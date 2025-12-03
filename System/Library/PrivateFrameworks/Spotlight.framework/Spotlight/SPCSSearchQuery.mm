@@ -2,33 +2,33 @@
 + (void)activate;
 + (void)deactivate;
 + (void)initialize;
-- (BOOL)skipResult:(id)a3 installedApps:(id)a4;
-- (SPCSSearchQuery)initWithUserQuery:(id)a3 queryGroupId:(unint64_t)a4 options:(unint64_t)a5 queryContext:(id)a6;
+- (BOOL)skipResult:(id)result installedApps:(id)apps;
+- (SPCSSearchQuery)initWithUserQuery:(id)query queryGroupId:(unint64_t)id options:(unint64_t)options queryContext:(id)context;
 - (id).cxx_construct;
-- (id)_makeUniqueFetchAttributesWithAttributes:(id)a3 extraAttributes:(id)a4 slowFetchAttributeSet:(id)a5;
-- (id)disabledBundlesWithParseDisabledBundles:(id)a3 filterEventBundle:(BOOL)a4;
-- (id)filterQueriesWithParseFilterQueries:(id)a3 onlyApps:(BOOL)a4 filterOrphanedFiles:(BOOL)a5;
-- (id)prepareRankingItems:(id)a3 withResultSets:(id)a4 totalFeatureComputationTime:(double *)a5;
-- (void)_sendResponse:(id)a3;
-- (void)buildFullSearchResults:(id)a3 withResultSets:(id)a4;
-- (void)buildPeopleResults:(id)a3 withContacts:(id)a4;
+- (id)_makeUniqueFetchAttributesWithAttributes:(id)attributes extraAttributes:(id)extraAttributes slowFetchAttributeSet:(id)set;
+- (id)disabledBundlesWithParseDisabledBundles:(id)bundles filterEventBundle:(BOOL)bundle;
+- (id)filterQueriesWithParseFilterQueries:(id)queries onlyApps:(BOOL)apps filterOrphanedFiles:(BOOL)files;
+- (id)prepareRankingItems:(id)items withResultSets:(id)sets totalFeatureComputationTime:(double *)time;
+- (void)_sendResponse:(id)response;
+- (void)buildFullSearchResults:(id)results withResultSets:(id)sets;
+- (void)buildPeopleResults:(id)results withContacts:(id)contacts;
 - (void)cancel;
-- (void)collectSearchResults:(id)a3;
-- (void)completed:(id)a3;
+- (void)collectSearchResults:(id)results;
+- (void)completed:(id)completed;
 - (void)dealloc;
 - (void)executeQuery;
-- (void)foundCompletion:(id)a3 scores:(id)a4 bundleIDs:(id)a5;
-- (void)foundCompletions:(id)a3;
+- (void)foundCompletion:(id)completion scores:(id)scores bundleIDs:(id)ds;
+- (void)foundCompletions:(id)completions;
 - (void)priorityGatherEnded;
-- (void)processSection:(id)a3;
-- (void)processUserActivitiesForSection:(id)a3;
-- (void)rankAndSendResultsWithResponseKind:(int)a3 withResultSections:(id)a4 withResultSets:(id)a5 withiCloudDriveResultSet:(id)a6 withMailResultSet:(id)a7 withCalendarResultSet:(id)a8;
-- (void)removeDuplicatesInSection:(id)a3;
-- (void)sendResponseWithKind:(int)a3;
-- (void)slowFetchAttributes:(id)a3;
+- (void)processSection:(id)section;
+- (void)processUserActivitiesForSection:(id)section;
+- (void)rankAndSendResultsWithResponseKind:(int)kind withResultSections:(id)sections withResultSets:(id)sets withiCloudDriveResultSet:(id)set withMailResultSet:(id)resultSet withCalendarResultSet:(id)calendarResultSet;
+- (void)removeDuplicatesInSection:(id)section;
+- (void)sendResponseWithKind:(int)kind;
+- (void)slowFetchAttributes:(id)attributes;
 - (void)start;
-- (void)updateCoreSuggestionsSection:(id)a3;
-- (void)updateMailAttachmentResults:(id)a3;
+- (void)updateCoreSuggestionsSection:(id)section;
+- (void)updateMailAttachmentResults:(id)results;
 @end
 
 @implementation SPCSSearchQuery
@@ -36,7 +36,7 @@
 + (void)initialize
 {
   v57 = *MEMORY[0x277D85DE8];
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = MEMORY[0x277CBEB98];
     v3 = *MEMORY[0x277D65CA0];
@@ -87,7 +87,7 @@
     v29 = *MEMORY[0x277D65B88];
     v30 = [v28 initWithSuiteName:*MEMORY[0x277D65B88]];
 
-    v32 = [v29 UTF8String];
+    uTF8String = [v29 UTF8String];
     v34 = ;
 
     v36 = dispatch_group_create();
@@ -96,12 +96,12 @@
       v38 = NSHomeDirectory();
       v39 = [v38 stringByAppendingString:@"/Library/Logs/CrashReporter/DiagnosticLogs/Search/Ranking"];
 
-      v40 = [MEMORY[0x277CCAA00] defaultManager];
-      [v40 createDirectoryAtPath:v39 withIntermediateDirectories:1 attributes:0 error:0];
+      defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+      [defaultManager createDirectoryAtPath:v39 withIntermediateDirectories:1 attributes:0 error:0];
     }
 
-    v41 = [MEMORY[0x277D657E8] sharedResourcesManager];
-    [v41 loadAllParameters];
+    mEMORY[0x277D657E8] = [MEMORY[0x277D657E8] sharedResourcesManager];
+    [mEMORY[0x277D657E8] loadAllParameters];
 
     v43 = dispatch_get_global_queue(17, 0);
     dispatch_group_async(v42, v43, &__block_literal_global_1);
@@ -218,16 +218,16 @@ void __29__SPCSSearchQuery_initialize__block_invoke_171()
 {
   v20 = *MEMORY[0x277D85DE8];
   {
-    v3 = [MEMORY[0x277D262A0] sharedConnection];
-    v4 = [v3 effectiveValueForSetting:*MEMORY[0x277D25F80]];
+    mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+    v4 = [mEMORY[0x277D262A0] effectiveValueForSetting:*MEMORY[0x277D25F80]];
 
-    v6 = [v3 effectiveValueForSetting:*MEMORY[0x277D25F90]];
+    v6 = [mEMORY[0x277D262A0] effectiveValueForSetting:*MEMORY[0x277D25F90]];
 
     v8 = SPFastHiddenAppsGetNoBuild();
     v9 = [v8 mutableCopy];
 
-    v10 = [MEMORY[0x277D4BE70] applicationsExcludedFromUninstall];
-    [v9 minusSet:v10];
+    applicationsExcludedFromUninstall = [MEMORY[0x277D4BE70] applicationsExcludedFromUninstall];
+    [v9 minusSet:applicationsExcludedFromUninstall];
 
     v11 = SPLogForSPLogCategoryDefault();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -237,7 +237,7 @@ void __29__SPCSSearchQuery_initialize__block_invoke_171()
       _os_log_impl(&dword_26B71B000, v11, OS_LOG_TYPE_DEFAULT, "%lu hiddenApps set during activate", &v18, 0xCu);
     }
 
-    v12 = [v9 allObjects];
+    allObjects = [v9 allObjects];
 
     if (+[SPCSSearchQuery activate]::onceToken[0] != -1)
     {
@@ -246,14 +246,14 @@ void __29__SPCSSearchQuery_initialize__block_invoke_171()
 
     if (v14 <= 0)
     {
-      [a1 preheat];
+      [self preheat];
     }
 
     else
     {
     }
 
-    v15 = [MEMORY[0x277D65970] copyRenderEngagementCounts];
+    copyRenderEngagementCounts = [MEMORY[0x277D65970] copyRenderEngagementCounts];
 
     if (+[SPCSSearchQuery activate]::mailVipOnceToken[0] != -1)
     {
@@ -299,11 +299,11 @@ void __27__SPCSSearchQuery_activate__block_invoke()
   }
 }
 
-- (SPCSSearchQuery)initWithUserQuery:(id)a3 queryGroupId:(unint64_t)a4 options:(unint64_t)a5 queryContext:(id)a6
+- (SPCSSearchQuery)initWithUserQuery:(id)query queryGroupId:(unint64_t)id options:(unint64_t)options queryContext:(id)context
 {
   v21.receiver = self;
   v21.super_class = SPCSSearchQuery;
-  v6 = [(SPKQuery *)&v21 initWithUserQuery:a3 queryGroupId:a4 options:a5 queryContext:a6];
+  v6 = [(SPKQuery *)&v21 initWithUserQuery:query queryGroupId:id options:options queryContext:context];
   if (v6)
   {
     v7 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
@@ -383,17 +383,17 @@ uint64_t __24__SPCSSearchQuery_start__block_invoke(uint64_t a1)
     os_unfair_lock_unlock(&self->_timeoutTimerLock);
   }
 
-  v5 = [(SPKQuery *)self delegate];
-  v6 = [v5 queryIdent];
-  v7 = [v5 clientBundleID];
+  delegate = [(SPKQuery *)self delegate];
+  queryIdent = [delegate queryIdent];
+  clientBundleID = [delegate clientBundleID];
   v22 = @"queryID";
-  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v6];
+  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:queryIdent];
   v23[0] = v8;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v23 forKeys:&v22 count:1];
   MEMORY[0x26D67EFE0]();
 
-  v10 = [(SPKQuery *)self queryContext];
-  LOBYTE(v9) = [v10 isSearchToolClient];
+  queryContext = [(SPKQuery *)self queryContext];
+  LOBYTE(v9) = [queryContext isSearchToolClient];
 
   if ((v9 & 1) == 0)
   {
@@ -404,8 +404,8 @@ uint64_t __24__SPCSSearchQuery_start__block_invoke(uint64_t a1)
     v18[2] = __25__SPCSSearchQuery_cancel__block_invoke;
     v18[3] = &unk_279CFE3A0;
     v19 = v11;
-    v21 = v6;
-    v20 = v7;
+    v21 = queryIdent;
+    v20 = clientBundleID;
     v13 = v11;
     md_dispatch_async_propagating(feedbackQueue, v18);
   }
@@ -431,42 +431,42 @@ void __25__SPCSSearchQuery_cancel__block_invoke(void *a1)
   [v2 sendFeedbackType:6 feedback:a1[4] queryId:a1[6] clientID:a1[5]];
 }
 
-- (void)_sendResponse:(id)a3
+- (void)_sendResponse:(id)response
 {
-  v4 = a3;
-  if (v4)
+  responseCopy = response;
+  if (responseCopy)
   {
-    v5 = [(SPKQuery *)self responseHandler];
+    responseHandler = [(SPKQuery *)self responseHandler];
 
-    if (v5)
+    if (responseHandler)
     {
-      v6 = [v4 sections];
-      v7 = [v6 count];
+      sections = [responseCopy sections];
+      v7 = [sections count];
 
       if (v7)
       {
-        [v4 setTopHitIsIn:1];
+        [responseCopy setTopHitIsIn:1];
       }
 
-      v8 = [(SPKQuery *)self delegate];
-      v9 = [v8 queryIdent];
-      v10 = [v8 clientBundleID];
+      delegate = [(SPKQuery *)self delegate];
+      queryIdent = [delegate queryIdent];
+      clientBundleID = [delegate clientBundleID];
       v11 = MEMORY[0x277D65968];
-      v12 = [(SPKQuery *)self queryContext];
-      v13 = [v12 queryUnderstandingOutput];
-      v14 = [v11 queryUnderstandingParseWithQueryUnderstanding:v13];
+      queryContext = [(SPKQuery *)self queryContext];
+      queryUnderstandingOutput = [queryContext queryUnderstandingOutput];
+      v14 = [v11 queryUnderstandingParseWithQueryUnderstanding:queryUnderstandingOutput];
 
-      v15 = [(SPKQuery *)self queryContext];
-      LOBYTE(v13) = [v15 isSearchToolClient];
+      queryContext2 = [(SPKQuery *)self queryContext];
+      LOBYTE(queryUnderstandingOutput) = [queryContext2 isSearchToolClient];
 
-      if ((v13 & 1) == 0)
+      if ((queryUnderstandingOutput & 1) == 0)
       {
         v16 = [objc_alloc(MEMORY[0x277D4C348]) initWithStartSearch:self->_feedback queryUnderstandingParse:v14];
         objc_initWeak(&location, self);
         feedbackQueue = self->_feedbackQueue;
         objc_copyWeak(v21, &location);
-        v21[1] = v9;
-        v20 = v10;
+        v21[1] = queryIdent;
+        v20 = clientBundleID;
         v18 = v16;
         md_tracing_dispatch_async_propagating();
 
@@ -474,8 +474,8 @@ void __25__SPCSSearchQuery_cancel__block_invoke(void *a1)
         objc_destroyWeak(&location);
       }
 
-      v19 = [(SPKQuery *)self responseHandler];
-      (v19)[2](v19, v4);
+      responseHandler2 = [(SPKQuery *)self responseHandler];
+      (responseHandler2)[2](responseHandler2, responseCopy);
     }
   }
 }
@@ -523,17 +523,17 @@ void __33__SPCSSearchQuery__sendResponse___block_invoke(uint64_t a1)
   [(SPCSSearchQuery *)&v6 dealloc];
 }
 
-- (BOOL)skipResult:(id)a3 installedApps:(id)a4
+- (BOOL)skipResult:(id)result installedApps:(id)apps
 {
   v42 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 attributeSet];
-  v9 = [v8 bundleID];
-  v10 = [v8 uniqueIdentifier];
-  v11 = [v8 attributeDictionary];
-  v12 = [MEMORY[0x277CC33F0] fpBundleIDs];
-  if (!v9)
+  resultCopy = result;
+  appsCopy = apps;
+  attributeSet = [resultCopy attributeSet];
+  bundleID = [attributeSet bundleID];
+  uniqueIdentifier = [attributeSet uniqueIdentifier];
+  attributeDictionary = [attributeSet attributeDictionary];
+  fpBundleIDs = [MEMORY[0x277CC33F0] fpBundleIDs];
+  if (!bundleID)
   {
     v14 = SPLogForSPLogCategoryDefault();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -544,14 +544,14 @@ void __33__SPCSSearchQuery__sendResponse___block_invoke(uint64_t a1)
     goto LABEL_10;
   }
 
-  if (![v9 isEqualToString:*MEMORY[0x277D4BEF0]])
+  if (![bundleID isEqualToString:*MEMORY[0x277D4BEF0]])
   {
-    if ([v9 isEqualToString:*MEMORY[0x277D65CE8]])
+    if ([bundleID isEqualToString:*MEMORY[0x277D65CE8]])
     {
-      v18 = [v8 relatedAppBundleIdentifier];
-      if (v18)
+      relatedAppBundleIdentifier = [attributeSet relatedAppBundleIdentifier];
+      if (relatedAppBundleIdentifier)
       {
-        if ([(NSSet *)self->_disabledAppSet containsObject:v18])
+        if ([(NSSet *)self->_disabledAppSet containsObject:relatedAppBundleIdentifier])
         {
           v19 = SPLogForSPLogCategoryDefault();
           v20 = v19;
@@ -571,9 +571,9 @@ void __33__SPCSSearchQuery__sendResponse___block_invoke(uint64_t a1)
           }
 
           *buf = 138412546;
-          v39 = v10;
+          v39 = uniqueIdentifier;
           v40 = 2112;
-          v41 = v18;
+          v41 = relatedAppBundleIdentifier;
           v22 = "Skipping shortcut %@ for disabled app %@";
           goto LABEL_44;
         }
@@ -597,9 +597,9 @@ void __33__SPCSSearchQuery__sendResponse___block_invoke(uint64_t a1)
           }
 
           *buf = 138412546;
-          v39 = v10;
+          v39 = uniqueIdentifier;
           v40 = 2112;
-          v41 = v18;
+          v41 = relatedAppBundleIdentifier;
           v22 = "Skipping shortcut %@ for restricted app %@";
 LABEL_44:
           _os_log_impl(&dword_26B71B000, v20, v21, v22, buf, 0x16u);
@@ -608,12 +608,12 @@ LABEL_44:
       }
     }
 
-    else if ([v9 isEqualToString:*MEMORY[0x277D65B98]])
+    else if ([bundleID isEqualToString:*MEMORY[0x277D65B98]])
     {
-      v18 = [v8 relatedAppBundleIdentifier];
-      if (v18)
+      relatedAppBundleIdentifier = [attributeSet relatedAppBundleIdentifier];
+      if (relatedAppBundleIdentifier)
       {
-        if ([(NSSet *)self->_disabledAppSet containsObject:v18])
+        if ([(NSSet *)self->_disabledAppSet containsObject:relatedAppBundleIdentifier])
         {
           v23 = SPLogForSPLogCategoryDefault();
           v20 = v23;
@@ -633,9 +633,9 @@ LABEL_44:
           }
 
           *buf = 138412546;
-          v39 = v10;
+          v39 = uniqueIdentifier;
           v40 = 2112;
-          v41 = v18;
+          v41 = relatedAppBundleIdentifier;
           v25 = "Skipping settings %@ for disabled app %@";
         }
 
@@ -658,15 +658,15 @@ LABEL_44:
           }
 
           *buf = 138412546;
-          v39 = v10;
+          v39 = uniqueIdentifier;
           v40 = 2112;
-          v41 = v18;
+          v41 = relatedAppBundleIdentifier;
           v25 = "Skipping settings %@ for restricted app %@";
         }
 
         else
         {
-          if ([v7 containsObject:v18])
+          if ([appsCopy containsObject:relatedAppBundleIdentifier])
           {
             goto LABEL_53;
           }
@@ -689,9 +689,9 @@ LABEL_44:
           }
 
           *buf = 138412546;
-          v39 = v10;
+          v39 = uniqueIdentifier;
           v40 = 2112;
-          v41 = v18;
+          v41 = relatedAppBundleIdentifier;
           v25 = "Skipping settings %@ for non-installed app %@";
         }
 
@@ -704,21 +704,21 @@ LABEL_70:
 
     else
     {
-      if (![v9 isEqualToString:*MEMORY[0x277D65A90]])
+      if (![bundleID isEqualToString:*MEMORY[0x277D65A90]])
       {
         goto LABEL_54;
       }
 
-      v26 = [(SPKQuery *)self queryContext];
-      v27 = [v26 isSearchToolClient];
+      queryContext = [(SPKQuery *)self queryContext];
+      isSearchToolClient = [queryContext isSearchToolClient];
 
-      if (!v27)
+      if (!isSearchToolClient)
       {
         goto LABEL_54;
       }
 
-      v18 = [v11 objectForKeyedSubscript:*MEMORY[0x277CC2A00]];
-      if (!v18)
+      relatedAppBundleIdentifier = [attributeDictionary objectForKeyedSubscript:*MEMORY[0x277CC2A00]];
+      if (!relatedAppBundleIdentifier)
       {
         v20 = SPLogForSPLogCategoryDefault();
         if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -729,9 +729,9 @@ LABEL_70:
         goto LABEL_70;
       }
 
-      v37 = [(CSSearchQuery *)self->_csQuery queryContext];
-      v28 = [v37 disableBundles];
-      v36 = [v28 containsObject:v18];
+      queryContext2 = [(CSSearchQuery *)self->_csQuery queryContext];
+      disableBundles = [queryContext2 disableBundles];
+      v36 = [disableBundles containsObject:relatedAppBundleIdentifier];
 
       if (v36)
       {
@@ -739,7 +739,7 @@ LABEL_70:
         if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v39 = v18;
+          v39 = relatedAppBundleIdentifier;
           _os_log_impl(&dword_26B71B000, v20, OS_LOG_TYPE_DEFAULT, "[ProtectedApps][personal answers] event extracted from disabled source bundle %@ was filtered out", buf, 0xCu);
         }
 
@@ -752,14 +752,14 @@ LABEL_53:
     goto LABEL_54;
   }
 
-  if (![(NSSet *)self->_disabledAppSet containsObject:v10])
+  if (![(NSSet *)self->_disabledAppSet containsObject:uniqueIdentifier])
   {
     {
       v13 = SPLogForSPLogCategoryDefault();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v39 = v10;
+        v39 = uniqueIdentifier;
         _os_log_impl(&dword_26B71B000, v13, OS_LOG_TYPE_DEFAULT, "Skipping restricted app %@", buf, 0xCu);
       }
 
@@ -767,11 +767,11 @@ LABEL_53:
     }
 
 LABEL_54:
-    v31 = [(CSSearchQuery *)self->_csQuery queryContext];
-    v32 = [v31 disableBundles];
-    if ([v32 containsObject:v9])
+    queryContext3 = [(CSSearchQuery *)self->_csQuery queryContext];
+    disableBundles2 = [queryContext3 disableBundles];
+    if ([disableBundles2 containsObject:bundleID])
     {
-      v33 = [v12 containsObject:v9];
+      v33 = [fpBundleIDs containsObject:bundleID];
 
       if ((v33 & 1) == 0)
       {
@@ -780,7 +780,7 @@ LABEL_54:
         if (os_log_type_enabled(v13, ((*MEMORY[0x277D4BF50] & 1) == 0)))
         {
           *buf = 138412290;
-          v39 = v9;
+          v39 = bundleID;
           _os_log_impl(&dword_26B71B000, v13, ((v34 & 1) == 0), "[ProtectedApps] item from disabled bundle %@ was found", buf, 0xCu);
         }
 
@@ -800,7 +800,7 @@ LABEL_54:
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v39 = v10;
+    v39 = uniqueIdentifier;
     _os_log_impl(&dword_26B71B000, v13, OS_LOG_TYPE_DEFAULT, "Skipping disabled app %@", buf, 0xCu);
   }
 
@@ -814,17 +814,17 @@ LABEL_11:
   return v15;
 }
 
-- (void)collectSearchResults:(id)a3
+- (void)collectSearchResults:(id)results
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  resultsCopy = results;
   v5 = SPCopyVisibleApps();
   v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v7 = v4;
+  v7 = resultsCopy;
   v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v8)
   {
@@ -851,10 +851,10 @@ LABEL_11:
     while (v8);
   }
 
-  v12 = [(SPKQuery *)self queryContext];
-  v13 = [(SPCSSearchQuery *)self isPeopleSearch];
-  v14 = [(CSSearchQuery *)self->_csQuery queryContext];
-  collectIndexResults(v6, v12, v13, 300, [v14 maxCount], &self->_indexResultsRegistry);
+  queryContext = [(SPKQuery *)self queryContext];
+  isPeopleSearch = [(SPCSSearchQuery *)self isPeopleSearch];
+  queryContext2 = [(CSSearchQuery *)self->_csQuery queryContext];
+  collectIndexResults(v6, queryContext, isPeopleSearch, 300, [queryContext2 maxCount], &self->_indexResultsRegistry);
 
   v15 = *MEMORY[0x277D85DE8];
 }
@@ -893,18 +893,18 @@ void __47__SPCSSearchQuery_constructResultsForResponse___block_invoke(uint64_t a
   v4 = *(a3 + 32);
 }
 
-- (void)updateMailAttachmentResults:(id)a3
+- (void)updateMailAttachmentResults:(id)results
 {
   v86 = *MEMORY[0x277D85DE8];
   v76 = 0u;
   v77 = 0u;
   v78 = 0u;
   v79 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v76 objects:v85 count:16];
+  resultsCopy = results;
+  v4 = [resultsCopy countByEnumeratingWithState:&v76 objects:v85 count:16];
   if (v4)
   {
-    v5 = 0;
+    dictionary = 0;
     v54 = 0;
     v55 = *v77;
     v6 = *MEMORY[0x277CC3048];
@@ -914,53 +914,53 @@ void __47__SPCSSearchQuery_constructResultsForResponse___block_invoke(uint64_t a
       {
         if (*v77 != v55)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(resultsCopy);
         }
 
         v8 = *(*(&v76 + 1) + 8 * i);
-        v9 = [v8 attributeSet];
-        v10 = [v9 attributeDictionary];
-        v11 = [v10 objectForKeyedSubscript:v6];
+        attributeSet = [v8 attributeSet];
+        attributeDictionary = [attributeSet attributeDictionary];
+        v11 = [attributeDictionary objectForKeyedSubscript:v6];
 
         if (v11)
         {
-          if (!v5)
+          if (!dictionary)
           {
-            v5 = [MEMORY[0x277CBEB38] dictionary];
-            v12 = [MEMORY[0x277CBEB38] dictionary];
+            dictionary = [MEMORY[0x277CBEB38] dictionary];
+            dictionary2 = [MEMORY[0x277CBEB38] dictionary];
 
-            v54 = v12;
+            v54 = dictionary2;
           }
 
-          v13 = [v8 dataclass];
-          v14 = [v5 objectForKeyedSubscript:v13];
+          dataclass = [v8 dataclass];
+          array = [dictionary objectForKeyedSubscript:dataclass];
 
-          if (!v14)
+          if (!array)
           {
-            v14 = [MEMORY[0x277CBEB18] array];
-            v15 = [v8 dataclass];
-            [v5 setObject:v14 forKeyedSubscript:v15];
+            array = [MEMORY[0x277CBEB18] array];
+            dataclass2 = [v8 dataclass];
+            [dictionary setObject:array forKeyedSubscript:dataclass2];
           }
 
           v16 = [v54 objectForKeyedSubscript:v11];
           if (!v16)
           {
-            v17 = [MEMORY[0x277CBEB18] array];
-            [v54 setObject:v17 forKeyedSubscript:v11];
-            v16 = v17;
-            [v14 addObject:v11];
+            array2 = [MEMORY[0x277CBEB18] array];
+            [v54 setObject:array2 forKeyedSubscript:v11];
+            v16 = array2;
+            [array addObject:v11];
           }
 
           [v16 addObject:v8];
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v76 objects:v85 count:16];
+      v4 = [resultsCopy countByEnumeratingWithState:&v76 objects:v85 count:16];
     }
 
     while (v4);
 
-    if (!v5)
+    if (!dictionary)
     {
       v37 = 0;
       goto LABEL_50;
@@ -970,7 +970,7 @@ void __47__SPCSSearchQuery_constructResultsForResponse___block_invoke(uint64_t a
     v75 = 0u;
     v72 = 0u;
     v73 = 0u;
-    v18 = v5;
+    v18 = dictionary;
     v19 = [v18 countByEnumeratingWithState:&v72 objects:v84 count:16];
     if (v19)
     {
@@ -992,7 +992,7 @@ void __47__SPCSSearchQuery_constructResultsForResponse___block_invoke(uint64_t a
           v44 = rankingAttributeNameArray();
           v21 = dispatch_group_create();
           dispatch_group_enter(v21);
-          v22 = [MEMORY[0x277CBEB18] array];
+          array3 = [MEMORY[0x277CBEB18] array];
           v67[0] = MEMORY[0x277D85DD0];
           v67[1] = 3221225472;
           v67[2] = __47__SPCSSearchQuery_updateMailAttachmentResults___block_invoke;
@@ -1001,13 +1001,13 @@ void __47__SPCSSearchQuery_constructResultsForResponse___block_invoke(uint64_t a
           v68 = v50;
           v47 = v44;
           v69 = v47;
-          v45 = v22;
+          v45 = array3;
           v70 = v45;
           group = v21;
           v71 = group;
           v49 = MEMORY[0x26D67F7A0](v67);
-          v23 = [MEMORY[0x277CC34A8] defaultSearchableIndex];
-          [v23 slowFetchAttributes:v47 protectionClass:v20 bundleID:v40 identifiers:v50 completionHandler:v49];
+          defaultSearchableIndex = [MEMORY[0x277CC34A8] defaultSearchableIndex];
+          [defaultSearchableIndex slowFetchAttributes:v47 protectionClass:v20 bundleID:v40 identifiers:v50 completionHandler:v49];
 
           v24 = dispatch_time(0, 300000000);
           if (dispatch_group_wait(group, v24))
@@ -1059,14 +1059,14 @@ void __47__SPCSSearchQuery_constructResultsForResponse___block_invoke(uint64_t a
                         }
 
                         v33 = *(*(&v56 + 1) + 8 * m);
-                        [v3 removeObject:v33];
+                        [resultsCopy removeObject:v33];
                         v34 = SPLogForSPLogCategoryQuery();
                         if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
                         {
-                          v35 = [v33 attributeSet];
-                          v36 = [v35 uniqueIdentifier];
+                          attributeSet2 = [v33 attributeSet];
+                          uniqueIdentifier = [attributeSet2 uniqueIdentifier];
                           *buf = 138412290;
-                          v83 = v36;
+                          v83 = uniqueIdentifier;
                           _os_log_error_impl(&dword_26B71B000, v34, OS_LOG_TYPE_ERROR, "[Mail Attachment] removed result:%@", buf, 0xCu);
                         }
                       }
@@ -1114,7 +1114,7 @@ void __47__SPCSSearchQuery_constructResultsForResponse___block_invoke(uint64_t a
   {
     v37 = 0;
     v54 = 0;
-    v18 = v3;
+    v18 = resultsCopy;
   }
 
 LABEL_50:
@@ -1235,19 +1235,19 @@ void __47__SPCSSearchQuery_updateMailAttachmentResults___block_invoke_226(uint64
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (id)prepareRankingItems:(id)a3 withResultSets:(id)a4 totalFeatureComputationTime:(double *)a5
+- (id)prepareRankingItems:(id)items withResultSets:(id)sets totalFeatureComputationTime:(double *)time
 {
   v153 = *MEMORY[0x277D85DE8];
-  v113 = a3;
-  v109 = a4;
-  v7 = [(SPCSSearchQuery *)self itemRanker];
-  v8 = [(SPKQuery *)self queryContext];
-  [v7 parseQUQuery:v8];
+  itemsCopy = items;
+  setsCopy = sets;
+  itemRanker = [(SPCSSearchQuery *)self itemRanker];
+  queryContext = [(SPKQuery *)self queryContext];
+  [itemRanker parseQUQuery:queryContext];
 
-  v117 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v113, "count")}];
+  v117 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(itemsCopy, "count")}];
   v9 = 0;
   v127 = *MEMORY[0x277CBEEE8];
-  while (v9 < [v113 count])
+  while (v9 < [itemsCopy count])
   {
     [v117 addObject:v127];
     ++v9;
@@ -1259,12 +1259,12 @@ void __47__SPCSSearchQuery_updateMailAttachmentResults___block_invoke_226(uint64
   v105 = *MEMORY[0x277D65AD0];
   *&v10 = 67109378;
   v103 = v10;
-  v120 = self;
-  while (v114 < [v113 count])
+  selfCopy = self;
+  while (v114 < [itemsCopy count])
   {
-    v118 = [v113 objectAtIndexedSubscript:v114];
-    v107 = [v109 objectAtIndexedSubscript:v114];
-    v11 = [v118 bundleIdentifier];
+    v118 = [itemsCopy objectAtIndexedSubscript:v114];
+    v107 = [setsCopy objectAtIndexedSubscript:v114];
+    bundleIdentifier = [v118 bundleIdentifier];
     IsSyndicatedPhotos = SSSectionIsSyndicatedPhotos();
     v13 = objc_opt_new();
     v140 = 0u;
@@ -1286,16 +1286,16 @@ void __47__SPCSSearchQuery_updateMailAttachmentResults___block_invoke_226(uint64
           }
 
           v18 = *(*(&v138 + 1) + 8 * i);
-          v19 = [v18 rankingItem];
-          v20 = v19 == 0;
+          rankingItem = [v18 rankingItem];
+          v20 = rankingItem == 0;
 
           if (!v20)
           {
-            v21 = [v18 rankingItem];
-            [v21 setSectionBundleIdentifier:v11];
+            rankingItem2 = [v18 rankingItem];
+            [rankingItem2 setSectionBundleIdentifier:bundleIdentifier];
 
-            v22 = [v18 rankingItem];
-            [v13 addObject:v22];
+            rankingItem3 = [v18 rankingItem];
+            [v13 addObject:rankingItem3];
           }
         }
 
@@ -1306,21 +1306,21 @@ void __47__SPCSSearchQuery_updateMailAttachmentResults___block_invoke_226(uint64
     }
 
     Current = CFAbsoluteTimeGetCurrent();
-    v24 = [(SPCSSearchQuery *)v120 itemRanker];
-    v25 = [v118 bundleIdentifier];
-    [v24 prepareItems:v13 inBundle:v25];
+    itemRanker2 = [(SPCSSearchQuery *)selfCopy itemRanker];
+    bundleIdentifier2 = [v118 bundleIdentifier];
+    [itemRanker2 prepareItems:v13 inBundle:bundleIdentifier2];
 
-    *a5 = CFAbsoluteTimeGetCurrent() - Current + *a5;
+    *time = CFAbsoluteTimeGetCurrent() - Current + *time;
     if (IsSyndicatedPhotos)
     {
       v110 = objc_opt_new();
       v111 = objc_opt_new();
       v123 = [v14 count];
-      v26 = [(SPCSSearchQuery *)v120 itemRanker];
-      v121 = [v26 isNLSearch];
+      itemRanker3 = [(SPCSSearchQuery *)selfCopy itemRanker];
+      isNLSearch = [itemRanker3 isNLSearch];
 
-      v27 = [(SPCSSearchQuery *)v120 itemRanker];
-      v28 = [v27 queryTermCount] == 0;
+      itemRanker4 = [(SPCSSearchQuery *)selfCopy itemRanker];
+      v28 = [itemRanker4 queryTermCount] == 0;
 
       if (v28)
       {
@@ -1347,12 +1347,12 @@ void __47__SPCSSearchQuery_updateMailAttachmentResults___block_invoke_226(uint64
                 objc_enumerationMutation(v29);
               }
 
-              v33 = [*(*(&v134 + 1) + 8 * j) rankingItem];
-              v34 = v33;
-              if (v33)
+              rankingItem4 = [*(*(&v134 + 1) + 8 * j) rankingItem];
+              v34 = rankingItem4;
+              if (rankingItem4)
               {
-                v35 = [v33 L2FeatureVector];
-                [v35 scoreForFeature:1929];
+                l2FeatureVector = [rankingItem4 L2FeatureVector];
+                [l2FeatureVector scoreForFeature:1929];
                 v37 = v36;
 
                 if (v37 == 1.0)
@@ -1385,25 +1385,25 @@ LABEL_29:
         for (k = 0; k != v123; ++k)
         {
           v39 = [v14 objectAtIndex:k];
-          v40 = [v39 rankingItem];
-          v41 = v40;
-          if (v40)
+          rankingItem5 = [v39 rankingItem];
+          v41 = rankingItem5;
+          if (rankingItem5)
           {
-            v42 = [v40 L2FeatureVector];
-            [v42 scoreForFeature:2392];
+            l2FeatureVector2 = [rankingItem5 L2FeatureVector];
+            [l2FeatureVector2 scoreForFeature:2392];
             v44 = v43;
 
-            v45 = [v41 L2FeatureVector];
-            [v45 scoreForFeature:1929];
+            l2FeatureVector3 = [v41 L2FeatureVector];
+            [l2FeatureVector3 scoreForFeature:1929];
             v47 = v46;
 
-            v48 = [v41 L2FeatureVector];
-            [v48 scoreForFeature:2380];
+            l2FeatureVector4 = [v41 L2FeatureVector];
+            [l2FeatureVector4 scoreForFeature:2380];
             v50 = v49;
 
             if (v44 == 1.0)
             {
-              v51 = v121;
+              v51 = isNLSearch;
             }
 
             else
@@ -1413,25 +1413,25 @@ LABEL_29:
 
             if (!((v115 ^ 1) & 1 | (v47 == 1.0)) && (v51 & 1) == 0 || (v47 == 1.0 ? (v57 = 1) : (v57 = v115), (v57 & 1) == 0 && v50 != 1.0 && ([v41 photosExactMatch] & 1) == 0 && ((objc_msgSend(v41, "photosMatch") | v51) & 1) == 0))
             {
-              if ((*(v120 + 448) & 2) != 0)
+              if ((*(selfCopy + 448) & 2) != 0)
               {
                 v52 = SPLogForSPLogCategoryDefault();
                 v58 = *MEMORY[0x277D4BF50];
                 if (os_log_type_enabled(v52, ((*MEMORY[0x277D4BF50] & 1) == 0)))
                 {
-                  v59 = [v41 identifier];
-                  v60 = [v41 photosExactMatch];
-                  v61 = [v41 photosMatch];
+                  identifier = [v41 identifier];
+                  photosExactMatch = [v41 photosExactMatch];
+                  photosMatch = [v41 photosMatch];
                   *buf = 138413314;
-                  *v144 = v59;
+                  *v144 = identifier;
                   *&v144[8] = 1024;
-                  *&v144[10] = v60;
+                  *&v144[10] = photosExactMatch;
                   v145 = 1024;
-                  v146 = v61;
+                  v146 = photosMatch;
                   v147 = 2048;
                   v148 = v44;
                   v149 = 1024;
-                  v150 = v121;
+                  v150 = isNLSearch;
                   _os_log_impl(&dword_26B71B000, v52, ((v58 & 1) == 0), "#####=== [Pommes Ranking] photo filtering ignored id:%@ exact:%d match:%d nl:%.0f isNL:%d", buf, 0x28u);
                 }
               }
@@ -1445,19 +1445,19 @@ LABEL_29:
                 v112 = 1;
                 if (os_log_type_enabled(v52, ((*MEMORY[0x277D4BF50] & 1) == 0)))
                 {
-                  v54 = [v41 identifier];
-                  v55 = [v41 photosExactMatch];
-                  v56 = [v41 photosMatch];
+                  identifier2 = [v41 identifier];
+                  photosExactMatch2 = [v41 photosExactMatch];
+                  photosMatch2 = [v41 photosMatch];
                   *buf = 138413314;
-                  *v144 = v54;
+                  *v144 = identifier2;
                   *&v144[8] = 1024;
-                  *&v144[10] = v55;
+                  *&v144[10] = photosExactMatch2;
                   v145 = 1024;
-                  v146 = v56;
+                  v146 = photosMatch2;
                   v147 = 2048;
                   v148 = v44;
                   v149 = 1024;
-                  v150 = v121;
+                  v150 = isNLSearch;
                   _os_log_impl(&dword_26B71B000, v52, ((v53 & 1) == 0), "#####=== photo filtered id:%@ exact:%d match:%d nl:%.0f isNL:%d", buf, 0x28u);
 
                   v112 = 1;
@@ -1477,14 +1477,14 @@ LABEL_29:
       }
     }
 
-    v62 = [v118 resultsCount];
-    if (!v120->_isPeopleSearch)
+    resultsCount = [v118 resultsCount];
+    if (!selfCopy->_isPeopleSearch)
     {
       goto LABEL_89;
     }
 
-    v63 = v62;
-    if ([v11 isEqualToString:v106])
+    v63 = resultsCount;
+    if ([bundleIdentifier isEqualToString:v106])
     {
       if (v63 < 0xC9)
       {
@@ -1494,7 +1494,7 @@ LABEL_29:
 
     else
     {
-      v64 = [v11 isEqualToString:v105];
+      v64 = [bundleIdentifier isEqualToString:v105];
       if (v63 > 0xC8)
       {
         v65 = v64;
@@ -1513,17 +1513,17 @@ LABEL_29:
 
     v122 = objc_opt_new();
     v124 = objc_opt_new();
-    v126 = [v118 resultSet];
+    resultSet = [v118 resultSet];
     v66 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:v63];
     v67 = 0;
     v68 = v66;
     do
     {
-      v69 = [v126 objectAtIndex:v67];
-      v70 = [v69 rankingItem];
-      if (v70)
+      v69 = [resultSet objectAtIndex:v67];
+      rankingItem6 = [v69 rankingItem];
+      if (rankingItem6)
       {
-        [v66 addObject:v70];
+        [v66 addObject:rankingItem6];
       }
 
       ++v67;
@@ -1535,7 +1535,7 @@ LABEL_29:
     v132[1] = 3221225472;
     v133[0] = __82__SPCSSearchQuery_prepareRankingItems_withResultSets_totalFeatureComputationTime___block_invoke;
     v133[1] = &unk_279CFE490;
-    v133[2] = v120;
+    v133[2] = selfCopy;
     [v68 sortWithOptions:16 usingComparator:v132];
     v71 = [v68 count];
     if (v71 >= 0xC9)
@@ -1543,9 +1543,9 @@ LABEL_29:
       for (m = 200; m != v71; ++m)
       {
         v73 = [v66 objectAtIndexedSubscript:m];
-        v74 = [v73 L2FeatureVector];
+        l2FeatureVector5 = [v73 L2FeatureVector];
         LODWORD(v75) = -8388608;
-        [v74 setOriginalL2Score:v75];
+        [l2FeatureVector5 setOriginalL2Score:v75];
 
         v66 = v68;
       }
@@ -1558,16 +1558,16 @@ LABEL_29:
     {
       while (1)
       {
-        v77 = [v126 objectAtIndex:v76];
-        v78 = [v77 rankingItem];
-        v79 = v78;
-        if (!v78)
+        v77 = [resultSet objectAtIndex:v76];
+        rankingItem7 = [v77 rankingItem];
+        v79 = rankingItem7;
+        if (!rankingItem7)
         {
           goto LABEL_79;
         }
 
-        v80 = [v78 L2FeatureVector];
-        [v80 originalL2Score];
+        l2FeatureVector6 = [rankingItem7 L2FeatureVector];
+        [l2FeatureVector6 originalL2Score];
         v82 = v81 == -INFINITY;
 
         if (!v82)
@@ -1619,13 +1619,13 @@ LABEL_85:
       *buf = v103;
       *v144 = v116;
       *&v144[4] = 2112;
-      *&v144[6] = v11;
+      *&v144[6] = bundleIdentifier;
       _os_log_impl(&dword_26B71B000, v88, ((v89 & 1) == 0), "Removing %d items from %@", buf, 0x12u);
     }
 
     v86 = v68;
     [v13 removeObjectsAtIndexes:v124];
-    [v126 removeObjectsAtIndexes:v122];
+    [resultSet removeObjectsAtIndexes:v122];
 LABEL_88:
 
 LABEL_89:
@@ -1717,11 +1717,11 @@ uint64_t __82__SPCSSearchQuery_prepareRankingItems_withResultSets_totalFeatureCo
   return v16;
 }
 
-- (void)slowFetchAttributes:(id)a3
+- (void)slowFetchAttributes:(id)attributes
 {
   v91 = *MEMORY[0x277D85DE8];
-  v49 = a3;
-  v51 = self;
+  attributesCopy = attributes;
+  selfCopy = self;
   if ([(NSArray *)self->_slowFetchAttrs count])
   {
     v4 = objc_opt_new();
@@ -1729,7 +1729,7 @@ uint64_t __82__SPCSSearchQuery_prepareRankingItems_withResultSets_totalFeatureCo
     v81 = 0u;
     v78 = 0u;
     v79 = 0u;
-    obj = v49;
+    obj = attributesCopy;
     v56 = [obj countByEnumeratingWithState:&v78 objects:v90 count:16];
     if (v56)
     {
@@ -1763,26 +1763,26 @@ uint64_t __82__SPCSSearchQuery_prepareRankingItems_withResultSets_totalFeatureCo
                 }
 
                 v10 = *(*(&v74 + 1) + 8 * j);
-                v11 = [v10 dataclass];
-                if (v11)
+                dataclass = [v10 dataclass];
+                if (dataclass)
                 {
-                  v12 = [v10 attributeSet];
-                  v13 = [v12 bundleIdentifier];
-                  v14 = v13 == 0;
+                  attributeSet = [v10 attributeSet];
+                  bundleIdentifier = [attributeSet bundleIdentifier];
+                  v14 = bundleIdentifier == 0;
 
                   if (!v14)
                   {
-                    v15 = [v10 dataclass];
-                    v88[0] = v15;
-                    v16 = [v10 attributeSet];
-                    v17 = [v16 bundleIdentifier];
-                    v88[1] = v17;
+                    dataclass2 = [v10 dataclass];
+                    v88[0] = dataclass2;
+                    attributeSet2 = [v10 attributeSet];
+                    bundleIdentifier2 = [attributeSet2 bundleIdentifier];
+                    v88[1] = bundleIdentifier2;
                     v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v88 count:2];
 
                     v19 = [v4 objectForKeyedSubscript:v18];
-                    LODWORD(v15) = v19 == 0;
+                    LODWORD(dataclass2) = v19 == 0;
 
-                    if (v15)
+                    if (dataclass2)
                     {
                       v20 = objc_opt_new();
                       [v4 setObject:v20 forKeyedSubscript:v18];
@@ -1852,15 +1852,15 @@ uint64_t __82__SPCSSearchQuery_prepareRankingItems_withResultSets_totalFeatureCo
                 }
 
                 v32 = *(*(&v66 + 1) + 8 * m);
-                v33 = [v32 attributeSet];
-                v34 = [v33 uniqueIdentifier];
-                v35 = v34 == 0;
+                attributeSet3 = [v32 attributeSet];
+                uniqueIdentifier = [attributeSet3 uniqueIdentifier];
+                v35 = uniqueIdentifier == 0;
 
                 if (!v35)
                 {
-                  v36 = [v32 attributeSet];
-                  v37 = [v36 uniqueIdentifier];
-                  [v26 addObject:v37];
+                  attributeSet4 = [v32 attributeSet];
+                  uniqueIdentifier2 = [attributeSet4 uniqueIdentifier];
+                  [v26 addObject:uniqueIdentifier2];
                 }
               }
 
@@ -1870,22 +1870,22 @@ uint64_t __82__SPCSSearchQuery_prepareRankingItems_withResultSets_totalFeatureCo
             while (v29);
           }
 
-          v38 = [MEMORY[0x277CBEB18] array];
-          v39 = v51->_slowFetchAttrs;
+          array = [MEMORY[0x277CBEB18] array];
+          v39 = selfCopy->_slowFetchAttrs;
           v40 = dispatch_group_create();
           dispatch_group_enter(v40);
-          v41 = [MEMORY[0x277CC34A8] defaultSearchableIndex];
+          defaultSearchableIndex = [MEMORY[0x277CC34A8] defaultSearchableIndex];
           v62[0] = MEMORY[0x277D85DD0];
           v62[1] = 3221225472;
           v62[2] = __39__SPCSSearchQuery_slowFetchAttributes___block_invoke;
           v62[3] = &unk_279CFE4B8;
           v42 = v39;
           v63 = v42;
-          v43 = v38;
+          v43 = array;
           v64 = v43;
           v44 = v40;
           v65 = v44;
-          [v41 slowFetchAttributes:v42 protectionClass:v57 bundleID:v59 identifiers:v26 completionHandler:v62];
+          [defaultSearchableIndex slowFetchAttributes:v42 protectionClass:v57 bundleID:v59 identifiers:v26 completionHandler:v62];
 
           v45 = dispatch_time(0, 1000000000);
           if (dispatch_group_wait(v44, v45))
@@ -1997,11 +1997,11 @@ void __39__SPCSSearchQuery_slowFetchAttributes___block_invoke_2(uint64_t a1, voi
   [v8 setAttributeSet:v5];
 }
 
-- (void)buildFullSearchResults:(id)a3 withResultSets:(id)a4
+- (void)buildFullSearchResults:(id)results withResultSets:(id)sets
 {
   v107 = *MEMORY[0x277D85DE8];
-  v91 = a3;
-  v73 = a4;
+  resultsCopy = results;
+  setsCopy = sets;
   v77 = objc_opt_new();
   v74 = objc_opt_new();
   v95 = 0;
@@ -2025,20 +2025,20 @@ void __39__SPCSSearchQuery_slowFetchAttributes___block_invoke_2(uint64_t a1, voi
   v78 = *MEMORY[0x277D65A98];
   v87 = *MEMORY[0x277D65C18];
   v83 = *MEMORY[0x277D65AE0];
-  while (v95 < [v91 count])
+  while (v95 < [resultsCopy count])
   {
-    v90 = [v91 objectAtIndexedSubscript:?];
-    v94 = [v90 bundleIdentifier];
-    if (([v94 isEqualToString:v98] & 1) == 0 && (objc_msgSend(v94, "isEqualToString:", v88) & 1) == 0 && (objc_msgSend(v94, "isEqualToString:", v82) & 1) == 0 && (objc_msgSend(v94, "isEqualToString:", v86) & 1) == 0 && (objc_msgSend(v94, "isEqualToString:", v75) & 1) == 0 && (objc_msgSend(v94, "isEqualToString:", v70) & 1) == 0 && (objc_msgSend(v94, "isEqualToString:", v67) & 1) == 0)
+    v90 = [resultsCopy objectAtIndexedSubscript:?];
+    bundleIdentifier = [v90 bundleIdentifier];
+    if (([bundleIdentifier isEqualToString:v98] & 1) == 0 && (objc_msgSend(bundleIdentifier, "isEqualToString:", v88) & 1) == 0 && (objc_msgSend(bundleIdentifier, "isEqualToString:", v82) & 1) == 0 && (objc_msgSend(bundleIdentifier, "isEqualToString:", v86) & 1) == 0 && (objc_msgSend(bundleIdentifier, "isEqualToString:", v75) & 1) == 0 && (objc_msgSend(bundleIdentifier, "isEqualToString:", v70) & 1) == 0 && (objc_msgSend(bundleIdentifier, "isEqualToString:", v67) & 1) == 0)
     {
-      v66 = [v73 objectAtIndexedSubscript:v95];
+      v66 = [setsCopy objectAtIndexedSubscript:v95];
       if (SSSectionIsSyndicatedPhotos())
       {
-        v6 = [MEMORY[0x277D65958] sharedInstance];
-        v7 = [v90 resultSet];
-        v8 = [(SPKQuery *)self userQueryString];
+        mEMORY[0x277D65958] = [MEMORY[0x277D65958] sharedInstance];
+        resultSet = [v90 resultSet];
+        userQueryString = [(SPKQuery *)self userQueryString];
         [(SPCSSearchQuery *)self currentTime];
-        [v6 sortAndFilterRankedPhotosItemsFilterFromSet:v7 maxCount:20 userQuery:v8 currentTime:?];
+        [mEMORY[0x277D65958] sortAndFilterRankedPhotosItemsFilterFromSet:resultSet maxCount:20 userQuery:userQueryString currentTime:?];
       }
 
       v69 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v66, "count")}];
@@ -2065,13 +2065,13 @@ void __39__SPCSSearchQuery_slowFetchAttributes___block_invoke_2(uint64_t a1, voi
 
             v12 = *(*(&v99 + 1) + 8 * i);
             currentTime = self->_currentTime;
-            v14 = [(SPKQuery *)self userQueryString];
-            v15 = [(SPKQuery *)self queryContext];
-            v16 = [v12 resultWithTime:v14 searchString:0 isCorrectedQuery:v15 withQueryContext:currentTime];
+            userQueryString2 = [(SPKQuery *)self userQueryString];
+            queryContext = [(SPKQuery *)self queryContext];
+            v16 = [v12 resultWithTime:userQueryString2 searchString:0 isCorrectedQuery:queryContext withQueryContext:currentTime];
 
-            v17 = [v12 rankingItem];
-            v18 = [v17 L2FeatureVector];
-            if (v18)
+            rankingItem = [v12 rankingItem];
+            l2FeatureVector = [rankingItem L2FeatureVector];
+            if (l2FeatureVector)
             {
               v19 = v12 == 0;
             }
@@ -2087,31 +2087,31 @@ void __39__SPCSSearchQuery_slowFetchAttributes___block_invoke_2(uint64_t a1, voi
             {
               v104[0] = @"score";
               v21 = MEMORY[0x277CCABB0];
-              [v17 score];
+              [rankingItem score];
               v22 = [v21 numberWithFloat:?];
               v105[0] = v22;
               v104[1] = @"raw score";
               v23 = MEMORY[0x277CCABB0];
-              [v17 rawScore];
+              [rankingItem rawScore];
               v24 = [v23 numberWithFloat:?];
               v105[1] = v24;
               v104[2] = @"original score";
               v25 = MEMORY[0x277CCABB0];
-              v26 = [v17 L2FeatureVector];
-              [v26 originalL2Score];
+              l2FeatureVector2 = [rankingItem L2FeatureVector];
+              [l2FeatureVector2 originalL2Score];
               v27 = [v25 numberWithFloat:?];
               v105[2] = v27;
               v28 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v105 forKeys:v104 count:3];
               [v16 setLocalFeatures:v28];
             }
 
-            v29 = [v12 rankingItem];
-            [v29 score];
+            rankingItem2 = [v12 rankingItem];
+            [rankingItem2 score];
             [v16 setL2score:?];
 
-            v30 = [v16 sectionBundleIdentifier];
-            v31 = [v16 resultBundleId];
-            v32 = [v30 isEqual:v98];
+            sectionBundleIdentifier = [v16 sectionBundleIdentifier];
+            resultBundleId = [v16 resultBundleId];
+            v32 = [sectionBundleIdentifier isEqual:v98];
             p_feedbackListener = &self->super._feedbackListener;
             if (v32)
             {
@@ -2120,17 +2120,17 @@ LABEL_26:
               goto LABEL_49;
             }
 
-            if ([v30 isEqual:v92])
+            if ([sectionBundleIdentifier isEqual:v92])
             {
               goto LABEL_28;
             }
 
-            if ([v30 isEqual:v88])
+            if ([sectionBundleIdentifier isEqual:v88])
             {
-              if ([v31 isEqual:v85])
+              if ([resultBundleId isEqual:v85])
               {
-                v39 = [v17 sectionBundleIdentifier];
-                v40 = [v39 isEqualToString:v87];
+                sectionBundleIdentifier2 = [rankingItem sectionBundleIdentifier];
+                v40 = [sectionBundleIdentifier2 isEqualToString:v87];
 
                 p_queryGroupId = &self->super._queryGroupId;
                 if ((v40 & 1) == 0)
@@ -2143,10 +2143,10 @@ LABEL_56:
                 goto LABEL_57;
               }
 
-              if ([v31 isEqual:v83])
+              if ([resultBundleId isEqual:v83])
               {
-                v47 = [v17 sectionBundleIdentifier];
-                v48 = [v47 isEqualToString:v87];
+                sectionBundleIdentifier3 = [rankingItem sectionBundleIdentifier];
+                v48 = [sectionBundleIdentifier3 isEqualToString:v87];
 
                 p_queryGroupId = &self->super._trimmedUserQueryString;
                 if (v48)
@@ -2161,7 +2161,7 @@ LABEL_56:
                 v103[1] = v79;
                 v103[2] = v78;
                 v49 = [MEMORY[0x277CBEA60] arrayWithObjects:v103 count:3];
-                v50 = [v49 containsObject:v31];
+                v50 = [v49 containsObject:resultBundleId];
 
                 p_queryGroupId = &self->super._ranker;
                 if (!v50)
@@ -2169,8 +2169,8 @@ LABEL_56:
                   goto LABEL_56;
                 }
 
-                v51 = [v17 sectionBundleIdentifier];
-                v52 = [v51 isEqualToString:v87];
+                sectionBundleIdentifier4 = [rankingItem sectionBundleIdentifier];
+                v52 = [sectionBundleIdentifier4 isEqualToString:v87];
 
                 p_queryGroupId = &self->super._delegate;
                 if (v52)
@@ -2180,8 +2180,8 @@ LABEL_56:
               }
 
 LABEL_57:
-              v53 = [v17 sectionBundleIdentifier];
-              v54 = [v53 isEqualToString:v87];
+              sectionBundleIdentifier5 = [rankingItem sectionBundleIdentifier];
+              v54 = [sectionBundleIdentifier5 isEqualToString:v87];
 
               p_feedbackListener = &self->super._queryId;
               if (v54)
@@ -2192,72 +2192,72 @@ LABEL_57:
               goto LABEL_49;
             }
 
-            v42 = [v30 isEqualToString:v86];
+            v42 = [sectionBundleIdentifier isEqualToString:v86];
             p_feedbackListener = &self->super._userQueryString;
             if (v42)
             {
               goto LABEL_26;
             }
 
-            if (([v30 isEqual:v84] & 1) != 0 || objc_msgSend(v30, "isEqual:", v81))
+            if (([sectionBundleIdentifier isEqual:v84] & 1) != 0 || objc_msgSend(sectionBundleIdentifier, "isEqual:", v81))
             {
-              v43 = [v16 personIdentifier];
-              if (v43)
+              personIdentifier = [v16 personIdentifier];
+              if (personIdentifier)
               {
-                v44 = [v16 personIdentifier];
-                v45 = [v44 hasPrefix:@"com.apple.spotlight"];
+                personIdentifier2 = [v16 personIdentifier];
+                v45 = [personIdentifier2 hasPrefix:@"com.apple.spotlight"];
 
                 if (v45)
                 {
-                  v46 = [(SPKQuery *)self queryContext];
-                  if ([v46 isSearchToolClient])
+                  queryContext2 = [(SPKQuery *)self queryContext];
+                  if ([queryContext2 isSearchToolClient])
                   {
 
                     goto LABEL_45;
                   }
 
-                  v57 = [v16 personType];
-                  if ([v57 isEqual:@"ml"])
+                  personType = [v16 personType];
+                  if ([personType isEqual:@"ml"])
                   {
 
                     goto LABEL_28;
                   }
 
-                  v60 = [v16 hasTextContentMatch];
+                  hasTextContentMatch = [v16 hasTextContentMatch];
 
-                  if (v60)
+                  if (hasTextContentMatch)
                   {
 LABEL_45:
-                    v35 = [v16 personIdentifier];
-                    [v77 setObject:v16 forKey:v35];
+                    personIdentifier3 = [v16 personIdentifier];
+                    [v77 setObject:v16 forKey:personIdentifier3];
                   }
 
                   else
                   {
 LABEL_28:
-                    v34 = v30;
+                    v34 = sectionBundleIdentifier;
                     if (v34)
                     {
-                      v35 = v34;
+                      personIdentifier3 = v34;
                     }
 
                     else
                     {
-                      v35 = @"empty_bundle";
+                      personIdentifier3 = @"empty_bundle";
                     }
 
-                    v36 = [v89 objectForKeyedSubscript:v35];
-                    v37 = v36;
+                    v36 = [v89 objectForKeyedSubscript:personIdentifier3];
+                    bundleIdentifier2 = v36;
                     if (v36)
                     {
-                      v38 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v36, "unsignedIntValue") + 1}];
-                      [v89 setObject:v38 forKeyedSubscript:v35];
+                      bundleIdentifier3 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v36, "unsignedIntValue") + 1}];
+                      [v89 setObject:bundleIdentifier3 forKeyedSubscript:personIdentifier3];
 LABEL_33:
                     }
 
                     else
                     {
-                      [v89 setObject:&unk_287C3B7A0 forKeyedSubscript:v35];
+                      [v89 setObject:&unk_287C3B7A0 forKeyedSubscript:personIdentifier3];
                     }
 
 LABEL_47:
@@ -2268,52 +2268,52 @@ LABEL_47:
 
             else
             {
-              if (([v30 isEqual:v76] & 1) == 0 && objc_msgSend(v31, "isEqual:", v72))
+              if (([sectionBundleIdentifier isEqual:v76] & 1) == 0 && objc_msgSend(resultBundleId, "isEqual:", v72))
               {
-                v55 = [(SPKQuery *)self queryContext];
-                if ([v55 isSearchToolClient])
+                queryContext3 = [(SPKQuery *)self queryContext];
+                if ([queryContext3 isSearchToolClient])
                 {
                 }
 
                 else
                 {
-                  v61 = [v16 hasTextContentMatch];
+                  hasTextContentMatch2 = [v16 hasTextContentMatch];
 
-                  if ((v61 & 1) == 0)
+                  if ((hasTextContentMatch2 & 1) == 0)
                   {
                     goto LABEL_28;
                   }
                 }
 
-                v62 = [v16 contactIdentifier];
-                v63 = v62 == 0;
+                contactIdentifier = [v16 contactIdentifier];
+                v63 = contactIdentifier == 0;
 
                 if (!v63)
                 {
-                  v58 = [v16 contactIdentifier];
-                  [v74 setObject:v16 forKey:v58];
+                  contactIdentifier2 = [v16 contactIdentifier];
+                  [v74 setObject:v16 forKey:contactIdentifier2];
 LABEL_81:
                 }
 
                 goto LABEL_82;
               }
 
-              v35 = [v16 userActivityRequiredString];
-              if (![(__CFString *)v35 length])
+              personIdentifier3 = [v16 userActivityRequiredString];
+              if (![(__CFString *)personIdentifier3 length])
               {
 
 LABEL_71:
-                if (([v30 hasPrefix:@"com.apple"] & 1) == 0 && objc_msgSend(MEMORY[0x277D65938], "isLowEngagementBundle:", v30))
+                if (([sectionBundleIdentifier hasPrefix:@"com.apple"] & 1) == 0 && objc_msgSend(MEMORY[0x277D65938], "isLowEngagementBundle:", sectionBundleIdentifier))
                 {
-                  v58 = [(SPKQuery *)self queryContext];
-                  if ([v58 isSearchToolClient])
+                  contactIdentifier2 = [(SPKQuery *)self queryContext];
+                  if ([contactIdentifier2 isSearchToolClient])
                   {
                     goto LABEL_81;
                   }
 
-                  v59 = [v16 hasTextContentMatch];
+                  hasTextContentMatch3 = [v16 hasTextContentMatch];
 
-                  if ((v59 & 1) == 0)
+                  if ((hasTextContentMatch3 & 1) == 0)
                   {
                     goto LABEL_28;
                   }
@@ -2324,19 +2324,19 @@ LABEL_82:
                 goto LABEL_49;
               }
 
-              v37 = [v90 bundleIdentifier];
-              if ([v37 isEqual:v71])
+              bundleIdentifier2 = [v90 bundleIdentifier];
+              if ([bundleIdentifier2 isEqual:v71])
               {
                 goto LABEL_47;
               }
 
-              v38 = [v90 bundleIdentifier];
-              if ([v38 isEqual:v68])
+              bundleIdentifier3 = [v90 bundleIdentifier];
+              if ([bundleIdentifier3 isEqual:v68])
               {
                 goto LABEL_33;
               }
 
-              v56 = [v90 bundleIdentifier];
+              bundleIdentifier4 = [v90 bundleIdentifier];
               IsSyndicatedPhotos = SSSectionIsSyndicatedPhotos();
 
               if ((IsSyndicatedPhotos & 1) == 0)
@@ -2384,36 +2384,36 @@ void __57__SPCSSearchQuery_buildFullSearchResults_withResultSets___block_invoke(
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateCoreSuggestionsSection:(id)a3
+- (void)updateCoreSuggestionsSection:(id)section
 {
   v37 = *MEMORY[0x277D85DE8];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v26 = a3;
-  v3 = [v26 results];
-  v4 = [v3 countByEnumeratingWithState:&v31 objects:v36 count:16];
+  sectionCopy = section;
+  results = [sectionCopy results];
+  v4 = [results countByEnumeratingWithState:&v31 objects:v36 count:16];
   if (v4)
   {
-    v5 = 0;
+    relatedBundleID2 = 0;
     v6 = *v32;
     while (2)
     {
       v7 = 0;
-      v8 = v5;
+      v8 = relatedBundleID2;
       do
       {
         if (*v32 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(results);
         }
 
         v9 = *(*(&v31 + 1) + 8 * v7);
         if (v8)
         {
-          v10 = [*(*(&v31 + 1) + 8 * v7) relatedBundleID];
-          v11 = [v8 isEqualToString:v10];
+          relatedBundleID = [*(*(&v31 + 1) + 8 * v7) relatedBundleID];
+          v11 = [v8 isEqualToString:relatedBundleID];
 
           if ((v11 & 1) == 0)
           {
@@ -2422,14 +2422,14 @@ void __57__SPCSSearchQuery_buildFullSearchResults_withResultSets___block_invoke(
           }
         }
 
-        v5 = [v9 relatedBundleID];
+        relatedBundleID2 = [v9 relatedBundleID];
 
         ++v7;
-        v8 = v5;
+        v8 = relatedBundleID2;
       }
 
       while (v4 != v7);
-      v4 = [v3 countByEnumeratingWithState:&v31 objects:v36 count:16];
+      v4 = [results countByEnumeratingWithState:&v31 objects:v36 count:16];
       if (v4)
       {
         continue;
@@ -2438,9 +2438,9 @@ void __57__SPCSSearchQuery_buildFullSearchResults_withResultSets___block_invoke(
       break;
     }
 
-    if (v5)
+    if (relatedBundleID2)
     {
-      v25 = [MEMORY[0x277D4BE80] displayNameForBundleIdentifer:v5];
+      v25 = [MEMORY[0x277D4BE80] displayNameForBundleIdentifer:relatedBundleID2];
       if (v25)
       {
           [SPCSSearchQuery updateCoreSuggestionsSection:]::nameFormat = {;
@@ -2457,7 +2457,7 @@ void __57__SPCSSearchQuery_buildFullSearchResults_withResultSets___block_invoke(
   {
 LABEL_15:
 
-    v5 = 0;
+    relatedBundleID2 = 0;
   }
 
     [SPCSSearchQuery updateCoreSuggestionsSection:]::name = {;
@@ -2467,15 +2467,15 @@ LABEL_15:
   v25 = 0;
   v12 = 1;
 LABEL_18:
-  [v26 setTitle:v13];
+  [sectionCopy setTitle:v13];
   if (v12)
   {
     v29 = 0u;
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v14 = [v26 results];
-    v15 = [v14 countByEnumeratingWithState:&v27 objects:v35 count:16];
+    results2 = [sectionCopy results];
+    v15 = [results2 countByEnumeratingWithState:&v27 objects:v35 count:16];
     if (v15)
     {
       v16 = *v28;
@@ -2485,23 +2485,23 @@ LABEL_18:
         {
           if (*v28 != v16)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(results2);
           }
 
           v18 = *(*(&v27 + 1) + 8 * i);
-          v19 = [v18 relatedBundleID];
-          v20 = v19 == 0;
+          relatedBundleID3 = [v18 relatedBundleID];
+          v20 = relatedBundleID3 == 0;
 
           if (!v20)
           {
             v21 = MEMORY[0x277D4BE80];
-            v22 = [v18 relatedBundleID];
-            v23 = [v21 displayNameForBundleIdentifer:v22];
+            relatedBundleID4 = [v18 relatedBundleID];
+            v23 = [v21 displayNameForBundleIdentifer:relatedBundleID4];
             [v18 setFootnote:v23];
           }
         }
 
-        v15 = [v14 countByEnumeratingWithState:&v27 objects:v35 count:16];
+        v15 = [results2 countByEnumeratingWithState:&v27 objects:v35 count:16];
       }
 
       while (v15);
@@ -2511,22 +2511,22 @@ LABEL_18:
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)buildPeopleResults:(id)a3 withContacts:(id)a4
+- (void)buildPeopleResults:(id)results withContacts:(id)contacts
 {
   v76 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v60 = a4;
-  v57 = v6;
-  v54 = self;
-  if ([v6 count])
+  resultsCopy = results;
+  contactsCopy = contacts;
+  v57 = resultsCopy;
+  selfCopy = self;
+  if ([resultsCopy count])
   {
-    v7 = [v6 keysSortedByValueUsingComparator:&__block_literal_global_273];
+    v7 = [resultsCopy keysSortedByValueUsingComparator:&__block_literal_global_273];
     v51 = [v7 mutableCopy];
 
-    v8 = [v60 keysSortedByValueUsingComparator:&__block_literal_global_275];
+    v8 = [contactsCopy keysSortedByValueUsingComparator:&__block_literal_global_275];
     v9 = [v8 mutableCopy];
 
-    v58 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v60, "count", v9)}];
+    v58 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(contactsCopy, "count", v9)}];
     v52 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v57, "count")}];
     v71 = 0u;
     v72 = 0u;
@@ -2547,23 +2547,23 @@ LABEL_18:
             objc_enumerationMutation(obj);
           }
 
-          v14 = [v60 objectForKeyedSubscript:*(*(&v69 + 1) + 8 * i)];
+          v14 = [contactsCopy objectForKeyedSubscript:*(*(&v69 + 1) + 8 * i)];
           [v58 addObject:v14];
           if (!v10)
           {
             v10 = objc_alloc_init(MEMORY[0x277CBEB58]);
           }
 
-          v15 = [v14 title];
-          v16 = [v15 text];
-          v17 = v16 == 0;
+          title = [v14 title];
+          text = [title text];
+          v17 = text == 0;
 
           if (!v17)
           {
-            v18 = [v14 title];
-            v19 = [v18 text];
-            v20 = [v19 lowercaseString];
-            [v10 addObject:v20];
+            title2 = [v14 title];
+            text2 = [title2 text];
+            lowercaseString = [text2 lowercaseString];
+            [v10 addObject:lowercaseString];
           }
         }
 
@@ -2573,7 +2573,7 @@ LABEL_18:
       while (v11);
     }
 
-    [(SFMutableResultSection *)v54->_bundleIdToResultsMap.contactResultsSection setResults:v58];
+    [(SFMutableResultSection *)selfCopy->_bundleIdToResultsMap.contactResultsSection setResults:v58];
     v67 = 0u;
     v68 = 0u;
     v65 = 0u;
@@ -2595,15 +2595,15 @@ LABEL_18:
           }
 
           v24 = [v57 objectForKeyedSubscript:*(*(&v65 + 1) + 8 * j)];
-          v25 = [v24 title];
-          v26 = [v25 text];
-          v27 = [v26 lowercaseString];
+          title3 = [v24 title];
+          text3 = [title3 text];
+          lowercaseString2 = [text3 lowercaseString];
 
-          v28 = [v24 sectionBundleIdentifier];
-          v29 = v28;
-          if (v28)
+          sectionBundleIdentifier = [v24 sectionBundleIdentifier];
+          v29 = sectionBundleIdentifier;
+          if (sectionBundleIdentifier)
           {
-            v30 = [v28 isEqual:v55];
+            v30 = [sectionBundleIdentifier isEqual:v55];
           }
 
           else
@@ -2611,12 +2611,12 @@ LABEL_18:
             v30 = 0;
           }
 
-          v31 = [v24 contactIdentifier];
-          v32 = v31 == 0;
+          contactIdentifier = [v24 contactIdentifier];
+          v32 = contactIdentifier == 0;
 
           if (v32)
           {
-            if ([v10 containsObject:v27])
+            if ([v10 containsObject:lowercaseString2])
             {
               goto LABEL_35;
             }
@@ -2624,40 +2624,40 @@ LABEL_18:
 
           else if ([obj count])
           {
-            v33 = [v24 contactIdentifier];
-            v34 = [v60 objectForKeyedSubscript:v33];
+            contactIdentifier2 = [v24 contactIdentifier];
+            v34 = [contactsCopy objectForKeyedSubscript:contactIdentifier2];
 
             if (v34)
             {
-              v35 = [v24 personIdentifier];
-              [v34 setPersonIdentifier:v35];
+              personIdentifier = [v24 personIdentifier];
+              [v34 setPersonIdentifier:personIdentifier];
 
-              v36 = [v24 personQueryIdentifier];
-              [v34 setPersonQueryIdentifier:v36];
+              personQueryIdentifier = [v24 personQueryIdentifier];
+              [v34 setPersonQueryIdentifier:personQueryIdentifier];
 
               if (v30)
               {
-                v37 = 1;
+                hasTextContentMatch = 1;
               }
 
               else
               {
-                v37 = [v34 hasTextContentMatch];
+                hasTextContentMatch = [v34 hasTextContentMatch];
               }
 
-              [v34 setHasTextContentMatch:v37];
+              [v34 setHasTextContentMatch:hasTextContentMatch];
               [v24 rankingScore];
               [v34 setRankingScore:?];
               [v34 setType:37];
               if ([v34 hasTextContentMatch])
               {
                 v42 = MEMORY[0x277D659B8];
-                v43 = [(SPKQuery *)v54 queryContext];
-                v44 = [v42 buildResultWithResult:v34 queryContext:v43];
+                queryContext = [(SPKQuery *)selfCopy queryContext];
+                v44 = [v42 buildResultWithResult:v34 queryContext:queryContext];
 
-                os_unfair_lock_lock(&v54->_suggestionsLock);
-                [(NSMutableArray *)v54->_suggestionResults addObject:v44];
-                os_unfair_lock_unlock(&v54->_suggestionsLock);
+                os_unfair_lock_lock(&selfCopy->_suggestionsLock);
+                [(NSMutableArray *)selfCopy->_suggestionResults addObject:v44];
+                os_unfair_lock_unlock(&selfCopy->_suggestionsLock);
 
                 v22 = v53;
               }
@@ -2672,12 +2672,12 @@ LABEL_18:
             if (v30)
             {
               v39 = MEMORY[0x277D659B8];
-              v40 = [(SPKQuery *)v54 queryContext];
-              v41 = [v39 buildResultWithResult:v24 queryContext:v40];
+              queryContext2 = [(SPKQuery *)selfCopy queryContext];
+              v41 = [v39 buildResultWithResult:v24 queryContext:queryContext2];
 
-              os_unfair_lock_lock(&v54->_suggestionsLock);
-              [(NSMutableArray *)v54->_suggestionResults addObject:v41];
-              os_unfair_lock_unlock(&v54->_suggestionsLock);
+              os_unfair_lock_lock(&selfCopy->_suggestionsLock);
+              [(NSMutableArray *)selfCopy->_suggestionResults addObject:v41];
+              os_unfair_lock_unlock(&selfCopy->_suggestionsLock);
 
               v22 = v53;
             }
@@ -2694,18 +2694,18 @@ LABEL_35:
       while (v21);
     }
 
-    [(SFMutableResultSection *)v54->_bundleIdToResultsMap.peopleResultsSection setResults:v52];
+    [(SFMutableResultSection *)selfCopy->_bundleIdToResultsMap.peopleResultsSection setResults:v52];
     goto LABEL_47;
   }
 
-  if ([v60 count])
+  if ([contactsCopy count])
   {
-    v56 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v60, "count")}];
+    v56 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(contactsCopy, "count")}];
     v63 = 0u;
     v64 = 0u;
     v61 = 0u;
     v62 = 0u;
-    v45 = v60;
+    v45 = contactsCopy;
     v46 = [v45 countByEnumeratingWithState:&v61 objects:v73 count:16];
     if (v46)
     {
@@ -2729,7 +2729,7 @@ LABEL_35:
       while (v46);
     }
 
-    [(SFMutableResultSection *)v54->_bundleIdToResultsMap.contactResultsSection setResults:v56];
+    [(SFMutableResultSection *)selfCopy->_bundleIdToResultsMap.contactResultsSection setResults:v56];
 LABEL_47:
   }
 
@@ -2780,14 +2780,14 @@ uint64_t __51__SPCSSearchQuery_buildPeopleResults_withContacts___block_invoke_2(
   return v11;
 }
 
-- (void)processUserActivitiesForSection:(id)a3
+- (void)processUserActivitiesForSection:(id)section
 {
   v122 = *MEMORY[0x277D85DE8];
-  v91 = a3;
+  sectionCopy = section;
   v92 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v90 = objc_alloc_init(MEMORY[0x277CBEB58]);
-  v3 = [v91 results];
-  v4 = [v3 copy];
+  results = [sectionCopy results];
+  v4 = [results copy];
 
   v113 = 0u;
   v114 = 0u;
@@ -2808,8 +2808,8 @@ uint64_t __51__SPCSSearchQuery_buildPeopleResults_withContacts___block_invoke_2(
         }
 
         v8 = *(*(&v111 + 1) + 8 * i);
-        v9 = [v8 externalIdentifier];
-        if (!v9)
+        externalIdentifier = [v8 externalIdentifier];
+        if (!externalIdentifier)
         {
           v10 = SPLogForSPLogCategoryDefault();
           if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -2820,10 +2820,10 @@ uint64_t __51__SPCSSearchQuery_buildPeopleResults_withContacts___block_invoke_2(
           }
         }
 
-        v11 = [v8 userActivityRequiredString];
-        if (v9)
+        userActivityRequiredString = [v8 userActivityRequiredString];
+        if (externalIdentifier)
         {
-          v12 = v11 == 0;
+          v12 = userActivityRequiredString == 0;
         }
 
         else
@@ -2835,11 +2835,11 @@ uint64_t __51__SPCSSearchQuery_buildPeopleResults_withContacts___block_invoke_2(
 
         if (v13)
         {
-          [v92 setObject:v8 forKey:v9];
-          v14 = [v8 compatibilityTitle];
-          if (v14)
+          [v92 setObject:v8 forKey:externalIdentifier];
+          compatibilityTitle = [v8 compatibilityTitle];
+          if (compatibilityTitle)
           {
-            [v90 addObject:v14];
+            [v90 addObject:compatibilityTitle];
           }
         }
       }
@@ -2869,24 +2869,24 @@ uint64_t __51__SPCSSearchQuery_buildPeopleResults_withContacts___block_invoke_2(
         }
 
         v19 = *(*(&v107 + 1) + 8 * j);
-        v20 = [v19 relatedUniqueIdentifier];
-        if (v20)
+        relatedUniqueIdentifier = [v19 relatedUniqueIdentifier];
+        if (relatedUniqueIdentifier)
         {
-          v21 = [v19 userActivityRequiredString];
-          v22 = v21 == 0;
+          userActivityRequiredString2 = [v19 userActivityRequiredString];
+          v22 = userActivityRequiredString2 == 0;
 
           if (v22)
           {
-            v23 = [v92 objectForKey:v20];
+            v23 = [v92 objectForKey:relatedUniqueIdentifier];
             v24 = v23 == 0;
 
             if (v24)
             {
-              [v92 setObject:v19 forKey:v20];
-              v25 = [v19 compatibilityTitle];
-              if (v25)
+              [v92 setObject:v19 forKey:relatedUniqueIdentifier];
+              compatibilityTitle2 = [v19 compatibilityTitle];
+              if (compatibilityTitle2)
               {
-                [v90 addObject:v25];
+                [v90 addObject:compatibilityTitle2];
               }
             }
           }
@@ -2920,10 +2920,10 @@ uint64_t __51__SPCSSearchQuery_buildPeopleResults_withContacts___block_invoke_2(
         }
 
         v28 = *(*(&v103 + 1) + 8 * k);
-        v29 = [v28 compatibilityTitle];
-        if (!v29 && ([v28 hasDetail] & 1) == 0)
+        compatibilityTitle3 = [v28 compatibilityTitle];
+        if (!compatibilityTitle3 && ([v28 hasDetail] & 1) == 0)
         {
-          v30 = [v28 sectionBundleIdentifier];
+          sectionBundleIdentifier = [v28 sectionBundleIdentifier];
           IsSyndicatedPhotos = SSSectionIsSyndicatedPhotos();
           if (IsSyndicatedPhotos && ([v28 contentType], v87 = objc_claimAutoreleasedReturnValue(), !objc_msgSend(v87, "isEqualToString:", @"public.item")))
           {
@@ -2931,8 +2931,8 @@ uint64_t __51__SPCSSearchQuery_buildPeopleResults_withContacts___block_invoke_2(
 
           else
           {
-            v32 = [v28 identifier];
-            v33 = [v32 hasPrefix:@"synthetic-bookmark-"];
+            identifier = [v28 identifier];
+            v33 = [identifier hasPrefix:@"synthetic-bookmark-"];
 
             if (IsSyndicatedPhotos)
             {
@@ -2940,74 +2940,74 @@ uint64_t __51__SPCSSearchQuery_buildPeopleResults_withContacts___block_invoke_2(
 
             if ((v33 & 1) == 0)
             {
-              [v91 removeResults:v28];
+              [sectionCopy removeResults:v28];
               goto LABEL_68;
             }
           }
         }
 
-        v34 = [v28 userActivityRequiredString];
-        v35 = v34 == 0;
+        userActivityRequiredString3 = [v28 userActivityRequiredString];
+        v35 = userActivityRequiredString3 == 0;
 
         if (!v35)
         {
-          v36 = [v28 relatedUniqueIdentifier];
-          if (v36)
+          relatedUniqueIdentifier2 = [v28 relatedUniqueIdentifier];
+          if (relatedUniqueIdentifier2)
           {
-            v37 = [v28 fileProviderIdentifier];
-            v38 = v37 == 0;
+            fileProviderIdentifier = [v28 fileProviderIdentifier];
+            v38 = fileProviderIdentifier == 0;
 
             if (v38)
             {
-              v39 = [v92 objectForKey:v36];
+              v39 = [v92 objectForKey:relatedUniqueIdentifier2];
               v40 = v39;
               if (v39)
               {
-                v41 = [v39 score];
+                score = [v39 score];
                 v43 = v42;
-                v44 = [v28 score];
-                [v40 setScore:{__PAIR128__(v45, v44) + __PAIR128__(v43, v41)}];
-                [v91 removeResults:v28];
+                score2 = [v28 score];
+                [v40 setScore:{__PAIR128__(v45, score2) + __PAIR128__(v43, score)}];
+                [sectionCopy removeResults:v28];
                 if (([v40 hasAssociatedUserActivity] & 1) == 0)
                 {
                   [v40 setPubliclyIndexable:{objc_msgSend(v28, "publiclyIndexable")}];
                   [v40 setHasAssociatedUserActivity:1];
-                  v46 = [v28 launchDates];
-                  [v40 setLaunchDates:v46];
+                  launchDates = [v28 launchDates];
+                  [v40 setLaunchDates:launchDates];
                   goto LABEL_65;
                 }
               }
 
               else
               {
-                v47 = [v86 objectForKey:v36];
-                v46 = v47;
+                v47 = [v86 objectForKey:relatedUniqueIdentifier2];
+                launchDates = v47;
                 if (v47)
                 {
-                  v48 = [v47 score];
+                  score3 = [v47 score];
                   v50 = v49;
-                  v51 = [v28 score];
-                  v52 = v51;
+                  score4 = [v28 score];
+                  v52 = score4;
                   v54 = v53;
-                  if (__PAIR128__(v53, v51) >= __PAIR128__(v50, v48))
+                  if (__PAIR128__(v53, score4) >= __PAIR128__(v50, score3))
                   {
-                    v57 = [v28 buddyScore];
-                    [v28 setBuddyScore:{__PAIR128__(v58, v57) + __PAIR128__(v50, v48)}];
-                    [v91 removeResults:v46];
-                    [v86 setObject:v28 forKey:v36];
+                    buddyScore = [v28 buddyScore];
+                    [v28 setBuddyScore:{__PAIR128__(v58, buddyScore) + __PAIR128__(v50, score3)}];
+                    [sectionCopy removeResults:launchDates];
+                    [v86 setObject:v28 forKey:relatedUniqueIdentifier2];
                   }
 
                   else
                   {
-                    v55 = [v46 buddyScore];
-                    [v46 setBuddyScore:{__PAIR128__(v56, v55) + __PAIR128__(v54, v52)}];
-                    [v91 removeResults:v28];
+                    buddyScore2 = [launchDates buddyScore];
+                    [launchDates setBuddyScore:{__PAIR128__(v56, buddyScore2) + __PAIR128__(v54, v52)}];
+                    [sectionCopy removeResults:v28];
                   }
                 }
 
                 else
                 {
-                  [v86 setObject:v28 forKey:v36];
+                  [v86 setObject:v28 forKey:relatedUniqueIdentifier2];
                 }
 
 LABEL_65:
@@ -3015,16 +3015,16 @@ LABEL_65:
             }
           }
 
-          else if (v29)
+          else if (compatibilityTitle3)
           {
-            if ([v90 containsObject:v29] && (objc_msgSend(v28, "hasDetail") & 1) == 0)
+            if ([v90 containsObject:compatibilityTitle3] && (objc_msgSend(v28, "hasDetail") & 1) == 0)
             {
-              [v91 removeResults:v28];
+              [sectionCopy removeResults:v28];
             }
 
             else
             {
-              [v90 addObject:v29];
+              [v90 addObject:compatibilityTitle3];
             }
           }
         }
@@ -3042,8 +3042,8 @@ LABEL_68:
   v102 = 0u;
   v99 = 0u;
   v100 = 0u;
-  v59 = [v91 resultSet];
-  v60 = [v59 countByEnumeratingWithState:&v99 objects:v116 count:16];
+  resultSet = [sectionCopy resultSet];
+  v60 = [resultSet countByEnumeratingWithState:&v99 objects:v116 count:16];
   if (v60)
   {
     v61 = *v100;
@@ -3053,17 +3053,17 @@ LABEL_68:
       {
         if (*v100 != v61)
         {
-          objc_enumerationMutation(v59);
+          objc_enumerationMutation(resultSet);
         }
 
         v63 = *(*(&v99 + 1) + 8 * m);
-        v64 = [v63 score];
+        score5 = [v63 score];
         v66 = v65;
-        v67 = [v63 buddyScore];
-        [v63 setScore:{__PAIR128__(v68, v67) + __PAIR128__(v66, v64)}];
+        buddyScore3 = [v63 buddyScore];
+        [v63 setScore:{__PAIR128__(v68, buddyScore3) + __PAIR128__(v66, score5)}];
       }
 
-      v60 = [v59 countByEnumeratingWithState:&v99 objects:v116 count:16];
+      v60 = [resultSet countByEnumeratingWithState:&v99 objects:v116 count:16];
     }
 
     while (v60);
@@ -3089,32 +3089,32 @@ LABEL_68:
         }
 
         v74 = *(*(&v95 + 1) + 8 * n);
-        v75 = [v74 itemIdentifier];
-        v76 = v75 == 0;
+        itemIdentifier = [v74 itemIdentifier];
+        v76 = itemIdentifier == 0;
 
         if (!v76)
         {
-          v77 = [v74 itemIdentifier];
-          v78 = [v69 objectForKey:v77];
+          itemIdentifier2 = [v74 itemIdentifier];
+          v78 = [v69 objectForKey:itemIdentifier2];
 
           if (v78)
           {
-            v79 = [v78 score];
+            score6 = [v78 score];
             v81 = v80;
-            v82 = [v74 score];
-            if (__PAIR128__(v83, v82) < __PAIR128__(v81, v79))
+            score7 = [v74 score];
+            if (__PAIR128__(v83, score7) < __PAIR128__(v81, score6))
             {
-              [v91 removeResults:v74];
+              [sectionCopy removeResults:v74];
 LABEL_88:
 
               continue;
             }
 
-            [v91 removeResults:v78];
+            [sectionCopy removeResults:v78];
           }
 
-          v84 = [v74 itemIdentifier];
-          [v69 setObject:v74 forKey:v84];
+          itemIdentifier3 = [v74 itemIdentifier];
+          [v69 setObject:v74 forKey:itemIdentifier3];
 
           goto LABEL_88;
         }
@@ -3129,20 +3129,20 @@ LABEL_88:
   v85 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeDuplicatesInSection:(id)a3
+- (void)removeDuplicatesInSection:(id)section
 {
   v65 = *MEMORY[0x277D85DE8];
-  v45 = a3;
-  v4 = [(SPKQuery *)self queryContext];
-  v5 = [v4 isSearchToolClient];
+  sectionCopy = section;
+  queryContext = [(SPKQuery *)self queryContext];
+  isSearchToolClient = [queryContext isSearchToolClient];
 
-  if (v5)
+  if (isSearchToolClient)
   {
     goto LABEL_52;
   }
 
-  v6 = [v45 results];
-  v42 = [v6 copy];
+  results = [sectionCopy results];
+  v42 = [results copy];
 
   v7 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v56 = 0u;
@@ -3165,13 +3165,13 @@ LABEL_88:
         }
 
         v12 = *(*(&v54 + 1) + 8 * i);
-        v13 = [v12 sectionBundleIdentifier];
-        v14 = [v12 externalIdentifier];
-        if (v14)
+        sectionBundleIdentifier = [v12 sectionBundleIdentifier];
+        externalIdentifier = [v12 externalIdentifier];
+        if (externalIdentifier)
         {
-          if ([v7 containsObject:v14])
+          if ([v7 containsObject:externalIdentifier])
           {
-            [v45 removeResults:v12];
+            [sectionCopy removeResults:v12];
             v15 = SPLogForSPLogCategoryQuery();
             v16 = v15;
             if (*v10)
@@ -3187,16 +3187,16 @@ LABEL_88:
             if (os_log_type_enabled(v15, v17))
             {
               *buf = 138412546;
-              v61 = v13;
+              v61 = sectionBundleIdentifier;
               v62 = 2112;
-              v63 = v14;
+              v63 = externalIdentifier;
               _os_log_impl(&dword_26B71B000, v16, v17, "Remove duplicate for %@ / %@", buf, 0x16u);
             }
           }
 
           else
           {
-            [v7 addObject:v14];
+            [v7 addObject:externalIdentifier];
           }
         }
       }
@@ -3207,8 +3207,8 @@ LABEL_88:
     while (v8);
   }
 
-  v18 = [v45 bundleIdentifier];
-  v19 = [v18 isEqualToString:*MEMORY[0x277D65AD0]];
+  bundleIdentifier = [sectionCopy bundleIdentifier];
+  v19 = [bundleIdentifier isEqualToString:*MEMORY[0x277D65AD0]];
 
   if (!v19)
   {
@@ -3227,7 +3227,7 @@ LABEL_88:
     goto LABEL_34;
   }
 
-  v21 = 0;
+  accountIdentifier = 0;
   v22 = *v51;
   do
   {
@@ -3239,14 +3239,14 @@ LABEL_88:
       }
 
       v24 = *(*(&v50 + 1) + 8 * j);
-      v25 = [v24 domainIdentifier];
+      domainIdentifier = [v24 domainIdentifier];
 
-      v26 = [v25 isEqualToString:@"attachmentDomain"];
-      if ((v26 | [v25 isEqualToString:@"chatDomain"]))
+      v26 = [domainIdentifier isEqualToString:@"attachmentDomain"];
+      if ((v26 | [domainIdentifier isEqualToString:@"chatDomain"]))
       {
-        v21 = [v24 accountIdentifier];
+        accountIdentifier = [v24 accountIdentifier];
 
-        if (!v21)
+        if (!accountIdentifier)
         {
           continue;
         }
@@ -3254,21 +3254,21 @@ LABEL_88:
 
       else
       {
-        v21 = v25;
-        if (!v25)
+        accountIdentifier = domainIdentifier;
+        if (!domainIdentifier)
         {
           continue;
         }
       }
 
-      if ([v7 containsObject:v21])
+      if ([v7 containsObject:accountIdentifier])
       {
-        [v45 removeResults:v24];
+        [sectionCopy removeResults:v24];
       }
 
       else
       {
-        [v7 addObject:v21];
+        [v7 addObject:accountIdentifier];
       }
     }
 
@@ -3279,8 +3279,8 @@ LABEL_88:
 
 LABEL_34:
 LABEL_35:
-  v27 = [v45 bundleIdentifier];
-  v28 = [v27 isEqualToString:*MEMORY[0x277D65B60]];
+  bundleIdentifier2 = [sectionCopy bundleIdentifier];
+  v28 = [bundleIdentifier2 isEqualToString:*MEMORY[0x277D65B60]];
 
   if (!v28)
   {
@@ -3311,33 +3311,33 @@ LABEL_35:
       }
 
       v33 = *(*(&v46 + 1) + 8 * v32);
-      v34 = [v33 stringForDedupe];
-      if (v34)
+      stringForDedupe = [v33 stringForDedupe];
+      if (stringForDedupe)
       {
-        v35 = [v33 domainIdentifier];
-        if ([v35 isEqualToString:@"com.apple.siri.interactions"])
+        domainIdentifier2 = [v33 domainIdentifier];
+        if ([domainIdentifier2 isEqualToString:@"com.apple.siri.interactions"])
         {
 
 LABEL_45:
-          v38 = [v33 stringForDedupe];
-          v39 = [v7 containsObject:v38];
+          stringForDedupe2 = [v33 stringForDedupe];
+          v39 = [v7 containsObject:stringForDedupe2];
 
           if (v39)
           {
-            [v45 removeResults:v33];
+            [sectionCopy removeResults:v33];
           }
 
           else
           {
-            v40 = [v33 stringForDedupe];
-            [v7 addObject:v40];
+            stringForDedupe3 = [v33 stringForDedupe];
+            [v7 addObject:stringForDedupe3];
           }
         }
 
         else
         {
-          v36 = [v33 domainIdentifier];
-          v37 = [v36 isEqualToString:@"com.apple.siri.upcomingmedia"];
+          domainIdentifier3 = [v33 domainIdentifier];
+          v37 = [domainIdentifier3 isEqualToString:@"com.apple.siri.upcomingmedia"];
 
           if (v37)
           {
@@ -3371,18 +3371,18 @@ LABEL_52:
   v41 = *MEMORY[0x277D85DE8];
 }
 
-- (void)processSection:(id)a3
+- (void)processSection:(id)section
 {
   v160[19] = *MEMORY[0x277D85DE8];
-  v146 = a3;
-  v128 = [(SPKQuery *)self userQueryString];
-  v6 = self;
+  sectionCopy = section;
+  userQueryString = [(SPKQuery *)self userQueryString];
+  selfCopy = self;
   v8 = *self->_topHitThreshold;
   v7 = *&self->_topHitThreshold[8];
-  v135 = v6;
-  isPeopleSearch = v6->_isPeopleSearch;
+  v135 = selfCopy;
+  isPeopleSearch = selfCopy->_isPeopleSearch;
   v10 = SPMaxVisibleResultsCountPerSection();
-  v11 = [v146 bundleIdentifier];
+  bundleIdentifier = [sectionCopy bundleIdentifier];
   IsSyndicatedPhotos = SSSectionIsSyndicatedPhotos();
 
   v13 = 50;
@@ -3418,52 +3418,52 @@ LABEL_52:
     v14 = v13;
   }
 
-  [v146 setMaxInitiallyVisibleResults:v14];
+  [sectionCopy setMaxInitiallyVisibleResults:v14];
   v15 = MEMORY[0x277D4BE80];
-  v16 = [v146 bundleIdentifier];
-  v17 = [v15 displayNameForBundleIdentifer:v16];
+  bundleIdentifier2 = [sectionCopy bundleIdentifier];
+  v17 = [v15 displayNameForBundleIdentifer:bundleIdentifier2];
 
   if (v17)
   {
-    v127 = v17;
-    [v146 setTitle:v17];
+    bundleIdentifier3 = v17;
+    [sectionCopy setTitle:v17];
   }
 
   else
   {
-    v18 = [(SPKQuery *)v135 queryContext];
-    v19 = [v18 isSearchToolClient];
+    queryContext = [(SPKQuery *)v135 queryContext];
+    isSearchToolClient = [queryContext isSearchToolClient];
 
-    if (v19)
+    if (isSearchToolClient)
     {
-      v127 = [v146 bundleIdentifier];
-      [v146 setTitle:v127];
+      bundleIdentifier3 = [sectionCopy bundleIdentifier];
+      [sectionCopy setTitle:bundleIdentifier3];
     }
 
     else
     {
-      v127 = 0;
+      bundleIdentifier3 = 0;
     }
   }
 
-  v20 = [v146 bundleIdentifier];
-  v21 = [v20 isEqualToString:@"com.apple.CoreSuggestions"];
+  bundleIdentifier4 = [sectionCopy bundleIdentifier];
+  v21 = [bundleIdentifier4 isEqualToString:@"com.apple.CoreSuggestions"];
 
   if (v21)
   {
-    [(SPCSSearchQuery *)v135 updateCoreSuggestionsSection:v146];
+    [(SPCSSearchQuery *)v135 updateCoreSuggestionsSection:sectionCopy];
   }
 
-  v22 = [v146 title];
+  title = [sectionCopy title];
 
-  if (!v22)
+  if (!title)
   {
-    [v146 setTitle:@"?"];
-    [v146 setResults:MEMORY[0x277CBEBF8]];
+    [sectionCopy setTitle:@"?"];
+    [sectionCopy setResults:MEMORY[0x277CBEBF8]];
   }
 
-  v23 = [v146 bundleIdentifier];
-  v24 = [v23 isEqual:@"com.apple.mobilesafari"];
+  bundleIdentifier5 = [sectionCopy bundleIdentifier];
+  v24 = [bundleIdentifier5 isEqual:@"com.apple.mobilesafari"];
 
   v126 = v24;
   if (v24)
@@ -3483,10 +3483,10 @@ LABEL_52:
     v154 = 0u;
     v151 = 0u;
     v152 = 0u;
-    v26 = [v146 resultSet];
+    resultSet = [sectionCopy resultSet];
     v130 = EvaluatorWithBlock;
-    obj = v26;
-    v27 = [v26 countByEnumeratingWithState:&v151 objects:v159 count:16];
+    obj = resultSet;
+    v27 = [resultSet countByEnumeratingWithState:&v151 objects:v159 count:16];
     if (v27)
     {
       v144 = *v152;
@@ -3502,18 +3502,18 @@ LABEL_52:
           v28 = *(*(&v151 + 1) + 8 * i);
           if (objc_opt_respondsToSelector())
           {
-            v29 = [v28 contentURL];
-            if (v29)
+            contentURL = [v28 contentURL];
+            if (contentURL)
             {
-              v30 = [v28 title];
-              v31 = [v30 text];
-              v32 = v31 == 0;
+              title2 = [v28 title];
+              text = [title2 text];
+              v32 = text == 0;
 
               if (!v32)
               {
                 v33 = MEMORY[0x277CBEBC0];
-                v34 = [v28 contentURL];
-                v35 = [v33 URLWithString:v34];
+                contentURL2 = [v28 contentURL];
+                v35 = [v33 URLWithString:contentURL2];
 
                 if (!v35)
                 {
@@ -3529,25 +3529,25 @@ LABEL_52:
 
                 [v36 setQuery:0];
                 [v37 setFragment:0];
-                v140 = [v37 string];
+                string = [v37 string];
                 v142 = [v138 objectForKey:?];
-                v38 = [v28 title];
-                v39 = [v38 text];
-                v141 = [v142 objectForKey:v39];
+                title3 = [v28 title];
+                text2 = [title3 text];
+                v141 = [v142 objectForKey:text2];
 
                 if (v141)
                 {
-                  v40 = [v141 contentURL];
-                  v41 = [v40 length];
-                  v42 = [v28 contentURL];
-                  v3 = v41 > [v42 length];
+                  contentURL3 = [v141 contentURL];
+                  v41 = [contentURL3 length];
+                  contentURL4 = [v28 contentURL];
+                  text3 = v41 > [contentURL4 length];
 
-                  if (v3)
+                  if (text3)
                   {
                     [v136 addObject:v141];
-                    v139 = [v28 title];
-                    v3 = [v139 text];
-                    [v142 setObject:v28 forKey:v3];
+                    title4 = [v28 title];
+                    text3 = [title4 text];
+                    [v142 setObject:v28 forKey:text3];
                     goto LABEL_62;
                   }
 
@@ -3563,21 +3563,21 @@ LABEL_65:
                 if (!v142)
                 {
                   v142 = objc_alloc_init(MEMORY[0x277CBEB38]);
-                  [v138 setObject:v142 forKey:v140];
+                  [v138 setObject:v142 forKey:string];
                 }
 
-                v43 = [v28 title];
-                v44 = [v43 text];
-                [v142 setObject:v28 forKey:v44];
+                title5 = [v28 title];
+                text4 = [title5 text];
+                [v142 setObject:v28 forKey:text4];
 
                 [v37 setPath:@"/"];
-                v139 = [v37 URL];
-                v3 = [v139 host];
-                v137 = v3;
-                v45 = [v139 scheme];
-                if (v45)
+                title4 = [v37 URL];
+                text3 = [title4 host];
+                v137 = text3;
+                scheme = [title4 scheme];
+                if (scheme)
                 {
-                  v46 = v3 == 0;
+                  v46 = text3 == 0;
                 }
 
                 else
@@ -3590,27 +3590,27 @@ LABEL_65:
                 if (v47)
                 {
 LABEL_45:
-                  v3 = v137;
+                  text3 = v137;
                 }
 
                 else
                 {
-                  v48 = [v139 scheme];
-                  v133 = [v48 caseInsensitiveCompare:@"https"];
+                  scheme2 = [title4 scheme];
+                  v133 = [scheme2 caseInsensitiveCompare:@"https"];
 
-                  if ([v139 isEqual:v35])
+                  if ([title4 isEqual:v35])
                   {
-                    [v134 addObject:v3];
-                    [v132 removeObjectForKey:v3];
-                    [v131 removeObject:v3];
+                    [v134 addObject:text3];
+                    [v132 removeObjectForKey:text3];
+                    [v131 removeObject:text3];
                   }
 
-                  else if (([v134 containsObject:v3] & 1) == 0)
+                  else if (([v134 containsObject:text3] & 1) == 0)
                   {
-                    v49 = [v132 objectForKeyedSubscript:v3];
+                    v49 = [v132 objectForKeyedSubscript:text3];
                     if (v49)
                     {
-                      v50 = [v131 containsObject:v3];
+                      v50 = [v131 containsObject:text3];
                       if (v133)
                       {
                         v51 = 1;
@@ -3634,8 +3634,8 @@ LABEL_45:
 
                     if (_MDSimpleQueryObjectMatches())
                     {
-                      v52 = [v28 title];
-                      v53 = [v52 text];
+                      title6 = [v28 title];
+                      text5 = [title6 text];
                       v54 = _MDStringPrefixOfString() == -1;
 
                       if (v54)
@@ -3648,7 +3648,7 @@ LABEL_45:
                         v55 = [MEMORY[0x277D4C598] textWithString:v137];
                         [v125 setTitle:v55];
 
-                        v56 = [MEMORY[0x277D4C550] punchoutWithURL:v139];
+                        v56 = [MEMORY[0x277D4C550] punchoutWithURL:title4];
                         v158 = v56;
                         v57 = [MEMORY[0x277CBEA60] arrayWithObjects:&v158 count:1];
                         [v125 setPunchoutOptions:v57];
@@ -3663,39 +3663,39 @@ LABEL_45:
 
                         v156 = v125;
                         v61 = [MEMORY[0x277CBEA60] arrayWithObjects:&v156 count:1];
-                        v62 = [v129 inlineCard];
-                        [v62 setCardSections:v61];
+                        inlineCard = [v129 inlineCard];
+                        [inlineCard setCardSections:v61];
 
-                        v124 = [v139 absoluteString];
+                        absoluteString = [title4 absoluteString];
                         [v129 setContentURL:?];
                         [v129 setTopHit:{objc_msgSend(v28, "topHit")}];
                         [v129 setForceNoTopHit:{objc_msgSend(v28, "forceNoTopHit")}];
-                        v63 = [v28 score];
-                        [v129 setScore:{v63, v64}];
-                        v65 = [v28 protectionClass];
-                        [v129 setProtectionClass:v65];
+                        score = [v28 score];
+                        [v129 setScore:{score, v64}];
+                        protectionClass = [v28 protectionClass];
+                        [v129 setProtectionClass:protectionClass];
 
                         [v28 rankingScore];
                         [v129 setRankingScore:?];
-                        v66 = [v28 applicationBundleIdentifier];
-                        [v129 setApplicationBundleIdentifier:v66];
+                        applicationBundleIdentifier = [v28 applicationBundleIdentifier];
+                        [v129 setApplicationBundleIdentifier:applicationBundleIdentifier];
 
-                        v67 = [v28 sectionBundleIdentifier];
-                        [v129 setSectionBundleIdentifier:v67];
+                        sectionBundleIdentifier = [v28 sectionBundleIdentifier];
+                        [v129 setSectionBundleIdentifier:sectionBundleIdentifier];
 
-                        v68 = [v28 resultBundleId];
-                        [v129 setResultBundleId:v68];
+                        resultBundleId = [v28 resultBundleId];
+                        [v129 setResultBundleId:resultBundleId];
 
                         [v129 setType:{objc_msgSend(v28, "type")}];
                         [v129 setQueryId:{objc_msgSend(v28, "queryId")}];
                         [v129 setCompletedQuery:v137];
                         [v129 setCompletion:v137];
-                        v69 = [v28 identifier];
-                        v70 = [@"synthetic-bookmark-" stringByAppendingString:v69];
+                        identifier = [v28 identifier];
+                        v70 = [@"synthetic-bookmark-" stringByAppendingString:identifier];
                         [v129 setIdentifier:v70];
 
-                        v71 = [v28 rankingItem];
-                        [v71 attributes];
+                        rankingItem = [v28 rankingItem];
+                        [rankingItem attributes];
                         v72 = SSCompactRankingAttrsCopy();
 
                         SSCompactRankingAttrsUpdateValue();
@@ -3704,14 +3704,14 @@ LABEL_45:
                         v73 = [objc_alloc(MEMORY[0x277D65830]) initWithAttrs:v72];
                         [v129 setRankingItem:v73];
 
-                        v74 = [v28 rankingItem];
-                        v75 = [v74 L2FeatureVector];
-                        [v75 originalL2Score];
+                        rankingItem2 = [v28 rankingItem];
+                        l2FeatureVector = [rankingItem2 L2FeatureVector];
+                        [l2FeatureVector originalL2Score];
                         v77 = v76;
-                        v78 = [v129 rankingItem];
-                        v79 = [v78 L2FeatureVector];
+                        rankingItem3 = [v129 rankingItem];
+                        l2FeatureVector2 = [rankingItem3 L2FeatureVector];
                         LODWORD(v80) = v77;
-                        [v79 setOriginalL2Score:v80];
+                        [l2FeatureVector2 setOriginalL2Score:v80];
 
                         [v132 setObject:v129 forKey:v137];
                         if (!v133)
@@ -3733,7 +3733,7 @@ LABEL_62:
           }
         }
 
-        v26 = obj;
+        resultSet = obj;
         v27 = [obj countByEnumeratingWithState:&v151 objects:v159 count:16];
       }
 
@@ -3747,20 +3747,20 @@ LABEL_62:
 
     if ([v132 count])
     {
-      v81 = [v132 allValues];
-      v82 = [v146 resultSet];
-      [v82 addObjectsFromArray:v81];
+      allValues = [v132 allValues];
+      resultSet2 = [sectionCopy resultSet];
+      [resultSet2 addObjectsFromArray:allValues];
     }
 
-    v83 = [v146 resultSet];
-    [v83 minusSet:v136];
+    resultSet3 = [sectionCopy resultSet];
+    [resultSet3 minusSet:v136];
   }
 
   v84 = SSEnableSpotlightTopHitPersonalizedRanking();
   if (v84)
   {
-    v85 = [v146 bundleIdentifier];
-    v3 = 0x281229000uLL;
+    bundleIdentifier6 = [sectionCopy bundleIdentifier];
+    text3 = 0x281229000uLL;
     {
       v112 = MEMORY[0x277CBEB98];
       v113 = *MEMORY[0x277D65A00];
@@ -3805,8 +3805,8 @@ LABEL_62:
   v150 = 0u;
   v147 = 0u;
   v148 = 0u;
-  v87 = [v146 resultSet];
-  v88 = [v87 countByEnumeratingWithState:&v147 objects:v155 count:16];
+  resultSet4 = [sectionCopy resultSet];
+  v88 = [resultSet4 countByEnumeratingWithState:&v147 objects:v155 count:16];
   if (v88)
   {
     v89 = *v148;
@@ -3816,12 +3816,12 @@ LABEL_62:
       {
         if (*v148 != v89)
         {
-          objc_enumerationMutation(v87);
+          objc_enumerationMutation(resultSet4);
         }
 
-        v3 = *(*(&v147 + 1) + 8 * j);
-        v91 = [v3 score];
-        if (v91 & v8 | v92 & v7)
+        text3 = *(*(&v147 + 1) + 8 * j);
+        score2 = [text3 score];
+        if (score2 & v8 | v92 & v7)
         {
           v93 = v86;
         }
@@ -3831,16 +3831,16 @@ LABEL_62:
           v93 = 1;
         }
 
-        if ((v93 & 1) == 0 && [v3 topHit] != 2)
+        if ((v93 & 1) == 0 && [text3 topHit] != 2)
         {
-          [v3 setTopHit:SSSetTopHitWithReasonType()];
+          [text3 setTopHit:SSSetTopHitWithReasonType()];
         }
 
-        i = [v146 bundleIdentifier];
-        [v3 setSectionBundleIdentifier:i];
+        i = [sectionCopy bundleIdentifier];
+        [text3 setSectionBundleIdentifier:i];
       }
 
-      v88 = [v87 countByEnumeratingWithState:&v147 objects:v155 count:16];
+      v88 = [resultSet4 countByEnumeratingWithState:&v147 objects:v155 count:16];
     }
 
     while (v88);
@@ -3849,46 +3849,46 @@ LABEL_62:
   if (!(v84 & 1 | ((v126 & 1) == 0)))
   {
     v94 = MEMORY[0x277D65978];
-    v95 = [(SPKQuery *)v135 userQueryString];
-    [v94 determineTopHitsForSafariSection:v146 forQuery:v95];
+    userQueryString2 = [(SPKQuery *)v135 userQueryString];
+    [v94 determineTopHitsForSafariSection:sectionCopy forQuery:userQueryString2];
 
-    [MEMORY[0x277D65978] moveSafariTopHitsToTopOfSection:v146];
+    [MEMORY[0x277D65978] moveSafariTopHitsToTopOfSection:sectionCopy];
   }
 
-  [MEMORY[0x277D65838] sortResultsInSection:v146 currentTime:v135->_currentTime];
-  [(SPCSSearchQuery *)v135 processUserActivitiesForSection:v146];
-  [(SPCSSearchQuery *)v135 removeDuplicatesInSection:v146];
+  [MEMORY[0x277D65838] sortResultsInSection:sectionCopy currentTime:v135->_currentTime];
+  [(SPCSSearchQuery *)v135 processUserActivitiesForSection:sectionCopy];
+  [(SPCSSearchQuery *)v135 removeDuplicatesInSection:sectionCopy];
   if (SSEnableSpotlightTopHitPersonalizedRanking())
   {
-    v96 = [(SPKQuery *)v135 queryContext];
-    v97 = [v96 searchEntities];
-    v98 = [v97 count];
-    if (v98 && (-[SPKQuery queryContext](v135, "queryContext"), v86 = objc_claimAutoreleasedReturnValue(), [v86 searchEntities], v3 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v3, "lastObject"), i = objc_claimAutoreleasedReturnValue(), (objc_msgSend(i, "isScopedSearch") & 1) != 0))
+    queryContext2 = [(SPKQuery *)v135 queryContext];
+    searchEntities = [queryContext2 searchEntities];
+    v98 = [searchEntities count];
+    if (v98 && (-[SPKQuery queryContext](v135, "queryContext"), v86 = objc_claimAutoreleasedReturnValue(), [v86 searchEntities], text3 = objc_claimAutoreleasedReturnValue(), objc_msgSend(text3, "lastObject"), i = objc_claimAutoreleasedReturnValue(), (objc_msgSend(i, "isScopedSearch") & 1) != 0))
     {
-      v145 = 1;
+      isAdvancedSyntax = 1;
     }
 
     else
     {
-      v99 = [(SPKQuery *)v135 queryContext];
-      v145 = [v99 isAdvancedSyntax];
+      queryContext3 = [(SPKQuery *)v135 queryContext];
+      isAdvancedSyntax = [queryContext3 isAdvancedSyntax];
 
       if (!v98)
       {
 LABEL_98:
 
         v100 = MEMORY[0x277D65838];
-        v101 = [(SPKQuery *)v135 userQueryString];
-        v102 = [(SPKQuery *)v135 queryContext];
-        v103 = [v102 queryIdent];
-        v104 = [(SPKQuery *)v135 queryContext];
-        v105 = [v104 searchEntities];
-        v106 = [v105 count];
-        v107 = [(SPKQuery *)v135 queryContext];
-        [v107 currentTime];
+        userQueryString3 = [(SPKQuery *)v135 userQueryString];
+        queryContext4 = [(SPKQuery *)v135 queryContext];
+        queryIdent = [queryContext4 queryIdent];
+        queryContext5 = [(SPKQuery *)v135 queryContext];
+        searchEntities2 = [queryContext5 searchEntities];
+        v106 = [searchEntities2 count];
+        queryContext6 = [(SPKQuery *)v135 queryContext];
+        [queryContext6 currentTime];
         v109 = v108;
-        v110 = [(SPKQuery *)v135 queryContext];
-        [v100 thresholdResultsInSection:v146 userQuery:v101 queryID:v103 isEntitiesSearch:v106 != 0 currentTime:v145 isScopedSearch:objc_msgSend(v110 isSearchToolClient:{"isSearchToolClient"), v109}];
+        queryContext7 = [(SPKQuery *)v135 queryContext];
+        [v100 thresholdResultsInSection:sectionCopy userQuery:userQueryString3 queryID:queryIdent isEntitiesSearch:v106 != 0 currentTime:isAdvancedSyntax isScopedSearch:objc_msgSend(queryContext7 isSearchToolClient:{"isSearchToolClient"), v109}];
 
         goto LABEL_99;
       }
@@ -3918,74 +3918,74 @@ CFTypeRef __34__SPCSSearchQuery_processSection___block_invoke(uint64_t a1, const
   return v5;
 }
 
-- (void)rankAndSendResultsWithResponseKind:(int)a3 withResultSections:(id)a4 withResultSets:(id)a5 withiCloudDriveResultSet:(id)a6 withMailResultSet:(id)a7 withCalendarResultSet:(id)a8
+- (void)rankAndSendResultsWithResponseKind:(int)kind withResultSections:(id)sections withResultSets:(id)sets withiCloudDriveResultSet:(id)set withMailResultSet:(id)resultSet withCalendarResultSet:(id)calendarResultSet
 {
   v166 = *MEMORY[0x277D85DE8];
-  v124 = a4;
-  v125 = a5;
-  v119 = a6;
-  v120 = a7;
-  v13 = a8;
+  sectionsCopy = sections;
+  setsCopy = sets;
+  setCopy = set;
+  resultSetCopy = resultSet;
+  calendarResultSetCopy = calendarResultSet;
   v14 = atomic_load(&self->_queryCanceled);
   if (v14)
   {
     goto LABEL_111;
   }
 
-  v117 = v13;
+  v117 = calendarResultSetCopy;
   v15 = SPLogForSPLogCategoryRanking();
-  v16 = [(SPKQuery *)self queryContext];
-  v17 = [v16 queryIdent];
-  v134 = self;
+  queryContext = [(SPKQuery *)self queryContext];
+  queryIdent = [queryContext queryIdent];
+  selfCopy = self;
 
-  if (v17 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v15))
+  if (queryIdent - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v15))
   {
     *buf = 0;
-    _os_signpost_emit_with_name_impl(&dword_26B71B000, v15, OS_SIGNPOST_INTERVAL_BEGIN, v17, "SPCSSearchQuery.rankAndSend", &unk_26B77CA4F, buf, 2u);
+    _os_signpost_emit_with_name_impl(&dword_26B71B000, v15, OS_SIGNPOST_INTERVAL_BEGIN, queryIdent, "SPCSSearchQuery.rankAndSend", &unk_26B77CA4F, buf, 2u);
   }
 
-  v18 = [v124 count];
-  if (v18 != [v125 count])
+  v18 = [sectionsCopy count];
+  if (v18 != [setsCopy count])
   {
     __assert_rtn("[SPCSSearchQuery rankAndSendResultsWithResponseKind:withResultSections:withResultSets:withiCloudDriveResultSet:withMailResultSet:withCalendarResultSet:]", "SPCSSearchQuery.mm", 2576, "resultSections.count == resultSets.count");
   }
 
   v149 = 0.0;
-  v114 = [(SPCSSearchQuery *)self prepareRankingItems:v124 withResultSets:v125 totalFeatureComputationTime:&v149];
+  v114 = [(SPCSSearchQuery *)self prepareRankingItems:sectionsCopy withResultSets:setsCopy totalFeatureComputationTime:&v149];
   v19 = clock_gettime_nsec_np(_CLOCK_UPTIME_RAW);
   if ([(NSArray *)self->_resultAttrs containsObject:*MEMORY[0x277CC2EF8]])
   {
-    v20 = 1;
+    fetchl2Signals = 1;
   }
 
   else
   {
-    v21 = [(CSSearchQuery *)self->_csQuery queryContext];
-    v20 = [v21 fetchl2Signals];
+    queryContext2 = [(CSSearchQuery *)self->_csQuery queryContext];
+    fetchl2Signals = [queryContext2 fetchl2Signals];
   }
 
-  v22 = [(SPCSSearchQuery *)v134 itemRanker];
-  v23 = *(v134 + 448);
-  v24 = [(SPKQuery *)v134 delegate];
-  v25 = [v24 clientBundleID];
+  itemRanker = [(SPCSSearchQuery *)selfCopy itemRanker];
+  v23 = *(selfCopy + 448);
+  delegate = [(SPKQuery *)selfCopy delegate];
+  clientBundleID = [delegate clientBundleID];
   SPL2Threshold();
   v27 = v26;
-  v28 = [(SPKQuery *)v134 queryContext];
-  v29 = [v28 isCardEventSearch];
-  v30 = [(SPKQuery *)v134 queryContext];
-  v31 = [v30 inferredLlmQUIntentType];
-  LOBYTE(v108) = (*MEMORY[0x277D657F8] & v31) != 0;
-  [v22 updateScoresForPreparedItems:v114 isCJK:v23 & 1 clientBundleID:v25 thresholdValue:0 queryNodeMatchInfo:v20 collectL2Signals:v29 isCardSearch:v27 isDocumentSearch:v108];
+  queryContext3 = [(SPKQuery *)selfCopy queryContext];
+  isCardEventSearch = [queryContext3 isCardEventSearch];
+  queryContext4 = [(SPKQuery *)selfCopy queryContext];
+  inferredLlmQUIntentType = [queryContext4 inferredLlmQUIntentType];
+  LOBYTE(v108) = (*MEMORY[0x277D657F8] & inferredLlmQUIntentType) != 0;
+  [itemRanker updateScoresForPreparedItems:v114 isCJK:v23 & 1 clientBundleID:clientBundleID thresholdValue:0 queryNodeMatchInfo:fetchl2Signals collectL2Signals:isCardEventSearch isCardSearch:v27 isDocumentSearch:v108];
 
-  v112 = [(SPKQuery *)v134 delegate];
-  v32 = [v112 queryIdent];
-  v113 = [v112 clientBundleID];
-  v115 = [objc_alloc(MEMORY[0x277D4C270]) initWithEvent:@"com.apple.spotlight.feature.extraction" timeInterval:0 queryId:v32];
-  v116 = [objc_alloc(MEMORY[0x277D4C270]) initWithEvent:@"com.apple.spotlight.indomain.score.computation" timeInterval:0 queryId:v32];
+  delegate2 = [(SPKQuery *)selfCopy delegate];
+  queryIdent2 = [delegate2 queryIdent];
+  clientBundleID2 = [delegate2 clientBundleID];
+  v115 = [objc_alloc(MEMORY[0x277D4C270]) initWithEvent:@"com.apple.spotlight.feature.extraction" timeInterval:0 queryId:queryIdent2];
+  v116 = [objc_alloc(MEMORY[0x277D4C270]) initWithEvent:@"com.apple.spotlight.indomain.score.computation" timeInterval:0 queryId:queryIdent2];
   [v116 setNanosecondInterval:clock_gettime_nsec_np(_CLOCK_UPTIME_RAW) - v19];
   [v115 setNanosecondInterval:(v149 * 1000000000.0)];
-  objc_initWeak(&location, v134);
-  feedbackQueue = v134->_feedbackQueue;
+  objc_initWeak(&location, selfCopy);
+  feedbackQueue = selfCopy->_feedbackQueue;
   v143[0] = MEMORY[0x277D85DD0];
   v143[1] = 3221225472;
   v143[2] = __153__SPCSSearchQuery_rankAndSendResultsWithResponseKind_withResultSections_withResultSets_withiCloudDriveResultSet_withMailResultSet_withCalendarResultSet___block_invoke;
@@ -3993,22 +3993,22 @@ CFTypeRef __34__SPCSSearchQuery_processSection___block_invoke(uint64_t a1, const
   objc_copyWeak(v147, &location);
   v110 = v115;
   v144 = v110;
-  v147[1] = v32;
-  v109 = v113;
+  v147[1] = queryIdent2;
+  v109 = clientBundleID2;
   v145 = v109;
   v111 = v116;
   v146 = v111;
   md_dispatch_async_propagating(feedbackQueue, v143);
-  v34 = v134;
-  if (v120)
+  v34 = selfCopy;
+  if (resultSetCopy)
   {
-    [(SPCSSearchQuery *)v134 updateMailAttachmentResults:v120];
+    [(SPCSSearchQuery *)selfCopy updateMailAttachmentResults:resultSetCopy];
   }
 
-  if (v119)
+  if (setCopy)
   {
-    v35 = v119;
-    v36 = [MEMORY[0x277CBEB38] dictionary];
+    v35 = setCopy;
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v163 = 0u;
     v164 = 0u;
     v161 = 0u;
@@ -4028,12 +4028,12 @@ CFTypeRef __34__SPCSSearchQuery_processSection___block_invoke(uint64_t a1, const
           }
 
           v41 = *(*(&v161 + 1) + 8 * i);
-          v42 = [v41 attributeSet];
-          v43 = [v42 documentIdentifier];
+          attributeSet = [v41 attributeSet];
+          documentIdentifier = [attributeSet documentIdentifier];
 
-          if (v43)
+          if (documentIdentifier)
           {
-            [v36 setObject:v41 forKeyedSubscript:v43];
+            [dictionary setObject:v41 forKeyedSubscript:documentIdentifier];
           }
         }
 
@@ -4043,12 +4043,12 @@ CFTypeRef __34__SPCSSearchQuery_processSection___block_invoke(uint64_t a1, const
       while (v38);
     }
 
-    v128 = [v36 copy];
+    v128 = [dictionary copy];
     v139 = 0u;
     v140 = 0u;
     v141 = 0u;
     v142 = 0u;
-    obj = v125;
+    obj = setsCopy;
     v44 = [obj countByEnumeratingWithState:&v139 objects:v160 count:16];
     if (v44)
     {
@@ -4088,10 +4088,10 @@ CFTypeRef __34__SPCSSearchQuery_processSection___block_invoke(uint64_t a1, const
                       objc_enumerationMutation(v49);
                     }
 
-                    v53 = [*(*(&v161 + 1) + 8 * k) attributeSet];
-                    v54 = [v53 documentIdentifier];
+                    attributeSet2 = [*(*(&v161 + 1) + 8 * k) attributeSet];
+                    documentIdentifier2 = [attributeSet2 documentIdentifier];
 
-                    v55 = [v48 objectForKeyedSubscript:v54];
+                    v55 = [v48 objectForKeyedSubscript:documentIdentifier2];
                     if (v55)
                     {
                       [v49 removeObject:v55];
@@ -4113,7 +4113,7 @@ CFTypeRef __34__SPCSSearchQuery_processSection___block_invoke(uint64_t a1, const
       while (v44);
     }
 
-    v34 = v134;
+    v34 = selfCopy;
   }
 
   if (v117)
@@ -4138,20 +4138,20 @@ CFTypeRef __34__SPCSSearchQuery_processSection___block_invoke(uint64_t a1, const
         *&v155 = -1;
         v150 = -1;
         *&v151 = -1;
-        v60 = [v59 attributeSet];
-        v61 = [v60 attributeDictionary];
+        attributeSet3 = [v59 attributeSet];
+        attributeDictionary = [attributeSet3 attributeDictionary];
 
-        v62 = [v61 objectForKeyedSubscript:v131];
-        v63 = [objc_opt_class() titleStringFromAttrs:v61];
+        v62 = [attributeDictionary objectForKeyedSubscript:v131];
+        v63 = [objc_opt_class() titleStringFromAttrs:attributeDictionary];
         if (v62)
         {
-          v64 = [MEMORY[0x277D658E8] calendar];
-          [v64 getEra:0 year:buf month:&v161 day:&v155 fromDate:v62];
+          calendar = [MEMORY[0x277D658E8] calendar];
+          [calendar getEra:0 year:buf month:&v161 day:&v155 fromDate:v62];
 
-          v65 = [MEMORY[0x277D658E8] calendar];
-          [v65 getEra:0 yearForWeekOfYear:0 weekOfYear:&v150 weekday:&v151 fromDate:v62];
+          calendar2 = [MEMORY[0x277D658E8] calendar];
+          [calendar2 getEra:0 yearForWeekOfYear:0 weekOfYear:&v150 weekday:&v151 fromDate:v62];
 
-          v66 = [v61 objectForKeyedSubscript:v121];
+          v66 = [attributeDictionary objectForKeyedSubscript:v121];
           v67 = v66;
           v68 = 0;
           if (v63 && v66)
@@ -4197,15 +4197,15 @@ CFTypeRef __34__SPCSSearchQuery_processSection___block_invoke(uint64_t a1, const
       while (v56 > 0);
     }
 
-    v34 = v134;
+    v34 = selfCopy;
   }
 
-  [(SPCSSearchQuery *)v34 slowFetchAttributes:v125];
-  [(SPCSSearchQuery *)v34 buildFullSearchResults:v124 withResultSets:v125];
-  if ((a3 & 0xFFFFFFFE) != 2)
+  [(SPCSSearchQuery *)v34 slowFetchAttributes:setsCopy];
+  [(SPCSSearchQuery *)v34 buildFullSearchResults:sectionsCopy withResultSets:setsCopy];
+  if ((kind & 0xFFFFFFFE) != 2)
   {
     isPhotosSearch = v34->_isPhotosSearch;
-    v75 = v124;
+    v75 = sectionsCopy;
     v76 = v75;
     if (!isPhotosSearch)
     {
@@ -4229,11 +4229,11 @@ CFTypeRef __34__SPCSSearchQuery_processSection___block_invoke(uint64_t a1, const
             }
 
             v82 = *(*(&v155 + 1) + 8 * m);
-            v84 = [v82 bundleIdentifier];
-            if ([v83 containsObject:v84])
+            bundleIdentifier = [v82 bundleIdentifier];
+            if ([v83 containsObject:bundleIdentifier])
             {
-              v85 = [v82 results];
-              v86 = [v85 count] != 0;
+              results = [v82 results];
+              v86 = [results count] != 0;
 
               v79 += v86;
             }
@@ -4284,8 +4284,8 @@ LABEL_90:
           }
 
           v94 = *(*(&v151 + 1) + 8 * n);
-          v95 = [v94 bundleIdentifier];
-          v96 = [v88 containsObject:v95];
+          bundleIdentifier2 = [v94 bundleIdentifier];
+          v96 = [v88 containsObject:bundleIdentifier2];
 
           if ((v96 & 1) == 0)
           {
@@ -4303,7 +4303,7 @@ LABEL_90:
     goto LABEL_100;
   }
 
-  v73 = v124;
+  v73 = sectionsCopy;
 LABEL_100:
   v137 = 0u;
   v138 = 0u;
@@ -4323,7 +4323,7 @@ LABEL_100:
           objc_enumerationMutation(v97);
         }
 
-        [(SPCSSearchQuery *)v134 processSection:*(*(&v135 + 1) + 8 * ii)];
+        [(SPCSSearchQuery *)selfCopy processSection:*(*(&v135 + 1) + 8 * ii)];
       }
 
       v98 = [v97 countByEnumeratingWithState:&v135 objects:v159 count:16];
@@ -4332,30 +4332,30 @@ LABEL_100:
     while (v98);
   }
 
-  v101 = [objc_alloc(MEMORY[0x277D65860]) initWithQueryID:-[SPKQuery queryGroupId](v134 kind:"queryGroupId") sourceKind:a3 sections:{1, v97}];
-  v102 = [(SPKQuery *)v134 userQueryString];
-  [v101 setUserQueryString:v102];
+  v101 = [objc_alloc(MEMORY[0x277D65860]) initWithQueryID:-[SPKQuery queryGroupId](selfCopy kind:"queryGroupId") sourceKind:kind sections:{1, v97}];
+  userQueryString = [(SPKQuery *)selfCopy userQueryString];
+  [v101 setUserQueryString:userQueryString];
 
-  os_unfair_lock_lock(&v134->_suggestionsLock);
-  v103 = [(NSMutableArray *)v134->_suggestionResults copy];
+  os_unfair_lock_lock(&selfCopy->_suggestionsLock);
+  v103 = [(NSMutableArray *)selfCopy->_suggestionResults copy];
   [v101 setLocalSuggestionResults:v103];
 
-  os_unfair_lock_unlock(&v134->_suggestionsLock);
-  [(SPCSSearchQuery *)v134 _sendResponse:v101];
+  os_unfair_lock_unlock(&selfCopy->_suggestionsLock);
+  [(SPCSSearchQuery *)selfCopy _sendResponse:v101];
   v104 = SPLogForSPLogCategoryRanking();
-  v105 = [(SPKQuery *)v134 queryContext];
-  v106 = [v105 queryIdent];
+  queryContext5 = [(SPKQuery *)selfCopy queryContext];
+  queryIdent3 = [queryContext5 queryIdent];
 
-  if (v106 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v104))
+  if (queryIdent3 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v104))
   {
     *buf = 0;
-    _os_signpost_emit_with_name_impl(&dword_26B71B000, v104, OS_SIGNPOST_INTERVAL_END, v106, "SPCSSearchQuery.rankAndSend", &unk_26B77CA4F, buf, 2u);
+    _os_signpost_emit_with_name_impl(&dword_26B71B000, v104, OS_SIGNPOST_INTERVAL_END, queryIdent3, "SPCSSearchQuery.rankAndSend", &unk_26B77CA4F, buf, 2u);
   }
 
   objc_destroyWeak(v147);
   objc_destroyWeak(&location);
 
-  v13 = v117;
+  calendarResultSetCopy = v117;
 LABEL_111:
 
   v107 = *MEMORY[0x277D85DE8];
@@ -4377,7 +4377,7 @@ void __153__SPCSSearchQuery_rankAndSendResultsWithResponseKind_withResultSection
   }
 }
 
-- (void)sendResponseWithKind:(int)a3
+- (void)sendResponseWithKind:(int)kind
 {
   v92 = *MEMORY[0x277D85DE8];
   v3 = atomic_load(&self->_queryCanceled);
@@ -4388,7 +4388,7 @@ void __153__SPCSSearchQuery_rankAndSendResultsWithResponseKind_withResultSection
 
   begin = self->_indexResultsRegistry.results.__begin_;
   end = self->_indexResultsRegistry.results.__end_;
-  v6 = a3 & 0xFFFFFFFE;
+  v6 = kind & 0xFFFFFFFE;
   if (begin == end)
   {
 LABEL_14:
@@ -4488,7 +4488,7 @@ LABEL_45:
           block[2] = __40__SPCSSearchQuery_sendResponseWithKind___block_invoke_2;
           block[3] = &unk_279CFE598;
           objc_copyWeak(&v80, buf);
-          v81 = a3;
+          kindCopy = kind;
           v75 = v45;
           v76 = v46;
           v77 = v67;
@@ -4506,10 +4506,10 @@ LABEL_45:
         else
         {
           v52 = objc_alloc(MEMORY[0x277D65860]);
-          v53 = [(SPKQuery *)self queryGroupId];
-          v54 = [v52 initWithQueryID:v53 kind:a3 sourceKind:1 sections:MEMORY[0x277CBEBF8]];
-          v55 = [(SPKQuery *)self userQueryString];
-          [v54 setUserQueryString:v55];
+          queryGroupId = [(SPKQuery *)self queryGroupId];
+          v54 = [v52 initWithQueryID:queryGroupId kind:kind sourceKind:1 sections:MEMORY[0x277CBEBF8]];
+          userQueryString = [(SPKQuery *)self userQueryString];
+          [v54 setUserQueryString:userQueryString];
 
           os_unfair_lock_lock(&self->_suggestionsLock);
           v56 = [(NSMutableArray *)self->_suggestionResults copy];
@@ -4549,11 +4549,11 @@ LABEL_45:
     {
       v26 = next[5];
       v27 = next[6];
-      v28 = [v26 bundleIdentifier];
-      v29 = v28;
+      bundleIdentifier = [v26 bundleIdentifier];
+      v29 = bundleIdentifier;
       if (v6 == 2)
       {
-        v30 = v28;
+        lastObject4 = bundleIdentifier;
         {
           goto LABEL_39;
         }
@@ -4574,7 +4574,7 @@ LABEL_45:
         v32 = [MEMORY[0x277CBEB40] orderedSetWithOrderedSet:v27];
         [v73 addObject:v32];
 
-        [v63 addObject:v30];
+        [v63 addObject:lastObject4];
       }
 
       else
@@ -4585,16 +4585,16 @@ LABEL_45:
 
       if ([v29 isEqualToString:v25])
       {
-        v33 = [v73 lastObject];
+        lastObject = [v73 lastObject];
         v34 = v67;
-        v67 = v33;
+        v67 = lastObject;
       }
 
       else if ([v29 isEqualToString:v65])
       {
-        v35 = [v73 lastObject];
+        lastObject2 = [v73 lastObject];
         v34 = v66;
-        v66 = v35;
+        v66 = lastObject2;
       }
 
       else
@@ -4604,16 +4604,16 @@ LABEL_45:
           goto LABEL_36;
         }
 
-        v36 = [v73 lastObject];
+        lastObject3 = [v73 lastObject];
         v34 = v64;
-        v64 = v36;
+        v64 = lastObject3;
       }
 
 LABEL_36:
       if (!v24)
       {
-        v30 = [v73 lastObject];
-        v24 = [v30 count] != 0;
+        lastObject4 = [v73 lastObject];
+        v24 = [lastObject4 count] != 0;
 LABEL_39:
 
         goto LABEL_40;
@@ -4695,17 +4695,17 @@ void __40__SPCSSearchQuery_sendResponseWithKind___block_invoke_2(uint64_t a1)
   [WeakRetained rankAndSendResultsWithResponseKind:*(a1 + 80) withResultSections:*(a1 + 32) withResultSets:*(a1 + 40) withiCloudDriveResultSet:*(a1 + 48) withMailResultSet:*(a1 + 56) withCalendarResultSet:*(a1 + 64)];
 }
 
-- (id)_makeUniqueFetchAttributesWithAttributes:(id)a3 extraAttributes:(id)a4 slowFetchAttributeSet:(id)a5
+- (id)_makeUniqueFetchAttributesWithAttributes:(id)attributes extraAttributes:(id)extraAttributes slowFetchAttributeSet:(id)set
 {
   v36 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 count];
-  v12 = [v9 count];
+  attributesCopy = attributes;
+  extraAttributesCopy = extraAttributes;
+  setCopy = set;
+  v11 = [attributesCopy count];
+  v12 = [extraAttributesCopy count];
   v13 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:v12 + v11];
-  v30 = self;
-  v14 = [MEMORY[0x277CBEB58] setWithArray:v8];
+  selfCopy = self;
+  v14 = [MEMORY[0x277CBEB58] setWithArray:attributesCopy];
   v33 = 0u;
   v34 = 0u;
   v31 = 0u;
@@ -4724,7 +4724,7 @@ void __40__SPCSSearchQuery_sendResponseWithKind___block_invoke_2(uint64_t a1)
         }
 
         v19 = *(*(&v31 + 1) + 8 * i);
-        if (([v8 containsObject:v19] & 1) != 0 || objc_msgSend(v9, "containsObject:", v19))
+        if (([attributesCopy containsObject:v19] & 1) != 0 || objc_msgSend(extraAttributesCopy, "containsObject:", v19))
         {
           [v13 addObject:v19];
           [v14 removeObject:v19];
@@ -4739,11 +4739,11 @@ void __40__SPCSSearchQuery_sendResponseWithKind___block_invoke_2(uint64_t a1)
 
   if ([v14 count])
   {
-    v20 = [v14 allObjects];
-    [v13 addObjectsFromArray:v20];
+    allObjects = [v14 allObjects];
+    [v13 addObjectsFromArray:allObjects];
   }
 
-  if (v10)
+  if (setCopy)
   {
     v21 = objc_opt_new();
     v22 = [v13 count];
@@ -4752,7 +4752,7 @@ void __40__SPCSSearchQuery_sendResponseWithKind___block_invoke_2(uint64_t a1)
       do
       {
         v23 = [v13 objectAtIndexedSubscript:--v22];
-        v24 = [v10 containsObject:v23];
+        v24 = [setCopy containsObject:v23];
 
         if (v24)
         {
@@ -4767,8 +4767,8 @@ void __40__SPCSSearchQuery_sendResponseWithKind___block_invoke_2(uint64_t a1)
     }
 
     v26 = [v21 copy];
-    slowFetchAttrs = v30->_slowFetchAttrs;
-    v30->_slowFetchAttrs = v26;
+    slowFetchAttrs = selfCopy->_slowFetchAttrs;
+    selfCopy->_slowFetchAttrs = v26;
   }
 
   v28 = *MEMORY[0x277D85DE8];
@@ -4776,19 +4776,19 @@ void __40__SPCSSearchQuery_sendResponseWithKind___block_invoke_2(uint64_t a1)
   return v13;
 }
 
-- (id)disabledBundlesWithParseDisabledBundles:(id)a3 filterEventBundle:(BOOL)a4
+- (id)disabledBundlesWithParseDisabledBundles:(id)bundles filterEventBundle:(BOOL)bundle
 {
-  v4 = a4;
-  v6 = [MEMORY[0x277CBEB58] setWithArray:a3];
-  v7 = [(SPKQuery *)self queryContext];
-  v8 = [v7 disabledBundles];
-  v9 = [v8 count];
+  bundleCopy = bundle;
+  v6 = [MEMORY[0x277CBEB58] setWithArray:bundles];
+  queryContext = [(SPKQuery *)self queryContext];
+  disabledBundles = [queryContext disabledBundles];
+  v9 = [disabledBundles count];
 
   if (v9)
   {
-    v10 = [(SPKQuery *)self queryContext];
-    v11 = [v10 disabledBundles];
-    [v6 addObjectsFromArray:v11];
+    queryContext2 = [(SPKQuery *)self queryContext];
+    disabledBundles2 = [queryContext2 disabledBundles];
+    [v6 addObjectsFromArray:disabledBundles2];
   }
 
   {
@@ -4813,15 +4813,15 @@ void __40__SPCSSearchQuery_sendResponseWithKind___block_invoke_2(uint64_t a1)
     }
   }
 
-  v17 = [(SPKQuery *)self queryContext];
-  v18 = [v17 isSearchToolClient];
+  queryContext3 = [(SPKQuery *)self queryContext];
+  isSearchToolClient = [queryContext3 isSearchToolClient];
 
-  if ((v18 & 1) == 0 && self->_parsecAvailable)
+  if ((isSearchToolClient & 1) == 0 && self->_parsecAvailable)
   {
     [v6 addObject:*MEMORY[0x277D65AC8]];
   }
 
-  if (v4)
+  if (bundleCopy)
   {
     [v6 addObject:*MEMORY[0x277D65BF0]];
     v19 = SPLogForSPLogCategoryQuery();
@@ -4832,30 +4832,30 @@ void __40__SPCSSearchQuery_sendResponseWithKind___block_invoke_2(uint64_t a1)
     }
   }
 
-  v20 = [v6 allObjects];
+  allObjects = [v6 allObjects];
 
-  return v20;
+  return allObjects;
 }
 
-- (id)filterQueriesWithParseFilterQueries:(id)a3 onlyApps:(BOOL)a4 filterOrphanedFiles:(BOOL)a5
+- (id)filterQueriesWithParseFilterQueries:(id)queries onlyApps:(BOOL)apps filterOrphanedFiles:(BOOL)files
 {
-  v5 = a5;
-  v8 = [MEMORY[0x277CBEB18] arrayWithArray:a3];
-  v9 = [(SPKQuery *)self queryContext];
-  v10 = [v9 filterQueries];
-  v11 = [v10 count];
+  filesCopy = files;
+  v8 = [MEMORY[0x277CBEB18] arrayWithArray:queries];
+  queryContext = [(SPKQuery *)self queryContext];
+  filterQueries = [queryContext filterQueries];
+  v11 = [filterQueries count];
 
   if (v11)
   {
-    v12 = [(SPKQuery *)self queryContext];
-    v13 = [v12 filterQueries];
-    [v8 addObjectsFromArray:v13];
+    queryContext2 = [(SPKQuery *)self queryContext];
+    filterQueries2 = [queryContext2 filterQueries];
+    [v8 addObjectsFromArray:filterQueries2];
   }
 
-  v14 = [(SPKQuery *)self queryContext];
-  v15 = [v14 isSearchToolClient];
+  queryContext3 = [(SPKQuery *)self queryContext];
+  isSearchToolClient = [queryContext3 isSearchToolClient];
 
-  if (v15)
+  if (isSearchToolClient)
   {
     v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"(kMDItemDisableSearchInSpotlight!=1 || _kMDItemBundleID=%@)", *MEMORY[0x277D65B80]];
     [v8 addObject:v16];
@@ -4891,7 +4891,7 @@ void __40__SPCSSearchQuery_sendResponseWithKind___block_invoke_2(uint64_t a1)
     [v8 addObject:v22];
   }
 
-  if (!a4)
+  if (!apps)
   {
     {
       v23 = MEMORY[0x277CCACA8];
@@ -4938,7 +4938,7 @@ LABEL_28:
 
   [v8 addObject:@"(_kMDItemUserActivityType != \"com.apple.stocks.v2.ForYouFeed\" && _kMDItemUserActivityType != \"com.apple.stocks.v2.SymbolFeed\""];
   [v8 addObject:@"(kMDItemIsTrashed!=1)"];
-  if (!v5)
+  if (!filesCopy)
   {
     goto LABEL_32;
   }
@@ -5086,43 +5086,43 @@ void __31__SPCSSearchQuery_executeQuery__block_invoke_11(uint64_t a1)
   [WeakRetained priorityGatherEnded];
 }
 
-- (void)foundCompletion:(id)a3 scores:(id)a4 bundleIDs:(id)a5
+- (void)foundCompletion:(id)completion scores:(id)scores bundleIDs:(id)ds
 {
-  v21 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(NSMutableDictionary *)self->_completionSuggestions objectForKey:v21];
+  completionCopy = completion;
+  scoresCopy = scores;
+  dsCopy = ds;
+  v10 = [(NSMutableDictionary *)self->_completionSuggestions objectForKey:completionCopy];
 
   if (!v10)
   {
-    v11 = [MEMORY[0x277CC34D8] emptySuggestion];
+    emptySuggestion = [MEMORY[0x277CC34D8] emptySuggestion];
     v12 = MEMORY[0x277CC34D8];
-    v13 = [(SPKQuery *)self userQueryString];
-    v14 = [v12 updatedSuggestionWithCurrentSuggestion:v11 userString:v13 tokens:MEMORY[0x277CBEBF8]];
+    userQueryString = [(SPKQuery *)self userQueryString];
+    v14 = [v12 updatedSuggestionWithCurrentSuggestion:emptySuggestion userString:userQueryString tokens:MEMORY[0x277CBEBF8]];
 
     v15 = MEMORY[0x277CC34D8];
-    v16 = [(SPKQuery *)self userQueryString];
-    v17 = [v15 suggestionWithCurrentSuggestion:v14 userQueryString:v16 completion:v21 attributes:v9 scores:v8 options:MEMORY[0x277CBEC10]];
+    userQueryString2 = [(SPKQuery *)self userQueryString];
+    v17 = [v15 suggestionWithCurrentSuggestion:v14 userQueryString:userQueryString2 completion:completionCopy attributes:dsCopy scores:scoresCopy options:MEMORY[0x277CBEC10]];
 
     if (v17)
     {
       v18 = MEMORY[0x277D659B8];
-      v19 = [(SPKQuery *)self queryContext];
-      v20 = [v18 buildResultWithSpotlightSuggestion:v17 queryContext:v19];
+      queryContext = [(SPKQuery *)self queryContext];
+      v20 = [v18 buildResultWithSpotlightSuggestion:v17 queryContext:queryContext];
 
-      [(NSMutableDictionary *)self->_completionSuggestions setObject:v20 forKey:v21];
+      [(NSMutableDictionary *)self->_completionSuggestions setObject:v20 forKey:completionCopy];
     }
   }
 }
 
-- (void)foundCompletions:(id)a3
+- (void)foundCompletions:(id)completions
 {
   os_unfair_lock_lock(&self->_suggestionsLock);
   v4 = (*(self + 376) & 1) != 0 || [(NSMutableDictionary *)self->_completionSuggestions count]|| [(NSMutableArray *)self->_suggestionResults count]!= 0;
   *(self + 376) = *(self + 376) & 0xFE | v4;
   suggestionResults = self->_suggestionResults;
-  v6 = [(NSMutableDictionary *)self->_completionSuggestions allValues];
-  [(NSMutableArray *)suggestionResults addObjectsFromArray:v6];
+  allValues = [(NSMutableDictionary *)self->_completionSuggestions allValues];
+  [(NSMutableArray *)suggestionResults addObjectsFromArray:allValues];
 
   os_unfair_lock_unlock(&self->_suggestionsLock);
 }
@@ -5179,9 +5179,9 @@ void __31__SPCSSearchQuery_executeQuery__block_invoke_11(uint64_t a1)
   }
 }
 
-- (void)completed:(id)a3
+- (void)completed:(id)completed
 {
-  v7 = a3;
+  completedCopy = completed;
   {
     timeoutTimer = self->_timeoutTimer;
     if (timeoutTimer)

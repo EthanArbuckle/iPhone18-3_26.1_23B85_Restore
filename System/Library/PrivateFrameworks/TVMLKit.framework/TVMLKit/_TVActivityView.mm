@@ -1,20 +1,20 @@
 @interface _TVActivityView
 - (void)layoutSubviews;
-- (void)setActivityView:(id)a3;
-- (void)setTextView:(id)a3;
+- (void)setActivityView:(id)view;
+- (void)setTextView:(id)view;
 @end
 
 @implementation _TVActivityView
 
-- (void)setActivityView:(id)a3
+- (void)setActivityView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   activityView = self->_activityView;
-  v7 = v5;
-  if (activityView != v5)
+  v7 = viewCopy;
+  if (activityView != viewCopy)
   {
     [(UIView *)activityView removeFromSuperview];
-    objc_storeStrong(&self->_activityView, a3);
+    objc_storeStrong(&self->_activityView, view);
     if (self->_activityView)
     {
       [(_TVActivityView *)self addSubview:?];
@@ -24,15 +24,15 @@
   [(_TVActivityView *)self setNeedsLayout];
 }
 
-- (void)setTextView:(id)a3
+- (void)setTextView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   textView = self->_textView;
-  v7 = v5;
-  if (textView != v5)
+  v7 = viewCopy;
+  if (textView != viewCopy)
   {
     [(UIView *)textView removeFromSuperview];
-    objc_storeStrong(&self->_textView, a3);
+    objc_storeStrong(&self->_textView, view);
     if (self->_textView)
     {
       [(_TVActivityView *)self addSubview:?];
@@ -47,10 +47,10 @@
   [(_TVActivityView *)self bounds];
   v4 = v3;
   v6 = v5;
-  v7 = [(_TVActivityView *)self activityView];
-  [v7 tv_itemWidth];
-  v8 = [(_TVActivityView *)self activityView];
-  [v8 tv_itemHeight];
+  activityView = [(_TVActivityView *)self activityView];
+  [activityView tv_itemWidth];
+  activityView2 = [(_TVActivityView *)self activityView];
+  [activityView2 tv_itemHeight];
   UIRectCenteredIntegralRect();
   v10 = v9;
   recta = v9;
@@ -58,14 +58,14 @@
   v14 = v13;
   v16 = v15;
 
-  v17 = [(_TVActivityView *)self activityView];
-  [v17 setFrame:{v10, v12, v14, v16}];
+  activityView3 = [(_TVActivityView *)self activityView];
+  [activityView3 setFrame:{v10, v12, v14, v16}];
 
-  v18 = [(_TVActivityView *)self textView];
-  [v18 tv_margin];
+  textView = [(_TVActivityView *)self textView];
+  [textView tv_margin];
 
-  v19 = [(_TVActivityView *)self textView];
-  [v19 sizeThatFits:{v4, v6}];
+  textView2 = [(_TVActivityView *)self textView];
+  [textView2 sizeThatFits:{v4, v6}];
 
   v23.origin.x = recta;
   v23.origin.y = v12;

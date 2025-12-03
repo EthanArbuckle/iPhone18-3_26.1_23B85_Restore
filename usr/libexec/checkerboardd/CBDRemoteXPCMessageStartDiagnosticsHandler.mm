@@ -1,22 +1,22 @@
 @interface CBDRemoteXPCMessageStartDiagnosticsHandler
-- (CBDRemoteXPCMessageStartDiagnosticsHandler)initWithProxyReceiver:(id)a3;
+- (CBDRemoteXPCMessageStartDiagnosticsHandler)initWithProxyReceiver:(id)receiver;
 - (CBDStartDiagnosticsReceiver)startDiagnosticsReceiver;
 - (id)expectedRemoteMessageClasses;
-- (void)handleRemoteMessage:(id)a3 completion:(id)a4;
+- (void)handleRemoteMessage:(id)message completion:(id)completion;
 @end
 
 @implementation CBDRemoteXPCMessageStartDiagnosticsHandler
 
-- (CBDRemoteXPCMessageStartDiagnosticsHandler)initWithProxyReceiver:(id)a3
+- (CBDRemoteXPCMessageStartDiagnosticsHandler)initWithProxyReceiver:(id)receiver
 {
-  v4 = a3;
+  receiverCopy = receiver;
   v8.receiver = self;
   v8.super_class = CBDRemoteXPCMessageStartDiagnosticsHandler;
   v5 = [(CBDRemoteXPCMessageStartDiagnosticsHandler *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_startDiagnosticsReceiver, v4);
+    objc_storeWeak(&v5->_startDiagnosticsReceiver, receiverCopy);
   }
 
   return v6;
@@ -29,19 +29,19 @@
   return [NSSet setWithObject:v2];
 }
 
-- (void)handleRemoteMessage:(id)a3 completion:(id)a4
+- (void)handleRemoteMessage:(id)message completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  completionCopy = completion;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v6;
-    v9 = [(CBDRemoteXPCMessageStartDiagnosticsHandler *)self startDiagnosticsReceiver];
+    v8 = messageCopy;
+    startDiagnosticsReceiver = [(CBDRemoteXPCMessageStartDiagnosticsHandler *)self startDiagnosticsReceiver];
 
     v10 = CheckerBoardLogHandleForCategory();
     v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
-    if (v9)
+    if (startDiagnosticsReceiver)
     {
       if (v11)
       {
@@ -50,14 +50,14 @@
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Start session for message %@", buf, 0xCu);
       }
 
-      v12 = [(CBDRemoteXPCMessageStartDiagnosticsHandler *)self startDiagnosticsReceiver];
+      startDiagnosticsReceiver2 = [(CBDRemoteXPCMessageStartDiagnosticsHandler *)self startDiagnosticsReceiver];
       v17[0] = _NSConcreteStackBlock;
       v17[1] = 3221225472;
       v17[2] = sub_100006958;
       v17[3] = &unk_100010528;
-      v19 = v7;
+      v19 = completionCopy;
       v18 = v8;
-      [v12 startDiagnosticsWithCompletion:v17];
+      [startDiagnosticsReceiver2 startDiagnosticsWithCompletion:v17];
 
       v13 = v19;
     }
@@ -74,7 +74,7 @@
       v16 = [NSError errorWithDomain:@"com.apple.checkerboardd.remoteXPCMessageDomain" code:3 userInfo:0];
       v13 = [v8 replyWithSuccess:0 error:v16];
 
-      (*(v7 + 2))(v7, v13);
+      (*(completionCopy + 2))(completionCopy, v13);
     }
   }
 
@@ -84,14 +84,14 @@
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v21 = v6;
+      v21 = messageCopy;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Expect to handle a start session message, but received %@ instead.", buf, 0xCu);
     }
 
     v15 = [NSError errorWithDomain:@"com.apple.checkerboardd.remoteXPCMessageDomain" code:1 userInfo:0];
-    v8 = [v6 replyWithSuccess:0 error:v15];
+    v8 = [messageCopy replyWithSuccess:0 error:v15];
 
-    (*(v7 + 2))(v7, v8);
+    (*(completionCopy + 2))(completionCopy, v8);
   }
 }
 

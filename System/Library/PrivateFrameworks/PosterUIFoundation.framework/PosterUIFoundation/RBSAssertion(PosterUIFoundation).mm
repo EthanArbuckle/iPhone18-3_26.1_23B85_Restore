@@ -17,15 +17,15 @@
     v18 = [v13 valueForEntitlement:@"com.apple.posterkit.enhanced-memory-limits"];
     if (objc_opt_respondsToSelector())
     {
-      v19 = [v18 BOOLValue];
+      bOOLValue = [v18 BOOLValue];
       v20 = PFBundleIdentifierRequiresMemoryHogAssertion();
       v21 = MEMORY[0x1E69C5238];
-      if ((v19 & v20) != 0)
+      if ((bOOLValue & v20) != 0)
       {
         v21 = MEMORY[0x1E69C5240];
       }
 
-      if (v19)
+      if (bOOLValue)
       {
         goto LABEL_11;
       }
@@ -54,7 +54,7 @@ LABEL_11:
   }
 
 LABEL_13:
-  v23 = [a1 pf_assertionForTarget:v16 assertionIdentifier:v22 explanation:v15 invalidationHandler:0];
+  v23 = [self pf_assertionForTarget:v16 assertionIdentifier:v22 explanation:v15 invalidationHandler:0];
 
   return v23;
 }
@@ -67,8 +67,8 @@ LABEL_13:
   v9 = [a4 valueForEntitlement:@"com.apple.posterkit.enhanced-memory-limits"];
   if (objc_opt_respondsToSelector())
   {
-    v10 = [v9 BOOLValue];
-    if ((v10 & PFBundleIdentifierRequiresMemoryHogAssertion()) != 0)
+    bOOLValue = [v9 BOOLValue];
+    if ((bOOLValue & PFBundleIdentifierRequiresMemoryHogAssertion()) != 0)
     {
       v11 = @"-Photos";
     }
@@ -78,7 +78,7 @@ LABEL_13:
       v11 = @"-Entitled";
     }
 
-    if (v10)
+    if (bOOLValue)
     {
       goto LABEL_9;
     }

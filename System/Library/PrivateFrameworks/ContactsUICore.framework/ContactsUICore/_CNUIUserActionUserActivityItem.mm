@@ -1,58 +1,58 @@
 @interface _CNUIUserActionUserActivityItem
-- (BOOL)_isIntent:(id)a3 equalToOther:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (_CNUIUserActionUserActivityItem)initWithType:(id)a3 contactProperty:(id)a4 bundleIdentifier:(id)a5 userActivity:(id)a6 group:(int64_t)a7 options:(unint64_t)a8;
-- (id)_personFromIntent:(id)a3;
+- (BOOL)_isIntent:(id)intent equalToOther:(id)other;
+- (BOOL)isEqual:(id)equal;
+- (_CNUIUserActionUserActivityItem)initWithType:(id)type contactProperty:(id)property bundleIdentifier:(id)identifier userActivity:(id)activity group:(int64_t)group options:(unint64_t)options;
+- (id)_personFromIntent:(id)intent;
 - (id)description;
-- (id)performActionWithContext:(id)a3;
-- (unint64_t)_hashForIntent:(id)a3;
+- (id)performActionWithContext:(id)context;
+- (unint64_t)_hashForIntent:(id)intent;
 - (unint64_t)hash;
 @end
 
 @implementation _CNUIUserActionUserActivityItem
 
-- (_CNUIUserActionUserActivityItem)initWithType:(id)a3 contactProperty:(id)a4 bundleIdentifier:(id)a5 userActivity:(id)a6 group:(int64_t)a7 options:(unint64_t)a8
+- (_CNUIUserActionUserActivityItem)initWithType:(id)type contactProperty:(id)property bundleIdentifier:(id)identifier userActivity:(id)activity group:(int64_t)group options:(unint64_t)options
 {
-  v15 = a6;
+  activityCopy = activity;
   v20.receiver = self;
   v20.super_class = _CNUIUserActionUserActivityItem;
-  v16 = [(CNUIUserActionItem *)&v20 initWithType:a3 contactProperty:a4 bundleIdentifier:a5 group:a7 options:a8];
+  v16 = [(CNUIUserActionItem *)&v20 initWithType:type contactProperty:property bundleIdentifier:identifier group:group options:options];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_userActivity, a6);
+    objc_storeStrong(&v16->_userActivity, activity);
     v18 = v17;
   }
 
   return v17;
 }
 
-- (id)performActionWithContext:(id)a3
+- (id)performActionWithContext:(id)context
 {
-  v4 = a3;
-  v5 = self;
-  v6 = [(_CNUIUserActionUserActivityItem *)v5 userActivity];
-  v7 = [(CNUIUserActionItem *)v5 bundleIdentifier];
-  if ([(CNUIUserActionItem *)v5 shouldCurateIfPerformed])
+  contextCopy = context;
+  selfCopy = self;
+  userActivity = [(_CNUIUserActionUserActivityItem *)selfCopy userActivity];
+  bundleIdentifier = [(CNUIUserActionItem *)selfCopy bundleIdentifier];
+  if ([(CNUIUserActionItem *)selfCopy shouldCurateIfPerformed])
   {
-    v8 = [v4 actionCurator];
-    v9 = [v8 curateUserAction:v5];
+    actionCurator = [contextCopy actionCurator];
+    v9 = [actionCurator curateUserAction:selfCopy];
 
-    v5 = v9;
+    selfCopy = v9;
   }
 
-  v10 = [v4 userActivityOpener];
-  v11 = [MEMORY[0x1E6996818] globalAsyncScheduler];
-  v12 = [v10 openUserActivity:v6 usingBundleIdentifier:v7 withScheduler:v11];
+  userActivityOpener = [contextCopy userActivityOpener];
+  globalAsyncScheduler = [MEMORY[0x1E6996818] globalAsyncScheduler];
+  v12 = [userActivityOpener openUserActivity:userActivity usingBundleIdentifier:bundleIdentifier withScheduler:globalAsyncScheduler];
 
-  if (v5)
+  if (selfCopy)
   {
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __60___CNUIUserActionUserActivityItem_performActionWithContext___block_invoke;
     v14[3] = &unk_1E76E83B8;
-    v15 = v4;
-    v16 = v5;
+    v15 = contextCopy;
+    v16 = selfCopy;
     [v12 addSuccessBlock:v14];
   }
 
@@ -62,31 +62,31 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E69966B0] descriptionBuilderWithObject:self];
-  v4 = [(CNUIUserActionItem *)self type];
-  v5 = [v3 appendObject:v4 withName:@"type"];
+  type = [(CNUIUserActionItem *)self type];
+  v5 = [v3 appendObject:type withName:@"type"];
 
-  v6 = [(CNUIUserActionItem *)self label];
-  v7 = [v3 appendObject:v6 withName:@"label"];
+  label = [(CNUIUserActionItem *)self label];
+  v7 = [v3 appendObject:label withName:@"label"];
 
-  v8 = [(CNUIUserActionItem *)self targetHandle];
-  v9 = [v3 appendObject:v8 withName:@"targetHandle"];
+  targetHandle = [(CNUIUserActionItem *)self targetHandle];
+  v9 = [v3 appendObject:targetHandle withName:@"targetHandle"];
 
-  v10 = [(CNUIUserActionItem *)self bundleIdentifier];
-  v11 = [v3 appendObject:v10 withName:@"bundleIdentifier"];
+  bundleIdentifier = [(CNUIUserActionItem *)self bundleIdentifier];
+  v11 = [v3 appendObject:bundleIdentifier withName:@"bundleIdentifier"];
 
-  v12 = [(_CNUIUserActionUserActivityItem *)self userActivity];
-  v13 = [v3 appendObject:v12 withName:@"userActivity"];
+  userActivity = [(_CNUIUserActionUserActivityItem *)self userActivity];
+  v13 = [v3 appendObject:userActivity withName:@"userActivity"];
 
   v14 = [v3 appendName:@"group" integerValue:{-[CNUIUserActionItem group](self, "group")}];
   v15 = [v3 appendName:@"options" unsignedInteger:{-[CNUIUserActionItem options](self, "options")}];
-  v16 = [v3 build];
+  build = [v3 build];
 
-  return v16;
+  return build;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = MEMORY[0x1E69966F0];
   v6 = objc_opt_class();
   v24[0] = MEMORY[0x1E69E9820];
@@ -94,7 +94,7 @@
   v24[2] = __43___CNUIUserActionUserActivityItem_isEqual___block_invoke;
   v24[3] = &unk_1E76E7A88;
   v24[4] = self;
-  v25 = v4;
+  v25 = equalCopy;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __43___CNUIUserActionUserActivityItem_isEqual___block_invoke_2;
@@ -169,15 +169,15 @@
   return v8;
 }
 
-- (BOOL)_isIntent:(id)a3 equalToOther:(id)a4
+- (BOOL)_isIntent:(id)intent equalToOther:(id)other
 {
-  v6 = a3;
-  v7 = a4;
+  intentCopy = intent;
+  otherCopy = other;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [(_CNUIUserActionUserActivityItem *)self _personFromIntent:v6];
-    v9 = [(_CNUIUserActionUserActivityItem *)self _personFromIntent:v7];
+    v8 = [(_CNUIUserActionUserActivityItem *)self _personFromIntent:intentCopy];
+    v9 = [(_CNUIUserActionUserActivityItem *)self _personFromIntent:otherCopy];
     v10 = MEMORY[0x1E69966F0];
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
@@ -205,9 +205,9 @@
   return v14;
 }
 
-- (unint64_t)_hashForIntent:(id)a3
+- (unint64_t)_hashForIntent:(id)intent
 {
-  v3 = [(_CNUIUserActionUserActivityItem *)self _personFromIntent:a3];
+  v3 = [(_CNUIUserActionUserActivityItem *)self _personFromIntent:intent];
   v4 = MEMORY[0x1E6996730];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
@@ -226,16 +226,16 @@
   return v7;
 }
 
-- (id)_personFromIntent:(id)a3
+- (id)_personFromIntent:(id)intent
 {
-  v3 = a3;
+  intentCopy = intent;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    v4 = [v3 contacts];
+    contacts = [intentCopy contacts];
 LABEL_5:
-    v5 = v4;
-    v6 = [v4 firstObject];
+    v5 = contacts;
+    firstObject = [contacts firstObject];
 
     goto LABEL_6;
   }
@@ -243,14 +243,14 @@ LABEL_5:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 recipients];
+    contacts = [intentCopy recipients];
     goto LABEL_5;
   }
 
-  v6 = 0;
+  firstObject = 0;
 LABEL_6:
 
-  return v6;
+  return firstObject;
 }
 
 @end

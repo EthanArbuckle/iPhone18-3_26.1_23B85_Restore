@@ -1,26 +1,26 @@
 @interface XPCServer
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (NSString)description;
 - (_TtC17proximitycontrold9XPCServer)init;
-- (void)activateWithCompletion:(id)a3;
+- (void)activateWithCompletion:(id)completion;
 - (void)invalidate;
-- (void)setDispatchQueue:(id)a3;
-- (void)setInterruptionHandler:(id)a3;
-- (void)setInvalidationHandler:(id)a3;
+- (void)setDispatchQueue:(id)queue;
+- (void)setInterruptionHandler:(id)handler;
+- (void)setInvalidationHandler:(id)handler;
 @end
 
 @implementation XPCServer
 
-- (void)setDispatchQueue:(id)a3
+- (void)setDispatchQueue:(id)queue
 {
   v4 = *(self + OBJC_IVAR____TtC17proximitycontrold9XPCServer_dispatchQueue);
-  *(self + OBJC_IVAR____TtC17proximitycontrold9XPCServer_dispatchQueue) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC17proximitycontrold9XPCServer_dispatchQueue) = queue;
+  queueCopy = queue;
 }
 
-- (void)setInterruptionHandler:(id)a3
+- (void)setInterruptionHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = v4;
@@ -39,13 +39,13 @@
   v9 = *(self + OBJC_IVAR____TtC17proximitycontrold9XPCServer_interruptionHandler + 8);
   *v7 = v6;
   v7[1] = v4;
-  v10 = self;
+  selfCopy = self;
   sub_10002689C(v8);
 }
 
-- (void)setInvalidationHandler:(id)a3
+- (void)setInvalidationHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = v4;
@@ -64,7 +64,7 @@
   v9 = *(self + OBJC_IVAR____TtC17proximitycontrold9XPCServer_invalidationHandler + 8);
   *v7 = v6;
   v7[1] = v4;
-  v10 = self;
+  selfCopy = self;
   sub_10002689C(v8);
 }
 
@@ -75,34 +75,34 @@
   return result;
 }
 
-- (void)activateWithCompletion:(id)a3
+- (void)activateWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
-  v6 = self;
+  selfCopy = self;
   sub_100102124(sub_100104000, v5);
 }
 
 - (void)invalidate
 {
-  v2 = self;
+  selfCopy = self;
   sub_100102758();
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_100102B8C(v6, v7);
+  listenerCopy = listener;
+  connectionCopy = connection;
+  selfCopy = self;
+  v9 = sub_100102B8C(listenerCopy, connectionCopy);
 
   return v9 & 1;
 }
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001037AC();
 
   v3 = String._bridgeToObjectiveC()();

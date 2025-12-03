@@ -1,44 +1,44 @@
 @interface TUIRatingsView
-+ (id)renderModelWithStates:(id)a3 actionHandler:(id)a4 viewState:(id)a5 identifier:(id)a6 name:(id)a7 rating:(double)a8 enabled:(BOOL)a9 direction:(unint64_t)a10 color:(id)a11 startColor:(id)a12 backgroundColor:(id)a13 backgroundImageName:(id)a14 foregroundImageName:(id)a15 starWidth:(double)a16 starPadding:(double)a17;
++ (id)renderModelWithStates:(id)states actionHandler:(id)handler viewState:(id)state identifier:(id)identifier name:(id)name rating:(double)rating enabled:(BOOL)enabled direction:(unint64_t)self0 color:(id)self1 startColor:(id)self2 backgroundColor:(id)self3 backgroundImageName:(id)self4 foregroundImageName:(id)self5 starWidth:(double)self6 starPadding:(double)self7;
 - (id)viewStateSave;
-- (void)_ratingControlChanged:(id)a3;
-- (void)_ratingControlTouchDown:(id)a3;
-- (void)_ratingControlTouchUp:(id)a3;
+- (void)_ratingControlChanged:(id)changed;
+- (void)_ratingControlTouchDown:(id)down;
+- (void)_ratingControlTouchUp:(id)up;
 - (void)_updateDynamicViewState;
-- (void)configureWithModel:(id)a3 outsets:(UIEdgeInsets)a4;
-- (void)loadControlWithValue:(double)a3 enabled:(BOOL)a4 direction:(unint64_t)a5 color:(id)a6 startColor:(id)a7 backgroundColor:(id)a8 backgroundImageName:(id)a9 foregroundImageName:(id)a10 starWidth:(double)a11 starPadding:(double)a12;
-- (void)updateControlWithValue:(double)a3 enabled:(BOOL)a4 direction:(unint64_t)a5 color:(id)a6 startColor:(id)a7 backgroundColor:(id)a8 backgroundImageName:(id)a9 foregroundImageName:(id)a10 starWidth:(double)a11 starPadding:(double)a12;
-- (void)viewStateRestore:(id)a3;
+- (void)configureWithModel:(id)model outsets:(UIEdgeInsets)outsets;
+- (void)loadControlWithValue:(double)value enabled:(BOOL)enabled direction:(unint64_t)direction color:(id)color startColor:(id)startColor backgroundColor:(id)backgroundColor backgroundImageName:(id)name foregroundImageName:(id)self0 starWidth:(double)self1 starPadding:(double)self2;
+- (void)updateControlWithValue:(double)value enabled:(BOOL)enabled direction:(unint64_t)direction color:(id)color startColor:(id)startColor backgroundColor:(id)backgroundColor backgroundImageName:(id)name foregroundImageName:(id)self0 starWidth:(double)self1 starPadding:(double)self2;
+- (void)viewStateRestore:(id)restore;
 @end
 
 @implementation TUIRatingsView
 
-- (void)configureWithModel:(id)a3 outsets:(UIEdgeInsets)a4
+- (void)configureWithModel:(id)model outsets:(UIEdgeInsets)outsets
 {
-  right = a4.right;
-  bottom = a4.bottom;
-  left = a4.left;
-  top = a4.top;
-  v9 = a3;
-  if (v9)
+  right = outsets.right;
+  bottom = outsets.bottom;
+  left = outsets.left;
+  top = outsets.top;
+  modelCopy = model;
+  if (modelCopy)
   {
     v10 = objc_opt_class();
-    v11 = [(TUIInteractiveBaseView *)self renderModel];
-    v12 = TUIDynamicCast(v10, v11);
+    renderModel = [(TUIInteractiveBaseView *)self renderModel];
+    v12 = TUIDynamicCast(v10, renderModel);
 
     v13 = objc_opt_class();
-    v14 = TUIDynamicCast(v13, v9);
+    v14 = TUIDynamicCast(v13, modelCopy);
     [v14 rating];
     v16 = v15;
     v36 = v12;
     if ([v12 isEqualToRenderModel:v14])
     {
-      v17 = [(TUIInteractiveBaseView *)self control];
+      control = [(TUIInteractiveBaseView *)self control];
 
-      if (v17)
+      if (control)
       {
-        v18 = [(TUIInteractiveBaseView *)self control];
-        [v18 value];
+        control2 = [(TUIInteractiveBaseView *)self control];
+        [control2 value];
         v16 = v19;
       }
     }
@@ -52,33 +52,33 @@
       self->_viewStateToRestore = 0;
     }
 
-    v23 = [v9 viewState];
+    viewState = [modelCopy viewState];
     dynamicViewState = self->_dynamicViewState;
-    self->_dynamicViewState = v23;
+    self->_dynamicViewState = viewState;
 
     v37.receiver = self;
     v37.super_class = TUIRatingsView;
-    [(TUIInteractiveBaseView *)&v37 configureWithModel:v9 outsets:top, left, bottom, right];
-    v25 = [(TUIInteractiveBaseView *)self control];
+    [(TUIInteractiveBaseView *)&v37 configureWithModel:modelCopy outsets:top, left, bottom, right];
+    control3 = [(TUIInteractiveBaseView *)self control];
 
-    v35 = [v14 enabled];
-    v26 = [v14 direction];
-    v27 = [v14 color];
-    v28 = [v14 startColor];
-    v29 = [v14 backgroundColor];
-    v30 = [v14 backgroundImageName];
-    v31 = [v14 foregroundImageName];
+    enabled = [v14 enabled];
+    direction = [v14 direction];
+    color = [v14 color];
+    startColor = [v14 startColor];
+    backgroundColor = [v14 backgroundColor];
+    backgroundImageName = [v14 backgroundImageName];
+    foregroundImageName = [v14 foregroundImageName];
     [v14 starWidth];
     v33 = v32;
     [v14 starPadding];
-    if (v25)
+    if (control3)
     {
-      [(TUIRatingsView *)self updateControlWithValue:v35 enabled:v26 direction:v27 color:v28 startColor:v29 backgroundColor:v30 backgroundImageName:v16 foregroundImageName:v33 starWidth:v34 starPadding:v31];
+      [(TUIRatingsView *)self updateControlWithValue:enabled enabled:direction direction:color color:startColor startColor:backgroundColor backgroundColor:backgroundImageName backgroundImageName:v16 foregroundImageName:v33 starWidth:v34 starPadding:foregroundImageName];
     }
 
     else
     {
-      [(TUIRatingsView *)self loadControlWithValue:v35 enabled:v26 direction:v27 color:v28 startColor:v29 backgroundColor:v30 backgroundImageName:v16 foregroundImageName:v33 starWidth:v34 starPadding:v31];
+      [(TUIRatingsView *)self loadControlWithValue:enabled enabled:direction direction:color color:startColor startColor:backgroundColor backgroundColor:backgroundImageName backgroundImageName:v16 foregroundImageName:v33 starWidth:v34 starPadding:foregroundImageName];
     }
   }
 }
@@ -87,14 +87,14 @@
 {
   if (self->_dynamicViewState)
   {
-    v3 = [(TUIInteractiveBaseView *)self control];
+    control = [(TUIInteractiveBaseView *)self control];
 
-    if (v3)
+    if (control)
     {
       dynamicViewState = self->_dynamicViewState;
       v8 = @"value";
-      v5 = [(TUIInteractiveBaseView *)self control];
-      [v5 value];
+      control2 = [(TUIInteractiveBaseView *)self control];
+      [control2 value];
       v6 = [NSNumber numberWithFloat:?];
       v9 = v6;
       v7 = [NSDictionary dictionaryWithObjects:&v9 forKeys:&v8 count:1];
@@ -103,40 +103,40 @@
   }
 }
 
-- (void)updateControlWithValue:(double)a3 enabled:(BOOL)a4 direction:(unint64_t)a5 color:(id)a6 startColor:(id)a7 backgroundColor:(id)a8 backgroundImageName:(id)a9 foregroundImageName:(id)a10 starWidth:(double)a11 starPadding:(double)a12
+- (void)updateControlWithValue:(double)value enabled:(BOOL)enabled direction:(unint64_t)direction color:(id)color startColor:(id)startColor backgroundColor:(id)backgroundColor backgroundImageName:(id)name foregroundImageName:(id)self0 starWidth:(double)self1 starPadding:(double)self2
 {
-  v18 = a4;
-  v21 = a10;
-  v22 = a9;
-  v23 = a8;
-  v24 = a7;
-  v25 = a6;
-  v27 = [(TUIInteractiveBaseView *)self control];
-  [v27 _updateImagesIfNeededWithForegroundImageName:v21 backgroundImageName:v22 starWidth:a11 starPadding:a12];
+  enabledCopy = enabled;
+  imageNameCopy = imageName;
+  nameCopy = name;
+  backgroundColorCopy = backgroundColor;
+  startColorCopy = startColor;
+  colorCopy = color;
+  control = [(TUIInteractiveBaseView *)self control];
+  [control _updateImagesIfNeededWithForegroundImageName:imageNameCopy backgroundImageName:nameCopy starWidth:width starPadding:padding];
 
-  [v27 setForegroundColor:v25];
-  [v27 setStartColor:v24];
+  [control setForegroundColor:colorCopy];
+  [control setStartColor:startColorCopy];
 
-  [v27 setBackgroundColor:v23];
-  *&v26 = a3;
-  [v27 setValue:v26];
-  [v27 setEnabled:v18];
+  [control setBackgroundColor:backgroundColorCopy];
+  *&v26 = value;
+  [control setValue:v26];
+  [control setEnabled:enabledCopy];
 }
 
-- (void)loadControlWithValue:(double)a3 enabled:(BOOL)a4 direction:(unint64_t)a5 color:(id)a6 startColor:(id)a7 backgroundColor:(id)a8 backgroundImageName:(id)a9 foregroundImageName:(id)a10 starWidth:(double)a11 starPadding:(double)a12
+- (void)loadControlWithValue:(double)value enabled:(BOOL)enabled direction:(unint64_t)direction color:(id)color startColor:(id)startColor backgroundColor:(id)backgroundColor backgroundImageName:(id)name foregroundImageName:(id)self0 starWidth:(double)self1 starPadding:(double)self2
 {
-  v19 = a4;
-  v22 = a10;
-  v23 = a9;
-  v24 = a8;
-  v25 = a7;
-  v26 = a6;
-  v27 = [[TUIStarRatingControl alloc] initWithRating:v23 backgroundImageName:v22 foregroundImageName:a5 direction:v26 color:v25 startColor:v24 backgroundColor:a3 starWidth:a11 starPadding:a12];
+  enabledCopy = enabled;
+  imageNameCopy = imageName;
+  nameCopy = name;
+  backgroundColorCopy = backgroundColor;
+  startColorCopy = startColor;
+  colorCopy = color;
+  v27 = [[TUIStarRatingControl alloc] initWithRating:nameCopy backgroundImageName:imageNameCopy foregroundImageName:direction direction:colorCopy color:startColorCopy startColor:backgroundColorCopy backgroundColor:value starWidth:width starPadding:padding];
 
   [(TUIStarRatingControl *)v27 setHitPadding:CGSizeZero.width, CGSizeZero.height];
   [(TUIRatingsView *)self bounds];
   [(TUIStarRatingControl *)v27 setFrame:?];
-  [(TUIStarRatingControl *)v27 setEnabled:v19];
+  [(TUIStarRatingControl *)v27 setEnabled:enabledCopy];
   [(TUIStarRatingControl *)v27 addTarget:self action:"_ratingControlChanged:" forControlEvents:4096];
   [(TUIStarRatingControl *)v27 addTarget:self action:"_ratingControlTouchDown:" forControlEvents:1];
   [(TUIStarRatingControl *)v27 addTarget:self action:"_ratingControlTouchUp:" forControlEvents:64];
@@ -146,81 +146,81 @@
   [(TUIInteractiveBaseView *)self setControl:v27];
 }
 
-- (void)_ratingControlChanged:(id)a3
+- (void)_ratingControlChanged:(id)changed
 {
-  v4 = [(TUIInteractiveBaseView *)self renderModel];
-  v5 = [v4 actionHandler];
+  renderModel = [(TUIInteractiveBaseView *)self renderModel];
+  actionHandler = [renderModel actionHandler];
   v11 = @"value";
   v6 = objc_opt_class();
-  v7 = [(TUIInteractiveBaseView *)self control];
-  v8 = TUIDynamicCast(v6, v7);
+  control = [(TUIInteractiveBaseView *)self control];
+  v8 = TUIDynamicCast(v6, control);
   [v8 value];
   v9 = [NSNumber numberWithFloat:?];
   v12 = v9;
   v10 = [NSDictionary dictionaryWithObjects:&v12 forKeys:&v11 count:1];
-  [v5 invoke:@"changedInput" arguments:v10];
+  [actionHandler invoke:@"changedInput" arguments:v10];
 
   [(TUIRatingsView *)self _updateDynamicViewState];
 }
 
-- (void)_ratingControlTouchDown:(id)a3
+- (void)_ratingControlTouchDown:(id)down
 {
-  v4 = [(TUIInteractiveBaseView *)self renderModel];
-  v5 = [v4 actionHandler];
+  renderModel = [(TUIInteractiveBaseView *)self renderModel];
+  actionHandler = [renderModel actionHandler];
   v11 = @"value";
   v6 = objc_opt_class();
-  v7 = [(TUIInteractiveBaseView *)self control];
-  v8 = TUIDynamicCast(v6, v7);
+  control = [(TUIInteractiveBaseView *)self control];
+  v8 = TUIDynamicCast(v6, control);
   [v8 value];
   v9 = [NSNumber numberWithFloat:?];
   v12 = v9;
   v10 = [NSDictionary dictionaryWithObjects:&v12 forKeys:&v11 count:1];
-  [v5 invoke:@"beginInput" arguments:v10];
+  [actionHandler invoke:@"beginInput" arguments:v10];
 }
 
-- (void)_ratingControlTouchUp:(id)a3
+- (void)_ratingControlTouchUp:(id)up
 {
-  v4 = [(TUIInteractiveBaseView *)self renderModel];
-  v5 = [v4 actionHandler];
+  renderModel = [(TUIInteractiveBaseView *)self renderModel];
+  actionHandler = [renderModel actionHandler];
   v11 = @"value";
   v6 = objc_opt_class();
-  v7 = [(TUIInteractiveBaseView *)self control];
-  v8 = TUIDynamicCast(v6, v7);
+  control = [(TUIInteractiveBaseView *)self control];
+  v8 = TUIDynamicCast(v6, control);
   [v8 value];
   v9 = [NSNumber numberWithFloat:?];
   v12 = v9;
   v10 = [NSDictionary dictionaryWithObjects:&v12 forKeys:&v11 count:1];
-  [v5 invoke:@"endInput" arguments:v10];
+  [actionHandler invoke:@"endInput" arguments:v10];
 }
 
-+ (id)renderModelWithStates:(id)a3 actionHandler:(id)a4 viewState:(id)a5 identifier:(id)a6 name:(id)a7 rating:(double)a8 enabled:(BOOL)a9 direction:(unint64_t)a10 color:(id)a11 startColor:(id)a12 backgroundColor:(id)a13 backgroundImageName:(id)a14 foregroundImageName:(id)a15 starWidth:(double)a16 starPadding:(double)a17
++ (id)renderModelWithStates:(id)states actionHandler:(id)handler viewState:(id)state identifier:(id)identifier name:(id)name rating:(double)rating enabled:(BOOL)enabled direction:(unint64_t)self0 color:(id)self1 startColor:(id)self2 backgroundColor:(id)self3 backgroundImageName:(id)self4 foregroundImageName:(id)self5 starWidth:(double)self6 starPadding:(double)self7
 {
-  v39 = a9;
-  v35 = a15;
-  v31 = a14;
-  v22 = a13;
-  v23 = a12;
-  v24 = a11;
-  v25 = a7;
-  v30 = a6;
-  v34 = a5;
-  v26 = a4;
-  v37 = a3;
+  enabledCopy = enabled;
+  foregroundImageNameCopy = foregroundImageName;
+  imageNameCopy = imageName;
+  backgroundColorCopy = backgroundColor;
+  startColorCopy = startColor;
+  colorCopy = color;
+  nameCopy = name;
+  identifierCopy = identifier;
+  stateCopy = state;
+  handlerCopy = handler;
+  statesCopy = states;
   v27 = [TUIRenderModelRatings alloc];
-  v28 = [a1 tuiReuseIdentifier];
-  v40 = [(TUIRenderModelRatings *)v27 initWithReuseIdentifier:v28 identifier:v30 elementStates:v37 actionHandler:v26 viewState:v34 enabled:v39 name:a8 rating:a16 direction:a17 color:v25 startColor:a10 backgroundColor:v24 backgroundImageName:v23 foregroundImageName:v22 starWidth:v31 starPadding:v35];
+  tuiReuseIdentifier = [self tuiReuseIdentifier];
+  v40 = [(TUIRenderModelRatings *)v27 initWithReuseIdentifier:tuiReuseIdentifier identifier:identifierCopy elementStates:statesCopy actionHandler:handlerCopy viewState:stateCopy enabled:enabledCopy name:rating rating:width direction:padding color:nameCopy startColor:direction backgroundColor:colorCopy backgroundImageName:startColorCopy foregroundImageName:backgroundColorCopy starWidth:imageNameCopy starPadding:foregroundImageNameCopy];
 
   return v40;
 }
 
 - (id)viewStateSave
 {
-  v3 = [(TUIInteractiveBaseView *)self control];
-  if ([v3 isEnabled])
+  control = [(TUIInteractiveBaseView *)self control];
+  if ([control isEnabled])
   {
     v4 = [_TUIRatingsViewState alloc];
-    v5 = [(TUIInteractiveBaseView *)self control];
-    [v5 value];
+    control2 = [(TUIInteractiveBaseView *)self control];
+    [control2 value];
     v7 = [(_TUIRatingsViewState *)v4 initWithValue:v6];
   }
 
@@ -232,25 +232,25 @@
   return v7;
 }
 
-- (void)viewStateRestore:(id)a3
+- (void)viewStateRestore:(id)restore
 {
-  v8 = a3;
-  v4 = [(TUIInteractiveBaseView *)self control];
+  restoreCopy = restore;
+  control = [(TUIInteractiveBaseView *)self control];
 
-  if (v8 && v4)
+  if (restoreCopy && control)
   {
-    [v8 value];
+    [restoreCopy value];
     v6 = v5;
 
-    v8 = [(TUIInteractiveBaseView *)self control];
+    restoreCopy = [(TUIInteractiveBaseView *)self control];
     *&v6 = v6;
     LODWORD(v7) = LODWORD(v6);
-    [v8 setValue:v7];
+    [restoreCopy setValue:v7];
   }
 
   else
   {
-    [(TUIRatingsView *)self setViewStateToRestore:v8];
+    [(TUIRatingsView *)self setViewStateToRestore:restoreCopy];
   }
 }
 

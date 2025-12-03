@@ -1,29 +1,29 @@
 @interface LCSCaptureApplicationMonitor
-+ (BOOL)_hasCameraUsageDescriptionForBundleIdentifier:(id)a3;
-+ (BOOL)_hasCaptureAppIntentForExtension:(id)a3;
-+ (id)_bundleRecordForBundleIdentifier:(id)a3;
++ (BOOL)_hasCameraUsageDescriptionForBundleIdentifier:(id)identifier;
++ (BOOL)_hasCaptureAppIntentForExtension:(id)extension;
++ (id)_bundleRecordForBundleIdentifier:(id)identifier;
 + (id)sharedInstance;
-- (BOOL)isCaptureApplication:(id)a3;
+- (BOOL)isCaptureApplication:(id)application;
 - (LCSCaptureApplicationMonitor)init;
 - (NSDictionary)knownCameraCaptureApplicationsByBundleIdentifier;
-- (id)_filterCaptureApplications:(id)a3 launchType:(unint64_t)a4;
-- (id)_lock_captureApplicationsFromKnownExtensions:(id)a3 currentCaptureApplications:(id)a4 usingCachedLaunchOptions:(BOOL)a5;
-- (unint64_t)_lock_supportedLaunchTypesForExtension:(id)a3;
+- (id)_filterCaptureApplications:(id)applications launchType:(unint64_t)type;
+- (id)_lock_captureApplicationsFromKnownExtensions:(id)extensions currentCaptureApplications:(id)applications usingCachedLaunchOptions:(BOOL)options;
+- (unint64_t)_lock_supportedLaunchTypesForExtension:(id)extension;
 - (void)_beginObservingMetadataChanges;
 - (void)_endObservingMetadataChanges;
-- (void)_lock_updateKnownCaptureApplications:(id)a3;
-- (void)_processMetadataChangeForBundleIdentifiers:(id)a3;
-- (void)_queue_knownCameraCaptureApplicationsByBundleIdentifierWithCompletionHandler:(id)a3;
+- (void)_lock_updateKnownCaptureApplications:(id)applications;
+- (void)_processMetadataChangeForBundleIdentifiers:(id)identifiers;
+- (void)_queue_knownCameraCaptureApplicationsByBundleIdentifierWithCompletionHandler:(id)handler;
 - (void)_reevaluateCaptureApplicationRequirements;
-- (void)_updateCachedKnownCaptureApplications:(id)a3;
-- (void)_updateTCCMonitorForBundleIdentifiers:(id)a3;
-- (void)addObserver:(id)a3;
-- (void)captureExtensionProvider:(id)a3 didUpdateKnownExtensions:(id)a4;
+- (void)_updateCachedKnownCaptureApplications:(id)applications;
+- (void)_updateTCCMonitorForBundleIdentifiers:(id)identifiers;
+- (void)addObserver:(id)observer;
+- (void)captureExtensionProvider:(id)provider didUpdateKnownExtensions:(id)extensions;
 - (void)dealloc;
 - (void)invalidate;
-- (void)knownCameraCaptureApplicationsByBundleIdentifierWithCompletionHandler:(id)a3;
-- (void)removeObserver:(id)a3;
-- (void)tccMonitor:(id)a3 didUpdateCameraTCCStatuses:(id)a4;
+- (void)knownCameraCaptureApplicationsByBundleIdentifierWithCompletionHandler:(id)handler;
+- (void)removeObserver:(id)observer;
+- (void)tccMonitor:(id)monitor didUpdateCameraTCCStatuses:(id)statuses;
 @end
 
 @implementation LCSCaptureApplicationMonitor
@@ -47,22 +47,22 @@ uint64_t __80__LCSCaptureApplicationMonitor_knownCameraCaptureApplicationsByBund
   return v4;
 }
 
-+ (BOOL)_hasCaptureAppIntentForExtension:(id)a3
++ (BOOL)_hasCaptureAppIntentForExtension:(id)extension
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277D23938] cameraCaptureProtocol];
-  v5 = [v3 hasImplementedAppIntentProtocol:v4 bundleTarget:0];
-  v6 = [v3 hasImplementedAppIntentProtocol:v4 bundleTarget:1];
+  extensionCopy = extension;
+  cameraCaptureProtocol = [MEMORY[0x277D23938] cameraCaptureProtocol];
+  v5 = [extensionCopy hasImplementedAppIntentProtocol:cameraCaptureProtocol bundleTarget:0];
+  v6 = [extensionCopy hasImplementedAppIntentProtocol:cameraCaptureProtocol bundleTarget:1];
   v7 = LCSLogCommon();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v3 containerBundleIdentifier];
-    v9 = [v4 typeName];
+    containerBundleIdentifier = [extensionCopy containerBundleIdentifier];
+    typeName = [cameraCaptureProtocol typeName];
     v12 = 138413058;
-    v13 = v8;
+    v13 = containerBundleIdentifier;
     v14 = 2112;
-    v15 = v9;
+    v15 = typeName;
     v16 = 1024;
     v17 = v5;
     v18 = 1024;
@@ -74,16 +74,16 @@ uint64_t __80__LCSCaptureApplicationMonitor_knownCameraCaptureApplicationsByBund
   return v5 & v6;
 }
 
-+ (BOOL)_hasCameraUsageDescriptionForBundleIdentifier:(id)a3
++ (BOOL)_hasCameraUsageDescriptionForBundleIdentifier:(id)identifier
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [objc_opt_class() _bundleRecordForBundleIdentifier:v3];
+  identifierCopy = identifier;
+  v4 = [objc_opt_class() _bundleRecordForBundleIdentifier:identifierCopy];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 infoDictionary];
-    v7 = [v6 objectForKey:@"NSCameraUsageDescription" ofClass:objc_opt_class()];
+    infoDictionary = [v4 infoDictionary];
+    v7 = [infoDictionary objectForKey:@"NSCameraUsageDescription" ofClass:objc_opt_class()];
     v8 = LCSLogCommon();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
@@ -105,12 +105,12 @@ uint64_t __80__LCSCaptureApplicationMonitor_knownCameraCaptureApplicationsByBund
 
   else
   {
-    v6 = LCSLogCommon();
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+    infoDictionary = LCSLogCommon();
+    if (os_log_type_enabled(infoDictionary, OS_LOG_TYPE_DEFAULT))
     {
       v12 = 138412290;
-      v13 = v3;
-      _os_log_impl(&dword_256175000, v6, OS_LOG_TYPE_DEFAULT, "No NSCameraUsageDescription for %@", &v12, 0xCu);
+      v13 = identifierCopy;
+      _os_log_impl(&dword_256175000, infoDictionary, OS_LOG_TYPE_DEFAULT, "No NSCameraUsageDescription for %@", &v12, 0xCu);
     }
 
     LOBYTE(v9) = 0;
@@ -120,18 +120,18 @@ uint64_t __80__LCSCaptureApplicationMonitor_knownCameraCaptureApplicationsByBund
   return v9;
 }
 
-+ (id)_bundleRecordForBundleIdentifier:(id)a3
++ (id)_bundleRecordForBundleIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v8 = 0;
-  v4 = [MEMORY[0x277CC1E90] bundleRecordWithBundleIdentifier:v3 allowPlaceholder:0 error:&v8];
+  v4 = [MEMORY[0x277CC1E90] bundleRecordWithBundleIdentifier:identifierCopy allowPlaceholder:0 error:&v8];
   v5 = v8;
   if (!v4)
   {
     v6 = LCSLogCommon();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      [(LCSCaptureApplicationMonitor *)v3 _bundleRecordForBundleIdentifier:v5, v6];
+      [(LCSCaptureApplicationMonitor *)identifierCopy _bundleRecordForBundleIdentifier:v5, v6];
     }
   }
 
@@ -170,9 +170,9 @@ uint64_t __46__LCSCaptureApplicationMonitor_sharedInstance__block_invoke()
     queue = v3->_queue;
     v3->_queue = SerialWithQoS;
 
-    v6 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     queue_observers = v3->_queue_observers;
-    v3->_queue_observers = v6;
+    v3->_queue_observers = weakObjectsHashTable;
 
     v8 = [[LCSExtensionMonitor alloc] initWithExtensionPointIdentifier:@"com.apple.securecapture"];
     queue_extensionMonitor = v3->_queue_extensionMonitor;
@@ -256,9 +256,9 @@ void __42__LCSCaptureApplicationMonitor_invalidate__block_invoke(uint64_t a1)
   *(v2 + 48) = 0;
 }
 
-- (void)knownCameraCaptureApplicationsByBundleIdentifierWithCompletionHandler:(id)a3
+- (void)knownCameraCaptureApplicationsByBundleIdentifierWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -266,8 +266,8 @@ void __42__LCSCaptureApplicationMonitor_invalidate__block_invoke(uint64_t a1)
   block[2] = __102__LCSCaptureApplicationMonitor_knownCameraCaptureApplicationsByBundleIdentifierWithCompletionHandler___block_invoke;
   block[3] = &unk_279824D50;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(queue, block);
 
   objc_destroyWeak(&v9);
@@ -280,9 +280,9 @@ void __102__LCSCaptureApplicationMonitor_knownCameraCaptureApplicationsByBundleI
   [WeakRetained _queue_knownCameraCaptureApplicationsByBundleIdentifierWithCompletionHandler:*(a1 + 32)];
 }
 
-- (void)_queue_knownCameraCaptureApplicationsByBundleIdentifierWithCompletionHandler:(id)a3
+- (void)_queue_knownCameraCaptureApplicationsByBundleIdentifierWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   queue_extensionMonitor = self->_queue_extensionMonitor;
   v7[0] = MEMORY[0x277D85DD0];
@@ -290,7 +290,7 @@ void __102__LCSCaptureApplicationMonitor_knownCameraCaptureApplicationsByBundleI
   v7[2] = __109__LCSCaptureApplicationMonitor__queue_knownCameraCaptureApplicationsByBundleIdentifierWithCompletionHandler___block_invoke;
   v7[3] = &unk_279824D78;
   objc_copyWeak(&v9, &location);
-  v6 = v4;
+  v6 = handlerCopy;
   v8 = v6;
   [(LCSExtensionProvider *)queue_extensionMonitor knownExtensionsWithCompletionHandler:v7];
 
@@ -309,11 +309,11 @@ void __109__LCSCaptureApplicationMonitor__queue_knownCameraCaptureApplicationsBy
   (*(v4 + 16))(v4, v5);
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  observerCopy = observer;
+  v5 = observerCopy;
+  if (observerCopy)
   {
     queue = self->_queue;
     v7[0] = MEMORY[0x277D85DD0];
@@ -321,7 +321,7 @@ void __109__LCSCaptureApplicationMonitor__queue_knownCameraCaptureApplicationsBy
     v7[2] = __44__LCSCaptureApplicationMonitor_addObserver___block_invoke;
     v7[3] = &unk_279824C98;
     v7[4] = self;
-    v8 = v4;
+    v8 = observerCopy;
     dispatch_async(queue, v7);
   }
 }
@@ -343,11 +343,11 @@ uint64_t __44__LCSCaptureApplicationMonitor_addObserver___block_invoke(uint64_t 
   return [*(*(a1 + 32) + 40) addObject:*(a1 + 40)];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  observerCopy = observer;
+  v5 = observerCopy;
+  if (observerCopy)
   {
     queue = self->_queue;
     v7[0] = MEMORY[0x277D85DD0];
@@ -355,7 +355,7 @@ uint64_t __44__LCSCaptureApplicationMonitor_addObserver___block_invoke(uint64_t 
     v7[2] = __47__LCSCaptureApplicationMonitor_removeObserver___block_invoke;
     v7[3] = &unk_279824C98;
     v7[4] = self;
-    v8 = v4;
+    v8 = observerCopy;
     dispatch_async(queue, v7);
   }
 }
@@ -379,13 +379,13 @@ uint64_t __47__LCSCaptureApplicationMonitor_removeObserver___block_invoke(uint64
   return result;
 }
 
-- (BOOL)isCaptureApplication:(id)a3
+- (BOOL)isCaptureApplication:(id)application
 {
-  v4 = a3;
+  applicationCopy = application;
   os_unfair_lock_lock(&self->_lock);
   v5 = [(NSDictionary *)self->_lock_knownCaptureApplicationsByBundleIdentifier copy];
   os_unfair_lock_unlock(&self->_lock);
-  if (v5 && ([v5 objectForKey:v4], v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
+  if (v5 && ([v5 objectForKey:applicationCopy], v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
   {
     v7 = 1;
   }
@@ -398,7 +398,7 @@ uint64_t __47__LCSCaptureApplicationMonitor_removeObserver___block_invoke(uint64
     v12[1] = 3221225472;
     v12[2] = __53__LCSCaptureApplicationMonitor_isCaptureApplication___block_invoke;
     v12[3] = &unk_279824DA0;
-    v13 = v4;
+    v13 = applicationCopy;
     v10 = [v9 bs_firstObjectPassingTest:v12];
     v7 = v10 != 0;
   }
@@ -456,33 +456,33 @@ void __73__LCSCaptureApplicationMonitor__reevaluateCaptureApplicationRequirement
   *(v4 + 40) = v3;
 }
 
-- (void)_lock_updateKnownCaptureApplications:(id)a3
+- (void)_lock_updateKnownCaptureApplications:(id)applications
 {
-  v5 = a3;
+  applicationsCopy = applications;
   v6 = [(NSDictionary *)self->_lock_knownCaptureApplicationsByBundleIdentifier copy];
-  objc_storeStrong(&self->_lock_knownCaptureApplicationsByBundleIdentifier, a3);
-  [(LCSCaptureApplicationMonitor *)self _updateCachedKnownCaptureApplications:v5];
+  objc_storeStrong(&self->_lock_knownCaptureApplicationsByBundleIdentifier, applications);
+  [(LCSCaptureApplicationMonitor *)self _updateCachedKnownCaptureApplications:applicationsCopy];
   v7 = MEMORY[0x277CBEB98];
-  v8 = [v5 allKeys];
-  v9 = [v7 setWithArray:v8];
+  allKeys = [applicationsCopy allKeys];
+  v9 = [v7 setWithArray:allKeys];
 
   v10 = MEMORY[0x277CBEB98];
-  v11 = [v6 allKeys];
-  v12 = [v10 setWithArray:v11];
+  allKeys2 = [v6 allKeys];
+  v12 = [v10 setWithArray:allKeys2];
 
   if (([v12 isEqualToSet:v9] & 1) == 0)
   {
-    v13 = [v5 allKeys];
-    [(LCSCaptureApplicationMonitor *)self _updateTCCMonitorForBundleIdentifiers:v13];
+    allKeys3 = [applicationsCopy allKeys];
+    [(LCSCaptureApplicationMonitor *)self _updateTCCMonitorForBundleIdentifiers:allKeys3];
   }
 
   v14 = MEMORY[0x277CBEB98];
-  v15 = [v5 allValues];
-  v16 = [v14 setWithArray:v15];
+  allValues = [applicationsCopy allValues];
+  v16 = [v14 setWithArray:allValues];
 
   v17 = MEMORY[0x277CBEB98];
-  v18 = [v6 allValues];
-  v19 = [v17 setWithArray:v18];
+  allValues2 = [v6 allValues];
+  v19 = [v17 setWithArray:allValues2];
 
   v20 = [(LCSCaptureApplicationMonitor *)self _filterCaptureApplications:v16 launchType:0];
   v21 = [(LCSCaptureApplicationMonitor *)self _filterCaptureApplications:v19 launchType:0];
@@ -493,7 +493,7 @@ void __73__LCSCaptureApplicationMonitor__reevaluateCaptureApplicationRequirement
   v26[3] = &unk_279824DF0;
   v27 = v20;
   v28 = v21;
-  v29 = self;
+  selfCopy = self;
   v30 = v6;
   v23 = v6;
   v24 = v21;
@@ -554,24 +554,24 @@ id __69__LCSCaptureApplicationMonitor__lock_updateKnownCaptureApplications___blo
   return result;
 }
 
-- (void)_updateCachedKnownCaptureApplications:(id)a3
+- (void)_updateCachedKnownCaptureApplications:(id)applications
 {
-  v4 = a3;
+  applicationsCopy = applications;
   os_unfair_lock_lock(&self->_cache_lock);
   lock_cached_knownCaptureApplicationsByBundleIdentifier = self->_lock_cached_knownCaptureApplicationsByBundleIdentifier;
-  self->_lock_cached_knownCaptureApplicationsByBundleIdentifier = v4;
+  self->_lock_cached_knownCaptureApplicationsByBundleIdentifier = applicationsCopy;
 
   os_unfair_lock_unlock(&self->_cache_lock);
 }
 
-- (id)_filterCaptureApplications:(id)a3 launchType:(unint64_t)a4
+- (id)_filterCaptureApplications:(id)applications launchType:(unint64_t)type
 {
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __70__LCSCaptureApplicationMonitor__filterCaptureApplications_launchType___block_invoke;
   v6[3] = &__block_descriptor_40_e43_B16__0___LCSCaptureApplicationDescribing__8l;
-  v6[4] = a4;
-  v4 = [a3 bs_filter:v6];
+  v6[4] = type;
+  v4 = [applications bs_filter:v6];
 
   return v4;
 }
@@ -589,14 +589,14 @@ uint64_t __70__LCSCaptureApplicationMonitor__filterCaptureApplications_launchTyp
   if (!self->_metadataChangedObserverToken)
   {
     objc_initWeak(&location, self);
-    v3 = [MEMORY[0x277CCA9A0] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
     v4 = *MEMORY[0x277D23A70];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __62__LCSCaptureApplicationMonitor__beginObservingMetadataChanges__block_invoke;
     v7[3] = &unk_279824E38;
     objc_copyWeak(&v8, &location);
-    v5 = [v3 addObserverForName:v4 object:0 queue:0 usingBlock:v7];
+    v5 = [defaultCenter addObserverForName:v4 object:0 queue:0 usingBlock:v7];
 
     metadataChangedObserverToken = self->_metadataChangedObserverToken;
     self->_metadataChangedObserverToken = v5;
@@ -619,10 +619,10 @@ void __62__LCSCaptureApplicationMonitor__beginObservingMetadataChanges__block_in
   }
 }
 
-- (void)_processMetadataChangeForBundleIdentifiers:(id)a3
+- (void)_processMetadataChangeForBundleIdentifiers:(id)identifiers
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifiersCopy = identifiers;
   v28 = 0;
   v29 = &v28;
   v30 = 0x3032000000;
@@ -659,11 +659,11 @@ void __62__LCSCaptureApplicationMonitor__beginObservingMetadataChanges__block_in
           }
 
           v11 = *(*(&v23 + 1) + 8 * i);
-          v12 = [v11 bundleIdentifier];
-          [v6 addObject:v12];
+          bundleIdentifier = [v11 bundleIdentifier];
+          [v6 addObject:bundleIdentifier];
 
-          v13 = [v11 containerBundleIdentifier];
-          [v6 addObject:v13];
+          containerBundleIdentifier = [v11 containerBundleIdentifier];
+          [v6 addObject:containerBundleIdentifier];
         }
 
         v8 = [v7 countByEnumeratingWithState:&v23 objects:v35 count:16];
@@ -676,7 +676,7 @@ void __62__LCSCaptureApplicationMonitor__beginObservingMetadataChanges__block_in
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v14 = v4;
+    v14 = identifiersCopy;
     v15 = [v14 countByEnumeratingWithState:&v19 objects:v34 count:16];
     if (v15)
     {
@@ -731,29 +731,29 @@ uint64_t __75__LCSCaptureApplicationMonitor__processMetadataChangeForBundleIdent
 
 - (void)_endObservingMetadataChanges
 {
-  v3 = [MEMORY[0x277CCA9A0] defaultCenter];
-  [v3 removeObserver:self->_metadataChangedObserverToken];
+  defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+  [defaultCenter removeObserver:self->_metadataChangedObserverToken];
 
   metadataChangedObserverToken = self->_metadataChangedObserverToken;
   self->_metadataChangedObserverToken = 0;
 }
 
-- (id)_lock_captureApplicationsFromKnownExtensions:(id)a3 currentCaptureApplications:(id)a4 usingCachedLaunchOptions:(BOOL)a5
+- (id)_lock_captureApplicationsFromKnownExtensions:(id)extensions currentCaptureApplications:(id)applications usingCachedLaunchOptions:(BOOL)options
 {
-  v8 = a4;
-  v9 = a3;
+  applicationsCopy = applications;
+  extensionsCopy = extensions;
   v10 = objc_opt_new();
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __129__LCSCaptureApplicationMonitor__lock_captureApplicationsFromKnownExtensions_currentCaptureApplications_usingCachedLaunchOptions___block_invoke;
   v16[3] = &unk_279824E60;
-  v20 = a5;
-  v17 = v8;
-  v18 = self;
+  optionsCopy = options;
+  v17 = applicationsCopy;
+  selfCopy = self;
   v11 = v10;
   v19 = v11;
-  v12 = v8;
-  [v9 bs_each:v16];
+  v12 = applicationsCopy;
+  [extensionsCopy bs_each:v16];
 
   v13 = v19;
   v14 = v11;
@@ -856,48 +856,48 @@ LABEL_12:
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (unint64_t)_lock_supportedLaunchTypesForExtension:(id)a3
+- (unint64_t)_lock_supportedLaunchTypesForExtension:(id)extension
 {
-  v3 = a3;
-  v4 = [objc_opt_class() _hasCaptureAppIntentForExtension:v3];
+  extensionCopy = extension;
+  v4 = [objc_opt_class() _hasCaptureAppIntentForExtension:extensionCopy];
 
   return v4;
 }
 
-- (void)_updateTCCMonitorForBundleIdentifiers:(id)a3
+- (void)_updateTCCMonitorForBundleIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   v7 = +[LCSCaptureApplicationTCCMonitor sharedMonitor];
-  v5 = [v7 addObserver:self forBundleIdentifiers:v4];
+  v5 = [v7 addObserver:self forBundleIdentifiers:identifiersCopy];
 
   tccObservationToken = self->_tccObservationToken;
   self->_tccObservationToken = v5;
 }
 
-- (void)captureExtensionProvider:(id)a3 didUpdateKnownExtensions:(id)a4
+- (void)captureExtensionProvider:(id)provider didUpdateKnownExtensions:(id)extensions
 {
-  if (self->_queue_extensionMonitor == a3)
+  if (self->_queue_extensionMonitor == provider)
   {
-    v6 = a4;
+    extensionsCopy = extensions;
     os_unfair_lock_lock(&self->_lock);
-    v7 = [(LCSCaptureApplicationMonitor *)self _lock_evaluateCaptureApplicationRequirementsForKnownExtensions:v6 usingCachedLaunchOptions:1];
+    v7 = [(LCSCaptureApplicationMonitor *)self _lock_evaluateCaptureApplicationRequirementsForKnownExtensions:extensionsCopy usingCachedLaunchOptions:1];
 
     [(LCSCaptureApplicationMonitor *)self _lock_updateKnownCaptureApplications:v7];
     os_unfair_lock_unlock(&self->_lock);
   }
 }
 
-- (void)tccMonitor:(id)a3 didUpdateCameraTCCStatuses:(id)a4
+- (void)tccMonitor:(id)monitor didUpdateCameraTCCStatuses:(id)statuses
 {
   v29 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  statusesCopy = statuses;
   os_unfair_lock_lock(&self->_lock);
   v6 = [(NSDictionary *)self->_lock_knownCaptureApplicationsByBundleIdentifier mutableCopy];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  obj = v5;
+  obj = statusesCopy;
   v7 = [obj countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v7)
   {
@@ -913,20 +913,20 @@ LABEL_12:
         }
 
         v11 = *(*(&v24 + 1) + 8 * i);
-        v12 = [v11 bundleIdentifier];
-        v13 = [(NSDictionary *)self->_lock_knownCaptureApplicationsByBundleIdentifier objectForKeyedSubscript:v12];
+        bundleIdentifier = [v11 bundleIdentifier];
+        v13 = [(NSDictionary *)self->_lock_knownCaptureApplicationsByBundleIdentifier objectForKeyedSubscript:bundleIdentifier];
         if (v13)
         {
           v14 = [LCSCaptureApplicationAttributes alloc];
-          v15 = [v11 tccStatus];
-          v16 = [v13 attributes];
-          v17 = -[LCSCaptureApplicationAttributes initWithCameraTCCStatus:supportedLaunchTypes:](v14, "initWithCameraTCCStatus:supportedLaunchTypes:", v15, [v16 supportedLaunchTypes]);
+          tccStatus = [v11 tccStatus];
+          attributes = [v13 attributes];
+          v17 = -[LCSCaptureApplicationAttributes initWithCameraTCCStatus:supportedLaunchTypes:](v14, "initWithCameraTCCStatus:supportedLaunchTypes:", tccStatus, [attributes supportedLaunchTypes]);
 
           v18 = [LCSCaptureApplication alloc];
-          v19 = [v13 extension];
-          v20 = [(LCSCaptureApplication *)v18 initWithExtensionInfo:v19 attributes:v17];
+          extension = [v13 extension];
+          v20 = [(LCSCaptureApplication *)v18 initWithExtensionInfo:extension attributes:v17];
 
-          [v6 setObject:v20 forKeyedSubscript:v12];
+          [v6 setObject:v20 forKeyedSubscript:bundleIdentifier];
         }
       }
 

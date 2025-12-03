@@ -12,12 +12,12 @@
   v14[2] = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CCA9B8];
   v13[0] = @"articleId";
-  v4 = [a3 articleID];
-  v5 = v4;
+  articleID = [a3 articleID];
+  v5 = articleID;
   v6 = @"nil";
-  if (v4)
+  if (articleID)
   {
-    v6 = v4;
+    v6 = articleID;
   }
 
   v14[0] = v6;
@@ -43,20 +43,20 @@
   v6 = [MEMORY[0x277CCACA8] stringWithFormat:v5, objc_msgSend(v3, "contentType")];
   v7 = MEMORY[0x277CCA9B8];
   v18[0] = @"articleId";
-  v8 = [v3 identifier];
-  v9 = v8;
+  identifier = [v3 identifier];
+  v9 = identifier;
   v10 = @"nil";
-  if (v8)
+  if (identifier)
   {
-    v10 = v8;
+    v10 = identifier;
   }
 
   v19[0] = v10;
   v18[1] = @"contentType";
   v11 = MEMORY[0x277CCABB0];
-  v12 = [v3 contentType];
+  contentType = [v3 contentType];
 
-  v13 = [v11 numberWithUnsignedLongLong:v12];
+  v13 = [v11 numberWithUnsignedLongLong:contentType];
   v18[2] = *MEMORY[0x277CCA450];
   v19[1] = v13;
   v19[2] = v6;
@@ -73,12 +73,12 @@
   v14[2] = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CCA9B8];
   v13[0] = @"articleId";
-  v4 = [a3 identifier];
-  v5 = v4;
+  identifier = [a3 identifier];
+  v5 = identifier;
   v6 = @"nil";
-  if (v4)
+  if (identifier)
   {
-    v6 = v4;
+    v6 = identifier;
   }
 
   v14[0] = v6;
@@ -99,12 +99,12 @@
   v5 = a4;
   v6 = MEMORY[0x277CBEB38];
   v7 = a3;
-  v8 = [v6 dictionary];
-  v9 = [v7 articleID];
+  dictionary = [v6 dictionary];
+  articleID = [v7 articleID];
 
-  if (v9)
+  if (articleID)
   {
-    v10 = v9;
+    v10 = articleID;
   }
 
   else
@@ -112,18 +112,18 @@
     v10 = @"nil";
   }
 
-  [v8 setObject:v10 forKeyedSubscript:@"articleId"];
+  [dictionary setObject:v10 forKeyedSubscript:@"articleId"];
 
   v11 = NUBundle();
   v12 = [v11 localizedStringForKey:@"Article download failed" value:&stru_286E03B58 table:0];
-  [v8 setObject:v12 forKeyedSubscript:*MEMORY[0x277CCA450]];
+  [dictionary setObject:v12 forKeyedSubscript:*MEMORY[0x277CCA450]];
 
   if (v5)
   {
-    [v8 setObject:v5 forKeyedSubscript:*MEMORY[0x277CCA7E8]];
+    [dictionary setObject:v5 forKeyedSubscript:*MEMORY[0x277CCA7E8]];
   }
 
-  v13 = [MEMORY[0x277CCA9B8] errorWithDomain:@"NUNewsUIErrorDomain" code:-4 userInfo:v8];
+  v13 = [MEMORY[0x277CCA9B8] errorWithDomain:@"NUNewsUIErrorDomain" code:-4 userInfo:dictionary];
 
   return v13;
 }

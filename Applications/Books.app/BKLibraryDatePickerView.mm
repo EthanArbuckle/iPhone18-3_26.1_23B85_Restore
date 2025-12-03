@@ -1,16 +1,16 @@
 @interface BKLibraryDatePickerView
-- (BKLibraryDatePickerView)initWithTitle:(id)a3;
+- (BKLibraryDatePickerView)initWithTitle:(id)title;
 - (SEL)action;
 - (void)cancelPressed;
 - (void)donePressed;
-- (void)setAction:(SEL)a3;
+- (void)setAction:(SEL)action;
 @end
 
 @implementation BKLibraryDatePickerView
 
-- (BKLibraryDatePickerView)initWithTitle:(id)a3
+- (BKLibraryDatePickerView)initWithTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   v5 = objc_alloc_init(UIToolbar);
   [v5 setBarStyle:0];
   v6 = +[UIColor blackColor];
@@ -18,7 +18,7 @@
 
   [v5 setAutoresizingMask:2];
   v7 = objc_alloc_init(UILabel);
-  [v7 setText:v4];
+  [v7 setText:titleCopy];
 
   [v7 sizeToFit];
   v8 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:1 target:self action:"cancelPressed"];
@@ -80,24 +80,24 @@
 
 - (void)donePressed
 {
-  v3 = [(BKLibraryDatePickerView *)self completionBlock];
+  completionBlock = [(BKLibraryDatePickerView *)self completionBlock];
 
-  if (v3)
+  if (completionBlock)
   {
-    v4 = [(BKLibraryDatePickerView *)self completionBlock];
-    v5 = [(BKLibraryDatePickerView *)self picker];
-    v6 = [v5 date];
-    (v4)[2](v4, v6);
+    completionBlock2 = [(BKLibraryDatePickerView *)self completionBlock];
+    picker = [(BKLibraryDatePickerView *)self picker];
+    date = [picker date];
+    (completionBlock2)[2](completionBlock2, date);
   }
 
-  v7 = [(BKLibraryDatePickerView *)self presentingViewController];
-  [v7 dismissViewControllerAnimated:1 completion:0];
+  presentingViewController = [(BKLibraryDatePickerView *)self presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 }
 
 - (void)cancelPressed
 {
-  v2 = [(BKLibraryDatePickerView *)self presentingViewController];
-  [v2 dismissViewControllerAnimated:1 completion:0];
+  presentingViewController = [(BKLibraryDatePickerView *)self presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 }
 
 - (SEL)action
@@ -113,19 +113,19 @@
   }
 }
 
-- (void)setAction:(SEL)a3
+- (void)setAction:(SEL)action
 {
-  if (a3)
+  if (action)
   {
-    v3 = a3;
+    actionCopy = action;
   }
 
   else
   {
-    v3 = 0;
+    actionCopy = 0;
   }
 
-  self->_action = v3;
+  self->_action = actionCopy;
 }
 
 @end

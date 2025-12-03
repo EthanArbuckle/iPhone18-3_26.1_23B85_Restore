@@ -1,8 +1,8 @@
 @interface MTFeedUpdateBackgroundTask
 + (double)_backgroundFetchInterval;
 - (void)cancel;
-- (void)didFinishUpdatingAllFeedsNotification:(id)a3;
-- (void)performWithCompletion:(id)a3;
+- (void)didFinishUpdatingAllFeedsNotification:(id)notification;
+- (void)performWithCompletion:(id)completion;
 @end
 
 @implementation MTFeedUpdateBackgroundTask
@@ -17,9 +17,9 @@
   return v5;
 }
 
-- (void)performWithCompletion:(id)a3
+- (void)performWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = _MTLogCategoryFeedUpdate();
   v6 = os_signpost_id_generate(v5);
 
@@ -48,9 +48,9 @@
       _os_signpost_emit_with_name_impl(&_mh_execute_header, v11, OS_SIGNPOST_INTERVAL_END, v6, "BACKGROUND_FEED_UPDATE", "MIGRATION_REQUIRED", buf, 2u);
     }
 
-    if (v4)
+    if (completionCopy)
     {
-      v4[2](v4, 0);
+      completionCopy[2](completionCopy, 0);
     }
   }
 
@@ -69,16 +69,16 @@
     v15[2] = sub_100110460;
     v15[3] = &unk_1004DCC80;
     v15[4] = self;
-    v16 = v4;
+    v16 = completionCopy;
     [v14 updateAllPodcastsInBackgroundWithSource:0 started:v15];
   }
 }
 
 - (void)cancel
 {
-  v3 = [(MTFeedUpdateBackgroundTask *)self pendingCompletion];
+  pendingCompletion = [(MTFeedUpdateBackgroundTask *)self pendingCompletion];
 
-  if (v3)
+  if (pendingCompletion)
   {
     [(MTFeedUpdateBackgroundTask *)self setPendingCompletion:0];
   }
@@ -100,7 +100,7 @@
   }
 }
 
-- (void)didFinishUpdatingAllFeedsNotification:(id)a3
+- (void)didFinishUpdatingAllFeedsNotification:(id)notification
 {
   v4 = +[MTFeedUpdateMetricsDataKey backgroundTask];
   [IMMetrics endTimer:v4];
@@ -113,18 +113,18 @@
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v15 = 134218240;
-    v16 = [(MTFeedUpdateBackgroundTask *)self initialFeedUpdateCount];
+    initialFeedUpdateCount = [(MTFeedUpdateBackgroundTask *)self initialFeedUpdateCount];
     v17 = 2048;
     v18 = v6 - v8;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Did finish updating %lld feeds for background task in %f", &v15, 0x16u);
   }
 
-  v10 = [(MTFeedUpdateBackgroundTask *)self pendingCompletion];
+  pendingCompletion = [(MTFeedUpdateBackgroundTask *)self pendingCompletion];
 
-  if (v10)
+  if (pendingCompletion)
   {
-    v11 = [(MTFeedUpdateBackgroundTask *)self pendingCompletion];
-    v11[2](v11, 1);
+    pendingCompletion2 = [(MTFeedUpdateBackgroundTask *)self pendingCompletion];
+    pendingCompletion2[2](pendingCompletion2, 1);
 
     [(MTFeedUpdateBackgroundTask *)self setPendingCompletion:0];
   }

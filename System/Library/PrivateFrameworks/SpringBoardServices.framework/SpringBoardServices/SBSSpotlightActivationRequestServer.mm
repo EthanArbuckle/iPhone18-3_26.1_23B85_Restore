@@ -1,12 +1,12 @@
 @interface SBSSpotlightActivationRequestServer
 + (BSServiceInterface)interface;
-- (SBSSpotlightActivationRequestServer)initWithDelegate:(id)a3;
+- (SBSSpotlightActivationRequestServer)initWithDelegate:(id)delegate;
 - (SBSSpotlightActivationRequestServerDelegate)delegate;
-- (void)_addConnection:(id)a3;
-- (void)_removeConnection:(id)a3;
+- (void)_addConnection:(id)connection;
+- (void)_removeConnection:(id)connection;
 - (void)dealloc;
 - (void)invalidate;
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5;
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context;
 - (void)startServer;
 @end
 
@@ -18,7 +18,7 @@
   block[1] = 3221225472;
   block[2] = __48__SBSSpotlightActivationRequestServer_interface__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (interface_onceToken_20 != -1)
   {
     dispatch_once(&interface_onceToken_20, block);
@@ -42,16 +42,16 @@ void __48__SBSSpotlightActivationRequestServer_interface__block_invoke(uint64_t 
   interface___interface_19 = v4;
 }
 
-- (SBSSpotlightActivationRequestServer)initWithDelegate:(id)a3
+- (SBSSpotlightActivationRequestServer)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = SBSSpotlightActivationRequestServer;
   v5 = [(SBSSpotlightActivationRequestServer *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v6->_connectionsLock._os_unfair_lock_opaque = 0;
   }
 
@@ -96,16 +96,16 @@ void __50__SBSSpotlightActivationRequestServer_startServer__block_invoke(uint64_
 
 - (void)dealloc
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"SBSSpotlightActivationRequestServer.m" lineNumber:70 description:@"Released without invalidation."];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"SBSSpotlightActivationRequestServer.m" lineNumber:70 description:@"Released without invalidation."];
 }
 
-- (void)_addConnection:(id)a3
+- (void)_addConnection:(id)connection
 {
-  v4 = a3;
-  if (v4)
+  connectionCopy = connection;
+  if (connectionCopy)
   {
-    v8 = v4;
+    v8 = connectionCopy;
     os_unfair_lock_lock(&self->_connectionsLock);
     connectionsLock_connections = self->_connectionsLock_connections;
     if (connectionsLock_connections)
@@ -121,17 +121,17 @@ void __50__SBSSpotlightActivationRequestServer_startServer__block_invoke(uint64_
     }
 
     os_unfair_lock_unlock(&self->_connectionsLock);
-    v4 = v8;
+    connectionCopy = v8;
   }
 }
 
-- (void)_removeConnection:(id)a3
+- (void)_removeConnection:(id)connection
 {
-  if (a3)
+  if (connection)
   {
-    v4 = a3;
+    connectionCopy = connection;
     os_unfair_lock_lock(&self->_connectionsLock);
-    [(NSMutableSet *)self->_connectionsLock_connections removeObject:v4];
+    [(NSMutableSet *)self->_connectionsLock_connections removeObject:connectionCopy];
 
     if (![(NSMutableSet *)self->_connectionsLock_connections count])
     {
@@ -143,14 +143,14 @@ void __50__SBSSpotlightActivationRequestServer_startServer__block_invoke(uint64_
   }
 }
 
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context
 {
   v20 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 remoteProcess];
-  v12 = [v11 hasEntitlement:@"com.apple.springboard.SBSRequestSpotlightActivationEntitlement"];
+  listenerCopy = listener;
+  connectionCopy = connection;
+  contextCopy = context;
+  remoteProcess = [connectionCopy remoteProcess];
+  v12 = [remoteProcess hasEntitlement:@"com.apple.springboard.SBSRequestSpotlightActivationEntitlement"];
 
   if (v12)
   {
@@ -159,19 +159,19 @@ void __50__SBSSpotlightActivationRequestServer_startServer__block_invoke(uint64_
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v19 = v9;
+      v19 = connectionCopy;
       _os_log_impl(&dword_19169D000, v13, OS_LOG_TYPE_DEFAULT, "SBSSpotlightActivationRequestServer received connection %@", buf, 0xCu);
     }
 
-    [(SBSSpotlightActivationRequestServer *)self _addConnection:v9];
+    [(SBSSpotlightActivationRequestServer *)self _addConnection:connectionCopy];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __81__SBSSpotlightActivationRequestServer_listener_didReceiveConnection_withContext___block_invoke;
     v15[3] = &unk_1E735F0A8;
     v15[4] = self;
     objc_copyWeak(&v16, &location);
-    [v9 configureConnection:v15];
-    [v9 activate];
+    [connectionCopy configureConnection:v15];
+    [connectionCopy activate];
     objc_destroyWeak(&v16);
     objc_destroyWeak(&location);
   }
@@ -181,10 +181,10 @@ void __50__SBSSpotlightActivationRequestServer_startServer__block_invoke(uint64_
     v14 = SBLogSpotlight();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
-      [SBSSpotlightActivationRequestServer listener:v9 didReceiveConnection:v14 withContext:?];
+      [SBSSpotlightActivationRequestServer listener:connectionCopy didReceiveConnection:v14 withContext:?];
     }
 
-    [v9 invalidate];
+    [connectionCopy invalidate];
   }
 }
 

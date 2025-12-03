@@ -7,14 +7,14 @@
 + (id)uarpCreateFileHandleForWritingToURL:()Availability error:
 {
   v5 = a3;
-  v6 = [MEMORY[0x277CCAA00] defaultManager];
-  v7 = [v5 path];
-  v8 = [v6 fileExistsAtPath:v7];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  path = [v5 path];
+  v8 = [defaultManager fileExistsAtPath:path];
 
   if (v8)
   {
-    v9 = [v5 path];
-    v10 = [v6 removeItemAtPath:v9 error:a4];
+    path2 = [v5 path];
+    v10 = [defaultManager removeItemAtPath:path2 error:a4];
 
     if (!v10)
     {
@@ -22,8 +22,8 @@
     }
   }
 
-  v11 = [v5 path];
-  v12 = [v6 createFileAtPath:v11 contents:0 attributes:0];
+  path3 = [v5 path];
+  v12 = [defaultManager createFileAtPath:path3 contents:0 attributes:0];
 
   if (v12)
   {

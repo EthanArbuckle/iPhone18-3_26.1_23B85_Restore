@@ -1,53 +1,53 @@
 @interface CESRGeoLMRegionIDCache
 + (id)sharedInstance;
 - (CESRGeoLMRegionIDCache)init;
-- (CESRGeoLMRegionIDCache)initWithUserDefaults:(id)a3;
-- (id)_geoLMAssetsInfoDictForLanguage:(id)a3;
-- (id)_userDefaultsGeoLMAssetsInfoDictKeyForLanguage:(id)a3;
-- (id)lastUsedGeoLMRegionIdForLanguage:(id)a3;
-- (id)purgeUnusedGeoLMRegionIdFromCacheForLanguage:(id)a3;
-- (void)_updateUserDefaultsWithGeoLMAssetsInfoDict:(id)a3 language:(id)a4;
-- (void)purgeUserDefaultsGeoLMAssetsInfoDictForLanguages:(id)a3;
-- (void)updateGeoLMAssetsInfoDictWithRegionId:(id)a3 language:(id)a4;
+- (CESRGeoLMRegionIDCache)initWithUserDefaults:(id)defaults;
+- (id)_geoLMAssetsInfoDictForLanguage:(id)language;
+- (id)_userDefaultsGeoLMAssetsInfoDictKeyForLanguage:(id)language;
+- (id)lastUsedGeoLMRegionIdForLanguage:(id)language;
+- (id)purgeUnusedGeoLMRegionIdFromCacheForLanguage:(id)language;
+- (void)_updateUserDefaultsWithGeoLMAssetsInfoDict:(id)dict language:(id)language;
+- (void)purgeUserDefaultsGeoLMAssetsInfoDictForLanguages:(id)languages;
+- (void)updateGeoLMAssetsInfoDictWithRegionId:(id)id language:(id)language;
 @end
 
 @implementation CESRGeoLMRegionIDCache
 
-- (id)_userDefaultsGeoLMAssetsInfoDictKeyForLanguage:(id)a3
+- (id)_userDefaultsGeoLMAssetsInfoDictKeyForLanguage:(id)language
 {
-  v3 = [a3 stringByReplacingOccurrencesOfString:@"-" withString:@"_"];
+  v3 = [language stringByReplacingOccurrencesOfString:@"-" withString:@"_"];
   v4 = [@"GeoLMAssetsInfo" stringByAppendingString:@"."];
   v5 = [v4 stringByAppendingString:v3];
 
   return v5;
 }
 
-- (void)_updateUserDefaultsWithGeoLMAssetsInfoDict:(id)a3 language:(id)a4
+- (void)_updateUserDefaultsWithGeoLMAssetsInfoDict:(id)dict language:(id)language
 {
   userDefaults = self->_userDefaults;
-  v7 = a3;
-  v8 = [(CESRGeoLMRegionIDCache *)self _userDefaultsGeoLMAssetsInfoDictKeyForLanguage:a4];
-  [(NSUserDefaults *)userDefaults setObject:v7 forKey:v8];
+  dictCopy = dict;
+  v8 = [(CESRGeoLMRegionIDCache *)self _userDefaultsGeoLMAssetsInfoDictKeyForLanguage:language];
+  [(NSUserDefaults *)userDefaults setObject:dictCopy forKey:v8];
 }
 
-- (id)_geoLMAssetsInfoDictForLanguage:(id)a3
+- (id)_geoLMAssetsInfoDictForLanguage:(id)language
 {
   userDefaults = self->_userDefaults;
-  v4 = [(CESRGeoLMRegionIDCache *)self _userDefaultsGeoLMAssetsInfoDictKeyForLanguage:a3];
+  v4 = [(CESRGeoLMRegionIDCache *)self _userDefaultsGeoLMAssetsInfoDictKeyForLanguage:language];
   v5 = [(NSUserDefaults *)userDefaults dictionaryForKey:v4];
 
   return v5;
 }
 
-- (void)purgeUserDefaultsGeoLMAssetsInfoDictForLanguages:(id)a3
+- (void)purgeUserDefaultsGeoLMAssetsInfoDictForLanguages:(id)languages
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  languagesCopy = languages;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v15 objects:v23 count:16];
+  v5 = [languagesCopy countByEnumeratingWithState:&v15 objects:v23 count:16];
   if (v5)
   {
     v7 = v5;
@@ -62,7 +62,7 @@
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(languagesCopy);
         }
 
         v11 = [(CESRGeoLMRegionIDCache *)self _userDefaultsGeoLMAssetsInfoDictKeyForLanguage:*(*(&v15 + 1) + 8 * v10), v14];
@@ -82,7 +82,7 @@
       }
 
       while (v7 != v10);
-      v7 = [v4 countByEnumeratingWithState:&v15 objects:v23 count:16];
+      v7 = [languagesCopy countByEnumeratingWithState:&v15 objects:v23 count:16];
     }
 
     while (v7);
@@ -91,11 +91,11 @@
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (id)lastUsedGeoLMRegionIdForLanguage:(id)a3
+- (id)lastUsedGeoLMRegionIdForLanguage:(id)language
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(CESRGeoLMRegionIDCache *)self _geoLMAssetsInfoDictForLanguage:v4];
+  languageCopy = language;
+  v5 = [(CESRGeoLMRegionIDCache *)self _geoLMAssetsInfoDictForLanguage:languageCopy];
   if ([v5 count])
   {
     v25 = 0u;
@@ -183,12 +183,12 @@
   return v19;
 }
 
-- (id)purgeUnusedGeoLMRegionIdFromCacheForLanguage:(id)a3
+- (id)purgeUnusedGeoLMRegionIdFromCacheForLanguage:(id)language
 {
   v46 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  languageCopy = language;
   v5 = _AFPreferencesBoolValueForKeyWithContext();
-  v6 = [(CESRGeoLMRegionIDCache *)self _geoLMAssetsInfoDictForLanguage:v4];
+  v6 = [(CESRGeoLMRegionIDCache *)self _geoLMAssetsInfoDictForLanguage:languageCopy];
   v7 = [v6 mutableCopy];
 
   v8 = [v7 count];
@@ -222,7 +222,7 @@ LABEL_5:
   v36 = 0u;
   v12 = v7;
   v13 = [v12 countByEnumeratingWithState:&v35 objects:v45 count:16];
-  v32 = self;
+  selfCopy = self;
   if (v13)
   {
     v14 = v13;
@@ -239,7 +239,7 @@ LABEL_5:
         }
 
         v19 = *(*(&v35 + 1) + 8 * i);
-        v20 = [v12 objectForKeyedSubscript:{v19, v32}];
+        v20 = [v12 objectForKeyedSubscript:{v19, selfCopy}];
         v21 = v20;
         if (v16 | v15)
         {
@@ -290,8 +290,8 @@ LABEL_5:
     }
 
 LABEL_24:
-    [v12 removeObjectForKey:{v11, v32}];
-    [v33 _updateUserDefaultsWithGeoLMAssetsInfoDict:v12 language:v4];
+    [v12 removeObjectForKey:{v11, selfCopy}];
+    [v33 _updateUserDefaultsWithGeoLMAssetsInfoDict:v12 language:languageCopy];
     goto LABEL_25;
   }
 
@@ -327,15 +327,15 @@ LABEL_26:
   return v11;
 }
 
-- (void)updateGeoLMAssetsInfoDictWithRegionId:(id)a3 language:(id)a4
+- (void)updateGeoLMAssetsInfoDictWithRegionId:(id)id language:(id)language
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CESRGeoLMRegionIDCache *)self _geoLMAssetsInfoDictForLanguage:v6];
+  languageCopy = language;
+  idCopy = id;
+  v8 = [(CESRGeoLMRegionIDCache *)self _geoLMAssetsInfoDictForLanguage:languageCopy];
   v13 = [v8 mutableCopy];
 
-  v9 = [MEMORY[0x277CBEAA8] date];
-  [v9 timeIntervalSince1970];
+  date = [MEMORY[0x277CBEAA8] date];
+  [date timeIntervalSince1970];
   v11 = v10;
 
   if (!v13)
@@ -344,21 +344,21 @@ LABEL_26:
   }
 
   v12 = [MEMORY[0x277CCABB0] numberWithDouble:v11];
-  [v13 setObject:v12 forKey:v7];
+  [v13 setObject:v12 forKey:idCopy];
 
-  [(CESRGeoLMRegionIDCache *)self _updateUserDefaultsWithGeoLMAssetsInfoDict:v13 language:v6];
+  [(CESRGeoLMRegionIDCache *)self _updateUserDefaultsWithGeoLMAssetsInfoDict:v13 language:languageCopy];
 }
 
-- (CESRGeoLMRegionIDCache)initWithUserDefaults:(id)a3
+- (CESRGeoLMRegionIDCache)initWithUserDefaults:(id)defaults
 {
-  v5 = a3;
+  defaultsCopy = defaults;
   v9.receiver = self;
   v9.super_class = CESRGeoLMRegionIDCache;
   v6 = [(CESRGeoLMRegionIDCache *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_userDefaults, a3);
+    objc_storeStrong(&v6->_userDefaults, defaults);
   }
 
   return v7;
@@ -371,9 +371,9 @@ LABEL_26:
   v2 = [(CESRGeoLMRegionIDCache *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
     userDefaults = v2->_userDefaults;
-    v2->_userDefaults = v3;
+    v2->_userDefaults = standardUserDefaults;
   }
 
   return v2;

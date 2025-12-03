@@ -1,13 +1,13 @@
 @interface CompanionDevice
-- (CompanionDevice)initWithCompanionUUID:(id)a3;
+- (CompanionDevice)initWithCompanionUUID:(id)d;
 @end
 
 @implementation CompanionDevice
 
-- (CompanionDevice)initWithCompanionUUID:(id)a3
+- (CompanionDevice)initWithCompanionUUID:(id)d
 {
-  v6 = a3;
-  if (!v6)
+  dCopy = d;
+  if (!dCopy)
   {
     v10 = +[NSAssertionHandler currentHandler];
     [v10 handleFailureInMethod:a2 object:self file:@"NIServerItemLocalizerSession.mm" lineNumber:372 description:{@"Invalid parameter not satisfying: %@", @"uuid"}];
@@ -19,7 +19,7 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_UUID, a3);
+    objc_storeStrong(&v7->_UUID, d);
   }
 
   return v8;

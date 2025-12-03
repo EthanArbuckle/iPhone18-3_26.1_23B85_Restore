@@ -1,18 +1,18 @@
 @interface SBHIconApplicationShortcutListComposer
-+ (BOOL)sbh_isDestructiveShortcutItem:(id)a3;
-+ (BOOL)sbh_isShortcutItemDeleteOrRemove:(id)a3;
-+ (BOOL)sbh_isShortcutItemSpringBoardOnly:(id)a3;
++ (BOOL)sbh_isDestructiveShortcutItem:(id)item;
++ (BOOL)sbh_isShortcutItemDeleteOrRemove:(id)remove;
++ (BOOL)sbh_isShortcutItemSpringBoardOnly:(id)only;
 + (BOOL)supportsMultiwindowShortcut;
 + (BOOL)supportsNewWindowShortcut;
 + (BOOL)supportsProtectedAppsShortcuts;
-+ (id)composedShortcutsForApplicationWithBundleIdentifier:(id)a3 iconDisplayName:(id)a4 staticItems:(id)a5 dynamicItems:(id)a6 applicationItemID:(unint64_t)a7 numberOfDisplayItemsInSwitcher:(int64_t)a8 supportsMultipleWindows:(BOOL)a9 isSystemApplication:(BOOL)a10 isInternalApplication:(BOOL)a11 isApplicationInBeta:(BOOL)a12 isApplicationHidden:(BOOL)a13 iconManagerAllowsEditing:(BOOL)a14 removeStyle:(int64_t)a15;
-+ (id)composedShortcutsForBookmarkIcon:(id)a3 withDisplayName:(id)a4 iconManagerAllowsEditing:(BOOL)a5 removeStyle:(int64_t)a6;
-+ (id)composedShortcutsForDownloadingApplicationWithBundleIdentifier:(id)a3 iconDisplayName:(id)a4 applicationItemID:(unint64_t)a5 canModifyDownloadState:(BOOL)a6 prioritizationIsAvailable:(BOOL)a7 downloadingInformationAgent:(id)a8 iconManagerAllowsEditing:(BOOL)a9 removeStyle:(int64_t)a10 canShare:(BOOL)a11;
-+ (id)composedShortcutsForFolderIcon:(id)a3 iconImageCache:(id)a4 iconManagerAllowsEditing:(BOOL)a5 removeStyle:(int64_t)a6 badgeViewGenerator:(id)a7;
-+ (id)composedShortcutsForWidgetIcon:(id)a3 additionalApplicationShortcutItems:(id)a4 widgetIconSupportsConfiguration:(BOOL)a5 iconManagerAllowsEditing:(BOOL)a6 widgetSettings:(id)a7;
-+ (id)filteredApplicationShortcutItemsWithStaticApplicationShortcutItems:(id)a3 dynamicApplicationShortcutItems:(id)a4;
++ (id)composedShortcutsForApplicationWithBundleIdentifier:(id)identifier iconDisplayName:(id)name staticItems:(id)items dynamicItems:(id)dynamicItems applicationItemID:(unint64_t)d numberOfDisplayItemsInSwitcher:(int64_t)switcher supportsMultipleWindows:(BOOL)windows isSystemApplication:(BOOL)self0 isInternalApplication:(BOOL)self1 isApplicationInBeta:(BOOL)self2 isApplicationHidden:(BOOL)self3 iconManagerAllowsEditing:(BOOL)self4 removeStyle:(int64_t)self5;
++ (id)composedShortcutsForBookmarkIcon:(id)icon withDisplayName:(id)name iconManagerAllowsEditing:(BOOL)editing removeStyle:(int64_t)style;
++ (id)composedShortcutsForDownloadingApplicationWithBundleIdentifier:(id)identifier iconDisplayName:(id)name applicationItemID:(unint64_t)d canModifyDownloadState:(BOOL)state prioritizationIsAvailable:(BOOL)available downloadingInformationAgent:(id)agent iconManagerAllowsEditing:(BOOL)editing removeStyle:(int64_t)self0 canShare:(BOOL)self1;
++ (id)composedShortcutsForFolderIcon:(id)icon iconImageCache:(id)cache iconManagerAllowsEditing:(BOOL)editing removeStyle:(int64_t)style badgeViewGenerator:(id)generator;
++ (id)composedShortcutsForWidgetIcon:(id)icon additionalApplicationShortcutItems:(id)items widgetIconSupportsConfiguration:(BOOL)configuration iconManagerAllowsEditing:(BOOL)editing widgetSettings:(id)settings;
++ (id)filteredApplicationShortcutItemsWithStaticApplicationShortcutItems:(id)items dynamicApplicationShortcutItems:(id)shortcutItems;
 + (id)homeScreenDefaults;
-+ (unint64_t)sbh_shortcutSectionForItem:(id)a3;
++ (unint64_t)sbh_shortcutSectionForItem:(id)item;
 @end
 
 @implementation SBHIconApplicationShortcutListComposer
@@ -20,10 +20,10 @@
 + (BOOL)supportsProtectedAppsShortcuts
 {
   v2 = _os_feature_enabled_impl();
-  v3 = [MEMORY[0x1E698E620] tokenForCurrentProcess];
-  if ([v3 hasEntitlement:@"com.apple.appprotectiond.read.access"] && objc_msgSend(v3, "hasEntitlement:", @"com.apple.appprotectiond.write.access"))
+  tokenForCurrentProcess = [MEMORY[0x1E698E620] tokenForCurrentProcess];
+  if ([tokenForCurrentProcess hasEntitlement:@"com.apple.appprotectiond.read.access"] && objc_msgSend(tokenForCurrentProcess, "hasEntitlement:", @"com.apple.appprotectiond.write.access"))
   {
-    v4 = [v3 hasEntitlement:@"com.apple.appprotectiond.guard.access"];
+    v4 = [tokenForCurrentProcess hasEntitlement:@"com.apple.appprotectiond.guard.access"];
   }
 
   else
@@ -36,18 +36,18 @@
 
 + (BOOL)supportsNewWindowShortcut
 {
-  v2 = [MEMORY[0x1E69DC938] currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  return (v3 & 0xFFFFFFFFFFFFFFFBLL) == 1;
+  return (userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1;
 }
 
 + (BOOL)supportsMultiwindowShortcut
 {
-  v2 = [MEMORY[0x1E69DC938] currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  return (v3 & 0xFFFFFFFFFFFFFFFBLL) == 1;
+  return (userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1;
 }
 
 + (id)homeScreenDefaults
@@ -71,13 +71,13 @@ uint64_t __60__SBHIconApplicationShortcutListComposer_homeScreenDefaults__block_
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-+ (id)filteredApplicationShortcutItemsWithStaticApplicationShortcutItems:(id)a3 dynamicApplicationShortcutItems:(id)a4
++ (id)filteredApplicationShortcutItemsWithStaticApplicationShortcutItems:(id)items dynamicApplicationShortcutItems:(id)shortcutItems
 {
-  if (a3 | a4)
+  if (items | shortcutItems)
   {
     v5 = MEMORY[0x1E695DF70];
-    v6 = a4;
-    v7 = a3;
+    shortcutItemsCopy = shortcutItems;
+    itemsCopy = items;
     v8 = objc_alloc_init(v5);
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
@@ -86,9 +86,9 @@ uint64_t __60__SBHIconApplicationShortcutListComposer_homeScreenDefaults__block_
     v9 = v8;
     v14 = v9;
     v10 = _Block_copy(aBlock);
-    v10[2](v10, v7);
+    v10[2](v10, itemsCopy);
 
-    v10[2](v10, v6);
+    v10[2](v10, shortcutItemsCopy);
     if ([v9 count])
     {
       v11 = [MEMORY[0x1E695DEC8] arrayWithArray:v9];
@@ -162,23 +162,23 @@ LABEL_4:
   }
 }
 
-+ (id)composedShortcutsForApplicationWithBundleIdentifier:(id)a3 iconDisplayName:(id)a4 staticItems:(id)a5 dynamicItems:(id)a6 applicationItemID:(unint64_t)a7 numberOfDisplayItemsInSwitcher:(int64_t)a8 supportsMultipleWindows:(BOOL)a9 isSystemApplication:(BOOL)a10 isInternalApplication:(BOOL)a11 isApplicationInBeta:(BOOL)a12 isApplicationHidden:(BOOL)a13 iconManagerAllowsEditing:(BOOL)a14 removeStyle:(int64_t)a15
++ (id)composedShortcutsForApplicationWithBundleIdentifier:(id)identifier iconDisplayName:(id)name staticItems:(id)items dynamicItems:(id)dynamicItems applicationItemID:(unint64_t)d numberOfDisplayItemsInSwitcher:(int64_t)switcher supportsMultipleWindows:(BOOL)windows isSystemApplication:(BOOL)self0 isInternalApplication:(BOOL)self1 isApplicationInBeta:(BOOL)self2 isApplicationHidden:(BOOL)self3 iconManagerAllowsEditing:(BOOL)self4 removeStyle:(int64_t)self5
 {
-  v19 = a13;
-  LODWORD(v69) = a11;
-  HIDWORD(v69) = a10;
+  hiddenCopy2 = hidden;
+  LODWORD(v69) = internalApplication;
+  HIDWORD(v69) = application;
   v71[1] = *MEMORY[0x1E69E9840];
-  v20 = a3;
-  v68 = a4;
-  v21 = a5;
-  v22 = a6;
+  identifierCopy = identifier;
+  nameCopy = name;
+  itemsCopy = items;
+  dynamicItemsCopy = dynamicItems;
   v23 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v66 = v22;
-  v67 = v21;
-  v24 = [objc_opt_class() filteredApplicationShortcutItemsWithStaticApplicationShortcutItems:v21 dynamicApplicationShortcutItems:v22];
+  v66 = dynamicItemsCopy;
+  v67 = itemsCopy;
+  v24 = [objc_opt_class() filteredApplicationShortcutItemsWithStaticApplicationShortcutItems:itemsCopy dynamicApplicationShortcutItems:dynamicItemsCopy];
   [v23 addObjectsFromArray:v24];
 
-  if (a14)
+  if (editing)
   {
     v25 = objc_alloc_init(MEMORY[0x1E69D41B8]);
     [v25 setType:@"com.apple.springboardhome.application-shortcut-item.change-widget-size"];
@@ -197,15 +197,15 @@ LABEL_4:
 
   if ([composedShortcutsForApplicationWithBundleIdentifier_iconDisplayName_staticItems_dynamicItems_applicationItemID_numberOfDisplayItemsInSwitcher_supportsMultipleWindows_isSystemApplication_isInternalApplication_isApplicationInBeta_isApplicationHidden_iconManagerAllowsEditing_removeStyle__homeScreenDefaults shouldFudgeShortcutsToCauseMaximumPain])
   {
-    if (!a7)
+    if (!d)
     {
-      a7 = 10000;
+      d = 10000;
     }
 
     if ([v23 count] > 3)
     {
       v69 = 0;
-      a12 = 0;
+      beta = 0;
     }
 
     else
@@ -223,14 +223,14 @@ LABEL_4:
 
       while ([v23 count] < 4);
       v69 = 0;
-      a12 = 0;
+      beta = 0;
     }
   }
 
   else
   {
 LABEL_12:
-    if (!a9)
+    if (!windows)
     {
       goto LABEL_20;
     }
@@ -240,7 +240,7 @@ LABEL_12:
   {
     v28 = SBHBundle();
     [v28 localizedStringForKey:@"ADD_NEW_WINDOW_SHORTCUT_ITEM_TITLE" value:&stru_1F3D472A8 table:@"SpringBoardHome"];
-    v30 = v29 = v20;
+    v30 = v29 = identifierCopy;
     v31 = objc_alloc_init(MEMORY[0x1E69D41B8]);
     v32 = [objc_alloc(MEMORY[0x1E69D41C8]) initWithSystemImageName:@"plus.rectangle"];
     [v31 setIcon:v32];
@@ -249,11 +249,11 @@ LABEL_12:
     [v31 setType:@"com.apple.springboardhome.application-shortcut-item.new-window"];
     [v23 addObject:v31];
 
-    v20 = v29;
+    identifierCopy = v29;
   }
 
-  v33 = [objc_opt_class() supportsMultiwindowShortcut];
-  if (a8 >= 1 && v33)
+  supportsMultiwindowShortcut = [objc_opt_class() supportsMultiwindowShortcut];
+  if (switcher >= 1 && supportsMultiwindowShortcut)
   {
     v34 = SBHBundle();
     v35 = [v34 localizedStringForKey:@"SHOW_ALL_WINDOWS_SHORTCUT_ITEM_TITLE" value:&stru_1F3D472A8 table:@"SpringBoardHome"];
@@ -265,22 +265,22 @@ LABEL_12:
     [v36 setType:@"com.apple.springboardhome.application-shortcut-item.show-all-windows"];
     [v23 addObject:v36];
 
-    v19 = a13;
+    hiddenCopy2 = hidden;
   }
 
 LABEL_20:
-  if (a14)
+  if (editing)
   {
     v38 = SBHBundle();
     v39 = [v38 localizedStringForKey:@"REARRANGE_ICONS_SHORTCUT_ITEM_TITLE" value:&stru_1F3D472A8 table:@"SpringBoardHome"];
     _SBCreateRearrangeAppsApplicationShortcutItemWithLocalizedTitle(v39);
-    v41 = v40 = v19;
+    v41 = v40 = hiddenCopy2;
     [v23 addObject:v41];
 
-    v19 = v40;
+    hiddenCopy2 = v40;
   }
 
-  if (v19)
+  if (hiddenCopy2)
   {
     v42 = objc_alloc_init(MEMORY[0x1E69D41B8]);
     v43 = [objc_alloc(MEMORY[0x1E69D41C8]) initWithSystemImageName:@"plus.app"];
@@ -295,14 +295,14 @@ LABEL_20:
   }
 
   v46 = v69;
-  if (!a7)
+  if (!d)
   {
     v46 = 1;
   }
 
   if (((HIDWORD(v69) | v46) & 1) == 0)
   {
-    if (a12)
+    if (beta)
     {
       v47 = objc_alloc_init(MEMORY[0x1E69D41B8]);
       [v47 setActivationMode:0];
@@ -316,7 +316,7 @@ LABEL_20:
 
       [v47 setType:*MEMORY[0x1E69D4558]];
       v70 = *MEMORY[0x1E69D4560];
-      v51 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a7];
+      v51 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:d];
       v71[0] = v51;
       v52 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v71 forKeys:&v70 count:1];
       [v47 setUserInfo:v52];
@@ -329,23 +329,23 @@ LABEL_20:
       v53 = MEMORY[0x1E696AEC0];
       v47 = SBHBundle();
       v54 = [v47 localizedStringForKey:@"SHARE_APPLICATION_SHORTCUT_ITEM_TITLE" value:&stru_1F3D472A8 table:@"SpringBoardHome"];
-      v55 = [v53 localizedStringWithFormat:v54, v68];
-      v56 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a7];
-      v57 = _SBCreateShareApplicationShortcutItemWithLocalizedTitle(v55, v56);
+      nameCopy = [v53 localizedStringWithFormat:v54, nameCopy];
+      v56 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:d];
+      v57 = _SBCreateShareApplicationShortcutItemWithLocalizedTitle(nameCopy, v56);
       [v23 addObject:v57];
     }
   }
 
   if ([objc_opt_class() supportsProtectedAppsShortcuts])
   {
-    v58 = _SBCreateAppProtectionApplicationShortcutItemForBundleIdentifier(v20);
+    v58 = _SBCreateAppProtectionApplicationShortcutItemForBundleIdentifier(identifierCopy);
     if (v58)
     {
       [v23 addObject:v58];
     }
   }
 
-  switch(a15)
+  switch(style)
   {
     case 1:
       v59 = SBHBundle();
@@ -383,13 +383,13 @@ uint64_t __327__SBHIconApplicationShortcutListComposer_composedShortcutsForAppli
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-+ (id)composedShortcutsForBookmarkIcon:(id)a3 withDisplayName:(id)a4 iconManagerAllowsEditing:(BOOL)a5 removeStyle:(int64_t)a6
++ (id)composedShortcutsForBookmarkIcon:(id)icon withDisplayName:(id)name iconManagerAllowsEditing:(BOOL)editing removeStyle:(int64_t)style
 {
-  v7 = a5;
+  editingCopy = editing;
   v53[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  iconCopy = icon;
   v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if (v7)
+  if (editingCopy)
   {
     v10 = SBHBundle();
     v11 = [v10 localizedStringForKey:@"REARRANGE_ICONS_SHORTCUT_ITEM_TITLE" value:&stru_1F3D472A8 table:@"SpringBoardHome"];
@@ -397,12 +397,12 @@ uint64_t __327__SBHIconApplicationShortcutListComposer_composedShortcutsForAppli
     [v9 addObject:v12];
   }
 
-  if ([v8 displaysShareBookmarkShortcutItem])
+  if ([iconCopy displaysShareBookmarkShortcutItem])
   {
-    v13 = [v8 isAppClipIcon];
+    isAppClipIcon = [iconCopy isAppClipIcon];
     v14 = SBHBundle();
     v15 = v14;
-    if (v13)
+    if (isAppClipIcon)
     {
       v16 = @"SHARE_APPCLIP_APPLICATION_SHORTCUT_ITEM_TITLE";
       v17 = @"SpringBoardHome-AppClips";
@@ -420,19 +420,19 @@ uint64_t __327__SBHIconApplicationShortcutListComposer_composedShortcutsForAppli
     [v9 addObject:v19];
   }
 
-  if ([v8 displaysAppStoreURLShortcutItem])
+  if ([iconCopy displaysAppStoreURLShortcutItem])
   {
-    v20 = [v8 appClip];
-    v21 = [v20 fullAppStoreURL];
+    appClip = [iconCopy appClip];
+    fullAppStoreURL = [appClip fullAppStoreURL];
 
-    if (v21)
+    if (fullAppStoreURL)
     {
       v22 = SBHBundle();
       v23 = [v22 localizedStringForKey:@"APPSTORE_URL_APPCLIP" value:&stru_1F3D472A8 table:@"SpringBoardHome-AppClips"];
 
       v24 = MEMORY[0x1E69D41B8];
       v25 = v23;
-      v26 = v21;
+      v26 = fullAppStoreURL;
       v27 = objc_alloc_init(v24);
       v28 = [objc_alloc(MEMORY[0x1E69D41D0]) initWithSystemImageName:@"appstore"];
       [v27 setIcon:v28];
@@ -441,9 +441,9 @@ uint64_t __327__SBHIconApplicationShortcutListComposer_composedShortcutsForAppli
       [v27 setLocalizedTitle:v25];
 
       v52 = kSBHIconAppStoreURLUserInfoKey;
-      v29 = [v26 absoluteString];
+      absoluteString = [v26 absoluteString];
 
-      v53[0] = v29;
+      v53[0] = absoluteString;
       v30 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v53 forKeys:&v52 count:1];
       [v27 setUserInfo:v30];
 
@@ -451,14 +451,14 @@ uint64_t __327__SBHIconApplicationShortcutListComposer_composedShortcutsForAppli
     }
   }
 
-  if (a6 == 1)
+  if (style == 1)
   {
-    v42 = [v8 webClip];
-    v43 = [v42 isAppClip];
+    webClip = [iconCopy webClip];
+    isAppClip = [webClip isAppClip];
 
     v44 = SBHBundle();
     v45 = v44;
-    if (v43)
+    if (isAppClip)
     {
       v46 = @"HIDE_APPCLIP_SHORTCUT_ITEM_TITLE";
       v47 = @"SpringBoardHome-AppClips";
@@ -476,14 +476,14 @@ uint64_t __327__SBHIconApplicationShortcutListComposer_composedShortcutsForAppli
     goto LABEL_24;
   }
 
-  if (a6 == 2)
+  if (style == 2)
   {
-    v36 = [v8 webClip];
-    v37 = [v36 isAppClip];
+    webClip2 = [iconCopy webClip];
+    isAppClip2 = [webClip2 isAppClip];
 
     v38 = SBHBundle();
     v39 = v38;
-    if (v37)
+    if (isAppClip2)
     {
       v40 = @"HIDE_APPCLIP_SHORTCUT_ITEM_TITLE";
       v41 = @"SpringBoardHome-AppClips";
@@ -504,15 +504,15 @@ LABEL_24:
     goto LABEL_27;
   }
 
-  if (a6 != 3)
+  if (style != 3)
   {
     goto LABEL_28;
   }
 
-  v31 = [v8 isAppClipIcon];
+  isAppClipIcon2 = [iconCopy isAppClipIcon];
   v32 = SBHBundle();
   v33 = v32;
-  if (v31)
+  if (isAppClipIcon2)
   {
     v34 = @"DELETE_APPCLIP_SHORTCUT_ITEM_TITLE";
     v35 = @"SpringBoardHome-AppClips";
@@ -534,19 +534,19 @@ LABEL_28:
   return v9;
 }
 
-+ (id)composedShortcutsForDownloadingApplicationWithBundleIdentifier:(id)a3 iconDisplayName:(id)a4 applicationItemID:(unint64_t)a5 canModifyDownloadState:(BOOL)a6 prioritizationIsAvailable:(BOOL)a7 downloadingInformationAgent:(id)a8 iconManagerAllowsEditing:(BOOL)a9 removeStyle:(int64_t)a10 canShare:(BOOL)a11
++ (id)composedShortcutsForDownloadingApplicationWithBundleIdentifier:(id)identifier iconDisplayName:(id)name applicationItemID:(unint64_t)d canModifyDownloadState:(BOOL)state prioritizationIsAvailable:(BOOL)available downloadingInformationAgent:(id)agent iconManagerAllowsEditing:(BOOL)editing removeStyle:(int64_t)self0 canShare:(BOOL)self1
 {
-  v12 = a7;
-  v13 = a6;
-  v15 = a10;
-  v16 = a9;
-  v17 = a3;
-  v18 = a4;
-  v19 = a8;
+  availableCopy = available;
+  stateCopy = state;
+  styleCopy5 = style;
+  editingCopy4 = editing;
+  identifierCopy = identifier;
+  nameCopy = name;
+  agentCopy = agent;
   v20 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if (v13 && ((objc_opt_respondsToSelector() & 1) == 0 || ([v19 isCloudDemoted] & 1) == 0))
+  if (stateCopy && ((objc_opt_respondsToSelector() & 1) == 0 || ([agentCopy isCloudDemoted] & 1) == 0))
   {
-    if ((objc_opt_respondsToSelector() & 1) != 0 && [v19 isPrioritizable] && v12)
+    if ((objc_opt_respondsToSelector() & 1) != 0 && [agentCopy isPrioritizable] && availableCopy)
     {
       v21 = objc_alloc_init(MEMORY[0x1E69D41B8]);
       v22 = [objc_alloc(MEMORY[0x1E69D41C8]) initWithType:33];
@@ -556,14 +556,14 @@ LABEL_28:
       v24 = [v23 localizedStringForKey:@"PRIORITIZE_DOWNLOAD_APPLICATION_SHORTCUT_ITEM_TITLE" value:&stru_1F3D472A8 table:@"SpringBoardHome"];
       [v21 setLocalizedTitle:v24];
 
-      v15 = a10;
+      styleCopy5 = style;
       [v21 setType:@"com.apple.springboardhome.application-shortcut-item.prioritize-download"];
       [v20 addObject:v21];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v25 = [v19 isPausable] ^ 1;
+      v25 = [agentCopy isPausable] ^ 1;
     }
 
     else
@@ -573,38 +573,38 @@ LABEL_28:
 
     if (objc_opt_respondsToSelector())
     {
-      v26 = [v19 isPaused];
+      isPaused = [agentCopy isPaused];
     }
 
     else
     {
-      v26 = 0;
+      isPaused = 0;
     }
 
-    if (((v25 | v26) & 1) == 0)
+    if (((v25 | isPaused) & 1) == 0)
     {
       v27 = objc_alloc_init(MEMORY[0x1E69D41B8]);
       v28 = objc_alloc(MEMORY[0x1E69D41B0]);
       [MEMORY[0x1E69DCAB8] imageNamed:@"PauseDownloadApplicationShortcutItemIcon"];
-      v29 = v18;
-      v31 = v30 = v17;
+      v29 = nameCopy;
+      v31 = v30 = identifierCopy;
       v32 = UIImagePNGRepresentation(v31);
       v33 = [v28 initWithImageData:v32 dataType:0 isTemplate:1];
       [v27 setIcon:v33];
 
-      v17 = v30;
-      v18 = v29;
+      identifierCopy = v30;
+      nameCopy = v29;
       v34 = SBHBundle();
       v35 = [v34 localizedStringForKey:@"PAUSE_DOWNLOAD_APPLICATION_SHORTCUT_ITEM_TITLE" value:&stru_1F3D472A8 table:@"SpringBoardHome"];
       [v27 setLocalizedTitle:v35];
 
-      v15 = a10;
-      v16 = a9;
+      styleCopy5 = style;
+      editingCopy4 = editing;
       [v27 setType:@"com.apple.springboardhome.application-shortcut-item.pause-download"];
       [v20 addObject:v27];
     }
 
-    if (!(v25 & 1 | ((v26 & 1) == 0)))
+    if (!(v25 & 1 | ((isPaused & 1) == 0)))
     {
       v36 = objc_alloc_init(MEMORY[0x1E69D41B8]);
       v37 = objc_alloc(MEMORY[0x1E69D41B0]);
@@ -613,17 +613,17 @@ LABEL_28:
       v40 = [v37 initWithImageData:v39 dataType:0 isTemplate:1];
       [v36 setIcon:v40];
 
-      v15 = a10;
+      styleCopy5 = style;
       v41 = SBHBundle();
       v42 = [v41 localizedStringForKey:@"RESUME_DOWNLOAD_APPLICATION_SHORTCUT_ITEM_TITLE" value:&stru_1F3D472A8 table:@"SpringBoardHome"];
       [v36 setLocalizedTitle:v42];
 
-      v16 = a9;
+      editingCopy4 = editing;
       [v36 setType:@"com.apple.springboardhome.application-shortcut-item.resume-download"];
       [v20 addObject:v36];
     }
 
-    if ((objc_opt_respondsToSelector() & 1) != 0 && [v19 isCancelable])
+    if ((objc_opt_respondsToSelector() & 1) != 0 && [agentCopy isCancelable])
     {
       v43 = objc_alloc_init(MEMORY[0x1E69D41B8]);
       v44 = objc_alloc(MEMORY[0x1E69D41B0]);
@@ -632,18 +632,18 @@ LABEL_28:
       v47 = [v44 initWithImageData:v46 dataType:0 isTemplate:1];
       [v43 setIcon:v47];
 
-      v15 = a10;
+      styleCopy5 = style;
       v48 = SBHBundle();
       v49 = [v48 localizedStringForKey:@"CANCEL_DOWNLOAD_APPLICATION_SHORTCUT_ITEM_TITLE" value:&stru_1F3D472A8 table:@"SpringBoardHome"];
       [v43 setLocalizedTitle:v49];
 
-      v16 = a9;
+      editingCopy4 = editing;
       [v43 setType:@"com.apple.springboardhome.application-shortcut-item.cancel-download"];
       [v20 addObject:v43];
     }
   }
 
-  if (v16)
+  if (editingCopy4)
   {
     v50 = SBHBundle();
     v51 = [v50 localizedStringForKey:@"REARRANGE_ICONS_SHORTCUT_ITEM_TITLE" value:&stru_1F3D472A8 table:@"SpringBoardHome"];
@@ -651,30 +651,30 @@ LABEL_28:
     [v20 addObject:v52];
   }
 
-  if (a5 && a11)
+  if (d && share)
   {
     v53 = MEMORY[0x1E696AEC0];
     v54 = SBHBundle();
     v55 = [v54 localizedStringForKey:@"SHARE_APPLICATION_SHORTCUT_ITEM_TITLE" value:&stru_1F3D472A8 table:@"SpringBoardHome"];
-    v56 = [v53 localizedStringWithFormat:v55, v18];
+    nameCopy = [v53 localizedStringWithFormat:v55, nameCopy];
 
-    v57 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a5];
-    v58 = _SBCreateShareApplicationShortcutItemWithLocalizedTitle(v56, v57);
+    v57 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:d];
+    v58 = _SBCreateShareApplicationShortcutItemWithLocalizedTitle(nameCopy, v57);
     [v20 addObject:v58];
   }
 
   if ([objc_opt_class() supportsProtectedAppsShortcuts])
   {
-    v59 = _SBCreateAppProtectionApplicationShortcutItemForBundleIdentifier(v17);
+    v59 = _SBCreateAppProtectionApplicationShortcutItemForBundleIdentifier(identifierCopy);
     if (v59)
     {
       [v20 addObject:v59];
     }
   }
 
-  if ((objc_opt_respondsToSelector() & 1) != 0 && [v19 isCloudDemoted])
+  if ((objc_opt_respondsToSelector() & 1) != 0 && [agentCopy isCloudDemoted])
   {
-    if (v15 == 2)
+    if (styleCopy5 == 2)
     {
       v60 = SBHBundle();
       v61 = [v60 localizedStringForKey:@"REMOVE_APP_SHORTCUT_ITEM_TITLE" value:&stru_1F3D472A8 table:@"SpringBoardHome"];
@@ -683,7 +683,7 @@ LABEL_28:
 
     else
     {
-      if (v15 != 3)
+      if (styleCopy5 != 3)
       {
         goto LABEL_37;
       }
@@ -702,30 +702,30 @@ LABEL_37:
   return v20;
 }
 
-+ (id)composedShortcutsForFolderIcon:(id)a3 iconImageCache:(id)a4 iconManagerAllowsEditing:(BOOL)a5 removeStyle:(int64_t)a6 badgeViewGenerator:(id)a7
++ (id)composedShortcutsForFolderIcon:(id)icon iconImageCache:(id)cache iconManagerAllowsEditing:(BOOL)editing removeStyle:(int64_t)style badgeViewGenerator:(id)generator
 {
-  v44 = a5;
+  editingCopy = editing;
   v63 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v50 = a7;
+  iconCopy = icon;
+  cacheCopy = cache;
+  generatorCopy = generator;
   v51 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  [v10 iconImageInfo];
+  [cacheCopy iconImageInfo];
   v12 = v11;
   v58 = 0u;
   v59 = 0u;
   v60 = 0u;
   v61 = 0u;
-  v45 = v9;
-  v13 = [v9 leafIconsWithBadgesSortedByImportance];
-  v14 = [v13 objectEnumerator];
+  v45 = iconCopy;
+  leafIconsWithBadgesSortedByImportance = [iconCopy leafIconsWithBadgesSortedByImportance];
+  objectEnumerator = [leafIconsWithBadgesSortedByImportance objectEnumerator];
 
-  obj = v14;
-  v49 = [v14 countByEnumeratingWithState:&v58 objects:v62 count:16];
+  obj = objectEnumerator;
+  v49 = [objectEnumerator countByEnumeratingWithState:&v58 objects:v62 count:16];
   if (v49)
   {
     v47 = *v59;
-    v48 = v10;
+    v48 = cacheCopy;
 LABEL_3:
     v15 = 0;
     while (1)
@@ -736,9 +736,9 @@ LABEL_3:
       }
 
       v16 = *(*(&v58 + 1) + 8 * v15);
-      if (v10)
+      if (cacheCopy)
       {
-        [v10 imageForIcon:*(*(&v58 + 1) + 8 * v15)];
+        [cacheCopy imageForIcon:*(*(&v58 + 1) + 8 * v15)];
       }
 
       else
@@ -746,8 +746,8 @@ LABEL_3:
         [*(*(&v58 + 1) + 8 * v15) iconImageWithInfo:0 traitCollection:1 options:{v12 * 29.0 / v12, v12 * 29.0 / v12, v12, 0.0}];
       }
       v17 = ;
-      v18 = v50[2](v50, v16);
-      v19 = [v18 badgeBackgroundColor];
+      v18 = generatorCopy[2](generatorCopy, v16);
+      badgeBackgroundColor = [v18 badgeBackgroundColor];
       v20 = [objc_alloc(MEMORY[0x1E69DCA78]) initWithSize:{v12 * 29.0, v12 * 29.0}];
       v52[0] = MEMORY[0x1E69E9820];
       v52[1] = 3221225472;
@@ -756,9 +756,9 @@ LABEL_3:
       v55 = v12 * 29.0;
       v56 = v12 * 6.0;
       v53 = v17;
-      v54 = v19;
+      v54 = badgeBackgroundColor;
       v57 = v12 * 10.0;
-      v21 = v19;
+      v21 = badgeBackgroundColor;
       v22 = v17;
       v23 = [v20 imageWithActions:v52];
       v24 = objc_alloc(MEMORY[0x1E69D41B0]);
@@ -767,18 +767,18 @@ LABEL_3:
 
       v27 = objc_alloc_init(MEMORY[0x1E69D41B8]);
       [v27 setBadgeView:v18];
-      v28 = [v16 applicationBundleID];
-      [v27 setBundleIdentifierToLaunch:v28];
+      applicationBundleID = [v16 applicationBundleID];
+      [v27 setBundleIdentifierToLaunch:applicationBundleID];
 
       [v27 setIcon:v26];
-      v29 = [v16 displayName];
-      [v27 setLocalizedTitle:v29];
+      displayName = [v16 displayName];
+      [v27 setLocalizedTitle:displayName];
 
       [v27 setType:@"com.apple.springboardhome.application-shortcut-item.unread-notifications"];
       [v51 addObject:v27];
       v30 = [v51 count];
 
-      v10 = v48;
+      cacheCopy = v48;
       if (v30 == 4)
       {
         break;
@@ -797,7 +797,7 @@ LABEL_3:
     }
   }
 
-  if (v44)
+  if (editingCopy)
   {
     v31 = objc_alloc_init(MEMORY[0x1E69D41B8]);
     v32 = [objc_alloc(MEMORY[0x1E69D41C8]) initWithSystemImageName:@"pencil"];
@@ -815,7 +815,7 @@ LABEL_3:
     v37 = _SBCreateRearrangeAppsApplicationShortcutItemWithLocalizedTitle(v36);
     [v51 addObject:v37];
 
-    if (a6 == 2)
+    if (style == 2)
     {
       v38 = objc_alloc_init(MEMORY[0x1E69D41B8]);
       v39 = [objc_alloc(MEMORY[0x1E69D41C8]) initWithSystemImageName:@"minus.circle"];
@@ -856,15 +856,15 @@ void __144__SBHIconApplicationShortcutListComposer_composedShortcutsForFolderIco
   [v6 fill];
 }
 
-+ (id)composedShortcutsForWidgetIcon:(id)a3 additionalApplicationShortcutItems:(id)a4 widgetIconSupportsConfiguration:(BOOL)a5 iconManagerAllowsEditing:(BOOL)a6 widgetSettings:(id)a7
++ (id)composedShortcutsForWidgetIcon:(id)icon additionalApplicationShortcutItems:(id)items widgetIconSupportsConfiguration:(BOOL)configuration iconManagerAllowsEditing:(BOOL)editing widgetSettings:(id)settings
 {
-  v8 = a6;
-  v9 = a5;
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
+  editingCopy = editing;
+  configurationCopy = configuration;
+  iconCopy = icon;
+  itemsCopy = items;
+  settingsCopy = settings;
   v15 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if (!v8)
+  if (!editingCopy)
   {
     goto LABEL_28;
   }
@@ -873,21 +873,21 @@ void __144__SBHIconApplicationShortcutListComposer_composedShortcutsForFolderIco
   [v16 setType:@"com.apple.springboardhome.application-shortcut-item.change-widget-size"];
   [v15 addObject:v16];
 
-  if ([v12 isWidgetStackIcon])
+  if ([iconCopy isWidgetStackIcon])
   {
-    v53 = a1;
-    v17 = [v12 activeDataSource];
+    selfCopy = self;
+    activeDataSource = [iconCopy activeDataSource];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      if ([v17 suggestionSource] == 1)
+      if ([activeDataSource suggestionSource] == 1)
       {
 LABEL_5:
         v18 = MEMORY[0x1E696AEC0];
         v51 = SBHBundle();
         v19 = [v51 localizedStringForKey:@"HIDE_STACK_SUGGESTION_SHORTCUT_ITEM_TITLE" value:&stru_1F3D472A8 table:@"SpringBoardHome"];
-        v20 = [v12 displayName];
-        v21 = [v18 stringWithFormat:v19, v20];
+        displayName = [iconCopy displayName];
+        v21 = [v18 stringWithFormat:v19, displayName];
         v22 = objc_alloc_init(MEMORY[0x1E69D41B8]);
         v23 = [objc_alloc(MEMORY[0x1E69D41C8]) initWithSystemImageName:@"hand.thumbsdown"];
         [v22 setIcon:v23];
@@ -897,8 +897,8 @@ LABEL_5:
         [v15 addObject:v22];
 
 LABEL_6:
-        v24 = [v12 iconDataSourceCount];
-        if (v24 >= [v14 maximumWidgetsInAStack])
+        iconDataSourceCount = [iconCopy iconDataSourceCount];
+        if (iconDataSourceCount >= [settingsCopy maximumWidgetsInAStack])
         {
           goto LABEL_17;
         }
@@ -906,8 +906,8 @@ LABEL_6:
         v25 = MEMORY[0x1E696AEC0];
         v52 = SBHBundle();
         v26 = [v52 localizedStringForKey:@"ADD_TO_STACK_WITH_NAME_SHORTCUT_ITEM_TITLE" value:&stru_1F3D472A8 table:@"SpringBoardHome"];
-        v27 = [v12 displayName];
-        v28 = [v25 stringWithFormat:v26, v27];
+        displayName2 = [iconCopy displayName];
+        v28 = [v25 stringWithFormat:v26, displayName2];
         v29 = objc_alloc_init(MEMORY[0x1E69D41B8]);
         v30 = [objc_alloc(MEMORY[0x1E69D41C8]) initWithSystemImageName:@"rectangle.stack.badge.plus"];
         [v29 setIcon:v30];
@@ -923,10 +923,10 @@ LABEL_6:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v33 = [v17 suggestionSource];
+        suggestionSource = [activeDataSource suggestionSource];
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
-        if (v33 == 1)
+        if (suggestionSource == 1)
         {
           if (isKindOfClass)
           {
@@ -938,7 +938,7 @@ LABEL_6:
       }
     }
 
-    if (!v9)
+    if (!configurationCopy)
     {
       goto LABEL_17;
     }
@@ -946,8 +946,8 @@ LABEL_6:
     v35 = MEMORY[0x1E696AEC0];
     v52 = SBHBundle();
     v26 = [v52 localizedStringForKey:@"CONFIGURE_WIDGET_WITH_NAME_SHORTCUT_ITEM_TITLE" value:&stru_1F3D472A8 table:@"SpringBoardHome"];
-    v27 = [v12 displayName];
-    v28 = [v35 stringWithFormat:v26, v27];
+    displayName2 = [iconCopy displayName];
+    v28 = [v35 stringWithFormat:v26, displayName2];
     v29 = _SBCreateConfigureWidgetApplicationShortcutItemWithLocalizedTitle(v28);
 LABEL_16:
     [v15 addObject:v29];
@@ -963,10 +963,10 @@ LABEL_17:
       goto LABEL_21;
     }
 
-    v39 = [v53 homeScreenDefaults];
-    v40 = [v39 shouldHideReportWidgetStackRotationQuickAction];
+    homeScreenDefaults = [selfCopy homeScreenDefaults];
+    shouldHideReportWidgetStackRotationQuickAction = [homeScreenDefaults shouldHideReportWidgetStackRotationQuickAction];
 
-    if (v40)
+    if (shouldHideReportWidgetStackRotationQuickAction)
     {
       goto LABEL_21;
     }
@@ -985,10 +985,10 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  if (v9)
+  if (configurationCopy)
   {
-    v17 = SBHBundle();
-    v31 = [v17 localizedStringForKey:@"CONFIGURE_WIDGET_SHORTCUT_ITEM_TITLE" value:&stru_1F3D472A8 table:@"SpringBoardHome"];
+    activeDataSource = SBHBundle();
+    v31 = [activeDataSource localizedStringForKey:@"CONFIGURE_WIDGET_SHORTCUT_ITEM_TITLE" value:&stru_1F3D472A8 table:@"SpringBoardHome"];
     v32 = _SBCreateConfigureWidgetApplicationShortcutItemWithLocalizedTitle(v31);
     [v15 addObject:v32];
 
@@ -996,9 +996,9 @@ LABEL_21:
   }
 
 LABEL_22:
-  if (v13)
+  if (itemsCopy)
   {
-    [v15 addObjectsFromArray:v13];
+    [v15 addObjectsFromArray:itemsCopy];
   }
 
   v42 = SBHBundle();
@@ -1006,7 +1006,7 @@ LABEL_22:
   v44 = _SBCreateRearrangeAppsApplicationShortcutItemWithLocalizedTitle(v43);
   [v15 addObject:v44];
 
-  LODWORD(v42) = [v12 isWidgetStackIcon];
+  LODWORD(v42) = [iconCopy isWidgetStackIcon];
   v45 = SBHBundle();
   v46 = v45;
   if (v42)
@@ -1028,9 +1028,9 @@ LABEL_28:
   return v15;
 }
 
-+ (unint64_t)sbh_shortcutSectionForItem:(id)a3
++ (unint64_t)sbh_shortcutSectionForItem:(id)item
 {
-  v3 = a3;
+  itemCopy = item;
   if (sbh_shortcutSectionForItem__systemActionTypesOnceToken != -1)
   {
     +[SBHIconApplicationShortcutListComposer sbh_shortcutSectionForItem:];
@@ -1051,23 +1051,23 @@ LABEL_28:
     +[SBHIconApplicationShortcutListComposer sbh_shortcutSectionForItem:];
   }
 
-  v4 = [v3 type];
-  if ([sbh_shortcutSectionForItem__systemActionTypes containsObject:v4])
+  type = [itemCopy type];
+  if ([sbh_shortcutSectionForItem__systemActionTypes containsObject:type])
   {
     v5 = 2;
   }
 
-  else if ([sbh_shortcutSectionForItem__widgetActionTypes containsObject:v4])
+  else if ([sbh_shortcutSectionForItem__widgetActionTypes containsObject:type])
   {
     v5 = 1;
   }
 
-  else if ([sbh_shortcutSectionForItem__widgetResizeActionTypes containsObject:v4])
+  else if ([sbh_shortcutSectionForItem__widgetResizeActionTypes containsObject:type])
   {
     v5 = 3;
   }
 
-  else if ([sbh_shortcutSectionForItem__appExposeActionTypes containsObject:v4])
+  else if ([sbh_shortcutSectionForItem__appExposeActionTypes containsObject:type])
   {
     v5 = 4;
   }
@@ -1145,18 +1145,18 @@ void __69__SBHIconApplicationShortcutListComposer_sbh_shortcutSectionForItem___b
   sbh_shortcutSectionForItem__appExposeActionTypes = v2;
 }
 
-+ (BOOL)sbh_isShortcutItemSpringBoardOnly:(id)a3
++ (BOOL)sbh_isShortcutItemSpringBoardOnly:(id)only
 {
   v3 = sbh_isShortcutItemSpringBoardOnly__onceToken;
-  v4 = a3;
+  onlyCopy = only;
   if (v3 != -1)
   {
     +[SBHIconApplicationShortcutListComposer sbh_isShortcutItemSpringBoardOnly:];
   }
 
-  v5 = [v4 type];
+  type = [onlyCopy type];
 
-  v6 = [sbh_isShortcutItemSpringBoardOnly__springBoardOnlyShortcutTypes containsObject:v5];
+  v6 = [sbh_isShortcutItemSpringBoardOnly__springBoardOnlyShortcutTypes containsObject:type];
   return v6;
 }
 
@@ -1185,18 +1185,18 @@ void __76__SBHIconApplicationShortcutListComposer_sbh_isShortcutItemSpringBoardO
   sbh_isShortcutItemSpringBoardOnly__springBoardOnlyShortcutTypes = v0;
 }
 
-+ (BOOL)sbh_isDestructiveShortcutItem:(id)a3
++ (BOOL)sbh_isDestructiveShortcutItem:(id)item
 {
   v3 = sbh_isDestructiveShortcutItem__onceToken;
-  v4 = a3;
+  itemCopy = item;
   if (v3 != -1)
   {
     +[SBHIconApplicationShortcutListComposer sbh_isDestructiveShortcutItem:];
   }
 
-  v5 = [v4 type];
+  type = [itemCopy type];
 
-  v6 = [sbh_isDestructiveShortcutItem__isDestructive containsObject:v5];
+  v6 = [sbh_isDestructiveShortcutItem__isDestructive containsObject:type];
   return v6;
 }
 
@@ -1212,18 +1212,18 @@ void __72__SBHIconApplicationShortcutListComposer_sbh_isDestructiveShortcutItem_
   sbh_isDestructiveShortcutItem__isDestructive = v0;
 }
 
-+ (BOOL)sbh_isShortcutItemDeleteOrRemove:(id)a3
++ (BOOL)sbh_isShortcutItemDeleteOrRemove:(id)remove
 {
   v3 = sbh_isShortcutItemDeleteOrRemove__onceToken;
-  v4 = a3;
+  removeCopy = remove;
   if (v3 != -1)
   {
     +[SBHIconApplicationShortcutListComposer sbh_isShortcutItemDeleteOrRemove:];
   }
 
-  v5 = [v4 type];
+  type = [removeCopy type];
 
-  v6 = [sbh_isShortcutItemDeleteOrRemove__springBoardOnlyShortcutTypes containsObject:v5];
+  v6 = [sbh_isShortcutItemDeleteOrRemove__springBoardOnlyShortcutTypes containsObject:type];
   return v6;
 }
 

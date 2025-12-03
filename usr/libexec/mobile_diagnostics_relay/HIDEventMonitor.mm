@@ -1,7 +1,7 @@
 @interface HIDEventMonitor
 + (id)sharedInstance;
-- (BOOL)registerParingEventCallback:(id)a3;
-- (BOOL)registerWakeupEventCallback:(id)a3;
+- (BOOL)registerParingEventCallback:(id)callback;
+- (BOOL)registerWakeupEventCallback:(id)callback;
 - (HIDEventMonitor)init;
 - (void)cancelLongPressTimer;
 - (void)unregisterParingEventCallback;
@@ -72,14 +72,14 @@
   self->_volumeDownPressed = 0;
 }
 
-- (BOOL)registerWakeupEventCallback:(id)a3
+- (BOOL)registerWakeupEventCallback:(id)callback
 {
-  v4 = a3;
+  callbackCopy = callback;
   if (self->_eventSystemClient)
   {
     v5 = [NSString stringWithFormat:@"Must unregister previous callback first"];
-    v6 = [(MDRBaseObject *)self logger];
-    if (!os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    logger = [(MDRBaseObject *)self logger];
+    if (!os_log_type_enabled(logger, OS_LOG_TYPE_ERROR))
     {
 LABEL_4:
       v7 = 0;
@@ -96,8 +96,8 @@ LABEL_3:
   if (!v8)
   {
     v5 = [NSString stringWithFormat:@"registerWakeupEventCallback failed"];
-    v6 = [(MDRBaseObject *)self logger];
-    if (!os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    logger = [(MDRBaseObject *)self logger];
+    if (!os_log_type_enabled(logger, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_4;
     }
@@ -105,7 +105,7 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v9 = objc_retainBlock(v4);
+  v9 = objc_retainBlock(callbackCopy);
   wakeupCallback = self->_wakeupCallback;
   self->_wakeupCallback = v9;
 
@@ -115,12 +115,12 @@ LABEL_3:
   v13 = self->_eventSystemClient;
   IOHIDEventSystemClientRegisterEventCallback();
   v5 = [NSString stringWithFormat:@"Wakeup event is registered!"];
-  v6 = [(MDRBaseObject *)self logger];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  logger = [(MDRBaseObject *)self logger];
+  if (os_log_type_enabled(logger, OS_LOG_TYPE_DEFAULT))
   {
     v15 = 138543362;
     v16 = v5;
-    _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%{public}@", &v15, 0xCu);
+    _os_log_impl(&_mh_execute_header, logger, OS_LOG_TYPE_DEFAULT, "%{public}@", &v15, 0xCu);
   }
 
   v7 = 1;
@@ -144,23 +144,23 @@ LABEL_9:
   self->_wakeupCallback = 0;
 
   v6 = [NSString stringWithFormat:@"Wakeup event is unregistered"];
-  v7 = [(MDRBaseObject *)self logger];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+  logger = [(MDRBaseObject *)self logger];
+  if (os_log_type_enabled(logger, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138543362;
     v9 = v6;
-    _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%{public}@", &v8, 0xCu);
+    _os_log_impl(&_mh_execute_header, logger, OS_LOG_TYPE_DEFAULT, "%{public}@", &v8, 0xCu);
   }
 }
 
-- (BOOL)registerParingEventCallback:(id)a3
+- (BOOL)registerParingEventCallback:(id)callback
 {
-  v4 = a3;
+  callbackCopy = callback;
   if (self->_eventSystemClient)
   {
     v5 = [NSString stringWithFormat:@"Must unregister previous callback first"];
-    v6 = [(MDRBaseObject *)self logger];
-    if (!os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    logger = [(MDRBaseObject *)self logger];
+    if (!os_log_type_enabled(logger, OS_LOG_TYPE_ERROR))
     {
 LABEL_4:
       v7 = 0;
@@ -177,8 +177,8 @@ LABEL_3:
   if (!v8)
   {
     v5 = [NSString stringWithFormat:@"registerParingEventCallback failed"];
-    v6 = [(MDRBaseObject *)self logger];
-    if (!os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    logger = [(MDRBaseObject *)self logger];
+    if (!os_log_type_enabled(logger, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_4;
     }
@@ -186,7 +186,7 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v9 = objc_retainBlock(v4);
+  v9 = objc_retainBlock(callbackCopy);
   paringCallback = self->_paringCallback;
   self->_paringCallback = v9;
 
@@ -199,12 +199,12 @@ LABEL_3:
   v14 = self->_eventSystemClient;
   IOHIDEventSystemClientRegisterEventCallback();
   v5 = [NSString stringWithFormat:@"Paring event is registered!"];
-  v6 = [(MDRBaseObject *)self logger];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  logger = [(MDRBaseObject *)self logger];
+  if (os_log_type_enabled(logger, OS_LOG_TYPE_DEFAULT))
   {
     v16 = 138543362;
     v17 = v5;
-    _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%{public}@", &v16, 0xCu);
+    _os_log_impl(&_mh_execute_header, logger, OS_LOG_TYPE_DEFAULT, "%{public}@", &v16, 0xCu);
   }
 
   v7 = 1;
@@ -231,12 +231,12 @@ LABEL_9:
   self->_paringKeyCombo = 0;
 
   v7 = [NSString stringWithFormat:@"Paring event is unregistered"];
-  v8 = [(MDRBaseObject *)self logger];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  logger = [(MDRBaseObject *)self logger];
+  if (os_log_type_enabled(logger, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138543362;
     v10 = v7;
-    _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%{public}@", &v9, 0xCu);
+    _os_log_impl(&_mh_execute_header, logger, OS_LOG_TYPE_DEFAULT, "%{public}@", &v9, 0xCu);
   }
 }
 

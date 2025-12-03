@@ -1,37 +1,37 @@
 @interface AVMobileGlassTimelineView
-- (AVMobileGlassTimelineView)initWithStyleSheet:(id)a3;
-- (AVMobileGlassTimelineView)initWithUsingFluidSlider:(BOOL)a3;
+- (AVMobileGlassTimelineView)initWithStyleSheet:(id)sheet;
+- (AVMobileGlassTimelineView)initWithUsingFluidSlider:(BOOL)slider;
 - (AVMobileGlassTimelineViewDelegate)delegate;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (double)_labelIntrinsicContentSize;
 - (uint64_t)_intrinsicContentSizeWithLabelsInline;
 - (uint64_t)_updateSliderEnabledStateIfNeeded;
 - (void)_commonInit;
 - (void)_setUpShadowAppearance;
-- (void)_traitCollectionDidChange:(id)a3;
+- (void)_traitCollectionDidChange:(id)change;
 - (void)_updateFonts;
 - (void)_updateLabelsTextColorIfNeeded;
 - (void)_updateShadowAppearanceState;
 - (void)_updateShadowPathIfNeeded;
-- (void)avkit_intrinsicContentSizeOfSubviewWasInvalidated:(id)a3;
+- (void)avkit_intrinsicContentSizeOfSubviewWasInvalidated:(id)invalidated;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
 - (void)prepareForDeemphasisIfNeeded;
-- (void)setBackgroundMaterialStyle:(int64_t)a3;
-- (void)setDrawsShadow:(BOOL)a3;
-- (void)setEmphasized:(BOOL)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setLabelPosition:(unint64_t)a3;
-- (void)setLabelsCompositingFilter:(id)a3;
-- (void)setLabelsExtendedDynamicRangeGain:(double)a3;
-- (void)setLabelsFont:(id)a3;
-- (void)setLabelsTextColor:(id)a3;
-- (void)setLayoutType:(unint64_t)a3;
-- (void)setLeadingTimeText:(id)a3;
-- (void)setSliderExtendedDynamicRangeGain:(double)a3;
-- (void)setStyleSheet:(id)a3;
-- (void)setTrailingTimeText:(id)a3;
+- (void)setBackgroundMaterialStyle:(int64_t)style;
+- (void)setDrawsShadow:(BOOL)shadow;
+- (void)setEmphasized:(BOOL)emphasized;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setLabelPosition:(unint64_t)position;
+- (void)setLabelsCompositingFilter:(id)filter;
+- (void)setLabelsExtendedDynamicRangeGain:(double)gain;
+- (void)setLabelsFont:(id)font;
+- (void)setLabelsTextColor:(id)color;
+- (void)setLayoutType:(unint64_t)type;
+- (void)setLeadingTimeText:(id)text;
+- (void)setSliderExtendedDynamicRangeGain:(double)gain;
+- (void)setStyleSheet:(id)sheet;
+- (void)setTrailingTimeText:(id)text;
 - (void)updateBackgroundMaterial;
 @end
 
@@ -44,36 +44,36 @@
   return WeakRetained;
 }
 
-- (void)setBackgroundMaterialStyle:(int64_t)a3
+- (void)setBackgroundMaterialStyle:(int64_t)style
 {
   if (self)
   {
-    v5 = [(AVMobileGlassTimelineView *)self traitCollection];
-    v6 = [v5 userInterfaceStyle];
+    traitCollection = [(AVMobileGlassTimelineView *)self traitCollection];
+    userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-    if ((a3 & 0xFFFFFFFFFFFFFFFBLL) != 0)
+    if ((style & 0xFFFFFFFFFFFFFFFBLL) != 0)
     {
-      v7 = 1;
+      styleCopy2 = 1;
     }
 
     else
     {
-      v7 = a3;
+      styleCopy2 = style;
     }
 
-    if (v6 != 2)
+    if (userInterfaceStyle != 2)
     {
-      v7 = a3;
+      styleCopy2 = style;
     }
 
-    if (v6 == 1)
+    if (userInterfaceStyle == 1)
     {
       v8 = 2;
     }
 
     else
     {
-      v8 = v7;
+      v8 = styleCopy2;
     }
   }
 
@@ -87,14 +87,14 @@
   [(AVGlassBackedView *)&v9 setBackgroundMaterialStyle:v8];
 }
 
-- (void)_traitCollectionDidChange:(id)a3
+- (void)_traitCollectionDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [(AVMobileGlassTimelineView *)self traitCollection];
-  v6 = [v5 userInterfaceStyle];
+  changeCopy = change;
+  traitCollection = [(AVMobileGlassTimelineView *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  v7 = [v4 userInterfaceStyle];
-  if (v6 != v7)
+  userInterfaceStyle2 = [changeCopy userInterfaceStyle];
+  if (userInterfaceStyle != userInterfaceStyle2)
   {
     [(AVMobileGlassTimelineView *)&self->super.super.super.super.super.isa _updateShadowAppearanceState];
     if (self)
@@ -103,50 +103,50 @@
       [(AVMobileGlassTimelineView *)self _updateLabelsTextColorIfNeeded];
     }
 
-    [(AVMobileChromelessSlider *)self->_slider setOverrideUserInterfaceStyle:v6];
-    [(AVLabel *)self->_leadingLabel setOverrideUserInterfaceStyle:v6];
+    [(AVMobileChromelessSlider *)self->_slider setOverrideUserInterfaceStyle:userInterfaceStyle];
+    [(AVLabel *)self->_leadingLabel setOverrideUserInterfaceStyle:userInterfaceStyle];
     trailingLabel = self->_trailingLabel;
 
-    [(AVLabel *)trailingLabel setOverrideUserInterfaceStyle:v6];
+    [(AVLabel *)trailingLabel setOverrideUserInterfaceStyle:userInterfaceStyle];
   }
 }
 
 - (void)_updateShadowAppearanceState
 {
-  if (!a1)
+  if (!self)
   {
     return;
   }
 
-  v14 = [a1[87] layer];
-  v2 = [a1[68] layer];
+  layer = [self[87] layer];
+  layer2 = [self[68] layer];
   v3 = 0.0;
-  if ([a1 drawsShadow])
+  if ([self drawsShadow])
   {
-    v4 = [a1[87] traitCollection];
-    v5 = [v4 userInterfaceStyle];
+    traitCollection = [self[87] traitCollection];
+    userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-    if (v5 == 1)
+    if (userInterfaceStyle == 1)
     {
-      v6 = 0;
+      blackColor = 0;
       v7 = 0.0;
     }
 
     else
     {
-      v6 = [MEMORY[0x1E69DC888] blackColor];
+      blackColor = [MEMORY[0x1E69DC888] blackColor];
       v7 = 0.5;
     }
 
-    v9 = [a1[66] traitCollection];
-    if ([v9 userInterfaceStyle] == 1)
+    traitCollection2 = [self[66] traitCollection];
+    if ([traitCollection2 userInterfaceStyle] == 1)
     {
-      v10 = [a1[67] traitCollection];
-      v11 = [v10 userInterfaceStyle];
+      traitCollection3 = [self[67] traitCollection];
+      userInterfaceStyle2 = [traitCollection3 userInterfaceStyle];
 
-      if (v11 == 1)
+      if (userInterfaceStyle2 == 1)
       {
-        v8 = 0;
+        blackColor2 = 0;
         goto LABEL_12;
       }
     }
@@ -155,110 +155,110 @@
     {
     }
 
-    v8 = [MEMORY[0x1E69DC888] blackColor];
+    blackColor2 = [MEMORY[0x1E69DC888] blackColor];
     v3 = 0.5;
     goto LABEL_12;
   }
 
-  v6 = 0;
-  v8 = 0;
+  blackColor = 0;
+  blackColor2 = 0;
   v7 = 0.0;
 LABEL_12:
-  [v14 setShadowColor:{objc_msgSend(v6, "CGColor")}];
+  [layer setShadowColor:{objc_msgSend(blackColor, "CGColor")}];
   *&v12 = v7;
-  [v14 setShadowOpacity:v12];
-  [v2 setShadowColor:{objc_msgSend(v8, "CGColor")}];
+  [layer setShadowOpacity:v12];
+  [layer2 setShadowColor:{objc_msgSend(blackColor2, "CGColor")}];
   *&v13 = v3;
-  [v2 setShadowOpacity:v13];
-  [(AVMobileGlassTimelineView *)a1 _updateShadowPathIfNeeded];
+  [layer2 setShadowOpacity:v13];
+  [(AVMobileGlassTimelineView *)self _updateShadowPathIfNeeded];
 }
 
 - (void)_updateLabelsTextColorIfNeeded
 {
-  if (!a1)
+  if (!self)
   {
     return;
   }
 
-  v2 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  v3 = v2;
-  v4 = *(a1 + 672);
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  v3 = secondaryLabelColor;
+  v4 = *(self + 672);
   if (v4)
   {
-    v7 = v2;
-    v5 = v4;
+    v7 = secondaryLabelColor;
+    tertiaryLabelColor = v4;
 LABEL_4:
-    v6 = v5;
+    v6 = tertiaryLabelColor;
 
     v3 = v6;
     goto LABEL_7;
   }
 
-  if (!*(a1 + 616) && (*(a1 + 603) & 1) == 0)
+  if (!*(self + 616) && (*(self + 603) & 1) == 0)
   {
-    v7 = v2;
-    v5 = [MEMORY[0x1E69DC888] tertiaryLabelColor];
+    v7 = secondaryLabelColor;
+    tertiaryLabelColor = [MEMORY[0x1E69DC888] tertiaryLabelColor];
     goto LABEL_4;
   }
 
 LABEL_7:
   v8 = v3;
-  [*(a1 + 528) setTextColor:v3];
-  [*(a1 + 536) setTextColor:v8];
+  [*(self + 528) setTextColor:v3];
+  [*(self + 536) setTextColor:v8];
 }
 
 - (void)_updateShadowPathIfNeeded
 {
-  if (a1 && [a1 drawsShadow])
+  if (self && [self drawsShadow])
   {
-    v26 = [*(a1 + 696) layer];
-    [v26 bounds];
+    layer = [*(self + 696) layer];
+    [layer bounds];
     v3 = v2;
     v5 = v4;
     v7 = v6;
     v9 = v8;
-    if (CGRectIsNull(*(a1 + 568)) || (v28.origin.x = v3, v28.origin.y = v5, v28.size.width = v7, v28.size.height = v9, !CGRectEqualToRect(*(a1 + 568), v28)))
+    if (CGRectIsNull(*(self + 568)) || (v28.origin.x = v3, v28.origin.y = v5, v28.size.width = v7, v28.size.height = v9, !CGRectEqualToRect(*(self + 568), v28)))
     {
-      *(a1 + 568) = v3;
-      *(a1 + 576) = v5;
-      *(a1 + 584) = v7;
-      *(a1 + 592) = v9;
+      *(self + 568) = v3;
+      *(self + 576) = v5;
+      *(self + 584) = v7;
+      *(self + 592) = v9;
       v10 = [MEMORY[0x1E69DC728] bezierPathWithRect:{v3, v5, v7, v9}];
-      [v26 setShadowPath:{objc_msgSend(v10, "CGPath")}];
+      [layer setShadowPath:{objc_msgSend(v10, "CGPath")}];
     }
 
-    v11 = [*(a1 + 544) layer];
+    layer2 = [*(self + 544) layer];
     v12 = [MEMORY[0x1E69DC728] bezierPathWithRect:{*MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24)}];
-    if (([*(a1 + 528) isHidden] & 1) == 0)
+    if (([*(self + 528) isHidden] & 1) == 0)
     {
-      v13 = [*(a1 + 528) traitCollection];
-      v14 = [v13 userInterfaceStyle];
+      traitCollection = [*(self + 528) traitCollection];
+      userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-      if (v14 != 1)
+      if (userInterfaceStyle != 1)
       {
-        v15 = [*(a1 + 528) layer];
+        layer3 = [*(self + 528) layer];
         v16 = MEMORY[0x1E69DC728];
-        [v15 frame];
+        [layer3 frame];
         v17 = [v16 bezierPathWithRect:?];
 
         v12 = v17;
       }
     }
 
-    if (([*(a1 + 536) isHidden] & 1) == 0)
+    if (([*(self + 536) isHidden] & 1) == 0)
     {
-      v18 = [*(a1 + 536) traitCollection];
-      v19 = [v18 userInterfaceStyle];
+      traitCollection2 = [*(self + 536) traitCollection];
+      userInterfaceStyle2 = [traitCollection2 userInterfaceStyle];
 
-      if (v19 != 1)
+      if (userInterfaceStyle2 != 1)
       {
-        v20 = [*(a1 + 536) layer];
-        v21 = [v12 isEmpty];
+        layer4 = [*(self + 536) layer];
+        isEmpty = [v12 isEmpty];
         v22 = MEMORY[0x1E69DC728];
-        [v20 frame];
+        [layer4 frame];
         v23 = [v22 bezierPathWithRect:?];
         v24 = v23;
-        if (v21)
+        if (isEmpty)
         {
           v25 = v12;
           v12 = v23;
@@ -272,57 +272,57 @@ LABEL_7:
       }
     }
 
-    [v11 setShadowPath:{objc_msgSend(v12, "CGPath")}];
+    [layer2 setShadowPath:{objc_msgSend(v12, "CGPath")}];
   }
 }
 
 - (void)_setUpShadowAppearance
 {
-  v4 = [(AVMobileChromelessSlider *)self->_slider layer];
-  v3 = [(UIView *)self->_labelShadowView layer];
-  [v4 setShadowOffset:{0.0, 4.0}];
-  [v4 setPunchoutShadow:1];
-  [v4 setShadowRadius:12.0];
-  [v4 setShadowPathIsBounds:1];
-  [v3 setShadowOffset:{0.0, 4.0}];
-  [v3 setShadowRadius:12.0];
-  [v3 setShadowPathIsBounds:1];
+  layer = [(AVMobileChromelessSlider *)self->_slider layer];
+  layer2 = [(UIView *)self->_labelShadowView layer];
+  [layer setShadowOffset:{0.0, 4.0}];
+  [layer setPunchoutShadow:1];
+  [layer setShadowRadius:12.0];
+  [layer setShadowPathIsBounds:1];
+  [layer2 setShadowOffset:{0.0, 4.0}];
+  [layer2 setShadowRadius:12.0];
+  [layer2 setShadowPathIsBounds:1];
   [(AVMobileGlassTimelineView *)&self->super.super.super.super.super.isa _updateShadowAppearanceState];
 }
 
 - (void)updateBackgroundMaterial
 {
-  v3 = [(AVGlassBackedView *)self backgroundMaterialStyle];
-  v4 = [(AVGlassBackedView *)self backgroundMaterialized];
-  [(AVGlassBackedView *)self->_contentsView setBackgroundMaterialStyle:v3];
+  backgroundMaterialStyle = [(AVGlassBackedView *)self backgroundMaterialStyle];
+  backgroundMaterialized = [(AVGlassBackedView *)self backgroundMaterialized];
+  [(AVGlassBackedView *)self->_contentsView setBackgroundMaterialStyle:backgroundMaterialStyle];
   contentsView = self->_contentsView;
 
-  [(AVGlassBackedView *)contentsView setBackgroundMaterialized:v4];
+  [(AVGlassBackedView *)contentsView setBackgroundMaterialized:backgroundMaterialized];
 }
 
-- (void)setDrawsShadow:(BOOL)a3
+- (void)setDrawsShadow:(BOOL)shadow
 {
-  if (self->_drawsShadow != a3)
+  if (self->_drawsShadow != shadow)
   {
-    self->_drawsShadow = a3;
+    self->_drawsShadow = shadow;
     [(AVMobileGlassTimelineView *)&self->super.super.super.super.super.isa _updateShadowAppearanceState];
   }
 }
 
-- (void)avkit_intrinsicContentSizeOfSubviewWasInvalidated:(id)a3
+- (void)avkit_intrinsicContentSizeOfSubviewWasInvalidated:(id)invalidated
 {
-  if (self->_slider == a3)
+  if (self->_slider == invalidated)
   {
-    v5 = a3;
+    invalidatedCopy = invalidated;
     [(AVMobileGlassTimelineView *)self invalidateIntrinsicContentSize];
-    v6 = [(AVMobileGlassTimelineView *)self superview];
-    [v6 avkit_intrinsicContentSizeOfSubviewWasInvalidated:v5];
+    superview = [(AVMobileGlassTimelineView *)self superview];
+    [superview avkit_intrinsicContentSizeOfSubviewWasInvalidated:invalidatedCopy];
 
     [(AVMobileGlassTimelineView *)self setNeedsLayout];
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   [(AVMobileGlassTimelineView *)self _intrinsicContentSizeWithLabelsInline];
   v5 = v4;
@@ -362,20 +362,20 @@ LABEL_7:
   return result;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = self;
+  y = inside.y;
+  x = inside.x;
+  selfCopy = self;
   v11.receiver = self;
   v11.super_class = AVMobileGlassTimelineView;
-  v7 = a4;
-  v8 = [(AVMobileGlassTimelineView *)&v11 pointInside:v7 withEvent:x, y];
-  slider = v6->_slider;
-  [(AVMobileChromelessSlider *)slider convertPoint:v6 fromView:x, y, v11.receiver, v11.super_class];
-  LOBYTE(v6) = [(AVMobileChromelessSlider *)slider pointInside:v7 withEvent:?];
+  eventCopy = event;
+  v8 = [(AVMobileGlassTimelineView *)&v11 pointInside:eventCopy withEvent:x, y];
+  slider = selfCopy->_slider;
+  [(AVMobileChromelessSlider *)slider convertPoint:selfCopy fromView:x, y, v11.receiver, v11.super_class];
+  LOBYTE(selfCopy) = [(AVMobileChromelessSlider *)slider pointInside:eventCopy withEvent:?];
 
-  return (v8 | v6) & 1;
+  return (v8 | selfCopy) & 1;
 }
 
 - (void)layoutSubviews
@@ -392,9 +392,9 @@ LABEL_7:
     v8 = v7;
     [(AVMobileChromelessSlider *)self->_slider intrinsicContentSize];
     v10 = v9;
-    v11 = [(AVMobileGlassTimelineView *)self _labelIntrinsicContentSize];
+    _labelIntrinsicContentSize = [(AVMobileGlassTimelineView *)self _labelIntrinsicContentSize];
     v13 = v12;
-    v14 = [(AVMobileGlassTimelineView *)self _labelIntrinsicContentSize];
+    _labelIntrinsicContentSize2 = [(AVMobileGlassTimelineView *)self _labelIntrinsicContentSize];
     v16 = v15;
     [(AVMobileChromelessTimelineView *)self _timelineScaleFactor];
     v93 = (10.0 - v10) * 0.5;
@@ -424,7 +424,7 @@ LABEL_7:
     v91 = v13;
     v92 = v21;
     v22 = v13 + v19;
-    v23 = v11;
+    v23 = _labelIntrinsicContentSize;
     v24 = v19;
     v25 = -(v6 - v6 * v17) * 0.5;
     if (self->_emphasized)
@@ -463,7 +463,7 @@ LABEL_7:
     }
 
     v34 = v32 >= 0.00000011921 && v30 <= v31;
-    v35 = v14 + v29;
+    v35 = _labelIntrinsicContentSize2 + v29;
     v37 = vabds_f32(v30, v35) >= 0.00000011921 && v30 <= v35;
     v38 = self->_trailingTimeText == 0 || v34 || v37;
     v39 = v8;
@@ -528,7 +528,7 @@ LABEL_47:
       }
     }
 
-    [(AVLabel *)self->_trailingLabel setFrame:v6 - v14 + v26, v24, v14, v16];
+    [(AVLabel *)self->_trailingLabel setFrame:v6 - _labelIntrinsicContentSize2 + v26, v24, _labelIntrinsicContentSize2, v16];
     if (v41)
     {
       goto LABEL_48;
@@ -662,23 +662,23 @@ LABEL_89:
   [(AVLabel *)v51 setHidden:v52];
   [(AVMobileChromelessSlider *)self->_slider setHidden:v41];
   [(AVMobileGlassTimelineView *)self _updateShadowPathIfNeeded];
-  v88 = [(AVMobileGlassTimelineView *)self delegate];
+  delegate = [(AVMobileGlassTimelineView *)self delegate];
   v89 = objc_opt_respondsToSelector();
 
   if (v89)
   {
-    v90 = [(AVMobileGlassTimelineView *)self delegate];
-    [v90 timelineViewDidLayoutSubviews:self];
+    delegate2 = [(AVMobileGlassTimelineView *)self delegate];
+    [delegate2 timelineViewDidLayoutSubviews:self];
   }
 }
 
 - (double)_labelIntrinsicContentSize
 {
-  [*(a1 + 528) intrinsicContentSize];
+  [*(self + 528) intrinsicContentSize];
   v3 = v2;
-  [*(a1 + 536) intrinsicContentSize];
+  [*(self + 536) intrinsicContentSize];
   v5 = v4;
-  [(AVMobileChromelessTimelineView *)a1 _timelineScaleFactor];
+  [(AVMobileChromelessTimelineView *)self _timelineScaleFactor];
   if (v3 >= v5)
   {
     v7 = v3;
@@ -690,7 +690,7 @@ LABEL_89:
   }
 
   v8 = v6 * v7;
-  if (!*(a1 + 603))
+  if (!*(self + 603))
   {
     return v7;
   }
@@ -715,8 +715,8 @@ LABEL_89:
       [(AVMobileGlassTimelineView *)self bounds];
       [(CALayer *)v5 setBounds:?];
       v6 = self->_glassShadowLayer;
-      v7 = [MEMORY[0x1E69DC888] blackColor];
-      -[CALayer setShadowColor:](v6, "setShadowColor:", [v7 CGColor]);
+      blackColor = [MEMORY[0x1E69DC888] blackColor];
+      -[CALayer setShadowColor:](v6, "setShadowColor:", [blackColor CGColor]);
 
       LODWORD(v8) = 1041865114;
       [(CALayer *)self->_glassShadowLayer setOpacity:v8];
@@ -725,8 +725,8 @@ LABEL_89:
       [(CALayer *)self->_glassShadowLayer setPunchoutShadow:1];
       [(CALayer *)self->_glassShadowLayer setAllowsEdgeAntialiasing:1];
       [(CALayer *)self->_glassShadowLayer setHidden:1];
-      v9 = [(AVMobileGlassTimelineView *)self layer];
-      [v9 insertSublayer:self->_glassShadowLayer atIndex:0];
+      layer = [(AVMobileGlassTimelineView *)self layer];
+      [layer insertSublayer:self->_glassShadowLayer atIndex:0];
     }
 
     if (!self->_dimmingView)
@@ -822,19 +822,19 @@ LABEL_89:
 
 - (void)_updateFonts
 {
-  if (!a1)
+  if (!self)
   {
     return;
   }
 
-  v2 = [*(a1 + 632) timeLabelFont];
-  v3 = v2;
-  v4 = *(a1 + 616);
+  timeLabelFont = [*(self + 632) timeLabelFont];
+  v3 = timeLabelFont;
+  v4 = *(self + 616);
   if (v4 == 2)
   {
-    v16 = v2;
+    v16 = timeLabelFont;
     v5 = &OBJC_IVAR___AVMobileGlassTimelineView__timeLabelFullscreenPlatterFont;
-    v6 = *(a1 + 560);
+    v6 = *(self + 560);
     if (!v6)
     {
       v7 = MEMORY[0x1E69DDD28];
@@ -850,9 +850,9 @@ LABEL_9:
 
   if (!v4)
   {
-    v16 = v2;
+    v16 = timeLabelFont;
     v5 = &OBJC_IVAR___AVMobileGlassTimelineView__timeLabelInlineFont;
-    v6 = *(a1 + 552);
+    v6 = *(self + 552);
     if (!v6)
     {
       v7 = MEMORY[0x1E69DDD08];
@@ -860,13 +860,13 @@ LABEL_8:
       v8 = MEMORY[0x1E69DB878];
       v9 = *v7;
       v10 = *MEMORY[0x1E69DB970];
-      v11 = [a1 traitCollection];
-      v12 = [v8 avkit_monospacedDigitFontWithTextStyle:v9 fontWeight:v11 traitCollection:v10];
+      traitCollection = [self traitCollection];
+      v12 = [v8 avkit_monospacedDigitFontWithTextStyle:v9 fontWeight:traitCollection traitCollection:v10];
       v13 = *v5;
-      v14 = *(a1 + v13);
-      *(a1 + v13) = v12;
+      v14 = *(self + v13);
+      *(self + v13) = v12;
 
-      v6 = *(a1 + *v5);
+      v6 = *(self + *v5);
       goto LABEL_9;
     }
 
@@ -875,9 +875,9 @@ LABEL_8:
 
 LABEL_10:
   v17 = v3;
-  [*(a1 + 528) setFont:v3];
-  [*(a1 + 536) setFont:v17];
-  [a1 setNeedsLayout];
+  [*(self + 528) setFont:v3];
+  [*(self + 536) setFont:v17];
+  [self setNeedsLayout];
 }
 
 - (uint64_t)_updateSliderEnabledStateIfNeeded
@@ -907,16 +907,16 @@ LABEL_10:
     {
       if ([MEMORY[0x1E69DD250] _isInRetargetableAnimationBlock])
       {
-        v5 = [(AVMobileGlassTimelineView *)self fluidSlider];
-        [v5 _removeAllRetargetableAnimations:0];
+        fluidSlider = [(AVMobileGlassTimelineView *)self fluidSlider];
+        [fluidSlider _removeAllRetargetableAnimations:0];
         v6 = MEMORY[0x1E69DD250];
         v8[0] = MEMORY[0x1E69E9820];
         v8[1] = 3221225472;
         v8[2] = __57__AVMobileGlassTimelineView_prepareForDeemphasisIfNeeded__block_invoke;
         v8[3] = &unk_1E7209FB0;
-        v9 = v5;
-        v10 = self;
-        v7 = v5;
+        v9 = fluidSlider;
+        selfCopy = self;
+        v7 = fluidSlider;
         [v6 performWithoutAnimation:v8];
       }
     }
@@ -933,61 +933,61 @@ uint64_t __57__AVMobileGlassTimelineView_prepareForDeemphasisIfNeeded__block_inv
   return [v2 layoutIfNeeded];
 }
 
-- (void)setSliderExtendedDynamicRangeGain:(double)a3
+- (void)setSliderExtendedDynamicRangeGain:(double)gain
 {
-  if (self->_sliderExtendedDynamicRangeGain != a3)
+  if (self->_sliderExtendedDynamicRangeGain != gain)
   {
-    self->_sliderExtendedDynamicRangeGain = a3;
+    self->_sliderExtendedDynamicRangeGain = gain;
     [(UIView *)self->_slider setAvkit_extendedDynamicRangeGain:?];
   }
 }
 
-- (void)setLabelsCompositingFilter:(id)a3
+- (void)setLabelsCompositingFilter:(id)filter
 {
-  v5 = a3;
-  if (self->_labelsCompositingFilter != v5)
+  filterCopy = filter;
+  if (self->_labelsCompositingFilter != filterCopy)
   {
-    v8 = v5;
-    objc_storeStrong(&self->_labelsCompositingFilter, a3);
-    v6 = [(AVLabel *)self->_trailingLabel layer];
-    [v6 setCompositingFilter:v8];
+    v8 = filterCopy;
+    objc_storeStrong(&self->_labelsCompositingFilter, filter);
+    layer = [(AVLabel *)self->_trailingLabel layer];
+    [layer setCompositingFilter:v8];
 
-    v7 = [(AVLabel *)self->_leadingLabel layer];
-    [v7 setCompositingFilter:v8];
+    layer2 = [(AVLabel *)self->_leadingLabel layer];
+    [layer2 setCompositingFilter:v8];
   }
 
-  MEMORY[0x1EEE66BE0](v5);
+  MEMORY[0x1EEE66BE0](filterCopy);
 }
 
-- (void)setLabelsFont:(id)a3
+- (void)setLabelsFont:(id)font
 {
-  v5 = a3;
-  if (self->_labelsFont != v5)
+  fontCopy = font;
+  if (self->_labelsFont != fontCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_labelsFont, a3);
+    v6 = fontCopy;
+    objc_storeStrong(&self->_labelsFont, font);
     [(AVMobileGlassTimelineView *)self _updateFonts];
-    v5 = v6;
+    fontCopy = v6;
   }
 }
 
-- (void)setLabelsTextColor:(id)a3
+- (void)setLabelsTextColor:(id)color
 {
-  v5 = a3;
-  if (self->_labelsTextColor != v5)
+  colorCopy = color;
+  if (self->_labelsTextColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_labelsTextColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_labelsTextColor, color);
     [(AVMobileGlassTimelineView *)self _updateLabelsTextColorIfNeeded];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
-- (void)setLabelsExtendedDynamicRangeGain:(double)a3
+- (void)setLabelsExtendedDynamicRangeGain:(double)gain
 {
-  if (self->_labelsExtendedDynamicRangeGain != a3)
+  if (self->_labelsExtendedDynamicRangeGain != gain)
   {
-    self->_labelsExtendedDynamicRangeGain = a3;
+    self->_labelsExtendedDynamicRangeGain = gain;
     [(UIView *)self->_trailingLabel setAvkit_extendedDynamicRangeGain:?];
     leadingLabel = self->_leadingLabel;
     labelsExtendedDynamicRangeGain = self->_labelsExtendedDynamicRangeGain;
@@ -996,47 +996,47 @@ uint64_t __57__AVMobileGlassTimelineView_prepareForDeemphasisIfNeeded__block_inv
   }
 }
 
-- (void)setTrailingTimeText:(id)a3
+- (void)setTrailingTimeText:(id)text
 {
-  v5 = a3;
-  if (self->_trailingTimeText != v5)
+  textCopy = text;
+  if (self->_trailingTimeText != textCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_trailingTimeText, a3);
+    v6 = textCopy;
+    objc_storeStrong(&self->_trailingTimeText, text);
     [(AVLabel *)self->_trailingLabel setText:self->_trailingTimeText];
     [(AVMobileGlassTimelineView *)self setNeedsLayout];
-    v5 = v6;
+    textCopy = v6;
   }
 }
 
-- (void)setStyleSheet:(id)a3
+- (void)setStyleSheet:(id)sheet
 {
-  v5 = a3;
-  if (self->_styleSheet != v5)
+  sheetCopy = sheet;
+  if (self->_styleSheet != sheetCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_styleSheet, a3);
+    v6 = sheetCopy;
+    objc_storeStrong(&self->_styleSheet, sheet);
     [(AVMobileGlassTimelineView *)self _updateFonts];
-    v5 = v6;
+    sheetCopy = v6;
   }
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  if (self->_enabled != a3)
+  if (self->_enabled != enabled)
   {
-    self->_enabled = a3;
+    self->_enabled = enabled;
     [(AVMobileGlassTimelineView *)self _updateSliderEnabledStateIfNeeded];
   }
 }
 
-- (void)setEmphasized:(BOOL)a3
+- (void)setEmphasized:(BOOL)emphasized
 {
-  if (self->_emphasized != a3)
+  if (self->_emphasized != emphasized)
   {
-    self->_emphasized = a3;
-    v5 = [(AVMobileGlassTimelineView *)self isEmphasized];
-    if (v5)
+    self->_emphasized = emphasized;
+    isEmphasized = [(AVMobileGlassTimelineView *)self isEmphasized];
+    if (isEmphasized)
     {
       if (self->_labelPosition == 1)
       {
@@ -1065,8 +1065,8 @@ uint64_t __57__AVMobileGlassTimelineView_prepareForDeemphasisIfNeeded__block_inv
       [(AVLabel *)self->_trailingLabel setAlpha:v6];
     }
 
-    [(AVMobileGlassBackgroundView *)self->_dimmingView setEmphasized:v5];
-    [(CALayer *)self->_glassShadowLayer setHidden:v5 ^ 1];
+    [(AVMobileGlassBackgroundView *)self->_dimmingView setEmphasized:isEmphasized];
+    [(CALayer *)self->_glassShadowLayer setHidden:isEmphasized ^ 1];
     v8 = self->_layoutType != 2;
     [(AVView *)self->_dimmingView setHidden:v8];
     [(CALayer *)self->_glassShadowLayer setHidden:v8];
@@ -1075,24 +1075,24 @@ uint64_t __57__AVMobileGlassTimelineView_prepareForDeemphasisIfNeeded__block_inv
   }
 }
 
-- (void)setLeadingTimeText:(id)a3
+- (void)setLeadingTimeText:(id)text
 {
-  v5 = a3;
-  if (self->_leadingTimeText != v5)
+  textCopy = text;
+  if (self->_leadingTimeText != textCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_leadingTimeText, a3);
+    v6 = textCopy;
+    objc_storeStrong(&self->_leadingTimeText, text);
     [(AVLabel *)self->_leadingLabel setText:self->_leadingTimeText];
     [(AVMobileGlassTimelineView *)self setNeedsLayout];
-    v5 = v6;
+    textCopy = v6;
   }
 }
 
-- (void)setLayoutType:(unint64_t)a3
+- (void)setLayoutType:(unint64_t)type
 {
-  if (self->_layoutType != a3)
+  if (self->_layoutType != type)
   {
-    self->_layoutType = a3;
+    self->_layoutType = type;
     [(AVMobileGlassTimelineView *)self _updateFonts];
     [(AVMobileGlassTimelineView *)self _updateLabelsTextColorIfNeeded];
     v4 = self->_layoutType != 2;
@@ -1103,16 +1103,16 @@ uint64_t __57__AVMobileGlassTimelineView_prepareForDeemphasisIfNeeded__block_inv
   }
 }
 
-- (void)setLabelPosition:(unint64_t)a3
+- (void)setLabelPosition:(unint64_t)position
 {
-  if (self->_labelPosition != a3)
+  if (self->_labelPosition != position)
   {
-    self->_labelPosition = a3;
+    self->_labelPosition = position;
     [(AVMobileGlassTimelineView *)self setNeedsLayout];
   }
 }
 
-- (AVMobileGlassTimelineView)initWithUsingFluidSlider:(BOOL)a3
+- (AVMobileGlassTimelineView)initWithUsingFluidSlider:(BOOL)slider
 {
   v7.receiver = self;
   v7.super_class = AVMobileGlassTimelineView;
@@ -1120,7 +1120,7 @@ uint64_t __57__AVMobileGlassTimelineView_prepareForDeemphasisIfNeeded__block_inv
   v5 = v4;
   if (v4)
   {
-    v4->_overrideFluidSliderPreference = a3;
+    v4->_overrideFluidSliderPreference = slider;
     [(AVMobileGlassTimelineView *)v4 _commonInit];
   }
 
@@ -1130,36 +1130,36 @@ uint64_t __57__AVMobileGlassTimelineView_prepareForDeemphasisIfNeeded__block_inv
 - (void)_commonInit
 {
   v7[1] = *MEMORY[0x1E69E9840];
-  v2 = *(a1 + 624);
-  *(a1 + 624) = 0;
+  v2 = *(self + 624);
+  *(self + 624) = 0;
 
-  v3 = *(a1 + 640);
-  *(a1 + 640) = 0;
+  v3 = *(self + 640);
+  *(self + 640) = 0;
 
-  *(a1 + 608) = 0;
-  *(a1 + 616) = 1;
-  *(a1 + 602) = 1;
+  *(self + 608) = 0;
+  *(self + 616) = 1;
+  *(self + 602) = 1;
   v4 = *(MEMORY[0x1E695F050] + 16);
-  *(a1 + 568) = *MEMORY[0x1E695F050];
-  *(a1 + 584) = v4;
-  *(a1 + 603) = 0;
-  *(a1 + 604) = 1;
-  [a1 setIgnoresTouches:1];
+  *(self + 568) = *MEMORY[0x1E695F050];
+  *(self + 584) = v4;
+  *(self + 603) = 0;
+  *(self + 604) = 1;
+  [self setIgnoresTouches:1];
   v7[0] = objc_opt_class();
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v7 count:1];
-  v6 = [a1 registerForTraitChanges:v5 withHandler:&__block_literal_global_22698];
+  v6 = [self registerForTraitChanges:v5 withHandler:&__block_literal_global_22698];
 }
 
-- (AVMobileGlassTimelineView)initWithStyleSheet:(id)a3
+- (AVMobileGlassTimelineView)initWithStyleSheet:(id)sheet
 {
-  v5 = a3;
+  sheetCopy = sheet;
   v10.receiver = self;
   v10.super_class = AVMobileGlassTimelineView;
   v6 = [(AVGlassBackedView *)&v10 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_styleSheet, a3);
+    objc_storeStrong(&v6->_styleSheet, sheet);
     v8 = +[AVKitGlobalSettings shared];
     v7->_overrideFluidSliderPreference = [v8 fluidSliderEnabled];
 

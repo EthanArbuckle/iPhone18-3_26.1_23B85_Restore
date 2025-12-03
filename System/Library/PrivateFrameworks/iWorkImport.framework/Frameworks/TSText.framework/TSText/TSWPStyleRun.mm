@@ -1,10 +1,10 @@
 @interface TSWPStyleRun
-- (BOOL)coalesceWith:(id)a3;
+- (BOOL)coalesceWith:(id)with;
 - (TSWPFontHeightInfo)fontHeightInfo;
 - (TSWPStyleRun)init;
 - (_NSRange)range;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setFontHeightInfo:(TSWPFontHeightInfo *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setFontHeightInfo:(TSWPFontHeightInfo *)info;
 @end
 
 @implementation TSWPStyleRun
@@ -22,7 +22,7 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_new();
   v7 = objc_msgSend_charIndex(self, v5, v6);
@@ -50,28 +50,28 @@
   return v4;
 }
 
-- (BOOL)coalesceWith:(id)a3
+- (BOOL)coalesceWith:(id)with
 {
-  v5 = a3;
+  withCopy = with;
   v8 = objc_msgSend_charIndex(self, v6, v7);
   v11 = objc_msgSend_runLength(self, v9, v10);
-  if (v11 + v8 != objc_msgSend_charIndex(v5, v12, v13))
+  if (v11 + v8 != objc_msgSend_charIndex(withCopy, v12, v13))
   {
     goto LABEL_19;
   }
 
   v16 = objc_msgSend_flags(self, v14, v15);
-  if (v16 != objc_msgSend_flags(v5, v17, v18))
+  if (v16 != objc_msgSend_flags(withCopy, v17, v18))
   {
     goto LABEL_19;
   }
 
   v21 = objc_msgSend_characterStyle(self, v19, v20);
-  v26 = objc_msgSend_characterStyle(v5, v22, v23);
+  v26 = objc_msgSend_characterStyle(withCopy, v22, v23);
   if (v21 != v26)
   {
     v61 = objc_msgSend_characterStyle(self, v24, v25);
-    v3 = objc_msgSend_characterStyle(v5, v27, v28);
+    v3 = objc_msgSend_characterStyle(withCopy, v27, v28);
     if (!objc_msgSend_isEqual_(v61, v29, v3))
     {
       goto LABEL_17;
@@ -79,10 +79,10 @@
   }
 
   v30 = objc_msgSend_ctFont(self, v24, v25);
-  if (v30 != objc_msgSend_ctFont(v5, v31, v32))
+  if (v30 != objc_msgSend_ctFont(withCopy, v31, v32))
   {
     v35 = objc_msgSend_ctFont(self, v33, v34);
-    v38 = objc_msgSend_ctFont(v5, v36, v37);
+    v38 = objc_msgSend_ctFont(withCopy, v36, v37);
     if (!CFEqual(v35, v38))
     {
       if (v21 == v26)
@@ -101,7 +101,7 @@ LABEL_17:
   }
 
   v39 = objc_msgSend_attributes(self, v33, v34);
-  v42 = objc_msgSend_attributes(v5, v40, v41);
+  v42 = objc_msgSend_attributes(withCopy, v40, v41);
   v45 = v42;
   if (v39 == v42)
   {
@@ -114,7 +114,7 @@ LABEL_17:
   else
   {
     v46 = objc_msgSend_attributes(self, v43, v44);
-    v49 = objc_msgSend_attributes(v5, v47, v48);
+    v49 = objc_msgSend_attributes(withCopy, v47, v48);
     isEqualToDictionary = objc_msgSend_isEqualToDictionary_(v46, v50, v49);
 
     if (v21 != v26)
@@ -127,7 +127,7 @@ LABEL_17:
     }
   }
 
-  v54 = objc_msgSend_runLength(v5, v52, v53);
+  v54 = objc_msgSend_runLength(withCopy, v52, v53);
   v57 = objc_msgSend_runLength(self, v55, v56);
   objc_msgSend_setRunLength_(self, v58, v57 + v54);
   v59 = 1;
@@ -160,15 +160,15 @@ LABEL_20:
   return self;
 }
 
-- (void)setFontHeightInfo:(TSWPFontHeightInfo *)a3
+- (void)setFontHeightInfo:(TSWPFontHeightInfo *)info
 {
-  v3 = *&a3->spaceBefore;
-  *&self->_fontHeightInfo.ascent = *&a3->ascent;
+  v3 = *&info->spaceBefore;
+  *&self->_fontHeightInfo.ascent = *&info->ascent;
   *&self->_fontHeightInfo.spaceBefore = v3;
-  v4 = *&a3->descent;
-  v5 = *&a3->leadingBelow;
-  v6 = *&a3->verticalHeight;
-  *&self->_fontHeightInfo.underlinePosition = *&a3->underlinePosition;
+  v4 = *&info->descent;
+  v5 = *&info->leadingBelow;
+  v6 = *&info->verticalHeight;
+  *&self->_fontHeightInfo.underlinePosition = *&info->underlinePosition;
   *&self->_fontHeightInfo.verticalHeight = v6;
   *&self->_fontHeightInfo.leadingBelow = v5;
   *&self->_fontHeightInfo.descent = v4;

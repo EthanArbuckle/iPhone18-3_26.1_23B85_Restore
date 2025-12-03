@@ -1,27 +1,27 @@
 @interface NotesCIDURLProtocol
-+ (BOOL)canInitWithRequest:(id)a3;
-+ (void)registerDataProvider:(id)a3 forCIDURL:(id)a4;
++ (BOOL)canInitWithRequest:(id)request;
++ (void)registerDataProvider:(id)provider forCIDURL:(id)l;
 - (void)startLoading;
 @end
 
 @implementation NotesCIDURLProtocol
 
-+ (void)registerDataProvider:(id)a3 forCIDURL:(id)a4
++ (void)registerDataProvider:(id)provider forCIDURL:(id)l
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __54__NotesCIDURLProtocol_registerDataProvider_forCIDURL___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   v5 = registerDataProvider_forCIDURL__onceToken;
-  v6 = a4;
-  v7 = a3;
+  lCopy = l;
+  providerCopy = provider;
   if (v5 != -1)
   {
     dispatch_once(&registerDataProvider_forCIDURL__onceToken, block);
   }
 
-  [s_providersByCID setObject:v7 forKeyedSubscript:v6];
+  [s_providersByCID setObject:providerCopy forKeyedSubscript:lCopy];
 }
 
 uint64_t __54__NotesCIDURLProtocol_registerDataProvider_forCIDURL___block_invoke(uint64_t a1)
@@ -33,21 +33,21 @@ uint64_t __54__NotesCIDURLProtocol_registerDataProvider_forCIDURL___block_invoke
   return MEMORY[0x1EEE66BB8](v1);
 }
 
-+ (BOOL)canInitWithRequest:(id)a3
++ (BOOL)canInitWithRequest:(id)request
 {
-  v3 = [a3 URL];
-  v4 = [v3 scheme];
-  v5 = [v4 isEqualToString:@"cid"];
+  v3 = [request URL];
+  scheme = [v3 scheme];
+  v5 = [scheme isEqualToString:@"cid"];
 
   return v5;
 }
 
 - (void)startLoading
 {
-  v3 = [(NSURLProtocol *)self request];
-  v4 = [v3 URL];
+  request = [(NSURLProtocol *)self request];
+  v4 = [request URL];
 
-  v5 = [(NSURLProtocol *)self client];
+  client = [(NSURLProtocol *)self client];
   v6 = [s_providersByCID objectForKeyedSubscript:v4];
   v7 = v6;
   if (v6)
@@ -62,13 +62,13 @@ uint64_t __54__NotesCIDURLProtocol_registerDataProvider_forCIDURL___block_invoke
     if (v9 && (v8 & 1) != 0)
     {
       v12 = objc_alloc(MEMORY[0x1E696AF70]);
-      v13 = [(NSURLProtocol *)self request];
-      v14 = [v13 URL];
+      request2 = [(NSURLProtocol *)self request];
+      v14 = [request2 URL];
       v15 = [v12 initWithURL:v14 MIMEType:v10 expectedContentLength:objc_msgSend(v9 textEncodingName:{"length"), 0}];
 
-      [v5 URLProtocol:self didReceiveResponse:v15 cacheStoragePolicy:2];
-      [v5 URLProtocol:self didLoadData:v9];
-      [v5 URLProtocolDidFinishLoading:self];
+      [client URLProtocol:self didReceiveResponse:v15 cacheStoragePolicy:2];
+      [client URLProtocol:self didLoadData:v9];
+      [client URLProtocolDidFinishLoading:self];
 
       goto LABEL_9;
     }
@@ -86,7 +86,7 @@ uint64_t __54__NotesCIDURLProtocol_registerDataProvider_forCIDURL___block_invoke
     v11 = [MEMORY[0x1E696ABC0] errorWithDomain:@"NotesCIDURLProtocolErrorDomain" code:100 userInfo:0];
   }
 
-  [v5 URLProtocol:self didFailWithError:v11];
+  [client URLProtocol:self didFailWithError:v11];
 LABEL_9:
 }
 

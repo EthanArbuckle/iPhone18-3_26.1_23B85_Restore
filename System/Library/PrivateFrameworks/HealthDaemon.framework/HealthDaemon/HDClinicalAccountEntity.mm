@@ -1,7 +1,7 @@
 @interface HDClinicalAccountEntity
 + (id)checkConstraints;
 + (id)foreignKeys;
-+ (id)joinClausesForProperty:(id)a3;
++ (id)joinClausesForProperty:(id)property;
 @end
 
 @implementation HDClinicalAccountEntity
@@ -36,10 +36,10 @@
   return v3;
 }
 
-+ (id)joinClausesForProperty:(id)a3
++ (id)joinClausesForProperty:(id)property
 {
   v20[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  propertyCopy = property;
   v5 = objc_alloc(MEMORY[0x277CBEB98]);
   v20[0] = @"gateway.external_id";
   v20[1] = @"gateway.last_reported_status";
@@ -47,26 +47,26 @@
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:3];
   v7 = [v5 initWithArray:v6];
 
-  if ([v7 containsObject:v4])
+  if ([v7 containsObject:propertyCopy])
   {
     v8 = MEMORY[0x277D10B50];
-    v9 = [a1 disambiguatedDatabaseTable];
+    disambiguatedDatabaseTable = [self disambiguatedDatabaseTable];
     v10 = objc_opt_class();
     v11 = *MEMORY[0x277D10A40];
-    v12 = [v8 leftJoinClauseFromTable:v9 toTargetEntity:v10 as:@"gateway" localReference:@"gateway_id" targetKey:*MEMORY[0x277D10A40]];
+    v12 = [v8 leftJoinClauseFromTable:disambiguatedDatabaseTable toTargetEntity:v10 as:@"gateway" localReference:@"gateway_id" targetKey:*MEMORY[0x277D10A40]];
 
     v13 = MEMORY[0x277D10B50];
-    v14 = [a1 disambiguatedDatabaseTable];
-    v15 = [v13 leftJoinClauseFromTable:v14 toTargetEntity:objc_opt_class() as:@"issuer" localReference:@"signed_clinical_data_issuer_rowid" targetKey:v11];
+    disambiguatedDatabaseTable2 = [self disambiguatedDatabaseTable];
+    v15 = [v13 leftJoinClauseFromTable:disambiguatedDatabaseTable2 toTargetEntity:objc_opt_class() as:@"issuer" localReference:@"signed_clinical_data_issuer_rowid" targetKey:v11];
 
     v16 = [objc_alloc(MEMORY[0x277CBEB98]) initWithObjects:{v12, v15, 0}];
   }
 
   else
   {
-    v19.receiver = a1;
+    v19.receiver = self;
     v19.super_class = &OBJC_METACLASS___HDClinicalAccountEntity;
-    v16 = objc_msgSendSuper2(&v19, sel_joinClausesForProperty_, v4);
+    v16 = objc_msgSendSuper2(&v19, sel_joinClausesForProperty_, propertyCopy);
   }
 
   v17 = *MEMORY[0x277D85DE8];

@@ -1,32 +1,32 @@
 @interface FedStatsCohortQueryURLBits
-+ (id)cohortQueryFieldWithKey:(id)a3;
-- (id)cohortKeyForParameters:(id)a3 possibleError:(id *)a4;
-- (id)initQueryFieldWithKey:(id)a3;
++ (id)cohortQueryFieldWithKey:(id)key;
+- (id)cohortKeyForParameters:(id)parameters possibleError:(id *)error;
+- (id)initQueryFieldWithKey:(id)key;
 @end
 
 @implementation FedStatsCohortQueryURLBits
 
-- (id)initQueryFieldWithKey:(id)a3
+- (id)initQueryFieldWithKey:(id)key
 {
-  v5 = a3;
+  keyCopy = key;
   v9.receiver = self;
   v9.super_class = FedStatsCohortQueryURLBits;
   v6 = [(FedStatsCohortQueryURLBits *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_cohortName, a3);
+    objc_storeStrong(&v6->_cohortName, key);
   }
 
   return v7;
 }
 
-+ (id)cohortQueryFieldWithKey:(id)a3
++ (id)cohortQueryFieldWithKey:(id)key
 {
-  if (a3)
+  if (key)
   {
-    v4 = a3;
-    v5 = [[a1 alloc] initQueryFieldWithKey:v4];
+    keyCopy = key;
+    v5 = [[self alloc] initQueryFieldWithKey:keyCopy];
   }
 
   else
@@ -37,11 +37,11 @@
   return v5;
 }
 
-- (id)cohortKeyForParameters:(id)a3 possibleError:(id *)a4
+- (id)cohortKeyForParameters:(id)parameters possibleError:(id *)error
 {
-  v6 = a3;
-  v7 = [(FedStatsCohortQueryURLBits *)self cohortName];
-  v8 = [v6 objectForKey:v7];
+  parametersCopy = parameters;
+  cohortName = [(FedStatsCohortQueryURLBits *)self cohortName];
+  v8 = [parametersCopy objectForKey:cohortName];
 
   if (v8 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
@@ -58,14 +58,14 @@
 
   else
   {
-    if (a4)
+    if (error)
     {
       v10 = MEMORY[0x277CCACA8];
-      v11 = [(FedStatsCohortQueryURLBits *)self cohortName];
-      v12 = [v10 stringWithFormat:@"The data should have a String value for key %@", v11];
+      cohortName2 = [(FedStatsCohortQueryURLBits *)self cohortName];
+      v12 = [v10 stringWithFormat:@"The data should have a String value for key %@", cohortName2];
       v13 = [FedStatsError errorWithCode:100 description:v12];
-      v14 = *a4;
-      *a4 = v13;
+      v14 = *error;
+      *error = v13;
     }
 
     v9 = @"<null>";

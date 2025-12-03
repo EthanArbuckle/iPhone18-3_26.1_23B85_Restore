@@ -1,20 +1,20 @@
 @interface AWDIMessageHealthCheckPerformed
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (unsigned)aliasesMatchedAtIndex:(unint64_t)a3;
-- (unsigned)coarseMatchedAtIndex:(unint64_t)a3;
-- (unsigned)numMissedAtIndex:(unint64_t)a3;
-- (unsigned)numOutOfOrderAtIndex:(unint64_t)a3;
-- (void)copyTo:(id)a3;
+- (unsigned)aliasesMatchedAtIndex:(unint64_t)index;
+- (unsigned)coarseMatchedAtIndex:(unint64_t)index;
+- (unsigned)numMissedAtIndex:(unint64_t)index;
+- (unsigned)numOutOfOrderAtIndex:(unint64_t)index;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasNumMessages:(BOOL)a3;
-- (void)setHasNumberOfRequests:(BOOL)a3;
-- (void)setHasNumberOfResponses:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasNumMessages:(BOOL)messages;
+- (void)setHasNumberOfRequests:(BOOL)requests;
+- (void)setHasNumberOfResponses:(BOOL)responses;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDIMessageHealthCheckPerformed
@@ -30,9 +30,9 @@
   [(AWDIMessageHealthCheckPerformed *)&v3 dealloc];
 }
 
-- (void)setHasNumberOfRequests:(BOOL)a3
+- (void)setHasNumberOfRequests:(BOOL)requests
 {
-  if (a3)
+  if (requests)
   {
     v3 = 4;
   }
@@ -45,9 +45,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasNumberOfResponses:(BOOL)a3
+- (void)setHasNumberOfResponses:(BOOL)responses
 {
-  if (a3)
+  if (responses)
   {
     v3 = 8;
   }
@@ -60,9 +60,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasNumMessages:(BOOL)a3
+- (void)setHasNumMessages:(BOOL)messages
 {
-  if (a3)
+  if (messages)
   {
     v3 = 2;
   }
@@ -75,52 +75,52 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (unsigned)numOutOfOrderAtIndex:(unint64_t)a3
+- (unsigned)numOutOfOrderAtIndex:(unint64_t)index
 {
   p_numOutOfOrders = &self->_numOutOfOrders;
   count = self->_numOutOfOrders.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_numOutOfOrders->list[a3];
+  return p_numOutOfOrders->list[index];
 }
 
-- (unsigned)numMissedAtIndex:(unint64_t)a3
+- (unsigned)numMissedAtIndex:(unint64_t)index
 {
   p_numMisseds = &self->_numMisseds;
   count = self->_numMisseds.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_numMisseds->list[a3];
+  return p_numMisseds->list[index];
 }
 
-- (unsigned)aliasesMatchedAtIndex:(unint64_t)a3
+- (unsigned)aliasesMatchedAtIndex:(unint64_t)index
 {
   p_aliasesMatcheds = &self->_aliasesMatcheds;
   count = self->_aliasesMatcheds.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_aliasesMatcheds->list[a3];
+  return p_aliasesMatcheds->list[index];
 }
 
-- (unsigned)coarseMatchedAtIndex:(unint64_t)a3
+- (unsigned)coarseMatchedAtIndex:(unint64_t)index
 {
   p_coarseMatcheds = &self->_coarseMatcheds;
   count = self->_coarseMatcheds.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_coarseMatcheds->list[a3];
+  return p_coarseMatcheds->list[index];
 }
 
 - (id)description
@@ -132,11 +132,11 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if (has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -147,7 +147,7 @@ LABEL_3:
       }
 
 LABEL_9:
-      [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_numberOfResponses), @"numberOfResponses"}];
+      [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_numberOfResponses), @"numberOfResponses"}];
       if ((*&self->_has & 2) == 0)
       {
         goto LABEL_6;
@@ -162,7 +162,7 @@ LABEL_9:
     goto LABEL_3;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_numberOfRequests), @"numberOfRequests"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_numberOfRequests), @"numberOfRequests"}];
   has = self->_has;
   if ((has & 8) != 0)
   {
@@ -173,18 +173,18 @@ LABEL_4:
   if ((has & 2) != 0)
   {
 LABEL_5:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_numMessages), @"numMessages"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_numMessages), @"numMessages"}];
   }
 
 LABEL_6:
-  [v3 setObject:PBRepeatedUInt32NSArray() forKey:@"numOutOfOrder"];
-  [v3 setObject:PBRepeatedUInt32NSArray() forKey:@"numMissed"];
-  [v3 setObject:PBRepeatedUInt32NSArray() forKey:@"aliasesMatched"];
-  [v3 setObject:PBRepeatedUInt32NSArray() forKey:@"coarseMatched"];
-  return v3;
+  [dictionary setObject:PBRepeatedUInt32NSArray() forKey:@"numOutOfOrder"];
+  [dictionary setObject:PBRepeatedUInt32NSArray() forKey:@"numMissed"];
+  [dictionary setObject:PBRepeatedUInt32NSArray() forKey:@"aliasesMatched"];
+  [dictionary setObject:PBRepeatedUInt32NSArray() forKey:@"coarseMatched"];
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if (has)
@@ -312,13 +312,13 @@ LABEL_6:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if (has)
   {
-    *(a3 + 13) = self->_timestamp;
-    *(a3 + 124) |= 1u;
+    *(to + 13) = self->_timestamp;
+    *(to + 124) |= 1u;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -329,8 +329,8 @@ LABEL_3:
       }
 
 LABEL_25:
-      *(a3 + 30) = self->_numberOfResponses;
-      *(a3 + 124) |= 8u;
+      *(to + 30) = self->_numberOfResponses;
+      *(to + 124) |= 8u;
       if ((*&self->_has & 2) == 0)
       {
         goto LABEL_6;
@@ -345,8 +345,8 @@ LABEL_25:
     goto LABEL_3;
   }
 
-  *(a3 + 29) = self->_numberOfRequests;
-  *(a3 + 124) |= 4u;
+  *(to + 29) = self->_numberOfRequests;
+  *(to + 124) |= 4u;
   has = self->_has;
   if ((has & 8) != 0)
   {
@@ -357,71 +357,71 @@ LABEL_4:
   if ((has & 2) != 0)
   {
 LABEL_5:
-    *(a3 + 28) = self->_numMessages;
-    *(a3 + 124) |= 2u;
+    *(to + 28) = self->_numMessages;
+    *(to + 124) |= 2u;
   }
 
 LABEL_6:
   if ([(AWDIMessageHealthCheckPerformed *)self numOutOfOrdersCount])
   {
-    [a3 clearNumOutOfOrders];
-    v6 = [(AWDIMessageHealthCheckPerformed *)self numOutOfOrdersCount];
-    if (v6)
+    [to clearNumOutOfOrders];
+    numOutOfOrdersCount = [(AWDIMessageHealthCheckPerformed *)self numOutOfOrdersCount];
+    if (numOutOfOrdersCount)
     {
-      v7 = v6;
+      v7 = numOutOfOrdersCount;
       for (i = 0; i != v7; ++i)
       {
-        [a3 addNumOutOfOrder:{-[AWDIMessageHealthCheckPerformed numOutOfOrderAtIndex:](self, "numOutOfOrderAtIndex:", i)}];
+        [to addNumOutOfOrder:{-[AWDIMessageHealthCheckPerformed numOutOfOrderAtIndex:](self, "numOutOfOrderAtIndex:", i)}];
       }
     }
   }
 
   if ([(AWDIMessageHealthCheckPerformed *)self numMissedsCount])
   {
-    [a3 clearNumMisseds];
-    v9 = [(AWDIMessageHealthCheckPerformed *)self numMissedsCount];
-    if (v9)
+    [to clearNumMisseds];
+    numMissedsCount = [(AWDIMessageHealthCheckPerformed *)self numMissedsCount];
+    if (numMissedsCount)
     {
-      v10 = v9;
+      v10 = numMissedsCount;
       for (j = 0; j != v10; ++j)
       {
-        [a3 addNumMissed:{-[AWDIMessageHealthCheckPerformed numMissedAtIndex:](self, "numMissedAtIndex:", j)}];
+        [to addNumMissed:{-[AWDIMessageHealthCheckPerformed numMissedAtIndex:](self, "numMissedAtIndex:", j)}];
       }
     }
   }
 
   if ([(AWDIMessageHealthCheckPerformed *)self aliasesMatchedsCount])
   {
-    [a3 clearAliasesMatcheds];
-    v12 = [(AWDIMessageHealthCheckPerformed *)self aliasesMatchedsCount];
-    if (v12)
+    [to clearAliasesMatcheds];
+    aliasesMatchedsCount = [(AWDIMessageHealthCheckPerformed *)self aliasesMatchedsCount];
+    if (aliasesMatchedsCount)
     {
-      v13 = v12;
+      v13 = aliasesMatchedsCount;
       for (k = 0; k != v13; ++k)
       {
-        [a3 addAliasesMatched:{-[AWDIMessageHealthCheckPerformed aliasesMatchedAtIndex:](self, "aliasesMatchedAtIndex:", k)}];
+        [to addAliasesMatched:{-[AWDIMessageHealthCheckPerformed aliasesMatchedAtIndex:](self, "aliasesMatchedAtIndex:", k)}];
       }
     }
   }
 
   if ([(AWDIMessageHealthCheckPerformed *)self coarseMatchedsCount])
   {
-    [a3 clearCoarseMatcheds];
-    v15 = [(AWDIMessageHealthCheckPerformed *)self coarseMatchedsCount];
-    if (v15)
+    [to clearCoarseMatcheds];
+    coarseMatchedsCount = [(AWDIMessageHealthCheckPerformed *)self coarseMatchedsCount];
+    if (coarseMatchedsCount)
     {
-      v16 = v15;
+      v16 = coarseMatchedsCount;
       for (m = 0; m != v16; ++m)
       {
-        [a3 addCoarseMatched:{-[AWDIMessageHealthCheckPerformed coarseMatchedAtIndex:](self, "coarseMatchedAtIndex:", m)}];
+        [to addCoarseMatched:{-[AWDIMessageHealthCheckPerformed coarseMatchedAtIndex:](self, "coarseMatchedAtIndex:", m)}];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = v4;
   has = self->_has;
   if (has)
@@ -478,62 +478,62 @@ LABEL_6:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (![a3 isMemberOfClass:objc_opt_class()])
+  if (![equal isMemberOfClass:objc_opt_class()])
   {
     return 0;
   }
 
-  v5 = *(a3 + 124);
+  v5 = *(equal + 124);
   if (*&self->_has)
   {
-    if ((*(a3 + 124) & 1) == 0 || self->_timestamp != *(a3 + 13))
+    if ((*(equal + 124) & 1) == 0 || self->_timestamp != *(equal + 13))
     {
       return 0;
     }
   }
 
-  else if (*(a3 + 124))
+  else if (*(equal + 124))
   {
     return 0;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(a3 + 124) & 4) == 0 || self->_numberOfRequests != *(a3 + 29))
+    if ((*(equal + 124) & 4) == 0 || self->_numberOfRequests != *(equal + 29))
     {
       return 0;
     }
   }
 
-  else if ((*(a3 + 124) & 4) != 0)
+  else if ((*(equal + 124) & 4) != 0)
   {
     return 0;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(a3 + 124) & 8) == 0 || self->_numberOfResponses != *(a3 + 30))
+    if ((*(equal + 124) & 8) == 0 || self->_numberOfResponses != *(equal + 30))
     {
       return 0;
     }
   }
 
-  else if ((*(a3 + 124) & 8) != 0)
+  else if ((*(equal + 124) & 8) != 0)
   {
     return 0;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(a3 + 124) & 2) == 0 || self->_numMessages != *(a3 + 28))
+    if ((*(equal + 124) & 2) == 0 || self->_numMessages != *(equal + 28))
     {
       return 0;
     }
   }
 
-  else if ((*(a3 + 124) & 2) != 0)
+  else if ((*(equal + 124) & 2) != 0)
   {
     return 0;
   }
@@ -604,14 +604,14 @@ LABEL_10:
   return v8 ^ PBRepeatedUInt32Hash();
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v5 = *(a3 + 124);
+  v5 = *(from + 124);
   if (v5)
   {
-    self->_timestamp = *(a3 + 13);
+    self->_timestamp = *(from + 13);
     *&self->_has |= 1u;
-    v5 = *(a3 + 124);
+    v5 = *(from + 124);
     if ((v5 & 4) == 0)
     {
 LABEL_3:
@@ -624,14 +624,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(a3 + 124) & 4) == 0)
+  else if ((*(from + 124) & 4) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_numberOfRequests = *(a3 + 29);
+  self->_numberOfRequests = *(from + 29);
   *&self->_has |= 4u;
-  v5 = *(a3 + 124);
+  v5 = *(from + 124);
   if ((v5 & 8) == 0)
   {
 LABEL_4:
@@ -644,53 +644,53 @@ LABEL_4:
   }
 
 LABEL_21:
-  self->_numberOfResponses = *(a3 + 30);
+  self->_numberOfResponses = *(from + 30);
   *&self->_has |= 8u;
-  if ((*(a3 + 124) & 2) != 0)
+  if ((*(from + 124) & 2) != 0)
   {
 LABEL_5:
-    self->_numMessages = *(a3 + 28);
+    self->_numMessages = *(from + 28);
     *&self->_has |= 2u;
   }
 
 LABEL_6:
-  v6 = [a3 numOutOfOrdersCount];
-  if (v6)
+  numOutOfOrdersCount = [from numOutOfOrdersCount];
+  if (numOutOfOrdersCount)
   {
-    v7 = v6;
+    v7 = numOutOfOrdersCount;
     for (i = 0; i != v7; ++i)
     {
-      -[AWDIMessageHealthCheckPerformed addNumOutOfOrder:](self, "addNumOutOfOrder:", [a3 numOutOfOrderAtIndex:i]);
+      -[AWDIMessageHealthCheckPerformed addNumOutOfOrder:](self, "addNumOutOfOrder:", [from numOutOfOrderAtIndex:i]);
     }
   }
 
-  v9 = [a3 numMissedsCount];
-  if (v9)
+  numMissedsCount = [from numMissedsCount];
+  if (numMissedsCount)
   {
-    v10 = v9;
+    v10 = numMissedsCount;
     for (j = 0; j != v10; ++j)
     {
-      -[AWDIMessageHealthCheckPerformed addNumMissed:](self, "addNumMissed:", [a3 numMissedAtIndex:j]);
+      -[AWDIMessageHealthCheckPerformed addNumMissed:](self, "addNumMissed:", [from numMissedAtIndex:j]);
     }
   }
 
-  v12 = [a3 aliasesMatchedsCount];
-  if (v12)
+  aliasesMatchedsCount = [from aliasesMatchedsCount];
+  if (aliasesMatchedsCount)
   {
-    v13 = v12;
+    v13 = aliasesMatchedsCount;
     for (k = 0; k != v13; ++k)
     {
-      -[AWDIMessageHealthCheckPerformed addAliasesMatched:](self, "addAliasesMatched:", [a3 aliasesMatchedAtIndex:k]);
+      -[AWDIMessageHealthCheckPerformed addAliasesMatched:](self, "addAliasesMatched:", [from aliasesMatchedAtIndex:k]);
     }
   }
 
-  v15 = [a3 coarseMatchedsCount];
-  if (v15)
+  coarseMatchedsCount = [from coarseMatchedsCount];
+  if (coarseMatchedsCount)
   {
-    v16 = v15;
+    v16 = coarseMatchedsCount;
     for (m = 0; m != v16; ++m)
     {
-      -[AWDIMessageHealthCheckPerformed addCoarseMatched:](self, "addCoarseMatched:", [a3 coarseMatchedAtIndex:m]);
+      -[AWDIMessageHealthCheckPerformed addCoarseMatched:](self, "addCoarseMatched:", [from coarseMatchedAtIndex:m]);
     }
   }
 }

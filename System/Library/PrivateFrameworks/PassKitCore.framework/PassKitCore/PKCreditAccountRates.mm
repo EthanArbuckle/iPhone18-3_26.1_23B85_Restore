@@ -1,8 +1,8 @@
 @interface PKCreditAccountRates
-- (BOOL)isEqual:(id)a3;
-- (PKCreditAccountRates)initWithCoder:(id)a3;
-- (PKCreditAccountRates)initWithDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (PKCreditAccountRates)initWithCoder:(id)coder;
+- (PKCreditAccountRates)initWithDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)formattedAPRForPurchasesPercentageString;
 - (id)jsonDictionaryRepresentation;
@@ -14,22 +14,22 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_aprForPurchases];
-  v4 = PKCombinedHash(17, v3);
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_aprForPurchases];
+  v4 = PKCombinedHash(17, array);
 
   return v4;
 }
 
-- (PKCreditAccountRates)initWithDictionary:(id)a3
+- (PKCreditAccountRates)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = PKCreditAccountRates;
   v5 = [(PKCreditAccountRates *)&v9 init];
   if (v5)
   {
-    v6 = [v4 PKDecimalNumberFromStringForKey:@"aprForPurchase"];
+    v6 = [dictionaryCopy PKDecimalNumberFromStringForKey:@"aprForPurchase"];
     aprForPurchases = v5->_aprForPurchases;
     v5->_aprForPurchases = v6;
   }
@@ -51,15 +51,15 @@
   return v4;
 }
 
-- (PKCreditAccountRates)initWithCoder:(id)a3
+- (PKCreditAccountRates)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = PKCreditAccountRates;
   v5 = [(PKCreditAccountRates *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"aprForPurchase"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"aprForPurchase"];
     aprForPurchases = v5->_aprForPurchases;
     v5->_aprForPurchases = v6;
   }
@@ -70,22 +70,22 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@: %p ", objc_opt_class(), self];;
-  v4 = [(NSDecimalNumber *)self->_aprForPurchases stringValue];
-  [v3 appendFormat:@"aprForPurchases: '%@'; ", v4];
+  stringValue = [(NSDecimalNumber *)self->_aprForPurchases stringValue];
+  [v3 appendFormat:@"aprForPurchases: '%@'; ", stringValue];
 
   [v3 appendFormat:@">"];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     aprForPurchases = self->_aprForPurchases;
-    v6 = v4[1];
+    v6 = equalCopy[1];
     if (aprForPurchases && v6)
     {
       v7 = [(NSDecimalNumber *)aprForPurchases isEqual:?];
@@ -105,10 +105,10 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[PKCreditAccountRates allocWithZone:](PKCreditAccountRates init];
-  v6 = [(NSDecimalNumber *)self->_aprForPurchases copyWithZone:a3];
+  v6 = [(NSDecimalNumber *)self->_aprForPurchases copyWithZone:zone];
   aprForPurchases = v5->_aprForPurchases;
   v5->_aprForPurchases = v6;
 
@@ -117,11 +117,11 @@
 
 - (id)jsonDictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(NSDecimalNumber *)self->_aprForPurchases stringValue];
-  [v3 setObject:v4 forKeyedSubscript:@"aprForPurchase"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  stringValue = [(NSDecimalNumber *)self->_aprForPurchases stringValue];
+  [dictionary setObject:stringValue forKeyedSubscript:@"aprForPurchase"];
 
-  v5 = [v3 copy];
+  v5 = [dictionary copy];
 
   return v5;
 }
@@ -130,9 +130,9 @@
 {
   v12 = *MEMORY[0x1E69E9840];
   v2 = MEMORY[0x1E696ACB0];
-  v3 = [(PKCreditAccountRates *)self jsonDictionaryRepresentation];
+  jsonDictionaryRepresentation = [(PKCreditAccountRates *)self jsonDictionaryRepresentation];
   v9 = 0;
-  v4 = [v2 dataWithJSONObject:v3 options:2 error:&v9];
+  v4 = [v2 dataWithJSONObject:jsonDictionaryRepresentation options:2 error:&v9];
   v5 = v9;
 
   if (v5)

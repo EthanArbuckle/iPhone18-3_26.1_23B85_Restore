@@ -13,12 +13,12 @@
 - (void)_notifyRecognitionLocaleIdentifierDidChange;
 - (void)_scheduleSavingSettingsSoon;
 - (void)dealloc;
-- (void)loadSettingsFromDictionary:(id)a3;
+- (void)loadSettingsFromDictionary:(id)dictionary;
 - (void)loadSettingsFromUserDefaults;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)resetToDefaultValues;
 - (void)saveSettingsToUserDefaults;
-- (void)setValue:(id)a3 forKey:(id)a4;
+- (void)setValue:(id)value forKey:(id)key;
 @end
 
 @implementation PKTextInputSettings
@@ -52,8 +52,8 @@ void __37__PKTextInputSettings_sharedSettings__block_invoke()
   {
     [(PKTextInputSettings *)v2 _loadDefaultValues];
     [(PKTextInputSettings *)v3 loadSettingsFromUserDefaults];
-    v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-    [v4 addObserver:v3 forKeyPath:@"ApplePencilTextInputEnabled" options:0 context:&PKTextInputEnabledDidChangeContext];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    [standardUserDefaults addObserver:v3 forKeyPath:@"ApplePencilTextInputEnabled" options:0 context:&PKTextInputEnabledDidChangeContext];
   }
 
   return v3;
@@ -61,20 +61,20 @@ void __37__PKTextInputSettings_sharedSettings__block_invoke()
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v3 removeObserver:self forKeyPath:@"ApplePencilTextInputEnabled" context:&PKTextInputEnabledDidChangeContext];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults removeObserver:self forKeyPath:@"ApplePencilTextInputEnabled" context:&PKTextInputEnabledDidChangeContext];
 
   v4.receiver = self;
   v4.super_class = PKTextInputSettings;
   [(PKTextInputSettings *)&v4 dealloc];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (a6 == &PKTextInputEnabledDidChangeContext)
+  if (context == &PKTextInputEnabledDidChangeContext)
   {
 
-    [(PKTextInputSettings *)self _notifyRecognitionLocaleIdentifierDidChange:a3];
+    [(PKTextInputSettings *)self _notifyRecognitionLocaleIdentifierDidChange:path];
   }
 
   else
@@ -83,7 +83,7 @@ void __37__PKTextInputSettings_sharedSettings__block_invoke()
     v10 = v7;
     v8.receiver = self;
     v8.super_class = PKTextInputSettings;
-    [(PKTextInputSettings *)&v8 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(PKTextInputSettings *)&v8 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 
@@ -114,18 +114,18 @@ void __66__PKTextInputSettings__notifyRecognitionLocaleIdentifierDidChange__bloc
 
 - (BOOL)_shouldSaveSettings
 {
-  v2 = [MEMORY[0x1E696AAE8] mainBundle];
-  v3 = [v2 bundleIdentifier];
-  v4 = [v3 isEqualToString:@"com.apple.Preferences"];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v4 = [bundleIdentifier isEqualToString:@"com.apple.Preferences"];
 
   return v4;
 }
 
-- (void)setValue:(id)a3 forKey:(id)a4
+- (void)setValue:(id)value forKey:(id)key
 {
   v5.receiver = self;
   v5.super_class = PKTextInputSettings;
-  [(PKTextInputSettings *)&v5 setValue:a3 forKey:a4];
+  [(PKTextInputSettings *)&v5 setValue:value forKey:key];
   if ([(PKTextInputSettings *)self _shouldSaveSettings])
   {
     [(PKTextInputSettings *)self _scheduleSavingSettingsSoon];
@@ -210,8 +210,8 @@ LABEL_13:
   if (*MEMORY[0x1E69DDA98])
   {
     v2 = +[PKTextInputLanguageSelectionController sharedInstance];
-    v3 = [v2 currentLanguageIdentifiers];
-    v4 = [v3 count] != 0;
+    currentLanguageIdentifiers = [v2 currentLanguageIdentifiers];
+    v4 = [currentLanguageIdentifiers count] != 0;
 
     return v4;
   }
@@ -224,16 +224,16 @@ LABEL_13:
   if ([(PKTextInputSettings *)self _isFeatureAvailableAndEnabled])
   {
     v2 = +[PKTextInputLanguageSelectionController sharedInstance];
-    v3 = [v2 currentLanguageIdentifiers];
-    v4 = [v3 firstObject];
+    currentLanguageIdentifiers = [v2 currentLanguageIdentifiers];
+    firstObject = [currentLanguageIdentifiers firstObject];
   }
 
   else
   {
-    v4 = 0;
+    firstObject = 0;
   }
 
-  return v4;
+  return firstObject;
 }
 
 - (BOOL)_isFeatureAvailableAndEnabled
@@ -243,8 +243,8 @@ LABEL_13:
     return 0;
   }
 
-  v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v4 = [v3 objectForKey:@"ApplePencilTextInputEnabled"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v4 = [standardUserDefaults objectForKey:@"ApplePencilTextInputEnabled"];
 
   v5 = -[PKTextInputSettings forceUserTextInputSettingEnabled](self, "forceUserTextInputSettingEnabled") || !v4 || [v4 BOOLValue];
   return v5;
@@ -532,574 +532,574 @@ LABEL_13:
   return v50;
 }
 
-- (void)loadSettingsFromDictionary:(id)a3
+- (void)loadSettingsFromDictionary:(id)dictionary
 {
-  v137 = a3;
-  if (v137)
+  dictionaryCopy = dictionary;
+  if (dictionaryCopy)
   {
-    v4 = [v137 objectForKeyedSubscript:@"textInputViewHitTestSlackHorizontal"];
+    v4 = [dictionaryCopy objectForKeyedSubscript:@"textInputViewHitTestSlackHorizontal"];
 
     if (v4)
     {
-      v5 = [v137 objectForKeyedSubscript:@"textInputViewHitTestSlackHorizontal"];
+      v5 = [dictionaryCopy objectForKeyedSubscript:@"textInputViewHitTestSlackHorizontal"];
       [v5 doubleValue];
       [(PKTextInputSettings *)self setTextInputViewHitTestSlackHorizontal:?];
     }
 
-    v6 = [v137 objectForKeyedSubscript:@"textInputViewHitTestSlackVertical"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"textInputViewHitTestSlackVertical"];
 
     if (v6)
     {
-      v7 = [v137 objectForKeyedSubscript:@"textInputViewHitTestSlackVertical"];
+      v7 = [dictionaryCopy objectForKeyedSubscript:@"textInputViewHitTestSlackVertical"];
       [v7 doubleValue];
       [(PKTextInputSettings *)self setTextInputViewHitTestSlackVertical:?];
     }
 
-    v8 = [v137 objectForKeyedSubscript:@"firstResponderAttractionHorizontal"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"firstResponderAttractionHorizontal"];
 
     if (v8)
     {
-      v9 = [v137 objectForKeyedSubscript:@"firstResponderAttractionHorizontal"];
+      v9 = [dictionaryCopy objectForKeyedSubscript:@"firstResponderAttractionHorizontal"];
       [v9 doubleValue];
       [(PKTextInputSettings *)self setFirstResponderAttractionHorizontal:?];
     }
 
-    v10 = [v137 objectForKeyedSubscript:@"firstResponderAttractionVertical"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"firstResponderAttractionVertical"];
 
     if (v10)
     {
-      v11 = [v137 objectForKeyedSubscript:@"firstResponderAttractionVertical"];
+      v11 = [dictionaryCopy objectForKeyedSubscript:@"firstResponderAttractionVertical"];
       [v11 doubleValue];
       [(PKTextInputSettings *)self setFirstResponderAttractionVertical:?];
     }
 
-    v12 = [v137 objectForKeyedSubscript:@"minimumWritingSpaceWidth"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"minimumWritingSpaceWidth"];
 
     if (v12)
     {
-      v13 = [v137 objectForKeyedSubscript:@"minimumWritingSpaceWidth"];
+      v13 = [dictionaryCopy objectForKeyedSubscript:@"minimumWritingSpaceWidth"];
       [v13 doubleValue];
       [(PKTextInputSettings *)self setMinimumWritingSpaceWidth:?];
     }
 
-    v14 = [v137 objectForKeyedSubscript:@"subwordGestureEndingSpeedRange"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"subwordGestureEndingSpeedRange"];
 
     if (v14)
     {
-      v15 = [v137 objectForKeyedSubscript:@"subwordGestureEndingSpeedRange"];
+      v15 = [dictionaryCopy objectForKeyedSubscript:@"subwordGestureEndingSpeedRange"];
       [v15 doubleValue];
       [(PKTextInputSettings *)self setSubwordGestureEndingSpeedRange:?];
     }
 
-    v16 = [v137 objectForKeyedSubscript:@"subwordGestureSpeedThreshold"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"subwordGestureSpeedThreshold"];
 
     if (v16)
     {
-      v17 = [v137 objectForKeyedSubscript:@"subwordGestureSpeedThreshold"];
+      v17 = [dictionaryCopy objectForKeyedSubscript:@"subwordGestureSpeedThreshold"];
       [v17 doubleValue];
       [(PKTextInputSettings *)self setSubwordGestureSpeedThreshold:?];
     }
 
-    v18 = [v137 objectForKeyedSubscript:@"preventLeftoverCharsInSubwordGestures"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"preventLeftoverCharsInSubwordGestures"];
 
     if (v18)
     {
-      v19 = [v137 objectForKeyedSubscript:@"preventLeftoverCharsInSubwordGestures"];
+      v19 = [dictionaryCopy objectForKeyedSubscript:@"preventLeftoverCharsInSubwordGestures"];
       -[PKTextInputSettings setPreventLeftoverCharsInSubwordGestures:](self, "setPreventLeftoverCharsInSubwordGestures:", [v19 BOOLValue]);
     }
 
-    v20 = [v137 objectForKeyedSubscript:@"interactionDisablingDelay"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"interactionDisablingDelay"];
 
     if (v20)
     {
-      v21 = [v137 objectForKeyedSubscript:@"interactionDisablingDelay"];
+      v21 = [dictionaryCopy objectForKeyedSubscript:@"interactionDisablingDelay"];
       [v21 doubleValue];
       [(PKTextInputSettings *)self setInteractionDisablingDelay:?];
     }
 
-    v22 = [v137 objectForKeyedSubscript:@"textInputStrokeFadeOutDelay"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"textInputStrokeFadeOutDelay"];
 
     if (v22)
     {
-      v23 = [v137 objectForKeyedSubscript:@"textInputStrokeFadeOutDelay"];
+      v23 = [dictionaryCopy objectForKeyedSubscript:@"textInputStrokeFadeOutDelay"];
       [v23 doubleValue];
       [(PKTextInputSettings *)self setTextInputStrokeFadeOutDelay:?];
     }
 
-    v24 = [v137 objectForKeyedSubscript:@"textInputStrokeFadeOutDuration"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"textInputStrokeFadeOutDuration"];
 
     if (v24)
     {
-      v25 = [v137 objectForKeyedSubscript:@"textInputStrokeFadeOutDuration"];
+      v25 = [dictionaryCopy objectForKeyedSubscript:@"textInputStrokeFadeOutDuration"];
       [v25 doubleValue];
       [(PKTextInputSettings *)self setTextInputStrokeFadeOutDuration:?];
     }
 
-    v26 = [v137 objectForKeyedSubscript:@"continuousRecognitionWritingInterval"];
+    v26 = [dictionaryCopy objectForKeyedSubscript:@"continuousRecognitionWritingInterval"];
 
     if (v26)
     {
-      v27 = [v137 objectForKeyedSubscript:@"continuousRecognitionWritingInterval"];
+      v27 = [dictionaryCopy objectForKeyedSubscript:@"continuousRecognitionWritingInterval"];
       [v27 doubleValue];
       [(PKTextInputSettings *)self setContinuousRecognitionWritingInterval:?];
     }
 
-    v28 = [v137 objectForKeyedSubscript:@"continuousRecognition"];
+    v28 = [dictionaryCopy objectForKeyedSubscript:@"continuousRecognition"];
 
     if (v28)
     {
-      v29 = [v137 objectForKeyedSubscript:@"continuousRecognition"];
+      v29 = [dictionaryCopy objectForKeyedSubscript:@"continuousRecognition"];
       -[PKTextInputSettings setContinuousRecognition:](self, "setContinuousRecognition:", [v29 BOOLValue]);
     }
 
-    v30 = [v137 objectForKeyedSubscript:@"recognitionCoalescingDelay"];
+    v30 = [dictionaryCopy objectForKeyedSubscript:@"recognitionCoalescingDelay"];
 
     if (v30)
     {
-      v31 = [v137 objectForKeyedSubscript:@"recognitionCoalescingDelay"];
+      v31 = [dictionaryCopy objectForKeyedSubscript:@"recognitionCoalescingDelay"];
       [v31 doubleValue];
       [(PKTextInputSettings *)self setRecognitionCoalescingDelay:?];
     }
 
-    v32 = [v137 objectForKeyedSubscript:@"outOfProcessRecognition"];
+    v32 = [dictionaryCopy objectForKeyedSubscript:@"outOfProcessRecognition"];
 
     if (v32)
     {
-      v33 = [v137 objectForKeyedSubscript:@"outOfProcessRecognition"];
+      v33 = [dictionaryCopy objectForKeyedSubscript:@"outOfProcessRecognition"];
       -[PKTextInputSettings setOutOfProcessRecognition:](self, "setOutOfProcessRecognition:", [v33 BOOLValue]);
     }
 
-    v34 = [v137 objectForKeyedSubscript:@"activePreviewEnabled"];
+    v34 = [dictionaryCopy objectForKeyedSubscript:@"activePreviewEnabled"];
 
     if (v34)
     {
-      v35 = [v137 objectForKeyedSubscript:@"activePreviewEnabled"];
+      v35 = [dictionaryCopy objectForKeyedSubscript:@"activePreviewEnabled"];
       -[PKTextInputSettings setActivePreviewEnabled:](self, "setActivePreviewEnabled:", [v35 BOOLValue]);
     }
 
-    v36 = [v137 objectForKeyedSubscript:@"styledActivePreview"];
+    v36 = [dictionaryCopy objectForKeyedSubscript:@"styledActivePreview"];
 
     if (v36)
     {
-      v37 = [v137 objectForKeyedSubscript:@"styledActivePreview"];
+      v37 = [dictionaryCopy objectForKeyedSubscript:@"styledActivePreview"];
       -[PKTextInputSettings setStyledActivePreview:](self, "setStyledActivePreview:", [v37 BOOLValue]);
     }
 
-    v38 = [v137 objectForKeyedSubscript:@"floatingBackgroundEnabled"];
+    v38 = [dictionaryCopy objectForKeyedSubscript:@"floatingBackgroundEnabled"];
 
     if (v38)
     {
-      v39 = [v137 objectForKeyedSubscript:@"floatingBackgroundEnabled"];
+      v39 = [dictionaryCopy objectForKeyedSubscript:@"floatingBackgroundEnabled"];
       -[PKTextInputSettings setFloatingBackgroundEnabled:](self, "setFloatingBackgroundEnabled:", [v39 BOOLValue]);
     }
 
-    v40 = [v137 objectForKeyedSubscript:@"textInputStandardCommitDelay"];
+    v40 = [dictionaryCopy objectForKeyedSubscript:@"textInputStandardCommitDelay"];
 
     if (v40)
     {
-      v41 = [v137 objectForKeyedSubscript:@"textInputStandardCommitDelay"];
+      v41 = [dictionaryCopy objectForKeyedSubscript:@"textInputStandardCommitDelay"];
       [v41 doubleValue];
       [(PKTextInputSettings *)self setTextInputStandardCommitDelay:?];
     }
 
-    v42 = [v137 objectForKeyedSubscript:@"singleCharacterCommitDelay"];
+    v42 = [dictionaryCopy objectForKeyedSubscript:@"singleCharacterCommitDelay"];
 
     if (v42)
     {
-      v43 = [v137 objectForKeyedSubscript:@"singleCharacterCommitDelay"];
+      v43 = [dictionaryCopy objectForKeyedSubscript:@"singleCharacterCommitDelay"];
       [v43 doubleValue];
       [(PKTextInputSettings *)self setSingleCharacterCommitDelay:?];
     }
 
-    v44 = [v137 objectForKeyedSubscript:@"incrementalCommitWordsBack"];
+    v44 = [dictionaryCopy objectForKeyedSubscript:@"incrementalCommitWordsBack"];
 
     if (v44)
     {
-      v45 = [v137 objectForKeyedSubscript:@"incrementalCommitWordsBack"];
+      v45 = [dictionaryCopy objectForKeyedSubscript:@"incrementalCommitWordsBack"];
       [v45 doubleValue];
       [(PKTextInputSettings *)self setIncrementalCommitWordsBack:v46];
     }
 
-    v47 = [v137 objectForKeyedSubscript:@"debugRecognitionRequestArtificialDelay"];
+    v47 = [dictionaryCopy objectForKeyedSubscript:@"debugRecognitionRequestArtificialDelay"];
 
     if (v47)
     {
-      v48 = [v137 objectForKeyedSubscript:@"debugRecognitionRequestArtificialDelay"];
+      v48 = [dictionaryCopy objectForKeyedSubscript:@"debugRecognitionRequestArtificialDelay"];
       [v48 doubleValue];
       [(PKTextInputSettings *)self setDebugRecognitionRequestArtificialDelay:?];
     }
 
-    v49 = [v137 objectForKeyedSubscript:@"debugElementFinderArtificialDelay"];
+    v49 = [dictionaryCopy objectForKeyedSubscript:@"debugElementFinderArtificialDelay"];
 
     if (v49)
     {
-      v50 = [v137 objectForKeyedSubscript:@"debugElementFinderArtificialDelay"];
+      v50 = [dictionaryCopy objectForKeyedSubscript:@"debugElementFinderArtificialDelay"];
       [v50 doubleValue];
       [(PKTextInputSettings *)self setDebugElementFinderArtificialDelay:?];
     }
 
-    v51 = [v137 objectForKeyedSubscript:@"debugFirstResponderArtificialDelay"];
+    v51 = [dictionaryCopy objectForKeyedSubscript:@"debugFirstResponderArtificialDelay"];
 
     if (v51)
     {
-      v52 = [v137 objectForKeyedSubscript:@"debugFirstResponderArtificialDelay"];
+      v52 = [dictionaryCopy objectForKeyedSubscript:@"debugFirstResponderArtificialDelay"];
       [v52 doubleValue];
       [(PKTextInputSettings *)self setDebugFirstResponderArtificialDelay:?];
     }
 
-    v53 = [v137 objectForKeyedSubscript:@"enableOnNonEditableViews"];
+    v53 = [dictionaryCopy objectForKeyedSubscript:@"enableOnNonEditableViews"];
 
     if (v53)
     {
-      v54 = [v137 objectForKeyedSubscript:@"enableOnNonEditableViews"];
+      v54 = [dictionaryCopy objectForKeyedSubscript:@"enableOnNonEditableViews"];
       -[PKTextInputSettings setEnableOnNonEditableViews:](self, "setEnableOnNonEditableViews:", [v54 BOOLValue]);
     }
 
-    v55 = [v137 objectForKeyedSubscript:@"enableOnRemoteViews"];
+    v55 = [dictionaryCopy objectForKeyedSubscript:@"enableOnRemoteViews"];
 
     if (v55)
     {
-      v56 = [v137 objectForKeyedSubscript:@"enableOnRemoteViews"];
+      v56 = [dictionaryCopy objectForKeyedSubscript:@"enableOnRemoteViews"];
       -[PKTextInputSettings setEnableOnRemoteViews:](self, "setEnableOnRemoteViews:", [v56 BOOLValue]);
     }
 
-    v57 = [v137 objectForKeyedSubscript:@"enableViewControllerSupport"];
+    v57 = [dictionaryCopy objectForKeyedSubscript:@"enableViewControllerSupport"];
 
     if (v57)
     {
-      v58 = [v137 objectForKeyedSubscript:@"enableViewControllerSupport"];
+      v58 = [dictionaryCopy objectForKeyedSubscript:@"enableViewControllerSupport"];
       -[PKTextInputSettings setEnableViewControllerSupport:](self, "setEnableViewControllerSupport:", [v58 BOOLValue]);
     }
 
-    v59 = [v137 objectForKeyedSubscript:@"UCBPaletteEnabledNewKey"];
+    v59 = [dictionaryCopy objectForKeyedSubscript:@"UCBPaletteEnabledNewKey"];
 
     if (v59)
     {
-      v60 = [v137 objectForKeyedSubscript:@"UCBPaletteEnabledNewKey"];
+      v60 = [dictionaryCopy objectForKeyedSubscript:@"UCBPaletteEnabledNewKey"];
       -[PKTextInputSettings setUCBPaletteEnabled:](self, "setUCBPaletteEnabled:", [v60 BOOLValue]);
     }
 
-    v61 = [v137 objectForKeyedSubscript:@"alwaysIncludeReturnKeyAndInputAssistantItems"];
+    v61 = [dictionaryCopy objectForKeyedSubscript:@"alwaysIncludeReturnKeyAndInputAssistantItems"];
 
     if (v61)
     {
-      v62 = [v137 objectForKeyedSubscript:@"alwaysIncludeReturnKeyAndInputAssistantItems"];
+      v62 = [dictionaryCopy objectForKeyedSubscript:@"alwaysIncludeReturnKeyAndInputAssistantItems"];
       -[PKTextInputSettings setAlwaysIncludeReturnKeyAndInputAssistantItems:](self, "setAlwaysIncludeReturnKeyAndInputAssistantItems:", [v62 BOOLValue]);
     }
 
-    v63 = [v137 objectForKeyedSubscript:@"hideDefaultReturnKeyWhenSpecialReturnKeyIsPresent2"];
+    v63 = [dictionaryCopy objectForKeyedSubscript:@"hideDefaultReturnKeyWhenSpecialReturnKeyIsPresent2"];
 
     if (v63)
     {
-      v64 = [v137 objectForKeyedSubscript:@"hideDefaultReturnKeyWhenSpecialReturnKeyIsPresent2"];
+      v64 = [dictionaryCopy objectForKeyedSubscript:@"hideDefaultReturnKeyWhenSpecialReturnKeyIsPresent2"];
       -[PKTextInputSettings setHideDefaultReturnKeyWhenSpecialReturnKeyIsPresent:](self, "setHideDefaultReturnKeyWhenSpecialReturnKeyIsPresent:", [v64 BOOLValue]);
     }
 
-    v65 = [v137 objectForKeyedSubscript:@"enableReserveSpace"];
+    v65 = [dictionaryCopy objectForKeyedSubscript:@"enableReserveSpace"];
 
     if (v65)
     {
-      v66 = [v137 objectForKeyedSubscript:@"enableReserveSpace"];
+      v66 = [dictionaryCopy objectForKeyedSubscript:@"enableReserveSpace"];
       -[PKTextInputSettings setEnableReserveSpace:](self, "setEnableReserveSpace:", [v66 BOOLValue]);
     }
 
-    v67 = [v137 objectForKeyedSubscript:@"enableReserveSpaceTapForNewlines"];
+    v67 = [dictionaryCopy objectForKeyedSubscript:@"enableReserveSpaceTapForNewlines"];
 
     if (v67)
     {
-      v68 = [v137 objectForKeyedSubscript:@"enableReserveSpaceTapForNewlines"];
+      v68 = [dictionaryCopy objectForKeyedSubscript:@"enableReserveSpaceTapForNewlines"];
       -[PKTextInputSettings setEnableReserveSpaceTapForNewlines:](self, "setEnableReserveSpaceTapForNewlines:", [v68 BOOLValue]);
     }
 
-    v69 = [v137 objectForKeyedSubscript:@"asyncElementRequestTimeout"];
+    v69 = [dictionaryCopy objectForKeyedSubscript:@"asyncElementRequestTimeout"];
 
     if (v69)
     {
-      v70 = [v137 objectForKeyedSubscript:@"asyncElementRequestTimeout"];
+      v70 = [dictionaryCopy objectForKeyedSubscript:@"asyncElementRequestTimeout"];
       [v70 doubleValue];
       [(PKTextInputSettings *)self setAsyncElementRequestTimeout:?];
     }
 
-    v71 = [v137 objectForKeyedSubscript:@"drawingGestureMinimumPanDistanceThreshold"];
+    v71 = [dictionaryCopy objectForKeyedSubscript:@"drawingGestureMinimumPanDistanceThreshold"];
 
     if (v71)
     {
-      v72 = [v137 objectForKeyedSubscript:@"drawingGestureMinimumPanDistanceThreshold"];
+      v72 = [dictionaryCopy objectForKeyedSubscript:@"drawingGestureMinimumPanDistanceThreshold"];
       [v72 doubleValue];
       [(PKTextInputSettings *)self setDrawingGestureMinimumPanDistanceThreshold:?];
     }
 
-    v73 = [v137 objectForKeyedSubscript:@"drawingGestureMinimumScrollDistanceThreshold"];
+    v73 = [dictionaryCopy objectForKeyedSubscript:@"drawingGestureMinimumScrollDistanceThreshold"];
 
     if (v73)
     {
-      v74 = [v137 objectForKeyedSubscript:@"drawingGestureMinimumScrollDistanceThreshold"];
+      v74 = [dictionaryCopy objectForKeyedSubscript:@"drawingGestureMinimumScrollDistanceThreshold"];
       [v74 doubleValue];
       [(PKTextInputSettings *)self setDrawingGestureMinimumScrollDistanceThreshold:?];
     }
 
-    v75 = [v137 objectForKeyedSubscript:@"drawingGestureTapDetectionTimeInterval2"];
+    v75 = [dictionaryCopy objectForKeyedSubscript:@"drawingGestureTapDetectionTimeInterval2"];
 
     if (v75)
     {
-      v76 = [v137 objectForKeyedSubscript:@"drawingGestureTapDetectionTimeInterval2"];
+      v76 = [dictionaryCopy objectForKeyedSubscript:@"drawingGestureTapDetectionTimeInterval2"];
       [v76 doubleValue];
       [(PKTextInputSettings *)self setDrawingGestureTapDetectionTimeInterval:?];
     }
 
-    v77 = [v137 objectForKeyedSubscript:@"drawingGestureTapDetectionDistanceThreshold3"];
+    v77 = [dictionaryCopy objectForKeyedSubscript:@"drawingGestureTapDetectionDistanceThreshold3"];
 
     if (v77)
     {
-      v78 = [v137 objectForKeyedSubscript:@"drawingGestureTapDetectionDistanceThreshold3"];
+      v78 = [dictionaryCopy objectForKeyedSubscript:@"drawingGestureTapDetectionDistanceThreshold3"];
       [v78 doubleValue];
       [(PKTextInputSettings *)self setDrawingGestureTapDetectionDistanceThreshold:?];
     }
 
-    v79 = [v137 objectForKeyedSubscript:@"drawingGestureDetectTapAwayFromCurrentStrokesHorizontalDistance"];
+    v79 = [dictionaryCopy objectForKeyedSubscript:@"drawingGestureDetectTapAwayFromCurrentStrokesHorizontalDistance"];
 
     if (v79)
     {
-      v80 = [v137 objectForKeyedSubscript:@"drawingGestureDetectTapAwayFromCurrentStrokesHorizontalDistance"];
+      v80 = [dictionaryCopy objectForKeyedSubscript:@"drawingGestureDetectTapAwayFromCurrentStrokesHorizontalDistance"];
       [v80 doubleValue];
       [(PKTextInputSettings *)self setDrawingGestureDetectTapAwayFromCurrentStrokesHorizontalDistance:?];
     }
 
-    v81 = [v137 objectForKeyedSubscript:@"drawingGestureDetectTapAwayFromCurrentStrokesVerticalDistance"];
+    v81 = [dictionaryCopy objectForKeyedSubscript:@"drawingGestureDetectTapAwayFromCurrentStrokesVerticalDistance"];
 
     if (v81)
     {
-      v82 = [v137 objectForKeyedSubscript:@"drawingGestureDetectTapAwayFromCurrentStrokesVerticalDistance"];
+      v82 = [dictionaryCopy objectForKeyedSubscript:@"drawingGestureDetectTapAwayFromCurrentStrokesVerticalDistance"];
       [v82 doubleValue];
       [(PKTextInputSettings *)self setDrawingGestureDetectTapAwayFromCurrentStrokesVerticalDistance:?];
     }
 
-    v83 = [v137 objectForKeyedSubscript:@"drawingGestureLongPressMaxDistance"];
+    v83 = [dictionaryCopy objectForKeyedSubscript:@"drawingGestureLongPressMaxDistance"];
 
     if (v83)
     {
-      v84 = [v137 objectForKeyedSubscript:@"drawingGestureLongPressMaxDistance"];
+      v84 = [dictionaryCopy objectForKeyedSubscript:@"drawingGestureLongPressMaxDistance"];
       [v84 doubleValue];
       [(PKTextInputSettings *)self setDrawingGestureLongPressMaxDistance:?];
     }
 
-    v85 = [v137 objectForKeyedSubscript:@"drawingGestureLongPressDetectionTimeInterval"];
+    v85 = [dictionaryCopy objectForKeyedSubscript:@"drawingGestureLongPressDetectionTimeInterval"];
 
     if (v85)
     {
-      v86 = [v137 objectForKeyedSubscript:@"drawingGestureLongPressDetectionTimeInterval"];
+      v86 = [dictionaryCopy objectForKeyedSubscript:@"drawingGestureLongPressDetectionTimeInterval"];
       [v86 doubleValue];
       [(PKTextInputSettings *)self setDrawingGestureLongPressDetectionTimeInterval:?];
     }
 
-    v87 = [v137 objectForKeyedSubscript:@"inkWeight"];
+    v87 = [dictionaryCopy objectForKeyedSubscript:@"inkWeight"];
 
     if (v87)
     {
-      v88 = [v137 objectForKeyedSubscript:@"inkWeight"];
+      v88 = [dictionaryCopy objectForKeyedSubscript:@"inkWeight"];
       [v88 doubleValue];
       [(PKTextInputSettings *)self setInkWeight:?];
     }
 
-    v89 = [v137 objectForKeyedSubscript:@"inkWeightForIncreasedContrast"];
+    v89 = [dictionaryCopy objectForKeyedSubscript:@"inkWeightForIncreasedContrast"];
 
     if (v89)
     {
-      v90 = [v137 objectForKeyedSubscript:@"inkWeightForIncreasedContrast"];
+      v90 = [dictionaryCopy objectForKeyedSubscript:@"inkWeightForIncreasedContrast"];
       [v90 doubleValue];
       [(PKTextInputSettings *)self setInkWeightForIncreasedContrast:?];
     }
 
-    v91 = [v137 objectForKeyedSubscript:@"lineBreakOnTapEnabled"];
+    v91 = [dictionaryCopy objectForKeyedSubscript:@"lineBreakOnTapEnabled"];
 
     if (v91)
     {
-      v92 = [v137 objectForKeyedSubscript:@"lineBreakOnTapEnabled"];
+      v92 = [dictionaryCopy objectForKeyedSubscript:@"lineBreakOnTapEnabled"];
       -[PKTextInputSettings setLineBreakOnTapEnabled:](self, "setLineBreakOnTapEnabled:", [v92 BOOLValue]);
     }
 
-    v93 = [v137 objectForKeyedSubscript:@"lineBreakVerticalBarGestureEnabled"];
+    v93 = [dictionaryCopy objectForKeyedSubscript:@"lineBreakVerticalBarGestureEnabled"];
 
     if (v93)
     {
-      v94 = [v137 objectForKeyedSubscript:@"lineBreakVerticalBarGestureEnabled"];
+      v94 = [dictionaryCopy objectForKeyedSubscript:@"lineBreakVerticalBarGestureEnabled"];
       -[PKTextInputSettings setLineBreakVerticalBarGestureEnabled:](self, "setLineBreakVerticalBarGestureEnabled:", [v94 BOOLValue]);
     }
 
-    v95 = [v137 objectForKeyedSubscript:@"lineBreakVerticalBarUpToDelete"];
+    v95 = [dictionaryCopy objectForKeyedSubscript:@"lineBreakVerticalBarUpToDelete"];
 
     if (v95)
     {
-      v96 = [v137 objectForKeyedSubscript:@"lineBreakVerticalBarUpToDelete"];
+      v96 = [dictionaryCopy objectForKeyedSubscript:@"lineBreakVerticalBarUpToDelete"];
       -[PKTextInputSettings setLineBreakVerticalBarUpToDelete:](self, "setLineBreakVerticalBarUpToDelete:", [v96 BOOLValue]);
     }
 
-    v97 = [v137 objectForKeyedSubscript:@"autoLineBreakEnabled2"];
+    v97 = [dictionaryCopy objectForKeyedSubscript:@"autoLineBreakEnabled2"];
 
     if (v97)
     {
-      v98 = [v137 objectForKeyedSubscript:@"autoLineBreakEnabled2"];
+      v98 = [dictionaryCopy objectForKeyedSubscript:@"autoLineBreakEnabled2"];
       -[PKTextInputSettings setAutoLineBreakEnabled:](self, "setAutoLineBreakEnabled:", [v98 BOOLValue]);
     }
 
-    v99 = [v137 objectForKeyedSubscript:@"autoLineBreakRequireWeakCursor2"];
+    v99 = [dictionaryCopy objectForKeyedSubscript:@"autoLineBreakRequireWeakCursor2"];
 
     if (v99)
     {
-      v100 = [v137 objectForKeyedSubscript:@"autoLineBreakRequireWeakCursor2"];
+      v100 = [dictionaryCopy objectForKeyedSubscript:@"autoLineBreakRequireWeakCursor2"];
       -[PKTextInputSettings setAutoLineBreakRequireWeakCursor:](self, "setAutoLineBreakRequireWeakCursor:", [v100 BOOLValue]);
     }
 
-    v101 = [v137 objectForKeyedSubscript:@"autoLineBreakVerticalDistance2"];
+    v101 = [dictionaryCopy objectForKeyedSubscript:@"autoLineBreakVerticalDistance2"];
 
     if (v101)
     {
-      v102 = [v137 objectForKeyedSubscript:@"autoLineBreakVerticalDistance2"];
+      v102 = [dictionaryCopy objectForKeyedSubscript:@"autoLineBreakVerticalDistance2"];
       [v102 doubleValue];
       [(PKTextInputSettings *)self setAutoLineBreakVerticalDistance:?];
     }
 
-    v103 = [v137 objectForKeyedSubscript:@"autoLineBreakDualVerticalDistance2"];
+    v103 = [dictionaryCopy objectForKeyedSubscript:@"autoLineBreakDualVerticalDistance2"];
 
     if (v103)
     {
-      v104 = [v137 objectForKeyedSubscript:@"autoLineBreakDualVerticalDistance2"];
+      v104 = [dictionaryCopy objectForKeyedSubscript:@"autoLineBreakDualVerticalDistance2"];
       [v104 doubleValue];
       [(PKTextInputSettings *)self setAutoLineBreakDualVerticalDistance:?];
     }
 
-    v105 = [v137 objectForKeyedSubscript:@"autoLineBreakAreaWidthFactor3"];
+    v105 = [dictionaryCopy objectForKeyedSubscript:@"autoLineBreakAreaWidthFactor3"];
 
     if (v105)
     {
-      v106 = [v137 objectForKeyedSubscript:@"autoLineBreakAreaWidthFactor3"];
+      v106 = [dictionaryCopy objectForKeyedSubscript:@"autoLineBreakAreaWidthFactor3"];
       [v106 doubleValue];
       [(PKTextInputSettings *)self setAutoLineBreakAreaWidthFactor:?];
     }
 
-    v107 = [v137 objectForKeyedSubscript:@"tapToLineBreakVerticalDistance2"];
+    v107 = [dictionaryCopy objectForKeyedSubscript:@"tapToLineBreakVerticalDistance2"];
 
     if (v107)
     {
-      v108 = [v137 objectForKeyedSubscript:@"tapToLineBreakVerticalDistance2"];
+      v108 = [dictionaryCopy objectForKeyedSubscript:@"tapToLineBreakVerticalDistance2"];
       [v108 doubleValue];
       [(PKTextInputSettings *)self setTapToLineBreakVerticalDistance:?];
     }
 
-    v109 = [v137 objectForKeyedSubscript:@"enableWeakCursor"];
+    v109 = [dictionaryCopy objectForKeyedSubscript:@"enableWeakCursor"];
 
     if (v109)
     {
-      v110 = [v137 objectForKeyedSubscript:@"enableWeakCursor"];
+      v110 = [dictionaryCopy objectForKeyedSubscript:@"enableWeakCursor"];
       -[PKTextInputSettings setEnableWeakCursor:](self, "setEnableWeakCursor:", [v110 BOOLValue]);
     }
 
-    v111 = [v137 objectForKeyedSubscript:@"weakCursorVisibilityTimeout"];
+    v111 = [dictionaryCopy objectForKeyedSubscript:@"weakCursorVisibilityTimeout"];
 
     if (v111)
     {
-      v112 = [v137 objectForKeyedSubscript:@"weakCursorVisibilityTimeout"];
+      v112 = [dictionaryCopy objectForKeyedSubscript:@"weakCursorVisibilityTimeout"];
       [v112 doubleValue];
       [(PKTextInputSettings *)self setWeakCursorVisibilityTimeout:?];
     }
 
-    v113 = [v137 objectForKeyedSubscript:@"strongCursorRestoreDelay"];
+    v113 = [dictionaryCopy objectForKeyedSubscript:@"strongCursorRestoreDelay"];
 
     if (v113)
     {
-      v114 = [v137 objectForKeyedSubscript:@"strongCursorRestoreDelay"];
+      v114 = [dictionaryCopy objectForKeyedSubscript:@"strongCursorRestoreDelay"];
       [v114 doubleValue];
       [(PKTextInputSettings *)self setStrongCursorRestoreDelay:?];
     }
 
-    v115 = [v137 objectForKeyedSubscript:@"scratchOutMakesTheCursorStrong"];
+    v115 = [dictionaryCopy objectForKeyedSubscript:@"scratchOutMakesTheCursorStrong"];
 
     if (v115)
     {
-      v116 = [v137 objectForKeyedSubscript:@"scratchOutMakesTheCursorStrong"];
+      v116 = [dictionaryCopy objectForKeyedSubscript:@"scratchOutMakesTheCursorStrong"];
       -[PKTextInputSettings setScratchOutMakesTheCursorStrong:](self, "setScratchOutMakesTheCursorStrong:", [v116 BOOLValue]);
     }
 
-    v117 = [v137 objectForKeyedSubscript:@"enableTargetedAppWorkarounds"];
+    v117 = [dictionaryCopy objectForKeyedSubscript:@"enableTargetedAppWorkarounds"];
 
     if (v117)
     {
-      v118 = [v137 objectForKeyedSubscript:@"enableTargetedAppWorkarounds"];
+      v118 = [dictionaryCopy objectForKeyedSubscript:@"enableTargetedAppWorkarounds"];
       -[PKTextInputSettings setEnableTargetedAppWorkarounds:](self, "setEnableTargetedAppWorkarounds:", [v118 BOOLValue]);
     }
 
-    v119 = [v137 objectForKeyedSubscript:@"useSlidingCanvas"];
+    v119 = [dictionaryCopy objectForKeyedSubscript:@"useSlidingCanvas"];
 
     if (v119)
     {
-      v120 = [v137 objectForKeyedSubscript:@"useSlidingCanvas"];
+      v120 = [dictionaryCopy objectForKeyedSubscript:@"useSlidingCanvas"];
       -[PKTextInputSettings setUseSlidingCanvas:](self, "setUseSlidingCanvas:", [v120 BOOLValue]);
     }
 
-    v121 = [v137 objectForKeyedSubscript:@"slidingCanvasDebugBorder"];
+    v121 = [dictionaryCopy objectForKeyedSubscript:@"slidingCanvasDebugBorder"];
 
     if (v121)
     {
-      v122 = [v137 objectForKeyedSubscript:@"slidingCanvasDebugBorder"];
+      v122 = [dictionaryCopy objectForKeyedSubscript:@"slidingCanvasDebugBorder"];
       -[PKTextInputSettings setSlidingCanvasDebugBorder:](self, "setSlidingCanvasDebugBorder:", [v122 BOOLValue]);
     }
 
-    v123 = [v137 objectForKeyedSubscript:@"slidingCanvasWidth2"];
+    v123 = [dictionaryCopy objectForKeyedSubscript:@"slidingCanvasWidth2"];
 
     if (v123)
     {
-      v124 = [v137 objectForKeyedSubscript:@"slidingCanvasWidth2"];
+      v124 = [dictionaryCopy objectForKeyedSubscript:@"slidingCanvasWidth2"];
       [v124 doubleValue];
       [(PKTextInputSettings *)self setSlidingCanvasWidth:?];
     }
 
-    v125 = [v137 objectForKeyedSubscript:@"slidingCanvasHeight2"];
+    v125 = [dictionaryCopy objectForKeyedSubscript:@"slidingCanvasHeight2"];
 
     if (v125)
     {
-      v126 = [v137 objectForKeyedSubscript:@"slidingCanvasHeight2"];
+      v126 = [dictionaryCopy objectForKeyedSubscript:@"slidingCanvasHeight2"];
       [v126 doubleValue];
       [(PKTextInputSettings *)self setSlidingCanvasHeight:?];
     }
 
-    v127 = [v137 objectForKeyedSubscript:@"useSingleComponentCanvas"];
+    v127 = [dictionaryCopy objectForKeyedSubscript:@"useSingleComponentCanvas"];
 
     if (v127)
     {
-      v128 = [v137 objectForKeyedSubscript:@"useSingleComponentCanvas"];
+      v128 = [dictionaryCopy objectForKeyedSubscript:@"useSingleComponentCanvas"];
       -[PKTextInputSettings setUseSingleComponentCanvas:](self, "setUseSingleComponentCanvas:", [v128 BOOLValue]);
     }
 
-    v129 = [v137 objectForKeyedSubscript:@"useLargeHitTestArea"];
+    v129 = [dictionaryCopy objectForKeyedSubscript:@"useLargeHitTestArea"];
 
     if (v129)
     {
-      v130 = [v137 objectForKeyedSubscript:@"useLargeHitTestArea"];
+      v130 = [dictionaryCopy objectForKeyedSubscript:@"useLargeHitTestArea"];
       -[PKTextInputSettings setUseLargeHitTestArea:](self, "setUseLargeHitTestArea:", [v130 BOOLValue]);
     }
 
-    v131 = [v137 objectForKeyedSubscript:@"strongCursorMaximumYDistance"];
+    v131 = [dictionaryCopy objectForKeyedSubscript:@"strongCursorMaximumYDistance"];
 
     if (v131)
     {
-      v132 = [v137 objectForKeyedSubscript:@"strongCursorMaximumYDistance"];
+      v132 = [dictionaryCopy objectForKeyedSubscript:@"strongCursorMaximumYDistance"];
       [v132 doubleValue];
       [(PKTextInputSettings *)self setStrongCursorMaximumYDistance:?];
     }
 
-    v133 = [v137 objectForKeyedSubscript:@"useTransformStrokesAnimation2"];
+    v133 = [dictionaryCopy objectForKeyedSubscript:@"useTransformStrokesAnimation2"];
 
     if (v133)
     {
-      v134 = [v137 objectForKeyedSubscript:@"useTransformStrokesAnimation2"];
+      v134 = [dictionaryCopy objectForKeyedSubscript:@"useTransformStrokesAnimation2"];
       -[PKTextInputSettings setUseTransformStrokesAnimation:](self, "setUseTransformStrokesAnimation:", [v134 BOOLValue]);
     }
 
-    v135 = [v137 objectForKeyedSubscript:@"emojiConversionDelay"];
+    v135 = [dictionaryCopy objectForKeyedSubscript:@"emojiConversionDelay"];
 
     if (v135)
     {
-      v136 = [v137 objectForKeyedSubscript:@"emojiConversionDelay"];
+      v136 = [dictionaryCopy objectForKeyedSubscript:@"emojiConversionDelay"];
       [v136 doubleValue];
       [(PKTextInputSettings *)self setEmojiConversionDelay:?];
     }
@@ -1108,8 +1108,8 @@ LABEL_13:
 
 - (void)loadSettingsFromUserDefaults
 {
-  v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v4 = [v3 dictionaryForKey:@"com.apple.PencilKit.TextInputDefaults"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v4 = [standardUserDefaults dictionaryForKey:@"com.apple.PencilKit.TextInputDefaults"];
 
   [(PKTextInputSettings *)self loadSettingsFromDictionary:v4];
 }
@@ -1118,9 +1118,9 @@ LABEL_13:
 {
   if ([(PKTextInputSettings *)self _shouldSaveSettings])
   {
-    v4 = [(PKTextInputSettings *)self settingsDictionaryRepresentation];
-    v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-    [v3 setObject:v4 forKey:@"com.apple.PencilKit.TextInputDefaults" inDomain:*MEMORY[0x1E696A400]];
+    settingsDictionaryRepresentation = [(PKTextInputSettings *)self settingsDictionaryRepresentation];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    [standardUserDefaults setObject:settingsDictionaryRepresentation forKey:@"com.apple.PencilKit.TextInputDefaults" inDomain:*MEMORY[0x1E696A400]];
   }
 }
 
@@ -1129,17 +1129,17 @@ LABEL_13:
   [(PKTextInputSettings *)self _loadDefaultValues];
   if ([(PKTextInputSettings *)self _shouldSaveSettings])
   {
-    v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-    [v3 setObject:0 forKey:@"com.apple.PencilKit.TextInputDefaults" inDomain:*MEMORY[0x1E696A400]];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    [standardUserDefaults setObject:0 forKey:@"com.apple.PencilKit.TextInputDefaults" inDomain:*MEMORY[0x1E696A400]];
   }
 }
 
 - (NSString)recognitionLocaleIdentifier
 {
-  v2 = [(PKTextInputSettings *)self recognitionLocaleIdentifiers];
-  v3 = [v2 firstObject];
+  recognitionLocaleIdentifiers = [(PKTextInputSettings *)self recognitionLocaleIdentifiers];
+  firstObject = [recognitionLocaleIdentifiers firstObject];
 
-  return v3;
+  return firstObject;
 }
 
 - (NSArray)recognitionLocaleIdentifiers
@@ -1147,15 +1147,15 @@ LABEL_13:
   if ([(PKTextInputSettings *)self _isFeatureAvailableAndEnabled])
   {
     v2 = +[PKTextInputLanguageSelectionController sharedInstance];
-    v3 = [v2 currentLanguageIdentifiers];
+    currentLanguageIdentifiers = [v2 currentLanguageIdentifiers];
   }
 
   else
   {
-    v3 = 0;
+    currentLanguageIdentifiers = 0;
   }
 
-  return v3;
+  return currentLanguageIdentifiers;
 }
 
 - (void)_loadDefaultValues

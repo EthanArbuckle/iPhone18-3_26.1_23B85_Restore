@@ -1,24 +1,24 @@
 @interface CTStewieEmergencyTextMessage
-+ (double)estimatedSendTimeForEmergencyText:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToEmergencyTextMessage:(id)a3;
-- (CTStewieEmergencyTextMessage)initWithCoder:(id)a3;
-- (CTStewieEmergencyTextMessage)initWithConversationIDInternal:(int64_t)a3 sequenceNum:(int64_t)a4 emergencyText:(id)a5 maxTextLength:(unint64_t)a6 error:(id *)p_isa;
++ (double)estimatedSendTimeForEmergencyText:(id)text;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToEmergencyTextMessage:(id)message;
+- (CTStewieEmergencyTextMessage)initWithCoder:(id)coder;
+- (CTStewieEmergencyTextMessage)initWithConversationIDInternal:(int64_t)internal sequenceNum:(int64_t)num emergencyText:(id)text maxTextLength:(unint64_t)length error:(id *)p_isa;
 - (NSString)description;
 - (double)estimatedSendTime;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)initIncomingTextMessageWithConversationID:(int64_t)a3 sequenceNum:(int64_t)a4 emergencyText:(id)a5 notifyOption:(int64_t)a6 error:(id *)a7;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)initIncomingTextMessageWithConversationID:(int64_t)d sequenceNum:(int64_t)num emergencyText:(id)text notifyOption:(int64_t)option error:(id *)error;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CTStewieEmergencyTextMessage
 
-- (CTStewieEmergencyTextMessage)initWithConversationIDInternal:(int64_t)a3 sequenceNum:(int64_t)a4 emergencyText:(id)a5 maxTextLength:(unint64_t)a6 error:(id *)p_isa
+- (CTStewieEmergencyTextMessage)initWithConversationIDInternal:(int64_t)internal sequenceNum:(int64_t)num emergencyText:(id)text maxTextLength:(unint64_t)length error:(id *)p_isa
 {
   v34[1] = *MEMORY[0x1E69E9840];
-  v13 = a5;
-  v14 = v13;
-  if (a3 >= 0x100)
+  textCopy = text;
+  v14 = textCopy;
+  if (internal >= 0x100)
   {
     if (!p_isa)
     {
@@ -36,7 +36,7 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if (a4 >= 0x2000)
+  if (num >= 0x2000)
   {
     if (!p_isa)
     {
@@ -52,7 +52,7 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  if (!v13)
+  if (!textCopy)
   {
     if (!p_isa)
     {
@@ -68,7 +68,7 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  if ([v13 lengthOfBytesUsingEncoding:4] - 1 >= a6)
+  if ([textCopy lengthOfBytesUsingEncoding:4] - 1 >= length)
   {
     if (!p_isa)
     {
@@ -90,9 +90,9 @@ LABEL_15:
   p_isa = &v15->super.isa;
   if (v15)
   {
-    v15->_conversationID = a3;
-    v15->_sequenceNum = a4;
-    objc_storeStrong(&v15->_text, a5);
+    v15->_conversationID = internal;
+    v15->_sequenceNum = num;
+    objc_storeStrong(&v15->_text, text);
     p_isa[4] = 0;
     self = p_isa;
     p_isa = &self->super.isa;
@@ -109,13 +109,13 @@ LABEL_16:
   return p_isa;
 }
 
-- (id)initIncomingTextMessageWithConversationID:(int64_t)a3 sequenceNum:(int64_t)a4 emergencyText:(id)a5 notifyOption:(int64_t)a6 error:(id *)a7
+- (id)initIncomingTextMessageWithConversationID:(int64_t)d sequenceNum:(int64_t)num emergencyText:(id)text notifyOption:(int64_t)option error:(id *)error
 {
-  v8 = [(CTStewieEmergencyTextMessage *)self initWithConversationIDInternal:a3 sequenceNum:a4 emergencyText:a5 maxTextLength:1024 error:a7];
+  v8 = [(CTStewieEmergencyTextMessage *)self initWithConversationIDInternal:d sequenceNum:num emergencyText:text maxTextLength:1024 error:error];
   v9 = v8;
   if (v8)
   {
-    v8->_incomingTextNotifyOption = a6;
+    v8->_incomingTextNotifyOption = option;
     v10 = v8;
   }
 
@@ -124,21 +124,21 @@ LABEL_16:
 
 - (double)estimatedSendTime
 {
-  v2 = [(CTStewieEmergencyTextMessage *)self text];
-  [CTStewieEmergencyTextMessage estimatedSendTimeForEmergencyText:v2];
+  text = [(CTStewieEmergencyTextMessage *)self text];
+  [CTStewieEmergencyTextMessage estimatedSendTimeForEmergencyText:text];
   v4 = v3;
 
   return v4;
 }
 
-+ (double)estimatedSendTimeForEmergencyText:(id)a3
++ (double)estimatedSendTimeForEmergencyText:(id)text
 {
-  v3 = a3;
-  v4 = v3;
+  textCopy = text;
+  v4 = textCopy;
   EstimatedSendTimeOverStewieInSeconds = 0.0;
-  if (v3)
+  if (textCopy)
   {
-    v6 = [v3 lengthOfBytesUsingEncoding:4];
+    v6 = [textCopy lengthOfBytesUsingEncoding:4];
     if (v6)
     {
       EstimatedSendTimeOverStewieInSeconds = getEstimatedSendTimeOverStewieInSeconds(v6 + 4);
@@ -153,18 +153,18 @@ LABEL_16:
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];
   [v3 appendFormat:@", conversationID=%ld", -[CTStewieEmergencyTextMessage conversationID](self, "conversationID")];
   [v3 appendFormat:@", sequenceNum=%ld", -[CTStewieEmergencyTextMessage sequenceNum](self, "sequenceNum")];
-  v4 = [(CTStewieEmergencyTextMessage *)self text];
-  [v3 appendFormat:@", text=%{sensitive}@", v4];
+  text = [(CTStewieEmergencyTextMessage *)self text];
+  [v3 appendFormat:@", text=%{sensitive}@", text];
 
-  v5 = [(CTStewieEmergencyTextMessage *)self incomingTextNotifyOption];
-  if (v5 > 3)
+  incomingTextNotifyOption = [(CTStewieEmergencyTextMessage *)self incomingTextNotifyOption];
+  if (incomingTextNotifyOption > 3)
   {
     v6 = "???";
   }
 
   else
   {
-    v6 = off_1E6A471A8[v5];
+    v6 = off_1E6A471A8[incomingTextNotifyOption];
   }
 
   [v3 appendFormat:@", incomingTextNotifyOption=%s", v6];
@@ -173,22 +173,22 @@ LABEL_16:
   return v3;
 }
 
-- (BOOL)isEqualToEmergencyTextMessage:(id)a3
+- (BOOL)isEqualToEmergencyTextMessage:(id)message
 {
-  v6 = a3;
-  v7 = [(CTStewieEmergencyTextMessage *)self conversationID];
-  if (v7 == [v6 conversationID])
+  messageCopy = message;
+  conversationID = [(CTStewieEmergencyTextMessage *)self conversationID];
+  if (conversationID == [messageCopy conversationID])
   {
-    v8 = [(CTStewieEmergencyTextMessage *)self sequenceNum];
-    if (v8 == [v6 sequenceNum])
+    sequenceNum = [(CTStewieEmergencyTextMessage *)self sequenceNum];
+    if (sequenceNum == [messageCopy sequenceNum])
     {
-      v9 = [(CTStewieEmergencyTextMessage *)self text];
-      v10 = [v6 text];
-      if (v9 == v10 || (-[CTStewieEmergencyTextMessage text](self, "text"), v3 = objc_claimAutoreleasedReturnValue(), [v6 text], v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v3, "isEqual:", v4)))
+      text = [(CTStewieEmergencyTextMessage *)self text];
+      text2 = [messageCopy text];
+      if (text == text2 || (-[CTStewieEmergencyTextMessage text](self, "text"), v3 = objc_claimAutoreleasedReturnValue(), [messageCopy text], v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v3, "isEqual:", v4)))
       {
-        v12 = [(CTStewieEmergencyTextMessage *)self incomingTextNotifyOption];
-        v11 = v12 == [v6 incomingTextNotifyOption];
-        if (v9 == v10)
+        incomingTextNotifyOption = [(CTStewieEmergencyTextMessage *)self incomingTextNotifyOption];
+        v11 = incomingTextNotifyOption == [messageCopy incomingTextNotifyOption];
+        if (text == text2)
         {
 LABEL_9:
 
@@ -211,10 +211,10 @@ LABEL_10:
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -222,47 +222,47 @@ LABEL_10:
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CTStewieEmergencyTextMessage *)self isEqualToEmergencyTextMessage:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CTStewieEmergencyTextMessage *)self isEqualToEmergencyTextMessage:equalCopy];
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v5 setConversationID:{-[CTStewieEmergencyTextMessage conversationID](self, "conversationID")}];
   [v5 setSequenceNum:{-[CTStewieEmergencyTextMessage sequenceNum](self, "sequenceNum")}];
-  v6 = [(CTStewieEmergencyTextMessage *)self text];
-  v7 = [v6 copyWithZone:a3];
+  text = [(CTStewieEmergencyTextMessage *)self text];
+  v7 = [text copyWithZone:zone];
   [v5 setText:v7];
 
   [v5 setIncomingTextNotifyOption:{-[CTStewieEmergencyTextMessage incomingTextNotifyOption](self, "incomingTextNotifyOption")}];
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  [v5 encodeInteger:-[CTStewieEmergencyTextMessage conversationID](self forKey:{"conversationID"), @"conversationID"}];
-  [v5 encodeInteger:-[CTStewieEmergencyTextMessage sequenceNum](self forKey:{"sequenceNum"), @"sequenceNum"}];
-  v4 = [(CTStewieEmergencyTextMessage *)self text];
-  [v5 encodeObject:v4 forKey:@"text"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[CTStewieEmergencyTextMessage conversationID](self forKey:{"conversationID"), @"conversationID"}];
+  [coderCopy encodeInteger:-[CTStewieEmergencyTextMessage sequenceNum](self forKey:{"sequenceNum"), @"sequenceNum"}];
+  text = [(CTStewieEmergencyTextMessage *)self text];
+  [coderCopy encodeObject:text forKey:@"text"];
 
-  [v5 encodeInteger:-[CTStewieEmergencyTextMessage incomingTextNotifyOption](self forKey:{"incomingTextNotifyOption"), @"notifyOption"}];
+  [coderCopy encodeInteger:-[CTStewieEmergencyTextMessage incomingTextNotifyOption](self forKey:{"incomingTextNotifyOption"), @"notifyOption"}];
 }
 
-- (CTStewieEmergencyTextMessage)initWithCoder:(id)a3
+- (CTStewieEmergencyTextMessage)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"conversationID"];
-  v6 = [v4 decodeIntegerForKey:@"sequenceNum"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"text"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"conversationID"];
+  v6 = [coderCopy decodeIntegerForKey:@"sequenceNum"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"text"];
   v8 = [(CTStewieEmergencyTextMessage *)self initWithConversationIDInternal:v5 sequenceNum:v6 emergencyText:v7 maxTextLength:-1 error:0];
 
   if (v8)
   {
-    v8->_incomingTextNotifyOption = [v4 decodeIntegerForKey:@"notifyOption"];
+    v8->_incomingTextNotifyOption = [coderCopy decodeIntegerForKey:@"notifyOption"];
     v9 = v8;
   }
 

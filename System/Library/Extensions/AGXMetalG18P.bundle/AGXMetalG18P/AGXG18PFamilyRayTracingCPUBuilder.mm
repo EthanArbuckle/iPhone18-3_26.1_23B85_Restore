@@ -1,9 +1,9 @@
 @interface AGXG18PFamilyRayTracingCPUBuilder
-+ ($F99D9A4FB75BC57F3386B8DC8EE08D7A)calcAllocSizesFromDescriptor:(SEL)a3;
++ ($F99D9A4FB75BC57F3386B8DC8EE08D7A)calcAllocSizesFromDescriptor:(SEL)descriptor;
 - (AGXG18PFamilyRayTracingCPUBuilder)init;
 - (id).cxx_construct;
-- (void)copyAndCompactAccelerationStructure:(id)a3 toAccelerationStructure:(id)a4;
-- (void)serializePrimitiveAccelerationStructure:(id)a3 toBuffer:(id)a4 serializedBufferOffset:(unint64_t)a5;
+- (void)copyAndCompactAccelerationStructure:(id)structure toAccelerationStructure:(id)accelerationStructure;
+- (void)serializePrimitiveAccelerationStructure:(id)structure toBuffer:(id)buffer serializedBufferOffset:(unint64_t)offset;
 @end
 
 @implementation AGXG18PFamilyRayTracingCPUBuilder
@@ -12,15 +12,15 @@
 {
   v2 = &unk_2A179F000;
   {
-    v6 = self;
+    selfCopy = self;
     v2 = &unk_2A179F000;
     v5 = v4;
-    self = v6;
+    self = selfCopy;
     if (v5)
     {
       AGX::RayTracingCPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::getSelectedRiaBvhGen(void)::riaBvhGenOverride = 0;
       v2 = &unk_2A179F000;
-      self = v6;
+      self = selfCopy;
     }
   }
 
@@ -34,27 +34,27 @@
   return self;
 }
 
-- (void)serializePrimitiveAccelerationStructure:(id)a3 toBuffer:(id)a4 serializedBufferOffset:(unint64_t)a5
+- (void)serializePrimitiveAccelerationStructure:(id)structure toBuffer:(id)buffer serializedBufferOffset:(unint64_t)offset
 {
-  v6 = a3 + 336;
-  v7 = *(a3 + 43);
+  v6 = structure + 336;
+  v7 = *(structure + 43);
   v8 = *(v7 + 72);
-  v9 = [a4 contents];
+  contents = [buffer contents];
   v10 = &unk_2A179F000;
   {
-    v16 = v9;
+    v16 = contents;
     v10 = &unk_2A179F000;
     v15 = v14;
-    v9 = v16;
+    contents = v16;
     if (v15)
     {
       AGX::RayTracingCPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::getSelectedRiaBvhGen(void)::riaBvhGenOverride = 0;
       v10 = &unk_2A179F000;
-      v9 = v16;
+      contents = v16;
     }
   }
 
-  v11 = v9 + a5;
+  v11 = contents + offset;
   v12 = v10[744];
   if (v12 <= 0)
   {
@@ -70,12 +70,12 @@
   memcpy((v11 + 24), v13, v8);
 }
 
-- (void)copyAndCompactAccelerationStructure:(id)a3 toAccelerationStructure:(id)a4
+- (void)copyAndCompactAccelerationStructure:(id)structure toAccelerationStructure:(id)accelerationStructure
 {
-  v5 = a4 + 336;
-  memcpy(*(a4 + 43), *(a3 + 43), *(*(a3 + 43) + 72));
+  v5 = accelerationStructure + 336;
+  memcpy(*(accelerationStructure + 43), *(structure + 43), *(*(structure + 43) + 72));
   v6 = *(v5 + 1);
-  *(v6 + 144) = [a4 uniqueIdentifier];
+  *(v6 + 144) = [accelerationStructure uniqueIdentifier];
 }
 
 - (AGXG18PFamilyRayTracingCPUBuilder)init
@@ -85,7 +85,7 @@
   return [(_MTLObjectWithLabel *)&v3 init];
 }
 
-+ ($F99D9A4FB75BC57F3386B8DC8EE08D7A)calcAllocSizesFromDescriptor:(SEL)a3
++ ($F99D9A4FB75BC57F3386B8DC8EE08D7A)calcAllocSizesFromDescriptor:(SEL)descriptor
 {
   *&retstr->var0 = xmmword_29D2F23A0;
   retstr->var2 = 16;

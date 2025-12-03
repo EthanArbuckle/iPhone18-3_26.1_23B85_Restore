@@ -1,16 +1,16 @@
 @interface SymbolCollectionViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation SymbolCollectionViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SymbolCollectionViewCell" hasInstanceVariable:@"_symbolName" withType:"NSString"];
-  [v3 validateClass:@"SymbolCollectionViewCell" hasInstanceVariable:@"_showsSelection" withType:"BOOL"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SymbolCollectionViewCell" hasInstanceVariable:@"_symbolName" withType:"NSString"];
+  [validationsCopy validateClass:@"SymbolCollectionViewCell" hasInstanceVariable:@"_showsSelection" withType:"BOOL"];
 }
 
 - (id)accessibilityLabel

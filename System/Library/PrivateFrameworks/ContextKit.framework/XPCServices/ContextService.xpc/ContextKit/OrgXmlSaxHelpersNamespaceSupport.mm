@@ -1,16 +1,16 @@
 @interface OrgXmlSaxHelpersNamespaceSupport
 + (void)initialize;
-- (BOOL)declarePrefixWithNSString:(id)a3 withNSString:(id)a4;
+- (BOOL)declarePrefixWithNSString:(id)string withNSString:(id)sString;
 - (id)getDeclaredPrefixes;
-- (id)getPrefixWithNSString:(id)a3;
+- (id)getPrefixWithNSString:(id)string;
 - (id)getPrefixes;
-- (id)getPrefixesWithNSString:(id)a3;
-- (id)getURIWithNSString:(id)a3;
+- (id)getPrefixesWithNSString:(id)string;
+- (id)getURIWithNSString:(id)string;
 - (void)dealloc;
 - (void)popContext;
 - (void)pushContext;
 - (void)reset;
-- (void)setNamespaceDeclUrisWithBoolean:(BOOL)a3;
+- (void)setNamespaceDeclUrisWithBoolean:(BOOL)boolean;
 @end
 
 @implementation OrgXmlSaxHelpersNamespaceSupport
@@ -160,14 +160,14 @@ LABEL_10:
   JreStrongAssign(&self->currentContext_, v11);
 }
 
-- (BOOL)declarePrefixWithNSString:(id)a3 withNSString:(id)a4
+- (BOOL)declarePrefixWithNSString:(id)string withNSString:(id)sString
 {
-  if (!a3)
+  if (!string)
   {
     goto LABEL_7;
   }
 
-  if ([a3 isEqual:@"xml"] & 1) != 0 || (objc_msgSend(a3, "isEqual:", @"xmlns"))
+  if ([string isEqual:@"xml"] & 1) != 0 || (objc_msgSend(string, "isEqual:", @"xmlns"))
   {
     return 0;
   }
@@ -179,11 +179,11 @@ LABEL_7:
     JreThrowNullPointerException();
   }
 
-  [(OrgXmlSaxHelpersNamespaceSupport_Context *)currentContext declarePrefixWithNSString:a3 withNSString:a4];
+  [(OrgXmlSaxHelpersNamespaceSupport_Context *)currentContext declarePrefixWithNSString:string withNSString:sString];
   return 1;
 }
 
-- (id)getURIWithNSString:(id)a3
+- (id)getURIWithNSString:(id)string
 {
   currentContext = self->currentContext_;
   if (!currentContext)
@@ -191,7 +191,7 @@ LABEL_7:
     JreThrowNullPointerException();
   }
 
-  return [(OrgXmlSaxHelpersNamespaceSupport_Context *)currentContext getURIWithNSString:a3];
+  return [(OrgXmlSaxHelpersNamespaceSupport_Context *)currentContext getURIWithNSString:string];
 }
 
 - (id)getPrefixes
@@ -205,7 +205,7 @@ LABEL_7:
   return [(OrgXmlSaxHelpersNamespaceSupport_Context *)currentContext getPrefixes];
 }
 
-- (id)getPrefixWithNSString:(id)a3
+- (id)getPrefixWithNSString:(id)string
 {
   currentContext = self->currentContext_;
   if (!currentContext)
@@ -213,38 +213,38 @@ LABEL_7:
     JreThrowNullPointerException();
   }
 
-  return [(OrgXmlSaxHelpersNamespaceSupport_Context *)currentContext getPrefixWithNSString:a3];
+  return [(OrgXmlSaxHelpersNamespaceSupport_Context *)currentContext getPrefixWithNSString:string];
 }
 
-- (id)getPrefixesWithNSString:(id)a3
+- (id)getPrefixesWithNSString:(id)string
 {
   v5 = new_JavaUtilArrayList_init();
-  v6 = [(OrgXmlSaxHelpersNamespaceSupport *)self getPrefixes];
-  if (!v6)
+  getPrefixes = [(OrgXmlSaxHelpersNamespaceSupport *)self getPrefixes];
+  if (!getPrefixes)
   {
     goto LABEL_12;
   }
 
-  v7 = v6;
-  if ([v6 hasMoreElements])
+  v7 = getPrefixes;
+  if ([getPrefixes hasMoreElements])
   {
     while (1)
     {
-      v8 = [v7 nextElement];
+      nextElement = [v7 nextElement];
       objc_opt_class();
-      if (v8 && (objc_opt_isKindOfClass() & 1) == 0)
+      if (nextElement && (objc_opt_isKindOfClass() & 1) == 0)
       {
         JreThrowClassCastException();
       }
 
-      if (!a3)
+      if (!string)
       {
         break;
       }
 
-      if ([a3 isEqual:{-[OrgXmlSaxHelpersNamespaceSupport getURIWithNSString:](self, "getURIWithNSString:", v8)}])
+      if ([string isEqual:{-[OrgXmlSaxHelpersNamespaceSupport getURIWithNSString:](self, "getURIWithNSString:", nextElement)}])
       {
-        [(JavaUtilArrayList *)v5 addWithId:v8];
+        [(JavaUtilArrayList *)v5 addWithId:nextElement];
       }
 
       if (([v7 hasMoreElements] & 1) == 0)
@@ -273,7 +273,7 @@ LABEL_9:
   return [(OrgXmlSaxHelpersNamespaceSupport_Context *)currentContext getDeclaredPrefixes];
 }
 
-- (void)setNamespaceDeclUrisWithBoolean:(BOOL)a3
+- (void)setNamespaceDeclUrisWithBoolean:(BOOL)boolean
 {
   if (self->contextPos_)
   {
@@ -281,10 +281,10 @@ LABEL_9:
     objc_exception_throw(v10);
   }
 
-  if (self->namespaceDeclUris_ != a3)
+  if (self->namespaceDeclUris_ != boolean)
   {
-    self->namespaceDeclUris_ = a3;
-    if (a3)
+    self->namespaceDeclUris_ = boolean;
+    if (boolean)
     {
       currentContext = self->currentContext_;
       if (currentContext)
@@ -327,7 +327,7 @@ LABEL_8:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = JavaUtilCollections_emptyList();
     v3 = JavaUtilCollections_enumerationWithJavaUtilCollection_(v2);

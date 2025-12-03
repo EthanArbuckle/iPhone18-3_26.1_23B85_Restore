@@ -8,20 +8,20 @@
 
 - (double)previewMaximumSize
 {
-  v1 = [a1 _FBSScene];
-  v2 = [v1 settings];
+  _FBSScene = [self _FBSScene];
+  settings = [_FBSScene settings];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v2 previewMaximumSize];
+    [settings previewMaximumSize];
     v4 = v3;
   }
 
   else
   {
-    v5 = [v2 displayConfiguration];
-    [v5 bounds];
+    displayConfiguration = [settings displayConfiguration];
+    [displayConfiguration bounds];
     v4 = v6;
   }
 
@@ -30,20 +30,20 @@
 
 - (id)displayName
 {
-  v1 = [a1 _FBSScene];
-  v2 = [v1 settings];
-  v3 = [v2 displayConfiguration];
-  v4 = [v3 name];
+  _FBSScene = [self _FBSScene];
+  settings = [_FBSScene settings];
+  displayConfiguration = [settings displayConfiguration];
+  name = [displayConfiguration name];
 
-  return v4;
+  return name;
 }
 
 - (double)displayScale
 {
-  v1 = [a1 _FBSScene];
-  v2 = [v1 settings];
-  v3 = [v2 displayConfiguration];
-  [v3 pointScale];
+  _FBSScene = [self _FBSScene];
+  settings = [_FBSScene settings];
+  displayConfiguration = [settings displayConfiguration];
+  [displayConfiguration pointScale];
   v5 = v4;
 
   return v5;

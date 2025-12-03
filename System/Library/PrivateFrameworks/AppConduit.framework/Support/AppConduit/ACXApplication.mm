@@ -1,29 +1,29 @@
 @interface ACXApplication
-- (id)externalApplicationDictionaryRepresentationForDeviceState:(id)a3;
-- (id)externalComplicationDictionaryRepresentationForDeviceState:(id)a3;
-- (int64_t)exportedAppStateForDeviceState:(id)a3;
+- (id)externalApplicationDictionaryRepresentationForDeviceState:(id)state;
+- (id)externalComplicationDictionaryRepresentationForDeviceState:(id)state;
+- (int64_t)exportedAppStateForDeviceState:(id)state;
 @end
 
 @implementation ACXApplication
 
-- (id)externalApplicationDictionaryRepresentationForDeviceState:(id)a3
+- (id)externalApplicationDictionaryRepresentationForDeviceState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v5 = objc_opt_new();
-  v6 = [(ACXApplication *)self bundleIdentifier];
-  [v5 setObject:v6 forKeyedSubscript:@"i"];
+  bundleIdentifier = [(ACXApplication *)self bundleIdentifier];
+  [v5 setObject:bundleIdentifier forKeyedSubscript:@"i"];
 
-  v7 = [(ACXApplication *)self applicationName];
-  [v5 setObject:v7 forKeyedSubscript:@"n"];
+  applicationName = [(ACXApplication *)self applicationName];
+  [v5 setObject:applicationName forKeyedSubscript:@"n"];
 
-  v8 = [(ACXApplication *)self teamID];
-  [v5 setObject:v8 forKeyedSubscript:@"SPApplicationTeamID"];
+  teamID = [(ACXApplication *)self teamID];
+  [v5 setObject:teamID forKeyedSubscript:@"SPApplicationTeamID"];
 
-  v9 = [(ACXApplication *)self companionAppBundleID];
-  [v5 setObject:v9 forKeyedSubscript:@"SPContainerAppBundleId"];
+  companionAppBundleID = [(ACXApplication *)self companionAppBundleID];
+  [v5 setObject:companionAppBundleID forKeyedSubscript:@"SPContainerAppBundleId"];
 
-  v10 = [(ACXApplication *)self watchKitAppExtensionBundleID];
-  [v5 setObject:v10 forKeyedSubscript:@"SPPluginBundleIdKey"];
+  watchKitAppExtensionBundleID = [(ACXApplication *)self watchKitAppExtensionBundleID];
+  [v5 setObject:watchKitAppExtensionBundleID forKeyedSubscript:@"SPPluginBundleIdKey"];
 
   v11 = [NSNumber numberWithBool:[(ACXApplication *)self isBetaApp]];
   [v5 setObject:v11 forKeyedSubscript:@"WKBetaAppKey"];
@@ -31,36 +31,36 @@
   v12 = [NSNumber numberWithBool:[(ACXApplication *)self isSystemApp]];
   [v5 setObject:v12 forKeyedSubscript:@"AppShipsWithOS"];
 
-  v13 = [(ACXApplication *)self watchKitVersion];
-  [v5 setObject:v13 forKeyedSubscript:@"WKWatchKitVersion"];
+  watchKitVersion = [(ACXApplication *)self watchKitVersion];
+  [v5 setObject:watchKitVersion forKeyedSubscript:@"WKWatchKitVersion"];
 
-  v14 = [(ACXApplication *)self intentsRestrictedWhileLocked];
-  [v5 setObject:v14 forKeyedSubscript:@"IntentsRestrictedWhileLockedAgg"];
+  intentsRestrictedWhileLocked = [(ACXApplication *)self intentsRestrictedWhileLocked];
+  [v5 setObject:intentsRestrictedWhileLocked forKeyedSubscript:@"IntentsRestrictedWhileLockedAgg"];
 
-  v15 = [(ACXApplication *)self intentsSupported];
-  [v5 setObject:v15 forKeyedSubscript:@"IntentsSupportedAgg"];
+  intentsSupported = [(ACXApplication *)self intentsSupported];
+  [v5 setObject:intentsSupported forKeyedSubscript:@"IntentsSupportedAgg"];
 
-  v16 = [(ACXApplication *)self clockFaceExtensionPaths];
-  [v5 setObject:v16 forKeyedSubscript:@"ACXClockfaceExtensionPaths"];
+  clockFaceExtensionPaths = [(ACXApplication *)self clockFaceExtensionPaths];
+  [v5 setObject:clockFaceExtensionPaths forKeyedSubscript:@"ACXClockfaceExtensionPaths"];
 
-  if (v4)
+  if (stateCopy)
   {
-    v17 = [(ACXApplication *)self exportedAppStateForDeviceState:v4];
+    v17 = [(ACXApplication *)self exportedAppStateForDeviceState:stateCopy];
     v18 = [NSNumber numberWithInteger:v17];
     [v5 setObject:v18 forKeyedSubscript:@"s"];
 
     v19 = [NSNumber numberWithInt:(v17 - 1) < 2];
     [v5 setObject:v19 forKeyedSubscript:@"saw"];
 
-    v20 = [(ACXApplication *)self bundleIdentifier];
-    v21 = [v4 uniqueInstallIDForApp:v20];
+    bundleIdentifier2 = [(ACXApplication *)self bundleIdentifier];
+    v21 = [stateCopy uniqueInstallIDForApp:bundleIdentifier2];
     [v5 setObject:v21 forKeyedSubscript:@"SPApplicationUniqueID"];
   }
 
-  v22 = [v4 device];
-  v23 = [v22 osVersion];
+  device = [stateCopy device];
+  osVersion = [device osVersion];
 
-  if ([(ACXApplication *)self isRuntimeCompatibleWithOSVersion:v23])
+  if ([(ACXApplication *)self isRuntimeCompatibleWithOSVersion:osVersion])
   {
     v24 = &off_100097878;
   }
@@ -71,8 +71,8 @@
   }
 
   [v5 setObject:v24 forKeyedSubscript:@"WKCompatibility"];
-  v25 = [v4 device];
-  v26 = [(ACXApplication *)self isCompatibleWithDevice:v25];
+  device2 = [stateCopy device];
+  v26 = [(ACXApplication *)self isCompatibleWithDevice:device2];
 
   if (v26)
   {
@@ -85,44 +85,44 @@
   }
 
   [v5 setObject:v27 forKeyedSubscript:@"ACXArchitectureCompatibility"];
-  v28 = [(ACXApplication *)self userActivityTypes];
-  [v5 setObject:v28 forKeyedSubscript:@"ACXUserActivityTypesKey"];
+  userActivityTypes = [(ACXApplication *)self userActivityTypes];
+  [v5 setObject:userActivityTypes forKeyedSubscript:@"ACXUserActivityTypesKey"];
 
   v29 = [v5 copy];
 
   return v29;
 }
 
-- (id)externalComplicationDictionaryRepresentationForDeviceState:(id)a3
+- (id)externalComplicationDictionaryRepresentationForDeviceState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v5 = objc_opt_new();
-  v6 = [(ACXApplication *)self bundleIdentifier];
-  [v5 setObject:v6 forKeyedSubscript:@"CFBundleIdentifier"];
+  bundleIdentifier = [(ACXApplication *)self bundleIdentifier];
+  [v5 setObject:bundleIdentifier forKeyedSubscript:@"CFBundleIdentifier"];
 
-  v7 = [(ACXApplication *)self companionAppName];
-  [v5 setObject:v7 forKeyedSubscript:@"CFBundleName"];
+  companionAppName = [(ACXApplication *)self companionAppName];
+  [v5 setObject:companionAppName forKeyedSubscript:@"CFBundleName"];
 
-  if (v4)
+  if (stateCopy)
   {
-    v8 = [NSNumber numberWithInteger:[(ACXApplication *)self exportedAppStateForDeviceState:v4]];
+    v8 = [NSNumber numberWithInteger:[(ACXApplication *)self exportedAppStateForDeviceState:stateCopy]];
     [v5 setObject:v8 forKeyedSubscript:@"s"];
   }
 
-  v9 = [(ACXApplication *)self complicationPrincipalClass];
+  complicationPrincipalClass = [(ACXApplication *)self complicationPrincipalClass];
 
-  if (v9)
+  if (complicationPrincipalClass)
   {
-    v10 = [(ACXApplication *)self complicationPrincipalClass];
-    [v5 setObject:v10 forKeyedSubscript:@"CLKComplicationPrincipalClass"];
+    complicationPrincipalClass2 = [(ACXApplication *)self complicationPrincipalClass];
+    [v5 setObject:complicationPrincipalClass2 forKeyedSubscript:@"CLKComplicationPrincipalClass"];
   }
 
-  v11 = [(ACXApplication *)self supportedComplicationFamilies];
+  supportedComplicationFamilies = [(ACXApplication *)self supportedComplicationFamilies];
 
-  if (v11)
+  if (supportedComplicationFamilies)
   {
-    v12 = [(ACXApplication *)self supportedComplicationFamilies];
-    [v5 setObject:v12 forKeyedSubscript:@"CLKComplicationSupportedFamilies"];
+    supportedComplicationFamilies2 = [(ACXApplication *)self supportedComplicationFamilies];
+    [v5 setObject:supportedComplicationFamilies2 forKeyedSubscript:@"CLKComplicationSupportedFamilies"];
   }
 
   v13 = [v5 copy];
@@ -130,11 +130,11 @@
   return v13;
 }
 
-- (int64_t)exportedAppStateForDeviceState:(id)a3
+- (int64_t)exportedAppStateForDeviceState:(id)state
 {
-  v4 = a3;
-  v5 = [(ACXApplication *)self companionAppBundleID];
-  v6 = [v4 updatePendingForCompanionApp:v5];
+  stateCopy = state;
+  companionAppBundleID = [(ACXApplication *)self companionAppBundleID];
+  v6 = [stateCopy updatePendingForCompanionApp:companionAppBundleID];
 
   if (v6)
   {
@@ -143,8 +143,8 @@
 
   else
   {
-    v8 = [(ACXApplication *)self bundleIdentifier];
-    v7 = [v4 exportedAppStateForDeviceState:{objc_msgSend(v4, "installStatusForApp:", v8)}];
+    bundleIdentifier = [(ACXApplication *)self bundleIdentifier];
+    v7 = [stateCopy exportedAppStateForDeviceState:{objc_msgSend(stateCopy, "installStatusForApp:", bundleIdentifier)}];
   }
 
   return v7;

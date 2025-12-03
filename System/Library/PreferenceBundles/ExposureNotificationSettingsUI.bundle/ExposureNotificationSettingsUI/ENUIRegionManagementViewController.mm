@@ -1,21 +1,21 @@
 @interface ENUIRegionManagementViewController
-- (ENUIRegionManagementViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (ENUIRegionManagementViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (id)_activeRegion;
 - (id)_addRegionSpecifiers;
 - (id)_authorizedRegions;
 - (id)_availableRegions;
 - (id)specifiers;
-- (id)specifiersForHealthAgencyModels:(id)a3;
-- (void)didTapAddRegion:(id)a3;
+- (id)specifiersForHealthAgencyModels:(id)models;
+- (void)didTapAddRegion:(id)region;
 @end
 
 @implementation ENUIRegionManagementViewController
 
-- (ENUIRegionManagementViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (ENUIRegionManagementViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v9.receiver = self;
   v9.super_class = ENUIRegionManagementViewController;
-  v4 = [(ENUIRegionManagementViewController *)&v9 initWithNibName:a3 bundle:a4];
+  v4 = [(ENUIRegionManagementViewController *)&v9 initWithNibName:name bundle:bundle];
   if (v4)
   {
     v5 = ENUILocalizedString();
@@ -42,16 +42,16 @@
   else
   {
     v6 = objc_alloc_init(NSMutableArray);
-    v7 = [(ENUIRegionManagementViewController *)self _activeRegion];
-    [v6 addObjectsFromArray:v7];
+    _activeRegion = [(ENUIRegionManagementViewController *)self _activeRegion];
+    [v6 addObjectsFromArray:_activeRegion];
 
     v8 = +[_TtC28HealthExposureNotificationUI27ENUIPublicHealthAgencyModel authorizedRegions];
     v9 = [v8 count];
 
     if (v9)
     {
-      v10 = [(ENUIRegionManagementViewController *)self _authorizedRegions];
-      [v6 addObjectsFromArray:v10];
+      _authorizedRegions = [(ENUIRegionManagementViewController *)self _authorizedRegions];
+      [v6 addObjectsFromArray:_authorizedRegions];
     }
 
     v11 = +[_TtC28HealthExposureNotificationUI27ENUIPublicHealthAgencyModel availableRegions];
@@ -59,12 +59,12 @@
 
     if (v12)
     {
-      v13 = [(ENUIRegionManagementViewController *)self _availableRegions];
-      [v6 addObjectsFromArray:v13];
+      _availableRegions = [(ENUIRegionManagementViewController *)self _availableRegions];
+      [v6 addObjectsFromArray:_availableRegions];
     }
 
-    v14 = [(ENUIRegionManagementViewController *)self _addRegionSpecifiers];
-    [v6 addObjectsFromArray:v14];
+    _addRegionSpecifiers = [(ENUIRegionManagementViewController *)self _addRegionSpecifiers];
+    [v6 addObjectsFromArray:_addRegionSpecifiers];
 
     v15 = [v6 copy];
     v16 = *&self->PSListController_opaque[v2];
@@ -89,7 +89,7 @@
     v15 = v6;
     v7 = [NSArray arrayWithObjects:&v15 count:1];
     v8 = [(ENUIRegionManagementViewController *)self specifiersForHealthAgencyModels:v7];
-    v9 = [v8 firstObject];
+    firstObject = [v8 firstObject];
 
     v10 = ENUILocalizedString();
     [v4 setObject:v10 forKeyedSubscript:PSFooterTextGroupKey];
@@ -98,13 +98,13 @@
   else
   {
     v11 = ENUILocalizedString();
-    v9 = [PSSpecifier preferenceSpecifierNamed:v11 target:0 set:0 get:0 detail:0 cell:-1 edit:0];
+    firstObject = [PSSpecifier preferenceSpecifierNamed:v11 target:0 set:0 get:0 detail:0 cell:-1 edit:0];
 
-    [v9 setObject:&__kCFBooleanFalse forKeyedSubscript:PSEnabledKey];
+    [firstObject setObject:&__kCFBooleanFalse forKeyedSubscript:PSEnabledKey];
   }
 
   v14[0] = v4;
-  v14[1] = v9;
+  v14[1] = firstObject;
   v12 = [NSArray arrayWithObjects:v14 count:2];
 
   return v12;
@@ -163,9 +163,9 @@
   return v6;
 }
 
-- (void)didTapAddRegion:(id)a3
+- (void)didTapAddRegion:(id)region
 {
-  v4 = a3;
+  regionCopy = region;
   v5 = +[_TtC28HealthExposureNotificationUI16ENManagerAdapter defaultAdapter];
   objc_initWeak(&location, self);
   v6 = +[ENUIViewControllerFactory sharedInstance];
@@ -182,15 +182,15 @@
   objc_destroyWeak(&location);
 }
 
-- (id)specifiersForHealthAgencyModels:(id)a3
+- (id)specifiersForHealthAgencyModels:(id)models
 {
-  v3 = a3;
-  v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v3 count]);
+  modelsCopy = models;
+  v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [modelsCopy count]);
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  obj = v3;
+  obj = modelsCopy;
   v5 = [obj countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v5)
   {
@@ -208,17 +208,17 @@
         }
 
         v11 = *(*(&v20 + 1) + 8 * i);
-        v12 = [v11 name];
-        v13 = [PSSpecifier preferenceSpecifierNamed:v12 target:self set:0 get:0 detail:objc_opt_class() cell:1 edit:0];
+        name = [v11 name];
+        v13 = [PSSpecifier preferenceSpecifierNamed:name target:self set:0 get:0 detail:objc_opt_class() cell:1 edit:0];
 
-        v14 = [v11 region];
-        v15 = [v14 regionCode];
-        [v13 setIdentifier:v15];
+        region = [v11 region];
+        regionCode = [region regionCode];
+        [v13 setIdentifier:regionCode];
 
         [v13 setUserInfo:v11];
         [v13 setObject:objc_opt_class() forKeyedSubscript:v8];
-        v16 = [v11 name];
-        [v13 setObject:v16 forKeyedSubscript:v9];
+        name2 = [v11 name];
+        [v13 setObject:name2 forKeyedSubscript:v9];
 
         [v4 addObject:v13];
       }

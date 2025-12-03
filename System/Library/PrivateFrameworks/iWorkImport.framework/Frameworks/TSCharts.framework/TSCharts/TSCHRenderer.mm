@@ -1,25 +1,25 @@
 @interface TSCHRenderer
 - (CGRect)chartLayoutSpaceRenderingRect;
-- (CGRect)frameForEditingTextForSelectionPath:(id)a3;
-- (CGRect)tLayerRectForContext:(CGContext *)a3;
-- (TSCHRenderer)initWithChartRep:(id)a3 layoutItem:(id)a4;
+- (CGRect)frameForEditingTextForSelectionPath:(id)path;
+- (CGRect)tLayerRectForContext:(CGContext *)context;
+- (TSCHRenderer)initWithChartRep:(id)rep layoutItem:(id)item;
 - (TSCHSupportsRendering)chartRep;
 - (double)viewScale;
-- (int)textDrawingFlagForSelectionPath:(id)a3;
-- (void)drawErrorBarsInContext:(CGContext *)a3 chartVertical:(BOOL)a4 elementRenderClass:(Class)a5;
-- (void)drawTrendLinesInContext:(CGContext *)a3 chartVertical:(BOOL)a4 elementRenderClass:(Class)a5;
-- (void)p_debugLayoutInContext:(CGContext *)a3;
-- (void)renderIntoContext:(CGContext *)a3 visible:(CGRect)a4;
-- (void)strokeRectInContext:(CGContext *)a3 rect:(CGRect)a4 color:(CGColor *)a5;
+- (int)textDrawingFlagForSelectionPath:(id)path;
+- (void)drawErrorBarsInContext:(CGContext *)context chartVertical:(BOOL)vertical elementRenderClass:(Class)class;
+- (void)drawTrendLinesInContext:(CGContext *)context chartVertical:(BOOL)vertical elementRenderClass:(Class)class;
+- (void)p_debugLayoutInContext:(CGContext *)context;
+- (void)renderIntoContext:(CGContext *)context visible:(CGRect)visible;
+- (void)strokeRectInContext:(CGContext *)context rect:(CGRect)rect color:(CGColor *)color;
 @end
 
 @implementation TSCHRenderer
 
-- (TSCHRenderer)initWithChartRep:(id)a3 layoutItem:(id)a4
+- (TSCHRenderer)initWithChartRep:(id)rep layoutItem:(id)item
 {
-  v6 = a3;
-  v8 = a4;
-  if (!v8)
+  repCopy = rep;
+  itemCopy = item;
+  if (!itemCopy)
   {
     v39 = MEMORY[0x277D81150];
     v40 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, v9, v10, v11, "[TSCHRenderer initWithChartRep:layoutItem:]");
@@ -27,7 +27,7 @@
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v39, v46, v47, v48, v49, v40, v45, 33, 0, "invalid nil value for '%{public}s'", "chartLayoutItem");
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v50, v51, v52, v53);
-    if (v6)
+    if (repCopy)
     {
       goto LABEL_3;
     }
@@ -42,7 +42,7 @@ LABEL_8:
     goto LABEL_3;
   }
 
-  if (!v6)
+  if (!repCopy)
   {
     goto LABEL_8;
   }
@@ -54,8 +54,8 @@ LABEL_3:
   v13 = v12;
   if (v12)
   {
-    objc_storeWeak(&v12->_chartRep, v6);
-    objc_storeStrong(&v13->_layoutItem, a4);
+    objc_storeWeak(&v12->_chartRep, repCopy);
+    objc_storeStrong(&v13->_layoutItem, item);
     v18 = objc_msgSend_chartInfo(v13, v14, v15, v16, v17);
 
     if (!v18)
@@ -81,7 +81,7 @@ LABEL_3:
   return v11;
 }
 
-- (CGRect)frameForEditingTextForSelectionPath:(id)a3
+- (CGRect)frameForEditingTextForSelectionPath:(id)path
 {
   v3 = *MEMORY[0x277CBF398];
   v4 = *(MEMORY[0x277CBF398] + 8);
@@ -94,18 +94,18 @@ LABEL_3:
   return result;
 }
 
-- (int)textDrawingFlagForSelectionPath:(id)a3
+- (int)textDrawingFlagForSelectionPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   objc_opt_class();
   v9 = objc_msgSend_chartRep(self, v5, v6, v7, v8);
   v10 = TSUDynamicCast();
   v15 = objc_msgSend_activeTextEditingPath(v10, v11, v12, v13, v14);
 
   v20 = 0;
-  if (v4 && v15)
+  if (pathCopy && v15)
   {
-    if (objc_msgSend_isEqual_(v4, v16, v17, v18, v19, v15))
+    if (objc_msgSend_isEqual_(pathCopy, v16, v17, v18, v19, v15))
     {
       objc_opt_class();
       v25 = objc_msgSend_chartRep(self, v21, v22, v23, v24);
@@ -132,13 +132,13 @@ LABEL_3:
   return v20;
 }
 
-- (void)renderIntoContext:(CGContext *)a3 visible:(CGRect)a4
+- (void)renderIntoContext:(CGContext *)context visible:(CGRect)visible
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v10 = objc_msgSend_layoutItem(self, a2, a4.origin.x, a4.origin.y, a4.size.width);
+  height = visible.size.height;
+  width = visible.size.width;
+  y = visible.origin.y;
+  x = visible.origin.x;
+  v10 = objc_msgSend_layoutItem(self, a2, visible.origin.x, visible.origin.y, visible.size.width);
   objc_msgSend_rootedDrawingRect(v10, v11, v12, v13, v14);
   v16 = v15;
   v18 = v17;
@@ -155,42 +155,42 @@ LABEL_3:
   v26.size.height = v22;
   if (CGRectIntersectsRect(v25, v26))
   {
-    UIGraphicsPushContext(a3);
-    CGContextSaveGState(a3);
-    objc_msgSend_p_renderIntoContext_visible_(self, v23, x, y, width, a3, height);
-    CGContextRestoreGState(a3);
+    UIGraphicsPushContext(context);
+    CGContextSaveGState(context);
+    objc_msgSend_p_renderIntoContext_visible_(self, v23, x, y, width, context, height);
+    CGContextRestoreGState(context);
 
     UIGraphicsPopContext();
   }
 }
 
-- (void)strokeRectInContext:(CGContext *)a3 rect:(CGRect)a4 color:(CGColor *)a5
+- (void)strokeRectInContext:(CGContext *)context rect:(CGRect)rect color:(CGColor *)color
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  CGContextSaveGState(a3);
-  sub_27628CB34(a3, x, y, width, height, 2.0);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  CGContextSaveGState(context);
+  sub_27628CB34(context, x, y, width, height, 2.0);
   v12 = v11;
   v14 = v13;
   v16 = v15;
   v18 = v17;
   CGContextClipToRectSafe();
-  CGContextSetLineCap(a3, kCGLineCapSquare);
-  CGContextSetLineJoin(a3, kCGLineJoinMiter);
-  CGContextSetLineWidth(a3, 2.0);
-  CGContextSetStrokeColorWithColor(a3, a5);
+  CGContextSetLineCap(context, kCGLineCapSquare);
+  CGContextSetLineJoin(context, kCGLineJoinMiter);
+  CGContextSetLineWidth(context, 2.0);
+  CGContextSetStrokeColorWithColor(context, color);
   v20.origin.x = v12;
   v20.origin.y = v14;
   v20.size.width = v16;
   v20.size.height = v18;
-  CGContextStrokeRect(a3, v20);
+  CGContextStrokeRect(context, v20);
 
-  CGContextRestoreGState(a3);
+  CGContextRestoreGState(context);
 }
 
-- (void)p_debugLayoutInContext:(CGContext *)a3
+- (void)p_debugLayoutInContext:(CGContext *)context
 {
   v7 = objc_msgSend_layoutItem(self, a2, v3, v4, v5);
   objc_msgSend_rootedLayoutRect(v7, v8, v9, v10, v11);
@@ -224,11 +224,11 @@ LABEL_3:
   return result;
 }
 
-- (CGRect)tLayerRectForContext:(CGContext *)a3
+- (CGRect)tLayerRectForContext:(CGContext *)context
 {
-  if (a3)
+  if (context)
   {
-    ClipBoundingBox = CGContextGetClipBoundingBox(a3);
+    ClipBoundingBox = CGContextGetClipBoundingBox(context);
     x = ClipBoundingBox.origin.x;
     y = ClipBoundingBox.origin.y;
     width = ClipBoundingBox.size.width;
@@ -279,9 +279,9 @@ LABEL_3:
   return WeakRetained;
 }
 
-- (void)drawErrorBarsInContext:(CGContext *)a3 chartVertical:(BOOL)a4 elementRenderClass:(Class)a5
+- (void)drawErrorBarsInContext:(CGContext *)context chartVertical:(BOOL)vertical elementRenderClass:(Class)class
 {
-  v11 = objc_msgSend_chartRep(self, a2, v5, v6, v7, a3, a4);
+  v11 = objc_msgSend_chartRep(self, a2, v5, v6, v7, context, vertical);
   v16 = objc_msgSend_model(self, v12, v13, v14, v15);
   v21 = objc_msgSend_renderSeriesIndexSet(v11, v17, v18, v19, v20);
   objc_opt_class();
@@ -298,8 +298,8 @@ LABEL_3:
   v48 = v37;
   v49 = v11;
   v50 = v22;
-  v51 = a5;
-  v52 = a3;
+  classCopy = class;
+  contextCopy = context;
   v38 = v22;
   v39 = v11;
   v40 = v37;
@@ -307,11 +307,11 @@ LABEL_3:
   objc_msgSend_enumerateIndexesWithOptions_usingBlock_(v21, v42, v43, v44, v45, 2, v46);
 }
 
-- (void)drawTrendLinesInContext:(CGContext *)a3 chartVertical:(BOOL)a4 elementRenderClass:(Class)a5
+- (void)drawTrendLinesInContext:(CGContext *)context chartVertical:(BOOL)vertical elementRenderClass:(Class)class
 {
-  if (a3)
+  if (context)
   {
-    v11 = objc_msgSend_chartRep(self, a2, v5, v6, v7, a3, a4);
+    v11 = objc_msgSend_chartRep(self, a2, v5, v6, v7, context, vertical);
     v16 = objc_msgSend_model(self, v12, v13, v14, v15);
     v21 = objc_msgSend_renderSeriesIndexSet(v11, v17, v18, v19, v20);
     objc_opt_class();
@@ -332,10 +332,10 @@ LABEL_3:
       v75[3] = &unk_27A6B9A18;
       v76 = v11;
       v77 = v16;
-      v81 = a5;
+      classCopy = class;
       v78 = v27;
-      v79 = self;
-      v82 = a3;
+      selfCopy = self;
+      contextCopy = context;
       v83 = v39;
       v80 = v33;
       objc_msgSend_enumerateIndexesWithOptions_usingBlock_(v21, v40, v41, v42, v43, 2, v75);
@@ -355,7 +355,7 @@ LABEL_3:
   else
   {
     v44 = MEMORY[0x277D81150];
-    v45 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, v5, v6, v7, "[TSCHRenderer(TrendLines) drawTrendLinesInContext:chartVertical:elementRenderClass:]", a4, a5);
+    v45 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, v5, v6, v7, "[TSCHRenderer(TrendLines) drawTrendLinesInContext:chartVertical:elementRenderClass:]", vertical, class);
     v50 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v46, v47, v48, v49, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCHRendererTrendLines.m");
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v44, v51, v52, v53, v54, v45, v50, 34, 0, "invalid nil value for '%{public}s'", "context");
 

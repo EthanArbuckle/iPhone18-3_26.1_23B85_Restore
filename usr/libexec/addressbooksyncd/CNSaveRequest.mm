@@ -9,8 +9,8 @@
 {
   v3 = objc_alloc_init(CNSaveRequest);
   [v3 setIgnoresGuardianRestrictions:1];
-  v4 = [a1 abs_transactionSignature];
-  [v3 setTransactionAuthor:v4];
+  abs_transactionSignature = [self abs_transactionSignature];
+  [v3 setTransactionAuthor:abs_transactionSignature];
 
   return v3;
 }

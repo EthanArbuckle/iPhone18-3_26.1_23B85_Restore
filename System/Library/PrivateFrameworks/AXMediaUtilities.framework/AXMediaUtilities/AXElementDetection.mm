@@ -1,30 +1,30 @@
 @interface AXElementDetection
-- (AXElementDetection)initWithBox:(CGRect)a3 defaultBox:(CGRect)a4 confidence:(float)a5 scale:(int)a6 mergesCount:(int)a7 hasLabel:(BOOL)a8 label:(int)a9 labelName:(id)a10;
-- (BOOL)isOverlappingLowMergeDet:(id)a3 withOverlapThreshold:(float)a4 withMergeCountDelta:(int)a5;
-- (BOOL)isOverlappingSmallFace:(id)a3 withOverlapThreshold:(float)a4 withSizeRatio:(float)a5;
+- (AXElementDetection)initWithBox:(CGRect)box defaultBox:(CGRect)defaultBox confidence:(float)confidence scale:(int)scale mergesCount:(int)count hasLabel:(BOOL)label label:(int)a9 labelName:(id)self0;
+- (BOOL)isOverlappingLowMergeDet:(id)det withOverlapThreshold:(float)threshold withMergeCountDelta:(int)delta;
+- (BOOL)isOverlappingSmallFace:(id)face withOverlapThreshold:(float)threshold withSizeRatio:(float)ratio;
 - (CGPoint)boxCenter;
 - (CGRect)box;
 - (CGRect)defaultBox;
 - (float)distanceToDefaultBox;
-- (float)iOa:(id)a3;
-- (float)overlap:(id)a3;
+- (float)iOa:(id)oa;
+- (float)overlap:(id)overlap;
 - (float)smartDistance;
 - (id)description;
 @end
 
 @implementation AXElementDetection
 
-- (AXElementDetection)initWithBox:(CGRect)a3 defaultBox:(CGRect)a4 confidence:(float)a5 scale:(int)a6 mergesCount:(int)a7 hasLabel:(BOOL)a8 label:(int)a9 labelName:(id)a10
+- (AXElementDetection)initWithBox:(CGRect)box defaultBox:(CGRect)defaultBox confidence:(float)confidence scale:(int)scale mergesCount:(int)count hasLabel:(BOOL)label label:(int)a9 labelName:(id)self0
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v19 = a3.size.height;
-  v20 = a3.size.width;
-  v21 = a3.origin.y;
-  v22 = a3.origin.x;
-  v24 = a10;
+  height = defaultBox.size.height;
+  width = defaultBox.size.width;
+  y = defaultBox.origin.y;
+  x = defaultBox.origin.x;
+  v19 = box.size.height;
+  v20 = box.size.width;
+  v21 = box.origin.y;
+  v22 = box.origin.x;
+  nameCopy = name;
   v29.receiver = self;
   v29.super_class = AXElementDetection;
   v25 = [(AXElementDetection *)&v29 init];
@@ -39,14 +39,14 @@
     v25->_defaultBox.origin.y = y;
     v25->_defaultBox.size.width = width;
     v25->_defaultBox.size.height = height;
-    v25->_confidence = a5;
-    v25->_mergesCount = a7;
-    v25->_scale = a6;
+    v25->_confidence = confidence;
+    v25->_mergesCount = count;
+    v25->_scale = scale;
     v27 = v20 * v19;
     v25->_area = v27;
-    v25->_hasLabel = a8;
+    v25->_hasLabel = label;
     v25->_label = a9;
-    objc_storeStrong(&v25->_labelName, a10);
+    objc_storeStrong(&v25->_labelName, name);
   }
 
   return v26;
@@ -95,9 +95,9 @@
   return v4 + (1.0 - v5);
 }
 
-- (float)overlap:(id)a3
+- (float)overlap:(id)overlap
 {
-  [a3 box];
+  [overlap box];
   v18 = v5;
   v19 = v4;
   v21 = v6;
@@ -121,9 +121,9 @@
   return *(v12.f64 + 1) / ((*v12.f64 + self->_area) - *(v12.f64 + 1));
 }
 
-- (float)iOa:(id)a3
+- (float)iOa:(id)oa
 {
-  [a3 box];
+  [oa box];
   v18 = v5;
   v19 = v4;
   v21 = v6;
@@ -147,9 +147,9 @@
   return result;
 }
 
-- (BOOL)isOverlappingSmallFace:(id)a3 withOverlapThreshold:(float)a4 withSizeRatio:(float)a5
+- (BOOL)isOverlappingSmallFace:(id)face withOverlapThreshold:(float)threshold withSizeRatio:(float)ratio
 {
-  [a3 box];
+  [face box];
   v26 = v9;
   v27 = v8;
   v24 = v11;
@@ -170,13 +170,13 @@
   *&v18.f64[0] = vcvt_f32_f64(v18);
   *&v18.f64[0] = vbsl_s8(vcgt_f32(*&v15.f64[0], *&v18.f64[0]), *&v15.f64[0], *&v18.f64[0]);
   *&v18.f64[0] = vbic_s8(vsub_f32(v22, *&v18.f64[0]), vcgt_f32(*&v18.f64[0], v22));
-  return vdiv_f32(vmul_lane_f32(*&v18.f64[0], *&v18.f64[0], 1), v14).f32[0] > a4 && v14.f32[0] <= (self->_area * a5);
+  return vdiv_f32(vmul_lane_f32(*&v18.f64[0], *&v18.f64[0], 1), v14).f32[0] > threshold && v14.f32[0] <= (self->_area * ratio);
 }
 
-- (BOOL)isOverlappingLowMergeDet:(id)a3 withOverlapThreshold:(float)a4 withMergeCountDelta:(int)a5
+- (BOOL)isOverlappingLowMergeDet:(id)det withOverlapThreshold:(float)threshold withMergeCountDelta:(int)delta
 {
-  v8 = a3;
-  [v8 box];
+  detCopy = det;
+  [detCopy box];
   v26 = v10;
   v27 = v9;
   v28 = v12;
@@ -198,7 +198,7 @@
   *&v17.f64[0] = vbic_s8(vsub_f32(v21, *&v17.f64[0]), vcgt_f32(*&v17.f64[0], v21));
   v22 = COERCE_DOUBLE(vmul_f32(vzip1_s32(*&v14.f64[0], *&v17.f64[0]), vzip2_s32(*&v14.f64[0], *&v17.f64[0])));
   *&v22 = *(&v22 + 1) / ((*&v22 + self->_area) - *(&v22 + 1));
-  if (*&v22 <= a4)
+  if (*&v22 <= threshold)
   {
     v24 = 0;
   }
@@ -206,7 +206,7 @@
   else
   {
     mergesCount = self->_mergesCount;
-    v24 = (mergesCount - [v8 mergesCount]) > a5;
+    v24 = (mergesCount - [detCopy mergesCount]) > delta;
   }
 
   return v24;

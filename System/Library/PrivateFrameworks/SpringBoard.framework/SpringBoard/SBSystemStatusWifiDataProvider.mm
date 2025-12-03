@@ -7,8 +7,8 @@
 - (void)_updateWifiActive;
 - (void)dealloc;
 - (void)invalidate;
-- (void)setFallingBackToCellular:(BOOL)a3;
-- (void)setWifiActive:(BOOL)a3;
+- (void)setFallingBackToCellular:(BOOL)cellular;
+- (void)setWifiActive:(BOOL)active;
 @end
 
 @implementation SBSystemStatusWifiDataProvider
@@ -21,8 +21,8 @@
   if (v2)
   {
     v3 = objc_alloc(MEMORY[0x277D6BBB8]);
-    v4 = [SBApp systemStatusServer];
-    v5 = [v3 initWithServerHandle:v4];
+    systemStatusServer = [SBApp systemStatusServer];
+    v5 = [v3 initWithServerHandle:systemStatusServer];
     v6 = *(v2 + 3);
     *(v2 + 3) = v5;
 
@@ -87,8 +87,8 @@ void __38__SBSystemStatusWifiDataProvider_init__block_invoke(uint64_t a1)
 - (void)invalidate
 {
   [(STWifiStatusDomainPublisher *)self->_wifiDataPublisher invalidate];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   if ([(SBSystemStatusWifiDataProvider *)self cellularFallbackWatcher])
   {
@@ -100,10 +100,10 @@ void __38__SBSystemStatusWifiDataProvider_init__block_invoke(uint64_t a1)
 
 - (void)_registerForNotifications
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:self selector:sel__updateData name:@"SBWifiSignalStrengthChangedNotification" object:0];
-  [v3 addObserver:self selector:sel__updateData name:@"SBWifiManagerLinkHotSpotnessDidChangeNotification" object:0];
-  [v3 addObserver:self selector:sel__updateWifiActive name:@"SBWifiManagerPrimaryInterfaceMayHaveChangedNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__updateData name:@"SBWifiSignalStrengthChangedNotification" object:0];
+  [defaultCenter addObserver:self selector:sel__updateData name:@"SBWifiManagerLinkHotSpotnessDidChangeNotification" object:0];
+  [defaultCenter addObserver:self selector:sel__updateWifiActive name:@"SBWifiManagerPrimaryInterfaceMayHaveChangedNotification" object:0];
 }
 
 - (void)_updateData
@@ -128,23 +128,23 @@ void __38__SBSystemStatusWifiDataProvider_init__block_invoke(uint64_t a1)
   dispatch_async(updateQueue, block);
 }
 
-- (void)setWifiActive:(BOOL)a3
+- (void)setWifiActive:(BOOL)active
 {
-  v3 = a3;
+  activeCopy = active;
   BSDispatchQueueAssert();
-  if (self->_queue_wifiActive != v3)
+  if (self->_queue_wifiActive != activeCopy)
   {
-    self->_queue_wifiActive = v3;
+    self->_queue_wifiActive = activeCopy;
   }
 }
 
-- (void)setFallingBackToCellular:(BOOL)a3
+- (void)setFallingBackToCellular:(BOOL)cellular
 {
-  v3 = a3;
+  cellularCopy = cellular;
   BSDispatchQueueAssert();
-  if (self->_queue_fallingBackToCellular != v3)
+  if (self->_queue_fallingBackToCellular != cellularCopy)
   {
-    self->_queue_fallingBackToCellular = v3;
+    self->_queue_fallingBackToCellular = cellularCopy;
   }
 }
 
@@ -166,8 +166,8 @@ void __38__SBSystemStatusWifiDataProvider_init__block_invoke(uint64_t a1)
   [v6 setWifiActive:v4];
   [v6 setSignalStrengthBars:{objc_msgSend(v3, "signalStrengthBars")}];
   [v6 setAssociatedToIOSHotspot:{objc_msgSend(v3, "isAssociatedToIOSHotspot")}];
-  v5 = [(SBSystemStatusWifiDataProvider *)self wifiDataPublisher];
-  [v5 setData:v6];
+  wifiDataPublisher = [(SBSystemStatusWifiDataProvider *)self wifiDataPublisher];
+  [wifiDataPublisher setData:v6];
 }
 
 - (void)_queue_updateWifiActive
@@ -176,15 +176,15 @@ void __38__SBSystemStatusWifiDataProvider_init__block_invoke(uint64_t a1)
   v4 = +[SBWiFiManager sharedInstance];
   if ([v4 isPowered] && objc_msgSend(v4, "isPrimaryInterface"))
   {
-    v3 = [v4 isAssociated];
+    isAssociated = [v4 isAssociated];
   }
 
   else
   {
-    v3 = 0;
+    isAssociated = 0;
   }
 
-  [(SBSystemStatusWifiDataProvider *)self setWifiActive:v3];
+  [(SBSystemStatusWifiDataProvider *)self setWifiActive:isAssociated];
   [(SBSystemStatusWifiDataProvider *)self _queue_updateData];
 }
 

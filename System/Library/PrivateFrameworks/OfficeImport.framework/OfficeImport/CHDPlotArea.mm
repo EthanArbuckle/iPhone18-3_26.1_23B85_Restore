@@ -1,24 +1,24 @@
 @interface CHDPlotArea
 - (BOOL)hasSecondaryAxis;
 - (BOOL)hasSecondaryYAxisDeleted;
-- (BOOL)isCategoryAxesReversed:(BOOL)a3;
-- (CHDPlotArea)initWithChart:(id)a3;
+- (BOOL)isCategoryAxesReversed:(BOOL)reversed;
+- (CHDPlotArea)initWithChart:(id)chart;
 - (id)description;
 - (void)markSecondaryAxes;
-- (void)setGraphicProperties:(id)a3;
+- (void)setGraphicProperties:(id)properties;
 @end
 
 @implementation CHDPlotArea
 
-- (CHDPlotArea)initWithChart:(id)a3
+- (CHDPlotArea)initWithChart:(id)chart
 {
-  v4 = a3;
+  chartCopy = chart;
   v11.receiver = self;
   v11.super_class = CHDPlotArea;
   v5 = [(CHDPlotArea *)&v11 init];
   if (v5)
   {
-    v6 = [[CHDChartTypesCollection alloc] initWithChart:v4];
+    v6 = [[CHDChartTypesCollection alloc] initWithChart:chartCopy];
     mChartTypes = v5->mChartTypes;
     v5->mChartTypes = v6;
 
@@ -97,9 +97,9 @@
     }
   }
 
-  v8 = [v7 isDeleted];
+  isDeleted = [v7 isDeleted];
 
-  return v8;
+  return isDeleted;
 }
 
 - (void)markSecondaryAxes
@@ -110,10 +110,10 @@
     do
     {
       v4 = [(EDCollection *)self->mChartTypes objectAtIndex:v3];
-      v5 = [v4 axisIds];
-      for (i = 0; i < [v5 count]; ++i)
+      axisIds = [v4 axisIds];
+      for (i = 0; i < [axisIds count]; ++i)
       {
-        v7 = [v5 objectAtIndex:i];
+        v7 = [axisIds objectAtIndex:i];
         v8 = -[EDKeyedCollection objectWithKey:](self->mAxes, "objectWithKey:", [v7 intValue]);
         [v8 setSecondary:v3 != 0];
       }
@@ -125,16 +125,16 @@
   }
 }
 
-- (void)setGraphicProperties:(id)a3
+- (void)setGraphicProperties:(id)properties
 {
-  v5 = a3;
+  propertiesCopy = properties;
   mGraphicProperties = self->mGraphicProperties;
   p_mGraphicProperties = &self->mGraphicProperties;
-  if (mGraphicProperties != v5)
+  if (mGraphicProperties != propertiesCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_mGraphicProperties, a3);
-    v5 = v8;
+    v8 = propertiesCopy;
+    objc_storeStrong(p_mGraphicProperties, properties);
+    propertiesCopy = v8;
   }
 }
 
@@ -147,24 +147,24 @@
   return v2;
 }
 
-- (BOOL)isCategoryAxesReversed:(BOOL)a3
+- (BOOL)isCategoryAxesReversed:(BOOL)reversed
 {
   if (!self->mCategoryAxesReversedOverridden)
   {
-    v4 = a3;
-    v5 = [(CHDPlotArea *)self axes];
-    v6 = [v5 count];
+    reversedCopy = reversed;
+    axes = [(CHDPlotArea *)self axes];
+    v6 = [axes count];
     if (v6)
     {
       for (i = 0; i != v6; ++i)
       {
-        v8 = [v5 objectAtIndex:i];
+        v8 = [axes objectAtIndex:i];
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) != 0 && !self->mCategoryAxesReversed)
         {
           self->mCategoryAxesReversed = [v8 isReverseOrder];
           self->mCategoryAxesReversedOverridden = 1;
-          if (v4)
+          if (reversedCopy)
           {
             if ([v8 isReverseOrder])
             {

@@ -1,6 +1,6 @@
 @interface CRSUIInstrumentClusterSettingsDiffAction
 - (id)sceneSettingsGeometryMutationDiffInspector;
-- (void)_performActionsForUIScene:(id)a3 withUpdatedFBSScene:(id)a4 settingsDiff:(id)a5 fromSettings:(id)a6 transitionContext:(id)a7 lifecycleActionType:(unsigned int)a8;
+- (void)_performActionsForUIScene:(id)scene withUpdatedFBSScene:(id)sScene settingsDiff:(id)diff fromSettings:(id)settings transitionContext:(id)context lifecycleActionType:(unsigned int)type;
 @end
 
 @implementation CRSUIInstrumentClusterSettingsDiffAction
@@ -25,19 +25,19 @@
   return instrumentClusterSettingsDiffInspector;
 }
 
-- (void)_performActionsForUIScene:(id)a3 withUpdatedFBSScene:(id)a4 settingsDiff:(id)a5 fromSettings:(id)a6 transitionContext:(id)a7 lifecycleActionType:(unsigned int)a8
+- (void)_performActionsForUIScene:(id)scene withUpdatedFBSScene:(id)sScene settingsDiff:(id)diff fromSettings:(id)settings transitionContext:(id)context lifecycleActionType:(unsigned int)type
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a7;
-  v14 = v11;
+  sceneCopy = scene;
+  diffCopy = diff;
+  contextCopy = context;
+  v14 = sceneCopy;
   if ([v14 conformsToProtocol:&unk_285608F50])
   {
     v15 = v14;
     v19 = 0;
     v18 = 0;
-    v16 = [(CRSUIInstrumentClusterSettingsDiffAction *)self sceneSettingsGeometryMutationDiffInspector];
-    [v16 inspectDiff:v12 withContext:&v18];
+    sceneSettingsGeometryMutationDiffInspector = [(CRSUIInstrumentClusterSettingsDiffAction *)self sceneSettingsGeometryMutationDiffInspector];
+    [sceneSettingsGeometryMutationDiffInspector inspectDiff:diffCopy withContext:&v18];
 
     if (v18 == 1)
     {

@@ -26,8 +26,8 @@
       v12 = *MEMORY[0x277CCA450];
       v5 = MEMORY[0x277CCA8D8];
       v6 = v4;
-      v7 = [v5 mainBundle];
-      v8 = [v7 localizedStringForKey:v6 value:&stru_286509E58 table:0];
+      mainBundle = [v5 mainBundle];
+      v8 = [mainBundle localizedStringForKey:v6 value:&stru_286509E58 table:0];
 
       v13[0] = v8;
       v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:&v12 count:1];

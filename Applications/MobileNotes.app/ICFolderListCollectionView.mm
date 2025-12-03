@@ -1,12 +1,12 @@
 @interface ICFolderListCollectionView
-- (ICFolderListCollectionView)initWithPresentingViewController:(id)a3 legacyManagedObjectContext:(id)a4 modernManagedObjectContext:(id)a5 viewControllerManager:(id)a6;
+- (ICFolderListCollectionView)initWithPresentingViewController:(id)controller legacyManagedObjectContext:(id)context modernManagedObjectContext:(id)objectContext viewControllerManager:(id)manager;
 - (ICTagContainerCell)tagContainerCell;
 - (id)createLayout;
-- (void)deselectAllTagsAnimated:(BOOL)a3;
+- (void)deselectAllTagsAnimated:(BOOL)animated;
 - (void)resetLayout;
-- (void)selectTagsWithTagSelection:(id)a3 animated:(BOOL)a4;
-- (void)setShouldShowAllowNotificationsView:(BOOL)a3;
-- (void)setShouldShowMoveHeader:(BOOL)a3;
+- (void)selectTagsWithTagSelection:(id)selection animated:(BOOL)animated;
+- (void)setShouldShowAllowNotificationsView:(BOOL)view;
+- (void)setShouldShowMoveHeader:(BOOL)header;
 @end
 
 @implementation ICFolderListCollectionView
@@ -58,11 +58,11 @@ LABEL_6:
   return v11;
 }
 
-- (ICFolderListCollectionView)initWithPresentingViewController:(id)a3 legacyManagedObjectContext:(id)a4 modernManagedObjectContext:(id)a5 viewControllerManager:(id)a6
+- (ICFolderListCollectionView)initWithPresentingViewController:(id)controller legacyManagedObjectContext:(id)context modernManagedObjectContext:(id)objectContext viewControllerManager:(id)manager
 {
   v9.receiver = self;
   v9.super_class = ICFolderListCollectionView;
-  v6 = [(ICCollectionView *)&v9 initWithPresentingViewController:a3 legacyManagedObjectContext:a4 modernManagedObjectContext:a5 viewControllerManager:a6];
+  v6 = [(ICCollectionView *)&v9 initWithPresentingViewController:controller legacyManagedObjectContext:context modernManagedObjectContext:objectContext viewControllerManager:manager];
   v7 = v6;
   if (v6)
   {
@@ -74,55 +74,55 @@ LABEL_6:
   return v7;
 }
 
-- (void)setShouldShowMoveHeader:(BOOL)a3
+- (void)setShouldShowMoveHeader:(BOOL)header
 {
-  if (self->_shouldShowMoveHeader != a3)
+  if (self->_shouldShowMoveHeader != header)
   {
-    self->_shouldShowMoveHeader = a3;
+    self->_shouldShowMoveHeader = header;
     [(ICFolderListCollectionView *)self resetLayout];
   }
 }
 
-- (void)setShouldShowAllowNotificationsView:(BOOL)a3
+- (void)setShouldShowAllowNotificationsView:(BOOL)view
 {
-  if (self->_shouldShowAllowNotificationsView != a3)
+  if (self->_shouldShowAllowNotificationsView != view)
   {
-    self->_shouldShowAllowNotificationsView = a3;
+    self->_shouldShowAllowNotificationsView = view;
     [(ICFolderListCollectionView *)self resetLayout];
   }
 }
 
 - (void)resetLayout
 {
-  v3 = [(ICFolderListCollectionView *)self createLayout];
+  createLayout = [(ICFolderListCollectionView *)self createLayout];
   if (objc_opt_respondsToSelector())
   {
-    [v3 _setRecomputesLayoutForEmptyUpdates:0];
+    [createLayout _setRecomputesLayoutForEmptyUpdates:0];
   }
 
-  [(ICFolderListCollectionView *)self setCollectionViewLayout:v3];
+  [(ICFolderListCollectionView *)self setCollectionViewLayout:createLayout];
 }
 
-- (void)deselectAllTagsAnimated:(BOOL)a3
+- (void)deselectAllTagsAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v4 = [(ICFolderListCollectionView *)self tagContainerCell];
-  [v4 deselectAllItemsAnimated:v3];
+  animatedCopy = animated;
+  tagContainerCell = [(ICFolderListCollectionView *)self tagContainerCell];
+  [tagContainerCell deselectAllItemsAnimated:animatedCopy];
 }
 
-- (void)selectTagsWithTagSelection:(id)a3 animated:(BOOL)a4
+- (void)selectTagsWithTagSelection:(id)selection animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(ICFolderListCollectionView *)self tagContainerCell];
-  [v7 selectTagsWithTagSelection:v6 animated:v4];
+  animatedCopy = animated;
+  selectionCopy = selection;
+  tagContainerCell = [(ICFolderListCollectionView *)self tagContainerCell];
+  [tagContainerCell selectTagsWithTagSelection:selectionCopy animated:animatedCopy];
 }
 
 - (ICTagContainerCell)tagContainerCell
 {
-  v3 = [(ICCollectionView *)self diffableDataSource];
+  diffableDataSource = [(ICCollectionView *)self diffableDataSource];
   v4 = +[ICTagContainerItemIdentifier sharedItemIdentifier];
-  v5 = [v3 indexPathForItemIdentifier:v4];
+  v5 = [diffableDataSource indexPathForItemIdentifier:v4];
 
   if (v5)
   {

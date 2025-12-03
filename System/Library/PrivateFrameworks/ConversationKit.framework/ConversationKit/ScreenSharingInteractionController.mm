@@ -1,23 +1,23 @@
 @interface ScreenSharingInteractionController
 - (NSDate)latestRemoteControlDate;
 - (int64_t)remoteControlStatus;
-- (void)screenSharingStateMonitor:(id)a3 didUpdateScreenSharingBroadcastingState:(BOOL)a4;
-- (void)setLatestRemoteControlDate:(id)a3;
+- (void)screenSharingStateMonitor:(id)monitor didUpdateScreenSharingBroadcastingState:(BOOL)state;
+- (void)setLatestRemoteControlDate:(id)date;
 @end
 
 @implementation ScreenSharingInteractionController
 
-- (void)screenSharingStateMonitor:(id)a3 didUpdateScreenSharingBroadcastingState:(BOOL)a4
+- (void)screenSharingStateMonitor:(id)monitor didUpdateScreenSharingBroadcastingState:(BOOL)state
 {
   swift_unknownObjectRetain();
-  v5 = self;
+  selfCopy = self;
   ScreenSharingInteractionController.screenSharingStateMonitor(_:didUpdateScreenSharingBroadcastingState:)();
   swift_unknownObjectRelease();
 }
 
 - (int64_t)remoteControlStatus
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ScreenSharingInteractionController.remoteControlStatus.getter();
 
   return v3;
@@ -40,12 +40,12 @@
   return isa;
 }
 
-- (void)setLatestRemoteControlDate:(id)a3
+- (void)setLatestRemoteControlDate:(id)date
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&_s10Foundation4DateVSgMd);
   MEMORY[0x1EEE9AC00](v5 - 8);
   v7 = &v11 - v6;
-  if (a3)
+  if (date)
   {
     static Date._unconditionallyBridgeFromObjectiveC(_:)();
     v8 = type metadata accessor for Date();
@@ -59,7 +59,7 @@
   }
 
   __swift_storeEnumTagSinglePayload(v7, v9, 1, v8);
-  v10 = self;
+  selfCopy = self;
   ScreenSharingInteractionController.latestRemoteControlDate.setter(v7);
 }
 

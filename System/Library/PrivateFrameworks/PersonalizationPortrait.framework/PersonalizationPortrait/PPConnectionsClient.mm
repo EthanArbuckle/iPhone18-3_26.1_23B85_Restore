@@ -1,10 +1,10 @@
 @interface PPConnectionsClient
 + (id)sharedInstance;
-- (BOOL)recentLocationDonationsSinceDate:(id)a3 client:(id)a4 error:(id *)a5 handleBatch:(id)a6;
-- (BOOL)recentLocationsForConsumer:(unint64_t)a3 criteria:(id)a4 limit:(unint64_t)a5 explanationSet:(id)a6 client:(id)a7 error:(id *)a8 handleBatch:(id)a9;
+- (BOOL)recentLocationDonationsSinceDate:(id)date client:(id)client error:(id *)error handleBatch:(id)batch;
+- (BOOL)recentLocationsForConsumer:(unint64_t)consumer criteria:(id)criteria limit:(unint64_t)limit explanationSet:(id)set client:(id)client error:(id *)error handleBatch:(id)batch;
 - (PPConnectionsClient)init;
 - (void)_unblockPendingQueries;
-- (void)registerFeedback:(id)a3 completion:(id)a4;
+- (void)registerFeedback:(id)feedback completion:(id)completion;
 @end
 
 @implementation PPConnectionsClient
@@ -15,7 +15,7 @@
   block[1] = 3221225472;
   block[2] = __37__PPConnectionsClient_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance__pasOnceToken6_5193 != -1)
   {
     dispatch_once(&sharedInstance__pasOnceToken6_5193, block);
@@ -26,30 +26,30 @@
   return v2;
 }
 
-- (void)registerFeedback:(id)a3 completion:(id)a4
+- (void)registerFeedback:(id)feedback completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PPConnectionsClient *)self _remoteObjectProxy];
-  [v8 registerFeedback:v7 completion:v6];
+  completionCopy = completion;
+  feedbackCopy = feedback;
+  _remoteObjectProxy = [(PPConnectionsClient *)self _remoteObjectProxy];
+  [_remoteObjectProxy registerFeedback:feedbackCopy completion:completionCopy];
 }
 
-- (BOOL)recentLocationsForConsumer:(unint64_t)a3 criteria:(id)a4 limit:(unint64_t)a5 explanationSet:(id)a6 client:(id)a7 error:(id *)a8 handleBatch:(id)a9
+- (BOOL)recentLocationsForConsumer:(unint64_t)consumer criteria:(id)criteria limit:(unint64_t)limit explanationSet:(id)set client:(id)client error:(id *)error handleBatch:(id)batch
 {
   v45 = *MEMORY[0x1E69E9840];
-  v15 = a4;
-  v16 = a6;
-  v17 = a7;
-  v18 = a9;
+  criteriaCopy = criteria;
+  setCopy = set;
+  clientCopy = client;
+  batchCopy = batch;
   v19 = pp_xpc_client_log_handle();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134218498;
-    v40 = a3;
+    consumerCopy = consumer;
     v41 = 2112;
-    v42 = v15;
+    v42 = criteriaCopy;
     v43 = 2048;
-    v44 = a5;
+    limitCopy = limit;
     _os_log_debug_impl(&dword_1A7FD3000, v19, OS_LOG_TYPE_DEBUG, "recentLocationsForConsumer: %lu criteria: %@ limit: %lu called", buf, 0x20u);
   }
 
@@ -60,23 +60,23 @@
   v33[2] = __105__PPConnectionsClient_recentLocationsForConsumer_criteria_limit_explanationSet_client_error_handleBatch___block_invoke;
   v33[3] = &unk_1E77F6F00;
   v33[4] = self;
-  v34 = v15;
-  v37 = a3;
-  v38 = a5;
-  v35 = v16;
-  v36 = v17;
+  v34 = criteriaCopy;
+  consumerCopy2 = consumer;
+  limitCopy2 = limit;
+  v35 = setCopy;
+  v36 = clientCopy;
   v29[0] = MEMORY[0x1E69E9820];
   v29[1] = 3221225472;
   v29[2] = __105__PPConnectionsClient_recentLocationsForConsumer_criteria_limit_explanationSet_client_error_handleBatch___block_invoke_2;
   v29[3] = &unk_1E77F79C0;
-  v31 = v18;
+  v31 = batchCopy;
   v32 = v20;
   v30 = @"recentLocationsForConsumer";
-  v22 = v18;
-  v23 = v17;
-  v24 = v16;
-  v25 = v15;
-  v26 = [(PPXPCClientPipelinedBatchQueryManager *)queryManager syncExecuteQueryWithName:@"recentLocationsForConsumer" error:a8 queryInitializer:v33 handleBatch:v29];
+  v22 = batchCopy;
+  v23 = clientCopy;
+  v24 = setCopy;
+  v25 = criteriaCopy;
+  v26 = [(PPXPCClientPipelinedBatchQueryManager *)queryManager syncExecuteQueryWithName:@"recentLocationsForConsumer" error:error queryInitializer:v33 handleBatch:v29];
 
   v27 = *MEMORY[0x1E69E9840];
   return v26;
@@ -97,19 +97,19 @@ void __105__PPConnectionsClient_recentLocationsForConsumer_criteria_limit_explan
   (*(a1[5] + 16))();
 }
 
-- (BOOL)recentLocationDonationsSinceDate:(id)a3 client:(id)a4 error:(id *)a5 handleBatch:(id)a6
+- (BOOL)recentLocationDonationsSinceDate:(id)date client:(id)client error:(id *)error handleBatch:(id)batch
 {
   v33 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  dateCopy = date;
+  clientCopy = client;
+  batchCopy = batch;
   v13 = pp_xpc_client_log_handle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412546;
-    v30 = v10;
+    v30 = dateCopy;
     v31 = 2112;
-    v32 = v11;
+    v32 = clientCopy;
     _os_log_debug_impl(&dword_1A7FD3000, v13, OS_LOG_TYPE_DEBUG, "recentLocationDonationsSinceDate: %@ client: %@ called", buf, 0x16u);
   }
 
@@ -120,19 +120,19 @@ void __105__PPConnectionsClient_recentLocationsForConsumer_criteria_limit_explan
   v26[2] = __81__PPConnectionsClient_recentLocationDonationsSinceDate_client_error_handleBatch___block_invoke;
   v26[3] = &unk_1E77F7948;
   v26[4] = self;
-  v27 = v10;
-  v28 = v11;
+  v27 = dateCopy;
+  v28 = clientCopy;
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __81__PPConnectionsClient_recentLocationDonationsSinceDate_client_error_handleBatch___block_invoke_2;
   v22[3] = &unk_1E77F79C0;
-  v24 = v12;
+  v24 = batchCopy;
   v25 = v14;
   v23 = @"recentLocationDonationsSinceDate";
-  v16 = v12;
-  v17 = v11;
-  v18 = v10;
-  v19 = [(PPXPCClientPipelinedBatchQueryManager *)queryManager syncExecuteQueryWithName:@"recentLocationDonationsSinceDate" error:a5 queryInitializer:v26 handleBatch:v22];
+  v16 = batchCopy;
+  v17 = clientCopy;
+  v18 = dateCopy;
+  v19 = [(PPXPCClientPipelinedBatchQueryManager *)queryManager syncExecuteQueryWithName:@"recentLocationDonationsSinceDate" error:error queryInitializer:v26 handleBatch:v22];
 
   v20 = *MEMORY[0x1E69E9840];
   return v19;

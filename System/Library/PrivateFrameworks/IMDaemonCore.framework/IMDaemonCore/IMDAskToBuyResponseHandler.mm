@@ -1,38 +1,38 @@
 @interface IMDAskToBuyResponseHandler
-- (BOOL)canHandleNotificationResponse:(id)a3 userNotificationCenter:(id)a4;
-- (void)handleNotificationResponse:(id)a3 userNotificationCenter:(id)a4 completionHandler:(id)a5;
+- (BOOL)canHandleNotificationResponse:(id)response userNotificationCenter:(id)center;
+- (void)handleNotificationResponse:(id)response userNotificationCenter:(id)center completionHandler:(id)handler;
 @end
 
 @implementation IMDAskToBuyResponseHandler
 
-- (BOOL)canHandleNotificationResponse:(id)a3 userNotificationCenter:(id)a4
+- (BOOL)canHandleNotificationResponse:(id)response userNotificationCenter:(id)center
 {
-  v4 = [a3 notification];
-  v5 = [v4 request];
-  v6 = [v5 content];
-  v7 = [v6 userInfo];
+  notification = [response notification];
+  request = [notification request];
+  content = [request content];
+  userInfo = [content userInfo];
 
-  v8 = [v7 objectForKeyedSubscript:@"CKBBContextKeyBalloonBundleID"];
+  v8 = [userInfo objectForKeyedSubscript:@"CKBBContextKeyBalloonBundleID"];
   v9 = *MEMORY[0x277D196E8];
   v10 = IMBalloonExtensionIDWithSuffix();
-  LOBYTE(v6) = [v8 isEqualToString:v10];
+  LOBYTE(content) = [v8 isEqualToString:v10];
 
-  return v6;
+  return content;
 }
 
-- (void)handleNotificationResponse:(id)a3 userNotificationCenter:(id)a4 completionHandler:(id)a5
+- (void)handleNotificationResponse:(id)response userNotificationCenter:(id)center completionHandler:(id)handler
 {
   v38 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v29 = a4;
-  v8 = a5;
-  v28 = v7;
-  v9 = [v7 notification];
-  v10 = [v9 request];
-  v11 = [v10 content];
-  v31 = [v11 userInfo];
+  responseCopy = response;
+  centerCopy = center;
+  handlerCopy = handler;
+  v28 = responseCopy;
+  notification = [responseCopy notification];
+  request = [notification request];
+  content = [request content];
+  userInfo = [content userInfo];
 
-  v30 = [v31 objectForKeyedSubscript:*MEMORY[0x277D1A440]];
+  v30 = [userInfo objectForKeyedSubscript:*MEMORY[0x277D1A440]];
   v12 = [MEMORY[0x277CBEBC0] URLWithString:v30];
   if (v12)
   {
@@ -41,8 +41,8 @@
     v36 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v13 = [v27 queryItems];
-    v14 = [v13 countByEnumeratingWithState:&v33 objects:v37 count:16];
+    queryItems = [v27 queryItems];
+    v14 = [queryItems countByEnumeratingWithState:&v33 objects:v37 count:16];
     if (v14)
     {
       v15 = *v34;
@@ -52,12 +52,12 @@ LABEL_4:
       {
         if (*v34 != v15)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(queryItems);
         }
 
         v17 = *(*(&v33 + 1) + 8 * v16);
-        v18 = [v17 name];
-        v19 = [v18 isEqualToString:@"requestID"];
+        name = [v17 name];
+        v19 = [name isEqualToString:@"requestID"];
 
         if (v19)
         {
@@ -66,7 +66,7 @@ LABEL_4:
 
         if (v14 == ++v16)
         {
-          v14 = [v13 countByEnumeratingWithState:&v33 objects:v37 count:16];
+          v14 = [queryItems countByEnumeratingWithState:&v33 objects:v37 count:16];
           if (v14)
           {
             goto LABEL_4;
@@ -76,9 +76,9 @@ LABEL_4:
         }
       }
 
-      v20 = [v17 value];
+      value = [v17 value];
 
-      if (!v20)
+      if (!value)
       {
         goto LABEL_19;
       }
@@ -96,16 +96,16 @@ LABEL_4:
       v22 = MEMORY[0x231897B40](@"APRequestHandler", @"AskPermission");
       if (v22)
       {
-        [v22 presentApprovalSheetWithRequestIdentifier:v20 completion:0];
-        v23 = [MEMORY[0x277D1AAA8] sharedInstance];
-        [v23 trackAction:@"view" extensionBundleID:*MEMORY[0x277D196E8] isNotification:1];
+        [v22 presentApprovalSheetWithRequestIdentifier:value completion:0];
+        mEMORY[0x277D1AAA8] = [MEMORY[0x277D1AAA8] sharedInstance];
+        [mEMORY[0x277D1AAA8] trackAction:@"view" extensionBundleID:*MEMORY[0x277D196E8] isNotification:1];
 
-        v8[2](v8, 1);
+        handlerCopy[2](handlerCopy, 1);
       }
 
       else
       {
-        v8[2](v8, 0);
+        handlerCopy[2](handlerCopy, 0);
       }
     }
 
@@ -120,7 +120,7 @@ LABEL_19:
         sub_22B7D98A4(v24);
       }
 
-      v8[2](v8, 0);
+      handlerCopy[2](handlerCopy, 0);
     }
   }
 
@@ -132,7 +132,7 @@ LABEL_19:
       sub_22B7D98E8(v25);
     }
 
-    v8[2](v8, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 
   v26 = *MEMORY[0x277D85DE8];

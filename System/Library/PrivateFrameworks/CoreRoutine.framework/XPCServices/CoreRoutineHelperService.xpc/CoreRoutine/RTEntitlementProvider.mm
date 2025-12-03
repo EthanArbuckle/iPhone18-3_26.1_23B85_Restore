@@ -3,27 +3,27 @@
 + (id)helperServiceProtocolEntitlementProvider;
 + (id)internalDaemonProtocolEntitlementProvider;
 + (id)safetyMonitorDaemonProtocolEntitlementProvider;
-+ (id)selectorsForProtocol:(id)a3;
-- (BOOL)clientConnection:(id)a3 hasEntitlement:(id)a4;
-- (BOOL)clientConnection:(id)a3 satisfiesEntitlementRequirementsForInvocation:(id)a4;
-- (RTEntitlementProvider)initWithProtocol:(id)a3 entitlementsDictionary:(id)a4;
++ (id)selectorsForProtocol:(id)protocol;
+- (BOOL)clientConnection:(id)connection hasEntitlement:(id)entitlement;
+- (BOOL)clientConnection:(id)connection satisfiesEntitlementRequirementsForInvocation:(id)invocation;
+- (RTEntitlementProvider)initWithProtocol:(id)protocol entitlementsDictionary:(id)dictionary;
 @end
 
 @implementation RTEntitlementProvider
 
-- (RTEntitlementProvider)initWithProtocol:(id)a3 entitlementsDictionary:(id)a4
+- (RTEntitlementProvider)initWithProtocol:(id)protocol entitlementsDictionary:(id)dictionary
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!v7)
+  protocolCopy = protocol;
+  dictionaryCopy = dictionary;
+  v9 = dictionaryCopy;
+  if (!protocolCopy)
   {
     v13 = sub_1000011A0(&qword_1000B2958);
     if (!os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
 LABEL_9:
 
-      v12 = 0;
+      selfCopy = 0;
       goto LABEL_10;
     }
 
@@ -34,7 +34,7 @@ LABEL_12:
     goto LABEL_9;
   }
 
-  if (!v8)
+  if (!dictionaryCopy)
   {
     v13 = sub_1000011A0(&qword_1000B2958);
     if (!os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -53,15 +53,15 @@ LABEL_12:
   p_isa = &v10->super.isa;
   if (v10)
   {
-    objc_storeStrong(&v10->_protocol, a3);
-    objc_storeStrong(p_isa + 2, a4);
+    objc_storeStrong(&v10->_protocol, protocol);
+    objc_storeStrong(p_isa + 2, dictionary);
   }
 
   self = p_isa;
-  v12 = self;
+  selfCopy = self;
 LABEL_10:
 
-  return v12;
+  return selfCopy;
 }
 
 + (id)daemonProtocolEntitlementProvider
@@ -254,14 +254,14 @@ LABEL_10:
   return v14;
 }
 
-+ (id)selectorsForProtocol:(id)a3
++ (id)selectorsForProtocol:(id)protocol
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  protocolCopy = protocol;
+  v4 = protocolCopy;
+  if (protocolCopy)
   {
     *outCount = 0;
-    v5 = protocol_copyMethodDescriptionList(v3, 1, 1, &outCount[1]);
+    v5 = protocol_copyMethodDescriptionList(protocolCopy, 1, 1, &outCount[1]);
     v6 = protocol_copyMethodDescriptionList(v4, 0, 1, outCount);
     v7 = [NSMutableSet alloc];
     v8 = [v7 initWithCapacity:outCount[1]];
@@ -318,12 +318,12 @@ LABEL_10:
   return v8;
 }
 
-- (BOOL)clientConnection:(id)a3 satisfiesEntitlementRequirementsForInvocation:(id)a4
+- (BOOL)clientConnection:(id)connection satisfiesEntitlementRequirementsForInvocation:(id)invocation
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  connectionCopy = connection;
+  invocationCopy = invocation;
+  v8 = invocationCopy;
+  if (!connectionCopy)
   {
     v15 = sub_1000011A0(&qword_1000B2958);
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -343,7 +343,7 @@ LABEL_29:
     goto LABEL_30;
   }
 
-  if (!v7)
+  if (!invocationCopy)
   {
     v15 = sub_1000011A0(&qword_1000B2958);
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -356,7 +356,7 @@ LABEL_29:
     goto LABEL_28;
   }
 
-  if (!sel_isEqual([v7 selector], "fetchEnumerableObjectsWithOptions:offset:reply:"))
+  if (!sel_isEqual([invocationCopy selector], "fetchEnumerableObjectsWithOptions:offset:reply:"))
   {
     entitlementsDictionary = self->_entitlementsDictionary;
     v20 = NSStringFromSelector([v8 selector]);
@@ -482,7 +482,7 @@ LABEL_45:
         goto LABEL_41;
       }
 
-      if (![(RTEntitlementProvider *)self clientConnection:v6 hasEntitlement:v26, v35])
+      if (![(RTEntitlementProvider *)self clientConnection:connectionCopy hasEntitlement:v26, v35])
       {
         v31 = sub_1000011A0(&qword_1000B2988);
         if (!os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
@@ -491,7 +491,7 @@ LABEL_45:
         }
 
         *buf = 138412546;
-        *&buf[4] = v6;
+        *&buf[4] = connectionCopy;
         v41 = 2112;
         v42 = v26;
         v32 = "%@, does not have entitlement, %@";
@@ -517,19 +517,19 @@ LABEL_30:
   return v27;
 }
 
-- (BOOL)clientConnection:(id)a3 hasEntitlement:(id)a4
+- (BOOL)clientConnection:(id)connection hasEntitlement:(id)entitlement
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (!v5)
+  connectionCopy = connection;
+  entitlementCopy = entitlement;
+  v7 = entitlementCopy;
+  if (!connectionCopy)
   {
     v10 = sub_1000011A0(&qword_1000B2958);
     if (!os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
 LABEL_8:
 
-      v9 = 0;
+      bOOLValue = 0;
       goto LABEL_11;
     }
 
@@ -541,7 +541,7 @@ LABEL_13:
     goto LABEL_8;
   }
 
-  if (!v6)
+  if (!entitlementCopy)
   {
     v10 = sub_1000011A0(&qword_1000B2958);
     if (!os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -555,20 +555,20 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  v8 = [v5 valueForEntitlement:v6];
+  v8 = [connectionCopy valueForEntitlement:entitlementCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [v8 BOOLValue];
+    bOOLValue = [v8 BOOLValue];
   }
 
   else
   {
-    v9 = 0;
+    bOOLValue = 0;
   }
 
 LABEL_11:
-  return v9;
+  return bOOLValue;
 }
 
 @end

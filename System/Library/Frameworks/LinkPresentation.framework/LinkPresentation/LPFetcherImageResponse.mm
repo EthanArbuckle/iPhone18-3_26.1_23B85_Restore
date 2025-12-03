@@ -1,32 +1,32 @@
 @interface LPFetcherImageResponse
-+ (id)imagePropertiesForFetcher:(id)a3;
-+ (id)responseForFetcher:(id)a3 withData:(id)a4 MIMEType:(id)a5;
-+ (id)responseForFetcher:(id)a3 withImage:(id)a4;
-- (LPFetcherImageResponse)initWithImage:(id)a3 fetcher:(id)a4;
++ (id)imagePropertiesForFetcher:(id)fetcher;
++ (id)responseForFetcher:(id)fetcher withData:(id)data MIMEType:(id)type;
++ (id)responseForFetcher:(id)fetcher withImage:(id)image;
+- (LPFetcherImageResponse)initWithImage:(id)image fetcher:(id)fetcher;
 @end
 
 @implementation LPFetcherImageResponse
 
-+ (id)imagePropertiesForFetcher:(id)a3
++ (id)imagePropertiesForFetcher:(id)fetcher
 {
   v3 = objc_alloc_init(LPImageProperties);
 
   return v3;
 }
 
-+ (id)responseForFetcher:(id)a3 withImage:(id)a4
++ (id)responseForFetcher:(id)fetcher withImage:(id)image
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  fetcherCopy = fetcher;
+  imageCopy = image;
+  if (imageCopy)
   {
     v8 = [LPImage alloc];
-    v9 = [a1 imagePropertiesForFetcher:v6];
-    v10 = [(LPImage *)v8 initWithPlatformImage:v7 properties:v9];
+    v9 = [self imagePropertiesForFetcher:fetcherCopy];
+    v10 = [(LPImage *)v8 initWithPlatformImage:imageCopy properties:v9];
 
     if (v10 && ![(LPImage *)v10 _isImperceptible])
     {
-      v11 = [[LPFetcherImageResponse alloc] initWithImage:v10 fetcher:v6];
+      v11 = [[LPFetcherImageResponse alloc] initWithImage:v10 fetcher:fetcherCopy];
     }
 
     else
@@ -43,20 +43,20 @@
   return v11;
 }
 
-+ (id)responseForFetcher:(id)a3 withData:(id)a4 MIMEType:(id)a5
++ (id)responseForFetcher:(id)fetcher withData:(id)data MIMEType:(id)type
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v9 length])
+  fetcherCopy = fetcher;
+  dataCopy = data;
+  typeCopy = type;
+  if ([dataCopy length])
   {
     v11 = [LPImage alloc];
-    v12 = [a1 imagePropertiesForFetcher:v8];
-    v13 = [(LPImage *)v11 initWithData:v9 MIMEType:v10 properties:v12];
+    v12 = [self imagePropertiesForFetcher:fetcherCopy];
+    v13 = [(LPImage *)v11 initWithData:dataCopy MIMEType:typeCopy properties:v12];
 
     if (v13 && ![(LPImage *)v13 _isImperceptible])
     {
-      v14 = [[LPFetcherImageResponse alloc] initWithImage:v13 fetcher:v8];
+      v14 = [[LPFetcherImageResponse alloc] initWithImage:v13 fetcher:fetcherCopy];
     }
 
     else
@@ -73,16 +73,16 @@
   return v14;
 }
 
-- (LPFetcherImageResponse)initWithImage:(id)a3 fetcher:(id)a4
+- (LPFetcherImageResponse)initWithImage:(id)image fetcher:(id)fetcher
 {
-  v7 = a3;
+  imageCopy = image;
   v12.receiver = self;
   v12.super_class = LPFetcherImageResponse;
-  v8 = [(LPFetcherResponse *)&v12 initWithState:2 fetcher:a4];
+  v8 = [(LPFetcherResponse *)&v12 initWithState:2 fetcher:fetcher];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_image, a3);
+    objc_storeStrong(&v8->_image, image);
     v10 = v9;
   }
 

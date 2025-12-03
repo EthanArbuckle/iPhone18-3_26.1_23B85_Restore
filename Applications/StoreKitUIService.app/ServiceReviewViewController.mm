@@ -1,16 +1,16 @@
 @interface ServiceReviewViewController
-- (id)_iconForApplication:(id)a3;
-- (void)_buildReviewInAppConfigurationWithParameters:(id)a3 completionHandler:(id)a4;
-- (void)_loadDidFailWithError:(id)a3;
-- (void)finishImmediately:(id)a3;
-- (void)setupWithParameters:(id)a3;
+- (id)_iconForApplication:(id)application;
+- (void)_buildReviewInAppConfigurationWithParameters:(id)parameters completionHandler:(id)handler;
+- (void)_loadDidFailWithError:(id)error;
+- (void)finishImmediately:(id)immediately;
+- (void)setupWithParameters:(id)parameters;
 @end
 
 @implementation ServiceReviewViewController
 
-- (void)setupWithParameters:(id)a3
+- (void)setupWithParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   objc_initWeak(&location, self);
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
@@ -18,38 +18,38 @@
   v5[3] = &unk_100051498;
   v5[4] = self;
   objc_copyWeak(&v6, &location);
-  [(ServiceReviewViewController *)self _buildReviewInAppConfigurationWithParameters:v4 completionHandler:v5];
+  [(ServiceReviewViewController *)self _buildReviewInAppConfigurationWithParameters:parametersCopy completionHandler:v5];
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
 }
 
-- (void)finishImmediately:(id)a3
+- (void)finishImmediately:(id)immediately
 {
-  v4 = a3;
-  v5 = [(ServiceReviewViewController *)self presentedViewController];
+  immediatelyCopy = immediately;
+  presentedViewController = [(ServiceReviewViewController *)self presentedViewController];
 
-  if (v5)
+  if (presentedViewController)
   {
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_100008C08;
     v6[3] = &unk_100051148;
     v6[4] = self;
-    -[ServiceReviewViewController dismissViewControllerAnimated:completion:](self, "dismissViewControllerAnimated:completion:", [v4 BOOLValue], v6);
+    -[ServiceReviewViewController dismissViewControllerAnimated:completion:](self, "dismissViewControllerAnimated:completion:", [immediatelyCopy BOOLValue], v6);
   }
 }
 
-- (void)_buildReviewInAppConfigurationWithParameters:(id)a3 completionHandler:(id)a4
+- (void)_buildReviewInAppConfigurationWithParameters:(id)parameters completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ServiceReviewViewController *)self _hostApplicationBundleIdentifier];
-  if (v8)
+  parametersCopy = parameters;
+  handlerCopy = handler;
+  _hostApplicationBundleIdentifier = [(ServiceReviewViewController *)self _hostApplicationBundleIdentifier];
+  if (_hostApplicationBundleIdentifier)
   {
     goto LABEL_6;
   }
 
-  v9 = [v6 objectForKeyedSubscript:@"bundleID"];
+  v9 = [parametersCopy objectForKeyedSubscript:@"bundleID"];
   v10 = v9;
   if (v9)
   {
@@ -61,39 +61,39 @@
     v11 = +[NSNull null];
   }
 
-  v8 = v11;
+  _hostApplicationBundleIdentifier = v11;
 
   v12 = +[NSNull null];
 
-  if (v8 != v12)
+  if (_hostApplicationBundleIdentifier != v12)
   {
 LABEL_6:
-    v13 = [LSApplicationProxy applicationProxyForIdentifier:v8];
+    v13 = [LSApplicationProxy applicationProxyForIdentifier:_hostApplicationBundleIdentifier];
     v49 = [(ServiceReviewViewController *)self _iconForApplication:v13];
-    v50 = v6;
-    v14 = [v6 objectForKey:SKUIServiceReviewSandboxMode];
-    v15 = [v14 BOOLValue];
+    v50 = parametersCopy;
+    v14 = [parametersCopy objectForKey:SKUIServiceReviewSandboxMode];
+    bOOLValue = [v14 BOOLValue];
 
     v60 = 0;
-    v16 = [[LSApplicationRecord alloc] initWithBundleIdentifier:v8 allowPlaceholder:0 error:&v60];
+    v16 = [[LSApplicationRecord alloc] initWithBundleIdentifier:_hostApplicationBundleIdentifier allowPlaceholder:0 error:&v60];
     v17 = v60;
     v48 = v16;
     if (v17)
     {
       v18 = +[SSLogConfig sharedConfig];
-      v19 = [v18 shouldLog];
+      shouldLog = [v18 shouldLog];
       if ([v18 shouldLogToDisk])
       {
-        v20 = v19 | 2;
+        v20 = shouldLog | 2;
       }
 
       else
       {
-        v20 = v19;
+        v20 = shouldLog;
       }
 
-      v21 = [v18 OSLogObject];
-      if (!os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
+      oSLogObject = [v18 OSLogObject];
+      if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
       {
         v20 &= 2u;
       }
@@ -114,15 +114,15 @@ LABEL_6:
         {
 LABEL_19:
 
-          v7[2](v7, 0);
+          handlerCopy[2](handlerCopy, 0);
           v30 = 0;
 LABEL_37:
 
-          v6 = v50;
+          parametersCopy = v50;
           goto LABEL_38;
         }
 
-        v21 = [NSString stringWithCString:v24 encoding:4, &v61, v45];
+        oSLogObject = [NSString stringWithCString:v24 encoding:4, &v61, v45];
         free(v24);
         SSFileLog();
       }
@@ -135,56 +135,56 @@ LABEL_37:
       goto LABEL_19;
     }
 
-    v26 = [v16 iTunesMetadata];
-    v27 = [v26 versionIdentifier];
+    iTunesMetadata = [v16 iTunesMetadata];
+    versionIdentifier = [iTunesMetadata versionIdentifier];
 
-    if (v27)
+    if (versionIdentifier)
     {
-      v28 = [v16 iTunesMetadata];
-      v29 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%llu", [v28 versionIdentifier]);
+      iTunesMetadata2 = [v16 iTunesMetadata];
+      installerVersionID = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%llu", [iTunesMetadata2 versionIdentifier]);
     }
 
     else
     {
-      v37 = [v13 bundleURL];
-      v28 = [ASFReceipt receiptFromBundleAtURL:v37];
+      bundleURL = [v13 bundleURL];
+      iTunesMetadata2 = [ASFReceipt receiptFromBundleAtURL:bundleURL];
 
-      if (!v28)
+      if (!iTunesMetadata2)
       {
         v30 = 0;
         goto LABEL_33;
       }
 
-      v29 = [v28 installerVersionID];
+      installerVersionID = [iTunesMetadata2 installerVersionID];
     }
 
-    v30 = v29;
+    v30 = installerVersionID;
 LABEL_33:
 
-    v38 = [v13 itemID];
-    v39 = [v38 unsignedIntegerValue];
+    itemID = [v13 itemID];
+    unsignedIntegerValue = [itemID unsignedIntegerValue];
 
-    if (v39 || (v15 & 1) != 0)
+    if (unsignedIntegerValue || (bOOLValue & 1) != 0)
     {
-      v42 = [v13 itemID];
-      v43 = [v13 localizedName];
+      itemID2 = [v13 itemID];
+      localizedName = [v13 localizedName];
       v25 = v49;
-      v44 = [(ServiceReviewViewController *)self _inAppConfigurationWithItemID:v42 bundleID:v8 title:v43 icon:v49 sandboxed:v15 storeExternalVersionID:v30];
+      v44 = [(ServiceReviewViewController *)self _inAppConfigurationWithItemID:itemID2 bundleID:_hostApplicationBundleIdentifier title:localizedName icon:v49 sandboxed:bOOLValue storeExternalVersionID:v30];
 
-      (v7)[2](v7, v44);
+      (handlerCopy)[2](handlerCopy, v44);
     }
 
     else
     {
       v47 = objc_opt_new();
-      [v47 addObject:v8];
+      [v47 addObject:_hostApplicationBundleIdentifier];
       v40 = +[SKServiceBroker defaultBroker];
       v58[0] = _NSConcreteStackBlock;
       v58[1] = 3221225472;
       v58[2] = sub_1000092F8;
       v58[3] = &unk_1000514C0;
       v58[4] = self;
-      v41 = v7;
+      v41 = handlerCopy;
       v59 = v41;
       v46 = [v40 storeKitServiceWithErrorHandler:v58];
 
@@ -194,11 +194,11 @@ LABEL_33:
       v51[3] = &unk_1000514E8;
       v51[4] = self;
       v56 = v41;
-      v52 = v8;
+      v52 = _hostApplicationBundleIdentifier;
       v53 = v13;
       v25 = v49;
       v54 = v49;
-      v57 = v15;
+      v57 = bOOLValue;
       v30 = v30;
       v55 = v30;
       [v46 lookUpItemIDsForDeletableSystemAppsWithBundleIDs:v47 reply:v51];
@@ -208,19 +208,19 @@ LABEL_33:
   }
 
   v31 = +[SSLogConfig sharedConfig];
-  v32 = [v31 shouldLog];
+  shouldLog2 = [v31 shouldLog];
   if ([v31 shouldLogToDisk])
   {
-    v33 = v32 | 2;
+    v33 = shouldLog2 | 2;
   }
 
   else
   {
-    v33 = v32;
+    v33 = shouldLog2;
   }
 
-  v34 = [v31 OSLogObject];
-  if (!os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
+  oSLogObject2 = [v31 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
   {
     v33 &= 2u;
   }
@@ -238,25 +238,25 @@ LABEL_33:
 
   if (v36)
   {
-    v34 = [NSString stringWithCString:v36 encoding:4, &v61, v45];
+    oSLogObject2 = [NSString stringWithCString:v36 encoding:4, &v61, v45];
     free(v36);
     SSFileLog();
 LABEL_28:
   }
 
-  v7[2](v7, 0);
+  handlerCopy[2](handlerCopy, 0);
 LABEL_38:
 }
 
-- (id)_iconForApplication:(id)a3
+- (id)_iconForApplication:(id)application
 {
-  v3 = a3;
+  applicationCopy = application;
   v4 = +[UIScreen mainScreen];
   [v4 scale];
   v6 = v5;
 
   v7 = +[UIDevice currentDevice];
-  v8 = [v7 userInterfaceIdiom];
+  userInterfaceIdiom = [v7 userInterfaceIdiom];
 
   if (v6 == 3.0)
   {
@@ -265,7 +265,7 @@ LABEL_38:
 
   else if (v6 == 2.0)
   {
-    if (v8 == 1)
+    if (userInterfaceIdiom == 1)
     {
       v9 = 24;
     }
@@ -278,10 +278,10 @@ LABEL_38:
 
   else
   {
-    v9 = v8 == 1;
+    v9 = userInterfaceIdiom == 1;
   }
 
-  v10 = [v3 iconDataForVariant:v9];
+  v10 = [applicationCopy iconDataForVariant:v9];
 
   v11 = LICreateIconFromCachedBitmap();
   if (v11)
@@ -299,33 +299,33 @@ LABEL_38:
   return v12;
 }
 
-- (void)_loadDidFailWithError:(id)a3
+- (void)_loadDidFailWithError:(id)error
 {
-  v4 = a3;
-  if (!v4)
+  errorCopy = error;
+  if (!errorCopy)
   {
     v24 = NSLocalizedDescriptionKey;
     v5 = [NSBundle bundleForClass:objc_opt_class()];
     v6 = [v5 localizedStringForKey:@"DEFAULT_ERROR_TITLE" value:&stru_100052318 table:0];
     v25 = v6;
     v7 = [NSDictionary dictionaryWithObjects:&v25 forKeys:&v24 count:1];
-    v4 = [NSError errorWithDomain:SKErrorDomain code:5 userInfo:v7];
+    errorCopy = [NSError errorWithDomain:SKErrorDomain code:5 userInfo:v7];
   }
 
   v8 = +[SSLogConfig sharedConfig];
-  v9 = [v8 shouldLog];
+  shouldLog = [v8 shouldLog];
   if ([v8 shouldLogToDisk])
   {
-    v10 = v9 | 2;
+    v10 = shouldLog | 2;
   }
 
   else
   {
-    v10 = v9;
+    v10 = shouldLog;
   }
 
-  v11 = [v8 OSLogObject];
-  if (!os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+  oSLogObject = [v8 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
     v10 &= 2u;
   }
@@ -335,7 +335,7 @@ LABEL_38:
     v20 = 138543618;
     v21 = objc_opt_class();
     v22 = 2114;
-    v23 = v4;
+    v23 = errorCopy;
     v12 = v21;
     LODWORD(v17) = 22;
     v13 = _os_log_send_and_compose_impl();
@@ -345,16 +345,16 @@ LABEL_38:
       goto LABEL_12;
     }
 
-    v11 = [NSString stringWithCString:v13 encoding:4, &v20, v17];
+    oSLogObject = [NSString stringWithCString:v13 encoding:4, &v20, v17];
     free(v13);
     SSFileLog();
   }
 
 LABEL_12:
-  v14 = [SKUIErrorHelper errorWithSafeUserInfo:v4];
-  v15 = [(ServiceReviewViewController *)self presentedViewController];
+  v14 = [SKUIErrorHelper errorWithSafeUserInfo:errorCopy];
+  presentedViewController = [(ServiceReviewViewController *)self presentedViewController];
 
-  if (v15)
+  if (presentedViewController)
   {
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;
@@ -367,8 +367,8 @@ LABEL_12:
 
   else
   {
-    v16 = [(ServiceReviewViewController *)self _clientViewControllerProxy];
-    [v16 didFinishWithResult:&off_100054FB8 error:v14];
+    _clientViewControllerProxy = [(ServiceReviewViewController *)self _clientViewControllerProxy];
+    [_clientViewControllerProxy didFinishWithResult:&off_100054FB8 error:v14];
   }
 }
 

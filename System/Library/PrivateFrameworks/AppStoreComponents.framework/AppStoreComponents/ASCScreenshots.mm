@@ -1,29 +1,29 @@
 @interface ASCScreenshots
-- (ASCScreenshots)initWithArtwork:(id)a3 mediaPlatform:(id)a4;
-- (ASCScreenshots)initWithCoder:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (ASCScreenshots)initWithArtwork:(id)artwork mediaPlatform:(id)platform;
+- (ASCScreenshots)initWithCoder:(id)coder;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ASCScreenshots
 
-- (ASCScreenshots)initWithArtwork:(id)a3 mediaPlatform:(id)a4
+- (ASCScreenshots)initWithArtwork:(id)artwork mediaPlatform:(id)platform
 {
-  v6 = a3;
-  v7 = a4;
+  artworkCopy = artwork;
+  platformCopy = platform;
   +[ASCEligibility assertCurrentProcessEligibility];
   v14.receiver = self;
   v14.super_class = ASCScreenshots;
   v8 = [(ASCScreenshots *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [artworkCopy copy];
     artwork = v8->_artwork;
     v8->_artwork = v9;
 
-    v11 = [v7 copy];
+    v11 = [platformCopy copy];
     mediaPlatform = v8->_mediaPlatform;
     v8->_mediaPlatform = v11;
   }
@@ -31,17 +31,17 @@
   return v8;
 }
 
-- (ASCScreenshots)initWithCoder:(id)a3
+- (ASCScreenshots)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   +[ASCEligibility assertCurrentProcessEligibility];
   v5 = objc_alloc(MEMORY[0x277CBEB98]);
   v6 = objc_opt_class();
   v7 = [v5 initWithObjects:{v6, objc_opt_class(), 0}];
-  v8 = [v4 decodeObjectOfClasses:v7 forKey:@"artwork"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"artwork"];
   if (v8)
   {
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mediaPlatform"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mediaPlatform"];
     if (v9)
     {
       v17.receiver = self;
@@ -59,7 +59,7 @@
       }
 
       self = v10;
-      v15 = self;
+      selfCopy = self;
     }
 
     else
@@ -69,7 +69,7 @@
         [ASCScreenshots initWithCoder:];
       }
 
-      v15 = 0;
+      selfCopy = 0;
     }
   }
 
@@ -80,40 +80,40 @@
       [ASCScreenshots initWithCoder:];
     }
 
-    v15 = 0;
+    selfCopy = 0;
   }
 
-  return v15;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ASCScreenshots *)self artwork];
-  [v4 encodeObject:v5 forKey:@"artwork"];
+  coderCopy = coder;
+  artwork = [(ASCScreenshots *)self artwork];
+  [coderCopy encodeObject:artwork forKey:@"artwork"];
 
-  v6 = [(ASCScreenshots *)self mediaPlatform];
-  [v4 encodeObject:v6 forKey:@"mediaPlatform"];
+  mediaPlatform = [(ASCScreenshots *)self mediaPlatform];
+  [coderCopy encodeObject:mediaPlatform forKey:@"mediaPlatform"];
 }
 
 - (unint64_t)hash
 {
   v3 = objc_alloc_init(ASCHasher);
-  v4 = [(ASCScreenshots *)self artwork];
-  [(ASCHasher *)v3 combineObject:v4];
+  artwork = [(ASCScreenshots *)self artwork];
+  [(ASCHasher *)v3 combineObject:artwork];
 
-  v5 = [(ASCScreenshots *)self mediaPlatform];
-  [(ASCHasher *)v3 combineObject:v5];
+  mediaPlatform = [(ASCScreenshots *)self mediaPlatform];
+  [(ASCHasher *)v3 combineObject:mediaPlatform];
 
-  v6 = [(ASCHasher *)v3 finalizeHash];
-  return v6;
+  finalizeHash = [(ASCHasher *)v3 finalizeHash];
+  return finalizeHash;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = v4;
+  v5 = equalCopy;
   if (v5)
   {
     if (objc_opt_isKindOfClass())
@@ -136,31 +136,31 @@
 
   if (v7)
   {
-    v8 = [(ASCScreenshots *)self artwork];
-    v9 = [v7 artwork];
-    v10 = v9;
-    if (v8 && v9)
+    artwork = [(ASCScreenshots *)self artwork];
+    artwork2 = [v7 artwork];
+    v10 = artwork2;
+    if (artwork && artwork2)
     {
-      if ([v8 isEqual:v9])
+      if ([artwork isEqual:artwork2])
       {
         goto LABEL_10;
       }
     }
 
-    else if (v8 == v9)
+    else if (artwork == artwork2)
     {
 LABEL_10:
-      v11 = [(ASCScreenshots *)self mediaPlatform];
-      v12 = [v7 mediaPlatform];
-      v13 = v12;
-      if (v11 && v12)
+      mediaPlatform = [(ASCScreenshots *)self mediaPlatform];
+      mediaPlatform2 = [v7 mediaPlatform];
+      v13 = mediaPlatform2;
+      if (mediaPlatform && mediaPlatform2)
       {
-        v14 = [v11 isEqual:v12];
+        v14 = [mediaPlatform isEqual:mediaPlatform2];
       }
 
       else
       {
-        v14 = v11 == v12;
+        v14 = mediaPlatform == mediaPlatform2;
       }
 
       goto LABEL_18;
@@ -181,15 +181,15 @@ LABEL_19:
 - (id)description
 {
   v3 = [[ASCDescriber alloc] initWithObject:self];
-  v4 = [(ASCScreenshots *)self artwork];
-  [(ASCDescriber *)v3 addObject:v4 withName:@"artwork"];
+  artwork = [(ASCScreenshots *)self artwork];
+  [(ASCDescriber *)v3 addObject:artwork withName:@"artwork"];
 
-  v5 = [(ASCScreenshots *)self mediaPlatform];
-  [(ASCDescriber *)v3 addObject:v5 withName:@"mediaPlatform"];
+  mediaPlatform = [(ASCScreenshots *)self mediaPlatform];
+  [(ASCDescriber *)v3 addObject:mediaPlatform withName:@"mediaPlatform"];
 
-  v6 = [(ASCDescriber *)v3 finalizeDescription];
+  finalizeDescription = [(ASCDescriber *)v3 finalizeDescription];
 
-  return v6;
+  return finalizeDescription;
 }
 
 @end

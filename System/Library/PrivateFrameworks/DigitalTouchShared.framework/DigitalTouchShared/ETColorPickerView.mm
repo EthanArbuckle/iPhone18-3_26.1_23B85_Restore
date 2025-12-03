@@ -1,46 +1,46 @@
 @interface ETColorPickerView
-- (BOOL)_isCenterCircle:(unint64_t)a3;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (ETColorPickerView)initWithFrame:(CGRect)a3 collapsedFrame:(CGRect)a4;
+- (BOOL)_isCenterCircle:(unint64_t)circle;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (ETColorPickerView)initWithFrame:(CGRect)frame collapsedFrame:(CGRect)collapsedFrame;
 - (ETColorPickerViewDelegate)presentationDelegate;
 - (id)paletteCircleAnimationPairs;
-- (void)_addRotationAnimationFromAngle:(double)a3 toAngle:(double)a4;
-- (void)_dismissAnimated:(BOOL)a3 completion:(id)a4;
+- (void)_addRotationAnimationFromAngle:(double)angle toAngle:(double)toAngle;
+- (void)_dismissAnimated:(BOOL)animated completion:(id)completion;
 - (void)animateOffscreen;
 - (void)animateOnscreen;
 - (void)animateToGray;
 - (void)animateToSelectedColor;
-- (void)colorWheel:(id)a3 didPickColor:(id)a4;
-- (void)colorWheel:(id)a3 willPickColor:(id)a4;
-- (void)dismissAnimated:(BOOL)a3 completion:(id)a4;
-- (void)fadeinPaletteCircle:(id)a3 delay:(double)a4;
+- (void)colorWheel:(id)wheel didPickColor:(id)color;
+- (void)colorWheel:(id)wheel willPickColor:(id)color;
+- (void)dismissAnimated:(BOOL)animated completion:(id)completion;
+- (void)fadeinPaletteCircle:(id)circle delay:(double)delay;
 - (void)fadeinPaletterCirclesInPairs;
-- (void)fadeoutPaletteCircle:(id)a3 delay:(double)a4;
+- (void)fadeoutPaletteCircle:(id)circle delay:(double)delay;
 - (void)fadeoutPaletterCirclesInPairs;
 - (void)layoutPaletteCircles;
-- (void)movePalettCircleToOriginalLayoutPosition:(id)a3;
-- (void)movePaletteCircleTowardsViewCenter:(id)a3 distance:(double)a4;
-- (void)paletteCircleTapped:(id)a3;
-- (void)presentAnimated:(BOOL)a3 completion:(id)a4;
-- (void)presentTapReceived:(id)a3;
-- (void)setDimmed:(BOOL)a3;
+- (void)movePalettCircleToOriginalLayoutPosition:(id)position;
+- (void)movePaletteCircleTowardsViewCenter:(id)center distance:(double)distance;
+- (void)paletteCircleTapped:(id)tapped;
+- (void)presentAnimated:(BOOL)animated completion:(id)completion;
+- (void)presentTapReceived:(id)received;
+- (void)setDimmed:(BOOL)dimmed;
 - (void)showColorWheel;
-- (void)transformPickerCircleToSelectionMarkerWithCompletion:(id)a3;
-- (void)transformSelectionMarkerToPickerCircleWithCompletion:(id)a3;
+- (void)transformPickerCircleToSelectionMarkerWithCompletion:(id)completion;
+- (void)transformSelectionMarkerToPickerCircleWithCompletion:(id)completion;
 @end
 
 @implementation ETColorPickerView
 
-- (ETColorPickerView)initWithFrame:(CGRect)a3 collapsedFrame:(CGRect)a4
+- (ETColorPickerView)initWithFrame:(CGRect)frame collapsedFrame:(CGRect)collapsedFrame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3.size.height;
-  v9 = a3.size.width;
-  v10 = a3.origin.y;
-  v11 = a3.origin.x;
+  height = collapsedFrame.size.height;
+  width = collapsedFrame.size.width;
+  y = collapsedFrame.origin.y;
+  x = collapsedFrame.origin.x;
+  v8 = frame.size.height;
+  v9 = frame.size.width;
+  v10 = frame.origin.y;
+  v11 = frame.origin.x;
   v27.receiver = self;
   v27.super_class = ETColorPickerView;
   v12 = [(DTSColorPicker *)&v27 initWithFrame:?];
@@ -115,11 +115,11 @@
   v26.size.height = height;
   MidY = CGRectGetMidY(v26);
   v9 = +[ETColorStore defaultStore];
-  v10 = [v9 colors];
-  v11 = [v10 count];
+  colors = [v9 colors];
+  v11 = [colors count];
 
   v12 = v11 - 1;
-  v23 = [(DTSColorPicker *)self paletteCircles];
+  paletteCircles = [(DTSColorPicker *)self paletteCircles];
   if (v11 != 1)
   {
     v13 = 0;
@@ -127,15 +127,15 @@
     {
       +[ETPaletteCircleView paletteCircleDiameter];
       v14 = +[ETColorStore defaultStore];
-      v15 = [v14 colors];
-      v16 = [v15 count];
+      colors2 = [v14 colors];
+      v16 = [colors2 count];
 
       __sincos_stret(v13 * (6.28318531 / (v16 - 1)) + -1.57079633);
       UIRoundToViewScale();
       v18 = v17;
       UIRoundToViewScale();
       v20 = v19;
-      v21 = [v23 objectAtIndexedSubscript:v13];
+      v21 = [paletteCircles objectAtIndexedSubscript:v13];
       [v21 setCenter:{v18, v20}];
 
       ++v13;
@@ -144,14 +144,14 @@
     while (v12 != v13);
   }
 
-  v22 = [v23 lastObject];
-  [v22 setCenter:{MidX, MidY}];
+  lastObject = [paletteCircles lastObject];
+  [lastObject setCenter:{MidX, MidY}];
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   [(ETColorPickerView *)self bounds];
   v11 = CGRectInset(v10, -12.0, -12.0);
   v6 = x;
@@ -160,10 +160,10 @@
   return CGRectContainsPoint(v11, *&v6);
 }
 
-- (void)presentTapReceived:(id)a3
+- (void)presentTapReceived:(id)received
 {
-  v4 = [(ETColorPickerView *)self presentationDelegate];
-  [v4 colorPickerViewWillPresent:self duration:0.3];
+  presentationDelegate = [(ETColorPickerView *)self presentationDelegate];
+  [presentationDelegate colorPickerViewWillPresent:self duration:0.3];
 
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
@@ -179,13 +179,13 @@ void __40__ETColorPickerView_presentTapReceived___block_invoke(uint64_t a1)
   [v2 colorPickerViewDidPresent:*(a1 + 32)];
 }
 
-- (void)presentAnimated:(BOOL)a3 completion:(id)a4
+- (void)presentAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
+  animatedCopy = animated;
+  completionCopy = completion;
   [(UITapGestureRecognizer *)self->_presentTapGestureRecognizer setEnabled:0];
   [(ETColorPickerView *)self setIsExpanded:1];
-  if (v4)
+  if (animatedCopy)
   {
     v7 = 0.3;
   }
@@ -205,8 +205,8 @@ void __40__ETColorPickerView_presentTapReceived___block_invoke(uint64_t a1)
   v10[1] = 3221225472;
   v10[2] = __48__ETColorPickerView_presentAnimated_completion___block_invoke_2;
   v10[3] = &unk_278F79EA8;
-  v11 = v6;
-  v9 = v6;
+  v11 = completionCopy;
+  v9 = completionCopy;
   [v8 animateWithDuration:4 delay:v12 options:v10 animations:v7 completion:0.0];
 }
 
@@ -279,22 +279,22 @@ uint64_t __48__ETColorPickerView_presentAnimated_completion___block_invoke_2(uin
   return result;
 }
 
-- (void)dismissAnimated:(BOOL)a3 completion:(id)a4
+- (void)dismissAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
+  animatedCopy = animated;
+  completionCopy = completion;
   if ([(ETColorPickerView *)self isExpanded])
   {
-    v7 = [(ETColorPickerView *)self presentationDelegate];
-    [v7 colorPickerView:self willDismissAnimated:v4 duration:0.3];
+    presentationDelegate = [(ETColorPickerView *)self presentationDelegate];
+    [presentationDelegate colorPickerView:self willDismissAnimated:animatedCopy duration:0.3];
 
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __48__ETColorPickerView_dismissAnimated_completion___block_invoke;
     v8[3] = &unk_278F79F38;
     v8[4] = self;
-    v9 = v6;
-    [(ETColorPickerView *)self _dismissAnimated:v4 completion:v8];
+    v9 = completionCopy;
+    [(ETColorPickerView *)self _dismissAnimated:animatedCopy completion:v8];
   }
 }
 
@@ -313,18 +313,18 @@ uint64_t __48__ETColorPickerView_dismissAnimated_completion___block_invoke(uint6
   return result;
 }
 
-- (void)_addRotationAnimationFromAngle:(double)a3 toAngle:(double)a4
+- (void)_addRotationAnimationFromAngle:(double)angle toAngle:(double)toAngle
 {
   v7 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"transform.rotation.z"];
   [v7 setDuration:0.3];
   [v7 setAdditive:1];
   [v7 setRemovedOnCompletion:0];
   [v7 setFillMode:*MEMORY[0x277CDA238]];
-  *&v8 = a3;
+  *&v8 = angle;
   v9 = [MEMORY[0x277CCABB0] numberWithFloat:v8];
   [v7 setFromValue:v9];
 
-  *&v10 = a4;
+  *&v10 = toAngle;
   v11 = [MEMORY[0x277CCABB0] numberWithFloat:v10];
   [v7 setToValue:v11];
 
@@ -338,8 +338,8 @@ uint64_t __48__ETColorPickerView_dismissAnimated_completion___block_invoke(uint6
   v14[3] = &unk_278F79ED0;
   v14[4] = self;
   [MEMORY[0x277CD9FF0] setCompletionBlock:v14];
-  v13 = [(UIView *)self->_contentView layer];
-  [v13 addAnimation:v7 forKey:@"ColorPickerRotationAnimationKey"];
+  layer = [(UIView *)self->_contentView layer];
+  [layer addAnimation:v7 forKey:@"ColorPickerRotationAnimationKey"];
 
   [MEMORY[0x277CD9FF0] commit];
 }
@@ -350,10 +350,10 @@ void __60__ETColorPickerView__addRotationAnimationFromAngle_toAngle___block_invo
   [v1 removeAnimationForKey:@"ColorPickerRotationAnimationKey"];
 }
 
-- (void)_dismissAnimated:(BOOL)a3 completion:(id)a4
+- (void)_dismissAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
+  animatedCopy = animated;
+  completionCopy = completion;
   if (([(ETColorWheelView *)self->_colorWheelView isHidden]& 1) == 0)
   {
     v20[0] = MEMORY[0x277D85DD0];
@@ -364,7 +364,7 @@ void __60__ETColorPickerView__addRotationAnimationFromAngle_toAngle___block_invo
     [MEMORY[0x277D75D18] performWithoutAnimation:v20];
   }
 
-  if (v4)
+  if (animatedCopy)
   {
     v7 = 0.3;
   }
@@ -374,26 +374,26 @@ void __60__ETColorPickerView__addRotationAnimationFromAngle_toAngle___block_invo
     v7 = 0.0;
   }
 
-  v8 = [(DTSColorPicker *)self paletteCircles];
-  v9 = [(DTSColorPicker *)self selectedCircle];
+  paletteCircles = [(DTSColorPicker *)self paletteCircles];
+  selectedCircle = [(DTSColorPicker *)self selectedCircle];
   v10 = MEMORY[0x277D75D18];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __49__ETColorPickerView__dismissAnimated_completion___block_invoke_2;
   v17[3] = &unk_278F79F60;
   v17[4] = self;
-  v18 = v8;
-  v19 = v9;
+  v18 = paletteCircles;
+  v19 = selectedCircle;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __49__ETColorPickerView__dismissAnimated_completion___block_invoke_3;
   v14[3] = &unk_278F79F88;
   v14[4] = self;
   v15 = v19;
-  v16 = v6;
-  v11 = v6;
+  v16 = completionCopy;
+  v11 = completionCopy;
   v12 = v19;
-  v13 = v8;
+  v13 = paletteCircles;
   [v10 animateWithDuration:4 delay:v17 options:v14 animations:v7 completion:0.0];
 }
 
@@ -540,23 +540,23 @@ uint64_t __49__ETColorPickerView__dismissAnimated_completion___block_invoke_3(ui
   return result;
 }
 
-- (BOOL)_isCenterCircle:(unint64_t)a3
+- (BOOL)_isCenterCircle:(unint64_t)circle
 {
-  v4 = [(DTSColorPicker *)self paletteCircles];
-  LOBYTE(a3) = [v4 count] - 1 == a3;
+  paletteCircles = [(DTSColorPicker *)self paletteCircles];
+  LOBYTE(circle) = [paletteCircles count] - 1 == circle;
 
-  return a3;
+  return circle;
 }
 
-- (void)setDimmed:(BOOL)a3
+- (void)setDimmed:(BOOL)dimmed
 {
-  v3 = a3;
-  if ([(DTSColorPicker *)self isDimmed]!= a3)
+  dimmedCopy = dimmed;
+  if ([(DTSColorPicker *)self isDimmed]!= dimmed)
   {
     v5.receiver = self;
     v5.super_class = ETColorPickerView;
-    [(DTSColorPicker *)&v5 setDimmed:v3];
-    if (v3)
+    [(DTSColorPicker *)&v5 setDimmed:dimmedCopy];
+    if (dimmedCopy)
     {
       [(ETColorPickerView *)self animateToGray];
     }
@@ -566,7 +566,7 @@ uint64_t __49__ETColorPickerView__dismissAnimated_completion___block_invoke_3(ui
       [(ETColorPickerView *)self animateToSelectedColor];
     }
 
-    [(ETColorPickerView *)self setUserInteractionEnabled:v3 ^ 1];
+    [(ETColorPickerView *)self setUserInteractionEnabled:dimmedCopy ^ 1];
   }
 }
 
@@ -645,15 +645,15 @@ uint64_t __37__ETColorPickerView_animateOffscreen__block_invoke(uint64_t a1)
   }
 }
 
-- (void)paletteCircleTapped:(id)a3
+- (void)paletteCircleTapped:(id)tapped
 {
   if (!self->_dismissingColorPicker)
   {
     self->_dismissingColorPicker = 1;
-    v4 = [a3 view];
-    v5 = [(DTSColorPicker *)self selectedCircle];
+    view = [tapped view];
+    selectedCircle = [(DTSColorPicker *)self selectedCircle];
 
-    if (v5 == v4)
+    if (selectedCircle == view)
     {
       [(ETColorPickerView *)self dismissAnimated:1 completion:0];
     }
@@ -665,30 +665,30 @@ uint64_t __37__ETColorPickerView_animateOffscreen__block_invoke(uint64_t a1)
       v7[2] = __41__ETColorPickerView_paletteCircleTapped___block_invoke;
       v7[3] = &unk_278F79ED0;
       v7[4] = self;
-      [(DTSColorPicker *)self selectCircle:v4 completion:v7];
+      [(DTSColorPicker *)self selectCircle:view completion:v7];
     }
 
-    v6 = [(DTSColorPicker *)self delegate];
-    [v6 colorPickerSelectedColorDidChange:self];
+    delegate = [(DTSColorPicker *)self delegate];
+    [delegate colorPickerSelectedColorDidChange:self];
   }
 }
 
 - (void)showColorWheel
 {
-  v3 = [(DTSColorPicker *)self longPressRecognizer];
-  [v3 setEnabled:0];
+  longPressRecognizer = [(DTSColorPicker *)self longPressRecognizer];
+  [longPressRecognizer setEnabled:0];
 
-  v4 = [(DTSColorPicker *)self selectedCircle];
-  v5 = [(DTSColorPicker *)self paletteCircles];
+  selectedCircle = [(DTSColorPicker *)self selectedCircle];
+  paletteCircles = [(DTSColorPicker *)self paletteCircles];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __35__ETColorPickerView_showColorWheel__block_invoke;
   v8[3] = &unk_278F79F60;
-  v9 = v5;
-  v10 = v4;
-  v11 = self;
-  v6 = v4;
-  v7 = v5;
+  v9 = paletteCircles;
+  v10 = selectedCircle;
+  selfCopy = self;
+  v6 = selectedCircle;
+  v7 = paletteCircles;
   [(ETColorPickerView *)self transformSelectionMarkerToPickerCircleWithCompletion:v8];
 }
 
@@ -705,24 +705,24 @@ uint64_t __35__ETColorPickerView_showColorWheel__block_invoke(uint64_t a1)
   return [v6 fadeoutPaletterCirclesInPairs];
 }
 
-- (void)transformSelectionMarkerToPickerCircleWithCompletion:(id)a3
+- (void)transformSelectionMarkerToPickerCircleWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(DTSColorPicker *)self selectedCircle];
+  completionCopy = completion;
+  selectedCircle = [(DTSColorPicker *)self selectedCircle];
   v6 = MEMORY[0x277D75D18];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __74__ETColorPickerView_transformSelectionMarkerToPickerCircleWithCompletion___block_invoke;
   v12[3] = &unk_278F79FB0;
-  v13 = v5;
-  v14 = self;
+  v13 = selectedCircle;
+  selfCopy = self;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __74__ETColorPickerView_transformSelectionMarkerToPickerCircleWithCompletion___block_invoke_2;
   v9[3] = &unk_278F79FD8;
   v10 = v13;
-  v11 = v4;
-  v7 = v4;
+  v11 = completionCopy;
+  v7 = completionCopy;
   v8 = v13;
   [v6 animateWithDuration:v12 animations:v9 completion:0.15];
 }
@@ -778,38 +778,38 @@ uint64_t __74__ETColorPickerView_transformSelectionMarkerToPickerCircleWithCompl
   return result;
 }
 
-- (void)transformPickerCircleToSelectionMarkerWithCompletion:(id)a3
+- (void)transformPickerCircleToSelectionMarkerWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(DTSColorPicker *)self selectedCircle];
-  v6 = [v5 selectionMarker];
+  completionCopy = completion;
+  selectedCircle = [(DTSColorPicker *)self selectedCircle];
+  selectionMarker = [selectedCircle selectionMarker];
   v7 = *(MEMORY[0x277CBF2C0] + 16);
   v18[0] = *MEMORY[0x277CBF2C0];
   v18[1] = v7;
   v18[2] = *(MEMORY[0x277CBF2C0] + 32);
-  [v6 setTransform:v18];
+  [selectionMarker setTransform:v18];
   v8 = +[ETPaletteCircleView selectionMarkerColor];
-  [v6 setBackgroundColor:v8];
+  [selectionMarker setBackgroundColor:v8];
 
-  v9 = [v6 layer];
-  [v9 setBorderWidth:0.0];
+  layer = [selectionMarker layer];
+  [layer setBorderWidth:0.0];
 
-  [(UIView *)self->_contentView addSubview:v5];
-  [(UIView *)self->_contentView sendSubviewToBack:v5];
+  [(UIView *)self->_contentView addSubview:selectedCircle];
+  [(UIView *)self->_contentView sendSubviewToBack:selectedCircle];
   v10 = MEMORY[0x277D75D18];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __74__ETColorPickerView_transformPickerCircleToSelectionMarkerWithCompletion___block_invoke;
   v15[3] = &unk_278F79FB0;
-  v16 = v5;
-  v17 = self;
+  v16 = selectedCircle;
+  selfCopy = self;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __74__ETColorPickerView_transformPickerCircleToSelectionMarkerWithCompletion___block_invoke_2;
   v13[3] = &unk_278F79EA8;
-  v14 = v4;
-  v11 = v4;
-  v12 = v5;
+  v14 = completionCopy;
+  v11 = completionCopy;
+  v12 = selectedCircle;
   [v10 animateWithDuration:0x20000 delay:v15 options:v13 animations:0.15 completion:0.0];
 }
 
@@ -838,12 +838,12 @@ uint64_t __74__ETColorPickerView_transformPickerCircleToSelectionMarkerWithCompl
 - (void)fadeoutPaletterCirclesInPairs
 {
   v29 = *MEMORY[0x277D85DE8];
-  v3 = [(ETColorPickerView *)self paletteCircleAnimationPairs];
+  paletteCircleAnimationPairs = [(ETColorPickerView *)self paletteCircleAnimationPairs];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  v4 = [paletteCircleAnimationPairs countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v4)
   {
     v5 = v4;
@@ -855,7 +855,7 @@ uint64_t __74__ETColorPickerView_transformPickerCircleToSelectionMarkerWithCompl
       {
         if (*v25 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(paletteCircleAnimationPairs);
         }
 
         v9 = *(*(&v24 + 1) + 8 * i);
@@ -870,21 +870,21 @@ uint64_t __74__ETColorPickerView_transformPickerCircleToSelectionMarkerWithCompl
         ++v6;
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v24 objects:v28 count:16];
+      v5 = [paletteCircleAnimationPairs countByEnumeratingWithState:&v24 objects:v28 count:16];
     }
 
     while (v5);
   }
 
-  v12 = [(DTSColorPicker *)self paletteCircles];
-  v13 = [v12 lastObject];
+  paletteCircles = [(DTSColorPicker *)self paletteCircles];
+  lastObject = [paletteCircles lastObject];
 
   v14 = MEMORY[0x277D75D18];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __50__ETColorPickerView_fadeoutPaletterCirclesInPairs__block_invoke;
   v22[3] = &unk_278F79ED0;
-  v15 = v13;
+  v15 = lastObject;
   v23 = v15;
   [v14 animateWithDuration:0 delay:v22 options:0 animations:0.15 completion:0.0];
   v16 = MEMORY[0x277D75D18];
@@ -913,13 +913,13 @@ uint64_t __50__ETColorPickerView_fadeoutPaletterCirclesInPairs__block_invoke(uin
 - (void)fadeinPaletterCirclesInPairs
 {
   v28 = *MEMORY[0x277D85DE8];
-  v3 = [(ETColorPickerView *)self paletteCircleAnimationPairs];
-  v4 = [v3 count];
+  paletteCircleAnimationPairs = [(ETColorPickerView *)self paletteCircleAnimationPairs];
+  v4 = [paletteCircleAnimationPairs count];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v5 = v3;
+  v5 = paletteCircleAnimationPairs;
   v6 = [v5 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v6)
   {
@@ -951,16 +951,16 @@ uint64_t __50__ETColorPickerView_fadeoutPaletterCirclesInPairs__block_invoke(uin
     while (v7);
   }
 
-  v13 = [(DTSColorPicker *)self paletteCircles];
-  v14 = [v13 lastObject];
+  paletteCircles = [(DTSColorPicker *)self paletteCircles];
+  lastObject = [paletteCircles lastObject];
 
-  [(UIView *)self->_contentView addSubview:v14];
+  [(UIView *)self->_contentView addSubview:lastObject];
   v15 = MEMORY[0x277D75D18];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __49__ETColorPickerView_fadeinPaletterCirclesInPairs__block_invoke;
   v21[3] = &unk_278F79ED0;
-  v16 = v14;
+  v16 = lastObject;
   v22 = v16;
   [v15 animateWithDuration:0 delay:v21 options:0 animations:0.25 completion:0.0];
   v17 = MEMORY[0x277D75D18];
@@ -983,23 +983,23 @@ uint64_t __49__ETColorPickerView_fadeinPaletterCirclesInPairs__block_invoke(uint
   return [v1 setTransform:v4];
 }
 
-- (void)fadeoutPaletteCircle:(id)a3 delay:(double)a4
+- (void)fadeoutPaletteCircle:(id)circle delay:(double)delay
 {
-  v6 = a3;
+  circleCopy = circle;
   v7 = MEMORY[0x277D75D18];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __48__ETColorPickerView_fadeoutPaletteCircle_delay___block_invoke;
   v11[3] = &unk_278F79FB0;
-  v12 = v6;
-  v13 = self;
+  v12 = circleCopy;
+  selfCopy = self;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __48__ETColorPickerView_fadeoutPaletteCircle_delay___block_invoke_2;
   v9[3] = &unk_278F7A000;
   v10 = v12;
   v8 = v12;
-  [v7 animateWithDuration:0 delay:v11 options:v9 animations:0.25 completion:a4];
+  [v7 animateWithDuration:0 delay:v11 options:v9 animations:0.25 completion:delay];
 }
 
 uint64_t __48__ETColorPickerView_fadeoutPaletteCircle_delay___block_invoke(uint64_t a1)
@@ -1012,20 +1012,20 @@ uint64_t __48__ETColorPickerView_fadeoutPaletteCircle_delay___block_invoke(uint6
   return [*(a1 + 40) movePaletteCircleTowardsViewCenter:*(a1 + 32) distance:10.0];
 }
 
-- (void)fadeinPaletteCircle:(id)a3 delay:(double)a4
+- (void)fadeinPaletteCircle:(id)circle delay:(double)delay
 {
-  v6 = a3;
-  [(UIView *)self->_contentView addSubview:v6];
-  [(UIView *)self->_contentView sendSubviewToBack:v6];
+  circleCopy = circle;
+  [(UIView *)self->_contentView addSubview:circleCopy];
+  [(UIView *)self->_contentView sendSubviewToBack:circleCopy];
   v7 = MEMORY[0x277D75D18];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __47__ETColorPickerView_fadeinPaletteCircle_delay___block_invoke;
   v9[3] = &unk_278F79FB0;
-  v10 = v6;
-  v11 = self;
-  v8 = v6;
-  [v7 animateWithDuration:0 delay:v9 options:0 animations:0.25 completion:a4];
+  v10 = circleCopy;
+  selfCopy = self;
+  v8 = circleCopy;
+  [v7 animateWithDuration:0 delay:v9 options:0 animations:0.25 completion:delay];
 }
 
 uint64_t __47__ETColorPickerView_fadeinPaletteCircle_delay___block_invoke(uint64_t a1)
@@ -1040,10 +1040,10 @@ uint64_t __47__ETColorPickerView_fadeinPaletteCircle_delay___block_invoke(uint64
   return [*(a1 + 40) movePalettCircleToOriginalLayoutPosition:*(a1 + 32)];
 }
 
-- (void)movePaletteCircleTowardsViewCenter:(id)a3 distance:(double)a4
+- (void)movePaletteCircleTowardsViewCenter:(id)center distance:(double)distance
 {
   contentView = self->_contentView;
-  v19 = a3;
+  centerCopy = center;
   [(UIView *)contentView bounds];
   x = v21.origin.x;
   y = v21.origin.y;
@@ -1055,19 +1055,19 @@ uint64_t __47__ETColorPickerView_fadeinPaletteCircle_delay___block_invoke(uint64
   v22.size.width = width;
   v22.size.height = height;
   MidY = CGRectGetMidY(v22);
-  [v19 center];
+  [centerCopy center];
   v13 = v12;
   v15 = v14;
   v16 = MidX - v12;
   v17 = MidY - v14;
   +[ETPaletteCircleView paletteCircleDiameter];
-  [v19 setCenter:{v13 + v16 / (v18 + 2.0) * a4, v15 + v17 / (v18 + 2.0) * a4}];
+  [centerCopy setCenter:{v13 + v16 / (v18 + 2.0) * distance, v15 + v17 / (v18 + 2.0) * distance}];
 }
 
-- (void)movePalettCircleToOriginalLayoutPosition:(id)a3
+- (void)movePalettCircleToOriginalLayoutPosition:(id)position
 {
   contentView = self->_contentView;
-  v18 = a3;
+  positionCopy = position;
   [(UIView *)contentView bounds];
   x = v20.origin.x;
   y = v20.origin.y;
@@ -1079,32 +1079,32 @@ uint64_t __47__ETColorPickerView_fadeinPaletteCircle_delay___block_invoke(uint64
   v21.size.width = width;
   v21.size.height = height;
   CGRectGetMidY(v21);
-  v9 = [(DTSColorPicker *)self paletteCircles];
-  v10 = [v9 indexOfObject:v18];
+  paletteCircles = [(DTSColorPicker *)self paletteCircles];
+  v10 = [paletteCircles indexOfObject:positionCopy];
 
   +[ETPaletteCircleView paletteCircleDiameter];
   v11 = v10;
   v12 = +[ETColorStore defaultStore];
-  v13 = [v12 colors];
-  v14 = [v13 count];
+  colors = [v12 colors];
+  v14 = [colors count];
 
   __sincos_stret(v11 * (6.28318531 / (v14 - 1)) + -1.57079633);
   UIRoundToViewScale();
   v16 = v15;
   UIRoundToViewScale();
-  [v18 setCenter:{v16, v17}];
+  [positionCopy setCenter:{v16, v17}];
 }
 
 - (id)paletteCircleAnimationPairs
 {
   v17[2] = *MEMORY[0x277D85DE8];
-  v3 = [(DTSColorPicker *)self paletteCircles];
-  v4 = [(DTSColorPicker *)self selectedCircle];
-  v5 = [v3 indexOfObject:v4];
+  paletteCircles = [(DTSColorPicker *)self paletteCircles];
+  selectedCircle = [(DTSColorPicker *)self selectedCircle];
+  v5 = [paletteCircles indexOfObject:selectedCircle];
 
   v6 = +[ETColorStore defaultStore];
-  v7 = [v6 colors];
-  v8 = [v7 count];
+  colors = [v6 colors];
+  v8 = [colors count];
 
   v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v10 = v8 - 2;
@@ -1114,9 +1114,9 @@ uint64_t __47__ETColorPickerView_fadeinPaletteCircle_delay___block_invoke(uint64
     v12 = 1;
     do
     {
-      v13 = [v3 objectAtIndexedSubscript:(v5 + v10) % v11];
+      v13 = [paletteCircles objectAtIndexedSubscript:(v5 + v10) % v11];
       v17[0] = v13;
-      v14 = [v3 objectAtIndexedSubscript:(v5 + v12) % v11];
+      v14 = [paletteCircles objectAtIndexedSubscript:(v5 + v12) % v11];
       v17[1] = v14;
       v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:2];
       [v9 addObject:v15];
@@ -1131,28 +1131,28 @@ uint64_t __47__ETColorPickerView_fadeinPaletteCircle_delay___block_invoke(uint64
   return v9;
 }
 
-- (void)colorWheel:(id)a3 willPickColor:(id)a4
+- (void)colorWheel:(id)wheel willPickColor:(id)color
 {
-  if (a4)
+  if (color)
   {
-    v5 = a4;
-    v6 = [(DTSColorPicker *)self selectedCircle];
-    [v6 setBackgroundColor:v5];
+    colorCopy = color;
+    selectedCircle = [(DTSColorPicker *)self selectedCircle];
+    [selectedCircle setBackgroundColor:colorCopy];
   }
 
   [(ETColorPickerView *)self fadeinPaletterCirclesInPairs];
 }
 
-- (void)colorWheel:(id)a3 didPickColor:(id)a4
+- (void)colorWheel:(id)wheel didPickColor:(id)color
 {
-  v5 = a4;
+  colorCopy = color;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __45__ETColorPickerView_colorWheel_didPickColor___block_invoke;
   v7[3] = &unk_278F79FB0;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = colorCopy;
+  v6 = colorCopy;
   [(ETColorPickerView *)self transformPickerCircleToSelectionMarkerWithCompletion:v7];
 }
 

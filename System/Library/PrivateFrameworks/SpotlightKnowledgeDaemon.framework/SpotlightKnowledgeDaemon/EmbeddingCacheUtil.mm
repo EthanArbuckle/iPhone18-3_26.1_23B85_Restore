@@ -1,14 +1,14 @@
 @interface EmbeddingCacheUtil
-+ (id)deserialize:(id)a3;
-+ (id)serialize:(id)a3;
++ (id)deserialize:(id)deserialize;
++ (id)serialize:(id)serialize;
 @end
 
 @implementation EmbeddingCacheUtil
 
-+ (id)deserialize:(id)a3
++ (id)deserialize:(id)deserialize
 {
-  v3 = a3;
-  if ([v3 length])
+  deserializeCopy = deserialize;
+  if ([deserializeCopy length])
   {
     v32 = 0;
     v33 = &v32;
@@ -35,7 +35,7 @@
     v17 = &v32;
     v18 = &v26;
     v19 = &v20;
-    v16 = v3;
+    v16 = deserializeCopy;
     [v16 enumerateByteRangesUsingBlock:v15];
     v4 = [MEMORY[0x277CBEB58] set];
     [v4 addObject:objc_opt_class()];
@@ -109,54 +109,54 @@ void __34__EmbeddingCacheUtil_deserialize___block_invoke(uint64_t a1, uint64_t a
   *(v16 + 40) = v15;
 }
 
-+ (id)serialize:(id)a3
++ (id)serialize:(id)serialize
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEA90] data];
-  v5 = [v3 primaryTextEmbedding];
+  serializeCopy = serialize;
+  data = [MEMORY[0x277CBEA90] data];
+  primaryTextEmbedding = [serializeCopy primaryTextEmbedding];
 
-  if (v5)
+  if (primaryTextEmbedding)
   {
-    v6 = [v3 primaryTextEmbedding];
-    v7 = [v6 encodedData];
+    primaryTextEmbedding2 = [serializeCopy primaryTextEmbedding];
+    encodedData = [primaryTextEmbedding2 encodedData];
 
-    v4 = v7;
+    data = encodedData;
   }
 
-  v8 = [MEMORY[0x277CBEA90] data];
-  v9 = [v3 secondaryTextEmbedding];
+  data2 = [MEMORY[0x277CBEA90] data];
+  secondaryTextEmbedding = [serializeCopy secondaryTextEmbedding];
 
-  if (v9)
+  if (secondaryTextEmbedding)
   {
-    v10 = [v3 secondaryTextEmbedding];
-    v11 = [v10 encodedData];
+    secondaryTextEmbedding2 = [serializeCopy secondaryTextEmbedding];
+    encodedData2 = [secondaryTextEmbedding2 encodedData];
 
-    v8 = v11;
+    data2 = encodedData2;
   }
 
-  if ([v4 length])
+  if ([data length])
   {
     v12 = MEMORY[0x277CCAAB0];
-    v13 = [v3 serializedAttributes];
+    serializedAttributes = [serializeCopy serializedAttributes];
     v22 = 0;
-    v14 = [v12 archivedDataWithRootObject:v13 requiringSecureCoding:1 error:&v22];
+    v14 = [v12 archivedDataWithRootObject:serializedAttributes requiringSecureCoding:1 error:&v22];
     v15 = v22;
 
     v16 = 0;
     if (!v15 && v14)
     {
-      v17 = [v4 length];
-      v18 = v17 + [v8 length];
+      v17 = [data length];
+      v18 = v17 + [data2 length];
       v19 = [v14 length];
       v16 = [MEMORY[0x277CBEB28] dataWithCapacity:(v18 + v19 + 4)];
-      v21 = [v4 length];
+      v21 = [data length];
       [v16 appendBytes:&v21 length:2];
-      [v16 appendData:v4];
-      v21 = [v8 length];
+      [v16 appendData:data];
+      v21 = [data2 length];
       [v16 appendBytes:&v21 length:2];
       if (v21)
       {
-        [v16 appendData:v8];
+        [v16 appendData:data2];
       }
 
       [v16 appendData:v14];

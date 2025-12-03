@@ -1,24 +1,24 @@
 @interface PLSearchIndexingEmbeddingsFetcher
 - (PLSearchIndexingEmbeddingsFetcher)init;
-- (id)embeddingForAsset:(id)a3 indexingContext:(id)a4 allowFetchIfMissing:(BOOL)a5;
-- (void)prefetchEmbeddingsForAssets:(id)a3 indexingContext:(id)a4;
+- (id)embeddingForAsset:(id)asset indexingContext:(id)context allowFetchIfMissing:(BOOL)missing;
+- (void)prefetchEmbeddingsForAssets:(id)assets indexingContext:(id)context;
 @end
 
 @implementation PLSearchIndexingEmbeddingsFetcher
 
-- (id)embeddingForAsset:(id)a3 indexingContext:(id)a4 allowFetchIfMissing:(BOOL)a5
+- (id)embeddingForAsset:(id)asset indexingContext:(id)context allowFetchIfMissing:(BOOL)missing
 {
-  v5 = a5;
+  missingCopy = missing;
   v46 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = [v7 uuid];
+  assetCopy = asset;
+  uuid = [assetCopy uuid];
   if ((PLSearchSemanticSearchIndexingSupported() & 1) == 0)
   {
     v13 = PLSearchBackendModelTranslationGetLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138543362;
-      v41 = v8;
+      v41 = uuid;
       v14 = "Embedding donations not supported. Skipping embedding donation for asset UUID: %{public}@";
 LABEL_9:
       _os_log_impl(&dword_19BF1F000, v13, OS_LOG_TYPE_DEBUG, v14, buf, 0xCu);
@@ -32,14 +32,14 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  PLSearchIndexingShouldFetchEmbeddingsForAsset(v7);
+  PLSearchIndexingShouldFetchEmbeddingsForAsset(assetCopy);
   if ((v9 & 1) == 0)
   {
     v13 = PLSearchBackendModelTranslationGetLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138543362;
-      v41 = v8;
+      v41 = uuid;
       v14 = "Embedding fetch pre-gating returned NO for asset UUID: %{public}@. Skipping embedding fetch.";
       goto LABEL_9;
     }
@@ -47,7 +47,7 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v10 = [(NSMutableDictionary *)self->_mutableEmbeddingsByUUID objectForKeyedSubscript:v8];
+  v10 = [(NSMutableDictionary *)self->_mutableEmbeddingsByUUID objectForKeyedSubscript:uuid];
   if (v10)
   {
     v11 = v10;
@@ -58,22 +58,22 @@ LABEL_11:
   }
 
   v18 = *MEMORY[0x1E69BFF48];
-  if ((PLErrorOrUnderlyingErrorHasDomainAndCode() & 1) != 0 || v5)
+  if ((PLErrorOrUnderlyingErrorHasDomainAndCode() & 1) != 0 || missingCopy)
   {
     v21 = PLSearchBackendModelTranslationGetLog();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
     {
       *buf = 138543362;
-      v41 = v8;
+      v41 = uuid;
       _os_log_impl(&dword_19BF1F000, v21, OS_LOG_TYPE_INFO, "Embedding not in pre-fetch cache for asset UUID: %{public}@. Using slower single asset fetch.", buf, 0xCu);
     }
 
     MADEmbeddingClass = getMADEmbeddingClass();
-    v23 = [v7 photoLibrary];
-    v24 = [v23 pathManager];
-    v25 = [v24 libraryURL];
+    photoLibrary = [assetCopy photoLibrary];
+    pathManager = [photoLibrary pathManager];
+    libraryURL = [pathManager libraryURL];
     v37 = 0;
-    v26 = [MADEmbeddingClass fetchEmbeddingWithAssetUUID:v8 photoLibraryURL:v25 options:0 error:&v37];
+    v26 = [MADEmbeddingClass fetchEmbeddingWithAssetUUID:uuid photoLibraryURL:libraryURL options:0 error:&v37];
     v27 = v37;
 
     if (v27)
@@ -82,7 +82,7 @@ LABEL_11:
       if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543874;
-        v41 = v8;
+        v41 = uuid;
         v42 = 2112;
         v43 = v26;
         v44 = 2112;
@@ -102,12 +102,12 @@ LABEL_11:
       if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543362;
-        v41 = v8;
+        v41 = uuid;
         _os_log_impl(&dword_19BF1F000, v29, OS_LOG_TYPE_ERROR, "Missing embedding for asset UUID: %{public}@", buf, 0xCu);
       }
 
       v30 = objc_alloc_init(MEMORY[0x1E695DF90]);
-      v31 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Missing embedding for asset UUID: %@", v8];
+      v31 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Missing embedding for asset UUID: %@", uuid];
       [v30 setObject:v31 forKeyedSubscript:*MEMORY[0x1E696A278]];
 
       [v30 setObject:v27 forKeyedSubscript:*MEMORY[0x1E696AA08]];
@@ -129,7 +129,7 @@ LABEL_11:
     {
       v34 = MEMORY[0x1E696ABC0];
       v38 = *MEMORY[0x1E696A278];
-      v35 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Missing embedding for asset UUID: %@", v8];
+      v35 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Missing embedding for asset UUID: %@", uuid];
       v39 = v35;
       v36 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v39 forKeys:&v38 count:1];
       v20 = [v34 errorWithDomain:v18 code:46502 userInfo:v36];
@@ -144,22 +144,22 @@ LABEL_12:
   return v16;
 }
 
-- (void)prefetchEmbeddingsForAssets:(id)a3 indexingContext:(id)a4
+- (void)prefetchEmbeddingsForAssets:(id)assets indexingContext:(id)context
 {
   v55 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  assetsCopy = assets;
+  contextCopy = context;
   if (PLSearchSemanticSearchIndexingSupported())
   {
-    v39 = self;
-    v40 = v7;
+    selfCopy = self;
+    v40 = contextCopy;
     v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v44 = 0u;
     v45 = 0u;
     v46 = 0u;
     v47 = 0u;
-    v41 = v6;
-    v9 = v6;
+    v41 = assetsCopy;
+    v9 = assetsCopy;
     v10 = [v9 countByEnumeratingWithState:&v44 objects:v54 count:16];
     if (v10)
     {
@@ -179,24 +179,24 @@ LABEL_12:
           PLSearchIndexingShouldFetchEmbeddingsForAsset(v15);
           if (v16)
           {
-            v17 = [v15 photoLibrary];
-            v18 = [v17 pathManager];
-            v19 = [v18 libraryURL];
+            photoLibrary = [v15 photoLibrary];
+            pathManager = [photoLibrary pathManager];
+            libraryURL = [pathManager libraryURL];
 
-            v20 = [v15 uuid];
-            [v8 addObject:v20];
-            v12 = v19;
+            uuid = [v15 uuid];
+            [v8 addObject:uuid];
+            v12 = libraryURL;
           }
 
           else
           {
-            v20 = PLSearchBackendModelTranslationGetLog();
-            if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
+            uuid = PLSearchBackendModelTranslationGetLog();
+            if (os_log_type_enabled(uuid, OS_LOG_TYPE_DEBUG))
             {
-              v21 = [v15 uuid];
+              uuid2 = [v15 uuid];
               *buf = 138412290;
-              v51 = v21;
-              _os_log_impl(&dword_19BF1F000, v20, OS_LOG_TYPE_DEBUG, "Embedding fetch pre-gating returned NO for asset UUID: %@. Skipping embedding fetch.", buf, 0xCu);
+              v51 = uuid2;
+              _os_log_impl(&dword_19BF1F000, uuid, OS_LOG_TYPE_DEBUG, "Embedding fetch pre-gating returned NO for asset UUID: %@. Skipping embedding fetch.", buf, 0xCu);
             }
           }
         }
@@ -225,12 +225,12 @@ LABEL_12:
       v42[1] = 3221225472;
       v42[2] = __81__PLSearchIndexingEmbeddingsFetcher_prefetchEmbeddingsForAssets_indexingContext___block_invoke;
       v42[3] = &unk_1E7569DE8;
-      v42[4] = v39;
+      v42[4] = selfCopy;
       [v24 enumerateKeysAndObjectsUsingBlock:v42];
 LABEL_28:
 
-      v7 = v40;
-      v6 = v41;
+      contextCopy = v40;
+      assetsCopy = v41;
       goto LABEL_29;
     }
 
@@ -274,7 +274,7 @@ LABEL_25:
 
     if (v26)
     {
-      objc_storeStrong(&v39->_prefetchError, v25);
+      objc_storeStrong(&selfCopy->_prefetchError, v25);
     }
 
     else
@@ -284,8 +284,8 @@ LABEL_25:
       v49 = @"fetch embeddings failed with unknown error";
       v36 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v49 forKeys:&v48 count:1];
       v37 = [v35 errorWithDomain:v27 code:46502 userInfo:v36];
-      prefetchError = v39->_prefetchError;
-      v39->_prefetchError = v37;
+      prefetchError = selfCopy->_prefetchError;
+      selfCopy->_prefetchError = v37;
     }
 
     goto LABEL_28;
@@ -295,7 +295,7 @@ LABEL_25:
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v51 = v6;
+    v51 = assetsCopy;
     _os_log_impl(&dword_19BF1F000, v12, OS_LOG_TYPE_DEBUG, "Embedding donations not supported. Skipping embedding donation for assets: %@", buf, 0xCu);
   }
 

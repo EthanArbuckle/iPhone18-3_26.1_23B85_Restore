@@ -9,8 +9,8 @@
 + (id)newConnection
 {
   v3 = [[RCSSavedRecordingServiceConnection alloc] initWithMachServiceName:@"com.apple.voicememod.xpc" options:0];
-  v4 = [a1 serviceInterface];
-  [(RCSSavedRecordingServiceConnection *)v3 setRemoteObjectInterface:v4];
+  serviceInterface = [self serviceInterface];
+  [(RCSSavedRecordingServiceConnection *)v3 setRemoteObjectInterface:serviceInterface];
 
   return v3;
 }

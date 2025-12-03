@@ -13,9 +13,9 @@
   v2 = [(SBHTrialClientManager *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E69DB518] client];
+    client = [MEMORY[0x1E69DB518] client];
     trialClient = v2->_trialClient;
-    v2->_trialClient = v3;
+    v2->_trialClient = client;
   }
 
   return v2;
@@ -29,9 +29,9 @@
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
   v5 = [v3 setWithArray:v4];
 
-  v6 = [(SBHTrialClientManager *)self trialClient];
+  trialClient = [(SBHTrialClientManager *)self trialClient];
   v11 = 0;
-  v7 = [v6 immediateDownloadForNamespaceNames:v5 allowExpensiveNetworking:1 error:&v11];
+  v7 = [trialClient immediateDownloadForNamespaceNames:v5 allowExpensiveNetworking:1 error:&v11];
   v8 = v11;
 
   if (v8)
@@ -58,11 +58,11 @@
 
 - (BOOL)widgetDiscoverabilityGoSwitchEnabled
 {
-  v2 = [(SBHTrialClientManager *)self trialClient];
-  v3 = [v2 levelForFactor:@"goSwitch" withNamespaceName:@"SPRINGBOARD_HOME"];
+  trialClient = [(SBHTrialClientManager *)self trialClient];
+  v3 = [trialClient levelForFactor:@"goSwitch" withNamespaceName:@"SPRINGBOARD_HOME"];
 
-  LOBYTE(v2) = [v3 BOOLeanValue];
-  return v2;
+  LOBYTE(trialClient) = [v3 BOOLeanValue];
+  return trialClient;
 }
 
 @end

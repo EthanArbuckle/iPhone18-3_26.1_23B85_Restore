@@ -1,13 +1,13 @@
 @interface NUChannelNullFormat
-- (BOOL)isEqualToChannelFormat:(id)a3;
+- (BOOL)isEqualToChannelFormat:(id)format;
 - (unint64_t)hash;
 @end
 
 @implementation NUChannelNullFormat
 
-- (BOOL)isEqualToChannelFormat:(id)a3
+- (BOOL)isEqualToChannelFormat:(id)format
 {
-  v3 = a3;
+  formatCopy = format;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 

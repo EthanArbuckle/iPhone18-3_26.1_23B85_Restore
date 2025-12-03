@@ -1,14 +1,14 @@
 @interface VPNListItemProvider
-- (void)connectivityManagerDidChange:(id)a3;
+- (void)connectivityManagerDidChange:(id)change;
 @end
 
 @implementation VPNListItemProvider
 
-- (void)connectivityManagerDidChange:(id)a3
+- (void)connectivityManagerDidChange:(id)change
 {
-  v3 = a3;
+  changeCopy = change;
 
-  sub_1000E8810(v3);
+  sub_1000E8810(changeCopy);
 }
 
 @end

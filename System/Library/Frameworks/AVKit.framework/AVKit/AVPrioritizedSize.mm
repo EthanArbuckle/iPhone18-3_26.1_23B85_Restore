@@ -1,9 +1,9 @@
 @interface AVPrioritizedSize
-+ (id)sizesResolvingFirstPrioritizedSize:(id)a3 secondPrioritizedSize:(id)a4 inAvailableWidth:(double)a5;
++ (id)sizesResolvingFirstPrioritizedSize:(id)size secondPrioritizedSize:(id)prioritizedSize inAvailableWidth:(double)width;
 - (AVPrioritizedSize)init;
 - (CGSize)currentTotalSize;
-- (id)removeLastSizeOfPriority:(unint64_t)a3;
-- (void)addSize:(CGSize)a3 withPriority:(unint64_t)a4;
+- (id)removeLastSizeOfPriority:(unint64_t)priority;
+- (void)addSize:(CGSize)size withPriority:(unint64_t)priority;
 @end
 
 @implementation AVPrioritizedSize
@@ -17,54 +17,54 @@
   return result;
 }
 
-- (id)removeLastSizeOfPriority:(unint64_t)a3
+- (id)removeLastSizeOfPriority:(unint64_t)priority
 {
-  v5 = [(AVPrioritizedSize *)self lowPrioritySizes];
-  if (a3 <= 1)
+  lowPrioritySizes = [(AVPrioritizedSize *)self lowPrioritySizes];
+  if (priority <= 1)
   {
-    if (a3)
+    if (priority)
     {
-      if (a3 != 1)
+      if (priority != 1)
       {
         goto LABEL_13;
       }
 
-      v6 = [(AVPrioritizedSize *)self mediumPrioritySizes];
+      mediumPrioritySizes = [(AVPrioritizedSize *)self mediumPrioritySizes];
     }
 
     else
     {
-      v6 = [(AVPrioritizedSize *)self lowPrioritySizes];
+      mediumPrioritySizes = [(AVPrioritizedSize *)self lowPrioritySizes];
     }
   }
 
   else
   {
-    switch(a3)
+    switch(priority)
     {
       case 2uLL:
-        v6 = [(AVPrioritizedSize *)self highPrioritySizes];
+        mediumPrioritySizes = [(AVPrioritizedSize *)self highPrioritySizes];
         break;
       case 3uLL:
-        v6 = [(AVPrioritizedSize *)self veryHighPrioritySizes];
+        mediumPrioritySizes = [(AVPrioritizedSize *)self veryHighPrioritySizes];
         break;
       case 4uLL:
-        v6 = [(AVPrioritizedSize *)self requiredPrioritySizes];
+        mediumPrioritySizes = [(AVPrioritizedSize *)self requiredPrioritySizes];
         break;
       default:
         goto LABEL_13;
     }
   }
 
-  v7 = v6;
+  v7 = mediumPrioritySizes;
 
-  v5 = v7;
+  lowPrioritySizes = v7;
 LABEL_13:
-  v8 = [v5 lastObject];
-  if (v8)
+  lastObject = [lowPrioritySizes lastObject];
+  if (lastObject)
   {
-    [v5 removeObjectAtIndex:{objc_msgSend(v5, "count") - 1}];
-    [v8 sizeValue];
+    [lowPrioritySizes removeObjectAtIndex:{objc_msgSend(lowPrioritySizes, "count") - 1}];
+    [lastObject sizeValue];
     v10 = v9;
     [(AVPrioritizedSize *)self currentTotalSize];
     v12 = v11 - v10;
@@ -72,13 +72,13 @@ LABEL_13:
     [(AVPrioritizedSize *)self setCurrentTotalSize:v12];
   }
 
-  return v8;
+  return lastObject;
 }
 
-- (void)addSize:(CGSize)a3 withPriority:(unint64_t)a4
+- (void)addSize:(CGSize)size withPriority:(unint64_t)priority
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(AVPrioritizedSize *)self currentTotalSize];
   v9 = width + v8;
   [(AVPrioritizedSize *)self currentTotalSize];
@@ -95,49 +95,49 @@ LABEL_13:
 
   [(AVPrioritizedSize *)self setCurrentTotalSize:v9, v12];
   v13 = [MEMORY[0x1E696B098] valueWithSize:{width, height}];
-  if (a4 <= 1)
+  if (priority <= 1)
   {
-    if (a4)
+    if (priority)
     {
-      if (a4 != 1)
+      if (priority != 1)
       {
         goto LABEL_16;
       }
 
       v16 = v13;
-      v14 = [(AVPrioritizedSize *)self mediumPrioritySizes];
+      mediumPrioritySizes = [(AVPrioritizedSize *)self mediumPrioritySizes];
     }
 
     else
     {
       v16 = v13;
-      v14 = [(AVPrioritizedSize *)self lowPrioritySizes];
+      mediumPrioritySizes = [(AVPrioritizedSize *)self lowPrioritySizes];
     }
   }
 
   else
   {
-    switch(a4)
+    switch(priority)
     {
       case 2uLL:
         v16 = v13;
-        v14 = [(AVPrioritizedSize *)self highPrioritySizes];
+        mediumPrioritySizes = [(AVPrioritizedSize *)self highPrioritySizes];
         break;
       case 3uLL:
         v16 = v13;
-        v14 = [(AVPrioritizedSize *)self veryHighPrioritySizes];
+        mediumPrioritySizes = [(AVPrioritizedSize *)self veryHighPrioritySizes];
         break;
       case 4uLL:
         v16 = v13;
-        v14 = [(AVPrioritizedSize *)self requiredPrioritySizes];
+        mediumPrioritySizes = [(AVPrioritizedSize *)self requiredPrioritySizes];
         break;
       default:
         goto LABEL_16;
     }
   }
 
-  v15 = v14;
-  [v14 addObject:v16];
+  v15 = mediumPrioritySizes;
+  [mediumPrioritySizes addObject:v16];
 
   v13 = v16;
 LABEL_16:
@@ -176,19 +176,19 @@ LABEL_16:
   return v2;
 }
 
-+ (id)sizesResolvingFirstPrioritizedSize:(id)a3 secondPrioritizedSize:(id)a4 inAvailableWidth:(double)a5
++ (id)sizesResolvingFirstPrioritizedSize:(id)size secondPrioritizedSize:(id)prioritizedSize inAvailableWidth:(double)width
 {
   v38 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = [MEMORY[0x1E695DF70] array];
-  [v7 currentTotalSize];
+  sizeCopy = size;
+  prioritizedSizeCopy = prioritizedSize;
+  array = [MEMORY[0x1E695DF70] array];
+  [sizeCopy currentTotalSize];
   v11 = v10;
-  [v8 currentTotalSize];
+  [prioritizedSizeCopy currentTotalSize];
   v13 = v11 + v12;
-  if (v13 > a5)
+  if (v13 > width)
   {
-    v14 = v7;
+    v14 = sizeCopy;
     v15 = 0;
     v16 = v14;
     do
@@ -205,7 +205,7 @@ LABEL_16:
       {
         if (v16 == v14)
         {
-          v20 = v8;
+          v20 = prioritizedSizeCopy;
         }
 
         else
@@ -220,15 +220,15 @@ LABEL_16:
       }
     }
 
-    while (v13 > a5 && v15 < 5);
+    while (v13 > width && v15 < 5);
   }
 
   v34 = 0u;
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v36[0] = v7;
-  v36[1] = v8;
+  v36[0] = sizeCopy;
+  v36[1] = prioritizedSizeCopy;
   v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:v36 count:{2, 0}];
   v24 = [v23 countByEnumeratingWithState:&v32 objects:v37 count:16];
   if (v24)
@@ -247,7 +247,7 @@ LABEL_16:
         v28 = MEMORY[0x1E696B098];
         [*(*(&v32 + 1) + 8 * i) currentTotalSize];
         v29 = [v28 valueWithSize:?];
-        [v9 addObject:v29];
+        [array addObject:v29];
       }
 
       v25 = [v23 countByEnumeratingWithState:&v32 objects:v37 count:16];
@@ -256,7 +256,7 @@ LABEL_16:
     while (v25);
   }
 
-  v30 = [v9 copy];
+  v30 = [array copy];
 
   return v30;
 }

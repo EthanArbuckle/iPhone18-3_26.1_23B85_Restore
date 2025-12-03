@@ -1,14 +1,14 @@
 @interface RMModelSoftwareUpdateSettingsDeclaration
 + (NSSet)allowedPayloadKeys;
 + (id)assetTypes;
-+ (id)buildRequiredOnlyWithIdentifier:(id)a3;
-+ (id)buildWithIdentifier:(id)a3 notifications:(id)a4 deferrals:(id)a5 recommendedCadence:(id)a6 automaticActions:(id)a7 rapidSecurityResponse:(id)a8 allowStandardUserOSUpdates:(id)a9 beta:(id)a10;
-+ (id)combineConfigurations:(id)a3;
++ (id)buildRequiredOnlyWithIdentifier:(id)identifier;
++ (id)buildWithIdentifier:(id)identifier notifications:(id)notifications deferrals:(id)deferrals recommendedCadence:(id)cadence automaticActions:(id)actions rapidSecurityResponse:(id)response allowStandardUserOSUpdates:(id)updates beta:(id)self0;
++ (id)combineConfigurations:(id)configurations;
 + (id)supportedOS;
-- (BOOL)loadPayloadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializePayloadWithType:(signed __int16)a3;
-- (void)combineWithOther:(id)a3;
+- (BOOL)loadPayloadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializePayloadWithType:(signed __int16)type;
+- (void)combineWithOther:(id)other;
 @end
 
 @implementation RMModelSoftwareUpdateSettingsDeclaration
@@ -39,34 +39,34 @@
   return v2;
 }
 
-+ (id)buildWithIdentifier:(id)a3 notifications:(id)a4 deferrals:(id)a5 recommendedCadence:(id)a6 automaticActions:(id)a7 rapidSecurityResponse:(id)a8 allowStandardUserOSUpdates:(id)a9 beta:(id)a10
++ (id)buildWithIdentifier:(id)identifier notifications:(id)notifications deferrals:(id)deferrals recommendedCadence:(id)cadence automaticActions:(id)actions rapidSecurityResponse:(id)response allowStandardUserOSUpdates:(id)updates beta:(id)self0
 {
-  v15 = a3;
-  v29 = a10;
-  v16 = a9;
-  v17 = a8;
-  v18 = a7;
-  v19 = a6;
-  v20 = a5;
-  v21 = a4;
+  identifierCopy = identifier;
+  betaCopy = beta;
+  updatesCopy = updates;
+  responseCopy = response;
+  actionsCopy = actions;
+  cadenceCopy = cadence;
+  deferralsCopy = deferrals;
+  notificationsCopy = notifications;
   v22 = objc_opt_new();
   [v22 setDeclarationType:@"com.apple.configuration.softwareupdate.settings"];
-  if (v15)
+  if (identifierCopy)
   {
-    [v22 setDeclarationIdentifier:v15];
+    [v22 setDeclarationIdentifier:identifierCopy];
   }
 
   else
   {
-    v23 = [MEMORY[0x277CCAD78] UUID];
-    v24 = [v23 UUIDString];
-    [v22 setDeclarationIdentifier:v24];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    [v22 setDeclarationIdentifier:uUIDString];
   }
 
   v25 = MEMORY[0x277CBEC38];
-  if (v21)
+  if (notificationsCopy)
   {
-    v26 = v21;
+    v26 = notificationsCopy;
   }
 
   else
@@ -76,15 +76,15 @@
 
   [v22 setPayloadNotifications:v26];
 
-  [v22 setPayloadDeferrals:v20];
-  [v22 setPayloadRecommendedCadence:v19];
+  [v22 setPayloadDeferrals:deferralsCopy];
+  [v22 setPayloadRecommendedCadence:cadenceCopy];
 
-  [v22 setPayloadAutomaticActions:v18];
-  [v22 setPayloadRapidSecurityResponse:v17];
+  [v22 setPayloadAutomaticActions:actionsCopy];
+  [v22 setPayloadRapidSecurityResponse:responseCopy];
 
-  if (v16)
+  if (updatesCopy)
   {
-    v27 = v16;
+    v27 = updatesCopy;
   }
 
   else
@@ -94,27 +94,27 @@
 
   [v22 setPayloadAllowStandardUserOSUpdates:v27];
 
-  [v22 setPayloadBeta:v29];
+  [v22 setPayloadBeta:betaCopy];
   [v22 updateServerToken];
 
   return v22;
 }
 
-+ (id)buildRequiredOnlyWithIdentifier:(id)a3
++ (id)buildRequiredOnlyWithIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = objc_opt_new();
   [v4 setDeclarationType:@"com.apple.configuration.softwareupdate.settings"];
-  if (v3)
+  if (identifierCopy)
   {
-    [v4 setDeclarationIdentifier:v3];
+    [v4 setDeclarationIdentifier:identifierCopy];
   }
 
   else
   {
-    v5 = [MEMORY[0x277CCAD78] UUID];
-    v6 = [v5 UUIDString];
-    [v4 setDeclarationIdentifier:v6];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    [v4 setDeclarationIdentifier:uUIDString];
   }
 
   [v4 updateServerToken];
@@ -122,16 +122,16 @@
   return v4;
 }
 
-+ (id)combineConfigurations:(id)a3
++ (id)combineConfigurations:(id)configurations
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  configurationsCopy = configurations;
   v4 = objc_opt_new();
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = v3;
+  v5 = configurationsCopy;
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -205,12 +205,12 @@
   return v11;
 }
 
-- (BOOL)loadPayloadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5
+- (BOOL)loadPayloadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error
 {
-  v8 = a3;
+  dictionaryCopy = dictionary;
   v9 = MEMORY[0x277CBEB58];
-  v10 = [v8 allKeys];
-  v11 = [v9 setWithArray:v10];
+  allKeys = [dictionaryCopy allKeys];
+  v11 = [v9 setWithArray:allKeys];
 
   v12 = +[RMModelSoftwareUpdateSettingsDeclaration allowedPayloadKeys];
   [v11 minusSet:v12];
@@ -218,10 +218,10 @@
   v13 = [v11 copy];
   [(RMModelPayloadBase *)self setUnknownPayloadKeys:v13];
 
-  if ([(RMModelPayloadBase *)self loadBooleanFromDictionary:v8 usingKey:@"Notifications" forKeyPath:@"payloadNotifications" isRequired:0 defaultValue:MEMORY[0x277CBEC38] error:a5]&& (LOWORD(v16) = a4, [(RMModelPayloadBase *)self loadDictionaryFromDictionary:v8 usingKey:@"Deferrals" forKeyPath:@"payloadDeferrals" classType:objc_opt_class() isRequired:0 defaultValue:0 serializationType:v16 error:a5]) && [(RMModelPayloadBase *)self loadStringFromDictionary:v8 usingKey:@"RecommendedCadence" forKeyPath:@"payloadRecommendedCadence" isRequired:0 defaultValue:0 error:a5]&& (LOWORD(v17) = a4, [(RMModelPayloadBase *)self loadDictionaryFromDictionary:v8 usingKey:@"AutomaticActions" forKeyPath:@"payloadAutomaticActions" classType:objc_opt_class() isRequired:0 defaultValue:0 serializationType:v17 error:a5]) && (LOWORD(v18) = a4, [(RMModelPayloadBase *)self loadDictionaryFromDictionary:v8 usingKey:@"RapidSecurityResponse" forKeyPath:@"payloadRapidSecurityResponse" classType:objc_opt_class() isRequired:0 defaultValue:0 serializationType:v18 error:a5]) && [(RMModelPayloadBase *)self loadBooleanFromDictionary:v8 usingKey:@"AllowStandardUserOSUpdates" forKeyPath:@"payloadAllowStandardUserOSUpdates" isRequired:0 defaultValue:MEMORY[0x277CBEC38] error:a5])
+  if ([(RMModelPayloadBase *)self loadBooleanFromDictionary:dictionaryCopy usingKey:@"Notifications" forKeyPath:@"payloadNotifications" isRequired:0 defaultValue:MEMORY[0x277CBEC38] error:error]&& (LOWORD(v16) = type, [(RMModelPayloadBase *)self loadDictionaryFromDictionary:dictionaryCopy usingKey:@"Deferrals" forKeyPath:@"payloadDeferrals" classType:objc_opt_class() isRequired:0 defaultValue:0 serializationType:v16 error:error]) && [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"RecommendedCadence" forKeyPath:@"payloadRecommendedCadence" isRequired:0 defaultValue:0 error:error]&& (LOWORD(v17) = type, [(RMModelPayloadBase *)self loadDictionaryFromDictionary:dictionaryCopy usingKey:@"AutomaticActions" forKeyPath:@"payloadAutomaticActions" classType:objc_opt_class() isRequired:0 defaultValue:0 serializationType:v17 error:error]) && (LOWORD(v18) = type, [(RMModelPayloadBase *)self loadDictionaryFromDictionary:dictionaryCopy usingKey:@"RapidSecurityResponse" forKeyPath:@"payloadRapidSecurityResponse" classType:objc_opt_class() isRequired:0 defaultValue:0 serializationType:v18 error:error]) && [(RMModelPayloadBase *)self loadBooleanFromDictionary:dictionaryCopy usingKey:@"AllowStandardUserOSUpdates" forKeyPath:@"payloadAllowStandardUserOSUpdates" isRequired:0 defaultValue:MEMORY[0x277CBEC38] error:error])
   {
-    LOWORD(v19) = a4;
-    v14 = [(RMModelPayloadBase *)self loadDictionaryFromDictionary:v8 usingKey:@"Beta" forKeyPath:@"payloadBeta" classType:objc_opt_class() isRequired:0 defaultValue:0 serializationType:v19 error:a5];
+    LOWORD(v19) = type;
+    v14 = [(RMModelPayloadBase *)self loadDictionaryFromDictionary:dictionaryCopy usingKey:@"Beta" forKeyPath:@"payloadBeta" classType:objc_opt_class() isRequired:0 defaultValue:0 serializationType:v19 error:error];
   }
 
   else
@@ -232,108 +232,108 @@
   return v14;
 }
 
-- (id)serializePayloadWithType:(signed __int16)a3
+- (id)serializePayloadWithType:(signed __int16)type
 {
   v5 = objc_opt_new();
-  v6 = [(RMModelSoftwareUpdateSettingsDeclaration *)self payloadNotifications];
+  payloadNotifications = [(RMModelSoftwareUpdateSettingsDeclaration *)self payloadNotifications];
   v7 = MEMORY[0x277CBEC38];
-  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v5 usingKey:@"Notifications" value:v6 isRequired:0 defaultValue:MEMORY[0x277CBEC38]];
+  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v5 usingKey:@"Notifications" value:payloadNotifications isRequired:0 defaultValue:MEMORY[0x277CBEC38]];
 
-  v8 = [(RMModelSoftwareUpdateSettingsDeclaration *)self payloadDeferrals];
+  payloadDeferrals = [(RMModelSoftwareUpdateSettingsDeclaration *)self payloadDeferrals];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __69__RMModelSoftwareUpdateSettingsDeclaration_serializePayloadWithType___block_invoke;
   v22[3] = &__block_descriptor_34_e42___NSDictionary_16__0__RMModelPayloadBase_8l;
-  v23 = a3;
-  [(RMModelPayloadBase *)self serializeDictionaryIntoDictionary:v5 usingKey:@"Deferrals" value:v8 dictSerializer:v22 isRequired:0 defaultValue:0];
+  typeCopy = type;
+  [(RMModelPayloadBase *)self serializeDictionaryIntoDictionary:v5 usingKey:@"Deferrals" value:payloadDeferrals dictSerializer:v22 isRequired:0 defaultValue:0];
 
-  v9 = [(RMModelSoftwareUpdateSettingsDeclaration *)self payloadRecommendedCadence];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"RecommendedCadence" value:v9 isRequired:0 defaultValue:0];
+  payloadRecommendedCadence = [(RMModelSoftwareUpdateSettingsDeclaration *)self payloadRecommendedCadence];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"RecommendedCadence" value:payloadRecommendedCadence isRequired:0 defaultValue:0];
 
-  v10 = [(RMModelSoftwareUpdateSettingsDeclaration *)self payloadAutomaticActions];
+  payloadAutomaticActions = [(RMModelSoftwareUpdateSettingsDeclaration *)self payloadAutomaticActions];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __69__RMModelSoftwareUpdateSettingsDeclaration_serializePayloadWithType___block_invoke_2;
   v20[3] = &__block_descriptor_34_e42___NSDictionary_16__0__RMModelPayloadBase_8l;
-  v21 = a3;
-  [(RMModelPayloadBase *)self serializeDictionaryIntoDictionary:v5 usingKey:@"AutomaticActions" value:v10 dictSerializer:v20 isRequired:0 defaultValue:0];
+  typeCopy2 = type;
+  [(RMModelPayloadBase *)self serializeDictionaryIntoDictionary:v5 usingKey:@"AutomaticActions" value:payloadAutomaticActions dictSerializer:v20 isRequired:0 defaultValue:0];
 
-  v11 = [(RMModelSoftwareUpdateSettingsDeclaration *)self payloadRapidSecurityResponse];
+  payloadRapidSecurityResponse = [(RMModelSoftwareUpdateSettingsDeclaration *)self payloadRapidSecurityResponse];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __69__RMModelSoftwareUpdateSettingsDeclaration_serializePayloadWithType___block_invoke_3;
   v18[3] = &__block_descriptor_34_e42___NSDictionary_16__0__RMModelPayloadBase_8l;
-  v19 = a3;
-  [(RMModelPayloadBase *)self serializeDictionaryIntoDictionary:v5 usingKey:@"RapidSecurityResponse" value:v11 dictSerializer:v18 isRequired:0 defaultValue:0];
+  typeCopy3 = type;
+  [(RMModelPayloadBase *)self serializeDictionaryIntoDictionary:v5 usingKey:@"RapidSecurityResponse" value:payloadRapidSecurityResponse dictSerializer:v18 isRequired:0 defaultValue:0];
 
-  v12 = [(RMModelSoftwareUpdateSettingsDeclaration *)self payloadAllowStandardUserOSUpdates];
-  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v5 usingKey:@"AllowStandardUserOSUpdates" value:v12 isRequired:0 defaultValue:v7];
+  payloadAllowStandardUserOSUpdates = [(RMModelSoftwareUpdateSettingsDeclaration *)self payloadAllowStandardUserOSUpdates];
+  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v5 usingKey:@"AllowStandardUserOSUpdates" value:payloadAllowStandardUserOSUpdates isRequired:0 defaultValue:v7];
 
-  v13 = [(RMModelSoftwareUpdateSettingsDeclaration *)self payloadBeta];
+  payloadBeta = [(RMModelSoftwareUpdateSettingsDeclaration *)self payloadBeta];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __69__RMModelSoftwareUpdateSettingsDeclaration_serializePayloadWithType___block_invoke_4;
   v16[3] = &__block_descriptor_34_e42___NSDictionary_16__0__RMModelPayloadBase_8l;
-  v17 = a3;
-  [(RMModelPayloadBase *)self serializeDictionaryIntoDictionary:v5 usingKey:@"Beta" value:v13 dictSerializer:v16 isRequired:0 defaultValue:0];
+  typeCopy4 = type;
+  [(RMModelPayloadBase *)self serializeDictionaryIntoDictionary:v5 usingKey:@"Beta" value:payloadBeta dictSerializer:v16 isRequired:0 defaultValue:0];
 
   v14 = [v5 copy];
 
   return v14;
 }
 
-- (void)combineWithOther:(id)a3
+- (void)combineWithOther:(id)other
 {
   v28[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(RMModelSoftwareUpdateSettingsDeclaration *)self payloadNotifications];
-  v6 = [v4 payloadNotifications];
-  v7 = [RMModelConfigurationBase combineBooleanAnd:v5 other:v6];
+  otherCopy = other;
+  payloadNotifications = [(RMModelSoftwareUpdateSettingsDeclaration *)self payloadNotifications];
+  payloadNotifications2 = [otherCopy payloadNotifications];
+  v7 = [RMModelConfigurationBase combineBooleanAnd:payloadNotifications other:payloadNotifications2];
   [(RMModelSoftwareUpdateSettingsDeclaration *)self setPayloadNotifications:v7];
 
-  v8 = [(RMModelSoftwareUpdateSettingsDeclaration *)self payloadDeferrals];
-  v9 = [v4 payloadDeferrals];
-  v10 = [RMModelConfigurationBase combineDictionary:v8 other:v9];
+  payloadDeferrals = [(RMModelSoftwareUpdateSettingsDeclaration *)self payloadDeferrals];
+  payloadDeferrals2 = [otherCopy payloadDeferrals];
+  v10 = [RMModelConfigurationBase combineDictionary:payloadDeferrals other:payloadDeferrals2];
   [(RMModelSoftwareUpdateSettingsDeclaration *)self setPayloadDeferrals:v10];
 
-  v11 = [(RMModelSoftwareUpdateSettingsDeclaration *)self payloadRecommendedCadence];
-  v12 = [v4 payloadRecommendedCadence];
+  payloadRecommendedCadence = [(RMModelSoftwareUpdateSettingsDeclaration *)self payloadRecommendedCadence];
+  payloadRecommendedCadence2 = [otherCopy payloadRecommendedCadence];
   v28[0] = @"All";
   v28[1] = @"Oldest";
   v28[2] = @"Newest";
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v28 count:3];
-  v14 = [RMModelConfigurationBase combineEnumLast:v11 other:v12 enums:v13];
+  v14 = [RMModelConfigurationBase combineEnumLast:payloadRecommendedCadence other:payloadRecommendedCadence2 enums:v13];
   [(RMModelSoftwareUpdateSettingsDeclaration *)self setPayloadRecommendedCadence:v14];
 
-  v15 = [(RMModelSoftwareUpdateSettingsDeclaration *)self payloadAutomaticActions];
-  v16 = [v4 payloadAutomaticActions];
-  v17 = [RMModelConfigurationBase combineDictionary:v15 other:v16];
+  payloadAutomaticActions = [(RMModelSoftwareUpdateSettingsDeclaration *)self payloadAutomaticActions];
+  payloadAutomaticActions2 = [otherCopy payloadAutomaticActions];
+  v17 = [RMModelConfigurationBase combineDictionary:payloadAutomaticActions other:payloadAutomaticActions2];
   [(RMModelSoftwareUpdateSettingsDeclaration *)self setPayloadAutomaticActions:v17];
 
-  v18 = [(RMModelSoftwareUpdateSettingsDeclaration *)self payloadRapidSecurityResponse];
-  v19 = [v4 payloadRapidSecurityResponse];
-  v20 = [RMModelConfigurationBase combineDictionary:v18 other:v19];
+  payloadRapidSecurityResponse = [(RMModelSoftwareUpdateSettingsDeclaration *)self payloadRapidSecurityResponse];
+  payloadRapidSecurityResponse2 = [otherCopy payloadRapidSecurityResponse];
+  v20 = [RMModelConfigurationBase combineDictionary:payloadRapidSecurityResponse other:payloadRapidSecurityResponse2];
   [(RMModelSoftwareUpdateSettingsDeclaration *)self setPayloadRapidSecurityResponse:v20];
 
-  v21 = [(RMModelSoftwareUpdateSettingsDeclaration *)self payloadAllowStandardUserOSUpdates];
-  v22 = [v4 payloadAllowStandardUserOSUpdates];
-  v23 = [RMModelConfigurationBase combineBooleanAnd:v21 other:v22];
+  payloadAllowStandardUserOSUpdates = [(RMModelSoftwareUpdateSettingsDeclaration *)self payloadAllowStandardUserOSUpdates];
+  payloadAllowStandardUserOSUpdates2 = [otherCopy payloadAllowStandardUserOSUpdates];
+  v23 = [RMModelConfigurationBase combineBooleanAnd:payloadAllowStandardUserOSUpdates other:payloadAllowStandardUserOSUpdates2];
   [(RMModelSoftwareUpdateSettingsDeclaration *)self setPayloadAllowStandardUserOSUpdates:v23];
 
-  v24 = [(RMModelSoftwareUpdateSettingsDeclaration *)self payloadBeta];
-  v25 = [v4 payloadBeta];
+  payloadBeta = [(RMModelSoftwareUpdateSettingsDeclaration *)self payloadBeta];
+  payloadBeta2 = [otherCopy payloadBeta];
 
-  v26 = [RMModelConfigurationBase combineDictionary:v24 other:v25];
+  v26 = [RMModelConfigurationBase combineDictionary:payloadBeta other:payloadBeta2];
   [(RMModelSoftwareUpdateSettingsDeclaration *)self setPayloadBeta:v26];
 
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v20.receiver = self;
   v20.super_class = RMModelSoftwareUpdateSettingsDeclaration;
-  v4 = [(RMModelDeclarationBase *)&v20 copyWithZone:a3];
+  v4 = [(RMModelDeclarationBase *)&v20 copyWithZone:zone];
   v5 = [(NSNumber *)self->_payloadNotifications copy];
   v6 = v4[6];
   v4[6] = v5;

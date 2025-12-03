@@ -7,10 +7,10 @@
 
 - (uint64_t)detectedBarcodeDescriptor
 {
-  result = [a1 _objectForIdentifier:@"com.apple.DetectedBarcode.UserActivityPayload"];
+  result = [self _objectForIdentifier:@"com.apple.DetectedBarcode.UserActivityPayload"];
   if (!result)
   {
-    result = [a1 _payloadForIdentifier:@"com.apple.DetectedBarcode.UserActivityPayload"];
+    result = [self _payloadForIdentifier:@"com.apple.DetectedBarcode.UserActivityPayload"];
     if (result)
     {
       v3 = result;
@@ -36,13 +36,13 @@
       v6[2] = __55__NSUserActivity_CIBarcodeDescriptor__setDetectedCode___block_invoke;
       v6[3] = &unk_1E75C1DB0;
       v6[4] = a3;
-      return [a1 _setPayloadIdentifier:@"com.apple.DetectedBarcode.UserActivityPayload" object:a3 withBlock:v6];
+      return [self _setPayloadIdentifier:@"com.apple.DetectedBarcode.UserActivityPayload" object:a3 withBlock:v6];
     }
 
     else
     {
 
-      return [a1 _setPayloadIdentifier:@"com.apple.DetectedBarcode.UserActivityPayload" object:0 withBlock:0];
+      return [self _setPayloadIdentifier:@"com.apple.DetectedBarcode.UserActivityPayload" object:0 withBlock:0];
     }
   }
 

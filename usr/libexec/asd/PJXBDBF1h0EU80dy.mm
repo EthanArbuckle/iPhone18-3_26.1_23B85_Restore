@@ -1,31 +1,31 @@
 @interface PJXBDBF1h0EU80dy
-+ (BOOL)canSerialize:(id)a3;
++ (BOOL)canSerialize:(id)serialize;
 + (PJXBDBF1h0EU80dy)sharedInstance;
-- (BOOL)updateGeoCodeForAddresses:(id)a3 locations:(id)a4 error:(id *)a5;
+- (BOOL)updateGeoCodeForAddresses:(id)addresses locations:(id)locations error:(id *)error;
 - (PJXBDBF1h0EU80dy)init;
-- (PJXBDBF1h0EU80dy)initWithCoreDataManager:(id)a3;
-- (id)YKIcrg8ijyspX6ho:(id)a3 entityName:(id)a4;
-- (id)YKIcrg8ijyspX6ho:(id)a3 forVersion:(unsigned int)a4;
-- (id)ab491f0831ce63bb:(id)a3 error:(id *)a4;
-- (id)canonicalStringForAddress:(id)a3;
-- (id)evrtH713YbFfEOzk:(id)a3 error:(id *)a4;
-- (id)f55HW2T4cquHq2nn:(id)a3;
+- (PJXBDBF1h0EU80dy)initWithCoreDataManager:(id)manager;
+- (id)YKIcrg8ijyspX6ho:(id)x6ho entityName:(id)name;
+- (id)YKIcrg8ijyspX6ho:(id)x6ho forVersion:(unsigned int)version;
+- (id)ab491f0831ce63bb:(id)ab491f0831ce63bb error:(id *)error;
+- (id)canonicalStringForAddress:(id)address;
+- (id)evrtH713YbFfEOzk:(id)ozk error:(id *)error;
+- (id)f55HW2T4cquHq2nn:(id)hq2nn;
 - (id)fetchAllBindings;
-- (id)fetchGeoCodingsForAddresses:(id)a3;
-- (id)rKKialn8e4bTPAC9:(id)a3 error:(id *)a4;
+- (id)fetchGeoCodingsForAddresses:(id)addresses;
+- (id)rKKialn8e4bTPAC9:(id)c9 error:(id *)error;
 - (id)removeAllGeocodings;
 - (id)removeRavioli;
-- (id)retrieveLegacyRavioliWithCoreDataManager:(id)a3;
-- (int64_t)ax7Szgk7yfiKNgSDError:(id *)a3;
-- (int64_t)nYOW3DfIUVSEf2Hm:(id)a3 rTZQrPNUbDSIifrh:(id *)a4;
-- (void)c94QZ147F1UWY71l:(id)a3 jkjlhN0UgO78kW6q:(id)a4 error:(id *)a5;
+- (id)retrieveLegacyRavioliWithCoreDataManager:(id)manager;
+- (int64_t)ax7Szgk7yfiKNgSDError:(id *)error;
+- (int64_t)nYOW3DfIUVSEf2Hm:(id)hm rTZQrPNUbDSIifrh:(id *)iifrh;
+- (void)c94QZ147F1UWY71l:(id)y71l jkjlhN0UgO78kW6q:(id)w6q error:(id *)error;
 - (void)cZK3HwMuoGcCgDQI;
-- (void)commitWithBindings:(id)a3 clearingExistingBindings:(BOOL)a4;
-- (void)dKsJLlNX54lzKt5n:(id)a3 eqF2XJh3hHBJQf2K:(id)a4;
-- (void)lJIqliFcwusu4FxD:(NSArray *)a3 workflowID:(NSString *)a4 completionHandler:(id)a5;
+- (void)commitWithBindings:(id)bindings clearingExistingBindings:(BOOL)existingBindings;
+- (void)dKsJLlNX54lzKt5n:(id)kt5n eqF2XJh3hHBJQf2K:(id)k;
+- (void)lJIqliFcwusu4FxD:(NSArray *)d workflowID:(NSString *)iD completionHandler:(id)handler;
 - (void)removeAllBindings;
-- (void)serializeCacheEntryV2WithMaxCacheAge:(int64_t)a3 gXKoR0dNwQUyaeOl:(unsigned int)a4 lEWFPyiFIAJ2uoyd:(id)a5;
-- (void)serializeCacheEntryWithCacheWritingTTL:(int64_t)a3 gXKoR0dNwQUyaeOl:(unsigned int)a4 lEWFPyiFIAJ2uoyd:(id)a5;
+- (void)serializeCacheEntryV2WithMaxCacheAge:(int64_t)age gXKoR0dNwQUyaeOl:(unsigned int)ol lEWFPyiFIAJ2uoyd:(id)j2uoyd;
+- (void)serializeCacheEntryWithCacheWritingTTL:(int64_t)l gXKoR0dNwQUyaeOl:(unsigned int)ol lEWFPyiFIAJ2uoyd:(id)j2uoyd;
 @end
 
 @implementation PJXBDBF1h0EU80dy
@@ -48,9 +48,9 @@
   coreDataManager = self->_coreDataManager;
   self->_coreDataManager = v3;
 
-  v5 = [(ASCoreDataManager *)self->_coreDataManager gFJw2BGPtEQWyLz5];
+  gFJw2BGPtEQWyLz5 = [(ASCoreDataManager *)self->_coreDataManager gFJw2BGPtEQWyLz5];
   managedObjectContext = self->_managedObjectContext;
-  self->_managedObjectContext = v5;
+  self->_managedObjectContext = gFJw2BGPtEQWyLz5;
 
   v7 = dispatch_queue_create("CCompletionQueue", 0);
   cacheOperationCompletionQueue = self->_cacheOperationCompletionQueue;
@@ -59,21 +59,21 @@
   return self;
 }
 
-- (PJXBDBF1h0EU80dy)initWithCoreDataManager:(id)a3
+- (PJXBDBF1h0EU80dy)initWithCoreDataManager:(id)manager
 {
-  v5 = a3;
-  objc_storeStrong(&self->_coreDataManager, a3);
-  v6 = [(ASCoreDataManager *)self->_coreDataManager gFJw2BGPtEQWyLz5];
+  managerCopy = manager;
+  objc_storeStrong(&self->_coreDataManager, manager);
+  gFJw2BGPtEQWyLz5 = [(ASCoreDataManager *)self->_coreDataManager gFJw2BGPtEQWyLz5];
   managedObjectContext = self->_managedObjectContext;
-  self->_managedObjectContext = v6;
+  self->_managedObjectContext = gFJw2BGPtEQWyLz5;
 
   return self;
 }
 
-- (id)YKIcrg8ijyspX6ho:(id)a3 forVersion:(unsigned int)a4
+- (id)YKIcrg8ijyspX6ho:(id)x6ho forVersion:(unsigned int)version
 {
-  v6 = a3;
-  if (a4 == 1)
+  x6hoCopy = x6ho;
+  if (version == 1)
   {
     v7 = @"DB_C56902430";
   }
@@ -83,23 +83,23 @@
     v7 = @"DB_R101288420";
   }
 
-  v8 = [(PJXBDBF1h0EU80dy *)self YKIcrg8ijyspX6ho:v6 entityName:v7];
+  v8 = [(PJXBDBF1h0EU80dy *)self YKIcrg8ijyspX6ho:x6hoCopy entityName:v7];
 
   return v8;
 }
 
-- (id)YKIcrg8ijyspX6ho:(id)a3 entityName:(id)a4
+- (id)YKIcrg8ijyspX6ho:(id)x6ho entityName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [NSFetchRequest fetchRequestWithEntityName:v7];
+  x6hoCopy = x6ho;
+  nameCopy = name;
+  v8 = [NSFetchRequest fetchRequestWithEntityName:nameCopy];
   v9 = v8;
-  if (v6)
+  if (x6hoCopy)
   {
-    [v8 setPredicate:v6];
+    [v8 setPredicate:x6hoCopy];
   }
 
-  if ([&off_1006BAC10 containsObject:v7])
+  if ([&off_1006BAC10 containsObject:nameCopy])
   {
     v10 = [NSSortDescriptor sortDescriptorWithKey:@"presentTime" ascending:0];
     v46 = v10;
@@ -125,7 +125,7 @@
   v22 = sub_10003DD60;
   v23 = &unk_100690DB8;
   v26 = &v28;
-  v24 = self;
+  selfCopy = self;
   v13 = v9;
   v25 = v13;
   v27 = &v34;
@@ -136,14 +136,14 @@
     v15 = qword_1006DF770;
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
-      v18 = [v35[5] localizedDescription];
-      v19 = [v35[5] userInfo];
+      localizedDescription = [v35[5] localizedDescription];
+      userInfo = [v35[5] userInfo];
       *buf = 138412802;
-      v41 = v7;
+      v41 = nameCopy;
       v42 = 2112;
-      v43 = v18;
+      v43 = localizedDescription;
       v44 = 2112;
-      v45 = v19;
+      v45 = userInfo;
       _os_log_error_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "Error fetching objects for entity %@: %@\n%@", buf, 0x20u);
     }
 
@@ -173,7 +173,7 @@
   v8[2] = sub_10003DF28;
   v8[3] = &unk_100690DE0;
   v9 = v3;
-  v10 = self;
+  selfCopy = self;
   v11 = &v12;
   v5 = v3;
   [(NSManagedObjectContext *)managedObjectContext performBlockAndWait:v8];
@@ -209,57 +209,57 @@
   }
 }
 
-- (void)serializeCacheEntryWithCacheWritingTTL:(int64_t)a3 gXKoR0dNwQUyaeOl:(unsigned int)a4 lEWFPyiFIAJ2uoyd:(id)a5
+- (void)serializeCacheEntryWithCacheWritingTTL:(int64_t)l gXKoR0dNwQUyaeOl:(unsigned int)ol lEWFPyiFIAJ2uoyd:(id)j2uoyd
 {
-  v8 = a5;
-  v9 = v8;
-  if (v8 && ([v8 rEI50SHLlVc37Bvu] & 1) != 0)
+  j2uoydCopy = j2uoyd;
+  v9 = j2uoydCopy;
+  if (j2uoydCopy && ([j2uoydCopy rEI50SHLlVc37Bvu] & 1) != 0)
   {
-    v10 = [v9 lL9A0cjB5y6UgZsI];
-    if (v10)
+    lL9A0cjB5y6UgZsI = [v9 lL9A0cjB5y6UgZsI];
+    if (lL9A0cjB5y6UgZsI)
     {
       [(PJXBDBF1h0EU80dy *)self managedObjectContext];
       v12[0] = _NSConcreteStackBlock;
       v12[1] = 3221225472;
       v12[2] = sub_10003E9D0;
       v13 = v12[3] = &unk_100690E80;
-      v17 = a3;
-      v14 = v10;
-      v18 = a4;
+      lCopy = l;
+      v14 = lL9A0cjB5y6UgZsI;
+      olCopy = ol;
       v15 = v9;
-      v16 = self;
+      selfCopy = self;
       v11 = v13;
       [v11 performBlock:v12];
     }
   }
 }
 
-- (void)serializeCacheEntryV2WithMaxCacheAge:(int64_t)a3 gXKoR0dNwQUyaeOl:(unsigned int)a4 lEWFPyiFIAJ2uoyd:(id)a5
+- (void)serializeCacheEntryV2WithMaxCacheAge:(int64_t)age gXKoR0dNwQUyaeOl:(unsigned int)ol lEWFPyiFIAJ2uoyd:(id)j2uoyd
 {
-  v8 = a5;
-  v9 = v8;
-  if (v8 && ([v8 rEI50SHLlVc37Bvu] & 1) != 0)
+  j2uoydCopy = j2uoyd;
+  v9 = j2uoydCopy;
+  if (j2uoydCopy && ([j2uoydCopy rEI50SHLlVc37Bvu] & 1) != 0)
   {
-    v10 = [v9 lL9A0cjB5y6UgZsI];
-    if (v10)
+    lL9A0cjB5y6UgZsI = [v9 lL9A0cjB5y6UgZsI];
+    if (lL9A0cjB5y6UgZsI)
     {
       [(PJXBDBF1h0EU80dy *)self managedObjectContext];
       v12[0] = _NSConcreteStackBlock;
       v12[1] = 3221225472;
       v12[2] = sub_10003EC8C;
       v13 = v12[3] = &unk_100690E80;
-      v17 = a3;
-      v14 = v10;
-      v18 = a4;
+      ageCopy = age;
+      v14 = lL9A0cjB5y6UgZsI;
+      olCopy = ol;
       v15 = v9;
-      v16 = self;
+      selfCopy = self;
       v11 = v13;
       [v11 performBlock:v12];
     }
   }
 }
 
-- (int64_t)ax7Szgk7yfiKNgSDError:(id *)a3
+- (int64_t)ax7Szgk7yfiKNgSDError:(id *)error
 {
   v7 = 0;
   v8 = &v7;
@@ -278,9 +278,9 @@
   return v4;
 }
 
-- (int64_t)nYOW3DfIUVSEf2Hm:(id)a3 rTZQrPNUbDSIifrh:(id *)a4
+- (int64_t)nYOW3DfIUVSEf2Hm:(id)hm rTZQrPNUbDSIifrh:(id *)iifrh
 {
-  v6 = a3;
+  hmCopy = hm;
   v48 = 0;
   v49 = &v48;
   v50 = 0x2020000000;
@@ -297,15 +297,15 @@
   v39 = sub_10003DD48;
   v40 = sub_10003DD58;
   v41 = 0;
-  v7 = [v6 objectForKey:@"all"];
-  v8 = [v7 BOOLValue];
+  v7 = [hmCopy objectForKey:@"all"];
+  bOOLValue = [v7 BOOLValue];
 
   v9 = objc_opt_new();
   v10 = qword_1006DF770;
   if (os_log_type_enabled(qword_1006DF770, OS_LOG_TYPE_INFO))
   {
     *buf = 67109120;
-    v55 = v8;
+    v55 = bOOLValue;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "ALL = %d", buf, 8u);
   }
 
@@ -316,7 +316,7 @@
   v32[3] = &unk_100690ED0;
   v32[4] = self;
   v12 = v9;
-  v35 = v8;
+  v35 = bOOLValue;
   v33 = v12;
   v34 = &v48;
   [(NSManagedObjectContext *)managedObjectContext performBlockAndWait:v32];
@@ -326,7 +326,7 @@
   v30[1] = 3221225472;
   v30[2] = sub_10003F9D4;
   v30[3] = &unk_100690EF8;
-  v31 = v8;
+  v31 = bOOLValue;
   v30[4] = self;
   v30[5] = &v42;
   v30[6] = &v48;
@@ -379,7 +379,7 @@
 
     v25 = [NSString stringWithUTF8String:off_1006C9430];
     v26 = [v22 copy];
-    *a4 = [NSError errorWithDomain:v25 code:-27109 userInfo:v26];
+    *iifrh = [NSError errorWithDomain:v25 code:-27109 userInfo:v26];
   }
 
   v27 = v49[3];
@@ -391,9 +391,9 @@
   return v27;
 }
 
-+ (BOOL)canSerialize:(id)a3
++ (BOOL)canSerialize:(id)serialize
 {
-  v3 = a3;
+  serializeCopy = serialize;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
@@ -409,9 +409,9 @@
   return isKindOfClass & 1;
 }
 
-- (id)f55HW2T4cquHq2nn:(id)a3
+- (id)f55HW2T4cquHq2nn:(id)hq2nn
 {
-  v4 = a3;
+  hq2nnCopy = hq2nn;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -419,7 +419,7 @@
   v18 = sub_10003DD58;
   v19 = 0;
   v13 = 0;
-  v5 = [(PJXBDBF1h0EU80dy *)self rKKialn8e4bTPAC9:v4 error:&v13];
+  v5 = [(PJXBDBF1h0EU80dy *)self rKKialn8e4bTPAC9:hq2nnCopy error:&v13];
   v6 = v13;
   if (v5)
   {
@@ -444,18 +444,18 @@
   return v8;
 }
 
-- (id)canonicalStringForAddress:(id)a3
+- (id)canonicalStringForAddress:(id)address
 {
-  v3 = a3;
-  v4 = [v3 ISOCountryCode];
-  v5 = [v3 country];
-  v6 = [v3 postalCode];
-  v7 = [v3 state];
-  v8 = [v3 subAdministrativeArea];
-  v9 = [v3 city];
-  v10 = [v3 subLocality];
-  v11 = [v3 street];
-  v12 = [NSString stringWithFormat:@"%@€%@€%@€%@€%@€%@€%@€%@", v4, v5, v6, v7, v8, v9, v10, v11];
+  addressCopy = address;
+  iSOCountryCode = [addressCopy ISOCountryCode];
+  country = [addressCopy country];
+  postalCode = [addressCopy postalCode];
+  state = [addressCopy state];
+  subAdministrativeArea = [addressCopy subAdministrativeArea];
+  city = [addressCopy city];
+  subLocality = [addressCopy subLocality];
+  street = [addressCopy street];
+  v12 = [NSString stringWithFormat:@"%@€%@€%@€%@€%@€%@€%@€%@", iSOCountryCode, country, postalCode, state, subAdministrativeArea, city, subLocality, street];
 
   return v12;
 }
@@ -483,7 +483,7 @@
   v13 = sub_100040784;
   v14 = &unk_100690DB8;
   v17 = v19;
-  v15 = self;
+  selfCopy = self;
   v6 = v4;
   v16 = v6;
   v18 = &v21;
@@ -512,12 +512,12 @@
   return v9;
 }
 
-- (BOOL)updateGeoCodeForAddresses:(id)a3 locations:(id)a4 error:(id *)a5
+- (BOOL)updateGeoCodeForAddresses:(id)addresses locations:(id)locations error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 count];
-  if (v10 != [v9 count])
+  addressesCopy = addresses;
+  locationsCopy = locations;
+  v10 = [addressesCopy count];
+  if (v10 != [locationsCopy count])
   {
     v13 = [NSString stringWithUTF8String:off_1006C9430];
     v26 = NSLocalizedDescriptionKey;
@@ -526,11 +526,11 @@
     v16 = [NSError errorWithDomain:v13 code:-27109 userInfo:v14];
 LABEL_7:
     v15 = 0;
-    *a5 = v16;
+    *error = v16;
     goto LABEL_8;
   }
 
-  if ([v8 count] > 0x1E || !objc_msgSend(v8, "count"))
+  if ([addressesCopy count] > 0x1E || !objc_msgSend(addressesCopy, "count"))
   {
     v13 = [NSString stringWithUTF8String:off_1006C9430];
     v24 = NSLocalizedDescriptionKey;
@@ -547,9 +547,9 @@ LABEL_7:
   v18[2] = sub_100040B0C;
   v18[3] = &unk_100690F70;
   v19 = v12;
-  v20 = v8;
-  v21 = v9;
-  v22 = self;
+  v20 = addressesCopy;
+  v21 = locationsCopy;
+  selfCopy = self;
   v23 = v11;
   v13 = v11;
   v14 = v12;
@@ -561,9 +561,9 @@ LABEL_8:
   return v15;
 }
 
-- (id)fetchGeoCodingsForAddresses:(id)a3
+- (id)fetchGeoCodingsForAddresses:(id)addresses
 {
-  v4 = a3;
+  addressesCopy = addresses;
   v5 = objc_alloc_init(NSMutableArray);
   v6 = self->_managedObjectContext;
   v7 = +[NSDate now];
@@ -574,8 +574,8 @@ LABEL_8:
     v14[1] = 3221225472;
     v14[2] = sub_100041234;
     v14[3] = &unk_100690F98;
-    v15 = v4;
-    v16 = self;
+    v15 = addressesCopy;
+    selfCopy = self;
     v9 = v6;
     v17 = v9;
     v10 = v5;
@@ -617,7 +617,7 @@ LABEL_8:
   v9 = 3221225472;
   v10 = sub_100041648;
   v11 = &unk_100690FE8;
-  v12 = self;
+  selfCopy = self;
   v5 = v3;
   v13 = v5;
   [(NSManagedObjectContext *)managedObjectContext performBlockAndWait:&v8];
@@ -649,7 +649,7 @@ LABEL_8:
   v10 = sub_100041B18;
   v11 = &unk_100690DB8;
   v14 = v16;
-  v12 = self;
+  selfCopy = self;
   v6 = v4;
   v13 = v6;
   v15 = &v18;
@@ -671,43 +671,43 @@ LABEL_8:
   _Block_object_dispose(&v18, 8);
 }
 
-- (void)commitWithBindings:(id)a3 clearingExistingBindings:(BOOL)a4
+- (void)commitWithBindings:(id)bindings clearingExistingBindings:(BOOL)existingBindings
 {
-  v6 = a3;
+  bindingsCopy = bindings;
   managedObjectContext = self->_managedObjectContext;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100041C58;
   v9[3] = &unk_100691010;
-  v11 = a4;
+  existingBindingsCopy = existingBindings;
   v9[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = bindingsCopy;
+  v8 = bindingsCopy;
   [(NSManagedObjectContext *)managedObjectContext performBlockAndWait:v9];
 }
 
-- (void)dKsJLlNX54lzKt5n:(id)a3 eqF2XJh3hHBJQf2K:(id)a4
+- (void)dKsJLlNX54lzKt5n:(id)kt5n eqF2XJh3hHBJQf2K:(id)k
 {
-  v6 = a3;
-  v7 = a4;
+  kt5nCopy = kt5n;
+  kCopy = k;
   v8 = self->_managedObjectContext;
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_1000420B4;
   v12[3] = &unk_100691038;
-  v13 = v6;
-  v14 = self;
-  v15 = v7;
+  v13 = kt5nCopy;
+  selfCopy = self;
+  v15 = kCopy;
   v16 = v8;
   v9 = v8;
-  v10 = v7;
-  v11 = v6;
+  v10 = kCopy;
+  v11 = kt5nCopy;
   [(NSManagedObjectContext *)v9 performBlock:v12];
 }
 
-- (id)evrtH713YbFfEOzk:(id)a3 error:(id *)a4
+- (id)evrtH713YbFfEOzk:(id)ozk error:(id *)error
 {
-  v6 = a3;
+  ozkCopy = ozk;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -725,13 +725,13 @@ LABEL_8:
   v11[1] = 3221225472;
   v11[2] = sub_100042400;
   v11[3] = &unk_100691060;
-  v12 = v6;
-  v13 = self;
+  v12 = ozkCopy;
+  selfCopy = self;
   v14 = &v16;
   v15 = &v22;
-  v8 = v6;
+  v8 = ozkCopy;
   [(NSManagedObjectContext *)managedObjectContext performBlockAndWait:v11];
-  *a4 = v17[5];
+  *error = v17[5];
   v9 = v23[5];
 
   _Block_object_dispose(&v16, 8);
@@ -740,33 +740,33 @@ LABEL_8:
   return v9;
 }
 
-- (void)c94QZ147F1UWY71l:(id)a3 jkjlhN0UgO78kW6q:(id)a4 error:(id *)a5
+- (void)c94QZ147F1UWY71l:(id)y71l jkjlhN0UgO78kW6q:(id)w6q error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  y71lCopy = y71l;
+  w6qCopy = w6q;
   v9 = self->_managedObjectContext;
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10004268C;
   v13[3] = &unk_100691038;
   v13[4] = self;
-  v14 = v7;
-  v15 = v8;
+  v14 = y71lCopy;
+  v15 = w6qCopy;
   v16 = v9;
   v10 = v9;
-  v11 = v8;
-  v12 = v7;
+  v11 = w6qCopy;
+  v12 = y71lCopy;
   [(NSManagedObjectContext *)v10 performBlockAndWait:v13];
 }
 
-- (id)ab491f0831ce63bb:(id)a3 error:(id *)a4
+- (id)ab491f0831ce63bb:(id)ab491f0831ce63bb error:(id *)error
 {
-  v6 = a3;
+  ab491f0831ce63bbCopy = ab491f0831ce63bb;
   v7 = +[DB_R115061196 fetchRequest];
   [v7 setFetchLimit:1];
   [v7 setResultType:0];
-  v8 = [NSPredicate predicateWithFormat:@"id = %@", v6];
-  [v7 setPredicate:v8];
+  ab491f0831ce63bbCopy = [NSPredicate predicateWithFormat:@"id = %@", ab491f0831ce63bbCopy];
+  [v7 setPredicate:ab491f0831ce63bbCopy];
   managedObjectContext = self->_managedObjectContext;
   v20 = 0;
   v10 = [(NSManagedObjectContext *)managedObjectContext executeFetchRequest:v7 error:&v20];
@@ -778,8 +778,8 @@ LABEL_8:
     v14 = qword_1006DF770;
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
-      v15 = [v13 localizedDescription];
-      sub_100595458(v6, v15, v23);
+      localizedDescription = [v13 localizedDescription];
+      sub_100595458(ab491f0831ce63bbCopy, localizedDescription, v23);
     }
   }
 
@@ -789,19 +789,19 @@ LABEL_8:
     if (os_log_type_enabled(qword_1006DF770, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v22 = v6;
+      v22 = ab491f0831ce63bbCopy;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "JSON Bag with ID %@ doesn't exist currently.", buf, 0xCu);
     }
   }
 
   if ([v10 count] == 1)
   {
-    v17 = [v10 firstObject];
+    firstObject = [v10 firstObject];
   }
 
   else
   {
-    v17 = 0;
+    firstObject = 0;
   }
 
   if ([v10 count] >= 2 && os_log_type_enabled(qword_1006DF770, OS_LOG_TYPE_ERROR))
@@ -810,14 +810,14 @@ LABEL_8:
   }
 
   v18 = v12;
-  *a4 = v12;
+  *error = v12;
 
-  return v17;
+  return firstObject;
 }
 
-- (id)rKKialn8e4bTPAC9:(id)a3 error:(id *)a4
+- (id)rKKialn8e4bTPAC9:(id)c9 error:(id *)error
 {
-  v6 = a3;
+  c9Copy = c9;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -836,12 +836,12 @@ LABEL_8:
   v11[2] = sub_100042CC0;
   v11[3] = &unk_100691060;
   v11[4] = self;
-  v12 = v6;
+  v12 = c9Copy;
   v13 = &v15;
   v14 = &v21;
-  v8 = v6;
+  v8 = c9Copy;
   [(NSManagedObjectContext *)managedObjectContext performBlockAndWait:v11];
-  *a4 = v16[5];
+  *error = v16[5];
   v9 = v22[5];
 
   _Block_object_dispose(&v15, 8);
@@ -850,10 +850,10 @@ LABEL_8:
   return v9;
 }
 
-- (id)retrieveLegacyRavioliWithCoreDataManager:(id)a3
+- (id)retrieveLegacyRavioliWithCoreDataManager:(id)manager
 {
-  v3 = a3;
-  v4 = [v3 gFJw2BGPtEQWyLz5];
+  managerCopy = manager;
+  gFJw2BGPtEQWyLz5 = [managerCopy gFJw2BGPtEQWyLz5];
   v5 = [NSFetchRequest fetchRequestWithEntityName:@"DB_R09283478"];
   [v5 setFetchLimit:1];
   v24[0] = 0;
@@ -879,7 +879,7 @@ LABEL_8:
   v10[2] = sub_10004308C;
   v10[3] = &unk_100691088;
   v13 = v22;
-  v6 = v4;
+  v6 = gFJw2BGPtEQWyLz5;
   v11 = v6;
   v7 = v5;
   v12 = v7;
@@ -896,17 +896,17 @@ LABEL_8:
   return v8;
 }
 
-- (void)lJIqliFcwusu4FxD:(NSArray *)a3 workflowID:(NSString *)a4 completionHandler:(id)a5
+- (void)lJIqliFcwusu4FxD:(NSArray *)d workflowID:(NSString *)iD completionHandler:(id)handler
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
-  v9[2] = a3;
-  v9[3] = a4;
+  v9[2] = d;
+  v9[3] = iD;
   v9[4] = v8;
   v9[5] = self;
-  v10 = a3;
-  v11 = a4;
-  v12 = self;
+  dCopy = d;
+  iDCopy = iD;
+  selfCopy = self;
 
   sub_1000CAD58(&unk_1005CF2E0, v9);
 }

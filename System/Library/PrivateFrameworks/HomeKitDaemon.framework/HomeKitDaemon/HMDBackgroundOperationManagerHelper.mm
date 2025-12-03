@@ -1,31 +1,31 @@
 @interface HMDBackgroundOperationManagerHelper
 + (BOOL)checkAndRaiseFaultIfHH2KeyIsMissing;
-+ (BOOL)didAuditTimeExpiredOnThisAccessory:(id)a3;
-+ (BOOL)didAuditTimeExpiredOnThisAirPlayAccessory:(id)a3;
-+ (BOOL)shouldWeAuditFromLastAudit:(id)a3;
-+ (id)auditAllowedAccessToRestrictedGuest:(id)a3 forAccessories:(id)a4 shouldRemoveScheduledOperations:(BOOL)a5 parentFlow:(id)a6;
-+ (id)auditProhibitedAccessToRestrictedGuest:(id)a3 forAccessories:(id)a4 shouldRemoveScheduledOperations:(BOOL)a5 parentFlow:(id)a6;
++ (BOOL)didAuditTimeExpiredOnThisAccessory:(id)accessory;
++ (BOOL)didAuditTimeExpiredOnThisAirPlayAccessory:(id)accessory;
++ (BOOL)shouldWeAuditFromLastAudit:(id)audit;
++ (id)auditAllowedAccessToRestrictedGuest:(id)guest forAccessories:(id)accessories shouldRemoveScheduledOperations:(BOOL)operations parentFlow:(id)flow;
++ (id)auditProhibitedAccessToRestrictedGuest:(id)guest forAccessories:(id)accessories shouldRemoveScheduledOperations:(BOOL)operations parentFlow:(id)flow;
 + (id)homeManager;
 + (id)logCategory;
-+ (void)_scheduleRemovePairingForAccessory:(id)a3 usingPairingIdentity:(id)a4;
-+ (void)addPairingOnAllAccessoriesOfHome:(id)a3 forSharedUser:(id)a4;
-+ (void)auditAllRestrictedGuestAccessoriesForHome:(id)a3;
-+ (void)auditSharedUserEntriesInDatabase:(id)a3;
-+ (void)auditSharedUserEntriesInDatabaseForAccessory:(id)a3;
-+ (void)auditSharedUserEntriesInDatabaseForHome:(id)a3 withCompletionHandler:(id)a4;
-+ (void)dumpUsers:(id)a3 usingTag:(id)a4;
-+ (void)makeSureToCreateBackUpOfHH2KeysIfNecessary:(id)a3;
-+ (void)removeAllScheduledOperationsForGuest:(id)a3 forAccessoryUUID:(id)a4;
-+ (void)removeAllUsersFromAccessory:(id)a3 withCompletionHandler:(id)a4;
-+ (void)removeAllUsersFromAirPlayAccessory:(id)a3 withCompletionHandler:(id)a4;
-+ (void)removeAllUsersFromHAPAccessory:(id)a3 withCompletionHandler:(id)a4;
-+ (void)removeAllUsersFromMatterAccessory:(id)a3 withCompletionHandler:(id)a4;
-+ (void)removePairingOnAllAccessoriesOfHome:(id)a3 forSharedUser:(id)a4;
-+ (void)scheduleAddPairingForAccessory:(id)a3 forSharedUser:(id)a4;
-+ (void)scheduleAddPairingForAccessory:(id)a3 sharedUser:(id)a4;
-+ (void)scheduleFullAuditForAccessory:(id)a3;
-+ (void)scheduleRemovePairingForAccessory:(id)a3 forSharedUser:(id)a4;
-+ (void)scheduleRemovePairingForAccessory:(id)a3 sharedUser:(id)a4;
++ (void)_scheduleRemovePairingForAccessory:(id)accessory usingPairingIdentity:(id)identity;
++ (void)addPairingOnAllAccessoriesOfHome:(id)home forSharedUser:(id)user;
++ (void)auditAllRestrictedGuestAccessoriesForHome:(id)home;
++ (void)auditSharedUserEntriesInDatabase:(id)database;
++ (void)auditSharedUserEntriesInDatabaseForAccessory:(id)accessory;
++ (void)auditSharedUserEntriesInDatabaseForHome:(id)home withCompletionHandler:(id)handler;
++ (void)dumpUsers:(id)users usingTag:(id)tag;
++ (void)makeSureToCreateBackUpOfHH2KeysIfNecessary:(id)necessary;
++ (void)removeAllScheduledOperationsForGuest:(id)guest forAccessoryUUID:(id)d;
++ (void)removeAllUsersFromAccessory:(id)accessory withCompletionHandler:(id)handler;
++ (void)removeAllUsersFromAirPlayAccessory:(id)accessory withCompletionHandler:(id)handler;
++ (void)removeAllUsersFromHAPAccessory:(id)accessory withCompletionHandler:(id)handler;
++ (void)removeAllUsersFromMatterAccessory:(id)accessory withCompletionHandler:(id)handler;
++ (void)removePairingOnAllAccessoriesOfHome:(id)home forSharedUser:(id)user;
++ (void)scheduleAddPairingForAccessory:(id)accessory forSharedUser:(id)user;
++ (void)scheduleAddPairingForAccessory:(id)accessory sharedUser:(id)user;
++ (void)scheduleFullAuditForAccessory:(id)accessory;
++ (void)scheduleRemovePairingForAccessory:(id)accessory forSharedUser:(id)user;
++ (void)scheduleRemovePairingForAccessory:(id)accessory sharedUser:(id)user;
 @end
 
 @implementation HMDBackgroundOperationManagerHelper
@@ -50,24 +50,24 @@ void __50__HMDBackgroundOperationManagerHelper_logCategory__block_invoke()
   logCategory__hmf_once_v129 = v1;
 }
 
-+ (void)removeAllScheduledOperationsForGuest:(id)a3 forAccessoryUUID:(id)a4
++ (void)removeAllScheduledOperationsForGuest:(id)guest forAccessoryUUID:(id)d
 {
   v14[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isRestrictedGuest])
+  guestCopy = guest;
+  dCopy = d;
+  if ([guestCopy isRestrictedGuest])
   {
     v14[0] = objc_opt_class();
     v14[1] = objc_opt_class();
     v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:2];
-    v9 = [a1 homeManager];
-    v10 = [v9 bgOpsManager];
+    homeManager = [self homeManager];
+    bgOpsManager = [homeManager bgOpsManager];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __93__HMDBackgroundOperationManagerHelper_removeAllScheduledOperationsForGuest_forAccessoryUUID___block_invoke;
     v12[3] = &unk_278685618;
-    v13 = v6;
-    [v10 removeOperationsForAccessoryIdentifier:v7 operationKind:v8 withBlock:v12];
+    v13 = guestCopy;
+    [bgOpsManager removeOperationsForAccessoryIdentifier:dCopy operationKind:v8 withBlock:v12];
   }
 
   v11 = *MEMORY[0x277D85DE8];
@@ -118,21 +118,21 @@ uint64_t __93__HMDBackgroundOperationManagerHelper_removeAllScheduledOperationsF
   return v13;
 }
 
-+ (id)auditProhibitedAccessToRestrictedGuest:(id)a3 forAccessories:(id)a4 shouldRemoveScheduledOperations:(BOOL)a5 parentFlow:(id)a6
++ (id)auditProhibitedAccessToRestrictedGuest:(id)guest forAccessories:(id)accessories shouldRemoveScheduledOperations:(BOOL)operations parentFlow:(id)flow
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [v10 home];
-  if (v7)
+  operationsCopy = operations;
+  guestCopy = guest;
+  accessoriesCopy = accessories;
+  flowCopy = flow;
+  home = [guestCopy home];
+  if (operationsCopy)
   {
     v30[0] = MEMORY[0x277D85DD0];
     v30[1] = 3221225472;
     v30[2] = __136__HMDBackgroundOperationManagerHelper_auditProhibitedAccessToRestrictedGuest_forAccessories_shouldRemoveScheduledOperations_parentFlow___block_invoke;
     v30[3] = &unk_278685550;
-    v31 = v10;
-    [v11 hmf_enumerateWithAutoreleasePoolUsingBlock:v30];
+    v31 = guestCopy;
+    [accessoriesCopy hmf_enumerateWithAutoreleasePoolUsingBlock:v30];
   }
 
   v14 = MEMORY[0x277D0F7C0];
@@ -140,21 +140,21 @@ uint64_t __93__HMDBackgroundOperationManagerHelper_removeAllScheduledOperationsF
   v25[1] = 3221225472;
   v25[2] = __136__HMDBackgroundOperationManagerHelper_auditProhibitedAccessToRestrictedGuest_forAccessories_shouldRemoveScheduledOperations_parentFlow___block_invoke_2;
   v25[3] = &unk_2786855A0;
-  v26 = v13;
-  v27 = v12;
-  v28 = v10;
-  v29 = a1;
-  v15 = v10;
-  v16 = v12;
-  v17 = v13;
-  v18 = [v11 na_map:v25];
+  v26 = home;
+  v27 = flowCopy;
+  v28 = guestCopy;
+  selfCopy = self;
+  v15 = guestCopy;
+  v16 = flowCopy;
+  v17 = home;
+  v18 = [accessoriesCopy na_map:v25];
   v19 = [v14 allSettled:v18];
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __136__HMDBackgroundOperationManagerHelper_auditProhibitedAccessToRestrictedGuest_forAccessories_shouldRemoveScheduledOperations_parentFlow___block_invoke_94;
   v23[3] = &unk_2786868A0;
-  v24 = v11;
-  v20 = v11;
+  v24 = accessoriesCopy;
+  v20 = accessoriesCopy;
   v21 = [v19 then:v23];
 
   return v21;
@@ -405,21 +405,21 @@ uint64_t __136__HMDBackgroundOperationManagerHelper_auditProhibitedAccessToRestr
   return v24;
 }
 
-+ (id)auditAllowedAccessToRestrictedGuest:(id)a3 forAccessories:(id)a4 shouldRemoveScheduledOperations:(BOOL)a5 parentFlow:(id)a6
++ (id)auditAllowedAccessToRestrictedGuest:(id)guest forAccessories:(id)accessories shouldRemoveScheduledOperations:(BOOL)operations parentFlow:(id)flow
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [v10 home];
-  if (v7)
+  operationsCopy = operations;
+  guestCopy = guest;
+  accessoriesCopy = accessories;
+  flowCopy = flow;
+  home = [guestCopy home];
+  if (operationsCopy)
   {
     v30[0] = MEMORY[0x277D85DD0];
     v30[1] = 3221225472;
     v30[2] = __133__HMDBackgroundOperationManagerHelper_auditAllowedAccessToRestrictedGuest_forAccessories_shouldRemoveScheduledOperations_parentFlow___block_invoke;
     v30[3] = &unk_278685550;
-    v31 = v10;
-    [v11 hmf_enumerateWithAutoreleasePoolUsingBlock:v30];
+    v31 = guestCopy;
+    [accessoriesCopy hmf_enumerateWithAutoreleasePoolUsingBlock:v30];
   }
 
   v14 = MEMORY[0x277D0F7C0];
@@ -427,21 +427,21 @@ uint64_t __136__HMDBackgroundOperationManagerHelper_auditProhibitedAccessToRestr
   v25[1] = 3221225472;
   v25[2] = __133__HMDBackgroundOperationManagerHelper_auditAllowedAccessToRestrictedGuest_forAccessories_shouldRemoveScheduledOperations_parentFlow___block_invoke_2;
   v25[3] = &unk_2786855A0;
-  v26 = v13;
-  v27 = v12;
-  v28 = v10;
-  v29 = a1;
-  v15 = v10;
-  v16 = v12;
-  v17 = v13;
-  v18 = [v11 na_map:v25];
+  v26 = home;
+  v27 = flowCopy;
+  v28 = guestCopy;
+  selfCopy = self;
+  v15 = guestCopy;
+  v16 = flowCopy;
+  v17 = home;
+  v18 = [accessoriesCopy na_map:v25];
   v19 = [v14 allSettled:v18];
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __133__HMDBackgroundOperationManagerHelper_auditAllowedAccessToRestrictedGuest_forAccessories_shouldRemoveScheduledOperations_parentFlow___block_invoke_87;
   v23[3] = &unk_2786868A0;
-  v24 = v11;
-  v20 = v11;
+  v24 = accessoriesCopy;
+  v20 = accessoriesCopy;
   v21 = [v19 then:v23];
 
   return v21;
@@ -714,18 +714,18 @@ uint64_t __133__HMDBackgroundOperationManagerHelper_auditAllowedAccessToRestrict
   return v31;
 }
 
-+ (void)auditAllRestrictedGuestAccessoriesForHome:(id)a3
++ (void)auditAllRestrictedGuestAccessoriesForHome:(id)home
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 restrictedGuests];
-  v6 = [v5 hmf_isEmpty];
+  homeCopy = home;
+  restrictedGuests = [homeCopy restrictedGuests];
+  hmf_isEmpty = [restrictedGuests hmf_isEmpty];
 
   v7 = objc_autoreleasePoolPush();
-  v8 = a1;
+  selfCopy = self;
   v9 = HMFGetOSLogHandle();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_INFO);
-  if (v6)
+  if (hmf_isEmpty)
   {
     if (v10)
     {
@@ -746,7 +746,7 @@ uint64_t __133__HMDBackgroundOperationManagerHelper_auditAllowedAccessToRestrict
       *buf = 138543618;
       *&buf[4] = v12;
       *&buf[12] = 2112;
-      *&buf[14] = v4;
+      *&buf[14] = homeCopy;
       _os_log_impl(&dword_229538000, v9, OS_LOG_TYPE_INFO, "%{public}@Starting the full audit for accessories which are restricted for the home: %@", buf, 0x16u);
     }
 
@@ -755,17 +755,17 @@ uint64_t __133__HMDBackgroundOperationManagerHelper_auditAllowedAccessToRestrict
     *&buf[8] = buf;
     *&buf[16] = 0x2020000000;
     v21 = 0;
-    v13 = [v4 backingStore];
-    v14 = [v13 context];
+    backingStore = [homeCopy backingStore];
+    context = [backingStore context];
 
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __81__HMDBackgroundOperationManagerHelper_auditAllRestrictedGuestAccessoriesForHome___block_invoke;
     v16[3] = &unk_2786852B8;
-    v17 = v4;
+    v17 = homeCopy;
     v18 = buf;
-    v19 = v8;
-    [v14 performBlockWithPinnedQueryGeneration:v16];
+    v19 = selfCopy;
+    [context performBlockWithPinnedQueryGeneration:v16];
 
     _Block_object_dispose(buf, 8);
   }
@@ -1134,29 +1134,29 @@ LABEL_63:
   v85 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)makeSureToCreateBackUpOfHH2KeysIfNecessary:(id)a3
++ (void)makeSureToCreateBackUpOfHH2KeysIfNecessary:(id)necessary
 {
-  v5 = a3;
+  necessaryCopy = necessary;
   if (+[HMDAuditHH2KeysForBackupOperation shouldWeScheduleHH2KeyBackupOperation])
   {
     v3 = [HMDAuditHH2KeysForBackupOperation alloc];
     v4 = [(HMDBackgroundOperation *)v3 initWithUserData:MEMORY[0x277CBEC10]];
-    [v5 addOperation:v4];
-    [v5 evaluateOperations];
+    [necessaryCopy addOperation:v4];
+    [necessaryCopy evaluateOperations];
   }
 }
 
 + (BOOL)checkAndRaiseFaultIfHH2KeyIsMissing
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = [a1 homeManager];
-  v4 = [v3 bgOpsManager];
-  v5 = [v4 getHH2ControllerKey];
+  homeManager = [self homeManager];
+  bgOpsManager = [homeManager bgOpsManager];
+  getHH2ControllerKey = [bgOpsManager getHH2ControllerKey];
 
-  if (!v5)
+  if (!getHH2ControllerKey)
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = a1;
+    selfCopy = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
@@ -1169,28 +1169,28 @@ LABEL_63:
     objc_autoreleasePoolPop(v6);
   }
 
-  result = v5 == 0;
+  result = getHH2ControllerKey == 0;
   v11 = *MEMORY[0x277D85DE8];
   return result;
 }
 
-+ (BOOL)shouldWeAuditFromLastAudit:(id)a3
++ (BOOL)shouldWeAuditFromLastAudit:(id)audit
 {
   v3 = MEMORY[0x277CBEAA8];
-  v4 = a3;
-  v5 = [v3 date];
-  [v5 timeIntervalSinceDate:v4];
+  auditCopy = audit;
+  date = [v3 date];
+  [date timeIntervalSinceDate:auditCopy];
   v7 = v6;
 
   return v7 >= 604800.0;
 }
 
-+ (void)removeAllUsersFromAirPlayAccessory:(id)a3 withCompletionHandler:(id)a4
++ (void)removeAllUsersFromAirPlayAccessory:(id)accessory withCompletionHandler:(id)handler
 {
   v55 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  aBlock = a4;
-  v7 = v6;
+  accessoryCopy = accessory;
+  aBlock = handler;
+  v7 = accessoryCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -1204,11 +1204,11 @@ LABEL_63:
 
   v9 = v8;
 
-  v10 = [v9 home];
-  v11 = v10;
+  home = [v9 home];
+  v11 = home;
   if (v9)
   {
-    v12 = v10 == 0;
+    v12 = home == 0;
   }
 
   else
@@ -1219,16 +1219,16 @@ LABEL_63:
   if (v12)
   {
     v13 = objc_autoreleasePoolPush();
-    v14 = a1;
+    selfCopy = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
       v16 = HMFGetLogIdentifier();
-      v17 = [v9 shortDescription];
+      shortDescription = [v9 shortDescription];
       *buf = 138543874;
       *&buf[4] = v16;
       *&buf[12] = 2112;
-      *&buf[14] = v17;
+      *&buf[14] = shortDescription;
       *&buf[22] = 2112;
       v52 = v11;
       _os_log_impl(&dword_229538000, v15, OS_LOG_TYPE_ERROR, "%{public}@Invalid instance of airplay accessory: %@ or Home: %@", buf, 0x20u);
@@ -1245,8 +1245,8 @@ LABEL_63:
 
   else
   {
-    v19 = [v10 users];
-    v20 = [v19 na_filter:&__block_literal_global_68_250799];
+    users = [home users];
+    v20 = [users na_filter:&__block_literal_global_68_250799];
 
     v21 = [v20 count];
     if (v21)
@@ -1267,7 +1267,7 @@ LABEL_63:
       v42[3] = &unk_278685490;
       v46 = v50;
       v47 = buf;
-      v48 = a1;
+      selfCopy2 = self;
       v49 = v21;
       v22 = v7;
       v43 = v22;
@@ -1275,19 +1275,19 @@ LABEL_63:
       v45 = aBlock;
       v23 = _Block_copy(v42);
       v24 = [v20 sortedArrayUsingComparator:&__block_literal_global_74_250803];
-      v25 = [v24 reverseObjectEnumerator];
-      v26 = [v25 allObjects];
+      reverseObjectEnumerator = [v24 reverseObjectEnumerator];
+      allObjects = [reverseObjectEnumerator allObjects];
 
       v37[0] = MEMORY[0x277D85DD0];
       v37[1] = 3221225472;
       v37[2] = __96__HMDBackgroundOperationManagerHelper_removeAllUsersFromAirPlayAccessory_withCompletionHandler___block_invoke_70;
       v37[3] = &unk_278685508;
-      v41 = a1;
+      selfCopy3 = self;
       v38 = v22;
       v39 = v9;
       v27 = v23;
       v40 = v27;
-      [v26 hmf_enumerateWithAutoreleasePoolUsingBlock:v37];
+      [allObjects hmf_enumerateWithAutoreleasePoolUsingBlock:v37];
 
       _Block_object_dispose(v50, 8);
       _Block_object_dispose(buf, 8);
@@ -1296,16 +1296,16 @@ LABEL_63:
     else
     {
       v28 = objc_autoreleasePoolPush();
-      v29 = a1;
+      selfCopy4 = self;
       v30 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v30, OS_LOG_TYPE_INFO))
       {
         v31 = HMFGetLogIdentifier();
-        v32 = [v9 shortDescription];
+        shortDescription2 = [v9 shortDescription];
         *buf = 138543618;
         *&buf[4] = v31;
         *&buf[12] = 2112;
-        *&buf[14] = v32;
+        *&buf[14] = shortDescription2;
         _os_log_impl(&dword_229538000, v30, OS_LOG_TYPE_INFO, "%{public}@No admin users exist on this home. Not scheduling any remove pairing operation for accessory: %@", buf, 0x16u);
       }
 
@@ -1452,15 +1452,15 @@ void __96__HMDBackgroundOperationManagerHelper_removeAllUsersFromAirPlayAccessor
   v11 = *MEMORY[0x277D85DE8];
 }
 
-+ (BOOL)didAuditTimeExpiredOnThisAirPlayAccessory:(id)a3
++ (BOOL)didAuditTimeExpiredOnThisAirPlayAccessory:(id)accessory
 {
-  v3 = a3;
-  v4 = [v3 lastPairingAuditTime];
+  accessoryCopy = accessory;
+  lastPairingAuditTime = [accessoryCopy lastPairingAuditTime];
 
-  if (v4)
+  if (lastPairingAuditTime)
   {
-    v5 = [v3 lastPairingAuditTime];
-    v6 = [HMDBackgroundOperationManagerHelper shouldWeAuditFromLastAudit:v5];
+    lastPairingAuditTime2 = [accessoryCopy lastPairingAuditTime];
+    v6 = [HMDBackgroundOperationManagerHelper shouldWeAuditFromLastAudit:lastPairingAuditTime2];
   }
 
   else
@@ -1471,12 +1471,12 @@ void __96__HMDBackgroundOperationManagerHelper_removeAllUsersFromAirPlayAccessor
   return v6;
 }
 
-+ (void)removeAllUsersFromHAPAccessory:(id)a3 withCompletionHandler:(id)a4
++ (void)removeAllUsersFromHAPAccessory:(id)accessory withCompletionHandler:(id)handler
 {
   v64 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
+  accessoryCopy = accessory;
+  handlerCopy = handler;
+  v8 = accessoryCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -1490,26 +1490,26 @@ void __96__HMDBackgroundOperationManagerHelper_removeAllUsersFromAirPlayAccessor
 
   v10 = v9;
 
-  v11 = [v10 bridge];
+  bridge = [v10 bridge];
 
-  if (v11)
+  if (bridge)
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = a1;
+    selfCopy = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
       v15 = HMFGetLogIdentifier();
-      v16 = [v10 shortDescription];
+      shortDescription = [v10 shortDescription];
       *buf = 138543618;
       *&buf[4] = v15;
       *&buf[12] = 2112;
-      *&buf[14] = v16;
+      *&buf[14] = shortDescription;
       _os_log_impl(&dword_229538000, v14, OS_LOG_TYPE_INFO, "%{public}@Not scheduling any remove pairing operation for accessory: %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v12);
-    v17 = _Block_copy(v7);
+    v17 = _Block_copy(handlerCopy);
     v18 = v17;
     if (v17)
     {
@@ -1519,11 +1519,11 @@ void __96__HMDBackgroundOperationManagerHelper_removeAllUsersFromAirPlayAccessor
 
   else
   {
-    v19 = [v10 home];
-    v18 = v19;
+    home = [v10 home];
+    v18 = home;
     if (v10)
     {
-      v20 = v19 == 0;
+      v20 = home == 0;
     }
 
     else
@@ -1534,23 +1534,23 @@ void __96__HMDBackgroundOperationManagerHelper_removeAllUsersFromAirPlayAccessor
     if (v20)
     {
       v21 = objc_autoreleasePoolPush();
-      v22 = a1;
+      selfCopy2 = self;
       v23 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
       {
         v24 = HMFGetLogIdentifier();
-        v25 = [v10 shortDescription];
+        shortDescription2 = [v10 shortDescription];
         *buf = 138543874;
         *&buf[4] = v24;
         *&buf[12] = 2112;
-        *&buf[14] = v25;
+        *&buf[14] = shortDescription2;
         *&buf[22] = 2112;
         v61 = v18;
         _os_log_impl(&dword_229538000, v23, OS_LOG_TYPE_ERROR, "%{public}@Invalid instance of accessory: %@ or Home: %@", buf, 0x20u);
       }
 
       objc_autoreleasePoolPop(v21);
-      v26 = _Block_copy(v7);
+      v26 = _Block_copy(handlerCopy);
       v28 = v26;
       if (v26)
       {
@@ -1560,8 +1560,8 @@ void __96__HMDBackgroundOperationManagerHelper_removeAllUsersFromAirPlayAccessor
 
     else
     {
-      v27 = [v19 users];
-      v28 = [v27 na_filter:&__block_literal_global_61_250816];
+      users = [home users];
+      v28 = [users na_filter:&__block_literal_global_61_250816];
 
       v29 = [v28 count];
       if (v29)
@@ -1582,23 +1582,23 @@ void __96__HMDBackgroundOperationManagerHelper_removeAllUsersFromAirPlayAccessor
         aBlock[3] = &unk_278685490;
         v55 = v59;
         v56 = buf;
-        v57 = a1;
+        selfCopy3 = self;
         v58 = v29;
         v30 = v8;
         v52 = v30;
         v31 = v18;
         v53 = v31;
-        v54 = v7;
+        v54 = handlerCopy;
         v42 = _Block_copy(aBlock);
         v32 = [v28 sortedArrayUsingComparator:&__block_literal_global_74_250803];
-        v33 = [v32 reverseObjectEnumerator];
-        contexta = [v33 allObjects];
+        reverseObjectEnumerator = [v32 reverseObjectEnumerator];
+        contexta = [reverseObjectEnumerator allObjects];
 
         v45[0] = MEMORY[0x277D85DD0];
         v45[1] = 3221225472;
         v45[2] = __92__HMDBackgroundOperationManagerHelper_removeAllUsersFromHAPAccessory_withCompletionHandler___block_invoke_64;
         v45[3] = &unk_2786854E0;
-        v50 = a1;
+        selfCopy4 = self;
         v46 = v30;
         v47 = v10;
         v48 = v31;
@@ -1613,21 +1613,21 @@ void __96__HMDBackgroundOperationManagerHelper_removeAllUsersFromAirPlayAccessor
       else
       {
         context = objc_autoreleasePoolPush();
-        v35 = a1;
+        selfCopy5 = self;
         v36 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v36, OS_LOG_TYPE_INFO))
         {
           v37 = HMFGetLogIdentifier();
-          v38 = [v10 shortDescription];
+          shortDescription3 = [v10 shortDescription];
           *buf = 138543618;
           *&buf[4] = v37;
           *&buf[12] = 2112;
-          *&buf[14] = v38;
+          *&buf[14] = shortDescription3;
           _os_log_impl(&dword_229538000, v36, OS_LOG_TYPE_INFO, "%{public}@No admin users exist on this home. Not scheduling any remove pairing operation for accessory: %@", buf, 0x16u);
         }
 
         objc_autoreleasePoolPop(context);
-        v39 = _Block_copy(v7);
+        v39 = _Block_copy(handlerCopy);
         v40 = v39;
         if (v39)
         {
@@ -1848,28 +1848,28 @@ void __92__HMDBackgroundOperationManagerHelper_removeAllUsersFromHAPAccessory_wi
   v26 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)removeAllUsersFromMatterAccessory:(id)a3 withCompletionHandler:(id)a4
++ (void)removeAllUsersFromMatterAccessory:(id)accessory withCompletionHandler:(id)handler
 {
   v63 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 home];
-  v9 = [v8 featuresDataSource];
-  v10 = [v9 isRVCEnabled];
+  accessoryCopy = accessory;
+  handlerCopy = handler;
+  home = [accessoryCopy home];
+  featuresDataSource = [home featuresDataSource];
+  isRVCEnabled = [featuresDataSource isRVCEnabled];
 
-  if (v10)
+  if (isRVCEnabled)
   {
-    v11 = v6;
+    v11 = accessoryCopy;
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
-    if (v8 && v11 && (isKindOfClass & 1) != 0)
+    if (home && v11 && (isKindOfClass & 1) != 0)
     {
-      v47 = [v11 accessoryServer];
-      if (v47)
+      accessoryServer = [v11 accessoryServer];
+      if (accessoryServer)
       {
-        v13 = [v8 users];
-        v14 = [v13 na_filter:&__block_literal_global_250829];
+        users = [home users];
+        v14 = [users na_filter:&__block_literal_global_250829];
 
         if ([v14 count])
         {
@@ -1879,8 +1879,8 @@ void __92__HMDBackgroundOperationManagerHelper_removeAllUsersFromHAPAccessory_wi
           LOBYTE(v62) = 0;
           v15 = dispatch_group_create();
           v16 = [v14 sortedArrayUsingComparator:&__block_literal_global_74_250803];
-          v17 = [v16 reverseObjectEnumerator];
-          v46 = [v17 allObjects];
+          reverseObjectEnumerator = [v16 reverseObjectEnumerator];
+          allObjects = [reverseObjectEnumerator allObjects];
 
           v54[0] = MEMORY[0x277D85DD0];
           v54[1] = 3221225472;
@@ -1888,25 +1888,25 @@ void __92__HMDBackgroundOperationManagerHelper_removeAllUsersFromHAPAccessory_wi
           v54[3] = &unk_278685440;
           v18 = v15;
           v55 = v18;
-          v60 = a1;
+          selfCopy = self;
           v19 = v11;
           v56 = v19;
-          v57 = v47;
-          v20 = v8;
+          v57 = accessoryServer;
+          v20 = home;
           v58 = v20;
           v59 = buf;
-          [v46 hmf_enumerateWithAutoreleasePoolUsingBlock:v54];
-          v21 = [v20 workQueue];
+          [allObjects hmf_enumerateWithAutoreleasePoolUsingBlock:v54];
+          workQueue = [v20 workQueue];
           block[0] = MEMORY[0x277D85DD0];
           block[1] = 3221225472;
           block[2] = __95__HMDBackgroundOperationManagerHelper_removeAllUsersFromMatterAccessory_withCompletionHandler___block_invoke_59;
           block[3] = &unk_278685468;
           v52 = buf;
-          v53 = a1;
+          selfCopy2 = self;
           v49 = v19;
           v50 = v20;
-          v51 = v7;
-          dispatch_group_notify(v18, v21, block);
+          v51 = handlerCopy;
+          dispatch_group_notify(v18, workQueue, block);
 
           _Block_object_dispose(buf, 8);
         }
@@ -1914,21 +1914,21 @@ void __92__HMDBackgroundOperationManagerHelper_removeAllUsersFromHAPAccessory_wi
         else
         {
           v38 = objc_autoreleasePoolPush();
-          v39 = a1;
+          selfCopy3 = self;
           v40 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v40, OS_LOG_TYPE_INFO))
           {
             v41 = HMFGetLogIdentifier();
-            v42 = [v11 shortDescription];
+            shortDescription = [v11 shortDescription];
             *buf = 138543618;
             *&buf[4] = v41;
             *&buf[12] = 2112;
-            *&buf[14] = v42;
+            *&buf[14] = shortDescription;
             _os_log_impl(&dword_229538000, v40, OS_LOG_TYPE_INFO, "%{public}@No admin users exist on this home. Not scheduling any remove pairing operation for accessory: %@", buf, 0x16u);
           }
 
           objc_autoreleasePoolPop(v38);
-          v43 = _Block_copy(v7);
+          v43 = _Block_copy(handlerCopy);
           v44 = v43;
           if (v43)
           {
@@ -1940,24 +1940,24 @@ void __92__HMDBackgroundOperationManagerHelper_removeAllUsersFromHAPAccessory_wi
       else
       {
         v31 = objc_autoreleasePoolPush();
-        v32 = a1;
+        selfCopy4 = self;
         v33 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v33, OS_LOG_TYPE_INFO))
         {
           v34 = HMFGetLogIdentifier();
-          v35 = [v11 shortDescription];
+          shortDescription2 = [v11 shortDescription];
           *buf = 138543618;
           *&buf[4] = v34;
           *&buf[12] = 2112;
-          *&buf[14] = v35;
+          *&buf[14] = shortDescription2;
           _os_log_impl(&dword_229538000, v33, OS_LOG_TYPE_INFO, "%{public}@No accessory server found for accessory: %@. Scheduling database audit", buf, 0x16u);
         }
 
         objc_autoreleasePoolPop(v31);
-        v36 = [v8 homeManager];
-        [v32 auditSharedUserEntriesInDatabase:v36];
+        homeManager = [home homeManager];
+        [selfCopy4 auditSharedUserEntriesInDatabase:homeManager];
 
-        v37 = _Block_copy(v7);
+        v37 = _Block_copy(handlerCopy);
         v14 = v37;
         if (v37)
         {
@@ -1969,23 +1969,23 @@ void __92__HMDBackgroundOperationManagerHelper_removeAllUsersFromHAPAccessory_wi
     else
     {
       v24 = objc_autoreleasePoolPush();
-      v25 = a1;
+      selfCopy5 = self;
       v26 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
       {
         v27 = HMFGetLogIdentifier();
-        v28 = [v11 shortDescription];
+        shortDescription3 = [v11 shortDescription];
         *buf = 138543874;
         *&buf[4] = v27;
         *&buf[12] = 2112;
-        *&buf[14] = v28;
+        *&buf[14] = shortDescription3;
         *&buf[22] = 2112;
-        v62 = v8;
+        v62 = home;
         _os_log_impl(&dword_229538000, v26, OS_LOG_TYPE_ERROR, "%{public}@Invalid instance of accessory: %@ or Home: %@", buf, 0x20u);
       }
 
       objc_autoreleasePoolPop(v24);
-      v29 = _Block_copy(v7);
+      v29 = _Block_copy(handlerCopy);
       v30 = v29;
       if (v29)
       {
@@ -1996,7 +1996,7 @@ void __92__HMDBackgroundOperationManagerHelper_removeAllUsersFromHAPAccessory_wi
 
   else
   {
-    v22 = _Block_copy(v7);
+    v22 = _Block_copy(handlerCopy);
     v23 = v22;
     if (v22)
     {
@@ -2182,15 +2182,15 @@ void __95__HMDBackgroundOperationManagerHelper_removeAllUsersFromMatterAccessory
   v10 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)removeAllUsersFromAccessory:(id)a3 withCompletionHandler:(id)a4
++ (void)removeAllUsersFromAccessory:(id)accessory withCompletionHandler:(id)handler
 {
   v40 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  accessoryCopy = accessory;
+  handlerCopy = handler;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v6;
+    v8 = accessoryCopy;
   }
 
   else
@@ -2199,7 +2199,7 @@ void __95__HMDBackgroundOperationManagerHelper_removeAllUsersFromMatterAccessory
   }
 
   v9 = v8;
-  v10 = v6;
+  v10 = accessoryCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -2229,61 +2229,61 @@ void __95__HMDBackgroundOperationManagerHelper_removeAllUsersFromMatterAccessory
 
   if (v15)
   {
-    [HMDBackgroundOperationManagerHelper removeAllUsersFromMatterAccessory:v15 withCompletionHandler:v7];
+    [HMDBackgroundOperationManagerHelper removeAllUsersFromMatterAccessory:v15 withCompletionHandler:handlerCopy];
   }
 
   else if (v9)
   {
     if ([v9 supportsAccessCode] & 1) != 0 || (objc_msgSend(v9, "supportsWalletKey"))
     {
-      v16 = [v9 home];
+      home = [v9 home];
       v30 = dispatch_get_global_queue(25, 0);
       v29 = [objc_alloc(MEMORY[0x277D0F7A8]) initWithQueue:v30];
       v17 = objc_autoreleasePoolPush();
-      v18 = a1;
+      selfCopy = self;
       v19 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
       {
         v20 = HMFGetLogIdentifier();
         [v13 uuid];
-        v21 = v28 = v16;
+        v21 = v28 = home;
         *buf = 138543618;
         v37 = v20;
         v38 = 2112;
         v39 = v21;
         _os_log_impl(&dword_229538000, v19, OS_LOG_TYPE_INFO, "%{public}@Removing Matter users from accessory: %@", buf, 0x16u);
 
-        v16 = v28;
+        home = v28;
       }
 
       objc_autoreleasePoolPop(v17);
-      v22 = [v16 removeUsersFromAccessory:v9];
-      v23 = [v22 ignoreOutcome];
+      v22 = [home removeUsersFromAccessory:v9];
+      ignoreOutcome = [v22 ignoreOutcome];
       v31[0] = MEMORY[0x277D85DD0];
       v31[1] = 3221225472;
       v31[2] = __89__HMDBackgroundOperationManagerHelper_removeAllUsersFromAccessory_withCompletionHandler___block_invoke;
       v31[3] = &unk_2786853D0;
-      v35 = v18;
+      v35 = selfCopy;
       v32 = v13;
       v33 = v9;
-      v34 = v7;
-      v24 = [v23 inContext:v29 then:v31];
+      v34 = handlerCopy;
+      v24 = [ignoreOutcome inContext:v29 then:v31];
     }
 
     else
     {
-      [HMDBackgroundOperationManagerHelper removeAllUsersFromHAPAccessory:v9 withCompletionHandler:v7];
+      [HMDBackgroundOperationManagerHelper removeAllUsersFromHAPAccessory:v9 withCompletionHandler:handlerCopy];
     }
   }
 
   else if (v12)
   {
-    [HMDBackgroundOperationManagerHelper removeAllUsersFromAirPlayAccessory:v12 withCompletionHandler:v7];
+    [HMDBackgroundOperationManagerHelper removeAllUsersFromAirPlayAccessory:v12 withCompletionHandler:handlerCopy];
   }
 
   else
   {
-    v25 = _Block_copy(v7);
+    v25 = _Block_copy(handlerCopy);
     v26 = v25;
     if (v25)
     {
@@ -2319,15 +2319,15 @@ uint64_t __89__HMDBackgroundOperationManagerHelper_removeAllUsersFromAccessory_w
   return 1;
 }
 
-+ (BOOL)didAuditTimeExpiredOnThisAccessory:(id)a3
++ (BOOL)didAuditTimeExpiredOnThisAccessory:(id)accessory
 {
-  v3 = a3;
-  v4 = [v3 lastPairingAuditTime];
+  accessoryCopy = accessory;
+  lastPairingAuditTime = [accessoryCopy lastPairingAuditTime];
 
-  if (v4)
+  if (lastPairingAuditTime)
   {
-    v5 = [v3 lastPairingAuditTime];
-    v6 = [HMDBackgroundOperationManagerHelper shouldWeAuditFromLastAudit:v5];
+    lastPairingAuditTime2 = [accessoryCopy lastPairingAuditTime];
+    v6 = [HMDBackgroundOperationManagerHelper shouldWeAuditFromLastAudit:lastPairingAuditTime2];
   }
 
   else
@@ -2338,26 +2338,26 @@ uint64_t __89__HMDBackgroundOperationManagerHelper_removeAllUsersFromAccessory_w
   return v6;
 }
 
-+ (void)_scheduleRemovePairingForAccessory:(id)a3 usingPairingIdentity:(id)a4
++ (void)_scheduleRemovePairingForAccessory:(id)accessory usingPairingIdentity:(id)identity
 {
   v41 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 castIfHAPAccessory];
-  v9 = v8;
-  if (v8 && isBridgedAccessory(v8))
+  accessoryCopy = accessory;
+  identityCopy = identity;
+  castIfHAPAccessory = [accessoryCopy castIfHAPAccessory];
+  v9 = castIfHAPAccessory;
+  if (castIfHAPAccessory && isBridgedAccessory(castIfHAPAccessory))
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = a1;
+    selfCopy4 = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       v13 = HMFGetLogIdentifier();
-      v14 = [v9 uniqueIdentifier];
+      uniqueIdentifier = [v9 uniqueIdentifier];
       v33 = 138543618;
       v34 = v13;
       v35 = 2112;
-      v36 = v14;
+      v36 = uniqueIdentifier;
       _os_log_impl(&dword_229538000, v12, OS_LOG_TYPE_ERROR, "%{public}@(c) Not scheduling remove pairing operation for accessory: %@", &v33, 0x16u);
 LABEL_11:
 
@@ -2367,25 +2367,25 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v15 = [v6 identifier];
+  identifier = [accessoryCopy identifier];
 
-  if (v15)
+  if (identifier)
   {
     v16 = [HMDRemoveAccessoryPairingSharedUserOperation alloc];
-    v17 = [v6 modelID];
-    v18 = [v6 identifier];
-    v19 = [v6 home];
-    v20 = [v19 modelID];
-    v21 = [(HMDRemoveAccessoryPairingSharedUserOperation *)v16 initWithAccessoryUUID:v17 accessoryIdentifier:v18 isOwnerIdentity:0 forSharedUser:0 sharedUserPairingIdentity:v7 homeUUIDWhereAccessoryWasPaired:v20];
+    modelID = [accessoryCopy modelID];
+    identifier2 = [accessoryCopy identifier];
+    home = [accessoryCopy home];
+    modelID2 = [home modelID];
+    v21 = [(HMDRemoveAccessoryPairingSharedUserOperation *)v16 initWithAccessoryUUID:modelID accessoryIdentifier:identifier2 isOwnerIdentity:0 forSharedUser:0 sharedUserPairingIdentity:identityCopy homeUUIDWhereAccessoryWasPaired:modelID2];
 
     if (v21)
     {
-      v22 = [a1 homeManager];
-      v23 = [v22 bgOpsManager];
-      [v23 addOperation:v21];
+      homeManager = [self homeManager];
+      bgOpsManager = [homeManager bgOpsManager];
+      [bgOpsManager addOperation:v21];
 
       v24 = objc_autoreleasePoolPush();
-      v25 = a1;
+      selfCopy2 = self;
       v26 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
       {
@@ -2402,21 +2402,21 @@ LABEL_15:
     else
     {
       v24 = objc_autoreleasePoolPush();
-      v29 = a1;
+      selfCopy3 = self;
       v26 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
       {
         v27 = HMFGetLogIdentifier();
-        v30 = [v6 modelID];
-        v31 = [v6 identifier];
+        modelID3 = [accessoryCopy modelID];
+        identifier3 = [accessoryCopy identifier];
         v33 = 138544130;
         v34 = v27;
         v35 = 2112;
-        v36 = v7;
+        v36 = identityCopy;
         v37 = 2112;
-        v38 = v30;
+        v38 = modelID3;
         v39 = 2112;
-        v40 = v31;
+        v40 = identifier3;
         _os_log_impl(&dword_229538000, v26, OS_LOG_TYPE_ERROR, "%{public}@(c) Failed to create remove pairing operation for pairing identity : %@, %@/%@", &v33, 0x2Au);
 
         goto LABEL_15;
@@ -2428,19 +2428,19 @@ LABEL_15:
   }
 
   v10 = objc_autoreleasePoolPush();
-  v11 = a1;
+  selfCopy4 = self;
   v12 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
   {
     v13 = HMFGetLogIdentifier();
-    v14 = [v6 modelID];
-    v28 = [v6 identifier];
+    uniqueIdentifier = [accessoryCopy modelID];
+    identifier4 = [accessoryCopy identifier];
     v33 = 138543874;
     v34 = v13;
     v35 = 2112;
-    v36 = v14;
+    v36 = uniqueIdentifier;
     v37 = 2112;
-    v38 = v28;
+    v38 = identifier4;
     _os_log_impl(&dword_229538000, v12, OS_LOG_TYPE_ERROR, "%{public}@(c) Cannot remove pairing for mkfAccessory without critical data, modelID: %@ ... identifier: %@", &v33, 0x20u);
 
     goto LABEL_11;
@@ -2454,28 +2454,28 @@ LABEL_17:
   v32 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)scheduleRemovePairingForAccessory:(id)a3 sharedUser:(id)a4
++ (void)scheduleRemovePairingForAccessory:(id)accessory sharedUser:(id)user
 {
   v46 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 castIfHAPAccessory];
-  v9 = v8;
-  if (v8 && isBridgedAccessory(v8))
+  accessoryCopy = accessory;
+  userCopy = user;
+  castIfHAPAccessory = [accessoryCopy castIfHAPAccessory];
+  v9 = castIfHAPAccessory;
+  if (castIfHAPAccessory && isBridgedAccessory(castIfHAPAccessory))
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = a1;
+    selfCopy5 = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       v13 = HMFGetLogIdentifier();
-      v14 = [v9 uniqueIdentifier];
+      uniqueIdentifier = [v9 uniqueIdentifier];
       *buf = 138543874;
       v41 = v13;
       v42 = 2112;
-      v43 = v14;
+      v43 = uniqueIdentifier;
       v44 = 2112;
-      v45 = v7;
+      v45 = userCopy;
       _os_log_impl(&dword_229538000, v12, OS_LOG_TYPE_ERROR, "%{public}@(b) Not scheduling remove pairing operation for accessory: %@ and shared user: %@", buf, 0x20u);
 LABEL_12:
 
@@ -2486,14 +2486,14 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v15 = [v6 identifier];
+  identifier = [accessoryCopy identifier];
 
-  if (v15)
+  if (identifier)
   {
-    if (([(HMDRemoveAccessoryPairingSharedUserOperation *)v7 isAllowedToAddOrRemoveHAPPairingsOnAccessory]& 1) == 0)
+    if (([(HMDRemoveAccessoryPairingSharedUserOperation *)userCopy isAllowedToAddOrRemoveHAPPairingsOnAccessory]& 1) == 0)
     {
       v10 = objc_autoreleasePoolPush();
-      v11 = a1;
+      selfCopy5 = self;
       v12 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
@@ -2501,7 +2501,7 @@ LABEL_15:
         *buf = 138543618;
         v41 = v13;
         v42 = 2112;
-        v43 = v7;
+        v43 = userCopy;
         _os_log_impl(&dword_229538000, v12, OS_LOG_TYPE_ERROR, "%{public}@(b) Cannot remove pairing for user as not allowed by policy: %@", buf, 0x16u);
         goto LABEL_15;
       }
@@ -2511,24 +2511,24 @@ LABEL_15:
 
     v38 = v9;
     v16 = [HMDRemoveAccessoryPairingSharedUserOperation alloc];
-    v17 = [v6 modelID];
-    v18 = [v6 identifier];
-    v19 = [(HMDRemoveAccessoryPairingSharedUserOperation *)v7 isOwner];
-    v20 = [(HMDRemoveAccessoryPairingSharedUserOperation *)v7 uuid];
-    v39 = v7;
-    v21 = [(HMDRemoveAccessoryPairingSharedUserOperation *)v7 pairingIdentity];
-    v22 = [v6 home];
-    v23 = [v22 modelID];
-    v24 = [(HMDRemoveAccessoryPairingSharedUserOperation *)v16 initWithAccessoryUUID:v17 accessoryIdentifier:v18 isOwnerIdentity:v19 forSharedUser:v20 sharedUserPairingIdentity:v21 homeUUIDWhereAccessoryWasPaired:v23];
+    modelID = [accessoryCopy modelID];
+    identifier2 = [accessoryCopy identifier];
+    isOwner = [(HMDRemoveAccessoryPairingSharedUserOperation *)userCopy isOwner];
+    uuid = [(HMDRemoveAccessoryPairingSharedUserOperation *)userCopy uuid];
+    v39 = userCopy;
+    pairingIdentity = [(HMDRemoveAccessoryPairingSharedUserOperation *)userCopy pairingIdentity];
+    home = [accessoryCopy home];
+    modelID2 = [home modelID];
+    v24 = [(HMDRemoveAccessoryPairingSharedUserOperation *)v16 initWithAccessoryUUID:modelID accessoryIdentifier:identifier2 isOwnerIdentity:isOwner forSharedUser:uuid sharedUserPairingIdentity:pairingIdentity homeUUIDWhereAccessoryWasPaired:modelID2];
 
     if (v24)
     {
-      v25 = [a1 homeManager];
-      v26 = [v25 bgOpsManager];
-      [v26 addOperation:v24];
+      homeManager = [self homeManager];
+      bgOpsManager = [homeManager bgOpsManager];
+      [bgOpsManager addOperation:v24];
 
       v27 = objc_autoreleasePoolPush();
-      v28 = a1;
+      selfCopy3 = self;
       v29 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
       {
@@ -2536,7 +2536,7 @@ LABEL_15:
         *buf = 138543874;
         v41 = v30;
         v42 = 2112;
-        v7 = v39;
+        userCopy = v39;
         v43 = v39;
         v44 = 2112;
         v45 = v24;
@@ -2558,7 +2558,7 @@ LABEL_21:
     else
     {
       v27 = objc_autoreleasePoolPush();
-      v36 = a1;
+      selfCopy4 = self;
       v29 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
       {
@@ -2566,7 +2566,7 @@ LABEL_21:
         *buf = 138543618;
         v41 = v30;
         v42 = 2112;
-        v7 = v39;
+        userCopy = v39;
         v43 = v39;
         v31 = "%{public}@(b) Failed to create remove pairing operation for shared user : %@";
         v32 = v29;
@@ -2576,24 +2576,24 @@ LABEL_21:
       }
     }
 
-    v7 = v39;
+    userCopy = v39;
     goto LABEL_21;
   }
 
   v10 = objc_autoreleasePoolPush();
-  v11 = a1;
+  selfCopy5 = self;
   v12 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
   {
     v13 = HMFGetLogIdentifier();
-    v14 = [v6 modelID];
-    v35 = [v6 identifier];
+    uniqueIdentifier = [accessoryCopy modelID];
+    identifier3 = [accessoryCopy identifier];
     *buf = 138543874;
     v41 = v13;
     v42 = 2112;
-    v43 = v14;
+    v43 = uniqueIdentifier;
     v44 = 2112;
-    v45 = v35;
+    v45 = identifier3;
     _os_log_impl(&dword_229538000, v12, OS_LOG_TYPE_ERROR, "%{public}@(b) Cannot remove pairing for mkfAccessory without critical data, modelID: %@ ... identifier: %@", buf, 0x20u);
 
     goto LABEL_12;
@@ -2607,41 +2607,41 @@ LABEL_22:
   v37 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)scheduleRemovePairingForAccessory:(id)a3 forSharedUser:(id)a4
++ (void)scheduleRemovePairingForAccessory:(id)accessory forSharedUser:(id)user
 {
   v49 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 castIfHAPAccessory];
-  v9 = v8;
-  if (!v8 || !isBridgedAccessory(v8))
+  accessoryCopy = accessory;
+  userCopy = user;
+  castIfHAPAccessory = [accessoryCopy castIfHAPAccessory];
+  v9 = castIfHAPAccessory;
+  if (!castIfHAPAccessory || !isBridgedAccessory(castIfHAPAccessory))
   {
-    v15 = [v6 identifier];
+    identifier = [accessoryCopy identifier];
 
-    if (v15)
+    if (identifier)
     {
-      if ([HMDUser isAllowedToAddOrRemoveHAPPairingsOnAccessoryFor:v7])
+      if ([HMDUser isAllowedToAddOrRemoveHAPPairingsOnAccessoryFor:userCopy])
       {
         v39 = v9;
-        v16 = [(HMDRemoveAccessoryPairingSharedUserOperation *)v7 pairingIdentity];
+        pairingIdentity = [(HMDRemoveAccessoryPairingSharedUserOperation *)userCopy pairingIdentity];
         v17 = [HMDRemoveAccessoryPairingSharedUserOperation alloc];
-        v18 = [v6 modelID];
-        v19 = [v6 identifier];
-        v20 = [(HMDRemoveAccessoryPairingSharedUserOperation *)v7 isOwner];
-        v40 = v7;
-        v21 = [(HMDRemoveAccessoryPairingSharedUserOperation *)v7 modelID];
-        v22 = [v6 home];
-        v23 = [v22 modelID];
-        v24 = [(HMDRemoveAccessoryPairingSharedUserOperation *)v17 initWithAccessoryUUID:v18 accessoryIdentifier:v19 isOwnerIdentity:v20 forSharedUser:v21 sharedUserPairingIdentity:v16 homeUUIDWhereAccessoryWasPaired:v23];
+        modelID = [accessoryCopy modelID];
+        identifier2 = [accessoryCopy identifier];
+        isOwner = [(HMDRemoveAccessoryPairingSharedUserOperation *)userCopy isOwner];
+        v40 = userCopy;
+        modelID2 = [(HMDRemoveAccessoryPairingSharedUserOperation *)userCopy modelID];
+        home = [accessoryCopy home];
+        modelID3 = [home modelID];
+        v24 = [(HMDRemoveAccessoryPairingSharedUserOperation *)v17 initWithAccessoryUUID:modelID accessoryIdentifier:identifier2 isOwnerIdentity:isOwner forSharedUser:modelID2 sharedUserPairingIdentity:pairingIdentity homeUUIDWhereAccessoryWasPaired:modelID3];
 
         if (v24)
         {
-          v25 = [a1 homeManager];
-          v26 = [v25 bgOpsManager];
-          [v26 addOperation:v24];
+          homeManager = [self homeManager];
+          bgOpsManager = [homeManager bgOpsManager];
+          [bgOpsManager addOperation:v24];
 
           v27 = objc_autoreleasePoolPush();
-          v28 = a1;
+          selfCopy = self;
           v29 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
           {
@@ -2649,7 +2649,7 @@ LABEL_22:
             *buf = 138543874;
             v42 = v30;
             v43 = 2112;
-            v7 = v40;
+            userCopy = v40;
             v44 = v40;
             v45 = 2112;
             v46 = v24;
@@ -2667,34 +2667,34 @@ LABEL_21:
         else
         {
           v27 = objc_autoreleasePoolPush();
-          v35 = a1;
+          selfCopy2 = self;
           v29 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
           {
             v30 = HMFGetLogIdentifier();
-            v36 = [v6 modelID];
-            v37 = [v6 identifier];
+            modelID4 = [accessoryCopy modelID];
+            identifier3 = [accessoryCopy identifier];
             *buf = 138544130;
             v42 = v30;
             v43 = 2112;
-            v7 = v40;
+            userCopy = v40;
             v44 = v40;
             v45 = 2112;
-            v46 = v36;
+            v46 = modelID4;
             v47 = 2112;
-            v48 = v37;
+            v48 = identifier3;
             _os_log_impl(&dword_229538000, v29, OS_LOG_TYPE_ERROR, "%{public}@(a) Failed to create remove pairing operation for shared user : %@, %@/%@", buf, 0x2Au);
 
             goto LABEL_19;
           }
         }
 
-        v7 = v40;
+        userCopy = v40;
         goto LABEL_21;
       }
 
       v10 = objc_autoreleasePoolPush();
-      v11 = a1;
+      selfCopy5 = self;
       v12 = HMFGetOSLogHandle();
       if (!os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
       {
@@ -2702,14 +2702,14 @@ LABEL_21:
       }
 
       v13 = HMFGetLogIdentifier();
-      v14 = [v6 debugDescription];
-      v31 = [(HMFObject *)v7 debugDescription];
+      modelID5 = [accessoryCopy debugDescription];
+      identifier4 = [(HMFObject *)userCopy debugDescription];
       *buf = 138543874;
       v42 = v13;
       v43 = 2112;
-      v44 = v14;
+      v44 = modelID5;
       v45 = 2112;
-      v46 = v31;
+      v46 = identifier4;
       v32 = "%{public}@(a) Not allowed to remove pairing for mkfAccessory: %@, shared user: %@";
       v33 = v12;
       v34 = OS_LOG_TYPE_INFO;
@@ -2718,7 +2718,7 @@ LABEL_21:
     else
     {
       v10 = objc_autoreleasePoolPush();
-      v11 = a1;
+      selfCopy5 = self;
       v12 = HMFGetOSLogHandle();
       if (!os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
@@ -2726,14 +2726,14 @@ LABEL_21:
       }
 
       v13 = HMFGetLogIdentifier();
-      v14 = [v6 modelID];
-      v31 = [v6 identifier];
+      modelID5 = [accessoryCopy modelID];
+      identifier4 = [accessoryCopy identifier];
       *buf = 138543874;
       v42 = v13;
       v43 = 2112;
-      v44 = v14;
+      v44 = modelID5;
       v45 = 2112;
-      v46 = v31;
+      v46 = identifier4;
       v32 = "%{public}@(a) Cannot remove pairing for mkfAccessory without critical data, modelID: %@ ... identifier: %@";
       v33 = v12;
       v34 = OS_LOG_TYPE_ERROR;
@@ -2745,18 +2745,18 @@ LABEL_21:
   }
 
   v10 = objc_autoreleasePoolPush();
-  v11 = a1;
+  selfCopy5 = self;
   v12 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
     v13 = HMFGetLogIdentifier();
-    v14 = [v9 uniqueIdentifier];
+    modelID5 = [v9 uniqueIdentifier];
     *buf = 138543874;
     v42 = v13;
     v43 = 2112;
-    v44 = v14;
+    v44 = modelID5;
     v45 = 2112;
-    v46 = v7;
+    v46 = userCopy;
     _os_log_impl(&dword_229538000, v12, OS_LOG_TYPE_INFO, "%{public}@(a) Not scheduling remove pairing operation for accessory: %@ and shared user: %@", buf, 0x20u);
 LABEL_15:
   }
@@ -2769,12 +2769,12 @@ LABEL_22:
   v38 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)scheduleAddPairingForAccessory:(id)a3 sharedUser:(id)a4
++ (void)scheduleAddPairingForAccessory:(id)accessory sharedUser:(id)user
 {
   v55 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
+  accessoryCopy = accessory;
+  userCopy = user;
+  v8 = accessoryCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -2790,10 +2790,10 @@ LABEL_22:
 
   if (!v10 || ([v10 bridge], v11 = objc_claimAutoreleasedReturnValue(), v11, !v11))
   {
-    if (([v7 isOwner] & 1) != 0 || objc_msgSend(v7, "isPending"))
+    if (([userCopy isOwner] & 1) != 0 || objc_msgSend(userCopy, "isPending"))
     {
       v12 = objc_autoreleasePoolPush();
-      v13 = a1;
+      selfCopy5 = self;
       v14 = HMFGetOSLogHandle();
       if (!os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
@@ -2804,7 +2804,7 @@ LABEL_22:
       *buf = 138543618;
       v46 = v15;
       v47 = 2112;
-      v48 = v7;
+      v48 = userCopy;
       v18 = "%{public}@(b) Failed to create add pairing operation for user: %@";
       v19 = v14;
       v20 = OS_LOG_TYPE_ERROR;
@@ -2813,10 +2813,10 @@ LABEL_12:
       goto LABEL_13;
     }
 
-    if (([v7 isAllowedToAddOrRemoveHAPPairingsOnAccessory] & 1) == 0)
+    if (([userCopy isAllowedToAddOrRemoveHAPPairingsOnAccessory] & 1) == 0)
     {
       v12 = objc_autoreleasePoolPush();
-      v13 = a1;
+      selfCopy5 = self;
       v14 = HMFGetOSLogHandle();
       if (!os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
       {
@@ -2827,7 +2827,7 @@ LABEL_12:
       *buf = 138543618;
       v46 = v15;
       v47 = 2112;
-      v48 = v7;
+      v48 = userCopy;
       v18 = "%{public}@(b) Not allowed to add pairing for this user : %@";
       v19 = v14;
       v20 = OS_LOG_TYPE_INFO;
@@ -2835,41 +2835,41 @@ LABEL_12:
     }
 
     v44 = [HMDAddAccessoryPairingSharedUserOperation alloc];
-    v43 = [v8 uuid];
-    v22 = [v8 identifier];
-    v23 = [v7 uuid];
-    v24 = [v7 pairingIdentity];
-    v42 = [v7 isAdministrator];
-    v25 = [v7 home];
-    v26 = [v25 uuid];
-    v27 = v23;
-    v28 = [(HMDAddAccessoryPairingSharedUserOperation *)v44 initWithAccessoryUUID:v43 accessoryIdentifier:v22 forSharedUser:v23 sharedUserPairingIdentity:v24 asOwner:0 asSharedAdmin:v42 homeUUIDWhereAccessoryWasPaired:v26];
+    uuid = [v8 uuid];
+    identifier = [v8 identifier];
+    uuid2 = [userCopy uuid];
+    pairingIdentity = [userCopy pairingIdentity];
+    isAdministrator = [userCopy isAdministrator];
+    home = [userCopy home];
+    uuid3 = [home uuid];
+    v27 = uuid2;
+    v28 = [(HMDAddAccessoryPairingSharedUserOperation *)v44 initWithAccessoryUUID:uuid accessoryIdentifier:identifier forSharedUser:uuid2 sharedUserPairingIdentity:pairingIdentity asOwner:0 asSharedAdmin:isAdministrator homeUUIDWhereAccessoryWasPaired:uuid3];
 
     if (v28)
     {
-      v29 = [a1 homeManager];
-      v30 = [v29 bgOpsManager];
-      [v30 addOperation:v28];
+      homeManager = [self homeManager];
+      bgOpsManager = [homeManager bgOpsManager];
+      [bgOpsManager addOperation:v28];
 
       v31 = objc_autoreleasePoolPush();
-      v32 = a1;
+      selfCopy3 = self;
       v33 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v33, OS_LOG_TYPE_INFO))
       {
         v34 = HMFGetLogIdentifier();
-        [v7 isAdministrator];
+        [userCopy isAdministrator];
         v35 = HMFBooleanToString();
-        v36 = [v8 shortDescription];
+        shortDescription = [v8 shortDescription];
         *buf = 138544386;
         v46 = v34;
         v47 = 2112;
-        v48 = v7;
+        v48 = userCopy;
         v49 = 2112;
         v50 = v28;
         v51 = 2112;
         v52 = v35;
         v53 = 2112;
-        v54 = v36;
+        v54 = shortDescription;
         v37 = "%{public}@(b) Scheduled add pairing operation for shared user : %@, %@, asSharedAdmin: %@, accessory: %@";
         v38 = v33;
         v39 = OS_LOG_TYPE_INFO;
@@ -2882,22 +2882,22 @@ LABEL_24:
     else
     {
       v31 = objc_autoreleasePoolPush();
-      v41 = a1;
+      selfCopy4 = self;
       v33 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
       {
         v34 = HMFGetLogIdentifier();
-        [v7 isAdministrator];
+        [userCopy isAdministrator];
         v35 = HMFBooleanToString();
-        v36 = [v8 shortDescription];
+        shortDescription = [v8 shortDescription];
         *buf = 138544130;
         v46 = v34;
         v47 = 2112;
-        v48 = v7;
+        v48 = userCopy;
         v49 = 2112;
         v50 = v35;
         v51 = 2112;
-        v52 = v36;
+        v52 = shortDescription;
         v37 = "%{public}@(b) Failed to create add pairing operation for shared user : %@, asSharedAdmin: %@, accessory: %@";
         v38 = v33;
         v39 = OS_LOG_TYPE_ERROR;
@@ -2911,22 +2911,22 @@ LABEL_24:
   }
 
   v12 = objc_autoreleasePoolPush();
-  v13 = a1;
+  selfCopy5 = self;
   v14 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
     v15 = HMFGetLogIdentifier();
-    [v7 isAdministrator];
+    [userCopy isAdministrator];
     v16 = HMFBooleanToString();
-    v17 = [v10 shortDescription];
+    shortDescription2 = [v10 shortDescription];
     *buf = 138544130;
     v46 = v15;
     v47 = 2112;
-    v48 = v7;
+    v48 = userCopy;
     v49 = 2112;
     v50 = v16;
     v51 = 2112;
-    v52 = v17;
+    v52 = shortDescription2;
     _os_log_impl(&dword_229538000, v14, OS_LOG_TYPE_INFO, "%{public}@(b) Not scheduling add pairing operation for shared user: %@, asSharedAdmin: %@, accessory: %@", buf, 0x2Au);
 
 LABEL_13:
@@ -2940,28 +2940,28 @@ LABEL_15:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)scheduleAddPairingForAccessory:(id)a3 forSharedUser:(id)a4
++ (void)scheduleAddPairingForAccessory:(id)accessory forSharedUser:(id)user
 {
   v62 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 castIfHAPAccessory];
-  v9 = v8;
-  if (v8 && isBridgedAccessory(v8))
+  accessoryCopy = accessory;
+  userCopy = user;
+  castIfHAPAccessory = [accessoryCopy castIfHAPAccessory];
+  v9 = castIfHAPAccessory;
+  if (castIfHAPAccessory && isBridgedAccessory(castIfHAPAccessory))
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = a1;
+    selfCopy7 = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       v13 = HMFGetLogIdentifier();
-      v14 = [v9 uniqueIdentifier];
+      uniqueIdentifier = [v9 uniqueIdentifier];
       *buf = 138543874;
       v55 = v13;
       v56 = 2112;
-      v57 = v14;
+      v57 = uniqueIdentifier;
       v58 = 2112;
-      v59 = v7;
+      v59 = userCopy;
       v15 = "%{public}@(a) Not scheduling add pairing operation for accessory: %@ and user: %@";
 LABEL_17:
       v41 = v12;
@@ -2977,25 +2977,25 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  v16 = [(HMDAddAccessoryPairingSharedUserOperation *)v7 privilege];
-  v17 = [v16 unsignedIntegerValue];
+  privilege = [(HMDAddAccessoryPairingSharedUserOperation *)userCopy privilege];
+  unsignedIntegerValue = [privilege unsignedIntegerValue];
 
-  v18 = [(HMDAddAccessoryPairingSharedUserOperation *)v7 privilege];
-  if (!v18 || v17 == 2)
+  privilege2 = [(HMDAddAccessoryPairingSharedUserOperation *)userCopy privilege];
+  if (!privilege2 || unsignedIntegerValue == 2)
   {
   }
 
   else
   {
 
-    if (v17 != 3)
+    if (unsignedIntegerValue != 3)
     {
-      v19 = [v6 identifier];
+      identifier = [accessoryCopy identifier];
 
-      if (!v19)
+      if (!identifier)
       {
         v10 = objc_autoreleasePoolPush();
-        v11 = a1;
+        selfCopy7 = self;
         v12 = HMFGetOSLogHandle();
         if (!os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
         {
@@ -3003,23 +3003,23 @@ LABEL_19:
         }
 
         v13 = HMFGetLogIdentifier();
-        v14 = [v6 modelID];
-        v45 = [v6 identifier];
+        uniqueIdentifier = [accessoryCopy modelID];
+        identifier2 = [accessoryCopy identifier];
         *buf = 138543874;
         v55 = v13;
         v56 = 2112;
-        v57 = v14;
+        v57 = uniqueIdentifier;
         v58 = 2112;
-        v59 = v45;
+        v59 = identifier2;
         _os_log_impl(&dword_229538000, v12, OS_LOG_TYPE_ERROR, "%{public}@(a) Cannot add pairing for mkfAccessory without critical data, modelID: %@ ... identifier: %@", buf, 0x20u);
 
         goto LABEL_19;
       }
 
-      if (![HMDUser isAllowedToAddOrRemoveHAPPairingsOnAccessoryFor:v7])
+      if (![HMDUser isAllowedToAddOrRemoveHAPPairingsOnAccessoryFor:userCopy])
       {
         v10 = objc_autoreleasePoolPush();
-        v11 = a1;
+        selfCopy7 = self;
         v12 = HMFGetOSLogHandle();
         if (!os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
         {
@@ -3027,11 +3027,11 @@ LABEL_19:
         }
 
         v13 = HMFGetLogIdentifier();
-        v14 = [(HMDAddAccessoryPairingSharedUserOperation *)v7 modelID];
+        uniqueIdentifier = [(HMDAddAccessoryPairingSharedUserOperation *)userCopy modelID];
         *buf = 138543618;
         v55 = v13;
         v56 = 2112;
-        v57 = v14;
+        v57 = uniqueIdentifier;
         v15 = "%{public}@(a) Cannot create add pairing operation for user:%@ as not allowed by policy";
         v41 = v12;
         v42 = OS_LOG_TYPE_INFO;
@@ -3039,11 +3039,11 @@ LABEL_19:
         goto LABEL_18;
       }
 
-      v20 = [(HMDAddAccessoryPairingSharedUserOperation *)v7 pairingIdentity];
-      if (!v20)
+      pairingIdentity = [(HMDAddAccessoryPairingSharedUserOperation *)userCopy pairingIdentity];
+      if (!pairingIdentity)
       {
         v46 = objc_autoreleasePoolPush();
-        v47 = a1;
+        selfCopy4 = self;
         v48 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v48, OS_LOG_TYPE_FAULT))
         {
@@ -3051,7 +3051,7 @@ LABEL_19:
           *buf = 138543618;
           v55 = v49;
           v56 = 2114;
-          v57 = v7;
+          v57 = userCopy;
           _os_log_impl(&dword_229538000, v48, OS_LOG_TYPE_FAULT, "%{public}@(a) Cannot create add pairing operation for user %{public}@ with no pairingIdentity", buf, 0x16u);
         }
 
@@ -3060,26 +3060,26 @@ LABEL_19:
       }
 
       v52 = [HMDAddAccessoryPairingSharedUserOperation alloc];
-      v21 = [v6 modelID];
-      v22 = [v6 identifier];
-      v23 = [(HMDAddAccessoryPairingSharedUserOperation *)v7 modelID];
-      v24 = [v6 home];
-      v25 = [v24 modelID];
-      v26 = v20;
-      v27 = v25;
-      v51 = v25;
+      modelID = [accessoryCopy modelID];
+      identifier3 = [accessoryCopy identifier];
+      modelID2 = [(HMDAddAccessoryPairingSharedUserOperation *)userCopy modelID];
+      home = [accessoryCopy home];
+      modelID3 = [home modelID];
+      v26 = pairingIdentity;
+      v27 = modelID3;
+      v51 = modelID3;
       v28 = v52;
       v53 = v26;
-      v29 = [HMDAddAccessoryPairingSharedUserOperation initWithAccessoryUUID:v28 accessoryIdentifier:"initWithAccessoryUUID:accessoryIdentifier:forSharedUser:sharedUserPairingIdentity:asOwner:asSharedAdmin:homeUUIDWhereAccessoryWasPaired:" forSharedUser:v21 sharedUserPairingIdentity:v22 asOwner:v23 asSharedAdmin:v51 homeUUIDWhereAccessoryWasPaired:?];
+      v29 = [HMDAddAccessoryPairingSharedUserOperation initWithAccessoryUUID:v28 accessoryIdentifier:"initWithAccessoryUUID:accessoryIdentifier:forSharedUser:sharedUserPairingIdentity:asOwner:asSharedAdmin:homeUUIDWhereAccessoryWasPaired:" forSharedUser:modelID sharedUserPairingIdentity:identifier3 asOwner:modelID2 asSharedAdmin:v51 homeUUIDWhereAccessoryWasPaired:?];
 
       if (v29)
       {
-        v30 = [a1 homeManager];
-        v31 = [v30 bgOpsManager];
-        [v31 addOperation:v29];
+        homeManager = [self homeManager];
+        bgOpsManager = [homeManager bgOpsManager];
+        [bgOpsManager addOperation:v29];
 
         v32 = objc_autoreleasePoolPush();
-        v33 = a1;
+        selfCopy5 = self;
         v34 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v34, OS_LOG_TYPE_INFO))
         {
@@ -3088,7 +3088,7 @@ LABEL_19:
           *buf = 138544130;
           v55 = v35;
           v56 = 2112;
-          v57 = v7;
+          v57 = userCopy;
           v58 = 2112;
           v59 = v29;
           v60 = 2112;
@@ -3105,7 +3105,7 @@ LABEL_31:
       else
       {
         v32 = objc_autoreleasePoolPush();
-        v50 = a1;
+        selfCopy6 = self;
         v34 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
         {
@@ -3114,7 +3114,7 @@ LABEL_31:
           *buf = 138543874;
           v55 = v35;
           v56 = 2112;
-          v57 = v7;
+          v57 = userCopy;
           v58 = 2112;
           v59 = v36;
           v37 = "%{public}@(a) Failed to create add pairing operation for shared user : %@, asSharedAdmin: %@";
@@ -3125,7 +3125,7 @@ LABEL_31:
         }
       }
 
-      v20 = v53;
+      pairingIdentity = v53;
 
       objc_autoreleasePoolPop(v32);
 LABEL_33:
@@ -3135,18 +3135,18 @@ LABEL_33:
   }
 
   v10 = objc_autoreleasePoolPush();
-  v11 = a1;
+  selfCopy7 = self;
   v12 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
   {
     v13 = HMFGetLogIdentifier();
-    v14 = [(HMDAddAccessoryPairingSharedUserOperation *)v7 privilege];
+    uniqueIdentifier = [(HMDAddAccessoryPairingSharedUserOperation *)userCopy privilege];
     *buf = 138543874;
     v55 = v13;
     v56 = 2112;
-    v57 = v7;
+    v57 = userCopy;
     v58 = 2112;
-    v59 = v14;
+    v59 = uniqueIdentifier;
     v15 = "%{public}@(a) Cannot create add pairing operation for user: %@ with privilege: %@";
     goto LABEL_17;
   }
@@ -3159,23 +3159,23 @@ LABEL_21:
   v44 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)scheduleFullAuditForAccessory:(id)a3
++ (void)scheduleFullAuditForAccessory:(id)accessory
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([a1 checkAndRaiseFaultIfHH2KeyIsMissing])
+  accessoryCopy = accessory;
+  if ([self checkAndRaiseFaultIfHH2KeyIsMissing])
   {
     v5 = objc_autoreleasePoolPush();
-    v6 = a1;
+    selfCopy2 = self;
     v7 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
       v8 = HMFGetLogIdentifier();
-      v9 = [v4 modelID];
+      modelID = [accessoryCopy modelID];
       v26 = 138543618;
       v27 = v8;
       v28 = 2112;
-      v29 = v9;
+      v29 = modelID;
       v10 = "%{public}@Cannot audit shared user entries in Database for accessory : %@ due to missing HH2 key";
 LABEL_9:
       _os_log_impl(&dword_229538000, v7, OS_LOG_TYPE_ERROR, v10, &v26, 0x16u);
@@ -3186,21 +3186,21 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v11 = [v4 identifier];
+  identifier = [accessoryCopy identifier];
 
-  if (!v11)
+  if (!identifier)
   {
     v5 = objc_autoreleasePoolPush();
-    v6 = a1;
+    selfCopy2 = self;
     v7 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
       v8 = HMFGetLogIdentifier();
-      v9 = [v4 debugDescription];
+      modelID = [accessoryCopy debugDescription];
       v26 = 138543618;
       v27 = v8;
       v28 = 2112;
-      v29 = v9;
+      v29 = modelID;
       v10 = "%{public}@Cannot audit the accessory with nil identifier. Ignoring audit for : %@";
       goto LABEL_9;
     }
@@ -3212,32 +3212,32 @@ LABEL_10:
   }
 
   v12 = [HMDAuditAccessoryPairingOperation alloc];
-  v13 = [v4 modelID];
-  v14 = [v4 identifier];
-  v15 = [v4 home];
-  v16 = [v15 modelID];
-  v17 = [(HMDAuditAccessoryPairingOperation *)v12 initWithAccessoryUUID:v13 accessoryIdentifier:v14 homeUUIDWhereAccessoryWasPaired:v16];
+  modelID2 = [accessoryCopy modelID];
+  identifier2 = [accessoryCopy identifier];
+  home = [accessoryCopy home];
+  modelID3 = [home modelID];
+  v17 = [(HMDAuditAccessoryPairingOperation *)v12 initWithAccessoryUUID:modelID2 accessoryIdentifier:identifier2 homeUUIDWhereAccessoryWasPaired:modelID3];
 
   if (v17)
   {
-    v18 = [a1 homeManager];
-    v19 = [v18 bgOpsManager];
-    [v19 addOperation:v17];
+    homeManager = [self homeManager];
+    bgOpsManager = [homeManager bgOpsManager];
+    [bgOpsManager addOperation:v17];
   }
 
   else
   {
     v20 = objc_autoreleasePoolPush();
-    v21 = a1;
+    selfCopy3 = self;
     v22 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
     {
       v23 = HMFGetLogIdentifier();
-      v24 = [v4 modelID];
+      modelID4 = [accessoryCopy modelID];
       v26 = 138543618;
       v27 = v23;
       v28 = 2112;
-      v29 = v24;
+      v29 = modelID4;
       _os_log_impl(&dword_229538000, v22, OS_LOG_TYPE_ERROR, "%{public}@Failed to create audit pairing operation for : %@", &v26, 0x16u);
     }
 
@@ -3248,17 +3248,17 @@ LABEL_15:
   v25 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)dumpUsers:(id)a3 usingTag:(id)a4
++ (void)dumpUsers:(id)users usingTag:(id)tag
 {
-  v6 = a4;
+  tagCopy = tag;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __58__HMDBackgroundOperationManagerHelper_dumpUsers_usingTag___block_invoke;
   v8[3] = &unk_2786853A8;
-  v9 = v6;
-  v10 = a1;
-  v7 = v6;
-  [a3 hmf_enumerateWithAutoreleasePoolUsingBlock:v8];
+  v9 = tagCopy;
+  selfCopy = self;
+  v7 = tagCopy;
+  [users hmf_enumerateWithAutoreleasePoolUsingBlock:v8];
 }
 
 void __58__HMDBackgroundOperationManagerHelper_dumpUsers_usingTag___block_invoke(uint64_t a1, void *a2)
@@ -3289,17 +3289,17 @@ void __58__HMDBackgroundOperationManagerHelper_dumpUsers_usingTag___block_invoke
   v11 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)auditSharedUserEntriesInDatabaseForHome:(id)a3 withCompletionHandler:(id)a4
++ (void)auditSharedUserEntriesInDatabaseForHome:(id)home withCompletionHandler:(id)handler
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 checkAndRaiseFaultIfHH2KeyIsMissing];
+  homeCopy = home;
+  handlerCopy = handler;
+  checkAndRaiseFaultIfHH2KeyIsMissing = [self checkAndRaiseFaultIfHH2KeyIsMissing];
   v9 = objc_autoreleasePoolPush();
-  v10 = a1;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   v12 = v11;
-  if (!v8)
+  if (!checkAndRaiseFaultIfHH2KeyIsMissing)
   {
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
@@ -3307,22 +3307,22 @@ void __58__HMDBackgroundOperationManagerHelper_dumpUsers_usingTag___block_invoke
       *buf = 138543618;
       v25 = v16;
       v26 = 2112;
-      v27 = v6;
+      v27 = homeCopy;
       _os_log_impl(&dword_229538000, v12, OS_LOG_TYPE_INFO, "%{public}@Going to audit shared user entries in database for home : %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v9);
     v17 = +[HMDCoreData sharedInstance];
-    v18 = [v6 uuid];
-    v14 = [v17 contextWithHomeUUID:v18];
+    uuid = [homeCopy uuid];
+    v14 = [v17 contextWithHomeUUID:uuid];
 
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __101__HMDBackgroundOperationManagerHelper_auditSharedUserEntriesInDatabaseForHome_withCompletionHandler___block_invoke;
     v20[3] = &unk_278687360;
-    v21 = v6;
-    v23 = v10;
-    v22 = v7;
+    v21 = homeCopy;
+    v23 = selfCopy;
+    v22 = handlerCopy;
     [v14 performBlockWithPinnedQueryGeneration:v20];
 
     v15 = v21;
@@ -3335,12 +3335,12 @@ void __58__HMDBackgroundOperationManagerHelper_dumpUsers_usingTag___block_invoke
     *buf = 138543618;
     v25 = v13;
     v26 = 2112;
-    v27 = v6;
+    v27 = homeCopy;
     _os_log_impl(&dword_229538000, v12, OS_LOG_TYPE_ERROR, "%{public}@Cannot trigger audit for shared users for %@ due to missing HH2 controller key", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v9);
-  v14 = _Block_copy(v7);
+  v14 = _Block_copy(handlerCopy);
   if (v14)
   {
     v15 = [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
@@ -3687,20 +3687,20 @@ void __101__HMDBackgroundOperationManagerHelper_auditSharedUserEntriesInDatabase
   }
 }
 
-+ (void)removePairingOnAllAccessoriesOfHome:(id)a3 forSharedUser:(id)a4
++ (void)removePairingOnAllAccessoriesOfHome:(id)home forSharedUser:(id)user
 {
   v38 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v7 isAllowedToAddOrRemoveHAPPairingsOnAccessory])
+  homeCopy = home;
+  userCopy = user;
+  if ([userCopy isAllowedToAddOrRemoveHAPPairingsOnAccessory])
   {
-    if ([v7 isOwner])
+    if ([userCopy isOwner])
     {
       _HMFPreconditionFailure();
     }
 
     v8 = objc_autoreleasePoolPush();
-    v9 = a1;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
@@ -3708,37 +3708,37 @@ void __101__HMDBackgroundOperationManagerHelper_auditSharedUserEntriesInDatabase
       *buf = 138543874;
       v33 = v11;
       v34 = 2112;
-      v35 = v7;
+      v35 = userCopy;
       v36 = 2112;
-      v37 = v6;
+      v37 = homeCopy;
       _os_log_impl(&dword_229538000, v10, OS_LOG_TYPE_INFO, "%{public}@Scheduling remove accessory pairing operation for shared user : %@ / %@", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v8);
     v12 = +[HMDCoreData sharedInstance];
-    v13 = [v6 uuid];
-    v14 = [v12 contextWithHomeUUID:v13];
+    uuid = [homeCopy uuid];
+    v14 = [v12 contextWithHomeUUID:uuid];
 
     v24 = MEMORY[0x277D85DD0];
     v25 = 3221225472;
     v26 = __89__HMDBackgroundOperationManagerHelper_removePairingOnAllAccessoriesOfHome_forSharedUser___block_invoke;
     v27 = &unk_278685330;
-    v15 = v6;
+    v15 = homeCopy;
     v28 = v15;
-    v31 = v9;
-    v29 = v7;
+    v31 = selfCopy;
+    v29 = userCopy;
     v30 = v14;
     v16 = v14;
     [v16 performBlockWithPinnedQueryGeneration:&v24];
-    v17 = [v15 homeManager];
-    v18 = [v17 bgOpsManager];
-    [v18 evaluateOperations];
+    homeManager = [v15 homeManager];
+    bgOpsManager = [homeManager bgOpsManager];
+    [bgOpsManager evaluateOperations];
   }
 
   else
   {
     v19 = objc_autoreleasePoolPush();
-    v20 = a1;
+    selfCopy2 = self;
     v21 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
     {
@@ -3746,9 +3746,9 @@ void __101__HMDBackgroundOperationManagerHelper_auditSharedUserEntriesInDatabase
       *buf = 138543874;
       v33 = v22;
       v34 = 2112;
-      v35 = v6;
+      v35 = homeCopy;
       v36 = 2112;
-      v37 = v7;
+      v37 = userCopy;
       _os_log_impl(&dword_229538000, v21, OS_LOG_TYPE_INFO, "%{public}@Not allowed to remove pairings for all the accessories of the home: %@, sharedUser: %@", buf, 0x20u);
     }
 
@@ -3889,18 +3889,18 @@ LABEL_8:
 LABEL_12:
 }
 
-+ (void)addPairingOnAllAccessoriesOfHome:(id)a3 forSharedUser:(id)a4
++ (void)addPairingOnAllAccessoriesOfHome:(id)home forSharedUser:(id)user
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v7 isOwner])
+  homeCopy = home;
+  userCopy = user;
+  if ([userCopy isOwner])
   {
     _HMFPreconditionFailure();
   }
 
   v8 = objc_autoreleasePoolPush();
-  v9 = a1;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -3908,26 +3908,26 @@ LABEL_12:
     *buf = 138543874;
     v24 = v11;
     v25 = 2112;
-    v26 = v7;
+    v26 = userCopy;
     v27 = 2112;
-    v28 = v6;
+    v28 = homeCopy;
     _os_log_impl(&dword_229538000, v10, OS_LOG_TYPE_INFO, "%{public}@Scheduling add accessory pairing operation for shared user: %@ / %@", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v8);
-  v12 = [v6 accessories];
+  accessories = [homeCopy accessories];
   v17 = MEMORY[0x277D85DD0];
   v18 = 3221225472;
   v19 = __86__HMDBackgroundOperationManagerHelper_addPairingOnAllAccessoriesOfHome_forSharedUser___block_invoke;
   v20 = &unk_2786852E0;
-  v21 = v7;
-  v22 = v9;
-  v13 = v7;
-  [v12 hmf_enumerateWithAutoreleasePoolUsingBlock:&v17];
+  v21 = userCopy;
+  v22 = selfCopy;
+  v13 = userCopy;
+  [accessories hmf_enumerateWithAutoreleasePoolUsingBlock:&v17];
 
-  v14 = [v6 homeManager];
-  v15 = [v14 bgOpsManager];
-  [v15 evaluateOperations];
+  homeManager = [homeCopy homeManager];
+  bgOpsManager = [homeManager bgOpsManager];
+  [bgOpsManager evaluateOperations];
 
   v16 = *MEMORY[0x277D85DE8];
 }
@@ -4007,26 +4007,26 @@ LABEL_16:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)auditSharedUserEntriesInDatabaseForAccessory:(id)a3
++ (void)auditSharedUserEntriesInDatabaseForAccessory:(id)accessory
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([a1 checkAndRaiseFaultIfHH2KeyIsMissing])
+  accessoryCopy = accessory;
+  if ([self checkAndRaiseFaultIfHH2KeyIsMissing])
   {
     v5 = objc_autoreleasePoolPush();
-    v6 = a1;
+    selfCopy = self;
     v7 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
       v8 = HMFGetLogIdentifier();
       *buf = 0;
       *&buf[8] = 0;
-      v9 = [v4 uuid];
+      uuid = [accessoryCopy uuid];
 
-      if (v9)
+      if (uuid)
       {
-        v10 = [v4 uuid];
-        [v10 getUUIDBytes:buf];
+        uuid2 = [accessoryCopy uuid];
+        [uuid2 getUUIDBytes:buf];
       }
 
       else
@@ -4049,14 +4049,14 @@ LABEL_16:
 
   else
   {
-    v11 = [MEMORY[0x277D0F8F0] defaultScheduler];
+    defaultScheduler = [MEMORY[0x277D0F8F0] defaultScheduler];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __84__HMDBackgroundOperationManagerHelper_auditSharedUserEntriesInDatabaseForAccessory___block_invoke;
     v14[3] = &unk_27868A0D0;
-    v15 = v4;
-    v16 = a1;
-    v12 = [v11 performWithQualityOfService:9 block:v14];
+    v15 = accessoryCopy;
+    selfCopy2 = self;
+    v12 = [defaultScheduler performWithQualityOfService:9 block:v14];
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -4316,18 +4316,18 @@ LABEL_22:
   v28 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)auditSharedUserEntriesInDatabase:(id)a3
++ (void)auditSharedUserEntriesInDatabase:(id)database
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277D0F8F0] defaultScheduler];
+  databaseCopy = database;
+  defaultScheduler = [MEMORY[0x277D0F8F0] defaultScheduler];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __72__HMDBackgroundOperationManagerHelper_auditSharedUserEntriesInDatabase___block_invoke;
   v8[3] = &unk_27868A0D0;
-  v9 = v4;
-  v10 = a1;
-  v6 = v4;
-  v7 = [v5 performWithQualityOfService:9 block:v8];
+  v9 = databaseCopy;
+  selfCopy = self;
+  v6 = databaseCopy;
+  v7 = [defaultScheduler performWithQualityOfService:9 block:v8];
 }
 
 void __72__HMDBackgroundOperationManagerHelper_auditSharedUserEntriesInDatabase___block_invoke(uint64_t a1)
@@ -4373,9 +4373,9 @@ void __72__HMDBackgroundOperationManagerHelper_auditSharedUserEntriesInDatabase_
 + (id)homeManager
 {
   v2 = +[HMDMainDriver driver];
-  v3 = [v2 homeManager];
+  homeManager = [v2 homeManager];
 
-  return v3;
+  return homeManager;
 }
 
 @end

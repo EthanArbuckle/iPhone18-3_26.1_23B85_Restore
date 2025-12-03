@@ -1,17 +1,17 @@
 @interface REMReminderFetchOptions_Codable
 - (REMReminderFetchOptions_Codable)init;
-- (REMReminderFetchOptions_Codable)initWithIncludeConcealed:(BOOL)a3 includeDueDateDeltaAlerts:(BOOL)a4;
+- (REMReminderFetchOptions_Codable)initWithIncludeConcealed:(BOOL)concealed includeDueDateDeltaAlerts:(BOOL)alerts;
 @end
 
 @implementation REMReminderFetchOptions_Codable
 
-- (REMReminderFetchOptions_Codable)initWithIncludeConcealed:(BOOL)a3 includeDueDateDeltaAlerts:(BOOL)a4
+- (REMReminderFetchOptions_Codable)initWithIncludeConcealed:(BOOL)concealed includeDueDateDeltaAlerts:(BOOL)alerts
 {
-  v4 = a4;
-  v5 = a3;
+  alertsCopy = alerts;
+  concealedCopy = concealed;
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
-  return [(REMReminderFetchOptions *)&v7 initWithIncludeConcealed:v5 includeDueDateDeltaAlerts:v4];
+  return [(REMReminderFetchOptions *)&v7 initWithIncludeConcealed:concealedCopy includeDueDateDeltaAlerts:alertsCopy];
 }
 
 - (REMReminderFetchOptions_Codable)init

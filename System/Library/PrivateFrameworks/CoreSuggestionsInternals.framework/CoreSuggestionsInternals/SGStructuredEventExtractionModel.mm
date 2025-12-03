@@ -1,10 +1,10 @@
 @interface SGStructuredEventExtractionModel
 + (id)sharedInstance;
-- (BOOL)isSenderSupportedForExtraction:(id)a3;
-- (BOOL)isSenderSupportedForMLDefaultExtraction:(id)a3;
-- (BOOL)isSenderSupportedForMLHybridExtraction:(id)a3;
-- (BOOL)isSenderSupportedForPFLTraining:(id)a3;
-- (BOOL)isSenderSupportedForShadowExtraction:(id)a3;
+- (BOOL)isSenderSupportedForExtraction:(id)extraction;
+- (BOOL)isSenderSupportedForMLDefaultExtraction:(id)extraction;
+- (BOOL)isSenderSupportedForMLHybridExtraction:(id)extraction;
+- (BOOL)isSenderSupportedForPFLTraining:(id)training;
+- (BOOL)isSenderSupportedForShadowExtraction:(id)extraction;
 - (id)_init;
 - (id)engineConfig;
 - (id)gazetteer;
@@ -13,8 +13,8 @@
 - (id)outputMapping;
 - (id)supportedProviders;
 - (unint64_t)addressComponentThreshold;
-- (unint64_t)maxMergeDistanceForSection:(id)a3 label:(id)a4;
-- (unint64_t)stripRepeatedContentForSectionLength:(id)a3 label:(id)a4;
+- (unint64_t)maxMergeDistanceForSection:(id)section label:(id)label;
+- (unint64_t)stripRepeatedContentForSectionLength:(id)length label:(id)label;
 - (void)updateAll;
 @end
 
@@ -65,17 +65,17 @@
 
 - (unint64_t)addressComponentThreshold
 {
-  v2 = [(SGStructuredEventExtractionModel *)self engineConfig];
-  v3 = v2;
-  if (v2)
+  engineConfig = [(SGStructuredEventExtractionModel *)self engineConfig];
+  v3 = engineConfig;
+  if (engineConfig)
   {
-    v4 = [v2 objectForKeyedSubscript:@"addressComponentThreshold"];
+    v4 = [engineConfig objectForKeyedSubscript:@"addressComponentThreshold"];
     if (v4)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v5 = [v4 unsignedIntegerValue];
+        unsignedIntegerValue = [v4 unsignedIntegerValue];
 
         goto LABEL_9;
       }
@@ -89,28 +89,28 @@
     _os_log_error_impl(&dword_231E60000, v6, OS_LOG_TYPE_ERROR, "SGStructuredEventExtractionModel: No configuration loaded", v8, 2u);
   }
 
-  v5 = 0;
+  unsignedIntegerValue = 0;
 LABEL_9:
 
-  return v5;
+  return unsignedIntegerValue;
 }
 
-- (unint64_t)stripRepeatedContentForSectionLength:(id)a3 label:(id)a4
+- (unint64_t)stripRepeatedContentForSectionLength:(id)length label:(id)label
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SGStructuredEventExtractionModel *)self engineConfig];
-  if (v8)
+  lengthCopy = length;
+  labelCopy = label;
+  engineConfig = [(SGStructuredEventExtractionModel *)self engineConfig];
+  if (engineConfig)
   {
-    v9 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@.%@.%@", @"stripRepeatedContentInSections", v6, v7];
-    v10 = [v8 valueForKeyPath:v9];
+    labelCopy = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@.%@.%@", @"stripRepeatedContentInSections", lengthCopy, labelCopy];
+    v10 = [engineConfig valueForKeyPath:labelCopy];
 
     if (v10)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v11 = [v10 unsignedIntegerValue];
+        unsignedIntegerValue = [v10 unsignedIntegerValue];
 
         goto LABEL_9;
       }
@@ -124,41 +124,41 @@ LABEL_9:
     _os_log_error_impl(&dword_231E60000, v12, OS_LOG_TYPE_ERROR, "SGStructuredEventExtractionModel: No configuration loaded", buf, 2u);
   }
 
-  v11 = 0;
+  unsignedIntegerValue = 0;
 LABEL_9:
 
-  return v11;
+  return unsignedIntegerValue;
 }
 
-- (unint64_t)maxMergeDistanceForSection:(id)a3 label:(id)a4
+- (unint64_t)maxMergeDistanceForSection:(id)section label:(id)label
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SGStructuredEventExtractionModel *)self engineConfig];
-  if (v8)
+  sectionCopy = section;
+  labelCopy = label;
+  engineConfig = [(SGStructuredEventExtractionModel *)self engineConfig];
+  if (engineConfig)
   {
-    v9 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@.%@.%@", @"sectionLabelTokenMergeDistance", v6, v7];
-    v10 = [v8 valueForKeyPath:v9];
+    labelCopy = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@.%@.%@", @"sectionLabelTokenMergeDistance", sectionCopy, labelCopy];
+    v10 = [engineConfig valueForKeyPath:labelCopy];
 
     if (v10)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v11 = [v10 unsignedIntegerValue];
+        unsignedIntegerValue = [v10 unsignedIntegerValue];
 LABEL_8:
 
         goto LABEL_13;
       }
     }
 
-    v12 = [v8 objectForKeyedSubscript:@"defaultLabelTokenMergeDistance"];
+    v12 = [engineConfig objectForKeyedSubscript:@"defaultLabelTokenMergeDistance"];
     if (v12)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v11 = [v12 unsignedIntegerValue];
+        unsignedIntegerValue = [v12 unsignedIntegerValue];
 
         goto LABEL_8;
       }
@@ -172,19 +172,19 @@ LABEL_8:
     _os_log_fault_impl(&dword_231E60000, v13, OS_LOG_TYPE_FAULT, "SGStructuredEventExtractionModel: No configuration loaded", buf, 2u);
   }
 
-  v11 = 0;
+  unsignedIntegerValue = 0;
 LABEL_13:
 
-  return v11;
+  return unsignedIntegerValue;
 }
 
 - (id)outputMapping
 {
   v3 = +[SGStructuredEventTrialClientWrapper sharedInstance];
-  v4 = [v3 structuredEventOutputMapping];
+  structuredEventOutputMapping = [v3 structuredEventOutputMapping];
 
-  outputMapping = v4;
-  if (!v4)
+  outputMapping = structuredEventOutputMapping;
+  if (!structuredEventOutputMapping)
   {
     outputMapping = self->_outputMapping;
   }
@@ -197,10 +197,10 @@ LABEL_13:
 - (id)inputMapping
 {
   v3 = +[SGStructuredEventTrialClientWrapper sharedInstance];
-  v4 = [v3 structuredEventInputMapping];
+  structuredEventInputMapping = [v3 structuredEventInputMapping];
 
-  inputMapping = v4;
-  if (!v4)
+  inputMapping = structuredEventInputMapping;
+  if (!structuredEventInputMapping)
   {
     inputMapping = self->_inputMapping;
   }
@@ -213,10 +213,10 @@ LABEL_13:
 - (id)engineConfig
 {
   v3 = +[SGStructuredEventTrialClientWrapper sharedInstance];
-  v4 = [v3 engineConfig];
+  engineConfig = [v3 engineConfig];
 
-  engineConfig = v4;
-  if (!v4)
+  engineConfig = engineConfig;
+  if (!engineConfig)
   {
     engineConfig = self->_engineConfig;
   }
@@ -226,17 +226,17 @@ LABEL_13:
   return v6;
 }
 
-- (BOOL)isSenderSupportedForMLHybridExtraction:(id)a3
+- (BOOL)isSenderSupportedForMLHybridExtraction:(id)extraction
 {
-  v4 = a3;
-  v5 = [(SGStructuredEventExtractionModel *)self supportedProviders];
-  v6 = v5;
-  if (!v5)
+  extractionCopy = extraction;
+  supportedProviders = [(SGStructuredEventExtractionModel *)self supportedProviders];
+  v6 = supportedProviders;
+  if (!supportedProviders)
   {
     goto LABEL_5;
   }
 
-  v7 = [v5 objectForKeyedSubscript:@"mlHybridExtractionSenders"];
+  v7 = [supportedProviders objectForKeyedSubscript:@"mlHybridExtractionSenders"];
 
   if (!v7)
   {
@@ -244,7 +244,7 @@ LABEL_13:
   }
 
   v8 = [v6 objectForKeyedSubscript:@"mlHybridExtractionSenders"];
-  v9 = [v8 objectForKeyedSubscript:v4];
+  v9 = [v8 objectForKeyedSubscript:extractionCopy];
 
   if (v9)
   {
@@ -260,17 +260,17 @@ LABEL_5:
   return v10;
 }
 
-- (BOOL)isSenderSupportedForPFLTraining:(id)a3
+- (BOOL)isSenderSupportedForPFLTraining:(id)training
 {
-  v4 = a3;
-  v5 = [(SGStructuredEventExtractionModel *)self supportedProviders];
-  v6 = v5;
-  if (!v5)
+  trainingCopy = training;
+  supportedProviders = [(SGStructuredEventExtractionModel *)self supportedProviders];
+  v6 = supportedProviders;
+  if (!supportedProviders)
   {
     goto LABEL_5;
   }
 
-  v7 = [v5 objectForKeyedSubscript:@"schemaOrgSenders"];
+  v7 = [supportedProviders objectForKeyedSubscript:@"schemaOrgSenders"];
 
   if (!v7)
   {
@@ -278,7 +278,7 @@ LABEL_5:
   }
 
   v8 = [v6 objectForKeyedSubscript:@"schemaOrgSenders"];
-  v9 = [v8 objectForKeyedSubscript:v4];
+  v9 = [v8 objectForKeyedSubscript:trainingCopy];
 
   if (v9)
   {
@@ -294,17 +294,17 @@ LABEL_5:
   return v10;
 }
 
-- (BOOL)isSenderSupportedForMLDefaultExtraction:(id)a3
+- (BOOL)isSenderSupportedForMLDefaultExtraction:(id)extraction
 {
-  v4 = a3;
-  v5 = [(SGStructuredEventExtractionModel *)self supportedProviders];
-  v6 = v5;
-  if (!v5)
+  extractionCopy = extraction;
+  supportedProviders = [(SGStructuredEventExtractionModel *)self supportedProviders];
+  v6 = supportedProviders;
+  if (!supportedProviders)
   {
     goto LABEL_5;
   }
 
-  v7 = [v5 objectForKeyedSubscript:@"mlDefaultExtractionSenders"];
+  v7 = [supportedProviders objectForKeyedSubscript:@"mlDefaultExtractionSenders"];
 
   if (!v7)
   {
@@ -312,7 +312,7 @@ LABEL_5:
   }
 
   v8 = [v6 objectForKeyedSubscript:@"mlDefaultExtractionSenders"];
-  v9 = [v8 objectForKeyedSubscript:v4];
+  v9 = [v8 objectForKeyedSubscript:extractionCopy];
 
   if (v9)
   {
@@ -328,17 +328,17 @@ LABEL_5:
   return v10;
 }
 
-- (BOOL)isSenderSupportedForShadowExtraction:(id)a3
+- (BOOL)isSenderSupportedForShadowExtraction:(id)extraction
 {
-  v4 = a3;
-  v5 = [(SGStructuredEventExtractionModel *)self supportedProviders];
-  v6 = v5;
-  if (!v5)
+  extractionCopy = extraction;
+  supportedProviders = [(SGStructuredEventExtractionModel *)self supportedProviders];
+  v6 = supportedProviders;
+  if (!supportedProviders)
   {
     goto LABEL_5;
   }
 
-  v7 = [v5 objectForKeyedSubscript:@"shadowSenders"];
+  v7 = [supportedProviders objectForKeyedSubscript:@"shadowSenders"];
 
   if (!v7)
   {
@@ -346,7 +346,7 @@ LABEL_5:
   }
 
   v8 = [v6 objectForKeyedSubscript:@"shadowSenders"];
-  v9 = [v8 objectForKeyedSubscript:v4];
+  v9 = [v8 objectForKeyedSubscript:extractionCopy];
 
   if (v9)
   {
@@ -362,17 +362,17 @@ LABEL_5:
   return v10;
 }
 
-- (BOOL)isSenderSupportedForExtraction:(id)a3
+- (BOOL)isSenderSupportedForExtraction:(id)extraction
 {
-  v4 = a3;
-  v5 = [(SGStructuredEventExtractionModel *)self supportedProviders];
-  v6 = v5;
-  if (!v5)
+  extractionCopy = extraction;
+  supportedProviders = [(SGStructuredEventExtractionModel *)self supportedProviders];
+  v6 = supportedProviders;
+  if (!supportedProviders)
   {
     goto LABEL_5;
   }
 
-  v7 = [v5 objectForKeyedSubscript:@"extractionSenders"];
+  v7 = [supportedProviders objectForKeyedSubscript:@"extractionSenders"];
 
   if (!v7)
   {
@@ -380,7 +380,7 @@ LABEL_5:
   }
 
   v8 = [v6 objectForKeyedSubscript:@"extractionSenders"];
-  v9 = [v8 objectForKeyedSubscript:v4];
+  v9 = [v8 objectForKeyedSubscript:extractionCopy];
 
   if (v9)
   {
@@ -399,10 +399,10 @@ LABEL_5:
 - (id)supportedProviders
 {
   v3 = +[SGStructuredEventTrialClientWrapper sharedInstance];
-  v4 = [v3 supportedProviders];
+  supportedProviders = [v3 supportedProviders];
 
-  supportedProviders = v4;
-  if (!v4)
+  supportedProviders = supportedProviders;
+  if (!supportedProviders)
   {
     supportedProviders = self->_supportedProviders;
   }
@@ -418,9 +418,9 @@ LABEL_5:
   v3 = objc_opt_new();
   [v3 setComputeUnits:0];
   v4 = +[SGStructuredEventTrialClientWrapper sharedInstance];
-  v5 = [v4 modelPath];
-  v6 = v5;
-  if (v5 && [v5 length])
+  modelPath = [v4 modelPath];
+  v6 = modelPath;
+  if (modelPath && [modelPath length])
   {
     v7 = sgEventsLogHandle();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))

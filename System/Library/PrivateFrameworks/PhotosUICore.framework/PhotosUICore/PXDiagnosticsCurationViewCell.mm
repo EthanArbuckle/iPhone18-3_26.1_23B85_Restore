@@ -1,27 +1,27 @@
 @interface PXDiagnosticsCurationViewCell
-- (PXDiagnosticsCurationViewCell)initWithFrame:(CGRect)a3;
+- (PXDiagnosticsCurationViewCell)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setAestheticScore:(double)a3;
-- (void)setAlternateState:(id)a3;
-- (void)setClusterParity:(unint64_t)a3;
-- (void)setClusterState:(id)a3;
-- (void)setComparisonMatch:(BOOL)a3;
-- (void)setContentScore:(double)a3;
-- (void)setCriteriaScore:(double)a3;
-- (void)setDebugInfo:(id)a3;
-- (void)setDedupedSymbolIndex:(id)a3;
-- (void)setDedupingType:(id)a3;
-- (void)setState:(id)a3;
-- (void)setSymbolIndex:(id)a3;
-- (void)setThumbnailImage:(id)a3;
+- (void)setAestheticScore:(double)score;
+- (void)setAlternateState:(id)state;
+- (void)setClusterParity:(unint64_t)parity;
+- (void)setClusterState:(id)state;
+- (void)setComparisonMatch:(BOOL)match;
+- (void)setContentScore:(double)score;
+- (void)setCriteriaScore:(double)score;
+- (void)setDebugInfo:(id)info;
+- (void)setDedupedSymbolIndex:(id)index;
+- (void)setDedupingType:(id)type;
+- (void)setState:(id)state;
+- (void)setSymbolIndex:(id)index;
+- (void)setThumbnailImage:(id)image;
 @end
 
 @implementation PXDiagnosticsCurationViewCell
 
-- (void)setComparisonMatch:(BOOL)a3
+- (void)setComparisonMatch:(BOOL)match
 {
-  if (a3)
+  if (match)
   {
     [MEMORY[0x1E69DC888] greenColor];
   }
@@ -31,13 +31,13 @@
     [MEMORY[0x1E69DC888] redColor];
   }
   v5 = ;
-  v4 = [(PXDiagnosticsCurationViewCell *)self contentView];
-  [v4 setBackgroundColor:v5];
+  contentView = [(PXDiagnosticsCurationViewCell *)self contentView];
+  [contentView setBackgroundColor:v5];
 }
 
-- (void)setClusterParity:(unint64_t)a3
+- (void)setClusterParity:(unint64_t)parity
 {
-  if (a3 == 2)
+  if (parity == 2)
   {
     v4 = MEMORY[0x1E69DC888];
     v7 = 0.7;
@@ -46,7 +46,7 @@
     goto LABEL_5;
   }
 
-  if (a3 == 1)
+  if (parity == 1)
   {
     v4 = MEMORY[0x1E69DC888];
     v5 = 0.7;
@@ -59,29 +59,29 @@ LABEL_5:
 
   v9 = 0;
 LABEL_7:
-  v8 = [(PXDiagnosticsCurationViewCell *)self contentView];
-  [v8 setBackgroundColor:v9];
+  contentView = [(PXDiagnosticsCurationViewCell *)self contentView];
+  [contentView setBackgroundColor:v9];
 }
 
-- (void)setDedupedSymbolIndex:(id)a3
+- (void)setDedupedSymbolIndex:(id)index
 {
-  objc_storeStrong(&self->_dedupedSymbolIndex, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_dedupedSymbolIndex, index);
+  indexCopy = index;
   [(PXSymbolBadgeView *)self->_dedupedSymbolBadgeView setIndex:self->_dedupedSymbolIndex];
 }
 
-- (void)setSymbolIndex:(id)a3
+- (void)setSymbolIndex:(id)index
 {
-  objc_storeStrong(&self->_symbolIndex, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_symbolIndex, index);
+  indexCopy = index;
   [(PXSymbolBadgeView *)self->_symbolBadgeView setIndex:self->_symbolIndex];
 }
 
-- (void)setCriteriaScore:(double)a3
+- (void)setCriteriaScore:(double)score
 {
-  self->_criteriaScore = a3;
+  self->_criteriaScore = score;
   criteriaScoreView = self->_criteriaScoreView;
-  if (a3 >= -0.5)
+  if (score >= -0.5)
   {
     [(PXScoreView *)criteriaScoreView setHidden:0];
     v5 = self->_criteriaScoreView;
@@ -97,11 +97,11 @@ LABEL_7:
   }
 }
 
-- (void)setContentScore:(double)a3
+- (void)setContentScore:(double)score
 {
-  self->_contentScore = a3;
+  self->_contentScore = score;
   contentScoreView = self->_contentScoreView;
-  if (a3 >= 0.0)
+  if (score >= 0.0)
   {
     [(PXScoreView *)contentScoreView setHidden:0];
     v5 = self->_contentScoreView;
@@ -117,11 +117,11 @@ LABEL_7:
   }
 }
 
-- (void)setAestheticScore:(double)a3
+- (void)setAestheticScore:(double)score
 {
-  self->_aestheticScore = a3;
+  self->_aestheticScore = score;
   aestheticScoreView = self->_aestheticScoreView;
-  if (a3 == -1.79769313e308)
+  if (score == -1.79769313e308)
   {
 
     [(PXScoreView *)aestheticScoreView setHidden:1];
@@ -137,64 +137,64 @@ LABEL_7:
   }
 }
 
-- (void)setDedupingType:(id)a3
+- (void)setDedupingType:(id)type
 {
-  objc_storeStrong(&self->_dedupingType, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_dedupingType, type);
+  typeCopy = type;
   [(PXDedupingBadgeView *)self->_dedupingBadgeView setDedupingType:self->_dedupingType];
 }
 
-- (void)setAlternateState:(id)a3
+- (void)setAlternateState:(id)state
 {
-  objc_storeStrong(&self->_alternateState, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_alternateState, state);
+  stateCopy = state;
   [(PXStateBadgeView *)self->_alternateStateBadgeView setState:self->_alternateState];
 }
 
-- (void)setState:(id)a3
+- (void)setState:(id)state
 {
-  objc_storeStrong(&self->_state, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_state, state);
+  stateCopy = state;
   [(PXStateBadgeView *)self->_stateBadgeView setState:self->_state];
 }
 
-- (void)setClusterState:(id)a3
+- (void)setClusterState:(id)state
 {
-  objc_storeStrong(&self->_clusterState, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_clusterState, state);
+  stateCopy = state;
   [(PXStateBadgeView *)self->_clusterStateBadgeView setState:self->_clusterState];
 }
 
-- (void)setDebugInfo:(id)a3
+- (void)setDebugInfo:(id)info
 {
-  v20 = a3;
-  objc_storeStrong(&self->_debugInfo, a3);
-  v5 = [v20 objectForKeyedSubscript:@"state"];
+  infoCopy = info;
+  objc_storeStrong(&self->_debugInfo, info);
+  v5 = [infoCopy objectForKeyedSubscript:@"state"];
   [(PXDiagnosticsCurationViewCell *)self setState:v5];
 
   [(PXDiagnosticsCurationViewCell *)self setAlternateState:0];
-  v6 = [v20 objectForKeyedSubscript:@"dedupingType"];
+  v6 = [infoCopy objectForKeyedSubscript:@"dedupingType"];
   [(PXDiagnosticsCurationViewCell *)self setDedupingType:v6];
 
-  v7 = [v20 objectForKeyedSubscript:@"isSDOFOrHDR"];
+  v7 = [infoCopy objectForKeyedSubscript:@"isSDOFOrHDR"];
   -[PXDiagnosticsCurationViewCell setSDOFOrHDR:](self, "setSDOFOrHDR:", [v7 BOOLValue]);
 
-  v8 = [v20 objectForKeyedSubscript:@"isFavorite"];
+  v8 = [infoCopy objectForKeyedSubscript:@"isFavorite"];
   -[PXDiagnosticsCurationViewCell setFavorite:](self, "setFavorite:", [v8 BOOLValue]);
 
-  v9 = [v20 objectForKeyedSubscript:@"isUtility"];
+  v9 = [infoCopy objectForKeyedSubscript:@"isUtility"];
   -[PXDiagnosticsCurationViewCell setUtility:](self, "setUtility:", [v9 BOOLValue]);
 
-  v10 = [v20 objectForKeyedSubscript:@"isBlurry"];
+  v10 = [infoCopy objectForKeyedSubscript:@"isBlurry"];
   -[PXDiagnosticsCurationViewCell setBlurry:](self, "setBlurry:", [v10 BOOLValue]);
 
-  if (v20)
+  if (infoCopy)
   {
-    v11 = [v20 objectForKeyedSubscript:@"aestheticScore"];
+    v11 = [infoCopy objectForKeyedSubscript:@"aestheticScore"];
     [v11 doubleValue];
     [(PXDiagnosticsCurationViewCell *)self setAestheticScore:?];
 
-    v12 = [v20 objectForKeyedSubscript:@"contentScore"];
+    v12 = [infoCopy objectForKeyedSubscript:@"contentScore"];
     [v12 doubleValue];
     [(PXDiagnosticsCurationViewCell *)self setContentScore:?];
   }
@@ -205,15 +205,15 @@ LABEL_7:
     [(PXDiagnosticsCurationViewCell *)self setContentScore:-1.0];
   }
 
-  v13 = [v20 objectForKeyedSubscript:@"passesCriteria"];
+  v13 = [infoCopy objectForKeyedSubscript:@"passesCriteria"];
   v14 = v13;
   if (v13)
   {
-    v15 = [v13 BOOLValue];
+    bOOLValue = [v13 BOOLValue];
     v16 = -0.5;
-    if (v15)
+    if (bOOLValue)
     {
-      v17 = [v20 objectForKeyedSubscript:{@"criteriaScore", -0.5}];
+      v17 = [infoCopy objectForKeyedSubscript:{@"criteriaScore", -0.5}];
       [v17 doubleValue];
       [(PXDiagnosticsCurationViewCell *)self setCriteriaScore:?];
 
@@ -228,9 +228,9 @@ LABEL_7:
 
   [(PXDiagnosticsCurationViewCell *)self setCriteriaScore:v16];
 LABEL_9:
-  if (v20)
+  if (infoCopy)
   {
-    v18 = [v20 objectForKeyedSubscript:@"iconicScore"];
+    v18 = [infoCopy objectForKeyedSubscript:@"iconicScore"];
     [v18 doubleValue];
     [(PXDiagnosticsCurationViewCell *)self setIconicScore:?];
   }
@@ -240,15 +240,15 @@ LABEL_9:
     [(PXDiagnosticsCurationViewCell *)self setIconicScore:-1.0];
   }
 
-  v19 = [v20 objectForKeyedSubscript:@"index"];
+  v19 = [infoCopy objectForKeyedSubscript:@"index"];
   -[PXDiagnosticsCurationViewCell setIndex:](self, "setIndex:", [v19 unsignedIntegerValue]);
 }
 
-- (void)setThumbnailImage:(id)a3
+- (void)setThumbnailImage:(id)image
 {
-  objc_storeStrong(&self->_thumbnailImage, a3);
-  v5 = a3;
-  [(UIImageView *)self->_imageView setImage:v5];
+  objc_storeStrong(&self->_thumbnailImage, image);
+  imageCopy = image;
+  [(UIImageView *)self->_imageView setImage:imageCopy];
 }
 
 - (void)prepareForReuse
@@ -281,8 +281,8 @@ LABEL_9:
   v11.receiver = self;
   v11.super_class = PXDiagnosticsCurationViewCell;
   [(PXDiagnosticsCurationViewCell *)&v11 layoutSubviews];
-  v3 = [(PXDiagnosticsCurationViewCell *)self contentView];
-  [v3 bounds];
+  contentView = [(PXDiagnosticsCurationViewCell *)self contentView];
+  [contentView bounds];
   v5 = v4;
   v10 = v4;
   v7 = v6;
@@ -307,11 +307,11 @@ LABEL_9:
   [(PXIndexView *)self->_indexView setFrame:v10 + -3.0 + -24.0, 4.0, 24.0, 13.0];
 }
 
-- (PXDiagnosticsCurationViewCell)initWithFrame:(CGRect)a3
+- (PXDiagnosticsCurationViewCell)initWithFrame:(CGRect)frame
 {
   v40.receiver = self;
   v40.super_class = PXDiagnosticsCurationViewCell;
-  v3 = [(PXDiagnosticsCurationViewCell *)&v40 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PXDiagnosticsCurationViewCell *)&v40 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69DCAE0]);
@@ -320,15 +320,15 @@ LABEL_9:
 
     [(UIImageView *)v3->_imageView setContentMode:2];
     [(UIImageView *)v3->_imageView setClipsToBounds:1];
-    v6 = [(PXDiagnosticsCurationViewCell *)v3 contentView];
-    [v6 addSubview:v3->_imageView];
+    contentView = [(PXDiagnosticsCurationViewCell *)v3 contentView];
+    [contentView addSubview:v3->_imageView];
 
     v7 = [[PXStateBadgeView alloc] initWithState:0];
     clusterStateBadgeView = v3->_clusterStateBadgeView;
     v3->_clusterStateBadgeView = v7;
 
-    v9 = [(PXDiagnosticsCurationViewCell *)v3 contentView];
-    [v9 addSubview:v3->_clusterStateBadgeView];
+    contentView2 = [(PXDiagnosticsCurationViewCell *)v3 contentView];
+    [contentView2 addSubview:v3->_clusterStateBadgeView];
 
     v10 = [[PXStateBadgeView alloc] initWithState:@"Unknown"];
     stateBadgeView = v3->_stateBadgeView;
@@ -399,8 +399,8 @@ LABEL_9:
     indexView = v3->_indexView;
     v3->_indexView = v36;
 
-    v38 = [(PXDiagnosticsCurationViewCell *)v3 contentView];
-    [v38 addSubview:v3->_indexView];
+    contentView3 = [(PXDiagnosticsCurationViewCell *)v3 contentView];
+    [contentView3 addSubview:v3->_indexView];
   }
 
   return v3;

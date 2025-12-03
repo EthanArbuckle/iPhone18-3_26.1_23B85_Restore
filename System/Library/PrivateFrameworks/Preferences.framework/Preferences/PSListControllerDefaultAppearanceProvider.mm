@@ -1,14 +1,14 @@
 @interface PSListControllerDefaultAppearanceProvider
-- (double)estimatedHeightOfRowForCellWithIndexPath:(id)a3 inController:(id)a4;
-- (id)cellForSpecifier:(id)a3 inController:(id)a4;
-- (int64_t)tableViewStyleForListController:(id)a3;
-- (void)customizeTableView:(id)a3 inContainerView:(id)a4 hostedInSetupController:(BOOL)a5 forListController:(id)a6;
-- (void)listController:(id)a3 updateSectionContentInsetAnimated:(BOOL)a4 isRegularWidth:(BOOL)a5 contentInsetInitialized:(BOOL)a6 contentInsetInitializedApplicator:(id)a7;
+- (double)estimatedHeightOfRowForCellWithIndexPath:(id)path inController:(id)controller;
+- (id)cellForSpecifier:(id)specifier inController:(id)controller;
+- (int64_t)tableViewStyleForListController:(id)controller;
+- (void)customizeTableView:(id)view inContainerView:(id)containerView hostedInSetupController:(BOOL)controller forListController:(id)listController;
+- (void)listController:(id)controller updateSectionContentInsetAnimated:(BOOL)animated isRegularWidth:(BOOL)width contentInsetInitialized:(BOOL)initialized contentInsetInitializedApplicator:(id)applicator;
 @end
 
 @implementation PSListControllerDefaultAppearanceProvider
 
-- (int64_t)tableViewStyleForListController:(id)a3
+- (int64_t)tableViewStyleForListController:(id)controller
 {
   if (PSIsRunningInAssistant())
   {
@@ -21,51 +21,51 @@
   }
 }
 
-- (void)customizeTableView:(id)a3 inContainerView:(id)a4 hostedInSetupController:(BOOL)a5 forListController:(id)a6
+- (void)customizeTableView:(id)view inContainerView:(id)containerView hostedInSetupController:(BOOL)controller forListController:(id)listController
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
-  [v9 setCellLayoutMarginsFollowReadableWidth:1];
-  [v9 setAutoresizingMask:18];
-  [v9 setLayoutMarginsFollowReadableWidth:PSIsRunningInAssistant() ^ 1];
-  [v9 setEstimatedSectionHeaderHeight:0.0];
-  [v9 setEstimatedSectionFooterHeight:0.0];
+  viewCopy = view;
+  containerViewCopy = containerView;
+  listControllerCopy = listController;
+  [viewCopy setCellLayoutMarginsFollowReadableWidth:1];
+  [viewCopy setAutoresizingMask:18];
+  [viewCopy setLayoutMarginsFollowReadableWidth:PSIsRunningInAssistant() ^ 1];
+  [viewCopy setEstimatedSectionHeaderHeight:0.0];
+  [viewCopy setEstimatedSectionFooterHeight:0.0];
   if (PSIsRunningInAssistant())
   {
-    [v9 setBackgroundView:0];
-    v12 = [MEMORY[0x1E69DC888] clearColor];
-    [v9 setBackgroundColor:v12];
+    [viewCopy setBackgroundView:0];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [viewCopy setBackgroundColor:clearColor];
   }
 
   else
   {
     v13 = +[PSListController appearance];
-    v14 = [v13 backgroundColor];
+    backgroundColor = [v13 backgroundColor];
 
-    if (!v14)
+    if (!backgroundColor)
     {
       goto LABEL_6;
     }
 
-    v12 = +[PSListController appearance];
-    v15 = [v12 backgroundColor];
-    [v9 setBackgroundColor:v15];
+    clearColor = +[PSListController appearance];
+    backgroundColor2 = [clearColor backgroundColor];
+    [viewCopy setBackgroundColor:backgroundColor2];
   }
 
 LABEL_6:
   v16 = +[PSListController appearance];
-  v17 = [v16 separatorColor];
+  separatorColor = [v16 separatorColor];
 
-  if (v17)
+  if (separatorColor)
   {
     v18 = +[PSListController appearance];
-    v19 = [v18 separatorColor];
-    [v9 setSeparatorColor:v19];
+    separatorColor2 = [v18 separatorColor];
+    [viewCopy setSeparatorColor:separatorColor2];
   }
 
-  v20 = [MEMORY[0x1E69DC938] currentDevice];
-  if (![v20 sf_isiPad])
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  if (![currentDevice sf_isiPad])
   {
 
     goto LABEL_15;
@@ -76,36 +76,36 @@ LABEL_6:
   if (!v21)
   {
 LABEL_15:
-    [v10 setAutoresizingMask:{objc_msgSend(v9, "autoresizingMask")}];
-    v29 = [MEMORY[0x1E69DC888] groupTableViewBackgroundColor];
-    [v10 setBackgroundColor:v29];
+    [containerViewCopy setAutoresizingMask:{objc_msgSend(viewCopy, "autoresizingMask")}];
+    groupTableViewBackgroundColor = [MEMORY[0x1E69DC888] groupTableViewBackgroundColor];
+    [containerViewCopy setBackgroundColor:groupTableViewBackgroundColor];
 
     v30 = +[PSListController appearance];
-    v31 = [v30 usesDarkTheme];
+    usesDarkTheme = [v30 usesDarkTheme];
 
-    if (v31)
+    if (usesDarkTheme)
     {
-      v32 = +[PSListController appearance];
-      v33 = [v32 backgroundColor];
-      [v9 setBackgroundColor:v33];
+      backgroundColor4 = +[PSListController appearance];
+      backgroundColor3 = [backgroundColor4 backgroundColor];
+      [viewCopy setBackgroundColor:backgroundColor3];
     }
 
     else
     {
-      v32 = [v10 backgroundColor];
-      [v9 setBackgroundColor:v32];
+      backgroundColor4 = [containerViewCopy backgroundColor];
+      [viewCopy setBackgroundColor:backgroundColor4];
     }
 
     goto LABEL_19;
   }
 
-  v22 = [MEMORY[0x1E69DC888] whiteColor];
-  [v10 setBackgroundColor:v22];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  [containerViewCopy setBackgroundColor:whiteColor];
 
-  v23 = [v9 panGestureRecognizer];
-  [v10 addGestureRecognizer:v23];
+  panGestureRecognizer = [viewCopy panGestureRecognizer];
+  [containerViewCopy addGestureRecognizer:panGestureRecognizer];
 
-  if (!a5)
+  if (!controller)
   {
     v35 = 0;
     v36 = &v35;
@@ -125,103 +125,103 @@ LABEL_15:
 
     v25 = v24;
     _Block_object_dispose(&v35, 8);
-    v26 = [v24 sharedStyle];
-    [v26 edgeInsetsForTable:v9];
+    sharedStyle = [v24 sharedStyle];
+    [sharedStyle edgeInsetsForTable:viewCopy];
     v28 = v27;
 
-    [v9 setScrollIndicatorInsets:{0.0, 0.0, 0.0, -v28}];
+    [viewCopy setScrollIndicatorInsets:{0.0, 0.0, 0.0, -v28}];
   }
 
 LABEL_19:
-  [v10 setLayoutMarginsFollowReadableWidth:1];
-  [v9 setClipsToBounds:0];
+  [containerViewCopy setLayoutMarginsFollowReadableWidth:1];
+  [viewCopy setClipsToBounds:0];
 }
 
-- (id)cellForSpecifier:(id)a3 inController:(id)a4
+- (id)cellForSpecifier:(id)specifier inController:(id)controller
 {
-  v4 = a3;
-  v5 = [PSTableCell cellClassForSpecifier:v4];
+  specifierCopy = specifier;
+  v5 = [PSTableCell cellClassForSpecifier:specifierCopy];
   v6 = [(objc_class *)v5 isSubclassOfClass:objc_opt_class()];
   v7 = [v5 alloc];
-  v8 = [(objc_class *)v5 cellStyle];
+  cellStyle = [(objc_class *)v5 cellStyle];
   if (v6)
   {
-    v9 = [PSTableCell reuseIdentifierForSpecifier:v4];
-    v10 = [v7 initWithStyle:v8 reuseIdentifier:v9 specifier:v4];
+    v9 = [PSTableCell reuseIdentifierForSpecifier:specifierCopy];
+    v10 = [v7 initWithStyle:cellStyle reuseIdentifier:v9 specifier:specifierCopy];
   }
 
   else
   {
-    v10 = [v7 initWithStyle:v8 reuseIdentifier:0];
+    v10 = [v7 initWithStyle:cellStyle reuseIdentifier:0];
   }
 
   return v10;
 }
 
-- (double)estimatedHeightOfRowForCellWithIndexPath:(id)a3 inController:(id)a4
+- (double)estimatedHeightOfRowForCellWithIndexPath:(id)path inController:(id)controller
 {
-  v5 = a4;
-  v6 = [v5 indexForIndexPath:a3];
-  v7 = [v5 unprotectedSpecifiers];
-  v8 = [v7 objectAtIndex:v6];
+  controllerCopy = controller;
+  v6 = [controllerCopy indexForIndexPath:path];
+  unprotectedSpecifiers = [controllerCopy unprotectedSpecifiers];
+  v8 = [unprotectedSpecifiers objectAtIndex:v6];
 
   if ((v8[7] & 0xFFFFFFFFFFFFFFFELL) == 0xA)
   {
-    v9 = 66.0;
+    integerValue = 66.0;
   }
 
   else
   {
-    v10 = [v5 table];
+    table = [controllerCopy table];
     v11 = [v8 propertyForKey:@"height"];
     v12 = v11;
     if (v11)
     {
-      v9 = [v11 integerValue];
+      integerValue = [v11 integerValue];
     }
 
     else
     {
-      [v10 estimatedRowHeight];
+      [table estimatedRowHeight];
       if (v13 <= 0.0)
       {
-        v9 = *MEMORY[0x1E69DE3D0];
+        integerValue = *MEMORY[0x1E69DE3D0];
       }
 
       else
       {
-        [v10 estimatedRowHeight];
-        v9 = v14;
+        [table estimatedRowHeight];
+        integerValue = v14;
       }
     }
   }
 
-  return v9;
+  return integerValue;
 }
 
-- (void)listController:(id)a3 updateSectionContentInsetAnimated:(BOOL)a4 isRegularWidth:(BOOL)a5 contentInsetInitialized:(BOOL)a6 contentInsetInitializedApplicator:(id)a7
+- (void)listController:(id)controller updateSectionContentInsetAnimated:(BOOL)animated isRegularWidth:(BOOL)width contentInsetInitialized:(BOOL)initialized contentInsetInitializedApplicator:(id)applicator
 {
-  v8 = a6;
-  v9 = a4;
-  v10 = a3;
-  v11 = a7;
+  initializedCopy = initialized;
+  animatedCopy = animated;
+  controllerCopy = controller;
+  applicatorCopy = applicator;
   if ((PSIsRunningInAssistant() & 1) == 0)
   {
-    v11[2](v11);
+    applicatorCopy[2](applicatorCopy);
     goto LABEL_16;
   }
 
-  v12 = [v10 view];
-  v13 = PSShouldInsetListView(v12);
+  view = [controllerCopy view];
+  v13 = PSShouldInsetListView(view);
   v14 = MEMORY[0x1E69DE3D0];
-  if (v13 && ([v10 edgeToEdgeCells] & 1) == 0)
+  if (v13 && ([controllerCopy edgeToEdgeCells] & 1) == 0)
   {
     v23 = PSIsRunningInAssistant();
 
     if ((v23 & 1) == 0)
     {
-      v24 = [v10 view];
-      [v24 safeAreaInsets];
+      view2 = [controllerCopy view];
+      [view2 safeAreaInsets];
       v26 = v25;
 
       v15 = 0.0;
@@ -229,19 +229,19 @@ LABEL_19:
       v16 = 0.0;
       if (v27)
       {
-        v28 = [v10 view];
-        [v28 layoutMargins];
+        view3 = [controllerCopy view];
+        [view3 layoutMargins];
         v16 = v29;
       }
 
-      v30 = [v10 view];
-      [v30 safeAreaInsets];
+      view4 = [controllerCopy view];
+      [view4 safeAreaInsets];
       v32 = v31;
 
       if (v32 <= 0.0)
       {
-        v33 = [v10 view];
-        [v33 layoutMargins];
+        view5 = [controllerCopy view];
+        [view5 layoutMargins];
         v15 = v34;
       }
 
@@ -256,14 +256,14 @@ LABEL_19:
   v15 = *v14;
   v16 = *v14;
 LABEL_6:
-  v17 = [v10 table];
-  [v17 _sectionContentInset];
+  table = [controllerCopy table];
+  [table _sectionContentInset];
   if (v16 != v19 || v15 != v18)
   {
     v21 = *v14;
-    if (v9 && v8)
+    if (animatedCopy && initializedCopy)
     {
-      [v17 _setSectionContentInset:{*v14, v16, *v14, v15}];
+      [table _setSectionContentInset:{*v14, v16, *v14, v15}];
     }
 
     else
@@ -273,13 +273,13 @@ LABEL_6:
       v35[1] = 3221225472;
       v35[2] = __167__PSListControllerDefaultAppearanceProvider_listController_updateSectionContentInsetAnimated_isRegularWidth_contentInsetInitialized_contentInsetInitializedApplicator___block_invoke;
       v35[3] = &unk_1E71DC788;
-      v36 = v17;
+      v36 = table;
       v37 = v21;
       v38 = v16;
       v39 = v21;
       v40 = v15;
       [v22 performWithoutAnimation:v35];
-      v11[2](v11);
+      applicatorCopy[2](applicatorCopy);
     }
   }
 

@@ -1,13 +1,13 @@
 @interface VTOpticalFlowConfiguration
 + (NSIndexSet)supportedRevisions;
 + (int64_t)defaultRevision;
-- (VTOpticalFlowConfiguration)initWithFrameWidth:(int64_t)a3 frameHeight:(int64_t)a4 qualityPrioritization:(int64_t)a5 revision:(int64_t)a6;
+- (VTOpticalFlowConfiguration)initWithFrameWidth:(int64_t)width frameHeight:(int64_t)height qualityPrioritization:(int64_t)prioritization revision:(int64_t)revision;
 - (void)dealloc;
 @end
 
 @implementation VTOpticalFlowConfiguration
 
-- (VTOpticalFlowConfiguration)initWithFrameWidth:(int64_t)a3 frameHeight:(int64_t)a4 qualityPrioritization:(int64_t)a5 revision:(int64_t)a6
+- (VTOpticalFlowConfiguration)initWithFrameWidth:(int64_t)width frameHeight:(int64_t)height qualityPrioritization:(int64_t)prioritization revision:(int64_t)revision
 {
   v26[4] = *MEMORY[0x1E69E9840];
   if (!loadVEFrameworkOnce())
@@ -27,7 +27,7 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v11 = [objc_alloc(NSClassFromString(&cfstr_Veopticalflowc.isa)) initWithFrameWidth:a3 frameHeight:a4 qualityPrioritization:a5 revision:a6];
+  v11 = [objc_alloc(NSClassFromString(&cfstr_Veopticalflowc.isa)) initWithFrameWidth:width frameHeight:height qualityPrioritization:prioritization revision:revision];
   self->_veConfiguration = v11;
   if (!v11)
   {
@@ -37,19 +37,19 @@ LABEL_9:
 
   self->_frameSupportedPixelFormats = [-[VEOpticalFlowConfiguration framePreferredPixelFormats](v11 "framePreferredPixelFormats")];
   self->_flowPixelFormat = [(VEOpticalFlowConfiguration *)self->_veConfiguration flowBufferPixelFormat];
-  self->_frameWidth = a3;
-  self->_frameHeight = a4;
-  self->_qualityPrioritization = a5;
-  self->_revision = a6;
+  self->_frameWidth = width;
+  self->_frameHeight = height;
+  self->_qualityPrioritization = prioritization;
+  self->_revision = revision;
   v12 = *MEMORY[0x1E6966130];
   v26[0] = self->_frameSupportedPixelFormats;
   v13 = *MEMORY[0x1E6966208];
   v23[0] = v12;
   v23[1] = v13;
-  v26[1] = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v26[1] = [MEMORY[0x1E696AD98] numberWithInteger:width];
   v24 = *MEMORY[0x1E69660B8];
   v14 = v24;
-  v15 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+  v15 = [MEMORY[0x1E696AD98] numberWithInteger:height];
   v25 = *MEMORY[0x1E69660D8];
   v16 = v25;
   v17 = MEMORY[0x1E695E0F8];

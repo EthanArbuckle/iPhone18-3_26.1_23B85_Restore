@@ -1,40 +1,40 @@
 @interface SXTextComponentSizerFactory
-- (SXTextComponentSizerFactory)initWithDOMObjectProvider:(id)a3 textComponentLayoutHosting:(id)a4 textSourceFactory:(id)a5;
-- (id)sizerForComponent:(id)a3 componentLayout:(id)a4 layoutOptions:(id)a5 DOMObjectProvider:(id)a6;
+- (SXTextComponentSizerFactory)initWithDOMObjectProvider:(id)provider textComponentLayoutHosting:(id)hosting textSourceFactory:(id)factory;
+- (id)sizerForComponent:(id)component componentLayout:(id)layout layoutOptions:(id)options DOMObjectProvider:(id)provider;
 @end
 
 @implementation SXTextComponentSizerFactory
 
-- (SXTextComponentSizerFactory)initWithDOMObjectProvider:(id)a3 textComponentLayoutHosting:(id)a4 textSourceFactory:(id)a5
+- (SXTextComponentSizerFactory)initWithDOMObjectProvider:(id)provider textComponentLayoutHosting:(id)hosting textSourceFactory:(id)factory
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  providerCopy = provider;
+  hostingCopy = hosting;
+  factoryCopy = factory;
   v15.receiver = self;
   v15.super_class = SXTextComponentSizerFactory;
   v12 = [(SXTextComponentSizerFactory *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_DOMObjectProvider, a3);
-    objc_storeStrong(&v13->_textComponentLayoutHosting, a4);
-    objc_storeStrong(&v13->_textSourceFactory, a5);
+    objc_storeStrong(&v12->_DOMObjectProvider, provider);
+    objc_storeStrong(&v13->_textComponentLayoutHosting, hosting);
+    objc_storeStrong(&v13->_textSourceFactory, factory);
   }
 
   return v13;
 }
 
-- (id)sizerForComponent:(id)a3 componentLayout:(id)a4 layoutOptions:(id)a5 DOMObjectProvider:(id)a6
+- (id)sizerForComponent:(id)component componentLayout:(id)layout layoutOptions:(id)options DOMObjectProvider:(id)provider
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [v10 componentStyleForComponent:v13];
+  providerCopy = provider;
+  optionsCopy = options;
+  layoutCopy = layout;
+  componentCopy = component;
+  v14 = [providerCopy componentStyleForComponent:componentCopy];
   v15 = [SXTextComponentSizer alloc];
-  v16 = [(SXTextComponentSizerFactory *)self textComponentLayoutHosting];
-  v17 = [(SXTextComponentSizerFactory *)self textSourceFactory];
-  v18 = [(SXTextComponentSizer *)v15 initWithComponent:v13 componentLayout:v12 componentStyle:v14 DOMObjectProvider:v10 layoutOptions:v11 textComponentLayoutHosting:v16 textSourceFactory:v17];
+  textComponentLayoutHosting = [(SXTextComponentSizerFactory *)self textComponentLayoutHosting];
+  textSourceFactory = [(SXTextComponentSizerFactory *)self textSourceFactory];
+  v18 = [(SXTextComponentSizer *)v15 initWithComponent:componentCopy componentLayout:layoutCopy componentStyle:v14 DOMObjectProvider:providerCopy layoutOptions:optionsCopy textComponentLayoutHosting:textComponentLayoutHosting textSourceFactory:textSourceFactory];
 
   return v18;
 }

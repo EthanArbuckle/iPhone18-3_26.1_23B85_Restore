@@ -2,8 +2,8 @@
 + (BCAnalyticsVisibilityPresentationNotifier)sharedInstance;
 - (BCAnalyticsVisibilityPresentationNotifier)init;
 - (id)_viewControllerClassesToIgnore;
-- (void)_dismissalTransitionDidEnd:(id)a3;
-- (void)_presentationTransitionDidEnd:(id)a3;
+- (void)_dismissalTransitionDidEnd:(id)end;
+- (void)_presentationTransitionDidEnd:(id)end;
 @end
 
 @implementation BCAnalyticsVisibilityPresentationNotifier
@@ -31,7 +31,7 @@
   block[1] = 3221225472;
   block[2] = sub_5918;
   block[3] = &unk_2C7CA8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_3420C8 != -1)
   {
     dispatch_once(&qword_3420C8, block);
@@ -42,70 +42,70 @@
   return v2;
 }
 
-- (void)_presentationTransitionDidEnd:(id)a3
+- (void)_presentationTransitionDidEnd:(id)end
 {
-  v4 = a3;
+  endCopy = end;
   objc_opt_class();
-  v5 = [v4 object];
+  object = [endCopy object];
   v6 = BUDynamicCast();
 
-  v7 = [(BCAnalyticsVisibilityPresentationNotifier *)self _viewControllerClassesToIgnore];
-  LOBYTE(v5) = [v7 containsObject:objc_opt_class()];
+  _viewControllerClassesToIgnore = [(BCAnalyticsVisibilityPresentationNotifier *)self _viewControllerClassesToIgnore];
+  LOBYTE(object) = [_viewControllerClassesToIgnore containsObject:objc_opt_class()];
 
-  if ((v5 & 1) == 0)
+  if ((object & 1) == 0)
   {
-    v8 = [v4 userInfo];
-    v9 = [v8 objectForKeyedSubscript:UIPresentationControllerPresentationTransitionDidEndCompletedKey];
-    v10 = [v9 BOOLValue];
+    userInfo = [endCopy userInfo];
+    v9 = [userInfo objectForKeyedSubscript:UIPresentationControllerPresentationTransitionDidEndCompletedKey];
+    bOOLValue = [v9 BOOLValue];
 
-    if (v10)
+    if (bOOLValue)
     {
       if ([v6 bc_analyticsVisibilityIsObscuredWhenSubtreePresented])
       {
-        v11 = [v6 presentingViewController];
-        [v11 bc_analyticsVisibilitySubtreeWillDisappear];
-        [v11 bc_analyticsVisibilitySubtreeDidDisappear];
+        presentingViewController = [v6 presentingViewController];
+        [presentingViewController bc_analyticsVisibilitySubtreeWillDisappear];
+        [presentingViewController bc_analyticsVisibilitySubtreeDidDisappear];
       }
 
-      v12 = [v6 transitionCoordinator];
+      transitionCoordinator = [v6 transitionCoordinator];
       v13[0] = _NSConcreteStackBlock;
       v13[1] = 3221225472;
       v13[2] = sub_5AE0;
       v13[3] = &unk_2C7CD0;
       v14 = v6;
-      [v12 animateAlongsideTransition:0 completion:v13];
+      [transitionCoordinator animateAlongsideTransition:0 completion:v13];
     }
   }
 }
 
-- (void)_dismissalTransitionDidEnd:(id)a3
+- (void)_dismissalTransitionDidEnd:(id)end
 {
-  v4 = a3;
+  endCopy = end;
   objc_opt_class();
-  v5 = [v4 object];
+  object = [endCopy object];
   v6 = BUDynamicCast();
 
-  v7 = [(BCAnalyticsVisibilityPresentationNotifier *)self _viewControllerClassesToIgnore];
-  LOBYTE(v5) = [v7 containsObject:objc_opt_class()];
+  _viewControllerClassesToIgnore = [(BCAnalyticsVisibilityPresentationNotifier *)self _viewControllerClassesToIgnore];
+  LOBYTE(object) = [_viewControllerClassesToIgnore containsObject:objc_opt_class()];
 
-  if ((v5 & 1) == 0)
+  if ((object & 1) == 0)
   {
-    v8 = [v6 presentingViewController];
-    v9 = [v4 userInfo];
-    v10 = [v9 objectForKeyedSubscript:UIPresentationControllerDismissalTransitionDidEndCompletedKey];
-    v11 = [v10 BOOLValue];
+    presentingViewController = [v6 presentingViewController];
+    userInfo = [endCopy userInfo];
+    v10 = [userInfo objectForKeyedSubscript:UIPresentationControllerDismissalTransitionDidEndCompletedKey];
+    bOOLValue = [v10 BOOLValue];
 
-    if (v11)
+    if (bOOLValue)
     {
       [v6 bc_analyticsVisibilitySubtreeWillDisappear];
       [v6 bc_analyticsVisibilitySubtreeDidDisappear];
-      v12 = [v6 transitionCoordinator];
+      transitionCoordinator = [v6 transitionCoordinator];
       v13[0] = _NSConcreteStackBlock;
       v13[1] = 3221225472;
       v13[2] = sub_5C70;
       v13[3] = &unk_2C7CD0;
-      v14 = v8;
-      [v12 animateAlongsideTransition:0 completion:v13];
+      v14 = presentingViewController;
+      [transitionCoordinator animateAlongsideTransition:0 completion:v13];
     }
   }
 }

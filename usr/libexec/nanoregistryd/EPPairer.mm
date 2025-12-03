@@ -1,14 +1,14 @@
 @interface EPPairer
 - (BOOL)isClassicDevice;
-- (EPPairer)initWithDevice:(id)a3 withDelegate:(id)a4 pairerList:(id)a5;
+- (EPPairer)initWithDevice:(id)device withDelegate:(id)delegate pairerList:(id)list;
 - (id)initBase;
-- (id)pairer:(id)a3 newEndpointWithDelegate:(id)a4;
+- (id)pairer:(id)pairer newEndpointWithDelegate:(id)delegate;
 - (void)dealloc;
-- (void)invalidateWithError:(id)a3;
-- (void)pairer:(id)a3 completedWithError:(id)a4;
-- (void)pairer:(id)a3 requestWithType:(int64_t)a4 passkey:(id)a5;
-- (void)pairerDidBeginToPair:(id)a3;
-- (void)respondWithType:(int64_t)a3 accept:(BOOL)a4 data:(id)a5;
+- (void)invalidateWithError:(id)error;
+- (void)pairer:(id)pairer completedWithError:(id)error;
+- (void)pairer:(id)pairer requestWithType:(int64_t)type passkey:(id)passkey;
+- (void)pairerDidBeginToPair:(id)pair;
+- (void)respondWithType:(int64_t)type accept:(BOOL)accept data:(id)data;
 - (void)update;
 @end
 
@@ -58,7 +58,7 @@
       *buf = 138412546;
       v10 = v7;
       v11 = 2048;
-      v12 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "dealloc %@[%p]", buf, 0x16u);
     }
   }
@@ -69,25 +69,25 @@
   [(EPPairer *)&v8 dealloc];
 }
 
-- (EPPairer)initWithDevice:(id)a3 withDelegate:(id)a4 pairerList:(id)a5
+- (EPPairer)initWithDevice:(id)device withDelegate:(id)delegate pairerList:(id)list
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [(EPPairer *)self initBase];
-  v13 = v12;
-  if (v12)
+  deviceCopy = device;
+  delegateCopy = delegate;
+  listCopy = list;
+  initBase = [(EPPairer *)self initBase];
+  v13 = initBase;
+  if (initBase)
   {
-    objc_storeStrong(v12 + 6, a3);
-    objc_storeStrong(&v13->_delegate, a4);
-    objc_storeStrong(&v13->_pairerList, a5);
+    objc_storeStrong(initBase + 6, device);
+    objc_storeStrong(&v13->_delegate, delegate);
+    objc_storeStrong(&v13->_pairerList, list);
     v14 = +[EPFactory sharedFactory];
-    v15 = [v14 agentManager];
-    v16 = [v15 newAgentWithDelegate:v13 fromCentral:{objc_msgSend(v9, "isPeripheral")}];
+    agentManager = [v14 agentManager];
+    v16 = [agentManager newAgentWithDelegate:v13 fromCentral:{objc_msgSend(deviceCopy, "isPeripheral")}];
     agent = v13->_agent;
     v13->_agent = v16;
 
-    if (([v9 isPeripheral] & 1) == 0)
+    if (([deviceCopy isPeripheral] & 1) == 0)
     {
       delegate = v13->_delegate;
       if (objc_opt_respondsToSelector())
@@ -108,8 +108,8 @@
 
 - (BOOL)isClassicDevice
 {
-  v3 = [(EPDevice *)self->_device info];
-  if ([v3 hasClassicDevice])
+  info = [(EPDevice *)self->_device info];
+  if ([info hasClassicDevice])
   {
     v4 = self->_type == 0;
   }
@@ -122,9 +122,9 @@
   return v4;
 }
 
-- (void)respondWithType:(int64_t)a3 accept:(BOOL)a4 data:(id)a5
+- (void)respondWithType:(int64_t)type accept:(BOOL)accept data:(id)data
 {
-  v8 = a5;
+  dataCopy = data;
   v9 = sub_1000A98C0();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
 
@@ -139,10 +139,10 @@
   }
 
   self->_shouldRespond = 1;
-  self->_type = a3;
-  self->_accept = a4;
+  self->_type = type;
+  self->_accept = accept;
   data = self->_data;
-  self->_data = v8;
+  self->_data = dataCopy;
 
   [(EPPairer *)self update];
 }
@@ -154,13 +154,13 @@
     if ([(EPPairer *)self isClassicDevice])
     {
       self->_shouldRespond = 0;
-      v3 = +[EPFactory queue];
+      agent = +[EPFactory queue];
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_10005E5D0;
       block[3] = &unk_100175660;
       block[4] = self;
-      dispatch_async(v3, block);
+      dispatch_async(agent, block);
 LABEL_4:
 
       return;
@@ -168,15 +168,15 @@ LABEL_4:
 
     if ([(EPResource *)self->_agent availability]== 1)
     {
-      v20 = [(EPDevice *)self->_device pairingConnector];
-      if ([v20 availability] == 1)
+      pairingConnector = [(EPDevice *)self->_device pairingConnector];
+      if ([pairingConnector availability] == 1)
       {
-        v4 = [(EPDevice *)self->_device pipe];
-        if ([v4 availability] == 1)
+        pipe = [(EPDevice *)self->_device pipe];
+        if ([pipe availability] == 1)
         {
-          v5 = [(EPDevice *)self->_device pairingPhase];
+          pairingPhase = [(EPDevice *)self->_device pairingPhase];
 
-          if (v5 == 3)
+          if (pairingPhase == 3)
           {
             self->_shouldRespond = 0;
             v6 = sub_1000A98C0();
@@ -187,10 +187,10 @@ LABEL_4:
               v8 = sub_1000A98C0();
               if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
               {
-                v9 = [(EPDevice *)self->_device info];
-                v10 = [v9 peer];
-                v11 = [v10 identifier];
-                v12 = [v11 UUIDString];
+                info = [(EPDevice *)self->_device info];
+                peer = [info peer];
+                identifier = [peer identifier];
+                uUIDString = [identifier UUIDString];
                 v13 = [EPDevice stringFromCBPairingType:self->_type];
                 v14 = v13;
                 v15 = @"NO";
@@ -202,7 +202,7 @@ LABEL_4:
                   v15 = @"YES";
                 }
 
-                v23 = v12;
+                v23 = uUIDString;
                 v24 = 2112;
                 v25 = v13;
                 v26 = 2112;
@@ -213,10 +213,10 @@ LABEL_4:
               }
             }
 
-            v3 = [(EPPairingAgent *)self->_agent agent];
-            v18 = [(EPDevice *)self->_device info];
-            v19 = [v18 peer];
-            [v3 respondToPairingRequest:v19 type:self->_type accept:self->_accept data:self->_data];
+            agent = [(EPPairingAgent *)self->_agent agent];
+            info2 = [(EPDevice *)self->_device info];
+            peer2 = [info2 peer];
+            [agent respondToPairingRequest:peer2 type:self->_type accept:self->_accept data:self->_data];
 
             goto LABEL_4;
           }
@@ -228,12 +228,12 @@ LABEL_4:
   }
 }
 
-- (void)invalidateWithError:(id)a3
+- (void)invalidateWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = sub_1000A98C0();
   v6 = v5;
-  if (v4)
+  if (errorCopy)
   {
     v7 = os_log_type_enabled(v5, OS_LOG_TYPE_ERROR);
 
@@ -242,7 +242,7 @@ LABEL_4:
       v8 = sub_1000A98C0();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
       {
-        sub_1001007F8(v4, v8);
+        sub_1001007F8(errorCopy, v8);
       }
 
 LABEL_8:
@@ -266,12 +266,12 @@ LABEL_8:
     }
   }
 
-  [(EPDevice *)self->_device cancelPairingWithError:v4];
+  [(EPDevice *)self->_device cancelPairingWithError:errorCopy];
 }
 
-- (id)pairer:(id)a3 newEndpointWithDelegate:(id)a4
+- (id)pairer:(id)pairer newEndpointWithDelegate:(id)delegate
 {
-  v5 = a4;
+  delegateCopy = delegate;
   v6 = sub_1000A98C0();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
 
@@ -285,7 +285,7 @@ LABEL_8:
       v11 = NSStringFromClass(v10);
       v12 = self->_delegate;
       v15 = 138412802;
-      v16 = self;
+      selfCopy = self;
       v17 = 2112;
       v18 = v11;
       v19 = 2048;
@@ -294,18 +294,18 @@ LABEL_8:
     }
   }
 
-  v13 = [(EPPairerDelegate *)self->_delegate pairer:self newEndpointWithDelegate:v5];
+  v13 = [(EPPairerDelegate *)self->_delegate pairer:self newEndpointWithDelegate:delegateCopy];
 
   return v13;
 }
 
-- (void)pairer:(id)a3 completedWithError:(id)a4
+- (void)pairer:(id)pairer completedWithError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  pairerCopy = pairer;
+  errorCopy = error;
   v8 = sub_1000A98C0();
   v9 = v8;
-  if (v7)
+  if (errorCopy)
   {
     v10 = os_log_type_enabled(v8, OS_LOG_TYPE_ERROR);
 
@@ -314,7 +314,7 @@ LABEL_8:
       v11 = sub_1000A98C0();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
-        sub_100100870(self, v7, v11);
+        sub_100100870(self, errorCopy, v11);
       }
 
 LABEL_8:
@@ -335,7 +335,7 @@ LABEL_8:
         v15 = NSStringFromClass(v14);
         v16 = self->_delegate;
         v18 = 138412802;
-        v19 = self;
+        selfCopy = self;
         v20 = 2112;
         v21 = v15;
         v22 = 2048;
@@ -347,14 +347,14 @@ LABEL_8:
     }
   }
 
-  [(EPPairerDelegate *)self->_delegate pairer:self completedWithError:v7];
+  [(EPPairerDelegate *)self->_delegate pairer:self completedWithError:errorCopy];
   v17 = self->_delegate;
   self->_delegate = 0;
 }
 
-- (void)pairer:(id)a3 requestWithType:(int64_t)a4 passkey:(id)a5
+- (void)pairer:(id)pairer requestWithType:(int64_t)type passkey:(id)passkey
 {
-  v7 = a5;
+  passkeyCopy = passkey;
   v8 = sub_1000A98C0();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
 
@@ -367,9 +367,9 @@ LABEL_8:
       v12 = objc_opt_class();
       v13 = NSStringFromClass(v12);
       v14 = self->_delegate;
-      v15 = [EPDevice stringFromCBPairingType:a4];
+      v15 = [EPDevice stringFromCBPairingType:type];
       v16 = 138413314;
-      v17 = self;
+      selfCopy = self;
       v18 = 2112;
       v19 = v13;
       v20 = 2048;
@@ -377,15 +377,15 @@ LABEL_8:
       v22 = 2112;
       v23 = v15;
       v24 = 2112;
-      v25 = v7;
+      v25 = passkeyCopy;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Calling pairer:requestWithType: with pairer %@ on %@[%p] with type %@ passkey %@", &v16, 0x34u);
     }
   }
 
-  [(EPPairerDelegate *)self->_delegate pairer:self requestWithType:a4 passkey:v7];
+  [(EPPairerDelegate *)self->_delegate pairer:self requestWithType:type passkey:passkeyCopy];
 }
 
-- (void)pairerDidBeginToPair:(id)a3
+- (void)pairerDidBeginToPair:(id)pair
 {
   delegate = self->_delegate;
   if (objc_opt_respondsToSelector())
@@ -403,7 +403,7 @@ LABEL_8:
         v10 = NSStringFromClass(v9);
         v11 = self->_delegate;
         v12 = 138412802;
-        v13 = self;
+        selfCopy = self;
         v14 = 2112;
         v15 = v10;
         v16 = 2048;

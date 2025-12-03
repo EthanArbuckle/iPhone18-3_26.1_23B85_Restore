@@ -1,20 +1,20 @@
 @interface UIStoryboardShowSegueTemplate
-- (UIStoryboardShowSegueTemplate)initWithCoder:(id)a3;
-- (id)newDefaultPerformHandlerForSegue:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (UIStoryboardShowSegueTemplate)initWithCoder:(id)coder;
+- (id)newDefaultPerformHandlerForSegue:(id)segue;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UIStoryboardShowSegueTemplate
 
-- (UIStoryboardShowSegueTemplate)initWithCoder:(id)a3
+- (UIStoryboardShowSegueTemplate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = UIStoryboardShowSegueTemplate;
-  v5 = [(UIStoryboardSegueTemplate *)&v10 initWithCoder:v4];
+  v5 = [(UIStoryboardSegueTemplate *)&v10 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectForKey:@"UIActionName"];
+    v6 = [coderCopy decodeObjectForKey:@"UIActionName"];
     v7 = [v6 copy];
     action = v5->_action;
     v5->_action = v7;
@@ -23,24 +23,24 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = UIStoryboardShowSegueTemplate;
-  v4 = a3;
-  [(UIStoryboardSegueTemplate *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(UIStoryboardSegueTemplate *)&v6 encodeWithCoder:coderCopy];
   v5 = [(UIStoryboardShowSegueTemplate *)self action:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"UIActionName"];
+  [coderCopy encodeObject:v5 forKey:@"UIActionName"];
 }
 
-- (id)newDefaultPerformHandlerForSegue:(id)a3
+- (id)newDefaultPerformHandlerForSegue:(id)segue
 {
-  v4 = a3;
-  objc_initWeak(&location, v4);
+  segueCopy = segue;
+  objc_initWeak(&location, segueCopy);
   if (self->_action)
   {
-    v5 = [(UIStoryboardShowSegueTemplate *)self action];
-    v6 = NSSelectorFromString(v5);
+    action = [(UIStoryboardShowSegueTemplate *)self action];
+    v6 = NSSelectorFromString(action);
   }
 
   else

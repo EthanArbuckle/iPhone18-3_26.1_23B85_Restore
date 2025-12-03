@@ -7,7 +7,7 @@
 - (id)_es_path;
 - (id)_es_quasarDir;
 - (id)_es_quasarModelPath;
-- (int64_t)_es_compareByVersion:(id)a3;
+- (int64_t)_es_compareByVersion:(id)version;
 - (int64_t)_es_requiredCapabilityIdentifier;
 - (int64_t)_es_status;
 @end
@@ -16,17 +16,17 @@
 
 - (int64_t)_es_requiredCapabilityIdentifier
 {
-  v2 = [(MAAsset *)self attributes];
-  v3 = [v2 objectForKey:@"RequiredCapabilityIdentifier"];
-  v4 = [v3 integerValue];
+  attributes = [(MAAsset *)self attributes];
+  v3 = [attributes objectForKey:@"RequiredCapabilityIdentifier"];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
 - (BOOL)_es_isCompatibleWithThisDevice
 {
-  v3 = [(MAAsset *)self _es_requiredCapabilityIdentifier];
-  if (v3 > AFDeviceHighestLanguageModelCapabilityIdentifier())
+  _es_requiredCapabilityIdentifier = [(MAAsset *)self _es_requiredCapabilityIdentifier];
+  if (_es_requiredCapabilityIdentifier > AFDeviceHighestLanguageModelCapabilityIdentifier())
   {
     return 0;
   }
@@ -39,8 +39,8 @@
   [v8 floatValue];
   v10 = v9;
 
-  v11 = [(MAAsset *)self attributes];
-  v12 = [v11 objectForKey:@"FormatVersion"];
+  attributes = [(MAAsset *)self attributes];
+  v12 = [attributes objectForKey:@"FormatVersion"];
   [v12 floatValue];
   v14 = v13;
 
@@ -49,8 +49,8 @@
 
 - (id)_es_description
 {
-  v3 = [(MAAsset *)self _es_contentVersion];
-  v4 = [(MAAsset *)self _es_masteredVersion];
+  _es_contentVersion = [(MAAsset *)self _es_contentVersion];
+  _es_masteredVersion = [(MAAsset *)self _es_masteredVersion];
   if ([(MAAsset *)self _es_isInstalled])
   {
     v5 = @"YES";
@@ -61,16 +61,16 @@
     v5 = @"NO";
   }
 
-  v6 = [(MAAsset *)self _es_language];
+  _es_language = [(MAAsset *)self _es_language];
   if ([(MAAsset *)self _es_isInstalled])
   {
-    v7 = [(MAAsset *)self _es_path];
-    v8 = [NSString stringWithFormat:@"Asset: content version: %@, mastered version %@, installed %@, language: %@, path: %@", v3, v4, v5, v6, v7];
+    _es_path = [(MAAsset *)self _es_path];
+    v8 = [NSString stringWithFormat:@"Asset: content version: %@, mastered version %@, installed %@, language: %@, path: %@", _es_contentVersion, _es_masteredVersion, v5, _es_language, _es_path];
   }
 
   else
   {
-    v8 = [NSString stringWithFormat:@"Asset: content version: %@, mastered version %@, installed %@, language: %@, path: %@", v3, v4, v5, v6, &stru_100105420];
+    v8 = [NSString stringWithFormat:@"Asset: content version: %@, mastered version %@, installed %@, language: %@, path: %@", _es_contentVersion, _es_masteredVersion, v5, _es_language, &stru_100105420];
   }
 
   return v8;
@@ -78,38 +78,38 @@
 
 - (id)_es_language
 {
-  v2 = [(MAAsset *)self attributes];
-  v3 = [v2 objectForKey:@"Language"];
+  attributes = [(MAAsset *)self attributes];
+  v3 = [attributes objectForKey:@"Language"];
 
   return v3;
 }
 
 - (id)_es_masteredVersion
 {
-  v2 = [(MAAsset *)self attributes];
-  v3 = [v2 objectForKey:ASAttributeMasteredVersion];
+  attributes = [(MAAsset *)self attributes];
+  v3 = [attributes objectForKey:ASAttributeMasteredVersion];
 
   return v3;
 }
 
 - (id)_es_contentVersion
 {
-  v2 = [(MAAsset *)self attributes];
-  v3 = [v2 objectForKey:ASAttributeContentVersion];
+  attributes = [(MAAsset *)self attributes];
+  v3 = [attributes objectForKey:ASAttributeContentVersion];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    stringValue = v3;
 LABEL_5:
-    v5 = v4;
+    v5 = stringValue;
     goto LABEL_7;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 stringValue];
+    stringValue = [v3 stringValue];
     goto LABEL_5;
   }
 
@@ -121,41 +121,41 @@ LABEL_7:
 
 - (id)_es_path
 {
-  v3 = [(MAAsset *)self getLocalUrl];
-  if (v3)
+  getLocalUrl = [(MAAsset *)self getLocalUrl];
+  if (getLocalUrl)
   {
-    v4 = [(MAAsset *)self getLocalUrl];
-    v5 = [v4 path];
+    getLocalUrl2 = [(MAAsset *)self getLocalUrl];
+    path = [getLocalUrl2 path];
   }
 
   else
   {
-    v5 = 0;
+    path = 0;
   }
 
-  return v5;
+  return path;
 }
 
 - (int64_t)_es_status
 {
-  v2 = [(MAAsset *)self state];
-  if ((v2 - 1) > 3)
+  state = [(MAAsset *)self state];
+  if ((state - 1) > 3)
   {
     return 2;
   }
 
   else
   {
-    return qword_1000D1700[(v2 - 1)];
+    return qword_1000D1700[(state - 1)];
   }
 }
 
 - (id)_es_quasarModelPath
 {
-  v3 = [(MAAsset *)self _es_path];
-  if (v3 && (-[MAAsset attributes](self, "attributes"), v4 = objc_claimAutoreleasedReturnValue(), [v4 objectForKey:@"QuasarDir"], v5 = objc_claimAutoreleasedReturnValue(), v4, v5))
+  _es_path = [(MAAsset *)self _es_path];
+  if (_es_path && (-[MAAsset attributes](self, "attributes"), v4 = objc_claimAutoreleasedReturnValue(), [v4 objectForKey:@"QuasarDir"], v5 = objc_claimAutoreleasedReturnValue(), v4, v5))
   {
-    v6 = [v3 stringByAppendingPathComponent:v5];
+    v6 = [_es_path stringByAppendingPathComponent:v5];
   }
 
   else
@@ -168,44 +168,44 @@ LABEL_7:
 
 - (id)_es_quasarDir
 {
-  v2 = [(MAAsset *)self attributes];
-  v3 = [v2 objectForKey:@"QuasarDir"];
+  attributes = [(MAAsset *)self attributes];
+  v3 = [attributes objectForKey:@"QuasarDir"];
 
   return v3;
 }
 
-- (int64_t)_es_compareByVersion:(id)a3
+- (int64_t)_es_compareByVersion:(id)version
 {
-  v4 = a3;
-  v5 = [(MAAsset *)self _es_contentVersion];
-  v6 = [v4 _es_contentVersion];
-  v7 = [v5 compare:v6 options:64];
+  versionCopy = version;
+  _es_contentVersion = [(MAAsset *)self _es_contentVersion];
+  _es_contentVersion2 = [versionCopy _es_contentVersion];
+  v7 = [_es_contentVersion compare:_es_contentVersion2 options:64];
 
   if (!v7)
   {
-    v8 = [(MAAsset *)self _es_masteredVersion];
-    v9 = [v4 _es_masteredVersion];
-    v10 = v9;
-    if (v8 && v9)
+    _es_masteredVersion = [(MAAsset *)self _es_masteredVersion];
+    _es_masteredVersion2 = [versionCopy _es_masteredVersion];
+    v10 = _es_masteredVersion2;
+    if (_es_masteredVersion && _es_masteredVersion2)
     {
-      v7 = [v8 compare:v9 options:64];
+      v7 = [_es_masteredVersion compare:_es_masteredVersion2 options:64];
       if (!v7)
       {
         goto LABEL_12;
       }
     }
 
-    else if (!v8 || v9)
+    else if (!_es_masteredVersion || _es_masteredVersion2)
     {
-      if (v8 || !v9)
+      if (_es_masteredVersion || !_es_masteredVersion2)
       {
 LABEL_12:
-        v11 = [(MAAsset *)self _es_path];
-        v12 = [v4 _es_path];
-        v13 = v12;
-        if (v11 && v12)
+        _es_path = [(MAAsset *)self _es_path];
+        _es_path2 = [versionCopy _es_path];
+        v13 = _es_path2;
+        if (_es_path && _es_path2)
         {
-          v7 = [v11 compare:v12];
+          v7 = [_es_path compare:_es_path2];
           if (!v7)
           {
 LABEL_22:
@@ -213,9 +213,9 @@ LABEL_22:
           }
         }
 
-        else if (!v11 || v12)
+        else if (!_es_path || _es_path2)
         {
-          if (v11 || !v12)
+          if (_es_path || !_es_path2)
           {
             goto LABEL_22;
           }

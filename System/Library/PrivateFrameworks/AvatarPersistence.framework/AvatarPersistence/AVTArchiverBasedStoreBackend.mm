@@ -1,64 +1,64 @@
 @interface AVTArchiverBasedStoreBackend
-+ (id)classifyRecordsByIdentifiers:(id)a3;
-+ (id)rootByRemovingAvatarWithIdentifier:(id)a3 fromRoot:(id)a4;
-+ (id)rootBySavingAvatarRecord:(id)a3 afterAvatarRecord:(id)a4 forDomainIdentifier:(id)a5 toRoot:(id)a6;
-- (AVTArchiverBasedStoreBackend)initWithStoreLocation:(id)a3 domainIdentifier:(id)a4 environment:(id)a5;
-- (BOOL)canCreateAvatarWithError:(id *)a3;
-- (BOOL)deleteAvatarWithIdentifier:(id)a3 error:(id *)a4;
-- (BOOL)loadContentFromDisk:(id *)a3;
-- (BOOL)loadContentFromDiskIfNeeded:(id *)a3;
-- (BOOL)saveAvatar:(id)a3 error:(id *)a4;
-- (BOOL)saveAvatars:(id)a3 error:(id *)a4;
-- (BOOL)saveModel:(id)a3 logger:(id)a4 error:(id *)a5;
++ (id)classifyRecordsByIdentifiers:(id)identifiers;
++ (id)rootByRemovingAvatarWithIdentifier:(id)identifier fromRoot:(id)root;
++ (id)rootBySavingAvatarRecord:(id)record afterAvatarRecord:(id)avatarRecord forDomainIdentifier:(id)identifier toRoot:(id)root;
+- (AVTArchiverBasedStoreBackend)initWithStoreLocation:(id)location domainIdentifier:(id)identifier environment:(id)environment;
+- (BOOL)canCreateAvatarWithError:(id *)error;
+- (BOOL)deleteAvatarWithIdentifier:(id)identifier error:(id *)error;
+- (BOOL)loadContentFromDisk:(id *)disk;
+- (BOOL)loadContentFromDiskIfNeeded:(id *)needed;
+- (BOOL)saveAvatar:(id)avatar error:(id *)error;
+- (BOOL)saveAvatars:(id)avatars error:(id *)error;
+- (BOOL)saveModel:(id)model logger:(id)logger error:(id *)error;
 - (id)allAvatars;
-- (id)avatarsExcludingIdentifiers:(id)a3 error:(id *)a4;
-- (id)avatarsForFetchRequest:(id)a3 error:(id *)a4;
-- (id)avatarsWithIdentifiers:(id)a3 error:(id *)a4;
-- (id)duplicateAvatarRecord:(id)a3 error:(id *)a4;
-- (unint64_t)avatarCountWithError:(id *)a3;
-- (void)loadModel:(id)a3;
+- (id)avatarsExcludingIdentifiers:(id)identifiers error:(id *)error;
+- (id)avatarsForFetchRequest:(id)request error:(id *)error;
+- (id)avatarsWithIdentifiers:(id)identifiers error:(id *)error;
+- (id)duplicateAvatarRecord:(id)record error:(id *)error;
+- (unint64_t)avatarCountWithError:(id *)error;
+- (void)loadModel:(id)model;
 @end
 
 @implementation AVTArchiverBasedStoreBackend
 
-- (AVTArchiverBasedStoreBackend)initWithStoreLocation:(id)a3 domainIdentifier:(id)a4 environment:(id)a5
+- (AVTArchiverBasedStoreBackend)initWithStoreLocation:(id)location domainIdentifier:(id)identifier environment:(id)environment
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  locationCopy = location;
+  identifierCopy = identifier;
+  environmentCopy = environment;
   v15.receiver = self;
   v15.super_class = AVTArchiverBasedStoreBackend;
   v12 = [(AVTArchiverBasedStoreBackend *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_storeLocation, a3);
-    objc_storeStrong(&v13->_domainIdentifier, a4);
-    objc_storeStrong(&v13->_environment, a5);
+    objc_storeStrong(&v12->_storeLocation, location);
+    objc_storeStrong(&v13->_domainIdentifier, identifier);
+    objc_storeStrong(&v13->_environment, environment);
   }
 
   return v13;
 }
 
-- (BOOL)loadContentFromDiskIfNeeded:(id *)a3
+- (BOOL)loadContentFromDiskIfNeeded:(id *)needed
 {
-  v5 = [(AVTArchiverBasedStoreBackend *)self model];
+  model = [(AVTArchiverBasedStoreBackend *)self model];
 
-  if (v5)
+  if (model)
   {
     return 1;
   }
 
-  return [(AVTArchiverBasedStoreBackend *)self loadContentFromDisk:a3];
+  return [(AVTArchiverBasedStoreBackend *)self loadContentFromDisk:needed];
 }
 
-- (BOOL)loadContentFromDisk:(id *)a3
+- (BOOL)loadContentFromDisk:(id *)disk
 {
-  v5 = [(AVTArchiverBasedStoreBackend *)self environment];
-  v6 = [v5 logger];
+  environment = [(AVTArchiverBasedStoreBackend *)self environment];
+  logger = [environment logger];
 
-  v7 = [(AVTArchiverBasedStoreBackend *)self storeLocation];
-  v8 = [AVTArchiverBasedStorePersistence readContentFromDiskAtLocation:v7 logger:v6 error:a3];
+  storeLocation = [(AVTArchiverBasedStoreBackend *)self storeLocation];
+  v8 = [AVTArchiverBasedStorePersistence readContentFromDiskAtLocation:storeLocation logger:logger error:disk];
 
   if (v8)
   {
@@ -68,39 +68,39 @@
   return v8 != 0;
 }
 
-- (void)loadModel:(id)a3
+- (void)loadModel:(id)model
 {
-  v4 = a3;
-  v6 = [v4 records];
-  v5 = [objc_opt_class() classifyRecordsByIdentifiers:v6];
-  [(AVTArchiverBasedStoreBackend *)self setModel:v4];
+  modelCopy = model;
+  records = [modelCopy records];
+  v5 = [objc_opt_class() classifyRecordsByIdentifiers:records];
+  [(AVTArchiverBasedStoreBackend *)self setModel:modelCopy];
 
-  [(AVTArchiverBasedStoreBackend *)self setSortedAvatars:v6];
+  [(AVTArchiverBasedStoreBackend *)self setSortedAvatars:records];
   [(AVTArchiverBasedStoreBackend *)self setAvatarsByIdentifiers:v5];
 }
 
-- (id)avatarsForFetchRequest:(id)a3 error:(id *)a4
+- (id)avatarsForFetchRequest:(id)request error:(id *)error
 {
-  v6 = a3;
-  if (![(AVTArchiverBasedStoreBackend *)self loadContentFromDiskIfNeeded:a4])
+  requestCopy = request;
+  if (![(AVTArchiverBasedStoreBackend *)self loadContentFromDiskIfNeeded:error])
   {
 LABEL_14:
-    v8 = 0;
+    allAvatars = 0;
     goto LABEL_17;
   }
 
-  v7 = [v6 criteria];
-  v8 = MEMORY[0x277CBEBF8];
-  if (v7 > 3)
+  criteria = [requestCopy criteria];
+  allAvatars = MEMORY[0x277CBEBF8];
+  if (criteria > 3)
   {
-    if (v7 == 7)
+    if (criteria == 7)
     {
       goto LABEL_17;
     }
 
-    if (v7 != 6)
+    if (criteria != 6)
     {
-      if (v7 != 4)
+      if (criteria != 4)
       {
         goto LABEL_12;
       }
@@ -108,26 +108,26 @@ LABEL_14:
       goto LABEL_10;
     }
 
-    v9 = [v6 excludingIdentifiers];
-    v10 = [(AVTArchiverBasedStoreBackend *)self avatarsExcludingIdentifiers:v9 error:a4];
+    excludingIdentifiers = [requestCopy excludingIdentifiers];
+    v10 = [(AVTArchiverBasedStoreBackend *)self avatarsExcludingIdentifiers:excludingIdentifiers error:error];
   }
 
   else
   {
-    if ((v7 - 1) >= 2)
+    if ((criteria - 1) >= 2)
     {
-      if (v7)
+      if (criteria)
       {
-        if (v7 == 3)
+        if (criteria == 3)
         {
           goto LABEL_17;
         }
 
 LABEL_12:
-        if (a4)
+        if (error)
         {
           [AVTError errorWithCode:999 userInfo:0];
-          *a4 = v8 = 0;
+          *error = allAvatars = 0;
           goto LABEL_17;
         }
 
@@ -135,40 +135,40 @@ LABEL_12:
       }
 
 LABEL_10:
-      v8 = [(AVTArchiverBasedStoreBackend *)self allAvatars];
+      allAvatars = [(AVTArchiverBasedStoreBackend *)self allAvatars];
       goto LABEL_17;
     }
 
-    v9 = [v6 identifiers];
-    v10 = [(AVTArchiverBasedStoreBackend *)self avatarsWithIdentifiers:v9 error:a4];
+    excludingIdentifiers = [requestCopy identifiers];
+    v10 = [(AVTArchiverBasedStoreBackend *)self avatarsWithIdentifiers:excludingIdentifiers error:error];
   }
 
-  v8 = v10;
+  allAvatars = v10;
 
 LABEL_17:
 
-  return v8;
+  return allAvatars;
 }
 
 - (id)allAvatars
 {
-  v2 = [(AVTArchiverBasedStoreBackend *)self sortedAvatars];
-  v3 = [v2 copy];
+  sortedAvatars = [(AVTArchiverBasedStoreBackend *)self sortedAvatars];
+  v3 = [sortedAvatars copy];
 
   return v3;
 }
 
-- (id)avatarsWithIdentifiers:(id)a3 error:(id *)a4
+- (id)avatarsWithIdentifiers:(id)identifiers error:(id *)error
 {
   v27 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v20 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v5, "count")}];
-  v19 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v5, "count")}];
+  identifiersCopy = identifiers;
+  v20 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(identifiersCopy, "count")}];
+  v19 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(identifiersCopy, "count")}];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  obj = v5;
+  obj = identifiersCopy;
   v6 = [obj countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v6)
   {
@@ -184,9 +184,9 @@ LABEL_17:
         }
 
         v10 = *(*(&v22 + 1) + 8 * i);
-        v11 = [(AVTArchiverBasedStoreBackend *)self sortedAvatars];
+        sortedAvatars = [(AVTArchiverBasedStoreBackend *)self sortedAvatars];
         v12 = [AVTAvatarRecord matchingIdentifierTest:v10];
-        v13 = [v11 indexOfObjectPassingTest:v12];
+        v13 = [sortedAvatars indexOfObjectPassingTest:v12];
 
         if (v13 == 0x7FFFFFFFFFFFFFFFLL)
         {
@@ -195,8 +195,8 @@ LABEL_17:
 
         else
         {
-          v14 = [(AVTArchiverBasedStoreBackend *)self sortedAvatars];
-          v15 = [v14 objectAtIndexedSubscript:v13];
+          sortedAvatars2 = [(AVTArchiverBasedStoreBackend *)self sortedAvatars];
+          v15 = [sortedAvatars2 objectAtIndexedSubscript:v13];
           [v20 addObject:v15];
         }
       }
@@ -213,20 +213,20 @@ LABEL_17:
   return v16;
 }
 
-- (id)avatarsExcludingIdentifiers:(id)a3 error:(id *)a4
+- (id)avatarsExcludingIdentifiers:(id)identifiers error:(id *)error
 {
-  v5 = a3;
-  v6 = [(AVTArchiverBasedStoreBackend *)self sortedAvatars];
+  identifiersCopy = identifiers;
+  sortedAvatars = [(AVTArchiverBasedStoreBackend *)self sortedAvatars];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __66__AVTArchiverBasedStoreBackend_avatarsExcludingIdentifiers_error___block_invoke;
   v13[3] = &unk_278CFAB28;
-  v14 = v5;
-  v7 = v5;
-  v8 = [v6 indexesOfObjectsPassingTest:v13];
+  v14 = identifiersCopy;
+  v7 = identifiersCopy;
+  v8 = [sortedAvatars indexesOfObjectsPassingTest:v13];
 
-  v9 = [(AVTArchiverBasedStoreBackend *)self sortedAvatars];
-  v10 = [v9 objectsAtIndexes:v8];
+  sortedAvatars2 = [(AVTArchiverBasedStoreBackend *)self sortedAvatars];
+  v10 = [sortedAvatars2 objectsAtIndexes:v8];
 
   v11 = [v10 copy];
 
@@ -242,15 +242,15 @@ BOOL __66__AVTArchiverBasedStoreBackend_avatarsExcludingIdentifiers_error___bloc
   return v4;
 }
 
-- (BOOL)saveAvatars:(id)a3 error:(id *)a4
+- (BOOL)saveAvatars:(id)avatars error:(id *)error
 {
   v19 = *MEMORY[0x277D85DE8];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = a3;
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  avatarsCopy = avatars;
+  v7 = [avatarsCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -261,17 +261,17 @@ BOOL __66__AVTArchiverBasedStoreBackend_avatarsExcludingIdentifiers_error___bloc
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(avatarsCopy);
         }
 
-        if (![(AVTArchiverBasedStoreBackend *)self saveAvatar:*(*(&v14 + 1) + 8 * i) error:a4, v14])
+        if (![(AVTArchiverBasedStoreBackend *)self saveAvatar:*(*(&v14 + 1) + 8 * i) error:error, v14])
         {
           v11 = 0;
           goto LABEL_11;
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [avatarsCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v8)
       {
         continue;
@@ -288,25 +288,25 @@ LABEL_11:
   return v11;
 }
 
-- (BOOL)saveAvatar:(id)a3 error:(id *)a4
+- (BOOL)saveAvatar:(id)avatar error:(id *)error
 {
-  v6 = a3;
-  if (![(AVTArchiverBasedStoreBackend *)self loadContentFromDiskIfNeeded:a4])
+  avatarCopy = avatar;
+  if (![(AVTArchiverBasedStoreBackend *)self loadContentFromDiskIfNeeded:error])
   {
     goto LABEL_7;
   }
 
-  v7 = [(AVTArchiverBasedStoreBackend *)self sortedAvatars];
-  v8 = [v6 identifier];
-  v9 = [AVTAvatarRecord matchingIdentifierTest:v8];
-  v10 = [v7 indexOfObjectPassingTest:v9];
+  sortedAvatars = [(AVTArchiverBasedStoreBackend *)self sortedAvatars];
+  identifier = [avatarCopy identifier];
+  v9 = [AVTAvatarRecord matchingIdentifierTest:identifier];
+  v10 = [sortedAvatars indexOfObjectPassingTest:v9];
 
   if (v10 == 0x7FFFFFFFFFFFFFFFLL && ![(AVTArchiverBasedStoreBackend *)self canCreateAvatarWithError:0])
   {
-    if (a4)
+    if (error)
     {
       [AVTError errorWithCode:578 userInfo:0];
-      *a4 = v17 = 0;
+      *error = v17 = 0;
       goto LABEL_8;
     }
 
@@ -315,34 +315,34 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v11 = [(AVTArchiverBasedStoreBackend *)self environment];
-  v12 = [v11 logger];
+  environment = [(AVTArchiverBasedStoreBackend *)self environment];
+  logger = [environment logger];
 
   v13 = objc_opt_class();
-  v14 = [(AVTArchiverBasedStoreBackend *)self domainIdentifier];
-  v15 = [(AVTArchiverBasedStoreBackend *)self model];
-  v16 = [v13 rootBySavingAvatarRecord:v6 afterAvatarRecord:0 forDomainIdentifier:v14 toRoot:v15];
+  domainIdentifier = [(AVTArchiverBasedStoreBackend *)self domainIdentifier];
+  model = [(AVTArchiverBasedStoreBackend *)self model];
+  v16 = [v13 rootBySavingAvatarRecord:avatarCopy afterAvatarRecord:0 forDomainIdentifier:domainIdentifier toRoot:model];
 
-  v17 = [(AVTArchiverBasedStoreBackend *)self saveModel:v16 logger:v12 error:a4];
+  v17 = [(AVTArchiverBasedStoreBackend *)self saveModel:v16 logger:logger error:error];
 LABEL_8:
 
   return v17;
 }
 
-- (BOOL)deleteAvatarWithIdentifier:(id)a3 error:(id *)a4
+- (BOOL)deleteAvatarWithIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
-  if ([(AVTArchiverBasedStoreBackend *)self loadContentFromDiskIfNeeded:a4])
+  identifierCopy = identifier;
+  if ([(AVTArchiverBasedStoreBackend *)self loadContentFromDiskIfNeeded:error])
   {
-    v7 = [(AVTArchiverBasedStoreBackend *)self environment];
-    v8 = [v7 logger];
+    environment = [(AVTArchiverBasedStoreBackend *)self environment];
+    logger = [environment logger];
 
-    [v8 logDeletingRecordWithIdentifier:v6];
+    [logger logDeletingRecordWithIdentifier:identifierCopy];
     v9 = objc_opt_class();
-    v10 = [(AVTArchiverBasedStoreBackend *)self model];
-    v11 = [v9 rootByRemovingAvatarWithIdentifier:v6 fromRoot:v10];
+    model = [(AVTArchiverBasedStoreBackend *)self model];
+    v11 = [v9 rootByRemovingAvatarWithIdentifier:identifierCopy fromRoot:model];
 
-    v12 = [(AVTArchiverBasedStoreBackend *)self saveModel:v11 logger:v8 error:a4];
+    v12 = [(AVTArchiverBasedStoreBackend *)self saveModel:v11 logger:logger error:error];
   }
 
   else
@@ -353,35 +353,35 @@ LABEL_8:
   return v12;
 }
 
-- (id)duplicateAvatarRecord:(id)a3 error:(id *)a4
+- (id)duplicateAvatarRecord:(id)record error:(id *)error
 {
-  v6 = a3;
-  if (![(AVTArchiverBasedStoreBackend *)self loadContentFromDiskIfNeeded:a4])
+  recordCopy = record;
+  if (![(AVTArchiverBasedStoreBackend *)self loadContentFromDiskIfNeeded:error])
   {
     goto LABEL_9;
   }
 
   if ([(AVTArchiverBasedStoreBackend *)self canCreateAvatarWithError:0])
   {
-    v7 = [(AVTArchiverBasedStoreBackend *)self environment];
-    v8 = [v7 logger];
+    environment = [(AVTArchiverBasedStoreBackend *)self environment];
+    logger = [environment logger];
 
-    v9 = [v6 identifier];
-    [v8 logDuplicatingRecordWithIdentifier:v9];
+    identifier = [recordCopy identifier];
+    [logger logDuplicatingRecordWithIdentifier:identifier];
 
     v10 = [AVTAvatarRecord alloc];
-    v11 = [v6 avatarData];
-    v12 = [v11 copy];
-    v13 = [v6 orderDate];
-    v14 = [v13 dateByAddingTimeInterval:0.5];
+    avatarData = [recordCopy avatarData];
+    v12 = [avatarData copy];
+    orderDate = [recordCopy orderDate];
+    v14 = [orderDate dateByAddingTimeInterval:0.5];
     v15 = [(AVTAvatarRecord *)v10 initWithAvatarData:v12 orderDate:v14];
 
     v16 = objc_opt_class();
-    v17 = [(AVTArchiverBasedStoreBackend *)self domainIdentifier];
-    v18 = [(AVTArchiverBasedStoreBackend *)self model];
-    v19 = [v16 rootBySavingAvatarRecord:v15 afterAvatarRecord:v6 forDomainIdentifier:v17 toRoot:v18];
+    domainIdentifier = [(AVTArchiverBasedStoreBackend *)self domainIdentifier];
+    model = [(AVTArchiverBasedStoreBackend *)self model];
+    v19 = [v16 rootBySavingAvatarRecord:v15 afterAvatarRecord:recordCopy forDomainIdentifier:domainIdentifier toRoot:model];
 
-    if ([(AVTArchiverBasedStoreBackend *)self saveModel:v19 logger:v8 error:a4])
+    if ([(AVTArchiverBasedStoreBackend *)self saveModel:v19 logger:logger error:error])
     {
       v20 = v15;
     }
@@ -396,10 +396,10 @@ LABEL_8:
     goto LABEL_10;
   }
 
-  if (a4)
+  if (error)
   {
     [AVTError errorWithCode:578 userInfo:0];
-    *a4 = v21 = 0;
+    *error = v21 = 0;
   }
 
   else
@@ -413,70 +413,70 @@ LABEL_10:
   return v21;
 }
 
-- (BOOL)canCreateAvatarWithError:(id *)a3
+- (BOOL)canCreateAvatarWithError:(id *)error
 {
-  if ([(AVTArchiverBasedStoreBackend *)self avatarCountWithError:a3]== 0x7FFFFFFFFFFFFFFFLL)
+  if ([(AVTArchiverBasedStoreBackend *)self avatarCountWithError:error]== 0x7FFFFFFFFFFFFFFFLL)
   {
     return 0;
   }
 
-  v5 = [(AVTArchiverBasedStoreBackend *)self sortedAvatars];
-  v6 = [v5 count];
+  sortedAvatars = [(AVTArchiverBasedStoreBackend *)self sortedAvatars];
+  v6 = [sortedAvatars count];
   v4 = v6 < [objc_opt_class() maximumNumberOfSavableAvatars];
 
   return v4;
 }
 
-- (BOOL)saveModel:(id)a3 logger:(id)a4 error:(id *)a5
+- (BOOL)saveModel:(id)model logger:(id)logger error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(AVTArchiverBasedStoreBackend *)self storeLocation];
-  v11 = [AVTArchiverBasedStorePersistence writeContent:v8 toDiskAtLocation:v10 logger:v9 error:a5];
+  modelCopy = model;
+  loggerCopy = logger;
+  storeLocation = [(AVTArchiverBasedStoreBackend *)self storeLocation];
+  v11 = [AVTArchiverBasedStorePersistence writeContent:modelCopy toDiskAtLocation:storeLocation logger:loggerCopy error:error];
 
   if (v11)
   {
-    [(AVTArchiverBasedStoreBackend *)self loadModel:v8];
+    [(AVTArchiverBasedStoreBackend *)self loadModel:modelCopy];
   }
 
   return v11;
 }
 
-- (unint64_t)avatarCountWithError:(id *)a3
+- (unint64_t)avatarCountWithError:(id *)error
 {
-  if (![(AVTArchiverBasedStoreBackend *)self loadContentFromDiskIfNeeded:a3])
+  if (![(AVTArchiverBasedStoreBackend *)self loadContentFromDiskIfNeeded:error])
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v4 = [(AVTArchiverBasedStoreBackend *)self sortedAvatars];
-  v5 = [v4 count];
+  sortedAvatars = [(AVTArchiverBasedStoreBackend *)self sortedAvatars];
+  v5 = [sortedAvatars count];
 
   return v5;
 }
 
-+ (id)rootBySavingAvatarRecord:(id)a3 afterAvatarRecord:(id)a4 forDomainIdentifier:(id)a5 toRoot:(id)a6
++ (id)rootBySavingAvatarRecord:(id)record afterAvatarRecord:(id)avatarRecord forDomainIdentifier:(id)identifier toRoot:(id)root
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [v12 domains];
-  v14 = [v13 mutableCopy];
+  recordCopy = record;
+  avatarRecordCopy = avatarRecord;
+  identifierCopy = identifier;
+  rootCopy = root;
+  domains = [rootCopy domains];
+  v14 = [domains mutableCopy];
 
   v39[0] = MEMORY[0x277D85DD0];
   v39[1] = 3221225472;
   v39[2] = __102__AVTArchiverBasedStoreBackend_rootBySavingAvatarRecord_afterAvatarRecord_forDomainIdentifier_toRoot___block_invoke;
   v39[3] = &unk_278CFAB78;
-  v15 = v11;
+  v15 = identifierCopy;
   v40 = v15;
   v16 = [v14 indexOfObjectPassingTest:v39];
   v38 = v15;
   if (v16 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v17 = [AVTArchiverBasedDomain alloc];
-    v18 = [v9 identifier];
-    v19 = [(AVTArchiverBasedDomain *)v17 initWithDomainIdentifier:v15 primaryAvatarIdentifier:v18];
+    identifier = [recordCopy identifier];
+    v19 = [(AVTArchiverBasedDomain *)v17 initWithDomainIdentifier:v15 primaryAvatarIdentifier:identifier];
 
     v37 = v19;
     [v14 addObject:v19];
@@ -486,26 +486,26 @@ LABEL_10:
   {
     v20 = v16;
     v21 = [v14 objectAtIndexedSubscript:v16];
-    v22 = [v9 identifier];
-    v23 = [v21 domainBySettingPrimaryAvatarIdentifier:v22];
+    identifier2 = [recordCopy identifier];
+    v23 = [v21 domainBySettingPrimaryAvatarIdentifier:identifier2];
 
     v37 = v23;
     [v14 replaceObjectAtIndex:v20 withObject:v23];
   }
 
-  v24 = [v12 records];
+  records = [rootCopy records];
 
-  v25 = [v24 mutableCopy];
-  v26 = [v9 identifier];
-  v27 = [AVTAvatarRecord matchingIdentifierTest:v26];
+  v25 = [records mutableCopy];
+  identifier3 = [recordCopy identifier];
+  v27 = [AVTAvatarRecord matchingIdentifierTest:identifier3];
   v28 = [v25 indexOfObjectPassingTest:v27];
 
   v29 = [v25 count];
-  if (v10)
+  if (avatarRecordCopy)
   {
-    v30 = v10;
-    v31 = [v10 identifier];
-    v32 = [AVTAvatarRecord matchingIdentifierTest:v31];
+    v30 = avatarRecordCopy;
+    identifier4 = [avatarRecordCopy identifier];
+    v32 = [AVTAvatarRecord matchingIdentifierTest:identifier4];
     v33 = [v25 indexOfObjectPassingTest:v32];
   }
 
@@ -527,12 +527,12 @@ LABEL_10:
       v34 = v33 + 1;
     }
 
-    [v25 insertObject:v9 atIndex:v34];
+    [v25 insertObject:recordCopy atIndex:v34];
   }
 
   else
   {
-    [v25 replaceObjectAtIndex:v28 withObject:v9];
+    [v25 replaceObjectAtIndex:v28 withObject:recordCopy];
   }
 
   v35 = [[AVTArchiverBasedStoreRoot alloc] initWithDomains:v14 records:v25];
@@ -548,32 +548,32 @@ uint64_t __102__AVTArchiverBasedStoreBackend_rootBySavingAvatarRecord_afterAvata
   return v4;
 }
 
-+ (id)rootByRemovingAvatarWithIdentifier:(id)a3 fromRoot:(id)a4
++ (id)rootByRemovingAvatarWithIdentifier:(id)identifier fromRoot:(id)root
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 records];
-  v8 = [v7 mutableCopy];
+  identifierCopy = identifier;
+  rootCopy = root;
+  records = [rootCopy records];
+  v8 = [records mutableCopy];
 
-  v9 = [AVTAvatarRecord matchingIdentifierTest:v5];
+  v9 = [AVTAvatarRecord matchingIdentifierTest:identifierCopy];
   v10 = [v8 indexOfObjectPassingTest:v9];
 
   if (v10 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v11 = v6;
+    v11 = rootCopy;
   }
 
   else
   {
     [v8 removeObjectAtIndex:v10];
-    v12 = [v6 domains];
-    v13 = [v12 mutableCopy];
+    domains = [rootCopy domains];
+    v13 = [domains mutableCopy];
 
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __76__AVTArchiverBasedStoreBackend_rootByRemovingAvatarWithIdentifier_fromRoot___block_invoke;
     v23[3] = &unk_278CFAB78;
-    v24 = v5;
+    v24 = identifierCopy;
     v14 = [v13 indexesOfObjectsPassingTest:v23];
     v18 = MEMORY[0x277D85DD0];
     v19 = 3221225472;
@@ -607,16 +607,16 @@ void __76__AVTArchiverBasedStoreBackend_rootByRemovingAvatarWithIdentifier_fromR
   [*(a1 + 32) replaceObjectAtIndex:a2 withObject:v6];
 }
 
-+ (id)classifyRecordsByIdentifiers:(id)a3
++ (id)classifyRecordsByIdentifiers:(id)identifiers
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v3, "count")}];
+  identifiersCopy = identifiers;
+  v4 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(identifiersCopy, "count")}];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = v3;
+  v5 = identifiersCopy;
   v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
@@ -632,8 +632,8 @@ void __76__AVTArchiverBasedStoreBackend_rootByRemovingAvatarWithIdentifier_fromR
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [v10 identifier];
-        [v4 setObject:v10 forKeyedSubscript:v11];
+        identifier = [v10 identifier];
+        [v4 setObject:v10 forKeyedSubscript:identifier];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];

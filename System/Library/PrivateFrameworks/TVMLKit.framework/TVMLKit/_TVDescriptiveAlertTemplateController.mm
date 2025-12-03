@@ -2,22 +2,22 @@
 - (CGSize)_backgroundImageProxySize;
 - (id)_backgroundImageProxy;
 - (int64_t)_blurEffectStyle;
-- (void)_configureWithBgImage:(id)a3 backdropImage:(id)a4;
-- (void)_normalizeButtonsInViews:(id)a3;
+- (void)_configureWithBgImage:(id)image backdropImage:(id)backdropImage;
+- (void)_normalizeButtonsInViews:(id)views;
 - (void)loadView;
-- (void)updateWithViewElement:(id)a3;
+- (void)updateWithViewElement:(id)element;
 @end
 
 @implementation _TVDescriptiveAlertTemplateController
 
-- (void)updateWithViewElement:(id)a3
+- (void)updateWithViewElement:(id)element
 {
   v157 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  elementCopy = element;
   v147.receiver = self;
   v147.super_class = _TVDescriptiveAlertTemplateController;
-  [(_TVBgImageLoadingViewController *)&v147 updateWithViewElement:v5];
-  objc_storeStrong(&self->_templateElement, a3);
+  [(_TVBgImageLoadingViewController *)&v147 updateWithViewElement:elementCopy];
+  objc_storeStrong(&self->_templateElement, element);
   p_bgImageElement = &self->_bgImageElement;
   bgImageElement = self->_bgImageElement;
   self->_bgImageElement = 0;
@@ -27,18 +27,18 @@
   self->_bgHeroImageElement = 0;
 
   v10 = objc_alloc(MEMORY[0x277CBEB18]);
-  v11 = [v5 children];
-  v102 = [v10 initWithCapacity:{objc_msgSend(v11, "count")}];
+  children = [elementCopy children];
+  v102 = [v10 initWithCapacity:{objc_msgSend(children, "count")}];
 
   v101 = [(NSArray *)self->_templateSubcontrollers mutableCopy];
-  v99 = [MEMORY[0x277CBEB18] array];
-  v100 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   v143 = 0u;
   v144 = 0u;
   v145 = 0u;
   v146 = 0u;
-  v98 = v5;
-  obj = [v5 children];
+  v98 = elementCopy;
+  obj = [elementCopy children];
   v108 = [obj countByEnumeratingWithState:&v143 objects:v156 count:16];
   v97 = 1056;
   if (v108)
@@ -49,7 +49,7 @@
     v13 = *(MEMORY[0x277CBF3A0] + 8);
     v14 = *(MEMORY[0x277CBF3A0] + 16);
     v15 = *(MEMORY[0x277CBF3A0] + 24);
-    v104 = self;
+    selfCopy = self;
     do
     {
       for (i = 0; i != v108; ++i)
@@ -66,8 +66,8 @@
           v142 = 0u;
           v139 = 0u;
           v140 = 0u;
-          v18 = [v17 children];
-          v19 = [v18 countByEnumeratingWithState:&v139 objects:v155 count:16];
+          children2 = [v17 children];
+          v19 = [children2 countByEnumeratingWithState:&v139 objects:v155 count:16];
           if (v19)
           {
             v20 = v19;
@@ -78,7 +78,7 @@
               {
                 if (*v140 != v21)
                 {
-                  objc_enumerationMutation(v18);
+                  objc_enumerationMutation(children2);
                 }
 
                 v23 = *(*(&v139 + 1) + 8 * j);
@@ -91,7 +91,7 @@
                 }
               }
 
-              v20 = [v18 countByEnumeratingWithState:&v139 objects:v155 count:16];
+              v20 = [children2 countByEnumeratingWithState:&v139 objects:v155 count:16];
             }
 
             while (v20);
@@ -100,10 +100,10 @@
 
         else
         {
-          v27 = [v17 autoHighlightIdentifier];
+          autoHighlightIdentifier = [v17 autoHighlightIdentifier];
 
           v109 = i;
-          if (v27)
+          if (autoHighlightIdentifier)
           {
             [v17 resetProperty:2];
             v106 = 0;
@@ -115,8 +115,8 @@
             v138 = 0u;
             v135 = 0u;
             v136 = 0u;
-            v28 = [v17 children];
-            v29 = [v28 countByEnumeratingWithState:&v135 objects:v154 count:16];
+            children3 = [v17 children];
+            v29 = [children3 countByEnumeratingWithState:&v135 objects:v154 count:16];
             if (v29)
             {
               v30 = v29;
@@ -128,15 +128,15 @@
                 {
                   if (*v136 != v32)
                   {
-                    objc_enumerationMutation(v28);
+                    objc_enumerationMutation(children3);
                   }
 
-                  v34 = [*(*(&v135 + 1) + 8 * k) autoHighlightIdentifier];
+                  autoHighlightIdentifier2 = [*(*(&v135 + 1) + 8 * k) autoHighlightIdentifier];
 
-                  v31 |= v34 != 0;
+                  v31 |= autoHighlightIdentifier2 != 0;
                 }
 
-                v30 = [v28 countByEnumeratingWithState:&v135 objects:v154 count:16];
+                v30 = [children3 countByEnumeratingWithState:&v135 objects:v154 count:16];
               }
 
               while (v30);
@@ -174,19 +174,19 @@ LABEL_37:
                 objc_enumerationMutation(v35);
               }
 
-              v18 = *(*(&v131 + 1) + 8 * v39);
+              children2 = *(*(&v131 + 1) + 8 * v39);
               objc_opt_class();
               if (objc_opt_isKindOfClass())
               {
-                v40 = [v18 subviews];
-                v41 = [v40 firstObject];
+                subviews = [children2 subviews];
+                firstObject = [subviews firstObject];
 
-                v18 = v41;
+                children2 = firstObject;
               }
 
-              v42 = [v18 tv_associatedIKViewElement];
+              tv_associatedIKViewElement = [children2 tv_associatedIKViewElement];
 
-              if (v42 == v17)
+              if (tv_associatedIKViewElement == v17)
               {
                 break;
               }
@@ -199,24 +199,24 @@ LABEL_37:
                   goto LABEL_37;
                 }
 
-                v18 = 0;
+                children2 = 0;
                 break;
               }
             }
 
-            self = v104;
+            self = selfCopy;
             i = v109;
           }
 
           else
           {
-            v18 = 0;
+            children2 = 0;
           }
 
           v43 = +[TVInterfaceFactory sharedInterfaceFactory];
-          v44 = [v43 _viewFromElement:v17 existingView:v18];
+          view = [v43 _viewFromElement:v17 existingView:children2];
 
-          if (!v44)
+          if (!view)
           {
             v110 = v17;
             v129 = 0u;
@@ -239,8 +239,8 @@ LABEL_37:
                   }
 
                   v50 = *(*(&v127 + 1) + 8 * m);
-                  v51 = [v50 tv_associatedIKViewElement];
-                  v52 = [v51 isEqual:v110];
+                  tv_associatedIKViewElement2 = [v50 tv_associatedIKViewElement];
+                  v52 = [tv_associatedIKViewElement2 isEqual:v110];
 
                   if (v52)
                   {
@@ -274,69 +274,69 @@ LABEL_60:
 
             if (v55)
             {
-              self = v104;
+              self = selfCopy;
               if (v55 != v53)
               {
-                [v99 addObject:v55];
+                [array addObject:v55];
               }
 
-              [v100 addObject:v55];
-              v44 = [v55 view];
+              [array2 addObject:v55];
+              view = [v55 view];
             }
 
             else
             {
-              v44 = 0;
-              self = v104;
+              view = 0;
+              self = selfCopy;
             }
           }
 
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v56 = [v17 style];
-            [v56 tv_width];
-            [v44 sizeThatFits:?];
+            style = [v17 style];
+            [style tv_width];
+            [view sizeThatFits:?];
             v58 = v57;
             v60 = v59;
 
-            [v44 setSize:{v58, v60}];
-            v61 = [v44 superview];
+            [view setSize:{v58, v60}];
+            superview = [view superview];
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v62 = [v44 superview];
+              superview2 = [view superview];
             }
 
             else
             {
-              v62 = [objc_alloc(MEMORY[0x277D759D8]) initWithFrame:{v12, v13, v14, v15}];
+              superview2 = [objc_alloc(MEMORY[0x277D759D8]) initWithFrame:{v12, v13, v14, v15}];
             }
 
-            v63 = v62;
+            v63 = superview2;
 
-            [v63 addSubview:v44];
+            [v63 addSubview:view];
             [v63 transferLayoutStylesFromElement:v17];
             [v63 setContentSize:{v58, v60}];
             [v63 setBounces:1];
 
-            v44 = v63;
+            view = v63;
           }
 
-          if (v44)
+          if (view)
           {
             if (!((v103 != 0) | v106 & 1))
             {
-              v103 = v44;
+              v103 = view;
             }
 
             if ([v17 tv_elementType] == 44)
             {
-              v64 = [v44 components];
-              [(_TVDescriptiveAlertTemplateController *)self _normalizeButtonsInViews:v64];
+              components = [view components];
+              [(_TVDescriptiveAlertTemplateController *)self _normalizeButtonsInViews:components];
             }
 
-            [v102 addObject:v44];
+            [v102 addObject:view];
           }
         }
       }
@@ -357,24 +357,24 @@ LABEL_60:
   templateSubviews = self->_templateSubviews;
   self->_templateSubviews = v65;
 
-  v67 = [v100 copy];
+  v67 = [array2 copy];
   v68 = *(&self->super.super.super.super.isa + v97);
   *(&self->super.super.super.super.isa + v97) = v67;
 
-  v69 = [v98 style];
-  v70 = [v69 tv_backgroundColor];
-  v71 = [v70 color];
+  style2 = [v98 style];
+  tv_backgroundColor = [style2 tv_backgroundColor];
+  color = [tv_backgroundColor color];
   backgroundColor = self->_backgroundColor;
-  self->_backgroundColor = v71;
+  self->_backgroundColor = color;
 
   objc_storeStrong(&self->_preferredFocusView, v103);
   if ([(_TVDescriptiveAlertTemplateController *)self isViewLoaded])
   {
-    v73 = [(_TVDescriptiveAlertTemplateController *)self view];
-    [v73 setBackgroundColor:self->_backgroundColor];
+    view2 = [(_TVDescriptiveAlertTemplateController *)self view];
+    [view2 setBackgroundColor:self->_backgroundColor];
 
-    v74 = [(_TVDescriptiveAlertTemplateController *)self view];
-    [v74 transferLayoutStylesFromElement:v98];
+    view3 = [(_TVDescriptiveAlertTemplateController *)self view];
+    [view3 transferLayoutStylesFromElement:v98];
 
     v125 = 0u;
     v126 = 0u;
@@ -408,7 +408,7 @@ LABEL_60:
     v122 = 0u;
     v119 = 0u;
     v120 = 0u;
-    v80 = v99;
+    v80 = array;
     v81 = [v80 countByEnumeratingWithState:&v119 objects:v150 count:16];
     if (v81)
     {
@@ -432,13 +432,13 @@ LABEL_60:
       while (v82);
     }
 
-    v85 = [(_TVDescriptiveAlertTemplateController *)self view];
-    [v85 setChildViews:self->_templateSubviews];
+    view4 = [(_TVDescriptiveAlertTemplateController *)self view];
+    [view4 setChildViews:self->_templateSubviews];
 
     if (self->_preferredFocusView)
     {
-      v86 = [(_TVDescriptiveAlertTemplateController *)self view];
-      [v86 setDefaultFocusView:self->_preferredFocusView];
+      view5 = [(_TVDescriptiveAlertTemplateController *)self view];
+      [view5 setDefaultFocusView:self->_preferredFocusView];
     }
 
     v117 = 0u;
@@ -505,8 +505,8 @@ LABEL_60:
 {
   v26 = *MEMORY[0x277D85DE8];
   v3 = [_TVDescriptiveAlertView alloc];
-  v4 = [MEMORY[0x277D759A0] mainScreen];
-  [v4 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v5 = [(_TVDescriptiveAlertView *)v3 initWithFrame:?];
 
   [(_TVDescriptiveAlertView *)v5 setBackgroundColor:self->_backgroundColor];
@@ -578,16 +578,16 @@ LABEL_60:
   }
 }
 
-- (void)_normalizeButtonsInViews:(id)a3
+- (void)_normalizeButtonsInViews:(id)views
 {
   v36 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB18] array];
+  viewsCopy = views;
+  array = [MEMORY[0x277CBEB18] array];
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v5 = v3;
+  v5 = viewsCopy;
   v6 = [v5 countByEnumeratingWithState:&v30 objects:v35 count:16];
   if (v6)
   {
@@ -607,13 +607,13 @@ LABEL_60:
         }
 
         v14 = *(*(&v30 + 1) + 8 * i);
-        v15 = [v14 tv_associatedIKViewElement];
-        if ([v15 tv_elementType] == 6)
+        tv_associatedIKViewElement = [v14 tv_associatedIKViewElement];
+        if ([tv_associatedIKViewElement tv_elementType] == 6)
         {
           [v14 tv_sizeThatFits:{v9, v10}];
           v12 = fmax(v12, v16);
           v11 = fmax(v11, v17);
-          [v4 addObject:v14];
+          [array addObject:v14];
         }
       }
 
@@ -633,7 +633,7 @@ LABEL_60:
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v18 = v4;
+  v18 = array;
   v19 = [v18 countByEnumeratingWithState:&v26 objects:v34 count:16];
   if (v19)
   {
@@ -690,15 +690,15 @@ LABEL_60:
 {
   if (self->_bgImageElement)
   {
-    v3 = [(IKViewElement *)self->_templateElement appDocument];
-    [v3 tv_adjustedWindowSize];
+    appDocument = [(IKViewElement *)self->_templateElement appDocument];
+    [appDocument tv_adjustedWindowSize];
     v5 = v4;
     v7 = v6;
 
     v8 = objc_opt_new();
     [v8 setImageSize:{v5, v7}];
     v9 = [TVImageLayout layoutWithLayout:v8 element:self->_bgImageElement];
-    v10 = [(IKImageElement *)self->_bgImageElement tv_imageProxyWithLayout:v8];
+    tv_imageProxy = [(IKImageElement *)self->_bgImageElement tv_imageProxyWithLayout:v8];
   }
 
   else
@@ -706,16 +706,16 @@ LABEL_60:
     bgHeroImageElement = self->_bgHeroImageElement;
     if (bgHeroImageElement)
     {
-      v10 = [(IKImageElement *)bgHeroImageElement tv_imageProxy];
+      tv_imageProxy = [(IKImageElement *)bgHeroImageElement tv_imageProxy];
     }
 
     else
     {
-      v10 = 0;
+      tv_imageProxy = 0;
     }
   }
 
-  return v10;
+  return tv_imageProxy;
 }
 
 - (int64_t)_blurEffectStyle
@@ -731,11 +731,11 @@ LABEL_60:
   }
 }
 
-- (void)_configureWithBgImage:(id)a3 backdropImage:(id)a4
+- (void)_configureWithBgImage:(id)image backdropImage:(id)backdropImage
 {
-  v5 = a3;
-  v6 = [(_TVDescriptiveAlertTemplateController *)self view];
-  [v6 setBgImage:v5];
+  imageCopy = image;
+  view = [(_TVDescriptiveAlertTemplateController *)self view];
+  [view setBgImage:imageCopy];
 }
 
 @end

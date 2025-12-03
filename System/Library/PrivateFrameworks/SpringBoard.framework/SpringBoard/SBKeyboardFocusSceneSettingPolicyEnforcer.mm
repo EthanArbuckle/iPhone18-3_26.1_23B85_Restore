@@ -1,50 +1,50 @@
 @interface SBKeyboardFocusSceneSettingPolicyEnforcer
 - (FBScene)sbWindowSceneAncestorForTargetScene;
 - (FBScene)targetSceneForKeyboardFocusDeferring;
-- (SBKeyboardFocusSceneSettingPolicyEnforcer)initWithSceneProvider:(id)a3;
-- (void)_moveKeyboardFocusDeferringEnvironmentSceneSettingFromScene:(id)a3 withSBAncestor:(id)a4 toScene:(id)a5 withSBAncestor:(id)a6 target:(id)a7 activeDisplayChanging:(BOOL)a8;
-- (void)enforce:(id)a3;
+- (SBKeyboardFocusSceneSettingPolicyEnforcer)initWithSceneProvider:(id)provider;
+- (void)_moveKeyboardFocusDeferringEnvironmentSceneSettingFromScene:(id)scene withSBAncestor:(id)ancestor toScene:(id)toScene withSBAncestor:(id)bAncestor target:(id)target activeDisplayChanging:(BOOL)changing;
+- (void)enforce:(id)enforce;
 - (void)invalidate;
 - (void)stopEnforcing;
 @end
 
 @implementation SBKeyboardFocusSceneSettingPolicyEnforcer
 
-- (SBKeyboardFocusSceneSettingPolicyEnforcer)initWithSceneProvider:(id)a3
+- (SBKeyboardFocusSceneSettingPolicyEnforcer)initWithSceneProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v9.receiver = self;
   v9.super_class = SBKeyboardFocusSceneSettingPolicyEnforcer;
   v6 = [(SBKeyboardFocusSceneSettingPolicyEnforcer *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_sceneProvider, a3);
+    objc_storeStrong(&v6->_sceneProvider, provider);
   }
 
   return v7;
 }
 
-- (void)enforce:(id)a3
+- (void)enforce:(id)enforce
 {
-  v4 = a3;
+  enforceCopy = enforce;
   WeakRetained = objc_loadWeakRetained(&self->_targetSceneForKeyboardFocusDeferring);
   v6 = objc_loadWeakRetained(&self->_sbWindowSceneAncestorForTargetScene);
   sceneProvider = self->_sceneProvider;
-  v8 = [v4 keyboardFocusTarget];
-  v9 = [(SBKeyboardFocusSceneProviding *)sceneProvider sceneForFocusTarget:v8];
+  keyboardFocusTarget = [enforceCopy keyboardFocusTarget];
+  v9 = [(SBKeyboardFocusSceneProviding *)sceneProvider sceneForFocusTarget:keyboardFocusTarget];
 
   v10 = self->_sceneProvider;
-  v11 = [v4 sbWindowSceneAncestor];
-  v12 = [SBKeyboardFocusTarget targetForSBWindowScene:v11];
+  sbWindowSceneAncestor = [enforceCopy sbWindowSceneAncestor];
+  v12 = [SBKeyboardFocusTarget targetForSBWindowScene:sbWindowSceneAncestor];
   v13 = [(SBKeyboardFocusSceneProviding *)v10 sceneForFocusTarget:v12];
 
-  v14 = [WeakRetained identityToken];
-  v15 = [v9 identityToken];
+  identityToken = [WeakRetained identityToken];
+  identityToken2 = [v9 identityToken];
   v16 = BSEqualObjects();
 
-  v17 = [v6 identityToken];
-  v18 = [v13 identityToken];
+  identityToken3 = [v6 identityToken];
+  identityToken4 = [v13 identityToken];
   v19 = BSEqualObjects();
 
   if (v9)
@@ -63,7 +63,7 @@
       v27 = v21;
       v22 = v13;
       v28 = v22;
-      v29 = v4;
+      v29 = enforceCopy;
       v30 = v20;
       dispatch_async(MEMORY[0x277D85CD0], block);
       objc_storeWeak(&self->_targetSceneForKeyboardFocusDeferring, v21);
@@ -76,7 +76,7 @@
     v23 = SBLogKeyboardFocus();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
     {
-      [(SBKeyboardFocusSceneSettingPolicyEnforcer *)v4 enforce:v23];
+      [(SBKeyboardFocusSceneSettingPolicyEnforcer *)enforceCopy enforce:v23];
     }
   }
 }
@@ -105,7 +105,7 @@ void __53__SBKeyboardFocusSceneSettingPolicyEnforcer_enforce___block_invoke(uint
     v10 = 2114;
     v11 = v7;
     v12 = 2048;
-    v13 = self;
+    selfCopy = self;
     v14 = 2114;
     v15 = @"SBKeyboardFocusSceneSettingPolicyEnforcer.m";
     v16 = 1024;
@@ -133,7 +133,7 @@ void __53__SBKeyboardFocusSceneSettingPolicyEnforcer_enforce___block_invoke(uint
     v10 = 2114;
     v11 = v7;
     v12 = 2048;
-    v13 = self;
+    selfCopy = self;
     v14 = 2114;
     v15 = @"SBKeyboardFocusSceneSettingPolicyEnforcer.m";
     v16 = 1024;
@@ -148,18 +148,18 @@ void __53__SBKeyboardFocusSceneSettingPolicyEnforcer_enforce___block_invoke(uint
   __break(0);
 }
 
-- (void)_moveKeyboardFocusDeferringEnvironmentSceneSettingFromScene:(id)a3 withSBAncestor:(id)a4 toScene:(id)a5 withSBAncestor:(id)a6 target:(id)a7 activeDisplayChanging:(BOOL)a8
+- (void)_moveKeyboardFocusDeferringEnvironmentSceneSettingFromScene:(id)scene withSBAncestor:(id)ancestor toScene:(id)toScene withSBAncestor:(id)bAncestor target:(id)target activeDisplayChanging:(BOOL)changing
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  sceneCopy = scene;
+  toSceneCopy = toScene;
+  bAncestorCopy = bAncestor;
+  targetCopy = target;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  if (v13)
+  if (toSceneCopy)
   {
-    v16 = [v13 identityToken];
-    v17 = [v14 identityToken];
-    v18 = [v16 isEqual:v17];
+    identityToken = [toSceneCopy identityToken];
+    identityToken2 = [bAncestorCopy identityToken];
+    v18 = [identityToken isEqual:identityToken2];
   }
 
   else
@@ -167,43 +167,43 @@ void __53__SBKeyboardFocusSceneSettingPolicyEnforcer_enforce___block_invoke(uint
     v18 = 0;
   }
 
-  if (v12)
+  if (sceneCopy)
   {
     v35[0] = MEMORY[0x277D85DD0];
     v35[1] = 3221225472;
     v35[2] = __172__SBKeyboardFocusSceneSettingPolicyEnforcer__moveKeyboardFocusDeferringEnvironmentSceneSettingFromScene_withSBAncestor_toScene_withSBAncestor_target_activeDisplayChanging___block_invoke;
     v35[3] = &unk_2783B5F70;
-    v36 = v12;
+    v36 = sceneCopy;
     [v36 updateUISettingsWithBlock:v35];
   }
 
-  if (v13)
+  if (toSceneCopy)
   {
-    v19 = [MEMORY[0x277CF0628] keyboardFocusEnvironment];
-    if (!(v18 & 1 | !a8))
+    keyboardFocusEnvironment = [MEMORY[0x277CF0628] keyboardFocusEnvironment];
+    if (!(v18 & 1 | !changing))
     {
-      v20 = [v14 uiSettings];
-      v21 = [v20 targetOfEventDeferringEnvironments];
+      uiSettings = [bAncestorCopy uiSettings];
+      targetOfEventDeferringEnvironments = [uiSettings targetOfEventDeferringEnvironments];
 
-      if (([v21 containsObject:v19] & 1) == 0)
+      if (([targetOfEventDeferringEnvironments containsObject:keyboardFocusEnvironment] & 1) == 0)
       {
-        if (v21)
+        if (targetOfEventDeferringEnvironments)
         {
-          v22 = [v21 setByAddingObject:v19];
+          v22 = [targetOfEventDeferringEnvironments setByAddingObject:keyboardFocusEnvironment];
         }
 
         else
         {
-          v22 = [MEMORY[0x277CBEB98] setWithObject:v19];
+          v22 = [MEMORY[0x277CBEB98] setWithObject:keyboardFocusEnvironment];
         }
 
         v32[0] = MEMORY[0x277D85DD0];
         v32[1] = 3221225472;
         v32[2] = __172__SBKeyboardFocusSceneSettingPolicyEnforcer__moveKeyboardFocusDeferringEnvironmentSceneSettingFromScene_withSBAncestor_toScene_withSBAncestor_target_activeDisplayChanging___block_invoke_9;
         v32[3] = &unk_2783B5F98;
-        v33 = v14;
-        v21 = v22;
-        v34 = v21;
+        v33 = bAncestorCopy;
+        targetOfEventDeferringEnvironments = v22;
+        v34 = targetOfEventDeferringEnvironments;
         [v33 updateUISettingsWithBlock:v32];
       }
 
@@ -211,10 +211,10 @@ void __53__SBKeyboardFocusSceneSettingPolicyEnforcer_enforce___block_invoke(uint
       v28[1] = 3221225472;
       v28[2] = __172__SBKeyboardFocusSceneSettingPolicyEnforcer__moveKeyboardFocusDeferringEnvironmentSceneSettingFromScene_withSBAncestor_toScene_withSBAncestor_target_activeDisplayChanging___block_invoke_10;
       v28[3] = &unk_2783B5FE8;
-      v29 = v14;
-      v30 = v21;
-      v31 = v19;
-      v24 = v21;
+      v29 = bAncestorCopy;
+      v30 = targetOfEventDeferringEnvironments;
+      v31 = keyboardFocusEnvironment;
+      v24 = targetOfEventDeferringEnvironments;
       [v29 updateUISettingsWithBlock:v28];
     }
 
@@ -222,9 +222,9 @@ void __53__SBKeyboardFocusSceneSettingPolicyEnforcer_enforce___block_invoke(uint
     v25[1] = 3221225472;
     v25[2] = __172__SBKeyboardFocusSceneSettingPolicyEnforcer__moveKeyboardFocusDeferringEnvironmentSceneSettingFromScene_withSBAncestor_toScene_withSBAncestor_target_activeDisplayChanging___block_invoke_2;
     v25[3] = &unk_2783B5F98;
-    v26 = v13;
-    v27 = v19;
-    v23 = v19;
+    v26 = toSceneCopy;
+    v27 = keyboardFocusEnvironment;
+    v23 = keyboardFocusEnvironment;
     [v26 updateUISettingsWithBlock:v25];
   }
 
@@ -233,7 +233,7 @@ void __53__SBKeyboardFocusSceneSettingPolicyEnforcer_enforce___block_invoke(uint
     v23 = SBLogKeyboardFocus();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
-      [SBKeyboardFocusSceneSettingPolicyEnforcer _moveKeyboardFocusDeferringEnvironmentSceneSettingFromScene:v15 withSBAncestor:v23 toScene:? withSBAncestor:? target:? activeDisplayChanging:?];
+      [SBKeyboardFocusSceneSettingPolicyEnforcer _moveKeyboardFocusDeferringEnvironmentSceneSettingFromScene:targetCopy withSBAncestor:v23 toScene:? withSBAncestor:? target:? activeDisplayChanging:?];
     }
   }
 }

@@ -12,8 +12,8 @@
 - (FCCKRecordZone)userInfoRecordZone;
 - (FCCKRecordZoneManager)recordZoneManager;
 - (FCPrivateDataContextInternal)init;
-- (id)recordZoneWithName:(id)a3;
-- (void)prepareRecordZonesForUseWithCompletionHandler:(id)a3;
+- (id)recordZoneWithName:(id)name;
+- (void)prepareRecordZonesForUseWithCompletionHandler:(id)handler;
 @end
 
 @implementation FCPrivateDataContextInternal
@@ -126,90 +126,90 @@
 
 - (FCCKRecordZone)issueReadingHistoryRecordZone
 {
-  v2 = [(FCPrivateDataContextInternal *)self recordZoneManager];
-  v3 = [(FCCKRecordZoneManager *)v2 recordZoneWithName:?];
+  recordZoneManager = [(FCPrivateDataContextInternal *)self recordZoneManager];
+  v3 = [(FCCKRecordZoneManager *)recordZoneManager recordZoneWithName:?];
 
   return v3;
 }
 
 - (FCCKRecordZone)readingListRecordZone
 {
-  v2 = [(FCPrivateDataContextInternal *)self recordZoneManager];
-  v3 = [(FCCKRecordZoneManager *)v2 recordZoneWithName:?];
+  recordZoneManager = [(FCPrivateDataContextInternal *)self recordZoneManager];
+  v3 = [(FCCKRecordZoneManager *)recordZoneManager recordZoneWithName:?];
 
   return v3;
 }
 
 - (FCCKRecordZone)puzzleHistoryRecordZone
 {
-  v2 = [(FCPrivateDataContextInternal *)self recordZoneManager];
-  v3 = [(FCCKRecordZoneManager *)v2 recordZoneWithName:?];
+  recordZoneManager = [(FCPrivateDataContextInternal *)self recordZoneManager];
+  v3 = [(FCCKRecordZoneManager *)recordZoneManager recordZoneWithName:?];
 
   return v3;
 }
 
 - (FCCKRecordZone)shortcutsRecordZone
 {
-  v2 = [(FCPrivateDataContextInternal *)self recordZoneManager];
-  v3 = [(FCCKRecordZoneManager *)v2 recordZoneWithName:?];
+  recordZoneManager = [(FCPrivateDataContextInternal *)self recordZoneManager];
+  v3 = [(FCCKRecordZoneManager *)recordZoneManager recordZoneWithName:?];
 
   return v3;
 }
 
 - (FCCKRecordZone)subscriptionsRecordZone
 {
-  v2 = [(FCPrivateDataContextInternal *)self recordZoneManager];
-  v3 = [(FCCKRecordZoneManager *)v2 recordZoneWithName:?];
+  recordZoneManager = [(FCPrivateDataContextInternal *)self recordZoneManager];
+  v3 = [(FCCKRecordZoneManager *)recordZoneManager recordZoneWithName:?];
 
   return v3;
 }
 
 - (FCCKRecordZone)sensitiveSubscriptionsRecordZone
 {
-  v2 = [(FCPrivateDataContextInternal *)self recordZoneManager];
-  v3 = [(FCCKRecordZoneManager *)v2 recordZoneWithName:?];
+  recordZoneManager = [(FCPrivateDataContextInternal *)self recordZoneManager];
+  v3 = [(FCCKRecordZoneManager *)recordZoneManager recordZoneWithName:?];
 
   return v3;
 }
 
 - (FCCKRecordZone)readingHistoryRecordZone
 {
-  v2 = [(FCPrivateDataContextInternal *)self recordZoneManager];
-  v3 = [(FCCKRecordZoneManager *)v2 recordZoneWithName:?];
+  recordZoneManager = [(FCPrivateDataContextInternal *)self recordZoneManager];
+  v3 = [(FCCKRecordZoneManager *)recordZoneManager recordZoneWithName:?];
 
   return v3;
 }
 
 - (FCCKRecordZone)channelMembershipsRecordZone
 {
-  v2 = [(FCPrivateDataContextInternal *)self recordZoneManager];
-  v3 = [(FCCKRecordZoneManager *)v2 recordZoneWithName:?];
+  recordZoneManager = [(FCPrivateDataContextInternal *)self recordZoneManager];
+  v3 = [(FCCKRecordZoneManager *)recordZoneManager recordZoneWithName:?];
 
   return v3;
 }
 
 - (FCCKRecordZone)userInfoRecordZone
 {
-  v2 = [(FCPrivateDataContextInternal *)self recordZoneManager];
-  v3 = [(FCCKRecordZoneManager *)v2 recordZoneWithName:?];
+  recordZoneManager = [(FCPrivateDataContextInternal *)self recordZoneManager];
+  v3 = [(FCCKRecordZoneManager *)recordZoneManager recordZoneWithName:?];
 
   return v3;
 }
 
-- (id)recordZoneWithName:(id)a3
+- (id)recordZoneWithName:(id)name
 {
-  v4 = a3;
-  v5 = [(FCPrivateDataContextInternal *)self recordZoneManager];
-  v6 = [(FCCKRecordZoneManager *)v5 recordZoneWithName:v4];
+  nameCopy = name;
+  recordZoneManager = [(FCPrivateDataContextInternal *)self recordZoneManager];
+  v6 = [(FCCKRecordZoneManager *)recordZoneManager recordZoneWithName:nameCopy];
 
   return v6;
 }
 
-- (void)prepareRecordZonesForUseWithCompletionHandler:(id)a3
+- (void)prepareRecordZonesForUseWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(FCPrivateDataContextInternal *)self recordZoneManager];
-  [(FCCKRecordZoneManager *)v5 prepareRecordZonesForUseWithCompletionHandler:v4];
+  handlerCopy = handler;
+  recordZoneManager = [(FCPrivateDataContextInternal *)self recordZoneManager];
+  [(FCCKRecordZoneManager *)recordZoneManager prepareRecordZonesForUseWithCompletionHandler:handlerCopy];
 }
 
 @end

@@ -1,17 +1,17 @@
 @interface VNModelResourceDescriptor
-+ (id)descriptorForModelURL:(id)a3;
-+ (id)descriptorForVisionCoreInferenceNetworkDescriptor:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)descriptorForModelURL:(id)l;
++ (id)descriptorForVisionCoreInferenceNetworkDescriptor:(id)descriptor;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation VNModelResourceDescriptor
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -21,11 +21,11 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(VNModelResourceDescriptor *)self modelURL];
-      v7 = [(VNModelResourceDescriptor *)v5 modelURL];
+      v5 = equalCopy;
+      modelURL = [(VNModelResourceDescriptor *)self modelURL];
+      modelURL2 = [(VNModelResourceDescriptor *)v5 modelURL];
 
-      v8 = [v6 isEqual:v7];
+      v8 = [modelURL isEqual:modelURL2];
     }
 
     else
@@ -39,8 +39,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(VNModelResourceDescriptor *)self modelURL];
-  v3 = [v2 hash];
+  modelURL = [(VNModelResourceDescriptor *)self modelURL];
+  v3 = [modelURL hash];
 
   return v3;
 }
@@ -50,25 +50,25 @@
   v8.receiver = self;
   v8.super_class = VNModelResourceDescriptor;
   v3 = [(VNModelResourceDescriptor *)&v8 description];
-  v4 = [(VNModelResourceDescriptor *)self modelURL];
-  v5 = [v4 lastPathComponent];
-  v6 = [v3 stringByAppendingFormat:@" %@", v5];
+  modelURL = [(VNModelResourceDescriptor *)self modelURL];
+  lastPathComponent = [modelURL lastPathComponent];
+  v6 = [v3 stringByAppendingFormat:@" %@", lastPathComponent];
 
   return v6;
 }
 
-+ (id)descriptorForVisionCoreInferenceNetworkDescriptor:(id)a3
++ (id)descriptorForVisionCoreInferenceNetworkDescriptor:(id)descriptor
 {
-  v3 = a3;
-  v4 = [[_VNVisionCoreInferenceNetworkResourceDescriptor alloc] initWithDescriptor:v3];
+  descriptorCopy = descriptor;
+  v4 = [[_VNVisionCoreInferenceNetworkResourceDescriptor alloc] initWithDescriptor:descriptorCopy];
 
   return v4;
 }
 
-+ (id)descriptorForModelURL:(id)a3
++ (id)descriptorForModelURL:(id)l
 {
-  v3 = a3;
-  v4 = [[_VNModelResourceDescriptor alloc] initWithModelURL:v3];
+  lCopy = l;
+  v4 = [[_VNModelResourceDescriptor alloc] initWithModelURL:lCopy];
 
   return v4;
 }

@@ -1,14 +1,14 @@
 @interface JavaLangIllegalStateException
-- (JavaLangIllegalStateException)initWithJavaLangThrowable:(id)a3;
+- (JavaLangIllegalStateException)initWithJavaLangThrowable:(id)throwable;
 @end
 
 @implementation JavaLangIllegalStateException
 
-- (JavaLangIllegalStateException)initWithJavaLangThrowable:(id)a3
+- (JavaLangIllegalStateException)initWithJavaLangThrowable:(id)throwable
 {
-  if (a3)
+  if (throwable)
   {
-    v5 = [a3 description];
+    v5 = [throwable description];
   }
 
   else
@@ -16,7 +16,7 @@
     v5 = 0;
   }
 
-  JavaLangRuntimeException_initWithNSString_withJavaLangThrowable_(self, v5, a3);
+  JavaLangRuntimeException_initWithNSString_withJavaLangThrowable_(self, v5, throwable);
   return self;
 }
 

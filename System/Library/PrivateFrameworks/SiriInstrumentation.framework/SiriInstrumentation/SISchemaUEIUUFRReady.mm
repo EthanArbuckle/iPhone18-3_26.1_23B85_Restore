@@ -1,37 +1,37 @@
 @interface SISchemaUEIUUFRReady
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (SISchemaUEIUUFRReady)initWithDictionary:(id)a3;
-- (SISchemaUEIUUFRReady)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (SISchemaUEIUUFRReady)initWithDictionary:(id)dictionary;
+- (SISchemaUEIUUFRReady)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addDialogIdentifiers:(id)a3;
-- (void)setHasDialogPhase:(BOOL)a3;
-- (void)setHasUufrReadySource:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addDialogIdentifiers:(id)identifiers;
+- (void)setHasDialogPhase:(BOOL)phase;
+- (void)setHasUufrReadySource:(BOOL)source;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SISchemaUEIUUFRReady
 
-- (SISchemaUEIUUFRReady)initWithDictionary:(id)a3
+- (SISchemaUEIUUFRReady)initWithDictionary:(id)dictionary
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v35.receiver = self;
   v35.super_class = SISchemaUEIUUFRReady;
   v5 = [(SISchemaUEIUUFRReady *)&v35 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"exists"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"exists"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SISchemaUEIUUFRReady setExists:](v5, "setExists:", [v6 BOOLValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"aceCommandClass"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"aceCommandClass"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -39,7 +39,7 @@
       [(SISchemaUEIUUFRReady *)v5 setAceCommandClass:v8];
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"aceViewId"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"aceViewId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -48,7 +48,7 @@
     }
 
     v30 = v9;
-    v11 = [v4 objectForKeyedSubscript:@"uufrReadySource"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"uufrReadySource"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -56,14 +56,14 @@
     }
 
     v29 = v11;
-    v12 = [v4 objectForKeyedSubscript:@"dialogPhase"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"dialogPhase"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SISchemaUEIUUFRReady setDialogPhase:](v5, "setDialogPhase:", [v12 intValue]);
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"dialogIdentifiers"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"dialogIdentifiers"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -111,7 +111,7 @@
       v6 = v28;
     }
 
-    v21 = [v4 objectForKeyedSubscript:{@"subRequestId", v27, v28}];
+    v21 = [dictionaryCopy objectForKeyedSubscript:{@"subRequestId", v27, v28}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -119,7 +119,7 @@
       [(SISchemaUEIUUFRReady *)v5 setSubRequestId:v22];
     }
 
-    v23 = [v4 objectForKeyedSubscript:@"aceCommandId"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"aceCommandId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -133,30 +133,30 @@
   return v5;
 }
 
-- (SISchemaUEIUUFRReady)initWithJSON:(id)a3
+- (SISchemaUEIUUFRReady)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SISchemaUEIUUFRReady *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SISchemaUEIUUFRReady *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SISchemaUEIUUFRReady *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -169,42 +169,42 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_aceCommandClass)
   {
-    v4 = [(SISchemaUEIUUFRReady *)self aceCommandClass];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"aceCommandClass"];
+    aceCommandClass = [(SISchemaUEIUUFRReady *)self aceCommandClass];
+    v5 = [aceCommandClass copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"aceCommandClass"];
   }
 
   if (self->_aceCommandId)
   {
-    v6 = [(SISchemaUEIUUFRReady *)self aceCommandId];
-    v7 = [v6 dictionaryRepresentation];
-    if (v7)
+    aceCommandId = [(SISchemaUEIUUFRReady *)self aceCommandId];
+    dictionaryRepresentation = [aceCommandId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v7 forKeyedSubscript:@"aceCommandId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"aceCommandId"];
     }
 
     else
     {
-      v8 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v8 forKeyedSubscript:@"aceCommandId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"aceCommandId"];
     }
   }
 
   if (self->_aceViewId)
   {
-    v9 = [(SISchemaUEIUUFRReady *)self aceViewId];
-    v10 = [v9 copy];
-    [v3 setObject:v10 forKeyedSubscript:@"aceViewId"];
+    aceViewId = [(SISchemaUEIUUFRReady *)self aceViewId];
+    v10 = [aceViewId copy];
+    [dictionary setObject:v10 forKeyedSubscript:@"aceViewId"];
   }
 
   if (self->_dialogIdentifiers)
   {
-    v11 = [(SISchemaUEIUUFRReady *)self dialogIdentifiers];
-    v12 = [v11 copy];
-    [v3 setObject:v12 forKeyedSubscript:@"dialogIdentifiers"];
+    dialogIdentifiers = [(SISchemaUEIUUFRReady *)self dialogIdentifiers];
+    v12 = [dialogIdentifiers copy];
+    [dictionary setObject:v12 forKeyedSubscript:@"dialogIdentifiers"];
   }
 
   has = self->_has;
@@ -221,29 +221,29 @@
       v15 = off_1E78E67D0[v14];
     }
 
-    [v3 setObject:v15 forKeyedSubscript:@"dialogPhase"];
+    [dictionary setObject:v15 forKeyedSubscript:@"dialogPhase"];
     has = self->_has;
   }
 
   if (has)
   {
     v16 = [MEMORY[0x1E696AD98] numberWithBool:{-[SISchemaUEIUUFRReady exists](self, "exists")}];
-    [v3 setObject:v16 forKeyedSubscript:@"exists"];
+    [dictionary setObject:v16 forKeyedSubscript:@"exists"];
   }
 
   if (self->_subRequestId)
   {
-    v17 = [(SISchemaUEIUUFRReady *)self subRequestId];
-    v18 = [v17 dictionaryRepresentation];
-    if (v18)
+    subRequestId = [(SISchemaUEIUUFRReady *)self subRequestId];
+    dictionaryRepresentation2 = [subRequestId dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v18 forKeyedSubscript:@"subRequestId"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"subRequestId"];
     }
 
     else
     {
-      v19 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v19 forKeyedSubscript:@"subRequestId"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"subRequestId"];
     }
   }
 
@@ -260,12 +260,12 @@
       v21 = off_1E78E6828[v20];
     }
 
-    [v3 setObject:v21 forKeyedSubscript:@"uufrReadySource"];
+    [dictionary setObject:v21 forKeyedSubscript:@"uufrReadySource"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -310,15 +310,15 @@ LABEL_9:
   return v10 ^ [(SISchemaUUID *)self->_aceCommandId hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_37;
   }
 
-  if ((*&self->_has & 1) != (v4[64] & 1))
+  if ((*&self->_has & 1) != (equalCopy[64] & 1))
   {
     goto LABEL_37;
   }
@@ -326,26 +326,26 @@ LABEL_9:
   if (*&self->_has)
   {
     exists = self->_exists;
-    if (exists != [v4 exists])
+    if (exists != [equalCopy exists])
     {
       goto LABEL_37;
     }
   }
 
-  v6 = [(SISchemaUEIUUFRReady *)self aceCommandClass];
-  v7 = [v4 aceCommandClass];
-  if ((v6 != 0) == (v7 == 0))
+  aceCommandClass = [(SISchemaUEIUUFRReady *)self aceCommandClass];
+  aceCommandClass2 = [equalCopy aceCommandClass];
+  if ((aceCommandClass != 0) == (aceCommandClass2 == 0))
   {
     goto LABEL_36;
   }
 
-  v8 = [(SISchemaUEIUUFRReady *)self aceCommandClass];
-  if (v8)
+  aceCommandClass3 = [(SISchemaUEIUUFRReady *)self aceCommandClass];
+  if (aceCommandClass3)
   {
-    v9 = v8;
-    v10 = [(SISchemaUEIUUFRReady *)self aceCommandClass];
-    v11 = [v4 aceCommandClass];
-    v12 = [v10 isEqual:v11];
+    v9 = aceCommandClass3;
+    aceCommandClass4 = [(SISchemaUEIUUFRReady *)self aceCommandClass];
+    aceCommandClass5 = [equalCopy aceCommandClass];
+    v12 = [aceCommandClass4 isEqual:aceCommandClass5];
 
     if (!v12)
     {
@@ -357,20 +357,20 @@ LABEL_9:
   {
   }
 
-  v6 = [(SISchemaUEIUUFRReady *)self aceViewId];
-  v7 = [v4 aceViewId];
-  if ((v6 != 0) == (v7 == 0))
+  aceCommandClass = [(SISchemaUEIUUFRReady *)self aceViewId];
+  aceCommandClass2 = [equalCopy aceViewId];
+  if ((aceCommandClass != 0) == (aceCommandClass2 == 0))
   {
     goto LABEL_36;
   }
 
-  v13 = [(SISchemaUEIUUFRReady *)self aceViewId];
-  if (v13)
+  aceViewId = [(SISchemaUEIUUFRReady *)self aceViewId];
+  if (aceViewId)
   {
-    v14 = v13;
-    v15 = [(SISchemaUEIUUFRReady *)self aceViewId];
-    v16 = [v4 aceViewId];
-    v17 = [v15 isEqual:v16];
+    v14 = aceViewId;
+    aceViewId2 = [(SISchemaUEIUUFRReady *)self aceViewId];
+    aceViewId3 = [equalCopy aceViewId];
+    v17 = [aceViewId2 isEqual:aceViewId3];
 
     if (!v17)
     {
@@ -384,7 +384,7 @@ LABEL_9:
 
   has = self->_has;
   v19 = (*&has >> 1) & 1;
-  v20 = v4[64];
+  v20 = equalCopy[64];
   if (v19 != ((v20 >> 1) & 1))
   {
     goto LABEL_37;
@@ -393,13 +393,13 @@ LABEL_9:
   if (v19)
   {
     uufrReadySource = self->_uufrReadySource;
-    if (uufrReadySource != [v4 uufrReadySource])
+    if (uufrReadySource != [equalCopy uufrReadySource])
     {
       goto LABEL_37;
     }
 
     has = self->_has;
-    v20 = v4[64];
+    v20 = equalCopy[64];
   }
 
   v22 = (*&has >> 2) & 1;
@@ -411,26 +411,26 @@ LABEL_9:
   if (v22)
   {
     dialogPhase = self->_dialogPhase;
-    if (dialogPhase != [v4 dialogPhase])
+    if (dialogPhase != [equalCopy dialogPhase])
     {
       goto LABEL_37;
     }
   }
 
-  v6 = [(SISchemaUEIUUFRReady *)self dialogIdentifiers];
-  v7 = [v4 dialogIdentifiers];
-  if ((v6 != 0) == (v7 == 0))
+  aceCommandClass = [(SISchemaUEIUUFRReady *)self dialogIdentifiers];
+  aceCommandClass2 = [equalCopy dialogIdentifiers];
+  if ((aceCommandClass != 0) == (aceCommandClass2 == 0))
   {
     goto LABEL_36;
   }
 
-  v24 = [(SISchemaUEIUUFRReady *)self dialogIdentifiers];
-  if (v24)
+  dialogIdentifiers = [(SISchemaUEIUUFRReady *)self dialogIdentifiers];
+  if (dialogIdentifiers)
   {
-    v25 = v24;
-    v26 = [(SISchemaUEIUUFRReady *)self dialogIdentifiers];
-    v27 = [v4 dialogIdentifiers];
-    v28 = [v26 isEqual:v27];
+    v25 = dialogIdentifiers;
+    dialogIdentifiers2 = [(SISchemaUEIUUFRReady *)self dialogIdentifiers];
+    dialogIdentifiers3 = [equalCopy dialogIdentifiers];
+    v28 = [dialogIdentifiers2 isEqual:dialogIdentifiers3];
 
     if (!v28)
     {
@@ -442,20 +442,20 @@ LABEL_9:
   {
   }
 
-  v6 = [(SISchemaUEIUUFRReady *)self subRequestId];
-  v7 = [v4 subRequestId];
-  if ((v6 != 0) == (v7 == 0))
+  aceCommandClass = [(SISchemaUEIUUFRReady *)self subRequestId];
+  aceCommandClass2 = [equalCopy subRequestId];
+  if ((aceCommandClass != 0) == (aceCommandClass2 == 0))
   {
     goto LABEL_36;
   }
 
-  v29 = [(SISchemaUEIUUFRReady *)self subRequestId];
-  if (v29)
+  subRequestId = [(SISchemaUEIUUFRReady *)self subRequestId];
+  if (subRequestId)
   {
-    v30 = v29;
-    v31 = [(SISchemaUEIUUFRReady *)self subRequestId];
-    v32 = [v4 subRequestId];
-    v33 = [v31 isEqual:v32];
+    v30 = subRequestId;
+    subRequestId2 = [(SISchemaUEIUUFRReady *)self subRequestId];
+    subRequestId3 = [equalCopy subRequestId];
+    v33 = [subRequestId2 isEqual:subRequestId3];
 
     if (!v33)
     {
@@ -467,17 +467,17 @@ LABEL_9:
   {
   }
 
-  v6 = [(SISchemaUEIUUFRReady *)self aceCommandId];
-  v7 = [v4 aceCommandId];
-  if ((v6 != 0) == (v7 == 0))
+  aceCommandClass = [(SISchemaUEIUUFRReady *)self aceCommandId];
+  aceCommandClass2 = [equalCopy aceCommandId];
+  if ((aceCommandClass != 0) == (aceCommandClass2 == 0))
   {
 LABEL_36:
 
     goto LABEL_37;
   }
 
-  v34 = [(SISchemaUEIUUFRReady *)self aceCommandId];
-  if (!v34)
+  aceCommandId = [(SISchemaUEIUUFRReady *)self aceCommandId];
+  if (!aceCommandId)
   {
 
 LABEL_40:
@@ -485,10 +485,10 @@ LABEL_40:
     goto LABEL_38;
   }
 
-  v35 = v34;
-  v36 = [(SISchemaUEIUUFRReady *)self aceCommandId];
-  v37 = [v4 aceCommandId];
-  v38 = [v36 isEqual:v37];
+  v35 = aceCommandId;
+  aceCommandId2 = [(SISchemaUEIUUFRReady *)self aceCommandId];
+  aceCommandId3 = [equalCopy aceCommandId];
+  v38 = [aceCommandId2 isEqual:aceCommandId3];
 
   if (v38)
   {
@@ -502,25 +502,25 @@ LABEL_38:
   return v39;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     PBDataWriterWriteBOOLField();
   }
 
-  v5 = [(SISchemaUEIUUFRReady *)self aceCommandClass];
+  aceCommandClass = [(SISchemaUEIUUFRReady *)self aceCommandClass];
 
-  if (v5)
+  if (aceCommandClass)
   {
     PBDataWriterWriteStringField();
   }
 
-  v6 = [(SISchemaUEIUUFRReady *)self aceViewId];
+  aceViewId = [(SISchemaUEIUUFRReady *)self aceViewId];
 
-  if (v6)
+  if (aceViewId)
   {
     PBDataWriterWriteStringField();
   }
@@ -565,44 +565,44 @@ LABEL_38:
     while (v10);
   }
 
-  v13 = [(SISchemaUEIUUFRReady *)self subRequestId];
+  subRequestId = [(SISchemaUEIUUFRReady *)self subRequestId];
 
-  if (v13)
+  if (subRequestId)
   {
-    v14 = [(SISchemaUEIUUFRReady *)self subRequestId];
+    subRequestId2 = [(SISchemaUEIUUFRReady *)self subRequestId];
     PBDataWriterWriteSubmessage();
   }
 
-  v15 = [(SISchemaUEIUUFRReady *)self aceCommandId];
+  aceCommandId = [(SISchemaUEIUUFRReady *)self aceCommandId];
 
-  if (v15)
+  if (aceCommandId)
   {
-    v16 = [(SISchemaUEIUUFRReady *)self aceCommandId];
+    aceCommandId2 = [(SISchemaUEIUUFRReady *)self aceCommandId];
     PBDataWriterWriteSubmessage();
   }
 }
 
-- (void)addDialogIdentifiers:(id)a3
+- (void)addDialogIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   dialogIdentifiers = self->_dialogIdentifiers;
-  v8 = v4;
+  v8 = identifiersCopy;
   if (!dialogIdentifiers)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_dialogIdentifiers;
-    self->_dialogIdentifiers = v6;
+    self->_dialogIdentifiers = array;
 
-    v4 = v8;
+    identifiersCopy = v8;
     dialogIdentifiers = self->_dialogIdentifiers;
   }
 
-  [(NSArray *)dialogIdentifiers addObject:v4];
+  [(NSArray *)dialogIdentifiers addObject:identifiersCopy];
 }
 
-- (void)setHasDialogPhase:(BOOL)a3
+- (void)setHasDialogPhase:(BOOL)phase
 {
-  if (a3)
+  if (phase)
   {
     v3 = 4;
   }
@@ -615,9 +615,9 @@ LABEL_38:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasUufrReadySource:(BOOL)a3
+- (void)setHasUufrReadySource:(BOOL)source
 {
-  if (a3)
+  if (source)
   {
     v3 = 2;
   }
@@ -630,31 +630,31 @@ LABEL_38:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v13.receiver = self;
   v13.super_class = SISchemaUEIUUFRReady;
-  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:v4];
-  if ([v4 isConditionSet:4])
+  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:policyCopy];
+  if ([policyCopy isConditionSet:4])
   {
     [(SISchemaUEIUUFRReady *)self deleteDialogIdentifiers];
   }
 
-  v6 = [(SISchemaUEIUUFRReady *)self subRequestId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  subRequestId = [(SISchemaUEIUUFRReady *)self subRequestId];
+  v7 = [subRequestId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(SISchemaUEIUUFRReady *)self deleteSubRequestId];
   }
 
-  v9 = [(SISchemaUEIUUFRReady *)self aceCommandId];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  aceCommandId = [(SISchemaUEIUUFRReady *)self aceCommandId];
+  v10 = [aceCommandId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(SISchemaUEIUUFRReady *)self deleteAceCommandId];
   }

@@ -1,26 +1,26 @@
 @interface SBMenuBarManagerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (void)_setMenuBarVisible:(BOOL)a3 animated:(BOOL)a4 userInitiated:(BOOL)a5;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (void)_setMenuBarVisible:(BOOL)visible animated:(BOOL)animated userInitiated:(BOOL)initiated;
 @end
 
 @implementation SBMenuBarManagerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBMenuBarManager" hasInstanceMethod:@"_setMenuBarVisible:animated:userInitiated:" withFullSignature:{"v", "B", "B", "B", 0}];
-  [v3 validateClass:@"SBMenuBarViewController" hasInstanceMethod:@"addPresentationCompletionBlock:" withFullSignature:{"v", "@?", 0}];
-  [v3 validateClass:@"SBMenuBarManager" hasInstanceMethod:@"menuBarViewController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBMenuBarViewController" hasInstanceMethod:@"menuBarView" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBMenuBarManager" hasInstanceMethod:@"_setMenuBarVisible:animated:userInitiated:" withFullSignature:{"v", "B", "B", "B", 0}];
+  [validationsCopy validateClass:@"SBMenuBarViewController" hasInstanceMethod:@"addPresentationCompletionBlock:" withFullSignature:{"v", "@?", 0}];
+  [validationsCopy validateClass:@"SBMenuBarManager" hasInstanceMethod:@"menuBarViewController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBMenuBarViewController" hasInstanceMethod:@"menuBarView" withFullSignature:{"@", 0}];
 }
 
-- (void)_setMenuBarVisible:(BOOL)a3 animated:(BOOL)a4 userInitiated:(BOOL)a5
+- (void)_setMenuBarVisible:(BOOL)visible animated:(BOOL)animated userInitiated:(BOOL)initiated
 {
-  v5 = a3;
+  visibleCopy = visible;
   v15.receiver = self;
   v15.super_class = SBMenuBarManagerAccessibility;
-  [(SBMenuBarManagerAccessibility *)&v15 _setMenuBarVisible:a3 animated:a4 userInitiated:a5];
-  if (v5)
+  [(SBMenuBarManagerAccessibility *)&v15 _setMenuBarVisible:visible animated:animated userInitiated:initiated];
+  if (visibleCopy)
   {
     v7 = [(SBMenuBarManagerAccessibility *)self safeValueForKey:@"menuBarViewController"];
     v13[0] = MEMORY[0x29EDCA5F8];

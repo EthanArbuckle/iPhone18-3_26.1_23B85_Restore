@@ -1,8 +1,8 @@
 @interface ICSAlarm
-+ (id)ICSStringFromAction:(int)a3;
++ (id)ICSStringFromAction:(int)action;
 + (id)createNoneAlarm;
-+ (id)parseableDocumentFromICS:(id)a3 options:(unint64_t)a4;
-+ (int)actionFromICSString:(id)a3;
++ (id)parseableDocumentFromICS:(id)s options:(unint64_t)options;
++ (int)actionFromICSString:(id)string;
 - (BOOL)isNoneAlarm;
 - (BOOL)x_apple_default_alarm;
 - (BOOL)x_apple_local_default_alarm;
@@ -14,26 +14,26 @@
 - (NSString)x_wr_alarmuid;
 - (int)action;
 - (void)fixAlarm;
-- (void)setAction:(int)a3;
-- (void)setBookmark:(id)a3;
-- (void)setX_apple_default_alarm:(BOOL)a3;
-- (void)setX_apple_local_default_alarm:(BOOL)a3;
-- (void)setX_apple_travel_default_alarm:(BOOL)a3;
+- (void)setAction:(int)action;
+- (void)setBookmark:(id)bookmark;
+- (void)setX_apple_default_alarm:(BOOL)x_apple_default_alarm;
+- (void)setX_apple_local_default_alarm:(BOOL)x_apple_local_default_alarm;
+- (void)setX_apple_travel_default_alarm:(BOOL)x_apple_travel_default_alarm;
 @end
 
 @implementation ICSAlarm
 
 - (void)fixAlarm
 {
-  v3 = [(ICSComponent *)self trigger];
-  [v3 fixAlarmTrigger];
+  trigger = [(ICSComponent *)self trigger];
+  [trigger fixAlarmTrigger];
 
   v4 = [(ICSComponent *)self propertiesForName:@"TRIGGER"];
 
   if (v4)
   {
     v5 = [(ICSComponent *)self propertiesForName:@"TRIGGER"];
-    v6 = [v5 lastObject];
+    lastObject = [v5 lastObject];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -45,30 +45,30 @@
   }
 }
 
-+ (int)actionFromICSString:(id)a3
++ (int)actionFromICSString:(id)string
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"AUDIO"])
+  stringCopy = string;
+  if ([stringCopy isEqualToString:@"AUDIO"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"DISPLAY"])
+  else if ([stringCopy isEqualToString:@"DISPLAY"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"EMAIL"])
+  else if ([stringCopy isEqualToString:@"EMAIL"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"PROCEDURE"])
+  else if ([stringCopy isEqualToString:@"PROCEDURE"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"NONE"])
+  else if ([stringCopy isEqualToString:@"NONE"])
   {
     v4 = 0;
   }
@@ -81,22 +81,22 @@
   return v4;
 }
 
-+ (id)ICSStringFromAction:(int)a3
++ (id)ICSStringFromAction:(int)action
 {
-  if (a3 > 4)
+  if (action > 4)
   {
     return 0;
   }
 
   else
   {
-    return off_27A64C280[a3];
+    return off_27A64C280[action];
   }
 }
 
-+ (id)parseableDocumentFromICS:(id)a3 options:(unint64_t)a4
++ (id)parseableDocumentFromICS:(id)s options:(unint64_t)options
 {
-  v5 = [a3 stringByReplacingOccurrencesOfString:@"\r" withString:&stru_28841D818];
+  v5 = [s stringByReplacingOccurrencesOfString:@"\r" withString:&stru_28841D818];
   v6 = v5;
   if (v5)
   {
@@ -109,7 +109,7 @@
     v8 = [@"BEGIN:VCALENDAR\n" stringByAppendingString:@"END:VCALENDAR\n"];
   }
 
-  v9 = [[ICSDocument alloc] initWithICSString:v8 options:a4 error:0];
+  v9 = [[ICSDocument alloc] initWithICSString:v8 options:options error:0];
 
   return v9;
 }
@@ -127,23 +127,23 @@
 
 - (BOOL)isNoneAlarm
 {
-  v3 = [(ICSComponent *)self x_apple_structured_location];
-  if (v3)
+  x_apple_structured_location = [(ICSComponent *)self x_apple_structured_location];
+  if (x_apple_structured_location)
   {
-    v4 = v3;
+    x_apple_proximity = x_apple_structured_location;
 LABEL_4:
     v5 = 0;
     goto LABEL_5;
   }
 
-  v4 = [(ICSAlarm *)self x_apple_proximity];
-  if ([v4 isEqualToString:@"CONNECT"])
+  x_apple_proximity = [(ICSAlarm *)self x_apple_proximity];
+  if ([x_apple_proximity isEqualToString:@"CONNECT"])
   {
     goto LABEL_4;
   }
 
-  v7 = [(ICSAlarm *)self x_apple_proximity];
-  v8 = [v7 isEqualToString:@"DISCONNECT"];
+  x_apple_proximity2 = [(ICSAlarm *)self x_apple_proximity];
+  v8 = [x_apple_proximity2 isEqualToString:@"DISCONNECT"];
 
   if (v8)
   {
@@ -155,19 +155,19 @@ LABEL_4:
     return 1;
   }
 
-  v9 = [(ICSComponent *)self trigger];
-  v10 = [v9 isDurationBased];
+  trigger = [(ICSComponent *)self trigger];
+  isDurationBased = [trigger isDurationBased];
 
-  if (v10)
+  if (isDurationBased)
   {
     return 0;
   }
 
-  v11 = [(ICSComponent *)self trigger];
-  v4 = [v11 value];
+  trigger2 = [(ICSComponent *)self trigger];
+  x_apple_proximity = [trigger2 value];
 
-  v12 = [v4 icsString];
-  if ([v12 isEqualToString:@"19760401T005545Z"])
+  icsString = [x_apple_proximity icsString];
+  if ([icsString isEqualToString:@"19760401T005545Z"])
   {
     [(ICSAlarm *)self setAction:0];
     v5 = 1;
@@ -185,58 +185,58 @@ LABEL_5:
 - (int)action
 {
   v2 = [(ICSComponent *)self propertiesForName:@"ACTION"];
-  v3 = [v2 lastObject];
-  v4 = [v3 value];
-  v5 = [v4 longValue];
+  lastObject = [v2 lastObject];
+  value = [lastObject value];
+  longValue = [value longValue];
 
-  return v5;
+  return longValue;
 }
 
-- (void)setAction:(int)a3
+- (void)setAction:(int)action
 {
-  v4 = [(ICSPredefinedValue *)ICSActionValue numberWithLong:a3];
+  v4 = [(ICSPredefinedValue *)ICSActionValue numberWithLong:action];
   [(ICSComponent *)self setPropertyValue:v4 type:5020 forName:@"ACTION"];
 }
 
 - (NSString)x_wr_alarmuid
 {
   v2 = [(ICSComponent *)self propertiesForName:@"X-WR-ALARMUID"];
-  v3 = [v2 lastObject];
-  v4 = [v3 value];
+  lastObject = [v2 lastObject];
+  value = [lastObject value];
 
-  return v4;
+  return value;
 }
 
 - (ICSDateTimeUTCValue)acknowledged
 {
   v2 = [(ICSComponent *)self propertiesForName:@"ACKNOWLEDGED"];
-  v3 = [v2 lastObject];
-  v4 = [v3 value];
+  lastObject = [v2 lastObject];
+  value = [lastObject value];
 
-  return v4;
+  return value;
 }
 
 - (NSString)relatedTo
 {
   v2 = [(ICSComponent *)self propertiesForName:@"RELATED-TO"];
-  v3 = [v2 lastObject];
-  v4 = [v3 value];
+  lastObject = [v2 lastObject];
+  value = [lastObject value];
 
-  return v4;
+  return value;
 }
 
 - (NSString)x_apple_proximity
 {
   v2 = [(ICSComponent *)self propertiesForName:@"X-APPLE-PROXIMITY"];
-  v3 = [v2 lastObject];
-  v4 = [v3 value];
+  lastObject = [v2 lastObject];
+  value = [lastObject value];
 
-  return v4;
+  return value;
 }
 
-- (void)setX_apple_default_alarm:(BOOL)a3
+- (void)setX_apple_default_alarm:(BOOL)x_apple_default_alarm
 {
-  if (a3)
+  if (x_apple_default_alarm)
   {
     v4 = [MEMORY[0x277CCABB0] numberWithBool:1];
     [(ICSComponent *)self setPropertyValue:v4 type:5012 forName:@"X-APPLE-DEFAULT-ALARM"];
@@ -252,16 +252,16 @@ LABEL_5:
 - (BOOL)x_apple_default_alarm
 {
   v2 = [(ICSComponent *)self propertiesForName:@"X-APPLE-DEFAULT-ALARM"];
-  v3 = [v2 lastObject];
-  v4 = [v3 value];
-  v5 = [v4 BOOLValue];
+  lastObject = [v2 lastObject];
+  value = [lastObject value];
+  bOOLValue = [value BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
-- (void)setX_apple_travel_default_alarm:(BOOL)a3
+- (void)setX_apple_travel_default_alarm:(BOOL)x_apple_travel_default_alarm
 {
-  if (a3)
+  if (x_apple_travel_default_alarm)
   {
     v4 = [MEMORY[0x277CCABB0] numberWithBool:1];
     [(ICSComponent *)self setPropertyValue:v4 type:5012 forName:@"X-APPLE-TRAVEL-DEFAULT-ALARM"];
@@ -277,16 +277,16 @@ LABEL_5:
 - (BOOL)x_apple_travel_default_alarm
 {
   v2 = [(ICSComponent *)self propertiesForName:@"X-APPLE-TRAVEL-DEFAULT-ALARM"];
-  v3 = [v2 lastObject];
-  v4 = [v3 value];
-  v5 = [v4 BOOLValue];
+  lastObject = [v2 lastObject];
+  value = [lastObject value];
+  bOOLValue = [value BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
-- (void)setX_apple_local_default_alarm:(BOOL)a3
+- (void)setX_apple_local_default_alarm:(BOOL)x_apple_local_default_alarm
 {
-  if (a3)
+  if (x_apple_local_default_alarm)
   {
     v4 = [MEMORY[0x277CCABB0] numberWithBool:1];
     [(ICSComponent *)self setPropertyValue:v4 type:5012 forName:@"X-APPLE-LOCAL-DEFAULT-ALARM"];
@@ -302,22 +302,22 @@ LABEL_5:
 - (BOOL)x_apple_local_default_alarm
 {
   v2 = [(ICSComponent *)self propertiesForName:@"X-APPLE-LOCAL-DEFAULT-ALARM"];
-  v3 = [v2 lastObject];
-  v4 = [v3 value];
-  v5 = [v4 BOOLValue];
+  lastObject = [v2 lastObject];
+  value = [lastObject value];
+  bOOLValue = [value BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
 - (NSData)bookmark
 {
   v2 = [(ICSComponent *)self propertiesForName:@"X-APPLE-BOOKMARK"];
-  v3 = [v2 lastObject];
-  v4 = [v3 value];
+  lastObject = [v2 lastObject];
+  value = [lastObject value];
 
-  if ([v4 length])
+  if ([value length])
   {
-    v5 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBase64EncodedString:v4 options:0];
+    v5 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBase64EncodedString:value options:0];
   }
 
   else
@@ -328,11 +328,11 @@ LABEL_5:
   return v5;
 }
 
-- (void)setBookmark:(id)a3
+- (void)setBookmark:(id)bookmark
 {
-  if (a3)
+  if (bookmark)
   {
-    v4 = [a3 base64EncodedStringWithOptions:0];
+    v4 = [bookmark base64EncodedStringWithOptions:0];
     [(ICSComponent *)self setPropertyValue:v4 forName:@"X-APPLE-BOOKMARK"];
   }
 

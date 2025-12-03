@@ -1,12 +1,12 @@
 @interface SGDSuggestManagerInterface
-+ (id)xpcInterfaceForProtocol:(id)a3;
-+ (void)_addSGXPCResponseToReplyWhitelistForMethods:(objc_method_description *)a3 count:(unsigned int)a4 interface:(id)a5;
-+ (void)_addSGXPCResponseToReplyWhitelistForProtocol:(id)a3 interface:(id)a4;
++ (id)xpcInterfaceForProtocol:(id)protocol;
++ (void)_addSGXPCResponseToReplyWhitelistForMethods:(objc_method_description *)methods count:(unsigned int)count interface:(id)interface;
++ (void)_addSGXPCResponseToReplyWhitelistForProtocol:(id)protocol interface:(id)interface;
 + (void)_initialize;
-+ (void)_registerWhitelistBlock:(id)a3 forProtocol:(id)a4;
-+ (void)_whitelistXPCInterface:(id)a3 forProtocol:(id)a4 alreadyWhitelisted:(id)a5;
-+ (void)interface:(id)a3 returns:(Class)a4 forSelector:(SEL)a5;
-+ (void)interface:(id)a3 returnsArrayOf:(Class)a4 forSelector:(SEL)a5;
++ (void)_registerWhitelistBlock:(id)block forProtocol:(id)protocol;
++ (void)_whitelistXPCInterface:(id)interface forProtocol:(id)protocol alreadyWhitelisted:(id)whitelisted;
++ (void)interface:(id)interface returns:(Class)returns forSelector:(SEL)selector;
++ (void)interface:(id)interface returnsArrayOf:(Class)of forSelector:(SEL)selector;
 @end
 
 @implementation SGDSuggestManagerInterface
@@ -126,7 +126,7 @@ void __41__SGDSuggestManagerInterface__initialize__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __41__SGDSuggestManagerInterface__initialize__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_initialize_onceToken != -1)
   {
     dispatch_once(&_initialize_onceToken, block);
@@ -211,39 +211,39 @@ void __41__SGDSuggestManagerInterface__initialize__block_invoke_7(uint64_t a1, v
   [*(a1 + 32) interface:v4 returns:objc_opt_class() forSelector:sel_launchInfoForSuggestedEventWithUniqueIdentifier_sourceURL_clientLocale_ignoreUserActivitySupport_ignoreMailCheck_completion_];
 }
 
-+ (void)interface:(id)a3 returnsArrayOf:(Class)a4 forSelector:(SEL)a5
++ (void)interface:(id)interface returnsArrayOf:(Class)of forSelector:(SEL)selector
 {
   v7 = _classSetPool;
   v8 = MEMORY[0x1E695DFD8];
-  v9 = a3;
+  interfaceCopy = interface;
   v10 = [v8 alloc];
   v11 = objc_opt_class();
-  v13 = [v10 initWithObjects:{v11, objc_opt_class(), a4, 0}];
+  v13 = [v10 initWithObjects:{v11, objc_opt_class(), of, 0}];
   v12 = [v7 intern:v13];
-  [v9 setClasses:v12 forSelector:a5 argumentIndex:0 ofReply:1];
+  [interfaceCopy setClasses:v12 forSelector:selector argumentIndex:0 ofReply:1];
 }
 
-+ (void)interface:(id)a3 returns:(Class)a4 forSelector:(SEL)a5
++ (void)interface:(id)interface returns:(Class)returns forSelector:(SEL)selector
 {
   v7 = _classSetPool;
   v8 = MEMORY[0x1E695DFD8];
-  v9 = a3;
-  v11 = [[v8 alloc] initWithObjects:{a4, objc_opt_class(), 0}];
+  interfaceCopy = interface;
+  v11 = [[v8 alloc] initWithObjects:{returns, objc_opt_class(), 0}];
   v10 = [v7 intern:v11];
-  [v9 setClasses:v10 forSelector:a5 argumentIndex:0 ofReply:1];
+  [interfaceCopy setClasses:v10 forSelector:selector argumentIndex:0 ofReply:1];
 }
 
-+ (void)_whitelistXPCInterface:(id)a3 forProtocol:(id)a4 alreadyWhitelisted:(id)a5
++ (void)_whitelistXPCInterface:(id)interface forProtocol:(id)protocol alreadyWhitelisted:(id)whitelisted
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [MEMORY[0x1E696AEC0] stringWithUTF8String:protocol_getName(v9)];
-  if (([v10 containsObject:v11] & 1) == 0)
+  interfaceCopy = interface;
+  protocolCopy = protocol;
+  whitelistedCopy = whitelisted;
+  v11 = [MEMORY[0x1E696AEC0] stringWithUTF8String:protocol_getName(protocolCopy)];
+  if (([whitelistedCopy containsObject:v11] & 1) == 0)
   {
-    [v10 addObject:v11];
+    [whitelistedCopy addObject:v11];
     outCount = 0;
-    v12 = protocol_copyProtocolList(v9, &outCount);
+    v12 = protocol_copyProtocolList(protocolCopy, &outCount);
     if (outCount)
     {
         ;
@@ -255,36 +255,36 @@ void __41__SGDSuggestManagerInterface__initialize__block_invoke_7(uint64_t a1, v
     if (v14)
     {
       v15 = [_whitelistBlocks objectForKeyedSubscript:v11];
-      (v15)[2](v15, v8);
+      (v15)[2](v15, interfaceCopy);
     }
 
     free(v12);
-    [a1 _addSGXPCResponseToReplyWhitelistForProtocol:v9 interface:v8];
+    [self _addSGXPCResponseToReplyWhitelistForProtocol:protocolCopy interface:interfaceCopy];
   }
 }
 
-+ (void)_addSGXPCResponseToReplyWhitelistForProtocol:(id)a3 interface:(id)a4
++ (void)_addSGXPCResponseToReplyWhitelistForProtocol:(id)protocol interface:(id)interface
 {
   outCount = 0;
-  v6 = a4;
-  v7 = a3;
-  v8 = protocol_copyMethodDescriptionList(v7, 1, 1, &outCount);
-  [a1 _addSGXPCResponseToReplyWhitelistForMethods:v8 count:outCount interface:v6];
+  interfaceCopy = interface;
+  protocolCopy = protocol;
+  v8 = protocol_copyMethodDescriptionList(protocolCopy, 1, 1, &outCount);
+  [self _addSGXPCResponseToReplyWhitelistForMethods:v8 count:outCount interface:interfaceCopy];
   free(v8);
-  v9 = protocol_copyMethodDescriptionList(v7, 0, 1, &outCount);
+  v9 = protocol_copyMethodDescriptionList(protocolCopy, 0, 1, &outCount);
 
-  [a1 _addSGXPCResponseToReplyWhitelistForMethods:v9 count:outCount interface:v6];
+  [self _addSGXPCResponseToReplyWhitelistForMethods:v9 count:outCount interface:interfaceCopy];
   free(v9);
 }
 
-+ (void)_addSGXPCResponseToReplyWhitelistForMethods:(objc_method_description *)a3 count:(unsigned int)a4 interface:(id)a5
++ (void)_addSGXPCResponseToReplyWhitelistForMethods:(objc_method_description *)methods count:(unsigned int)count interface:(id)interface
 {
-  LODWORD(v5) = a4;
-  v34 = a5;
+  LODWORD(v5) = count;
+  interfaceCopy = interface;
   if (v5)
   {
     v5 = v5;
-    p_types = &a3->types;
+    p_types = &methods->types;
     v8 = 0x1E695D000uLL;
     do
     {
@@ -301,8 +301,8 @@ void __41__SGDSuggestManagerInterface__initialize__block_invoke_7(uint64_t a1, v
 
       else
       {
-        v26 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v26 handleFailureInMethod:a2 object:a1 file:@"SGDSuggestManagerInterface.m" lineNumber:410 description:{@"Invalid parameter not satisfying: %@", @"selector"}];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"SGDSuggestManagerInterface.m" lineNumber:410 description:{@"Invalid parameter not satisfying: %@", @"selector"}];
 
         if (v11)
         {
@@ -310,15 +310,15 @@ void __41__SGDSuggestManagerInterface__initialize__block_invoke_7(uint64_t a1, v
         }
       }
 
-      v27 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v27 handleFailureInMethod:a2 object:a1 file:@"SGDSuggestManagerInterface.m" lineNumber:411 description:{@"Invalid parameter not satisfying: %@", @"types"}];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"SGDSuggestManagerInterface.m" lineNumber:411 description:{@"Invalid parameter not satisfying: %@", @"types"}];
 
 LABEL_5:
       v12 = [*(v8 + 3944) signatureWithObjCTypes:v11];
       v13 = [v12 getArgumentTypeAtIndex:{objc_msgSend(v12, "numberOfArguments") - 1}];
       if (*v13 == 64 && v13[1] == 63 && !v13[2])
       {
-        v14 = [v34 classesForSelector:v10 argumentIndex:0 ofReply:1];
+        v14 = [interfaceCopy classesForSelector:v10 argumentIndex:0 ofReply:1];
         if (![v14 count] || objc_msgSend(v14, "count") == 1 && (objc_msgSend(v14, "anyObject"), v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "alloc"), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v16, v15, (isKindOfClass & 1) != 0))
         {
           v33 = _classSetPool;
@@ -342,7 +342,7 @@ LABEL_5:
 
         v25 = [v23 intern:v22];
 
-        [v34 setClasses:v25 forSelector:v10 argumentIndex:0 ofReply:1];
+        [interfaceCopy setClasses:v25 forSelector:v10 argumentIndex:0 ofReply:1];
         v8 = 0x1E695D000;
       }
 
@@ -355,11 +355,11 @@ LABEL_5:
   }
 }
 
-+ (id)xpcInterfaceForProtocol:(id)a3
++ (id)xpcInterfaceForProtocol:(id)protocol
 {
-  v4 = a3;
-  [a1 _initialize];
-  v5 = [MEMORY[0x1E696AEC0] stringWithUTF8String:protocol_getName(v4)];
+  protocolCopy = protocol;
+  [self _initialize];
+  v5 = [MEMORY[0x1E696AEC0] stringWithUTF8String:protocol_getName(protocolCopy)];
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -374,9 +374,9 @@ LABEL_5:
   v14 = &v16;
   v7 = v5;
   v12 = v7;
-  v8 = v4;
+  v8 = protocolCopy;
   v13 = v8;
-  v15 = a1;
+  selfCopy = self;
   [v6 runWithLockAcquired:v11];
   v9 = v17[5];
 
@@ -410,14 +410,14 @@ void __54__SGDSuggestManagerInterface_xpcInterfaceForProtocol___block_invoke(voi
   }
 }
 
-+ (void)_registerWhitelistBlock:(id)a3 forProtocol:(id)a4
++ (void)_registerWhitelistBlock:(id)block forProtocol:(id)protocol
 {
-  v5 = a4;
-  v11 = [a3 copy];
+  protocolCopy = protocol;
+  v11 = [block copy];
   v6 = MEMORY[0x1BFAF7240]();
   v7 = _whitelistBlocks;
   v8 = MEMORY[0x1E696AEC0];
-  Name = protocol_getName(v5);
+  Name = protocol_getName(protocolCopy);
 
   v10 = [v8 stringWithUTF8String:Name];
   [v7 setObject:v6 forKeyedSubscript:v10];

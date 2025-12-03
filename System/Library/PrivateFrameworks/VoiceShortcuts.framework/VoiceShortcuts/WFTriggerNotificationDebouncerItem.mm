@@ -1,5 +1,5 @@
 @interface WFTriggerNotificationDebouncerItem
-- (WFTriggerNotificationDebouncerItem)initWithConfiguredTrigger:(id)a3 notificationType:(unint64_t)a4 reference:(id)a5 triggerEventIDs:(id)a6 debouncer:(id)a7;
+- (WFTriggerNotificationDebouncerItem)initWithConfiguredTrigger:(id)trigger notificationType:(unint64_t)type reference:(id)reference triggerEventIDs:(id)ds debouncer:(id)debouncer;
 - (id)description;
 @end
 
@@ -10,32 +10,32 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(WFTriggerNotificationDebouncerItem *)self configuredTrigger];
-  v7 = [(WFTriggerNotificationDebouncerItem *)self reference];
-  v8 = [(WFTriggerNotificationDebouncerItem *)self triggerEventIDs];
-  v9 = [(WFTriggerNotificationDebouncerItem *)self debouncer];
-  v10 = [v3 stringWithFormat:@"<%@: %p, configuredTrigger: %@, reference: %@, triggerEventIDs: %@, debouncer: %@>", v5, self, v6, v7, v8, v9];
+  configuredTrigger = [(WFTriggerNotificationDebouncerItem *)self configuredTrigger];
+  reference = [(WFTriggerNotificationDebouncerItem *)self reference];
+  triggerEventIDs = [(WFTriggerNotificationDebouncerItem *)self triggerEventIDs];
+  debouncer = [(WFTriggerNotificationDebouncerItem *)self debouncer];
+  v10 = [v3 stringWithFormat:@"<%@: %p, configuredTrigger: %@, reference: %@, triggerEventIDs: %@, debouncer: %@>", v5, self, configuredTrigger, reference, triggerEventIDs, debouncer];
 
   return v10;
 }
 
-- (WFTriggerNotificationDebouncerItem)initWithConfiguredTrigger:(id)a3 notificationType:(unint64_t)a4 reference:(id)a5 triggerEventIDs:(id)a6 debouncer:(id)a7
+- (WFTriggerNotificationDebouncerItem)initWithConfiguredTrigger:(id)trigger notificationType:(unint64_t)type reference:(id)reference triggerEventIDs:(id)ds debouncer:(id)debouncer
 {
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  triggerCopy = trigger;
+  referenceCopy = reference;
+  dsCopy = ds;
+  debouncerCopy = debouncer;
   v21.receiver = self;
   v21.super_class = WFTriggerNotificationDebouncerItem;
   v17 = [(WFTriggerNotificationDebouncerItem *)&v21 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_configuredTrigger, a3);
-    objc_storeStrong(&v18->_triggerEventIDs, a6);
-    objc_storeStrong(&v18->_reference, a5);
-    objc_storeStrong(&v18->_debouncer, a7);
-    v18->_notificationType = a4;
+    objc_storeStrong(&v17->_configuredTrigger, trigger);
+    objc_storeStrong(&v18->_triggerEventIDs, ds);
+    objc_storeStrong(&v18->_reference, reference);
+    objc_storeStrong(&v18->_debouncer, debouncer);
+    v18->_notificationType = type;
     v19 = v18;
   }
 

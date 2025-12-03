@@ -1,5 +1,5 @@
 @interface SKUIProfileSettingDescription
-- (SKUIProfileSettingDescription)initWithViewElement:(id)a3 parent:(id)a4;
+- (SKUIProfileSettingDescription)initWithViewElement:(id)element parent:(id)parent;
 - (void)_fetchAccountInfo;
 - (void)_fetchProfilePhoto;
 - (void)dealloc;
@@ -8,10 +8,10 @@
 
 @implementation SKUIProfileSettingDescription
 
-- (SKUIProfileSettingDescription)initWithViewElement:(id)a3 parent:(id)a4
+- (SKUIProfileSettingDescription)initWithViewElement:(id)element parent:(id)parent
 {
-  v6 = a3;
-  v7 = a4;
+  elementCopy = element;
+  parentCopy = parent;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIProfileSettingDescription initWithViewElement:parent:];
@@ -19,7 +19,7 @@
 
   v12.receiver = self;
   v12.super_class = SKUIProfileSettingDescription;
-  v8 = [(SKUISettingDescription *)&v12 initWithViewElement:v6 parent:v7];
+  v8 = [(SKUISettingDescription *)&v12 initWithViewElement:elementCopy parent:parentCopy];
   if (v8)
   {
     v9 = objc_alloc_init(MEMORY[0x277CCABD8]);
@@ -115,10 +115,10 @@ uint64_t __50__SKUIProfileSettingDescription__fetchAccountInfo__block_invoke_2(u
 
 - (void)_fetchProfilePhoto
 {
-  v3 = [(SKUISettingDescription *)self parent];
-  v4 = [v3 clientContext];
+  parent = [(SKUISettingDescription *)self parent];
+  clientContext = [parent clientContext];
 
-  v5 = [[SKUIMediaSocialLoadProfilePhotoOperation alloc] initWithClientContext:v4];
+  v5 = [[SKUIMediaSocialLoadProfilePhotoOperation alloc] initWithClientContext:clientContext];
   objc_initWeak(&location, self);
   v6 = MEMORY[0x277D85DD0];
   v7 = 3221225472;

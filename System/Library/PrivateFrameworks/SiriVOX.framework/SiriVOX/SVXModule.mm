@@ -1,5 +1,5 @@
 @interface SVXModule
-- (SVXModule)initWithIdentifier:(id)a3 instanceClass:(Class)a4 instanceContext:(id)a5 preferences:(id)a6 analytics:(id)a7 performer:(id)a8;
+- (SVXModule)initWithIdentifier:(id)identifier instanceClass:(Class)class instanceContext:(id)context preferences:(id)preferences analytics:(id)analytics performer:(id)performer;
 - (id)description;
 @end
 
@@ -19,17 +19,17 @@
   return v8;
 }
 
-- (SVXModule)initWithIdentifier:(id)a3 instanceClass:(Class)a4 instanceContext:(id)a5 preferences:(id)a6 analytics:(id)a7 performer:(id)a8
+- (SVXModule)initWithIdentifier:(id)identifier instanceClass:(Class)class instanceContext:(id)context preferences:(id)preferences analytics:(id)analytics performer:(id)performer
 {
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  obj = a8;
-  v17 = a8;
-  if (v13)
+  identifierCopy = identifier;
+  contextCopy = context;
+  preferencesCopy = preferences;
+  analyticsCopy = analytics;
+  obj = performer;
+  performerCopy = performer;
+  if (identifierCopy)
   {
-    if (a4)
+    if (class)
     {
       goto LABEL_3;
     }
@@ -37,13 +37,13 @@
 
   else
   {
-    v22 = [MEMORY[0x277CCA890] currentHandler];
-    [v22 handleFailureInMethod:a2 object:self file:@"SVXModule.m" lineNumber:22 description:{@"Invalid parameter not satisfying: %@", @"identifier != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SVXModule.m" lineNumber:22 description:{@"Invalid parameter not satisfying: %@", @"identifier != nil"}];
 
-    if (a4)
+    if (class)
     {
 LABEL_3:
-      if (v14)
+      if (contextCopy)
       {
         goto LABEL_4;
       }
@@ -52,13 +52,13 @@ LABEL_3:
     }
   }
 
-  v23 = [MEMORY[0x277CCA890] currentHandler];
-  [v23 handleFailureInMethod:a2 object:self file:@"SVXModule.m" lineNumber:23 description:{@"Invalid parameter not satisfying: %@", @"instanceClass != Nil"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"SVXModule.m" lineNumber:23 description:{@"Invalid parameter not satisfying: %@", @"instanceClass != Nil"}];
 
-  if (v14)
+  if (contextCopy)
   {
 LABEL_4:
-    if (v15)
+    if (preferencesCopy)
     {
       goto LABEL_5;
     }
@@ -67,22 +67,22 @@ LABEL_4:
   }
 
 LABEL_12:
-  v24 = [MEMORY[0x277CCA890] currentHandler];
-  [v24 handleFailureInMethod:a2 object:self file:@"SVXModule.m" lineNumber:24 description:{@"Invalid parameter not satisfying: %@", @"instanceContext != nil"}];
+  currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"SVXModule.m" lineNumber:24 description:{@"Invalid parameter not satisfying: %@", @"instanceContext != nil"}];
 
-  if (v15)
+  if (preferencesCopy)
   {
 LABEL_5:
-    if (v16)
+    if (analyticsCopy)
     {
       goto LABEL_6;
     }
 
 LABEL_14:
-    v26 = [MEMORY[0x277CCA890] currentHandler];
-    [v26 handleFailureInMethod:a2 object:self file:@"SVXModule.m" lineNumber:26 description:{@"Invalid parameter not satisfying: %@", @"analytics != nil"}];
+    currentHandler4 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler4 handleFailureInMethod:a2 object:self file:@"SVXModule.m" lineNumber:26 description:{@"Invalid parameter not satisfying: %@", @"analytics != nil"}];
 
-    if (v17)
+    if (performerCopy)
     {
       goto LABEL_7;
     }
@@ -91,23 +91,23 @@ LABEL_14:
   }
 
 LABEL_13:
-  v25 = [MEMORY[0x277CCA890] currentHandler];
-  [v25 handleFailureInMethod:a2 object:self file:@"SVXModule.m" lineNumber:25 description:{@"Invalid parameter not satisfying: %@", @"preferences != nil"}];
+  currentHandler5 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler5 handleFailureInMethod:a2 object:self file:@"SVXModule.m" lineNumber:25 description:{@"Invalid parameter not satisfying: %@", @"preferences != nil"}];
 
-  if (!v16)
+  if (!analyticsCopy)
   {
     goto LABEL_14;
   }
 
 LABEL_6:
-  if (v17)
+  if (performerCopy)
   {
     goto LABEL_7;
   }
 
 LABEL_15:
-  v27 = [MEMORY[0x277CCA890] currentHandler];
-  [v27 handleFailureInMethod:a2 object:self file:@"SVXModule.m" lineNumber:27 description:{@"Invalid parameter not satisfying: %@", @"performer != nil"}];
+  currentHandler6 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler6 handleFailureInMethod:a2 object:self file:@"SVXModule.m" lineNumber:27 description:{@"Invalid parameter not satisfying: %@", @"performer != nil"}];
 
 LABEL_7:
   v31.receiver = self;
@@ -115,15 +115,15 @@ LABEL_7:
   v18 = [(SVXModule *)&v31 init];
   if (v18)
   {
-    v19 = [v13 copy];
+    v19 = [identifierCopy copy];
     identifier = v18->_identifier;
     v18->_identifier = v19;
 
-    objc_storeStrong(&v18->_instanceContext, a5);
-    objc_storeStrong(&v18->_preferences, a6);
-    objc_storeStrong(&v18->_analytics, a7);
+    objc_storeStrong(&v18->_instanceContext, context);
+    objc_storeStrong(&v18->_preferences, preferences);
+    objc_storeStrong(&v18->_analytics, analytics);
     objc_storeStrong(&v18->_performer, obj);
-    v18->_instanceClass = a4;
+    v18->_instanceClass = class;
   }
 
   return v18;

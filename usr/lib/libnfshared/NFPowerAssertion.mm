@@ -3,7 +3,7 @@
 - (NFPowerAssertion)init;
 - (id)assertionHolders;
 - (id)dumpState;
-- (void)releasePowerAssertion:(id)a3 logFaultOnOverRelease:(BOOL)a4;
+- (void)releasePowerAssertion:(id)assertion logFaultOnOverRelease:(BOOL)release;
 @end
 
 @implementation NFPowerAssertion
@@ -35,14 +35,14 @@
   return v2;
 }
 
-- (void)releasePowerAssertion:(id)a3 logFaultOnOverRelease:(BOOL)a4
+- (void)releasePowerAssertion:(id)assertion logFaultOnOverRelease:(BOOL)release
 {
-  v4 = a4;
+  releaseCopy = release;
   v126 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  assertionCopy = assertion;
   v8 = self->_assertionHolders;
   objc_sync_enter(v8);
-  v10 = objc_msgSend_objectForKey_(self->_assertionHolders, v9, v7);
+  v10 = objc_msgSend_objectForKey_(self->_assertionHolders, v9, assertionCopy);
   v13 = v10;
   if (!v10)
   {
@@ -51,7 +51,7 @@
       dispatch_once(&qword_280AEEFD8, &unk_2843ADA20);
     }
 
-    if (byte_280AEEFE0 == 1 && v4)
+    if (byte_280AEEFE0 == 1 && releaseCopy)
     {
       v16 = NFSharedLogGetLogger(0);
       if (!os_log_type_enabled(v16, OS_LOG_TYPE_FAULT))
@@ -60,7 +60,7 @@
       }
 
       *buf = 138543362;
-      *v117 = v7;
+      *v117 = assertionCopy;
 LABEL_51:
       _os_log_fault_impl(&dword_22EEC4000, v16, OS_LOG_TYPE_FAULT, "%{public}@ does not hold assertion", buf, 0xCu);
       goto LABEL_73;
@@ -86,7 +86,7 @@ LABEL_51:
         v89 = 43;
       }
 
-      v86(3, "%c[%{public}s %{public}s]:%i %{public}@ does not hold assertion", v89, ClassName, Name, 162, v7);
+      v86(3, "%c[%{public}s %{public}s]:%i %{public}@ does not hold assertion", v89, ClassName, Name, 162, assertionCopy);
       v84 = kNFLOG_DISPATCH_SPECIFIC_KEY;
     }
 
@@ -117,7 +117,7 @@ LABEL_51:
     v120 = 1024;
     v121 = 162;
     v122 = 2114;
-    v123 = v7;
+    v123 = assertionCopy;
 LABEL_72:
     _os_log_impl(&dword_22EEC4000, v16, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i %{public}@ does not hold assertion", buf, 0x2Cu);
     goto LABEL_73;
@@ -190,7 +190,7 @@ LABEL_72:
     objc_msgSend_removeLastObject(v13, v21, v22);
     if (!objc_msgSend_count(v13, v34, v35))
     {
-      objc_msgSend_removeObjectForKey_(self->_assertionHolders, v36, v7);
+      objc_msgSend_removeObjectForKey_(self->_assertionHolders, v36, assertionCopy);
     }
 
     if (self->_enableDebug)
@@ -213,7 +213,7 @@ LABEL_72:
             v46 = 43;
           }
 
-          v39(6, "%c[%{public}s %{public}s]:%i released assertion: counter: %lu id: %{public}@", v46, v42, v43, 195, v112, v7);
+          v39(6, "%c[%{public}s %{public}s]:%i released assertion: counter: %lu id: %{public}@", v46, v42, v43, 195, v112, assertionCopy);
           v37 = kNFLOG_DISPATCH_SPECIFIC_KEY;
         }
 
@@ -247,7 +247,7 @@ LABEL_72:
           v122 = 2048;
           v123 = v55;
           v124 = 2114;
-          v125 = v7;
+          v125 = assertionCopy;
           _os_log_impl(&dword_22EEC4000, v48, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i released assertion: counter: %lu id: %{public}@", buf, 0x36u);
         }
 
@@ -264,7 +264,7 @@ LABEL_72:
             v62 = sel_getName(sel);
             objc_msgSend_dumpState(self, v63, v64);
             v65 = v8;
-            v67 = v66 = v7;
+            v67 = v66 = assertionCopy;
             v70 = objc_msgSend_description(v67, v68, v69);
             v71 = 45;
             if (v60)
@@ -274,7 +274,7 @@ LABEL_72:
 
             v58(6, "%c[%{public}s %{public}s]:%i all assertions: %{public}@", v71, v61, v62, 196, v70);
 
-            v7 = v66;
+            assertionCopy = v66;
             v8 = v65;
             v56 = kNFLOG_DISPATCH_SPECIFIC_KEY;
           }
@@ -299,7 +299,7 @@ LABEL_72:
             v77 = sel_getName(sel);
             v80 = objc_msgSend_dumpState(self, v78, v79);
             objc_msgSend_description(v80, v81, v82);
-            v83 = sela = v7;
+            v83 = sela = assertionCopy;
             *buf = 67110146;
             *v117 = v75;
             *&v117[4] = 2082;
@@ -312,7 +312,7 @@ LABEL_72:
             v123 = v83;
             _os_log_impl(&dword_22EEC4000, v73, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i all assertions: %{public}@", buf, 0x2Cu);
 
-            v7 = sela;
+            assertionCopy = sela;
           }
 
           goto LABEL_73;
@@ -326,13 +326,13 @@ LABEL_77:
     goto LABEL_73;
   }
 
-  objc_msgSend_removeObjectForKey_(self->_assertionHolders, v14, v7);
+  objc_msgSend_removeObjectForKey_(self->_assertionHolders, v14, assertionCopy);
   if (qword_280AEEFD8 != -1)
   {
     dispatch_once(&qword_280AEEFD8, &unk_2843ADA20);
   }
 
-  if (byte_280AEEFE0 == 1 && v4)
+  if (byte_280AEEFE0 == 1 && releaseCopy)
   {
     v16 = NFSharedLogGetLogger(0);
     if (!os_log_type_enabled(v16, OS_LOG_TYPE_FAULT))
@@ -341,7 +341,7 @@ LABEL_77:
     }
 
     *buf = 138543362;
-    *v117 = v7;
+    *v117 = assertionCopy;
     goto LABEL_51;
   }
 
@@ -365,7 +365,7 @@ LABEL_77:
       v98 = 43;
     }
 
-    v95(3, "%c[%{public}s %{public}s]:%i %{public}@ does not hold assertion", v98, v108, v111, 171, v7);
+    v95(3, "%c[%{public}s %{public}s]:%i %{public}@ does not hold assertion", v98, v108, v111, 171, assertionCopy);
     v93 = kNFLOG_DISPATCH_SPECIFIC_KEY;
   }
 
@@ -393,7 +393,7 @@ LABEL_77:
     v120 = 1024;
     v121 = 171;
     v122 = 2114;
-    v123 = v7;
+    v123 = assertionCopy;
     goto LABEL_72;
   }
 

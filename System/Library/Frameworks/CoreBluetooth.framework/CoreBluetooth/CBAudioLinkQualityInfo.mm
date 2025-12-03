@@ -1,19 +1,19 @@
 @interface CBAudioLinkQualityInfo
-- (BOOL)isEqual:(id)a3;
-- (CBAudioLinkQualityInfo)initWithCoder:(id)a3;
-- (CBAudioLinkQualityInfo)initWithDictionary:(id)a3 error:(id *)a4;
-- (CBAudioLinkQualityInfo)initWithXPCObject:(id)a3 error:(id *)a4;
-- (id)descriptionWithLevel:(int)a3;
+- (BOOL)isEqual:(id)equal;
+- (CBAudioLinkQualityInfo)initWithCoder:(id)coder;
+- (CBAudioLinkQualityInfo)initWithDictionary:(id)dictionary error:(id *)error;
+- (CBAudioLinkQualityInfo)initWithXPCObject:(id)object error:(id *)error;
+- (id)descriptionWithLevel:(int)level;
 - (id)dictionaryRepresentation;
-- (void)encodeWithCoder:(id)a3;
-- (void)encodeWithXPCObject:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)encodeWithXPCObject:(id)object;
 @end
 
 @implementation CBAudioLinkQualityInfo
 
-- (CBAudioLinkQualityInfo)initWithCoder:(id)a3
+- (CBAudioLinkQualityInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   objc_opt_class();
   objc_opt_class();
   NSDecodeNSDictionaryOfClassesIfPresent();
@@ -22,27 +22,27 @@
   return v5;
 }
 
-- (CBAudioLinkQualityInfo)initWithDictionary:(id)a3 error:(id *)a4
+- (CBAudioLinkQualityInfo)initWithDictionary:(id)dictionary error:(id *)error
 {
   v12 = _CFXPCCreateXPCObjectFromCFObject();
   if (v12)
   {
-    self = [(CBAudioLinkQualityInfo *)self initWithXPCObject:v12 error:a4];
-    v13 = self;
+    self = [(CBAudioLinkQualityInfo *)self initWithXPCObject:v12 error:error];
+    selfCopy = self;
   }
 
-  else if (a4)
+  else if (error)
   {
     CBErrorF(-6700, "CBControllerInfo convert XPC dict failed", v6, v7, v8, v9, v10, v11, v15);
-    *a4 = v13 = 0;
+    *error = selfCopy = 0;
   }
 
   else
   {
-    v13 = 0;
+    selfCopy = 0;
   }
 
-  return v13;
+  return selfCopy;
 }
 
 - (id)dictionaryRepresentation
@@ -66,23 +66,23 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  v4 = [(CBAudioLinkQualityInfo *)self dictionaryRepresentation];
-  if (v4)
+  coderCopy = coder;
+  dictionaryRepresentation = [(CBAudioLinkQualityInfo *)self dictionaryRepresentation];
+  if (dictionaryRepresentation)
   {
-    [v5 encodeObject:v4 forKey:@"auLQ"];
+    [coderCopy encodeObject:dictionaryRepresentation forKey:@"auLQ"];
   }
 }
 
-- (void)encodeWithXPCObject:(id)a3
+- (void)encodeWithXPCObject:(id)object
 {
-  v4 = a3;
-  v5 = v4;
+  objectCopy = object;
+  v5 = objectCopy;
   if (self->_aosState)
   {
-    xpc_dictionary_set_uint64(v4, "aos", self->_aosState);
+    xpc_dictionary_set_uint64(objectCopy, "aos", self->_aosState);
   }
 
   bitRate = self->_bitRate;
@@ -103,10 +103,10 @@
 
   deviceName = self->_deviceName;
   xdict = v5;
-  v8 = [(NSString *)deviceName UTF8String];
-  if (v8)
+  uTF8String = [(NSString *)deviceName UTF8String];
+  if (uTF8String)
   {
-    xpc_dictionary_set_string(xdict, "dvNm", v8);
+    xpc_dictionary_set_string(xdict, "dvNm", uTF8String);
   }
 
   jitterBufferSeconds = self->_jitterBufferSeconds;
@@ -141,19 +141,19 @@
   }
 }
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
-  v4 = a3;
+  levelCopy = level;
   if (qword_1ED7C1F90 != -1)
   {
     [CBAudioLinkQualityInfo descriptionWithLevel:];
   }
 
   v5 = qword_1ED7C1F88;
-  v6 = [MEMORY[0x1E695DF00] date];
-  v7 = [v5 stringFromDate:v6];
+  date = [MEMORY[0x1E695DF00] date];
+  v7 = [v5 stringFromDate:date];
 
-  if (v4 > 0x14)
+  if (levelCopy > 0x14)
   {
     v46 = 0;
     NSAppendPrintF_safe();
@@ -294,9 +294,9 @@ void __47__CBAudioLinkQualityInfo_descriptionWithLevel___block_invoke()
   [v2 setTimeZone:v3];
 }
 
-- (CBAudioLinkQualityInfo)initWithXPCObject:(id)a3 error:(id *)a4
+- (CBAudioLinkQualityInfo)initWithXPCObject:(id)object error:(id *)error
 {
-  OUTLINED_FUNCTION_19(self, a2, a3);
+  OUTLINED_FUNCTION_19(self, a2, object);
   v7 = OUTLINED_FUNCTION_18();
   if (!v7)
   {
@@ -431,9 +431,9 @@ LABEL_28:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -441,7 +441,7 @@ LABEL_28:
     goto LABEL_19;
   }
 
-  v5 = v4;
+  v5 = equalCopy;
   aosState = self->_aosState;
   if (aosState != [v5 aosState])
   {
@@ -467,9 +467,9 @@ LABEL_28:
   }
 
   deviceName = self->_deviceName;
-  v11 = [v5 deviceName];
+  deviceName = [v5 deviceName];
   v12 = deviceName;
-  v13 = v11;
+  v13 = deviceName;
   v14 = v13;
   if (v12 == v13)
   {

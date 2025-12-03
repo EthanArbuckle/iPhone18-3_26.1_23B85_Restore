@@ -1,5 +1,5 @@
 @interface CPLEngineComponentEnumerator
-- (CPLEngineComponentEnumerator)initWithComponents:(id)a3 handler:(id)a4;
+- (CPLEngineComponentEnumerator)initWithComponents:(id)components handler:(id)handler;
 - (void)handleNextComponent;
 @end
 
@@ -10,9 +10,9 @@
   if (self->_handler)
   {
     v3 = objc_autoreleasePoolPush();
-    v4 = [(NSEnumerator *)self->_enumerator nextObject];
+    nextObject = [(NSEnumerator *)self->_enumerator nextObject];
     (*(self->_handler + 2))();
-    if (!v4)
+    if (!nextObject)
     {
       handler = self->_handler;
       self->_handler = 0;
@@ -22,20 +22,20 @@
   }
 }
 
-- (CPLEngineComponentEnumerator)initWithComponents:(id)a3 handler:(id)a4
+- (CPLEngineComponentEnumerator)initWithComponents:(id)components handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  componentsCopy = components;
+  handlerCopy = handler;
   v14.receiver = self;
   v14.super_class = CPLEngineComponentEnumerator;
   v8 = [(CPLEngineComponentEnumerator *)&v14 init];
   if (v8)
   {
-    v9 = [v6 objectEnumerator];
+    objectEnumerator = [componentsCopy objectEnumerator];
     enumerator = v8->_enumerator;
-    v8->_enumerator = v9;
+    v8->_enumerator = objectEnumerator;
 
-    v11 = [v7 copy];
+    v11 = [handlerCopy copy];
     handler = v8->_handler;
     v8->_handler = v11;
   }

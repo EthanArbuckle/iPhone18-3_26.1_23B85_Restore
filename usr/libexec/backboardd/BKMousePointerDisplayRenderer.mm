@@ -1,13 +1,13 @@
 @interface BKMousePointerDisplayRenderer
-+ (BKMousePointerDisplayRendererRootLayerProperties)rootLayerPropertiesForDisplay:(SEL)a3 displayController:(id)a4;
-- (BKMousePointerDisplayRenderer)initWithDisplayName:(id)a3;
++ (BKMousePointerDisplayRendererRootLayerProperties)rootLayerPropertiesForDisplay:(SEL)display displayController:(id)controller;
+- (BKMousePointerDisplayRenderer)initWithDisplayName:(id)name;
 - (BKMousePointerDisplayRendererRootLayerProperties)rootLayerProperties;
 - (BKMousePointerDisplayRendererTransformLayerProperties)transformLayerProperties;
 - (CGPoint)pointerPosition;
 - (void)_updateTransformLayerPosition;
-- (void)setPointerLayer:(id)a3;
-- (void)setPointerPosition:(CGPoint)a3;
-- (void)setRootLayerProperties:(BKMousePointerDisplayRendererRootLayerProperties *)a3;
+- (void)setPointerLayer:(id)layer;
+- (void)setPointerPosition:(CGPoint)position;
+- (void)setRootLayerProperties:(BKMousePointerDisplayRendererRootLayerProperties *)properties;
 @end
 
 @implementation BKMousePointerDisplayRenderer
@@ -61,16 +61,16 @@
   [(CALayer *)transformLayer setPosition:v13, v15];
 }
 
-- (void)setRootLayerProperties:(BKMousePointerDisplayRendererRootLayerProperties *)a3
+- (void)setRootLayerProperties:(BKMousePointerDisplayRendererRootLayerProperties *)properties
 {
   v5 = *&self->_rootLayerProperties.affineTransform.c;
   *&t1.a = *&self->_rootLayerProperties.affineTransform.a;
   *&t1.c = v5;
   *&t1.tx = *&self->_rootLayerProperties.affineTransform.tx;
-  v6 = *&a3->affineTransform.c;
-  *&v45.a = *&a3->affineTransform.a;
+  v6 = *&properties->affineTransform.c;
+  *&v45.a = *&properties->affineTransform.a;
   *&v45.c = v6;
-  *&v45.tx = *&a3->affineTransform.tx;
+  *&v45.tx = *&properties->affineTransform.tx;
   if (!CGAffineTransformEqualToTransform(&t1, &v45))
   {
     goto LABEL_4;
@@ -80,11 +80,11 @@
   y = self->_rootLayerProperties.bounds.origin.y;
   width = self->_rootLayerProperties.bounds.size.width;
   height = self->_rootLayerProperties.bounds.size.height;
-  v11 = a3->bounds.origin.x;
-  v12 = a3->bounds.origin.y;
-  v13 = a3->bounds.size.width;
-  v14 = a3->bounds.size.height;
-  if (!BSRectEqualToRect() || (v15 = self->_rootLayerProperties.displayScale, v16 = a3->displayScale, (BSFloatEqualToFloat() & 1) == 0))
+  v11 = properties->bounds.origin.x;
+  v12 = properties->bounds.origin.y;
+  v13 = properties->bounds.size.width;
+  v14 = properties->bounds.size.height;
+  if (!BSRectEqualToRect() || (v15 = self->_rootLayerProperties.displayScale, v16 = properties->displayScale, (BSFloatEqualToFloat() & 1) == 0))
   {
 LABEL_4:
     displayScale = self->_rootLayerProperties.displayScale;
@@ -99,12 +99,12 @@ LABEL_4:
       v18 = BSFloatEqualToFloat();
     }
 
-    v20 = *&a3->affineTransform.tx;
-    origin = a3->bounds.origin;
-    size = a3->bounds.size;
-    self->_rootLayerProperties.displayScale = a3->displayScale;
-    v23 = *&a3->affineTransform.c;
-    *&self->_rootLayerProperties.affineTransform.a = *&a3->affineTransform.a;
+    v20 = *&properties->affineTransform.tx;
+    origin = properties->bounds.origin;
+    size = properties->bounds.size;
+    self->_rootLayerProperties.displayScale = properties->displayScale;
+    v23 = *&properties->affineTransform.c;
+    *&self->_rootLayerProperties.affineTransform.a = *&properties->affineTransform.a;
     *&self->_rootLayerProperties.affineTransform.c = v23;
     self->_rootLayerProperties.bounds.origin = origin;
     self->_rootLayerProperties.bounds.size = size;
@@ -203,10 +203,10 @@ LABEL_4:
   }
 }
 
-- (void)setPointerPosition:(CGPoint)a3
+- (void)setPointerPosition:(CGPoint)position
 {
-  y = a3.y;
-  x = a3.x;
+  y = position.y;
+  x = position.x;
   v6 = self->_pointerPosition.x;
   v7 = self->_pointerPosition.y;
   if ((BSPointEqualToPoint() & 1) == 0)
@@ -219,26 +219,26 @@ LABEL_4:
   }
 }
 
-- (void)setPointerLayer:(id)a3
+- (void)setPointerLayer:(id)layer
 {
-  v5 = a3;
+  layerCopy = layer;
   p_pointerLayer = &self->_pointerLayer;
   pointerLayer = self->_pointerLayer;
-  v10 = v5;
-  if (pointerLayer != v5)
+  v10 = layerCopy;
+  if (pointerLayer != layerCopy)
   {
     if (pointerLayer)
     {
-      v8 = [(CALayer *)pointerLayer superlayer];
+      superlayer = [(CALayer *)pointerLayer superlayer];
       transformLayer = self->_transformLayer;
 
-      if (v8 == transformLayer)
+      if (superlayer == transformLayer)
       {
         [(CALayer *)*p_pointerLayer removeFromSuperlayer];
       }
     }
 
-    objc_storeStrong(&self->_pointerLayer, a3);
+    objc_storeStrong(&self->_pointerLayer, layer);
     if (*p_pointerLayer)
     {
       [(CALayer *)self->_transformLayer addSublayer:?];
@@ -247,15 +247,15 @@ LABEL_4:
   }
 }
 
-- (BKMousePointerDisplayRenderer)initWithDisplayName:(id)a3
+- (BKMousePointerDisplayRenderer)initWithDisplayName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v9.receiver = self;
   v9.super_class = BKMousePointerDisplayRenderer;
   v5 = [(BKMousePointerDisplayRenderer *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [nameCopy copy];
     displayName = v5->_displayName;
     v5->_displayName = v6;
   }
@@ -263,14 +263,14 @@ LABEL_4:
   return v5;
 }
 
-+ (BKMousePointerDisplayRendererRootLayerProperties)rootLayerPropertiesForDisplay:(SEL)a3 displayController:(id)a4
++ (BKMousePointerDisplayRendererRootLayerProperties)rootLayerPropertiesForDisplay:(SEL)display displayController:(id)controller
 {
-  v7 = a4;
+  controllerCopy = controller;
   v8 = a5;
   v9 = v8;
   if (v8)
   {
-    [v8 geometryForDisplay:v7];
+    [v8 geometryForDisplay:controllerCopy];
     v10 = 0.0;
     if (BSFloatLessThanOrEqualToFloat())
     {

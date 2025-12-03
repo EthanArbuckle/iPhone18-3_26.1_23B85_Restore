@@ -1,8 +1,8 @@
 @interface SBScreenLongevityController
-+ (id)_sharedInstanceCreateIfNeeded:(BOOL)a3;
++ (id)_sharedInstanceCreateIfNeeded:(BOOL)needed;
 - (BOOL)_hasCameraAttributions;
 - (BOOL)_isAutoLockSetToNever;
-- (BOOL)_isValidCurrentTimer:(id)a3;
+- (BOOL)_isValidCurrentTimer:(id)timer;
 - (BOOL)_shouldEnable;
 - (BOOL)isAdaptiveDimmingEnabled;
 - (BOOL)isUnderAutoDimThreshold;
@@ -10,35 +10,35 @@
 - (id)faceStreamAwarenessConfiguration;
 - (void)_beginMonitoringAttentionAwarenessFeaturesEnablement;
 - (void)_checkFaceAttentionAwareness;
-- (void)_clientDidResetForUserAttention:(id)a3;
+- (void)_clientDidResetForUserAttention:(id)attention;
 - (void)_dim;
 - (void)_endMonitoringAttentionAwarenessFeaturesEnablement;
 - (void)_mediaNowPlayingChanged;
 - (void)_observeDefaults;
 - (void)_screenBacklightStateChanged;
 - (void)_startDimTimer;
-- (void)_toggleBacklightAdaptiveDimming:(BOOL)a3;
+- (void)_toggleBacklightAdaptiveDimming:(BOOL)dimming;
 - (void)_undim;
 - (void)_updateCachedDefaults;
-- (void)activityDidChangeForSensorActivityDataProvider:(id)a3;
-- (void)client:(id)a3 attentionLostTimeoutDidExpire:(double)a4 forConfigurationGeneration:(unint64_t)a5 withAssociatedObject:(id)a6;
-- (void)clientDidResetForUserAttention:(id)a3 withEvent:(id)a4;
+- (void)activityDidChangeForSensorActivityDataProvider:(id)provider;
+- (void)client:(id)client attentionLostTimeoutDidExpire:(double)expire forConfigurationGeneration:(unint64_t)generation withAssociatedObject:(id)object;
+- (void)clientDidResetForUserAttention:(id)attention withEvent:(id)event;
 - (void)dealloc;
-- (void)dimTimerDidExpireForTimer:(id)a3;
+- (void)dimTimerDidExpireForTimer:(id)timer;
 - (void)evaluateEnablement;
-- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)a3 userInfo:(id)a4;
-- (void)resetTimerForReason:(id)a3;
-- (void)setAdaptiveDimmingEnabled:(BOOL)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)settings:(id)a3 changedValueForKey:(id)a4;
-- (void)streamerClientDidResetForUserAttention:(id)a3;
+- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)notification userInfo:(id)info;
+- (void)resetTimerForReason:(id)reason;
+- (void)setAdaptiveDimmingEnabled:(BOOL)enabled;
+- (void)setEnabled:(BOOL)enabled;
+- (void)settings:(id)settings changedValueForKey:(id)key;
+- (void)streamerClientDidResetForUserAttention:(id)attention;
 @end
 
 @implementation SBScreenLongevityController
 
-+ (id)_sharedInstanceCreateIfNeeded:(BOOL)a3
++ (id)_sharedInstanceCreateIfNeeded:(BOOL)needed
 {
-  if (a3 && _sharedInstanceCreateIfNeeded__onceToken_2 != -1)
+  if (needed && _sharedInstanceCreateIfNeeded__onceToken_2 != -1)
   {
     +[SBScreenLongevityController _sharedInstanceCreateIfNeeded:];
   }
@@ -62,8 +62,8 @@ void __61__SBScreenLongevityController__sharedInstanceCreateIfNeeded___block_inv
   v2 = [(SBScreenLongevityController *)&v23 init];
   if (v2)
   {
-    v3 = [SBApp sensorActivityDataProvider];
-    [v3 addObserver:v2];
+    sensorActivityDataProvider = [SBApp sensorActivityDataProvider];
+    [sensorActivityDataProvider addObserver:v2];
 
     v4 = +[SBScreenLongevityDomain rootSettings];
     settings = v2->_settings;
@@ -73,12 +73,12 @@ void __61__SBScreenLongevityController__sharedInstanceCreateIfNeeded___block_inv
     [(SBScreenLongevityController *)v2 _observeDefaults];
     v2->_attentionAwarenessFeatureMonitoringToken = 0;
     [(SBScreenLongevityController *)v2 _beginMonitoringAttentionAwarenessFeaturesEnablement];
-    v6 = [MEMORY[0x277D262A0] sharedConnection];
-    [v6 registerObserver:v2];
+    mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+    [mEMORY[0x277D262A0] registerObserver:v2];
 
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v7 addObserver:v2 selector:sel__mediaNowPlayingChanged name:@"SBMediaNowPlayingChangedNotification" object:0];
-    [v7 addObserver:v2 selector:sel__screenBacklightStateChanged name:@"SBBlankScreenStateChangeNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__mediaNowPlayingChanged name:@"SBMediaNowPlayingChangedNotification" object:0];
+    [defaultCenter addObserver:v2 selector:sel__screenBacklightStateChanged name:@"SBBlankScreenStateChangeNotification" object:0];
     v8 = objc_alloc_init(MEMORY[0x277CEF768]);
     idleTouchAwarenessConfiguration = v2->_idleTouchAwarenessConfiguration;
     v2->_idleTouchAwarenessConfiguration = v8;
@@ -152,16 +152,16 @@ void __35__SBScreenLongevityController_init__block_invoke_2(uint64_t a1)
     self->_faceStreamAwarenessClient = 0;
   }
 
-  v7 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v7 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
-  v8 = [SBApp sensorActivityDataProvider];
-  [v8 removeObserver:self];
+  sensorActivityDataProvider = [SBApp sensorActivityDataProvider];
+  [sensorActivityDataProvider removeObserver:self];
 
   [(PTSettings *)self->_settings removeKeyObserver:self];
   [(BSDefaultObserver *)self->_defaultsObserver invalidate];
-  v9 = [MEMORY[0x277D262A0] sharedConnection];
-  [v9 unregisterObserver:self];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  [mEMORY[0x277D262A0] unregisterObserver:self];
 
   [(SBScreenLongevityController *)self _endMonitoringAttentionAwarenessFeaturesEnablement];
   v10.receiver = self;
@@ -171,23 +171,23 @@ void __35__SBScreenLongevityController_init__block_invoke_2(uint64_t a1)
 
 - (void)evaluateEnablement
 {
-  v3 = [(SBScreenLongevityController *)self _shouldEnable];
+  _shouldEnable = [(SBScreenLongevityController *)self _shouldEnable];
 
-  [(SBScreenLongevityController *)self setEnabled:v3];
+  [(SBScreenLongevityController *)self setEnabled:_shouldEnable];
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
   v11 = *MEMORY[0x277D85DE8];
-  if (self->_enabled != a3)
+  if (self->_enabled != enabled)
   {
-    self->_enabled = a3;
+    self->_enabled = enabled;
     v4 = SBLogScreenLongevityController();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       enabled = self->_enabled;
       *buf = 67109120;
-      v10 = enabled;
+      enabledCopy = enabled;
       _os_log_impl(&dword_21ED4E000, v4, OS_LOG_TYPE_DEFAULT, "set enabled -> %{BOOL}u", buf, 8u);
     }
 
@@ -305,11 +305,11 @@ LABEL_25:
   }
 }
 
-- (void)resetTimerForReason:(id)a3
+- (void)resetTimerForReason:(id)reason
 {
   if (self->_enabled)
   {
-    [(SBScreenLongevityController *)self _clientDidResetForUserAttention:a3];
+    [(SBScreenLongevityController *)self _clientDidResetForUserAttention:reason];
   }
 }
 
@@ -318,20 +318,20 @@ LABEL_25:
   v44 = *MEMORY[0x277D85DE8];
   if (![(SBScreenLongevitySettings *)self->_settings overrideEnablement])
   {
-    v5 = [MEMORY[0x277D262A0] sharedConnection];
-    v6 = [v5 isAutoDimAllowed];
+    mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+    isAutoDimAllowed = [mEMORY[0x277D262A0] isAutoDimAllowed];
 
     v7 = _AXSAttentionAwarenessFeaturesEnabled();
-    v8 = [(SBScreenLongevityController *)self _hasCameraAttributions];
-    v9 = [(SBScreenLongevityController *)self _isAutoLockSetToNever];
-    v10 = [(SBScreenLongevitySettings *)self->_settings ignoreAutoLockSetToNever];
+    _hasCameraAttributions = [(SBScreenLongevityController *)self _hasCameraAttributions];
+    _isAutoLockSetToNever = [(SBScreenLongevityController *)self _isAutoLockSetToNever];
+    ignoreAutoLockSetToNever = [(SBScreenLongevitySettings *)self->_settings ignoreAutoLockSetToNever];
     v4 = +[SBMediaController sharedInstance];
-    v23 = [v4 isPlaying];
-    v11 = [v4 playingMediaType];
-    v12 = v11;
-    if (v11)
+    isPlaying = [v4 isPlaying];
+    playingMediaType = [v4 playingMediaType];
+    v12 = playingMediaType;
+    if (playingMediaType)
     {
-      v22 = [v11 isEqual:*MEMORY[0x277D27CB8]] ^ 1;
+      v22 = [playingMediaType isEqual:*MEMORY[0x277D27CB8]] ^ 1;
     }
 
     else
@@ -341,50 +341,50 @@ LABEL_25:
 
     v13 = v7 == 0;
     v14 = +[SBIdleTimerService sharedInstance];
-    v21 = [v14 isDisabledByMediaPlayback];
+    isDisabledByMediaPlayback = [v14 isDisabledByMediaPlayback];
 
     v15 = +[SBIdleTimerGlobalCoordinator sharedInstance];
-    v20 = [v15 isIdleTimerDisabled];
+    isIdleTimerDisabled = [v15 isIdleTimerDisabled];
 
-    v16 = [(SBScreenLongevityController *)self isUnderAutoDimThreshold];
-    v17 = v16;
-    v3 = 0;
-    if (!v13 && (v6 & 1) != 0 && !v8 && (v9 || v10))
+    isUnderAutoDimThreshold = [(SBScreenLongevityController *)self isUnderAutoDimThreshold];
+    v17 = isUnderAutoDimThreshold;
+    enablement = 0;
+    if (!v13 && (isAutoDimAllowed & 1) != 0 && !_hasCameraAttributions && (_isAutoLockSetToNever || ignoreAutoLockSetToNever))
     {
-      if ((v23 & ~v22 | v21))
+      if ((isPlaying & ~v22 | isDisabledByMediaPlayback))
       {
-        v3 = 0;
+        enablement = 0;
       }
 
       else
       {
-        v3 = v20 & !v16;
+        enablement = isIdleTimerDisabled & !isUnderAutoDimThreshold;
       }
     }
 
-    if (self->_enabled != v3 || [(SBScreenLongevitySettings *)self->_settings noisyLogging])
+    if (self->_enabled != enablement || [(SBScreenLongevitySettings *)self->_settings noisyLogging])
     {
       v18 = SBLogScreenLongevityController();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 67111424;
-        v25 = v3;
+        v25 = enablement;
         v26 = 1024;
-        v27 = v6;
+        v27 = isAutoDimAllowed;
         v28 = 1024;
-        v29 = v8;
+        v29 = _hasCameraAttributions;
         v30 = 1024;
-        v31 = v9;
+        v31 = _isAutoLockSetToNever;
         v32 = 1024;
-        v33 = v10;
+        v33 = ignoreAutoLockSetToNever;
         v34 = 1024;
-        v35 = v23;
+        v35 = isPlaying;
         v36 = 1024;
         v37 = v22;
         v38 = 1024;
-        v39 = v21;
+        v39 = isDisabledByMediaPlayback;
         v40 = 1024;
-        v41 = v20;
+        v41 = isIdleTimerDisabled;
         v42 = 1024;
         v43 = v17;
         _os_log_impl(&dword_21ED4E000, v18, OS_LOG_TYPE_DEFAULT, "shouldEnable=%{BOOL}u, isDeviceAllowedByManagedConfiguration=%{BOOL}u, isCameraInUse=%{BOOL}u, isAutoLockDisabled=%{BOOL}u, shouldIgnoreAutoLockDisable=%{BOOL}u, isMediaNowPlaying=%{BOOL}u, isProbablyAudioOnly=%{BOOL}u, isIdleTimerDisabledByMediaPlayback=%{BOOL}u, isIdleTimerOffForAnyReason=%{BOOL}u isAutoDimThresholdPassed=%{BOOL}u", buf, 0x3Eu);
@@ -394,21 +394,21 @@ LABEL_25:
     goto LABEL_20;
   }
 
-  v3 = [(SBScreenLongevitySettings *)self->_settings enablement];
-  if (self->_enabled != v3 || [(SBScreenLongevitySettings *)self->_settings noisyLogging])
+  enablement = [(SBScreenLongevitySettings *)self->_settings enablement];
+  if (self->_enabled != enablement || [(SBScreenLongevitySettings *)self->_settings noisyLogging])
   {
     v4 = SBLogScreenLongevityController();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109120;
-      v25 = v3;
+      v25 = enablement;
       _os_log_impl(&dword_21ED4E000, v4, OS_LOG_TYPE_DEFAULT, "shouldEnable=%{BOOL}u from override", buf, 8u);
     }
 
 LABEL_20:
   }
 
-  return v3;
+  return enablement;
 }
 
 - (void)_mediaNowPlayingChanged
@@ -441,7 +441,7 @@ LABEL_20:
   if (!self->_attentionAwarenessFeatureMonitoringToken)
   {
     objc_initWeak(&location, self);
-    v3 = [*MEMORY[0x277D81C58] UTF8String];
+    uTF8String = [*MEMORY[0x277D81C58] UTF8String];
     v4 = MEMORY[0x277D85CD0];
     v5 = MEMORY[0x277D85CD0];
     v6[0] = MEMORY[0x277D85DD0];
@@ -449,7 +449,7 @@ LABEL_20:
     v6[2] = __83__SBScreenLongevityController__beginMonitoringAttentionAwarenessFeaturesEnablement__block_invoke;
     v6[3] = &unk_2783C4DD8;
     objc_copyWeak(&v7, &location);
-    notify_register_dispatch(v3, p_attentionAwarenessFeatureMonitoringToken, v4, v6);
+    notify_register_dispatch(uTF8String, p_attentionAwarenessFeatureMonitoringToken, v4, v6);
 
     objc_destroyWeak(&v7);
     objc_destroyWeak(&location);
@@ -481,20 +481,20 @@ void __83__SBScreenLongevityController__beginMonitoringAttentionAwarenessFeature
 
 - (BOOL)_hasCameraAttributions
 {
-  v2 = [SBApp sensorActivityDataProvider];
-  v3 = [v2 activeCameraAndMicrophoneActivityAttributions];
-  v4 = [v3 bs_filter:&__block_literal_global_25_7];
+  sensorActivityDataProvider = [SBApp sensorActivityDataProvider];
+  activeCameraAndMicrophoneActivityAttributions = [sensorActivityDataProvider activeCameraAndMicrophoneActivityAttributions];
+  v4 = [activeCameraAndMicrophoneActivityAttributions bs_filter:&__block_literal_global_25_7];
 
-  LOBYTE(v2) = [v4 count] != 0;
-  return v2;
+  LOBYTE(sensorActivityDataProvider) = [v4 count] != 0;
+  return sensorActivityDataProvider;
 }
 
 - (BOOL)_isAutoLockSetToNever
 {
   v2 = +[SBIdleTimerGlobalStateMonitor sharedInstance];
-  v3 = [v2 autoLockTimeout];
+  autoLockTimeout = [v2 autoLockTimeout];
 
-  LOBYTE(v2) = [v3 intValue] == 0x7FFFFFFF;
+  LOBYTE(v2) = [autoLockTimeout intValue] == 0x7FFFFFFF;
   return v2;
 }
 
@@ -546,19 +546,19 @@ void __37__SBScreenLongevityController__undim__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_toggleBacklightAdaptiveDimming:(BOOL)a3
+- (void)_toggleBacklightAdaptiveDimming:(BOOL)dimming
 {
-  v3 = a3;
+  dimmingCopy = dimming;
   v7 = *MEMORY[0x277D85DE8];
   v5 = SBLogScreenLongevityController();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6[0] = 67109120;
-    v6[1] = v3;
+    v6[1] = dimmingCopy;
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "Back light adaptive dimming enable -> %u", v6, 8u);
   }
 
-  [(SBScreenLongevityController *)self setAdaptiveDimmingEnabled:v3];
+  [(SBScreenLongevityController *)self setAdaptiveDimmingEnabled:dimmingCopy];
 }
 
 - (void)_checkFaceAttentionAwareness
@@ -577,8 +577,8 @@ void __37__SBScreenLongevityController__undim__block_invoke(uint64_t a1)
 
   [(SBAttentionAwarenessStreamerClient *)self->_faceStreamAwarenessClient setDelegate:self];
   v7 = self->_faceStreamAwarenessClient;
-  v8 = [(SBScreenLongevityController *)self faceStreamAwarenessConfiguration];
-  [(SBAttentionAwarenessStreamerClient *)v7 setConfiguration:v8];
+  faceStreamAwarenessConfiguration = [(SBScreenLongevityController *)self faceStreamAwarenessConfiguration];
+  [(SBAttentionAwarenessStreamerClient *)v7 setConfiguration:faceStreamAwarenessConfiguration];
 
   v9 = self->_faceStreamAwarenessClient;
 
@@ -607,7 +607,7 @@ void __37__SBScreenLongevityController__undim__block_invoke(uint64_t a1)
 {
   v16[1] = *MEMORY[0x277D85DE8];
   v3 = +[SBDefaults localDefaults];
-  v4 = [v3 screenLongevityDefaults];
+  screenLongevityDefaults = [v3 screenLongevityDefaults];
 
   objc_initWeak(&location, self);
   v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"dimInterval"];
@@ -619,7 +619,7 @@ void __37__SBScreenLongevityController__undim__block_invoke(uint64_t a1)
   v12 = __47__SBScreenLongevityController__observeDefaults__block_invoke;
   v13 = &unk_2783A8C68;
   objc_copyWeak(&v14, &location);
-  v8 = [v4 observeDefaults:v6 onQueue:MEMORY[0x277D85CD0] withBlock:&v10];
+  v8 = [screenLongevityDefaults observeDefaults:v6 onQueue:MEMORY[0x277D85CD0] withBlock:&v10];
   defaultsObserver = self->_defaultsObserver;
   self->_defaultsObserver = v8;
 
@@ -637,21 +637,21 @@ void __47__SBScreenLongevityController__observeDefaults__block_invoke(uint64_t a
 - (void)_updateCachedDefaults
 {
   v3 = +[SBDefaults localDefaults];
-  v5 = [v3 screenLongevityDefaults];
+  screenLongevityDefaults = [v3 screenLongevityDefaults];
 
   settings = self->_settings;
-  [v5 dimInterval];
+  [screenLongevityDefaults dimInterval];
   [(SBScreenLongevitySettings *)settings setDimInterval:?];
 }
 
-- (void)settings:(id)a3 changedValueForKey:(id)a4
+- (void)settings:(id)settings changedValueForKey:(id)key
 {
-  v6 = a4;
-  v7 = v6;
-  if (self->_settings == a3)
+  keyCopy = key;
+  v7 = keyCopy;
+  if (self->_settings == settings)
   {
-    v10 = v6;
-    if (([v6 isEqualToString:@"ignoreAutoLockSetToNever"] & 1) != 0 || (objc_msgSend(v10, "isEqualToString:", @"overrideEnablement") & 1) != 0 || objc_msgSend(v10, "isEqualToString:", @"enablement"))
+    v10 = keyCopy;
+    if (([keyCopy isEqualToString:@"ignoreAutoLockSetToNever"] & 1) != 0 || (objc_msgSend(v10, "isEqualToString:", @"overrideEnablement") & 1) != 0 || objc_msgSend(v10, "isEqualToString:", @"enablement"))
     {
       [(SBScreenLongevityController *)self evaluateEnablement];
 LABEL_6:
@@ -676,7 +676,7 @@ LABEL_6:
 LABEL_7:
 }
 
-- (void)activityDidChangeForSensorActivityDataProvider:(id)a3
+- (void)activityDidChangeForSensorActivityDataProvider:(id)provider
 {
   v4 = SBLogScreenLongevityController();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -717,25 +717,25 @@ uint64_t __45__SBScreenLongevityController__startDimTimer__block_invoke(uint64_t
   return result;
 }
 
-- (void)client:(id)a3 attentionLostTimeoutDidExpire:(double)a4 forConfigurationGeneration:(unint64_t)a5 withAssociatedObject:(id)a6
+- (void)client:(id)client attentionLostTimeoutDidExpire:(double)expire forConfigurationGeneration:(unint64_t)generation withAssociatedObject:(id)object
 {
-  v9 = a3;
-  v8 = a6;
-  if (self->_enabled && self->_idleTouchAwarenessClient == v9)
+  clientCopy = client;
+  objectCopy = object;
+  if (self->_enabled && self->_idleTouchAwarenessClient == clientCopy)
   {
     [(SBScreenLongevityController *)self _startDimTimer];
   }
 }
 
-- (void)_clientDidResetForUserAttention:(id)a3
+- (void)_clientDidResetForUserAttention:(id)attention
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  attentionCopy = attention;
   v5 = SBLogScreenLongevityController();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v8 = v4;
+    v8 = attentionCopy;
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "Reset for user attention: %@", buf, 0xCu);
   }
 
@@ -789,34 +789,34 @@ LABEL_7:
   }
 }
 
-- (void)clientDidResetForUserAttention:(id)a3 withEvent:(id)a4
+- (void)clientDidResetForUserAttention:(id)attention withEvent:(id)event
 {
-  v9 = a3;
-  v6 = a4;
-  if (self->_enabled && self->_idleTouchAwarenessClient == v9)
+  attentionCopy = attention;
+  eventCopy = event;
+  if (self->_enabled && self->_idleTouchAwarenessClient == attentionCopy)
   {
-    v7 = [(SBAttentionAwarenessClient *)v9 configuration];
-    v8 = [v7 identifier];
-    [(SBScreenLongevityController *)self _clientDidResetForUserAttention:v8];
+    configuration = [(SBAttentionAwarenessClient *)attentionCopy configuration];
+    identifier = [configuration identifier];
+    [(SBScreenLongevityController *)self _clientDidResetForUserAttention:identifier];
   }
 }
 
-- (void)streamerClientDidResetForUserAttention:(id)a3
+- (void)streamerClientDidResetForUserAttention:(id)attention
 {
-  v4 = a3;
-  if (self->_enabled && self->_faceStreamAwarenessClient == v4)
+  attentionCopy = attention;
+  if (self->_enabled && self->_faceStreamAwarenessClient == attentionCopy)
   {
-    v7 = v4;
-    v5 = [(SBAttentionAwarenessStreamerClient *)v4 configuration];
-    v6 = [v5 identifier];
-    [(SBScreenLongevityController *)self _clientDidResetForUserAttention:v6];
+    v7 = attentionCopy;
+    configuration = [(SBAttentionAwarenessStreamerClient *)attentionCopy configuration];
+    identifier = [configuration identifier];
+    [(SBScreenLongevityController *)self _clientDidResetForUserAttention:identifier];
 
     [(SBScreenLongevityController *)self _startDimTimer];
-    v4 = v7;
+    attentionCopy = v7;
   }
 }
 
-- (void)dimTimerDidExpireForTimer:(id)a3
+- (void)dimTimerDidExpireForTimer:(id)timer
 {
   if (![(SBScreenLongevityController *)self _isDimmed])
   {
@@ -908,11 +908,11 @@ void __57__SBScreenLongevityController_dimTimerDidExpireForTimer___block_invoke_
   }
 }
 
-- (BOOL)_isValidCurrentTimer:(id)a3
+- (BOOL)_isValidCurrentTimer:(id)timer
 {
-  if (self->_undimTimer == a3)
+  if (self->_undimTimer == timer)
   {
-    return [a3 isValid];
+    return [timer isValid];
   }
 
   else
@@ -921,7 +921,7 @@ void __57__SBScreenLongevityController_dimTimerDidExpireForTimer___block_invoke_
   }
 }
 
-- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)a3 userInfo:(id)a4
+- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)notification userInfo:(id)info
 {
   v5 = SBLogScreenLongevityController();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -933,13 +933,13 @@ void __57__SBScreenLongevityController_dimTimerDidExpireForTimer___block_invoke_
   [(SBScreenLongevityController *)self evaluateEnablement];
 }
 
-- (void)setAdaptiveDimmingEnabled:(BOOL)a3
+- (void)setAdaptiveDimmingEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v10 = [objc_alloc(MEMORY[0x277CCABB0]) initWithInt:a3];
+  enabledCopy = enabled;
+  v10 = [objc_alloc(MEMORY[0x277CCABB0]) initWithInt:enabled];
   v5 = objc_alloc(MEMORY[0x277CCABB0]);
   settings = self->_settings;
-  if (v3)
+  if (enabledCopy)
   {
     [(SBScreenLongevitySettings *)settings dimmingAnimationLength];
   }
@@ -962,23 +962,23 @@ void __57__SBScreenLongevityController_dimTimerDidExpireForTimer___block_invoke_
   if (v2)
   {
     v4 = [v2 objectForKey:@"AmbientAdaptiveDimmingEnable"];
-    v5 = [v4 BOOLValue];
+    bOOLValue = [v4 BOOLValue];
   }
 
   else
   {
-    v5 = 0;
+    bOOLValue = 0;
   }
 
-  return v5;
+  return bOOLValue;
 }
 
 - (BOOL)isUnderAutoDimThreshold
 {
   v2 = [(BrightnessSystemClient *)self->_brightnessSystemClient copyPropertyForKey:@"CBBrightnessIsUnderAutoDimThreshold"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 @end

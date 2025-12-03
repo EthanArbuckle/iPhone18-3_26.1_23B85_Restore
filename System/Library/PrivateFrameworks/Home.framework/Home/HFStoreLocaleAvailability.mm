@@ -6,7 +6,7 @@
 
 + (id)getAvailabilityDictionary
 {
-  v2 = [MEMORY[0x277CBEAF8] autoupdatingCurrentLocale];
+  autoupdatingCurrentLocale = [MEMORY[0x277CBEAF8] autoupdatingCurrentLocale];
   if (!getAvailabilityDictionary_availablityDictionary)
   {
     v3 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -22,18 +22,18 @@
 
     if (v7)
     {
-      v9 = [v7 localizedDescription];
-      NSLog(&cfstr_AvailabilityDi.isa, v9);
+      localizedDescription = [v7 localizedDescription];
+      NSLog(&cfstr_AvailabilityDi.isa, localizedDescription);
     }
   }
 
-  v10 = [v2 countryCode];
-  v11 = [MEMORY[0x277CBEAF8] preferredLanguages];
-  v12 = [v11 firstObject];
-  v13 = [v12 lowercaseString];
+  countryCode = [autoupdatingCurrentLocale countryCode];
+  preferredLanguages = [MEMORY[0x277CBEAF8] preferredLanguages];
+  firstObject = [preferredLanguages firstObject];
+  lowercaseString = [firstObject lowercaseString];
 
-  v14 = [getAvailabilityDictionary_availablityDictionary objectForKeyedSubscript:v10];
-  v15 = [v14 objectForKeyedSubscript:v13];
+  v14 = [getAvailabilityDictionary_availablityDictionary objectForKeyedSubscript:countryCode];
+  v15 = [v14 objectForKeyedSubscript:lowercaseString];
   v16 = v15;
   if (v15)
   {
@@ -42,8 +42,8 @@
 
   else
   {
-    v18 = [getAvailabilityDictionary_availablityDictionary objectForKeyedSubscript:v10];
-    v19 = [getAvailabilityDictionary_availablityDictionary objectForKeyedSubscript:v10];
+    v18 = [getAvailabilityDictionary_availablityDictionary objectForKeyedSubscript:countryCode];
+    v19 = [getAvailabilityDictionary_availablityDictionary objectForKeyedSubscript:countryCode];
     v20 = [v19 objectForKeyedSubscript:@"default_language"];
     v17 = [v18 objectForKeyedSubscript:v20];
   }

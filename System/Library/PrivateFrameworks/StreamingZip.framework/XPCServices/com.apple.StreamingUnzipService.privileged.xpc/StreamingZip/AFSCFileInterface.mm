@@ -1,33 +1,33 @@
 @interface AFSCFileInterface
-- (AFSCFileInterface)initWithFilePath:(id)a3 expectedSize:(int64_t)a4 resumptionState:(id)a5;
-- (BOOL)closeOutputFDWithError:(id *)a3;
-- (BOOL)finalizeFileWithAccessTime:(timeval)a3 modTime:(timeval)a4 mode:(unsigned __int16)a5 error:(id *)a6;
-- (BOOL)setCurrentOffset:(int64_t)a3 error:(id *)a4;
-- (BOOL)writeBuffer:(const void *)a3 length:(unint64_t)a4 error:(id *)a5;
-- (id)suspendWithError:(id *)a3;
-- (void)configureFileAndSetOwnership:(BOOL)a3 toUID:(unsigned int)a4 GID:(unsigned int)a5;
+- (AFSCFileInterface)initWithFilePath:(id)path expectedSize:(int64_t)size resumptionState:(id)state;
+- (BOOL)closeOutputFDWithError:(id *)error;
+- (BOOL)finalizeFileWithAccessTime:(timeval)time modTime:(timeval)modTime mode:(unsigned __int16)mode error:(id *)error;
+- (BOOL)setCurrentOffset:(int64_t)offset error:(id *)error;
+- (BOOL)writeBuffer:(const void *)buffer length:(unint64_t)length error:(id *)error;
+- (id)suspendWithError:(id *)error;
+- (void)configureFileAndSetOwnership:(BOOL)ownership toUID:(unsigned int)d GID:(unsigned int)iD;
 - (void)dealloc;
 - (void)setIncompleteExtractionAttribute;
 @end
 
 @implementation AFSCFileInterface
 
-- (id)suspendWithError:(id *)a3
+- (id)suspendWithError:(id *)error
 {
-  v5 = [(AFSCFileInterface *)self path];
+  path = [(AFSCFileInterface *)self path];
   if (![(AFSCFileInterface *)self aaStream])
   {
     v13 = sub_10000126C();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      *v41 = v5;
+      *v41 = path;
       *&v41[8] = 2112;
       *&v41[10] = 0;
       _os_log_error_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "AAStream was NULL when trying to suspend %@ : %@", buf, 0x16u);
     }
 
-    v15 = sub_1000015F4("[AFSCFileInterface suspendWithError:]", 352, @"SZExtractorErrorDomain", 1, 0, 0, @"AAStream was NULL when trying to suspend %@", v14, v5);
+    v15 = sub_1000015F4("[AFSCFileInterface suspendWithError:]", 352, @"SZExtractorErrorDomain", 1, 0, 0, @"AAStream was NULL when trying to suspend %@", v14, path);
     goto LABEL_12;
   }
 
@@ -41,13 +41,13 @@
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      *v41 = v5;
+      *v41 = path;
       *&v41[8] = 2112;
       *&v41[10] = v7;
       _os_log_error_impl(&_mh_execute_header, v16, OS_LOG_TYPE_ERROR, "Failed to create MemoryBufferStream while suspending %@ : %@", buf, 0x16u);
     }
 
-    v15 = sub_1000015F4("[AFSCFileInterface suspendWithError:]", 359, @"SZExtractorErrorDomain", 1, v7, 0, @"Failed to create MemoryBufferStream while suspending %@", v17, v5);
+    v15 = sub_1000015F4("[AFSCFileInterface suspendWithError:]", 359, @"SZExtractorErrorDomain", 1, v7, 0, @"Failed to create MemoryBufferStream while suspending %@", v17, path);
 
 LABEL_12:
     v6 = 0;
@@ -92,13 +92,13 @@ LABEL_12:
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      *v41 = v5;
+      *v41 = path;
       *&v41[8] = 2112;
       *&v41[10] = v25;
       _os_log_error_impl(&_mh_execute_header, v26, OS_LOG_TYPE_ERROR, "Failed to suspend AAAFSC stream for %@ : %@", buf, 0x16u);
     }
 
-    v15 = sub_1000015F4("[AFSCFileInterface suspendWithError:]", 365, @"SZExtractorErrorDomain", 1, v25, 0, @"Failed to suspend AAAFSC stream for %@", v27, v5);
+    v15 = sub_1000015F4("[AFSCFileInterface suspendWithError:]", 365, @"SZExtractorErrorDomain", 1, v25, 0, @"Failed to suspend AAAFSC stream for %@", v27, path);
 
     goto LABEL_27;
   }
@@ -110,13 +110,13 @@ LABEL_12:
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
     {
       v35 = v39;
-      v36 = [(AFSCFileInterface *)self currentOffset];
+      currentOffset = [(AFSCFileInterface *)self currentOffset];
       *buf = 134218754;
       *v41 = v35;
       *&v41[8] = 2048;
-      *&v41[10] = v36;
+      *&v41[10] = currentOffset;
       v42 = 2112;
-      v43 = v5;
+      v43 = path;
       v44 = 2112;
       v45 = 0;
       _os_log_error_impl(&_mh_execute_header, v28, OS_LOG_TYPE_ERROR, "Mismatched suspend offset from AAByteStreamCloseWithState: got %lld, but we wrote %lld for %@ : %@", buf, 0x2Au);
@@ -128,7 +128,7 @@ LABEL_12:
 
 LABEL_27:
     v19 = 0;
-    if (!a3)
+    if (!error)
     {
       goto LABEL_30;
     }
@@ -147,17 +147,17 @@ LABEL_27:
     *buf = 134218242;
     *v41 = v34;
     *&v41[8] = 2112;
-    *&v41[10] = v5;
+    *&v41[10] = path;
     _os_log_debug_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEBUG, "Got %lu bytes of suspend data from AA for %@", buf, 0x16u);
   }
 
-  if (a3)
+  if (error)
   {
 LABEL_28:
     if (!v19)
     {
       v31 = v15;
-      *a3 = v15;
+      *error = v15;
     }
   }
 
@@ -167,29 +167,29 @@ LABEL_30:
   return v19;
 }
 
-- (BOOL)finalizeFileWithAccessTime:(timeval)a3 modTime:(timeval)a4 mode:(unsigned __int16)a5 error:(id *)a6
+- (BOOL)finalizeFileWithAccessTime:(timeval)time modTime:(timeval)modTime mode:(unsigned __int16)mode error:(id *)error
 {
-  v7 = a5;
-  v8 = *&a4.tv_usec;
-  tv_sec = a4.tv_sec;
-  v10 = *&a3.tv_usec;
-  v11 = a3.tv_sec;
-  v13 = [(AFSCFileInterface *)self path];
-  v14 = [(AFSCFileInterface *)self aaStream];
-  if (!v14)
+  modeCopy = mode;
+  v8 = *&modTime.tv_usec;
+  tv_sec = modTime.tv_sec;
+  v10 = *&time.tv_usec;
+  v11 = time.tv_sec;
+  path = [(AFSCFileInterface *)self path];
+  aaStream = [(AFSCFileInterface *)self aaStream];
+  if (!aaStream)
   {
     v19 = sub_10000126C();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v28 = v13;
+      v28 = path;
       v29 = 2112;
       v30 = 0;
       _os_log_error_impl(&_mh_execute_header, v19, OS_LOG_TYPE_ERROR, "AAStream was NULL when trying to finalize %@ : %@", buf, 0x16u);
     }
 
-    v17 = sub_1000015F4("[AFSCFileInterface finalizeFileWithAccessTime:modTime:mode:error:]", 321, @"SZExtractorErrorDomain", 1, 0, 0, @"AAStream was NULL when trying to finalize %@", v20, v13);
-    if (!a6)
+    v17 = sub_1000015F4("[AFSCFileInterface finalizeFileWithAccessTime:modTime:mode:error:]", 321, @"SZExtractorErrorDomain", 1, 0, 0, @"AAStream was NULL when trying to finalize %@", v20, path);
+    if (!error)
     {
       goto LABEL_11;
     }
@@ -197,7 +197,7 @@ LABEL_30:
     goto LABEL_7;
   }
 
-  v15 = v14;
+  v15 = aaStream;
   [(AFSCFileInterface *)self setAaStream:0];
   v26 = 0;
   v16 = sub_10000C364(v15, &v26);
@@ -208,16 +208,16 @@ LABEL_30:
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v28 = v13;
+      v28 = path;
       v29 = 2112;
       v30 = v17;
       _os_log_error_impl(&_mh_execute_header, v22, OS_LOG_TYPE_ERROR, "Failed to close AAAFSC stream for %@ : %@", buf, 0x16u);
     }
 
-    v24 = sub_1000015F4("[AFSCFileInterface finalizeFileWithAccessTime:modTime:mode:error:]", 328, @"SZExtractorErrorDomain", 1, v17, 0, @"Failed to close AAAFSC stream for %@", v23, v13);
+    v24 = sub_1000015F4("[AFSCFileInterface finalizeFileWithAccessTime:modTime:mode:error:]", 328, @"SZExtractorErrorDomain", 1, v17, 0, @"Failed to close AAAFSC stream for %@", v23, path);
 
     v17 = v24;
-    if (!a6)
+    if (!error)
     {
 LABEL_11:
       v18 = 0;
@@ -227,46 +227,46 @@ LABEL_11:
 LABEL_7:
     v21 = v17;
     v18 = 0;
-    *a6 = v17;
+    *error = v17;
     goto LABEL_12;
   }
 
-  sub_10000C4E0(-[AFSCFileInterface outputFD](self, "outputFD"), [v13 fileSystemRepresentation], v11, v10, tv_sec, v8, v7);
+  sub_10000C4E0(-[AFSCFileInterface outputFD](self, "outputFD"), [path fileSystemRepresentation], v11, v10, tv_sec, v8, modeCopy);
   v18 = 1;
 LABEL_12:
 
   return v18;
 }
 
-- (void)configureFileAndSetOwnership:(BOOL)a3 toUID:(unsigned int)a4 GID:(unsigned int)a5
+- (void)configureFileAndSetOwnership:(BOOL)ownership toUID:(unsigned int)d GID:(unsigned int)iD
 {
-  v7 = a3;
-  v9 = [(AFSCFileInterface *)self outputFD];
-  v11 = [(AFSCFileInterface *)self path];
-  v10 = v11;
-  sub_10000C700(v9, [v11 fileSystemRepresentation], -[AFSCFileInterface fileSize](self, "fileSize"), v7, a4, a5);
+  ownershipCopy = ownership;
+  outputFD = [(AFSCFileInterface *)self outputFD];
+  path = [(AFSCFileInterface *)self path];
+  v10 = path;
+  sub_10000C700(outputFD, [path fileSystemRepresentation], -[AFSCFileInterface fileSize](self, "fileSize"), ownershipCopy, d, iD);
 }
 
 - (void)setIncompleteExtractionAttribute
 {
-  v3 = [(AFSCFileInterface *)self outputFD];
-  v5 = [(AFSCFileInterface *)self path];
-  v4 = v5;
-  sub_10000C9C0(v3, [v5 fileSystemRepresentation]);
+  outputFD = [(AFSCFileInterface *)self outputFD];
+  path = [(AFSCFileInterface *)self path];
+  v4 = path;
+  sub_10000C9C0(outputFD, [path fileSystemRepresentation]);
 }
 
-- (BOOL)setCurrentOffset:(int64_t)a3 error:(id *)a4
+- (BOOL)setCurrentOffset:(int64_t)offset error:(id *)error
 {
-  v7 = [(AFSCFileInterface *)self expectedResumptionOffset];
-  v8 = [(AFSCFileInterface *)self isResumedStream];
-  if (v7 == a3)
+  expectedResumptionOffset = [(AFSCFileInterface *)self expectedResumptionOffset];
+  isResumedStream = [(AFSCFileInterface *)self isResumedStream];
+  if (expectedResumptionOffset == offset)
   {
     v9 = 0;
   }
 
   else
   {
-    v9 = v8;
+    v9 = isResumedStream;
   }
 
   if (v9 == 1)
@@ -275,40 +275,40 @@ LABEL_12:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       *buf = 134218498;
-      v15 = v7;
+      v15 = expectedResumptionOffset;
       v16 = 2048;
-      v17 = a3;
+      offsetCopy = offset;
       v18 = 2112;
       v19 = 0;
       _os_log_error_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "AAFSC stream expected file to resume at offset %lld but StreamingZip believes it should resume at offset %lld : %@", buf, 0x20u);
     }
 
-    v12 = sub_1000015F4("[AFSCFileInterface setCurrentOffset:error:]", 293, @"SZExtractorErrorDomain", 1, 0, 0, @"AAFSC stream expected file to resume at offset %lld but StreamingZip believes it should resume at offset %lld", v11, v7);
-    if (a4)
+    v12 = sub_1000015F4("[AFSCFileInterface setCurrentOffset:error:]", 293, @"SZExtractorErrorDomain", 1, 0, 0, @"AAFSC stream expected file to resume at offset %lld but StreamingZip believes it should resume at offset %lld", v11, expectedResumptionOffset);
+    if (error)
     {
       v12 = v12;
-      *a4 = v12;
+      *error = v12;
     }
   }
 
   else
   {
-    [(AFSCFileInterface *)self setCurrentOffset:a3];
+    [(AFSCFileInterface *)self setCurrentOffset:offset];
   }
 
   return v9 ^ 1;
 }
 
-- (BOOL)closeOutputFDWithError:(id *)a3
+- (BOOL)closeOutputFDWithError:(id *)error
 {
-  v5 = [(AFSCFileInterface *)self aaStream];
-  if (!v5)
+  aaStream = [(AFSCFileInterface *)self aaStream];
+  if (!aaStream)
   {
     v10 = 0;
     goto LABEL_5;
   }
 
-  v6 = v5;
+  v6 = aaStream;
   [(AFSCFileInterface *)self setAaStream:0];
   v19 = 0;
   v7 = sub_10000C364(v6, &v19);
@@ -318,10 +318,10 @@ LABEL_12:
   {
     v10 = v8;
 LABEL_5:
-    v11 = [(AFSCFileInterface *)self outputFD];
-    if ((v11 & 0x80000000) == 0)
+    outputFD = [(AFSCFileInterface *)self outputFD];
+    if ((outputFD & 0x80000000) == 0)
     {
-      close(v11);
+      close(outputFD);
       [(AFSCFileInterface *)self setOutputFD:0xFFFFFFFFLL];
     }
 
@@ -332,22 +332,22 @@ LABEL_5:
   v13 = sub_10000126C();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
   {
-    v18 = [(AFSCFileInterface *)self path];
+    path = [(AFSCFileInterface *)self path];
     *buf = 138412546;
-    v21 = v18;
+    v21 = path;
     v22 = 2112;
     v23 = v9;
     _os_log_error_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "Failed to close AAFSC stream for %@ : %@", buf, 0x16u);
   }
 
-  v14 = [(AFSCFileInterface *)self path];
-  v10 = sub_1000015F4("[AFSCFileInterface closeOutputFDWithError:]", 264, @"SZExtractorErrorDomain", 1, v9, 0, @"Failed to close AAFSC stream for %@", v15, v14);
+  path2 = [(AFSCFileInterface *)self path];
+  v10 = sub_1000015F4("[AFSCFileInterface closeOutputFDWithError:]", 264, @"SZExtractorErrorDomain", 1, v9, 0, @"Failed to close AAFSC stream for %@", v15, path2);
 
-  if (a3)
+  if (error)
   {
     v16 = v10;
     v12 = 0;
-    *a3 = v10;
+    *error = v10;
   }
 
   else
@@ -360,15 +360,15 @@ LABEL_13:
   return v12;
 }
 
-- (BOOL)writeBuffer:(const void *)a3 length:(unint64_t)a4 error:(id *)a5
+- (BOOL)writeBuffer:(const void *)buffer length:(unint64_t)length error:(id *)error
 {
-  v9 = [(AFSCFileInterface *)self aaStream];
-  if (v9)
+  aaStream = [(AFSCFileInterface *)self aaStream];
+  if (aaStream)
   {
-    v10 = v9;
+    v10 = aaStream;
     AAThreadErrorContextEnter();
     *__error() = 0;
-    v11 = AAByteStreamWrite(v10, a3, a4);
+    v11 = AAByteStreamWrite(v10, buffer, length);
     v12 = *__error();
     v13 = AAThreadErrorContextLeave();
     if (v11 < 0)
@@ -390,7 +390,7 @@ LABEL_13:
         *buf = 134218242;
         v38 = v11;
         v39 = 2112;
-        v40 = v20;
+        lengthCopy = v20;
         _os_log_error_impl(&_mh_execute_header, v24, OS_LOG_TYPE_ERROR, "AAByteStreamWrite failed, returning %zd : %@", buf, 0x16u);
       }
 
@@ -398,50 +398,50 @@ LABEL_13:
       v27 = v26;
 
       v28 = v26;
-      v17 = [(AFSCFileInterface *)self path];
+      path = [(AFSCFileInterface *)self path];
       v29 = sub_10000126C();
       if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v38 = v17;
+        v38 = path;
         v39 = 2112;
-        v40 = v28;
+        lengthCopy = v28;
         _os_log_error_impl(&_mh_execute_header, v29, OS_LOG_TYPE_ERROR, "AAAFSC stream failed to write data to output file at %@ : %@", buf, 0x16u);
       }
 
       v45 = NSFilePathErrorKey;
-      v46 = v17;
+      v46 = path;
       v30 = [NSDictionary dictionaryWithObjects:&v46 forKeys:&v45 count:1];
-      v14 = sub_1000015F4("[AFSCFileInterface writeBuffer:length:error:]", 231, @"SZExtractorErrorDomain", 1, v28, v30, @"AAAFSC stream failed to write data to output file at %@", v31, v17);
+      v14 = sub_1000015F4("[AFSCFileInterface writeBuffer:length:error:]", 231, @"SZExtractorErrorDomain", 1, v28, v30, @"AAAFSC stream failed to write data to output file at %@", v31, path);
     }
 
     else
     {
-      if (v11 == a4)
+      if (v11 == length)
       {
-        [(AFSCFileInterface *)self setCurrentOffset:[(AFSCFileInterface *)self currentOffset]+ a4];
+        [(AFSCFileInterface *)self setCurrentOffset:[(AFSCFileInterface *)self currentOffset]+ length];
         v14 = 0;
         v15 = 1;
         goto LABEL_22;
       }
 
-      v17 = [(AFSCFileInterface *)self path];
+      path = [(AFSCFileInterface *)self path];
       v21 = sub_10000126C();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
       {
         *buf = 134218754;
         v38 = v11;
         v39 = 2048;
-        v40 = a4;
+        lengthCopy = length;
         v41 = 2112;
-        v42 = v17;
+        v42 = path;
         v43 = 2112;
         v44 = 0;
         _os_log_error_impl(&_mh_execute_header, v21, OS_LOG_TYPE_ERROR, "AAAFSC stream wrote incomplete data; wrote %zd, expected %zu, for file %@ : %@", buf, 0x2Au);
       }
 
       v35 = NSFilePathErrorKey;
-      v36 = v17;
+      v36 = path;
       v22 = [NSDictionary dictionaryWithObjects:&v36 forKeys:&v35 count:1];
       v14 = sub_1000015F4("[AFSCFileInterface writeBuffer:length:error:]", 235, @"SZExtractorErrorDomain", 1, 0, v22, @"AAAFSC stream wrote incomplete data wrote %zd, expected %zu, for file %@", v23, v11);;
     }
@@ -452,23 +452,23 @@ LABEL_13:
     v16 = sub_10000126C();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
-      v34 = [(AFSCFileInterface *)self path];
+      path2 = [(AFSCFileInterface *)self path];
       *buf = 138412546;
-      v38 = v34;
+      v38 = path2;
       v39 = 2112;
-      v40 = 0;
+      lengthCopy = 0;
       _os_log_error_impl(&_mh_execute_header, v16, OS_LOG_TYPE_ERROR, "AAStream was NULL when trying to write to %@ : %@", buf, 0x16u);
     }
 
-    v17 = [(AFSCFileInterface *)self path];
-    v14 = sub_1000015F4("[AFSCFileInterface writeBuffer:length:error:]", 224, @"SZExtractorErrorDomain", 1, 0, 0, @"AAStream was NULL when trying to write to %@", v18, v17);
+    path = [(AFSCFileInterface *)self path];
+    v14 = sub_1000015F4("[AFSCFileInterface writeBuffer:length:error:]", 224, @"SZExtractorErrorDomain", 1, 0, 0, @"AAStream was NULL when trying to write to %@", v18, path);
   }
 
-  if (a5)
+  if (error)
   {
     v32 = v14;
     v15 = 0;
-    *a5 = v14;
+    *error = v14;
   }
 
   else
@@ -489,23 +489,23 @@ LABEL_22:
   [(AFSCFileInterface *)&v3 dealloc];
 }
 
-- (AFSCFileInterface)initWithFilePath:(id)a3 expectedSize:(int64_t)a4 resumptionState:(id)a5
+- (AFSCFileInterface)initWithFilePath:(id)path expectedSize:(int64_t)size resumptionState:(id)state
 {
-  v8 = a3;
-  v9 = a5;
+  pathCopy = path;
+  stateCopy = state;
   v14.receiver = self;
   v14.super_class = AFSCFileInterface;
   v10 = [(AFSCFileInterface *)&v14 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [pathCopy copy];
     path = v10->_path;
     v10->_path = v11;
 
-    v10->_fileSize = a4;
+    v10->_fileSize = size;
     v10->_outputFD = -1;
-    objc_storeStrong(&v10->_resumptionState, a5);
-    v10->_isResumedStream = v9 != 0;
+    objc_storeStrong(&v10->_resumptionState, state);
+    v10->_isResumedStream = stateCopy != 0;
     v10->_currentOffset = 0;
     v10->_expectedResumptionOffset = 0;
   }

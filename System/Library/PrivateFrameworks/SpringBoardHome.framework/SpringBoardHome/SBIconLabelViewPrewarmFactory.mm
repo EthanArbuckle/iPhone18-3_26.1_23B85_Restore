@@ -1,6 +1,6 @@
 @interface SBIconLabelViewPrewarmFactory
 + (id)sharedInstance;
-- (id)iconLabelViewWithSettings:(id)a3 imageParameters:(id)a4 forIconView:(id)a5;
+- (id)iconLabelViewWithSettings:(id)settings imageParameters:(id)parameters forIconView:(id)view;
 @end
 
 @implementation SBIconLabelViewPrewarmFactory
@@ -26,15 +26,15 @@ uint64_t __47__SBIconLabelViewPrewarmFactory_sharedInstance__block_invoke()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-- (id)iconLabelViewWithSettings:(id)a3 imageParameters:(id)a4 forIconView:(id)a5
+- (id)iconLabelViewWithSettings:(id)settings imageParameters:(id)parameters forIconView:(id)view
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  settingsCopy = settings;
+  parametersCopy = parameters;
+  viewCopy = view;
   prewarmSimpleLabelView = self->_prewarmSimpleLabelView;
   if (!prewarmSimpleLabelView)
   {
-    v12 = [[SBIconSimpleLabelView alloc] initWithSettings:v8];
+    v12 = [[SBIconSimpleLabelView alloc] initWithSettings:settingsCopy];
     v13 = self->_prewarmSimpleLabelView;
     self->_prewarmSimpleLabelView = v12;
 
@@ -42,8 +42,8 @@ uint64_t __47__SBIconLabelViewPrewarmFactory_sharedInstance__block_invoke()
     prewarmSimpleLabelView = self->_prewarmSimpleLabelView;
   }
 
-  [(SBIconSimpleLabelView *)prewarmSimpleLabelView setIconView:v10];
-  [(SBIconSimpleLabelView *)self->_prewarmSimpleLabelView updateIconLabelWithSettings:v8 imageParameters:v9];
+  [(SBIconSimpleLabelView *)prewarmSimpleLabelView setIconView:viewCopy];
+  [(SBIconSimpleLabelView *)self->_prewarmSimpleLabelView updateIconLabelWithSettings:settingsCopy imageParameters:parametersCopy];
   v14 = self->_prewarmSimpleLabelView;
   v15 = v14;
 

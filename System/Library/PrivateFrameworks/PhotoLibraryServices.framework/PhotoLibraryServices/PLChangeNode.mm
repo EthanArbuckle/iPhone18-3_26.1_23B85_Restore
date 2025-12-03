@@ -1,21 +1,21 @@
 @interface PLChangeNode
-- (BOOL)_isInvalidRemoteChangeEvent:(id)a3 reply:(id)a4;
-- (PLChangeNode)initWithLibraryURL:(id)a3 changeMerger:(id)a4 changePublisher:(id)a5 libraryServicesManager:(id)a6;
-- (void)connectManagedObjectContext:(id)a3;
+- (BOOL)_isInvalidRemoteChangeEvent:(id)event reply:(id)reply;
+- (PLChangeNode)initWithLibraryURL:(id)l changeMerger:(id)merger changePublisher:(id)publisher libraryServicesManager:(id)manager;
+- (void)connectManagedObjectContext:(id)context;
 - (void)dealloc;
-- (void)disconnectManagedObjectContext:(id)a3;
-- (void)distributeRemoteContextDidSaveEvent:(id)a3 delayedSaveActionsDetail:(id)a4 transaction:(id)a5;
+- (void)disconnectManagedObjectContext:(id)context;
+- (void)distributeRemoteContextDidSaveEvent:(id)event delayedSaveActionsDetail:(id)detail transaction:(id)transaction;
 - (void)invalidate;
-- (void)publishChangesForDidSaveObjectIDsNotification:(id)a3;
-- (void)publishRemoteChangeEvent:(id)a3 delayedSaveActionsDetail:(id)a4 reply:(id)a5;
+- (void)publishChangesForDidSaveObjectIDsNotification:(id)notification;
+- (void)publishRemoteChangeEvent:(id)event delayedSaveActionsDetail:(id)detail reply:(id)reply;
 @end
 
 @implementation PLChangeNode
 
-- (void)publishChangesForDidSaveObjectIDsNotification:(id)a3
+- (void)publishChangesForDidSaveObjectIDsNotification:(id)notification
 {
   v62 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  notificationCopy = notification;
   v6 = objc_autoreleasePoolPush();
   v7 = PLChangeHandlingGetLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -29,79 +29,79 @@
     _os_log_impl(&dword_19BF1F000, v7, OS_LOG_TYPE_DEBUG, "PLChangeNode [%@]: %@", buf, 0x16u);
   }
 
-  v10 = [v5 object];
-  if (([v10 savingDuringMerge] & 1) == 0)
+  object = [notificationCopy object];
+  if (([object savingDuringMerge] & 1) == 0)
   {
-    v11 = [(PLChangePublisher *)self->_changePublisher addEvent];
-    [v11 startLocalPublish];
-    v12 = [v10 photoLibrary];
-    if (!v12)
+    addEvent = [(PLChangePublisher *)self->_changePublisher addEvent];
+    [addEvent startLocalPublish];
+    photoLibrary = [object photoLibrary];
+    if (!photoLibrary)
     {
-      v40 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v40 handleFailureInMethod:a2 object:self file:@"PLChangeNode.m" lineNumber:214 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PLChangeNode.m" lineNumber:214 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
     }
 
     v46 = v6;
-    if ([v10 isUserInterfaceContext])
+    if ([object isUserInterfaceContext])
     {
       v13 = +[PLChangeNotificationCenter defaultCenter];
-      [v13 processContextDidSaveObjectIDsNotification:v5];
+      [v13 processContextDidSaveObjectIDsNotification:notificationCopy];
     }
 
-    v44 = [v10 delayedSaveActions];
-    v14 = [v44 popDelayedSaveActionsDetail];
-    v15 = [v10 userInfo];
-    v16 = [PLClientServerTransaction transactionFromUserInfo:v15];
+    delayedSaveActions = [object delayedSaveActions];
+    popDelayedSaveActionsDetail = [delayedSaveActions popDelayedSaveActionsDetail];
+    userInfo = [object userInfo];
+    v16 = [PLClientServerTransaction transactionFromUserInfo:userInfo];
 
-    v45 = v5;
-    v17 = [v5 userInfo];
-    v18 = [v17 objectForKeyedSubscript:*MEMORY[0x1E695D710]];
-    [v10 recordChangesFromTriggerModifiedObjectIDs:v18];
+    v45 = notificationCopy;
+    userInfo2 = [notificationCopy userInfo];
+    v18 = [userInfo2 objectForKeyedSubscript:*MEMORY[0x1E695D710]];
+    [object recordChangesFromTriggerModifiedObjectIDs:v18];
 
-    v51 = v17;
-    v19 = [v17 mutableCopy];
+    v51 = userInfo2;
+    v19 = [userInfo2 mutableCopy];
     v56 = 0;
     v57 = 0;
-    [v10 getAndClearUpdatedObjectsAttributes:&v57 relationships:&v56];
+    [object getAndClearUpdatedObjectsAttributes:&v57 relationships:&v56];
     v20 = v57;
     v21 = v56;
     v50 = v20;
     [v19 setObject:v20 forKeyedSubscript:@"PLUpdatedAttributesByObjectIDKey"];
     v49 = v21;
     [v19 setObject:v21 forKeyedSubscript:@"PLUpdatedRelationshipsByObjectIDKey"];
-    v47 = v11;
-    v48 = v14;
-    v43 = v12;
+    v47 = addEvent;
+    v48 = popDelayedSaveActionsDetail;
+    v43 = photoLibrary;
     if ([(PLUpdatedOrderKeys *)self->_updatedOrderKeys isObservingOrderKeys])
     {
-      v22 = [(PLUpdatedOrderKeys *)self->_updatedOrderKeys getAndClearUpdatedOrderKeys];
-      [v19 setObject:v22 forKeyedSubscript:@"PLUpdatedOrderKeyRelationshipsByObjectIDKey"];
+      getAndClearUpdatedOrderKeys = [(PLUpdatedOrderKeys *)self->_updatedOrderKeys getAndClearUpdatedOrderKeys];
+      [v19 setObject:getAndClearUpdatedOrderKeys forKeyedSubscript:@"PLUpdatedOrderKeyRelationshipsByObjectIDKey"];
     }
 
     else
     {
-      v22 = MEMORY[0x1E695E0F8];
+      getAndClearUpdatedOrderKeys = MEMORY[0x1E695E0F8];
     }
 
-    v23 = [v10 userInfo];
-    v24 = [v23 objectForKey:@"PLMOCRedundantDeleteObjectIDs"];
-    v25 = [v10 getAndClearRecordedObjectsForCloudDeletion];
-    v26 = [v10 changeSource];
-    BYTE4(v41) = [v10 getAndClearSyncChangeMarker];
-    LODWORD(v41) = v26;
-    v27 = [PLLegacyChangeEventBuilder createXPCDictionaryFromChangedObjectIDs:v51 redundantDeletes:v24 uuidsForCloudDeletion:v25 updatedAttributesByObjectID:v50 updatedRelationshipsByObjectID:v49 updatedOrderKeys:v22 changeSource:v41 syncChangeMarker:?];
+    userInfo3 = [object userInfo];
+    v24 = [userInfo3 objectForKey:@"PLMOCRedundantDeleteObjectIDs"];
+    getAndClearRecordedObjectsForCloudDeletion = [object getAndClearRecordedObjectsForCloudDeletion];
+    changeSource = [object changeSource];
+    BYTE4(v41) = [object getAndClearSyncChangeMarker];
+    LODWORD(v41) = changeSource;
+    v27 = [PLLegacyChangeEventBuilder createXPCDictionaryFromChangedObjectIDs:v51 redundantDeletes:v24 uuidsForCloudDeletion:getAndClearRecordedObjectsForCloudDeletion updatedAttributesByObjectID:v50 updatedRelationshipsByObjectID:v49 updatedOrderKeys:getAndClearUpdatedOrderKeys changeSource:v41 syncChangeMarker:?];
 
-    v42 = v22;
+    v42 = getAndClearUpdatedOrderKeys;
     if (v27)
     {
       v28 = v47;
       [v47 setHasMessage:1];
       [PLClientServerTransaction addTransaction:v16 toXPCDictionary:v27];
-      [v10 appendDelayedDeletionsToXPCMessage:v27];
+      [object appendDelayedDeletionsToXPCMessage:v27];
       v29 = [(PLChangePublisher *)self->_changePublisher publishChangeEvent:v27 delayedSaveActionsDetail:v48 debugEvent:v47 transaction:v16];
 
       v16 = v29;
-      v5 = v45;
+      notificationCopy = v45;
       v30 = v43;
     }
 
@@ -112,26 +112,26 @@
       v30 = v43;
       if (PLIsAssetsd())
       {
-        v31 = [v16 transactionToken];
-        if (v31)
+        transactionToken = [v16 transactionToken];
+        if (transactionToken)
         {
           v32 = v16;
-          v33 = [v43 pathManager];
-          v34 = [v32 changeScopes];
-          v16 = [PLClientServerTransaction beginServerTransactionWithToken:v31 changeScopes:v34 pathManager:v33 identifier:"[PLChangeNode publishChangesForDidSaveObjectIDsNotification:]"];
+          pathManager = [v43 pathManager];
+          changeScopes = [v32 changeScopes];
+          v16 = [PLClientServerTransaction beginServerTransactionWithToken:transactionToken changeScopes:changeScopes pathManager:pathManager identifier:"[PLChangeNode publishChangesForDidSaveObjectIDsNotification:]"];
 
           [v32 completeTransaction];
           v28 = v47;
         }
 
-        v35 = v31;
-        v5 = v45;
+        v35 = transactionToken;
+        notificationCopy = v45;
       }
 
       else
       {
         [v16 abortTransaction];
-        v5 = v45;
+        notificationCopy = v45;
       }
     }
 
@@ -153,7 +153,7 @@
     v37 = v16;
     v38 = v30;
     v39 = v48;
-    [(PLCoreDataChangeMerger *)changeMerger mergeChangesFromRemoteContextSave:v19 intoAllContextsNotIdenticalTo:v10 debugEvent:0 completionHandler:v52];
+    [(PLCoreDataChangeMerger *)changeMerger mergeChangesFromRemoteContextSave:v19 intoAllContextsNotIdenticalTo:object debugEvent:0 completionHandler:v52];
 
     v6 = v46;
   }
@@ -177,46 +177,46 @@ uint64_t __62__PLChangeNode_publishChangesForDidSaveObjectIDsNotification___bloc
   return result;
 }
 
-- (void)disconnectManagedObjectContext:(id)a3
+- (void)disconnectManagedObjectContext:(id)context
 {
   v4 = MEMORY[0x1E696AD88];
-  v5 = a3;
-  v6 = [v4 defaultCenter];
-  [v6 removeObserver:self name:*MEMORY[0x1E695D358] object:v5];
+  contextCopy = context;
+  defaultCenter = [v4 defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E695D358] object:contextCopy];
 }
 
-- (void)connectManagedObjectContext:(id)a3
+- (void)connectManagedObjectContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   if (PLIsAssetsd())
   {
-    [(PLUpdatedOrderKeys *)self->_updatedOrderKeys registerForStoreOrderKeyUpdateNotificationFromManagedObjectContext:v5];
+    [(PLUpdatedOrderKeys *)self->_updatedOrderKeys registerForStoreOrderKeyUpdateNotificationFromManagedObjectContext:contextCopy];
   }
 
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 addObserver:self selector:sel_publishChangesForDidSaveObjectIDsNotification_ name:*MEMORY[0x1E695D358] object:v5];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_publishChangesForDidSaveObjectIDsNotification_ name:*MEMORY[0x1E695D358] object:contextCopy];
 }
 
-- (void)distributeRemoteContextDidSaveEvent:(id)a3 delayedSaveActionsDetail:(id)a4 transaction:(id)a5
+- (void)distributeRemoteContextDidSaveEvent:(id)event delayedSaveActionsDetail:(id)detail transaction:(id)transaction
 {
   v35 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v25 = a5;
-  v10 = [(PLLibraryServicesManager *)self->_libraryServicesManager libraryBundle];
-  v11 = [v10 persistentContainer];
-  v12 = [v11 sharedPersistentStoreCoordinatorWithError:0];
+  eventCopy = event;
+  detailCopy = detail;
+  transactionCopy = transaction;
+  libraryBundle = [(PLLibraryServicesManager *)self->_libraryServicesManager libraryBundle];
+  persistentContainer = [libraryBundle persistentContainer];
+  v12 = [persistentContainer sharedPersistentStoreCoordinatorWithError:0];
 
   v13 = PLChangeHandlingGetLog();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
-    v14 = [PLLegacyChangeEvent _descriptionForEvent:v8 withPersistentStoreCoordinator:v12];
+    v14 = [PLLegacyChangeEvent _descriptionForEvent:eventCopy withPersistentStoreCoordinator:v12];
     *buf = 138412290;
     v32 = v14;
     _os_log_impl(&dword_19BF1F000, v13, OS_LOG_TYPE_DEBUG, "Got remote event: %@", buf, 0xCu);
   }
 
-  v15 = [PLLegacyChangeEvent localChangeEventFromChangeHubEvent:v8 withLibraryBundle:v10];
+  v15 = [PLLegacyChangeEvent localChangeEventFromChangeHubEvent:eventCopy withLibraryBundle:libraryBundle];
   v16 = PLChangeHandlingGetLog();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
   {
@@ -228,13 +228,13 @@ uint64_t __62__PLChangeNode_publishChangesForDidSaveObjectIDsNotification___bloc
   v17 = PLIsAssetsd();
   if (v17)
   {
-    if ([v9 shouldHandleMoments])
+    if ([detailCopy shouldHandleMoments])
     {
-      [(PLDelayedSaveActionsProcessor *)self->_delayedSaveActionsProcessor processDelayedMomentGeneratorSaveActionsFromDetail:v9];
+      [(PLDelayedSaveActionsProcessor *)self->_delayedSaveActionsProcessor processDelayedMomentGeneratorSaveActionsFromDetail:detailCopy];
     }
 
-    v18 = [(PLLibraryServicesManager *)self->_libraryServicesManager databaseContext];
-    v19 = [v18 newShortLivedLibraryWithName:"-[PLChangeNode distributeRemoteContextDidSaveEvent:delayedSaveActionsDetail:transaction:]"];
+    databaseContext = [(PLLibraryServicesManager *)self->_libraryServicesManager databaseContext];
+    v19 = [databaseContext newShortLivedLibraryWithName:"-[PLChangeNode distributeRemoteContextDidSaveEvent:delayedSaveActionsDetail:transaction:]"];
 
     if (!v19)
     {
@@ -242,11 +242,11 @@ uint64_t __62__PLChangeNode_publishChangesForDidSaveObjectIDsNotification___bloc
       if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
       {
         libraryServicesManager = self->_libraryServicesManager;
-        v22 = [(PLLibraryServicesManager *)libraryServicesManager databaseContext];
+        databaseContext2 = [(PLLibraryServicesManager *)libraryServicesManager databaseContext];
         *buf = 134218240;
         v32 = libraryServicesManager;
         v33 = 2048;
-        v34 = v22;
+        v34 = databaseContext2;
         _os_log_impl(&dword_19BF1F000, v20, OS_LOG_TYPE_ERROR, "PLChangeNode distribute: transientLibrary is nil. LSM=%p databaseContext=%p", buf, 0x16u);
       }
 
@@ -266,15 +266,15 @@ uint64_t __62__PLChangeNode_publishChangesForDidSaveObjectIDsNotification___bloc
   v26[3] = &unk_1E756E508;
   v30 = v17;
   v26[4] = self;
-  v27 = v9;
+  v27 = detailCopy;
   v20 = v19;
   v28 = v20;
-  v24 = v25;
+  v24 = transactionCopy;
   v29 = v24;
   [(PLCoreDataChangeMerger *)changeMerger mergeIntoAllContextsChangesFromRemoteContextSave:v15 debugEvent:0 completionHandler:v26];
   if (v17)
   {
-    [(PLDelayedSaveActionsProcessor *)self->_delayedSaveActionsProcessor processDelayedDeletionsFromChangeHubEvent:v8 library:v20 transaction:v24];
+    [(PLDelayedSaveActionsProcessor *)self->_delayedSaveActionsProcessor processDelayedDeletionsFromChangeHubEvent:eventCopy library:v20 transaction:v24];
   }
 
 LABEL_15:
@@ -290,11 +290,11 @@ uint64_t __89__PLChangeNode_distributeRemoteContextDidSaveEvent_delayedSaveActio
   return result;
 }
 
-- (BOOL)_isInvalidRemoteChangeEvent:(id)a3 reply:(id)a4
+- (BOOL)_isInvalidRemoteChangeEvent:(id)event reply:(id)reply
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  uint64 = xpc_dictionary_get_uint64(a3, "eventKind");
+  replyCopy = reply;
+  uint64 = xpc_dictionary_get_uint64(event, "eventKind");
   if (uint64 != 1)
   {
     v7 = PLChangeHandlingGetLog();
@@ -312,26 +312,26 @@ uint64_t __89__PLChangeNode_distributeRemoteContextDidSaveEvent_delayedSaveActio
     v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v14 forKeys:&v13 count:1];
     v11 = [v8 errorWithDomain:v9 code:44002 userInfo:v10];
 
-    v5[2](v5, v11);
+    replyCopy[2](replyCopy, v11);
   }
 
   return uint64 != 1;
 }
 
-- (void)publishRemoteChangeEvent:(id)a3 delayedSaveActionsDetail:(id)a4 reply:(id)a5
+- (void)publishRemoteChangeEvent:(id)event delayedSaveActionsDetail:(id)detail reply:(id)reply
 {
-  v13 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (![(PLChangeNode *)self _isInvalidRemoteChangeEvent:v13 reply:v9])
+  eventCopy = event;
+  detailCopy = detail;
+  replyCopy = reply;
+  if (![(PLChangeNode *)self _isInvalidRemoteChangeEvent:eventCopy reply:replyCopy])
   {
-    v10 = [(PLLibraryServicesManager *)self->_libraryServicesManager pathManager];
-    v11 = [PLClientServerTransaction beginServerTransactionWithClientTransactionFromXPCDictionary:v13 pathManager:v10 identifier:"[PLChangeNode publishRemoteChangeEvent:delayedSaveActionsDetail:reply:]"];
+    pathManager = [(PLLibraryServicesManager *)self->_libraryServicesManager pathManager];
+    v11 = [PLClientServerTransaction beginServerTransactionWithClientTransactionFromXPCDictionary:eventCopy pathManager:pathManager identifier:"[PLChangeNode publishRemoteChangeEvent:delayedSaveActionsDetail:reply:]"];
 
-    v9[2](v9, 0);
-    v12 = [(PLChangePublisher *)self->_changePublisher publishChangeEvent:v13 delayedSaveActionsDetail:v8 debugEvent:0 transaction:v11];
+    replyCopy[2](replyCopy, 0);
+    v12 = [(PLChangePublisher *)self->_changePublisher publishChangeEvent:eventCopy delayedSaveActionsDetail:detailCopy debugEvent:0 transaction:v11];
 
-    [(PLChangeNode *)self distributeRemoteContextDidSaveEvent:v13 delayedSaveActionsDetail:v8 transaction:v12];
+    [(PLChangeNode *)self distributeRemoteContextDidSaveEvent:eventCopy delayedSaveActionsDetail:detailCopy transaction:v12];
   }
 }
 
@@ -346,14 +346,14 @@ uint64_t __89__PLChangeNode_distributeRemoteContextDidSaveEvent_delayedSaveActio
     v7 = 138412802;
     v8 = v4;
     v9 = 2048;
-    v10 = self;
+    selfCopy = self;
     v11 = 2112;
     v12 = libraryUrl;
     _os_log_impl(&dword_19BF1F000, v3, OS_LOG_TYPE_DEBUG, "%@ %p invalidate %@", &v7, 0x20u);
   }
 
-  v6 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v6 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 }
 
 - (void)dealloc
@@ -367,7 +367,7 @@ uint64_t __89__PLChangeNode_distributeRemoteContextDidSaveEvent_delayedSaveActio
     *buf = 138412802;
     v8 = v4;
     v9 = 2048;
-    v10 = self;
+    selfCopy = self;
     v11 = 2112;
     v12 = libraryUrl;
     _os_log_impl(&dword_19BF1F000, v3, OS_LOG_TYPE_DEBUG, "%@ %p dealloc %@", buf, 0x20u);
@@ -378,17 +378,17 @@ uint64_t __89__PLChangeNode_distributeRemoteContextDidSaveEvent_delayedSaveActio
   [(PLChangeNode *)&v6 dealloc];
 }
 
-- (PLChangeNode)initWithLibraryURL:(id)a3 changeMerger:(id)a4 changePublisher:(id)a5 libraryServicesManager:(id)a6
+- (PLChangeNode)initWithLibraryURL:(id)l changeMerger:(id)merger changePublisher:(id)publisher libraryServicesManager:(id)manager
 {
   v42 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  lCopy = l;
+  mergerCopy = merger;
+  publisherCopy = publisher;
+  managerCopy = manager;
   if (PLIsAssetsdProxyService())
   {
-    v33 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v33 handleFailureInMethod:a2 object:self file:@"PLChangeNode.m" lineNumber:71 description:@"PLChangeNode is disabled for assetsd proxy service"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLChangeNode.m" lineNumber:71 description:@"PLChangeNode is disabled for assetsd proxy service"];
   }
 
   v35.receiver = self;
@@ -396,12 +396,12 @@ uint64_t __89__PLChangeNode_distributeRemoteContextDidSaveEvent_delayedSaveActio
   v15 = [(PLChangeNode *)&v35 init];
   if (v15)
   {
-    v34 = v13;
-    v16 = v12;
+    v34 = publisherCopy;
+    v16 = mergerCopy;
     v17 = objc_alloc_init(MEMORY[0x1E696AFB0]);
     [v17 getUUIDBytes:v15->_nodeUUID];
-    v18 = [v17 UUIDString];
-    v19 = [(PLChangeNode *)v18 substringToIndex:8];
+    uUIDString = [v17 UUIDString];
+    v19 = [(PLChangeNode *)uUIDString substringToIndex:8];
     v20 = [v19 copy];
     nodeUUIDShortString = v15->_nodeUUIDShortString;
     v15->_nodeUUIDShortString = v20;
@@ -413,13 +413,13 @@ uint64_t __89__PLChangeNode_distributeRemoteContextDidSaveEvent_delayedSaveActio
       *buf = 138412802;
       v37 = v23;
       v38 = 2112;
-      v39 = v18;
+      v39 = uUIDString;
       v40 = 2112;
-      v41 = v11;
+      v41 = lCopy;
       _os_log_impl(&dword_19BF1F000, v22, OS_LOG_TYPE_DEFAULT, "PLChangeNode [%@]: Created change node with UUID %@ for libraryURL: %@", buf, 0x20u);
     }
 
-    v24 = [v11 copy];
+    v24 = [lCopy copy];
     libraryUrl = v15->_libraryUrl;
     v15->_libraryUrl = v24;
 
@@ -427,19 +427,19 @@ uint64_t __89__PLChangeNode_distributeRemoteContextDidSaveEvent_delayedSaveActio
     updatedOrderKeys = v15->_updatedOrderKeys;
     v15->_updatedOrderKeys = v26;
 
-    objc_storeStrong(&v15->_changeMerger, a4);
-    objc_storeStrong(&v15->_changePublisher, a5);
-    if (v14)
+    objc_storeStrong(&v15->_changeMerger, merger);
+    objc_storeStrong(&v15->_changePublisher, publisher);
+    if (managerCopy)
     {
-      v28 = [[PLDelayedSaveActionsProcessor alloc] initWithLibraryServicesManager:v14];
+      v28 = [[PLDelayedSaveActionsProcessor alloc] initWithLibraryServicesManager:managerCopy];
       delayedSaveActionsProcessor = v15->_delayedSaveActionsProcessor;
       v15->_delayedSaveActionsProcessor = v28;
     }
 
-    objc_storeStrong(&v15->_libraryServicesManager, a6);
+    objc_storeStrong(&v15->_libraryServicesManager, manager);
 
-    v12 = v16;
-    v13 = v34;
+    mergerCopy = v16;
+    publisherCopy = v34;
   }
 
   v30 = PLPhotosObjectLifecycleGetLog();
@@ -451,7 +451,7 @@ uint64_t __89__PLChangeNode_distributeRemoteContextDidSaveEvent_delayedSaveActio
     v38 = 2048;
     v39 = v15;
     v40 = 2112;
-    v41 = v11;
+    v41 = lCopy;
     _os_log_impl(&dword_19BF1F000, v30, OS_LOG_TYPE_DEBUG, "%@ %p initWithLibraryURL:%@", buf, 0x20u);
   }
 

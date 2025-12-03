@@ -1,46 +1,46 @@
 @interface NWURLSessionDownloadResumeInfo
-+ (id)infoWithResumeData:(id)a3;
-+ (id)infoWithTask:(id)a3;
-- (NWURLSessionDownloadResumeInfo)initWithCoder:(id)a3;
++ (id)infoWithResumeData:(id)data;
++ (id)infoWithTask:(id)task;
+- (NWURLSessionDownloadResumeInfo)initWithCoder:(id)coder;
 - (id)serialize;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NWURLSessionDownloadResumeInfo
 
-- (NWURLSessionDownloadResumeInfo)initWithCoder:(id)a3
+- (NWURLSessionDownloadResumeInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = NWURLSessionDownloadResumeInfo;
-  v5 = [(NWURLSessionResumeInfo *)&v9 initWithCoder:v4];
+  v5 = [(NWURLSessionResumeInfo *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"fileURL"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"fileURL"];
     [(NWURLSessionDownloadResumeInfo *)v5 setFileURL:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"tempFileName"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"tempFileName"];
     [(NWURLSessionDownloadResumeInfo *)v5 setTempFileName:v7];
 
-    -[NWURLSessionDownloadResumeInfo set_keepDownloadTaskFile:](v5, "set_keepDownloadTaskFile:", [v4 decodeBoolForKey:@"_keepDownloadTaskFile"]);
+    -[NWURLSessionDownloadResumeInfo set_keepDownloadTaskFile:](v5, "set_keepDownloadTaskFile:", [coderCopy decodeBoolForKey:@"_keepDownloadTaskFile"]);
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = NWURLSessionDownloadResumeInfo;
-  v4 = a3;
-  [(NWURLSessionResumeInfo *)&v7 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(NWURLSessionResumeInfo *)&v7 encodeWithCoder:coderCopy];
   v5 = [(NWURLSessionDownloadResumeInfo *)self fileURL:v7.receiver];
-  [v4 encodeObject:v5 forKey:@"fileURL"];
+  [coderCopy encodeObject:v5 forKey:@"fileURL"];
 
-  v6 = [(NWURLSessionDownloadResumeInfo *)self tempFileName];
-  [v4 encodeObject:v6 forKey:@"tempFileName"];
+  tempFileName = [(NWURLSessionDownloadResumeInfo *)self tempFileName];
+  [coderCopy encodeObject:tempFileName forKey:@"tempFileName"];
 
-  [v4 encodeBool:-[NWURLSessionDownloadResumeInfo _keepDownloadTaskFile](self forKey:{"_keepDownloadTaskFile"), @"_keepDownloadTaskFile"}];
+  [coderCopy encodeBool:-[NWURLSessionDownloadResumeInfo _keepDownloadTaskFile](self forKey:{"_keepDownloadTaskFile"), @"_keepDownloadTaskFile"}];
 }
 
 - (id)serialize
@@ -70,31 +70,31 @@
     goto LABEL_20;
   }
 
-  v6 = [v5 mutableBytes];
+  mutableBytes = [v5 mutableBytes];
   if ([v5 length])
   {
-    *v6 ^= 0x54u;
+    *mutableBytes ^= 0x54u;
     if ([v5 length] >= 2)
     {
-      v6[1] ^= 0x65u;
+      mutableBytes[1] ^= 0x65u;
       if ([v5 length] >= 3)
       {
-        v6[2] ^= 0x64u;
+        mutableBytes[2] ^= 0x64u;
         if ([v5 length] >= 4)
         {
-          v6[3] ^= 0x4Cu;
+          mutableBytes[3] ^= 0x4Cu;
           if ([v5 length] >= 5)
           {
-            v6[4] ^= 0x61u;
+            mutableBytes[4] ^= 0x61u;
             if ([v5 length] >= 6)
             {
-              v6[5] ^= 0x73u;
+              mutableBytes[5] ^= 0x73u;
               if ([v5 length] >= 7)
               {
-                v6[6] ^= 0x73u;
+                mutableBytes[6] ^= 0x73u;
                 if ([v5 length] >= 8)
                 {
-                  v6[7] ^= 0x6Fu;
+                  mutableBytes[7] ^= 0x6Fu;
                 }
               }
             }
@@ -113,28 +113,28 @@
   if (isWebKitNetworking_result)
   {
     v8 = MEMORY[0x1E695DF20];
-    v9 = [(NWURLSessionDownloadResumeInfo *)self fileURL];
-    v10 = [v9 path];
-    v11 = [v8 dictionaryWithObjectsAndKeys:{v7, @"data", v10, @"NSURLSessionResumeInfoLocalPath", 0}];
+    fileURL = [(NWURLSessionDownloadResumeInfo *)self fileURL];
+    path = [fileURL path];
+    v11 = [v8 dictionaryWithObjectsAndKeys:{v7, @"data", path, @"NSURLSessionResumeInfoLocalPath", 0}];
 
     v12 = [objc_alloc(MEMORY[0x1E696ACC8]) initRequiringSecureCoding:1];
     [v12 encodeObject:v11 forKey:@"NSKeyedArchiveRootObjectKey"];
-    v13 = [v12 encodedData];
+    encodedData = [v12 encodedData];
 
-    v7 = v13;
+    v7 = encodedData;
 LABEL_20:
   }
 
   return v7;
 }
 
-+ (id)infoWithResumeData:(id)a3
++ (id)infoWithResumeData:(id)data
 {
   v30 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (v3)
+  dataCopy = data;
+  if (dataCopy)
   {
-    v4 = v3;
+    v4 = dataCopy;
     if (isWebKitNetworking_onceToken != -1)
     {
       dispatch_once(&isWebKitNetworking_onceToken, &__block_literal_global_262);
@@ -214,31 +214,31 @@ LABEL_39:
           v4 = v21;
 LABEL_15:
           v10 = [v4 mutableCopy];
-          v17 = [v10 mutableBytes];
+          mutableBytes = [v10 mutableBytes];
           if ([v10 length])
           {
-            *v17 ^= 0x54u;
+            *mutableBytes ^= 0x54u;
             if ([v10 length]>= 2)
             {
-              v17[1] ^= 0x65u;
+              mutableBytes[1] ^= 0x65u;
               if ([v10 length]>= 3)
               {
-                v17[2] ^= 0x64u;
+                mutableBytes[2] ^= 0x64u;
                 if ([v10 length]>= 4)
                 {
-                  v17[3] ^= 0x4Cu;
+                  mutableBytes[3] ^= 0x4Cu;
                   if ([v10 length]>= 5)
                   {
-                    v17[4] ^= 0x61u;
+                    mutableBytes[4] ^= 0x61u;
                     if ([v10 length]>= 6)
                     {
-                      v17[5] ^= 0x73u;
+                      mutableBytes[5] ^= 0x73u;
                       if ([v10 length]>= 7)
                       {
-                        v17[6] ^= 0x73u;
+                        mutableBytes[6] ^= 0x73u;
                         if ([v10 length]>= 8)
                         {
-                          v17[7] ^= 0x6Fu;
+                          mutableBytes[7] ^= 0x6Fu;
                         }
                       }
                     }
@@ -346,14 +346,14 @@ LABEL_59:
   return v16;
 }
 
-+ (id)infoWithTask:(id)a3
++ (id)infoWithTask:(id)task
 {
-  v3 = a3;
-  v4 = [(NWURLSessionResumeInfo *)[NWURLSessionDownloadResumeInfo alloc] initWithTask:v3];
-  [v4 set_keepDownloadTaskFile:{objc_msgSend(v3, "_keepDownloadTaskFile")}];
-  if (v3)
+  taskCopy = task;
+  v4 = [(NWURLSessionResumeInfo *)[NWURLSessionDownloadResumeInfo alloc] initWithTask:taskCopy];
+  [v4 set_keepDownloadTaskFile:{objc_msgSend(taskCopy, "_keepDownloadTaskFile")}];
+  if (taskCopy)
   {
-    v5 = v3[55];
+    v5 = taskCopy[55];
   }
 
   else

@@ -1,6 +1,6 @@
 @interface FormatSystemFactory
 - (_TtC8NewsFeed19FormatSystemFactory)init;
-- (id)createFeedConfigurationForViewController:(id)a3;
+- (id)createFeedConfigurationForViewController:(id)controller;
 @end
 
 @implementation FormatSystemFactory
@@ -12,11 +12,11 @@
   return result;
 }
 
-- (id)createFeedConfigurationForViewController:(id)a3
+- (id)createFeedConfigurationForViewController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
-  v6 = FormatSystemFactory.createFeedConfiguration(viewController:)(v4);
+  controllerCopy = controller;
+  selfCopy = self;
+  v6 = FormatSystemFactory.createFeedConfiguration(viewController:)(controllerCopy);
 
   return v6;
 }

@@ -1,16 +1,16 @@
 @interface LSATTrackingEnforcementManager
-+ (BOOL)shouldEnforceTrackingWithReasonCode:(int64_t *)a3;
++ (BOOL)shouldEnforceTrackingWithReasonCode:(int64_t *)code;
 @end
 
 @implementation LSATTrackingEnforcementManager
 
-+ (BOOL)shouldEnforceTrackingWithReasonCode:(int64_t *)a3
++ (BOOL)shouldEnforceTrackingWithReasonCode:(int64_t *)code
 {
   if (getATTrackingEnforcementManagerClass())
   {
     ATTrackingEnforcementManagerClass = getATTrackingEnforcementManagerClass();
 
-    return [(objc_class *)ATTrackingEnforcementManagerClass shouldEnforceTrackingWithReasonCode:a3];
+    return [(objc_class *)ATTrackingEnforcementManagerClass shouldEnforceTrackingWithReasonCode:code];
   }
 
   else
@@ -21,9 +21,9 @@
       [LSATTrackingEnforcementManager shouldEnforceTrackingWithReasonCode:v6];
     }
 
-    if (a3)
+    if (code)
     {
-      *a3 = 0;
+      *code = 0;
     }
 
     return 1;

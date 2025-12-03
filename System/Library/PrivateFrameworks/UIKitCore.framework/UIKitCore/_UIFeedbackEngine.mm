@@ -1,6 +1,6 @@
 @interface _UIFeedbackEngine
-+ (BOOL)_supportsPlayingFeedback:(id)a3;
-+ (id)engineForFeedback:(id)a3;
++ (BOOL)_supportsPlayingFeedback:(id)feedback;
++ (id)engineForFeedback:(id)feedback;
 + (id)sharedEngine;
 - (NSString)_stats_key;
 - (_UIFeedbackEngine)init;
@@ -10,68 +10,68 @@
 - (id)_prewarmCountStatistics;
 - (id)_prewarmDurationStatistics;
 - (id)description;
-- (void)_activate:(BOOL)a3 andPerformWhenRunning:(id)a4;
-- (void)_applicationDidBecomeActive:(id)a3;
-- (void)_applicationDidResume:(id)a3;
-- (void)_applicationWillResignActive:(id)a3;
-- (void)_applicationWillSuspend:(id)a3;
+- (void)_activate:(BOOL)_activate andPerformWhenRunning:(id)running;
+- (void)_applicationDidBecomeActive:(id)active;
+- (void)_applicationDidResume:(id)resume;
+- (void)_applicationWillResignActive:(id)active;
+- (void)_applicationWillSuspend:(id)suspend;
 - (void)_cooldown;
 - (void)_deactivate;
-- (void)_dequeueReusableFeedbackPlayerWithCompletionBlock:(id)a3;
-- (void)_hostDidEnterBackground:(id)a3;
-- (void)_hostWillEnterForeground:(id)a3;
-- (void)_internal_activate:(BOOL)a3 andPerformWhenRunning:(id)a4;
+- (void)_dequeueReusableFeedbackPlayerWithCompletionBlock:(id)block;
+- (void)_hostDidEnterBackground:(id)background;
+- (void)_hostWillEnterForeground:(id)foreground;
+- (void)_internal_activate:(BOOL)_internal_activate andPerformWhenRunning:(id)running;
 - (void)_internal_activateEngine;
-- (void)_internal_activateUnderlyingPlayerWithCompletion:(id)a3;
+- (void)_internal_activateUnderlyingPlayerWithCompletion:(id)completion;
 - (void)_internal_cooldown;
 - (void)_internal_cooldownEngineIfPossible;
-- (void)_internal_cooldownUnderlyingPlayerIfPossibleWithCompletion:(id)a3;
+- (void)_internal_cooldownUnderlyingPlayerIfPossibleWithCompletion:(id)completion;
 - (void)_internal_deactivate;
 - (void)_internal_deactivateEngineIfPossible;
-- (void)_internal_dequeueReusableFeedbackPlayerWithCompletionBlock:(id)a3;
-- (void)_internal_performAtState:(int64_t)a3 block:(id)a4;
-- (void)_internal_playFeedbackData:(id)a3 atTime:(double)a4 feedback:(id)a5 effectiveFeedbackType:(unint64_t)a6 existingPlayer:(id)a7 withCompletionBlock:(id)a8;
-- (void)_internal_prewarm:(BOOL)a3 andPerformWhenPrewarmed:(id)a4;
+- (void)_internal_dequeueReusableFeedbackPlayerWithCompletionBlock:(id)block;
+- (void)_internal_performAtState:(int64_t)state block:(id)block;
+- (void)_internal_playFeedbackData:(id)data atTime:(double)time feedback:(id)feedback effectiveFeedbackType:(unint64_t)type existingPlayer:(id)player withCompletionBlock:(id)block;
+- (void)_internal_prewarm:(BOOL)_internal_prewarm andPerformWhenPrewarmed:(id)prewarmed;
 - (void)_internal_prewarmEngine;
-- (void)_internal_prewarmUnderlyingPlayerWithCompletion:(id)a3;
-- (void)_internal_serviceBlocksForState:(int64_t)a3 withSuccess:(BOOL)a4;
-- (void)_internal_setSuspended:(BOOL)a3;
+- (void)_internal_prewarmUnderlyingPlayerWithCompletion:(id)completion;
+- (void)_internal_serviceBlocksForState:(int64_t)state withSuccess:(BOOL)success;
+- (void)_internal_setSuspended:(BOOL)suspended;
 - (void)_internal_setupBackgroundTask;
-- (void)_internal_startWarmingFeedbacks:(id)a3;
-- (void)_internal_stopWarmingFeedbacks:(id)a3;
+- (void)_internal_startWarmingFeedbacks:(id)feedbacks;
+- (void)_internal_stopWarmingFeedbacks:(id)feedbacks;
 - (void)_internal_teardownBackgroundTask;
-- (void)_internal_teardownUnderlyingPlayerIfPossibleWithCompletion:(id)a3;
+- (void)_internal_teardownUnderlyingPlayerIfPossibleWithCompletion:(id)completion;
 - (void)_internal_updateSuspension;
-- (void)_internal_willCancelFeedback:(id)a3;
-- (void)_internal_willPlayFeedback:(id)a3 atTime:(double)a4;
-- (void)_playFeedback:(id)a3 atTime:(double)a4 withCompletionBlock:(id)a5;
-- (void)_prewarm:(BOOL)a3 andPerformWhenPrewarmed:(id)a4;
-- (void)_remoteViewControllerWillDisconnect:(id)a3;
+- (void)_internal_willCancelFeedback:(id)feedback;
+- (void)_internal_willPlayFeedback:(id)feedback atTime:(double)time;
+- (void)_playFeedback:(id)feedback atTime:(double)time withCompletionBlock:(id)block;
+- (void)_prewarm:(BOOL)_prewarm andPerformWhenPrewarmed:(id)prewarmed;
+- (void)_remoteViewControllerWillDisconnect:(id)disconnect;
 - (void)_sb_stuckInNonInactiveState;
-- (void)_setState:(int64_t)a3;
-- (void)_setSuspended:(BOOL)a3;
-- (void)_startWarmingFeedbacks:(id)a3;
+- (void)_setState:(int64_t)state;
+- (void)_setSuspended:(BOOL)suspended;
+- (void)_startWarmingFeedbacks:(id)feedbacks;
 - (void)_stats_outOfChannels;
-- (void)_stats_stateDidChangeFrom:(int64_t)a3 to:(int64_t)a4;
-- (void)_stopWarmingFeedbacks:(id)a3;
+- (void)_stats_stateDidChangeFrom:(int64_t)from to:(int64_t)to;
+- (void)_stopWarmingFeedbacks:(id)feedbacks;
 - (void)_suspendEngineNow;
-- (void)runWhenReady:(id)a3;
+- (void)runWhenReady:(id)ready;
 @end
 
 @implementation _UIFeedbackEngine
 
 - (id)_activationCountStatistics
 {
-  v2 = [(_UIFeedbackEngine *)self _statsSuffix];
-  v3 = [_UIStatistics feedbackEngineActivationCountWithSuffix:v2];
+  _statsSuffix = [(_UIFeedbackEngine *)self _statsSuffix];
+  v3 = [_UIStatistics feedbackEngineActivationCountWithSuffix:_statsSuffix];
 
   return v3;
 }
 
 - (id)_activationDurationStatistics
 {
-  v2 = [(_UIFeedbackEngine *)self _statsSuffix];
-  v3 = [_UIStatistics feedbackEngineActivationDurationWithSuffix:v2];
+  _statsSuffix = [(_UIFeedbackEngine *)self _statsSuffix];
+  v3 = [_UIStatistics feedbackEngineActivationDurationWithSuffix:_statsSuffix];
 
   return v3;
 }
@@ -88,14 +88,14 @@
   playerDequeueBlocks = v2->_playerDequeueBlocks;
   v2->_playerDequeueBlocks = v3;
 
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   if ((_UIApplicationIsExtension() & 1) != 0 || _UIApplicationMayVendViews())
   {
-    [v5 addObserver:v2 selector:sel__hostDidEnterBackground_ name:0x1EFBB47B0 object:0];
-    [v5 addObserver:v2 selector:sel__hostWillEnterForeground_ name:0x1EFBB47D0 object:0];
+    [defaultCenter addObserver:v2 selector:sel__hostDidEnterBackground_ name:0x1EFBB47B0 object:0];
+    [defaultCenter addObserver:v2 selector:sel__hostWillEnterForeground_ name:0x1EFBB47D0 object:0];
     v6 = sel__remoteViewControllerWillDisconnect_;
     v7 = @"_UIViewServiceRemoteViewControllerWillDisconnectNotification";
-    v8 = v5;
+    v8 = defaultCenter;
     v9 = v2;
     v10 = 0;
   }
@@ -131,15 +131,15 @@
       }
     }
 
-    [v5 addObserver:v2 selector:sel__applicationWillResignActive_ name:@"UIApplicationWillResignActiveNotification" object:UIApp];
-    [v5 addObserver:v2 selector:sel__applicationWillSuspend_ name:@"UIApplicationSuspendedNotification" object:UIApp];
-    [v5 addObserver:v2 selector:sel__applicationWillSuspend_ name:@"UIApplicationSuspendedEventsOnlyNotification" object:UIApp];
-    [v5 addObserver:v2 selector:sel__applicationDidResume_ name:@"UIApplicationResumedNotification" object:UIApp];
-    [v5 addObserver:v2 selector:sel__applicationDidResume_ name:@"UIApplicationResumedEventsOnlyNotification" object:UIApp];
+    [defaultCenter addObserver:v2 selector:sel__applicationWillResignActive_ name:@"UIApplicationWillResignActiveNotification" object:UIApp];
+    [defaultCenter addObserver:v2 selector:sel__applicationWillSuspend_ name:@"UIApplicationSuspendedNotification" object:UIApp];
+    [defaultCenter addObserver:v2 selector:sel__applicationWillSuspend_ name:@"UIApplicationSuspendedEventsOnlyNotification" object:UIApp];
+    [defaultCenter addObserver:v2 selector:sel__applicationDidResume_ name:@"UIApplicationResumedNotification" object:UIApp];
+    [defaultCenter addObserver:v2 selector:sel__applicationDidResume_ name:@"UIApplicationResumedEventsOnlyNotification" object:UIApp];
     v6 = sel__applicationDidBecomeActive_;
     v7 = @"UIApplicationDidBecomeActiveNotification";
     v10 = UIApp;
-    v8 = v5;
+    v8 = defaultCenter;
     v9 = v2;
   }
 
@@ -159,28 +159,28 @@
   [objc_opt_class() _internalQueue];
 
   has_internal_diagnostics = os_variant_has_internal_diagnostics();
-  v4 = [(_UIFeedbackEngine *)self _state];
+  _state = [(_UIFeedbackEngine *)self _state];
   if (has_internal_diagnostics)
   {
-    if (v4 == 3)
+    if (_state == 3)
     {
       v10 = __UIFaultDebugAssertLog();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
       {
         *buf = 138412290;
-        v14 = self;
+        selfCopy2 = self;
         _os_log_fault_impl(&dword_188A29000, v10, OS_LOG_TYPE_FAULT, "Attempt to activate an activating engine (%@)", buf, 0xCu);
       }
     }
   }
 
-  else if (v4 == 3)
+  else if (_state == 3)
   {
     v11 = *(__UILogGetCategoryCachedImpl("Assert", &qword_1ED499E80) + 8);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v14 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_188A29000, v11, OS_LOG_TYPE_ERROR, "Attempt to activate an activating engine (%@)", buf, 0xCu);
     }
   }
@@ -193,12 +193,12 @@
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
       {
         v6 = MEMORY[0x1E696AEC0];
-        v7 = self;
+        selfCopy3 = self;
         v8 = v5;
-        v9 = [v6 stringWithFormat:@"<%s: %p>", object_getClassName(v7), v7];
+        selfCopy3 = [v6 stringWithFormat:@"<%s: %p>", object_getClassName(selfCopy3), selfCopy3];
 
         *buf = 138412290;
-        v14 = v9;
+        selfCopy2 = selfCopy3;
         _os_log_impl(&dword_188A29000, v8, OS_LOG_TYPE_DEFAULT, "activating engine %@", buf, 0xCu);
       }
     }
@@ -248,10 +248,10 @@ LABEL_14:
     return;
   }
 
-  v3 = [(_UIFeedbackEngine *)self _state];
-  if (v3 <= 5)
+  _state = [(_UIFeedbackEngine *)self _state];
+  if (_state <= 5)
   {
-    self->_suspensionState = qword_18A67A008[v3];
+    self->_suspensionState = qword_18A67A008[_state];
   }
 
   [(_UIFeedbackEngine *)self _internal_deactivateEngineIfPossible];
@@ -268,24 +268,24 @@ LABEL_14:
   v14 = *MEMORY[0x1E69E9840];
   [objc_opt_class() _internalQueue];
 
-  v3 = [(_UIFeedbackEngine *)self _backgroundTaskIdentifier];
-  if (v3)
+  _backgroundTaskIdentifier = [(_UIFeedbackEngine *)self _backgroundTaskIdentifier];
+  if (_backgroundTaskIdentifier)
   {
-    v4 = v3;
+    v4 = _backgroundTaskIdentifier;
     if ((_UIFeedbackLoggingDisabled & 1) == 0)
     {
       v5 = *(__UILogGetCategoryCachedImpl("Feedback", &_internal_teardownBackgroundTask___s_category) + 8);
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
       {
         v6 = MEMORY[0x1E696AEC0];
-        v7 = self;
+        selfCopy = self;
         v8 = v5;
-        v9 = [v6 stringWithFormat:@"<%s: %p>", object_getClassName(v7), v7];
+        selfCopy = [v6 stringWithFormat:@"<%s: %p>", object_getClassName(selfCopy), selfCopy];
 
         *buf = 134218242;
         v11 = v4;
         v12 = 2112;
-        v13 = v9;
+        v13 = selfCopy;
         _os_log_impl(&dword_188A29000, v8, OS_LOG_TYPE_DEFAULT, "ended background task with ID %ld for engine %@", buf, 0x16u);
       }
     }
@@ -301,28 +301,28 @@ LABEL_14:
   [objc_opt_class() _internalQueue];
 
   has_internal_diagnostics = os_variant_has_internal_diagnostics();
-  v4 = [(_UIFeedbackEngine *)self _state];
+  _state = [(_UIFeedbackEngine *)self _state];
   if (has_internal_diagnostics)
   {
-    if (v4 == 1)
+    if (_state == 1)
     {
       v5 = __UIFaultDebugAssertLog();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))
       {
         *buf = 138412290;
-        v9 = self;
+        selfCopy2 = self;
         _os_log_fault_impl(&dword_188A29000, v5, OS_LOG_TYPE_FAULT, "Attempt to prewarm a prewarming engine (%@)", buf, 0xCu);
       }
     }
   }
 
-  else if (v4 == 1)
+  else if (_state == 1)
   {
     v6 = *(__UILogGetCategoryCachedImpl("Assert", &_internal_prewarmEngine___s_category) + 8);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v9 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_188A29000, v6, OS_LOG_TYPE_ERROR, "Attempt to prewarm a prewarming engine (%@)", buf, 0xCu);
     }
   }
@@ -345,16 +345,16 @@ LABEL_14:
 
 - (id)_prewarmDurationStatistics
 {
-  v2 = [(_UIFeedbackEngine *)self _statsSuffix];
-  v3 = [_UIStatistics feedbackEnginePrewarmDurationWithSuffix:v2];
+  _statsSuffix = [(_UIFeedbackEngine *)self _statsSuffix];
+  v3 = [_UIStatistics feedbackEnginePrewarmDurationWithSuffix:_statsSuffix];
 
   return v3;
 }
 
 - (id)_prewarmCountStatistics
 {
-  v2 = [(_UIFeedbackEngine *)self _statsSuffix];
-  v3 = [_UIStatistics feedbackEnginePrewarmCountWithSuffix:v2];
+  _statsSuffix = [(_UIFeedbackEngine *)self _statsSuffix];
+  v3 = [_UIStatistics feedbackEnginePrewarmCountWithSuffix:_statsSuffix];
 
   return v3;
 }
@@ -370,13 +370,13 @@ LABEL_14:
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       v5 = MEMORY[0x1E696AEC0];
-      v6 = self;
+      selfCopy = self;
       v7 = v4;
-      v8 = [v5 stringWithFormat:@"<%s: %p>", object_getClassName(v6), v6];
+      selfCopy = [v5 stringWithFormat:@"<%s: %p>", object_getClassName(selfCopy), selfCopy];
 
-      prewarmCount = v6->_prewarmCount;
+      prewarmCount = selfCopy->_prewarmCount;
       *buf = 138412802;
-      v17 = v8;
+      v17 = selfCopy;
       v18 = 2048;
       v19 = prewarmCount;
       v20 = 2048;
@@ -388,11 +388,11 @@ LABEL_14:
   v10 = self->_prewarmCount;
   if (v10 <= 0)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v13 = objc_opt_class();
     v14 = NSStringFromClass(v13);
     v15 = NSStringFromSelector(a2);
-    [v12 handleFailureInMethod:a2 object:self file:@"_UIFeedbackEngine.m" lineNumber:807 description:{@"ERROR: -[%@ %@] called more times than the feedback engine was pre-warmed", v14, v15}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIFeedbackEngine.m" lineNumber:807 description:{@"ERROR: -[%@ %@] called more times than the feedback engine was pre-warmed", v14, v15}];
 
     v10 = self->_prewarmCount;
   }
@@ -427,12 +427,12 @@ LABEL_14:
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
       v4 = MEMORY[0x1E696AEC0];
-      v5 = self;
+      selfCopy = self;
       v6 = v3;
-      v7 = [v4 stringWithFormat:@"<%s: %p>", object_getClassName(v5), v5];
+      selfCopy = [v4 stringWithFormat:@"<%s: %p>", object_getClassName(selfCopy), selfCopy];
 
       *buf = 138412290;
-      v11 = v7;
+      v11 = selfCopy;
       _os_log_impl(&dword_188A29000, v6, OS_LOG_TYPE_DEFAULT, "_internal_cooldownEngineIfPossible %@", buf, 0xCu);
     }
   }
@@ -460,113 +460,113 @@ LABEL_14:
 
 - (void)_cooldown
 {
-  v3 = [objc_opt_class() _internalQueue];
+  _internalQueue = [objc_opt_class() _internalQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __30___UIFeedbackEngine__cooldown__block_invoke;
   block[3] = &unk_1E70F3590;
   block[4] = self;
-  v4 = v3;
-  if (!v3)
+  v4 = _internalQueue;
+  if (!_internalQueue)
   {
     v4 = MEMORY[0x1E69E96A0];
     v5 = MEMORY[0x1E69E96A0];
   }
 
-  v6 = v3;
+  v6 = _internalQueue;
   dispatch_async(v4, block);
 }
 
 - (id)_outOfChannelsCountStatistics
 {
-  v2 = [(_UIFeedbackEngine *)self _statsSuffix];
-  v3 = [_UIStatistics feedbackEngineOutOfChannelsCountWithSuffix:v2];
+  _statsSuffix = [(_UIFeedbackEngine *)self _statsSuffix];
+  v3 = [_UIStatistics feedbackEngineOutOfChannelsCountWithSuffix:_statsSuffix];
 
   return v3;
 }
 
-- (void)_stats_stateDidChangeFrom:(int64_t)a3 to:(int64_t)a4
+- (void)_stats_stateDidChangeFrom:(int64_t)from to:(int64_t)to
 {
-  if (a4 == 2)
+  if (to == 2)
   {
-    v8 = [(_UIFeedbackEngine *)self _prewarmCountStatistics];
-    [v8 incrementValueBy:1];
+    _prewarmCountStatistics = [(_UIFeedbackEngine *)self _prewarmCountStatistics];
+    [_prewarmCountStatistics incrementValueBy:1];
 
-    v7 = [(_UIFeedbackEngine *)self _prewarmDurationStatistics];
+    _prewarmDurationStatistics = [(_UIFeedbackEngine *)self _prewarmDurationStatistics];
   }
 
   else
   {
-    if (a4 != 4)
+    if (to != 4)
     {
       goto LABEL_6;
     }
 
-    v6 = [(_UIFeedbackEngine *)self _activationCountStatistics];
-    [v6 incrementValueBy:1];
+    _activationCountStatistics = [(_UIFeedbackEngine *)self _activationCountStatistics];
+    [_activationCountStatistics incrementValueBy:1];
 
-    v7 = [(_UIFeedbackEngine *)self _activationDurationStatistics];
+    _prewarmDurationStatistics = [(_UIFeedbackEngine *)self _activationDurationStatistics];
   }
 
-  v9 = v7;
-  [v7 startTimingForObject:self];
+  v9 = _prewarmDurationStatistics;
+  [_prewarmDurationStatistics startTimingForObject:self];
 
 LABEL_6:
-  if (a3 == 2)
+  if (from == 2)
   {
-    v10 = [(_UIFeedbackEngine *)self _prewarmDurationStatistics];
+    _prewarmDurationStatistics2 = [(_UIFeedbackEngine *)self _prewarmDurationStatistics];
   }
 
   else
   {
-    if (a3 != 4)
+    if (from != 4)
     {
       return;
     }
 
-    v10 = [(_UIFeedbackEngine *)self _activationDurationStatistics];
+    _prewarmDurationStatistics2 = [(_UIFeedbackEngine *)self _activationDurationStatistics];
   }
 
-  v11 = v10;
-  [v10 recordTimingForObject:self];
+  v11 = _prewarmDurationStatistics2;
+  [_prewarmDurationStatistics2 recordTimingForObject:self];
 }
 
 - (void)_stats_outOfChannels
 {
-  v2 = [(_UIFeedbackEngine *)self _outOfChannelsCountStatistics];
-  [v2 incrementValueBy:1];
+  _outOfChannelsCountStatistics = [(_UIFeedbackEngine *)self _outOfChannelsCountStatistics];
+  [_outOfChannelsCountStatistics incrementValueBy:1];
 }
 
 + (id)sharedEngine
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"_UIFeedbackEngine.m" lineNumber:176 description:@"Should use one of the subclasses"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"_UIFeedbackEngine.m" lineNumber:176 description:@"Should use one of the subclasses"];
 
   return 0;
 }
 
-+ (id)engineForFeedback:(id)a3
++ (id)engineForFeedback:(id)feedback
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  feedbackCopy = feedback;
   if (qword_1ED499E60 != -1)
   {
     dispatch_once(&qword_1ED499E60, &__block_literal_global_213);
   }
 
-  v4 = [v3 _individualFeedbacks];
+  _individualFeedbacks = [feedbackCopy _individualFeedbacks];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v5 = qword_1ED499E58;
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
-  if (v6)
+  sharedEngine = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  if (sharedEngine)
   {
     v7 = *v12;
     while (2)
     {
-      for (i = 0; i != v6; i = i + 1)
+      for (i = 0; i != sharedEngine; i = i + 1)
       {
         if (*v12 != v7)
         {
@@ -574,15 +574,15 @@ LABEL_6:
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
-        if (_engineClassSupportsAllIndividualFeedbacks(v9, v4))
+        if (_engineClassSupportsAllIndividualFeedbacks(v9, _individualFeedbacks))
         {
-          v6 = [v9 sharedEngine];
+          sharedEngine = [v9 sharedEngine];
           goto LABEL_13;
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
-      if (v6)
+      sharedEngine = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      if (sharedEngine)
       {
         continue;
       }
@@ -593,15 +593,15 @@ LABEL_6:
 
 LABEL_13:
 
-  return v6;
+  return sharedEngine;
 }
 
-+ (BOOL)_supportsPlayingFeedback:(id)a3
++ (BOOL)_supportsPlayingFeedback:(id)feedback
 {
-  v4 = [a3 _individualFeedbacks];
-  LOBYTE(a1) = _engineClassSupportsAllIndividualFeedbacks(a1, v4);
+  _individualFeedbacks = [feedback _individualFeedbacks];
+  LOBYTE(self) = _engineClassSupportsAllIndividualFeedbacks(self, _individualFeedbacks);
 
-  return a1;
+  return self;
 }
 
 - (id)description
@@ -620,12 +620,12 @@ LABEL_13:
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v13 count:3];
   v10 = [(UIDescriptionBuilder *)v3 appendKeys:v9, v13, v14];
 
-  v11 = [(UIDescriptionBuilder *)v3 string];
+  string = [(UIDescriptionBuilder *)v3 string];
 
-  return v11;
+  return string;
 }
 
-- (void)_setSuspended:(BOOL)a3
+- (void)_setSuspended:(BOOL)suspended
 {
   if (pthread_main_np() == 1)
   {
@@ -633,21 +633,21 @@ LABEL_13:
     suspensionTimer = self->_suspensionTimer;
     self->_suspensionTimer = 0;
 
-    v6 = [objc_opt_class() _internalQueue];
+    _internalQueue = [objc_opt_class() _internalQueue];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __35___UIFeedbackEngine__setSuspended___block_invoke;
     v11[3] = &unk_1E70F35E0;
     v11[4] = self;
-    v12 = a3;
-    v7 = v6;
-    if (!v6)
+    suspendedCopy = suspended;
+    v7 = _internalQueue;
+    if (!_internalQueue)
     {
       v7 = MEMORY[0x1E69E96A0];
       v8 = MEMORY[0x1E69E96A0];
     }
 
-    v9 = v6;
+    v9 = _internalQueue;
     dispatch_async(v7, v11);
   }
 
@@ -662,13 +662,13 @@ LABEL_13:
   }
 }
 
-- (void)_internal_setSuspended:(BOOL)a3
+- (void)_internal_setSuspended:(BOOL)suspended
 {
-  v3 = a3;
+  suspendedCopy = suspended;
   v27 = *MEMORY[0x1E69E9840];
   [objc_opt_class() _internalQueue];
 
-  if (!v3)
+  if (!suspendedCopy)
   {
 LABEL_8:
     v10 = 0;
@@ -688,12 +688,12 @@ LABEL_8:
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
       {
         v6 = MEMORY[0x1E696AEC0];
-        v7 = self;
+        selfCopy = self;
         v8 = v5;
-        v9 = [v6 stringWithFormat:@"<%s: %p>", object_getClassName(v7), v7];
+        selfCopy = [v6 stringWithFormat:@"<%s: %p>", object_getClassName(selfCopy), selfCopy];
 
         *buf = 138412290;
-        v22 = v9;
+        v22 = selfCopy;
         _os_log_impl(&dword_188A29000, v8, OS_LOG_TYPE_DEFAULT, "ignoring request to suspend due to background feedback entitlement for engine %@", buf, 0xCu);
       }
     }
@@ -705,12 +705,12 @@ LABEL_8:
 LABEL_10:
   suspended = self->_suspended;
   self->_suspended = v10;
-  v12 = [(_UIFeedbackEngine *)self _internal_isSuspended];
-  if (suspended != v12)
+  _internal_isSuspended = [(_UIFeedbackEngine *)self _internal_isSuspended];
+  if (suspended != _internal_isSuspended)
   {
     if ((_UIFeedbackLoggingDisabled & 1) == 0)
     {
-      v13 = v12;
+      v13 = _internal_isSuspended;
       v14 = *(__UILogGetCategoryCachedImpl("Feedback", &qword_1ED499E78) + 8);
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
@@ -735,16 +735,16 @@ LABEL_10:
         }
 
         v17 = MEMORY[0x1E696AEC0];
-        v18 = self;
+        selfCopy2 = self;
         v19 = v14;
-        v20 = [v17 stringWithFormat:@"<%s: %p>", object_getClassName(v18), v18];
+        selfCopy2 = [v17 stringWithFormat:@"<%s: %p>", object_getClassName(selfCopy2), selfCopy2];
 
         *buf = 138412802;
         v22 = v15;
         v23 = 2112;
         v24 = v16;
         v25 = 2112;
-        v26 = v20;
+        v26 = selfCopy2;
         _os_log_impl(&dword_188A29000, v19, OS_LOG_TYPE_DEFAULT, "suspended changed from: %@ --> %@ for engine %@", buf, 0x20u);
       }
     }
@@ -753,9 +753,9 @@ LABEL_10:
   }
 }
 
-- (void)_internal_performAtState:(int64_t)a3 block:(id)a4
+- (void)_internal_performAtState:(int64_t)state block:(id)block
 {
-  aBlock = a4;
+  aBlock = block;
   [objc_opt_class() _internalQueue];
 
   v6 = aBlock;
@@ -764,37 +764,37 @@ LABEL_10:
     completionBlocks = self->_completionBlocks;
     if (!completionBlocks)
     {
-      v8 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
       v9 = self->_completionBlocks;
-      self->_completionBlocks = v8;
+      self->_completionBlocks = dictionary;
 
       completionBlocks = self->_completionBlocks;
     }
 
-    v10 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-    v11 = [(NSMutableDictionary *)completionBlocks objectForKeyedSubscript:v10];
+    v10 = [MEMORY[0x1E696AD98] numberWithInteger:state];
+    array = [(NSMutableDictionary *)completionBlocks objectForKeyedSubscript:v10];
 
-    if (!v11)
+    if (!array)
     {
-      v11 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       v12 = self->_completionBlocks;
-      v13 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-      [(NSMutableDictionary *)v12 setObject:v11 forKeyedSubscript:v13];
+      v13 = [MEMORY[0x1E696AD98] numberWithInteger:state];
+      [(NSMutableDictionary *)v12 setObject:array forKeyedSubscript:v13];
     }
 
     v14 = _Block_copy(aBlock);
-    [v11 addObject:v14];
+    [array addObject:v14];
 
     v6 = aBlock;
   }
 }
 
-- (void)_internal_serviceBlocksForState:(int64_t)a3 withSuccess:(BOOL)a4
+- (void)_internal_serviceBlocksForState:(int64_t)state withSuccess:(BOOL)success
 {
   v18 = *MEMORY[0x1E69E9840];
   [objc_opt_class() _internalQueue];
 
-  v6 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v6 = [MEMORY[0x1E696AD98] numberWithInteger:state];
   v7 = [(NSMutableDictionary *)self->_completionBlocks objectForKeyedSubscript:v6];
   [(NSMutableDictionary *)self->_completionBlocks removeObjectForKey:v6];
   v15 = 0u;
@@ -829,17 +829,17 @@ LABEL_10:
   }
 }
 
-- (void)_activate:(BOOL)a3 andPerformWhenRunning:(id)a4
+- (void)_activate:(BOOL)_activate andPerformWhenRunning:(id)running
 {
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  runningCopy = running;
+  v7 = runningCopy;
+  if (runningCopy)
   {
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __53___UIFeedbackEngine__activate_andPerformWhenRunning___block_invoke;
     aBlock[3] = &unk_1E70F3608;
-    v18 = v6;
+    v18 = runningCopy;
     v8 = _Block_copy(aBlock);
   }
 
@@ -848,34 +848,34 @@ LABEL_10:
     v8 = 0;
   }
 
-  v9 = [objc_opt_class() _internalQueue];
+  _internalQueue = [objc_opt_class() _internalQueue];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __53___UIFeedbackEngine__activate_andPerformWhenRunning___block_invoke_3;
   v14[3] = &unk_1E70FD0C8;
-  v16 = a3;
+  _activateCopy = _activate;
   v14[4] = self;
   v15 = v8;
-  v10 = v9;
-  if (!v9)
+  v10 = _internalQueue;
+  if (!_internalQueue)
   {
     v10 = MEMORY[0x1E69E96A0];
     v11 = MEMORY[0x1E69E96A0];
   }
 
-  v12 = v9;
+  v12 = _internalQueue;
   v13 = v8;
   dispatch_async(v10, v14);
 }
 
-- (void)_internal_activate:(BOOL)a3 andPerformWhenRunning:(id)a4
+- (void)_internal_activate:(BOOL)_internal_activate andPerformWhenRunning:(id)running
 {
-  v4 = a3;
+  _internal_activateCopy = _internal_activate;
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  runningCopy = running;
   [objc_opt_class() _internalQueue];
 
-  if (v4)
+  if (_internal_activateCopy)
   {
     if ((_UIFeedbackLoggingDisabled & 1) == 0)
     {
@@ -883,17 +883,17 @@ LABEL_10:
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
         v8 = MEMORY[0x1E696AEC0];
-        v9 = self;
+        selfCopy = self;
         v10 = v7;
-        v11 = [v8 stringWithFormat:@"<%s: %p>", object_getClassName(v9), v9];
+        selfCopy = [v8 stringWithFormat:@"<%s: %p>", object_getClassName(selfCopy), selfCopy];
 
-        v12 = v11;
+        v12 = selfCopy;
         *buf = 138412802;
-        v19 = v11;
+        v19 = selfCopy;
         v20 = 2048;
-        v21 = [(_UIFeedbackEngine *)v9 numberOfClients];
+        numberOfClients = [(_UIFeedbackEngine *)selfCopy numberOfClients];
         v22 = 2048;
-        v23 = [(_UIFeedbackEngine *)v9 numberOfClients]+ 1;
+        v23 = [(_UIFeedbackEngine *)selfCopy numberOfClients]+ 1;
         _os_log_impl(&dword_188A29000, v10, OS_LOG_TYPE_DEFAULT, "activate engine %@, clientCount: %ld -> %ld", buf, 0x20u);
       }
     }
@@ -911,25 +911,25 @@ LABEL_10:
     goto LABEL_20;
   }
 
-  v13 = [(_UIFeedbackEngine *)self _state];
-  if (v13 > 2)
+  _state = [(_UIFeedbackEngine *)self _state];
+  if (_state > 2)
   {
-    if (v13 == 3)
+    if (_state == 3)
     {
-      v14 = self;
+      selfCopy3 = self;
       v15 = 4;
-      v16 = v6;
+      v16 = runningCopy;
       goto LABEL_25;
     }
 
-    if (v13 != 4)
+    if (_state != 4)
     {
-      if (v13 != 5)
+      if (_state != 5)
       {
         goto LABEL_26;
       }
 
-      if (![objc_opt_class() _supportsAbortingDeactivation] || !v4)
+      if (![objc_opt_class() _supportsAbortingDeactivation] || !_internal_activateCopy)
       {
         goto LABEL_12;
       }
@@ -938,19 +938,19 @@ LABEL_10:
     }
 
 LABEL_20:
-    if (v6)
+    if (runningCopy)
     {
-      (v6[2])(v6, 1);
+      (runningCopy[2])(runningCopy, 1);
     }
 
     goto LABEL_26;
   }
 
-  if (v13)
+  if (_state)
   {
-    if (v13 != 1)
+    if (_state != 1)
     {
-      if (v13 != 2)
+      if (_state != 2)
       {
         goto LABEL_26;
       }
@@ -958,8 +958,8 @@ LABEL_20:
       goto LABEL_12;
     }
 
-    [(_UIFeedbackEngine *)self _internal_performAtState:4 block:v6];
-    if (!v4)
+    [(_UIFeedbackEngine *)self _internal_performAtState:4 block:runningCopy];
+    if (!_internal_activateCopy)
     {
       goto LABEL_26;
     }
@@ -970,16 +970,16 @@ LABEL_20:
     v17[3] = &unk_1E70F5AC0;
     v17[4] = self;
     v16 = v17;
-    v14 = self;
+    selfCopy3 = self;
     v15 = 2;
 LABEL_25:
-    [(_UIFeedbackEngine *)v14 _internal_performAtState:v15 block:v16];
+    [(_UIFeedbackEngine *)selfCopy3 _internal_performAtState:v15 block:v16];
     goto LABEL_26;
   }
 
 LABEL_12:
-  [(_UIFeedbackEngine *)self _internal_performAtState:4 block:v6];
-  if (v4)
+  [(_UIFeedbackEngine *)self _internal_performAtState:4 block:runningCopy];
+  if (_internal_activateCopy)
   {
     [(_UIFeedbackEngine *)self _internal_activateEngine];
   }
@@ -989,20 +989,20 @@ LABEL_26:
 
 - (void)_deactivate
 {
-  v3 = [objc_opt_class() _internalQueue];
+  _internalQueue = [objc_opt_class() _internalQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __32___UIFeedbackEngine__deactivate__block_invoke;
   block[3] = &unk_1E70F3590;
   block[4] = self;
-  v4 = v3;
-  if (!v3)
+  v4 = _internalQueue;
+  if (!_internalQueue)
   {
     v4 = MEMORY[0x1E69E96A0];
     v5 = MEMORY[0x1E69E96A0];
   }
 
-  v6 = v3;
+  v6 = _internalQueue;
   dispatch_async(v4, block);
 }
 
@@ -1017,28 +1017,28 @@ LABEL_26:
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       v5 = MEMORY[0x1E696AEC0];
-      v6 = self;
+      selfCopy = self;
       v7 = v4;
-      v8 = [v5 stringWithFormat:@"<%s: %p>", object_getClassName(v6), v6];
+      selfCopy = [v5 stringWithFormat:@"<%s: %p>", object_getClassName(selfCopy), selfCopy];
 
-      v9 = v8;
+      v9 = selfCopy;
       *buf = 138412802;
-      v15 = v8;
+      v15 = selfCopy;
       v16 = 2048;
-      v17 = [(_UIFeedbackEngine *)v6 numberOfClients];
+      numberOfClients = [(_UIFeedbackEngine *)selfCopy numberOfClients];
       v18 = 2048;
-      v19 = [(_UIFeedbackEngine *)v6 numberOfClients]- 1;
+      v19 = [(_UIFeedbackEngine *)selfCopy numberOfClients]- 1;
       _os_log_impl(&dword_188A29000, v7, OS_LOG_TYPE_DEFAULT, "deactivate engine %@, clientCount: %ld -> %ld", buf, 0x20u);
     }
   }
 
   if (![(_UIFeedbackEngine *)self numberOfClients])
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v11 = objc_opt_class();
     v12 = NSStringFromClass(v11);
     v13 = NSStringFromSelector(a2);
-    [v10 handleFailureInMethod:a2 object:self file:@"_UIFeedbackEngine.m" lineNumber:615 description:{@"ERROR: -[%@ %@] called more times than the feedback engine was activated", v12, v13}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIFeedbackEngine.m" lineNumber:615 description:{@"ERROR: -[%@ %@] called more times than the feedback engine was activated", v12, v13}];
   }
 
   --self->_numberOfClients;
@@ -1073,8 +1073,8 @@ LABEL_26:
   [objc_opt_class() _internalQueue];
 
   v3 = MEMORY[0x1E696AEC0];
-  v4 = self;
-  v5 = [v3 stringWithFormat:@"<%s: %p>", object_getClassName(v4), v4];
+  selfCopy = self;
+  selfCopy = [v3 stringWithFormat:@"<%s: %p>", object_getClassName(selfCopy), selfCopy];
 
   if ((_UIFeedbackLoggingDisabled & 1) == 0)
   {
@@ -1083,118 +1083,118 @@ LABEL_26:
     {
       v7 = v6;
       *buf = 138412802;
-      v13 = v5;
+      v13 = selfCopy;
       v14 = 2048;
-      v15 = [(_UIFeedbackEngine *)v4 numberOfClients];
+      numberOfClients = [(_UIFeedbackEngine *)selfCopy numberOfClients];
       v16 = 2048;
-      v17 = [(_UIFeedbackEngine *)v4 _internal_isSuspended];
+      _internal_isSuspended = [(_UIFeedbackEngine *)selfCopy _internal_isSuspended];
       _os_log_impl(&dword_188A29000, v7, OS_LOG_TYPE_DEFAULT, "_internal_deactivateEngineIfPossible %@, clientCount: %ld, suspended: %ld", buf, 0x20u);
     }
   }
 
-  if ([(_UIFeedbackEngine *)v4 _state]== 3)
+  if ([(_UIFeedbackEngine *)selfCopy _state]== 3)
   {
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __57___UIFeedbackEngine__internal_deactivateEngineIfPossible__block_invoke;
     v11[3] = &unk_1E70F5AC0;
-    v11[4] = v4;
-    [(_UIFeedbackEngine *)v4 _internal_performAtState:4 block:v11];
+    v11[4] = selfCopy;
+    [(_UIFeedbackEngine *)selfCopy _internal_performAtState:4 block:v11];
   }
 
-  else if (![(_UIFeedbackEngine *)v4 numberOfClients]|| [(_UIFeedbackEngine *)v4 _internal_isSuspended])
+  else if (![(_UIFeedbackEngine *)selfCopy numberOfClients]|| [(_UIFeedbackEngine *)selfCopy _internal_isSuspended])
   {
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __57___UIFeedbackEngine__internal_deactivateEngineIfPossible__block_invoke_2;
     v8[3] = &unk_1E70F3C60;
-    v9 = v5;
-    v10 = v4;
-    [(_UIFeedbackEngine *)v4 _internal_teardownUnderlyingPlayerIfPossibleWithCompletion:v8];
+    v9 = selfCopy;
+    v10 = selfCopy;
+    [(_UIFeedbackEngine *)selfCopy _internal_teardownUnderlyingPlayerIfPossibleWithCompletion:v8];
   }
 }
 
-- (void)_internal_activateUnderlyingPlayerWithCompletion:(id)a3
+- (void)_internal_activateUnderlyingPlayerWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   [objc_opt_class() _internalQueue];
 
-  v3[2](v3, 1);
+  completionCopy[2](completionCopy, 1);
 }
 
-- (void)_internal_teardownUnderlyingPlayerIfPossibleWithCompletion:(id)a3
+- (void)_internal_teardownUnderlyingPlayerIfPossibleWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   [objc_opt_class() _internalQueue];
 
-  v3[2](v3, 1);
+  completionCopy[2](completionCopy, 1);
 }
 
-- (void)_startWarmingFeedbacks:(id)a3
+- (void)_startWarmingFeedbacks:(id)feedbacks
 {
-  v4 = a3;
-  v5 = [objc_opt_class() _internalQueue];
+  feedbacksCopy = feedbacks;
+  _internalQueue = [objc_opt_class() _internalQueue];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __44___UIFeedbackEngine__startWarmingFeedbacks___block_invoke;
   v10[3] = &unk_1E70F35B8;
   v10[4] = self;
-  v11 = v4;
-  v6 = v5;
-  if (!v5)
+  v11 = feedbacksCopy;
+  v6 = _internalQueue;
+  if (!_internalQueue)
   {
     v6 = MEMORY[0x1E69E96A0];
     v7 = MEMORY[0x1E69E96A0];
   }
 
-  v8 = v5;
-  v9 = v4;
+  v8 = _internalQueue;
+  v9 = feedbacksCopy;
   dispatch_async(v6, v10);
 }
 
-- (void)_internal_startWarmingFeedbacks:(id)a3
+- (void)_internal_startWarmingFeedbacks:(id)feedbacks
 {
-  v3 = [objc_opt_class() _internalQueue];
+  _internalQueue = [objc_opt_class() _internalQueue];
 }
 
-- (void)_stopWarmingFeedbacks:(id)a3
+- (void)_stopWarmingFeedbacks:(id)feedbacks
 {
-  v4 = a3;
-  v5 = [objc_opt_class() _internalQueue];
+  feedbacksCopy = feedbacks;
+  _internalQueue = [objc_opt_class() _internalQueue];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __43___UIFeedbackEngine__stopWarmingFeedbacks___block_invoke;
   v10[3] = &unk_1E70F35B8;
   v10[4] = self;
-  v11 = v4;
-  v6 = v5;
-  if (!v5)
+  v11 = feedbacksCopy;
+  v6 = _internalQueue;
+  if (!_internalQueue)
   {
     v6 = MEMORY[0x1E69E96A0];
     v7 = MEMORY[0x1E69E96A0];
   }
 
-  v8 = v5;
-  v9 = v4;
+  v8 = _internalQueue;
+  v9 = feedbacksCopy;
   dispatch_async(v6, v10);
 }
 
-- (void)_internal_stopWarmingFeedbacks:(id)a3
+- (void)_internal_stopWarmingFeedbacks:(id)feedbacks
 {
-  v3 = [objc_opt_class() _internalQueue];
+  _internalQueue = [objc_opt_class() _internalQueue];
 }
 
-- (void)_prewarm:(BOOL)a3 andPerformWhenPrewarmed:(id)a4
+- (void)_prewarm:(BOOL)_prewarm andPerformWhenPrewarmed:(id)prewarmed
 {
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  prewarmedCopy = prewarmed;
+  v7 = prewarmedCopy;
+  if (prewarmedCopy)
   {
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __54___UIFeedbackEngine__prewarm_andPerformWhenPrewarmed___block_invoke;
     aBlock[3] = &unk_1E70F3608;
-    v18 = v6;
+    v18 = prewarmedCopy;
     v8 = _Block_copy(aBlock);
   }
 
@@ -1203,34 +1203,34 @@ LABEL_26:
     v8 = 0;
   }
 
-  v9 = [objc_opt_class() _internalQueue];
+  _internalQueue = [objc_opt_class() _internalQueue];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __54___UIFeedbackEngine__prewarm_andPerformWhenPrewarmed___block_invoke_3;
   v14[3] = &unk_1E70FD0C8;
-  v16 = a3;
+  _prewarmCopy = _prewarm;
   v14[4] = self;
   v15 = v8;
-  v10 = v9;
-  if (!v9)
+  v10 = _internalQueue;
+  if (!_internalQueue)
   {
     v10 = MEMORY[0x1E69E96A0];
     v11 = MEMORY[0x1E69E96A0];
   }
 
-  v12 = v9;
+  v12 = _internalQueue;
   v13 = v8;
   dispatch_async(v10, v14);
 }
 
-- (void)_internal_prewarm:(BOOL)a3 andPerformWhenPrewarmed:(id)a4
+- (void)_internal_prewarm:(BOOL)_internal_prewarm andPerformWhenPrewarmed:(id)prewarmed
 {
-  v4 = a3;
+  _internal_prewarmCopy = _internal_prewarm;
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  prewarmedCopy = prewarmed;
   [objc_opt_class() _internalQueue];
 
-  if (v4)
+  if (_internal_prewarmCopy)
   {
     if ((_UIFeedbackLoggingDisabled & 1) == 0)
     {
@@ -1238,13 +1238,13 @@ LABEL_26:
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
         v8 = MEMORY[0x1E696AEC0];
-        v9 = self;
+        selfCopy = self;
         v10 = v7;
-        v11 = [v8 stringWithFormat:@"<%s: %p>", object_getClassName(v9), v9];
+        selfCopy = [v8 stringWithFormat:@"<%s: %p>", object_getClassName(selfCopy), selfCopy];
 
-        prewarmCount = v9->_prewarmCount;
+        prewarmCount = selfCopy->_prewarmCount;
         *buf = 138412802;
-        v17 = v11;
+        v17 = selfCopy;
         v18 = 2048;
         v19 = prewarmCount;
         v20 = 2048;
@@ -1268,27 +1268,27 @@ LABEL_26:
   else if ([(_UIFeedbackEngine *)self _internal_isSuspended])
   {
 LABEL_17:
-    if (v6)
+    if (prewarmedCopy)
     {
-      v6[2](v6, 1);
+      prewarmedCopy[2](prewarmedCopy, 1);
     }
 
     goto LABEL_24;
   }
 
-  v13 = [(_UIFeedbackEngine *)self _state];
-  if (v13 > 2)
+  _state = [(_UIFeedbackEngine *)self _state];
+  if (_state > 2)
   {
-    if (v13 == 3)
+    if (_state == 3)
     {
-      v14 = self;
+      selfCopy3 = self;
       v15 = 4;
       goto LABEL_23;
     }
 
-    if (v13 != 5)
+    if (_state != 5)
     {
-      if (v13 != 4)
+      if (_state != 4)
       {
         goto LABEL_24;
       }
@@ -1297,11 +1297,11 @@ LABEL_17:
     }
   }
 
-  else if (v13)
+  else if (_state)
   {
-    if (v13 != 1)
+    if (_state != 1)
     {
-      if (v13 != 2)
+      if (_state != 2)
       {
         goto LABEL_24;
       }
@@ -1309,15 +1309,15 @@ LABEL_17:
       goto LABEL_17;
     }
 
-    v14 = self;
+    selfCopy3 = self;
     v15 = 2;
 LABEL_23:
-    [(_UIFeedbackEngine *)v14 _internal_performAtState:v15 block:v6];
+    [(_UIFeedbackEngine *)selfCopy3 _internal_performAtState:v15 block:prewarmedCopy];
     goto LABEL_24;
   }
 
-  [(_UIFeedbackEngine *)self _internal_performAtState:2 block:v6];
-  if (v4)
+  [(_UIFeedbackEngine *)self _internal_performAtState:2 block:prewarmedCopy];
+  if (_internal_prewarmCopy)
   {
     [(_UIFeedbackEngine *)self _internal_prewarmEngine];
   }
@@ -1325,90 +1325,90 @@ LABEL_23:
 LABEL_24:
 }
 
-- (void)_internal_prewarmUnderlyingPlayerWithCompletion:(id)a3
+- (void)_internal_prewarmUnderlyingPlayerWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   [objc_opt_class() _internalQueue];
 
-  v3[2](v3, 1);
+  completionCopy[2](completionCopy, 1);
 }
 
-- (void)_internal_cooldownUnderlyingPlayerIfPossibleWithCompletion:(id)a3
+- (void)_internal_cooldownUnderlyingPlayerIfPossibleWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   [objc_opt_class() _internalQueue];
 
-  v3[2](v3, 1);
+  completionCopy[2](completionCopy, 1);
 }
 
-- (void)_playFeedback:(id)a3 atTime:(double)a4 withCompletionBlock:(id)a5
+- (void)_playFeedback:(id)feedback atTime:(double)time withCompletionBlock:(id)block
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [v8 _effectiveFeedbackData];
-  v11 = [v8 _effectiveEnabledFeedbackTypes];
-  v12 = [v8 _player];
-  v13 = [objc_opt_class() _internalQueue];
+  feedbackCopy = feedback;
+  blockCopy = block;
+  _effectiveFeedbackData = [feedbackCopy _effectiveFeedbackData];
+  _effectiveEnabledFeedbackTypes = [feedbackCopy _effectiveEnabledFeedbackTypes];
+  _player = [feedbackCopy _player];
+  _internalQueue = [objc_opt_class() _internalQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __62___UIFeedbackEngine__playFeedback_atTime_withCompletionBlock___block_invoke;
   block[3] = &unk_1E7107D78;
   block[4] = self;
-  v22 = v10;
-  v26 = a4;
-  v27 = v11;
-  v23 = v8;
-  v24 = v12;
-  v25 = v9;
-  v14 = v13;
-  if (!v13)
+  v22 = _effectiveFeedbackData;
+  timeCopy = time;
+  v27 = _effectiveEnabledFeedbackTypes;
+  v23 = feedbackCopy;
+  v24 = _player;
+  v25 = blockCopy;
+  v14 = _internalQueue;
+  if (!_internalQueue)
   {
     v14 = MEMORY[0x1E69E96A0];
     v15 = MEMORY[0x1E69E96A0];
   }
 
-  v16 = v13;
-  v17 = v9;
-  v18 = v12;
-  v19 = v8;
-  v20 = v10;
+  v16 = _internalQueue;
+  v17 = blockCopy;
+  v18 = _player;
+  v19 = feedbackCopy;
+  v20 = _effectiveFeedbackData;
   dispatch_async(v14, block);
 }
 
-- (void)_internal_playFeedbackData:(id)a3 atTime:(double)a4 feedback:(id)a5 effectiveFeedbackType:(unint64_t)a6 existingPlayer:(id)a7 withCompletionBlock:(id)a8
+- (void)_internal_playFeedbackData:(id)data atTime:(double)time feedback:(id)feedback effectiveFeedbackType:(unint64_t)type existingPlayer:(id)player withCompletionBlock:(id)block
 {
   v44 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a5;
-  v16 = a7;
-  v17 = a8;
+  dataCopy = data;
+  feedbackCopy = feedback;
+  playerCopy = player;
+  blockCopy = block;
   [objc_opt_class() _internalQueue];
 
   if ([(_UIFeedbackEngine *)self isEnabled])
   {
     if ([(_UIFeedbackEngine *)self _internal_isSuspended])
     {
-      (*(v17 + 2))(v17, 0, 0, @"suspended");
+      (*(blockCopy + 2))(blockCopy, 0, 0, @"suspended");
     }
 
     else if ([(_UIFeedbackEngine *)self _state]== 4 || [(_UIFeedbackEngine *)self _state]== 3)
     {
-      if (a6)
+      if (type)
       {
         aBlock[0] = MEMORY[0x1E69E9820];
         aBlock[1] = 3221225472;
         aBlock[2] = __121___UIFeedbackEngine__internal_playFeedbackData_atTime_feedback_effectiveFeedbackType_existingPlayer_withCompletionBlock___block_invoke;
         aBlock[3] = &unk_1E7107DA0;
-        v38 = v14;
-        v18 = v15;
+        v38 = dataCopy;
+        v18 = feedbackCopy;
         v39 = v18;
-        v41 = a4;
-        v40 = v17;
+        timeCopy = time;
+        v40 = blockCopy;
         v19 = _Block_copy(aBlock);
         v20 = v19;
-        if (v16)
+        if (playerCopy)
         {
-          (*(v19 + 2))(v19, v16);
+          (*(v19 + 2))(v19, playerCopy);
         }
 
         else
@@ -1459,7 +1459,7 @@ LABEL_24:
             v33[2] = __121___UIFeedbackEngine__internal_playFeedbackData_atTime_feedback_effectiveFeedbackType_existingPlayer_withCompletionBlock___block_invoke_106;
             v33[3] = &unk_1E7107DC8;
             v34 = v18;
-            v35 = self;
+            selfCopy = self;
             v22 = v32;
             v36 = v22;
             [(_UIFeedbackEngine *)self _internal_dequeueReusableFeedbackPlayerWithCompletionBlock:v33];
@@ -1471,55 +1471,55 @@ LABEL_24:
 
       else
       {
-        (*(v17 + 2))(v17, 0, 0, @"has no effective enabled types");
+        (*(blockCopy + 2))(blockCopy, 0, 0, @"has no effective enabled types");
       }
     }
 
     else
     {
-      (*(v17 + 2))(v17, 0, 0, @"engine not running or activating");
+      (*(blockCopy + 2))(blockCopy, 0, 0, @"engine not running or activating");
     }
   }
 
   else
   {
-    (*(v17 + 2))(v17, 0, 0, @"not enabled");
+    (*(blockCopy + 2))(blockCopy, 0, 0, @"not enabled");
   }
 }
 
-- (void)_dequeueReusableFeedbackPlayerWithCompletionBlock:(id)a3
+- (void)_dequeueReusableFeedbackPlayerWithCompletionBlock:(id)block
 {
-  v4 = a3;
-  v5 = [objc_opt_class() _internalQueue];
+  blockCopy = block;
+  _internalQueue = [objc_opt_class() _internalQueue];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __71___UIFeedbackEngine__dequeueReusableFeedbackPlayerWithCompletionBlock___block_invoke;
   v10[3] = &unk_1E70F37C0;
   v10[4] = self;
-  v11 = v4;
-  v6 = v5;
-  if (!v5)
+  v11 = blockCopy;
+  v6 = _internalQueue;
+  if (!_internalQueue)
   {
     v6 = MEMORY[0x1E69E96A0];
     v7 = MEMORY[0x1E69E96A0];
   }
 
-  v8 = v5;
-  v9 = v4;
+  v8 = _internalQueue;
+  v9 = blockCopy;
   dispatch_async(v6, v10);
 }
 
-- (void)_internal_dequeueReusableFeedbackPlayerWithCompletionBlock:(id)a3
+- (void)_internal_dequeueReusableFeedbackPlayerWithCompletionBlock:(id)block
 {
-  v3 = a3;
+  blockCopy = block;
   [objc_opt_class() _internalQueue];
 
-  v3[2](v3, 0);
+  blockCopy[2](blockCopy, 0);
 }
 
-- (void)_internal_willPlayFeedback:(id)a3 atTime:(double)a4
+- (void)_internal_willPlayFeedback:(id)feedback atTime:(double)time
 {
-  v6 = a3;
+  feedbackCopy = feedback;
   [objc_opt_class() _internalQueue];
 
   if ((_UIInternalPreferenceUsesDefault_0(&_MergedGlobals_933, @"EnableFeedbackVisualization") & 1) == 0 && byte_1ED48ADA4)
@@ -1528,16 +1528,16 @@ LABEL_24:
     block[1] = 3221225472;
     block[2] = __55___UIFeedbackEngine__internal_willPlayFeedback_atTime___block_invoke;
     block[3] = &unk_1E70F36D0;
-    v9 = a4;
+    timeCopy = time;
     block[4] = self;
-    v8 = v6;
+    v8 = feedbackCopy;
     dispatch_async(MEMORY[0x1E69E96A0], block);
   }
 }
 
-- (void)_internal_willCancelFeedback:(id)a3
+- (void)_internal_willCancelFeedback:(id)feedback
 {
-  v3 = a3;
+  feedbackCopy = feedback;
   [objc_opt_class() _internalQueue];
 
   if ((_UIInternalPreferenceUsesDefault_0(&_MergedGlobals_933, @"EnableFeedbackVisualization") & 1) == 0 && byte_1ED48ADA4)
@@ -1546,19 +1546,19 @@ LABEL_24:
     block[1] = 3221225472;
     block[2] = __50___UIFeedbackEngine__internal_willCancelFeedback___block_invoke;
     block[3] = &unk_1E70F3590;
-    v5 = v3;
+    v5 = feedbackCopy;
     dispatch_async(MEMORY[0x1E69E96A0], block);
   }
 }
 
-- (void)_setState:(int64_t)a3
+- (void)_setState:(int64_t)state
 {
   v24 = *MEMORY[0x1E69E9840];
   [objc_opt_class() _internalQueue];
 
   state = self->_state;
-  self->_state = a3;
-  if (state != a3)
+  self->_state = state;
+  if (state != state)
   {
     if ((_UIFeedbackLoggingDisabled & 1) == 0)
     {
@@ -1566,15 +1566,15 @@ LABEL_24:
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
         v7 = MEMORY[0x1E696AEC0];
-        v8 = self;
+        selfCopy = self;
         v9 = v6;
-        v10 = [v7 stringWithFormat:@"<%s: %p>", object_getClassName(v8), v8];
+        selfCopy = [v7 stringWithFormat:@"<%s: %p>", object_getClassName(selfCopy), selfCopy];
 
-        v11 = v10;
+        v11 = selfCopy;
         v12 = stringForFeedbackEngineState(state);
-        v13 = stringForFeedbackEngineState(a3);
+        v13 = stringForFeedbackEngineState(state);
         *buf = 138412802;
-        v19 = v10;
+        v19 = selfCopy;
         v20 = 2112;
         v21 = v12;
         v22 = 2112;
@@ -1589,7 +1589,7 @@ LABEL_24:
     block[3] = &unk_1E70F6848;
     block[4] = self;
     block[5] = state;
-    block[6] = a3;
+    block[6] = state;
     dispatch_async(MEMORY[0x1E69E96A0], block);
     if (os_variant_has_internal_diagnostics())
     {
@@ -1601,15 +1601,15 @@ LABEL_24:
           springBoardTimer = self->_springBoardTimer;
           self->_springBoardTimer = v15;
 
-          v14 = [MEMORY[0x1E695DFD0] mainRunLoop];
-          [v14 addTimer:self->_springBoardTimer forMode:*MEMORY[0x1E695DA28]];
+          mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
+          [mainRunLoop addTimer:self->_springBoardTimer forMode:*MEMORY[0x1E695DA28]];
           goto LABEL_12;
         }
 
-        if (!a3)
+        if (!state)
         {
           [(NSTimer *)self->_springBoardTimer invalidate];
-          v14 = self->_springBoardTimer;
+          mainRunLoop = self->_springBoardTimer;
           self->_springBoardTimer = 0;
 LABEL_12:
         }
@@ -1637,35 +1637,35 @@ LABEL_12:
   }
 }
 
-- (void)runWhenReady:(id)a3
+- (void)runWhenReady:(id)ready
 {
-  v4 = a3;
+  readyCopy = ready;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __34___UIFeedbackEngine_runWhenReady___block_invoke;
   v6[3] = &unk_1E7107E48;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = readyCopy;
+  v5 = readyCopy;
   [(_UIFeedbackEngine *)self _activate:1 andPerformWhenRunning:v6];
 }
 
-- (void)_applicationWillResignActive:(id)a3
+- (void)_applicationWillResignActive:(id)active
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  activeCopy = active;
   if ((_UIFeedbackLoggingDisabled & 1) == 0)
   {
     v5 = *(__UILogGetCategoryCachedImpl("Feedback", &_applicationWillResignActive____s_category) + 8);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6 = MEMORY[0x1E696AEC0];
-      v7 = self;
+      selfCopy = self;
       v8 = v5;
-      v9 = [v6 stringWithFormat:@"<%s: %p>", object_getClassName(v7), v7];
+      selfCopy = [v6 stringWithFormat:@"<%s: %p>", object_getClassName(selfCopy), selfCopy];
 
       *buf = 138412290;
-      v13 = v9;
+      v13 = selfCopy;
       _os_log_impl(&dword_188A29000, v8, OS_LOG_TYPE_DEFAULT, "app will resign active for engine %@", buf, 0xCu);
     }
   }
@@ -1687,12 +1687,12 @@ LABEL_12:
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
       v4 = MEMORY[0x1E696AEC0];
-      v5 = self;
+      selfCopy = self;
       v6 = v3;
-      v7 = [v4 stringWithFormat:@"<%s: %p>", object_getClassName(v5), v5];
+      selfCopy = [v4 stringWithFormat:@"<%s: %p>", object_getClassName(selfCopy), selfCopy];
 
       *buf = 138412290;
-      v9 = v7;
+      v9 = selfCopy;
       _os_log_impl(&dword_188A29000, v6, OS_LOG_TYPE_DEFAULT, "_suspendEngineNow for engine %@", buf, 0xCu);
     }
   }
@@ -1700,7 +1700,7 @@ LABEL_12:
   [(_UIFeedbackEngine *)self _setSuspended:1];
 }
 
-- (void)_applicationDidBecomeActive:(id)a3
+- (void)_applicationDidBecomeActive:(id)active
 {
   v11 = *MEMORY[0x1E69E9840];
   if ((_UIFeedbackLoggingDisabled & 1) == 0)
@@ -1709,12 +1709,12 @@ LABEL_12:
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       v5 = MEMORY[0x1E696AEC0];
-      v6 = self;
+      selfCopy = self;
       v7 = v4;
-      v8 = [v5 stringWithFormat:@"<%s: %p>", object_getClassName(v6), v6];
+      selfCopy = [v5 stringWithFormat:@"<%s: %p>", object_getClassName(selfCopy), selfCopy];
 
       *buf = 138412290;
-      v10 = v8;
+      v10 = selfCopy;
       _os_log_impl(&dword_188A29000, v7, OS_LOG_TYPE_DEFAULT, "app did become active for engine %@", buf, 0xCu);
     }
   }
@@ -1722,7 +1722,7 @@ LABEL_12:
   [(_UIFeedbackEngine *)self _setSuspended:0];
 }
 
-- (void)_applicationWillSuspend:(id)a3
+- (void)_applicationWillSuspend:(id)suspend
 {
   v11 = *MEMORY[0x1E69E9840];
   if ((_UIFeedbackLoggingDisabled & 1) == 0)
@@ -1731,12 +1731,12 @@ LABEL_12:
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       v5 = MEMORY[0x1E696AEC0];
-      v6 = self;
+      selfCopy = self;
       v7 = v4;
-      v8 = [v5 stringWithFormat:@"<%s: %p>", object_getClassName(v6), v6];
+      selfCopy = [v5 stringWithFormat:@"<%s: %p>", object_getClassName(selfCopy), selfCopy];
 
       *buf = 138412290;
-      v10 = v8;
+      v10 = selfCopy;
       _os_log_impl(&dword_188A29000, v7, OS_LOG_TYPE_DEFAULT, "app will suspend for engine %@", buf, 0xCu);
     }
   }
@@ -1744,7 +1744,7 @@ LABEL_12:
   [(_UIFeedbackEngine *)self _setSuspended:1];
 }
 
-- (void)_applicationDidResume:(id)a3
+- (void)_applicationDidResume:(id)resume
 {
   v11 = *MEMORY[0x1E69E9840];
   if ((_UIFeedbackLoggingDisabled & 1) == 0)
@@ -1753,12 +1753,12 @@ LABEL_12:
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       v5 = MEMORY[0x1E696AEC0];
-      v6 = self;
+      selfCopy = self;
       v7 = v4;
-      v8 = [v5 stringWithFormat:@"<%s: %p>", object_getClassName(v6), v6];
+      selfCopy = [v5 stringWithFormat:@"<%s: %p>", object_getClassName(selfCopy), selfCopy];
 
       *buf = 138412290;
-      v10 = v8;
+      v10 = selfCopy;
       _os_log_impl(&dword_188A29000, v7, OS_LOG_TYPE_DEFAULT, "app did resume for engine %@", buf, 0xCu);
     }
   }
@@ -1766,22 +1766,22 @@ LABEL_12:
   [(_UIFeedbackEngine *)self _setSuspended:0];
 }
 
-- (void)_hostDidEnterBackground:(id)a3
+- (void)_hostDidEnterBackground:(id)background
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  backgroundCopy = background;
   if ((_UIFeedbackLoggingDisabled & 1) == 0)
   {
     v5 = *(__UILogGetCategoryCachedImpl("Feedback", &_hostDidEnterBackground____s_category) + 8);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6 = MEMORY[0x1E696AEC0];
-      v7 = self;
+      selfCopy = self;
       v8 = v5;
-      v9 = [v6 stringWithFormat:@"<%s: %p>", object_getClassName(v7), v7];
+      selfCopy = [v6 stringWithFormat:@"<%s: %p>", object_getClassName(selfCopy), selfCopy];
 
       *buf = 138412290;
-      v13 = v9;
+      v13 = selfCopy;
       _os_log_impl(&dword_188A29000, v8, OS_LOG_TYPE_DEFAULT, "host did enter background for engine %@", buf, 0xCu);
     }
   }
@@ -1794,7 +1794,7 @@ LABEL_12:
   }
 }
 
-- (void)_hostWillEnterForeground:(id)a3
+- (void)_hostWillEnterForeground:(id)foreground
 {
   v11 = *MEMORY[0x1E69E9840];
   if ((_UIFeedbackLoggingDisabled & 1) == 0)
@@ -1803,12 +1803,12 @@ LABEL_12:
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       v5 = MEMORY[0x1E696AEC0];
-      v6 = self;
+      selfCopy = self;
       v7 = v4;
-      v8 = [v5 stringWithFormat:@"<%s: %p>", object_getClassName(v6), v6];
+      selfCopy = [v5 stringWithFormat:@"<%s: %p>", object_getClassName(selfCopy), selfCopy];
 
       *buf = 138412290;
-      v10 = v8;
+      v10 = selfCopy;
       _os_log_impl(&dword_188A29000, v7, OS_LOG_TYPE_DEFAULT, "host will enter foreground for engine %@", buf, 0xCu);
     }
   }
@@ -1816,7 +1816,7 @@ LABEL_12:
   [(_UIFeedbackEngine *)self _setSuspended:0];
 }
 
-- (void)_remoteViewControllerWillDisconnect:(id)a3
+- (void)_remoteViewControllerWillDisconnect:(id)disconnect
 {
   v11 = *MEMORY[0x1E69E9840];
   if ((_UIFeedbackLoggingDisabled & 1) == 0)
@@ -1825,12 +1825,12 @@ LABEL_12:
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       v5 = MEMORY[0x1E696AEC0];
-      v6 = self;
+      selfCopy = self;
       v7 = v4;
-      v8 = [v5 stringWithFormat:@"<%s: %p>", object_getClassName(v6), v6];
+      selfCopy = [v5 stringWithFormat:@"<%s: %p>", object_getClassName(selfCopy), selfCopy];
 
       *buf = 138412290;
-      v10 = v8;
+      v10 = selfCopy;
       _os_log_impl(&dword_188A29000, v7, OS_LOG_TYPE_DEFAULT, "remote view controller will disconnect for engine %@", buf, 0xCu);
     }
   }
@@ -1862,15 +1862,15 @@ LABEL_12:
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
         v8 = v7;
-        v9 = [(_UIFeedbackEngine *)self _backgroundTaskIdentifier];
+        _backgroundTaskIdentifier = [(_UIFeedbackEngine *)self _backgroundTaskIdentifier];
         v10 = MEMORY[0x1E696AEC0];
-        v11 = self;
-        v12 = [v10 stringWithFormat:@"<%s: %p>", object_getClassName(v11), v11];
+        selfCopy = self;
+        selfCopy = [v10 stringWithFormat:@"<%s: %p>", object_getClassName(selfCopy), selfCopy];
 
         *buf = 134218242;
-        v15 = v9;
+        v15 = _backgroundTaskIdentifier;
         v16 = 2112;
-        v17 = v12;
+        v17 = selfCopy;
         _os_log_impl(&dword_188A29000, v8, OS_LOG_TYPE_DEFAULT, "began background task with ID %ld for engine %@", buf, 0x16u);
       }
     }

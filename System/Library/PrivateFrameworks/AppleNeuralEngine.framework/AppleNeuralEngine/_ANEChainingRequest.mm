@@ -1,58 +1,58 @@
 @interface _ANEChainingRequest
-+ (id)chainingRequestWithInputs:(id)a3 outputSets:(id)a4 lbInputSymbolId:(id)a5 lbOutputSymbolId:(id)a6 procedureIndex:(id)a7 signalEvents:(id)a8 transactionHandle:(id)a9 fwEnqueueDelay:(id)a10 memoryPoolId:(id)a11;
++ (id)chainingRequestWithInputs:(id)inputs outputSets:(id)sets lbInputSymbolId:(id)id lbOutputSymbolId:(id)symbolId procedureIndex:(id)index signalEvents:(id)events transactionHandle:(id)handle fwEnqueueDelay:(id)self0 memoryPoolId:(id)self1;
 - (BOOL)validate;
-- (_ANEChainingRequest)initWithCoder:(id)a3;
-- (_ANEChainingRequest)initWithInputs:(id)a3 outputs:(id)a4 lbInputSymbolId:(id)a5 lbOutputSymbolId:(id)a6 procedureIndex:(id)a7 signalEvents:(id)a8 transactionHandle:(id)a9 fwEnqueueDelay:(id)a10 memoryPoolId:(id)a11;
+- (_ANEChainingRequest)initWithCoder:(id)coder;
+- (_ANEChainingRequest)initWithInputs:(id)inputs outputs:(id)outputs lbInputSymbolId:(id)id lbOutputSymbolId:(id)symbolId procedureIndex:(id)index signalEvents:(id)events transactionHandle:(id)handle fwEnqueueDelay:(id)self0 memoryPoolId:(id)self1;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)validate;
 @end
 
 @implementation _ANEChainingRequest
 
-- (_ANEChainingRequest)initWithInputs:(id)a3 outputs:(id)a4 lbInputSymbolId:(id)a5 lbOutputSymbolId:(id)a6 procedureIndex:(id)a7 signalEvents:(id)a8 transactionHandle:(id)a9 fwEnqueueDelay:(id)a10 memoryPoolId:(id)a11
+- (_ANEChainingRequest)initWithInputs:(id)inputs outputs:(id)outputs lbInputSymbolId:(id)id lbOutputSymbolId:(id)symbolId procedureIndex:(id)index signalEvents:(id)events transactionHandle:(id)handle fwEnqueueDelay:(id)self0 memoryPoolId:(id)self1
 {
-  v29 = a3;
-  v28 = a4;
-  v27 = a5;
-  v26 = a6;
-  v25 = a7;
-  v24 = a8;
-  v23 = a9;
-  v22 = a10;
-  v18 = a11;
+  inputsCopy = inputs;
+  outputsCopy = outputs;
+  idCopy = id;
+  symbolIdCopy = symbolId;
+  indexCopy = index;
+  eventsCopy = events;
+  handleCopy = handle;
+  delayCopy = delay;
+  poolIdCopy = poolId;
   v30.receiver = self;
   v30.super_class = _ANEChainingRequest;
   v19 = [(_ANEChainingRequest *)&v30 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_inputBuffer, a3);
-    objc_storeStrong(&v20->_outputSets, a4);
-    objc_storeStrong(&v20->_loopbackInputSymbolIndex, a5);
-    objc_storeStrong(&v20->_loopbackOutputSymbolIndex, a6);
-    objc_storeStrong(&v20->_procedureIndex, a7);
-    objc_storeStrong(&v20->_signalEvents, a8);
-    objc_storeStrong(&v20->_transactionHandle, a9);
-    objc_storeStrong(&v20->_fwEnqueueDelay, a10);
-    objc_storeStrong(&v20->_memoryPoolId, a11);
+    objc_storeStrong(&v19->_inputBuffer, inputs);
+    objc_storeStrong(&v20->_outputSets, outputs);
+    objc_storeStrong(&v20->_loopbackInputSymbolIndex, id);
+    objc_storeStrong(&v20->_loopbackOutputSymbolIndex, symbolId);
+    objc_storeStrong(&v20->_procedureIndex, index);
+    objc_storeStrong(&v20->_signalEvents, events);
+    objc_storeStrong(&v20->_transactionHandle, handle);
+    objc_storeStrong(&v20->_fwEnqueueDelay, delay);
+    objc_storeStrong(&v20->_memoryPoolId, poolId);
   }
 
   return v20;
 }
 
-+ (id)chainingRequestWithInputs:(id)a3 outputSets:(id)a4 lbInputSymbolId:(id)a5 lbOutputSymbolId:(id)a6 procedureIndex:(id)a7 signalEvents:(id)a8 transactionHandle:(id)a9 fwEnqueueDelay:(id)a10 memoryPoolId:(id)a11
++ (id)chainingRequestWithInputs:(id)inputs outputSets:(id)sets lbInputSymbolId:(id)id lbOutputSymbolId:(id)symbolId procedureIndex:(id)index signalEvents:(id)events transactionHandle:(id)handle fwEnqueueDelay:(id)self0 memoryPoolId:(id)self1
 {
-  v18 = a11;
-  v19 = a10;
-  v20 = a9;
-  v21 = a8;
-  v22 = a7;
-  v23 = a6;
-  v24 = a5;
-  v25 = a4;
-  v26 = a3;
-  v27 = [[a1 alloc] initWithInputs:v26 outputs:v25 lbInputSymbolId:v24 lbOutputSymbolId:v23 procedureIndex:v22 signalEvents:v21 transactionHandle:v20 fwEnqueueDelay:v19 memoryPoolId:v18];
+  poolIdCopy = poolId;
+  delayCopy = delay;
+  handleCopy = handle;
+  eventsCopy = events;
+  indexCopy = index;
+  symbolIdCopy = symbolId;
+  idCopy = id;
+  setsCopy = sets;
+  inputsCopy = inputs;
+  v27 = [[self alloc] initWithInputs:inputsCopy outputs:setsCopy lbInputSymbolId:idCopy lbOutputSymbolId:symbolIdCopy procedureIndex:indexCopy signalEvents:eventsCopy transactionHandle:handleCopy fwEnqueueDelay:delayCopy memoryPoolId:poolIdCopy];
 
   return v27;
 }
@@ -60,11 +60,11 @@
 - (BOOL)validate
 {
   v52 = *MEMORY[0x1E69E9840];
-  v4 = [(_ANEChainingRequest *)self inputBuffer];
-  v5 = [v4 count];
+  inputBuffer = [(_ANEChainingRequest *)self inputBuffer];
+  v5 = [inputBuffer count];
 
-  v6 = [(_ANEChainingRequest *)self outputSets];
-  v7 = [v6 count];
+  outputSets = [(_ANEChainingRequest *)self outputSets];
+  v7 = [outputSets count];
 
   if (v5 && v7)
   {
@@ -84,12 +84,12 @@
     v9 = 0;
     do
     {
-      v10 = [(_ANEChainingRequest *)self inputBuffer];
-      v11 = [v10 objectAtIndexedSubscript:v9];
-      v12 = [v11 symbolIndex];
-      v13 = [v12 unsignedIntegerValue];
+      inputBuffer2 = [(_ANEChainingRequest *)self inputBuffer];
+      v11 = [inputBuffer2 objectAtIndexedSubscript:v9];
+      symbolIndex = [v11 symbolIndex];
+      unsignedIntegerValue = [symbolIndex unsignedIntegerValue];
 
-      if (v13 >= 0xFF)
+      if (unsignedIntegerValue >= 0xFF)
       {
         v8 = +[_ANELog common];
         if (!os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -97,17 +97,17 @@
           goto LABEL_15;
         }
 
-        v34 = NSStringFromSelector(aSelector);
-        v35 = [(_ANEChainingRequest *)self inputBuffer];
-        v36 = [v35 objectAtIndexedSubscript:v9];
+        loopbackInputSymbolIndex2 = NSStringFromSelector(aSelector);
+        inputBuffer3 = [(_ANEChainingRequest *)self inputBuffer];
+        v36 = [inputBuffer3 objectAtIndexedSubscript:v9];
         *buf = 138413314;
-        v49 = v34;
+        v49 = loopbackInputSymbolIndex2;
         v50 = 1024;
         *v51 = v9;
         *&v51[4] = 2112;
         *&v51[6] = v36;
         *&v51[14] = 2048;
-        *&v51[16] = v13;
+        *&v51[16] = unsignedIntegerValue;
         *&v51[24] = 1024;
         *&v51[26] = 254;
         _os_log_error_impl(&dword_1AD246000, v8, OS_LOG_TYPE_ERROR, "%@: inputBuffer[%u]=%@ symbolIndex=%lu exceeds kANERequestMaxSymbolIndex=%d", buf, 0x2Cu);
@@ -135,10 +135,10 @@ LABEL_35:
     v16 = 0;
     while (2)
     {
-      v17 = [(_ANEChainingRequest *)self outputSets];
-      v18 = [v17 objectAtIndexedSubscript:v16];
-      v19 = [v18 outputBuffer];
-      v20 = [v19 count];
+      outputSets2 = [(_ANEChainingRequest *)self outputSets];
+      v18 = [outputSets2 objectAtIndexedSubscript:v16];
+      outputBuffer = [v18 outputBuffer];
+      v20 = [outputBuffer count];
 
       if (v20)
       {
@@ -156,8 +156,8 @@ LABEL_35:
           v21 = 0;
           do
           {
-            v22 = [(_ANEChainingRequest *)self outputSets];
-            v23 = [v22 objectAtIndexedSubscript:v16];
+            outputSets3 = [(_ANEChainingRequest *)self outputSets];
+            v23 = [outputSets3 objectAtIndexedSubscript:v16];
 
             if (!v23)
             {
@@ -170,14 +170,14 @@ LABEL_35:
               goto LABEL_15;
             }
 
-            v24 = [(_ANEChainingRequest *)self outputSets];
-            v25 = [v24 objectAtIndexedSubscript:v16];
-            v26 = [v25 outputBuffer];
-            v27 = [v26 objectAtIndexedSubscript:v21];
-            v28 = [v27 symbolIndex];
-            v29 = [v28 unsignedIntegerValue];
+            outputSets4 = [(_ANEChainingRequest *)self outputSets];
+            v25 = [outputSets4 objectAtIndexedSubscript:v16];
+            outputBuffer2 = [v25 outputBuffer];
+            v27 = [outputBuffer2 objectAtIndexedSubscript:v21];
+            symbolIndex2 = [v27 symbolIndex];
+            unsignedIntegerValue2 = [symbolIndex2 unsignedIntegerValue];
 
-            if (v29 >= 0xFF)
+            if (unsignedIntegerValue2 >= 0xFF)
             {
               v8 = +[_ANELog common];
               if (!os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -185,19 +185,19 @@ LABEL_35:
                 goto LABEL_15;
               }
 
-              v34 = NSStringFromSelector(aSelector);
-              v35 = [(_ANEChainingRequest *)self outputSets];
-              v36 = [v35 objectAtIndexedSubscript:v16];
-              v37 = [v36 outputBuffer];
-              v38 = [v37 objectAtIndexedSubscript:v21];
+              loopbackInputSymbolIndex2 = NSStringFromSelector(aSelector);
+              inputBuffer3 = [(_ANEChainingRequest *)self outputSets];
+              v36 = [inputBuffer3 objectAtIndexedSubscript:v16];
+              outputBuffer3 = [v36 outputBuffer];
+              v38 = [outputBuffer3 objectAtIndexedSubscript:v21];
               *buf = 138413314;
-              v49 = v34;
+              v49 = loopbackInputSymbolIndex2;
               v50 = 1024;
               *v51 = v16;
               *&v51[4] = 2112;
               *&v51[6] = v38;
               *&v51[14] = 2048;
-              *&v51[16] = v29;
+              *&v51[16] = unsignedIntegerValue2;
               *&v51[24] = 1024;
               *&v51[26] = 254;
               _os_log_error_impl(&dword_1AD246000, v8, OS_LOG_TYPE_ERROR, "%@: outputIndexArray[%u]=%@ symbolIndex=%lu exceeds kANERequestMaxSymbolIndex=%d", buf, 0x2Cu);
@@ -215,11 +215,11 @@ LABEL_35:
             continue;
           }
 
-          v30 = [(_ANEChainingRequest *)self loopbackInputSymbolIndex];
-          v31 = [v30 count];
+          loopbackInputSymbolIndex = [(_ANEChainingRequest *)self loopbackInputSymbolIndex];
+          v31 = [loopbackInputSymbolIndex count];
 
-          v32 = [(_ANEChainingRequest *)self loopbackOutputSymbolIndex];
-          v33 = [v32 count];
+          loopbackOutputSymbolIndex = [(_ANEChainingRequest *)self loopbackOutputSymbolIndex];
+          v33 = [loopbackOutputSymbolIndex count];
 
           if (v31 != v33)
           {
@@ -229,12 +229,12 @@ LABEL_35:
               break;
             }
 
-            v34 = [(_ANEChainingRequest *)self loopbackInputSymbolIndex];
-            v35 = [(_ANEChainingRequest *)self loopbackInputSymbolIndex];
+            loopbackInputSymbolIndex2 = [(_ANEChainingRequest *)self loopbackInputSymbolIndex];
+            inputBuffer3 = [(_ANEChainingRequest *)self loopbackInputSymbolIndex];
             *buf = 138413058;
-            v49 = v34;
+            v49 = loopbackInputSymbolIndex2;
             v50 = 2112;
-            *v51 = v35;
+            *v51 = inputBuffer3;
             *&v51[8] = 2048;
             *&v51[10] = v31;
             *&v51[18] = 2048;
@@ -256,10 +256,10 @@ LABEL_35:
             break;
           }
 
-          v42 = [(_ANEChainingRequest *)self procedureIndex];
-          v43 = [v42 unsignedIntegerValue];
+          procedureIndex = [(_ANEChainingRequest *)self procedureIndex];
+          unsignedIntegerValue3 = [procedureIndex unsignedIntegerValue];
 
-          if (v43 >= 0x81)
+          if (unsignedIntegerValue3 >= 0x81)
           {
             v8 = +[_ANELog common];
             if (!os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -267,14 +267,14 @@ LABEL_35:
               break;
             }
 
-            v34 = NSStringFromSelector(aSelector);
-            v35 = [(_ANEChainingRequest *)self procedureIndex];
+            loopbackInputSymbolIndex2 = NSStringFromSelector(aSelector);
+            inputBuffer3 = [(_ANEChainingRequest *)self procedureIndex];
             *buf = 138413058;
-            v49 = v34;
+            v49 = loopbackInputSymbolIndex2;
             v50 = 2112;
-            *v51 = v35;
+            *v51 = inputBuffer3;
             *&v51[8] = 2048;
-            *&v51[10] = v43;
+            *&v51[10] = unsignedIntegerValue3;
             *&v51[18] = 1024;
             *&v51[20] = 128;
             v39 = "%@: self.procedureIndex=%@ length=%lu exceeds kANEMaxProcedures=%d";
@@ -285,8 +285,8 @@ LABEL_42:
             goto LABEL_35;
           }
 
-          v44 = [(_ANEChainingRequest *)self signalEvents];
-          v45 = [v44 count];
+          signalEvents = [(_ANEChainingRequest *)self signalEvents];
+          v45 = [signalEvents count];
 
           if (v45 < 0x101)
           {
@@ -337,51 +337,51 @@ LABEL_16:
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(_ANEChainingRequest *)self inputBuffer];
-  v7 = [(_ANEChainingRequest *)self outputSets];
-  v8 = [(_ANEChainingRequest *)self transactionHandle];
-  v9 = [(_ANEChainingRequest *)self procedureIndex];
-  v10 = [v3 stringWithFormat:@"%@: { inputBuffer=%@  outputSets=%@ ; transactionHandle=%@ ; procedureIndex=%@ }", v5, v6, v7, v8, v9];;
+  inputBuffer = [(_ANEChainingRequest *)self inputBuffer];
+  outputSets = [(_ANEChainingRequest *)self outputSets];
+  transactionHandle = [(_ANEChainingRequest *)self transactionHandle];
+  procedureIndex = [(_ANEChainingRequest *)self procedureIndex];
+  v10 = [v3 stringWithFormat:@"%@: { inputBuffer=%@  outputSets=%@ ; transactionHandle=%@ ; procedureIndex=%@ }", v5, inputBuffer, outputSets, transactionHandle, procedureIndex];;
 
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(_ANEChainingRequest *)self inputBuffer];
-  [v4 encodeObject:v5 forKey:@"inputs"];
+  coderCopy = coder;
+  inputBuffer = [(_ANEChainingRequest *)self inputBuffer];
+  [coderCopy encodeObject:inputBuffer forKey:@"inputs"];
 
-  v6 = [(_ANEChainingRequest *)self outputSets];
-  [v4 encodeObject:v6 forKey:@"outputs"];
+  outputSets = [(_ANEChainingRequest *)self outputSets];
+  [coderCopy encodeObject:outputSets forKey:@"outputs"];
 
-  v7 = [(_ANEChainingRequest *)self loopbackInputSymbolIndex];
-  [v4 encodeObject:v7 forKey:@"loopbackInputs"];
+  loopbackInputSymbolIndex = [(_ANEChainingRequest *)self loopbackInputSymbolIndex];
+  [coderCopy encodeObject:loopbackInputSymbolIndex forKey:@"loopbackInputs"];
 
-  v8 = [(_ANEChainingRequest *)self loopbackOutputSymbolIndex];
-  [v4 encodeObject:v8 forKey:@"loopbackOutputs"];
+  loopbackOutputSymbolIndex = [(_ANEChainingRequest *)self loopbackOutputSymbolIndex];
+  [coderCopy encodeObject:loopbackOutputSymbolIndex forKey:@"loopbackOutputs"];
 
-  v9 = [(_ANEChainingRequest *)self procedureIndex];
-  [v4 encodeObject:v9 forKey:@"procedureIndex"];
+  procedureIndex = [(_ANEChainingRequest *)self procedureIndex];
+  [coderCopy encodeObject:procedureIndex forKey:@"procedureIndex"];
 
-  v10 = [(_ANEChainingRequest *)self signalEvents];
-  [v4 encodeObject:v10 forKey:@"signalEvents"];
+  signalEvents = [(_ANEChainingRequest *)self signalEvents];
+  [coderCopy encodeObject:signalEvents forKey:@"signalEvents"];
 
-  v11 = [(_ANEChainingRequest *)self transactionHandle];
-  [v4 encodeObject:v11 forKey:@"transactionHandle"];
+  transactionHandle = [(_ANEChainingRequest *)self transactionHandle];
+  [coderCopy encodeObject:transactionHandle forKey:@"transactionHandle"];
 
-  v12 = [(_ANEChainingRequest *)self fwEnqueueDelay];
-  [v4 encodeObject:v12 forKey:@"fwEnqueueDelay"];
+  fwEnqueueDelay = [(_ANEChainingRequest *)self fwEnqueueDelay];
+  [coderCopy encodeObject:fwEnqueueDelay forKey:@"fwEnqueueDelay"];
 
-  v13 = [(_ANEChainingRequest *)self memoryPoolId];
-  [v4 encodeObject:v13 forKey:@"memoryPoolId"];
+  memoryPoolId = [(_ANEChainingRequest *)self memoryPoolId];
+  [coderCopy encodeObject:memoryPoolId forKey:@"memoryPoolId"];
 }
 
-- (_ANEChainingRequest)initWithCoder:(id)a3
+- (_ANEChainingRequest)initWithCoder:(id)coder
 {
   v20[6] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E695DFD8];
-  v4 = a3;
+  coderCopy = coder;
   v20[0] = objc_opt_class();
   v20[1] = objc_opt_class();
   v20[2] = objc_opt_class();
@@ -391,15 +391,15 @@ LABEL_16:
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:6];
   v6 = [v3 setWithArray:v5];
 
-  v17 = [v4 decodeObjectOfClasses:v6 forKey:@"inputs"];
-  v7 = [v4 decodeObjectOfClasses:v6 forKey:@"outputs"];
-  v8 = [v4 decodeObjectOfClasses:v6 forKey:@"loopbackInputs"];
-  v9 = [v4 decodeObjectOfClasses:v6 forKey:@"loopbackOutputs"];
-  v10 = [v4 decodeObjectOfClasses:v6 forKey:@"signalEvents"];
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"procedureIndex"];
-  v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"transactionHandle"];
-  v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"fwEnqueueDelay"];
-  v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"memoryPoolId"];
+  v17 = [coderCopy decodeObjectOfClasses:v6 forKey:@"inputs"];
+  v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"outputs"];
+  v8 = [coderCopy decodeObjectOfClasses:v6 forKey:@"loopbackInputs"];
+  v9 = [coderCopy decodeObjectOfClasses:v6 forKey:@"loopbackOutputs"];
+  v10 = [coderCopy decodeObjectOfClasses:v6 forKey:@"signalEvents"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"procedureIndex"];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"transactionHandle"];
+  v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"fwEnqueueDelay"];
+  v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"memoryPoolId"];
 
   v19 = [(_ANEChainingRequest *)self initWithInputs:v17 outputs:v7 lbInputSymbolId:v8 lbOutputSymbolId:v9 procedureIndex:v11 signalEvents:v10 transactionHandle:v12 fwEnqueueDelay:v13 memoryPoolId:v14];
   v15 = *MEMORY[0x1E69E9840];
@@ -410,7 +410,7 @@ LABEL_16:
 {
   v8 = *MEMORY[0x1E69E9840];
   v4 = 134218240;
-  v5 = a1;
+  selfCopy = self;
   v6 = 2048;
   v7 = a2;
   _os_log_error_impl(&dword_1AD246000, log, OS_LOG_TYPE_ERROR, "No input buffers or output sets. inputBuffer.count = %lu : outputSets.count = %lu", &v4, 0x16u);

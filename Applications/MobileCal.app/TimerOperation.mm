@@ -1,23 +1,23 @@
 @interface TimerOperation
-+ (id)operationWithTimeInterval:(double)a3;
-- (TimerOperation)initWithTimeInterval:(double)a3;
++ (id)operationWithTimeInterval:(double)interval;
+- (TimerOperation)initWithTimeInterval:(double)interval;
 - (void)cancel;
 - (void)finish;
 - (void)main;
 - (void)start;
-- (void)timerFired:(id)a3;
+- (void)timerFired:(id)fired;
 @end
 
 @implementation TimerOperation
 
-+ (id)operationWithTimeInterval:(double)a3
++ (id)operationWithTimeInterval:(double)interval
 {
-  v3 = [[TimerOperation alloc] initWithTimeInterval:a3];
+  v3 = [[TimerOperation alloc] initWithTimeInterval:interval];
 
   return v3;
 }
 
-- (TimerOperation)initWithTimeInterval:(double)a3
+- (TimerOperation)initWithTimeInterval:(double)interval
 {
   v7.receiver = self;
   v7.super_class = TimerOperation;
@@ -27,7 +27,7 @@
   {
     v4->_executing = 0;
     v4->_finished = 0;
-    [(TimerOperation *)v4 setTimeInterval:a3];
+    [(TimerOperation *)v4 setTimeInterval:interval];
   }
 
   return v5;
@@ -66,7 +66,7 @@
   [(TimerOperation *)self didChangeValueForKey:v3];
 }
 
-- (void)timerFired:(id)a3
+- (void)timerFired:(id)fired
 {
   if (([(TimerOperation *)self isCancelled]& 1) == 0)
   {
@@ -84,8 +84,8 @@
 
 - (void)cancel
 {
-  v3 = [(TimerOperation *)self timer];
-  [v3 invalidate];
+  timer = [(TimerOperation *)self timer];
+  [timer invalidate];
 
   v4.receiver = self;
   v4.super_class = TimerOperation;

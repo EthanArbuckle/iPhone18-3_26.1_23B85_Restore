@@ -2,7 +2,7 @@
 + (id)Connected;
 + (id)configurationForConnected;
 + (id)storeConfigurationForConnected;
-+ (id)streamWithName:(id)a3;
++ (id)streamWithName:(id)name;
 + (id)validKeyPaths;
 @end
 
@@ -11,7 +11,7 @@
 + (id)Connected
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForConnected];
+  configurationForConnected = [self configurationForConnected];
   v3 = +[BMGameControllerConnected columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -23,7 +23,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"GameController.Connected" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"GameController.Connected" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"GameController.Connected" schema:v9 configuration:configurationForConnected];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -32,13 +32,13 @@
 
 + (id)configurationForConnected
 {
-  v3 = [a1 storeConfigurationForConnected];
-  v4 = [a1 syncPolicyForConnected];
+  storeConfigurationForConnected = [self storeConfigurationForConnected];
+  syncPolicyForConnected = [self syncPolicyForConnected];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"A60FD4B0-C9C3-4360-8EF4-52177DBADDA8"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"GameController.Connected" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:&unk_1EF3EB658 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"GameController.Connected" eventClass:objc_opt_class() storeConfig:storeConfigurationForConnected syncPolicy:syncPolicyForConnected legacyNames:&unk_1EF3EB658 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -51,19 +51,19 @@
   return v3;
 }
 
-+ (id)streamWithName:(id)a3
++ (id)streamWithName:(id)name
 {
-  if ([a3 isEqualToString:@"Connected"])
+  if ([name isEqualToString:@"Connected"])
   {
-    v4 = [a1 Connected];
+    connected = [self Connected];
   }
 
   else
   {
-    v4 = 0;
+    connected = 0;
   }
 
-  return v4;
+  return connected;
 }
 
 + (id)validKeyPaths

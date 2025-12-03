@@ -1,25 +1,25 @@
 @interface WLKChannelResponse
-- (WLKChannelResponse)initWithDictionary:(id)a3 expirationDate:(id)a4 environmentHash:(unint64_t)a5;
+- (WLKChannelResponse)initWithDictionary:(id)dictionary expirationDate:(id)date environmentHash:(unint64_t)hash;
 @end
 
 @implementation WLKChannelResponse
 
-- (WLKChannelResponse)initWithDictionary:(id)a3 expirationDate:(id)a4 environmentHash:(unint64_t)a5
+- (WLKChannelResponse)initWithDictionary:(id)dictionary expirationDate:(id)date environmentHash:(unint64_t)hash
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = WLKChannelResponse;
   v7 = [(WLKChannelResponse *)&v13 init];
   if (v7)
   {
-    v8 = [v6 wlk_dictionaryForKey:@"channel"];
-    v9 = [v8 allValues];
+    v8 = [dictionaryCopy wlk_dictionaryForKey:@"channel"];
+    allValues = [v8 allValues];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __72__WLKChannelResponse_initWithDictionary_expirationDate_environmentHash___block_invoke;
     v11[3] = &unk_279E5FB20;
     v12 = v7;
-    [v9 enumerateObjectsUsingBlock:v11];
+    [allValues enumerateObjectsUsingBlock:v11];
   }
 
   return v7;

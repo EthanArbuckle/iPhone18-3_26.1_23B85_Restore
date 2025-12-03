@@ -1,6 +1,6 @@
 @interface WDSexualActivityListDataProvider
 - (id)sampleTypes;
-- (id)textForObject:(id)a3;
+- (id)textForObject:(id)object;
 @end
 
 @implementation WDSexualActivityListDataProvider
@@ -17,17 +17,17 @@
   return v3;
 }
 
-- (id)textForObject:(id)a3
+- (id)textForObject:(id)object
 {
-  v3 = [a3 metadata];
-  v4 = [v3 objectForKeyedSubscript:*MEMORY[0x277CCC508]];
+  metadata = [object metadata];
+  v4 = [metadata objectForKeyedSubscript:*MEMORY[0x277CCC508]];
 
   if (v4)
   {
-    v5 = [v4 BOOLValue];
+    bOOLValue = [v4 BOOLValue];
     v6 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.HealthUI"];
     v7 = v6;
-    if (v5)
+    if (bOOLValue)
     {
       v8 = @"PROTECTION_USED";
     }

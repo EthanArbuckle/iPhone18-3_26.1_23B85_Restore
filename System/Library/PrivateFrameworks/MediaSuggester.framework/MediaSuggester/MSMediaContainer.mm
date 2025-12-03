@@ -1,15 +1,15 @@
 @interface MSMediaContainer
 - (NSString)description;
-- (_TtC14MediaSuggester16MSMediaContainer)initWithCoder:(id)a3;
-- (id)copyWithZone:(void *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_TtC14MediaSuggester16MSMediaContainer)initWithCoder:(id)coder;
+- (id)copyWithZone:(void *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MSMediaContainer
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v3 = self;
+  selfCopy = self;
   sub_22C9DE9C8();
 
   sub_22C9D05CC(v6, v6[3]);
@@ -18,23 +18,23 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
+  coderCopy = coder;
+  selfCopy = self;
   sub_22C9DEBE4();
 }
 
-- (_TtC14MediaSuggester16MSMediaContainer)initWithCoder:(id)a3
+- (_TtC14MediaSuggester16MSMediaContainer)initWithCoder:(id)coder
 {
-  v3 = a3;
+  coderCopy = coder;
   MSMediaContainer.init(coder:)();
   return result;
 }
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_22C9DF6F4();
 
   v3 = sub_22CA20E10();

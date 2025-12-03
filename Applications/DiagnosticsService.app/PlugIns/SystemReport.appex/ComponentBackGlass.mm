@@ -1,31 +1,31 @@
 @interface ComponentBackGlass
 - (BOOL)isPresent;
 - (id)serialNumber;
-- (void)populateAttributes:(id)a3;
+- (void)populateAttributes:(id)attributes;
 @end
 
 @implementation ComponentBackGlass
 
-- (void)populateAttributes:(id)a3
+- (void)populateAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   v6.receiver = self;
   v6.super_class = ComponentBackGlass;
-  [(ComponentBase *)&v6 populateAttributes:v4];
-  v5 = [(ComponentBackGlass *)self serialNumber];
-  if (v5)
+  [(ComponentBase *)&v6 populateAttributes:attributesCopy];
+  serialNumber = [(ComponentBackGlass *)self serialNumber];
+  if (serialNumber)
   {
-    [v4 setObject:v5 forKeyedSubscript:@"serialNumber"];
+    [attributesCopy setObject:serialNumber forKeyedSubscript:@"serialNumber"];
   }
 }
 
 - (BOOL)isPresent
 {
-  v2 = [(ComponentBackGlass *)self serialNumber];
-  v3 = v2;
-  if (v2)
+  serialNumber = [(ComponentBackGlass *)self serialNumber];
+  v3 = serialNumber;
+  if (serialNumber)
   {
-    v4 = [v2 length] != 0;
+    v4 = [serialNumber length] != 0;
   }
 
   else

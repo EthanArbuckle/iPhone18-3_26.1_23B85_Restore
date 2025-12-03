@@ -1,16 +1,16 @@
 @interface ClientPayload
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_TtC9AskToCore13ClientPayload)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ClientPayload
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_2410DF4E0();
     swift_unknownObjectRelease();
@@ -19,7 +19,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = ClientPayload.isEqual(_:)(v8);
@@ -35,14 +35,14 @@
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5 = objc_allocWithZone(__swift_instantiateConcreteTypeFromMangledNameV2(&unk_27E5266A8, &qword_2410E5878));
-  v6 = self;
-  v7 = a3;
+  selfCopy = self;
+  coderCopy = coder;
   v8 = sub_2410DEF60();
   v9 = sub_2410DF0A0();
-  [v7 encodeObject:v8 forKey:v9];
+  [coderCopy encodeObject:v8 forKey:v9];
 }
 
 @end

@@ -1,27 +1,27 @@
 @interface SISchemaLocation
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (SISchemaLocation)initWithDictionary:(id)a3;
-- (SISchemaLocation)initWithJSON:(id)a3;
+- (SISchemaLocation)initWithDictionary:(id)dictionary;
+- (SISchemaLocation)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasHorizontalAccuracyInMeters:(BOOL)a3;
-- (void)setHasLongitude:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasHorizontalAccuracyInMeters:(BOOL)meters;
+- (void)setHasLongitude:(BOOL)longitude;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SISchemaLocation
 
-- (SISchemaLocation)initWithDictionary:(id)a3
+- (SISchemaLocation)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = SISchemaLocation;
   v5 = [(SISchemaLocation *)&v11 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"latitude"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"latitude"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -29,7 +29,7 @@
       [(SISchemaLocation *)v5 setLatitude:?];
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"longitude"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"longitude"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -37,7 +37,7 @@
       [(SISchemaLocation *)v5 setLongitude:?];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"horizontalAccuracyInMeters"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"horizontalAccuracyInMeters"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -51,30 +51,30 @@
   return v5;
 }
 
-- (SISchemaLocation)initWithJSON:(id)a3
+- (SISchemaLocation)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SISchemaLocation *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SISchemaLocation *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SISchemaLocation *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -87,14 +87,14 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 4) != 0)
   {
     v8 = MEMORY[0x1E696AD98];
     [(SISchemaLocation *)self horizontalAccuracyInMeters];
     v9 = [v8 numberWithFloat:?];
-    [v3 setObject:v9 forKeyedSubscript:@"horizontalAccuracyInMeters"];
+    [dictionary setObject:v9 forKeyedSubscript:@"horizontalAccuracyInMeters"];
 
     has = self->_has;
     if ((has & 1) == 0)
@@ -117,7 +117,7 @@ LABEL_3:
   v10 = MEMORY[0x1E696AD98];
   [(SISchemaLocation *)self latitude];
   v11 = [v10 numberWithFloat:?];
-  [v3 setObject:v11 forKeyedSubscript:@"latitude"];
+  [dictionary setObject:v11 forKeyedSubscript:@"latitude"];
 
   if ((*&self->_has & 2) != 0)
   {
@@ -125,13 +125,13 @@ LABEL_4:
     v5 = MEMORY[0x1E696AD98];
     [(SISchemaLocation *)self longitude];
     v6 = [v5 numberWithFloat:?];
-    [v3 setObject:v6 forKeyedSubscript:@"longitude"];
+    [dictionary setObject:v6 forKeyedSubscript:@"longitude"];
   }
 
 LABEL_5:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -255,16 +255,16 @@ LABEL_5:
   return v9 ^ v4 ^ v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_13;
   }
 
   has = self->_has;
-  v6 = v4[20];
+  v6 = equalCopy[20];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_13;
@@ -273,14 +273,14 @@ LABEL_5:
   if (*&has)
   {
     latitude = self->_latitude;
-    [v4 latitude];
+    [equalCopy latitude];
     if (latitude != v8)
     {
       goto LABEL_13;
     }
 
     has = self->_has;
-    v6 = v4[20];
+    v6 = equalCopy[20];
   }
 
   v9 = (*&has >> 1) & 1;
@@ -289,20 +289,20 @@ LABEL_5:
     if (v9)
     {
       longitude = self->_longitude;
-      [v4 longitude];
+      [equalCopy longitude];
       if (longitude != v11)
       {
         goto LABEL_13;
       }
 
       has = self->_has;
-      v6 = v4[20];
+      v6 = equalCopy[20];
     }
 
     v12 = (*&has >> 2) & 1;
     if (v12 == ((v6 >> 2) & 1))
     {
-      if (!v12 || (horizontalAccuracyInMeters = self->_horizontalAccuracyInMeters, [v4 horizontalAccuracyInMeters], horizontalAccuracyInMeters == v14))
+      if (!v12 || (horizontalAccuracyInMeters = self->_horizontalAccuracyInMeters, [equalCopy horizontalAccuracyInMeters], horizontalAccuracyInMeters == v14))
       {
         v15 = 1;
         goto LABEL_14;
@@ -317,15 +317,15 @@ LABEL_14:
   return v15;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v6 = v4;
+  v6 = toCopy;
   if (has)
   {
     PBDataWriterWriteFloatField();
-    v4 = v6;
+    toCopy = v6;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -345,20 +345,20 @@ LABEL_3:
   }
 
   PBDataWriterWriteFloatField();
-  v4 = v6;
+  toCopy = v6;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_4:
     PBDataWriterWriteFloatField();
-    v4 = v6;
+    toCopy = v6;
   }
 
 LABEL_5:
 }
 
-- (void)setHasHorizontalAccuracyInMeters:(BOOL)a3
+- (void)setHasHorizontalAccuracyInMeters:(BOOL)meters
 {
-  if (a3)
+  if (meters)
   {
     v3 = 4;
   }
@@ -371,9 +371,9 @@ LABEL_5:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasLongitude:(BOOL)a3
+- (void)setHasLongitude:(BOOL)longitude
 {
-  if (a3)
+  if (longitude)
   {
     v3 = 2;
   }

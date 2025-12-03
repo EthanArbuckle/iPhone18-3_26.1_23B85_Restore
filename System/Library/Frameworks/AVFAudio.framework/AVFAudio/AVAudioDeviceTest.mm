@@ -1,30 +1,30 @@
 @interface AVAudioDeviceTest
 - (AVAudioDeviceTest)init;
-- (AVAudioDeviceTest)initWithXPCEndPoint:(id)a3;
-- (id)initInProcess:(BOOL)a3;
+- (AVAudioDeviceTest)initWithXPCEndPoint:(id)point;
+- (id)initInProcess:(BOOL)process;
 - (void)cancel;
 - (void)dealloc;
-- (void)playback:(id)a3 filePath:(id)a4 completion:(id)a5;
-- (void)playbackTone:(id)a3 completion:(id)a4;
-- (void)setupAudioSessionForHearingTest:(id)a3;
-- (void)setupAudioSessionForHearingTestWithStatus:(id)a3 success:(id)a4;
-- (void)startRecording:(id)a3 filePath:(id)a4 completion:(id)a5;
-- (void)startWithSequence:(id)a3 completion:(id)a4;
-- (void)stopAudioSession:(id)a3;
+- (void)playback:(id)playback filePath:(id)path completion:(id)completion;
+- (void)playbackTone:(id)tone completion:(id)completion;
+- (void)setupAudioSessionForHearingTest:(id)test;
+- (void)setupAudioSessionForHearingTestWithStatus:(id)status success:(id)success;
+- (void)startRecording:(id)recording filePath:(id)path completion:(id)completion;
+- (void)startWithSequence:(id)sequence completion:(id)completion;
+- (void)stopAudioSession:(id)session;
 - (void)stopPlayback;
-- (void)stopRecording:(id)a3;
+- (void)stopRecording:(id)recording;
 @end
 
 @implementation AVAudioDeviceTest
 
 - (void)dealloc
 {
-  v3 = [(AVAudioDeviceTest *)self service];
+  service = [(AVAudioDeviceTest *)self service];
 
-  if (!v3)
+  if (!service)
   {
-    v4 = [(AVAudioDeviceTest *)self connection];
-    [v4 invalidate];
+    connection = [(AVAudioDeviceTest *)self connection];
+    [connection invalidate];
   }
 
   v5.receiver = self;
@@ -34,19 +34,19 @@
 
 - (void)cancel
 {
-  v3 = [(AVAudioDeviceTest *)self service];
+  service = [(AVAudioDeviceTest *)self service];
 
-  if (!v3)
+  if (!service)
   {
-    v4 = [(AVAudioDeviceTest *)self serviceDelegateAsync];
-    [v4 cancel];
+    serviceDelegateAsync = [(AVAudioDeviceTest *)self serviceDelegateAsync];
+    [serviceDelegateAsync cancel];
   }
 }
 
-- (void)stopAudioSession:(id)a3
+- (void)stopAudioSession:(id)session
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  sessionCopy = session;
   if (AVAudioDeviceTestClientLog(void)::once != -1)
   {
     dispatch_once(&AVAudioDeviceTestClientLog(void)::once, &__block_literal_global_2167);
@@ -55,18 +55,18 @@
   v5 = *AVAudioDeviceTestClientLog(void)::category;
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [(AVAudioDeviceTest *)self connection];
+    connection = [(AVAudioDeviceTest *)self connection];
     v11 = 136315650;
     v12 = "AVAudioDeviceTest.mm";
     v13 = 1024;
     v14 = 272;
     v15 = 1024;
-    v16 = [v6 processIdentifier];
+    processIdentifier = [connection processIdentifier];
     _os_log_impl(&dword_1BA5AC000, v5, OS_LOG_TYPE_INFO, "%25s:%-5d Stopping audio session. { pid=%d }", &v11, 0x18u);
   }
 
-  v7 = [(AVAudioDeviceTest *)self service];
-  v8 = v7 == 0;
+  service = [(AVAudioDeviceTest *)self service];
+  v8 = service == 0;
 
   if (v8)
   {
@@ -79,24 +79,24 @@
     {
       [(AVAudioDeviceTest *)self serviceDelegateSync];
     }
-    v9 = ;
-    [v9 stopAudioSession:v4];
+    service2 = ;
+    [service2 stopAudioSession:sessionCopy];
   }
 
   else
   {
-    v9 = [(AVAudioDeviceTest *)self service];
-    [v9 stopAudioSession:v4];
+    service2 = [(AVAudioDeviceTest *)self service];
+    [service2 stopAudioSession:sessionCopy];
   }
 
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setupAudioSessionForHearingTestWithStatus:(id)a3 success:(id)a4
+- (void)setupAudioSessionForHearingTestWithStatus:(id)status success:(id)success
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  statusCopy = status;
+  successCopy = success;
   if (AVAudioDeviceTestClientLog(void)::once != -1)
   {
     dispatch_once(&AVAudioDeviceTestClientLog(void)::once, &__block_literal_global_2167);
@@ -105,18 +105,18 @@
   v8 = *AVAudioDeviceTestClientLog(void)::category;
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
-    v9 = [(AVAudioDeviceTest *)self connection];
+    connection = [(AVAudioDeviceTest *)self connection];
     v14 = 136315650;
     v15 = "AVAudioDeviceTest.mm";
     v16 = 1024;
     v17 = 260;
     v18 = 1024;
-    v19 = [v9 processIdentifier];
+    processIdentifier = [connection processIdentifier];
     _os_log_impl(&dword_1BA5AC000, v8, OS_LOG_TYPE_INFO, "%25s:%-5d Setting up hearing test audio session. { pid=%d }", &v14, 0x18u);
   }
 
-  v10 = [(AVAudioDeviceTest *)self service];
-  v11 = v10 == 0;
+  service = [(AVAudioDeviceTest *)self service];
+  v11 = service == 0;
 
   if (v11)
   {
@@ -129,23 +129,23 @@
     {
       [(AVAudioDeviceTest *)self serviceDelegateSync];
     }
-    v12 = ;
-    [v12 setupAudioSessionForHearingTestWithStatus:v6 success:v7];
+    service2 = ;
+    [service2 setupAudioSessionForHearingTestWithStatus:statusCopy success:successCopy];
   }
 
   else
   {
-    v12 = [(AVAudioDeviceTest *)self service];
-    [v12 setupAudioSessionForHearingTestWithStatus:v6 success:v7];
+    service2 = [(AVAudioDeviceTest *)self service];
+    [service2 setupAudioSessionForHearingTestWithStatus:statusCopy success:successCopy];
   }
 
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setupAudioSessionForHearingTest:(id)a3
+- (void)setupAudioSessionForHearingTest:(id)test
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  testCopy = test;
   if (AVAudioDeviceTestClientLog(void)::once != -1)
   {
     dispatch_once(&AVAudioDeviceTestClientLog(void)::once, &__block_literal_global_2167);
@@ -154,18 +154,18 @@
   v5 = *AVAudioDeviceTestClientLog(void)::category;
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [(AVAudioDeviceTest *)self connection];
+    connection = [(AVAudioDeviceTest *)self connection];
     v11 = 136315650;
     v12 = "AVAudioDeviceTest.mm";
     v13 = 1024;
     v14 = 247;
     v15 = 1024;
-    v16 = [v6 processIdentifier];
+    processIdentifier = [connection processIdentifier];
     _os_log_impl(&dword_1BA5AC000, v5, OS_LOG_TYPE_INFO, "%25s:%-5d Setting up hearing test audio session. { pid=%d }", &v11, 0x18u);
   }
 
-  v7 = [(AVAudioDeviceTest *)self service];
-  v8 = v7 == 0;
+  service = [(AVAudioDeviceTest *)self service];
+  v8 = service == 0;
 
   if (v8)
   {
@@ -178,23 +178,23 @@
     {
       [(AVAudioDeviceTest *)self serviceDelegateSync];
     }
-    v9 = ;
-    [v9 setupAudioSessionForHearingTest:v4];
+    service2 = ;
+    [service2 setupAudioSessionForHearingTest:testCopy];
   }
 
   else
   {
-    v9 = [(AVAudioDeviceTest *)self service];
-    [v9 setupAudioSessionForHearingTest:v4];
+    service2 = [(AVAudioDeviceTest *)self service];
+    [service2 setupAudioSessionForHearingTest:testCopy];
   }
 
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)stopRecording:(id)a3
+- (void)stopRecording:(id)recording
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  recordingCopy = recording;
   if (AVAudioDeviceTestClientLog(void)::once != -1)
   {
     dispatch_once(&AVAudioDeviceTestClientLog(void)::once, &__block_literal_global_2167);
@@ -210,8 +210,8 @@
     _os_log_impl(&dword_1BA5AC000, v5, OS_LOG_TYPE_DEFAULT, "%25s:%-5d stopping recording on client side", &v10, 0x12u);
   }
 
-  v6 = [(AVAudioDeviceTest *)self service];
-  v7 = v6 == 0;
+  service = [(AVAudioDeviceTest *)self service];
+  v7 = service == 0;
 
   if (v7)
   {
@@ -224,25 +224,25 @@
     {
       [(AVAudioDeviceTest *)self serviceDelegateSync];
     }
-    v8 = ;
-    [v8 stopRecording:v4];
+    service2 = ;
+    [service2 stopRecording:recordingCopy];
   }
 
   else
   {
-    v8 = [(AVAudioDeviceTest *)self service];
-    [v8 stopRecording:v4];
+    service2 = [(AVAudioDeviceTest *)self service];
+    [service2 stopRecording:recordingCopy];
   }
 
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)startRecording:(id)a3 filePath:(id)a4 completion:(id)a5
+- (void)startRecording:(id)recording filePath:(id)path completion:(id)completion
 {
   v32 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  recordingCopy = recording;
+  pathCopy = path;
+  completionCopy = completion;
   if (AVAudioDeviceTestClientLog(void)::once != -1)
   {
     dispatch_once(&AVAudioDeviceTestClientLog(void)::once, &__block_literal_global_2167);
@@ -256,17 +256,17 @@
     v26 = 1024;
     v27 = 211;
     v28 = 2112;
-    v29 = v9;
+    v29 = pathCopy;
     _os_log_impl(&dword_1BA5AC000, v11, OS_LOG_TYPE_DEFAULT, "%25s:%-5d starting recording on client side %@", &v24, 0x1Cu);
   }
 
-  v12 = [(AVAudioDeviceTest *)self service];
-  v13 = v12 == 0;
+  service = [(AVAudioDeviceTest *)self service];
+  v13 = service == 0;
 
   if (v13)
   {
-    v15 = v9;
-    [v9 fileSystemRepresentation];
+    v15 = pathCopy;
+    [pathCopy fileSystemRepresentation];
     v16 = *MEMORY[0x1E69E9BB0];
     v17 = *MEMORY[0x1E69E9BE0];
     v18 = sandbox_extension_issue_file();
@@ -285,15 +285,15 @@
       v28 = 2080;
       v29 = v16;
       v30 = 2112;
-      v31 = v9;
+      v31 = pathCopy;
       _os_log_impl(&dword_1BA5AC000, v19, OS_LOG_TYPE_DEFAULT, "%25s:%-5d Issuing sandbox %s for path %@", &v24, 0x26u);
     }
 
     if (v18)
     {
-      v20 = [(AVAudioDeviceTest *)self serviceDelegateSync];
+      serviceDelegateSync = [(AVAudioDeviceTest *)self serviceDelegateSync];
       v21 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v18];
-      [v20 passExtensionToken:v21];
+      [serviceDelegateSync passExtensionToken:v21];
 
       free(v18);
     }
@@ -325,14 +325,14 @@
     {
       [(AVAudioDeviceTest *)self serviceDelegateSync];
     }
-    v14 = ;
-    [v14 startRecording:v8 filePath:v9 completion:v10];
+    service2 = ;
+    [service2 startRecording:recordingCopy filePath:pathCopy completion:completionCopy];
   }
 
   else
   {
-    v14 = [(AVAudioDeviceTest *)self service];
-    [v14 startRecording:v8 filePath:v9 completion:v10];
+    service2 = [(AVAudioDeviceTest *)self service];
+    [service2 startRecording:recordingCopy filePath:pathCopy completion:completionCopy];
   }
 
   v23 = *MEMORY[0x1E69E9840];
@@ -356,8 +356,8 @@
     _os_log_impl(&dword_1BA5AC000, v3, OS_LOG_TYPE_DEFAULT, "%25s:%-5d stopping playback tone on client side", &v8, 0x12u);
   }
 
-  v4 = [(AVAudioDeviceTest *)self service];
-  v5 = v4 == 0;
+  service = [(AVAudioDeviceTest *)self service];
+  v5 = service == 0;
 
   if (v5)
   {
@@ -370,24 +370,24 @@
     {
       [(AVAudioDeviceTest *)self serviceDelegateSync];
     }
-    v6 = ;
-    [v6 stopPlayback];
+    service2 = ;
+    [service2 stopPlayback];
   }
 
   else
   {
-    v6 = [(AVAudioDeviceTest *)self service];
-    [v6 stopPlayback];
+    service2 = [(AVAudioDeviceTest *)self service];
+    [service2 stopPlayback];
   }
 
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)playbackTone:(id)a3 completion:(id)a4
+- (void)playbackTone:(id)tone completion:(id)completion
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  toneCopy = tone;
+  completionCopy = completion;
   if (AVAudioDeviceTestClientLog(void)::once != -1)
   {
     dispatch_once(&AVAudioDeviceTestClientLog(void)::once, &__block_literal_global_2167);
@@ -403,8 +403,8 @@
     _os_log_impl(&dword_1BA5AC000, v8, OS_LOG_TYPE_DEFAULT, "%25s:%-5d playback tone on client side", &v13, 0x12u);
   }
 
-  v9 = [(AVAudioDeviceTest *)self service];
-  v10 = v9 == 0;
+  service = [(AVAudioDeviceTest *)self service];
+  v10 = service == 0;
 
   if (v10)
   {
@@ -417,25 +417,25 @@
     {
       [(AVAudioDeviceTest *)self serviceDelegateSync];
     }
-    v11 = ;
-    [v11 playbackTone:v6 completion:v7];
+    service2 = ;
+    [service2 playbackTone:toneCopy completion:completionCopy];
   }
 
   else
   {
-    v11 = [(AVAudioDeviceTest *)self service];
-    [v11 playbackTone:v6 completion:v7];
+    service2 = [(AVAudioDeviceTest *)self service];
+    [service2 playbackTone:toneCopy completion:completionCopy];
   }
 
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)playback:(id)a3 filePath:(id)a4 completion:(id)a5
+- (void)playback:(id)playback filePath:(id)path completion:(id)completion
 {
   v32 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  playbackCopy = playback;
+  pathCopy = path;
+  completionCopy = completion;
   if (AVAudioDeviceTestClientLog(void)::once != -1)
   {
     dispatch_once(&AVAudioDeviceTestClientLog(void)::once, &__block_literal_global_2167);
@@ -451,8 +451,8 @@
     _os_log_impl(&dword_1BA5AC000, v11, OS_LOG_TYPE_DEFAULT, "%25s:%-5d playback on client side", &v24, 0x12u);
   }
 
-  v12 = [(AVAudioDeviceTest *)self service];
-  v13 = v12 == 0;
+  service = [(AVAudioDeviceTest *)self service];
+  v13 = service == 0;
 
   if (v13)
   {
@@ -475,15 +475,15 @@
       v28 = 2080;
       v29 = v19;
       v30 = 2112;
-      v31 = v9;
+      v31 = pathCopy;
       _os_log_impl(&dword_1BA5AC000, v18, OS_LOG_TYPE_DEFAULT, "%25s:%-5d Issuing sandbox %s for path %@", &v24, 0x26u);
     }
 
     if (v17)
     {
-      v20 = [(AVAudioDeviceTest *)self serviceDelegateSync];
+      serviceDelegateSync = [(AVAudioDeviceTest *)self serviceDelegateSync];
       v21 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v17];
-      [v20 passExtensionToken:v21];
+      [serviceDelegateSync passExtensionToken:v21];
 
       free(v17);
     }
@@ -515,24 +515,24 @@
     {
       [(AVAudioDeviceTest *)self serviceDelegateSync];
     }
-    v14 = ;
-    [v14 playback:v8 filePath:v9 completion:v10];
+    service2 = ;
+    [service2 playback:playbackCopy filePath:pathCopy completion:completionCopy];
   }
 
   else
   {
-    v14 = [(AVAudioDeviceTest *)self service];
-    [v14 playback:v8 filePath:v9 completion:v10];
+    service2 = [(AVAudioDeviceTest *)self service];
+    [service2 playback:playbackCopy filePath:pathCopy completion:completionCopy];
   }
 
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (void)startWithSequence:(id)a3 completion:(id)a4
+- (void)startWithSequence:(id)sequence completion:(id)completion
 {
   v39 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  sequenceCopy = sequence;
+  completionCopy = completion;
   if (AVAudioDeviceTestClientLog(void)::once != -1)
   {
     dispatch_once(&AVAudioDeviceTestClientLog(void)::once, &__block_literal_global_2167);
@@ -548,14 +548,14 @@
     _os_log_impl(&dword_1BA5AC000, v8, OS_LOG_TYPE_DEFAULT, "%25s:%-5d starting sequence on client side", buf, 0x12u);
   }
 
-  v9 = [(AVAudioDeviceTest *)self service];
-  v10 = v9 == 0;
+  service = [(AVAudioDeviceTest *)self service];
+  v10 = service == 0;
 
   if (v10)
   {
-    v13 = [v6 stimulusURL];
-    v14 = v13;
-    [v13 fileSystemRepresentation];
+    stimulusURL = [sequenceCopy stimulusURL];
+    v14 = stimulusURL;
+    [stimulusURL fileSystemRepresentation];
     v15 = *MEMORY[0x1E69E9BA8];
     v16 = *MEMORY[0x1E69E9BE0];
     v17 = sandbox_extension_issue_file();
@@ -568,9 +568,9 @@
     v18 = *AVAudioDeviceTestClientLog(void)::category;
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
-      v19 = [v6 stimulusURL];
-      v20 = v19;
-      v21 = [v19 fileSystemRepresentation];
+      stimulusURL2 = [sequenceCopy stimulusURL];
+      v20 = stimulusURL2;
+      fileSystemRepresentation = [stimulusURL2 fileSystemRepresentation];
       *buf = 136315906;
       v32 = "AVAudioDeviceTest.mm";
       v33 = 1024;
@@ -578,15 +578,15 @@
       v35 = 2080;
       v36 = v15;
       v37 = 2080;
-      v38 = v21;
+      v38 = fileSystemRepresentation;
       _os_log_impl(&dword_1BA5AC000, v18, OS_LOG_TYPE_DEFAULT, "%25s:%-5d Issuing sandbox %s for path %s", buf, 0x26u);
     }
 
     if (v17)
     {
-      v22 = [(AVAudioDeviceTest *)self serviceDelegateSync];
+      serviceDelegateSync = [(AVAudioDeviceTest *)self serviceDelegateSync];
       v23 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v17];
-      [v22 passExtensionToken:v23];
+      [serviceDelegateSync passExtensionToken:v23];
 
       free(v17);
     }
@@ -623,8 +623,8 @@
     v27[1] = 3221225472;
     v27[2] = __50__AVAudioDeviceTest_startWithSequence_completion___block_invoke_54;
     v27[3] = &unk_1E7EF54B8;
-    v28 = v7;
-    [v12 startWithSequence:v6 completion:v27];
+    v28 = completionCopy;
+    [v12 startWithSequence:sequenceCopy completion:v27];
     if (AVAudioDeviceTestClientLog(void)::once != -1)
     {
       dispatch_once(&AVAudioDeviceTestClientLog(void)::once, &__block_literal_global_2167);
@@ -643,13 +643,13 @@
 
   else
   {
-    v11 = [(AVAudioDeviceTest *)self service];
+    service2 = [(AVAudioDeviceTest *)self service];
     v29[0] = MEMORY[0x1E69E9820];
     v29[1] = 3221225472;
     v29[2] = __50__AVAudioDeviceTest_startWithSequence_completion___block_invoke;
     v29[3] = &unk_1E7EF54B8;
-    v30 = v7;
-    [v11 startWithSequence:v6 completion:v29];
+    v30 = completionCopy;
+    [service2 startWithSequence:sequenceCopy completion:v29];
 
     v12 = v30;
   }
@@ -789,16 +789,16 @@ void __50__AVAudioDeviceTest_startWithSequence_completion___block_invoke_54(uint
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (id)initInProcess:(BOOL)a3
+- (id)initInProcess:(BOOL)process
 {
-  v3 = a3;
+  processCopy = process;
   v16 = *MEMORY[0x1E69E9840];
   v11.receiver = self;
   v11.super_class = AVAudioDeviceTest;
   v4 = [(AVAudioDeviceTest *)&v11 init];
   if (v4)
   {
-    if (v3)
+    if (processCopy)
     {
       if (AVAudioDeviceTestClientLog(void)::once != -1)
       {
@@ -869,10 +869,10 @@ void __50__AVAudioDeviceTest_startWithSequence_completion___block_invoke_54(uint
   return result;
 }
 
-- (AVAudioDeviceTest)initWithXPCEndPoint:(id)a3
+- (AVAudioDeviceTest)initWithXPCEndPoint:(id)point
 {
   v62 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  pointCopy = point;
   v55.receiver = self;
   v55.super_class = AVAudioDeviceTest;
   v5 = [(AVAudioDeviceTest *)&v55 init];
@@ -881,81 +881,81 @@ void __50__AVAudioDeviceTest_startWithSequence_completion___block_invoke_54(uint
     goto LABEL_6;
   }
 
-  if (v4)
+  if (pointCopy)
   {
-    v6 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithListenerEndpoint:v4];
+    v6 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithListenerEndpoint:pointCopy];
     [(AVAudioDeviceTest *)v5 setConnection:v6];
 
 LABEL_5:
     v9 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F3864788];
-    v10 = [(AVAudioDeviceTest *)v5 connection];
-    [v10 setRemoteObjectInterface:v9];
+    connection = [(AVAudioDeviceTest *)v5 connection];
+    [connection setRemoteObjectInterface:v9];
 
-    v11 = [(AVAudioDeviceTest *)v5 connection];
-    v12 = [v11 remoteObjectInterface];
+    connection2 = [(AVAudioDeviceTest *)v5 connection];
+    remoteObjectInterface = [connection2 remoteObjectInterface];
     v13 = MEMORY[0x1E695DFD8];
     v14 = objc_opt_class();
     v15 = objc_opt_class();
     v16 = [v13 setWithObjects:{v14, v15, objc_opt_class(), 0}];
-    [v12 setClasses:v16 forSelector:sel_startWithSequence_completion_ argumentIndex:0 ofReply:1];
+    [remoteObjectInterface setClasses:v16 forSelector:sel_startWithSequence_completion_ argumentIndex:0 ofReply:1];
 
-    v17 = [(AVAudioDeviceTest *)v5 connection];
-    v18 = [v17 remoteObjectInterface];
+    connection3 = [(AVAudioDeviceTest *)v5 connection];
+    remoteObjectInterface2 = [connection3 remoteObjectInterface];
     v19 = MEMORY[0x1E695DFD8];
     v20 = objc_opt_class();
     v21 = [v19 setWithObjects:{v20, objc_opt_class(), 0}];
-    [v18 setClasses:v21 forSelector:sel_startWithSequence_completion_ argumentIndex:0 ofReply:0];
+    [remoteObjectInterface2 setClasses:v21 forSelector:sel_startWithSequence_completion_ argumentIndex:0 ofReply:0];
 
-    v22 = [(AVAudioDeviceTest *)v5 connection];
-    v23 = [v22 remoteObjectInterface];
+    connection4 = [(AVAudioDeviceTest *)v5 connection];
+    remoteObjectInterface3 = [connection4 remoteObjectInterface];
     v24 = MEMORY[0x1E695DFD8];
     v25 = objc_opt_class();
     v26 = [v24 setWithObjects:{v25, objc_opt_class(), 0}];
-    [v23 setClasses:v26 forSelector:sel_playback_filePath_completion_ argumentIndex:0 ofReply:0];
+    [remoteObjectInterface3 setClasses:v26 forSelector:sel_playback_filePath_completion_ argumentIndex:0 ofReply:0];
 
-    v27 = [(AVAudioDeviceTest *)v5 connection];
-    v28 = [v27 remoteObjectInterface];
+    connection5 = [(AVAudioDeviceTest *)v5 connection];
+    remoteObjectInterface4 = [connection5 remoteObjectInterface];
     v29 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
-    [v28 setClasses:v29 forSelector:sel_playback_filePath_completion_ argumentIndex:0 ofReply:1];
+    [remoteObjectInterface4 setClasses:v29 forSelector:sel_playback_filePath_completion_ argumentIndex:0 ofReply:1];
 
-    v30 = [(AVAudioDeviceTest *)v5 connection];
-    v31 = [v30 remoteObjectInterface];
-    [v31 setClass:objc_opt_class() forSelector:sel_playbackTone_completion_ argumentIndex:0 ofReply:0];
+    connection6 = [(AVAudioDeviceTest *)v5 connection];
+    remoteObjectInterface5 = [connection6 remoteObjectInterface];
+    [remoteObjectInterface5 setClass:objc_opt_class() forSelector:sel_playbackTone_completion_ argumentIndex:0 ofReply:0];
 
-    v32 = [(AVAudioDeviceTest *)v5 connection];
-    v33 = [v32 remoteObjectInterface];
+    connection7 = [(AVAudioDeviceTest *)v5 connection];
+    remoteObjectInterface6 = [connection7 remoteObjectInterface];
     v34 = MEMORY[0x1E695DFD8];
     v35 = objc_opt_class();
     v36 = objc_opt_class();
     v37 = [v34 setWithObjects:{v35, v36, objc_opt_class(), 0}];
-    [v33 setClasses:v37 forSelector:sel_playbackTone_completion_ argumentIndex:0 ofReply:1];
+    [remoteObjectInterface6 setClasses:v37 forSelector:sel_playbackTone_completion_ argumentIndex:0 ofReply:1];
 
-    v38 = [(AVAudioDeviceTest *)v5 connection];
-    v39 = [v38 remoteObjectInterface];
+    connection8 = [(AVAudioDeviceTest *)v5 connection];
+    remoteObjectInterface7 = [connection8 remoteObjectInterface];
     v40 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
-    [v39 setClasses:v40 forSelector:sel_setupAudioSessionForHearingTest_ argumentIndex:0 ofReply:1];
+    [remoteObjectInterface7 setClasses:v40 forSelector:sel_setupAudioSessionForHearingTest_ argumentIndex:0 ofReply:1];
 
-    v41 = [(AVAudioDeviceTest *)v5 connection];
-    v42 = [v41 remoteObjectInterface];
+    connection9 = [(AVAudioDeviceTest *)v5 connection];
+    remoteObjectInterface8 = [connection9 remoteObjectInterface];
     v43 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
-    [v42 setClasses:v43 forSelector:sel_stopAudioSession_ argumentIndex:0 ofReply:1];
+    [remoteObjectInterface8 setClasses:v43 forSelector:sel_stopAudioSession_ argumentIndex:0 ofReply:1];
 
-    v44 = [(AVAudioDeviceTest *)v5 connection];
-    v45 = [v44 remoteObjectProxyWithErrorHandler:&__block_literal_global_42];
+    connection10 = [(AVAudioDeviceTest *)v5 connection];
+    v45 = [connection10 remoteObjectProxyWithErrorHandler:&__block_literal_global_42];
     [(AVAudioDeviceTest *)v5 setServiceDelegateAsync:v45];
 
-    v46 = [(AVAudioDeviceTest *)v5 connection];
-    v47 = [v46 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_45];
+    connection11 = [(AVAudioDeviceTest *)v5 connection];
+    v47 = [connection11 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_45];
     [(AVAudioDeviceTest *)v5 setServiceDelegateSync:v47];
 
-    v48 = [(AVAudioDeviceTest *)v5 connection];
-    [v48 setInterruptionHandler:&__block_literal_global_48];
+    connection12 = [(AVAudioDeviceTest *)v5 connection];
+    [connection12 setInterruptionHandler:&__block_literal_global_48];
 
-    v49 = [(AVAudioDeviceTest *)v5 connection];
-    [v49 setInvalidationHandler:&__block_literal_global_51];
+    connection13 = [(AVAudioDeviceTest *)v5 connection];
+    [connection13 setInvalidationHandler:&__block_literal_global_51];
 
-    v50 = [(AVAudioDeviceTest *)v5 connection];
-    [v50 resume];
+    connection14 = [(AVAudioDeviceTest *)v5 connection];
+    [connection14 resume];
 
 LABEL_6:
     v51 = v5;
@@ -965,8 +965,8 @@ LABEL_6:
   v7 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithServiceName:@"com.apple.avfaudio.devicetest.service"];
   [(AVAudioDeviceTest *)v5 setConnection:v7];
 
-  v8 = [(AVAudioDeviceTest *)v5 connection];
-  LODWORD(v7) = v8 == 0;
+  connection15 = [(AVAudioDeviceTest *)v5 connection];
+  LODWORD(v7) = connection15 == 0;
 
   if (!v7)
   {

@@ -1,12 +1,12 @@
 @interface OverlayLayer
-- (_TtC16AutomationModeUI12OverlayLayer)initWithLayer:(id)a3;
+- (_TtC16AutomationModeUI12OverlayLayer)initWithLayer:(id)layer;
 - (void)dealloc;
 - (void)layoutSublayers;
 @end
 
 @implementation OverlayLayer
 
-- (_TtC16AutomationModeUI12OverlayLayer)initWithLayer:(id)a3
+- (_TtC16AutomationModeUI12OverlayLayer)initWithLayer:(id)layer
 {
   swift_unknownObjectRetain();
   _bridgeAnyObjectToAny(_:)();
@@ -17,7 +17,7 @@
 - (void)dealloc
 {
   v3 = *(&self->super.super.isa + OBJC_IVAR____TtC16AutomationModeUI12OverlayLayer_textGroupMoveTimer);
-  v4 = self;
+  selfCopy = self;
   if (v3)
   {
     [v3 invalidate];
@@ -30,7 +30,7 @@
 
 - (void)layoutSublayers
 {
-  v2 = self;
+  selfCopy = self;
   sub_100008624();
 }
 

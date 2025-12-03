@@ -1,21 +1,21 @@
 @interface SKUIProgrammedCardLayout
-+ (BOOL)allowsViewElement:(id)a3;
-- (double)bottomInsetForLastViewElement:(id)a3 width:(double)a4;
++ (BOOL)allowsViewElement:(id)element;
+- (double)bottomInsetForLastViewElement:(id)element width:(double)width;
 - (double)horizontalContentInset;
-- (double)topInsetForViewElement:(id)a3 previousViewElement:(id)a4 width:(double)a5;
-- (id)_fontForButton:(id)a3;
-- (id)_fontForLabel:(id)a3;
-- (id)_stringLayoutForViewElement:(id)a3 width:(double)a4;
-- (id)attributedStringForButton:(id)a3;
-- (id)attributedStringForLabel:(id)a3;
+- (double)topInsetForViewElement:(id)element previousViewElement:(id)viewElement width:(double)width;
+- (id)_fontForButton:(id)button;
+- (id)_fontForLabel:(id)label;
+- (id)_stringLayoutForViewElement:(id)element width:(double)width;
+- (id)attributedStringForButton:(id)button;
+- (id)attributedStringForLabel:(id)label;
 - (int64_t)layoutStyle;
 @end
 
 @implementation SKUIProgrammedCardLayout
 
-+ (BOOL)allowsViewElement:(id)a3
++ (BOOL)allowsViewElement:(id)element
 {
-  v3 = a3;
+  elementCopy = element;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -28,19 +28,19 @@
     }
   }
 
-  v12 = [v3 elementType];
+  elementType = [elementCopy elementType];
   v13 = 1;
-  if (v12 > 0x32 || ((1 << v12) & 0x6000000001000) == 0)
+  if (elementType > 0x32 || ((1 << elementType) & 0x6000000001000) == 0)
   {
-    v13 = v12 == 138;
+    v13 = elementType == 138;
   }
 
   return v13;
 }
 
-- (id)attributedStringForButton:(id)a3
+- (id)attributedStringForButton:(id)button
 {
-  v4 = a3;
+  buttonCopy = button;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -53,8 +53,8 @@
     }
   }
 
-  v13 = [v4 style];
-  v14 = SKUIViewElementAlignmentForStyle(v13);
+  style = [buttonCopy style];
+  v14 = SKUIViewElementAlignmentForStyle(style);
 
   if (v14)
   {
@@ -66,22 +66,22 @@
     v15 = 1;
   }
 
-  v16 = [v4 buttonText];
-  v17 = [(SKUIProgrammedCardLayout *)self _fontForButton:v4];
-  v18 = [v4 style];
-  v19 = [v16 attributedStringWithDefaultFont:v17 foregroundColor:0 textAlignment:v15 style:v18];
+  buttonText = [buttonCopy buttonText];
+  v17 = [(SKUIProgrammedCardLayout *)self _fontForButton:buttonCopy];
+  style2 = [buttonCopy style];
+  v19 = [buttonText attributedStringWithDefaultFont:v17 foregroundColor:0 textAlignment:v15 style:style2];
 
   return v19;
 }
 
-- (id)attributedStringForLabel:(id)a3
+- (id)attributedStringForLabel:(id)label
 {
-  v4 = a3;
-  v5 = [v4 style];
-  v6 = [v5 textAlignment];
-  if (v6)
+  labelCopy = label;
+  style = [labelCopy style];
+  textAlignment = [style textAlignment];
+  if (textAlignment)
   {
-    v7 = SKUIViewElementNSTextAlignmentForIKElementAlignment(v6);
+    v7 = SKUIViewElementNSTextAlignmentForIKElementAlignment(textAlignment);
   }
 
   else
@@ -89,13 +89,13 @@
     v7 = 1;
   }
 
-  v8 = [(SKUICardLayout *)self layoutContext];
-  v9 = [v8 tintColor];
-  v10 = SKUIViewElementPlainColorWithStyle(v5, v9);
+  layoutContext = [(SKUICardLayout *)self layoutContext];
+  tintColor = [layoutContext tintColor];
+  v10 = SKUIViewElementPlainColorWithStyle(style, tintColor);
 
   if (!v10)
   {
-    if ([v4 labelViewStyle] == 5)
+    if ([labelCopy labelViewStyle] == 5)
     {
       [MEMORY[0x277D75348] blackColor];
     }
@@ -107,16 +107,16 @@
     v10 = ;
   }
 
-  v11 = [v4 text];
-  v12 = [(SKUIProgrammedCardLayout *)self _fontForLabel:v4];
-  v13 = [v11 attributedStringWithDefaultFont:v12 foregroundColor:v10 textAlignment:v7 style:v5];
+  text = [labelCopy text];
+  v12 = [(SKUIProgrammedCardLayout *)self _fontForLabel:labelCopy];
+  v13 = [text attributedStringWithDefaultFont:v12 foregroundColor:v10 textAlignment:v7 style:style];
 
   return v13;
 }
 
-- (double)bottomInsetForLastViewElement:(id)a3 width:(double)a4
+- (double)bottomInsetForLastViewElement:(id)element width:(double)width
 {
-  v6 = a3;
+  elementCopy = element;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -129,7 +129,7 @@
     }
   }
 
-  v15 = [(SKUIProgrammedCardLayout *)self _stringLayoutForViewElement:v6 width:a4];
+  v15 = [(SKUIProgrammedCardLayout *)self _stringLayoutForViewElement:elementCopy width:width];
   v16 = v15;
   if (v15)
   {
@@ -182,10 +182,10 @@
   return 1;
 }
 
-- (double)topInsetForViewElement:(id)a3 previousViewElement:(id)a4 width:(double)a5
+- (double)topInsetForViewElement:(id)element previousViewElement:(id)viewElement width:(double)width
 {
-  v8 = a3;
-  v9 = a4;
+  elementCopy = element;
+  viewElementCopy = viewElement;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -198,28 +198,28 @@
     }
   }
 
-  v18 = [v8 elementType];
-  if ((v18 - 49) < 2)
+  elementType = [elementCopy elementType];
+  if ((elementType - 49) < 2)
   {
     v19 = 20.0;
   }
 
   else
   {
-    if (v18 == 138)
+    if (elementType == 138)
     {
-      v20 = [(SKUIProgrammedCardLayout *)self _fontForLabel:v8];
+      v20 = [(SKUIProgrammedCardLayout *)self _fontForLabel:elementCopy];
     }
 
     else
     {
       v19 = 0.0;
-      if (v18 != 12)
+      if (elementType != 12)
       {
         goto LABEL_12;
       }
 
-      v20 = [(SKUIProgrammedCardLayout *)self _fontForButton:v8];
+      v20 = [(SKUIProgrammedCardLayout *)self _fontForButton:elementCopy];
     }
 
     v21 = v20;
@@ -229,7 +229,7 @@
   }
 
 LABEL_12:
-  v23 = [(SKUIProgrammedCardLayout *)self _stringLayoutForViewElement:v8 width:a5];
+  v23 = [(SKUIProgrammedCardLayout *)self _stringLayoutForViewElement:elementCopy width:width];
   v24 = v23;
   if (v23)
   {
@@ -238,7 +238,7 @@ LABEL_12:
     v19 = v19 - roundf(*&v25);
   }
 
-  v26 = [(SKUIProgrammedCardLayout *)self _stringLayoutForViewElement:v9 width:a5];
+  v26 = [(SKUIProgrammedCardLayout *)self _stringLayoutForViewElement:viewElementCopy width:width];
 
   if (v26)
   {
@@ -252,20 +252,20 @@ LABEL_12:
   return v19;
 }
 
-- (id)_fontForButton:(id)a3
+- (id)_fontForButton:(id)button
 {
-  v3 = a3;
-  v4 = [v3 buttonTitleStyle];
-  v5 = v4;
-  if (v4)
+  buttonCopy = button;
+  buttonTitleStyle = [buttonCopy buttonTitleStyle];
+  v5 = buttonTitleStyle;
+  if (buttonTitleStyle)
   {
-    v6 = SKUIViewElementFontWithStyle(v4);
+    v6 = SKUIViewElementFontWithStyle(buttonTitleStyle);
   }
 
   else
   {
-    v7 = [v3 style];
-    v6 = SKUIViewElementFontWithStyle(v7);
+    style = [buttonCopy style];
+    v6 = SKUIViewElementFontWithStyle(style);
   }
 
   if (v6)
@@ -283,17 +283,17 @@ LABEL_12:
   return v9;
 }
 
-- (id)_fontForLabel:(id)a3
+- (id)_fontForLabel:(id)label
 {
-  v3 = a3;
-  v4 = [v3 style];
-  v5 = SKUIViewElementFontWithStyle(v4);
+  labelCopy = label;
+  style = [labelCopy style];
+  v5 = SKUIViewElementFontWithStyle(style);
 
   if (!v5)
   {
-    v6 = [v3 labelViewStyle];
+    labelViewStyle = [labelCopy labelViewStyle];
     v7 = 14.0;
-    if (v6 == 5)
+    if (labelViewStyle == 5)
     {
       v7 = 20.0;
     }
@@ -304,15 +304,15 @@ LABEL_12:
   return v5;
 }
 
-- (id)_stringLayoutForViewElement:(id)a3 width:(double)a4
+- (id)_stringLayoutForViewElement:(id)element width:(double)width
 {
-  v6 = a3;
-  v7 = [v6 elementType];
-  if (v7 == 138 || v7 == 12)
+  elementCopy = element;
+  elementType = [elementCopy elementType];
+  if (elementType == 138 || elementType == 12)
   {
-    v9 = [(SKUICardLayout *)self layoutContext];
-    v10 = [v9 labelLayoutCache];
-    v11 = [v10 layoutForWidth:a4 viewElement:v6];
+    layoutContext = [(SKUICardLayout *)self layoutContext];
+    labelLayoutCache = [layoutContext labelLayoutCache];
+    v11 = [labelLayoutCache layoutForWidth:width viewElement:elementCopy];
   }
 
   else

@@ -1,27 +1,27 @@
 @interface IDSFirewall
-- (IDSFirewall)initWithService:(id)a3 queue:(id)a4;
-- (id)_removeInvalidEntries:(id)a3;
+- (IDSFirewall)initWithService:(id)service queue:(id)queue;
+- (id)_removeInvalidEntries:(id)entries;
 - (id)description;
-- (void)currentDonatedEntries:(id)a3;
-- (void)currentEntries:(id)a3;
-- (void)donateEntries:(id)a3 withCompletion:(id)a4;
-- (void)populateImpactedServices:(id)a3;
-- (void)recentlyBlockedEntries:(id)a3;
-- (void)removeAllDonatedEntries:(id)a3;
-- (void)removeAllEntries:(id)a3;
-- (void)removeDonatedEntries:(id)a3 withCompletion:(id)a4;
-- (void)removeEntries:(id)a3 withCompletion:(id)a4;
-- (void)replaceAllEntriesWithEntries:(id)a3 withCompletion:(id)a4;
-- (void)replaceDonatedEntriesWithEntries:(id)a3 withCompletion:(id)a4;
-- (void)setQueue:(id)a3;
+- (void)currentDonatedEntries:(id)entries;
+- (void)currentEntries:(id)entries;
+- (void)donateEntries:(id)entries withCompletion:(id)completion;
+- (void)populateImpactedServices:(id)services;
+- (void)recentlyBlockedEntries:(id)entries;
+- (void)removeAllDonatedEntries:(id)entries;
+- (void)removeAllEntries:(id)entries;
+- (void)removeDonatedEntries:(id)entries withCompletion:(id)completion;
+- (void)removeEntries:(id)entries withCompletion:(id)completion;
+- (void)replaceAllEntriesWithEntries:(id)entries withCompletion:(id)completion;
+- (void)replaceDonatedEntriesWithEntries:(id)entries withCompletion:(id)completion;
+- (void)setQueue:(id)queue;
 @end
 
 @implementation IDSFirewall
 
-- (IDSFirewall)initWithService:(id)a3 queue:(id)a4
+- (IDSFirewall)initWithService:(id)service queue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  serviceCopy = service;
+  queueCopy = queue;
   v15.receiver = self;
   v15.super_class = IDSFirewall;
   v8 = [(IDSFirewall *)&v15 init];
@@ -33,33 +33,33 @@
     v11[2] = sub_195A4C28C;
     v11[3] = &unk_1E743E620;
     v12 = v8;
-    v13 = v6;
-    v14 = v7;
+    v13 = serviceCopy;
+    v14 = queueCopy;
     [v9 performBlock:v11 waitUntilDone:1];
   }
 
   return v8;
 }
 
-- (void)setQueue:(id)a3
+- (void)setQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v5 = +[IDSInternalQueueController sharedInstance];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = sub_195A4C414;
   v7[3] = &unk_1E743EA30;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = queueCopy;
+  v6 = queueCopy;
   [v5 performBlock:v7 waitUntilDone:1];
 }
 
-- (void)populateImpactedServices:(id)a3
+- (void)populateImpactedServices:(id)services
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  servicesCopy = services;
+  if (!servicesCopy)
   {
     sub_195B2A7C8(a2, self);
   }
@@ -82,7 +82,7 @@
     v15[2] = sub_195A4C61C;
     v15[3] = &unk_1E743F368;
     v15[4] = self;
-    v16 = v5;
+    v16 = servicesCopy;
     v10 = MEMORY[0x19A8BBEF0](v15);
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
@@ -107,11 +107,11 @@
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)donateEntries:(id)a3 withCompletion:(id)a4
+- (void)donateEntries:(id)entries withCompletion:(id)completion
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  entriesCopy = entries;
+  completionCopy = completion;
   queue = self->_queue;
   v9 = +[IDSLogging IDSService];
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
@@ -123,11 +123,11 @@
       *buf = 138412546;
       v25 = service;
       v26 = 2112;
-      v27 = v6;
+      v27 = entriesCopy;
       _os_log_impl(&dword_1959FF000, v9, OS_LOG_TYPE_DEFAULT, "IDSFirewall update for service %@ donateEntries %@", buf, 0x16u);
     }
 
-    v12 = [(IDSFirewall *)self _removeInvalidEntries:v6];
+    v12 = [(IDSFirewall *)self _removeInvalidEntries:entriesCopy];
 
     if ([v12 count])
     {
@@ -136,10 +136,10 @@
       v18[1] = 3221225472;
       v18[2] = sub_195A4CC98;
       v18[3] = &unk_1E743FE38;
-      v6 = v12;
-      v19 = v6;
-      v20 = self;
-      v21 = v7;
+      entriesCopy = v12;
+      v19 = entriesCopy;
+      selfCopy = self;
+      v21 = completionCopy;
       v16[0] = MEMORY[0x1E69E9820];
       v16[1] = 3221225472;
       v16[2] = sub_195A4CE04;
@@ -158,10 +158,10 @@
       block[1] = 3221225472;
       block[2] = sub_195A4CB9C;
       block[3] = &unk_1E743E850;
-      v23 = v7;
+      v23 = completionCopy;
       dispatch_async(v14, block);
       v9 = v23;
-      v6 = v12;
+      entriesCopy = v12;
     }
   }
 
@@ -175,11 +175,11 @@
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeDonatedEntries:(id)a3 withCompletion:(id)a4
+- (void)removeDonatedEntries:(id)entries withCompletion:(id)completion
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  entriesCopy = entries;
+  completionCopy = completion;
   queue = self->_queue;
   v9 = +[IDSLogging IDSService];
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
@@ -191,11 +191,11 @@
       *buf = 138412546;
       v25 = service;
       v26 = 2112;
-      v27 = v6;
+      v27 = entriesCopy;
       _os_log_impl(&dword_1959FF000, v9, OS_LOG_TYPE_DEFAULT, "IDSFirewall update for service %@ removeDonatedEntries %@", buf, 0x16u);
     }
 
-    v12 = [(IDSFirewall *)self _removeInvalidEntries:v6];
+    v12 = [(IDSFirewall *)self _removeInvalidEntries:entriesCopy];
 
     if ([v12 count])
     {
@@ -204,10 +204,10 @@
       v18[1] = 3221225472;
       v18[2] = sub_195A4D17C;
       v18[3] = &unk_1E743FE38;
-      v6 = v12;
-      v19 = v6;
-      v20 = self;
-      v21 = v7;
+      entriesCopy = v12;
+      v19 = entriesCopy;
+      selfCopy = self;
+      v21 = completionCopy;
       v16[0] = MEMORY[0x1E69E9820];
       v16[1] = 3221225472;
       v16[2] = sub_195A4D2E8;
@@ -226,10 +226,10 @@
       block[1] = 3221225472;
       block[2] = sub_195A4D168;
       block[3] = &unk_1E743E850;
-      v23 = v7;
+      v23 = completionCopy;
       dispatch_async(v14, block);
       v9 = v23;
-      v6 = v12;
+      entriesCopy = v12;
     }
   }
 
@@ -243,11 +243,11 @@
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeEntries:(id)a3 withCompletion:(id)a4
+- (void)removeEntries:(id)entries withCompletion:(id)completion
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  entriesCopy = entries;
+  completionCopy = completion;
   queue = self->_queue;
   v9 = +[IDSLogging IDSService];
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
@@ -259,11 +259,11 @@
       *buf = 138412546;
       v25 = service;
       v26 = 2112;
-      v27 = v6;
+      v27 = entriesCopy;
       _os_log_impl(&dword_1959FF000, v9, OS_LOG_TYPE_DEFAULT, "IDSFirewall update for service %@ removeEntries %@", buf, 0x16u);
     }
 
-    v12 = [(IDSFirewall *)self _removeInvalidEntries:v6];
+    v12 = [(IDSFirewall *)self _removeInvalidEntries:entriesCopy];
 
     if ([v12 count])
     {
@@ -272,10 +272,10 @@
       v18[1] = 3221225472;
       v18[2] = sub_195A4D660;
       v18[3] = &unk_1E743FE38;
-      v6 = v12;
-      v19 = v6;
-      v20 = self;
-      v21 = v7;
+      entriesCopy = v12;
+      v19 = entriesCopy;
+      selfCopy = self;
+      v21 = completionCopy;
       v16[0] = MEMORY[0x1E69E9820];
       v16[1] = 3221225472;
       v16[2] = sub_195A4D7CC;
@@ -294,10 +294,10 @@
       block[1] = 3221225472;
       block[2] = sub_195A4D64C;
       block[3] = &unk_1E743E850;
-      v23 = v7;
+      v23 = completionCopy;
       dispatch_async(v14, block);
       v9 = v23;
-      v6 = v12;
+      entriesCopy = v12;
     }
   }
 
@@ -311,11 +311,11 @@
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)replaceDonatedEntriesWithEntries:(id)a3 withCompletion:(id)a4
+- (void)replaceDonatedEntriesWithEntries:(id)entries withCompletion:(id)completion
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  entriesCopy = entries;
+  completionCopy = completion;
   queue = self->_queue;
   v9 = +[IDSLogging IDSService];
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
@@ -327,11 +327,11 @@
       *buf = 138412546;
       v22 = service;
       v23 = 2112;
-      v24 = v6;
+      v24 = entriesCopy;
       _os_log_impl(&dword_1959FF000, v9, OS_LOG_TYPE_DEFAULT, "IDSFirewall update for service %@ replaceDonatedEntriesWithEntries %@", buf, 0x16u);
     }
 
-    v12 = [(IDSFirewall *)self _removeInvalidEntries:v6];
+    v12 = [(IDSFirewall *)self _removeInvalidEntries:entriesCopy];
 
     if ([v12 count])
     {
@@ -340,10 +340,10 @@
       v17[1] = 3221225472;
       v17[2] = sub_195A4DAD8;
       v17[3] = &unk_1E743FE38;
-      v6 = v12;
-      v18 = v6;
-      v19 = self;
-      v20 = v7;
+      entriesCopy = v12;
+      v18 = entriesCopy;
+      selfCopy = self;
+      v20 = completionCopy;
       v15[0] = MEMORY[0x1E69E9820];
       v15[1] = 3221225472;
       v15[2] = sub_195A4DC48;
@@ -355,8 +355,8 @@
 
     else
     {
-      [(IDSFirewall *)self removeAllDonatedEntries:v7];
-      v6 = v12;
+      [(IDSFirewall *)self removeAllDonatedEntries:completionCopy];
+      entriesCopy = v12;
     }
   }
 
@@ -373,11 +373,11 @@
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)replaceAllEntriesWithEntries:(id)a3 withCompletion:(id)a4
+- (void)replaceAllEntriesWithEntries:(id)entries withCompletion:(id)completion
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  entriesCopy = entries;
+  completionCopy = completion;
   queue = self->_queue;
   v9 = +[IDSLogging IDSService];
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
@@ -389,11 +389,11 @@
       *buf = 138412546;
       v22 = service;
       v23 = 2112;
-      v24 = v6;
+      v24 = entriesCopy;
       _os_log_impl(&dword_1959FF000, v9, OS_LOG_TYPE_DEFAULT, "IDSFirewall update for service %@ replaceAllEntriesWithEntries %@", buf, 0x16u);
     }
 
-    v12 = [(IDSFirewall *)self _removeInvalidEntries:v6];
+    v12 = [(IDSFirewall *)self _removeInvalidEntries:entriesCopy];
 
     if ([v12 count])
     {
@@ -402,10 +402,10 @@
       v17[1] = 3221225472;
       v17[2] = sub_195A4DF50;
       v17[3] = &unk_1E743FE38;
-      v6 = v12;
-      v18 = v6;
-      v19 = self;
-      v20 = v7;
+      entriesCopy = v12;
+      v18 = entriesCopy;
+      selfCopy = self;
+      v20 = completionCopy;
       v15[0] = MEMORY[0x1E69E9820];
       v15[1] = 3221225472;
       v15[2] = sub_195A4E0C0;
@@ -417,8 +417,8 @@
 
     else
     {
-      [(IDSFirewall *)self removeAllEntries:v7];
-      v6 = v12;
+      [(IDSFirewall *)self removeAllEntries:completionCopy];
+      entriesCopy = v12;
     }
   }
 
@@ -435,10 +435,10 @@
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)currentDonatedEntries:(id)a3
+- (void)currentDonatedEntries:(id)entries
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  entriesCopy = entries;
   queue = self->_queue;
   v6 = +[IDSLogging IDSService];
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
@@ -458,7 +458,7 @@
     v13[2] = sub_195A4E43C;
     v13[3] = &unk_1E743FE88;
     v13[4] = self;
-    v14 = v4;
+    v14 = entriesCopy;
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = sub_195A4E5C4;
@@ -480,10 +480,10 @@
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)currentEntries:(id)a3
+- (void)currentEntries:(id)entries
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  entriesCopy = entries;
   queue = self->_queue;
   v6 = +[IDSLogging IDSService];
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
@@ -503,7 +503,7 @@
     v13[2] = sub_195A4E884;
     v13[3] = &unk_1E743FE88;
     v13[4] = self;
-    v14 = v4;
+    v14 = entriesCopy;
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = sub_195A4EA0C;
@@ -525,10 +525,10 @@
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeAllDonatedEntries:(id)a3
+- (void)removeAllDonatedEntries:(id)entries
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  entriesCopy = entries;
   queue = self->_queue;
   v6 = +[IDSLogging IDSService];
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
@@ -548,7 +548,7 @@
     v13[2] = sub_195A4ECCC;
     v13[3] = &unk_1E743FE88;
     v13[4] = self;
-    v14 = v4;
+    v14 = entriesCopy;
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = sub_195A4EE28;
@@ -570,10 +570,10 @@
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeAllEntries:(id)a3
+- (void)removeAllEntries:(id)entries
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  entriesCopy = entries;
   queue = self->_queue;
   v6 = +[IDSLogging IDSService];
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
@@ -593,7 +593,7 @@
     v13[2] = sub_195A4F0BC;
     v13[3] = &unk_1E743FE88;
     v13[4] = self;
-    v14 = v4;
+    v14 = entriesCopy;
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = sub_195A4F218;
@@ -615,10 +615,10 @@
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)recentlyBlockedEntries:(id)a3
+- (void)recentlyBlockedEntries:(id)entries
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  entriesCopy = entries;
   queue = self->_queue;
   v6 = +[IDSLogging IDSService];
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
@@ -638,7 +638,7 @@
     v13[2] = sub_195A4F4AC;
     v13[3] = &unk_1E743FE88;
     v13[4] = self;
-    v14 = v4;
+    v14 = entriesCopy;
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = sub_195A4F634;
@@ -663,24 +663,24 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(IDSFirewall *)self service];
-  v5 = [(IDSFirewall *)self queue];
-  v6 = [(IDSFirewall *)self impactedServiceIdentifiers];
-  v7 = [v3 stringWithFormat:@"<IDSFirewall %p>: Service %@ Queue %@ ImpactedServices %@", self, v4, v5, v6];
+  service = [(IDSFirewall *)self service];
+  queue = [(IDSFirewall *)self queue];
+  impactedServiceIdentifiers = [(IDSFirewall *)self impactedServiceIdentifiers];
+  v7 = [v3 stringWithFormat:@"<IDSFirewall %p>: Service %@ Queue %@ ImpactedServices %@", self, service, queue, impactedServiceIdentifiers];
 
   return v7;
 }
 
-- (id)_removeInvalidEntries:(id)a3
+- (id)_removeInvalidEntries:(id)entries
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  entriesCopy = entries;
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = v3;
+  v5 = entriesCopy;
   v6 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v6)
   {
@@ -701,9 +701,9 @@
         {
           v12 = v11;
           v13 = [v10 uri];
-          v14 = [v13 prefixedURI];
+          prefixedURI = [v13 prefixedURI];
 
-          if (v14)
+          if (prefixedURI)
           {
             [v4 addObject:v10];
           }

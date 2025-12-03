@@ -1,5 +1,5 @@
 @interface UIShareGroupActivityCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (CGRect)accessibilityFrame;
 - (id)_accessibilityAXAttributedLabel;
 - (unint64_t)accessibilityTraits;
@@ -7,11 +7,11 @@
 
 @implementation UIShareGroupActivityCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"UIShareGroupActivityCell" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"UIShareGroupActivityCell" hasProperty:@"titleSlotID" withType:"I"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"UIShareGroupActivityCell" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"UIShareGroupActivityCell" hasProperty:@"titleSlotID" withType:"I"];
 }
 
 - (unint64_t)accessibilityTraits
@@ -27,19 +27,19 @@
   {
     v3 = objc_alloc(MEMORY[0x29EDBD7E8]);
     v4 = accessibilityLocalizedString(@"sharing.activity");
-    v5 = [v3 initWithString:v4];
+    accessibilityLabel = [v3 initWithString:v4];
 
     v6 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:{-[UIShareGroupActivityCellAccessibility _accessibilitySlotID](self, "_accessibilitySlotID")}];
-    [v5 setAttribute:v6 forKey:*MEMORY[0x29EDBD9B8]];
+    [accessibilityLabel setAttribute:v6 forKey:*MEMORY[0x29EDBD9B8]];
   }
 
   else
   {
     v6 = [(UIShareGroupActivityCellAccessibility *)self safeUIViewForKey:@"titleLabel"];
-    v5 = [v6 accessibilityLabel];
+    accessibilityLabel = [v6 accessibilityLabel];
   }
 
-  return v5;
+  return accessibilityLabel;
 }
 
 - (CGRect)accessibilityFrame
@@ -51,11 +51,11 @@
     [(UIShareGroupActivityCellAccessibility *)&v34 accessibilityFrame];
   }
 
-  v3 = [(UIShareGroupActivityCellAccessibility *)self accessibilityUserDefinedFrame];
-  v4 = v3;
-  if (v3)
+  accessibilityUserDefinedFrame = [(UIShareGroupActivityCellAccessibility *)self accessibilityUserDefinedFrame];
+  v4 = accessibilityUserDefinedFrame;
+  if (accessibilityUserDefinedFrame)
   {
-    [v3 rectValue];
+    [accessibilityUserDefinedFrame rectValue];
     v6 = v5;
     v8 = v7;
     v10 = v9;
@@ -64,13 +64,13 @@
 
   else
   {
-    v13 = self;
-    [(UIShareGroupActivityCellAccessibility *)v13 bounds];
+    selfCopy = self;
+    [(UIShareGroupActivityCellAccessibility *)selfCopy bounds];
     v15 = v14;
     v17 = v16;
     v19 = v18;
     v21 = v20;
-    [(UIShareGroupActivityCellAccessibility *)v13 _accessibilityFrameExpansion];
+    [(UIShareGroupActivityCellAccessibility *)selfCopy _accessibilityFrameExpansion];
     v23 = -v22;
     v25 = -v24;
     v35.origin.x = v15;

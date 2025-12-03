@@ -1,17 +1,17 @@
 @interface VideosUI_EpicInlineViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)layoutSubviews;
 @end
 
 @implementation VideosUI_EpicInlineViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"VideosUI.EpicInlineView" isKindOfClass:@"UIView"];
-  [v3 validateClass:@"VideosUI.VerticalStackView"];
-  [v3 validateClass:@"VUILabel"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"VideosUI.EpicInlineView" isKindOfClass:@"UIView"];
+  [validationsCopy validateClass:@"VideosUI.VerticalStackView"];
+  [validationsCopy validateClass:@"VUILabel"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

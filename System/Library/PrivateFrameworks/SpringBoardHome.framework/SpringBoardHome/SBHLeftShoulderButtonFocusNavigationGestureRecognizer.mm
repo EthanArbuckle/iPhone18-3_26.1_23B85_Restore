@@ -1,15 +1,15 @@
 @interface SBHLeftShoulderButtonFocusNavigationGestureRecognizer
-- (SBHLeftShoulderButtonFocusNavigationGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
+- (SBHLeftShoulderButtonFocusNavigationGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
 - (int64_t)preferredNavigationDirection;
 @end
 
 @implementation SBHLeftShoulderButtonFocusNavigationGestureRecognizer
 
-- (SBHLeftShoulderButtonFocusNavigationGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (SBHLeftShoulderButtonFocusNavigationGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
   v7.receiver = self;
   v7.super_class = SBHLeftShoulderButtonFocusNavigationGestureRecognizer;
-  v4 = [(SBHLeftShoulderButtonFocusNavigationGestureRecognizer *)&v7 initWithTarget:a3 action:a4];
+  v4 = [(SBHLeftShoulderButtonFocusNavigationGestureRecognizer *)&v7 initWithTarget:target action:action];
   v5 = v4;
   if (v4)
   {

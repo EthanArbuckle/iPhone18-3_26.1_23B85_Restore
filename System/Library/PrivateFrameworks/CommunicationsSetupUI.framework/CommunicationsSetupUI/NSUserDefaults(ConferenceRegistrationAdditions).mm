@@ -12,43 +12,43 @@
 + (void)setShouldShowCNFRegistrationSettingsUI:()ConferenceRegistrationAdditions
 {
   v2 = [MEMORY[0x277CCABB0] numberWithBool:?];
-  [a1 setCNFObject:v2 forKey:@"CNFRegShowRegistrationSettingsUI"];
+  [self setCNFObject:v2 forKey:@"CNFRegShowRegistrationSettingsUI"];
 }
 
 + (uint64_t)shouldShowCNFRegistrationSettingsUI
 {
-  v1 = [a1 CNFObjectForKey:@"CNFRegShowRegistrationSettingsUI"];
-  v2 = [v1 BOOLValue];
+  v1 = [self CNFObjectForKey:@"CNFRegShowRegistrationSettingsUI"];
+  bOOLValue = [v1 BOOLValue];
 
-  return v2;
+  return bOOLValue;
 }
 
 + (uint64_t)CNFRegEmailValidationTimeout
 {
-  v1 = [a1 CNFObjectForKey:@"registration.emailValidationTimeout"];
-  v2 = [v1 unsignedIntegerValue];
+  v1 = [self CNFObjectForKey:@"registration.emailValidationTimeout"];
+  unsignedIntegerValue = [v1 unsignedIntegerValue];
 
-  return v2;
+  return unsignedIntegerValue;
 }
 
 + (void)setCNFRegEmailValidationTimeout:()ConferenceRegistrationAdditions
 {
   v2 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:?];
-  [a1 setCNFObject:v2 forKey:@"registration.emailValidationTimeout"];
+  [self setCNFObject:v2 forKey:@"registration.emailValidationTimeout"];
 }
 
 + (void)setShouldShowCNFRegistrationServerLogs:()ConferenceRegistrationAdditions
 {
   v2 = [MEMORY[0x277CCABB0] numberWithBool:?];
-  [a1 setCNFObject:v2 forKey:@"registration.showServerWebPageLogging"];
+  [self setCNFObject:v2 forKey:@"registration.showServerWebPageLogging"];
 }
 
 + (uint64_t)shouldShowCNFRegistrationServerLogs
 {
-  v1 = [a1 CNFObjectForKey:@"registration.showServerWebPageLogging"];
-  v2 = [v1 BOOLValue];
+  v1 = [self CNFObjectForKey:@"registration.showServerWebPageLogging"];
+  bOOLValue = [v1 BOOLValue];
 
-  return v2;
+  return bOOLValue;
 }
 
 @end

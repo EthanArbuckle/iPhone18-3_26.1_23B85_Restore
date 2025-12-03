@@ -1,17 +1,17 @@
 @interface CRLFreehandDrawingToolInputPoint
 - ($F8C478D75979E1913FC0AA0A435BEEED)PKInputPoint;
 - (CGPoint)unscaledPoint;
-- (CRLFreehandDrawingToolInputPoint)initWithUnscaledPoint:(CGPoint)a3 time:(double)a4 inputType:(int64_t)a5 isPredicted:(BOOL)a6 activeInputProperties:(unint64_t)a7 altitudeAngleInRadians:(double)a8 azimuthAngleInRadians:(double)a9 rollAngleInRadians:(double)a10 force:(double)a11 estimationUpdateIndex:(int64_t)a12 hasEstimatedAltitudeAndAzimuth:(BOOL)a13 wasAddedByTouchesEnded:(BOOL)a14;
-- (CRLFreehandDrawingToolInputPoint)initWithUnscaledPoint:(CGPoint)a3 touch:(id)a4 activeInputProperties:(unint64_t)a5 isPredicted:(BOOL)a6 wasAddedByTouchesEnded:(BOOL)a7;
-- (CRLFreehandDrawingToolInputPoint)initWithUnscaledPoint:(CGPoint)a3 touch:(id)a4 event:(id)a5 isPredicted:(BOOL)a6 wasAddedByTouchesEnded:(BOOL)a7;
+- (CRLFreehandDrawingToolInputPoint)initWithUnscaledPoint:(CGPoint)point time:(double)time inputType:(int64_t)type isPredicted:(BOOL)predicted activeInputProperties:(unint64_t)properties altitudeAngleInRadians:(double)radians azimuthAngleInRadians:(double)inRadians rollAngleInRadians:(double)self0 force:(double)self1 estimationUpdateIndex:(int64_t)self2 hasEstimatedAltitudeAndAzimuth:(BOOL)self3 wasAddedByTouchesEnded:(BOOL)self4;
+- (CRLFreehandDrawingToolInputPoint)initWithUnscaledPoint:(CGPoint)point touch:(id)touch activeInputProperties:(unint64_t)properties isPredicted:(BOOL)predicted wasAddedByTouchesEnded:(BOOL)ended;
+- (CRLFreehandDrawingToolInputPoint)initWithUnscaledPoint:(CGPoint)point touch:(id)touch event:(id)event isPredicted:(BOOL)predicted wasAddedByTouchesEnded:(BOOL)ended;
 @end
 
 @implementation CRLFreehandDrawingToolInputPoint
 
-- (CRLFreehandDrawingToolInputPoint)initWithUnscaledPoint:(CGPoint)a3 time:(double)a4 inputType:(int64_t)a5 isPredicted:(BOOL)a6 activeInputProperties:(unint64_t)a7 altitudeAngleInRadians:(double)a8 azimuthAngleInRadians:(double)a9 rollAngleInRadians:(double)a10 force:(double)a11 estimationUpdateIndex:(int64_t)a12 hasEstimatedAltitudeAndAzimuth:(BOOL)a13 wasAddedByTouchesEnded:(BOOL)a14
+- (CRLFreehandDrawingToolInputPoint)initWithUnscaledPoint:(CGPoint)point time:(double)time inputType:(int64_t)type isPredicted:(BOOL)predicted activeInputProperties:(unint64_t)properties altitudeAngleInRadians:(double)radians azimuthAngleInRadians:(double)inRadians rollAngleInRadians:(double)self0 force:(double)self1 estimationUpdateIndex:(int64_t)self2 hasEstimatedAltitudeAndAzimuth:(BOOL)self3 wasAddedByTouchesEnded:(BOOL)self4
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v28.receiver = self;
   v28.super_class = CRLFreehandDrawingToolInputPoint;
   result = [(CRLFreehandDrawingToolInputPoint *)&v28 init];
@@ -19,32 +19,32 @@
   {
     result->_unscaledPoint.x = x;
     result->_unscaledPoint.y = y;
-    result->_time = a4;
-    result->_isPredicted = a6;
-    result->_inputType = a5;
-    result->_activeInputProperties = a7;
-    result->_altitudeAngleInRadians = a8;
-    result->_azimuthAngleInRadians = a9;
-    result->_rollAngleInRadians = a10;
-    result->_force = a11;
-    result->_estimationUpdateIndex = a12;
-    result->_hasEstimatedAltitudeAndAzimuth = a13;
-    result->_wasAddedByTouchesEnded = a14;
+    result->_time = time;
+    result->_isPredicted = predicted;
+    result->_inputType = type;
+    result->_activeInputProperties = properties;
+    result->_altitudeAngleInRadians = radians;
+    result->_azimuthAngleInRadians = inRadians;
+    result->_rollAngleInRadians = angleInRadians;
+    result->_force = force;
+    result->_estimationUpdateIndex = index;
+    result->_hasEstimatedAltitudeAndAzimuth = azimuth;
+    result->_wasAddedByTouchesEnded = ended;
   }
 
   return result;
 }
 
-- (CRLFreehandDrawingToolInputPoint)initWithUnscaledPoint:(CGPoint)a3 touch:(id)a4 activeInputProperties:(unint64_t)a5 isPredicted:(BOOL)a6 wasAddedByTouchesEnded:(BOOL)a7
+- (CRLFreehandDrawingToolInputPoint)initWithUnscaledPoint:(CGPoint)point touch:(id)touch activeInputProperties:(unint64_t)properties isPredicted:(BOOL)predicted wasAddedByTouchesEnded:(BOOL)ended
 {
-  v7 = a7;
-  v8 = a6;
-  y = a3.y;
-  x = a3.x;
-  v13 = a4;
-  if ([v13 type] == 2)
+  endedCopy = ended;
+  predictedCopy = predicted;
+  y = point.y;
+  x = point.x;
+  touchCopy = touch;
+  if ([touchCopy type] == 2)
   {
-    [v13 altitudeAngle];
+    [touchCopy altitudeAngle];
     if ((*&v14 & 0x7FFFFFFFFFFFFFFFuLL) <= 0x7FEFFFFFFFFFFFFFLL)
     {
       v18 = 1.57079633 - v14;
@@ -81,7 +81,7 @@
       v18 = 0.785398163;
     }
 
-    [v13 azimuthAngleInView:0];
+    [touchCopy azimuthAngleInView:0];
     if ((*&v24 & 0x7FFFFFFFFFFFFFFFuLL) <= 0x7FEFFFFFFFFFFFFFLL)
     {
       v23 = v24 + -3.14159265;
@@ -118,7 +118,7 @@
       v23 = 0.0;
     }
 
-    [v13 _rollAngle];
+    [touchCopy _rollAngle];
     if ((*&v28 & 0x7FFFFFFFFFFFFFFFuLL) >= 0x7FF0000000000000)
     {
       v20 = 0.0;
@@ -129,20 +129,20 @@
       v20 = v28;
     }
 
-    [v13 maximumPossibleForce];
+    [touchCopy maximumPossibleForce];
     v21 = -1.0;
     if (v29 > 0.0)
     {
-      [v13 force];
+      [touchCopy force];
       if ((v30 & 0x7FFFFFFFFFFFFFFFuLL) <= 0x7FEFFFFFFFFFFFFFLL)
       {
-        [v13 force];
+        [touchCopy force];
         v21 = v36;
       }
 
       else
       {
-        [v13 maximumPossibleForce];
+        [touchCopy maximumPossibleForce];
         v32 = v31;
         +[CRLAssertionHandler _atomicIncrementAssertCount];
         if (qword_101AD5A10 != -1)
@@ -173,19 +173,19 @@
       }
     }
 
-    v37 = [v13 estimationUpdateIndex];
-    v38 = v37;
-    if (v37)
+    estimationUpdateIndex = [touchCopy estimationUpdateIndex];
+    v38 = estimationUpdateIndex;
+    if (estimationUpdateIndex)
     {
-      v22 = [v37 integerValue];
+      integerValue = [estimationUpdateIndex integerValue];
     }
 
     else
     {
-      v22 = -1;
+      integerValue = -1;
     }
 
-    v19 = ([v13 estimatedProperties] & 6) != 0;
+    v19 = ([touchCopy estimatedProperties] & 6) != 0;
   }
 
   else
@@ -193,25 +193,25 @@
     v19 = 0;
     v20 = 0.0;
     v21 = -1.0;
-    v22 = -1;
+    integerValue = -1;
     v18 = 0.785398163;
     v23 = 0.0;
   }
 
-  [v13 timestamp];
-  v40 = -[CRLFreehandDrawingToolInputPoint initWithUnscaledPoint:time:inputType:isPredicted:activeInputProperties:altitudeAngleInRadians:azimuthAngleInRadians:rollAngleInRadians:force:estimationUpdateIndex:hasEstimatedAltitudeAndAzimuth:wasAddedByTouchesEnded:](self, "initWithUnscaledPoint:time:inputType:isPredicted:activeInputProperties:altitudeAngleInRadians:azimuthAngleInRadians:rollAngleInRadians:force:estimationUpdateIndex:hasEstimatedAltitudeAndAzimuth:wasAddedByTouchesEnded:", sub_10042B6C0([v13 type]), v8, a5, v22, v19, v7, x, y, v39, v18, v23, v20, v21);
+  [touchCopy timestamp];
+  v40 = -[CRLFreehandDrawingToolInputPoint initWithUnscaledPoint:time:inputType:isPredicted:activeInputProperties:altitudeAngleInRadians:azimuthAngleInRadians:rollAngleInRadians:force:estimationUpdateIndex:hasEstimatedAltitudeAndAzimuth:wasAddedByTouchesEnded:](self, "initWithUnscaledPoint:time:inputType:isPredicted:activeInputProperties:altitudeAngleInRadians:azimuthAngleInRadians:rollAngleInRadians:force:estimationUpdateIndex:hasEstimatedAltitudeAndAzimuth:wasAddedByTouchesEnded:", sub_10042B6C0([touchCopy type]), predictedCopy, properties, integerValue, v19, endedCopy, x, y, v39, v18, v23, v20, v21);
 
   return v40;
 }
 
-- (CRLFreehandDrawingToolInputPoint)initWithUnscaledPoint:(CGPoint)a3 touch:(id)a4 event:(id)a5 isPredicted:(BOOL)a6 wasAddedByTouchesEnded:(BOOL)a7
+- (CRLFreehandDrawingToolInputPoint)initWithUnscaledPoint:(CGPoint)point touch:(id)touch event:(id)event isPredicted:(BOOL)predicted wasAddedByTouchesEnded:(BOOL)ended
 {
-  v7 = a7;
-  v8 = a6;
-  y = a3.y;
-  x = a3.x;
-  v13 = a4;
-  v14 = [(CRLFreehandDrawingToolInputPoint *)self initWithUnscaledPoint:v13 touch:[PKDrawingGestureRecognizer activeInputPropertiesForTouch:? event:?], v8, v7, x, y];
+  endedCopy = ended;
+  predictedCopy = predicted;
+  y = point.y;
+  x = point.x;
+  touchCopy = touch;
+  v14 = [(CRLFreehandDrawingToolInputPoint *)self initWithUnscaledPoint:touchCopy touch:[PKDrawingGestureRecognizer activeInputPropertiesForTouch:? event:?], predictedCopy, endedCopy, x, y];
 
   return v14;
 }

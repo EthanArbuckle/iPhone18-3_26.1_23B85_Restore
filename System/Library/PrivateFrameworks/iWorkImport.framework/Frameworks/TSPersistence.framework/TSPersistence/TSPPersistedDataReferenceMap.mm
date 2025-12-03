@@ -1,25 +1,25 @@
 @interface TSPPersistedDataReferenceMap
-- (BOOL)isAnyObjectIdentifierInDocument:(id)a3;
+- (BOOL)isAnyObjectIdentifierInDocument:(id)document;
 - (NSString)description;
 - (TSPPersistedDataReferenceMap)init;
-- (TSPPersistedDataReferenceMap)initWithComponentDataReferenceInfoDictionary:(id)a3 dataCount:(unint64_t)a4 objectCount:(unint64_t)a5;
-- (id)allReferencesFromObjectIdentifier:(int64_t)a3;
+- (TSPPersistedDataReferenceMap)initWithComponentDataReferenceInfoDictionary:(id)dictionary dataCount:(unint64_t)count objectCount:(unint64_t)objectCount;
+- (id)allReferencesFromObjectIdentifier:(int64_t)identifier;
 - (void)dealloc;
 @end
 
 @implementation TSPPersistedDataReferenceMap
 
-- (TSPPersistedDataReferenceMap)initWithComponentDataReferenceInfoDictionary:(id)a3 dataCount:(unint64_t)a4 objectCount:(unint64_t)a5
+- (TSPPersistedDataReferenceMap)initWithComponentDataReferenceInfoDictionary:(id)dictionary dataCount:(unint64_t)count objectCount:(unint64_t)objectCount
 {
-  v8 = a3;
+  dictionaryCopy = dictionary;
   v15.receiver = self;
   v15.super_class = TSPPersistedDataReferenceMap;
   v9 = [(TSPPersistedDataReferenceMap *)&v15 init];
   v10 = v9;
-  if (a5 | a4 && v9)
+  if (objectCount | count && v9)
   {
     v11 = [_TtC13TSPersistence22TSPMutableReferenceMap alloc];
-    objc_msgSend_initWithCapacity_(v11, v12, a4);
+    objc_msgSend_initWithCapacity_(v11, v12, count);
     v13 = objc_alloc_init(MEMORY[0x277CCAB58]);
     operator new();
   }
@@ -57,13 +57,13 @@
   [(TSPPersistedDataReferenceMap *)&v5 dealloc];
 }
 
-- (id)allReferencesFromObjectIdentifier:(int64_t)a3
+- (id)allReferencesFromObjectIdentifier:(int64_t)identifier
 {
-  v7 = a3;
+  identifierCopy = identifier;
   objectToDataReferenceMap = self->_objectToDataReferenceMap;
   if (objectToDataReferenceMap)
   {
-    v4 = sub_2769ABC64(objectToDataReferenceMap, &v7);
+    v4 = sub_2769ABC64(objectToDataReferenceMap, &identifierCopy);
     if (v4)
     {
       v5 = v4[3];
@@ -80,12 +80,12 @@
   return objectToDataReferenceMap;
 }
 
-- (BOOL)isAnyObjectIdentifierInDocument:(id)a3
+- (BOOL)isAnyObjectIdentifierInDocument:(id)document
 {
-  v4 = a3;
-  if (objc_msgSend_count(self->_objectIdentifiersInDocument, v5, v6) && objc_msgSend_count(v4, v7, v8))
+  documentCopy = document;
+  if (objc_msgSend_count(self->_objectIdentifiersInDocument, v5, v6) && objc_msgSend_count(documentCopy, v7, v8))
   {
-    v10 = objc_msgSend_intersectsIndexSet_(v4, v9, self->_objectIdentifiersInDocument);
+    v10 = objc_msgSend_intersectsIndexSet_(documentCopy, v9, self->_objectIdentifiersInDocument);
   }
 
   else

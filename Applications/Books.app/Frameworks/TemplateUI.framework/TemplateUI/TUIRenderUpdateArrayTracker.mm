@@ -1,9 +1,9 @@
 @interface TUIRenderUpdateArrayTracker
 - (TUIRenderUpdateArrayTracker)init;
-- (id)addDeletedInterestInDeletedModels:(id)a3;
-- (void)decrementInterestInDeletedModels:(id)a3;
-- (void)incrementInterestInDeletedModels:(id)a3;
-- (void)setSubmodelTracker:(id)a3 forIdentifier:(id)a4;
+- (id)addDeletedInterestInDeletedModels:(id)models;
+- (void)decrementInterestInDeletedModels:(id)models;
+- (void)incrementInterestInDeletedModels:(id)models;
+- (void)setSubmodelTracker:(id)tracker forIdentifier:(id)identifier;
 @end
 
 @implementation TUIRenderUpdateArrayTracker
@@ -27,22 +27,22 @@
   return v2;
 }
 
-- (id)addDeletedInterestInDeletedModels:(id)a3
+- (id)addDeletedInterestInDeletedModels:(id)models
 {
-  v4 = a3;
-  v5 = [[_TUIRenderUpdateDeletionInterest alloc] initWithModels:v4 tracker:self];
+  modelsCopy = models;
+  v5 = [[_TUIRenderUpdateDeletionInterest alloc] initWithModels:modelsCopy tracker:self];
 
   return v5;
 }
 
-- (void)incrementInterestInDeletedModels:(id)a3
+- (void)incrementInterestInDeletedModels:(id)models
 {
-  v4 = a3;
+  modelsCopy = models;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [modelsCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -53,30 +53,30 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(modelsCopy);
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
-        v10 = [v9 identifier];
-        [(NSCountedSet *)self->_deletedIdentifiers addObject:v10];
-        [(NSMutableDictionary *)self->_deletedModels setObject:v9 forKeyedSubscript:v10];
+        identifier = [v9 identifier];
+        [(NSCountedSet *)self->_deletedIdentifiers addObject:identifier];
+        [(NSMutableDictionary *)self->_deletedModels setObject:v9 forKeyedSubscript:identifier];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [modelsCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)decrementInterestInDeletedModels:(id)a3
+- (void)decrementInterestInDeletedModels:(id)models
 {
-  v4 = a3;
+  modelsCopy = models;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v5 = [modelsCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -88,31 +88,31 @@
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(modelsCopy);
         }
 
-        v9 = [*(*(&v10 + 1) + 8 * v8) identifier];
-        [(NSCountedSet *)self->_deletedIdentifiers removeObject:v9];
-        if (![(NSCountedSet *)self->_deletedIdentifiers countForObject:v9])
+        identifier = [*(*(&v10 + 1) + 8 * v8) identifier];
+        [(NSCountedSet *)self->_deletedIdentifiers removeObject:identifier];
+        if (![(NSCountedSet *)self->_deletedIdentifiers countForObject:identifier])
         {
-          [(NSMutableDictionary *)self->_deletedModels removeObjectForKey:v9];
+          [(NSMutableDictionary *)self->_deletedModels removeObjectForKey:identifier];
         }
 
         v8 = v8 + 1;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [modelsCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)setSubmodelTracker:(id)a3 forIdentifier:(id)a4
+- (void)setSubmodelTracker:(id)tracker forIdentifier:(id)identifier
 {
-  v10 = a3;
-  v6 = a4;
+  trackerCopy = tracker;
+  identifierCopy = identifier;
   submodelTrackers = self->_submodelTrackers;
   if (!submodelTrackers)
   {
@@ -123,7 +123,7 @@
     submodelTrackers = self->_submodelTrackers;
   }
 
-  [(NSMutableDictionary *)submodelTrackers setObject:v10 forKeyedSubscript:v6];
+  [(NSMutableDictionary *)submodelTrackers setObject:trackerCopy forKeyedSubscript:identifierCopy];
 }
 
 @end

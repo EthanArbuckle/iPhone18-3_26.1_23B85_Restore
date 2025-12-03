@@ -1,25 +1,25 @@
 @interface PKPaymentButton
 + (PKPaymentButton)buttonWithType:(PKPaymentButtonType)buttonType style:(PKPaymentButtonStyle)buttonStyle;
-+ (PKPaymentButton)buttonWithType:(int64_t)a3 style:(int64_t)a4 disableCardArt:(BOOL)a5;
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3;
++ (PKPaymentButton)buttonWithType:(int64_t)type style:(int64_t)style disableCardArt:(BOOL)art;
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key;
 - (BOOL)shouldShowDynamicButton;
 - (CGSize)intrinsicContentSize;
-- (PKPaymentButton)initWithCoder:(id)a3;
-- (PKPaymentButton)initWithPaymentButtonType:(int64_t)a3 paymentButtonStyle:(int64_t)a4 disableCardArt:(BOOL)a5;
+- (PKPaymentButton)initWithCoder:(id)coder;
+- (PKPaymentButton)initWithPaymentButtonType:(int64_t)type paymentButtonStyle:(int64_t)style disableCardArt:(BOOL)art;
 - (int64_t)_effectiveButtonStyle;
 - (void)_createHighlightFilterIfNecessary;
 - (void)applyAccessibilityValues;
 - (void)dealloc;
-- (void)drawRect:(CGRect)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)drawRect:(CGRect)rect;
+- (void)encodeWithCoder:(id)coder;
 - (void)layoutSubviews;
 - (void)prepareForInterfaceBuilder;
 - (void)setCornerRadius:(CGFloat)cornerRadius;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setStyle:(int64_t)a3;
-- (void)setType:(int64_t)a3;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setStyle:(int64_t)style;
+- (void)setType:(int64_t)type;
 - (void)setupDynamicButtonViewIfNeeded;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateDynamicButtonView;
 @end
 
@@ -32,31 +32,31 @@
   return v4;
 }
 
-+ (PKPaymentButton)buttonWithType:(int64_t)a3 style:(int64_t)a4 disableCardArt:(BOOL)a5
++ (PKPaymentButton)buttonWithType:(int64_t)type style:(int64_t)style disableCardArt:(BOOL)art
 {
-  v5 = [objc_alloc(objc_opt_class()) initWithPaymentButtonType:a3 paymentButtonStyle:a4 disableCardArt:a5];
+  v5 = [objc_alloc(objc_opt_class()) initWithPaymentButtonType:type paymentButtonStyle:style disableCardArt:art];
 
   return v5;
 }
 
-- (PKPaymentButton)initWithCoder:(id)a3
+- (PKPaymentButton)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = PKPaymentButton;
-  v5 = [(PKPaymentButton *)&v7 initWithCoder:v4];
+  v5 = [(PKPaymentButton *)&v7 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_style = [v4 decodeIntegerForKey:@"PKPaymentButtonStyle"];
-    v5->_type = [v4 decodeIntegerForKey:@"PKPaymentButtonType"];
-    v5->_disableCardArt = [v4 decodeBoolForKey:@"PKPaymentButtonDisableCardArt"];
+    v5->_style = [coderCopy decodeIntegerForKey:@"PKPaymentButtonStyle"];
+    v5->_type = [coderCopy decodeIntegerForKey:@"PKPaymentButtonType"];
+    v5->_disableCardArt = [coderCopy decodeBoolForKey:@"PKPaymentButtonDisableCardArt"];
     [(PKPaymentButton *)v5 applyAccessibilityValues];
   }
 
   return v5;
 }
 
-- (PKPaymentButton)initWithPaymentButtonType:(int64_t)a3 paymentButtonStyle:(int64_t)a4 disableCardArt:(BOOL)a5
+- (PKPaymentButton)initWithPaymentButtonType:(int64_t)type paymentButtonStyle:(int64_t)style disableCardArt:(BOOL)art
 {
   v8 = *MEMORY[0x1E695EFF8];
   v9 = *(MEMORY[0x1E695EFF8] + 8);
@@ -66,17 +66,17 @@
   v11 = v10;
   if (v10)
   {
-    v10->_style = a4;
-    v10->_type = a3;
-    v10->_disableCardArt = a5;
+    v10->_style = style;
+    v10->_type = type;
+    v10->_disableCardArt = art;
     v10->_cornerRadius = *MEMORY[0x1E69BB740];
     [(PKPaymentButton *)v10 applyAccessibilityValues];
   }
 
   if (![(PKPaymentButton *)v11 shouldShowDynamicButton])
   {
-    v12 = [MEMORY[0x1E696AAE8] mainBundle];
-    v13 = [v12 bundleIdentifier];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
     PKAnalyticsReportPaymentButtonRequest();
   }
 
@@ -100,14 +100,14 @@
   }
 }
 
-- (void)setType:(int64_t)a3
+- (void)setType:(int64_t)type
 {
-  if (self->_type != a3)
+  if (self->_type != type)
   {
-    self->_type = a3;
-    v5 = [(PKPaymentButton *)self shouldShowDynamicButton];
+    self->_type = type;
+    shouldShowDynamicButton = [(PKPaymentButton *)self shouldShowDynamicButton];
     dynamicButtonView = self->_dynamicButtonView;
-    if (v5)
+    if (shouldShowDynamicButton)
     {
       if (dynamicButtonView)
       {
@@ -135,11 +135,11 @@
   }
 }
 
-- (void)setStyle:(int64_t)a3
+- (void)setStyle:(int64_t)style
 {
-  if (self->_style != a3)
+  if (self->_style != style)
   {
-    self->_style = a3;
+    self->_style = style;
     if (self->_dynamicButtonView)
     {
       [(PKPaymentButton *)self updateDynamicButtonView];
@@ -187,13 +187,13 @@
   {
     v12 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{v3, v4, v5, v6}];
     [(UIView *)v12 setAutoresizingMask:18];
-    v13 = [MEMORY[0x1E69DC888] clearColor];
-    [(UIView *)v12 setBackgroundColor:v13];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(UIView *)v12 setBackgroundColor:clearColor];
 
     [(UIView *)v12 setClipsToBounds:1];
     [(UIView *)v12 setUserInteractionEnabled:0];
-    v14 = [(UIView *)v12 layer];
-    [v14 setCornerRadius:self->_cornerRadius];
+    layer = [(UIView *)v12 layer];
+    [layer setCornerRadius:self->_cornerRadius];
 
     v15 = PKLogFacilityTypeGetObject();
     v16 = os_signpost_id_make_with_pointer(v15, self);
@@ -210,8 +210,8 @@
     v18 = [_TtC9PassKitUI28DynamicPaymentButtonSlotView alloc];
     type = self->_type;
     style = self->_style;
-    v21 = [(PKPaymentButton *)self traitCollection];
-    v22 = -[DynamicPaymentButtonSlotView initWithType:style:paymentRequest:buttonSize:interfaceStyle:action:](v18, "initWithType:style:paymentRequest:buttonSize:interfaceStyle:action:", type, style, 0, [v21 userInterfaceStyle], 0, v9, v10);
+    traitCollection = [(PKPaymentButton *)self traitCollection];
+    v22 = -[DynamicPaymentButtonSlotView initWithType:style:paymentRequest:buttonSize:interfaceStyle:action:](v18, "initWithType:style:paymentRequest:buttonSize:interfaceStyle:action:", type, style, 0, [traitCollection userInterfaceStyle], 0, v9, v10);
 
     v23 = v15;
     v24 = os_signpost_id_make_with_pointer(v23, self);
@@ -247,23 +247,23 @@
   {
     [(PKPaymentButton *)self bounds];
     [(UIView *)dynamicButtonView setFrame:?];
-    v4 = [(UIView *)self->_dynamicButtonView layer];
-    [v4 setCornerRadius:self->_cornerRadius];
+    layer = [(UIView *)self->_dynamicButtonView layer];
+    [layer setCornerRadius:self->_cornerRadius];
   }
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   if (![(PKPaymentButton *)self shouldShowDynamicButton])
   {
     [(PKPaymentButton *)self _effectiveButtonStyle];
     CurrentContext = UIGraphicsGetCurrentContext();
-    v9 = [(PKPaymentButton *)self traitCollection];
-    [v9 displayScale];
+    traitCollection = [(PKPaymentButton *)self traitCollection];
+    [traitCollection displayScale];
 
     v10 = PKCreateApplePayButtonImageWithCornerRadius();
     v12.origin.x = x;
@@ -346,18 +346,18 @@
   [(PKPaymentButton *)self setNeedsDisplay];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v8.receiver = self;
   v8.super_class = PKPaymentButton;
-  v4 = a3;
-  [(PKPaymentButton *)&v8 traitCollectionDidChange:v4];
-  v5 = [v4 userInterfaceStyle];
+  changeCopy = change;
+  [(PKPaymentButton *)&v8 traitCollectionDidChange:changeCopy];
+  userInterfaceStyle = [changeCopy userInterfaceStyle];
 
-  v6 = [(PKPaymentButton *)self traitCollection];
-  v7 = [v6 userInterfaceStyle];
+  traitCollection = [(PKPaymentButton *)self traitCollection];
+  userInterfaceStyle2 = [traitCollection userInterfaceStyle];
 
-  if (v5 != v7)
+  if (userInterfaceStyle != userInterfaceStyle2)
   {
     if (self->_dynamicButtonView)
     {
@@ -371,21 +371,21 @@
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = PKPaymentButton;
-  v4 = a3;
-  [(PKPaymentButton *)&v5 encodeWithCoder:v4];
-  [v4 encodeInteger:self->_style forKey:{@"PKPaymentButtonStyle", v5.receiver, v5.super_class}];
-  [v4 encodeInteger:self->_type forKey:@"PKPaymentButtonType"];
-  [v4 encodeBool:self->_disableCardArt forKey:@"PKPaymentButtonDisableCardArt"];
+  coderCopy = coder;
+  [(PKPaymentButton *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:self->_style forKey:{@"PKPaymentButtonStyle", v5.receiver, v5.super_class}];
+  [coderCopy encodeInteger:self->_type forKey:@"PKPaymentButtonType"];
+  [coderCopy encodeBool:self->_disableCardArt forKey:@"PKPaymentButtonDisableCardArt"];
 }
 
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"path"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"path"])
   {
     v5 = 1;
   }
@@ -394,7 +394,7 @@
   {
     v7.receiver = self;
     v7.super_class = PKPaymentButton;
-    v5 = [(PKPaymentButton *)&v7 _shouldAnimatePropertyWithKey:v4];
+    v5 = [(PKPaymentButton *)&v7 _shouldAnimatePropertyWithKey:keyCopy];
   }
 
   return v5;
@@ -405,7 +405,7 @@
   v10[1] = *MEMORY[0x1E69E9840];
   if (!self->_highlightFilter)
   {
-    v3 = [(PKPaymentButton *)self layer];
+    layer = [(PKPaymentButton *)self layer];
     v4 = objc_alloc(MEMORY[0x1E6979378]);
     v5 = [v4 initWithType:*MEMORY[0x1E6979CB0]];
     highlightFilter = self->_highlightFilter;
@@ -419,39 +419,39 @@
 
     v10[0] = self->_highlightFilter;
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
-    [v3 setFilters:v9];
+    [layer setFilters:v9];
   }
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v13.receiver = self;
   v13.super_class = PKPaymentButton;
   [(PKPaymentButton *)&v13 setHighlighted:?];
-  if (self->_highlighted == !v3)
+  if (self->_highlighted == !highlightedCopy)
   {
-    self->_highlighted = v3;
+    self->_highlighted = highlightedCopy;
     [(PKPaymentButton *)self _createHighlightFilterIfNecessary];
-    v5 = [(PKPaymentButton *)self layer];
+    layer = [(PKPaymentButton *)self layer];
     v6 = 0.6;
-    if (!v3)
+    if (!highlightedCopy)
     {
       v6 = 1.0;
     }
 
     v7 = [MEMORY[0x1E69DC888] colorWithWhite:v6 alpha:?];
     v8 = MEMORY[0x1E69DC888];
-    v9 = [v5 valueForKeyPath:@"filters.highlightFilter.inputColor"];
+    v9 = [layer valueForKeyPath:@"filters.highlightFilter.inputColor"];
     v10 = [v8 colorWithCGColor:v9];
 
-    [v5 setValue:objc_msgSend(v7 forKeyPath:{"CGColor"), @"filters.highlightFilter.inputColor"}];
+    [layer setValue:objc_msgSend(v7 forKeyPath:{"CGColor"), @"filters.highlightFilter.inputColor"}];
     v11 = [MEMORY[0x1E6979318] animationWithKeyPath:@"filters.highlightFilter.inputColor"];
     [v11 setDuration:0.15];
     [v11 setFillMode:*MEMORY[0x1E69797E8]];
     [v11 setFromValue:{objc_msgSend(v10, "CGColor")}];
     [v11 setToValue:{objc_msgSend(v7, "CGColor")}];
-    v12 = [v5 pkui_addAdditiveAnimation:v11];
+    v12 = [layer pkui_addAdditiveAnimation:v11];
   }
 }
 
@@ -460,15 +460,15 @@
   style = self->_style;
   if (style == 3)
   {
-    v3 = [(PKPaymentButton *)self traitCollection];
-    if ([v3 userInterfaceIdiom] == 6)
+    traitCollection = [(PKPaymentButton *)self traitCollection];
+    if ([traitCollection userInterfaceIdiom] == 6)
     {
       style = 2;
     }
 
     else
     {
-      style = 2 * ([v3 userInterfaceStyle] == 1);
+      style = 2 * ([traitCollection userInterfaceStyle] == 1);
     }
   }
 

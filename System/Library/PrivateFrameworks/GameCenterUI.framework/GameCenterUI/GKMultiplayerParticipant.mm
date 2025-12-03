@@ -1,10 +1,10 @@
 @interface GKMultiplayerParticipant
-+ (id)stringFromGKMultiplayerParticipantStatus:(int64_t)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)stringFromGKMultiplayerParticipantStatus:(int64_t)status;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isSharePlayInvitee;
 - (GKMultiplayerParticipant)init;
 - (NSString)statusName;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -23,10 +23,10 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -36,13 +36,13 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       type = self->_type;
       if (type == [(GKMultiplayerParticipant *)v5 type]&& (status = self->_status, status == [(GKMultiplayerParticipant *)v5 status]))
       {
         player = self->_player;
-        v9 = [(GKMultiplayerParticipant *)v5 player];
-        v10 = [(GKPlayer *)player isEqual:v9];
+        player = [(GKMultiplayerParticipant *)v5 player];
+        v10 = [(GKPlayer *)player isEqual:player];
       }
 
       else
@@ -60,7 +60,7 @@
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(GKMultiplayerParticipant);
   [(GKMultiplayerParticipant *)v4 setType:self->_type];
@@ -72,9 +72,9 @@
 
 - (NSString)statusName
 {
-  v2 = [(GKMultiplayerParticipant *)self status];
+  status = [(GKMultiplayerParticipant *)self status];
 
-  return [GKMultiplayerParticipant stringFromGKMultiplayerParticipantStatus:v2];
+  return [GKMultiplayerParticipant stringFromGKMultiplayerParticipantStatus:status];
 }
 
 - (id)description
@@ -91,8 +91,8 @@
 LABEL_4:
       v4 = MEMORY[0x277CCACA8];
       player = self->_player;
-      v6 = [(GKMultiplayerParticipant *)self statusName];
-      v7 = [v4 stringWithFormat:@" player = %@, status = %@", player, v6];
+      statusName = [(GKMultiplayerParticipant *)self statusName];
+      v7 = [v4 stringWithFormat:@" player = %@, status = %@", player, statusName];
 
       break;
     default:
@@ -108,24 +108,24 @@ LABEL_4:
   return v9;
 }
 
-+ (id)stringFromGKMultiplayerParticipantStatus:(int64_t)a3
++ (id)stringFromGKMultiplayerParticipantStatus:(int64_t)status
 {
-  if (a3 > 0x15)
+  if (status > 0x15)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_27966AA10[a3];
+    return off_27966AA10[status];
   }
 }
 
 - (BOOL)isSharePlayInvitee
 {
-  v2 = [(GKMultiplayerParticipant *)self player];
-  v3 = [v2 tuParticipant];
-  v4 = v3 != 0;
+  player = [(GKMultiplayerParticipant *)self player];
+  tuParticipant = [player tuParticipant];
+  v4 = tuParticipant != 0;
 
   return v4;
 }

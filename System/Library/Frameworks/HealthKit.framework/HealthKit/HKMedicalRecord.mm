@@ -1,26 +1,26 @@
 @interface HKMedicalRecord
-+ (id)_newMedicalRecordWithType:(id)a3 note:(id)a4 enteredInError:(BOOL)a5 modifiedDate:(id)a6 originIdentifier:(id)a7 locale:(id)a8 extractionVersion:(int64_t)a9 device:(id)a10 metadata:(id)a11 sortDate:(id)a12 country:(id)a13 state:(unint64_t)a14 config:(id)a15;
-+ (id)_sortDateIntervalFromStartDateComponents:(id)a3 endDateComponents:(id)a4 error:(id *)a5;
++ (id)_newMedicalRecordWithType:(id)type note:(id)note enteredInError:(BOOL)error modifiedDate:(id)date originIdentifier:(id)identifier locale:(id)locale extractionVersion:(int64_t)version device:(id)self0 metadata:(id)self1 sortDate:(id)self2 country:(id)self3 state:(unint64_t)self4 config:(id)self5;
++ (id)_sortDateIntervalFromStartDateComponents:(id)components endDateComponents:(id)dateComponents error:(id *)error;
 + (id)cachedConceptRelationshipKeyPaths;
 + (id)indexableConceptKeyPaths;
-+ (id)indexableKeyPathsWithPrefix:(id)a3;
-- (BOOL)applyConcepts:(id)a3 forKeyPath:(id)a4 error:(id *)a5;
-- (BOOL)isEquivalent:(id)a3;
++ (id)indexableKeyPathsWithPrefix:(id)prefix;
+- (BOOL)applyConcepts:(id)concepts forKeyPath:(id)path error:(id *)error;
+- (BOOL)isEquivalent:(id)equivalent;
 - (HKConcept)primaryConcept;
-- (HKMedicalRecord)initWithCoder:(id)a3;
+- (HKMedicalRecord)initWithCoder:(id)coder;
 - (id)_init;
-- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)a3;
-- (id)codingsForKeyPath:(id)a3 error:(id *)a4;
+- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)configuration;
+- (id)codingsForKeyPath:(id)path error:(id *)error;
 - (id)fallbackDisplayString;
 - (unint64_t)medicalRecordOriginType;
-- (void)_setCountry:(id)a3;
-- (void)_setLocale:(id)a3;
-- (void)_setModifiedDate:(id)a3;
-- (void)_setNote:(id)a3;
-- (void)_setOriginIdentifier:(id)a3;
-- (void)_setPrimaryConcept:(id)a3;
-- (void)_setSortDate:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_setCountry:(id)country;
+- (void)_setLocale:(id)locale;
+- (void)_setModifiedDate:(id)date;
+- (void)_setNote:(id)note;
+- (void)_setOriginIdentifier:(id)identifier;
+- (void)_setPrimaryConcept:(id)concept;
+- (void)_setSortDate:(id)date;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKMedicalRecord
@@ -36,53 +36,53 @@
 {
   v5.receiver = self;
   v5.super_class = HKMedicalRecord;
-  v2 = [(HKSample *)&v5 _init];
-  v3 = v2[12];
-  v2[12] = 0;
+  _init = [(HKSample *)&v5 _init];
+  v3 = _init[12];
+  _init[12] = 0;
 
-  return v2;
+  return _init;
 }
 
-+ (id)_newMedicalRecordWithType:(id)a3 note:(id)a4 enteredInError:(BOOL)a5 modifiedDate:(id)a6 originIdentifier:(id)a7 locale:(id)a8 extractionVersion:(int64_t)a9 device:(id)a10 metadata:(id)a11 sortDate:(id)a12 country:(id)a13 state:(unint64_t)a14 config:(id)a15
++ (id)_newMedicalRecordWithType:(id)type note:(id)note enteredInError:(BOOL)error modifiedDate:(id)date originIdentifier:(id)identifier locale:(id)locale extractionVersion:(int64_t)version device:(id)self0 metadata:(id)self1 sortDate:(id)self2 country:(id)self3 state:(unint64_t)self4 config:(id)self5
 {
-  v38 = a4;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v22 = a12;
-  v23 = a13;
-  v24 = a15;
-  v43 = a11;
-  v25 = a10;
-  v26 = a3;
-  [v19 timeIntervalSinceReferenceDate];
+  noteCopy = note;
+  dateCopy = date;
+  identifierCopy = identifier;
+  localeCopy = locale;
+  sortDateCopy = sortDate;
+  countryCopy = country;
+  configCopy = config;
+  metadataCopy = metadata;
+  deviceCopy = device;
+  typeCopy = type;
+  [dateCopy timeIntervalSinceReferenceDate];
   v28 = v27;
-  [v19 timeIntervalSinceReferenceDate];
+  [dateCopy timeIntervalSinceReferenceDate];
   v30 = v29;
   v45[0] = MEMORY[0x1E69E9820];
   v45[1] = 3221225472;
   v45[2] = __166__HKMedicalRecord__newMedicalRecordWithType_note_enteredInError_modifiedDate_originIdentifier_locale_extractionVersion_device_metadata_sortDate_country_state_config___block_invoke;
   v45[3] = &unk_1E737DB68;
-  v55 = a5;
-  v46 = v38;
-  v47 = v19;
-  v48 = v20;
-  v49 = v21;
-  v50 = v22;
-  v51 = v23;
-  v53 = a9;
-  v54 = a14;
-  v52 = v24;
-  v44.receiver = a1;
+  errorCopy = error;
+  v46 = noteCopy;
+  v47 = dateCopy;
+  v48 = identifierCopy;
+  v49 = localeCopy;
+  v50 = sortDateCopy;
+  v51 = countryCopy;
+  versionCopy = version;
+  stateCopy = state;
+  v52 = configCopy;
+  v44.receiver = self;
   v44.super_class = &OBJC_METACLASS___HKMedicalRecord;
-  v42 = v24;
-  v40 = v23;
-  v31 = v22;
-  v32 = v21;
-  v33 = v20;
-  v34 = v19;
-  v35 = v38;
-  v36 = objc_msgSendSuper2(&v44, sel__newSampleWithType_startDate_endDate_device_metadata_config_, v26, v25, v43, v45, v28, v30);
+  v42 = configCopy;
+  v40 = countryCopy;
+  v31 = sortDateCopy;
+  v32 = localeCopy;
+  v33 = identifierCopy;
+  v34 = dateCopy;
+  v35 = noteCopy;
+  v36 = objc_msgSendSuper2(&v44, sel__newSampleWithType_startDate_endDate_device_metadata_config_, typeCopy, deviceCopy, metadataCopy, v45, v28, v30);
 
   return v36;
 }
@@ -128,9 +128,9 @@ uint64_t __166__HKMedicalRecord__newMedicalRecordWithType_note_enteredInError_mo
 
 - (unint64_t)medicalRecordOriginType
 {
-  v2 = [(HKMedicalRecordOriginIdentifier *)self->_originIdentifier signedClinicalDataRecordIdentifier];
+  signedClinicalDataRecordIdentifier = [(HKMedicalRecordOriginIdentifier *)self->_originIdentifier signedClinicalDataRecordIdentifier];
 
-  if (v2)
+  if (signedClinicalDataRecordIdentifier)
   {
     return 3;
   }
@@ -151,80 +151,80 @@ uint64_t __166__HKMedicalRecord__newMedicalRecordWithType_note_enteredInError_mo
 
   else
   {
-    v4 = [(HKMedicalRecord *)self medicalRecordCodings];
-    v5 = [HKMedicalCodingCollection collectionWithCodings:v4];
+    medicalRecordCodings = [(HKMedicalRecord *)self medicalRecordCodings];
+    v5 = [HKMedicalCodingCollection collectionWithCodings:medicalRecordCodings];
     v3 = [HKConceptSynthesizer synthesizeInMemoryConceptForCodingCollection:v5];
   }
 
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = HKMedicalRecord;
-  v4 = a3;
-  [(HKSample *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_note forKey:{@"Note", v5.receiver, v5.super_class}];
-  [v4 encodeBool:self->_enteredInError forKey:@"EnteredInError"];
-  [v4 encodeObject:self->_modifiedDate forKey:@"ModifiedDate"];
-  [v4 encodeObject:self->_originIdentifier forKey:@"MedicalRecordOriginIdentifier"];
-  [v4 encodeObject:self->_locale forKey:@"Locale"];
-  [v4 encodeInteger:self->_extractionVersion forKey:@"ExtractionVersion"];
-  [v4 encodeObject:self->_sortDate forKey:@"SortDate"];
-  [v4 encodeObject:self->_primaryConcept forKey:@"PrimaryConcept"];
-  [v4 encodeObject:self->_country forKey:@"Country"];
-  [v4 encodeInteger:self->_state forKey:@"State"];
+  coderCopy = coder;
+  [(HKSample *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_note forKey:{@"Note", v5.receiver, v5.super_class}];
+  [coderCopy encodeBool:self->_enteredInError forKey:@"EnteredInError"];
+  [coderCopy encodeObject:self->_modifiedDate forKey:@"ModifiedDate"];
+  [coderCopy encodeObject:self->_originIdentifier forKey:@"MedicalRecordOriginIdentifier"];
+  [coderCopy encodeObject:self->_locale forKey:@"Locale"];
+  [coderCopy encodeInteger:self->_extractionVersion forKey:@"ExtractionVersion"];
+  [coderCopy encodeObject:self->_sortDate forKey:@"SortDate"];
+  [coderCopy encodeObject:self->_primaryConcept forKey:@"PrimaryConcept"];
+  [coderCopy encodeObject:self->_country forKey:@"Country"];
+  [coderCopy encodeInteger:self->_state forKey:@"State"];
 }
 
-- (HKMedicalRecord)initWithCoder:(id)a3
+- (HKMedicalRecord)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v21.receiver = self;
   v21.super_class = HKMedicalRecord;
-  v5 = [(HKSample *)&v21 initWithCoder:v4];
+  v5 = [(HKSample *)&v21 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Note"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Note"];
     note = v5->_note;
     v5->_note = v6;
 
-    v5->_enteredInError = [v4 decodeBoolForKey:@"EnteredInError"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ModifiedDate"];
+    v5->_enteredInError = [coderCopy decodeBoolForKey:@"EnteredInError"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ModifiedDate"];
     modifiedDate = v5->_modifiedDate;
     v5->_modifiedDate = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MedicalRecordOriginIdentifier"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MedicalRecordOriginIdentifier"];
     originIdentifier = v5->_originIdentifier;
     v5->_originIdentifier = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Locale"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Locale"];
     locale = v5->_locale;
     v5->_locale = v12;
 
-    v5->_extractionVersion = [v4 decodeIntegerForKey:@"ExtractionVersion"];
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SortDate"];
+    v5->_extractionVersion = [coderCopy decodeIntegerForKey:@"ExtractionVersion"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SortDate"];
     sortDate = v5->_sortDate;
     v5->_sortDate = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PrimaryConcept"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PrimaryConcept"];
     primaryConcept = v5->_primaryConcept;
     v5->_primaryConcept = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Country"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Country"];
     country = v5->_country;
     v5->_country = v18;
 
-    v5->_state = [v4 decodeIntegerForKey:@"State"];
+    v5->_state = [coderCopy decodeIntegerForKey:@"State"];
   }
 
   return v5;
 }
 
-- (BOOL)isEquivalent:(id)a3
+- (BOOL)isEquivalent:(id)equivalent
 {
-  v4 = a3;
-  if (self == v4)
+  equivalentCopy = equivalent;
+  if (self == equivalentCopy)
   {
     v19 = 1;
   }
@@ -238,43 +238,43 @@ uint64_t __166__HKMedicalRecord__newMedicalRecordWithType_note_enteredInError_mo
     {
       v39.receiver = self;
       v39.super_class = HKMedicalRecord;
-      if ([(HKSample *)&v39 isEquivalent:v4])
+      if ([(HKSample *)&v39 isEquivalent:equivalentCopy])
       {
-        v6 = v4;
-        v7 = [(HKMedicalRecord *)self enteredInError];
-        if (v7 != [(HKMedicalRecord *)v6 enteredInError])
+        v6 = equivalentCopy;
+        enteredInError = [(HKMedicalRecord *)self enteredInError];
+        if (enteredInError != [(HKMedicalRecord *)v6 enteredInError])
         {
           goto LABEL_28;
         }
 
-        v8 = [(HKMedicalRecord *)self sortDate];
-        v9 = [(HKMedicalRecord *)v6 sortDate];
-        v10 = [v8 isEqual:v9];
+        sortDate = [(HKMedicalRecord *)self sortDate];
+        sortDate2 = [(HKMedicalRecord *)v6 sortDate];
+        v10 = [sortDate isEqual:sortDate2];
 
         if (!v10)
         {
           goto LABEL_28;
         }
 
-        v11 = [(HKMedicalRecord *)self modifiedDate];
-        v12 = [(HKMedicalRecord *)v6 modifiedDate];
-        v13 = v12;
-        if (v11 == v12)
+        modifiedDate = [(HKMedicalRecord *)self modifiedDate];
+        modifiedDate2 = [(HKMedicalRecord *)v6 modifiedDate];
+        locale = modifiedDate2;
+        if (modifiedDate == modifiedDate2)
         {
         }
 
         else
         {
-          v14 = [(HKMedicalRecord *)v6 modifiedDate];
-          if (!v14)
+          modifiedDate3 = [(HKMedicalRecord *)v6 modifiedDate];
+          if (!modifiedDate3)
           {
             goto LABEL_27;
           }
 
-          v15 = v14;
-          v16 = [(HKMedicalRecord *)self modifiedDate];
-          v17 = [(HKMedicalRecord *)v6 modifiedDate];
-          v18 = [v16 isEqual:v17];
+          v15 = modifiedDate3;
+          modifiedDate4 = [(HKMedicalRecord *)self modifiedDate];
+          modifiedDate5 = [(HKMedicalRecord *)v6 modifiedDate];
+          v18 = [modifiedDate4 isEqual:modifiedDate5];
 
           if (!v18)
           {
@@ -282,17 +282,17 @@ uint64_t __166__HKMedicalRecord__newMedicalRecordWithType_note_enteredInError_mo
           }
         }
 
-        v11 = [(HKMedicalRecord *)self locale];
-        v13 = [(HKMedicalRecord *)v6 locale];
-        if ((v11 == 0) != (v13 != 0))
+        modifiedDate = [(HKMedicalRecord *)self locale];
+        locale = [(HKMedicalRecord *)v6 locale];
+        if ((modifiedDate == 0) != (locale != 0))
         {
-          v20 = [(HKMedicalRecord *)v6 locale];
-          if (v20)
+          locale2 = [(HKMedicalRecord *)v6 locale];
+          if (locale2)
           {
-            v21 = v20;
-            v22 = [(HKMedicalRecord *)self locale];
-            v23 = [(HKMedicalRecord *)v6 locale];
-            v24 = [v22 hk_isEquivalent:v23];
+            v21 = locale2;
+            locale3 = [(HKMedicalRecord *)self locale];
+            locale4 = [(HKMedicalRecord *)v6 locale];
+            v24 = [locale3 hk_isEquivalent:locale4];
 
             if (!v24)
             {
@@ -304,25 +304,25 @@ uint64_t __166__HKMedicalRecord__newMedicalRecordWithType_note_enteredInError_mo
           {
           }
 
-          v11 = [(HKMedicalRecord *)self note];
-          v25 = [(HKMedicalRecord *)v6 note];
-          v13 = v25;
-          if (v11 == v25)
+          modifiedDate = [(HKMedicalRecord *)self note];
+          note = [(HKMedicalRecord *)v6 note];
+          locale = note;
+          if (modifiedDate == note)
           {
           }
 
           else
           {
-            v26 = [(HKMedicalRecord *)v6 note];
-            if (!v26)
+            note2 = [(HKMedicalRecord *)v6 note];
+            if (!note2)
             {
               goto LABEL_27;
             }
 
-            v27 = v26;
-            v28 = [(HKMedicalRecord *)self note];
-            v29 = [(HKMedicalRecord *)v6 note];
-            v30 = [v28 isEqualToString:v29];
+            v27 = note2;
+            note3 = [(HKMedicalRecord *)self note];
+            note4 = [(HKMedicalRecord *)v6 note];
+            v30 = [note3 isEqualToString:note4];
 
             if (!v30)
             {
@@ -330,25 +330,25 @@ uint64_t __166__HKMedicalRecord__newMedicalRecordWithType_note_enteredInError_mo
             }
           }
 
-          v11 = [(HKMedicalRecord *)self country];
-          v31 = [(HKMedicalRecord *)v6 country];
-          v13 = v31;
-          if (v11 == v31)
+          modifiedDate = [(HKMedicalRecord *)self country];
+          country = [(HKMedicalRecord *)v6 country];
+          locale = country;
+          if (modifiedDate == country)
           {
 
 LABEL_32:
-            v38 = [(HKMedicalRecord *)self state];
-            v19 = v38 == [(HKMedicalRecord *)v6 state];
+            state = [(HKMedicalRecord *)self state];
+            v19 = state == [(HKMedicalRecord *)v6 state];
             goto LABEL_29;
           }
 
-          v32 = [(HKMedicalRecord *)v6 country];
-          if (v32)
+          country2 = [(HKMedicalRecord *)v6 country];
+          if (country2)
           {
-            v33 = v32;
-            v34 = [(HKMedicalRecord *)self country];
-            v35 = [(HKMedicalRecord *)v6 country];
-            v36 = [v34 isEqualToString:v35];
+            v33 = country2;
+            country3 = [(HKMedicalRecord *)self country];
+            country4 = [(HKMedicalRecord *)v6 country];
+            v36 = [country3 isEqualToString:country4];
 
             if (v36)
             {
@@ -377,55 +377,55 @@ LABEL_30:
   return v19;
 }
 
-- (void)_setNote:(id)a3
+- (void)_setNote:(id)note
 {
-  v4 = [a3 copy];
+  v4 = [note copy];
   note = self->_note;
   self->_note = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)_setModifiedDate:(id)a3
+- (void)_setModifiedDate:(id)date
 {
-  v4 = [a3 copy];
+  v4 = [date copy];
   modifiedDate = self->_modifiedDate;
   self->_modifiedDate = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)_setOriginIdentifier:(id)a3
+- (void)_setOriginIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   originIdentifier = self->_originIdentifier;
   self->_originIdentifier = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)_setLocale:(id)a3
+- (void)_setLocale:(id)locale
 {
-  v4 = [a3 copy];
+  v4 = [locale copy];
   locale = self->_locale;
   self->_locale = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)_setSortDate:(id)a3
+- (void)_setSortDate:(id)date
 {
-  v4 = [a3 copy];
+  v4 = [date copy];
   sortDate = self->_sortDate;
   self->_sortDate = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)_setPrimaryConcept:(id)a3
+- (void)_setPrimaryConcept:(id)concept
 {
-  v4 = a3;
-  if (!v4)
+  conceptCopy = concept;
+  if (!conceptCopy)
   {
     _HKInitializeLogging();
     v5 = HKLogHealthRecords;
@@ -436,23 +436,23 @@ LABEL_30:
   }
 
   primaryConcept = self->_primaryConcept;
-  self->_primaryConcept = v4;
+  self->_primaryConcept = conceptCopy;
 }
 
-- (void)_setCountry:(id)a3
+- (void)_setCountry:(id)country
 {
-  v4 = [a3 copy];
+  v4 = [country copy];
   country = self->_country;
   self->_country = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)a3
+- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)configuration
 {
   v13.receiver = self;
   v13.super_class = HKMedicalRecord;
-  v5 = [(HKSample *)&v13 _validateWithConfiguration:a3.var0, a3.var1];
+  v5 = [(HKSample *)&v13 _validateWithConfiguration:configuration.var0, configuration.var1];
   v6 = v5;
   if (v5)
   {
@@ -510,28 +510,28 @@ LABEL_14:
   return v8;
 }
 
-+ (id)_sortDateIntervalFromStartDateComponents:(id)a3 endDateComponents:(id)a4 error:(id *)a5
++ (id)_sortDateIntervalFromStartDateComponents:(id)components endDateComponents:(id)dateComponents error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!v7 || !v8)
+  componentsCopy = components;
+  dateComponentsCopy = dateComponents;
+  v9 = dateComponentsCopy;
+  if (!componentsCopy || !dateComponentsCopy)
   {
-    [MEMORY[0x1E696ABC0] hk_assignError:a5 code:3 format:@"start and end date components must be nonnull"];
+    [MEMORY[0x1E696ABC0] hk_assignError:error code:3 format:@"start and end date components must be nonnull"];
     v13 = 0;
     goto LABEL_14;
   }
 
-  v10 = [MEMORY[0x1E695DEE8] hk_gregorianCalendarWithUTCTimeZone];
-  if ([v7 isValidDateInCalendar:v10])
+  hk_gregorianCalendarWithUTCTimeZone = [MEMORY[0x1E695DEE8] hk_gregorianCalendarWithUTCTimeZone];
+  if ([componentsCopy isValidDateInCalendar:hk_gregorianCalendarWithUTCTimeZone])
   {
-    if ([v9 isValidDateInCalendar:v10])
+    if ([v9 isValidDateInCalendar:hk_gregorianCalendarWithUTCTimeZone])
     {
-      v11 = [v10 dateFromComponents:v7];
-      v12 = [v10 dateFromComponents:v9];
+      v11 = [hk_gregorianCalendarWithUTCTimeZone dateFromComponents:componentsCopy];
+      v12 = [hk_gregorianCalendarWithUTCTimeZone dateFromComponents:v9];
       if ([v11 hk_isAfterDate:v12])
       {
-        [MEMORY[0x1E696ABC0] hk_assignError:a5 code:3 format:@"start date components after end date components"];
+        [MEMORY[0x1E696ABC0] hk_assignError:error code:3 format:@"start date components after end date components"];
         v13 = 0;
       }
 
@@ -553,7 +553,7 @@ LABEL_14:
     v15 = @"start date components are not a valid date";
   }
 
-  [v14 hk_assignError:a5 code:3 format:v15];
+  [v14 hk_assignError:error code:3 format:v15];
   v13 = 0;
 LABEL_13:
 
@@ -562,11 +562,11 @@ LABEL_14:
   return v13;
 }
 
-+ (id)indexableKeyPathsWithPrefix:(id)a3
++ (id)indexableKeyPathsWithPrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [a1 indexableConceptKeyPaths];
-  v6 = [HKConceptIndexUtilities keyPaths:v5 prefix:v4];
+  prefixCopy = prefix;
+  indexableConceptKeyPaths = [self indexableConceptKeyPaths];
+  v6 = [HKConceptIndexUtilities keyPaths:indexableConceptKeyPaths prefix:prefixCopy];
 
   return v6;
 }
@@ -591,14 +591,14 @@ LABEL_14:
   return v2;
 }
 
-- (id)codingsForKeyPath:(id)a3 error:(id *)a4
+- (id)codingsForKeyPath:(id)path error:(id *)error
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if ([v6 isEqualToString:@"primaryConcept"])
+  pathCopy = path;
+  if ([pathCopy isEqualToString:@"primaryConcept"])
   {
-    v7 = [(HKMedicalRecord *)self medicalRecordCodings];
-    v8 = [HKMedicalCodingCollection collectionWithCodings:v7];
+    medicalRecordCodings = [(HKMedicalRecord *)self medicalRecordCodings];
+    v8 = [HKMedicalCodingCollection collectionWithCodings:medicalRecordCodings];
 
     v9 = [HKIndexableObject indexableObjectWithObject:v8];
     v13[0] = v9;
@@ -607,7 +607,7 @@ LABEL_14:
 
   else
   {
-    [HKConceptIndexUtilities assignError:a4 forInvalidKeyPath:v6 inClass:objc_opt_class()];
+    [HKConceptIndexUtilities assignError:error forInvalidKeyPath:pathCopy inClass:objc_opt_class()];
     v10 = 0;
   }
 
@@ -616,14 +616,14 @@ LABEL_14:
   return v10;
 }
 
-- (BOOL)applyConcepts:(id)a3 forKeyPath:(id)a4 error:(id *)a5
+- (BOOL)applyConcepts:(id)concepts forKeyPath:(id)path error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v9 isEqualToString:@"primaryConcept"];
+  conceptsCopy = concepts;
+  pathCopy = path;
+  v10 = [pathCopy isEqualToString:@"primaryConcept"];
   if (v10)
   {
-    v11 = HKIndexableObjectCheckCardinalityForIndexRestore([v8 count], 1, v9, a5);
+    v11 = HKIndexableObjectCheckCardinalityForIndexRestore([conceptsCopy count], 1, pathCopy, error);
 
     if (!v11)
     {
@@ -631,17 +631,17 @@ LABEL_14:
       goto LABEL_7;
     }
 
-    v12 = [v8 firstObject];
-    v9 = [v12 object];
-    [(HKMedicalRecord *)self _setPrimaryConcept:v9];
+    firstObject = [conceptsCopy firstObject];
+    pathCopy = [firstObject object];
+    [(HKMedicalRecord *)self _setPrimaryConcept:pathCopy];
   }
 
   else
   {
     v13 = MEMORY[0x1E696ABC0];
     v14 = objc_opt_class();
-    v12 = NSStringFromClass(v14);
-    [v13 hk_assignError:a5 code:3 format:{@"%@ does not support applying concepts for key-path %@", v12, v9}];
+    firstObject = NSStringFromClass(v14);
+    [v13 hk_assignError:error code:3 format:{@"%@ does not support applying concepts for key-path %@", firstObject, pathCopy}];
   }
 
 LABEL_7:

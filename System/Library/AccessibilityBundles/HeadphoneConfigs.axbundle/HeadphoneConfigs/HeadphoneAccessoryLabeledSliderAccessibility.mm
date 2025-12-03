@@ -1,5 +1,5 @@
 @interface HeadphoneAccessoryLabeledSliderAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityValue;
 - (void)accessibilityDecrement;
 - (void)accessibilityIncrement;
@@ -7,12 +7,12 @@
 
 @implementation HeadphoneAccessoryLabeledSliderAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"_TtGC16HeadphoneConfigs31HeadphoneAccessoryLabeledSliderVSo17AAAutoANCStrength_" hasInstanceMethod:@"selectedIndex" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"_TtGC16HeadphoneConfigs31HeadphoneAccessoryLabeledSliderVSo17AAAutoANCStrength_" hasInstanceMethod:@"setValue:animated:objectChange:" withFullSignature:{"v", "f", "B", "B", 0}];
-  [v3 validateClass:@"_TtGC16HeadphoneConfigs31HeadphoneAccessoryLabeledSliderVSo17AAAutoANCStrength_" hasSwiftField:@"ticks" withSwiftType:"Array<String>"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"_TtGC16HeadphoneConfigs31HeadphoneAccessoryLabeledSliderVSo17AAAutoANCStrength_" hasInstanceMethod:@"selectedIndex" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"_TtGC16HeadphoneConfigs31HeadphoneAccessoryLabeledSliderVSo17AAAutoANCStrength_" hasInstanceMethod:@"setValue:animated:objectChange:" withFullSignature:{"v", "f", "B", "B", 0}];
+  [validationsCopy validateClass:@"_TtGC16HeadphoneConfigs31HeadphoneAccessoryLabeledSliderVSo17AAAutoANCStrength_" hasSwiftField:@"ticks" withSwiftType:"Array<String>"];
 }
 
 - (void)accessibilityIncrement
@@ -26,8 +26,8 @@
   v5 = [(HeadphoneAccessoryLabeledSliderAccessibility *)self safeValueForKey:@"selectedIndex"];
   v6 = __UIAccessibilityCastAsClass();
 
-  v7 = [v6 integerValue];
-  if (![v4 count] || (v7 & 0x8000000000000000) != 0 || v7 >= objc_msgSend(v4, "count"))
+  integerValue = [v6 integerValue];
+  if (![v4 count] || (integerValue & 0x8000000000000000) != 0 || integerValue >= objc_msgSend(v4, "count"))
   {
     v8.receiver = self;
     v8.super_class = HeadphoneAccessoryLabeledSliderAccessibility;
@@ -62,21 +62,21 @@
   v5 = [(HeadphoneAccessoryLabeledSliderAccessibility *)self safeValueForKey:@"selectedIndex"];
   v6 = __UIAccessibilityCastAsClass();
 
-  v7 = [v6 integerValue];
+  integerValue = [v6 integerValue];
   v8 = [v4 count];
-  if ((v7 & 0x8000000000000000) != 0 || v7 >= v8)
+  if ((integerValue & 0x8000000000000000) != 0 || integerValue >= v8)
   {
     v12.receiver = self;
     v12.super_class = HeadphoneAccessoryLabeledSliderAccessibility;
-    v9 = [(HeadphoneAccessoryLabeledSliderAccessibility *)&v12 accessibilityValue];
+    accessibilityValue = [(HeadphoneAccessoryLabeledSliderAccessibility *)&v12 accessibilityValue];
   }
 
   else
   {
-    v9 = [v4 objectAtIndex:v7];
+    accessibilityValue = [v4 objectAtIndex:integerValue];
   }
 
-  v10 = v9;
+  v10 = accessibilityValue;
 
   return v10;
 }

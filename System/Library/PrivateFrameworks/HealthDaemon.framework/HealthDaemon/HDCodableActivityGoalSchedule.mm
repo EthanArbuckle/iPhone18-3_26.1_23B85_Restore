@@ -1,27 +1,27 @@
 @interface HDCodableActivityGoalSchedule
-- (BOOL)applyToObject:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)applyToObject:(id)object;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasGoalType:(BOOL)a3;
-- (void)setHasMondayGoal:(BOOL)a3;
-- (void)setHasSaturdayGoal:(BOOL)a3;
-- (void)setHasSundayGoal:(BOOL)a3;
-- (void)setHasThursdayGoal:(BOOL)a3;
-- (void)setHasTuesdayGoal:(BOOL)a3;
-- (void)setHasWednesdayGoal:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasGoalType:(BOOL)type;
+- (void)setHasMondayGoal:(BOOL)goal;
+- (void)setHasSaturdayGoal:(BOOL)goal;
+- (void)setHasSundayGoal:(BOOL)goal;
+- (void)setHasThursdayGoal:(BOOL)goal;
+- (void)setHasTuesdayGoal:(BOOL)goal;
+- (void)setHasWednesdayGoal:(BOOL)goal;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HDCodableActivityGoalSchedule
 
-- (void)setHasGoalType:(BOOL)a3
+- (void)setHasGoalType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -34,9 +34,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasMondayGoal:(BOOL)a3
+- (void)setHasMondayGoal:(BOOL)goal
 {
-  if (a3)
+  if (goal)
   {
     v3 = 4;
   }
@@ -49,9 +49,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasTuesdayGoal:(BOOL)a3
+- (void)setHasTuesdayGoal:(BOOL)goal
 {
-  if (a3)
+  if (goal)
   {
     v3 = 64;
   }
@@ -64,9 +64,9 @@
   *&self->_has = *&self->_has & 0xBF | v3;
 }
 
-- (void)setHasWednesdayGoal:(BOOL)a3
+- (void)setHasWednesdayGoal:(BOOL)goal
 {
-  if (a3)
+  if (goal)
   {
     v3 = 0x80;
   }
@@ -79,9 +79,9 @@
   *&self->_has = v3 & 0x80 | *&self->_has & 0x7F;
 }
 
-- (void)setHasThursdayGoal:(BOOL)a3
+- (void)setHasThursdayGoal:(BOOL)goal
 {
-  if (a3)
+  if (goal)
   {
     v3 = 32;
   }
@@ -94,9 +94,9 @@
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasSaturdayGoal:(BOOL)a3
+- (void)setHasSaturdayGoal:(BOOL)goal
 {
-  if (a3)
+  if (goal)
   {
     v3 = 8;
   }
@@ -109,9 +109,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasSundayGoal:(BOOL)a3
+- (void)setHasSundayGoal:(BOOL)goal
 {
-  if (a3)
+  if (goal)
   {
     v3 = 16;
   }
@@ -130,39 +130,39 @@
   v8.receiver = self;
   v8.super_class = HDCodableActivityGoalSchedule;
   v4 = [(HDCodableActivityGoalSchedule *)&v8 description];
-  v5 = [(HDCodableActivityGoalSchedule *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HDCodableActivityGoalSchedule *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   sample = self->_sample;
   if (sample)
   {
-    v5 = [(HDCodableSample *)sample dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"sample"];
+    dictionaryRepresentation = [(HDCodableSample *)sample dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"sample"];
   }
 
   if ((*&self->_has & 2) != 0)
   {
     v6 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_goalType];
-    [v3 setObject:v6 forKey:@"goalType"];
+    [dictionary setObject:v6 forKey:@"goalType"];
   }
 
   unitString = self->_unitString;
   if (unitString)
   {
-    [v3 setObject:unitString forKey:@"unitString"];
+    [dictionary setObject:unitString forKey:@"unitString"];
   }
 
   has = self->_has;
   if ((has & 4) != 0)
   {
     v11 = [MEMORY[0x277CCABB0] numberWithDouble:self->_mondayGoal];
-    [v3 setObject:v11 forKey:@"mondayGoal"];
+    [dictionary setObject:v11 forKey:@"mondayGoal"];
 
     has = self->_has;
     if ((has & 0x40) == 0)
@@ -183,7 +183,7 @@ LABEL_9:
   }
 
   v12 = [MEMORY[0x277CCABB0] numberWithDouble:self->_tuesdayGoal];
-  [v3 setObject:v12 forKey:@"tuesdayGoal"];
+  [dictionary setObject:v12 forKey:@"tuesdayGoal"];
 
   has = self->_has;
   if ((has & 0x80) == 0)
@@ -199,7 +199,7 @@ LABEL_10:
 
 LABEL_20:
   v13 = [MEMORY[0x277CCABB0] numberWithDouble:self->_wednesdayGoal];
-  [v3 setObject:v13 forKey:@"wednesdayGoal"];
+  [dictionary setObject:v13 forKey:@"wednesdayGoal"];
 
   has = self->_has;
   if ((has & 0x20) == 0)
@@ -215,7 +215,7 @@ LABEL_11:
 
 LABEL_21:
   v14 = [MEMORY[0x277CCABB0] numberWithDouble:self->_thursdayGoal];
-  [v3 setObject:v14 forKey:@"thursdayGoal"];
+  [dictionary setObject:v14 forKey:@"thursdayGoal"];
 
   has = self->_has;
   if ((has & 1) == 0)
@@ -231,7 +231,7 @@ LABEL_12:
 
 LABEL_22:
   v15 = [MEMORY[0x277CCABB0] numberWithDouble:self->_fridayGoal];
-  [v3 setObject:v15 forKey:@"fridayGoal"];
+  [dictionary setObject:v15 forKey:@"fridayGoal"];
 
   has = self->_has;
   if ((has & 8) == 0)
@@ -247,41 +247,41 @@ LABEL_13:
 
 LABEL_23:
   v16 = [MEMORY[0x277CCABB0] numberWithDouble:self->_saturdayGoal];
-  [v3 setObject:v16 forKey:@"saturdayGoal"];
+  [dictionary setObject:v16 forKey:@"saturdayGoal"];
 
   if ((*&self->_has & 0x10) != 0)
   {
 LABEL_14:
     v9 = [MEMORY[0x277CCABB0] numberWithDouble:self->_sundayGoal];
-    [v3 setObject:v9 forKey:@"sundayGoal"];
+    [dictionary setObject:v9 forKey:@"sundayGoal"];
   }
 
 LABEL_15:
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v14 = v4;
+  toCopy = to;
+  v14 = toCopy;
   if (self->_sample)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v14;
+    toCopy = v14;
   }
 
   if ((*&self->_has & 2) != 0)
   {
     goalType = self->_goalType;
     PBDataWriterWriteInt64Field();
-    v4 = v14;
+    toCopy = v14;
   }
 
   if (self->_unitString)
   {
     PBDataWriterWriteStringField();
-    v4 = v14;
+    toCopy = v14;
   }
 
   has = self->_has;
@@ -289,7 +289,7 @@ LABEL_15:
   {
     mondayGoal = self->_mondayGoal;
     PBDataWriterWriteDoubleField();
-    v4 = v14;
+    toCopy = v14;
     has = self->_has;
     if ((has & 0x40) == 0)
     {
@@ -310,7 +310,7 @@ LABEL_9:
 
   tuesdayGoal = self->_tuesdayGoal;
   PBDataWriterWriteDoubleField();
-  v4 = v14;
+  toCopy = v14;
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -326,7 +326,7 @@ LABEL_10:
 LABEL_20:
   wednesdayGoal = self->_wednesdayGoal;
   PBDataWriterWriteDoubleField();
-  v4 = v14;
+  toCopy = v14;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -342,7 +342,7 @@ LABEL_11:
 LABEL_21:
   thursdayGoal = self->_thursdayGoal;
   PBDataWriterWriteDoubleField();
-  v4 = v14;
+  toCopy = v14;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -358,7 +358,7 @@ LABEL_12:
 LABEL_22:
   fridayGoal = self->_fridayGoal;
   PBDataWriterWriteDoubleField();
-  v4 = v14;
+  toCopy = v14;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -374,45 +374,45 @@ LABEL_13:
 LABEL_23:
   saturdayGoal = self->_saturdayGoal;
   PBDataWriterWriteDoubleField();
-  v4 = v14;
+  toCopy = v14;
   if ((*&self->_has & 0x10) != 0)
   {
 LABEL_14:
     sundayGoal = self->_sundayGoal;
     PBDataWriterWriteDoubleField();
-    v4 = v14;
+    toCopy = v14;
   }
 
 LABEL_15:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_sample)
   {
-    [v4 setSample:?];
-    v4 = v6;
+    [toCopy setSample:?];
+    toCopy = v6;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    *(v4 + 2) = self->_goalType;
-    *(v4 + 88) |= 2u;
+    *(toCopy + 2) = self->_goalType;
+    *(toCopy + 88) |= 2u;
   }
 
   if (self->_unitString)
   {
     [v6 setUnitString:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 4) != 0)
   {
-    *(v4 + 3) = *&self->_mondayGoal;
-    *(v4 + 88) |= 4u;
+    *(toCopy + 3) = *&self->_mondayGoal;
+    *(toCopy + 88) |= 4u;
     has = self->_has;
     if ((has & 0x40) == 0)
     {
@@ -431,8 +431,8 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  *(v4 + 7) = *&self->_tuesdayGoal;
-  *(v4 + 88) |= 0x40u;
+  *(toCopy + 7) = *&self->_tuesdayGoal;
+  *(toCopy + 88) |= 0x40u;
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -446,8 +446,8 @@ LABEL_10:
   }
 
 LABEL_20:
-  *(v4 + 8) = *&self->_wednesdayGoal;
-  *(v4 + 88) |= 0x80u;
+  *(toCopy + 8) = *&self->_wednesdayGoal;
+  *(toCopy + 88) |= 0x80u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -461,8 +461,8 @@ LABEL_11:
   }
 
 LABEL_21:
-  *(v4 + 6) = *&self->_thursdayGoal;
-  *(v4 + 88) |= 0x20u;
+  *(toCopy + 6) = *&self->_thursdayGoal;
+  *(toCopy + 88) |= 0x20u;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -476,8 +476,8 @@ LABEL_12:
   }
 
 LABEL_22:
-  *(v4 + 1) = *&self->_fridayGoal;
-  *(v4 + 88) |= 1u;
+  *(toCopy + 1) = *&self->_fridayGoal;
+  *(toCopy + 88) |= 1u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -491,22 +491,22 @@ LABEL_13:
   }
 
 LABEL_23:
-  *(v4 + 4) = *&self->_saturdayGoal;
-  *(v4 + 88) |= 8u;
+  *(toCopy + 4) = *&self->_saturdayGoal;
+  *(toCopy + 88) |= 8u;
   if ((*&self->_has & 0x10) != 0)
   {
 LABEL_14:
-    *(v4 + 5) = *&self->_sundayGoal;
-    *(v4 + 88) |= 0x10u;
+    *(toCopy + 5) = *&self->_sundayGoal;
+    *(toCopy + 88) |= 0x10u;
   }
 
 LABEL_15:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(HDCodableSample *)self->_sample copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(HDCodableSample *)self->_sample copyWithZone:zone];
   v7 = *(v5 + 72);
   *(v5 + 72) = v6;
 
@@ -516,7 +516,7 @@ LABEL_15:
     *(v5 + 88) |= 2u;
   }
 
-  v8 = [(NSString *)self->_unitString copyWithZone:a3];
+  v8 = [(NSString *)self->_unitString copyWithZone:zone];
   v9 = *(v5 + 80);
   *(v5 + 80) = v8;
 
@@ -615,16 +615,16 @@ LABEL_10:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_46;
   }
 
   sample = self->_sample;
-  if (sample | *(v4 + 9))
+  if (sample | *(equalCopy + 9))
   {
     if (![(HDCodableSample *)sample isEqual:?])
     {
@@ -633,22 +633,22 @@ LABEL_10:
   }
 
   has = self->_has;
-  v7 = *(v4 + 88);
+  v7 = *(equalCopy + 88);
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 88) & 2) == 0 || self->_goalType != *(v4 + 2))
+    if ((*(equalCopy + 88) & 2) == 0 || self->_goalType != *(equalCopy + 2))
     {
       goto LABEL_46;
     }
   }
 
-  else if ((*(v4 + 88) & 2) != 0)
+  else if ((*(equalCopy + 88) & 2) != 0)
   {
     goto LABEL_46;
   }
 
   unitString = self->_unitString;
-  if (unitString | *(v4 + 10))
+  if (unitString | *(equalCopy + 10))
   {
     if (![(NSString *)unitString isEqual:?])
     {
@@ -656,12 +656,12 @@ LABEL_10:
     }
 
     has = self->_has;
-    v7 = *(v4 + 88);
+    v7 = *(equalCopy + 88);
   }
 
   if ((has & 4) != 0)
   {
-    if ((v7 & 4) == 0 || self->_mondayGoal != *(v4 + 3))
+    if ((v7 & 4) == 0 || self->_mondayGoal != *(equalCopy + 3))
     {
       goto LABEL_46;
     }
@@ -674,7 +674,7 @@ LABEL_10:
 
   if ((has & 0x40) != 0)
   {
-    if ((v7 & 0x40) == 0 || self->_tuesdayGoal != *(v4 + 7))
+    if ((v7 & 0x40) == 0 || self->_tuesdayGoal != *(equalCopy + 7))
     {
       goto LABEL_46;
     }
@@ -697,7 +697,7 @@ LABEL_46:
     goto LABEL_47;
   }
 
-  if ((v7 & 0x80) == 0 || self->_wednesdayGoal != *(v4 + 8))
+  if ((v7 & 0x80) == 0 || self->_wednesdayGoal != *(equalCopy + 8))
   {
     goto LABEL_46;
   }
@@ -705,7 +705,7 @@ LABEL_46:
 LABEL_24:
   if ((has & 0x20) != 0)
   {
-    if ((v7 & 0x20) == 0 || self->_thursdayGoal != *(v4 + 6))
+    if ((v7 & 0x20) == 0 || self->_thursdayGoal != *(equalCopy + 6))
     {
       goto LABEL_46;
     }
@@ -718,7 +718,7 @@ LABEL_24:
 
   if (has)
   {
-    if ((v7 & 1) == 0 || self->_fridayGoal != *(v4 + 1))
+    if ((v7 & 1) == 0 || self->_fridayGoal != *(equalCopy + 1))
     {
       goto LABEL_46;
     }
@@ -731,7 +731,7 @@ LABEL_24:
 
   if ((has & 8) != 0)
   {
-    if ((v7 & 8) == 0 || self->_saturdayGoal != *(v4 + 4))
+    if ((v7 & 8) == 0 || self->_saturdayGoal != *(equalCopy + 4))
     {
       goto LABEL_46;
     }
@@ -745,7 +745,7 @@ LABEL_24:
   v9 = (v7 & 0x10) == 0;
   if ((has & 0x10) != 0)
   {
-    if ((v7 & 0x10) == 0 || self->_sundayGoal != *(v4 + 5))
+    if ((v7 & 0x10) == 0 || self->_sundayGoal != *(equalCopy + 5))
     {
       goto LABEL_46;
     }
@@ -1012,12 +1012,12 @@ LABEL_47:
   return v4 ^ v3 ^ v5 ^ v8 ^ v12 ^ v16 ^ v20 ^ v24 ^ v28 ^ v32;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   sample = self->_sample;
-  v6 = *(v4 + 9);
-  v8 = v4;
+  v6 = *(fromCopy + 9);
+  v8 = fromCopy;
   if (sample)
   {
     if (!v6)
@@ -1038,26 +1038,26 @@ LABEL_47:
     [(HDCodableActivityGoalSchedule *)self setSample:?];
   }
 
-  v4 = v8;
+  fromCopy = v8;
 LABEL_7:
-  if ((*(v4 + 88) & 2) != 0)
+  if ((*(fromCopy + 88) & 2) != 0)
   {
-    self->_goalType = *(v4 + 2);
+    self->_goalType = *(fromCopy + 2);
     *&self->_has |= 2u;
   }
 
-  if (*(v4 + 10))
+  if (*(fromCopy + 10))
   {
     [(HDCodableActivityGoalSchedule *)self setUnitString:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  v7 = *(v4 + 88);
+  v7 = *(fromCopy + 88);
   if ((v7 & 4) != 0)
   {
-    self->_mondayGoal = *(v4 + 3);
+    self->_mondayGoal = *(fromCopy + 3);
     *&self->_has |= 4u;
-    v7 = *(v4 + 88);
+    v7 = *(fromCopy + 88);
     if ((v7 & 0x40) == 0)
     {
 LABEL_13:
@@ -1070,14 +1070,14 @@ LABEL_13:
     }
   }
 
-  else if ((*(v4 + 88) & 0x40) == 0)
+  else if ((*(fromCopy + 88) & 0x40) == 0)
   {
     goto LABEL_13;
   }
 
-  self->_tuesdayGoal = *(v4 + 7);
+  self->_tuesdayGoal = *(fromCopy + 7);
   *&self->_has |= 0x40u;
-  v7 = *(v4 + 88);
+  v7 = *(fromCopy + 88);
   if ((v7 & 0x80) == 0)
   {
 LABEL_14:
@@ -1090,9 +1090,9 @@ LABEL_14:
   }
 
 LABEL_24:
-  self->_wednesdayGoal = *(v4 + 8);
+  self->_wednesdayGoal = *(fromCopy + 8);
   *&self->_has |= 0x80u;
-  v7 = *(v4 + 88);
+  v7 = *(fromCopy + 88);
   if ((v7 & 0x20) == 0)
   {
 LABEL_15:
@@ -1105,9 +1105,9 @@ LABEL_15:
   }
 
 LABEL_25:
-  self->_thursdayGoal = *(v4 + 6);
+  self->_thursdayGoal = *(fromCopy + 6);
   *&self->_has |= 0x20u;
-  v7 = *(v4 + 88);
+  v7 = *(fromCopy + 88);
   if ((v7 & 1) == 0)
   {
 LABEL_16:
@@ -1120,9 +1120,9 @@ LABEL_16:
   }
 
 LABEL_26:
-  self->_fridayGoal = *(v4 + 1);
+  self->_fridayGoal = *(fromCopy + 1);
   *&self->_has |= 1u;
-  v7 = *(v4 + 88);
+  v7 = *(fromCopy + 88);
   if ((v7 & 8) == 0)
   {
 LABEL_17:
@@ -1135,12 +1135,12 @@ LABEL_17:
   }
 
 LABEL_27:
-  self->_saturdayGoal = *(v4 + 4);
+  self->_saturdayGoal = *(fromCopy + 4);
   *&self->_has |= 8u;
-  if ((*(v4 + 88) & 0x10) != 0)
+  if ((*(fromCopy + 88) & 0x10) != 0)
   {
 LABEL_18:
-    self->_sundayGoal = *(v4 + 5);
+    self->_sundayGoal = *(fromCopy + 5);
     *&self->_has |= 0x10u;
   }
 
@@ -1149,58 +1149,58 @@ LABEL_19:
   MEMORY[0x2821F96F8]();
 }
 
-- (BOOL)applyToObject:(id)a3
+- (BOOL)applyToObject:(id)object
 {
   v34 = *MEMORY[0x277D85DE8];
   v31 = 0;
-  v4 = a3;
+  objectCopy = object;
   if (self)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(HDCodableActivityGoalSchedule *)self sample];
-      v6 = [v5 applyToObject:v4];
+      sample = [(HDCodableActivityGoalSchedule *)self sample];
+      v6 = [sample applyToObject:objectCopy];
 
       if (v6)
       {
-        [v4 setGoalType:{-[HDCodableActivityGoalSchedule goalType](self, "goalType")}];
-        v7 = [(HDCodableActivityGoalSchedule *)self unitString];
-        v8 = [MEMORY[0x277CCDAB0] unitFromString:v7];
+        [objectCopy setGoalType:{-[HDCodableActivityGoalSchedule goalType](self, "goalType")}];
+        unitString = [(HDCodableActivityGoalSchedule *)self unitString];
+        v8 = [MEMORY[0x277CCDAB0] unitFromString:unitString];
         v9 = MEMORY[0x277CCD7E8];
         [(HDCodableActivityGoalSchedule *)self mondayGoal];
         v10 = [v9 quantityWithUnit:v8 doubleValue:?];
-        [v4 setMondayGoal:v10];
+        [objectCopy setMondayGoal:v10];
 
         v11 = MEMORY[0x277CCD7E8];
         [(HDCodableActivityGoalSchedule *)self tuesdayGoal];
         v12 = [v11 quantityWithUnit:v8 doubleValue:?];
-        [v4 setTuesdayGoal:v12];
+        [objectCopy setTuesdayGoal:v12];
 
         v13 = MEMORY[0x277CCD7E8];
         [(HDCodableActivityGoalSchedule *)self wednesdayGoal];
         v14 = [v13 quantityWithUnit:v8 doubleValue:?];
-        [v4 setWednesdayGoal:v14];
+        [objectCopy setWednesdayGoal:v14];
 
         v15 = MEMORY[0x277CCD7E8];
         [(HDCodableActivityGoalSchedule *)self thursdayGoal];
         v16 = [v15 quantityWithUnit:v8 doubleValue:?];
-        [v4 setThursdayGoal:v16];
+        [objectCopy setThursdayGoal:v16];
 
         v17 = MEMORY[0x277CCD7E8];
         [(HDCodableActivityGoalSchedule *)self fridayGoal];
         v18 = [v17 quantityWithUnit:v8 doubleValue:?];
-        [v4 setFridayGoal:v18];
+        [objectCopy setFridayGoal:v18];
 
         v19 = MEMORY[0x277CCD7E8];
         [(HDCodableActivityGoalSchedule *)self saturdayGoal];
         v20 = [v19 quantityWithUnit:v8 doubleValue:?];
-        [v4 setSaturdayGoal:v20];
+        [objectCopy setSaturdayGoal:v20];
 
         v21 = MEMORY[0x277CCD7E8];
         [(HDCodableActivityGoalSchedule *)self sundayGoal];
         v22 = [v21 quantityWithUnit:v8 doubleValue:?];
-        [v4 setSundayGoal:v22];
+        [objectCopy setSundayGoal:v22];
 
         v23 = 0;
         v24 = 1;

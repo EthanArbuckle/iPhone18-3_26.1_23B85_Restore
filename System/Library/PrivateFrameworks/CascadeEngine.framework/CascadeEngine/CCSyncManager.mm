@@ -1,24 +1,24 @@
 @interface CCSyncManager
-- (CCSyncManager)initWithQueue:(id)a3;
-- (id)_syncEngineForCurrentPersona:(id *)a3;
-- (void)_handleSetChanges:(id)a3;
-- (void)_syncPersonasNow:(id)a3 withReason:(unsigned __int8)a4 activity:(id)a5 completionHandler:(id)a6;
-- (void)handleIncomingSyncRequestsWithReason:(unsigned __int8)a3 completionHandler:(id)a4;
-- (void)syncCurrentPersonaNowWithReason:(unsigned __int8)a3 activity:(id)a4 completionHandler:(id)a5;
+- (CCSyncManager)initWithQueue:(id)queue;
+- (id)_syncEngineForCurrentPersona:(id *)persona;
+- (void)_handleSetChanges:(id)changes;
+- (void)_syncPersonasNow:(id)now withReason:(unsigned __int8)reason activity:(id)activity completionHandler:(id)handler;
+- (void)handleIncomingSyncRequestsWithReason:(unsigned __int8)reason completionHandler:(id)handler;
+- (void)syncCurrentPersonaNowWithReason:(unsigned __int8)reason activity:(id)activity completionHandler:(id)handler;
 @end
 
 @implementation CCSyncManager
 
-- (CCSyncManager)initWithQueue:(id)a3
+- (CCSyncManager)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v18.receiver = self;
   v18.super_class = CCSyncManager;
   v6 = [(CCSyncManager *)&v18 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_queue, a3);
+    objc_storeStrong(&v6->_queue, queue);
     v8 = objc_alloc(MEMORY[0x1E6993A68]);
     v9 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"com.apple.biomesyncd.cascadeSetChange"];
     v16[0] = MEMORY[0x1E69E9820];
@@ -37,36 +37,36 @@
   return v7;
 }
 
-- (void)syncCurrentPersonaNowWithReason:(unsigned __int8)a3 activity:(id)a4 completionHandler:(id)a5
+- (void)syncCurrentPersonaNowWithReason:(unsigned __int8)reason activity:(id)activity completionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
+  activityCopy = activity;
+  handlerCopy = handler;
   queue = self->_queue;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __76__CCSyncManager_syncCurrentPersonaNowWithReason_activity_completionHandler___block_invoke;
   v13[3] = &unk_1E85C2A68;
-  v16 = a3;
+  reasonCopy = reason;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
+  v14 = activityCopy;
+  v15 = handlerCopy;
+  v11 = handlerCopy;
+  v12 = activityCopy;
   dispatch_async(queue, v13);
 }
 
-- (void)handleIncomingSyncRequestsWithReason:(unsigned __int8)a3 completionHandler:(id)a4
+- (void)handleIncomingSyncRequestsWithReason:(unsigned __int8)reason completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __72__CCSyncManager_handleIncomingSyncRequestsWithReason_completionHandler___block_invoke;
   block[3] = &unk_1E85C2AB8;
   block[4] = self;
-  v10 = v6;
-  v11 = a3;
-  v8 = v6;
+  v10 = handlerCopy;
+  reasonCopy = reason;
+  v8 = handlerCopy;
   dispatch_async(queue, block);
 }
 
@@ -108,7 +108,7 @@ void __72__CCSyncManager_handleIncomingSyncRequestsWithReason_completionHandler_
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_syncEngineForCurrentPersona:(id *)a3
+- (id)_syncEngineForCurrentPersona:(id *)persona
 {
   v14 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_queue);
@@ -124,7 +124,7 @@ void __72__CCSyncManager_handleIncomingSyncRequestsWithReason_completionHandler_
       _os_log_impl(&dword_1DA444000, v6, OS_LOG_TYPE_DEFAULT, "Initializing %@", &v12, 0xCu);
     }
 
-    v8 = [[CCRapportSyncEngine alloc] initWithQueue:self->_queue error:a3];
+    v8 = [[CCRapportSyncEngine alloc] initWithQueue:self->_queue error:persona];
     v9 = self->_syncEngine;
     self->_syncEngine = v8;
 
@@ -136,18 +136,18 @@ void __72__CCSyncManager_handleIncomingSyncRequestsWithReason_completionHandler_
   return syncEngine;
 }
 
-- (void)_syncPersonasNow:(id)a3 withReason:(unsigned __int8)a4 activity:(id)a5 completionHandler:(id)a6
+- (void)_syncPersonasNow:(id)now withReason:(unsigned __int8)reason activity:(id)activity completionHandler:(id)handler
 {
-  v8 = a6;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __72__CCSyncManager__syncPersonasNow_withReason_activity_completionHandler___block_invoke;
   block[3] = &unk_1E85C2AB8;
-  v13 = a4;
+  reasonCopy = reason;
   block[4] = self;
-  v12 = v8;
-  v10 = v8;
+  v12 = handlerCopy;
+  v10 = handlerCopy;
   dispatch_async(queue, block);
 }
 
@@ -197,15 +197,15 @@ void __77__CCSyncManager__syncCurrentPersonaNowWithReason_activity_completionHan
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleSetChanges:(id)a3
+- (void)_handleSetChanges:(id)changes
 {
   v40 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  changesCopy = changes;
   v5 = __biome_log_for_category();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v39 = v4;
+    v39 = changesCopy;
     _os_log_impl(&dword_1DA444000, v5, OS_LOG_TYPE_DEFAULT, "Notified of changes to sets, evaluating policy %@", buf, 0xCu);
   }
 
@@ -215,13 +215,13 @@ void __77__CCSyncManager__syncCurrentPersonaNowWithReason_activity_completionHan
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v7 = v4;
+  v7 = changesCopy;
   v8 = [v7 countByEnumeratingWithState:&v33 objects:v37 count:16];
   if (v8)
   {
     v9 = v8;
     obj = v7;
-    v27 = self;
+    selfCopy = self;
     v29 = 0;
     v10 = *v34;
     do
@@ -236,11 +236,11 @@ void __77__CCSyncManager__syncCurrentPersonaNowWithReason_activity_completionHan
         v12 = *(*(&v33 + 1) + 8 * i);
         v13 = objc_autoreleasePoolPush();
         v14 = [MEMORY[0x1E6993A70] setConfigurationForItemType:{objc_msgSend(v12, "itemType")}];
-        v15 = [v14 setIdentifier];
-        if ([v6 containsObject:v15])
+        setIdentifier = [v14 setIdentifier];
+        if ([v6 containsObject:setIdentifier])
         {
-          v16 = [v14 syncPolicy];
-          v17 = [v16 supportsTransport:2 direction:2 fromPlatform:{objc_msgSend(MEMORY[0x1E698E9A0], "platform")}];
+          syncPolicy = [v14 syncPolicy];
+          v17 = [syncPolicy supportsTransport:2 direction:2 fromPlatform:{objc_msgSend(MEMORY[0x1E698E9A0], "platform")}];
 
           if (v17)
           {
@@ -248,16 +248,16 @@ void __77__CCSyncManager__syncCurrentPersonaNowWithReason_activity_completionHan
             if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138412290;
-              v39 = v15;
+              v39 = setIdentifier;
               _os_log_impl(&dword_1DA444000, v18, OS_LOG_TYPE_DEFAULT, "Sync policy requires immediate sync for set: %@", buf, 0xCu);
             }
 
-            v19 = [v12 personaIdentifier];
+            personaIdentifier = [v12 personaIdentifier];
 
-            if (v19)
+            if (personaIdentifier)
             {
-              v20 = [v12 personaIdentifier];
-              [v28 addObject:v20];
+              personaIdentifier2 = [v12 personaIdentifier];
+              [v28 addObject:personaIdentifier2];
             }
 
             v29 = 1;
@@ -284,14 +284,14 @@ void __77__CCSyncManager__syncCurrentPersonaNowWithReason_activity_completionHan
         _os_log_impl(&dword_1DA444000, v23, OS_LOG_TYPE_DEFAULT, "Triggering immediate sync following change(s) to set(s) %@", buf, 0xCu);
       }
 
-      v24 = [v28 allObjects];
+      allObjects = [v28 allObjects];
       v31[0] = MEMORY[0x1E69E9820];
       v31[1] = 3221225472;
       v31[2] = __35__CCSyncManager__handleSetChanges___block_invoke;
       v31[3] = &unk_1E85C2B30;
       v32 = v22;
       v25 = v22;
-      [(CCSyncManager *)v27 _syncPersonasNow:v24 withReason:6 activity:0 completionHandler:v31];
+      [(CCSyncManager *)selfCopy _syncPersonasNow:allObjects withReason:6 activity:0 completionHandler:v31];
 
       dispatch_semaphore_wait(v25, 0xFFFFFFFFFFFFFFFFLL);
       goto LABEL_24;

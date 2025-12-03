@@ -1,19 +1,19 @@
 @interface DSSafetyCheck
 + (BOOL)isManagedAccount;
 + (BOOL)shouldShowHSA2Upgrade;
-+ (BOOL)startWithPresentingViewController:(id)a3 withURL:(id)a4;
++ (BOOL)startWithPresentingViewController:(id)controller withURL:(id)l;
 + (id)safetyCheckViewController;
-+ (void)authForSafetyCheckWithPresentingViewController:(id)a3 safetyCheckController:(id)a4;
-+ (void)isChildOrTeenAccountWithCompletion:(id)a3;
++ (void)authForSafetyCheckWithPresentingViewController:(id)controller safetyCheckController:(id)checkController;
++ (void)isChildOrTeenAccountWithCompletion:(id)completion;
 + (void)isManagedAccount;
-+ (void)presentSafetyCheckWithViewController:(id)a3 navigationController:(id)a4;
-+ (void)showHSA2UpgradeWithPresentingViewController:(id)a3 safetyCheckController:(id)a4;
-+ (void)showManagedAccountAlertWithPresentingViewController:(id)a3;
-+ (void)showlearnMoreForPresentingViewController:(id)a3 withURL:(id)a4;
-+ (void)startEmergencyResetWithPresentingViewController:(id)a3;
-+ (void)startManageSharingWithPresentingViewController:(id)a3;
-+ (void)startReviewDeviceAccessWithPresentingViewController:(id)a3;
-+ (void)startSafetyCheckWithPresentingViewController:(id)a3 safetyCheckController:(id)a4;
++ (void)presentSafetyCheckWithViewController:(id)controller navigationController:(id)navigationController;
++ (void)showHSA2UpgradeWithPresentingViewController:(id)controller safetyCheckController:(id)checkController;
++ (void)showManagedAccountAlertWithPresentingViewController:(id)controller;
++ (void)showlearnMoreForPresentingViewController:(id)controller withURL:(id)l;
++ (void)startEmergencyResetWithPresentingViewController:(id)controller;
++ (void)startManageSharingWithPresentingViewController:(id)controller;
++ (void)startReviewDeviceAccessWithPresentingViewController:(id)controller;
++ (void)startSafetyCheckWithPresentingViewController:(id)controller safetyCheckController:(id)checkController;
 @end
 
 @implementation DSSafetyCheck
@@ -25,58 +25,58 @@
   return v2;
 }
 
-+ (void)startSafetyCheckWithPresentingViewController:(id)a3 safetyCheckController:(id)a4
++ (void)startSafetyCheckWithPresentingViewController:(id)controller safetyCheckController:(id)checkController
 {
-  v6 = a3;
-  v5 = a4;
+  controllerCopy = controller;
+  checkControllerCopy = checkController;
   if (+[DSSafetyCheck isManagedAccount])
   {
-    [DSSafetyCheck showManagedAccountAlertWithPresentingViewController:v6];
+    [DSSafetyCheck showManagedAccountAlertWithPresentingViewController:controllerCopy];
   }
 
   else if (+[DSSafetyCheck shouldShowHSA2Upgrade])
   {
-    [DSSafetyCheck showHSA2UpgradeWithPresentingViewController:v6 safetyCheckController:v5];
+    [DSSafetyCheck showHSA2UpgradeWithPresentingViewController:controllerCopy safetyCheckController:checkControllerCopy];
   }
 
-  else if ([DSSafetyCheck shouldSkipAuthenticationForController:v5])
+  else if ([DSSafetyCheck shouldSkipAuthenticationForController:checkControllerCopy])
   {
-    [DSSafetyCheck presentSafetyCheckWithViewController:v6 navigationController:v5];
+    [DSSafetyCheck presentSafetyCheckWithViewController:controllerCopy navigationController:checkControllerCopy];
   }
 
   else
   {
-    [DSSafetyCheck authForSafetyCheckWithPresentingViewController:v6 safetyCheckController:v5];
+    [DSSafetyCheck authForSafetyCheckWithPresentingViewController:controllerCopy safetyCheckController:checkControllerCopy];
   }
 }
 
-+ (void)startEmergencyResetWithPresentingViewController:(id)a3
++ (void)startEmergencyResetWithPresentingViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [[DSNavigationController alloc] initStartingWithEmergencyReset];
-  [a1 startSafetyCheckWithPresentingViewController:v4 safetyCheckController:v5];
+  controllerCopy = controller;
+  initStartingWithEmergencyReset = [[DSNavigationController alloc] initStartingWithEmergencyReset];
+  [self startSafetyCheckWithPresentingViewController:controllerCopy safetyCheckController:initStartingWithEmergencyReset];
 }
 
-+ (void)startManageSharingWithPresentingViewController:(id)a3
++ (void)startManageSharingWithPresentingViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [[DSNavigationController alloc] initStartingWithMangeSharing];
-  [a1 startSafetyCheckWithPresentingViewController:v4 safetyCheckController:v5];
+  controllerCopy = controller;
+  initStartingWithMangeSharing = [[DSNavigationController alloc] initStartingWithMangeSharing];
+  [self startSafetyCheckWithPresentingViewController:controllerCopy safetyCheckController:initStartingWithMangeSharing];
 }
 
-+ (BOOL)startWithPresentingViewController:(id)a3 withURL:(id)a4
++ (BOOL)startWithPresentingViewController:(id)controller withURL:(id)l
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [[DSNavigationController alloc] initStartingWithURL:v7];
+  controllerCopy = controller;
+  lCopy = l;
+  v8 = [[DSNavigationController alloc] initStartingWithURL:lCopy];
   if (v8)
   {
-    [a1 startSafetyCheckWithPresentingViewController:v6 safetyCheckController:v8];
+    [self startSafetyCheckWithPresentingViewController:controllerCopy safetyCheckController:v8];
   }
 
   else
   {
-    v9 = [v7 objectForKey:@"path"];
+    v9 = [lCopy objectForKey:@"path"];
     if ([v9 containsString:@"#root"])
     {
       AnalyticsSendEventLazy();
@@ -86,10 +86,10 @@
   return v8 != 0;
 }
 
-+ (void)authForSafetyCheckWithPresentingViewController:(id)a3 safetyCheckController:(id)a4
++ (void)authForSafetyCheckWithPresentingViewController:(id)controller safetyCheckController:(id)checkController
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  checkControllerCopy = checkController;
   v8 = os_log_create("com.apple.DigitalSeparation", "DSSafetyCheck");
   v9 = DSLog_3;
   DSLog_3 = v8;
@@ -106,10 +106,10 @@
     v25[1] = 3221225472;
     v25[2] = __86__DSSafetyCheck_authForSafetyCheckWithPresentingViewController_safetyCheckController___block_invoke;
     v25[3] = &unk_278F75890;
-    v26 = v7;
+    v26 = checkControllerCopy;
     v27 = v10;
-    v29 = a1;
-    v28 = v6;
+    selfCopy = self;
+    v28 = controllerCopy;
     [v27 evaluatePolicy:2 localizedReason:v14 reply:v25];
 
     v15 = v26;
@@ -118,12 +118,12 @@ LABEL_3:
     goto LABEL_12;
   }
 
-  v16 = [v12 domain];
-  if ([v16 isEqualToString:*MEMORY[0x277CD4770]])
+  domain = [v12 domain];
+  if ([domain isEqualToString:*MEMORY[0x277CD4770]])
   {
-    v17 = [v13 code];
+    code = [v13 code];
 
-    if (v17 == -5)
+    if (code == -5)
     {
       v18 = DSLog_3;
       if (os_log_type_enabled(DSLog_3, OS_LOG_TYPE_INFO))
@@ -136,10 +136,10 @@ LABEL_3:
       v19[1] = 3221225472;
       v19[2] = __86__DSSafetyCheck_authForSafetyCheckWithPresentingViewController_safetyCheckController___block_invoke_358;
       v19[3] = &unk_278F75868;
-      v20 = v7;
+      v20 = checkControllerCopy;
       v21 = v10;
-      v23 = a1;
-      v22 = v6;
+      selfCopy2 = self;
+      v22 = controllerCopy;
       dispatch_async(MEMORY[0x277D85CD0], v19);
 
       v15 = v20;
@@ -236,12 +236,12 @@ uint64_t __86__DSSafetyCheck_authForSafetyCheckWithPresentingViewController_safe
   return [v2 presentSafetyCheckWithViewController:v3 navigationController:v4];
 }
 
-+ (void)presentSafetyCheckWithViewController:(id)a3 navigationController:(id)a4
++ (void)presentSafetyCheckWithViewController:(id)controller navigationController:(id)navigationController
 {
-  v5 = a4;
-  [a3 presentViewController:v5 animated:1 completion:&__block_literal_global_360];
+  navigationControllerCopy = navigationController;
+  [controller presentViewController:navigationControllerCopy animated:1 completion:&__block_literal_global_360];
   [DSDTOManager isRatchetActiveWithCompletion:&__block_literal_global_365];
-  v6 = v5;
+  v6 = navigationControllerCopy;
   AnalyticsSendEventLazy();
 }
 
@@ -274,16 +274,16 @@ id __75__DSSafetyCheck_presentSafetyCheckWithViewController_navigationController
   return v2;
 }
 
-+ (void)isChildOrTeenAccountWithCompletion:(id)a3
++ (void)isChildOrTeenAccountWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = objc_alloc_init(MEMORY[0x277D08280]);
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __52__DSSafetyCheck_isChildOrTeenAccountWithCompletion___block_invoke;
   v6[3] = &unk_278F758D8;
-  v7 = v3;
-  v5 = v3;
+  v7 = completionCopy;
+  v5 = completionCopy;
   [v4 startRequestWithCompletionHandler:v6];
 }
 
@@ -351,11 +351,11 @@ LABEL_15:
 + (BOOL)isManagedAccount
 {
   v2 = objc_opt_new();
-  v3 = [v2 aa_primaryAppleAccount];
-  v4 = [MEMORY[0x277CF0130] sharedInstance];
-  v5 = [v3 aa_altDSID];
+  aa_primaryAppleAccount = [v2 aa_primaryAppleAccount];
+  mEMORY[0x277CF0130] = [MEMORY[0x277CF0130] sharedInstance];
+  aa_altDSID = [aa_primaryAppleAccount aa_altDSID];
   v11 = 0;
-  v6 = [v4 authKitAccountWithAltDSID:v5 error:&v11];
+  v6 = [mEMORY[0x277CF0130] authKitAccountWithAltDSID:aa_altDSID error:&v11];
   v7 = v11;
 
   if (v7 && os_log_type_enabled(DSLog_3, OS_LOG_TYPE_ERROR))
@@ -363,16 +363,16 @@ LABEL_15:
     +[DSSafetyCheck isManagedAccount];
   }
 
-  v8 = [MEMORY[0x277CF0130] sharedInstance];
-  v9 = [v8 securityLevelForAccount:v6] == 5;
+  mEMORY[0x277CF0130]2 = [MEMORY[0x277CF0130] sharedInstance];
+  v9 = [mEMORY[0x277CF0130]2 securityLevelForAccount:v6] == 5;
 
   return v9;
 }
 
-+ (void)showManagedAccountAlertWithPresentingViewController:(id)a3
++ (void)showManagedAccountAlertWithPresentingViewController:(id)controller
 {
   v3 = MEMORY[0x277D75110];
-  v4 = a3;
+  controllerCopy = controller;
   v5 = DSUILocStringForKey(@"MANAGED_ACCOUNT_TITLE");
   v6 = DSUILocStringForKey(@"MANAGED_ACCOUNT_DETAIL");
   v10 = [v3 alertControllerWithTitle:v5 message:v6 preferredStyle:1];
@@ -382,18 +382,18 @@ LABEL_15:
   v9 = [v7 actionWithTitle:v8 style:1 handler:&__block_literal_global_384_0];
   [v10 addAction:v9];
 
-  [v4 presentViewController:v10 animated:1 completion:0];
+  [controllerCopy presentViewController:v10 animated:1 completion:0];
   AnalyticsSendEventLazy();
 }
 
 + (BOOL)shouldShowHSA2Upgrade
 {
   v2 = objc_opt_new();
-  v3 = [v2 aa_primaryAppleAccount];
-  v4 = [MEMORY[0x277CF0130] sharedInstance];
-  v5 = [v3 aa_altDSID];
+  aa_primaryAppleAccount = [v2 aa_primaryAppleAccount];
+  mEMORY[0x277CF0130] = [MEMORY[0x277CF0130] sharedInstance];
+  aa_altDSID = [aa_primaryAppleAccount aa_altDSID];
   v11 = 0;
-  v6 = [v4 authKitAccountWithAltDSID:v5 error:&v11];
+  v6 = [mEMORY[0x277CF0130] authKitAccountWithAltDSID:aa_altDSID error:&v11];
   v7 = v11;
 
   if (v7 && os_log_type_enabled(DSLog_3, OS_LOG_TYPE_ERROR))
@@ -401,36 +401,36 @@ LABEL_15:
     +[DSSafetyCheck isManagedAccount];
   }
 
-  v8 = [MEMORY[0x277CF0130] sharedInstance];
-  v9 = [v8 securityLevelForAccount:v6] != 4;
+  mEMORY[0x277CF0130]2 = [MEMORY[0x277CF0130] sharedInstance];
+  v9 = [mEMORY[0x277CF0130]2 securityLevelForAccount:v6] != 4;
 
   return v9;
 }
 
-+ (void)showHSA2UpgradeWithPresentingViewController:(id)a3 safetyCheckController:(id)a4
++ (void)showHSA2UpgradeWithPresentingViewController:(id)controller safetyCheckController:(id)checkController
 {
-  v5 = a3;
-  v6 = a4;
+  controllerCopy = controller;
+  checkControllerCopy = checkController;
   v7 = objc_opt_new();
-  v8 = [v7 aa_primaryAppleAccount];
-  v9 = v8;
-  if (v8)
+  aa_primaryAppleAccount = [v7 aa_primaryAppleAccount];
+  v9 = aa_primaryAppleAccount;
+  if (aa_primaryAppleAccount)
   {
-    v10 = [v8 aa_altDSID];
-    v11 = [objc_alloc(MEMORY[0x277CFDAE8]) initWithAltDSID:v10];
+    aa_altDSID = [aa_primaryAppleAccount aa_altDSID];
+    v11 = [objc_alloc(MEMORY[0x277CFDAE8]) initWithAltDSID:aa_altDSID];
     [v11 setDeviceToDeviceEncryptionUpgradeUIStyle:0];
     [v11 setDeviceToDeviceEncryptionUpgradeType:1];
     v12 = DSUILocStringForKey(@"SAFETY_CHECK");
     [v11 setFeatureName:v12];
 
-    [v11 setPresentingViewController:v5];
+    [v11 setPresentingViewController:controllerCopy];
     v13 = [objc_alloc(MEMORY[0x277CFDAF0]) initWithContext:v11];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __83__DSSafetyCheck_showHSA2UpgradeWithPresentingViewController_safetyCheckController___block_invoke_3;
     v20[3] = &unk_278F75900;
-    v21 = v5;
-    v22 = v6;
+    v21 = controllerCopy;
+    v22 = checkControllerCopy;
     [v13 performDeviceToDeviceEncryptionStateRepairWithCompletion:v20];
   }
 
@@ -439,14 +439,14 @@ LABEL_15:
     v14 = MEMORY[0x277D75110];
     v15 = DSUILocStringForKey(@"HSA2_NOT_REPAIRED_TITLE");
     v16 = DSUILocStringForKey(@"HSA2_NOT_REPAIRED_DETAIL");
-    v10 = [v14 alertControllerWithTitle:v15 message:v16 preferredStyle:1];
+    aa_altDSID = [v14 alertControllerWithTitle:v15 message:v16 preferredStyle:1];
 
     v17 = MEMORY[0x277D750F8];
     v18 = DSUILocStringForKey(@"OK");
     v19 = [v17 actionWithTitle:v18 style:1 handler:&__block_literal_global_410];
-    [v10 addAction:v19];
+    [aa_altDSID addAction:v19];
 
-    [v5 presentViewController:v10 animated:1 completion:0];
+    [controllerCopy presentViewController:aa_altDSID animated:1 completion:0];
     AnalyticsSendEventLazy();
   }
 }
@@ -490,41 +490,41 @@ void __83__DSSafetyCheck_showHSA2UpgradeWithPresentingViewController_safetyCheck
   }
 }
 
-+ (void)showlearnMoreForPresentingViewController:(id)a3 withURL:(id)a4
++ (void)showlearnMoreForPresentingViewController:(id)controller withURL:(id)l
 {
   v5 = MEMORY[0x277CDB708];
-  v6 = a4;
-  v7 = a3;
+  lCopy = l;
+  controllerCopy = controller;
   v11 = objc_alloc_init(v5);
   [v11 _setEphemeral:1];
   v8 = objc_alloc(MEMORY[0x277CDB700]);
-  v9 = [MEMORY[0x277CBEBC0] URLWithString:v6];
+  v9 = [MEMORY[0x277CBEBC0] URLWithString:lCopy];
 
   v10 = [v8 initWithURL:v9 configuration:v11];
-  [v7 presentViewController:v10 animated:1 completion:0];
+  [controllerCopy presentViewController:v10 animated:1 completion:0];
 }
 
-+ (void)startReviewDeviceAccessWithPresentingViewController:(id)a3
++ (void)startReviewDeviceAccessWithPresentingViewController:(id)controller
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277D75418] currentDevice];
-  v5 = [v4 sf_isiPhone];
+  controllerCopy = controller;
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  sf_isiPhone = [currentDevice sf_isiPhone];
 
-  if (v5)
+  if (sf_isiPhone)
   {
     v6 = +[DSAlternateDeviceAccessManager sharedManager];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __69__DSSafetyCheck_startReviewDeviceAccessWithPresentingViewController___block_invoke;
     v8[3] = &unk_278F75950;
-    v9 = v3;
+    v9 = controllerCopy;
     [v6 fetchAccessMethodsWithCompletion:v8];
   }
 
   else
   {
-    v7 = [v3 presentingViewController];
-    [v7 dismissViewControllerAnimated:1 completion:0];
+    presentingViewController = [controllerCopy presentingViewController];
+    [presentingViewController dismissViewControllerAnimated:1 completion:0];
   }
 }
 

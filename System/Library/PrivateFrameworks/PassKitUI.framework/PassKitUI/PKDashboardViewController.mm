@@ -1,101 +1,101 @@
 @interface PKDashboardViewController
-- ($53A5F136F2571818685D7E4B154E8CAC)methodsForItemIdentifier:(id)a3;
-- (BOOL)_isCellVisibleAtIndexPath:(id)a3 withTopSafeArea:(double)a4 contentOffset:(double)a5;
-- (BOOL)_isIndexPathAFooter:(id)a3;
-- (BOOL)_isIndexPathAHeader:(id)a3;
-- (BOOL)_isListSectionAtIndex:(int64_t)a3;
-- (BOOL)collectionView:(id)a3 layout:(id)a4 hasFooterForSectionAtIndex:(int64_t)a5;
-- (BOOL)collectionView:(id)a3 layout:(id)a4 hasHeaderForSectionAtIndex:(int64_t)a5;
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4;
-- (BOOL)itemIsIndependentInCollectionView:(id)a3 atIndexPath:(id)a4;
-- (BOOL)itemIsStackableInCollectionView:(id)a3 atIndexPath:(id)a4;
-- (CGPoint)_scrollView:(id)a3 adjustedOffsetForOffset:(CGPoint)result translation:(CGPoint)a5 startPoint:(CGPoint)a6 locationInView:(CGPoint)a7 horizontalVelocity:(double *)a8 verticalVelocity:(double *)a9;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
+- ($53A5F136F2571818685D7E4B154E8CAC)methodsForItemIdentifier:(id)identifier;
+- (BOOL)_isCellVisibleAtIndexPath:(id)path withTopSafeArea:(double)area contentOffset:(double)offset;
+- (BOOL)_isIndexPathAFooter:(id)footer;
+- (BOOL)_isIndexPathAHeader:(id)header;
+- (BOOL)_isListSectionAtIndex:(int64_t)index;
+- (BOOL)collectionView:(id)view layout:(id)layout hasFooterForSectionAtIndex:(int64_t)index;
+- (BOOL)collectionView:(id)view layout:(id)layout hasHeaderForSectionAtIndex:(int64_t)index;
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path;
+- (BOOL)itemIsIndependentInCollectionView:(id)view atIndexPath:(id)path;
+- (BOOL)itemIsStackableInCollectionView:(id)view atIndexPath:(id)path;
+- (CGPoint)_scrollView:(id)view adjustedOffsetForOffset:(CGPoint)result translation:(CGPoint)translation startPoint:(CGPoint)point locationInView:(CGPoint)inView horizontalVelocity:(double *)velocity verticalVelocity:(double *)verticalVelocity;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
 - (NSArray)actualIndexPathsForSelectedItems;
 - (PKDashboardDelegate)delegate;
-- (PKDashboardViewController)initWithCoder:(id)a3;
-- (PKDashboardViewController)initWithCollectionViewLayout:(id)a3;
-- (PKDashboardViewController)initWithDataSource:(id)a3 presenters:(id)a4 layout:(id)a5;
-- (PKDashboardViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)_actualItemIndexPathForIndexPath:(id)a3;
-- (id)_footerViewAtIndexPath:(id)a3 isCell:(BOOL)a4;
-- (id)_headerViewAtIndexPath:(id)a3 isCell:(BOOL)a4;
-- (id)_internalIndexPathForItemIndexPath:(id)a3;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)collectionView:(id)a3 layout:(id)a4 separatorInsetsForItemAtIndexPath:(id)a5;
-- (id)collectionView:(id)a3 layout:(id)a4 trailingSwipeActionsConfigurationForItemAtIndexPath:(id)a5;
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
-- (void)_hideAllContentAnimated:(BOOL)a3;
+- (PKDashboardViewController)initWithCoder:(id)coder;
+- (PKDashboardViewController)initWithCollectionViewLayout:(id)layout;
+- (PKDashboardViewController)initWithDataSource:(id)source presenters:(id)presenters layout:(id)layout;
+- (PKDashboardViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)_actualItemIndexPathForIndexPath:(id)path;
+- (id)_footerViewAtIndexPath:(id)path isCell:(BOOL)cell;
+- (id)_headerViewAtIndexPath:(id)path isCell:(BOOL)cell;
+- (id)_internalIndexPathForItemIndexPath:(id)path;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view layout:(id)layout separatorInsetsForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view layout:(id)layout trailingSwipeActionsConfigurationForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
+- (void)_hideAllContentAnimated:(BOOL)animated;
 - (void)_presentAllContent;
-- (void)_resolveDismissInteractionForScrollView:(id)a3;
-- (void)_setupPresenters:(id)a3;
+- (void)_resolveDismissInteractionForScrollView:(id)view;
+- (void)_setupPresenters:(id)presenters;
 - (void)_updateNavigationBarAppearance;
 - (void)_updateNavigationBarVisibility;
-- (void)collectionView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)collectionView:(id)a3 didHighlightItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 didUnhighlightItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 prefetchItemsAtIndexPaths:(id)a4;
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5;
+- (void)collectionView:(id)view didEndDisplayingCell:(id)cell forItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didHighlightItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didUnhighlightItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view prefetchItemsAtIndexPaths:(id)paths;
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path;
 - (void)contentIsLoaded;
 - (void)dealloc;
-- (void)deleteItemsAtIndexPaths:(id)a3;
-- (void)deleteSections:(id)a3;
-- (void)insertItemsAtIndexPaths:(id)a3;
-- (void)insertSections:(id)a3;
-- (void)itemChanged:(id)a3 atIndexPath:(id)a4;
+- (void)deleteItemsAtIndexPaths:(id)paths;
+- (void)deleteSections:(id)sections;
+- (void)insertItemsAtIndexPaths:(id)paths;
+- (void)insertSections:(id)sections;
+- (void)itemChanged:(id)changed atIndexPath:(id)path;
 - (void)loadView;
-- (void)moveItemAtIndexPath:(id)a3 toIndexPath:(id)a4;
-- (void)moveSection:(int64_t)a3 toSection:(int64_t)a4;
-- (void)performBatchUpdates:(id)a3 completion:(id)a4;
+- (void)moveItemAtIndexPath:(id)path toIndexPath:(id)indexPath;
+- (void)moveSection:(int64_t)section toSection:(int64_t)toSection;
+- (void)performBatchUpdates:(id)updates completion:(id)completion;
 - (void)performCollectionViewDataReload;
-- (void)reloadSections:(id)a3;
-- (void)scrollViewDidEndDecelerating:(id)a3;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)setActionForVisibilityChange:(id)a3 indexPath:(id)a4;
-- (void)setFreezeChromelessNavigationItem:(BOOL)a3;
-- (void)setUseChromelessNavigationItem:(BOOL)a3;
-- (void)shouldPresentAllContent:(BOOL)a3 animated:(BOOL)a4;
+- (void)reloadSections:(id)sections;
+- (void)scrollViewDidEndDecelerating:(id)decelerating;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)setActionForVisibilityChange:(id)change indexPath:(id)path;
+- (void)setFreezeChromelessNavigationItem:(BOOL)item;
+- (void)setUseChromelessNavigationItem:(BOOL)item;
+- (void)shouldPresentAllContent:(BOOL)content animated:(BOOL)animated;
 - (void)updateContent;
 - (void)viewDidLoad;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation PKDashboardViewController
 
-- (PKDashboardViewController)initWithCollectionViewLayout:(id)a3
+- (PKDashboardViewController)initWithCollectionViewLayout:(id)layout
 {
-  result = a3;
+  result = layout;
   __break(1u);
   return result;
 }
 
-- (PKDashboardViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (PKDashboardViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  v5 = a3;
-  result = a4;
+  nameCopy = name;
+  result = bundle;
   __break(1u);
   return result;
 }
 
-- (PKDashboardViewController)initWithCoder:(id)a3
+- (PKDashboardViewController)initWithCoder:(id)coder
 {
-  result = a3;
+  result = coder;
   __break(1u);
   return result;
 }
 
-- (PKDashboardViewController)initWithDataSource:(id)a3 presenters:(id)a4 layout:(id)a5
+- (PKDashboardViewController)initWithDataSource:(id)source presenters:(id)presenters layout:(id)layout
 {
   v39[3] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
-  if (!v11)
+  sourceCopy = source;
+  presentersCopy = presenters;
+  layoutCopy = layout;
+  v12 = layoutCopy;
+  if (!layoutCopy)
   {
     v12 = objc_alloc_init(MEMORY[0x1E69DC840]);
     [v12 setScrollDirection:0];
@@ -115,17 +115,17 @@
     v17 = PKMagicCurve();
     [(PKUISpringAnimationFactory *)v16 setTiming:v17];
 
-    [(PKDashboardViewController *)v13 _setupPresenters:v10];
-    objc_storeStrong(&v13->_dataSource, a3);
-    if (v9 && (objc_opt_respondsToSelector() & 1) != 0)
+    [(PKDashboardViewController *)v13 _setupPresenters:presentersCopy];
+    objc_storeStrong(&v13->_dataSource, source);
+    if (sourceCopy && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      [v9 setDataSourceDelegate:v13];
+      [sourceCopy setDataSourceDelegate:v13];
     }
 
     *&v13->_dataSourceOptionalMethods = objc_opt_respondsToSelector() & 1;
-    if (v11)
+    if (layoutCopy)
     {
-      objc_storeStrong(&v13->_customLayout, a5);
+      objc_storeStrong(&v13->_customLayout, layout);
     }
 
     v18 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -155,12 +155,12 @@
     v13->_sampleFooterView = v31;
 
     [(PKDashboardViewController *)v13 _updateNavigationBarAppearance];
-    v33 = [MEMORY[0x1E69DD1B8] systemTraitsAffectingColorAppearance];
+    systemTraitsAffectingColorAppearance = [MEMORY[0x1E69DD1B8] systemTraitsAffectingColorAppearance];
     v39[0] = objc_opt_class();
     v39[1] = objc_opt_class();
     v39[2] = objc_opt_class();
     v34 = [MEMORY[0x1E695DEC8] arrayWithObjects:v39 count:3];
-    v35 = [v33 arrayByAddingObjectsFromArray:v34];
+    v35 = [systemTraitsAffectingColorAppearance arrayByAddingObjectsFromArray:v34];
     v36 = [(PKDashboardViewController *)v13 registerForTraitChanges:v35 withHandler:&__block_literal_global_150];
   }
 
@@ -229,12 +229,12 @@ void __66__PKDashboardViewController_initWithDataSource_presenters_layout___bloc
   [(PKDashboardViewController *)&v3 dealloc];
 }
 
-- (void)_setupPresenters:(id)a3
+- (void)_setupPresenters:(id)presenters
 {
-  v34 = a3;
+  presentersCopy = presenters;
   v4 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v6 = [v34 count];
+  v6 = [presentersCopy count];
   v7 = 1040;
   self->_presentersOptionalMethods = malloc_type_malloc(2 * v6, 0x10000401A82F6E5uLL);
   if (v6)
@@ -244,7 +244,7 @@ void __66__PKDashboardViewController_initWithDataSource_presenters_layout___bloc
     v33 = v5;
     do
     {
-      v9 = [v34 objectAtIndex:{v8, v32}];
+      v9 = [presentersCopy objectAtIndex:{v8, v32}];
       v10 = [objc_msgSend(v9 "itemClass")];
       [v4 setObject:v9 forKey:v10];
       v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v8];
@@ -306,7 +306,7 @@ void __66__PKDashboardViewController_initWithDataSource_presenters_layout___bloc
       v19 = v7;
       v20 = v6;
       v21 = v4;
-      v22 = self;
+      selfCopy = self;
       if (objc_opt_respondsToSelector())
       {
         v23 = 64;
@@ -340,7 +340,7 @@ void __66__PKDashboardViewController_initWithDataSource_presenters_layout___bloc
 
       v27 = v24 | v23;
       v5 = v33;
-      self = v22;
+      self = selfCopy;
       v4 = v21;
       v6 = v20;
       v7 = v19;
@@ -361,12 +361,12 @@ void __66__PKDashboardViewController_initWithDataSource_presenters_layout___bloc
   self->_presenterMethodsIndexPerIdentifier = v30;
 }
 
-- ($53A5F136F2571818685D7E4B154E8CAC)methodsForItemIdentifier:(id)a3
+- ($53A5F136F2571818685D7E4B154E8CAC)methodsForItemIdentifier:(id)identifier
 {
-  v4 = [(NSDictionary *)self->_presenterMethodsIndexPerIdentifier objectForKey:a3];
-  v5 = [v4 integerValue];
+  v4 = [(NSDictionary *)self->_presenterMethodsIndexPerIdentifier objectForKey:identifier];
+  integerValue = [v4 integerValue];
 
-  return *(self->_presentersOptionalMethods + v5);
+  return *(self->_presentersOptionalMethods + integerValue);
 }
 
 - (void)loadView
@@ -374,16 +374,16 @@ void __66__PKDashboardViewController_initWithDataSource_presenters_layout___bloc
   v6.receiver = self;
   v6.super_class = PKDashboardViewController;
   [(PKDashboardViewController *)&v6 loadView];
-  v3 = [(PKDashboardViewController *)self collectionView];
-  [v3 setAlwaysBounceVertical:1];
-  [v3 setBounces:1];
-  v4 = [MEMORY[0x1E69DC888] clearColor];
-  [v3 setBackgroundColor:v4];
+  collectionView = [(PKDashboardViewController *)self collectionView];
+  [collectionView setAlwaysBounceVertical:1];
+  [collectionView setBounces:1];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [collectionView setBackgroundColor:clearColor];
 
-  [v3 setPrefetchDataSource:self];
-  [v3 _setAdjustsContentInsetWhenScrollDisabled:1];
-  v5 = [(PKDashboardViewController *)self view];
-  [v5 setAccessibilityIdentifier:*MEMORY[0x1E69B9678]];
+  [collectionView setPrefetchDataSource:self];
+  [collectionView _setAdjustsContentInsetWhenScrollDisabled:1];
+  view = [(PKDashboardViewController *)self view];
+  [view setAccessibilityIdentifier:*MEMORY[0x1E69B9678]];
 }
 
 - (void)viewDidLoad
@@ -391,13 +391,13 @@ void __66__PKDashboardViewController_initWithDataSource_presenters_layout___bloc
   v8.receiver = self;
   v8.super_class = PKDashboardViewController;
   [(PKDashboardViewController *)&v8 viewDidLoad];
-  v3 = [(PKDashboardViewController *)self collectionView];
+  collectionView = [(PKDashboardViewController *)self collectionView];
   presentersPerIdentifier = self->_presentersPerIdentifier;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __40__PKDashboardViewController_viewDidLoad__block_invoke;
   v6[3] = &unk_1E801C4C0;
-  v5 = v3;
+  v5 = collectionView;
   v7 = v5;
   [(NSDictionary *)presentersPerIdentifier enumerateKeysAndObjectsUsingBlock:v6];
   [v5 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"HeaderViewIdentifier"];
@@ -446,25 +446,25 @@ void __40__PKDashboardViewController_viewDidLoad__block_invoke(uint64_t a1, uint
   }
 }
 
-- (void)setActionForVisibilityChange:(id)a3 indexPath:(id)a4
+- (void)setActionForVisibilityChange:(id)change indexPath:(id)path
 {
-  aBlock = a3;
-  v6 = a4;
-  if (v6)
+  aBlock = change;
+  pathCopy = path;
+  if (pathCopy)
   {
     blocksOnVisibilityChange = self->_blocksOnVisibilityChange;
     if (aBlock)
     {
       v8 = _Block_copy(aBlock);
-      [(NSMutableDictionary *)blocksOnVisibilityChange setObject:v8 forKey:v6];
+      [(NSMutableDictionary *)blocksOnVisibilityChange setObject:v8 forKey:pathCopy];
 
-      v9 = [(PKDashboardViewController *)self collectionView];
-      [v9 safeAreaInsets];
+      collectionView = [(PKDashboardViewController *)self collectionView];
+      [collectionView safeAreaInsets];
       v11 = v10;
-      [v9 contentOffset];
-      if ([(PKDashboardViewController *)self _isCellVisibleAtIndexPath:v6 withTopSafeArea:v11 contentOffset:?])
+      [collectionView contentOffset];
+      if ([(PKDashboardViewController *)self _isCellVisibleAtIndexPath:pathCopy withTopSafeArea:v11 contentOffset:?])
       {
-        v12 = [(NSSet *)self->_visibleCellsExcludingSafeArea setByAddingObject:v6];
+        v12 = [(NSSet *)self->_visibleCellsExcludingSafeArea setByAddingObject:pathCopy];
         visibleCellsExcludingSafeArea = self->_visibleCellsExcludingSafeArea;
         self->_visibleCellsExcludingSafeArea = v12;
       }
@@ -472,24 +472,24 @@ void __40__PKDashboardViewController_viewDidLoad__block_invoke(uint64_t a1, uint
 
     else
     {
-      [(NSMutableDictionary *)blocksOnVisibilityChange removeObjectForKey:v6];
-      v14 = [(NSSet *)self->_visibleCellsExcludingSafeArea pk_setByRemovingObject:v6];
-      v9 = self->_visibleCellsExcludingSafeArea;
+      [(NSMutableDictionary *)blocksOnVisibilityChange removeObjectForKey:pathCopy];
+      v14 = [(NSSet *)self->_visibleCellsExcludingSafeArea pk_setByRemovingObject:pathCopy];
+      collectionView = self->_visibleCellsExcludingSafeArea;
       self->_visibleCellsExcludingSafeArea = v14;
     }
   }
 }
 
-- (BOOL)_isCellVisibleAtIndexPath:(id)a3 withTopSafeArea:(double)a4 contentOffset:(double)a5
+- (BOOL)_isCellVisibleAtIndexPath:(id)path withTopSafeArea:(double)area contentOffset:(double)offset
 {
-  v8 = [(PKDashboardViewController *)self _actualItemIndexPathForIndexPath:a3];
-  v9 = [(PKDashboardViewController *)self collectionView];
-  v10 = [v9 cellForItemAtIndexPath:v8];
+  v8 = [(PKDashboardViewController *)self _actualItemIndexPathForIndexPath:path];
+  collectionView = [(PKDashboardViewController *)self collectionView];
+  v10 = [collectionView cellForItemAtIndexPath:v8];
   v11 = v10;
   if (v10)
   {
     [v10 frame];
-    v14 = a4 + a5 <= v12 + v13;
+    v14 = area + offset <= v12 + v13;
   }
 
   else
@@ -500,14 +500,14 @@ void __40__PKDashboardViewController_viewDidLoad__block_invoke(uint64_t a1, uint
   return v14;
 }
 
-- (void)shouldPresentAllContent:(BOOL)a3 animated:(BOOL)a4
+- (void)shouldPresentAllContent:(BOOL)content animated:(BOOL)animated
 {
-  if (self->_shouldPresentAllContent != a3)
+  if (self->_shouldPresentAllContent != content)
   {
-    self->_shouldPresentAllContent = a3;
-    if (a3)
+    self->_shouldPresentAllContent = content;
+    if (content)
     {
-      self->_presentationAnimated = a4;
+      self->_presentationAnimated = animated;
       if (self->_contentIsLoaded)
       {
         [(PKDashboardViewController *)self _presentAllContent];
@@ -517,28 +517,28 @@ void __40__PKDashboardViewController_viewDidLoad__block_invoke(uint64_t a1, uint
     else
     {
       self->_presentationAnimated = 0;
-      [(PKDashboardViewController *)self _hideAllContentAnimated:a4];
+      [(PKDashboardViewController *)self _hideAllContentAnimated:animated];
     }
   }
 }
 
-- (void)setFreezeChromelessNavigationItem:(BOOL)a3
+- (void)setFreezeChromelessNavigationItem:(BOOL)item
 {
-  v3 = a3;
-  if ((_UISolariumEnabled() & 1) == 0 && self->_freezeChromelessNavigationItem != v3)
+  itemCopy = item;
+  if ((_UISolariumEnabled() & 1) == 0 && self->_freezeChromelessNavigationItem != itemCopy)
   {
-    self->_freezeChromelessNavigationItem = v3;
+    self->_freezeChromelessNavigationItem = itemCopy;
 
     [(PKDashboardViewController *)self _updateNavigationBarVisibility];
   }
 }
 
-- (void)setUseChromelessNavigationItem:(BOOL)a3
+- (void)setUseChromelessNavigationItem:(BOOL)item
 {
-  v3 = a3;
-  if ((_UISolariumEnabled() & 1) == 0 && self->_useChromelessNavigationItem != v3)
+  itemCopy = item;
+  if ((_UISolariumEnabled() & 1) == 0 && self->_useChromelessNavigationItem != itemCopy)
   {
-    self->_useChromelessNavigationItem = v3;
+    self->_useChromelessNavigationItem = itemCopy;
 
     [(PKDashboardViewController *)self _updateNavigationBarAppearance];
   }
@@ -548,14 +548,14 @@ void __40__PKDashboardViewController_viewDidLoad__block_invoke(uint64_t a1, uint
 {
   v18 = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v4 = [(PKDashboardViewController *)self collectionView];
-  v5 = [v4 indexPathsForSelectedItems];
+  collectionView = [(PKDashboardViewController *)self collectionView];
+  indexPathsForSelectedItems = [collectionView indexPathsForSelectedItems];
 
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = v5;
+  v6 = indexPathsForSelectedItems;
   v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
@@ -583,14 +583,14 @@ void __40__PKDashboardViewController_viewDidLoad__block_invoke(uint64_t a1, uint
   return v3;
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
   v9.receiver = self;
   v9.super_class = PKDashboardViewController;
-  [(PKDashboardViewController *)&v9 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  [(PKDashboardViewController *)&v9 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   if ((PKIsPad() & 1) != 0 || PKIsVision())
   {
     v8[0] = MEMORY[0x1E69E9820];
@@ -598,7 +598,7 @@ void __40__PKDashboardViewController_viewDidLoad__block_invoke(uint64_t a1, uint
     v8[2] = __80__PKDashboardViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
     v8[3] = &unk_1E80127E0;
     v8[4] = self;
-    [v7 animateAlongsideTransition:v8 completion:0];
+    [coordinatorCopy animateAlongsideTransition:v8 completion:0];
   }
 }
 
@@ -608,14 +608,14 @@ void __80__PKDashboardViewController_viewWillTransitionToSize_withTransitionCoor
   [v1 invalidateLayout];
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  v6 = a3;
+  viewCopy = view;
   v7 = objc_autoreleasePoolPush();
-  v8 = [(PKDashboardDataSource *)self->_dataSource numberOfItemsInSection:a4];
-  v9 = [(PKDashboardDataSource *)self->_dataSource titleForSection:a4];
+  v8 = [(PKDashboardDataSource *)self->_dataSource numberOfItemsInSection:section];
+  v9 = [(PKDashboardDataSource *)self->_dataSource titleForSection:section];
   titlesForSection = self->_titlesForSection;
-  v11 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+  v11 = [MEMORY[0x1E696AD98] numberWithInteger:section];
   if (v9)
   {
     [(NSMutableDictionary *)titlesForSection setObject:v9 forKey:v11];
@@ -626,9 +626,9 @@ void __80__PKDashboardViewController_viewWillTransitionToSize_withTransitionCoor
     [(NSMutableDictionary *)titlesForSection removeObjectForKey:v11];
   }
 
-  v12 = [(PKDashboardDataSource *)self->_dataSource footerTextItemForSection:a4];
+  v12 = [(PKDashboardDataSource *)self->_dataSource footerTextItemForSection:section];
   footerTextItemsBySection = self->_footerTextItemsBySection;
-  v14 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+  v14 = [MEMORY[0x1E696AD98] numberWithInteger:section];
   if (v12)
   {
     [(NSMutableDictionary *)footerTextItemsBySection setObject:v12 forKey:v14];
@@ -639,7 +639,7 @@ void __80__PKDashboardViewController_viewWillTransitionToSize_withTransitionCoor
     [(NSMutableDictionary *)footerTextItemsBySection removeObjectForKey:v14];
   }
 
-  v15 = [(PKDashboardViewController *)self _isListSectionAtIndex:a4];
+  v15 = [(PKDashboardViewController *)self _isListSectionAtIndex:section];
   if (v9)
   {
     v16 = v8 + 1;
@@ -669,29 +669,29 @@ void __80__PKDashboardViewController_viewWillTransitionToSize_withTransitionCoor
   return v17;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(PKDashboardViewController *)self _isIndexPathAHeader:v7])
+  viewCopy = view;
+  pathCopy = path;
+  if ([(PKDashboardViewController *)self _isIndexPathAHeader:pathCopy])
   {
-    v8 = [(PKDashboardViewController *)self _headerViewAtIndexPath:v7 isCell:1];
+    v8 = [(PKDashboardViewController *)self _headerViewAtIndexPath:pathCopy isCell:1];
 LABEL_5:
     v9 = v8;
     goto LABEL_23;
   }
 
-  if ([(PKDashboardViewController *)self _isIndexPathAFooter:v7])
+  if ([(PKDashboardViewController *)self _isIndexPathAFooter:pathCopy])
   {
-    v8 = [(PKDashboardViewController *)self _footerViewAtIndexPath:v7 isCell:1];
+    v8 = [(PKDashboardViewController *)self _footerViewAtIndexPath:pathCopy isCell:1];
     goto LABEL_5;
   }
 
-  v10 = [(PKDashboardViewController *)self _actualItemIndexPathForIndexPath:v7];
+  v10 = [(PKDashboardViewController *)self _actualItemIndexPathForIndexPath:pathCopy];
   v11 = [(PKDashboardDataSource *)self->_dataSource itemAtIndexPath:v10];
-  v12 = [objc_opt_class() identifier];
-  v13 = [(NSDictionary *)self->_presentersPerIdentifier objectForKey:v12];
-  v9 = [v13 cellForItem:v11 inCollectionView:v6 atIndexPath:v10];
+  identifier = [objc_opt_class() identifier];
+  v13 = [(NSDictionary *)self->_presentersPerIdentifier objectForKey:identifier];
+  v9 = [v13 cellForItem:v11 inCollectionView:viewCopy atIndexPath:v10];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -704,7 +704,7 @@ LABEL_5:
   }
 
   v15 = v14;
-  if (-[PKDashboardViewController _isListSectionAtIndex:](self, "_isListSectionAtIndex:", [v7 section]))
+  if (-[PKDashboardViewController _isListSectionAtIndex:](self, "_isListSectionAtIndex:", [pathCopy section]))
   {
     [v15 setWantsListBehavior:1];
     v16 = 0;
@@ -713,14 +713,14 @@ LABEL_5:
 
   if (([v15 wantsCustomAppearance] & 1) == 0)
   {
-    v28 = v12;
+    v28 = identifier;
     v27 = [v10 row];
     footerTextItemsBySection = self->_footerTextItemsBySection;
-    v18 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v7, "section")}];
+    v18 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(pathCopy, "section")}];
     v19 = [(NSMutableDictionary *)footerTextItemsBySection objectForKey:v18];
 
-    v20 = [v6 numberOfItemsInSection:{objc_msgSend(v7, "section")}];
-    v21 = [v7 row];
+    v20 = [viewCopy numberOfItemsInSection:{objc_msgSend(pathCopy, "section")}];
+    v21 = [pathCopy row];
     v22 = 1;
     if (v19)
     {
@@ -733,10 +733,10 @@ LABEL_5:
       if (!v27 || v20 != v23)
       {
         [v15 setMaskType:v27 == 0];
-        v12 = v28;
+        identifier = v28;
         if (([(PKDashboardViewController *)self methodsForItemIdentifier:v28]& 0x80) != 0)
         {
-          v16 = [v13 hideSeparatorForItem:v11 inCollectionView:v6] ^ 1;
+          v16 = [v13 hideSeparatorForItem:v11 inCollectionView:viewCopy] ^ 1;
         }
 
         else
@@ -759,7 +759,7 @@ LABEL_5:
 
     [v24 setMaskType:v25];
     v16 = 0;
-    v12 = v28;
+    identifier = v28;
 LABEL_21:
     [v15 setShowsBottomSeparator:v16];
   }
@@ -769,21 +769,21 @@ LABEL_23:
   return v9;
 }
 
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path
 {
-  v7 = a4;
-  v8 = a5;
-  if ([v7 isEqualToString:*MEMORY[0x1E69DDC08]])
+  kindCopy = kind;
+  pathCopy = path;
+  if ([kindCopy isEqualToString:*MEMORY[0x1E69DDC08]])
   {
-    v9 = [(PKDashboardViewController *)self _headerViewAtIndexPath:v8 isCell:0];
+    v9 = [(PKDashboardViewController *)self _headerViewAtIndexPath:pathCopy isCell:0];
 LABEL_5:
     v10 = v9;
     goto LABEL_7;
   }
 
-  if ([v7 isEqualToString:*MEMORY[0x1E69DDC00]])
+  if ([kindCopy isEqualToString:*MEMORY[0x1E69DDC00]])
   {
-    v9 = [(PKDashboardViewController *)self _footerViewAtIndexPath:v8 isCell:0];
+    v9 = [(PKDashboardViewController *)self _footerViewAtIndexPath:pathCopy isCell:0];
     goto LABEL_5;
   }
 
@@ -793,16 +793,16 @@ LABEL_7:
   return v10;
 }
 
-- (void)collectionView:(id)a3 prefetchItemsAtIndexPaths:(id)a4
+- (void)collectionView:(id)view prefetchItemsAtIndexPaths:(id)paths
 {
   v29 = *MEMORY[0x1E69E9840];
-  v22 = a3;
+  viewCopy = view;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v6 = a4;
-  v7 = [v6 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  pathsCopy = paths;
+  v7 = [pathsCopy countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v7)
   {
     v8 = v7;
@@ -816,27 +816,27 @@ LABEL_7:
       {
         if (*v25 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(pathsCopy);
         }
 
         v12 = *(*(&v24 + 1) + 8 * v11);
-        if (![(PKDashboardViewController *)self _isIndexPathAHeader:v12, v22]&& ![(PKDashboardViewController *)self _isIndexPathAFooter:v12])
+        if (![(PKDashboardViewController *)self _isIndexPathAHeader:v12, viewCopy]&& ![(PKDashboardViewController *)self _isIndexPathAFooter:v12])
         {
           v13 = objc_autoreleasePoolPush();
           v14 = [(PKDashboardViewController *)self _actualItemIndexPathForIndexPath:v12];
           v15 = [*(&self->super.super.super.super.isa + v10[140]) itemAtIndexPath:v14];
-          v16 = [objc_opt_class() identifier];
-          if (([(PKDashboardViewController *)self methodsForItemIdentifier:v16]& 0x40) != 0)
+          identifier = [objc_opt_class() identifier];
+          if (([(PKDashboardViewController *)self methodsForItemIdentifier:identifier]& 0x40) != 0)
           {
-            [(NSDictionary *)self->_presentersPerIdentifier objectForKey:v16];
+            [(NSDictionary *)self->_presentersPerIdentifier objectForKey:identifier];
             v17 = v9;
             v18 = v13;
-            v19 = v6;
+            v19 = pathsCopy;
             v21 = v20 = v10;
-            [v21 prefetchForItem:v15 inCollectionView:v22];
+            [v21 prefetchForItem:v15 inCollectionView:viewCopy];
 
             v10 = v20;
-            v6 = v19;
+            pathsCopy = v19;
             v13 = v18;
             v9 = v17;
             v8 = v23;
@@ -849,14 +849,14 @@ LABEL_7:
       }
 
       while (v8 != v11);
-      v8 = [v6 countByEnumeratingWithState:&v24 objects:v28 count:16];
+      v8 = [pathsCopy countByEnumeratingWithState:&v24 objects:v28 count:16];
     }
 
     while (v8);
   }
 }
 
-- (BOOL)_isListSectionAtIndex:(int64_t)a3
+- (BOOL)_isListSectionAtIndex:(int64_t)index
 {
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
@@ -865,14 +865,14 @@ LABEL_7:
 
   dataSource = self->_dataSource;
 
-  return [(PKDashboardDataSource *)dataSource isListLayoutForSection:a3];
+  return [(PKDashboardDataSource *)dataSource isListLayoutForSection:index];
 }
 
-- (BOOL)_isIndexPathAHeader:(id)a3
+- (BOOL)_isIndexPathAHeader:(id)header
 {
-  v4 = a3;
-  v5 = [v4 section];
-  if (-[PKDashboardViewController _isListSectionAtIndex:](self, "_isListSectionAtIndex:", v5) || [v4 row])
+  headerCopy = header;
+  section = [headerCopy section];
+  if (-[PKDashboardViewController _isListSectionAtIndex:](self, "_isListSectionAtIndex:", section) || [headerCopy row])
   {
     v6 = 0;
   }
@@ -880,7 +880,7 @@ LABEL_7:
   else
   {
     titlesForSection = self->_titlesForSection;
-    v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v5];
+    v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:section];
     v10 = [(NSMutableDictionary *)titlesForSection objectForKey:v9];
     v6 = v10 != 0;
   }
@@ -888,23 +888,23 @@ LABEL_7:
   return v6;
 }
 
-- (BOOL)_isIndexPathAFooter:(id)a3
+- (BOOL)_isIndexPathAFooter:(id)footer
 {
-  v4 = a3;
-  v5 = [v4 section];
-  if ([(PKDashboardViewController *)self _isListSectionAtIndex:v5])
+  footerCopy = footer;
+  section = [footerCopy section];
+  if ([(PKDashboardViewController *)self _isListSectionAtIndex:section])
   {
     v6 = 0;
   }
 
   else
   {
-    v7 = [v4 row] + 1;
-    v8 = [(PKDashboardViewController *)self collectionView];
-    if (v7 == [(PKDashboardViewController *)self collectionView:v8 numberOfItemsInSection:v5])
+    v7 = [footerCopy row] + 1;
+    collectionView = [(PKDashboardViewController *)self collectionView];
+    if (v7 == [(PKDashboardViewController *)self collectionView:collectionView numberOfItemsInSection:section])
     {
       footerTextItemsBySection = self->_footerTextItemsBySection;
-      v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v5];
+      v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:section];
       v11 = [(NSMutableDictionary *)footerTextItemsBySection objectForKey:v10];
       v6 = v11 != 0;
     }
@@ -918,46 +918,46 @@ LABEL_7:
   return v6;
 }
 
-- (id)_actualItemIndexPathForIndexPath:(id)a3
+- (id)_actualItemIndexPathForIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   titlesForSection = self->_titlesForSection;
-  v6 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v4, "section")}];
+  v6 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(pathCopy, "section")}];
   v7 = [(NSMutableDictionary *)titlesForSection objectForKey:v6];
 
-  if (v7 && !-[PKDashboardViewController _isListSectionAtIndex:](self, "_isListSectionAtIndex:", [v4 section]) && objc_msgSend(v4, "row") >= 1)
+  if (v7 && !-[PKDashboardViewController _isListSectionAtIndex:](self, "_isListSectionAtIndex:", [pathCopy section]) && objc_msgSend(pathCopy, "row") >= 1)
   {
-    v8 = [MEMORY[0x1E696AC88] indexPathForRow:objc_msgSend(v4 inSection:{"row") - 1, objc_msgSend(v4, "section")}];
+    v8 = [MEMORY[0x1E696AC88] indexPathForRow:objc_msgSend(pathCopy inSection:{"row") - 1, objc_msgSend(pathCopy, "section")}];
 
-    v4 = v8;
+    pathCopy = v8;
   }
 
-  return v4;
+  return pathCopy;
 }
 
-- (id)_internalIndexPathForItemIndexPath:(id)a3
+- (id)_internalIndexPathForItemIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   titlesForSection = self->_titlesForSection;
-  v6 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v4, "section")}];
+  v6 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(pathCopy, "section")}];
   v7 = [(NSMutableDictionary *)titlesForSection objectForKey:v6];
 
-  if (v7 && !-[PKDashboardViewController _isListSectionAtIndex:](self, "_isListSectionAtIndex:", [v4 section]))
+  if (v7 && !-[PKDashboardViewController _isListSectionAtIndex:](self, "_isListSectionAtIndex:", [pathCopy section]))
   {
-    v8 = [MEMORY[0x1E696AC88] indexPathForRow:objc_msgSend(v4 inSection:{"row") + 1, objc_msgSend(v4, "section")}];
+    v8 = [MEMORY[0x1E696AC88] indexPathForRow:objc_msgSend(pathCopy inSection:{"row") + 1, objc_msgSend(pathCopy, "section")}];
 
-    v4 = v8;
+    pathCopy = v8;
   }
 
-  return v4;
+  return pathCopy;
 }
 
-- (id)_headerViewAtIndexPath:(id)a3 isCell:(BOOL)a4
+- (id)_headerViewAtIndexPath:(id)path isCell:(BOOL)cell
 {
-  v4 = a4;
-  v6 = a3;
+  cellCopy = cell;
+  pathCopy = path;
   titlesForSection = self->_titlesForSection;
-  v8 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v6, "section")}];
+  v8 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(pathCopy, "section")}];
   v9 = [(NSMutableDictionary *)titlesForSection objectForKey:v8];
 
   if (!v9)
@@ -966,79 +966,79 @@ LABEL_7:
     goto LABEL_21;
   }
 
-  v10 = [(PKDashboardViewController *)self collectionView];
-  v11 = v10;
-  if (v4)
+  collectionView = [(PKDashboardViewController *)self collectionView];
+  v11 = collectionView;
+  if (cellCopy)
   {
-    [v10 dequeueReusableCellWithReuseIdentifier:@"HeaderViewIdentifier" forIndexPath:v6];
+    [collectionView dequeueReusableCellWithReuseIdentifier:@"HeaderViewIdentifier" forIndexPath:pathCopy];
   }
 
   else
   {
-    [v10 dequeueReusableSupplementaryViewOfKind:*MEMORY[0x1E69DDC08] withReuseIdentifier:@"HeaderSupplementaryViewIdentifier" forIndexPath:v6];
+    [collectionView dequeueReusableSupplementaryViewOfKind:*MEMORY[0x1E69DDC08] withReuseIdentifier:@"HeaderSupplementaryViewIdentifier" forIndexPath:pathCopy];
   }
   v12 = ;
 
-  v13 = [v9 title];
-  [v12 setTitle:v13];
+  title = [v9 title];
+  [v12 setTitle:title];
 
-  v14 = [v9 titleColor];
-  if (v14)
+  titleColor = [v9 titleColor];
+  if (titleColor)
   {
-    v15 = [MEMORY[0x1E69DC888] systemGrayColor];
-    [v12 setTitleColor:v15];
+    systemGrayColor = [MEMORY[0x1E69DC888] systemGrayColor];
+    [v12 setTitleColor:systemGrayColor];
   }
 
   [v12 setTitleStyle:{objc_msgSend(v9, "style")}];
-  v16 = [v9 actionTitle];
+  actionTitle = [v9 actionTitle];
 
-  if (v16)
+  if (actionTitle)
   {
-    v17 = [v9 actionTitle];
-    [v12 setActionTitle:v17];
+    actionTitle2 = [v9 actionTitle];
+    [v12 setActionTitle:actionTitle2];
   }
 
   else
   {
-    v18 = [v9 actionImage];
+    actionImage = [v9 actionImage];
 
-    if (!v18)
+    if (!actionImage)
     {
       goto LABEL_13;
     }
 
-    v17 = [v9 actionImage];
-    [v12 setActionImage:v17];
+    actionTitle2 = [v9 actionImage];
+    [v12 setActionImage:actionTitle2];
   }
 
 LABEL_13:
-  v19 = [v9 action];
+  action = [v9 action];
 
-  if (v19)
+  if (action)
   {
-    v20 = [v9 action];
-    [v12 setAction:v20];
+    action2 = [v9 action];
+    [v12 setAction:action2];
 LABEL_17:
 
     goto LABEL_18;
   }
 
-  v21 = [v9 menu];
+  menu = [v9 menu];
 
-  if (v21)
+  if (menu)
   {
-    v20 = [v9 menu];
-    [v12 setMenu:v20];
+    action2 = [v9 menu];
+    [v12 setMenu:action2];
     goto LABEL_17;
   }
 
 LABEL_18:
-  v22 = [v9 actionColor];
+  actionColor = [v9 actionColor];
 
-  if (v22)
+  if (actionColor)
   {
-    v23 = [v9 actionColor];
-    [v12 setActionColor:v23];
+    actionColor2 = [v9 actionColor];
+    [v12 setActionColor:actionColor2];
   }
 
   [v12 setActionStyle:{objc_msgSend(v9, "actionStyle")}];
@@ -1048,52 +1048,52 @@ LABEL_21:
   return v12;
 }
 
-- (id)_footerViewAtIndexPath:(id)a3 isCell:(BOOL)a4
+- (id)_footerViewAtIndexPath:(id)path isCell:(BOOL)cell
 {
-  v4 = a4;
-  v6 = a3;
+  cellCopy = cell;
+  pathCopy = path;
   footerTextItemsBySection = self->_footerTextItemsBySection;
-  v8 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v6, "section")}];
+  v8 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(pathCopy, "section")}];
   v9 = [(NSMutableDictionary *)footerTextItemsBySection objectForKey:v8];
 
   if (v9)
   {
-    v10 = [(PKDashboardViewController *)self collectionView];
-    v11 = v10;
-    if (v4)
+    collectionView = [(PKDashboardViewController *)self collectionView];
+    v11 = collectionView;
+    if (cellCopy)
     {
-      [v10 dequeueReusableCellWithReuseIdentifier:@"FooterViewIdentifier" forIndexPath:v6];
+      [collectionView dequeueReusableCellWithReuseIdentifier:@"FooterViewIdentifier" forIndexPath:pathCopy];
     }
 
     else
     {
-      [v10 dequeueReusableSupplementaryViewOfKind:*MEMORY[0x1E69DDC00] withReuseIdentifier:@"FooterSupplementaryViewIdentifier" forIndexPath:v6];
+      [collectionView dequeueReusableSupplementaryViewOfKind:*MEMORY[0x1E69DDC00] withReuseIdentifier:@"FooterSupplementaryViewIdentifier" forIndexPath:pathCopy];
     }
     v12 = ;
 
     [v12 setMaximumLines:{objc_msgSend(v9, "maximumNumberOfLines")}];
     +[PKDashboardCollectionViewCell defaultHorizontalInset];
     [v12 setHorizontalInset:?];
-    v13 = [v9 footerText];
-    [v12 setFooterText:v13];
+    footerText = [v9 footerText];
+    [v12 setFooterText:footerText];
 
-    v14 = [v9 sources];
-    [v12 setSources:v14];
+    sources = [v9 sources];
+    [v12 setSources:sources];
 
-    v15 = [v9 linkTextColor];
-    [v12 setLinkTextColor:v15];
+    linkTextColor = [v9 linkTextColor];
+    [v12 setLinkTextColor:linkTextColor];
 
     [v12 setBottomInsetType:{objc_msgSend(v9, "bottomInsetType")}];
     [v12 setUseCustomContentInsets:{objc_msgSend(v9, "useCustomContentInsets")}];
     [v9 customContentInsets];
     [v12 setCustomContentInsets:?];
-    v16 = [v9 font];
-    [v12 setFont:v16];
+    font = [v9 font];
+    [v12 setFont:font];
 
-    v17 = [v9 fdicConfiguration];
-    if (v17)
+    fdicConfiguration = [v9 fdicConfiguration];
+    if (fdicConfiguration)
     {
-      v18 = [[PKFDICSignageView alloc] initWithConfiguration:v17];
+      v18 = [[PKFDICSignageView alloc] initWithConfiguration:fdicConfiguration];
     }
 
     else
@@ -1112,16 +1112,16 @@ LABEL_21:
   return v12;
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
   self->_dragging = 1;
   v4 = MEMORY[0x1E695EFF8];
   self->_draggingVelocity = *MEMORY[0x1E695EFF8];
-  v5 = a3;
+  draggingCopy = dragging;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v6 = [v5 panGestureRecognizer];
+  panGestureRecognizer = [draggingCopy panGestureRecognizer];
 
-  if (([v6 state] - 1) > 1)
+  if (([panGestureRecognizer state] - 1) > 1)
   {
     v12 = 0;
     v10 = *v4;
@@ -1130,12 +1130,12 @@ LABEL_21:
 
   else
   {
-    v7 = [(PKDashboardViewController *)self viewIfLoaded];
-    [v6 locationInView:v7];
+    viewIfLoaded = [(PKDashboardViewController *)self viewIfLoaded];
+    [panGestureRecognizer locationInView:viewIfLoaded];
     v10 = v8;
     v11 = v9;
     v12 = 0;
-    if (v7 && WeakRetained)
+    if (viewIfLoaded && WeakRetained)
     {
       v12 = [WeakRetained dashboardViewController:self shouldStartDismissInteractionFromPoint:{v8, v9}];
     }
@@ -1150,20 +1150,20 @@ LABEL_21:
   }
 }
 
-- (CGPoint)_scrollView:(id)a3 adjustedOffsetForOffset:(CGPoint)result translation:(CGPoint)a5 startPoint:(CGPoint)a6 locationInView:(CGPoint)a7 horizontalVelocity:(double *)a8 verticalVelocity:(double *)a9
+- (CGPoint)_scrollView:(id)view adjustedOffsetForOffset:(CGPoint)result translation:(CGPoint)translation startPoint:(CGPoint)point locationInView:(CGPoint)inView horizontalVelocity:(double *)velocity verticalVelocity:(double *)verticalVelocity
 {
   x = result.x;
   if (self->_trackingDismissInteraction)
   {
-    y = a5.y;
+    y = translation.y;
     if (self->_dismissInteractionNeedsInitialAdjustment)
     {
       self->_dismissInteractionNeedsInitialAdjustment = 0;
       self->_dismissInteractionAdjustment.horizontal = 0.0;
-      self->_dismissInteractionAdjustment.vertical = a5.y;
+      self->_dismissInteractionAdjustment.vertical = translation.y;
     }
 
-    [a3 adjustedContentInset];
+    [view adjustedContentInset];
     x = x + self->_dismissInteractionAdjustment.horizontal;
     result.y = self->_dismissInteractionAdjustment.vertical - v12 - y;
   }
@@ -1173,29 +1173,29 @@ LABEL_21:
   return result;
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
   self->_dragging = 0;
-  if (!a4)
+  if (!decelerate)
   {
-    [(PKDashboardViewController *)self _resolveDismissInteractionForScrollView:a3];
+    [(PKDashboardViewController *)self _resolveDismissInteractionForScrollView:dragging];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained contentDidFinishScrollInteraction];
   }
 }
 
-- (void)scrollViewDidEndDecelerating:(id)a3
+- (void)scrollViewDidEndDecelerating:(id)decelerating
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained contentDidFinishScrollInteraction];
 }
 
-- (void)_resolveDismissInteractionForScrollView:(id)a3
+- (void)_resolveDismissInteractionForScrollView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   if (self->_trackingDismissInteraction)
   {
-    v13 = v4;
+    v13 = viewCopy;
     self->_trackingDismissInteraction = 0;
     x = self->_draggingVelocity.x;
     y = self->_draggingVelocity.y;
@@ -1225,15 +1225,15 @@ LABEL_21:
       }
     }
 
-    v4 = v13;
+    viewCopy = v13;
   }
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
   v54 = *MEMORY[0x1E69E9840];
-  v4 = [(PKDashboardViewController *)self collectionView];
-  [v4 contentOffset];
+  collectionView = [(PKDashboardViewController *)self collectionView];
+  [collectionView contentOffset];
   v6 = v5;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v8 = WeakRetained;
@@ -1243,18 +1243,18 @@ LABEL_21:
   }
 
   [(PKDashboardViewController *)self _updateNavigationBarVisibility];
-  [v4 safeAreaInsets];
+  [collectionView safeAreaInsets];
   v10 = v9;
   if (vabdd_f64(v6, self->_lastScrollOffset) > 10.0)
   {
     self->_lastScrollOffset = v6;
-    v11 = [(NSMutableDictionary *)self->_blocksOnVisibilityChange allKeys];
-    v12 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithArray:v11];
+    allKeys = [(NSMutableDictionary *)self->_blocksOnVisibilityChange allKeys];
+    v12 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithArray:allKeys];
     v47 = 0u;
     v48 = 0u;
     v49 = 0u;
     v50 = 0u;
-    v13 = v11;
+    v13 = allKeys;
     v14 = [v13 countByEnumeratingWithState:&v47 objects:v53 count:16];
     if (v14)
     {
@@ -1284,7 +1284,7 @@ LABEL_21:
 
     if (self->_visibleCellsExcludingSafeArea)
     {
-      v38 = v4;
+      v38 = collectionView;
       v19 = [v12 mutableCopy];
       [v19 minusSet:self->_visibleCellsExcludingSafeArea];
       v45 = 0u;
@@ -1358,7 +1358,7 @@ LABEL_21:
       }
 
       v8 = v37;
-      v4 = v38;
+      collectionView = v38;
     }
 
     v35 = [v12 copy];
@@ -1367,26 +1367,26 @@ LABEL_21:
   }
 }
 
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(PKDashboardViewController *)self _isIndexPathAHeader:v7]|| [(PKDashboardViewController *)self _isIndexPathAFooter:v7])
+  viewCopy = view;
+  pathCopy = path;
+  if ([(PKDashboardViewController *)self _isIndexPathAHeader:pathCopy]|| [(PKDashboardViewController *)self _isIndexPathAFooter:pathCopy])
   {
     v8 = 0;
-    v9 = v7;
+    v9 = pathCopy;
   }
 
   else
   {
-    v9 = [(PKDashboardViewController *)self _actualItemIndexPathForIndexPath:v7];
+    v9 = [(PKDashboardViewController *)self _actualItemIndexPathForIndexPath:pathCopy];
 
     v10 = [(PKDashboardDataSource *)self->_dataSource itemAtIndexPath:v9];
-    v11 = [objc_opt_class() identifier];
-    if (([(PKDashboardViewController *)self methodsForItemIdentifier:v11]& 1) != 0)
+    identifier = [objc_opt_class() identifier];
+    if (([(PKDashboardViewController *)self methodsForItemIdentifier:identifier]& 1) != 0)
     {
-      v12 = [(NSDictionary *)self->_presentersPerIdentifier objectForKey:v11];
-      v8 = [v12 canSelectItem:v10 inCollectionView:v6 atIndexPath:v9];
+      v12 = [(NSDictionary *)self->_presentersPerIdentifier objectForKey:identifier];
+      v8 = [v12 canSelectItem:v10 inCollectionView:viewCopy atIndexPath:v9];
     }
 
     else
@@ -1398,34 +1398,34 @@ LABEL_21:
   return v8;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v12 = a3;
-  v6 = a4;
-  if (!-[PKDashboardViewController _isIndexPathAHeader:](self, "_isIndexPathAHeader:", v6) && !-[PKDashboardViewController _isIndexPathAFooter:](self, "_isIndexPathAFooter:", v6) && ([v12 isEditing] & 1) == 0)
+  viewCopy = view;
+  pathCopy = path;
+  if (!-[PKDashboardViewController _isIndexPathAHeader:](self, "_isIndexPathAHeader:", pathCopy) && !-[PKDashboardViewController _isIndexPathAFooter:](self, "_isIndexPathAFooter:", pathCopy) && ([viewCopy isEditing] & 1) == 0)
   {
-    v7 = [(PKDashboardViewController *)self _actualItemIndexPathForIndexPath:v6];
+    v7 = [(PKDashboardViewController *)self _actualItemIndexPathForIndexPath:pathCopy];
 
     v8 = [(PKDashboardDataSource *)self->_dataSource itemAtIndexPath:v7];
-    v9 = [objc_opt_class() identifier];
-    v10 = [(NSDictionary *)self->_presentersPerIdentifier objectForKey:v9];
-    v11 = [(PKDashboardViewController *)self navigationController];
-    [v10 didSelectItem:v8 inCollectionView:v12 atIndexPath:v7 navigationController:v11 canPresent:0];
+    identifier = [objc_opt_class() identifier];
+    v10 = [(NSDictionary *)self->_presentersPerIdentifier objectForKey:identifier];
+    navigationController = [(PKDashboardViewController *)self navigationController];
+    [v10 didSelectItem:v8 inCollectionView:viewCopy atIndexPath:v7 navigationController:navigationController canPresent:0];
 
-    v6 = v7;
+    pathCopy = v7;
   }
 }
 
-- (void)collectionView:(id)a3 didUnhighlightItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didUnhighlightItemAtIndexPath:(id)path
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [(PKDashboardViewController *)self _actualItemIndexPathForIndexPath:v6];
+  viewCopy = view;
+  pathCopy = path;
+  v7 = [(PKDashboardViewController *)self _actualItemIndexPathForIndexPath:pathCopy];
   v8 = -[PKDashboardViewController _isListSectionAtIndex:](self, "_isListSectionAtIndex:", [v7 section]);
   if ([v7 item] >= 1)
   {
-    v9 = [MEMORY[0x1E696AC88] indexPathForItem:objc_msgSend(v6 inSection:{"item") - 1, objc_msgSend(v6, "section")}];
-    v10 = [v11 cellForItemAtIndexPath:v9];
+    v9 = [MEMORY[0x1E696AC88] indexPathForItem:objc_msgSend(pathCopy inSection:{"item") - 1, objc_msgSend(pathCopy, "section")}];
+    v10 = [viewCopy cellForItemAtIndexPath:v9];
     if (!v8)
     {
       objc_opt_class();
@@ -1437,16 +1437,16 @@ LABEL_21:
   }
 }
 
-- (void)collectionView:(id)a3 didHighlightItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didHighlightItemAtIndexPath:(id)path
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [(PKDashboardViewController *)self _actualItemIndexPathForIndexPath:v6];
+  viewCopy = view;
+  pathCopy = path;
+  v7 = [(PKDashboardViewController *)self _actualItemIndexPathForIndexPath:pathCopy];
   v8 = -[PKDashboardViewController _isListSectionAtIndex:](self, "_isListSectionAtIndex:", [v7 section]);
   if ([v7 item] >= 1)
   {
-    v9 = [MEMORY[0x1E696AC88] indexPathForItem:objc_msgSend(v6 inSection:{"item") - 1, objc_msgSend(v6, "section")}];
-    v10 = [v11 cellForItemAtIndexPath:v9];
+    v9 = [MEMORY[0x1E696AC88] indexPathForItem:objc_msgSend(pathCopy inSection:{"item") - 1, objc_msgSend(pathCopy, "section")}];
+    v10 = [viewCopy cellForItemAtIndexPath:v9];
     if (!v8)
     {
       objc_opt_class();
@@ -1458,41 +1458,41 @@ LABEL_21:
   }
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
-  v7 = a3;
-  v8 = a5;
+  viewCopy = view;
+  pathCopy = path;
   v9 = *MEMORY[0x1E695F060];
   v10 = *(MEMORY[0x1E695F060] + 8);
-  [v7 safeAreaInsets];
+  [viewCopy safeAreaInsets];
   v12 = v11;
   v14 = v13;
-  [v7 bounds];
+  [viewCopy bounds];
   v16 = v15 - v12 - v14;
-  if ([(PKDashboardViewController *)self _isIndexPathAHeader:v8])
+  if ([(PKDashboardViewController *)self _isIndexPathAHeader:pathCopy])
   {
     titlesForSection = self->_titlesForSection;
-    v18 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v8, "section")}];
+    v18 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(pathCopy, "section")}];
     v19 = [(NSMutableDictionary *)titlesForSection objectForKey:v18];
 
     if (v19)
     {
       sampleHeaderView = self->_sampleHeaderView;
-      v21 = [v19 title];
-      [(PKDashboardTitleHeaderView *)sampleHeaderView setTitle:v21];
+      title = [v19 title];
+      [(PKDashboardTitleHeaderView *)sampleHeaderView setTitle:title];
 
       -[PKDashboardTitleHeaderView setTitleStyle:](self->_sampleHeaderView, "setTitleStyle:", [v19 style]);
       v22 = self->_sampleHeaderView;
-      v23 = [v19 actionTitle];
-      [(PKDashboardTitleHeaderView *)v22 setActionTitle:v23];
+      actionTitle = [v19 actionTitle];
+      [(PKDashboardTitleHeaderView *)v22 setActionTitle:actionTitle];
 
       v24 = self->_sampleHeaderView;
-      v25 = [v19 actionImage];
-      [(PKDashboardTitleHeaderView *)v24 setActionImage:v25];
+      actionImage = [v19 actionImage];
+      [(PKDashboardTitleHeaderView *)v24 setActionImage:actionImage];
 
       v26 = self->_sampleHeaderView;
-      v27 = [v19 action];
-      [(PKDashboardTitleHeaderView *)v26 setAction:v27];
+      action = [v19 action];
+      [(PKDashboardTitleHeaderView *)v26 setAction:action];
 
       -[PKDashboardTitleHeaderView setActionStyle:](self->_sampleHeaderView, "setActionStyle:", [v19 actionStyle]);
       v28 = self->_sampleHeaderView;
@@ -1503,42 +1503,42 @@ LABEL_21:
     }
   }
 
-  else if ([(PKDashboardViewController *)self _isIndexPathAFooter:v8])
+  else if ([(PKDashboardViewController *)self _isIndexPathAFooter:pathCopy])
   {
     footerTextItemsBySection = self->_footerTextItemsBySection;
-    v33 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v8, "section")}];
+    v33 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(pathCopy, "section")}];
     v19 = [(NSMutableDictionary *)footerTextItemsBySection objectForKey:v33];
 
     if (v19)
     {
-      v34 = [v19 footerText];
-      v35 = [v19 fdicConfiguration];
-      if ([v34 length])
+      footerText = [v19 footerText];
+      fdicConfiguration = [v19 fdicConfiguration];
+      if ([footerText length])
       {
         v36 = 0;
       }
 
       else
       {
-        v36 = v35 == 0;
+        v36 = fdicConfiguration == 0;
       }
 
       if (!v36)
       {
         -[PKDashboardFooterTextView setMaximumLines:](self->_sampleFooterView, "setMaximumLines:", [v19 maximumNumberOfLines]);
-        [(PKDashboardFooterTextView *)self->_sampleFooterView setFooterText:v34];
+        [(PKDashboardFooterTextView *)self->_sampleFooterView setFooterText:footerText];
         -[PKDashboardFooterTextView setBottomInsetType:](self->_sampleFooterView, "setBottomInsetType:", [v19 bottomInsetType]);
         -[PKDashboardFooterTextView setUseCustomContentInsets:](self->_sampleFooterView, "setUseCustomContentInsets:", [v19 useCustomContentInsets]);
         sampleFooterView = self->_sampleFooterView;
         [v19 customContentInsets];
         [(PKDashboardFooterTextView *)sampleFooterView setCustomContentInsets:?];
         v38 = self->_sampleFooterView;
-        v39 = [v19 font];
-        [(PKDashboardFooterTextView *)v38 setFont:v39];
+        font = [v19 font];
+        [(PKDashboardFooterTextView *)v38 setFont:font];
 
-        if (v35)
+        if (fdicConfiguration)
         {
-          v40 = [[PKFDICSignageView alloc] initWithConfiguration:v35];
+          v40 = [[PKFDICSignageView alloc] initWithConfiguration:fdicConfiguration];
         }
 
         else
@@ -1558,16 +1558,16 @@ LABEL_21:
 
   else
   {
-    v41 = [(PKDashboardViewController *)self _actualItemIndexPathForIndexPath:v8];
+    v41 = [(PKDashboardViewController *)self _actualItemIndexPathForIndexPath:pathCopy];
 
     v19 = [(PKDashboardDataSource *)self->_dataSource itemAtIndexPath:v41];
-    v42 = [objc_opt_class() identifier];
-    v43 = [(NSDictionary *)self->_presentersPerIdentifier objectForKey:v42];
-    [v43 sizeForItem:v19 inCollectionView:v7 safeAreaWidth:v41 atIndexPath:v16];
+    identifier = [objc_opt_class() identifier];
+    v43 = [(NSDictionary *)self->_presentersPerIdentifier objectForKey:identifier];
+    [v43 sizeForItem:v19 inCollectionView:viewCopy safeAreaWidth:v41 atIndexPath:v16];
     v9 = v44;
     v10 = v45;
 
-    v8 = v41;
+    pathCopy = v41;
   }
 
   v50 = v9;
@@ -1577,56 +1577,56 @@ LABEL_21:
   return result;
 }
 
-- (void)collectionView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view didEndDisplayingCell:(id)cell forItemAtIndexPath:(id)path
 {
-  v16 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v9 section];
-  if (v10 >= -[PKDashboardViewController numberOfSectionsInCollectionView:](self, "numberOfSectionsInCollectionView:", v16) || (v11 = [v9 item], v11 >= -[PKDashboardViewController collectionView:numberOfItemsInSection:](self, "collectionView:numberOfItemsInSection:", v16, objc_msgSend(v9, "section"))) || -[PKDashboardViewController _isIndexPathAHeader:](self, "_isIndexPathAHeader:", v9) || -[PKDashboardViewController _isIndexPathAFooter:](self, "_isIndexPathAFooter:", v9))
+  viewCopy = view;
+  cellCopy = cell;
+  pathCopy = path;
+  section = [pathCopy section];
+  if (section >= -[PKDashboardViewController numberOfSectionsInCollectionView:](self, "numberOfSectionsInCollectionView:", viewCopy) || (v11 = [pathCopy item], v11 >= -[PKDashboardViewController collectionView:numberOfItemsInSection:](self, "collectionView:numberOfItemsInSection:", viewCopy, objc_msgSend(pathCopy, "section"))) || -[PKDashboardViewController _isIndexPathAHeader:](self, "_isIndexPathAHeader:", pathCopy) || -[PKDashboardViewController _isIndexPathAFooter:](self, "_isIndexPathAFooter:", pathCopy))
   {
-    v12 = v9;
+    v12 = pathCopy;
   }
 
   else
   {
-    v12 = [(PKDashboardViewController *)self _actualItemIndexPathForIndexPath:v9];
+    v12 = [(PKDashboardViewController *)self _actualItemIndexPathForIndexPath:pathCopy];
 
     v13 = [(PKDashboardDataSource *)self->_dataSource itemAtIndexPath:v12];
     if (v13)
     {
-      v14 = [objc_opt_class() identifier];
-      if (([(PKDashboardViewController *)self methodsForItemIdentifier:v14]& 2) != 0)
+      identifier = [objc_opt_class() identifier];
+      if (([(PKDashboardViewController *)self methodsForItemIdentifier:identifier]& 2) != 0)
       {
-        v15 = [(NSDictionary *)self->_presentersPerIdentifier objectForKey:v14];
-        [v15 cellDidDisappear:v8 forItem:v13 inCollectionView:v16 atIndexPath:v12];
+        v15 = [(NSDictionary *)self->_presentersPerIdentifier objectForKey:identifier];
+        [v15 cellDidDisappear:cellCopy forItem:v13 inCollectionView:viewCopy atIndexPath:v12];
       }
     }
   }
 }
 
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path
 {
-  v14 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([(PKDashboardViewController *)self _isIndexPathAHeader:v9]|| [(PKDashboardViewController *)self _isIndexPathAFooter:v9])
+  viewCopy = view;
+  cellCopy = cell;
+  pathCopy = path;
+  if ([(PKDashboardViewController *)self _isIndexPathAHeader:pathCopy]|| [(PKDashboardViewController *)self _isIndexPathAFooter:pathCopy])
   {
-    v10 = v9;
+    v10 = pathCopy;
   }
 
   else
   {
-    v10 = [(PKDashboardViewController *)self _actualItemIndexPathForIndexPath:v9];
+    v10 = [(PKDashboardViewController *)self _actualItemIndexPathForIndexPath:pathCopy];
 
     v11 = [(PKDashboardDataSource *)self->_dataSource itemAtIndexPath:v10];
     if (v11)
     {
-      v12 = [objc_opt_class() identifier];
-      if (([(PKDashboardViewController *)self methodsForItemIdentifier:v12]& 4) != 0)
+      identifier = [objc_opt_class() identifier];
+      if (([(PKDashboardViewController *)self methodsForItemIdentifier:identifier]& 4) != 0)
       {
-        v13 = [(NSDictionary *)self->_presentersPerIdentifier objectForKey:v12];
-        [v13 cellWillAppear:v8 forItem:v11 inCollectionView:v14 atIndexPath:v10];
+        v13 = [(NSDictionary *)self->_presentersPerIdentifier objectForKey:identifier];
+        [v13 cellWillAppear:cellCopy forItem:v11 inCollectionView:viewCopy atIndexPath:v10];
       }
     }
 
@@ -1637,28 +1637,28 @@ LABEL_21:
   }
 }
 
-- (BOOL)itemIsStackableInCollectionView:(id)a3 atIndexPath:(id)a4
+- (BOOL)itemIsStackableInCollectionView:(id)view atIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(PKDashboardViewController *)self _isIndexPathAHeader:v7]|| [(PKDashboardViewController *)self _isIndexPathAFooter:v7])
+  viewCopy = view;
+  pathCopy = path;
+  if ([(PKDashboardViewController *)self _isIndexPathAHeader:pathCopy]|| [(PKDashboardViewController *)self _isIndexPathAFooter:pathCopy])
   {
     v8 = 0;
-    v9 = v7;
+    v9 = pathCopy;
   }
 
   else
   {
-    v9 = [(PKDashboardViewController *)self _actualItemIndexPathForIndexPath:v7];
+    v9 = [(PKDashboardViewController *)self _actualItemIndexPathForIndexPath:pathCopy];
 
     v10 = [(PKDashboardDataSource *)self->_dataSource itemAtIndexPath:v9];
     if (v10)
     {
-      v11 = [objc_opt_class() identifier];
-      if (([(PKDashboardViewController *)self methodsForItemIdentifier:v11]& 0x10) != 0)
+      identifier = [objc_opt_class() identifier];
+      if (([(PKDashboardViewController *)self methodsForItemIdentifier:identifier]& 0x10) != 0)
       {
-        v12 = [(NSDictionary *)self->_presentersPerIdentifier objectForKey:v11];
-        v8 = [v12 cellIsStackableForItem:v10 inCollectionView:v6 atIndexPath:v9];
+        v12 = [(NSDictionary *)self->_presentersPerIdentifier objectForKey:identifier];
+        v8 = [v12 cellIsStackableForItem:v10 inCollectionView:viewCopy atIndexPath:v9];
       }
 
       else
@@ -1676,28 +1676,28 @@ LABEL_21:
   return v8;
 }
 
-- (BOOL)itemIsIndependentInCollectionView:(id)a3 atIndexPath:(id)a4
+- (BOOL)itemIsIndependentInCollectionView:(id)view atIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(PKDashboardViewController *)self _isIndexPathAHeader:v7]|| [(PKDashboardViewController *)self _isIndexPathAFooter:v7])
+  viewCopy = view;
+  pathCopy = path;
+  if ([(PKDashboardViewController *)self _isIndexPathAHeader:pathCopy]|| [(PKDashboardViewController *)self _isIndexPathAFooter:pathCopy])
   {
     v8 = 0;
-    v9 = v7;
+    v9 = pathCopy;
   }
 
   else
   {
-    v9 = [(PKDashboardViewController *)self _actualItemIndexPathForIndexPath:v7];
+    v9 = [(PKDashboardViewController *)self _actualItemIndexPathForIndexPath:pathCopy];
 
     v10 = [(PKDashboardDataSource *)self->_dataSource itemAtIndexPath:v9];
     if (v10)
     {
-      v11 = [objc_opt_class() identifier];
-      if (([(PKDashboardViewController *)self methodsForItemIdentifier:v11]& 0x20) != 0)
+      identifier = [objc_opt_class() identifier];
+      if (([(PKDashboardViewController *)self methodsForItemIdentifier:identifier]& 0x20) != 0)
       {
-        v12 = [(NSDictionary *)self->_presentersPerIdentifier objectForKey:v11];
-        v8 = [v12 cellIsIndependentForItem:v10 inCollectionView:v6 atIndexPath:v9];
+        v12 = [(NSDictionary *)self->_presentersPerIdentifier objectForKey:identifier];
+        v8 = [v12 cellIsIndependentForItem:v10 inCollectionView:viewCopy atIndexPath:v9];
       }
 
       else
@@ -1715,34 +1715,34 @@ LABEL_21:
   return v8;
 }
 
-- (BOOL)collectionView:(id)a3 layout:(id)a4 hasHeaderForSectionAtIndex:(int64_t)a5
+- (BOOL)collectionView:(id)view layout:(id)layout hasHeaderForSectionAtIndex:(int64_t)index
 {
   titlesForSection = self->_titlesForSection;
-  v6 = [MEMORY[0x1E696AD98] numberWithInteger:{a5, a4}];
+  v6 = [MEMORY[0x1E696AD98] numberWithInteger:{index, layout}];
   v7 = [(NSMutableDictionary *)titlesForSection objectForKeyedSubscript:v6];
   LOBYTE(titlesForSection) = v7 != 0;
 
   return titlesForSection;
 }
 
-- (BOOL)collectionView:(id)a3 layout:(id)a4 hasFooterForSectionAtIndex:(int64_t)a5
+- (BOOL)collectionView:(id)view layout:(id)layout hasFooterForSectionAtIndex:(int64_t)index
 {
   footerTextItemsBySection = self->_footerTextItemsBySection;
-  v6 = [MEMORY[0x1E696AD98] numberWithInteger:{a5, a4}];
+  v6 = [MEMORY[0x1E696AD98] numberWithInteger:{index, layout}];
   v7 = [(NSMutableDictionary *)footerTextItemsBySection objectForKeyedSubscript:v6];
   LOBYTE(footerTextItemsBySection) = v7 != 0;
 
   return footerTextItemsBySection;
 }
 
-- (id)collectionView:(id)a3 layout:(id)a4 trailingSwipeActionsConfigurationForItemAtIndexPath:(id)a5
+- (id)collectionView:(id)view layout:(id)layout trailingSwipeActionsConfigurationForItemAtIndexPath:(id)path
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  viewCopy = view;
+  layoutCopy = layout;
+  pathCopy = path;
   dataSource = self->_dataSource;
-  v12 = [(PKDashboardViewController *)self _actualItemIndexPathForIndexPath:v10];
+  v12 = [(PKDashboardViewController *)self _actualItemIndexPathForIndexPath:pathCopy];
   v13 = [(PKDashboardDataSource *)dataSource itemAtIndexPath:v12];
 
   if ((objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector() & 1) != 0 && [(PKDashboardDataSource *)self->_dataSource canDeleteItem:v13])
@@ -1801,19 +1801,19 @@ void __103__PKDashboardViewController_collectionView_layout_trailingSwipeActions
 
 - (void)performCollectionViewDataReload
 {
-  v3 = [(PKDashboardViewController *)self collectionView];
-  [v3 reloadData];
+  collectionView = [(PKDashboardViewController *)self collectionView];
+  [collectionView reloadData];
 
-  v4 = [(PKDashboardViewController *)self collectionViewLayout];
-  [v4 invalidateLayout];
+  collectionViewLayout = [(PKDashboardViewController *)self collectionViewLayout];
+  [collectionViewLayout invalidateLayout];
 }
 
-- (id)collectionView:(id)a3 layout:(id)a4 separatorInsetsForItemAtIndexPath:(id)a5
+- (id)collectionView:(id)view layout:(id)layout separatorInsetsForItemAtIndexPath:(id)path
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [v8 section];
-  if (v9 >= -[PKDashboardViewController numberOfSectionsInCollectionView:](self, "numberOfSectionsInCollectionView:", v7) || (v10 = [v8 item], v10 >= -[PKDashboardViewController collectionView:numberOfItemsInSection:](self, "collectionView:numberOfItemsInSection:", v7, objc_msgSend(v8, "section"))) || -[PKDashboardViewController _isIndexPathAHeader:](self, "_isIndexPathAHeader:", v8) || -[PKDashboardViewController _isIndexPathAFooter:](self, "_isIndexPathAFooter:", v8))
+  viewCopy = view;
+  pathCopy = path;
+  section = [pathCopy section];
+  if (section >= -[PKDashboardViewController numberOfSectionsInCollectionView:](self, "numberOfSectionsInCollectionView:", viewCopy) || (v10 = [pathCopy item], v10 >= -[PKDashboardViewController collectionView:numberOfItemsInSection:](self, "collectionView:numberOfItemsInSection:", viewCopy, objc_msgSend(pathCopy, "section"))) || -[PKDashboardViewController _isIndexPathAHeader:](self, "_isIndexPathAHeader:", pathCopy) || -[PKDashboardViewController _isIndexPathAFooter:](self, "_isIndexPathAFooter:", pathCopy))
   {
     v11 = 0;
   }
@@ -1821,16 +1821,16 @@ void __103__PKDashboardViewController_collectionView_layout_trailingSwipeActions
   else
   {
     dataSource = self->_dataSource;
-    v14 = [(PKDashboardViewController *)self _actualItemIndexPathForIndexPath:v8];
+    v14 = [(PKDashboardViewController *)self _actualItemIndexPathForIndexPath:pathCopy];
     v15 = [(PKDashboardDataSource *)dataSource itemAtIndexPath:v14];
 
     if (v15)
     {
-      v16 = [objc_opt_class() identifier];
-      v17 = [(NSDictionary *)self->_presentersPerIdentifier objectForKey:v16];
-      if (([(PKDashboardViewController *)self methodsForItemIdentifier:v16]& 0x100) != 0)
+      identifier = [objc_opt_class() identifier];
+      v17 = [(NSDictionary *)self->_presentersPerIdentifier objectForKey:identifier];
+      if (([(PKDashboardViewController *)self methodsForItemIdentifier:identifier]& 0x100) != 0)
       {
-        v11 = [v17 separatorInsetsForItem:v15 inCollectionView:v7 atIndexPath:v8];
+        v11 = [v17 separatorInsetsForItem:v15 inCollectionView:viewCopy atIndexPath:pathCopy];
       }
 
       else
@@ -1861,39 +1861,39 @@ void __103__PKDashboardViewController_collectionView_layout_trailingSwipeActions
   }
 }
 
-- (void)itemChanged:(id)a3 atIndexPath:(id)a4
+- (void)itemChanged:(id)changed atIndexPath:(id)path
 {
-  v12 = a3;
-  v6 = a4;
-  v7 = [(PKDashboardViewController *)self collectionView];
-  v8 = [(PKDashboardViewController *)self _internalIndexPathForItemIndexPath:v6];
-  v9 = [v7 cellForItemAtIndexPath:v8];
+  changedCopy = changed;
+  pathCopy = path;
+  collectionView = [(PKDashboardViewController *)self collectionView];
+  v8 = [(PKDashboardViewController *)self _internalIndexPathForItemIndexPath:pathCopy];
+  v9 = [collectionView cellForItemAtIndexPath:v8];
   if (v9)
   {
-    v10 = [objc_opt_class() identifier];
-    v11 = [(NSDictionary *)self->_presentersPerIdentifier objectForKey:v10];
-    [v11 updateCell:v9 forItem:v12 inCollectionView:v7 atIndexPath:v6];
+    identifier = [objc_opt_class() identifier];
+    v11 = [(NSDictionary *)self->_presentersPerIdentifier objectForKey:identifier];
+    [v11 updateCell:v9 forItem:changedCopy inCollectionView:collectionView atIndexPath:pathCopy];
   }
 }
 
-- (void)performBatchUpdates:(id)a3 completion:(id)a4
+- (void)performBatchUpdates:(id)updates completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PKDashboardViewController *)self collectionView];
-  v12 = v7;
+  updatesCopy = updates;
+  completionCopy = completion;
+  collectionView = [(PKDashboardViewController *)self collectionView];
+  v12 = completionCopy;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __60__PKDashboardViewController_performBatchUpdates_completion___block_invoke;
   v13[3] = &unk_1E8010B50;
-  v14 = v6;
+  v14 = updatesCopy;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __60__PKDashboardViewController_performBatchUpdates_completion___block_invoke_2;
   v11[3] = &unk_1E8010AD8;
-  v9 = v7;
-  v10 = v6;
-  [v8 performBatchUpdates:v13 completion:v11];
+  v9 = completionCopy;
+  v10 = updatesCopy;
+  [collectionView performBatchUpdates:v13 completion:v11];
 }
 
 uint64_t __60__PKDashboardViewController_performBatchUpdates_completion___block_invoke(uint64_t a1)
@@ -1918,17 +1918,17 @@ uint64_t __60__PKDashboardViewController_performBatchUpdates_completion___block_
   return result;
 }
 
-- (void)reloadSections:(id)a3
+- (void)reloadSections:(id)sections
 {
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __44__PKDashboardViewController_reloadSections___block_invoke;
   v6[3] = &unk_1E8011A68;
   v6[4] = self;
-  v4 = a3;
-  [v4 enumerateIndexesUsingBlock:v6];
-  v5 = [(PKDashboardViewController *)self collectionView];
-  [v5 reloadSections:v4];
+  sectionsCopy = sections;
+  [sectionsCopy enumerateIndexesUsingBlock:v6];
+  collectionView = [(PKDashboardViewController *)self collectionView];
+  [collectionView reloadSections:sectionsCopy];
 }
 
 void __44__PKDashboardViewController_reloadSections___block_invoke(uint64_t a1, uint64_t a2)
@@ -1960,16 +1960,16 @@ void __44__PKDashboardViewController_reloadSections___block_invoke(uint64_t a1, 
   }
 }
 
-- (void)deleteItemsAtIndexPaths:(id)a3
+- (void)deleteItemsAtIndexPaths:(id)paths
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  pathsCopy = paths;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = v4;
+  v6 = pathsCopy;
   v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
@@ -1998,20 +1998,20 @@ void __44__PKDashboardViewController_reloadSections___block_invoke(uint64_t a1, 
     while (v8);
   }
 
-  v12 = [(PKDashboardViewController *)self collectionView];
-  [v12 deleteItemsAtIndexPaths:v5];
+  collectionView = [(PKDashboardViewController *)self collectionView];
+  [collectionView deleteItemsAtIndexPaths:v5];
 }
 
-- (void)insertItemsAtIndexPaths:(id)a3
+- (void)insertItemsAtIndexPaths:(id)paths
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  pathsCopy = paths;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = v4;
+  v6 = pathsCopy;
   v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
@@ -2040,43 +2040,43 @@ void __44__PKDashboardViewController_reloadSections___block_invoke(uint64_t a1, 
     while (v8);
   }
 
-  v12 = [(PKDashboardViewController *)self collectionView];
-  [v12 insertItemsAtIndexPaths:v5];
+  collectionView = [(PKDashboardViewController *)self collectionView];
+  [collectionView insertItemsAtIndexPaths:v5];
 }
 
-- (void)moveItemAtIndexPath:(id)a3 toIndexPath:(id)a4
+- (void)moveItemAtIndexPath:(id)path toIndexPath:(id)indexPath
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PKDashboardViewController *)self collectionView];
-  [v8 moveItemAtIndexPath:v7 toIndexPath:v6];
+  indexPathCopy = indexPath;
+  pathCopy = path;
+  collectionView = [(PKDashboardViewController *)self collectionView];
+  [collectionView moveItemAtIndexPath:pathCopy toIndexPath:indexPathCopy];
 }
 
-- (void)insertSections:(id)a3
+- (void)insertSections:(id)sections
 {
-  v4 = a3;
-  v5 = [(PKDashboardViewController *)self collectionView];
-  [v5 insertSections:v4];
+  sectionsCopy = sections;
+  collectionView = [(PKDashboardViewController *)self collectionView];
+  [collectionView insertSections:sectionsCopy];
 }
 
-- (void)deleteSections:(id)a3
+- (void)deleteSections:(id)sections
 {
-  v4 = a3;
-  v5 = [(PKDashboardViewController *)self collectionView];
-  [v5 deleteSections:v4];
+  sectionsCopy = sections;
+  collectionView = [(PKDashboardViewController *)self collectionView];
+  [collectionView deleteSections:sectionsCopy];
 }
 
-- (void)moveSection:(int64_t)a3 toSection:(int64_t)a4
+- (void)moveSection:(int64_t)section toSection:(int64_t)toSection
 {
-  v6 = [(PKDashboardViewController *)self collectionView];
-  [v6 moveSection:a3 toSection:a4];
+  collectionView = [(PKDashboardViewController *)self collectionView];
+  [collectionView moveSection:section toSection:toSection];
 }
 
 - (void)_presentAllContent
 {
   if (!self->_isPresentingContent)
   {
-    v3 = [(PKDashboardViewController *)self collectionView];
+    collectionView = [(PKDashboardViewController *)self collectionView];
     customLayout = self->_customLayout;
     if (customLayout)
     {
@@ -2090,7 +2090,7 @@ void __44__PKDashboardViewController_reloadSections___block_invoke(uint64_t a1, 
           v5[2] = __47__PKDashboardViewController__presentAllContent__block_invoke_2;
           v5[3] = &unk_1E8012FD0;
           v5[4] = self;
-          v6 = v3;
+          v6 = collectionView;
           [v6 performBatchUpdates:&__block_literal_global_100 completion:v5];
         }
 
@@ -2143,15 +2143,15 @@ uint64_t __47__PKDashboardViewController__presentAllContent__block_invoke_3(uint
   return [v1 performBatchUpdates:v4 completion:v3];
 }
 
-- (void)_hideAllContentAnimated:(BOOL)a3
+- (void)_hideAllContentAnimated:(BOOL)animated
 {
   if (!self->_isHidingContent)
   {
-    v3 = a3;
-    v5 = [(PKDashboardViewController *)self collectionView];
+    animatedCopy = animated;
+    collectionView = [(PKDashboardViewController *)self collectionView];
     if (self->_customLayout && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      if (v3)
+      if (animatedCopy)
       {
         self->_isHidingContent = 1;
         v6 = MEMORY[0x1E69DD250];
@@ -2160,8 +2160,8 @@ uint64_t __47__PKDashboardViewController__presentAllContent__block_invoke_3(uint
         v8[1] = 3221225472;
         v8[2] = __53__PKDashboardViewController__hideAllContentAnimated___block_invoke;
         v8[3] = &unk_1E8010A10;
-        v9 = v5;
-        v10 = self;
+        v9 = collectionView;
+        selfCopy = self;
         [v6 pkui_animateUsingFactory:collectionViewFactory withDelay:0x20000 options:v8 animations:0 completion:0.0];
       }
 
@@ -2193,13 +2193,13 @@ uint64_t __53__PKDashboardViewController__hideAllContentAnimated___block_invoke(
 {
   if ((_UISolariumEnabled() & 1) == 0)
   {
-    v3 = [(PKDashboardViewController *)self navigationItem];
-    v5 = v3;
+    navigationItem = [(PKDashboardViewController *)self navigationItem];
+    v5 = navigationItem;
     if (self->_useChromelessNavigationItem)
     {
       if (self->_freezeChromelessNavigationItem)
       {
-        [v3 _setManualScrollEdgeAppearanceProgress:0.0];
+        [navigationItem _setManualScrollEdgeAppearanceProgress:0.0];
       }
 
       else
@@ -2209,7 +2209,7 @@ uint64_t __53__PKDashboardViewController__hideAllContentAnimated___block_invoke(
 
       [v5 pkui_setupScrollEdgeChromelessAppearance];
       useChromelessNavigationItem = self->_useChromelessNavigationItem;
-      v3 = v5;
+      navigationItem = v5;
     }
 
     else
@@ -2217,7 +2217,7 @@ uint64_t __53__PKDashboardViewController__hideAllContentAnimated___block_invoke(
       useChromelessNavigationItem = 0;
     }
 
-    [v3 _setManualScrollEdgeAppearanceEnabled:useChromelessNavigationItem];
+    [navigationItem _setManualScrollEdgeAppearanceEnabled:useChromelessNavigationItem];
     if (!self->_useChromelessNavigationItem)
     {
       [v5 setScrollEdgeAppearance:0];
@@ -2230,16 +2230,16 @@ uint64_t __53__PKDashboardViewController__hideAllContentAnimated___block_invoke(
 {
   if (self->_useChromelessNavigationItem && !self->_freezeChromelessNavigationItem && (_UISolariumEnabled() & 1) == 0)
   {
-    v4 = [(PKDashboardViewController *)self navigationItem];
+    navigationItem = [(PKDashboardViewController *)self navigationItem];
     if ([(PKDashboardViewController *)self isViewLoaded])
     {
-      v3 = [(PKDashboardViewController *)self collectionView];
-      [v3 pkui_adjustManualScrollEdgeAppearanceProgressForNavigationItem:v4];
+      collectionView = [(PKDashboardViewController *)self collectionView];
+      [collectionView pkui_adjustManualScrollEdgeAppearanceProgressForNavigationItem:navigationItem];
     }
 
     else
     {
-      [v4 _setManualScrollEdgeAppearanceProgress:0.0];
+      [navigationItem _setManualScrollEdgeAppearanceProgress:0.0];
     }
   }
 }

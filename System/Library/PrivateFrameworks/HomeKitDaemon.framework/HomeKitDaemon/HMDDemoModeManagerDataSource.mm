@@ -1,6 +1,6 @@
 @interface HMDDemoModeManagerDataSource
 + (HMDDemoModeManagerDataSource)defaultDataSource;
-+ (void)setDefaultDataSourceOverride:(id)a3;
++ (void)setDefaultDataSourceOverride:(id)override;
 - (BOOL)isAppleMediaAccessory;
 - (BOOL)isDemoModeMadeForDemoBundle;
 - (BOOL)isDemoModeV2Enabled;
@@ -9,25 +9,25 @@
 - (HMDDemoModeManagerDataSource)init;
 - (HMDHH2FrameworkSwitchDataSource)frameworkSwitchDataSource;
 - (HMFProductInfo)productInfo;
-- (void)setFrameworkSwitchDataSource:(id)a3;
+- (void)setFrameworkSwitchDataSource:(id)source;
 @end
 
 @implementation HMDDemoModeManagerDataSource
 
 - (BOOL)isDemoModeV2Enabled
 {
-  v2 = [objc_opt_self() defaultDataSource];
-  v3 = [v2 isDemoModeV2Enabled];
+  defaultDataSource = [objc_opt_self() defaultDataSource];
+  isDemoModeV2Enabled = [defaultDataSource isDemoModeV2Enabled];
 
-  return v3;
+  return isDemoModeV2Enabled;
 }
 
 - (BOOL)isDemoModeV2EnabledAndActive
 {
-  v2 = [objc_opt_self() defaultDataSource];
-  v3 = [v2 isDemoModeV2Enabled];
+  defaultDataSource = [objc_opt_self() defaultDataSource];
+  isDemoModeV2Enabled = [defaultDataSource isDemoModeV2Enabled];
 
-  if (!v3)
+  if (!isDemoModeV2Enabled)
   {
     return 0;
   }
@@ -37,10 +37,10 @@
 
 - (BOOL)isDemoModeV2WithoutCKEnabled
 {
-  v2 = [objc_opt_self() defaultDataSource];
-  v3 = [v2 isDemoModeV2Enabled];
+  defaultDataSource = [objc_opt_self() defaultDataSource];
+  isDemoModeV2Enabled = [defaultDataSource isDemoModeV2Enabled];
 
-  if (v3)
+  if (isDemoModeV2Enabled)
   {
     v4 = isDemoModeV2Active();
     if (v4)
@@ -59,10 +59,10 @@
 
 - (BOOL)isDemoModeMadeForDemoBundle
 {
-  v2 = [objc_opt_self() defaultDataSource];
-  v3 = [v2 isDemoModeV2Enabled];
+  defaultDataSource = [objc_opt_self() defaultDataSource];
+  isDemoModeV2Enabled = [defaultDataSource isDemoModeV2Enabled];
 
-  if (!v3 || !isDemoModeV2Active())
+  if (!isDemoModeV2Enabled || !isDemoModeV2Active())
   {
     return 0;
   }
@@ -79,9 +79,9 @@
 
 - (HMFProductInfo)productInfo
 {
-  v2 = [objc_opt_self() productInfo];
+  productInfo = [objc_opt_self() productInfo];
 
-  return v2;
+  return productInfo;
 }
 
 - (HMDHH2FrameworkSwitchDataSource)frameworkSwitchDataSource
@@ -92,10 +92,10 @@
   return v3;
 }
 
-- (void)setFrameworkSwitchDataSource:(id)a3
+- (void)setFrameworkSwitchDataSource:(id)source
 {
   v3 = *(&self->super.isa + OBJC_IVAR___HMDDemoModeManagerDataSource_frameworkSwitchDataSource);
-  *(&self->super.isa + OBJC_IVAR___HMDDemoModeManagerDataSource_frameworkSwitchDataSource) = a3;
+  *(&self->super.isa + OBJC_IVAR___HMDDemoModeManagerDataSource_frameworkSwitchDataSource) = source;
   swift_unknownObjectRetain();
 
   swift_unknownObjectRelease();
@@ -124,9 +124,9 @@
   return v2;
 }
 
-+ (void)setDefaultDataSourceOverride:(id)a3
++ (void)setDefaultDataSourceOverride:(id)override
 {
-  qword_27D87F8F8 = a3;
+  qword_27D87F8F8 = override;
   swift_unknownObjectRetain();
 
   swift_unknownObjectRelease();

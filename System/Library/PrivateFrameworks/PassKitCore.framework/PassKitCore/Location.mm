@@ -1,21 +1,21 @@
 @interface Location
-+ (BOOL)hasLocationsInDatabase:(id)a3 forPassPID:(unint64_t)a4;
-+ (id)_locationsInDatabase:(id)a3 matchingPredicate:(id)a4;
-+ (id)_predicateForLocationSource:(id)a3;
-+ (id)_predicateForLocationSourcePID:(int64_t)a3;
-+ (id)_predicateForPass:(id)a3;
-+ (id)_predicateForPassPID:(int64_t)a3;
-+ (id)_predicateForSourceType:(int)a3;
++ (BOOL)hasLocationsInDatabase:(id)database forPassPID:(unint64_t)d;
++ (id)_locationsInDatabase:(id)database matchingPredicate:(id)predicate;
++ (id)_predicateForLocationSource:(id)source;
++ (id)_predicateForLocationSourcePID:(int64_t)d;
++ (id)_predicateForPass:(id)pass;
++ (id)_predicateForPassPID:(int64_t)d;
++ (id)_predicateForSourceType:(int)type;
 + (id)_propertySettersForLocation;
-+ (id)associationPropertyForEntityClass:(Class)a3;
-+ (id)foreignKeyColumnForTable:(id)a3;
-+ (id)locationsInDatabase:(id)a3 forPassPID:(unint64_t)a4;
-+ (id)locationsInDatabase:(id)a3 forPassPID:(unint64_t)a4 withSourceType:(int)a5;
-+ (id)queryWithDatabase:(id)a3 locationSourcePID:(unint64_t)a4;
-+ (void)addJoinClausesForProperty:(id)a3 toJoins:(id)a4;
-+ (void)deleteEntitiesForPass:(id)a3 inDatabase:(id)a4;
-+ (void)insertLocations:(id)a3 forSource:(id)a4 inDatabase:(id)a5;
-- (Location)initWithLocation:(id)a3 source:(id)a4 inDatabase:(id)a5;
++ (id)associationPropertyForEntityClass:(Class)class;
++ (id)foreignKeyColumnForTable:(id)table;
++ (id)locationsInDatabase:(id)database forPassPID:(unint64_t)d;
++ (id)locationsInDatabase:(id)database forPassPID:(unint64_t)d withSourceType:(int)type;
++ (id)queryWithDatabase:(id)database locationSourcePID:(unint64_t)d;
++ (void)addJoinClausesForProperty:(id)property toJoins:(id)joins;
++ (void)deleteEntitiesForPass:(id)pass inDatabase:(id)database;
++ (void)insertLocations:(id)locations forSource:(id)source inDatabase:(id)database;
+- (Location)initWithLocation:(id)location source:(id)source inDatabase:(id)database;
 @end
 
 @implementation Location
@@ -39,14 +39,14 @@
   return v2;
 }
 
-+ (id)associationPropertyForEntityClass:(Class)a3
++ (id)associationPropertyForEntityClass:(Class)class
 {
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == class)
   {
     return @"location_source_pid";
   }
 
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == class)
   {
     return @"pass_location_source.pass_pid";
   }
@@ -54,27 +54,27 @@
   return 0;
 }
 
-+ (void)addJoinClausesForProperty:(id)a3 toJoins:(id)a4
++ (void)addJoinClausesForProperty:(id)property toJoins:(id)joins
 {
-  v6 = a3;
-  v5 = a4;
-  if (([v6 isEqualToString:@"pass.pid"] & 1) != 0 || objc_msgSend(v6, "isEqualToString:", @"location_source.type"))
+  propertyCopy = property;
+  joinsCopy = joins;
+  if (([propertyCopy isEqualToString:@"pass.pid"] & 1) != 0 || objc_msgSend(propertyCopy, "isEqualToString:", @"location_source.type"))
   {
-    [v5 addObject:@"JOIN location_source ON location.location_source_pid = location_source.pid"];
-    [v5 addObject:@"LEFT JOIN pass_location_source ON pass_location_source.location_source_pid = location_source.pid"];
-    [v5 addObject:@"JOIN pass ON pass_location_source.pass_pid = pass.pid"];
+    [joinsCopy addObject:@"JOIN location_source ON location.location_source_pid = location_source.pid"];
+    [joinsCopy addObject:@"LEFT JOIN pass_location_source ON pass_location_source.location_source_pid = location_source.pid"];
+    [joinsCopy addObject:@"JOIN pass ON pass_location_source.pass_pid = pass.pid"];
   }
 
-  if ([v6 isEqualToString:@"pass_location_source.pass_pid"])
+  if ([propertyCopy isEqualToString:@"pass_location_source.pass_pid"])
   {
-    [v5 addObject:@"JOIN location_source ON location.location_source_pid = location_source.pid"];
-    [v5 addObject:@"LEFT JOIN pass_location_source ON pass_location_source.location_source_pid = location_source.pid"];
+    [joinsCopy addObject:@"JOIN location_source ON location.location_source_pid = location_source.pid"];
+    [joinsCopy addObject:@"LEFT JOIN pass_location_source ON pass_location_source.location_source_pid = location_source.pid"];
   }
 }
 
-+ (id)foreignKeyColumnForTable:(id)a3
++ (id)foreignKeyColumnForTable:(id)table
 {
-  if ([a3 isEqualToString:@"location_index"])
+  if ([table isEqualToString:@"location_index"])
   {
     return @"location_pid";
   }
@@ -85,95 +85,95 @@
   }
 }
 
-- (Location)initWithLocation:(id)a3 source:(id)a4 inDatabase:(id)a5
+- (Location)initWithLocation:(id)location source:(id)source inDatabase:(id)database
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = a4;
+  locationCopy = location;
+  databaseCopy = database;
+  sourceCopy = source;
   v10 = objc_alloc_init(NSMutableDictionary);
   v11 = [NSNumber alloc];
-  [v7 latitude];
+  [locationCopy latitude];
   v12 = [v11 initWithDouble:?];
   v13 = [NSNumber alloc];
-  [v7 longitude];
+  [locationCopy longitude];
   v14 = [v13 initWithDouble:?];
   [v10 setObject:v12 forKey:@"latitude"];
   [v10 setObject:v14 forKey:@"longitude"];
-  [v7 maxDistance];
+  [locationCopy maxDistance];
   if (v15 > 0.0)
   {
     v16 = [NSNumber numberWithDouble:?];
     [v10 setObject:v16 forKey:@"max_distance"];
   }
 
-  if ([v7 hasAltitude])
+  if ([locationCopy hasAltitude])
   {
     v17 = [NSNumber alloc];
-    [v7 altitude];
+    [locationCopy altitude];
     v18 = [v17 initWithDouble:?];
     [v10 setObject:v18 forKey:@"altitude"];
   }
 
-  v19 = [v7 name];
-  if (v19)
+  name = [locationCopy name];
+  if (name)
   {
-    [v10 setObject:v19 forKey:@"name"];
+    [v10 setObject:name forKey:@"name"];
   }
 
-  v20 = [v7 relevantText];
-  if (v20)
+  relevantText = [locationCopy relevantText];
+  if (relevantText)
   {
-    [v10 setObject:v20 forKey:@"relevant_text"];
+    [v10 setObject:relevantText forKey:@"relevant_text"];
   }
 
   v21 = [NSNumber alloc];
-  v22 = [v9 persistentID];
+  persistentID = [sourceCopy persistentID];
 
-  v23 = [v21 initWithLongLong:v22];
+  v23 = [v21 initWithLongLong:persistentID];
   [v10 setObject:v23 forKey:@"location_source_pid"];
   v28.receiver = self;
   v28.super_class = Location;
-  v24 = [(SQLiteEntity *)&v28 initWithPropertyValues:v10 inDatabase:v8];
-  v25 = [LocationIndex insertIndexedLocationWithLatitude:v12 longitude:v14 forLocation:v24 database:v8];
+  v24 = [(SQLiteEntity *)&v28 initWithPropertyValues:v10 inDatabase:databaseCopy];
+  v25 = [LocationIndex insertIndexedLocationWithLatitude:v12 longitude:v14 forLocation:v24 database:databaseCopy];
 
   return v24;
 }
 
-+ (void)insertLocations:(id)a3 forSource:(id)a4 inDatabase:(id)a5
++ (void)insertLocations:(id)locations forSource:(id)source inDatabase:(id)database
 {
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100106650;
   v11[3] = &unk_100843068;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a1;
-  v8 = v14;
-  v9 = v13;
-  v10 = v12;
+  locationsCopy = locations;
+  sourceCopy = source;
+  databaseCopy = database;
+  selfCopy = self;
+  v8 = databaseCopy;
+  v9 = sourceCopy;
+  v10 = locationsCopy;
   sub_1005D4424(v8, v11);
 }
 
-+ (id)_locationsInDatabase:(id)a3 matchingPredicate:(id)a4
++ (id)_locationsInDatabase:(id)database matchingPredicate:(id)predicate
 {
-  v6 = a4;
-  v7 = a3;
+  predicateCopy = predicate;
+  databaseCopy = database;
   v8 = objc_alloc_init(NSMutableArray);
-  v9 = [a1 _propertySettersForLocation];
-  v10 = [(SQLiteEntity *)Location queryWithDatabase:v7 predicate:v6];
+  _propertySettersForLocation = [self _propertySettersForLocation];
+  v10 = [(SQLiteEntity *)Location queryWithDatabase:databaseCopy predicate:predicateCopy];
 
-  v11 = [v9 allKeys];
+  allKeys = [_propertySettersForLocation allKeys];
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_1001068C4;
   v17[3] = &unk_10083C998;
-  v20 = a1;
-  v18 = v9;
+  selfCopy = self;
+  v18 = _propertySettersForLocation;
   v12 = v8;
   v19 = v12;
-  v13 = v9;
-  [v10 enumeratePersistentIDsAndProperties:v11 usingBlock:v17];
+  v13 = _propertySettersForLocation;
+  [v10 enumeratePersistentIDsAndProperties:allKeys usingBlock:v17];
 
   v14 = v19;
   v15 = v12;
@@ -181,91 +181,91 @@
   return v12;
 }
 
-+ (id)_predicateForPassPID:(int64_t)a3
++ (id)_predicateForPassPID:(int64_t)d
 {
-  v3 = [NSNumber numberWithLongLong:a3];
+  v3 = [NSNumber numberWithLongLong:d];
   v4 = [SQLiteComparisonPredicate predicateWithProperty:@"pass.pid" equalToValue:v3];
 
   return v4;
 }
 
-+ (id)_predicateForPass:(id)a3
++ (id)_predicateForPass:(id)pass
 {
-  v4 = [a3 persistentID];
+  persistentID = [pass persistentID];
 
-  return [a1 _predicateForPassPID:v4];
+  return [self _predicateForPassPID:persistentID];
 }
 
-+ (BOOL)hasLocationsInDatabase:(id)a3 forPassPID:(unint64_t)a4
++ (BOOL)hasLocationsInDatabase:(id)database forPassPID:(unint64_t)d
 {
-  v6 = a3;
-  v7 = [a1 _predicateForPassPID:a4];
-  v8 = [a1 anyInDatabase:v6 predicate:v7];
+  databaseCopy = database;
+  v7 = [self _predicateForPassPID:d];
+  v8 = [self anyInDatabase:databaseCopy predicate:v7];
 
   return v8 != 0;
 }
 
-+ (id)locationsInDatabase:(id)a3 forPassPID:(unint64_t)a4
++ (id)locationsInDatabase:(id)database forPassPID:(unint64_t)d
 {
-  v6 = a3;
-  v7 = [a1 _predicateForPassPID:a4];
-  v8 = [a1 _locationsInDatabase:v6 matchingPredicate:v7];
+  databaseCopy = database;
+  v7 = [self _predicateForPassPID:d];
+  v8 = [self _locationsInDatabase:databaseCopy matchingPredicate:v7];
 
   return v8;
 }
 
-+ (id)_predicateForLocationSourcePID:(int64_t)a3
++ (id)_predicateForLocationSourcePID:(int64_t)d
 {
-  v3 = [NSNumber numberWithLongLong:a3];
+  v3 = [NSNumber numberWithLongLong:d];
   v4 = [SQLiteComparisonPredicate predicateWithProperty:@"location_source_pid" equalToValue:v3];
 
   return v4;
 }
 
-+ (id)_predicateForLocationSource:(id)a3
++ (id)_predicateForLocationSource:(id)source
 {
-  v4 = [a3 persistentID];
+  persistentID = [source persistentID];
 
-  return [a1 _predicateForLocationSourcePID:v4];
+  return [self _predicateForLocationSourcePID:persistentID];
 }
 
-+ (id)_predicateForSourceType:(int)a3
++ (id)_predicateForSourceType:(int)type
 {
-  v3 = [NSNumber numberWithInt:*&a3];
+  v3 = [NSNumber numberWithInt:*&type];
   v4 = [SQLiteComparisonPredicate predicateWithProperty:@"location_source.type" equalToValue:v3];
 
   return v4;
 }
 
-+ (id)locationsInDatabase:(id)a3 forPassPID:(unint64_t)a4 withSourceType:(int)a5
++ (id)locationsInDatabase:(id)database forPassPID:(unint64_t)d withSourceType:(int)type
 {
-  v5 = *&a5;
-  v8 = a3;
-  v9 = [a1 _predicateForPassPID:a4];
+  v5 = *&type;
+  databaseCopy = database;
+  v9 = [self _predicateForPassPID:d];
   v15[0] = v9;
-  v10 = [a1 _predicateForSourceType:v5];
+  v10 = [self _predicateForSourceType:v5];
   v15[1] = v10;
   v11 = [NSArray arrayWithObjects:v15 count:2];
   v12 = [SQLiteCompoundPredicate predicateMatchingAllPredicates:v11];
-  v13 = [a1 _locationsInDatabase:v8 matchingPredicate:v12];
+  v13 = [self _locationsInDatabase:databaseCopy matchingPredicate:v12];
 
   return v13;
 }
 
-+ (id)queryWithDatabase:(id)a3 locationSourcePID:(unint64_t)a4
++ (id)queryWithDatabase:(id)database locationSourcePID:(unint64_t)d
 {
-  v6 = a3;
-  v7 = [a1 _predicateForLocationSourcePID:a4];
-  v8 = [a1 queryWithDatabase:v6 predicate:v7];
+  databaseCopy = database;
+  v7 = [self _predicateForLocationSourcePID:d];
+  v8 = [self queryWithDatabase:databaseCopy predicate:v7];
 
   return v8;
 }
 
-+ (void)deleteEntitiesForPass:(id)a3 inDatabase:(id)a4
++ (void)deleteEntitiesForPass:(id)pass inDatabase:(id)database
 {
-  v6 = a4;
-  v8 = [a1 _predicateForPass:a3];
-  v7 = [a1 queryWithDatabase:v6 predicate:v8];
+  databaseCopy = database;
+  v8 = [self _predicateForPass:pass];
+  v7 = [self queryWithDatabase:databaseCopy predicate:v8];
 
   [v7 deleteAllEntities];
 }

@@ -1,24 +1,24 @@
 @interface PXSurveyQuestionsHorizontalGadget
 - (id)alertControllerForHideAction;
 - (id)alertControllerForInfoAction;
-- (void)_checkCanNavigate:(BOOL *)a3 toDestination:(id)a4 iterator:(id)a5;
-- (void)_hideSurveyQuestionsUntilDate:(id)a3;
+- (void)_checkCanNavigate:(BOOL *)navigate toDestination:(id)destination iterator:(id)iterator;
+- (void)_hideSurveyQuestionsUntilDate:(id)date;
 - (void)_sendRequestConsentFormMail;
-- (void)navigateToDestination:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5;
-- (void)presentViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
+- (void)navigateToDestination:(id)destination options:(unint64_t)options completionHandler:(id)handler;
+- (void)presentViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
 - (void)viewDidLayoutSubviews;
 @end
 
 @implementation PXSurveyQuestionsHorizontalGadget
 
-- (void)_checkCanNavigate:(BOOL *)a3 toDestination:(id)a4 iterator:(id)a5
+- (void)_checkCanNavigate:(BOOL *)navigate toDestination:(id)destination iterator:(id)iterator
 {
-  v7 = a5;
-  v8 = [(PXSurveyQuestionsHorizontalGadget *)self px_isVisible];
-  *a3 = v8;
-  if (v8)
+  iteratorCopy = iterator;
+  px_isVisible = [(PXSurveyQuestionsHorizontalGadget *)self px_isVisible];
+  *navigate = px_isVisible;
+  if (px_isVisible)
   {
-    [v7 stop];
+    [iteratorCopy stop];
   }
 
   else
@@ -28,18 +28,18 @@
     v10[1] = 3221225472;
     v10[2] = __78__PXSurveyQuestionsHorizontalGadget__checkCanNavigate_toDestination_iterator___block_invoke;
     v10[3] = &unk_1E774C5C0;
-    v11 = v7;
+    v11 = iteratorCopy;
     [(PXExpectation *)v9 performWhenFulfilled:v10 timeout:3.0];
     [(PXSurveyQuestionsHorizontalGadget *)self setNextViewLayoutExpectation:v9];
   }
 }
 
-- (void)navigateToDestination:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5
+- (void)navigateToDestination:(id)destination options:(unint64_t)options completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [(PXHorizontalCollectionGadget *)self horizontalGadgetDelegate];
-  v10 = [v9 radarConfigurationForHorizontalCollectionGadget:self];
+  destinationCopy = destination;
+  handlerCopy = handler;
+  horizontalGadgetDelegate = [(PXHorizontalCollectionGadget *)self horizontalGadgetDelegate];
+  v10 = [horizontalGadgetDelegate radarConfigurationForHorizontalCollectionGadget:self];
 
   v11 = [[PXSurveyRadarReporterViewController alloc] initWithConfiguration:v10 completionHandler:0];
   v15[0] = 0;
@@ -53,8 +53,8 @@
   v12[4] = &unk_1E77411A0;
   objc_copyWeak(&v13, &location);
   v12[6] = v15;
-  v12[5] = v7;
-  v8;
+  v12[5] = destinationCopy;
+  handlerCopy;
   objc_copyWeak(v12, &location);
   v11;
   PXIterateAsynchronously();
@@ -108,23 +108,23 @@ uint64_t __85__PXSurveyQuestionsHorizontalGadget_navigateToDestination_options_c
   }
 }
 
-- (void)_hideSurveyQuestionsUntilDate:(id)a3
+- (void)_hideSurveyQuestionsUntilDate:(id)date
 {
-  v4 = a3;
-  v5 = [(PXHorizontalCollectionGadget *)self horizontalGadgetDelegate];
-  [v5 horizontalCollectionGadget:self hideUntilDate:v4];
+  dateCopy = date;
+  horizontalGadgetDelegate = [(PXHorizontalCollectionGadget *)self horizontalGadgetDelegate];
+  [horizontalGadgetDelegate horizontalCollectionGadget:self hideUntilDate:dateCopy];
 }
 
 - (id)alertControllerForInfoAction
 {
   IsAppleInternal = PXSurveyQuestionIsAppleInternal();
-  v4 = [(PXHorizontalCollectionGadget *)self horizontalGadgetDelegate];
-  v5 = [v4 infoAlertTitleForHorizontalCollectionGadget:self];
+  horizontalGadgetDelegate = [(PXHorizontalCollectionGadget *)self horizontalGadgetDelegate];
+  v5 = [horizontalGadgetDelegate infoAlertTitleForHorizontalCollectionGadget:self];
 
   if (IsAppleInternal)
   {
-    v6 = [(PXHorizontalCollectionGadget *)self horizontalGadgetDelegate];
-    v7 = [v6 infoAlertMessageForHorizontalCollectionGadget:self];
+    horizontalGadgetDelegate2 = [(PXHorizontalCollectionGadget *)self horizontalGadgetDelegate];
+    v7 = [horizontalGadgetDelegate2 infoAlertMessageForHorizontalCollectionGadget:self];
 
     v8 = @"PXInternalPhotosChallengeInfoDonateDataButton";
   }
@@ -156,11 +156,11 @@ uint64_t __85__PXSurveyQuestionsHorizontalGadget_navigateToDestination_options_c
   v16 = v12;
   v24 = IsAppleInternal;
   v22 = v16;
-  v23 = self;
+  selfCopy = self;
   v17 = [v15 actionWithTitle:v14 style:0 handler:v21];
   [v16 addAction:v17];
-  v18 = [(PXHorizontalCollectionGadget *)self horizontalGadgetDelegate];
-  [v18 horizontalCollectionGadget:self configureCustomInfoAlertActionsForAlertController:v16];
+  horizontalGadgetDelegate3 = [(PXHorizontalCollectionGadget *)self horizontalGadgetDelegate];
+  [horizontalGadgetDelegate3 horizontalCollectionGadget:self configureCustomInfoAlertActionsForAlertController:v16];
 
   v19 = v16;
   return v16;
@@ -219,7 +219,7 @@ void __65__PXSurveyQuestionsHorizontalGadget_alertControllerForInfoAction__block
   v37[3] = &unk_1E774A2C8;
   v10 = v6;
   v38 = v10;
-  v39 = self;
+  selfCopy = self;
   v11 = [v8 actionWithTitle:v9 style:0 handler:v37];
 
   v12 = MEMORY[0x1E69DC648];
@@ -230,14 +230,14 @@ void __65__PXSurveyQuestionsHorizontalGadget_alertControllerForInfoAction__block
   v34[3] = &unk_1E774A2C8;
   v14 = v10;
   v35 = v14;
-  v36 = self;
+  selfCopy2 = self;
   v15 = [v12 actionWithTitle:v13 style:0 handler:v34];
 
   IsAppleInternal = PXSurveyQuestionIsAppleInternal();
   if (IsAppleInternal)
   {
-    v17 = [(PXHorizontalCollectionGadget *)self horizontalGadgetDelegate];
-    v18 = [v17 hideForeverAlertMessageForHorizontalCollectionGadget:self];
+    horizontalGadgetDelegate = [(PXHorizontalCollectionGadget *)self horizontalGadgetDelegate];
+    v18 = [horizontalGadgetDelegate hideForeverAlertMessageForHorizontalCollectionGadget:self];
   }
 
   else
@@ -255,7 +255,7 @@ void __65__PXSurveyQuestionsHorizontalGadget_alertControllerForInfoAction__block
   v30 = v21;
   v31 = v18;
   v33 = IsAppleInternal;
-  v32 = self;
+  selfCopy3 = self;
   v22 = v18;
   v23 = [v19 actionWithTitle:v20 style:2 handler:&v26];
 
@@ -359,27 +359,27 @@ void __65__PXSurveyQuestionsHorizontalGadget_alertControllerForHideAction__block
   [*(a1 + 32) _hideSurveyQuestionsUntilDate:v4];
 }
 
-- (void)presentViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)presentViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  v10 = [(PXSurveyQuestionsHorizontalGadget *)self parentViewController];
+  animatedCopy = animated;
+  controllerCopy = controller;
+  completionCopy = completion;
+  parentViewController = [(PXSurveyQuestionsHorizontalGadget *)self parentViewController];
 
-  if (v10)
+  if (parentViewController)
   {
     v14.receiver = self;
     v14.super_class = PXSurveyQuestionsHorizontalGadget;
-    [(PXSurveyQuestionsHorizontalGadget *)&v14 presentViewController:v8 animated:v6 completion:v9];
+    [(PXSurveyQuestionsHorizontalGadget *)&v14 presentViewController:controllerCopy animated:animatedCopy completion:completionCopy];
   }
 
   else
   {
-    v11 = [MEMORY[0x1E69DC668] sharedApplication];
-    v12 = [v11 px_firstKeyWindow];
-    v13 = [v12 rootViewController];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+    px_firstKeyWindow = [mEMORY[0x1E69DC668] px_firstKeyWindow];
+    rootViewController = [px_firstKeyWindow rootViewController];
 
-    [v13 presentViewController:v8 animated:v6 completion:v9];
+    [rootViewController presentViewController:controllerCopy animated:animatedCopy completion:completionCopy];
   }
 }
 
@@ -388,8 +388,8 @@ void __65__PXSurveyQuestionsHorizontalGadget_alertControllerForHideAction__block
   v4.receiver = self;
   v4.super_class = PXSurveyQuestionsHorizontalGadget;
   [(PXGadgetUIViewController *)&v4 viewDidLayoutSubviews];
-  v3 = [(PXSurveyQuestionsHorizontalGadget *)self nextViewLayoutExpectation];
-  [v3 fulfill];
+  nextViewLayoutExpectation = [(PXSurveyQuestionsHorizontalGadget *)self nextViewLayoutExpectation];
+  [nextViewLayoutExpectation fulfill];
 
   [(PXSurveyQuestionsHorizontalGadget *)self setNextViewLayoutExpectation:0];
 }

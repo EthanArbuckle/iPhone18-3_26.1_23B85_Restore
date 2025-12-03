@@ -1,24 +1,24 @@
 @interface IRAVOutputContextController
-- (IRAVOutputContextController)initWithOutputContextType:(int64_t)a3;
-- (id)_associatedOutputContextForType:(int64_t)a3;
+- (IRAVOutputContextController)initWithOutputContextType:(int64_t)type;
+- (id)_associatedOutputContextForType:(int64_t)type;
 - (id)getOutputDevice;
 - (id)getPredictedOutputDevice;
-- (void)_didUpdateOutputDevice:(id)a3;
-- (void)_didUpdatePredictedOutputDevice:(id)a3;
+- (void)_didUpdateOutputDevice:(id)device;
+- (void)_didUpdatePredictedOutputDevice:(id)device;
 - (void)_registerForAVOutputContextOutputDeviceDidChangeNotification;
 - (void)_registerForAVOutputContextPredictedOutputDeviceDidChangeNotification;
 - (void)_unregisterForAVOutputContextOutputDeviceDidChangeNotification;
 - (void)_unregisterForAVOutputContextPredictedOutputDeviceDidChangeNotification;
-- (void)addObserver:(id)a3;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
-- (void)removeObserver:(id)a3;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation IRAVOutputContextController
 
-- (IRAVOutputContextController)initWithOutputContextType:(int64_t)a3
+- (IRAVOutputContextController)initWithOutputContextType:(int64_t)type
 {
-  if (a3)
+  if (type)
   {
     [IRAVOutputContextController initWithOutputContextType:];
   }
@@ -30,11 +30,11 @@
   if (v3)
   {
     [(IRAVOutputContextController *)v3 setLock:0];
-    v5 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
-    [(IRAVOutputContextController *)v4 setObservers:v5];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    [(IRAVOutputContextController *)v4 setObservers:weakObjectsHashTable];
 
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
-    [(IRAVOutputContextController *)v4 setNotificationCenter:v6];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [(IRAVOutputContextController *)v4 setNotificationCenter:defaultCenter];
 
     v7 = [(IRAVOutputContextController *)v4 _associatedOutputContextForType:0];
     [(IRAVOutputContextController *)v4 setOutputContext:v7];
@@ -55,33 +55,33 @@
   [(IRAVOutputContextController *)&v3 dealloc];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v7 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_lock);
-  v4 = [(IRAVOutputContextController *)self observers];
-  v5 = [v4 containsObject:v7];
+  observers = [(IRAVOutputContextController *)self observers];
+  v5 = [observers containsObject:observerCopy];
 
   if ((v5 & 1) == 0)
   {
-    v6 = [(IRAVOutputContextController *)self observers];
-    [v6 addObject:v7];
+    observers2 = [(IRAVOutputContextController *)self observers];
+    [observers2 addObject:observerCopy];
   }
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v7 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_lock);
-  v4 = [(IRAVOutputContextController *)self observers];
-  v5 = [v4 containsObject:v7];
+  observers = [(IRAVOutputContextController *)self observers];
+  v5 = [observers containsObject:observerCopy];
 
   if (v5)
   {
-    v6 = [(IRAVOutputContextController *)self observers];
-    [v6 removeObject:v7];
+    observers2 = [(IRAVOutputContextController *)self observers];
+    [observers2 removeObject:observerCopy];
   }
 
   os_unfair_lock_unlock(&self->_lock);
@@ -90,9 +90,9 @@
 - (id)getOutputDevice
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(IRAVOutputContextController *)self outputContext];
-  v4 = [v3 outputDevice];
-  v5 = [IRAVOutputDeviceDO AVOutputDeviceToDO:v4];
+  outputContext = [(IRAVOutputContextController *)self outputContext];
+  outputDevice = [outputContext outputDevice];
+  v5 = [IRAVOutputDeviceDO AVOutputDeviceToDO:outputDevice];
 
   os_unfair_lock_unlock(&self->_lock);
 
@@ -102,18 +102,18 @@
 - (id)getPredictedOutputDevice
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(IRAVOutputContextController *)self outputContext];
-  v4 = [v3 predictedOutputDevice];
-  v5 = [IRAVOutputDeviceDO AVOutputDeviceToDO:v4];
+  outputContext = [(IRAVOutputContextController *)self outputContext];
+  predictedOutputDevice = [outputContext predictedOutputDevice];
+  v5 = [IRAVOutputDeviceDO AVOutputDeviceToDO:predictedOutputDevice];
 
   os_unfair_lock_unlock(&self->_lock);
 
   return v5;
 }
 
-- (id)_associatedOutputContextForType:(int64_t)a3
+- (id)_associatedOutputContextForType:(int64_t)type
 {
-  switch(a3)
+  switch(type)
   {
     case 2:
       self = [MEMORY[0x277CB8698] sharedAudioPresentationOutputContext];
@@ -129,15 +129,15 @@
   return self;
 }
 
-- (void)_didUpdateOutputDevice:(id)a3
+- (void)_didUpdateOutputDevice:(id)device
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  deviceCopy = device;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(IRAVOutputContextController *)self outputContext];
-  v6 = [v5 outputDevice];
+  outputContext = [(IRAVOutputContextController *)self outputContext];
+  outputDevice = [outputContext outputDevice];
 
-  v7 = [IRAVOutputDeviceDO AVOutputDeviceToDO:v6];
+  v7 = [IRAVOutputDeviceDO AVOutputDeviceToDO:outputDevice];
   v8 = *MEMORY[0x277D21260];
   if (os_log_type_enabled(*MEMORY[0x277D21260], OS_LOG_TYPE_DEBUG))
   {
@@ -148,8 +148,8 @@
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v9 = [(IRAVOutputContextController *)self observers];
-  v10 = [v9 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  observers = [(IRAVOutputContextController *)self observers];
+  v10 = [observers countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v10)
   {
     v11 = *v15;
@@ -160,14 +160,14 @@
       {
         if (*v15 != v11)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(observers);
         }
 
         [*(*(&v14 + 1) + 8 * v12++) context:self didUpdateOutputDevice:v7];
       }
 
       while (v10 != v12);
-      v10 = [v9 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v10 = [observers countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v10);
@@ -177,15 +177,15 @@
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_didUpdatePredictedOutputDevice:(id)a3
+- (void)_didUpdatePredictedOutputDevice:(id)device
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  deviceCopy = device;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(IRAVOutputContextController *)self outputContext];
-  v6 = [v5 predictedOutputDevice];
+  outputContext = [(IRAVOutputContextController *)self outputContext];
+  predictedOutputDevice = [outputContext predictedOutputDevice];
 
-  v7 = [IRAVOutputDeviceDO AVOutputDeviceToDO:v6];
+  v7 = [IRAVOutputDeviceDO AVOutputDeviceToDO:predictedOutputDevice];
   v8 = *MEMORY[0x277D21260];
   if (os_log_type_enabled(*MEMORY[0x277D21260], OS_LOG_TYPE_DEBUG))
   {
@@ -196,8 +196,8 @@
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v9 = [(IRAVOutputContextController *)self observers];
-  v10 = [v9 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  observers = [(IRAVOutputContextController *)self observers];
+  v10 = [observers countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v10)
   {
     v11 = *v15;
@@ -208,14 +208,14 @@
       {
         if (*v15 != v11)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(observers);
         }
 
         [*(*(&v14 + 1) + 8 * v12++) context:self didUpdatePredicatedOutputDevice:v7];
       }
 
       while (v10 != v12);
-      v10 = [v9 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v10 = [observers countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v10);
@@ -227,34 +227,34 @@
 
 - (void)_registerForAVOutputContextOutputDeviceDidChangeNotification
 {
-  v5 = [(IRAVOutputContextController *)self notificationCenter];
+  notificationCenter = [(IRAVOutputContextController *)self notificationCenter];
   v3 = *MEMORY[0x277CB8628];
-  v4 = [(IRAVOutputContextController *)self outputContext];
-  [v5 addObserver:self selector:sel__didUpdateOutputDevice_ name:v3 object:v4];
+  outputContext = [(IRAVOutputContextController *)self outputContext];
+  [notificationCenter addObserver:self selector:sel__didUpdateOutputDevice_ name:v3 object:outputContext];
 }
 
 - (void)_unregisterForAVOutputContextOutputDeviceDidChangeNotification
 {
   notificationCenter = self->_notificationCenter;
   v4 = *MEMORY[0x277CB8628];
-  v5 = [(IRAVOutputContextController *)self outputContext];
-  [(NSNotificationCenter *)notificationCenter removeObserver:self name:v4 object:v5];
+  outputContext = [(IRAVOutputContextController *)self outputContext];
+  [(NSNotificationCenter *)notificationCenter removeObserver:self name:v4 object:outputContext];
 }
 
 - (void)_registerForAVOutputContextPredictedOutputDeviceDidChangeNotification
 {
-  v5 = [(IRAVOutputContextController *)self notificationCenter];
+  notificationCenter = [(IRAVOutputContextController *)self notificationCenter];
   v3 = *MEMORY[0x277CB8638];
-  v4 = [(IRAVOutputContextController *)self outputContext];
-  [v5 addObserver:self selector:sel__didUpdatePredictedOutputDevice_ name:v3 object:v4];
+  outputContext = [(IRAVOutputContextController *)self outputContext];
+  [notificationCenter addObserver:self selector:sel__didUpdatePredictedOutputDevice_ name:v3 object:outputContext];
 }
 
 - (void)_unregisterForAVOutputContextPredictedOutputDeviceDidChangeNotification
 {
   notificationCenter = self->_notificationCenter;
   v4 = *MEMORY[0x277CB8638];
-  v5 = [(IRAVOutputContextController *)self outputContext];
-  [(NSNotificationCenter *)notificationCenter removeObserver:self name:v4 object:v5];
+  outputContext = [(IRAVOutputContextController *)self outputContext];
+  [(NSNotificationCenter *)notificationCenter removeObserver:self name:v4 object:outputContext];
 }
 
 - (void)initWithOutputContextType:.cold.1()

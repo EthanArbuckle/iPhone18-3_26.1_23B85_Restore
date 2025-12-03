@@ -1,7 +1,7 @@
 @interface AKIORegistryReader
 + (id)sharedInstance;
-- (id)copyDeviceTreeInt:(id)a3 key:(id)a4 defaultValue:(int)a5;
-- (id)copyDeviceTreeProperty:(id)a3 key:(id)a4;
+- (id)copyDeviceTreeInt:(id)int key:(id)key defaultValue:(int)value;
+- (id)copyDeviceTreeProperty:(id)property key:(id)key;
 - (id)sfrManifest;
 @end
 
@@ -31,14 +31,14 @@ uint64_t __36__AKIORegistryReader_sharedInstance__block_invoke()
   return MEMORY[0x1E69E5920](v1);
 }
 
-- (id)copyDeviceTreeProperty:(id)a3 key:(id)a4
+- (id)copyDeviceTreeProperty:(id)property key:(id)key
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, property);
   v12 = 0;
-  objc_storeStrong(&v12, a4);
+  objc_storeStrong(&v12, key);
   if (location[0] && v12)
   {
     mainPort = *MEMORY[0x1E696CD60];
@@ -72,20 +72,20 @@ uint64_t __36__AKIORegistryReader_sharedInstance__block_invoke()
   return v14;
 }
 
-- (id)copyDeviceTreeInt:(id)a3 key:(id)a4 defaultValue:(int)a5
+- (id)copyDeviceTreeInt:(id)int key:(id)key defaultValue:(int)value
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, int);
   v15 = 0;
-  objc_storeStrong(&v15, a4);
-  v14 = a5;
-  v13 = [MEMORY[0x1E696AD98] numberWithInt:a5];
-  v12 = a5;
+  objc_storeStrong(&v15, key);
+  valueCopy = value;
+  v13 = [MEMORY[0x1E696AD98] numberWithInt:value];
+  valueCopy2 = value;
   if (location[0] && v15)
   {
-    v10 = [(AKIORegistryReader *)v17 copyDeviceTreeProperty:location[0] key:v15];
+    v10 = [(AKIORegistryReader *)selfCopy copyDeviceTreeProperty:location[0] key:v15];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
@@ -109,8 +109,8 @@ LABEL_12:
         goto LABEL_13;
       }
 
-      [v10 getBytes:&v12 length:4];
-      v5 = [MEMORY[0x1E696AD98] numberWithInt:v12];
+      [v10 getBytes:&valueCopy2 length:4];
+      v5 = [MEMORY[0x1E696AD98] numberWithInt:valueCopy2];
       v6 = v13;
       v13 = v5;
       MEMORY[0x1E69E5920](v6);

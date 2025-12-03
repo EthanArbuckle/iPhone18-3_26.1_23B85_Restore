@@ -1,10 +1,10 @@
 @interface SFUILoadedMetadataCollection
-- (SFUILoadedMetadataCollection)initWithMetadatas:(id)a3;
+- (SFUILoadedMetadataCollection)initWithMetadatas:(id)metadatas;
 - (SFUILoadedMetadataCollectionDelegate)delegate;
 - (void)_didFinishLoading;
 - (void)_listenForMetadataChanges;
 - (void)_load;
-- (void)_metadataDidChange:(id)a3;
+- (void)_metadataDidChange:(id)change;
 @end
 
 @implementation SFUILoadedMetadataCollection
@@ -12,9 +12,9 @@
 - (void)_listenForMetadataChanges
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   headerMetadataObservers = self->_headerMetadataObservers;
-  self->_headerMetadataObservers = v3;
+  self->_headerMetadataObservers = array;
 
   v17 = 0u;
   v18 = 0u;
@@ -69,8 +69,8 @@
   v22 = 0u;
   v23 = 0u;
   val = self;
-  v5 = [(SFUILoadedMetadataCollection *)self metadatas];
-  v6 = [v5 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  metadatas = [(SFUILoadedMetadataCollection *)self metadatas];
+  v6 = [metadatas countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v6)
   {
     v7 = v6;
@@ -82,7 +82,7 @@
       {
         if (*v21 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(metadatas);
         }
 
         v10 = *(*(&v20 + 1) + 8 * v9);
@@ -101,7 +101,7 @@
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v7 = [metadatas countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v7);
@@ -132,21 +132,21 @@
 {
   v12 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v3 = [(SFUILoadedMetadataCollection *)self metadatas];
-  [(SFUILoadedMetadataCollection *)self setLoadedMetadatas:v3];
+  metadatas = [(SFUILoadedMetadataCollection *)self metadatas];
+  [(SFUILoadedMetadataCollection *)self setLoadedMetadatas:metadatas];
 
   v4 = share_sheet_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(SFUILoadedMetadataCollection *)self loadedMetadatas];
+    loadedMetadatas = [(SFUILoadedMetadataCollection *)self loadedMetadatas];
     *buf = 138412290;
-    v11 = v5;
+    v11 = loadedMetadatas;
     _os_log_impl(&dword_1B9E4B000, v4, OS_LOG_TYPE_DEFAULT, "did finish loading metadata:%@", buf, 0xCu);
   }
 
   v6 = objc_alloc(MEMORY[0x1E695DEC8]);
-  v7 = [(SFUILoadedMetadataCollection *)self loadedMetadatas];
-  v8 = [v6 initWithArray:v7 copyItems:1];
+  loadedMetadatas2 = [(SFUILoadedMetadataCollection *)self loadedMetadatas];
+  v8 = [v6 initWithArray:loadedMetadatas2 copyItems:1];
 
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -163,19 +163,19 @@ void __49__SFUILoadedMetadataCollection__didFinishLoading__block_invoke(uint64_t
   sf_dispatch_on_main_queue();
 }
 
-- (SFUILoadedMetadataCollection)initWithMetadatas:(id)a3
+- (SFUILoadedMetadataCollection)initWithMetadatas:(id)metadatas
 {
-  v4 = a3;
+  metadatasCopy = metadatas;
   v10.receiver = self;
   v10.super_class = SFUILoadedMetadataCollection;
   v5 = [(SFUILoadedMetadataCollection *)&v10 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [metadatasCopy copy];
     metadatas = v5->_metadatas;
     v5->_metadatas = v6;
 
-    v8 = SFUILinkMetadataSerializationForLocalLowFidelityUseOnly(v4);
+    v8 = SFUILinkMetadataSerializationForLocalLowFidelityUseOnly(metadatasCopy);
     [(SFUILoadedMetadataCollection *)v5 setLoadedSerializedMetadatas:v8];
 
     [(SFUILoadedMetadataCollection *)v5 _listenForMetadataChanges];
@@ -191,10 +191,10 @@ void __57__SFUILoadedMetadataCollection__listenForMetadataChanges__block_invoke(
   [WeakRetained _metadataDidChange:*(a1 + 32)];
 }
 
-- (void)_metadataDidChange:(id)a3
+- (void)_metadataDidChange:(id)change
 {
-  v4 = a3;
-  v3 = v4;
+  changeCopy = change;
+  v3 = changeCopy;
   sf_dispatch_on_main_queue();
 }
 

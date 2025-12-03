@@ -1,10 +1,10 @@
 @interface CHTextSize
-+ (id)averageTextSize:(id)a3;
-+ (id)scaledSize:(id)a3 scale:(double)a4;
-+ (id)textSizeFromPrincipalLines:(id *)a3 string:(id)a4;
++ (id)averageTextSize:(id)size;
++ (id)scaledSize:(id)size scale:(double)scale;
++ (id)textSizeFromPrincipalLines:(id *)lines string:(id)string;
 - (CHTextSize)init;
-- (CHTextSize)initWithXHeight:(double)a3 ascenderHeight:(double)a4 descenderHeight:(double)a5 activeLines:(unint64_t)a6;
-- (double)scaleToMatchSize:(id)a3;
+- (CHTextSize)initWithXHeight:(double)height ascenderHeight:(double)ascenderHeight descenderHeight:(double)descenderHeight activeLines:(unint64_t)lines;
+- (double)scaleToMatchSize:(id)size;
 @end
 
 @implementation CHTextSize
@@ -23,27 +23,27 @@
   return result;
 }
 
-- (CHTextSize)initWithXHeight:(double)a3 ascenderHeight:(double)a4 descenderHeight:(double)a5 activeLines:(unint64_t)a6
+- (CHTextSize)initWithXHeight:(double)height ascenderHeight:(double)ascenderHeight descenderHeight:(double)descenderHeight activeLines:(unint64_t)lines
 {
   v11.receiver = self;
   v11.super_class = CHTextSize;
   result = [(CHTextSize *)&v11 init];
   if (result)
   {
-    result->_xHeight = a3;
-    result->_ascenderHeight = a4;
-    result->_descenderHeight = a5;
-    result->_activeLines = a6;
+    result->_xHeight = height;
+    result->_ascenderHeight = ascenderHeight;
+    result->_descenderHeight = descenderHeight;
+    result->_activeLines = lines;
   }
 
   return result;
 }
 
-- (double)scaleToMatchSize:(id)a3
+- (double)scaleToMatchSize:(id)size
 {
-  v4 = a3;
-  v10 = v4;
-  if (self->_activeLines & 1) != 0 && (objc_msgSend_activeLines(v4, v5, v6, v7, v8, v9))
+  sizeCopy = size;
+  v10 = sizeCopy;
+  if (self->_activeLines & 1) != 0 && (objc_msgSend_activeLines(sizeCopy, v5, v6, v7, v8, v9))
   {
     v11 = self->_ascenderHeight != 0.0;
     if ((self->_activeLines & 2) == 0)
@@ -124,36 +124,36 @@ LABEL_19:
   return v14;
 }
 
-+ (id)scaledSize:(id)a3 scale:(double)a4
++ (id)scaledSize:(id)size scale:(double)scale
 {
-  v5 = a3;
+  sizeCopy = size;
   v6 = [CHTextSize alloc];
-  objc_msgSend_xHeight(v5, v7, v8, v9, v10, v11);
+  objc_msgSend_xHeight(sizeCopy, v7, v8, v9, v10, v11);
   v13 = v12;
-  objc_msgSend_ascenderHeight(v5, v14, v15, v16, v17, v18);
+  objc_msgSend_ascenderHeight(sizeCopy, v14, v15, v16, v17, v18);
   v20 = v19;
-  objc_msgSend_descenderHeight(v5, v21, v22, v23, v24, v25);
+  objc_msgSend_descenderHeight(sizeCopy, v21, v22, v23, v24, v25);
   v27 = v26;
-  active = objc_msgSend_activeLines(v5, v28, v29, v30, v31, v32);
-  v38 = objc_msgSend_initWithXHeight_ascenderHeight_descenderHeight_activeLines_(v6, v34, active, v35, v36, v37, v13 * a4, v20 * a4, v27 * a4);
+  active = objc_msgSend_activeLines(sizeCopy, v28, v29, v30, v31, v32);
+  v38 = objc_msgSend_initWithXHeight_ascenderHeight_descenderHeight_activeLines_(v6, v34, active, v35, v36, v37, v13 * scale, v20 * scale, v27 * scale);
 
   return v38;
 }
 
-+ (id)textSizeFromPrincipalLines:(id *)a3 string:(id)a4
++ (id)textSizeFromPrincipalLines:(id *)lines string:(id)string
 {
-  v5 = a4;
-  x = a3->var1.var1.x;
-  v8 = a3->var1.var0.x;
-  y = a3->var1.var0.y;
-  v9 = a3->var3.var0.x;
-  v52 = a3->var1.var1.y;
-  v53 = a3->var3.var0.y;
-  v10 = a3->var2.var0.x;
-  v11 = a3->var2.var0.y;
-  v12 = a3->var0.var0.x;
-  v13 = a3->var0.var0.y;
-  v14 = v5;
+  stringCopy = string;
+  x = lines->var1.var1.x;
+  v8 = lines->var1.var0.x;
+  y = lines->var1.var0.y;
+  v9 = lines->var3.var0.x;
+  v52 = lines->var1.var1.y;
+  v53 = lines->var3.var0.y;
+  v10 = lines->var2.var0.x;
+  v11 = lines->var2.var0.y;
+  v12 = lines->var0.var0.x;
+  v13 = lines->var0.var0.y;
+  v14 = stringCopy;
   hasXHeightCharacter = objc_msgSend_hasXHeightCharacter(v14, v15, v16, v17, v18, v19);
   hasAscender = objc_msgSend_hasAscender(v14, v21, v22, v23, v24, v25);
   hasDescender = objc_msgSend_hasDescender(v14, v27, v28, v29, v30, v31);
@@ -190,14 +190,14 @@ LABEL_19:
   return v50;
 }
 
-+ (id)averageTextSize:(id)a3
++ (id)averageTextSize:(id)size
 {
   v178 = *MEMORY[0x1E69E9840];
   v172 = 0u;
   v173 = 0u;
   v174 = 0u;
   v175 = 0u;
-  obj = a3;
+  obj = size;
   LOBYTE(v5) = 0;
   LOBYTE(v6) = 0;
   LOBYTE(v7) = 0;

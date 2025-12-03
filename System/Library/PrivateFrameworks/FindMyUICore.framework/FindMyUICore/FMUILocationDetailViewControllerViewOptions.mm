@@ -1,25 +1,25 @@
 @interface FMUILocationDetailViewControllerViewOptions
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (FMUILocationDetailViewControllerViewOptions)init;
-- (FMUILocationDetailViewControllerViewOptions)initWithRawValue:(int64_t)a3;
+- (FMUILocationDetailViewControllerViewOptions)initWithRawValue:(int64_t)value;
 @end
 
 @implementation FMUILocationDetailViewControllerViewOptions
 
-- (FMUILocationDetailViewControllerViewOptions)initWithRawValue:(int64_t)a3
+- (FMUILocationDetailViewControllerViewOptions)initWithRawValue:(int64_t)value
 {
   ObjectType = swift_getObjectType();
-  *(&self->super.isa + OBJC_IVAR___FMUILocationDetailViewControllerViewOptions_rawValue) = a3;
+  *(&self->super.isa + OBJC_IVAR___FMUILocationDetailViewControllerViewOptions_rawValue) = value;
   v7.receiver = self;
   v7.super_class = ObjectType;
   return [(FMUILocationDetailViewControllerViewOptions *)&v7 init];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_24B2D5B14();
     swift_unknownObjectRelease();
@@ -28,7 +28,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = LocationDetailViewController.ViewOptions.isEqual(_:)(v8);

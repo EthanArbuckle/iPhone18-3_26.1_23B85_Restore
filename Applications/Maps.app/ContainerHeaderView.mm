@@ -1,26 +1,26 @@
 @interface ContainerHeaderView
 - (CGSize)intrinsicContentSize;
-- (ContainerHeaderView)initWithCardButton:(id)a3 trailingCardButtons:(id)a4;
-- (ContainerHeaderView)initWithCardButtonType:(unint64_t)a3;
-- (ContainerHeaderView)initWithCardButtonType:(unint64_t)a3 cardButtonBlurred:(BOOL)a4;
-- (ContainerHeaderView)initWithCardButtonType:(unint64_t)a3 cardButtonTintColor:(id)a4;
-- (ContainerHeaderView)initWithFrame:(CGRect)a3;
+- (ContainerHeaderView)initWithCardButton:(id)button trailingCardButtons:(id)buttons;
+- (ContainerHeaderView)initWithCardButtonType:(unint64_t)type;
+- (ContainerHeaderView)initWithCardButtonType:(unint64_t)type cardButtonBlurred:(BOOL)blurred;
+- (ContainerHeaderView)initWithCardButtonType:(unint64_t)type cardButtonTintColor:(id)color;
+- (ContainerHeaderView)initWithFrame:(CGRect)frame;
 - (HeaderViewDelegate)delegate;
 - (NSString)subtitle;
 - (NSString)title;
 - (NSString)titleAXID;
 - (double)trailingButtonInset;
-- (int64_t)swiftCardButtonTypeForCardButtonType:(unint64_t)a3;
-- (unint64_t)cardButtonTypeForSwiftCardButtonType:(int64_t)a3;
+- (int64_t)swiftCardButtonTypeForCardButtonType:(unint64_t)type;
+- (unint64_t)cardButtonTypeForSwiftCardButtonType:(int64_t)type;
 - (void)_initViews;
-- (void)headerViewButtonTappedWithHeaderView:(id)a3 buttonType:(int64_t)a4;
-- (void)setAccessoryView:(id)a3;
-- (void)setSubtitle:(id)a3;
-- (void)setTitle:(id)a3;
-- (void)setTitleAXID:(id)a3;
-- (void)setTitleHidden:(BOOL)a3;
-- (void)setTitleView:(id)a3;
-- (void)titlePlaceholderViewTapped:(id)a3;
+- (void)headerViewButtonTappedWithHeaderView:(id)view buttonType:(int64_t)type;
+- (void)setAccessoryView:(id)view;
+- (void)setSubtitle:(id)subtitle;
+- (void)setTitle:(id)title;
+- (void)setTitleAXID:(id)d;
+- (void)setTitleHidden:(BOOL)hidden;
+- (void)setTitleView:(id)view;
+- (void)titlePlaceholderViewTapped:(id)tapped;
 - (void)updateButtons;
 @end
 
@@ -33,27 +33,27 @@
   return WeakRetained;
 }
 
-- (void)headerViewButtonTappedWithHeaderView:(id)a3 buttonType:(int64_t)a4
+- (void)headerViewButtonTappedWithHeaderView:(id)view buttonType:(int64_t)type
 {
-  v6 = [(ContainerHeaderView *)self delegate];
+  delegate = [(ContainerHeaderView *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(ContainerHeaderView *)self delegate];
-    [v8 headerViewButtonTapped:self buttonType:{-[ContainerHeaderView cardButtonTypeForSwiftCardButtonType:](self, "cardButtonTypeForSwiftCardButtonType:", a4)}];
+    delegate2 = [(ContainerHeaderView *)self delegate];
+    [delegate2 headerViewButtonTapped:self buttonType:{-[ContainerHeaderView cardButtonTypeForSwiftCardButtonType:](self, "cardButtonTypeForSwiftCardButtonType:", type)}];
   }
 }
 
-- (void)titlePlaceholderViewTapped:(id)a3
+- (void)titlePlaceholderViewTapped:(id)tapped
 {
-  v4 = [(ContainerHeaderView *)self delegate];
+  delegate = [(ContainerHeaderView *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(ContainerHeaderView *)self delegate];
-    [v6 headerViewTapped:self];
+    delegate2 = [(ContainerHeaderView *)self delegate];
+    [delegate2 headerViewTapped:self];
   }
 }
 
@@ -62,12 +62,12 @@
   v3 = objc_opt_new();
   if (![(ContainerHeaderView *)self isButtonHidden])
   {
-    v4 = [(ContainerHeaderView *)self mainCardButton];
+    mainCardButton = [(ContainerHeaderView *)self mainCardButton];
 
-    if (v4)
+    if (mainCardButton)
     {
-      v5 = [(ContainerHeaderView *)self mainCardButton];
-      v6 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", -[ContainerHeaderView swiftCardButtonTypeForCardButtonType:](self, "swiftCardButtonTypeForCardButtonType:", [v5 type]));
+      mainCardButton2 = [(ContainerHeaderView *)self mainCardButton];
+      v6 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", -[ContainerHeaderView swiftCardButtonTypeForCardButtonType:](self, "swiftCardButtonTypeForCardButtonType:", [mainCardButton2 type]));
       [v3 addObject:v6];
     }
   }
@@ -78,8 +78,8 @@
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v7 = [(ContainerHeaderView *)self trailingButtons];
-    v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    trailingButtons = [(ContainerHeaderView *)self trailingButtons];
+    v8 = [trailingButtons countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v8)
     {
       v9 = v8;
@@ -91,7 +91,7 @@
         {
           if (*v15 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(trailingButtons);
           }
 
           v12 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", -[ContainerHeaderView swiftCardButtonTypeForCardButtonType:](self, "swiftCardButtonTypeForCardButtonType:", [*(*(&v14 + 1) + 8 * v11) type]));
@@ -101,202 +101,202 @@
         }
 
         while (v9 != v11);
-        v9 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v9 = [trailingButtons countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v9);
     }
   }
 
-  v13 = [(ContainerHeaderView *)self cardHeaderComponent];
-  [v13 setTrailingButtons:v3];
+  cardHeaderComponent = [(ContainerHeaderView *)self cardHeaderComponent];
+  [cardHeaderComponent setTrailingButtons:v3];
 }
 
-- (unint64_t)cardButtonTypeForSwiftCardButtonType:(int64_t)a3
+- (unint64_t)cardButtonTypeForSwiftCardButtonType:(int64_t)type
 {
-  if (a3 >= 0xD)
+  if (type >= 0xD)
   {
     return 0;
   }
 
   else
   {
-    return a3;
+    return type;
   }
 }
 
-- (int64_t)swiftCardButtonTypeForCardButtonType:(unint64_t)a3
+- (int64_t)swiftCardButtonTypeForCardButtonType:(unint64_t)type
 {
-  if (a3 >= 0xD)
+  if (type >= 0xD)
   {
     return 0;
   }
 
   else
   {
-    return a3;
+    return type;
   }
 }
 
-- (void)setAccessoryView:(id)a3
+- (void)setAccessoryView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   [(UIView *)self->_accessoryView removeFromSuperview];
   accessoryView = self->_accessoryView;
-  self->_accessoryView = v4;
-  v6 = v4;
+  self->_accessoryView = viewCopy;
+  v6 = viewCopy;
 
   if (v6)
   {
-    v7 = [(ContainerHeaderView *)self accessoryPlaceholderView];
-    [v7 addSubview:v6];
+    accessoryPlaceholderView = [(ContainerHeaderView *)self accessoryPlaceholderView];
+    [accessoryPlaceholderView addSubview:v6];
 
-    v8 = [(ContainerHeaderView *)self accessoryPlaceholderHeightConstraint];
-    v32 = v8;
+    accessoryPlaceholderHeightConstraint = [(ContainerHeaderView *)self accessoryPlaceholderHeightConstraint];
+    v32 = accessoryPlaceholderHeightConstraint;
     v9 = [NSArray arrayWithObjects:&v32 count:1];
     [NSLayoutConstraint deactivateConstraints:v9];
 
-    v23 = [(UIView *)v6 leadingAnchor];
-    v22 = [(ContainerHeaderView *)self accessoryPlaceholderView];
-    v29 = [v22 leadingAnchor];
-    v28 = [v23 constraintEqualToAnchor:v29];
+    leadingAnchor = [(UIView *)v6 leadingAnchor];
+    accessoryPlaceholderView2 = [(ContainerHeaderView *)self accessoryPlaceholderView];
+    leadingAnchor2 = [accessoryPlaceholderView2 leadingAnchor];
+    v28 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v31[0] = v28;
-    v26 = [(UIView *)v6 trailingAnchor];
-    v27 = [(ContainerHeaderView *)self accessoryPlaceholderView];
-    v25 = [v27 trailingAnchor];
-    v24 = [v26 constraintEqualToAnchor:v25];
+    trailingAnchor = [(UIView *)v6 trailingAnchor];
+    accessoryPlaceholderView3 = [(ContainerHeaderView *)self accessoryPlaceholderView];
+    trailingAnchor2 = [accessoryPlaceholderView3 trailingAnchor];
+    v24 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v31[1] = v24;
-    v10 = [(UIView *)v6 topAnchor];
-    v11 = [(ContainerHeaderView *)self accessoryPlaceholderView];
-    v12 = [v11 topAnchor];
-    v13 = [v10 constraintEqualToAnchor:v12];
+    topAnchor = [(UIView *)v6 topAnchor];
+    accessoryPlaceholderView4 = [(ContainerHeaderView *)self accessoryPlaceholderView];
+    topAnchor2 = [accessoryPlaceholderView4 topAnchor];
+    v13 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v31[2] = v13;
-    v14 = [(UIView *)v6 bottomAnchor];
-    v15 = [(ContainerHeaderView *)self accessoryPlaceholderView];
-    v16 = [v15 bottomAnchor];
-    v17 = [v14 constraintEqualToAnchor:v16];
+    bottomAnchor = [(UIView *)v6 bottomAnchor];
+    accessoryPlaceholderView5 = [(ContainerHeaderView *)self accessoryPlaceholderView];
+    bottomAnchor2 = [accessoryPlaceholderView5 bottomAnchor];
+    v17 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v31[3] = v17;
     v18 = [NSArray arrayWithObjects:v31 count:4];
     [NSLayoutConstraint activateConstraints:v18];
 
-    v19 = v22;
-    v20 = v23;
+    v19 = accessoryPlaceholderView2;
+    accessoryPlaceholderHeightConstraint2 = leadingAnchor;
 
-    v21 = v29;
+    v21 = leadingAnchor2;
   }
 
   else
   {
-    v20 = [(ContainerHeaderView *)self accessoryPlaceholderHeightConstraint];
-    v30 = v20;
+    accessoryPlaceholderHeightConstraint2 = [(ContainerHeaderView *)self accessoryPlaceholderHeightConstraint];
+    v30 = accessoryPlaceholderHeightConstraint2;
     v19 = [NSArray arrayWithObjects:&v30 count:1];
     [NSLayoutConstraint activateConstraints:v19];
     v21 = 0;
   }
 }
 
-- (void)setTitleView:(id)a3
+- (void)setTitleView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   [(UIView *)self->_titleView removeFromSuperview];
-  objc_storeStrong(&self->_titleView, a3);
-  v6 = [(ContainerHeaderView *)self cardHeaderComponent];
-  [v6 setTextHidden:v5 != 0];
+  objc_storeStrong(&self->_titleView, view);
+  cardHeaderComponent = [(ContainerHeaderView *)self cardHeaderComponent];
+  [cardHeaderComponent setTextHidden:viewCopy != 0];
 
-  if (v5)
+  if (viewCopy)
   {
-    v7 = [(ContainerHeaderView *)self titlePlaceholderView];
-    [v7 addSubview:v5];
+    titlePlaceholderView = [(ContainerHeaderView *)self titlePlaceholderView];
+    [titlePlaceholderView addSubview:viewCopy];
 
-    v8 = [(ContainerHeaderView *)self cardHeaderComponent];
-    [v8 trailingButtonInset];
+    cardHeaderComponent2 = [(ContainerHeaderView *)self cardHeaderComponent];
+    [cardHeaderComponent2 trailingButtonInset];
     v10 = -v9;
 
-    v26 = [v5 leadingAnchor];
-    v27 = [(ContainerHeaderView *)self titlePlaceholderView];
-    v25 = [v27 leadingAnchor];
-    v24 = [v26 constraintEqualToAnchor:v25];
+    leadingAnchor = [viewCopy leadingAnchor];
+    titlePlaceholderView2 = [(ContainerHeaderView *)self titlePlaceholderView];
+    leadingAnchor2 = [titlePlaceholderView2 leadingAnchor];
+    v24 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v28[0] = v24;
-    v22 = [v5 trailingAnchor];
-    v23 = [(ContainerHeaderView *)self titlePlaceholderView];
-    v21 = [v23 trailingAnchor];
-    v20 = [v22 constraintEqualToAnchor:v21 constant:v10];
+    trailingAnchor = [viewCopy trailingAnchor];
+    titlePlaceholderView3 = [(ContainerHeaderView *)self titlePlaceholderView];
+    trailingAnchor2 = [titlePlaceholderView3 trailingAnchor];
+    v20 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:v10];
     v28[1] = v20;
-    v11 = [v5 topAnchor];
-    v12 = [(ContainerHeaderView *)self titlePlaceholderView];
-    v13 = [v12 topAnchor];
-    v14 = [v11 constraintEqualToAnchor:v13];
+    topAnchor = [viewCopy topAnchor];
+    titlePlaceholderView4 = [(ContainerHeaderView *)self titlePlaceholderView];
+    topAnchor2 = [titlePlaceholderView4 topAnchor];
+    v14 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v28[2] = v14;
-    v15 = [v5 bottomAnchor];
-    v16 = [(ContainerHeaderView *)self titlePlaceholderView];
-    v17 = [v16 bottomAnchor];
-    v18 = [v15 constraintEqualToAnchor:v17];
+    bottomAnchor = [viewCopy bottomAnchor];
+    titlePlaceholderView5 = [(ContainerHeaderView *)self titlePlaceholderView];
+    bottomAnchor2 = [titlePlaceholderView5 bottomAnchor];
+    v18 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v28[3] = v18;
     v19 = [NSArray arrayWithObjects:v28 count:4];
     [NSLayoutConstraint activateConstraints:v19];
   }
 }
 
-- (void)setTitleHidden:(BOOL)a3
+- (void)setTitleHidden:(BOOL)hidden
 {
-  v3 = a3;
-  self->_titleHidden = a3;
-  v5 = [(ContainerHeaderView *)self titlePlaceholderZeroHeightConstraint];
-  [v5 setActive:v3];
+  hiddenCopy = hidden;
+  self->_titleHidden = hidden;
+  titlePlaceholderZeroHeightConstraint = [(ContainerHeaderView *)self titlePlaceholderZeroHeightConstraint];
+  [titlePlaceholderZeroHeightConstraint setActive:hiddenCopy];
 
-  v6 = [(ContainerHeaderView *)self titlePlaceholderMaxHeightConstraint];
-  [v6 setActive:v3 ^ 1];
+  titlePlaceholderMaxHeightConstraint = [(ContainerHeaderView *)self titlePlaceholderMaxHeightConstraint];
+  [titlePlaceholderMaxHeightConstraint setActive:hiddenCopy ^ 1];
 }
 
-- (void)setSubtitle:(id)a3
+- (void)setSubtitle:(id)subtitle
 {
-  v4 = a3;
-  v5 = [(ContainerHeaderView *)self cardHeaderComponent];
-  [v5 setSubtitle:v4];
+  subtitleCopy = subtitle;
+  cardHeaderComponent = [(ContainerHeaderView *)self cardHeaderComponent];
+  [cardHeaderComponent setSubtitle:subtitleCopy];
 }
 
 - (NSString)subtitle
 {
-  v2 = [(ContainerHeaderView *)self cardHeaderComponent];
-  v3 = [v2 subtitle];
+  cardHeaderComponent = [(ContainerHeaderView *)self cardHeaderComponent];
+  subtitle = [cardHeaderComponent subtitle];
 
-  return v3;
+  return subtitle;
 }
 
-- (void)setTitleAXID:(id)a3
+- (void)setTitleAXID:(id)d
 {
-  v4 = a3;
-  v5 = [(ContainerHeaderView *)self cardHeaderComponent];
-  [v5 setTitleCustomAXID:v4];
+  dCopy = d;
+  cardHeaderComponent = [(ContainerHeaderView *)self cardHeaderComponent];
+  [cardHeaderComponent setTitleCustomAXID:dCopy];
 }
 
 - (NSString)titleAXID
 {
-  v2 = [(ContainerHeaderView *)self cardHeaderComponent];
-  v3 = [v2 titleCustomAXID];
+  cardHeaderComponent = [(ContainerHeaderView *)self cardHeaderComponent];
+  titleCustomAXID = [cardHeaderComponent titleCustomAXID];
 
-  return v3;
+  return titleCustomAXID;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = a3;
-  v5 = [(ContainerHeaderView *)self cardHeaderComponent];
-  [v5 setTitle:v4];
+  titleCopy = title;
+  cardHeaderComponent = [(ContainerHeaderView *)self cardHeaderComponent];
+  [cardHeaderComponent setTitle:titleCopy];
 }
 
 - (NSString)title
 {
-  v2 = [(ContainerHeaderView *)self cardHeaderComponent];
-  v3 = [v2 title];
+  cardHeaderComponent = [(ContainerHeaderView *)self cardHeaderComponent];
+  title = [cardHeaderComponent title];
 
-  return v3;
+  return title;
 }
 
 - (double)trailingButtonInset
 {
-  v2 = [(ContainerHeaderView *)self cardHeaderComponent];
-  [v2 trailingButtonInset];
+  cardHeaderComponent = [(ContainerHeaderView *)self cardHeaderComponent];
+  [cardHeaderComponent trailingButtonInset];
   v4 = v3;
 
   return v4;
@@ -304,8 +304,8 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = [(ContainerHeaderView *)self stackView];
-  [v2 intrinsicContentSize];
+  stackView = [(ContainerHeaderView *)self stackView];
+  [stackView intrinsicContentSize];
   v4 = v3;
   v6 = v5;
 
@@ -322,147 +322,147 @@
   y = CGRectZero.origin.y;
   width = CGRectZero.size.width;
   height = CGRectZero.size.height;
-  v7 = [(SwiftContainerHeaderView *)v3 initWithFrame:CGRectZero.origin.x, y, width, height];
-  [(ContainerHeaderView *)self setCardHeaderComponent:v7];
+  height = [(SwiftContainerHeaderView *)v3 initWithFrame:CGRectZero.origin.x, y, width, height];
+  [(ContainerHeaderView *)self setCardHeaderComponent:height];
 
-  v8 = [(ContainerHeaderView *)self cardHeaderComponent];
-  [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
+  cardHeaderComponent = [(ContainerHeaderView *)self cardHeaderComponent];
+  [cardHeaderComponent setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v9 = [(ContainerHeaderView *)self cardHeaderComponent];
-  [v9 setDelegate:self];
+  cardHeaderComponent2 = [(ContainerHeaderView *)self cardHeaderComponent];
+  [cardHeaderComponent2 setDelegate:self];
 
   v10 = [[UIView alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
   [(ContainerHeaderView *)self setTitlePlaceholderView:v10];
 
-  v11 = [(ContainerHeaderView *)self titlePlaceholderView];
-  [v11 setTranslatesAutoresizingMaskIntoConstraints:0];
+  titlePlaceholderView = [(ContainerHeaderView *)self titlePlaceholderView];
+  [titlePlaceholderView setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v12 = [[UITapGestureRecognizer alloc] initWithTarget:self action:"titlePlaceholderViewTapped:"];
   [(ContainerHeaderView *)self setTapGestureRecognizer:v12];
 
-  v13 = [(ContainerHeaderView *)self titlePlaceholderView];
-  v14 = [(ContainerHeaderView *)self tapGestureRecognizer];
-  [v13 addGestureRecognizer:v14];
+  titlePlaceholderView2 = [(ContainerHeaderView *)self titlePlaceholderView];
+  tapGestureRecognizer = [(ContainerHeaderView *)self tapGestureRecognizer];
+  [titlePlaceholderView2 addGestureRecognizer:tapGestureRecognizer];
 
-  v15 = [(ContainerHeaderView *)self titlePlaceholderView];
-  v16 = [(ContainerHeaderView *)self cardHeaderComponent];
-  [v15 addSubview:v16];
+  titlePlaceholderView3 = [(ContainerHeaderView *)self titlePlaceholderView];
+  cardHeaderComponent3 = [(ContainerHeaderView *)self cardHeaderComponent];
+  [titlePlaceholderView3 addSubview:cardHeaderComponent3];
 
-  v17 = [(ContainerHeaderView *)self titlePlaceholderView];
-  v18 = [v17 heightAnchor];
-  v19 = [(ContainerHeaderView *)self cardHeaderComponent];
-  v20 = [v19 heightAnchor];
-  v21 = [v18 constraintGreaterThanOrEqualToAnchor:v20];
+  titlePlaceholderView4 = [(ContainerHeaderView *)self titlePlaceholderView];
+  heightAnchor = [titlePlaceholderView4 heightAnchor];
+  cardHeaderComponent4 = [(ContainerHeaderView *)self cardHeaderComponent];
+  heightAnchor2 = [cardHeaderComponent4 heightAnchor];
+  v21 = [heightAnchor constraintGreaterThanOrEqualToAnchor:heightAnchor2];
   [(ContainerHeaderView *)self setTitlePlaceholderMaxHeightConstraint:v21];
 
-  v22 = [(ContainerHeaderView *)self titlePlaceholderView];
-  v23 = [v22 heightAnchor];
-  v24 = [v23 constraintEqualToConstant:0.0];
+  titlePlaceholderView5 = [(ContainerHeaderView *)self titlePlaceholderView];
+  heightAnchor3 = [titlePlaceholderView5 heightAnchor];
+  v24 = [heightAnchor3 constraintEqualToConstant:0.0];
   [(ContainerHeaderView *)self setTitlePlaceholderZeroHeightConstraint:v24];
 
-  v94 = [(ContainerHeaderView *)self cardHeaderComponent];
-  v90 = [v94 leadingAnchor];
-  v92 = [(ContainerHeaderView *)self titlePlaceholderView];
-  v88 = [v92 leadingAnchor];
-  v86 = [v90 constraintEqualToAnchor:v88];
+  cardHeaderComponent5 = [(ContainerHeaderView *)self cardHeaderComponent];
+  leadingAnchor = [cardHeaderComponent5 leadingAnchor];
+  titlePlaceholderView6 = [(ContainerHeaderView *)self titlePlaceholderView];
+  leadingAnchor2 = [titlePlaceholderView6 leadingAnchor];
+  v86 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v98[0] = v86;
-  v84 = [(ContainerHeaderView *)self cardHeaderComponent];
-  v80 = [v84 trailingAnchor];
-  v82 = [(ContainerHeaderView *)self titlePlaceholderView];
-  v78 = [v82 trailingAnchor];
-  v75 = [v80 constraintEqualToAnchor:v78];
+  cardHeaderComponent6 = [(ContainerHeaderView *)self cardHeaderComponent];
+  trailingAnchor = [cardHeaderComponent6 trailingAnchor];
+  titlePlaceholderView7 = [(ContainerHeaderView *)self titlePlaceholderView];
+  trailingAnchor2 = [titlePlaceholderView7 trailingAnchor];
+  v75 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v98[1] = v75;
-  v73 = [(ContainerHeaderView *)self cardHeaderComponent];
-  v69 = [v73 topAnchor];
-  v71 = [(ContainerHeaderView *)self titlePlaceholderView];
-  v25 = [v71 topAnchor];
-  v26 = [v69 constraintEqualToAnchor:v25];
+  cardHeaderComponent7 = [(ContainerHeaderView *)self cardHeaderComponent];
+  topAnchor = [cardHeaderComponent7 topAnchor];
+  titlePlaceholderView8 = [(ContainerHeaderView *)self titlePlaceholderView];
+  topAnchor2 = [titlePlaceholderView8 topAnchor];
+  v26 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v98[2] = v26;
-  v27 = [(ContainerHeaderView *)self cardHeaderComponent];
-  v28 = [v27 bottomAnchor];
-  v29 = [(ContainerHeaderView *)self titlePlaceholderView];
-  v30 = [v29 bottomAnchor];
-  v31 = [v28 constraintEqualToAnchor:v30];
+  cardHeaderComponent8 = [(ContainerHeaderView *)self cardHeaderComponent];
+  bottomAnchor = [cardHeaderComponent8 bottomAnchor];
+  titlePlaceholderView9 = [(ContainerHeaderView *)self titlePlaceholderView];
+  bottomAnchor2 = [titlePlaceholderView9 bottomAnchor];
+  v31 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v98[3] = v31;
-  v32 = [(ContainerHeaderView *)self titlePlaceholderMaxHeightConstraint];
-  v98[4] = v32;
+  titlePlaceholderMaxHeightConstraint = [(ContainerHeaderView *)self titlePlaceholderMaxHeightConstraint];
+  v98[4] = titlePlaceholderMaxHeightConstraint;
   v33 = [NSArray arrayWithObjects:v98 count:5];
   [NSLayoutConstraint activateConstraints:v33];
 
   v34 = [[UIView alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
   [(ContainerHeaderView *)self setAccessoryPlaceholderView:v34];
 
-  v35 = [(ContainerHeaderView *)self accessoryPlaceholderView];
-  [v35 setTranslatesAutoresizingMaskIntoConstraints:0];
+  accessoryPlaceholderView = [(ContainerHeaderView *)self accessoryPlaceholderView];
+  [accessoryPlaceholderView setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v36 = [UIStackView alloc];
-  v37 = [(ContainerHeaderView *)self titlePlaceholderView];
-  v97[0] = v37;
-  v38 = [(ContainerHeaderView *)self accessoryPlaceholderView];
-  v97[1] = v38;
+  titlePlaceholderView10 = [(ContainerHeaderView *)self titlePlaceholderView];
+  v97[0] = titlePlaceholderView10;
+  accessoryPlaceholderView2 = [(ContainerHeaderView *)self accessoryPlaceholderView];
+  v97[1] = accessoryPlaceholderView2;
   v39 = [NSArray arrayWithObjects:v97 count:2];
   v40 = [v36 initWithArrangedSubviews:v39];
   [(ContainerHeaderView *)self setStackView:v40];
 
-  v41 = [(ContainerHeaderView *)self stackView];
-  [v41 setTranslatesAutoresizingMaskIntoConstraints:0];
+  stackView = [(ContainerHeaderView *)self stackView];
+  [stackView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v42 = [(ContainerHeaderView *)self stackView];
-  [v42 setAxis:1];
+  stackView2 = [(ContainerHeaderView *)self stackView];
+  [stackView2 setAxis:1];
 
-  v43 = [(ContainerHeaderView *)self stackView];
+  stackView3 = [(ContainerHeaderView *)self stackView];
   LODWORD(v44) = 1148846080;
-  [v43 setContentHuggingPriority:1 forAxis:v44];
+  [stackView3 setContentHuggingPriority:1 forAxis:v44];
 
-  v45 = [(ContainerHeaderView *)self stackView];
-  [(ContainerHeaderView *)self addSubview:v45];
+  stackView4 = [(ContainerHeaderView *)self stackView];
+  [(ContainerHeaderView *)self addSubview:stackView4];
 
-  v46 = [(ContainerHeaderView *)self accessoryPlaceholderView];
-  v47 = [v46 heightAnchor];
-  v48 = [v47 constraintEqualToConstant:0.0];
+  accessoryPlaceholderView3 = [(ContainerHeaderView *)self accessoryPlaceholderView];
+  heightAnchor4 = [accessoryPlaceholderView3 heightAnchor];
+  v48 = [heightAnchor4 constraintEqualToConstant:0.0];
   [(ContainerHeaderView *)self setAccessoryPlaceholderHeightConstraint:v48];
 
-  v95 = [(ContainerHeaderView *)self titlePlaceholderView];
-  v93 = [v95 leadingAnchor];
-  v91 = [(ContainerHeaderView *)self leadingAnchor];
-  v89 = [v93 constraintEqualToAnchor:v91];
+  titlePlaceholderView11 = [(ContainerHeaderView *)self titlePlaceholderView];
+  leadingAnchor3 = [titlePlaceholderView11 leadingAnchor];
+  leadingAnchor4 = [(ContainerHeaderView *)self leadingAnchor];
+  v89 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v96[0] = v89;
-  v87 = [(ContainerHeaderView *)self titlePlaceholderView];
-  v85 = [v87 trailingAnchor];
-  v83 = [(ContainerHeaderView *)self trailingAnchor];
-  v81 = [v85 constraintEqualToAnchor:v83];
+  titlePlaceholderView12 = [(ContainerHeaderView *)self titlePlaceholderView];
+  trailingAnchor3 = [titlePlaceholderView12 trailingAnchor];
+  trailingAnchor4 = [(ContainerHeaderView *)self trailingAnchor];
+  v81 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v96[1] = v81;
-  v79 = [(ContainerHeaderView *)self accessoryPlaceholderView];
-  v77 = [v79 leadingAnchor];
-  v76 = [(ContainerHeaderView *)self leadingAnchor];
-  v74 = [v77 constraintEqualToAnchor:v76];
+  accessoryPlaceholderView4 = [(ContainerHeaderView *)self accessoryPlaceholderView];
+  leadingAnchor5 = [accessoryPlaceholderView4 leadingAnchor];
+  leadingAnchor6 = [(ContainerHeaderView *)self leadingAnchor];
+  v74 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
   v96[2] = v74;
-  v72 = [(ContainerHeaderView *)self accessoryPlaceholderView];
-  v70 = [v72 trailingAnchor];
-  v68 = [(ContainerHeaderView *)self trailingAnchor];
-  v67 = [v70 constraintEqualToAnchor:v68];
+  accessoryPlaceholderView5 = [(ContainerHeaderView *)self accessoryPlaceholderView];
+  trailingAnchor5 = [accessoryPlaceholderView5 trailingAnchor];
+  trailingAnchor6 = [(ContainerHeaderView *)self trailingAnchor];
+  v67 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
   v96[3] = v67;
-  v66 = [(ContainerHeaderView *)self accessoryPlaceholderHeightConstraint];
-  v96[4] = v66;
-  v65 = [(ContainerHeaderView *)self stackView];
-  v64 = [v65 leadingAnchor];
-  v63 = [(ContainerHeaderView *)self leadingAnchor];
-  v62 = [v64 constraintEqualToAnchor:v63];
+  accessoryPlaceholderHeightConstraint = [(ContainerHeaderView *)self accessoryPlaceholderHeightConstraint];
+  v96[4] = accessoryPlaceholderHeightConstraint;
+  stackView5 = [(ContainerHeaderView *)self stackView];
+  leadingAnchor7 = [stackView5 leadingAnchor];
+  leadingAnchor8 = [(ContainerHeaderView *)self leadingAnchor];
+  v62 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8];
   v96[5] = v62;
-  v61 = [(ContainerHeaderView *)self stackView];
-  v60 = [v61 trailingAnchor];
-  v59 = [(ContainerHeaderView *)self trailingAnchor];
-  v58 = [v60 constraintEqualToAnchor:v59];
+  stackView6 = [(ContainerHeaderView *)self stackView];
+  trailingAnchor7 = [stackView6 trailingAnchor];
+  trailingAnchor8 = [(ContainerHeaderView *)self trailingAnchor];
+  v58 = [trailingAnchor7 constraintEqualToAnchor:trailingAnchor8];
   v96[6] = v58;
-  v49 = [(ContainerHeaderView *)self stackView];
-  v50 = [v49 topAnchor];
-  v51 = [(ContainerHeaderView *)self topAnchor];
-  v52 = [v50 constraintEqualToAnchor:v51];
+  stackView7 = [(ContainerHeaderView *)self stackView];
+  topAnchor3 = [stackView7 topAnchor];
+  topAnchor4 = [(ContainerHeaderView *)self topAnchor];
+  v52 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   v96[7] = v52;
-  v53 = [(ContainerHeaderView *)self stackView];
-  v54 = [v53 bottomAnchor];
-  v55 = [(ContainerHeaderView *)self bottomAnchor];
-  v56 = [v54 constraintEqualToAnchor:v55];
+  stackView8 = [(ContainerHeaderView *)self stackView];
+  bottomAnchor3 = [stackView8 bottomAnchor];
+  bottomAnchor4 = [(ContainerHeaderView *)self bottomAnchor];
+  v56 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   v96[8] = v56;
   v57 = [NSArray arrayWithObjects:v96 count:9];
   [NSLayoutConstraint activateConstraints:v57];
@@ -470,24 +470,24 @@
   [(ContainerHeaderView *)self updateButtons];
 }
 
-- (ContainerHeaderView)initWithCardButton:(id)a3 trailingCardButtons:(id)a4
+- (ContainerHeaderView)initWithCardButton:(id)button trailingCardButtons:(id)buttons
 {
-  v6 = a3;
-  v7 = a4;
+  buttonCopy = button;
+  buttonsCopy = buttons;
   v24.receiver = self;
   v24.super_class = ContainerHeaderView;
   v8 = [(ContainerHeaderView *)&v24 initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
   if (v8)
   {
-    v9 = [v6 configuration];
-    [(ContainerHeaderView *)v8 setMainCardButton:v9];
+    configuration = [buttonCopy configuration];
+    [(ContainerHeaderView *)v8 setMainCardButton:configuration];
 
     v10 = objc_opt_new();
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v11 = v7;
+    v11 = buttonsCopy;
     v12 = [v11 countByEnumeratingWithState:&v20 objects:v25 count:16];
     if (v12)
     {
@@ -503,12 +503,12 @@
           }
 
           v16 = *(*(&v20 + 1) + 8 * i);
-          v17 = [v16 configuration];
+          configuration2 = [v16 configuration];
 
-          if (v17)
+          if (configuration2)
           {
-            v18 = [v16 configuration];
-            [v10 addObject:v18];
+            configuration3 = [v16 configuration];
+            [v10 addObject:configuration3];
           }
         }
 
@@ -525,17 +525,17 @@
   return v8;
 }
 
-- (ContainerHeaderView)initWithCardButtonType:(unint64_t)a3 cardButtonTintColor:(id)a4
+- (ContainerHeaderView)initWithCardButtonType:(unint64_t)type cardButtonTintColor:(id)color
 {
-  v6 = a4;
+  colorCopy = color;
   v10.receiver = self;
   v10.super_class = ContainerHeaderView;
   v7 = [(ContainerHeaderView *)&v10 initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
   if (v7)
   {
     v8 = objc_alloc_init(CardButtonConfiguration);
-    [(CardButtonConfiguration *)v8 setType:a3];
-    [(CardButtonConfiguration *)v8 setTintColor:v6];
+    [(CardButtonConfiguration *)v8 setType:type];
+    [(CardButtonConfiguration *)v8 setTintColor:colorCopy];
     [(ContainerHeaderView *)v7 setMainCardButton:v8];
     [(ContainerHeaderView *)v7 _initViews];
   }
@@ -543,17 +543,17 @@
   return v7;
 }
 
-- (ContainerHeaderView)initWithCardButtonType:(unint64_t)a3 cardButtonBlurred:(BOOL)a4
+- (ContainerHeaderView)initWithCardButtonType:(unint64_t)type cardButtonBlurred:(BOOL)blurred
 {
-  v4 = a4;
+  blurredCopy = blurred;
   v9.receiver = self;
   v9.super_class = ContainerHeaderView;
   v6 = [(ContainerHeaderView *)&v9 initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
   if (v6)
   {
     v7 = objc_alloc_init(CardButtonConfiguration);
-    [(CardButtonConfiguration *)v7 setType:a3];
-    [(CardButtonConfiguration *)v7 setBlurred:v4];
+    [(CardButtonConfiguration *)v7 setType:type];
+    [(CardButtonConfiguration *)v7 setBlurred:blurredCopy];
     [(ContainerHeaderView *)v6 setMainCardButton:v7];
     [(ContainerHeaderView *)v6 _initViews];
   }
@@ -561,7 +561,7 @@
   return v6;
 }
 
-- (ContainerHeaderView)initWithCardButtonType:(unint64_t)a3
+- (ContainerHeaderView)initWithCardButtonType:(unint64_t)type
 {
   v7.receiver = self;
   v7.super_class = ContainerHeaderView;
@@ -569,7 +569,7 @@
   if (v4)
   {
     v5 = objc_alloc_init(CardButtonConfiguration);
-    [(CardButtonConfiguration *)v5 setType:a3];
+    [(CardButtonConfiguration *)v5 setType:type];
     [(ContainerHeaderView *)v4 setMainCardButton:v5];
     [(ContainerHeaderView *)v4 _initViews];
   }
@@ -577,7 +577,7 @@
   return v4;
 }
 
-- (ContainerHeaderView)initWithFrame:(CGRect)a3
+- (ContainerHeaderView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = ContainerHeaderView;

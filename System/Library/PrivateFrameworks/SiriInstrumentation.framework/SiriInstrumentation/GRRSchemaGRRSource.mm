@@ -1,26 +1,26 @@
 @interface GRRSchemaGRRSource
-- (BOOL)isEqual:(id)a3;
-- (GRRSchemaGRRSource)initWithDictionary:(id)a3;
-- (GRRSchemaGRRSource)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (GRRSchemaGRRSource)initWithDictionary:(id)dictionary;
+- (GRRSchemaGRRSource)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation GRRSchemaGRRSource
 
-- (GRRSchemaGRRSource)initWithDictionary:(id)a3
+- (GRRSchemaGRRSource)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = GRRSchemaGRRSource;
   v5 = [(GRRSchemaGRRSource *)&v11 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"sourceId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"sourceId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -28,7 +28,7 @@
       [(GRRSchemaGRRSource *)v5 setSourceId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"sourceType"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"sourceType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -41,30 +41,30 @@
   return v5;
 }
 
-- (GRRSchemaGRRSource)initWithJSON:(id)a3
+- (GRRSchemaGRRSource)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(GRRSchemaGRRSource *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(GRRSchemaGRRSource *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(GRRSchemaGRRSource *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -77,20 +77,20 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_sourceId)
   {
-    v4 = [(GRRSchemaGRRSource *)self sourceId];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    sourceId = [(GRRSchemaGRRSource *)self sourceId];
+    dictionaryRepresentation = [sourceId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"sourceId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"sourceId"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"sourceId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"sourceId"];
     }
   }
 
@@ -107,12 +107,12 @@
       v8 = off_1E78D79B8[v7];
     }
 
-    [v3 setObject:v8 forKeyedSubscript:@"sourceType"];
+    [dictionary setObject:v8 forKeyedSubscript:@"sourceType"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -131,18 +131,18 @@
   return v4 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(GRRSchemaGRRSource *)self sourceId];
-  v6 = [v4 sourceId];
-  v7 = v6;
-  if ((v5 != 0) == (v6 == 0))
+  sourceId = [(GRRSchemaGRRSource *)self sourceId];
+  sourceId2 = [equalCopy sourceId];
+  v7 = sourceId2;
+  if ((sourceId != 0) == (sourceId2 == 0))
   {
 
 LABEL_12:
@@ -150,13 +150,13 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v8 = [(GRRSchemaGRRSource *)self sourceId];
-  if (v8)
+  sourceId3 = [(GRRSchemaGRRSource *)self sourceId];
+  if (sourceId3)
   {
-    v9 = v8;
-    v10 = [(GRRSchemaGRRSource *)self sourceId];
-    v11 = [v4 sourceId];
-    v12 = [v10 isEqual:v11];
+    v9 = sourceId3;
+    sourceId4 = [(GRRSchemaGRRSource *)self sourceId];
+    sourceId5 = [equalCopy sourceId];
+    v12 = [sourceId4 isEqual:sourceId5];
 
     if (!v12)
     {
@@ -168,7 +168,7 @@ LABEL_12:
   {
   }
 
-  if ((*&self->_has & 1) != (v4[20] & 1))
+  if ((*&self->_has & 1) != (equalCopy[20] & 1))
   {
     goto LABEL_12;
   }
@@ -176,7 +176,7 @@ LABEL_12:
   if (*&self->_has)
   {
     sourceType = self->_sourceType;
-    if (sourceType != [v4 sourceType])
+    if (sourceType != [equalCopy sourceType])
     {
       goto LABEL_12;
     }
@@ -188,14 +188,14 @@ LABEL_13:
   return v14;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
-  v4 = [(GRRSchemaGRRSource *)self sourceId];
+  toCopy = to;
+  sourceId = [(GRRSchemaGRRSource *)self sourceId];
 
-  if (v4)
+  if (sourceId)
   {
-    v5 = [(GRRSchemaGRRSource *)self sourceId];
+    sourceId2 = [(GRRSchemaGRRSource *)self sourceId];
     PBDataWriterWriteSubmessage();
   }
 
@@ -205,17 +205,17 @@ LABEL_13:
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = GRRSchemaGRRSource;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(GRRSchemaGRRSource *)self sourceId:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(GRRSchemaGRRSource *)self deleteSourceId];
   }

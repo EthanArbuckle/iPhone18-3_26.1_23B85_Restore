@@ -1,34 +1,34 @@
 @interface IDSOTRController
 + (IDSOTRController)sharedInstance;
-- (BOOL)hasMessagableOTRSessionForToken:(id)a3;
-- (BOOL)isSessionNegotiating:(id)a3;
-- (BOOL)isSessionReady:(id)a3;
-- (BOOL)serializeSession:(_SecOTRSession *)a3 token:(id)a4;
+- (BOOL)hasMessagableOTRSessionForToken:(id)token;
+- (BOOL)isSessionNegotiating:(id)negotiating;
+- (BOOL)isSessionReady:(id)ready;
+- (BOOL)serializeSession:(_SecOTRSession *)session token:(id)token;
 - (IDSOTRController)init;
-- (_SecMPPublicIdentity)copyPairedDevicePublicIdentityWithDataProtectionClass:(unsigned int)a3;
-- (_SecOTRSession)_cachedSessionForToken:(id)a3;
-- (_SecOTRSession)copySessionForToken:(id)a3;
-- (double)sessionStartTimeWithToken:(id)a3;
-- (id)copyOTRTestBlock:(id)a3;
-- (id)copySessionObjectForToken:(id)a3;
-- (unsigned)sessionNegotiationCount:(id)a3;
-- (void)_cacheSession:(_SecOTRSession *)a3 token:(id)a4;
-- (void)_kickoffOTRNegotiationWithDevice:(id)a3 token:(id)a4 negotiationData:(id)a5;
-- (void)_onQueueStartOTRNegotiationWithDeviceIfNeeded:(id)a3 token:(id)a4 reset:(BOOL)a5 errorHandler:(id)a6;
-- (void)_reportOTRTestResult:(id)a3 setupTime:(double)a4 result:(unsigned __int8)a5;
-- (void)addOTRSessionBlock:(unsigned __int8)a3 sessionBlock:(id)a4 key:(id)a5;
-- (void)performOTRSessionBlock:(unsigned __int8)a3 token:(id)a4;
-- (void)processNegotiationData:(id)a3 deviceUniqueID:(id)a4 token:(id)a5 negotiationCount:(unsigned int)a6;
+- (_SecMPPublicIdentity)copyPairedDevicePublicIdentityWithDataProtectionClass:(unsigned int)class;
+- (_SecOTRSession)_cachedSessionForToken:(id)token;
+- (_SecOTRSession)copySessionForToken:(id)token;
+- (double)sessionStartTimeWithToken:(id)token;
+- (id)copyOTRTestBlock:(id)block;
+- (id)copySessionObjectForToken:(id)token;
+- (unsigned)sessionNegotiationCount:(id)count;
+- (void)_cacheSession:(_SecOTRSession *)session token:(id)token;
+- (void)_kickoffOTRNegotiationWithDevice:(id)device token:(id)token negotiationData:(id)data;
+- (void)_onQueueStartOTRNegotiationWithDeviceIfNeeded:(id)needed token:(id)token reset:(BOOL)reset errorHandler:(id)handler;
+- (void)_reportOTRTestResult:(id)result setupTime:(double)time result:(unsigned __int8)a5;
+- (void)addOTRSessionBlock:(unsigned __int8)block sessionBlock:(id)sessionBlock key:(id)key;
+- (void)performOTRSessionBlock:(unsigned __int8)block token:(id)token;
+- (void)processNegotiationData:(id)data deviceUniqueID:(id)d token:(id)token negotiationCount:(unsigned int)count;
 - (void)removeAllCachedSessionsFromMainQueue;
 - (void)resetAllSessions;
 - (void)resumeSessionNegotiation;
-- (void)setOTRTestBlockFromCompletionBlock:(id)a3 token:(id)a4;
-- (void)setSessionNegotiationComplete:(id)a3;
-- (void)setSessionNegotiationStart:(id)a3;
-- (void)setSessionReady:(id)a3;
-- (void)setupNewSessionInfoWithToken:(id)a3;
-- (void)startOTRNegotiationWithDeviceIfNeeded:(id)a3 token:(id)a4 reset:(BOOL)a5 errorHandler:(id)a6;
-- (void)suspendSessionNegotiation:(id)a3 askedByPairedDevice:(BOOL)a4;
+- (void)setOTRTestBlockFromCompletionBlock:(id)block token:(id)token;
+- (void)setSessionNegotiationComplete:(id)complete;
+- (void)setSessionNegotiationStart:(id)start;
+- (void)setSessionReady:(id)ready;
+- (void)setupNewSessionInfoWithToken:(id)token;
+- (void)startOTRNegotiationWithDeviceIfNeeded:(id)needed token:(id)token reset:(BOOL)reset errorHandler:(id)handler;
+- (void)suspendSessionNegotiation:(id)negotiation askedByPairedDevice:(BOOL)device;
 @end
 
 @implementation IDSOTRController
@@ -62,18 +62,18 @@
   return v3;
 }
 
-- (void)addOTRSessionBlock:(unsigned __int8)a3 sessionBlock:(id)a4 key:(id)a5
+- (void)addOTRSessionBlock:(unsigned __int8)block sessionBlock:(id)sessionBlock key:(id)key
 {
-  v6 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (!v8)
+  blockCopy = block;
+  sessionBlockCopy = sessionBlock;
+  keyCopy = key;
+  if (!sessionBlockCopy)
   {
     goto LABEL_37;
   }
 
   pthread_mutex_lock(&self->_lock);
-  if (v6 == 2)
+  if (blockCopy == 2)
   {
     priorityToTimeoutBlocks = self->_priorityToTimeoutBlocks;
     if (!priorityToTimeoutBlocks)
@@ -85,17 +85,17 @@
       priorityToTimeoutBlocks = self->_priorityToTimeoutBlocks;
     }
 
-    v19 = [v8 copy];
-    [(NSMutableDictionary *)priorityToTimeoutBlocks setObject:v19 forKey:v9];
+    v19 = [sessionBlockCopy copy];
+    [(NSMutableDictionary *)priorityToTimeoutBlocks setObject:v19 forKey:keyCopy];
 
     v20 = OSLogHandleForTransportCategory();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
-      v21 = objc_retainBlock(v8);
+      v21 = objc_retainBlock(sessionBlockCopy);
       *buf = 134218242;
       v31 = v21;
       v32 = 2112;
-      v33 = v9;
+      v33 = keyCopy;
       _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "add OTR timeout block %p key %@.", buf, 0x16u);
     }
 
@@ -109,7 +109,7 @@
       goto LABEL_24;
     }
 
-    v29 = objc_retainBlock(v8);
+    v29 = objc_retainBlock(sessionBlockCopy);
     _IDSLogTransport();
 
     if (!_IDSShouldLog())
@@ -118,19 +118,19 @@
     }
 
 LABEL_11:
-    v28 = objc_retainBlock(v8);
+    v28 = objc_retainBlock(sessionBlockCopy);
     _IDSLogV();
 
     goto LABEL_24;
   }
 
-  if (v6 != 1)
+  if (blockCopy != 1)
   {
     v22 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
     {
       *buf = 67109120;
-      LODWORD(v31) = v6;
+      LODWORD(v31) = blockCopy;
       _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_ERROR, "addOTRSessionBlock: invalid sessionBlock type %d.", buf, 8u);
     }
 
@@ -154,17 +154,17 @@ LABEL_11:
     priorityToCompletionBlocks = self->_priorityToCompletionBlocks;
   }
 
-  v13 = [v8 copy];
-  [(NSMutableDictionary *)priorityToCompletionBlocks setObject:v13 forKey:v9];
+  v13 = [sessionBlockCopy copy];
+  [(NSMutableDictionary *)priorityToCompletionBlocks setObject:v13 forKey:keyCopy];
 
   v14 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = objc_retainBlock(v8);
+    v15 = objc_retainBlock(sessionBlockCopy);
     *buf = 134218242;
     v31 = v15;
     v32 = 2112;
-    v33 = v9;
+    v33 = keyCopy;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "add OTR completion block %p key %@.", buf, 0x16u);
   }
 
@@ -172,7 +172,7 @@ LABEL_11:
   {
     if (_IDSShouldLogTransport())
     {
-      v27 = objc_retainBlock(v8);
+      v27 = objc_retainBlock(sessionBlockCopy);
       _IDSLogTransport();
 
       if (_IDSShouldLog())
@@ -229,12 +229,12 @@ LABEL_24:
 LABEL_37:
 }
 
-- (void)performOTRSessionBlock:(unsigned __int8)a3 token:(id)a4
+- (void)performOTRSessionBlock:(unsigned __int8)block token:(id)token
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = sub_10057279C(v6);
-  v8 = v6;
+  blockCopy = block;
+  tokenCopy = token;
+  v7 = sub_10057279C(tokenCopy);
+  v8 = tokenCopy;
   v9 = [(NSMutableDictionary *)v8 componentsSeparatedByString:@"-"];
   if ([v9 count] > 3)
   {
@@ -360,14 +360,14 @@ LABEL_37:
   }
 
   pthread_mutex_lock(&self->_lock);
-  if (v4 == 1)
+  if (blockCopy == 1)
   {
     v24 = 96;
   }
 
   else
   {
-    if (v4 != 2)
+    if (blockCopy != 2)
     {
       goto LABEL_46;
     }
@@ -384,7 +384,7 @@ LABEL_37:
       *buf = 138412802;
       v43 = v8;
       v44 = 1024;
-      v45 = v4;
+      v45 = blockCopy;
       v46 = 2048;
       v47 = v7;
       _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "performOTRSessionBlock for %@ (blockType:%d priority:%ld).", buf, 0x1Cu);
@@ -469,7 +469,7 @@ LABEL_46:
     *buf = 138412802;
     v43 = v8;
     v44 = 1024;
-    v45 = v4;
+    v45 = blockCopy;
     v46 = 2048;
     v47 = v7;
     _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_ERROR, "performOTRSessionBlock found no block for %@ (blockType:%u, Priority:%ld).", buf, 0x1Cu);
@@ -487,9 +487,9 @@ LABEL_51:
   pthread_mutex_unlock(&self->_lock);
 }
 
-- (void)setupNewSessionInfoWithToken:(id)a3
+- (void)setupNewSessionInfoWithToken:(id)token
 {
-  v9 = a3;
+  tokenCopy = token;
   pthread_mutex_lock(&self->_lock);
   sessionInfoToToken = self->_sessionInfoToToken;
   if (!sessionInfoToToken)
@@ -501,7 +501,7 @@ LABEL_51:
     sessionInfoToToken = self->_sessionInfoToToken;
   }
 
-  v7 = [(NSMutableDictionary *)sessionInfoToToken objectForKey:v9];
+  v7 = [(NSMutableDictionary *)sessionInfoToToken objectForKey:tokenCopy];
   if (v7)
   {
     v8 = v7;
@@ -513,16 +513,16 @@ LABEL_51:
 
   else
   {
-    v8 = [[IDSOTRSessionInfo alloc] initWithToken:v9];
-    [(NSMutableDictionary *)self->_sessionInfoToToken setObject:v8 forKey:v9];
+    v8 = [[IDSOTRSessionInfo alloc] initWithToken:tokenCopy];
+    [(NSMutableDictionary *)self->_sessionInfoToToken setObject:v8 forKey:tokenCopy];
   }
 
   pthread_mutex_unlock(&self->_lock);
 }
 
-- (void)setSessionReady:(id)a3
+- (void)setSessionReady:(id)ready
 {
-  v4 = a3;
+  readyCopy = ready;
   pthread_mutex_lock(&self->_lock);
   sessionInfoToToken = self->_sessionInfoToToken;
   if (!sessionInfoToToken)
@@ -534,7 +534,7 @@ LABEL_51:
     sessionInfoToToken = self->_sessionInfoToToken;
   }
 
-  v8 = [(NSMutableDictionary *)sessionInfoToToken objectForKey:v4];
+  v8 = [(NSMutableDictionary *)sessionInfoToToken objectForKey:readyCopy];
   v9 = v8;
   if (v8)
   {
@@ -545,7 +545,7 @@ LABEL_51:
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v13 = v4;
+        v13 = readyCopy;
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Enable OTR session for %@.", buf, 0xCu);
       }
 
@@ -566,14 +566,14 @@ LABEL_15:
 
   else
   {
-    v9 = [[IDSOTRSessionInfo alloc] initWithToken:v4];
+    v9 = [[IDSOTRSessionInfo alloc] initWithToken:readyCopy];
     [(IDSOTRSessionInfo *)v9 setIsReady:1];
-    [(NSMutableDictionary *)self->_sessionInfoToToken setObject:v9 forKey:v4];
+    [(NSMutableDictionary *)self->_sessionInfoToToken setObject:v9 forKey:readyCopy];
     v11 = OSLogHandleForTransportCategory();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v13 = v4;
+      v13 = readyCopy;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Enable OTR session for %@.", buf, 0xCu);
     }
 
@@ -586,9 +586,9 @@ LABEL_15:
   pthread_mutex_unlock(&self->_lock);
 }
 
-- (double)sessionStartTimeWithToken:(id)a3
+- (double)sessionStartTimeWithToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   pthread_mutex_lock(&self->_lock);
   sessionInfoToToken = self->_sessionInfoToToken;
   if (!sessionInfoToToken)
@@ -600,7 +600,7 @@ LABEL_15:
     sessionInfoToToken = self->_sessionInfoToToken;
   }
 
-  v8 = [(NSMutableDictionary *)sessionInfoToToken objectForKey:v4];
+  v8 = [(NSMutableDictionary *)sessionInfoToToken objectForKey:tokenCopy];
   v9 = v8;
   if (v8)
   {
@@ -618,9 +618,9 @@ LABEL_15:
   return v11;
 }
 
-- (void)setSessionNegotiationStart:(id)a3
+- (void)setSessionNegotiationStart:(id)start
 {
-  v4 = a3;
+  startCopy = start;
   pthread_mutex_lock(&self->_lock);
   sessionInfoToToken = self->_sessionInfoToToken;
   if (!sessionInfoToToken)
@@ -632,7 +632,7 @@ LABEL_15:
     sessionInfoToToken = self->_sessionInfoToToken;
   }
 
-  v8 = [(NSMutableDictionary *)sessionInfoToToken objectForKey:v4];
+  v8 = [(NSMutableDictionary *)sessionInfoToToken objectForKey:startCopy];
   v9 = v8;
   if (v8)
   {
@@ -641,22 +641,22 @@ LABEL_15:
       [v9 lastStartTime];
       if (v10 == 0.0)
       {
-        v11 = [v9 negotiationCount];
-        if (v11 == 0x7FFFFFFF)
+        negotiationCount = [v9 negotiationCount];
+        if (negotiationCount == 0x7FFFFFFF)
         {
           v12 = 1;
         }
 
         else
         {
-          v12 = v11 + 1;
+          v12 = negotiationCount + 1;
         }
 
         v13 = OSLogHandleForTransportCategory();
         if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412546;
-          v19 = v4;
+          v19 = startCopy;
           v20 = 1024;
           v21 = v12;
           _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "### OTR session negotiation started for %@, count:%08x.", buf, 0x12u);
@@ -666,12 +666,12 @@ LABEL_15:
         {
           if (_IDSShouldLogTransport())
           {
-            v15 = v4;
+            v15 = startCopy;
             v17 = v12;
             _IDSLogTransport();
             if (_IDSShouldLog())
             {
-              v15 = v4;
+              v15 = startCopy;
               v17 = v12;
               _IDSLogV();
             }
@@ -686,7 +686,7 @@ LABEL_15:
           if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
-            v19 = v4;
+            v19 = startCopy;
             _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Disable OTR session for %@.", buf, 0xCu);
           }
 
@@ -694,11 +694,11 @@ LABEL_15:
           {
             if (_IDSShouldLogTransport())
             {
-              v16 = v4;
+              v16 = startCopy;
               _IDSLogTransport();
               if (_IDSShouldLog())
               {
-                v16 = v4;
+                v16 = startCopy;
                 _IDSLogV();
               }
             }
@@ -717,9 +717,9 @@ LABEL_15:
   pthread_mutex_unlock(&self->_lock);
 }
 
-- (void)setSessionNegotiationComplete:(id)a3
+- (void)setSessionNegotiationComplete:(id)complete
 {
-  v4 = a3;
+  completeCopy = complete;
   pthread_mutex_lock(&self->_lock);
   sessionInfoToToken = self->_sessionInfoToToken;
   if (!sessionInfoToToken)
@@ -731,7 +731,7 @@ LABEL_15:
     sessionInfoToToken = self->_sessionInfoToToken;
   }
 
-  v8 = [(NSMutableDictionary *)sessionInfoToToken objectForKey:v4];
+  v8 = [(NSMutableDictionary *)sessionInfoToToken objectForKey:completeCopy];
   v9 = v8;
   if (!v8)
   {
@@ -739,7 +739,7 @@ LABEL_15:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v15 = v4;
+      v15 = completeCopy;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "### Resume OTR session for %@.", buf, 0xCu);
     }
 
@@ -747,11 +747,11 @@ LABEL_15:
     {
       if (_IDSShouldLogTransport())
       {
-        v13 = v4;
+        v13 = completeCopy;
         _IDSLogTransport();
         if (_IDSShouldLog())
         {
-          v13 = v4;
+          v13 = completeCopy;
           _IDSLogV();
         }
       }
@@ -762,7 +762,7 @@ LABEL_15:
   }
 
   [v8 setIsNegotiating:0];
-  v10 = [v9 isReady];
+  isReady = [v9 isReady];
   [v9 setIsSuspended:0];
   [v9 setLastStartTime:0.0];
   [v9 removeNegotiationTimer];
@@ -770,7 +770,7 @@ LABEL_15:
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v15 = v4;
+    v15 = completeCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "### OTR session negotiation finished for %@.", buf, 0xCu);
   }
 
@@ -778,27 +778,27 @@ LABEL_15:
   {
     if (_IDSShouldLogTransport())
     {
-      v13 = v4;
+      v13 = completeCopy;
       _IDSLogTransport();
       if (_IDSShouldLog())
       {
-        v13 = v4;
+        v13 = completeCopy;
         _IDSLogV();
       }
     }
   }
 
   pthread_mutex_unlock(&self->_lock);
-  if ((v10 & 1) == 0)
+  if ((isReady & 1) == 0)
   {
 LABEL_19:
-    [(IDSOTRController *)self performOTRSessionBlock:1 token:v4, v13];
+    [(IDSOTRController *)self performOTRSessionBlock:1 token:completeCopy, v13];
   }
 }
 
-- (void)suspendSessionNegotiation:(id)a3 askedByPairedDevice:(BOOL)a4
+- (void)suspendSessionNegotiation:(id)negotiation askedByPairedDevice:(BOOL)device
 {
-  v6 = a3;
+  negotiationCopy = negotiation;
   v7 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -829,7 +829,7 @@ LABEL_19:
     sessionInfoToToken = self->_sessionInfoToToken;
   }
 
-  v11 = [(NSMutableDictionary *)sessionInfoToToken objectForKey:v6];
+  v11 = [(NSMutableDictionary *)sessionInfoToToken objectForKey:negotiationCopy];
   v12 = v11;
   if (v11)
   {
@@ -842,7 +842,7 @@ LABEL_19:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v16 = v6;
+      v16 = negotiationCopy;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "### OTR session negotiation suspended for %@.", buf, 0xCu);
     }
 
@@ -860,10 +860,10 @@ LABEL_19:
   }
 
   pthread_mutex_unlock(&self->_lock);
-  if (!a4)
+  if (!device)
   {
     v14 = +[IDSUTunController sharedInstance];
-    [v14 sendSuspendOTRNegotiationMessage:v6];
+    [v14 sendSuspendOTRNegotiationMessage:negotiationCopy];
   }
 }
 
@@ -889,13 +889,13 @@ LABEL_19:
   }
 
   pthread_mutex_lock(&self->_lock);
-  v4 = [(NSMutableDictionary *)self->_sessionInfoToToken allValues];
+  allValues = [(NSMutableDictionary *)self->_sessionInfoToToken allValues];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100574BB4;
   v5[3] = &unk_100BD8A48;
   v5[4] = self;
-  [v4 enumerateObjectsUsingBlock:v5];
+  [allValues enumerateObjectsUsingBlock:v5];
   pthread_mutex_unlock(&self->_lock);
 }
 
@@ -927,9 +927,9 @@ LABEL_19:
   pthread_mutex_unlock(&self->_lock);
 }
 
-- (BOOL)isSessionNegotiating:(id)a3
+- (BOOL)isSessionNegotiating:(id)negotiating
 {
-  v4 = a3;
+  negotiatingCopy = negotiating;
   pthread_mutex_lock(&self->_lock);
   sessionInfoToToken = self->_sessionInfoToToken;
   if (!sessionInfoToToken)
@@ -941,16 +941,16 @@ LABEL_19:
     sessionInfoToToken = self->_sessionInfoToToken;
   }
 
-  v8 = [(NSMutableDictionary *)sessionInfoToToken objectForKey:v4];
-  v9 = [v8 isNegotiating];
+  v8 = [(NSMutableDictionary *)sessionInfoToToken objectForKey:negotiatingCopy];
+  isNegotiating = [v8 isNegotiating];
   pthread_mutex_unlock(&self->_lock);
 
-  return v9;
+  return isNegotiating;
 }
 
-- (BOOL)isSessionReady:(id)a3
+- (BOOL)isSessionReady:(id)ready
 {
-  v4 = a3;
+  readyCopy = ready;
   pthread_mutex_lock(&self->_lock);
   sessionInfoToToken = self->_sessionInfoToToken;
   if (!sessionInfoToToken)
@@ -962,16 +962,16 @@ LABEL_19:
     sessionInfoToToken = self->_sessionInfoToToken;
   }
 
-  v8 = [(NSMutableDictionary *)sessionInfoToToken objectForKey:v4];
-  v9 = [v8 isReady];
+  v8 = [(NSMutableDictionary *)sessionInfoToToken objectForKey:readyCopy];
+  isReady = [v8 isReady];
   pthread_mutex_unlock(&self->_lock);
 
-  return v9;
+  return isReady;
 }
 
-- (unsigned)sessionNegotiationCount:(id)a3
+- (unsigned)sessionNegotiationCount:(id)count
 {
-  v4 = a3;
+  countCopy = count;
   pthread_mutex_lock(&self->_lock);
   sessionInfoToToken = self->_sessionInfoToToken;
   if (!sessionInfoToToken)
@@ -983,20 +983,20 @@ LABEL_19:
     sessionInfoToToken = self->_sessionInfoToToken;
   }
 
-  v8 = [(NSMutableDictionary *)sessionInfoToToken objectForKey:v4];
-  v9 = [v8 negotiationCount];
+  v8 = [(NSMutableDictionary *)sessionInfoToToken objectForKey:countCopy];
+  negotiationCount = [v8 negotiationCount];
   pthread_mutex_unlock(&self->_lock);
 
-  return v9;
+  return negotiationCount;
 }
 
-- (_SecOTRSession)copySessionForToken:(id)a3
+- (_SecOTRSession)copySessionForToken:(id)token
 {
-  v4 = a3;
-  if (v4)
+  tokenCopy = token;
+  if (tokenCopy)
   {
     [(NSRecursiveLock *)self->_storageLock lock];
-    v5 = [(IDSOTRController *)self _cachedSessionForToken:v4];
+    v5 = [(IDSOTRController *)self _cachedSessionForToken:tokenCopy];
     if (v5)
     {
       v6 = v5;
@@ -1007,7 +1007,7 @@ LABEL_19:
     else
     {
       v7 = +[IDSOTRKeyStorage sharedInstance];
-      v8 = [v7 sessionKeyForToken:v4];
+      v8 = [v7 sessionKeyForToken:tokenCopy];
 
       if (v8)
       {
@@ -1020,7 +1020,7 @@ LABEL_19:
             *buf = 134218242;
             v16 = v6;
             v17 = 2112;
-            v18 = v4;
+            v18 = tokenCopy;
             _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Created new session %p using cached key for %@.", buf, 0x16u);
           }
 
@@ -1029,18 +1029,18 @@ LABEL_19:
             if (_IDSShouldLogTransport())
             {
               v13 = v6;
-              v14 = v4;
+              v14 = tokenCopy;
               _IDSLogTransport();
               if (_IDSShouldLog())
               {
                 v13 = v6;
-                v14 = v4;
+                v14 = tokenCopy;
                 _IDSLogV();
               }
             }
           }
 
-          [(IDSOTRController *)self setupNewSessionInfoWithToken:v4, v13, v14];
+          [(IDSOTRController *)self setupNewSessionInfoWithToken:tokenCopy, v13, v14];
         }
 
         else
@@ -1049,7 +1049,7 @@ LABEL_19:
           if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
-            v16 = v4;
+            v16 = tokenCopy;
             _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "SecOTRSessionCreateFromData failed, remove session key for %@.", buf, 0xCu);
           }
 
@@ -1057,21 +1057,21 @@ LABEL_19:
           {
             if (_IDSShouldLogTransport())
             {
-              v13 = v4;
+              v13 = tokenCopy;
               _IDSLogTransport();
               if (_IDSShouldLog())
               {
-                v13 = v4;
+                v13 = tokenCopy;
                 _IDSLogV();
               }
             }
           }
 
           v11 = +[IDSOTRKeyStorage sharedInstance];
-          [v11 removeSessionKeyForToken:v4];
+          [v11 removeSessionKeyForToken:tokenCopy];
         }
 
-        [(IDSOTRController *)self _cacheSession:v6 token:v4];
+        [(IDSOTRController *)self _cacheSession:v6 token:tokenCopy];
         [(NSRecursiveLock *)self->_storageLock unlock];
       }
 
@@ -1091,12 +1091,12 @@ LABEL_19:
   return v6;
 }
 
-- (_SecOTRSession)_cachedSessionForToken:(id)a3
+- (_SecOTRSession)_cachedSessionForToken:(id)token
 {
-  v4 = a3;
-  if (v4)
+  tokenCopy = token;
+  if (tokenCopy)
   {
-    v5 = [(NSMutableDictionary *)self->_sessionStorage objectForKey:v4];
+    v5 = [(NSMutableDictionary *)self->_sessionStorage objectForKey:tokenCopy];
     if (v5)
     {
       v6 = +[IDSFoundationLog OTRController];
@@ -1107,7 +1107,7 @@ LABEL_19:
         v10 = 2112;
         v11 = v5;
         v12 = 2112;
-        v13 = v4;
+        v13 = tokenCopy;
         _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Found cached session %p: %@ for %@", &v8, 0x20u);
       }
     }
@@ -1121,10 +1121,10 @@ LABEL_19:
   return v5;
 }
 
-- (void)_cacheSession:(_SecOTRSession *)a3 token:(id)a4
+- (void)_cacheSession:(_SecOTRSession *)session token:(id)token
 {
-  v6 = a4;
-  if (v6)
+  tokenCopy = token;
+  if (tokenCopy)
   {
     [(NSRecursiveLock *)self->_storageLock lock];
     if (!self->_sessionStorage)
@@ -1135,46 +1135,46 @@ LABEL_19:
     }
 
     v9 = self->_sessionStorage;
-    if (a3)
+    if (session)
     {
-      [(NSMutableDictionary *)v9 setObject:a3 forKey:v6];
+      [(NSMutableDictionary *)v9 setObject:session forKey:tokenCopy];
       v10 = OSLogHandleForIDSCategory();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134218498;
-        v16 = a3;
+        sessionCopy = session;
         v17 = 2112;
-        v18 = a3;
+        sessionCopy2 = session;
         v19 = 2112;
-        v20 = v6;
+        v20 = tokenCopy;
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Storing cached session %p (%@) for %@", buf, 0x20u);
       }
 
       if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
       {
         _IDSLogV();
-        [(NSRecursiveLock *)self->_storageLock unlock:a3];
+        [(NSRecursiveLock *)self->_storageLock unlock:session];
         goto LABEL_16;
       }
     }
 
     else
     {
-      [(NSMutableDictionary *)v9 removeObjectForKey:v6];
+      [(NSMutableDictionary *)v9 removeObjectForKey:tokenCopy];
       v11 = OSLogHandleForIDSCategory();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134218242;
-        v16 = 0;
+        sessionCopy = 0;
         v17 = 2112;
-        v18 = v6;
+        sessionCopy2 = tokenCopy;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Removing cached session %p for %@", buf, 0x16u);
       }
 
       if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
       {
         v12 = 0;
-        v13 = v6;
+        v13 = tokenCopy;
         _IDSLogV();
       }
     }
@@ -1185,21 +1185,21 @@ LABEL_19:
 LABEL_16:
 }
 
-- (BOOL)serializeSession:(_SecOTRSession *)a3 token:(id)a4
+- (BOOL)serializeSession:(_SecOTRSession *)session token:(id)token
 {
-  v6 = a4;
-  if (v6)
+  tokenCopy = token;
+  if (tokenCopy)
   {
-    if (a3)
+    if (session)
     {
       v7 = objc_alloc_init(NSMutableData);
       v8 = SecOTRSAppendSerialization();
       v9 = v8 == 0;
       if (v8)
       {
-        [(IDSOTRController *)self _cacheSession:0 token:v6];
+        [(IDSOTRController *)self _cacheSession:0 token:tokenCopy];
         v10 = +[IDSOTRKeyStorage sharedInstance];
-        [v10 removeSessionKeyForToken:v6];
+        [v10 removeSessionKeyForToken:tokenCopy];
 
         v11 = OSLogHandleForIDSCategory();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -1230,9 +1230,9 @@ LABEL_16:
           _IDSLogV();
         }
 
-        [(IDSOTRController *)self _cacheSession:a3 token:v6];
+        [(IDSOTRController *)self _cacheSession:session token:tokenCopy];
         v16 = +[IDSOTRKeyStorage sharedInstance];
-        [v16 storeSessionKey:v7 token:v6];
+        [v16 storeSessionKey:v7 token:tokenCopy];
       }
     }
 
@@ -1242,7 +1242,7 @@ LABEL_16:
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v20 = v6;
+        sessionCopy = tokenCopy;
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "serializeSession - NULL session for token %@", buf, 0xCu);
       }
 
@@ -1250,13 +1250,13 @@ LABEL_16:
       {
         _IDSWarnV();
         _IDSLogV();
-        v18 = v6;
+        v18 = tokenCopy;
         _IDSLogTransport();
       }
 
-      [(IDSOTRController *)self _cacheSession:0 token:v6, v18];
+      [(IDSOTRController *)self _cacheSession:0 token:tokenCopy, v18];
       v14 = +[IDSOTRKeyStorage sharedInstance];
-      [v14 removeSessionKeyForToken:v6];
+      [v14 removeSessionKeyForToken:tokenCopy];
 
       v9 = 1;
     }
@@ -1268,7 +1268,7 @@ LABEL_16:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       *buf = 134217984;
-      v20 = a3;
+      sessionCopy = session;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "serializeSession - token nil for session %p.", buf, 0xCu);
     }
 
@@ -1285,9 +1285,9 @@ LABEL_16:
   return v9;
 }
 
-- (id)copySessionObjectForToken:(id)a3
+- (id)copySessionObjectForToken:(id)token
 {
-  v3 = [(IDSOTRController *)self copySessionForToken:a3];
+  v3 = [(IDSOTRController *)self copySessionForToken:token];
   v4 = [[IDSSecOTRSession alloc] initWithSecOTRSessionRef:v3];
   if (v3)
   {
@@ -1306,31 +1306,31 @@ LABEL_16:
   [(NSRecursiveLock *)storageLock unlock];
 }
 
-- (void)setOTRTestBlockFromCompletionBlock:(id)a3 token:(id)a4
+- (void)setOTRTestBlockFromCompletionBlock:(id)block token:(id)token
 {
-  v6 = a3;
-  v7 = a4;
+  blockCopy = block;
+  tokenCopy = token;
   v8 = +[IDSEncryptionController sharedInstance];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100575C20;
   v11[3] = &unk_100BD8CB0;
   v11[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = tokenCopy;
+  v13 = blockCopy;
+  v9 = blockCopy;
+  v10 = tokenCopy;
   [v8 performAsyncBlock:v11 priority:sub_10057279C(v10)];
 }
 
-- (id)copyOTRTestBlock:(id)a3
+- (id)copyOTRTestBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   pthread_mutex_lock(&self->_lock);
-  v5 = [(NSMutableDictionary *)self->_sessionInfoToToken objectForKey:v4];
+  v5 = [(NSMutableDictionary *)self->_sessionInfoToToken objectForKey:blockCopy];
 
-  v6 = [v5 otrTestBlock];
-  v7 = [v6 copy];
+  otrTestBlock = [v5 otrTestBlock];
+  v7 = [otrTestBlock copy];
 
   pthread_mutex_unlock(&self->_lock);
   v8 = objc_retainBlock(v7);
@@ -1338,10 +1338,10 @@ LABEL_16:
   return v8;
 }
 
-- (void)_reportOTRTestResult:(id)a3 setupTime:(double)a4 result:(unsigned __int8)a5
+- (void)_reportOTRTestResult:(id)result setupTime:(double)time result:(unsigned __int8)a5
 {
   v5 = a5;
-  v13 = a3;
+  resultCopy = result;
   v8 = [(IDSOTRController *)self copyOTRTestBlock:?];
   if (v8)
   {
@@ -1357,7 +1357,7 @@ LABEL_16:
       if (v5 != 3)
       {
 LABEL_7:
-        (v8)[2](v8, v13, v9, a4);
+        (v8)[2](v8, resultCopy, v9, time);
 
         goto LABEL_8;
       }
@@ -1375,30 +1375,30 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)processNegotiationData:(id)a3 deviceUniqueID:(id)a4 token:(id)a5 negotiationCount:(unsigned int)a6
+- (void)processNegotiationData:(id)data deviceUniqueID:(id)d token:(id)token negotiationCount:(unsigned int)count
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  dataCopy = data;
+  dCopy = d;
+  tokenCopy = token;
   v13 = +[IDSEncryptionController sharedInstance];
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_100575FC4;
   v17[3] = &unk_100BDF658;
   v17[4] = self;
-  v18 = v12;
-  v21 = a6;
-  v19 = v10;
-  v20 = v11;
-  v14 = v11;
-  v15 = v10;
-  v16 = v12;
+  v18 = tokenCopy;
+  countCopy = count;
+  v19 = dataCopy;
+  v20 = dCopy;
+  v14 = dCopy;
+  v15 = dataCopy;
+  v16 = tokenCopy;
   [v13 performAsyncBlock:v17 priority:sub_10057279C(v16)];
 }
 
-- (BOOL)hasMessagableOTRSessionForToken:(id)a3
+- (BOOL)hasMessagableOTRSessionForToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -1409,7 +1409,7 @@ LABEL_8:
   v8[2] = sub_1005779D4;
   v8[3] = &unk_100BE0810;
   v8[4] = self;
-  v6 = v4;
+  v6 = tokenCopy;
   v9 = v6;
   v10 = &v11;
   [v5 performSyncBlock:v8 priority:sub_10057279C(v6)];
@@ -1420,13 +1420,13 @@ LABEL_8:
   return v5;
 }
 
-- (_SecMPPublicIdentity)copyPairedDevicePublicIdentityWithDataProtectionClass:(unsigned int)a3
+- (_SecMPPublicIdentity)copyPairedDevicePublicIdentityWithDataProtectionClass:(unsigned int)class
 {
   v4 = +[IDSPairingManager sharedInstance];
   v5 = v4;
-  if (a3)
+  if (class)
   {
-    if (a3 == 1)
+    if (class == 1)
     {
       [v4 pairedDevicePublicClassAKey];
     }
@@ -1435,15 +1435,15 @@ LABEL_8:
     {
       [v4 pairedDevicePublicKey];
     }
-    v6 = ;
+    pairedDevicePublicClassCKey = ;
   }
 
   else
   {
-    v6 = [v4 pairedDevicePublicClassCKey];
+    pairedDevicePublicClassCKey = [v4 pairedDevicePublicClassCKey];
   }
 
-  v7 = v6;
+  v7 = pairedDevicePublicClassCKey;
 
   if (!v7)
   {
@@ -1530,20 +1530,20 @@ LABEL_27:
   return v8;
 }
 
-- (void)_kickoffOTRNegotiationWithDevice:(id)a3 token:(id)a4 negotiationData:(id)a5
+- (void)_kickoffOTRNegotiationWithDevice:(id)device token:(id)token negotiationData:(id)data
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  [(IDSOTRController *)self setSessionNegotiationStart:v9];
-  v11 = [(IDSOTRController *)self sessionNegotiationCount:v9]| 0x80000000;
+  deviceCopy = device;
+  tokenCopy = token;
+  dataCopy = data;
+  [(IDSOTRController *)self setSessionNegotiationStart:tokenCopy];
+  v11 = [(IDSOTRController *)self sessionNegotiationCount:tokenCopy]| 0x80000000;
   v12 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218498;
-    v19 = [v10 length];
+    v19 = [dataCopy length];
     v20 = 2112;
-    v21 = v9;
+    v21 = tokenCopy;
     v22 = 1024;
     v23 = v11;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "  => will, send out OTR negotiation data %luB for %@, count:%08x.", buf, 0x1Cu);
@@ -1553,14 +1553,14 @@ LABEL_27:
   {
     if (_IDSShouldLogTransport())
     {
-      v16 = v9;
+      v16 = tokenCopy;
       v17 = v11;
-      v15 = [v10 length];
+      v15 = [dataCopy length];
       _IDSLogTransport();
       if (_IDSShouldLog())
       {
-        v13 = [v10 length];
-        v16 = v9;
+        v13 = [dataCopy length];
+        v16 = tokenCopy;
         v17 = v11;
         v15 = v13;
         _IDSLogV();
@@ -1569,36 +1569,36 @@ LABEL_27:
   }
 
   v14 = [IDSUTunController sharedInstance:v15];
-  [v14 sendOTRNegotiationMessage:v9 negotiationCount:v11 negotiationData:v10];
+  [v14 sendOTRNegotiationMessage:tokenCopy negotiationCount:v11 negotiationData:dataCopy];
 }
 
-- (void)startOTRNegotiationWithDeviceIfNeeded:(id)a3 token:(id)a4 reset:(BOOL)a5 errorHandler:(id)a6
+- (void)startOTRNegotiationWithDeviceIfNeeded:(id)needed token:(id)token reset:(BOOL)reset errorHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  neededCopy = needed;
+  tokenCopy = token;
+  handlerCopy = handler;
   v13 = +[IDSEncryptionController sharedInstance];
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_10057835C;
   v17[3] = &unk_100BD9968;
   v17[4] = self;
-  v18 = v10;
-  v21 = a5;
-  v19 = v11;
-  v20 = v12;
-  v14 = v12;
-  v15 = v11;
-  v16 = v10;
+  v18 = neededCopy;
+  resetCopy = reset;
+  v19 = tokenCopy;
+  v20 = handlerCopy;
+  v14 = handlerCopy;
+  v15 = tokenCopy;
+  v16 = neededCopy;
   [v13 performAsyncBlock:v17 priority:sub_10057279C(v15)];
 }
 
-- (void)_onQueueStartOTRNegotiationWithDeviceIfNeeded:(id)a3 token:(id)a4 reset:(BOOL)a5 errorHandler:(id)a6
+- (void)_onQueueStartOTRNegotiationWithDeviceIfNeeded:(id)needed token:(id)token reset:(BOOL)reset errorHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v65 = a6;
-  v12 = sub_100572610(v11);
+  neededCopy = needed;
+  tokenCopy = token;
+  handlerCopy = handler;
+  v12 = sub_100572610(tokenCopy);
   if (![v12 isEqualToString:@"idsotr"])
   {
     v15 = +[IDSDServiceController sharedInstance];
@@ -1610,7 +1610,7 @@ LABEL_27:
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v67 = v11;
+        v67 = tokenCopy;
         _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "Failed to find service for token %@", buf, 0xCu);
       }
 
@@ -1629,11 +1629,11 @@ LABEL_27:
       goto LABEL_112;
     }
 
-    v13 = [v16 dataProtectionClass];
+    dataProtectionClass = [v16 dataProtectionClass];
 
 LABEL_11:
     v17 = +[IDSRegistrationKeyManager sharedInstance];
-    v18 = [v17 latestCopyMessageProtectionIdentityForDataProtectionClass:v13];
+    v18 = [v17 latestCopyMessageProtectionIdentityForDataProtectionClass:dataProtectionClass];
 
     cf = v18;
     if (!v18)
@@ -1662,19 +1662,19 @@ LABEL_11:
         }
       }
 
-      [(IDSOTRController *)self setupNewSessionInfoWithToken:v11, v58];
-      [(IDSOTRController *)self suspendSessionNegotiation:v11 askedByPairedDevice:0];
+      [(IDSOTRController *)self setupNewSessionInfoWithToken:tokenCopy, v58];
+      [(IDSOTRController *)self suspendSessionNegotiation:tokenCopy askedByPairedDevice:0];
       goto LABEL_112;
     }
 
-    v63 = [(IDSOTRController *)self copyPairedDevicePublicIdentityWithDataProtectionClass:v13];
+    v63 = [(IDSOTRController *)self copyPairedDevicePublicIdentityWithDataProtectionClass:dataProtectionClass];
     if (!v63)
     {
       v23 = OSLogHandleForTransportCategory();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v67 = v10;
+        v67 = neededCopy;
         _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "We have no public key for remote device %@, can't start OTR negotiation!", buf, 0xCu);
       }
 
@@ -1682,23 +1682,23 @@ LABEL_11:
       {
         if (_IDSShouldLogTransport())
         {
-          v58 = v10;
+          v58 = neededCopy;
           _IDSLogTransport();
           if (_IDSShouldLog())
           {
-            v58 = v10;
+            v58 = neededCopy;
             _IDSLogV();
           }
         }
       }
 
-      [(IDSOTRController *)self setupNewSessionInfoWithToken:v11, v58];
-      [(IDSOTRController *)self suspendSessionNegotiation:v11 askedByPairedDevice:0];
+      [(IDSOTRController *)self setupNewSessionInfoWithToken:tokenCopy, v58];
+      [(IDSOTRController *)self suspendSessionNegotiation:tokenCopy askedByPairedDevice:0];
       CFRelease(v18);
       goto LABEL_112;
     }
 
-    v62 = [(IDSOTRController *)self copySessionForToken:v11];
+    v62 = [(IDSOTRController *)self copySessionForToken:tokenCopy];
     if (v62)
     {
       IsReadyForMessages = SecOTRSGetIsReadyForMessages();
@@ -1710,14 +1710,14 @@ LABEL_11:
     }
 
     v24 = +[IDSOTRKeyStorage sharedInstance];
-    v25 = [v24 sessionKeyForToken:v11];
+    v25 = [v24 sessionKeyForToken:tokenCopy];
 
     v26 = OSLogHandleForTransportCategory();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
     {
       v27 = @"NO";
       *buf = 138413058;
-      v67 = v10;
+      v67 = neededCopy;
       if (IsReadyForMessages)
       {
         v28 = @"YES";
@@ -1748,14 +1748,14 @@ LABEL_11:
       v30 = v25 ? @"YES" : @"NO";
       v60 = v29;
       v61 = v30;
-      v58 = v10;
+      v58 = neededCopy;
       v59 = v63;
       _IDSLogTransport();
       if (_IDSShouldLog())
       {
         v60 = v29;
         v61 = v30;
-        v58 = v10;
+        v58 = neededCopy;
         v59 = v63;
         _IDSLogV();
       }
@@ -1773,13 +1773,13 @@ LABEL_11:
 
     if (v31)
     {
-      if ([(IDSOTRController *)self isSessionNegotiating:v11])
+      if ([(IDSOTRController *)self isSessionNegotiating:tokenCopy])
       {
         v32 = OSLogHandleForTransportCategory();
         if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v67 = v11;
+          v67 = tokenCopy;
           _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "OTR negotiation for %@ in progress.", buf, 0xCu);
         }
 
@@ -1805,13 +1805,13 @@ LABEL_11:
         goto LABEL_111;
       }
 
-      if (!a5 && ((IsReadyForMessages ^ 1) & 1) == 0)
+      if (!reset && ((IsReadyForMessages ^ 1) & 1) == 0)
       {
         v37 = OSLogHandleForTransportCategory();
         if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v67 = v11;
+          v67 = tokenCopy;
           _os_log_impl(&_mh_execute_header, v37, OS_LOG_TYPE_DEFAULT, "OTR session for %@ is ready.", buf, 0xCu);
         }
 
@@ -1819,17 +1819,17 @@ LABEL_11:
         {
           if (_IDSShouldLogTransport())
           {
-            v58 = v11;
+            v58 = tokenCopy;
             _IDSLogTransport();
             if (_IDSShouldLog())
             {
-              v58 = v11;
+              v58 = tokenCopy;
               _IDSLogV();
             }
           }
         }
 
-        [(IDSOTRController *)self performOTRSessionBlock:1 token:v11, v58, v59, v60, v61];
+        [(IDSOTRController *)self performOTRSessionBlock:1 token:tokenCopy, v58, v59, v60, v61];
         CFRelease(cf);
         CFRelease(v63);
         if (!v62)
@@ -1846,7 +1846,7 @@ LABEL_111:
       if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v67 = v11;
+        v67 = tokenCopy;
         _os_log_impl(&_mh_execute_header, v40, OS_LOG_TYPE_DEFAULT, "Kick off OTR session re-negotiation for %@.", buf, 0xCu);
       }
 
@@ -1854,11 +1854,11 @@ LABEL_111:
       {
         if (_IDSShouldLogTransport())
         {
-          v58 = v11;
+          v58 = tokenCopy;
           _IDSLogTransport();
           if (_IDSShouldLog())
           {
-            v58 = v11;
+            v58 = tokenCopy;
             _IDSLogV();
           }
         }
@@ -1874,7 +1874,7 @@ LABEL_111:
           if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
           {
             *buf = 138412546;
-            v67 = v11;
+            v67 = tokenCopy;
             v68 = 1024;
             LODWORD(v69) = restarted;
             _os_log_impl(&_mh_execute_header, v43, OS_LOG_TYPE_ERROR, "SecOTRSAppendRestartPacket failed for %@, with result %d, removing session key. Kick off re-negotiation.", buf, 0x12u);
@@ -1884,14 +1884,14 @@ LABEL_111:
           {
             _IDSWarnV();
             _IDSLogV();
-            v58 = v11;
+            v58 = tokenCopy;
             v59 = restarted;
             _IDSLogTransport();
           }
 
-          [(IDSOTRController *)self _cacheSession:0 token:v11, v58, v59, v60, v61];
+          [(IDSOTRController *)self _cacheSession:0 token:tokenCopy, v58, v59, v60, v61];
           v44 = +[IDSOTRKeyStorage sharedInstance];
-          [v44 removeSessionKeyForToken:v11];
+          [v44 removeSessionKeyForToken:tokenCopy];
 
           goto LABEL_109;
         }
@@ -1902,7 +1902,7 @@ LABEL_111:
           *buf = 134218242;
           v67 = v62;
           v68 = 2112;
-          v69 = v11;
+          v69 = tokenCopy;
           _os_log_impl(&_mh_execute_header, v53, OS_LOG_TYPE_DEFAULT, "Restarted OTR session %p for %@.", buf, 0x16u);
         }
 
@@ -1911,30 +1911,30 @@ LABEL_111:
           if (_IDSShouldLogTransport())
           {
             v58 = v62;
-            v59 = v11;
+            v59 = tokenCopy;
             _IDSLogTransport();
             if (_IDSShouldLog())
             {
               v58 = v62;
-              v59 = v11;
+              v59 = tokenCopy;
               _IDSLogV();
             }
           }
         }
 
-        [(IDSOTRController *)self serializeSession:v62 token:v11, v58, v59, v60, v61];
-        [(IDSOTRController *)self _kickoffOTRNegotiationWithDevice:v10 token:v11 negotiationData:v41];
+        [(IDSOTRController *)self serializeSession:v62 token:tokenCopy, v58, v59, v60, v61];
+        [(IDSOTRController *)self _kickoffOTRNegotiationWithDevice:neededCopy token:tokenCopy negotiationData:v41];
 
         goto LABEL_110;
       }
 
-      if (v13 != 1)
+      if (dataProtectionClass != 1)
       {
         v54 = OSLogHandleForTransportCategory();
         if (os_log_type_enabled(v54, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v67 = v11;
+          v67 = tokenCopy;
           _os_log_impl(&_mh_execute_header, v54, OS_LOG_TYPE_DEFAULT, "Failed to find OTR session for token %@, this should never happen.", buf, 0xCu);
         }
 
@@ -1963,21 +1963,21 @@ LABEL_134:
       [v46 lock];
 
       v47 = +[IDSOTRKeyStorage sharedInstance];
-      v48 = [v47 isUnderLock];
+      isUnderLock = [v47 isUnderLock];
 
       v49 = +[IDSOTRKeyStorage sharedInstance];
-      v50 = [v49 sessionKeyForToken:v11];
+      v50 = [v49 sessionKeyForToken:tokenCopy];
 
       v51 = +[IDSOTRKeyStorage sharedInstance];
       [v51 unlock];
 
-      if ((v48 & (v50 == 0)) == 1)
+      if ((isUnderLock & (v50 == 0)) == 1)
       {
         v52 = OSLogHandleForTransportCategory();
         if (os_log_type_enabled(v52, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v67 = v11;
+          v67 = tokenCopy;
           _os_log_impl(&_mh_execute_header, v52, OS_LOG_TYPE_DEFAULT, "Failed to find OTR session for token %@, we're under first lock.", buf, 0xCu);
         }
 
@@ -1993,7 +1993,7 @@ LABEL_134:
           }
         }
 
-        v65[2](v65, 1);
+        handlerCopy[2](handlerCopy, 1);
         goto LABEL_110;
       }
 
@@ -2001,7 +2001,7 @@ LABEL_134:
       if (os_log_type_enabled(v55, OS_LOG_TYPE_DEFAULT))
       {
         v56 = @"NO";
-        if (v48)
+        if (isUnderLock)
         {
           v57 = @"YES";
         }
@@ -2012,7 +2012,7 @@ LABEL_134:
         }
 
         *buf = 138412802;
-        v67 = v11;
+        v67 = tokenCopy;
         v69 = v57;
         v68 = 2112;
         if (v50)
@@ -2048,7 +2048,7 @@ LABEL_134:
         if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412546;
-          v67 = v11;
+          v67 = tokenCopy;
           v68 = 2112;
           v69 = 0;
           _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_ERROR, "SecMPFullIdentityCreateOTRSessionWithFlags failed for %@ with error %@. Kick off re-negotiation.", buf, 0x16u);
@@ -2058,7 +2058,7 @@ LABEL_134:
         {
           _IDSWarnV();
           _IDSLogV();
-          v58 = v11;
+          v58 = tokenCopy;
           v59 = 0;
           _IDSLogTransport();
         }
@@ -2073,7 +2073,7 @@ LABEL_134:
         if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412546;
-          v67 = v11;
+          v67 = tokenCopy;
           v68 = 1024;
           LODWORD(v69) = started;
           _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_ERROR, "SecOTRSAppendStartPacket failed for %@ with error %d. Kick off re-negotiation.", buf, 0x12u);
@@ -2083,7 +2083,7 @@ LABEL_134:
         {
           _IDSWarnV();
           _IDSLogV();
-          v58 = v11;
+          v58 = tokenCopy;
           v59 = started;
           _IDSLogTransport();
         }
@@ -2099,7 +2099,7 @@ LABEL_134:
           *buf = 134218242;
           v67 = OTRSessionWithFlags;
           v68 = 2112;
-          v69 = v11;
+          v69 = tokenCopy;
           _os_log_impl(&_mh_execute_header, v45, OS_LOG_TYPE_DEFAULT, "Created new OTR session %p for %@.", buf, 0x16u);
         }
 
@@ -2108,20 +2108,20 @@ LABEL_134:
           if (_IDSShouldLogTransport())
           {
             v58 = OTRSessionWithFlags;
-            v59 = v11;
+            v59 = tokenCopy;
             _IDSLogTransport();
             if (_IDSShouldLog())
             {
               v58 = OTRSessionWithFlags;
-              v59 = v11;
+              v59 = tokenCopy;
               _IDSLogV();
             }
           }
         }
 
-        [(IDSOTRController *)self serializeSession:OTRSessionWithFlags token:v11, v58, v59, v60, v61];
-        [(IDSOTRController *)self setupNewSessionInfoWithToken:v11];
-        [(IDSOTRController *)self _kickoffOTRNegotiationWithDevice:v10 token:v11 negotiationData:v33];
+        [(IDSOTRController *)self serializeSession:OTRSessionWithFlags token:tokenCopy, v58, v59, v60, v61];
+        [(IDSOTRController *)self setupNewSessionInfoWithToken:tokenCopy];
+        [(IDSOTRController *)self _kickoffOTRNegotiationWithDevice:neededCopy token:tokenCopy negotiationData:v33];
         v39 = 0;
       }
 
@@ -2130,7 +2130,7 @@ LABEL_134:
       if (v39)
       {
 LABEL_109:
-        [(IDSOTRController *)self startOTRNegotiationWithDeviceIfNeeded:v10 token:v11 reset:1 errorHandler:0, v58, v59];
+        [(IDSOTRController *)self startOTRNegotiationWithDeviceIfNeeded:neededCopy token:tokenCopy reset:1 errorHandler:0, v58, v59];
       }
     }
 
@@ -2145,8 +2145,8 @@ LABEL_110:
     goto LABEL_111;
   }
 
-  v13 = sub_100577740(v11);
-  if (v13 < 3)
+  dataProtectionClass = sub_100577740(tokenCopy);
+  if (dataProtectionClass < 3)
   {
     goto LABEL_11;
   }
@@ -2155,7 +2155,7 @@ LABEL_110:
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v67 = v11;
+    v67 = tokenCopy;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Invalid data protection class for token %@", buf, 0xCu);
   }
 

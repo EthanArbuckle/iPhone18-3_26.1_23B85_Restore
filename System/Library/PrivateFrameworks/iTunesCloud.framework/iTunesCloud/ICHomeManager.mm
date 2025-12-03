@@ -9,10 +9,10 @@
 - (void)_postPropertiesChangedNotification;
 - (void)_savePropertiesToCache;
 - (void)_updateProperties;
-- (void)accessory:(id)a3 didUpdateSettings:(id)a4;
-- (void)homeManager:(id)a3 didUpdateStatus:(unint64_t)a4;
-- (void)homeManagerDidRemoveCurrentAccessory:(id)a3;
-- (void)homeManagerDidUpdateHomes:(id)a3;
+- (void)accessory:(id)accessory didUpdateSettings:(id)settings;
+- (void)homeManager:(id)manager didUpdateStatus:(unint64_t)status;
+- (void)homeManagerDidRemoveCurrentAccessory:(id)accessory;
+- (void)homeManagerDidUpdateHomes:(id)homes;
 @end
 
 @implementation ICHomeManager
@@ -24,7 +24,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B4491000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ Properties changed - posting notification", buf, 0xCu);
   }
 
@@ -46,9 +46,9 @@ void __51__ICHomeManager__postPropertiesChangedNotification__block_invoke(uint64
 - (id)_currentHomeOwnerAltDSID
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [(HMHomeManager *)self->_homeManager currentHome];
-  v4 = [v3 owner];
-  if (v4)
+  currentHome = [(HMHomeManager *)self->_homeManager currentHome];
+  owner = [currentHome owner];
+  if (owner)
   {
     v5 = +[ICMonitoredAccountStore sharedAccountStore];
     v12 = 0;
@@ -60,43 +60,43 @@ void __51__ICHomeManager__postPropertiesChangedNotification__block_invoke(uint64
       v8 = os_log_create("com.apple.amp.iTunesCloud", "Default");
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
       {
-        v9 = [v7 msv_description];
+        msv_description = [v7 msv_description];
         *buf = 138543618;
-        v14 = self;
+        selfCopy = self;
         v15 = 2114;
-        v16 = v9;
+        v16 = msv_description;
         _os_log_impl(&dword_1B4491000, v8, OS_LOG_TYPE_ERROR, "%{public}@ Failed to find primary apple account error=%{public}@", buf, 0x16u);
       }
     }
 
-    v10 = [v6 ic_altDSID];
+    ic_altDSID = [v6 ic_altDSID];
   }
 
   else
   {
-    v10 = 0;
+    ic_altDSID = 0;
   }
 
-  return v10;
+  return ic_altDSID;
 }
 
 - (id)_currentPreferredMediaUserAltDSID
 {
-  v2 = [(HMHomeManager *)self->_homeManager currentAccessory];
-  v3 = [v2 preferredMediaUser];
-  v4 = [v3 iCloudAltDSID];
+  currentAccessory = [(HMHomeManager *)self->_homeManager currentAccessory];
+  preferredMediaUser = [currentAccessory preferredMediaUser];
+  iCloudAltDSID = [preferredMediaUser iCloudAltDSID];
 
-  return v4;
+  return iCloudAltDSID;
 }
 
 - (void)_updateProperties
 {
-  v7 = [(ICHomeManager *)self _currentPreferredMediaUserAltDSID];
-  v3 = [(ICHomeManager *)self _currentHomeOwnerAltDSID];
+  _currentPreferredMediaUserAltDSID = [(ICHomeManager *)self _currentPreferredMediaUserAltDSID];
+  _currentHomeOwnerAltDSID = [(ICHomeManager *)self _currentHomeOwnerAltDSID];
   os_unfair_lock_lock(&self->_lock);
   v4 = [(NSMutableDictionary *)self->_cachedProperties copy];
-  [(NSMutableDictionary *)self->_cachedProperties setObject:v7 forKeyedSubscript:@"preferredMediaUserAltDSID"];
-  [(NSMutableDictionary *)self->_cachedProperties setObject:v3 forKeyedSubscript:@"homeOwnerAltDSID"];
+  [(NSMutableDictionary *)self->_cachedProperties setObject:_currentPreferredMediaUserAltDSID forKeyedSubscript:@"preferredMediaUserAltDSID"];
+  [(NSMutableDictionary *)self->_cachedProperties setObject:_currentHomeOwnerAltDSID forKeyedSubscript:@"homeOwnerAltDSID"];
   cachedProperties = self->_cachedProperties;
   if (cachedProperties == v4)
   {
@@ -152,16 +152,16 @@ void __39__ICHomeManager__savePropertiesToCache__block_invoke(uint64_t a1)
 {
   v15 = *MEMORY[0x1E69E9840];
   v3 = +[ICDefaults standardDefaults];
-  v4 = [v3 cachedHomeProperties];
-  v5 = [v4 mutableCopy];
+  cachedHomeProperties = [v3 cachedHomeProperties];
+  v5 = [cachedHomeProperties mutableCopy];
   cachedProperties = self->_cachedProperties;
   self->_cachedProperties = v5;
 
   if (!self->_cachedProperties)
   {
-    v7 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v8 = self->_cachedProperties;
-    self->_cachedProperties = v7;
+    self->_cachedProperties = dictionary;
   }
 
   v9 = os_log_create("com.apple.amp.iTunesCloud", "Default");
@@ -169,35 +169,35 @@ void __39__ICHomeManager__savePropertiesToCache__block_invoke(uint64_t a1)
   {
     v10 = self->_cachedProperties;
     v11 = 138543618;
-    v12 = self;
+    selfCopy = self;
     v13 = 2114;
     v14 = v10;
     _os_log_impl(&dword_1B4491000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ loaded cached properties %{public}@", &v11, 0x16u);
   }
 }
 
-- (void)accessory:(id)a3 didUpdateSettings:(id)a4
+- (void)accessory:(id)accessory didUpdateSettings:(id)settings
 {
   v8 = *MEMORY[0x1E69E9840];
   v5 = os_log_create("com.apple.amp.iTunesCloud", "Default");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138543362;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B4491000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ current accessory updated settings - updating properties", &v6, 0xCu);
   }
 
   [(ICHomeManager *)self _updateProperties];
 }
 
-- (void)homeManagerDidRemoveCurrentAccessory:(id)a3
+- (void)homeManagerDidRemoveCurrentAccessory:(id)accessory
 {
   v8 = *MEMORY[0x1E69E9840];
   v4 = os_log_create("com.apple.amp.iTunesCloud", "Default");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138543362;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B4491000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ current accessory removed - updating properties", &v6, 0xCu);
   }
 
@@ -207,10 +207,10 @@ void __39__ICHomeManager__savePropertiesToCache__block_invoke(uint64_t a1)
   [(ICHomeManager *)self _updateProperties];
 }
 
-- (void)homeManager:(id)a3 didUpdateStatus:(unint64_t)a4
+- (void)homeManager:(id)manager didUpdateStatus:(unint64_t)status
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  managerCopy = manager;
   v7 = os_log_create("com.apple.amp.iTunesCloud", "Default");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -236,14 +236,14 @@ void __39__ICHomeManager__savePropertiesToCache__block_invoke(uint64_t a1)
     _Block_object_dispose(&v20, 8);
     if (!v8)
     {
-      v18 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v19 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *soft_HMHomeManagerStatusToString(HMHomeManagerStatus)"];
-      [v18 handleFailureInFunction:v19 file:@"ICHomeManager.m" lineNumber:23 description:{@"%s", dlerror()}];
+      [currentHandler handleFailureInFunction:v19 file:@"ICHomeManager.m" lineNumber:23 description:{@"%s", dlerror()}];
 
       __break(1u);
     }
 
-    v11 = v8(a4);
+    v11 = v8(status);
     *buf = 138543618;
     *&buf[4] = self;
     *&buf[12] = 2114;
@@ -251,26 +251,26 @@ void __39__ICHomeManager__savePropertiesToCache__block_invoke(uint64_t a1)
     _os_log_impl(&dword_1B4491000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ received updated status: %{public}@", buf, 0x16u);
   }
 
-  if ((a4 & 1) == 0)
+  if ((status & 1) == 0)
   {
-    v12 = [(HMHomeManager *)self->_homeManager currentAccessory];
-    v13 = [v12 uniqueIdentifier];
-    v14 = v13;
-    if (v13 == self->_currentAccessoryIdentifier)
+    currentAccessory = [(HMHomeManager *)self->_homeManager currentAccessory];
+    uniqueIdentifier = [currentAccessory uniqueIdentifier];
+    v14 = uniqueIdentifier;
+    if (uniqueIdentifier == self->_currentAccessoryIdentifier)
     {
     }
 
     else
     {
-      v15 = [(NSUUID *)v13 isEqual:?];
+      v15 = [(NSUUID *)uniqueIdentifier isEqual:?];
 
       if ((v15 & 1) == 0)
       {
-        v16 = [v12 uniqueIdentifier];
+        uniqueIdentifier2 = [currentAccessory uniqueIdentifier];
         currentAccessoryIdentifier = self->_currentAccessoryIdentifier;
-        self->_currentAccessoryIdentifier = v16;
+        self->_currentAccessoryIdentifier = uniqueIdentifier2;
 
-        [v12 setDelegate:self];
+        [currentAccessory setDelegate:self];
       }
     }
 
@@ -278,36 +278,36 @@ void __39__ICHomeManager__savePropertiesToCache__block_invoke(uint64_t a1)
   }
 }
 
-- (void)homeManagerDidUpdateHomes:(id)a3
+- (void)homeManagerDidUpdateHomes:(id)homes
 {
   v13 = *MEMORY[0x1E69E9840];
   v4 = os_log_create("com.apple.amp.iTunesCloud", "Default");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138543362;
-    v12 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B4491000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ updated homes - setting as ready", &v11, 0xCu);
   }
 
   self->_homeManagerIsReady = 1;
-  v5 = [(HMHomeManager *)self->_homeManager currentAccessory];
-  v6 = [v5 uniqueIdentifier];
-  v7 = v6;
-  if (v6 == self->_currentAccessoryIdentifier)
+  currentAccessory = [(HMHomeManager *)self->_homeManager currentAccessory];
+  uniqueIdentifier = [currentAccessory uniqueIdentifier];
+  v7 = uniqueIdentifier;
+  if (uniqueIdentifier == self->_currentAccessoryIdentifier)
   {
   }
 
   else
   {
-    v8 = [(NSUUID *)v6 isEqual:?];
+    v8 = [(NSUUID *)uniqueIdentifier isEqual:?];
 
     if ((v8 & 1) == 0)
     {
-      v9 = [v5 uniqueIdentifier];
+      uniqueIdentifier2 = [currentAccessory uniqueIdentifier];
       currentAccessoryIdentifier = self->_currentAccessoryIdentifier;
-      self->_currentAccessoryIdentifier = v9;
+      self->_currentAccessoryIdentifier = uniqueIdentifier2;
 
-      [v5 setDelegate:self];
+      [currentAccessory setDelegate:self];
     }
   }
 
@@ -320,22 +320,22 @@ void __39__ICHomeManager__savePropertiesToCache__block_invoke(uint64_t a1)
   v3 = [(NSMutableDictionary *)self->_cachedProperties objectForKeyedSubscript:@"homeOwnerAltDSID"];
   os_unfair_lock_unlock(&self->_lock);
   v4 = v3;
-  v5 = v4;
+  _currentHomeOwnerAltDSID = v4;
   if (self->_homeManagerIsReady)
   {
-    v5 = [(ICHomeManager *)self _currentHomeOwnerAltDSID];
+    _currentHomeOwnerAltDSID = [(ICHomeManager *)self _currentHomeOwnerAltDSID];
 
-    if (v5 != v4 && ([v5 isEqual:v4] & 1) == 0)
+    if (_currentHomeOwnerAltDSID != v4 && ([_currentHomeOwnerAltDSID isEqual:v4] & 1) == 0)
     {
       os_unfair_lock_lock(&self->_lock);
-      [(NSMutableDictionary *)self->_cachedProperties setObject:v5 forKeyedSubscript:@"homeOwnerAltDSID"];
+      [(NSMutableDictionary *)self->_cachedProperties setObject:_currentHomeOwnerAltDSID forKeyedSubscript:@"homeOwnerAltDSID"];
       os_unfair_lock_unlock(&self->_lock);
       [(ICHomeManager *)self _savePropertiesToCache];
       [(ICHomeManager *)self _postPropertiesChangedNotification];
     }
   }
 
-  return v5;
+  return _currentHomeOwnerAltDSID;
 }
 
 - (NSString)preferredMediaUserAltDSID
@@ -344,22 +344,22 @@ void __39__ICHomeManager__savePropertiesToCache__block_invoke(uint64_t a1)
   v3 = [(NSMutableDictionary *)self->_cachedProperties objectForKeyedSubscript:@"preferredMediaUserAltDSID"];
   os_unfair_lock_unlock(&self->_lock);
   v4 = v3;
-  v5 = v4;
+  _currentPreferredMediaUserAltDSID = v4;
   if (self->_homeManagerIsReady)
   {
-    v5 = [(ICHomeManager *)self _currentPreferredMediaUserAltDSID];
+    _currentPreferredMediaUserAltDSID = [(ICHomeManager *)self _currentPreferredMediaUserAltDSID];
 
-    if (v5 != v4 && ([v5 isEqual:v4] & 1) == 0)
+    if (_currentPreferredMediaUserAltDSID != v4 && ([_currentPreferredMediaUserAltDSID isEqual:v4] & 1) == 0)
     {
       os_unfair_lock_lock(&self->_lock);
-      [(NSMutableDictionary *)self->_cachedProperties setObject:v5 forKeyedSubscript:@"preferredMediaUserAltDSID"];
+      [(NSMutableDictionary *)self->_cachedProperties setObject:_currentPreferredMediaUserAltDSID forKeyedSubscript:@"preferredMediaUserAltDSID"];
       os_unfair_lock_unlock(&self->_lock);
       [(ICHomeManager *)self _savePropertiesToCache];
       [(ICHomeManager *)self _postPropertiesChangedNotification];
     }
   }
 
-  return v5;
+  return _currentPreferredMediaUserAltDSID;
 }
 
 - (id)_init

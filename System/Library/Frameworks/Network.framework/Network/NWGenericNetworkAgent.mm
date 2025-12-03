@@ -15,9 +15,9 @@
 - (NSString)agentType;
 - (NSString)privateDescription;
 - (NSUUID)agentUUID;
-- (NWGenericNetworkAgent)initWithKernelAgent:(const netagent *)a3;
+- (NWGenericNetworkAgent)initWithKernelAgent:(const netagent *)agent;
 - (id)description;
-- (id)descriptionWithIndent:(int)a3 showFullContent:(BOOL)a4;
+- (id)descriptionWithIndent:(int)indent showFullContent:(BOOL)content;
 - (unsigned)agentDataSize;
 - (void)dealloc;
 @end
@@ -26,167 +26,167 @@
 
 - (NSString)agentDomain
 {
-  v3 = [(NWGenericNetworkAgent *)self internalNetagent];
-  if (v3)
+  internalNetagent = [(NWGenericNetworkAgent *)self internalNetagent];
+  if (internalNetagent)
   {
-    v3 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{-[NWGenericNetworkAgent internalNetagent](self, "internalNetagent") + 16}];
+    internalNetagent = [MEMORY[0x1E696AEC0] stringWithUTF8String:{-[NWGenericNetworkAgent internalNetagent](self, "internalNetagent") + 16}];
   }
 
-  return v3;
+  return internalNetagent;
 }
 
 - (BOOL)isNetworkProvider
 {
-  v3 = [(NWGenericNetworkAgent *)self internalNetagent];
-  if (v3)
+  internalNetagent = [(NWGenericNetworkAgent *)self internalNetagent];
+  if (internalNetagent)
   {
-    LODWORD(v3) = ([(NWGenericNetworkAgent *)self internalNetagent][208] >> 6) & 1;
+    LODWORD(internalNetagent) = ([(NWGenericNetworkAgent *)self internalNetagent][208] >> 6) & 1;
   }
 
-  return v3;
+  return internalNetagent;
 }
 
 - (BOOL)isActive
 {
-  v3 = [(NWGenericNetworkAgent *)self internalNetagent];
-  if (v3)
+  internalNetagent = [(NWGenericNetworkAgent *)self internalNetagent];
+  if (internalNetagent)
   {
-    LODWORD(v3) = ([(NWGenericNetworkAgent *)self internalNetagent][208] >> 1) & 1;
+    LODWORD(internalNetagent) = ([(NWGenericNetworkAgent *)self internalNetagent][208] >> 1) & 1;
   }
 
-  return v3;
+  return internalNetagent;
 }
 
 - (BOOL)supportsResolve
 {
-  v3 = [(NWGenericNetworkAgent *)self internalNetagent];
-  if (v3)
+  internalNetagent = [(NWGenericNetworkAgent *)self internalNetagent];
+  if (internalNetagent)
   {
-    LOBYTE(v3) = [(NWGenericNetworkAgent *)self internalNetagent][210] & 1;
+    LOBYTE(internalNetagent) = [(NWGenericNetworkAgent *)self internalNetagent][210] & 1;
   }
 
-  return v3;
+  return internalNetagent;
 }
 
 - (BOOL)supportsBrowse
 {
-  v3 = [(NWGenericNetworkAgent *)self internalNetagent];
-  if (v3)
+  internalNetagent = [(NWGenericNetworkAgent *)self internalNetagent];
+  if (internalNetagent)
   {
-    LOBYTE(v3) = [(NWGenericNetworkAgent *)self internalNetagent][209] & 1;
+    LOBYTE(internalNetagent) = [(NWGenericNetworkAgent *)self internalNetagent][209] & 1;
   }
 
-  return v3;
+  return internalNetagent;
 }
 
 - (NSString)agentType
 {
-  v3 = [(NWGenericNetworkAgent *)self internalNetagent];
-  if (v3)
+  internalNetagent = [(NWGenericNetworkAgent *)self internalNetagent];
+  if (internalNetagent)
   {
-    v3 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{-[NWGenericNetworkAgent internalNetagent](self, "internalNetagent") + 48}];
+    internalNetagent = [MEMORY[0x1E696AEC0] stringWithUTF8String:{-[NWGenericNetworkAgent internalNetagent](self, "internalNetagent") + 48}];
   }
 
-  return v3;
+  return internalNetagent;
 }
 
 - (NSUUID)agentUUID
 {
-  v3 = [(NWGenericNetworkAgent *)self internalNetagent];
-  if (v3)
+  internalNetagent = [(NWGenericNetworkAgent *)self internalNetagent];
+  if (internalNetagent)
   {
-    v3 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDBytes:{-[NWGenericNetworkAgent internalNetagent](self, "internalNetagent")}];
+    internalNetagent = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDBytes:{-[NWGenericNetworkAgent internalNetagent](self, "internalNetagent")}];
   }
 
-  return v3;
+  return internalNetagent;
 }
 
 - (NSString)agentDescription
 {
-  v3 = [(NWGenericNetworkAgent *)self internalNetagent];
-  if (v3)
+  internalNetagent = [(NWGenericNetworkAgent *)self internalNetagent];
+  if (internalNetagent)
   {
-    v3 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{-[NWGenericNetworkAgent internalNetagent](self, "internalNetagent") + 80}];
+    internalNetagent = [MEMORY[0x1E696AEC0] stringWithUTF8String:{-[NWGenericNetworkAgent internalNetagent](self, "internalNetagent") + 80}];
   }
 
-  return v3;
+  return internalNetagent;
 }
 
 - (BOOL)isKernelActivated
 {
-  v3 = [(NWGenericNetworkAgent *)self internalNetagent];
-  if (v3)
+  internalNetagent = [(NWGenericNetworkAgent *)self internalNetagent];
+  if (internalNetagent)
   {
-    LODWORD(v3) = ([(NWGenericNetworkAgent *)self internalNetagent][208] >> 2) & 1;
+    LODWORD(internalNetagent) = ([(NWGenericNetworkAgent *)self internalNetagent][208] >> 2) & 1;
   }
 
-  return v3;
+  return internalNetagent;
 }
 
 - (BOOL)isUserActivated
 {
-  v3 = [(NWGenericNetworkAgent *)self internalNetagent];
-  if (v3)
+  internalNetagent = [(NWGenericNetworkAgent *)self internalNetagent];
+  if (internalNetagent)
   {
-    LODWORD(v3) = ([(NWGenericNetworkAgent *)self internalNetagent][208] >> 3) & 1;
+    LODWORD(internalNetagent) = ([(NWGenericNetworkAgent *)self internalNetagent][208] >> 3) & 1;
   }
 
-  return v3;
+  return internalNetagent;
 }
 
 - (BOOL)isVoluntary
 {
-  v3 = [(NWGenericNetworkAgent *)self internalNetagent];
-  if (v3)
+  internalNetagent = [(NWGenericNetworkAgent *)self internalNetagent];
+  if (internalNetagent)
   {
-    LODWORD(v3) = ([(NWGenericNetworkAgent *)self internalNetagent][208] >> 4) & 1;
+    LODWORD(internalNetagent) = ([(NWGenericNetworkAgent *)self internalNetagent][208] >> 4) & 1;
   }
 
-  return v3;
+  return internalNetagent;
 }
 
 - (BOOL)isSpecificUseOnly
 {
-  v3 = [(NWGenericNetworkAgent *)self internalNetagent];
-  if (v3)
+  internalNetagent = [(NWGenericNetworkAgent *)self internalNetagent];
+  if (internalNetagent)
   {
-    LODWORD(v3) = ([(NWGenericNetworkAgent *)self internalNetagent][208] >> 5) & 1;
+    LODWORD(internalNetagent) = ([(NWGenericNetworkAgent *)self internalNetagent][208] >> 5) & 1;
   }
 
-  return v3;
+  return internalNetagent;
 }
 
 - (BOOL)isNexusProvider
 {
-  v3 = [(NWGenericNetworkAgent *)self internalNetagent];
-  if (v3)
+  internalNetagent = [(NWGenericNetworkAgent *)self internalNetagent];
+  if (internalNetagent)
   {
-    LODWORD(v3) = [(NWGenericNetworkAgent *)self internalNetagent][208] >> 7;
+    LODWORD(internalNetagent) = [(NWGenericNetworkAgent *)self internalNetagent][208] >> 7;
   }
 
-  return v3;
+  return internalNetagent;
 }
 
 - (BOOL)supportsGroups
 {
-  v3 = [(NWGenericNetworkAgent *)self internalNetagent];
-  if (v3)
+  internalNetagent = [(NWGenericNetworkAgent *)self internalNetagent];
+  if (internalNetagent)
   {
-    LODWORD(v3) = ([(NWGenericNetworkAgent *)self internalNetagent][210] >> 1) & 1;
+    LODWORD(internalNetagent) = ([(NWGenericNetworkAgent *)self internalNetagent][210] >> 1) & 1;
   }
 
-  return v3;
+  return internalNetagent;
 }
 
 - (BOOL)requiresAssert
 {
-  v3 = [(NWGenericNetworkAgent *)self internalNetagent];
-  if (v3)
+  internalNetagent = [(NWGenericNetworkAgent *)self internalNetagent];
+  if (internalNetagent)
   {
-    LODWORD(v3) = ([(NWGenericNetworkAgent *)self internalNetagent][209] >> 1) & 1;
+    LODWORD(internalNetagent) = ([(NWGenericNetworkAgent *)self internalNetagent][209] >> 1) & 1;
   }
 
-  return v3;
+  return internalNetagent;
 }
 
 - (void)dealloc
@@ -204,13 +204,13 @@
 
 - (unsigned)agentDataSize
 {
-  v3 = [(NWGenericNetworkAgent *)self internalNetagent];
-  if (v3)
+  internalNetagent = [(NWGenericNetworkAgent *)self internalNetagent];
+  if (internalNetagent)
   {
-    LODWORD(v3) = [(NWGenericNetworkAgent *)self internalNetagent][212];
+    LODWORD(internalNetagent) = [(NWGenericNetworkAgent *)self internalNetagent][212];
   }
 
-  return v3;
+  return internalNetagent;
 }
 
 - (NSString)privateDescription
@@ -227,32 +227,32 @@
   return v2;
 }
 
-- (id)descriptionWithIndent:(int)a3 showFullContent:(BOOL)a4
+- (id)descriptionWithIndent:(int)indent showFullContent:(BOOL)content
 {
-  v4 = a4;
-  v5 = *&a3;
+  contentCopy = content;
+  v5 = *&indent;
   v7 = objc_alloc_init(MEMORY[0x1E696AD60]);
-  v8 = [(NWGenericNetworkAgent *)self agentDomain];
-  [v7 appendPrettyObject:v8 withName:@"domain" indent:v5 showFullContent:1];
+  agentDomain = [(NWGenericNetworkAgent *)self agentDomain];
+  [v7 appendPrettyObject:agentDomain withName:@"domain" indent:v5 showFullContent:1];
 
-  v9 = [(NWGenericNetworkAgent *)self agentType];
-  [v7 appendPrettyObject:v9 withName:@"type" indent:v5 showFullContent:1];
+  agentType = [(NWGenericNetworkAgent *)self agentType];
+  [v7 appendPrettyObject:agentType withName:@"type" indent:v5 showFullContent:1];
 
-  if (!v4)
+  if (!contentCopy)
   {
-    v14 = [(NWGenericNetworkAgent *)self agentDescription];
-    [v7 appendPrettyObject:v14 withName:@"description" indent:v5 showFullContent:1];
+    agentDescription = [(NWGenericNetworkAgent *)self agentDescription];
+    [v7 appendPrettyObject:agentDescription withName:@"description" indent:v5 showFullContent:1];
 
-    v12 = [(NWGenericNetworkAgent *)self isActive];
+    isActive = [(NWGenericNetworkAgent *)self isActive];
     v13 = @"isActive";
     goto LABEL_19;
   }
 
-  v10 = [(NWGenericNetworkAgent *)self agentUUID];
-  [v7 appendPrettyObject:v10 withName:@"UUID" indent:v5 showFullContent:1];
+  agentUUID = [(NWGenericNetworkAgent *)self agentUUID];
+  [v7 appendPrettyObject:agentUUID withName:@"UUID" indent:v5 showFullContent:1];
 
-  v11 = [(NWGenericNetworkAgent *)self agentDescription];
-  [v7 appendPrettyObject:v11 withName:@"description" indent:v5 showFullContent:1];
+  agentDescription2 = [(NWGenericNetworkAgent *)self agentDescription];
+  [v7 appendPrettyObject:agentDescription2 withName:@"description" indent:v5 showFullContent:1];
 
   [v7 appendPrettyBOOL:-[NWGenericNetworkAgent isActive](self withName:"isActive") indent:{@"isActive", v5}];
   if ([(NWGenericNetworkAgent *)self isKernelActivated])
@@ -294,31 +294,31 @@
 
   if ([(NWGenericNetworkAgent *)self requiresAssert])
   {
-    v12 = [(NWGenericNetworkAgent *)self requiresAssert];
+    isActive = [(NWGenericNetworkAgent *)self requiresAssert];
     v13 = @"requiresAssert";
 LABEL_19:
-    [v7 appendPrettyBOOL:v12 withName:v13 indent:v5];
+    [v7 appendPrettyBOOL:isActive withName:v13 indent:v5];
   }
 
   return v7;
 }
 
-- (NWGenericNetworkAgent)initWithKernelAgent:(const netagent *)a3
+- (NWGenericNetworkAgent)initWithKernelAgent:(const netagent *)agent
 {
   v9.receiver = self;
   v9.super_class = NWGenericNetworkAgent;
   v4 = [(NWGenericNetworkAgent *)&v9 init];
   v5 = v4;
-  if (a3)
+  if (agent)
   {
     if (v4)
     {
-      var5 = a3->var5;
+      var5 = agent->var5;
       v7 = malloc_type_malloc(var5 + 216, 0xF4C667E2uLL);
       v5->_internalNetagent = v7;
       if (v7)
       {
-        memcpy(v7, a3, var5 + 216);
+        memcpy(v7, agent, var5 + 216);
       }
     }
   }

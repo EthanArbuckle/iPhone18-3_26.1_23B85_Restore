@@ -1,17 +1,17 @@
 @interface WFFilePathLocation
-+ (Class)supportedClassForURL:(id)a3;
-+ (id)locationWithSerializedRepresentation:(id)a3;
++ (Class)supportedClassForURL:(id)l;
++ (id)locationWithSerializedRepresentation:(id)representation;
 @end
 
 @implementation WFFilePathLocation
 
-+ (id)locationWithSerializedRepresentation:(id)a3
++ (id)locationWithSerializedRepresentation:(id)representation
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  representationCopy = representation;
+  if (representationCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = [v4 objectForKey:@"relativeSubpath"];
-    v6 = [[a1 alloc] initWithRelativeSubpath:v5];
+    v5 = [representationCopy objectForKey:@"relativeSubpath"];
+    v6 = [[self alloc] initWithRelativeSubpath:v5];
   }
 
   else
@@ -22,10 +22,10 @@
   return v6;
 }
 
-+ (Class)supportedClassForURL:(id)a3
++ (Class)supportedClassForURL:(id)l
 {
   v11[2] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  lCopy = l;
   v11[0] = objc_opt_class();
   v11[1] = objc_opt_class();
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:2];
@@ -33,8 +33,8 @@
   v9[1] = 3221225472;
   v9[2] = __43__WFFilePathLocation_supportedClassForURL___block_invoke;
   v9[3] = &unk_1E837E1B8;
-  v10 = v3;
-  v5 = v3;
+  v10 = lCopy;
+  v5 = lCopy;
   v6 = [v4 if_firstObjectPassingTest:v9];
 
   v7 = *MEMORY[0x1E69E9840];

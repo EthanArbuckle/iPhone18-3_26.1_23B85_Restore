@@ -1,21 +1,21 @@
 @interface CLSSignalNode
-- (BOOL)failsHighPrecisionWithSignal:(id)a3;
-- (BOOL)failsHighRecallWithSignal:(id)a3;
-- (BOOL)failsWithSignal:(id)a3;
-- (BOOL)passesHighPrecisionWithSignal:(id)a3;
-- (BOOL)passesHighRecallWithSignal:(id)a3;
-- (BOOL)passesWithSignal:(id)a3;
-- (CLSSignalNode)initWithIdentifier:(unint64_t)a3 name:(id)a4 operatingPoint:(double)a5 highPrecisionOperatingPoint:(double)a6 highRecallOperatingPoint:(double)a7;
+- (BOOL)failsHighPrecisionWithSignal:(id)signal;
+- (BOOL)failsHighRecallWithSignal:(id)signal;
+- (BOOL)failsWithSignal:(id)signal;
+- (BOOL)passesHighPrecisionWithSignal:(id)signal;
+- (BOOL)passesHighRecallWithSignal:(id)signal;
+- (BOOL)passesWithSignal:(id)signal;
+- (CLSSignalNode)initWithIdentifier:(unint64_t)identifier name:(id)name operatingPoint:(double)point highPrecisionOperatingPoint:(double)operatingPoint highRecallOperatingPoint:(double)recallOperatingPoint;
 @end
 
 @implementation CLSSignalNode
 
-- (BOOL)failsHighRecallWithSignal:(id)a3
+- (BOOL)failsHighRecallWithSignal:(id)signal
 {
-  v4 = a3;
-  if ([v4 extendedSceneIdentifier] == self->_identifier)
+  signalCopy = signal;
+  if ([signalCopy extendedSceneIdentifier] == self->_identifier)
   {
-    [v4 confidence];
+    [signalCopy confidence];
     v6 = v5 < self->_highRecallOperatingPoint;
   }
 
@@ -27,12 +27,12 @@
   return v6;
 }
 
-- (BOOL)failsHighPrecisionWithSignal:(id)a3
+- (BOOL)failsHighPrecisionWithSignal:(id)signal
 {
-  v4 = a3;
-  if ([v4 extendedSceneIdentifier] == self->_identifier)
+  signalCopy = signal;
+  if ([signalCopy extendedSceneIdentifier] == self->_identifier)
   {
-    [v4 confidence];
+    [signalCopy confidence];
     v6 = v5 < self->_highPrecisionOperatingPoint;
   }
 
@@ -44,12 +44,12 @@
   return v6;
 }
 
-- (BOOL)failsWithSignal:(id)a3
+- (BOOL)failsWithSignal:(id)signal
 {
-  v4 = a3;
-  if ([v4 extendedSceneIdentifier] == self->_identifier)
+  signalCopy = signal;
+  if ([signalCopy extendedSceneIdentifier] == self->_identifier)
   {
-    [v4 confidence];
+    [signalCopy confidence];
     v6 = v5 < self->_operatingPoint;
   }
 
@@ -61,12 +61,12 @@
   return v6;
 }
 
-- (BOOL)passesHighRecallWithSignal:(id)a3
+- (BOOL)passesHighRecallWithSignal:(id)signal
 {
-  v4 = a3;
-  if ([v4 extendedSceneIdentifier] == self->_identifier)
+  signalCopy = signal;
+  if ([signalCopy extendedSceneIdentifier] == self->_identifier)
   {
-    [v4 confidence];
+    [signalCopy confidence];
     v6 = v5 >= self->_highRecallOperatingPoint;
   }
 
@@ -78,12 +78,12 @@
   return v6;
 }
 
-- (BOOL)passesHighPrecisionWithSignal:(id)a3
+- (BOOL)passesHighPrecisionWithSignal:(id)signal
 {
-  v4 = a3;
-  if ([v4 extendedSceneIdentifier] == self->_identifier)
+  signalCopy = signal;
+  if ([signalCopy extendedSceneIdentifier] == self->_identifier)
   {
-    [v4 confidence];
+    [signalCopy confidence];
     v6 = v5 >= self->_highPrecisionOperatingPoint;
   }
 
@@ -95,12 +95,12 @@
   return v6;
 }
 
-- (BOOL)passesWithSignal:(id)a3
+- (BOOL)passesWithSignal:(id)signal
 {
-  v4 = a3;
-  if ([v4 extendedSceneIdentifier] == self->_identifier)
+  signalCopy = signal;
+  if ([signalCopy extendedSceneIdentifier] == self->_identifier)
   {
-    [v4 confidence];
+    [signalCopy confidence];
     v6 = v5 >= self->_operatingPoint;
   }
 
@@ -112,26 +112,26 @@
   return v6;
 }
 
-- (CLSSignalNode)initWithIdentifier:(unint64_t)a3 name:(id)a4 operatingPoint:(double)a5 highPrecisionOperatingPoint:(double)a6 highRecallOperatingPoint:(double)a7
+- (CLSSignalNode)initWithIdentifier:(unint64_t)identifier name:(id)name operatingPoint:(double)point highPrecisionOperatingPoint:(double)operatingPoint highRecallOperatingPoint:(double)recallOperatingPoint
 {
-  v13 = a4;
+  nameCopy = name;
   v17.receiver = self;
   v17.super_class = CLSSignalNode;
   v14 = [(CLSSignalNode *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    v14->_identifier = a3;
-    objc_storeStrong(&v14->_name, a4);
-    v15->_operatingPoint = a5;
-    v15->_highPrecisionOperatingPoint = a6;
-    v15->_highRecallOperatingPoint = a7;
-    if (a5 > a6)
+    v14->_identifier = identifier;
+    objc_storeStrong(&v14->_name, name);
+    v15->_operatingPoint = point;
+    v15->_highPrecisionOperatingPoint = operatingPoint;
+    v15->_highRecallOperatingPoint = recallOperatingPoint;
+    if (point > operatingPoint)
     {
       __assert_rtn("[CLSSignalNode initWithIdentifier:name:operatingPoint:highPrecisionOperatingPoint:highRecallOperatingPoint:]", "CLSSignalModel.m", 31, "_operatingPoint <= _highPrecisionOperatingPoint");
     }
 
-    if (a5 < a7)
+    if (point < recallOperatingPoint)
     {
       __assert_rtn("[CLSSignalNode initWithIdentifier:name:operatingPoint:highPrecisionOperatingPoint:highRecallOperatingPoint:]", "CLSSignalModel.m", 32, "_operatingPoint >= _highRecallOperatingPoint");
     }

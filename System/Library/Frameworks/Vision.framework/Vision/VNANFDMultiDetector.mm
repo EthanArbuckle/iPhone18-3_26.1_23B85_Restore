@@ -1,41 +1,41 @@
 @interface VNANFDMultiDetector
-+ (Class)anfdMultiDetectorClassToProcessRequest:(id)a3;
-+ (Class)detectorClassForConfigurationOptions:(id)a3 error:(id *)a4;
++ (Class)anfdMultiDetectorClassToProcessRequest:(id)request;
++ (Class)detectorClassForConfigurationOptions:(id)options error:(id *)error;
 + (NSArray)knownAnimalIdentifiers;
 + (NSDictionary)detectedObjectClassToRequestKey;
 + (NSDictionary)detectedObjectRequestKeyToRequestInfo;
 + (NSDictionary)recognizedAnimalObjectClassToAnimalName;
 + (id)configurationOptionKeysForDetectorKey;
-+ (id)defaultFilterThresholdsForOptions:(id)a3 error:(id *)a4;
-+ (id)espressoModelFileNameForConfigurationOptions:(id)a3;
-+ (id)espressoModelInputImageDimensionsBlobNameForConfigurationOptions:(id)a3;
-+ (id)requestInfoForRequest:(id)a3;
-+ (id)supportedImageSizeSetForOptions:(id)a3 error:(id *)a4;
-+ (void)_printDebugInfo:(id)a3 detectedObjectsRaw:(id)a4 faceDetectorBGRAImage:(__CVBuffer *)a5 tempImage:(vImage_Buffer *)a6 session:(id)a7;
-- (BOOL)completeInitializationForSession:(id)a3 error:(id *)a4;
-- (BOOL)createRegionOfInterestCrop:(CGRect)a3 options:(id)a4 qosClass:(unsigned int)a5 warningRecorder:(id)a6 pixelBuffer:(__CVBuffer *)a7 error:(id *)a8 progressHandler:(id)a9;
-- (BOOL)isDetectedObject:(id)a3 ofAGivenObjectSubClass:(id)a4;
-- (BOOL)processDetectedObject:(id)a3 originatingRequestSpecifier:(id)a4 objectBoundingBox:(CGRect)a5 objectGroupId:(id)a6 imageBuffer:(id)a7 qosClass:(unsigned int)a8 session:(id)a9 warningRecorder:(id)a10 detectedObjectResults:(id)a11 error:(id *)a12;
-- (id)_alignFace:(id)a3 imageBuffer:(id)a4 qosClass:(unsigned int)a5 session:(id)a6 warningRecorder:(id)a7 error:(id *)a8;
-- (id)applicableOptionKeyToShotflowKeyMappingsForOptions:(id)a3 error:(id *)a4;
-- (id)filterThresholdsForOptions:(id)a3 error:(id *)a4;
-- (id)internalProcessUsingQualityOfServiceClass:(unsigned int)a3 options:(id)a4 regionOfInterest:(CGRect)a5 warningRecorder:(id)a6 error:(id *)a7 progressHandler:(id)a8;
-- (id)processRegionOfInterest:(CGRect)a3 croppedPixelBuffer:(const __CVBuffer *)a4 options:(id)a5 qosClass:(unsigned int)a6 warningRecorder:(id)a7 error:(id *)a8 progressHandler:(id)a9;
-- (id)splitDetectedClassResultsIntoSubclasses:(id)a3;
-- (void)processRecognizedObjectWithIdentifier:(id)a3 originatingRequestSpecifier:(id)a4 objectBoundingBox:(CGRect)a5 objectGroupId:(id)a6 objectConfidence:(float)a7 detectedObjectResults:(id)a8;
++ (id)defaultFilterThresholdsForOptions:(id)options error:(id *)error;
++ (id)espressoModelFileNameForConfigurationOptions:(id)options;
++ (id)espressoModelInputImageDimensionsBlobNameForConfigurationOptions:(id)options;
++ (id)requestInfoForRequest:(id)request;
++ (id)supportedImageSizeSetForOptions:(id)options error:(id *)error;
++ (void)_printDebugInfo:(id)info detectedObjectsRaw:(id)raw faceDetectorBGRAImage:(__CVBuffer *)image tempImage:(vImage_Buffer *)tempImage session:(id)session;
+- (BOOL)completeInitializationForSession:(id)session error:(id *)error;
+- (BOOL)createRegionOfInterestCrop:(CGRect)crop options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder pixelBuffer:(__CVBuffer *)buffer error:(id *)error progressHandler:(id)handler;
+- (BOOL)isDetectedObject:(id)object ofAGivenObjectSubClass:(id)class;
+- (BOOL)processDetectedObject:(id)object originatingRequestSpecifier:(id)specifier objectBoundingBox:(CGRect)box objectGroupId:(id)id imageBuffer:(id)buffer qosClass:(unsigned int)class session:(id)session warningRecorder:(id)self0 detectedObjectResults:(id)self1 error:(id *)self2;
+- (id)_alignFace:(id)face imageBuffer:(id)buffer qosClass:(unsigned int)class session:(id)session warningRecorder:(id)recorder error:(id *)error;
+- (id)applicableOptionKeyToShotflowKeyMappingsForOptions:(id)options error:(id *)error;
+- (id)filterThresholdsForOptions:(id)options error:(id *)error;
+- (id)internalProcessUsingQualityOfServiceClass:(unsigned int)class options:(id)options regionOfInterest:(CGRect)interest warningRecorder:(id)recorder error:(id *)error progressHandler:(id)handler;
+- (id)processRegionOfInterest:(CGRect)interest croppedPixelBuffer:(const __CVBuffer *)buffer options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder error:(id *)error progressHandler:(id)handler;
+- (id)splitDetectedClassResultsIntoSubclasses:(id)subclasses;
+- (void)processRecognizedObjectWithIdentifier:(id)identifier originatingRequestSpecifier:(id)specifier objectBoundingBox:(CGRect)box objectGroupId:(id)id objectConfidence:(float)confidence detectedObjectResults:(id)results;
 @end
 
 @implementation VNANFDMultiDetector
 
-+ (void)_printDebugInfo:(id)a3 detectedObjectsRaw:(id)a4 faceDetectorBGRAImage:(__CVBuffer *)a5 tempImage:(vImage_Buffer *)a6 session:(id)a7
++ (void)_printDebugInfo:(id)info detectedObjectsRaw:(id)raw faceDetectorBGRAImage:(__CVBuffer *)image tempImage:(vImage_Buffer *)tempImage session:(id)session
 {
   v47 = *MEMORY[0x1E69E9840];
-  v30 = a3;
-  v11 = a4;
-  v12 = a7;
+  infoCopy = info;
+  rawCopy = raw;
+  sessionCopy = session;
   if (+[VNFaceDetector shouldDumpDebugIntermediates])
   {
-    v29 = a5;
+    imageCopy = image;
     v35 = 0;
     v36 = 0;
     v37 = 0;
@@ -43,7 +43,7 @@
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v13 = v11;
+    v13 = rawCopy;
     v14 = [v13 countByEnumeratingWithState:&v31 objects:v46 count:16];
     if (v14)
     {
@@ -109,33 +109,33 @@
       while (v14);
     }
 
-    v28 = *&a6->width;
-    *__p = *&a6->data;
+    v28 = *&tempImage->width;
+    *__p = *&tempImage->data;
     v39 = v28;
-    [VNFaceDetector printDebugInfo:v30 facesDataRaw:&v35 faceDetectorBGRAImage:v29 tempImage:__p session:v12];
+    [VNFaceDetector printDebugInfo:infoCopy facesDataRaw:&v35 faceDetectorBGRAImage:imageCopy tempImage:__p session:sessionCopy];
     __p[0] = &v35;
     std::vector<vision::mod::DetectedObject>::__destroy_vector::operator()[abi:ne200100](__p);
   }
 }
 
-+ (id)defaultFilterThresholdsForOptions:(id)a3 error:(id *)a4
++ (id)defaultFilterThresholdsForOptions:(id)options error:(id *)error
 {
-  v4 = [objc_msgSend(a1 detectorClass];
+  detectorClass = [objc_msgSend(self detectorClass];
 
-  return v4;
+  return detectorClass;
 }
 
-+ (id)espressoModelInputImageDimensionsBlobNameForConfigurationOptions:(id)a3
++ (id)espressoModelInputImageDimensionsBlobNameForConfigurationOptions:(id)options
 {
-  v3 = [objc_msgSend(a1 detectorClass];
+  detectorClass = [objc_msgSend(self detectorClass];
 
-  return v3;
+  return detectorClass;
 }
 
-+ (id)espressoModelFileNameForConfigurationOptions:(id)a3
++ (id)espressoModelFileNameForConfigurationOptions:(id)options
 {
-  v3 = a3;
-  v4 = [objc_opt_class() detectorClassForConfigurationOptions:v3 error:0];
+  optionsCopy = options;
+  v4 = [objc_opt_class() detectorClassForConfigurationOptions:optionsCopy error:0];
   if (v4)
   {
     v5 = [objc_msgSend(v4 "detectorClass")];
@@ -155,7 +155,7 @@
   block[1] = 3221225472;
   block[2] = __60__VNANFDMultiDetector_configurationOptionKeysForDetectorKey__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (+[VNANFDMultiDetector configurationOptionKeysForDetectorKey]::onceToken != -1)
   {
     dispatch_once(&+[VNANFDMultiDetector configurationOptionKeysForDetectorKey]::onceToken, block);
@@ -185,7 +185,7 @@ void __60__VNANFDMultiDetector_configurationOptionKeysForDetectorKey__block_invo
   block[1] = 3221225472;
   block[2] = __45__VNANFDMultiDetector_knownAnimalIdentifiers__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (+[VNANFDMultiDetector knownAnimalIdentifiers]::onceToken != -1)
   {
     dispatch_once(&+[VNANFDMultiDetector knownAnimalIdentifiers]::onceToken, block);
@@ -308,43 +308,43 @@ void __54__VNANFDMultiDetector_detectedObjectClassToRequestKey__block_invoke()
   +[VNANFDMultiDetector detectedObjectClassToRequestKey]::detectedObjectClassToRequestKey = v12;
 }
 
-+ (id)requestInfoForRequest:(id)a3
++ (id)requestInfoForRequest:(id)request
 {
-  v4 = a3;
-  v5 = [a1 detectedObjectRequestKeyToRequestInfo];
-  v6 = [VNANFDMultiDetectorOriginalRequestInfo requestKeyFromRequest:v4];
-  v7 = [v5 objectForKeyedSubscript:v6];
+  requestCopy = request;
+  detectedObjectRequestKeyToRequestInfo = [self detectedObjectRequestKeyToRequestInfo];
+  v6 = [VNANFDMultiDetectorOriginalRequestInfo requestKeyFromRequest:requestCopy];
+  v7 = [detectedObjectRequestKeyToRequestInfo objectForKeyedSubscript:v6];
 
   return v7;
 }
 
-+ (Class)anfdMultiDetectorClassToProcessRequest:(id)a3
++ (Class)anfdMultiDetectorClassToProcessRequest:(id)request
 {
-  v3 = a3;
+  requestCopy = request;
   v4 = +[VNANFDMultiDetectorOriginalRequestInfo originatingRequestSpecifierToDetectorClassMap];
-  v5 = [v3 specifier];
-  v6 = [v4 objectForKeyedSubscript:v5];
+  specifier = [requestCopy specifier];
+  v6 = [v4 objectForKeyedSubscript:specifier];
 
   return v6;
 }
 
-+ (id)supportedImageSizeSetForOptions:(id)a3 error:(id *)a4
++ (id)supportedImageSizeSetForOptions:(id)options error:(id *)error
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [a1 networkRequiredInputImagePixelFormatForConfigurationOptions:v5];
-  [objc_msgSend(a1 "detectorClass")];
-  v8 = -[VNSupportedImageSize initWithIdealFormat:width:height:orientation:aspectRatioHandling:orientationAgnostic:]([VNSupportedImageSize alloc], "initWithIdealFormat:width:height:orientation:aspectRatioHandling:orientationAgnostic:", v6, v7, v7, 1, [a1 inputImageAspectRatioHandlingForConfigurationOptions:v5], 0);
+  optionsCopy = options;
+  v6 = [self networkRequiredInputImagePixelFormatForConfigurationOptions:optionsCopy];
+  [objc_msgSend(self "detectorClass")];
+  v8 = -[VNSupportedImageSize initWithIdealFormat:width:height:orientation:aspectRatioHandling:orientationAgnostic:]([VNSupportedImageSize alloc], "initWithIdealFormat:width:height:orientation:aspectRatioHandling:orientationAgnostic:", v6, v7, v7, 1, [self inputImageAspectRatioHandlingForConfigurationOptions:optionsCopy], 0);
   v11[0] = v8;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
 
   return v9;
 }
 
-+ (Class)detectorClassForConfigurationOptions:(id)a3 error:(id *)a4
++ (Class)detectorClassForConfigurationOptions:(id)options error:(id *)error
 {
-  v5 = a3;
-  v6 = [VNValidationUtilities originatingRequestSpecifierInOptions:v5 error:a4];
+  optionsCopy = options;
+  v6 = [VNValidationUtilities originatingRequestSpecifierInOptions:optionsCopy error:error];
   if (v6)
   {
     v7 = +[VNANFDMultiDetectorOriginalRequestInfo originatingRequestSpecifierToDetectorClassMap];
@@ -355,9 +355,9 @@ void __54__VNANFDMultiDetector_detectedObjectClassToRequestKey__block_invoke()
       v10 = v8;
     }
 
-    else if (a4)
+    else if (error)
     {
-      *a4 = [VNError errorForUnsupportedRequestSpecifier:v6];
+      *error = [VNError errorForUnsupportedRequestSpecifier:v6];
     }
   }
 
@@ -369,17 +369,17 @@ void __54__VNANFDMultiDetector_detectedObjectClassToRequestKey__block_invoke()
   return v9;
 }
 
-- (BOOL)isDetectedObject:(id)a3 ofAGivenObjectSubClass:(id)a4
+- (BOOL)isDetectedObject:(id)object ofAGivenObjectSubClass:(id)class
 {
-  v5 = a3;
-  v6 = a4;
+  objectCopy = object;
+  classCopy = class;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v5 labels];
-    v8 = [v7 firstObject];
-    v9 = [v8 identifier];
-    v10 = [v9 containsString:v6];
+    labels = [objectCopy labels];
+    firstObject = [labels firstObject];
+    identifier = [firstObject identifier];
+    v10 = [identifier containsString:classCopy];
   }
 
   else
@@ -390,71 +390,71 @@ void __54__VNANFDMultiDetector_detectedObjectClassToRequestKey__block_invoke()
   return v10;
 }
 
-- (id)splitDetectedClassResultsIntoSubclasses:(id)a3
+- (id)splitDetectedClassResultsIntoSubclasses:(id)subclasses
 {
-  v3 = a3;
-  v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{v3, 0}];
+  subclassesCopy = subclasses;
+  v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{subclassesCopy, 0}];
 
   return v4;
 }
 
-- (void)processRecognizedObjectWithIdentifier:(id)a3 originatingRequestSpecifier:(id)a4 objectBoundingBox:(CGRect)a5 objectGroupId:(id)a6 objectConfidence:(float)a7 detectedObjectResults:(id)a8
+- (void)processRecognizedObjectWithIdentifier:(id)identifier originatingRequestSpecifier:(id)specifier objectBoundingBox:(CGRect)box objectGroupId:(id)id objectConfidence:(float)confidence detectedObjectResults:(id)results
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
+  height = box.size.height;
+  width = box.size.width;
+  y = box.origin.y;
+  x = box.origin.x;
   v27[1] = *MEMORY[0x1E69E9840];
-  v16 = a3;
-  v17 = a4;
-  v18 = a6;
-  v19 = a8;
+  identifierCopy = identifier;
+  specifierCopy = specifier;
+  idCopy = id;
+  resultsCopy = results;
   v20 = [VNClassificationObservation alloc];
-  *&v21 = a7;
-  v22 = [(VNClassificationObservation *)v20 initWithOriginatingRequestSpecifier:v17 identifier:v16 confidence:v21];
+  *&v21 = confidence;
+  v22 = [(VNClassificationObservation *)v20 initWithOriginatingRequestSpecifier:specifierCopy identifier:identifierCopy confidence:v21];
   v23 = [VNRecognizedObjectObservation alloc];
   v27[0] = v22;
   v24 = [MEMORY[0x1E695DEC8] arrayWithObjects:v27 count:1];
-  *&v25 = a7;
-  v26 = [(VNRecognizedObjectObservation *)v23 initWithOriginatingRequestSpecifier:v17 boundingBox:v24 confidence:0 labels:v18 segmentationMask:x groupId:y, width, height, v25];
+  *&v25 = confidence;
+  v26 = [(VNRecognizedObjectObservation *)v23 initWithOriginatingRequestSpecifier:specifierCopy boundingBox:v24 confidence:0 labels:idCopy segmentationMask:x groupId:y, width, height, v25];
 
-  [v19 addObject:v26];
+  [resultsCopy addObject:v26];
 }
 
-- (BOOL)processDetectedObject:(id)a3 originatingRequestSpecifier:(id)a4 objectBoundingBox:(CGRect)a5 objectGroupId:(id)a6 imageBuffer:(id)a7 qosClass:(unsigned int)a8 session:(id)a9 warningRecorder:(id)a10 detectedObjectResults:(id)a11 error:(id *)a12
+- (BOOL)processDetectedObject:(id)object originatingRequestSpecifier:(id)specifier objectBoundingBox:(CGRect)box objectGroupId:(id)id imageBuffer:(id)buffer qosClass:(unsigned int)class session:(id)session warningRecorder:(id)self0 detectedObjectResults:(id)self1 error:(id *)self2
 {
-  v13 = *&a8;
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
+  v13 = *&class;
+  height = box.size.height;
+  width = box.size.width;
+  y = box.origin.y;
+  x = box.origin.x;
   v73 = *MEMORY[0x1E69E9840];
-  v22 = a3;
-  v66 = a4;
-  v23 = a6;
-  v62 = a7;
-  v63 = a9;
-  v64 = a10;
-  v24 = a11;
+  objectCopy = object;
+  specifierCopy = specifier;
+  idCopy = id;
+  bufferCopy = buffer;
+  sessionCopy = session;
+  recorderCopy = recorder;
+  resultsCopy = results;
   v25 = objc_opt_class();
-  v65 = [v25 recognizedAnimalObjectClassToAnimalName];
-  v26 = [v22 labelKey];
-  if (v26 <= 3)
+  recognizedAnimalObjectClassToAnimalName = [v25 recognizedAnimalObjectClassToAnimalName];
+  labelKey = [objectCopy labelKey];
+  if (labelKey <= 3)
   {
-    switch(v26)
+    switch(labelKey)
     {
       case 1:
-        v35 = [(VNDetectedObjectObservation *)[VNFaceObservation alloc] initWithOriginatingRequestSpecifier:v66 boundingBox:x, y, width, height];
-        v36 = v35;
-        if (v23)
+        height = [(VNDetectedObjectObservation *)[VNFaceObservation alloc] initWithOriginatingRequestSpecifier:specifierCopy boundingBox:x, y, width, height];
+        v36 = height;
+        if (idCopy)
         {
-          [(VNDetectedObjectObservation *)v35 setGroupId:v23];
+          [(VNDetectedObjectObservation *)height setGroupId:idCopy];
         }
 
         [(VNFaceObservation *)v36 setUnalignedBoundingBox:x, y, width, height];
-        [v22 confidence];
+        [objectCopy confidence];
         [(VNObservation *)v36 setConfidence:?];
-        [v22 rotationAngle];
+        [objectCopy rotationAngle];
         v38 = ((v37 * 3.1416) / 180.0);
         if (v38 > 3.14159265)
         {
@@ -471,20 +471,20 @@ void __54__VNANFDMultiDetector_detectedObjectClassToRequestKey__block_invoke()
         [(VNFaceObservation *)v36 setRoll:v39];
 
         v40 = MEMORY[0x1E696AD98];
-        [v22 yawAngle];
+        [objectCopy yawAngle];
         *&v42 = (v41 * 3.1416) / 180.0;
         v43 = [v40 numberWithFloat:v42];
         [(VNFaceObservation *)v36 setYaw:v43];
 
         v44 = MEMORY[0x1E696AD98];
-        [v22 pitchAngle];
+        [objectCopy pitchAngle];
         *&v46 = (v45 * 3.1416) / 180.0;
         v47 = [v44 numberWithFloat:v46];
         [(VNFaceObservation *)v36 setPitch:v47];
 
-        if ([v25 shouldAlignFacesForRequestWithSpecifier:v66])
+        if ([v25 shouldAlignFacesForRequestWithSpecifier:specifierCopy])
         {
-          v48 = [(VNANFDMultiDetector *)self _alignFace:v36 imageBuffer:v62 qosClass:v13 session:v63 warningRecorder:v64 error:a12];
+          v48 = [(VNANFDMultiDetector *)self _alignFace:v36 imageBuffer:bufferCopy qosClass:v13 session:sessionCopy warningRecorder:recorderCopy error:error];
           if (!v48)
           {
 
@@ -535,57 +535,57 @@ LABEL_39:
           v49 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v71 count:1];
         }
 
-        [v24 addObjectsFromArray:v49];
+        [resultsCopy addObjectsFromArray:v49];
 
         goto LABEL_32;
       case 2:
-        v58 = [[VNDetectedObjectObservation alloc] initWithOriginatingRequestSpecifier:v66 boundingBox:x, y, width, height];
-        v31 = v58;
-        if (v23)
+        height2 = [[VNDetectedObjectObservation alloc] initWithOriginatingRequestSpecifier:specifierCopy boundingBox:x, y, width, height];
+        v31 = height2;
+        if (idCopy)
         {
-          [(VNDetectedObjectObservation *)v58 setGroupId:v23];
+          [(VNDetectedObjectObservation *)height2 setGroupId:idCopy];
         }
 
-        [v22 confidence];
+        [objectCopy confidence];
         [v31 setConfidence:?];
-        [v24 addObject:v31];
+        [resultsCopy addObject:v31];
         goto LABEL_31;
       case 3:
         v27 = [VNHumanObservation alloc];
-        [v22 confidence];
+        [objectCopy confidence];
         LODWORD(v29) = v28;
-        v30 = [(VNHumanObservation *)v27 initWithOriginatingRequestSpecifier:v66 boundingBox:1 upperBodyOnly:x confidence:y, width, height, v29];
+        v30 = [(VNHumanObservation *)v27 initWithOriginatingRequestSpecifier:specifierCopy boundingBox:1 upperBodyOnly:x confidence:y, width, height, v29];
         v31 = v30;
-        if (v23)
+        if (idCopy)
         {
-          [(VNDetectedObjectObservation *)v30 setGroupId:v23];
+          [(VNDetectedObjectObservation *)v30 setGroupId:idCopy];
         }
 
-        [v24 addObject:v31];
+        [resultsCopy addObject:v31];
         goto LABEL_31;
     }
 
 LABEL_34:
-    if (a12)
+    if (error)
     {
-      v61 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected label key for detected object: %d", objc_msgSend(v22, "labelKey")];
-      *a12 = [VNError errorForInternalErrorWithLocalizedDescription:v61];
+      v61 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected label key for detected object: %d", objc_msgSend(objectCopy, "labelKey")];
+      *error = [VNError errorForInternalErrorWithLocalizedDescription:v61];
     }
 
     goto LABEL_39;
   }
 
-  if ((v26 - 4) >= 2)
+  if ((labelKey - 4) >= 2)
   {
     goto LABEL_34;
   }
 
-  v32 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v22, "labelKey")}];
-  v31 = [v65 objectForKey:v32];
+  v32 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(objectCopy, "labelKey")}];
+  v31 = [recognizedAnimalObjectClassToAnimalName objectForKey:v32];
 
-  [v22 confidence];
+  [objectCopy confidence];
   LODWORD(v34) = v33;
-  [(VNANFDMultiDetector *)self processRecognizedObjectWithIdentifier:v31 originatingRequestSpecifier:v66 objectBoundingBox:v23 objectGroupId:v24 objectConfidence:x detectedObjectResults:y, width, height, v34];
+  [(VNANFDMultiDetector *)self processRecognizedObjectWithIdentifier:v31 originatingRequestSpecifier:specifierCopy objectBoundingBox:idCopy objectGroupId:resultsCopy objectConfidence:x detectedObjectResults:y, width, height, v34];
 LABEL_31:
 
 LABEL_32:
@@ -595,39 +595,39 @@ LABEL_33:
   return v59;
 }
 
-- (id)_alignFace:(id)a3 imageBuffer:(id)a4 qosClass:(unsigned int)a5 session:(id)a6 warningRecorder:(id)a7 error:(id *)a8
+- (id)_alignFace:(id)face imageBuffer:(id)buffer qosClass:(unsigned int)class session:(id)session warningRecorder:(id)recorder error:(id *)error
 {
-  v10 = *&a5;
+  v10 = *&class;
   v39[1] = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a4;
-  v34 = a6;
-  v35 = a7;
+  faceCopy = face;
+  bufferCopy = buffer;
+  sessionCopy = session;
+  recorderCopy = recorder;
   v15 = objc_autoreleasePoolPush();
   v16 = objc_alloc(MEMORY[0x1E695DF90]);
-  v17 = [v13 originatingRequestSpecifier];
-  v39[0] = v14;
+  originatingRequestSpecifier = [faceCopy originatingRequestSpecifier];
+  v39[0] = bufferCopy;
   v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v39 count:1];
-  v19 = [v16 initWithObjectsAndKeys:{v17, @"VNDetectorOption_OriginatingRequestSpecifier", v18, @"VNDetectorProcessOption_InputImageBuffers", 0}];
+  v19 = [v16 initWithObjectsAndKeys:{originatingRequestSpecifier, @"VNDetectorOption_OriginatingRequestSpecifier", v18, @"VNDetectorProcessOption_InputImageBuffers", 0}];
 
-  [v14 orientation];
+  [bufferCopy orientation];
   v37 = 0;
-  LOBYTE(v18) = VNSetFaceOrientationInOptionsDictionary(v13, v19, &v37);
+  LOBYTE(v18) = VNSetFaceOrientationInOptionsDictionary(faceCopy, v19, &v37);
   v20 = v37;
   if (v18)
   {
-    v38 = v13;
+    v38 = faceCopy;
     v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v38 count:1];
     [v19 setObject:v21 forKeyedSubscript:@"VNDetectorProcessOption_InputFaceObservations"];
 
-    [v19 setObject:v34 forKeyedSubscript:@"VNDetectorProcessOption_Session"];
+    [v19 setObject:sessionCopy forKeyedSubscript:@"VNDetectorProcessOption_Session"];
     faceBBoxAligner = self->_faceBBoxAligner;
     v23 = *MEMORY[0x1E695F050];
     v24 = *(MEMORY[0x1E695F050] + 8);
     v25 = *(MEMORY[0x1E695F050] + 16);
     v26 = *(MEMORY[0x1E695F050] + 24);
     v36 = v20;
-    v27 = [(VNFaceBBoxAligner *)faceBBoxAligner internalProcessUsingQualityOfServiceClass:v10 options:v19 regionOfInterest:v35 warningRecorder:&v36 error:0 progressHandler:v23, v24, v25, v26];
+    v27 = [(VNFaceBBoxAligner *)faceBBoxAligner internalProcessUsingQualityOfServiceClass:v10 options:v19 regionOfInterest:recorderCopy warningRecorder:&v36 error:0 progressHandler:v23, v24, v25, v26];
     v28 = v36;
 
     if (v27 && [v27 count] == 1 && objc_msgSend(v27, "count") != 1)
@@ -653,47 +653,47 @@ LABEL_33:
     v29 = v27;
   }
 
-  else if (a8)
+  else if (error)
   {
     v30 = v20;
-    *a8 = v20;
+    *error = v20;
   }
 
   return v27;
 }
 
-- (id)processRegionOfInterest:(CGRect)a3 croppedPixelBuffer:(const __CVBuffer *)a4 options:(id)a5 qosClass:(unsigned int)a6 warningRecorder:(id)a7 error:(id *)a8 progressHandler:(id)a9
+- (id)processRegionOfInterest:(CGRect)interest croppedPixelBuffer:(const __CVBuffer *)buffer options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder error:(id *)error progressHandler:(id)handler
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = interest.size.height;
+  width = interest.size.width;
+  y = interest.origin.y;
+  x = interest.origin.x;
   v108 = *MEMORY[0x1E69E9840];
-  v15 = a5;
-  v68 = a7;
-  v73 = v15;
-  v67 = [VNValidationUtilities requiredSessionInOptions:v15 error:a8];
+  optionsCopy = options;
+  recorderCopy = recorder;
+  v73 = optionsCopy;
+  v67 = [VNValidationUtilities requiredSessionInOptions:optionsCopy error:error];
   if (!v67)
   {
     v23 = 0;
     goto LABEL_59;
   }
 
-  v16 = [(VNDetector *)self validatedImageBufferFromOptions:v15 error:a8];
+  v16 = [(VNDetector *)self validatedImageBufferFromOptions:optionsCopy error:error];
   v17 = v16;
   v66 = v16;
   if (v16)
   {
-    v60 = [v16 width];
-    v59 = [v17 height];
-    v18 = v15;
+    width = [v16 width];
+    height = [v17 height];
+    v18 = optionsCopy;
     if (self)
     {
       v74 = v18;
-      v19 = [(VNANFDMultiDetector *)self filterThresholdsForOptions:v18 error:a8];
+      v19 = [(VNANFDMultiDetector *)self filterThresholdsForOptions:v18 error:error];
       if (v19)
       {
-        v20 = [objc_opt_class() filterThresholdsArrayForFilterThresholds:v19 error:a8];
+        v20 = [objc_opt_class() filterThresholdsArrayForFilterThresholds:v19 error:error];
         v21 = v20;
         if (v20)
         {
@@ -710,15 +710,15 @@ LABEL_33:
       if (v21)
       {
         v58 = objc_opt_class();
-        v61 = [v58 detectedObjectRequestKeyToRequestInfo];
-        v24 = [v61 count];
-        v65 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+        detectedObjectRequestKeyToRequestInfo = [v58 detectedObjectRequestKeyToRequestInfo];
+        v24 = [detectedObjectRequestKeyToRequestInfo count];
+        strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
         v72 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v24];
         v104 = 0u;
         v105 = 0u;
         v102 = 0u;
         v103 = 0u;
-        obj = v61;
+        obj = detectedObjectRequestKeyToRequestInfo;
         v25 = [obj countByEnumeratingWithState:&v102 objects:v107 count:16];
         if (v25)
         {
@@ -749,8 +749,8 @@ LABEL_51:
 
               v30 = [VNANFDMultiDetectorOriginalRequestInfo requestClassNameFromRequestKey:v27];
               v101 = 0;
-              v31 = [v29 originatingRequestSpecifierKey];
-              v32 = [VNValidationUtilities getOptionalOriginatingRequestSpecifier:&v101 forKey:v31 inOptions:v74 specifyingRequestClass:NSClassFromString(v30) error:a8];
+              originatingRequestSpecifierKey = [v29 originatingRequestSpecifierKey];
+              v32 = [VNValidationUtilities getOptionalOriginatingRequestSpecifier:&v101 forKey:originatingRequestSpecifierKey inOptions:v74 specifyingRequestClass:NSClassFromString(v30) error:error];
               v33 = v101;
 
               if (!v32)
@@ -770,14 +770,14 @@ LABEL_51:
 
               if (!v36)
               {
-                [v65 setObject:v33 forKey:v27];
+                [strongToStrongObjectsMapTable setObject:v33 forKey:v27];
 LABEL_26:
 
                 continue;
               }
 
               v100 = 1;
-              if ([VNValidationUtilities getBOOLValue:&v100 forKey:@"VNANFDMultiDetectorProcessingOption_HumanDetectorUpperBody" inOptions:v74 withDefaultValue:0 error:a8])
+              if ([VNValidationUtilities getBOOLValue:&v100 forKey:@"VNANFDMultiDetectorProcessingOption_HumanDetectorUpperBody" inOptions:v74 withDefaultValue:0 error:error])
               {
                 if (v100 == 1)
                 {
@@ -796,7 +796,7 @@ LABEL_26:
                 }
 
                 v99 = 1;
-                if ([VNValidationUtilities getBOOLValue:&v99 forKey:@"VNANFDMultiDetectorProcessingOption_HumanDetectorFullBody" inOptions:v74 withDefaultValue:0 error:a8])
+                if ([VNValidationUtilities getBOOLValue:&v99 forKey:@"VNANFDMultiDetectorProcessingOption_HumanDetectorFullBody" inOptions:v74 withDefaultValue:0 error:error])
                 {
                   if (v99 != 1)
                   {
@@ -818,7 +818,7 @@ LABEL_26:
                   }
 
 LABEL_31:
-                  [v65 setObject:v33 forKey:v27];
+                  [strongToStrongObjectsMapTable setObject:v33 forKey:v27];
 
                   v47 = 3;
                   goto LABEL_33;
@@ -840,33 +840,33 @@ LABEL_33:
           while (v25);
         }
 
-        v48 = [v58 detectorClass];
+        detectorClass = [v58 detectorClass];
         aBlock[0] = MEMORY[0x1E69E9820];
         aBlock[1] = 3221225472;
         aBlock[2] = __121__VNANFDMultiDetector_processRegionOfInterest_croppedPixelBuffer_options_qosClass_warningRecorder_error_progressHandler___block_invoke;
         aBlock[3] = &unk_1E77B5B80;
-        v89 = a4;
+        bufferCopy = buffer;
         aBlock[4] = self;
         v81 = v62;
         v90 = v58;
         v82 = v66;
         v83 = v67;
-        v84 = v65;
+        v84 = strongToStrongObjectsMapTable;
         v91 = x;
         v92 = y;
         v93 = width;
         v94 = height;
-        v95 = v60;
-        v96 = v59;
-        v97 = v48;
+        v95 = width;
+        v96 = height;
+        v97 = detectorClass;
         v85 = obj;
         v49 = v72;
         v86 = v49;
-        v98 = a6;
-        v87 = v68;
+        classCopy = class;
+        v87 = recorderCopy;
         v88 = v74;
         v50 = _Block_copy(aBlock);
-        if (v50[2](v50, a8, x, y, width, height))
+        if (v50[2](v50, error, x, y, width, height))
         {
           if ([(VisionCoreRuntimeUtilities *)VNRuntimeUtilities linkTimeOrRunTimeBeforeVersion:393216])
           {
@@ -1177,29 +1177,29 @@ uint64_t __121__VNANFDMultiDetector_processRegionOfInterest_croppedPixelBuffer_o
   return 1;
 }
 
-- (BOOL)createRegionOfInterestCrop:(CGRect)a3 options:(id)a4 qosClass:(unsigned int)a5 warningRecorder:(id)a6 pixelBuffer:(__CVBuffer *)a7 error:(id *)a8 progressHandler:(id)a9
+- (BOOL)createRegionOfInterestCrop:(CGRect)crop options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder pixelBuffer:(__CVBuffer *)buffer error:(id *)error progressHandler:(id)handler
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v17 = a4;
-  v18 = a6;
-  v19 = [(VNDetector *)self validatedImageBufferFromOptions:v17 error:a8];
+  height = crop.size.height;
+  width = crop.size.width;
+  y = crop.origin.y;
+  x = crop.origin.x;
+  optionsCopy = options;
+  recorderCopy = recorder;
+  v19 = [(VNDetector *)self validatedImageBufferFromOptions:optionsCopy error:error];
   v20 = v19;
   if (v19)
   {
-    v21 = [v19 width];
-    v22 = [v20 height];
-    if (v21 >= v22)
+    width = [v19 width];
+    height = [v20 height];
+    if (width >= height)
     {
-      v21 = v22;
+      width = height;
     }
 
     [objc_msgSend(objc_opt_class() "detectorClass")];
-    if (v21 < v23)
+    if (width < v23)
     {
-      VNRecordImageTooSmallWarningWithImageMinimumShortDimension(v18, v23);
+      VNRecordImageTooSmallWarningWithImageMinimumShortDimension(recorderCopy, v23);
     }
 
     v39.origin.x = x;
@@ -1235,13 +1235,13 @@ uint64_t __121__VNANFDMultiDetector_processRegionOfInterest_croppedPixelBuffer_o
     }
 
     v38 = 0;
-    v34 = [v20 croppedBufferWithWidth:v32 height:v33 format:1111970369 cropRect:v17 options:a8 error:&v38 pixelBufferRepsCacheKey:{v24, v25, v26, v27}];
+    v34 = [v20 croppedBufferWithWidth:v32 height:v33 format:1111970369 cropRect:optionsCopy options:error error:&v38 pixelBufferRepsCacheKey:{v24, v25, v26, v27}];
     v35 = v38;
-    *a7 = v34;
+    *buffer = v34;
     v36 = v34 != 0;
     if (v34)
     {
-      [(VNDetector *)self recordImageCropQuickLookInfoToOptionsSafe:v17 cacheKey:v35 imageBuffer:v20];
+      [(VNDetector *)self recordImageCropQuickLookInfoToOptionsSafe:optionsCopy cacheKey:v35 imageBuffer:v20];
     }
   }
 
@@ -1253,17 +1253,17 @@ uint64_t __121__VNANFDMultiDetector_processRegionOfInterest_croppedPixelBuffer_o
   return v36;
 }
 
-- (id)internalProcessUsingQualityOfServiceClass:(unsigned int)a3 options:(id)a4 regionOfInterest:(CGRect)a5 warningRecorder:(id)a6 error:(id *)a7 progressHandler:(id)a8
+- (id)internalProcessUsingQualityOfServiceClass:(unsigned int)class options:(id)options regionOfInterest:(CGRect)interest warningRecorder:(id)recorder error:(id *)error progressHandler:(id)handler
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v16 = a4;
-  v149 = a6;
-  v147 = a8;
-  v148 = v16;
-  v17 = [(VNDetector *)self validatedImageBufferFromOptions:v16 error:a7];
+  height = interest.size.height;
+  width = interest.size.width;
+  y = interest.origin.y;
+  x = interest.origin.x;
+  optionsCopy = options;
+  recorderCopy = recorder;
+  handlerCopy = handler;
+  v148 = optionsCopy;
+  v17 = [(VNDetector *)self validatedImageBufferFromOptions:optionsCopy error:error];
   if (!v17)
   {
     v128 = 0;
@@ -1276,19 +1276,19 @@ uint64_t __121__VNANFDMultiDetector_processRegionOfInterest_croppedPixelBuffer_o
   v215 = 0;
   v216 = 0;
   v136 = v17;
-  v18 = [v17 width];
-  v19 = [v136 height];
+  width = [v17 width];
+  height = [v136 height];
   LODWORD(v20) = 1050253722;
   LODWORD(v21) = 2.0;
-  if ([VNFaceDetector calculateTilesForRegionOfInterest:v18 imageWidth:v19 imageHeight:3145728 tileSizeInPixels:&v218 overlapFraction:&v217 aspectRatioThreshold:&v214 columns:x rows:y tiles:width error:height, v20, v21, a7])
+  if ([VNFaceDetector calculateTilesForRegionOfInterest:width imageWidth:height imageHeight:3145728 tileSizeInPixels:&v218 overlapFraction:&v217 aspectRatioThreshold:&v214 columns:x rows:y tiles:width error:height, v20, v21, error])
   {
-    VNRecordImageTilingWarning(v149, v218, v217);
+    VNRecordImageTilingWarning(recorderCopy, v218, v217);
     v23 = v214;
     v22 = v215;
     v156 = (v215 - v214) >> 5;
     v144 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:?];
-    v135 = [objc_opt_class() detectedObjectRequestKeyToRequestInfo];
-    v24 = [v135 count];
+    detectedObjectRequestKeyToRequestInfo = [objc_opt_class() detectedObjectRequestKeyToRequestInfo];
+    v24 = [detectedObjectRequestKeyToRequestInfo count];
     v208 = 0;
     v209 = &v208;
     v210 = 0x3032000000;
@@ -1310,15 +1310,15 @@ uint64_t __121__VNANFDMultiDetector_processRegionOfInterest_croppedPixelBuffer_o
     v207 = 0;
     objc_initWeak(&location, self);
     v27 = objc_opt_class();
-    v152 = [v27 VNClassCode];
-    v143 = [v27 detectorCropCreationAsyncTasksQueue];
+    vNClassCode = [v27 VNClassCode];
+    detectorCropCreationAsyncTasksQueue = [v27 detectorCropCreationAsyncTasksQueue];
     v146 = dispatch_group_create();
-    v142 = [v27 detectorCropProcessingAsyncTasksQueue];
-    v134 = a7;
+    detectorCropProcessingAsyncTasksQueue = [v27 detectorCropProcessingAsyncTasksQueue];
+    errorCopy = error;
     v145 = dispatch_group_create();
     kdebug_trace();
     VNValidatedLog(1, @"Start processing tilesProcessingGroup. currentDetector: %@", v28, v29, v30, v31, v32, v33, self);
-    v158 = self;
+    selfCopy = self;
     if (v22 != v23)
     {
       v40 = 0;
@@ -1358,34 +1358,34 @@ uint64_t __121__VNANFDMultiDetector_processRegionOfInterest_croppedPixelBuffer_o
         block[2] = __128__VNANFDMultiDetector_internalProcessUsingQualityOfServiceClass_options_regionOfInterest_warningRecorder_error_progressHandler___block_invoke;
         block[3] = &unk_1E77B65D8;
         objc_copyWeak(v192, &location);
-        v196 = v152;
+        v196 = vNClassCode;
         v190 = v201;
         v192[1] = v41;
         v159 = v146;
         v185 = v159;
-        v197 = a3;
+        classCopy = class;
         v193 = v203;
         v194 = v204;
         v45 = v44;
         v186 = v45;
-        v46 = v149;
+        v46 = recorderCopy;
         v187 = v46;
         v191 = v198;
-        v47 = v147;
+        v47 = handlerCopy;
         v189 = v47;
         v195 = v156;
-        v48 = v143;
+        v48 = detectorCropCreationAsyncTasksQueue;
         v188 = v48;
-        v49 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, a3, 0, block);
+        v49 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, class, 0, block);
         v165[0] = MEMORY[0x1E69E9820];
         v165[1] = 3221225472;
         v165[2] = __128__VNANFDMultiDetector_internalProcessUsingQualityOfServiceClass_options_regionOfInterest_warningRecorder_error_progressHandler___block_invoke_3;
         v165[3] = &unk_1E77B5A90;
         objc_copyWeak(v178, &location);
         v173 = v201;
-        v182 = a3;
+        classCopy2 = class;
         v50 = v49;
-        v183 = v152;
+        v183 = vNClassCode;
         v51 = v50;
         v171 = v50;
         v178[1] = v41;
@@ -1403,23 +1403,23 @@ uint64_t __121__VNANFDMultiDetector_processRegionOfInterest_croppedPixelBuffer_o
         v177 = &v208;
         v169 = v144;
         v181 = v156;
-        v54 = v142;
+        v54 = detectorCropProcessingAsyncTasksQueue;
         v170 = v54;
-        v61 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, a3, 0, v165);
+        v61 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, class, 0, v165);
         if (v156 < 2)
         {
-          VNValidatedLog(1, @"Performing createRegionOfInterestCropForProcessingBlock. currentDetector: %@", v55, v56, v57, v58, v59, v60, v158);
+          VNValidatedLog(1, @"Performing createRegionOfInterestCropForProcessingBlock. currentDetector: %@", v55, v56, v57, v58, v59, v60, selfCopy);
           v51[2](v51);
-          VNValidatedLog(1, @"Performing processRegionOfInterestBlock. currentDetector: %@", v68, v69, v70, v71, v72, v73, v158);
+          VNValidatedLog(1, @"Performing processRegionOfInterestBlock. currentDetector: %@", v68, v69, v70, v71, v72, v73, selfCopy);
           v61[2](v61);
-          VNValidatedLog(1, @"Finish processing createRegionOfInterestCropForProcessingBlock and processRegionOfInterestBlock. currentDetector: %@", v74, v75, v76, v77, v78, v79, v158);
+          VNValidatedLog(1, @"Finish processing createRegionOfInterestCropForProcessingBlock and processRegionOfInterestBlock. currentDetector: %@", v74, v75, v76, v77, v78, v79, selfCopy);
         }
 
         else
         {
-          VNValidatedLog(1, @"Scheduling createRegionOfInterestCropForProcessingBlock. currentDetector: %@", v55, v56, v57, v58, v59, v60, v158);
+          VNValidatedLog(1, @"Scheduling createRegionOfInterestCropForProcessingBlock. currentDetector: %@", v55, v56, v57, v58, v59, v60, selfCopy);
           [v48 dispatchGroupAsyncByPreservingQueueCapacity:v159 block:v51];
-          VNValidatedLog(1, @"Scheduling processRegionOfInterestBlock. currentDetector: %@", v62, v63, v64, v65, v66, v67, v158);
+          VNValidatedLog(1, @"Scheduling processRegionOfInterestBlock. currentDetector: %@", v62, v63, v64, v65, v66, v67, selfCopy);
           [v54 dispatchGroupAsyncByPreservingQueueCapacity:v52 block:v61];
         }
 
@@ -1437,16 +1437,16 @@ uint64_t __121__VNANFDMultiDetector_processRegionOfInterest_croppedPixelBuffer_o
       while (v137 != v41);
     }
 
-    v80 = v158;
+    v80 = selfCopy;
     if (v156 > 1)
     {
-      VNValidatedLog(1, @"Waiting for tilesCropCreationGroup. currentDetector: %@; group: %@", v34, v35, v36, v37, v38, v39, v158);
-      if ([v143 dispatchGroupWait:v146 error:v134])
+      VNValidatedLog(1, @"Waiting for tilesCropCreationGroup. currentDetector: %@; group: %@", v34, v35, v36, v37, v38, v39, selfCopy);
+      if ([detectorCropCreationAsyncTasksQueue dispatchGroupWait:v146 error:errorCopy])
       {
-        VNValidatedLog(1, @"Waiting for tilesCropProcessingGroup. currentDetector: %@ group: %@", v81, v82, v83, v84, v85, v86, v158);
-        if ([v142 dispatchGroupWait:v145 error:v134])
+        VNValidatedLog(1, @"Waiting for tilesCropProcessingGroup. currentDetector: %@ group: %@", v81, v82, v83, v84, v85, v86, selfCopy);
+        if ([detectorCropProcessingAsyncTasksQueue dispatchGroupWait:v145 error:errorCopy])
         {
-          VNValidatedLog(1, @"Finish processing tilesCropCreationGroup and tilesCropProcessingGroup. currentDetector: %@; cropCreationGroup: %@; cropProcessingGroup: %@", v81, v82, v83, v84, v85, v86, v158);
+          VNValidatedLog(1, @"Finish processing tilesCropCreationGroup and tilesCropProcessingGroup. currentDetector: %@; cropCreationGroup: %@; cropProcessingGroup: %@", v81, v82, v83, v84, v85, v86, selfCopy);
           goto LABEL_17;
         }
 
@@ -1464,7 +1464,7 @@ uint64_t __121__VNANFDMultiDetector_processRegionOfInterest_croppedPixelBuffer_o
 
 LABEL_17:
     kdebug_trace();
-    if ([VNValidationUtilities validateAsyncStatusResults:v144 error:v134])
+    if ([VNValidationUtilities validateAsyncStatusResults:v144 error:errorCopy])
     {
       if (v156 >= 2)
       {
@@ -1491,7 +1491,7 @@ LABEL_17:
             {
               _ZZZ128__VNANFDMultiDetector_internalProcessUsingQualityOfServiceClass_options_regionOfInterest_warningRecorder_error_progressHandler__EUb_E27duplicatedObjectToBeRemoved = [MEMORY[0x1E695DFB0] null];
               __cxa_guard_release(&_ZGVZZ128__VNANFDMultiDetector_internalProcessUsingQualityOfServiceClass_options_regionOfInterest_warningRecorder_error_progressHandler__EUb_E27duplicatedObjectToBeRemoved);
-              v80 = v158;
+              v80 = selfCopy;
             }
 
             if (v92)
@@ -1586,7 +1586,7 @@ LABEL_17:
                 }
 
                 v93 = v95;
-                v80 = v158;
+                v80 = selfCopy;
               }
 
               while (v95 != v92);
@@ -1939,7 +1939,7 @@ BOOL __128__VNANFDMultiDetector_internalProcessUsingQualityOfServiceClass_option
   return *(*(*(a1 + 72) + 8) + 40) != 0;
 }
 
-- (id)applicableOptionKeyToShotflowKeyMappingsForOptions:(id)a3 error:(id *)a4
+- (id)applicableOptionKeyToShotflowKeyMappingsForOptions:(id)options error:(id *)error
 {
   v7[2] = *MEMORY[0x1E69E9840];
   v6[0] = @"VNANFDMultiDetectorProcessingOption_HumanFacePrecisionRecallThresholdOverride";
@@ -1951,14 +1951,14 @@ BOOL __128__VNANFDMultiDetector_internalProcessUsingQualityOfServiceClass_option
   return v4;
 }
 
-- (id)filterThresholdsForOptions:(id)a3 error:(id *)a4
+- (id)filterThresholdsForOptions:(id)options error:(id *)error
 {
   v33 = *MEMORY[0x1E69E9840];
-  v26 = a3;
-  v6 = [objc_opt_class() defaultFilterThresholdsForOptions:v26 error:a4];
+  optionsCopy = options;
+  v6 = [objc_opt_class() defaultFilterThresholdsForOptions:optionsCopy error:error];
   if (v6)
   {
-    v7 = [(VNANFDMultiDetector *)self applicableOptionKeyToShotflowKeyMappingsForOptions:v26 error:a4];
+    v7 = [(VNANFDMultiDetector *)self applicableOptionKeyToShotflowKeyMappingsForOptions:optionsCopy error:error];
     v25 = v7;
     if (v7)
     {
@@ -1966,9 +1966,9 @@ BOOL __128__VNANFDMultiDetector_internalProcessUsingQualityOfServiceClass_option
       v30 = 0u;
       v27 = 0u;
       v28 = 0u;
-      v8 = [v7 allKeys];
-      obj = v8;
-      v9 = [v8 countByEnumeratingWithState:&v27 objects:v32 count:16];
+      allKeys = [v7 allKeys];
+      obj = allKeys;
+      v9 = [allKeys countByEnumeratingWithState:&v27 objects:v32 count:16];
       if (v9)
       {
         v24 = *v28;
@@ -1987,11 +1987,11 @@ BOOL __128__VNANFDMultiDetector_internalProcessUsingQualityOfServiceClass_option
             v13 = v6;
             v14 = v12;
             v15 = v11;
-            v16 = v26;
+            v16 = optionsCopy;
             if (self)
             {
               v31 = 0;
-              v17 = [VNValidationUtilities getOptionalObject:&v31 ofClass:objc_opt_class() forKey:v15 inOptions:v16 error:a4];
+              v17 = [VNValidationUtilities getOptionalObject:&v31 ofClass:objc_opt_class() forKey:v15 inOptions:v16 error:error];
               v18 = v31;
               v19 = v18;
               if (v17)
@@ -2030,7 +2030,7 @@ BOOL __128__VNANFDMultiDetector_internalProcessUsingQualityOfServiceClass_option
           }
 
           while (v9 != v10);
-          v8 = obj;
+          allKeys = obj;
           v20 = [obj countByEnumeratingWithState:&v27 objects:v32 count:16];
           v9 = v20;
         }
@@ -2057,25 +2057,25 @@ LABEL_23:
   return v21;
 }
 
-- (BOOL)completeInitializationForSession:(id)a3 error:(id *)a4
+- (BOOL)completeInitializationForSession:(id)session error:(id *)error
 {
   v27[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  sessionCopy = session;
   v25.receiver = self;
   v25.super_class = VNANFDMultiDetector;
-  if ([(VNEspressoModelFileBasedDetector *)&v25 completeInitializationForSession:v6 error:a4])
+  if ([(VNEspressoModelFileBasedDetector *)&v25 completeInitializationForSession:sessionCopy error:error])
   {
-    v7 = [(VNEspressoModelFileBasedDetector *)self espressoResources];
-    v8 = [objc_opt_class() detectorClass];
-    v9 = [v7 network];
-    v11 = [v8 processingDeviceDetectorWithEspressoNetwork:v9 espressoPlan:{v10, objc_msgSend(v7, "plan")}];
+    espressoResources = [(VNEspressoModelFileBasedDetector *)self espressoResources];
+    detectorClass = [objc_opt_class() detectorClass];
+    network = [espressoResources network];
+    v11 = [detectorClass processingDeviceDetectorWithEspressoNetwork:network espressoPlan:{v10, objc_msgSend(espressoResources, "plan")}];
     mMultiHeadedANFDDetector = self->_mMultiHeadedANFDDetector;
     self->_mMultiHeadedANFDDetector = v11;
 
     if (self->_mMultiHeadedANFDDetector)
     {
       v13 = objc_opt_class();
-      if (([v13 isEqual:objc_opt_class()] & 1) != 0 || (-[VNDetector configurationOptions](self, "configurationOptions"), v14 = objc_claimAutoreleasedReturnValue(), +[VNFaceBBoxAligner supportedComputeStageDevicesForOptions:error:](VNFaceBBoxAligner, "supportedComputeStageDevicesForOptions:error:", v14, a4), v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v14, "mutableCopy"), v26 = @"VNComputeStageMain", objc_msgSend(v15, "objectForKeyedSubscript:"), v17 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v17, "firstObject"), v18 = objc_claimAutoreleasedReturnValue(), v27[0] = v18, objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v27, &v26, 1), v19 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v16, "setObject:forKeyedSubscript:", v19, @"VNDetectorOption_ComputeStageDeviceAssignments"), v19, v18, v17, objc_msgSend(v6, "detectorOfType:configuredWithOptions:error:", @"VNFaceBoxAlignerType", v16, a4), v20 = objc_claimAutoreleasedReturnValue(), faceBBoxAligner = self->_faceBBoxAligner, self->_faceBBoxAligner = v20, faceBBoxAligner, v22 = self->_faceBBoxAligner == 0, v16, v15, v14, !v22))
+      if (([v13 isEqual:objc_opt_class()] & 1) != 0 || (-[VNDetector configurationOptions](self, "configurationOptions"), v14 = objc_claimAutoreleasedReturnValue(), +[VNFaceBBoxAligner supportedComputeStageDevicesForOptions:error:](VNFaceBBoxAligner, "supportedComputeStageDevicesForOptions:error:", v14, error), v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v14, "mutableCopy"), v26 = @"VNComputeStageMain", objc_msgSend(v15, "objectForKeyedSubscript:"), v17 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v17, "firstObject"), v18 = objc_claimAutoreleasedReturnValue(), v27[0] = v18, objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v27, &v26, 1), v19 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v16, "setObject:forKeyedSubscript:", v19, @"VNDetectorOption_ComputeStageDeviceAssignments"), v19, v18, v17, objc_msgSend(sessionCopy, "detectorOfType:configuredWithOptions:error:", @"VNFaceBoxAlignerType", v16, error), v20 = objc_claimAutoreleasedReturnValue(), faceBBoxAligner = self->_faceBBoxAligner, self->_faceBBoxAligner = v20, faceBBoxAligner, v22 = self->_faceBBoxAligner == 0, v16, v15, v14, !v22))
       {
         v23 = 1;
 LABEL_10:
@@ -2084,10 +2084,10 @@ LABEL_10:
       }
     }
 
-    else if (a4)
+    else if (error)
     {
       [VNError errorForInternalErrorWithLocalizedDescription:@"Failure to create multi-headed object detector."];
-      *a4 = v23 = 0;
+      *error = v23 = 0;
       goto LABEL_10;
     }
 

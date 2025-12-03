@@ -8,7 +8,7 @@
 
 - (NSString)largeContentTitle
 {
-  v2 = self;
+  selfCopy = self;
   sub_257E563DC();
 
   v3 = sub_257ECF4C0();
@@ -25,7 +25,7 @@
 
 - (NSString)accessibilityLabel
 {
-  v2 = self;
+  selfCopy = self;
   sub_257E5755C();
   v4 = v3;
 

@@ -1,13 +1,13 @@
 @interface VUIMediaItemEntityTypesFetchControllerOperation
-+ (id)_changeSetFromMediaItemEntityTypes:(id)a3 toMediaItemEntityTypes:(id)a4;
-- (VUIMediaItemEntityTypesFetchControllerOperation)initWithMediaLibrary:(id)a3;
-- (VUIMediaItemEntityTypesFetchControllerOperation)initWithMediaLibrary:(id)a3 fetchReason:(int64_t)a4;
++ (id)_changeSetFromMediaItemEntityTypes:(id)types toMediaItemEntityTypes:(id)entityTypes;
+- (VUIMediaItemEntityTypesFetchControllerOperation)initWithMediaLibrary:(id)library;
+- (VUIMediaItemEntityTypesFetchControllerOperation)initWithMediaLibrary:(id)library fetchReason:(int64_t)reason;
 - (void)executionDidBegin;
 @end
 
 @implementation VUIMediaItemEntityTypesFetchControllerOperation
 
-- (VUIMediaItemEntityTypesFetchControllerOperation)initWithMediaLibrary:(id)a3
+- (VUIMediaItemEntityTypesFetchControllerOperation)initWithMediaLibrary:(id)library
 {
   v4 = MEMORY[0x1E695DF30];
   v5 = *MEMORY[0x1E695D940];
@@ -17,14 +17,14 @@
   return 0;
 }
 
-- (VUIMediaItemEntityTypesFetchControllerOperation)initWithMediaLibrary:(id)a3 fetchReason:(int64_t)a4
+- (VUIMediaItemEntityTypesFetchControllerOperation)initWithMediaLibrary:(id)library fetchReason:(int64_t)reason
 {
   v6.receiver = self;
   v6.super_class = VUIMediaItemEntityTypesFetchControllerOperation;
-  result = [(VUIMediaLibraryOperation *)&v6 initWithMediaLibrary:a3];
+  result = [(VUIMediaLibraryOperation *)&v6 initWithMediaLibrary:library];
   if (result)
   {
-    result->_fetchReason = a4;
+    result->_fetchReason = reason;
   }
 
   return result;
@@ -33,13 +33,13 @@
 - (void)executionDidBegin
 {
   objc_initWeak(&location, self);
-  v3 = [(VUIMediaLibraryOperation *)self mediaLibrary];
+  mediaLibrary = [(VUIMediaLibraryOperation *)self mediaLibrary];
   v5 = MEMORY[0x1E69E9820];
   v6 = 3221225472;
   v7 = __68__VUIMediaItemEntityTypesFetchControllerOperation_executionDidBegin__block_invoke;
   v8 = &unk_1E87325F8;
   objc_copyWeak(&v9, &location);
-  v4 = [v3 enqueueMediaItemEntityTypesFetchWithCompletionHandler:&v5];
+  v4 = [mediaLibrary enqueueMediaItemEntityTypesFetchWithCompletionHandler:&v5];
 
   [(VUIMediaLibraryOperation *)self setAsyncWorkToken:v4, v5, v6, v7, v8];
   objc_destroyWeak(&v9);
@@ -96,13 +96,13 @@ void __68__VUIMediaItemEntityTypesFetchControllerOperation_executionDidBegin__bl
   }
 }
 
-+ (id)_changeSetFromMediaItemEntityTypes:(id)a3 toMediaItemEntityTypes:(id)a4
++ (id)_changeSetFromMediaItemEntityTypes:(id)types toMediaItemEntityTypes:(id)entityTypes
 {
   v5 = MEMORY[0x1E69DF6B0];
-  v6 = a4;
-  v7 = a3;
+  entityTypesCopy = entityTypes;
+  typesCopy = types;
   v8 = objc_alloc_init(v5);
-  v9 = [v8 changeSetFromObjects:v7 toObjects:v6 identifierBlock:&__block_literal_global_80 isEqualBlock:0];
+  v9 = [v8 changeSetFromObjects:typesCopy toObjects:entityTypesCopy identifierBlock:&__block_literal_global_80 isEqualBlock:0];
 
   return v9;
 }

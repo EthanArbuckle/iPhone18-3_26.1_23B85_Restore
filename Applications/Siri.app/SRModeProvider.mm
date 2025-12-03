@@ -36,8 +36,8 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%s #modes %@", &v13, 0x16u);
   }
 
-  v5 = [(SRModeProvider *)self internalModeOverride];
-  if (v5 == -1)
+  internalModeOverride = [(SRModeProvider *)self internalModeOverride];
+  if (internalModeOverride == -1)
   {
     if ([(SRModeSystemState *)self->_systemState isVoiceTriggerRequest]|| ![(SRModeSystemState *)self->_systemState userTypedInSiri]&& ![(SRModeSystemState *)self->_systemState userTouchedSnippet]&& ([(SRModeSystemState *)self->_systemState isConnectedToCarPlay]|| [(SRModeSystemState *)self->_systemState isForCarDND]|| [(SRModeSystemState *)self->_systemState isEyesFree]|| [(SRModeSystemState *)self->_systemState isConnectedToAudioAccessory]|| [(SRModeSystemState *)self->_systemState isScreenOffBeforeRequest]))
     {
@@ -52,7 +52,7 @@
 
   else
   {
-    v6 = v5;
+    v6 = internalModeOverride;
     v7 = AFSiriLogContextConnection;
     if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEFAULT))
     {
@@ -92,10 +92,10 @@
     return 0;
   }
 
-  v4 = [(SRModeSystemState *)self->_systemState voiceFeedbackSetting];
-  if (v4 != 1)
+  voiceFeedbackSetting = [(SRModeSystemState *)self->_systemState voiceFeedbackSetting];
+  if (voiceFeedbackSetting != 1)
   {
-    if (v4 || [(SRModeSystemState *)self->_systemState isScreenOffBeforeRequest]&& [(SRModeSystemState *)self->_systemState isConnectedToAudioAccessory])
+    if (voiceFeedbackSetting || [(SRModeSystemState *)self->_systemState isScreenOffBeforeRequest]&& [(SRModeSystemState *)self->_systemState isConnectedToAudioAccessory])
     {
       return 1;
     }
@@ -122,10 +122,10 @@
 - (BOOL)displayOnlyModeForInterstitialsAndErrors
 {
   v3 = +[AFAccessibilityObserver sharedObserver];
-  v4 = [v3 state];
-  v5 = [v4 isVoiceOverTouchEnabled];
+  state = [v3 state];
+  isVoiceOverTouchEnabled = [state isVoiceOverTouchEnabled];
 
-  if (v5 == 2)
+  if (isVoiceOverTouchEnabled == 2)
   {
     v6 = AFSiriLogContextConnection;
     if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEFAULT))
@@ -199,10 +199,10 @@ LABEL_10:
     goto LABEL_9;
   }
 
-  v10 = [(SRModeSystemState *)self->_systemState isDeviceSilentMode];
+  isDeviceSilentMode = [(SRModeSystemState *)self->_systemState isDeviceSilentMode];
   v6 = AFSiriLogContextConnection;
   v11 = os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEFAULT);
-  if ((v10 & 1) == 0)
+  if ((isDeviceSilentMode & 1) == 0)
   {
     if (!v11)
     {
@@ -237,31 +237,31 @@ LABEL_11:
 
   v2 = [[NSUserDefaults alloc] initWithSuiteName:@"com.apple.siri.internal"];
   v3 = [v2 stringForKey:@"ModeOverride"];
-  v4 = [v3 lowercaseString];
+  lowercaseString = [v3 lowercaseString];
 
-  if ([v4 isEqualToString:@"silent"] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"displayonly"))
+  if ([lowercaseString isEqualToString:@"silent"] & 1) != 0 || (objc_msgSend(lowercaseString, "isEqualToString:", @"displayonly"))
   {
     v5 = 2;
   }
 
-  else if ([v4 isEqualToString:@"mixed"] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"displayforward"))
+  else if ([lowercaseString isEqualToString:@"mixed"] & 1) != 0 || (objc_msgSend(lowercaseString, "isEqualToString:", @"displayforward"))
   {
     v5 = 1;
   }
 
-  else if ([v4 isEqualToString:@"voice"] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"voiceonly") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"voiceforward"))
+  else if ([lowercaseString isEqualToString:@"voice"] & 1) != 0 || (objc_msgSend(lowercaseString, "isEqualToString:", @"voiceonly") & 1) != 0 || (objc_msgSend(lowercaseString, "isEqualToString:", @"voiceforward"))
   {
     v5 = 0;
   }
 
   else
   {
-    if (v4)
+    if (lowercaseString)
     {
       v7 = AFSiriLogContextConnection;
       if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_ERROR))
       {
-        sub_1000CC200(v4, v7);
+        sub_1000CC200(lowercaseString, v7);
       }
     }
 

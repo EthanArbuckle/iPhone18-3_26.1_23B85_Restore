@@ -1,7 +1,7 @@
 @interface SSPurchasableItem
 + (id)allPropertyKeys;
 - (BOOL)isHidden;
-- (SSPurchasableItem)initWithPropertyValues:(id)a3;
+- (SSPurchasableItem)initWithPropertyValues:(id)values;
 - (id)datePurchased;
 - (id)description;
 - (id)propertyValues;
@@ -13,12 +13,12 @@
 
 @implementation SSPurchasableItem
 
-- (SSPurchasableItem)initWithPropertyValues:(id)a3
+- (SSPurchasableItem)initWithPropertyValues:(id)values
 {
   v4 = [(SSPurchasableItem *)self init];
   if (v4)
   {
-    v4->_propertyValues = [a3 copy];
+    v4->_propertyValues = [values copy];
   }
 
   return v4;

@@ -1,67 +1,67 @@
 @interface PKPlaceholderPassConfiguration
-- (PKPlaceholderPassConfiguration)initWithCoder:(id)a3;
-- (PKPlaceholderPassConfiguration)initWithSubcredential:(id)a3 automaticSelectionCriterion:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (PKPlaceholderPassConfiguration)initWithCoder:(id)coder;
+- (PKPlaceholderPassConfiguration)initWithSubcredential:(id)subcredential automaticSelectionCriterion:(id)criterion;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPlaceholderPassConfiguration
 
-- (PKPlaceholderPassConfiguration)initWithSubcredential:(id)a3 automaticSelectionCriterion:(id)a4
+- (PKPlaceholderPassConfiguration)initWithSubcredential:(id)subcredential automaticSelectionCriterion:(id)criterion
 {
-  v7 = a3;
-  v8 = a4;
-  if (v7)
+  subcredentialCopy = subcredential;
+  criterionCopy = criterion;
+  if (subcredentialCopy)
   {
     v9 = [(PKPlaceholderPassConfiguration *)self init];
     v10 = v9;
     if (v9)
     {
-      objc_storeStrong(&v9->_subcredential, a3);
-      objc_storeStrong(&v10->_automaticSelectionCriterion, a4);
+      objc_storeStrong(&v9->_subcredential, subcredential);
+      objc_storeStrong(&v10->_automaticSelectionCriterion, criterion);
       v10->_paymentApplicationState = [(PKAppletSubcredential *)v10->_subcredential state];
     }
 
     self = v10;
-    v11 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   subcredential = self->_subcredential;
-  v5 = a3;
-  [v5 encodeObject:subcredential forKey:@"subcredential"];
-  [v5 encodeObject:self->_automaticSelectionCriterion forKey:@"automaticSelectionCriterion"];
-  [v5 encodeInteger:self->_paymentApplicationState forKey:@"paymentApplicationState"];
-  [v5 encodeObject:self->_associatedApplicationIdentifiers forKey:@"associatedApplicationIdentifiers"];
+  coderCopy = coder;
+  [coderCopy encodeObject:subcredential forKey:@"subcredential"];
+  [coderCopy encodeObject:self->_automaticSelectionCriterion forKey:@"automaticSelectionCriterion"];
+  [coderCopy encodeInteger:self->_paymentApplicationState forKey:@"paymentApplicationState"];
+  [coderCopy encodeObject:self->_associatedApplicationIdentifiers forKey:@"associatedApplicationIdentifiers"];
 }
 
-- (PKPlaceholderPassConfiguration)initWithCoder:(id)a3
+- (PKPlaceholderPassConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(PKPlaceholderPassConfiguration *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"subcredential"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"subcredential"];
     subcredential = v5->_subcredential;
     v5->_subcredential = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"automaticSelectionCriterion"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"automaticSelectionCriterion"];
     automaticSelectionCriterion = v5->_automaticSelectionCriterion;
     v5->_automaticSelectionCriterion = v8;
 
-    v5->_paymentApplicationState = [v4 decodeIntegerForKey:@"paymentApplicationState"];
+    v5->_paymentApplicationState = [coderCopy decodeIntegerForKey:@"paymentApplicationState"];
     v10 = MEMORY[0x1E695DFD8];
     v11 = objc_opt_class();
     v12 = [v10 setWithObjects:{v11, objc_opt_class(), 0}];
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"associatedApplicationIdentifiers"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"associatedApplicationIdentifiers"];
     associatedApplicationIdentifiers = v5->_associatedApplicationIdentifiers;
     v5->_associatedApplicationIdentifiers = v13;
   }

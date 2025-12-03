@@ -1,31 +1,31 @@
 @interface PREResponsesExperimentMessage
-- (BOOL)isEqual:(id)a3;
-- (PREResponsesExperimentMessage)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (PREResponsesExperimentMessage)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PREResponsesExperimentMessage
 
 - (unint64_t)hash
 {
-  v3 = [(PREResponsesExperimentMessage *)self title];
-  v4 = [v3 hash];
-  v5 = [(PREResponsesExperimentMessage *)self senderIdentifier];
-  v6 = v4 + [v5 hash];
-  v7 = [(PREResponsesExperimentMessage *)self summaryString];
-  v8 = [v7 hash];
-  v9 = [(PREResponsesExperimentMessage *)self dateSent];
-  v10 = v6 + v8 + [v9 hash];
+  title = [(PREResponsesExperimentMessage *)self title];
+  v4 = [title hash];
+  senderIdentifier = [(PREResponsesExperimentMessage *)self senderIdentifier];
+  v6 = v4 + [senderIdentifier hash];
+  summaryString = [(PREResponsesExperimentMessage *)self summaryString];
+  v8 = [summaryString hash];
+  dateSent = [(PREResponsesExperimentMessage *)self dateSent];
+  v10 = v6 + v8 + [dateSent hash];
 
   return v10 + 31;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -35,25 +35,25 @@
     v5 = objc_opt_class();
     if (v5 == objc_opt_class())
     {
-      v7 = v4;
+      v7 = equalCopy;
       v8 = [(PREResponsesExperimentMessage *)self hash];
       if (v8 == [(PREResponsesExperimentMessage *)v7 hash])
       {
         title = self->_title;
-        v10 = [(PREResponsesExperimentMessage *)v7 title];
-        if ([(NSString *)title isEqualToString:v10])
+        title = [(PREResponsesExperimentMessage *)v7 title];
+        if ([(NSString *)title isEqualToString:title])
         {
           senderIdentifier = self->_senderIdentifier;
-          v12 = [(PREResponsesExperimentMessage *)v7 senderIdentifier];
-          if ([(NSString *)senderIdentifier isEqualToString:v12])
+          senderIdentifier = [(PREResponsesExperimentMessage *)v7 senderIdentifier];
+          if ([(NSString *)senderIdentifier isEqualToString:senderIdentifier])
           {
             summaryString = self->_summaryString;
-            v14 = [(PREResponsesExperimentMessage *)v7 summaryString];
-            if ([(NSString *)summaryString isEqualToString:v14]&& (tapBack = self->_tapBack, tapBack == [(PREResponsesExperimentMessage *)v7 isTapBack]) && (emote = self->_emote, emote == [(PREResponsesExperimentMessage *)v7 isEmote]) && (read = self->_read, read == [(PREResponsesExperimentMessage *)v7 isRead]))
+            summaryString = [(PREResponsesExperimentMessage *)v7 summaryString];
+            if ([(NSString *)summaryString isEqualToString:summaryString]&& (tapBack = self->_tapBack, tapBack == [(PREResponsesExperimentMessage *)v7 isTapBack]) && (emote = self->_emote, emote == [(PREResponsesExperimentMessage *)v7 isEmote]) && (read = self->_read, read == [(PREResponsesExperimentMessage *)v7 isRead]))
             {
               dateSent = self->_dateSent;
-              v19 = [(PREResponsesExperimentMessage *)v7 dateSent];
-              v6 = [(NSDate *)dateSent isEqualToDate:v19];
+              dateSent = [(PREResponsesExperimentMessage *)v7 dateSent];
+              v6 = [(NSDate *)dateSent isEqualToDate:dateSent];
             }
 
             else
@@ -89,7 +89,7 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_new();
   v5 = [(NSString *)self->_title copy];
@@ -110,33 +110,33 @@
   return v4;
 }
 
-- (PREResponsesExperimentMessage)initWithCoder:(id)a3
+- (PREResponsesExperimentMessage)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = PREResponsesExperimentMessage;
   v5 = [(PREResponsesExperimentMessage *)&v19 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"title"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"title"];
     v7 = [v6 copy];
     title = v5->_title;
     v5->_title = v7;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"senderIdentifier"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"senderIdentifier"];
     v10 = [v9 copy];
     senderIdentifier = v5->_senderIdentifier;
     v5->_senderIdentifier = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"summaryString"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"summaryString"];
     v13 = [v12 copy];
     summaryString = v5->_summaryString;
     v5->_summaryString = v13;
 
-    v5->_tapBack = [v4 decodeBoolForKey:@"tapBack"];
-    v5->_emote = [v4 decodeBoolForKey:@"emote"];
-    v5->_read = [v4 decodeBoolForKey:@"read"];
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dateSent"];
+    v5->_tapBack = [coderCopy decodeBoolForKey:@"tapBack"];
+    v5->_emote = [coderCopy decodeBoolForKey:@"emote"];
+    v5->_read = [coderCopy decodeBoolForKey:@"read"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dateSent"];
     dateSent = v5->_dateSent;
     v5->_dateSent = v15;
 
@@ -146,17 +146,17 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   title = self->_title;
-  v5 = a3;
-  [v5 encodeObject:title forKey:@"title"];
-  [v5 encodeObject:self->_senderIdentifier forKey:@"senderIdentifier"];
-  [v5 encodeObject:self->_summaryString forKey:@"summaryString"];
-  [v5 encodeBool:self->_tapBack forKey:@"tapBack"];
-  [v5 encodeBool:self->_emote forKey:@"emote"];
-  [v5 encodeBool:self->_read forKey:@"read"];
-  [v5 encodeObject:self->_dateSent forKey:@"dateSent"];
+  coderCopy = coder;
+  [coderCopy encodeObject:title forKey:@"title"];
+  [coderCopy encodeObject:self->_senderIdentifier forKey:@"senderIdentifier"];
+  [coderCopy encodeObject:self->_summaryString forKey:@"summaryString"];
+  [coderCopy encodeBool:self->_tapBack forKey:@"tapBack"];
+  [coderCopy encodeBool:self->_emote forKey:@"emote"];
+  [coderCopy encodeBool:self->_read forKey:@"read"];
+  [coderCopy encodeObject:self->_dateSent forKey:@"dateSent"];
 }
 
 @end

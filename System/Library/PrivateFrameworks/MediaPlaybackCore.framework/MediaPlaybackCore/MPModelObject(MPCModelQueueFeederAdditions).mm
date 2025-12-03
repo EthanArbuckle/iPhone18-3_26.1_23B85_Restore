@@ -9,9 +9,9 @@
 {
   if (MSVDeviceOSIsInternalInstall())
   {
-    v4 = [MEMORY[0x1E696AAA8] currentHandler];
-    v5 = NSStringFromClass(a1);
-    [v4 handleFailureInMethod:a2 object:a1 file:@"MPCModelQueueFeeder.m" lineNumber:1446 description:{@"Could not discern required properties for %@", v5}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    v5 = NSStringFromClass(self);
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPCModelQueueFeeder.m" lineNumber:1446 description:{@"Could not discern required properties for %@", v5}];
   }
 
   v6 = MEMORY[0x1E69708B0];
@@ -23,9 +23,9 @@
 {
   if (MSVDeviceOSIsInternalInstall())
   {
-    v4 = [MEMORY[0x1E696AAA8] currentHandler];
-    v5 = NSStringFromClass(a1);
-    [v4 handleFailureInMethod:a2 object:a1 file:@"MPCModelQueueFeeder.m" lineNumber:1439 description:{@"Could not discern required properties for %@", v5}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    v5 = NSStringFromClass(self);
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPCModelQueueFeeder.m" lineNumber:1439 description:{@"Could not discern required properties for %@", v5}];
   }
 
   v6 = MEMORY[0x1E69708B0];

@@ -1,19 +1,19 @@
 @interface HMMutableMediaDestinationControllerData
 + (id)logCategory;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation HMMutableMediaDestinationControllerData
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [HMMediaDestinationControllerData allocWithZone:a3];
-  v5 = [(HMMediaDestinationControllerData *)self identifier];
-  v6 = [(HMMediaDestinationControllerData *)self parentIdentifier];
-  v7 = [(HMMediaDestinationControllerData *)self destinationIdentifier];
-  v8 = [(HMMediaDestinationControllerData *)self supportedOptions];
-  v9 = [(HMMediaDestinationControllerData *)self availableDestinationIdentifiers];
-  v10 = [(HMMediaDestinationControllerData *)v4 initWithIdentifier:v5 parentIdentifier:v6 destinationIdentifier:v7 supportedOptions:v8 availableDestinationIdentifiers:v9];
+  v4 = [HMMediaDestinationControllerData allocWithZone:zone];
+  identifier = [(HMMediaDestinationControllerData *)self identifier];
+  parentIdentifier = [(HMMediaDestinationControllerData *)self parentIdentifier];
+  destinationIdentifier = [(HMMediaDestinationControllerData *)self destinationIdentifier];
+  supportedOptions = [(HMMediaDestinationControllerData *)self supportedOptions];
+  availableDestinationIdentifiers = [(HMMediaDestinationControllerData *)self availableDestinationIdentifiers];
+  v10 = [(HMMediaDestinationControllerData *)v4 initWithIdentifier:identifier parentIdentifier:parentIdentifier destinationIdentifier:destinationIdentifier supportedOptions:supportedOptions availableDestinationIdentifiers:availableDestinationIdentifiers];
 
   return v10;
 }

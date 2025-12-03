@@ -1,44 +1,44 @@
 @interface CADFetchedObjectSerializer
-- (CADFetchedObjectSerializer)initWithConnection:(id)a3 defaultPropertiesToLoad:(id)a4 relatedObjectPropertiesToLoad:(id)a5;
+- (CADFetchedObjectSerializer)initWithConnection:(id)connection defaultPropertiesToLoad:(id)load relatedObjectPropertiesToLoad:(id)toLoad;
 - (NSArray)fetchedObjectWrappers;
-- (id)_fetchedObjectDictionaryForEntity:(void *)a3;
-- (id)_properties:(id)a3 forEntityIfNotSeen:(void *)a4 objectExists:(BOOL *)a5;
-- (id)addEntity:(void *)a3;
+- (id)_fetchedObjectDictionaryForEntity:(void *)entity;
+- (id)_properties:(id)_properties forEntityIfNotSeen:(void *)seen objectExists:(BOOL *)exists;
+- (id)addEntity:(void *)entity;
 @end
 
 @implementation CADFetchedObjectSerializer
 
 - (NSArray)fetchedObjectWrappers
 {
-  v2 = [(CADFetchedObjectSerializer *)self wrappers];
-  v3 = [v2 copy];
+  wrappers = [(CADFetchedObjectSerializer *)self wrappers];
+  v3 = [wrappers copy];
 
   return v3;
 }
 
-- (CADFetchedObjectSerializer)initWithConnection:(id)a3 defaultPropertiesToLoad:(id)a4 relatedObjectPropertiesToLoad:(id)a5
+- (CADFetchedObjectSerializer)initWithConnection:(id)connection defaultPropertiesToLoad:(id)load relatedObjectPropertiesToLoad:(id)toLoad
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  connectionCopy = connection;
+  loadCopy = load;
+  toLoadCopy = toLoad;
   v23.receiver = self;
   v23.super_class = CADFetchedObjectSerializer;
   v12 = [(CADFetchedObjectSerializer *)&v23 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_connection, a3);
-    v14 = [v10 copy];
+    objc_storeStrong(&v12->_connection, connection);
+    v14 = [loadCopy copy];
     defaultPropertiesToLoad = v13->_defaultPropertiesToLoad;
     v13->_defaultPropertiesToLoad = v14;
 
-    v16 = [v11 copy];
+    v16 = [toLoadCopy copy];
     relatedObjectPropertiesToLoad = v13->_relatedObjectPropertiesToLoad;
     v13->_relatedObjectPropertiesToLoad = v16;
 
-    v18 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     wrappers = v13->_wrappers;
-    v13->_wrappers = v18;
+    v13->_wrappers = array;
 
     v20 = [MEMORY[0x277CBEB58] set];
     seenObjectIDs = v13->_seenObjectIDs;
@@ -48,10 +48,10 @@
   return v13;
 }
 
-- (id)addEntity:(void *)a3
+- (id)addEntity:(void *)entity
 {
   v29 = *MEMORY[0x277D85DE8];
-  v5 = CFGetTypeID(a3);
+  v5 = CFGetTypeID(entity);
   TypeID = CalEventOccurrenceGetTypeID();
   if (v5 == TypeID)
   {
@@ -61,8 +61,8 @@ LABEL_5:
     CalEventOccurrenceGetDate();
     v10 = v9;
     LOBYTE(v26) = 0;
-    v11 = [(CADFetchedObjectSerializer *)self defaultPropertiesToLoad];
-    v12 = [(CADFetchedObjectSerializer *)self _properties:v11 forEntityIfNotSeen:Event objectExists:&v26];
+    defaultPropertiesToLoad = [(CADFetchedObjectSerializer *)self defaultPropertiesToLoad];
+    v12 = [(CADFetchedObjectSerializer *)self _properties:defaultPropertiesToLoad forEntityIfNotSeen:Event objectExists:&v26];
 
     if (v26 == 1)
     {
@@ -97,12 +97,12 @@ LABEL_5:
   }
 
   LOBYTE(v26) = 0;
-  v14 = [(CADFetchedObjectSerializer *)self defaultPropertiesToLoad];
-  v15 = [(CADFetchedObjectSerializer *)self _properties:v14 forEntityIfNotSeen:a3 objectExists:&v26];
+  defaultPropertiesToLoad2 = [(CADFetchedObjectSerializer *)self defaultPropertiesToLoad];
+  v15 = [(CADFetchedObjectSerializer *)self _properties:defaultPropertiesToLoad2 forEntityIfNotSeen:entity objectExists:&v26];
 
   if (v26 == 1)
   {
-    v13 = [[CADEntityWrapper alloc] initWithCalEntity:a3 loadedValues:v15];
+    v13 = [[CADEntityWrapper alloc] initWithCalEntity:entity loadedValues:v15];
   }
 
   else
@@ -123,29 +123,29 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  v19 = [(CADEntityWrapper *)v13 objectID];
-  v20 = [v19 entityType];
+  objectID = [(CADEntityWrapper *)v13 objectID];
+  entityType = [objectID entityType];
 
-  if ((v20 + 1) <= 1)
+  if ((entityType + 1) <= 1)
   {
     v21 = CADLogHandle;
     if (os_log_type_enabled(CADLogHandle, OS_LOG_TYPE_ERROR))
     {
       v22 = v21;
-      v23 = [(CADEntityWrapper *)v13 objectID];
-      v24 = [v23 entityID];
+      objectID2 = [(CADEntityWrapper *)v13 objectID];
+      entityID = [objectID2 entityID];
       LODWORD(v26) = 67109376;
-      HIDWORD(v26) = v24;
+      HIDWORD(v26) = entityID;
       v27 = 1024;
-      v28 = v20;
+      v28 = entityType;
       _os_log_impl(&dword_22430B000, v22, OS_LOG_TYPE_ERROR, "Entity with rowID = %d has unexpected entity type = %d. Filtering out of search results.", &v26, 0xEu);
     }
 
     goto LABEL_17;
   }
 
-  v25 = [(CADFetchedObjectSerializer *)self wrappers];
-  [v25 addObject:v13];
+  wrappers = [(CADFetchedObjectSerializer *)self wrappers];
+  [wrappers addObject:v13];
 
   v16 = v13;
 LABEL_18:
@@ -155,17 +155,17 @@ LABEL_18:
   return v16;
 }
 
-- (id)_properties:(id)a3 forEntityIfNotSeen:(void *)a4 objectExists:(BOOL *)a5
+- (id)_properties:(id)_properties forEntityIfNotSeen:(void *)seen objectExists:(BOOL *)exists
 {
   v64 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = v8;
-  if (a5)
+  _propertiesCopy = _properties;
+  v9 = _propertiesCopy;
+  if (exists)
   {
-    *a5 = 1;
+    *exists = 1;
   }
 
-  if (![v8 count])
+  if (![_propertiesCopy count])
   {
     goto LABEL_9;
   }
@@ -191,8 +191,8 @@ LABEL_9:
   }
 
   v13 = [objc_alloc(MEMORY[0x277CF74C8]) initWithEntityType:Type entityID:ID databaseID:CalDatabaseGetAuxilliaryDatabaseID()];
-  v14 = [(CADFetchedObjectSerializer *)self seenObjectIDs];
-  v15 = [v14 containsObject:v13];
+  seenObjectIDs = [(CADFetchedObjectSerializer *)self seenObjectIDs];
+  v15 = [seenObjectIDs containsObject:v13];
 
   if (v15)
   {
@@ -201,9 +201,9 @@ LABEL_9:
 
   else
   {
-    v18 = [(CADFetchedObjectSerializer *)self seenObjectIDs];
+    seenObjectIDs2 = [(CADFetchedObjectSerializer *)self seenObjectIDs];
     v42 = v13;
-    [v18 addObject:v13];
+    [seenObjectIDs2 addObject:v13];
 
     v19 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v9, "count")}];
     v55 = 0u;
@@ -216,8 +216,8 @@ LABEL_9:
     if (v49)
     {
       v48 = *v56;
-      v44 = a4;
-      v45 = a5;
+      seenCopy = seen;
+      existsCopy = exists;
       v46 = v19;
       while (2)
       {
@@ -230,15 +230,15 @@ LABEL_9:
 
           v21 = *(*(&v55 + 1) + 8 * i);
           cf = 0;
-          v22 = CalEntityCopyProperty(self->_connection, a4, v21, &cf);
+          v22 = CalEntityCopyProperty(self->_connection, seen, v21, &cf);
           if (v22)
           {
             v23 = v22;
             if (CalEntityIsDeleted())
             {
-              if (a5)
+              if (exists)
               {
-                *a5 = 0;
+                *exists = 0;
               }
 
               v16 = 0;
@@ -255,8 +255,8 @@ LABEL_9:
               _os_log_impl(&dword_22430B000, v24, OS_LOG_TYPE_ERROR, "Unable to fetch property with name %{public}@, %d", buf, 0x12u);
             }
 
-            v25 = [MEMORY[0x277CBEB68] null];
-            [v19 addObject:v25];
+            null = [MEMORY[0x277CBEB68] null];
+            [v19 addObject:null];
           }
 
           else
@@ -321,25 +321,25 @@ LABEL_9:
 
                 CFRelease(cf);
                 cf = v30;
-                a4 = v44;
-                a5 = v45;
+                seen = seenCopy;
+                exists = existsCopy;
               }
             }
 
             v19 = v46;
             if (cf)
             {
-              v39 = cf;
+              null2 = cf;
             }
 
             else
             {
 LABEL_38:
-              v39 = [MEMORY[0x277CBEB68] null];
+              null2 = [MEMORY[0x277CBEB68] null];
             }
 
-            v25 = v39;
-            [v19 addObject:v39];
+            null = null2;
+            [v19 addObject:null2];
             if (cf)
             {
               CFRelease(cf);
@@ -370,7 +370,7 @@ LABEL_49:
   return v16;
 }
 
-- (id)_fetchedObjectDictionaryForEntity:(void *)a3
+- (id)_fetchedObjectDictionaryForEntity:(void *)entity
 {
   v25 = *MEMORY[0x277D85DE8];
   Type = CalEntityGetType();
@@ -392,12 +392,12 @@ LABEL_49:
 
   else
   {
-    v7 = [(CADFetchedObjectSerializer *)self relatedObjectPropertiesToLoad];
+    relatedObjectPropertiesToLoad = [(CADFetchedObjectSerializer *)self relatedObjectPropertiesToLoad];
     v8 = [MEMORY[0x277CCABB0] numberWithInt:Type];
-    v9 = [v7 objectForKeyedSubscript:v8];
+    v9 = [relatedObjectPropertiesToLoad objectForKeyedSubscript:v8];
 
     v20 = 0;
-    v10 = [(CADFetchedObjectSerializer *)self _properties:v9 forEntityIfNotSeen:a3 objectExists:&v20];
+    v10 = [(CADFetchedObjectSerializer *)self _properties:v9 forEntityIfNotSeen:entity objectExists:&v20];
     v11 = v10;
     if (v20)
     {

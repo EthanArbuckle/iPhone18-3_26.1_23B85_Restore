@@ -1,28 +1,28 @@
 @interface STCommunicationSafetyViewModelCoordinator
-- (STCommunicationSafetyViewModelCoordinator)initWithPersistenceController:(id)a3 userDSID:(id)a4 currentAccountIsProto:(BOOL)a5 modelUpdatedHandler:(id)a6;
+- (STCommunicationSafetyViewModelCoordinator)initWithPersistenceController:(id)controller userDSID:(id)d currentAccountIsProto:(BOOL)proto modelUpdatedHandler:(id)handler;
 - (void)_loadViewModel;
 - (void)_registerForPersistentStoreNotifications;
-- (void)_reportCoreAnalyticsEventCommunicationSafetyEnabled:(BOOL)a3;
-- (void)persistCommunicationSafetySettingsWithCompletionHandler:(id)a3;
-- (void)saveCommunicationSafetyReceivingRestricted:(BOOL)a3 communicationSafetySendingRestricted:(BOOL)a4 completionHandler:(id)a5;
+- (void)_reportCoreAnalyticsEventCommunicationSafetyEnabled:(BOOL)enabled;
+- (void)persistCommunicationSafetySettingsWithCompletionHandler:(id)handler;
+- (void)saveCommunicationSafetyReceivingRestricted:(BOOL)restricted communicationSafetySendingRestricted:(BOOL)sendingRestricted completionHandler:(id)handler;
 @end
 
 @implementation STCommunicationSafetyViewModelCoordinator
 
-- (STCommunicationSafetyViewModelCoordinator)initWithPersistenceController:(id)a3 userDSID:(id)a4 currentAccountIsProto:(BOOL)a5 modelUpdatedHandler:(id)a6
+- (STCommunicationSafetyViewModelCoordinator)initWithPersistenceController:(id)controller userDSID:(id)d currentAccountIsProto:(BOOL)proto modelUpdatedHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  controllerCopy = controller;
+  dCopy = d;
+  handlerCopy = handler;
   v24.receiver = self;
   v24.super_class = STCommunicationSafetyViewModelCoordinator;
   v14 = [(STCommunicationSafetyViewModelCoordinator *)&v24 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_persistenceController, a3);
-    v15->_currentAccountIsProto = a5;
-    v16 = [v12 copy];
+    objc_storeStrong(&v14->_persistenceController, controller);
+    v15->_currentAccountIsProto = proto;
+    v16 = [dCopy copy];
     v17 = v16;
     if (v16)
     {
@@ -36,7 +36,7 @@
 
     objc_storeStrong(&v15->_userDSID, v18);
 
-    v19 = _Block_copy(v13);
+    v19 = _Block_copy(handlerCopy);
     modelUpdatedHandler = v15->_modelUpdatedHandler;
     v15->_modelUpdatedHandler = v19;
 
@@ -55,15 +55,15 @@
 {
   v11[1] = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277D4B9C8];
-  v4 = [MEMORY[0x277D4B980] fetchRequest];
-  v5 = [v3 requestWithFetchRequest:v4];
+  fetchRequest = [MEMORY[0x277D4B980] fetchRequest];
+  v5 = [v3 requestWithFetchRequest:fetchRequest];
 
   v6 = objc_alloc(MEMORY[0x277D4B9D0]);
-  v7 = [(STCommunicationSafetyViewModelCoordinator *)self persistenceController];
-  v8 = [v7 viewContext];
+  persistenceController = [(STCommunicationSafetyViewModelCoordinator *)self persistenceController];
+  viewContext = [persistenceController viewContext];
   v11[0] = v5;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:1];
-  v10 = [v6 initWithContext:v8 resultsRequests:v9];
+  v10 = [v6 initWithContext:viewContext resultsRequests:v9];
 
   [v10 setDelegate:self];
   [(STCommunicationSafetyViewModelCoordinator *)self setFetchedResultsController:v10];
@@ -71,7 +71,7 @@
 
 - (void)_loadViewModel
 {
-  v1 = [a1 userDSID];
+  userDSID = [self userDSID];
   OUTLINED_FUNCTION_0();
   OUTLINED_FUNCTION_1_0(&dword_264BA2000, v2, v3, "Loading viewModel for userDSID %{public}@...", v4, v5, v6, v7, v8);
 }
@@ -202,18 +202,18 @@ void __59__STCommunicationSafetyViewModelCoordinator__loadViewModel__block_invok
   }
 }
 
-- (void)persistCommunicationSafetySettingsWithCompletionHandler:(id)a3
+- (void)persistCommunicationSafetySettingsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(STCommunicationSafetyViewModelCoordinator *)self persistenceController];
+  handlerCopy = handler;
+  persistenceController = [(STCommunicationSafetyViewModelCoordinator *)self persistenceController];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __101__STCommunicationSafetyViewModelCoordinator_persistCommunicationSafetySettingsWithCompletionHandler___block_invoke;
   v7[3] = &unk_279B7D298;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 performBackgroundTaskAndWait:v7];
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  [persistenceController performBackgroundTaskAndWait:v7];
 }
 
 void __101__STCommunicationSafetyViewModelCoordinator_persistCommunicationSafetySettingsWithCompletionHandler___block_invoke(uint64_t a1, void *a2)
@@ -276,20 +276,20 @@ void __101__STCommunicationSafetyViewModelCoordinator_persistCommunicationSafety
   }
 }
 
-- (void)saveCommunicationSafetyReceivingRestricted:(BOOL)a3 communicationSafetySendingRestricted:(BOOL)a4 completionHandler:(id)a5
+- (void)saveCommunicationSafetyReceivingRestricted:(BOOL)restricted communicationSafetySendingRestricted:(BOOL)sendingRestricted completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = [(STCommunicationSafetyViewModelCoordinator *)self persistenceController];
+  handlerCopy = handler;
+  persistenceController = [(STCommunicationSafetyViewModelCoordinator *)self persistenceController];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __143__STCommunicationSafetyViewModelCoordinator_saveCommunicationSafetyReceivingRestricted_communicationSafetySendingRestricted_completionHandler___block_invoke;
   v11[3] = &unk_279B7D2C0;
-  v13 = a3;
-  v14 = a4;
+  restrictedCopy = restricted;
+  sendingRestrictedCopy = sendingRestricted;
   v11[4] = self;
-  v12 = v8;
-  v10 = v8;
-  [v9 performBackgroundTaskAndWait:v11];
+  v12 = handlerCopy;
+  v10 = handlerCopy;
+  [persistenceController performBackgroundTaskAndWait:v11];
 }
 
 void __143__STCommunicationSafetyViewModelCoordinator_saveCommunicationSafetyReceivingRestricted_communicationSafetySendingRestricted_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -341,9 +341,9 @@ void __143__STCommunicationSafetyViewModelCoordinator_saveCommunicationSafetyRec
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (void)_reportCoreAnalyticsEventCommunicationSafetyEnabled:(BOOL)a3
+- (void)_reportCoreAnalyticsEventCommunicationSafetyEnabled:(BOOL)enabled
 {
-  v3 = [objc_alloc(MEMORY[0x277D4B958]) initWithCommunicationSafetyEnabled:a3];
+  v3 = [objc_alloc(MEMORY[0x277D4B958]) initWithCommunicationSafetyEnabled:enabled];
   [MEMORY[0x277D4B970] reportEvent:v3];
 }
 

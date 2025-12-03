@@ -6,8 +6,8 @@
 - (id)imageResourceBundleIdentifier;
 - (id)suggestedButtonTitle;
 - (id)titleString;
-- (void)alternateButtonPressed:(id)a3;
-- (void)suggestedButtonPressed:(id)a3;
+- (void)alternateButtonPressed:(id)pressed;
+- (void)suggestedButtonPressed:(id)pressed;
 @end
 
 @implementation NoiseOnboardingViewController
@@ -64,21 +64,21 @@
 - (id)imageResourceBundleIdentifier
 {
   v2 = [NSBundle bundleForClass:objc_opt_class()];
-  v3 = [v2 bundleIdentifier];
+  bundleIdentifier = [v2 bundleIdentifier];
 
-  return v3;
+  return bundleIdentifier;
 }
 
-- (void)suggestedButtonPressed:(id)a3
+- (void)suggestedButtonPressed:(id)pressed
 {
-  v3 = [(NoiseOnboardingViewController *)self noiseOnboardingDelegate];
-  [v3 onboardingCompletedWithEnabled:1];
+  noiseOnboardingDelegate = [(NoiseOnboardingViewController *)self noiseOnboardingDelegate];
+  [noiseOnboardingDelegate onboardingCompletedWithEnabled:1];
 }
 
-- (void)alternateButtonPressed:(id)a3
+- (void)alternateButtonPressed:(id)pressed
 {
-  v3 = [(NoiseOnboardingViewController *)self noiseOnboardingDelegate];
-  [v3 onboardingCompletedWithEnabled:0];
+  noiseOnboardingDelegate = [(NoiseOnboardingViewController *)self noiseOnboardingDelegate];
+  [noiseOnboardingDelegate onboardingCompletedWithEnabled:0];
 }
 
 - (NoiseOnboardingViewControllerDelegate)noiseOnboardingDelegate

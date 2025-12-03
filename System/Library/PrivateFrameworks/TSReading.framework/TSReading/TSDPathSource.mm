@@ -1,20 +1,20 @@
 @interface TSDPathSource
-+ (id)pathSourceForShapeType:(int)a3 naturalSize:(CGSize)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)pathSourceForShapeType:(int)type naturalSize:(CGSize)size;
+- (BOOL)isEqual:(id)equal;
 - (CGAffineTransform)pathFlipTransform;
 - (CGSize)naturalSize;
-- (double)uniformScaleForScalingToNaturalSize:(CGSize)a3;
+- (double)uniformScaleForScalingToNaturalSize:(CGSize)size;
 - (id)bezierPath;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)mixedObjectWithFraction:(double)a3 ofObject:(id)a4;
-- (void)setNaturalSize:(CGSize)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)mixedObjectWithFraction:(double)fraction ofObject:(id)object;
+- (void)setNaturalSize:(CGSize)size;
 @end
 
 @implementation TSDPathSource
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (v4)
   {
     [v4 setHasHorizontalFlip:{-[TSDPathSource hasHorizontalFlip](self, "hasHorizontalFlip")}];
@@ -24,9 +24,9 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
@@ -37,19 +37,19 @@
     return 0;
   }
 
-  v6 = [(TSDPathSource *)self hasHorizontalFlip];
-  if (v6 != [a3 hasHorizontalFlip])
+  hasHorizontalFlip = [(TSDPathSource *)self hasHorizontalFlip];
+  if (hasHorizontalFlip != [equal hasHorizontalFlip])
   {
     return 0;
   }
 
-  v8 = [(TSDPathSource *)self hasVerticalFlip];
-  return v8 ^ [a3 hasVerticalFlip] ^ 1;
+  hasVerticalFlip = [(TSDPathSource *)self hasVerticalFlip];
+  return hasVerticalFlip ^ [equal hasVerticalFlip] ^ 1;
 }
 
 - (id)bezierPath
 {
-  v3 = [(TSDPathSource *)self bezierPathWithoutFlips];
+  bezierPathWithoutFlips = [(TSDPathSource *)self bezierPathWithoutFlips];
   if (self)
   {
     [(TSDPathSource *)self pathFlipTransform];
@@ -60,8 +60,8 @@
     memset(v5, 0, sizeof(v5));
   }
 
-  [v3 transformUsingAffineTransform:v5];
-  return v3;
+  [bezierPathWithoutFlips transformUsingAffineTransform:v5];
+  return bezierPathWithoutFlips;
 }
 
 - (CGSize)naturalSize
@@ -74,17 +74,17 @@
   return result;
 }
 
-- (void)setNaturalSize:(CGSize)a3
+- (void)setNaturalSize:(CGSize)size
 {
   v3 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE648] reason:objc_msgSend(MEMORY[0x277CCACA8] userInfo:{"stringWithFormat:", @"Concrete subclass %@ must implement -setNaturalSize:.", objc_opt_class()), 0}];
 
   [v3 raise];
 }
 
-- (double)uniformScaleForScalingToNaturalSize:(CGSize)a3
+- (double)uniformScaleForScalingToNaturalSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(TSDPathSource *)self naturalSize];
   v7 = 1.0;
   if (v5 <= 1.0 || v6 <= 1.0)
@@ -118,12 +118,12 @@
   *&retstr->c = v24;
   v23 = *(v5 + 32);
   *&retstr->tx = v23;
-  v6 = [(TSDPathSource *)self hasHorizontalFlip];
+  hasHorizontalFlip = [(TSDPathSource *)self hasHorizontalFlip];
   result = [(TSDPathSource *)self hasVerticalFlip];
   v8 = result;
-  if (v6 || result)
+  if (hasHorizontalFlip || result)
   {
-    if (v6)
+    if (hasHorizontalFlip)
     {
       v9 = -1.0;
     }
@@ -185,12 +185,12 @@
   return result;
 }
 
-+ (id)pathSourceForShapeType:(int)a3 naturalSize:(CGSize)a4
++ (id)pathSourceForShapeType:(int)type naturalSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a4.height / 100.0;
-  switch(a3)
+  height = size.height;
+  width = size.width;
+  v7 = size.height / 100.0;
+  switch(type)
   {
     case 0:
     case 3:
@@ -200,14 +200,14 @@
     case 1:
     case 15:
     case 16:
-      v8 = [TSDBezierPath bezierPathWithStart:*MEMORY[0x277CBF348] end:*(MEMORY[0x277CBF348] + 8), sqrt(width * width + a4.height * a4.height), 0.0];
+      v8 = [TSDBezierPath bezierPathWithStart:*MEMORY[0x277CBF348] end:*(MEMORY[0x277CBF348] + 8), sqrt(width * width + size.height * size.height), 0.0];
       goto LABEL_30;
     case 2:
     case 18:
     case 19:
-      v9 = [TSDConnectionLinePathSource pathSourceAtAngleOfSize:a3 == 18 forType:width, a4.height];
+      v9 = [TSDConnectionLinePathSource pathSourceAtAngleOfSize:type == 18 forType:width, size.height];
       v10 = v9;
-      if (a3 == 2)
+      if (type == 2)
       {
         [(TSDBezierPathSource *)v9 bend];
       }
@@ -215,9 +215,9 @@
       goto LABEL_17;
     case 4:
 
-      return [TSDScalarPathSource roundedRectangleWithScalar:15.0 naturalSize:width, a4.height];
+      return [TSDScalarPathSource roundedRectangleWithScalar:15.0 naturalSize:width, size.height];
     case 5:
-      v16 = [TSDBezierPath bezierPathWithOvalInRect:0.0, 0.0, width, a4.height];
+      v16 = [TSDBezierPath bezierPathWithOvalInRect:0.0, 0.0, width, size.height];
       v11 = v16;
       goto LABEL_29;
     case 6:
@@ -239,11 +239,11 @@ LABEL_23:
     case 8:
       v19 = v7 * 64.0;
 
-      return [TSDPointPathSource rightSingleArrowWithPoint:v19 naturalSize:0.34, width, a4.height];
+      return [TSDPointPathSource rightSingleArrowWithPoint:v19 naturalSize:0.34, width, size.height];
     case 9:
       v15 = v7 * 44.0;
 
-      return [TSDPointPathSource doubleArrowWithPoint:v15 naturalSize:0.34, width, a4.height];
+      return [TSDPointPathSource doubleArrowWithPoint:v15 naturalSize:0.34, width, size.height];
     case 10:
       v11 = +[TSDBezierPath bezierPath];
       [(TSDBezierPath *)v11 moveToPoint:0.0, height * 0.5];
@@ -264,19 +264,19 @@ LABEL_30:
       break;
     case 11:
 
-      result = [TSDCalloutPathSource quoteBubbleWithTailPosition:v7 tailSize:v7 * 96.0 naturalSize:v7 * 10.0, width, a4.height * 0.8];
+      result = [TSDCalloutPathSource quoteBubbleWithTailPosition:v7 tailSize:v7 * 96.0 naturalSize:v7 * 10.0, width, size.height * 0.8];
       break;
     case 12:
 
-      result = [TSDCalloutPathSource calloutWithCornerRadius:5.0 tailPosition:v7 * -20.0 tailSize:v7 * 50.0 naturalSize:v7 * 10.0, width, a4.height];
+      result = [TSDCalloutPathSource calloutWithCornerRadius:5.0 tailPosition:v7 * -20.0 tailSize:v7 * 50.0 naturalSize:v7 * 10.0, width, size.height];
       break;
     case 13:
 
-      result = [TSDScalarPathSource regularPolygonWithScalar:5.0 naturalSize:width, a4.height];
+      result = [TSDScalarPathSource regularPolygonWithScalar:5.0 naturalSize:width, size.height];
       break;
     case 14:
 
-      result = [TSDPointPathSource starWithPoint:5.0 naturalSize:0.382, width, a4.height];
+      result = [TSDPointPathSource starWithPoint:5.0 naturalSize:0.382, width, size.height];
       break;
     case 17:
       v18 = objc_alloc_init(TSDEditableBezierPathSource);
@@ -302,11 +302,11 @@ uint64_t __38__TSDPathSource_mixingTypeWithObject___block_invoke()
   return 1;
 }
 
-- (id)mixedObjectWithFraction:(double)a3 ofObject:(id)a4
+- (id)mixedObjectWithFraction:(double)fraction ofObject:(id)object
 {
-  v4 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDPathSource mixedObjectWithFraction:ofObject:]"];
-  [v4 handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDPathSource.m"), 280, @"Called on superclass!"}];
+  [currentHandler handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDPathSource.m"), 280, @"Called on superclass!"}];
   return 0;
 }
 

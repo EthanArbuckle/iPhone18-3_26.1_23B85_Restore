@@ -1,21 +1,21 @@
 @interface SBSystemShellExtendedDisplayResolverFactory
-- (id)resolverForPhysicalDisplay:(id)a3;
+- (id)resolverForPhysicalDisplay:(id)display;
 @end
 
 @implementation SBSystemShellExtendedDisplayResolverFactory
 
-- (id)resolverForPhysicalDisplay:(id)a3
+- (id)resolverForPhysicalDisplay:(id)display
 {
-  v5 = a3;
-  v6 = [v5 identity];
-  if (([v6 isRootIdentity] & 1) == 0)
+  displayCopy = display;
+  identity = [displayCopy identity];
+  if (([identity isRootIdentity] & 1) == 0)
   {
     [(SBSystemShellExtendedDisplayResolverFactory *)a2 resolverForPhysicalDisplay:?];
   }
 
-  if ([v6 _sb_supportsExtendedDisplayMode] && (objc_msgSend(MEMORY[0x277D65DB0], "withDisplay:", v5), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "supportedScales"), v7, v8))
+  if ([identity _sb_supportsExtendedDisplayMode] && (objc_msgSend(MEMORY[0x277D65DB0], "withDisplay:", displayCopy), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "supportedScales"), v7, v8))
   {
-    v9 = [[SBSystemShellExtendedDisplayResolver alloc] initWithRootDisplay:v6];
+    v9 = [[SBSystemShellExtendedDisplayResolver alloc] initWithRootDisplay:identity];
   }
 
   else

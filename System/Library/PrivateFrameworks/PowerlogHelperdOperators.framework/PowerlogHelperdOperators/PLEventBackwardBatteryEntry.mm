@@ -1,32 +1,32 @@
 @interface PLEventBackwardBatteryEntry
 + (void)load;
-+ (void)populateCellWOMForEntry:(id)a3 withRawData:(id)a4;
-+ (void)populateDODForEntry:(id)a3 withRawData:(id)a4;
-+ (void)populateQmaxForEntry:(id)a3 withRawData:(id)a4;
-+ (void)populatewRaForEntry:(id)a3 withRawData:(id)a4;
-- (id)absoluteLevelWithRawData:(id)a3;
-- (id)initEntryWithRawData:(id)a3;
-- (id)levelWithRawData:(id)a3;
-- (id)rawLevelWithRawData:(id)a3;
++ (void)populateCellWOMForEntry:(id)entry withRawData:(id)data;
++ (void)populateDODForEntry:(id)entry withRawData:(id)data;
++ (void)populateQmaxForEntry:(id)entry withRawData:(id)data;
++ (void)populatewRaForEntry:(id)entry withRawData:(id)data;
+- (id)absoluteLevelWithRawData:(id)data;
+- (id)initEntryWithRawData:(id)data;
+- (id)levelWithRawData:(id)data;
+- (id)rawLevelWithRawData:(id)data;
 - (void)dealloc;
-- (void)populateAdapterPowerTierWithRawData:(id)a3;
-- (void)populatePresentDODFromRawData:(id)a3;
-- (void)populateTLCCounterWithRawData:(id)a3;
+- (void)populateAdapterPowerTierWithRawData:(id)data;
+- (void)populatePresentDODFromRawData:(id)data;
+- (void)populateTLCCounterWithRawData:(id)data;
 @end
 
 @implementation PLEventBackwardBatteryEntry
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___PLEventBackwardBatteryEntry;
   objc_msgSendSuper2(&v2, sel_load);
 }
 
-+ (void)populateDODForEntry:(id)a3 withRawData:(id)a4
++ (void)populateDODForEntry:(id)entry withRawData:(id)data
 {
-  v10 = a3;
-  v5 = [a4 objectForKeyedSubscript:@"BatteryData"];
+  entryCopy = entry;
+  v5 = [data objectForKeyedSubscript:@"BatteryData"];
   v6 = [v5 objectForKeyedSubscript:@"DOD0"];
 
   if ([v6 count])
@@ -36,7 +36,7 @@
     {
       v8 = [v6 objectAtIndexedSubscript:v7];
       v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"DOD%d", v7];
-      [v10 setObject:v8 forKeyedSubscript:v9];
+      [entryCopy setObject:v8 forKeyedSubscript:v9];
 
       ++v7;
     }
@@ -45,19 +45,19 @@
   }
 }
 
-+ (void)populateQmaxForEntry:(id)a3 withRawData:(id)a4
++ (void)populateQmaxForEntry:(id)entry withRawData:(id)data
 {
-  v5 = a3;
-  if (v5 && a4)
+  entryCopy = entry;
+  if (entryCopy && data)
   {
-    v6 = [a4 objectForKeyedSubscript:@"BatteryData"];
+    v6 = [data objectForKeyedSubscript:@"BatteryData"];
     v7 = [v6 objectForKeyedSubscript:@"Qmax"];
 
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __64__PLEventBackwardBatteryEntry_populateQmaxForEntry_withRawData___block_invoke;
     v8[3] = &unk_279A5E4A8;
-    v9 = v5;
+    v9 = entryCopy;
     [v7 enumerateObjectsUsingBlock:v8];
   }
 }
@@ -70,19 +70,19 @@ void __64__PLEventBackwardBatteryEntry_populateQmaxForEntry_withRawData___block_
   [*(a1 + 32) setObject:v6 forKeyedSubscript:v7];
 }
 
-+ (void)populateCellWOMForEntry:(id)a3 withRawData:(id)a4
++ (void)populateCellWOMForEntry:(id)entry withRawData:(id)data
 {
-  v5 = a3;
-  if (v5 && a4)
+  entryCopy = entry;
+  if (entryCopy && data)
   {
-    v6 = [a4 objectForKeyedSubscript:@"BatteryData"];
+    v6 = [data objectForKeyedSubscript:@"BatteryData"];
     v7 = [v6 objectForKeyedSubscript:@"CellWom"];
 
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __67__PLEventBackwardBatteryEntry_populateCellWOMForEntry_withRawData___block_invoke;
     v8[3] = &unk_279A5E4A8;
-    v9 = v5;
+    v9 = entryCopy;
     [v7 enumerateObjectsUsingBlock:v8];
   }
 }
@@ -96,17 +96,17 @@ void __67__PLEventBackwardBatteryEntry_populateCellWOMForEntry_withRawData___blo
   [*(a1 + 32) setObject:v6 forKeyedSubscript:v7];
 }
 
-+ (void)populatewRaForEntry:(id)a3 withRawData:(id)a4
++ (void)populatewRaForEntry:(id)entry withRawData:(id)data
 {
-  v5 = a3;
-  v6 = [a4 objectForKeyedSubscript:@"BatteryData"];
+  entryCopy = entry;
+  v6 = [data objectForKeyedSubscript:@"BatteryData"];
   v7 = [v6 objectForKeyedSubscript:@"WeightedRa"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [v7 firstObject];
-    [v5 setObject:v8 forKeyedSubscript:@"WeightedRa"];
+    firstObject = [v7 firstObject];
+    [entryCopy setObject:firstObject forKeyedSubscript:@"WeightedRa"];
 
     if ([v7 count] >= 2)
     {
@@ -114,7 +114,7 @@ void __67__PLEventBackwardBatteryEntry_populateCellWOMForEntry_withRawData___blo
       v10[1] = 3221225472;
       v10[2] = __63__PLEventBackwardBatteryEntry_populatewRaForEntry_withRawData___block_invoke;
       v10[3] = &unk_279A5E4A8;
-      v11 = v5;
+      v11 = entryCopy;
       [v7 enumerateObjectsUsingBlock:v10];
     }
   }
@@ -124,7 +124,7 @@ void __67__PLEventBackwardBatteryEntry_populateCellWOMForEntry_withRawData___blo
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v5 setObject:v7 forKeyedSubscript:@"WeightedRa"];
+      [entryCopy setObject:v7 forKeyedSubscript:@"WeightedRa"];
     }
 
     else
@@ -149,7 +149,7 @@ void __63__PLEventBackwardBatteryEntry_populatewRaForEntry_withRawData___block_i
   }
 }
 
-- (id)levelWithRawData:(id)a3
+- (id)levelWithRawData:(id)data
 {
   v4 = MEMORY[0x277CCABB0];
   v5 = [(PLEntry *)self objectForKeyedSubscript:@"CurrentCapacity"];
@@ -162,7 +162,7 @@ void __63__PLEventBackwardBatteryEntry_populatewRaForEntry_withRawData___block_i
   return v10;
 }
 
-- (id)rawLevelWithRawData:(id)a3
+- (id)rawLevelWithRawData:(id)data
 {
   v4 = MEMORY[0x277CCABB0];
   v5 = [(PLEntry *)self objectForKeyedSubscript:@"AppleRawCurrentCapacity"];
@@ -175,7 +175,7 @@ void __63__PLEventBackwardBatteryEntry_populatewRaForEntry_withRawData___block_i
   return v10;
 }
 
-- (id)absoluteLevelWithRawData:(id)a3
+- (id)absoluteLevelWithRawData:(id)data
 {
   v4 = MEMORY[0x277CCABB0];
   v5 = [(PLEntry *)self objectForKeyedSubscript:@"AbsoluteCapacity"];
@@ -188,18 +188,18 @@ void __63__PLEventBackwardBatteryEntry_populatewRaForEntry_withRawData___block_i
   return v10;
 }
 
-- (void)populatePresentDODFromRawData:(id)a3
+- (void)populatePresentDODFromRawData:(id)data
 {
-  v4 = [a3 objectForKeyedSubscript:@"BatteryData"];
+  v4 = [data objectForKeyedSubscript:@"BatteryData"];
   v6 = [v4 objectForKeyedSubscript:@"PresentDOD"];
 
   v5 = [v6 objectAtIndexedSubscript:0];
   [(PLEntry *)self setObject:v5 forKeyedSubscript:@"PresentDOD"];
 }
 
-- (void)populateTLCCounterWithRawData:(id)a3
+- (void)populateTLCCounterWithRawData:(id)data
 {
-  v4 = [a3 objectForKeyedSubscript:@"ChargerData"];
+  v4 = [data objectForKeyedSubscript:@"ChargerData"];
   if (v4)
   {
     v6 = v4;
@@ -210,9 +210,9 @@ void __63__PLEventBackwardBatteryEntry_populatewRaForEntry_withRawData___block_i
   }
 }
 
-- (void)populateAdapterPowerTierWithRawData:(id)a3
+- (void)populateAdapterPowerTierWithRawData:(id)data
 {
-  v4 = [a3 objectForKeyedSubscript:@"AdapterDetails"];
+  v4 = [data objectForKeyedSubscript:@"AdapterDetails"];
   if (v4)
   {
     v6 = v4;
@@ -223,38 +223,38 @@ void __63__PLEventBackwardBatteryEntry_populatewRaForEntry_withRawData___block_i
   }
 }
 
-- (id)initEntryWithRawData:(id)a3
+- (id)initEntryWithRawData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = +[PLEventBackwardBatteryEntry entryKey];
   v15.receiver = self;
   v15.super_class = PLEventBackwardBatteryEntry;
-  v6 = [(PLEntry *)&v15 initWithEntryKey:v5 withRawData:v4];
+  v6 = [(PLEntry *)&v15 initWithEntryKey:v5 withRawData:dataCopy];
 
   if (v6)
   {
-    [objc_opt_class() populateQmaxForEntry:v6 withRawData:v4];
-    [objc_opt_class() populateDODForEntry:v6 withRawData:v4];
-    [objc_opt_class() populateCellVoltageForEntry:v6 withRawData:v4];
-    [objc_opt_class() populatewRaForEntry:v6 withRawData:v4];
-    [(PLEventBackwardBatteryEntry *)v6 populatePresentDODFromRawData:v4];
+    [objc_opt_class() populateQmaxForEntry:v6 withRawData:dataCopy];
+    [objc_opt_class() populateDODForEntry:v6 withRawData:dataCopy];
+    [objc_opt_class() populateCellVoltageForEntry:v6 withRawData:dataCopy];
+    [objc_opt_class() populatewRaForEntry:v6 withRawData:dataCopy];
+    [(PLEventBackwardBatteryEntry *)v6 populatePresentDODFromRawData:dataCopy];
     v7 = MEMORY[0x277CCABB0];
-    v8 = [v4 objectForKeyedSubscript:@"Temperature"];
+    v8 = [dataCopy objectForKeyedSubscript:@"Temperature"];
     [v8 doubleValue];
     v10 = [v7 numberWithDouble:v9 / 100.0];
     [(PLEntry *)v6 setObject:v10 forKeyedSubscript:@"Temperature"];
 
-    v11 = [(PLEventBackwardBatteryEntry *)v6 levelWithRawData:v4];
+    v11 = [(PLEventBackwardBatteryEntry *)v6 levelWithRawData:dataCopy];
     [(PLEntry *)v6 setObject:v11 forKeyedSubscript:@"Level"];
 
-    v12 = [(PLEventBackwardBatteryEntry *)v6 rawLevelWithRawData:v4];
+    v12 = [(PLEventBackwardBatteryEntry *)v6 rawLevelWithRawData:dataCopy];
     [(PLEntry *)v6 setObject:v12 forKeyedSubscript:@"RawLevel"];
 
-    v13 = [(PLEventBackwardBatteryEntry *)v6 absoluteLevelWithRawData:v4];
+    v13 = [(PLEventBackwardBatteryEntry *)v6 absoluteLevelWithRawData:dataCopy];
     [(PLEntry *)v6 setObject:v13 forKeyedSubscript:@"AbsoluteLevel"];
 
-    [(PLEventBackwardBatteryEntry *)v6 populateTLCCounterWithRawData:v4];
-    [(PLEventBackwardBatteryEntry *)v6 populateAdapterPowerTierWithRawData:v4];
+    [(PLEventBackwardBatteryEntry *)v6 populateTLCCounterWithRawData:dataCopy];
+    [(PLEventBackwardBatteryEntry *)v6 populateAdapterPowerTierWithRawData:dataCopy];
   }
 
   return v6;

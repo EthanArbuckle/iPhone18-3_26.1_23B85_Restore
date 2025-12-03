@@ -1,50 +1,50 @@
 @interface _MFLoadingContextEventResult
-- (void)setCleanupInvocable:(uint64_t)a1;
-- (void)setContentURL:(uint64_t)a1;
-- (void)setMessageAndHTMLDataPair:(uint64_t)a1;
-- (void)setPublicMessageURL:(uint64_t)a1;
-- (void)setRelatedContentItems:(uint64_t)a1;
+- (void)setCleanupInvocable:(uint64_t)invocable;
+- (void)setContentURL:(uint64_t)l;
+- (void)setMessageAndHTMLDataPair:(uint64_t)pair;
+- (void)setPublicMessageURL:(uint64_t)l;
+- (void)setRelatedContentItems:(uint64_t)items;
 @end
 
 @implementation _MFLoadingContextEventResult
 
-- (void)setContentURL:(uint64_t)a1
+- (void)setContentURL:(uint64_t)l
 {
-  if (a1)
+  if (l)
   {
-    objc_storeStrong((a1 + 8), a2);
+    objc_storeStrong((l + 8), a2);
   }
 }
 
-- (void)setRelatedContentItems:(uint64_t)a1
+- (void)setRelatedContentItems:(uint64_t)items
 {
-  if (a1)
+  if (items)
   {
-    OUTLINED_FUNCTION_2_3(a1, a2);
+    OUTLINED_FUNCTION_2_3(items, a2);
   }
 }
 
-- (void)setCleanupInvocable:(uint64_t)a1
+- (void)setCleanupInvocable:(uint64_t)invocable
 {
-  if (a1)
+  if (invocable)
   {
-    OUTLINED_FUNCTION_1_6(a1, a2);
+    OUTLINED_FUNCTION_1_6(invocable, a2);
   }
 }
 
-- (void)setPublicMessageURL:(uint64_t)a1
+- (void)setPublicMessageURL:(uint64_t)l
 {
-  if (a1)
+  if (l)
   {
-    objc_storeStrong((a1 + 32), a2);
+    objc_storeStrong((l + 32), a2);
   }
 }
 
-- (void)setMessageAndHTMLDataPair:(uint64_t)a1
+- (void)setMessageAndHTMLDataPair:(uint64_t)pair
 {
-  if (a1)
+  if (pair)
   {
-    objc_storeStrong((a1 + 40), a2);
+    objc_storeStrong((pair + 40), a2);
   }
 }
 

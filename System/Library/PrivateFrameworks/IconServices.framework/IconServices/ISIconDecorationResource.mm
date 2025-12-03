@@ -1,36 +1,36 @@
 @interface ISIconDecorationResource
-- (ISIconDecorationResource)initWithDecoration:(id)a3;
-- (id)imageForSize:(CGSize)a3 scale:(double)a4;
-- (void)configureWithType:(id)a3;
+- (ISIconDecorationResource)initWithDecoration:(id)decoration;
+- (id)imageForSize:(CGSize)size scale:(double)scale;
+- (void)configureWithType:(id)type;
 @end
 
 @implementation ISIconDecorationResource
 
-- (ISIconDecorationResource)initWithDecoration:(id)a3
+- (ISIconDecorationResource)initWithDecoration:(id)decoration
 {
   v14 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  decorationCopy = decoration;
   v11.receiver = self;
   v11.super_class = ISIconDecorationResource;
   v6 = [(ISIconDecorationResource *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_decoration, a3);
+    objc_storeStrong(&v6->_decoration, decoration);
     if ([(ISIconDecoration *)v7->_decoration identifierKind]== 2)
     {
-      v8 = [(ISIconDecoration *)v7->_decoration identifier];
-      [(ISIconDecorationResource *)v7 configureWithType:v8];
+      identifier = [(ISIconDecoration *)v7->_decoration identifier];
+      [(ISIconDecorationResource *)v7 configureWithType:identifier];
     }
 
     else
     {
-      v8 = _ISDefaultLog();
-      if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+      identifier = _ISDefaultLog();
+      if (os_log_type_enabled(identifier, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v13 = v5;
-        _os_log_impl(&dword_1A77B8000, v8, OS_LOG_TYPE_DEFAULT, "Invalid decoration %@. Badging with app an icon is not currently supported.", buf, 0xCu);
+        v13 = decorationCopy;
+        _os_log_impl(&dword_1A77B8000, identifier, OS_LOG_TYPE_DEFAULT, "Invalid decoration %@. Badging with app an icon is not currently supported.", buf, 0xCu);
       }
     }
   }
@@ -39,22 +39,22 @@
   return v7;
 }
 
-- (void)configureWithType:(id)a3
+- (void)configureWithType:(id)type
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(ISIconDecoration *)self->_decoration identifier];
-  v6 = UTTypeConformsTo(v5, @"com.apple.icon-decoration");
+  typeCopy = type;
+  identifier = [(ISIconDecoration *)self->_decoration identifier];
+  v6 = UTTypeConformsTo(identifier, @"com.apple.icon-decoration");
 
   if (v6)
   {
-    v7 = [(ISIconDecoration *)self->_decoration identifier];
+    identifier2 = [(ISIconDecoration *)self->_decoration identifier];
     v8 = _UTTypeCopyGlyphName();
 
     if (!v8)
     {
-      v18 = [(ISIconDecoration *)self->_decoration identifier];
-      v19 = UTTypeConformsTo(v18, @"com.apple.icon-decoration.system");
+      identifier3 = [(ISIconDecoration *)self->_decoration identifier];
+      v19 = UTTypeConformsTo(identifier3, @"com.apple.icon-decoration.system");
 
       if (!v19)
       {
@@ -64,10 +64,10 @@
       v20 = _ISDefaultLog();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
       {
-        [(ISIconDecorationResource *)v4 configureWithType:v20];
+        [(ISIconDecorationResource *)typeCopy configureWithType:v20];
       }
 
-      v21 = [(ISIconDecoration *)self->_decoration identifier];
+      identifier4 = [(ISIconDecoration *)self->_decoration identifier];
       v8 = _UTTypeCopyIconName();
 
       if (!v8)
@@ -77,7 +77,7 @@ LABEL_17:
         if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v25 = v4;
+          v25 = typeCopy;
           _os_log_impl(&dword_1A77B8000, v13, OS_LOG_TYPE_DEFAULT, "No resource named for decoration type '%@'", buf, 0xCu);
         }
 
@@ -86,8 +86,8 @@ LABEL_17:
       }
     }
 
-    v9 = [(ISIconDecoration *)self->_decoration identifier];
-    v10 = UTTypeCopyDeclaringBundleURL(v9);
+    identifier5 = [(ISIconDecoration *)self->_decoration identifier];
+    v10 = UTTypeCopyDeclaringBundleURL(identifier5);
 
     Unique = _CFBundleCreateUnique();
     if (!Unique)
@@ -134,7 +134,7 @@ LABEL_21:
     v8 = _ISDefaultLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      [(ISIconDecorationResource *)v4 configureWithType:v8];
+      [(ISIconDecorationResource *)typeCopy configureWithType:v8];
     }
   }
 
@@ -143,12 +143,12 @@ LABEL_22:
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (id)imageForSize:(CGSize)a3 scale:(double)a4
+- (id)imageForSize:(CGSize)size scale:(double)scale
 {
   internalResource = self->_internalResource;
   if (internalResource)
   {
-    internalResource = [internalResource imageForSize:a3.width scale:{a3.height, a4}];
+    internalResource = [internalResource imageForSize:size.width scale:{size.height, scale}];
     v4 = vars8;
   }
 

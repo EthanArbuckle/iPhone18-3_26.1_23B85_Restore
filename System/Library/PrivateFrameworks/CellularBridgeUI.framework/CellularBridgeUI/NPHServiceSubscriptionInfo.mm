@@ -10,16 +10,16 @@
   v16.receiver = self;
   v16.super_class = NPHServiceSubscriptionInfo;
   v3 = [(NPHServiceSubscriptionInfo *)&v16 description];
-  v4 = [(NPHServiceSubscriptionInfo *)self serviceSubscriptionContext];
-  v5 = [(NPHServiceSubscriptionInfo *)self shouldShowAddNewRemotePlan];
-  v6 = [(NPHServiceSubscriptionInfo *)self shouldOfferRemotePlan];
-  v7 = [(NPHServiceSubscriptionInfo *)self shouldOfferTrialPlan];
-  v8 = [(NPHServiceSubscriptionInfo *)self shouldOfferSignupCompletion];
-  v9 = [(NPHServiceSubscriptionInfo *)self trialPlanType];
-  v10 = [(NPHServiceSubscriptionInfo *)self SIMStatus];
-  v11 = [(NPHServiceSubscriptionInfo *)self planFlows];
-  v12 = [(NPHServiceSubscriptionInfo *)self persistentError];
-  v13 = [v15 stringWithFormat:@"%@ serviceSubscriptionContext: %@ shouldShowAddNewRemotePlan: %d shouldOfferRemotePlan: %d shouldOfferTrialPlan: %d shouldOfferSignupCompletion: %d trialPlanType: %@ SIMStatus: %@ planFlows: %lx persistentError: %@", v3, v4, v5, v6, v7, v8, v9, v10, v11, v12];
+  serviceSubscriptionContext = [(NPHServiceSubscriptionInfo *)self serviceSubscriptionContext];
+  shouldShowAddNewRemotePlan = [(NPHServiceSubscriptionInfo *)self shouldShowAddNewRemotePlan];
+  shouldOfferRemotePlan = [(NPHServiceSubscriptionInfo *)self shouldOfferRemotePlan];
+  shouldOfferTrialPlan = [(NPHServiceSubscriptionInfo *)self shouldOfferTrialPlan];
+  shouldOfferSignupCompletion = [(NPHServiceSubscriptionInfo *)self shouldOfferSignupCompletion];
+  trialPlanType = [(NPHServiceSubscriptionInfo *)self trialPlanType];
+  sIMStatus = [(NPHServiceSubscriptionInfo *)self SIMStatus];
+  planFlows = [(NPHServiceSubscriptionInfo *)self planFlows];
+  persistentError = [(NPHServiceSubscriptionInfo *)self persistentError];
+  v13 = [v15 stringWithFormat:@"%@ serviceSubscriptionContext: %@ shouldShowAddNewRemotePlan: %d shouldOfferRemotePlan: %d shouldOfferTrialPlan: %d shouldOfferSignupCompletion: %d trialPlanType: %@ SIMStatus: %@ planFlows: %lx persistentError: %@", v3, serviceSubscriptionContext, shouldShowAddNewRemotePlan, shouldOfferRemotePlan, shouldOfferTrialPlan, shouldOfferSignupCompletion, trialPlanType, sIMStatus, planFlows, persistentError];
 
   return v13;
 }

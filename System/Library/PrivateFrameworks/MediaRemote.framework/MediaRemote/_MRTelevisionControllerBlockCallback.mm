@@ -1,28 +1,28 @@
 @interface _MRTelevisionControllerBlockCallback
-- (_MRTelevisionControllerBlockCallback)initWithCallbackBlock:(id)a3 queue:(id)a4;
+- (_MRTelevisionControllerBlockCallback)initWithCallbackBlock:(id)block queue:(id)queue;
 @end
 
 @implementation _MRTelevisionControllerBlockCallback
 
-- (_MRTelevisionControllerBlockCallback)initWithCallbackBlock:(id)a3 queue:(id)a4
+- (_MRTelevisionControllerBlockCallback)initWithCallbackBlock:(id)block queue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  blockCopy = block;
+  queueCopy = queue;
   v12.receiver = self;
   v12.super_class = _MRTelevisionControllerBlockCallback;
   v8 = [(_MRTelevisionControllerBlockCallback *)&v12 init];
   if (v8)
   {
-    if (v6)
+    if (blockCopy)
     {
-      if (v7)
+      if (queueCopy)
       {
 LABEL_4:
-        v9 = [v6 copy];
+        v9 = [blockCopy copy];
         callbackBlock = v8->_callbackBlock;
         v8->_callbackBlock = v9;
 
-        objc_storeStrong(&v8->_queue, a4);
+        objc_storeStrong(&v8->_queue, queue);
         goto LABEL_5;
       }
     }
@@ -30,7 +30,7 @@ LABEL_4:
     else
     {
       [_MRTelevisionControllerBlockCallback initWithCallbackBlock:queue:];
-      if (v7)
+      if (queueCopy)
       {
         goto LABEL_4;
       }

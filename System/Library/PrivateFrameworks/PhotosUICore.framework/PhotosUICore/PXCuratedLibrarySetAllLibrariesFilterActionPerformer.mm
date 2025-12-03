@@ -1,5 +1,5 @@
 @interface PXCuratedLibrarySetAllLibrariesFilterActionPerformer
-- (PXCuratedLibrarySetAllLibrariesFilterActionPerformer)initWithViewModel:(id)a3;
+- (PXCuratedLibrarySetAllLibrariesFilterActionPerformer)initWithViewModel:(id)model;
 - (int64_t)menuElementState;
 - (void)performUserInteractionTask;
 @end
@@ -8,29 +8,29 @@
 
 - (void)performUserInteractionTask
 {
-  v3 = [(PXCuratedLibraryActionPerformer *)self viewModel];
-  v4 = [v3 libraryFilterState];
-  [v4 setViewMode:0];
+  viewModel = [(PXCuratedLibraryActionPerformer *)self viewModel];
+  libraryFilterState = [viewModel libraryFilterState];
+  [libraryFilterState setViewMode:0];
 
-  v6 = [(PXCuratedLibraryActionPerformer *)self viewModel];
-  v5 = [v6 libraryFilterState];
-  [(PXCuratedLibraryToggleFilterActionPerformer *)self updateToLibraryFilterStateAndFinishTask:v5];
+  viewModel2 = [(PXCuratedLibraryActionPerformer *)self viewModel];
+  libraryFilterState2 = [viewModel2 libraryFilterState];
+  [(PXCuratedLibraryToggleFilterActionPerformer *)self updateToLibraryFilterStateAndFinishTask:libraryFilterState2];
 }
 
 - (int64_t)menuElementState
 {
-  v2 = [(PXCuratedLibraryActionPerformer *)self viewModel];
-  v3 = [v2 libraryFilterState];
-  v4 = [v3 isLibraryFilterActive:0];
+  viewModel = [(PXCuratedLibraryActionPerformer *)self viewModel];
+  libraryFilterState = [viewModel libraryFilterState];
+  v4 = [libraryFilterState isLibraryFilterActive:0];
 
   return v4;
 }
 
-- (PXCuratedLibrarySetAllLibrariesFilterActionPerformer)initWithViewModel:(id)a3
+- (PXCuratedLibrarySetAllLibrariesFilterActionPerformer)initWithViewModel:(id)model
 {
   v4.receiver = self;
   v4.super_class = PXCuratedLibrarySetAllLibrariesFilterActionPerformer;
-  return [(PXCuratedLibraryActionPerformer *)&v4 initWithActionType:@"PXCuratedLibraryActionSetAllLibrariesFilter" viewModel:a3];
+  return [(PXCuratedLibraryActionPerformer *)&v4 initWithActionType:@"PXCuratedLibraryActionSetAllLibrariesFilter" viewModel:model];
 }
 
 @end

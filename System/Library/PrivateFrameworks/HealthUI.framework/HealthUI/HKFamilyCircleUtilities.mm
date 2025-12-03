@@ -1,12 +1,12 @@
 @interface HKFamilyCircleUtilities
-+ (void)fetchFamilyContacts:(id)a3;
++ (void)fetchFamilyContacts:(id)contacts;
 @end
 
 @implementation HKFamilyCircleUtilities
 
-+ (void)fetchFamilyContacts:(id)a3
++ (void)fetchFamilyContacts:(id)contacts
 {
-  v3 = a3;
+  contactsCopy = contacts;
   if ([MEMORY[0x1E695CE18] authorizationStatusForEntityType:0] == 3)
   {
     v4 = objc_alloc_init(MEMORY[0x1E699C070]);
@@ -14,14 +14,14 @@
     v5[1] = 3221225472;
     v5[2] = __47__HKFamilyCircleUtilities_fetchFamilyContacts___block_invoke;
     v5[3] = &unk_1E81BB908;
-    v6 = v3;
+    v6 = contactsCopy;
     [v4 startRequestWithCompletionHandler:v5];
   }
 
   else
   {
     v4 = [MEMORY[0x1E696ABC0] hk_error:110 format:@"Unauthorized for Contact's access."];
-    (*(v3 + 2))(v3, 0, v4);
+    (*(contactsCopy + 2))(contactsCopy, 0, v4);
   }
 }
 

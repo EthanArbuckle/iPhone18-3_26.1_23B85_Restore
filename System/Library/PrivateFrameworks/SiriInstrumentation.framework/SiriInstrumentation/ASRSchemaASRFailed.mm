@@ -1,25 +1,25 @@
 @interface ASRSchemaASRFailed
-- (ASRSchemaASRFailed)initWithDictionary:(id)a3;
-- (ASRSchemaASRFailed)initWithJSON:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (ASRSchemaASRFailed)initWithDictionary:(id)dictionary;
+- (ASRSchemaASRFailed)initWithJSON:(id)n;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ASRSchemaASRFailed
 
-- (ASRSchemaASRFailed)initWithDictionary:(id)a3
+- (ASRSchemaASRFailed)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = ASRSchemaASRFailed;
   v5 = [(ASRSchemaASRFailed *)&v10 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"metrics"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"metrics"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -33,30 +33,30 @@
   return v5;
 }
 
-- (ASRSchemaASRFailed)initWithJSON:(id)a3
+- (ASRSchemaASRFailed)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ASRSchemaASRFailed *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ASRSchemaASRFailed *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ASRSchemaASRFailed *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -69,40 +69,40 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_metrics)
   {
-    v4 = [(ASRSchemaASRFailed *)self metrics];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    metrics = [(ASRSchemaASRFailed *)self metrics];
+    dictionaryRepresentation = [metrics dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"metrics"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"metrics"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"metrics"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"metrics"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(ASRSchemaASRFailed *)self metrics];
-    v6 = [v4 metrics];
-    v7 = v6;
-    if ((v5 != 0) != (v6 == 0))
+    metrics = [(ASRSchemaASRFailed *)self metrics];
+    metrics2 = [equalCopy metrics];
+    v7 = metrics2;
+    if ((metrics != 0) != (metrics2 == 0))
     {
-      v8 = [(ASRSchemaASRFailed *)self metrics];
-      if (!v8)
+      metrics3 = [(ASRSchemaASRFailed *)self metrics];
+      if (!metrics3)
       {
 
 LABEL_10:
@@ -110,10 +110,10 @@ LABEL_10:
         goto LABEL_8;
       }
 
-      v9 = v8;
-      v10 = [(ASRSchemaASRFailed *)self metrics];
-      v11 = [v4 metrics];
-      v12 = [v10 isEqual:v11];
+      v9 = metrics3;
+      metrics4 = [(ASRSchemaASRFailed *)self metrics];
+      metrics5 = [equalCopy metrics];
+      v12 = [metrics4 isEqual:metrics5];
 
       if (v12)
       {
@@ -132,29 +132,29 @@ LABEL_8:
   return v13;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
-  v4 = [(ASRSchemaASRFailed *)self metrics];
+  toCopy = to;
+  metrics = [(ASRSchemaASRFailed *)self metrics];
 
-  if (v4)
+  if (metrics)
   {
-    v5 = [(ASRSchemaASRFailed *)self metrics];
+    metrics2 = [(ASRSchemaASRFailed *)self metrics];
     PBDataWriterWriteSubmessage();
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = ASRSchemaASRFailed;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(ASRSchemaASRFailed *)self metrics:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(ASRSchemaASRFailed *)self deleteMetrics];
   }

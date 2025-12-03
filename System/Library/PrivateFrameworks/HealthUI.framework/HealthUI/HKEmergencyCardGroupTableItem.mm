@@ -1,38 +1,38 @@
 @interface HKEmergencyCardGroupTableItem
-- (BOOL)canEditRowAtIndex:(int64_t)a3;
+- (BOOL)canEditRowAtIndex:(int64_t)index;
 - (BOOL)hasPresentableData;
-- (BOOL)shouldHighlightRowAtIndex:(int64_t)a3;
-- (double)tableView:(id)a3 estimatedHeightForRowAtIndex:(int64_t)a4;
-- (double)tableView:(id)a3 heightForRowAtIndex:(int64_t)a4;
-- (id)tableView:(id)a3 cellForRowAtIndex:(int64_t)a4;
-- (int64_t)commitEditingStyle:(int64_t)a3 forRowAtIndex:(int64_t)a4;
-- (int64_t)editingStyleForRowAtIndex:(int64_t)a3;
+- (BOOL)shouldHighlightRowAtIndex:(int64_t)index;
+- (double)tableView:(id)view estimatedHeightForRowAtIndex:(int64_t)index;
+- (double)tableView:(id)view heightForRowAtIndex:(int64_t)index;
+- (id)tableView:(id)view cellForRowAtIndex:(int64_t)index;
+- (int64_t)commitEditingStyle:(int64_t)style forRowAtIndex:(int64_t)index;
+- (int64_t)editingStyleForRowAtIndex:(int64_t)index;
 - (int64_t)numberOfRows;
-- (void)_getSubitem:(id *)a3 andSubitemRow:(int64_t *)a4 forTableViewRow:(int64_t)a5;
-- (void)didCommitEditingStyle:(int64_t)a3 forRowAtIndex:(int64_t)a4;
-- (void)setData:(id)a3;
-- (void)setOwningViewController:(id)a3;
-- (void)setProfileFirstName:(id)a3;
-- (void)setSubitems:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndex:(int64_t)a4;
+- (void)_getSubitem:(id *)subitem andSubitemRow:(int64_t *)row forTableViewRow:(int64_t)viewRow;
+- (void)didCommitEditingStyle:(int64_t)style forRowAtIndex:(int64_t)index;
+- (void)setData:(id)data;
+- (void)setOwningViewController:(id)controller;
+- (void)setProfileFirstName:(id)name;
+- (void)setSubitems:(id)subitems;
+- (void)tableView:(id)view didSelectRowAtIndex:(int64_t)index;
 @end
 
 @implementation HKEmergencyCardGroupTableItem
 
-- (void)setSubitems:(id)a3
+- (void)setSubitems:(id)subitems
 {
-  v5 = a3;
-  objc_storeStrong(&self->_allSubItems, a3);
+  subitemsCopy = subitems;
+  objc_storeStrong(&self->_allSubItems, subitems);
   subitems = self->_subitems;
-  self->_subitems = v5;
-  v9 = v5;
+  self->_subitems = subitemsCopy;
+  v9 = subitemsCopy;
 
   v7 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{-[NSArray count](v9, "count")}];
   cumulativeRowOffsets = self->_cumulativeRowOffsets;
   self->_cumulativeRowOffsets = v7;
 }
 
-- (void)_getSubitem:(id *)a3 andSubitemRow:(int64_t *)a4 forTableViewRow:(int64_t)a5
+- (void)_getSubitem:(id *)subitem andSubitemRow:(int64_t *)row forTableViewRow:(int64_t)viewRow
 {
   v21 = *MEMORY[0x1E69E9840];
   v16 = 0u;
@@ -47,7 +47,7 @@
     while (2)
     {
       v11 = 0;
-      v12 = a5;
+      viewRowCopy = viewRow;
       do
       {
         if (*v17 != v10)
@@ -56,17 +56,17 @@
         }
 
         v13 = *(*(&v16 + 1) + 8 * v11);
-        v14 = [v13 numberOfRows];
-        a5 = v12 - v14;
-        if (v12 < v14)
+        numberOfRows = [v13 numberOfRows];
+        viewRow = viewRowCopy - numberOfRows;
+        if (viewRowCopy < numberOfRows)
         {
           v9 = v13;
-          a5 = v12;
+          viewRow = viewRowCopy;
           goto LABEL_11;
         }
 
         v11 = v11 + 1;
-        v12 -= v14;
+        viewRowCopy -= numberOfRows;
       }
 
       while (v9 != v11);
@@ -83,35 +83,35 @@
 LABEL_11:
 
   v15 = v9;
-  *a3 = v9;
-  *a4 = a5;
+  *subitem = v9;
+  *row = viewRow;
 }
 
-- (void)setData:(id)a3
+- (void)setData:(id)data
 {
   v5.receiver = self;
   v5.super_class = HKEmergencyCardGroupTableItem;
-  v4 = a3;
-  [(HKEmergencyCardTableItem *)&v5 setData:v4];
-  [(NSArray *)self->_allSubItems makeObjectsPerformSelector:sel_setData_ withObject:v4, v5.receiver, v5.super_class];
+  dataCopy = data;
+  [(HKEmergencyCardTableItem *)&v5 setData:dataCopy];
+  [(NSArray *)self->_allSubItems makeObjectsPerformSelector:sel_setData_ withObject:dataCopy, v5.receiver, v5.super_class];
 }
 
-- (void)setProfileFirstName:(id)a3
+- (void)setProfileFirstName:(id)name
 {
   v5.receiver = self;
   v5.super_class = HKEmergencyCardGroupTableItem;
-  v4 = a3;
-  [(HKEmergencyCardTableItem *)&v5 setProfileFirstName:v4];
-  [(NSArray *)self->_allSubItems makeObjectsPerformSelector:sel_setProfileFirstName_ withObject:v4, v5.receiver, v5.super_class];
+  nameCopy = name;
+  [(HKEmergencyCardTableItem *)&v5 setProfileFirstName:nameCopy];
+  [(NSArray *)self->_allSubItems makeObjectsPerformSelector:sel_setProfileFirstName_ withObject:nameCopy, v5.receiver, v5.super_class];
 }
 
-- (void)setOwningViewController:(id)a3
+- (void)setOwningViewController:(id)controller
 {
   v5.receiver = self;
   v5.super_class = HKEmergencyCardGroupTableItem;
-  v4 = a3;
-  [(HKEmergencyCardTableItem *)&v5 setOwningViewController:v4];
-  [(NSArray *)self->_allSubItems makeObjectsPerformSelector:sel_setOwningViewController_ withObject:v4, v5.receiver, v5.super_class];
+  controllerCopy = controller;
+  [(HKEmergencyCardTableItem *)&v5 setOwningViewController:controllerCopy];
+  [(NSArray *)self->_allSubItems makeObjectsPerformSelector:sel_setOwningViewController_ withObject:controllerCopy, v5.receiver, v5.super_class];
 }
 
 - (BOOL)hasPresentableData
@@ -153,8 +153,8 @@ LABEL_11:
   subitems = self->_subitems;
   self->_subitems = v3;
 
-  v11 = [(HKEmergencyCardGroupTableItem *)self subitems];
-  v12 = [v11 count] != 0;
+  subitems = [(HKEmergencyCardGroupTableItem *)self subitems];
+  v12 = [subitems count] != 0;
 
   return v12;
 }
@@ -199,105 +199,105 @@ LABEL_11:
   return v5;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndex:(int64_t)a4
+- (id)tableView:(id)view cellForRowAtIndex:(int64_t)index
 {
   v10 = 0;
   v11 = 0;
-  v6 = a3;
-  [(HKEmergencyCardGroupTableItem *)self _getSubitem:&v10 andSubitemRow:&v11 forTableViewRow:a4];
+  viewCopy = view;
+  [(HKEmergencyCardGroupTableItem *)self _getSubitem:&v10 andSubitemRow:&v11 forTableViewRow:index];
   v7 = v10;
-  v8 = [v7 tableView:v6 cellForRowAtIndex:v11];
+  v8 = [v7 tableView:viewCopy cellForRowAtIndex:v11];
 
   return v8;
 }
 
-- (double)tableView:(id)a3 estimatedHeightForRowAtIndex:(int64_t)a4
+- (double)tableView:(id)view estimatedHeightForRowAtIndex:(int64_t)index
 {
   v11 = 0;
   v12 = 0;
-  v6 = a3;
-  [(HKEmergencyCardGroupTableItem *)self _getSubitem:&v11 andSubitemRow:&v12 forTableViewRow:a4];
+  viewCopy = view;
+  [(HKEmergencyCardGroupTableItem *)self _getSubitem:&v11 andSubitemRow:&v12 forTableViewRow:index];
   v7 = v11;
-  [v7 tableView:v6 estimatedHeightForRowAtIndex:v12];
+  [v7 tableView:viewCopy estimatedHeightForRowAtIndex:v12];
   v9 = v8;
 
   return v9;
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndex:(int64_t)a4
+- (double)tableView:(id)view heightForRowAtIndex:(int64_t)index
 {
   v11 = 0;
   v12 = 0;
-  v6 = a3;
-  [(HKEmergencyCardGroupTableItem *)self _getSubitem:&v11 andSubitemRow:&v12 forTableViewRow:a4];
+  viewCopy = view;
+  [(HKEmergencyCardGroupTableItem *)self _getSubitem:&v11 andSubitemRow:&v12 forTableViewRow:index];
   v7 = v11;
-  [v7 tableView:v6 heightForRowAtIndex:v12];
+  [v7 tableView:viewCopy heightForRowAtIndex:v12];
   v9 = v8;
 
   return v9;
 }
 
-- (BOOL)shouldHighlightRowAtIndex:(int64_t)a3
+- (BOOL)shouldHighlightRowAtIndex:(int64_t)index
 {
   v6 = 0;
   v7 = 0;
-  [(HKEmergencyCardGroupTableItem *)self _getSubitem:&v6 andSubitemRow:&v7 forTableViewRow:a3];
+  [(HKEmergencyCardGroupTableItem *)self _getSubitem:&v6 andSubitemRow:&v7 forTableViewRow:index];
   v3 = v6;
   v4 = [v3 shouldHighlightRowAtIndex:v7];
 
   return v4;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndex:(int64_t)a4
+- (void)tableView:(id)view didSelectRowAtIndex:(int64_t)index
 {
   v8 = 0;
   v9 = 0;
-  v6 = a3;
-  [(HKEmergencyCardGroupTableItem *)self _getSubitem:&v8 andSubitemRow:&v9 forTableViewRow:a4];
+  viewCopy = view;
+  [(HKEmergencyCardGroupTableItem *)self _getSubitem:&v8 andSubitemRow:&v9 forTableViewRow:index];
   v7 = v8;
-  [v7 tableView:v6 didSelectRowAtIndex:v9];
+  [v7 tableView:viewCopy didSelectRowAtIndex:v9];
 }
 
-- (BOOL)canEditRowAtIndex:(int64_t)a3
+- (BOOL)canEditRowAtIndex:(int64_t)index
 {
   v6 = 0;
   v7 = 0;
-  [(HKEmergencyCardGroupTableItem *)self _getSubitem:&v6 andSubitemRow:&v7 forTableViewRow:a3];
+  [(HKEmergencyCardGroupTableItem *)self _getSubitem:&v6 andSubitemRow:&v7 forTableViewRow:index];
   v3 = v6;
   v4 = [v3 canEditRowAtIndex:v7];
 
   return v4;
 }
 
-- (int64_t)editingStyleForRowAtIndex:(int64_t)a3
+- (int64_t)editingStyleForRowAtIndex:(int64_t)index
 {
   v6 = 0;
   v7 = 0;
-  [(HKEmergencyCardGroupTableItem *)self _getSubitem:&v6 andSubitemRow:&v7 forTableViewRow:a3];
+  [(HKEmergencyCardGroupTableItem *)self _getSubitem:&v6 andSubitemRow:&v7 forTableViewRow:index];
   v3 = v6;
   v4 = [v3 editingStyleForRowAtIndex:v7];
 
   return v4;
 }
 
-- (int64_t)commitEditingStyle:(int64_t)a3 forRowAtIndex:(int64_t)a4
+- (int64_t)commitEditingStyle:(int64_t)style forRowAtIndex:(int64_t)index
 {
   v8 = 0;
   v9 = 0;
-  [(HKEmergencyCardGroupTableItem *)self _getSubitem:&v8 andSubitemRow:&v9 forTableViewRow:a4];
+  [(HKEmergencyCardGroupTableItem *)self _getSubitem:&v8 andSubitemRow:&v9 forTableViewRow:index];
   v5 = v8;
-  v6 = [v5 commitEditingStyle:a3 forRowAtIndex:v9];
+  v6 = [v5 commitEditingStyle:style forRowAtIndex:v9];
 
   return v6;
 }
 
-- (void)didCommitEditingStyle:(int64_t)a3 forRowAtIndex:(int64_t)a4
+- (void)didCommitEditingStyle:(int64_t)style forRowAtIndex:(int64_t)index
 {
   v6 = 0;
   v7 = 0;
-  [(HKEmergencyCardGroupTableItem *)self _getSubitem:&v6 andSubitemRow:&v7 forTableViewRow:a4];
+  [(HKEmergencyCardGroupTableItem *)self _getSubitem:&v6 andSubitemRow:&v7 forTableViewRow:index];
   v5 = v6;
-  [v5 didCommitEditingStyle:a3 forRowAtIndex:v7];
+  [v5 didCommitEditingStyle:style forRowAtIndex:v7];
 }
 
 @end

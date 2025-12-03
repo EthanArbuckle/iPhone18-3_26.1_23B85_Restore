@@ -1,8 +1,8 @@
 @interface CRLCommandFreehandDrawingProhibitClustering
 - (NSUUID)id;
 - (_TtC8Freeform43CRLCommandFreehandDrawingProhibitClustering)init;
-- (_TtC8Freeform43CRLCommandFreehandDrawingProhibitClustering)initWithFreehandDrawingItem:(id)a3 prohibitsClustering:(BOOL)a4;
-- (_TtC8Freeform43CRLCommandFreehandDrawingProhibitClustering)initWithId:(id)a3 prohibitsClustering:(BOOL)a4;
+- (_TtC8Freeform43CRLCommandFreehandDrawingProhibitClustering)initWithFreehandDrawingItem:(id)item prohibitsClustering:(BOOL)clustering;
+- (_TtC8Freeform43CRLCommandFreehandDrawingProhibitClustering)initWithId:(id)id prohibitsClustering:(BOOL)clustering;
 @end
 
 @implementation CRLCommandFreehandDrawingProhibitClustering
@@ -20,7 +20,7 @@
   return v8.super.isa;
 }
 
-- (_TtC8Freeform43CRLCommandFreehandDrawingProhibitClustering)initWithId:(id)a3 prohibitsClustering:(BOOL)a4
+- (_TtC8Freeform43CRLCommandFreehandDrawingProhibitClustering)initWithId:(id)id prohibitsClustering:(BOOL)clustering
 {
   v6 = type metadata accessor for UUID();
   v7 = *(v6 - 8);
@@ -28,7 +28,7 @@
   v9 = &v13 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static UUID._unconditionallyBridgeFromObjectiveC(_:)();
   (*(v7 + 16))(self + OBJC_IVAR____TtC8Freeform43CRLCommandFreehandDrawingProhibitClustering_id, v9, v6);
-  *(self + OBJC_IVAR____TtC8Freeform43CRLCommandFreehandDrawingProhibitClustering_prohibitsClustering) = a4;
+  *(self + OBJC_IVAR____TtC8Freeform43CRLCommandFreehandDrawingProhibitClustering_prohibitsClustering) = clustering;
   v10 = type metadata accessor for CRLCommandFreehandDrawingProhibitClustering();
   v13.receiver = self;
   v13.super_class = v10;
@@ -37,18 +37,18 @@
   return v11;
 }
 
-- (_TtC8Freeform43CRLCommandFreehandDrawingProhibitClustering)initWithFreehandDrawingItem:(id)a3 prohibitsClustering:(BOOL)a4
+- (_TtC8Freeform43CRLCommandFreehandDrawingProhibitClustering)initWithFreehandDrawingItem:(id)item prohibitsClustering:(BOOL)clustering
 {
-  v4 = a4;
+  clusteringCopy = clustering;
   v7 = type metadata accessor for UUID();
   v8 = *(v7 - 8);
   v9 = __chkstk_darwin(v7);
   v11 = &v16 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
-  (*(**(a3 + OBJC_IVAR____TtC8Freeform16CRLBoardItemBase_itemData) + 264))(v9);
-  v12 = a3;
+  (*(**(item + OBJC_IVAR____TtC8Freeform16CRLBoardItemBase_itemData) + 264))(v9);
+  itemCopy = item;
   isa = UUID._bridgeToObjectiveC()().super.isa;
   (*(v8 + 8))(v11, v7);
-  v14 = [(CRLCommandFreehandDrawingProhibitClustering *)self initWithId:isa prohibitsClustering:v4];
+  v14 = [(CRLCommandFreehandDrawingProhibitClustering *)self initWithId:isa prohibitsClustering:clusteringCopy];
 
   return v14;
 }

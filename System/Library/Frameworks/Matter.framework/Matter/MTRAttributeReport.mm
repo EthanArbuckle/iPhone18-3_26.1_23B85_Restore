@@ -1,26 +1,26 @@
 @interface MTRAttributeReport
-- (MTRAttributeReport)initWithPath:(const void *)a3 value:(id)a4 error:(id)a5;
+- (MTRAttributeReport)initWithPath:(const void *)path value:(id)value error:(id)error;
 - (MTRAttributeReport)initWithResponseValue:(NSDictionary *)responseValue error:(NSError *)error;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation MTRAttributeReport
 
-- (MTRAttributeReport)initWithPath:(const void *)a3 value:(id)a4 error:(id)a5
+- (MTRAttributeReport)initWithPath:(const void *)path value:(id)value error:(id)error
 {
-  v9 = a4;
-  v10 = a5;
+  valueCopy = value;
+  errorCopy = error;
   v15.receiver = self;
   v15.super_class = MTRAttributeReport;
   v11 = [(MTRAttributeReport *)&v15 init];
   if (v11)
   {
-    v12 = [[MTRAttributePath alloc] initWithPath:a3];
+    v12 = [[MTRAttributePath alloc] initWithPath:path];
     path = v11->_path;
     v11->_path = v12;
 
-    objc_storeStrong(&v11->_value, a4);
-    objc_storeStrong(&v11->_error, a5);
+    objc_storeStrong(&v11->_value, value);
+    objc_storeStrong(&v11->_error, error);
   }
 
   return v11;
@@ -80,10 +80,10 @@ LABEL_18:
         goto LABEL_19;
       }
 
-      v23 = [v9 _asConcretePath];
+      _asConcretePath = [v9 _asConcretePath];
       v24 = v16;
       v22 = xmmword_278A72F40;
-      v17 = sub_23929E56C(&v23, v25, &v22);
+      v17 = sub_23929E56C(&_asConcretePath, v25, &v22);
       if (v22 == 181)
       {
         v19 = @"No known schema for decoding attribute value.";
@@ -121,18 +121,18 @@ LABEL_20:
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [MTRAttributeReport alloc];
-  v5 = [(MTRAttributeReport *)self path];
-  v11 = [v5 _asConcretePath];
+  path = [(MTRAttributeReport *)self path];
+  _asConcretePath = [path _asConcretePath];
   v12 = v6;
   v13 = 0;
   v14 = 0;
   v15 = 0;
-  v7 = [(MTRAttributeReport *)self value];
-  v8 = [(MTRAttributeReport *)self error];
-  v9 = [(MTRAttributeReport *)v4 initWithPath:&v11 value:v7 error:v8];
+  value = [(MTRAttributeReport *)self value];
+  error = [(MTRAttributeReport *)self error];
+  v9 = [(MTRAttributeReport *)v4 initWithPath:&_asConcretePath value:value error:error];
 
   return v9;
 }

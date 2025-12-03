@@ -1,19 +1,19 @@
 @interface InputUIWindowAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)makeKeyAndVisible;
-- (void)setDocumentTraits:(id)a3;
+- (void)setDocumentTraits:(id)traits;
 @end
 
 @implementation InputUIWindowAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"IUIInputSourceViewController" hasInstanceMethod:@"textInputSource" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"IUIRTIInputSource" hasInstanceMethod:@"sourceSession" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"UIWindow" hasInstanceMethod:@"makeKeyAndVisible" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"RTIInputSystemSession" hasInstanceMethod:@"setDocumentTraits:" withFullSignature:{"v", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"IUIInputSourceViewController" hasInstanceMethod:@"textInputSource" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"IUIRTIInputSource" hasInstanceMethod:@"sourceSession" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"UIWindow" hasInstanceMethod:@"makeKeyAndVisible" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"RTIInputSystemSession" hasInstanceMethod:@"setDocumentTraits:" withFullSignature:{"v", "@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -100,11 +100,11 @@ uint64_t __72__InputUIWindowAccessibility__accessibilityLoadAccessibilityInforma
   [(InputUIWindowAccessibility *)self _accessibilityLoadAccessibilityInformation];
 }
 
-- (void)setDocumentTraits:(id)a3
+- (void)setDocumentTraits:(id)traits
 {
   v4.receiver = self;
   v4.super_class = InputUIWindowAccessibility;
-  [(InputUIWindowAccessibility *)&v4 setDocumentTraits:a3];
+  [(InputUIWindowAccessibility *)&v4 setDocumentTraits:traits];
   [(InputUIWindowAccessibility *)self _accessibilityLoadAccessibilityInformation];
 }
 

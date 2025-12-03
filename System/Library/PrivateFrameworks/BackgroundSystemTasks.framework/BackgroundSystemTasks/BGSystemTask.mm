@@ -1,29 +1,29 @@
 @interface BGSystemTask
 + (id)logger;
-- (BGSystemTask)initWithIdentifier:(id)a3;
-- (BGSystemTask)initWithIdentifier:(id)a3 queue:(id)a4 taskRequest:(id)a5;
+- (BGSystemTask)initWithIdentifier:(id)identifier;
+- (BGSystemTask)initWithIdentifier:(id)identifier queue:(id)queue taskRequest:(id)request;
 - (BGSystemTaskDelegate)delegate;
-- (BOOL)consumedResults:(id)a3 error:(id *)a4;
-- (BOOL)deregisterThroughputTrackingFor:(id)a3 withEndTime:(id)a4 error:(id *)a5;
-- (BOOL)producedCumulativeResults:(id)a3 error:(id *)a4;
+- (BOOL)consumedResults:(id)results error:(id *)error;
+- (BOOL)deregisterThroughputTrackingFor:(id)for withEndTime:(id)time error:(id *)error;
+- (BOOL)producedCumulativeResults:(id)results error:(id *)error;
 - (BOOL)queue_reportBufferedTaskWorkloadProgress;
-- (BOOL)queue_reportThroughputForPerformanceMetric:(id)a3 error:(id *)a4;
-- (BOOL)registerThroughputTrackingFor:(id)a3 withStartTime:(id)a4 error:(id *)a5;
-- (BOOL)reportCumulativeResultConsumptionWithError:(id *)a3;
+- (BOOL)queue_reportThroughputForPerformanceMetric:(id)metric error:(id *)error;
+- (BOOL)registerThroughputTrackingFor:(id)for withStartTime:(id)time error:(id *)error;
+- (BOOL)reportCumulativeResultConsumptionWithError:(id *)error;
 - (BOOL)reportPendingThroughputMetrics;
-- (BOOL)reportTaskWorkloadProgress:(unint64_t)a3 completed:(unint64_t)a4 category:(unint64_t)a5 subCategory:(id)a6 error:(id *)a7;
-- (BOOL)resetResultsForIdentifier:(id)a3 error:(id *)a4;
+- (BOOL)reportTaskWorkloadProgress:(unint64_t)progress completed:(unint64_t)completed category:(unint64_t)category subCategory:(id)subCategory error:(id *)error;
+- (BOOL)resetResultsForIdentifier:(id)identifier error:(id *)error;
 - (BOOL)resultQueue_containsPendingConsumedResults;
-- (BOOL)sendTaskWorkloadProgressToPPS:(unint64_t)a3 completed:(unint64_t)a4 category:(unint64_t)a5 subCategory:(id)a6;
-- (BOOL)setTaskExpiredWithRetryAfter:(double)a3 error:(id *)a4;
-- (id)delegate:(id *)a3;
+- (BOOL)sendTaskWorkloadProgressToPPS:(unint64_t)s completed:(unint64_t)completed category:(unint64_t)category subCategory:(id)subCategory;
+- (BOOL)setTaskExpiredWithRetryAfter:(double)after error:(id *)error;
+- (id)delegate:(id *)delegate;
 - (void)clearLocked;
-- (void)handleExpirationWithReason:(unint64_t)a3;
-- (void)invokeExpirationHandlerWithReason:(unint64_t)a3;
+- (void)handleExpirationWithReason:(unint64_t)reason;
+- (void)invokeExpirationHandlerWithReason:(unint64_t)reason;
 - (void)prepareForRunning;
-- (void)resultQueue_aggregateConsumedResult:(id)a3;
-- (void)setExpirationHandler:(id)a3;
-- (void)setExpirationHandlerWithReason:(id)a3;
+- (void)resultQueue_aggregateConsumedResult:(id)result;
+- (void)setExpirationHandler:(id)handler;
+- (void)setExpirationHandlerWithReason:(id)reason;
 - (void)setTaskCompleted;
 @end
 
@@ -56,8 +56,8 @@
 - (BOOL)resultQueue_containsPendingConsumedResults
 {
   dispatch_assert_queue_V2(self->_resultQueue);
-  v3 = [(NSMutableDictionary *)self->_runningConsumedResults allKeys];
-  v4 = [v3 count] != 0;
+  allKeys = [(NSMutableDictionary *)self->_runningConsumedResults allKeys];
+  v4 = [allKeys count] != 0;
 
   return v4;
 }
@@ -70,15 +70,15 @@
   v19 = 0x3032000000;
   v20 = __Block_byref_object_copy__2;
   v21 = __Block_byref_object_dispose__2;
-  v22 = [MEMORY[0x1E695DF70] array];
-  v3 = [(BGSystemTask *)self performanceMetricQueue];
+  array = [MEMORY[0x1E695DF70] array];
+  performanceMetricQueue = [(BGSystemTask *)self performanceMetricQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __46__BGSystemTask_reportPendingThroughputMetrics__block_invoke;
   block[3] = &unk_1E7B24680;
   block[4] = self;
   block[5] = &v17;
-  dispatch_sync(v3, block);
+  dispatch_sync(performanceMetricQueue, block);
 
   v14 = 0u;
   v15 = 0u;
@@ -217,12 +217,12 @@ uint64_t __32__BGSystemTask_setTaskCompleted__block_invoke(uint64_t a1)
   v44 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v3 = [(BGSystemTask *)self taskProgressInfo];
-  v31 = [v3 countByEnumeratingWithState:&v41 objects:v46 count:16];
+  taskProgressInfo = [(BGSystemTask *)self taskProgressInfo];
+  v31 = [taskProgressInfo countByEnumeratingWithState:&v41 objects:v46 count:16];
   if (v31)
   {
     v4 = *v42;
-    v33 = v3;
+    v33 = taskProgressInfo;
     v30 = *v42;
     do
     {
@@ -231,7 +231,7 @@ uint64_t __32__BGSystemTask_setTaskCompleted__block_invoke(uint64_t a1)
       {
         if (*v42 != v4)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(taskProgressInfo);
         }
 
         v32 = v5;
@@ -240,8 +240,8 @@ uint64_t __32__BGSystemTask_setTaskCompleted__block_invoke(uint64_t a1)
         v38 = 0u;
         v39 = 0u;
         v40 = 0u;
-        v7 = [(BGSystemTask *)self taskProgressInfo];
-        v8 = [v7 objectForKeyedSubscript:v6];
+        taskProgressInfo2 = [(BGSystemTask *)self taskProgressInfo];
+        v8 = [taskProgressInfo2 objectForKeyedSubscript:v6];
 
         obj = v8;
         v36 = [v8 countByEnumeratingWithState:&v37 objects:v45 count:16];
@@ -259,32 +259,32 @@ uint64_t __32__BGSystemTask_setTaskCompleted__block_invoke(uint64_t a1)
               }
 
               v11 = *(*(&v37 + 1) + 8 * i);
-              v12 = [(BGSystemTask *)self taskProgressInfo];
-              v13 = [v12 objectForKeyedSubscript:v6];
+              taskProgressInfo3 = [(BGSystemTask *)self taskProgressInfo];
+              v13 = [taskProgressInfo3 objectForKeyedSubscript:v6];
               v14 = [v13 objectForKey:v11];
               v15 = [v14 objectAtIndexedSubscript:1];
-              v16 = [v15 unsignedLongValue];
+              unsignedLongValue = [v15 unsignedLongValue];
 
-              if (![(BGSystemTask *)self shouldReportTaskWorkloadProgress:v16])
+              if (![(BGSystemTask *)self shouldReportTaskWorkloadProgress:unsignedLongValue])
               {
-                v17 = [(BGSystemTask *)self taskProgressInfo];
-                v18 = [v17 objectForKeyedSubscript:v6];
+                taskProgressInfo4 = [(BGSystemTask *)self taskProgressInfo];
+                v18 = [taskProgressInfo4 objectForKeyedSubscript:v6];
                 v19 = [v18 objectForKey:v11];
                 v20 = [v19 objectAtIndexedSubscript:0];
-                v21 = [v20 unsignedLongValue];
+                unsignedLongValue2 = [v20 unsignedLongValue];
 
                 v22 = v11 == @"default" ? 0 : v11;
                 v23 = v22;
-                v24 = [v6 unsignedLongValue];
-                v25 = v21;
+                unsignedLongValue3 = [v6 unsignedLongValue];
+                v25 = unsignedLongValue2;
                 v9 = v34;
-                v26 = [(BGSystemTask *)self sendTaskWorkloadProgressToPPS:v25 completed:v16 category:v24 subCategory:v23];
+                v26 = [(BGSystemTask *)self sendTaskWorkloadProgressToPPS:v25 completed:unsignedLongValue category:unsignedLongValue3 subCategory:v23];
 
                 if (!v26)
                 {
 
                   v27 = 0;
-                  v3 = v33;
+                  taskProgressInfo = v33;
                   goto LABEL_23;
                 }
               }
@@ -301,7 +301,7 @@ uint64_t __32__BGSystemTask_setTaskCompleted__block_invoke(uint64_t a1)
         }
 
         v5 = v32 + 1;
-        v3 = v33;
+        taskProgressInfo = v33;
         v4 = v30;
       }
 
@@ -368,67 +368,67 @@ LABEL_23:
   [(BGSystemTask *)self setState:1];
 }
 
-- (BGSystemTask)initWithIdentifier:(id)a3
+- (BGSystemTask)initWithIdentifier:(id)identifier
 {
   v4 = MEMORY[0x1E696AEC0];
-  v5 = a3;
-  v6 = [v4 stringWithFormat:@"com.apple.BGSystemTask.%@", v5];
-  v7 = [v6 cStringUsingEncoding:4];
+  identifierCopy = identifier;
+  identifierCopy = [v4 stringWithFormat:@"com.apple.BGSystemTask.%@", identifierCopy];
+  v7 = [identifierCopy cStringUsingEncoding:4];
   v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
   v9 = dispatch_queue_create(v7, v8);
 
-  v10 = [(BGSystemTask *)self initWithIdentifier:v5 queue:v9];
+  v10 = [(BGSystemTask *)self initWithIdentifier:identifierCopy queue:v9];
   return v10;
 }
 
-- (BGSystemTask)initWithIdentifier:(id)a3 queue:(id)a4 taskRequest:(id)a5
+- (BGSystemTask)initWithIdentifier:(id)identifier queue:(id)queue taskRequest:(id)request
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  identifierCopy = identifier;
+  queueCopy = queue;
+  requestCopy = request;
   v37.receiver = self;
   v37.super_class = BGSystemTask;
   v12 = [(BGSystemTask *)&v37 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_identifier, a3);
-    objc_storeStrong(&v13->_queue, a4);
-    v14 = [v11 copy];
+    objc_storeStrong(&v12->_identifier, identifier);
+    objc_storeStrong(&v13->_queue, queue);
+    v14 = [requestCopy copy];
     taskRequest = v13->_taskRequest;
     v13->_taskRequest = v14;
 
-    v16 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     runningConsumedResults = v13->_runningConsumedResults;
-    v13->_runningConsumedResults = v16;
+    v13->_runningConsumedResults = dictionary;
 
-    v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.BGSystemTask.resultQ.%@", v9];
-    v19 = [v18 cStringUsingEncoding:4];
+    identifierCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.BGSystemTask.resultQ.%@", identifierCopy];
+    v19 = [identifierCopy cStringUsingEncoding:4];
     v20 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v21 = dispatch_queue_attr_make_with_qos_class(v20, QOS_CLASS_BACKGROUND, 0);
     v22 = dispatch_queue_create(v19, v21);
     resultQueue = v13->_resultQueue;
     v13->_resultQueue = v22;
 
-    v24 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.BGSystemTask.perfMetricQ.%@", v9];
-    v25 = [v24 cStringUsingEncoding:4];
+    identifierCopy2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.BGSystemTask.perfMetricQ.%@", identifierCopy];
+    v25 = [identifierCopy2 cStringUsingEncoding:4];
     v26 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v27 = dispatch_queue_attr_make_with_qos_class(v26, QOS_CLASS_BACKGROUND, 0);
     v28 = dispatch_queue_create(v25, v27);
     performanceMetricQueue = v13->_performanceMetricQueue;
     v13->_performanceMetricQueue = v28;
 
-    v30 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     taskProgressInfo = v13->_taskProgressInfo;
-    v13->_taskProgressInfo = v30;
+    v13->_taskProgressInfo = dictionary2;
 
-    v32 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary3 = [MEMORY[0x1E695DF90] dictionary];
     throughputMetricsMap = v13->_throughputMetricsMap;
-    v13->_throughputMetricsMap = v32;
+    v13->_throughputMetricsMap = dictionary3;
 
-    v34 = [MEMORY[0x1E696AFB0] UUID];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
     uuid = v13->_uuid;
-    v13->_uuid = v34;
+    v13->_uuid = uUID;
   }
 
   return v13;
@@ -453,13 +453,13 @@ uint64_t __22__BGSystemTask_logger__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)delegate:(id *)a3
+- (id)delegate:(id *)delegate
 {
-  v4 = [(BGSystemTask *)self delegate];
-  v5 = v4;
-  if (a3 && !v4)
+  delegate = [(BGSystemTask *)self delegate];
+  v5 = delegate;
+  if (delegate && !delegate)
   {
-    *a3 = [MEMORY[0x1E696ABC0] errorWithDomain:@"BGSystemTaskSchedulerErrorDomain" code:1 userInfo:0];
+    *delegate = [MEMORY[0x1E696ABC0] errorWithDomain:@"BGSystemTaskSchedulerErrorDomain" code:1 userInfo:0];
   }
 
   return v5;
@@ -472,15 +472,15 @@ void __27__BGSystemTask_clearLocked__block_invoke(uint64_t a1)
   *(v1 + 64) = 0;
 }
 
-- (BOOL)setTaskExpiredWithRetryAfter:(double)a3 error:(id *)a4
+- (BOOL)setTaskExpiredWithRetryAfter:(double)after error:(id *)error
 {
   dispatch_assert_queue_not_V2(self->_queue);
   if ([(BGSystemTask *)self invalid])
   {
-    if (a4)
+    if (error)
     {
       [MEMORY[0x1E696ABC0] errorWithDomain:@"BGSystemTaskSchedulerErrorDomain" code:4 userInfo:0];
-      *a4 = v7 = 0;
+      *error = v7 = 0;
     }
 
     else
@@ -501,7 +501,7 @@ void __27__BGSystemTask_clearLocked__block_invoke(uint64_t a1)
     v15 = __Block_byref_object_copy__2;
     v16 = __Block_byref_object_dispose__2;
     v17 = 0;
-    v8 = [(BGSystemTask *)self reportCumulativeResultConsumptionWithError:a4];
+    v8 = [(BGSystemTask *)self reportCumulativeResultConsumptionWithError:error];
     *(v19 + 24) = v8;
     if (v8)
     {
@@ -511,15 +511,15 @@ void __27__BGSystemTask_clearLocked__block_invoke(uint64_t a1)
       v11[1] = 3221225472;
       v11[2] = __51__BGSystemTask_setTaskExpiredWithRetryAfter_error___block_invoke;
       v11[3] = &unk_1E7B245B8;
-      *&v11[7] = a3;
+      *&v11[7] = after;
       v11[4] = self;
       v11[5] = &v12;
       v11[6] = &v18;
       dispatch_sync(queue, v11);
       v7 = *(v19 + 24);
-      if (a4 && (v19[3] & 1) == 0)
+      if (error && (v19[3] & 1) == 0)
       {
-        *a4 = v13[5];
+        *error = v13[5];
         v7 = *(v19 + 24);
       }
     }
@@ -606,15 +606,15 @@ void __51__BGSystemTask_setTaskExpiredWithRetryAfter_error___block_invoke(uint64
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleExpirationWithReason:(unint64_t)a3
+- (void)handleExpirationWithReason:(unint64_t)reason
 {
   if (!self->_hasPropagatedExpiration)
   {
     [(BGSystemTask *)self setState:2];
-    self->_expirationReason = a3;
+    self->_expirationReason = reason;
     if ([(BGSystemTask *)self hasValidExpirationHandler])
     {
-      [(BGSystemTask *)self invokeExpirationHandlerWithReason:a3];
+      [(BGSystemTask *)self invokeExpirationHandlerWithReason:reason];
       expirationHandlerWithReason = self->_expirationHandlerWithReason;
       self->_expirationHandlerWithReason = 0;
 
@@ -624,14 +624,14 @@ void __51__BGSystemTask_setTaskExpiredWithRetryAfter_error___block_invoke(uint64
   }
 }
 
-- (void)invokeExpirationHandlerWithReason:(unint64_t)a3
+- (void)invokeExpirationHandlerWithReason:(unint64_t)reason
 {
   if ([(BGSystemTask *)self hasValidExpirationHandler])
   {
     expirationHandlerWithReason = self->_expirationHandlerWithReason;
     if (expirationHandlerWithReason)
     {
-      expirationHandlerWithReason[2](expirationHandlerWithReason, a3);
+      expirationHandlerWithReason[2](expirationHandlerWithReason, reason);
     }
 
     else
@@ -652,18 +652,18 @@ void __51__BGSystemTask_setTaskExpiredWithRetryAfter_error___block_invoke(uint64
   }
 }
 
-- (BOOL)producedCumulativeResults:(id)a3 error:(id *)a4
+- (BOOL)producedCumulativeResults:(id)results error:(id *)error
 {
-  v6 = a3;
-  v7 = [(BGSystemTask *)self delegate:a4];
-  LOBYTE(a4) = [v7 systemTask:self producedResults:v6 error:a4];
+  resultsCopy = results;
+  v7 = [(BGSystemTask *)self delegate:error];
+  LOBYTE(error) = [v7 systemTask:self producedResults:resultsCopy error:error];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)consumedResults:(id)a3 error:(id *)a4
+- (BOOL)consumedResults:(id)results error:(id *)error
 {
-  v6 = a3;
+  resultsCopy = results;
   v25 = 0;
   v26 = &v25;
   v27 = 0x2020000000;
@@ -684,9 +684,9 @@ void __51__BGSystemTask_setTaskExpiredWithRetryAfter_error___block_invoke(uint64
     v13 = 3221225472;
     v14 = __38__BGSystemTask_consumedResults_error___block_invoke;
     v15 = &unk_1E7B24448;
-    v16 = v6;
+    v16 = resultsCopy;
     v17 = v7;
-    v18 = self;
+    selfCopy = self;
     v19 = &v22;
     v20 = &v25;
     dispatch_sync(resultQueue, &v12);
@@ -705,12 +705,12 @@ void __51__BGSystemTask_setTaskExpiredWithRetryAfter_error___block_invoke(uint64
   v9 = [BGSystemTask logger:v12];
   if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
   {
-    [BGSystemTask consumedResults:v6 error:v23];
+    [BGSystemTask consumedResults:resultsCopy error:v23];
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = *(v23[0] + 40);
+    *error = *(v23[0] + 40);
   }
 
 LABEL_9:
@@ -779,9 +779,9 @@ LABEL_11:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)resetResultsForIdentifier:(id)a3 error:(id *)a4
+- (BOOL)resetResultsForIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v25 = 0;
   v26 = &v25;
   v27 = 0x2020000000;
@@ -804,8 +804,8 @@ LABEL_11:
     v15 = &unk_1E7B245E0;
     v19 = &v25;
     v16 = v7;
-    v17 = self;
-    v18 = v6;
+    selfCopy = self;
+    v18 = identifierCopy;
     v20 = &v22;
     dispatch_sync(resultQueue, &v12);
 
@@ -823,12 +823,12 @@ LABEL_11:
   v9 = [BGSystemTask logger:v12];
   if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
   {
-    [BGSystemTask resetResultsForIdentifier:v6 error:v23];
+    [BGSystemTask resetResultsForIdentifier:identifierCopy error:v23];
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = *(v23[0] + 40);
+    *error = *(v23[0] + 40);
   }
 
 LABEL_9:
@@ -852,35 +852,35 @@ void __48__BGSystemTask_resetResultsForIdentifier_error___block_invoke(void *a1)
   *(*(a1[7] + 8) + 24) = v6;
 }
 
-- (void)resultQueue_aggregateConsumedResult:(id)a3
+- (void)resultQueue_aggregateConsumedResult:(id)result
 {
-  v13 = a3;
+  resultCopy = result;
   dispatch_assert_queue_V2(self->_resultQueue);
   runningConsumedResults = self->_runningConsumedResults;
-  v5 = [v13 identifier];
-  v6 = [(NSMutableDictionary *)runningConsumedResults objectForKeyedSubscript:v5];
+  identifier = [resultCopy identifier];
+  v6 = [(NSMutableDictionary *)runningConsumedResults objectForKeyedSubscript:identifier];
 
   if (v6)
   {
     v7 = [BGSystemTaskResult alloc];
-    v8 = [v13 identifier];
-    v9 = -[BGSystemTaskResult initWithIdentifier:consumptionCount:](v7, "initWithIdentifier:consumptionCount:", v8, [v13 count] + objc_msgSend(v6, "count"));
+    identifier2 = [resultCopy identifier];
+    v9 = -[BGSystemTaskResult initWithIdentifier:consumptionCount:](v7, "initWithIdentifier:consumptionCount:", identifier2, [resultCopy count] + objc_msgSend(v6, "count"));
 
     v10 = v9;
   }
 
   else
   {
-    v10 = v13;
+    v10 = resultCopy;
   }
 
   v11 = self->_runningConsumedResults;
   v14 = v10;
-  v12 = [v10 identifier];
-  [(NSMutableDictionary *)v11 setObject:v14 forKeyedSubscript:v12];
+  identifier3 = [v10 identifier];
+  [(NSMutableDictionary *)v11 setObject:v14 forKeyedSubscript:identifier3];
 }
 
-- (BOOL)reportCumulativeResultConsumptionWithError:(id *)a3
+- (BOOL)reportCumulativeResultConsumptionWithError:(id *)error
 {
   v19 = 0;
   v20 = &v19;
@@ -914,9 +914,9 @@ void __48__BGSystemTask_resetResultsForIdentifier_error___block_invoke(void *a1)
       [(BGSystemTask *)self reportCumulativeResultConsumptionWithError:v17];
     }
 
-    if (a3)
+    if (error)
     {
-      *a3 = *(v17[0] + 40);
+      *error = *(v17[0] + 40);
     }
   }
 
@@ -949,9 +949,9 @@ void __59__BGSystemTask_reportCumulativeResultConsumptionWithError___block_invok
   }
 }
 
-- (BOOL)reportTaskWorkloadProgress:(unint64_t)a3 completed:(unint64_t)a4 category:(unint64_t)a5 subCategory:(id)a6 error:(id *)a7
+- (BOOL)reportTaskWorkloadProgress:(unint64_t)progress completed:(unint64_t)completed category:(unint64_t)category subCategory:(id)subCategory error:(id *)error
 {
-  v12 = a6;
+  subCategoryCopy = subCategory;
   v31 = 0;
   v32 = &v31;
   v33 = 0x2020000000;
@@ -967,19 +967,19 @@ void __59__BGSystemTask_reportCumulativeResultConsumptionWithError___block_invok
   block[1] = 3221225472;
   block[2] = __80__BGSystemTask_reportTaskWorkloadProgress_completed_category_subCategory_error___block_invoke;
   block[3] = &unk_1E7B24630;
-  v22 = a4;
-  v23 = a3;
+  completedCopy = completed;
+  progressCopy = progress;
   v20 = &v25;
-  v24 = a5;
-  v14 = v12;
+  categoryCopy = category;
+  v14 = subCategoryCopy;
   v21 = &v31;
   v18 = v14;
-  v19 = self;
+  selfCopy = self;
   dispatch_sync(queue, block);
   v15 = *(v32 + 24);
-  if (a7 && (v32[3] & 1) == 0)
+  if (error && (v32[3] & 1) == 0)
   {
-    *a7 = v26[5];
+    *error = v26[5];
     v15 = *(v32 + 24);
   }
 
@@ -1109,27 +1109,27 @@ void __80__BGSystemTask_reportTaskWorkloadProgress_completed_category_subCategor
   v29 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)sendTaskWorkloadProgressToPPS:(unint64_t)a3 completed:(unint64_t)a4 category:(unint64_t)a5 subCategory:(id)a6
+- (BOOL)sendTaskWorkloadProgressToPPS:(unint64_t)s completed:(unint64_t)completed category:(unint64_t)category subCategory:(id)subCategory
 {
-  v10 = a6;
+  subCategoryCopy = subCategory;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
   v18 = 1;
-  v11 = [MEMORY[0x1E699A4B8] sharedScheduler];
-  v12 = [(BGSystemTask *)self identifier];
+  mEMORY[0x1E699A4B8] = [MEMORY[0x1E699A4B8] sharedScheduler];
+  identifier = [(BGSystemTask *)self identifier];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __77__BGSystemTask_sendTaskWorkloadProgressToPPS_completed_category_subCategory___block_invoke;
   v14[3] = &unk_1E7B24050;
   v14[4] = self;
   v14[5] = &v15;
-  [v11 reportTaskWorkloadProgress:v12 target:a3 completed:a4 category:a5 subCategory:v10 completionHandler:v14];
+  [mEMORY[0x1E699A4B8] reportTaskWorkloadProgress:identifier target:s completed:completed category:category subCategory:subCategoryCopy completionHandler:v14];
 
-  LOBYTE(a5) = *(v16 + 24);
+  LOBYTE(category) = *(v16 + 24);
   _Block_object_dispose(&v15, 8);
 
-  return a5;
+  return category;
 }
 
 void __77__BGSystemTask_sendTaskWorkloadProgressToPPS_completed_category_subCategory___block_invoke(uint64_t a1, int a2)
@@ -1162,26 +1162,26 @@ void __77__BGSystemTask_sendTaskWorkloadProgressToPPS_completed_category_subCate
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setExpirationHandler:(id)a3
+- (void)setExpirationHandler:(id)handler
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   dispatch_assert_queue_not_V2(self->_queue);
   if ([(BGSystemTask *)self expiring])
   {
-    v5 = [(BGSystemTask *)self hasValidExpirationHandler];
-    v6 = MEMORY[0x1B2747570](v4);
+    hasValidExpirationHandler = [(BGSystemTask *)self hasValidExpirationHandler];
+    v6 = MEMORY[0x1B2747570](handlerCopy);
     expirationHandler = self->_expirationHandler;
     self->_expirationHandler = v6;
 
-    if (!v5)
+    if (!hasValidExpirationHandler)
     {
       v8 = +[BGSystemTask logger];
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
-        v9 = [(BGSystemTask *)self identifier];
+        identifier = [(BGSystemTask *)self identifier];
         *buf = 138543362;
-        v16 = v9;
+        v16 = identifier;
         _os_log_impl(&dword_1B236A000, v8, OS_LOG_TYPE_DEFAULT, "Invoking expirationHandler for %{public}@ immediately after being set due to a cached expiration request", buf, 0xCu);
       }
 
@@ -1197,7 +1197,7 @@ void __77__BGSystemTask_sendTaskWorkloadProgressToPPS_completed_category_subCate
 
   else
   {
-    v11 = MEMORY[0x1B2747570](v4);
+    v11 = MEMORY[0x1B2747570](handlerCopy);
     v12 = self->_expirationHandler;
     self->_expirationHandler = v11;
   }
@@ -1205,26 +1205,26 @@ void __77__BGSystemTask_sendTaskWorkloadProgressToPPS_completed_category_subCate
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setExpirationHandlerWithReason:(id)a3
+- (void)setExpirationHandlerWithReason:(id)reason
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  reasonCopy = reason;
   dispatch_assert_queue_not_V2(self->_queue);
   if ([(BGSystemTask *)self expiring])
   {
-    v5 = [(BGSystemTask *)self hasValidExpirationHandler];
-    v6 = MEMORY[0x1B2747570](v4);
+    hasValidExpirationHandler = [(BGSystemTask *)self hasValidExpirationHandler];
+    v6 = MEMORY[0x1B2747570](reasonCopy);
     expirationHandlerWithReason = self->_expirationHandlerWithReason;
     self->_expirationHandlerWithReason = v6;
 
-    if (!v5)
+    if (!hasValidExpirationHandler)
     {
       v8 = +[BGSystemTask logger];
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
-        v9 = [(BGSystemTask *)self identifier];
+        identifier = [(BGSystemTask *)self identifier];
         *buf = 138543362;
-        v16 = v9;
+        v16 = identifier;
         _os_log_impl(&dword_1B236A000, v8, OS_LOG_TYPE_DEFAULT, "Invoking expirationHandlerWithReason for %{public}@ immediately after being set due to a cached expiration request", buf, 0xCu);
       }
 
@@ -1240,7 +1240,7 @@ void __77__BGSystemTask_sendTaskWorkloadProgressToPPS_completed_category_subCate
 
   else
   {
-    v11 = MEMORY[0x1B2747570](v4);
+    v11 = MEMORY[0x1B2747570](reasonCopy);
     v12 = self->_expirationHandlerWithReason;
     self->_expirationHandlerWithReason = v11;
   }
@@ -1256,10 +1256,10 @@ uint64_t __47__BGSystemTask_setExpirationHandlerWithReason___block_invoke(uint64
   return [v1 handleExpirationWithReason:v2];
 }
 
-- (BOOL)registerThroughputTrackingFor:(id)a3 withStartTime:(id)a4 error:(id *)a5
+- (BOOL)registerThroughputTrackingFor:(id)for withStartTime:(id)time error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  forCopy = for;
+  timeCopy = time;
   v25 = 0;
   v26 = &v25;
   v27 = 0x2020000000;
@@ -1270,19 +1270,19 @@ uint64_t __47__BGSystemTask_setExpirationHandlerWithReason___block_invoke(uint64
   v23[2] = __Block_byref_object_copy__2;
   v23[3] = __Block_byref_object_dispose__2;
   v24 = 0;
-  v10 = [(BGSystemTask *)self performanceMetricQueue];
+  performanceMetricQueue = [(BGSystemTask *)self performanceMetricQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __66__BGSystemTask_registerThroughputTrackingFor_withStartTime_error___block_invoke;
   block[3] = &unk_1E7B24658;
-  v11 = v8;
+  v11 = forCopy;
   v17 = v11;
   v20 = &v22;
   v21 = &v25;
-  v12 = v9;
+  v12 = timeCopy;
   v18 = v12;
-  v19 = self;
-  dispatch_sync(v10, block);
+  selfCopy = self;
+  dispatch_sync(performanceMetricQueue, block);
 
   if ((v26[3] & 1) == 0)
   {
@@ -1292,9 +1292,9 @@ uint64_t __47__BGSystemTask_setExpirationHandlerWithReason___block_invoke(uint64
       [BGSystemTask registerThroughputTrackingFor:v23 withStartTime:? error:?];
     }
 
-    if (a5)
+    if (error)
     {
-      *a5 = *(v23[0] + 40);
+      *error = *(v23[0] + 40);
     }
   }
 
@@ -1361,10 +1361,10 @@ void __66__BGSystemTask_registerThroughputTrackingFor_withStartTime_error___bloc
   }
 }
 
-- (BOOL)deregisterThroughputTrackingFor:(id)a3 withEndTime:(id)a4 error:(id *)a5
+- (BOOL)deregisterThroughputTrackingFor:(id)for withEndTime:(id)time error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  forCopy = for;
+  timeCopy = time;
   v25 = 0;
   v26 = &v25;
   v27 = 0x2020000000;
@@ -1375,19 +1375,19 @@ void __66__BGSystemTask_registerThroughputTrackingFor_withStartTime_error___bloc
   v23[2] = __Block_byref_object_copy__2;
   v23[3] = __Block_byref_object_dispose__2;
   v24 = 0;
-  v10 = [(BGSystemTask *)self performanceMetricQueue];
+  performanceMetricQueue = [(BGSystemTask *)self performanceMetricQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __66__BGSystemTask_deregisterThroughputTrackingFor_withEndTime_error___block_invoke;
   block[3] = &unk_1E7B24658;
-  v11 = v8;
+  v11 = forCopy;
   v20 = &v22;
   v21 = &v25;
   v17 = v11;
-  v18 = self;
-  v12 = v9;
+  selfCopy = self;
+  v12 = timeCopy;
   v19 = v12;
-  dispatch_sync(v10, block);
+  dispatch_sync(performanceMetricQueue, block);
 
   if ((v26[3] & 1) == 0)
   {
@@ -1397,9 +1397,9 @@ void __66__BGSystemTask_registerThroughputTrackingFor_withStartTime_error___bloc
       [BGSystemTask deregisterThroughputTrackingFor:v23 withEndTime:? error:?];
     }
 
-    if (a5)
+    if (error)
     {
-      *a5 = *(v23[0] + 40);
+      *error = *(v23[0] + 40);
     }
   }
 
@@ -1529,25 +1529,25 @@ LABEL_11:
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)queue_reportThroughputForPerformanceMetric:(id)a3 error:(id *)a4
+- (BOOL)queue_reportThroughputForPerformanceMetric:(id)metric error:(id *)error
 {
   v89 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(BGSystemTask *)self performanceMetricQueue];
-  dispatch_assert_queue_V2(v7);
+  metricCopy = metric;
+  performanceMetricQueue = [(BGSystemTask *)self performanceMetricQueue];
+  dispatch_assert_queue_V2(performanceMetricQueue);
 
   v8 = 0x1E7B23000uLL;
   v9 = +[BGSystemTask logger];
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v81 = v6;
+    v81 = metricCopy;
     _os_log_impl(&dword_1B236A000, v9, OS_LOG_TYPE_DEFAULT, "Reporting throughput metrics for %@", buf, 0xCu);
   }
 
-  v64 = self;
-  v10 = [(BGSystemTask *)self throughputMetricsMap];
-  v11 = [v10 objectForKeyedSubscript:v6];
+  selfCopy = self;
+  throughputMetricsMap = [(BGSystemTask *)self throughputMetricsMap];
+  v11 = [throughputMetricsMap objectForKeyedSubscript:metricCopy];
 
   v78 = 0u;
   v79 = 0u;
@@ -1557,22 +1557,22 @@ LABEL_11:
   v68 = [v12 countByEnumeratingWithState:&v76 objects:v88 count:16];
   if (v68)
   {
-    v65 = v6;
-    v66 = a4;
-    v13 = 0;
-    v14 = 0;
+    v65 = metricCopy;
+    errorCopy = error;
+    expectedMetricValue = 0;
+    category = 0;
     v15 = 0;
     v69 = 0;
     v72 = 0;
     v16 = 0;
-    v17 = 0;
+    taskName = 0;
     v67 = *v77;
     while (2)
     {
       v18 = 0;
-      v19 = v13;
+      v19 = expectedMetricValue;
       v20 = v15;
-      v21 = v17;
+      v21 = taskName;
       do
       {
         v73 = v20;
@@ -1587,27 +1587,27 @@ LABEL_11:
         v71 = [v23 itemCount] + v16;
 
         v24 = [v12 objectForKeyedSubscript:v22];
-        v25 = [v24 startTimestamp];
+        startTimestamp = [v24 startTimestamp];
         v26 = [v12 objectForKeyedSubscript:v22];
-        v27 = [v26 endTimestamp];
-        v28 = [v25 compare:v27];
+        endTimestamp = [v26 endTimestamp];
+        v28 = [startTimestamp compare:endTimestamp];
 
         if (v28 != -1)
         {
           v45 = +[BGSystemTask logger];
-          v6 = v65;
-          a4 = v66;
+          metricCopy = v65;
+          error = errorCopy;
           v44 = v72;
           if (os_log_type_enabled(v45, OS_LOG_TYPE_ERROR))
           {
             v60 = [v12 objectForKeyedSubscript:v22];
-            v61 = [v60 endTimestamp];
+            endTimestamp2 = [v60 endTimestamp];
             v62 = [v12 objectForKeyedSubscript:v22];
-            v63 = [v62 startTimestamp];
+            startTimestamp2 = [v62 startTimestamp];
             *buf = 138413058;
-            v81 = v61;
+            v81 = endTimestamp2;
             v82 = 2112;
-            v83 = v63;
+            v83 = startTimestamp2;
             v84 = 2112;
             v85 = v65;
             v86 = 2112;
@@ -1615,7 +1615,7 @@ LABEL_11:
             _os_log_error_impl(&dword_1B236A000, v45, OS_LOG_TYPE_ERROR, "reportThroughputForPerformanceMetric: EndDate:%@ < StartDate:%@ for %@:%@", buf, 0x2Au);
 
             v44 = v72;
-            a4 = v66;
+            error = errorCopy;
           }
 
           v42 = [MEMORY[0x1E696ABC0] errorWithDomain:@"BGSystemTaskSchedulerErrorDomain" code:4 userInfo:0];
@@ -1627,37 +1627,37 @@ LABEL_11:
         if (!v72 || ([v12 objectForKeyedSubscript:v22], v30 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v30, "startTimestamp"), v31 = objc_claimAutoreleasedReturnValue(), v31, v30, v31 < v72))
         {
           v32 = [v12 objectForKeyedSubscript:v22];
-          v33 = [v32 startTimestamp];
+          startTimestamp3 = [v32 startTimestamp];
 
-          v29 = v33;
+          v29 = startTimestamp3;
         }
 
         v72 = v29;
         if (!v69 || ([v12 objectForKeyedSubscript:v22], v34 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v34, "endTimestamp"), v35 = objc_claimAutoreleasedReturnValue(), v35, v34, v35 > v69))
         {
           v36 = [v12 objectForKeyedSubscript:v22];
-          v37 = [v36 endTimestamp];
+          endTimestamp3 = [v36 endTimestamp];
 
-          v69 = v37;
+          v69 = endTimestamp3;
         }
 
         v16 = v71;
         v38 = [v12 objectForKeyedSubscript:v22];
-        v17 = [v38 taskName];
+        taskName = [v38 taskName];
 
         v39 = [v12 objectForKeyedSubscript:v22];
         v15 = [v39 qos];
 
         v40 = [v12 objectForKeyedSubscript:v22];
-        v14 = [v40 category];
+        category = [v40 category];
 
         v41 = [v12 objectForKeyedSubscript:v22];
-        v13 = [v41 expectedMetricValue];
+        expectedMetricValue = [v41 expectedMetricValue];
 
         ++v18;
-        v19 = v13;
+        v19 = expectedMetricValue;
         v20 = v15;
-        v21 = v17;
+        v21 = taskName;
       }
 
       while (v68 != v18);
@@ -1673,10 +1673,10 @@ LABEL_11:
     v42 = 0;
     v43 = 1;
     v73 = v15;
-    v74 = v13;
-    v21 = v17;
-    v6 = v65;
-    a4 = v66;
+    v74 = expectedMetricValue;
+    v21 = taskName;
+    metricCopy = v65;
+    error = errorCopy;
     v44 = v29;
 LABEL_21:
     v46 = v69;
@@ -1687,7 +1687,7 @@ LABEL_21:
   {
     v73 = 0;
     v74 = 0;
-    v14 = 0;
+    category = 0;
     v46 = 0;
     v44 = 0;
     v71 = 0;
@@ -1700,16 +1700,16 @@ LABEL_21:
   {
     if (v43)
     {
-      v47 = [MEMORY[0x1E699A4B8] sharedScheduler];
+      mEMORY[0x1E699A4B8] = [MEMORY[0x1E699A4B8] sharedScheduler];
       v70 = v46;
       v48 = [objc_alloc(MEMORY[0x1E696AB80]) initWithStartDate:v44 endDate:v46];
       [v48 duration];
       v75 = v42;
-      v49 = [v47 reportThroughputMetricsForIdentifier:v6 taskName:v21 itemCount:v71 totalDuration:v73 qos:v14 workloadCategory:v74 expectedValue:&v75 error:?];
+      v49 = [mEMORY[0x1E699A4B8] reportThroughputMetricsForIdentifier:metricCopy taskName:v21 itemCount:v71 totalDuration:v73 qos:category workloadCategory:v74 expectedValue:&v75 error:?];
       v50 = v75;
 
-      v51 = [(BGSystemTask *)v64 throughputMetricsMap];
-      [v51 removeObjectForKey:v6];
+      throughputMetricsMap2 = [(BGSystemTask *)selfCopy throughputMetricsMap];
+      [throughputMetricsMap2 removeObjectForKey:metricCopy];
 
       if (v49)
       {
@@ -1717,7 +1717,7 @@ LABEL_21:
         if (os_log_type_enabled(v52, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v81 = v6;
+          v81 = metricCopy;
           _os_log_impl(&dword_1B236A000, v52, OS_LOG_TYPE_DEFAULT, "reportThroughputForPerformanceMetric: Reported throughput metrics successfully for %@", buf, 0xCu);
         }
 
@@ -1740,33 +1740,33 @@ LABEL_21:
   {
     v50 = [MEMORY[0x1E696ABC0] errorWithDomain:@"BGSystemTaskSchedulerErrorDomain" code:4 userInfo:0];
 
-    v54 = [*(v8 + 3816) logger];
-    if (os_log_type_enabled(v54, OS_LOG_TYPE_ERROR))
+    logger = [*(v8 + 3816) logger];
+    if (os_log_type_enabled(logger, OS_LOG_TYPE_ERROR))
     {
-      v59 = [(BGSystemTask *)v64 identifier];
+      identifier = [(BGSystemTask *)selfCopy identifier];
       *buf = 138413058;
       v81 = v46;
       v82 = 2112;
       v83 = v44;
       v84 = 2112;
-      v85 = v6;
+      v85 = metricCopy;
       v86 = 2112;
-      v87 = v59;
-      _os_log_error_impl(&dword_1B236A000, v54, OS_LOG_TYPE_ERROR, "reportThroughputForPerformanceMetric: EndDate:%@ < StartDate:%@ for %@:%@", buf, 0x2Au);
+      v87 = identifier;
+      _os_log_error_impl(&dword_1B236A000, logger, OS_LOG_TYPE_ERROR, "reportThroughputForPerformanceMetric: EndDate:%@ < StartDate:%@ for %@:%@", buf, 0x2Au);
     }
   }
 
-  v55 = [*(v8 + 3816) logger];
-  if (os_log_type_enabled(v55, OS_LOG_TYPE_ERROR))
+  logger2 = [*(v8 + 3816) logger];
+  if (os_log_type_enabled(logger2, OS_LOG_TYPE_ERROR))
   {
-    [BGSystemTask queue_reportThroughputForPerformanceMetric:v6 error:v55];
+    [BGSystemTask queue_reportThroughputForPerformanceMetric:metricCopy error:logger2];
   }
 
-  if (a4)
+  if (error)
   {
     v56 = v50;
     v53 = 0;
-    *a4 = v50;
+    *error = v50;
   }
 
   else

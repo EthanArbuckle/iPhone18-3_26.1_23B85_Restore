@@ -3,26 +3,26 @@
 + (id)_isoLocalTimeZoneFractionalSecondsDateFormatter;
 + (id)_isoUTCDateFormatter;
 + (id)_isoUTCFractionalSecondsDateFormatter;
-+ (id)dateWithStringLocalTimeZone:(id)a3;
-+ (id)dateWithStringLocalTimeZoneFractionalSeconds:(id)a3;
-+ (id)dateWithStringUTC:(id)a3;
-+ (id)dateWithStringUTCFractionalSeconds:(id)a3;
-+ (id)stringLocalTimeZoneFractionalSecondsWithDate:(id)a3;
-+ (id)stringLocalTimeZoneWithDate:(id)a3;
-+ (id)stringUTCFractionalSecondsWithDate:(id)a3;
-+ (id)stringUTCWithDate:(id)a3;
++ (id)dateWithStringLocalTimeZone:(id)zone;
++ (id)dateWithStringLocalTimeZoneFractionalSeconds:(id)seconds;
++ (id)dateWithStringUTC:(id)c;
++ (id)dateWithStringUTCFractionalSeconds:(id)seconds;
++ (id)stringLocalTimeZoneFractionalSecondsWithDate:(id)date;
++ (id)stringLocalTimeZoneWithDate:(id)date;
++ (id)stringUTCFractionalSecondsWithDate:(id)date;
++ (id)stringUTCWithDate:(id)date;
 @end
 
 @implementation RMDateFormat
 
-+ (id)stringUTCWithDate:(id)a3
++ (id)stringUTCWithDate:(id)date
 {
-  v4 = a3;
-  v5 = [a1 _isoUTCDateFormatter];
-  v6 = v5;
-  if (v4)
+  dateCopy = date;
+  _isoUTCDateFormatter = [self _isoUTCDateFormatter];
+  v6 = _isoUTCDateFormatter;
+  if (dateCopy)
   {
-    v7 = [v5 stringFromDate:v4];
+    v7 = [_isoUTCDateFormatter stringFromDate:dateCopy];
   }
 
   else
@@ -34,14 +34,14 @@
   return v7;
 }
 
-+ (id)stringUTCFractionalSecondsWithDate:(id)a3
++ (id)stringUTCFractionalSecondsWithDate:(id)date
 {
-  v4 = a3;
-  v5 = [a1 _isoUTCFractionalSecondsDateFormatter];
-  v6 = v5;
-  if (v4)
+  dateCopy = date;
+  _isoUTCFractionalSecondsDateFormatter = [self _isoUTCFractionalSecondsDateFormatter];
+  v6 = _isoUTCFractionalSecondsDateFormatter;
+  if (dateCopy)
   {
-    v7 = [v5 stringFromDate:v4];
+    v7 = [_isoUTCFractionalSecondsDateFormatter stringFromDate:dateCopy];
   }
 
   else
@@ -53,14 +53,14 @@
   return v7;
 }
 
-+ (id)stringLocalTimeZoneWithDate:(id)a3
++ (id)stringLocalTimeZoneWithDate:(id)date
 {
-  v4 = a3;
-  v5 = [a1 _isoLocalTimeZoneDateFormatter];
-  v6 = v5;
-  if (v4)
+  dateCopy = date;
+  _isoLocalTimeZoneDateFormatter = [self _isoLocalTimeZoneDateFormatter];
+  v6 = _isoLocalTimeZoneDateFormatter;
+  if (dateCopy)
   {
-    v7 = [v5 stringFromDate:v4];
+    v7 = [_isoLocalTimeZoneDateFormatter stringFromDate:dateCopy];
   }
 
   else
@@ -72,14 +72,14 @@
   return v7;
 }
 
-+ (id)stringLocalTimeZoneFractionalSecondsWithDate:(id)a3
++ (id)stringLocalTimeZoneFractionalSecondsWithDate:(id)date
 {
-  v4 = a3;
-  v5 = [a1 _isoLocalTimeZoneFractionalSecondsDateFormatter];
-  v6 = v5;
-  if (v4)
+  dateCopy = date;
+  _isoLocalTimeZoneFractionalSecondsDateFormatter = [self _isoLocalTimeZoneFractionalSecondsDateFormatter];
+  v6 = _isoLocalTimeZoneFractionalSecondsDateFormatter;
+  if (dateCopy)
   {
-    v7 = [v5 stringFromDate:v4];
+    v7 = [_isoLocalTimeZoneFractionalSecondsDateFormatter stringFromDate:dateCopy];
   }
 
   else
@@ -91,38 +91,38 @@
   return v7;
 }
 
-+ (id)dateWithStringUTC:(id)a3
++ (id)dateWithStringUTC:(id)c
 {
-  v4 = a3;
-  v5 = [a1 _isoUTCDateFormatter];
-  v6 = [v5 dateFromString:v4];
+  cCopy = c;
+  _isoUTCDateFormatter = [self _isoUTCDateFormatter];
+  v6 = [_isoUTCDateFormatter dateFromString:cCopy];
 
   return v6;
 }
 
-+ (id)dateWithStringUTCFractionalSeconds:(id)a3
++ (id)dateWithStringUTCFractionalSeconds:(id)seconds
 {
-  v4 = a3;
-  v5 = [a1 _isoUTCFractionalSecondsDateFormatter];
-  v6 = [v5 dateFromString:v4];
+  secondsCopy = seconds;
+  _isoUTCFractionalSecondsDateFormatter = [self _isoUTCFractionalSecondsDateFormatter];
+  v6 = [_isoUTCFractionalSecondsDateFormatter dateFromString:secondsCopy];
 
   return v6;
 }
 
-+ (id)dateWithStringLocalTimeZone:(id)a3
++ (id)dateWithStringLocalTimeZone:(id)zone
 {
-  v4 = a3;
-  v5 = [a1 _isoLocalTimeZoneDateFormatter];
-  v6 = [v5 dateFromString:v4];
+  zoneCopy = zone;
+  _isoLocalTimeZoneDateFormatter = [self _isoLocalTimeZoneDateFormatter];
+  v6 = [_isoLocalTimeZoneDateFormatter dateFromString:zoneCopy];
 
   return v6;
 }
 
-+ (id)dateWithStringLocalTimeZoneFractionalSeconds:(id)a3
++ (id)dateWithStringLocalTimeZoneFractionalSeconds:(id)seconds
 {
-  v4 = a3;
-  v5 = [a1 _isoLocalTimeZoneFractionalSecondsDateFormatter];
-  v6 = [v5 dateFromString:v4];
+  secondsCopy = seconds;
+  _isoLocalTimeZoneFractionalSecondsDateFormatter = [self _isoLocalTimeZoneFractionalSecondsDateFormatter];
+  v6 = [_isoLocalTimeZoneFractionalSecondsDateFormatter dateFromString:secondsCopy];
 
   return v6;
 }

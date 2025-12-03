@@ -1,18 +1,18 @@
 @interface SBSuspendedWorkspaceTransaction
-- (void)_addSceneEntityToAppRecency:(id)a3;
+- (void)_addSceneEntityToAppRecency:(id)recency;
 - (void)_begin;
-- (void)_childTransactionDidComplete:(id)a3;
+- (void)_childTransactionDidComplete:(id)complete;
 - (void)_didComplete;
-- (void)_sendActivationResultWithError:(id)a3;
-- (void)transaction:(id)a3 willLaunchProcess:(id)a4;
+- (void)_sendActivationResultWithError:(id)error;
+- (void)transaction:(id)transaction willLaunchProcess:(id)process;
 @end
 
 @implementation SBSuspendedWorkspaceTransaction
 
 - (void)_begin
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"SBSuspendedWorkspaceTransaction.m" lineNumber:58 description:@"must have a scene handle"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"SBSuspendedWorkspaceTransaction.m" lineNumber:58 description:@"must have a scene handle"];
 }
 
 - (void)_didComplete
@@ -24,29 +24,29 @@
   [(SBSuspendedWorkspaceTransaction *)self _sendActivationResultWithError:v3];
 }
 
-- (void)_sendActivationResultWithError:(id)a3
+- (void)_sendActivationResultWithError:(id)error
 {
-  v7 = a3;
-  v4 = [(SBWorkspaceTransaction *)self transitionRequest];
-  v5 = [v4 applicationContext];
+  errorCopy = error;
+  transitionRequest = [(SBWorkspaceTransaction *)self transitionRequest];
+  applicationContext = [transitionRequest applicationContext];
 
-  if ([v5 needsToSendActivationResult])
+  if ([applicationContext needsToSendActivationResult])
   {
-    [v5 sendActivationResultError:v7];
+    [applicationContext sendActivationResultError:errorCopy];
     if ([(SBSuspendedWorkspaceTransaction *)self isAuditHistoryEnabled])
     {
-      v6 = [v7 localizedFailureReason];
-      [(SBSuspendedWorkspaceTransaction *)self _addAuditHistoryItem:@"Sent activation result; error = %@", v6];
+      localizedFailureReason = [errorCopy localizedFailureReason];
+      [(SBSuspendedWorkspaceTransaction *)self _addAuditHistoryItem:@"Sent activation result; error = %@", localizedFailureReason];
     }
   }
 }
 
-- (void)_childTransactionDidComplete:(id)a3
+- (void)_childTransactionDidComplete:(id)complete
 {
   v83 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  completeCopy = complete;
   v6 = objc_opt_class();
-  v7 = v5;
+  v7 = completeCopy;
   if (v6)
   {
     if (objc_opt_isKindOfClass())
@@ -70,8 +70,8 @@
   if (v9 && [(NSMutableSet *)self->_incompleteProcessLaunchTransactions containsObject:v9])
   {
     [(NSMutableSet *)self->_incompleteProcessLaunchTransactions removeObject:v9];
-    v10 = [v9 process];
-    v11 = [v10 pid];
+    process = [v9 process];
+    v11 = [process pid];
     if (v11 < 1)
     {
       anyLaunchError = self->_anyLaunchError;
@@ -82,10 +82,10 @@
 
       else
       {
-        v53 = [v10 exitContext];
-        v54 = [v53 createError];
+        exitContext = [process exitContext];
+        createError = [exitContext createError];
         v55 = self->_anyLaunchError;
-        self->_anyLaunchError = v54;
+        self->_anyLaunchError = createError;
       }
     }
 
@@ -93,43 +93,43 @@
     {
       v69 = v11;
       v12 = [(NSMapTable *)self->_launchTransactionToSceneEntityMap objectForKey:v9];
-      v13 = [v12 sceneHandle];
-      if (!v13)
+      sceneHandle = [v12 sceneHandle];
+      if (!sceneHandle)
       {
         [(SBSuspendedWorkspaceTransaction *)a2 _childTransactionDidComplete:?];
       }
 
-      v72 = [(SBWorkspaceTransaction *)self transitionRequest];
-      v14 = [v72 applicationContext];
-      v73 = [v13 _createApplicationSceneTransitionContextFromContext:v14 entity:v12];
-      v15 = [v73 animationFence];
+      transitionRequest = [(SBWorkspaceTransaction *)self transitionRequest];
+      applicationContext = [transitionRequest applicationContext];
+      v73 = [sceneHandle _createApplicationSceneTransitionContextFromContext:applicationContext entity:v12];
+      animationFence = [v73 animationFence];
 
-      if (v15)
+      if (animationFence)
       {
         [(SBSuspendedWorkspaceTransaction *)a2 _childTransactionDidComplete:?];
       }
 
-      v70 = v13;
-      v71 = v14;
-      if ([v14 isSceneless])
+      v70 = sceneHandle;
+      v71 = applicationContext;
+      if ([applicationContext isSceneless])
       {
-        v63 = v10;
+        v63 = process;
         v64 = v9;
         if ([(SBSuspendedWorkspaceTransaction *)self isAuditHistoryEnabled])
         {
           [(SBSuspendedWorkspaceTransaction *)self _addAuditHistoryItem:@"launched scene-less"];
         }
 
-        v66 = self;
+        selfCopy = self;
         v67 = v12;
         v65 = v7;
-        v16 = [v73 actions];
-        v17 = [v16 mutableCopy];
+        actions = [v73 actions];
+        v17 = [actions mutableCopy];
         v77 = 0u;
         v78 = 0u;
         v79 = 0u;
         v80 = 0u;
-        v18 = v16;
+        v18 = actions;
         v19 = [v18 countByEnumeratingWithState:&v77 objects:v82 count:16];
         if (v19)
         {
@@ -150,10 +150,10 @@
               {
                 v25 = objc_alloc(*(v22 + 2000));
                 v26 = [v24 url];
-                v27 = [v24 workspaceOriginatingProcess];
-                if (v27)
+                workspaceOriginatingProcess = [v24 workspaceOriginatingProcess];
+                if (workspaceOriginatingProcess)
                 {
-                  v28 = [v25 initWithURL:v26 workspaceOriginatingProcess:v27];
+                  v28 = [v25 initWithURL:v26 workspaceOriginatingProcess:workspaceOriginatingProcess];
                 }
 
                 else
@@ -182,10 +182,10 @@
         v32 = [MEMORY[0x277D47008] targetWithPid:v69];
         v33 = [MEMORY[0x277D46D78] attributeWithCompletionPolicy:1];
         v81[0] = v33;
-        v34 = [MEMORY[0x277D46DF0] grantWithUserInteractivity];
-        v81[1] = v34;
-        v35 = [MEMORY[0x277D46EA8] grantWithForegroundPriority];
-        v81[2] = v35;
+        grantWithUserInteractivity = [MEMORY[0x277D46DF0] grantWithUserInteractivity];
+        v81[1] = grantWithUserInteractivity;
+        grantWithForegroundPriority = [MEMORY[0x277D46EA8] grantWithForegroundPriority];
+        v81[2] = grantWithForegroundPriority;
         v36 = [MEMORY[0x277D46FC0] grantWithResistance:40];
         v81[3] = v36;
         [MEMORY[0x277D46E30] grant];
@@ -206,57 +206,57 @@
         v76 = v42;
         v44 = v42;
         dispatch_after(v43, MEMORY[0x277D85CD0], block);
-        v10 = v63;
-        v45 = [v63 workspace];
-        [v45 sendActions:v37];
+        process = v63;
+        workspace = [v63 workspace];
+        [workspace sendActions:v37];
 
-        v46 = [v67 application];
-        v47 = [v46 _dataStore];
-        v48 = [v67 uniqueIdentifier];
-        [v47 removeSceneStoreForIdentifier:v48];
+        application = [v67 application];
+        _dataStore = [application _dataStore];
+        uniqueIdentifier = [v67 uniqueIdentifier];
+        [_dataStore removeSceneStoreForIdentifier:uniqueIdentifier];
 
         v12 = v67;
         v7 = v65;
-        self = v66;
+        self = selfCopy;
         v9 = v64;
       }
 
       else
       {
-        v50 = [v13 sceneIdentifier];
-        v51 = [v13 sceneIfExists];
-        if (v51)
+        sceneIdentifier = [sceneHandle sceneIdentifier];
+        sceneIfExists = [sceneHandle sceneIfExists];
+        if (sceneIfExists)
         {
           if ([(SBSuspendedWorkspaceTransaction *)self isAuditHistoryEnabled])
           {
-            [(SBSuspendedWorkspaceTransaction *)self _addAuditHistoryItem:@"sent transition to scene %@", v50];
+            [(SBSuspendedWorkspaceTransaction *)self _addAuditHistoryItem:@"sent transition to scene %@", sceneIdentifier];
           }
 
-          v52 = [v51 settings];
-          [v51 updateSettings:v52 withTransitionContext:v73];
+          settings = [sceneIfExists settings];
+          [sceneIfExists updateSettings:settings withTransitionContext:v73];
         }
 
         else
         {
-          v56 = [v72 applicationContext];
+          applicationContext2 = [transitionRequest applicationContext];
           v68 = v12;
-          v52 = [v13 _createParametersFromTransitionContext:v56 entity:v12];
+          settings = [sceneHandle _createParametersFromTransitionContext:applicationContext2 entity:v12];
 
           if ([(SBSuspendedWorkspaceTransaction *)self isAuditHistoryEnabled])
           {
-            [(SBSuspendedWorkspaceTransaction *)self _addAuditHistoryItem:@"created scene %@", v50, v73];
+            [(SBSuspendedWorkspaceTransaction *)self _addAuditHistoryItem:@"created scene %@", sceneIdentifier, v73];
           }
 
-          v57 = [MEMORY[0x277D0AAD8] sharedInstance];
-          v58 = [v10 workspace];
-          v59 = [v57 createSceneWithIdentifier:v50 parameters:v52 clientProvider:v58 transitionContext:v73];
+          mEMORY[0x277D0AAD8] = [MEMORY[0x277D0AAD8] sharedInstance];
+          workspace2 = [process workspace];
+          v59 = [mEMORY[0x277D0AAD8] createSceneWithIdentifier:sceneIdentifier parameters:settings clientProvider:workspace2 transitionContext:v73];
 
           v60 = [v71 applicationSceneEntityForLayoutRole:4];
           v61 = v60;
           if (v60)
           {
-            v62 = [v60 activationSettings];
-            if ([v62 _settingsAreValidToMoveContentToNewScene])
+            activationSettings = [v60 activationSettings];
+            if ([activationSettings _settingsAreValidToMoveContentToNewScene])
             {
               [(SBSuspendedWorkspaceTransaction *)self _addSceneEntityToAppRecency:v61];
             }
@@ -279,40 +279,40 @@
   [(SBSuspendedWorkspaceTransaction *)&v74 _childTransactionDidComplete:v7];
 }
 
-- (void)_addSceneEntityToAppRecency:(id)a3
+- (void)_addSceneEntityToAppRecency:(id)recency
 {
-  v3 = [a3 sceneHandle];
-  v4 = [v3 scene];
-  v5 = [v4 parameters];
-  v6 = [v5 mutableCopy];
+  sceneHandle = [recency sceneHandle];
+  scene = [sceneHandle scene];
+  parameters = [scene parameters];
+  v6 = [parameters mutableCopy];
 
   [v6 updateSettingsWithBlock:&__block_literal_global_192];
-  v7 = [v6 settings];
+  settings = [v6 settings];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __63__SBSuspendedWorkspaceTransaction__addSceneEntityToAppRecency___block_invoke_2;
   v20[3] = &unk_2783A9398;
-  v21 = v4;
-  v8 = v4;
-  [v8 updateSettings:v7 withTransitionContext:0 completion:v20];
+  v21 = scene;
+  v8 = scene;
+  [v8 updateSettings:settings withTransitionContext:0 completion:v20];
 
-  v9 = [v3 application];
-  v10 = [v9 bundleIdentifier];
+  application = [sceneHandle application];
+  bundleIdentifier = [application bundleIdentifier];
 
-  v11 = [v3 sceneIdentifier];
-  v12 = [SBDisplayItem applicationDisplayItemWithBundleIdentifier:v10 sceneIdentifier:v11];
-  v13 = [SBApp windowSceneManager];
-  v14 = [v3 displayIdentity];
-  v15 = [v13 windowSceneForDisplayIdentity:v14];
+  sceneIdentifier = [sceneHandle sceneIdentifier];
+  v12 = [SBDisplayItem applicationDisplayItemWithBundleIdentifier:bundleIdentifier sceneIdentifier:sceneIdentifier];
+  windowSceneManager = [SBApp windowSceneManager];
+  displayIdentity = [sceneHandle displayIdentity];
+  v15 = [windowSceneManager windowSceneForDisplayIdentity:displayIdentity];
 
-  v16 = [v15 switcherController];
+  switcherController = [v15 switcherController];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __63__SBSuspendedWorkspaceTransaction__addSceneEntityToAppRecency___block_invoke_4;
   v18[3] = &unk_2783AE4B8;
-  v19 = v11;
-  v17 = v11;
-  [v16 addCenterRoleAppLayoutForDisplayItem:v12 completion:v18];
+  v19 = sceneIdentifier;
+  v17 = sceneIdentifier;
+  [switcherController addCenterRoleAppLayoutForDisplayItem:v12 completion:v18];
 }
 
 uint64_t __63__SBSuspendedWorkspaceTransaction__addSceneEntityToAppRecency___block_invoke_2(uint64_t result, int a2)
@@ -338,29 +338,29 @@ void __63__SBSuspendedWorkspaceTransaction__addSceneEntityToAppRecency___block_i
   }
 }
 
-- (void)transaction:(id)a3 willLaunchProcess:(id)a4
+- (void)transaction:(id)transaction willLaunchProcess:(id)process
 {
-  v12 = a3;
-  v6 = a4;
-  if ([(NSMutableSet *)self->_outstandingProcessLaunchTransactions containsObject:v12])
+  transactionCopy = transaction;
+  processCopy = process;
+  if ([(NSMutableSet *)self->_outstandingProcessLaunchTransactions containsObject:transactionCopy])
   {
-    [(NSMutableSet *)self->_outstandingProcessLaunchTransactions removeObject:v12];
-    if (([v6 isRunning] & 1) == 0)
+    [(NSMutableSet *)self->_outstandingProcessLaunchTransactions removeObject:transactionCopy];
+    if (([processCopy isRunning] & 1) == 0)
     {
       anyLaunchError = self->_anyLaunchError;
       if (anyLaunchError)
       {
         v8 = anyLaunchError;
-        v9 = self->_anyLaunchError;
+        exitContext = self->_anyLaunchError;
         self->_anyLaunchError = v8;
       }
 
       else
       {
-        v9 = [v6 exitContext];
-        v10 = [v9 createError];
+        exitContext = [processCopy exitContext];
+        createError = [exitContext createError];
         v11 = self->_anyLaunchError;
-        self->_anyLaunchError = v10;
+        self->_anyLaunchError = createError;
       }
     }
 

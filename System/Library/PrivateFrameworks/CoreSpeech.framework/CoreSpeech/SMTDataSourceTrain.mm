@@ -1,8 +1,8 @@
 @interface SMTDataSourceTrain
-- (SMTDataSourceTrain)initWithNumDataPoints:(unint64_t)a3 sequenceLength:(unint64_t)a4 noiseSize:(unint64_t)a5 batchSize:(unint64_t)a6 vocabSize:(unint64_t)a7 contextKey:(id)a8 targetKey:(id)a9 maskKey:(id)a10 noiseKey:(id)a11;
+- (SMTDataSourceTrain)initWithNumDataPoints:(unint64_t)points sequenceLength:(unint64_t)length noiseSize:(unint64_t)size batchSize:(unint64_t)batchSize vocabSize:(unint64_t)vocabSize contextKey:(id)key targetKey:(id)targetKey maskKey:(id)self0 noiseKey:(id)self1;
 - (id).cxx_construct;
-- (id)dataPointAtIndex:(unint64_t)a3 error:(id *)a4;
-- (void)setVectorsWithProcessor:(id)a3;
+- (id)dataPointAtIndex:(unint64_t)index error:(id *)error;
+- (void)setVectorsWithProcessor:(id)processor;
 @end
 
 @implementation SMTDataSourceTrain
@@ -18,10 +18,10 @@
   return self;
 }
 
-- (void)setVectorsWithProcessor:(id)a3
+- (void)setVectorsWithProcessor:(id)processor
 {
-  v25 = a3;
-  [v25 textSequence];
+  processorCopy = processor;
+  [processorCopy textSequence];
   v33 = 0u;
   v34 = 0u;
   v31 = 0u;
@@ -44,25 +44,25 @@
 
         v4 = *(*(&v31 + 1) + 8 * v29);
         batchSize = self->_batchSize;
-        v6 = [v4 sequence];
-        v7 = [v4 target];
-        v8 = [v4 mask];
+        sequence = [v4 sequence];
+        target = [v4 target];
+        mask = [v4 mask];
         v9 = 0;
         v10 = (v30 % batchSize);
         v11 = v30 / batchSize;
-        while (v9 < [v6 count])
+        while (v9 < [sequence count])
         {
           sequenceLength = self->_sequenceLength;
-          v13 = [v6 objectAtIndexedSubscript:v9];
+          v13 = [sequence objectAtIndexedSubscript:v9];
           [v13 floatValue];
           v14 = v9 + sequenceLength * v10;
           *(*(self->_contextData.__begin_ + 3 * v11) + 4 * v14) = v15;
 
-          v16 = [v7 objectAtIndexedSubscript:v9];
+          v16 = [target objectAtIndexedSubscript:v9];
           [v16 floatValue];
           *(*(self->_targetData.__begin_ + 3 * v11) + 4 * v14) = v17;
 
-          v18 = [v8 objectAtIndexedSubscript:v9];
+          v18 = [mask objectAtIndexedSubscript:v9];
           [v18 floatValue];
           *(*(self->_maskData.__begin_ + 3 * v11) + 4 * v14) = v19;
 
@@ -107,9 +107,9 @@
   }
 }
 
-- (id)dataPointAtIndex:(unint64_t)a3 error:(id *)a4
+- (id)dataPointAtIndex:(unint64_t)index error:(id *)error
 {
-  if (self->_numBatches <= a3)
+  if (self->_numBatches <= index)
   {
     v39 = &__NSDictionary0__struct;
   }
@@ -129,8 +129,8 @@
     v37 = [NSArray arrayWithObjects:v43 count:5];
 
     v10 = sequenceLength * batchSize;
-    v11 = [NSNumber numberWithUnsignedInteger:sequenceLength * batchSize];
-    v42[0] = v11;
+    batchSize = [NSNumber numberWithUnsignedInteger:sequenceLength * batchSize];
+    v42[0] = batchSize;
     v12 = [NSNumber numberWithUnsignedInteger:v10];
     v42[1] = v12;
     v13 = [NSNumber numberWithUnsignedInteger:v10];
@@ -140,21 +140,21 @@
     v42[4] = &off_10003B1C8;
     v38 = [NSArray arrayWithObjects:v42 count:5];
 
-    v15 = [[ETDataTensor alloc] initWithData:*(self->_contextData.__begin_ + 3 * a3) type:2 shape:v37 strides:v38];
+    v15 = [[ETDataTensor alloc] initWithData:*(self->_contextData.__begin_ + 3 * index) type:2 shape:v37 strides:v38];
     [v39 setObject:v15 forKeyedSubscript:self->_contextKey];
 
     v16 = [NSNumber numberWithUnsignedInteger:v10];
     v17 = [v39 objectForKeyedSubscript:self->_contextKey];
     [v17 setMaxNumberOfElements:v16];
 
-    v18 = [[ETDataTensor alloc] initWithData:*(self->_targetData.__begin_ + 3 * a3) type:2 shape:v37 strides:v38];
+    v18 = [[ETDataTensor alloc] initWithData:*(self->_targetData.__begin_ + 3 * index) type:2 shape:v37 strides:v38];
     [v39 setObject:v18 forKeyedSubscript:self->_targetKey];
 
     v19 = [NSNumber numberWithUnsignedInteger:v10];
     v20 = [v39 objectForKeyedSubscript:self->_targetKey];
     [v20 setMaxNumberOfElements:v19];
 
-    v21 = [[ETDataTensor alloc] initWithData:*(self->_maskData.__begin_ + 3 * a3) type:2 shape:v37 strides:v38];
+    v21 = [[ETDataTensor alloc] initWithData:*(self->_maskData.__begin_ + 3 * index) type:2 shape:v37 strides:v38];
     [v39 setObject:v21 forKeyedSubscript:self->_maskKey];
 
     v22 = [NSNumber numberWithUnsignedInteger:v10];
@@ -162,7 +162,7 @@
     [v23 setMaxNumberOfElements:v22];
 
     v24 = [ETDataTensor alloc];
-    v25 = *(self->_noiseData.__begin_ + 3 * a3);
+    v25 = *(self->_noiseData.__begin_ + 3 * index);
     v41[0] = &off_10003B1C8;
     v41[1] = &off_10003B1C8;
     v41[2] = &off_10003B1C8;
@@ -191,12 +191,12 @@
   return v39;
 }
 
-- (SMTDataSourceTrain)initWithNumDataPoints:(unint64_t)a3 sequenceLength:(unint64_t)a4 noiseSize:(unint64_t)a5 batchSize:(unint64_t)a6 vocabSize:(unint64_t)a7 contextKey:(id)a8 targetKey:(id)a9 maskKey:(id)a10 noiseKey:(id)a11
+- (SMTDataSourceTrain)initWithNumDataPoints:(unint64_t)points sequenceLength:(unint64_t)length noiseSize:(unint64_t)size batchSize:(unint64_t)batchSize vocabSize:(unint64_t)vocabSize contextKey:(id)key targetKey:(id)targetKey maskKey:(id)self0 noiseKey:(id)self1
 {
-  v36 = a8;
-  v35 = a9;
-  v34 = a10;
-  v33 = a11;
+  keyCopy = key;
+  targetKeyCopy = targetKey;
+  maskKeyCopy = maskKey;
+  noiseKeyCopy = noiseKey;
   v38.receiver = self;
   v38.super_class = SMTDataSourceTrain;
   v18 = [(SMTDataSourceTrain *)&v38 init];
@@ -210,16 +210,16 @@ LABEL_8:
 
   sub_10001EAD0(v18 + 1, 1uLL);
   sub_10001EAD0(v19 + 4, 1uLL);
-  sub_10001ECA8(*(v19 + 1), a4);
-  sub_10001ECA8(*(v19 + 4), a4);
+  sub_10001ECA8(*(v19 + 1), length);
+  sub_10001ECA8(*(v19 + 4), length);
   v20 = 0;
-  *(v19 + 13) = a4;
-  if (a3 && a6)
+  *(v19 + 13) = length;
+  if (points && batchSize)
   {
-    *(v19 + 14) = (a3 + a6 - 1) / a6;
-    *(v19 + 15) = a5;
-    *(v19 + 16) = a6;
-    v21 = [[SMTNoiseSampler alloc] initWithZipfOfSize:a7];
+    *(v19 + 14) = (points + batchSize - 1) / batchSize;
+    *(v19 + 15) = size;
+    *(v19 + 16) = batchSize;
+    v21 = [[SMTNoiseSampler alloc] initWithZipfOfSize:vocabSize];
     v22 = *(v19 + 17);
     *(v19 + 17) = v21;
 
@@ -231,7 +231,7 @@ LABEL_8:
     {
       v24 = 0;
       v25 = 0;
-      v26 = *(v19 + 16) * a4;
+      v26 = *(v19 + 16) * length;
       do
       {
         v27 = *(v19 + 1);
@@ -251,10 +251,10 @@ LABEL_8:
       while (v25 < *(v19 + 14));
     }
 
-    objc_storeStrong(v19 + 18, a8);
-    objc_storeStrong(v19 + 19, a9);
-    objc_storeStrong(v19 + 20, a10);
-    objc_storeStrong(v19 + 21, a11);
+    objc_storeStrong(v19 + 18, key);
+    objc_storeStrong(v19 + 19, targetKey);
+    objc_storeStrong(v19 + 20, maskKey);
+    objc_storeStrong(v19 + 21, noiseKey);
     goto LABEL_8;
   }
 

@@ -1,192 +1,192 @@
 @interface SRSystemAssistantExperienceViewController
 - ($F24F406B2B787EFB06265DBA3D28CBD5)_bottomContentInsetComponents;
-- (BOOL)_allowEmptyTranscriptItemUpdatesForCurrentTranscriptItems:(id)a3;
+- (BOOL)_allowEmptyTranscriptItemUpdatesForCurrentTranscriptItems:(id)items;
 - (BOOL)_alwaysObscureBackgroundContentWhenActive;
-- (BOOL)_contentDiffersBetweenPlatterItems:(id)a3 andItems:(id)a4;
+- (BOOL)_contentDiffersBetweenPlatterItems:(id)items andItems:(id)andItems;
 - (BOOL)_isTextInputAndKeyboardShowing;
-- (BOOL)_keyboardHasContentAtPoint:(CGPoint)a3;
+- (BOOL)_keyboardHasContentAtPoint:(CGPoint)point;
 - (BOOL)_resultEligibleForIntelligentLightEffects;
 - (BOOL)_shouldRenderResult;
-- (BOOL)_smartDialogActiveTranscriptItemContainsViewController:(id)a3;
+- (BOOL)_smartDialogActiveTranscriptItemContainsViewController:(id)controller;
 - (BOOL)alwaysShowRecognizedSpeech;
-- (BOOL)didReceiveUpdateVisualResponseCommand:(id)a3;
+- (BOOL)didReceiveUpdateVisualResponseCommand:(id)command;
 - (BOOL)isDisplayingResponse;
-- (BOOL)siriViewControllerShouldPreventUserInteraction:(id)a3;
-- (CGRect)_convertRectFromKeyboard:(CGRect)a3;
+- (BOOL)siriViewControllerShouldPreventUserInteraction:(id)interaction;
+- (CGRect)_convertRectFromKeyboard:(CGRect)keyboard;
 - (CGRect)_keyboardFrame;
 - (CGSize)activeSmartDialogSize;
 - (CGSize)latestDropletContentLayoutSize;
 - (CGSize)maxSizeForSnippet;
-- (CGSize)siriViewControllerVisibleContentArea:(id)a3;
+- (CGSize)siriViewControllerVisibleContentArea:(id)area;
 - (SRSystemAssistantExperienceViewController)init;
 - (SRSystemAssistantExperienceViewControllerDelegate)delegate;
-- (UIEdgeInsets)siriViewControllerBackgroundInsets:(id)a3;
-- (double)boundingWidthForSnippetViewController:(id)a3;
+- (UIEdgeInsets)siriViewControllerBackgroundInsets:(id)insets;
+- (double)boundingWidthForSnippetViewController:(id)controller;
 - (double)dropletContentMaximumContainerHeight;
 - (double)dropletContentMaximumContainerWidth;
-- (double)siriViewControllerExpectedWidth:(id)a3;
-- (id)_contentPlatterViewFromViewController:(id)a3;
-- (id)_createBackgroundView:(id)a3;
-- (id)_findSnippetViewControllerWithViewIdFromTranscriptItems:(id)a3 viewId:(id)a4;
+- (double)siriViewControllerExpectedWidth:(id)width;
+- (id)_contentPlatterViewFromViewController:(id)controller;
+- (id)_createBackgroundView:(id)view;
+- (id)_findSnippetViewControllerWithViewIdFromTranscriptItems:(id)items viewId:(id)id;
 - (id)_snippetFromTranscriptItems;
 - (id)createNewSmartDialog;
 - (id)createSuggestionsViewProvider;
-- (id)filterTranscriptItemsForSAEDialogBoxContent:(id)a3;
-- (id)localeForSiriViewController:(id)a3;
-- (id)prepareForReportConcernAndCreateForm:(id)a3 additionalDomainProvidedFeedback:(id)a4;
-- (id)siriViewController:(id)a3 disambiguationItemForListItem:(id)a4 disambiguationKey:(id)a5;
-- (id)siriViewController:(id)a3 filteredDisambiguationListItems:(id)a4;
-- (id)siriViewController:(id)a3 listItemToPickInAutodisambiguationForListItems:(id)a4;
-- (id)siriViewControllerEffectiveBundleForCoreLocation:(id)a3;
-- (int)viewRegionForPresentedAceObject:(id)a3;
-- (int64_t)_mapSASRequestSourceToSuggestionsInputOrigin:(int64_t)a3;
-- (int64_t)_mapSuggestionRequestTypeToSASSuggestionRequestType:(int64_t)a3;
+- (id)filterTranscriptItemsForSAEDialogBoxContent:(id)content;
+- (id)localeForSiriViewController:(id)controller;
+- (id)prepareForReportConcernAndCreateForm:(id)form additionalDomainProvidedFeedback:(id)feedback;
+- (id)siriViewController:(id)controller disambiguationItemForListItem:(id)item disambiguationKey:(id)key;
+- (id)siriViewController:(id)controller filteredDisambiguationListItems:(id)items;
+- (id)siriViewController:(id)controller listItemToPickInAutodisambiguationForListItems:(id)items;
+- (id)siriViewControllerEffectiveBundleForCoreLocation:(id)location;
+- (int)viewRegionForPresentedAceObject:(id)object;
+- (int64_t)_mapSASRequestSourceToSuggestionsInputOrigin:(int64_t)origin;
+- (int64_t)_mapSuggestionRequestTypeToSASSuggestionRequestType:(int64_t)type;
 - (unint64_t)presentedResponseElements;
 - (void)_addFeedbackButton;
 - (void)_addSuggestionsToContainer;
 - (void)_cancelFirstVisualIntelligenceRequestIfNeeded;
 - (void)_didEndEditing;
-- (void)_didPressReportConcernButton:(id)a3 additionalDomainProvidedFeedback:(id)a4;
+- (void)_didPressReportConcernButton:(id)button additionalDomainProvidedFeedback:(id)feedback;
 - (void)_executePendingBlocksForTransition;
 - (void)_fadeOutContinuerSuggestionsIfAny;
-- (void)_keyboardWillHideForAmbient:(id)a3;
-- (void)_keyboardWillShowForAmbient:(id)a3;
-- (void)_performResultAnimation:(BOOL)a3;
+- (void)_keyboardWillHideForAmbient:(id)ambient;
+- (void)_keyboardWillShowForAmbient:(id)ambient;
+- (void)_performResultAnimation:(BOOL)animation;
 - (void)_popToRootViewControllerIfNeeded;
 - (void)_prepContainerForFirstSnippetPresentation;
 - (void)_presentContinuerSuggestions;
-- (void)_presentSystemPromptEntryViewWithUtterance:(id)a3 alternatives:(id)a4;
+- (void)_presentSystemPromptEntryViewWithUtterance:(id)utterance alternatives:(id)alternatives;
 - (void)_pushQueuedNavigationContentViewController;
-- (void)_recursivelyNotifyVisibleViewControllers:(id)a3 withBlock:(id)a4;
+- (void)_recursivelyNotifyVisibleViewControllers:(id)controllers withBlock:(id)block;
 - (void)_registerForAmbientPresentationTraitChange;
 - (void)_renderResult;
-- (void)_reportConcernWithCardSection:(id)a3 additionalDomainProvidedFeedback:(id)a4;
-- (void)_requestKeyboardWithCompletion:(id)a3;
+- (void)_reportConcernWithCardSection:(id)section additionalDomainProvidedFeedback:(id)feedback;
+- (void)_requestKeyboardWithCompletion:(id)completion;
 - (void)_resumeTouchDismissalPostMontaraOnboardingCompletion;
-- (void)_setBottomContentInsetComponents:(id)a3 animatedWithDuration:(double)a4 animationOptions:(unint64_t)a5;
-- (void)_setInputType:(int64_t)a3;
-- (void)_setKeyboardState:(id)a3;
-- (void)_setSmartDialogConversationActiveTranscriptItems:(id)a3 withCompletionBlock:(id)a4;
-- (void)_setStatusViewHidden:(BOOL)a3;
-- (void)_setUpConversationContinuerSuggestions:(int64_t)a3 forRequestId:(id)a4 currentMode:(id)a5;
-- (void)_setUpConversationStarterSuggestions:(int64_t)a3 isVoiceTrigger:(BOOL)a4 invocationSource:(int64_t)a5;
+- (void)_setBottomContentInsetComponents:(id)components animatedWithDuration:(double)duration animationOptions:(unint64_t)options;
+- (void)_setInputType:(int64_t)type;
+- (void)_setKeyboardState:(id)state;
+- (void)_setSmartDialogConversationActiveTranscriptItems:(id)items withCompletionBlock:(id)block;
+- (void)_setStatusViewHidden:(BOOL)hidden;
+- (void)_setUpConversationContinuerSuggestions:(int64_t)suggestions forRequestId:(id)id currentMode:(id)mode;
+- (void)_setUpConversationStarterSuggestions:(int64_t)suggestions isVoiceTrigger:(BOOL)trigger invocationSource:(int64_t)source;
 - (void)_setupFeedbackButton;
 - (void)_setupTextFieldForQuickTypeVisualIntelligence;
-- (void)_siriRequestCommittedFromSuggestion:(id)a3 encodedToolInvocationData:(id)a4 suggestionRequestType:(int64_t)a5;
-- (void)_siriRequestCommittedFromSuggestion:(id)a3 suggestionRequestType:(int64_t)a4;
-- (void)_siriRequestCommittedFromSuggestionToolInvocation:(id)a3;
-- (void)_smartDialogSnippetLayoutDidUpdateForViewController:(id)a3;
+- (void)_siriRequestCommittedFromSuggestion:(id)suggestion encodedToolInvocationData:(id)data suggestionRequestType:(int64_t)type;
+- (void)_siriRequestCommittedFromSuggestion:(id)suggestion suggestionRequestType:(int64_t)type;
+- (void)_siriRequestCommittedFromSuggestionToolInvocation:(id)invocation;
+- (void)_smartDialogSnippetLayoutDidUpdateForViewController:(id)controller;
 - (void)_teardownTypeToSiriForVisualIntelligenceCameraWithUpdate;
 - (void)_teardownTypeToSiriUI;
 - (void)_updateAmbientAvailability;
 - (void)_updateBottomContentInsetKeyboardComponent;
 - (void)_updateHomeAffordanceVisibility;
-- (void)_updateIsInAmbientWithInteractivity:(BOOL)a3;
-- (void)_updateKeyboardStateFromNotification:(id)a3;
+- (void)_updateIsInAmbientWithInteractivity:(BOOL)interactivity;
+- (void)_updateKeyboardStateFromNotification:(id)notification;
 - (void)_updateSAEViewSize;
 - (void)_updateStatusViewVisibility;
-- (void)_willBeginEditingOfType:(int64_t)a3;
-- (void)animatedDisappearanceDidBeginWithDuration:(double)a3 reason:(int64_t)a4;
-- (void)cancelSpeakingForSiriViewController:(id)a3;
-- (void)completedOnboardingFlowWithEnablementResult:(int64_t)a3;
-- (void)configureSmartDialog:(id)a3;
-- (void)containerView:(id)a3 requestsDismissalWithReason:(int64_t)a4;
-- (void)didChangeText:(id)a3;
-- (void)didPresentContentWithAceObject:(id)a3;
-- (void)didReceiveAddViewsDialogPhaseForSuggestions:(id)a3;
-- (void)didSetInputType:(int64_t)a3;
-- (void)didSetServerUtterance:(id)a3;
+- (void)_willBeginEditingOfType:(int64_t)type;
+- (void)animatedDisappearanceDidBeginWithDuration:(double)duration reason:(int64_t)reason;
+- (void)cancelSpeakingForSiriViewController:(id)controller;
+- (void)completedOnboardingFlowWithEnablementResult:(int64_t)result;
+- (void)configureSmartDialog:(id)dialog;
+- (void)containerView:(id)view requestsDismissalWithReason:(int64_t)reason;
+- (void)didChangeText:(id)text;
+- (void)didPresentContentWithAceObject:(id)object;
+- (void)didReceiveAddViewsDialogPhaseForSuggestions:(id)suggestions;
+- (void)didSetInputType:(int64_t)type;
+- (void)didSetServerUtterance:(id)utterance;
 - (void)didSetTranscriptItems;
 - (void)dismissSiriResults;
-- (void)dropletContentWillUpdateLayout:(id)a3 withUpdatedContentSize:(CGSize)a4 animated:(BOOL)a5;
+- (void)dropletContentWillUpdateLayout:(id)layout withUpdatedContentSize:(CGSize)size animated:(BOOL)animated;
 - (void)endTypeToSiriLatencyStateIfNeeded;
-- (void)entryViewDidSubmit:(id)a3 suggestionText:(id)a4 suggestionRequestType:(int64_t)a5;
-- (void)entryViewDidSubmit:(id)a3 text:(id)a4;
-- (void)entryViewDidSubmit:(id)a3 visualIntelligenceText:(id)a4;
-- (void)handleVoiceActivationRequestWithRequestOptions:(id)a3;
-- (void)hasContentAtPoint:(CGPoint)a3 completion:(id)a4;
+- (void)entryViewDidSubmit:(id)submit suggestionText:(id)text suggestionRequestType:(int64_t)type;
+- (void)entryViewDidSubmit:(id)submit text:(id)text;
+- (void)entryViewDidSubmit:(id)submit visualIntelligenceText:(id)text;
+- (void)handleVoiceActivationRequestWithRequestOptions:(id)options;
+- (void)hasContentAtPoint:(CGPoint)point completion:(id)completion;
 - (void)keyboardIsReadyToReceiveInput;
-- (void)keyboardShouldDuckForLongSnippet:(CGPoint)a3;
-- (void)loadContinuerSuggestionsForRequest:(id)a3 currentMode:(id)a4;
+- (void)keyboardShouldDuckForLongSnippet:(CGPoint)snippet;
+- (void)loadContinuerSuggestionsForRequest:(id)request currentMode:(id)mode;
 - (void)loadView;
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5;
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated;
 - (void)performPillCollapseAnimation;
 - (void)performPillMergeAndCrossfadeAnimation;
 - (void)performSinglePillExpandAnimation;
-- (void)presentGenerativeAssistantOnboardingFlowWithCommand:(id)a3 completion:(id)a4;
+- (void)presentGenerativeAssistantOnboardingFlowWithCommand:(id)command completion:(id)completion;
 - (void)presentLatencyPillAnimation;
-- (void)presentResultAnimation:(BOOL)a3;
-- (void)processSuggestionViewWrappers:(id)a3;
-- (void)promptEntryDidDismissEditMenu:(id)a3;
-- (void)promptEntryViewDidBeginEditing:(id)a3;
-- (void)promptEntryViewDidEndEditing:(id)a3;
-- (void)promptEntryViewDidLayoutSubviews:(id)a3;
-- (void)promptEntryViewWillPresentEditMenu:(id)a3;
-- (void)removeResponseElementsIfNeeded:(unint64_t)a3;
-- (void)reportConcernButtonTappedForSuggestion:(id)a3;
+- (void)presentResultAnimation:(BOOL)animation;
+- (void)processSuggestionViewWrappers:(id)wrappers;
+- (void)promptEntryDidDismissEditMenu:(id)menu;
+- (void)promptEntryViewDidBeginEditing:(id)editing;
+- (void)promptEntryViewDidEndEditing:(id)editing;
+- (void)promptEntryViewDidLayoutSubviews:(id)subviews;
+- (void)promptEntryViewWillPresentEditMenu:(id)menu;
+- (void)removeResponseElementsIfNeeded:(unint64_t)needed;
+- (void)reportConcernButtonTappedForSuggestion:(id)suggestion;
 - (void)resignKeyboardIfNeeded;
-- (void)setActiveRequestOptions:(id)a3;
-- (void)setBottomContentInset:(double)a3;
-- (void)setDelegate:(id)a3;
-- (void)setDockFrame:(CGRect)a3;
-- (void)setDropletContainerUserUtteranceViewHeight:(double)a3;
-- (void)setIsInAmbient:(BOOL)a3;
-- (void)setRevealRecognizedSpeech:(BOOL)a3;
-- (void)setSmartDialogCardBlock:(id)a3;
-- (void)setSmartDialogPluginBlock:(id)a3;
-- (void)setTopContentInset:(double)a3 animated:(BOOL)a4;
-- (void)setUpConversationStarterSuggestionsWith:(int64_t)a3;
+- (void)setActiveRequestOptions:(id)options;
+- (void)setBottomContentInset:(double)inset;
+- (void)setDelegate:(id)delegate;
+- (void)setDockFrame:(CGRect)frame;
+- (void)setDropletContainerUserUtteranceViewHeight:(double)height;
+- (void)setIsInAmbient:(BOOL)ambient;
+- (void)setRevealRecognizedSpeech:(BOOL)speech;
+- (void)setSmartDialogCardBlock:(id)block;
+- (void)setSmartDialogPluginBlock:(id)block;
+- (void)setTopContentInset:(double)inset animated:(BOOL)animated;
+- (void)setUpConversationStarterSuggestionsWith:(int64_t)with;
 - (void)setupTextFieldForTamale;
 - (void)setupTextFieldForTextInput;
 - (void)shouldBeginEditing;
 - (void)siriDidActivate;
 - (void)siriDidDeactivate;
-- (void)siriDidStartSpeakingWithIdentifier:(id)a3;
-- (void)siriDidStopSpeakingWithIdentifier:(id)a3 speechQueueIsEmpty:(BOOL)a4;
+- (void)siriDidStartSpeakingWithIdentifier:(id)identifier;
+- (void)siriDidStopSpeakingWithIdentifier:(id)identifier speechQueueIsEmpty:(BOOL)empty;
 - (void)siriDidTapOutsideContent;
-- (void)siriDidUpdateASRWithRecognition:(id)a3;
+- (void)siriDidUpdateASRWithRecognition:(id)recognition;
 - (void)siriIsIdleAndQuiet;
-- (void)siriSnippetViewController:(id)a3 handleStartLocalRequest:(id)a4 turnIdentifier:(id)a5;
-- (void)siriSnippetViewController:(id)a3 informHostOfBackgroundView:(id)a4 isSnippetAsyncColored:(BOOL)a5;
-- (void)siriSnippetViewController:(id)a3 isBackgroundColorUpdateSuccessful:(BOOL)a4;
-- (void)siriSnippetViewController:(id)a3 performAceCommands:(id)a4 sashItem:(id)a5;
-- (void)siriSnippetViewController:(id)a3 pushSirilandSnippets:(id)a4;
-- (void)siriSnippetViewController:(id)a3 willDismissViewController:(id)a4;
-- (void)siriSnippetViewController:(id)a3 willPresentViewController:(id)a4;
-- (void)siriSnippetViewControllerViewDidLoad:(id)a3;
-- (void)siriViewController:(id)a3 openURL:(id)a4 completion:(id)a5;
-- (void)siriViewController:(id)a3 openURL:(id)a4 launchOptions:(id)a5 completion:(id)a6;
-- (void)siriViewController:(id)a3 performAceCommands:(id)a4 completion:(id)a5;
-- (void)siriViewController:(id)a3 speakText:(id)a4 completion:(id)a5;
+- (void)siriSnippetViewController:(id)controller handleStartLocalRequest:(id)request turnIdentifier:(id)identifier;
+- (void)siriSnippetViewController:(id)controller informHostOfBackgroundView:(id)view isSnippetAsyncColored:(BOOL)colored;
+- (void)siriSnippetViewController:(id)controller isBackgroundColorUpdateSuccessful:(BOOL)successful;
+- (void)siriSnippetViewController:(id)controller performAceCommands:(id)commands sashItem:(id)item;
+- (void)siriSnippetViewController:(id)controller pushSirilandSnippets:(id)snippets;
+- (void)siriSnippetViewController:(id)controller willDismissViewController:(id)viewController;
+- (void)siriSnippetViewController:(id)controller willPresentViewController:(id)viewController;
+- (void)siriSnippetViewControllerViewDidLoad:(id)load;
+- (void)siriViewController:(id)controller openURL:(id)l completion:(id)completion;
+- (void)siriViewController:(id)controller openURL:(id)l launchOptions:(id)options completion:(id)completion;
+- (void)siriViewController:(id)controller performAceCommands:(id)commands completion:(id)completion;
+- (void)siriViewController:(id)controller speakText:(id)text completion:(id)completion;
 - (void)siriViewControllerDidEndEditing;
 - (void)siriViewControllerHeightDidChange;
-- (void)siriViewControllerHeightDidChange:(id)a3;
-- (void)siriViewControllerHeightDidChange:(id)a3 pinTopOfSnippet:(BOOL)a4;
-- (void)siriViewControllerRequestDeviceUnlockWithCompletion:(id)a3;
-- (void)siriViewControllerShouldOpenUrl:(id)a3;
-- (void)siriViewControllerShouldRequestTextInputWithUtterance:(id)a3 alternatives:(id)a4;
-- (void)siriViewControllerViewDidAppear:(id)a3 isTopLevelViewController:(BOOL)a4;
-- (void)siriViewControllerViewDidDisappear:(id)a3 isTopLevelViewController:(BOOL)a4;
+- (void)siriViewControllerHeightDidChange:(id)change;
+- (void)siriViewControllerHeightDidChange:(id)change pinTopOfSnippet:(BOOL)snippet;
+- (void)siriViewControllerRequestDeviceUnlockWithCompletion:(id)completion;
+- (void)siriViewControllerShouldOpenUrl:(id)url;
+- (void)siriViewControllerShouldRequestTextInputWithUtterance:(id)utterance alternatives:(id)alternatives;
+- (void)siriViewControllerViewDidAppear:(id)appear isTopLevelViewController:(BOOL)controller;
+- (void)siriViewControllerViewDidDisappear:(id)disappear isTopLevelViewController:(BOOL)controller;
 - (void)siriViewControllerWillBeginEditing;
 - (void)siriWillStartRequest;
 - (void)smartDialogContentDidChange;
 - (void)switchPresentationToTextInput;
 - (void)switchPresentationToVisualIntelligenceCameraInput;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)updateSpeechRecognitionHypothesisForSuggestion:(id)a3;
-- (void)updateTopInset:(double)a3 animated:(BOOL)a4;
+- (void)traitCollectionDidChange:(id)change;
+- (void)updateSpeechRecognitionHypothesisForSuggestion:(id)suggestion;
+- (void)updateTopInset:(double)inset animated:(BOOL)animated;
 - (void)userDrilledIntoSnippet;
 - (void)userTouchedSnippet;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 - (void)willPresentOnboardingFlow;
 - (void)willPresentResult;
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4;
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation SRSystemAssistantExperienceViewController
@@ -216,17 +216,17 @@
     [(SiriSharedUISystemAssistantExperienceContainerView *)v3->_textFieldContainerView setDelegate:v3];
     if (SiriSharedUIDeviceIsPhone())
     {
-      v10 = [(SiriSharedUISystemAssistantExperienceContainerView *)v3->_textFieldContainerView layer];
+      layer = [(SiriSharedUISystemAssistantExperienceContainerView *)v3->_textFieldContainerView layer];
       v11 = +[UIScreen mainScreen];
-      v12 = [v11 traitCollection];
-      [v12 displayCornerRadius];
-      [v10 setCornerRadius:v13 / 1.2];
+      traitCollection = [v11 traitCollection];
+      [traitCollection displayCornerRadius];
+      [layer setCornerRadius:v13 / 1.2];
 
-      v14 = [(SiriSharedUISystemAssistantExperienceContainerView *)v3->_textFieldContainerView layer];
-      [v14 setMaskedCorners:12];
+      layer2 = [(SiriSharedUISystemAssistantExperienceContainerView *)v3->_textFieldContainerView layer];
+      [layer2 setMaskedCorners:12];
 
-      v15 = [(SiriSharedUISystemAssistantExperienceContainerView *)v3->_textFieldContainerView layer];
-      [v15 setMasksToBounds:1];
+      layer3 = [(SiriSharedUISystemAssistantExperienceContainerView *)v3->_textFieldContainerView layer];
+      [layer3 setMasksToBounds:1];
     }
 
     v16 = objc_alloc_init(SiriSharedUICompactResultViewController);
@@ -238,15 +238,15 @@
     v3->_navigationController = v18;
 
     [(SiriUINavigationController *)v3->_navigationController setDelegate:v3];
-    v20 = [(SiriUINavigationController *)v3->_navigationController view];
-    [v20 recursive_setSemanticContentAttribute:SiriLanguageSemanticContentAttribute()];
+    view = [(SiriUINavigationController *)v3->_navigationController view];
+    [view recursive_setSemanticContentAttribute:SiriLanguageSemanticContentAttribute()];
 
-    v21 = [(SiriUINavigationController *)v3->_navigationController navigationBar];
-    [v21 recursive_setSemanticContentAttribute:SiriLanguageSemanticContentAttribute()];
+    navigationBar = [(SiriUINavigationController *)v3->_navigationController navigationBar];
+    [navigationBar recursive_setSemanticContentAttribute:SiriLanguageSemanticContentAttribute()];
 
     v22 = [SiriSharedUICompactHostingInstrumentationSupplement alloc];
-    v23 = [(SRSystemAssistantExperienceViewController *)v3 _instrumentationManager];
-    v24 = [v22 initWithInstrumentationManager:v23];
+    _instrumentationManager = [(SRSystemAssistantExperienceViewController *)v3 _instrumentationManager];
+    v24 = [v22 initWithInstrumentationManager:_instrumentationManager];
     instrumentationSupplement = v3->_instrumentationSupplement;
     v3->_instrumentationSupplement = v24;
 
@@ -374,8 +374,8 @@
 
 - (void)_executePendingBlocksForTransition
 {
-  v3 = [(SiriSharedUISAEViewState *)self->_viewState activeSmartDialogView];
-  v4 = [v3 updateUserUtteranceVisibilityIfNeeded];
+  activeSmartDialogView = [(SiriSharedUISAEViewState *)self->_viewState activeSmartDialogView];
+  updateUserUtteranceVisibilityIfNeeded = [activeSmartDialogView updateUserUtteranceVisibilityIfNeeded];
 
   serverUtteranceUpdateBlock = self->serverUtteranceUpdateBlock;
   v6 = serverUtteranceUpdateBlock != 0;
@@ -459,27 +459,27 @@
   *p_snippetUpdateBlock = 0;
 
 LABEL_18:
-  v16 = [(SiriSharedUISAEViewState *)self->_viewState activeSmartDialogView];
-  [v16 reloadView];
+  activeSmartDialogView2 = [(SiriSharedUISAEViewState *)self->_viewState activeSmartDialogView];
+  [activeSmartDialogView2 reloadView];
 
-  if (v4)
+  if (updateUserUtteranceVisibilityIfNeeded)
   {
     v17 = objc_alloc_init(SISchemaUEITranscriptShown);
     [v17 setHasTranscriptShownReason:1];
-    [v17 setTranscriptShownReason:v4];
-    v18 = [(SRSystemAssistantExperienceViewController *)self _instrumentationManager];
-    [v18 emitInstrumentation:v17];
+    [v17 setTranscriptShownReason:updateUserUtteranceVisibilityIfNeeded];
+    _instrumentationManager = [(SRSystemAssistantExperienceViewController *)self _instrumentationManager];
+    [_instrumentationManager emitInstrumentation:v17];
 
     v19 = AFSiriLogContextConnection;
     if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEFAULT))
     {
       v20 = @"TRANSCRIPTSHOWNREASON_UNKNOWN";
-      if (v4 == 1)
+      if (updateUserUtteranceVisibilityIfNeeded == 1)
       {
         v20 = @"TRANSCRIPTSHOWNREASON_ALWAYS_SHOW";
       }
 
-      if (v4 == 2)
+      if (updateUserUtteranceVisibilityIfNeeded == 2)
       {
         v20 = @"TRANSCRIPTSHOWNREASON_RECEIVED_SHOW_TRANSCRIPT_COMMAND";
       }
@@ -494,28 +494,28 @@ LABEL_18:
   }
 
 LABEL_26:
-  v22 = [(SiriSharedUISAEViewState *)self->_viewState activeSmartDialogView];
-  [v22 updateContentSizeIfNecessary];
+  activeSmartDialogView3 = [(SiriSharedUISAEViewState *)self->_viewState activeSmartDialogView];
+  [activeSmartDialogView3 updateContentSizeIfNecessary];
 }
 
-- (void)updateTopInset:(double)a3 animated:(BOOL)a4
+- (void)updateTopInset:(double)inset animated:(BOOL)animated
 {
-  v4 = a4;
-  self->_topInset = a3;
+  animatedCopy = animated;
+  self->_topInset = inset;
   if ([UIApp activeInterfaceOrientation] - 1 <= 1)
   {
-    v7 = [(SRSystemAssistantExperienceViewController *)self view];
-    v8 = [v7 window];
+    view = [(SRSystemAssistantExperienceViewController *)self view];
+    window = [view window];
 
-    [v8 safeAreaInsets];
-    v10 = v9 < a3;
-    v11 = a3 - v9 + 10.0;
+    [window safeAreaInsets];
+    v10 = v9 < inset;
+    v11 = inset - v9 + 10.0;
     if (!v10)
     {
       v11 = 0.0;
     }
 
-    if (!v8)
+    if (!window)
     {
       v11 = 0.0;
     }
@@ -535,7 +535,7 @@ LABEL_26:
     v14[0] = _NSConcreteStackBlock;
     v14[2] = sub_10001D010;
     v14[3] = &unk_100166EA8;
-    if (!v4)
+    if (!animatedCopy)
     {
       v13 = 0.0;
     }
@@ -556,9 +556,9 @@ LABEL_26:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%s ", buf, 0xCu);
   }
 
-  v4 = [(SRSystemAssistantExperienceViewController *)self _navigationController];
-  v5 = [v4 view];
-  [(SRSystemAssistantExperienceViewController *)self addChildViewController:v4];
+  _navigationController = [(SRSystemAssistantExperienceViewController *)self _navigationController];
+  view = [_navigationController view];
+  [(SRSystemAssistantExperienceViewController *)self addChildViewController:_navigationController];
   v6 = objc_alloc_init(AFUITouchPassThroughView);
   v7 = +[UIColor clearColor];
   [v6 setBackgroundColor:v7];
@@ -566,12 +566,12 @@ LABEL_26:
   [v6 setOpaque:0];
   [v6 setAutoresizingMask:18];
   [v6 bounds];
-  [v5 setFrame:?];
-  [v5 setAutoresizingMask:18];
-  [v6 addSubview:v5];
+  [view setFrame:?];
+  [view setAutoresizingMask:18];
+  [v6 addSubview:view];
   [(SiriSharedUISystemAssistantExperienceContainerView *)self->_textFieldContainerView setAutoresizingMask:18];
-  v8 = [(SiriSharedUISystemAssistantExperienceContainerView *)self->_textFieldContainerView layer];
-  [v8 setHitTestsAsOpaque:0];
+  layer = [(SiriSharedUISystemAssistantExperienceContainerView *)self->_textFieldContainerView layer];
+  [layer setHitTestsAsOpaque:0];
 
   [(SiriSharedUISystemAssistantExperienceContainerView *)self->_textFieldContainerView setOpaque:0];
   [v6 addSubview:self->_textFieldContainerView];
@@ -580,17 +580,17 @@ LABEL_26:
     goto LABEL_8;
   }
 
-  v9 = [(SRSystemAssistantExperienceViewController *)self activeRequestOptions];
-  if ([v9 requestSource] != 48)
+  activeRequestOptions = [(SRSystemAssistantExperienceViewController *)self activeRequestOptions];
+  if ([activeRequestOptions requestSource] != 48)
   {
 
     goto LABEL_8;
   }
 
   v10 = +[SASSystemState sharedSystemState];
-  v11 = [v10 isInActiveCall];
+  isInActiveCall = [v10 isInActiveCall];
 
-  if ((v11 & 1) == 0)
+  if ((isInActiveCall & 1) == 0)
   {
 LABEL_8:
     v13 = [UIImage _systemImageNamed:@"microphone"];
@@ -612,27 +612,27 @@ LABEL_9:
   v14 = [[_TtC4Siri30SystemAssistantPromptEntryView alloc] initWithFrame:v12 dictationReplacementAction:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
   [(SRSystemAssistantExperienceViewController *)self setPromptEntryView:v14];
 
-  v15 = [(SRSystemAssistantExperienceViewController *)self promptEntryView];
-  [v15 setDelegate:self];
+  promptEntryView = [(SRSystemAssistantExperienceViewController *)self promptEntryView];
+  [promptEntryView setDelegate:self];
 
-  [v4 didMoveToParentViewController:self];
+  [_navigationController didMoveToParentViewController:self];
   v16 = [[SiriSharedUIFeedbackController alloc] initWithNibName:0 bundle:0];
   feedbackController = self->_feedbackController;
   self->_feedbackController = v16;
 
-  v18 = [(SiriSharedUIFeedbackController *)self->_feedbackController view];
-  v19 = [v18 layer];
-  [v19 setAllowsHitTesting:0];
+  view2 = [(SiriSharedUIFeedbackController *)self->_feedbackController view];
+  layer2 = [view2 layer];
+  [layer2 setAllowsHitTesting:0];
 
   [(SRSystemAssistantExperienceViewController *)self setView:v6];
 }
 
-- (void)_didPressReportConcernButton:(id)a3 additionalDomainProvidedFeedback:(id)a4
+- (void)_didPressReportConcernButton:(id)button additionalDomainProvidedFeedback:(id)feedback
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SRSystemAssistantExperienceViewController *)self delegate];
-  v9 = [v8 lockStateForSAEViewController:self];
+  buttonCopy = button;
+  feedbackCopy = feedback;
+  delegate = [(SRSystemAssistantExperienceViewController *)self delegate];
+  v9 = [delegate lockStateForSAEViewController:self];
 
   if ((v9 & 2) != 0)
   {
@@ -643,8 +643,8 @@ LABEL_9:
     v11[2] = sub_10001D63C;
     v11[3] = &unk_100166EF8;
     objc_copyWeak(&v14, &location);
-    v12 = v6;
-    v13 = v7;
+    v12 = buttonCopy;
+    v13 = feedbackCopy;
     [WeakRetained requestToHandlePasscodeUnlockWithClient:2 withCompletion:v11];
 
     objc_destroyWeak(&v14);
@@ -653,34 +653,34 @@ LABEL_9:
 
   else
   {
-    [(SRSystemAssistantExperienceViewController *)self _reportConcernWithCardSection:v6 additionalDomainProvidedFeedback:v7];
+    [(SRSystemAssistantExperienceViewController *)self _reportConcernWithCardSection:buttonCopy additionalDomainProvidedFeedback:feedbackCopy];
   }
 }
 
-- (void)_reportConcernWithCardSection:(id)a3 additionalDomainProvidedFeedback:(id)a4
+- (void)_reportConcernWithCardSection:(id)section additionalDomainProvidedFeedback:(id)feedback
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SRSystemAssistantExperienceViewController *)self delegate];
-  v9 = [v8 feedbackFormForCurrentRequest];
+  sectionCopy = section;
+  feedbackCopy = feedback;
+  delegate = [(SRSystemAssistantExperienceViewController *)self delegate];
+  feedbackFormForCurrentRequest = [delegate feedbackFormForCurrentRequest];
 
-  v10 = [(SRSystemAssistantExperienceViewController *)self prepareForReportConcernAndCreateForm:v9 additionalDomainProvidedFeedback:v7];
+  v10 = [(SRSystemAssistantExperienceViewController *)self prepareForReportConcernAndCreateForm:feedbackFormForCurrentRequest additionalDomainProvidedFeedback:feedbackCopy];
 
-  if (v6)
+  if (sectionCopy)
   {
-    v11 = [v6 racFeedbackSubfeatureId];
-    [v10 setSubFeature:v11];
+    racFeedbackSubfeatureId = [sectionCopy racFeedbackSubfeatureId];
+    [v10 setSubFeature:racFeedbackSubfeatureId];
 
-    v12 = [v6 racFeedbackLoggingContent];
-    v13 = [NSString stringWithFormat:@"%@", v12];
+    racFeedbackLoggingContent = [sectionCopy racFeedbackLoggingContent];
+    v13 = [NSString stringWithFormat:@"%@", racFeedbackLoggingContent];
 
     [v10 setDiagnosticContent:v13];
   }
 
-  v14 = [(SRSystemAssistantExperienceViewController *)self delegate];
-  v15 = [v14 isPresentingVisualIntelligenceDirectInvocation];
+  delegate2 = [(SRSystemAssistantExperienceViewController *)self delegate];
+  isPresentingVisualIntelligenceDirectInvocation = [delegate2 isPresentingVisualIntelligenceDirectInvocation];
 
-  if (v15)
+  if (isPresentingVisualIntelligenceDirectInvocation)
   {
     [v10 setFeedbackDomain:4];
     [v10 setSubFeature:@"ask_chatgpt"];
@@ -701,14 +701,14 @@ LABEL_9:
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEFAULT))
   {
     v18 = v17;
-    v19 = [v10 userInput];
-    v20 = [v10 siriDialog];
+    userInput = [v10 userInput];
+    siriDialog = [v10 siriDialog];
     *buf = 136315650;
     v22 = "[SRSystemAssistantExperienceViewController _reportConcernWithCardSection:additionalDomainProvidedFeedback:]";
     v23 = 2112;
-    v24 = v19;
+    v24 = userInput;
     v25 = 2112;
-    v26 = v20;
+    v26 = siriDialog;
     _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "%s #feedback - donating feedback with input: %@, output: %@", buf, 0x20u);
   }
 
@@ -723,16 +723,16 @@ LABEL_9:
   return v3;
 }
 
-- (void)configureSmartDialog:(id)a3
+- (void)configureSmartDialog:(id)dialog
 {
-  v4 = a3;
-  [v4 setInteractionDelegate:self];
-  [v4 setDropletContainerDelegate:self];
-  v5 = [v4 layer];
-  [v5 setAllowsGroupOpacity:0];
+  dialogCopy = dialog;
+  [dialogCopy setInteractionDelegate:self];
+  [dialogCopy setDropletContainerDelegate:self];
+  layer = [dialogCopy layer];
+  [layer setAllowsGroupOpacity:0];
 
-  [v4 setClipsToBounds:1];
-  [v4 setPopoverViewController:self];
+  [dialogCopy setClipsToBounds:1];
+  [dialogCopy setPopoverViewController:self];
 
   self->_resultPresentedInActiveSmartDialog = 0;
 }
@@ -742,22 +742,22 @@ LABEL_9:
   v8.receiver = self;
   v8.super_class = SRSystemAssistantExperienceViewController;
   [(SRSystemAssistantExperienceViewController *)&v8 viewDidLoad];
-  v3 = [(SRSystemAssistantExperienceViewController *)self view];
-  [v3 recursive_setSemanticContentAttribute:SiriLanguageSemanticContentAttribute()];
+  view = [(SRSystemAssistantExperienceViewController *)self view];
+  [view recursive_setSemanticContentAttribute:SiriLanguageSemanticContentAttribute()];
 
   v4 = [SiriUIMultiNavigationTransitionController alloc];
   v5 = objc_alloc_init(SRSystemAssistantExperienceNavigationTransitionController);
   v6 = [v4 initWithPrimaryTransitionController:v5];
 
-  v7 = [(SRSystemAssistantExperienceViewController *)self _navigationController];
-  [v7 setTransitionController:v6];
+  _navigationController = [(SRSystemAssistantExperienceViewController *)self _navigationController];
+  [_navigationController setTransitionController:v6];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v14.receiver = self;
   v14.super_class = SRSystemAssistantExperienceViewController;
-  [(SRSystemAssistantExperienceViewController *)&v14 viewWillAppear:a3];
+  [(SRSystemAssistantExperienceViewController *)&v14 viewWillAppear:appear];
   v4 = +[NSNotificationCenter defaultCenter];
   v10 = 0u;
   v11 = 0u;
@@ -791,11 +791,11 @@ LABEL_9:
   [v4 addObserver:self selector:"_keyboardWillHideForAmbient:" name:UIKeyboardWillHideNotification object:0];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v7.receiver = self;
   v7.super_class = SRSystemAssistantExperienceViewController;
-  [(SRSystemAssistantExperienceViewController *)&v7 viewDidAppear:a3];
+  [(SRSystemAssistantExperienceViewController *)&v7 viewDidAppear:appear];
   v4 = +[NSProcessInfo processInfo];
   [v4 systemUptime];
   self->_presentationTime = v5;
@@ -804,38 +804,38 @@ LABEL_9:
   [WeakRetained viewControllerDidPresentUserInterface:self];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = SRSystemAssistantExperienceViewController;
-  [(SRSystemAssistantExperienceViewController *)&v5 viewWillDisappear:a3];
-  v4 = [(SRSystemAssistantExperienceViewController *)self delegate];
-  [v4 viewControllerViewWillDisappear:self];
+  [(SRSystemAssistantExperienceViewController *)&v5 viewWillDisappear:disappear];
+  delegate = [(SRSystemAssistantExperienceViewController *)self delegate];
+  [delegate viewControllerViewWillDisappear:self];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v31.receiver = self;
   v31.super_class = SRSystemAssistantExperienceViewController;
-  [(SRSystemAssistantExperienceViewController *)&v31 viewDidDisappear:a3];
-  v4 = [(SiriSharedUISAEViewState *)self->_viewState userUtterance];
-  v5 = [v4 speech];
+  [(SRSystemAssistantExperienceViewController *)&v31 viewDidDisappear:disappear];
+  userUtterance = [(SiriSharedUISAEViewState *)self->_viewState userUtterance];
+  speech = [userUtterance speech];
 
-  if (v5)
+  if (speech)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v7 = [(SiriSharedUISAEViewState *)self->_viewState userUtterance];
-    v8 = [v7 speech];
-    v9 = [v8 backingAceObject];
-    [WeakRetained saeViewController:self viewDidDisappearForAceObject:v9];
+    userUtterance2 = [(SiriSharedUISAEViewState *)self->_viewState userUtterance];
+    speech2 = [userUtterance2 speech];
+    backingAceObject = [speech2 backingAceObject];
+    [WeakRetained saeViewController:self viewDidDisappearForAceObject:backingAceObject];
   }
 
   v29 = 0u;
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v10 = [(SiriSharedUISAEViewState *)self->_viewState serverUtterances];
-  v11 = [v10 countByEnumeratingWithState:&v27 objects:v33 count:16];
+  serverUtterances = [(SiriSharedUISAEViewState *)self->_viewState serverUtterances];
+  v11 = [serverUtterances countByEnumeratingWithState:&v27 objects:v33 count:16];
   if (v11)
   {
     v12 = v11;
@@ -847,7 +847,7 @@ LABEL_9:
       {
         if (*v28 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(serverUtterances);
         }
 
         v15 = *(*(&v27 + 1) + 8 * v14);
@@ -858,7 +858,7 @@ LABEL_9:
       }
 
       while (v12 != v14);
-      v12 = [v10 countByEnumeratingWithState:&v27 objects:v33 count:16];
+      v12 = [serverUtterances countByEnumeratingWithState:&v27 objects:v33 count:16];
     }
 
     while (v12);
@@ -911,18 +911,18 @@ LABEL_9:
 
 - (void)_updateSAEViewSize
 {
-  v3 = [(SRSystemAssistantExperienceViewController *)self view];
-  v45 = [v3 window];
+  view = [(SRSystemAssistantExperienceViewController *)self view];
+  window = [view window];
 
   if (SiriSharedUIDeviceIsPad())
   {
-    v4 = v45;
+    v4 = window;
   }
 
   else
   {
     IsMac = SiriSharedUIDeviceIsMac();
-    v4 = v45;
+    v4 = window;
     if (!IsMac)
     {
       goto LABEL_14;
@@ -936,8 +936,8 @@ LABEL_9:
     v9 = v8;
     v11 = v10;
     v13 = v12;
-    v14 = [v45 windowScene];
-    [v14 interfaceOrientation];
+    windowScene = [window windowScene];
+    [windowScene interfaceOrientation];
     SiriSharedUICompactSlideOverContentSpacingOnPad();
     v16 = v15;
     v18 = v17;
@@ -962,15 +962,15 @@ LABEL_9:
       v48.size.width = v11;
       v48.size.height = v13;
       v23 = (CGRectGetWidth(v48) - v21) * 0.5;
-      v24 = [(SRSystemAssistantExperienceViewController *)self view];
-      [v24 setFrame:{v23, 0.0, v21, Height}];
+      view2 = [(SRSystemAssistantExperienceViewController *)self view];
+      [view2 setFrame:{v23, 0.0, v21, Height}];
 
-      v25 = [(SRSystemAssistantExperienceViewController *)self view];
-      [v25 safeAreaInsets];
+      view3 = [(SRSystemAssistantExperienceViewController *)self view];
+      [view3 safeAreaInsets];
       v27 = v26 + 16.0;
 
-      v28 = [(SRSystemAssistantExperienceViewController *)self view];
-      [v28 safeAreaInsets];
+      view4 = [(SRSystemAssistantExperienceViewController *)self view];
+      [view4 safeAreaInsets];
       v30 = v29 + 20.0;
 
       v49.origin.y = 0.0;
@@ -983,16 +983,16 @@ LABEL_9:
       v50.size.width = v21;
       v50.size.height = Height;
       v32 = CGRectGetHeight(v50) - v27 - v30;
-      v33 = [(SRSystemAssistantExperienceViewController *)self _navigationController];
-      v34 = [v33 view];
-      [v34 setFrame:{0.0, v27, Width, v32}];
+      _navigationController = [(SRSystemAssistantExperienceViewController *)self _navigationController];
+      view5 = [_navigationController view];
+      [view5 setFrame:{0.0, v27, Width, v32}];
     }
 
     else
     {
       v35 = v16 + v18 + SiriSharedUICompactLeftPaddingForShadowOutsetsiPad;
       IsRTL = SiriLanguageIsRTL();
-      v33 = [(SRSystemAssistantExperienceViewController *)self view];
+      _navigationController = [(SRSystemAssistantExperienceViewController *)self view];
       v37 = v7;
       v38 = v9;
       v39 = v11;
@@ -1001,7 +1001,7 @@ LABEL_9:
       {
         v41 = CGRectGetHeight(*&v37);
         v42 = 0.0;
-        v43 = v33;
+        v43 = _navigationController;
       }
 
       else
@@ -1012,7 +1012,7 @@ LABEL_9:
         v51.size.width = v11;
         v51.size.height = v13;
         v41 = CGRectGetHeight(v51);
-        v43 = v33;
+        v43 = _navigationController;
         v42 = v44;
       }
 
@@ -1025,42 +1025,42 @@ LABEL_14:
   _objc_release_x1();
 }
 
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator
 {
   v13.receiver = self;
   v13.super_class = SRSystemAssistantExperienceViewController;
-  v6 = a4;
-  v7 = a3;
-  [(SRSystemAssistantExperienceViewController *)&v13 willTransitionToTraitCollection:v7 withTransitionCoordinator:v6];
+  coordinatorCopy = coordinator;
+  collectionCopy = collection;
+  [(SRSystemAssistantExperienceViewController *)&v13 willTransitionToTraitCollection:collectionCopy withTransitionCoordinator:coordinatorCopy];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_10001E4CC;
   v12[3] = &unk_100166F20;
   v12[4] = self;
-  [v6 animateAlongsideTransition:v12 completion:0];
+  [coordinatorCopy animateAlongsideTransition:v12 completion:0];
 
-  v8 = [v7 verticalSizeClass];
-  if (v8 == 1)
+  verticalSizeClass = [collectionCopy verticalSizeClass];
+  if (verticalSizeClass == 1)
   {
-    v9 = [(SRSystemAssistantExperienceViewController *)self containerView];
-    v10 = [v9 isDisplayingResponse];
+    containerView = [(SRSystemAssistantExperienceViewController *)self containerView];
+    isDisplayingResponse = [containerView isDisplayingResponse];
 
-    if (v10)
+    if (isDisplayingResponse)
     {
-      v11 = [(SRSystemAssistantExperienceViewController *)self promptEntryView];
-      [v11 resignKeyboard];
+      promptEntryView = [(SRSystemAssistantExperienceViewController *)self promptEntryView];
+      [promptEntryView resignKeyboard];
     }
   }
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v9.receiver = self;
   v9.super_class = SRSystemAssistantExperienceViewController;
-  v7 = a4;
-  [(SRSystemAssistantExperienceViewController *)&v9 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  coordinatorCopy = coordinator;
+  [(SRSystemAssistantExperienceViewController *)&v9 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   if (height <= width)
   {
     [(SRSystemAssistantExperienceViewController *)self _updateAmbientAvailability];
@@ -1076,36 +1076,36 @@ LABEL_14:
   v8[2] = sub_10001E608;
   v8[3] = &unk_100166F20;
   v8[4] = self;
-  [v7 animateAlongsideTransition:v8 completion:0];
+  [coordinatorCopy animateAlongsideTransition:v8 completion:0];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [v4 userInterfaceStyle];
-  v6 = [(SRSystemAssistantExperienceViewController *)self traitCollection];
-  v7 = [v6 userInterfaceStyle];
+  changeCopy = change;
+  userInterfaceStyle = [changeCopy userInterfaceStyle];
+  traitCollection = [(SRSystemAssistantExperienceViewController *)self traitCollection];
+  userInterfaceStyle2 = [traitCollection userInterfaceStyle];
 
-  if (v5 != v7)
+  if (userInterfaceStyle != userInterfaceStyle2)
   {
     v8 = AFSiriLogContextConnection;
     if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEFAULT))
     {
       v9 = v8;
-      v10 = [v4 userInterfaceStyle];
-      v11 = [(SRSystemAssistantExperienceViewController *)self traitCollection];
+      userInterfaceStyle3 = [changeCopy userInterfaceStyle];
+      traitCollection2 = [(SRSystemAssistantExperienceViewController *)self traitCollection];
       v14 = 136315650;
       v15 = "[SRSystemAssistantExperienceViewController traitCollectionDidChange:]";
       v16 = 2048;
-      v17 = v10;
+      v17 = userInterfaceStyle3;
       v18 = 2048;
-      v19 = [v11 userInterfaceStyle];
+      userInterfaceStyle4 = [traitCollection2 userInterfaceStyle];
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%s #smartDialog: previous userInteractionStyle:%ld, current userInteractionStyle:%ld", &v14, 0x20u);
     }
 
-    v12 = [(SiriSharedUISAEViewState *)self->_viewState activeSmartDialogView];
-    v13 = [(SRSystemAssistantExperienceViewController *)self traitCollection];
-    [v12 setUserInterfaceStyle:{objc_msgSend(v13, "userInterfaceStyle")}];
+    activeSmartDialogView = [(SiriSharedUISAEViewState *)self->_viewState activeSmartDialogView];
+    traitCollection3 = [(SRSystemAssistantExperienceViewController *)self traitCollection];
+    [activeSmartDialogView setUserInterfaceStyle:{objc_msgSend(traitCollection3, "userInterfaceStyle")}];
   }
 }
 
@@ -1118,8 +1118,8 @@ LABEL_14:
     self->_feedbackButton = v3;
 
     [(SRFeedbackButton *)self->_feedbackButton addTarget:self action:"userDidReportConcern" forControlEvents:64];
-    v5 = [(SRSystemAssistantExperienceViewController *)self containerView];
-    [v5 setBottomFloatingButton:self->_feedbackButton];
+    containerView = [(SRSystemAssistantExperienceViewController *)self containerView];
+    [containerView setBottomFloatingButton:self->_feedbackButton];
   }
 }
 
@@ -1129,8 +1129,8 @@ LABEL_14:
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v2 = [(SiriSharedUISAEViewState *)self->_viewState activeConversationTranscriptItems];
-  v3 = [v2 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  activeConversationTranscriptItems = [(SiriSharedUISAEViewState *)self->_viewState activeConversationTranscriptItems];
+  v3 = [activeConversationTranscriptItems countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v3)
   {
     v4 = v3;
@@ -1141,23 +1141,23 @@ LABEL_14:
       {
         if (*v15 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(activeConversationTranscriptItems);
         }
 
         v7 = *(*(&v14 + 1) + 8 * i);
-        v8 = [v7 viewController];
+        viewController = [v7 viewController];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
 
 LABEL_13:
-          v12 = [v7 viewController];
-          v11 = [v12 view];
+          viewController2 = [v7 viewController];
+          view = [viewController2 view];
 
           goto LABEL_14;
         }
 
-        v9 = [v7 viewController];
+        viewController3 = [v7 viewController];
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
 
@@ -1167,8 +1167,8 @@ LABEL_13:
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v14 objects:v18 count:16];
-      v11 = 0;
+      v4 = [activeConversationTranscriptItems countByEnumeratingWithState:&v14 objects:v18 count:16];
+      view = 0;
       if (v4)
       {
         continue;
@@ -1180,15 +1180,15 @@ LABEL_13:
 
   else
   {
-    v11 = 0;
+    view = 0;
   }
 
 LABEL_14:
 
-  return v11;
+  return view;
 }
 
-- (id)_createBackgroundView:(id)a3
+- (id)_createBackgroundView:(id)view
 {
   v4 = objc_alloc_init(SiriSharedUISmartDialogBackgroundView);
   [v4 setClipsToBounds:1];
@@ -1203,11 +1203,11 @@ LABEL_14:
     }
 
     v6 = objc_alloc_init(UIView);
-    v7 = [(SRSystemAssistantExperienceViewController *)self view];
-    v8 = [v7 traitCollection];
-    v9 = [v8 userInterfaceStyle];
+    view = [(SRSystemAssistantExperienceViewController *)self view];
+    traitCollection = [view traitCollection];
+    userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-    if (v9 == 1)
+    if (userInterfaceStyle == 1)
     {
       +[UIColor whiteColor];
     }
@@ -1219,96 +1219,96 @@ LABEL_14:
     v10 = ;
     [v6 setBackgroundColor:v10];
 
-    v11 = [v6 layer];
-    v12 = v11;
+    layer = [v6 layer];
+    v12 = layer;
     v13 = &kCAFilterPlusL;
-    if (v9 != 1)
+    if (userInterfaceStyle != 1)
     {
       v13 = &kCAFilterPlusD;
     }
 
-    [v11 setCompositingFilter:*v13];
+    [layer setCompositingFilter:*v13];
 
-    v14 = [v6 layer];
+    layer2 = [v6 layer];
     LODWORD(v15) = 1053609165;
-    [v14 setOpacity:v15];
+    [layer2 setOpacity:v15];
 
-    v16 = [v4 contentView];
-    [v16 addSubview:v6];
+    contentView = [v4 contentView];
+    [contentView addSubview:v6];
 
     [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v17 = [v6 leadingAnchor];
-    v18 = [v4 contentView];
-    v19 = [v18 leadingAnchor];
-    v20 = [v17 constraintEqualToAnchor:v19];
+    leadingAnchor = [v6 leadingAnchor];
+    contentView2 = [v4 contentView];
+    leadingAnchor2 = [contentView2 leadingAnchor];
+    v20 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     [v20 setActive:1];
 
-    v21 = [v6 bottomAnchor];
-    v22 = [v4 contentView];
-    v23 = [v22 bottomAnchor];
-    v24 = [v21 constraintEqualToAnchor:v23];
+    bottomAnchor = [v6 bottomAnchor];
+    contentView3 = [v4 contentView];
+    bottomAnchor2 = [contentView3 bottomAnchor];
+    v24 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     [v24 setActive:1];
 
-    v25 = [v6 trailingAnchor];
-    v26 = [v4 contentView];
-    v27 = [v26 trailingAnchor];
-    v28 = [v25 constraintEqualToAnchor:v27];
+    trailingAnchor = [v6 trailingAnchor];
+    contentView4 = [v4 contentView];
+    trailingAnchor2 = [contentView4 trailingAnchor];
+    v28 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     [v28 setActive:1];
 
-    v29 = [v6 topAnchor];
-    v30 = [v4 contentView];
-    v31 = [v30 topAnchor];
-    v32 = [v29 constraintEqualToAnchor:v31];
+    topAnchor = [v6 topAnchor];
+    contentView5 = [v4 contentView];
+    topAnchor2 = [contentView5 topAnchor];
+    v32 = [topAnchor constraintEqualToAnchor:topAnchor2];
     [v32 setActive:1];
   }
 
   return v4;
 }
 
-- (void)setRevealRecognizedSpeech:(BOOL)a3
+- (void)setRevealRecognizedSpeech:(BOOL)speech
 {
-  v3 = a3;
-  v4 = [(SiriSharedUISAEViewState *)self->_viewState activeSmartDialogView];
-  [v4 setRevealRecognizedSpeech:v3];
+  speechCopy = speech;
+  activeSmartDialogView = [(SiriSharedUISAEViewState *)self->_viewState activeSmartDialogView];
+  [activeSmartDialogView setRevealRecognizedSpeech:speechCopy];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  objc_storeWeak(&self->_delegate, a3);
+  objc_storeWeak(&self->_delegate, delegate);
 
   [(SRSystemAssistantExperienceViewController *)self _updateStatusViewVisibility];
 }
 
-- (void)updateSpeechRecognitionHypothesisForSuggestion:(id)a3
+- (void)updateSpeechRecognitionHypothesisForSuggestion:(id)suggestion
 {
   viewState = self->_viewState;
-  v4 = a3;
-  v5 = [(SiriSharedUISAEViewState *)viewState activeSmartDialogView];
-  [v5 setSpeechRecognitionHypothesisForSuggestion:v4];
+  suggestionCopy = suggestion;
+  activeSmartDialogView = [(SiriSharedUISAEViewState *)viewState activeSmartDialogView];
+  [activeSmartDialogView setSpeechRecognitionHypothesisForSuggestion:suggestionCopy];
 }
 
-- (void)_setSmartDialogConversationActiveTranscriptItems:(id)a3 withCompletionBlock:(id)a4
+- (void)_setSmartDialogConversationActiveTranscriptItems:(id)items withCompletionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  itemsCopy = items;
+  blockCopy = block;
+  if ([itemsCopy count])
   {
-    v8 = [(SRSystemAssistantExperienceViewController *)self _snippetFromTranscriptItems];
-    if (v8)
+    _snippetFromTranscriptItems = [(SRSystemAssistantExperienceViewController *)self _snippetFromTranscriptItems];
+    if (_snippetFromTranscriptItems)
     {
-      v9 = [(SRSystemAssistantExperienceViewController *)self _createBackgroundView:v8];
-      v10 = [(SiriSharedUISAEViewState *)self->_viewState activeSmartDialogView];
-      [v10 setSnippetBackgroundView:v9];
+      v9 = [(SRSystemAssistantExperienceViewController *)self _createBackgroundView:_snippetFromTranscriptItems];
+      activeSmartDialogView = [(SiriSharedUISAEViewState *)self->_viewState activeSmartDialogView];
+      [activeSmartDialogView setSnippetBackgroundView:v9];
     }
   }
 
-  v11 = [(SRSystemAssistantExperienceViewController *)self viewState];
-  v12 = [v11 activeSmartDialogView];
-  v13 = [v12 activeTranscriptItems];
+  viewState = [(SRSystemAssistantExperienceViewController *)self viewState];
+  activeSmartDialogView2 = [viewState activeSmartDialogView];
+  activeTranscriptItems = [activeSmartDialogView2 activeTranscriptItems];
 
-  if ([v13 count] && !objc_msgSend(v6, "count"))
+  if ([activeTranscriptItems count] && !objc_msgSend(itemsCopy, "count"))
   {
-    v14 = [(SRSystemAssistantExperienceViewController *)self _allowEmptyTranscriptItemUpdatesForCurrentTranscriptItems:v13];
+    v14 = [(SRSystemAssistantExperienceViewController *)self _allowEmptyTranscriptItemUpdatesForCurrentTranscriptItems:activeTranscriptItems];
   }
 
   else
@@ -1316,7 +1316,7 @@ LABEL_14:
     v14 = 0;
   }
 
-  if ([v6 count] || v14)
+  if ([itemsCopy count] || v14)
   {
     objc_initWeak(&location, self);
     v17[0] = _NSConcreteStackBlock;
@@ -1324,8 +1324,8 @@ LABEL_14:
     v17[2] = sub_10001F070;
     v17[3] = &unk_100166F48;
     objc_copyWeak(&v20, &location);
-    v18 = v6;
-    v19 = v7;
+    v18 = itemsCopy;
+    v19 = blockCopy;
     v15 = objc_retainBlock(v17);
     snippetUpdateBlock = self->snippetUpdateBlock;
     self->snippetUpdateBlock = v15;
@@ -1335,14 +1335,14 @@ LABEL_14:
   }
 }
 
-- (BOOL)_allowEmptyTranscriptItemUpdatesForCurrentTranscriptItems:(id)a3
+- (BOOL)_allowEmptyTranscriptItemUpdatesForCurrentTranscriptItems:(id)items
 {
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  itemsCopy = items;
+  v4 = [itemsCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1353,19 +1353,19 @@ LABEL_14:
       {
         if (*v17 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(itemsCopy);
         }
 
         v8 = *(*(&v16 + 1) + 8 * i);
-        v9 = [v8 aceObject];
+        aceObject = [v8 aceObject];
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
 
         if (isKindOfClass)
         {
-          v11 = [v8 aceObject];
-          v12 = [v11 bundleName];
-          v13 = [v12 isEqualToString:@"SiriMailUIPlugin"];
+          aceObject2 = [v8 aceObject];
+          bundleName = [aceObject2 bundleName];
+          v13 = [bundleName isEqualToString:@"SiriMailUIPlugin"];
 
           if (v13)
           {
@@ -1375,7 +1375,7 @@ LABEL_14:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v5 = [itemsCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v5)
       {
         continue;
@@ -1409,27 +1409,27 @@ LABEL_12:
 
 - (void)resignKeyboardIfNeeded
 {
-  v3 = [(SiriSharedUISAEViewState *)self->_viewState inputType];
-  v4 = [(SRSystemAssistantExperienceViewController *)self traitCollection];
-  v5 = [v4 verticalSizeClass];
+  inputType = [(SiriSharedUISAEViewState *)self->_viewState inputType];
+  traitCollection = [(SRSystemAssistantExperienceViewController *)self traitCollection];
+  verticalSizeClass = [traitCollection verticalSizeClass];
 
-  if (v3 == 1 && v5 == 1)
+  if (inputType == 1 && verticalSizeClass == 1)
   {
-    v7 = [(SRSystemAssistantExperienceViewController *)self promptEntryView];
-    [v7 resignKeyboard];
+    promptEntryView = [(SRSystemAssistantExperienceViewController *)self promptEntryView];
+    [promptEntryView resignKeyboard];
   }
 }
 
-- (void)presentResultAnimation:(BOOL)a3
+- (void)presentResultAnimation:(BOOL)animation
 {
-  v5 = [(SiriSharedUISAEViewState *)self->_viewState activeSmartDialogView];
-  v6 = [v5 superview];
-  if (v6)
+  activeSmartDialogView = [(SiriSharedUISAEViewState *)self->_viewState activeSmartDialogView];
+  superview = [activeSmartDialogView superview];
+  if (superview)
   {
-    v7 = v6;
-    v8 = [(SiriSharedUISAEViewState *)self->_viewState inputType];
+    v7 = superview;
+    inputType = [(SiriSharedUISAEViewState *)self->_viewState inputType];
 
-    if (v8 != 1)
+    if (inputType != 1)
     {
       goto LABEL_6;
     }
@@ -1445,7 +1445,7 @@ LABEL_12:
   v11[2] = sub_10001F548;
   v11[3] = &unk_100166F70;
   objc_copyWeak(&v12, &location);
-  v13 = a3;
+  animationCopy = animation;
   v9 = objc_retainBlock(v11);
   renderResultBlock = self->renderResultBlock;
   self->renderResultBlock = v9;
@@ -1477,18 +1477,18 @@ LABEL_6:
     return 1;
   }
 
-  v3 = [(SiriSharedUISAEViewState *)self->_viewState activeSmartDialogView];
-  v4 = [v3 conversationSnippetViews];
-  if ([v4 count])
+  activeSmartDialogView = [(SiriSharedUISAEViewState *)self->_viewState activeSmartDialogView];
+  conversationSnippetViews = [activeSmartDialogView conversationSnippetViews];
+  if ([conversationSnippetViews count])
   {
     v5 = 1;
   }
 
   else
   {
-    v7 = [(SiriSharedUISAEViewState *)self->_viewState activeSmartDialogView];
-    v8 = [v7 activeTranscriptItems];
-    v5 = [v8 count] != 0;
+    activeSmartDialogView2 = [(SiriSharedUISAEViewState *)self->_viewState activeSmartDialogView];
+    activeTranscriptItems = [activeSmartDialogView2 activeTranscriptItems];
+    v5 = [activeTranscriptItems count] != 0;
   }
 
   return v5;
@@ -1496,35 +1496,35 @@ LABEL_6:
 
 - (void)_prepContainerForFirstSnippetPresentation
 {
-  v3 = [(SRSystemAssistantExperienceViewController *)self containerView];
-  [v3 setIsFirstSnippet:1];
+  containerView = [(SRSystemAssistantExperienceViewController *)self containerView];
+  [containerView setIsFirstSnippet:1];
 
-  v4 = [(SRSystemAssistantExperienceViewController *)self containerView];
-  v5 = [v4 blurrableView];
-  [v5 setAlpha:0.0];
+  containerView2 = [(SRSystemAssistantExperienceViewController *)self containerView];
+  blurrableView = [containerView2 blurrableView];
+  [blurrableView setAlpha:0.0];
 
   v6 = +[UIScreen mainScreen];
   [v6 bounds];
   v8 = v7 * 0.5;
-  v9 = [(SRSystemAssistantExperienceViewController *)self containerView];
-  [v9 frame];
+  containerView3 = [(SRSystemAssistantExperienceViewController *)self containerView];
+  [containerView3 frame];
   v11 = v10;
-  v12 = [(SRSystemAssistantExperienceViewController *)self containerView];
-  [v12 frame];
+  containerView4 = [(SRSystemAssistantExperienceViewController *)self containerView];
+  [containerView4 frame];
   v14 = v13;
-  v15 = [(SRSystemAssistantExperienceViewController *)self containerView];
-  [v15 setFrame:{0.0, v8, v11, v14}];
+  containerView5 = [(SRSystemAssistantExperienceViewController *)self containerView];
+  [containerView5 setFrame:{0.0, v8, v11, v14}];
 
-  v16 = [(SRSystemAssistantExperienceViewController *)self containerView];
-  [v16 performAnimatedBlur:0 withDuration:0.6];
+  containerView6 = [(SRSystemAssistantExperienceViewController *)self containerView];
+  [containerView6 performAnimatedBlur:0 withDuration:0.6];
 }
 
-- (void)_performResultAnimation:(BOOL)a3
+- (void)_performResultAnimation:(BOOL)animation
 {
-  v3 = a3;
+  animationCopy = animation;
   [(SiriSharedUISAEViewState *)self->_viewState setSmartDialogAnimationInProgress:1];
   self->_resultPresentedInActiveSmartDialog = 1;
-  if (v3 && (SiriSharedUIReducedMotionEnabled() & 1) == 0)
+  if (animationCopy && (SiriSharedUIReducedMotionEnabled() & 1) == 0)
   {
     [(SRSystemAssistantExperienceViewController *)self _prepContainerForFirstSnippetPresentation];
   }
@@ -1553,19 +1553,19 @@ LABEL_6:
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%s #droplet present snippet now with size:%@!", buf, 0x16u);
   }
 
-  v11 = [(SRSystemAssistantExperienceViewController *)self _resultEligibleForIntelligentLightEffects];
-  v12 = [(SRSystemAssistantExperienceViewController *)self containerView];
-  v13 = [(SiriSharedUISAEViewState *)self->_viewState activeSmartDialogView];
-  [v12 setResultWithResultView:v13 resultSize:v11 eligibleForLightEffects:{self->_activeSmartDialogSize.width, self->_activeSmartDialogSize.height}];
+  _resultEligibleForIntelligentLightEffects = [(SRSystemAssistantExperienceViewController *)self _resultEligibleForIntelligentLightEffects];
+  containerView = [(SRSystemAssistantExperienceViewController *)self containerView];
+  activeSmartDialogView = [(SiriSharedUISAEViewState *)self->_viewState activeSmartDialogView];
+  [containerView setResultWithResultView:activeSmartDialogView resultSize:_resultEligibleForIntelligentLightEffects eligibleForLightEffects:{self->_activeSmartDialogSize.width, self->_activeSmartDialogSize.height}];
 
   if (SiriSharedUIReducedMotionEnabled())
   {
-    v14 = [(SRSystemAssistantExperienceViewController *)self containerView];
+    containerView2 = [(SRSystemAssistantExperienceViewController *)self containerView];
     LODWORD(v15) = 1.0;
-    [v14 reduceMotionCarouselWithDuration:v3 isFirstSnippet:v15];
+    [containerView2 reduceMotionCarouselWithDuration:animationCopy isFirstSnippet:v15];
   }
 
-  if (v3)
+  if (animationCopy)
   {
     v16 = 0;
   }
@@ -1581,14 +1581,14 @@ LABEL_6:
   v18[2] = sub_10001FAA8;
   v18[3] = &unk_100166F98;
   v18[4] = self;
-  v19 = v3;
+  v19 = animationCopy;
   dispatch_after(v17, &_dispatch_main_q, v18);
 }
 
 - (void)_presentContinuerSuggestions
 {
-  v3 = [(SRSystemAssistantExperienceViewController *)self containerView];
-  [v3 removeContinuerSuggestions];
+  containerView = [(SRSystemAssistantExperienceViewController *)self containerView];
+  [containerView removeContinuerSuggestions];
 
   if (![(SRSystemAssistantExperienceViewController *)self _isTextInputAndKeyboardShowing]&& !self->_isInAmbient)
   {
@@ -1623,23 +1623,23 @@ LABEL_6:
   }
 }
 
-- (id)prepareForReportConcernAndCreateForm:(id)a3 additionalDomainProvidedFeedback:(id)a4
+- (id)prepareForReportConcernAndCreateForm:(id)form additionalDomainProvidedFeedback:(id)feedback
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SRSystemAssistantExperienceViewController *)self delegate];
-  [v8 cancelRequestForViewController:self];
+  formCopy = form;
+  feedbackCopy = feedback;
+  delegate = [(SRSystemAssistantExperienceViewController *)self delegate];
+  [delegate cancelRequestForViewController:self];
 
-  v9 = [(SRSystemAssistantExperienceViewController *)self delegate];
-  [v9 siriSAEViewControllerRequestStopAttending:self];
+  delegate2 = [(SRSystemAssistantExperienceViewController *)self delegate];
+  [delegate2 siriSAEViewControllerRequestStopAttending:self];
 
   v10 = objc_alloc_init(SiriSharedUIFeedbackModel);
-  v11 = [v6 domain];
+  domain = [formCopy domain];
 
-  if (v11)
+  if (domain)
   {
-    v12 = [v6 domain];
-    v13 = [v12 isEqualToString:SAUIFeedbackFormDomainDeviceExpertValue];
+    domain2 = [formCopy domain];
+    v13 = [domain2 isEqualToString:SAUIFeedbackFormDomainDeviceExpertValue];
 
     if (v13)
     {
@@ -1648,8 +1648,8 @@ LABEL_6:
 
     else
     {
-      v15 = [v6 domain];
-      v16 = [v15 isEqualToString:SAUIFeedbackFormDomainSiriWithChatGPTValue];
+      domain3 = [formCopy domain];
+      v16 = [domain3 isEqualToString:SAUIFeedbackFormDomainSiriWithChatGPTValue];
 
       if (v16)
       {
@@ -1658,8 +1658,8 @@ LABEL_6:
 
       else
       {
-        v17 = [v6 domain];
-        v18 = [v17 isEqualToString:SAUIFeedbackFormDomainSiriPQAValue];
+        domain4 = [formCopy domain];
+        v18 = [domain4 isEqualToString:SAUIFeedbackFormDomainSiriPQAValue];
 
         if (v18)
         {
@@ -1676,41 +1676,41 @@ LABEL_6:
     [v10 setFeedbackDomain:v14];
   }
 
-  v19 = [v6 input];
+  input = [formCopy input];
 
-  if (v19)
+  if (input)
   {
-    v20 = [v6 input];
-    [v10 setUserInput:v20];
+    input2 = [formCopy input];
+    [v10 setUserInput:input2];
   }
 
   else
   {
-    v20 = [(SiriSharedUISAEViewState *)self->_viewState userUtterance];
-    v21 = [v20 speech];
-    v22 = [v21 userUtterance];
-    v23 = [v22 bestTextInterpretation];
-    [v10 setUserInput:v23];
+    input2 = [(SiriSharedUISAEViewState *)self->_viewState userUtterance];
+    speech = [input2 speech];
+    userUtterance = [speech userUtterance];
+    bestTextInterpretation = [userUtterance bestTextInterpretation];
+    [v10 setUserInput:bestTextInterpretation];
   }
 
-  v24 = [v6 output];
+  output = [formCopy output];
 
-  if (v24)
+  if (output)
   {
-    v25 = [v6 output];
-    [v10 setSiriDialog:v25];
+    output2 = [formCopy output];
+    [v10 setSiriDialog:output2];
   }
 
   else
   {
     v44 = v10;
-    v45 = v7;
+    v45 = feedbackCopy;
     v48 = 0u;
     v49 = 0u;
     v46 = 0u;
     v47 = 0u;
-    v26 = [(SiriSharedUISAEViewState *)self->_viewState serverUtterances];
-    v27 = [v26 countByEnumeratingWithState:&v46 objects:v50 count:16];
+    serverUtterances = [(SiriSharedUISAEViewState *)self->_viewState serverUtterances];
+    v27 = [serverUtterances countByEnumeratingWithState:&v46 objects:v50 count:16];
     if (v27)
     {
       v28 = v27;
@@ -1722,16 +1722,16 @@ LABEL_6:
         {
           if (*v47 != v29)
           {
-            objc_enumerationMutation(v26);
+            objc_enumerationMutation(serverUtterances);
           }
 
-          v32 = [*(*(&v46 + 1) + 8 * i) text];
-          v33 = [(__CFString *)v30 stringByAppendingString:v32];
+          text = [*(*(&v46 + 1) + 8 * i) text];
+          v33 = [(__CFString *)v30 stringByAppendingString:text];
 
           v30 = [v33 stringByAppendingString:@"\n"];
         }
 
-        v28 = [v26 countByEnumeratingWithState:&v46 objects:v50 count:16];
+        v28 = [serverUtterances countByEnumeratingWithState:&v46 objects:v50 count:16];
       }
 
       while (v28);
@@ -1745,66 +1745,66 @@ LABEL_6:
     v10 = v44;
     [v44 setSiriDialog:v30];
 
-    v7 = v45;
+    feedbackCopy = v45;
   }
 
-  v34 = [v6 subFeature];
+  subFeature = [formCopy subFeature];
 
-  if (v34)
+  if (subFeature)
   {
-    v35 = [v6 subFeature];
-    [v10 setSubFeature:v35];
+    subFeature2 = [formCopy subFeature];
+    [v10 setSubFeature:subFeature2];
   }
 
-  v36 = [(SRSystemAssistantExperienceViewController *)self view];
-  v37 = [(SRSystemAssistantExperienceViewController *)self view];
-  [v37 bounds];
-  v38 = [v36 _imageFromRect:?];
+  view = [(SRSystemAssistantExperienceViewController *)self view];
+  view2 = [(SRSystemAssistantExperienceViewController *)self view];
+  [view2 bounds];
+  v38 = [view _imageFromRect:?];
 
   v39 = UIImageJPEGRepresentation(v38, 1.0);
   [v10 setImageRepresentationOfSnippet:v39];
 
-  v40 = [v7 visualIntelligenceCameraFeedImageData];
-  [v10 setImageRepresentationOfRequestImage:v40];
+  visualIntelligenceCameraFeedImageData = [feedbackCopy visualIntelligenceCameraFeedImageData];
+  [v10 setImageRepresentationOfRequestImage:visualIntelligenceCameraFeedImageData];
 
   [(SRSystemAssistantExperienceViewController *)self addChildViewController:self->_feedbackController];
-  v41 = [(SRSystemAssistantExperienceViewController *)self view];
-  v42 = [(SiriSharedUIFeedbackController *)self->_feedbackController view];
-  [v41 insertSubview:v42 atIndex:0];
+  view3 = [(SRSystemAssistantExperienceViewController *)self view];
+  view4 = [(SiriSharedUIFeedbackController *)self->_feedbackController view];
+  [view3 insertSubview:view4 atIndex:0];
 
   [(SiriSharedUIFeedbackController *)self->_feedbackController didMoveToParentViewController:self];
 
   return v10;
 }
 
-- (void)reportConcernButtonTappedForSuggestion:(id)a3
+- (void)reportConcernButtonTappedForSuggestion:(id)suggestion
 {
-  v4 = a3;
-  v5 = [(SRSystemAssistantExperienceViewController *)self delegate];
-  v6 = [v5 feedbackFormForCurrentRequest];
+  suggestionCopy = suggestion;
+  delegate = [(SRSystemAssistantExperienceViewController *)self delegate];
+  feedbackFormForCurrentRequest = [delegate feedbackFormForCurrentRequest];
 
-  [v6 setSubFeature:@"related_questions_suggestions"];
-  v7 = [(SRSystemAssistantExperienceViewController *)self prepareForReportConcernAndCreateForm:v6 additionalDomainProvidedFeedback:0];
-  v8 = [v6 domain];
+  [feedbackFormForCurrentRequest setSubFeature:@"related_questions_suggestions"];
+  v7 = [(SRSystemAssistantExperienceViewController *)self prepareForReportConcernAndCreateForm:feedbackFormForCurrentRequest additionalDomainProvidedFeedback:0];
+  domain = [feedbackFormForCurrentRequest domain];
 
-  if (v8)
+  if (domain)
   {
     [v7 setFeedbackDomain:0];
   }
 
-  [v7 setSiriSuggestionText:v4];
+  [v7 setSiriSuggestionText:suggestionCopy];
   v9 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEFAULT))
   {
     v10 = v9;
-    v11 = [v7 userInput];
-    v12 = [v7 siriSuggestionText];
+    userInput = [v7 userInput];
+    siriSuggestionText = [v7 siriSuggestionText];
     v13 = 136315650;
     v14 = "[SRSystemAssistantExperienceViewController reportConcernButtonTappedForSuggestion:]";
     v15 = 2112;
-    v16 = v11;
+    v16 = userInput;
     v17 = 2112;
-    v18 = v12;
+    v18 = siriSuggestionText;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%s #feedback - donating feedback with input: %@, output: %@", &v13, 0x20u);
   }
 
@@ -1813,11 +1813,11 @@ LABEL_6:
 
 - (BOOL)_isTextInputAndKeyboardShowing
 {
-  v3 = [(SRSystemAssistantExperienceViewController *)self _keyboardState];
-  v4 = v3;
-  if (v3)
+  _keyboardState = [(SRSystemAssistantExperienceViewController *)self _keyboardState];
+  v4 = _keyboardState;
+  if (_keyboardState)
   {
-    [v3 frameForAnimation];
+    [_keyboardState frameForAnimation];
     [(SRSystemAssistantExperienceViewController *)self _convertRectFromKeyboard:?];
     v5 = CGRectGetHeight(v8) != 0.0;
   }
@@ -1838,8 +1838,8 @@ LABEL_6:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(SiriSharedUISAEViewState *)self->_viewState serverUtterances];
-  v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  serverUtterances = [(SiriSharedUISAEViewState *)self->_viewState serverUtterances];
+  v3 = [serverUtterances countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v3)
   {
     v4 = v3;
@@ -1850,7 +1850,7 @@ LABEL_6:
       {
         if (*v10 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(serverUtterances);
         }
 
         if (![SiriSharedUIUtilities utteranceViewEligibleForLightEffects:*(*(&v9 + 1) + 8 * i)])
@@ -1860,7 +1860,7 @@ LABEL_6:
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [serverUtterances countByEnumeratingWithState:&v9 objects:v13 count:16];
       if (v4)
       {
         continue;
@@ -1880,18 +1880,18 @@ LABEL_11:
 {
   [(SiriSharedUISAEViewState *)self->_viewState setSmartDialogAnimationInProgress:1];
   self->_resultPresentedInActiveSmartDialog = 1;
-  v3 = [(SRSystemAssistantExperienceViewController *)self containerView];
-  v4 = [v3 resultContentView];
+  containerView = [(SRSystemAssistantExperienceViewController *)self containerView];
+  resultContentView = [containerView resultContentView];
 
   if (SiriSharedUIReducedMotionEnabled())
   {
-    v5 = [(SRSystemAssistantExperienceViewController *)self containerView];
+    containerView2 = [(SRSystemAssistantExperienceViewController *)self containerView];
     v6 = SiriSharedUIMitosisDuration * 1.5;
     *&v6 = SiriSharedUIMitosisDuration * 1.5;
-    [v5 reduceMotionCarouselWithDuration:0 isFirstSnippet:v6];
+    [containerView2 reduceMotionCarouselWithDuration:0 isFirstSnippet:v6];
   }
 
-  v7 = v4 == 0;
+  v7 = resultContentView == 0;
   if (SiriSharedUIReducedMotionEnabled())
   {
     v8 = 100000000;
@@ -1917,12 +1917,12 @@ LABEL_11:
   [(SRSystemAssistantExperienceViewController *)self _fadeOutContinuerSuggestionsIfAny];
   self->_resultPresentedInActiveSmartDialog = 0;
   [(SiriSharedUISAEViewState *)self->_viewState setFinalAndDisplayedSmartDialog:0];
-  v3 = [(SRSystemAssistantExperienceViewController *)self containerView];
-  [v3 cleanupResultTransitionIfNeeded];
+  containerView = [(SRSystemAssistantExperienceViewController *)self containerView];
+  [containerView cleanupResultTransitionIfNeeded];
 
-  v4 = [(SRSystemAssistantExperienceViewController *)self containerView];
-  v5 = [(SiriSharedUISAEViewState *)self->_viewState activeSmartDialogView];
-  [v4 setCollapseLoadingWith:v5 collapseLoadingSize:{self->_latestDropletContentLayoutSize.width, self->_latestDropletContentLayoutSize.height}];
+  containerView2 = [(SRSystemAssistantExperienceViewController *)self containerView];
+  activeSmartDialogView = [(SiriSharedUISAEViewState *)self->_viewState activeSmartDialogView];
+  [containerView2 setCollapseLoadingWith:activeSmartDialogView collapseLoadingSize:{self->_latestDropletContentLayoutSize.width, self->_latestDropletContentLayoutSize.height}];
 
   defaultSpringAnimationBehavior = self->_defaultSpringAnimationBehavior;
   v8[0] = _NSConcreteStackBlock;
@@ -1940,10 +1940,10 @@ LABEL_11:
 
 - (void)_addFeedbackButton
 {
-  v3 = [(SRSystemAssistantExperienceViewController *)self delegate];
-  v4 = [v3 isPresentingVisualIntelligenceCamera];
+  delegate = [(SRSystemAssistantExperienceViewController *)self delegate];
+  isPresentingVisualIntelligenceCamera = [delegate isPresentingVisualIntelligenceCamera];
 
-  if ((v4 & 1) == 0 && +[SiriSharedUIUtilities reportConcernButtonEnabled])
+  if ((isPresentingVisualIntelligenceCamera & 1) == 0 && +[SiriSharedUIUtilities reportConcernButtonEnabled])
   {
 
     [(SRSystemAssistantExperienceViewController *)self _setupFeedbackButton];
@@ -1952,26 +1952,26 @@ LABEL_11:
 
 - (void)performPillMergeAndCrossfadeAnimation
 {
-  v3 = [(SRSystemAssistantExperienceViewController *)self containerView];
-  [v3 setShouldPreserveResultSpace:{-[SiriSharedUISAEViewState shouldPreserveResultSpace](self->_viewState, "shouldPreserveResultSpace")}];
+  containerView = [(SRSystemAssistantExperienceViewController *)self containerView];
+  [containerView setShouldPreserveResultSpace:{-[SiriSharedUISAEViewState shouldPreserveResultSpace](self->_viewState, "shouldPreserveResultSpace")}];
 
   [(SiriSharedUISAEViewState *)self->_viewState setSmartDialogAnimationInProgress:1];
-  v4 = [(SRSystemAssistantExperienceViewController *)self containerView];
-  [v4 setTransitionLoadingToResultWithResultSize:{self->_activeSmartDialogSize.width, self->_activeSmartDialogSize.height}];
+  containerView2 = [(SRSystemAssistantExperienceViewController *)self containerView];
+  [containerView2 setTransitionLoadingToResultWithResultSize:{self->_activeSmartDialogSize.width, self->_activeSmartDialogSize.height}];
 
   v5 = SiriSharedUIReducedMotionEnabled();
-  v6 = [(SRSystemAssistantExperienceViewController *)self containerView];
-  v7 = v6;
+  containerView3 = [(SRSystemAssistantExperienceViewController *)self containerView];
+  v7 = containerView3;
   v8 = SiriSharedUIMitosisDuration;
   *&v9 = SiriSharedUIMitosisDuration;
   if (v5)
   {
-    [v6 reduceMotionMitosisWithDuration:1 intoSnippet:v9];
+    [containerView3 reduceMotionMitosisWithDuration:1 intoSnippet:v9];
   }
 
   else
   {
-    [v6 mitoseWithDuration:1 mitosingIntoSnippet:v9];
+    [containerView3 mitoseWithDuration:1 mitosingIntoSnippet:v9];
   }
 
   v10 = dispatch_time(0, (v8 * 0.75 * 1000000000.0));
@@ -1993,18 +1993,18 @@ LABEL_11:
 - (void)presentLatencyPillAnimation
 {
   [(SRSystemAssistantExperienceViewController *)self _popToRootViewControllerIfNeeded];
-  v3 = [(SRSystemAssistantExperienceViewController *)self containerView];
-  v4 = [(SiriSharedUISAEViewState *)self->_viewState activeSmartDialogView];
-  [v3 setVoiceLoadingWith:v4 voiceLoadingSize:{self->_latestDropletContentLayoutSize.width, self->_latestDropletContentLayoutSize.height}];
+  containerView = [(SRSystemAssistantExperienceViewController *)self containerView];
+  activeSmartDialogView = [(SiriSharedUISAEViewState *)self->_viewState activeSmartDialogView];
+  [containerView setVoiceLoadingWith:activeSmartDialogView voiceLoadingSize:{self->_latestDropletContentLayoutSize.width, self->_latestDropletContentLayoutSize.height}];
 
-  v5 = [(SRSystemAssistantExperienceViewController *)self promptEntryView];
-  [v5 stopLatencyAnimationIfNeeded];
+  promptEntryView = [(SRSystemAssistantExperienceViewController *)self promptEntryView];
+  [promptEntryView stopLatencyAnimationIfNeeded];
 
   [(SRSystemAssistantExperienceViewController *)self _fadeOutContinuerSuggestionsIfAny];
   if (SiriSharedUIReducedMotionEnabled())
   {
-    v6 = [(SRSystemAssistantExperienceViewController *)self containerView];
-    [v6 transitionVoiceLoadingToLoading];
+    containerView2 = [(SRSystemAssistantExperienceViewController *)self containerView];
+    [containerView2 transitionVoiceLoadingToLoading];
   }
 
   else
@@ -2022,17 +2022,17 @@ LABEL_11:
 {
   if (self->_isDrilledIntoSnippet)
   {
-    v3 = [(SRSystemAssistantExperienceViewController *)self _navigationController];
-    [v3 setPopToRootViewController:1];
+    _navigationController = [(SRSystemAssistantExperienceViewController *)self _navigationController];
+    [_navigationController setPopToRootViewController:1];
 
-    v4 = [(SRSystemAssistantExperienceViewController *)self _navigationController];
-    v5 = [v4 popToRootViewControllerAnimated:1];
+    _navigationController2 = [(SRSystemAssistantExperienceViewController *)self _navigationController];
+    v5 = [_navigationController2 popToRootViewControllerAnimated:1];
 
     self->_isDrilledIntoSnippet = 0;
   }
 }
 
-- (void)removeResponseElementsIfNeeded:(unint64_t)a3
+- (void)removeResponseElementsIfNeeded:(unint64_t)needed
 {
   [(SiriSharedUISAEViewState *)self->_viewState setFinalAndDisplayedSmartDialog:0];
   v8[0] = 0;
@@ -2048,14 +2048,14 @@ LABEL_11:
   v7[3] = &unk_100167060;
   v7[4] = self;
   v7[5] = v8;
-  v7[6] = a3;
+  v7[6] = needed;
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100021D18;
   v6[3] = &unk_100167088;
   v6[4] = self;
   v6[5] = v8;
-  v6[6] = a3;
+  v6[6] = needed;
   [UIView _animateUsingSpringBehavior:defaultSpringAnimationBehavior tracking:0 animations:v7 completion:v6];
   [(SRSystemAssistantExperienceViewController *)self _fadeOutContinuerSuggestionsIfAny];
   _Block_object_dispose(v8, 8);
@@ -2063,15 +2063,15 @@ LABEL_11:
 
 - (unint64_t)presentedResponseElements
 {
-  v2 = [(SRSystemAssistantExperienceViewController *)self containerView];
-  v3 = [v2 presentedResponseElements];
+  containerView = [(SRSystemAssistantExperienceViewController *)self containerView];
+  presentedResponseElements = [containerView presentedResponseElements];
 
-  return v3;
+  return presentedResponseElements;
 }
 
-- (void)animatedDisappearanceDidBeginWithDuration:(double)a3 reason:(int64_t)a4
+- (void)animatedDisappearanceDidBeginWithDuration:(double)duration reason:(int64_t)reason
 {
-  if ((a4 == 6 || a4 == 24) && [(SiriSharedUISAEViewState *)self->_viewState inputType]!= 1)
+  if ((reason == 6 || reason == 24) && [(SiriSharedUISAEViewState *)self->_viewState inputType]!= 1)
   {
     v6 = AFSiriLogContextConnection;
     if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEFAULT))
@@ -2081,8 +2081,8 @@ LABEL_11:
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%s #dismissal Performing snippet blur-out", buf, 0xCu);
     }
 
-    v7 = [(SRSystemAssistantExperienceViewController *)self containerView];
-    [v7 performAnimatedBlur:1 withDuration:a3];
+    containerView = [(SRSystemAssistantExperienceViewController *)self containerView];
+    [containerView performAnimatedBlur:1 withDuration:duration];
   }
 
   else if ([(SiriSharedUISAEViewState *)self->_viewState inputType]== 1)
@@ -2095,8 +2095,8 @@ LABEL_11:
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%s #dismissal Resigning keyboard", buf, 0xCu);
     }
 
-    v9 = [(SRSystemAssistantExperienceViewController *)self promptEntryView];
-    [v9 resignFirstResponder];
+    promptEntryView = [(SRSystemAssistantExperienceViewController *)self promptEntryView];
+    [promptEntryView resignFirstResponder];
 
     suggestionsSpringAnimationBehavior = self->_suggestionsSpringAnimationBehavior;
     v11[0] = _NSConcreteStackBlock;
@@ -2110,24 +2110,24 @@ LABEL_11:
 
 - (BOOL)isDisplayingResponse
 {
-  v2 = [(SRSystemAssistantExperienceViewController *)self containerView];
-  v3 = [v2 isDisplayingResponse];
+  containerView = [(SRSystemAssistantExperienceViewController *)self containerView];
+  isDisplayingResponse = [containerView isDisplayingResponse];
 
-  return v3;
+  return isDisplayingResponse;
 }
 
-- (void)hasContentAtPoint:(CGPoint)a3 completion:(id)a4
+- (void)hasContentAtPoint:(CGPoint)point completion:(id)completion
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = point.y;
+  x = point.x;
+  completionCopy = completion;
   if (self->_shouldAbsorbSuggestionTap)
   {
     self->_shouldAbsorbSuggestionTap = 0;
 LABEL_3:
-    if (v7)
+    if (completionCopy)
     {
-      v7[2](v7, 1);
+      completionCopy[2](completionCopy, 1);
     }
 
     goto LABEL_17;
@@ -2148,34 +2148,34 @@ LABEL_3:
 
   v9 = objc_alloc_init(SRCompactViewControllerMutableContentTesterState);
   [(SRCompactViewControllerMutableContentTesterState *)v9 setDeviceIsPad:SiriUIDeviceIsPad()];
-  v10 = [(SiriUINavigationController *)self->_navigationController transitionController];
-  -[SRCompactViewControllerMutableContentTesterState setNavigationStackIsPopping:](v9, "setNavigationStackIsPopping:", [v10 operation] == 2);
+  transitionController = [(SiriUINavigationController *)self->_navigationController transitionController];
+  -[SRCompactViewControllerMutableContentTesterState setNavigationStackIsPopping:](v9, "setNavigationStackIsPopping:", [transitionController operation] == 2);
 
-  v11 = [(SiriUINavigationController *)self->_navigationController viewControllers];
-  -[SRCompactViewControllerMutableContentTesterState setNavigationStackSize:](v9, "setNavigationStackSize:", [v11 count]);
+  viewControllers = [(SiriUINavigationController *)self->_navigationController viewControllers];
+  -[SRCompactViewControllerMutableContentTesterState setNavigationStackSize:](v9, "setNavigationStackSize:", [viewControllers count]);
 
-  v12 = [(SiriUINavigationController *)self->_navigationController viewControllers];
-  if ([v12 count] > 1)
+  viewControllers2 = [(SiriUINavigationController *)self->_navigationController viewControllers];
+  if ([viewControllers2 count] > 1)
   {
 
     goto LABEL_11;
   }
 
-  v13 = [(SRCompactViewControllerMutableContentTesterState *)v9 navigationStackIsPopping];
+  navigationStackIsPopping = [(SRCompactViewControllerMutableContentTesterState *)v9 navigationStackIsPopping];
 
-  if (v13)
+  if (navigationStackIsPopping)
   {
 LABEL_11:
-    v14 = [(SRSystemAssistantExperienceViewController *)self view];
-    v15 = [(SiriUINavigationController *)self->_navigationController visibleViewController];
-    v16 = [v15 view];
-    [v14 convertPoint:v16 toView:{x, y}];
+    view = [(SRSystemAssistantExperienceViewController *)self view];
+    visibleViewController = [(SiriUINavigationController *)self->_navigationController visibleViewController];
+    view2 = [visibleViewController view];
+    [view convertPoint:view2 toView:{x, y}];
     v18 = v17;
     v20 = v19;
 
-    v21 = [(SRSystemAssistantExperienceViewController *)self _navigationController];
-    v22 = [v21 navigationBar];
-    [v22 bounds];
+    _navigationController = [(SRSystemAssistantExperienceViewController *)self _navigationController];
+    navigationBar = [_navigationController navigationBar];
+    [navigationBar bounds];
     v24 = v23;
     v26 = v25;
     v28 = v27;
@@ -2188,14 +2188,14 @@ LABEL_11:
     v60.x = v18;
     v60.y = v20;
     [(SRCompactViewControllerMutableContentTesterState *)v9 setNavigationBarHasContent:CGRectContainsPoint(v61, v60)];
-    v31 = [(SiriUINavigationController *)self->_navigationController visibleViewController];
+    visibleViewController2 = [(SiriUINavigationController *)self->_navigationController visibleViewController];
     objc_opt_class();
-    LOBYTE(v22) = objc_opt_isKindOfClass();
+    LOBYTE(navigationBar) = objc_opt_isKindOfClass();
 
-    if (v22)
+    if (navigationBar)
     {
-      v32 = [(SiriUINavigationController *)self->_navigationController visibleViewController];
-      -[SRCompactViewControllerMutableContentTesterState setMultiLevelViewHasContent:](v9, "setMultiLevelViewHasContent:", [v32 hasContentAtPoint:{v18, v20}]);
+      visibleViewController3 = [(SiriUINavigationController *)self->_navigationController visibleViewController];
+      -[SRCompactViewControllerMutableContentTesterState setMultiLevelViewHasContent:](v9, "setMultiLevelViewHasContent:", [visibleViewController3 hasContentAtPoint:{v18, v20}]);
     }
 
     else
@@ -2205,25 +2205,25 @@ LABEL_11:
   }
 
   [(SRCompactViewControllerMutableContentTesterState *)v9 setKeyboardHasContent:[(SRSystemAssistantExperienceViewController *)self _keyboardHasContentAtPoint:x, y]];
-  v33 = [(SRSystemAssistantExperienceViewController *)self containerView];
-  v34 = [(SRSystemAssistantExperienceViewController *)self view];
-  [v34 convertPoint:v33 toView:{x, y}];
+  containerView = [(SRSystemAssistantExperienceViewController *)self containerView];
+  view3 = [(SRSystemAssistantExperienceViewController *)self view];
+  [view3 convertPoint:containerView toView:{x, y}];
   v36 = v35;
   v38 = v37;
 
-  v39 = [(SRSystemAssistantExperienceViewController *)self textFieldContainerView];
-  v40 = [(SRSystemAssistantExperienceViewController *)self view];
-  [v40 convertPoint:v39 toView:{x, y}];
+  textFieldContainerView = [(SRSystemAssistantExperienceViewController *)self textFieldContainerView];
+  view4 = [(SRSystemAssistantExperienceViewController *)self view];
+  [view4 convertPoint:textFieldContainerView toView:{x, y}];
   v42 = v41;
   v44 = v43;
 
   [(SRSystemAssistantExperienceViewController *)self keyboardShouldDuckForLongSnippet:v36, v38];
-  v45 = [(SRSystemAssistantExperienceViewController *)self view];
-  v46 = [v45 window];
+  view5 = [(SRSystemAssistantExperienceViewController *)self view];
+  window = [view5 window];
 
-  if (v46)
+  if (window)
   {
-    -[SRCompactViewControllerMutableContentTesterState setContextMenuIsPresented:](v9, "setContextMenuIsPresented:", [v46 contextMenuIsPresented]);
+    -[SRCompactViewControllerMutableContentTesterState setContextMenuIsPresented:](v9, "setContextMenuIsPresented:", [window contextMenuIsPresented]);
   }
 
   v47 = objc_alloc_init(SRCompactViewControllerContentTester);
@@ -2232,20 +2232,20 @@ LABEL_11:
   v51[2] = sub_100022544;
   v51[3] = &unk_1001670D8;
   v52 = v9;
-  v54 = v39;
-  v55 = v7;
+  v54 = textFieldContainerView;
+  v55 = completionCopy;
   v53 = v47;
   v56 = v42;
   v57 = v44;
-  v48 = v39;
+  v48 = textFieldContainerView;
   v49 = v47;
   v50 = v9;
-  [v33 hasContentAtPoint:v51 completion:{v36, v38}];
+  [containerView hasContentAtPoint:v51 completion:{v36, v38}];
 
 LABEL_17:
 }
 
-- (void)keyboardShouldDuckForLongSnippet:(CGPoint)a3
+- (void)keyboardShouldDuckForLongSnippet:(CGPoint)snippet
 {
   if (self->_shouldIgnoreKeyboardDuckingCheck)
   {
@@ -2254,26 +2254,26 @@ LABEL_17:
 
   else
   {
-    y = a3.y;
+    y = snippet.y;
     v5 = +[UIScreen mainScreen];
     [v5 bounds];
     v7 = v6 - self->_bottomContentInsetComponents.keyboard;
-    v8 = [(SRSystemAssistantExperienceViewController *)self textFieldContainerView];
-    [v8 textFieldHeight];
+    textFieldContainerView = [(SRSystemAssistantExperienceViewController *)self textFieldContainerView];
+    [textFieldContainerView textFieldHeight];
     v10 = v7 - v9;
 
     if (y < v10 && self->_activeSmartDialogSize.height > v10)
     {
-      v11 = [(SRSystemAssistantExperienceViewController *)self promptEntryView];
-      [v11 resignFirstResponder];
+      promptEntryView = [(SRSystemAssistantExperienceViewController *)self promptEntryView];
+      [promptEntryView resignFirstResponder];
     }
   }
 }
 
 - (CGSize)maxSizeForSnippet
 {
-  v3 = [(SiriSharedUISAEViewState *)self->_viewState activeSmartDialogView];
-  [v3 maxSnippetWidth];
+  activeSmartDialogView = [(SiriSharedUISAEViewState *)self->_viewState activeSmartDialogView];
+  [activeSmartDialogView maxSnippetWidth];
   v5 = v4;
 
   v6 = +[AFPreferences sharedPreferences];
@@ -2285,10 +2285,10 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  v7 = [(SiriSharedUISAEViewState *)self->_viewState activeSmartDialogView];
-  v8 = [v7 revealRecognizedSpeech];
+  activeSmartDialogView2 = [(SiriSharedUISAEViewState *)self->_viewState activeSmartDialogView];
+  revealRecognizedSpeech = [activeSmartDialogView2 revealRecognizedSpeech];
 
-  if (v8)
+  if (revealRecognizedSpeech)
   {
     goto LABEL_4;
   }
@@ -2301,26 +2301,26 @@ LABEL_5:
   return result;
 }
 
-- (void)_setBottomContentInsetComponents:(id)a3 animatedWithDuration:(double)a4 animationOptions:(unint64_t)a5
+- (void)_setBottomContentInsetComponents:(id)components animatedWithDuration:(double)duration animationOptions:(unint64_t)options
 {
   p_bottomContentInsetComponents = &self->_bottomContentInsetComponents;
-  if (self->_bottomContentInsetComponents.external != a3.var0 || self->_bottomContentInsetComponents.keyboard != a3.var1)
+  if (self->_bottomContentInsetComponents.external != components.var0 || self->_bottomContentInsetComponents.keyboard != components.var1)
   {
-    p_bottomContentInsetComponents->external = a3.var0;
-    self->_bottomContentInsetComponents.keyboard = a3.var1;
-    if (a3.var0 >= a3.var1)
+    p_bottomContentInsetComponents->external = components.var0;
+    self->_bottomContentInsetComponents.keyboard = components.var1;
+    if (components.var0 >= components.var1)
     {
-      var0 = a3.var0;
+      var0 = components.var0;
     }
 
     else
     {
-      var0 = a3.var1;
+      var0 = components.var1;
     }
 
-    if (a3.var1 == 0.0 && a3.var0 < 0.0)
+    if (components.var1 == 0.0 && components.var0 < 0.0)
     {
-      v12 = a3.var0;
+      v12 = components.var0;
     }
 
     else
@@ -2328,42 +2328,42 @@ LABEL_5:
       v12 = var0;
     }
 
-    v13 = [(SRSystemAssistantExperienceViewController *)self containerView];
-    [v13 setBottomContentInset:v12];
+    containerView = [(SRSystemAssistantExperienceViewController *)self containerView];
+    [containerView setBottomContentInset:v12];
 
-    v14 = [(SRSystemAssistantExperienceViewController *)self textFieldContainerView];
-    [v14 setBottomContentInset:v12];
+    textFieldContainerView = [(SRSystemAssistantExperienceViewController *)self textFieldContainerView];
+    [textFieldContainerView setBottomContentInset:v12];
 
-    v15 = [(SRSystemAssistantExperienceViewController *)self containerView];
-    [v15 setIsExternalKeyboardPresented:p_bottomContentInsetComponents->keyboard > 0.0];
+    containerView2 = [(SRSystemAssistantExperienceViewController *)self containerView];
+    [containerView2 setIsExternalKeyboardPresented:p_bottomContentInsetComponents->keyboard > 0.0];
 
-    v16 = [(SRSystemAssistantExperienceViewController *)self textFieldContainerView];
-    [v16 textFieldHeight];
+    textFieldContainerView2 = [(SRSystemAssistantExperienceViewController *)self textFieldContainerView];
+    [textFieldContainerView2 textFieldHeight];
     v18 = v17;
-    v19 = [(SRSystemAssistantExperienceViewController *)self containerView];
-    [v19 setTextFieldHeight:v18];
+    containerView3 = [(SRSystemAssistantExperienceViewController *)self containerView];
+    [containerView3 setTextFieldHeight:v18];
 
     v20[0] = _NSConcreteStackBlock;
     v20[1] = 3221225472;
     v20[2] = sub_1000229FC;
     v20[3] = &unk_100167010;
     v20[4] = self;
-    [UIView _animateWithDuration:a5 delay:v20 options:0 animations:0 start:a4 completion:0.0];
+    [UIView _animateWithDuration:options delay:v20 options:0 animations:0 start:duration completion:0.0];
   }
 }
 
-- (void)setBottomContentInset:(double)a3
+- (void)setBottomContentInset:(double)inset
 {
   [(SRSystemAssistantExperienceViewController *)self _bottomContentInsetComponents];
 
-  [(SRSystemAssistantExperienceViewController *)self _setBottomContentInsetComponents:a3];
+  [(SRSystemAssistantExperienceViewController *)self _setBottomContentInsetComponents:inset];
 }
 
-- (void)setDockFrame:(CGRect)a3
+- (void)setDockFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  y = a3.origin.y;
-  v6 = [(SRSystemAssistantExperienceViewController *)self view:a3.origin.x];
+  height = frame.size.height;
+  y = frame.origin.y;
+  v6 = [(SRSystemAssistantExperienceViewController *)self view:frame.origin.x];
   [v6 frame];
   v8 = v7;
 
@@ -2375,8 +2375,8 @@ LABEL_5:
       return;
     }
 
-    v14 = [(SRSystemAssistantExperienceViewController *)self view];
-    [v14 safeAreaInsets];
+    view = [(SRSystemAssistantExperienceViewController *)self view];
+    [view safeAreaInsets];
     v16 = v15 + 20.0;
 
     v13 = height - v16;
@@ -2389,8 +2389,8 @@ LABEL_5:
       return;
     }
 
-    v10 = [(SRSystemAssistantExperienceViewController *)self view];
-    [v10 safeAreaInsets];
+    view2 = [(SRSystemAssistantExperienceViewController *)self view];
+    [view2 safeAreaInsets];
     v12 = v11 + 20.0;
 
     v13 = -v12;
@@ -2399,11 +2399,11 @@ LABEL_5:
   [(SRSystemAssistantExperienceViewController *)self setBottomContentInset:v13];
 }
 
-- (void)setTopContentInset:(double)a3 animated:(BOOL)a4
+- (void)setTopContentInset:(double)inset animated:(BOOL)animated
 {
-  if (self->_topInset != a3)
+  if (self->_topInset != inset)
   {
-    [(SRSystemAssistantExperienceViewController *)self updateTopInset:a4 animated:?];
+    [(SRSystemAssistantExperienceViewController *)self updateTopInset:animated animated:?];
   }
 }
 
@@ -2411,8 +2411,8 @@ LABEL_5:
 {
   [(SRSystemAssistantExperienceViewController *)self _bottomContentInsetComponents];
   v4 = v3;
-  v18 = [(SRSystemAssistantExperienceViewController *)self _keyboardState];
-  [v18 frameForAnimation];
+  _keyboardState = [(SRSystemAssistantExperienceViewController *)self _keyboardState];
+  [_keyboardState frameForAnimation];
   [(SRSystemAssistantExperienceViewController *)self _convertRectFromKeyboard:?];
   x = v20.origin.x;
   y = v20.origin.y;
@@ -2421,15 +2421,15 @@ LABEL_5:
   v9 = 0.0;
   if (CGRectGetHeight(v20) != 0.0)
   {
-    v10 = [(SRSystemAssistantExperienceViewController *)self view];
-    [v10 bounds];
+    view = [(SRSystemAssistantExperienceViewController *)self view];
+    [view bounds];
     v11 = CGRectGetHeight(v21);
-    v12 = [(SRSystemAssistantExperienceViewController *)self containerView];
-    [v12 bounds];
+    containerView = [(SRSystemAssistantExperienceViewController *)self containerView];
+    [containerView bounds];
     v13 = v11 - CGRectGetHeight(v22);
 
-    v14 = [(SRSystemAssistantExperienceViewController *)self containerView];
-    [v14 bounds];
+    containerView2 = [(SRSystemAssistantExperienceViewController *)self containerView];
+    [containerView2 bounds];
     v15 = CGRectGetHeight(v23);
     v24.origin.x = x;
     v24.origin.y = y;
@@ -2438,9 +2438,9 @@ LABEL_5:
     v9 = v13 + v15 - CGRectGetMinY(v24);
   }
 
-  v16 = [v18 animation];
-  [v16 duration];
-  -[SRSystemAssistantExperienceViewController _setBottomContentInsetComponents:animatedWithDuration:animationOptions:](self, "_setBottomContentInsetComponents:animatedWithDuration:animationOptions:", [v16 options], v4, v9, v17);
+  animation = [_keyboardState animation];
+  [animation duration];
+  -[SRSystemAssistantExperienceViewController _setBottomContentInsetComponents:animatedWithDuration:animationOptions:](self, "_setBottomContentInsetComponents:animatedWithDuration:animationOptions:", [animation options], v4, v9, v17);
 }
 
 - (void)siriDidActivate
@@ -2450,41 +2450,41 @@ LABEL_5:
     return;
   }
 
-  v3 = [(SRSystemAssistantExperienceViewController *)self activeRequestOptions];
-  if ([v3 requestSource] == 53)
+  activeRequestOptions = [(SRSystemAssistantExperienceViewController *)self activeRequestOptions];
+  if ([activeRequestOptions requestSource] == 53)
   {
 
 LABEL_6:
-    v6 = [(SRSystemAssistantExperienceViewController *)self promptEntryView];
-    [v6 updateRequestSourceIsQuickTypeTamale:1];
+    promptEntryView = [(SRSystemAssistantExperienceViewController *)self promptEntryView];
+    [promptEntryView updateRequestSourceIsQuickTypeTamale:1];
 
     [(SRSystemAssistantExperienceViewController *)self setupTextFieldForTamale];
     return;
   }
 
-  v4 = [(SRSystemAssistantExperienceViewController *)self activeRequestOptions];
-  v5 = [v4 requestSource];
+  activeRequestOptions2 = [(SRSystemAssistantExperienceViewController *)self activeRequestOptions];
+  requestSource = [activeRequestOptions2 requestSource];
 
-  if (v5 == 60)
+  if (requestSource == 60)
   {
     goto LABEL_6;
   }
 
-  v7 = [(SRSystemAssistantExperienceViewController *)self activeRequestOptions];
-  v8 = [v7 requestSource];
+  activeRequestOptions3 = [(SRSystemAssistantExperienceViewController *)self activeRequestOptions];
+  requestSource2 = [activeRequestOptions3 requestSource];
 
-  v9 = [(SRSystemAssistantExperienceViewController *)self promptEntryView];
-  v10 = v9;
-  if (v8 == 59)
+  promptEntryView2 = [(SRSystemAssistantExperienceViewController *)self promptEntryView];
+  v10 = promptEntryView2;
+  if (requestSource2 == 59)
   {
-    [v9 updateRequestSourceIsQuickTypeTamale:1];
+    [promptEntryView2 updateRequestSourceIsQuickTypeTamale:1];
 
     [(SRSystemAssistantExperienceViewController *)self _setupTextFieldForQuickTypeVisualIntelligence];
   }
 
   else
   {
-    [v9 updateRequestSourceIsQuickTypeTamale:0];
+    [promptEntryView2 updateRequestSourceIsQuickTypeTamale:0];
 
     [(SRSystemAssistantExperienceViewController *)self setupTextFieldForTextInput];
   }
@@ -2493,79 +2493,79 @@ LABEL_6:
 - (void)setupTextFieldForTextInput
 {
   [(SRTypeToSiriKeyboardReadinessObserver *)self->_typeToSiriKeyboardReadinessObserver start];
-  v3 = [(SRSystemAssistantExperienceViewController *)self delegate];
-  v4 = [v3 isPresentingVisualIntelligenceCamera];
+  delegate = [(SRSystemAssistantExperienceViewController *)self delegate];
+  isPresentingVisualIntelligenceCamera = [delegate isPresentingVisualIntelligenceCamera];
 
-  if (v4)
+  if (isPresentingVisualIntelligenceCamera)
   {
-    v5 = [(SRSystemAssistantExperienceViewController *)self promptEntryView];
-    [v5 resetIsInTamaleAndCollapsed];
+    promptEntryView = [(SRSystemAssistantExperienceViewController *)self promptEntryView];
+    [promptEntryView resetIsInTamaleAndCollapsed];
   }
 
-  v6 = [(SRSystemAssistantExperienceViewController *)self textFieldContainerView];
-  v7 = [(SRSystemAssistantExperienceViewController *)self promptEntryView];
-  [v7 minimumTextFieldHeight];
-  [v6 setTextFieldHeight:?];
+  textFieldContainerView = [(SRSystemAssistantExperienceViewController *)self textFieldContainerView];
+  promptEntryView2 = [(SRSystemAssistantExperienceViewController *)self promptEntryView];
+  [promptEntryView2 minimumTextFieldHeight];
+  [textFieldContainerView setTextFieldHeight:?];
 
-  v8 = [(SRSystemAssistantExperienceViewController *)self textFieldContainerView];
-  v9 = [(SRSystemAssistantExperienceViewController *)self promptEntryView];
-  [v8 setTextFieldWithTextFieldView:v9];
+  textFieldContainerView2 = [(SRSystemAssistantExperienceViewController *)self textFieldContainerView];
+  promptEntryView3 = [(SRSystemAssistantExperienceViewController *)self promptEntryView];
+  [textFieldContainerView2 setTextFieldWithTextFieldView:promptEntryView3];
 
-  v10 = [(SRSystemAssistantExperienceViewController *)self promptEntryView];
-  [v10 becomeFirstResponder];
+  promptEntryView4 = [(SRSystemAssistantExperienceViewController *)self promptEntryView];
+  [promptEntryView4 becomeFirstResponder];
 
-  v11 = [(SRSystemAssistantExperienceViewController *)self activeRequestOptions];
-  v12 = [v11 requestSource];
+  activeRequestOptions = [(SRSystemAssistantExperienceViewController *)self activeRequestOptions];
+  requestSource = [activeRequestOptions requestSource];
 
-  if (v12 == 56)
+  if (requestSource == 56)
   {
-    v13 = [(SRSystemAssistantExperienceViewController *)self promptEntryView];
-    [v13 setIsInGenerativeAssistantTextFollowup];
+    promptEntryView5 = [(SRSystemAssistantExperienceViewController *)self promptEntryView];
+    [promptEntryView5 setIsInGenerativeAssistantTextFollowup];
   }
 }
 
 - (void)_setupTextFieldForQuickTypeVisualIntelligence
 {
   [(SRTypeToSiriKeyboardReadinessObserver *)self->_typeToSiriKeyboardReadinessObserver start];
-  v3 = [(SRSystemAssistantExperienceViewController *)self textFieldContainerView];
-  v4 = [(SRSystemAssistantExperienceViewController *)self promptEntryView];
-  [v4 minimumTextFieldHeight];
-  [v3 setTextFieldHeight:?];
+  textFieldContainerView = [(SRSystemAssistantExperienceViewController *)self textFieldContainerView];
+  promptEntryView = [(SRSystemAssistantExperienceViewController *)self promptEntryView];
+  [promptEntryView minimumTextFieldHeight];
+  [textFieldContainerView setTextFieldHeight:?];
 
-  v5 = [(SRSystemAssistantExperienceViewController *)self textFieldContainerView];
-  v6 = [(SRSystemAssistantExperienceViewController *)self promptEntryView];
-  [v5 setTextFieldWithTextFieldView:v6];
+  textFieldContainerView2 = [(SRSystemAssistantExperienceViewController *)self textFieldContainerView];
+  promptEntryView2 = [(SRSystemAssistantExperienceViewController *)self promptEntryView];
+  [textFieldContainerView2 setTextFieldWithTextFieldView:promptEntryView2];
 
-  v7 = [(SRSystemAssistantExperienceViewController *)self promptEntryView];
-  [v7 becomeFirstResponder];
+  promptEntryView3 = [(SRSystemAssistantExperienceViewController *)self promptEntryView];
+  [promptEntryView3 becomeFirstResponder];
 
-  v8 = [(SRSystemAssistantExperienceViewController *)self promptEntryView];
-  [v8 setIsInGenerativeAssistantTextFollowup];
+  promptEntryView4 = [(SRSystemAssistantExperienceViewController *)self promptEntryView];
+  [promptEntryView4 setIsInGenerativeAssistantTextFollowup];
 }
 
 - (void)setupTextFieldForTamale
 {
-  v3 = [(SRSystemAssistantExperienceViewController *)self textFieldContainerView];
-  v4 = [(SRSystemAssistantExperienceViewController *)self promptEntryView];
-  [v4 minimumTextFieldHeight];
-  [v3 setTextFieldHeight:?];
+  textFieldContainerView = [(SRSystemAssistantExperienceViewController *)self textFieldContainerView];
+  promptEntryView = [(SRSystemAssistantExperienceViewController *)self promptEntryView];
+  [promptEntryView minimumTextFieldHeight];
+  [textFieldContainerView setTextFieldHeight:?];
 
-  v5 = [(SRSystemAssistantExperienceViewController *)self textFieldContainerView];
-  v6 = [(SRSystemAssistantExperienceViewController *)self promptEntryView];
-  [v5 setTextFieldWithTextFieldView:v6];
+  textFieldContainerView2 = [(SRSystemAssistantExperienceViewController *)self textFieldContainerView];
+  promptEntryView2 = [(SRSystemAssistantExperienceViewController *)self promptEntryView];
+  [textFieldContainerView2 setTextFieldWithTextFieldView:promptEntryView2];
 
-  v7 = [(SRSystemAssistantExperienceViewController *)self textFieldContainerView];
-  [v7 updateKeyboardLightEffects:0];
+  textFieldContainerView3 = [(SRSystemAssistantExperienceViewController *)self textFieldContainerView];
+  [textFieldContainerView3 updateKeyboardLightEffects:0];
 
-  v8 = [(SRSystemAssistantExperienceViewController *)self promptEntryView];
-  [v8 updateIsInTamaleAndCollapsed:1];
+  promptEntryView3 = [(SRSystemAssistantExperienceViewController *)self promptEntryView];
+  [promptEntryView3 updateIsInTamaleAndCollapsed:1];
 }
 
-- (void)setUpConversationStarterSuggestionsWith:(int64_t)a3
+- (void)setUpConversationStarterSuggestionsWith:(int64_t)with
 {
-  v5 = [(SiriSharedUISAEViewState *)self->_viewState inputType];
-  self->_requestInvocationSource = a3;
-  if (v5 == 1)
+  inputType = [(SiriSharedUISAEViewState *)self->_viewState inputType];
+  self->_requestInvocationSource = with;
+  if (inputType == 1)
   {
     v6 = AFSiriLogContextConnection;
     if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEFAULT))
@@ -2582,7 +2582,7 @@ LABEL_6:
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%s #suggestions source is %@, inputType is %@, setting up conversation starter suggestions", &v10, 0x20u);
     }
 
-    [(SRSystemAssistantExperienceViewController *)self _setUpConversationStarterSuggestions:1 isVoiceTrigger:a3 == 8 invocationSource:a3];
+    [(SRSystemAssistantExperienceViewController *)self _setUpConversationStarterSuggestions:1 isVoiceTrigger:with == 8 invocationSource:with];
   }
 }
 
@@ -2591,61 +2591,61 @@ LABEL_6:
   if ([(SiriSharedUISAEViewState *)self->_viewState inputType]== 1)
   {
     [(SRTypeToSiriKeyboardReadinessObserver *)self->_typeToSiriKeyboardReadinessObserver stop];
-    v3 = [(SRSystemAssistantExperienceViewController *)self promptEntryView];
-    [v3 resignFirstResponder];
+    promptEntryView = [(SRSystemAssistantExperienceViewController *)self promptEntryView];
+    [promptEntryView resignFirstResponder];
   }
 
-  v5 = [(SRSystemAssistantExperienceViewController *)self _navigationController];
-  v4 = [v5 visibleViewController];
-  [(SRSystemAssistantExperienceViewController *)self _recursivelyNotifyVisibleViewControllers:v4 withBlock:&stru_100167118];
+  _navigationController = [(SRSystemAssistantExperienceViewController *)self _navigationController];
+  visibleViewController = [_navigationController visibleViewController];
+  [(SRSystemAssistantExperienceViewController *)self _recursivelyNotifyVisibleViewControllers:visibleViewController withBlock:&stru_100167118];
 }
 
-- (int)viewRegionForPresentedAceObject:(id)a3
+- (int)viewRegionForPresentedAceObject:(id)object
 {
   instrumentationSupplement = self->_instrumentationSupplement;
   viewState = self->_viewState;
-  v6 = a3;
-  v7 = [(SiriSharedUISAEViewState *)viewState activeConversationTranscriptItems];
-  v8 = [(SiriSharedUISAEViewState *)self->_viewState serverUtterances];
-  LODWORD(instrumentationSupplement) = [(SiriSharedUICompactHostingInstrumentationSupplement *)instrumentationSupplement viewRegionForPresentedAceObject:v6 resultTrasncriptItems:&__NSArray0__struct conversationTranscriptItems:v7 serverUtterances:v8];
+  objectCopy = object;
+  activeConversationTranscriptItems = [(SiriSharedUISAEViewState *)viewState activeConversationTranscriptItems];
+  serverUtterances = [(SiriSharedUISAEViewState *)self->_viewState serverUtterances];
+  LODWORD(instrumentationSupplement) = [(SiriSharedUICompactHostingInstrumentationSupplement *)instrumentationSupplement viewRegionForPresentedAceObject:objectCopy resultTrasncriptItems:&__NSArray0__struct conversationTranscriptItems:activeConversationTranscriptItems serverUtterances:serverUtterances];
 
   return instrumentationSupplement;
 }
 
-- (BOOL)didReceiveUpdateVisualResponseCommand:(id)a3
+- (BOOL)didReceiveUpdateVisualResponseCommand:(id)command
 {
-  v4 = a3;
-  v5 = [v4 viewId];
-  v6 = [(SiriSharedUISAEViewState *)self->_viewState activeSmartDialogView];
-  v7 = [v6 containsSmartDialogSnippetWithViewId:v5];
+  commandCopy = command;
+  viewId = [commandCopy viewId];
+  activeSmartDialogView = [(SiriSharedUISAEViewState *)self->_viewState activeSmartDialogView];
+  v7 = [activeSmartDialogView containsSmartDialogSnippetWithViewId:viewId];
 
   viewState = self->_viewState;
   if (v7)
   {
-    v9 = [(SiriSharedUISAEViewState *)viewState activeSmartDialogView];
-    v10 = [v4 stateData];
-    [v9 updateSmartDialogSnippetWithData:v10];
+    activeSmartDialogView2 = [(SiriSharedUISAEViewState *)viewState activeSmartDialogView];
+    stateData = [commandCopy stateData];
+    [activeSmartDialogView2 updateSmartDialogSnippetWithData:stateData];
   }
 
   else
   {
-    v11 = [(SiriSharedUISAEViewState *)viewState activeConversationTranscriptItems];
-    v9 = [(SRSystemAssistantExperienceViewController *)self _findSnippetViewControllerWithViewIdFromTranscriptItems:v11 viewId:v5];
+    activeConversationTranscriptItems = [(SiriSharedUISAEViewState *)viewState activeConversationTranscriptItems];
+    activeSmartDialogView2 = [(SRSystemAssistantExperienceViewController *)self _findSnippetViewControllerWithViewIdFromTranscriptItems:activeConversationTranscriptItems viewId:viewId];
 
-    if (!v9)
+    if (!activeSmartDialogView2)
     {
-      v12 = [(SiriSharedUISAEViewState *)self->_viewState storedConversationTranscriptItems];
-      v9 = [(SRSystemAssistantExperienceViewController *)self _findSnippetViewControllerWithViewIdFromTranscriptItems:v12 viewId:v5];
+      storedConversationTranscriptItems = [(SiriSharedUISAEViewState *)self->_viewState storedConversationTranscriptItems];
+      activeSmartDialogView2 = [(SRSystemAssistantExperienceViewController *)self _findSnippetViewControllerWithViewIdFromTranscriptItems:storedConversationTranscriptItems viewId:viewId];
 
-      if (!v9)
+      if (!activeSmartDialogView2)
       {
         v13 = 0;
         goto LABEL_7;
       }
     }
 
-    v10 = [v4 stateData];
-    [v9 updateSharedState:v10];
+    stateData = [commandCopy stateData];
+    [activeSmartDialogView2 updateSharedState:stateData];
   }
 
   v13 = 1;
@@ -2654,15 +2654,15 @@ LABEL_7:
   return v13;
 }
 
-- (id)_findSnippetViewControllerWithViewIdFromTranscriptItems:(id)a3 viewId:(id)a4
+- (id)_findSnippetViewControllerWithViewIdFromTranscriptItems:(id)items viewId:(id)id
 {
-  v5 = a3;
-  v25 = a4;
+  itemsCopy = items;
+  idCopy = id;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v6 = v5;
+  v6 = itemsCopy;
   v7 = [v6 countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v7)
   {
@@ -2680,24 +2680,24 @@ LABEL_7:
         }
 
         v13 = *(*(&v27 + 1) + 8 * i);
-        v14 = [v13 viewController];
+        viewController = [v13 viewController];
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
 
         if (isKindOfClass)
         {
-          v16 = [v13 viewController];
-          v17 = [v16 aceObject];
+          viewController2 = [v13 viewController];
+          aceObject = [viewController2 aceObject];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v18 = [v16 aceObject];
-            [v18 viewId];
+            aceObject2 = [viewController2 aceObject];
+            [aceObject2 viewId];
             v19 = v9;
             v20 = v10;
             v21 = v6;
             v23 = v22 = v11;
-            v26 = [v23 isEqualToString:v25];
+            v26 = [v23 isEqualToString:idCopy];
 
             v11 = v22;
             v6 = v21;
@@ -2722,21 +2722,21 @@ LABEL_7:
     while (v8);
   }
 
-  v16 = 0;
+  viewController2 = 0;
 LABEL_15:
 
-  return v16;
+  return viewController2;
 }
 
-- (void)setActiveRequestOptions:(id)a3
+- (void)setActiveRequestOptions:(id)options
 {
-  v5 = a3;
-  if (self->_activeRequestOptions != v5)
+  optionsCopy = options;
+  if (self->_activeRequestOptions != optionsCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_activeRequestOptions, a3);
+    v6 = optionsCopy;
+    objc_storeStrong(&self->_activeRequestOptions, options);
     [(SRSystemAssistantExperienceViewController *)self _updateAmbientAvailability];
-    v5 = v6;
+    optionsCopy = v6;
   }
 }
 
@@ -2760,15 +2760,15 @@ LABEL_15:
 
 - (void)_updateAmbientAvailability
 {
-  v3 = [(SRSystemAssistantExperienceViewController *)self view];
-  v4 = [v3 traitCollection];
-  v5 = [v4 isAmbientPresented];
+  view = [(SRSystemAssistantExperienceViewController *)self view];
+  traitCollection = [view traitCollection];
+  isAmbientPresented = [traitCollection isAmbientPresented];
 
   v6 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEFAULT))
   {
     v7 = v6;
-    v8 = [NSNumber numberWithBool:v5];
+    v8 = [NSNumber numberWithBool:isAmbientPresented];
     v9 = 136315394;
     v10 = "[SRSystemAssistantExperienceViewController _updateAmbientAvailability]";
     v11 = 2112;
@@ -2776,15 +2776,15 @@ LABEL_15:
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%s #ambient - is Presented - %@", &v9, 0x16u);
   }
 
-  [(SRSystemAssistantExperienceViewController *)self setIsInAmbient:v5];
+  [(SRSystemAssistantExperienceViewController *)self setIsInAmbient:isAmbientPresented];
 }
 
-- (void)setIsInAmbient:(BOOL)a3
+- (void)setIsInAmbient:(BOOL)ambient
 {
-  if (self->_isInAmbient != a3)
+  if (self->_isInAmbient != ambient)
   {
-    v3 = a3;
-    self->_isInAmbient = a3;
+    ambientCopy = ambient;
+    self->_isInAmbient = ambient;
     [(SiriSharedUISAEViewState *)self->_viewState setIsInAmbient:?];
     if (self->_isInAmbient)
     {
@@ -2792,57 +2792,57 @@ LABEL_15:
       [v5 scale];
       v7 = v6 * SiriSharedUICompactAmbientContentScaleAmount;
 
-      v8 = [(SRSystemAssistantExperienceViewController *)self _navigationController];
-      v9 = [v8 traitOverrides];
-      [v9 setDisplayScale:v7];
+      _navigationController = [(SRSystemAssistantExperienceViewController *)self _navigationController];
+      traitOverrides = [_navigationController traitOverrides];
+      [traitOverrides setDisplayScale:v7];
 
-      v10 = [(SRSystemAssistantExperienceViewController *)self _navigationController];
-      v11 = [v10 traitOverrides];
-      [v11 setUserInterfaceStyle:2];
+      _navigationController2 = [(SRSystemAssistantExperienceViewController *)self _navigationController];
+      traitOverrides2 = [_navigationController2 traitOverrides];
+      [traitOverrides2 setUserInterfaceStyle:2];
 
-      v12 = [(SRSystemAssistantExperienceViewController *)self traitOverrides];
-      [v12 setDisplayScale:v7];
+      traitOverrides3 = [(SRSystemAssistantExperienceViewController *)self traitOverrides];
+      [traitOverrides3 setDisplayScale:v7];
 
-      v13 = [(SRSystemAssistantExperienceViewController *)self traitOverrides];
-      [v13 setUserInterfaceStyle:2];
+      traitOverrides4 = [(SRSystemAssistantExperienceViewController *)self traitOverrides];
+      [traitOverrides4 setUserInterfaceStyle:2];
     }
 
     else
     {
-      v14 = [(SRSystemAssistantExperienceViewController *)self _navigationController];
-      v15 = [v14 traitOverrides];
+      _navigationController3 = [(SRSystemAssistantExperienceViewController *)self _navigationController];
+      traitOverrides5 = [_navigationController3 traitOverrides];
       v16 = objc_opt_self();
-      [v15 removeTrait:v16];
+      [traitOverrides5 removeTrait:v16];
 
-      v17 = [(SRSystemAssistantExperienceViewController *)self _navigationController];
-      v18 = [v17 traitOverrides];
+      _navigationController4 = [(SRSystemAssistantExperienceViewController *)self _navigationController];
+      traitOverrides6 = [_navigationController4 traitOverrides];
       v19 = objc_opt_self();
-      [v18 removeTrait:v19];
+      [traitOverrides6 removeTrait:v19];
 
-      v20 = [(SRSystemAssistantExperienceViewController *)self traitOverrides];
+      traitOverrides7 = [(SRSystemAssistantExperienceViewController *)self traitOverrides];
       v21 = objc_opt_self();
-      [v20 removeTrait:v21];
+      [traitOverrides7 removeTrait:v21];
 
-      v13 = [(SRSystemAssistantExperienceViewController *)self traitOverrides];
+      traitOverrides4 = [(SRSystemAssistantExperienceViewController *)self traitOverrides];
       v22 = objc_opt_self();
-      [v13 removeTrait:v22];
+      [traitOverrides4 removeTrait:v22];
     }
 
     [(SiriSharedUISystemAssistantExperienceContainerView *)self->_containerView setIsInAmbient:self->_isInAmbient];
-    v23 = [(SiriSharedUISAEViewState *)self->_viewState activeSmartDialogView];
-    [v23 setIsInAmbient:v3];
+    activeSmartDialogView = [(SiriSharedUISAEViewState *)self->_viewState activeSmartDialogView];
+    [activeSmartDialogView setIsInAmbient:ambientCopy];
 
-    v24 = [(SRSystemAssistantExperienceViewController *)self promptEntryView];
-    [v24 setIsInAmbient:v3];
+    promptEntryView = [(SRSystemAssistantExperienceViewController *)self promptEntryView];
+    [promptEntryView setIsInAmbient:ambientCopy];
 
     v44 = 0u;
     v45 = 0u;
     v42 = 0u;
     v43 = 0u;
-    v25 = [(SRSystemAssistantExperienceViewController *)self _navigationController];
-    v26 = [v25 viewControllers];
+    _navigationController5 = [(SRSystemAssistantExperienceViewController *)self _navigationController];
+    viewControllers = [_navigationController5 viewControllers];
 
-    v27 = [v26 countByEnumeratingWithState:&v42 objects:v47 count:16];
+    v27 = [viewControllers countByEnumeratingWithState:&v42 objects:v47 count:16];
     if (v27)
     {
       v28 = v27;
@@ -2854,17 +2854,17 @@ LABEL_15:
         {
           if (*v43 != v29)
           {
-            objc_enumerationMutation(v26);
+            objc_enumerationMutation(viewControllers);
           }
 
           v31 = [(SRSystemAssistantExperienceViewController *)self _contentPlatterViewFromViewController:*(*(&v42 + 1) + 8 * v30)];
-          [v31 setIsInAmbient:v3];
+          [v31 setIsInAmbient:ambientCopy];
 
           v30 = v30 + 1;
         }
 
         while (v28 != v30);
-        v28 = [v26 countByEnumeratingWithState:&v42 objects:v47 count:16];
+        v28 = [viewControllers countByEnumeratingWithState:&v42 objects:v47 count:16];
       }
 
       while (v28);
@@ -2874,8 +2874,8 @@ LABEL_15:
     v41 = 0u;
     v38 = 0u;
     v39 = 0u;
-    v32 = [(SRSystemAssistantExperienceViewController *)self _allTranscriptItems];
-    v33 = [v32 countByEnumeratingWithState:&v38 objects:v46 count:16];
+    _allTranscriptItems = [(SRSystemAssistantExperienceViewController *)self _allTranscriptItems];
+    v33 = [_allTranscriptItems countByEnumeratingWithState:&v38 objects:v46 count:16];
     if (v33)
     {
       v34 = v33;
@@ -2887,20 +2887,20 @@ LABEL_15:
         {
           if (*v39 != v35)
           {
-            objc_enumerationMutation(v32);
+            objc_enumerationMutation(_allTranscriptItems);
           }
 
-          v37 = [*(*(&v38 + 1) + 8 * v36) viewController];
+          viewController = [*(*(&v38 + 1) + 8 * v36) viewController];
           if (objc_opt_respondsToSelector())
           {
-            [v37 setIsInAmbient:self->_isInAmbient];
+            [viewController setIsInAmbient:self->_isInAmbient];
           }
 
           v36 = v36 + 1;
         }
 
         while (v34 != v36);
-        v34 = [v32 countByEnumeratingWithState:&v38 objects:v46 count:16];
+        v34 = [_allTranscriptItems countByEnumeratingWithState:&v38 objects:v46 count:16];
       }
 
       while (v34);
@@ -2908,26 +2908,26 @@ LABEL_15:
   }
 }
 
-- (void)_updateIsInAmbientWithInteractivity:(BOOL)a3
+- (void)_updateIsInAmbientWithInteractivity:(BOOL)interactivity
 {
   if (self->_isInAmbient)
   {
-    v3 = a3;
+    interactivityCopy = interactivity;
     v5 = +[UIScreen mainScreen];
     [v5 scale];
     v7 = v6 * SiriSharedUICompactAmbientContentScaleAmountForInteractivity;
 
-    v8 = [(SRSystemAssistantExperienceViewController *)self _navigationController];
-    v9 = [v8 traitOverrides];
-    [v9 setDisplayScale:v7];
+    _navigationController = [(SRSystemAssistantExperienceViewController *)self _navigationController];
+    traitOverrides = [_navigationController traitOverrides];
+    [traitOverrides setDisplayScale:v7];
 
-    self->_isInAmbientInteractivity = v3;
+    self->_isInAmbientInteractivity = interactivityCopy;
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v10 = [(SRSystemAssistantExperienceViewController *)self _allTranscriptItems];
-    v11 = [v10 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    _allTranscriptItems = [(SRSystemAssistantExperienceViewController *)self _allTranscriptItems];
+    v11 = [_allTranscriptItems countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v11)
     {
       v12 = v11;
@@ -2939,47 +2939,47 @@ LABEL_15:
         {
           if (*v18 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(_allTranscriptItems);
           }
 
-          v15 = [*(*(&v17 + 1) + 8 * v14) viewController];
+          viewController = [*(*(&v17 + 1) + 8 * v14) viewController];
           if (objc_opt_respondsToSelector())
           {
-            [v15 setIsInAmbientInteractivity:v3];
+            [viewController setIsInAmbientInteractivity:interactivityCopy];
           }
 
           v14 = v14 + 1;
         }
 
         while (v12 != v14);
-        v12 = [v10 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v12 = [_allTranscriptItems countByEnumeratingWithState:&v17 objects:v21 count:16];
       }
 
       while (v12);
     }
 
-    v16 = [(SiriSharedUISAEViewState *)self->_viewState activeSmartDialogView];
-    [v16 setIsInAmbientInteractivity:v3];
+    activeSmartDialogView = [(SiriSharedUISAEViewState *)self->_viewState activeSmartDialogView];
+    [activeSmartDialogView setIsInAmbientInteractivity:interactivityCopy];
   }
 }
 
-- (void)_setUpConversationStarterSuggestions:(int64_t)a3 isVoiceTrigger:(BOOL)a4 invocationSource:(int64_t)a5
+- (void)_setUpConversationStarterSuggestions:(int64_t)suggestions isVoiceTrigger:(BOOL)trigger invocationSource:(int64_t)source
 {
-  v6 = a4;
-  v21 = [(SRSystemAssistantExperienceViewController *)self delegate];
-  if ([v21 isPresentingVisualIntelligenceCamera])
+  triggerCopy = trigger;
+  delegate = [(SRSystemAssistantExperienceViewController *)self delegate];
+  if ([delegate isPresentingVisualIntelligenceCamera])
   {
   }
 
   else
   {
-    v8 = [(SRSystemAssistantExperienceViewController *)self delegate];
-    v9 = [v8 isPresentingVisualIntelligenceDirectInvocation];
+    delegate2 = [(SRSystemAssistantExperienceViewController *)self delegate];
+    isPresentingVisualIntelligenceDirectInvocation = [delegate2 isPresentingVisualIntelligenceDirectInvocation];
 
-    if ((v9 & 1) == 0)
+    if ((isPresentingVisualIntelligenceDirectInvocation & 1) == 0)
     {
-      v10 = [(SRSystemAssistantExperienceViewController *)self delegate];
-      v11 = [v10 lockStateForSAEViewController:self];
+      delegate3 = [(SRSystemAssistantExperienceViewController *)self delegate];
+      v11 = [delegate3 lockStateForSAEViewController:self];
 
       v12 = [(SRUIFPreferences *)self->_preferences BOOLForKey:SRUIFPreferencesConversationStartersShownSinceOSInstalled];
       if (!self->_suggestionsDisplayed)
@@ -2987,17 +2987,17 @@ LABEL_15:
         v13 = v12;
         if (!self->_suggestionsViewProvider)
         {
-          v14 = [(SRSystemAssistantExperienceViewController *)self createSuggestionsViewProvider];
+          createSuggestionsViewProvider = [(SRSystemAssistantExperienceViewController *)self createSuggestionsViewProvider];
           suggestionsViewProvider = self->_suggestionsViewProvider;
-          self->_suggestionsViewProvider = v14;
+          self->_suggestionsViewProvider = createSuggestionsViewProvider;
         }
 
         objc_initWeak(&location, self);
         v16 = self->_suggestionsViewProvider;
-        v17 = [(SRSystemAssistantExperienceViewController *)self _mapSASRequestSourceToSuggestionsInputOrigin:a5];
-        v18 = [(SRSystemAssistantExperienceViewController *)self _instrumentationManager];
-        v19 = [v18 currentInstrumentationTurnContext];
-        v20 = [v19 turnIdentifier];
+        v17 = [(SRSystemAssistantExperienceViewController *)self _mapSASRequestSourceToSuggestionsInputOrigin:source];
+        _instrumentationManager = [(SRSystemAssistantExperienceViewController *)self _instrumentationManager];
+        currentInstrumentationTurnContext = [_instrumentationManager currentInstrumentationTurnContext];
+        turnIdentifier = [currentInstrumentationTurnContext turnIdentifier];
         v22[0] = _NSConcreteStackBlock;
         v22[1] = 3221225472;
         v22[2] = sub_1000243A4;
@@ -3005,7 +3005,7 @@ LABEL_15:
         objc_copyWeak(&v23, &location);
         v22[4] = self;
         v24 = v13;
-        [(SiriSharedUISuggestionsViewInterface *)v16 fetchStarterSuggestionsViewsWithDeviceLocked:v11 == 2 isVoiceTrigger:v6 invocationSource:v17 isFirstInvocationSinceOSInstalled:v13 ^ 1 turnId:v20 completion:v22];
+        [(SiriSharedUISuggestionsViewInterface *)v16 fetchStarterSuggestionsViewsWithDeviceLocked:v11 == 2 isVoiceTrigger:triggerCopy invocationSource:v17 isFirstInvocationSinceOSInstalled:v13 ^ 1 turnId:turnIdentifier completion:v22];
 
         objc_destroyWeak(&v23);
         objc_destroyWeak(&location);
@@ -3014,10 +3014,10 @@ LABEL_15:
   }
 }
 
-- (void)processSuggestionViewWrappers:(id)a3
+- (void)processSuggestionViewWrappers:(id)wrappers
 {
-  v4 = a3;
-  v5 = [v4 count];
+  wrappersCopy = wrappers;
+  v5 = [wrappersCopy count];
   v6 = [NSMutableArray arrayWithCapacity:v5];
   v7 = [NSMutableArray arrayWithCapacity:v5];
   v14[0] = _NSConcreteStackBlock;
@@ -3028,7 +3028,7 @@ LABEL_15:
   v15 = v8;
   v9 = v7;
   v16 = v9;
-  [v4 enumerateObjectsUsingBlock:v14];
+  [wrappersCopy enumerateObjectsUsingBlock:v14];
 
   suggestionTexts = self->_suggestionTexts;
   self->_suggestionTexts = v8;
@@ -3079,20 +3079,20 @@ LABEL_15:
   }
 }
 
-- (void)_siriRequestCommittedFromSuggestion:(id)a3 suggestionRequestType:(int64_t)a4
+- (void)_siriRequestCommittedFromSuggestion:(id)suggestion suggestionRequestType:(int64_t)type
 {
-  v6 = a3;
-  v7 = [(SRSystemAssistantExperienceViewController *)self delegate];
-  [v7 viewController:self siriRequestEnteredWithSuggestion:v6 suggestionRequestType:{-[SRSystemAssistantExperienceViewController _mapSuggestionRequestTypeToSASSuggestionRequestType:](self, "_mapSuggestionRequestTypeToSASSuggestionRequestType:", a4)}];
+  suggestionCopy = suggestion;
+  delegate = [(SRSystemAssistantExperienceViewController *)self delegate];
+  [delegate viewController:self siriRequestEnteredWithSuggestion:suggestionCopy suggestionRequestType:{-[SRSystemAssistantExperienceViewController _mapSuggestionRequestTypeToSASSuggestionRequestType:](self, "_mapSuggestionRequestTypeToSASSuggestionRequestType:", type)}];
 }
 
-- (void)_siriRequestCommittedFromSuggestion:(id)a3 encodedToolInvocationData:(id)a4 suggestionRequestType:(int64_t)a5
+- (void)_siriRequestCommittedFromSuggestion:(id)suggestion encodedToolInvocationData:(id)data suggestionRequestType:(int64_t)type
 {
-  v8 = a3;
-  v9 = a4;
+  suggestionCopy = suggestion;
+  dataCopy = data;
   v10 = AFSiriLogContextConnection;
   v11 = os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEFAULT);
-  if (v9)
+  if (dataCopy)
   {
     if (v11)
     {
@@ -3101,7 +3101,7 @@ LABEL_15:
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%s #suggestions committing suggestion with invocation tool data", &v12, 0xCu);
     }
 
-    [(SRSystemAssistantExperienceViewController *)self _siriRequestCommittedFromSuggestionToolInvocation:v9];
+    [(SRSystemAssistantExperienceViewController *)self _siriRequestCommittedFromSuggestionToolInvocation:dataCopy];
   }
 
   else
@@ -3113,20 +3113,20 @@ LABEL_15:
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%s #suggestions committing suggestion with text", &v12, 0xCu);
     }
 
-    [(SRSystemAssistantExperienceViewController *)self _siriRequestCommittedFromSuggestion:v8 suggestionRequestType:a5];
+    [(SRSystemAssistantExperienceViewController *)self _siriRequestCommittedFromSuggestion:suggestionCopy suggestionRequestType:type];
   }
 }
 
-- (void)_siriRequestCommittedFromSuggestionToolInvocation:(id)a3
+- (void)_siriRequestCommittedFromSuggestionToolInvocation:(id)invocation
 {
-  v4 = a3;
-  if (v4)
+  invocationCopy = invocation;
+  if (invocationCopy)
   {
-    v5 = [(SRSystemAssistantExperienceViewController *)self delegate];
-    v6 = [(SRSystemAssistantExperienceViewController *)self _instrumentationManager];
-    v7 = [v6 currentInstrumentationTurnContext];
-    v8 = [v7 turnIdentifier];
-    [v5 viewController:self siriRequestEnteredWithSuggestionToolInvocation:v4 turnIdentifier:v8];
+    delegate = [(SRSystemAssistantExperienceViewController *)self delegate];
+    _instrumentationManager = [(SRSystemAssistantExperienceViewController *)self _instrumentationManager];
+    currentInstrumentationTurnContext = [_instrumentationManager currentInstrumentationTurnContext];
+    turnIdentifier = [currentInstrumentationTurnContext turnIdentifier];
+    [delegate viewController:self siriRequestEnteredWithSuggestionToolInvocation:invocationCopy turnIdentifier:turnIdentifier];
   }
 
   else
@@ -3139,10 +3139,10 @@ LABEL_15:
   }
 }
 
-- (void)_setUpConversationContinuerSuggestions:(int64_t)a3 forRequestId:(id)a4 currentMode:(id)a5
+- (void)_setUpConversationContinuerSuggestions:(int64_t)suggestions forRequestId:(id)id currentMode:(id)mode
 {
-  v7 = a4;
-  v8 = a5;
+  idCopy = id;
+  modeCopy = mode;
   suggestionsSpringAnimationBehavior = self->_suggestionsSpringAnimationBehavior;
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
@@ -3151,15 +3151,15 @@ LABEL_15:
   v19[4] = self;
   [UIView _animateUsingSpringBehavior:suggestionsSpringAnimationBehavior tracking:0 animations:v19 completion:0];
   [(SRSystemAssistantExperienceViewController *)self _fadeOutContinuerSuggestionsIfAny];
-  v10 = [(SRSystemAssistantExperienceViewController *)self delegate];
-  v11 = [v10 lockStateForSAEViewController:self];
+  delegate = [(SRSystemAssistantExperienceViewController *)self delegate];
+  v11 = [delegate lockStateForSAEViewController:self];
 
   self->_shouldShowSuggestions = 1;
   if (!self->_suggestionsViewProvider)
   {
-    v12 = [(SRSystemAssistantExperienceViewController *)self createSuggestionsViewProvider];
+    createSuggestionsViewProvider = [(SRSystemAssistantExperienceViewController *)self createSuggestionsViewProvider];
     suggestionsViewProvider = self->_suggestionsViewProvider;
-    self->_suggestionsViewProvider = v12;
+    self->_suggestionsViewProvider = createSuggestionsViewProvider;
   }
 
   objc_initWeak(&location, self);
@@ -3171,18 +3171,18 @@ LABEL_15:
   v16[3] = &unk_100167248;
   objc_copyWeak(&v17, &location);
   v16[4] = self;
-  [(SiriSharedUISuggestionsViewInterface *)v14 fetchContinuerSuggestionsViewsWithRequestId:v7 currentMode:v8 deviceLocked:v11 == 2 invocationSource:v15 completion:v16];
+  [(SiriSharedUISuggestionsViewInterface *)v14 fetchContinuerSuggestionsViewsWithRequestId:idCopy currentMode:modeCopy deviceLocked:v11 == 2 invocationSource:v15 completion:v16];
   objc_destroyWeak(&v17);
   objc_destroyWeak(&location);
 }
 
-- (int64_t)_mapSASRequestSourceToSuggestionsInputOrigin:(int64_t)a3
+- (int64_t)_mapSASRequestSourceToSuggestionsInputOrigin:(int64_t)origin
 {
-  if (a3 > 47)
+  if (origin > 47)
   {
-    if (a3 != 50)
+    if (origin != 50)
     {
-      if (a3 != 48)
+      if (origin != 48)
       {
         return 0;
       }
@@ -3195,9 +3195,9 @@ LABEL_15:
 
   else
   {
-    if (a3 != 8)
+    if (origin != 8)
     {
-      if (a3 != 16)
+      if (origin != 16)
       {
         return 0;
       }
@@ -3209,16 +3209,16 @@ LABEL_15:
   }
 }
 
-- (int64_t)_mapSuggestionRequestTypeToSASSuggestionRequestType:(int64_t)a3
+- (int64_t)_mapSuggestionRequestTypeToSASSuggestionRequestType:(int64_t)type
 {
-  if ((a3 - 1) >= 3)
+  if ((type - 1) >= 3)
   {
     return 0;
   }
 
   else
   {
-    return a3;
+    return type;
   }
 }
 
@@ -3261,13 +3261,13 @@ LABEL_15:
   return v5;
 }
 
-- (void)loadContinuerSuggestionsForRequest:(id)a3 currentMode:(id)a4
+- (void)loadContinuerSuggestionsForRequest:(id)request currentMode:(id)mode
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  modeCopy = mode;
   if (_os_feature_enabled_impl())
   {
-    [(SRSystemAssistantExperienceViewController *)self _setUpConversationContinuerSuggestions:[(SiriSharedUISAEViewState *)self->_viewState inputType] forRequestId:v6 currentMode:v7];
+    [(SRSystemAssistantExperienceViewController *)self _setUpConversationContinuerSuggestions:[(SiriSharedUISAEViewState *)self->_viewState inputType] forRequestId:requestCopy currentMode:modeCopy];
   }
 
   else
@@ -3280,103 +3280,103 @@ LABEL_15:
   }
 }
 
-- (void)didReceiveAddViewsDialogPhaseForSuggestions:(id)a3
+- (void)didReceiveAddViewsDialogPhaseForSuggestions:(id)suggestions
 {
-  v4 = a3;
+  suggestionsCopy = suggestions;
   suggestionsViewProvider = self->_suggestionsViewProvider;
-  v8 = v4;
+  v8 = suggestionsCopy;
   if (!suggestionsViewProvider)
   {
-    v6 = [(SRSystemAssistantExperienceViewController *)self createSuggestionsViewProvider];
+    createSuggestionsViewProvider = [(SRSystemAssistantExperienceViewController *)self createSuggestionsViewProvider];
     v7 = self->_suggestionsViewProvider;
-    self->_suggestionsViewProvider = v6;
+    self->_suggestionsViewProvider = createSuggestionsViewProvider;
 
-    v4 = v8;
+    suggestionsCopy = v8;
     suggestionsViewProvider = self->_suggestionsViewProvider;
   }
 
-  [(SiriSharedUISuggestionsViewInterface *)suggestionsViewProvider setDialogPhase:v4];
+  [(SiriSharedUISuggestionsViewInterface *)suggestionsViewProvider setDialogPhase:suggestionsCopy];
 }
 
-- (void)siriDidStartSpeakingWithIdentifier:(id)a3
+- (void)siriDidStartSpeakingWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(SRSystemAssistantExperienceViewController *)self _navigationController];
-  v6 = [v5 visibleViewController];
+  identifierCopy = identifier;
+  _navigationController = [(SRSystemAssistantExperienceViewController *)self _navigationController];
+  visibleViewController = [_navigationController visibleViewController];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100025D28;
   v8[3] = &unk_100167378;
-  v9 = v4;
-  v7 = v4;
-  [(SRSystemAssistantExperienceViewController *)self _recursivelyNotifyVisibleViewControllers:v6 withBlock:v8];
+  v9 = identifierCopy;
+  v7 = identifierCopy;
+  [(SRSystemAssistantExperienceViewController *)self _recursivelyNotifyVisibleViewControllers:visibleViewController withBlock:v8];
 }
 
-- (void)siriDidStopSpeakingWithIdentifier:(id)a3 speechQueueIsEmpty:(BOOL)a4
+- (void)siriDidStopSpeakingWithIdentifier:(id)identifier speechQueueIsEmpty:(BOOL)empty
 {
-  v6 = a3;
-  v7 = [(SRSystemAssistantExperienceViewController *)self _navigationController];
-  v8 = [v7 visibleViewController];
+  identifierCopy = identifier;
+  _navigationController = [(SRSystemAssistantExperienceViewController *)self _navigationController];
+  visibleViewController = [_navigationController visibleViewController];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100025E60;
   v10[3] = &unk_1001673A0;
-  v11 = v6;
-  v12 = a4;
-  v9 = v6;
-  [(SRSystemAssistantExperienceViewController *)self _recursivelyNotifyVisibleViewControllers:v8 withBlock:v10];
+  v11 = identifierCopy;
+  emptyCopy = empty;
+  v9 = identifierCopy;
+  [(SRSystemAssistantExperienceViewController *)self _recursivelyNotifyVisibleViewControllers:visibleViewController withBlock:v10];
 }
 
-- (void)siriDidUpdateASRWithRecognition:(id)a3
+- (void)siriDidUpdateASRWithRecognition:(id)recognition
 {
-  v4 = a3;
-  v5 = [(SRSystemAssistantExperienceViewController *)self _navigationController];
-  v6 = [v5 visibleViewController];
+  recognitionCopy = recognition;
+  _navigationController = [(SRSystemAssistantExperienceViewController *)self _navigationController];
+  visibleViewController = [_navigationController visibleViewController];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100025F8C;
   v8[3] = &unk_100167378;
-  v9 = v4;
-  v7 = v4;
-  [(SRSystemAssistantExperienceViewController *)self _recursivelyNotifyVisibleViewControllers:v6 withBlock:v8];
+  v9 = recognitionCopy;
+  v7 = recognitionCopy;
+  [(SRSystemAssistantExperienceViewController *)self _recursivelyNotifyVisibleViewControllers:visibleViewController withBlock:v8];
 }
 
 - (void)siriDidTapOutsideContent
 {
-  v4 = [(SRSystemAssistantExperienceViewController *)self _navigationController];
-  v3 = [v4 visibleViewController];
-  [(SRSystemAssistantExperienceViewController *)self _recursivelyNotifyVisibleViewControllers:v3 withBlock:&stru_1001673C0];
+  _navigationController = [(SRSystemAssistantExperienceViewController *)self _navigationController];
+  visibleViewController = [_navigationController visibleViewController];
+  [(SRSystemAssistantExperienceViewController *)self _recursivelyNotifyVisibleViewControllers:visibleViewController withBlock:&stru_1001673C0];
 }
 
 - (void)siriWillStartRequest
 {
-  v4 = [(SRSystemAssistantExperienceViewController *)self _navigationController];
-  v3 = [v4 visibleViewController];
-  [(SRSystemAssistantExperienceViewController *)self _recursivelyNotifyVisibleViewControllers:v3 withBlock:&stru_1001673E0];
+  _navigationController = [(SRSystemAssistantExperienceViewController *)self _navigationController];
+  visibleViewController = [_navigationController visibleViewController];
+  [(SRSystemAssistantExperienceViewController *)self _recursivelyNotifyVisibleViewControllers:visibleViewController withBlock:&stru_1001673E0];
 }
 
 - (void)siriIsIdleAndQuiet
 {
-  v4 = [(SRSystemAssistantExperienceViewController *)self _navigationController];
-  v3 = [v4 visibleViewController];
-  [(SRSystemAssistantExperienceViewController *)self _recursivelyNotifyVisibleViewControllers:v3 withBlock:&stru_100167400];
+  _navigationController = [(SRSystemAssistantExperienceViewController *)self _navigationController];
+  visibleViewController = [_navigationController visibleViewController];
+  [(SRSystemAssistantExperienceViewController *)self _recursivelyNotifyVisibleViewControllers:visibleViewController withBlock:&stru_100167400];
 }
 
-- (void)_recursivelyNotifyVisibleViewControllers:(id)a3 withBlock:(id)a4
+- (void)_recursivelyNotifyVisibleViewControllers:(id)controllers withBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 conformsToProtocol:&OBJC_PROTOCOL___SiriSharedUIViewControlling])
+  controllersCopy = controllers;
+  blockCopy = block;
+  if ([controllersCopy conformsToProtocol:&OBJC_PROTOCOL___SiriSharedUIViewControlling])
   {
-    v7[2](v7, v6);
+    blockCopy[2](blockCopy, controllersCopy);
   }
 
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v8 = [v6 childViewControllers];
-  v9 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  childViewControllers = [controllersCopy childViewControllers];
+  v9 = [childViewControllers countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v9)
   {
     v10 = v9;
@@ -3388,15 +3388,15 @@ LABEL_15:
       {
         if (*v14 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(childViewControllers);
         }
 
-        [(SRSystemAssistantExperienceViewController *)self _recursivelyNotifyVisibleViewControllers:*(*(&v13 + 1) + 8 * v12) withBlock:v7];
+        [(SRSystemAssistantExperienceViewController *)self _recursivelyNotifyVisibleViewControllers:*(*(&v13 + 1) + 8 * v12) withBlock:blockCopy];
         v12 = v12 + 1;
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v10 = [childViewControllers countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v10);
@@ -3405,96 +3405,96 @@ LABEL_15:
 
 - (void)_pushQueuedNavigationContentViewController
 {
-  v3 = [(SRSystemAssistantExperienceViewController *)self _queuedNavigationContentViewController];
-  if (v3)
+  _queuedNavigationContentViewController = [(SRSystemAssistantExperienceViewController *)self _queuedNavigationContentViewController];
+  if (_queuedNavigationContentViewController)
   {
-    v5 = v3;
-    v4 = [(SRSystemAssistantExperienceViewController *)self _navigationController];
-    [v4 pushViewController:v5 animated:1];
+    v5 = _queuedNavigationContentViewController;
+    _navigationController = [(SRSystemAssistantExperienceViewController *)self _navigationController];
+    [_navigationController pushViewController:v5 animated:1];
 
     [(SRSystemAssistantExperienceViewController *)self _setQueuedNavigationContentViewController:0];
     [(SRSystemAssistantExperienceViewController *)self userDrilledIntoSnippet];
-    v3 = v5;
+    _queuedNavigationContentViewController = v5;
   }
 }
 
-- (void)siriViewController:(id)a3 openURL:(id)a4 completion:(id)a5
+- (void)siriViewController:(id)controller openURL:(id)l completion:(id)completion
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100026514;
   v9[3] = &unk_100167428;
-  v10 = a5;
-  v8 = v10;
-  [(SRSystemAssistantExperienceViewController *)self siriViewController:a3 openURL:a4 launchOptions:0 completion:v9];
+  completionCopy = completion;
+  v8 = completionCopy;
+  [(SRSystemAssistantExperienceViewController *)self siriViewController:controller openURL:l launchOptions:0 completion:v9];
 }
 
-- (void)siriViewController:(id)a3 openURL:(id)a4 launchOptions:(id)a5 completion:(id)a6
+- (void)siriViewController:(id)controller openURL:(id)l launchOptions:(id)options completion:(id)completion
 {
   instrumentationSupplement = self->_instrumentationSupplement;
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
-  [(SiriSharedUICompactHostingInstrumentationSupplement *)instrumentationSupplement logPunchOutEventForSiriViewController:a3 aceCommand:0 URL:v13 appID:0 sashItem:0];
-  v14 = [(SRSystemAssistantExperienceViewController *)self delegate];
-  [v14 viewController:self openURL:v13 launchOptions:v12 completion:v11];
+  completionCopy = completion;
+  optionsCopy = options;
+  lCopy = l;
+  [(SiriSharedUICompactHostingInstrumentationSupplement *)instrumentationSupplement logPunchOutEventForSiriViewController:controller aceCommand:0 URL:lCopy appID:0 sashItem:0];
+  delegate = [(SRSystemAssistantExperienceViewController *)self delegate];
+  [delegate viewController:self openURL:lCopy launchOptions:optionsCopy completion:completionCopy];
 }
 
-- (void)siriSnippetViewController:(id)a3 performAceCommands:(id)a4 sashItem:(id)a5
+- (void)siriSnippetViewController:(id)controller performAceCommands:(id)commands sashItem:(id)item
 {
   instrumentationSupplement = self->_instrumentationSupplement;
-  v9 = a4;
-  [(SiriSharedUICompactHostingInstrumentationSupplement *)instrumentationSupplement logPunchOutEventForSiriViewController:a3 aceCommands:v9 sashItem:a5];
-  v10 = [(SRSystemAssistantExperienceViewController *)self delegate];
-  [v10 viewController:self performAceCommands:v9 completion:0];
+  commandsCopy = commands;
+  [(SiriSharedUICompactHostingInstrumentationSupplement *)instrumentationSupplement logPunchOutEventForSiriViewController:controller aceCommands:commandsCopy sashItem:item];
+  delegate = [(SRSystemAssistantExperienceViewController *)self delegate];
+  [delegate viewController:self performAceCommands:commandsCopy completion:0];
 }
 
-- (void)siriViewController:(id)a3 performAceCommands:(id)a4 completion:(id)a5
+- (void)siriViewController:(id)controller performAceCommands:(id)commands completion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [(SRSystemAssistantExperienceViewController *)self delegate];
-  [v9 viewController:self performAceCommands:v8 completion:v7];
+  completionCopy = completion;
+  commandsCopy = commands;
+  delegate = [(SRSystemAssistantExperienceViewController *)self delegate];
+  [delegate viewController:self performAceCommands:commandsCopy completion:completionCopy];
 }
 
-- (double)boundingWidthForSnippetViewController:(id)a3
+- (double)boundingWidthForSnippetViewController:(id)controller
 {
-  v3 = [(SRSystemAssistantExperienceViewController *)self delegate];
-  [v3 expectedContentWidth];
+  delegate = [(SRSystemAssistantExperienceViewController *)self delegate];
+  [delegate expectedContentWidth];
   v5 = v4;
 
   return v5;
 }
 
-- (id)siriViewController:(id)a3 disambiguationItemForListItem:(id)a4 disambiguationKey:(id)a5
+- (id)siriViewController:(id)controller disambiguationItemForListItem:(id)item disambiguationKey:(id)key
 {
-  v6 = a5;
-  v7 = a4;
+  keyCopy = key;
+  itemCopy = item;
   v8 = +[SiriUISnippetManager sharedInstance];
-  v9 = [v8 disambiguationItemForListItem:v7 disambiguationKey:v6];
+  v9 = [v8 disambiguationItemForListItem:itemCopy disambiguationKey:keyCopy];
 
   return v9;
 }
 
-- (id)siriViewController:(id)a3 filteredDisambiguationListItems:(id)a4
+- (id)siriViewController:(id)controller filteredDisambiguationListItems:(id)items
 {
-  v4 = a4;
+  itemsCopy = items;
   v5 = +[SiriUISnippetManager sharedInstance];
-  v6 = [v5 filteredDisambiguationListItems:v4];
+  v6 = [v5 filteredDisambiguationListItems:itemsCopy];
 
   return v6;
 }
 
-- (id)siriViewController:(id)a3 listItemToPickInAutodisambiguationForListItems:(id)a4
+- (id)siriViewController:(id)controller listItemToPickInAutodisambiguationForListItems:(id)items
 {
-  v4 = a4;
+  itemsCopy = items;
   v5 = +[SiriUISnippetManager sharedInstance];
-  v6 = [v5 listItemToPickInAutodisambiguationForListItems:v4];
+  v6 = [v5 listItemToPickInAutodisambiguationForListItems:itemsCopy];
 
   return v6;
 }
 
-- (UIEdgeInsets)siriViewControllerBackgroundInsets:(id)a3
+- (UIEdgeInsets)siriViewControllerBackgroundInsets:(id)insets
 {
   top = UIEdgeInsetsZero.top;
   left = UIEdgeInsetsZero.left;
@@ -3507,28 +3507,28 @@ LABEL_15:
   return result;
 }
 
-- (id)siriViewControllerEffectiveBundleForCoreLocation:(id)a3
+- (id)siriViewControllerEffectiveBundleForCoreLocation:(id)location
 {
-  v4 = a3;
-  v5 = [(SRSystemAssistantExperienceViewController *)self delegate];
-  v6 = [v5 effectiveCoreLocationBundleForSAEViewController:self];
+  locationCopy = location;
+  delegate = [(SRSystemAssistantExperienceViewController *)self delegate];
+  v6 = [delegate effectiveCoreLocationBundleForSAEViewController:self];
 
   if (!v6)
   {
     v7 = AFSiriLogContextConnection;
     if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_ERROR))
     {
-      sub_1000CAC5C(v4, v7);
+      sub_1000CAC5C(locationCopy, v7);
     }
   }
 
   return v6;
 }
 
-- (double)siriViewControllerExpectedWidth:(id)a3
+- (double)siriViewControllerExpectedWidth:(id)width
 {
-  v4 = [(SiriSharedUISAEViewState *)self->_viewState activeSmartDialogView];
-  [v4 portraitContentSize];
+  activeSmartDialogView = [(SiriSharedUISAEViewState *)self->_viewState activeSmartDialogView];
+  [activeSmartDialogView portraitContentSize];
   v6 = v5;
 
   if (self->_isInAmbient && !self->_isInAmbientInteractivity)
@@ -3539,55 +3539,55 @@ LABEL_15:
   return v6;
 }
 
-- (void)siriViewControllerHeightDidChange:(id)a3
+- (void)siriViewControllerHeightDidChange:(id)change
 {
-  v10 = a3;
-  if (v10)
+  changeCopy = change;
+  if (changeCopy)
   {
-    v4 = [(SiriUINavigationController *)self->_navigationController topViewController];
-    v5 = [v4 view];
-    v6 = [(SiriSharedUISystemAssistantExperienceContainerView *)self->_containerView superview];
+    topViewController = [(SiriUINavigationController *)self->_navigationController topViewController];
+    view = [topViewController view];
+    superview = [(SiriSharedUISystemAssistantExperienceContainerView *)self->_containerView superview];
 
-    if (v5 == v6)
+    if (view == superview)
     {
-      [(SRSystemAssistantExperienceViewController *)self _smartDialogSnippetLayoutDidUpdateForViewController:v10];
+      [(SRSystemAssistantExperienceViewController *)self _smartDialogSnippetLayoutDidUpdateForViewController:changeCopy];
     }
 
     else
     {
-      v7 = [(SiriUINavigationController *)self->_navigationController topViewController];
+      topViewController2 = [(SiriUINavigationController *)self->_navigationController topViewController];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
       if (isKindOfClass)
       {
-        v9 = [(SiriUINavigationController *)self->_navigationController topViewController];
-        [v9 contentViewDidUpdateSize];
+        topViewController3 = [(SiriUINavigationController *)self->_navigationController topViewController];
+        [topViewController3 contentViewDidUpdateSize];
       }
     }
   }
 }
 
-- (void)_smartDialogSnippetLayoutDidUpdateForViewController:(id)a3
+- (void)_smartDialogSnippetLayoutDidUpdateForViewController:(id)controller
 {
-  if ([(SRSystemAssistantExperienceViewController *)self _smartDialogActiveTranscriptItemContainsViewController:a3])
+  if ([(SRSystemAssistantExperienceViewController *)self _smartDialogActiveTranscriptItemContainsViewController:controller])
   {
-    v4 = [(SiriSharedUISAEViewState *)self->_viewState activeSmartDialogView];
-    [v4 snippetContentDidUpdate];
+    activeSmartDialogView = [(SiriSharedUISAEViewState *)self->_viewState activeSmartDialogView];
+    [activeSmartDialogView snippetContentDidUpdate];
   }
 }
 
-- (BOOL)_smartDialogActiveTranscriptItemContainsViewController:(id)a3
+- (BOOL)_smartDialogActiveTranscriptItemContainsViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [(SiriSharedUISAEViewState *)self->_viewState activeSmartDialogView];
-  v6 = [v5 activeTranscriptItems];
+  activeSmartDialogView = [(SiriSharedUISAEViewState *)self->_viewState activeSmartDialogView];
+  activeTranscriptItems = [activeSmartDialogView activeTranscriptItems];
 
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v7 = [activeTranscriptItems countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -3598,12 +3598,12 @@ LABEL_15:
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(activeTranscriptItems);
         }
 
-        v11 = [*(*(&v15 + 1) + 8 * i) viewController];
-        v12 = v11;
-        if (v11 == v4 || ([v11 isEqual:v4] & 1) != 0)
+        viewController = [*(*(&v15 + 1) + 8 * i) viewController];
+        v12 = viewController;
+        if (viewController == controllerCopy || ([viewController isEqual:controllerCopy] & 1) != 0)
         {
 
           v13 = 1;
@@ -3611,7 +3611,7 @@ LABEL_15:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [activeTranscriptItems countByEnumeratingWithState:&v15 objects:v19 count:16];
       v13 = 0;
       if (v8)
       {
@@ -3632,13 +3632,13 @@ LABEL_13:
   return v13;
 }
 
-- (void)siriViewControllerHeightDidChange:(id)a3 pinTopOfSnippet:(BOOL)a4
+- (void)siriViewControllerHeightDidChange:(id)change pinTopOfSnippet:(BOOL)snippet
 {
-  v4 = [(SiriSharedUISAEViewState *)self->_viewState activeSmartDialogView:a3];
+  v4 = [(SiriSharedUISAEViewState *)self->_viewState activeSmartDialogView:change];
   [v4 setNeedsLayout];
 }
 
-- (CGSize)siriViewControllerVisibleContentArea:(id)a3
+- (CGSize)siriViewControllerVisibleContentArea:(id)area
 {
   width = CGSizeZero.width;
   height = CGSizeZero.height;
@@ -3647,14 +3647,14 @@ LABEL_13:
   return result;
 }
 
-- (void)siriSnippetViewController:(id)a3 pushSirilandSnippets:(id)a4
+- (void)siriSnippetViewController:(id)controller pushSirilandSnippets:(id)snippets
 {
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v4 = a4;
-  v5 = [v4 countByEnumeratingWithState:&v35 objects:v40 count:16];
+  snippetsCopy = snippets;
+  v5 = [snippetsCopy countByEnumeratingWithState:&v35 objects:v40 count:16];
   if (!v5)
   {
     goto LABEL_26;
@@ -3668,7 +3668,7 @@ LABEL_13:
     {
       if (*v36 != v7)
       {
-        objc_enumerationMutation(v4);
+        objc_enumerationMutation(snippetsCopy);
       }
 
       v9 = *(*(&v35 + 1) + 8 * i);
@@ -3686,33 +3686,33 @@ LABEL_13:
         v11 = [v12 transcriptItemForObject:v10 sizeClass:1];
       }
 
-      v13 = [v11 viewController];
-      [v13 setAceObject:v10];
+      viewController = [v11 viewController];
+      [viewController setAceObject:v10];
 
-      v14 = [v11 viewController];
-      [v14 wasAddedToTranscript];
+      viewController2 = [v11 viewController];
+      [viewController2 wasAddedToTranscript];
 
-      v15 = [v11 viewController];
+      viewController3 = [v11 viewController];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v16 = [v15 view];
-        [v16 layoutIfNeeded];
-        v17 = v15;
+        view = [viewController3 view];
+        [view layoutIfNeeded];
+        v17 = viewController3;
         if (SiriUIDeviceIsPad())
         {
           [v17 setNavigating:1];
         }
 
-        v18 = self;
+        selfCopy4 = self;
         if (objc_opt_respondsToSelector())
         {
-          v33 = [v16 shouldAutomaticallyScaleContentInAmbient];
+          shouldAutomaticallyScaleContentInAmbient = [view shouldAutomaticallyScaleContentInAmbient];
         }
 
         else
         {
-          v33 = 1;
+          shouldAutomaticallyScaleContentInAmbient = 1;
         }
 
         [v17 setIsInAmbient:self->_isInAmbient];
@@ -3720,8 +3720,8 @@ LABEL_13:
         [(SiriSharedUICompactHostingInstrumentationSupplement *)self->_instrumentationSupplement configureSiriViewControllerWithCurrentTurn:v17];
         v19 = objc_alloc_init(SiriSharedUIContentPlatterViewController);
         navigationController = self->_navigationController;
-        v21 = [v19 contentPlatterView];
-        [v21 setDelegate:navigationController];
+        contentPlatterView = [v19 contentPlatterView];
+        [contentPlatterView setDelegate:navigationController];
 
         v39 = v17;
         v22 = [NSArray arrayWithObjects:&v39 count:1];
@@ -3731,58 +3731,58 @@ LABEL_13:
         [v23 setContentViewController:v19];
         if (self->_isInAmbient)
         {
-          v24 = [v19 contentPlatterView];
-          v25 = [(SRSystemAssistantExperienceViewController *)self _resultViewController];
-          v26 = [v25 compactResultView];
-          [v24 setDelegate:v26];
+          contentPlatterView2 = [v19 contentPlatterView];
+          _resultViewController = [(SRSystemAssistantExperienceViewController *)self _resultViewController];
+          compactResultView = [_resultViewController compactResultView];
+          [contentPlatterView2 setDelegate:compactResultView];
 
-          v18 = self;
+          selfCopy4 = self;
         }
 
-        v27 = [v19 contentPlatterView];
-        [v27 setIsNextLevelCard:1];
+        contentPlatterView3 = [v19 contentPlatterView];
+        [contentPlatterView3 setIsNextLevelCard:1];
 
-        v28 = [v19 contentPlatterView];
-        [v28 setIsInAmbient:v18->_isInAmbient];
+        contentPlatterView4 = [v19 contentPlatterView];
+        [contentPlatterView4 setIsInAmbient:selfCopy4->_isInAmbient];
 
-        v29 = [v19 contentPlatterView];
-        [v29 setAllowAutomaticContentViewsScaling:v33];
+        contentPlatterView5 = [v19 contentPlatterView];
+        [contentPlatterView5 setAllowAutomaticContentViewsScaling:shouldAutomaticallyScaleContentInAmbient];
 
-        [(SRSystemAssistantExperienceViewController *)v18 _updateAdditionalSafeAreaInsetsForNavigationContentViewController:v23];
-        [(SRSystemAssistantExperienceViewController *)v18 _setQueuedNavigationContentViewController:v23];
+        [(SRSystemAssistantExperienceViewController *)selfCopy4 _updateAdditionalSafeAreaInsetsForNavigationContentViewController:v23];
+        [(SRSystemAssistantExperienceViewController *)selfCopy4 _setQueuedNavigationContentViewController:v23];
         if ([v17 isLoading])
         {
-          v30 = [v17 aceObject];
+          aceObject = [v17 aceObject];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
 
-            v18 = self;
+            selfCopy4 = self;
           }
 
           else
           {
-            v31 = [v17 aceObject];
+            aceObject2 = [v17 aceObject];
             objc_opt_class();
             isKindOfClass = objc_opt_isKindOfClass();
 
-            v18 = self;
+            selfCopy4 = self;
             if ((isKindOfClass & 1) == 0)
             {
 LABEL_25:
-              [(SiriSharedUICompactHostingInstrumentationSupplement *)v18->_instrumentationSupplement logDrillInInteractionForSnippetViewControllerIfNecessary:v17];
+              [(SiriSharedUICompactHostingInstrumentationSupplement *)selfCopy4->_instrumentationSupplement logDrillInInteractionForSnippetViewControllerIfNecessary:v17];
 
               goto LABEL_26;
             }
           }
         }
 
-        [(SRSystemAssistantExperienceViewController *)v18 _pushQueuedNavigationContentViewController];
+        [(SRSystemAssistantExperienceViewController *)selfCopy4 _pushQueuedNavigationContentViewController];
         goto LABEL_25;
       }
     }
 
-    v6 = [v4 countByEnumeratingWithState:&v35 objects:v40 count:16];
+    v6 = [snippetsCopy countByEnumeratingWithState:&v35 objects:v40 count:16];
     if (v6)
     {
       continue;
@@ -3794,13 +3794,13 @@ LABEL_25:
 LABEL_26:
 }
 
-- (void)siriSnippetViewControllerViewDidLoad:(id)a3
+- (void)siriSnippetViewControllerViewDidLoad:(id)load
 {
-  if (a3)
+  if (load)
   {
     [(SRSystemAssistantExperienceViewController *)self _smartDialogSnippetLayoutDidUpdateForViewController:?];
-    v4 = [(SiriSharedUISAEViewState *)self->_viewState activeSmartDialogView];
-    [v4 setNeedsLayout];
+    activeSmartDialogView = [(SiriSharedUISAEViewState *)self->_viewState activeSmartDialogView];
+    [activeSmartDialogView setNeedsLayout];
 
     [(SRSystemAssistantExperienceViewController *)self _pushQueuedNavigationContentViewController];
   }
@@ -3808,51 +3808,51 @@ LABEL_26:
 
 - (void)userTouchedSnippet
 {
-  v2 = [(SRSystemAssistantExperienceViewController *)self delegate];
-  [v2 userTouchedSnippet];
+  delegate = [(SRSystemAssistantExperienceViewController *)self delegate];
+  [delegate userTouchedSnippet];
 }
 
-- (void)siriSnippetViewController:(id)a3 handleStartLocalRequest:(id)a4 turnIdentifier:(id)a5
+- (void)siriSnippetViewController:(id)controller handleStartLocalRequest:(id)request turnIdentifier:(id)identifier
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [(SRSystemAssistantExperienceViewController *)self delegate];
-  [v9 saeViewController:self handleStartLocalRequest:v8 turnIdentifier:v7];
+  identifierCopy = identifier;
+  requestCopy = request;
+  delegate = [(SRSystemAssistantExperienceViewController *)self delegate];
+  [delegate saeViewController:self handleStartLocalRequest:requestCopy turnIdentifier:identifierCopy];
 }
 
 - (void)userDrilledIntoSnippet
 {
-  v2 = [(SRSystemAssistantExperienceViewController *)self delegate];
-  [v2 userDrilledIntoSnippet];
+  delegate = [(SRSystemAssistantExperienceViewController *)self delegate];
+  [delegate userDrilledIntoSnippet];
 }
 
-- (void)siriSnippetViewController:(id)a3 informHostOfBackgroundView:(id)a4 isSnippetAsyncColored:(BOOL)a5
+- (void)siriSnippetViewController:(id)controller informHostOfBackgroundView:(id)view isSnippetAsyncColored:(BOOL)colored
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  if (v5)
+  coloredCopy = colored;
+  controllerCopy = controller;
+  viewCopy = view;
+  if (coloredCopy)
   {
-    v10 = [(SiriSharedUISAEViewState *)self->_viewState activeSmartDialogView];
-    v11 = [v10 snippetBackgroundView];
+    activeSmartDialogView = [(SiriSharedUISAEViewState *)self->_viewState activeSmartDialogView];
+    snippetBackgroundView = [activeSmartDialogView snippetBackgroundView];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v11 = v11;
-      v12 = [(SiriSharedUISAEViewState *)self->_viewState activeSmartDialogView];
-      v13 = [v12 activeTranscriptItems];
+      snippetBackgroundView = snippetBackgroundView;
+      activeSmartDialogView2 = [(SiriSharedUISAEViewState *)self->_viewState activeSmartDialogView];
+      activeTranscriptItems = [activeSmartDialogView2 activeTranscriptItems];
 
-      if (v13)
+      if (activeTranscriptItems)
       {
         v83 = 0u;
         v84 = 0u;
         v81 = 0u;
         v82 = 0u;
-        v14 = [(SiriSharedUISAEViewState *)self->_viewState activeSmartDialogView];
-        v15 = [v14 activeTranscriptItems];
+        activeSmartDialogView3 = [(SiriSharedUISAEViewState *)self->_viewState activeSmartDialogView];
+        activeTranscriptItems2 = [activeSmartDialogView3 activeTranscriptItems];
 
-        v16 = [v15 countByEnumeratingWithState:&v81 objects:v92 count:16];
+        v16 = [activeTranscriptItems2 countByEnumeratingWithState:&v81 objects:v92 count:16];
         if (!v16)
         {
 LABEL_13:
@@ -3861,8 +3861,8 @@ LABEL_13:
         }
 
         v17 = v16;
-        v75 = v11;
-        v76 = v9;
+        v75 = snippetBackgroundView;
+        v76 = viewCopy;
         v18 = 0;
         v19 = *v82;
         do
@@ -3871,34 +3871,34 @@ LABEL_13:
           {
             if (*v82 != v19)
             {
-              objc_enumerationMutation(v15);
+              objc_enumerationMutation(activeTranscriptItems2);
             }
 
-            v21 = [*(*(&v81 + 1) + 8 * i) viewController];
+            viewController = [*(*(&v81 + 1) + 8 * i) viewController];
             objc_opt_class();
-            v18 |= objc_opt_isKindOfClass() & (v21 == v8);
+            v18 |= objc_opt_isKindOfClass() & (viewController == controllerCopy);
           }
 
-          v17 = [v15 countByEnumeratingWithState:&v81 objects:v92 count:16];
+          v17 = [activeTranscriptItems2 countByEnumeratingWithState:&v81 objects:v92 count:16];
         }
 
         while (v17);
 
-        v11 = v75;
-        v9 = v76;
+        snippetBackgroundView = v75;
+        viewCopy = v76;
         if ((v18 & 1) == 0)
         {
 LABEL_14:
-          [v11 bounds];
-          [v9 setFrame:?];
-          v22 = [(SiriSharedUISAEViewState *)self->_viewState hasSmartDialogSnippet];
+          [snippetBackgroundView bounds];
+          [viewCopy setFrame:?];
+          hasSmartDialogSnippet = [(SiriSharedUISAEViewState *)self->_viewState hasSmartDialogSnippet];
           v23 = &SiriSharedUISmartDialogSnippetCornerRadius;
-          if (!v22)
+          if (!hasSmartDialogSnippet)
           {
             v23 = &SiriSharedUISmartDialogPlatterCornerRadius;
           }
 
-          [v11 setContinuousCornerRadius:*v23];
+          [snippetBackgroundView setContinuousCornerRadius:*v23];
           v24 = AFSiriLogContextConnection;
           if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEFAULT))
           {
@@ -3907,12 +3907,12 @@ LABEL_14:
             _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "%s #background: get SearchUIBackgroundColorView", buf, 0xCu);
           }
 
-          v25 = [(SiriSharedUISAEViewState *)self->_viewState activeSmartDialogView];
-          if ([v25 onlyContainsSnippet])
+          activeSmartDialogView4 = [(SiriSharedUISAEViewState *)self->_viewState activeSmartDialogView];
+          if ([activeSmartDialogView4 onlyContainsSnippet])
           {
-            v26 = [(SiriSharedUISAEViewState *)self->_viewState hasSmartDialogSnippet];
+            hasSmartDialogSnippet2 = [(SiriSharedUISAEViewState *)self->_viewState hasSmartDialogSnippet];
 
-            if (v26)
+            if (hasSmartDialogSnippet2)
             {
 LABEL_22:
 
@@ -3920,45 +3920,45 @@ LABEL_57:
               goto LABEL_58;
             }
 
-            [v11 removeFromSuperview];
-            v27 = [(SiriSharedUISAEViewState *)self->_viewState activeSmartDialogView];
-            [v27 setSnippetBackgroundView:0];
+            [snippetBackgroundView removeFromSuperview];
+            activeSmartDialogView5 = [(SiriSharedUISAEViewState *)self->_viewState activeSmartDialogView];
+            [activeSmartDialogView5 setSnippetBackgroundView:0];
 
-            v25 = [(SRSystemAssistantExperienceViewController *)self containerView];
-            v28 = [(SiriSharedUISAEViewState *)self->_viewState activeSmartDialogView];
-            [v25 updateBackgroundView:v9 smartDialogView:v28 isSnippetAsyncColored:1];
+            activeSmartDialogView4 = [(SRSystemAssistantExperienceViewController *)self containerView];
+            activeSmartDialogView6 = [(SiriSharedUISAEViewState *)self->_viewState activeSmartDialogView];
+            [activeSmartDialogView4 updateBackgroundView:viewCopy smartDialogView:activeSmartDialogView6 isSnippetAsyncColored:1];
           }
 
           goto LABEL_22;
         }
       }
 
-      v15 = [v11 contentView];
-      [v15 addSubview:v9];
+      activeTranscriptItems2 = [snippetBackgroundView contentView];
+      [activeTranscriptItems2 addSubview:viewCopy];
       goto LABEL_13;
     }
 
-    v35 = [(SiriSharedUISAEViewState *)self->_viewState activeSmartDialogView];
-    v61 = [v35 snippetBackgroundView];
-    if (v61)
+    activeSmartDialogView7 = [(SiriSharedUISAEViewState *)self->_viewState activeSmartDialogView];
+    snippetBackgroundView2 = [activeSmartDialogView7 snippetBackgroundView];
+    if (snippetBackgroundView2)
     {
 
       goto LABEL_56;
     }
 
-    v53 = [(SiriSharedUISAEViewState *)self->_viewState activeSmartDialogView];
-    if ([v53 onlyContainsSnippet])
+    activeSmartDialogView8 = [(SiriSharedUISAEViewState *)self->_viewState activeSmartDialogView];
+    if ([activeSmartDialogView8 onlyContainsSnippet])
     {
-      v74 = [(SiriSharedUISAEViewState *)self->_viewState hasSmartDialogSnippet];
+      hasSmartDialogSnippet3 = [(SiriSharedUISAEViewState *)self->_viewState hasSmartDialogSnippet];
 
-      if (v74)
+      if (hasSmartDialogSnippet3)
       {
         goto LABEL_57;
       }
 
-      v35 = [(SRSystemAssistantExperienceViewController *)self containerView];
-      v71 = [(SiriSharedUISAEViewState *)self->_viewState activeSmartDialogView];
-      [v35 updateBackgroundView:v9 smartDialogView:v71 isSnippetAsyncColored:1];
+      activeSmartDialogView7 = [(SRSystemAssistantExperienceViewController *)self containerView];
+      activeSmartDialogView9 = [(SiriSharedUISAEViewState *)self->_viewState activeSmartDialogView];
+      [activeSmartDialogView7 updateBackgroundView:viewCopy smartDialogView:activeSmartDialogView9 isSnippetAsyncColored:1];
 LABEL_54:
 
       goto LABEL_56;
@@ -3972,65 +3972,65 @@ LABEL_55:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v29 = [(SiriSharedUISAEViewState *)self->_viewState activeSmartDialogView];
-    v30 = [v29 snippetBackgroundView];
+    activeSmartDialogView10 = [(SiriSharedUISAEViewState *)self->_viewState activeSmartDialogView];
+    snippetBackgroundView3 = [activeSmartDialogView10 snippetBackgroundView];
 
-    if (v30)
+    if (snippetBackgroundView3)
     {
-      v31 = [(SiriSharedUISAEViewState *)self->_viewState activeSmartDialogView];
-      v32 = [v31 snippetBackgroundView];
+      activeSmartDialogView11 = [(SiriSharedUISAEViewState *)self->_viewState activeSmartDialogView];
+      snippetBackgroundView4 = [activeSmartDialogView11 snippetBackgroundView];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
       if (isKindOfClass)
       {
-        v11 = v9;
-        v34 = [(SiriSharedUISAEViewState *)self->_viewState activeSmartDialogView];
-        v35 = [v34 snippetBackgroundView];
+        snippetBackgroundView = viewCopy;
+        activeSmartDialogView12 = [(SiriSharedUISAEViewState *)self->_viewState activeSmartDialogView];
+        activeSmartDialogView7 = [activeSmartDialogView12 snippetBackgroundView];
 
-        v36 = [v11 effect];
-        [v35 setEffect:v36];
+        effect = [snippetBackgroundView effect];
+        [activeSmartDialogView7 setEffect:effect];
 
-        v37 = [v11 backgroundColor];
-        [v35 setBackgroundColor:v37];
+        backgroundColor = [snippetBackgroundView backgroundColor];
+        [activeSmartDialogView7 setBackgroundColor:backgroundColor];
 
-        v38 = [(SiriSharedUISAEViewState *)self->_viewState hasSmartDialogSnippet];
+        hasSmartDialogSnippet4 = [(SiriSharedUISAEViewState *)self->_viewState hasSmartDialogSnippet];
         v39 = &SiriSharedUISmartDialogSnippetCornerRadius;
-        if (!v38)
+        if (!hasSmartDialogSnippet4)
         {
           v39 = &SiriSharedUISmartDialogPlatterCornerRadius;
         }
 
         v40 = *v39;
-        v41 = [v35 layer];
-        [v41 setCornerRadius:v40];
+        layer = [activeSmartDialogView7 layer];
+        [layer setCornerRadius:v40];
 
         v42 = AFSiriLogContextConnection;
         if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEFAULT))
         {
           v43 = v42;
-          v44 = [v35 backgroundColor];
-          v45 = [v35 effect];
+          backgroundColor2 = [activeSmartDialogView7 backgroundColor];
+          effect2 = [activeSmartDialogView7 effect];
           *buf = 136315650;
           v87 = "[SRSystemAssistantExperienceViewController siriSnippetViewController:informHostOfBackgroundView:isSnippetAsyncColored:]";
           v88 = 2112;
-          v89 = v44;
+          v89 = backgroundColor2;
           v90 = 2112;
-          v91 = v45;
+          v91 = effect2;
           _os_log_impl(&_mh_execute_header, v43, OS_LOG_TYPE_DEFAULT, "%s #background: setting backgroundViewColor:%@, effect:%@", buf, 0x20u);
         }
 
         if ([(SiriSharedUISAEViewState *)self->_viewState hasSmartDialogSnippet])
         {
-          v46 = v11;
+          v46 = snippetBackgroundView;
           v79 = 0u;
           v80 = 0u;
           v77 = 0u;
           v78 = 0u;
-          v47 = [v35 contentView];
-          v48 = [v47 subviews];
+          contentView = [activeSmartDialogView7 contentView];
+          subviews = [contentView subviews];
 
-          v49 = [v48 countByEnumeratingWithState:&v77 objects:v85 count:16];
+          v49 = [subviews countByEnumeratingWithState:&v77 objects:v85 count:16];
           if (v49)
           {
             v50 = v49;
@@ -4041,55 +4041,55 @@ LABEL_55:
               {
                 if (*v78 != v51)
                 {
-                  objc_enumerationMutation(v48);
+                  objc_enumerationMutation(subviews);
                 }
 
                 [*(*(&v77 + 1) + 8 * j) removeFromSuperview];
               }
 
-              v50 = [v48 countByEnumeratingWithState:&v77 objects:v85 count:16];
+              v50 = [subviews countByEnumeratingWithState:&v77 objects:v85 count:16];
             }
 
             while (v50);
           }
 
-          v11 = v46;
+          snippetBackgroundView = v46;
         }
 
-        v53 = [(SiriSharedUISAEViewState *)self->_viewState activeSmartDialogView];
-        if ([v53 onlyContainsSnippet])
+        activeSmartDialogView8 = [(SiriSharedUISAEViewState *)self->_viewState activeSmartDialogView];
+        if ([activeSmartDialogView8 onlyContainsSnippet])
         {
-          v54 = [(SiriSharedUISAEViewState *)self->_viewState hasSmartDialogSnippet];
+          hasSmartDialogSnippet5 = [(SiriSharedUISAEViewState *)self->_viewState hasSmartDialogSnippet];
 
-          if (v54)
+          if (hasSmartDialogSnippet5)
           {
 LABEL_56:
 
             goto LABEL_57;
           }
 
-          [v35 removeFromSuperview];
-          v55 = [(SiriSharedUISAEViewState *)self->_viewState activeSmartDialogView];
-          [v55 setSnippetBackgroundView:0];
+          [activeSmartDialogView7 removeFromSuperview];
+          activeSmartDialogView13 = [(SiriSharedUISAEViewState *)self->_viewState activeSmartDialogView];
+          [activeSmartDialogView13 setSnippetBackgroundView:0];
 
           v56 = AFSiriLogContextConnection;
           if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEFAULT))
           {
             v57 = v56;
-            v58 = [v35 backgroundColor];
-            v59 = [v35 effect];
+            backgroundColor3 = [activeSmartDialogView7 backgroundColor];
+            effect3 = [activeSmartDialogView7 effect];
             *buf = 136315650;
             v87 = "[SRSystemAssistantExperienceViewController siriSnippetViewController:informHostOfBackgroundView:isSnippetAsyncColored:]";
             v88 = 2112;
-            v89 = v58;
+            v89 = backgroundColor3;
             v90 = 2112;
-            v91 = v59;
+            v91 = effect3;
             _os_log_impl(&_mh_execute_header, v57, OS_LOG_TYPE_DEFAULT, "%s #background: updating the whole background backgroundViewColor:%@, effect:%@", buf, 0x20u);
           }
 
-          v53 = [(SRSystemAssistantExperienceViewController *)self containerView];
-          v60 = [(SiriSharedUISAEViewState *)self->_viewState activeSmartDialogView];
-          [v53 updateBackgroundView:v35 smartDialogView:v60 isSnippetAsyncColored:0];
+          activeSmartDialogView8 = [(SRSystemAssistantExperienceViewController *)self containerView];
+          activeSmartDialogView14 = [(SiriSharedUISAEViewState *)self->_viewState activeSmartDialogView];
+          [activeSmartDialogView8 updateBackgroundView:activeSmartDialogView7 smartDialogView:activeSmartDialogView14 isSnippetAsyncColored:0];
         }
 
         goto LABEL_55;
@@ -4098,30 +4098,30 @@ LABEL_56:
 
     else
     {
-      v62 = [(SiriSharedUISystemAssistantExperienceContainerView *)self->_containerView resultSnippetBackgroundView];
+      resultSnippetBackgroundView = [(SiriSharedUISystemAssistantExperienceContainerView *)self->_containerView resultSnippetBackgroundView];
       objc_opt_class();
       v63 = objc_opt_isKindOfClass();
 
       if (v63)
       {
-        v11 = v9;
-        v35 = [(SiriSharedUISystemAssistantExperienceContainerView *)self->_containerView resultSnippetBackgroundView];
-        v64 = [v11 effect];
-        [v35 setEffect:v64];
+        snippetBackgroundView = viewCopy;
+        activeSmartDialogView7 = [(SiriSharedUISystemAssistantExperienceContainerView *)self->_containerView resultSnippetBackgroundView];
+        effect4 = [snippetBackgroundView effect];
+        [activeSmartDialogView7 setEffect:effect4];
 
-        v65 = [v11 backgroundColor];
-        [v35 setBackgroundColor:v65];
+        backgroundColor4 = [snippetBackgroundView backgroundColor];
+        [activeSmartDialogView7 setBackgroundColor:backgroundColor4];
 
-        v66 = [(SiriSharedUISAEViewState *)self->_viewState hasSmartDialogSnippet];
+        hasSmartDialogSnippet6 = [(SiriSharedUISAEViewState *)self->_viewState hasSmartDialogSnippet];
         v67 = &SiriSharedUISmartDialogSnippetCornerRadius;
-        if (!v66)
+        if (!hasSmartDialogSnippet6)
         {
           v67 = &SiriSharedUISmartDialogPlatterCornerRadius;
         }
 
         v68 = *v67;
-        v69 = [v35 layer];
-        [v69 setCornerRadius:v68];
+        layer2 = [activeSmartDialogView7 layer];
+        [layer2 setCornerRadius:v68];
 
         v70 = AFSiriLogContextConnection;
         if (!os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEFAULT))
@@ -4129,16 +4129,16 @@ LABEL_56:
           goto LABEL_56;
         }
 
-        v71 = v70;
-        v72 = [v35 backgroundColor];
-        v73 = [v35 effect];
+        activeSmartDialogView9 = v70;
+        backgroundColor5 = [activeSmartDialogView7 backgroundColor];
+        effect5 = [activeSmartDialogView7 effect];
         *buf = 136315650;
         v87 = "[SRSystemAssistantExperienceViewController siriSnippetViewController:informHostOfBackgroundView:isSnippetAsyncColored:]";
         v88 = 2112;
-        v89 = v72;
+        v89 = backgroundColor5;
         v90 = 2112;
-        v91 = v73;
-        _os_log_impl(&_mh_execute_header, v71, OS_LOG_TYPE_DEFAULT, "%s #background: setting backgroundViewColor:%@, effect:%@", buf, 0x20u);
+        v91 = effect5;
+        _os_log_impl(&_mh_execute_header, activeSmartDialogView9, OS_LOG_TYPE_DEFAULT, "%s #background: setting backgroundViewColor:%@, effect:%@", buf, 0x20u);
 
         goto LABEL_54;
       }
@@ -4148,92 +4148,92 @@ LABEL_56:
 LABEL_58:
 }
 
-- (void)siriSnippetViewController:(id)a3 isBackgroundColorUpdateSuccessful:(BOOL)a4
+- (void)siriSnippetViewController:(id)controller isBackgroundColorUpdateSuccessful:(BOOL)successful
 {
-  v4 = a4;
-  v6 = [(SiriSharedUISAEViewState *)self->_viewState activeSmartDialogView];
-  v7 = [v6 onlyContainsSnippet];
+  successfulCopy = successful;
+  activeSmartDialogView = [(SiriSharedUISAEViewState *)self->_viewState activeSmartDialogView];
+  onlyContainsSnippet = [activeSmartDialogView onlyContainsSnippet];
 
-  if (v7)
+  if (onlyContainsSnippet)
   {
-    v8 = [(SRSystemAssistantExperienceViewController *)self containerView];
-    [v8 searchUIBackgroundColorUpdateSuccessful:v4];
+    containerView = [(SRSystemAssistantExperienceViewController *)self containerView];
+    [containerView searchUIBackgroundColorUpdateSuccessful:successfulCopy];
   }
 }
 
-- (void)cancelSpeakingForSiriViewController:(id)a3
+- (void)cancelSpeakingForSiriViewController:(id)controller
 {
-  v4 = [(SRSystemAssistantExperienceViewController *)self delegate];
-  [v4 stopSpeakingForSAEViewController:self];
+  delegate = [(SRSystemAssistantExperienceViewController *)self delegate];
+  [delegate stopSpeakingForSAEViewController:self];
 }
 
-- (void)siriViewController:(id)a3 speakText:(id)a4 completion:(id)a5
+- (void)siriViewController:(id)controller speakText:(id)text completion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [(SRSystemAssistantExperienceViewController *)self delegate];
-  [v9 saeViewController:self speakText:v8 isPhonetic:0 completion:v7];
+  completionCopy = completion;
+  textCopy = text;
+  delegate = [(SRSystemAssistantExperienceViewController *)self delegate];
+  [delegate saeViewController:self speakText:textCopy isPhonetic:0 completion:completionCopy];
 }
 
-- (BOOL)siriViewControllerShouldPreventUserInteraction:(id)a3
+- (BOOL)siriViewControllerShouldPreventUserInteraction:(id)interaction
 {
-  v4 = [(SRSystemAssistantExperienceViewController *)self delegate];
-  v5 = [v4 lockStateForSAEViewController:self];
+  delegate = [(SRSystemAssistantExperienceViewController *)self delegate];
+  v5 = [delegate lockStateForSAEViewController:self];
 
   return v5 != 0;
 }
 
-- (id)localeForSiriViewController:(id)a3
+- (id)localeForSiriViewController:(id)controller
 {
-  v4 = [(SRSystemAssistantExperienceViewController *)self delegate];
-  v5 = [v4 localeForSAEViewController:self];
+  delegate = [(SRSystemAssistantExperienceViewController *)self delegate];
+  v5 = [delegate localeForSAEViewController:self];
 
   return v5;
 }
 
-- (void)siriSnippetViewController:(id)a3 willDismissViewController:(id)a4
+- (void)siriSnippetViewController:(id)controller willDismissViewController:(id)viewController
 {
-  v5 = a4;
-  v6 = [(SRSystemAssistantExperienceViewController *)self delegate];
-  [v6 siriSAEViewController:self willDismissViewController:v5];
+  viewControllerCopy = viewController;
+  delegate = [(SRSystemAssistantExperienceViewController *)self delegate];
+  [delegate siriSAEViewController:self willDismissViewController:viewControllerCopy];
 }
 
-- (void)siriSnippetViewController:(id)a3 willPresentViewController:(id)a4
+- (void)siriSnippetViewController:(id)controller willPresentViewController:(id)viewController
 {
-  v5 = a4;
-  v6 = [(SRSystemAssistantExperienceViewController *)self delegate];
-  [v6 siriSAEViewController:self willPresentViewController:v5];
+  viewControllerCopy = viewController;
+  delegate = [(SRSystemAssistantExperienceViewController *)self delegate];
+  [delegate siriSAEViewController:self willPresentViewController:viewControllerCopy];
 }
 
-- (void)siriViewControllerViewDidAppear:(id)a3 isTopLevelViewController:(BOOL)a4
+- (void)siriViewControllerViewDidAppear:(id)appear isTopLevelViewController:(BOOL)controller
 {
-  if (a4)
+  if (controller)
   {
-    v5 = a3;
+    appearCopy = appear;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v6 = [v5 aceObject];
+    aceObject = [appearCopy aceObject];
 
-    [WeakRetained saeViewController:self viewDidAppearForAceObject:v6];
+    [WeakRetained saeViewController:self viewDidAppearForAceObject:aceObject];
   }
 }
 
-- (void)siriViewControllerViewDidDisappear:(id)a3 isTopLevelViewController:(BOOL)a4
+- (void)siriViewControllerViewDidDisappear:(id)disappear isTopLevelViewController:(BOOL)controller
 {
-  if (a4)
+  if (controller)
   {
-    v5 = a3;
+    disappearCopy = disappear;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v6 = [v5 aceObject];
+    aceObject = [disappearCopy aceObject];
 
-    [WeakRetained saeViewController:self viewDidDisappearForAceObject:v6];
+    [WeakRetained saeViewController:self viewDidDisappearForAceObject:aceObject];
   }
 }
 
-- (void)_setStatusViewHidden:(BOOL)a3
+- (void)_setStatusViewHidden:(BOOL)hidden
 {
-  v3 = a3;
-  v5 = [(SRSystemAssistantExperienceViewController *)self delegate];
-  [v5 saeViewController:self setStatusViewHidden:v3];
+  hiddenCopy = hidden;
+  delegate = [(SRSystemAssistantExperienceViewController *)self delegate];
+  [delegate saeViewController:self setStatusViewHidden:hiddenCopy];
 }
 
 - (void)_updateStatusViewVisibility
@@ -4246,10 +4246,10 @@ LABEL_58:
 
 - (void)_updateHomeAffordanceVisibility
 {
-  v3 = [(SiriSharedUISAEViewState *)self->_viewState inputType];
-  if (v3 != 3)
+  inputType = [(SiriSharedUISAEViewState *)self->_viewState inputType];
+  if (inputType != 3)
   {
-    if (v3 == 2)
+    if (inputType == 2)
     {
       v6 = AFSiriLogContextConnection;
       if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEFAULT))
@@ -4263,7 +4263,7 @@ LABEL_58:
       goto LABEL_9;
     }
 
-    if (v3 != 1)
+    if (inputType != 1)
     {
       return;
     }
@@ -4280,27 +4280,27 @@ LABEL_58:
   }
 
 LABEL_9:
-  v7 = [(SRSystemAssistantExperienceViewController *)self delegate];
-  [v7 toggleHomeAffordanceHidden:v5];
+  delegate = [(SRSystemAssistantExperienceViewController *)self delegate];
+  [delegate toggleHomeAffordanceHidden:v5];
 }
 
-- (void)_willBeginEditingOfType:(int64_t)a3
+- (void)_willBeginEditingOfType:(int64_t)type
 {
-  v5 = [(SRSystemAssistantExperienceViewController *)self delegate];
-  [v5 saeViewController:self willBeginEditingOfType:a3];
+  delegate = [(SRSystemAssistantExperienceViewController *)self delegate];
+  [delegate saeViewController:self willBeginEditingOfType:type];
 }
 
 - (void)_didEndEditing
 {
-  v3 = [(SRSystemAssistantExperienceViewController *)self delegate];
-  [v3 saeViewControllerDidEndEditing:self];
+  delegate = [(SRSystemAssistantExperienceViewController *)self delegate];
+  [delegate saeViewControllerDidEndEditing:self];
 }
 
-- (void)_updateKeyboardStateFromNotification:(id)a3
+- (void)_updateKeyboardStateFromNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [v4 name];
-  v6 = [v5 isEqualToString:UIKeyboardDidHideNotification];
+  notificationCopy = notification;
+  name = [notificationCopy name];
+  v6 = [name isEqualToString:UIKeyboardDidHideNotification];
 
   if (v6)
   {
@@ -4317,12 +4317,12 @@ LABEL_9:
 
   else
   {
-    v8 = [[SRCompactKeyboardState alloc] initWithKeyboardNotification:v4];
+    v8 = [[SRCompactKeyboardState alloc] initWithKeyboardNotification:notificationCopy];
     [(SRSystemAssistantExperienceViewController *)self _setKeyboardState:v8];
   }
 }
 
-- (void)_keyboardWillHideForAmbient:(id)a3
+- (void)_keyboardWillHideForAmbient:(id)ambient
 {
   if (self->_isInAmbient)
   {
@@ -4330,7 +4330,7 @@ LABEL_9:
   }
 }
 
-- (void)_keyboardWillShowForAmbient:(id)a3
+- (void)_keyboardWillShowForAmbient:(id)ambient
 {
   if (self->_isInAmbient)
   {
@@ -4338,28 +4338,28 @@ LABEL_9:
   }
 }
 
-- (void)_setKeyboardState:(id)a3
+- (void)_setKeyboardState:(id)state
 {
-  v4 = [a3 copy];
+  v4 = [state copy];
   keyboardState = self->_keyboardState;
   self->_keyboardState = v4;
 
   [(SRSystemAssistantExperienceViewController *)self _updateBottomContentInsetKeyboardComponent];
 }
 
-- (CGRect)_convertRectFromKeyboard:(CGRect)a3
+- (CGRect)_convertRectFromKeyboard:(CGRect)keyboard
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(SRSystemAssistantExperienceViewController *)self view];
-  v9 = [v8 window];
-  v10 = [v9 screen];
+  height = keyboard.size.height;
+  width = keyboard.size.width;
+  y = keyboard.origin.y;
+  x = keyboard.origin.x;
+  view = [(SRSystemAssistantExperienceViewController *)self view];
+  window = [view window];
+  screen = [window screen];
 
-  v11 = [v10 coordinateSpace];
-  v12 = [(SRSystemAssistantExperienceViewController *)self view];
-  [v12 convertRect:v11 fromCoordinateSpace:{x, y, width, height}];
+  coordinateSpace = [screen coordinateSpace];
+  view2 = [(SRSystemAssistantExperienceViewController *)self view];
+  [view2 convertRect:coordinateSpace fromCoordinateSpace:{x, y, width, height}];
   v14 = v13;
   v16 = v15;
   v18 = v17;
@@ -4378,8 +4378,8 @@ LABEL_9:
 
 - (CGRect)_keyboardFrame
 {
-  v3 = [(SRSystemAssistantExperienceViewController *)self _keyboardState];
-  [v3 frame];
+  _keyboardState = [(SRSystemAssistantExperienceViewController *)self _keyboardState];
+  [_keyboardState frame];
   [(SRSystemAssistantExperienceViewController *)self _convertRectFromKeyboard:?];
   v5 = v4;
   v7 = v6;
@@ -4397,13 +4397,13 @@ LABEL_9:
   return result;
 }
 
-- (void)_setInputType:(int64_t)a3
+- (void)_setInputType:(int64_t)type
 {
-  if ([(SiriSharedUISAEViewState *)self->_viewState inputType]!= a3)
+  if ([(SiriSharedUISAEViewState *)self->_viewState inputType]!= type)
   {
-    [(SiriSharedUISAEViewState *)self->_viewState setInputType:a3];
-    v5 = [(SRSystemAssistantExperienceViewController *)self containerView];
-    [v5 setInputType:a3];
+    [(SiriSharedUISAEViewState *)self->_viewState setInputType:type];
+    containerView = [(SRSystemAssistantExperienceViewController *)self containerView];
+    [containerView setInputType:type];
 
     [(SRSystemAssistantExperienceViewController *)self _updateTextRequestViewVisibility];
 
@@ -4414,15 +4414,15 @@ LABEL_9:
 - (BOOL)_alwaysObscureBackgroundContentWhenActive
 {
   v2 = +[AFPreferences sharedPreferences];
-  v3 = [v2 alwaysObscureBackgroundContentWhenActive];
+  alwaysObscureBackgroundContentWhenActive = [v2 alwaysObscureBackgroundContentWhenActive];
 
-  return v3;
+  return alwaysObscureBackgroundContentWhenActive;
 }
 
-- (BOOL)_keyboardHasContentAtPoint:(CGPoint)a3
+- (BOOL)_keyboardHasContentAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   [(SRSystemAssistantExperienceViewController *)self _keyboardFrame];
   v9 = x;
   v10 = y;
@@ -4430,64 +4430,64 @@ LABEL_9:
   return CGRectContainsPoint(*&v5, *&v9);
 }
 
-- (void)_requestKeyboardWithCompletion:(id)a3
+- (void)_requestKeyboardWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(SRSystemAssistantExperienceViewController *)self delegate];
-  [v5 saeViewController:self requestsKeyboardWithCompletion:v4];
+  completionCopy = completion;
+  delegate = [(SRSystemAssistantExperienceViewController *)self delegate];
+  [delegate saeViewController:self requestsKeyboardWithCompletion:completionCopy];
 }
 
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated
 {
-  v5 = a5;
-  v27 = a3;
-  v8 = a4;
-  v9 = [(SRSystemAssistantExperienceViewController *)self _contentPlatterViewFromViewController:v8];
-  v10 = [v27 viewControllers];
-  v11 = [v10 count];
+  animatedCopy = animated;
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  v9 = [(SRSystemAssistantExperienceViewController *)self _contentPlatterViewFromViewController:viewControllerCopy];
+  viewControllers = [controllerCopy viewControllers];
+  v11 = [viewControllers count];
 
   if (v11 == 2)
   {
     if (SiriSharedUIDeviceIsPhone() && !self->_isDrilledIntoSnippet)
     {
-      v13 = [(SRSystemAssistantExperienceViewController *)self delegate];
-      [v13 updateEdgeLightWindowLevel:1];
+      delegate = [(SRSystemAssistantExperienceViewController *)self delegate];
+      [delegate updateEdgeLightWindowLevel:1];
     }
 
     self->_isDrilledIntoSnippet = 1;
     if (SiriSharedUIDeviceIsPad())
     {
-      [v27 setNavigationBarHidden:0 animated:v5];
+      [controllerCopy setNavigationBarHidden:0 animated:animatedCopy];
       [v9 setFakeNavigationBarBackgroundHidden:1];
     }
 
     else
     {
-      [v27 setNavigationBarHidden:1 animated:v5];
+      [controllerCopy setNavigationBarHidden:1 animated:animatedCopy];
     }
 
-    v19 = [(SRSystemAssistantExperienceViewController *)self textFieldContainerView];
-    [v19 textFieldHeight];
+    textFieldContainerView = [(SRSystemAssistantExperienceViewController *)self textFieldContainerView];
+    [textFieldContainerView textFieldHeight];
     v21 = v20;
 
     if ((SiriSharedUIDeviceIsPad() & 1) == 0)
     {
-      v22 = [(SRSystemAssistantExperienceViewController *)self view];
-      [v22 safeAreaInsets];
+      view = [(SRSystemAssistantExperienceViewController *)self view];
+      [view safeAreaInsets];
       v21 = v21 + v23;
     }
 
     [v9 setMinimumScrollViewBottomInset:v21];
-    v24 = [v8 navigationItem];
-    [v24 setHidesBackButton:1];
+    navigationItem = [viewControllerCopy navigationItem];
+    [navigationItem setHidesBackButton:1];
 
-    v25 = [(SRSystemAssistantExperienceViewController *)self delegate];
-    [v25 toggleHomeAffordanceHidden:SiriSharedUIDeviceIsPhone() ^ 1];
+    delegate2 = [(SRSystemAssistantExperienceViewController *)self delegate];
+    [delegate2 toggleHomeAffordanceHidden:SiriSharedUIDeviceIsPhone() ^ 1];
 
     if ([(SiriSharedUISAEViewState *)self->_viewState inputType]== 1)
     {
-      v26 = [(SRSystemAssistantExperienceViewController *)self promptEntryView];
-      [v26 resignFirstResponder];
+      promptEntryView = [(SRSystemAssistantExperienceViewController *)self promptEntryView];
+      [promptEntryView resignFirstResponder];
     }
 
     [(SRSystemAssistantExperienceViewController *)self updateTopInset:1 animated:self->_topInset];
@@ -4498,13 +4498,13 @@ LABEL_9:
   else if (v11 == 1)
   {
     self->_isDrilledIntoSnippet = 0;
-    [v27 setNavigationBarHidden:1 animated:v5];
+    [controllerCopy setNavigationBarHidden:1 animated:animatedCopy];
     [v9 setFakeNavigationBarBackgroundHidden:1];
     [(SRSystemAssistantExperienceViewController *)self _updateHomeAffordanceVisibility];
     if (SiriSharedUIDeviceIsPhone())
     {
-      v12 = [(SRSystemAssistantExperienceViewController *)self delegate];
-      [v12 updateEdgeLightWindowLevel:0];
+      delegate3 = [(SRSystemAssistantExperienceViewController *)self delegate];
+      [delegate3 updateEdgeLightWindowLevel:0];
     }
 
     [(SRSystemAssistantExperienceViewController *)self updateTopInset:1 animated:self->_topInset];
@@ -4512,16 +4512,16 @@ LABEL_9:
 
   else if (v11 >= 3)
   {
-    [v27 setNavigationBarHidden:0 animated:v5];
+    [controllerCopy setNavigationBarHidden:0 animated:animatedCopy];
     [v9 setFakeNavigationBarBackgroundHidden:0];
-    v14 = [(SRSystemAssistantExperienceViewController *)self textFieldContainerView];
-    [v14 textFieldHeight];
+    textFieldContainerView2 = [(SRSystemAssistantExperienceViewController *)self textFieldContainerView];
+    [textFieldContainerView2 textFieldHeight];
     v16 = v15;
 
     if ((SiriSharedUIDeviceIsPad() & 1) == 0)
     {
-      v17 = [(SRSystemAssistantExperienceViewController *)self view];
-      [v17 safeAreaInsets];
+      view2 = [(SRSystemAssistantExperienceViewController *)self view];
+      [view2 safeAreaInsets];
       v16 = v16 + v18;
     }
 
@@ -4529,39 +4529,39 @@ LABEL_9:
   }
 }
 
-- (id)_contentPlatterViewFromViewController:(id)a3
+- (id)_contentPlatterViewFromViewController:(id)controller
 {
-  v3 = a3;
+  controllerCopy = controller;
   v4 = objc_opt_class();
-  v5 = sub_100019948(v4, v3);
+  v5 = sub_100019948(v4, controllerCopy);
 
   if (v5 && (v6 = objc_opt_class(), [v5 contentViewController], v7 = objc_claimAutoreleasedReturnValue(), sub_100019948(v6, v7), v8 = objc_claimAutoreleasedReturnValue(), v7, v8))
   {
-    v9 = [v8 contentPlatterView];
+    contentPlatterView = [v8 contentPlatterView];
   }
 
   else
   {
-    v9 = 0;
+    contentPlatterView = 0;
   }
 
-  return v9;
+  return contentPlatterView;
 }
 
-- (BOOL)_contentDiffersBetweenPlatterItems:(id)a3 andItems:(id)a4
+- (BOOL)_contentDiffersBetweenPlatterItems:(id)items andItems:(id)andItems
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 count];
-  if (v7 == [v6 count])
+  itemsCopy = items;
+  andItemsCopy = andItems;
+  v7 = [itemsCopy count];
+  if (v7 == [andItemsCopy count])
   {
-    if ([v5 count])
+    if ([itemsCopy count])
     {
       v8 = 0;
       do
       {
-        v9 = [v5 objectAtIndex:v8];
-        v10 = [v6 objectAtIndex:v8];
+        v9 = [itemsCopy objectAtIndex:v8];
+        v10 = [andItemsCopy objectAtIndex:v8];
         v11 = [SiriSharedUIUtilities contentDiffersBetweenItems:v10 andItems:v9];
 
         if (v11)
@@ -4572,7 +4572,7 @@ LABEL_9:
         ++v8;
       }
 
-      while ([v5 count] > v8);
+      while ([itemsCopy count] > v8);
     }
 
     else
@@ -4589,24 +4589,24 @@ LABEL_9:
   return v11;
 }
 
-- (void)dropletContentWillUpdateLayout:(id)a3 withUpdatedContentSize:(CGSize)a4 animated:(BOOL)a5
+- (void)dropletContentWillUpdateLayout:(id)layout withUpdatedContentSize:(CGSize)size animated:(BOOL)animated
 {
-  height = a4.height;
-  width = a4.width;
-  self->_latestDropletContentLayoutSize = a4;
+  height = size.height;
+  width = size.width;
+  self->_latestDropletContentLayoutSize = size;
   viewState = self->_viewState;
-  v9 = a3;
-  v10 = [(SiriSharedUISAEViewState *)viewState activeSmartDialogView];
+  layoutCopy = layout;
+  activeSmartDialogView = [(SiriSharedUISAEViewState *)viewState activeSmartDialogView];
 
-  if (v10 == v9)
+  if (activeSmartDialogView == layoutCopy)
   {
-    v11 = [(SiriSharedUISAEViewState *)self->_viewState activeSmartDialogIsLatencyPill];
+    activeSmartDialogIsLatencyPill = [(SiriSharedUISAEViewState *)self->_viewState activeSmartDialogIsLatencyPill];
     v12 = self->_viewState;
-    if (v11)
+    if (activeSmartDialogIsLatencyPill)
     {
-      v13 = [(SiriSharedUISAEViewState *)v12 userUtterance];
-      v14 = [v13 speech];
-      v15 = [v14 isFinal];
+      userUtterance = [(SiriSharedUISAEViewState *)v12 userUtterance];
+      speech = [userUtterance speech];
+      isFinal = [speech isFinal];
 
       defaultSpringAnimationBehavior = self->_defaultSpringAnimationBehavior;
       v30[0] = _NSConcreteStackBlock;
@@ -4620,28 +4620,28 @@ LABEL_9:
       v28[1] = 3221225472;
       v28[2] = sub_100028FF4;
       v28[3] = &unk_100166FC0;
-      v29 = v15;
+      v29 = isFinal;
       v28[4] = self;
       [UIView _animateUsingSpringBehavior:defaultSpringAnimationBehavior tracking:0 animations:v30 completion:v28];
-      v17 = [(SRSystemAssistantExperienceViewController *)self view];
-      [v17 setNeedsLayout];
+      view = [(SRSystemAssistantExperienceViewController *)self view];
+      [view setNeedsLayout];
 
-      v18 = [(SRSystemAssistantExperienceViewController *)self view];
+      view2 = [(SRSystemAssistantExperienceViewController *)self view];
 LABEL_4:
-      v19 = v18;
-      [v18 layoutIfNeeded];
+      v19 = view2;
+      [view2 layoutIfNeeded];
 
       return;
     }
 
-    v20 = [(SiriSharedUISAEViewState *)v12 activeSmartDialogView];
-    if (v20)
+    activeSmartDialogView2 = [(SiriSharedUISAEViewState *)v12 activeSmartDialogView];
+    if (activeSmartDialogView2)
     {
-      v21 = v20;
-      v22 = [(SiriSharedUISAEViewState *)self->_viewState activeSmartDialogView];
-      v23 = [v22 hasResult];
+      v21 = activeSmartDialogView2;
+      activeSmartDialogView3 = [(SiriSharedUISAEViewState *)self->_viewState activeSmartDialogView];
+      hasResult = [activeSmartDialogView3 hasResult];
 
-      if (v23)
+      if (hasResult)
       {
         self->_activeSmartDialogSize.width = width;
         self->_activeSmartDialogSize.height = height;
@@ -4661,16 +4661,16 @@ LABEL_4:
           *&v27[5] = width;
           *&v27[6] = height;
           [UIView _performWithoutRetargetingAnimations:v27];
-          v24 = [(SRSystemAssistantExperienceViewController *)self view];
-          [v24 setNeedsLayout];
+          view3 = [(SRSystemAssistantExperienceViewController *)self view];
+          [view3 setNeedsLayout];
 
-          v25 = [(SRSystemAssistantExperienceViewController *)self view];
-          [v25 layoutIfNeeded];
+          view4 = [(SRSystemAssistantExperienceViewController *)self view];
+          [view4 layoutIfNeeded];
 
-          v26 = [(SRSystemAssistantExperienceViewController *)self containerView];
-          [v26 setNeedsLayout];
+          containerView = [(SRSystemAssistantExperienceViewController *)self containerView];
+          [containerView setNeedsLayout];
 
-          v18 = [(SRSystemAssistantExperienceViewController *)self containerView];
+          view2 = [(SRSystemAssistantExperienceViewController *)self containerView];
           goto LABEL_4;
         }
       }
@@ -4680,8 +4680,8 @@ LABEL_4:
 
 - (double)dropletContentMaximumContainerWidth
 {
-  v2 = [(SRSystemAssistantExperienceViewController *)self containerView];
-  [v2 frame];
+  containerView = [(SRSystemAssistantExperienceViewController *)self containerView];
+  [containerView frame];
   v4 = v3;
 
   return v4;
@@ -4689,40 +4689,40 @@ LABEL_4:
 
 - (double)dropletContentMaximumContainerHeight
 {
-  v2 = [(SRSystemAssistantExperienceViewController *)self containerView];
-  [v2 frame];
+  containerView = [(SRSystemAssistantExperienceViewController *)self containerView];
+  [containerView frame];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setDropletContainerUserUtteranceViewHeight:(double)a3
+- (void)setDropletContainerUserUtteranceViewHeight:(double)height
 {
-  v4 = [(SRSystemAssistantExperienceViewController *)self containerView];
-  [v4 setUserUtteranceViewHeight:a3];
+  containerView = [(SRSystemAssistantExperienceViewController *)self containerView];
+  [containerView setUserUtteranceViewHeight:height];
 }
 
 - (void)siriViewControllerHeightDidChange
 {
-  v2 = [(SiriSharedUISAEViewState *)self->_viewState activeSmartDialogView];
-  [v2 snippetContentDidUpdate];
+  activeSmartDialogView = [(SiriSharedUISAEViewState *)self->_viewState activeSmartDialogView];
+  [activeSmartDialogView snippetContentDidUpdate];
 }
 
-- (void)siriViewControllerShouldOpenUrl:(id)a3
+- (void)siriViewControllerShouldOpenUrl:(id)url
 {
-  v4 = a3;
-  v5 = [(SRSystemAssistantExperienceViewController *)self delegate];
-  [v5 viewController:self openURL:v4 completion:0];
+  urlCopy = url;
+  delegate = [(SRSystemAssistantExperienceViewController *)self delegate];
+  [delegate viewController:self openURL:urlCopy completion:0];
 }
 
-- (void)siriViewControllerShouldRequestTextInputWithUtterance:(id)a3 alternatives:(id)a4
+- (void)siriViewControllerShouldRequestTextInputWithUtterance:(id)utterance alternatives:(id)alternatives
 {
-  v6 = a3;
-  v7 = a4;
+  utteranceCopy = utterance;
+  alternativesCopy = alternatives;
   v8 = objc_alloc_init(SISchemaUEITranscriptTapped);
   [v8 setExists:1];
-  v9 = [(SRSystemAssistantExperienceViewController *)self _instrumentationManager];
-  [v9 emitInstrumentation:v8];
+  _instrumentationManager = [(SRSystemAssistantExperienceViewController *)self _instrumentationManager];
+  [_instrumentationManager emitInstrumentation:v8];
 
   v10 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEFAULT))
@@ -4739,18 +4739,18 @@ LABEL_4:
     [(SRSystemAssistantExperienceViewController *)self removeResponseElementsIfNeeded:1];
     [(SRSystemAssistantExperienceViewController *)self _setInputType:1];
     [(SRSystemAssistantExperienceViewController *)self siriDidActivate];
-    v11 = [(SRSystemAssistantExperienceViewController *)self delegate];
-    [v11 siriSAEViewControllerRequestsTextActivation:self withRequestSource:33];
+    delegate = [(SRSystemAssistantExperienceViewController *)self delegate];
+    [delegate siriSAEViewControllerRequestsTextActivation:self withRequestSource:33];
   }
 
-  [(SRSystemAssistantExperienceViewController *)self _presentSystemPromptEntryViewWithUtterance:v6 alternatives:v7];
+  [(SRSystemAssistantExperienceViewController *)self _presentSystemPromptEntryViewWithUtterance:utteranceCopy alternatives:alternativesCopy];
 }
 
-- (void)siriViewControllerRequestDeviceUnlockWithCompletion:(id)a3
+- (void)siriViewControllerRequestDeviceUnlockWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(SRSystemAssistantExperienceViewController *)self delegate];
-  v6 = [v5 lockStateForSAEViewController:self];
+  completionCopy = completion;
+  delegate = [(SRSystemAssistantExperienceViewController *)self delegate];
+  v6 = [delegate lockStateForSAEViewController:self];
 
   if ((v6 & 2) != 0)
   {
@@ -4759,44 +4759,44 @@ LABEL_4:
     v8[1] = 3221225472;
     v8[2] = sub_1000296B0;
     v8[3] = &unk_100167478;
-    v9 = v4;
+    v9 = completionCopy;
     [WeakRetained requestToHandlePasscodeUnlockWithClient:0 withCompletion:v8];
   }
 
-  else if (v4)
+  else if (completionCopy)
   {
-    (*(v4 + 2))(v4, 1);
+    (*(completionCopy + 2))(completionCopy, 1);
   }
 }
 
-- (void)_presentSystemPromptEntryViewWithUtterance:(id)a3 alternatives:(id)a4
+- (void)_presentSystemPromptEntryViewWithUtterance:(id)utterance alternatives:(id)alternatives
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SRSystemAssistantExperienceViewController *)self promptEntryView];
-  [v8 prefillWithText:v7];
+  alternativesCopy = alternatives;
+  utteranceCopy = utterance;
+  promptEntryView = [(SRSystemAssistantExperienceViewController *)self promptEntryView];
+  [promptEntryView prefillWithText:utteranceCopy];
 
-  v9 = [(SRSystemAssistantExperienceViewController *)self promptEntryView];
-  [v9 becomeFirstResponder];
+  promptEntryView2 = [(SRSystemAssistantExperienceViewController *)self promptEntryView];
+  [promptEntryView2 becomeFirstResponder];
 
-  v10 = [(SRSystemAssistantExperienceViewController *)self promptEntryView];
-  [v10 setKeyboardSuggestions:v6];
+  promptEntryView3 = [(SRSystemAssistantExperienceViewController *)self promptEntryView];
+  [promptEntryView3 setKeyboardSuggestions:alternativesCopy];
 
-  v11 = [v6 count];
+  v11 = [alternativesCopy count];
   if (v11)
   {
-    v12 = [(SRSystemAssistantExperienceViewController *)self promptEntryView];
-    [v12 selectAllText];
+    promptEntryView4 = [(SRSystemAssistantExperienceViewController *)self promptEntryView];
+    [promptEntryView4 selectAllText];
   }
 }
 
 - (void)siriViewControllerWillBeginEditing
 {
-  v3 = [(SRSystemAssistantExperienceViewController *)self delegate];
-  [v3 cancelRequestForViewController:self];
+  delegate = [(SRSystemAssistantExperienceViewController *)self delegate];
+  [delegate cancelRequestForViewController:self];
 
-  v4 = [(SRSystemAssistantExperienceViewController *)self delegate];
-  [v4 saeViewControllerRequestsHIDEventDefferal:self];
+  delegate2 = [(SRSystemAssistantExperienceViewController *)self delegate];
+  [delegate2 saeViewControllerRequestsHIDEventDefferal:self];
 
   v5 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEFAULT))
@@ -4806,14 +4806,14 @@ LABEL_4:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s #dismissal - temporarily preventing touches from dismissing Siri while edit sheet is up", &v7, 0xCu);
   }
 
-  v6 = [(SRSystemAssistantExperienceViewController *)self delegate];
-  [v6 saeViewController:self preventOutsideTouchesFromDismissingSiri:1];
+  delegate3 = [(SRSystemAssistantExperienceViewController *)self delegate];
+  [delegate3 saeViewController:self preventOutsideTouchesFromDismissingSiri:1];
 }
 
 - (void)siriViewControllerDidEndEditing
 {
-  v3 = [(SRSystemAssistantExperienceViewController *)self delegate];
-  [v3 saeViewControllerCancelHIDEventDefferal:self];
+  delegate = [(SRSystemAssistantExperienceViewController *)self delegate];
+  [delegate saeViewControllerCancelHIDEventDefferal:self];
 
   v4 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEFAULT))
@@ -4823,8 +4823,8 @@ LABEL_4:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%s #dismissal - edit sheet is removed, no longer preventing touches from dismissing Siri", &v6, 0xCu);
   }
 
-  v5 = [(SRSystemAssistantExperienceViewController *)self delegate];
-  [v5 saeViewController:self preventOutsideTouchesFromDismissingSiri:0];
+  delegate2 = [(SRSystemAssistantExperienceViewController *)self delegate];
+  [delegate2 saeViewController:self preventOutsideTouchesFromDismissingSiri:0];
 }
 
 - (void)switchPresentationToTextInput
@@ -4841,7 +4841,7 @@ LABEL_4:
   [(SRSystemAssistantExperienceViewController *)self siriDidActivate];
 }
 
-- (void)promptEntryViewWillPresentEditMenu:(id)a3
+- (void)promptEntryViewWillPresentEditMenu:(id)menu
 {
   v4 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEFAULT))
@@ -4851,11 +4851,11 @@ LABEL_4:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%s #dismissal - temporarily preventing touches from dismissing Siri while edit menu is up", &v6, 0xCu);
   }
 
-  v5 = [(SRSystemAssistantExperienceViewController *)self delegate];
-  [v5 saeViewController:self preventOutsideTouchesFromDismissingSiri:1];
+  delegate = [(SRSystemAssistantExperienceViewController *)self delegate];
+  [delegate saeViewController:self preventOutsideTouchesFromDismissingSiri:1];
 }
 
-- (void)promptEntryDidDismissEditMenu:(id)a3
+- (void)promptEntryDidDismissEditMenu:(id)menu
 {
   v4 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEFAULT))
@@ -4865,38 +4865,38 @@ LABEL_4:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%s #dismissal - edit menu is removed, no longer preventing touches from dismissing Siri", &v6, 0xCu);
   }
 
-  v5 = [(SRSystemAssistantExperienceViewController *)self delegate];
-  [v5 saeViewController:self preventOutsideTouchesFromDismissingSiri:0];
+  delegate = [(SRSystemAssistantExperienceViewController *)self delegate];
+  [delegate saeViewController:self preventOutsideTouchesFromDismissingSiri:0];
 }
 
-- (void)entryViewDidSubmit:(id)a3 text:(id)a4
+- (void)entryViewDidSubmit:(id)submit text:(id)text
 {
-  v5 = a4;
-  v6 = [(SRSystemAssistantExperienceViewController *)self textFieldContainerView];
-  [v6 removeSuggestions];
+  textCopy = text;
+  textFieldContainerView = [(SRSystemAssistantExperienceViewController *)self textFieldContainerView];
+  [textFieldContainerView removeSuggestions];
 
   self->_promptEntryViewSuggestionsSubmitting = 0;
   if (self->_inTapToEdit)
   {
-    v7 = [(SiriSharedUISAEViewState *)self->_viewState activeSmartDialogView];
-    v8 = [v7 userUtteranceViewModel];
-    v9 = [v8 asrAlternatives];
-    v10 = [v9 count] == 0;
+    activeSmartDialogView = [(SiriSharedUISAEViewState *)self->_viewState activeSmartDialogView];
+    userUtteranceViewModel = [activeSmartDialogView userUtteranceViewModel];
+    asrAlternatives = [userUtteranceViewModel asrAlternatives];
+    v10 = [asrAlternatives count] == 0;
 
-    v11 = [(SRSystemAssistantExperienceViewController *)self delegate];
-    v12 = [(SiriSharedUISAEViewState *)self->_viewState userUtterance];
-    v13 = [v12 speech];
-    v14 = [v13 userUtterance];
+    delegate = [(SRSystemAssistantExperienceViewController *)self delegate];
+    userUtterance = [(SiriSharedUISAEViewState *)self->_viewState userUtterance];
+    speech = [userUtterance speech];
+    userUtterance2 = [speech userUtterance];
     v15 = objc_alloc_init(AFUserUtteranceSelectionResults);
-    [v11 viewController:self didFinishEditingUtteranceWithText:v5 originalUserUtterance:v14 selectionResults:v15 showASR:v10];
+    [delegate viewController:self didFinishEditingUtteranceWithText:textCopy originalUserUtterance:userUtterance2 selectionResults:v15 showASR:v10];
 
     self->_inTapToEdit = 0;
   }
 
   else
   {
-    v16 = [(SRSystemAssistantExperienceViewController *)self delegate];
-    [v16 viewController:self siriRequestEnteredWithText:v5];
+    delegate2 = [(SRSystemAssistantExperienceViewController *)self delegate];
+    [delegate2 viewController:self siriRequestEnteredWithText:textCopy];
   }
 
   suggestionsViewProvider = self->_suggestionsViewProvider;
@@ -4904,9 +4904,9 @@ LABEL_4:
   [(SiriSharedUISuggestionsViewInterface *)suggestionsViewProvider startNewTypingSession];
 }
 
-- (void)entryViewDidSubmit:(id)a3 visualIntelligenceText:(id)a4
+- (void)entryViewDidSubmit:(id)submit visualIntelligenceText:(id)text
 {
-  v5 = a4;
+  textCopy = text;
   v6 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEFAULT))
   {
@@ -4916,16 +4916,16 @@ LABEL_4:
   }
 
   v7 = [[SASRequestOptions alloc] initWithRequestSource:60 uiPresentationIdentifier:@"com.apple.siri.SystemAssistantExperience"];
-  [v7 setText:v5];
-  v8 = [(SRSystemAssistantExperienceViewController *)self delegate];
-  [v8 siriSAEViewControllerRequestsTextRequest:self withRequestOptions:v7];
+  [v7 setText:textCopy];
+  delegate = [(SRSystemAssistantExperienceViewController *)self delegate];
+  [delegate siriSAEViewControllerRequestsTextRequest:self withRequestOptions:v7];
 }
 
-- (void)entryViewDidSubmit:(id)a3 suggestionText:(id)a4 suggestionRequestType:(int64_t)a5
+- (void)entryViewDidSubmit:(id)submit suggestionText:(id)text suggestionRequestType:(int64_t)type
 {
-  v7 = a4;
-  v8 = [(SRSystemAssistantExperienceViewController *)self textFieldContainerView];
-  [v8 removeSuggestions];
+  textCopy = text;
+  textFieldContainerView = [(SRSystemAssistantExperienceViewController *)self textFieldContainerView];
+  [textFieldContainerView removeSuggestions];
 
   encodedToolInvocationDataForTappedSuggestion = self->_encodedToolInvocationDataForTappedSuggestion;
   v10 = AFSiriLogContextConnection;
@@ -4951,8 +4951,8 @@ LABEL_4:
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%s #suggestions committing suggestion from promptEntryView with text", &v16, 0xCu);
     }
 
-    v12 = [(SRSystemAssistantExperienceViewController *)self delegate];
-    [v12 viewController:self siriRequestEnteredWithSuggestion:v7 suggestionRequestType:{-[SRSystemAssistantExperienceViewController _mapSuggestionRequestTypeToSASSuggestionRequestType:](self, "_mapSuggestionRequestTypeToSASSuggestionRequestType:", a5)}];
+    delegate = [(SRSystemAssistantExperienceViewController *)self delegate];
+    [delegate viewController:self siriRequestEnteredWithSuggestion:textCopy suggestionRequestType:{-[SRSystemAssistantExperienceViewController _mapSuggestionRequestTypeToSASSuggestionRequestType:](self, "_mapSuggestionRequestTypeToSASSuggestionRequestType:", type)}];
   }
 
   [(SiriSharedUISuggestionsViewInterface *)self->_suggestionsViewProvider startNewTypingSession];
@@ -4969,31 +4969,31 @@ LABEL_4:
 
 - (void)shouldBeginEditing
 {
-  v3 = [(SRSystemAssistantExperienceViewController *)self textFieldContainerView];
-  [v3 updateKeyboardLightEffects:1];
+  textFieldContainerView = [(SRSystemAssistantExperienceViewController *)self textFieldContainerView];
+  [textFieldContainerView updateKeyboardLightEffects:1];
 
   [(SRSystemAssistantExperienceViewController *)self _fadeOutContinuerSuggestionsIfAny];
 }
 
-- (void)promptEntryViewDidBeginEditing:(id)a3
+- (void)promptEntryViewDidBeginEditing:(id)editing
 {
-  v4 = [(SRSystemAssistantExperienceViewController *)self delegate];
-  if ([v4 isPresentingVisualIntelligenceCamera])
+  delegate = [(SRSystemAssistantExperienceViewController *)self delegate];
+  if ([delegate isPresentingVisualIntelligenceCamera])
   {
-    v5 = 1;
+    isPresentingVisualIntelligenceDirectInvocation = 1;
   }
 
   else
   {
-    v6 = [(SRSystemAssistantExperienceViewController *)self delegate];
-    v5 = [v6 isPresentingVisualIntelligenceDirectInvocation];
+    delegate2 = [(SRSystemAssistantExperienceViewController *)self delegate];
+    isPresentingVisualIntelligenceDirectInvocation = [delegate2 isPresentingVisualIntelligenceDirectInvocation];
   }
 
-  v7 = [(SystemAssistantPromptEntryView *)self->_promptEntryView isInTamaleAndCollapsed];
-  v8 = [(SRSystemAssistantExperienceViewController *)self delegate];
-  if (v7)
+  isInTamaleAndCollapsed = [(SystemAssistantPromptEntryView *)self->_promptEntryView isInTamaleAndCollapsed];
+  delegate3 = [(SRSystemAssistantExperienceViewController *)self delegate];
+  if (isInTamaleAndCollapsed)
   {
-    v9 = v5 == 0;
+    v9 = isPresentingVisualIntelligenceDirectInvocation == 0;
   }
 
   else
@@ -5001,69 +5001,69 @@ LABEL_4:
     v9 = 1;
   }
 
-  v10 = v8;
+  v10 = delegate3;
   if (v9)
   {
-    [v8 viewController:self willChangeKeyboardVisibility:1];
+    [delegate3 viewController:self willChangeKeyboardVisibility:1];
   }
 
   else
   {
-    [v8 cancelRequestForViewController:self];
+    [delegate3 cancelRequestForViewController:self];
 
     [(SRSystemAssistantExperienceViewController *)self removeResponseElementsIfNeeded:1];
   }
 }
 
-- (void)promptEntryViewDidEndEditing:(id)a3
+- (void)promptEntryViewDidEndEditing:(id)editing
 {
-  v4 = [(SRSystemAssistantExperienceViewController *)self delegate];
-  [v4 viewController:self willChangeKeyboardVisibility:0];
+  delegate = [(SRSystemAssistantExperienceViewController *)self delegate];
+  [delegate viewController:self willChangeKeyboardVisibility:0];
 }
 
 - (void)_cancelFirstVisualIntelligenceRequestIfNeeded
 {
-  v3 = [(SystemAssistantPromptEntryView *)self->_promptEntryView isInTamaleAndCollapsed];
-  v4 = [(SystemAssistantPromptEntryView *)self->_promptEntryView firstPromptSubmitted];
-  v5 = [(SystemAssistantPromptEntryView *)self->_promptEntryView requestSourceIsQuickTypeTamale];
+  isInTamaleAndCollapsed = [(SystemAssistantPromptEntryView *)self->_promptEntryView isInTamaleAndCollapsed];
+  firstPromptSubmitted = [(SystemAssistantPromptEntryView *)self->_promptEntryView firstPromptSubmitted];
+  requestSourceIsQuickTypeTamale = [(SystemAssistantPromptEntryView *)self->_promptEntryView requestSourceIsQuickTypeTamale];
   v6 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 136316162;
     v9 = "[SRSystemAssistantExperienceViewController _cancelFirstVisualIntelligenceRequestIfNeeded]";
     v10 = 1024;
-    v11 = v5 & ((v3 | v4) ^ 1);
+    v11 = requestSourceIsQuickTypeTamale & ((isInTamaleAndCollapsed | firstPromptSubmitted) ^ 1);
     v12 = 1024;
-    v13 = v3 & 1;
+    v13 = isInTamaleAndCollapsed & 1;
     v14 = 1024;
-    v15 = v4 & 1;
+    v15 = firstPromptSubmitted & 1;
     v16 = 1024;
-    v17 = v5;
+    v17 = requestSourceIsQuickTypeTamale;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%s #visual intelligence - shouldCancelActiveRequest: %d (firstPromptSubmitted: %d, isVisualIntelligenceDirectInvocationRequest: %d, isVisualIntelligenceDirectInvocationRequest: %d)", &v8, 0x24u);
   }
 
-  if ((v5 & ((v3 | v4) ^ 1)) != 0 && !self->_hasCanceledFirstVisualIntelligenceRequest)
+  if ((requestSourceIsQuickTypeTamale & ((isInTamaleAndCollapsed | firstPromptSubmitted) ^ 1)) != 0 && !self->_hasCanceledFirstVisualIntelligenceRequest)
   {
-    v7 = [(SRSystemAssistantExperienceViewController *)self delegate];
-    [v7 cancelRequestForViewController:self];
+    delegate = [(SRSystemAssistantExperienceViewController *)self delegate];
+    [delegate cancelRequestForViewController:self];
 
     [(SRSystemAssistantExperienceViewController *)self removeResponseElementsIfNeeded:1];
     self->_hasCanceledFirstVisualIntelligenceRequest = 1;
   }
 }
 
-- (void)didChangeText:(id)a3
+- (void)didChangeText:(id)text
 {
-  v4 = a3;
-  v5 = [(SRSystemAssistantExperienceViewController *)self delegate];
-  [v5 saeViewController:self didChangeText:v4];
+  textCopy = text;
+  delegate = [(SRSystemAssistantExperienceViewController *)self delegate];
+  [delegate saeViewController:self didChangeText:textCopy];
 
-  v6 = [(SRSystemAssistantExperienceViewController *)self delegate];
-  if ([v6 isPresentingVisualIntelligenceCamera])
+  delegate2 = [(SRSystemAssistantExperienceViewController *)self delegate];
+  if ([delegate2 isPresentingVisualIntelligenceCamera])
   {
 
 LABEL_4:
-    if ([v4 length] && !self->_hasCanceledFirstVisualIntelligenceRequest)
+    if ([textCopy length] && !self->_hasCanceledFirstVisualIntelligenceRequest)
     {
       [(SRSystemAssistantExperienceViewController *)self _cancelFirstVisualIntelligenceRequestIfNeeded];
     }
@@ -5071,10 +5071,10 @@ LABEL_4:
     goto LABEL_16;
   }
 
-  v7 = [(SRSystemAssistantExperienceViewController *)self delegate];
-  v8 = [v7 isPresentingVisualIntelligenceDirectInvocation];
+  delegate3 = [(SRSystemAssistantExperienceViewController *)self delegate];
+  isPresentingVisualIntelligenceDirectInvocation = [delegate3 isPresentingVisualIntelligenceDirectInvocation];
 
-  if (v8)
+  if (isPresentingVisualIntelligenceDirectInvocation)
   {
     goto LABEL_4;
   }
@@ -5082,30 +5082,30 @@ LABEL_4:
   if (!self->_promptEntryViewSuggestionsSubmitting)
   {
     [(SRSystemAssistantExperienceViewController *)self _fadeOutContinuerSuggestionsIfAny];
-    if ([v4 length])
+    if ([textCopy length])
     {
-      v9 = [(SRSystemAssistantExperienceViewController *)self delegate];
-      v10 = [v9 lockStateForSAEViewController:self];
+      delegate4 = [(SRSystemAssistantExperienceViewController *)self delegate];
+      v10 = [delegate4 lockStateForSAEViewController:self];
 
       if (!self->_suggestionsViewProvider)
       {
-        v11 = [(SRSystemAssistantExperienceViewController *)self createSuggestionsViewProvider];
+        createSuggestionsViewProvider = [(SRSystemAssistantExperienceViewController *)self createSuggestionsViewProvider];
         suggestionsViewProvider = self->_suggestionsViewProvider;
-        self->_suggestionsViewProvider = v11;
+        self->_suggestionsViewProvider = createSuggestionsViewProvider;
       }
 
       objc_initWeak(&location, self);
       v13 = self->_suggestionsViewProvider;
-      v14 = [(SRSystemAssistantExperienceViewController *)self _instrumentationManager];
-      v15 = [v14 currentInstrumentationTurnContext];
-      v16 = [v15 turnIdentifier];
+      _instrumentationManager = [(SRSystemAssistantExperienceViewController *)self _instrumentationManager];
+      currentInstrumentationTurnContext = [_instrumentationManager currentInstrumentationTurnContext];
+      turnIdentifier = [currentInstrumentationTurnContext turnIdentifier];
       v21[0] = _NSConcreteStackBlock;
       v21[1] = 3221225472;
       v21[2] = sub_10002A5C4;
       v21[3] = &unk_100167248;
       objc_copyWeak(&v22, &location);
       v21[4] = self;
-      [(SiriSharedUISuggestionsViewInterface *)v13 fetchAutoCompletionSuggestionsViewsWithQuery:v4 deviceLocked:(v10 >> 1) & 1 turnId:v16 completion:v21];
+      [(SiriSharedUISuggestionsViewInterface *)v13 fetchAutoCompletionSuggestionsViewsWithQuery:textCopy deviceLocked:(v10 >> 1) & 1 turnId:turnIdentifier completion:v21];
 
       objc_destroyWeak(&v22);
       objc_destroyWeak(&location);
@@ -5113,10 +5113,10 @@ LABEL_4:
 
     else
     {
-      v17 = [(SiriSharedUISuggestionsViewInterface *)self->_suggestionsViewProvider getInitialSuggestionViewWrappers];
-      if ([v17 count])
+      getInitialSuggestionViewWrappers = [(SiriSharedUISuggestionsViewInterface *)self->_suggestionsViewProvider getInitialSuggestionViewWrappers];
+      if ([getInitialSuggestionViewWrappers count])
       {
-        [(SRSystemAssistantExperienceViewController *)self processSuggestionViewWrappers:v17];
+        [(SRSystemAssistantExperienceViewController *)self processSuggestionViewWrappers:getInitialSuggestionViewWrappers];
         [(SRSystemAssistantExperienceViewController *)self _addSuggestionsToContainer];
       }
 
@@ -5128,8 +5128,8 @@ LABEL_4:
         suggestionViews = self->_suggestionViews;
         self->_suggestionViews = &__NSArray0__struct;
 
-        v20 = [(SRSystemAssistantExperienceViewController *)self textFieldContainerView];
-        [v20 removeSuggestions];
+        textFieldContainerView = [(SRSystemAssistantExperienceViewController *)self textFieldContainerView];
+        [textFieldContainerView removeSuggestions];
       }
     }
   }
@@ -5141,15 +5141,15 @@ LABEL_16:
 {
   if ([(NSArray *)self->_continuerSuggestionViews count])
   {
-    v3 = [(SRSystemAssistantExperienceViewController *)self containerView];
-    [v3 removeContinuerSuggestions];
+    containerView = [(SRSystemAssistantExperienceViewController *)self containerView];
+    [containerView removeContinuerSuggestions];
 
     continuerSuggestionViews = self->_continuerSuggestionViews;
     self->_continuerSuggestionViews = &__NSArray0__struct;
   }
 }
 
-- (void)promptEntryViewDidLayoutSubviews:(id)a3
+- (void)promptEntryViewDidLayoutSubviews:(id)subviews
 {
   [(SiriSharedUISystemAssistantExperienceContainerView *)self->_textFieldContainerView setNeedsLayout];
   textFieldContainerView = self->_textFieldContainerView;
@@ -5157,19 +5157,19 @@ LABEL_16:
   [(SiriSharedUISystemAssistantExperienceContainerView *)textFieldContainerView layoutIfNeeded];
 }
 
-- (void)handleVoiceActivationRequestWithRequestOptions:(id)a3
+- (void)handleVoiceActivationRequestWithRequestOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   [(SRSystemAssistantExperienceViewController *)self _setInputType:2];
   [(SRSystemAssistantExperienceViewController *)self _teardownTypeToSiriUI];
-  v5 = [(SRSystemAssistantExperienceViewController *)self delegate];
-  [v5 siriSAEViewControllerRequestsVoiceActivation:self withRequestOptions:v4];
+  delegate = [(SRSystemAssistantExperienceViewController *)self delegate];
+  [delegate siriSAEViewControllerRequestsVoiceActivation:self withRequestOptions:optionsCopy];
 }
 
 - (void)_teardownTypeToSiriUI
 {
-  v3 = [(SRSystemAssistantExperienceViewController *)self promptEntryView];
-  [v3 resignFirstResponder];
+  promptEntryView = [(SRSystemAssistantExperienceViewController *)self promptEntryView];
+  [promptEntryView resignFirstResponder];
 
   suggestionsSpringAnimationBehavior = self->_suggestionsSpringAnimationBehavior;
   v6[0] = _NSConcreteStackBlock;
@@ -5187,23 +5187,23 @@ LABEL_16:
 
 - (void)dismissSiriResults
 {
-  v3 = [(SiriSharedUISAEViewState *)self->_viewState inputType];
-  v4 = [(SRSystemAssistantExperienceViewController *)self delegate];
-  v5 = [v4 isPresentingVisualIntelligenceCamera];
+  inputType = [(SiriSharedUISAEViewState *)self->_viewState inputType];
+  delegate = [(SRSystemAssistantExperienceViewController *)self delegate];
+  isPresentingVisualIntelligenceCamera = [delegate isPresentingVisualIntelligenceCamera];
 
-  if (!v5 || v3 == 3)
+  if (!isPresentingVisualIntelligenceCamera || inputType == 3)
   {
     v7 = AFSiriLogContextConnection;
     if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_ERROR))
     {
-      sub_1000CADD8(v5, v3 == 3, v7);
+      sub_1000CADD8(isPresentingVisualIntelligenceCamera, inputType == 3, v7);
     }
   }
 
   else
   {
-    v6 = [(SRSystemAssistantExperienceViewController *)self delegate];
-    [v6 siriResultsWillDismissInTamale];
+    delegate2 = [(SRSystemAssistantExperienceViewController *)self delegate];
+    [delegate2 siriResultsWillDismissInTamale];
 
     [(SRSystemAssistantExperienceViewController *)self _teardownTypeToSiriForVisualIntelligenceCameraWithUpdate];
   }
@@ -5211,30 +5211,30 @@ LABEL_16:
 
 - (void)_teardownTypeToSiriForVisualIntelligenceCameraWithUpdate
 {
-  v3 = [(SRSystemAssistantExperienceViewController *)self delegate];
-  v4 = [v3 isPresentingVisualIntelligenceCamera];
+  delegate = [(SRSystemAssistantExperienceViewController *)self delegate];
+  isPresentingVisualIntelligenceCamera = [delegate isPresentingVisualIntelligenceCamera];
 
-  if (v4)
+  if (isPresentingVisualIntelligenceCamera)
   {
-    v5 = [(SRSystemAssistantExperienceViewController *)self promptEntryView];
-    v6 = [v5 isInTamaleAndCollapsed];
+    promptEntryView = [(SRSystemAssistantExperienceViewController *)self promptEntryView];
+    isInTamaleAndCollapsed = [promptEntryView isInTamaleAndCollapsed];
 
-    if (v6)
+    if (isInTamaleAndCollapsed)
     {
-      v7 = [(SRSystemAssistantExperienceViewController *)self promptEntryView];
+      promptEntryView2 = [(SRSystemAssistantExperienceViewController *)self promptEntryView];
       v9[0] = _NSConcreteStackBlock;
       v9[1] = 3221225472;
       v9[2] = sub_10002AF68;
       v9[3] = &unk_100167010;
       v9[4] = self;
-      [v7 animateOutTextFieldAndButton:v9];
+      [promptEntryView2 animateOutTextFieldAndButton:v9];
     }
 
     else
     {
       [(SRSystemAssistantExperienceViewController *)self _teardownTypeToSiriUI];
-      v8 = [(SRSystemAssistantExperienceViewController *)self delegate];
-      [v8 siriResultsDidDismissInTamale];
+      delegate2 = [(SRSystemAssistantExperienceViewController *)self delegate];
+      [delegate2 siriResultsDidDismissInTamale];
     }
   }
 
@@ -5247,21 +5247,21 @@ LABEL_16:
 
 - (void)keyboardIsReadyToReceiveInput
 {
-  v3 = [(SRSystemAssistantExperienceViewController *)self _instrumentationManager];
+  _instrumentationManager = [(SRSystemAssistantExperienceViewController *)self _instrumentationManager];
   v4 = SRUIFConstructLaunchContextForLaunchEnded();
-  [v3 emitInstrumentation:v4];
+  [_instrumentationManager emitInstrumentation:v4];
 
   typeToSiriKeyboardReadinessObserver = self->_typeToSiriKeyboardReadinessObserver;
 
   [(SRTypeToSiriKeyboardReadinessObserver *)typeToSiriKeyboardReadinessObserver stop];
 }
 
-- (void)containerView:(id)a3 requestsDismissalWithReason:(int64_t)a4
+- (void)containerView:(id)view requestsDismissalWithReason:(int64_t)reason
 {
-  v6 = [(SRSystemAssistantExperienceViewController *)self delegate];
-  v7 = [v6 isPresentingVisualIntelligenceCamera];
+  delegate = [(SRSystemAssistantExperienceViewController *)self delegate];
+  isPresentingVisualIntelligenceCamera = [delegate isPresentingVisualIntelligenceCamera];
 
-  if (v7)
+  if (isPresentingVisualIntelligenceCamera)
   {
 
     [(SRSystemAssistantExperienceViewController *)self dismissSiriResults];
@@ -5269,26 +5269,26 @@ LABEL_16:
 
   else
   {
-    v8 = [(SRSystemAssistantExperienceViewController *)self delegate];
-    [v8 endSiriSessionForViewController:self withDismissalReason:a4];
+    delegate2 = [(SRSystemAssistantExperienceViewController *)self delegate];
+    [delegate2 endSiriSessionForViewController:self withDismissalReason:reason];
   }
 }
 
-- (void)presentGenerativeAssistantOnboardingFlowWithCommand:(id)a3 completion:(id)a4
+- (void)presentGenerativeAssistantOnboardingFlowWithCommand:(id)command completion:(id)completion
 {
-  v7 = a3;
-  [(SRSystemAssistantExperienceViewController *)self setStoredGenerativeAssistantOnboardingCompletion:a4];
-  v6 = [v7 aceId];
-  [(SRSystemAssistantExperienceViewController *)self setGenerativeAssistantOnboardingCommandAceID:v6];
+  commandCopy = command;
+  [(SRSystemAssistantExperienceViewController *)self setStoredGenerativeAssistantOnboardingCompletion:completion];
+  aceId = [commandCopy aceId];
+  [(SRSystemAssistantExperienceViewController *)self setGenerativeAssistantOnboardingCommandAceID:aceId];
 
-  [(SiriSharedUIGenerativeAssistantOnboardingManager *)self->_montaraOnboardingManager presentOnboardingFlowForCommand:v7];
+  [(SiriSharedUIGenerativeAssistantOnboardingManager *)self->_montaraOnboardingManager presentOnboardingFlowForCommand:commandCopy];
 }
 
 - (void)willPresentOnboardingFlow
 {
   [(SiriSharedUISystemAssistantExperienceContainerView *)self->_containerView clearResultViewAndBackground];
-  v3 = [(SRSystemAssistantExperienceViewController *)self delegate];
-  [v3 siriSAEViewControllerRequestStopAttending:self];
+  delegate = [(SRSystemAssistantExperienceViewController *)self delegate];
+  [delegate siriSAEViewControllerRequestStopAttending:self];
 
   v4 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEFAULT))
@@ -5298,31 +5298,31 @@ LABEL_16:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%s #dismissal - temporarily preventing touches from dismissing Siri while presenting Montara onboarding flow", &v6, 0xCu);
   }
 
-  v5 = [(SRSystemAssistantExperienceViewController *)self delegate];
-  [v5 saeViewController:self preventOutsideTouchesFromDismissingSiri:1];
+  delegate2 = [(SRSystemAssistantExperienceViewController *)self delegate];
+  [delegate2 saeViewController:self preventOutsideTouchesFromDismissingSiri:1];
 }
 
-- (void)completedOnboardingFlowWithEnablementResult:(int64_t)a3
+- (void)completedOnboardingFlowWithEnablementResult:(int64_t)result
 {
   [(SRSystemAssistantExperienceViewController *)self performSelector:"_resumeTouchDismissalPostMontaraOnboardingCompletion" withObject:0 afterDelay:1.0];
-  v5 = [(SRSystemAssistantExperienceViewController *)self storedGenerativeAssistantOnboardingCompletion];
+  storedGenerativeAssistantOnboardingCompletion = [(SRSystemAssistantExperienceViewController *)self storedGenerativeAssistantOnboardingCompletion];
 
-  if (v5)
+  if (storedGenerativeAssistantOnboardingCompletion)
   {
-    if (a3 == 2)
+    if (result == 2)
     {
       v9 = [NSURL URLWithString:@"settings-navigation://com.apple.Settings.Siri/ExternalAIModel?view=signIn"];
       [(SRSystemAssistantExperienceViewController *)self siriViewControllerShouldOpenUrl:v9];
     }
 
-    else if (a3 == 3)
+    else if (result == 3)
     {
       v13 = objc_alloc_init(SACommandSucceeded);
-      v6 = [(SRSystemAssistantExperienceViewController *)self generativeAssistantOnboardingCommandAceID];
-      [v13 setRefId:v6];
+      generativeAssistantOnboardingCommandAceID = [(SRSystemAssistantExperienceViewController *)self generativeAssistantOnboardingCommandAceID];
+      [v13 setRefId:generativeAssistantOnboardingCommandAceID];
 
-      v7 = [(SRSystemAssistantExperienceViewController *)self storedGenerativeAssistantOnboardingCompletion];
-      (v7)[2](v7, v13);
+      storedGenerativeAssistantOnboardingCompletion2 = [(SRSystemAssistantExperienceViewController *)self storedGenerativeAssistantOnboardingCompletion];
+      (storedGenerativeAssistantOnboardingCompletion2)[2](storedGenerativeAssistantOnboardingCompletion2, v13);
 
 LABEL_10:
 
@@ -5330,14 +5330,14 @@ LABEL_10:
     }
 
     v13 = objc_alloc_init(SACommandFailed);
-    v10 = [(SRSystemAssistantExperienceViewController *)self generativeAssistantOnboardingCommandAceID];
-    [v13 setRefId:v10];
+    generativeAssistantOnboardingCommandAceID2 = [(SRSystemAssistantExperienceViewController *)self generativeAssistantOnboardingCommandAceID];
+    [v13 setRefId:generativeAssistantOnboardingCommandAceID2];
 
-    v11 = [(SRSystemAssistantExperienceViewController *)self storedGenerativeAssistantOnboardingCompletion];
-    (v11)[2](v11, v13);
+    storedGenerativeAssistantOnboardingCompletion3 = [(SRSystemAssistantExperienceViewController *)self storedGenerativeAssistantOnboardingCompletion];
+    (storedGenerativeAssistantOnboardingCompletion3)[2](storedGenerativeAssistantOnboardingCompletion3, v13);
 
-    v12 = [(SRSystemAssistantExperienceViewController *)self delegate];
-    [v12 endSiriSessionForViewController:self withDismissalReason:10];
+    delegate = [(SRSystemAssistantExperienceViewController *)self delegate];
+    [delegate endSiriSessionForViewController:self withDismissalReason:10];
 
     goto LABEL_10;
   }
@@ -5359,25 +5359,25 @@ LABEL_10:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%s #dismissal - Montara onboarding flow complete, no longer preventing touches from dismissing Siri", &v5, 0xCu);
   }
 
-  v4 = [(SRSystemAssistantExperienceViewController *)self delegate];
-  [v4 saeViewController:self preventOutsideTouchesFromDismissingSiri:0];
+  delegate = [(SRSystemAssistantExperienceViewController *)self delegate];
+  [delegate saeViewController:self preventOutsideTouchesFromDismissingSiri:0];
 }
 
-- (void)didSetInputType:(int64_t)a3
+- (void)didSetInputType:(int64_t)type
 {
-  [(SiriSharedUISystemAssistantExperienceContainerView *)self->_containerView setInputType:a3];
+  [(SiriSharedUISystemAssistantExperienceContainerView *)self->_containerView setInputType:type];
 
   [(SRSystemAssistantExperienceViewController *)self _updateHomeAffordanceVisibility];
 }
 
-- (void)didSetServerUtterance:(id)a3
+- (void)didSetServerUtterance:(id)utterance
 {
-  v4 = a3;
-  v5 = [(SRSystemAssistantExperienceViewController *)self _resultEligibleForIntelligentLightEffects];
-  v6 = [(SRSystemAssistantExperienceViewController *)self containerView];
-  [v6 setResultEligibleForLightEffects:v5];
+  utteranceCopy = utterance;
+  _resultEligibleForIntelligentLightEffects = [(SRSystemAssistantExperienceViewController *)self _resultEligibleForIntelligentLightEffects];
+  containerView = [(SRSystemAssistantExperienceViewController *)self containerView];
+  [containerView setResultEligibleForLightEffects:_resultEligibleForIntelligentLightEffects];
 
-  if ([v4 count])
+  if ([utteranceCopy count])
   {
     objc_initWeak(&location, self);
     v9[0] = _NSConcreteStackBlock;
@@ -5385,7 +5385,7 @@ LABEL_10:
     v9[2] = sub_10002B63C;
     v9[3] = &unk_100166FE8;
     objc_copyWeak(&v11, &location);
-    v10 = v4;
+    v10 = utteranceCopy;
     v7 = objc_retainBlock(v9);
     serverUtteranceUpdateBlock = self->serverUtteranceUpdateBlock;
     self->serverUtteranceUpdateBlock = v7;
@@ -5402,8 +5402,8 @@ LABEL_10:
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v3 = [(SiriSharedUISAEViewState *)self->_viewState activeConversationTranscriptItems];
-  v4 = [v3 countByEnumeratingWithState:&v20 objects:v26 count:16];
+  activeConversationTranscriptItems = [(SiriSharedUISAEViewState *)self->_viewState activeConversationTranscriptItems];
+  v4 = [activeConversationTranscriptItems countByEnumeratingWithState:&v20 objects:v26 count:16];
   if (v4)
   {
     v5 = *v21;
@@ -5413,29 +5413,29 @@ LABEL_10:
       {
         if (*v21 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(activeConversationTranscriptItems);
         }
 
         v7 = *(*(&v20 + 1) + 8 * i);
-        v8 = [v7 viewController];
-        if (v8)
+        viewController = [v7 viewController];
+        if (viewController)
         {
-          [v16 addObject:v8];
-          v9 = [v8 parentViewController];
+          [v16 addObject:viewController];
+          parentViewController = [viewController parentViewController];
 
-          if (!v9)
+          if (!parentViewController)
           {
-            [(SRSystemAssistantExperienceRootViewController *)self->_rootViewController addChildViewController:v8];
-            [v8 didMoveToParentViewController:self->_rootViewController];
+            [(SRSystemAssistantExperienceRootViewController *)self->_rootViewController addChildViewController:viewController];
+            [viewController didMoveToParentViewController:self->_rootViewController];
           }
 
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v10 = v8;
-            v11 = [v7 isHintItem];
-            v12 = v11;
-            if (v11)
+            v10 = viewController;
+            isHintItem = [v7 isHintItem];
+            v12 = isHintItem;
+            if (isHintItem)
             {
               [v10 setIsHint:1];
             }
@@ -5450,7 +5450,7 @@ LABEL_10:
 
           if (objc_opt_respondsToSelector())
           {
-            [v8 setIsInAmbient:self->_isInAmbient];
+            [viewController setIsInAmbient:self->_isInAmbient];
           }
 
           if ((v12 & self->_isInAmbient) == 1)
@@ -5464,21 +5464,21 @@ LABEL_10:
             }
           }
 
-          if (!v9)
+          if (!parentViewController)
           {
-            [v8 didMoveToParentViewController:self->_rootViewController];
+            [viewController didMoveToParentViewController:self->_rootViewController];
           }
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v20 objects:v26 count:16];
+      v4 = [activeConversationTranscriptItems countByEnumeratingWithState:&v20 objects:v26 count:16];
     }
 
     while (v4);
   }
 
   objc_initWeak(buf, self);
-  v14 = [(SiriSharedUISAEViewState *)self->_viewState activeConversationTranscriptItems];
+  activeConversationTranscriptItems2 = [(SiriSharedUISAEViewState *)self->_viewState activeConversationTranscriptItems];
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_10002BA20;
@@ -5486,7 +5486,7 @@ LABEL_10:
   objc_copyWeak(&v19, buf);
   v15 = v16;
   v18 = v15;
-  [(SRSystemAssistantExperienceViewController *)self _setSmartDialogConversationActiveTranscriptItems:v14 withCompletionBlock:v17];
+  [(SRSystemAssistantExperienceViewController *)self _setSmartDialogConversationActiveTranscriptItems:activeConversationTranscriptItems2 withCompletionBlock:v17];
 
   objc_destroyWeak(&v19);
   objc_destroyWeak(buf);
@@ -5494,26 +5494,26 @@ LABEL_10:
 
 - (void)smartDialogContentDidChange
 {
-  v2 = [(SRSystemAssistantExperienceViewController *)self delegate];
-  [v2 contentDidUpdate];
+  delegate = [(SRSystemAssistantExperienceViewController *)self delegate];
+  [delegate contentDidUpdate];
 }
 
-- (void)didPresentContentWithAceObject:(id)a3
+- (void)didPresentContentWithAceObject:(id)object
 {
-  v6 = a3;
-  v4 = [(SRSystemAssistantExperienceViewController *)self delegate];
-  [v4 didPresentContentForSAEViewController:self];
+  objectCopy = object;
+  delegate = [(SRSystemAssistantExperienceViewController *)self delegate];
+  [delegate didPresentContentForSAEViewController:self];
 
-  if (v6)
+  if (objectCopy)
   {
-    v5 = [(SRSystemAssistantExperienceViewController *)self delegate];
-    [v5 saeViewController:self viewDidAppearForAceObject:v6];
+    delegate2 = [(SRSystemAssistantExperienceViewController *)self delegate];
+    [delegate2 saeViewController:self viewDidAppearForAceObject:objectCopy];
   }
 }
 
-- (void)setSmartDialogCardBlock:(id)a3
+- (void)setSmartDialogCardBlock:(id)block
 {
-  self->smartDialogCardBlock = objc_retainBlock(a3);
+  self->smartDialogCardBlock = objc_retainBlock(block);
 
   _objc_release_x1();
 }
@@ -5526,13 +5526,13 @@ LABEL_10:
   [(SRSystemAssistantExperienceViewController *)self resignKeyboardIfNeeded];
 }
 
-- (id)filterTranscriptItemsForSAEDialogBoxContent:(id)a3
+- (id)filterTranscriptItemsForSAEDialogBoxContent:(id)content
 {
   v85 = 0u;
   v86 = 0u;
   v87 = 0u;
   v88 = 0u;
-  obj = a3;
+  obj = content;
   v3 = [obj countByEnumeratingWithState:&v85 objects:v94 count:16];
   if (!v3)
   {
@@ -5557,7 +5557,7 @@ LABEL_10:
       }
 
       v9 = *(*(&v85 + 1) + 8 * v8);
-      v10 = [v9 aceObject];
+      aceObject = [v9 aceObject];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
@@ -5568,40 +5568,40 @@ LABEL_10:
 
       v77 = v8;
       v73 = v9;
-      v12 = [v9 aceObject];
-      v13 = [v12 siriui_card_compact];
-      v14 = [v13 backingCard];
-      v15 = [v14 cardSections];
+      aceObject2 = [v9 aceObject];
+      siriui_card_compact = [aceObject2 siriui_card_compact];
+      backingCard = [siriui_card_compact backingCard];
+      cardSections = [backingCard cardSections];
       v16 = v6;
-      if (v15)
+      if (cardSections)
       {
-        [v12 siriui_card_compact];
+        [aceObject2 siriui_card_compact];
       }
 
       else
       {
-        [v12 siriui_card];
+        [aceObject2 siriui_card];
       }
       v17 = ;
-      v18 = [v17 backingCard];
+      backingCard2 = [v17 backingCard];
 
       v19 = objc_alloc(v7[369]);
-      v76 = v12;
-      v20 = v12;
-      v21 = v18;
-      v22 = [v20 cardData];
-      v23 = [v19 initWithData:v22];
+      v76 = aceObject2;
+      v20 = aceObject2;
+      v21 = backingCard2;
+      cardData = [v20 cardData];
+      v23 = [v19 initWithData:cardData];
 
-      v24 = [v23 cardSections];
-      v25 = [v24 count];
-      v26 = [v18 cardSections];
-      v27 = [v26 count];
+      cardSections2 = [v23 cardSections];
+      v25 = [cardSections2 count];
+      cardSections3 = [backingCard2 cardSections];
+      v27 = [cardSections3 count];
 
-      v79 = v18;
+      v79 = backingCard2;
       if (v25 == v27)
       {
-        v28 = [v18 cardSections];
-        v29 = [v28 count];
+        cardSections4 = [backingCard2 cardSections];
+        v29 = [cardSections4 count];
 
         if (v29)
         {
@@ -5609,24 +5609,24 @@ LABEL_10:
           do
           {
             v31 = [v23 cardSectionsAtIndex:v30];
-            v32 = [v21 cardSections];
-            v33 = [v32 objectAtIndex:v30];
+            cardSections5 = [v21 cardSections];
+            v33 = [cardSections5 objectAtIndex:v30];
 
             v34 = [NSMutableDictionary alloc];
-            v35 = [v31 racFeedbackLoggingContent];
-            v36 = [v34 initWithDictionary:v35];
+            racFeedbackLoggingContent = [v31 racFeedbackLoggingContent];
+            v36 = [v34 initWithDictionary:racFeedbackLoggingContent];
 
             [v33 setRacFeedbackLoggingContent:v36];
-            v37 = [v18 cardSections];
-            v38 = [v37 mutableCopy];
+            cardSections6 = [backingCard2 cardSections];
+            v38 = [cardSections6 mutableCopy];
 
-            v21 = v18;
+            v21 = backingCard2;
             [v38 replaceObjectAtIndex:v30 withObject:v33];
-            [v18 setCardSections:v38];
+            [backingCard2 setCardSections:v38];
 
             ++v30;
-            v39 = [v18 cardSections];
-            v40 = [v39 count];
+            cardSections7 = [backingCard2 cardSections];
+            v40 = [cardSections7 count];
           }
 
           while (v40 > v30);
@@ -5641,8 +5641,8 @@ LABEL_10:
       v82 = 0u;
       v83 = 0u;
       v84 = 0u;
-      v42 = [v21 cardSections];
-      v43 = [v42 countByEnumeratingWithState:&v81 objects:v93 count:16];
+      cardSections8 = [v21 cardSections];
+      v43 = [cardSections8 countByEnumeratingWithState:&v81 objects:v93 count:16];
       v74 = v43 != 0;
       if (v43)
       {
@@ -5655,19 +5655,19 @@ LABEL_10:
           {
             if (*v82 != v46)
             {
-              objc_enumerationMutation(v42);
+              objc_enumerationMutation(cardSections8);
             }
 
             v48 = *(*(&v81 + 1) + 8 * i);
-            v49 = [v48 shouldShowInSmartDialog];
+            shouldShowInSmartDialog = [v48 shouldShowInSmartDialog];
             objc_opt_class();
             v50 = objc_opt_isKindOfClass();
-            if (v49)
+            if (shouldShowInSmartDialog)
             {
               if (v50)
               {
-                v51 = [v48 cardSections];
-                [v41 addObjectsFromArray:v51];
+                cardSections9 = [v48 cardSections];
+                [v41 addObjectsFromArray:cardSections9];
               }
 
               else
@@ -5681,18 +5681,18 @@ LABEL_10:
             else if (v50)
             {
               v52 = v48;
-              v53 = [v52 cardSections];
-              v54 = [v53 count];
+              cardSections10 = [v52 cardSections];
+              v54 = [cardSections10 count];
 
               if (v54)
               {
-                v55 = [v52 cardSections];
-                v56 = [v55 objectAtIndexedSubscript:0];
+                cardSections11 = [v52 cardSections];
+                v56 = [cardSections11 objectAtIndexedSubscript:0];
 
                 if ([v56 shouldShowInSmartDialog])
                 {
-                  v57 = [v52 cardSections];
-                  [v41 addObjectsFromArray:v57];
+                  cardSections12 = [v52 cardSections];
+                  [v41 addObjectsFromArray:cardSections12];
 
                   v45 = 1;
                 }
@@ -5705,7 +5705,7 @@ LABEL_10:
             }
           }
 
-          v44 = [v42 countByEnumeratingWithState:&v81 objects:v93 count:16];
+          v44 = [cardSections8 countByEnumeratingWithState:&v81 objects:v93 count:16];
         }
 
         while (v44);
@@ -5734,22 +5734,22 @@ LABEL_10:
         }
 
         [v79 setCardSections:v80];
-        v42 = [v76 copy];
+        cardSections8 = [v76 copy];
         v60 = [[_SFPBCard alloc] initWithFacade:v79];
-        v61 = [v60 data];
-        [v42 setCardData:v61];
+        data = [v60 data];
+        [cardSections8 setCardData:data];
 
-        v62 = [v73 viewController];
+        viewController = [v73 viewController];
         objc_opt_class();
-        LOBYTE(v61) = objc_opt_isKindOfClass();
+        LOBYTE(data) = objc_opt_isKindOfClass();
 
         v5 = v71;
-        if (v61)
+        if (data)
         {
-          v63 = [v73 viewController];
+          viewController2 = [v73 viewController];
           if ([v80 count])
           {
-            [v63 setSnippet:v42];
+            [viewController2 setSnippet:cardSections8];
           }
 
           else
@@ -5798,19 +5798,19 @@ LABEL_49:
   return v69;
 }
 
-- (void)setSmartDialogPluginBlock:(id)a3
+- (void)setSmartDialogPluginBlock:(id)block
 {
-  self->smartDialogPluginBlock = objc_retainBlock(a3);
+  self->smartDialogPluginBlock = objc_retainBlock(block);
 
   _objc_release_x1();
 }
 
 - (BOOL)alwaysShowRecognizedSpeech
 {
-  v2 = [(SRSystemAssistantExperienceViewController *)self delegate];
-  v3 = [v2 alwaysShowRecognizedSpeech];
+  delegate = [(SRSystemAssistantExperienceViewController *)self delegate];
+  alwaysShowRecognizedSpeech = [delegate alwaysShowRecognizedSpeech];
 
-  return v3;
+  return alwaysShowRecognizedSpeech;
 }
 
 - (SRSystemAssistantExperienceViewControllerDelegate)delegate

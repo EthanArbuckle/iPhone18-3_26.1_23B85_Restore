@@ -1,19 +1,19 @@
 @interface LNVocabularyStrictPicker
-- (id)pickTermsFromCorpora:(id)a3;
+- (id)pickTermsFromCorpora:(id)corpora;
 @end
 
 @implementation LNVocabularyStrictPicker
 
-- (id)pickTermsFromCorpora:(id)a3
+- (id)pickTermsFromCorpora:(id)corpora
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  corporaCopy = corpora;
   v4 = objc_alloc_init(MEMORY[0x1E695DFA0]);
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = v3;
+  v5 = corporaCopy;
   v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
@@ -35,10 +35,10 @@ LABEL_3:
       }
 
       v11 = 1000 - v8;
-      v12 = [*(*(&v16 + 1) + 8 * v10) getTerms];
-      if (1000 - v8 < [v12 count] || (v11 = objc_msgSend(v12, "count")) != 0)
+      getTerms = [*(*(&v16 + 1) + 8 * v10) getTerms];
+      if (1000 - v8 < [getTerms count] || (v11 = objc_msgSend(getTerms, "count")) != 0)
       {
-        v13 = [v12 subarrayWithRange:{0, v11}];
+        v13 = [getTerms subarrayWithRange:{0, v11}];
         [v4 addObjectsFromArray:v13];
         v8 += v11;
       }

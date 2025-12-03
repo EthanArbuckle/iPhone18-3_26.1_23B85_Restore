@@ -1,22 +1,22 @@
 @interface _UIHostedFocusSystemItemContainer
 - (UICoordinateSpace)coordinateSpace;
 - (_UIHostedFocusSystem)focusSystem;
-- (_UIHostedFocusSystemItemContainer)initWithHostedFocusSystem:(id)a3;
-- (id)focusItemsInRect:(CGRect)a3;
+- (_UIHostedFocusSystemItemContainer)initWithHostedFocusSystem:(id)system;
+- (id)focusItemsInRect:(CGRect)rect;
 @end
 
 @implementation _UIHostedFocusSystemItemContainer
 
-- (_UIHostedFocusSystemItemContainer)initWithHostedFocusSystem:(id)a3
+- (_UIHostedFocusSystemItemContainer)initWithHostedFocusSystem:(id)system
 {
-  v4 = a3;
+  systemCopy = system;
   v8.receiver = self;
   v8.super_class = _UIHostedFocusSystemItemContainer;
   v5 = [(_UIHostedFocusSystemItemContainer *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(_UIHostedFocusSystemItemContainer *)v5 setFocusSystem:v4];
+    [(_UIHostedFocusSystemItemContainer *)v5 setFocusSystem:systemCopy];
   }
 
   return v6;
@@ -24,27 +24,27 @@
 
 - (UICoordinateSpace)coordinateSpace
 {
-  v2 = [(_UIHostedFocusSystemItemContainer *)self focusSystem];
-  v3 = [v2 hostEnvironment];
-  v4 = [v3 focusItemContainer];
-  v5 = [v4 coordinateSpace];
+  focusSystem = [(_UIHostedFocusSystemItemContainer *)self focusSystem];
+  hostEnvironment = [focusSystem hostEnvironment];
+  focusItemContainer = [hostEnvironment focusItemContainer];
+  coordinateSpace = [focusItemContainer coordinateSpace];
 
-  return v5;
+  return coordinateSpace;
 }
 
-- (id)focusItemsInRect:(CGRect)a3
+- (id)focusItemsInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = [(_UIHostedFocusSystemItemContainer *)self focusSystem];
-  v8 = [v7 delegateProxy];
-  v9 = [v8 delegate];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  focusSystem = [(_UIHostedFocusSystemItemContainer *)self focusSystem];
+  delegateProxy = [focusSystem delegateProxy];
+  delegate = [delegateProxy delegate];
 
-  if (v9)
+  if (delegate)
   {
-    v10 = [v9 _focusSystem:v7 focusItemsInRect:{x, y, width, height}];
+    v10 = [delegate _focusSystem:focusSystem focusItemsInRect:{x, y, width, height}];
   }
 
   else

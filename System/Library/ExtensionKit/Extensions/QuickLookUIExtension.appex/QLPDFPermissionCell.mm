@@ -1,19 +1,19 @@
 @interface QLPDFPermissionCell
-- (BOOL)_isLargeTextTraitCollection:(id)a3;
-- (QLPDFPermissionCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (BOOL)_isLargeTextTraitCollection:(id)collection;
+- (QLPDFPermissionCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (UILabel)label;
 - (UITextField)textField;
-- (void)installConstraintsWithWidth:(double)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)installConstraintsWithWidth:(double)width;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation QLPDFPermissionCell
 
-- (QLPDFPermissionCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (QLPDFPermissionCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v20.receiver = self;
   v20.super_class = QLPDFPermissionCell;
-  v4 = [(QLPDFPermissionCell *)&v20 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(QLPDFPermissionCell *)&v20 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
@@ -30,30 +30,30 @@
     v8 = objc_opt_new();
     [(QLPDFPermissionCell *)v4 setStackView:v8];
 
-    v9 = [(QLPDFPermissionCell *)v4 stackView];
-    [v9 setAxis:0];
+    stackView = [(QLPDFPermissionCell *)v4 stackView];
+    [stackView setAxis:0];
 
-    v10 = [(QLPDFPermissionCell *)v4 stackView];
-    [v10 setSpacing:20.0];
+    stackView2 = [(QLPDFPermissionCell *)v4 stackView];
+    [stackView2 setSpacing:20.0];
 
-    v11 = [(QLPDFPermissionCell *)v4 stackView];
-    [v11 setAlignment:0];
+    stackView3 = [(QLPDFPermissionCell *)v4 stackView];
+    [stackView3 setAlignment:0];
 
-    v12 = [(QLPDFPermissionCell *)v4 stackView];
-    [v12 setDistribution:0];
+    stackView4 = [(QLPDFPermissionCell *)v4 stackView];
+    [stackView4 setDistribution:0];
 
-    v13 = [(QLPDFPermissionCell *)v4 stackView];
-    [v13 addArrangedSubview:v6];
+    stackView5 = [(QLPDFPermissionCell *)v4 stackView];
+    [stackView5 addArrangedSubview:v6];
 
-    v14 = [(QLPDFPermissionCell *)v4 stackView];
-    [v14 addArrangedSubview:v7];
+    stackView6 = [(QLPDFPermissionCell *)v4 stackView];
+    [stackView6 addArrangedSubview:v7];
 
-    v15 = [(QLPDFPermissionCell *)v4 stackView];
-    [v15 setTranslatesAutoresizingMaskIntoConstraints:0];
+    stackView7 = [(QLPDFPermissionCell *)v4 stackView];
+    [stackView7 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v16 = [(QLPDFPermissionCell *)v4 contentView];
-    v17 = [(QLPDFPermissionCell *)v4 stackView];
-    [v16 addSubview:v17];
+    contentView = [(QLPDFPermissionCell *)v4 contentView];
+    stackView8 = [(QLPDFPermissionCell *)v4 stackView];
+    [contentView addSubview:stackView8];
 
     LODWORD(v18) = 1132134400;
     [v6 setContentHuggingPriority:0 forAxis:v18];
@@ -63,96 +63,96 @@
   return v4;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = [a3 preferredContentSizeCategory];
-  v5 = [(QLPDFPermissionCell *)self traitCollection];
-  v6 = [v5 preferredContentSizeCategory];
-  v7 = [v4 isEqualToString:v6];
+  preferredContentSizeCategory = [change preferredContentSizeCategory];
+  traitCollection = [(QLPDFPermissionCell *)self traitCollection];
+  preferredContentSizeCategory2 = [traitCollection preferredContentSizeCategory];
+  v7 = [preferredContentSizeCategory isEqualToString:preferredContentSizeCategory2];
 
   if ((v7 & 1) == 0)
   {
-    v8 = [(QLPDFPermissionCell *)self traitCollection];
-    v9 = [(QLPDFPermissionCell *)self _isLargeTextTraitCollection:v8];
+    traitCollection2 = [(QLPDFPermissionCell *)self traitCollection];
+    v9 = [(QLPDFPermissionCell *)self _isLargeTextTraitCollection:traitCollection2];
 
     [(UIStackView *)self->_stackView setAxis:v9];
-    v10 = [(QLPDFPermissionCell *)self traitCollection];
-    v13 = [UIFont preferredFontForTextStyle:UIFontTextStyleBody compatibleWithTraitCollection:v10];
+    traitCollection3 = [(QLPDFPermissionCell *)self traitCollection];
+    v13 = [UIFont preferredFontForTextStyle:UIFontTextStyleBody compatibleWithTraitCollection:traitCollection3];
 
-    v11 = [(QLPDFPermissionCell *)self label];
-    [v11 setFont:v13];
+    label = [(QLPDFPermissionCell *)self label];
+    [label setFont:v13];
 
-    v12 = [(QLPDFPermissionCell *)self textField];
-    [v12 setFont:v13];
+    textField = [(QLPDFPermissionCell *)self textField];
+    [textField setFont:v13];
   }
 }
 
-- (BOOL)_isLargeTextTraitCollection:(id)a3
+- (BOOL)_isLargeTextTraitCollection:(id)collection
 {
   v8 = UIContentSizeCategoryAccessibilityLarge;
   v9 = UIContentSizeCategoryAccessibilityExtraLarge;
   v10 = UIContentSizeCategoryAccessibilityExtraExtraLarge;
   v11 = UIContentSizeCategoryAccessibilityExtraExtraExtraLarge;
   v12 = UIContentSizeCategoryExtraExtraExtraLarge;
-  v3 = a3;
+  collectionCopy = collection;
   v4 = [NSArray arrayWithObjects:&v8 count:5];
-  v5 = [v3 preferredContentSizeCategory];
+  preferredContentSizeCategory = [collectionCopy preferredContentSizeCategory];
 
-  v6 = [v4 containsObject:v5];
+  v6 = [v4 containsObject:preferredContentSizeCategory];
   return v6;
 }
 
-- (void)installConstraintsWithWidth:(double)a3
+- (void)installConstraintsWithWidth:(double)width
 {
-  v5 = [(QLPDFPermissionCell *)self constraints];
+  constraints = [(QLPDFPermissionCell *)self constraints];
 
-  if (v5)
+  if (constraints)
   {
-    v6 = [(QLPDFPermissionCell *)self constraints];
-    [NSLayoutConstraint deactivateConstraints:v6];
+    constraints2 = [(QLPDFPermissionCell *)self constraints];
+    [NSLayoutConstraint deactivateConstraints:constraints2];
   }
 
-  v38 = [(QLPDFPermissionCell *)self textField];
-  v37 = [v38 widthAnchor];
-  v36 = [v37 constraintGreaterThanOrEqualToConstant:a3];
+  textField = [(QLPDFPermissionCell *)self textField];
+  widthAnchor = [textField widthAnchor];
+  v36 = [widthAnchor constraintGreaterThanOrEqualToConstant:width];
   v39[0] = v36;
-  v35 = [(QLPDFPermissionCell *)self label];
-  v34 = [v35 widthAnchor];
-  v33 = [v34 constraintGreaterThanOrEqualToConstant:a3];
+  label = [(QLPDFPermissionCell *)self label];
+  widthAnchor2 = [label widthAnchor];
+  v33 = [widthAnchor2 constraintGreaterThanOrEqualToConstant:width];
   v39[1] = v33;
-  v32 = [(QLPDFPermissionCell *)self stackView];
-  v30 = [v32 leadingAnchor];
-  v31 = [(QLPDFPermissionCell *)self contentView];
-  v29 = [v31 layoutMarginsGuide];
-  v28 = [v29 leadingAnchor];
-  v27 = [v30 constraintEqualToAnchor:v28];
+  stackView = [(QLPDFPermissionCell *)self stackView];
+  leadingAnchor = [stackView leadingAnchor];
+  contentView = [(QLPDFPermissionCell *)self contentView];
+  layoutMarginsGuide = [contentView layoutMarginsGuide];
+  leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+  v27 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v39[2] = v27;
-  v26 = [(QLPDFPermissionCell *)self contentView];
-  v25 = [v26 layoutMarginsGuide];
-  v23 = [v25 bottomAnchor];
-  v24 = [(QLPDFPermissionCell *)self stackView];
-  v22 = [v24 bottomAnchor];
-  v21 = [v23 constraintEqualToAnchor:v22 constant:0.5];
+  contentView2 = [(QLPDFPermissionCell *)self contentView];
+  layoutMarginsGuide2 = [contentView2 layoutMarginsGuide];
+  bottomAnchor = [layoutMarginsGuide2 bottomAnchor];
+  stackView2 = [(QLPDFPermissionCell *)self stackView];
+  bottomAnchor2 = [stackView2 bottomAnchor];
+  v21 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:0.5];
   v39[3] = v21;
-  v20 = [(QLPDFPermissionCell *)self contentView];
-  v19 = [v20 layoutMarginsGuide];
-  v17 = [v19 trailingAnchor];
-  v18 = [(QLPDFPermissionCell *)self stackView];
-  v7 = [v18 trailingAnchor];
-  v8 = [v17 constraintEqualToAnchor:v7 constant:8.0];
+  contentView3 = [(QLPDFPermissionCell *)self contentView];
+  layoutMarginsGuide3 = [contentView3 layoutMarginsGuide];
+  trailingAnchor = [layoutMarginsGuide3 trailingAnchor];
+  stackView3 = [(QLPDFPermissionCell *)self stackView];
+  trailingAnchor2 = [stackView3 trailingAnchor];
+  v8 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:8.0];
   v39[4] = v8;
-  v9 = [(QLPDFPermissionCell *)self stackView];
-  v10 = [v9 topAnchor];
-  v11 = [(QLPDFPermissionCell *)self contentView];
-  v12 = [v11 layoutMarginsGuide];
-  v13 = [v12 topAnchor];
-  v14 = [v10 constraintEqualToAnchor:v13 constant:0.5];
+  stackView4 = [(QLPDFPermissionCell *)self stackView];
+  topAnchor = [stackView4 topAnchor];
+  contentView4 = [(QLPDFPermissionCell *)self contentView];
+  layoutMarginsGuide4 = [contentView4 layoutMarginsGuide];
+  topAnchor2 = [layoutMarginsGuide4 topAnchor];
+  v14 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:0.5];
   v39[5] = v14;
   v15 = [NSArray arrayWithObjects:v39 count:6];
   [(QLPDFPermissionCell *)self setConstraints:v15];
 
-  v16 = [(QLPDFPermissionCell *)self constraints];
-  [NSLayoutConstraint activateConstraints:v16];
+  constraints3 = [(QLPDFPermissionCell *)self constraints];
+  [NSLayoutConstraint activateConstraints:constraints3];
 }
 
 - (UILabel)label

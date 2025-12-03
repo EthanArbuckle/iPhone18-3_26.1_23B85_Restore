@@ -1,21 +1,21 @@
 @interface MTTimer
-+ (BOOL)isActiveTimer:(id)a3;
-+ (BOOL)stateChangeIsAllowableFromState:(unint64_t)a3 toState:(unint64_t)a4;
-+ (id)_timerTimeForState:(unint64_t)a3 remainingTime:(double)a4 currentDateProvider:(id)a5;
-+ (id)currentTimerFromTimers:(id)a3;
-+ (id)descriptionForState:(unint64_t)a3;
-+ (id)firstActiveTimerFromTimers:(id)a3;
++ (BOOL)isActiveTimer:(id)timer;
++ (BOOL)stateChangeIsAllowableFromState:(unint64_t)state toState:(unint64_t)toState;
++ (id)_timerTimeForState:(unint64_t)state remainingTime:(double)time currentDateProvider:(id)provider;
++ (id)currentTimerFromTimers:(id)timers;
++ (id)descriptionForState:(unint64_t)state;
++ (id)firstActiveTimerFromTimers:(id)timers;
 + (id)propertiesAffectingSessions;
-- (BOOL)_isEqualToTimer:(id)a3 checkLastModified:(BOOL)a4;
+- (BOOL)_isEqualToTimer:(id)timer checkLastModified:(BOOL)modified;
 - (BOOL)hasDefaultTitle;
 - (BOOL)isCurrentTimer;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isFiring;
-- (MTTimer)initWithId:(id)a3 state:(unint64_t)a4 duration:(double)a5 currentDateProvider:(id)a6;
-- (MTTimer)initWithIdentifier:(id)a3;
-- (MTTimer)initWithMTCDTimer:(id)a3;
-- (MTTimer)initWithState:(unint64_t)a3 duration:(double)a4;
-- (MTTimer)initWithState:(unint64_t)a3 duration:(double)a4 currentDateProvider:(id)a5;
+- (MTTimer)initWithId:(id)id state:(unint64_t)state duration:(double)duration currentDateProvider:(id)provider;
+- (MTTimer)initWithIdentifier:(id)identifier;
+- (MTTimer)initWithMTCDTimer:(id)timer;
+- (MTTimer)initWithState:(unint64_t)state duration:(double)duration;
+- (MTTimer)initWithState:(unint64_t)state duration:(double)duration currentDateProvider:(id)provider;
 - (NSDate)fireDate;
 - (NSString)description;
 - (NSString)displayTitle;
@@ -23,30 +23,30 @@
 - (NSURL)timerURL;
 - (double)remainingTime;
 - (id)_initCommon;
-- (id)initFromDeserializer:(id)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)initFromDeserializer:(id)deserializer;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)nextTrigger;
-- (id)nextTriggerAfterDate:(id)a3;
+- (id)nextTriggerAfterDate:(id)date;
 - (id)timerByRestarting;
-- (id)timerByUpdatingWithState:(unint64_t)a3;
-- (id)upcomingTriggersAfterDate:(id)a3;
-- (int64_t)compare:(id)a3;
+- (id)timerByUpdatingWithState:(unint64_t)state;
+- (id)upcomingTriggersAfterDate:(id)date;
+- (int64_t)compare:(id)compare;
 - (int64_t)type;
 - (unint64_t)hash;
-- (void)_copyStateOntoTimer:(id)a3;
-- (void)_setDuration:(double)a3;
-- (void)serializeWithSerializer:(id)a3;
-- (void)setDuration:(double)a3;
-- (void)setSound:(id)a3;
-- (void)setState:(unint64_t)a3;
+- (void)_copyStateOntoTimer:(id)timer;
+- (void)_setDuration:(double)duration;
+- (void)serializeWithSerializer:(id)serializer;
+- (void)setDuration:(double)duration;
+- (void)setSound:(id)sound;
+- (void)setState:(unint64_t)state;
 @end
 
 @implementation MTTimer
 
 - (BOOL)isCurrentTimer
 {
-  v2 = [(MTTimer *)self title];
-  v3 = [v2 isEqualToString:@"CURRENT_TIMER"];
+  title = [(MTTimer *)self title];
+  v3 = [title isEqualToString:@"CURRENT_TIMER"];
 
   return v3;
 }
@@ -55,27 +55,27 @@
 {
   v16 = MEMORY[0x1E696AEC0];
   v15 = objc_opt_class();
-  v3 = [(MTTimer *)self timerID];
-  v4 = [(MTTimer *)self title];
+  timerID = [(MTTimer *)self timerID];
+  title = [(MTTimer *)self title];
   v5 = [MTTimer descriptionForState:[(MTTimer *)self state]];
   [(MTTimer *)self duration];
   v7 = v6;
-  v8 = [(MTTimer *)self firedDate];
-  v9 = [(MTTimer *)self dismissedDate];
-  v10 = [(MTTimer *)self sound];
-  v11 = [(MTTimer *)self siriContext];
-  v12 = [(MTTimer *)self timerContext];
-  v13 = [v16 stringWithFormat:@"<%@:%p TimerID: %@, Title: %@, state:%@, duration:%d, firedDate: %@, dismissedDate: %@, sound: %@, siriContext: %@>, timerContext: %@>", v15, self, v3, v4, v5, v7, v8, v9, v10, v11, v12];
+  firedDate = [(MTTimer *)self firedDate];
+  dismissedDate = [(MTTimer *)self dismissedDate];
+  sound = [(MTTimer *)self sound];
+  siriContext = [(MTTimer *)self siriContext];
+  timerContext = [(MTTimer *)self timerContext];
+  v13 = [v16 stringWithFormat:@"<%@:%p TimerID: %@, Title: %@, state:%@, duration:%d, firedDate: %@, dismissedDate: %@, sound: %@, siriContext: %@>, timerContext: %@>", v15, self, timerID, title, v5, v7, firedDate, dismissedDate, sound, siriContext, timerContext];
 
   return v13;
 }
 
 - (NSString)timerIDString
 {
-  v2 = [(MTTimer *)self timerID];
-  v3 = [v2 UUIDString];
+  timerID = [(MTTimer *)self timerID];
+  uUIDString = [timerID UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
 - (id)_initCommon
@@ -91,10 +91,10 @@
   return v2;
 }
 
-- (id)upcomingTriggersAfterDate:(id)a3
+- (id)upcomingTriggersAfterDate:(id)date
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  v3 = [(MTTimer *)self nextTriggerAfterDate:a3];
+  v3 = [(MTTimer *)self nextTriggerAfterDate:date];
   v4 = v3;
   if (v3)
   {
@@ -140,48 +140,48 @@ void __50__MTTimer_Properties__propertiesAffectingSessions__block_invoke()
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (MTTimer)initWithState:(unint64_t)a3 duration:(double)a4
+- (MTTimer)initWithState:(unint64_t)state duration:(double)duration
 {
   v7 = MTCurrentDateProvider();
-  v8 = [(MTTimer *)self initWithState:a3 duration:v7 currentDateProvider:a4];
+  v8 = [(MTTimer *)self initWithState:state duration:v7 currentDateProvider:duration];
 
   return v8;
 }
 
-- (MTTimer)initWithState:(unint64_t)a3 duration:(double)a4 currentDateProvider:(id)a5
+- (MTTimer)initWithState:(unint64_t)state duration:(double)duration currentDateProvider:(id)provider
 {
   v8 = MEMORY[0x1E696AFB0];
-  v9 = a5;
-  v10 = [v8 UUID];
-  v11 = [(MTTimer *)self initWithId:v10 state:a3 duration:v9 currentDateProvider:a4];
+  providerCopy = provider;
+  uUID = [v8 UUID];
+  v11 = [(MTTimer *)self initWithId:uUID state:state duration:providerCopy currentDateProvider:duration];
 
   return v11;
 }
 
-- (MTTimer)initWithId:(id)a3 state:(unint64_t)a4 duration:(double)a5 currentDateProvider:(id)a6
+- (MTTimer)initWithId:(id)id state:(unint64_t)state duration:(double)duration currentDateProvider:(id)provider
 {
-  v11 = a3;
-  v12 = a6;
+  idCopy = id;
+  providerCopy = provider;
   v22.receiver = self;
   v22.super_class = MTTimer;
   v13 = [(MTTimer *)&v22 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_timerID, a3);
-    v14->_state = a4;
-    if (a4 >= 4)
+    objc_storeStrong(&v13->_timerID, id);
+    v14->_state = state;
+    if (state >= 4)
     {
-      NSLog(&cfstr_StateMustBeAVa.isa, a4);
+      NSLog(&cfstr_StateMustBeAVa.isa, state);
       v14->_state = 0;
     }
 
-    v14->_duration = a5;
-    v15 = [v12 copy];
+    v14->_duration = duration;
+    v15 = [providerCopy copy];
     currentDateProvider = v14->_currentDateProvider;
     v14->_currentDateProvider = v15;
 
-    v17 = [objc_opt_class() _timerTimeForState:a4 remainingTime:v14->_currentDateProvider currentDateProvider:a5];
+    v17 = [objc_opt_class() _timerTimeForState:state remainingTime:v14->_currentDateProvider currentDateProvider:duration];
     fireTime = v14->_fireTime;
     v14->_fireTime = v17;
 
@@ -193,96 +193,96 @@ void __50__MTTimer_Properties__propertiesAffectingSessions__block_invoke()
   return v14;
 }
 
-- (MTTimer)initWithIdentifier:(id)a3
+- (MTTimer)initWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(MTTimer *)self _initCommon];
-  if (v5)
+  identifierCopy = identifier;
+  _initCommon = [(MTTimer *)self _initCommon];
+  if (_initCommon)
   {
-    v6 = [v4 copy];
-    timerID = v5->_timerID;
-    v5->_timerID = v6;
+    v6 = [identifierCopy copy];
+    timerID = _initCommon->_timerID;
+    _initCommon->_timerID = v6;
   }
 
-  return v5;
+  return _initCommon;
 }
 
-- (MTTimer)initWithMTCDTimer:(id)a3
+- (MTTimer)initWithMTCDTimer:(id)timer
 {
-  v4 = a3;
-  [v4 duration];
+  timerCopy = timer;
+  [timerCopy duration];
   v6 = v5;
-  v7 = [v4 state];
+  state = [timerCopy state];
   v8 = [MTMutableTimer alloc];
-  v9 = [v4 mtid];
+  mtid = [timerCopy mtid];
   v10 = MTCurrentDateProvider();
-  v11 = [(MTTimer *)v8 initWithId:v9 state:v7 duration:v10 currentDateProvider:v6];
+  v11 = [(MTTimer *)v8 initWithId:mtid state:state duration:v10 currentDateProvider:v6];
 
-  v12 = [v4 timerURL];
-  [(MTTimer *)v11 setTimerURL:v12];
+  timerURL = [timerCopy timerURL];
+  [(MTTimer *)v11 setTimerURL:timerURL];
 
-  v13 = [v4 firedDate];
-  [(MTTimer *)v11 setFiredDate:v13];
+  firedDate = [timerCopy firedDate];
+  [(MTTimer *)v11 setFiredDate:firedDate];
 
-  v14 = [v4 title];
-  [(MTTimer *)v11 setTitle:v14];
+  title = [timerCopy title];
+  [(MTTimer *)v11 setTitle:title];
 
-  v15 = [v4 lastModifiedDate];
-  [(MTTimer *)v11 setLastModifiedDate:v15];
+  lastModifiedDate = [timerCopy lastModifiedDate];
+  [(MTTimer *)v11 setLastModifiedDate:lastModifiedDate];
 
-  v16 = [v4 dismissedDate];
-  [(MTTimer *)v11 setDismissedDate:v16];
+  dismissedDate = [timerCopy dismissedDate];
+  [(MTTimer *)v11 setDismissedDate:dismissedDate];
 
   v17 = MEMORY[0x1E696ACD0];
-  v18 = [v4 fireTime];
-  v19 = [v17 unarchiveObjectWithData:v18];
+  fireTime = [timerCopy fireTime];
+  v19 = [v17 unarchiveObjectWithData:fireTime];
   [(MTTimer *)v11 setFireTime:v19];
 
-  v20 = [v4 siriContextDecoded];
-  [(MTTimer *)v11 setSiriContext:v20];
+  siriContextDecoded = [timerCopy siriContextDecoded];
+  [(MTTimer *)v11 setSiriContext:siriContextDecoded];
 
-  v21 = [v4 timerContextDecoded];
-  [(MTTimer *)v11 setTimerContext:v21];
+  timerContextDecoded = [timerCopy timerContextDecoded];
+  [(MTTimer *)v11 setTimerContext:timerContextDecoded];
 
   v22 = [MTSound alloc];
-  v23 = [v4 sound];
+  sound = [timerCopy sound];
 
-  v24 = [(MTSound *)v22 initWithMTCDSound:v23];
+  v24 = [(MTSound *)v22 initWithMTCDSound:sound];
   [(MTTimer *)v11 setSound:v24];
 
   v25 = [(MTMutableTimer *)v11 copy];
   return v25;
 }
 
-+ (id)currentTimerFromTimers:(id)a3
++ (id)currentTimerFromTimers:(id)timers
 {
-  v3 = a3;
-  v4 = [v3 na_firstObjectPassingTest:&__block_literal_global_51];
+  timersCopy = timers;
+  v4 = [timersCopy na_firstObjectPassingTest:&__block_literal_global_51];
   v5 = v4;
   if (v4)
   {
-    v6 = v4;
+    firstObject = v4;
   }
 
   else
   {
-    v6 = [v3 firstObject];
+    firstObject = [timersCopy firstObject];
   }
 
-  v7 = v6;
+  v7 = firstObject;
 
   return v7;
 }
 
-+ (id)firstActiveTimerFromTimers:(id)a3
++ (id)firstActiveTimerFromTimers:(id)timers
 {
   v18 = *MEMORY[0x1E69E9840];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  timersCopy = timers;
+  v5 = [timersCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -293,18 +293,18 @@ void __50__MTTimer_Properties__propertiesAffectingSessions__block_invoke()
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(timersCopy);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        if ([a1 isActiveTimer:{v9, v13}])
+        if ([self isActiveTimer:{v9, v13}])
         {
           v10 = v9;
           goto LABEL_11;
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [timersCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v6)
       {
         continue;
@@ -322,19 +322,19 @@ LABEL_11:
   return v10;
 }
 
-+ (BOOL)isActiveTimer:(id)a3
++ (BOOL)isActiveTimer:(id)timer
 {
-  v3 = a3;
-  v4 = [v3 state] == 3 || objc_msgSend(v3, "state") == 2;
+  timerCopy = timer;
+  v4 = [timerCopy state] == 3 || objc_msgSend(timerCopy, "state") == 2;
 
   return v4;
 }
 
 - (NSURL)timerURL
 {
-  v2 = [(MTTimer *)self timerID];
-  v3 = [v2 UUIDString];
-  v4 = [@"x-apple-clock:timer?id=" stringByAppendingString:v3];
+  timerID = [(MTTimer *)self timerID];
+  uUIDString = [timerID UUIDString];
+  v4 = [@"x-apple-clock:timer?id=" stringByAppendingString:uUIDString];
 
   v5 = [MEMORY[0x1E695DFF8] URLWithString:v4];
 
@@ -343,8 +343,8 @@ LABEL_11:
 
 - (double)remainingTime
 {
-  v2 = [(MTTimer *)self fireTime];
-  [v2 remainingTime];
+  fireTime = [(MTTimer *)self fireTime];
+  [fireTime remainingTime];
   v4 = v3;
 
   return v4;
@@ -372,32 +372,32 @@ LABEL_11:
   if ([(MTTimer *)self hasDefaultTitle])
   {
     v3 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-    v4 = [v3 localizedStringForKey:@"TIMER_DEFAULT_TITLE" value:&stru_1F29360E0 table:@"Localizable"];
+    title = [v3 localizedStringForKey:@"TIMER_DEFAULT_TITLE" value:&stru_1F29360E0 table:@"Localizable"];
   }
 
   else
   {
-    v4 = [(MTTimer *)self title];
+    title = [(MTTimer *)self title];
   }
 
-  return v4;
+  return title;
 }
 
 - (BOOL)hasDefaultTitle
 {
-  v3 = [(MTTimer *)self title];
-  if ([v3 isEqualToString:@"CURRENT_TIMER"])
+  title = [(MTTimer *)self title];
+  if ([title isEqualToString:@"CURRENT_TIMER"])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(MTTimer *)self title];
-    if ([v5 length])
+    title2 = [(MTTimer *)self title];
+    if ([title2 length])
     {
-      v6 = [(MTTimer *)self title];
-      v4 = v6 == 0;
+      title3 = [(MTTimer *)self title];
+      v4 = title3 == 0;
     }
 
     else
@@ -417,32 +417,32 @@ LABEL_11:
   return v3;
 }
 
-- (id)timerByUpdatingWithState:(unint64_t)a3
+- (id)timerByUpdatingWithState:(unint64_t)state
 {
   v4 = [(MTTimer *)self mutableCopy];
-  [v4 setState:a3];
+  [v4 setState:state];
 
   return v4;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  v5 = [(MTTimer *)self fireTime];
-  v6 = [v4 fireTime];
-  v7 = [v5 compare:v6];
+  compareCopy = compare;
+  fireTime = [(MTTimer *)self fireTime];
+  fireTime2 = [compareCopy fireTime];
+  v7 = [fireTime compare:fireTime2];
 
   if (!v7)
   {
-    v8 = [(MTTimer *)self displayTitle];
-    v9 = [v4 displayTitle];
-    v7 = [v8 compare:v9];
+    displayTitle = [(MTTimer *)self displayTitle];
+    displayTitle2 = [compareCopy displayTitle];
+    v7 = [displayTitle compare:displayTitle2];
 
     if (!v7)
     {
-      v10 = [(MTTimer *)self timerIDString];
-      v11 = [v4 timerIDString];
-      v7 = [v10 compare:v11];
+      timerIDString = [(MTTimer *)self timerIDString];
+      timerIDString2 = [compareCopy timerIDString];
+      v7 = [timerIDString compare:timerIDString2];
     }
   }
 
@@ -457,112 +457,112 @@ LABEL_11:
   return v4;
 }
 
-- (id)nextTriggerAfterDate:(id)a3
+- (id)nextTriggerAfterDate:(id)date
 {
   v47 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(MTTimer *)self lastModifiedDate];
-  if (v5)
+  dateCopy = date;
+  lastModifiedDate = [(MTTimer *)self lastModifiedDate];
+  if (lastModifiedDate)
   {
-    v6 = v5;
-    v7 = [(MTTimer *)self lastModifiedDate];
-    v8 = [v7 mtIsAfterDate:v4];
+    v6 = lastModifiedDate;
+    lastModifiedDate2 = [(MTTimer *)self lastModifiedDate];
+    v8 = [lastModifiedDate2 mtIsAfterDate:dateCopy];
 
     if (v8)
     {
       v9 = MTLogForCategory(4);
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
-        v10 = [(MTTimer *)self timerID];
-        v11 = [(MTTimer *)self lastModifiedDate];
+        timerID = [(MTTimer *)self timerID];
+        lastModifiedDate3 = [(MTTimer *)self lastModifiedDate];
         v41 = 138543874;
-        v42 = v10;
+        v42 = timerID;
         v43 = 2114;
-        v44 = v4;
+        v44 = dateCopy;
         v45 = 2114;
-        v46 = v11;
+        v46 = lastModifiedDate3;
         _os_log_impl(&dword_1B1F9F000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ modified after %{public}@ (%{public}@)", &v41, 0x20u);
       }
 
-      v12 = [(MTTimer *)self lastModifiedDate];
+      lastModifiedDate4 = [(MTTimer *)self lastModifiedDate];
 
-      v4 = v12;
+      dateCopy = lastModifiedDate4;
     }
   }
 
-  v13 = [(MTTimer *)self firedDate];
-  if (v13)
+  firedDate = [(MTTimer *)self firedDate];
+  if (firedDate)
   {
-    v14 = v13;
-    v15 = [(MTTimer *)self firedDate];
-    v16 = [v15 mtIsAfterDate:v4];
+    v14 = firedDate;
+    firedDate2 = [(MTTimer *)self firedDate];
+    v16 = [firedDate2 mtIsAfterDate:dateCopy];
 
     if (v16)
     {
       v17 = MTLogForCategory(4);
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
-        v18 = [(MTTimer *)self timerID];
-        v19 = [(MTTimer *)self firedDate];
+        timerID2 = [(MTTimer *)self timerID];
+        firedDate3 = [(MTTimer *)self firedDate];
         v41 = 138543874;
-        v42 = v18;
+        v42 = timerID2;
         v43 = 2114;
-        v44 = v4;
+        v44 = dateCopy;
         v45 = 2114;
-        v46 = v19;
+        v46 = firedDate3;
         _os_log_impl(&dword_1B1F9F000, v17, OS_LOG_TYPE_DEFAULT, "%{public}@ already fired after %{public}@ (%{public}@)", &v41, 0x20u);
       }
 
-      v20 = [(MTTimer *)self firedDate];
+      firedDate4 = [(MTTimer *)self firedDate];
 
-      v4 = v20;
+      dateCopy = firedDate4;
     }
   }
 
-  v21 = [(MTTimer *)self dismissedDate];
-  if (v21)
+  dismissedDate = [(MTTimer *)self dismissedDate];
+  if (dismissedDate)
   {
-    v22 = v21;
-    v23 = [(MTTimer *)self dismissedDate];
-    v24 = [v23 mtIsAfterDate:v4];
+    v22 = dismissedDate;
+    dismissedDate2 = [(MTTimer *)self dismissedDate];
+    v24 = [dismissedDate2 mtIsAfterDate:dateCopy];
 
     if (v24)
     {
       v25 = MTLogForCategory(4);
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
       {
-        v26 = [(MTTimer *)self timerID];
-        v27 = [(MTTimer *)self dismissedDate];
+        timerID3 = [(MTTimer *)self timerID];
+        dismissedDate3 = [(MTTimer *)self dismissedDate];
         v41 = 138543874;
-        v42 = v26;
+        v42 = timerID3;
         v43 = 2114;
-        v44 = v4;
+        v44 = dateCopy;
         v45 = 2114;
-        v46 = v27;
+        v46 = dismissedDate3;
         _os_log_impl(&dword_1B1F9F000, v25, OS_LOG_TYPE_DEFAULT, "%{public}@ already dismissed after %{public}@ (%{public}@)", &v41, 0x20u);
       }
 
-      v28 = [(MTTimer *)self dismissedDate];
+      dismissedDate4 = [(MTTimer *)self dismissedDate];
 
-      v4 = v28;
+      dateCopy = dismissedDate4;
     }
   }
 
   v29 = MTLogForCategory(4);
   if (os_log_type_enabled(v29, OS_LOG_TYPE_DEBUG))
   {
-    [(MTTimer *)self nextTriggerAfterDate:v4, v29];
+    [(MTTimer *)self nextTriggerAfterDate:dateCopy, v29];
   }
 
   if ([(MTTimer *)self state]== 3)
   {
     v30 = objc_opt_class();
-    v31 = [(MTTimer *)self fireTime];
-    if (v31)
+    fireTime = [(MTTimer *)self fireTime];
+    if (fireTime)
     {
       if (objc_opt_isKindOfClass())
       {
-        v32 = v31;
+        v32 = fireTime;
       }
 
       else
@@ -573,7 +573,7 @@ LABEL_11:
       v33 = v32;
       if (!v33)
       {
-        [MTTimerScheduler _queue_scheduleTimers:v31 withCompletion:v30];
+        [MTTimerScheduler _queue_scheduleTimers:fireTime withCompletion:v30];
       }
     }
 
@@ -582,10 +582,10 @@ LABEL_11:
       v33 = 0;
     }
 
-    v35 = [v33 date];
-    if ([v35 mtIsAfterOrSameAsDate:v4])
+    date = [v33 date];
+    if ([date mtIsAfterOrSameAsDate:dateCopy])
     {
-      v34 = [MTTrigger triggerWithDate:v35 triggerType:0];
+      v34 = [MTTrigger triggerWithDate:date triggerType:0];
     }
 
     else
@@ -594,9 +594,9 @@ LABEL_11:
       if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
       {
         v41 = 138543618;
-        v42 = v35;
+        v42 = date;
         v43 = 2114;
-        v44 = v4;
+        v44 = dateCopy;
         _os_log_impl(&dword_1B1F9F000, v36, OS_LOG_TYPE_DEFAULT, "Next trigger date %{public}@ is prior to requested date %{public}@", &v41, 0x16u);
       }
 
@@ -612,9 +612,9 @@ LABEL_11:
   v37 = MTLogForCategory(4);
   if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
   {
-    v38 = [(MTTimer *)self timerID];
+    timerID4 = [(MTTimer *)self timerID];
     v41 = 138543618;
-    v42 = v38;
+    v42 = timerID4;
     v43 = 2114;
     v44 = v34;
     _os_log_impl(&dword_1B1F9F000, v37, OS_LOG_TYPE_DEFAULT, "%{public}@ has next trigger %{public}@", &v41, 0x16u);
@@ -632,15 +632,15 @@ LABEL_11:
     return 0;
   }
 
-  v4 = [(MTTimer *)self firedDate];
-  if (v4)
+  firedDate = [(MTTimer *)self firedDate];
+  if (firedDate)
   {
-    v5 = [(MTTimer *)self dismissedDate];
-    if (v5)
+    dismissedDate = [(MTTimer *)self dismissedDate];
+    if (dismissedDate)
     {
-      v6 = [(MTTimer *)self firedDate];
-      v7 = [(MTTimer *)self dismissedDate];
-      v3 = [v6 mtIsAfterDate:v7];
+      firedDate2 = [(MTTimer *)self firedDate];
+      dismissedDate2 = [(MTTimer *)self dismissedDate];
+      v3 = [firedDate2 mtIsAfterDate:dismissedDate2];
     }
 
     else
@@ -657,78 +657,78 @@ LABEL_11:
   return v3;
 }
 
-+ (id)descriptionForState:(unint64_t)a3
++ (id)descriptionForState:(unint64_t)state
 {
-  if (a3 > 3)
+  if (state > 3)
   {
     return @"Invalid State";
   }
 
   else
   {
-    return off_1E7B0FDC8[a3];
+    return off_1E7B0FDC8[state];
   }
 }
 
-+ (BOOL)stateChangeIsAllowableFromState:(unint64_t)a3 toState:(unint64_t)a4
++ (BOOL)stateChangeIsAllowableFromState:(unint64_t)state toState:(unint64_t)toState
 {
-  if (a3 == 2 && a4 == 2)
+  if (state == 2 && toState == 2)
   {
     return 1;
   }
 
-  return a3 == 3 || a4 != 2;
+  return state == 3 || toState != 2;
 }
 
-- (void)setState:(unint64_t)a3
+- (void)setState:(unint64_t)state
 {
-  if (a3 < 4)
+  if (state < 4)
   {
-    if (self->_state != a3)
+    if (self->_state != state)
     {
-      v5 = [(MTTimer *)self fireTime];
-      [v5 remainingTime];
+      fireTime = [(MTTimer *)self fireTime];
+      [fireTime remainingTime];
       v7 = v6;
 
-      if (a3 == 1)
+      if (state == 1)
       {
         [(MTTimer *)self duration];
         v7 = v8;
       }
 
-      v9 = [objc_opt_class() _timerTimeForState:a3 remainingTime:self->_currentDateProvider currentDateProvider:v7];
+      v9 = [objc_opt_class() _timerTimeForState:state remainingTime:self->_currentDateProvider currentDateProvider:v7];
       [(MTTimer *)self setFireTime:v9];
 
-      self->_state = a3;
+      self->_state = state;
     }
   }
 
   else
   {
-    NSLog(&cfstr_StateMustBeAVa.isa, a2, a3);
+    NSLog(&cfstr_StateMustBeAVa.isa, a2, state);
   }
 }
 
-- (void)setSound:(id)a3
+- (void)setSound:(id)sound
 {
-  v4 = a3;
-  if (self->_sound != v4)
+  soundCopy = sound;
+  if (self->_sound != soundCopy)
   {
-    if (!v4)
+    if (!soundCopy)
     {
-      v4 = [MTSound defaultSoundForCategory:1];
+      soundCopy = [MTSound defaultSoundForCategory:1];
     }
 
-    v7 = v4;
-    v5 = [(MTSound *)v4 copy];
+    v7 = soundCopy;
+    v5 = [(MTSound *)soundCopy copy];
     sound = self->_sound;
     self->_sound = v5;
 
-    v4 = v7;
+    soundCopy = v7;
   }
 }
 
-- (void)setDuration:(double)a3
+- (void)setDuration:(double)duration
 {
   if ([(MTTimer *)self state]!= 1)
   {
@@ -737,10 +737,10 @@ LABEL_11:
 
   if ([(MTTimer *)self state]== 1)
   {
-    if (a3 > 0.0)
+    if (duration > 0.0)
     {
 
-      [(MTTimer *)self _setDuration:a3];
+      [(MTTimer *)self _setDuration:duration];
     }
 
     else
@@ -750,11 +750,11 @@ LABEL_11:
   }
 }
 
-- (void)_setDuration:(double)a3
+- (void)_setDuration:(double)duration
 {
-  if (self->_duration != a3)
+  if (self->_duration != duration)
   {
-    self->_duration = a3;
+    self->_duration = duration;
     if ([(MTTimer *)self state]== 1)
     {
       v4 = [objc_opt_class() _timerTimeForState:1 remainingTime:self->_currentDateProvider currentDateProvider:self->_duration];
@@ -765,17 +765,17 @@ LABEL_11:
 
 - (unint64_t)hash
 {
-  v2 = [(MTTimer *)self timerID];
-  v3 = [v2 hash];
+  timerID = [(MTTimer *)self timerID];
+  v3 = [timerID hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = v4;
+  v5 = equalCopy;
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
@@ -801,51 +801,51 @@ LABEL_11:
   return v8;
 }
 
-- (BOOL)_isEqualToTimer:(id)a3 checkLastModified:(BOOL)a4
+- (BOOL)_isEqualToTimer:(id)timer checkLastModified:(BOOL)modified
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(MTTimer *)self timerID];
-  v8 = [v6 timerID];
-  if ([v7 isEqual:v8])
+  modifiedCopy = modified;
+  timerCopy = timer;
+  timerID = [(MTTimer *)self timerID];
+  timerID2 = [timerCopy timerID];
+  if ([timerID isEqual:timerID2])
   {
-    v9 = [(MTTimer *)self state];
-    if (v9 == [v6 state])
+    state = [(MTTimer *)self state];
+    if (state == [timerCopy state])
     {
       [(MTTimer *)self duration];
       v11 = round(v10);
-      [v6 duration];
+      [timerCopy duration];
       if (v11 == round(v12))
       {
-        v13 = [(MTTimer *)self fireTime];
-        v14 = [v6 fireTime];
-        if (v13 != v14)
+        fireTime = [(MTTimer *)self fireTime];
+        fireTime2 = [timerCopy fireTime];
+        if (fireTime != fireTime2)
         {
-          v15 = [(MTTimer *)self fireTime];
-          v76 = [v6 fireTime];
-          v77 = v15;
-          if (![v15 isEqual:?])
+          fireTime3 = [(MTTimer *)self fireTime];
+          fireTime4 = [timerCopy fireTime];
+          v77 = fireTime3;
+          if (![fireTime3 isEqual:?])
           {
             v16 = 0;
             goto LABEL_54;
           }
         }
 
-        v18 = [(MTTimer *)self title];
-        v78 = [v6 title];
-        if (v18 != v78)
+        title = [(MTTimer *)self title];
+        title2 = [timerCopy title];
+        if (title != title2)
         {
-          v19 = [(MTTimer *)self title];
-          v74 = [v6 title];
-          v75 = v19;
-          if (![v19 isEqual:v74])
+          title3 = [(MTTimer *)self title];
+          title4 = [timerCopy title];
+          v75 = title3;
+          if (![title3 isEqual:title4])
           {
             v16 = 0;
-            v20 = v78;
+            v20 = title2;
 LABEL_52:
 
 LABEL_53:
-            if (v13 == v14)
+            if (fireTime == fireTime2)
             {
 LABEL_55:
 
@@ -858,30 +858,30 @@ LABEL_54:
           }
         }
 
-        if (v4)
+        if (modifiedCopy)
         {
-          v21 = [v6 lastModifiedDate];
-          v65 = [(MTTimer *)self lastModifiedDate];
-          v66 = v21;
-          if (v21 == v65)
+          lastModifiedDate = [timerCopy lastModifiedDate];
+          lastModifiedDate2 = [(MTTimer *)self lastModifiedDate];
+          v66 = lastModifiedDate;
+          if (lastModifiedDate == lastModifiedDate2)
           {
             v73 = 0;
           }
 
           else
           {
-            v22 = [v6 lastModifiedDate];
-            v23 = [(MTTimer *)self lastModifiedDate];
-            if (([v22 isEqual:v23] & 1) == 0)
+            lastModifiedDate3 = [timerCopy lastModifiedDate];
+            lastModifiedDate4 = [(MTTimer *)self lastModifiedDate];
+            if (([lastModifiedDate3 isEqual:lastModifiedDate4] & 1) == 0)
             {
 
               v16 = 0;
               goto LABEL_51;
             }
 
-            v58 = v22;
+            v58 = lastModifiedDate3;
             v73 = 1;
-            v57 = v23;
+            v57 = lastModifiedDate4;
           }
         }
 
@@ -890,22 +890,22 @@ LABEL_54:
           v73 = 0;
         }
 
-        v24 = [(MTTimer *)self firedDate];
-        v25 = [v6 firedDate];
-        v72 = v24;
-        v26 = v24 == v25;
-        v27 = v25;
+        firedDate = [(MTTimer *)self firedDate];
+        firedDate2 = [timerCopy firedDate];
+        v72 = firedDate;
+        v26 = firedDate == firedDate2;
+        v27 = firedDate2;
         if (v26)
         {
-          v71 = v25;
+          v71 = firedDate2;
         }
 
         else
         {
-          v28 = [(MTTimer *)self firedDate];
-          v67 = [v6 firedDate];
-          v68 = v28;
-          if (![v28 isEqual:?])
+          firedDate3 = [(MTTimer *)self firedDate];
+          firedDate4 = [timerCopy firedDate];
+          v68 = firedDate3;
+          if (![firedDate3 isEqual:?])
           {
             v16 = 0;
             v35 = v27;
@@ -916,18 +916,18 @@ LABEL_54:
           v71 = v27;
         }
 
-        v29 = [(MTTimer *)self dismissedDate];
-        v30 = [v6 dismissedDate];
-        v69 = v29;
-        v70 = v18;
-        v26 = v29 == v30;
-        v31 = v30;
+        dismissedDate = [(MTTimer *)self dismissedDate];
+        dismissedDate2 = [timerCopy dismissedDate];
+        v69 = dismissedDate;
+        v70 = title;
+        v26 = dismissedDate == dismissedDate2;
+        v31 = dismissedDate2;
         if (!v26)
         {
-          v32 = [(MTTimer *)self dismissedDate];
-          v60 = [v6 dismissedDate];
-          v61 = v32;
-          if (![v32 isEqual:?])
+          dismissedDate3 = [(MTTimer *)self dismissedDate];
+          dismissedDate4 = [timerCopy dismissedDate];
+          v61 = dismissedDate3;
+          if (![dismissedDate3 isEqual:?])
           {
             v33 = v71;
             v16 = 0;
@@ -938,7 +938,7 @@ LABEL_44:
             v36 = v72;
             v35 = v33;
             v26 = v72 == v33;
-            v18 = v70;
+            title = v70;
             if (v26)
             {
 
@@ -946,11 +946,11 @@ LABEL_44:
               {
 LABEL_46:
 
-                if (!v4)
+                if (!modifiedCopy)
                 {
 LABEL_51:
-                  v20 = v78;
-                  if (v18 == v78)
+                  v20 = title2;
+                  if (title == title2)
                   {
                     goto LABEL_53;
                   }
@@ -964,7 +964,7 @@ LABEL_50:
               }
 
 LABEL_49:
-              if (!v4)
+              if (!modifiedCopy)
               {
                 goto LABEL_51;
               }
@@ -983,36 +983,36 @@ LABEL_45:
           }
         }
 
-        v37 = [(MTTimer *)self sound];
-        v62 = [v6 sound];
-        v63 = v37;
+        sound = [(MTTimer *)self sound];
+        sound2 = [timerCopy sound];
+        v63 = sound;
         v64 = v31;
-        if (v37 != v62)
+        if (sound != sound2)
         {
-          v38 = [(MTTimer *)self sound];
-          v54 = [v6 sound];
-          v55 = v38;
-          v39 = [v38 isEqual:?];
+          sound3 = [(MTTimer *)self sound];
+          sound4 = [timerCopy sound];
+          v55 = sound3;
+          v39 = [sound3 isEqual:?];
           v40 = v71;
           if (!v39)
           {
             v16 = 0;
-            v45 = v62;
+            v45 = sound2;
             v44 = v63;
             goto LABEL_40;
           }
         }
 
-        v41 = [(MTTimer *)self siriContext];
-        v56 = [v6 siriContext];
-        v59 = v41;
-        if (v41 == v56 || (-[MTTimer siriContext](self, "siriContext"), v42 = objc_claimAutoreleasedReturnValue(), [v6 siriContext], v51 = objc_claimAutoreleasedReturnValue(), v52 = v42, objc_msgSend(v42, "isEqual:")))
+        siriContext = [(MTTimer *)self siriContext];
+        siriContext2 = [timerCopy siriContext];
+        v59 = siriContext;
+        if (siriContext == siriContext2 || (-[MTTimer siriContext](self, "siriContext"), v42 = objc_claimAutoreleasedReturnValue(), [timerCopy siriContext], v51 = objc_claimAutoreleasedReturnValue(), v52 = v42, objc_msgSend(v42, "isEqual:")))
         {
-          v46 = [(MTTimer *)self timerContext];
-          v47 = [v6 timerContext];
-          v48 = v47;
-          v53 = v46;
-          if (v46 == v47)
+          timerContext = [(MTTimer *)self timerContext];
+          timerContext2 = [timerCopy timerContext];
+          v48 = timerContext2;
+          v53 = timerContext;
+          if (timerContext == timerContext2)
           {
 
             v16 = 1;
@@ -1020,20 +1020,20 @@ LABEL_45:
 
           else
           {
-            v49 = [(MTTimer *)self timerContext];
-            v50 = [v6 timerContext];
-            v16 = [v49 isEqual:v50];
+            timerContext3 = [(MTTimer *)self timerContext];
+            timerContext4 = [timerCopy timerContext];
+            v16 = [timerContext3 isEqual:timerContext4];
           }
 
-          v43 = v56;
-          if (v59 == v56)
+          v43 = siriContext2;
+          if (v59 == siriContext2)
           {
 LABEL_39:
 
-            v45 = v62;
+            v45 = sound2;
             v44 = v63;
             v40 = v71;
-            if (v63 == v62)
+            if (v63 == sound2)
             {
               v33 = v71;
 LABEL_42:
@@ -1058,7 +1058,7 @@ LABEL_40:
         else
         {
           v16 = 0;
-          v43 = v56;
+          v43 = siriContext2;
         }
 
         goto LABEL_39;
@@ -1072,69 +1072,69 @@ LABEL_8:
   return v16;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [MTMutableTimer allocWithZone:a3];
-  v5 = [(MTTimer *)self timerID];
-  v6 = [(MTTimer *)v4 initWithIdentifier:v5];
+  v4 = [MTMutableTimer allocWithZone:zone];
+  timerID = [(MTTimer *)self timerID];
+  v6 = [(MTTimer *)v4 initWithIdentifier:timerID];
 
   [(MTTimer *)self _copyStateOntoTimer:v6];
   return v6;
 }
 
-- (void)_copyStateOntoTimer:(id)a3
+- (void)_copyStateOntoTimer:(id)timer
 {
-  v4 = a3;
-  v5 = [(MTTimer *)self currentDateProvider];
-  [v4 setCurrentDateProvider:v5];
+  timerCopy = timer;
+  currentDateProvider = [(MTTimer *)self currentDateProvider];
+  [timerCopy setCurrentDateProvider:currentDateProvider];
 
-  v6 = [(MTTimer *)self fireTime];
-  [v4 setFireTime:v6];
+  fireTime = [(MTTimer *)self fireTime];
+  [timerCopy setFireTime:fireTime];
 
   [(MTTimer *)self duration];
-  [v4 _setDuration:?];
-  [v4 setState:{-[MTTimer state](self, "state")}];
-  v7 = [(MTTimer *)self title];
-  [v4 setTitle:v7];
+  [timerCopy _setDuration:?];
+  [timerCopy setState:{-[MTTimer state](self, "state")}];
+  title = [(MTTimer *)self title];
+  [timerCopy setTitle:title];
 
-  v8 = [(MTTimer *)self lastModifiedDate];
-  [v4 setLastModifiedDate:v8];
+  lastModifiedDate = [(MTTimer *)self lastModifiedDate];
+  [timerCopy setLastModifiedDate:lastModifiedDate];
 
-  v9 = [(MTTimer *)self firedDate];
-  [v4 setFiredDate:v9];
+  firedDate = [(MTTimer *)self firedDate];
+  [timerCopy setFiredDate:firedDate];
 
-  v10 = [(MTTimer *)self dismissedDate];
-  [v4 setDismissedDate:v10];
+  dismissedDate = [(MTTimer *)self dismissedDate];
+  [timerCopy setDismissedDate:dismissedDate];
 
-  v11 = [(MTTimer *)self sound];
-  [v4 setSound:v11];
+  sound = [(MTTimer *)self sound];
+  [timerCopy setSound:sound];
 
-  v12 = [(MTTimer *)self siriContext];
-  [v4 setSiriContext:v12];
+  siriContext = [(MTTimer *)self siriContext];
+  [timerCopy setSiriContext:siriContext];
 
-  v13 = [(MTTimer *)self timerContext];
-  [v4 setTimerContext:v13];
+  timerContext = [(MTTimer *)self timerContext];
+  [timerCopy setTimerContext:timerContext];
 }
 
-- (id)initFromDeserializer:(id)a3
+- (id)initFromDeserializer:(id)deserializer
 {
   v73 = *MEMORY[0x1E69E9840];
-  v4 = [a3 mtCoder];
-  v5 = [(MTTimer *)self _initCommon];
-  if (!v5)
+  mtCoder = [deserializer mtCoder];
+  _initCommon = [(MTTimer *)self _initCommon];
+  if (!_initCommon)
   {
     goto LABEL_41;
   }
 
-  if ([v4 mtType] == 3)
+  if ([mtCoder mtType] == 3)
   {
-    [v4 decodeFloatForKey:@"MTTimerDataVersion"];
+    [mtCoder decodeFloatForKey:@"MTTimerDataVersion"];
     v7 = v6;
     if (v6 < 1.3)
     {
-      v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MTTimerID"];
-      v9 = *(v5 + 1);
-      *(v5 + 1) = v8;
+      v8 = [mtCoder decodeObjectOfClass:objc_opt_class() forKey:@"MTTimerID"];
+      v9 = *(_initCommon + 1);
+      *(_initCommon + 1) = v8;
     }
 
     if (v7 >= 1.4)
@@ -1153,21 +1153,21 @@ LABEL_8:
 
     else
     {
-      v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MTTimerSound"];
-      v11 = [v10 soundVolume];
-      v12 = v11 != 0;
+      v10 = [mtCoder decodeObjectOfClass:objc_opt_class() forKey:@"MTTimerSound"];
+      soundVolume = [v10 soundVolume];
+      v12 = soundVolume != 0;
 
-      if (v11)
+      if (soundVolume)
       {
-        v13 = [v10 toneIdentifier];
-        v14 = [v10 vibrationIdentifier];
-        v15 = [MTSound toneSoundWithIdentifier:v13 vibrationIdentifer:v14 volume:0];
-        v16 = *(v5 + 9);
-        *(v5 + 9) = v15;
+        toneIdentifier = [v10 toneIdentifier];
+        vibrationIdentifier = [v10 vibrationIdentifier];
+        v15 = [MTSound toneSoundWithIdentifier:toneIdentifier vibrationIdentifer:vibrationIdentifier volume:0];
+        v16 = *(_initCommon + 9);
+        *(_initCommon + 9) = v15;
 
         if (v7 < 1.5)
         {
-          v17 = *(v5 + 9);
+          v17 = *(_initCommon + 9);
           goto LABEL_15;
         }
 
@@ -1184,7 +1184,7 @@ LABEL_26:
           if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
           {
             *buf = 138543618;
-            v70 = v5;
+            v70 = _initCommon;
             v71 = 2048;
             v72 = v7;
             _os_log_impl(&dword_1B1F9F000, v29, OS_LOG_TYPE_INFO, "%{public}@ read data version: %f", buf, 0x16u);
@@ -1193,44 +1193,44 @@ LABEL_26:
           goto LABEL_29;
         }
 
-        if (v11)
+        if (soundVolume)
         {
 LABEL_19:
-          v22 = *(v5 + 9);
+          v22 = *(_initCommon + 9);
 LABEL_21:
           v23 = v22;
           if ([v22 soundType] == 1)
           {
             v24 = *MEMORY[0x1E69DA928];
-            v25 = [v23 soundVolume];
-            v26 = [MTSound toneSoundWithIdentifier:v24 vibrationIdentifer:0 volume:v25];
-            v27 = *(v5 + 9);
-            *(v5 + 9) = v26;
+            soundVolume2 = [v23 soundVolume];
+            v26 = [MTSound toneSoundWithIdentifier:v24 vibrationIdentifer:0 volume:soundVolume2];
+            v27 = *(_initCommon + 9);
+            *(_initCommon + 9) = v26;
           }
 
           else
           {
             v28 = v23;
-            v25 = *(v5 + 9);
-            *(v5 + 9) = v28;
+            soundVolume2 = *(_initCommon + 9);
+            *(_initCommon + 9) = v28;
           }
 
           goto LABEL_25;
         }
 
 LABEL_20:
-        v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MTTimerSound"];
+        v22 = [mtCoder decodeObjectOfClass:objc_opt_class() forKey:@"MTTimerSound"];
         goto LABEL_21;
       }
     }
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MTTimerSound"];
+    v17 = [mtCoder decodeObjectOfClass:objc_opt_class() forKey:@"MTTimerSound"];
 LABEL_15:
     v18 = v17;
-    v19 = [v17 toneIdentifier];
-    v20 = [MTSound toneSoundWithIdentifier:v19 vibrationIdentifer:0 volume:0];
-    v21 = *(v5 + 9);
-    *(v5 + 9) = v20;
+    toneIdentifier2 = [v17 toneIdentifier];
+    v20 = [MTSound toneSoundWithIdentifier:toneIdentifier2 vibrationIdentifer:0 volume:0];
+    v21 = *(_initCommon + 9);
+    *(_initCommon + 9) = v20;
 
     if (v7 >= 1.6)
     {
@@ -1244,36 +1244,36 @@ LABEL_25:
 
   v12 = 0;
 LABEL_29:
-  if (!*(v5 + 1))
+  if (!*(_initCommon + 1))
   {
     v30 = objc_alloc(MEMORY[0x1E696AFB0]);
-    v31 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MTTimerID"];
+    v31 = [mtCoder decodeObjectOfClass:objc_opt_class() forKey:@"MTTimerID"];
     v32 = [v30 initWithUUIDString:v31];
-    v33 = *(v5 + 1);
-    *(v5 + 1) = v32;
+    v33 = *(_initCommon + 1);
+    *(_initCommon + 1) = v32;
   }
 
-  v34 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MTTimerState"];
-  *(v5 + 3) = [v34 unsignedIntegerValue];
+  v34 = [mtCoder decodeObjectOfClass:objc_opt_class() forKey:@"MTTimerState"];
+  *(_initCommon + 3) = [v34 unsignedIntegerValue];
 
-  if (*(v5 + 3) >= 4uLL)
+  if (*(_initCommon + 3) >= 4uLL)
   {
-    NSLog(&cfstr_StateMustBeAVa_0.isa, *(v5 + 3));
-    *(v5 + 3) = 0;
+    NSLog(&cfstr_StateMustBeAVa_0.isa, *(_initCommon + 3));
+    *(_initCommon + 3) = 0;
   }
 
-  [v4 decodeDoubleForKey:@"MTTimerDuration"];
-  *(v5 + 4) = v35;
-  v36 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MTTimerFireTimerClass"];
+  [mtCoder decodeDoubleForKey:@"MTTimerDuration"];
+  *(_initCommon + 4) = v35;
+  v36 = [mtCoder decodeObjectOfClass:objc_opt_class() forKey:@"MTTimerFireTimerClass"];
   v37 = objc_opt_class();
   v38 = NSStringFromClass(v37);
   v39 = [v36 isEqualToString:v38];
 
   if (v39 || (v40 = objc_opt_class(), NSStringFromClass(v40), v41 = objc_claimAutoreleasedReturnValue(), v42 = [v36 isEqualToString:v41], v41, v42))
   {
-    v43 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MTTimerFireTime"];
-    v44 = *(v5 + 10);
-    *(v5 + 10) = v43;
+    v43 = [mtCoder decodeObjectOfClass:objc_opt_class() forKey:@"MTTimerFireTime"];
+    v44 = *(_initCommon + 10);
+    *(_initCommon + 10) = v43;
   }
 
   else
@@ -1285,127 +1285,127 @@ LABEL_29:
     }
   }
 
-  v45 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MTTimerTitle"];
-  v46 = *(v5 + 8);
-  *(v5 + 8) = v45;
+  v45 = [mtCoder decodeObjectOfClass:objc_opt_class() forKey:@"MTTimerTitle"];
+  v46 = *(_initCommon + 8);
+  *(_initCommon + 8) = v45;
 
-  v47 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MTTimerLastModifiedDate"];
-  v48 = *(v5 + 6);
-  *(v5 + 6) = v47;
+  v47 = [mtCoder decodeObjectOfClass:objc_opt_class() forKey:@"MTTimerLastModifiedDate"];
+  v48 = *(_initCommon + 6);
+  *(_initCommon + 6) = v47;
 
-  v49 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MTTimerFiredDate"];
-  v50 = *(v5 + 5);
-  *(v5 + 5) = v49;
+  v49 = [mtCoder decodeObjectOfClass:objc_opt_class() forKey:@"MTTimerFiredDate"];
+  v50 = *(_initCommon + 5);
+  *(_initCommon + 5) = v49;
 
-  v51 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MTTimerDismissedDate"];
-  v52 = *(v5 + 7);
-  *(v5 + 7) = v51;
+  v51 = [mtCoder decodeObjectOfClass:objc_opt_class() forKey:@"MTTimerDismissedDate"];
+  v52 = *(_initCommon + 7);
+  *(_initCommon + 7) = v51;
 
   if (!v12)
   {
-    v53 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MTTimerSound"];
-    v54 = *(v5 + 9);
-    *(v5 + 9) = v53;
+    v53 = [mtCoder decodeObjectOfClass:objc_opt_class() forKey:@"MTTimerSound"];
+    v54 = *(_initCommon + 9);
+    *(_initCommon + 9) = v53;
   }
 
   v55 = MEMORY[0x1E695DFD8];
   v56 = objc_opt_class();
   v57 = objc_opt_class();
   v58 = [v55 setWithObjects:{v56, v57, objc_opt_class(), 0}];
-  v59 = [v4 decodeObjectOfClasses:v58 forKey:@"MTTimerSiriContext"];
-  v60 = *(v5 + 11);
-  *(v5 + 11) = v59;
+  v59 = [mtCoder decodeObjectOfClasses:v58 forKey:@"MTTimerSiriContext"];
+  v60 = *(_initCommon + 11);
+  *(_initCommon + 11) = v59;
 
   v61 = MEMORY[0x1E695DFD8];
   v62 = objc_opt_class();
   v63 = objc_opt_class();
   v64 = [v61 setWithObjects:{v62, v63, objc_opt_class(), 0}];
-  v65 = [v4 decodeObjectOfClasses:v64 forKey:@"MTTimerContext"];
-  v66 = *(v5 + 12);
-  *(v5 + 12) = v65;
+  v65 = [mtCoder decodeObjectOfClasses:v64 forKey:@"MTTimerContext"];
+  v66 = *(_initCommon + 12);
+  *(_initCommon + 12) = v65;
 
 LABEL_41:
   v67 = *MEMORY[0x1E69E9840];
-  return v5;
+  return _initCommon;
 }
 
-- (void)serializeWithSerializer:(id)a3
+- (void)serializeWithSerializer:(id)serializer
 {
-  v18 = [a3 mtCoder];
-  if ([v18 mtType] == 2)
+  mtCoder = [serializer mtCoder];
+  if ([mtCoder mtType] == 2)
   {
     LODWORD(v4) = 1070386381;
-    [v18 encodeFloat:@"MTTimerDataVersion" forKey:v4];
+    [mtCoder encodeFloat:@"MTTimerDataVersion" forKey:v4];
   }
 
-  v5 = [(MTTimer *)self timerIDString];
-  [v18 encodeObject:v5 forKey:@"MTTimerID"];
+  timerIDString = [(MTTimer *)self timerIDString];
+  [mtCoder encodeObject:timerIDString forKey:@"MTTimerID"];
 
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[MTTimer state](self, "state")}];
-  [v18 encodeObject:v6 forKey:@"MTTimerState"];
+  [mtCoder encodeObject:v6 forKey:@"MTTimerState"];
 
   [(MTTimer *)self duration];
-  [v18 encodeDouble:@"MTTimerDuration" forKey:?];
-  v7 = [(MTTimer *)self fireTime];
+  [mtCoder encodeDouble:@"MTTimerDuration" forKey:?];
+  fireTime = [(MTTimer *)self fireTime];
   v8 = objc_opt_class();
   v9 = NSStringFromClass(v8);
-  [v18 encodeObject:v9 forKey:@"MTTimerFireTimerClass"];
+  [mtCoder encodeObject:v9 forKey:@"MTTimerFireTimerClass"];
 
-  v10 = [(MTTimer *)self fireTime];
-  [v18 encodeObject:v10 forKey:@"MTTimerFireTime"];
+  fireTime2 = [(MTTimer *)self fireTime];
+  [mtCoder encodeObject:fireTime2 forKey:@"MTTimerFireTime"];
 
-  v11 = [(MTTimer *)self title];
-  [v18 encodeObject:v11 forKey:@"MTTimerTitle"];
+  title = [(MTTimer *)self title];
+  [mtCoder encodeObject:title forKey:@"MTTimerTitle"];
 
-  v12 = [(MTTimer *)self lastModifiedDate];
-  [v18 encodeObject:v12 forKey:@"MTTimerLastModifiedDate"];
+  lastModifiedDate = [(MTTimer *)self lastModifiedDate];
+  [mtCoder encodeObject:lastModifiedDate forKey:@"MTTimerLastModifiedDate"];
 
-  v13 = [(MTTimer *)self firedDate];
-  [v18 encodeObject:v13 forKey:@"MTTimerFiredDate"];
+  firedDate = [(MTTimer *)self firedDate];
+  [mtCoder encodeObject:firedDate forKey:@"MTTimerFiredDate"];
 
-  v14 = [(MTTimer *)self dismissedDate];
-  [v18 encodeObject:v14 forKey:@"MTTimerDismissedDate"];
+  dismissedDate = [(MTTimer *)self dismissedDate];
+  [mtCoder encodeObject:dismissedDate forKey:@"MTTimerDismissedDate"];
 
-  v15 = [(MTTimer *)self sound];
-  [v18 encodeObject:v15 forKey:@"MTTimerSound"];
+  sound = [(MTTimer *)self sound];
+  [mtCoder encodeObject:sound forKey:@"MTTimerSound"];
 
-  v16 = [(MTTimer *)self siriContext];
-  [v18 encodeObject:v16 forKey:@"MTTimerSiriContext"];
+  siriContext = [(MTTimer *)self siriContext];
+  [mtCoder encodeObject:siriContext forKey:@"MTTimerSiriContext"];
 
-  v17 = [(MTTimer *)self timerContext];
-  [v18 encodeObject:v17 forKey:@"MTTimerContext"];
+  timerContext = [(MTTimer *)self timerContext];
+  [mtCoder encodeObject:timerContext forKey:@"MTTimerContext"];
 }
 
-+ (id)_timerTimeForState:(unint64_t)a3 remainingTime:(double)a4 currentDateProvider:(id)a5
++ (id)_timerTimeForState:(unint64_t)state remainingTime:(double)time currentDateProvider:(id)provider
 {
-  v7 = a5;
-  if (a3 <= 2)
+  providerCopy = provider;
+  if (state <= 2)
   {
-    if (a3 - 1 < 2)
+    if (state - 1 < 2)
     {
-      v8 = [[MTTimerTimeInterval alloc] initWithTimeInterval:a4];
+      v8 = [[MTTimerTimeInterval alloc] initWithTimeInterval:time];
       goto LABEL_11;
     }
 
-    if (!a3)
+    if (!state)
     {
       goto LABEL_8;
     }
 
 LABEL_9:
-    NSLog(&cfstr_StateMustBeAVa.isa, a3);
+    NSLog(&cfstr_StateMustBeAVa.isa, state);
     goto LABEL_10;
   }
 
-  if (a3 != 4)
+  if (state != 4)
   {
-    if (a3 == 3)
+    if (state == 3)
     {
       v9 = [MTTimerDate alloc];
       v10 = MEMORY[0x1E695DF00];
-      v11 = v7[2](v7);
-      v12 = [v10 dateWithTimeInterval:v11 sinceDate:a4];
-      v8 = [(MTTimerDate *)v9 initWithDate:v12 currentDateProvider:v7];
+      v11 = providerCopy[2](providerCopy);
+      v12 = [v10 dateWithTimeInterval:v11 sinceDate:time];
+      v8 = [(MTTimerDate *)v9 initWithDate:v12 currentDateProvider:providerCopy];
 
       goto LABEL_11;
     }
@@ -1414,7 +1414,7 @@ LABEL_9:
   }
 
 LABEL_8:
-  NSLog(&cfstr_UnexpectedTime_0.isa, a3);
+  NSLog(&cfstr_UnexpectedTime_0.isa, state);
 LABEL_10:
   v8 = 0;
 LABEL_11:
@@ -1424,8 +1424,8 @@ LABEL_11:
 
 - (int64_t)type
 {
-  v2 = [(MTTimer *)self siriContext];
-  v3 = MTIntentsTimerTypeFromSiriContext(v2);
+  siriContext = [(MTTimer *)self siriContext];
+  v3 = MTIntentsTimerTypeFromSiriContext(siriContext);
 
   return v3;
 }

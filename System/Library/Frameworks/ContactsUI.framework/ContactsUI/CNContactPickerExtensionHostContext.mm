@@ -1,13 +1,13 @@
 @interface CNContactPickerExtensionHostContext
 - (CNContactPickerHostViewController)viewController;
 - (id)_derivedExtensionAuxiliaryHostProtocol;
-- (void)invalidateSelectionAnimated:(BOOL)a3;
+- (void)invalidateSelectionAnimated:(BOOL)animated;
 - (void)pickerDidCancel;
-- (void)pickerDidCompleteWithNewContact:(id)a3;
+- (void)pickerDidCompleteWithNewContact:(id)contact;
 - (void)pickerDidSelectAddNewContact;
-- (void)pickerDidSelectContact:(id)a3 property:(id)a4;
-- (void)pickerDidSelectContacts:(id)a3 properties:(id)a4;
-- (void)setupWithOptions:(id)a3 readyBlock:(id)a4;
+- (void)pickerDidSelectContact:(id)contact property:(id)property;
+- (void)pickerDidSelectContacts:(id)contacts properties:(id)properties;
+- (void)setupWithOptions:(id)options readyBlock:(id)block;
 @end
 
 @implementation CNContactPickerExtensionHostContext
@@ -35,16 +35,16 @@ void __54__CNContactPickerExtensionHostContext_pickerDidCancel__block_invoke(uin
   [v1 pickerDidCancel];
 }
 
-- (void)pickerDidCompleteWithNewContact:(id)a3
+- (void)pickerDidCompleteWithNewContact:(id)contact
 {
-  v4 = a3;
+  contactCopy = contact;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __71__CNContactPickerExtensionHostContext_pickerDidCompleteWithNewContact___block_invoke;
   v6[3] = &unk_1E74E77C0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = contactCopy;
+  v5 = contactCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
@@ -54,19 +54,19 @@ void __71__CNContactPickerExtensionHostContext_pickerDidCompleteWithNewContact__
   [v2 pickerDidCompleteWithNewContact:*(a1 + 40)];
 }
 
-- (void)pickerDidSelectContacts:(id)a3 properties:(id)a4
+- (void)pickerDidSelectContacts:(id)contacts properties:(id)properties
 {
-  v6 = a3;
-  v7 = a4;
+  contactsCopy = contacts;
+  propertiesCopy = properties;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __74__CNContactPickerExtensionHostContext_pickerDidSelectContacts_properties___block_invoke;
   block[3] = &unk_1E74E6EE8;
   block[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = contactsCopy;
+  v12 = propertiesCopy;
+  v8 = propertiesCopy;
+  v9 = contactsCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
@@ -76,19 +76,19 @@ void __74__CNContactPickerExtensionHostContext_pickerDidSelectContacts_propertie
   [v2 pickerDidSelectContacts:*(a1 + 40) properties:*(a1 + 48)];
 }
 
-- (void)pickerDidSelectContact:(id)a3 property:(id)a4
+- (void)pickerDidSelectContact:(id)contact property:(id)property
 {
-  v6 = a3;
-  v7 = a4;
+  contactCopy = contact;
+  propertyCopy = property;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __71__CNContactPickerExtensionHostContext_pickerDidSelectContact_property___block_invoke;
   block[3] = &unk_1E74E6EE8;
   block[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = contactCopy;
+  v12 = propertyCopy;
+  v8 = propertyCopy;
+  v9 = contactCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
@@ -114,22 +114,22 @@ void __67__CNContactPickerExtensionHostContext_pickerDidSelectAddNewContact__blo
   [v1 pickerDidSelectAddNewContact];
 }
 
-- (void)invalidateSelectionAnimated:(BOOL)a3
+- (void)invalidateSelectionAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v6 = [(CNContactPickerExtensionHostContext *)self _auxiliaryConnection];
-  v9 = [v6 remoteObjectProxyWithErrorHandler:&__block_literal_global_147];
+  animatedCopy = animated;
+  _auxiliaryConnection = [(CNContactPickerExtensionHostContext *)self _auxiliaryConnection];
+  v9 = [_auxiliaryConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_147];
 
   v7 = v9;
   if (!v9)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"CNContactPickerHostViewController.m" lineNumber:215 description:@"service object is nil!"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"CNContactPickerHostViewController.m" lineNumber:215 description:@"service object is nil!"];
 
     v7 = 0;
   }
 
-  [v7 invalidateSelectionAnimated:v3];
+  [v7 invalidateSelectionAnimated:animatedCopy];
 }
 
 void __67__CNContactPickerExtensionHostContext_invalidateSelectionAnimated___block_invoke(uint64_t a1, void *a2)
@@ -138,20 +138,20 @@ void __67__CNContactPickerExtensionHostContext_invalidateSelectionAnimated___blo
   _CNUILog("/Library/Caches/com.apple.xbs/Sources/ContactsUI/Framework/CNContactPickerHostViewController.m", 213, 3, @"error calling service - %@", v2, v3, v4, v5, v6);
 }
 
-- (void)setupWithOptions:(id)a3 readyBlock:(id)a4
+- (void)setupWithOptions:(id)options readyBlock:(id)block
 {
-  v11 = a3;
-  v7 = a4;
-  v8 = [(CNContactPickerExtensionHostContext *)self _auxiliaryConnection];
-  v9 = [v8 remoteObjectProxyWithErrorHandler:&__block_literal_global_135_43405];
+  optionsCopy = options;
+  blockCopy = block;
+  _auxiliaryConnection = [(CNContactPickerExtensionHostContext *)self _auxiliaryConnection];
+  v9 = [_auxiliaryConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_135_43405];
 
   if (!v9)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"CNContactPickerHostViewController.m" lineNumber:205 description:@"service object is nil!"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"CNContactPickerHostViewController.m" lineNumber:205 description:@"service object is nil!"];
   }
 
-  [v9 setupWithOptions:v11 readyBlock:v7];
+  [v9 setupWithOptions:optionsCopy readyBlock:blockCopy];
 }
 
 void __67__CNContactPickerExtensionHostContext_setupWithOptions_readyBlock___block_invoke(uint64_t a1, void *a2)
@@ -164,18 +164,18 @@ void __67__CNContactPickerExtensionHostContext_setupWithOptions_readyBlock___blo
 {
   v10.receiver = self;
   v10.super_class = CNContactPickerExtensionHostContext;
-  v2 = [(CNContactPickerExtensionHostContext *)&v10 _derivedExtensionAuxiliaryHostProtocol];
+  _derivedExtensionAuxiliaryHostProtocol = [(CNContactPickerExtensionHostContext *)&v10 _derivedExtensionAuxiliaryHostProtocol];
   v3 = MEMORY[0x1E695DFD8];
   v4 = objc_opt_class();
   v5 = [v3 setWithObjects:{v4, objc_opt_class(), 0}];
-  [v2 setClasses:v5 forSelector:sel_pickerDidSelectContacts_properties_ argumentIndex:0 ofReply:0];
+  [_derivedExtensionAuxiliaryHostProtocol setClasses:v5 forSelector:sel_pickerDidSelectContacts_properties_ argumentIndex:0 ofReply:0];
 
   v6 = MEMORY[0x1E695DFD8];
   v7 = objc_opt_class();
   v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-  [v2 setClasses:v8 forSelector:sel_pickerDidSelectContacts_properties_ argumentIndex:1 ofReply:0];
+  [_derivedExtensionAuxiliaryHostProtocol setClasses:v8 forSelector:sel_pickerDidSelectContacts_properties_ argumentIndex:1 ofReply:0];
 
-  return v2;
+  return _derivedExtensionAuxiliaryHostProtocol;
 }
 
 @end

@@ -1,16 +1,16 @@
 @interface ARUndistortionMapping
-- (ARUndistortionMapping)initWithImageSize:(CGSize)a3;
+- (ARUndistortionMapping)initWithImageSize:(CGSize)size;
 - (id).cxx_construct;
-- (void)createVImageMappingIfNeededForImage:(vImage_Buffer *)a3;
+- (void)createVImageMappingIfNeededForImage:(vImage_Buffer *)image;
 - (void)dealloc;
 @end
 
 @implementation ARUndistortionMapping
 
-- (ARUndistortionMapping)initWithImageSize:(CGSize)a3
+- (ARUndistortionMapping)initWithImageSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v8.receiver = self;
   v8.super_class = ARUndistortionMapping;
   v5 = [(ARUndistortionMapping *)&v8 init];
@@ -26,7 +26,7 @@
   return v6;
 }
 
-- (void)createVImageMappingIfNeededForImage:(vImage_Buffer *)a3
+- (void)createVImageMappingIfNeededForImage:(vImage_Buffer *)image
 {
   if (!self->_mapping)
   {

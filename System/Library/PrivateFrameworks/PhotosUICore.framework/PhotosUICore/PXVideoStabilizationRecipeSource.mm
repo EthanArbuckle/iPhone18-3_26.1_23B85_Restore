@@ -1,29 +1,29 @@
 @interface PXVideoStabilizationRecipeSource
 - (PXVideoStabilizationRecipeSource)init;
-- (id)_loadStabilizationRecipe:(id *)a3 analysisType:(unint64_t *)a4;
-- (id)loadStabilizationRecipe:(id *)a3 analysisType:(unint64_t *)a4;
+- (id)_loadStabilizationRecipe:(id *)recipe analysisType:(unint64_t *)type;
+- (id)loadStabilizationRecipe:(id *)recipe analysisType:(unint64_t *)type;
 @end
 
 @implementation PXVideoStabilizationRecipeSource
 
-- (id)_loadStabilizationRecipe:(id *)a3 analysisType:(unint64_t *)a4
+- (id)_loadStabilizationRecipe:(id *)recipe analysisType:(unint64_t *)type
 {
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v7 = objc_opt_class();
   v8 = NSStringFromClass(v7);
-  [v6 handleFailureInMethod:a2 object:self file:@"PXVideoStabilizationRecipeSource.m" lineNumber:121 description:{@"Method %s is a responsibility of subclass %@", "-[PXVideoStabilizationRecipeSource _loadStabilizationRecipe:analysisType:]", v8}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXVideoStabilizationRecipeSource.m" lineNumber:121 description:{@"Method %s is a responsibility of subclass %@", "-[PXVideoStabilizationRecipeSource _loadStabilizationRecipe:analysisType:]", v8}];
 
   abort();
 }
 
-- (id)loadStabilizationRecipe:(id *)a3 analysisType:(unint64_t *)a4
+- (id)loadStabilizationRecipe:(id *)recipe analysisType:(unint64_t *)type
 {
   self->_recipeLoadSignpost = [MEMORY[0x1E6991F28] startSignpost];
   v15 = 0;
-  v7 = [(PXVideoStabilizationRecipeSource *)self _loadStabilizationRecipe:a3 analysisType:&v15];
+  v7 = [(PXVideoStabilizationRecipeSource *)self _loadStabilizationRecipe:recipe analysisType:&v15];
   v8 = objc_alloc(MEMORY[0x1E695DF90]);
-  v9 = [(PXVideoStabilizationRecipeSource *)self analyticsPayload];
-  v10 = [v8 initWithDictionary:v9];
+  analyticsPayload = [(PXVideoStabilizationRecipeSource *)self analyticsPayload];
+  v10 = [v8 initWithDictionary:analyticsPayload];
 
   [v10 setObject:@"com.apple.photos.CPAnalytics.inlineStabilizationRecipeLoading" forKeyedSubscript:*MEMORY[0x1E6991E40]];
   v11 = objc_opt_class();
@@ -34,7 +34,7 @@
   [v10 setObject:v13 forKeyedSubscript:@"com.apple.photos.PXVideoStabilizationRecipeSource.analysisType"];
 
   [MEMORY[0x1E6991F28] endSignpost:self->_recipeLoadSignpost forEventName:*MEMORY[0x1E6991C98] withPayload:v10];
-  *a4 = v15;
+  *type = v15;
 
   return v7;
 }

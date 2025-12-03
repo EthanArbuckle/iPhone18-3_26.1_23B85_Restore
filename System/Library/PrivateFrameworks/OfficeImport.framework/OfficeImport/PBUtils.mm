@@ -1,17 +1,17 @@
 @interface PBUtils
-+ (id)readStringWithInstance:(int)a3 fromContainer:(id)a4;
++ (id)readStringWithInstance:(int)instance fromContainer:(id)container;
 @end
 
 @implementation PBUtils
 
-+ (id)readStringWithInstance:(int)a3 fromContainer:(id)a4
++ (id)readStringWithInstance:(int)instance fromContainer:(id)container
 {
-  v4 = [a4 childOfType:4026 instance:a3];
+  v4 = [container childOfType:4026 instance:instance];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 eshObject];
-    v7 = [MEMORY[0x277CCACA8] stringWithCsString:v6 + 48];
+    eshObject = [v4 eshObject];
+    v7 = [MEMORY[0x277CCACA8] stringWithCsString:eshObject + 48];
   }
 
   else

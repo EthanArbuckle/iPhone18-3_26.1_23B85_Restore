@@ -1,50 +1,50 @@
 @interface WBSFaviconProvider
 + (CGSize)defaultFaviconSize;
-- (BOOL)_isIconDateExpired:(id)a3;
+- (BOOL)_isIconDateExpired:(id)expired;
 - (BOOL)_shouldRejectIconWithBadData;
-- (BOOL)canHandleRequest:(id)a3;
+- (BOOL)canHandleRequest:(id)request;
 - (CGSize)preferredIconSize;
-- (WBSFaviconProvider)initWithPersistenceBaseURL:(id)a3 persistenceName:(id)a4 preferredIconSize:(CGSize)a5 atScale:(double)a6 allScales:(id)a7 isReadOnly:(BOOL)a8 shouldCheckIntegrityWhenOpeningDatabaseBlock:(id)a9;
+- (WBSFaviconProvider)initWithPersistenceBaseURL:(id)l persistenceName:(id)name preferredIconSize:(CGSize)size atScale:(double)scale allScales:(id)scales isReadOnly:(BOOL)only shouldCheckIntegrityWhenOpeningDatabaseBlock:(id)block;
 - (WBSSiteMetadataProviderDelegate)providerDelegate;
-- (id)_cachedResponseForRequest:(id)a3;
-- (id)_createSemaphoreAndAddToWebViewImageOperationSemaphoresIfNecessary:(BOOL *)a3;
-- (id)_hostFromRequest:(id)a3;
-- (id)_hostFromURL:(id)a3;
-- (id)_requestsForHost:(id)a3;
-- (id)_responseCacheKeyForRequest:(id)a3;
-- (id)_responseDictionaryKeyForRequest:(id)a3;
-- (id)responseForRequest:(id)a3 willProvideUpdates:(BOOL *)a4;
+- (id)_cachedResponseForRequest:(id)request;
+- (id)_createSemaphoreAndAddToWebViewImageOperationSemaphoresIfNecessary:(BOOL *)necessary;
+- (id)_hostFromRequest:(id)request;
+- (id)_hostFromURL:(id)l;
+- (id)_requestsForHost:(id)host;
+- (id)_responseCacheKeyForRequest:(id)request;
+- (id)_responseDictionaryKeyForRequest:(id)request;
+- (id)responseForRequest:(id)request willProvideUpdates:(BOOL *)updates;
 - (int64_t)providerState;
-- (void)_addCachedResponse:(id)a3 forRequest:(id)a4;
-- (void)_atomicallyLinkPageURLs:(id)a3 toIconWithInfo:(id)a4 isPrivate:(BOOL)a5;
-- (void)_atomicallySaveImageData:(id)a3 iconURL:(id)a4 pageURL:(id)a5 originalPageURL:(id)a6 size:(CGSize)a7 isPrivate:(BOOL)a8 completionHandler:(id)a9;
-- (void)_confirmImageDataShouldBeSaved:(id)a3 size:(CGSize)a4 pageURL:(id)a5 iconURL:(id)a6 includingPrivateData:(BOOL)a7 completionHandler:(id)a8;
-- (void)_getIconForRequest:(id)a3 withCompletionHandler:(id)a4;
-- (void)_linkPageURL:(id)a3 toIconWithInfo:(id)a4 isPrivate:(BOOL)a5 completionHandler:(id)a6;
-- (void)_multiResolutionImageFromImageData:(id)a3 withPreferredSize:(CGSize)a4 atScales:(id)a5 completionHandler:(id)a6;
-- (void)_prepareAndSendResponseForRequests:(id)a3 forceDidReceiveNewData:(BOOL)a4;
-- (void)_registerRequest:(id)a3;
-- (void)_removeCachedResponsesForRequest:(id)a3;
-- (void)_removeCachedResponsesForURL:(id)a3;
-- (void)_saveImageData:(id)a3 iconURL:(id)a4 pageURL:(id)a5 originalPageURL:(id)a6 size:(CGSize)a7 isPrivate:(BOOL)a8 completionHandler:(id)a9;
-- (void)_sizeOfImageWithData:(id)a3 closestToPreferredSize:(CGSize)a4 completionHandler:(id)a5;
+- (void)_addCachedResponse:(id)response forRequest:(id)request;
+- (void)_atomicallyLinkPageURLs:(id)ls toIconWithInfo:(id)info isPrivate:(BOOL)private;
+- (void)_atomicallySaveImageData:(id)data iconURL:(id)l pageURL:(id)rL originalPageURL:(id)uRL size:(CGSize)size isPrivate:(BOOL)private completionHandler:(id)handler;
+- (void)_confirmImageDataShouldBeSaved:(id)saved size:(CGSize)size pageURL:(id)l iconURL:(id)rL includingPrivateData:(BOOL)data completionHandler:(id)handler;
+- (void)_getIconForRequest:(id)request withCompletionHandler:(id)handler;
+- (void)_linkPageURL:(id)l toIconWithInfo:(id)info isPrivate:(BOOL)private completionHandler:(id)handler;
+- (void)_multiResolutionImageFromImageData:(id)data withPreferredSize:(CGSize)size atScales:(id)scales completionHandler:(id)handler;
+- (void)_prepareAndSendResponseForRequests:(id)requests forceDidReceiveNewData:(BOOL)data;
+- (void)_registerRequest:(id)request;
+- (void)_removeCachedResponsesForRequest:(id)request;
+- (void)_removeCachedResponsesForURL:(id)l;
+- (void)_saveImageData:(id)data iconURL:(id)l pageURL:(id)rL originalPageURL:(id)uRL size:(CGSize)size isPrivate:(BOOL)private completionHandler:(id)handler;
+- (void)_sizeOfImageWithData:(id)data closestToPreferredSize:(CGSize)size completionHandler:(id)handler;
 - (void)_updateOutstandingRequestsAfterSuccessfulSetup;
-- (void)_updateOutstandingRequestsForPageURL:(id)a3 forceDidReceiveNewData:(BOOL)a4;
+- (void)_updateOutstandingRequestsForPageURL:(id)l forceDidReceiveNewData:(BOOL)data;
 - (void)dealloc;
-- (void)flushPrivateDataFromMemoryWithCompletionHandler:(id)a3;
-- (void)linkIconFromPageURL:(id)a3 toCurrentPageURL:(id)a4 isPrivate:(BOOL)a5 completionHandler:(id)a6;
-- (void)prepareResponseForRequest:(id)a3 allowDelayedResponse:(BOOL)a4;
+- (void)flushPrivateDataFromMemoryWithCompletionHandler:(id)handler;
+- (void)linkIconFromPageURL:(id)l toCurrentPageURL:(id)rL isPrivate:(BOOL)private completionHandler:(id)handler;
+- (void)prepareResponseForRequest:(id)request allowDelayedResponse:(BOOL)response;
 - (void)releasePrivateData;
-- (void)removeAllIconsForURLStringsNotIn:(id)a3 completionHandler:(id)a4;
-- (void)removeIconForURLString:(id)a3 completionHandler:(id)a4;
+- (void)removeAllIconsForURLStringsNotIn:(id)in completionHandler:(id)handler;
+- (void)removeIconForURLString:(id)string completionHandler:(id)handler;
 - (void)retainPrivateData;
-- (void)saveFaviconImageData:(id)a3 iconURL:(id)a4 pageURL:(id)a5 originalPageURL:(id)a6 size:(CGSize)a7 isPrivate:(BOOL)a8 completionHandler:(id)a9;
+- (void)saveFaviconImageData:(id)data iconURL:(id)l pageURL:(id)rL originalPageURL:(id)uRL size:(CGSize)size isPrivate:(BOOL)private completionHandler:(id)handler;
 - (void)savePendingChangesBeforeTermination;
-- (void)setUpWithCompletionHandler:(id)a3;
-- (void)shouldIconDataBeSavedForIconWithPageURL:(id)a3 originalPageURL:(id)a4 iconURL:(id)a5 size:(CGSize)a6 isPrivate:(BOOL)a7 completionHandler:(id)a8;
-- (void)stopWatchingUpdatesForRequest:(id)a3;
-- (void)webViewMetadataFetchOperation:(id)a3 didFinishUsingWebView:(id)a4;
-- (void)webViewMetadataFetchOperation:(id)a3 getWebViewOfSize:(CGSize)a4 withConfiguration:(id)a5 completionHandler:(id)a6;
+- (void)setUpWithCompletionHandler:(id)handler;
+- (void)shouldIconDataBeSavedForIconWithPageURL:(id)l originalPageURL:(id)rL iconURL:(id)uRL size:(CGSize)size isPrivate:(BOOL)private completionHandler:(id)handler;
+- (void)stopWatchingUpdatesForRequest:(id)request;
+- (void)webViewMetadataFetchOperation:(id)operation didFinishUsingWebView:(id)view;
+- (void)webViewMetadataFetchOperation:(id)operation getWebViewOfSize:(CGSize)size withConfiguration:(id)configuration completionHandler:(id)handler;
 @end
 
 @implementation WBSFaviconProvider
@@ -137,22 +137,22 @@ void __68__WBSFaviconProvider__updateOutstandingRequestsAfterSuccessfulSetup__bl
   }
 }
 
-- (WBSFaviconProvider)initWithPersistenceBaseURL:(id)a3 persistenceName:(id)a4 preferredIconSize:(CGSize)a5 atScale:(double)a6 allScales:(id)a7 isReadOnly:(BOOL)a8 shouldCheckIntegrityWhenOpeningDatabaseBlock:(id)a9
+- (WBSFaviconProvider)initWithPersistenceBaseURL:(id)l persistenceName:(id)name preferredIconSize:(CGSize)size atScale:(double)scale allScales:(id)scales isReadOnly:(BOOL)only shouldCheckIntegrityWhenOpeningDatabaseBlock:(id)block
 {
-  v10 = a8;
-  height = a5.height;
-  width = a5.width;
-  v18 = a3;
-  v19 = a4;
-  v20 = a7;
-  v21 = a9;
+  onlyCopy = only;
+  height = size.height;
+  width = size.width;
+  lCopy = l;
+  nameCopy = name;
+  scalesCopy = scales;
+  blockCopy = block;
   v47.receiver = self;
   v47.super_class = WBSFaviconProvider;
   v22 = [(WBSFaviconProvider *)&v47 init];
   v23 = v22;
   if (v22)
   {
-    objc_storeStrong(&v22->_baseURL, a3);
+    objc_storeStrong(&v22->_baseURL, l);
     v24 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_UTILITY, 0);
     v25 = dispatch_queue_create("com.apple.Safari.WBSFaviconProvider", v24);
     internalQueue = v23->_internalQueue;
@@ -162,31 +162,31 @@ void __68__WBSFaviconProvider__updateOutstandingRequestsAfterSuccessfulSetup__bl
     internalSavingQueue = v23->_internalSavingQueue;
     v23->_internalSavingQueue = v27;
 
-    v29 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     hostsToRequestsMap = v23->_hostsToRequestsMap;
-    v23->_hostsToRequestsMap = v29;
+    v23->_hostsToRequestsMap = dictionary;
 
     v31 = objc_alloc_init(MEMORY[0x1E695DEE0]);
     responseCache = v23->_responseCache;
     v23->_responseCache = v31;
 
     v23->_providerState = 0;
-    v33 = [MEMORY[0x1E695DEE8] currentCalendar];
+    currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
     calendar = v23->_calendar;
-    v23->_calendar = v33;
+    v23->_calendar = currentCalendar;
 
     v23->_expirationInterval = 604800.0;
     v23->_preferredIconSize.width = width;
     v23->_preferredIconSize.height = height;
-    v23->_preferredIconScale = a6;
-    v23->_scaledPreferredIconSize.width = width * a6;
-    v23->_scaledPreferredIconSize.height = height * a6;
-    v35 = [v20 copy];
+    v23->_preferredIconScale = scale;
+    v23->_scaledPreferredIconSize.width = width * scale;
+    v23->_scaledPreferredIconSize.height = height * scale;
+    v35 = [scalesCopy copy];
     allIconScales = v23->_allIconScales;
     v23->_allIconScales = v35;
 
-    v23->_isReadOnly = v10;
-    v37 = _Block_copy(v21);
+    v23->_isReadOnly = onlyCopy;
+    v37 = _Block_copy(blockCopy);
     shouldCheckIntegrityWhenOpeningDatabaseBlock = v23->_shouldCheckIntegrityWhenOpeningDatabaseBlock;
     v23->_shouldCheckIntegrityWhenOpeningDatabaseBlock = v37;
 
@@ -194,13 +194,13 @@ void __68__WBSFaviconProvider__updateOutstandingRequestsAfterSuccessfulSetup__bl
     requestsPendingResponse = v23->_requestsPendingResponse;
     v23->_requestsPendingResponse = v39;
 
-    v41 = [[WBSFaviconProviderPersistenceController alloc] initWithPersistenceBaseURL:v23->_baseURL databaseName:v19 preferredIconSize:v10 isReadOnly:v23->_scaledPreferredIconSize.width, v23->_scaledPreferredIconSize.height];
+    v41 = [[WBSFaviconProviderPersistenceController alloc] initWithPersistenceBaseURL:v23->_baseURL databaseName:nameCopy preferredIconSize:onlyCopy isReadOnly:v23->_scaledPreferredIconSize.width, v23->_scaledPreferredIconSize.height];
     persistenceController = v23->_persistenceController;
     v23->_persistenceController = v41;
 
-    v43 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     webViewImageOperationSemaphores = v23->_webViewImageOperationSemaphores;
-    v23->_webViewImageOperationSemaphores = v43;
+    v23->_webViewImageOperationSemaphores = array;
 
     v45 = v23;
   }
@@ -234,9 +234,9 @@ void __68__WBSFaviconProvider__updateOutstandingRequestsAfterSuccessfulSetup__bl
   return v3;
 }
 
-- (void)setUpWithCompletionHandler:(id)a3
+- (void)setUpWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   internalQueue = self->_internalQueue;
   v7[0] = MEMORY[0x1E69E9820];
@@ -245,8 +245,8 @@ void __68__WBSFaviconProvider__updateOutstandingRequestsAfterSuccessfulSetup__bl
   v7[3] = &unk_1E82840C0;
   v7[4] = self;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(internalQueue, v7);
 
   objc_destroyWeak(&v9);
@@ -429,31 +429,31 @@ void __49__WBSFaviconProvider_setUpWithCompletionHandler___block_invoke_5(uint64
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)shouldIconDataBeSavedForIconWithPageURL:(id)a3 originalPageURL:(id)a4 iconURL:(id)a5 size:(CGSize)a6 isPrivate:(BOOL)a7 completionHandler:(id)a8
+- (void)shouldIconDataBeSavedForIconWithPageURL:(id)l originalPageURL:(id)rL iconURL:(id)uRL size:(CGSize)size isPrivate:(BOOL)private completionHandler:(id)handler
 {
-  height = a6.height;
-  width = a6.width;
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a8;
+  height = size.height;
+  width = size.width;
+  lCopy = l;
+  rLCopy = rL;
+  uRLCopy = uRL;
+  handlerCopy = handler;
   internalQueue = self->_internalQueue;
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __119__WBSFaviconProvider_shouldIconDataBeSavedForIconWithPageURL_originalPageURL_iconURL_size_isPrivate_completionHandler___block_invoke;
   v24[3] = &unk_1E8284160;
-  v27 = v17;
-  v28 = v18;
+  v27 = uRLCopy;
+  v28 = handlerCopy;
   v24[4] = self;
-  v25 = v15;
-  v26 = v16;
-  v31 = a7;
+  v25 = lCopy;
+  v26 = rLCopy;
+  privateCopy = private;
   v29 = width;
   v30 = height;
-  v20 = v17;
-  v21 = v16;
-  v22 = v15;
-  v23 = v18;
+  v20 = uRLCopy;
+  v21 = rLCopy;
+  v22 = lCopy;
+  v23 = handlerCopy;
   dispatch_async(internalQueue, v24);
 }
 
@@ -725,24 +725,24 @@ LABEL_31:
 LABEL_32:
 }
 
-- (void)linkIconFromPageURL:(id)a3 toCurrentPageURL:(id)a4 isPrivate:(BOOL)a5 completionHandler:(id)a6
+- (void)linkIconFromPageURL:(id)l toCurrentPageURL:(id)rL isPrivate:(BOOL)private completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  lCopy = l;
+  rLCopy = rL;
+  handlerCopy = handler;
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __87__WBSFaviconProvider_linkIconFromPageURL_toCurrentPageURL_isPrivate_completionHandler___block_invoke;
   block[3] = &unk_1E82841B0;
   block[4] = self;
-  v18 = v10;
-  v19 = v11;
-  v20 = v12;
-  v21 = a5;
-  v14 = v11;
-  v15 = v10;
-  v16 = v12;
+  v18 = lCopy;
+  v19 = rLCopy;
+  v20 = handlerCopy;
+  privateCopy = private;
+  v14 = rLCopy;
+  v15 = lCopy;
+  v16 = handlerCopy;
   dispatch_async(internalQueue, block);
 }
 
@@ -821,30 +821,30 @@ void __87__WBSFaviconProvider_linkIconFromPageURL_toCurrentPageURL_isPrivate_com
   }
 }
 
-- (BOOL)_isIconDateExpired:(id)a3
+- (BOOL)_isIconDateExpired:(id)expired
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF00] date];
-  [v5 timeIntervalSinceReferenceDate];
+  expiredCopy = expired;
+  date = [MEMORY[0x1E695DF00] date];
+  [date timeIntervalSinceReferenceDate];
   v7 = v6;
 
-  [v4 timeIntervalSinceReferenceDate];
+  [expiredCopy timeIntervalSinceReferenceDate];
   v9 = v7 - v8 > self->_expirationInterval || v8 > v7;
 
   return v9;
 }
 
-- (void)saveFaviconImageData:(id)a3 iconURL:(id)a4 pageURL:(id)a5 originalPageURL:(id)a6 size:(CGSize)a7 isPrivate:(BOOL)a8 completionHandler:(id)a9
+- (void)saveFaviconImageData:(id)data iconURL:(id)l pageURL:(id)rL originalPageURL:(id)uRL size:(CGSize)size isPrivate:(BOOL)private completionHandler:(id)handler
 {
-  height = a7.height;
-  width = a7.width;
+  height = size.height;
+  width = size.width;
   v43 = *MEMORY[0x1E69E9840];
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = a6;
-  v21 = a9;
-  if (!v18 || !v19 || !v20)
+  dataCopy = data;
+  lCopy = l;
+  rLCopy = rL;
+  uRLCopy = uRL;
+  handlerCopy = handler;
+  if (!lCopy || !rLCopy || !uRLCopy)
   {
     v26 = WBS_LOG_CHANNEL_PREFIXFaviconProvider();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
@@ -856,35 +856,35 @@ void __87__WBSFaviconProvider_linkIconFromPageURL_toCurrentPageURL_isPrivate_com
     if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138478339;
-      v38 = v19;
+      v38 = rLCopy;
       v39 = 2113;
-      v40 = v20;
+      v40 = uRLCopy;
       v41 = 2113;
-      v42 = v18;
+      v42 = lCopy;
       _os_log_debug_impl(&dword_1C6968000, v27, OS_LOG_TYPE_DEBUG, "Cannot save icon, invalid page URL %{private}@, original page URL %{private}@, or icon URL %{private}@", buf, 0x20u);
-      if (!v21)
+      if (!handlerCopy)
       {
         goto LABEL_13;
       }
     }
 
-    else if (!v21)
+    else if (!handlerCopy)
     {
       goto LABEL_13;
     }
 
-    v21[2](v21);
+    handlerCopy[2](handlerCopy);
     goto LABEL_13;
   }
 
-  if ([v20 safari_shouldBeAssociatedWithFaviconFromRedirectedURL:v19])
+  if ([uRLCopy safari_shouldBeAssociatedWithFaviconFromRedirectedURL:rLCopy])
   {
-    v22 = v20;
+    v22 = uRLCopy;
   }
 
   else
   {
-    v22 = v19;
+    v22 = rLCopy;
   }
 
   v23 = v22;
@@ -894,14 +894,14 @@ void __87__WBSFaviconProvider_linkIconFromPageURL_toCurrentPageURL_isPrivate_com
   block[2] = __108__WBSFaviconProvider_saveFaviconImageData_iconURL_pageURL_originalPageURL_size_isPrivate_completionHandler___block_invoke;
   block[3] = &unk_1E82841D8;
   block[4] = self;
-  v33 = v21;
-  v29 = v19;
+  v33 = handlerCopy;
+  v29 = rLCopy;
   v30 = v23;
-  v31 = v17;
-  v32 = v18;
+  v31 = dataCopy;
+  v32 = lCopy;
   v34 = width;
   v35 = height;
-  v36 = a8;
+  privateCopy = private;
   v25 = v23;
   dispatch_async(internalQueue, block);
 
@@ -954,15 +954,15 @@ void *__108__WBSFaviconProvider_saveFaviconImageData_iconURL_pageURL_originalPag
   return result;
 }
 
-- (void)_atomicallySaveImageData:(id)a3 iconURL:(id)a4 pageURL:(id)a5 originalPageURL:(id)a6 size:(CGSize)a7 isPrivate:(BOOL)a8 completionHandler:(id)a9
+- (void)_atomicallySaveImageData:(id)data iconURL:(id)l pageURL:(id)rL originalPageURL:(id)uRL size:(CGSize)size isPrivate:(BOOL)private completionHandler:(id)handler
 {
-  height = a7.height;
-  width = a7.width;
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = a6;
-  v21 = a9;
+  height = size.height;
+  width = size.width;
+  dataCopy = data;
+  lCopy = l;
+  rLCopy = rL;
+  uRLCopy = uRL;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   internalSavingQueue = self->_internalSavingQueue;
   v28[0] = MEMORY[0x1E69E9820];
@@ -970,19 +970,19 @@ void *__108__WBSFaviconProvider_saveFaviconImageData_iconURL_pageURL_originalPag
   v28[2] = __112__WBSFaviconProvider__atomicallySaveImageData_iconURL_pageURL_originalPageURL_size_isPrivate_completionHandler___block_invoke;
   v28[3] = &unk_1E8284200;
   objc_copyWeak(v34, &location);
-  v32 = v20;
-  v33 = v21;
-  v29 = v17;
-  v30 = v18;
-  v31 = v19;
+  v32 = uRLCopy;
+  v33 = handlerCopy;
+  v29 = dataCopy;
+  v30 = lCopy;
+  v31 = rLCopy;
   v34[1] = *&width;
   v34[2] = *&height;
-  v35 = a8;
-  v23 = v20;
-  v24 = v19;
-  v25 = v18;
-  v26 = v17;
-  v27 = v21;
+  privateCopy = private;
+  v23 = uRLCopy;
+  v24 = rLCopy;
+  v25 = lCopy;
+  v26 = dataCopy;
+  v27 = handlerCopy;
   dispatch_async(internalSavingQueue, v28);
 
   objc_destroyWeak(v34);
@@ -1032,7 +1032,7 @@ uint64_t __112__WBSFaviconProvider__atomicallySaveImageData_iconURL_pageURL_orig
   return result;
 }
 
-- (id)_createSemaphoreAndAddToWebViewImageOperationSemaphoresIfNecessary:(BOOL *)a3
+- (id)_createSemaphoreAndAddToWebViewImageOperationSemaphoresIfNecessary:(BOOL *)necessary
 {
   v5 = dispatch_semaphore_create(0);
   v6 = self->_webViewImageOperationSemaphores;
@@ -1045,25 +1045,25 @@ uint64_t __112__WBSFaviconProvider__atomicallySaveImageData_iconURL_pageURL_orig
 
   objc_sync_exit(v6);
 
-  *a3 = isSavingPendingChangesBeforeTermination;
+  *necessary = isSavingPendingChangesBeforeTermination;
 
   return v5;
 }
 
-- (void)_sizeOfImageWithData:(id)a3 closestToPreferredSize:(CGSize)a4 completionHandler:(id)a5
+- (void)_sizeOfImageWithData:(id)data closestToPreferredSize:(CGSize)size completionHandler:(id)handler
 {
-  height = a4.height;
-  width = a4.width;
-  v9 = a3;
-  v10 = a5;
-  if ([v9 length])
+  height = size.height;
+  width = size.width;
+  dataCopy = data;
+  handlerCopy = handler;
+  if ([dataCopy length])
   {
     WeakRetained = objc_loadWeakRetained(&self->_providerDelegate);
     isSavingPendingChangesBeforeTermination = 0;
     v12 = [(WBSFaviconProvider *)self _createSemaphoreAndAddToWebViewImageOperationSemaphoresIfNecessary:&isSavingPendingChangesBeforeTermination];
     if (isSavingPendingChangesBeforeTermination)
     {
-      v10[2](v10, 0, *MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8));
+      handlerCopy[2](handlerCopy, 0, *MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8));
     }
 
     else
@@ -1080,7 +1080,7 @@ uint64_t __112__WBSFaviconProvider__atomicallySaveImageData_iconURL_pageURL_orig
       v30 = &v29;
       v31 = 0x2020000000;
       v32 = 0;
-      v14 = [[WBSPerformImageOperationUsingWebViewRequest alloc] initForGettingImageInfoWithImageData:v9];
+      v14 = [[WBSPerformImageOperationUsingWebViewRequest alloc] initForGettingImageInfoWithImageData:dataCopy];
       v20 = MEMORY[0x1E69E9820];
       v21 = 3221225472;
       v22 = __84__WBSFaviconProvider__sizeOfImageWithData_closestToPreferredSize_completionHandler___block_invoke;
@@ -1112,7 +1112,7 @@ uint64_t __112__WBSFaviconProvider__atomicallySaveImageData_iconURL_pageURL_orig
         v18 = *(v30 + 24);
       }
 
-      v10[2](v10, v18 & 1, *v13, *v19);
+      handlerCopy[2](handlerCopy, v18 & 1, *v13, *v19);
 
       _Block_object_dispose(&v29, 8);
       _Block_object_dispose(&v33, 8);
@@ -1121,7 +1121,7 @@ uint64_t __112__WBSFaviconProvider__atomicallySaveImageData_iconURL_pageURL_orig
 
   else
   {
-    v10[2](v10, 0, *MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8));
+    handlerCopy[2](handlerCopy, 0, *MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8));
   }
 }
 
@@ -1202,19 +1202,19 @@ void __84__WBSFaviconProvider__sizeOfImageWithData_closestToPreferredSize_comple
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (void)_multiResolutionImageFromImageData:(id)a3 withPreferredSize:(CGSize)a4 atScales:(id)a5 completionHandler:(id)a6
+- (void)_multiResolutionImageFromImageData:(id)data withPreferredSize:(CGSize)size atScales:(id)scales completionHandler:(id)handler
 {
-  height = a4.height;
-  width = a4.width;
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
+  height = size.height;
+  width = size.width;
+  dataCopy = data;
+  scalesCopy = scales;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_providerDelegate);
   isSavingPendingChangesBeforeTermination = 0;
   v15 = [(WBSFaviconProvider *)self _createSemaphoreAndAddToWebViewImageOperationSemaphoresIfNecessary:&isSavingPendingChangesBeforeTermination];
   if (isSavingPendingChangesBeforeTermination)
   {
-    (*(v13 + 2))(v13, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 
   else
@@ -1229,7 +1229,7 @@ void __84__WBSFaviconProvider__sizeOfImageWithData_closestToPreferredSize_comple
     v30 = &v29;
     v31 = 0x2020000000;
     v32 = 0;
-    v16 = [[WBSPerformImageOperationUsingWebViewRequest alloc] initForGettingMultiResolutionImageDataWithImageData:v11 withPreferredSize:v12 atScales:width, height];
+    height = [[WBSPerformImageOperationUsingWebViewRequest alloc] initForGettingMultiResolutionImageDataWithImageData:dataCopy withPreferredSize:scalesCopy atScales:width, height];
     v22 = MEMORY[0x1E69E9820];
     v23 = 3221225472;
     v24 = __102__WBSFaviconProvider__multiResolutionImageFromImageData_withPreferredSize_atScales_completionHandler___block_invoke;
@@ -1238,7 +1238,7 @@ void __84__WBSFaviconProvider__sizeOfImageWithData_closestToPreferredSize_comple
     v28 = &v29;
     v17 = v15;
     v26 = v17;
-    v18 = [WeakRetained siteMetadataProvider:self registerOneTimeRequest:v16 priority:2 responseHandler:&v22];
+    v18 = [WeakRetained siteMetadataProvider:self registerOneTimeRequest:height priority:2 responseHandler:&v22];
     dispatch_semaphore_wait(v17, 0xFFFFFFFFFFFFFFFFLL);
     v19 = self->_webViewImageOperationSemaphores;
     objc_sync_enter(v19);
@@ -1258,7 +1258,7 @@ void __84__WBSFaviconProvider__sizeOfImageWithData_closestToPreferredSize_comple
       v21 = *(v30 + 24);
     }
 
-    (*(v13 + 2))(v13, v20, v21 & 1);
+    (*(handlerCopy + 2))(handlerCopy, v20, v21 & 1);
 
     _Block_object_dispose(&v29, 8);
     _Block_object_dispose(&v33, 8);
@@ -1279,44 +1279,44 @@ void __102__WBSFaviconProvider__multiResolutionImageFromImageData_withPreferredS
 
 - (BOOL)_shouldRejectIconWithBadData
 {
-  v2 = self;
+  selfCopy = self;
   v3 = self->_webViewImageOperationSemaphores;
   objc_sync_enter(v3);
-  LOBYTE(v2) = v2->_isSavingPendingChangesBeforeTermination;
+  LOBYTE(selfCopy) = selfCopy->_isSavingPendingChangesBeforeTermination;
   objc_sync_exit(v3);
 
-  return (v2 & 1) == 0;
+  return (selfCopy & 1) == 0;
 }
 
-- (void)_confirmImageDataShouldBeSaved:(id)a3 size:(CGSize)a4 pageURL:(id)a5 iconURL:(id)a6 includingPrivateData:(BOOL)a7 completionHandler:(id)a8
+- (void)_confirmImageDataShouldBeSaved:(id)saved size:(CGSize)size pageURL:(id)l iconURL:(id)rL includingPrivateData:(BOOL)data completionHandler:(id)handler
 {
-  v9 = a7;
-  height = a4.height;
-  width = a4.width;
-  v15 = a3;
-  v16 = a5;
-  v24 = a6;
-  v17 = a8;
+  dataCopy = data;
+  height = size.height;
+  width = size.width;
+  savedCopy = saved;
+  lCopy = l;
+  rLCopy = rL;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   persistenceController = self->_persistenceController;
-  v19 = [v16 absoluteString];
+  absoluteString = [lCopy absoluteString];
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __113__WBSFaviconProvider__confirmImageDataShouldBeSaved_size_pageURL_iconURL_includingPrivateData_completionHandler___block_invoke;
   v25[3] = &unk_1E82842C8;
   objc_copyWeak(v30, &location);
-  v20 = v17;
+  v20 = handlerCopy;
   v29 = v20;
-  v21 = v15;
+  v21 = savedCopy;
   v26 = v21;
-  v22 = v16;
+  v22 = lCopy;
   v27 = v22;
-  v23 = v24;
+  v23 = rLCopy;
   v28 = v23;
-  v31 = v9;
+  v31 = dataCopy;
   v30[1] = *&width;
   v30[2] = *&height;
-  [(WBSFaviconProviderPersistenceController *)persistenceController iconInfoForPageURLString:v19 includingPrivateData:v9 completionHandler:v25];
+  [(WBSFaviconProviderPersistenceController *)persistenceController iconInfoForPageURLString:absoluteString includingPrivateData:dataCopy completionHandler:v25];
 
   objc_destroyWeak(v30);
   objc_destroyWeak(&location);
@@ -1525,32 +1525,32 @@ LABEL_10:
 LABEL_11:
 }
 
-- (void)_saveImageData:(id)a3 iconURL:(id)a4 pageURL:(id)a5 originalPageURL:(id)a6 size:(CGSize)a7 isPrivate:(BOOL)a8 completionHandler:(id)a9
+- (void)_saveImageData:(id)data iconURL:(id)l pageURL:(id)rL originalPageURL:(id)uRL size:(CGSize)size isPrivate:(BOOL)private completionHandler:(id)handler
 {
-  v10 = a8;
-  height = a7.height;
-  width = a7.width;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a9;
-  v21 = a3;
+  privateCopy = private;
+  height = size.height;
+  width = size.width;
+  lCopy = l;
+  rLCopy = rL;
+  uRLCopy = uRL;
+  handlerCopy = handler;
+  dataCopy = data;
   objc_initWeak(&location, self);
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __102__WBSFaviconProvider__saveImageData_iconURL_pageURL_originalPageURL_size_isPrivate_completionHandler___block_invoke;
   v26[3] = &unk_1E8284368;
   objc_copyWeak(&v31, &location);
-  v27 = v18;
-  v28 = v17;
-  v32 = v10;
-  v29 = v19;
-  v30 = v20;
-  v22 = v19;
-  v23 = v17;
-  v24 = v18;
-  v25 = v20;
-  [(WBSFaviconProvider *)self _confirmImageDataShouldBeSaved:v21 size:v24 pageURL:v23 iconURL:v10 includingPrivateData:v26 completionHandler:width, height];
+  v27 = rLCopy;
+  v28 = lCopy;
+  v32 = privateCopy;
+  v29 = uRLCopy;
+  v30 = handlerCopy;
+  v22 = uRLCopy;
+  v23 = lCopy;
+  v24 = rLCopy;
+  v25 = handlerCopy;
+  [(WBSFaviconProvider *)self _confirmImageDataShouldBeSaved:dataCopy size:v24 pageURL:v23 iconURL:privateCopy includingPrivateData:v26 completionHandler:width, height];
 
   objc_destroyWeak(&v31);
   objc_destroyWeak(&location);
@@ -1692,51 +1692,51 @@ uint64_t __102__WBSFaviconProvider__saveImageData_iconURL_pageURL_originalPageUR
   return result;
 }
 
-- (void)removeAllIconsForURLStringsNotIn:(id)a3 completionHandler:(id)a4
+- (void)removeAllIconsForURLStringsNotIn:(id)in completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  inCopy = in;
+  handlerCopy = handler;
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __73__WBSFaviconProvider_removeAllIconsForURLStringsNotIn_completionHandler___block_invoke;
   block[3] = &unk_1E8283450;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = inCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = inCopy;
   dispatch_async(internalQueue, block);
 }
 
-- (void)removeIconForURLString:(id)a3 completionHandler:(id)a4
+- (void)removeIconForURLString:(id)string completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  stringCopy = string;
+  handlerCopy = handler;
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __63__WBSFaviconProvider_removeIconForURLString_completionHandler___block_invoke;
   block[3] = &unk_1E8283450;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = stringCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = stringCopy;
   dispatch_async(internalQueue, block);
 }
 
-- (void)flushPrivateDataFromMemoryWithCompletionHandler:(id)a3
+- (void)flushPrivateDataFromMemoryWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   internalQueue = self->_internalQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __70__WBSFaviconProvider_flushPrivateDataFromMemoryWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E8283758;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(internalQueue, v7);
 }
 
@@ -1855,27 +1855,27 @@ void *__40__WBSFaviconProvider_releasePrivateData__block_invoke(void *result)
   return result;
 }
 
-- (BOOL)canHandleRequest:(id)a3
+- (BOOL)canHandleRequest:(id)request
 {
-  v3 = a3;
+  requestCopy = request;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return isKindOfClass & 1;
 }
 
-- (void)prepareResponseForRequest:(id)a3 allowDelayedResponse:(BOOL)a4
+- (void)prepareResponseForRequest:(id)request allowDelayedResponse:(BOOL)response
 {
-  v5 = a3;
+  requestCopy = request;
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __69__WBSFaviconProvider_prepareResponseForRequest_allowDelayedResponse___block_invoke;
   block[3] = &unk_1E8282EF0;
   block[4] = self;
-  v9 = v5;
-  v10 = v5;
-  v7 = v5;
+  v9 = requestCopy;
+  v10 = requestCopy;
+  v7 = requestCopy;
   dispatch_async(internalQueue, block);
 }
 
@@ -1897,25 +1897,25 @@ void __69__WBSFaviconProvider_prepareResponseForRequest_allowDelayedResponse___b
   }
 }
 
-- (id)responseForRequest:(id)a3 willProvideUpdates:(BOOL *)a4
+- (id)responseForRequest:(id)request willProvideUpdates:(BOOL *)updates
 {
-  *a4 = 1;
-  v4 = [(WBSFaviconProvider *)self _cachedResponseForRequest:a3];
+  *updates = 1;
+  v4 = [(WBSFaviconProvider *)self _cachedResponseForRequest:request];
 
   return v4;
 }
 
-- (void)stopWatchingUpdatesForRequest:(id)a3
+- (void)stopWatchingUpdatesForRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   internalQueue = self->_internalQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __52__WBSFaviconProvider_stopWatchingUpdatesForRequest___block_invoke;
   v7[3] = &unk_1E8282EA0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = requestCopy;
+  selfCopy = self;
+  v6 = requestCopy;
   dispatch_async(internalQueue, v7);
 }
 
@@ -1978,16 +1978,16 @@ void __52__WBSFaviconProvider_stopWatchingUpdatesForRequest___block_invoke(uint6
   objc_sync_exit(v8);
 }
 
-- (id)_cachedResponseForRequest:(id)a3
+- (id)_cachedResponseForRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = self->_responseCache;
   objc_sync_enter(v5);
   responseCache = self->_responseCache;
-  v7 = [(WBSFaviconProvider *)self _responseCacheKeyForRequest:v4];
+  v7 = [(WBSFaviconProvider *)self _responseCacheKeyForRequest:requestCopy];
   v8 = [(NSCache *)responseCache objectForKey:v7];
 
-  v9 = [(WBSFaviconProvider *)self _responseDictionaryKeyForRequest:v4];
+  v9 = [(WBSFaviconProvider *)self _responseDictionaryKeyForRequest:requestCopy];
   v10 = [v8 objectForKeyedSubscript:v9];
 
   objc_sync_exit(v5);
@@ -1995,107 +1995,107 @@ void __52__WBSFaviconProvider_stopWatchingUpdatesForRequest___block_invoke(uint6
   return v10;
 }
 
-- (void)_addCachedResponse:(id)a3 forRequest:(id)a4
+- (void)_addCachedResponse:(id)response forRequest:(id)request
 {
-  v15 = a3;
-  v6 = a4;
+  responseCopy = response;
+  requestCopy = request;
   v7 = self->_responseCache;
   objc_sync_enter(v7);
   responseCache = self->_responseCache;
-  v9 = [(WBSFaviconProvider *)self _responseCacheKeyForRequest:v6];
+  v9 = [(WBSFaviconProvider *)self _responseCacheKeyForRequest:requestCopy];
   v10 = [(NSCache *)responseCache objectForKey:v9];
 
   if (!v10)
   {
-    v11 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v12 = self->_responseCache;
-    v13 = [(WBSFaviconProvider *)self _responseCacheKeyForRequest:v6];
-    [(NSCache *)v12 setObject:v11 forKey:v13];
+    v13 = [(WBSFaviconProvider *)self _responseCacheKeyForRequest:requestCopy];
+    [(NSCache *)v12 setObject:dictionary forKey:v13];
 
-    v10 = v11;
+    v10 = dictionary;
   }
 
-  v14 = [(WBSFaviconProvider *)self _responseDictionaryKeyForRequest:v6];
-  [v10 setObject:v15 forKeyedSubscript:v14];
+  v14 = [(WBSFaviconProvider *)self _responseDictionaryKeyForRequest:requestCopy];
+  [v10 setObject:responseCopy forKeyedSubscript:v14];
 
   objc_sync_exit(v7);
 }
 
-- (void)_removeCachedResponsesForURL:(id)a3
+- (void)_removeCachedResponsesForURL:(id)l
 {
   obj = self->_responseCache;
-  v5 = a3;
+  lCopy = l;
   objc_sync_enter(obj);
-  [(NSCache *)self->_responseCache removeObjectForKey:v5];
+  [(NSCache *)self->_responseCache removeObjectForKey:lCopy];
 
   objc_sync_exit(obj);
 }
 
-- (void)_removeCachedResponsesForRequest:(id)a3
+- (void)_removeCachedResponsesForRequest:(id)request
 {
-  v9 = a3;
+  requestCopy = request;
   v4 = self->_responseCache;
   objc_sync_enter(v4);
   responseCache = self->_responseCache;
-  v6 = [(WBSFaviconProvider *)self _responseCacheKeyForRequest:v9];
+  v6 = [(WBSFaviconProvider *)self _responseCacheKeyForRequest:requestCopy];
   v7 = [(NSCache *)responseCache objectForKey:v6];
 
   if (v7)
   {
-    v8 = [(WBSFaviconProvider *)self _responseDictionaryKeyForRequest:v9];
+    v8 = [(WBSFaviconProvider *)self _responseDictionaryKeyForRequest:requestCopy];
     [v7 removeObjectForKey:v8];
   }
 
   objc_sync_exit(v4);
 }
 
-- (id)_responseDictionaryKeyForRequest:(id)a3
+- (id)_responseDictionaryKeyForRequest:(id)request
 {
-  v3 = a3;
+  requestCopy = request;
   v4 = MEMORY[0x1E696AEC0];
-  [v3 iconSize];
+  [requestCopy iconSize];
   v6 = v5;
-  [v3 iconSize];
-  v8 = [v4 stringWithFormat:@"{%lf, %lf}-%lu", v6, v7, objc_msgSend(v3, "fallbackType")];
+  [requestCopy iconSize];
+  v8 = [v4 stringWithFormat:@"{%lf, %lf}-%lu", v6, v7, objc_msgSend(requestCopy, "fallbackType")];
 
   return v8;
 }
 
-- (id)_responseCacheKeyForRequest:(id)a3
+- (id)_responseCacheKeyForRequest:(id)request
 {
-  v3 = [a3 url];
+  v3 = [request url];
 
   return v3;
 }
 
-- (id)_hostFromRequest:(id)a3
+- (id)_hostFromRequest:(id)request
 {
-  v4 = [a3 url];
+  v4 = [request url];
   v5 = [(WBSFaviconProvider *)self _hostFromURL:v4];
 
   return v5;
 }
 
-- (id)_hostFromURL:(id)a3
+- (id)_hostFromURL:(id)l
 {
-  v3 = a3;
-  if ([v3 isFileURL])
+  lCopy = l;
+  if ([lCopy isFileURL])
   {
-    v4 = [v3 absoluteString];
+    absoluteString = [lCopy absoluteString];
   }
 
   else
   {
-    v5 = [v3 host];
-    v4 = [v5 safari_stringByRemovingWwwDotPrefix];
+    host = [lCopy host];
+    absoluteString = [host safari_stringByRemovingWwwDotPrefix];
   }
 
-  return v4;
+  return absoluteString;
 }
 
-- (void)_registerRequest:(id)a3
+- (void)_registerRequest:(id)request
 {
-  v6 = a3;
+  requestCopy = request;
   v4 = [(WBSFaviconProvider *)self _hostFromRequest:?];
   if (v4)
   {
@@ -2106,40 +2106,40 @@ void __52__WBSFaviconProvider_stopWatchingUpdatesForRequest___block_invoke(uint6
       [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
     }
 
-    [v5 addObject:v6];
+    [v5 addObject:requestCopy];
   }
 }
 
-- (id)_requestsForHost:(id)a3
+- (id)_requestsForHost:(id)host
 {
-  v3 = [(NSMutableDictionary *)self->_hostsToRequestsMap objectForKeyedSubscript:a3];
+  v3 = [(NSMutableDictionary *)self->_hostsToRequestsMap objectForKeyedSubscript:host];
 
   return v3;
 }
 
-- (void)_updateOutstandingRequestsForPageURL:(id)a3 forceDidReceiveNewData:(BOOL)a4
+- (void)_updateOutstandingRequestsForPageURL:(id)l forceDidReceiveNewData:(BOOL)data
 {
-  v4 = a4;
-  v8 = a3;
+  dataCopy = data;
+  lCopy = l;
   [(WBSFaviconProvider *)self _removeCachedResponsesForURL:?];
-  v6 = [(WBSFaviconProvider *)self _hostFromURL:v8];
+  v6 = [(WBSFaviconProvider *)self _hostFromURL:lCopy];
   v7 = [(WBSFaviconProvider *)self _requestsForHost:v6];
 
   if ([v7 count])
   {
-    [(WBSFaviconProvider *)self _prepareAndSendResponseForRequests:v7 forceDidReceiveNewData:v4];
+    [(WBSFaviconProvider *)self _prepareAndSendResponseForRequests:v7 forceDidReceiveNewData:dataCopy];
   }
 }
 
-- (void)_prepareAndSendResponseForRequests:(id)a3 forceDidReceiveNewData:(BOOL)a4
+- (void)_prepareAndSendResponseForRequests:(id)requests forceDidReceiveNewData:(BOOL)data
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __80__WBSFaviconProvider__prepareAndSendResponseForRequests_forceDidReceiveNewData___block_invoke;
   v4[3] = &unk_1E8284430;
   v4[4] = self;
-  v5 = a4;
-  [a3 enumerateObjectsUsingBlock:v4];
+  dataCopy = data;
+  [requests enumerateObjectsUsingBlock:v4];
 }
 
 void __80__WBSFaviconProvider__prepareAndSendResponseForRequests_forceDidReceiveNewData___block_invoke(uint64_t a1, void *a2)
@@ -2338,35 +2338,35 @@ void __48__WBSFaviconProvider__blockOperationForRequest___block_invoke_3(uint64_
   }
 }
 
-- (void)webViewMetadataFetchOperation:(id)a3 didFinishUsingWebView:(id)a4
+- (void)webViewMetadataFetchOperation:(id)operation didFinishUsingWebView:(id)view
 {
-  v5 = a4;
+  viewCopy = view;
   WeakRetained = objc_loadWeakRetained(&self->_providerDelegate);
-  [WeakRetained siteMetadataProvider:self didFinishUsingWebView:v5];
+  [WeakRetained siteMetadataProvider:self didFinishUsingWebView:viewCopy];
 }
 
-- (void)webViewMetadataFetchOperation:(id)a3 getWebViewOfSize:(CGSize)a4 withConfiguration:(id)a5 completionHandler:(id)a6
+- (void)webViewMetadataFetchOperation:(id)operation getWebViewOfSize:(CGSize)size withConfiguration:(id)configuration completionHandler:(id)handler
 {
-  height = a4.height;
-  width = a4.width;
-  v10 = a6;
-  v11 = a5;
+  height = size.height;
+  width = size.width;
+  handlerCopy = handler;
+  configurationCopy = configuration;
   WeakRetained = objc_loadWeakRetained(&self->_providerDelegate);
-  [WeakRetained siteMetadataProvider:self getWebViewOfSize:v11 withConfiguration:v10 completionHandler:{width, height}];
+  [WeakRetained siteMetadataProvider:self getWebViewOfSize:configurationCopy withConfiguration:handlerCopy completionHandler:{width, height}];
 }
 
-- (void)_getIconForRequest:(id)a3 withCompletionHandler:(id)a4
+- (void)_getIconForRequest:(id)request withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __63__WBSFaviconProvider__getIconForRequest_withCompletionHandler___block_invoke;
   aBlock[3] = &unk_1E82844D0;
   aBlock[4] = self;
-  v8 = v6;
+  v8 = requestCopy;
   v30 = v8;
-  v9 = v7;
+  v9 = handlerCopy;
   v31 = v9;
   v10 = _Block_copy(aBlock);
   v11 = v10;
@@ -2383,19 +2383,19 @@ LABEL_14:
 
     if (self->_providerState == 1)
     {
-      v13 = [(WBSFaviconProvider *)self fallbackIconForRequest:v8];
+      absoluteString = [(WBSFaviconProvider *)self fallbackIconForRequest:v8];
       v14 = [WBSFaviconResponse alloc];
       v15 = [v8 url];
-      v16 = [(WBSFaviconResponse *)v14 initWithURL:v15 favicon:v13 faviconType:0];
+      v16 = [(WBSFaviconResponse *)v14 initWithURL:v15 favicon:absoluteString faviconType:0];
       (*(v9 + 2))(v9, v16);
     }
 
     else
     {
-      v17 = [v8 type];
-      if (v17)
+      type = [v8 type];
+      if (type)
       {
-        if (v17 != 1)
+        if (type != 1)
         {
           goto LABEL_14;
         }
@@ -2409,8 +2409,8 @@ LABEL_14:
         v27 = v18;
         v28 = v11;
         v26[4] = self;
-        v13 = v18;
-        [(WBSFaviconProviderPersistenceController *)persistenceController firstIconForVariantsOfDomainString:v13 includingPrivateData:1 completionHandler:v26];
+        absoluteString = v18;
+        [(WBSFaviconProviderPersistenceController *)persistenceController firstIconForVariantsOfDomainString:absoluteString includingPrivateData:1 completionHandler:v26];
 
         v15 = v28;
       }
@@ -2418,14 +2418,14 @@ LABEL_14:
       else
       {
         v20 = [v8 url];
-        v13 = [v20 absoluteString];
+        absoluteString = [v20 absoluteString];
 
         if ([v8 isURLTypedByUser])
         {
-          v21 = [v13 safari_bestURLForUserTypedString];
-          v22 = [v21 absoluteString];
+          safari_bestURLForUserTypedString = [absoluteString safari_bestURLForUserTypedString];
+          absoluteString2 = [safari_bestURLForUserTypedString absoluteString];
 
-          v13 = v22;
+          absoluteString = absoluteString2;
         }
 
         v23 = self->_persistenceController;
@@ -2434,7 +2434,7 @@ LABEL_14:
         v24[2] = __63__WBSFaviconProvider__getIconForRequest_withCompletionHandler___block_invoke_7;
         v24[3] = &unk_1E8284590;
         v25 = v11;
-        [(WBSFaviconProviderPersistenceController *)v23 firstIconForVariantsOfPageURLString:v13 includingPrivateData:1 completionHandler:v24];
+        [(WBSFaviconProviderPersistenceController *)v23 firstIconForVariantsOfPageURLString:absoluteString includingPrivateData:1 completionHandler:v24];
         v15 = v25;
       }
     }
@@ -2559,10 +2559,10 @@ uint64_t __63__WBSFaviconProvider__getIconForRequest_withCompletionHandler___blo
   return v10;
 }
 
-- (void)_atomicallyLinkPageURLs:(id)a3 toIconWithInfo:(id)a4 isPrivate:(BOOL)a5
+- (void)_atomicallyLinkPageURLs:(id)ls toIconWithInfo:(id)info isPrivate:(BOOL)private
 {
-  v8 = a3;
-  v9 = a4;
+  lsCopy = ls;
+  infoCopy = info;
   objc_initWeak(&location, self);
   internalSavingQueue = self->_internalSavingQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -2570,11 +2570,11 @@ uint64_t __63__WBSFaviconProvider__getIconForRequest_withCompletionHandler___blo
   block[2] = __71__WBSFaviconProvider__atomicallyLinkPageURLs_toIconWithInfo_isPrivate___block_invoke;
   block[3] = &unk_1E82845B8;
   objc_copyWeak(&v16, &location);
-  v14 = v8;
-  v15 = v9;
-  v17 = a5;
-  v11 = v9;
-  v12 = v8;
+  v14 = lsCopy;
+  v15 = infoCopy;
+  privateCopy = private;
+  v11 = infoCopy;
+  v12 = lsCopy;
   dispatch_async(internalSavingQueue, block);
 
   objc_destroyWeak(&v16);
@@ -2628,28 +2628,28 @@ void __71__WBSFaviconProvider__atomicallyLinkPageURLs_toIconWithInfo_isPrivate__
   }
 }
 
-- (void)_linkPageURL:(id)a3 toIconWithInfo:(id)a4 isPrivate:(BOOL)a5 completionHandler:(id)a6
+- (void)_linkPageURL:(id)l toIconWithInfo:(id)info isPrivate:(BOOL)private completionHandler:(id)handler
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  privateCopy = private;
+  lCopy = l;
+  infoCopy = info;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   persistenceController = self->_persistenceController;
-  v14 = [v10 absoluteString];
+  absoluteString = [lCopy absoluteString];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __78__WBSFaviconProvider__linkPageURL_toIconWithInfo_isPrivate_completionHandler___block_invoke;
   v18[3] = &unk_1E8284608;
   objc_copyWeak(&v22, &location);
-  v15 = v12;
+  v15 = handlerCopy;
   v21 = v15;
-  v16 = v11;
+  v16 = infoCopy;
   v19 = v16;
-  v17 = v10;
+  v17 = lCopy;
   v20 = v17;
-  v23 = v7;
-  [(WBSFaviconProviderPersistenceController *)persistenceController iconInfoForPageURLString:v14 includingPrivateData:v7 completionHandler:v18];
+  v23 = privateCopy;
+  [(WBSFaviconProviderPersistenceController *)persistenceController iconInfoForPageURLString:absoluteString includingPrivateData:privateCopy completionHandler:v18];
 
   objc_destroyWeak(&v22);
   objc_destroyWeak(&location);

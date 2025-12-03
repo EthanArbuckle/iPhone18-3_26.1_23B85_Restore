@@ -1,16 +1,16 @@
 @interface KNOXBackendXPC
-- (KNOXBackendXPC)initWithCoder:(id)a3;
-- (KNOXBackendXPC)initWithURL:(id)a3 key:(void *)a4;
+- (KNOXBackendXPC)initWithCoder:(id)coder;
+- (KNOXBackendXPC)initWithURL:(id)l key:(void *)key;
 - (id).cxx_construct;
 - (shared_ptr<unsigned)key;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation KNOXBackendXPC
 
-- (KNOXBackendXPC)initWithURL:(id)a3 key:(void *)a4
+- (KNOXBackendXPC)initWithURL:(id)l key:(void *)key
 {
-  v7 = a3;
+  lCopy = l;
   v15.receiver = self;
   v15.super_class = KNOXBackendXPC;
   v8 = [(KNOXBackendXPC *)&v15 init];
@@ -18,8 +18,8 @@
   if (v8)
   {
     p_key = &v8->_key;
-    v12 = *a4;
-    v11 = *(a4 + 1);
+    v12 = *key;
+    v11 = *(key + 1);
     if (v11)
     {
       atomic_fetch_add_explicit((v11 + 8), 1uLL, memory_order_relaxed);
@@ -33,7 +33,7 @@
       std::__shared_weak_count::__release_shared[abi:ne200100](cntrl);
     }
 
-    objc_storeStrong(&v9->_URL, a3);
+    objc_storeStrong(&v9->_URL, l);
     [(KNOXBackendXPC *)v9 URL];
     [objc_claimAutoreleasedReturnValue() absoluteString];
     [objc_claimAutoreleasedReturnValue() UTF8String];
@@ -43,20 +43,20 @@
   return 0;
 }
 
-- (KNOXBackendXPC)initWithCoder:(id)a3
+- (KNOXBackendXPC)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = KNOXBackendXPC;
-  v5 = [(BackendXPC *)&v11 initWithCoder:v4];
+  v5 = [(BackendXPC *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"URL"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"URL"];
     URL = v5->_URL;
     v5->_URL = v6;
 
     v10 = 0;
-    if ([v4 decodeBytesForKey:@"encKeys" returnedLength:&v10] && v10 == 32)
+    if ([coderCopy decodeBytesForKey:@"encKeys" returnedLength:&v10] && v10 == 32)
     {
       operator new[]();
     }
@@ -72,16 +72,16 @@
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6.receiver = self;
   v6.super_class = KNOXBackendXPC;
-  [(BackendXPC *)&v6 encodeWithCoder:v4];
+  [(BackendXPC *)&v6 encodeWithCoder:coderCopy];
   v5 = [(KNOXBackendXPC *)self URL];
-  [v4 encodeObject:v5 forKey:@"URL"];
+  [coderCopy encodeObject:v5 forKey:@"URL"];
 
-  [v4 encodeBytes:self->_key.__ptr_ length:32 forKey:@"encKeys"];
+  [coderCopy encodeBytes:self->_key.__ptr_ length:32 forKey:@"encKeys"];
 }
 
 - (shared_ptr<unsigned)key

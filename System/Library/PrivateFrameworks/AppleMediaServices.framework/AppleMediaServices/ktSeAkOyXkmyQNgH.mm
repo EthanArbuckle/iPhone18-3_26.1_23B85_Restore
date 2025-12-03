@@ -1,21 +1,21 @@
 @interface ktSeAkOyXkmyQNgH
 + (id)sharedInstance;
-- (BOOL)l7UrdRfCzeduYqtA:(id)a3;
-- (id)BFzukpKGO3cStNGp:(id)a3;
-- (ktSeAkOyXkmyQNgH)initWithServiceName:(id)a3;
-- (void)JI0A3nkqsab9cUj8:(id)a3 completion:(id)a4;
-- (void)QeMnG23X94qgz7jT:(id)a3 hostChallenge:(id)a4 challengeResponse:(id)a5 seid:(id)a6 nonce:(id)a7 completion:(id)a8;
-- (void)Z8aAH7stm0EYhyxg:(id)a3 dhAnc7b9U376IHnX:(id)a4 xz5EHXEN4FjlhJbi:(id)a5 uhVTXyAfCFn7u0Ue:(id)a6 EQUjQp7JcQbqcPcD:(id)a7 A5wDLa5TFdFZlz3A:(id)a8 TJKMyOe6zn5PdGIr:(id)a9 eCqgGM0WcnHOslnr:(unint64_t)a10 eCszfxdv3kUXvhgV:(unint64_t)a11 uWp4aZpP2vLhc04Q:(id)a12 QZYtNpvp0hKd248p:(id)a13 oCwPYmtRv8s31KUH:(id)a14 completion:(id)a15;
-- (void)ZfE6lVphNUVrZcKx:(id)a3 completion:(id)a4;
-- (void)evrtH713YbFfEOzk:(id)a3 completion:(id)a4;
-- (void)fetchConfigThrowingWithCompletion:(id)a3;
-- (void)fetchConfigWithCompletion:(id)a3;
-- (void)llNEghuIdfPH7O8I:(BOOL)a3 all:(BOOL)a4 pregeneration:(BOOL)a5 workflowID:(id)a6 completion:(id)a7;
-- (void)llNEghuIdfPH7O8I:(BOOL)a3 all:(BOOL)a4 workflowID:(id)a5 completion:(id)a6;
-- (void)ofLBc0SV56ddaijH:(id)a3 i7D0Lridvo8oYoNd:(id)a4 completion:(id)a5;
+- (BOOL)l7UrdRfCzeduYqtA:(id)a;
+- (id)BFzukpKGO3cStNGp:(id)gp;
+- (ktSeAkOyXkmyQNgH)initWithServiceName:(id)name;
+- (void)JI0A3nkqsab9cUj8:(id)uj8 completion:(id)completion;
+- (void)QeMnG23X94qgz7jT:(id)t hostChallenge:(id)challenge challengeResponse:(id)response seid:(id)seid nonce:(id)nonce completion:(id)completion;
+- (void)Z8aAH7stm0EYhyxg:(id)yhyxg dhAnc7b9U376IHnX:(id)x xz5EHXEN4FjlhJbi:(id)jbi uhVTXyAfCFn7u0Ue:(id)ue EQUjQp7JcQbqcPcD:(id)d A5wDLa5TFdFZlz3A:(id)a TJKMyOe6zn5PdGIr:(id)ir eCqgGM0WcnHOslnr:(unint64_t)self0 eCszfxdv3kUXvhgV:(unint64_t)self1 uWp4aZpP2vLhc04Q:(id)self2 QZYtNpvp0hKd248p:(id)self3 oCwPYmtRv8s31KUH:(id)self4 completion:(id)self5;
+- (void)ZfE6lVphNUVrZcKx:(id)kx completion:(id)completion;
+- (void)evrtH713YbFfEOzk:(id)ozk completion:(id)completion;
+- (void)fetchConfigThrowingWithCompletion:(id)completion;
+- (void)fetchConfigWithCompletion:(id)completion;
+- (void)llNEghuIdfPH7O8I:(BOOL)i all:(BOOL)all pregeneration:(BOOL)pregeneration workflowID:(id)d completion:(id)completion;
+- (void)llNEghuIdfPH7O8I:(BOOL)i all:(BOOL)all workflowID:(id)d completion:(id)completion;
+- (void)ofLBc0SV56ddaijH:(id)h i7D0Lridvo8oYoNd:(id)nd completion:(id)completion;
 - (void)uTtwJoGUgL3N0GVz;
-- (void)updateRavioliWithCompletion:(id)a3;
-- (void)vffg4lwI2HftPvpO:(id)a3;
+- (void)updateRavioliWithCompletion:(id)completion;
+- (void)vffg4lwI2HftPvpO:(id)o;
 @end
 
 @implementation ktSeAkOyXkmyQNgH
@@ -32,9 +32,9 @@
   return v3;
 }
 
-- (ktSeAkOyXkmyQNgH)initWithServiceName:(id)a3
+- (ktSeAkOyXkmyQNgH)initWithServiceName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v20.receiver = self;
   v20.super_class = ktSeAkOyXkmyQNgH;
   v5 = [(ktSeAkOyXkmyQNgH *)&v20 init];
@@ -48,7 +48,7 @@
     syncQueue = v5->_syncQueue;
     v5->_syncQueue = v8;
 
-    v10 = [[NSXPCConnection alloc] initWithMachServiceName:v4 options:4096];
+    v10 = [[NSXPCConnection alloc] initWithMachServiceName:nameCopy options:4096];
     connection = v5->_connection;
     v5->_connection = v10;
 
@@ -70,16 +70,16 @@
   return v5;
 }
 
-- (void)JI0A3nkqsab9cUj8:(id)a3 completion:(id)a4
+- (void)JI0A3nkqsab9cUj8:(id)uj8 completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  uj8Copy = uj8;
+  completionCopy = completion;
   v8 = [(NSXPCConnection *)self->_connection remoteObjectProxyWithErrorHandler:&stru_1002BC4B8];
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
   v21[2] = sub_1001B1B64;
   v21[3] = &unk_1002BC4E0;
-  v9 = v7;
+  v9 = completionCopy;
   v22 = v9;
   v10 = objc_retainBlock(v21);
   v11 = [(ktSeAkOyXkmyQNgH *)self BFzukpKGO3cStNGp:v10];
@@ -94,27 +94,27 @@
   v13 = v9;
   v18 = v13;
   v14 = objc_retainBlock(v16);
-  v15 = [v6 toDictionary];
-  [v8 k0p7Rchr49btq6wB:v15 HY6FXG20397zwmVg:v14];
+  toDictionary = [uj8Copy toDictionary];
+  [v8 k0p7Rchr49btq6wB:toDictionary HY6FXG20397zwmVg:v14];
 
   objc_destroyWeak(&v19);
   objc_destroyWeak(&location);
 }
 
-- (void)QeMnG23X94qgz7jT:(id)a3 hostChallenge:(id)a4 challengeResponse:(id)a5 seid:(id)a6 nonce:(id)a7 completion:(id)a8
+- (void)QeMnG23X94qgz7jT:(id)t hostChallenge:(id)challenge challengeResponse:(id)response seid:(id)seid nonce:(id)nonce completion:(id)completion
 {
-  v26 = a3;
-  v14 = a4;
-  v25 = a5;
-  v15 = a6;
-  v24 = a7;
-  v16 = a8;
+  tCopy = t;
+  challengeCopy = challenge;
+  responseCopy = response;
+  seidCopy = seid;
+  nonceCopy = nonce;
+  completionCopy = completion;
   v17 = [(NSXPCConnection *)self->_connection remoteObjectProxyWithErrorHandler:&stru_1002BC528];
   v32[0] = _NSConcreteStackBlock;
   v32[1] = 3221225472;
   v32[2] = sub_1001B1E5C;
   v32[3] = &unk_1002BC4E0;
-  v18 = v16;
+  v18 = completionCopy;
   v33 = v18;
   v19 = objc_retainBlock(v32);
   v20 = [(ktSeAkOyXkmyQNgH *)self BFzukpKGO3cStNGp:v19];
@@ -129,22 +129,22 @@
   v22 = v18;
   v29 = v22;
   v23 = objc_retainBlock(v27);
-  [v17 Me7YKKqFAKjegMFz:v26 hostChallenge:v14 challengeResponse:v25 seid:v15 nonce:v24 HY6FXG20397zwmVg:v23];
+  [v17 Me7YKKqFAKjegMFz:tCopy hostChallenge:challengeCopy challengeResponse:responseCopy seid:seidCopy nonce:nonceCopy HY6FXG20397zwmVg:v23];
 
   objc_destroyWeak(&v30);
   objc_destroyWeak(&location);
 }
 
-- (void)ZfE6lVphNUVrZcKx:(id)a3 completion:(id)a4
+- (void)ZfE6lVphNUVrZcKx:(id)kx completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  kxCopy = kx;
+  completionCopy = completion;
   v8 = [(NSXPCConnection *)self->_connection remoteObjectProxyWithErrorHandler:&stru_1002BC570];
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_1001B20D0;
   v20[3] = &unk_1002BC4E0;
-  v9 = v7;
+  v9 = completionCopy;
   v21 = v9;
   v10 = objc_retainBlock(v20);
   v11 = [(ktSeAkOyXkmyQNgH *)self BFzukpKGO3cStNGp:v10];
@@ -159,21 +159,21 @@
   v13 = v9;
   v17 = v13;
   v14 = objc_retainBlock(v15);
-  [v8 f9MGfLOgnHPuKTrU:v6 HY6FXG20397zwmVg:v14];
+  [v8 f9MGfLOgnHPuKTrU:kxCopy HY6FXG20397zwmVg:v14];
 
   objc_destroyWeak(&v18);
   objc_destroyWeak(&location);
 }
 
-- (void)vffg4lwI2HftPvpO:(id)a3
+- (void)vffg4lwI2HftPvpO:(id)o
 {
-  v4 = a3;
+  oCopy = o;
   v5 = [(NSXPCConnection *)self->_connection remoteObjectProxyWithErrorHandler:&stru_1002BC5B8];
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_1001B2334;
   v17[3] = &unk_1002BC4E0;
-  v6 = v4;
+  v6 = oCopy;
   v18 = v6;
   v7 = objc_retainBlock(v17);
   v8 = [(ktSeAkOyXkmyQNgH *)self BFzukpKGO3cStNGp:v7];
@@ -194,25 +194,25 @@
   objc_destroyWeak(&location);
 }
 
-- (void)Z8aAH7stm0EYhyxg:(id)a3 dhAnc7b9U376IHnX:(id)a4 xz5EHXEN4FjlhJbi:(id)a5 uhVTXyAfCFn7u0Ue:(id)a6 EQUjQp7JcQbqcPcD:(id)a7 A5wDLa5TFdFZlz3A:(id)a8 TJKMyOe6zn5PdGIr:(id)a9 eCqgGM0WcnHOslnr:(unint64_t)a10 eCszfxdv3kUXvhgV:(unint64_t)a11 uWp4aZpP2vLhc04Q:(id)a12 QZYtNpvp0hKd248p:(id)a13 oCwPYmtRv8s31KUH:(id)a14 completion:(id)a15
+- (void)Z8aAH7stm0EYhyxg:(id)yhyxg dhAnc7b9U376IHnX:(id)x xz5EHXEN4FjlhJbi:(id)jbi uhVTXyAfCFn7u0Ue:(id)ue EQUjQp7JcQbqcPcD:(id)d A5wDLa5TFdFZlz3A:(id)a TJKMyOe6zn5PdGIr:(id)ir eCqgGM0WcnHOslnr:(unint64_t)self0 eCszfxdv3kUXvhgV:(unint64_t)self1 uWp4aZpP2vLhc04Q:(id)self2 QZYtNpvp0hKd248p:(id)self3 oCwPYmtRv8s31KUH:(id)self4 completion:(id)self5
 {
-  v21 = a3;
-  v38 = a4;
-  v37 = a5;
-  v36 = a6;
-  v35 = a7;
-  v34 = a8;
-  v22 = a9;
-  v23 = a12;
-  v24 = a13;
-  v25 = a14;
-  v26 = a15;
+  yhyxgCopy = yhyxg;
+  xCopy = x;
+  jbiCopy = jbi;
+  ueCopy = ue;
+  dCopy = d;
+  aCopy = a;
+  irCopy = ir;
+  qCopy = q;
+  kd248pCopy = kd248p;
+  hCopy = h;
+  completionCopy = completion;
   v33 = [(NSXPCConnection *)self->_connection remoteObjectProxyWithErrorHandler:&stru_1002BC5D8];
   v44[0] = _NSConcreteStackBlock;
   v44[1] = 3221225472;
   v44[2] = sub_1001B26B0;
   v44[3] = &unk_1002BC4E0;
-  v27 = v26;
+  v27 = completionCopy;
   v45 = v27;
   v28 = objc_retainBlock(v44);
   v29 = [(ktSeAkOyXkmyQNgH *)self BFzukpKGO3cStNGp:v28];
@@ -227,22 +227,22 @@
   v31 = v27;
   v41 = v31;
   v32 = objc_retainBlock(v39);
-  [v33 sPLljm0ZB9z7TiKd:v21 nSLeS2inTAbpsUeZ:v38 noUfOiGjp1iQmKZX:v37 pPGyXmlDbN3mzzHm:v36 iSOZt67ioKsVcqQZ:v22 hjCrdFOLMJN0Cc5Q:a10 lE40aye8U2u533Ka:a11 JRuZv6Feh9qwrGmN:v23 Wn0aIR2B54NCtGQc:v24 B3l3lS18BITy5E4L:v25 UywAszL6AB8Y6LTJ:v32 uNao9X8A82jVmQkK:? completion:?];
+  [v33 sPLljm0ZB9z7TiKd:yhyxgCopy nSLeS2inTAbpsUeZ:xCopy noUfOiGjp1iQmKZX:jbiCopy pPGyXmlDbN3mzzHm:ueCopy iSOZt67ioKsVcqQZ:irCopy hjCrdFOLMJN0Cc5Q:oslnr lE40aye8U2u533Ka:v JRuZv6Feh9qwrGmN:qCopy Wn0aIR2B54NCtGQc:kd248pCopy B3l3lS18BITy5E4L:hCopy UywAszL6AB8Y6LTJ:v32 uNao9X8A82jVmQkK:? completion:?];
 
   objc_destroyWeak(&v42);
   objc_destroyWeak(&location);
 }
 
-- (void)updateRavioliWithCompletion:(id)a3
+- (void)updateRavioliWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = [(NSXPCConnection *)self->_connection remoteObjectProxyWithErrorHandler:&stru_1002BC620];
   objc_initWeak(&location, self);
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_1001B2944;
   v15[3] = &unk_1002BC4E0;
-  v6 = v4;
+  v6 = completionCopy;
   v16 = v6;
   v7 = objc_retainBlock(v15);
   v8 = [(ktSeAkOyXkmyQNgH *)self BFzukpKGO3cStNGp:v7];
@@ -261,9 +261,9 @@
   objc_destroyWeak(&location);
 }
 
-- (void)fetchConfigThrowingWithCompletion:(id)a3
+- (void)fetchConfigThrowingWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -290,7 +290,7 @@
 
   if (v7)
   {
-    v4[2](v4, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
   else
@@ -300,7 +300,7 @@
     v19[1] = 3221225472;
     v19[2] = sub_1001B2CC0;
     v19[3] = &unk_1002BC4E0;
-    v11 = v4;
+    v11 = completionCopy;
     v20 = v11;
     v12 = objc_retainBlock(v19);
     v13 = [(ktSeAkOyXkmyQNgH *)self BFzukpKGO3cStNGp:v12];
@@ -321,16 +321,16 @@
   _Block_object_dispose(&v23, 8);
 }
 
-- (void)fetchConfigWithCompletion:(id)a3
+- (void)fetchConfigWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = [(NSXPCConnection *)self->_connection remoteObjectProxyWithErrorHandler:&stru_1002BC6B8];
   objc_initWeak(&location, self);
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_1001B2EF8;
   v15[3] = &unk_1002BC4E0;
-  v6 = v4;
+  v6 = completionCopy;
   v16 = v6;
   v7 = objc_retainBlock(v15);
   v8 = [(ktSeAkOyXkmyQNgH *)self BFzukpKGO3cStNGp:v7];
@@ -349,59 +349,59 @@
   objc_destroyWeak(&location);
 }
 
-- (void)llNEghuIdfPH7O8I:(BOOL)a3 all:(BOOL)a4 workflowID:(id)a5 completion:(id)a6
+- (void)llNEghuIdfPH7O8I:(BOOL)i all:(BOOL)all workflowID:(id)d completion:(id)completion
 {
   v7 = kCoreASErrorDomainCA;
-  v8 = a6;
+  completionCopy = completion;
   v9 = [NSString stringWithUTF8String:v7];
   v12 = NSLocalizedDescriptionKey;
   v13 = @"Not implemented";
   v10 = [NSDictionary dictionaryWithObjects:&v13 forKeys:&v12 count:1];
   v11 = [NSError errorWithDomain:v9 code:-27006 userInfo:v10];
-  (*(a6 + 2))(v8, v11);
+  (*(completion + 2))(completionCopy, v11);
 }
 
-- (void)evrtH713YbFfEOzk:(id)a3 completion:(id)a4
+- (void)evrtH713YbFfEOzk:(id)ozk completion:(id)completion
 {
   v5 = kCoreASErrorDomainCA;
-  v6 = a4;
+  completionCopy = completion;
   v7 = [NSString stringWithUTF8String:v5];
   v10 = NSLocalizedDescriptionKey;
   v11 = @"Not implemented";
   v8 = [NSDictionary dictionaryWithObjects:&v11 forKeys:&v10 count:1];
   v9 = [NSError errorWithDomain:v7 code:-27006 userInfo:v8];
-  (*(a4 + 2))(v6, 0, v9);
+  (*(completion + 2))(completionCopy, 0, v9);
 }
 
-- (void)ofLBc0SV56ddaijH:(id)a3 i7D0Lridvo8oYoNd:(id)a4 completion:(id)a5
+- (void)ofLBc0SV56ddaijH:(id)h i7D0Lridvo8oYoNd:(id)nd completion:(id)completion
 {
   v6 = kCoreASErrorDomainCA;
-  v7 = a5;
+  completionCopy = completion;
   v8 = [NSString stringWithUTF8String:v6];
   v11 = NSLocalizedDescriptionKey;
   v12 = @"Not implemented";
   v9 = [NSDictionary dictionaryWithObjects:&v12 forKeys:&v11 count:1];
   v10 = [NSError errorWithDomain:v8 code:-27006 userInfo:v9];
-  (*(a5 + 2))(v7, 0, v10);
+  (*(completion + 2))(completionCopy, 0, v10);
 }
 
-- (void)llNEghuIdfPH7O8I:(BOOL)a3 all:(BOOL)a4 pregeneration:(BOOL)a5 workflowID:(id)a6 completion:(id)a7
+- (void)llNEghuIdfPH7O8I:(BOOL)i all:(BOOL)all pregeneration:(BOOL)pregeneration workflowID:(id)d completion:(id)completion
 {
   v8 = kCoreASErrorDomainCA;
-  v9 = a7;
+  completionCopy = completion;
   v10 = [NSString stringWithUTF8String:v8];
   v13 = NSLocalizedDescriptionKey;
   v14 = @"Not implemented";
   v11 = [NSDictionary dictionaryWithObjects:&v14 forKeys:&v13 count:1];
   v12 = [NSError errorWithDomain:v10 code:-27006 userInfo:v11];
-  (*(a7 + 2))(v9, v12);
+  (*(completion + 2))(completionCopy, v12);
 }
 
-- (id)BFzukpKGO3cStNGp:(id)a3
+- (id)BFzukpKGO3cStNGp:(id)gp
 {
-  v4 = a3;
+  gpCopy = gp;
   v5 = +[NSUUID UUID];
-  v6 = [v5 UUIDString];
+  uUIDString = [v5 UUIDString];
 
   syncQueue = self->_syncQueue;
   block[0] = _NSConcreteStackBlock;
@@ -409,10 +409,10 @@
   block[2] = sub_1001B34C0;
   block[3] = &unk_1002BC6E0;
   block[4] = self;
-  v15 = v4;
-  v8 = v6;
+  v15 = gpCopy;
+  v8 = uUIDString;
   v14 = v8;
-  v9 = v4;
+  v9 = gpCopy;
   dispatch_sync(syncQueue, block);
   v10 = v14;
   v11 = v8;
@@ -420,9 +420,9 @@
   return v8;
 }
 
-- (BOOL)l7UrdRfCzeduYqtA:(id)a3
+- (BOOL)l7UrdRfCzeduYqtA:(id)a
 {
-  v4 = a3;
+  aCopy = a;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -432,10 +432,10 @@
   block[1] = 3221225472;
   block[2] = sub_1001B35EC;
   block[3] = &unk_1002BC708;
-  v9 = v4;
+  v9 = aCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
+  v6 = aCopy;
   dispatch_sync(syncQueue, block);
   LOBYTE(syncQueue) = *(v12 + 24);
 

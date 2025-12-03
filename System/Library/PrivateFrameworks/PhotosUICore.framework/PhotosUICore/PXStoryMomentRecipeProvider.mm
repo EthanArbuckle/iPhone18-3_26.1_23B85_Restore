@@ -1,56 +1,56 @@
 @interface PXStoryMomentRecipeProvider
-- ($7B05257DCED3654557744F96476E9D8A)_nextEmptySpaceBreakTransitionForMotion:(SEL)a3;
+- ($7B05257DCED3654557744F96476E9D8A)_nextEmptySpaceBreakTransitionForMotion:(SEL)motion;
 - (BOOL)_isSongEnergetic;
 - (PXStoryMomentRecipeProvider)init;
-- (PXStoryMomentRecipeProvider)initWithConfiguration:(id)a3 colorGradeCategory:(id)a4 songPace:(int64_t)a5 randomNumberGenerator:(id)a6;
-- (_NSRange)_rangeOfLength:(int64_t)a3 centeredOnIndex:(int64_t)a4 withinRange:(_NSRange)a5;
-- (id)_nextBaseMomentRecipeWithPreviousClip:(id)a3;
-- (id)_nextModuleRecipeWithModuleClipRange:(_NSRange)a3 clipCatalog:(id)a4;
-- (id)_nextSingleAssetRecipeWithPreviousClip:(id)a3;
-- (id)_recipeFromRecipeType:(unint64_t)a3 previousClip:(id)a4;
-- (int64_t)_incomingTransitionKindForRecipe:(unint64_t)a3;
-- (int64_t)_innerTransitionKindForRecipe:(unint64_t)a3;
-- (int64_t)_motionStyleForRecipe:(unint64_t)a3;
-- (void)provideDebugInfoForClip:(unint64_t)a3 usingBlock:(id)a4;
-- (void)provideRecipeForMomentClipRange:(_NSRange)a3 withClipCatalog:(id)a4 usingBlock:(id)a5;
+- (PXStoryMomentRecipeProvider)initWithConfiguration:(id)configuration colorGradeCategory:(id)category songPace:(int64_t)pace randomNumberGenerator:(id)generator;
+- (_NSRange)_rangeOfLength:(int64_t)length centeredOnIndex:(int64_t)index withinRange:(_NSRange)range;
+- (id)_nextBaseMomentRecipeWithPreviousClip:(id)clip;
+- (id)_nextModuleRecipeWithModuleClipRange:(_NSRange)range clipCatalog:(id)catalog;
+- (id)_nextSingleAssetRecipeWithPreviousClip:(id)clip;
+- (id)_recipeFromRecipeType:(unint64_t)type previousClip:(id)clip;
+- (int64_t)_incomingTransitionKindForRecipe:(unint64_t)recipe;
+- (int64_t)_innerTransitionKindForRecipe:(unint64_t)recipe;
+- (int64_t)_motionStyleForRecipe:(unint64_t)recipe;
+- (void)provideDebugInfoForClip:(unint64_t)clip usingBlock:(id)block;
+- (void)provideRecipeForMomentClipRange:(_NSRange)range withClipCatalog:(id)catalog usingBlock:(id)block;
 @end
 
 @implementation PXStoryMomentRecipeProvider
 
-- (void)provideDebugInfoForClip:(unint64_t)a3 usingBlock:(id)a4
+- (void)provideDebugInfoForClip:(unint64_t)clip usingBlock:(id)block
 {
-  v12 = a4;
+  blockCopy = block;
   clipDebugInfos = self->_clipDebugInfos;
-  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:clip];
   v8 = [(NSMutableDictionary *)clipDebugInfos objectForKeyedSubscript:v7];
 
   if (v8)
   {
     v9 = self->_clipDebugInfos;
-    v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+    v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:clip];
     v11 = [(NSMutableDictionary *)v9 objectForKeyedSubscript:v10];
-    v12[2](v12, v11);
+    blockCopy[2](blockCopy, v11);
   }
 }
 
-- (void)provideRecipeForMomentClipRange:(_NSRange)a3 withClipCatalog:(id)a4 usingBlock:(id)a5
+- (void)provideRecipeForMomentClipRange:(_NSRange)range withClipCatalog:(id)catalog usingBlock:(id)block
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v163[2] = *MEMORY[0x1E69E9840];
-  v9 = a4;
-  v130 = a5;
+  catalogCopy = catalog;
+  blockCopy = block;
   if (!length)
   {
-    v124 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v124 handleFailureInMethod:a2 object:self file:@"PXStoryMomentRecipeProvider.m" lineNumber:460 description:{@"Invalid parameter not satisfying: %@", @"momentClipRange.length > 0"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryMomentRecipeProvider.m" lineNumber:460 description:{@"Invalid parameter not satisfying: %@", @"momentClipRange.length > 0"}];
   }
 
-  v10 = [v9 clipAtIndex:location];
+  v10 = [catalogCopy clipAtIndex:location];
   v150 = a2;
   if (location)
   {
-    v11 = [v9 clipAtIndex:location - 1];
+    v11 = [catalogCopy clipAtIndex:location - 1];
   }
 
   else
@@ -70,8 +70,8 @@
     addToPapertrail(v12, "@(momentClipRange.length)", v16, 476);
 
     v17 = MEMORY[0x1E696AD98];
-    v18 = [v10 displayAssets];
-    v19 = [v17 numberWithUnsignedInteger:{objc_msgSend(v18, "count")}];
+    displayAssets = [v10 displayAssets];
+    v19 = [v17 numberWithUnsignedInteger:{objc_msgSend(displayAssets, "count")}];
     addToPapertrail(v12, "@(firstClip.displayAssets.count)", v19, 476);
 
     v11 = v15;
@@ -83,9 +83,9 @@
   {
     if (location)
     {
-      v21 = [v9 clipAtIndex:location - 1];
-      v22 = [v21 displayAssets];
-      v23 = [v22 count] == 2;
+      v21 = [catalogCopy clipAtIndex:location - 1];
+      displayAssets2 = [v21 displayAssets];
+      v23 = [displayAssets2 count] == 2;
     }
 
     else
@@ -93,14 +93,14 @@
       v23 = 0;
     }
 
-    v24 = [v10 displayAssets];
-    v25 = [v24 count];
+    displayAssets3 = [v10 displayAssets];
+    v25 = [displayAssets3 count];
 
     v142 = 0;
     if (v23 && v25 == 1)
     {
-      v26 = [v10 displayAssets];
-      [v26 objectAtIndexedSubscript:0];
+      displayAssets4 = [v10 displayAssets];
+      [displayAssets4 objectAtIndexedSubscript:0];
       v27 = v11;
       v29 = v28 = v10;
       v142 = [PXStoryRecipeClipUtilities assetHasHighCurationScore:v29];
@@ -121,8 +121,8 @@
     addToPapertrail(v12, "@(firstIs1Up)", v32, 484);
 
     v33 = MEMORY[0x1E696AD98];
-    v34 = [v10 displayAssets];
-    v35 = [v34 objectAtIndexedSubscript:0];
+    displayAssets5 = [v10 displayAssets];
+    v35 = [displayAssets5 objectAtIndexedSubscript:0];
     v36 = [v33 numberWithBool:{+[PXStoryRecipeClipUtilities assetHasHighCurationScore:](PXStoryRecipeClipUtilities, "assetHasHighCurationScore:", v35)}];
     addToPapertrail(v12, "@([PXStoryRecipeClipUtilities assetHasHighCurationScore:firstClip.displayAssets[0]])", v36, 484);
 
@@ -144,12 +144,12 @@
       v39 = v143;
       do
       {
-        v40 = [v9 clipAtIndex:v39];
+        v40 = [catalogCopy clipAtIndex:v39];
         [v40 moduleInfo];
         if ((v41 & 0x100) != 0)
         {
-          v42 = [(PXStoryMomentRecipeState *)self->_state nextEmptySpaceStrategy];
-          switch(v42)
+          nextEmptySpaceStrategy = [(PXStoryMomentRecipeState *)self->_state nextEmptySpaceStrategy];
+          switch(nextEmptySpaceStrategy)
           {
             case 1:
               [v128 addIndex:v39];
@@ -159,8 +159,8 @@
               [v131 addIndexesInRange:{v43, v44}];
               break;
             case 0:
-              v125 = [MEMORY[0x1E696AAA8] currentHandler];
-              [v125 handleFailureInMethod:v150 object:self file:@"PXStoryMomentRecipeProvider.m" lineNumber:510 description:@"Undefined empty space strategy"];
+              currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+              [currentHandler2 handleFailureInMethod:v150 object:self file:@"PXStoryMomentRecipeProvider.m" lineNumber:510 description:@"Undefined empty space strategy"];
 
               abort();
           }
@@ -181,7 +181,7 @@
     v126 = v11;
     v127 = v10;
     v45 = 0;
-    v140 = v9;
+    v140 = catalogCopy;
     v141 = 0;
     v46 = location;
     v132 = v20;
@@ -191,20 +191,20 @@
       v12 = [v129 mutableCopy];
 
       v48 = MEMORY[0x1E696AD60];
-      v49 = [v20 recipeType];
+      recipeType = [v20 recipeType];
       v50 = @"??";
-      if (v49 <= 8)
+      if (recipeType <= 8)
       {
-        v50 = off_1E7732050[v49];
+        v50 = off_1E7732050[recipeType];
       }
 
       v51 = v50;
       v136 = [v48 stringWithFormat:@"Base recipe: %@\n", v51];
 
-      v52 = [v9 numberOfClips];
+      numberOfClips = [catalogCopy numberOfClips];
       if (v46)
       {
-        v53 = [v9 clipAtIndex:v46 - 1];
+        v53 = [catalogCopy clipAtIndex:v46 - 1];
       }
 
       else
@@ -213,22 +213,22 @@
       }
 
       v54 = v46 + 1;
-      v55 = [v9 clipAtIndex:v46];
-      if (v46 + 1 >= v52)
+      v55 = [catalogCopy clipAtIndex:v46];
+      if (v46 + 1 >= numberOfClips)
       {
         v56 = 0;
       }
 
       else
       {
-        v56 = [v9 clipAtIndex:v46 + 1];
+        v56 = [catalogCopy clipAtIndex:v46 + 1];
       }
 
       v149 = v46;
       if (v46)
       {
-        v57 = [v53 displayAssets];
-        v148 = [v57 count] > 1;
+        displayAssets6 = [v53 displayAssets];
+        v148 = [displayAssets6 count] > 1;
       }
 
       else
@@ -236,30 +236,30 @@
         v148 = 0;
       }
 
-      v58 = [v55 displayAssets];
-      v59 = [v58 count];
+      displayAssets7 = [v55 displayAssets];
+      v59 = [displayAssets7 count];
 
       v151 = v53;
-      if (v54 >= v52)
+      if (v54 >= numberOfClips)
       {
         v61 = 0;
       }
 
       else
       {
-        v60 = [v56 displayAssets];
-        v61 = [v60 count] > 1;
+        displayAssets8 = [v56 displayAssets];
+        v61 = [displayAssets8 count] > 1;
       }
 
       v62 = v56;
       v138 = v59;
       v134 = v59 > 1;
       v146 = v54;
-      v63 = v54 < v52;
-      v64 = [v55 moduleInfo];
+      v63 = v54 < numberOfClips;
+      moduleInfo = [v55 moduleInfo];
       [v55 moduleInfo];
       v147 = v65;
-      v135 = v64 != 0;
+      v135 = moduleInfo != 0;
       v66 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v143];
       addToPapertrail(v12, "@(firstIndex)", v66, 544);
 
@@ -269,7 +269,7 @@
       v68 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v152];
       addToPapertrail(v12, "@(lastIndex)", v68, 544);
 
-      v69 = v64;
+      v69 = moduleInfo;
       v70 = [MEMORY[0x1E696AD98] numberWithBool:v149 != 0];
       addToPapertrail(v12, "@(previousIsValid)", v70, 545);
 
@@ -295,9 +295,9 @@
 
       v76 = @"??";
       v77 = v61;
-      if (v64 <= 3)
+      if (moduleInfo <= 3)
       {
-        v76 = off_1E7731FC0[v64];
+        v76 = off_1E7731FC0[moduleInfo];
       }
 
       v45 = v136;
@@ -305,8 +305,8 @@
       addToPapertrail(v12, "PXStoryAutoEditModuleTypeName(moduleType)", v78, 548);
 
       v79 = v149 == v143 && v142;
-      v80 = [MEMORY[0x1E696AD98] numberWithBool:v149 == v143];
-      addToPapertrail(v12, "@(isFirstClipOfMoment)", v80, 548);
+      v143 = [MEMORY[0x1E696AD98] numberWithBool:v149 == v143];
+      addToPapertrail(v12, "@(isFirstClipOfMoment)", v143, 548);
 
       v81 = [MEMORY[0x1E696AD98] numberWithBool:v147 & 1];
       addToPapertrail(v12, "@(isStartOfModule)", v81, 548);
@@ -320,14 +320,14 @@
       if (v79)
       {
         v133 = v69;
-        v83 = v132;
+        v140 = v132;
 
         if (v132)
         {
-          [(__CFString *)v83 incomingTransition];
+          [(__CFString *)v140 incomingTransition];
           v160 = *buf;
           v161 = v159;
-          [(__CFString *)v83 motion];
+          [(__CFString *)v140 motion];
           v85 = *buf;
           v84 = *&buf[8];
           v86 = v159;
@@ -342,11 +342,11 @@
           v161 = 0u;
         }
 
-        v92 = [(__CFString *)v83 recipeType];
+        recipeType2 = [(__CFString *)v140 recipeType];
         v93 = @"??";
-        if (v92 <= 8)
+        if (recipeType2 <= 8)
         {
-          v93 = off_1E7732050[v92];
+          v93 = off_1E7732050[recipeType2];
         }
 
         v94 = v93;
@@ -381,15 +381,15 @@
               v161 = 0uLL;
             }
 
-            v99 = [(__CFString *)v141 recipeType];
+            recipeType3 = [(__CFString *)v141 recipeType];
             v100 = @"??";
-            if (v99 <= 8)
+            if (recipeType3 <= 8)
             {
-              v100 = off_1E7732050[v99];
+              v100 = off_1E7732050[recipeType3];
             }
 
-            v83 = v100;
-            [v45 appendFormat:@"Mid-module %@\n", v83];
+            v140 = v100;
+            [v45 appendFormat:@"Mid-module %@\n", v140];
             goto LABEL_85;
           }
 
@@ -416,11 +416,11 @@
               v161 = 0uLL;
             }
 
-            v119 = [v132 recipeType];
+            recipeType4 = [v132 recipeType];
             v120 = @"??";
-            if (v119 <= 8)
+            if (recipeType4 <= 8)
             {
-              v120 = off_1E7732050[v119];
+              v120 = off_1E7732050[recipeType4];
             }
 
             v121 = v120;
@@ -474,7 +474,7 @@ LABEL_124:
 
           [v122 appendString:v123];
 LABEL_126:
-          v83 = v141;
+          v140 = v141;
           goto LABEL_78;
         }
 
@@ -506,14 +506,14 @@ LABEL_71:
         v96 = [MEMORY[0x1E696B098] valueWithRange:{v149, v87 - v149}];
         addToPapertrail(v12, "[NSValue valueWithRange:moduleClipRange]", v96, 570);
 
-        v83 = [(PXStoryMomentRecipeProvider *)self _nextModuleRecipeWithModuleClipRange:v149 clipCatalog:v95, v140];
+        v140 = [(PXStoryMomentRecipeProvider *)self _nextModuleRecipeWithModuleClipRange:v149 clipCatalog:v95, v140];
 
-        if (v83)
+        if (v140)
         {
-          [(__CFString *)v83 incomingTransition];
+          [(__CFString *)v140 incomingTransition];
           v160 = *buf;
           v161 = v159;
-          [(__CFString *)v83 motion];
+          [(__CFString *)v140 motion];
           v85 = *buf;
           v84 = *&buf[8];
           v86 = v159;
@@ -528,11 +528,11 @@ LABEL_71:
           v161 = 0u;
         }
 
-        v97 = [(__CFString *)v83 recipeType];
+        recipeType5 = [(__CFString *)v140 recipeType];
         v98 = @"??";
-        if (v97 <= 8)
+        if (recipeType5 <= 8)
         {
-          v98 = off_1E7732050[v97];
+          v98 = off_1E7732050[recipeType5];
         }
 
         v94 = v98;
@@ -542,7 +542,7 @@ LABEL_71:
 LABEL_78:
       if (v147 & 1 | (v133 != 0))
       {
-        v141 = v83;
+        v141 = v140;
         goto LABEL_86;
       }
 
@@ -625,8 +625,8 @@ LABEL_104:
         if (v102 == 1)
         {
           state = self->_state;
-          v105 = [v145 displayAssets];
-          v86 = -[PXStoryMomentRecipeState nextNUpPanRelativeMotionWithN:](state, "nextNUpPanRelativeMotionWithN:", [v105 count]);
+          displayAssets9 = [v145 displayAssets];
+          v86 = -[PXStoryMomentRecipeState nextNUpPanRelativeMotionWithN:](state, "nextNUpPanRelativeMotionWithN:", [displayAssets9 count]);
         }
 
         else
@@ -691,16 +691,16 @@ LABEL_111:
       v117 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v149];
       [(NSMutableDictionary *)clipDebugInfos setObject:v115 forKeyedSubscript:v117];
 
-      v118 = v130[2];
+      v118 = blockCopy[2];
       v153[0] = v85;
       v153[1] = v84;
       v153[2] = v86;
       *buf = v160;
       v159 = v161;
-      v118(v130, v153, buf, v108, v149);
+      v118(blockCopy, v153, buf, v108, v149);
 
       v46 = v146;
-      v9 = v140;
+      catalogCopy = v140;
       v20 = v132;
       if (v146 > v152)
       {
@@ -713,18 +713,18 @@ LABEL_111:
   }
 }
 
-- (_NSRange)_rangeOfLength:(int64_t)a3 centeredOnIndex:(int64_t)a4 withinRange:(_NSRange)a5
+- (_NSRange)_rangeOfLength:(int64_t)length centeredOnIndex:(int64_t)index withinRange:(_NSRange)range
 {
-  length = a5.length;
-  location = a5.location;
-  if (a4 < a5.location || a4 - a5.location >= a5.length)
+  length = range.length;
+  location = range.location;
+  if (index < range.location || index - range.location >= range.length)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"PXStoryMomentRecipeProvider.m" lineNumber:412 description:{@"Invalid parameter not satisfying: %@", @"NSLocationInRange(centerIdx, range)"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryMomentRecipeProvider.m" lineNumber:412 description:{@"Invalid parameter not satisfying: %@", @"NSLocationInRange(centerIdx, range)"}];
   }
 
   v11 = location + length;
-  v12 = a4 - a3 / 2;
+  v12 = index - length / 2;
   if (v12 <= location)
   {
     v13 = location;
@@ -732,12 +732,12 @@ LABEL_111:
 
   else
   {
-    v13 = a4 - a3 / 2;
+    v13 = index - length / 2;
   }
 
-  if (v12 + a3 < v11)
+  if (v12 + length < v11)
   {
-    v11 = v12 + a3;
+    v11 = v12 + length;
   }
 
   v14 = v11 - v13;
@@ -746,7 +746,7 @@ LABEL_111:
   return result;
 }
 
-- ($7B05257DCED3654557744F96476E9D8A)_nextEmptySpaceBreakTransitionForMotion:(SEL)a3
+- ($7B05257DCED3654557744F96476E9D8A)_nextEmptySpaceBreakTransitionForMotion:(SEL)motion
 {
   result = [(PXStoryMomentRecipeProvider *)self _isSongEnergetic];
   if (!result)
@@ -786,8 +786,8 @@ LABEL_7:
   {
     if (var0 == 4)
     {
-      v14 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v14 handleFailureInMethod:a3 object:self file:@"PXStoryMomentRecipeProvider.m" lineNumber:399 description:@"Invalid motion style"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:motion object:self file:@"PXStoryMomentRecipeProvider.m" lineNumber:399 description:@"Invalid motion style"];
 
       abort();
     }
@@ -805,64 +805,64 @@ LABEL_11:
   return result;
 }
 
-- (id)_nextSingleAssetRecipeWithPreviousClip:(id)a3
+- (id)_nextSingleAssetRecipeWithPreviousClip:(id)clip
 {
   state = self->_state;
-  v5 = a3;
-  v6 = [(PXStoryMomentRecipeProvider *)self _recipeFromRecipeType:[(PXStoryMomentRecipeState *)state nextSingleAssetMomentRecipe] previousClip:v5];
+  clipCopy = clip;
+  v6 = [(PXStoryMomentRecipeProvider *)self _recipeFromRecipeType:[(PXStoryMomentRecipeState *)state nextSingleAssetMomentRecipe] previousClip:clipCopy];
 
   return v6;
 }
 
-- (id)_nextModuleRecipeWithModuleClipRange:(_NSRange)a3 clipCatalog:(id)a4
+- (id)_nextModuleRecipeWithModuleClipRange:(_NSRange)range clipCatalog:(id)catalog
 {
-  length = a3.length;
-  location = a3.location;
-  v7 = a4;
-  v8 = [(PXStoryMomentRecipeState *)self->_state _nextModuleRecipeWithModuleClipRange:location clipCatalog:length, v7];
+  length = range.length;
+  location = range.location;
+  catalogCopy = catalog;
+  catalogCopy = [(PXStoryMomentRecipeState *)self->_state _nextModuleRecipeWithModuleClipRange:location clipCatalog:length, catalogCopy];
   if (location)
   {
-    location = [v7 clipAtIndex:location - 1];
+    location = [catalogCopy clipAtIndex:location - 1];
   }
 
-  v9 = [(PXStoryMomentRecipeProvider *)self _recipeFromRecipeType:v8 previousClip:location];
+  v9 = [(PXStoryMomentRecipeProvider *)self _recipeFromRecipeType:catalogCopy previousClip:location];
 
   return v9;
 }
 
-- (id)_nextBaseMomentRecipeWithPreviousClip:(id)a3
+- (id)_nextBaseMomentRecipeWithPreviousClip:(id)clip
 {
   state = self->_state;
-  v5 = a3;
-  v6 = [(PXStoryMomentRecipeProvider *)self _recipeFromRecipeType:[(PXStoryMomentRecipeState *)state nextBaseMomentRecipe] previousClip:v5];
+  clipCopy = clip;
+  v6 = [(PXStoryMomentRecipeProvider *)self _recipeFromRecipeType:[(PXStoryMomentRecipeState *)state nextBaseMomentRecipe] previousClip:clipCopy];
 
   return v6;
 }
 
-- (id)_recipeFromRecipeType:(unint64_t)a3 previousClip:(id)a4
+- (id)_recipeFromRecipeType:(unint64_t)type previousClip:(id)clip
 {
-  v7 = a4;
-  v8 = [(PXStoryMomentRecipeProvider *)self _incomingTransitionKindForRecipe:a3];
-  v9 = [(PXStoryMomentRecipeProvider *)self _innerTransitionKindForRecipe:a3];
-  v10 = [(PXStoryMomentRecipeProvider *)self _motionStyleForRecipe:a3];
+  clipCopy = clip;
+  v8 = [(PXStoryMomentRecipeProvider *)self _incomingTransitionKindForRecipe:type];
+  v9 = [(PXStoryMomentRecipeProvider *)self _innerTransitionKindForRecipe:type];
+  v10 = [(PXStoryMomentRecipeProvider *)self _motionStyleForRecipe:type];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __66__PXStoryMomentRecipeProvider__recipeFromRecipeType_previousClip___block_invoke;
   aBlock[3] = &unk_1E7730B70;
-  v11 = v7;
+  v11 = clipCopy;
   v31 = v11;
-  v32 = self;
+  selfCopy = self;
   v12 = _Block_copy(aBlock);
-  v13 = 0;
+  nextRotateDirection = 0;
   v14 = 0;
-  if (a3 > 4)
+  if (type > 4)
   {
-    if (a3 <= 6)
+    if (type <= 6)
     {
-      if (a3 == 5)
+      if (type == 5)
       {
-        v13 = 0;
-        v16 = 0;
+        nextRotateDirection = 0;
+        nextPanDirection = 0;
         v14 = 1;
         v15 = 1;
         goto LABEL_19;
@@ -871,64 +871,64 @@ LABEL_11:
       goto LABEL_12;
     }
 
-    if (a3 == 7)
+    if (type == 7)
     {
 LABEL_12:
-      v17 = v12[2](v12);
+      nextScaleDirection = v12[2](v12);
 LABEL_15:
-      v15 = v17;
+      v15 = nextScaleDirection;
       v14 = 0;
-      v13 = 0;
+      nextRotateDirection = 0;
       goto LABEL_16;
     }
 
     v15 = 0;
-    v16 = 0;
-    if (a3 != 8)
+    nextPanDirection = 0;
+    if (type != 8)
     {
       goto LABEL_19;
     }
 
 LABEL_17:
-    v16 = [(PXStoryMomentRecipeState *)self->_state nextPanDirection];
+    nextPanDirection = [(PXStoryMomentRecipeState *)self->_state nextPanDirection];
     v14 = 0;
-    v13 = 0;
+    nextRotateDirection = 0;
     v15 = 0;
     goto LABEL_19;
   }
 
-  if (a3 > 2)
+  if (type > 2)
   {
-    if (a3 != 3)
+    if (type != 3)
     {
-      v17 = [(PXStoryMomentRecipeState *)self->_state nextScaleDirection];
+      nextScaleDirection = [(PXStoryMomentRecipeState *)self->_state nextScaleDirection];
       goto LABEL_15;
     }
 
     goto LABEL_17;
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
     goto LABEL_12;
   }
 
-  if (a3 == 2)
+  if (type == 2)
   {
-    v13 = [(PXStoryMomentRecipeState *)self->_state nextRotateDirection];
+    nextRotateDirection = [(PXStoryMomentRecipeState *)self->_state nextRotateDirection];
     v14 = 0;
     v15 = 0;
 LABEL_16:
-    v16 = 0;
+    nextPanDirection = 0;
     goto LABEL_19;
   }
 
   v15 = 0;
-  v16 = 0;
-  if (!a3)
+  nextPanDirection = 0;
+  if (!type)
   {
-    v25 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v25 handleFailureInMethod:a2 object:self file:@"PXStoryMomentRecipeProvider.m" lineNumber:319 description:@"Undefined moment recipe type"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryMomentRecipeProvider.m" lineNumber:319 description:@"Undefined moment recipe type"];
 
     abort();
   }
@@ -942,8 +942,8 @@ LABEL_19:
   {
     if (v8 == 7)
     {
-      v18 = v13 & 0xFFFFFFFFFFFF0000;
-      v19 = v13;
+      v18 = nextRotateDirection & 0xFFFFFFFFFFFF0000;
+      v19 = nextRotateDirection;
     }
 
     else if (v8 == 8)
@@ -955,8 +955,8 @@ LABEL_19:
 
   else if (v8 == 5)
   {
-    v18 = v16 & 0xFFFFFFFFFFFF0000;
-    v19 = v16;
+    v18 = nextPanDirection & 0xFFFFFFFFFFFF0000;
+    v19 = nextPanDirection;
   }
 
   else if (v8 == 6)
@@ -971,8 +971,8 @@ LABEL_19:
   {
     if (v9 == 7)
     {
-      v21 = v13 & 0xFFFFFFFFFFFF0000;
-      v22 = v13;
+      v21 = nextRotateDirection & 0xFFFFFFFFFFFF0000;
+      v22 = nextRotateDirection;
     }
 
     else if (v9 == 8)
@@ -984,8 +984,8 @@ LABEL_19:
 
   else if (v9 == 5)
   {
-    v21 = v16 & 0xFFFFFFFFFFFF0000;
-    v22 = v16;
+    v21 = nextPanDirection & 0xFFFFFFFFFFFF0000;
+    v22 = nextPanDirection;
   }
 
   else if (v9 == 6)
@@ -996,14 +996,14 @@ LABEL_19:
 
   if (v10 == 3)
   {
-    v15 = v13;
+    v15 = nextRotateDirection;
   }
 
   else if (v10 != 2)
   {
     if (v10 == 1)
     {
-      v15 = v16;
+      v15 = nextPanDirection;
     }
 
     else
@@ -1023,7 +1023,7 @@ LABEL_19:
   v27[0] = v10;
   v27[1] = v15;
   v27[2] = 0;
-  v23 = [[PXStoryAutoEditMomentRecipe alloc] initWithRecipeType:a3 incomingTransition:v29 innerTransition:v28 motion:v27];
+  v23 = [[PXStoryAutoEditMomentRecipe alloc] initWithRecipeType:type incomingTransition:v29 innerTransition:v28 motion:v27];
 
   return v23;
 }
@@ -1052,24 +1052,24 @@ void *__66__PXStoryMomentRecipeProvider__recipeFromRecipeType_previousClip___blo
   return result;
 }
 
-- (int64_t)_motionStyleForRecipe:(unint64_t)a3
+- (int64_t)_motionStyleForRecipe:(unint64_t)recipe
 {
-  if (a3 >= 9)
+  if (recipe >= 9)
   {
     v13 = v4;
     v14 = v3;
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"PXStoryMomentRecipeProvider.m" lineNumber:292 description:@"Unhandled case"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryMomentRecipeProvider.m" lineNumber:292 description:@"Unhandled case"];
 
     abort();
   }
 
-  return qword_1A53817F0[a3];
+  return qword_1A53817F0[recipe];
 }
 
-- (int64_t)_innerTransitionKindForRecipe:(unint64_t)a3
+- (int64_t)_innerTransitionKindForRecipe:(unint64_t)recipe
 {
-  if (a3 == 6)
+  if (recipe == 6)
   {
     return 6;
   }
@@ -1080,13 +1080,13 @@ void *__66__PXStoryMomentRecipeProvider__recipeFromRecipeType_previousClip___blo
   }
 }
 
-- (int64_t)_incomingTransitionKindForRecipe:(unint64_t)a3
+- (int64_t)_incomingTransitionKindForRecipe:(unint64_t)recipe
 {
-  if (a3 <= 3)
+  if (recipe <= 3)
   {
-    if (a3 > 1)
+    if (recipe > 1)
     {
-      if (a3 == 2)
+      if (recipe == 2)
       {
         return 7;
       }
@@ -1097,9 +1097,9 @@ void *__66__PXStoryMomentRecipeProvider__recipeFromRecipeType_previousClip___blo
       }
     }
 
-    else if (a3)
+    else if (recipe)
     {
-      if (a3 != 1)
+      if (recipe != 1)
       {
         goto LABEL_20;
       }
@@ -1110,9 +1110,9 @@ void *__66__PXStoryMomentRecipeProvider__recipeFromRecipeType_previousClip___blo
 
   else
   {
-    if (a3 <= 5)
+    if (recipe <= 5)
     {
-      if (a3 != 4)
+      if (recipe != 4)
       {
         return 8;
       }
@@ -1120,16 +1120,16 @@ void *__66__PXStoryMomentRecipeProvider__recipeFromRecipeType_previousClip___blo
 
     else
     {
-      if (a3 == 6)
+      if (recipe == 6)
       {
-        return a3;
+        return recipe;
       }
 
-      if (a3 != 7 && a3 != 8)
+      if (recipe != 7 && recipe != 8)
       {
 LABEL_20:
-        v6 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v6 handleFailureInMethod:a2 object:self file:@"PXStoryMomentRecipeProvider.m" lineNumber:259 description:@"Unhandled case"];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryMomentRecipeProvider.m" lineNumber:259 description:@"Unhandled case"];
 
         abort();
       }
@@ -1146,7 +1146,7 @@ LABEL_20:
     }
   }
 
-  return a3;
+  return recipe;
 }
 
 - (BOOL)_isSongEnergetic
@@ -1175,21 +1175,21 @@ LABEL_20:
   return colorGradeCategory;
 }
 
-- (PXStoryMomentRecipeProvider)initWithConfiguration:(id)a3 colorGradeCategory:(id)a4 songPace:(int64_t)a5 randomNumberGenerator:(id)a6
+- (PXStoryMomentRecipeProvider)initWithConfiguration:(id)configuration colorGradeCategory:(id)category songPace:(int64_t)pace randomNumberGenerator:(id)generator
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  configurationCopy = configuration;
+  categoryCopy = category;
+  generatorCopy = generator;
   v21.receiver = self;
   v21.super_class = PXStoryMomentRecipeProvider;
   v14 = [(PXStoryMomentRecipeProvider *)&v21 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_configuration, a3);
-    v15->_songPace = a5;
-    objc_storeStrong(&v15->_colorGradeCategory, a4);
-    v16 = [[PXStoryMomentRecipeState alloc] initWithRandomNumberGenerator:v13];
+    objc_storeStrong(&v14->_configuration, configuration);
+    v15->_songPace = pace;
+    objc_storeStrong(&v15->_colorGradeCategory, category);
+    v16 = [[PXStoryMomentRecipeState alloc] initWithRandomNumberGenerator:generatorCopy];
     state = v15->_state;
     v15->_state = v16;
 
@@ -1203,8 +1203,8 @@ LABEL_20:
 
 - (PXStoryMomentRecipeProvider)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXStoryMomentRecipeProvider.m" lineNumber:193 description:{@"%s is not available as initializer", "-[PXStoryMomentRecipeProvider init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryMomentRecipeProvider.m" lineNumber:193 description:{@"%s is not available as initializer", "-[PXStoryMomentRecipeProvider init]"}];
 
   abort();
 }

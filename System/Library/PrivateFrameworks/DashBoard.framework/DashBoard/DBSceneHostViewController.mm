@@ -4,34 +4,34 @@
 - (CGRect)sceneFrame;
 - (DBEnvironment)environment;
 - (UIEdgeInsets)sceneSafeAreaInsets;
-- (id)_initWithScene:(id)a3 application:(id)a4 proxyApplication:(id)a5 environment:(id)a6;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)presentationViewWithIdentifier:(id)a3;
-- (id)presentationViewWithIdentifier:(id)a3 activate:(BOOL)a4 backgroundColor:(id)a5;
+- (id)_initWithScene:(id)scene application:(id)application proxyApplication:(id)proxyApplication environment:(id)environment;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)presentationViewWithIdentifier:(id)identifier;
+- (id)presentationViewWithIdentifier:(id)identifier activate:(BOOL)activate backgroundColor:(id)color;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 - (int64_t)sceneContentState;
 - (int64_t)sceneInterfaceStyle;
 - (int64_t)sceneMapInterfaceStyle;
 - (void)_installScenePresentationView;
-- (void)_updateSceneSettings:(id)a3 transitionContext:(id)a4 updateBlock:(id)a5;
+- (void)_updateSceneSettings:(id)settings transitionContext:(id)context updateBlock:(id)block;
 - (void)_updateSceneUI;
-- (void)activatePresentationViewWithIdentifier:(id)a3;
-- (void)deactivatePresentationViewWithIdentifier:(id)a3;
+- (void)activatePresentationViewWithIdentifier:(id)identifier;
+- (void)deactivatePresentationViewWithIdentifier:(id)identifier;
 - (void)deactivateScene;
 - (void)invalidate;
-- (void)invalidatePresentationViewForIdentifier:(id)a3;
+- (void)invalidatePresentationViewForIdentifier:(id)identifier;
 - (void)invalidateScenePresenter;
-- (void)performSceneUpdateWithBlock:(id)a3 waitsForSceneCommit:(BOOL)a4 timeout:(double)a5 completion:(id)a6;
-- (void)processMonitor:(id)a3 shouldHandleDeathOfBundleIdentifier:(id)a4 isCrash:(BOOL)a5;
-- (void)scene:(id)a3 didUpdateClientSettings:(id)a4;
-- (void)sceneContentStateDidChange:(id)a3;
-- (void)sceneDidDeactivate:(id)a3 withContext:(id)a4;
-- (void)sceneDidInvalidate:(id)a3;
-- (void)sendSceneActions:(id)a3;
-- (void)updateSceneSettingsWithBlock:(id)a3;
-- (void)updateSceneSettingsWithTransitionBlock:(id)a3;
+- (void)performSceneUpdateWithBlock:(id)block waitsForSceneCommit:(BOOL)commit timeout:(double)timeout completion:(id)completion;
+- (void)processMonitor:(id)monitor shouldHandleDeathOfBundleIdentifier:(id)identifier isCrash:(BOOL)crash;
+- (void)scene:(id)scene didUpdateClientSettings:(id)settings;
+- (void)sceneContentStateDidChange:(id)change;
+- (void)sceneDidDeactivate:(id)deactivate withContext:(id)context;
+- (void)sceneDidInvalidate:(id)invalidate;
+- (void)sendSceneActions:(id)actions;
+- (void)updateSceneSettingsWithBlock:(id)block;
+- (void)updateSceneSettingsWithTransitionBlock:(id)block;
 @end
 
 @implementation DBSceneHostViewController
@@ -46,48 +46,48 @@
 - (void)_installScenePresentationView
 {
   v34[4] = *MEMORY[0x277D85DE8];
-  v3 = [(FBScene *)self->_scene uiPresentationManager];
-  v4 = [(DBSceneHostViewController *)self scenePresentationIdentifier];
-  v5 = [v3 createPresenterWithIdentifier:v4 priority:1];
+  uiPresentationManager = [(FBScene *)self->_scene uiPresentationManager];
+  scenePresentationIdentifier = [(DBSceneHostViewController *)self scenePresentationIdentifier];
+  v5 = [uiPresentationManager createPresenterWithIdentifier:scenePresentationIdentifier priority:1];
   scenePresenter = self->_scenePresenter;
   self->_scenePresenter = v5;
 
   [(UIScenePresenter *)self->_scenePresenter modifyPresentationContext:&__block_literal_global_182];
   [(UIScenePresenter *)self->_scenePresenter activate];
-  v7 = [(UIScenePresenter *)self->_scenePresenter presentationView];
-  [(DBSceneHostViewController *)self setSceneHostView:v7];
+  presentationView = [(UIScenePresenter *)self->_scenePresenter presentationView];
+  [(DBSceneHostViewController *)self setSceneHostView:presentationView];
 
-  v8 = [(DBSceneHostViewController *)self view];
-  v9 = [(DBSceneHostViewController *)self sceneHostView];
-  [v8 addSubview:v9];
+  view = [(DBSceneHostViewController *)self view];
+  sceneHostView = [(DBSceneHostViewController *)self sceneHostView];
+  [view addSubview:sceneHostView];
 
-  v10 = [(DBSceneHostViewController *)self sceneHostView];
-  [v10 setTranslatesAutoresizingMaskIntoConstraints:0];
+  sceneHostView2 = [(DBSceneHostViewController *)self sceneHostView];
+  [sceneHostView2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v23 = MEMORY[0x277CCAAD0];
-  v32 = [(DBSceneHostViewController *)self sceneHostView];
-  v30 = [v32 leftAnchor];
-  v31 = [(DBSceneHostViewController *)self view];
-  v29 = [v31 leftAnchor];
-  v28 = [v30 constraintEqualToAnchor:v29];
+  sceneHostView3 = [(DBSceneHostViewController *)self sceneHostView];
+  leftAnchor = [sceneHostView3 leftAnchor];
+  view2 = [(DBSceneHostViewController *)self view];
+  leftAnchor2 = [view2 leftAnchor];
+  v28 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
   v34[0] = v28;
-  v27 = [(DBSceneHostViewController *)self sceneHostView];
-  v25 = [v27 rightAnchor];
-  v26 = [(DBSceneHostViewController *)self view];
-  v24 = [v26 rightAnchor];
-  v22 = [v25 constraintEqualToAnchor:v24];
+  sceneHostView4 = [(DBSceneHostViewController *)self sceneHostView];
+  rightAnchor = [sceneHostView4 rightAnchor];
+  view3 = [(DBSceneHostViewController *)self view];
+  rightAnchor2 = [view3 rightAnchor];
+  v22 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
   v34[1] = v22;
-  v21 = [(DBSceneHostViewController *)self sceneHostView];
-  v20 = [v21 topAnchor];
-  v11 = [(DBSceneHostViewController *)self view];
-  v12 = [v11 topAnchor];
-  v13 = [v20 constraintEqualToAnchor:v12];
+  sceneHostView5 = [(DBSceneHostViewController *)self sceneHostView];
+  topAnchor = [sceneHostView5 topAnchor];
+  view4 = [(DBSceneHostViewController *)self view];
+  topAnchor2 = [view4 topAnchor];
+  v13 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v34[2] = v13;
-  v14 = [(DBSceneHostViewController *)self sceneHostView];
-  v15 = [v14 bottomAnchor];
-  v16 = [(DBSceneHostViewController *)self view];
-  v17 = [v16 bottomAnchor];
-  v18 = [v15 constraintEqualToAnchor:v17];
+  sceneHostView6 = [(DBSceneHostViewController *)self sceneHostView];
+  bottomAnchor = [sceneHostView6 bottomAnchor];
+  view5 = [(DBSceneHostViewController *)self view];
+  bottomAnchor2 = [view5 bottomAnchor];
+  v18 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v34[3] = v18;
   v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v34 count:4];
   [v23 activateConstraints:v19];
@@ -110,10 +110,10 @@ void __58__DBSceneHostViewController__installScenePresentationView__block_invoke
 
 - (CGRect)sceneFrame
 {
-  v3 = [(DBSceneHostViewController *)self environment];
-  v4 = [(DBSceneHostViewController *)self application];
-  v5 = [(DBSceneHostViewController *)self proxyApplication];
-  [v3 sceneFrameForApplication:v4 proxyApplication:v5];
+  environment = [(DBSceneHostViewController *)self environment];
+  application = [(DBSceneHostViewController *)self application];
+  proxyApplication = [(DBSceneHostViewController *)self proxyApplication];
+  [environment sceneFrameForApplication:application proxyApplication:proxyApplication];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -132,22 +132,22 @@ void __58__DBSceneHostViewController__installScenePresentationView__block_invoke
 
 - (id)succinctDescription
 {
-  v2 = [(DBSceneHostViewController *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(DBSceneHostViewController *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
 {
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
-  v4 = [(DBSceneHostViewController *)self application];
-  v5 = [v4 bundleIdentifier];
-  v6 = [v3 appendObject:v5 withName:0];
+  application = [(DBSceneHostViewController *)self application];
+  bundleIdentifier = [application bundleIdentifier];
+  v6 = [v3 appendObject:bundleIdentifier withName:0];
 
-  v7 = [(DBSceneHostViewController *)self proxyApplication];
-  v8 = [v7 bundleIdentifier];
-  v9 = [v3 appendObject:v8 withName:@"proxy" skipIfNil:1];
+  proxyApplication = [(DBSceneHostViewController *)self proxyApplication];
+  bundleIdentifier2 = [proxyApplication bundleIdentifier];
+  v9 = [v3 appendObject:bundleIdentifier2 withName:@"proxy" skipIfNil:1];
 
   return v3;
 }
@@ -179,7 +179,7 @@ void __58__DBSceneHostViewController__installScenePresentationView__block_invoke
 
 - (int64_t)sceneMapInterfaceStyle
 {
-  v3 = [(DBSceneHostViewController *)self environment];
+  environment = [(DBSceneHostViewController *)self environment];
   v4 = objc_opt_respondsToSelector();
 
   if ((v4 & 1) == 0)
@@ -187,17 +187,17 @@ void __58__DBSceneHostViewController__installScenePresentationView__block_invoke
     return 0;
   }
 
-  v5 = [(DBSceneHostViewController *)self environment];
-  v6 = [(DBSceneHostViewController *)self application];
-  v7 = [(DBSceneHostViewController *)self proxyApplication];
-  v8 = [v5 sceneMapInterfaceStyleForApplication:v6 proxyApplication:v7];
+  environment2 = [(DBSceneHostViewController *)self environment];
+  application = [(DBSceneHostViewController *)self application];
+  proxyApplication = [(DBSceneHostViewController *)self proxyApplication];
+  v8 = [environment2 sceneMapInterfaceStyleForApplication:application proxyApplication:proxyApplication];
 
   return v8;
 }
 
 - (int64_t)sceneInterfaceStyle
 {
-  v3 = [(DBSceneHostViewController *)self environment];
+  environment = [(DBSceneHostViewController *)self environment];
   v4 = objc_opt_respondsToSelector();
 
   if ((v4 & 1) == 0)
@@ -205,20 +205,20 @@ void __58__DBSceneHostViewController__installScenePresentationView__block_invoke
     return 0;
   }
 
-  v5 = [(DBSceneHostViewController *)self environment];
-  v6 = [(DBSceneHostViewController *)self application];
-  v7 = [(DBSceneHostViewController *)self proxyApplication];
-  v8 = [v5 sceneInterfaceStyleForApplication:v6 proxyApplication:v7];
+  environment2 = [(DBSceneHostViewController *)self environment];
+  application = [(DBSceneHostViewController *)self application];
+  proxyApplication = [(DBSceneHostViewController *)self proxyApplication];
+  v8 = [environment2 sceneInterfaceStyleForApplication:application proxyApplication:proxyApplication];
 
   return v8;
 }
 
 - (UIEdgeInsets)sceneSafeAreaInsets
 {
-  v3 = [(DBSceneHostViewController *)self environment];
-  v4 = [(DBSceneHostViewController *)self application];
-  v5 = [(DBSceneHostViewController *)self proxyApplication];
-  [v3 safeAreaInsetsForApplication:v4 proxyApplication:v5];
+  environment = [(DBSceneHostViewController *)self environment];
+  application = [(DBSceneHostViewController *)self application];
+  proxyApplication = [(DBSceneHostViewController *)self proxyApplication];
+  [environment safeAreaInsetsForApplication:application proxyApplication:proxyApplication];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -237,40 +237,40 @@ void __58__DBSceneHostViewController__installScenePresentationView__block_invoke
 
 - (void)_updateSceneUI
 {
-  v3 = [(DBSceneHostViewController *)self scene];
-  v4 = [v3 contentState];
+  scene = [(DBSceneHostViewController *)self scene];
+  contentState = [scene contentState];
 
-  v5 = [(DBSceneHostViewController *)self secondaryScenePresentersByIdentifier];
-  v6 = v5;
-  if (v4 == 2)
+  secondaryScenePresentersByIdentifier = [(DBSceneHostViewController *)self secondaryScenePresentersByIdentifier];
+  v6 = secondaryScenePresentersByIdentifier;
+  if (contentState == 2)
   {
-    [v5 enumerateKeysAndObjectsUsingBlock:&__block_literal_global_178];
+    [secondaryScenePresentersByIdentifier enumerateKeysAndObjectsUsingBlock:&__block_literal_global_178];
 
     v7 = MEMORY[0x277D75D18];
     v15 = MEMORY[0x277D85DD0];
     v16 = 3221225472;
     v17 = __43__DBSceneHostViewController__updateSceneUI__block_invoke_3;
     v18 = &unk_278F01580;
-    v19 = self;
+    selfCopy = self;
     v8 = 0.25;
     v9 = &v15;
   }
 
   else
   {
-    [v5 enumerateKeysAndObjectsUsingBlock:&__block_literal_global_180];
+    [secondaryScenePresentersByIdentifier enumerateKeysAndObjectsUsingBlock:&__block_literal_global_180];
 
     v7 = MEMORY[0x277D75D18];
     v10 = MEMORY[0x277D85DD0];
     v11 = 3221225472;
     v12 = __43__DBSceneHostViewController__updateSceneUI__block_invoke_6;
     v13 = &unk_278F01580;
-    v14 = self;
+    selfCopy2 = self;
     v8 = 0.25;
     v9 = &v10;
   }
 
-  [v7 animateWithDuration:v9 animations:{v8, v10, v11, v12, v13, v14, v15, v16, v17, v18, v19}];
+  [v7 animateWithDuration:v9 animations:{v8, v10, v11, v12, v13, selfCopy2, v15, v16, v17, v18, selfCopy}];
 }
 
 void __43__DBSceneHostViewController__updateSceneUI__block_invoke_6(uint64_t a1)
@@ -301,53 +301,53 @@ void __43__DBSceneHostViewController__updateSceneUI__block_invoke_3(uint64_t a1)
 - (void)invalidateScenePresenter
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = [(DBSceneHostViewController *)self scenePresenter];
+  scenePresenter = [(DBSceneHostViewController *)self scenePresenter];
 
-  if (v3)
+  if (scenePresenter)
   {
     v4 = DBLogForCategory(8uLL);
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
-      v5 = [(DBSceneHostViewController *)self scene];
-      v6 = [v5 identifier];
+      scene = [(DBSceneHostViewController *)self scene];
+      identifier = [scene identifier];
       v10 = 138543618;
-      v11 = self;
+      selfCopy = self;
       v12 = 2114;
-      v13 = v6;
+      v13 = identifier;
       _os_log_impl(&dword_248146000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ Invalidating presenter for scene %{public}@", &v10, 0x16u);
     }
 
-    v7 = [(DBSceneHostViewController *)self scenePresenter];
-    [v7 deactivate];
+    scenePresenter2 = [(DBSceneHostViewController *)self scenePresenter];
+    [scenePresenter2 deactivate];
 
-    v8 = [(DBSceneHostViewController *)self scenePresenter];
-    [v8 invalidate];
+    scenePresenter3 = [(DBSceneHostViewController *)self scenePresenter];
+    [scenePresenter3 invalidate];
 
     [(DBSceneHostViewController *)self setScenePresenter:0];
-    v9 = [(DBSceneHostViewController *)self sceneHostView];
-    [v9 removeFromSuperview];
+    sceneHostView = [(DBSceneHostViewController *)self sceneHostView];
+    [sceneHostView removeFromSuperview];
 
     [(DBSceneHostViewController *)self setSceneHostView:0];
     [(DBSceneHostViewController *)self setScenePresenterInvalidated:1];
   }
 }
 
-- (id)_initWithScene:(id)a3 application:(id)a4 proxyApplication:(id)a5 environment:(id)a6
+- (id)_initWithScene:(id)scene application:(id)application proxyApplication:(id)proxyApplication environment:(id)environment
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  sceneCopy = scene;
+  applicationCopy = application;
+  proxyApplicationCopy = proxyApplication;
+  environmentCopy = environment;
   v26.receiver = self;
   v26.super_class = DBSceneHostViewController;
   v15 = [(DBSceneHostViewController *)&v26 initWithNibName:0 bundle:0];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_scene, a3);
-    objc_storeStrong(&v16->_application, a4);
-    objc_storeStrong(&v16->_proxyApplication, a5);
-    objc_storeWeak(&v16->_environment, v14);
+    objc_storeStrong(&v15->_scene, scene);
+    objc_storeStrong(&v16->_application, application);
+    objc_storeStrong(&v16->_proxyApplication, proxyApplication);
+    objc_storeWeak(&v16->_environment, environmentCopy);
     v16->_invalidated = 0;
     v16->_hostedAppCrashTally = 0;
     v16->_proxyAppCrashTally = 0;
@@ -361,9 +361,9 @@ void __43__DBSceneHostViewController__updateSceneUI__block_invoke_3(uint64_t a1)
     secondaryScenePresentersByIdentifier = v16->_secondaryScenePresentersByIdentifier;
     v16->_secondaryScenePresentersByIdentifier = v21;
 
-    v23 = [v14 environmentConfiguration];
-    v24 = [v23 processMonitor];
-    [v24 addObserver:v16];
+    environmentConfiguration = [environmentCopy environmentConfiguration];
+    processMonitor = [environmentConfiguration processMonitor];
+    [processMonitor addObserver:v16];
 
     v16->_scenePresenterInvalidated = 1;
   }
@@ -373,78 +373,78 @@ void __43__DBSceneHostViewController__updateSceneUI__block_invoke_3(uint64_t a1)
 
 - (BOOL)sceneIsActive
 {
-  v2 = [(DBSceneHostViewController *)self scene];
-  v3 = [v2 isActive];
+  scene = [(DBSceneHostViewController *)self scene];
+  isActive = [scene isActive];
 
-  return v3;
+  return isActive;
 }
 
 - (BOOL)sceneIsForeground
 {
-  v3 = [(DBSceneHostViewController *)self scene];
-  if (v3)
+  scene = [(DBSceneHostViewController *)self scene];
+  if (scene)
   {
-    v4 = [(DBSceneHostViewController *)self scene];
-    v5 = [v4 settings];
-    v6 = [v5 isForeground];
+    scene2 = [(DBSceneHostViewController *)self scene];
+    settings = [scene2 settings];
+    isForeground = [settings isForeground];
   }
 
   else
   {
-    v6 = 0;
+    isForeground = 0;
   }
 
-  return v6;
+  return isForeground;
 }
 
 - (int64_t)sceneContentState
 {
-  v3 = [(DBSceneHostViewController *)self scene];
-  if (v3)
+  scene = [(DBSceneHostViewController *)self scene];
+  if (scene)
   {
-    v4 = [(DBSceneHostViewController *)self scene];
-    v5 = [v4 contentState];
+    scene2 = [(DBSceneHostViewController *)self scene];
+    contentState = [scene2 contentState];
   }
 
   else
   {
-    v5 = 0;
+    contentState = 0;
   }
 
-  return v5;
+  return contentState;
 }
 
-- (void)performSceneUpdateWithBlock:(id)a3 waitsForSceneCommit:(BOOL)a4 timeout:(double)a5 completion:(id)a6
+- (void)performSceneUpdateWithBlock:(id)block waitsForSceneCommit:(BOOL)commit timeout:(double)timeout completion:(id)completion
 {
-  v8 = a4;
+  commitCopy = commit;
   v57 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a6;
+  blockCopy = block;
+  completionCopy = completion;
   if ([(DBSceneHostViewController *)self isInvalidated])
   {
-    if (v11)
+    if (completionCopy)
     {
       v12 = [MEMORY[0x277CCA9B8] errorWithDomain:@"DBSceneHostErrorDomain" code:6 userInfo:0];
-      v11[2](v11, v12);
+      completionCopy[2](completionCopy, v12);
     }
 
     goto LABEL_20;
   }
 
-  v13 = [(DBSceneHostViewController *)self environment];
-  v14 = [v13 displayConfiguration];
+  environment = [(DBSceneHostViewController *)self environment];
+  displayConfiguration = [environment displayConfiguration];
 
-  if (v14)
+  if (displayConfiguration)
   {
-    v15 = [(DBSceneHostViewController *)self hostedAppCrashTally];
-    if (v15 < [(DBSceneHostViewController *)self persistentSceneCrashLimit])
+    hostedAppCrashTally = [(DBSceneHostViewController *)self hostedAppCrashTally];
+    if (hostedAppCrashTally < [(DBSceneHostViewController *)self persistentSceneCrashLimit])
     {
-      v16 = [(DBSceneHostViewController *)self proxyAppCrashTally];
-      if (v16 < [(DBSceneHostViewController *)self persistentSceneCrashLimit])
+      proxyAppCrashTally = [(DBSceneHostViewController *)self proxyAppCrashTally];
+      if (proxyAppCrashTally < [(DBSceneHostViewController *)self persistentSceneCrashLimit])
       {
         v17 = +[DBApplicationController sharedInstance];
-        v18 = [(DBSceneHostViewController *)self application];
-        v19 = [v17 preflightRequiredForApplication:v18];
+        application = [(DBSceneHostViewController *)self application];
+        v19 = [v17 preflightRequiredForApplication:application];
 
         if (v19)
         {
@@ -452,53 +452,53 @@ void __43__DBSceneHostViewController__updateSceneUI__block_invoke_3(uint64_t a1)
           if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138543362;
-            v54 = self;
+            selfCopy4 = self;
             _os_log_impl(&dword_248146000, v20, OS_LOG_TYPE_DEFAULT, "%{public}@ Application requires preflight, ignoring scene update request.", buf, 0xCu);
           }
 
-          if (v11)
+          if (completionCopy)
           {
             v21 = [MEMORY[0x277CCA9B8] errorWithDomain:@"DBSceneHostErrorDomain" code:5 userInfo:0];
-            v11[2](v11, v21);
+            completionCopy[2](completionCopy, v21);
           }
 
           goto LABEL_20;
         }
 
-        v26 = [(DBSceneHostViewController *)self application];
-        v27 = [v26 isLockedOrHidden];
+        application2 = [(DBSceneHostViewController *)self application];
+        isLockedOrHidden = [application2 isLockedOrHidden];
 
-        if (v27)
+        if (isLockedOrHidden)
         {
           v28 = DBLogForCategory(8uLL);
           if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138543362;
-            v54 = self;
+            selfCopy4 = self;
             _os_log_impl(&dword_248146000, v28, OS_LOG_TYPE_DEFAULT, "%{public}@ Application is locked or hidden, ignoring scene update request.", buf, 0xCu);
           }
 
-          if (v11)
+          if (completionCopy)
           {
             v29 = [MEMORY[0x277CCA9B8] errorWithDomain:@"DBSceneHostErrorDomain" code:7 userInfo:0];
-            v11[2](v11, v29);
+            completionCopy[2](completionCopy, v29);
           }
 
           goto LABEL_20;
         }
 
-        v30 = [(DBSceneHostViewController *)self updateTimer];
+        updateTimer = [(DBSceneHostViewController *)self updateTimer];
 
-        if (v30)
+        if (updateTimer)
         {
-          v31 = [(DBSceneHostViewController *)self updateTimer];
-          [v31 invalidate];
+          updateTimer2 = [(DBSceneHostViewController *)self updateTimer];
+          [updateTimer2 invalidate];
 
           [(DBSceneHostViewController *)self setUpdateTimer:0];
         }
 
         objc_initWeak(&location, self);
-        if (a5 <= 0.0)
+        if (timeout <= 0.0)
         {
           v37 = 0;
         }
@@ -509,16 +509,16 @@ void __43__DBSceneHostViewController__updateSceneUI__block_invoke_3(uint64_t a1)
           if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138543618;
-            v54 = self;
+            selfCopy4 = self;
             v55 = 2048;
-            v56 = a5;
+            timeoutCopy = timeout;
             _os_log_impl(&dword_248146000, v32, OS_LOG_TYPE_DEFAULT, "%{public}@ Transaction timeout interval: %f seconds", buf, 0x16u);
           }
 
           v33 = MEMORY[0x277CCACA8];
-          v34 = [(DBSceneHostViewController *)self scene];
-          v35 = [v34 identity];
-          v36 = [v33 stringWithFormat:@"SceneUpdate - %@", v35];
+          scene = [(DBSceneHostViewController *)self scene];
+          identity = [scene identity];
+          v36 = [v33 stringWithFormat:@"SceneUpdate - %@", identity];
 
           v37 = [objc_alloc(MEMORY[0x277CF0BD8]) initWithIdentifier:v36];
           v38 = MEMORY[0x277D85CD0];
@@ -527,65 +527,65 @@ void __43__DBSceneHostViewController__updateSceneUI__block_invoke_3(uint64_t a1)
           v50[2] = __96__DBSceneHostViewController_performSceneUpdateWithBlock_waitsForSceneCommit_timeout_completion___block_invoke;
           v50[3] = &unk_278F04280;
           objc_copyWeak(&v51, &location);
-          [v37 scheduleWithFireInterval:MEMORY[0x277D85CD0] leewayInterval:v50 queue:a5 handler:a5 * 0.05];
+          [v37 scheduleWithFireInterval:MEMORY[0x277D85CD0] leewayInterval:v50 queue:timeout handler:timeout * 0.05];
 
           [(DBSceneHostViewController *)self setUpdateTimer:v37];
           objc_destroyWeak(&v51);
         }
 
-        v39 = [(DBSceneHostViewController *)self scene];
-        [v39 setDelegate:self];
+        scene2 = [(DBSceneHostViewController *)self scene];
+        [scene2 setDelegate:self];
 
-        v40 = [(DBSceneHostViewController *)self scene];
+        scene3 = [(DBSceneHostViewController *)self scene];
         v48[0] = MEMORY[0x277D85DD0];
         v48[1] = 3221225472;
         v48[2] = __96__DBSceneHostViewController_performSceneUpdateWithBlock_waitsForSceneCommit_timeout_completion___block_invoke_97;
         v48[3] = &unk_278F042A8;
         v48[4] = self;
-        v49 = v10;
+        v49 = blockCopy;
         v46[0] = MEMORY[0x277D85DD0];
         v46[1] = 3221225472;
         v46[2] = __96__DBSceneHostViewController_performSceneUpdateWithBlock_waitsForSceneCommit_timeout_completion___block_invoke_2;
         v46[3] = &unk_278F042D0;
         objc_copyWeak(&v47, &location);
-        [v40 performUpdate:v48 withCompletion:v46];
+        [scene3 performUpdate:v48 withCompletion:v46];
 
         [(DBSceneHostViewController *)self setScenePresenterInvalidated:0];
-        v41 = [(DBSceneHostViewController *)self scenePresenter];
-        LODWORD(v40) = v41 == 0;
+        scenePresenter = [(DBSceneHostViewController *)self scenePresenter];
+        LODWORD(scene3) = scenePresenter == 0;
 
-        if (v40)
+        if (scene3)
         {
           v42 = DBLogForCategory(8uLL);
           if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
           {
-            v43 = [(DBSceneHostViewController *)self scene];
-            v44 = [v43 identity];
+            scene4 = [(DBSceneHostViewController *)self scene];
+            identity2 = [scene4 identity];
             *buf = 138543618;
-            v54 = self;
+            selfCopy4 = self;
             v55 = 2114;
-            v56 = *&v44;
+            timeoutCopy = *&identity2;
             _os_log_impl(&dword_248146000, v42, OS_LOG_TYPE_DEFAULT, "%{public}@ Recreating presenter for scene %{public}@", buf, 0x16u);
           }
 
           [(DBSceneHostViewController *)self _installScenePresentationView];
         }
 
-        if (v8)
+        if (commitCopy)
         {
-          v45 = [(DBSceneHostViewController *)self scene];
-          if ([v45 contentState] != 2)
+          scene5 = [(DBSceneHostViewController *)self scene];
+          if ([scene5 contentState] != 2)
           {
 
-            if (v11)
+            if (completionCopy)
             {
-              [(DBSceneHostViewController *)self setPendingUpdateCompletion:v11];
+              [(DBSceneHostViewController *)self setPendingUpdateCompletion:completionCopy];
             }
 
             goto LABEL_45;
           }
 
-          if (!v11)
+          if (!completionCopy)
           {
 LABEL_45:
             objc_destroyWeak(&v47);
@@ -595,12 +595,12 @@ LABEL_45:
           }
         }
 
-        else if (!v11)
+        else if (!completionCopy)
         {
           goto LABEL_45;
         }
 
-        v11[2](v11, 0);
+        completionCopy[2](completionCopy, 0);
         goto LABEL_45;
       }
     }
@@ -611,10 +611,10 @@ LABEL_45:
       [DBSceneHostViewController performSceneUpdateWithBlock:v22 waitsForSceneCommit:? timeout:? completion:?];
     }
 
-    if (v11)
+    if (completionCopy)
     {
       v23 = [MEMORY[0x277CCA9B8] errorWithDomain:@"DBSceneHostErrorDomain" code:3 userInfo:0];
-      v11[2](v11, v23);
+      completionCopy[2](completionCopy, v23);
     }
   }
 
@@ -626,10 +626,10 @@ LABEL_45:
       [DBSceneHostViewController performSceneUpdateWithBlock:v24 waitsForSceneCommit:? timeout:? completion:?];
     }
 
-    if (v11)
+    if (completionCopy)
     {
       v25 = [MEMORY[0x277CCA9B8] errorWithDomain:@"DBSceneHostErrorDomain" code:2 userInfo:0];
-      v11[2](v11, v25);
+      completionCopy[2](completionCopy, v25);
     }
   }
 
@@ -762,18 +762,18 @@ void __96__DBSceneHostViewController_performSceneUpdateWithBlock_waitsForSceneCo
   }
 }
 
-- (void)updateSceneSettingsWithBlock:(id)a3
+- (void)updateSceneSettingsWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   if (self->_scene)
   {
-    v5 = [(DBSceneHostViewController *)self scene];
+    scene = [(DBSceneHostViewController *)self scene];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __58__DBSceneHostViewController_updateSceneSettingsWithBlock___block_invoke;
     v6[3] = &unk_278F042F8;
-    v7 = v4;
-    [v5 updateUISettingsWithBlock:v6];
+    v7 = blockCopy;
+    [scene updateUISettingsWithBlock:v6];
   }
 }
 
@@ -808,17 +808,17 @@ void __58__DBSceneHostViewController_updateSceneSettingsWithBlock___block_invoke
   }
 }
 
-- (void)updateSceneSettingsWithTransitionBlock:(id)a3
+- (void)updateSceneSettingsWithTransitionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   if (self->_scene)
   {
-    v5 = [MEMORY[0x277D75188] transitionContext];
-    v6 = [(DBSceneHostViewController *)self scene];
-    v7 = [v6 isActive];
+    transitionContext = [MEMORY[0x277D75188] transitionContext];
+    scene = [(DBSceneHostViewController *)self scene];
+    isActive = [scene isActive];
 
-    v8 = [(DBSceneHostViewController *)self scene];
-    if (v7)
+    scene2 = [(DBSceneHostViewController *)self scene];
+    if (isActive)
     {
       v13[0] = MEMORY[0x277D85DD0];
       v13[1] = 3221225472;
@@ -826,10 +826,10 @@ void __58__DBSceneHostViewController_updateSceneSettingsWithBlock___block_invoke
       v13[3] = &unk_278F04348;
       v9 = &v15;
       v10 = &v14;
-      v14 = v5;
-      v15 = v4;
-      v11 = v5;
-      [v8 updateUISettingsWithTransitionBlock:v13];
+      v14 = transitionContext;
+      v15 = blockCopy;
+      v11 = transitionContext;
+      [scene2 updateUISettingsWithTransitionBlock:v13];
     }
 
     else
@@ -840,10 +840,10 @@ void __58__DBSceneHostViewController_updateSceneSettingsWithBlock___block_invoke
       v16[3] = &unk_278F04320;
       v9 = &v18;
       v10 = &v17;
-      v17 = v5;
-      v18 = v4;
-      v12 = v5;
-      [v8 updateSettings:v16];
+      v17 = transitionContext;
+      v18 = blockCopy;
+      v12 = transitionContext;
+      [scene2 updateSettings:v16];
     }
   }
 }
@@ -884,17 +884,17 @@ void *__68__DBSceneHostViewController_updateSceneSettingsWithTransitionBlock___b
   return v8;
 }
 
-- (void)sendSceneActions:(id)a3
+- (void)sendSceneActions:(id)actions
 {
-  v4 = a3;
+  actionsCopy = actions;
   if (self->_scene)
   {
-    v5 = [(DBSceneHostViewController *)self scene];
-    v6 = [v5 isActive];
+    scene = [(DBSceneHostViewController *)self scene];
+    isActive = [scene isActive];
 
-    if (v6)
+    if (isActive)
     {
-      [(FBScene *)self->_scene sendActions:v4];
+      [(FBScene *)self->_scene sendActions:actionsCopy];
     }
 
     else
@@ -914,89 +914,89 @@ void *__68__DBSceneHostViewController_updateSceneSettingsWithTransitionBlock___b
   v3 = DBLogForCategory(8uLL);
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(DBSceneHostViewController *)self scene];
-    v5 = [v4 identity];
+    scene = [(DBSceneHostViewController *)self scene];
+    identity = [scene identity];
     v7 = 138543618;
-    v8 = self;
+    selfCopy = self;
     v9 = 2114;
-    v10 = v5;
+    v10 = identity;
     _os_log_impl(&dword_248146000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ Deactivating scene %{public}@", &v7, 0x16u);
   }
 
-  v6 = [(DBSceneHostViewController *)self scene];
-  [v6 deactivate:0];
+  scene2 = [(DBSceneHostViewController *)self scene];
+  [scene2 deactivate:0];
 }
 
-- (id)presentationViewWithIdentifier:(id)a3
+- (id)presentationViewWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(DBSceneHostViewController *)self environment];
-  v6 = [v5 environmentConfiguration];
-  v7 = [v6 effectiveSceneBackgroundColor];
-  v8 = [(DBSceneHostViewController *)self presentationViewWithIdentifier:v4 activate:1 backgroundColor:v7];
+  identifierCopy = identifier;
+  environment = [(DBSceneHostViewController *)self environment];
+  environmentConfiguration = [environment environmentConfiguration];
+  effectiveSceneBackgroundColor = [environmentConfiguration effectiveSceneBackgroundColor];
+  v8 = [(DBSceneHostViewController *)self presentationViewWithIdentifier:identifierCopy activate:1 backgroundColor:effectiveSceneBackgroundColor];
 
   return v8;
 }
 
-- (id)presentationViewWithIdentifier:(id)a3 activate:(BOOL)a4 backgroundColor:(id)a5
+- (id)presentationViewWithIdentifier:(id)identifier activate:(BOOL)activate backgroundColor:(id)color
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  v10 = [(DBSceneHostViewController *)self secondaryScenePresentersByIdentifier];
-  v11 = [v10 objectForKey:v8];
+  activateCopy = activate;
+  identifierCopy = identifier;
+  colorCopy = color;
+  secondaryScenePresentersByIdentifier = [(DBSceneHostViewController *)self secondaryScenePresentersByIdentifier];
+  scene = [secondaryScenePresentersByIdentifier objectForKey:identifierCopy];
 
-  if (!v11)
+  if (!scene)
   {
-    v11 = [(DBSceneHostViewController *)self scene];
-    if (v11)
+    scene = [(DBSceneHostViewController *)self scene];
+    if (scene)
     {
-      v18 = [(DBSceneHostViewController *)self scene];
-      v19 = [v18 uiPresentationManager];
-      v20 = [v19 isInvalidated];
+      scene2 = [(DBSceneHostViewController *)self scene];
+      uiPresentationManager = [scene2 uiPresentationManager];
+      isInvalidated = [uiPresentationManager isInvalidated];
 
-      if (v20)
+      if (isInvalidated)
       {
-        v11 = 0;
+        scene = 0;
       }
 
       else
       {
-        v21 = [(DBSceneHostViewController *)self scene];
-        v22 = [v21 uiPresentationManager];
-        v11 = [v22 createPresenterWithIdentifier:v8 priority:100];
+        scene3 = [(DBSceneHostViewController *)self scene];
+        uiPresentationManager2 = [scene3 uiPresentationManager];
+        scene = [uiPresentationManager2 createPresenterWithIdentifier:identifierCopy priority:100];
 
         v24[0] = MEMORY[0x277D85DD0];
         v24[1] = 3221225472;
         v24[2] = __85__DBSceneHostViewController_presentationViewWithIdentifier_activate_backgroundColor___block_invoke;
         v24[3] = &unk_278F04370;
-        v25 = v9;
-        [v11 modifyPresentationContext:v24];
-        v23 = [(DBSceneHostViewController *)self secondaryScenePresentersByIdentifier];
-        [v23 bs_setSafeObject:v11 forKey:v8];
+        v25 = colorCopy;
+        [scene modifyPresentationContext:v24];
+        secondaryScenePresentersByIdentifier2 = [(DBSceneHostViewController *)self secondaryScenePresentersByIdentifier];
+        [secondaryScenePresentersByIdentifier2 bs_setSafeObject:scene forKey:identifierCopy];
       }
     }
   }
 
-  if (v6)
+  if (activateCopy)
   {
-    [v11 activate];
+    [scene activate];
   }
 
-  v12 = [v11 presentationView];
-  v13 = [(DBSceneHostViewController *)self scene];
-  v14 = [v13 contentState];
+  presentationView = [scene presentationView];
+  scene4 = [(DBSceneHostViewController *)self scene];
+  contentState = [scene4 contentState];
 
-  v15 = v12;
-  if (v14 != 2)
+  v15 = presentationView;
+  if (contentState != 2)
   {
     v16 = objc_alloc(MEMORY[0x277D75D18]);
-    [v12 frame];
+    [presentationView frame];
     v15 = [v16 initWithFrame:?];
 
-    [v15 setBackgroundColor:v9];
-    [v15 addSubview:v12];
-    [v12 setAlpha:0.0];
+    [v15 setBackgroundColor:colorCopy];
+    [v15 addSubview:presentationView];
+    [presentationView setAlpha:0.0];
   }
 
   return v15;
@@ -1009,55 +1009,55 @@ void __85__DBSceneHostViewController_presentationViewWithIdentifier_activate_bac
   [v3 setBackgroundColorWhileHosting:*(a1 + 32)];
 }
 
-- (void)activatePresentationViewWithIdentifier:(id)a3
+- (void)activatePresentationViewWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(DBSceneHostViewController *)self secondaryScenePresentersByIdentifier];
-  v6 = [v5 objectForKey:v4];
+  identifierCopy = identifier;
+  secondaryScenePresentersByIdentifier = [(DBSceneHostViewController *)self secondaryScenePresentersByIdentifier];
+  v6 = [secondaryScenePresentersByIdentifier objectForKey:identifierCopy];
 
   [v6 activate];
 }
 
-- (void)deactivatePresentationViewWithIdentifier:(id)a3
+- (void)deactivatePresentationViewWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(DBSceneHostViewController *)self secondaryScenePresentersByIdentifier];
-  v6 = [v5 objectForKey:v4];
+  identifierCopy = identifier;
+  secondaryScenePresentersByIdentifier = [(DBSceneHostViewController *)self secondaryScenePresentersByIdentifier];
+  v6 = [secondaryScenePresentersByIdentifier objectForKey:identifierCopy];
 
   [v6 deactivate];
 }
 
-- (void)invalidatePresentationViewForIdentifier:(id)a3
+- (void)invalidatePresentationViewForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(DBSceneHostViewController *)self secondaryScenePresentersByIdentifier];
-  v7 = [v5 objectForKey:v4];
+  identifierCopy = identifier;
+  secondaryScenePresentersByIdentifier = [(DBSceneHostViewController *)self secondaryScenePresentersByIdentifier];
+  v7 = [secondaryScenePresentersByIdentifier objectForKey:identifierCopy];
 
   [v7 invalidate];
-  v6 = [(DBSceneHostViewController *)self secondaryScenePresentersByIdentifier];
-  [v6 removeObjectForKey:v4];
+  secondaryScenePresentersByIdentifier2 = [(DBSceneHostViewController *)self secondaryScenePresentersByIdentifier];
+  [secondaryScenePresentersByIdentifier2 removeObjectForKey:identifierCopy];
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(DBSceneHostViewController *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(DBSceneHostViewController *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(DBSceneHostViewController *)self succinctDescriptionBuilder];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(DBSceneHostViewController *)self succinctDescriptionBuilder];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __67__DBSceneHostViewController_descriptionBuilderWithMultilinePrefix___block_invoke;
   v9[3] = &unk_278F014B8;
-  v6 = v5;
+  v6 = succinctDescriptionBuilder;
   v10 = v6;
-  v11 = self;
-  [v6 appendBodySectionWithName:@"scene" multilinePrefix:v4 block:v9];
+  selfCopy = self;
+  [v6 appendBodySectionWithName:@"scene" multilinePrefix:prefixCopy block:v9];
 
   v7 = v6;
   return v6;
@@ -1073,32 +1073,32 @@ void __67__DBSceneHostViewController_descriptionBuilderWithMultilinePrefix___blo
 - (void)invalidate
 {
   [(DBSceneHostViewController *)self setInvalidated:1];
-  v3 = [(DBSceneHostViewController *)self scenePresenter];
-  [v3 invalidate];
+  scenePresenter = [(DBSceneHostViewController *)self scenePresenter];
+  [scenePresenter invalidate];
 
   [(DBSceneHostViewController *)self setScenePresenter:0];
-  v4 = [(DBSceneHostViewController *)self sceneHostView];
-  [v4 removeFromSuperview];
+  sceneHostView = [(DBSceneHostViewController *)self sceneHostView];
+  [sceneHostView removeFromSuperview];
 
   [(DBSceneHostViewController *)self setSceneHostView:0];
-  v5 = [(DBSceneHostViewController *)self scene];
-  if (v5)
+  scene = [(DBSceneHostViewController *)self scene];
+  if (scene)
   {
-    v6 = v5;
-    [v5 updateSettingsWithBlock:&__block_literal_global_42];
+    v6 = scene;
+    [scene updateSettingsWithBlock:&__block_literal_global_42];
     [v6 invalidate];
-    v5 = v6;
+    scene = v6;
   }
 }
 
-- (void)processMonitor:(id)a3 shouldHandleDeathOfBundleIdentifier:(id)a4 isCrash:(BOOL)a5
+- (void)processMonitor:(id)monitor shouldHandleDeathOfBundleIdentifier:(id)identifier isCrash:(BOOL)crash
 {
-  v5 = a5;
+  crashCopy = crash;
   v27 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = [(DBSceneHostViewController *)self application];
-  v9 = [v8 bundleIdentifier];
-  v10 = [v7 isEqualToString:v9];
+  identifierCopy = identifier;
+  application = [(DBSceneHostViewController *)self application];
+  bundleIdentifier = [application bundleIdentifier];
+  v10 = [identifierCopy isEqualToString:bundleIdentifier];
 
   if (v10)
   {
@@ -1107,15 +1107,15 @@ void __67__DBSceneHostViewController_descriptionBuilderWithMultilinePrefix___blo
     {
       v19 = NSStringFromBOOL();
       v21 = 138543874;
-      v22 = self;
+      selfCopy2 = self;
       v23 = 2114;
-      v24 = v7;
+      v24 = identifierCopy;
       v25 = 2114;
       v26 = v19;
       _os_log_error_impl(&dword_248146000, v11, OS_LOG_TYPE_ERROR, "%{public}@ Hosted process %{public}@ has died (crash: %{public}@)", &v21, 0x20u);
     }
 
-    if (v5)
+    if (crashCopy)
     {
       [(DBSceneHostViewController *)self setHostedAppCrashTally:[(DBSceneHostViewController *)self hostedAppCrashTally]+ 1];
       v12 = DBLogForCategory(8uLL);
@@ -1130,13 +1130,13 @@ LABEL_14:
 
   else
   {
-    v13 = [(DBSceneHostViewController *)self proxyApplication];
-    if (v13)
+    proxyApplication = [(DBSceneHostViewController *)self proxyApplication];
+    if (proxyApplication)
     {
-      v14 = v13;
-      v15 = [(DBSceneHostViewController *)self proxyApplication];
-      v16 = [v15 bundleIdentifier];
-      v17 = [v7 isEqualToString:v16];
+      v14 = proxyApplication;
+      proxyApplication2 = [(DBSceneHostViewController *)self proxyApplication];
+      bundleIdentifier2 = [proxyApplication2 bundleIdentifier];
+      v17 = [identifierCopy isEqualToString:bundleIdentifier2];
 
       if (v17)
       {
@@ -1145,15 +1145,15 @@ LABEL_14:
         {
           v20 = NSStringFromBOOL();
           v21 = 138543874;
-          v22 = self;
+          selfCopy2 = self;
           v23 = 2114;
-          v24 = v7;
+          v24 = identifierCopy;
           v25 = 2114;
           v26 = v20;
           _os_log_error_impl(&dword_248146000, v18, OS_LOG_TYPE_ERROR, "%{public}@ Hosted proxy process %{public}@ has died (crash: %{public}@", &v21, 0x20u);
         }
 
-        if (v5)
+        if (crashCopy)
         {
           [(DBSceneHostViewController *)self setProxyAppCrashTally:[(DBSceneHostViewController *)self proxyAppCrashTally]+ 1];
           v12 = DBLogForCategory(8uLL);
@@ -1169,41 +1169,41 @@ LABEL_14:
   }
 }
 
-- (void)sceneDidDeactivate:(id)a3 withContext:(id)a4
+- (void)sceneDidDeactivate:(id)deactivate withContext:(id)context
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  deactivateCopy = deactivate;
   v6 = DBLogForCategory(8uLL);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
-    [DBSceneHostViewController sceneDidDeactivate:v5 withContext:?];
+    [DBSceneHostViewController sceneDidDeactivate:deactivateCopy withContext:?];
   }
 
-  if ([v5 isValid])
+  if ([deactivateCopy isValid])
   {
-    v7 = [(DBSceneHostViewController *)self deactivationPolicy];
-    if (v7 != 1)
+    deactivationPolicy = [(DBSceneHostViewController *)self deactivationPolicy];
+    if (deactivationPolicy != 1)
     {
-      if (v7)
+      if (deactivationPolicy)
       {
-        v8 = [(DBSceneHostViewController *)self hostedAppCrashTally];
-        if (v8 < [(DBSceneHostViewController *)self persistentSceneCrashLimit])
+        hostedAppCrashTally = [(DBSceneHostViewController *)self hostedAppCrashTally];
+        if (hostedAppCrashTally < [(DBSceneHostViewController *)self persistentSceneCrashLimit])
         {
-          v9 = [(DBSceneHostViewController *)self proxyAppCrashTally];
-          if (v9 < [(DBSceneHostViewController *)self persistentSceneCrashLimit])
+          proxyAppCrashTally = [(DBSceneHostViewController *)self proxyAppCrashTally];
+          if (proxyAppCrashTally < [(DBSceneHostViewController *)self persistentSceneCrashLimit])
           {
             v10 = DBLogForCategory(8uLL);
             if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
             {
-              v11 = [v5 identity];
+              identity = [deactivateCopy identity];
               v13 = 138543618;
-              v14 = self;
+              selfCopy = self;
               v15 = 2114;
-              v16 = v11;
+              v16 = identity;
               _os_log_impl(&dword_248146000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@ Re-activating persistent scene %{public}@", &v13, 0x16u);
             }
 
-            [v5 activate:0];
+            [deactivateCopy activate:0];
             goto LABEL_15;
           }
         }
@@ -1211,74 +1211,74 @@ LABEL_14:
         v12 = DBLogForCategory(8uLL);
         if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
         {
-          [DBSceneHostViewController sceneDidDeactivate:v5 withContext:?];
+          [DBSceneHostViewController sceneDidDeactivate:deactivateCopy withContext:?];
         }
       }
 
-      [v5 invalidate];
+      [deactivateCopy invalidate];
     }
   }
 
 LABEL_15:
 }
 
-- (void)sceneContentStateDidChange:(id)a3
+- (void)sceneContentStateDidChange:(id)change
 {
-  v8 = a3;
+  changeCopy = change;
   [(DBSceneHostViewController *)self _updateSceneUI];
-  -[DBSceneHostViewController sceneContentStateDidUpdate:](self, "sceneContentStateDidUpdate:", [v8 contentState]);
-  v4 = [(DBSceneHostViewController *)self pendingUpdateCompletion];
-  if (v4)
+  -[DBSceneHostViewController sceneContentStateDidUpdate:](self, "sceneContentStateDidUpdate:", [changeCopy contentState]);
+  pendingUpdateCompletion = [(DBSceneHostViewController *)self pendingUpdateCompletion];
+  if (pendingUpdateCompletion)
   {
-    v5 = v4;
-    v6 = [v8 contentState];
+    v5 = pendingUpdateCompletion;
+    contentState = [changeCopy contentState];
 
-    if (v6 == 2)
+    if (contentState == 2)
     {
-      v7 = [(DBSceneHostViewController *)self pendingUpdateCompletion];
-      v7[2](v7, 0);
+      pendingUpdateCompletion2 = [(DBSceneHostViewController *)self pendingUpdateCompletion];
+      pendingUpdateCompletion2[2](pendingUpdateCompletion2, 0);
       [(DBSceneHostViewController *)self setPendingUpdateCompletion:0];
     }
   }
 }
 
-- (void)scene:(id)a3 didUpdateClientSettings:(id)a4
+- (void)scene:(id)scene didUpdateClientSettings:(id)settings
 {
-  v5 = [a3 uiClientSettings];
-  [(DBSceneHostViewController *)self clientSceneSettingsDidUpdate:v5];
+  uiClientSettings = [scene uiClientSettings];
+  [(DBSceneHostViewController *)self clientSceneSettingsDidUpdate:uiClientSettings];
 }
 
-- (void)sceneDidInvalidate:(id)a3
+- (void)sceneDidInvalidate:(id)invalidate
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 settings];
+  invalidateCopy = invalidate;
+  settings = [invalidateCopy settings];
   v6 = DBLogForCategory(8uLL);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543618;
-    v8 = self;
+    selfCopy = self;
     v9 = 2112;
-    v10 = v4;
+    v10 = invalidateCopy;
     _os_log_impl(&dword_248146000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ Scene invalidated: %@", &v7, 0x16u);
   }
 
   [(DBSceneHostViewController *)self sceneDidInvalidate];
 }
 
-- (void)_updateSceneSettings:(id)a3 transitionContext:(id)a4 updateBlock:(id)a5
+- (void)_updateSceneSettings:(id)settings transitionContext:(id)context updateBlock:(id)block
 {
   v57 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v48 = a4;
-  v9 = a5;
-  v10 = [(DBSceneHostViewController *)self environment];
-  v11 = [v10 displayConfiguration];
-  [v8 setDisplayConfiguration:v11];
+  settingsCopy = settings;
+  contextCopy = context;
+  blockCopy = block;
+  environment = [(DBSceneHostViewController *)self environment];
+  displayConfiguration = [environment displayConfiguration];
+  [settingsCopy setDisplayConfiguration:displayConfiguration];
 
-  [v8 setLevel:1.0];
-  [v8 setInterfaceOrientation:1];
-  v12 = [(DBSceneHostViewController *)self application];
+  [settingsCopy setLevel:1.0];
+  [settingsCopy setInterfaceOrientation:1];
+  application = [(DBSceneHostViewController *)self application];
   [(DBSceneHostViewController *)self sceneFrame];
   v14 = v13;
   v16 = v15;
@@ -1303,9 +1303,9 @@ LABEL_15:
     v59.right = v28;
     v31 = NSStringFromUIEdgeInsets(v59);
     *buf = 138544130;
-    v50 = self;
+    selfCopy4 = self;
     v51 = 2112;
-    v52 = v12;
+    v52 = application;
     v53 = 2114;
     v54 = v30;
     v55 = 2114;
@@ -1313,41 +1313,41 @@ LABEL_15:
     _os_log_impl(&dword_248146000, v29, OS_LOG_TYPE_DEFAULT, "%{public}@ Scene update for app: %@ - frame: %{public}@, safe area insets: %{public}@", buf, 0x2Au);
   }
 
-  [v8 setFrame:{v14, v16, v18, v20}];
-  [v8 setSafeAreaInsetsPortrait:{v22, v24, v26, v28}];
-  v32 = [(DBSceneHostViewController *)self sceneInterfaceStyle];
-  if (v32)
+  [settingsCopy setFrame:{v14, v16, v18, v20}];
+  [settingsCopy setSafeAreaInsetsPortrait:{v22, v24, v26, v28}];
+  sceneInterfaceStyle = [(DBSceneHostViewController *)self sceneInterfaceStyle];
+  if (sceneInterfaceStyle)
   {
     v33 = DBLogForCategory(0x13uLL);
     if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543874;
-      v50 = self;
+      selfCopy4 = self;
       v51 = 2112;
-      v52 = v12;
+      v52 = application;
       v53 = 2048;
-      v54 = v32;
+      v54 = sceneInterfaceStyle;
       _os_log_impl(&dword_248146000, v33, OS_LOG_TYPE_DEFAULT, "%{public}@ Scene update for app: %@ to style %ld", buf, 0x20u);
     }
 
-    [v8 setUserInterfaceStyle:v32];
+    [settingsCopy setUserInterfaceStyle:sceneInterfaceStyle];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    [v8 setDisableFiveRowKeyboards:{objc_msgSend(v10, "shouldDisableFiveRowKeyboards")}];
+    [settingsCopy setDisableFiveRowKeyboards:{objc_msgSend(environment, "shouldDisableFiveRowKeyboards")}];
   }
 
-  v34 = [(DBSceneHostViewController *)self environment];
-  v35 = [v34 environmentConfiguration];
-  v36 = [v35 wallpaperPreferences];
-  v37 = [v36 currentWallpaper];
+  environment2 = [(DBSceneHostViewController *)self environment];
+  environmentConfiguration = [environment2 environmentConfiguration];
+  wallpaperPreferences = [environmentConfiguration wallpaperPreferences];
+  currentWallpaper = [wallpaperPreferences currentWallpaper];
 
-  v38 = [v37 traits];
-  v39 = [v38 isBlack];
-  if (v32 == 2)
+  traits = [currentWallpaper traits];
+  isBlack = [traits isBlack];
+  if (sceneInterfaceStyle == 2)
   {
-    v40 = v39;
+    v40 = isBlack;
   }
 
   else
@@ -1355,49 +1355,49 @@ LABEL_15:
     v40 = 0;
   }
 
-  [v8 setBlackWallpaperModeEnabled:v40];
-  v41 = [(DBSceneHostViewController *)self sceneMapInterfaceStyle];
-  if (v41)
+  [settingsCopy setBlackWallpaperModeEnabled:v40];
+  sceneMapInterfaceStyle = [(DBSceneHostViewController *)self sceneMapInterfaceStyle];
+  if (sceneMapInterfaceStyle)
   {
-    v42 = v41;
-    if ([v8 conformsToProtocol:&unk_285B71E40])
+    v42 = sceneMapInterfaceStyle;
+    if ([settingsCopy conformsToProtocol:&unk_285B71E40])
     {
       v43 = DBLogForCategory(0x13uLL);
       if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543874;
-        v50 = self;
+        selfCopy4 = self;
         v51 = 2112;
-        v52 = v12;
+        v52 = application;
         v53 = 2048;
         v54 = v42;
         _os_log_impl(&dword_248146000, v43, OS_LOG_TYPE_DEFAULT, "%{public}@ Scene update for app: %@ to map style %ld", buf, 0x20u);
       }
 
-      [v8 setMapStyle:v42];
+      [settingsCopy setMapStyle:v42];
     }
   }
 
-  if ([v8 conformsToProtocol:&unk_285B71F30])
+  if ([settingsCopy conformsToProtocol:&unk_285B71F30])
   {
-    v44 = [v10 environmentConfiguration];
-    v45 = [v44 thermalMonitor];
-    v46 = [v45 suggestedFrameRateLimit];
+    environmentConfiguration2 = [environment environmentConfiguration];
+    thermalMonitor = [environmentConfiguration2 thermalMonitor];
+    suggestedFrameRateLimit = [thermalMonitor suggestedFrameRateLimit];
 
     v47 = DBLogForCategory(8uLL);
     if (os_log_type_enabled(v47, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v50 = self;
+      selfCopy4 = self;
       v51 = 2114;
-      v52 = v46;
+      v52 = suggestedFrameRateLimit;
       _os_log_impl(&dword_248146000, v47, OS_LOG_TYPE_DEFAULT, "%{public}@ Scene update setting frame rate limit: %{public}@", buf, 0x16u);
     }
 
-    [v8 setFrameRateLimit:v46];
+    [settingsCopy setFrameRateLimit:suggestedFrameRateLimit];
   }
 
-  [v8 setForeground:{v9[2](v9, v8, v48)}];
+  [settingsCopy setForeground:{blockCopy[2](blockCopy, settingsCopy, contextCopy)}];
 }
 
 void __43__DBSceneHostViewController__updateSceneUI__block_invoke_4(uint64_t a1, uint64_t a2, void *a3)

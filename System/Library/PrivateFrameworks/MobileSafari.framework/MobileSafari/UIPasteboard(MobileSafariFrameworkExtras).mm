@@ -9,12 +9,12 @@
 - (void)safari_copyLinksForTabGroup:()MobileSafariFrameworkExtras
 {
   v4 = a3;
-  v6 = [v4 richTextForPasteboard];
-  v5 = [v4 plainTextForPasteboard];
+  richTextForPasteboard = [v4 richTextForPasteboard];
+  plainTextForPasteboard = [v4 plainTextForPasteboard];
 
-  if (v6 && v5)
+  if (richTextForPasteboard && plainTextForPasteboard)
   {
-    [a1 _safari_copyRichText:v6 withPlainTextFallback:v5];
+    [self _safari_copyRichText:richTextForPasteboard withPlainTextFallback:plainTextForPasteboard];
   }
 }
 
@@ -37,7 +37,7 @@
 
   if (!v7)
   {
-    [a1 _safari_copyRichText:v8 withPlainTextFallback:v6];
+    [self _safari_copyRichText:v8 withPlainTextFallback:v6];
   }
 }
 
@@ -47,27 +47,27 @@
   v6 = a3;
   v7 = a4;
   v8 = objc_alloc_init(MEMORY[0x1E696ACA0]);
-  v9 = [*MEMORY[0x1E6982F90] identifier];
+  identifier = [*MEMORY[0x1E6982F90] identifier];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __88__UIPasteboard_MobileSafariFrameworkExtras___safari_copyRichText_withPlainTextFallback___block_invoke;
   v19[3] = &unk_1E721E8C8;
   v20 = v6;
   v10 = v6;
-  [v8 registerItemForTypeIdentifier:v9 loadHandler:v19];
+  [v8 registerItemForTypeIdentifier:identifier loadHandler:v19];
 
-  v11 = [*MEMORY[0x1E6982F40] identifier];
+  identifier2 = [*MEMORY[0x1E6982F40] identifier];
   v14 = MEMORY[0x1E69E9820];
   v15 = 3221225472;
   v16 = __88__UIPasteboard_MobileSafariFrameworkExtras___safari_copyRichText_withPlainTextFallback___block_invoke_5;
   v17 = &unk_1E721E8C8;
   v18 = v7;
   v12 = v7;
-  [v8 registerItemForTypeIdentifier:v11 loadHandler:&v14];
+  [v8 registerItemForTypeIdentifier:identifier2 loadHandler:&v14];
 
   v21[0] = v8;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:{1, v14, v15, v16, v17}];
-  [a1 setItemProviders:v13];
+  [self setItemProviders:v13];
 }
 
 @end

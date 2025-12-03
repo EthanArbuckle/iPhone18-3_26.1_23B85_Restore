@@ -1,14 +1,14 @@
 @interface EKUIEventStatusButtonsView
-+ (BOOL)isActionDestructive:(int64_t)a3;
-+ (double)_estimatedTotalButtonWidthForTitles:(id)a3 attributes:(id)a4;
-+ (id)_appliesToAllTitleForAction:(int64_t)a3;
-+ (id)buttonAccessibilityIdentifierStringForAction:(int64_t)a3;
-+ (id)buttonTitleForAction:(int64_t)a3;
-+ (id)imageForAction:(int64_t)a3 selected:(BOOL)a4;
-+ (id)labelColorForAction:(int64_t)a3 selected:(BOOL)a4;
-- (BOOL)_shouldUseLowSpaceContentInsetsForTotalButtonWidth:(double)a3;
++ (BOOL)isActionDestructive:(int64_t)destructive;
++ (double)_estimatedTotalButtonWidthForTitles:(id)titles attributes:(id)attributes;
++ (id)_appliesToAllTitleForAction:(int64_t)action;
++ (id)buttonAccessibilityIdentifierStringForAction:(int64_t)action;
++ (id)buttonTitleForAction:(int64_t)action;
++ (id)imageForAction:(int64_t)action selected:(BOOL)selected;
++ (id)labelColorForAction:(int64_t)action selected:(BOOL)selected;
+- (BOOL)_shouldUseLowSpaceContentInsetsForTotalButtonWidth:(double)width;
 - (BOOL)noButtonSelected;
-- (EKUIEventStatusButtonsView)initWithFrame:(CGRect)a3 actions:(id)a4 delegate:(id)a5 options:(unint64_t)a6 textSizeMode:(int64_t)a7;
+- (EKUIEventStatusButtonsView)initWithFrame:(CGRect)frame actions:(id)actions delegate:(id)delegate options:(unint64_t)options textSizeMode:(int64_t)mode;
 - (EKUIEventStatusButtonsViewDelegate)delegate;
 - (UIButton)centerButton;
 - (UIButton)leadingButton;
@@ -17,55 +17,55 @@
 - (double)_buttonFontSizeFromDelegate;
 - (double)_defaultFontSizeForButtons;
 - (double)_updateFontFromDelegate;
-- (id)_fontWithSize:(double)a3 selected:(BOOL)a4;
-- (id)_horizontalConstraintStringForMiddleButtonsStartingAt:(unint64_t)a3 endingAt:(unint64_t)a4 resultingViews:(id)a5;
-- (id)backgroundColorForAction:(int64_t)a3 selected:(BOOL)a4 inboxStyle:(BOOL)a5 inPadSidebar:(BOOL)a6;
-- (id)buttonForAction:(int64_t)a3;
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
-- (int64_t)_buttonIndexForAction:(int64_t)a3;
-- (void)_buttonTappedInternal:(id)a3 appliesToAll:(BOOL)a4;
-- (void)_configureButton:(id)a3 forAction:(int64_t)a4 isLargeSize:(BOOL)a5 totalButtonWidth:(double)a6;
+- (id)_fontWithSize:(double)size selected:(BOOL)selected;
+- (id)_horizontalConstraintStringForMiddleButtonsStartingAt:(unint64_t)at endingAt:(unint64_t)endingAt resultingViews:(id)views;
+- (id)backgroundColorForAction:(int64_t)action selected:(BOOL)selected inboxStyle:(BOOL)style inPadSidebar:(BOOL)sidebar;
+- (id)buttonForAction:(int64_t)action;
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
+- (int64_t)_buttonIndexForAction:(int64_t)action;
+- (void)_buttonTappedInternal:(id)internal appliesToAll:(BOOL)all;
+- (void)_configureButton:(id)button forAction:(int64_t)action isLargeSize:(BOOL)size totalButtonWidth:(double)width;
 - (void)_setupButtons;
 - (void)_setupConstraints;
-- (void)_updateButtonFonts:(id)a3;
-- (void)_updateButtonFontsWithOverrideSize:(double)a3;
-- (void)_updateButtonFontsWithSize:(double)a3;
-- (void)_updateSelectionToButton:(id)a3;
-- (void)findPointerInteractionWithButton:(id)a3 actions:(id)a4;
+- (void)_updateButtonFonts:(id)fonts;
+- (void)_updateButtonFontsWithOverrideSize:(double)size;
+- (void)_updateButtonFontsWithSize:(double)size;
+- (void)_updateSelectionToButton:(id)button;
+- (void)findPointerInteractionWithButton:(id)button actions:(id)actions;
 - (void)layoutSubviews;
-- (void)setActions:(id)a3;
-- (void)setButtonsTouchInsets:(UIEdgeInsets)a3;
-- (void)setDisableButtonHighlights:(BOOL)a3;
-- (void)setSelectedAction:(int64_t)a3;
-- (void)setShouldUseVerticalLayout:(BOOL)a3;
-- (void)setTextSizeMode:(int64_t)a3;
+- (void)setActions:(id)actions;
+- (void)setButtonsTouchInsets:(UIEdgeInsets)insets;
+- (void)setDisableButtonHighlights:(BOOL)highlights;
+- (void)setSelectedAction:(int64_t)action;
+- (void)setShouldUseVerticalLayout:(BOOL)layout;
+- (void)setTextSizeMode:(int64_t)mode;
 - (void)updateConstraints;
 @end
 
 @implementation EKUIEventStatusButtonsView
 
-- (EKUIEventStatusButtonsView)initWithFrame:(CGRect)a3 actions:(id)a4 delegate:(id)a5 options:(unint64_t)a6 textSizeMode:(int64_t)a7
+- (EKUIEventStatusButtonsView)initWithFrame:(CGRect)frame actions:(id)actions delegate:(id)delegate options:(unint64_t)options textSizeMode:(int64_t)mode
 {
-  v8 = a6;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v16 = a4;
-  v17 = a5;
+  optionsCopy = options;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  actionsCopy = actions;
+  delegateCopy = delegate;
   v23.receiver = self;
   v23.super_class = EKUIEventStatusButtonsView;
-  v18 = [(EKUIEventStatusButtonsView *)&v23 initWithFrame:x, y, width, height];
-  v19 = v18;
-  if (v18)
+  height = [(EKUIEventStatusButtonsView *)&v23 initWithFrame:x, y, width, height];
+  v19 = height;
+  if (height)
   {
-    objc_storeWeak(&v18->_delegate, v17);
-    v19->_textSizeMode = a7;
-    objc_storeStrong(&v19->_actions, a4);
-    v19->_allowAppliesToAll = (v8 & 4) != 0;
-    v19->_inboxStyle = (v8 & 2) != 0;
-    if ((v8 & 2) != 0)
+    objc_storeWeak(&height->_delegate, delegateCopy);
+    v19->_textSizeMode = mode;
+    objc_storeStrong(&v19->_actions, actions);
+    v19->_allowAppliesToAll = (optionsCopy & 4) != 0;
+    v19->_inboxStyle = (optionsCopy & 2) != 0;
+    if ((optionsCopy & 2) != 0)
     {
       v19->_layoutButtons = 1;
     }
@@ -81,7 +81,7 @@
     }
 
     v19->_outsideMargin = 0.0;
-    v19->_forcesSingleButtonToCenter = v8 & 1;
+    v19->_forcesSingleButtonToCenter = optionsCopy & 1;
     LODWORD(v20) = 1144750080;
     [(EKUIEventStatusButtonsView *)v19 setContentCompressionResistancePriority:0 forAxis:v20];
 LABEL_7:
@@ -136,58 +136,58 @@ LABEL_11:
   return v7;
 }
 
-- (void)_configureButton:(id)a3 forAction:(int64_t)a4 isLargeSize:(BOOL)a5 totalButtonWidth:(double)a6
+- (void)_configureButton:(id)button forAction:(int64_t)action isLargeSize:(BOOL)size totalButtonWidth:(double)width
 {
-  v7 = a5;
+  sizeCopy = size;
   v47[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = [(EKUIEventStatusButtonsView *)self selectedAction];
-  v12 = [EKUIEventStatusButtonsView buttonTitleForAction:a4];
-  v13 = [EKUIEventStatusButtonsView buttonAccessibilityIdentifierStringForAction:a4];
-  [v10 setAccessibilityIdentifier:v13];
+  buttonCopy = button;
+  selectedAction = [(EKUIEventStatusButtonsView *)self selectedAction];
+  v12 = [EKUIEventStatusButtonsView buttonTitleForAction:action];
+  v13 = [EKUIEventStatusButtonsView buttonAccessibilityIdentifierStringForAction:action];
+  [buttonCopy setAccessibilityIdentifier:v13];
 
-  if (MEMORY[0x1D38B98D0]([v10 addTarget:self action:sel__buttonTapped_ forControlEvents:64]))
+  if (MEMORY[0x1D38B98D0]([buttonCopy addTarget:self action:sel__buttonTapped_ forControlEvents:64]))
   {
     if (self->_inboxStyle && self->_inPadSidebar && MEMORY[0x1D38B98D0]())
     {
-      v14 = [MEMORY[0x1E69DC740] grayButtonConfiguration];
+      grayButtonConfiguration = [MEMORY[0x1E69DC740] grayButtonConfiguration];
     }
 
     else
     {
-      v14 = [MEMORY[0x1E69DC740] tintedButtonConfiguration];
-      v19 = [(EKUIEventStatusButtonsView *)self backgroundColorForAction:a4 selected:v11 == a4 inboxStyle:self->_inboxStyle inPadSidebar:self->_inPadSidebar];
-      v20 = [v14 background];
-      [v20 setBackgroundColor:v19];
+      grayButtonConfiguration = [MEMORY[0x1E69DC740] tintedButtonConfiguration];
+      v19 = [(EKUIEventStatusButtonsView *)self backgroundColorForAction:action selected:selectedAction == action inboxStyle:self->_inboxStyle inPadSidebar:self->_inPadSidebar];
+      background = [grayButtonConfiguration background];
+      [background setBackgroundColor:v19];
     }
 
-    [v14 setCornerStyle:4];
-    [v14 setTitleLineBreakMode:4];
-    v21 = [objc_opt_class() labelColorForAction:a4 selected:v11 == a4];
-    [v14 setBaseForegroundColor:v21];
+    [grayButtonConfiguration setCornerStyle:4];
+    [grayButtonConfiguration setTitleLineBreakMode:4];
+    action = [objc_opt_class() labelColorForAction:action selected:selectedAction == action];
+    [grayButtonConfiguration setBaseForegroundColor:action];
 
     if (self->_inboxStyle)
     {
       v22 = objc_alloc(MEMORY[0x1E696AAB0]);
       v46 = *MEMORY[0x1E69DB648];
       [(EKUIEventStatusButtonsView *)self _buttonFontSizeFromDelegate];
-      v24 = -[EKUIEventStatusButtonsView _fontWithSize:selected:](self, "_fontWithSize:selected:", [v10 isSelected], v23);
+      v24 = -[EKUIEventStatusButtonsView _fontWithSize:selected:](self, "_fontWithSize:selected:", [buttonCopy isSelected], v23);
       v47[0] = v24;
       v25 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v47 forKeys:&v46 count:1];
       v26 = [v22 initWithString:v12 attributes:v25];
-      [v14 setAttributedTitle:v26];
+      [grayButtonConfiguration setAttributedTitle:v26];
 
-      [v14 contentInsets];
-      [v14 setContentInsets:?];
+      [grayButtonConfiguration contentInsets];
+      [grayButtonConfiguration setContentInsets:?];
     }
 
     else
     {
       if (self->_textSizeMode)
       {
-        v27 = [MEMORY[0x1E6966A98] shared];
-        v28 = [v27 calPreferences];
-        v29 = [v28 getBooleanPreference:@"UseLargeStatusButtonSize" defaultValue:0] | v7;
+        mEMORY[0x1E6966A98] = [MEMORY[0x1E6966A98] shared];
+        calPreferences = [mEMORY[0x1E6966A98] calPreferences];
+        v29 = [calPreferences getBooleanPreference:@"UseLargeStatusButtonSize" defaultValue:0] | sizeCopy;
 
         if (v29)
         {
@@ -205,7 +205,7 @@ LABEL_11:
         v30 = 1;
       }
 
-      [v14 setButtonSize:v30];
+      [grayButtonConfiguration setButtonSize:v30];
       v31 = objc_alloc(MEMORY[0x1E696AAB0]);
       v44 = *MEMORY[0x1E69DB648];
       [(EKUIEventStatusButtonsView *)self _buttonFontSizeFromDelegate];
@@ -213,25 +213,25 @@ LABEL_11:
       v45 = v32;
       v33 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v45 forKeys:&v44 count:1];
       v34 = [v31 initWithString:v12 attributes:v33];
-      [v14 setAttributedTitle:v34];
+      [grayButtonConfiguration setAttributedTitle:v34];
     }
 
-    [v10 setConfiguration:v14];
+    [buttonCopy setConfiguration:grayButtonConfiguration];
     objc_initWeak(&location, self);
     v37 = MEMORY[0x1E69E9820];
     v38 = 3221225472;
     v39 = __86__EKUIEventStatusButtonsView__configureButton_forAction_isLargeSize_totalButtonWidth___block_invoke;
     v40 = &unk_1E843F368;
     objc_copyWeak(v42, &location);
-    v42[1] = a4;
-    v42[2] = *&a6;
+    v42[1] = action;
+    v42[2] = *&width;
     v41 = v12;
-    [v10 setConfigurationUpdateHandler:&v37];
-    v35 = [v10 titleLabel];
-    [v35 setAdjustsFontSizeToFitWidth:1];
+    [buttonCopy setConfigurationUpdateHandler:&v37];
+    titleLabel = [buttonCopy titleLabel];
+    [titleLabel setAdjustsFontSizeToFitWidth:1];
 
-    v36 = [v10 titleLabel];
-    [v36 setMinimumScaleFactor:0.5];
+    titleLabel2 = [buttonCopy titleLabel];
+    [titleLabel2 setMinimumScaleFactor:0.5];
 
     objc_destroyWeak(v42);
     objc_destroyWeak(&location);
@@ -239,13 +239,13 @@ LABEL_11:
 
   else
   {
-    v15 = [v10 titleLabel];
+    titleLabel3 = [buttonCopy titleLabel];
     [(EKUIEventStatusButtonsView *)self _buttonFontSizeFromDelegate];
-    v17 = -[EKUIEventStatusButtonsView _fontWithSize:selected:](self, "_fontWithSize:selected:", [v10 isSelected], v16);
-    [v15 setFont:v17];
+    v17 = -[EKUIEventStatusButtonsView _fontWithSize:selected:](self, "_fontWithSize:selected:", [buttonCopy isSelected], v16);
+    [titleLabel3 setFont:v17];
 
-    v18 = [v10 titleLabel];
-    [v18 setLineBreakMode:4];
+    titleLabel4 = [buttonCopy titleLabel];
+    [titleLabel4 setLineBreakMode:4];
   }
 }
 
@@ -287,16 +287,16 @@ void __86__EKUIEventStatusButtonsView__configureButton_forAction_isLargeSize_tot
   }
 }
 
-+ (double)_estimatedTotalButtonWidthForTitles:(id)a3 attributes:(id)a4
++ (double)_estimatedTotalButtonWidthForTitles:(id)titles attributes:(id)attributes
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  titlesCopy = titles;
+  attributesCopy = attributes;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v7 = [titlesCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -308,14 +308,14 @@ void __86__EKUIEventStatusButtonsView__configureButton_forAction_isLargeSize_tot
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(titlesCopy);
         }
 
-        [*(*(&v14 + 1) + 8 * i) sizeWithAttributes:v6];
+        [*(*(&v14 + 1) + 8 * i) sizeWithAttributes:attributesCopy];
         v10 = v10 + v12 + 60.0;
       }
 
-      v8 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [titlesCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v8);
@@ -329,30 +329,30 @@ void __86__EKUIEventStatusButtonsView__configureButton_forAction_isLargeSize_tot
   return v10;
 }
 
-- (BOOL)_shouldUseLowSpaceContentInsetsForTotalButtonWidth:(double)a3
+- (BOOL)_shouldUseLowSpaceContentInsetsForTotalButtonWidth:(double)width
 {
-  v5 = [(EKUIEventStatusButtonsView *)self _shouldCheckForLowSpaceInsets];
-  if (v5)
+  _shouldCheckForLowSpaceInsets = [(EKUIEventStatusButtonsView *)self _shouldCheckForLowSpaceInsets];
+  if (_shouldCheckForLowSpaceInsets)
   {
     EKUIApplicationFrame(self);
-    LOBYTE(v5) = v6 + -56.0 < a3;
+    LOBYTE(_shouldCheckForLowSpaceInsets) = v6 + -56.0 < width;
   }
 
-  return v5;
+  return _shouldCheckForLowSpaceInsets;
 }
 
-- (void)findPointerInteractionWithButton:(id)a3 actions:(id)a4
+- (void)findPointerInteractionWithButton:(id)button actions:(id)actions
 {
-  v6 = a4;
-  v7 = [a3 interactions];
+  actionsCopy = actions;
+  interactions = [button interactions];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __71__EKUIEventStatusButtonsView_findPointerInteractionWithButton_actions___block_invoke;
   v9[3] = &unk_1E843F390;
   v9[4] = self;
-  v10 = v6;
-  v8 = v6;
-  [v7 enumerateObjectsUsingBlock:v9];
+  v10 = actionsCopy;
+  v8 = actionsCopy;
+  [interactions enumerateObjectsUsingBlock:v9];
 }
 
 void __71__EKUIEventStatusButtonsView_findPointerInteractionWithButton_actions___block_invoke(uint64_t a1, void *a2, uint64_t a3, _BYTE *a4)
@@ -379,12 +379,12 @@ void __71__EKUIEventStatusButtonsView_findPointerInteractionWithButton_actions__
 
 - (void)_setupButtons
 {
-  v2 = self;
+  selfCopy = self;
   v80[1] = *MEMORY[0x1E69E9840];
   v3 = [(NSArray *)self->_actions count];
-  buttons = v2->_buttons;
+  buttons = selfCopy->_buttons;
   v58 = v3;
-  val = v2;
+  val = selfCopy;
   if (buttons)
   {
     v5 = [(NSArray *)buttons mutableCopy];
@@ -398,11 +398,11 @@ void __71__EKUIEventStatusButtonsView_findPointerInteractionWithButton_actions__
   obj = v5;
   v56 = [v5 count];
   v6 = 0.0;
-  if ([(EKUIEventStatusButtonsView *)v2 _shouldCheckForLowSpaceInsets])
+  if ([(EKUIEventStatusButtonsView *)selfCopy _shouldCheckForLowSpaceInsets])
   {
     v79 = *MEMORY[0x1E69DB648];
-    [(EKUIEventStatusButtonsView *)v2 _buttonFontSizeFromDelegate];
-    v8 = [(EKUIEventStatusButtonsView *)v2 _fontWithSize:1 selected:v7 * 0.75];
+    [(EKUIEventStatusButtonsView *)selfCopy _buttonFontSizeFromDelegate];
+    v8 = [(EKUIEventStatusButtonsView *)selfCopy _fontWithSize:1 selected:v7 * 0.75];
     v80[0] = v8;
     v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v80 forKeys:&v79 count:1];
 
@@ -411,7 +411,7 @@ void __71__EKUIEventStatusButtonsView_findPointerInteractionWithButton_actions__
     v76 = 0u;
     v73 = 0u;
     v74 = 0u;
-    v11 = v2->_actions;
+    v11 = selfCopy->_actions;
     v12 = [(NSArray *)v11 countByEnumeratingWithState:&v73 objects:v78 count:16];
     if (v12)
     {
@@ -446,8 +446,8 @@ void __71__EKUIEventStatusButtonsView_findPointerInteractionWithButton_actions__
     v17 = 0;
     do
     {
-      v18 = [(NSArray *)v2->_actions objectAtIndexedSubscript:v17];
-      v19 = [v18 integerValue];
+      v18 = [(NSArray *)selfCopy->_actions objectAtIndexedSubscript:v17];
+      integerValue = [v18 integerValue];
 
       if (v17 >= v56)
       {
@@ -459,7 +459,7 @@ void __71__EKUIEventStatusButtonsView_findPointerInteractionWithButton_actions__
         }
 
         v23 = [*v22 buttonWithType:v21 ^ 1u];
-        [(EKUIEventStatusButtonsView *)val _configureButton:v23 forAction:v19 isLargeSize:([(EKUIEventStatusButtonsView *)val textSizeMode]== 1) & (v58 == 3) totalButtonWidth:v6];
+        [(EKUIEventStatusButtonsView *)val _configureButton:v23 forAction:integerValue isLargeSize:([(EKUIEventStatusButtonsView *)val textSizeMode]== 1) & (v58 == 3) totalButtonWidth:v6];
         v20 = v23;
         if (val->_layoutButtons)
         {
@@ -472,18 +472,18 @@ void __71__EKUIEventStatusButtonsView_findPointerInteractionWithButton_actions__
       else
       {
         v20 = [obj objectAtIndexedSubscript:v17];
-        [(EKUIEventStatusButtonsView *)val _configureButton:v20 forAction:v19 isLargeSize:([(EKUIEventStatusButtonsView *)val textSizeMode]== 1) & (v58 == 3) totalButtonWidth:v6];
+        [(EKUIEventStatusButtonsView *)val _configureButton:v20 forAction:integerValue isLargeSize:([(EKUIEventStatusButtonsView *)val textSizeMode]== 1) & (v58 == 3) totalButtonWidth:v6];
       }
 
       [v20 setSelected:0];
-      v24 = [objc_opt_class() buttonTitleForAction:v19];
-      [v20 setTag:v19];
+      v24 = [objc_opt_class() buttonTitleForAction:integerValue];
+      [v20 setTag:integerValue];
       if (val->_layoutButtons)
       {
         [v20 setTitle:v24 forState:0];
       }
 
-      v25 = [objc_opt_class() _appliesToAllTitleForAction:v19];
+      v25 = [objc_opt_class() _appliesToAllTitleForAction:integerValue];
       v26 = v25;
       if (val->_allowAppliesToAll && v25)
       {
@@ -523,8 +523,8 @@ void __71__EKUIEventStatusButtonsView_findPointerInteractionWithButton_actions__
       [v20 setTranslatesAutoresizingMaskIntoConstraints:0];
       if (val->_layoutButtons)
       {
-        v34 = [MEMORY[0x1E69DC888] whiteColor];
-        [v20 setTitleColor:v34 forState:4];
+        whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+        [v20 setTitleColor:whiteColor forState:4];
 
         if ([(EKUIEventStatusButtonsView *)val shouldUseVerticalLayout])
         {
@@ -537,11 +537,11 @@ void __71__EKUIEventStatusButtonsView_findPointerInteractionWithButton_actions__
         }
 
         [v20 setContentHorizontalAlignment:v35];
-        v36 = [v20 titleLabel];
+        titleLabel = [v20 titleLabel];
         LODWORD(v37) = 1148846080;
-        [v36 setContentHuggingPriority:1 forAxis:v37];
+        [titleLabel setContentHuggingPriority:1 forAxis:v37];
 
-        v38 = [v20 titleLabel];
+        titleLabel2 = [v20 titleLabel];
         v39 = MEMORY[0x1D38B98D0]();
         LODWORD(v40) = 1148846080;
         if (v39)
@@ -549,7 +549,7 @@ void __71__EKUIEventStatusButtonsView_findPointerInteractionWithButton_actions__
           *&v40 = 250.0;
         }
 
-        [v38 setContentHuggingPriority:0 forAxis:v40];
+        [titleLabel2 setContentHuggingPriority:0 forAxis:v40];
 
         v41 = MEMORY[0x1D38B98D0]();
         LODWORD(v42) = 1148846080;
@@ -568,7 +568,7 @@ void __71__EKUIEventStatusButtonsView_findPointerInteractionWithButton_actions__
       }
 
       ++v17;
-      v2 = val;
+      selfCopy = val;
     }
 
     while (v58 != v17);
@@ -611,11 +611,11 @@ void __71__EKUIEventStatusButtonsView_findPointerInteractionWithButton_actions__
       v50 = val;
     }
 
-    v51 = [(EKUIEventStatusButtonsView *)v50 _shouldCenterButton];
+    _shouldCenterButton = [(EKUIEventStatusButtonsView *)v50 _shouldCenterButton];
     v52 = *(&val->super.super.super.isa + v55);
-    if (v51)
+    if (_shouldCenterButton)
     {
-      v53 = [v52 firstObject];
+      firstObject = [v52 firstObject];
       location = 0;
       p_location = &location;
       v64 = 0x2020000000;
@@ -625,11 +625,11 @@ void __71__EKUIEventStatusButtonsView_findPointerInteractionWithButton_actions__
       v61[2] = __43__EKUIEventStatusButtonsView__setupButtons__block_invoke_3;
       v61[3] = &unk_1E843F3E0;
       v61[4] = &location;
-      [(EKUIEventStatusButtonsView *)val findPointerInteractionWithButton:v53 actions:v61];
+      [(EKUIEventStatusButtonsView *)val findPointerInteractionWithButton:firstObject actions:v61];
       if ((p_location[3] & 1) == 0)
       {
         v54 = [objc_alloc(MEMORY[0x1E69DCDB0]) initWithDelegate:val];
-        [v53 addInteraction:v54];
+        [firstObject addInteraction:v54];
       }
 
       _Block_object_dispose(&location, 8);
@@ -678,18 +678,18 @@ void __43__EKUIEventStatusButtonsView__setupButtons__block_invoke_4(uint64_t a1,
 
 - (void)_setupConstraints
 {
-  v2 = self;
+  selfCopy = self;
   v122 = *MEMORY[0x1E69E9840];
   v3 = 0x1E696A000uLL;
   if ([(NSArray *)self->_currentConstraints count])
   {
-    [MEMORY[0x1E696ACD8] deactivateConstraints:v2->_currentConstraints];
-    currentConstraints = v2->_currentConstraints;
-    v2->_currentConstraints = 0;
+    [MEMORY[0x1E696ACD8] deactivateConstraints:selfCopy->_currentConstraints];
+    currentConstraints = selfCopy->_currentConstraints;
+    selfCopy->_currentConstraints = 0;
   }
 
-  v5 = [(NSArray *)v2->_buttons count];
-  if (v2->_buttons)
+  v5 = [(NSArray *)selfCopy->_buttons count];
+  if (selfCopy->_buttons)
   {
     v6 = v5 == 0;
   }
@@ -705,70 +705,70 @@ void __43__EKUIEventStatusButtonsView__setupButtons__block_invoke_4(uint64_t a1,
     v110 = objc_alloc_init(MEMORY[0x1E695DF70]);
     if (v7 == 1)
     {
-      v8 = [(NSArray *)v2->_buttons firstObject];
+      firstObject = [(NSArray *)selfCopy->_buttons firstObject];
       if (MEMORY[0x1D38B98D0]())
       {
-        v9 = [MEMORY[0x1E696ACD8] constraintWithItem:v8 attribute:5 relatedBy:0 toItem:v2 attribute:5 multiplier:1.0 constant:0.0];
+        v9 = [MEMORY[0x1E696ACD8] constraintWithItem:firstObject attribute:5 relatedBy:0 toItem:selfCopy attribute:5 multiplier:1.0 constant:0.0];
         [(NSArray *)v110 addObject:v9];
 
-        v10 = [MEMORY[0x1E696ACD8] constraintWithItem:v8 attribute:7 relatedBy:1 toItem:v2 attribute:7 multiplier:0.333 constant:-8.0];
+        v10 = [MEMORY[0x1E696ACD8] constraintWithItem:firstObject attribute:7 relatedBy:1 toItem:selfCopy attribute:7 multiplier:0.333 constant:-8.0];
         [(NSArray *)v110 addObject:v10];
 
-        v11 = [MEMORY[0x1E696ACD8] constraintWithItem:v8 attribute:6 relatedBy:-1 toItem:v2 attribute:6 multiplier:1.0 constant:0.0];
+        v11 = [MEMORY[0x1E696ACD8] constraintWithItem:firstObject attribute:6 relatedBy:-1 toItem:selfCopy attribute:6 multiplier:1.0 constant:0.0];
         [(NSArray *)v110 addObject:v11];
 
-        v12 = [MEMORY[0x1E696ACD8] constraintWithItem:v8 attribute:3 relatedBy:0 toItem:v2 attribute:3 multiplier:1.0 constant:0.0];
+        v12 = [MEMORY[0x1E696ACD8] constraintWithItem:firstObject attribute:3 relatedBy:0 toItem:selfCopy attribute:3 multiplier:1.0 constant:0.0];
         [(NSArray *)v110 addObject:v12];
 
-        v13 = [MEMORY[0x1E696ACD8] constraintWithItem:v8 attribute:4 relatedBy:0 toItem:v2 attribute:4 multiplier:1.0 constant:0.0];
-        [(NSArray *)v110 addObject:v13];
+        firstObject2 = [MEMORY[0x1E696ACD8] constraintWithItem:firstObject attribute:4 relatedBy:0 toItem:selfCopy attribute:4 multiplier:1.0 constant:0.0];
+        [(NSArray *)v110 addObject:firstObject2];
       }
 
       else
       {
-        if ([(EKUIEventStatusButtonsView *)v2 _shouldCenterButton])
+        if ([(EKUIEventStatusButtonsView *)selfCopy _shouldCenterButton])
         {
-          v13 = [(NSArray *)v2->_buttons firstObject];
+          firstObject2 = [(NSArray *)selfCopy->_buttons firstObject];
           v43 = MEMORY[0x1E696ACD8];
-          v44 = _NSDictionaryOfVariableBindings(&cfstr_Button.isa, v13, 0);
+          v44 = _NSDictionaryOfVariableBindings(&cfstr_Button.isa, firstObject2, 0);
           v45 = [v43 constraintsWithVisualFormat:@"H:|[button]" options:0 metrics:0 views:v44];
-          v46 = [v45 firstObject];
-          leadingMarginConstraint = v2->_leadingMarginConstraint;
-          v2->_leadingMarginConstraint = v46;
+          firstObject3 = [v45 firstObject];
+          leadingMarginConstraint = selfCopy->_leadingMarginConstraint;
+          selfCopy->_leadingMarginConstraint = firstObject3;
 
-          [(NSArray *)v110 addObject:v2->_leadingMarginConstraint];
+          [(NSArray *)v110 addObject:selfCopy->_leadingMarginConstraint];
           v48 = MEMORY[0x1E696ACD8];
-          v49 = _NSDictionaryOfVariableBindings(&cfstr_Button.isa, v13, 0);
+          v49 = _NSDictionaryOfVariableBindings(&cfstr_Button.isa, firstObject2, 0);
           v50 = [v48 constraintsWithVisualFormat:@"H:[button]|" options:0 metrics:0 views:v49];
-          v51 = [v50 firstObject];
-          trailingMarginConstraint = v2->_trailingMarginConstraint;
-          v2->_trailingMarginConstraint = v51;
+          firstObject4 = [v50 firstObject];
+          trailingMarginConstraint = selfCopy->_trailingMarginConstraint;
+          selfCopy->_trailingMarginConstraint = firstObject4;
 
-          [(NSArray *)v110 addObject:v2->_trailingMarginConstraint];
+          [(NSArray *)v110 addObject:selfCopy->_trailingMarginConstraint];
           v53 = MEMORY[0x1E696ACD8];
-          v54 = _NSDictionaryOfVariableBindings(&cfstr_Button.isa, v13, 0);
+          v54 = _NSDictionaryOfVariableBindings(&cfstr_Button.isa, firstObject2, 0);
           v55 = [v53 constraintsWithVisualFormat:@"V:|[button]|" options:0 metrics:0 views:v54];
           [(NSArray *)v110 addObjectsFromArray:v55];
         }
 
         else
         {
-          v79 = [MEMORY[0x1E696ACD8] constraintWithItem:v8 attribute:5 relatedBy:0 toItem:v2 attribute:5 multiplier:1.0 constant:0.0];
-          v80 = v2->_leadingMarginConstraint;
-          v2->_leadingMarginConstraint = v79;
+          v79 = [MEMORY[0x1E696ACD8] constraintWithItem:firstObject attribute:5 relatedBy:0 toItem:selfCopy attribute:5 multiplier:1.0 constant:0.0];
+          v80 = selfCopy->_leadingMarginConstraint;
+          selfCopy->_leadingMarginConstraint = v79;
 
-          [(NSArray *)v110 addObject:v2->_leadingMarginConstraint];
-          v81 = v2->_trailingMarginConstraint;
-          v2->_trailingMarginConstraint = 0;
+          [(NSArray *)v110 addObject:selfCopy->_leadingMarginConstraint];
+          v81 = selfCopy->_trailingMarginConstraint;
+          selfCopy->_trailingMarginConstraint = 0;
 
-          v82 = [(EKUIEventStatusButtonsView *)v2 trailingAnchor];
-          v83 = [v8 trailingAnchor];
-          v84 = [v82 constraintGreaterThanOrEqualToSystemSpacingAfterAnchor:v83 multiplier:1.0];
+          trailingAnchor = [(EKUIEventStatusButtonsView *)selfCopy trailingAnchor];
+          trailingAnchor2 = [firstObject trailingAnchor];
+          v84 = [trailingAnchor constraintGreaterThanOrEqualToSystemSpacingAfterAnchor:trailingAnchor2 multiplier:1.0];
           [(NSArray *)v110 addObject:v84];
 
           v85 = MEMORY[0x1E696ACD8];
-          v13 = _NSDictionaryOfVariableBindings(&cfstr_Theonlybutton.isa, v8, 0);
-          v54 = [v85 constraintsWithVisualFormat:@"V:|[theOnlyButton]|" options:0 metrics:0 views:v13];
+          firstObject2 = _NSDictionaryOfVariableBindings(&cfstr_Theonlybutton.isa, firstObject, 0);
+          v54 = [v85 constraintsWithVisualFormat:@"V:|[theOnlyButton]|" options:0 metrics:0 views:firstObject2];
           [(NSArray *)v110 addObjectsFromArray:v54];
         }
       }
@@ -777,17 +777,17 @@ void __43__EKUIEventStatusButtonsView__setupButtons__block_invoke_4(uint64_t a1,
       goto LABEL_42;
     }
 
-    v14 = [(EKUIEventStatusButtonsView *)v2 shouldUseVerticalLayout];
-    v15 = [(NSArray *)v2->_buttons firstObject];
-    v16 = [(NSArray *)v2->_buttons lastObject];
+    shouldUseVerticalLayout = [(EKUIEventStatusButtonsView *)selfCopy shouldUseVerticalLayout];
+    firstObject5 = [(NSArray *)selfCopy->_buttons firstObject];
+    lastObject = [(NSArray *)selfCopy->_buttons lastObject];
     v17 = MEMORY[0x1E696ACD8];
-    v108 = v16;
-    v109 = v2;
-    if (v14)
+    v108 = lastObject;
+    v109 = selfCopy;
+    if (shouldUseVerticalLayout)
     {
-      v18 = v16;
-      firstValue = v15;
-      v19 = _NSDictionaryOfVariableBindings(&cfstr_Topbutton.isa, v15, 0);
+      v18 = lastObject;
+      firstValue = firstObject5;
+      v19 = _NSDictionaryOfVariableBindings(&cfstr_Topbutton.isa, firstObject5, 0);
       v20 = [v17 constraintsWithVisualFormat:@"V:|[topButton]" options:0 metrics:0 views:v19];
       [(NSArray *)v110 addObjectsFromArray:v20];
 
@@ -802,7 +802,7 @@ void __43__EKUIEventStatusButtonsView__setupButtons__block_invoke_4(uint64_t a1,
       v114 = 0u;
       v111 = 0u;
       v112 = 0u;
-      v26 = v2->_buttons;
+      v26 = selfCopy->_buttons;
       v27 = [(NSArray *)v26 countByEnumeratingWithState:&v111 objects:v121 count:16];
       if (v27)
       {
@@ -821,28 +821,28 @@ void __43__EKUIEventStatusButtonsView__setupButtons__block_invoke_4(uint64_t a1,
             }
 
             v33 = *(*(&v111 + 1) + 8 * v31);
-            v34 = [*(v3 + 3288) constraintWithItem:v33 attribute:5 relatedBy:0 toItem:v2 attribute:5 multiplier:1.0 constant:0.0];
+            v34 = [*(v3 + 3288) constraintWithItem:v33 attribute:5 relatedBy:0 toItem:selfCopy attribute:5 multiplier:1.0 constant:0.0];
             [(NSArray *)v23 addObject:v34];
 
-            v35 = [*(v3 + 3288) constraintWithItem:v2 attribute:6 relatedBy:1 toItem:v33 attribute:6 multiplier:1.0 constant:0.0];
+            v35 = [*(v3 + 3288) constraintWithItem:selfCopy attribute:6 relatedBy:1 toItem:v33 attribute:6 multiplier:1.0 constant:0.0];
             [(NSArray *)v23 addObject:v35];
 
             if (v32)
             {
-              v36 = [v33 firstBaselineAnchor];
-              v37 = [v32 lastBaselineAnchor];
-              v38 = [v36 constraintEqualToSystemSpacingBelowAnchor:v37 multiplier:1.0];
+              firstBaselineAnchor = [v33 firstBaselineAnchor];
+              lastBaselineAnchor = [v32 lastBaselineAnchor];
+              v38 = [firstBaselineAnchor constraintEqualToSystemSpacingBelowAnchor:lastBaselineAnchor multiplier:1.0];
 
               LODWORD(v39) = 1144750080;
               [v38 setPriority:v39];
               [(NSArray *)v23 addObject:v38];
-              v40 = [v33 firstBaselineAnchor];
-              v41 = [v32 lastBaselineAnchor];
-              v42 = [v40 constraintGreaterThanOrEqualToAnchor:v41 constant:40.0];
+              firstBaselineAnchor2 = [v33 firstBaselineAnchor];
+              lastBaselineAnchor2 = [v32 lastBaselineAnchor];
+              v42 = [firstBaselineAnchor2 constraintGreaterThanOrEqualToAnchor:lastBaselineAnchor2 constant:40.0];
               [(NSArray *)v110 addObject:v42];
 
               v23 = v110;
-              v2 = v109;
+              selfCopy = v109;
 
               v3 = 0x1E696A000;
             }
@@ -868,46 +868,46 @@ void __43__EKUIEventStatusButtonsView__setupButtons__block_invoke_4(uint64_t a1,
       goto LABEL_42;
     }
 
-    v56 = _NSDictionaryOfVariableBindings(&cfstr_Leadingbutton.isa, v15, 0);
+    v56 = _NSDictionaryOfVariableBindings(&cfstr_Leadingbutton.isa, firstObject5, 0);
     v57 = [v17 constraintsWithVisualFormat:@"V:|[leadingButton]|" options:0 metrics:0 views:v56];
     [(NSArray *)v110 addObjectsFromArray:v57];
 
     if (v7 >= 3)
     {
-      v58 = [MEMORY[0x1E696ACD8] constraintWithItem:v15 attribute:5 relatedBy:0 toItem:v2 attribute:5 multiplier:1.0 constant:0.0];
-      v59 = v2->_leadingMarginConstraint;
-      v2->_leadingMarginConstraint = v58;
+      v58 = [MEMORY[0x1E696ACD8] constraintWithItem:firstObject5 attribute:5 relatedBy:0 toItem:selfCopy attribute:5 multiplier:1.0 constant:0.0];
+      v59 = selfCopy->_leadingMarginConstraint;
+      selfCopy->_leadingMarginConstraint = v58;
 
-      [(NSArray *)v110 addObject:v2->_leadingMarginConstraint];
-      v60 = [MEMORY[0x1E696ACD8] constraintWithItem:v108 attribute:6 relatedBy:0 toItem:v2 attribute:6 multiplier:1.0 constant:0.0];
-      v61 = v2->_trailingMarginConstraint;
-      v2->_trailingMarginConstraint = v60;
+      [(NSArray *)v110 addObject:selfCopy->_leadingMarginConstraint];
+      v60 = [MEMORY[0x1E696ACD8] constraintWithItem:v108 attribute:6 relatedBy:0 toItem:selfCopy attribute:6 multiplier:1.0 constant:0.0];
+      v61 = selfCopy->_trailingMarginConstraint;
+      selfCopy->_trailingMarginConstraint = v60;
 
-      [(NSArray *)v110 addObject:v2->_trailingMarginConstraint];
+      [(NSArray *)v110 addObject:selfCopy->_trailingMarginConstraint];
       v62 = v7 - 2;
-      v63 = [(NSArray *)v2->_buttons objectAtIndexedSubscript:1];
-      v64 = [(NSArray *)v2->_buttons objectAtIndexedSubscript:v62];
+      v63 = [(NSArray *)selfCopy->_buttons objectAtIndexedSubscript:1];
+      v64 = [(NSArray *)selfCopy->_buttons objectAtIndexedSubscript:v62];
       v65 = MEMORY[0x1E696ACD8];
       v66 = _NSDictionaryOfVariableBindings(&cfstr_Firstmiddlebut.isa, v63, 0);
       v67 = [v65 constraintsWithVisualFormat:@"V:|[firstMiddleButton]|" options:0 metrics:&unk_1F4F32900 views:v66];
       [(NSArray *)v110 addObjectsFromArray:v67];
 
-      if (v2->_inboxStyle)
+      if (selfCopy->_inboxStyle)
       {
         v3 = 0x1E696A000uLL;
-        v68 = [MEMORY[0x1E696ACD8] constraintWithItem:v63 attribute:9 relatedBy:0 toItem:v2 attribute:9 multiplier:1.0 constant:0.0];
+        v68 = [MEMORY[0x1E696ACD8] constraintWithItem:v63 attribute:9 relatedBy:0 toItem:selfCopy attribute:9 multiplier:1.0 constant:0.0];
         [(NSArray *)v110 addObject:v68];
 
         LODWORD(v68) = MEMORY[0x1D38B98D0]();
         v69 = MEMORY[0x1E696ACD8];
-        v70 = _NSDictionaryOfVariableBindings(&cfstr_LeadingbuttonT.isa, v15, v108, v63, 0);
+        v70 = _NSDictionaryOfVariableBindings(&cfstr_LeadingbuttonT.isa, firstObject5, v108, v63, 0);
         if (v68)
         {
           v71 = [v69 constraintsWithVisualFormat:@"H:|[leadingButton(==firstMiddleButton)]-(minInboxStylePadding)-[firstMiddleButton(==trailingButton)]-(minInboxStylePadding)-[trailingButton]|" options:2048 metrics:? views:?];
           [(NSArray *)v110 addObjectsFromArray:v71];
 
           v72 = MEMORY[0x1E696ACD8];
-          v73 = _NSDictionaryOfVariableBindings(&cfstr_Leadingbutton.isa, v15, 0);
+          v73 = _NSDictionaryOfVariableBindings(&cfstr_Leadingbutton.isa, firstObject5, 0);
           v74 = [v72 constraintsWithVisualFormat:@"V:|[leadingButton]|" options:0 metrics:&unk_1F4F32900 views:v73];
           [(NSArray *)v110 addObjectsFromArray:v74];
 
@@ -933,17 +933,17 @@ void __43__EKUIEventStatusButtonsView__setupButtons__block_invoke_4(uint64_t a1,
       else
       {
         v70 = objc_alloc_init(MEMORY[0x1E69DCC20]);
-        [(EKUIEventStatusButtonsView *)v2 addLayoutGuide:v70];
-        v90 = [MEMORY[0x1E696ACD8] constraintWithItem:v70 attribute:9 relatedBy:0 toItem:v2 attribute:9 multiplier:1.0 constant:0.0];
+        [(EKUIEventStatusButtonsView *)selfCopy addLayoutGuide:v70];
+        v90 = [MEMORY[0x1E696ACD8] constraintWithItem:v70 attribute:9 relatedBy:0 toItem:selfCopy attribute:9 multiplier:1.0 constant:0.0];
         [(NSArray *)v110 addObject:v90];
 
         v91 = MEMORY[0x1E696ACD8];
-        v92 = _NSDictionaryOfVariableBindings(&cfstr_LeadingbuttonT_0.isa, v15, v108, v70, 0);
+        v92 = _NSDictionaryOfVariableBindings(&cfstr_LeadingbuttonT_0.isa, firstObject5, v108, v70, 0);
         v93 = [v91 constraintsWithVisualFormat:@"H:[leadingButton]-(>=minPadding)-[centerGuide]-(>=minPadding)-[trailingButton]" options:24 metrics:&unk_1F4F32900 views:v92];
         [(NSArray *)v110 addObjectsFromArray:v93];
 
         v94 = objc_alloc_init(MEMORY[0x1E695DF90]);
-        v95 = [(EKUIEventStatusButtonsView *)v2 _horizontalConstraintStringForMiddleButtonsStartingAt:1 endingAt:v62 resultingViews:v94];
+        v95 = [(EKUIEventStatusButtonsView *)selfCopy _horizontalConstraintStringForMiddleButtonsStartingAt:1 endingAt:v62 resultingViews:v94];
         v3 = 0x1E696A000uLL;
         v96 = [MEMORY[0x1E696ACD8] constraintsWithVisualFormat:v95 options:24 metrics:&unk_1F4F32900 views:v94];
         [(NSArray *)v110 addObjectsFromArray:v96];
@@ -961,25 +961,25 @@ void __43__EKUIEventStatusButtonsView__setupButtons__block_invoke_4(uint64_t a1,
 
     v3 = 0x1E696A000uLL;
     v86 = v108;
-    if (v2->_inboxStyle)
+    if (selfCopy->_inboxStyle)
     {
       v87 = MEMORY[0x1D38B98D0]();
       v88 = MEMORY[0x1E696ACD8];
       if (!v87)
       {
-        v63 = [MEMORY[0x1E696ACD8] constraintWithItem:v108 attribute:9 relatedBy:0 toItem:v2 attribute:9 multiplier:1.0 constant:0.0];
+        v63 = [MEMORY[0x1E696ACD8] constraintWithItem:v108 attribute:9 relatedBy:0 toItem:selfCopy attribute:9 multiplier:1.0 constant:0.0];
         LODWORD(v104) = 1144750080;
         [v63 setPriority:v104];
         [(NSArray *)v110 addObject:v63];
         v105 = MEMORY[0x1E696ACD8];
-        v64 = _NSDictionaryOfVariableBindings(&cfstr_LeadingbuttonT_1.isa, v15, v108, 0);
+        v64 = _NSDictionaryOfVariableBindings(&cfstr_LeadingbuttonT_1.isa, firstObject5, v108, 0);
         v106 = [v105 constraintsWithVisualFormat:@"H:|[leadingButton]-(>=minInboxStylePadding)-[trailingButton]" options:24 metrics:&unk_1F4F32900 views:v64];
         [(NSArray *)v110 addObjectsFromArray:v106];
 
         goto LABEL_41;
       }
 
-      v63 = _NSDictionaryOfVariableBindings(&cfstr_LeadingbuttonT_1.isa, v15, v108, 0);
+      v63 = _NSDictionaryOfVariableBindings(&cfstr_LeadingbuttonT_1.isa, firstObject5, v108, 0);
       v64 = [v88 constraintsWithVisualFormat:@"H:|[leadingButton(==trailingButton)]-(minInboxStylePadding)-[trailingButton]|" options:24 metrics:&unk_1F4F32900 views:v63];
       v89 = v110;
     }
@@ -987,7 +987,7 @@ void __43__EKUIEventStatusButtonsView__setupButtons__block_invoke_4(uint64_t a1,
     else
     {
       v99 = MEMORY[0x1E696ACD8];
-      v63 = _NSDictionaryOfVariableBindings(&cfstr_LeadingbuttonT_1.isa, v15, v108, 0);
+      v63 = _NSDictionaryOfVariableBindings(&cfstr_LeadingbuttonT_1.isa, firstObject5, v108, 0);
       v64 = [v99 constraintsWithVisualFormat:@"H:|-(==minPadding)-[leadingButton]-(>=minPadding)-[trailingButton]-(==minPadding)-|" options:24 metrics:&unk_1F4F32900 views:v63];
       v89 = v110;
     }
@@ -1000,28 +1000,28 @@ LABEL_42:
     if (os_log_type_enabled(kEKUILogHandle, OS_LOG_TYPE_DEBUG))
     {
       v101 = v100;
-      v102 = [(EKUIEventStatusButtonsView *)v2 delegate];
+      delegate = [(EKUIEventStatusButtonsView *)selfCopy delegate];
       *buf = 136315650;
       v116 = "[EKUIEventStatusButtonsView _setupConstraints]";
       v117 = 2112;
       v118 = v110;
       v119 = 2112;
-      v120 = v102;
+      v120 = delegate;
       _os_log_impl(&dword_1D3400000, v101, OS_LOG_TYPE_DEBUG, "%s: Activating constraints [%@] for status button view with delegate [%@]", buf, 0x20u);
 
       v3 = 0x1E696A000uLL;
     }
 
     [*(v3 + 3288) activateConstraints:v110];
-    v103 = v2->_currentConstraints;
-    v2->_currentConstraints = v110;
+    v103 = selfCopy->_currentConstraints;
+    selfCopy->_currentConstraints = v110;
   }
 }
 
-- (id)_horizontalConstraintStringForMiddleButtonsStartingAt:(unint64_t)a3 endingAt:(unint64_t)a4 resultingViews:(id)a5
+- (id)_horizontalConstraintStringForMiddleButtonsStartingAt:(unint64_t)at endingAt:(unint64_t)endingAt resultingViews:(id)views
 {
-  v8 = a5;
-  if (a3 > a4)
+  viewsCopy = views;
+  if (at > endingAt)
   {
     v9 = kEKUILogHandle;
     if (os_log_type_enabled(kEKUILogHandle, OS_LOG_TYPE_ERROR))
@@ -1037,7 +1037,7 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if ([(NSArray *)self->_buttons count]<= a4)
+  if ([(NSArray *)self->_buttons count]<= endingAt)
   {
     v9 = kEKUILogHandle;
     if (os_log_type_enabled(kEKUILogHandle, OS_LOG_TYPE_ERROR))
@@ -1056,39 +1056,39 @@ LABEL_13:
   v12 = [objc_alloc(MEMORY[0x1E696AD60]) initWithString:@"H:"];
   do
   {
-    v13 = [(NSArray *)self->_buttons objectAtIndexedSubscript:a3];
-    v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"button%lu", a3];
-    [v8 setObject:v13 forKey:v14];
+    v13 = [(NSArray *)self->_buttons objectAtIndexedSubscript:at];
+    v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"button%lu", at];
+    [viewsCopy setObject:v13 forKey:v14];
     [(__CFString *)v12 appendFormat:@"[%@]", v14];
-    if (a4 != a3)
+    if (endingAt != at)
     {
       [(__CFString *)v12 appendString:@"-(>=minPadding)-"];
     }
 
-    ++a3;
+    ++at;
   }
 
-  while (a3 <= a4);
+  while (at <= endingAt);
 LABEL_14:
 
   return v12;
 }
 
-- (void)_buttonTappedInternal:(id)a3 appliesToAll:(BOOL)a4
+- (void)_buttonTappedInternal:(id)internal appliesToAll:(BOOL)all
 {
-  v4 = a4;
+  allCopy = all;
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if ([(NSArray *)self->_buttons indexOfObject:v6]!= 0x7FFFFFFFFFFFFFFFLL)
+  internalCopy = internal;
+  if ([(NSArray *)self->_buttons indexOfObject:internalCopy]!= 0x7FFFFFFFFFFFFFFFLL)
   {
-    [(EKUIEventStatusButtonsView *)self setSelectedAction:[(EKUIEventStatusButtonsView *)self _actionForButton:v6]];
+    [(EKUIEventStatusButtonsView *)self setSelectedAction:[(EKUIEventStatusButtonsView *)self _actionForButton:internalCopy]];
     v7 = kEKUILogHandle;
     if (os_log_type_enabled(kEKUILogHandle, OS_LOG_TYPE_DEFAULT))
     {
       v8 = MEMORY[0x1E696AD98];
       v9 = v7;
       v10 = [v8 numberWithInteger:{-[EKUIEventStatusButtonsView selectedAction](self, "selectedAction")}];
-      v11 = [MEMORY[0x1E696AD98] numberWithBool:v4];
+      v11 = [MEMORY[0x1E696AD98] numberWithBool:allCopy];
       *buf = 138543618;
       v16 = v10;
       v17 = 2114;
@@ -1096,21 +1096,21 @@ LABEL_14:
       _os_log_impl(&dword_1D3400000, v9, OS_LOG_TYPE_DEFAULT, "Selected action: [%{public}@], appliesToAll: %{public}@.", buf, 0x16u);
     }
 
-    v12 = [(EKUIEventStatusButtonsView *)self delegate];
-    v13 = [(EKUIEventStatusButtonsView *)self selectedAction];
+    delegate = [(EKUIEventStatusButtonsView *)self delegate];
+    selectedAction = [(EKUIEventStatusButtonsView *)self selectedAction];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __65__EKUIEventStatusButtonsView__buttonTappedInternal_appliesToAll___block_invoke;
     v14[3] = &unk_1E843EC60;
     v14[4] = self;
-    [v12 eventStatusButtonsView:self didSelectAction:v13 sourceView:v6 sourceRect:v4 appliesToAll:v14 ifCancelled:{*MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24)}];
+    [delegate eventStatusButtonsView:self didSelectAction:selectedAction sourceView:internalCopy sourceRect:allCopy appliesToAll:v14 ifCancelled:{*MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24)}];
   }
 }
 
-- (void)_updateSelectionToButton:(id)a3
+- (void)_updateSelectionToButton:(id)button
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  buttonCopy = button;
   if (![(EKUIEventStatusButtonsView *)self disableButtonHighlights])
   {
     v21 = 0u;
@@ -1133,7 +1133,7 @@ LABEL_14:
             objc_enumerationMutation(v5);
           }
 
-          [*(*(&v19 + 1) + 8 * v9) setSelected:*(*(&v19 + 1) + 8 * v9) == v4];
+          [*(*(&v19 + 1) + 8 * v9) setSelected:*(*(&v19 + 1) + 8 * v9) == buttonCopy];
           ++v9;
         }
 
@@ -1179,7 +1179,7 @@ LABEL_14:
   }
 }
 
-- (int64_t)_buttonIndexForAction:(int64_t)a3
+- (int64_t)_buttonIndexForAction:(int64_t)action
 {
   if (![(NSArray *)self->_buttons count])
   {
@@ -1192,7 +1192,7 @@ LABEL_14:
     v6 = [(NSArray *)self->_buttons objectAtIndexedSubscript:v5];
     v7 = [v6 tag];
 
-    if (v7 == a3)
+    if (v7 == action)
     {
       break;
     }
@@ -1206,9 +1206,9 @@ LABEL_14:
   return v5;
 }
 
-- (id)buttonForAction:(int64_t)a3
+- (id)buttonForAction:(int64_t)action
 {
-  v4 = [(EKUIEventStatusButtonsView *)self _buttonIndexForAction:a3];
+  v4 = [(EKUIEventStatusButtonsView *)self _buttonIndexForAction:action];
   if (v4 < 0)
   {
     v5 = 0;
@@ -1222,17 +1222,17 @@ LABEL_14:
   return v5;
 }
 
-+ (id)buttonTitleForAction:(int64_t)a3
++ (id)buttonTitleForAction:(int64_t)action
 {
   v4 = 0;
   v16 = *MEMORY[0x1E69E9840];
-  if (a3 <= 1023)
+  if (action <= 1023)
   {
-    if (a3 > 15)
+    if (action > 15)
     {
-      if (a3 > 127)
+      if (action > 127)
       {
-        switch(a3)
+        switch(action)
         {
           case 128:
             v5 = EventKitUIBundle();
@@ -1254,7 +1254,7 @@ LABEL_14:
 
       else
       {
-        switch(a3)
+        switch(action)
         {
           case 16:
             v5 = EventKitUIBundle();
@@ -1277,16 +1277,16 @@ LABEL_14:
       goto LABEL_57;
     }
 
-    if (a3 <= 3)
+    if (action <= 3)
     {
-      if (!a3)
+      if (!action)
       {
         goto LABEL_54;
       }
 
-      if (a3 != 1)
+      if (action != 1)
       {
-        if (a3 == 2)
+        if (action == 2)
         {
           v5 = EventKitUIBundle();
           v6 = v5;
@@ -1306,14 +1306,14 @@ LABEL_40:
       goto LABEL_52;
     }
 
-    if (a3 != 4)
+    if (action != 4)
     {
-      if (a3 == 7)
+      if (action == 7)
       {
         goto LABEL_54;
       }
 
-      if (a3 == 8)
+      if (action == 8)
       {
         v5 = EventKitUIBundle();
         v6 = v5;
@@ -1334,11 +1334,11 @@ LABEL_53:
     goto LABEL_54;
   }
 
-  if (a3 >= 0x8000)
+  if (action >= 0x8000)
   {
-    if (a3 >= 0x40000)
+    if (action >= 0x40000)
     {
-      switch(a3)
+      switch(action)
       {
         case 0x40000:
           v5 = EventKitUIBundle();
@@ -1360,7 +1360,7 @@ LABEL_53:
       goto LABEL_57;
     }
 
-    if (a3 == 0x8000)
+    if (action == 0x8000)
     {
       v5 = EventKitUIBundle();
       v6 = v5;
@@ -1368,7 +1368,7 @@ LABEL_53:
       goto LABEL_52;
     }
 
-    if (a3 == 0x10000)
+    if (action == 0x10000)
     {
       v5 = EventKitUIBundle();
       v6 = v5;
@@ -1376,7 +1376,7 @@ LABEL_53:
       goto LABEL_52;
     }
 
-    if (a3 != 0x20000)
+    if (action != 0x20000)
     {
       goto LABEL_57;
     }
@@ -1388,16 +1388,16 @@ LABEL_53:
     goto LABEL_53;
   }
 
-  if (a3 > 4095)
+  if (action > 4095)
   {
-    if (a3 == 4096)
+    if (action == 4096)
     {
       goto LABEL_40;
     }
 
-    if (a3 != 0x2000)
+    if (action != 0x2000)
     {
-      if (a3 == 0x4000)
+      if (action == 0x4000)
       {
         v5 = EventKitUIBundle();
         v6 = v5;
@@ -1415,7 +1415,7 @@ LABEL_53:
     goto LABEL_53;
   }
 
-  switch(a3)
+  switch(action)
   {
     case 1024:
       v5 = EventKitUIBundle();
@@ -1437,7 +1437,7 @@ LABEL_57:
   {
     v11 = MEMORY[0x1E696AD98];
     v12 = v10;
-    v13 = [v11 numberWithInteger:a3];
+    v13 = [v11 numberWithInteger:action];
     v14 = 138412290;
     v15 = v13;
     _os_log_impl(&dword_1D3400000, v12, OS_LOG_TYPE_ERROR, "invalid action passed to buttonTitleForAction: %@", &v14, 0xCu);
@@ -1449,17 +1449,17 @@ LABEL_54:
   return v4;
 }
 
-+ (id)buttonAccessibilityIdentifierStringForAction:(int64_t)a3
++ (id)buttonAccessibilityIdentifierStringForAction:(int64_t)action
 {
   result = 0;
   v11 = *MEMORY[0x1E69E9840];
-  if (a3 <= 1023)
+  if (action <= 1023)
   {
-    if (a3 <= 15)
+    if (action <= 15)
     {
-      if (a3 > 3)
+      if (action > 3)
       {
-        switch(a3)
+        switch(action)
         {
           case 4:
             return @"decline-button";
@@ -1472,14 +1472,14 @@ LABEL_54:
         goto LABEL_50;
       }
 
-      if (!a3)
+      if (!action)
       {
         return result;
       }
 
-      if (a3 != 1)
+      if (action != 1)
       {
-        if (a3 == 2)
+        if (action == 2)
         {
           return @"maybe-button";
         }
@@ -1490,9 +1490,9 @@ LABEL_54:
       return @"accept-button";
     }
 
-    if (a3 <= 127)
+    if (action <= 127)
     {
-      switch(a3)
+      switch(action)
       {
         case 16:
           return @"delete-event-button";
@@ -1505,9 +1505,9 @@ LABEL_54:
       goto LABEL_50;
     }
 
-    if (a3 != 128)
+    if (action != 128)
     {
-      if (a3 == 256 || a3 == 512)
+      if (action == 256 || action == 512)
       {
         return @"view-comment-button";
       }
@@ -1518,11 +1518,11 @@ LABEL_54:
     return @"ignore-button";
   }
 
-  if (a3 < 0x8000)
+  if (action < 0x8000)
   {
-    if (a3 <= 4095)
+    if (action <= 4095)
     {
-      switch(a3)
+      switch(action)
       {
         case 1024:
           return @"view-event-button";
@@ -1535,14 +1535,14 @@ LABEL_54:
       goto LABEL_50;
     }
 
-    if (a3 == 4096)
+    if (action == 4096)
     {
       return @"accept-button";
     }
 
-    if (a3 != 0x2000)
+    if (action != 0x2000)
     {
-      if (a3 == 0x4000)
+      if (action == 0x4000)
       {
         return @"reply-button";
       }
@@ -1553,9 +1553,9 @@ LABEL_54:
     return @"ignore-button";
   }
 
-  if (a3 >= 0x40000)
+  if (action >= 0x40000)
   {
-    switch(a3)
+    switch(action)
     {
       case 0x40000:
         return @"unsubscribe-calendar-button";
@@ -1568,7 +1568,7 @@ LABEL_54:
 
   else
   {
-    switch(a3)
+    switch(action)
     {
       case 0x8000:
         return @"cancel-proposed-time-button";
@@ -1585,7 +1585,7 @@ LABEL_50:
   {
     v6 = MEMORY[0x1E696AD98];
     v7 = v5;
-    v8 = [v6 numberWithInteger:a3];
+    v8 = [v6 numberWithInteger:action];
     v9 = 138412290;
     v10 = v8;
     _os_log_impl(&dword_1D3400000, v7, OS_LOG_TYPE_ERROR, "invalid action passed to buttonTitleForAction: %@", &v9, 0xCu);
@@ -1594,37 +1594,37 @@ LABEL_50:
   return 0;
 }
 
-+ (id)_appliesToAllTitleForAction:(int64_t)a3
++ (id)_appliesToAllTitleForAction:(int64_t)action
 {
   v4 = 0;
   v16 = *MEMORY[0x1E69E9840];
-  if (a3 > 1023)
+  if (action > 1023)
   {
-    if (a3 >= 0x8000)
+    if (action >= 0x8000)
     {
-      if (a3 >= 0x40000)
+      if (action >= 0x40000)
       {
-        if (a3 == 0x40000 || a3 == 0x80000 || a3 == 0x100000)
+        if (action == 0x40000 || action == 0x80000 || action == 0x100000)
         {
           goto LABEL_47;
         }
       }
 
-      else if (a3 == 0x8000 || a3 == 0x10000 || a3 == 0x20000)
+      else if (action == 0x8000 || action == 0x10000 || action == 0x20000)
       {
         goto LABEL_47;
       }
     }
 
-    else if (a3 > 4095)
+    else if (action > 4095)
     {
-      if (a3 == 4096 || a3 == 0x2000 || a3 == 0x4000)
+      if (action == 4096 || action == 0x2000 || action == 0x4000)
       {
         goto LABEL_47;
       }
     }
 
-    else if (a3 == 1024 || a3 == 1792 || a3 == 2048)
+    else if (action == 1024 || action == 1792 || action == 2048)
     {
       goto LABEL_47;
     }
@@ -1632,16 +1632,16 @@ LABEL_50:
     goto LABEL_38;
   }
 
-  if (a3 <= 15)
+  if (action <= 15)
   {
-    if (a3 > 3)
+    if (action > 3)
     {
-      if ((a3 - 7) < 2)
+      if ((action - 7) < 2)
       {
         goto LABEL_47;
       }
 
-      if (a3 == 4)
+      if (action == 4)
       {
         v5 = EventKitUIBundle();
         v6 = v5;
@@ -1652,7 +1652,7 @@ LABEL_50:
 
     else
     {
-      switch(a3)
+      switch(action)
       {
         case 0:
           goto LABEL_47;
@@ -1674,9 +1674,9 @@ LABEL_45:
     goto LABEL_38;
   }
 
-  if (a3 <= 127)
+  if (action <= 127)
   {
-    switch(a3)
+    switch(action)
     {
       case 16:
         v5 = EventKitUIBundle();
@@ -1699,7 +1699,7 @@ LABEL_46:
     goto LABEL_38;
   }
 
-  if (a3 == 128)
+  if (action == 128)
   {
     v5 = EventKitUIBundle();
     v6 = v5;
@@ -1707,7 +1707,7 @@ LABEL_46:
     goto LABEL_45;
   }
 
-  if (a3 != 256 && a3 != 512)
+  if (action != 256 && action != 512)
   {
 LABEL_38:
     v8 = kEKUILogHandle;
@@ -1715,7 +1715,7 @@ LABEL_38:
     {
       v9 = MEMORY[0x1E696AD98];
       v10 = v8;
-      v11 = [v9 numberWithInteger:a3];
+      v11 = [v9 numberWithInteger:action];
       v14 = 138412290;
       v15 = v11;
       _os_log_impl(&dword_1D3400000, v10, OS_LOG_TYPE_ERROR, "invalid action passed to buttonTitleForAction: %@", &v14, 0xCu);
@@ -1729,23 +1729,23 @@ LABEL_47:
   return v4;
 }
 
-+ (id)imageForAction:(int64_t)a3 selected:(BOOL)a4
++ (id)imageForAction:(int64_t)action selected:(BOOL)selected
 {
   v5 = 0;
   v15 = *MEMORY[0x1E69E9840];
-  if (a3 <= 1023)
+  if (action <= 1023)
   {
-    if (a3 <= 15)
+    if (action <= 15)
     {
-      if (a3 <= 3)
+      if (action <= 3)
       {
-        switch(a3)
+        switch(action)
         {
           case 0:
             goto LABEL_55;
           case 1:
             v6 = MEMORY[0x1E69DCAB8];
-            if (a4)
+            if (selected)
             {
               v7 = @"checkmark.circle.fill";
             }
@@ -1758,7 +1758,7 @@ LABEL_47:
             goto LABEL_54;
           case 2:
             v6 = MEMORY[0x1E69DCAB8];
-            if (a4)
+            if (selected)
             {
               v7 = @"questionmark.circle.fill";
             }
@@ -1774,14 +1774,14 @@ LABEL_47:
         goto LABEL_49;
       }
 
-      if (a3 != 4)
+      if (action != 4)
       {
-        if (a3 == 7)
+        if (action == 7)
         {
           goto LABEL_55;
         }
 
-        if (a3 == 8)
+        if (action == 8)
         {
           v6 = MEMORY[0x1E69DCAB8];
           v7 = @"plus";
@@ -1793,7 +1793,7 @@ LABEL_47:
 
 LABEL_43:
       v6 = MEMORY[0x1E69DCAB8];
-      if (a4)
+      if (selected)
       {
         v7 = @"xmark.circle.fill";
       }
@@ -1806,11 +1806,11 @@ LABEL_43:
       goto LABEL_54;
     }
 
-    if (a3 <= 127)
+    if (action <= 127)
     {
-      if (a3 != 16)
+      if (action != 16)
       {
-        if (a3 != 32 && a3 != 64)
+        if (action != 32 && action != 64)
         {
           goto LABEL_49;
         }
@@ -1827,9 +1827,9 @@ LABEL_40:
       goto LABEL_54;
     }
 
-    if (a3 != 128)
+    if (action != 128)
     {
-      if (a3 == 256 || a3 == 512)
+      if (action == 256 || action == 512)
       {
         goto LABEL_55;
       }
@@ -1840,11 +1840,11 @@ LABEL_40:
     goto LABEL_41;
   }
 
-  if (a3 >= 0x8000)
+  if (action >= 0x8000)
   {
-    if (a3 >= 0x40000)
+    if (action >= 0x40000)
     {
-      if (a3 != 0x40000 && a3 != 0x80000 && a3 != 0x100000)
+      if (action != 0x40000 && action != 0x80000 && action != 0x100000)
       {
         goto LABEL_49;
       }
@@ -1852,16 +1852,16 @@ LABEL_40:
       goto LABEL_40;
     }
 
-    if (a3 != 0x8000)
+    if (action != 0x8000)
     {
-      if (a3 == 0x10000)
+      if (action == 0x10000)
       {
         v6 = MEMORY[0x1E69DCAB8];
         v7 = @"bin.xmark";
         goto LABEL_54;
       }
 
-      if (a3 != 0x20000)
+      if (action != 0x20000)
       {
         goto LABEL_49;
       }
@@ -1875,16 +1875,16 @@ LABEL_41:
     goto LABEL_54;
   }
 
-  if (a3 > 4095)
+  if (action > 4095)
   {
-    if (a3 == 4096)
+    if (action == 4096)
     {
       goto LABEL_42;
     }
 
-    if (a3 != 0x2000)
+    if (action != 0x2000)
     {
-      if (a3 == 0x4000)
+      if (action == 0x4000)
       {
         goto LABEL_55;
       }
@@ -1895,12 +1895,12 @@ LABEL_41:
     goto LABEL_41;
   }
 
-  if (a3 == 1024 || a3 == 1792)
+  if (action == 1024 || action == 1792)
   {
     goto LABEL_55;
   }
 
-  if (a3 == 2048)
+  if (action == 2048)
   {
     v6 = MEMORY[0x1E69DCAB8];
     v7 = @"square.and.arrow.down";
@@ -1915,7 +1915,7 @@ LABEL_49:
   {
     v9 = MEMORY[0x1E696AD98];
     v10 = v8;
-    v11 = [v9 numberWithInteger:a3];
+    v11 = [v9 numberWithInteger:action];
     v13 = 138412290;
     v14 = v11;
     _os_log_impl(&dword_1D3400000, v10, OS_LOG_TYPE_ERROR, "invalid action passed to imageForAction: %@", &v13, 0xCu);
@@ -1927,17 +1927,17 @@ LABEL_55:
   return v5;
 }
 
-+ (BOOL)isActionDestructive:(int64_t)a3
++ (BOOL)isActionDestructive:(int64_t)destructive
 {
   v12 = *MEMORY[0x1E69E9840];
   LOBYTE(v4) = 1;
-  if (a3 > 1023)
+  if (destructive > 1023)
   {
-    if (a3 >= 0x8000)
+    if (destructive >= 0x8000)
     {
-      if (a3 >= 0x40000)
+      if (destructive >= 0x40000)
       {
-        if (a3 == 0x40000 || a3 == 0x80000 || a3 == 0x100000)
+        if (destructive == 0x40000 || destructive == 0x80000 || destructive == 0x100000)
         {
           return v4;
         }
@@ -1945,48 +1945,48 @@ LABEL_55:
 
       else
       {
-        if (a3 == 0x8000 || a3 == 0x10000)
+        if (destructive == 0x8000 || destructive == 0x10000)
         {
           return v4;
         }
 
-        if (a3 == 0x20000)
+        if (destructive == 0x20000)
         {
           goto LABEL_27;
         }
       }
     }
 
-    else if (a3 > 4095)
+    else if (destructive > 4095)
     {
-      if (a3 == 4096 || a3 == 0x2000 || a3 == 0x4000)
+      if (destructive == 4096 || destructive == 0x2000 || destructive == 0x4000)
       {
         goto LABEL_27;
       }
     }
 
-    else if (a3 == 1024 || a3 == 1792 || a3 == 2048)
+    else if (destructive == 1024 || destructive == 1792 || destructive == 2048)
     {
       goto LABEL_27;
     }
   }
 
-  else if (a3 <= 127)
+  else if (destructive <= 127)
   {
-    if ((a3 - 4) <= 0x3C)
+    if ((destructive - 4) <= 0x3C)
     {
-      if (((1 << (a3 - 4)) & 0x1000000010000019) != 0)
+      if (((1 << (destructive - 4)) & 0x1000000010000019) != 0)
       {
         goto LABEL_27;
       }
 
-      if (a3 == 16)
+      if (destructive == 16)
       {
         return v4;
       }
     }
 
-    if (a3 < 3)
+    if (destructive < 3)
     {
       goto LABEL_27;
     }
@@ -1994,12 +1994,12 @@ LABEL_55:
 
   else
   {
-    if (a3 == 128)
+    if (destructive == 128)
     {
       return v4;
     }
 
-    if (a3 == 256 || a3 == 512)
+    if (destructive == 256 || destructive == 512)
     {
       goto LABEL_27;
     }
@@ -2011,7 +2011,7 @@ LABEL_55:
   {
     v6 = MEMORY[0x1E696AD98];
     v7 = v5;
-    v8 = [v6 numberWithInteger:a3];
+    v8 = [v6 numberWithInteger:destructive];
     v10 = 138412290;
     v11 = v8;
     _os_log_impl(&dword_1D3400000, v7, OS_LOG_TYPE_ERROR, "invalid action passed to isActionDestructive: %@", &v10, 0xCu);
@@ -2023,19 +2023,19 @@ LABEL_27:
   return v4;
 }
 
-+ (id)labelColorForAction:(int64_t)a3 selected:(BOOL)a4
++ (id)labelColorForAction:(int64_t)action selected:(BOOL)selected
 {
-  if (a3 <= 1023)
+  if (action <= 1023)
   {
-    if (a3 > 127)
+    if (action > 127)
     {
-      if (a3 != 128 && a3 != 256 && a3 != 512)
+      if (action != 128 && action != 256 && action != 512)
       {
         goto LABEL_34;
       }
 
 LABEL_26:
-      if (a4)
+      if (selected)
       {
         [MEMORY[0x1E69DC888] systemWhiteColor];
       }
@@ -2044,24 +2044,24 @@ LABEL_26:
       {
         [MEMORY[0x1E69DC888] labelColor];
       }
-      a1 = ;
+      self = ;
       goto LABEL_34;
     }
 
-    if ((a3 - 4) > 0x3C)
+    if ((action - 4) > 0x3C)
     {
       goto LABEL_21;
     }
 
-    if (((1 << (a3 - 4)) & 0x1000000010000019) != 0)
+    if (((1 << (action - 4)) & 0x1000000010000019) != 0)
     {
       goto LABEL_26;
     }
 
-    if (a3 != 16)
+    if (action != 16)
     {
 LABEL_21:
-      if (a3 >= 3)
+      if (action >= 3)
       {
         goto LABEL_34;
       }
@@ -2070,21 +2070,21 @@ LABEL_21:
     }
 
 LABEL_33:
-    a1 = [MEMORY[0x1E69DC888] systemRedColor];
+    self = [MEMORY[0x1E69DC888] systemRedColor];
     goto LABEL_34;
   }
 
-  if (a3 >= 0x8000)
+  if (action >= 0x8000)
   {
-    if (a3 >= 0x40000)
+    if (action >= 0x40000)
     {
-      if (a3 == 0x40000 || a3 == 0x100000 || a3 == 0x80000)
+      if (action == 0x40000 || action == 0x100000 || action == 0x80000)
       {
         goto LABEL_33;
       }
     }
 
-    else if (a3 == 0x8000 || a3 == 0x10000 || a3 == 0x20000)
+    else if (action == 0x8000 || action == 0x10000 || action == 0x20000)
     {
       goto LABEL_33;
     }
@@ -2092,16 +2092,16 @@ LABEL_33:
 
   else
   {
-    if (a3 > 4095)
+    if (action > 4095)
     {
-      if (a3 == 4096)
+      if (action == 4096)
       {
         goto LABEL_26;
       }
 
-      if (a3 != 0x2000)
+      if (action != 0x2000)
       {
-        if (a3 != 0x4000)
+        if (action != 0x4000)
         {
           goto LABEL_34;
         }
@@ -2112,7 +2112,7 @@ LABEL_33:
       goto LABEL_33;
     }
 
-    if (a3 == 1024 || a3 == 1792 || a3 == 2048)
+    if (action == 1024 || action == 1792 || action == 2048)
     {
       goto LABEL_26;
     }
@@ -2120,15 +2120,15 @@ LABEL_33:
 
 LABEL_34:
 
-  return a1;
+  return self;
 }
 
-- (id)backgroundColorForAction:(int64_t)a3 selected:(BOOL)a4 inboxStyle:(BOOL)a5 inPadSidebar:(BOOL)a6
+- (id)backgroundColorForAction:(int64_t)action selected:(BOOL)selected inboxStyle:(BOOL)style inPadSidebar:(BOOL)sidebar
 {
-  if (!a4)
+  if (!selected)
   {
     v6 = MEMORY[0x1E69DC888];
-    if (a5)
+    if (style)
     {
       self = [MEMORY[0x1E69DC888] tertiarySystemFillColor];
       goto LABEL_10;
@@ -2137,41 +2137,41 @@ LABEL_34:
     goto LABEL_9;
   }
 
-  if (a3 > 1023)
+  if (action > 1023)
   {
-    if (a3 >= 0x8000)
+    if (action >= 0x8000)
     {
-      if (a3 >= 0x40000)
+      if (action >= 0x40000)
       {
-        if (a3 == 0x40000 || a3 == 0x80000 || a3 == 0x100000)
+        if (action == 0x40000 || action == 0x80000 || action == 0x100000)
         {
           goto LABEL_6;
         }
       }
 
-      else if (a3 == 0x8000 || a3 == 0x10000 || a3 == 0x20000)
+      else if (action == 0x8000 || action == 0x10000 || action == 0x20000)
       {
         goto LABEL_6;
       }
     }
 
-    else if (a3 > 4095)
+    else if (action > 4095)
     {
-      if (a3 == 4096 || a3 == 0x2000 || a3 == 0x4000)
+      if (action == 4096 || action == 0x2000 || action == 0x4000)
       {
         goto LABEL_6;
       }
     }
 
-    else if (a3 == 1024 || a3 == 1792 || a3 == 2048)
+    else if (action == 1024 || action == 1792 || action == 2048)
     {
       goto LABEL_6;
     }
   }
 
-  else if (a3 > 127)
+  else if (action > 127)
   {
-    if (a3 == 128 || a3 == 256 || a3 == 512)
+    if (action == 128 || action == 256 || action == 512)
     {
       goto LABEL_6;
     }
@@ -2179,9 +2179,9 @@ LABEL_34:
 
   else
   {
-    if ((a3 - 2) <= 0x3E)
+    if ((action - 2) <= 0x3E)
     {
-      if (((1 << (a3 - 2)) & 0x4000000040004060) != 0)
+      if (((1 << (action - 2)) & 0x4000000040004060) != 0)
       {
 LABEL_6:
         v6 = MEMORY[0x1E69DC888];
@@ -2190,25 +2190,25 @@ LABEL_9:
         goto LABEL_10;
       }
 
-      if (a3 == 2)
+      if (action == 2)
       {
         self = [MEMORY[0x1E69DC888] systemOrangeColor];
         goto LABEL_10;
       }
 
-      if (a3 == 4)
+      if (action == 4)
       {
         self = [MEMORY[0x1E69DC888] systemRedColor];
         goto LABEL_10;
       }
     }
 
-    if (!a3)
+    if (!action)
     {
       goto LABEL_6;
     }
 
-    if (a3 == 1)
+    if (action == 1)
     {
       self = [MEMORY[0x1E69DC888] systemGreenColor];
     }
@@ -2219,19 +2219,19 @@ LABEL_10:
   return self;
 }
 
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region
 {
   buttons = self->_buttons;
-  v6 = a4;
-  v7 = [(NSArray *)buttons firstObject];
-  v8 = [v7 titleLabel];
-  [v8 frame];
+  requestCopy = request;
+  firstObject = [(NSArray *)buttons firstObject];
+  titleLabel = [firstObject titleLabel];
+  [titleLabel frame];
   v10 = v9;
   v12 = v11;
   v14 = v13;
   v16 = v15;
 
-  [v6 location];
+  [requestCopy location];
   v18 = v17;
   v20 = v19;
 
@@ -2254,17 +2254,17 @@ LABEL_10:
   return v21;
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
-  v4 = [(NSArray *)self->_buttons firstObject:a3];
-  v5 = [v4 titleLabel];
-  [v5 frame];
+  v4 = [(NSArray *)self->_buttons firstObject:interaction];
+  titleLabel = [v4 titleLabel];
+  [titleLabel frame];
   v17 = CGRectInset(v16, -6.0, -6.0);
   x = v17.origin.x;
   y = v17.origin.y;
   width = v17.size.width;
   height = v17.size.height;
-  v10 = [objc_alloc(MEMORY[0x1E69DD070]) initWithView:v5];
+  v10 = [objc_alloc(MEMORY[0x1E69DD070]) initWithView:titleLabel];
   v11 = [MEMORY[0x1E69DCD98] effectWithPreview:v10];
   v12 = [MEMORY[0x1E69DCDC8] shapeWithRoundedRect:{x, y, width, height}];
   v13 = [MEMORY[0x1E69DCDD0] styleWithEffect:v11 shape:v12];
@@ -2272,11 +2272,11 @@ LABEL_10:
   return v13;
 }
 
-- (void)setTextSizeMode:(int64_t)a3
+- (void)setTextSizeMode:(int64_t)mode
 {
-  if (self->_textSizeMode != a3)
+  if (self->_textSizeMode != mode)
   {
-    self->_textSizeMode = a3;
+    self->_textSizeMode = mode;
     [(EKUIEventStatusButtonsView *)self _defaultFontSizeForButtons];
     [(EKUIEventStatusButtonsView *)self _updateButtonFontsWithSize:?];
     if (MEMORY[0x1D38B98D0]([(EKUIEventStatusButtonsView *)self setNeedsLayout]))
@@ -2311,20 +2311,20 @@ LABEL_10:
 
 - (UIButton)trailingButton
 {
-  v3 = [(NSArray *)self->_buttons count];
-  if (v3)
+  lastObject = [(NSArray *)self->_buttons count];
+  if (lastObject)
   {
-    v3 = [(NSArray *)self->_buttons lastObject];
+    lastObject = [(NSArray *)self->_buttons lastObject];
   }
 
-  return v3;
+  return lastObject;
 }
 
-- (void)setActions:(id)a3
+- (void)setActions:(id)actions
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (([v5 isEqualToArray:self->_actions] & 1) == 0)
+  actionsCopy = actions;
+  if (([actionsCopy isEqualToArray:self->_actions] & 1) == 0)
   {
     v6 = kEKUILogHandle;
     if (os_log_type_enabled(kEKUILogHandle, OS_LOG_TYPE_DEBUG))
@@ -2333,33 +2333,33 @@ LABEL_10:
       v8 = 136315906;
       v9 = "[EKUIEventStatusButtonsView setActions:]";
       v10 = 2112;
-      v11 = self;
+      selfCopy = self;
       v12 = 2112;
-      v13 = actions;
+      actionsCopy2 = actions;
       v14 = 2112;
-      v15 = v5;
+      v15 = actionsCopy;
       _os_log_impl(&dword_1D3400000, v6, OS_LOG_TYPE_DEBUG, "%s: Action set on status buttons [%@] changed from old actions [%@] to new actions [%@]", &v8, 0x2Au);
     }
 
-    objc_storeStrong(&self->_actions, a3);
+    objc_storeStrong(&self->_actions, actions);
     [(EKUIEventStatusButtonsView *)self _setupButtons];
   }
 }
 
-- (void)setButtonsTouchInsets:(UIEdgeInsets)a3
+- (void)setButtonsTouchInsets:(UIEdgeInsets)insets
 {
   v17 = *MEMORY[0x1E69E9840];
   p_buttonsTouchInsets = &self->_buttonsTouchInsets;
-  v4.f64[0] = a3.top;
-  v4.f64[1] = a3.left;
-  v5.f64[0] = a3.bottom;
-  v5.f64[1] = a3.right;
+  v4.f64[0] = insets.top;
+  v4.f64[1] = insets.left;
+  v5.f64[0] = insets.bottom;
+  v5.f64[1] = insets.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_buttonsTouchInsets.top, v4), vceqq_f64(*&self->_buttonsTouchInsets.bottom, v5)))) & 1) == 0)
   {
-    p_buttonsTouchInsets->top = a3.top;
-    self->_buttonsTouchInsets.left = a3.left;
-    self->_buttonsTouchInsets.bottom = a3.bottom;
-    self->_buttonsTouchInsets.right = a3.right;
+    p_buttonsTouchInsets->top = insets.top;
+    self->_buttonsTouchInsets.left = insets.left;
+    self->_buttonsTouchInsets.bottom = insets.bottom;
+    self->_buttonsTouchInsets.right = insets.right;
     [(EKUIEventStatusButtonsView *)self _setTouchInsets:?];
     v14 = 0u;
     v15 = 0u;
@@ -2391,11 +2391,11 @@ LABEL_10:
   }
 }
 
-- (void)setSelectedAction:(int64_t)a3
+- (void)setSelectedAction:(int64_t)action
 {
-  if (self->_selectedAction != a3)
+  if (self->_selectedAction != action)
   {
-    self->_selectedAction = a3;
+    self->_selectedAction = action;
     v5 = [(EKUIEventStatusButtonsView *)self buttonForAction:?];
     [(EKUIEventStatusButtonsView *)self _updateSelectionToButton:v5];
 
@@ -2403,13 +2403,13 @@ LABEL_10:
   }
 }
 
-- (void)setDisableButtonHighlights:(BOOL)a3
+- (void)setDisableButtonHighlights:(BOOL)highlights
 {
   v13 = *MEMORY[0x1E69E9840];
-  if (self->_disableButtonHighlights != a3)
+  if (self->_disableButtonHighlights != highlights)
   {
-    self->_disableButtonHighlights = a3;
-    if (a3)
+    self->_disableButtonHighlights = highlights;
+    if (highlights)
     {
       v10 = 0u;
       v11 = 0u;
@@ -2444,13 +2444,13 @@ LABEL_10:
   }
 }
 
-- (void)setShouldUseVerticalLayout:(BOOL)a3
+- (void)setShouldUseVerticalLayout:(BOOL)layout
 {
   v16 = *MEMORY[0x1E69E9840];
-  if (self->_shouldUseVerticalLayout != a3)
+  if (self->_shouldUseVerticalLayout != layout)
   {
-    v3 = a3;
-    self->_shouldUseVerticalLayout = a3;
+    layoutCopy = layout;
+    self->_shouldUseVerticalLayout = layout;
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
@@ -2461,7 +2461,7 @@ LABEL_10:
     {
       v7 = v6;
       v8 = *v12;
-      if (v3)
+      if (layoutCopy)
       {
         v9 = 4;
       }
@@ -2495,7 +2495,7 @@ LABEL_10:
   }
 }
 
-- (void)_updateButtonFontsWithSize:(double)a3
+- (void)_updateButtonFontsWithSize:(double)size
 {
   v18 = *MEMORY[0x1E69E9840];
   if (self->_layoutButtons)
@@ -2520,9 +2520,9 @@ LABEL_10:
           }
 
           v10 = *(*(&v13 + 1) + 8 * i);
-          v11 = [v10 titleLabel];
-          v12 = -[EKUIEventStatusButtonsView _fontWithSize:selected:](self, "_fontWithSize:selected:", [v10 isSelected], a3);
-          [v11 setFont:v12];
+          titleLabel = [v10 titleLabel];
+          v12 = -[EKUIEventStatusButtonsView _fontWithSize:selected:](self, "_fontWithSize:selected:", [v10 isSelected], size);
+          [titleLabel setFont:v12];
         }
 
         v7 = [(NSArray *)v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -2533,10 +2533,10 @@ LABEL_10:
   }
 }
 
-- (void)_updateButtonFonts:(id)a3
+- (void)_updateButtonFonts:(id)fonts
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  fontsCopy = fonts;
   if (self->_layoutButtons)
   {
     v13 = 0u;
@@ -2559,8 +2559,8 @@ LABEL_10:
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v11 + 1) + 8 * v9) titleLabel];
-          [v10 setFont:v4];
+          titleLabel = [*(*(&v11 + 1) + 8 * v9) titleLabel];
+          [titleLabel setFont:fontsCopy];
 
           ++v9;
         }
@@ -2574,16 +2574,16 @@ LABEL_10:
   }
 }
 
-- (void)_updateButtonFontsWithOverrideSize:(double)a3
+- (void)_updateButtonFontsWithOverrideSize:(double)size
 {
-  v5 = [(EKUIEventStatusButtonsView *)self delegate];
+  delegate = [(EKUIEventStatusButtonsView *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(EKUIEventStatusButtonsView *)self delegate];
-    v8 = [v7 eventStatusButtonsViewButtonFont:self];
-    v9 = [v8 fontWithSize:a3];
+    delegate2 = [(EKUIEventStatusButtonsView *)self delegate];
+    v8 = [delegate2 eventStatusButtonsViewButtonFont:self];
+    v9 = [v8 fontWithSize:size];
 
     [(EKUIEventStatusButtonsView *)self _updateButtonFonts:v9];
   }
@@ -2591,7 +2591,7 @@ LABEL_10:
   else
   {
 
-    [(EKUIEventStatusButtonsView *)self _updateButtonFontsWithSize:a3];
+    [(EKUIEventStatusButtonsView *)self _updateButtonFontsWithSize:size];
   }
 }
 
@@ -2606,24 +2606,24 @@ LABEL_10:
   return result;
 }
 
-- (id)_fontWithSize:(double)a3 selected:(BOOL)a4
+- (id)_fontWithSize:(double)size selected:(BOOL)selected
 {
   if (MEMORY[0x1D38B98D0](self, a2))
   {
-    if (a4)
+    if (selected)
     {
-      v6 = [MEMORY[0x1E69DB878] systemFontOfSize:a3 weight:*MEMORY[0x1E69DB970]];
+      v6 = [MEMORY[0x1E69DB878] systemFontOfSize:size weight:*MEMORY[0x1E69DB970]];
       goto LABEL_7;
     }
   }
 
-  else if (a4)
+  else if (selected)
   {
-    v6 = [MEMORY[0x1E69DB878] boldSystemFontOfSize:a3];
+    v6 = [MEMORY[0x1E69DB878] boldSystemFontOfSize:size];
     goto LABEL_7;
   }
 
-  v6 = [MEMORY[0x1E69DB878] systemFontOfSize:a3];
+  v6 = [MEMORY[0x1E69DB878] systemFontOfSize:size];
 LABEL_7:
 
   return v6;
@@ -2631,14 +2631,14 @@ LABEL_7:
 
 - (double)_updateFontFromDelegate
 {
-  v3 = [(EKUIEventStatusButtonsView *)self delegate];
+  delegate = [(EKUIEventStatusButtonsView *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
-  v5 = [(EKUIEventStatusButtonsView *)self delegate];
-  v6 = v5;
+  delegate2 = [(EKUIEventStatusButtonsView *)self delegate];
+  v6 = delegate2;
   if (v4)
   {
-    v7 = [v5 eventStatusButtonsViewButtonFont:self];
+    v7 = [delegate2 eventStatusButtonsViewButtonFont:self];
 
     [(EKUIEventStatusButtonsView *)self _updateButtonFonts:v7];
     [v7 pointSize];
@@ -2665,14 +2665,14 @@ LABEL_7:
 {
   if (self->_layoutButtons)
   {
-    v3 = [(EKUIEventStatusButtonsView *)self delegate];
+    delegate = [(EKUIEventStatusButtonsView *)self delegate];
     v4 = objc_opt_respondsToSelector();
 
-    v5 = [(EKUIEventStatusButtonsView *)self delegate];
-    v6 = v5;
+    delegate2 = [(EKUIEventStatusButtonsView *)self delegate];
+    v6 = delegate2;
     if (v4)
     {
-      v7 = [v5 eventStatusButtonsViewButtonFont:self];
+      v7 = [delegate2 eventStatusButtonsViewButtonFont:self];
 
       [v7 pointSize];
       v9 = v8;
@@ -2684,8 +2684,8 @@ LABEL_7:
 
     if (v10)
     {
-      v11 = [(EKUIEventStatusButtonsView *)self delegate];
-      [v11 eventStatusButtonsViewButtonFontSize:self];
+      delegate3 = [(EKUIEventStatusButtonsView *)self delegate];
+      [delegate3 eventStatusButtonsViewButtonFontSize:self];
       v9 = v12;
 
       return v9;
@@ -2762,14 +2762,14 @@ LABEL_22:
 
     while ([(NSArray *)self->_buttons count]== 3)
     {
-      v13 = [(EKUIEventStatusButtonsView *)self leadingButton];
-      v14 = _CachedSizeForButton(v13);
+      leadingButton = [(EKUIEventStatusButtonsView *)self leadingButton];
+      v14 = _CachedSizeForButton(leadingButton);
 
-      v15 = [(EKUIEventStatusButtonsView *)self centerButton];
-      v16 = _CachedSizeForButton(v15);
+      centerButton = [(EKUIEventStatusButtonsView *)self centerButton];
+      v16 = _CachedSizeForButton(centerButton);
 
-      v17 = [(EKUIEventStatusButtonsView *)self trailingButton];
-      v18 = _CachedSizeForButton(v17);
+      trailingButton = [(EKUIEventStatusButtonsView *)self trailingButton];
+      v18 = _CachedSizeForButton(trailingButton);
 
       [(EKUIEventStatusButtonsView *)self bounds];
       Width = CGRectGetWidth(v34);
@@ -2806,22 +2806,22 @@ LABEL_4:
     [(EKUIEventStatusButtonsView *)self setNeedsUpdateConstraints];
   }
 
-  v8 = [(EKUIEventStatusButtonsView *)self delegate];
-  [v8 eventStatusButtonsView:self calculatedFontSizeToFit:v7];
+  delegate = [(EKUIEventStatusButtonsView *)self delegate];
+  [delegate eventStatusButtonsView:self calculatedFontSizeToFit:v7];
 
   if (v5)
   {
-    v9 = [(NSArray *)self->_buttons firstObject];
-    [v9 layoutIfNeeded];
+    firstObject = [(NSArray *)self->_buttons firstObject];
+    [firstObject layoutIfNeeded];
   }
 
-  v10 = [(EKUIEventStatusButtonsView *)self delegate];
+  delegate2 = [(EKUIEventStatusButtonsView *)self delegate];
   v11 = objc_opt_respondsToSelector();
 
   if (v11)
   {
-    v12 = [(EKUIEventStatusButtonsView *)self delegate];
-    [v12 statusButtonsDidLayout];
+    delegate3 = [(EKUIEventStatusButtonsView *)self delegate];
+    [delegate3 statusButtonsDidLayout];
   }
 }
 

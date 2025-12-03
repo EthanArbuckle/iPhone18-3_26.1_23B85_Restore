@@ -1,28 +1,28 @@
 @interface CNTestQuickActionViewContainer
-- (CNTestQuickActionViewContainer)initWithActionTypes:(id)a3;
-- (id)viewForActionType:(id)a3;
+- (CNTestQuickActionViewContainer)initWithActionTypes:(id)types;
+- (id)viewForActionType:(id)type;
 @end
 
 @implementation CNTestQuickActionViewContainer
 
-- (id)viewForActionType:(id)a3
+- (id)viewForActionType:(id)type
 {
-  v4 = a3;
-  v5 = [(CNTestQuickActionViewContainer *)self actionViewsByActionType];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  typeCopy = type;
+  actionViewsByActionType = [(CNTestQuickActionViewContainer *)self actionViewsByActionType];
+  v6 = [actionViewsByActionType objectForKeyedSubscript:typeCopy];
 
   return v6;
 }
 
-- (CNTestQuickActionViewContainer)initWithActionTypes:(id)a3
+- (CNTestQuickActionViewContainer)initWithActionTypes:(id)types
 {
-  v4 = a3;
+  typesCopy = types;
   v11.receiver = self;
   v11.super_class = CNTestQuickActionViewContainer;
   v5 = [(CNTestQuickActionViewContainer *)&v11 init];
   if (v5)
   {
-    v6 = [v4 _cn_indexBy:*MEMORY[0x1E6996520]];
+    v6 = [typesCopy _cn_indexBy:*MEMORY[0x1E6996520]];
     v7 = [v6 _cn_map:&__block_literal_global_35240];
     actionViewsByActionType = v5->_actionViewsByActionType;
     v5->_actionViewsByActionType = v7;

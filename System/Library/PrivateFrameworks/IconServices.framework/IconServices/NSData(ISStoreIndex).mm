@@ -6,8 +6,8 @@
 
 + (id)_ISStoreIndex_mappedDataWithURL:()ISStoreIndex
 {
-  v3 = [a3 path];
-  v4 = open([v3 UTF8String], 0);
+  path = [a3 path];
+  v4 = open([path UTF8String], 0);
   if (v4 == -1)
   {
     v8 = _ISDefaultLog();

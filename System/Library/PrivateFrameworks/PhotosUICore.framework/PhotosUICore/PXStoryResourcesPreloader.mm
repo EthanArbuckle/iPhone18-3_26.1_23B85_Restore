@@ -1,44 +1,44 @@
 @interface PXStoryResourcesPreloader
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)currentPlaybackTime;
-- (BOOL)_isImagePreloadingNeededForClipInfo:(id *)a3;
+- (BOOL)_isImagePreloadingNeededForClipInfo:(id *)info;
 - (BOOL)isLoadingLikelyToKeepUpWithPlayback;
 - (NSArray)loadedTimeRanges;
 - (NSError)error;
 - (NSString)diagnosticDescription;
 - (PXStoryResourcesPreloader)init;
-- (PXStoryResourcesPreloader)initWithMediaProvider:(id)a3 displayScale:(double)a4 videoSessionManager:(id)a5 loadingStatusReporter:(id)a6 storyQueue:(id)a7 isExporting:(BOOL)a8 isInline:(BOOL)a9 limitVideoDownloadQuality:(BOOL)a10;
+- (PXStoryResourcesPreloader)initWithMediaProvider:(id)provider displayScale:(double)scale videoSessionManager:(id)manager loadingStatusReporter:(id)reporter storyQueue:(id)queue isExporting:(BOOL)exporting isInline:(BOOL)inline limitVideoDownloadQuality:(BOOL)self0;
 - (PXStoryResourcesPreloadingRequest)currentRequest;
 - (float)loadingFractionComplete;
 - (id)previousRequest;
 - (int64_t)currentSegmentIdentifier;
 - (int64_t)lagsCount;
-- (void)_accumulateLoadedTimeRange:(id *)a3 moreExpected:(BOOL)a4;
-- (void)_estimationNoteClipWithPlaybackStyle:(int64_t)a3 loadedWithLoadingTime:(double)a4;
-- (void)_estimationNoteLoadingSegments:(id)a3 loadedSegments:(id)a4;
-- (void)_estimationNoteSessionStartedWithSegmentsToLoad:(id)a3 preloadableClipsCounts:(id *)a4 inTimeline:(id)a5;
+- (void)_accumulateLoadedTimeRange:(id *)range moreExpected:(BOOL)expected;
+- (void)_estimationNoteClipWithPlaybackStyle:(int64_t)style loadedWithLoadingTime:(double)time;
+- (void)_estimationNoteLoadingSegments:(id)segments loadedSegments:(id)loadedSegments;
+- (void)_estimationNoteSessionStartedWithSegmentsToLoad:(id)load preloadableClipsCounts:(id *)counts inTimeline:(id)timeline;
 - (void)_estimationQueue_updateEstimation;
 - (void)_invalidateEstimation;
 - (void)_invalidateProcessing;
-- (void)_noteLoadingEndedForClip:(id *)a3 inSegment:(int64_t)a4 resourceType:(id)a5 resourceIdentifier:(id)a6 timeRange:(id *)a7 error:(id)a8 loadingTime:(double)a9 playbackStyle:(int64_t)a10;
-- (void)_noteLoadingStartedForClipInSegment:(int64_t)a3;
-- (void)_noteSessionStartedWithLoadedSegments:(id)a3 segmentsToLoad:(id)a4 preloadableClipsCounts:(id *)a5 inTimeline:(id)a6;
-- (void)_performChangesOnStoryQueue:(id)a3;
-- (void)_stateQueue_accumulateLoadedTimeRange:(id *)a3 moreExpected:(BOOL)a4;
-- (void)_timelineReadingQueue_loadResourcesForClipsInSegment:(int64_t)a3 request:(id)a4 clipLoadingGroup:(id)a5;
-- (void)_timelineReadingQueue_processRequest:(id)a3 previousRequest:(id)a4;
-- (void)_timelineReadingQueue_sessionStartedWithAlreadyLoadedSegments:(id)a3 segmentsToLoad:(id)a4 preloadableClipsCounts:(id *)a5 request:(id)a6;
+- (void)_noteLoadingEndedForClip:(id *)clip inSegment:(int64_t)segment resourceType:(id)type resourceIdentifier:(id)identifier timeRange:(id *)range error:(id)error loadingTime:(double)time playbackStyle:(int64_t)self0;
+- (void)_noteLoadingStartedForClipInSegment:(int64_t)segment;
+- (void)_noteSessionStartedWithLoadedSegments:(id)segments segmentsToLoad:(id)load preloadableClipsCounts:(id *)counts inTimeline:(id)timeline;
+- (void)_performChangesOnStoryQueue:(id)queue;
+- (void)_stateQueue_accumulateLoadedTimeRange:(id *)range moreExpected:(BOOL)expected;
+- (void)_timelineReadingQueue_loadResourcesForClipsInSegment:(int64_t)segment request:(id)request clipLoadingGroup:(id)group;
+- (void)_timelineReadingQueue_processRequest:(id)request previousRequest:(id)previousRequest;
+- (void)_timelineReadingQueue_sessionStartedWithAlreadyLoadedSegments:(id)segments segmentsToLoad:(id)load preloadableClipsCounts:(id *)counts request:(id)request;
 - (void)_updateEstimation;
 - (void)_updateProcessing;
 - (void)dealloc;
 - (void)didPerformChanges;
-- (void)performChanges:(id)a3;
-- (void)setCurrentPlaybackTime:(id *)a3;
-- (void)setCurrentRequest:(id)a3;
-- (void)setCurrentSegmentIdentifier:(int64_t)a3;
-- (void)setError:(id)a3;
-- (void)setIsLoadingLikelyToKeepUpWithPlayback:(BOOL)a3;
-- (void)setLoadingFractionComplete:(float)a3;
-- (void)startProcessingRequest:(id)a3;
+- (void)performChanges:(id)changes;
+- (void)setCurrentPlaybackTime:(id *)time;
+- (void)setCurrentRequest:(id)request;
+- (void)setCurrentSegmentIdentifier:(int64_t)identifier;
+- (void)setError:(id)error;
+- (void)setIsLoadingLikelyToKeepUpWithPlayback:(BOOL)playback;
+- (void)setLoadingFractionComplete:(float)complete;
+- (void)startProcessingRequest:(id)request;
 @end
 
 @implementation PXStoryResourcesPreloader
@@ -47,9 +47,9 @@
 {
   v20 = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(MEMORY[0x1E696AD60]);
-  v4 = [(PXStoryResourcesPreloader *)self loadingOperationQueue];
-  v5 = [v4 operations];
-  v6 = [v5 copy];
+  loadingOperationQueue = [(PXStoryResourcesPreloader *)self loadingOperationQueue];
+  operations = [loadingOperationQueue operations];
+  v6 = [operations copy];
 
   v17 = 0u;
   v18 = 0u;
@@ -73,8 +73,8 @@
         v12 = *(*(&v15 + 1) + 8 * i);
         if (objc_opt_respondsToSelector())
         {
-          v13 = [v12 diagnosticDescription];
-          [v3 appendFormat:@"%@\n", v13];
+          diagnosticDescription = [v12 diagnosticDescription];
+          [v3 appendFormat:@"%@\n", diagnosticDescription];
         }
       }
 
@@ -87,9 +87,9 @@
   return v3;
 }
 
-- (BOOL)_isImagePreloadingNeededForClipInfo:(id *)a3
+- (BOOL)_isImagePreloadingNeededForClipInfo:(id *)info
 {
-  var1 = a3->var1;
+  var1 = info->var1;
   if (var1 == 5)
   {
 
@@ -98,7 +98,7 @@
 
   else if (var1 == 1)
   {
-    var5 = a3->var5;
+    var5 = info->var5;
     if ((var5 - 3) >= 3)
     {
       return (var5 - 1) <= 1;
@@ -116,22 +116,22 @@
   }
 }
 
-- (void)_timelineReadingQueue_loadResourcesForClipsInSegment:(int64_t)a3 request:(id)a4 clipLoadingGroup:(id)a5
+- (void)_timelineReadingQueue_loadResourcesForClipsInSegment:(int64_t)segment request:(id)request clipLoadingGroup:(id)group
 {
-  v8 = a4;
-  v9 = a5;
+  requestCopy = request;
+  groupCopy = group;
   [(PXStoryResourcesPreloader *)self log];
   objc_claimAutoreleasedReturnValue();
   [(PXStoryResourcesPreloader *)self logContext];
   [(PXStoryResourcesPreloader *)self loadingStatusReporter];
   objc_claimAutoreleasedReturnValue();
-  v10 = [v8 timeline];
-  if (v10)
+  timeline = [requestCopy timeline];
+  if (timeline)
   {
-    [v10 timeRangeForSegmentWithIdentifier:a3];
+    [timeline timeRangeForSegmentWithIdentifier:segment];
   }
 
-  [v8 timeline];
+  [requestCopy timeline];
   [objc_claimAutoreleasedReturnValue() size];
   PXRectWithOriginAndSize();
 }
@@ -440,28 +440,28 @@ void __107__PXStoryResourcesPreloader__timelineReadingQueue_loadResourcesForClip
   PXTimebaseConversionFactor();
 }
 
-- (void)_timelineReadingQueue_processRequest:(id)a3 previousRequest:(id)a4
+- (void)_timelineReadingQueue_processRequest:(id)request previousRequest:(id)previousRequest
 {
   v15 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v6 && ([v6 isCancelled] & 1) == 0)
+  requestCopy = request;
+  previousRequestCopy = previousRequest;
+  if (requestCopy && ([requestCopy isCancelled] & 1) == 0)
   {
     v8 = PLStoryGetLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
-      v9 = [v6 timeline];
+      timeline = [requestCopy timeline];
       buf[0] = 138412546;
-      *&buf[1] = v9;
+      *&buf[1] = timeline;
       v13 = 2048;
-      v14 = [v6 startingSegmentIdentifier];
+      startingSegmentIdentifier = [requestCopy startingSegmentIdentifier];
       _os_log_impl(&dword_1A3C1C000, v8, OS_LOG_TYPE_INFO, "[Buffering] Starting for timeline: %@, starting segment %ld", buf, 0x16u);
     }
 
-    v10 = [v6 timeline];
-    if (![v6 shouldIgnoreStartingSegmentIdentifier] || objc_msgSend(v10, "numberOfSegments") > 2)
+    timeline2 = [requestCopy timeline];
+    if (![requestCopy shouldIgnoreStartingSegmentIdentifier] || objc_msgSend(timeline2, "numberOfSegments") > 2)
     {
-      [v6 timeline];
+      [requestCopy timeline];
       [objc_claimAutoreleasedReturnValue() size];
       PXRectWithOriginAndSize();
     }
@@ -595,29 +595,29 @@ uint64_t __82__PXStoryResourcesPreloader__timelineReadingQueue_processRequest_pr
   return result;
 }
 
-- (void)_timelineReadingQueue_sessionStartedWithAlreadyLoadedSegments:(id)a3 segmentsToLoad:(id)a4 preloadableClipsCounts:(id *)a5 request:(id)a6
+- (void)_timelineReadingQueue_sessionStartedWithAlreadyLoadedSegments:(id)segments segmentsToLoad:(id)load preloadableClipsCounts:(id *)counts request:(id)request
 {
-  v10 = a6;
-  v11 = a4;
-  v12 = a3;
-  v13 = [v10 timeline];
-  v16 = *&a5->var0;
-  *&v17 = a5->var2;
-  [(PXStoryResourcesPreloader *)self _noteSessionStartedWithLoadedSegments:v12 segmentsToLoad:v11 preloadableClipsCounts:&v16 inTimeline:v13];
+  requestCopy = request;
+  loadCopy = load;
+  segmentsCopy = segments;
+  timeline = [requestCopy timeline];
+  v16 = *&counts->var0;
+  *&v17 = counts->var2;
+  [(PXStoryResourcesPreloader *)self _noteSessionStartedWithLoadedSegments:segmentsCopy segmentsToLoad:loadCopy preloadableClipsCounts:&v16 inTimeline:timeline];
 
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __137__PXStoryResourcesPreloader__timelineReadingQueue_sessionStartedWithAlreadyLoadedSegments_segmentsToLoad_preloadableClipsCounts_request___block_invoke;
   v19[3] = &unk_1E774A7B8;
   v19[4] = self;
-  v20 = v10;
-  v14 = v10;
-  [v12 enumerateIndexesUsingBlock:v19];
+  v20 = requestCopy;
+  v14 = requestCopy;
+  [segmentsCopy enumerateIndexesUsingBlock:v19];
   v17 = 0u;
   v18 = 0u;
   v16 = 0u;
   [(PXStoryResourcesPreloader *)self _accumulateLoadedTimeRange:&v16 moreExpected:0];
-  v15 = [v12 mutableCopy];
+  v15 = [segmentsCopy mutableCopy];
 
   [(PXStoryResourcesPreloader *)self setTimelineReadingQueue_loadedSegments:v15];
 }
@@ -643,9 +643,9 @@ void __137__PXStoryResourcesPreloader__timelineReadingQueue_sessionStartedWithAl
 - (void)_estimationQueue_updateEstimation
 {
   v78 = *MEMORY[0x1E69E9840];
-  v4 = [(PXStoryResourcesPreloader *)self currentRequest];
-  v5 = v4;
-  if (v4 && ([v4 isCancelled] & 1) == 0)
+  currentRequest = [(PXStoryResourcesPreloader *)self currentRequest];
+  v5 = currentRequest;
+  if (currentRequest && ([currentRequest isCancelled] & 1) == 0)
   {
     v6 = 0.0;
     if (self->_estimationQueue_sessionStarted)
@@ -656,29 +656,29 @@ void __137__PXStoryResourcesPreloader__timelineReadingQueue_sessionStartedWithAl
 
     [(PXStoryResourcesPreloader *)self logContext];
     v8 = self->_estimationQueue_currentSessionTimeline;
-    v9 = [(PXStoryResourcesPreloader *)self currentSegmentIdentifier];
-    v10 = [v5 startingSegmentIdentifier];
-    v11 = [v5 timeline];
+    currentSegmentIdentifier = [(PXStoryResourcesPreloader *)self currentSegmentIdentifier];
+    startingSegmentIdentifier = [v5 startingSegmentIdentifier];
+    timeline = [v5 timeline];
 
-    if (v8 != v11)
+    if (v8 != timeline)
     {
-      v12 = [v5 timeline];
-      v13 = [(PXStoryTimeline *)v8 identifiersOfSegmentsMatchingSegmentWithIdentifier:v9 inTimeline:v12];
-      v9 = [v13 firstIndex];
+      timeline2 = [v5 timeline];
+      v13 = [(PXStoryTimeline *)v8 identifiersOfSegmentsMatchingSegmentWithIdentifier:currentSegmentIdentifier inTimeline:timeline2];
+      currentSegmentIdentifier = [v13 firstIndex];
 
-      v14 = [v5 timeline];
-      v15 = [(PXStoryTimeline *)v8 identifiersOfSegmentsMatchingSegmentWithIdentifier:v10 inTimeline:v14];
-      v10 = [v15 firstIndex];
+      timeline3 = [v5 timeline];
+      v15 = [(PXStoryTimeline *)v8 identifiersOfSegmentsMatchingSegmentWithIdentifier:startingSegmentIdentifier inTimeline:timeline3];
+      startingSegmentIdentifier = [v15 firstIndex];
     }
 
-    v53 = [(PXStoryTimeline *)v8 indexOfSegmentWithIdentifier:v9];
+    v53 = [(PXStoryTimeline *)v8 indexOfSegmentWithIdentifier:currentSegmentIdentifier];
     v54 = +[PXStorySettings sharedInstance];
     if ([v54 preloadingEstimationStrategy])
     {
       if ([v54 preloadingEstimationStrategy] != 1)
       {
-        v52 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v52 handleFailureInMethod:a2 object:self file:@"PXStoryResourcesPreloader.m" lineNumber:636 description:@"Code which should be unreachable has been reached"];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryResourcesPreloader.m" lineNumber:636 description:@"Code which should be unreachable has been reached"];
 
         abort();
       }
@@ -701,13 +701,13 @@ void __137__PXStoryResourcesPreloader__timelineReadingQueue_sessionStartedWithAl
       v63 = v53;
       [(NSIndexSet *)estimationQueue_loadedSegments enumerateIndexesUsingBlock:v59];
       v17 = *(*&time2.start.timescale + 24);
-      v18 = [v54 minPreloadedeSegments];
-      LOBYTE(v19) = v17 > v18;
+      minPreloadedeSegments = [v54 minPreloadedeSegments];
+      LOBYTE(didDownloadFirstVideo) = v17 > minPreloadedeSegments;
       v20 = PLStoryGetLog();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
       {
         v21 = @"NO";
-        if (v17 > v18)
+        if (v17 > minPreloadedeSegments)
         {
           v21 = @"YES";
         }
@@ -740,13 +740,13 @@ void __137__PXStoryResourcesPreloader__timelineReadingQueue_sessionStartedWithAl
 
       buf = time2;
       CMTimeRangeGetEnd(&v75, &buf);
-      v24 = [(PXStoryTimeline *)v8 indexOfSegmentWithIdentifier:v10];
+      v24 = [(PXStoryTimeline *)v8 indexOfSegmentWithIdentifier:startingSegmentIdentifier];
       v72 = 0u;
       v73 = 0u;
       v70 = 0u;
       v71 = 0u;
-      v25 = [(NSArray *)self->_estimationQueue_loadingSegments objectEnumerator];
-      v26 = [v25 countByEnumeratingWithState:&v70 objects:v77 count:16];
+      objectEnumerator = [(NSArray *)self->_estimationQueue_loadingSegments objectEnumerator];
+      v26 = [objectEnumerator countByEnumeratingWithState:&v70 objects:v77 count:16];
       if (v26)
       {
         v27 = *v71;
@@ -757,7 +757,7 @@ void __137__PXStoryResourcesPreloader__timelineReadingQueue_sessionStartedWithAl
           {
             if (*v71 != v27)
             {
-              objc_enumerationMutation(v25);
+              objc_enumerationMutation(objectEnumerator);
             }
 
             v30 = -[PXStoryTimeline indexOfSegmentWithIdentifier:](v8, "indexOfSegmentWithIdentifier:", [*(*(&v70 + 1) + 8 * i) integerValue]);
@@ -777,7 +777,7 @@ void __137__PXStoryResourcesPreloader__timelineReadingQueue_sessionStartedWithAl
             }
           }
 
-          v26 = [v25 countByEnumeratingWithState:&v70 objects:v77 count:16];
+          v26 = [objectEnumerator countByEnumeratingWithState:&v70 objects:v77 count:16];
         }
 
         while (v26);
@@ -788,8 +788,8 @@ void __137__PXStoryResourcesPreloader__timelineReadingQueue_sessionStartedWithAl
         v28 = 0x7FFFFFFFFFFFFFFFLL;
       }
 
-      v33 = [(PXStoryResourcesPreloader *)self isInline];
-      v34 = v33;
+      isInline = [(PXStoryResourcesPreloader *)self isInline];
+      v34 = isInline;
       v35 = v53 == 0x7FFFFFFFFFFFFFFFLL || v28 == 0x7FFFFFFFFFFFFFFFLL;
       v23 = !v35;
       if (v35)
@@ -800,14 +800,14 @@ void __137__PXStoryResourcesPreloader__timelineReadingQueue_sessionStartedWithAl
 
       else
       {
-        if (v33)
+        if (isInline)
         {
-          v36 = 2;
+          numberOfSegments = 2;
         }
 
         else
         {
-          v38 = [(PXStoryResourcesPreloader *)self lagsCount];
+          lagsCount = [(PXStoryResourcesPreloader *)self lagsCount];
           memset(&v69, 0, sizeof(v69));
           buf.start = v75;
           CMTimeMultiplyByRatio(&v69, &buf.start, 1, 2);
@@ -826,15 +826,15 @@ void __137__PXStoryResourcesPreloader__timelineReadingQueue_sessionStartedWithAl
           *&buf.start.value = v64;
           buf.start.epoch = v65;
           time2.start = v69;
-          v36 = 2 * v38 + 2;
+          numberOfSegments = 2 * lagsCount + 2;
           if (CMTimeCompare(&buf.start, &time2.start) >= 1 && ![(PXStoryResourcesPreloader *)self isLoadingLikelyToKeepUpWithPlayback])
           {
-            v36 = [(PXStoryTimeline *)v8 numberOfSegments];
+            numberOfSegments = [(PXStoryTimeline *)v8 numberOfSegments];
           }
         }
 
-        v37 = v28 < v24 || v28 - v53 >= v36;
-        [0 appendFormat:@"Indexes: (%ld - %ld = %ld) >= %ld\n", v28, v53, v28 - v53, v36];
+        v37 = v28 < v24 || v28 - v53 >= numberOfSegments;
+        [0 appendFormat:@"Indexes: (%ld - %ld = %ld) >= %ld\n", v28, v53, v28 - v53, numberOfSegments];
       }
 
       buf.start = v75;
@@ -853,16 +853,16 @@ void __137__PXStoryResourcesPreloader__timelineReadingQueue_sessionStartedWithAl
       }
 
       v43 = +[PXStorySettings sharedInstance];
-      v44 = [v43 estimateTimeLeftPerPlaybackStyle];
+      estimateTimeLeftPerPlaybackStyle = [v43 estimateTimeLeftPerPlaybackStyle];
 
-      if ((v44 & v37) == 1)
+      if ((estimateTimeLeftPerPlaybackStyle & v37) == 1)
       {
-        v19 = [(PXStoryResourcesPreloadingStatsStore *)self->_estimationQueue_statsStore didDownloadFirstVideo];
+        didDownloadFirstVideo = [(PXStoryResourcesPreloadingStatsStore *)self->_estimationQueue_statsStore didDownloadFirstVideo];
       }
 
       else
       {
-        v19 = (v44 ^ 1) & v37;
+        didDownloadFirstVideo = (estimateTimeLeftPerPlaybackStyle ^ 1) & v37;
       }
 
       [(PXStoryResourcesPreloader *)self loadingFractionComplete];
@@ -871,7 +871,7 @@ void __137__PXStoryResourcesPreloader__timelineReadingQueue_sessionStartedWithAl
         v46 = PLStoryGetLog();
         if (os_log_type_enabled(v46, OS_LOG_TYPE_INFO))
         {
-          if (v19)
+          if (didDownloadFirstVideo)
           {
             v47 = @"YES";
           }
@@ -916,7 +916,7 @@ void __137__PXStoryResourcesPreloader__timelineReadingQueue_sessionStartedWithAl
     v55[3] = &unk_1E7745AD8;
     v57 = v50;
     v55[4] = self;
-    v58 = (v6 >= 1.0) | v19 & 1;
+    v58 = (v6 >= 1.0) | didDownloadFirstVideo & 1;
     v56 = v6;
     [(PXStoryResourcesPreloader *)self _performChangesOnStoryQueue:v55];
     stateQueue_estimationDiagnostics = self->_stateQueue_estimationDiagnostics;
@@ -953,17 +953,17 @@ uint64_t __62__PXStoryResourcesPreloader__estimationQueue_updateEstimation__bloc
   return [v3 setLoadingFractionComplete:a2];
 }
 
-- (void)_estimationNoteClipWithPlaybackStyle:(int64_t)a3 loadedWithLoadingTime:(double)a4
+- (void)_estimationNoteClipWithPlaybackStyle:(int64_t)style loadedWithLoadingTime:(double)time
 {
-  v7 = [(PXStoryResourcesPreloader *)self estimationQueue];
+  estimationQueue = [(PXStoryResourcesPreloader *)self estimationQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __88__PXStoryResourcesPreloader__estimationNoteClipWithPlaybackStyle_loadedWithLoadingTime___block_invoke;
   block[3] = &unk_1E7745A10;
   block[4] = self;
-  block[5] = a3;
-  *&block[6] = a4;
-  dispatch_async(v7, block);
+  block[5] = style;
+  *&block[6] = time;
+  dispatch_async(estimationQueue, block);
 }
 
 uint64_t __88__PXStoryResourcesPreloader__estimationNoteClipWithPlaybackStyle_loadedWithLoadingTime___block_invoke(uint64_t a1)
@@ -974,23 +974,23 @@ uint64_t __88__PXStoryResourcesPreloader__estimationNoteClipWithPlaybackStyle_lo
   return [v2 _estimationQueue_updateEstimation];
 }
 
-- (void)_estimationNoteLoadingSegments:(id)a3 loadedSegments:(id)a4
+- (void)_estimationNoteLoadingSegments:(id)segments loadedSegments:(id)loadedSegments
 {
-  v6 = a4;
-  v7 = [a3 copy];
-  v8 = [v6 copy];
+  loadedSegmentsCopy = loadedSegments;
+  v7 = [segments copy];
+  v8 = [loadedSegmentsCopy copy];
 
-  v9 = [(PXStoryResourcesPreloader *)self estimationQueue];
+  estimationQueue = [(PXStoryResourcesPreloader *)self estimationQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __75__PXStoryResourcesPreloader__estimationNoteLoadingSegments_loadedSegments___block_invoke;
   block[3] = &unk_1E774A1B8;
   v13 = v7;
-  v14 = self;
+  selfCopy = self;
   v15 = v8;
   v10 = v8;
   v11 = v7;
-  dispatch_async(v9, block);
+  dispatch_async(estimationQueue, block);
 }
 
 void __75__PXStoryResourcesPreloader__estimationNoteLoadingSegments_loadedSegments___block_invoke(uint64_t a1)
@@ -1046,22 +1046,22 @@ LABEL_11:
   [v13 _estimationQueue_updateEstimation];
 }
 
-- (void)_estimationNoteSessionStartedWithSegmentsToLoad:(id)a3 preloadableClipsCounts:(id *)a4 inTimeline:(id)a5
+- (void)_estimationNoteSessionStartedWithSegmentsToLoad:(id)load preloadableClipsCounts:(id *)counts inTimeline:(id)timeline
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(PXStoryResourcesPreloader *)self estimationQueue];
+  loadCopy = load;
+  timelineCopy = timeline;
+  estimationQueue = [(PXStoryResourcesPreloader *)self estimationQueue];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __111__PXStoryResourcesPreloader__estimationNoteSessionStartedWithSegmentsToLoad_preloadableClipsCounts_inTimeline___block_invoke;
   v13[3] = &unk_1E7746980;
-  v16 = *a4;
+  v16 = *counts;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
-  dispatch_sync(v10, v13);
+  v14 = loadCopy;
+  v15 = timelineCopy;
+  v11 = timelineCopy;
+  v12 = loadCopy;
+  dispatch_sync(estimationQueue, v13);
 }
 
 void __111__PXStoryResourcesPreloader__estimationNoteSessionStartedWithSegmentsToLoad_preloadableClipsCounts_inTimeline___block_invoke(uint64_t a1)
@@ -1091,13 +1091,13 @@ void __111__PXStoryResourcesPreloader__estimationNoteSessionStartedWithSegmentsT
 - (void)_updateProcessing
 {
   objc_initWeak(&location, self);
-  v3 = [(PXStoryResourcesPreloader *)self currentRequest];
-  objc_initWeak(&from, v3);
+  currentRequest = [(PXStoryResourcesPreloader *)self currentRequest];
+  objc_initWeak(&from, currentRequest);
 
-  v4 = [(PXStoryResourcesPreloader *)self previousRequest];
-  objc_initWeak(&v10, v4);
+  previousRequest = [(PXStoryResourcesPreloader *)self previousRequest];
+  objc_initWeak(&v10, previousRequest);
 
-  v5 = [(PXStoryResourcesPreloader *)self timelineReadingQueue];
+  timelineReadingQueue = [(PXStoryResourcesPreloader *)self timelineReadingQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __46__PXStoryResourcesPreloader__updateProcessing__block_invoke;
@@ -1105,7 +1105,7 @@ void __111__PXStoryResourcesPreloader__estimationNoteSessionStartedWithSegmentsT
   objc_copyWeak(&v7, &location);
   objc_copyWeak(&v8, &from);
   objc_copyWeak(&v9, &v10);
-  dispatch_async(v5, v6);
+  dispatch_async(timelineReadingQueue, v6);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&v8);
@@ -1125,20 +1125,20 @@ void __46__PXStoryResourcesPreloader__updateProcessing__block_invoke(id *a1)
 
 - (void)_invalidateProcessing
 {
-  v2 = [(PXStoryResourcesPreloader *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateProcessing];
+  updater = [(PXStoryResourcesPreloader *)self updater];
+  [updater setNeedsUpdateOf:sel__updateProcessing];
 }
 
 - (void)_updateEstimation
 {
   objc_initWeak(&location, self);
-  v3 = [(PXStoryResourcesPreloader *)self estimationQueue];
+  estimationQueue = [(PXStoryResourcesPreloader *)self estimationQueue];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __46__PXStoryResourcesPreloader__updateEstimation__block_invoke;
   v4[3] = &unk_1E774C318;
   objc_copyWeak(&v5, &location);
-  dispatch_async(v3, v4);
+  dispatch_async(estimationQueue, v4);
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -1152,33 +1152,33 @@ void __46__PXStoryResourcesPreloader__updateEstimation__block_invoke(uint64_t a1
 
 - (void)_invalidateEstimation
 {
-  v2 = [(PXStoryResourcesPreloader *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateEstimation];
+  updater = [(PXStoryResourcesPreloader *)self updater];
+  [updater setNeedsUpdateOf:sel__updateEstimation];
 }
 
-- (void)startProcessingRequest:(id)a3
+- (void)startProcessingRequest:(id)request
 {
-  v14 = a3;
-  v4 = [(PXStoryResourcesPreloader *)self currentRequest];
+  requestCopy = request;
+  currentRequest = [(PXStoryResourcesPreloader *)self currentRequest];
 
-  v5 = v14;
-  if (v4 != v14)
+  v5 = requestCopy;
+  if (currentRequest != requestCopy)
   {
-    v6 = [(PXStoryResourcesPreloader *)self currentRequest];
-    v7 = [v14 timeline];
-    v8 = [v6 timeline];
-    if (v7 == v8 || ([v7 isEqual:v8] & 1) != 0)
+    currentRequest2 = [(PXStoryResourcesPreloader *)self currentRequest];
+    timeline = [requestCopy timeline];
+    timeline2 = [currentRequest2 timeline];
+    if (timeline == timeline2 || ([timeline isEqual:timeline2] & 1) != 0)
     {
-      v9 = [v14 songResource];
-      v10 = [v6 songResource];
-      v11 = v10;
-      if (v9 == v10)
+      songResource = [requestCopy songResource];
+      songResource2 = [currentRequest2 songResource];
+      v11 = songResource2;
+      if (songResource == songResource2)
       {
       }
 
       else
       {
-        v12 = [v9 isEqual:v10];
+        v12 = [songResource isEqual:songResource2];
 
         if ((v12 & 1) == 0)
         {
@@ -1186,12 +1186,12 @@ void __46__PXStoryResourcesPreloader__updateEstimation__block_invoke(uint64_t a1
         }
       }
 
-      v13 = [v14 startingSegmentIdentifier];
-      if (v13 == [v6 startingSegmentIdentifier])
+      startingSegmentIdentifier = [requestCopy startingSegmentIdentifier];
+      if (startingSegmentIdentifier == [currentRequest2 startingSegmentIdentifier])
       {
 LABEL_11:
 
-        v5 = v14;
+        v5 = requestCopy;
         goto LABEL_12;
       }
     }
@@ -1201,55 +1201,55 @@ LABEL_11:
     }
 
 LABEL_10:
-    [(PXStoryResourcesPreloader *)self setCurrentRequest:v14];
+    [(PXStoryResourcesPreloader *)self setCurrentRequest:requestCopy];
     goto LABEL_11;
   }
 
 LABEL_12:
 }
 
-- (void)_noteLoadingEndedForClip:(id *)a3 inSegment:(int64_t)a4 resourceType:(id)a5 resourceIdentifier:(id)a6 timeRange:(id *)a7 error:(id)a8 loadingTime:(double)a9 playbackStyle:(int64_t)a10
+- (void)_noteLoadingEndedForClip:(id *)clip inSegment:(int64_t)segment resourceType:(id)type resourceIdentifier:(id)identifier timeRange:(id *)range error:(id)error loadingTime:(double)time playbackStyle:(int64_t)self0
 {
-  v17 = a5;
-  v18 = a6;
-  v19 = a8;
-  v20 = [(PXStoryResourcesPreloader *)self loadingStatusReporter];
-  [v20 notifyPreloadingCompleteForClipIdentifier:a3->var0];
+  typeCopy = type;
+  identifierCopy = identifier;
+  errorCopy = error;
+  loadingStatusReporter = [(PXStoryResourcesPreloader *)self loadingStatusReporter];
+  [loadingStatusReporter notifyPreloadingCompleteForClipIdentifier:clip->var0];
 
-  v21 = [(PXStoryResourcesPreloader *)self stateQueue];
+  stateQueue = [(PXStoryResourcesPreloader *)self stateQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __138__PXStoryResourcesPreloader__noteLoadingEndedForClip_inSegment_resourceType_resourceIdentifier_timeRange_error_loadingTime_playbackStyle___block_invoke;
   block[3] = &unk_1E7745A38;
   block[4] = self;
-  block[5] = a4;
-  v22 = *&a7->var0.var3;
-  v37 = *&a7->var0.var0;
+  block[5] = segment;
+  v22 = *&range->var0.var3;
+  v37 = *&range->var0.var0;
   v38 = v22;
-  v39 = *&a7->var1.var1;
-  block[6] = a10;
-  *&block[7] = a9;
-  dispatch_async(v21, block);
+  v39 = *&range->var1.var1;
+  block[6] = style;
+  *&block[7] = time;
+  dispatch_async(stateQueue, block);
 
   v23 = +[PXStorySettings sharedInstance];
-  v24 = [v23 simulateResourcesBufferingError];
+  simulateResourcesBufferingError = [v23 simulateResourcesBufferingError];
 
-  if (!v19 && v24)
+  if (!errorCopy && simulateResourcesBufferingError)
   {
-    v19 = PXStoryErrorCreateWithCodeDebugFormat(22, @"Simulated preloading error.", v25, v26, v27, v28, v29, v30, v31[0]);
+    errorCopy = PXStoryErrorCreateWithCodeDebugFormat(22, @"Simulated preloading error.", v25, v26, v27, v28, v29, v30, v31[0]);
   }
 
-  if (v19)
+  if (errorCopy)
   {
     v31[0] = MEMORY[0x1E69E9820];
     v31[1] = 3221225472;
     v31[2] = __138__PXStoryResourcesPreloader__noteLoadingEndedForClip_inSegment_resourceType_resourceIdentifier_timeRange_error_loadingTime_playbackStyle___block_invoke_2;
     v31[3] = &unk_1E7745A60;
     v31[4] = self;
-    v32 = v19;
-    v33 = v17;
-    v34 = v18;
-    memcpy(v35, a3, sizeof(v35));
+    v32 = errorCopy;
+    v33 = typeCopy;
+    v34 = identifierCopy;
+    memcpy(v35, clip, sizeof(v35));
     [(PXStoryResourcesPreloader *)self _performChangesOnStoryQueue:v31];
   }
 }
@@ -1291,17 +1291,17 @@ void __138__PXStoryResourcesPreloader__noteLoadingEndedForClip_inSegment_resourc
   [*(a1 + 32) setError:v3];
 }
 
-- (void)_noteLoadingStartedForClipInSegment:(int64_t)a3
+- (void)_noteLoadingStartedForClipInSegment:(int64_t)segment
 {
-  v6 = [(PXStoryResourcesPreloader *)self stateQueue];
+  stateQueue = [(PXStoryResourcesPreloader *)self stateQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __65__PXStoryResourcesPreloader__noteLoadingStartedForClipInSegment___block_invoke;
   block[3] = &unk_1E7745A10;
   block[4] = self;
-  block[5] = a3;
+  block[5] = segment;
   block[6] = a2;
-  dispatch_async(v6, block);
+  dispatch_async(stateQueue, block);
 }
 
 void __65__PXStoryResourcesPreloader__noteLoadingStartedForClipInSegment___block_invoke(uint64_t a1)
@@ -1321,7 +1321,7 @@ void __65__PXStoryResourcesPreloader__noteLoadingStartedForClipInSegment___block
   [v4 _estimationNoteLoadingSegments:v6 loadedSegments:*(*(a1 + 32) + 248)];
 }
 
-- (void)_stateQueue_accumulateLoadedTimeRange:(id *)a3 moreExpected:(BOOL)a4
+- (void)_stateQueue_accumulateLoadedTimeRange:(id *)range moreExpected:(BOOL)expected
 {
   v27 = *MEMORY[0x1E69E9840];
   p_stateQueue_loadedContinuousTimeRange = &self->_stateQueue_loadedContinuousTimeRange;
@@ -1338,13 +1338,13 @@ void __65__PXStoryResourcesPreloader__noteLoadingStartedForClipInSegment___block
       {
         epoch = self->_stateQueue_loadedContinuousTimeRange.start.epoch;
         v13 = self->_stateQueue_loadedContinuousTimeRange.duration.timescale;
-        *time1 = *&a3->var0.var0;
-        *&time1[16] = a3->var0.var3;
+        *time1 = *&range->var0.var0;
+        *&time1[16] = range->var0.var3;
         time2.start.value = p_stateQueue_loadedContinuousTimeRange->start.value;
         time2.start.timescale = self->_stateQueue_loadedContinuousTimeRange.start.timescale;
         time2.start.flags = flags;
         time2.start.epoch = epoch;
-        if ((CMTimeCompare(time1, &time2.start) & 0x80000000) == 0 && a4)
+        if ((CMTimeCompare(time1, &time2.start) & 0x80000000) == 0 && expected)
         {
           time2.start.value = value;
           time2.start.timescale = timescale;
@@ -1354,10 +1354,10 @@ void __65__PXStoryResourcesPreloader__noteLoadingStartedForClipInSegment___block
           time2.duration.timescale = v13;
           time2.duration.flags = v7;
           time2.duration.epoch = 0;
-          v14 = *&a3->var0.var3;
-          v21[0] = *&a3->var0.var0;
+          v14 = *&range->var0.var3;
+          v21[0] = *&range->var0.var0;
           v21[1] = v14;
-          v21[2] = *&a3->var1.var1;
+          v21[2] = *&range->var1.var1;
           PXStoryTimeRangeUnion(&time2, v21, time1);
           v15 = *&time1[16];
           *&p_stateQueue_loadedContinuousTimeRange->start.value = *time1;
@@ -1379,27 +1379,27 @@ void __65__PXStoryResourcesPreloader__noteLoadingStartedForClipInSegment___block
     }
   }
 
-  v19 = *&a3->var0.var0;
-  v20 = *&a3->var1.var1;
-  *&p_stateQueue_loadedContinuousTimeRange->start.epoch = *&a3->var0.var3;
+  v19 = *&range->var0.var0;
+  v20 = *&range->var1.var1;
+  *&p_stateQueue_loadedContinuousTimeRange->start.epoch = *&range->var0.var3;
   *&p_stateQueue_loadedContinuousTimeRange->duration.timescale = v20;
   *&p_stateQueue_loadedContinuousTimeRange->start.value = v19;
 }
 
-- (void)_accumulateLoadedTimeRange:(id *)a3 moreExpected:(BOOL)a4
+- (void)_accumulateLoadedTimeRange:(id *)range moreExpected:(BOOL)expected
 {
-  v7 = [(PXStoryResourcesPreloader *)self stateQueue];
+  stateQueue = [(PXStoryResourcesPreloader *)self stateQueue];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
-  v8 = *&a3->var0.var3;
-  v10 = *&a3->var0.var0;
+  v8 = *&range->var0.var3;
+  v10 = *&range->var0.var0;
   v9[2] = __69__PXStoryResourcesPreloader__accumulateLoadedTimeRange_moreExpected___block_invoke;
   v9[3] = &unk_1E77459E8;
   v9[4] = self;
   v11 = v8;
-  v12 = *&a3->var1.var1;
-  v13 = a4;
-  dispatch_async(v7, v9);
+  v12 = *&range->var1.var1;
+  expectedCopy = expected;
+  dispatch_async(stateQueue, v9);
 }
 
 uint64_t __69__PXStoryResourcesPreloader__accumulateLoadedTimeRange_moreExpected___block_invoke(uint64_t a1)
@@ -1413,23 +1413,23 @@ uint64_t __69__PXStoryResourcesPreloader__accumulateLoadedTimeRange_moreExpected
   return [v1 _stateQueue_accumulateLoadedTimeRange:v5 moreExpected:v2];
 }
 
-- (void)_noteSessionStartedWithLoadedSegments:(id)a3 segmentsToLoad:(id)a4 preloadableClipsCounts:(id *)a5 inTimeline:(id)a6
+- (void)_noteSessionStartedWithLoadedSegments:(id)segments segmentsToLoad:(id)load preloadableClipsCounts:(id *)counts inTimeline:(id)timeline
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = a4;
-  v13 = [(PXStoryResourcesPreloader *)self stateQueue];
+  segmentsCopy = segments;
+  timelineCopy = timeline;
+  loadCopy = load;
+  stateQueue = [(PXStoryResourcesPreloader *)self stateQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __116__PXStoryResourcesPreloader__noteSessionStartedWithLoadedSegments_segmentsToLoad_preloadableClipsCounts_inTimeline___block_invoke;
   block[3] = &unk_1E774C620;
   block[4] = self;
-  v17 = v10;
-  v14 = v10;
-  dispatch_sync(v13, block);
+  v17 = segmentsCopy;
+  v14 = segmentsCopy;
+  dispatch_sync(stateQueue, block);
 
-  v15 = *a5;
-  [(PXStoryResourcesPreloader *)self _estimationNoteSessionStartedWithSegmentsToLoad:v12 preloadableClipsCounts:&v15 inTimeline:v11];
+  v15 = *counts;
+  [(PXStoryResourcesPreloader *)self _estimationNoteSessionStartedWithSegmentsToLoad:loadCopy preloadableClipsCounts:&v15 inTimeline:timelineCopy];
 
   [(PXStoryResourcesPreloader *)self _estimationNoteLoadingSegments:0 loadedSegments:v14];
 }
@@ -1456,14 +1456,14 @@ void __116__PXStoryResourcesPreloader__noteSessionStartedWithLoadedSegments_segm
   v10 = __Block_byref_object_copy__213020;
   v11 = __Block_byref_object_dispose__213021;
   v12 = 0;
-  v3 = [(PXStoryResourcesPreloader *)self stateQueue];
+  stateQueue = [(PXStoryResourcesPreloader *)self stateQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __45__PXStoryResourcesPreloader_loadedTimeRanges__block_invoke;
   v6[3] = &unk_1E7749A28;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(stateQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -1499,23 +1499,23 @@ void __45__PXStoryResourcesPreloader_loadedTimeRanges__block_invoke(uint64_t a1)
   }
 }
 
-- (void)setError:(id)a3
+- (void)setError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  v5 = [(PXStoryResourcesPreloader *)self stateQueue];
+  stateQueue = [(PXStoryResourcesPreloader *)self stateQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __38__PXStoryResourcesPreloader_setError___block_invoke;
   block[3] = &unk_1E7746448;
-  v6 = v4;
+  v6 = errorCopy;
   v8 = v6;
-  v9 = self;
+  selfCopy = self;
   v10 = &v11;
-  dispatch_sync(v5, block);
+  dispatch_sync(stateQueue, block);
 
   if (*(v12 + 24) == 1)
   {
@@ -1554,14 +1554,14 @@ void __38__PXStoryResourcesPreloader_setError___block_invoke(uint64_t a1)
   v10 = __Block_byref_object_copy__213020;
   v11 = __Block_byref_object_dispose__213021;
   v12 = 0;
-  v3 = [(PXStoryResourcesPreloader *)self stateQueue];
+  stateQueue = [(PXStoryResourcesPreloader *)self stateQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __34__PXStoryResourcesPreloader_error__block_invoke;
   v6[3] = &unk_1E7749A28;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(stateQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -1569,21 +1569,21 @@ void __38__PXStoryResourcesPreloader_setError___block_invoke(uint64_t a1)
   return v4;
 }
 
-- (void)setLoadingFractionComplete:(float)a3
+- (void)setLoadingFractionComplete:(float)complete
 {
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
   v11 = 0;
-  v5 = [(PXStoryResourcesPreloader *)self stateQueue];
+  stateQueue = [(PXStoryResourcesPreloader *)self stateQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __56__PXStoryResourcesPreloader_setLoadingFractionComplete___block_invoke;
   block[3] = &unk_1E77467E8;
-  v7 = a3;
+  completeCopy = complete;
   block[4] = self;
   block[5] = &v8;
-  dispatch_sync(v5, block);
+  dispatch_sync(stateQueue, block);
 
   if (*(v9 + 24) == 1)
   {
@@ -1643,14 +1643,14 @@ void __56__PXStoryResourcesPreloader_setLoadingFractionComplete___block_invoke(u
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v3 = [(PXStoryResourcesPreloader *)self stateQueue];
+  stateQueue = [(PXStoryResourcesPreloader *)self stateQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __52__PXStoryResourcesPreloader_loadingFractionComplete__block_invoke;
   v6[3] = &unk_1E7749A28;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(stateQueue, v6);
 
   v4 = v8[6];
   _Block_object_dispose(&v7, 8);
@@ -1670,35 +1670,35 @@ float __52__PXStoryResourcesPreloader_loadingFractionComplete__block_invoke(uint
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v3 = [(PXStoryResourcesPreloader *)self stateQueue];
+  stateQueue = [(PXStoryResourcesPreloader *)self stateQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __38__PXStoryResourcesPreloader_lagsCount__block_invoke;
   v6[3] = &unk_1E7749A28;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(stateQueue, v6);
 
   v4 = v8[3];
   _Block_object_dispose(&v7, 8);
   return v4;
 }
 
-- (void)setIsLoadingLikelyToKeepUpWithPlayback:(BOOL)a3
+- (void)setIsLoadingLikelyToKeepUpWithPlayback:(BOOL)playback
 {
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
   v11 = 0;
-  v5 = [(PXStoryResourcesPreloader *)self stateQueue];
+  stateQueue = [(PXStoryResourcesPreloader *)self stateQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __68__PXStoryResourcesPreloader_setIsLoadingLikelyToKeepUpWithPlayback___block_invoke;
   block[3] = &unk_1E77465B0;
-  v7 = a3;
+  playbackCopy = playback;
   block[4] = self;
   block[5] = &v8;
-  dispatch_sync(v5, block);
+  dispatch_sync(stateQueue, block);
 
   if (*(v9 + 24) == 1)
   {
@@ -1779,42 +1779,42 @@ LABEL_10:
 
 - (BOOL)isLoadingLikelyToKeepUpWithPlayback
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(PXStoryResourcesPreloader *)self stateQueue];
+  stateQueue = [(PXStoryResourcesPreloader *)self stateQueue];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __64__PXStoryResourcesPreloader_isLoadingLikelyToKeepUpWithPlayback__block_invoke;
   v5[3] = &unk_1E7749A28;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_sync(v3, v5);
+  dispatch_sync(stateQueue, v5);
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
-- (void)setCurrentRequest:(id)a3
+- (void)setCurrentRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  v5 = [(PXStoryResourcesPreloader *)self stateQueue];
+  stateQueue = [(PXStoryResourcesPreloader *)self stateQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __47__PXStoryResourcesPreloader_setCurrentRequest___block_invoke;
   block[3] = &unk_1E7746448;
-  v6 = v4;
+  v6 = requestCopy;
   v8 = v6;
-  v9 = self;
+  selfCopy = self;
   v10 = &v11;
-  dispatch_sync(v5, block);
+  dispatch_sync(stateQueue, block);
 
   if (*(v12 + 24) == 1)
   {
@@ -1846,14 +1846,14 @@ void __47__PXStoryResourcesPreloader_setCurrentRequest___block_invoke(uint64_t a
   v10 = __Block_byref_object_copy__213020;
   v11 = __Block_byref_object_dispose__213021;
   v12 = 0;
-  v3 = [(PXStoryResourcesPreloader *)self stateQueue];
+  stateQueue = [(PXStoryResourcesPreloader *)self stateQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __44__PXStoryResourcesPreloader_previousRequest__block_invoke;
   v6[3] = &unk_1E7749A28;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(stateQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -1869,14 +1869,14 @@ void __47__PXStoryResourcesPreloader_setCurrentRequest___block_invoke(uint64_t a
   v10 = __Block_byref_object_copy__213020;
   v11 = __Block_byref_object_dispose__213021;
   v12 = 0;
-  v3 = [(PXStoryResourcesPreloader *)self stateQueue];
+  stateQueue = [(PXStoryResourcesPreloader *)self stateQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __43__PXStoryResourcesPreloader_currentRequest__block_invoke;
   v6[3] = &unk_1E7749A28;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(stateQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -1884,21 +1884,21 @@ void __47__PXStoryResourcesPreloader_setCurrentRequest___block_invoke(uint64_t a
   return v4;
 }
 
-- (void)setCurrentSegmentIdentifier:(int64_t)a3
+- (void)setCurrentSegmentIdentifier:(int64_t)identifier
 {
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v5 = [(PXStoryResourcesPreloader *)self stateQueue];
+  stateQueue = [(PXStoryResourcesPreloader *)self stateQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __57__PXStoryResourcesPreloader_setCurrentSegmentIdentifier___block_invoke;
   block[3] = &unk_1E77477B8;
   block[5] = &v7;
-  block[6] = a3;
+  block[6] = identifier;
   block[4] = self;
-  dispatch_sync(v5, block);
+  dispatch_sync(stateQueue, block);
 
   if (*(v8 + 24) == 1)
   {
@@ -1927,30 +1927,30 @@ void *__57__PXStoryResourcesPreloader_setCurrentSegmentIdentifier___block_invoke
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v3 = [(PXStoryResourcesPreloader *)self stateQueue];
+  stateQueue = [(PXStoryResourcesPreloader *)self stateQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __53__PXStoryResourcesPreloader_currentSegmentIdentifier__block_invoke;
   v6[3] = &unk_1E7749A28;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(stateQueue, v6);
 
   v4 = v8[3];
   _Block_object_dispose(&v7, 8);
   return v4;
 }
 
-- (void)setCurrentPlaybackTime:(id *)a3
+- (void)setCurrentPlaybackTime:(id *)time
 {
-  v5 = [(PXStoryResourcesPreloader *)self stateQueue];
+  stateQueue = [(PXStoryResourcesPreloader *)self stateQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __52__PXStoryResourcesPreloader_setCurrentPlaybackTime___block_invoke;
   v6[3] = &unk_1E7749770;
-  v7 = *a3;
+  v7 = *time;
   v6[4] = self;
-  dispatch_sync(v5, v6);
+  dispatch_sync(stateQueue, v6);
 }
 
 __n128 __52__PXStoryResourcesPreloader_setCurrentPlaybackTime___block_invoke(uint64_t a1)
@@ -1980,14 +1980,14 @@ __n128 __52__PXStoryResourcesPreloader_setCurrentPlaybackTime___block_invoke(uin
   v12 = 0;
   v13 = 0;
   v14 = 0;
-  v5 = [(PXStoryResourcesPreloader *)self stateQueue];
+  stateQueue = [(PXStoryResourcesPreloader *)self stateQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __48__PXStoryResourcesPreloader_currentPlaybackTime__block_invoke;
   block[3] = &unk_1E7749A28;
   block[4] = self;
   block[5] = &v8;
-  dispatch_sync(v5, block);
+  dispatch_sync(stateQueue, block);
 
   *retstr = *(v9 + 4);
   _Block_object_dispose(&v8, 8);
@@ -2010,36 +2010,36 @@ __n128 __48__PXStoryResourcesPreloader_currentPlaybackTime__block_invoke(uint64_
   v4.receiver = self;
   v4.super_class = PXStoryResourcesPreloader;
   [(PXStoryResourcesPreloader *)&v4 didPerformChanges];
-  v3 = [(PXStoryResourcesPreloader *)self updater];
-  [v3 updateIfNeeded];
+  updater = [(PXStoryResourcesPreloader *)self updater];
+  [updater updateIfNeeded];
 }
 
-- (void)_performChangesOnStoryQueue:(id)a3
+- (void)_performChangesOnStoryQueue:(id)queue
 {
-  v4 = a3;
-  v5 = [(PXStoryResourcesPreloader *)self storyQueue];
+  queueCopy = queue;
+  storyQueue = [(PXStoryResourcesPreloader *)self storyQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __57__PXStoryResourcesPreloader__performChangesOnStoryQueue___block_invoke;
   v7[3] = &unk_1E774C2F0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = queueCopy;
+  v6 = queueCopy;
+  dispatch_async(storyQueue, v7);
 }
 
-- (void)performChanges:(id)a3
+- (void)performChanges:(id)changes
 {
   v3.receiver = self;
   v3.super_class = PXStoryResourcesPreloader;
-  [(PXStoryResourcesPreloader *)&v3 performChanges:a3];
+  [(PXStoryResourcesPreloader *)&v3 performChanges:changes];
 }
 
 - (void)dealloc
 {
   [(PXStoryResourcesPreloadingRequest *)self->_stateQueue_currentRequest setIsCancelled:1];
-  v3 = [(PXStoryResourcesPreloader *)self loadingOperationQueue];
-  [v3 cancelAllOperations];
+  loadingOperationQueue = [(PXStoryResourcesPreloader *)self loadingOperationQueue];
+  [loadingOperationQueue cancelAllOperations];
 
   v4.receiver = self;
   v4.super_class = PXStoryResourcesPreloader;
@@ -2048,29 +2048,29 @@ __n128 __48__PXStoryResourcesPreloader_currentPlaybackTime__block_invoke(uint64_
 
 - (PXStoryResourcesPreloader)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXStoryResourcesPreloader.m" lineNumber:162 description:{@"%s is not available as initializer", "-[PXStoryResourcesPreloader init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryResourcesPreloader.m" lineNumber:162 description:{@"%s is not available as initializer", "-[PXStoryResourcesPreloader init]"}];
 
   abort();
 }
 
-- (PXStoryResourcesPreloader)initWithMediaProvider:(id)a3 displayScale:(double)a4 videoSessionManager:(id)a5 loadingStatusReporter:(id)a6 storyQueue:(id)a7 isExporting:(BOOL)a8 isInline:(BOOL)a9 limitVideoDownloadQuality:(BOOL)a10
+- (PXStoryResourcesPreloader)initWithMediaProvider:(id)provider displayScale:(double)scale videoSessionManager:(id)manager loadingStatusReporter:(id)reporter storyQueue:(id)queue isExporting:(BOOL)exporting isInline:(BOOL)inline limitVideoDownloadQuality:(BOOL)self0
 {
-  v10 = a9;
-  v18 = a3;
-  v52 = a5;
-  v19 = a6;
-  v20 = a7;
+  inlineCopy = inline;
+  providerCopy = provider;
+  managerCopy = manager;
+  reporterCopy = reporter;
+  queueCopy = queue;
   v53.receiver = self;
   v53.super_class = PXStoryResourcesPreloader;
   v21 = [(PXStoryResourcesPreloader *)&v53 init];
   v22 = v21;
   if (v21)
   {
-    objc_storeStrong(&v21->_mediaProvider, a3);
-    v22->_displayScale = a4;
-    objc_storeStrong(&v22->_videoSessionManager, a5);
-    objc_storeStrong(&v22->_loadingStatusReporter, a6);
+    objc_storeStrong(&v21->_mediaProvider, provider);
+    v22->_displayScale = scale;
+    objc_storeStrong(&v22->_videoSessionManager, manager);
+    objc_storeStrong(&v22->_loadingStatusReporter, reporter);
     v23 = *MEMORY[0x1E69BFF60];
     v24 = objc_opt_class();
     v25 = NSStringFromClass(v24);
@@ -2078,10 +2078,10 @@ __n128 __48__PXStoryResourcesPreloader_currentPlaybackTime__block_invoke(uint64_
     log = v22->_log;
     v22->_log = v26;
 
-    objc_storeStrong(&v22->_storyQueue, a7);
-    v22->_isExporting = a8;
-    v22->_isInline = v10;
-    v22->_limitVideoDownloadQuality = a10;
+    objc_storeStrong(&v22->_storyQueue, queue);
+    v22->_isExporting = exporting;
+    v22->_isInline = inlineCopy;
+    v22->_limitVideoDownloadQuality = quality;
     v28 = [[off_1E7721940 alloc] initWithTarget:v22 needsUpdateSelector:sel__setNeedsUpdate];
     updater = v22->_updater;
     v22->_updater = v28;
@@ -2105,7 +2105,7 @@ __n128 __48__PXStoryResourcesPreloader_currentPlaybackTime__block_invoke(uint64_
     loadingOperationQueue = v22->_loadingOperationQueue;
     v22->_loadingOperationQueue = v37;
 
-    if (v10)
+    if (inlineCopy)
     {
       [(NSOperationQueue *)v22->_loadingOperationQueue setMaxConcurrentOperationCount:1];
     }
@@ -2116,7 +2116,7 @@ __n128 __48__PXStoryResourcesPreloader_currentPlaybackTime__block_invoke(uint64_
       -[NSOperationQueue setMaxConcurrentOperationCount:](v22->_loadingOperationQueue, "setMaxConcurrentOperationCount:", [v39 simultaneousPreloadingOperationsCount]);
     }
 
-    [(NSOperationQueue *)v22->_loadingOperationQueue setQualityOfService:25, v18, v52];
+    [(NSOperationQueue *)v22->_loadingOperationQueue setQualityOfService:25, providerCopy, managerCopy];
     [(NSOperationQueue *)v22->_loadingOperationQueue setName:@"PXStoryResourcesPreloader.resourcesLoading"];
     v40 = objc_alloc_init(MEMORY[0x1E696AD50]);
     timelineReadingQueue_loadedSegments = v22->_timelineReadingQueue_loadedSegments;
@@ -2138,7 +2138,7 @@ __n128 __48__PXStoryResourcesPreloader_currentPlaybackTime__block_invoke(uint64_
     estimationQueue_statsStore = v22->_estimationQueue_statsStore;
     v22->_estimationQueue_statsStore = v48;
 
-    v18 = v51;
+    providerCopy = v51;
   }
 
   return v22;

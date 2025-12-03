@@ -1,29 +1,29 @@
 @interface CNiOSContactFetcher
-+ (id)contactsForFetchRequest:(id)a3 matchInfos:(id *)a4 inAddressBook:(void *)a5 environment:(id)a6 managedConfiguration:(id)a7 error:(id *)a8;
++ (id)contactsForFetchRequest:(id)request matchInfos:(id *)infos inAddressBook:(void *)book environment:(id)environment managedConfiguration:(id)configuration error:(id *)error;
 + (id)linkedPeopleComparator;
-- (CNiOSContactFetcher)initWithFetchRequest:(id)a3 addressBook:(void *)a4 environment:(id)a5 managedConfiguration:(id)a6;
-- (id)_abMatchMetadataToCNContactMatchInfoArray:(uint64_t)a1;
-- (id)_contactsFromPeople:(void *)a3 abMatchInfo:(void *)a4 keysToFetch:;
-- (id)executeFetchRequestWithProgressiveResults:(id)a3 completion:(id)a4;
-- (id)fetchContactsReturningMatchInfos:(id *)a3 error:(id *)a4;
-- (id)unifyPeople:(void *)a3 keysToFetch:(void *)a4 abMatchInfos:(void *)a5 filteredForAccountIdentifiers:(uint64_t)a6 outCNMatchInfos:;
-- (void)_batchLoadPropertiesForPeople:(void *)a3 keysToFetch:;
+- (CNiOSContactFetcher)initWithFetchRequest:(id)request addressBook:(void *)book environment:(id)environment managedConfiguration:(id)configuration;
+- (id)_abMatchMetadataToCNContactMatchInfoArray:(uint64_t)array;
+- (id)_contactsFromPeople:(void *)people abMatchInfo:(void *)info keysToFetch:;
+- (id)executeFetchRequestWithProgressiveResults:(id)results completion:(id)completion;
+- (id)fetchContactsReturningMatchInfos:(id *)infos error:(id *)error;
+- (id)unifyPeople:(void *)people keysToFetch:(void *)fetch abMatchInfos:(void *)infos filteredForAccountIdentifiers:(uint64_t)identifiers outCNMatchInfos:;
+- (void)_batchLoadPropertiesForPeople:(void *)people keysToFetch:;
 - (void)dealloc;
 @end
 
 @implementation CNiOSContactFetcher
 
-+ (id)contactsForFetchRequest:(id)a3 matchInfos:(id *)a4 inAddressBook:(void *)a5 environment:(id)a6 managedConfiguration:(id)a7 error:(id *)a8
++ (id)contactsForFetchRequest:(id)request matchInfos:(id *)infos inAddressBook:(void *)book environment:(id)environment managedConfiguration:(id)configuration error:(id *)error
 {
-  v13 = a3;
-  v14 = a6;
-  v15 = a7;
+  requestCopy = request;
+  environmentCopy = environment;
+  configurationCopy = configuration;
   v16 = objc_autoreleasePoolPush();
-  v17 = [[CNiOSContactFetcher alloc] initWithFetchRequest:v13 addressBook:a5 environment:v14 managedConfiguration:v15];
+  v17 = [[CNiOSContactFetcher alloc] initWithFetchRequest:requestCopy addressBook:book environment:environmentCopy managedConfiguration:configurationCopy];
   v18 = v17;
   v28 = 0;
   v29 = 0;
-  if (a4)
+  if (infos)
   {
     v19 = &v29;
   }
@@ -34,7 +34,7 @@
   }
 
   v20 = [(CNiOSContactFetcher *)v17 fetchContactsReturningMatchInfos:v19 error:&v28];
-  if (a4)
+  if (infos)
   {
     v21 = v29;
   }
@@ -47,44 +47,44 @@
   v22 = v28;
 
   objc_autoreleasePoolPop(v16);
-  if (a4)
+  if (infos)
   {
     v23 = v21;
-    *a4 = v21;
+    *infos = v21;
   }
 
   v24 = v20;
   v25 = v24;
-  if (a8 && !v24)
+  if (error && !v24)
   {
     v26 = v22;
-    *a8 = v22;
+    *error = v22;
   }
 
   return v25;
 }
 
-- (CNiOSContactFetcher)initWithFetchRequest:(id)a3 addressBook:(void *)a4 environment:(id)a5 managedConfiguration:(id)a6
+- (CNiOSContactFetcher)initWithFetchRequest:(id)request addressBook:(void *)book environment:(id)environment managedConfiguration:(id)configuration
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
+  requestCopy = request;
+  environmentCopy = environment;
+  configurationCopy = configuration;
   v23.receiver = self;
   v23.super_class = CNiOSContactFetcher;
   v14 = [(CNiOSContactFetcher *)&v23 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_fetchRequest, a3);
-    v16 = [(CNContactFetchRequest *)v15->_fetchRequest effectiveKeysToFetch];
-    v17 = +[CNiOSABConversions personToContactTransformWithKeysToFetch:mutable:](CNiOSABConversions, v16, [v11 mutableObjects]);
+    objc_storeStrong(&v14->_fetchRequest, request);
+    effectiveKeysToFetch = [(CNContactFetchRequest *)v15->_fetchRequest effectiveKeysToFetch];
+    v17 = +[CNiOSABConversions personToContactTransformWithKeysToFetch:mutable:](CNiOSABConversions, effectiveKeysToFetch, [requestCopy mutableObjects]);
     v18 = [v17 copy];
     personToContact = v15->_personToContact;
     v15->_personToContact = v18;
 
-    if (a4)
+    if (book)
     {
-      v20 = CFRetain(a4);
+      v20 = CFRetain(book);
     }
 
     else
@@ -93,8 +93,8 @@
     }
 
     v15->_addressBook = v20;
-    objc_storeStrong(&v15->_environment, a5);
-    objc_storeStrong(&v15->_managedConfiguration, a6);
+    objc_storeStrong(&v15->_environment, environment);
+    objc_storeStrong(&v15->_managedConfiguration, configuration);
     v21 = v15;
   }
 
@@ -201,12 +201,12 @@ uint64_t __65__CNiOSContactFetcher__batchLoadPropertiesForPeople_keysToFetch___b
   return result;
 }
 
-- (id)executeFetchRequestWithProgressiveResults:(id)a3 completion:(id)a4
+- (id)executeFetchRequestWithProgressiveResults:(id)results completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 && v7)
+  resultsCopy = results;
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (resultsCopy && completionCopy)
   {
     v9 = [CNiOSPersonFetchRequest fetchRequestFromCNFetchRequest:self->_fetchRequest managedConfiguration:self->_managedConfiguration error:0];
     if (v9)
@@ -217,7 +217,7 @@ uint64_t __65__CNiOSContactFetcher__batchLoadPropertiesForPeople_keysToFetch___b
       v13[2] = __76__CNiOSContactFetcher_executeFetchRequestWithProgressiveResults_completion___block_invoke;
       v13[3] = &unk_1E7413718;
       v13[4] = self;
-      v14 = v6;
+      v14 = resultsCopy;
       v11 = [(CNiOSPersonFetcher *)v10 executeFetchRequestWithProgressiveResults:v13 completion:v8];
     }
 
@@ -245,58 +245,58 @@ void __76__CNiOSContactFetcher_executeFetchRequestWithProgressiveResults_complet
   }
 }
 
-- (id)fetchContactsReturningMatchInfos:(id *)a3 error:(id *)a4
+- (id)fetchContactsReturningMatchInfos:(id *)infos error:(id *)error
 {
   if (self->_addressBook)
   {
-    v7 = [CNiOSPersonFetchRequest fetchRequestFromCNFetchRequest:self->_fetchRequest managedConfiguration:self->_managedConfiguration error:a4];
+    v7 = [CNiOSPersonFetchRequest fetchRequestFromCNFetchRequest:self->_fetchRequest managedConfiguration:self->_managedConfiguration error:error];
     if (!v7)
     {
 LABEL_3:
-      v8 = 0;
+      first = 0;
       goto LABEL_6;
     }
 
-    v12 = [[_CNiOSPersonMainStoreFetcher alloc] initWithAddressBook:self->_environment environment:a3 != 0 shouldReturnMatchInfo:?];
-    v13 = [MEMORY[0x1E69966E8] currentEnvironment];
-    v14 = [v13 featureFlags];
-    v15 = [v14 isFeatureEnabled:22];
+    v12 = [[_CNiOSPersonMainStoreFetcher alloc] initWithAddressBook:self->_environment environment:infos != 0 shouldReturnMatchInfo:?];
+    currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+    featureFlags = [currentEnvironment featureFlags];
+    v15 = [featureFlags isFeatureEnabled:22];
 
     if (v15)
     {
       v16 = [_CNiOSPersonFetcherPosterDataFetchInterceptor alloc];
-      v17 = [(CNContactsEnvironment *)self->_environment posterDataStore];
-      v18 = [(_CNiOSPersonFetcherPosterDataFetchInterceptor *)v16 initWithMainStoreFetcher:v12 posterDataStore:v17];
+      posterDataStore = [(CNContactsEnvironment *)self->_environment posterDataStore];
+      v18 = [(_CNiOSPersonFetcherPosterDataFetchInterceptor *)v16 initWithMainStoreFetcher:v12 posterDataStore:posterDataStore];
 
       v12 = v18;
     }
 
-    v19 = [v12 executeFetchRequest:v7 error:a4];
+    v19 = [v12 executeFetchRequest:v7 error:error];
     v20 = v19;
     if (v19)
     {
-      v21 = [v19 people];
-      v22 = [v20 matchInfos];
-      v23 = [(CNContactFetchRequest *)self->_fetchRequest effectiveKeysToFetch];
-      v24 = [(CNiOSContactFetcher *)self _contactsFromPeople:v21 abMatchInfo:v22 keysToFetch:v23];
+      people = [v19 people];
+      matchInfos = [v20 matchInfos];
+      effectiveKeysToFetch = [(CNContactFetchRequest *)self->_fetchRequest effectiveKeysToFetch];
+      v24 = [(CNiOSContactFetcher *)self _contactsFromPeople:people abMatchInfo:matchInfos keysToFetch:effectiveKeysToFetch];
 
-      v8 = [v24 first];
-      v25 = [v24 second];
-      if (a3)
+      first = [v24 first];
+      second = [v24 second];
+      if (infos)
       {
-        v26 = [v20 matchInfos];
+        matchInfos2 = [v20 matchInfos];
 
-        if (v26)
+        if (matchInfos2)
         {
-          v27 = v25;
-          *a3 = v25;
+          v27 = second;
+          *infos = second;
         }
       }
     }
 
     else
     {
-      v8 = 0;
+      first = 0;
     }
   }
 
@@ -304,19 +304,19 @@ LABEL_3:
   {
     v9 = [CNErrorFactory errorWithCode:2];
     v7 = v9;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_3;
     }
 
     v10 = v9;
-    v8 = 0;
-    *a4 = v7;
+    first = 0;
+    *error = v7;
   }
 
 LABEL_6:
 
-  return v8;
+  return first;
 }
 
 uint64_t __106__CNiOSContactFetcher_unifyPeople_keysToFetch_abMatchInfos_filteredForAccountIdentifiers_outCNMatchInfos___block_invoke(uint64_t a1, ABRecordRef record)
@@ -353,9 +353,9 @@ void __45__CNiOSContactFetcher_linkedPeopleComparator__block_invoke()
   linkedPeopleComparator_cn_once_object_0 = v1;
 }
 
-- (id)_abMatchMetadataToCNContactMatchInfoArray:(uint64_t)a1
+- (id)_abMatchMetadataToCNContactMatchInfoArray:(uint64_t)array
 {
-  if (a1)
+  if (array)
   {
     v2 = MEMORY[0x1E695DF90];
     v3 = a2;
@@ -378,43 +378,43 @@ void __45__CNiOSContactFetcher_linkedPeopleComparator__block_invoke()
   return v5;
 }
 
-- (void)_batchLoadPropertiesForPeople:(void *)a3 keysToFetch:
+- (void)_batchLoadPropertiesForPeople:(void *)people keysToFetch:
 {
   v5 = a2;
-  v6 = a3;
-  v7 = v6;
-  if (a1)
+  peopleCopy = people;
+  v7 = peopleCopy;
+  if (self)
   {
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __65__CNiOSContactFetcher__batchLoadPropertiesForPeople_keysToFetch___block_invoke;
     aBlock[3] = &unk_1E74136C8;
-    v16 = v6;
+    v16 = peopleCopy;
     v8 = _Block_copy(aBlock);
     OUTLINED_FUNCTION_0();
     v10 = 3221225472;
     v11 = __65__CNiOSContactFetcher__batchLoadPropertiesForPeople_keysToFetch___block_invoke_4;
     v12 = &unk_1E74136F0;
     v13 = v5;
-    v14 = a1;
+    selfCopy = self;
     v8[2](v8, v9);
   }
 }
 
-- (id)_contactsFromPeople:(void *)a3 abMatchInfo:(void *)a4 keysToFetch:
+- (id)_contactsFromPeople:(void *)people abMatchInfo:(void *)info keysToFetch:
 {
   v7 = a2;
-  v8 = a3;
-  v9 = a4;
-  if (a1)
+  peopleCopy = people;
+  infoCopy = info;
+  if (self)
   {
-    v10 = *(a1 + 40);
+    v10 = *(self + 40);
     if (v10 && [v10 deviceHasManagementRestrictions])
     {
-      v11 = [[CNiOSABUtilities alloc] initWithAddressBook:*(a1 + 8)];
-      v12 = [(CNiOSABUtilities *)v11 allAccountIdentifiers];
-      v13 = [*(a1 + 40) readableAccountIdentifiersFromIdentifiers:v12];
-      v14 = [v12 count];
+      v11 = [[CNiOSABUtilities alloc] initWithAddressBook:*(self + 8)];
+      allAccountIdentifiers = [(CNiOSABUtilities *)v11 allAccountIdentifiers];
+      v13 = [*(self + 40) readableAccountIdentifiersFromIdentifiers:allAccountIdentifiers];
+      v14 = [allAccountIdentifiers count];
       if (v14 == [v13 count])
       {
         v15 = v7;
@@ -434,61 +434,61 @@ void __45__CNiOSContactFetcher_linkedPeopleComparator__block_invoke()
       v13 = 0;
     }
 
-    v17 = [*(a1 + 16) predicate];
-    if (([v17 cn_supportsNativeBatchFetch] & 1) == 0)
+    predicate = [*(self + 16) predicate];
+    if (([predicate cn_supportsNativeBatchFetch] & 1) == 0)
     {
-      [(CNiOSContactFetcher *)a1 _batchLoadPropertiesForPeople:v16 keysToFetch:v9];
+      [(CNiOSContactFetcher *)self _batchLoadPropertiesForPeople:v16 keysToFetch:infoCopy];
     }
 
-    if ([*(a1 + 16) unifyResults])
+    if ([*(self + 16) unifyResults])
     {
       v23 = 0;
-      v18 = [(CNiOSContactFetcher *)a1 unifyPeople:v16 keysToFetch:v9 abMatchInfos:v8 filteredForAccountIdentifiers:v13 outCNMatchInfos:&v23];
+      v18 = [(CNiOSContactFetcher *)self unifyPeople:v16 keysToFetch:infoCopy abMatchInfos:peopleCopy filteredForAccountIdentifiers:v13 outCNMatchInfos:&v23];
       v19 = v23;
-      a1 = [MEMORY[0x1E69967A8] pairWithFirst:v18 second:v19];
+      self = [MEMORY[0x1E69967A8] pairWithFirst:v18 second:v19];
     }
 
     else
     {
-      v20 = [(CNiOSContactFetcher *)a1 _abMatchMetadataToCNContactMatchInfoArray:v8];
-      v21 = [v16 _cn_map:*(a1 + 24)];
-      a1 = [MEMORY[0x1E69967A8] pairWithFirst:v21 second:v20];
+      v20 = [(CNiOSContactFetcher *)self _abMatchMetadataToCNContactMatchInfoArray:peopleCopy];
+      v21 = [v16 _cn_map:*(self + 24)];
+      self = [MEMORY[0x1E69967A8] pairWithFirst:v21 second:v20];
     }
   }
 
-  return a1;
+  return self;
 }
 
-- (id)unifyPeople:(void *)a3 keysToFetch:(void *)a4 abMatchInfos:(void *)a5 filteredForAccountIdentifiers:(uint64_t)a6 outCNMatchInfos:
+- (id)unifyPeople:(void *)people keysToFetch:(void *)fetch abMatchInfos:(void *)infos filteredForAccountIdentifiers:(uint64_t)identifiers outCNMatchInfos:
 {
   v135 = *MEMORY[0x1E69E9840];
   v94 = a2;
-  v93 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (a1)
+  peopleCopy = people;
+  fetchCopy = fetch;
+  infosCopy = infos;
+  if (self)
   {
     v104 = [MEMORY[0x1E695DFA8] set];
-    v13 = [MEMORY[0x1E695DF70] array];
-    v92 = v12;
-    if (a6)
+    array = [MEMORY[0x1E695DF70] array];
+    v92 = infosCopy;
+    if (identifiers)
     {
-      v99 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
     }
 
     else
     {
-      v99 = 0;
+      dictionary = 0;
     }
 
     Mutable = CFArrayCreateMutable(0, [v94 count], 0);
     v15 = v94;
     v16 = 0;
-    v101 = a1;
+    selfCopy = self;
     if (Mutable)
     {
       v68 = Mutable;
-      v98 = v13;
+      v98 = array;
       v69 = [MEMORY[0x1E695DFA8] set];
       v126 = 0u;
       v127 = 0u;
@@ -530,7 +530,7 @@ void __45__CNiOSContactFetcher_linkedPeopleComparator__block_invoke()
       v79 = v78;
       if (v92)
       {
-        v81 = [[CNiOSABUtilities alloc] initWithAddressBook:*(a1 + 8)];
+        v81 = [[CNiOSABUtilities alloc] initWithAddressBook:*(self + 8)];
         v80 = [(CNiOSABUtilities *)v81 filterPeople:v79 matchingAccountIdentifiers:v92];
       }
 
@@ -546,7 +546,7 @@ void __45__CNiOSContactFetcher_linkedPeopleComparator__block_invoke()
       v82 = v69;
       v125 = v82;
       v83 = [(__CFArray *)v80 _cn_filter:v124];
-      [(CNiOSContactFetcher *)a1 _batchLoadPropertiesForPeople:v83 keysToFetch:v93];
+      [(CNiOSContactFetcher *)self _batchLoadPropertiesForPeople:v83 keysToFetch:peopleCopy];
       if (v79)
       {
         v107 = v83;
@@ -579,7 +579,7 @@ void __45__CNiOSContactFetcher_linkedPeopleComparator__block_invoke()
         }
 
         CFRelease(v79);
-        a1 = v101;
+        self = selfCopy;
         v82 = v109;
         v80 = v111;
         v83 = v107;
@@ -593,7 +593,7 @@ void __45__CNiOSContactFetcher_linkedPeopleComparator__block_invoke()
       CFRelease(v68);
 
       v15 = v94;
-      v13 = v98;
+      array = v98;
     }
 
     v122 = 0u;
@@ -606,7 +606,7 @@ void __45__CNiOSContactFetcher_linkedPeopleComparator__block_invoke()
     {
       v102 = *v121;
       v96 = v16;
-      v97 = v13;
+      v97 = array;
       v95 = v17;
       do
       {
@@ -630,9 +630,9 @@ void __45__CNiOSContactFetcher_linkedPeopleComparator__block_invoke()
           {
             if ((v21 | v23))
             {
-              v24 = (*(*(a1 + 24) + 16))();
-              v25 = [v24 identifier];
-              v26 = [v11 objectForKey:v25];
+              v24 = (*(*(self + 24) + 16))();
+              identifier = [v24 identifier];
+              v26 = [fetchCopy objectForKey:identifier];
 
               if (v26)
               {
@@ -652,10 +652,10 @@ void __45__CNiOSContactFetcher_linkedPeopleComparator__block_invoke()
               v30 = [v28 sortedArrayUsingComparator:v29];
 
               v105 = v30;
-              v31 = [v30 _cn_map:*(a1 + 24)];
-              v32 = [v31 firstObject];
-              v33 = [v32 keyVector];
-              v34 = [v33 mutableCopy];
+              v31 = [v30 _cn_map:*(self + 24)];
+              firstObject = [v31 firstObject];
+              keyVector = [firstObject keyVector];
+              v34 = [keyVector mutableCopy];
 
               v118 = 0u;
               v119 = 0u;
@@ -682,10 +682,10 @@ void __45__CNiOSContactFetcher_linkedPeopleComparator__block_invoke()
 
                     if (v41 != v42)
                     {
-                      v43 = [v41 keyVector];
-                      if (([v43 isEqualToKeyVector:v34] & 1) == 0)
+                      keyVector2 = [v41 keyVector];
+                      if (([keyVector2 isEqualToKeyVector:v34] & 1) == 0)
                       {
-                        [v34 unionKeyVector:v43];
+                        [v34 unionKeyVector:keyVector2];
                         v38 = 1;
                       }
                     }
@@ -703,7 +703,7 @@ void __45__CNiOSContactFetcher_linkedPeopleComparator__block_invoke()
               }
 
               v100 = [MEMORY[0x1E695DFD8] setWithObject:v34];
-              v106 = +[CNiOSABConversions personToContactTransformWithKeysToFetch:mutable:](CNiOSABConversions, v100, [*(v101 + 16) mutableObjects]);
+              v106 = +[CNiOSABConversions personToContactTransformWithKeysToFetch:mutable:](CNiOSABConversions, v100, [*(selfCopy + 16) mutableObjects]);
               v44 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v35, "count")}];
               if ([v35 count])
               {
@@ -711,9 +711,9 @@ void __45__CNiOSContactFetcher_linkedPeopleComparator__block_invoke()
                 do
                 {
                   v46 = [v35 objectAtIndexedSubscript:v45];
-                  v47 = [MEMORY[0x1E695DFB0] null];
+                  null = [MEMORY[0x1E695DFB0] null];
 
-                  if (v46 != v47)
+                  if (v46 != null)
                   {
                     if (v38)
                     {
@@ -741,7 +741,7 @@ void __45__CNiOSContactFetcher_linkedPeopleComparator__block_invoke()
               }
 
               v52 = v44;
-              v53 = [MEMORY[0x1E695DF90] dictionary];
+              dictionary2 = [MEMORY[0x1E695DF90] dictionary];
               v112 = 0u;
               v113 = 0u;
               v114 = 0u;
@@ -762,14 +762,14 @@ void __45__CNiOSContactFetcher_linkedPeopleComparator__block_invoke()
                     }
 
                     v59 = *(*(&v112 + 1) + 8 * k);
-                    v60 = [v59 identifier];
-                    v61 = [v11 objectForKey:v60];
+                    identifier2 = [v59 identifier];
+                    v61 = [fetchCopy objectForKey:identifier2];
 
                     if (v61)
                     {
                       v62 = [CNiOSABConversions contactMatchInfoFromABMatchMetadataDictionary:v61];
-                      v63 = [v59 identifier];
-                      [v53 setObject:v62 forKey:v63];
+                      identifier3 = [v59 identifier];
+                      [dictionary2 setObject:v62 forKey:identifier3];
                     }
                   }
 
@@ -780,9 +780,9 @@ void __45__CNiOSContactFetcher_linkedPeopleComparator__block_invoke()
               }
 
               v17 = v95;
-              if ([v53 count])
+              if ([dictionary2 count])
               {
-                v27 = [CN unifyContactMatchInfos:v53 linkedContacts:v54];
+                v27 = [CN unifyContactMatchInfos:dictionary2 linkedContacts:v54];
               }
 
               else
@@ -790,7 +790,7 @@ void __45__CNiOSContactFetcher_linkedPeopleComparator__block_invoke()
                 v27 = 0;
               }
 
-              v13 = v97;
+              array = v97;
               v24 = [CN contactUnifyingContacts:v54 includingMainStoreContacts:1 allowMutableContactFreeze:1];
               v64 = [MEMORY[0x1E696AD98] numberWithInt:v108];
               [v104 addObject:v64];
@@ -801,13 +801,13 @@ void __45__CNiOSContactFetcher_linkedPeopleComparator__block_invoke()
 
             if (v27)
             {
-              v65 = [v24 identifier];
-              [v99 setObject:v27 forKey:v65];
+              identifier4 = [v24 identifier];
+              [dictionary setObject:v27 forKey:identifier4];
             }
 
-            [v13 addObject:v24];
+            [array addObject:v24];
 
-            a1 = v101;
+            self = selfCopy;
           }
 
           v18 = v110 + 1;
@@ -822,11 +822,11 @@ void __45__CNiOSContactFetcher_linkedPeopleComparator__block_invoke()
 
     if (v91)
     {
-      *v91 = v99;
+      *v91 = dictionary;
     }
 
     v66 = v94;
-    v12 = v92;
+    infosCopy = v92;
     if (v16)
     {
       CFRelease(v16);
@@ -835,11 +835,11 @@ void __45__CNiOSContactFetcher_linkedPeopleComparator__block_invoke()
 
   else
   {
-    v13 = 0;
+    array = 0;
     v66 = v94;
   }
 
-  return v13;
+  return array;
 }
 
 void __76__CNiOSContactFetcher_executeFetchRequestWithProgressiveResults_completion___block_invoke_cold_1(uint64_t a1, void *a2, void *a3, uint64_t a4)

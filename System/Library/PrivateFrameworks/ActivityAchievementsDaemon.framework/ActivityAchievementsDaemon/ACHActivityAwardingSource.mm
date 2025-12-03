@@ -1,34 +1,34 @@
 @interface ACHActivityAwardingSource
 - (ACHAchievementProgressEngine)progressEngine;
-- (ACHActivityAwardingSource)initWithHealthStore:(id)a3 dataStore:(id)a4 templateStore:(id)a5 pauseRingsCoordinator:(id)a6 awardingEngine:(id)a7 progressEngine:(id)a8;
+- (ACHActivityAwardingSource)initWithHealthStore:(id)store dataStore:(id)dataStore templateStore:(id)templateStore pauseRingsCoordinator:(id)coordinator awardingEngine:(id)engine progressEngine:(id)progressEngine;
 - (ACHDataStore)dataStore;
 - (ACHEarnedInstanceAwardingEngine)engine;
 - (ACHTemplateStore)templateStore;
-- (BOOL)_hasMetGoalForTemplate:(id)a3 andActivitySummary:(id)a4;
-- (BOOL)_isAchievementStillEarnableForTemplate:(id)a3 andProgressEnvironment:(id)a4;
+- (BOOL)_hasMetGoalForTemplate:(id)template andActivitySummary:(id)summary;
+- (BOOL)_isAchievementStillEarnableForTemplate:(id)template andProgressEnvironment:(id)environment;
 - (BOOL)isAppleWatch;
-- (BOOL)providesProgressForTemplate:(id)a3;
+- (BOOL)providesProgressForTemplate:(id)template;
 - (NSArray)dataStorePropertyKeys;
 - (NSDate)validThroughDate;
 - (NSDictionary)dataStoreProperties;
 - (NSString)watchCountryCode;
-- (id)_progressUpdateForTemplate:(id)a3 environment:(id)a4;
-- (id)_queue_evaluateTriggers:(unint64_t)a3 activitySummary:(id)a4 templates:(id)a5 shouldLog:(BOOL)a6;
-- (id)_queue_goalQuantityForTemplate:(id)a3 environment:(id)a4;
-- (id)_queue_progressQuantityForTemplate:(id)a3 environment:(id)a4;
+- (id)_progressUpdateForTemplate:(id)template environment:(id)environment;
+- (id)_queue_evaluateTriggers:(unint64_t)triggers activitySummary:(id)summary templates:(id)templates shouldLog:(BOOL)log;
+- (id)_queue_goalQuantityForTemplate:(id)template environment:(id)environment;
+- (id)_queue_progressQuantityForTemplate:(id)template environment:(id)environment;
 - (id)currentDate;
-- (id)earnedInstancesForHistoricalInterval:(id)a3 error:(id *)a4;
-- (unint64_t)_queue_triggersWithChangedSummaryFields:(unint64_t)a3 dataProvider:(id)a4;
+- (id)earnedInstancesForHistoricalInterval:(id)interval error:(id *)error;
+- (unint64_t)_queue_triggersWithChangedSummaryFields:(unint64_t)fields dataProvider:(id)provider;
 - (unsigned)_creatorDevice;
 - (void)_queue_startCurrentSummaryQuery;
-- (void)_queue_updateDataProvider:(id)a3 forDateInterval:(id)a4 awardingBlock:(id)a5 error:(id *)a6;
+- (void)_queue_updateDataProvider:(id)provider forDateInterval:(id)interval awardingBlock:(id)block error:(id *)error;
 - (void)_queue_updateProgressDataProviderIfNeeded;
-- (void)_runIncrementallyForChangedSummaryFields:(unint64_t)a3;
-- (void)currentActivitySummaryQueryDidUpdateTodayActivitySummary:(id)a3 changedFields:(unint64_t)a4;
-- (void)currentActivitySummaryQueryDidUpdateYesterdayActivitySummary:(id)a3 changedFields:(unint64_t)a4;
-- (void)dataStoreDidClearAllProperties:(id)a3 completion:(id)a4;
-- (void)requestAchievementProgressUpdatesForTemplates:(id)a3;
-- (void)setDataStoreProperties:(id)a3;
+- (void)_runIncrementallyForChangedSummaryFields:(unint64_t)fields;
+- (void)currentActivitySummaryQueryDidUpdateTodayActivitySummary:(id)summary changedFields:(unint64_t)fields;
+- (void)currentActivitySummaryQueryDidUpdateYesterdayActivitySummary:(id)summary changedFields:(unint64_t)fields;
+- (void)dataStoreDidClearAllProperties:(id)properties completion:(id)completion;
+- (void)requestAchievementProgressUpdatesForTemplates:(id)templates;
+- (void)setDataStoreProperties:(id)properties;
 - (void)startUp;
 @end
 
@@ -39,15 +39,15 @@
   currentDateOverride = self->_currentDateOverride;
   if (currentDateOverride)
   {
-    v3 = currentDateOverride;
+    date = currentDateOverride;
   }
 
   else
   {
-    v3 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
   }
 
-  return v3;
+  return date;
 }
 
 - (ACHAchievementProgressEngine)progressEngine
@@ -57,26 +57,26 @@
   return WeakRetained;
 }
 
-- (ACHActivityAwardingSource)initWithHealthStore:(id)a3 dataStore:(id)a4 templateStore:(id)a5 pauseRingsCoordinator:(id)a6 awardingEngine:(id)a7 progressEngine:(id)a8
+- (ACHActivityAwardingSource)initWithHealthStore:(id)store dataStore:(id)dataStore templateStore:(id)templateStore pauseRingsCoordinator:(id)coordinator awardingEngine:(id)engine progressEngine:(id)progressEngine
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
+  storeCopy = store;
+  dataStoreCopy = dataStore;
+  templateStoreCopy = templateStore;
+  coordinatorCopy = coordinator;
+  engineCopy = engine;
+  progressEngineCopy = progressEngine;
   v41.receiver = self;
   v41.super_class = ACHActivityAwardingSource;
   v21 = [(ACHActivityAwardingSource *)&v41 init];
   v22 = v21;
   if (v21)
   {
-    objc_storeStrong(&v21->_healthStore, a3);
-    objc_storeWeak(&v22->_dataStore, v16);
-    objc_storeWeak(&v22->_templateStore, v17);
-    objc_storeStrong(&v22->_pauseRingsCoordinator, a6);
-    objc_storeWeak(&v22->_engine, v19);
-    objc_storeWeak(&v22->_progressEngine, v20);
+    objc_storeStrong(&v21->_healthStore, store);
+    objc_storeWeak(&v22->_dataStore, dataStoreCopy);
+    objc_storeWeak(&v22->_templateStore, templateStoreCopy);
+    objc_storeStrong(&v22->_pauseRingsCoordinator, coordinator);
+    objc_storeWeak(&v22->_engine, engineCopy);
+    objc_storeWeak(&v22->_progressEngine, progressEngineCopy);
     v23 = objc_alloc_init(ACHActivityAwardingDataProvider);
     dataProvider = v22->_dataProvider;
     v22->_dataProvider = v23;
@@ -85,7 +85,7 @@
     progressDataProvider = v22->_progressDataProvider;
     v22->_progressDataProvider = v25;
 
-    v27 = [[ACHActivityTriggerGenerator alloc] initWithPauseRingsCoordinator:v18];
+    v27 = [[ACHActivityTriggerGenerator alloc] initWithPauseRingsCoordinator:coordinatorCopy];
     triggerGenerator = v22->_triggerGenerator;
     v22->_triggerGenerator = v27;
 
@@ -101,11 +101,11 @@
     internalQueue = v22->_internalQueue;
     v22->_internalQueue = v33;
 
-    v35 = [MEMORY[0x277CBEA80] hk_gregorianCalendarWithUTCTimeZone];
+    hk_gregorianCalendarWithUTCTimeZone = [MEMORY[0x277CBEA80] hk_gregorianCalendarWithUTCTimeZone];
     gregorianUTCCalendar = v22->_gregorianUTCCalendar;
-    v22->_gregorianUTCCalendar = v35;
+    v22->_gregorianUTCCalendar = hk_gregorianCalendarWithUTCTimeZone;
 
-    v37 = [[ACHActivitySummaryIterator alloc] initWithHealthStore:v15 shouldIncludePrivateProperties:1];
+    v37 = [[ACHActivitySummaryIterator alloc] initWithHealthStore:storeCopy shouldIncludePrivateProperties:1];
     activitySummaryIterator = v22->_activitySummaryIterator;
     v22->_activitySummaryIterator = v37;
 
@@ -122,42 +122,42 @@
 {
   if (![(ACHActivityAwardingSource *)self isAppleWatch])
   {
-    v3 = [(ACHActivityAwardingSource *)self internalQueue];
+    internalQueue = [(ACHActivityAwardingSource *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __36__ACHActivityAwardingSource_startUp__block_invoke;
     block[3] = &unk_278490870;
     block[4] = self;
-    dispatch_async(v3, block);
+    dispatch_async(internalQueue, block);
   }
 }
 
 - (BOOL)isAppleWatch
 {
-  v3 = [(ACHActivityAwardingSource *)self overrideIsAppleWatch];
+  overrideIsAppleWatch = [(ACHActivityAwardingSource *)self overrideIsAppleWatch];
 
-  if (v3)
+  if (overrideIsAppleWatch)
   {
-    v4 = [(ACHActivityAwardingSource *)self overrideIsAppleWatch];
-    v5 = [v4 BOOLValue];
+    overrideIsAppleWatch2 = [(ACHActivityAwardingSource *)self overrideIsAppleWatch];
+    bOOLValue = [overrideIsAppleWatch2 BOOLValue];
   }
 
   else
   {
-    v4 = [MEMORY[0x277CCDD30] sharedBehavior];
-    v5 = [v4 isAppleWatch];
+    overrideIsAppleWatch2 = [MEMORY[0x277CCDD30] sharedBehavior];
+    bOOLValue = [overrideIsAppleWatch2 isAppleWatch];
   }
 
-  v6 = v5;
+  v6 = bOOLValue;
 
   return v6;
 }
 
 - (NSString)watchCountryCode
 {
-  v3 = [(ACHActivityAwardingSource *)self overrideWatchCountryCode];
+  overrideWatchCountryCode = [(ACHActivityAwardingSource *)self overrideWatchCountryCode];
 
-  if (v3)
+  if (overrideWatchCountryCode)
   {
     [(ACHActivityAwardingSource *)self overrideWatchCountryCode];
   }
@@ -186,12 +186,12 @@
 
 - (void)_queue_startCurrentSummaryQuery
 {
-  v3 = [(ACHActivityAwardingSource *)self internalQueue];
-  dispatch_assert_queue_V2(v3);
+  internalQueue = [(ACHActivityAwardingSource *)self internalQueue];
+  dispatch_assert_queue_V2(internalQueue);
 
-  v4 = [(ACHActivityAwardingSource *)self currentActivitySummaryQuery];
+  currentActivitySummaryQuery = [(ACHActivityAwardingSource *)self currentActivitySummaryQuery];
 
-  if (!v4)
+  if (!currentActivitySummaryQuery)
   {
     objc_initWeak(&location, self);
     v5 = objc_alloc(MEMORY[0x277CE8D28]);
@@ -204,9 +204,9 @@
     [(ACHActivityAwardingSource *)self setCurrentActivitySummaryQuery:v6, v9, v10, v11, v12];
 
     [(ACHActivityAwardingSource *)self setIsObservingSummaryUpdates:1];
-    v7 = [(ACHActivityAwardingSource *)self healthStore];
-    v8 = [(ACHActivityAwardingSource *)self currentActivitySummaryQuery];
-    [v7 executeQuery:v8];
+    healthStore = [(ACHActivityAwardingSource *)self healthStore];
+    currentActivitySummaryQuery2 = [(ACHActivityAwardingSource *)self currentActivitySummaryQuery];
+    [healthStore executeQuery:currentActivitySummaryQuery2];
 
     objc_destroyWeak(&v13);
     objc_destroyWeak(&location);
@@ -232,21 +232,21 @@ void __60__ACHActivityAwardingSource__queue_startCurrentSummaryQuery__block_invo
   }
 }
 
-- (void)_queue_updateDataProvider:(id)a3 forDateInterval:(id)a4 awardingBlock:(id)a5 error:(id *)a6
+- (void)_queue_updateDataProvider:(id)provider forDateInterval:(id)interval awardingBlock:(id)block error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [(ACHActivityAwardingSource *)self internalQueue];
-  dispatch_assert_queue_V2(v12);
+  providerCopy = provider;
+  intervalCopy = interval;
+  blockCopy = block;
+  internalQueue = [(ACHActivityAwardingSource *)self internalQueue];
+  dispatch_assert_queue_V2(internalQueue);
 
-  v13 = [(ACHActivityAwardingSource *)self gregorianUTCCalendar];
-  v14 = [v10 startDate];
-  v15 = [v13 hk_activitySummaryDateComponentsFromDate:v14];
+  gregorianUTCCalendar = [(ACHActivityAwardingSource *)self gregorianUTCCalendar];
+  startDate = [intervalCopy startDate];
+  v15 = [gregorianUTCCalendar hk_activitySummaryDateComponentsFromDate:startDate];
 
-  v16 = [(ACHActivityAwardingSource *)self gregorianUTCCalendar];
-  v17 = [v10 endDate];
-  v18 = [v16 hk_activitySummaryDateComponentsFromDate:v17];
+  gregorianUTCCalendar2 = [(ACHActivityAwardingSource *)self gregorianUTCCalendar];
+  endDate = [intervalCopy endDate];
+  v18 = [gregorianUTCCalendar2 hk_activitySummaryDateComponentsFromDate:endDate];
 
   v34 = v18;
   v19 = [objc_alloc(MEMORY[0x277CE8D30]) initWithStartDateComponents:v15 endDateComponents:v18];
@@ -266,20 +266,20 @@ void __60__ACHActivityAwardingSource__queue_startCurrentSummaryQuery__block_invo
   v45 = &v44;
   v46 = 0x2020000000;
   v47 = 0;
-  v20 = [MEMORY[0x277CBEAA8] date];
-  v21 = [(ACHActivityAwardingSource *)self activitySummaryIterator];
-  v22 = [(ACHActivityAwardingSource *)self progressDataProvider];
-  v23 = v22 == v9;
+  date = [MEMORY[0x277CBEAA8] date];
+  activitySummaryIterator = [(ACHActivityAwardingSource *)self activitySummaryIterator];
+  progressDataProvider = [(ACHActivityAwardingSource *)self progressDataProvider];
+  v23 = progressDataProvider == providerCopy;
   v37[0] = MEMORY[0x277D85DD0];
   v37[1] = 3221225472;
   v37[2] = __91__ACHActivityAwardingSource__queue_updateDataProvider_forDateInterval_awardingBlock_error___block_invoke;
   v37[3] = &unk_2784929E8;
-  v24 = v9;
+  v24 = providerCopy;
   v38 = v24;
-  v39 = self;
+  selfCopy = self;
   v41 = v54;
   v43 = 16398;
-  v25 = v11;
+  v25 = blockCopy;
   v40 = v25;
   v42 = &v44;
   v36[0] = MEMORY[0x277D85DD0];
@@ -287,28 +287,28 @@ void __60__ACHActivityAwardingSource__queue_startCurrentSummaryQuery__block_invo
   v36[2] = __91__ACHActivityAwardingSource__queue_updateDataProvider_forDateInterval_awardingBlock_error___block_invoke_309;
   v36[3] = &unk_278490958;
   v36[4] = &v48;
-  [v21 enumerateActivitySummariesForDateComponentInterval:v19 includeNilSummaries:v23 handler:v37 errorHandler:v36];
+  [activitySummaryIterator enumerateActivitySummariesForDateComponentInterval:v19 includeNilSummaries:v23 handler:v37 errorHandler:v36];
 
-  v26 = [MEMORY[0x277CBEAA8] date];
-  v27 = [(ACHActivityAwardingSource *)self dataProvider];
+  date2 = [MEMORY[0x277CBEAA8] date];
+  dataProvider = [(ACHActivityAwardingSource *)self dataProvider];
 
-  if (v27 == v24)
+  if (dataProvider == v24)
   {
     [(ACHActivityAwardingSource *)self _queue_updateProgressDataProviderIfNeeded];
-    [v26 timeIntervalSinceReferenceDate];
+    [date2 timeIntervalSinceReferenceDate];
     v29 = v28;
-    [v20 timeIntervalSinceReferenceDate];
-    [ACHDMetricsReporter reportProcessingMetricsWithSourceType:0 intervalProcessed:v10 processingDuration:v45[3] recordsProcessed:v49[5] error:v29 - v30];
+    [date timeIntervalSinceReferenceDate];
+    [ACHDMetricsReporter reportProcessingMetricsWithSourceType:0 intervalProcessed:intervalCopy processingDuration:v45[3] recordsProcessed:v49[5] error:v29 - v30];
   }
 
   v31 = v49[5];
   v32 = v31;
   if (v31)
   {
-    if (a6)
+    if (error)
     {
       v33 = v31;
-      *a6 = v32;
+      *error = v32;
     }
 
     else
@@ -445,11 +445,11 @@ LABEL_23:
   objc_autoreleasePoolPop(v8);
 }
 
-- (id)earnedInstancesForHistoricalInterval:(id)a3 error:(id *)a4
+- (id)earnedInstancesForHistoricalInterval:(id)interval error:(id *)error
 {
-  v6 = a3;
-  v7 = [(ACHActivityAwardingSource *)self internalQueue];
-  dispatch_assert_queue_not_V2(v7);
+  intervalCopy = interval;
+  internalQueue = [(ACHActivityAwardingSource *)self internalQueue];
+  dispatch_assert_queue_not_V2(internalQueue);
 
   v21 = 0;
   v22 = &v21;
@@ -457,20 +457,20 @@ LABEL_23:
   v24 = __Block_byref_object_copy__26;
   v25 = __Block_byref_object_dispose__26;
   v26 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v8 = [(ACHActivityAwardingSource *)self internalQueue];
+  internalQueue2 = [(ACHActivityAwardingSource *)self internalQueue];
   v13 = MEMORY[0x277D85DD0];
   v14 = 3221225472;
   v15 = __72__ACHActivityAwardingSource_earnedInstancesForHistoricalInterval_error___block_invoke;
   v16 = &unk_278490980;
-  v17 = self;
-  v9 = v6;
+  selfCopy = self;
+  v9 = intervalCopy;
   v18 = v9;
   v19 = &v21;
-  v20 = a4;
-  dispatch_sync(v8, &v13);
+  errorCopy = error;
+  dispatch_sync(internalQueue2, &v13);
 
   v10 = objc_alloc(MEMORY[0x277CBEB98]);
-  v11 = [v10 initWithArray:{v22[5], v13, v14, v15, v16, v17}];
+  v11 = [v10 initWithArray:{v22[5], v13, v14, v15, v16, selfCopy}];
 
   _Block_object_dispose(&v21, 8);
 
@@ -586,27 +586,27 @@ void __72__ACHActivityAwardingSource_earnedInstancesForHistoricalInterval_error_
   objc_autoreleasePoolPop(v5);
 }
 
-- (BOOL)providesProgressForTemplate:(id)a3
+- (BOOL)providesProgressForTemplate:(id)template
 {
-  v3 = a3;
+  templateCopy = template;
   v4 = +[ACHActivityTriggerGenerator allPossibleTriggers];
-  v5 = [v3 triggers];
+  triggers = [templateCopy triggers];
 
-  return (v5 & v4) != 0;
+  return (triggers & v4) != 0;
 }
 
-- (void)requestAchievementProgressUpdatesForTemplates:(id)a3
+- (void)requestAchievementProgressUpdatesForTemplates:(id)templates
 {
-  v4 = a3;
-  v5 = [(ACHActivityAwardingSource *)self internalQueue];
+  templatesCopy = templates;
+  internalQueue = [(ACHActivityAwardingSource *)self internalQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __75__ACHActivityAwardingSource_requestAchievementProgressUpdatesForTemplates___block_invoke;
   v7[3] = &unk_278490898;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = templatesCopy;
+  v6 = templatesCopy;
+  dispatch_async(internalQueue, v7);
 }
 
 void __75__ACHActivityAwardingSource_requestAchievementProgressUpdatesForTemplates___block_invoke(uint64_t a1)
@@ -675,25 +675,25 @@ void __75__ACHActivityAwardingSource_requestAchievementProgressUpdatesForTemplat
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_progressUpdateForTemplate:(id)a3 environment:(id)a4
+- (id)_progressUpdateForTemplate:(id)template environment:(id)environment
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  templateCopy = template;
+  environmentCopy = environment;
   v8 = objc_alloc_init(MEMORY[0x277CE8D40]);
-  v9 = [v8 validateTemplate:v6];
+  v9 = [v8 validateTemplate:templateCopy];
   if ([v9 isValid])
   {
-    v10 = [(ACHActivityAwardingSource *)self _queue_goalQuantityForTemplate:v6 environment:v7];
-    v11 = [(ACHActivityAwardingSource *)self _queue_progressQuantityForTemplate:v6 environment:v7];
-    if (![(ACHActivityAwardingSource *)self _isAchievementStillEarnableForTemplate:v6 andProgressEnvironment:v7])
+    v10 = [(ACHActivityAwardingSource *)self _queue_goalQuantityForTemplate:templateCopy environment:environmentCopy];
+    v11 = [(ACHActivityAwardingSource *)self _queue_progressQuantityForTemplate:templateCopy environment:environmentCopy];
+    if (![(ACHActivityAwardingSource *)self _isAchievementStillEarnableForTemplate:templateCopy andProgressEnvironment:environmentCopy])
     {
       v12 = ACHLogAwardEngine();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
-        v13 = [v6 uniqueName];
+        uniqueName = [templateCopy uniqueName];
         v23 = 138412802;
-        v24 = v13;
+        v24 = uniqueName;
         v25 = 2112;
         v26 = v11;
         v27 = 2112;
@@ -701,10 +701,10 @@ void __75__ACHActivityAwardingSource_requestAchievementProgressUpdatesForTemplat
         _os_log_impl(&dword_221DDC000, v12, OS_LOG_TYPE_DEFAULT, "[ACHActivityAwardingSource] cannot earn %@ anymore, setting progress and goal to 0 (was: %@/%@)", &v23, 0x20u);
       }
 
-      v14 = [v6 canonicalUnit];
+      canonicalUnit = [templateCopy canonicalUnit];
       v15 = ACHHKQuantityWithValueAndUnit();
 
-      v16 = [v6 canonicalUnit];
+      canonicalUnit2 = [templateCopy canonicalUnit];
       v17 = ACHHKQuantityWithValueAndUnit();
 
       v11 = v17;
@@ -712,8 +712,8 @@ void __75__ACHActivityAwardingSource_requestAchievementProgressUpdatesForTemplat
     }
 
     v18 = objc_alloc(MEMORY[0x277CE8CC0]);
-    v19 = [v6 uniqueName];
-    v20 = [v18 initWithTemplateUniqueName:v19 progressQuantity:v11 goalQuantity:v10];
+    uniqueName2 = [templateCopy uniqueName];
+    v20 = [v18 initWithTemplateUniqueName:uniqueName2 progressQuantity:v11 goalQuantity:v10];
   }
 
   else
@@ -726,116 +726,116 @@ void __75__ACHActivityAwardingSource_requestAchievementProgressUpdatesForTemplat
   return v20;
 }
 
-- (id)_queue_progressQuantityForTemplate:(id)a3 environment:(id)a4
+- (id)_queue_progressQuantityForTemplate:(id)template environment:(id)environment
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
-  v9 = [(ACHActivityAwardingSource *)self currentDate];
-  IsAvailableForCalendarAndDate = ACHTemplateIsAvailableForCalendarAndDate(v6, v8, v9);
+  templateCopy = template;
+  environmentCopy = environment;
+  hk_gregorianCalendar = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
+  currentDate = [(ACHActivityAwardingSource *)self currentDate];
+  IsAvailableForCalendarAndDate = ACHTemplateIsAvailableForCalendarAndDate(templateCopy, hk_gregorianCalendar, currentDate);
 
   if (IsAvailableForCalendarAndDate)
   {
-    v11 = [v6 graceProgressExpression];
-    v12 = v11;
-    if (v11)
+    graceProgressExpression = [templateCopy graceProgressExpression];
+    v12 = graceProgressExpression;
+    if (graceProgressExpression)
     {
-      v13 = v11;
+      progressExpression = graceProgressExpression;
     }
 
     else
     {
-      v13 = [v6 progressExpression];
+      progressExpression = [templateCopy progressExpression];
     }
 
-    v14 = v13;
+    canonicalUnit2 = progressExpression;
 
-    v16 = [MEMORY[0x277CCA9C0] expressionWithFormat:v14];
-    v17 = [v16 expressionValueWithObject:v7 context:0];
-    v18 = [v6 canonicalUnit];
+    v16 = [MEMORY[0x277CCA9C0] expressionWithFormat:canonicalUnit2];
+    v17 = [v16 expressionValueWithObject:environmentCopy context:0];
+    canonicalUnit = [templateCopy canonicalUnit];
     v15 = ACHHKQuantityWithValueAndUnit();
   }
 
   else
   {
-    v14 = [v6 canonicalUnit];
+    canonicalUnit2 = [templateCopy canonicalUnit];
     v15 = ACHHKQuantityWithValueAndUnit();
   }
 
   return v15;
 }
 
-- (id)_queue_goalQuantityForTemplate:(id)a3 environment:(id)a4
+- (id)_queue_goalQuantityForTemplate:(id)template environment:(id)environment
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 graceGoalExpression];
-  v8 = v7;
-  if (v7)
+  templateCopy = template;
+  environmentCopy = environment;
+  graceGoalExpression = [templateCopy graceGoalExpression];
+  v8 = graceGoalExpression;
+  if (graceGoalExpression)
   {
-    v9 = v7;
+    goalExpression = graceGoalExpression;
   }
 
   else
   {
-    v9 = [v5 goalExpression];
+    goalExpression = [templateCopy goalExpression];
   }
 
-  v10 = v9;
+  v10 = goalExpression;
 
   v11 = [MEMORY[0x277CCA9C0] expressionWithFormat:v10];
-  v12 = [v11 expressionValueWithObject:v6 context:0];
+  v12 = [v11 expressionValueWithObject:environmentCopy context:0];
 
-  v13 = [v5 canonicalUnit];
+  canonicalUnit = [templateCopy canonicalUnit];
   v14 = ACHHKQuantityWithValueAndUnit();
 
   return v14;
 }
 
-- (BOOL)_isAchievementStillEarnableForTemplate:(id)a3 andProgressEnvironment:(id)a4
+- (BOOL)_isAchievementStillEarnableForTemplate:(id)template andProgressEnvironment:(id)environment
 {
-  v6 = a3;
-  v7 = a4;
+  templateCopy = template;
+  environmentCopy = environment;
   v8 = objc_alloc_init(MEMORY[0x277CE8D40]);
-  v9 = [v8 validateTemplate:v6];
+  v9 = [v8 validateTemplate:templateCopy];
   if ([v9 isValid])
   {
-    if (v7)
+    if (environmentCopy)
     {
-      v10 = [v6 uniqueName];
-      v11 = [(ACHActivityAwardingSource *)self progressDataProvider];
-      v32 = [v11 todayActivitySummary];
+      uniqueName = [templateCopy uniqueName];
+      progressDataProvider = [(ACHActivityAwardingSource *)self progressDataProvider];
+      todayActivitySummary = [progressDataProvider todayActivitySummary];
 
-      v12 = [v6 graceProgressExpression];
-      v13 = v12;
-      if (v12)
+      graceProgressExpression = [templateCopy graceProgressExpression];
+      v13 = graceProgressExpression;
+      if (graceProgressExpression)
       {
-        v14 = v12;
+        progressExpression = graceProgressExpression;
       }
 
       else
       {
-        v14 = [v6 progressExpression];
+        progressExpression = [templateCopy progressExpression];
       }
 
-      v16 = v14;
+      v16 = progressExpression;
 
       v30 = v16;
       v29 = [MEMORY[0x277CCA9C0] expressionWithFormat:v16];
-      v17 = [v29 expressionValueWithObject:v7 context:0];
-      v18 = [(ACHActivityAwardingSource *)self currentDate];
-      v19 = [v17 intValue];
-      v31 = v10;
-      if (([v10 isEqualToString:@"PerfectWeekMove"] & 1) != 0 || (objc_msgSend(v10, "isEqualToString:", @"PerfectWeekExercise") & 1) != 0 || (objc_msgSend(v10, "isEqualToString:", @"PerfectWeekStand") & 1) != 0 || objc_msgSend(v10, "isEqualToString:", @"PerfectWeekAll"))
+      v17 = [v29 expressionValueWithObject:environmentCopy context:0];
+      currentDate = [(ACHActivityAwardingSource *)self currentDate];
+      intValue = [v17 intValue];
+      v31 = uniqueName;
+      if (([uniqueName isEqualToString:@"PerfectWeekMove"] & 1) != 0 || (objc_msgSend(uniqueName, "isEqualToString:", @"PerfectWeekExercise") & 1) != 0 || (objc_msgSend(uniqueName, "isEqualToString:", @"PerfectWeekStand") & 1) != 0 || objc_msgSend(uniqueName, "isEqualToString:", @"PerfectWeekAll"))
       {
-        if ([(ACHActivityAwardingSource *)self _hasMetGoalForTemplate:v6 andActivitySummary:v32])
+        if ([(ACHActivityAwardingSource *)self _hasMetGoalForTemplate:templateCopy andActivitySummary:todayActivitySummary])
         {
-          v20 = 1 - v19;
+          v20 = 1 - intValue;
         }
 
         else
         {
-          v20 = -v19;
+          v20 = -intValue;
         }
 
         gregorianUTCCalendar = self->_gregorianUTCCalendar;
@@ -845,30 +845,30 @@ void __75__ACHActivityAwardingSource_requestAchievementProgressUpdatesForTemplat
 
       else
       {
-        v27 = [v10 hasPrefix:@"PerfectMonth_"];
+        v27 = [uniqueName hasPrefix:@"PerfectMonth_"];
         v15 = 1;
         if (!v27)
         {
           goto LABEL_17;
         }
 
-        if ([(ACHActivityAwardingSource *)self _hasMetGoalForTemplate:v6 andActivitySummary:v32])
+        if ([(ACHActivityAwardingSource *)self _hasMetGoalForTemplate:templateCopy andActivitySummary:todayActivitySummary])
         {
-          v20 = 1 - v19;
+          v20 = 1 - intValue;
         }
 
         else
         {
-          v20 = -v19;
+          v20 = -intValue;
         }
 
         v28 = self->_gregorianUTCCalendar;
         p_gregorianUTCCalendar = &self->_gregorianUTCCalendar;
-        v23 = [(NSCalendar *)v28 hk_startOfMonthForDate:v18];
+        v23 = [(NSCalendar *)v28 hk_startOfMonthForDate:currentDate];
       }
 
       v24 = v23;
-      v25 = [(NSCalendar *)*p_gregorianUTCCalendar dateByAddingUnit:16 value:v20 toDate:v18 options:0];
+      v25 = [(NSCalendar *)*p_gregorianUTCCalendar dateByAddingUnit:16 value:v20 toDate:currentDate options:0];
       v15 = [(NSCalendar *)*p_gregorianUTCCalendar isDate:v24 inSameDayAsDate:v25];
 
 LABEL_17:
@@ -888,34 +888,34 @@ LABEL_18:
   return v15;
 }
 
-- (BOOL)_hasMetGoalForTemplate:(id)a3 andActivitySummary:(id)a4
+- (BOOL)_hasMetGoalForTemplate:(id)template andActivitySummary:(id)summary
 {
-  v5 = a3;
-  if (a4)
+  templateCopy = template;
+  if (summary)
   {
-    v6 = a4;
-    [v6 _activeEnergyCompletionPercentage];
+    summaryCopy = summary;
+    [summaryCopy _activeEnergyCompletionPercentage];
     v8 = v7;
-    [v6 _moveMinutesCompletionPercentage];
+    [summaryCopy _moveMinutesCompletionPercentage];
     v10 = v8 + v9;
-    [v6 _exerciseTimeCompletionPercentage];
+    [summaryCopy _exerciseTimeCompletionPercentage];
     v12 = v11;
-    [v6 _standHoursCompletionPercentage];
+    [summaryCopy _standHoursCompletionPercentage];
     v14 = v13;
 
-    v15 = [v5 graceProgressExpression];
-    v16 = v15;
-    if (v15)
+    graceProgressExpression = [templateCopy graceProgressExpression];
+    v16 = graceProgressExpression;
+    if (graceProgressExpression)
     {
-      v17 = v15;
+      progressExpression = graceProgressExpression;
     }
 
     else
     {
-      v17 = [v5 progressExpression];
+      progressExpression = [templateCopy progressExpression];
     }
 
-    v19 = v17;
+    v19 = progressExpression;
 
     v20 = [&unk_283555CB0 indexOfObject:v19];
     v21 = v14 >= 1.0;
@@ -969,22 +969,22 @@ LABEL_18:
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138543362;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_221DDC000, a2, OS_LOG_TYPE_ERROR, "[ACHActivityAwardingSource] Error updating progress data provider: %{public}@", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_runIncrementallyForChangedSummaryFields:(unint64_t)a3
+- (void)_runIncrementallyForChangedSummaryFields:(unint64_t)fields
 {
-  v5 = [(ACHActivityAwardingSource *)self engine];
-  v6 = [(ACHActivityAwardingSource *)self uniqueName];
+  engine = [(ACHActivityAwardingSource *)self engine];
+  uniqueName = [(ACHActivityAwardingSource *)self uniqueName];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __70__ACHActivityAwardingSource__runIncrementallyForChangedSummaryFields___block_invoke;
   v7[3] = &unk_278492A38;
   v7[4] = self;
-  v7[5] = a3;
-  [v5 requestIncrementalEvaluationForSource:v6 evaluationBlock:v7];
+  v7[5] = fields;
+  [engine requestIncrementalEvaluationForSource:uniqueName evaluationBlock:v7];
 }
 
 id __70__ACHActivityAwardingSource__runIncrementallyForChangedSummaryFields___block_invoke(uint64_t a1, void *a2)
@@ -1053,34 +1053,34 @@ void __70__ACHActivityAwardingSource__runIncrementallyForChangedSummaryFields___
   [*(a1 + 32) _queue_updateProgressDataProviderIfNeeded];
 }
 
-- (unint64_t)_queue_triggersWithChangedSummaryFields:(unint64_t)a3 dataProvider:(id)a4
+- (unint64_t)_queue_triggersWithChangedSummaryFields:(unint64_t)fields dataProvider:(id)provider
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(ACHActivityAwardingSource *)self internalQueue];
-  dispatch_assert_queue_V2(v7);
+  fieldsCopy = fields;
+  providerCopy = provider;
+  internalQueue = [(ACHActivityAwardingSource *)self internalQueue];
+  dispatch_assert_queue_V2(internalQueue);
 
-  v8 = [v6 todayActivitySummary];
-  v9 = [v8 activityMoveMode];
+  todayActivitySummary = [providerCopy todayActivitySummary];
+  activityMoveMode = [todayActivitySummary activityMoveMode];
 
-  if (v9 == 2)
+  if (activityMoveMode == 2)
   {
-    if ((v4 & 0x4000) != 0)
+    if ((fieldsCopy & 0x4000) != 0)
     {
-      v10 = [(ACHActivityAwardingSource *)self triggerGenerator];
-      v11 = [v10 triggersForNewMoveTimeDataWithDataProvider:v6];
+      triggerGenerator = [(ACHActivityAwardingSource *)self triggerGenerator];
+      v11 = [triggerGenerator triggersForNewMoveTimeDataWithDataProvider:providerCopy];
       goto LABEL_8;
     }
   }
 
-  else if ((v4 & 2) != 0)
+  else if ((fieldsCopy & 2) != 0)
   {
-    v10 = [(ACHActivityAwardingSource *)self triggerGenerator];
-    v11 = [v10 triggersForNewMoveDataWithDataProvider:v6];
+    triggerGenerator = [(ACHActivityAwardingSource *)self triggerGenerator];
+    v11 = [triggerGenerator triggersForNewMoveDataWithDataProvider:providerCopy];
 LABEL_8:
     v12 = v11;
 
-    if ((v4 & 4) == 0)
+    if ((fieldsCopy & 4) == 0)
     {
       goto LABEL_10;
     }
@@ -1089,18 +1089,18 @@ LABEL_8:
   }
 
   v12 = 0;
-  if ((v4 & 4) != 0)
+  if ((fieldsCopy & 4) != 0)
   {
 LABEL_9:
-    v13 = [(ACHActivityAwardingSource *)self triggerGenerator];
-    v12 |= [v13 triggersForNewExerciseDataWithDataProvider:v6];
+    triggerGenerator2 = [(ACHActivityAwardingSource *)self triggerGenerator];
+    v12 |= [triggerGenerator2 triggersForNewExerciseDataWithDataProvider:providerCopy];
   }
 
 LABEL_10:
-  if ((v4 & 8) != 0)
+  if ((fieldsCopy & 8) != 0)
   {
-    v14 = [(ACHActivityAwardingSource *)self triggerGenerator];
-    v12 |= [v14 triggersForNewStandDataWithDataProvider:v6];
+    triggerGenerator3 = [(ACHActivityAwardingSource *)self triggerGenerator];
+    v12 |= [triggerGenerator3 triggersForNewStandDataWithDataProvider:providerCopy];
 
     if ((v12 & 0x40) == 0)
     {
@@ -1113,20 +1113,20 @@ LABEL_10:
     goto LABEL_16;
   }
 
-  v15 = [v6 todayActivitySummary];
-  v16 = [v15 _activitySummaryIndex];
-  v17 = [v6 properties];
-  v18 = [v17 mostRecentAllGoalsMadeIndex];
+  todayActivitySummary2 = [providerCopy todayActivitySummary];
+  _activitySummaryIndex = [todayActivitySummary2 _activitySummaryIndex];
+  properties = [providerCopy properties];
+  mostRecentAllGoalsMadeIndex = [properties mostRecentAllGoalsMadeIndex];
 
-  if (v16 > v18)
+  if (_activitySummaryIndex > mostRecentAllGoalsMadeIndex)
   {
-    v19 = [v6 properties];
-    [v19 setTotalAllGoalsMade:{objc_msgSend(v19, "totalAllGoalsMade") + 1}];
+    properties2 = [providerCopy properties];
+    [properties2 setTotalAllGoalsMade:{objc_msgSend(properties2, "totalAllGoalsMade") + 1}];
 
-    v20 = [v6 todayActivitySummary];
-    v21 = [v20 _activitySummaryIndex];
-    v22 = [v6 properties];
-    [v22 setMostRecentAllGoalsMadeIndex:v21];
+    todayActivitySummary3 = [providerCopy todayActivitySummary];
+    _activitySummaryIndex2 = [todayActivitySummary3 _activitySummaryIndex];
+    properties3 = [providerCopy properties];
+    [properties3 setMostRecentAllGoalsMadeIndex:_activitySummaryIndex2];
   }
 
 LABEL_16:
@@ -1134,39 +1134,39 @@ LABEL_16:
   return v12;
 }
 
-- (id)_queue_evaluateTriggers:(unint64_t)a3 activitySummary:(id)a4 templates:(id)a5 shouldLog:(BOOL)a6
+- (id)_queue_evaluateTriggers:(unint64_t)triggers activitySummary:(id)summary templates:(id)templates shouldLog:(BOOL)log
 {
-  v6 = a6;
+  logCopy = log;
   v93 = *MEMORY[0x277D85DE8];
-  v10 = a4;
-  v69 = a5;
-  v11 = [(ACHActivityAwardingSource *)self internalQueue];
-  dispatch_assert_queue_V2(v11);
+  summaryCopy = summary;
+  templatesCopy = templates;
+  internalQueue = [(ACHActivityAwardingSource *)self internalQueue];
+  dispatch_assert_queue_V2(internalQueue);
 
-  if (a3)
+  if (triggers)
   {
-    v12 = [v10 _gregorianDateComponents];
-    v13 = [(ACHActivityAwardingSource *)self environment];
-    [v13 setCurrentDateComponents:v12];
+    _gregorianDateComponents = [summaryCopy _gregorianDateComponents];
+    environment = [(ACHActivityAwardingSource *)self environment];
+    [environment setCurrentDateComponents:_gregorianDateComponents];
 
-    v14 = [(ACHActivityAwardingSource *)self gregorianUTCCalendar];
-    v72 = v12;
-    v15 = [v14 dateFromComponents:v12];
+    gregorianUTCCalendar = [(ACHActivityAwardingSource *)self gregorianUTCCalendar];
+    v72 = _gregorianDateComponents;
+    v15 = [gregorianUTCCalendar dateFromComponents:_gregorianDateComponents];
 
-    v16 = [(ACHActivityAwardingSource *)self healthStore];
-    v17 = [(ACHActivityAwardingSource *)self gregorianUTCCalendar];
+    healthStore = [(ACHActivityAwardingSource *)self healthStore];
+    gregorianUTCCalendar2 = [(ACHActivityAwardingSource *)self gregorianUTCCalendar];
     v83 = 0;
     v65 = v15;
-    v18 = ACHExperienceTypeForDateWithHealthStore(v16, v17, v15, &v83);
+    v18 = ACHExperienceTypeForDateWithHealthStore(healthStore, gregorianUTCCalendar2, v15, &v83);
     v19 = v83;
-    v20 = [(ACHActivityAwardingSource *)self environment];
-    [v20 setExperienceType:v18];
+    environment2 = [(ACHActivityAwardingSource *)self environment];
+    [environment2 setExperienceType:v18];
 
     v68 = v19;
     if (v19)
     {
-      v21 = [(ACHActivityAwardingSource *)self environment];
-      [v21 setExperienceType:3];
+      environment3 = [(ACHActivityAwardingSource *)self environment];
+      [environment3 setExperienceType:3];
 
       v22 = ACHLogAwardEngine();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
@@ -1182,12 +1182,12 @@ LABEL_16:
     v82[1] = 3221225472;
     v82[2] = __89__ACHActivityAwardingSource__queue_evaluateTriggers_activitySummary_templates_shouldLog___block_invoke;
     v82[3] = &__block_descriptor_40_e38_B24__0__ACHTemplate_8__NSDictionary_16l;
-    v82[4] = a3;
+    v82[4] = triggers;
     v24 = [MEMORY[0x277CCAC30] predicateWithBlock:{v82, v65}];
-    v25 = [v69 filteredArrayUsingPredicate:v24];
+    v25 = [templatesCopy filteredArrayUsingPredicate:v24];
 
     v71 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    if (v6)
+    if (logCopy)
     {
       v26 = ACHLogAwardEngine();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
@@ -1201,12 +1201,12 @@ LABEL_16:
         v89 = 2114;
         v90 = v72;
         v91 = 2112;
-        v92 = v10;
+        v92 = summaryCopy;
         _os_log_impl(&dword_221DDC000, v26, OS_LOG_TYPE_DEFAULT, "Activity source is evaluating triggers %@ for %{public}@ templates using activity summary with date %{public}@, values: %@", buf, 0x2Au);
       }
     }
 
-    v67 = v10;
+    v67 = summaryCopy;
     v29 = objc_alloc_init(MEMORY[0x277CE8D40]);
     v78 = 0u;
     v79 = 0u;
@@ -1217,8 +1217,8 @@ LABEL_16:
     if (v77)
     {
       v30 = *v79;
-      v70 = v6;
-      v73 = self;
+      v70 = logCopy;
+      selfCopy = self;
       v74 = *v79;
       v75 = v29;
       do
@@ -1235,42 +1235,42 @@ LABEL_16:
           v33 = [v29 validateTemplate:v32];
           if ([v33 isValid])
           {
-            v34 = [v32 gracePredicate];
-            v35 = v34;
-            if (v34)
+            gracePredicate = [v32 gracePredicate];
+            v35 = gracePredicate;
+            if (gracePredicate)
             {
-              v36 = v34;
+              predicate = gracePredicate;
             }
 
             else
             {
-              v36 = [v32 predicate];
+              predicate = [v32 predicate];
             }
 
-            v37 = v36;
+            v37 = predicate;
 
             v39 = [*(v23 + 3120) predicateWithFormat:v37];
             [v39 allowEvaluation];
-            v40 = [(ACHActivityAwardingSource *)self environment];
-            v41 = [v39 evaluateWithObject:v40];
+            environment4 = [(ACHActivityAwardingSource *)self environment];
+            v41 = [v39 evaluateWithObject:environment4];
 
             if (v41)
             {
-              if (v6)
+              if (logCopy)
               {
                 v42 = ACHLogAwardEngine();
                 if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
                 {
-                  v43 = [v32 uniqueName];
+                  uniqueName = [v32 uniqueName];
                   *buf = 138412546;
-                  v86 = v43;
+                  v86 = uniqueName;
                   v87 = 2112;
                   v88 = v37;
                   _os_log_impl(&dword_221DDC000, v42, OS_LOG_TYPE_DEFAULT, "Template predicate is true, creating earned instance. Template: %@, predicate: %@", buf, 0x16u);
                 }
 
-                v44 = [(ACHActivityAwardingSource *)self environment];
-                [v44 setValueForKeyLoggingEnabled:1];
+                environment5 = [(ACHActivityAwardingSource *)self environment];
+                [environment5 setValueForKeyLoggingEnabled:1];
 
                 v45 = ACHLogAwardEngine();
                 if (os_log_type_enabled(v45, OS_LOG_TYPE_DEFAULT))
@@ -1279,16 +1279,16 @@ LABEL_16:
                   _os_log_impl(&dword_221DDC000, v45, OS_LOG_TYPE_DEFAULT, "Evaluating predicate with valueForKey logging enabled:", buf, 2u);
                 }
 
-                v46 = [(ACHActivityAwardingSource *)self environment];
-                [v39 evaluateWithObject:v46];
+                environment6 = [(ACHActivityAwardingSource *)self environment];
+                [v39 evaluateWithObject:environment6];
 
-                v47 = [(ACHActivityAwardingSource *)self environment];
-                [v47 setValueForKeyLoggingEnabled:0];
+                environment7 = [(ACHActivityAwardingSource *)self environment];
+                [environment7 setValueForKeyLoggingEnabled:0];
               }
 
               v48 = objc_alloc_init(MEMORY[0x277CE8D38]);
-              v49 = [v32 uniqueName];
-              [v48 setTemplateUniqueName:v49];
+              uniqueName2 = [v32 uniqueName];
+              [v48 setTemplateUniqueName:uniqueName2];
 
               [v72 year];
               [v72 month];
@@ -1296,40 +1296,40 @@ LABEL_16:
               v50 = ACHDateComponentsForYearMonthDay();
               [v48 setEarnedDateComponents:v50];
 
-              v51 = [v32 graceValueExpression];
-              if (v51)
+              graceValueExpression = [v32 graceValueExpression];
+              if (graceValueExpression)
               {
-                v52 = v51;
+                valueExpression = graceValueExpression;
                 goto LABEL_31;
               }
 
-              v52 = [v32 valueExpression];
-              if (v52)
+              valueExpression = [v32 valueExpression];
+              if (valueExpression)
               {
 LABEL_31:
-                v53 = [v32 canonicalUnit];
+                canonicalUnit = [v32 canonicalUnit];
 
-                if (v53)
+                if (canonicalUnit)
                 {
-                  v54 = [MEMORY[0x277CCA9C0] expressionWithFormat:v52];
-                  v55 = [(ACHActivityAwardingSource *)v73 environment];
-                  v56 = [v54 expressionValueWithObject:v55 context:0];
+                  v54 = [MEMORY[0x277CCA9C0] expressionWithFormat:valueExpression];
+                  environment8 = [(ACHActivityAwardingSource *)selfCopy environment];
+                  v56 = [v54 expressionValueWithObject:environment8 context:0];
 
                   if (v56)
                   {
                     v57 = MEMORY[0x277CCD7E8];
-                    v58 = [v32 canonicalUnit];
+                    canonicalUnit2 = [v32 canonicalUnit];
                     [v56 doubleValue];
-                    v59 = [v57 quantityWithUnit:v58 doubleValue:?];
+                    v59 = [v57 quantityWithUnit:canonicalUnit2 doubleValue:?];
                     [v48 setValue:v59];
                   }
                 }
 
-                v6 = v70;
+                logCopy = v70;
               }
 
-              self = v73;
-              if (v6)
+              self = selfCopy;
+              if (logCopy)
               {
                 v60 = ACHLogAwardEngine();
                 if (os_log_type_enabled(v60, OS_LOG_TYPE_DEFAULT))
@@ -1353,9 +1353,9 @@ LABEL_31:
           v37 = ACHLogAwardEngine();
           if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
           {
-            v38 = [v32 uniqueName];
+            uniqueName3 = [v32 uniqueName];
             *buf = 138412290;
-            v86 = v38;
+            v86 = uniqueName3;
             _os_log_impl(&dword_221DDC000, v37, OS_LOG_TYPE_DEFAULT, "Template has invalid predicates, skipping: %@", buf, 0xCu);
           }
 
@@ -1373,7 +1373,7 @@ LABEL_42:
     }
 
     v62 = [v71 copy];
-    v10 = v67;
+    summaryCopy = v67;
   }
 
   else
@@ -1386,20 +1386,20 @@ LABEL_42:
   return v62;
 }
 
-- (void)currentActivitySummaryQueryDidUpdateTodayActivitySummary:(id)a3 changedFields:(unint64_t)a4
+- (void)currentActivitySummaryQueryDidUpdateTodayActivitySummary:(id)summary changedFields:(unint64_t)fields
 {
-  v6 = a3;
-  if (([v6 _isDataLoading] & 1) == 0)
+  summaryCopy = summary;
+  if (([summaryCopy _isDataLoading] & 1) == 0)
   {
-    v7 = [(ACHActivityAwardingSource *)self internalQueue];
+    internalQueue = [(ACHActivityAwardingSource *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __100__ACHActivityAwardingSource_currentActivitySummaryQueryDidUpdateTodayActivitySummary_changedFields___block_invoke;
     block[3] = &unk_278492A80;
     block[4] = self;
-    v9 = v6;
-    v10 = a4;
-    dispatch_async(v7, block);
+    v9 = summaryCopy;
+    fieldsCopy = fields;
+    dispatch_async(internalQueue, block);
   }
 }
 
@@ -1426,10 +1426,10 @@ uint64_t __100__ACHActivityAwardingSource_currentActivitySummaryQueryDidUpdateTo
   }
 }
 
-- (void)currentActivitySummaryQueryDidUpdateYesterdayActivitySummary:(id)a3 changedFields:(unint64_t)a4
+- (void)currentActivitySummaryQueryDidUpdateYesterdayActivitySummary:(id)summary changedFields:(unint64_t)fields
 {
-  v6 = a3;
-  if (([v6 _isDataLoading] & 1) == 0)
+  summaryCopy = summary;
+  if (([summaryCopy _isDataLoading] & 1) == 0)
   {
     internalQueue = self->_internalQueue;
     block[0] = MEMORY[0x277D85DD0];
@@ -1437,8 +1437,8 @@ uint64_t __100__ACHActivityAwardingSource_currentActivitySummaryQueryDidUpdateTo
     block[2] = __104__ACHActivityAwardingSource_currentActivitySummaryQueryDidUpdateYesterdayActivitySummary_changedFields___block_invoke;
     block[3] = &unk_278492A80;
     block[4] = self;
-    v9 = v6;
-    v10 = a4;
+    v9 = summaryCopy;
+    fieldsCopy = fields;
     dispatch_async(internalQueue, block);
   }
 }
@@ -1468,8 +1468,8 @@ uint64_t __104__ACHActivityAwardingSource_currentActivitySummaryQueryDidUpdateYe
 
 - (NSDate)validThroughDate
 {
-  v3 = [(ACHActivityAwardingSource *)self internalQueue];
-  dispatch_assert_queue_not_V2(v3);
+  internalQueue = [(ACHActivityAwardingSource *)self internalQueue];
+  dispatch_assert_queue_not_V2(internalQueue);
 
   v8 = 0;
   v9 = &v8;
@@ -1477,14 +1477,14 @@ uint64_t __104__ACHActivityAwardingSource_currentActivitySummaryQueryDidUpdateYe
   v11 = __Block_byref_object_copy__26;
   v12 = __Block_byref_object_dispose__26;
   v13 = 0;
-  v4 = [(ACHActivityAwardingSource *)self internalQueue];
+  internalQueue2 = [(ACHActivityAwardingSource *)self internalQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __45__ACHActivityAwardingSource_validThroughDate__block_invoke;
   v7[3] = &unk_278491920;
   v7[4] = self;
   v7[5] = &v8;
-  dispatch_sync(v4, v7);
+  dispatch_sync(internalQueue2, v7);
 
   v5 = v9[5];
   _Block_object_dispose(&v8, 8);
@@ -1511,8 +1511,8 @@ void __45__ACHActivityAwardingSource_validThroughDate__block_invoke(uint64_t a1)
 
 - (NSArray)dataStorePropertyKeys
 {
-  v3 = [(ACHActivityAwardingSource *)self internalQueue];
-  dispatch_assert_queue_not_V2(v3);
+  internalQueue = [(ACHActivityAwardingSource *)self internalQueue];
+  dispatch_assert_queue_not_V2(internalQueue);
 
   v8 = 0;
   v9 = &v8;
@@ -1520,14 +1520,14 @@ void __45__ACHActivityAwardingSource_validThroughDate__block_invoke(uint64_t a1)
   v11 = __Block_byref_object_copy__26;
   v12 = __Block_byref_object_dispose__26;
   v13 = 0;
-  v4 = [(ACHActivityAwardingSource *)self internalQueue];
+  internalQueue2 = [(ACHActivityAwardingSource *)self internalQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __50__ACHActivityAwardingSource_dataStorePropertyKeys__block_invoke;
   v7[3] = &unk_278490FE8;
   v7[4] = self;
   v7[5] = &v8;
-  dispatch_sync(v4, v7);
+  dispatch_sync(internalQueue2, v7);
 
   v5 = v9[5];
   _Block_object_dispose(&v8, 8);
@@ -1547,8 +1547,8 @@ void __50__ACHActivityAwardingSource_dataStorePropertyKeys__block_invoke(uint64_
 
 - (NSDictionary)dataStoreProperties
 {
-  v3 = [(ACHActivityAwardingSource *)self internalQueue];
-  dispatch_assert_queue_not_V2(v3);
+  internalQueue = [(ACHActivityAwardingSource *)self internalQueue];
+  dispatch_assert_queue_not_V2(internalQueue);
 
   v8 = 0;
   v9 = &v8;
@@ -1556,14 +1556,14 @@ void __50__ACHActivityAwardingSource_dataStorePropertyKeys__block_invoke(uint64_
   v11 = __Block_byref_object_copy__26;
   v12 = __Block_byref_object_dispose__26;
   v13 = 0;
-  v4 = [(ACHActivityAwardingSource *)self internalQueue];
+  internalQueue2 = [(ACHActivityAwardingSource *)self internalQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __48__ACHActivityAwardingSource_dataStoreProperties__block_invoke;
   v7[3] = &unk_278490FE8;
   v7[4] = self;
   v7[5] = &v8;
-  dispatch_sync(v4, v7);
+  dispatch_sync(internalQueue2, v7);
 
   v5 = v9[5];
   _Block_object_dispose(&v8, 8);
@@ -1581,18 +1581,18 @@ void __48__ACHActivityAwardingSource_dataStoreProperties__block_invoke(uint64_t 
   *(v4 + 40) = v3;
 }
 
-- (void)setDataStoreProperties:(id)a3
+- (void)setDataStoreProperties:(id)properties
 {
-  v4 = a3;
-  v5 = [(ACHActivityAwardingSource *)self internalQueue];
+  propertiesCopy = properties;
+  internalQueue = [(ACHActivityAwardingSource *)self internalQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __52__ACHActivityAwardingSource_setDataStoreProperties___block_invoke;
   v7[3] = &unk_278490898;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = propertiesCopy;
+  v6 = propertiesCopy;
+  dispatch_async(internalQueue, v7);
 }
 
 uint64_t __52__ACHActivityAwardingSource_setDataStoreProperties___block_invoke(uint64_t a1)
@@ -1612,18 +1612,18 @@ uint64_t __52__ACHActivityAwardingSource_setDataStoreProperties___block_invoke(u
   return [v7 _queue_updateProgressDataProviderIfNeeded];
 }
 
-- (void)dataStoreDidClearAllProperties:(id)a3 completion:(id)a4
+- (void)dataStoreDidClearAllProperties:(id)properties completion:(id)completion
 {
-  v5 = a4;
-  v6 = [(ACHActivityAwardingSource *)self internalQueue];
+  completionCopy = completion;
+  internalQueue = [(ACHActivityAwardingSource *)self internalQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __71__ACHActivityAwardingSource_dataStoreDidClearAllProperties_completion___block_invoke;
   v8[3] = &unk_278491948;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
-  dispatch_async(v6, v8);
+  v9 = completionCopy;
+  v7 = completionCopy;
+  dispatch_async(internalQueue, v8);
 }
 
 uint64_t __71__ACHActivityAwardingSource_dataStoreDidClearAllProperties_completion___block_invoke(uint64_t a1)

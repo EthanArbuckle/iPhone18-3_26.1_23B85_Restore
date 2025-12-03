@@ -1,6 +1,6 @@
 @interface CKKSLocalSynchronizeOperation
 - (CKKSKeychainView)ckks;
-- (CKKSLocalSynchronizeOperation)initWithCKKSKeychainView:(id)a3 operationDependencies:(id)a4;
+- (CKKSLocalSynchronizeOperation)initWithCKKSKeychainView:(id)view operationDependencies:(id)dependencies;
 - (void)groupStart;
 @end
 
@@ -30,21 +30,21 @@
   objc_destroyWeak(&location);
 }
 
-- (CKKSLocalSynchronizeOperation)initWithCKKSKeychainView:(id)a3 operationDependencies:(id)a4
+- (CKKSLocalSynchronizeOperation)initWithCKKSKeychainView:(id)view operationDependencies:(id)dependencies
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  dependenciesCopy = dependencies;
   v12.receiver = self;
   v12.super_class = CKKSLocalSynchronizeOperation;
   v8 = [(CKKSGroupOperation *)&v12 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak((v8 + 132), v6);
+    objc_storeWeak((v8 + 132), viewCopy);
     *(v9 + 32) = 0;
-    objc_storeStrong((v9 + 140), a4);
-    v10 = [v6 holdLocalSynchronizeOperation];
-    [v9 addNullableDependency:v10];
+    objc_storeStrong((v9 + 140), dependencies);
+    holdLocalSynchronizeOperation = [viewCopy holdLocalSynchronizeOperation];
+    [v9 addNullableDependency:holdLocalSynchronizeOperation];
   }
 
   return v9;

@@ -1,8 +1,8 @@
 @interface SFAutoFillHelperProxy
 - (SFAutoFillHelperProxy)init;
-- (void)_getAutomaticStrongPasswordForAppWithPasswordRules:(id)a3 confirmPasswordRules:(id)a4 overrideApplicationIdentifier:(id)a5 completion:(id)a6;
+- (void)_getAutomaticStrongPasswordForAppWithPasswordRules:(id)rules confirmPasswordRules:(id)passwordRules overrideApplicationIdentifier:(id)identifier completion:(id)completion;
 - (void)dealloc;
-- (void)getRemoteAutoFillAvailabilityWithCompletionHandler:(id)a3;
+- (void)getRemoteAutoFillAvailabilityWithCompletionHandler:(id)handler;
 @end
 
 @implementation SFAutoFillHelperProxy
@@ -58,27 +58,27 @@ void __29__SFAutoFillHelperProxy_init__block_invoke(uint64_t a1)
   [(SFAutoFillHelperProxy *)&v3 dealloc];
 }
 
-- (void)_getAutomaticStrongPasswordForAppWithPasswordRules:(id)a3 confirmPasswordRules:(id)a4 overrideApplicationIdentifier:(id)a5 completion:(id)a6
+- (void)_getAutomaticStrongPasswordForAppWithPasswordRules:(id)rules confirmPasswordRules:(id)passwordRules overrideApplicationIdentifier:(id)identifier completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = v13;
-  if (v13)
+  rulesCopy = rules;
+  passwordRulesCopy = passwordRules;
+  identifierCopy = identifier;
+  completionCopy = completion;
+  v14 = completionCopy;
+  if (completionCopy)
   {
     connection = self->_connection;
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __138__SFAutoFillHelperProxy__getAutomaticStrongPasswordForAppWithPasswordRules_confirmPasswordRules_overrideApplicationIdentifier_completion___block_invoke;
     v19[3] = &unk_279B61748;
-    v16 = v13;
+    v16 = completionCopy;
     v20 = v16;
     v17 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v19];
     v18 = v17;
     if (v17)
     {
-      [v17 getAutomaticStrongPasswordForAppWithPasswordRules:v10 confirmPasswordRules:v11 overrideApplicationIdentifier:v12 completion:v16];
+      [v17 getAutomaticStrongPasswordForAppWithPasswordRules:rulesCopy confirmPasswordRules:passwordRulesCopy overrideApplicationIdentifier:identifierCopy completion:v16];
     }
   }
 }
@@ -95,15 +95,15 @@ void __138__SFAutoFillHelperProxy__getAutomaticStrongPasswordForAppWithPasswordR
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)getRemoteAutoFillAvailabilityWithCompletionHandler:(id)a3
+- (void)getRemoteAutoFillAvailabilityWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   connection = self->_connection;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __76__SFAutoFillHelperProxy_getRemoteAutoFillAvailabilityWithCompletionHandler___block_invoke;
   v9[3] = &unk_279B61748;
-  v6 = v4;
+  v6 = handlerCopy;
   v10 = v6;
   v7 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v9];
   v8 = v7;

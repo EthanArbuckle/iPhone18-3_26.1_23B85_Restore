@@ -1,48 +1,48 @@
 @interface VMUStackLogConsolidator
-- (VMUStackLogConsolidator)initWithScannerOrGraph:(id)a3 stackLogReader:(id)a4;
-- (id)callTreeWithOptions:(unint64_t)a3 nodeFilter:(id)a4;
-- (id)stackIDsToNodesFilteredBy:(id)a3;
+- (VMUStackLogConsolidator)initWithScannerOrGraph:(id)graph stackLogReader:(id)reader;
+- (id)callTreeWithOptions:(unint64_t)options nodeFilter:(id)filter;
+- (id)stackIDsToNodesFilteredBy:(id)by;
 @end
 
 @implementation VMUStackLogConsolidator
 
-- (VMUStackLogConsolidator)initWithScannerOrGraph:(id)a3 stackLogReader:(id)a4
+- (VMUStackLogConsolidator)initWithScannerOrGraph:(id)graph stackLogReader:(id)reader
 {
-  v7 = a3;
-  v8 = a4;
+  graphCopy = graph;
+  readerCopy = reader;
   v12.receiver = self;
   v12.super_class = VMUStackLogConsolidator;
   v9 = [(VMUStackLogConsolidator *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_scannerOrGraph, a3);
-    objc_storeStrong(&v10->_stackLogReader, a4);
+    objc_storeStrong(&v9->_scannerOrGraph, graph);
+    objc_storeStrong(&v10->_stackLogReader, reader);
   }
 
   return v10;
 }
 
-- (id)stackIDsToNodesFilteredBy:(id)a3
+- (id)stackIDsToNodesFilteredBy:(id)by
 {
-  v4 = a3;
+  byCopy = by;
   v5 = [MEMORY[0x1E696AD18] mapTableWithKeyOptions:258 valueOptions:259];
   debugTimer = self->_debugTimer;
   if (debugTimer)
   {
-    v7 = [(VMUDebugTimer *)debugTimer signpostID];
+    signpostID = [(VMUDebugTimer *)debugTimer signpostID];
     debugTimer = self->_debugTimer;
-    if (v7)
+    if (signpostID)
     {
-      v8 = [(VMUDebugTimer *)debugTimer logHandle];
-      v9 = [(VMUDebugTimer *)self->_debugTimer signpostID];
-      if (v9 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+      logHandle = [(VMUDebugTimer *)debugTimer logHandle];
+      signpostID2 = [(VMUDebugTimer *)self->_debugTimer signpostID];
+      if (signpostID2 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
       {
-        v10 = v9;
-        if (os_signpost_enabled(v8))
+        v10 = signpostID2;
+        if (os_signpost_enabled(logHandle))
         {
           *buf = 0;
-          _os_signpost_emit_with_name_impl(&dword_1C679D000, v8, OS_SIGNPOST_INTERVAL_END, v10, "VMUStackLogConsolidator", "", buf, 2u);
+          _os_signpost_emit_with_name_impl(&dword_1C679D000, logHandle, OS_SIGNPOST_INTERVAL_END, v10, "VMUStackLogConsolidator", "", buf, 2u);
         }
       }
 
@@ -55,15 +55,15 @@
   v11 = self->_debugTimer;
   if (v11)
   {
-    v12 = [(VMUDebugTimer *)v11 logHandle];
-    v13 = [(VMUDebugTimer *)self->_debugTimer signpostID];
-    if (v13 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+    logHandle2 = [(VMUDebugTimer *)v11 logHandle];
+    signpostID3 = [(VMUDebugTimer *)self->_debugTimer signpostID];
+    if (signpostID3 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
     {
-      v14 = v13;
-      if (os_signpost_enabled(v12))
+      v14 = signpostID3;
+      if (os_signpost_enabled(logHandle2))
       {
         *buf = 0;
-        _os_signpost_emit_with_name_impl(&dword_1C679D000, v12, OS_SIGNPOST_INTERVAL_BEGIN, v14, "VMUStackLogConsolidator", "step 1 -- build map table with live malloc block addresses as keys", buf, 2u);
+        _os_signpost_emit_with_name_impl(&dword_1C679D000, logHandle2, OS_SIGNPOST_INTERVAL_BEGIN, v14, "VMUStackLogConsolidator", "step 1 -- build map table with live malloc block addresses as keys", buf, 2u);
       }
     }
   }
@@ -72,7 +72,7 @@
   v57 = buf;
   v58 = 0x2020000000;
   v59 = 0;
-  v15 = [(VMUCommonGraphInterface *)self->_scannerOrGraph nodeCount];
+  nodeCount = [(VMUCommonGraphInterface *)self->_scannerOrGraph nodeCount];
   scannerOrGraph = self->_scannerOrGraph;
   v51[0] = MEMORY[0x1E69E9820];
   v51[1] = 3221225472;
@@ -80,8 +80,8 @@
   v51[3] = &unk_1E82787F8;
   v51[4] = self;
   v54 = buf;
-  v55 = v15;
-  v17 = v4;
+  v55 = nodeCount;
+  v17 = byCopy;
   v53 = v17;
   v18 = v5;
   v52 = v18;
@@ -91,16 +91,16 @@
     v19 = self->_debugTimer;
     if (v19)
     {
-      v20 = [(VMUDebugTimer *)v19 signpostID];
+      signpostID4 = [(VMUDebugTimer *)v19 signpostID];
       v19 = self->_debugTimer;
-      if (v20)
+      if (signpostID4)
       {
-        v21 = [(VMUDebugTimer *)v19 logHandle];
-        v22 = [(VMUDebugTimer *)self->_debugTimer signpostID];
-        if (v22 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v21))
+        logHandle3 = [(VMUDebugTimer *)v19 logHandle];
+        signpostID5 = [(VMUDebugTimer *)self->_debugTimer signpostID];
+        if (signpostID5 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(logHandle3))
         {
           LOWORD(v48._pi) = 0;
-          _os_signpost_emit_with_name_impl(&dword_1C679D000, v21, OS_SIGNPOST_INTERVAL_END, v22, "VMUStackLogConsolidator", "", &v48, 2u);
+          _os_signpost_emit_with_name_impl(&dword_1C679D000, logHandle3, OS_SIGNPOST_INTERVAL_END, signpostID5, "VMUStackLogConsolidator", "", &v48, 2u);
         }
 
         v19 = self->_debugTimer;
@@ -112,12 +112,12 @@
     v23 = self->_debugTimer;
     if (v23)
     {
-      v24 = [(VMUDebugTimer *)v23 logHandle];
-      v25 = [(VMUDebugTimer *)self->_debugTimer signpostID];
-      if (v25 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v24))
+      logHandle4 = [(VMUDebugTimer *)v23 logHandle];
+      signpostID6 = [(VMUDebugTimer *)self->_debugTimer signpostID];
+      if (signpostID6 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(logHandle4))
       {
         LOWORD(v48._pi) = 0;
-        _os_signpost_emit_with_name_impl(&dword_1C679D000, v24, OS_SIGNPOST_INTERVAL_BEGIN, v25, "VMUStackLogConsolidator", "step 2 -- enumerate stack log records to record unique backtrace IDs for objects of interest", &v48, 2u);
+        _os_signpost_emit_with_name_impl(&dword_1C679D000, logHandle4, OS_SIGNPOST_INTERVAL_BEGIN, signpostID6, "VMUStackLogConsolidator", "step 2 -- enumerate stack log records to record unique backtrace IDs for objects of interest", &v48, 2u);
       }
     }
 
@@ -133,16 +133,16 @@
   v27 = self->_debugTimer;
   if (v27)
   {
-    v28 = [(VMUDebugTimer *)v27 signpostID];
+    signpostID7 = [(VMUDebugTimer *)v27 signpostID];
     v27 = self->_debugTimer;
-    if (v28)
+    if (signpostID7)
     {
-      v29 = [(VMUDebugTimer *)v27 logHandle];
-      v30 = [(VMUDebugTimer *)self->_debugTimer signpostID];
-      if (v30 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v29))
+      logHandle5 = [(VMUDebugTimer *)v27 logHandle];
+      signpostID8 = [(VMUDebugTimer *)self->_debugTimer signpostID];
+      if (signpostID8 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(logHandle5))
       {
         LOWORD(v48._pi) = 0;
-        _os_signpost_emit_with_name_impl(&dword_1C679D000, v29, OS_SIGNPOST_INTERVAL_END, v30, "VMUStackLogConsolidator", "", &v48, 2u);
+        _os_signpost_emit_with_name_impl(&dword_1C679D000, logHandle5, OS_SIGNPOST_INTERVAL_END, signpostID8, "VMUStackLogConsolidator", "", &v48, 2u);
       }
 
       v27 = self->_debugTimer;
@@ -154,12 +154,12 @@
   v31 = self->_debugTimer;
   if (v31)
   {
-    v32 = [(VMUDebugTimer *)v31 logHandle];
-    v33 = [(VMUDebugTimer *)self->_debugTimer signpostID];
-    if (v33 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v32))
+    logHandle6 = [(VMUDebugTimer *)v31 logHandle];
+    signpostID9 = [(VMUDebugTimer *)self->_debugTimer signpostID];
+    if (signpostID9 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(logHandle6))
     {
       LOWORD(v48._pi) = 0;
-      _os_signpost_emit_with_name_impl(&dword_1C679D000, v32, OS_SIGNPOST_INTERVAL_BEGIN, v33, "VMUStackLogConsolidator", "step 3 -- from uniqueBacktraceToObjectsMap, create uniqueBacktraceToObjectsMap", &v48, 2u);
+      _os_signpost_emit_with_name_impl(&dword_1C679D000, logHandle6, OS_SIGNPOST_INTERVAL_BEGIN, signpostID9, "VMUStackLogConsolidator", "step 3 -- from uniqueBacktraceToObjectsMap, create uniqueBacktraceToObjectsMap", &v48, 2u);
     }
   }
 
@@ -189,16 +189,16 @@
   v40 = self->_debugTimer;
   if (v40)
   {
-    v41 = [(VMUDebugTimer *)v40 signpostID];
+    signpostID10 = [(VMUDebugTimer *)v40 signpostID];
     v40 = self->_debugTimer;
-    if (v41)
+    if (signpostID10)
     {
-      v42 = [(VMUDebugTimer *)v40 logHandle];
-      v43 = [(VMUDebugTimer *)self->_debugTimer signpostID];
-      if (v43 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v42))
+      logHandle7 = [(VMUDebugTimer *)v40 logHandle];
+      signpostID11 = [(VMUDebugTimer *)self->_debugTimer signpostID];
+      if (signpostID11 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(logHandle7))
       {
         *v45 = 0;
-        _os_signpost_emit_with_name_impl(&dword_1C679D000, v42, OS_SIGNPOST_INTERVAL_END, v43, "VMUStackLogConsolidator", "", v45, 2u);
+        _os_signpost_emit_with_name_impl(&dword_1C679D000, logHandle7, OS_SIGNPOST_INTERVAL_END, signpostID11, "VMUStackLogConsolidator", "", v45, 2u);
       }
 
       v40 = self->_debugTimer;
@@ -342,25 +342,25 @@ void *__53__VMUStackLogConsolidator_stackIDsToNodesFilteredBy___block_invoke_5(u
   return result;
 }
 
-- (id)callTreeWithOptions:(unint64_t)a3 nodeFilter:(id)a4
+- (id)callTreeWithOptions:(unint64_t)options nodeFilter:(id)filter
 {
-  v6 = [(VMUStackLogConsolidator *)self stackIDsToNodesFilteredBy:a4];
+  v6 = [(VMUStackLogConsolidator *)self stackIDsToNodesFilteredBy:filter];
   debugTimer = self->_debugTimer;
   if (debugTimer)
   {
-    v8 = [(VMUDebugTimer *)debugTimer signpostID];
+    signpostID = [(VMUDebugTimer *)debugTimer signpostID];
     debugTimer = self->_debugTimer;
-    if (v8)
+    if (signpostID)
     {
-      v9 = [(VMUDebugTimer *)debugTimer logHandle];
-      v10 = [(VMUDebugTimer *)self->_debugTimer signpostID];
-      if (v10 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+      logHandle = [(VMUDebugTimer *)debugTimer logHandle];
+      signpostID2 = [(VMUDebugTimer *)self->_debugTimer signpostID];
+      if (signpostID2 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
       {
-        v11 = v10;
-        if (os_signpost_enabled(v9))
+        v11 = signpostID2;
+        if (os_signpost_enabled(logHandle))
         {
           *buf = 0;
-          _os_signpost_emit_with_name_impl(&dword_1C679D000, v9, OS_SIGNPOST_INTERVAL_END, v11, "VMUStackLogConsolidator", "", buf, 2u);
+          _os_signpost_emit_with_name_impl(&dword_1C679D000, logHandle, OS_SIGNPOST_INTERVAL_END, v11, "VMUStackLogConsolidator", "", buf, 2u);
         }
       }
 
@@ -373,26 +373,26 @@ void *__53__VMUStackLogConsolidator_stackIDsToNodesFilteredBy___block_invoke_5(u
   v12 = self->_debugTimer;
   if (v12)
   {
-    v13 = [(VMUDebugTimer *)v12 logHandle];
-    v14 = [(VMUDebugTimer *)self->_debugTimer signpostID];
-    if (v14 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+    logHandle2 = [(VMUDebugTimer *)v12 logHandle];
+    signpostID3 = [(VMUDebugTimer *)self->_debugTimer signpostID];
+    if (signpostID3 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
     {
-      v15 = v14;
-      if (os_signpost_enabled(v13))
+      v15 = signpostID3;
+      if (os_signpost_enabled(logHandle2))
       {
         *buf = 0;
-        _os_signpost_emit_with_name_impl(&dword_1C679D000, v13, OS_SIGNPOST_INTERVAL_BEGIN, v15, "VMUStackLogConsolidator", "step 4 -- build call tree by iterating the uniqueBacktraceToObjectsMap", buf, 2u);
+        _os_signpost_emit_with_name_impl(&dword_1C679D000, logHandle2, OS_SIGNPOST_INTERVAL_BEGIN, v15, "VMUStackLogConsolidator", "step 4 -- build call tree by iterating the uniqueBacktraceToObjectsMap", buf, 2u);
       }
     }
   }
 
   if ([(VMUStackLogReader *)self->_stackLogReader coldestFrameIsNotThreadId])
   {
-    a3 |= 4uLL;
+    options |= 4uLL;
   }
 
-  v16 = [[VMUCallTreeRoot alloc] initWithSymbolicator:0 sampler:0 options:0, a3];
-  [(VMUCallTreeRoot *)v16 setStackLogReader:self->_stackLogReader];
+  options = [[VMUCallTreeRoot alloc] initWithSymbolicator:0 sampler:0 options:0, options];
+  [(VMUCallTreeRoot *)options setStackLogReader:self->_stackLogReader];
   v17 = objc_alloc_init(VMUBacktrace);
   v17->_flavor = 32;
   if (self->_debugTimer)
@@ -407,29 +407,29 @@ void *__53__VMUStackLogConsolidator_stackIDsToNodesFilteredBy___block_invoke_5(u
   v29[4] = self;
   v18 = v17;
   v30 = v18;
-  v19 = v16;
+  v19 = options;
   v31 = v19;
   [v6 enumerateKeysAndObjectsUsingBlock:v29];
   [(VMUCallTreeRoot *)v19 allBacktracesHaveBeenAdded];
-  v20 = [(VMUCommonGraphInterface *)self->_scannerOrGraph binaryImagesDescription];
-  [(VMUCallTreeRoot *)v19 setBinaryImagesDescription:v20];
+  binaryImagesDescription = [(VMUCommonGraphInterface *)self->_scannerOrGraph binaryImagesDescription];
+  [(VMUCallTreeRoot *)v19 setBinaryImagesDescription:binaryImagesDescription];
 
   v21 = self->_debugTimer;
   if (v21)
   {
-    v22 = [(VMUDebugTimer *)v21 signpostID];
+    signpostID4 = [(VMUDebugTimer *)v21 signpostID];
     v21 = self->_debugTimer;
-    if (v22)
+    if (signpostID4)
     {
-      v23 = [(VMUDebugTimer *)v21 logHandle];
-      v24 = [(VMUDebugTimer *)self->_debugTimer signpostID];
-      if (v24 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+      logHandle3 = [(VMUDebugTimer *)v21 logHandle];
+      signpostID5 = [(VMUDebugTimer *)self->_debugTimer signpostID];
+      if (signpostID5 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
       {
-        v25 = v24;
-        if (os_signpost_enabled(v23))
+        v25 = signpostID5;
+        if (os_signpost_enabled(logHandle3))
         {
           *buf = 0;
-          _os_signpost_emit_with_name_impl(&dword_1C679D000, v23, OS_SIGNPOST_INTERVAL_END, v25, "VMUStackLogConsolidator", "", buf, 2u);
+          _os_signpost_emit_with_name_impl(&dword_1C679D000, logHandle3, OS_SIGNPOST_INTERVAL_END, v25, "VMUStackLogConsolidator", "", buf, 2u);
         }
       }
 

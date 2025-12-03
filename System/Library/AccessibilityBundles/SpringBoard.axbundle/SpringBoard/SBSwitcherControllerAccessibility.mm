@@ -1,15 +1,15 @@
 @interface SBSwitcherControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_updateContentViewControllerIfNeeded;
 @end
 
 @implementation SBSwitcherControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBSwitcherController" hasInstanceMethod:@"_updateContentViewControllerIfNeeded" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"SBSwitcherController" hasInstanceMethod:@"switcherCoordinator" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBSwitcherController" hasInstanceMethod:@"_updateContentViewControllerIfNeeded" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"SBSwitcherController" hasInstanceMethod:@"switcherCoordinator" withFullSignature:{"@", 0}];
 }
 
 - (void)_updateContentViewControllerIfNeeded

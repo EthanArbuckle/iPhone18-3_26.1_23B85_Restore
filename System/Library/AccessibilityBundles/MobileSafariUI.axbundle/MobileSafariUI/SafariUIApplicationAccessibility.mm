@@ -1,37 +1,37 @@
 @interface SafariUIApplicationAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (BOOL)_accessibilityAlternateActionForURL:(id)a3;
-- (BOOL)_accessibilityLoadURL:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (BOOL)_accessibilityAlternateActionForURL:(id)l;
+- (BOOL)_accessibilityLoadURL:(id)l;
 - (BOOL)_accessibilityWebSearchResultsActive;
 - (id)_accessibilityActiveURL;
 - (id)_accessibilityMainBrowserController;
 - (id)_accessibilityRetrieveWebViewForSearchResults;
 - (id)_getScribbleController;
-- (id)_iosAccessibilityAttributeValue:(int64_t)a3;
-- (id)_iosAccessibilityAttributeValue:(int64_t)a3 forParameter:(id)a4;
+- (id)_iosAccessibilityAttributeValue:(int64_t)value;
+- (id)_iosAccessibilityAttributeValue:(int64_t)value forParameter:(id)parameter;
 @end
 
 @implementation SafariUIApplicationAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"WebHTMLView" hasInstanceMethod:@"accessibilityRootElement" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"UIWebBrowserFindOnPageHighlighter" hasInstanceMethod:@"setSearchText: matchLimit:" withFullSignature:{"v", "@", "Q", 0}];
-  [v3 validateClass:@"UIWebBrowserFindOnPageHighlighter" hasInstanceMethod:@"numberOfMatches" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"TabDocument" hasInstanceMethod:@"loadURL: userDriven:" withFullSignature:{"@", "@", "B", 0}];
-  [v3 validateClass:@"TabDocument" hasInstanceVariable:@"_findCompletionProvider" withType:"FindOnPageCompletionProvider"];
-  [v3 validateClass:@"TabController" hasInstanceMethod:@"activeTabDocument" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"TabDocument" hasInstanceMethod:@"URLString" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"Application" hasInstanceMethod:@"browserWindowController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"TabDocument" hasInstanceVariable:@"_sfScribbleController" withType:"SFScribbleController"];
-  [v3 validateClass:@"SFScribbleController" hasInstanceVariable:@"_elementController" withType:"WBSScribbleController"];
-  [v3 validateClass:@"SFScribbleController" hasInstanceMethod:@"_hideSelectedElement" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"SFScribbleController" hasInstanceMethod:@"_setSelectedElement:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"SFScribbleController" hasInstanceMethod:@"_updateScribbleControllerForElementAtPoint:" withFullSignature:{"v", "{CGPoint=dd}", 0}];
-  [v3 validateClass:@"WBSScribbleController" hasInstanceMethod:@"getElementAtPoint:completion:" withFullSignature:{"v", "{CGPoint=dd}", "@?", 0}];
-  [v3 validateClass:@"WBSScribbleElement" hasInstanceVariable:@"_targetedElements" withType:"NSArray"];
-  [v3 validateClass:@"WBSScribbleElement" hasInstanceVariable:@"_screenReaderText" withType:"NSString"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"WebHTMLView" hasInstanceMethod:@"accessibilityRootElement" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"UIWebBrowserFindOnPageHighlighter" hasInstanceMethod:@"setSearchText: matchLimit:" withFullSignature:{"v", "@", "Q", 0}];
+  [validationsCopy validateClass:@"UIWebBrowserFindOnPageHighlighter" hasInstanceMethod:@"numberOfMatches" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"TabDocument" hasInstanceMethod:@"loadURL: userDriven:" withFullSignature:{"@", "@", "B", 0}];
+  [validationsCopy validateClass:@"TabDocument" hasInstanceVariable:@"_findCompletionProvider" withType:"FindOnPageCompletionProvider"];
+  [validationsCopy validateClass:@"TabController" hasInstanceMethod:@"activeTabDocument" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"TabDocument" hasInstanceMethod:@"URLString" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"Application" hasInstanceMethod:@"browserWindowController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"TabDocument" hasInstanceVariable:@"_sfScribbleController" withType:"SFScribbleController"];
+  [validationsCopy validateClass:@"SFScribbleController" hasInstanceVariable:@"_elementController" withType:"WBSScribbleController"];
+  [validationsCopy validateClass:@"SFScribbleController" hasInstanceMethod:@"_hideSelectedElement" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"SFScribbleController" hasInstanceMethod:@"_setSelectedElement:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"SFScribbleController" hasInstanceMethod:@"_updateScribbleControllerForElementAtPoint:" withFullSignature:{"v", "{CGPoint=dd}", 0}];
+  [validationsCopy validateClass:@"WBSScribbleController" hasInstanceMethod:@"getElementAtPoint:completion:" withFullSignature:{"v", "{CGPoint=dd}", "@?", 0}];
+  [validationsCopy validateClass:@"WBSScribbleElement" hasInstanceVariable:@"_targetedElements" withType:"NSArray"];
+  [validationsCopy validateClass:@"WBSScribbleElement" hasInstanceVariable:@"_screenReaderText" withType:"NSString"];
 }
 
 - (id)_accessibilityMainBrowserController
@@ -72,13 +72,13 @@
           goto LABEL_19;
         }
 
-        v12 = [v11 view];
-        v13 = [v12 window];
+        view = [v11 view];
+        window = [view window];
 
-        v14 = [v13 windowScene];
-        v15 = [v14 keyWindow];
+        windowScene = [window windowScene];
+        keyWindow = [windowScene keyWindow];
 
-        if (v13 == v15)
+        if (window == keyWindow)
         {
           v25 = 0;
           v17 = __UIAccessibilitySafeClass();
@@ -140,9 +140,9 @@ LABEL_3:
         objc_enumerationMutation(v2);
       }
 
-      v7 = [*(*(&v12 + 1) + 8 * v6) firstResponder];
+      firstResponder = [*(*(&v12 + 1) + 8 * v6) firstResponder];
       v8 = 1;
-      v9 = [v7 _accessibilityFindAncestor:&__block_literal_global_1 startWithSelf:1];
+      v9 = [firstResponder _accessibilityFindAncestor:&__block_literal_global_1 startWithSelf:1];
 
       if (v9)
       {
@@ -182,9 +182,9 @@ uint64_t __72__SafariUIApplicationAccessibility__accessibilityWebSearchResultsAc
 
 - (id)_accessibilityRetrieveWebViewForSearchResults
 {
-  v3 = [(SafariUIApplicationAccessibility *)self _accessibilityMainBrowserController];
-  v4 = v3;
-  if (!v3 || ([v3 safeValueForKey:@"browserView"], v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "safeValueForKey:", @"webView"), v6 = objc_claimAutoreleasedReturnValue(), v5, !v6))
+  _accessibilityMainBrowserController = [(SafariUIApplicationAccessibility *)self _accessibilityMainBrowserController];
+  v4 = _accessibilityMainBrowserController;
+  if (!_accessibilityMainBrowserController || ([_accessibilityMainBrowserController safeValueForKey:@"browserView"], v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "safeValueForKey:", @"webView"), v6 = objc_claimAutoreleasedReturnValue(), v5, !v6))
   {
     v6 = [(SafariUIApplicationAccessibility *)self _accessibilityAncestorIsKindOf:NSClassFromString(&cfstr_Webview_0.isa)];
   }
@@ -195,10 +195,10 @@ uint64_t __72__SafariUIApplicationAccessibility__accessibilityWebSearchResultsAc
 - (id)_accessibilityActiveURL
 {
   objc_opt_class();
-  v3 = [(SafariUIApplicationAccessibility *)self _accessibilityMainBrowserController];
+  _accessibilityMainBrowserController = [(SafariUIApplicationAccessibility *)self _accessibilityMainBrowserController];
   v4 = __UIAccessibilityCastAsSafeCategory();
 
-  v5 = [v4 accessibilityActiveTabDocument];
+  accessibilityActiveTabDocument = [v4 accessibilityActiveTabDocument];
   v6 = __UIAccessibilitySafeClass();
 
   v7 = [v6 safeValueForKey:@"URLString"];
@@ -206,32 +206,32 @@ uint64_t __72__SafariUIApplicationAccessibility__accessibilityWebSearchResultsAc
   return v7;
 }
 
-- (BOOL)_accessibilityLoadURL:(id)a3
+- (BOOL)_accessibilityLoadURL:(id)l
 {
-  v4 = a3;
-  if (v4)
+  lCopy = l;
+  if (lCopy)
   {
     objc_opt_class();
-    v5 = [(SafariUIApplicationAccessibility *)self _accessibilityMainBrowserController];
+    _accessibilityMainBrowserController = [(SafariUIApplicationAccessibility *)self _accessibilityMainBrowserController];
     v6 = __UIAccessibilityCastAsSafeCategory();
 
-    v7 = [v6 accessibilityActiveTabDocument];
+    accessibilityActiveTabDocument = [v6 accessibilityActiveTabDocument];
     v8 = __UIAccessibilitySafeClass();
 
     v12 = v8;
-    v13 = [objc_alloc(MEMORY[0x29EDB8E70]) initWithString:v4];
+    v13 = [objc_alloc(MEMORY[0x29EDB8E70]) initWithString:lCopy];
     v9 = v13;
     v10 = v8;
     AXPerformSafeBlock();
   }
 
-  return v4 != 0;
+  return lCopy != 0;
 }
 
-- (BOOL)_accessibilityAlternateActionForURL:(id)a3
+- (BOOL)_accessibilityAlternateActionForURL:(id)l
 {
-  v3 = a3;
-  v4 = [MEMORY[0x29EDB8E70] URLWithString:v3];
+  lCopy = l;
+  v4 = [MEMORY[0x29EDB8E70] URLWithString:lCopy];
   v5 = v4;
   if (v4)
   {
@@ -267,12 +267,12 @@ uint64_t __72__SafariUIApplicationAccessibility__accessibilityAlternateActionFor
   return MEMORY[0x2A1C71028]();
 }
 
-- (id)_iosAccessibilityAttributeValue:(int64_t)a3
+- (id)_iosAccessibilityAttributeValue:(int64_t)value
 {
-  if (a3 == 5073)
+  if (value == 5073)
   {
-    v3 = [(SafariUIApplicationAccessibility *)self _getScribbleController];
-    v4 = [v3 safeBoolForKey:@"isScribbling"];
+    _getScribbleController = [(SafariUIApplicationAccessibility *)self _getScribbleController];
+    v4 = [_getScribbleController safeBoolForKey:@"isScribbling"];
     v5 = [MEMORY[0x29EDBA070] numberWithBool:v4];
   }
 
@@ -302,21 +302,21 @@ uint64_t __87__SafariUIApplicationAccessibility__iosAccessibilityPerformAction_w
   return result;
 }
 
-- (id)_iosAccessibilityAttributeValue:(int64_t)a3 forParameter:(id)a4
+- (id)_iosAccessibilityAttributeValue:(int64_t)value forParameter:(id)parameter
 {
   v69 = *MEMORY[0x29EDCA608];
-  v6 = a4;
-  if (a3 == 94100)
+  parameterCopy = parameter;
+  if (value == 94100)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v6 pointValue];
+      [parameterCopy pointValue];
       v8 = v7;
       v10 = v9;
-      v11 = [(SafariUIApplicationAccessibility *)self _getScribbleController];
-      v35 = v11;
-      if (v11)
+      _getScribbleController = [(SafariUIApplicationAccessibility *)self _getScribbleController];
+      v35 = _getScribbleController;
+      if (_getScribbleController)
       {
         v63 = 0;
         v64 = &v63;
@@ -332,7 +332,7 @@ uint64_t __87__SafariUIApplicationAccessibility__iosAccessibilityPerformAction_w
         v49 = 3221225472;
         v50 = __81__SafariUIApplicationAccessibility__iosAccessibilityAttributeValue_forParameter___block_invoke;
         v51 = &unk_29F2D7C80;
-        v12 = v11;
+        v12 = _getScribbleController;
         v55 = v8;
         v56 = v10;
         v52 = v12;
@@ -400,15 +400,15 @@ uint64_t __87__SafariUIApplicationAccessibility__iosAccessibilityPerformAction_w
             v25 = v24;
             v27 = v26;
             v29 = v28;
-            v14 = [MEMORY[0x29EDB8E00] dictionary];
-            [v14 setObject:v17 forKey:@"AXScribbleRenderedTextKey"];
+            dictionary = [MEMORY[0x29EDB8E00] dictionary];
+            [dictionary setObject:v17 forKey:@"AXScribbleRenderedTextKey"];
             v30 = [MEMORY[0x29EDBA168] valueWithRect:{v23, v25, v27, v29}];
-            [v14 setObject:v30 forKey:@"AXScribbleGeometryKey"];
+            [dictionary setObject:v30 forKey:@"AXScribbleGeometryKey"];
           }
 
           else
           {
-            v14 = 0;
+            dictionary = 0;
           }
         }
 
@@ -421,7 +421,7 @@ uint64_t __87__SafariUIApplicationAccessibility__iosAccessibilityPerformAction_w
             _os_log_impl(&dword_29BFE7000, v16, OS_LOG_TYPE_DEFAULT, "[Scribble] no element found at point", v47, 2u);
           }
 
-          v14 = 0;
+          dictionary = 0;
         }
 
         _Block_object_dispose(buf, 8);
@@ -430,7 +430,7 @@ uint64_t __87__SafariUIApplicationAccessibility__iosAccessibilityPerformAction_w
 
       else
       {
-        v14 = 0;
+        dictionary = 0;
       }
     }
 
@@ -443,7 +443,7 @@ uint64_t __87__SafariUIApplicationAccessibility__iosAccessibilityPerformAction_w
         _os_log_impl(&dword_29BFE7000, v15, OS_LOG_TYPE_DEFAULT, "[Scribble] attribute value is not an NSValue", buf, 2u);
       }
 
-      v14 = 0;
+      dictionary = 0;
     }
   }
 
@@ -451,12 +451,12 @@ uint64_t __87__SafariUIApplicationAccessibility__iosAccessibilityPerformAction_w
   {
     v67.receiver = self;
     v67.super_class = SafariUIApplicationAccessibility;
-    v14 = [(SafariUIApplicationAccessibility *)&v67 _iosAccessibilityAttributeValue:a3 forParameter:v6];
+    dictionary = [(SafariUIApplicationAccessibility *)&v67 _iosAccessibilityAttributeValue:value forParameter:parameterCopy];
   }
 
   v31 = *MEMORY[0x29EDCA608];
 
-  return v14;
+  return dictionary;
 }
 
 void __81__SafariUIApplicationAccessibility__iosAccessibilityAttributeValue_forParameter___block_invoke(uint64_t a1)
@@ -496,10 +496,10 @@ void __81__SafariUIApplicationAccessibility__iosAccessibilityAttributeValue_forP
 - (id)_getScribbleController
 {
   objc_opt_class();
-  v3 = [(SafariUIApplicationAccessibility *)self _accessibilityMainBrowserController];
+  _accessibilityMainBrowserController = [(SafariUIApplicationAccessibility *)self _accessibilityMainBrowserController];
   v4 = __UIAccessibilityCastAsSafeCategory();
 
-  v5 = [v4 accessibilityActiveTabDocument];
+  accessibilityActiveTabDocument = [v4 accessibilityActiveTabDocument];
   v6 = __UIAccessibilitySafeClass();
 
   v7 = [v6 safeValueForKey:@"_sfScribbleController"];

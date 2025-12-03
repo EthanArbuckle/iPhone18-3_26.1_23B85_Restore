@@ -2,30 +2,30 @@
 - (BOOL)accessibilityActivate;
 - (CGRect)absoluteTextViewFrame;
 - (CGRect)typographicBounds;
-- (SXButtonComponentView)initWithDOMObjectProvider:(id)a3 viewport:(id)a4 presentationDelegate:(id)a5 componentStyleRendererFactory:(id)a6;
-- (id)accessibilityContextualLabelForTextView:(id)a3;
-- (id)accessibilityCustomRotorMembershipForTextView:(id)a3;
+- (SXButtonComponentView)initWithDOMObjectProvider:(id)provider viewport:(id)viewport presentationDelegate:(id)delegate componentStyleRendererFactory:(id)factory;
+- (id)accessibilityContextualLabelForTextView:(id)view;
+- (id)accessibilityCustomRotorMembershipForTextView:(id)view;
 - (id)accessibilityHint;
 - (id)accessibilityLabel;
 - (id)accessibilityUserInputLabels;
 - (id)accessibilityValue;
-- (id)componentIdentifierForTextView:(id)a3;
-- (id)textRulesForTextView:(id)a3;
+- (id)componentIdentifierForTextView:(id)view;
+- (id)textRulesForTextView:(id)view;
 - (void)didMoveToSuperview;
-- (void)presentComponentWithChanges:(id)a3;
-- (void)provideInfosLayoutTo:(id)a3;
-- (void)receivedInfo:(id)a3 fromLayoutingPhaseWithIdentifier:(id)a4;
-- (void)setAbsoluteFrame:(CGRect)a3;
-- (void)setPresentationFrame:(CGRect)a3;
+- (void)presentComponentWithChanges:(id)changes;
+- (void)provideInfosLayoutTo:(id)to;
+- (void)receivedInfo:(id)info fromLayoutingPhaseWithIdentifier:(id)identifier;
+- (void)setAbsoluteFrame:(CGRect)frame;
+- (void)setPresentationFrame:(CGRect)frame;
 @end
 
 @implementation SXButtonComponentView
 
-- (SXButtonComponentView)initWithDOMObjectProvider:(id)a3 viewport:(id)a4 presentationDelegate:(id)a5 componentStyleRendererFactory:(id)a6
+- (SXButtonComponentView)initWithDOMObjectProvider:(id)provider viewport:(id)viewport presentationDelegate:(id)delegate componentStyleRendererFactory:(id)factory
 {
   v11.receiver = self;
   v11.super_class = SXButtonComponentView;
-  v6 = [(SXComponentView *)&v11 initWithDOMObjectProvider:a3 viewport:a4 presentationDelegate:a5 componentStyleRendererFactory:a6];
+  v6 = [(SXComponentView *)&v11 initWithDOMObjectProvider:provider viewport:viewport presentationDelegate:delegate componentStyleRendererFactory:factory];
   if (v6)
   {
     v7 = objc_alloc_init(SXTextView);
@@ -33,8 +33,8 @@
     v6->_textView = v7;
 
     [(SXTextView *)v6->_textView setDelegate:v6];
-    v9 = [(SXComponentView *)v6 contentView];
-    [v9 addSubview:v6->_textView];
+    contentView = [(SXComponentView *)v6 contentView];
+    [contentView addSubview:v6->_textView];
 
     [(SXButtonComponentView *)v6 setIsAccessibilityElement:1];
     [(SXButtonComponentView *)v6 setAccessibilityTraits:*MEMORY[0x1E69DD9B8]];
@@ -45,26 +45,26 @@
 
 - (id)accessibilityLabel
 {
-  v3 = [(SXButtonComponentView *)self textView];
-  v4 = [v3 rep];
-  v5 = [v4 accessibilityLabel];
+  textView = [(SXButtonComponentView *)self textView];
+  v4 = [textView rep];
+  accessibilityLabel = [v4 accessibilityLabel];
 
-  if (!v5)
+  if (!accessibilityLabel)
   {
-    v6 = [(SXButtonComponentView *)self textView];
-    v5 = [v6 accessibilityLabel];
+    textView2 = [(SXButtonComponentView *)self textView];
+    accessibilityLabel = [textView2 accessibilityLabel];
   }
 
-  return v5;
+  return accessibilityLabel;
 }
 
 - (id)accessibilityValue
 {
-  v2 = [(SXButtonComponentView *)self textView];
-  v3 = [v2 rep];
-  v4 = [v3 accessibilityValue];
+  textView = [(SXButtonComponentView *)self textView];
+  v3 = [textView rep];
+  accessibilityValue = [v3 accessibilityValue];
 
-  return v4;
+  return accessibilityValue;
 }
 
 - (id)accessibilityUserInputLabels
@@ -72,19 +72,19 @@
   v3 = objc_alloc(MEMORY[0x1E695DF70]);
   v9.receiver = self;
   v9.super_class = SXButtonComponentView;
-  v4 = [(SXButtonComponentView *)&v9 accessibilityUserInputLabels];
-  v5 = [v3 initWithArray:v4];
+  accessibilityUserInputLabels = [(SXButtonComponentView *)&v9 accessibilityUserInputLabels];
+  v5 = [v3 initWithArray:accessibilityUserInputLabels];
 
-  v6 = [(SXButtonComponentView *)self accessibilityLabel];
-  if (v6)
+  accessibilityLabel = [(SXButtonComponentView *)self accessibilityLabel];
+  if (accessibilityLabel)
   {
-    [v5 addObject:v6];
+    [v5 addObject:accessibilityLabel];
   }
 
-  v7 = [(SXButtonComponentView *)self accessibilityValue];
-  if (v7)
+  accessibilityValue = [(SXButtonComponentView *)self accessibilityValue];
+  if (accessibilityValue)
   {
-    [v5 addObject:v7];
+    [v5 addObject:accessibilityValue];
   }
 
   return v5;
@@ -92,13 +92,13 @@
 
 - (BOOL)accessibilityActivate
 {
-  v3 = [(SXComponentView *)self presentationDelegate];
+  presentationDelegate = [(SXComponentView *)self presentationDelegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(SXComponentView *)self presentationDelegate];
-    v6 = [v5 accessibilityShouldHandleInteractionForView:self];
+    presentationDelegate2 = [(SXComponentView *)self presentationDelegate];
+    v6 = [presentationDelegate2 accessibilityShouldHandleInteractionForView:self];
 
     return v6;
   }
@@ -113,18 +113,18 @@
 
 - (id)accessibilityHint
 {
-  v2 = [(SXButtonComponentView *)self textView];
-  v3 = [v2 accessibilityHint];
+  textView = [(SXButtonComponentView *)self textView];
+  accessibilityHint = [textView accessibilityHint];
 
-  return v3;
+  return accessibilityHint;
 }
 
-- (void)presentComponentWithChanges:(id)a3
+- (void)presentComponentWithChanges:(id)changes
 {
   v16.receiver = self;
   v16.super_class = SXButtonComponentView;
-  [(SXComponentView *)&v16 presentComponentWithChanges:*&a3.var0 & 0xFFFFFFLL];
-  v4 = [(SXButtonComponentView *)self textView];
+  [(SXComponentView *)&v16 presentComponentWithChanges:*&changes.var0 & 0xFFFFFFLL];
+  textView = [(SXButtonComponentView *)self textView];
   [(SXComponentView *)self contentFrame];
   v6 = v5;
   [(SXComponentView *)self contentFrame];
@@ -134,18 +134,18 @@
   [(SXComponentView *)self contentFrame];
   v12 = v11;
   [(SXComponentView *)self contentFrame];
-  [v4 setFrame:{v6, v10, v12}];
+  [textView setFrame:{v6, v10, v12}];
 
-  v13 = [(SXButtonComponentView *)self textView];
+  textView2 = [(SXButtonComponentView *)self textView];
   [(SXButtonComponentView *)self absoluteTextViewFrame];
-  [v13 setFrameInCanvas:?];
+  [textView2 setFrameInCanvas:?];
 
-  v14 = [(SXButtonComponentView *)self textView];
+  textView3 = [(SXButtonComponentView *)self textView];
   [(SXComponentView *)self absoluteFrame];
-  [v14 setParentFrame:?];
+  [textView3 setParentFrame:?];
 
-  v15 = [(SXButtonComponentView *)self textView];
-  [v15 invalidate];
+  textView4 = [(SXButtonComponentView *)self textView];
+  [textView4 invalidate];
 }
 
 - (void)didMoveToSuperview
@@ -153,123 +153,123 @@
   v7.receiver = self;
   v7.super_class = SXButtonComponentView;
   [(SXButtonComponentView *)&v7 didMoveToSuperview];
-  v3 = [(SXButtonComponentView *)self superview];
+  superview = [(SXButtonComponentView *)self superview];
 
-  v4 = [(SXComponentView *)self presentationDelegate];
-  v5 = [v4 tangierController];
-  v6 = [(SXButtonComponentView *)self textView];
-  if (v3)
+  presentationDelegate = [(SXComponentView *)self presentationDelegate];
+  tangierController = [presentationDelegate tangierController];
+  textView = [(SXButtonComponentView *)self textView];
+  if (superview)
   {
-    [v5 didStartPresentingTextView:v6];
+    [tangierController didStartPresentingTextView:textView];
   }
 
   else
   {
-    [v5 didStopPresentingTextView:v6];
+    [tangierController didStopPresentingTextView:textView];
   }
 }
 
-- (void)setAbsoluteFrame:(CGRect)a3
+- (void)setAbsoluteFrame:(CGRect)frame
 {
   v5.receiver = self;
   v5.super_class = SXButtonComponentView;
-  [(SXComponentView *)&v5 setAbsoluteFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
-  v4 = [(SXButtonComponentView *)self textView];
+  [(SXComponentView *)&v5 setAbsoluteFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
+  textView = [(SXButtonComponentView *)self textView];
   [(SXButtonComponentView *)self absoluteTextViewFrame];
-  [v4 setFrameInCanvas:?];
+  [textView setFrameInCanvas:?];
 }
 
-- (void)setPresentationFrame:(CGRect)a3
+- (void)setPresentationFrame:(CGRect)frame
 {
   v5.receiver = self;
   v5.super_class = SXButtonComponentView;
-  [(SXComponentView *)&v5 setPresentationFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
-  v4 = [(SXButtonComponentView *)self textView];
+  [(SXComponentView *)&v5 setPresentationFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
+  textView = [(SXButtonComponentView *)self textView];
   [(SXButtonComponentView *)self absoluteTextViewFrame];
-  [v4 setFrameInCanvas:?];
+  [textView setFrameInCanvas:?];
 }
 
-- (void)receivedInfo:(id)a3 fromLayoutingPhaseWithIdentifier:(id)a4
+- (void)receivedInfo:(id)info fromLayoutingPhaseWithIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  infoCopy = info;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = SXButtonComponentView;
-  [(SXComponentView *)&v9 receivedInfo:v6 fromLayoutingPhaseWithIdentifier:v7];
-  if ([v7 isEqualToString:@"TextLayouter"])
+  [(SXComponentView *)&v9 receivedInfo:infoCopy fromLayoutingPhaseWithIdentifier:identifierCopy];
+  if ([identifierCopy isEqualToString:@"TextLayouter"])
   {
-    v8 = [(SXButtonComponentView *)self textView];
-    [v8 setTextLayouter:v6];
+    textView = [(SXButtonComponentView *)self textView];
+    [textView setTextLayouter:infoCopy];
   }
 
-  else if ([v7 isEqualToString:@"TypographicBounds"])
+  else if ([identifierCopy isEqualToString:@"TypographicBounds"])
   {
-    [v6 CGRectValue];
+    [infoCopy CGRectValue];
     [(SXButtonComponentView *)self setTypographicBounds:?];
   }
 }
 
-- (void)provideInfosLayoutTo:(id)a3
+- (void)provideInfosLayoutTo:(id)to
 {
-  v4 = a3;
-  v5 = [(SXButtonComponentView *)self textView];
-  [v5 provideInfosLayoutTo:v4];
+  toCopy = to;
+  textView = [(SXButtonComponentView *)self textView];
+  [textView provideInfosLayoutTo:toCopy];
 }
 
-- (id)componentIdentifierForTextView:(id)a3
+- (id)componentIdentifierForTextView:(id)view
 {
-  v3 = [(SXComponentView *)self component];
-  v4 = [v3 identifier];
+  component = [(SXComponentView *)self component];
+  identifier = [component identifier];
 
-  return v4;
+  return identifier;
 }
 
-- (id)textRulesForTextView:(id)a3
+- (id)textRulesForTextView:(id)view
 {
-  v3 = [(SXComponentView *)self component];
-  v4 = [v3 classification];
-  v5 = [v4 textRules];
+  component = [(SXComponentView *)self component];
+  classification = [component classification];
+  textRules = [classification textRules];
 
-  return v5;
+  return textRules;
 }
 
-- (id)accessibilityCustomRotorMembershipForTextView:(id)a3
+- (id)accessibilityCustomRotorMembershipForTextView:(id)view
 {
-  v3 = [(SXComponentView *)self component];
-  v4 = [v3 classification];
-  v5 = [v4 accessibilityCustomRotorMembership];
+  component = [(SXComponentView *)self component];
+  classification = [component classification];
+  accessibilityCustomRotorMembership = [classification accessibilityCustomRotorMembership];
 
-  return v5;
+  return accessibilityCustomRotorMembership;
 }
 
-- (id)accessibilityContextualLabelForTextView:(id)a3
+- (id)accessibilityContextualLabelForTextView:(id)view
 {
-  v4 = [(SXComponentView *)self component];
-  v5 = [v4 accessibilityLabel];
+  component = [(SXComponentView *)self component];
+  accessibilityLabel = [component accessibilityLabel];
 
-  if (!v5)
+  if (!accessibilityLabel)
   {
-    v6 = [(SXComponentView *)self component];
-    v7 = [v6 classification];
-    v5 = [v7 accessibilityContextualLabel];
+    component2 = [(SXComponentView *)self component];
+    classification = [component2 classification];
+    accessibilityLabel = [classification accessibilityContextualLabel];
   }
 
-  return v5;
+  return accessibilityLabel;
 }
 
 - (CGRect)absoluteTextViewFrame
 {
   [(SXComponentView *)self absoluteFrame];
   MinX = CGRectGetMinX(v17);
-  v4 = [(SXComponentView *)self contentView];
-  [v4 frame];
+  contentView = [(SXComponentView *)self contentView];
+  [contentView frame];
   v5 = MinX + CGRectGetMinX(v18);
   [(SXComponentView *)self contentFrame];
   v6 = v5 + CGRectGetMinX(v19);
   [(SXComponentView *)self absoluteFrame];
   MinY = CGRectGetMinY(v20);
-  v8 = [(SXComponentView *)self contentView];
-  [v8 frame];
+  contentView2 = [(SXComponentView *)self contentView];
+  [contentView2 frame];
   v9 = MinY + CGRectGetMinY(v21);
   [(SXComponentView *)self contentFrame];
   v10 = v9 + CGRectGetMinY(v22);

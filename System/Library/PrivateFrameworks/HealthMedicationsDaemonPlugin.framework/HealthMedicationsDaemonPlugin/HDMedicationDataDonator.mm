@@ -1,37 +1,37 @@
 @interface HDMedicationDataDonator
-- (BOOL)_checkBuilderAndCancelIfErrorForBuilder:(id)a3 fullStream:(id)a4;
-- (BOOL)_registerItemForDonationForConcept:(id)a3 builder:(id)a4 fullStream:(id)a5 error:(id *)a6;
-- (BOOL)_registerItemForStream:(id)a3 item:(id)a4 error:(id *)a5;
+- (BOOL)_checkBuilderAndCancelIfErrorForBuilder:(id)builder fullStream:(id)stream;
+- (BOOL)_registerItemForDonationForConcept:(id)concept builder:(id)builder fullStream:(id)stream error:(id *)error;
+- (BOOL)_registerItemForStream:(id)stream item:(id)item error:(id *)error;
 - (BOOL)getDonationRequiredOnNextUnlock;
-- (HDMedicationDataDonator)initWithProfile:(id)a3;
-- (id)_findPreferredNameForConcept:(id)a3;
-- (id)_medicationUserDomainConceptsForProfile:(id)a3 error:(id *)a4;
-- (void)_donateActiveConceptsForStream:(id)a3 activeMedications:(id)a4 error:(id)a5 completion:(id)a6;
-- (void)_donateIfUDCListChangedForUDCArray:(id)a3 manager:(id)a4;
-- (void)_donateWithReason:(id)a3;
-- (void)_finishStreamingForStream:(id)a3 completion:(id)a4;
-- (void)_performDataDonationForProfile:(id)a3 completion:(id)a4;
-- (void)database:(id)a3 protectedDataDidBecomeAvailable:(BOOL)a4;
-- (void)profileDidBecomeReady:(id)a3;
-- (void)setDonationRequiredOnNextUnlock:(BOOL)a3;
+- (HDMedicationDataDonator)initWithProfile:(id)profile;
+- (id)_findPreferredNameForConcept:(id)concept;
+- (id)_medicationUserDomainConceptsForProfile:(id)profile error:(id *)error;
+- (void)_donateActiveConceptsForStream:(id)stream activeMedications:(id)medications error:(id)error completion:(id)completion;
+- (void)_donateIfUDCListChangedForUDCArray:(id)array manager:(id)manager;
+- (void)_donateWithReason:(id)reason;
+- (void)_finishStreamingForStream:(id)stream completion:(id)completion;
+- (void)_performDataDonationForProfile:(id)profile completion:(id)completion;
+- (void)database:(id)database protectedDataDidBecomeAvailable:(BOOL)available;
+- (void)profileDidBecomeReady:(id)ready;
+- (void)setDonationRequiredOnNextUnlock:(BOOL)unlock;
 @end
 
 @implementation HDMedicationDataDonator
 
-- (HDMedicationDataDonator)initWithProfile:(id)a3
+- (HDMedicationDataDonator)initWithProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v11.receiver = self;
   v11.super_class = HDMedicationDataDonator;
   v5 = [(HDMedicationDataDonator *)&v11 init];
   v6 = v5;
   if (v5)
   {
-    v7 = objc_storeWeak(&v5->_profileExtension, v4);
+    v7 = objc_storeWeak(&v5->_profileExtension, profileCopy);
     v6->_donationRequiredOnNextUnlock = 0;
     v8 = v7;
-    v9 = [v4 profile];
-    [v9 registerProfileReadyObserver:v6 queue:0];
+    profile = [profileCopy profile];
+    [profile registerProfileReadyObserver:v6 queue:0];
 
     v6->_lock._os_unfair_lock_opaque = 0;
   }
@@ -47,22 +47,22 @@
   return donationRequiredOnNextUnlock;
 }
 
-- (void)setDonationRequiredOnNextUnlock:(BOOL)a3
+- (void)setDonationRequiredOnNextUnlock:(BOOL)unlock
 {
   os_unfair_lock_lock(&self->_lock);
-  self->_donationRequiredOnNextUnlock = a3;
+  self->_donationRequiredOnNextUnlock = unlock;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)_performDataDonationForProfile:(id)a3 completion:(id)a4
+- (void)_performDataDonationForProfile:(id)profile completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  profileCopy = profile;
+  completionCopy = completion;
   if (AFDeviceSupportsSiriUOD() & 1) != 0 || ([MEMORY[0x277CCDD30] sharedBehavior], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "shouldOverrideSiriUOD"), v8, (v9))
   {
     v19 = 0;
-    v10 = [(HDMedicationDataDonator *)self _medicationUserDomainConceptsForProfile:v6 error:&v19];
+    v10 = [(HDMedicationDataDonator *)self _medicationUserDomainConceptsForProfile:profileCopy error:&v19];
     v11 = v19;
     if (v10)
     {
@@ -78,27 +78,27 @@
         v15[2] = __69__HDMedicationDataDonator__performDataDonationForProfile_completion___block_invoke;
         v15[3] = &unk_2796CE720;
         v15[4] = self;
-        v17 = v7;
+        v17 = completionCopy;
         v16 = v10;
         [v13 donateWithOptions:0 usingDataStream:v15];
       }
 
       else
       {
-        (*(v7 + 2))(v7, 0, v14);
+        (*(completionCopy + 2))(completionCopy, 0, v14);
       }
     }
 
     else
     {
-      (*(v7 + 2))(v7, 0, v11);
+      (*(completionCopy + 2))(completionCopy, 0, v11);
       v14 = v11;
     }
   }
 
   else
   {
-    (*(v7 + 2))(v7, 1, 0);
+    (*(completionCopy + 2))(completionCopy, 1, 0);
   }
 }
 
@@ -136,19 +136,19 @@ void __69__HDMedicationDataDonator__performDataDonationForProfile_completion___b
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_donateActiveConceptsForStream:(id)a3 activeMedications:(id)a4 error:(id)a5 completion:(id)a6
+- (void)_donateActiveConceptsForStream:(id)stream activeMedications:(id)medications error:(id)error completion:(id)completion
 {
   v33 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v26 = a6;
+  streamCopy = stream;
+  medicationsCopy = medications;
+  errorCopy = error;
+  completionCopy = completion;
   v13 = objc_alloc_init(MEMORY[0x277D22D28]);
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v14 = v11;
+  v14 = medicationsCopy;
   v15 = [v14 countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v15)
   {
@@ -157,7 +157,7 @@ void __69__HDMedicationDataDonator__performDataDonationForProfile_completion___b
     while (2)
     {
       v18 = 0;
-      v19 = v12;
+      v19 = errorCopy;
       do
       {
         if (*v29 != v17)
@@ -167,10 +167,10 @@ void __69__HDMedicationDataDonator__performDataDonationForProfile_completion___b
 
         v20 = *(*(&v28 + 1) + 8 * v18);
         v27 = v19;
-        v21 = [(HDMedicationDataDonator *)self _registerItemForDonationForConcept:v20 builder:v13 fullStream:v10 error:&v27, v26];
-        v12 = v27;
+        completionCopy = [(HDMedicationDataDonator *)self _registerItemForDonationForConcept:v20 builder:v13 fullStream:streamCopy error:&v27, completionCopy];
+        errorCopy = v27;
 
-        if (!v21)
+        if (!completionCopy)
         {
           _HKInitializeLogging();
           v24 = HKLogMedication();
@@ -179,14 +179,14 @@ void __69__HDMedicationDataDonator__performDataDonationForProfile_completion___b
             [HDMedicationDataDonator _donateActiveConceptsForStream:? activeMedications:? error:? completion:?];
           }
 
-          v23 = v26;
-          (*(v26 + 2))(v26, 0, v12);
+          v23 = completionCopy;
+          (*(completionCopy + 2))(completionCopy, 0, errorCopy);
 
           goto LABEL_13;
         }
 
         ++v18;
-        v19 = v12;
+        v19 = errorCopy;
       }
 
       while (v16 != v18);
@@ -200,50 +200,50 @@ void __69__HDMedicationDataDonator__performDataDonationForProfile_completion___b
     }
   }
 
-  v22 = self;
-  v23 = v26;
-  [(HDMedicationDataDonator *)v22 _finishStreamingForStream:v10 completion:v26];
+  selfCopy = self;
+  v23 = completionCopy;
+  [(HDMedicationDataDonator *)selfCopy _finishStreamingForStream:streamCopy completion:completionCopy];
 LABEL_13:
 
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_registerItemForDonationForConcept:(id)a3 builder:(id)a4 fullStream:(id)a5 error:(id *)a6
+- (BOOL)_registerItemForDonationForConcept:(id)concept builder:(id)builder fullStream:(id)stream error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  conceptCopy = concept;
+  builderCopy = builder;
+  streamCopy = stream;
   v13 = objc_alloc(MEMORY[0x277CCD660]);
-  v14 = [v10 semanticIdentifier];
-  v15 = [v14 stringValue];
-  v16 = [v13 initWithSemanticIdentifierString:v15];
+  semanticIdentifier = [conceptCopy semanticIdentifier];
+  stringValue = [semanticIdentifier stringValue];
+  v16 = [v13 initWithSemanticIdentifierString:stringValue];
 
-  v17 = [v10 freeTextMedicationName];
-  if (v17)
+  freeTextMedicationName = [conceptCopy freeTextMedicationName];
+  if (freeTextMedicationName)
   {
-    [v10 freeTextMedicationName];
+    [conceptCopy freeTextMedicationName];
   }
 
   else
   {
-    [(HDMedicationDataDonator *)self _findPreferredNameForConcept:v10];
+    [(HDMedicationDataDonator *)self _findPreferredNameForConcept:conceptCopy];
   }
   v18 = ;
 
-  v19 = [v16 underlyingIdentifier];
-  v20 = [v11 setItemType:19 itemId:v19 error:a6];
+  underlyingIdentifier = [v16 underlyingIdentifier];
+  v20 = [builderCopy setItemType:19 itemId:underlyingIdentifier error:error];
 
-  if (-[HDMedicationDataDonator _checkBuilderAndCancelIfErrorForBuilder:fullStream:](self, "_checkBuilderAndCancelIfErrorForBuilder:fullStream:", v11, v12) && (v21 = [v11 addFieldWithType:850 value:v18 error:a6], -[HDMedicationDataDonator _checkBuilderAndCancelIfErrorForBuilder:fullStream:](self, "_checkBuilderAndCancelIfErrorForBuilder:fullStream:", v11, v12)) && (objc_msgSend(v10, "userSpecifiedName"), v22 = objc_claimAutoreleasedReturnValue(), v23 = objc_msgSend(v11, "addFieldWithType:value:error:", 851, v22, a6), v22, -[HDMedicationDataDonator _checkBuilderAndCancelIfErrorForBuilder:fullStream:](self, "_checkBuilderAndCancelIfErrorForBuilder:fullStream:", v11, v12)))
+  if (-[HDMedicationDataDonator _checkBuilderAndCancelIfErrorForBuilder:fullStream:](self, "_checkBuilderAndCancelIfErrorForBuilder:fullStream:", builderCopy, streamCopy) && (v21 = [builderCopy addFieldWithType:850 value:v18 error:error], -[HDMedicationDataDonator _checkBuilderAndCancelIfErrorForBuilder:fullStream:](self, "_checkBuilderAndCancelIfErrorForBuilder:fullStream:", builderCopy, streamCopy)) && (objc_msgSend(conceptCopy, "userSpecifiedName"), v22 = objc_claimAutoreleasedReturnValue(), v23 = objc_msgSend(builderCopy, "addFieldWithType:value:error:", 851, v22, error), v22, -[HDMedicationDataDonator _checkBuilderAndCancelIfErrorForBuilder:fullStream:](self, "_checkBuilderAndCancelIfErrorForBuilder:fullStream:", builderCopy, streamCopy)))
   {
-    v24 = [v11 buildItemWithError:a6];
+    v24 = [builderCopy buildItemWithError:error];
     if (v24)
     {
-      v25 = [(HDMedicationDataDonator *)self _registerItemForStream:v12 item:v24 error:a6];
+      v25 = [(HDMedicationDataDonator *)self _registerItemForStream:streamCopy item:v24 error:error];
     }
 
     else
     {
-      [v12 cancel];
+      [streamCopy cancel];
       v25 = 0;
     }
   }
@@ -256,33 +256,33 @@ LABEL_13:
   return v25;
 }
 
-- (BOOL)_registerItemForStream:(id)a3 item:(id)a4 error:(id *)a5
+- (BOOL)_registerItemForStream:(id)stream item:(id)item error:(id *)error
 {
-  v7 = [a3 registerItem:a4 error:a5];
+  v7 = [stream registerItem:item error:error];
   if ((v7 & 1) == 0)
   {
     _HKInitializeLogging();
     v8 = HKLogMedication();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      [HDMedicationDataDonator _registerItemForStream:a5 item:v8 error:?];
+      [HDMedicationDataDonator _registerItemForStream:error item:v8 error:?];
     }
   }
 
   return v7;
 }
 
-- (void)_finishStreamingForStream:(id)a3 completion:(id)a4
+- (void)_finishStreamingForStream:(id)stream completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __64__HDMedicationDataDonator__finishStreamingForStream_completion___block_invoke;
   v8[3] = &unk_2796CE748;
   v8[4] = self;
-  v9 = v6;
-  v7 = v6;
-  [a3 finish:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [stream finish:v8];
 }
 
 void __64__HDMedicationDataDonator__finishStreamingForStream_completion___block_invoke(uint64_t a1, void *a2)
@@ -312,12 +312,12 @@ void __64__HDMedicationDataDonator__finishStreamingForStream_completion___block_
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_medicationUserDomainConceptsForProfile:(id)a3 error:(id *)a4
+- (id)_medicationUserDomainConceptsForProfile:(id)profile error:(id *)error
 {
   v21[1] = *MEMORY[0x277D85DE8];
   v5 = MEMORY[0x277CCDB50];
-  v6 = a3;
-  v7 = [v5 medicationUserDomainConceptTypeIdentifier];
+  profileCopy = profile;
+  medicationUserDomainConceptTypeIdentifier = [v5 medicationUserDomainConceptTypeIdentifier];
   v8 = HDUserDomainConceptEntityPredicateForConceptsWithTypeIdentifier();
   v9 = MEMORY[0x277D10B20];
   v21[0] = v8;
@@ -325,7 +325,7 @@ void __64__HDMedicationDataDonator__finishStreamingForStream_completion___block_
   v11 = [v9 predicateMatchingAllPredicates:v10];
 
   v12 = objc_alloc_init(MEMORY[0x277CBEB58]);
-  v13 = [v6 userDomainConceptManager];
+  userDomainConceptManager = [profileCopy userDomainConceptManager];
 
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
@@ -333,9 +333,9 @@ void __64__HDMedicationDataDonator__finishStreamingForStream_completion___block_
   v19[3] = &unk_2796CD5A0;
   v20 = v12;
   v14 = v12;
-  LODWORD(a4) = [v13 enumerateUserDomainConceptsWithPredicate:v11 error:a4 enumerationHandler:v19];
+  LODWORD(error) = [userDomainConceptManager enumerateUserDomainConceptsWithPredicate:v11 error:error enumerationHandler:v19];
 
-  if (a4)
+  if (error)
   {
     v15 = v14;
   }
@@ -351,52 +351,52 @@ void __64__HDMedicationDataDonator__finishStreamingForStream_completion___block_
   return v15;
 }
 
-- (BOOL)_checkBuilderAndCancelIfErrorForBuilder:(id)a3 fullStream:(id)a4
+- (BOOL)_checkBuilderAndCancelIfErrorForBuilder:(id)builder fullStream:(id)stream
 {
-  if (!a3)
+  if (!builder)
   {
-    [a4 cancel];
+    [stream cancel];
   }
 
-  return a3 != 0;
+  return builder != 0;
 }
 
-- (id)_findPreferredNameForConcept:(id)a3
+- (id)_findPreferredNameForConcept:(id)concept
 {
-  v3 = [a3 displayNameComponents];
-  v4 = [v3 medicationDisplayName];
+  displayNameComponents = [concept displayNameComponents];
+  medicationDisplayName = [displayNameComponents medicationDisplayName];
 
-  return v4;
+  return medicationDisplayName;
 }
 
-- (void)profileDidBecomeReady:(id)a3
+- (void)profileDidBecomeReady:(id)ready
 {
   WeakRetained = objc_loadWeakRetained(&self->_profileExtension);
-  v5 = [WeakRetained profile];
-  v6 = [v5 database];
-  [v6 addProtectedDataObserver:self];
+  profile = [WeakRetained profile];
+  database = [profile database];
+  [database addProtectedDataObserver:self];
 
   v7 = objc_loadWeakRetained(&self->_profileExtension);
-  v8 = [v7 profile];
-  v9 = [v8 userDomainConceptManager];
-  [v9 addUserDomainConceptObserver:self queue:0];
+  profile2 = [v7 profile];
+  userDomainConceptManager = [profile2 userDomainConceptManager];
+  [userDomainConceptManager addUserDomainConceptObserver:self queue:0];
 
   [(HDMedicationDataDonator *)self _donateWithReason:@"Profile did become ready. Triggering data donation."];
 }
 
-- (void)database:(id)a3 protectedDataDidBecomeAvailable:(BOOL)a4
+- (void)database:(id)database protectedDataDidBecomeAvailable:(BOOL)available
 {
-  v4 = a4;
-  if ([(HDMedicationDataDonator *)self donationRequiredOnNextUnlock]&& v4)
+  availableCopy = available;
+  if ([(HDMedicationDataDonator *)self donationRequiredOnNextUnlock]&& availableCopy)
   {
 
     [(HDMedicationDataDonator *)self _donateWithReason:@"Did observe protected database becoming ready and donation needed. Triggering data donation."];
   }
 }
 
-- (void)_donateIfUDCListChangedForUDCArray:(id)a3 manager:(id)a4
+- (void)_donateIfUDCListChangedForUDCArray:(id)array manager:(id)manager
 {
-  if ([(HDMedicationDataDonator *)self _medicationUDCHasChangedForUDCArray:a3, a4])
+  if ([(HDMedicationDataDonator *)self _medicationUDCHasChangedForUDCArray:array, manager])
   {
 
     [(HDMedicationDataDonator *)self _donateWithReason:@"Did observe change of user domain concept(s) list. Triggering data donation."];
@@ -412,30 +412,30 @@ uint64_t __63__HDMedicationDataDonator__medicationUDCHasChangedForUDCArray___blo
   return isKindOfClass & 1;
 }
 
-- (void)_donateWithReason:(id)a3
+- (void)_donateWithReason:(id)reason
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  reasonCopy = reason;
   _HKInitializeLogging();
   v5 = HKLogMedication();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v11 = self;
+    selfCopy = self;
     v12 = 2112;
-    v13 = v4;
+    v13 = reasonCopy;
     _os_log_impl(&dword_25181C000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] %@", buf, 0x16u);
   }
 
   [(HDMedicationDataDonator *)self setDonationRequiredOnNextUnlock:0];
   WeakRetained = objc_loadWeakRetained(&self->_profileExtension);
-  v7 = [WeakRetained profile];
+  profile = [WeakRetained profile];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __45__HDMedicationDataDonator__donateWithReason___block_invoke;
   v9[3] = &unk_2796CE3B0;
   v9[4] = self;
-  [(HDMedicationDataDonator *)self _performDataDonationForProfile:v7 completion:v9];
+  [(HDMedicationDataDonator *)self _performDataDonationForProfile:profile completion:v9];
 
   v8 = *MEMORY[0x277D85DE8];
 }

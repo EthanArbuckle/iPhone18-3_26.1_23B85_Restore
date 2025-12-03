@@ -1,11 +1,11 @@
 @interface BSAbsoluteMachTimer
-- (BSAbsoluteMachTimer)initWithIdentifier:(id)a3;
+- (BSAbsoluteMachTimer)initWithIdentifier:(id)identifier;
 - (NSString)debugDescription;
 - (NSString)description;
 - (NSString)identifier;
 - (void)dealloc;
-- (void)scheduleRepeatingWithFireInterval:(double)a3 repeatInterval:(double)a4 leewayInterval:(double)a5 queue:(id)a6 handler:(id)a7;
-- (void)scheduleWithFireInterval:(double)a3 leewayInterval:(double)a4 queue:(id)a5 handler:(id)a6;
+- (void)scheduleRepeatingWithFireInterval:(double)interval repeatInterval:(double)repeatInterval leewayInterval:(double)leewayInterval queue:(id)queue handler:(id)handler;
+- (void)scheduleWithFireInterval:(double)interval leewayInterval:(double)leewayInterval queue:(id)queue handler:(id)handler;
 @end
 
 @implementation BSAbsoluteMachTimer
@@ -36,7 +36,7 @@
       v15 = 2114;
       v16 = v10;
       v17 = 2048;
-      v18 = self;
+      selfCopy = self;
       v19 = 2114;
       v20 = @"BSAbsoluteMachTimer.m";
       v21 = 1024;
@@ -57,15 +57,15 @@
   [(BSAbsoluteMachTimer *)&v12 dealloc];
 }
 
-- (BSAbsoluteMachTimer)initWithIdentifier:(id)a3
+- (BSAbsoluteMachTimer)initWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = BSAbsoluteMachTimer;
   v5 = [(BSAbsoluteMachTimer *)&v9 init];
   if (v5)
   {
-    v6 = [BSDispatchTimer timerWithIdentifier:v4];
+    v6 = [BSDispatchTimer timerWithIdentifier:identifierCopy];
     timer = v5->_timer;
     v5->_timer = v6;
   }
@@ -91,36 +91,36 @@
 {
   v3 = [BSDescriptionBuilder builderWithObject:self];
   [(BSDispatchTimer *)self->_timer appendDescriptionToBuilder:v3 forDebugging:0];
-  v4 = [v3 build];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 - (NSString)debugDescription
 {
   v3 = [BSDescriptionBuilder builderWithObject:self];
   [(BSDispatchTimer *)self->_timer appendDescriptionToBuilder:v3 forDebugging:1];
-  v4 = [v3 build];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (void)scheduleWithFireInterval:(double)a3 leewayInterval:(double)a4 queue:(id)a5 handler:(id)a6
+- (void)scheduleWithFireInterval:(double)interval leewayInterval:(double)leewayInterval queue:(id)queue handler:(id)handler
 {
   v55 = *MEMORY[0x1E69E9840];
-  v42 = a5;
-  v11 = a6;
-  v12 = (*&a3 & 0x7FFFFFFFFFFFFFFFuLL) - 1 < 0xFFFFFFFFFFFFFLL;
-  v13 = a3 < 0.0 && ((*&a3 & 0x7FFFFFFFFFFFFFFFuLL) - 0x10000000000000) >> 53 < 0x3FF;
-  if (a3 >= 0.0)
+  queueCopy = queue;
+  handlerCopy = handler;
+  v12 = (*&interval & 0x7FFFFFFFFFFFFFFFuLL) - 1 < 0xFFFFFFFFFFFFFLL;
+  v13 = interval < 0.0 && ((*&interval & 0x7FFFFFFFFFFFFFFFuLL) - 0x10000000000000) >> 53 < 0x3FF;
+  if (interval >= 0.0)
   {
     v12 = 0;
   }
 
-  v14 = (*&a3 & 0x7FFFFFFFFFFFFFFFLL) == 0x7FF0000000000000 || v12;
+  v14 = (*&interval & 0x7FFFFFFFFFFFFFFFLL) == 0x7FF0000000000000 || v12;
   if ((v14 | v13) == 1)
   {
-    v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"invalid fireInterval %f", *&a3];
+    v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"invalid fireInterval %f", *&interval];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
       v23 = NSStringFromSelector(a2);
@@ -131,7 +131,7 @@
       v45 = 2114;
       v46 = v25;
       v47 = 2048;
-      v48 = self;
+      selfCopy4 = self;
       v49 = 2114;
       v50 = @"BSAbsoluteMachTimer.m";
       v51 = 1024;
@@ -147,17 +147,17 @@
     JUMPOUT(0x18FF35EE8);
   }
 
-  v15 = (*&a4 & 0x7FFFFFFFFFFFFFFFuLL) - 1 < 0xFFFFFFFFFFFFFLL;
-  v16 = a4 < 0.0 && ((*&a4 & 0x7FFFFFFFFFFFFFFFuLL) - 0x10000000000000) >> 53 < 0x3FF;
-  if (a4 >= 0.0)
+  v15 = (*&leewayInterval & 0x7FFFFFFFFFFFFFFFuLL) - 1 < 0xFFFFFFFFFFFFFLL;
+  v16 = leewayInterval < 0.0 && ((*&leewayInterval & 0x7FFFFFFFFFFFFFFFuLL) - 0x10000000000000) >> 53 < 0x3FF;
+  if (leewayInterval >= 0.0)
   {
     v15 = 0;
   }
 
-  v17 = (*&a4 & 0x7FFFFFFFFFFFFFFFLL) == 0x7FF0000000000000 || v15;
+  v17 = (*&leewayInterval & 0x7FFFFFFFFFFFFFFFLL) == 0x7FF0000000000000 || v15;
   if ((v17 | v16) == 1)
   {
-    v27 = [MEMORY[0x1E696AEC0] stringWithFormat:@"invalid leeway %f", *&a4];
+    v27 = [MEMORY[0x1E696AEC0] stringWithFormat:@"invalid leeway %f", *&leewayInterval];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
       v28 = NSStringFromSelector(a2);
@@ -168,7 +168,7 @@
       v45 = 2114;
       v46 = v30;
       v47 = 2048;
-      v48 = self;
+      selfCopy4 = self;
       v49 = 2114;
       v50 = @"BSAbsoluteMachTimer.m";
       v51 = 1024;
@@ -184,7 +184,7 @@
     JUMPOUT(0x18FF35FE8);
   }
 
-  if (!v42)
+  if (!queueCopy)
   {
     v32 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"queue"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -197,7 +197,7 @@
       v45 = 2114;
       v46 = v35;
       v47 = 2048;
-      v48 = self;
+      selfCopy4 = self;
       v49 = 2114;
       v50 = @"BSAbsoluteMachTimer.m";
       v51 = 1024;
@@ -213,7 +213,7 @@
     JUMPOUT(0x18FF360F0);
   }
 
-  if (!v11)
+  if (!handlerCopy)
   {
     v37 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"handler"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -226,7 +226,7 @@
       v45 = 2114;
       v46 = v40;
       v47 = 2048;
-      v48 = self;
+      selfCopy4 = self;
       v49 = 2114;
       v50 = @"BSAbsoluteMachTimer.m";
       v51 = 1024;
@@ -243,46 +243,46 @@
   }
 
   timer = self->_timer;
-  if (a3 >= 9223372040.0)
+  if (interval >= 9223372040.0)
   {
     v19 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
   else
   {
-    v19 = (a3 * 1000000000.0);
+    v19 = (interval * 1000000000.0);
   }
 
   v20 = dispatch_time(0, v19);
-  if (a4 >= 9223372040.0)
+  if (leewayInterval >= 9223372040.0)
   {
     v21 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
   else
   {
-    v21 = (a4 * 1000000000.0);
+    v21 = (leewayInterval * 1000000000.0);
   }
 
-  [(BSDispatchTimer *)timer scheduleWithFireTime:v20 repeatNanoseconds:-1 leewayNanoseconds:v21 queue:v42 weakContext:self handler:v11];
+  [(BSDispatchTimer *)timer scheduleWithFireTime:v20 repeatNanoseconds:-1 leewayNanoseconds:v21 queue:queueCopy weakContext:self handler:handlerCopy];
 }
 
-- (void)scheduleRepeatingWithFireInterval:(double)a3 repeatInterval:(double)a4 leewayInterval:(double)a5 queue:(id)a6 handler:(id)a7
+- (void)scheduleRepeatingWithFireInterval:(double)interval repeatInterval:(double)repeatInterval leewayInterval:(double)leewayInterval queue:(id)queue handler:(id)handler
 {
   v67 = *MEMORY[0x1E69E9840];
-  v54 = a6;
-  v13 = a7;
-  v14 = (*&a3 & 0x7FFFFFFFFFFFFFFFuLL) - 1 < 0xFFFFFFFFFFFFFLL;
-  v15 = a3 < 0.0 && ((*&a3 & 0x7FFFFFFFFFFFFFFFuLL) - 0x10000000000000) >> 53 < 0x3FF;
-  if (a3 >= 0.0)
+  queueCopy = queue;
+  handlerCopy = handler;
+  v14 = (*&interval & 0x7FFFFFFFFFFFFFFFuLL) - 1 < 0xFFFFFFFFFFFFFLL;
+  v15 = interval < 0.0 && ((*&interval & 0x7FFFFFFFFFFFFFFFuLL) - 0x10000000000000) >> 53 < 0x3FF;
+  if (interval >= 0.0)
   {
     v14 = 0;
   }
 
-  v16 = (*&a3 & 0x7FFFFFFFFFFFFFFFLL) == 0x7FF0000000000000 || v14;
+  v16 = (*&interval & 0x7FFFFFFFFFFFFFFFLL) == 0x7FF0000000000000 || v14;
   if ((v16 | v15) == 1)
   {
-    v29 = [MEMORY[0x1E696AEC0] stringWithFormat:@"invalid fireInterval %f", *&a3];
+    v29 = [MEMORY[0x1E696AEC0] stringWithFormat:@"invalid fireInterval %f", *&interval];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
       v30 = NSStringFromSelector(a2);
@@ -293,7 +293,7 @@
       v57 = 2114;
       v58 = v32;
       v59 = 2048;
-      v60 = self;
+      selfCopy5 = self;
       v61 = 2114;
       v62 = @"BSAbsoluteMachTimer.m";
       v63 = 1024;
@@ -309,17 +309,17 @@
     JUMPOUT(0x18FF365E4);
   }
 
-  v17 = (*&a4 & 0x7FFFFFFFFFFFFFFFuLL) - 1 < 0xFFFFFFFFFFFFFLL;
-  v18 = a4 < 0.0 && ((*&a4 & 0x7FFFFFFFFFFFFFFFuLL) - 0x10000000000000) >> 53 < 0x3FF;
-  if (a4 >= 0.0)
+  v17 = (*&repeatInterval & 0x7FFFFFFFFFFFFFFFuLL) - 1 < 0xFFFFFFFFFFFFFLL;
+  v18 = repeatInterval < 0.0 && ((*&repeatInterval & 0x7FFFFFFFFFFFFFFFuLL) - 0x10000000000000) >> 53 < 0x3FF;
+  if (repeatInterval >= 0.0)
   {
     v17 = 0;
   }
 
-  v19 = (*&a4 & 0x7FFFFFFFFFFFFFFFLL) == 0x7FF0000000000000 || v17;
+  v19 = (*&repeatInterval & 0x7FFFFFFFFFFFFFFFLL) == 0x7FF0000000000000 || v17;
   if ((v19 | v18) == 1)
   {
-    v34 = [MEMORY[0x1E696AEC0] stringWithFormat:@"invalid repeatInterval %f", *&a4];
+    v34 = [MEMORY[0x1E696AEC0] stringWithFormat:@"invalid repeatInterval %f", *&repeatInterval];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
       v35 = NSStringFromSelector(a2);
@@ -330,7 +330,7 @@
       v57 = 2114;
       v58 = v37;
       v59 = 2048;
-      v60 = self;
+      selfCopy5 = self;
       v61 = 2114;
       v62 = @"BSAbsoluteMachTimer.m";
       v63 = 1024;
@@ -346,17 +346,17 @@
     JUMPOUT(0x18FF366E4);
   }
 
-  v20 = (*&a5 & 0x7FFFFFFFFFFFFFFFuLL) - 1 < 0xFFFFFFFFFFFFFLL;
-  v21 = a5 < 0.0 && ((*&a5 & 0x7FFFFFFFFFFFFFFFuLL) - 0x10000000000000) >> 53 < 0x3FF;
-  if (a5 >= 0.0)
+  v20 = (*&leewayInterval & 0x7FFFFFFFFFFFFFFFuLL) - 1 < 0xFFFFFFFFFFFFFLL;
+  v21 = leewayInterval < 0.0 && ((*&leewayInterval & 0x7FFFFFFFFFFFFFFFuLL) - 0x10000000000000) >> 53 < 0x3FF;
+  if (leewayInterval >= 0.0)
   {
     v20 = 0;
   }
 
-  v22 = (*&a5 & 0x7FFFFFFFFFFFFFFFLL) == 0x7FF0000000000000 || v20;
+  v22 = (*&leewayInterval & 0x7FFFFFFFFFFFFFFFLL) == 0x7FF0000000000000 || v20;
   if ((v22 | v21) == 1)
   {
-    v39 = [MEMORY[0x1E696AEC0] stringWithFormat:@"invalid leeway %f", *&a5];
+    v39 = [MEMORY[0x1E696AEC0] stringWithFormat:@"invalid leeway %f", *&leewayInterval];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
       v40 = NSStringFromSelector(a2);
@@ -367,7 +367,7 @@
       v57 = 2114;
       v58 = v42;
       v59 = 2048;
-      v60 = self;
+      selfCopy5 = self;
       v61 = 2114;
       v62 = @"BSAbsoluteMachTimer.m";
       v63 = 1024;
@@ -383,7 +383,7 @@
     JUMPOUT(0x18FF367E4);
   }
 
-  if (!v54)
+  if (!queueCopy)
   {
     v44 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"queue"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -396,7 +396,7 @@
       v57 = 2114;
       v58 = v47;
       v59 = 2048;
-      v60 = self;
+      selfCopy5 = self;
       v61 = 2114;
       v62 = @"BSAbsoluteMachTimer.m";
       v63 = 1024;
@@ -412,7 +412,7 @@
     JUMPOUT(0x18FF368ECLL);
   }
 
-  if (!v13)
+  if (!handlerCopy)
   {
     v49 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"handler"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -425,7 +425,7 @@
       v57 = 2114;
       v58 = v52;
       v59 = 2048;
-      v60 = self;
+      selfCopy5 = self;
       v61 = 2114;
       v62 = @"BSAbsoluteMachTimer.m";
       v63 = 1024;
@@ -442,34 +442,34 @@
   }
 
   timer = self->_timer;
-  if (a3 >= 9223372040.0)
+  if (interval >= 9223372040.0)
   {
     v24 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
   else
   {
-    v24 = (a3 * 1000000000.0);
+    v24 = (interval * 1000000000.0);
   }
 
   v25 = dispatch_time(0, v24);
-  v26 = (a4 * 1000000000.0);
+  v26 = (repeatInterval * 1000000000.0);
   if (v26 <= 1)
   {
     v26 = 1;
   }
 
-  if (a5 >= 9223372040.0)
+  if (leewayInterval >= 9223372040.0)
   {
     v27 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
   else
   {
-    v27 = (a5 * 1000000000.0);
+    v27 = (leewayInterval * 1000000000.0);
   }
 
-  if (a4 >= 9223372040.0)
+  if (repeatInterval >= 9223372040.0)
   {
     v28 = 0x7FFFFFFFFFFFFFFFLL;
   }
@@ -479,7 +479,7 @@
     v28 = v26;
   }
 
-  [(BSDispatchTimer *)timer scheduleWithFireTime:v25 repeatNanoseconds:v28 leewayNanoseconds:v27 queue:v54 weakContext:self handler:v13];
+  [(BSDispatchTimer *)timer scheduleWithFireTime:v25 repeatNanoseconds:v28 leewayNanoseconds:v27 queue:queueCopy weakContext:self handler:handlerCopy];
 }
 
 @end

@@ -1,13 +1,13 @@
 @interface DMDLostDeviceLocationManager
 + (DMDLostDeviceLocationManager)sharedManager;
-- (BOOL)_updateLostModeFileForOriginator:(id)a3;
+- (BOOL)_updateLostModeFileForOriginator:(id)originator;
 - (DMDLostDeviceLocationManager)init;
 - (NSString)lastLocationRequestedDateMessage;
 - (void)_cleanupAfterResponseFromLocationManagerOrTimeout;
 - (void)clearLastLocationRequestedDate;
-- (void)getCurrentLocationForOriginator:(id)a3 completion:(id)a4;
-- (void)locationManager:(id)a3 didFailWithError:(id)a4;
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4;
+- (void)getCurrentLocationForOriginator:(id)originator completion:(id)completion;
+- (void)locationManager:(id)manager didFailWithError:(id)error;
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations;
 @end
 
 @implementation DMDLostDeviceLocationManager
@@ -36,7 +36,7 @@
   block[1] = 3221225472;
   block[2] = sub_10004E76C;
   block[3] = &unk_1000CE018;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1000FF128 != -1)
   {
     dispatch_once(&qword_1000FF128, block);
@@ -47,21 +47,21 @@
   return v2;
 }
 
-- (void)getCurrentLocationForOriginator:(id)a3 completion:(id)a4
+- (void)getCurrentLocationForOriginator:(id)originator completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(DMDLostDeviceLocationManager *)self queue];
+  originatorCopy = originator;
+  completionCopy = completion;
+  queue = [(DMDLostDeviceLocationManager *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10004E87C;
   block[3] = &unk_1000CF3B0;
-  v12 = v6;
-  v13 = v7;
+  v12 = originatorCopy;
+  v13 = completionCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async(v8, block);
+  v9 = originatorCopy;
+  v10 = completionCopy;
+  dispatch_async(queue, block);
 }
 
 - (void)clearLastLocationRequestedDate
@@ -188,13 +188,13 @@
   return v16;
 }
 
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations
 {
-  v5 = a4;
-  v6 = [(DMDLostDeviceLocationManager *)self queue];
-  dispatch_assert_queue_V2(v6);
+  locationsCopy = locations;
+  queue = [(DMDLostDeviceLocationManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v7 = [v5 lastObject];
+  lastObject = [locationsCopy lastObject];
 
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
@@ -202,80 +202,80 @@
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Location Manager returned a location.", v12, 2u);
   }
 
-  v8 = [(DMDLostDeviceLocationManager *)self originator];
-  v9 = [(DMDLostDeviceLocationManager *)self _updateLostModeFileForOriginator:v8];
+  originator = [(DMDLostDeviceLocationManager *)self originator];
+  v9 = [(DMDLostDeviceLocationManager *)self _updateLostModeFileForOriginator:originator];
 
-  v10 = [(DMDLostDeviceLocationManager *)self completionBlock];
+  completionBlock = [(DMDLostDeviceLocationManager *)self completionBlock];
   [(DMDLostDeviceLocationManager *)self _cleanupAfterResponseFromLocationManagerOrTimeout];
   if (!v9)
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
     {
       sub_100084C2C();
-      if (!v10)
+      if (!completionBlock)
       {
         goto LABEL_9;
       }
     }
 
-    else if (!v10)
+    else if (!completionBlock)
     {
       goto LABEL_9;
     }
 
     v11 = DMFErrorWithCodeAndUserInfo();
-    (v10)[2](v10, 0, v11);
+    (completionBlock)[2](completionBlock, 0, v11);
 
     goto LABEL_9;
   }
 
-  if (v10)
+  if (completionBlock)
   {
-    (v10)[2](v10, v7, 0);
+    (completionBlock)[2](completionBlock, lastObject, 0);
   }
 
 LABEL_9:
 }
 
-- (void)locationManager:(id)a3 didFailWithError:(id)a4
+- (void)locationManager:(id)manager didFailWithError:(id)error
 {
-  v5 = a4;
-  v6 = [(DMDLostDeviceLocationManager *)self queue];
-  dispatch_assert_queue_V2(v6);
+  errorCopy = error;
+  queue = [(DMDLostDeviceLocationManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_100084C70();
   }
 
-  v7 = [(DMDLostDeviceLocationManager *)self completionBlock];
+  completionBlock = [(DMDLostDeviceLocationManager *)self completionBlock];
   [(DMDLostDeviceLocationManager *)self _cleanupAfterResponseFromLocationManagerOrTimeout];
-  if (v7)
+  if (completionBlock)
   {
-    (v7)[2](v7, 0, v5);
+    (completionBlock)[2](completionBlock, 0, errorCopy);
   }
 }
 
 - (void)_cleanupAfterResponseFromLocationManagerOrTimeout
 {
-  v3 = [(DMDLostDeviceLocationManager *)self locationManager];
-  [v3 stopUpdatingLocation];
+  locationManager = [(DMDLostDeviceLocationManager *)self locationManager];
+  [locationManager stopUpdatingLocation];
 
   [(DMDLostDeviceLocationManager *)self setLocationManager:0];
   [(DMDLostDeviceLocationManager *)self setCompletionBlock:0];
-  v4 = [(DMDLostDeviceLocationManager *)self timeoutTimerDispatchSource];
-  if (v4)
+  timeoutTimerDispatchSource = [(DMDLostDeviceLocationManager *)self timeoutTimerDispatchSource];
+  if (timeoutTimerDispatchSource)
   {
-    v5 = v4;
-    dispatch_source_cancel(v4);
+    v5 = timeoutTimerDispatchSource;
+    dispatch_source_cancel(timeoutTimerDispatchSource);
     [(DMDLostDeviceLocationManager *)self setTimeoutTimerDispatchSource:0];
-    v4 = v5;
+    timeoutTimerDispatchSource = v5;
   }
 }
 
-- (BOOL)_updateLostModeFileForOriginator:(id)a3
+- (BOOL)_updateLostModeFileForOriginator:(id)originator
 {
-  v3 = a3;
+  originatorCopy = originator;
   v4 = +[DMDPaths systemLostModeRequestPath];
   v5 = [NSURL fileURLWithPath:v4 isDirectory:0];
 
@@ -294,7 +294,7 @@ LABEL_9:
   v11[2] = sub_10004F864;
   v11[3] = &unk_1000CF428;
   v13 = &v20;
-  v7 = v3;
+  v7 = originatorCopy;
   v12 = v7;
   v14 = &v16;
   [v6 coordinateWritingItemAtURL:v5 options:0 error:&v15 byAccessor:v11];

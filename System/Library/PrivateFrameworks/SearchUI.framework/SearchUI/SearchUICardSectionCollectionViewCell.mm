@@ -3,7 +3,7 @@
 - (BOOL)needsInternalFocus;
 - (BOOL)setupManualFocus;
 - (CGRect)highlightFrame;
-- (NSDirectionalEdgeInsets)_preferredSeparatorInsetsForProposedInsets:(NSDirectionalEdgeInsets)a3;
+- (NSDirectionalEdgeInsets)_preferredSeparatorInsetsForProposedInsets:(NSDirectionalEdgeInsets)insets;
 - (double)highlightFrameCornerRadius;
 - (id)embeddedViewController;
 - (id)highlightReferenceView;
@@ -13,235 +13,235 @@
 - (id)rowModelForCustomHighlightBehavior;
 - (id)sizingView;
 - (id)viewForForcedFocus;
-- (void)createStyledButtons:(id)a3 buttonFont:(id)a4 isCompact:(BOOL)a5 :(id)a6;
-- (void)emitInstrumentationEvent:(id)a3;
-- (void)performSFCommand:(id)a3;
+- (void)createStyledButtons:(id)buttons buttonFont:(id)font isCompact:(BOOL)compact :(id)a6;
+- (void)emitInstrumentationEvent:(id)event;
+- (void)performSFCommand:(id)command;
 - (void)removeManualFocus;
-- (void)reportSFFeedback:(id)a3;
+- (void)reportSFFeedback:(id)feedback;
 - (void)returnKeyPressed;
-- (void)setCustomViewProvider:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)updateChevronVisible:(BOOL)a3 leaveSpaceForChevron:(BOOL)a4;
-- (void)updateWithRowModel:(id)a3;
+- (void)setCustomViewProvider:(id)provider;
+- (void)setDelegate:(id)delegate;
+- (void)updateChevronVisible:(BOOL)visible leaveSpaceForChevron:(BOOL)chevron;
+- (void)updateWithRowModel:(id)model;
 @end
 
 @implementation SearchUICardSectionCollectionViewCell
 
 - (id)leadingView
 {
-  v2 = [(SearchUICardSectionCollectionViewCell *)self cardSectionView];
-  v3 = [v2 leadingView];
+  cardSectionView = [(SearchUICardSectionCollectionViewCell *)self cardSectionView];
+  leadingView = [cardSectionView leadingView];
 
-  return v3;
+  return leadingView;
 }
 
 - (id)leadingTextView
 {
-  v2 = [(SearchUICardSectionCollectionViewCell *)self cardSectionView];
-  v3 = [v2 leadingTextView];
+  cardSectionView = [(SearchUICardSectionCollectionViewCell *)self cardSectionView];
+  leadingTextView = [cardSectionView leadingTextView];
 
-  return v3;
+  return leadingTextView;
 }
 
 - (id)embeddedViewController
 {
-  v2 = [(SearchUICardSectionCollectionViewCell *)self cardSectionView];
-  v3 = [v2 embeddedViewController];
+  cardSectionView = [(SearchUICardSectionCollectionViewCell *)self cardSectionView];
+  embeddedViewController = [cardSectionView embeddedViewController];
 
-  return v3;
+  return embeddedViewController;
 }
 
 - (BOOL)needsInternalFocus
 {
-  v2 = [(SearchUICardSectionCollectionViewCell *)self cardSectionView];
-  v3 = [v2 needsInternalFocus];
+  cardSectionView = [(SearchUICardSectionCollectionViewCell *)self cardSectionView];
+  needsInternalFocus = [cardSectionView needsInternalFocus];
 
-  return v3;
+  return needsInternalFocus;
 }
 
 - (id)highlightReferenceView
 {
-  v2 = [(SearchUICardSectionCollectionViewCell *)self cardSectionView];
-  v3 = [v2 highlightReferenceView];
+  cardSectionView = [(SearchUICardSectionCollectionViewCell *)self cardSectionView];
+  highlightReferenceView = [cardSectionView highlightReferenceView];
 
-  return v3;
+  return highlightReferenceView;
 }
 
 - (id)sizingView
 {
-  v3 = [(SearchUICardSectionCollectionViewCell *)self boxView];
-  v4 = v3;
-  if (v3)
+  boxView = [(SearchUICardSectionCollectionViewCell *)self boxView];
+  v4 = boxView;
+  if (boxView)
   {
-    v5 = v3;
+    contentView = boxView;
   }
 
   else
   {
-    v5 = [(SearchUICardSectionCollectionViewCell *)self contentView];
+    contentView = [(SearchUICardSectionCollectionViewCell *)self contentView];
   }
 
-  v6 = v5;
+  v6 = contentView;
 
   return v6;
 }
 
-- (void)updateWithRowModel:(id)a3
+- (void)updateWithRowModel:(id)model
 {
   v30[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  modelCopy = model;
   v29.receiver = self;
   v29.super_class = SearchUICardSectionCollectionViewCell;
-  [(SearchUICollectionViewCell *)&v29 updateWithRowModel:v4];
-  if (![SearchUIContentConfigurator supportsConfigurationFor:v4])
+  [(SearchUICollectionViewCell *)&v29 updateWithRowModel:modelCopy];
+  if (![SearchUIContentConfigurator supportsConfigurationFor:modelCopy])
   {
     [(SearchUICollectionViewCell *)self setUseSystemSizing:0];
-    v6 = [(SearchUICardSectionCollectionViewCell *)self contentView];
-    [v6 setClipsToBounds:0];
+    contentView = [(SearchUICardSectionCollectionViewCell *)self contentView];
+    [contentView setClipsToBounds:0];
 
-    v7 = [(SearchUICardSectionCollectionViewCell *)self cardSectionView];
+    cardSectionView = [(SearchUICardSectionCollectionViewCell *)self cardSectionView];
 
-    if (v7)
+    if (cardSectionView)
     {
-      v8 = [(SearchUICardSectionCollectionViewCell *)self cardSectionView];
-      [v8 updateWithRowModel:v4];
+      cardSectionView2 = [(SearchUICardSectionCollectionViewCell *)self cardSectionView];
+      [cardSectionView2 updateWithRowModel:modelCopy];
     }
 
     else
     {
-      v9 = [(SearchUICollectionViewCell *)self delegate];
-      v10 = [SearchUICardSectionCreator cardSectionViewForModel:v4 feedbackDelegate:v9];
+      delegate = [(SearchUICollectionViewCell *)self delegate];
+      v10 = [SearchUICardSectionCreator cardSectionViewForModel:modelCopy feedbackDelegate:delegate];
       [(SearchUICardSectionCollectionViewCell *)self setCardSectionView:v10];
 
-      v11 = [(SearchUICardSectionCollectionViewCell *)self cardSectionView];
+      cardSectionView3 = [(SearchUICardSectionCollectionViewCell *)self cardSectionView];
 
-      if (!v11)
+      if (!cardSectionView3)
       {
 LABEL_10:
-        [v4 minimumLayoutSize];
+        [modelCopy minimumLayoutSize];
         v25 = v24;
         v27 = v26;
-        v28 = [(SearchUICardSectionCollectionViewCell *)self cardSectionView];
-        [v28 setMinimumLayoutSize:{v25, v27}];
+        cardSectionView4 = [(SearchUICardSectionCollectionViewCell *)self cardSectionView];
+        [cardSectionView4 setMinimumLayoutSize:{v25, v27}];
 
         goto LABEL_11;
       }
 
-      v12 = [(SearchUICardSectionCollectionViewCell *)self cardSectionView];
+      cardSectionView5 = [(SearchUICardSectionCollectionViewCell *)self cardSectionView];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
       if (isKindOfClass)
       {
-        v14 = [(SearchUICardSectionCollectionViewCell *)self cardSectionView];
-        v15 = [(SearchUICollectionViewCell *)self customViewProvider];
-        [v14 setViewProvider:v15];
+        cardSectionView6 = [(SearchUICardSectionCollectionViewCell *)self cardSectionView];
+        customViewProvider = [(SearchUICollectionViewCell *)self customViewProvider];
+        [cardSectionView6 setViewProvider:customViewProvider];
       }
 
       v16 = objc_alloc(MEMORY[0x1E698B718]);
-      v17 = [(SearchUICardSectionCollectionViewCell *)self cardSectionView];
-      v30[0] = v17;
+      cardSectionView7 = [(SearchUICardSectionCollectionViewCell *)self cardSectionView];
+      v30[0] = cardSectionView7;
       v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v30 count:1];
       v19 = [v16 initWithArrangedSubviews:v18];
       [(SearchUICardSectionCollectionViewCell *)self setBoxView:v19];
 
-      v20 = [(SearchUICardSectionCollectionViewCell *)self boxView];
-      [v20 setInvalidatingIntrinsicContentSizeAlsoInvalidatesSuperview:1];
+      boxView = [(SearchUICardSectionCollectionViewCell *)self boxView];
+      [boxView setInvalidatingIntrinsicContentSizeAlsoInvalidatesSuperview:1];
 
-      v21 = [(SearchUICardSectionCollectionViewCell *)self boxView];
-      [v21 setVerticalAlignment:1];
+      boxView2 = [(SearchUICardSectionCollectionViewCell *)self boxView];
+      [boxView2 setVerticalAlignment:1];
 
-      v22 = [(SearchUICardSectionCollectionViewCell *)self cardSectionView];
-      [v22 setInvalidatingIntrinsicContentSizeAlsoInvalidatesSuperview:1];
+      cardSectionView8 = [(SearchUICardSectionCollectionViewCell *)self cardSectionView];
+      [cardSectionView8 setInvalidatingIntrinsicContentSizeAlsoInvalidatesSuperview:1];
 
-      v8 = [(SearchUICardSectionCollectionViewCell *)self contentView];
-      v23 = [(SearchUICardSectionCollectionViewCell *)self boxView];
-      [v8 addSubview:v23];
+      cardSectionView2 = [(SearchUICardSectionCollectionViewCell *)self contentView];
+      boxView3 = [(SearchUICardSectionCollectionViewCell *)self boxView];
+      [cardSectionView2 addSubview:boxView3];
     }
 
     goto LABEL_10;
   }
 
-  [SearchUIContentConfigurator applyConfigurationTo:self rowModel:v4 interactionDelegate:self];
-  v5 = [(SearchUICardSectionCollectionViewCell *)self contentView];
-  [v5 setClipsToBounds:1];
+  [SearchUIContentConfigurator applyConfigurationTo:self rowModel:modelCopy interactionDelegate:self];
+  contentView2 = [(SearchUICardSectionCollectionViewCell *)self contentView];
+  [contentView2 setClipsToBounds:1];
 
   [(SearchUICollectionViewCell *)self setUseSystemSizing:1];
 LABEL_11:
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v6.receiver = self;
   v6.super_class = SearchUICardSectionCollectionViewCell;
-  v4 = a3;
-  [(SearchUICollectionViewCell *)&v6 setDelegate:v4];
+  delegateCopy = delegate;
+  [(SearchUICollectionViewCell *)&v6 setDelegate:delegateCopy];
   v5 = [(SearchUICardSectionCollectionViewCell *)self cardSectionView:v6.receiver];
-  [v5 setFeedbackDelegate:v4];
+  [v5 setFeedbackDelegate:delegateCopy];
 }
 
-- (void)updateChevronVisible:(BOOL)a3 leaveSpaceForChevron:(BOOL)a4
+- (void)updateChevronVisible:(BOOL)visible leaveSpaceForChevron:(BOOL)chevron
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = [(SearchUICardSectionCollectionViewCell *)self cardSectionView];
-  [v6 updateChevronVisible:v5 leaveSpaceForChevron:v4];
+  chevronCopy = chevron;
+  visibleCopy = visible;
+  cardSectionView = [(SearchUICardSectionCollectionViewCell *)self cardSectionView];
+  [cardSectionView updateChevronVisible:visibleCopy leaveSpaceForChevron:chevronCopy];
 }
 
 - (BOOL)setupManualFocus
 {
-  v2 = [(SearchUICardSectionCollectionViewCell *)self cardSectionView];
-  v3 = [v2 setupManualFocus];
+  cardSectionView = [(SearchUICardSectionCollectionViewCell *)self cardSectionView];
+  setupManualFocus = [cardSectionView setupManualFocus];
 
-  return v3;
+  return setupManualFocus;
 }
 
 - (void)removeManualFocus
 {
-  v2 = [(SearchUICardSectionCollectionViewCell *)self cardSectionView];
-  [v2 removeManualFocus];
+  cardSectionView = [(SearchUICardSectionCollectionViewCell *)self cardSectionView];
+  [cardSectionView removeManualFocus];
 }
 
 - (id)rowModelForCustomHighlightBehavior
 {
-  v3 = [(SearchUICollectionViewCell *)self rowModel];
+  rowModel = [(SearchUICollectionViewCell *)self rowModel];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(SearchUICollectionViewCell *)self rowModel];
-    if ([v5 supportsCustomHighlightBehavior])
+    rowModel2 = [(SearchUICollectionViewCell *)self rowModel];
+    if ([rowModel2 supportsCustomHighlightBehavior])
     {
       goto LABEL_5;
     }
   }
 
-  v5 = 0;
+  rowModel2 = 0;
 LABEL_5:
 
-  return v5;
+  return rowModel2;
 }
 
 - (CGRect)highlightFrame
 {
-  v3 = [(SearchUICardSectionCollectionViewCell *)self rowModelForCustomHighlightBehavior];
-  if (v3)
+  rowModelForCustomHighlightBehavior = [(SearchUICardSectionCollectionViewCell *)self rowModelForCustomHighlightBehavior];
+  if (rowModelForCustomHighlightBehavior)
   {
-    v4 = [(SearchUICardSectionCollectionViewCell *)self contentView];
-    [v4 frame];
+    contentView = [(SearchUICardSectionCollectionViewCell *)self contentView];
+    [contentView frame];
     v6 = v5;
     v8 = v7;
     v10 = v9;
     v12 = v11;
-    [v3 intrinsicContentInset];
+    [rowModelForCustomHighlightBehavior intrinsicContentInset];
     [SearchUIAutoLayout rect:[(SearchUICardSectionCollectionViewCell *)self effectiveUserInterfaceLayoutDirection]== 0 insettedBy:v6 isLTR:v8, v10, v12, v13, v14, v15, v16];
   }
 
   else
   {
-    v4 = [(SearchUICardSectionCollectionViewCell *)self cardSectionView];
-    [v4 highlightFrame];
+    contentView = [(SearchUICardSectionCollectionViewCell *)self cardSectionView];
+    [contentView highlightFrame];
   }
 
   v21 = v17;
@@ -262,11 +262,11 @@ LABEL_5:
 
 - (double)highlightFrameCornerRadius
 {
-  v3 = [(SearchUICardSectionCollectionViewCell *)self rowModelForCustomHighlightBehavior];
-  v4 = v3;
-  if (v3)
+  rowModelForCustomHighlightBehavior = [(SearchUICardSectionCollectionViewCell *)self rowModelForCustomHighlightBehavior];
+  v4 = rowModelForCustomHighlightBehavior;
+  if (rowModelForCustomHighlightBehavior)
   {
-    [v3 highlightReferenceFrameCornerRadius];
+    [rowModelForCustomHighlightBehavior highlightReferenceFrameCornerRadius];
   }
 
   else
@@ -283,11 +283,11 @@ LABEL_5:
 
 - (BOOL)highlightFrameMatchesHighlightView
 {
-  v3 = [(SearchUICardSectionCollectionViewCell *)self cardSectionView];
-  if ([v3 highlightFrameMatchesHighlightView])
+  cardSectionView = [(SearchUICardSectionCollectionViewCell *)self cardSectionView];
+  if ([cardSectionView highlightFrameMatchesHighlightView])
   {
-    v4 = [(SearchUICardSectionCollectionViewCell *)self rowModelForCustomHighlightBehavior];
-    v5 = v4 == 0;
+    rowModelForCustomHighlightBehavior = [(SearchUICardSectionCollectionViewCell *)self rowModelForCustomHighlightBehavior];
+    v5 = rowModelForCustomHighlightBehavior == 0;
   }
 
   else
@@ -300,35 +300,35 @@ LABEL_5:
 
 - (void)returnKeyPressed
 {
-  v2 = [(SearchUICardSectionCollectionViewCell *)self cardSectionView];
-  [v2 returnKeyPressed];
+  cardSectionView = [(SearchUICardSectionCollectionViewCell *)self cardSectionView];
+  [cardSectionView returnKeyPressed];
 }
 
 - (id)viewForForcedFocus
 {
-  v2 = [(SearchUICardSectionCollectionViewCell *)self cardSectionView];
-  v3 = [v2 viewForForcedFocus];
+  cardSectionView = [(SearchUICardSectionCollectionViewCell *)self cardSectionView];
+  viewForForcedFocus = [cardSectionView viewForForcedFocus];
 
-  return v3;
+  return viewForForcedFocus;
 }
 
-- (NSDirectionalEdgeInsets)_preferredSeparatorInsetsForProposedInsets:(NSDirectionalEdgeInsets)a3
+- (NSDirectionalEdgeInsets)_preferredSeparatorInsetsForProposedInsets:(NSDirectionalEdgeInsets)insets
 {
-  leading = a3.leading;
+  leading = insets.leading;
   v20.receiver = self;
   v20.super_class = SearchUICardSectionCollectionViewCell;
-  [(SearchUICollectionViewCell *)&v20 _preferredSeparatorInsetsForProposedInsets:a3.top, a3.leading, a3.bottom, a3.trailing];
+  [(SearchUICollectionViewCell *)&v20 _preferredSeparatorInsetsForProposedInsets:insets.top, insets.leading, insets.bottom, insets.trailing];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(SearchUICollectionViewCell *)self rowModel];
-  v14 = [v13 cardSection];
-  if ([SnippetUIUtilities supportsConfigurationForCardSection:v14])
+  rowModel = [(SearchUICollectionViewCell *)self rowModel];
+  cardSection = [rowModel cardSection];
+  if ([SnippetUIUtilities supportsConfigurationForCardSection:cardSection])
   {
-    v15 = [(SearchUICollectionViewCell *)self sfSeparatorStyle];
+    sfSeparatorStyle = [(SearchUICollectionViewCell *)self sfSeparatorStyle];
 
-    if (v15 == 3)
+    if (sfSeparatorStyle == 3)
     {
       v8 = leading;
     }
@@ -349,63 +349,63 @@ LABEL_5:
   return result;
 }
 
-- (void)createStyledButtons:(id)a3 buttonFont:(id)a4 isCompact:(BOOL)a5 :(id)a6
+- (void)createStyledButtons:(id)buttons buttonFont:(id)font isCompact:(BOOL)compact :(id)a6
 {
-  v6 = a5;
+  compactCopy = compact;
   v10 = a6;
-  v11 = a4;
-  v12 = a3;
-  v14 = [(SearchUICollectionViewCell *)self rowModel];
-  v13 = [(SearchUICollectionViewCell *)self delegate];
-  [SnippetUIUtilities createViewControllersForButtons:v12 buttonFont:v11 isCompact:v6 sourceView:self rowModel:v14 delegate:v13 completionHandler:v10];
+  fontCopy = font;
+  buttonsCopy = buttons;
+  rowModel = [(SearchUICollectionViewCell *)self rowModel];
+  delegate = [(SearchUICollectionViewCell *)self delegate];
+  [SnippetUIUtilities createViewControllersForButtons:buttonsCopy buttonFont:fontCopy isCompact:compactCopy sourceView:self rowModel:rowModel delegate:delegate completionHandler:v10];
 }
 
-- (void)performSFCommand:(id)a3
+- (void)performSFCommand:(id)command
 {
-  v4 = a3;
-  v6 = [(SearchUICollectionViewCell *)self rowModel];
-  v5 = [(SearchUICollectionViewCell *)self delegate];
-  [SnippetUIUtilities performSFCommand:v4 rowModel:v6 delegate:v5];
+  commandCopy = command;
+  rowModel = [(SearchUICollectionViewCell *)self rowModel];
+  delegate = [(SearchUICollectionViewCell *)self delegate];
+  [SnippetUIUtilities performSFCommand:commandCopy rowModel:rowModel delegate:delegate];
 }
 
-- (void)emitInstrumentationEvent:(id)a3
+- (void)emitInstrumentationEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(SearchUICollectionViewCell *)self delegate];
-  [SnippetUIUtilities emitInstrumentationEvent:v4 delegate:v5];
+  eventCopy = event;
+  delegate = [(SearchUICollectionViewCell *)self delegate];
+  [SnippetUIUtilities emitInstrumentationEvent:eventCopy delegate:delegate];
 }
 
-- (void)reportSFFeedback:(id)a3
+- (void)reportSFFeedback:(id)feedback
 {
-  v4 = a3;
-  v7 = [(SearchUICollectionViewCell *)self rowModel];
-  v5 = [v7 queryId];
-  v6 = [(SearchUICollectionViewCell *)self delegate];
-  [SnippetUIUtilities reportFeedback:v4 queryId:v5 delegate:v6];
+  feedbackCopy = feedback;
+  rowModel = [(SearchUICollectionViewCell *)self rowModel];
+  queryId = [rowModel queryId];
+  delegate = [(SearchUICollectionViewCell *)self delegate];
+  [SnippetUIUtilities reportFeedback:feedbackCopy queryId:queryId delegate:delegate];
 }
 
 - (id)presentingViewController
 {
-  v3 = [(SearchUICollectionViewCell *)self delegate];
-  v4 = [SnippetUIUtilities presentingViewController:self delegate:v3];
+  delegate = [(SearchUICollectionViewCell *)self delegate];
+  v4 = [SnippetUIUtilities presentingViewController:self delegate:delegate];
 
   return v4;
 }
 
-- (void)setCustomViewProvider:(id)a3
+- (void)setCustomViewProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v8.receiver = self;
   v8.super_class = SearchUICardSectionCollectionViewCell;
-  [(SearchUICollectionViewCell *)&v8 setCustomViewProvider:v4];
-  v5 = [(SearchUICardSectionCollectionViewCell *)self cardSectionView];
+  [(SearchUICollectionViewCell *)&v8 setCustomViewProvider:providerCopy];
+  cardSectionView = [(SearchUICardSectionCollectionViewCell *)self cardSectionView];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v7 = [(SearchUICardSectionCollectionViewCell *)self cardSectionView];
-    [v7 setViewProvider:v4];
+    cardSectionView2 = [(SearchUICardSectionCollectionViewCell *)self cardSectionView];
+    [cardSectionView2 setViewProvider:providerCopy];
   }
 }
 

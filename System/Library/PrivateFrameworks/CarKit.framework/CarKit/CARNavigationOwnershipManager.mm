@@ -1,32 +1,32 @@
 @interface CARNavigationOwnershipManager
-- (CARNavigationOwnershipManager)initWithIdentifier:(id)a3 delegate:(id)a4;
+- (CARNavigationOwnershipManager)initWithIdentifier:(id)identifier delegate:(id)delegate;
 - (CARNavigationOwnershipManagerDelegate)delegate;
 - (NSString)lastNavigatingBundleIdentifier;
 - (unint64_t)owner;
 - (void)_handleConnectionReset;
 - (void)_setupConnection;
 - (void)invalidate;
-- (void)navigationOwnershipChangedTo:(unint64_t)a3;
+- (void)navigationOwnershipChangedTo:(unint64_t)to;
 - (void)releaseNavigationOwnership;
 - (void)requestNavigationOwnership;
 @end
 
 @implementation CARNavigationOwnershipManager
 
-- (CARNavigationOwnershipManager)initWithIdentifier:(id)a3 delegate:(id)a4
+- (CARNavigationOwnershipManager)initWithIdentifier:(id)identifier delegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  delegateCopy = delegate;
   v12.receiver = self;
   v12.super_class = CARNavigationOwnershipManager;
   v8 = [(CARNavigationOwnershipManager *)&v12 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [identifierCopy copy];
     identifier = v8->_identifier;
     v8->_identifier = v9;
 
-    objc_storeWeak(&v8->_delegate, v7);
+    objc_storeWeak(&v8->_delegate, delegateCopy);
     v8->_ownershipRequested = 0;
     [(CARNavigationOwnershipManager *)v8 _setupConnection];
   }
@@ -36,16 +36,16 @@
 
 - (void)invalidate
 {
-  v2 = [(CARNavigationOwnershipManager *)self connection];
-  [v2 invalidate];
+  connection = [(CARNavigationOwnershipManager *)self connection];
+  [connection invalidate];
 }
 
 - (void)requestNavigationOwnership
 {
-  v3 = [(CARNavigationOwnershipManager *)self connection];
-  v4 = [v3 remoteObjectProxy];
-  v5 = [(CARNavigationOwnershipManager *)self identifier];
-  [v4 addNavigationOwnerWithIdentifier:v5];
+  connection = [(CARNavigationOwnershipManager *)self connection];
+  remoteObjectProxy = [connection remoteObjectProxy];
+  identifier = [(CARNavigationOwnershipManager *)self identifier];
+  [remoteObjectProxy addNavigationOwnerWithIdentifier:identifier];
 
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -57,10 +57,10 @@
 
 - (void)releaseNavigationOwnership
 {
-  v3 = [(CARNavigationOwnershipManager *)self connection];
-  v4 = [v3 remoteObjectProxy];
-  v5 = [(CARNavigationOwnershipManager *)self identifier];
-  [v4 removeNavigationOwnerWithIdentifier:v5];
+  connection = [(CARNavigationOwnershipManager *)self connection];
+  remoteObjectProxy = [connection remoteObjectProxy];
+  identifier = [(CARNavigationOwnershipManager *)self identifier];
+  [remoteObjectProxy removeNavigationOwnerWithIdentifier:identifier];
 
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -77,8 +77,8 @@
   v15 = 0x2020000000;
   v16 = 0;
   v3 = dispatch_semaphore_create(0);
-  v4 = [(CARNavigationOwnershipManager *)self connection];
-  v5 = [v4 remoteObjectProxy];
+  connection = [(CARNavigationOwnershipManager *)self connection];
+  remoteObjectProxy = [connection remoteObjectProxy];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __38__CARNavigationOwnershipManager_owner__block_invoke;
@@ -86,7 +86,7 @@
   v12 = &v13;
   v6 = v3;
   v11 = v6;
-  [v5 fetchNavigationOwnerWithReply:v10];
+  [remoteObjectProxy fetchNavigationOwnerWithReply:v10];
 
   v7 = dispatch_time(0, 10000000000);
   dispatch_semaphore_wait(v6, v7);
@@ -105,8 +105,8 @@
   v17 = __Block_byref_object_dispose__10;
   v18 = 0;
   v3 = dispatch_semaphore_create(0);
-  v4 = [(CARNavigationOwnershipManager *)self connection];
-  v5 = [v4 remoteObjectProxy];
+  connection = [(CARNavigationOwnershipManager *)self connection];
+  remoteObjectProxy = [connection remoteObjectProxy];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __63__CARNavigationOwnershipManager_lastNavigatingBundleIdentifier__block_invoke;
@@ -114,7 +114,7 @@
   v12 = &v13;
   v6 = v3;
   v11 = v6;
-  [v5 fetchNavigationIdentifierWithReply:v10];
+  [remoteObjectProxy fetchNavigationIdentifierWithReply:v10];
 
   v7 = dispatch_time(0, 10000000000);
   dispatch_semaphore_wait(v6, v7);
@@ -202,26 +202,26 @@ void __55__CARNavigationOwnershipManager__handleConnectionReset__block_invoke(ui
   }
 }
 
-- (void)navigationOwnershipChangedTo:(unint64_t)a3
+- (void)navigationOwnershipChangedTo:(unint64_t)to
 {
   v13 = *MEMORY[0x1E69E9840];
   v5 = CarGeneralLogging();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = @"None";
-    if (a3 == 1)
+    if (to == 1)
     {
       v6 = @"iOS";
     }
 
-    if (a3 == 2)
+    if (to == 2)
     {
       v6 = @"Car";
     }
 
     v7 = v6;
     *buf = 138412546;
-    v10 = self;
+    selfCopy = self;
     v11 = 2112;
     v12 = v7;
     _os_log_impl(&dword_1C81FC000, v5, OS_LOG_TYPE_DEFAULT, "%@: Navigation ownership changed to %@", buf, 0x16u);
@@ -232,7 +232,7 @@ void __55__CARNavigationOwnershipManager__handleConnectionReset__block_invoke(ui
   v8[2] = __62__CARNavigationOwnershipManager_navigationOwnershipChangedTo___block_invoke;
   v8[3] = &unk_1E82FD2C8;
   v8[4] = self;
-  v8[5] = a3;
+  v8[5] = to;
   dispatch_async(MEMORY[0x1E69E96A0], v8);
 }
 

@@ -1,32 +1,32 @@
 @interface CTStewieSatSmsMessageOutgoing
-+ (double)estimatedSendTimeForTextPayload:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToOther:(id)a3;
-- (CTStewieSatSmsMessageOutgoing)initWithCoder:(id)a3;
-- (CTStewieSatSmsMessageOutgoing)initWithContext:(id)a3 destinationPhoneNumber:(id)a4 codecID:(int64_t)a5 textPayload:(id)a6 notifyDowngrade:(BOOL)a7 error:(id *)p_isa;
++ (double)estimatedSendTimeForTextPayload:(id)payload;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToOther:(id)other;
+- (CTStewieSatSmsMessageOutgoing)initWithCoder:(id)coder;
+- (CTStewieSatSmsMessageOutgoing)initWithContext:(id)context destinationPhoneNumber:(id)number codecID:(int64_t)d textPayload:(id)payload notifyDowngrade:(BOOL)downgrade error:(id *)p_isa;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CTStewieSatSmsMessageOutgoing
 
-- (CTStewieSatSmsMessageOutgoing)initWithContext:(id)a3 destinationPhoneNumber:(id)a4 codecID:(int64_t)a5 textPayload:(id)a6 notifyDowngrade:(BOOL)a7 error:(id *)p_isa
+- (CTStewieSatSmsMessageOutgoing)initWithContext:(id)context destinationPhoneNumber:(id)number codecID:(int64_t)d textPayload:(id)payload notifyDowngrade:(BOOL)downgrade error:(id *)p_isa
 {
   v45[1] = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v16 = a4;
-  v17 = a6;
-  if (v15)
+  contextCopy = context;
+  numberCopy = number;
+  payloadCopy = payload;
+  if (contextCopy)
   {
-    if (v16 && [(_anonymous_namespace_ *)v16 length])
+    if (numberCopy && [(_anonymous_namespace_ *)numberCopy length])
     {
       {
-        if (a5 < 0x10)
+        if (d < 0x10)
         {
-          if (v17 && [v17 length])
+          if (payloadCopy && [payloadCopy length])
           {
-            if ([v17 length] < 0x8F)
+            if ([payloadCopy length] < 0x8F)
             {
               v33.receiver = self;
               v33.super_class = CTStewieSatSmsMessageOutgoing;
@@ -34,11 +34,11 @@
               p_isa = &v32->super.isa;
               if (v32)
               {
-                objc_storeStrong(&v32->_context, a3);
-                objc_storeStrong(p_isa + 3, a4);
-                p_isa[4] = a5;
-                objc_storeStrong(p_isa + 5, a6);
-                *(p_isa + 8) = a7;
+                objc_storeStrong(&v32->_context, context);
+                objc_storeStrong(p_isa + 3, number);
+                p_isa[4] = d;
+                objc_storeStrong(p_isa + 5, payload);
+                *(p_isa + 8) = downgrade;
                 self = p_isa;
                 p_isa = &self->super.isa;
               }
@@ -125,14 +125,14 @@ LABEL_21:
   return p_isa;
 }
 
-+ (double)estimatedSendTimeForTextPayload:(id)a3
++ (double)estimatedSendTimeForTextPayload:(id)payload
 {
-  v3 = a3;
-  v4 = v3;
+  payloadCopy = payload;
+  v4 = payloadCopy;
   EstimatedSendTimeOverStewieInSeconds = 0.0;
-  if (v3)
+  if (payloadCopy)
   {
-    v6 = [v3 lengthOfBytesUsingEncoding:4];
+    v6 = [payloadCopy lengthOfBytesUsingEncoding:4];
     if (v6)
     {
       EstimatedSendTimeOverStewieInSeconds = getEstimatedSendTimeOverStewieInSeconds(v6 + 22);
@@ -145,19 +145,19 @@ LABEL_21:
 - (NSString)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];
-  v4 = [(CTStewieSatSmsMessageOutgoing *)self context];
-  [v3 appendFormat:@", context=%@", v4];
+  context = [(CTStewieSatSmsMessageOutgoing *)self context];
+  [v3 appendFormat:@", context=%@", context];
 
-  v5 = [(CTStewieSatSmsMessageOutgoing *)self destinationPhoneNumber];
-  [v3 appendFormat:@", destinationPhoneNumber=%@", v5];
+  destinationPhoneNumber = [(CTStewieSatSmsMessageOutgoing *)self destinationPhoneNumber];
+  [v3 appendFormat:@", destinationPhoneNumber=%@", destinationPhoneNumber];
 
   [v3 appendFormat:@", codecID=%ld", -[CTStewieSatSmsMessageOutgoing codecID](self, "codecID")];
-  v6 = [(CTStewieSatSmsMessageOutgoing *)self textPayload];
-  [v3 appendFormat:@", textPayload size=%lu", objc_msgSend(v6, "length")];
+  textPayload = [(CTStewieSatSmsMessageOutgoing *)self textPayload];
+  [v3 appendFormat:@", textPayload size=%lu", objc_msgSend(textPayload, "length")];
 
-  v7 = [(CTStewieSatSmsMessageOutgoing *)self notifyDowngrade];
+  notifyDowngrade = [(CTStewieSatSmsMessageOutgoing *)self notifyDowngrade];
   v8 = "no";
-  if (v7)
+  if (notifyDowngrade)
   {
     v8 = "yes";
   }
@@ -168,16 +168,16 @@ LABEL_21:
   return v3;
 }
 
-- (BOOL)isEqualToOther:(id)a3
+- (BOOL)isEqualToOther:(id)other
 {
-  v6 = a3;
-  v7 = [(CTStewieSatSmsMessageOutgoing *)self context];
-  v8 = [v6 context];
-  if (v7 != v8)
+  otherCopy = other;
+  context = [(CTStewieSatSmsMessageOutgoing *)self context];
+  context2 = [otherCopy context];
+  if (context != context2)
   {
-    v20 = [(CTStewieSatSmsMessageOutgoing *)self context];
-    v18 = [v6 context];
-    if (![v20 isEqual:?])
+    context3 = [(CTStewieSatSmsMessageOutgoing *)self context];
+    context4 = [otherCopy context];
+    if (![context3 isEqual:?])
     {
       LOBYTE(v9) = 0;
 LABEL_18:
@@ -186,29 +186,29 @@ LABEL_18:
     }
   }
 
-  v10 = [(CTStewieSatSmsMessageOutgoing *)self destinationPhoneNumber];
-  v11 = [v6 destinationPhoneNumber];
-  if (v10 == v11 || (-[CTStewieSatSmsMessageOutgoing destinationPhoneNumber](self, "destinationPhoneNumber"), v19 = objc_claimAutoreleasedReturnValue(), [v6 destinationPhoneNumber], v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v19, "isEqual:", v4)))
+  destinationPhoneNumber = [(CTStewieSatSmsMessageOutgoing *)self destinationPhoneNumber];
+  destinationPhoneNumber2 = [otherCopy destinationPhoneNumber];
+  if (destinationPhoneNumber == destinationPhoneNumber2 || (-[CTStewieSatSmsMessageOutgoing destinationPhoneNumber](self, "destinationPhoneNumber"), v19 = objc_claimAutoreleasedReturnValue(), [otherCopy destinationPhoneNumber], v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v19, "isEqual:", v4)))
   {
-    v12 = [(CTStewieSatSmsMessageOutgoing *)self codecID];
-    if (v12 != [v6 codecID])
+    codecID = [(CTStewieSatSmsMessageOutgoing *)self codecID];
+    if (codecID != [otherCopy codecID])
     {
       LOBYTE(v9) = 0;
       goto LABEL_15;
     }
 
-    v13 = [(CTStewieSatSmsMessageOutgoing *)self textPayload];
-    v14 = [v6 textPayload];
-    if (v13 == v14 || (-[CTStewieSatSmsMessageOutgoing textPayload](self, "textPayload"), v17 = objc_claimAutoreleasedReturnValue(), [v6 textPayload], v3 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v17, "isEqual:", v3)))
+    textPayload = [(CTStewieSatSmsMessageOutgoing *)self textPayload];
+    textPayload2 = [otherCopy textPayload];
+    if (textPayload == textPayload2 || (-[CTStewieSatSmsMessageOutgoing textPayload](self, "textPayload"), v17 = objc_claimAutoreleasedReturnValue(), [otherCopy textPayload], v3 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v17, "isEqual:", v3)))
     {
-      v15 = [(CTStewieSatSmsMessageOutgoing *)self notifyDowngrade];
-      v9 = v15 ^ [v6 notifyDowngrade] ^ 1;
-      if (v13 == v14)
+      notifyDowngrade = [(CTStewieSatSmsMessageOutgoing *)self notifyDowngrade];
+      v9 = notifyDowngrade ^ [otherCopy notifyDowngrade] ^ 1;
+      if (textPayload == textPayload2)
       {
 LABEL_14:
 
 LABEL_15:
-        if (v10 == v11)
+        if (destinationPhoneNumber == destinationPhoneNumber2)
         {
           goto LABEL_17;
         }
@@ -229,7 +229,7 @@ LABEL_15:
 LABEL_16:
 
 LABEL_17:
-  if (v7 != v8)
+  if (context != context2)
   {
     goto LABEL_18;
   }
@@ -239,10 +239,10 @@ LABEL_19:
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -250,56 +250,56 @@ LABEL_19:
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CTStewieSatSmsMessageOutgoing *)self isEqualToOther:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CTStewieSatSmsMessageOutgoing *)self isEqualToOther:equalCopy];
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(CTStewieSatSmsMessageOutgoing *)self context];
-  v7 = [v6 copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  context = [(CTStewieSatSmsMessageOutgoing *)self context];
+  v7 = [context copyWithZone:zone];
   [v5 setContext:v7];
 
-  v8 = [(CTStewieSatSmsMessageOutgoing *)self destinationPhoneNumber];
-  v9 = [v8 copyWithZone:a3];
+  destinationPhoneNumber = [(CTStewieSatSmsMessageOutgoing *)self destinationPhoneNumber];
+  v9 = [destinationPhoneNumber copyWithZone:zone];
   [v5 setDestinationPhoneNumber:v9];
 
   [v5 setCodecID:{-[CTStewieSatSmsMessageOutgoing codecID](self, "codecID")}];
-  v10 = [(CTStewieSatSmsMessageOutgoing *)self textPayload];
-  v11 = [v10 copyWithZone:a3];
+  textPayload = [(CTStewieSatSmsMessageOutgoing *)self textPayload];
+  v11 = [textPayload copyWithZone:zone];
   [v5 setTextPayload:v11];
 
   [v5 setNotifyDowngrade:{-[CTStewieSatSmsMessageOutgoing notifyDowngrade](self, "notifyDowngrade")}];
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
-  v4 = [(CTStewieSatSmsMessageOutgoing *)self context];
-  [v7 encodeObject:v4 forKey:@"context"];
+  coderCopy = coder;
+  context = [(CTStewieSatSmsMessageOutgoing *)self context];
+  [coderCopy encodeObject:context forKey:@"context"];
 
-  v5 = [(CTStewieSatSmsMessageOutgoing *)self destinationPhoneNumber];
-  [v7 encodeObject:v5 forKey:@"phoneNumber"];
+  destinationPhoneNumber = [(CTStewieSatSmsMessageOutgoing *)self destinationPhoneNumber];
+  [coderCopy encodeObject:destinationPhoneNumber forKey:@"phoneNumber"];
 
-  [v7 encodeInteger:-[CTStewieSatSmsMessageOutgoing codecID](self forKey:{"codecID"), @"codecID"}];
-  v6 = [(CTStewieSatSmsMessageOutgoing *)self textPayload];
-  [v7 encodeObject:v6 forKey:@"textPayload"];
+  [coderCopy encodeInteger:-[CTStewieSatSmsMessageOutgoing codecID](self forKey:{"codecID"), @"codecID"}];
+  textPayload = [(CTStewieSatSmsMessageOutgoing *)self textPayload];
+  [coderCopy encodeObject:textPayload forKey:@"textPayload"];
 
-  [v7 encodeBool:-[CTStewieSatSmsMessageOutgoing notifyDowngrade](self forKey:{"notifyDowngrade"), @"notifyDowngrade"}];
+  [coderCopy encodeBool:-[CTStewieSatSmsMessageOutgoing notifyDowngrade](self forKey:{"notifyDowngrade"), @"notifyDowngrade"}];
 }
 
-- (CTStewieSatSmsMessageOutgoing)initWithCoder:(id)a3
+- (CTStewieSatSmsMessageOutgoing)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"context"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"phoneNumber"];
-  v7 = [v4 decodeIntegerForKey:@"codecID"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"textPayload"];
-  v9 = -[CTStewieSatSmsMessageOutgoing initWithContext:destinationPhoneNumber:codecID:textPayload:notifyDowngrade:error:](self, "initWithContext:destinationPhoneNumber:codecID:textPayload:notifyDowngrade:error:", v5, v6, v7, v8, [v4 decodeBoolForKey:@"notifyDowngrade"], 0);
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"context"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"phoneNumber"];
+  v7 = [coderCopy decodeIntegerForKey:@"codecID"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"textPayload"];
+  v9 = -[CTStewieSatSmsMessageOutgoing initWithContext:destinationPhoneNumber:codecID:textPayload:notifyDowngrade:error:](self, "initWithContext:destinationPhoneNumber:codecID:textPayload:notifyDowngrade:error:", v5, v6, v7, v8, [coderCopy decodeBoolForKey:@"notifyDowngrade"], 0);
 
   return v9;
 }

@@ -1,10 +1,10 @@
 @interface NATagActivityItemsConfiguration
-- (NATagActivityItemsConfiguration)initWithTag:(id)a3;
+- (NATagActivityItemsConfiguration)initWithTag:(id)tag;
 @end
 
 @implementation NATagActivityItemsConfiguration
 
-- (NATagActivityItemsConfiguration)initWithTag:(id)a3
+- (NATagActivityItemsConfiguration)initWithTag:(id)tag
 {
   swift_getObjectType();
   v4 = swift_unknownObjectRetain();

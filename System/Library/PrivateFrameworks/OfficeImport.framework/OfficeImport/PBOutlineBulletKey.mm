@@ -1,50 +1,50 @@
 @interface PBOutlineBulletKey
-- (BOOL)isEqual:(id)a3;
-- (PBOutlineBulletKey)initWithOutlineBullet:(id)a3;
-- (PBOutlineBulletKey)initWithSlideId:(unsigned int)a3 textType:(int)a4 placeholderIndex:(unsigned int)a5;
+- (BOOL)isEqual:(id)equal;
+- (PBOutlineBulletKey)initWithOutlineBullet:(id)bullet;
+- (PBOutlineBulletKey)initWithSlideId:(unsigned int)id textType:(int)type placeholderIndex:(unsigned int)index;
 @end
 
 @implementation PBOutlineBulletKey
 
-- (PBOutlineBulletKey)initWithOutlineBullet:(id)a3
+- (PBOutlineBulletKey)initWithOutlineBullet:(id)bullet
 {
-  v4 = a3;
-  v5 = [v4 eshObject];
+  bulletCopy = bullet;
+  eshObject = [bulletCopy eshObject];
   {
     self = [(PBOutlineBulletKey *)self initWithSlideId:v6[12] textType:v6[13] placeholderIndex:EshRecord::getInstance(v6)];
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (PBOutlineBulletKey)initWithSlideId:(unsigned int)a3 textType:(int)a4 placeholderIndex:(unsigned int)a5
+- (PBOutlineBulletKey)initWithSlideId:(unsigned int)id textType:(int)type placeholderIndex:(unsigned int)index
 {
   v9.receiver = self;
   v9.super_class = PBOutlineBulletKey;
   result = [(PBOutlineBulletKey *)&v9 init];
   if (result)
   {
-    result->mSlideId = a3;
-    result->mTextType = a4;
-    result->mPlaceholderIndex = a5;
+    result->mSlideId = id;
+    result->mTextType = type;
+    result->mPlaceholderIndex = index;
   }
 
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = self->mSlideId == v5[2] && self->mTextType == v5[3] && self->mPlaceholderIndex == v5[4];
   }
 

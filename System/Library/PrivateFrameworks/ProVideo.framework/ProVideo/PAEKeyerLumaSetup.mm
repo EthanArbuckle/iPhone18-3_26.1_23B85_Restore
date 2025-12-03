@@ -1,44 +1,44 @@
 @interface PAEKeyerLumaSetup
-- (BOOL)isEqualTo:(id)a3;
+- (BOOL)isEqualTo:(id)to;
 - (PAEKeyerLumaSetup)init;
-- (PAEKeyerLumaSetup)initWithCoder:(id)a3;
-- (id)interpolateBetween:(id)a3 withWeight:(float)a4;
+- (PAEKeyerLumaSetup)initWithCoder:(id)coder;
+- (id)interpolateBetween:(id)between withWeight:(float)weight;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)setLumANumber:(id)a3;
-- (void)setLumBNumber:(id)a3;
-- (void)setLumCNumber:(id)a3;
-- (void)setLumDNumber:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setLumANumber:(id)number;
+- (void)setLumBNumber:(id)number;
+- (void)setLumCNumber:(id)number;
+- (void)setLumDNumber:(id)number;
 @end
 
 @implementation PAEKeyerLumaSetup
 
-- (void)setLumANumber:(id)a3
+- (void)setLumANumber:(id)number
 {
-  v5 = a3;
+  numberCopy = number;
 
-  self->_lumA = a3;
+  self->_lumA = number;
 }
 
-- (void)setLumBNumber:(id)a3
+- (void)setLumBNumber:(id)number
 {
-  v5 = a3;
+  numberCopy = number;
 
-  self->_lumB = a3;
+  self->_lumB = number;
 }
 
-- (void)setLumCNumber:(id)a3
+- (void)setLumCNumber:(id)number
 {
-  v5 = a3;
+  numberCopy = number;
 
-  self->_lumC = a3;
+  self->_lumC = number;
 }
 
-- (void)setLumDNumber:(id)a3
+- (void)setLumDNumber:(id)number
 {
-  v5 = a3;
+  numberCopy = number;
 
-  self->_lumD = a3;
+  self->_lumD = number;
 }
 
 - (PAEKeyerLumaSetup)init
@@ -65,17 +65,17 @@
   return v2;
 }
 
-- (PAEKeyerLumaSetup)initWithCoder:(id)a3
+- (PAEKeyerLumaSetup)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = PAEKeyerLumaSetup;
   v4 = [(PAEKeyerLumaSetup *)&v6 init];
   if (v4)
   {
-    -[PAEKeyerLumaSetup setLumANumber:](v4, "setLumANumber:", [a3 decodeObjectOfClass:objc_opt_class() forKey:@"LumA"]);
-    -[PAEKeyerLumaSetup setLumBNumber:](v4, "setLumBNumber:", [a3 decodeObjectOfClass:objc_opt_class() forKey:@"LumB"]);
-    -[PAEKeyerLumaSetup setLumCNumber:](v4, "setLumCNumber:", [a3 decodeObjectOfClass:objc_opt_class() forKey:@"LumC"]);
-    -[PAEKeyerLumaSetup setLumDNumber:](v4, "setLumDNumber:", [a3 decodeObjectOfClass:objc_opt_class() forKey:@"LumD"]);
+    -[PAEKeyerLumaSetup setLumANumber:](v4, "setLumANumber:", [coder decodeObjectOfClass:objc_opt_class() forKey:@"LumA"]);
+    -[PAEKeyerLumaSetup setLumBNumber:](v4, "setLumBNumber:", [coder decodeObjectOfClass:objc_opt_class() forKey:@"LumB"]);
+    -[PAEKeyerLumaSetup setLumCNumber:](v4, "setLumCNumber:", [coder decodeObjectOfClass:objc_opt_class() forKey:@"LumC"]);
+    -[PAEKeyerLumaSetup setLumDNumber:](v4, "setLumDNumber:", [coder decodeObjectOfClass:objc_opt_class() forKey:@"LumD"]);
   }
 
   return v4;
@@ -88,17 +88,17 @@
   [(PAEKeyerLumaSetup *)&v3 dealloc];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeObject:self->_lumA forKey:@"LumA"];
-  [a3 encodeObject:self->_lumB forKey:@"LumB"];
-  [a3 encodeObject:self->_lumC forKey:@"LumC"];
+  [coder encodeObject:self->_lumA forKey:@"LumA"];
+  [coder encodeObject:self->_lumB forKey:@"LumB"];
+  [coder encodeObject:self->_lumC forKey:@"LumC"];
   lumD = self->_lumD;
 
-  [a3 encodeObject:lumD forKey:@"LumD"];
+  [coder encodeObject:lumD forKey:@"LumD"];
 }
 
-- (id)interpolateBetween:(id)a3 withWeight:(float)a4
+- (id)interpolateBetween:(id)between withWeight:(float)weight
 {
   v7 = objc_alloc_init(PAEKeyerLumaSetup);
   [(PAEKeyerLumaSetup *)self lumA];
@@ -109,46 +109,46 @@
   v27 = v12;
   [(PAEKeyerLumaSetup *)self lumD];
   v28 = v13;
-  [a3 lumA];
+  [between lumA];
   v15 = v14;
-  [a3 lumB];
+  [between lumB];
   v17 = v16;
-  [a3 lumC];
+  [between lumC];
   v19 = v18;
-  [a3 lumD];
+  [between lumD];
   v21 = v20;
-  *&v22 = ((1.0 - a4) * v9) + (v15 * a4);
+  *&v22 = ((1.0 - weight) * v9) + (v15 * weight);
   [(PAEKeyerLumaSetup *)v7 setLumA:v22];
-  *&v23 = ((1.0 - a4) * v11) + (v17 * a4);
+  *&v23 = ((1.0 - weight) * v11) + (v17 * weight);
   [(PAEKeyerLumaSetup *)v7 setLumB:v23];
-  *&v24 = ((1.0 - a4) * v27) + (v19 * a4);
+  *&v24 = ((1.0 - weight) * v27) + (v19 * weight);
   [(PAEKeyerLumaSetup *)v7 setLumC:v24];
-  *&v25 = ((1.0 - a4) * v28) + (v21 * a4);
+  *&v25 = ((1.0 - weight) * v28) + (v21 * weight);
   [(PAEKeyerLumaSetup *)v7 setLumD:v25];
   return v7;
 }
 
-- (BOOL)isEqualTo:(id)a3
+- (BOOL)isEqualTo:(id)to
 {
   [(PAEKeyerLumaSetup *)self lumA];
   v6 = v5;
-  [a3 lumA];
+  [to lumA];
   result = 0;
   if (v6 == v7)
   {
     [(PAEKeyerLumaSetup *)self lumB];
     v9 = v8;
-    [a3 lumB];
+    [to lumB];
     if (v9 == v10)
     {
       [(PAEKeyerLumaSetup *)self lumC];
       v12 = v11;
-      [a3 lumC];
+      [to lumC];
       if (v12 == v13)
       {
         [(PAEKeyerLumaSetup *)self lumD];
         v15 = v14;
-        [a3 lumD];
+        [to lumD];
         if (v15 == v16)
         {
           return 1;

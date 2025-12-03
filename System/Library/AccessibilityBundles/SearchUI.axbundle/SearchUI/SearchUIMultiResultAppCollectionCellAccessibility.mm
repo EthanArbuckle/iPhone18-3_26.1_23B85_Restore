@@ -1,24 +1,24 @@
 @interface SearchUIMultiResultAppCollectionCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (CGRect)accessibilityFrame;
 - (id)accessibilityLabel;
 @end
 
 @implementation SearchUIMultiResultAppCollectionCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SearchUIHomeScreenAppIconView"];
-  [v3 validateClass:@"SearchUIMultiResultAppCollectionCell" hasInstanceMethod:@"appIconView" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SearchUIHomeScreenAppIconView"];
+  [validationsCopy validateClass:@"SearchUIMultiResultAppCollectionCell" hasInstanceMethod:@"appIconView" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
 {
   v2 = [(SearchUIMultiResultAppCollectionCellAccessibility *)self safeValueForKey:@"appIconView"];
-  v3 = [v2 accessibilityLabel];
+  accessibilityLabel = [v2 accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (CGRect)accessibilityFrame

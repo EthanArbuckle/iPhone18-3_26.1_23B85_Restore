@@ -1,39 +1,39 @@
 @interface CRCameraReaderAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_accessibilityCameraView;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)loadView;
-- (void)sendDidFindTarget:(id)a3 frameTime:(id *)a4;
-- (void)sendDidRecognizeNewObjects:(id)a3;
+- (void)sendDidFindTarget:(id)target frameTime:(id *)time;
+- (void)sendDidRecognizeNewObjects:(id)objects;
 - (void)startSession;
 @end
 
 @implementation CRCameraReaderAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CALayer" hasInstanceMethod:@"superlayer" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CRCameraReader" hasInstanceMethod:@"sessionManager" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CRDefaultCaptureSessionManager" hasInstanceMethod:@"previewLayer" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CRCameraReader" hasInstanceMethod:@"alignmentLayer" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CRAlignmentLayer" hasInstanceMethod:@"outlineLayer" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CRCameraReader" hasInstanceMethod:@"sendDidFindTarget:frameTime:" withFullSignature:{"v", "@", "{?=qiIq}", 0}];
-  [v3 validateClass:@"CRCameraReader" hasInstanceMethod:@"sendDidRecognizeNewObjects:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"CRCameraReader" hasInstanceMethod:@"startSession" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CALayer" hasInstanceMethod:@"superlayer" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CRCameraReader" hasInstanceMethod:@"sessionManager" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CRDefaultCaptureSessionManager" hasInstanceMethod:@"previewLayer" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CRCameraReader" hasInstanceMethod:@"alignmentLayer" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CRAlignmentLayer" hasInstanceMethod:@"outlineLayer" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CRCameraReader" hasInstanceMethod:@"sendDidFindTarget:frameTime:" withFullSignature:{"v", "@", "{?=qiIq}", 0}];
+  [validationsCopy validateClass:@"CRCameraReader" hasInstanceMethod:@"sendDidRecognizeNewObjects:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"CRCameraReader" hasInstanceMethod:@"startSession" withFullSignature:{"v", 0}];
 }
 
-- (void)sendDidFindTarget:(id)a3 frameTime:(id *)a4
+- (void)sendDidFindTarget:(id)target frameTime:(id *)time
 {
   v54 = *MEMORY[0x29EDCA608];
-  v6 = a3;
+  targetCopy = target;
   v52.receiver = self;
   v52.super_class = CRCameraReaderAccessibility;
-  v44 = *a4;
-  [(CRCameraReaderAccessibility *)&v52 sendDidFindTarget:v6 frameTime:&v44];
+  v44 = *time;
+  [(CRCameraReaderAccessibility *)&v52 sendDidFindTarget:targetCopy frameTime:&v44];
   v7 = [(CRCameraReaderAccessibility *)self safeValueForKey:@"sessionManager"];
   v8 = [v7 safeValueForKey:@"previewLayer"];
-  v9 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   v10 = [v8 safeValueForKey:@"bounds"];
   [v10 CGRectValue];
   v42 = v12;
@@ -45,7 +45,7 @@
   v51 = 0u;
   v48 = 0u;
   v49 = 0u;
-  obj = v6;
+  obj = targetCopy;
   v17 = [obj countByEnumeratingWithState:&v48 objects:v53 count:16];
   if (v17)
   {
@@ -93,7 +93,7 @@
         v29 = v32;
 LABEL_11:
         v33 = [MEMORY[0x29EDBA168] valueWithCGPoint:{v30, v29}];
-        [v9 addObject:v33];
+        [array addObject:v33];
 
         v56.origin.y = v42;
         v56.origin.x = v43;
@@ -189,8 +189,8 @@ void __59__CRCameraReaderAccessibility_sendDidFindTarget_frameTime___block_invok
   v4.receiver = self;
   v4.super_class = CRCameraReaderAccessibility;
   [(CRCameraReaderAccessibility *)&v4 startSession];
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
-  [(CRCameraReaderAccessibility *)self _accessibilitySetRetainedValue:v3 forKey:@"AnnouncedStatusActions"];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
+  [(CRCameraReaderAccessibility *)self _accessibilitySetRetainedValue:dictionary forKey:@"AnnouncedStatusActions"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -198,20 +198,20 @@ void __59__CRCameraReaderAccessibility_sendDidFindTarget_frameTime___block_invok
   v6.receiver = self;
   v6.super_class = CRCameraReaderAccessibility;
   [(CRCameraReaderAccessibility *)&v6 _accessibilityLoadAccessibilityInformation];
-  v3 = [(CRCameraReaderAccessibility *)self _accessibilityCameraView];
-  [v3 setIsAccessibilityElement:1];
-  [v3 setAccessibilityIdentifier:@"CardCaptureViewFinder"];
+  _accessibilityCameraView = [(CRCameraReaderAccessibility *)self _accessibilityCameraView];
+  [_accessibilityCameraView setIsAccessibilityElement:1];
+  [_accessibilityCameraView setAccessibilityIdentifier:@"CardCaptureViewFinder"];
   v4 = accessibilityLocalizedString(@"camera.viewfinder");
-  [v3 setAccessibilityLabel:v4];
+  [_accessibilityCameraView setAccessibilityLabel:v4];
 
-  v5 = [(CRCameraReaderAccessibility *)self accessibilityHint];
-  if (!v5)
+  accessibilityHint = [(CRCameraReaderAccessibility *)self accessibilityHint];
+  if (!accessibilityHint)
   {
-    v5 = accessibilityLocalizedString(@"camera.scan.card.hint");
+    accessibilityHint = accessibilityLocalizedString(@"camera.scan.card.hint");
   }
 
-  [v3 setAccessibilityHint:v5];
-  [v3 _setAccessibilityServesAsFirstElement:1];
+  [_accessibilityCameraView setAccessibilityHint:accessibilityHint];
+  [_accessibilityCameraView _setAccessibilityServesAsFirstElement:1];
 }
 
 - (id)_accessibilityCameraView
@@ -240,16 +240,16 @@ BOOL __55__CRCameraReaderAccessibility__accessibilityCameraView__block_invoke(ui
   return v4;
 }
 
-- (void)sendDidRecognizeNewObjects:(id)a3
+- (void)sendDidRecognizeNewObjects:(id)objects
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:@"code"];
-  v6 = [v4 objectForKey:@"cardholderName"];
-  v7 = [v4 objectForKey:@"expirationDate"];
+  objectsCopy = objects;
+  v5 = [objectsCopy objectForKey:@"code"];
+  v6 = [objectsCopy objectForKey:@"cardholderName"];
+  v7 = [objectsCopy objectForKey:@"expirationDate"];
   v8 = [(CRCameraReaderAccessibility *)self _accessibilityValueForKey:@"AnnouncedStatusActions"];
   v24.receiver = self;
   v24.super_class = CRCameraReaderAccessibility;
-  [(CRCameraReaderAccessibility *)&v24 sendDidRecognizeNewObjects:v4];
+  [(CRCameraReaderAccessibility *)&v24 sendDidRecognizeNewObjects:objectsCopy];
 
   if (v5 && v6 && v7)
   {

@@ -1,14 +1,14 @@
 @interface EKDefaultSerializerFactory
-+ (id)createSerializerWithEventStore:(id)a3 withVersion:(id)a4;
++ (id)createSerializerWithEventStore:(id)store withVersion:(id)version;
 @end
 
 @implementation EKDefaultSerializerFactory
 
-+ (id)createSerializerWithEventStore:(id)a3 withVersion:(id)a4
++ (id)createSerializerWithEventStore:(id)store withVersion:(id)version
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[EKSecureKeyedArchiverSerializer alloc] initWithEventStore:v6 withVersion:v5];
+  versionCopy = version;
+  storeCopy = store;
+  v7 = [[EKSecureKeyedArchiverSerializer alloc] initWithEventStore:storeCopy withVersion:versionCopy];
 
   return v7;
 }

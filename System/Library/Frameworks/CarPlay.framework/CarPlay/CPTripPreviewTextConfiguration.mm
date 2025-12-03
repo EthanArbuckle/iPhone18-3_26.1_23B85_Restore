@@ -1,7 +1,7 @@
 @interface CPTripPreviewTextConfiguration
-- (CPTripPreviewTextConfiguration)initWithCoder:(id)a3;
+- (CPTripPreviewTextConfiguration)initWithCoder:(id)coder;
 - (CPTripPreviewTextConfiguration)initWithStartButtonTitle:(NSString *)startButtonTitle additionalRoutesButtonTitle:(NSString *)additionalRoutesButtonTitle overviewButtonTitle:(NSString *)overviewButtonTitle;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CPTripPreviewTextConfiguration
@@ -25,23 +25,23 @@
   return v13;
 }
 
-- (CPTripPreviewTextConfiguration)initWithCoder:(id)a3
+- (CPTripPreviewTextConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = CPTripPreviewTextConfiguration;
   v5 = [(CPTripPreviewTextConfiguration *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CPTripPreviewTextConfigurationStartButtonTitle"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CPTripPreviewTextConfigurationStartButtonTitle"];
     startButtonTitle = v5->_startButtonTitle;
     v5->_startButtonTitle = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CPTripPreviewTextConfigurationAdditionalRoutesButtonTitle"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CPTripPreviewTextConfigurationAdditionalRoutesButtonTitle"];
     additionalRoutesButtonTitle = v5->_additionalRoutesButtonTitle;
     v5->_additionalRoutesButtonTitle = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CPTripPreviewTextConfigurationOverviewButtonTitle"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CPTripPreviewTextConfigurationOverviewButtonTitle"];
     overviewButtonTitle = v5->_overviewButtonTitle;
     v5->_overviewButtonTitle = v10;
   }
@@ -49,17 +49,17 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(CPTripPreviewTextConfiguration *)self startButtonTitle];
-  [v4 encodeObject:v5 forKey:@"CPTripPreviewTextConfigurationStartButtonTitle"];
+  coderCopy = coder;
+  startButtonTitle = [(CPTripPreviewTextConfiguration *)self startButtonTitle];
+  [coderCopy encodeObject:startButtonTitle forKey:@"CPTripPreviewTextConfigurationStartButtonTitle"];
 
-  v6 = [(CPTripPreviewTextConfiguration *)self additionalRoutesButtonTitle];
-  [v4 encodeObject:v6 forKey:@"CPTripPreviewTextConfigurationAdditionalRoutesButtonTitle"];
+  additionalRoutesButtonTitle = [(CPTripPreviewTextConfiguration *)self additionalRoutesButtonTitle];
+  [coderCopy encodeObject:additionalRoutesButtonTitle forKey:@"CPTripPreviewTextConfigurationAdditionalRoutesButtonTitle"];
 
-  v7 = [(CPTripPreviewTextConfiguration *)self overviewButtonTitle];
-  [v4 encodeObject:v7 forKey:@"CPTripPreviewTextConfigurationOverviewButtonTitle"];
+  overviewButtonTitle = [(CPTripPreviewTextConfiguration *)self overviewButtonTitle];
+  [coderCopy encodeObject:overviewButtonTitle forKey:@"CPTripPreviewTextConfigurationOverviewButtonTitle"];
 }
 
 @end

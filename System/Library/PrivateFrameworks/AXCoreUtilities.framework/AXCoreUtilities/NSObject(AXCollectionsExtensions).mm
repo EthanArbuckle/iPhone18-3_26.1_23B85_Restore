@@ -11,7 +11,7 @@
   v8 = a3;
   v9 = a4;
   v10 = a5;
-  v11 = [a1 conformsToProtocol:&unk_1F058D500];
+  v11 = [self conformsToProtocol:&unk_1F058D500];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -38,12 +38,12 @@
       _AXAssert(0, "/Library/Caches/com.apple.xbs/Sources/AccessibilityLibraries/Source/AXCoreUtilities/source/DataStructures/NSObject+AXCollectionsExtensions.m", 0x1D, "[NSObject(AXCollectionsExtensions) _ax_appendPrettyDescriptionToString:indentationString:visitedCollections:]", @"visitedCollections <%@: %p> was supposed to be a mutable set", v24, v25, v26, v23);
     }
 
-    v27 = [MEMORY[0x1E696B098] valueWithNonretainedObject:a1];
+    v27 = [MEMORY[0x1E696B098] valueWithNonretainedObject:self];
     if ([v10 containsObject:v27])
     {
       v28 = objc_opt_class();
       v29 = NSStringFromClass(v28);
-      [v8 appendFormat:@"<%@: %p>", v29, a1];
+      [v8 appendFormat:@"<%@: %p>", v29, self];
     }
 
     else
@@ -66,10 +66,10 @@
         v46 = v8;
         v47 = v9;
         v48 = v10;
-        [a1 enumerateKeysAndObjectsUsingBlock:v45];
+        [self enumerateKeysAndObjectsUsingBlock:v45];
 
         v31 = @"}";
-        v32 = v46;
+        selfCopy = v46;
       }
 
       else
@@ -80,8 +80,8 @@
         v42 = 0u;
         v43 = 0u;
         v44 = 0u;
-        v32 = a1;
-        v33 = [v32 countByEnumeratingWithState:&v41 objects:v54 count:16];
+        selfCopy = self;
+        v33 = [selfCopy countByEnumeratingWithState:&v41 objects:v54 count:16];
         if (v33)
         {
           v34 = *v42;
@@ -91,7 +91,7 @@
             {
               if (*v42 != v34)
               {
-                objc_enumerationMutation(v32);
+                objc_enumerationMutation(selfCopy);
               }
 
               v36 = *(*(&v41 + 1) + 8 * i);
@@ -106,7 +106,7 @@
               [v8 appendString:{@", \n"}];
             }
 
-            v33 = [v32 countByEnumeratingWithState:&v41 objects:v54 count:16];
+            v33 = [selfCopy countByEnumeratingWithState:&v41 objects:v54 count:16];
           }
 
           while (v33);
@@ -137,10 +137,10 @@
 
   else
   {
-    v30 = [a1 ax_prettyDescription];
-    if (v30)
+    ax_prettyDescription = [self ax_prettyDescription];
+    if (ax_prettyDescription)
     {
-      [v8 appendString:v30];
+      [v8 appendString:ax_prettyDescription];
     }
 
     else
@@ -154,17 +154,17 @@
 
 - (id)ax_prettyDescription
 {
-  if ([a1 conformsToProtocol:&unk_1F058D500])
+  if ([self conformsToProtocol:&unk_1F058D500])
   {
     v2 = [objc_alloc(MEMORY[0x1E696AD60]) initWithString:&stru_1F0579798];
     v3 = [objc_alloc(MEMORY[0x1E696AD60]) initWithString:&stru_1F0579798];
     v4 = objc_opt_new();
-    [a1 _ax_appendPrettyDescriptionToString:v2 indentationString:v3 visitedCollections:v4];
+    [self _ax_appendPrettyDescriptionToString:v2 indentationString:v3 visitedCollections:v4];
   }
 
   else
   {
-    v2 = [a1 description];
+    v2 = [self description];
   }
 
   return v2;

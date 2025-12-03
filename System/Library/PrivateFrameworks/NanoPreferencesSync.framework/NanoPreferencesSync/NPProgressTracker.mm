@@ -1,15 +1,15 @@
 @interface NPProgressTracker
 + (NPProgressTracker)sharedInstance;
-- (BOOL)canStartOperation:(id)a3;
-- (id)_getOperationDictionary:(id)a3;
+- (BOOL)canStartOperation:(id)operation;
+- (id)_getOperationDictionary:(id)dictionary;
 - (id)_init;
-- (id)_valueForKey:(id)a3;
+- (id)_valueForKey:(id)key;
 - (id)dump;
 - (void)_clearState;
 - (void)_processStateClearIfNeeded;
-- (void)_save:(id)a3 forOperation:(id)a4;
-- (void)_setValue:(id)a3 forKey:(id)a4;
-- (void)addToProblematicOperationSet:(id)a3;
+- (void)_save:(id)_save forOperation:(id)operation;
+- (void)_setValue:(id)value forKey:(id)key;
+- (void)addToProblematicOperationSet:(id)set;
 - (void)clearState;
 - (void)completedOperations;
 - (void)startedOperations;
@@ -37,7 +37,7 @@
   block[1] = 3221225472;
   block[2] = sub_100020458;
   block[3] = &unk_10003D1C0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100045710 != -1)
   {
     dispatch_once(&qword_100045710, block);
@@ -72,12 +72,12 @@
   [(NPProgressTracker *)self _setValue:@"kNPProgressTrackerStateStarted" forKey:@"kNPProgressTrackerStateKey"];
 }
 
-- (BOOL)canStartOperation:(id)a3
+- (BOOL)canStartOperation:(id)operation
 {
-  v4 = a3;
+  operationCopy = operation;
   if (self->_crashedDuringLastRun)
   {
-    v5 = [(NSMutableSet *)self->_problematicOperationSet containsObject:v4]^ 1;
+    v5 = [(NSMutableSet *)self->_problematicOperationSet containsObject:operationCopy]^ 1;
   }
 
   else
@@ -95,7 +95,7 @@
     }
 
     v9 = 138543618;
-    v10 = v4;
+    v10 = operationCopy;
     v11 = 2112;
     v12 = v7;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "[Progress Tracker] Can start syncing (%{public}@)? %@", &v9, 0x16u);
@@ -147,14 +147,14 @@
   return v4;
 }
 
-- (void)addToProblematicOperationSet:(id)a3
+- (void)addToProblematicOperationSet:(id)set
 {
-  v4 = a3;
+  setCopy = set;
   v5 = nps_daemon_log;
   if (os_log_type_enabled(nps_daemon_log, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138543362;
-    v12 = v4;
+    v12 = setCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[Progress Tracker] Adding %{public}@ to known problematic operation set.", &v11, 0xCu);
   }
 
@@ -171,21 +171,21 @@
   }
 
   v9 = v8;
-  if (([(NSMutableSet *)v8 containsObject:v4]& 1) == 0)
+  if (([(NSMutableSet *)v8 containsObject:setCopy]& 1) == 0)
   {
-    [(NSMutableSet *)v9 addObject:v4];
+    [(NSMutableSet *)v9 addObject:setCopy];
     objc_storeStrong(&self->_problematicOperationSet, v9);
     if (*p_problematicOperationSet)
     {
-      v10 = [(NSMutableSet *)*p_problematicOperationSet allObjects];
+      allObjects = [(NSMutableSet *)*p_problematicOperationSet allObjects];
     }
 
     else
     {
-      v10 = 0;
+      allObjects = 0;
     }
 
-    [(NPProgressTracker *)self _setValue:v10 forKey:@"kNPProgressTrackerOversizedDomainsKey"];
+    [(NPProgressTracker *)self _setValue:allObjects forKey:@"kNPProgressTrackerOversizedDomainsKey"];
   }
 }
 
@@ -200,7 +200,7 @@
 
 - (void)_processStateClearIfNeeded
 {
-  v3 = [(NPProgressTracker *)self _lastBootedTimeFromPref];
+  _lastBootedTimeFromPref = [(NPProgressTracker *)self _lastBootedTimeFromPref];
   *v18 = 0x1500000001;
   *buf = 0;
   *&buf[8] = 0;
@@ -217,13 +217,13 @@
   if (os_log_type_enabled(nps_daemon_log, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    *&buf[4] = v3;
+    *&buf[4] = _lastBootedTimeFromPref;
     *&buf[12] = 2112;
     *&buf[14] = v6;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "storedBootTime: %@ freshBootTime: %@", buf, 0x16u);
   }
 
-  if (v3 && ([v3 isEqual:v6] & 1) != 0)
+  if (_lastBootedTimeFromPref && ([_lastBootedTimeFromPref isEqual:v6] & 1) != 0)
   {
     v8 = [(NPProgressTracker *)self _valueForKey:@"kNPProgressTrackerStateKey"];
     v9 = [(NPProgressTracker *)self _valueForKey:@"kNPProgressTrackerLastProcessingDomainKey"];
@@ -259,31 +259,31 @@
   }
 }
 
-- (void)_setValue:(id)a3 forKey:(id)a4
+- (void)_setValue:(id)value forKey:(id)key
 {
-  value = a3;
-  v6 = a4;
-  v7 = self;
-  objc_sync_enter(v7);
-  CFPreferencesSetAppValue(v6, value, @"kNPProgressTrackerDomain");
+  value = value;
+  keyCopy = key;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  CFPreferencesSetAppValue(keyCopy, value, @"kNPProgressTrackerDomain");
   CFPreferencesAppSynchronize(@"kNPProgressTrackerDomain");
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 }
 
-- (id)_valueForKey:(id)a3
+- (id)_valueForKey:(id)key
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = CFPreferencesCopyAppValue(v4, @"kNPProgressTrackerDomain");
-  objc_sync_exit(v5);
+  keyCopy = key;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = CFPreferencesCopyAppValue(keyCopy, @"kNPProgressTrackerDomain");
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
-- (id)_getOperationDictionary:(id)a3
+- (id)_getOperationDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = [(NPProgressTracker *)self _valueForKey:@"kNPProgressTrackerDomainsKey"];
   v6 = [v5 mutableCopy];
 
@@ -292,7 +292,7 @@
     v6 = objc_opt_new();
   }
 
-  v7 = [v6 objectForKeyedSubscript:v4];
+  v7 = [v6 objectForKeyedSubscript:dictionaryCopy];
 
   v8 = [v7 mutableCopy];
   v9 = v8;
@@ -311,10 +311,10 @@
   return v11;
 }
 
-- (void)_save:(id)a3 forOperation:(id)a4
+- (void)_save:(id)_save forOperation:(id)operation
 {
-  v6 = a4;
-  v7 = a3;
+  operationCopy = operation;
+  _saveCopy = _save;
   v8 = [(NPProgressTracker *)self _valueForKey:@"kNPProgressTrackerDomainsKey"];
   v10 = [v8 mutableCopy];
 
@@ -325,7 +325,7 @@
   }
 
   v11 = v9;
-  [v9 setObject:v7 forKeyedSubscript:v6];
+  [v9 setObject:_saveCopy forKeyedSubscript:operationCopy];
 
   [(NPProgressTracker *)self _setValue:v11 forKey:@"kNPProgressTrackerDomainsKey"];
 }

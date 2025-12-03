@@ -1,8 +1,8 @@
 @interface ATClientController
-+ (id)controllerForDataclasses:(id)a3;
++ (id)controllerForDataclasses:(id)dataclasses;
 + (id)sharedInstance;
-- (BOOL)_loadClientsForDataclasses:(id)a3;
-- (id)queueForClient:(id)a3;
+- (BOOL)_loadClientsForDataclasses:(id)dataclasses;
+- (id)queueForClient:(id)client;
 - (void)dealloc;
 - (void)resetQueues;
 - (void)waitToDrain;
@@ -10,10 +10,10 @@
 
 @implementation ATClientController
 
-- (BOOL)_loadClientsForDataclasses:(id)a3
+- (BOOL)_loadClientsForDataclasses:(id)dataclasses
 {
   v102 = *MEMORY[0x277D85DE8];
-  v53 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   v4 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v76 = 0u;
   v77 = 0u;
@@ -24,7 +24,7 @@
   if (v56)
   {
     v55 = *v77;
-    v59 = self;
+    selfCopy = self;
     do
     {
       v5 = 0;
@@ -40,15 +40,15 @@
         v7 = MSVSystemRootDirectory();
         v8 = [v7 stringByAppendingPathComponent:v6];
         v9 = [v8 stringByAppendingPathComponent:@"SyncBundles"];
-        v10 = [v9 stringByResolvingSymlinksInPath];
+        stringByResolvingSymlinksInPath = [v9 stringByResolvingSymlinksInPath];
 
         v74 = 0u;
         v75 = 0u;
         v72 = 0u;
         v73 = 0u;
-        v11 = [MEMORY[0x277CCAA00] defaultManager];
+        defaultManager = [MEMORY[0x277CCAA00] defaultManager];
         v71 = 0;
-        v12 = [v11 contentsOfDirectoryAtPath:v10 error:&v71];
+        v12 = [defaultManager contentsOfDirectoryAtPath:stringByResolvingSymlinksInPath error:&v71];
         v57 = v71;
 
         v62 = v12;
@@ -56,7 +56,7 @@
         if (v64)
         {
           v63 = *v73;
-          v61 = v10;
+          v61 = stringByResolvingSymlinksInPath;
           do
           {
             for (i = 0; i != v64; ++i)
@@ -67,10 +67,10 @@
               }
 
               v14 = *(*(&v72 + 1) + 8 * i);
-              v65 = [MEMORY[0x277CBEAA8] date];
-              v15 = [v10 stringByAppendingPathComponent:v14];
-              v16 = [v15 pathExtension];
-              v17 = [v16 isEqualToString:@"syncBundle"];
+              date2 = [MEMORY[0x277CBEAA8] date];
+              v15 = [stringByResolvingSymlinksInPath stringByAppendingPathComponent:v14];
+              pathExtension = [v15 pathExtension];
+              v17 = [pathExtension isEqualToString:@"syncBundle"];
 
               if (v17)
               {
@@ -109,20 +109,20 @@
                 v22 = v70;
                 if (v21)
                 {
-                  v23 = [v20 principalClass];
-                  if (v23)
+                  principalClass = [v20 principalClass];
+                  if (principalClass)
                   {
-                    v24 = v23;
+                    v24 = principalClass;
                     v60 = v22;
-                    if ([(objc_class *)v23 conformsToProtocol:&unk_283709248])
+                    if ([(objc_class *)principalClass conformsToProtocol:&unk_283709248])
                     {
                       v25 = objc_alloc_init(v24);
                       v66 = 0u;
                       v67 = 0u;
                       v68 = 0u;
                       v69 = 0u;
-                      v26 = [v25 supportedDataclasses];
-                      v27 = [v26 countByEnumeratingWithState:&v66 objects:v99 count:16];
+                      supportedDataclasses = [v25 supportedDataclasses];
+                      v27 = [supportedDataclasses countByEnumeratingWithState:&v66 objects:v99 count:16];
                       if (v27)
                       {
                         v28 = v27;
@@ -133,13 +133,13 @@
                           {
                             if (*v67 != v29)
                             {
-                              objc_enumerationMutation(v26);
+                              objc_enumerationMutation(supportedDataclasses);
                             }
 
                             [v4 setObject:v25 forKey:*(*(&v66 + 1) + 8 * j)];
                           }
 
-                          v28 = [v26 countByEnumeratingWithState:&v66 objects:v99 count:16];
+                          v28 = [supportedDataclasses countByEnumeratingWithState:&v66 objects:v99 count:16];
                         }
 
                         while (v28);
@@ -148,8 +148,8 @@
                       v31 = _ATLogCategoryFramework();
                       if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
                       {
-                        v32 = [MEMORY[0x277CBEAA8] date];
-                        [v32 timeIntervalSinceDate:v65];
+                        date3 = [MEMORY[0x277CBEAA8] date];
+                        [date3 timeIntervalSinceDate:date2];
                         *buf = 138543618;
                         v96 = v24;
                         v97 = 2048;
@@ -157,7 +157,7 @@
                         _os_log_impl(&dword_223819000, v31, OS_LOG_TYPE_DEFAULT, "Loaded bundle %{public}@ in %.2fs", buf, 0x16u);
                       }
 
-                      self = v59;
+                      self = selfCopy;
                     }
 
                     else
@@ -179,8 +179,8 @@
                       v39 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v93 forKeys:&v92 count:1];
                       v94 = v39;
                       v40 = [MEMORY[0x277CBEA60] arrayWithObjects:&v94 count:1];
-                      self = v59;
-                      [(ATClientController *)v59 _snapShotWithContext:v31 events:v40];
+                      self = selfCopy;
+                      [(ATClientController *)selfCopy _snapShotWithContext:v31 events:v40];
                     }
 
                     v22 = v60;
@@ -201,7 +201,7 @@
                   v31 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v90 forKeys:&v89 count:1];
                   v91 = v31;
                   v36 = [MEMORY[0x277CBEA60] arrayWithObjects:&v91 count:1];
-                  self = v59;
+                  self = selfCopy;
                 }
 
                 else
@@ -229,7 +229,7 @@
                 [(ATClientController *)self _snapShotWithContext:v25 events:v36];
 
 LABEL_42:
-                v10 = v61;
+                stringByResolvingSymlinksInPath = v61;
               }
             }
 
@@ -241,10 +241,10 @@ LABEL_42:
 
         if (v57)
         {
-          v41 = [v57 code];
+          code = [v57 code];
           v42 = _ATLogCategoryFramework();
           v43 = v42;
-          if (v41 == 260)
+          if (code == 260)
           {
             if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
             {
@@ -292,8 +292,8 @@ LABEL_42:
       _os_log_impl(&dword_223819000, v46, OS_LOG_TYPE_ERROR, "found 0 sync bundle clients.", buf, 2u);
     }
 
-    v47 = [MEMORY[0x277CCA890] currentHandler];
-    [v47 handleFailureInMethod:a2 object:self file:@"ATClientController.m" lineNumber:193 description:@"Failed to load sync bundles"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ATClientController.m" lineNumber:193 description:@"Failed to load sync bundles"];
   }
 
   objc_storeStrong(&self->_clientMap, v4);
@@ -301,8 +301,8 @@ LABEL_42:
   v48 = _ATLogCategoryFramework();
   if (os_log_type_enabled(v48, OS_LOG_TYPE_DEFAULT))
   {
-    v49 = [MEMORY[0x277CBEAA8] date];
-    [v49 timeIntervalSinceDate:v53];
+    date4 = [MEMORY[0x277CBEAA8] date];
+    [date4 timeIntervalSinceDate:date];
     *buf = 134217984;
     v96 = v50;
     _os_log_impl(&dword_223819000, v48, OS_LOG_TYPE_DEFAULT, "Loaded all clients in %.2fs", buf, 0xCu);
@@ -311,19 +311,19 @@ LABEL_42:
   return 1;
 }
 
-- (id)queueForClient:(id)a3
+- (id)queueForClient:(id)client
 {
-  v5 = a3;
+  clientCopy = client;
   queueMap = self->_queueMap;
   if (!queueMap)
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"ATClientController.m" lineNumber:110 description:@"We have no queues!"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ATClientController.m" lineNumber:110 description:@"We have no queues!"];
 
     queueMap = self->_queueMap;
   }
 
-  v7 = CFDictionaryGetValue(queueMap, v5);
+  v7 = CFDictionaryGetValue(queueMap, clientCopy);
 
   return v7;
 }
@@ -374,8 +374,8 @@ LABEL_42:
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v3 = [(NSDictionary *)self->_clientMap allValues];
-    v4 = [v3 countByEnumeratingWithState:&v21 objects:v26 count:16];
+    allValues = [(NSDictionary *)self->_clientMap allValues];
+    v4 = [allValues countByEnumeratingWithState:&v21 objects:v26 count:16];
     if (v4)
     {
       v5 = v4;
@@ -387,7 +387,7 @@ LABEL_42:
         {
           if (*v22 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(allValues);
           }
 
           v8 = CFDictionaryGetValue(self->_queueMap, *(*(&v21 + 1) + 8 * v7));
@@ -397,7 +397,7 @@ LABEL_42:
         }
 
         while (v5 != v7);
-        v5 = [v3 countByEnumeratingWithState:&v21 objects:v26 count:16];
+        v5 = [allValues countByEnumeratingWithState:&v21 objects:v26 count:16];
       }
 
       while (v5);
@@ -412,8 +412,8 @@ LABEL_42:
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v9 = [(ATClientController *)self allClients];
-  v10 = [v9 countByEnumeratingWithState:&v17 objects:v25 count:16];
+  allClients = [(ATClientController *)self allClients];
+  v10 = [allClients countByEnumeratingWithState:&v17 objects:v25 count:16];
   if (v10)
   {
     v11 = v10;
@@ -425,7 +425,7 @@ LABEL_42:
       {
         if (*v18 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(allClients);
         }
 
         v14 = *(*(&v17 + 1) + 8 * v13);
@@ -437,7 +437,7 @@ LABEL_42:
       }
 
       while (v11 != v13);
-      v11 = [v9 countByEnumeratingWithState:&v17 objects:v25 count:16];
+      v11 = [allClients countByEnumeratingWithState:&v17 objects:v25 count:16];
     }
 
     while (v11);
@@ -460,8 +460,8 @@ LABEL_42:
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v4 = [(NSDictionary *)self->_clientMap allValues];
-    v5 = [v4 countByEnumeratingWithState:&v11 objects:v16 count:16];
+    allValues = [(NSDictionary *)self->_clientMap allValues];
+    v5 = [allValues countByEnumeratingWithState:&v11 objects:v16 count:16];
     if (v5)
     {
       v6 = v5;
@@ -473,7 +473,7 @@ LABEL_42:
         {
           if (*v12 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(allValues);
           }
 
           v9 = CFDictionaryGetValue(self->_queueMap, *(*(&v11 + 1) + 8 * v8));
@@ -483,7 +483,7 @@ LABEL_42:
         }
 
         while (v6 != v8);
-        v6 = [v4 countByEnumeratingWithState:&v11 objects:v16 count:16];
+        v6 = [allValues countByEnumeratingWithState:&v11 objects:v16 count:16];
       }
 
       while (v6);
@@ -517,11 +517,11 @@ uint64_t __36__ATClientController_sharedInstance__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-+ (id)controllerForDataclasses:(id)a3
++ (id)controllerForDataclasses:(id)dataclasses
 {
-  v3 = a3;
+  dataclassesCopy = dataclasses;
   v4 = objc_alloc_init(ATClientController);
-  v5 = [(ATClientController *)v4 _loadClientsForDataclasses:v3];
+  v5 = [(ATClientController *)v4 _loadClientsForDataclasses:dataclassesCopy];
 
   if (v5)
   {

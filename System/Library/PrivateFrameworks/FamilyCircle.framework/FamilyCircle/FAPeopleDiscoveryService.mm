@@ -186,7 +186,7 @@ LABEL_6:
 - (id)getNearbyPeople
 {
   v3 = [MEMORY[0x1E695DFA8] set];
-  v4 = [(RPPeopleDiscovery *)self->_peopleDiscovery dispatchQueue];
+  dispatchQueue = [(RPPeopleDiscovery *)self->_peopleDiscovery dispatchQueue];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __43__FAPeopleDiscoveryService_getNearbyPeople__block_invoke;
@@ -194,7 +194,7 @@ LABEL_6:
   v9[4] = self;
   v5 = v3;
   v10 = v5;
-  dispatch_sync(v4, v9);
+  dispatch_sync(dispatchQueue, v9);
 
   v6 = v10;
   v7 = v5;

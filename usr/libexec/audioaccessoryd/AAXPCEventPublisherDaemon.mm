@@ -4,14 +4,14 @@
 - (void)_activate;
 - (void)_deviceDiscoveryEnsureStarted;
 - (void)_deviceDiscoveryEnsureStopped;
-- (void)_deviceFound:(id)a3;
-- (void)_deviceLost:(id)a3;
+- (void)_deviceFound:(id)found;
+- (void)_deviceLost:(id)lost;
 - (void)_ensureEventPublisherCreated;
-- (void)_fireEventIfNeededForDevice:(id)a3 subscription:(id)a4;
-- (void)_handleEventPublisherAction:(unsigned int)a3 withToken:(unint64_t)a4 descriptor:(id)a5;
+- (void)_fireEventIfNeededForDevice:(id)device subscription:(id)subscription;
+- (void)_handleEventPublisherAction:(unsigned int)action withToken:(unint64_t)token descriptor:(id)descriptor;
 - (void)_invalidate;
-- (void)_subscriptionAddedWithToken:(unint64_t)a3 descriptor:(id)a4;
-- (void)_subscriptionRemovedForToken:(unint64_t)a3;
+- (void)_subscriptionAddedWithToken:(unint64_t)token descriptor:(id)descriptor;
+- (void)_subscriptionRemovedForToken:(unint64_t)token;
 - (void)activate;
 - (void)invalidate;
 @end
@@ -128,58 +128,58 @@
   }
 }
 
-- (void)_handleEventPublisherAction:(unsigned int)a3 withToken:(unint64_t)a4 descriptor:(id)a5
+- (void)_handleEventPublisherAction:(unsigned int)action withToken:(unint64_t)token descriptor:(id)descriptor
 {
-  v8 = a5;
-  if (a3 == 2)
+  descriptorCopy = descriptor;
+  if (action == 2)
   {
     if (dword_1002F7310 <= 30)
     {
-      if (dword_1002F7310 != -1 || (v8 = _LogCategory_Initialize(), v8))
+      if (dword_1002F7310 != -1 || (descriptorCopy = _LogCategory_Initialize(), descriptorCopy))
       {
-        v8 = sub_1001F9A2C();
+        descriptorCopy = sub_1001F9A2C();
       }
     }
   }
 
-  else if (a3 == 1)
+  else if (action == 1)
   {
-    v8 = [(AAXPCEventPublisherDaemon *)self _subscriptionRemovedForToken:a4];
+    descriptorCopy = [(AAXPCEventPublisherDaemon *)self _subscriptionRemovedForToken:token];
   }
 
-  else if (a3)
+  else if (action)
   {
     if (dword_1002F7310 <= 90)
     {
-      if (dword_1002F7310 != -1 || (v8 = _LogCategory_Initialize(), v8))
+      if (dword_1002F7310 != -1 || (descriptorCopy = _LogCategory_Initialize(), descriptorCopy))
       {
-        v8 = sub_1001F9A48();
+        descriptorCopy = sub_1001F9A48();
       }
     }
   }
 
   else
   {
-    v8 = [(AAXPCEventPublisherDaemon *)self _subscriptionAddedWithToken:a4 descriptor:?];
+    descriptorCopy = [(AAXPCEventPublisherDaemon *)self _subscriptionAddedWithToken:token descriptor:?];
   }
 
-  _objc_release_x3(v8);
+  _objc_release_x3(descriptorCopy);
 }
 
-- (void)_fireEventIfNeededForDevice:(id)a3 subscription:(id)a4
+- (void)_fireEventIfNeededForDevice:(id)device subscription:(id)subscription
 {
-  v9 = a3;
-  v6 = a4;
-  if ([v6 needsToFireEventForDeviceFound:v9])
+  deviceCopy = device;
+  subscriptionCopy = subscription;
+  if ([subscriptionCopy needsToFireEventForDeviceFound:deviceCopy])
   {
     if (dword_1002F7310 <= 40 && (dword_1002F7310 != -1 || _LogCategory_Initialize()))
     {
-      sub_1001F9A88(v6, v9);
+      sub_1001F9A88(subscriptionCopy, deviceCopy);
     }
 
     v7 = xpc_dictionary_create(0, 0, 0);
     xpcEventPublisher = self->_xpcEventPublisher;
-    [v6 token];
+    [subscriptionCopy token];
     xpc_event_publisher_fire();
   }
 }
@@ -218,17 +218,17 @@
   }
 }
 
-- (void)_subscriptionAddedWithToken:(unint64_t)a3 descriptor:(id)a4
+- (void)_subscriptionAddedWithToken:(unint64_t)token descriptor:(id)descriptor
 {
-  v6 = a4;
+  descriptorCopy = descriptor;
   if (dword_1002F7310 <= 30 && (dword_1002F7310 != -1 || _LogCategory_Initialize()))
   {
     CUPrintXPC();
-    v18 = v17 = a3;
+    v18 = v17 = token;
     LogPrintF_safe();
   }
 
-  v7 = [AAXPCEventSubscription subscriptionWithToken:a3 descriptor:v6, v17, v18];
+  v7 = [AAXPCEventSubscription subscriptionWithToken:token descriptor:descriptorCopy, v17, v18];
   if (v7)
   {
     subscriptionMap = self->_subscriptionMap;
@@ -241,15 +241,15 @@
       subscriptionMap = self->_subscriptionMap;
     }
 
-    v11 = [NSNumber numberWithUnsignedLongLong:a3];
+    v11 = [NSNumber numberWithUnsignedLongLong:token];
     [(NSMutableDictionary *)subscriptionMap setObject:v7 forKeyedSubscript:v11];
 
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v12 = [(AADeviceManager *)self->_deviceManager discoveredDevices];
-    v13 = [v12 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    discoveredDevices = [(AADeviceManager *)self->_deviceManager discoveredDevices];
+    v13 = [discoveredDevices countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v13)
     {
       v14 = v13;
@@ -260,13 +260,13 @@
         {
           if (*v20 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(discoveredDevices);
           }
 
           [(AAXPCEventPublisherDaemon *)self _fireEventIfNeededForDevice:*(*(&v19 + 1) + 8 * i) subscription:v7];
         }
 
-        v14 = [v12 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v14 = [discoveredDevices countByEnumeratingWithState:&v19 objects:v23 count:16];
       }
 
       while (v14);
@@ -274,7 +274,7 @@
   }
 }
 
-- (void)_subscriptionRemovedForToken:(unint64_t)a3
+- (void)_subscriptionRemovedForToken:(unint64_t)token
 {
   if (dword_1002F7310 <= 30 && (dword_1002F7310 != -1 || _LogCategory_Initialize()))
   {
@@ -284,7 +284,7 @@
   subscriptionMap = self->_subscriptionMap;
   if (subscriptionMap)
   {
-    v6 = [NSNumber numberWithUnsignedLongLong:a3];
+    v6 = [NSNumber numberWithUnsignedLongLong:token];
     [(NSMutableDictionary *)subscriptionMap setObject:0 forKeyedSubscript:v6];
 
     if (![(NSMutableDictionary *)self->_subscriptionMap count])
@@ -310,13 +310,13 @@
   }
 }
 
-- (void)_deviceFound:(id)a3
+- (void)_deviceFound:(id)found
 {
-  v4 = a3;
+  foundCopy = found;
   subscriptionMap = self->_subscriptionMap;
   if (subscriptionMap)
   {
-    v6 = [(NSMutableDictionary *)subscriptionMap allValues];
+    allValues = [(NSMutableDictionary *)subscriptionMap allValues];
     sub_1000D211C();
     v8 = [v7 countByEnumeratingWithState:? objects:? count:?];
     if (v8)
@@ -329,14 +329,14 @@
         {
           if (MEMORY[0] != v10)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(allValues);
           }
 
-          [(AAXPCEventPublisherDaemon *)self _fireEventIfNeededForDevice:v4 subscription:*(8 * i)];
+          [(AAXPCEventPublisherDaemon *)self _fireEventIfNeededForDevice:foundCopy subscription:*(8 * i)];
         }
 
         sub_1000D211C();
-        v9 = [v6 countByEnumeratingWithState:? objects:? count:?];
+        v9 = [allValues countByEnumeratingWithState:? objects:? count:?];
       }
 
       while (v9);
@@ -344,13 +344,13 @@
   }
 }
 
-- (void)_deviceLost:(id)a3
+- (void)_deviceLost:(id)lost
 {
-  v4 = a3;
+  lostCopy = lost;
   subscriptionMap = self->_subscriptionMap;
   if (subscriptionMap)
   {
-    v6 = [(NSMutableDictionary *)subscriptionMap allValues];
+    allValues = [(NSMutableDictionary *)subscriptionMap allValues];
     sub_1000D211C();
     v8 = [v7 countByEnumeratingWithState:? objects:? count:?];
     if (v8)
@@ -363,14 +363,14 @@
         {
           if (MEMORY[0] != v10)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(allValues);
           }
 
-          [*(8 * i) deviceLost:v4];
+          [*(8 * i) deviceLost:lostCopy];
         }
 
         sub_1000D211C();
-        v9 = [v6 countByEnumeratingWithState:? objects:? count:?];
+        v9 = [allValues countByEnumeratingWithState:? objects:? count:?];
       }
 
       while (v9);

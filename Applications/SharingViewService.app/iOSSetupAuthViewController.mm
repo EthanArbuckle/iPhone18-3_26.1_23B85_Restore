@@ -1,18 +1,18 @@
 @interface iOSSetupAuthViewController
-- (void)_handleKeyboardWillShow:(id)a3;
-- (void)_handlePINEntered:(id)a3;
-- (void)handleDismissButton:(id)a3;
-- (void)showWithFlags:(unsigned int)a3 throttleSeconds:(int)a4;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)_handleKeyboardWillShow:(id)show;
+- (void)_handlePINEntered:(id)entered;
+- (void)handleDismissButton:(id)button;
+- (void)showWithFlags:(unsigned int)flags throttleSeconds:(int)seconds;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation iOSSetupAuthViewController
 
-- (void)showWithFlags:(unsigned int)a3 throttleSeconds:(int)a4
+- (void)showWithFlags:(unsigned int)flags throttleSeconds:(int)seconds
 {
-  [*(&self->super.super._didReactivateContainerViewAfterLayingOut + 1) setHidden:{1, *&a4}];
-  if ((a3 & 0x10000) != 0)
+  [*(&self->super.super._didReactivateContainerViewAfterLayingOut + 1) setHidden:{1, *&seconds}];
+  if ((flags & 0x10000) != 0)
   {
     v8 = +[NSBundle mainBundle];
     v9 = [v8 localizedStringForKey:@"AUTH_INCORRECT" value:&stru_100195CA8 table:@"Localizable"];
@@ -50,9 +50,9 @@
   [v14 setText:&stru_100195CA8];
 }
 
-- (void)_handlePINEntered:(id)a3
+- (void)_handlePINEntered:(id)entered
 {
-  v4 = a3;
+  enteredCopy = entered;
   [*(&self->super.super._didReactivateContainerViewAfterLayingOut + 1) setHidden:0];
   [*(&self->super.super._didReactivateContainerViewAfterLayingOut + 1) startAnimating];
   if ([self->super.super._mainController testMode])
@@ -62,8 +62,8 @@
     handler[2] = sub_1000F48B0;
     handler[3] = &unk_100195AE8;
     v7 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, &_dispatch_main_q);
-    v8 = v4;
-    v9 = self;
+    v8 = enteredCopy;
+    selfCopy = self;
     v5 = v7;
     dispatch_source_set_event_handler(v5, handler);
     SFDispatchTimerSet();
@@ -72,66 +72,66 @@
 
   else
   {
-    [self->super.super._mainController _tryPIN:v4];
+    [self->super.super._mainController _tryPIN:enteredCopy];
   }
 }
 
-- (void)_handleKeyboardWillShow:(id)a3
+- (void)_handleKeyboardWillShow:(id)show
 {
   v30[0] = _NSConcreteStackBlock;
   v30[1] = 3221225472;
   v30[2] = sub_1000F4BA0;
   v30[3] = &unk_100195AC0;
   v30[4] = self;
-  v4 = a3;
+  showCopy = show;
   [UIView performWithoutAnimation:v30];
-  v5 = [v4 userInfo];
+  userInfo = [showCopy userInfo];
 
-  v6 = [v5 objectForKeyedSubscript:UIKeyboardFrameEndUserInfoKey];
+  v6 = [userInfo objectForKeyedSubscript:UIKeyboardFrameEndUserInfoKey];
   [v6 CGRectValue];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
 
-  v15 = [(iOSSetupAuthViewController *)self view];
-  [v15 convertRect:0 fromView:{v8, v10, v12, v14}];
+  view = [(iOSSetupAuthViewController *)self view];
+  [view convertRect:0 fromView:{v8, v10, v12, v14}];
   v17 = v16;
 
-  v18 = [v5 objectForKeyedSubscript:UIKeyboardAnimationDurationUserInfoKey];
+  v18 = [userInfo objectForKeyedSubscript:UIKeyboardAnimationDurationUserInfoKey];
   [v18 doubleValue];
   v20 = v19;
 
-  v21 = [v5 objectForKeyedSubscript:UIKeyboardAnimationCurveUserInfoKey];
-  v22 = [v21 integerValue];
+  v21 = [userInfo objectForKeyedSubscript:UIKeyboardAnimationCurveUserInfoKey];
+  integerValue = [v21 integerValue];
 
   if (BYTE1(self->_pinWell6) != 1)
   {
-    v23 = [(SVSBaseViewController *)self bottomMarginConstraint];
-    [v23 constant];
+    bottomMarginConstraint = [(SVSBaseViewController *)self bottomMarginConstraint];
+    [bottomMarginConstraint constant];
     *(&self->_viewBottomConstantValid + 1) = v24;
 
     BYTE1(self->_pinWell6) = 1;
   }
 
   v25 = *(&self->_viewBottomConstantValid + 1);
-  v26 = [(iOSSetupAuthViewController *)self view];
-  [v26 bounds];
+  view2 = [(iOSSetupAuthViewController *)self view];
+  [view2 bounds];
   v27 = v25 + CGRectGetHeight(v31) - v17;
-  v28 = [(SVSBaseViewController *)self bottomMarginConstraint];
-  [v28 setConstant:v27];
+  bottomMarginConstraint2 = [(SVSBaseViewController *)self bottomMarginConstraint];
+  [bottomMarginConstraint2 setConstant:v27];
 
   v29[0] = _NSConcreteStackBlock;
   v29[1] = 3221225472;
   v29[2] = sub_1000F4C3C;
   v29[3] = &unk_100195AC0;
   v29[4] = self;
-  [UIView animateWithDuration:v22 | 4 delay:v29 options:0 animations:v20 completion:0.0];
+  [UIView animateWithDuration:integerValue | 4 delay:v29 options:0 animations:v20 completion:0.0];
 }
 
-- (void)handleDismissButton:(id)a3
+- (void)handleDismissButton:(id)button
 {
-  v4 = a3;
+  buttonCopy = button;
   if (dword_1001BE6C8 <= 30 && (dword_1001BE6C8 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -141,9 +141,9 @@
   [self->super.super._mainController dismiss:5];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   if (dword_1001BE6C8 <= 30 && (dword_1001BE6C8 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -151,14 +151,14 @@
 
   v6.receiver = self;
   v6.super_class = iOSSetupAuthViewController;
-  [(iOSSetupAuthViewController *)&v6 viewDidDisappear:v3];
+  [(iOSSetupAuthViewController *)&v6 viewDidDisappear:disappearCopy];
   v5 = +[NSNotificationCenter defaultCenter];
   [v5 removeObserver:self name:UIKeyboardWillShowNotification object:0];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   if (dword_1001BE6C8 <= 30 && (dword_1001BE6C8 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -166,7 +166,7 @@
 
   v16.receiver = self;
   v16.super_class = iOSSetupAuthViewController;
-  [(SVSBaseViewController *)&v16 viewWillAppear:v3];
+  [(SVSBaseViewController *)&v16 viewWillAppear:appearCopy];
   v5 = +[NSNotificationCenter defaultCenter];
   [v5 addObserver:self selector:"_handleKeyboardWillShow:" name:UIKeyboardWillShowNotification object:0];
   v6 = *(&self->_pinLabel1 + 1);

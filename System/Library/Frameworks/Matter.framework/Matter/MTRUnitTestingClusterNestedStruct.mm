@@ -1,6 +1,6 @@
 @interface MTRUnitTestingClusterNestedStruct
 - (MTRUnitTestingClusterNestedStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -31,7 +31,7 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRUnitTestingClusterNestedStruct);
   v5 = [(MTRUnitTestingClusterNestedStruct *)self a];

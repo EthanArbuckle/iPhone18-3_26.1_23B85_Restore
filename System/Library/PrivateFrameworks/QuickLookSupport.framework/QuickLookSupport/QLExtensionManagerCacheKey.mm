@@ -1,33 +1,33 @@
 @interface QLExtensionManagerCacheKey
-- (BOOL)isEqual:(id)a3;
-- (QLExtensionManagerCacheKey)initWithAttributes:(id)a3 allowParentTypes:(BOOL)a4 wantsFirstPartyExtension:(BOOL)a5 extensionPath:(id)a6;
+- (BOOL)isEqual:(id)equal;
+- (QLExtensionManagerCacheKey)initWithAttributes:(id)attributes allowParentTypes:(BOOL)types wantsFirstPartyExtension:(BOOL)extension extensionPath:(id)path;
 @end
 
 @implementation QLExtensionManagerCacheKey
 
-- (QLExtensionManagerCacheKey)initWithAttributes:(id)a3 allowParentTypes:(BOOL)a4 wantsFirstPartyExtension:(BOOL)a5 extensionPath:(id)a6
+- (QLExtensionManagerCacheKey)initWithAttributes:(id)attributes allowParentTypes:(BOOL)types wantsFirstPartyExtension:(BOOL)extension extensionPath:(id)path
 {
-  v11 = a3;
-  v12 = a6;
+  attributesCopy = attributes;
+  pathCopy = path;
   v16.receiver = self;
   v16.super_class = QLExtensionManagerCacheKey;
   v13 = [(QLExtensionManagerCacheKey *)&v16 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_attributes, a3);
-    v14->_allowParentTypes = a4;
-    v14->_wantsFirstPartyExtension = a5;
-    objc_storeStrong(&v14->_extensionPath, a6);
+    objc_storeStrong(&v13->_attributes, attributes);
+    v14->_allowParentTypes = types;
+    v14->_wantsFirstPartyExtension = extension;
+    objc_storeStrong(&v14->_extensionPath, path);
   }
 
   return v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -37,9 +37,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
-      v7 = [(QLExtensionManagerCacheKey *)v6 attributes];
-      if (![v7 isEqual:self->_attributes])
+      v6 = equalCopy;
+      attributes = [(QLExtensionManagerCacheKey *)v6 attributes];
+      if (![attributes isEqual:self->_attributes])
       {
         v10 = 0;
 LABEL_16:
@@ -47,12 +47,12 @@ LABEL_16:
         goto LABEL_17;
       }
 
-      v8 = [(QLExtensionManagerCacheKey *)v6 extensionPath];
+      extensionPath = [(QLExtensionManagerCacheKey *)v6 extensionPath];
       extensionPath = self->_extensionPath;
-      if (v8 == extensionPath || (-[QLExtensionManagerCacheKey extensionPath](v6, "extensionPath"), v3 = objc_claimAutoreleasedReturnValue(), [v3 isEqual:self->_extensionPath]))
+      if (extensionPath == extensionPath || (-[QLExtensionManagerCacheKey extensionPath](v6, "extensionPath"), v3 = objc_claimAutoreleasedReturnValue(), [v3 isEqual:self->_extensionPath]))
       {
         v10 = self->_allowParentTypes == [(QLExtensionManagerCacheKey *)v6 allowParentTypes]&& self->_wantsFirstPartyExtension == [(QLExtensionManagerCacheKey *)v6 wantsFirstPartyExtension];
-        if (v8 == extensionPath)
+        if (extensionPath == extensionPath)
         {
           goto LABEL_15;
         }

@@ -1,30 +1,30 @@
 @interface SBFolderControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityCancelSBAXClosingFolderTimer;
 - (void)_accessibilityScheduleSBAXClosingFolderTimer;
 - (void)_cancelCloseFolderTimer;
 - (void)_closeFolderTimerFired;
 - (void)_setCloseFolderTimerIfNecessary;
-- (void)folderViewDidEndScrolling:(id)a3;
-- (void)scrollUsingDecelerationAnimationToDefaultPageWithCompletionHandler:(id)a3;
+- (void)folderViewDidEndScrolling:(id)scrolling;
+- (void)scrollUsingDecelerationAnimationToDefaultPageWithCompletionHandler:(id)handler;
 @end
 
 @implementation SBFolderControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBFolderController" hasInstanceMethod:@"scrollUsingDecelerationAnimationToDefaultPageWithCompletionHandler:" withFullSignature:{"v", "@?", 0}];
-  [v3 validateClass:@"SBFolderController" hasInstanceMethod:@"folderViewDidEndScrolling:" withFullSignature:{"v", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBFolderController" hasInstanceMethod:@"scrollUsingDecelerationAnimationToDefaultPageWithCompletionHandler:" withFullSignature:{"v", "@?", 0}];
+  [validationsCopy validateClass:@"SBFolderController" hasInstanceMethod:@"folderViewDidEndScrolling:" withFullSignature:{"v", "@", 0}];
 }
 
-- (void)scrollUsingDecelerationAnimationToDefaultPageWithCompletionHandler:(id)a3
+- (void)scrollUsingDecelerationAnimationToDefaultPageWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = AXSBIconControllerSharedInstance();
-  v6 = [v5 _accessibilityIconListIndex];
+  _accessibilityIconListIndex = [v5 _accessibilityIconListIndex];
 
-  if (v6)
+  if (_accessibilityIconListIndex)
   {
     v7 = *MEMORY[0x29EDC7F10];
     v8 = accessibilityLocalizedString(@"home");
@@ -38,7 +38,7 @@
 
   v9.receiver = self;
   v9.super_class = SBFolderControllerAccessibility;
-  [(SBFolderControllerAccessibility *)&v9 scrollUsingDecelerationAnimationToDefaultPageWithCompletionHandler:v4];
+  [(SBFolderControllerAccessibility *)&v9 scrollUsingDecelerationAnimationToDefaultPageWithCompletionHandler:handlerCopy];
 }
 
 void __102__SBFolderControllerAccessibility_scrollUsingDecelerationAnimationToDefaultPageWithCompletionHandler___block_invoke()
@@ -128,16 +128,16 @@ void __102__SBFolderControllerAccessibility_scrollUsingDecelerationAnimationToDe
   MEMORY[0x2A1C71028]();
 }
 
-- (void)folderViewDidEndScrolling:(id)a3
+- (void)folderViewDidEndScrolling:(id)scrolling
 {
   v10.receiver = self;
   v10.super_class = SBFolderControllerAccessibility;
-  [(SBFolderControllerAccessibility *)&v10 folderViewDidEndScrolling:a3];
+  [(SBFolderControllerAccessibility *)&v10 folderViewDidEndScrolling:scrolling];
   v3 = AXSBIconControllerSharedInstance();
-  v4 = [v3 _axDragManager];
-  v5 = [v4 _axGrabbedIcons];
+  _axDragManager = [v3 _axDragManager];
+  _axGrabbedIcons = [_axDragManager _axGrabbedIcons];
 
-  if ([v5 count] && (SBAXPerformingAXDrag & 1) == 0)
+  if ([_axGrabbedIcons count] && (SBAXPerformingAXDrag & 1) == 0)
   {
     v6 = [v3 _accessibilityIconListIndex] + 1;
     v7 = MEMORY[0x29EDBA0F8];

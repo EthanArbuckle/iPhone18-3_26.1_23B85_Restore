@@ -9,9 +9,9 @@
 - (uint64_t)px_navigationWellKnownName
 {
   v1 = MEMORY[0x1E6978B10];
-  v2 = [a1 type];
+  type = [self type];
 
-  return [v1 px_builtInAlbumNameForUtilityCollectionType:v2];
+  return [v1 px_builtInAlbumNameForUtilityCollectionType:type];
 }
 
 + (uint64_t)px_utilityCollectionTypeforBuiltInAlbumName:()PhotosUICore
@@ -26,15 +26,15 @@
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 unsignedIntegerValue];
+    unsignedIntegerValue = [v4 unsignedIntegerValue];
   }
 
   else
   {
-    v6 = 0;
+    unsignedIntegerValue = 0;
   }
 
-  return v6;
+  return unsignedIntegerValue;
 }
 
 + (__CFString)px_builtInAlbumNameForUtilityCollectionType:()PhotosUICore

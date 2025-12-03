@@ -6,10 +6,10 @@
 
 - (uint64_t)_wk_isInFullscreenPresentation
 {
-  result = [a1 activePresentationController];
+  result = [self activePresentationController];
   if (result)
   {
-    return [a1 modalPresentationStyle] == 0;
+    return [self modalPresentationStyle] == 0;
   }
 
   return result;

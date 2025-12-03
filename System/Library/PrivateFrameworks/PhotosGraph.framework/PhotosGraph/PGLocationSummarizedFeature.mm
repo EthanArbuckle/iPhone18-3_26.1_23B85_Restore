@@ -1,16 +1,16 @@
 @interface PGLocationSummarizedFeature
-+ (unsigned)summarizedFeatureSubtypeForLocationNode:(id)a3;
-- (PGLocationSummarizedFeature)initWithSubtype:(unsigned __int16)a3 intervalsPresent:(id)a4 numberOfAssets:(unint64_t)a5 isMandatoryForKeyAsset:(BOOL)a6 locationNode:(id)a7 personNode:(id)a8 locationName:(id)a9;
++ (unsigned)summarizedFeatureSubtypeForLocationNode:(id)node;
+- (PGLocationSummarizedFeature)initWithSubtype:(unsigned __int16)subtype intervalsPresent:(id)present numberOfAssets:(unint64_t)assets isMandatoryForKeyAsset:(BOOL)asset locationNode:(id)node personNode:(id)personNode locationName:(id)name;
 @end
 
 @implementation PGLocationSummarizedFeature
 
-- (PGLocationSummarizedFeature)initWithSubtype:(unsigned __int16)a3 intervalsPresent:(id)a4 numberOfAssets:(unint64_t)a5 isMandatoryForKeyAsset:(BOOL)a6 locationNode:(id)a7 personNode:(id)a8 locationName:(id)a9
+- (PGLocationSummarizedFeature)initWithSubtype:(unsigned __int16)subtype intervalsPresent:(id)present numberOfAssets:(unint64_t)assets isMandatoryForKeyAsset:(BOOL)asset locationNode:(id)node personNode:(id)personNode locationName:(id)name
 {
-  v14 = a4;
-  v15 = a7;
-  v16 = a8;
-  v17 = a9;
+  presentCopy = present;
+  nodeCopy = node;
+  personNodeCopy = personNode;
+  nameCopy = name;
   v24.receiver = self;
   v24.super_class = PGLocationSummarizedFeature;
   v18 = [(PGLocationSummarizedFeature *)&v24 init];
@@ -18,26 +18,26 @@
   if (v18)
   {
     v18->_type = 1;
-    v18->_subtype = a3;
-    v20 = PGSummarizedFeatureConsolidatedDateIntervals(v14);
+    v18->_subtype = subtype;
+    v20 = PGSummarizedFeatureConsolidatedDateIntervals(presentCopy);
     intervalsPresent = v19->_intervalsPresent;
     v19->_intervalsPresent = v20;
 
-    v19->_numberOfAssets = a5;
-    v19->_isMandatoryForKeyAsset = a6;
-    objc_storeStrong(&v19->_locationNode, a7);
-    objc_storeStrong(&v19->_personNode, a8);
-    objc_storeStrong(&v19->_locationName, a9);
+    v19->_numberOfAssets = assets;
+    v19->_isMandatoryForKeyAsset = asset;
+    objc_storeStrong(&v19->_locationNode, node);
+    objc_storeStrong(&v19->_personNode, personNode);
+    objc_storeStrong(&v19->_locationName, name);
   }
 
   return v19;
 }
 
-+ (unsigned)summarizedFeatureSubtypeForLocationNode:(id)a3
++ (unsigned)summarizedFeatureSubtypeForLocationNode:(id)node
 {
-  v3 = a3;
-  v4 = [v3 label];
-  v5 = [v4 isEqualToString:@"Address"];
+  nodeCopy = node;
+  label = [nodeCopy label];
+  v5 = [label isEqualToString:@"Address"];
 
   if (v5)
   {
@@ -46,8 +46,8 @@
 
   else
   {
-    v7 = [v3 label];
-    v8 = [v7 isEqualToString:@"Area"];
+    label2 = [nodeCopy label];
+    v8 = [label2 isEqualToString:@"Area"];
 
     if (v8)
     {
@@ -56,8 +56,8 @@
 
     else
     {
-      v9 = [v3 label];
-      v10 = [v9 isEqualToString:@"District"];
+      label3 = [nodeCopy label];
+      v10 = [label3 isEqualToString:@"District"];
 
       if (v10)
       {
@@ -66,8 +66,8 @@
 
       else
       {
-        v11 = [v3 label];
-        v12 = [v11 isEqualToString:@"City"];
+        label4 = [nodeCopy label];
+        v12 = [label4 isEqualToString:@"City"];
 
         if (v12)
         {
@@ -76,8 +76,8 @@
 
         else
         {
-          v13 = [v3 label];
-          v14 = [v13 isEqualToString:@"County"];
+          label5 = [nodeCopy label];
+          v14 = [label5 isEqualToString:@"County"];
 
           if (v14)
           {

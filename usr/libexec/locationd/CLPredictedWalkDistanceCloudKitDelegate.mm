@@ -1,29 +1,29 @@
 @interface CLPredictedWalkDistanceCloudKitDelegate
-- (BOOL)convertDataBlob:(id)a3 toBoundStatement:(const void *)a4;
-- (CLPredictedWalkDistanceCloudKitDelegate)initWithPredictedWalkDistanceBoutRecorderDb:(void *)a3;
-- (id)convertStatementToDataBlobs:(const void *)a3;
+- (BOOL)convertDataBlob:(id)blob toBoundStatement:(const void *)statement;
+- (CLPredictedWalkDistanceCloudKitDelegate)initWithPredictedWalkDistanceBoutRecorderDb:(void *)db;
+- (id)convertStatementToDataBlobs:(const void *)blobs;
 @end
 
 @implementation CLPredictedWalkDistanceCloudKitDelegate
 
-- (CLPredictedWalkDistanceCloudKitDelegate)initWithPredictedWalkDistanceBoutRecorderDb:(void *)a3
+- (CLPredictedWalkDistanceCloudKitDelegate)initWithPredictedWalkDistanceBoutRecorderDb:(void *)db
 {
   v5.receiver = self;
   v5.super_class = CLPredictedWalkDistanceCloudKitDelegate;
   result = [(CLPredictedWalkDistanceCloudKitDelegate *)&v5 init];
   if (result)
   {
-    result->fPredictedWalkDistanceBoutDb = a3;
+    result->fPredictedWalkDistanceBoutDb = db;
   }
 
   return result;
 }
 
-- (id)convertStatementToDataBlobs:(const void *)a3
+- (id)convertStatementToDataBlobs:(const void *)blobs
 {
   v7 = 0;
   fPredictedWalkDistanceBoutDb = self->fPredictedWalkDistanceBoutDb;
-  if (fPredictedWalkDistanceBoutDb && !sub_100FFEC74(fPredictedWalkDistanceBoutDb, a3, &v7))
+  if (fPredictedWalkDistanceBoutDb && !sub_100FFEC74(fPredictedWalkDistanceBoutDb, blobs, &v7))
   {
     if (qword_1025D4430 != -1)
     {
@@ -46,12 +46,12 @@
   return v7;
 }
 
-- (BOOL)convertDataBlob:(id)a3 toBoundStatement:(const void *)a4
+- (BOOL)convertDataBlob:(id)blob toBoundStatement:(const void *)statement
 {
   fPredictedWalkDistanceBoutDb = self->fPredictedWalkDistanceBoutDb;
   if (fPredictedWalkDistanceBoutDb)
   {
-    v5 = *a4 == 0;
+    v5 = *statement == 0;
   }
 
   else
@@ -78,8 +78,8 @@
     v20 = 0u;
     v21 = 0u;
     v22 = 0;
-    v8 = sub_100FFEF08(fPredictedWalkDistanceBoutDb, a3, &v11);
-    v9 = sub_100008880(*a4);
+    v8 = sub_100FFEF08(fPredictedWalkDistanceBoutDb, blob, &v11);
+    v9 = sub_100008880(*statement);
     if (v9)
     {
       if (v8)

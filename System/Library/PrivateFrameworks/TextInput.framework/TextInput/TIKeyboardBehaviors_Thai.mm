@@ -1,15 +1,15 @@
 @interface TIKeyboardBehaviors_Thai
-- (id)keyBehaviorsForState:(id)a3;
+- (id)keyBehaviorsForState:(id)state;
 @end
 
 @implementation TIKeyboardBehaviors_Thai
 
-- (id)keyBehaviorsForState:(id)a3
+- (id)keyBehaviorsForState:(id)state
 {
-  v3 = a3;
-  if ([v3 hasAutocorrection])
+  stateCopy = state;
+  if ([stateCopy hasAutocorrection])
   {
-    if ([v3 isContinuousPathUnderway])
+    if ([stateCopy isContinuousPathUnderway])
     {
       v4 = 7;
     }

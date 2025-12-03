@@ -33,9 +33,9 @@
     *&v2->_portraitLogoMargin.top = xmmword_1E4296CE0;
     *&v2->_portraitLogoMargin.bottom = _Q1;
     v2->_descriptionWidth = 220.0;
-    v9 = [MEMORY[0x1E69DC888] whiteColor];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
     dividerColor = v3->_dividerColor;
-    v3->_dividerColor = v9;
+    v3->_dividerColor = whiteColor;
 
     *&v3->_dividerMargin.top = xmmword_1E42971A0;
     *&v3->_dividerMargin.bottom = xmmword_1E42971A0;
@@ -52,8 +52,8 @@
     [(VUITextLayout *)v11 setTextStyle:13];
     [(VUITextLayout *)v11 setNumberOfLines:3];
     [(VUITextLayout *)v11 setFontWeight:5];
-    v12 = [MEMORY[0x1E69DC888] whiteColor];
-    [(VUITextLayout *)v11 setColor:v12];
+    whiteColor2 = [MEMORY[0x1E69DC888] whiteColor];
+    [(VUITextLayout *)v11 setColor:whiteColor2];
 
     [(VUITextLayout *)v11 setMargin:0.0, 3.0, 0.0, 0.0];
     [(VUITextLayout *)v11 setFontSize:10.0];

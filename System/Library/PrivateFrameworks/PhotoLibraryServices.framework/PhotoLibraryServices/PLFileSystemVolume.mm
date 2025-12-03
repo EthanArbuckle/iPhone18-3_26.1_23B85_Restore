@@ -1,37 +1,37 @@
 @interface PLFileSystemVolume
-+ (id)keyPathsForValuesAffectingValueForKey:(id)a3;
-+ (id)predictedURLForVolumeName:(id)a3;
-+ (id)volumeForObjectUUID:(id)a3 context:(id)a4;
-+ (id)volumeForURL:(id)a3 context:(id)a4;
-+ (id)volumeForVolumeUUID:(id)a3 context:(id)a4;
++ (id)keyPathsForValuesAffectingValueForKey:(id)key;
++ (id)predictedURLForVolumeName:(id)name;
++ (id)volumeForObjectUUID:(id)d context:(id)context;
++ (id)volumeForURL:(id)l context:(id)context;
++ (id)volumeForVolumeUUID:(id)d context:(id)context;
 - (BOOL)isOffline;
 - (NSURL)url;
-- (id)payloadForChangedKeys:(id)a3;
+- (id)payloadForChangedKeys:(id)keys;
 - (id)payloadID;
-- (id)payloadIDForTombstone:(id)a3;
+- (id)payloadIDForTombstone:(id)tombstone;
 - (id)predictedURL;
 - (void)_registerWithVolumeManager;
 - (void)_unregisterWithVolumeManager;
 - (void)awakeFromFetch;
 - (void)awakeFromInsert;
 - (void)didTurnIntoFault;
-- (void)setUrl:(id)a3;
+- (void)setUrl:(id)url;
 - (void)willTurnIntoFault;
 @end
 
 @implementation PLFileSystemVolume
 
-- (id)payloadForChangedKeys:(id)a3
+- (id)payloadForChangedKeys:(id)keys
 {
-  v4 = a3;
-  v5 = [(PLManagedObjectJournalEntryPayload *)[PLFileSystemVolumeJournalEntryPayload alloc] initWithManagedObject:self changedKeys:v4];
+  keysCopy = keys;
+  v5 = [(PLManagedObjectJournalEntryPayload *)[PLFileSystemVolumeJournalEntryPayload alloc] initWithManagedObject:self changedKeys:keysCopy];
 
   return v5;
 }
 
-- (id)payloadIDForTombstone:(id)a3
+- (id)payloadIDForTombstone:(id)tombstone
 {
-  v3 = [a3 objectForKeyedSubscript:@"uuid"];
+  v3 = [tombstone objectForKeyedSubscript:@"uuid"];
   v4 = [PLJournalEntryPayloadIDFactory payloadIDWithUUIDString:v3];
 
   return v4;
@@ -39,19 +39,19 @@
 
 - (id)payloadID
 {
-  v2 = [(PLFileSystemVolume *)self uuid];
-  v3 = [PLJournalEntryPayloadIDFactory payloadIDWithUUIDString:v2];
+  uuid = [(PLFileSystemVolume *)self uuid];
+  v3 = [PLJournalEntryPayloadIDFactory payloadIDWithUUIDString:uuid];
 
   return v3;
 }
 
-+ (id)predictedURLForVolumeName:(id)a3
++ (id)predictedURLForVolumeName:(id)name
 {
-  v3 = a3;
-  if ([v3 length])
+  nameCopy = name;
+  if ([nameCopy length])
   {
     v4 = [MEMORY[0x1E695DFF8] fileURLWithPath:@"/Volumes" isDirectory:1];
-    v5 = [v4 URLByAppendingPathComponent:v3 isDirectory:1];
+    v5 = [v4 URLByAppendingPathComponent:nameCopy isDirectory:1];
   }
 
   else
@@ -62,19 +62,19 @@
   return v5;
 }
 
-+ (id)volumeForObjectUUID:(id)a3 context:(id)a4
++ (id)volumeForObjectUUID:(id)d context:(id)context
 {
-  v5 = a4;
-  v6 = a3;
+  contextCopy = context;
+  dCopy = d;
   v7 = +[PLFileSystemVolume fetchRequest];
-  v8 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %@", @"uuid", v6];
+  dCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %@", @"uuid", dCopy];
 
-  [v7 setPredicate:v8];
-  v9 = [v5 executeFetchRequest:v7 error:0];
+  [v7 setPredicate:dCopy];
+  v9 = [contextCopy executeFetchRequest:v7 error:0];
 
-  v10 = [v9 firstObject];
+  firstObject = [v9 firstObject];
 
-  return v10;
+  return firstObject;
 }
 
 - (id)predictedURL
@@ -82,12 +82,12 @@
   v3 = [(PLFileSystemVolume *)self url];
   if (!v3)
   {
-    v4 = [(PLFileSystemVolume *)self name];
-    if ([v4 length])
+    name = [(PLFileSystemVolume *)self name];
+    if ([name length])
     {
       v5 = objc_opt_class();
-      v6 = [(PLFileSystemVolume *)self name];
-      v3 = [v5 predictedURLForVolumeName:v6];
+      name2 = [(PLFileSystemVolume *)self name];
+      v3 = [v5 predictedURLForVolumeName:name2];
     }
 
     else
@@ -142,8 +142,8 @@
   v4.receiver = self;
   v4.super_class = PLFileSystemVolume;
   [(PLFileSystemVolume *)&v4 awakeFromInsert];
-  v3 = [MEMORY[0x1E69BF320] UUIDString];
-  [(PLFileSystemVolume *)self setUuid:v3];
+  uUIDString = [MEMORY[0x1E69BF320] UUIDString];
+  [(PLFileSystemVolume *)self setUuid:uUIDString];
 }
 
 - (BOOL)isOffline
@@ -158,17 +158,17 @@
     return 1;
   }
 
-  v5 = [(PLFileSystemVolume *)self uuid];
+  uuid = [(PLFileSystemVolume *)self uuid];
 
-  if (!v5)
+  if (!uuid)
   {
     return 1;
   }
 
   if ([(PLFileSystemVolume *)self faultingState])
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"PLFileSystemVolume.m" lineNumber:56 description:{@"Invalid parameter not satisfying: %@", @"self.faultingState == 0"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLFileSystemVolume.m" lineNumber:56 description:{@"Invalid parameter not satisfying: %@", @"self.faultingState == 0"}];
   }
 
   return self->_url == 0;
@@ -181,48 +181,48 @@
   return v2;
 }
 
-- (void)setUrl:(id)a3
+- (void)setUrl:(id)url
 {
-  if (self->_url != a3)
+  if (self->_url != url)
   {
-    v4 = [a3 copy];
+    v4 = [url copy];
     url = self->_url;
     self->_url = v4;
   }
 }
 
-+ (id)volumeForVolumeUUID:(id)a3 context:(id)a4
++ (id)volumeForVolumeUUID:(id)d context:(id)context
 {
-  v5 = a4;
-  v6 = a3;
+  contextCopy = context;
+  dCopy = d;
   v7 = +[PLFileSystemVolume fetchRequest];
-  v8 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %@", @"volumeUuidString", v6];
+  dCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %@", @"volumeUuidString", dCopy];
 
-  [v7 setPredicate:v8];
-  v9 = [v5 executeFetchRequest:v7 error:0];
+  [v7 setPredicate:dCopy];
+  v9 = [contextCopy executeFetchRequest:v7 error:0];
 
-  v10 = [v9 firstObject];
+  firstObject = [v9 firstObject];
 
-  return v10;
+  return firstObject;
 }
 
-+ (id)volumeForURL:(id)a3 context:(id)a4
++ (id)volumeForURL:(id)l context:(id)context
 {
-  v5 = a4;
-  v6 = a3;
+  contextCopy = context;
+  lCopy = l;
   v7 = +[PLFileSystemVolumeManager sharedFileSystemVolumeManager];
-  v8 = [v7 volumeForURL:v6 context:v5];
+  v8 = [v7 volumeForURL:lCopy context:contextCopy];
 
   return v8;
 }
 
-+ (id)keyPathsForValuesAffectingValueForKey:(id)a3
++ (id)keyPathsForValuesAffectingValueForKey:(id)key
 {
-  v9.receiver = a1;
+  v9.receiver = self;
   v9.super_class = &OBJC_METACLASS___PLFileSystemVolume;
-  v3 = a3;
-  v4 = objc_msgSendSuper2(&v9, sel_keyPathsForValuesAffectingValueForKey_, v3);
-  v5 = [v3 isEqualToString:{@"isOffline", v9.receiver, v9.super_class}];
+  keyCopy = key;
+  v4 = objc_msgSendSuper2(&v9, sel_keyPathsForValuesAffectingValueForKey_, keyCopy);
+  v5 = [keyCopy isEqualToString:{@"isOffline", v9.receiver, v9.super_class}];
 
   if (v5)
   {

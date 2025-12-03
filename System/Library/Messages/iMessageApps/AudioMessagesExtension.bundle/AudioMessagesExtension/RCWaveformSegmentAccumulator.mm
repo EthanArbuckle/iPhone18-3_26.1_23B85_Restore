@@ -1,14 +1,14 @@
 @interface RCWaveformSegmentAccumulator
 - (BOOL)waitUntilFinished;
-- (RCWaveformSegmentAccumulator)initWithWaveformGenerator:(id)a3;
+- (RCWaveformSegmentAccumulator)initWithWaveformGenerator:(id)generator;
 - (void)dealloc;
 @end
 
 @implementation RCWaveformSegmentAccumulator
 
-- (RCWaveformSegmentAccumulator)initWithWaveformGenerator:(id)a3
+- (RCWaveformSegmentAccumulator)initWithWaveformGenerator:(id)generator
 {
-  v5 = a3;
+  generatorCopy = generator;
   v10.receiver = self;
   v10.super_class = RCWaveformSegmentAccumulator;
   v6 = [(RCWaveformSegmentAccumulator *)&v10 init];
@@ -18,7 +18,7 @@
     segments = v6->_segments;
     v6->_segments = v7;
 
-    objc_storeStrong(&v6->_generator, a3);
+    objc_storeStrong(&v6->_generator, generator);
     [(RCWaveformGenerator *)v6->_generator addSegmentOutputObserver:v6];
     [(RCWaveformGenerator *)v6->_generator beginLoading];
   }

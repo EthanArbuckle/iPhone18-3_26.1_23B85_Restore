@@ -1,69 +1,69 @@
 @interface NSIndexSet
-+ (id)tsu_indexSetWithIndices:(unint64_t *)a3 count:(unint64_t)a4;
-- (BOOL)tsu_intersectsIndexesInIndexSet:(id)a3;
++ (id)tsu_indexSetWithIndices:(unint64_t *)indices count:(unint64_t)count;
+- (BOOL)tsu_intersectsIndexesInIndexSet:(id)set;
 - (BOOL)tsu_isSingleContiguousRange;
 - (_NSRange)tsu_boundingRange;
-- (_NSRange)tsu_leadingRangeInRange:(_NSRange)a3;
-- (_NSRange)tsu_trailingRangeInRange:(_NSRange)a3;
-- (id)tsu_indexSetByAddingIndex:(unint64_t)a3;
-- (id)tsu_indexSetByAddingIndexes:(id)a3;
-- (id)tsu_indexSetByExcludingIndex:(unint64_t)a3;
-- (id)tsu_indexSetByExcludingIndexes:(id)a3;
-- (id)tsu_indexSetByInsertingIndexes:(id)a3 inRange:(_NSRange)a4;
-- (id)tsu_indexSetByIntersectingWithIndexes:(id)a3;
-- (id)tsu_indexSetByIntersectingWithRange:(_NSRange)a3;
-- (id)tsu_indexSetByOutsettingRangesBy:(unint64_t)a3;
-- (id)tsu_indexSetChunkIndex:(unint64_t)a3 ofChunkCount:(unint64_t)a4;
-- (id)tsu_initWithIndices:(unint64_t *)a3 count:(unint64_t)a4;
+- (_NSRange)tsu_leadingRangeInRange:(_NSRange)range;
+- (_NSRange)tsu_trailingRangeInRange:(_NSRange)range;
+- (id)tsu_indexSetByAddingIndex:(unint64_t)index;
+- (id)tsu_indexSetByAddingIndexes:(id)indexes;
+- (id)tsu_indexSetByExcludingIndex:(unint64_t)index;
+- (id)tsu_indexSetByExcludingIndexes:(id)indexes;
+- (id)tsu_indexSetByInsertingIndexes:(id)indexes inRange:(_NSRange)range;
+- (id)tsu_indexSetByIntersectingWithIndexes:(id)indexes;
+- (id)tsu_indexSetByIntersectingWithRange:(_NSRange)range;
+- (id)tsu_indexSetByOutsettingRangesBy:(unint64_t)by;
+- (id)tsu_indexSetChunkIndex:(unint64_t)index ofChunkCount:(unint64_t)count;
+- (id)tsu_initWithIndices:(unint64_t *)indices count:(unint64_t)count;
 - (id)tsu_localizedDescription;
-- (unint64_t)tsu_firstCommonIndexWithIndexes:(id)a3;
-- (unint64_t)tsu_indexAtPosition:(unint64_t)a3;
+- (unint64_t)tsu_firstCommonIndexWithIndexes:(id)indexes;
+- (unint64_t)tsu_indexAtPosition:(unint64_t)position;
 - (unint64_t)tsu_nsIndexSetConcurrencyFactor;
-- (unint64_t)tsu_positionOfIndex:(unint64_t)a3;
-- (void)tsu_enumerateIndexesAndPositionsUsingBlock:(id)a3;
-- (void)tsu_enumeratePowerSetIncludingEmptySet:(BOOL)a3 usingBlock:(id)a4;
-- (void)tsu_enumerateRangesConcurrentlyUsingBeginBlock:(id)a3 concurrentBlock:(id)a4 finalBlock:(id)a5;
-- (void)tsu_enumerateSkippedIndexesWithOptions:(unint64_t)a3 usingBlock:(id)a4;
-- (void)tsu_enumerateSkippedRangesWithOptions:(unint64_t)a3 usingBlock:(id)a4;
+- (unint64_t)tsu_positionOfIndex:(unint64_t)index;
+- (void)tsu_enumerateIndexesAndPositionsUsingBlock:(id)block;
+- (void)tsu_enumeratePowerSetIncludingEmptySet:(BOOL)set usingBlock:(id)block;
+- (void)tsu_enumerateRangesConcurrentlyUsingBeginBlock:(id)block concurrentBlock:(id)concurrentBlock finalBlock:(id)finalBlock;
+- (void)tsu_enumerateSkippedIndexesWithOptions:(unint64_t)options usingBlock:(id)block;
+- (void)tsu_enumerateSkippedRangesWithOptions:(unint64_t)options usingBlock:(id)block;
 @end
 
 @implementation NSIndexSet
 
-+ (id)tsu_indexSetWithIndices:(unint64_t *)a3 count:(unint64_t)a4
++ (id)tsu_indexSetWithIndices:(unint64_t *)indices count:(unint64_t)count
 {
-  v4 = [[NSIndexSet alloc] tsu_initWithIndices:a3 count:a4];
+  v4 = [[NSIndexSet alloc] tsu_initWithIndices:indices count:count];
 
   return v4;
 }
 
-- (id)tsu_initWithIndices:(unint64_t *)a3 count:(unint64_t)a4
+- (id)tsu_initWithIndices:(unint64_t *)indices count:(unint64_t)count
 {
   for (i = +[NSMutableIndexSet indexSet];
   {
-    v8 = *a3++;
+    v8 = *indices++;
     [i addIndex:v8];
   }
 
-  v9 = self;
-  v10 = [(NSIndexSet *)v9 initWithIndexSet:i];
+  selfCopy = self;
+  v10 = [(NSIndexSet *)selfCopy initWithIndexSet:i];
 
   return v10;
 }
 
-- (id)tsu_indexSetByAddingIndex:(unint64_t)a3
+- (id)tsu_indexSetByAddingIndex:(unint64_t)index
 {
   v4 = [(NSIndexSet *)self mutableCopy];
-  [v4 addIndex:a3];
+  [v4 addIndex:index];
   v5 = [v4 copy];
 
   return v5;
 }
 
-- (id)tsu_indexSetByAddingIndexes:(id)a3
+- (id)tsu_indexSetByAddingIndexes:(id)indexes
 {
-  v4 = a3;
+  indexesCopy = indexes;
   v5 = [(NSIndexSet *)self mutableCopy];
-  [v5 addIndexes:v4];
+  [v5 addIndexes:indexesCopy];
   v6 = [v5 copy];
 
   return v6;
@@ -74,28 +74,28 @@
   v3 = [(NSIndexSet *)self count];
   if (v3)
   {
-    v4 = [(NSIndexSet *)self lastIndex];
-    v5 = v4 - [(NSIndexSet *)self firstIndex]+ 1;
+    lastIndex = [(NSIndexSet *)self lastIndex];
+    v5 = lastIndex - [(NSIndexSet *)self firstIndex]+ 1;
     LOBYTE(v3) = v5 == [(NSIndexSet *)self count];
   }
 
   return v3;
 }
 
-- (BOOL)tsu_intersectsIndexesInIndexSet:(id)a3
+- (BOOL)tsu_intersectsIndexesInIndexSet:(id)set
 {
-  v4 = a3;
+  setCopy = set;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
   v13 = 0;
-  if (-[NSIndexSet count](self, "count") && [v4 count])
+  if (-[NSIndexSet count](self, "count") && [setCopy count])
   {
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_1000A9934;
     v7[3] = &unk_1001CE8B8;
-    v8 = v4;
+    v8 = setCopy;
     v9 = &v10;
     [(NSIndexSet *)self enumerateRangesUsingBlock:v7];
   }
@@ -106,16 +106,16 @@
   return v5;
 }
 
-- (id)tsu_indexSetByInsertingIndexes:(id)a3 inRange:(_NSRange)a4
+- (id)tsu_indexSetByInsertingIndexes:(id)indexes inRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v7 = a3;
-  if (v7 && length)
+  length = range.length;
+  location = range.location;
+  indexesCopy = indexes;
+  if (indexesCopy && length)
   {
     v8 = [(NSIndexSet *)self mutableCopy];
     [v8 shiftIndexesStartingAtIndex:location by:length];
-    v9 = [v7 mutableCopy];
+    v9 = [indexesCopy mutableCopy];
     [v9 shiftIndexesStartingAtIndex:0 by:location];
     [v8 addIndexes:v9];
   }
@@ -128,10 +128,10 @@
   return v8;
 }
 
-- (id)tsu_indexSetByIntersectingWithRange:(_NSRange)a3
+- (id)tsu_indexSetByIntersectingWithRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
@@ -151,9 +151,9 @@
   return v7;
 }
 
-- (id)tsu_indexSetByIntersectingWithIndexes:(id)a3
+- (id)tsu_indexSetByIntersectingWithIndexes:(id)indexes
 {
-  v4 = a3;
+  indexesCopy = indexes;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -161,29 +161,29 @@
   v20 = sub_1000A9BB4;
   v21 = +[NSMutableIndexSet indexSet];
   v5 = [(NSIndexSet *)self count];
-  if (v5 >= [v4 count])
+  if (v5 >= [indexesCopy count])
   {
-    v8 = [(NSIndexSet *)self firstIndex];
+    firstIndex = [(NSIndexSet *)self firstIndex];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_1000A9EA0;
     v12[3] = &unk_1001CE8B8;
     v12[4] = self;
     v12[5] = &v16;
-    [v4 enumerateRangesInRange:v8 options:-[NSIndexSet lastIndex](self usingBlock:{"lastIndex") - v8 + 1, 0, v12}];
+    [indexesCopy enumerateRangesInRange:firstIndex options:-[NSIndexSet lastIndex](self usingBlock:{"lastIndex") - firstIndex + 1, 0, v12}];
   }
 
   else
   {
-    v6 = [v4 firstIndex];
-    v7 = ([v4 lastIndex] - v6);
+    firstIndex2 = [indexesCopy firstIndex];
+    v7 = ([indexesCopy lastIndex] - firstIndex2);
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_1000A9E08;
     v13[3] = &unk_1001CE8B8;
-    v14 = v4;
+    v14 = indexesCopy;
     v15 = &v16;
-    [(NSIndexSet *)self enumerateRangesInRange:v6 options:v7 + 1 usingBlock:0, v13];
+    [(NSIndexSet *)self enumerateRangesInRange:firstIndex2 options:v7 + 1 usingBlock:0, v13];
   }
 
   v9 = [NSIndexSet alloc];
@@ -193,31 +193,31 @@
   return v10;
 }
 
-- (id)tsu_indexSetByExcludingIndex:(unint64_t)a3
+- (id)tsu_indexSetByExcludingIndex:(unint64_t)index
 {
-  v4 = [NSIndexSet indexSetWithIndex:a3];
+  v4 = [NSIndexSet indexSetWithIndex:index];
   v5 = [(NSIndexSet *)self tsu_indexSetByExcludingIndexes:v4];
 
   return v5;
 }
 
-- (id)tsu_indexSetByExcludingIndexes:(id)a3
+- (id)tsu_indexSetByExcludingIndexes:(id)indexes
 {
-  v4 = a3;
+  indexesCopy = indexes;
   v5 = [(NSIndexSet *)self mutableCopy];
-  [v5 removeIndexes:v4];
+  [v5 removeIndexes:indexesCopy];
   v6 = [v5 copy];
 
   return v6;
 }
 
-- (unint64_t)tsu_indexAtPosition:(unint64_t)a3
+- (unint64_t)tsu_indexAtPosition:(unint64_t)position
 {
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
   v12 = 0x7FFFFFFFFFFFFFFFLL;
-  if ([(NSIndexSet *)self count]> a3)
+  if ([(NSIndexSet *)self count]> position)
   {
     v8[0] = 0;
     v8[1] = v8;
@@ -229,7 +229,7 @@
     v7[3] = &unk_1001CE908;
     v7[4] = v8;
     v7[5] = &v9;
-    v7[6] = a3;
+    v7[6] = position;
     [(NSIndexSet *)self enumerateIndexesUsingBlock:v7];
     _Block_object_dispose(v8, 8);
   }
@@ -239,7 +239,7 @@
   return v5;
 }
 
-- (unint64_t)tsu_positionOfIndex:(unint64_t)a3
+- (unint64_t)tsu_positionOfIndex:(unint64_t)index
 {
   v5 = [(NSIndexSet *)self count];
   if (!v5)
@@ -257,7 +257,7 @@
   v9[2] = sub_1000AA270;
   v9[3] = &unk_1001CE930;
   v9[4] = &v10;
-  v9[5] = a3;
+  v9[5] = index;
   [(NSIndexSet *)self enumerateIndexesUsingBlock:v9];
   if (v11[3] >= v6)
   {
@@ -273,7 +273,7 @@
   return v7;
 }
 
-- (void)tsu_enumerateIndexesAndPositionsUsingBlock:(id)a3
+- (void)tsu_enumerateIndexesAndPositionsUsingBlock:(id)block
 {
   v8[0] = 0;
   v8[1] = v8;
@@ -283,15 +283,15 @@
   v5[1] = 3221225472;
   v5[2] = sub_1000AA37C;
   v5[3] = &unk_1001CE958;
-  v6 = a3;
+  blockCopy = block;
   v7 = v8;
-  v4 = v6;
+  v4 = blockCopy;
   [(NSIndexSet *)self enumerateIndexesUsingBlock:v5];
 
   _Block_object_dispose(v8, 8);
 }
 
-- (_NSRange)tsu_leadingRangeInRange:(_NSRange)a3
+- (_NSRange)tsu_leadingRangeInRange:(_NSRange)range
 {
   v9 = 0;
   v10 = &v9;
@@ -299,14 +299,14 @@
   v12 = sub_1000AA4DC;
   v13 = nullsub_1;
   v14 = &unk_10018361A;
-  location = a3.location;
+  location = range.location;
   v16 = 0;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000AA4EC;
   v8[3] = &unk_1001CE8E0;
   v8[4] = &v9;
-  [(NSIndexSet *)self enumerateRangesInRange:a3.location options:a3.length usingBlock:0, v8];
+  [(NSIndexSet *)self enumerateRangesInRange:range.location options:range.length usingBlock:0, v8];
   if (v10[7])
   {
     v3 = (v10 + 6);
@@ -327,7 +327,7 @@
   return result;
 }
 
-- (_NSRange)tsu_trailingRangeInRange:(_NSRange)a3
+- (_NSRange)tsu_trailingRangeInRange:(_NSRange)range
 {
   v8 = 0;
   v9 = &v8;
@@ -335,7 +335,7 @@
   v11 = sub_1000AA4DC;
   v12 = nullsub_1;
   v13 = &unk_10018361A;
-  v14 = a3.location + a3.length;
+  v14 = range.location + range.length;
   v15 = 0;
   [NSIndexSet enumerateRangesInRange:"enumerateRangesInRange:options:usingBlock:" options:? usingBlock:?];
   if (v9[7])
@@ -358,7 +358,7 @@
   return result;
 }
 
-- (unint64_t)tsu_firstCommonIndexWithIndexes:(id)a3
+- (unint64_t)tsu_firstCommonIndexWithIndexes:(id)indexes
 {
   v10 = 0;
   v11 = &v10;
@@ -368,9 +368,9 @@
   v7[1] = 3221225472;
   v7[2] = sub_1000AA7B8;
   v7[3] = &unk_1001CE8B8;
-  v8 = a3;
+  indexesCopy = indexes;
   v9 = &v10;
-  v4 = v8;
+  v4 = indexesCopy;
   [(NSIndexSet *)self enumerateRangesUsingBlock:v7];
   v5 = v11[3];
 
@@ -387,36 +387,36 @@
   v3 = objc_opt_new();
   v7 = v3;
   [(NSIndexSet *)self enumerateRangesUsingBlock:v6];
-  v4 = [v3 tsu_localizedList];
+  tsu_localizedList = [v3 tsu_localizedList];
 
-  return v4;
+  return tsu_localizedList;
 }
 
 - (_NSRange)tsu_boundingRange
 {
   if ([(NSIndexSet *)self count])
   {
-    v3 = [(NSIndexSet *)self firstIndex];
-    v4 = [(NSIndexSet *)self lastIndex];
-    v5 = v4 - [(NSIndexSet *)self firstIndex]+ 1;
+    firstIndex = [(NSIndexSet *)self firstIndex];
+    lastIndex = [(NSIndexSet *)self lastIndex];
+    v5 = lastIndex - [(NSIndexSet *)self firstIndex]+ 1;
   }
 
   else
   {
-    v3 = 0x7FFFFFFFFFFFFFFFLL;
+    firstIndex = 0x7FFFFFFFFFFFFFFFLL;
     v5 = 0;
   }
 
-  v6 = v3;
+  v6 = firstIndex;
   result.length = v5;
   result.location = v6;
   return result;
 }
 
-- (void)tsu_enumeratePowerSetIncludingEmptySet:(BOOL)a3 usingBlock:(id)a4
+- (void)tsu_enumeratePowerSetIncludingEmptySet:(BOOL)set usingBlock:(id)block
 {
-  v4 = a3;
-  v6 = a4;
+  setCopy = set;
+  blockCopy = block;
   v7 = [(NSIndexSet *)self count];
   v8 = v7;
   if (v7 >= 0x40)
@@ -438,7 +438,7 @@
     goto LABEL_23;
   }
 
-  if (!v6)
+  if (!blockCopy)
   {
     +[TSUAssertionHandler _atomicIncrementAssertCount];
     if (TSUAssertCat_init_token != -1)
@@ -461,7 +461,7 @@ LABEL_23:
   }
 
   v9 = ~(-1 << v7);
-  v10 = !v4;
+  v10 = !setCopy;
   if (v10 <= v9)
   {
     do
@@ -479,7 +479,7 @@ LABEL_23:
       }
 
       v17 = 0;
-      v6[2](v6, v11, &v17);
+      blockCopy[2](blockCopy, v11, &v17);
       v13 = v17;
 
       if (v13)
@@ -494,13 +494,13 @@ LABEL_23:
 LABEL_24:
 }
 
-- (id)tsu_indexSetChunkIndex:(unint64_t)a3 ofChunkCount:(unint64_t)a4
+- (id)tsu_indexSetChunkIndex:(unint64_t)index ofChunkCount:(unint64_t)count
 {
-  v7 = [(NSIndexSet *)self firstIndex];
-  v8 = [(NSIndexSet *)self lastIndex]- v7 + 1;
-  if (v8 % a4)
+  firstIndex = [(NSIndexSet *)self firstIndex];
+  v8 = [(NSIndexSet *)self lastIndex]- firstIndex + 1;
+  if (v8 % count)
   {
-    v9 = a4 - v8 % a4;
+    v9 = count - v8 % count;
   }
 
   else
@@ -509,17 +509,17 @@ LABEL_24:
   }
 
   v10 = v8 + v9;
-  if (v10 < a4)
+  if (v10 < count)
   {
     v11 = 1;
   }
 
   else
   {
-    v11 = v10 / a4;
+    v11 = v10 / count;
   }
 
-  return [(NSIndexSet *)self tsu_indexSetByIntersectingWithRange:v7 + v11 * a3];
+  return [(NSIndexSet *)self tsu_indexSetByIntersectingWithRange:firstIndex + v11 * index];
 }
 
 - (unint64_t)tsu_nsIndexSetConcurrencyFactor
@@ -532,14 +532,14 @@ LABEL_24:
   return qword_1001EB050;
 }
 
-- (void)tsu_enumerateRangesConcurrentlyUsingBeginBlock:(id)a3 concurrentBlock:(id)a4 finalBlock:(id)a5
+- (void)tsu_enumerateRangesConcurrentlyUsingBeginBlock:(id)block concurrentBlock:(id)concurrentBlock finalBlock:(id)finalBlock
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(NSIndexSet *)self firstIndex];
-  v12 = [(NSIndexSet *)self lastIndex];
-  v13 = [(NSIndexSet *)self tsu_nsIndexSetConcurrencyFactor];
+  blockCopy = block;
+  concurrentBlockCopy = concurrentBlock;
+  finalBlockCopy = finalBlock;
+  firstIndex = [(NSIndexSet *)self firstIndex];
+  lastIndex = [(NSIndexSet *)self lastIndex];
+  tsu_nsIndexSetConcurrencyFactor = [(NSIndexSet *)self tsu_nsIndexSetConcurrencyFactor];
   v30 = 0;
   v31 = &v30;
   v32 = 0x4812000000;
@@ -547,10 +547,10 @@ LABEL_24:
   v34 = sub_1000AB288;
   v35 = &unk_10018361A;
   memset(v36, 0, sizeof(v36));
-  sub_1000AB2B4(v36, v13);
-  v14 = v12 - v11 + 1;
-  v15 = v14 % v13;
-  v16 = v13 + v14 - v14 % v13;
+  sub_1000AB2B4(v36, tsu_nsIndexSetConcurrencyFactor);
+  v14 = lastIndex - firstIndex + 1;
+  v15 = v14 % tsu_nsIndexSetConcurrencyFactor;
+  v16 = tsu_nsIndexSetConcurrencyFactor + v14 - v14 % tsu_nsIndexSetConcurrencyFactor;
   if (v15)
   {
     v17 = v16;
@@ -558,38 +558,38 @@ LABEL_24:
 
   else
   {
-    v17 = v12 - v11 + 1;
+    v17 = lastIndex - firstIndex + 1;
   }
 
   v24[0] = _NSConcreteStackBlock;
   v24[1] = 3221225472;
   v24[2] = sub_1000AB33C;
   v24[3] = &unk_1001CEA58;
-  if (v13 > v17)
+  if (tsu_nsIndexSetConcurrencyFactor > v17)
   {
     v18 = 1;
   }
 
   else
   {
-    v18 = v17 / v13;
+    v18 = v17 / tsu_nsIndexSetConcurrencyFactor;
   }
 
-  v28 = v11;
+  v28 = firstIndex;
   v29 = v18;
   v24[4] = self;
-  v19 = v8;
+  v19 = blockCopy;
   v25 = v19;
-  v20 = v9;
+  v20 = concurrentBlockCopy;
   v26 = v20;
   v27 = &v30;
   v21 = objc_retainBlock(v24);
-  dispatch_apply(v13, 0, v21);
-  v22 = [NSMutableArray arrayWithCapacity:v13];
+  dispatch_apply(tsu_nsIndexSetConcurrencyFactor, 0, v21);
+  v22 = [NSMutableArray arrayWithCapacity:tsu_nsIndexSetConcurrencyFactor];
   v23 = 0;
-  if (v13 <= 1)
+  if (tsu_nsIndexSetConcurrencyFactor <= 1)
   {
-    v13 = 1;
+    tsu_nsIndexSetConcurrencyFactor = 1;
   }
 
   do
@@ -602,39 +602,39 @@ LABEL_24:
     ++v23;
   }
 
-  while (v13 != v23);
-  v10[2](v10, v22);
+  while (tsu_nsIndexSetConcurrencyFactor != v23);
+  finalBlockCopy[2](finalBlockCopy, v22);
 
   _Block_object_dispose(&v30, 8);
   v37 = v36;
   sub_1000ABAA8(&v37);
 }
 
-- (void)tsu_enumerateSkippedRangesWithOptions:(unint64_t)a3 usingBlock:(id)a4
+- (void)tsu_enumerateSkippedRangesWithOptions:(unint64_t)options usingBlock:(id)block
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1000AB544;
   v6[3] = &unk_1001CEA80;
-  v7 = self;
-  v8 = a4;
-  v5 = v8;
-  [(NSIndexSet *)v7 enumerateRangesWithOptions:a3 usingBlock:v6];
+  selfCopy = self;
+  blockCopy = block;
+  v5 = blockCopy;
+  [(NSIndexSet *)selfCopy enumerateRangesWithOptions:options usingBlock:v6];
 }
 
-- (void)tsu_enumerateSkippedIndexesWithOptions:(unint64_t)a3 usingBlock:(id)a4
+- (void)tsu_enumerateSkippedIndexesWithOptions:(unint64_t)options usingBlock:(id)block
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1000AB680;
   v6[3] = &unk_1001CEA80;
-  v7 = self;
-  v8 = a4;
-  v5 = v8;
-  [(NSIndexSet *)v7 enumerateRangesWithOptions:a3 usingBlock:v6];
+  selfCopy = self;
+  blockCopy = block;
+  v5 = blockCopy;
+  [(NSIndexSet *)selfCopy enumerateRangesWithOptions:options usingBlock:v6];
 }
 
-- (id)tsu_indexSetByOutsettingRangesBy:(unint64_t)a3
+- (id)tsu_indexSetByOutsettingRangesBy:(unint64_t)by
 {
   v8 = 0;
   v9 = &v8;
@@ -647,7 +647,7 @@ LABEL_24:
   v7[2] = sub_1000AB830;
   v7[3] = &unk_1001CEAA8;
   v7[4] = &v8;
-  v7[5] = a3;
+  v7[5] = by;
   [(NSIndexSet *)self enumerateRangesUsingBlock:v7];
   v5 = [v9[5] copy];
   _Block_object_dispose(&v8, 8);

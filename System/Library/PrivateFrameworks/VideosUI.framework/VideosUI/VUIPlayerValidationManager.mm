@@ -1,8 +1,8 @@
 @interface VUIPlayerValidationManager
 + (id)sharedInstance;
 - (id)_init;
-- (void)addReferenceForPlayer:(id)a3;
-- (void)removeReferenceForPlayer:(id)a3 stoppingIfNeeded:(BOOL)a4;
+- (void)addReferenceForPlayer:(id)player;
+- (void)removeReferenceForPlayer:(id)player stoppingIfNeeded:(BOOL)needed;
 @end
 
 @implementation VUIPlayerValidationManager
@@ -33,21 +33,21 @@ void __44__VUIPlayerValidationManager_sharedInstance__block_invoke()
   v2 = [(VUIPlayerValidationManager *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
     playerCounts = v2->_playerCounts;
-    v2->_playerCounts = v3;
+    v2->_playerCounts = weakToStrongObjectsMapTable;
   }
 
   return v2;
 }
 
-- (void)addReferenceForPlayer:(id)a3
+- (void)addReferenceForPlayer:(id)player
 {
-  if (a3)
+  if (player)
   {
-    v4 = a3;
-    v5 = [(VUIPlayerValidationManager *)self playerCounts];
-    v6 = [v5 objectForKey:v4];
+    playerCopy = player;
+    playerCounts = [(VUIPlayerValidationManager *)self playerCounts];
+    v6 = [playerCounts objectForKey:playerCopy];
     v7 = v6;
     v8 = &unk_1F5E5CF48;
     if (v6)
@@ -58,23 +58,23 @@ void __44__VUIPlayerValidationManager_sharedInstance__block_invoke()
     v9 = v8;
 
     v10 = MEMORY[0x1E696AD98];
-    v11 = [v9 intValue];
+    intValue = [v9 intValue];
 
-    v13 = [v10 numberWithInt:(v11 + 1)];
-    v12 = [(VUIPlayerValidationManager *)self playerCounts];
-    [v12 setObject:v13 forKey:v4];
+    v13 = [v10 numberWithInt:(intValue + 1)];
+    playerCounts2 = [(VUIPlayerValidationManager *)self playerCounts];
+    [playerCounts2 setObject:v13 forKey:playerCopy];
   }
 }
 
-- (void)removeReferenceForPlayer:(id)a3 stoppingIfNeeded:(BOOL)a4
+- (void)removeReferenceForPlayer:(id)player stoppingIfNeeded:(BOOL)needed
 {
-  v4 = a4;
-  v6 = a3;
-  if (v6)
+  neededCopy = needed;
+  playerCopy = player;
+  if (playerCopy)
   {
-    v20 = v6;
-    v7 = [(VUIPlayerValidationManager *)self playerCounts];
-    v8 = [v7 objectForKey:v20];
+    v20 = playerCopy;
+    playerCounts = [(VUIPlayerValidationManager *)self playerCounts];
+    v8 = [playerCounts objectForKey:v20];
     v9 = v8;
     v10 = &unk_1F5E5CF48;
     if (v8)
@@ -85,22 +85,22 @@ void __44__VUIPlayerValidationManager_sharedInstance__block_invoke()
     v11 = v10;
 
     v12 = MEMORY[0x1E696AD98];
-    v13 = [v11 intValue];
+    intValue = [v11 intValue];
 
-    v14 = [v12 numberWithInt:(v13 - 1)];
-    v15 = [v14 intValue];
-    v16 = [(VUIPlayerValidationManager *)self playerCounts];
-    v17 = v16;
-    if (v15 <= 0)
+    v14 = [v12 numberWithInt:(intValue - 1)];
+    intValue2 = [v14 intValue];
+    playerCounts2 = [(VUIPlayerValidationManager *)self playerCounts];
+    v17 = playerCounts2;
+    if (intValue2 <= 0)
     {
-      [v16 removeObjectForKey:v20];
+      [playerCounts2 removeObjectForKey:v20];
 
-      if (v4)
+      if (neededCopy)
       {
-        v18 = [v20 state];
-        v19 = [MEMORY[0x1E69D5A40] stopped];
+        state = [v20 state];
+        stopped = [MEMORY[0x1E69D5A40] stopped];
 
-        if (v18 != v19)
+        if (state != stopped)
         {
           [v20 stop];
         }
@@ -111,10 +111,10 @@ void __44__VUIPlayerValidationManager_sharedInstance__block_invoke()
 
     else
     {
-      [v16 setObject:v14 forKey:v20];
+      [playerCounts2 setObject:v14 forKey:v20];
     }
 
-    v6 = v20;
+    playerCopy = v20;
   }
 }
 

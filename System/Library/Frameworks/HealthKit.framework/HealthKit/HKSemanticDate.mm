@@ -1,21 +1,21 @@
 @interface HKSemanticDate
-+ (HKSemanticDate)semanticDateWithKeyPath:(id)a3 date:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (HKSemanticDate)semanticDateWithKeyPath:(id)path date:(id)date;
+- (BOOL)isEqual:(id)equal;
 - (HKSemanticDate)init;
-- (HKSemanticDate)initWithCoder:(id)a3;
-- (HKSemanticDate)initWithKeyPath:(id)a3 date:(id)a4;
-- (int64_t)compare:(id)a3;
+- (HKSemanticDate)initWithCoder:(id)coder;
+- (HKSemanticDate)initWithKeyPath:(id)path date:(id)date;
+- (int64_t)compare:(id)compare;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKSemanticDate
 
-+ (HKSemanticDate)semanticDateWithKeyPath:(id)a3 date:(id)a4
++ (HKSemanticDate)semanticDateWithKeyPath:(id)path date:(id)date
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [objc_alloc(objc_opt_class()) initWithKeyPath:v6 date:v5];
+  dateCopy = date;
+  pathCopy = path;
+  v7 = [objc_alloc(objc_opt_class()) initWithKeyPath:pathCopy date:dateCopy];
 
   return v7;
 }
@@ -30,14 +30,14 @@
   return 0;
 }
 
-- (HKSemanticDate)initWithKeyPath:(id)a3 date:(id)a4
+- (HKSemanticDate)initWithKeyPath:(id)path date:(id)date
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  pathCopy = path;
+  dateCopy = date;
+  v9 = dateCopy;
+  if (pathCopy)
   {
-    if (v8)
+    if (dateCopy)
     {
       goto LABEL_3;
     }
@@ -59,7 +59,7 @@ LABEL_3:
   v10 = [(HKSemanticDate *)&v16 init];
   if (v10)
   {
-    v11 = [v7 copy];
+    v11 = [pathCopy copy];
     keyPath = v10->_keyPath;
     v10->_keyPath = v11;
 
@@ -71,19 +71,19 @@ LABEL_3:
   return v10;
 }
 
-- (HKSemanticDate)initWithCoder:(id)a3
+- (HKSemanticDate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = HKSemanticDate;
   v5 = [(HKSemanticDate *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"KeyPath"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"KeyPath"];
     keyPath = v5->_keyPath;
     v5->_keyPath = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Date"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Date"];
     date = v5->_date;
     v5->_date = v8;
   }
@@ -91,23 +91,23 @@ LABEL_3:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HKSemanticDate *)self keyPath];
-  [v4 encodeObject:v5 forKey:@"KeyPath"];
+  coderCopy = coder;
+  keyPath = [(HKSemanticDate *)self keyPath];
+  [coderCopy encodeObject:keyPath forKey:@"KeyPath"];
 
-  v6 = [(HKSemanticDate *)self date];
-  [v4 encodeObject:v6 forKey:@"Date"];
+  date = [(HKSemanticDate *)self date];
+  [coderCopy encodeObject:date forKey:@"Date"];
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
+  compareCopy = compare;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = compareCopy;
   }
 
   else
@@ -120,8 +120,8 @@ LABEL_3:
   if (v6 && ([v6 date], (v8 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v9 = v8;
-    v10 = [(HKSemanticDate *)self date];
-    v11 = [v10 compare:v9];
+    date = [(HKSemanticDate *)self date];
+    v11 = [date compare:v9];
   }
 
   else
@@ -134,18 +134,18 @@ LABEL_3:
 
 - (unint64_t)hash
 {
-  v3 = [(HKSemanticDate *)self keyPath];
-  v4 = [v3 hash];
-  v5 = [(HKSemanticDate *)self date];
-  v6 = [v5 hash];
+  keyPath = [(HKSemanticDate *)self keyPath];
+  v4 = [keyPath hash];
+  date = [(HKSemanticDate *)self date];
+  v6 = [date hash];
 
   return v6 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
@@ -155,16 +155,16 @@ LABEL_3:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(HKSemanticDate *)self keyPath];
-      v7 = [(HKSemanticDate *)v5 keyPath];
-      v8 = [v6 isEqualToString:v7];
+      v5 = equalCopy;
+      keyPath = [(HKSemanticDate *)self keyPath];
+      keyPath2 = [(HKSemanticDate *)v5 keyPath];
+      v8 = [keyPath isEqualToString:keyPath2];
 
       if (v8)
       {
-        v9 = [(HKSemanticDate *)self date];
-        v10 = [(HKSemanticDate *)v5 date];
-        v11 = [v9 isEqualToDate:v10];
+        date = [(HKSemanticDate *)self date];
+        date2 = [(HKSemanticDate *)v5 date];
+        v11 = [date isEqualToDate:date2];
       }
 
       else

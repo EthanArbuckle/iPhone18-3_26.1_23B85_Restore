@@ -1,9 +1,9 @@
 @interface _UIKBFeedbackGeneratorPartner
 + (BOOL)_isVisceralEnabled;
-+ (id)feedbackGeneratorWithCoordinateSpace:(id)a3;
-+ (id)feedbackGeneratorWithView:(id)a3;
-+ (void)cooldownSystemSoundsForObject:(id)a3;
-+ (void)preheatSystemSoundsForObject:(id)a3;
++ (id)feedbackGeneratorWithCoordinateSpace:(id)space;
++ (id)feedbackGeneratorWithView:(id)view;
++ (void)cooldownSystemSoundsForObject:(id)object;
++ (void)preheatSystemSoundsForObject:(id)object;
 @end
 
 @implementation _UIKBFeedbackGeneratorPartner
@@ -26,9 +26,9 @@
   return _os_feature_enabled_impl();
 }
 
-+ (id)feedbackGeneratorWithView:(id)a3
++ (id)feedbackGeneratorWithView:(id)view
 {
-  v3 = a3;
+  viewCopy = view;
   if (+[_UIKBFeedbackGeneratorPartner _isVisceralEnabled])
   {
     v4 = objc_alloc_init(_UIKBFeedbackGenerator);
@@ -36,7 +36,7 @@
 
   else
   {
-    v4 = [(UIFeedbackGenerator *)[_UIKeyboardFeedbackGenerator alloc] initWithView:v3];
+    v4 = [(UIFeedbackGenerator *)[_UIKeyboardFeedbackGenerator alloc] initWithView:viewCopy];
   }
 
   v5 = v4;
@@ -44,31 +44,31 @@
   return v5;
 }
 
-+ (id)feedbackGeneratorWithCoordinateSpace:(id)a3
++ (id)feedbackGeneratorWithCoordinateSpace:(id)space
 {
-  v4 = _viewFromCoordinateSpace(a3);
-  v5 = [a1 feedbackGeneratorWithView:v4];
+  v4 = _viewFromCoordinateSpace(space);
+  v5 = [self feedbackGeneratorWithView:v4];
 
   return v5;
 }
 
-+ (void)preheatSystemSoundsForObject:(id)a3
++ (void)preheatSystemSoundsForObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   if ([objc_opt_class() _shouldPreheatAndCoolSystemSounds])
   {
     v3 = +[UIDevice currentDevice];
-    [v3 _registerForSystemSounds:v4];
+    [v3 _registerForSystemSounds:objectCopy];
   }
 }
 
-+ (void)cooldownSystemSoundsForObject:(id)a3
++ (void)cooldownSystemSoundsForObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   if ([objc_opt_class() _shouldPreheatAndCoolSystemSounds])
   {
     v3 = +[UIDevice currentDevice];
-    [v3 _unregisterForSystemSounds:v4];
+    [v3 _unregisterForSystemSounds:objectCopy];
   }
 }
 

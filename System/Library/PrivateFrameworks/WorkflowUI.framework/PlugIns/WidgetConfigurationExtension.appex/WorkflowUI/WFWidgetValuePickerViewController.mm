@@ -1,10 +1,10 @@
 @interface WFWidgetValuePickerViewController
-- (WFWidgetValuePickerViewController)initWithAction:(id)a3 parameter:(id)a4 intentIdentifier:(id)a5 widgetFamily:(int64_t)a6;
+- (WFWidgetValuePickerViewController)initWithAction:(id)action parameter:(id)parameter intentIdentifier:(id)identifier widgetFamily:(int64_t)family;
 - (WFWidgetValuePickerViewControllerDelegate)pickerDelegate;
-- (void)parameterValuePickerViewController:(id)a3 didFinishWithParameterState:(id)a4;
-- (void)populateConfiguredAppIntentWithAction:(id)a3 completion:(id)a4;
-- (void)populateConfiguredCustomIntentWithAction:(id)a3 completion:(id)a4;
-- (void)populateConfiguredIntentWithCompletion:(id)a3;
+- (void)parameterValuePickerViewController:(id)controller didFinishWithParameterState:(id)state;
+- (void)populateConfiguredAppIntentWithAction:(id)action completion:(id)completion;
+- (void)populateConfiguredCustomIntentWithAction:(id)action completion:(id)completion;
+- (void)populateConfiguredIntentWithCompletion:(id)completion;
 @end
 
 @implementation WFWidgetValuePickerViewController
@@ -16,96 +16,96 @@
   return WeakRetained;
 }
 
-- (void)parameterValuePickerViewController:(id)a3 didFinishWithParameterState:(id)a4
+- (void)parameterValuePickerViewController:(id)controller didFinishWithParameterState:(id)state
 {
-  v5 = a4;
-  v6 = [(WFWidgetValuePickerViewController *)self parameter];
-  if (![v6 allowsMultipleValues] || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  stateCopy = state;
+  parameter = [(WFWidgetValuePickerViewController *)self parameter];
+  if (![parameter allowsMultipleValues] || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
 
 LABEL_4:
-    v7 = v5;
+    v7 = stateCopy;
     goto LABEL_5;
   }
 
-  if (!v5)
+  if (!stateCopy)
   {
     goto LABEL_4;
   }
 
-  v13 = [(WFWidgetValuePickerViewController *)self parameter];
-  v14 = [v13 multipleStateClass];
+  parameter2 = [(WFWidgetValuePickerViewController *)self parameter];
+  multipleStateClass = [parameter2 multipleStateClass];
 
-  v15 = [v14 alloc];
-  v17 = v5;
+  v15 = [multipleStateClass alloc];
+  v17 = stateCopy;
   v16 = [NSArray arrayWithObjects:&v17 count:1];
   v7 = [v15 initWithParameterStates:v16];
 
 LABEL_5:
-  v8 = [(WFWidgetValuePickerViewController *)self action];
-  v9 = [(WFWidgetValuePickerViewController *)self parameter];
-  v10 = [v9 key];
-  [v8 setParameterState:v7 forKey:v10];
+  action = [(WFWidgetValuePickerViewController *)self action];
+  parameter3 = [(WFWidgetValuePickerViewController *)self parameter];
+  v10 = [parameter3 key];
+  [action setParameterState:v7 forKey:v10];
 
-  v11 = [(WFWidgetValuePickerViewController *)self pickerDelegate];
-  LOBYTE(v9) = objc_opt_respondsToSelector();
+  pickerDelegate = [(WFWidgetValuePickerViewController *)self pickerDelegate];
+  LOBYTE(parameter3) = objc_opt_respondsToSelector();
 
-  if (v9)
+  if (parameter3)
   {
-    v12 = [(WFWidgetValuePickerViewController *)self pickerDelegate];
-    [v12 widgetValuePickerViewControllerDidChooseValue:self];
+    pickerDelegate2 = [(WFWidgetValuePickerViewController *)self pickerDelegate];
+    [pickerDelegate2 widgetValuePickerViewControllerDidChooseValue:self];
   }
 }
 
-- (void)populateConfiguredAppIntentWithAction:(id)a3 completion:(id)a4
+- (void)populateConfiguredAppIntentWithAction:(id)action completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  actionCopy = action;
   v8 = [INAppIntent alloc];
-  v9 = [v7 fullyQualifiedLinkActionIdentifier];
-  v10 = [v9 bundleIdentifier];
-  v11 = [v7 fullyQualifiedLinkActionIdentifier];
-  v12 = [v11 actionIdentifier];
-  v13 = [(WFWidgetValuePickerViewController *)self action];
-  v14 = [v13 serializedParameters];
-  v20 = [v8 initWithAppBundleIdentifier:v10 appIntentIdentifier:v12 serializedParameters:v14];
+  fullyQualifiedLinkActionIdentifier = [actionCopy fullyQualifiedLinkActionIdentifier];
+  bundleIdentifier = [fullyQualifiedLinkActionIdentifier bundleIdentifier];
+  fullyQualifiedLinkActionIdentifier2 = [actionCopy fullyQualifiedLinkActionIdentifier];
+  actionIdentifier = [fullyQualifiedLinkActionIdentifier2 actionIdentifier];
+  action = [(WFWidgetValuePickerViewController *)self action];
+  serializedParameters = [action serializedParameters];
+  v20 = [v8 initWithAppBundleIdentifier:bundleIdentifier appIntentIdentifier:actionIdentifier serializedParameters:serializedParameters];
 
-  v15 = [v7 metadata];
+  metadata = [actionCopy metadata];
 
-  v16 = [v15 effectiveBundleIdentifiers];
-  v17 = [v16 array];
-  v18 = [v17 if_firstObjectPassingTest:&stru_10002D660];
-  v19 = [v18 bundleIdentifier];
-  [v20 _setExtensionBundleId:v19];
+  effectiveBundleIdentifiers = [metadata effectiveBundleIdentifiers];
+  array = [effectiveBundleIdentifiers array];
+  v18 = [array if_firstObjectPassingTest:&stru_10002D660];
+  bundleIdentifier2 = [v18 bundleIdentifier];
+  [v20 _setExtensionBundleId:bundleIdentifier2];
 
-  v6[2](v6, v20, 0);
+  completionCopy[2](completionCopy, v20, 0);
 }
 
-- (void)populateConfiguredCustomIntentWithAction:(id)a3 completion:(id)a4
+- (void)populateConfiguredCustomIntentWithAction:(id)action completion:(id)completion
 {
-  v6 = a3;
+  actionCopy = action;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100012F90;
   v9[3] = &unk_10002D640;
-  v11 = self;
-  v12 = a4;
-  v10 = v6;
-  v7 = v6;
-  v8 = v12;
+  selfCopy = self;
+  completionCopy = completion;
+  v10 = actionCopy;
+  v7 = actionCopy;
+  v8 = completionCopy;
   [v7 processParametersWithoutAskingForValuesWithInput:0 workQueue:&_dispatch_main_q completionHandler:v9];
 }
 
-- (void)populateConfiguredIntentWithCompletion:(id)a3
+- (void)populateConfiguredIntentWithCompletion:(id)completion
 {
-  v11 = a3;
-  v4 = [(WFWidgetValuePickerViewController *)self action];
-  if (v4)
+  completionCopy = completion;
+  action = [(WFWidgetValuePickerViewController *)self action];
+  if (action)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = action;
     }
 
     else
@@ -121,10 +121,10 @@ LABEL_5:
 
   v6 = v5;
 
-  v7 = [(WFWidgetValuePickerViewController *)self action];
-  if (v7)
+  action2 = [(WFWidgetValuePickerViewController *)self action];
+  if (action2)
   {
-    v8 = v7;
+    v8 = action2;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -145,7 +145,7 @@ LABEL_5:
         goto LABEL_17;
       }
 
-      [(WFWidgetValuePickerViewController *)self populateConfiguredAppIntentWithAction:v10 completion:v11];
+      [(WFWidgetValuePickerViewController *)self populateConfiguredAppIntentWithAction:v10 completion:completionCopy];
       goto LABEL_16;
     }
   }
@@ -160,20 +160,20 @@ LABEL_5:
     v10 = 0;
   }
 
-  [(WFWidgetValuePickerViewController *)self populateConfiguredCustomIntentWithAction:v6 completion:v11];
+  [(WFWidgetValuePickerViewController *)self populateConfiguredCustomIntentWithAction:v6 completion:completionCopy];
   v8 = v10;
 LABEL_16:
 
 LABEL_17:
 }
 
-- (WFWidgetValuePickerViewController)initWithAction:(id)a3 parameter:(id)a4 intentIdentifier:(id)a5 widgetFamily:(int64_t)a6
+- (WFWidgetValuePickerViewController)initWithAction:(id)action parameter:(id)parameter intentIdentifier:(id)identifier widgetFamily:(int64_t)family
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a4;
-  v14 = [v13 key];
-  v15 = [v11 parameterStateForKey:v14];
+  actionCopy = action;
+  identifierCopy = identifier;
+  parameterCopy = parameter;
+  v14 = [parameterCopy key];
+  v15 = [actionCopy parameterStateForKey:v14];
 
   if (v15)
   {
@@ -198,12 +198,12 @@ LABEL_17:
 
   v23.receiver = self;
   v23.super_class = WFWidgetValuePickerViewController;
-  v18 = [(WFWidgetValuePickerViewController *)&v23 initWithParameter:v13 widgetFamily:a6 allowsVariables:0 initialCollection:0 currentState:v17 delegate:self];
+  v18 = [(WFWidgetValuePickerViewController *)&v23 initWithParameter:parameterCopy widgetFamily:family allowsVariables:0 initialCollection:0 currentState:v17 delegate:self];
 
   if (v18)
   {
-    objc_storeStrong(&v18->_action, a3);
-    v19 = [v12 copy];
+    objc_storeStrong(&v18->_action, action);
+    v19 = [identifierCopy copy];
     intentIdentifier = v18->_intentIdentifier;
     v18->_intentIdentifier = v19;
 

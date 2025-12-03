@@ -1,68 +1,68 @@
 @interface WiFiUsagePoorLinkSession
-+ (id)describeWiFiUsageMonitor_tdDecisionState:(id *)a3;
-+ (id)describeWiFiUsageMonitor_tdExecState:(id)a3;
-+ (id)describeWiFiUsageMonitor_tdFastTDState:(id *)a3;
-+ (id)sessionEndedBy:(int)a3;
-+ (id)sessionStartedBy:(int)a3;
-+ (id)timerReason:(int)a3;
++ (id)describeWiFiUsageMonitor_tdDecisionState:(id *)state;
++ (id)describeWiFiUsageMonitor_tdExecState:(id)state;
++ (id)describeWiFiUsageMonitor_tdFastTDState:(id *)state;
++ (id)sessionEndedBy:(int)by;
++ (id)sessionStartedBy:(int)by;
++ (id)timerReason:(int)reason;
 - ($CA18CBBE7683B0106BED709705F86C47)last_SuppressState;
 - ($F459DE10F772475887923C84DB189A08)last_DecisionState;
-- (BOOL)driverDoesNotRecommendTd:(unint64_t)a3;
-- (WiFiUsagePoorLinkSession)initWithInterfaceName:(id)a3 andCapabilities:(id)a4 onQueue:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)driverDoesNotRecommendTd:(unint64_t)td;
+- (WiFiUsagePoorLinkSession)initWithInterfaceName:(id)name andCapabilities:(id)capabilities onQueue:(id)queue;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
-- (void)faultEventDetected:(unint64_t)a3 event:(id)a4;
+- (void)faultEventDetected:(unint64_t)detected event:(id)event;
 - (void)initializeTimer;
-- (void)joinStateDidChange:(id)a3 withReason:(unint64_t)a4 lastDisconnectReason:(int64_t)a5 lastJoinFailure:(int64_t)a6 andNetworkDetails:(id)a7;
-- (void)linkQualityDidChange:(id)a3;
+- (void)joinStateDidChange:(id)change withReason:(unint64_t)reason lastDisconnectReason:(int64_t)disconnectReason lastJoinFailure:(int64_t)failure andNetworkDetails:(id)details;
+- (void)linkQualityDidChange:(id)change;
 - (void)logUserImpactTimes;
 - (void)resetRxFrameImpact;
-- (void)roamingStateDidChange:(BOOL)a3 reason:(unint64_t)a4 andStatus:(unint64_t)a5 andLatency:(unint64_t)a6 andRoamData:(id)a7 andPingPongStats:(id)a8;
-- (void)sessionDidEnd:(int)a3;
-- (void)setLast_DecisionState:(id *)a3;
-- (void)setLast_FastTdVotes:(id *)a3;
+- (void)roamingStateDidChange:(BOOL)change reason:(unint64_t)reason andStatus:(unint64_t)status andLatency:(unint64_t)latency andRoamData:(id)data andPingPongStats:(id)stats;
+- (void)sessionDidEnd:(int)end;
+- (void)setLast_DecisionState:(id *)state;
+- (void)setLast_FastTdVotes:(id *)votes;
 - (void)stopTimer;
 - (void)summarizeSession;
 - (void)suspendTimer;
-- (void)tdLogic_badRssi:(int64_t)a3 goodRSSI:(int64_t)goodLinkRssi;
-- (void)tdLogic_decisionState:(id *)a3;
-- (void)tdLogic_deferJoin:(unint64_t)a3 perBSSID:(unint64_t)perBSSID_deferJoin;
-- (void)tdLogic_fastTdState:(id *)a3;
-- (void)updateRxFrameImpactWith:(id)a3;
-- (void)updateWithScores:(id)a3;
+- (void)tdLogic_badRssi:(int64_t)rssi goodRSSI:(int64_t)goodLinkRssi;
+- (void)tdLogic_decisionState:(id *)state;
+- (void)tdLogic_deferJoin:(unint64_t)join perBSSID:(unint64_t)perBSSID_deferJoin;
+- (void)tdLogic_fastTdState:(id *)state;
+- (void)updateRxFrameImpactWith:(id)with;
+- (void)updateWithScores:(id)scores;
 @end
 
 @implementation WiFiUsagePoorLinkSession
 
-- (void)updateWithScores:(id)a3
+- (void)updateWithScores:(id)scores
 {
-  v6 = a3;
+  scoresCopy = scores;
   if ([(WiFiUsageSession *)self isSessionActive])
   {
     timerReason = self->_timerReason;
     if (timerReason == 3 || timerReason == 0)
     {
-      if ([v6 txLatencyP95] != 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(v6, "txLatencyP95") > self->_txLatencyThreshold)
+      if ([scoresCopy txLatencyP95] != 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(scoresCopy, "txLatencyP95") > self->_txLatencyThreshold)
       {
-        self->_txLatencyImpactTime += [v6 duration];
+        self->_txLatencyImpactTime += [scoresCopy duration];
       }
 
-      if ([v6 chanQualScore] == 1)
+      if ([scoresCopy chanQualScore] == 1)
       {
-        self->_txRxRateImpactTime += [v6 duration];
+        self->_txRxRateImpactTime += [scoresCopy duration];
       }
 
-      if ([v6 txLossScore] <= 2)
+      if ([scoresCopy txLossScore] <= 2)
       {
-        self->_txPerImpactTime += [v6 duration];
+        self->_txPerImpactTime += [scoresCopy duration];
       }
     }
   }
 }
 
-- (void)linkQualityDidChange:(id)a3
+- (void)linkQualityDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   if (![(WiFiUsageSession *)self isSessionActive])
   {
     goto LABEL_52;
@@ -70,17 +70,17 @@
 
   if (self->_toBeClosedAfterLQM)
   {
-    -[WiFiUsagePoorLinkSession setRssiAtNextLinkUp:](self, "setRssiAtNextLinkUp:", [v4 rssiInUse]);
-    if ([v4 driverTDrecommended] != 0x7FFFFFFFFFFFFFFFLL)
+    -[WiFiUsagePoorLinkSession setRssiAtNextLinkUp:](self, "setRssiAtNextLinkUp:", [changeCopy rssiInUse]);
+    if ([changeCopy driverTDrecommended] != 0x7FFFFFFFFFFFFFFFLL)
     {
-      -[WiFiUsagePoorLinkSession setTdRecommendAtNextLinkUp:](self, "setTdRecommendAtNextLinkUp:", [v4 driverTDrecommended] != 0);
+      -[WiFiUsagePoorLinkSession setTdRecommendAtNextLinkUp:](self, "setTdRecommendAtNextLinkUp:", [changeCopy driverTDrecommended] != 0);
     }
 
     timerReason = self->_timerReason;
     if (timerReason == 2)
     {
       self->_timerReason = 3;
-      v6 = self;
+      selfCopy2 = self;
       timerReason = 6;
     }
 
@@ -95,10 +95,10 @@
       }
 
       self->_timerReason = 3;
-      v6 = self;
+      selfCopy2 = self;
     }
 
-    [(WiFiUsagePoorLinkSession *)v6 sessionDidEnd:timerReason];
+    [(WiFiUsagePoorLinkSession *)selfCopy2 sessionDidEnd:timerReason];
 LABEL_26:
     self->_toBeClosedAfterLQM = 0;
     goto LABEL_47;
@@ -107,56 +107,56 @@ LABEL_26:
   v7 = self->_timerReason;
   if (v7 == 3 || v7 == 0)
   {
-    v9 = [v4 perCoreRssiInUse];
-    if (v9 <= 2)
+    perCoreRssiInUse = [changeCopy perCoreRssiInUse];
+    if (perCoreRssiInUse <= 2)
     {
-      v10 = off_2789C7BC0[v9];
-      *(&self->super.super.isa + *v10) = *(&self->super.super.isa + *v10) + [v4 duration];
+      v10 = off_2789C7BC0[perCoreRssiInUse];
+      *(&self->super.super.isa + *v10) = *(&self->super.super.isa + *v10) + [changeCopy duration];
     }
 
     v38.receiver = self;
     v38.super_class = WiFiUsagePoorLinkSession;
-    [(WiFiUsageSession *)&v38 linkQualityDidChange:v4];
+    [(WiFiUsageSession *)&v38 linkQualityDidChange:changeCopy];
     if (self->_isFirstTDConfirmed)
     {
-      v11 = [v4 duration];
+      duration = [changeCopy duration];
     }
 
     else
     {
-      v11 = 0;
+      duration = 0;
     }
 
-    self->_totalSessionTime += [v4 duration];
-    self->_totalSessionTimeAfterFirstTDConfirmed += v11;
-    if ([v4 averageTxPer] >= self->_txPerThresholdHigh)
+    self->_totalSessionTime += [changeCopy duration];
+    self->_totalSessionTimeAfterFirstTDConfirmed += duration;
+    if ([changeCopy averageTxPer] >= self->_txPerThresholdHigh)
     {
-      self->_lowModHighImpactTime += [v4 duration];
-      self->_modHighImpactTime += [v4 duration];
-      self->_highImpactTime += [v4 duration];
-      self->_lowModHighImpactTimeAfterFirstTDConfirmed += v11;
+      self->_lowModHighImpactTime += [changeCopy duration];
+      self->_modHighImpactTime += [changeCopy duration];
+      self->_highImpactTime += [changeCopy duration];
+      self->_lowModHighImpactTimeAfterFirstTDConfirmed += duration;
       v13 = &OBJC_IVAR___WiFiUsagePoorLinkSession__highImpactTimeAfterFirstTDConfirmed;
       v14 = &OBJC_IVAR___WiFiUsagePoorLinkSession__modHighImpactTimeAfterFirstTDConfirmed;
     }
 
     else
     {
-      if ([v4 averageTxPer] < self->_txPerThresholdModerate)
+      if ([changeCopy averageTxPer] < self->_txPerThresholdModerate)
       {
-        if ([v4 averageTxPer] < self->_txPerThresholdLow)
+        if ([changeCopy averageTxPer] < self->_txPerThresholdLow)
         {
 LABEL_30:
-          [(WiFiUsagePoorLinkSession *)self updateRxFrameImpactWith:v4];
-          if (-[WiFiUsagePoorLinkSession isGoodRssi:](self, "isGoodRssi:", [v4 rssiInUse]) && -[WiFiUsagePoorLinkSession driverDoesNotRecommendTd:](self, "driverDoesNotRecommendTd:", objc_msgSend(v4, "driverTDrecommended")) && (objc_msgSend(v4, "rssiInUse") > self->_rssiThresholdFor2GHz || (objc_msgSend(v4, "isHighCCAFor2GHz") & 1) == 0))
+          [(WiFiUsagePoorLinkSession *)self updateRxFrameImpactWith:changeCopy];
+          if (-[WiFiUsagePoorLinkSession isGoodRssi:](self, "isGoodRssi:", [changeCopy rssiInUse]) && -[WiFiUsagePoorLinkSession driverDoesNotRecommendTd:](self, "driverDoesNotRecommendTd:", objc_msgSend(changeCopy, "driverTDrecommended")) && (objc_msgSend(changeCopy, "rssiInUse") > self->_rssiThresholdFor2GHz || (objc_msgSend(changeCopy, "isHighCCAFor2GHz") & 1) == 0))
           {
-            v16 = [(WiFiUsagePoorLinkSession *)self lastTdEval_EndedBy];
-            if (v16)
+            lastTdEval_EndedBy = [(WiFiUsagePoorLinkSession *)self lastTdEval_EndedBy];
+            if (lastTdEval_EndedBy)
             {
             }
 
             else if (!self->_toBeClosedAfterTdLogicEnd)
             {
-              v30 = [v4 rssiInUse];
+              rssiInUse = [changeCopy rssiInUse];
               goodLinkRssi = self->_goodLinkRssi;
               if (goodLinkRssi == 0x7FFFFFFFFFFFFFFFLL)
               {
@@ -168,22 +168,22 @@ LABEL_30:
                 v32 = [MEMORY[0x277CCABB0] numberWithInteger:goodLinkRssi];
               }
 
-              if ([v4 driverTDrecommended] == 0x7FFFFFFFFFFFFFFFLL)
+              if ([changeCopy driverTDrecommended] == 0x7FFFFFFFFFFFFFFFLL)
               {
                 v33 = @"N/A";
               }
 
               else
               {
-                v34 = [v4 driverTDrecommended];
+                driverTDrecommended = [changeCopy driverTDrecommended];
                 v33 = @"YES";
-                if (!v34)
+                if (!driverTDrecommended)
                 {
                   v33 = @"NO";
                 }
               }
 
-              NSLog(&cfstr_SBadlinkSessio.isa, "[WiFiUsagePoorLinkSession linkQualityDidChange:]", v30, v32, v33);
+              NSLog(&cfstr_SBadlinkSessio.isa, "[WiFiUsagePoorLinkSession linkQualityDidChange:]", rssiInUse, v32, v33);
               if (goodLinkRssi != 0x7FFFFFFFFFFFFFFFLL)
               {
               }
@@ -193,7 +193,7 @@ LABEL_30:
             }
 
             self->_toBeClosedAfterTdLogicEnd = 0;
-            v17 = [v4 rssiInUse];
+            rssiInUse2 = [changeCopy rssiInUse];
             v18 = self->_goodLinkRssi;
             if (v18 == 0x7FFFFFFFFFFFFFFFLL)
             {
@@ -205,22 +205,22 @@ LABEL_30:
               v19 = [MEMORY[0x277CCABB0] numberWithInteger:v18];
             }
 
-            if ([v4 driverTDrecommended] == 0x7FFFFFFFFFFFFFFFLL)
+            if ([changeCopy driverTDrecommended] == 0x7FFFFFFFFFFFFFFFLL)
             {
               v20 = @"N/A";
             }
 
             else
             {
-              v21 = [v4 driverTDrecommended];
+              driverTDrecommended2 = [changeCopy driverTDrecommended];
               v20 = @"YES";
-              if (!v21)
+              if (!driverTDrecommended2)
               {
                 v20 = @"NO";
               }
             }
 
-            NSLog(&cfstr_SBadlinkSessio_0.isa, "[WiFiUsagePoorLinkSession linkQualityDidChange:]", v17, v19, v20, 10);
+            NSLog(&cfstr_SBadlinkSessio_0.isa, "[WiFiUsagePoorLinkSession linkQualityDidChange:]", rssiInUse2, v19, v20, 10);
             if (v18 != 0x7FFFFFFFFFFFFFFFLL)
             {
             }
@@ -231,29 +231,29 @@ LABEL_30:
           goto LABEL_47;
         }
 
-        v12 = [v4 duration];
+        duration2 = [changeCopy duration];
         v13 = &OBJC_IVAR___WiFiUsagePoorLinkSession__lowModHighImpactTimeAfterFirstTDConfirmed;
         v14 = &OBJC_IVAR___WiFiUsagePoorLinkSession__lowModHighImpactTime;
 LABEL_29:
-        *(&self->super.super.isa + *v14) = (*(&self->super.super.isa + *v14) + v12);
-        *(&self->super.super.isa + *v13) = (*(&self->super.super.isa + *v13) + v11);
+        *(&self->super.super.isa + *v14) = (*(&self->super.super.isa + *v14) + duration2);
+        *(&self->super.super.isa + *v13) = (*(&self->super.super.isa + *v13) + duration);
         goto LABEL_30;
       }
 
-      self->_lowModHighImpactTime += [v4 duration];
-      self->_modHighImpactTime += [v4 duration];
+      self->_lowModHighImpactTime += [changeCopy duration];
+      self->_modHighImpactTime += [changeCopy duration];
       v13 = &OBJC_IVAR___WiFiUsagePoorLinkSession__modHighImpactTimeAfterFirstTDConfirmed;
       v14 = &OBJC_IVAR___WiFiUsagePoorLinkSession__lowModHighImpactTimeAfterFirstTDConfirmed;
     }
 
-    v12 = v11;
+    duration2 = duration;
     goto LABEL_29;
   }
 
 LABEL_47:
   if (!self->_firstLQMForSessionReceived)
   {
-    if (self->_sessionStartedBy == 4 && -[WiFiUsagePoorLinkSession isBadRssi:](self, "isBadRssi:", [v4 rssiInUse]))
+    if (self->_sessionStartedBy == 4 && -[WiFiUsagePoorLinkSession isBadRssi:](self, "isBadRssi:", [changeCopy rssiInUse]))
     {
       self->_sessionStartedBy = 1;
       NSLog(&cfstr_STdalertedDueT.isa, "[WiFiUsagePoorLinkSession linkQualityDidChange:]");
@@ -265,17 +265,17 @@ LABEL_47:
 LABEL_52:
   if (![(WiFiUsageSession *)self isSessionActive]|| !self->_timerReason)
   {
-    if (-[WiFiUsagePoorLinkSession isBadRssi:](self, "isBadRssi:", [v4 rssiInUse]))
+    if (-[WiFiUsagePoorLinkSession isBadRssi:](self, "isBadRssi:", [changeCopy rssiInUse]))
     {
       if (!self->_timerReason)
       {
         self->_timerReason = 3;
         [(WiFiUsagePoorLinkSession *)self suspendTimer];
-        v26 = [v4 rssiInUse];
-        v27 = v26;
+        rssiInUse3 = [changeCopy rssiInUse];
+        v27 = rssiInUse3;
         if (self->_badLinkRssi == 0x7FFFFFFFFFFFFFFFLL)
         {
-          NSLog(&cfstr_SRssiLddbmCros.isa, "[WiFiUsagePoorLinkSession linkQualityDidChange:]", v26, @"N/A");
+          NSLog(&cfstr_SRssiLddbmCros.isa, "[WiFiUsagePoorLinkSession linkQualityDidChange:]", rssiInUse3, @"N/A");
         }
 
         else
@@ -287,11 +287,11 @@ LABEL_52:
         goto LABEL_74;
       }
 
-      v22 = [v4 rssiInUse];
-      v23 = v22;
+      rssiInUse4 = [changeCopy rssiInUse];
+      v23 = rssiInUse4;
       if (self->_badLinkRssi == 0x7FFFFFFFFFFFFFFFLL)
       {
-        NSLog(&cfstr_SRssiLddbmCros_0.isa, "[WiFiUsagePoorLinkSession linkQualityDidChange:]", v22, @"N/A");
+        NSLog(&cfstr_SRssiLddbmCros_0.isa, "[WiFiUsagePoorLinkSession linkQualityDidChange:]", rssiInUse4, @"N/A");
       }
 
       else
@@ -300,11 +300,11 @@ LABEL_52:
         NSLog(&cfstr_SRssiLddbmCros_0.isa, "[WiFiUsagePoorLinkSession linkQualityDidChange:]", v23, v28);
       }
 
-      v24 = self;
+      selfCopy5 = self;
       v25 = 1;
     }
 
-    else if ([v4 rssiInUse] <= self->_rssiThresholdFor2GHz && objc_msgSend(v4, "isHighCCAFor2GHz"))
+    else if ([changeCopy rssiInUse] <= self->_rssiThresholdFor2GHz && objc_msgSend(changeCopy, "isHighCCAFor2GHz"))
     {
       if (!self->_timerReason)
       {
@@ -315,13 +315,13 @@ LABEL_52:
       }
 
       NSLog(&cfstr_SBadlinkSessio_2.isa, "[WiFiUsagePoorLinkSession linkQualityDidChange:]");
-      v24 = self;
+      selfCopy5 = self;
       v25 = 5;
     }
 
     else
     {
-      if ([v4 driverTDrecommended] == 0x7FFFFFFFFFFFFFFFLL || !objc_msgSend(v4, "driverTDrecommended"))
+      if ([changeCopy driverTDrecommended] == 0x7FFFFFFFFFFFFFFFLL || !objc_msgSend(changeCopy, "driverTDrecommended"))
       {
         goto LABEL_74;
       }
@@ -330,81 +330,81 @@ LABEL_52:
       {
         self->_timerReason = 3;
         [(WiFiUsagePoorLinkSession *)self suspendTimer];
-        NSLog(&cfstr_SBadlinkSessio_3.isa, "[WiFiUsagePoorLinkSession linkQualityDidChange:]", v4, v36);
+        NSLog(&cfstr_SBadlinkSessio_3.isa, "[WiFiUsagePoorLinkSession linkQualityDidChange:]", changeCopy, v36);
         goto LABEL_74;
       }
 
-      NSLog(&cfstr_SBadlinkSessio_4.isa, "[WiFiUsagePoorLinkSession linkQualityDidChange:]", v4);
-      v24 = self;
+      NSLog(&cfstr_SBadlinkSessio_4.isa, "[WiFiUsagePoorLinkSession linkQualityDidChange:]", changeCopy);
+      selfCopy5 = self;
       v25 = 2;
     }
 
-    [(WiFiUsagePoorLinkSession *)v24 sessionDidStart:v25];
+    [(WiFiUsagePoorLinkSession *)selfCopy5 sessionDidStart:v25];
 LABEL_74:
     v37.receiver = self;
     v37.super_class = WiFiUsagePoorLinkSession;
-    [(WiFiUsageSession *)&v37 linkQualityDidChange:v4];
+    [(WiFiUsageSession *)&v37 linkQualityDidChange:changeCopy];
   }
 
   if (self->_justJoined)
   {
-    -[WiFiUsagePoorLinkSession setRssiAtJoin:](self, "setRssiAtJoin:", [v4 rssiInUse]);
-    if ([v4 driverTDrecommended] != 0x7FFFFFFFFFFFFFFFLL)
+    -[WiFiUsagePoorLinkSession setRssiAtJoin:](self, "setRssiAtJoin:", [changeCopy rssiInUse]);
+    if ([changeCopy driverTDrecommended] != 0x7FFFFFFFFFFFFFFFLL)
     {
-      -[WiFiUsagePoorLinkSession setTdRecommendAtJoin:](self, "setTdRecommendAtJoin:", [v4 driverTDrecommended] != 0);
+      -[WiFiUsagePoorLinkSession setTdRecommendAtJoin:](self, "setTdRecommendAtJoin:", [changeCopy driverTDrecommended] != 0);
     }
 
     self->_justJoined = 0;
   }
 
-  if ([v4 driverTDrecommended] != 0x7FFFFFFFFFFFFFFFLL)
+  if ([changeCopy driverTDrecommended] != 0x7FFFFFFFFFFFFFFFLL)
   {
-    self->_lastTdRecommended = [v4 driverTDrecommended] != 0;
+    self->_lastTdRecommended = [changeCopy driverTDrecommended] != 0;
   }
 
-  self->_lastIsTimeSensitiveAppRunning = [v4 isAVcallOnWiFi];
-  self->_lastIsAnyAppinFG = [v4 isNwAppInFG];
+  self->_lastIsTimeSensitiveAppRunning = [changeCopy isAVcallOnWiFi];
+  self->_lastIsAnyAppinFG = [changeCopy isNwAppInFG];
 }
 
-- (BOOL)driverDoesNotRecommendTd:(unint64_t)a3
+- (BOOL)driverDoesNotRecommendTd:(unint64_t)td
 {
   lastTdRecommended = self->_lastTdRecommended;
   if (lastTdRecommended)
   {
-    return !a3 && lastTdRecommended;
+    return !td && lastTdRecommended;
   }
 
   result = 1;
-  if (a3)
+  if (td)
   {
-    if (a3 != 0x7FFFFFFFFFFFFFFFLL)
+    if (td != 0x7FFFFFFFFFFFFFFFLL)
     {
-      return !a3 && lastTdRecommended;
+      return !td && lastTdRecommended;
     }
   }
 
   return result;
 }
 
-- (void)faultEventDetected:(unint64_t)a3 event:(id)a4
+- (void)faultEventDetected:(unint64_t)detected event:(id)event
 {
   v6.receiver = self;
   v6.super_class = WiFiUsagePoorLinkSession;
-  [(WiFiUsageSession *)&v6 faultEventDetected:a3 event:a4];
-  if (a3 == 1 && ![(WiFiUsageSession *)self isSessionActive])
+  [(WiFiUsageSession *)&v6 faultEventDetected:detected event:event];
+  if (detected == 1 && ![(WiFiUsageSession *)self isSessionActive])
   {
     NSLog(&cfstr_SBadlinkSessio_5.isa, "[WiFiUsagePoorLinkSession faultEventDetected:event:]");
     [(WiFiUsagePoorLinkSession *)self sessionDidStart:3];
   }
 }
 
-- (void)joinStateDidChange:(id)a3 withReason:(unint64_t)a4 lastDisconnectReason:(int64_t)a5 lastJoinFailure:(int64_t)a6 andNetworkDetails:(id)a7
+- (void)joinStateDidChange:(id)change withReason:(unint64_t)reason lastDisconnectReason:(int64_t)disconnectReason lastJoinFailure:(int64_t)failure andNetworkDetails:(id)details
 {
-  v12 = a3;
+  changeCopy = change;
   v19.receiver = self;
   v19.super_class = WiFiUsagePoorLinkSession;
-  [(WiFiUsageSession *)&v19 joinStateDidChange:v12 withReason:a4 lastDisconnectReason:a5 lastJoinFailure:a6 andNetworkDetails:a7];
-  if (v12)
+  [(WiFiUsageSession *)&v19 joinStateDidChange:changeCopy withReason:reason lastDisconnectReason:disconnectReason lastJoinFailure:failure andNetworkDetails:details];
+  if (changeCopy)
   {
     if ([(WiFiUsageSession *)self isSessionActive])
     {
@@ -415,10 +415,10 @@ LABEL_74:
         [(WiFiUsagePoorLinkSession *)self setTimeToNextJoin:?];
       }
 
-      v14 = [WiFiUsageSession joinReasonString:a4];
+      v14 = [WiFiUsageSession joinReasonString:reason];
       [(WiFiUsagePoorLinkSession *)self setNextJoinReason:v14];
 
-      if ([v12 isEqualToString:self->_ssidAtLinkDown])
+      if ([changeCopy isEqualToString:self->_ssidAtLinkDown])
       {
         [(WiFiUsagePoorLinkSession *)self setNextJoinIsSameSSID:1];
         timeToNextJoin = self->_timeToNextJoin;
@@ -437,13 +437,13 @@ LABEL_74:
   }
 }
 
-- (void)roamingStateDidChange:(BOOL)a3 reason:(unint64_t)a4 andStatus:(unint64_t)a5 andLatency:(unint64_t)a6 andRoamData:(id)a7 andPingPongStats:(id)a8
+- (void)roamingStateDidChange:(BOOL)change reason:(unint64_t)reason andStatus:(unint64_t)status andLatency:(unint64_t)latency andRoamData:(id)data andPingPongStats:(id)stats
 {
-  if (!a3)
+  if (!change)
   {
     if (self->_tdConfirmed)
     {
-      switch(a5)
+      switch(status)
       {
         case 0uLL:
           v12 = &OBJC_IVAR___WiFiUsagePoorLinkSession__roamStatus_Succeeded_Count_WhileTDWait;
@@ -466,7 +466,7 @@ LABEL_19:
       goto LABEL_13;
     }
 
-    switch(a5)
+    switch(status)
     {
       case 0uLL:
         v12 = &OBJC_IVAR___WiFiUsagePoorLinkSession__roamStatus_Succeeded_Count_BeforeTDWait;
@@ -495,9 +495,9 @@ LABEL_20:
   [WiFiUsageSession roamingStateDidChange:sel_roamingStateDidChange_reason_andStatus_andLatency_andRoamData_andPingPongStats_ reason:? andStatus:? andLatency:? andRoamData:? andPingPongStats:?];
 }
 
-- (void)tdLogic_decisionState:(id *)a3
+- (void)tdLogic_decisionState:(id *)state
 {
-  ++a3->var8;
+  ++state->var8;
   if (self->_timerReason == 3)
   {
     v20 = v3;
@@ -597,8 +597,8 @@ LABEL_20:
       lastDecisionAt = self->_lastDecisionAt;
       self->_lastDecisionAt = v8;
 
-      v18 = *&a3->var13;
-      v19[0] = *&a3->var0;
+      v18 = *&state->var13;
+      v19[0] = *&state->var0;
       v19[1] = v18;
       [(WiFiUsagePoorLinkSession *)self setLast_DecisionState:v19];
       [(WiFiUsagePoorLinkSession *)self setIsLastDecisionStateValid:1];
@@ -606,7 +606,7 @@ LABEL_20:
   }
 }
 
-- (void)tdLogic_fastTdState:(id *)a3
+- (void)tdLogic_fastTdState:(id *)state
 {
   v5 = [MEMORY[0x277CBEAA8] now];
   v6 = v5;
@@ -701,8 +701,8 @@ LABEL_20:
   lastFastTDVotesAt = self->_lastFastTDVotesAt;
   self->_lastFastTDVotesAt = v6;
 
-  v16 = *&a3->var0;
-  v17 = *&a3->var9;
+  v16 = *&state->var0;
+  v17 = *&state->var9;
   [(WiFiUsagePoorLinkSession *)self setLast_FastTdVotes:&v16];
   [(WiFiUsagePoorLinkSession *)self setIsLastFastTdVotesValid:1];
 }
@@ -993,10 +993,10 @@ LABEL_20:
   [(WiFiUsageSession *)&v30 summarizeSession];
 }
 
-- (void)sessionDidEnd:(int)a3
+- (void)sessionDidEnd:(int)end
 {
   [(WiFiUsagePoorLinkSession *)self setSessionEndedBy:?];
-  if (a3 == 5 || !a3)
+  if (end == 5 || !end)
   {
     v5 = [WiFiUsageInterfaceStats statsForInterfaceName:self->_interface];
     -[WiFiUsagePoorLinkSession setSessionTxBytes:](self, "setSessionTxBytes:", [v5 txBytes] - self->_sessionStartTxBytes);
@@ -1115,18 +1115,18 @@ LABEL_9:
   }
 }
 
-- (WiFiUsagePoorLinkSession)initWithInterfaceName:(id)a3 andCapabilities:(id)a4 onQueue:(id)a5
+- (WiFiUsagePoorLinkSession)initWithInterfaceName:(id)name andCapabilities:(id)capabilities onQueue:(id)queue
 {
-  v9 = a3;
-  v10 = a5;
+  nameCopy = name;
+  queueCopy = queue;
   v24.receiver = self;
   v24.super_class = WiFiUsagePoorLinkSession;
-  v11 = [(WiFiUsageSession *)&v24 initWithSessionType:9 andInterfaceName:v9 andCapabilities:a4];
+  v11 = [(WiFiUsageSession *)&v24 initWithSessionType:9 andInterfaceName:nameCopy andCapabilities:capabilities];
   v12 = [[WiFiUsageSessionCAConfig alloc] initWithSampling:2 minInterval:86400.0];
   [(WiFiUsageSession *)v11 setCa_config:v12];
 
-  objc_storeStrong(&v11->_queue, a5);
-  objc_storeStrong(&v11->_interface, a3);
+  objc_storeStrong(&v11->_queue, queue);
+  objc_storeStrong(&v11->_interface, name);
   [(WiFiUsagePoorLinkSession *)v11 initializeTimer];
   v13 = [[WiFiSoftError alloc] initWithName:@"TriggerDisconnect" andParams:&unk_2848BB0D8];
   tdSoftError = v11->_tdSoftError;
@@ -1207,11 +1207,11 @@ LABEL_9:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v9.receiver = self;
   v9.super_class = WiFiUsagePoorLinkSession;
-  v4 = [(WiFiUsageSession *)&v9 copyWithZone:a3];
+  v4 = [(WiFiUsageSession *)&v9 copyWithZone:zone];
   *(v4 + 1503) = self->_badLinkRssi;
   *(v4 + 1504) = self->_goodLinkRssi;
   *(v4 + 1505) = self->_rssiThresholdFor2GHz;
@@ -1341,12 +1341,12 @@ LABEL_9:
   return v4;
 }
 
-- (void)tdLogic_badRssi:(int64_t)a3 goodRSSI:(int64_t)goodLinkRssi
+- (void)tdLogic_badRssi:(int64_t)rssi goodRSSI:(int64_t)goodLinkRssi
 {
   v10.receiver = self;
   v10.super_class = WiFiUsagePoorLinkSession;
   [WiFiUsageSession tdLogic_badRssi:sel_tdLogic_badRssi_goodRSSI_ goodRSSI:?];
-  self->_badLinkRssi = a3;
+  self->_badLinkRssi = rssi;
   self->_goodLinkRssi = goodLinkRssi;
   badLinkRssi = self->_badLinkRssi;
   if (badLinkRssi == 0x7FFFFFFFFFFFFFFFLL)
@@ -1376,12 +1376,12 @@ LABEL_9:
   }
 }
 
-- (void)tdLogic_deferJoin:(unint64_t)a3 perBSSID:(unint64_t)perBSSID_deferJoin
+- (void)tdLogic_deferJoin:(unint64_t)join perBSSID:(unint64_t)perBSSID_deferJoin
 {
   v10.receiver = self;
   v10.super_class = WiFiUsagePoorLinkSession;
   [WiFiUsageSession tdLogic_deferJoin:sel_tdLogic_deferJoin_perBSSID_ perBSSID:?];
-  self->_perSSID_deferJoin = a3;
+  self->_perSSID_deferJoin = join;
   self->_perBSSID_deferJoin = perBSSID_deferJoin;
   perSSID_deferJoin = self->_perSSID_deferJoin;
   if (perSSID_deferJoin == 0x7FFFFFFFFFFFFFFFLL)
@@ -1411,9 +1411,9 @@ LABEL_9:
   }
 }
 
-- (void)updateRxFrameImpactWith:(id)a3
+- (void)updateRxFrameImpactWith:(id)with
 {
-  v11 = a3;
+  withCopy = with;
   if ([(NSArray *)self->_rxFrameThresholds count])
   {
     v4 = 0;
@@ -1428,18 +1428,18 @@ LABEL_9:
       }
 
       objc_opt_class();
-      if ((objc_opt_isKindOfClass() & 1) == 0 || ![v11 duration])
+      if ((objc_opt_isKindOfClass() & 1) == 0 || ![withCopy duration])
       {
         break;
       }
 
       v7 = v5;
-      v8 = [v11 rxFrames];
-      v9 = v8 / [v11 duration];
+      rxFrames = [withCopy rxFrames];
+      v9 = rxFrames / [withCopy duration];
       v10 = v7;
       if (v9 <= [v6 integerValue])
       {
-        v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v7, "unsignedIntegerValue") + objc_msgSend(v11, "duration")}];
+        v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v7, "unsignedIntegerValue") + objc_msgSend(withCopy, "duration")}];
 
         [(NSMutableArray *)self->_rxFrameImpactTime replaceObjectAtIndex:v4 withObject:v10];
       }
@@ -1487,8 +1487,8 @@ LABEL_11:
   NSLog(&cfstr_SLowmodhighimp.isa, "[WiFiUsagePoorLinkSession logUserImpactTimes]", [(WiFiUsagePoorLinkSession *)self lowModHighImpactTime], [(WiFiUsagePoorLinkSession *)self lowModHighImpactTimeAfterFirstTDConfirmed]);
   NSLog(&cfstr_SModhighimpact.isa, "[WiFiUsagePoorLinkSession logUserImpactTimes]", [(WiFiUsagePoorLinkSession *)self modHighImpactTime], [(WiFiUsagePoorLinkSession *)self modHighImpactTimeAfterFirstTDConfirmed]);
   NSLog(&cfstr_SHighimpacttim.isa, "[WiFiUsagePoorLinkSession logUserImpactTimes]", [(WiFiUsagePoorLinkSession *)self highImpactTime], [(WiFiUsagePoorLinkSession *)self highImpactTimeAfterFirstTDConfirmed]);
-  v10 = [MEMORY[0x277CCAB68] string];
-  [v10 appendFormat:@"%s RxFrameImpactTime [Threshold, Duration] ", "-[WiFiUsagePoorLinkSession logUserImpactTimes]"];
+  string = [MEMORY[0x277CCAB68] string];
+  [string appendFormat:@"%s RxFrameImpactTime [Threshold, Duration] ", "-[WiFiUsagePoorLinkSession logUserImpactTimes]"];
   if ([(NSArray *)self->_rxFrameThresholds count])
   {
     v4 = 0;
@@ -1509,10 +1509,10 @@ LABEL_11:
       }
 
       v7 = v5;
-      v8 = [v6 unsignedIntegerValue];
-      v9 = [v7 unsignedIntegerValue];
+      unsignedIntegerValue = [v6 unsignedIntegerValue];
+      unsignedIntegerValue2 = [v7 unsignedIntegerValue];
 
-      [v10 appendFormat:@"[%lu, %lu] ", v8, v9];
+      [string appendFormat:@"[%lu, %lu] ", unsignedIntegerValue, unsignedIntegerValue2];
       if (++v4 >= [(NSArray *)self->_rxFrameThresholds count])
       {
         goto LABEL_12;
@@ -1521,56 +1521,56 @@ LABEL_11:
   }
 
 LABEL_12:
-  NSLog(&stru_284888320.isa, v10);
+  NSLog(&stru_284888320.isa, string);
   NSLog(&cfstr_SUnifiedimpact.isa, "[WiFiUsagePoorLinkSession logUserImpactTimes]", [(WiFiUsagePoorLinkSession *)self unifiedImpactTime], [(WiFiUsagePoorLinkSession *)self txPerImpactTime], [(WiFiUsagePoorLinkSession *)self txRxRateImpactTime], [(WiFiUsagePoorLinkSession *)self txLatencyImpactTime]);
   NSLog(&cfstr_SSessiontotalb.isa, "[WiFiUsagePoorLinkSession logUserImpactTimes]", [(WiFiUsagePoorLinkSession *)self sessionTotalBytes], [(WiFiUsagePoorLinkSession *)self sessionTxBytes], [(WiFiUsagePoorLinkSession *)self sessionRxBytes]);
 }
 
-+ (id)sessionStartedBy:(int)a3
++ (id)sessionStartedBy:(int)by
 {
-  if ((a3 - 1) > 4)
+  if ((by - 1) > 4)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_2789C7BD8[a3 - 1];
+    return off_2789C7BD8[by - 1];
   }
 }
 
-+ (id)sessionEndedBy:(int)a3
++ (id)sessionEndedBy:(int)by
 {
-  if (a3 > 6)
+  if (by > 6)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_2789C7C00[a3];
+    return off_2789C7C00[by];
   }
 }
 
-+ (id)timerReason:(int)a3
++ (id)timerReason:(int)reason
 {
-  if (a3 > 3)
+  if (reason > 3)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_2789C7C38[a3];
+    return off_2789C7C38[reason];
   }
 }
 
-+ (id)describeWiFiUsageMonitor_tdDecisionState:(id *)a3
++ (id)describeWiFiUsageMonitor_tdDecisionState:(id *)state
 {
   v4 = MEMORY[0x277CCACA8];
-  v5 = [WiFiUsagePrivacyFilter getLabelForTDMode:a3->var8];
+  v5 = [WiFiUsagePrivacyFilter getLabelForTDMode:state->var8];
   v6 = &stru_28487EF20;
-  if (a3->var0)
+  if (state->var0)
   {
     v7 = @"decision_TxPER & ";
   }
@@ -1580,7 +1580,7 @@ LABEL_12:
     v7 = &stru_28487EF20;
   }
 
-  if (a3->var1)
+  if (state->var1)
   {
     v8 = @"decision_BeaconPER & ";
   }
@@ -1590,7 +1590,7 @@ LABEL_12:
     v8 = &stru_28487EF20;
   }
 
-  if (a3->var2)
+  if (state->var2)
   {
     v9 = @"decision_FWTxPER & ";
   }
@@ -1601,12 +1601,12 @@ LABEL_12:
   }
 
   v10 = @"decision_GatewayARPFailure & ";
-  if (!a3->var3)
+  if (!state->var3)
   {
     v10 = &stru_28487EF20;
   }
 
-  if (a3->var4)
+  if (state->var4)
   {
     v11 = @"decision_SymptomsDNSError & ";
   }
@@ -1616,7 +1616,7 @@ LABEL_12:
     v11 = &stru_28487EF20;
   }
 
-  if (a3->var5)
+  if (state->var5)
   {
     v12 = @"decision_AutoLeave & ";
   }
@@ -1626,7 +1626,7 @@ LABEL_12:
     v12 = &stru_28487EF20;
   }
 
-  if (a3->var6)
+  if (state->var6)
   {
     v13 = @"decision_ActiveProbe & ";
   }
@@ -1636,7 +1636,7 @@ LABEL_12:
     v13 = &stru_28487EF20;
   }
 
-  if (a3->var7)
+  if (state->var7)
   {
     v14 = @"decision_FastTD & ";
   }
@@ -1646,7 +1646,7 @@ LABEL_12:
     v14 = &stru_28487EF20;
   }
 
-  if (a3->var9)
+  if (state->var9)
   {
     v15 = @"motionbasedAggressiveTDEnabled & ";
   }
@@ -1657,12 +1657,12 @@ LABEL_12:
   }
 
   v16 = @"walkoutDetected & ";
-  if (!a3->var10)
+  if (!state->var10)
   {
     v16 = &stru_28487EF20;
   }
 
-  if (a3->var11)
+  if (state->var11)
   {
     v17 = @"waitForRoam & ";
   }
@@ -1672,7 +1672,7 @@ LABEL_12:
     v17 = &stru_28487EF20;
   }
 
-  if (a3->var12)
+  if (state->var12)
   {
     v18 = @"edgeBSS & ";
   }
@@ -1682,7 +1682,7 @@ LABEL_12:
     v18 = &stru_28487EF20;
   }
 
-  if (a3->var13)
+  if (state->var13)
   {
     v19 = @"appsUsingWiFi & ";
   }
@@ -1692,20 +1692,20 @@ LABEL_12:
     v19 = &stru_28487EF20;
   }
 
-  if (a3->var14)
+  if (state->var14)
   {
     v6 = @"monitorMode & ";
   }
 
-  v20 = [v4 stringWithFormat:@"tdMode:%@ & %@%@%@%@%@%@%@%@%@%@%@%@%@%@autoLeaveRSSIthreshold:%ld", v5, v7, v8, v9, v10, v11, v12, v13, v14, v15, v16, v17, v18, v19, v6, a3->var15];
+  v20 = [v4 stringWithFormat:@"tdMode:%@ & %@%@%@%@%@%@%@%@%@%@%@%@%@%@autoLeaveRSSIthreshold:%ld", v5, v7, v8, v9, v10, v11, v12, v13, v14, v15, v16, v17, v18, v19, v6, state->var15];
 
   return v20;
 }
 
-+ (id)describeWiFiUsageMonitor_tdFastTDState:(id *)a3
++ (id)describeWiFiUsageMonitor_tdFastTDState:(id *)state
 {
   v3 = @"NO";
-  if (a3->var9)
+  if (state->var9)
   {
     v4 = @"YES";
   }
@@ -1715,13 +1715,13 @@ LABEL_12:
     v4 = @"NO";
   }
 
-  if (a3->var10)
+  if (state->var10)
   {
     v3 = @"YES";
   }
 
   v5 = &stru_28487EF20;
-  if (a3->var1)
+  if (state->var1)
   {
     v6 = @"Recommend & ";
   }
@@ -1731,7 +1731,7 @@ LABEL_12:
     v6 = &stru_28487EF20;
   }
 
-  if (a3->var2)
+  if (state->var2)
   {
     v7 = @"TxPER & ";
   }
@@ -1741,7 +1741,7 @@ LABEL_12:
     v7 = &stru_28487EF20;
   }
 
-  if (a3->var3)
+  if (state->var3)
   {
     v8 = @"BeaconPER & ";
   }
@@ -1751,7 +1751,7 @@ LABEL_12:
     v8 = &stru_28487EF20;
   }
 
-  if (a3->var4)
+  if (state->var4)
   {
     v9 = @"FWTxPER & ";
   }
@@ -1762,12 +1762,12 @@ LABEL_12:
   }
 
   v10 = @"2GDataStall & ";
-  if (!a3->var7)
+  if (!state->var7)
   {
     v10 = &stru_28487EF20;
   }
 
-  if (a3->var6)
+  if (state->var6)
   {
     v11 = @"2GPoorLink & ";
   }
@@ -1777,7 +1777,7 @@ LABEL_12:
     v11 = &stru_28487EF20;
   }
 
-  if (a3->var5)
+  if (state->var5)
   {
     v12 = @"HighLatency & ";
   }
@@ -1787,95 +1787,95 @@ LABEL_12:
     v12 = &stru_28487EF20;
   }
 
-  if (a3->var8)
+  if (state->var8)
   {
     v5 = @"InsufficientRxFrames & ";
   }
 
-  return [MEMORY[0x277CCACA8] stringWithFormat:@"fastTD (RTApp:%@ Cheap5G:%@) votes:%lu %@%@%@%@%@%@%@%@", v4, v3, a3->var0, v6, v7, v8, v9, v10, v11, v12, v5];
+  return [MEMORY[0x277CCACA8] stringWithFormat:@"fastTD (RTApp:%@ Cheap5G:%@) votes:%lu %@%@%@%@%@%@%@%@", v4, v3, state->var0, v6, v7, v8, v9, v10, v11, v12, v5];
 }
 
-+ (id)describeWiFiUsageMonitor_tdExecState:(id)a3
++ (id)describeWiFiUsageMonitor_tdExecState:(id)state
 {
   v3 = &stru_28487EF20;
   v4 = @"aggressiveTDEnabled & ";
-  if (!a3.var0)
+  if (!state.var0)
   {
     v4 = &stru_28487EF20;
   }
 
   v5 = @"rnfAllowed & ";
-  if ((*&a3.var0 & 0x100) == 0)
+  if ((*&state.var0 & 0x100) == 0)
   {
     v5 = &stru_28487EF20;
   }
 
   v6 = @"fastTD & ";
-  if ((*&a3.var0 & 0x10000) == 0)
+  if ((*&state.var0 & 0x10000) == 0)
   {
     v6 = &stru_28487EF20;
   }
 
   v7 = @"suppress_SymptomDataStallScoreGood & ";
-  if ((*&a3.var0 & 0x1000000) == 0)
+  if ((*&state.var0 & 0x1000000) == 0)
   {
     v7 = &stru_28487EF20;
   }
 
   v8 = @"suppress_SymptomAppPolicyScore & ";
-  if ((*&a3.var0 & 0x100000000) == 0)
+  if ((*&state.var0 & 0x100000000) == 0)
   {
     v8 = &stru_28487EF20;
   }
 
   v9 = @"suppress_FastCheapCellular & ";
-  if ((*&a3.var0 & 0x10000000000) == 0)
+  if ((*&state.var0 & 0x10000000000) == 0)
   {
     v9 = &stru_28487EF20;
   }
 
   v10 = @"suppress_2dBGuard & ";
-  if ((*&a3.var0 & 0x1000000000000) == 0)
+  if ((*&state.var0 & 0x1000000000000) == 0)
   {
     v10 = &stru_28487EF20;
   }
 
   v11 = @"suppress_NoFGnetwApp & ";
-  if ((*&a3.var0 & 0x100000000000000) == 0)
+  if ((*&state.var0 & 0x100000000000000) == 0)
   {
     v11 = &stru_28487EF20;
   }
 
   v12 = @"suppress_TTR & ";
-  if (!a3.var8)
+  if (!state.var8)
   {
     v12 = &stru_28487EF20;
   }
 
   v13 = @"suppress_UserInput & ";
-  if ((*&a3.var8 & 0x100) == 0)
+  if ((*&state.var8 & 0x100) == 0)
   {
     v13 = &stru_28487EF20;
   }
 
-  *&a3.var0 = @"suppress_GoodAfterRoam & ";
-  if ((*&a3.var8 & 0x10000) == 0)
+  *&state.var0 = @"suppress_GoodAfterRoam & ";
+  if ((*&state.var8 & 0x10000) == 0)
   {
-    *&a3.var0 = &stru_28487EF20;
+    *&state.var0 = &stru_28487EF20;
   }
 
   v14 = @"defer_activeProbing & ";
-  if ((*&a3.var8 & 0x1000000) == 0)
+  if ((*&state.var8 & 0x1000000) == 0)
   {
     v14 = &stru_28487EF20;
   }
 
-  if ((*&a3.var8 & 0x100000000) != 0)
+  if ((*&state.var8 & 0x100000000) != 0)
   {
     v3 = @"defer_roaming & ";
   }
 
-  return [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@%@%@%@%@%@%@%@%@%@%@%@", v4, v5, v6, v7, v8, v9, v10, v11, v12, v13, *&a3.var0, v14, v3];
+  return [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@%@%@%@%@%@%@%@%@%@%@%@", v4, v5, v6, v7, v8, v9, v10, v11, v12, v13, *&state.var0, v14, v3];
 }
 
 - (void)dealloc
@@ -1894,10 +1894,10 @@ LABEL_12:
   return self;
 }
 
-- (void)setLast_DecisionState:(id *)a3
+- (void)setLast_DecisionState:(id *)state
 {
-  v3 = *&a3->var13;
-  *&self->_last_DecisionState.decision_TxPER = *&a3->var0;
+  v3 = *&state->var13;
+  *&self->_last_DecisionState.decision_TxPER = *&state->var0;
   *&self->_last_DecisionState.appsUsingWiFi = v3;
 }
 
@@ -1922,10 +1922,10 @@ LABEL_12:
   return result;
 }
 
-- (void)setLast_FastTdVotes:(id *)a3
+- (void)setLast_FastTdVotes:(id *)votes
 {
-  v3 = *&a3->var9;
-  *&self->_last_FastTdVotes.fastTD_voteCount = *&a3->var0;
+  v3 = *&votes->var9;
+  *&self->_last_FastTdVotes.fastTD_voteCount = *&votes->var0;
   *&self->_last_FastTdVotes.fastTD_RTApp = v3;
 }
 

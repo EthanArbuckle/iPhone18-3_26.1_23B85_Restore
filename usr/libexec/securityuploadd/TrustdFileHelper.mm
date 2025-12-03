@@ -1,20 +1,20 @@
 @interface TrustdFileHelper
-- (BOOL)allowTrustdToReadFilesForMigration:(id *)a3;
-- (BOOL)changeOwnerOfValidFile:(id)a3 error:(id *)a4;
-- (BOOL)changePermissionsOfKeychainDirectoryFile:(id)a3 error:(id *)a4;
-- (BOOL)fixTrustSettingsPermissions:(id *)a3;
-- (BOOL)fixValidPermissions:(id *)a3;
+- (BOOL)allowTrustdToReadFilesForMigration:(id *)migration;
+- (BOOL)changeOwnerOfValidFile:(id)file error:(id *)error;
+- (BOOL)changePermissionsOfKeychainDirectoryFile:(id)file error:(id *)error;
+- (BOOL)fixTrustSettingsPermissions:(id *)permissions;
+- (BOOL)fixValidPermissions:(id *)permissions;
 - (void)deleteOldFiles;
 - (void)deleteSupplementalsAssetsDir;
-- (void)deleteSystemDbFiles:(__CFString *)a3;
-- (void)fixFiles:(id)a3;
+- (void)deleteSystemDbFiles:(__CFString *)files;
+- (void)fixFiles:(id)files;
 @end
 
 @implementation TrustdFileHelper
 
-- (void)fixFiles:(id)a3
+- (void)fixFiles:(id)files
 {
-  v4 = a3;
+  filesCopy = files;
   [(TrustdFileHelper *)self deleteOldFiles];
   [(TrustdFileHelper *)self allowTrustdToWriteAnalyticsFiles];
   v9 = 0;
@@ -30,7 +30,7 @@
     }
   }
 
-  v4[2](v4, v5, v6);
+  filesCopy[2](filesCopy, v5, v6);
 }
 
 - (void)deleteOldFiles
@@ -63,11 +63,11 @@
   sub_1000148F0(v7, &stru_1000215C0);
 }
 
-- (void)deleteSystemDbFiles:(__CFString *)a3
+- (void)deleteSystemDbFiles:(__CFString *)files
 {
-  v4 = sub_100014804(@"Library/Keychains", a3);
+  v4 = sub_100014804(@"Library/Keychains", files);
   sub_1000148F0(v4, &stru_1000214A0);
-  v5 = CFStringCreateWithFormat(0, 0, @"%@-shm", a3);
+  v5 = CFStringCreateWithFormat(0, 0, @"%@-shm", files);
   v6 = sub_100014804(@"Library/Keychains", v5);
   sub_1000148F0(v6, &stru_1000214C0);
   if (v5)
@@ -75,7 +75,7 @@
     CFRelease(v5);
   }
 
-  v7 = CFStringCreateWithFormat(0, 0, @"%@-wal", a3);
+  v7 = CFStringCreateWithFormat(0, 0, @"%@-wal", files);
   v8 = sub_100014804(@"Library/Keychains", v7);
   sub_1000148F0(v8, &stru_1000214E0);
   if (v7)
@@ -83,7 +83,7 @@
     CFRelease(v7);
   }
 
-  v9 = CFStringCreateWithFormat(0, 0, @"%@-journal", a3);
+  v9 = CFStringCreateWithFormat(0, 0, @"%@-journal", files);
   v10 = sub_100014804(@"Library/Keychains", v9);
   sub_1000148F0(v10, &stru_100021500);
   if (v9)
@@ -93,18 +93,18 @@
   }
 }
 
-- (BOOL)allowTrustdToReadFilesForMigration:(id *)a3
+- (BOOL)allowTrustdToReadFilesForMigration:(id *)migration
 {
-  v5 = [(TrustdFileHelper *)self changePermissionsOfKeychainDirectoryFile:@"TrustStore.sqlite3" error:a3];
-  v6 = [(TrustdFileHelper *)self changePermissionsOfKeychainDirectoryFile:@"com.apple.security.exception_reset_counter.plist" error:a3];
-  v7 = [(TrustdFileHelper *)self changePermissionsOfKeychainDirectoryFile:@"CTExceptions.plist" error:a3];
-  v8 = [(TrustdFileHelper *)self changePermissionsOfKeychainDirectoryFile:@"CARevocation.plist" error:a3];
-  return [(TrustdFileHelper *)self changePermissionsOfKeychainDirectoryFile:@"TransparentConnectionPins.plist" error:a3]& v8 & v7 & v6 & v5;
+  v5 = [(TrustdFileHelper *)self changePermissionsOfKeychainDirectoryFile:@"TrustStore.sqlite3" error:migration];
+  v6 = [(TrustdFileHelper *)self changePermissionsOfKeychainDirectoryFile:@"com.apple.security.exception_reset_counter.plist" error:migration];
+  v7 = [(TrustdFileHelper *)self changePermissionsOfKeychainDirectoryFile:@"CTExceptions.plist" error:migration];
+  v8 = [(TrustdFileHelper *)self changePermissionsOfKeychainDirectoryFile:@"CARevocation.plist" error:migration];
+  return [(TrustdFileHelper *)self changePermissionsOfKeychainDirectoryFile:@"TransparentConnectionPins.plist" error:migration]& v8 & v7 & v6 & v5;
 }
 
-- (BOOL)changePermissionsOfKeychainDirectoryFile:(id)a3 error:(id *)a4
+- (BOOL)changePermissionsOfKeychainDirectoryFile:(id)file error:(id *)error
 {
-  v5 = a3;
+  fileCopy = file;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
@@ -121,10 +121,10 @@
   v8[3] = &unk_100021420;
   v8[4] = &v9;
   v8[5] = &v15;
-  sub_100014994(v5, v8);
-  if (a4 && !*a4)
+  sub_100014994(fileCopy, v8);
+  if (error && !*error)
   {
-    *a4 = v10[5];
+    *error = v10[5];
   }
 
   v6 = *(v16 + 24);
@@ -134,7 +134,7 @@
   return v6;
 }
 
-- (BOOL)fixTrustSettingsPermissions:(id *)a3
+- (BOOL)fixTrustSettingsPermissions:(id *)permissions
 {
   v4 = +[NSFileManager defaultManager];
   v5 = 1;
@@ -149,7 +149,7 @@
   if (v9)
   {
     v10 = v9;
-    v28 = a3;
+    permissionsCopy = permissions;
     v29 = v7;
     v30 = v6;
     v31 = v4;
@@ -207,7 +207,7 @@
     }
 
     while (v10);
-    if ((v28 == 0) | v5 & 1)
+    if ((permissionsCopy == 0) | v5 & 1)
     {
       v6 = v30;
       v4 = v31;
@@ -219,7 +219,7 @@
       v6 = v30;
       v4 = v31;
       v7 = v29;
-      if (*v28)
+      if (*permissionsCopy)
       {
         v5 = 0;
       }
@@ -228,7 +228,7 @@
       {
         v26 = v11;
         v5 = 0;
-        *v28 = v11;
+        *permissionsCopy = v11;
       }
     }
   }
@@ -241,15 +241,15 @@
   return v5 & 1;
 }
 
-- (BOOL)fixValidPermissions:(id *)a3
+- (BOOL)fixValidPermissions:(id *)permissions
 {
-  if (![(TrustdFileHelper *)self changeOwnerOfValidFile:@"valid.sqlite3" error:a3])
+  if (![(TrustdFileHelper *)self changeOwnerOfValidFile:@"valid.sqlite3" error:permissions])
   {
     goto LABEL_5;
   }
 
   v5 = [NSString stringWithFormat:@"%@-shm", @"valid.sqlite3"];
-  v6 = [(TrustdFileHelper *)self changeOwnerOfValidFile:v5 error:a3];
+  v6 = [(TrustdFileHelper *)self changeOwnerOfValidFile:v5 error:permissions];
 
   if (!v6)
   {
@@ -257,12 +257,12 @@
   }
 
   v7 = [NSString stringWithFormat:@"%@-wal", @"valid.sqlite3"];
-  v8 = [(TrustdFileHelper *)self changeOwnerOfValidFile:v7 error:a3];
+  v8 = [(TrustdFileHelper *)self changeOwnerOfValidFile:v7 error:permissions];
 
   if (v8)
   {
     v9 = [NSString stringWithFormat:@"%@-journal", @"valid.sqlite3"];
-    v10 = [(TrustdFileHelper *)self changeOwnerOfValidFile:v9 error:a3];
+    v10 = [(TrustdFileHelper *)self changeOwnerOfValidFile:v9 error:permissions];
   }
 
   else
@@ -271,12 +271,12 @@ LABEL_5:
     v10 = 0;
   }
 
-  return [(TrustdFileHelper *)self changeOwnerOfValidFile:@".valid_replace" error:a3]& v10;
+  return [(TrustdFileHelper *)self changeOwnerOfValidFile:@".valid_replace" error:permissions]& v10;
 }
 
-- (BOOL)changeOwnerOfValidFile:(id)a3 error:(id *)a4
+- (BOOL)changeOwnerOfValidFile:(id)file error:(id *)error
 {
-  v5 = a3;
+  fileCopy = file;
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
@@ -297,38 +297,38 @@ LABEL_5:
   if (qword_100026320 != -1)
   {
     dispatch_once(&qword_100026320, &stru_100021680);
-    if (v5)
+    if (fileCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_5:
-    v7 = @"trustd/";
+    fileCopy = @"trustd/";
     goto LABEL_6;
   }
 
-  if (!v5)
+  if (!fileCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
-  v7 = [NSString stringWithFormat:@"trustd/%@", v5];
+  fileCopy = [NSString stringWithFormat:@"trustd/%@", fileCopy];
 LABEL_6:
-  v8 = sub_100014804(@"private/var/protected/", v7);
+  v8 = sub_100014804(@"private/var/protected/", fileCopy);
 
   sub_1000148F0(v8, v6);
   v9 = *(v19 + 24);
-  if (a4 && (v19[3] & 1) == 0)
+  if (error && (v19[3] & 1) == 0)
   {
-    if (*a4)
+    if (*error)
     {
       v9 = 0;
     }
 
     else
     {
-      *a4 = v13[5];
+      *error = v13[5];
       v9 = *(v19 + 24);
     }
   }

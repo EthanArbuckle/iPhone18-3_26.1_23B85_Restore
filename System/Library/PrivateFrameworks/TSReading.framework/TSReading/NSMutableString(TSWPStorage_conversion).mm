@@ -6,7 +6,7 @@
 
 - (uint64_t)replaceBreaksWithPlainTextVersions
 {
-  result = [a1 length];
+  result = [self length];
   if (result)
   {
     v3 = 0;
@@ -15,14 +15,14 @@
     do
     {
       v4 = [objc_alloc(MEMORY[0x277CCACA8]) initWithCharactersNoCopy:&v5 + v3 length:1 freeWhenDone:0];
-      [a1 replaceOccurrencesOfString:v4 withString:@"\n" options:2 range:{0, objc_msgSend(a1, "length")}];
+      [self replaceOccurrencesOfString:v4 withString:@"\n" options:2 range:{0, objc_msgSend(self, "length")}];
 
       v3 += 2;
     }
 
     while (v3 != 6);
-    [a1 replaceOccurrencesOfString:@"\x04" withString:@"\f" options:2 range:{0, objc_msgSend(a1, "length")}];
-    return [a1 replaceOccurrencesOfString:@"\x05" withString:@"\f" options:2 range:{0, objc_msgSend(a1, "length")}];
+    [self replaceOccurrencesOfString:@"\x04" withString:@"\f" options:2 range:{0, objc_msgSend(self, "length")}];
+    return [self replaceOccurrencesOfString:@"\x05" withString:@"\f" options:2 range:{0, objc_msgSend(self, "length")}];
   }
 
   return result;

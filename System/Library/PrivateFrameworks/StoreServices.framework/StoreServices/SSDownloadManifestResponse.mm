@@ -1,10 +1,10 @@
 @interface SSDownloadManifestResponse
-- (SSDownloadManifestResponse)initWithCoder:(id)a3;
-- (SSDownloadManifestResponse)initWithXPCEncoding:(id)a3;
+- (SSDownloadManifestResponse)initWithCoder:(id)coder;
+- (SSDownloadManifestResponse)initWithXPCEncoding:(id)encoding;
 - (id)copyXPCEncoding;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)setValidDownloads:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setValidDownloads:(id)downloads;
 @end
 
 @implementation SSDownloadManifestResponse
@@ -16,19 +16,19 @@
   [(SSDownloadManifestResponse *)&v3 dealloc];
 }
 
-- (void)setValidDownloads:(id)a3
+- (void)setValidDownloads:(id)downloads
 {
   validDownloads = self->_validDownloads;
-  if (validDownloads != a3)
+  if (validDownloads != downloads)
   {
 
-    self->_validDownloads = a3;
+    self->_validDownloads = downloads;
   }
 }
 
-- (SSDownloadManifestResponse)initWithCoder:(id)a3
+- (SSDownloadManifestResponse)initWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     [(SSDownloadManifestResponse *)a2 initWithCoder:?];
   }
@@ -40,22 +40,22 @@
   {
     v7 = MEMORY[0x1E695DFD8];
     v8 = objc_opt_class();
-    v6->_validDownloads = [a3 decodeObjectOfClasses:objc_msgSend(v7 forKey:{"setWithObjects:", v8, objc_opt_class(), 0), @"valid"}];
+    v6->_validDownloads = [coder decodeObjectOfClasses:objc_msgSend(v7 forKey:{"setWithObjects:", v8, objc_opt_class(), 0), @"valid"}];
   }
 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     [(SSDownloadManifestResponse *)a2 encodeWithCoder:?];
   }
 
   validDownloads = self->_validDownloads;
 
-  [a3 encodeObject:validDownloads forKey:@"valid"];
+  [coder encodeObject:validDownloads forKey:@"valid"];
 }
 
 - (id)copyXPCEncoding
@@ -98,9 +98,9 @@
   return v3;
 }
 
-- (SSDownloadManifestResponse)initWithXPCEncoding:(id)a3
+- (SSDownloadManifestResponse)initWithXPCEncoding:(id)encoding
 {
-  if (a3 && MEMORY[0x1DA6E0380](a3, a2) == MEMORY[0x1E69E9E80])
+  if (encoding && MEMORY[0x1DA6E0380](encoding, a2) == MEMORY[0x1E69E9E80])
   {
     v11.receiver = self;
     v11.super_class = SSDownloadManifestResponse;
@@ -108,7 +108,7 @@
     if (v5)
     {
       v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      value = xpc_dictionary_get_value(a3, "valid");
+      value = xpc_dictionary_get_value(encoding, "valid");
       if (value)
       {
         v9 = value;

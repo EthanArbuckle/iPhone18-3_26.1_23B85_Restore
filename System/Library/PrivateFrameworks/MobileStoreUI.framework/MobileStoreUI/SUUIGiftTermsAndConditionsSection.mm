@@ -1,14 +1,14 @@
 @interface SUUIGiftTermsAndConditionsSection
 - (id)_headerView;
-- (void)_termsAction:(id)a3;
+- (void)_termsAction:(id)action;
 @end
 
 @implementation SUUIGiftTermsAndConditionsSection
 
-- (void)_termsAction:(id)a3
+- (void)_termsAction:(id)action
 {
-  v3 = [MEMORY[0x277CBEBC0] termsAndConditionsURL];
-  SUUIMetricsOpenURL(v3);
+  termsAndConditionsURL = [MEMORY[0x277CBEBC0] termsAndConditionsURL];
+  SUUIMetricsOpenURL(termsAndConditionsURL);
 }
 
 - (id)_headerView
@@ -23,11 +23,11 @@
     [(UIView *)self->_headerView setFrame:0.0, 0.0, 60.0, 45.0];
     [(UIView *)self->_headerView bounds];
     v7 = v6;
-    v8 = [MEMORY[0x277D75128] sharedApplication];
-    v9 = [v8 userInterfaceLayoutDirection];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    userInterfaceLayoutDirection = [mEMORY[0x277D75128] userInterfaceLayoutDirection];
 
     v10 = [SUUILinkButton alloc];
-    if (v9)
+    if (userInterfaceLayoutDirection)
     {
       v11 = 5;
     }
@@ -40,28 +40,28 @@
     v12 = [(SUUILinkButton *)v10 initWithArrowStyle:v11];
     [(SUUILinkButton *)v12 addTarget:self action:sel__termsAction_ forControlEvents:64];
     [(SUUILinkButton *)v12 setAutoresizingMask:5];
-    v13 = [(SUUIGiftTableViewSection *)self giftConfiguration];
-    v14 = [v13 clientContext];
+    giftConfiguration = [(SUUIGiftTableViewSection *)self giftConfiguration];
+    clientContext = [giftConfiguration clientContext];
 
-    if (SUUIUserInterfaceIdiom(v14) == 1)
+    if (SUUIUserInterfaceIdiom(clientContext) == 1)
     {
-      if (v14)
+      if (clientContext)
       {
         v15 = @"GIFTING_TERMS_LINK_IPAD";
 LABEL_10:
-        v16 = [v14 localizedStringForKey:v15 inTable:@"Gifting"];
+        v16 = [clientContext localizedStringForKey:v15 inTable:@"Gifting"];
 LABEL_14:
         v18 = v16;
         [(SUUILinkButton *)v12 setTitle:v16 forState:0];
-        v19 = [(SUUILinkButton *)v12 titleLabel];
+        titleLabel = [(SUUILinkButton *)v12 titleLabel];
         v20 = [MEMORY[0x277D74300] systemFontOfSize:12.0];
-        [v19 setFont:v20];
+        [titleLabel setFont:v20];
 
-        v21 = [MEMORY[0x277D75348] secondaryLabelColor];
-        [(SUUILinkButton *)v12 setTitleColor:v21 forState:0];
+        secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+        [(SUUILinkButton *)v12 setTitleColor:secondaryLabelColor forState:0];
 
-        v22 = [MEMORY[0x277D75348] labelColor];
-        [(SUUILinkButton *)v12 setTitleColor:v22 forState:1];
+        labelColor = [MEMORY[0x277D75348] labelColor];
+        [(SUUILinkButton *)v12 setTitleColor:labelColor forState:1];
 
         [(SUUILinkButton *)v12 sizeToFit];
         [(SUUILinkButton *)v12 frame];
@@ -77,7 +77,7 @@ LABEL_14:
 
     else
     {
-      if (v14)
+      if (clientContext)
       {
         v15 = @"GIFTING_TERMS_LINK_IPHONE";
         goto LABEL_10;

@@ -1,8 +1,8 @@
 @interface NUTestPatternSourceDefinition
 - ($0AC6E346AE4835514AAA8AC86D8F4844)size;
 - (NUTestPatternSourceDefinition)init;
-- (NUTestPatternSourceDefinition)initWithSize:(id)a3 orientation:(int64_t)a4;
-- (id)generateSourceNodeWithIdentifier:(id)a3 error:(id *)a4;
+- (NUTestPatternSourceDefinition)initWithSize:(id)size orientation:(int64_t)orientation;
+- (id)generateSourceNodeWithIdentifier:(id)identifier error:(id *)error;
 @end
 
 @implementation NUTestPatternSourceDefinition
@@ -17,16 +17,16 @@
   return result;
 }
 
-- (NUTestPatternSourceDefinition)initWithSize:(id)a3 orientation:(int64_t)a4
+- (NUTestPatternSourceDefinition)initWithSize:(id)size orientation:(int64_t)orientation
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = size.var1;
+  var0 = size.var0;
   v8.receiver = self;
   v8.super_class = NUTestPatternSourceDefinition;
   result = [(NUSingleSourceDefinition *)&v8 init];
   result->_size.width = var0;
   result->_size.height = var1;
-  result->_orientation = a4;
+  result->_orientation = orientation;
   return result;
 }
 
@@ -76,8 +76,8 @@ LABEL_8:
     {
       v12 = MEMORY[0x1E696AF00];
       v13 = v11;
-      v14 = [v12 callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v12 callStackSymbols];
+      v15 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v30 = v15;
       _os_log_error_impl(&dword_1C0184000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -93,8 +93,8 @@ LABEL_8:
     v18 = MEMORY[0x1E696AF00];
     v19 = specific;
     v20 = v16;
-    v21 = [v18 callStackSymbols];
-    v22 = [v21 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v18 callStackSymbols];
+    v22 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v30 = specific;
     v31 = 2114;
@@ -110,13 +110,13 @@ LABEL_14:
   _NUAssertFailHandler("[NUTestPatternSourceDefinition init]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Adjustments/NUSource.m", 266, @"Initializer not available: [%@ %@], use designated initializer instead.", v25, v26, v27, v28, v24);
 }
 
-- (id)generateSourceNodeWithIdentifier:(id)a3 error:(id *)a4
+- (id)generateSourceNodeWithIdentifier:(id)identifier error:(id *)error
 {
   v5 = [NUTestPatternSourceNode alloc];
   v6 = [(NUTestPatternSourceDefinition *)self size];
   v8 = [(NUTestPatternSourceNode *)v5 initWithSize:v6 orientation:v7, [(NUTestPatternSourceDefinition *)self orientation]];
-  v9 = [(NUSingleSourceDefinition *)self sourceDerivation];
-  [(NUSourceNode *)v8 setSourceDerivation:v9];
+  sourceDerivation = [(NUSingleSourceDefinition *)self sourceDerivation];
+  [(NUSourceNode *)v8 setSourceDerivation:sourceDerivation];
 
   return v8;
 }

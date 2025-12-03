@@ -1,42 +1,42 @@
 @interface PKHowToUseWalletSection
-+ (id)_sectionToPrioritize:(id)a3 otherSection:(id)a4;
-+ (id)sectionsByPriority:(id)a3;
-- (BOOL)containsCardPassingTest:(id)a3;
-- (PKHowToUseWalletSection)initWithDictionary:(id)a3 bundle:(id)a4;
-- (id)cardsPassingTest:(id)a3;
++ (id)_sectionToPrioritize:(id)prioritize otherSection:(id)section;
++ (id)sectionsByPriority:(id)priority;
+- (BOOL)containsCardPassingTest:(id)test;
+- (PKHowToUseWalletSection)initWithDictionary:(id)dictionary bundle:(id)bundle;
+- (id)cardsPassingTest:(id)test;
 - (id)localizationBundle;
 @end
 
 @implementation PKHowToUseWalletSection
 
-- (PKHowToUseWalletSection)initWithDictionary:(id)a3 bundle:(id)a4
+- (PKHowToUseWalletSection)initWithDictionary:(id)dictionary bundle:(id)bundle
 {
   v52 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  bundleCopy = bundle;
   v46.receiver = self;
   v46.super_class = PKHowToUseWalletSection;
   v8 = [(PKHowToUseWalletSection *)&v46 init];
   if (v8)
   {
-    v9 = [v6 PKStringForKey:@"identifier"];
+    v9 = [dictionaryCopy PKStringForKey:@"identifier"];
     identifier = v8->_identifier;
     v8->_identifier = v9;
 
-    v11 = [v6 PKStringForKey:@"titleKey"];
+    v11 = [dictionaryCopy PKStringForKey:@"titleKey"];
     titleKey = v8->_titleKey;
     v8->_titleKey = v11;
 
-    v13 = [v6 PKStringForKey:@"localizationBundlePath"];
-    v14 = [v7 bundleURL];
+    v13 = [dictionaryCopy PKStringForKey:@"localizationBundlePath"];
+    bundleURL = [bundleCopy bundleURL];
     if ([v13 length])
     {
-      v15 = [v14 URLByAppendingPathComponent:v13];
+      v15 = [bundleURL URLByAppendingPathComponent:v13];
     }
 
     else
     {
-      v15 = v14;
+      v15 = bundleURL;
     }
 
     p_localizationBundleURL = &v8->_localizationBundleURL;
@@ -46,7 +46,7 @@
     v18 = v8->_identifier;
     if (v18 && *p_localizationBundleURL)
     {
-      v19 = [v6 PKDictionaryForKey:@"requirements"];
+      v19 = [dictionaryCopy PKDictionaryForKey:@"requirements"];
       v20 = [[PKHowToUseWalletRequirements alloc] initWithDictionary:v19];
       requirements = v8->_requirements;
       v8->_requirements = v20;
@@ -54,9 +54,9 @@
       if ([(PKHowToUseWalletRequirements *)v8->_requirements deviceMeetsRequirements])
       {
         v39 = v19;
-        v40 = v14;
+        v40 = bundleURL;
         v41 = v13;
-        v22 = [v6 PKArrayForKey:@"cards"];
+        v22 = [dictionaryCopy PKArrayForKey:@"cards"];
         v23 = objc_alloc_init(MEMORY[0x1E695DF70]);
         v42 = 0u;
         v43 = 0u;
@@ -78,7 +78,7 @@
                 objc_enumerationMutation(v24);
               }
 
-              v29 = [[PKHowToUseWalletCard alloc] initWithDictionary:*(*(&v42 + 1) + 8 * v28) bundle:v7];
+              v29 = [[PKHowToUseWalletCard alloc] initWithDictionary:*(*(&v42 + 1) + 8 * v28) bundle:bundleCopy];
               [v23 safelyAddObject:v29];
 
               ++v28;
@@ -102,12 +102,12 @@
       if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
       {
         [(PKHowToUseWalletRequirements *)v8->_requirements description];
-        v37 = v36 = v14;
+        v37 = v36 = bundleURL;
         *buf = 138412290;
         v49 = v37;
         _os_log_impl(&dword_1AD337000, v35, OS_LOG_TYPE_DEFAULT, "Device does not meet section requirements: %@. Skipping...", buf, 0xCu);
 
-        v14 = v36;
+        bundleURL = v36;
       }
     }
 
@@ -136,15 +136,15 @@ LABEL_24:
   return v32;
 }
 
-- (BOOL)containsCardPassingTest:(id)a3
+- (BOOL)containsCardPassingTest:(id)test
 {
-  v4 = a3;
+  testCopy = test;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __51__PKHowToUseWalletSection_containsCardPassingTest___block_invoke;
   v9[3] = &unk_1E79CA4F0;
-  v10 = v4;
-  v5 = v4;
+  v10 = testCopy;
+  v5 = testCopy;
   v6 = [(PKHowToUseWalletSection *)self cardsPassingTest:v9];
   v7 = [v6 count] != 0;
 
@@ -162,16 +162,16 @@ uint64_t __51__PKHowToUseWalletSection_containsCardPassingTest___block_invoke(ui
   return result;
 }
 
-- (id)cardsPassingTest:(id)a3
+- (id)cardsPassingTest:(id)test
 {
-  v4 = a3;
+  testCopy = test;
   cards = self->_cards;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __44__PKHowToUseWalletSection_cardsPassingTest___block_invoke;
   v9[3] = &unk_1E79CA518;
-  v10 = v4;
-  v6 = v4;
+  v10 = testCopy;
+  v6 = testCopy;
   v7 = [(NSArray *)cards pk_objectsPassingTest:v9];
 
   return v7;
@@ -184,17 +184,17 @@ uint64_t __51__PKHowToUseWalletSection_containsCardPassingTest___block_invoke(ui
   return v2;
 }
 
-+ (id)sectionsByPriority:(id)a3
++ (id)sectionsByPriority:(id)priority
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  priorityCopy = priority;
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v6 = v3;
+  v6 = priorityCopy;
   v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v7)
   {
@@ -210,8 +210,8 @@ uint64_t __51__PKHowToUseWalletSection_containsCardPassingTest___block_invoke(ui
         }
 
         v11 = *(*(&v18 + 1) + 8 * i);
-        v12 = [v11 identifier];
-        v13 = [v5 objectForKey:v12];
+        identifier = [v11 identifier];
+        v13 = [v5 objectForKey:identifier];
 
         if (v13)
         {
@@ -221,21 +221,21 @@ uint64_t __51__PKHowToUseWalletSection_containsCardPassingTest___block_invoke(ui
             goto LABEL_12;
           }
 
-          v15 = v14;
+          identifier3 = v14;
           if (([v14 isEqual:v13] & 1) == 0)
           {
             [v4 removeObject:v13];
-            [v4 addObject:v15];
-            v16 = [v15 identifier];
-            [v5 setObject:v15 forKey:v16];
+            [v4 addObject:identifier3];
+            identifier2 = [identifier3 identifier];
+            [v5 setObject:identifier3 forKey:identifier2];
           }
         }
 
         else
         {
           [v4 addObject:v11];
-          v15 = [v11 identifier];
-          [v5 setObject:v11 forKey:v15];
+          identifier3 = [v11 identifier];
+          [v5 setObject:v11 forKey:identifier3];
         }
 
 LABEL_12:
@@ -250,30 +250,30 @@ LABEL_12:
   return v4;
 }
 
-+ (id)_sectionToPrioritize:(id)a3 otherSection:(id)a4
++ (id)_sectionToPrioritize:(id)prioritize otherSection:(id)section
 {
   v31 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (!v5)
+  prioritizeCopy = prioritize;
+  sectionCopy = section;
+  v7 = sectionCopy;
+  if (!prioritizeCopy)
   {
-    v14 = v6;
+    v14 = sectionCopy;
 LABEL_10:
     v15 = v14;
     goto LABEL_26;
   }
 
-  if (!v6)
+  if (!sectionCopy)
   {
-    v14 = v5;
+    v14 = prioritizeCopy;
     goto LABEL_10;
   }
 
-  v8 = [v5 identifier];
-  v9 = [v7 identifier];
-  v10 = v8;
-  v11 = v9;
+  identifier = [prioritizeCopy identifier];
+  identifier2 = [v7 identifier];
+  v10 = identifier;
+  v11 = identifier2;
   v12 = v11;
   if (v10 == v11)
   {
@@ -291,16 +291,16 @@ LABEL_10:
     }
 
 LABEL_12:
-    v16 = [v5 requirements];
-    v17 = [v7 requirements];
-    if ([v16 isEqual:v17])
+    requirements = [prioritizeCopy requirements];
+    requirements2 = [v7 requirements];
+    if ([requirements isEqual:requirements2])
     {
-      v18 = [v5 cards];
-      v19 = [v18 count];
-      v20 = [v7 cards];
-      if (v19 >= [v20 count])
+      cards = [prioritizeCopy cards];
+      v19 = [cards count];
+      cards2 = [v7 cards];
+      if (v19 >= [cards2 count])
       {
-        v21 = v5;
+        v21 = prioritizeCopy;
       }
 
       else
@@ -313,10 +313,10 @@ LABEL_12:
 
     else
     {
-      v18 = [PKHowToUseWalletRequirements requirementsToPrioritize:v16 otherRequirements:v17];
-      if (v16 == v18)
+      cards = [PKHowToUseWalletRequirements requirementsToPrioritize:requirements otherRequirements:requirements2];
+      if (requirements == cards)
       {
-        v25 = v5;
+        v25 = prioritizeCopy;
       }
 
       else
@@ -334,12 +334,12 @@ LABEL_18:
   v22 = PKLogFacilityTypeGetObject(0x11uLL);
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
   {
-    v23 = [v5 identifier];
-    v24 = [v7 identifier];
+    identifier3 = [prioritizeCopy identifier];
+    identifier4 = [v7 identifier];
     v27 = 138412546;
-    v28 = v23;
+    v28 = identifier3;
     v29 = 2112;
-    v30 = v24;
+    v30 = identifier4;
     _os_log_impl(&dword_1AD337000, v22, OS_LOG_TYPE_DEFAULT, "Cannot determine the priority between sections with different identifiers. section=%@ otherSection=%@", &v27, 0x16u);
   }
 

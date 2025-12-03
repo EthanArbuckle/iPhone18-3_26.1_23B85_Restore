@@ -1,26 +1,26 @@
 @interface SCNNode
 - (BOOL)hasContinuousRotationAnimation;
 - (void)addContinuousRotationWithEaseIn;
-- (void)addContinuousRotationWithInitialRotation:(SCNVector4)a3;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
-- (void)p_removeAnimationForKey:(id)a3 shouldPreserveTransform:(BOOL)a4;
+- (void)addContinuousRotationWithInitialRotation:(SCNVector4)rotation;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
+- (void)p_removeAnimationForKey:(id)key shouldPreserveTransform:(BOOL)transform;
 - (void)removeContinuousRotationAnimations;
 @end
 
 @implementation SCNNode
 
-- (void)p_removeAnimationForKey:(id)a3 shouldPreserveTransform:(BOOL)a4
+- (void)p_removeAnimationForKey:(id)key shouldPreserveTransform:(BOOL)transform
 {
-  if (a4)
+  if (transform)
   {
     v10 = 0u;
     v11 = 0u;
     v8 = 0u;
     v9 = 0u;
-    v6 = [(SCNNode *)self presentationNode];
-    if (v6)
+    presentationNode = [(SCNNode *)self presentationNode];
+    if (presentationNode)
     {
-      [(SCNNode *)v6 transform];
+      [(SCNNode *)presentationNode transform];
     }
 
     else
@@ -31,7 +31,7 @@
       v9 = 0u;
     }
 
-    [(SCNNode *)self removeAnimationForKey:a3];
+    [(SCNNode *)self removeAnimationForKey:key];
     +[SCNTransaction begin];
     [SCNTransaction setDisableActions:1];
     v7[0] = v8;
@@ -67,12 +67,12 @@
   +[SCNTransaction commit];
 }
 
-- (void)addContinuousRotationWithInitialRotation:(SCNVector4)a3
+- (void)addContinuousRotationWithInitialRotation:(SCNVector4)rotation
 {
-  w = a3.w;
-  z = a3.z;
-  y = a3.y;
-  x = a3.x;
+  w = rotation.w;
+  z = rotation.z;
+  y = rotation.y;
+  x = rotation.x;
   +[SCNTransaction begin];
   v8 = [CABasicAnimation animationWithKeyPath:@"rotation"];
   [(CABasicAnimation *)v8 setDuration:15.0];
@@ -123,11 +123,11 @@
   }
 }
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
-  v4 = a4;
-  v7 = [a3 valueForKey:@"THAnimationIdentifier"];
-  if (v4 && [v7 isEqualToString:@"THEaseInRotation"])
+  finishedCopy = finished;
+  v7 = [stop valueForKey:@"THAnimationIdentifier"];
+  if (finishedCopy && [v7 isEqualToString:@"THEaseInRotation"])
   {
     [[(SCNNode *)self presentationNode] rotation];
     v9 = v8;
@@ -141,7 +141,7 @@
     LODWORD(v19) = v15;
     [(SCNNode *)self addContinuousRotationWithInitialRotation:v16, v17, v18, v19];
 
-    [a3 setDelegate:0];
+    [stop setDelegate:0];
   }
 }
 

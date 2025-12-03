@@ -2,35 +2,35 @@
 - (void)checkActiveHRMDeviceUpdate;
 - (void)checkDataRelayServerPublishEligibility;
 - (void)checkSiriHijackEligibility;
-- (void)setDataRelayServerPublished:(BOOL)a3;
-- (void)setFirstBannerShown:(BOOL)a3;
-- (void)setHasOwnership:(BOOL)a3;
-- (void)setHijackBackoffTicks:(unint64_t)a3;
-- (void)setInEar:(BOOL)a3;
-- (void)setIsHRMCapable:(BOOL)a3;
-- (void)setIsRoutingActionInitialized:(BOOL)a3;
-- (void)setManualRouteChangeInProgress:(BOOL)a3;
-- (void)setManuallyRouted:(BOOL)a3;
-- (void)setOtherTipiDeviceBuildVersion:(int64_t)a3 andMinorBuildVersion:(int64_t)a4;
-- (void)setOtherTipiDeviceDRCompatible:(BOOL)a3;
-- (void)setOtherTipiDeviceInfo:(id)a3 andName:(id)a4 andVersion:(id)a5;
-- (void)setOtherTipiDeviceIsStreamingAudio:(BOOL)a3;
-- (void)setOtherTipiDeviceIsWatch:(BOOL)a3;
-- (void)setOtherTipiDevicePlayingApp:(id)a3;
-- (void)setOtherTipiDeviceSiriEnablement:(BOOL)a3;
-- (void)setOtherTipiIDSIdentifier:(id)a3;
-- (void)setOtherTipiManuallyRouteTicks:(unint64_t)a3;
-- (void)setRouted:(BOOL)a3;
-- (void)setRoutingAction:(int)a3;
-- (void)setRoutingUI:(int)a3;
-- (void)setTipiAndRoutedStateFlags:(unsigned int)a3;
+- (void)setDataRelayServerPublished:(BOOL)published;
+- (void)setFirstBannerShown:(BOOL)shown;
+- (void)setHasOwnership:(BOOL)ownership;
+- (void)setHijackBackoffTicks:(unint64_t)ticks;
+- (void)setInEar:(BOOL)ear;
+- (void)setIsHRMCapable:(BOOL)capable;
+- (void)setIsRoutingActionInitialized:(BOOL)initialized;
+- (void)setManualRouteChangeInProgress:(BOOL)progress;
+- (void)setManuallyRouted:(BOOL)routed;
+- (void)setOtherTipiDeviceBuildVersion:(int64_t)version andMinorBuildVersion:(int64_t)buildVersion;
+- (void)setOtherTipiDeviceDRCompatible:(BOOL)compatible;
+- (void)setOtherTipiDeviceInfo:(id)info andName:(id)name andVersion:(id)version;
+- (void)setOtherTipiDeviceIsStreamingAudio:(BOOL)audio;
+- (void)setOtherTipiDeviceIsWatch:(BOOL)watch;
+- (void)setOtherTipiDevicePlayingApp:(id)app;
+- (void)setOtherTipiDeviceSiriEnablement:(BOOL)enablement;
+- (void)setOtherTipiIDSIdentifier:(id)identifier;
+- (void)setOtherTipiManuallyRouteTicks:(unint64_t)ticks;
+- (void)setRouted:(BOOL)routed;
+- (void)setRoutingAction:(int)action;
+- (void)setRoutingUI:(int)i;
+- (void)setTipiAndRoutedStateFlags:(unsigned int)flags;
 @end
 
 @implementation SRWxDevice
 
-- (void)setFirstBannerShown:(BOOL)a3
+- (void)setFirstBannerShown:(BOOL)shown
 {
-  if (self->firstBannerShown != a3)
+  if (self->firstBannerShown != shown)
   {
     if (dword_1002F6700 <= 30)
     {
@@ -49,7 +49,7 @@
     }
 
 LABEL_6:
-    self->firstBannerShown = a3;
+    self->firstBannerShown = shown;
   }
 }
 
@@ -126,9 +126,9 @@ LABEL_20:
   }
 }
 
-- (void)setDataRelayServerPublished:(BOOL)a3
+- (void)setDataRelayServerPublished:(BOOL)published
 {
-  if (self->dataRelayServerPublished != a3)
+  if (self->dataRelayServerPublished != published)
   {
     if (dword_1002F6700 <= 30)
     {
@@ -147,13 +147,13 @@ LABEL_20:
     }
 
 LABEL_6:
-    self->dataRelayServerPublished = a3;
+    self->dataRelayServerPublished = published;
   }
 }
 
-- (void)setHijackBackoffTicks:(unint64_t)a3
+- (void)setHijackBackoffTicks:(unint64_t)ticks
 {
-  if (self->hijackBackoffTicks != a3)
+  if (self->hijackBackoffTicks != ticks)
   {
     if (dword_1002F6700 <= 30)
     {
@@ -172,19 +172,19 @@ LABEL_6:
     }
 
 LABEL_6:
-    self->hijackBackoffTicks = a3;
+    self->hijackBackoffTicks = ticks;
   }
 }
 
-- (void)setInEar:(BOOL)a3
+- (void)setInEar:(BOOL)ear
 {
   inEar = self->inEar;
-  if (inEar == a3)
+  if (inEar == ear)
   {
     return;
   }
 
-  v5 = a3;
+  earCopy = ear;
   if (dword_1002F6700 <= 30)
   {
     if (dword_1002F6700 != -1)
@@ -201,7 +201,7 @@ LABEL_4:
         v8 = "no";
       }
 
-      if (v5)
+      if (earCopy)
       {
         v7 = "yes";
       }
@@ -220,15 +220,15 @@ LABEL_4:
   }
 
 LABEL_11:
-  self->inEar = v5;
+  self->inEar = earCopy;
   [(SRWxDevice *)self checkActiveHRMDeviceUpdate:v9];
 
   [(SRWxDevice *)self checkDataRelayServerPublishEligibility];
 }
 
-- (void)setManuallyRouted:(BOOL)a3
+- (void)setManuallyRouted:(BOOL)routed
 {
-  if (self->manuallyRouted != a3)
+  if (self->manuallyRouted != routed)
   {
     if (dword_1002F6700 <= 30)
     {
@@ -246,13 +246,13 @@ LABEL_11:
     }
 
 LABEL_6:
-    self->manuallyRouted = a3;
+    self->manuallyRouted = routed;
   }
 }
 
-- (void)setManualRouteChangeInProgress:(BOOL)a3
+- (void)setManualRouteChangeInProgress:(BOOL)progress
 {
-  if (self->manualRouteChangeInProgress != a3)
+  if (self->manualRouteChangeInProgress != progress)
   {
     if (dword_1002F6700 <= 30)
     {
@@ -270,13 +270,13 @@ LABEL_6:
     }
 
 LABEL_6:
-    self->manualRouteChangeInProgress = a3;
+    self->manualRouteChangeInProgress = progress;
   }
 }
 
-- (void)setOtherTipiDevicePlayingApp:(id)a3
+- (void)setOtherTipiDevicePlayingApp:(id)app
 {
-  v7 = a3;
+  appCopy = app;
   if (![(NSString *)self->otherTipiDevicePlayingApp isEqualToString:?])
   {
     if (dword_1002F6700 <= 30 && (dword_1002F6700 != -1 || _LogCategory_Initialize()))
@@ -286,16 +286,16 @@ LABEL_6:
       LogPrintF();
     }
 
-    objc_storeStrong(&self->otherTipiDevicePlayingApp, a3);
+    objc_storeStrong(&self->otherTipiDevicePlayingApp, app);
   }
 }
 
-- (void)setOtherTipiDeviceInfo:(id)a3 andName:(id)a4 andVersion:(id)a5
+- (void)setOtherTipiDeviceInfo:(id)info andName:(id)name andVersion:(id)version
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v9;
+  infoCopy = info;
+  nameCopy = name;
+  versionCopy = version;
+  v12 = infoCopy;
   otherTipiDeviceBTAddress = self->otherTipiDeviceBTAddress;
   v23 = v12;
   if (!(v12 | otherTipiDeviceBTAddress))
@@ -307,17 +307,17 @@ LABEL_6:
   {
     if (dword_1002F6700 <= 30 && (dword_1002F6700 != -1 || _LogCategory_Initialize()))
     {
-      v21 = v10;
-      v22 = v11;
+      v21 = nameCopy;
+      v22 = versionCopy;
       v19 = self->otherTipiDeviceBTAddress;
       v20 = v23;
       deviceAddress = self->deviceAddress;
       LogPrintF();
     }
 
-    objc_storeStrong(&self->otherTipiDeviceBTAddress, a3);
-    objc_storeStrong(&self->otherTipiDeviceBTName, a4);
-    objc_storeStrong(&self->otherTipiDeviceVersion, a5);
+    objc_storeStrong(&self->otherTipiDeviceBTAddress, info);
+    objc_storeStrong(&self->otherTipiDeviceBTName, name);
+    objc_storeStrong(&self->otherTipiDeviceVersion, version);
     self->otherTipiManuallyRouteTicks = 0;
     [(SRWxDevice *)self checkSiriHijackEligibility];
     [(SRWxDevice *)self checkDataRelayServerPublishEligibility];
@@ -354,9 +354,9 @@ LABEL_9:
   [v17 _setTipiAndRoutedStateFlags:v16 forDevice:self];
 }
 
-- (void)setOtherTipiDeviceIsStreamingAudio:(BOOL)a3
+- (void)setOtherTipiDeviceIsStreamingAudio:(BOOL)audio
 {
-  if (self->otherTipiDeviceIsStreamingAudio == a3)
+  if (self->otherTipiDeviceIsStreamingAudio == audio)
   {
     return;
   }
@@ -377,16 +377,16 @@ LABEL_9:
   }
 
 LABEL_6:
-  self->otherTipiDeviceIsStreamingAudio = a3;
+  self->otherTipiDeviceIsStreamingAudio = audio;
 
   [(SRWxDevice *)self checkDataRelayServerPublishEligibility];
 }
 
-- (void)setOtherTipiDeviceIsWatch:(BOOL)a3
+- (void)setOtherTipiDeviceIsWatch:(BOOL)watch
 {
-  v3 = a3;
+  watchCopy = watch;
   otherTipiDeviceIsWatch = self->otherTipiDeviceIsWatch;
-  if (otherTipiDeviceIsWatch == a3)
+  if (otherTipiDeviceIsWatch == watch)
   {
     goto LABEL_12;
   }
@@ -407,7 +407,7 @@ LABEL_4:
         v7 = "no";
       }
 
-      if (v3)
+      if (watchCopy)
       {
         v6 = "yes";
       }
@@ -426,10 +426,10 @@ LABEL_4:
   }
 
 LABEL_11:
-  self->otherTipiDeviceIsWatch = v3;
+  self->otherTipiDeviceIsWatch = watchCopy;
 LABEL_12:
   v8 = self->tipiAndRoutedState & 0xFFFFFFFD;
-  if (v3)
+  if (watchCopy)
   {
     v9 = 2;
   }
@@ -443,9 +443,9 @@ LABEL_12:
   [v12 _setTipiAndRoutedStateFlags:v9 | v8 forDevice:self];
 }
 
-- (void)setOtherTipiDeviceBuildVersion:(int64_t)a3 andMinorBuildVersion:(int64_t)a4
+- (void)setOtherTipiDeviceBuildVersion:(int64_t)version andMinorBuildVersion:(int64_t)buildVersion
 {
-  if (*&self->otherTipiDeviceMajorBuildVersion != __PAIR128__(a4, a3))
+  if (*&self->otherTipiDeviceMajorBuildVersion != __PAIR128__(buildVersion, version))
   {
     if (dword_1002F6700 <= 30)
     {
@@ -465,14 +465,14 @@ LABEL_12:
     }
 
 LABEL_6:
-    self->otherTipiDeviceMajorBuildVersion = a3;
-    self->otherTipiDeviceMinorBuildVersion = a4;
+    self->otherTipiDeviceMajorBuildVersion = version;
+    self->otherTipiDeviceMinorBuildVersion = buildVersion;
   }
 }
 
-- (void)setOtherTipiDeviceDRCompatible:(BOOL)a3
+- (void)setOtherTipiDeviceDRCompatible:(BOOL)compatible
 {
-  if (self->otherTipiDeviceDRCompatible != a3)
+  if (self->otherTipiDeviceDRCompatible != compatible)
   {
     if (dword_1002F6700 <= 30)
     {
@@ -490,13 +490,13 @@ LABEL_6:
     }
 
 LABEL_6:
-    self->otherTipiDeviceDRCompatible = a3;
+    self->otherTipiDeviceDRCompatible = compatible;
   }
 }
 
-- (void)setOtherTipiIDSIdentifier:(id)a3
+- (void)setOtherTipiIDSIdentifier:(id)identifier
 {
-  v7 = a3;
+  identifierCopy = identifier;
   if (![(NSString *)self->_otherTipiIDSIdentifier isEqualToString:?])
   {
     if (dword_1002F6700 <= 30 && (dword_1002F6700 != -1 || _LogCategory_Initialize()))
@@ -506,13 +506,13 @@ LABEL_6:
       LogPrintF();
     }
 
-    objc_storeStrong(&self->_otherTipiIDSIdentifier, a3);
+    objc_storeStrong(&self->_otherTipiIDSIdentifier, identifier);
   }
 }
 
-- (void)setOtherTipiManuallyRouteTicks:(unint64_t)a3
+- (void)setOtherTipiManuallyRouteTicks:(unint64_t)ticks
 {
-  if (self->otherTipiManuallyRouteTicks != a3)
+  if (self->otherTipiManuallyRouteTicks != ticks)
   {
     if (dword_1002F6700 <= 30)
     {
@@ -531,13 +531,13 @@ LABEL_6:
     }
 
 LABEL_6:
-    self->otherTipiManuallyRouteTicks = a3;
+    self->otherTipiManuallyRouteTicks = ticks;
   }
 }
 
-- (void)setOtherTipiDeviceSiriEnablement:(BOOL)a3
+- (void)setOtherTipiDeviceSiriEnablement:(BOOL)enablement
 {
-  if (self->otherTipiDeviceSiriEnablement == a3)
+  if (self->otherTipiDeviceSiriEnablement == enablement)
   {
     return;
   }
@@ -560,17 +560,17 @@ LABEL_4:
   }
 
 LABEL_6:
-  self->otherTipiDeviceSiriEnablement = a3;
-  if (!a3)
+  self->otherTipiDeviceSiriEnablement = enablement;
+  if (!enablement)
   {
 
     [(SRWxDevice *)self checkSiriHijackEligibility];
   }
 }
 
-- (void)setHasOwnership:(BOOL)a3
+- (void)setHasOwnership:(BOOL)ownership
 {
-  if (self->hasOwnership == a3)
+  if (self->hasOwnership == ownership)
   {
     return;
   }
@@ -593,21 +593,21 @@ LABEL_4:
   }
 
 LABEL_6:
-  self->hasOwnership = a3;
-  if (!a3)
+  self->hasOwnership = ownership;
+  if (!ownership)
   {
     v7 = +[BTSmartRoutingDaemon sharedBTSmartRoutingDaemon];
     [v7 _setConnectedBannerTick:0];
   }
 }
 
-- (void)setRouted:(BOOL)a3
+- (void)setRouted:(BOOL)routed
 {
-  v3 = a3;
+  routedCopy = routed;
   v5 = +[BTSmartRoutingDaemon sharedBTSmartRoutingDaemon];
   routed = self->routed;
   v20 = v5;
-  if (routed != v3)
+  if (routed != routedCopy)
   {
     if (dword_1002F6700 <= 30)
     {
@@ -625,7 +625,7 @@ LABEL_4:
           v8 = "no";
         }
 
-        if (v3)
+        if (routedCopy)
         {
           v7 = "yes";
         }
@@ -645,20 +645,20 @@ LABEL_4:
     }
 
 LABEL_11:
-    self->routed = v3;
+    self->routed = routedCopy;
     [(SRWxDevice *)self checkActiveHRMDeviceUpdate:deviceAddress];
     [(SRWxDevice *)self checkDataRelayServerPublishEligibility];
     v5 = v20;
   }
 
   tipiAndRoutedState = self->tipiAndRoutedState;
-  v10 = [v5 workoutObserver];
-  v11 = [v10 workoutActive];
+  workoutObserver = [v5 workoutObserver];
+  workoutActive = [workoutObserver workoutActive];
 
   if (self->routed)
   {
     v12 = tipiAndRoutedState | 4;
-    if (v11)
+    if (workoutActive)
     {
       v13 = v20;
       if (!self->isHRMCapable)
@@ -667,7 +667,7 @@ LABEL_11:
       }
 
       v14 = v20;
-      v15 = self;
+      selfCopy = self;
       goto LABEL_18;
     }
   }
@@ -675,14 +675,14 @@ LABEL_11:
   else
   {
     v12 = tipiAndRoutedState & 0xFFFFFFFB;
-    v16 = [v20 workoutWx];
+    workoutWx = [v20 workoutWx];
 
-    if (v16 == self)
+    if (workoutWx == self)
     {
       v14 = v20;
-      v15 = 0;
+      selfCopy = 0;
 LABEL_18:
-      [v14 setWorkoutWx:v15];
+      [v14 setWorkoutWx:selfCopy];
     }
   }
 
@@ -691,15 +691,15 @@ LABEL_20:
   [v13 _setTipiAndRoutedStateFlags:v12 forDevice:self];
 }
 
-- (void)setIsHRMCapable:(BOOL)a3
+- (void)setIsHRMCapable:(BOOL)capable
 {
   isHRMCapable = self->isHRMCapable;
-  if (isHRMCapable == a3)
+  if (isHRMCapable == capable)
   {
     return;
   }
 
-  v5 = a3;
+  capableCopy = capable;
   if (dword_1002F6700 <= 30)
   {
     if (dword_1002F6700 != -1)
@@ -716,7 +716,7 @@ LABEL_4:
         v8 = "no";
       }
 
-      if (v5)
+      if (capableCopy)
       {
         v7 = "yes";
       }
@@ -736,15 +736,15 @@ LABEL_4:
   }
 
 LABEL_11:
-  self->isHRMCapable = v5;
+  self->isHRMCapable = capableCopy;
   [(SRWxDevice *)self checkDataRelayServerPublishEligibility:deviceAddress];
 
   [(SRWxDevice *)self checkActiveHRMDeviceUpdate];
 }
 
-- (void)setIsRoutingActionInitialized:(BOOL)a3
+- (void)setIsRoutingActionInitialized:(BOOL)initialized
 {
-  if (self->isRoutingActionInitialized != a3)
+  if (self->isRoutingActionInitialized != initialized)
   {
     if (dword_1002F6700 <= 30)
     {
@@ -763,14 +763,14 @@ LABEL_11:
     }
 
 LABEL_6:
-    self->isRoutingActionInitialized = a3;
+    self->isRoutingActionInitialized = initialized;
   }
 }
 
-- (void)setRoutingAction:(int)a3
+- (void)setRoutingAction:(int)action
 {
   routingAction = self->routingAction;
-  if (routingAction != a3)
+  if (routingAction != action)
   {
     if (dword_1002F6700 <= 30)
     {
@@ -782,9 +782,9 @@ LABEL_4:
           v6 = (&off_1002B7D20)[routingAction];
         }
 
-        if (a3 <= 5)
+        if (action <= 5)
         {
-          v7 = (&off_1002B7D20)[a3];
+          v7 = (&off_1002B7D20)[action];
         }
 
         deviceAddress = self->deviceAddress;
@@ -800,14 +800,14 @@ LABEL_4:
     }
 
 LABEL_11:
-    self->routingAction = a3;
+    self->routingAction = action;
   }
 }
 
-- (void)setRoutingUI:(int)a3
+- (void)setRoutingUI:(int)i
 {
   routingUI = self->routingUI;
-  if (routingUI != a3)
+  if (routingUI != i)
   {
     if (dword_1002F6700 <= 30)
     {
@@ -819,9 +819,9 @@ LABEL_4:
           v6 = (&off_1002B7D20)[routingUI];
         }
 
-        if (a3 <= 5)
+        if (i <= 5)
         {
-          v7 = (&off_1002B7D20)[a3];
+          v7 = (&off_1002B7D20)[i];
         }
 
         deviceAddress = self->deviceAddress;
@@ -837,13 +837,13 @@ LABEL_4:
     }
 
 LABEL_11:
-    self->routingUI = a3;
+    self->routingUI = i;
   }
 }
 
-- (void)setTipiAndRoutedStateFlags:(unsigned int)a3
+- (void)setTipiAndRoutedStateFlags:(unsigned int)flags
 {
-  if (self->tipiAndRoutedState != a3)
+  if (self->tipiAndRoutedState != flags)
   {
     if (dword_1002F6700 <= 30)
     {
@@ -864,7 +864,7 @@ LABEL_11:
     }
 
 LABEL_6:
-    self->tipiAndRoutedState = a3;
+    self->tipiAndRoutedState = flags;
   }
 }
 
@@ -904,8 +904,8 @@ LABEL_43:
     {
       v3 = self->otherTipiAudioCategory != 100 || self->otherTipiDeviceIsStreamingAudio;
       v4 = !self->routed && self->otherTipiDeviceBTAddress && self->inEar && v3;
-      v5 = [v9 workoutObserver];
-      v6 = [v5 workoutActive];
+      workoutObserver = [v9 workoutObserver];
+      workoutActive = [workoutObserver workoutActive];
 
       if (self->routed)
       {
@@ -914,7 +914,7 @@ LABEL_43:
 
       else
       {
-        v7 = (self->otherTipiDeviceBTAddress != 0) & v6;
+        v7 = (self->otherTipiDeviceBTAddress != 0) & workoutActive;
       }
 
       if (dword_1002F6700 <= 30)

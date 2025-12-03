@@ -3,23 +3,23 @@
 - (CGRect)badgeFrame;
 - (CGRect)labelFrame;
 - (CGSize)size;
-- (TSCHLegendCellModelCache)initWithChartModel:(id)a3 cellType:(int)a4 seriesIndex:(unint64_t)a5 withMetrics:(id)a6 overrideLabel:(id)a7 styleProvidingSource:(id)a8;
+- (TSCHLegendCellModelCache)initWithChartModel:(id)model cellType:(int)type seriesIndex:(unint64_t)index withMetrics:(id)metrics overrideLabel:(id)label styleProvidingSource:(id)source;
 - (id)fill;
 - (id)symbolFill;
 @end
 
 @implementation TSCHLegendCellModelCache
 
-- (TSCHLegendCellModelCache)initWithChartModel:(id)a3 cellType:(int)a4 seriesIndex:(unint64_t)a5 withMetrics:(id)a6 overrideLabel:(id)a7 styleProvidingSource:(id)a8
+- (TSCHLegendCellModelCache)initWithChartModel:(id)model cellType:(int)type seriesIndex:(unint64_t)index withMetrics:(id)metrics overrideLabel:(id)label styleProvidingSource:(id)source
 {
-  v13 = a3;
-  v14 = a6;
-  v15 = a7;
-  v16 = a8;
-  v22 = objc_msgSend_chartInfo(v13, v17, v18, v19, v20);
+  modelCopy = model;
+  metricsCopy = metrics;
+  labelCopy = label;
+  sourceCopy = source;
+  v22 = objc_msgSend_chartInfo(modelCopy, v17, v18, v19, v20);
   if (v22)
   {
-    if (v14)
+    if (metricsCopy)
     {
       goto LABEL_3;
     }
@@ -33,7 +33,7 @@
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v93, v100, v101, v102, v103, v94, v99, 294, 0, "invalid nil value for '%{public}s'", "chartInfo");
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v104, v105, v106, v107);
-    if (v14)
+    if (metricsCopy)
     {
       goto LABEL_3;
     }
@@ -46,18 +46,18 @@
 
   objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v119, v120, v121, v122);
 LABEL_3:
-  if (a5 == 0x7FFFFFFFFFFFFFFFLL)
+  if (index == 0x7FFFFFFFFFFFFFFFLL)
   {
     v26 = 0;
   }
 
   else
   {
-    v26 = objc_msgSend_seriesAtIndex_(v13, v21, v23, v24, v25, a5);
+    v26 = objc_msgSend_seriesAtIndex_(modelCopy, v21, v23, v24, v25, index);
   }
 
-  v27 = 0;
-  if (v14 && v22)
+  selfCopy = 0;
+  if (metricsCopy && v22)
   {
     v291.receiver = self;
     v291.super_class = TSCHLegendCellModelCache;
@@ -67,20 +67,20 @@ LABEL_3:
     {
 LABEL_69:
       self = v29;
-      v27 = self;
+      selfCopy = self;
       goto LABEL_70;
     }
 
     v288 = v22;
-    v28->_legendCellType = a4;
-    v28->_seriesIndex = a5;
+    v28->_legendCellType = type;
+    v28->_seriesIndex = index;
     objc_storeStrong(&v28->_series, v26);
     v34 = objc_msgSend_seriesType(v26, v30, v31, v32, v33);
     v29->_badgeType = objc_msgSend_legendBadgeType(v34, v35, v36, v37, v38);
 
-    objc_msgSend_badgeSize(v14, v39, v40, v41, v42);
+    objc_msgSend_badgeSize(metricsCopy, v39, v40, v41, v42);
     v44 = *&v43;
-    objc_msgSend_badgeSize(v14, v45, v43, v46, v47);
+    objc_msgSend_badgeSize(metricsCopy, v45, v43, v46, v47);
     v49 = *&v48;
     v53 = objc_msgSend_seriesType(v29->_series, v50, v48, v51, v52);
     v54 = v29->_series;
@@ -274,9 +274,9 @@ LABEL_13:
 
           objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v85, v86, v87, v88);
 LABEL_57:
-          if (v15)
+          if (labelCopy)
           {
-            v240 = objc_msgSend_copy(v15, v89, v90, v91, v92);
+            v240 = objc_msgSend_copy(labelCopy, v89, v90, v91, v92);
             v241 = v29->_labelString;
             v29->_labelString = v240;
           }
@@ -287,21 +287,21 @@ LABEL_57:
           if (v243)
           {
             v253 = v29->_labelString;
-            v254 = objc_msgSend_paragraphStyle(v14, v248, v250, v251, v252);
-            objc_msgSend_measureText_paragraphStyle_wrapWidth_checkNumberTemplates_layoutProperties_styleProvidingSource_outErasableFrame_outTextLayoutResults_(v249, v255, 0.0, v256, v257, v253, v254, 1, 0, v16, 0, 0);
+            v254 = objc_msgSend_paragraphStyle(metricsCopy, v248, v250, v251, v252);
+            objc_msgSend_measureText_paragraphStyle_wrapWidth_checkNumberTemplates_layoutProperties_styleProvidingSource_outErasableFrame_outTextLayoutResults_(v249, v255, 0.0, v256, v257, v253, v254, 1, 0, sourceCopy, 0, 0);
             v259 = v258;
             v261 = v260;
           }
 
           else
           {
-            v262 = objc_msgSend_paragraphStyle(v14, v248, v250, v251, v252);
+            v262 = objc_msgSend_paragraphStyle(metricsCopy, v248, v250, v251, v252);
             v259 = 0.0;
-            objc_msgSend_measureText_paragraphStyle_wrapWidth_checkNumberTemplates_layoutProperties_styleProvidingSource_outErasableFrame_outTextLayoutResults_(v249, v263, 0.0, v264, v265, @" ", v262, 1, 0, v16, 0, 0);
+            objc_msgSend_measureText_paragraphStyle_wrapWidth_checkNumberTemplates_layoutProperties_styleProvidingSource_outErasableFrame_outTextLayoutResults_(v249, v263, 0.0, v264, v265, @" ", v262, 1, 0, sourceCopy, 0, 0);
             v261 = v266;
           }
 
-          objc_msgSend_symbolGap(v14, v267, v268, v269, v270);
+          objc_msgSend_symbolGap(metricsCopy, v267, v268, v269, v270);
           if (v261 <= v242)
           {
             v272 = v242;
@@ -361,7 +361,7 @@ LABEL_30:
 
 LABEL_70:
 
-  return v27;
+  return selfCopy;
 }
 
 - (id)fill

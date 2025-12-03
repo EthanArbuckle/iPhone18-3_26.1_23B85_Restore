@@ -25,12 +25,12 @@
   v49 = 0x2020000000;
   v50 = 1;
   v18 = objc_autoreleasePoolPush();
-  v19 = [v14 textContentLanguage];
-  if ([v19 length])
+  textContentLanguage = [v14 textContentLanguage];
+  if ([textContentLanguage length])
   {
-    v20 = [v14 textContentSize];
+    textContentSize = [v14 textContentSize];
 
-    if (v20)
+    if (textContentSize)
     {
       v21 = 0;
       LOBYTE(v7) = *(v48 + 24);
@@ -42,11 +42,11 @@
   {
   }
 
-  Copy = [a1 copyStringValueFromRecord:v13 key:@"kMDItemTextContentLanguage"];
-  v23 = [a1 copyTextContentFromRecord:v13];
+  Copy = [self copyStringValueFromRecord:v13 key:@"kMDItemTextContentLanguage"];
+  v23 = [self copyTextContentFromRecord:v13];
   if (!v23)
   {
-    v23 = [a1 copySnippetFromRecord:v13];
+    v23 = [self copySnippetFromRecord:v13];
     if (!v23)
     {
       v21 = 0;
@@ -76,9 +76,9 @@
     goto LABEL_14;
   }
 
-  v25 = [a1 loadLanguageIdentifier];
-  *(v48 + 24) = v25;
-  if (!v25)
+  loadLanguageIdentifier = [self loadLanguageIdentifier];
+  *(v48 + 24) = loadLanguageIdentifier;
+  if (!loadLanguageIdentifier)
   {
     Copy = 0;
     v21 = 0;
@@ -95,10 +95,10 @@
   v45 = v39;
   v40 = _Block_copy(aBlock);
   v7 = 0x277D65000uLL;
-  v26 = [MEMORY[0x277D657A8] sharedProcessorListener];
-  v27 = [v26 enableV2LanguageID];
+  mEMORY[0x277D657A8] = [MEMORY[0x277D657A8] sharedProcessorListener];
+  enableV2LanguageID = [mEMORY[0x277D657A8] enableV2LanguageID];
 
-  if (v27)
+  if (enableV2LanguageID)
   {
     context = objc_autoreleasePoolPush();
     v28 = +[SKGLanguageIdentifier sharedIdentifier];
@@ -129,10 +129,10 @@
     goto LABEL_48;
   }
 
-  v31 = [MEMORY[0x277D657A8] sharedProcessorListener];
-  v32 = [v31 currentLocaleIsCJK];
+  mEMORY[0x277D657A8]2 = [MEMORY[0x277D657A8] sharedProcessorListener];
+  currentLocaleIsCJK = [mEMORY[0x277D657A8]2 currentLocaleIsCJK];
 
-  if (v32)
+  if (currentLocaleIsCJK)
   {
     if ([(__CFString *)v23 length]<= 5)
     {

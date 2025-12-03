@@ -1,8 +1,8 @@
 @interface TVLPersistenceManager
 + (id)URLForRecording;
 + (id)allRecordingPaths;
-+ (id)documentsDirectory:(id)a3;
-+ (id)recordingsDirectory:(id)a3;
++ (id)documentsDirectory:(id)directory;
++ (id)recordingsDirectory:(id)directory;
 + (void)URLForRecording;
 + (void)allRecordingPaths;
 + (void)eraseAllRecordings;
@@ -10,17 +10,17 @@
 
 @implementation TVLPersistenceManager
 
-+ (id)documentsDirectory:(id)a3
++ (id)documentsDirectory:(id)directory
 {
-  v3 = [a3 URLsForDirectory:9 inDomains:1];
-  v4 = [v3 firstObject];
+  v3 = [directory URLsForDirectory:9 inDomains:1];
+  firstObject = [v3 firstObject];
 
-  return v4;
+  return firstObject;
 }
 
-+ (id)recordingsDirectory:(id)a3
++ (id)recordingsDirectory:(id)directory
 {
-  v3 = [a1 documentsDirectory:a3];
+  v3 = [self documentsDirectory:directory];
   v4 = [v3 URLByAppendingPathComponent:@"tvlatency-recordings" isDirectory:1];
 
   return v4;
@@ -28,10 +28,10 @@
 
 + (id)URLForRecording
 {
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
-  v4 = [a1 recordingsDirectory:v3];
-  v5 = [v4 path];
-  v6 = [v3 fileExistsAtPath:v5];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v4 = [self recordingsDirectory:defaultManager];
+  path = [v4 path];
+  v6 = [defaultManager fileExistsAtPath:path];
 
   if (v6)
   {
@@ -44,8 +44,8 @@ LABEL_4:
     }
 
     v11 = CurrentTimeStamp_ISO8601DateFormatter;
-    v12 = [MEMORY[0x277CBEAA8] date];
-    v13 = [v11 stringFromDate:v12];
+    date = [MEMORY[0x277CBEAA8] date];
+    v13 = [v11 stringFromDate:date];
 
     v14 = [v10 stringWithFormat:@"recording-%@.caf", v13];
 
@@ -54,9 +54,9 @@ LABEL_4:
     goto LABEL_12;
   }
 
-  v8 = [v4 path];
+  path2 = [v4 path];
   v18 = 0;
-  v9 = [v3 createDirectoryAtPath:v8 withIntermediateDirectories:1 attributes:0 error:&v18];
+  v9 = [defaultManager createDirectoryAtPath:path2 withIntermediateDirectories:1 attributes:0 error:&v18];
   v7 = v18;
 
   if (v9)
@@ -83,10 +83,10 @@ LABEL_12:
 
 + (id)allRecordingPaths
 {
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
-  v4 = [a1 recordingsDirectory:v3];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v4 = [self recordingsDirectory:defaultManager];
   v10 = 0;
-  v5 = [v3 contentsOfDirectoryAtURL:v4 includingPropertiesForKeys:0 options:0 error:&v10];
+  v5 = [defaultManager contentsOfDirectoryAtURL:v4 includingPropertiesForKeys:0 options:0 error:&v10];
   v6 = v10;
   if (v6)
   {
@@ -115,8 +115,8 @@ LABEL_12:
 + (void)eraseAllRecordings
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = a1;
-  v4 = [a2 path];
+  selfCopy = self;
+  path = [a2 path];
   OUTLINED_FUNCTION_0();
   OUTLINED_FUNCTION_1(&dword_26CD78000, v5, v6, "Failed to remove directory at path %@ with error %@", v7, v8, v9, v10, v12);
 
@@ -126,8 +126,8 @@ LABEL_12:
 + (void)URLForRecording
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = a1;
-  v4 = [a2 path];
+  selfCopy = self;
+  path = [a2 path];
   OUTLINED_FUNCTION_0();
   OUTLINED_FUNCTION_1(&dword_26CD78000, v5, v6, "Failed to create recordings directory at path %@ with error %@", v7, v8, v9, v10, v12);
 
@@ -137,8 +137,8 @@ LABEL_12:
 + (void)allRecordingPaths
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = a1;
-  v4 = [a2 path];
+  selfCopy = self;
+  path = [a2 path];
   OUTLINED_FUNCTION_0();
   OUTLINED_FUNCTION_1(&dword_26CD78000, v5, v6, "Failed to retrieve contents of directory at path %@ with error %@", v7, v8, v9, v10, v12);
 

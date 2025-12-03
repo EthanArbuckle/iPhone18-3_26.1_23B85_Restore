@@ -1,29 +1,29 @@
 @interface MobileCalUIDimmingViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_accessibilityObscuredScreenAllowedViews;
 @end
 
 @implementation MobileCalUIDimmingViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"LargeWeekViewController"];
-  [v3 validateClass:@"UIDimmingView" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"LargeWeekViewController"];
+  [validationsCopy validateClass:@"UIDimmingView" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
 }
 
 - (id)_accessibilityObscuredScreenAllowedViews
 {
   v13.receiver = self;
   v13.super_class = MobileCalUIDimmingViewAccessibility;
-  v3 = [(MobileCalUIDimmingViewAccessibility *)&v13 _accessibilityObscuredScreenAllowedViews];
-  v4 = [v3 mutableCopy];
+  _accessibilityObscuredScreenAllowedViews = [(MobileCalUIDimmingViewAccessibility *)&v13 _accessibilityObscuredScreenAllowedViews];
+  v4 = [_accessibilityObscuredScreenAllowedViews mutableCopy];
 
   v5 = [(MobileCalUIDimmingViewAccessibility *)self safeValueForKey:@"delegate"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v5 delegate];
+    delegate = [v5 delegate];
     NSClassFromString(&cfstr_Largeweekviewc_0.isa);
     isKindOfClass = objc_opt_isKindOfClass();
 

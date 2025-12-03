@@ -1,16 +1,16 @@
 @interface _SBLoadApplicationResult
 - (uint64_t)isSuccess;
 - (uint64_t)setSuccess:(uint64_t)result;
-- (void)setErrorDescription:(void *)a1;
+- (void)setErrorDescription:(void *)description;
 @end
 
 @implementation _SBLoadApplicationResult
 
 - (uint64_t)isSuccess
 {
-  if (a1)
+  if (self)
   {
-    v1 = *(a1 + 8);
+    v1 = *(self + 8);
   }
 
   else
@@ -31,11 +31,11 @@
   return result;
 }
 
-- (void)setErrorDescription:(void *)a1
+- (void)setErrorDescription:(void *)description
 {
-  if (a1)
+  if (description)
   {
-    objc_setProperty_nonatomic_copy(a1, newValue, newValue, 16);
+    objc_setProperty_nonatomic_copy(description, newValue, newValue, 16);
   }
 }
 

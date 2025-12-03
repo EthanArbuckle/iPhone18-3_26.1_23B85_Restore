@@ -25,8 +25,8 @@
   filterMaskImage = self->super._filterMaskImage;
   self->super._filterMaskImage = 0;
 
-  v9 = [objc_opt_self() mainScreen];
-  [v9 scale];
+  mainScreen = [objc_opt_self() mainScreen];
+  [mainScreen scale];
   self->super._scale = v10;
 
   self->super._requiresColorStatistics = 0;

@@ -1,30 +1,30 @@
 @interface DBLocalSceneHostWindow
 - (FBSScene)clientScene;
 - (FBScene)localScene;
-- (id)presentationViewWithIdentifier:(id)a3;
+- (id)presentationViewWithIdentifier:(id)identifier;
 @end
 
 @implementation DBLocalSceneHostWindow
 
 - (FBScene)localScene
 {
-  v2 = [*(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC9DashBoard22DBLocalSceneHostWindow__localSceneController) scene];
+  scene = [*(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC9DashBoard22DBLocalSceneHostWindow__localSceneController) scene];
 
-  return v2;
+  return scene;
 }
 
 - (FBSScene)clientScene
 {
-  v2 = [*(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC9DashBoard22DBLocalSceneHostWindow__localSceneController) clientScene];
+  clientScene = [*(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC9DashBoard22DBLocalSceneHostWindow__localSceneController) clientScene];
 
-  return v2;
+  return clientScene;
 }
 
-- (id)presentationViewWithIdentifier:(id)a3
+- (id)presentationViewWithIdentifier:(id)identifier
 {
-  v3 = [*(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC9DashBoard22DBLocalSceneHostWindow__localSceneController) presentationViewWithIdentifier_];
+  presentationViewWithIdentifier_ = [*(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC9DashBoard22DBLocalSceneHostWindow__localSceneController) presentationViewWithIdentifier_];
 
-  return v3;
+  return presentationViewWithIdentifier_;
 }
 
 @end

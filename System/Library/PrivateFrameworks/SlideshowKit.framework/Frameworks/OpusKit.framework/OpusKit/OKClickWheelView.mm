@@ -1,37 +1,37 @@
 @interface OKClickWheelView
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
 - (BOOL)isPresented;
-- (OKClickWheelView)initWithContainerView:(id)a3 andAuthoringGuidelines:(id)a4;
-- (OKClickWheelView)initWithFrame:(CGRect)a3;
-- (id)animationForKeyPath:(id)a3 fromValue:(id)a4 toValue:(id)a5 duration:(double)a6 timmingFunctionName:(id)a7 delegate:(id)a8;
-- (void)_setupLayerShadowForLabel:(id)a3;
-- (void)activateProgress:(id)a3;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
-- (void)audioStartedPlayingWithAVAsset:(id)a3;
-- (void)buttonPressed:(id)a3;
+- (OKClickWheelView)initWithContainerView:(id)view andAuthoringGuidelines:(id)guidelines;
+- (OKClickWheelView)initWithFrame:(CGRect)frame;
+- (id)animationForKeyPath:(id)path fromValue:(id)value toValue:(id)toValue duration:(double)duration timmingFunctionName:(id)name delegate:(id)delegate;
+- (void)_setupLayerShadowForLabel:(id)label;
+- (void)activateProgress:(id)progress;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
+- (void)audioStartedPlayingWithAVAsset:(id)asset;
+- (void)buttonPressed:(id)pressed;
 - (void)dealloc;
-- (void)handleAllGestures:(id)a3;
-- (void)handleLongPress:(id)a3;
+- (void)handleAllGestures:(id)gestures;
+- (void)handleLongPress:(id)press;
 - (void)hide;
 - (void)initAlbumInformationView;
 - (void)initButtons;
 - (void)initGesture;
 - (void)layoutSubviews;
-- (void)notifyProgress:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setProgress:(double)a3;
-- (void)setVolume:(double)a3;
+- (void)notifyProgress:(id)progress;
+- (void)setDelegate:(id)delegate;
+- (void)setProgress:(double)progress;
+- (void)setVolume:(double)volume;
 - (void)show;
-- (void)updateMusicInformation:(id)a3;
+- (void)updateMusicInformation:(id)information;
 @end
 
 @implementation OKClickWheelView
 
-- (OKClickWheelView)initWithContainerView:(id)a3 andAuthoringGuidelines:(id)a4
+- (OKClickWheelView)initWithContainerView:(id)view andAuthoringGuidelines:(id)guidelines
 {
   v30 = *MEMORY[0x277D85DE8];
-  [a3 frame];
+  [view frame];
   v8 = v7;
   v10 = v9;
   if (+[OKRuntime currentPlatform]== 1)
@@ -80,13 +80,13 @@
   v18 = v17;
   if (v17)
   {
-    v17->_containerView = a3;
+    v17->_containerView = view;
     [(OKClickWheelView *)v17 initGesture];
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v19 = [a4 countByEnumeratingWithState:&v25 objects:v29 count:16];
+    v19 = [guidelines countByEnumeratingWithState:&v25 objects:v29 count:16];
     if (v19)
     {
       v20 = v19;
@@ -97,7 +97,7 @@
         {
           if (*v26 != v21)
           {
-            objc_enumerationMutation(a4);
+            objc_enumerationMutation(guidelines);
           }
 
           v23 = *(*(&v25 + 1) + 8 * i);
@@ -112,7 +112,7 @@
           }
         }
 
-        v20 = [a4 countByEnumeratingWithState:&v25 objects:v29 count:16];
+        v20 = [guidelines countByEnumeratingWithState:&v25 objects:v29 count:16];
       }
 
       while (v20);
@@ -122,13 +122,13 @@
   return v18;
 }
 
-- (OKClickWheelView)initWithFrame:(CGRect)a3
+- (OKClickWheelView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
+  height = frame.size.height;
+  width = frame.size.width;
   v42.receiver = self;
   v42.super_class = OKClickWheelView;
-  v5 = [(OFViewProxy *)&v42 initWithFrame:a3.origin.x, a3.origin.y];
+  v5 = [(OFViewProxy *)&v42 initWithFrame:frame.origin.x, frame.origin.y];
   v6 = v5;
   if (v5)
   {
@@ -149,26 +149,26 @@
     v8 = objc_alloc_init(MEMORY[0x277CCABD8]);
     v6->_fetchInformationsQueue = v8;
     [(NSOperationQueue *)v8 setQualityOfService:25];
-    v9 = [MEMORY[0x277CD9F90] layer];
-    [v9 setFrame:{1.5, 1.5, width + -3.0, height + -3.0}];
-    [v9 setStrokeColor:{objc_msgSend(objc_msgSend(MEMORY[0x277D75348], "colorWithWhite:alpha:", 0.800000012, 1.0), "CGColor")}];
-    [v9 setFillColor:{objc_msgSend(objc_msgSend(MEMORY[0x277D75348], "clearColor"), "CGColor")}];
-    [v9 setLineWidth:3.0];
+    layer = [MEMORY[0x277CD9F90] layer];
+    [layer setFrame:{1.5, 1.5, width + -3.0, height + -3.0}];
+    [layer setStrokeColor:{objc_msgSend(objc_msgSend(MEMORY[0x277D75348], "colorWithWhite:alpha:", 0.800000012, 1.0), "CGColor")}];
+    [layer setFillColor:{objc_msgSend(objc_msgSend(MEMORY[0x277D75348], "clearColor"), "CGColor")}];
+    [layer setLineWidth:3.0];
     v10 = MEMORY[0x277D75208];
-    [v9 frame];
+    [layer frame];
     v12 = v11 * 0.5;
-    [v9 frame];
+    [layer frame];
     v14 = v13 * 0.5;
-    [v9 frame];
-    [v9 setPath:{objc_msgSend(objc_msgSend(v10, "bezierPathWithArcCenter:radius:startAngle:endAngle:clockwise:", 1, v12, v14, v15 * 0.5, 0.0, 6.28318531), "CGPath")}];
+    [layer frame];
+    [layer setPath:{objc_msgSend(objc_msgSend(v10, "bezierPathWithArcCenter:radius:startAngle:endAngle:clockwise:", 1, v12, v14, v15 * 0.5, 0.0, 6.28318531), "CGPath")}];
     v16 = [objc_alloc(MEMORY[0x277D75DE8]) initWithFrame:2071 privateStyle:{0.0, 0.0, width, height}];
     [(OKClickWheelView *)v6 addSubview:v16];
     [objc_msgSend(v16 "layer")];
 
     v17 = [objc_alloc(MEMORY[0x277D75D18]) initWithSize:{width, height}];
-    v18 = [MEMORY[0x277CD9F90] layer];
-    v6->_volumeLayer = v18;
-    [(CAShapeLayer *)v18 setFrame:1.5, 1.5, width + -3.0, height + -3.0];
+    layer2 = [MEMORY[0x277CD9F90] layer];
+    v6->_volumeLayer = layer2;
+    [(CAShapeLayer *)layer2 setFrame:1.5, 1.5, width + -3.0, height + -3.0];
     -[CAShapeLayer setStrokeColor:](v6->_volumeLayer, "setStrokeColor:", [objc_msgSend(MEMORY[0x277D75348] colorWithRed:0.874509811 green:0.137254909 blue:0.254901975 alpha:{1.0), "CGColor"}]);
     -[CAShapeLayer setFillColor:](v6->_volumeLayer, "setFillColor:", [objc_msgSend(MEMORY[0x277D75348] "clearColor")]);
     [(CAShapeLayer *)v6->_volumeLayer setLineWidth:3.0];
@@ -187,21 +187,21 @@
     [v22 setBackgroundColor:{objc_msgSend(MEMORY[0x277D75348], "colorWithWhite:alpha:", 0.0, 0.7)}];
     [v22 frame];
     [objc_msgSend(v22 "layer")];
-    v24 = [MEMORY[0x277CD9F90] layer];
+    layer3 = [MEMORY[0x277CD9F90] layer];
     [v22 frame];
     v26 = v25 + -2.0;
     [v22 frame];
-    [v24 setFrame:{1.0, 1.0, v26, v27 + -2.0}];
-    [v24 setStrokeColor:{objc_msgSend(objc_msgSend(MEMORY[0x277D75348], "colorWithWhite:alpha:", 0.800000012, 1.0), "CGColor")}];
-    [v24 setFillColor:{objc_msgSend(objc_msgSend(MEMORY[0x277D75348], "clearColor"), "CGColor")}];
-    [v24 setLineWidth:2.0];
+    [layer3 setFrame:{1.0, 1.0, v26, v27 + -2.0}];
+    [layer3 setStrokeColor:{objc_msgSend(objc_msgSend(MEMORY[0x277D75348], "colorWithWhite:alpha:", 0.800000012, 1.0), "CGColor")}];
+    [layer3 setFillColor:{objc_msgSend(objc_msgSend(MEMORY[0x277D75348], "clearColor"), "CGColor")}];
+    [layer3 setLineWidth:2.0];
     v28 = MEMORY[0x277D75208];
-    [v24 frame];
+    [layer3 frame];
     v30 = v29 * 0.5;
-    [v24 frame];
+    [layer3 frame];
     v32 = v31 * 0.5;
-    [v24 frame];
-    [v24 setPath:{objc_msgSend(objc_msgSend(v28, "bezierPathWithArcCenter:radius:startAngle:endAngle:clockwise:", 1, v30, v32, v33 * 0.5, 0.0, 6.28318531), "CGPath")}];
+    [layer3 frame];
+    [layer3 setPath:{objc_msgSend(objc_msgSend(v28, "bezierPathWithArcCenter:radius:startAngle:endAngle:clockwise:", 1, v30, v32, v33 * 0.5, 0.0, 6.28318531), "CGPath")}];
     [(OKClickWheelView *)v6 addSubview:v22];
     [objc_msgSend(v22 "layer")];
     v34 = objc_alloc(MEMORY[0x277D75D18]);
@@ -320,10 +320,10 @@
   }
 }
 
-- (void)updateMusicInformation:(id)a3
+- (void)updateMusicInformation:(id)information
 {
   v13[2] = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (information)
   {
     if (!self->_isInformationLoaded)
     {
@@ -333,8 +333,8 @@
       v12[2] = __43__OKClickWheelView_updateMusicInformation___block_invoke;
       v12[3] = &unk_279C91640;
       v12[4] = self;
-      v12[5] = a3;
-      v5 = [a3 metadataWithCompletionHandler:v12 force:1 cache:1];
+      v12[5] = information;
+      v5 = [information metadataWithCompletionHandler:v12 force:1 cache:1];
       [(UIImageView *)self->_thumbnailMusic size];
       v7 = v6;
       [objc_msgSend(-[OFUIView window](self->_containerView "window")];
@@ -343,7 +343,7 @@
       v11[2] = __43__OKClickWheelView_updateMusicInformation___block_invoke_3;
       v11[3] = &unk_279C91668;
       v11[4] = self;
-      v9 = [a3 thumbnailImageForResolution:v7 aspectRatio:0 scale:v11 quality:1 colorSpace:1 completionHandler:1.0 force:v8 cache:0x800uLL];
+      v9 = [information thumbnailImageForResolution:v7 aspectRatio:0 scale:v11 quality:1 colorSpace:1 completionHandler:1.0 force:v8 cache:0x800uLL];
       fetchInformationsQueue = self->_fetchInformationsQueue;
       v13[0] = v5;
       v13[1] = v9;
@@ -801,24 +801,24 @@ uint64_t __43__OKClickWheelView_updateMusicInformation___block_invoke_4(uint64_t
   [(OFUIView *)&v16 dealloc];
 }
 
-- (void)_setupLayerShadowForLabel:(id)a3
+- (void)_setupLayerShadowForLabel:(id)label
 {
-  [objc_msgSend(a3 "layer")];
-  [objc_msgSend(a3 "layer")];
-  [objc_msgSend(a3 "layer")];
-  v4 = [a3 layer];
+  [objc_msgSend(label "layer")];
+  [objc_msgSend(label "layer")];
+  [objc_msgSend(label "layer")];
+  layer = [label layer];
   LODWORD(v5) = 1.0;
-  [v4 setShadowOpacity:v5];
-  v6 = [a3 layer];
+  [layer setShadowOpacity:v5];
+  layer2 = [label layer];
 
-  [v6 setMasksToBounds:0];
+  [layer2 setMasksToBounds:0];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  if (self->_delegate != a3)
+  if (self->_delegate != delegate)
   {
-    self->_delegate = a3;
+    self->_delegate = delegate;
     self->_delegateRespondToDidCircleGesture = objc_opt_respondsToSelector() & 1;
     self->_delegateRespondWillAppear = objc_opt_respondsToSelector() & 1;
     self->_delegateRespondWillDisappear = objc_opt_respondsToSelector() & 1;
@@ -826,19 +826,19 @@ uint64_t __43__OKClickWheelView_updateMusicInformation___block_invoke_4(uint64_t
   }
 }
 
-- (void)setVolume:(double)a3
+- (void)setVolume:(double)volume
 {
-  if (a3 < 0.0)
+  if (volume < 0.0)
   {
-    a3 = 0.0;
+    volume = 0.0;
   }
 
-  if (a3 > 1.0)
+  if (volume > 1.0)
   {
-    a3 = 1.0;
+    volume = 1.0;
   }
 
-  self->_volume = a3;
+  self->_volume = volume;
   [(CAShapeLayer *)self->_volumeLayer frame];
   v5 = v4 * 0.5;
   [(CAShapeLayer *)self->_volumeLayer frame];
@@ -851,19 +851,19 @@ uint64_t __43__OKClickWheelView_updateMusicInformation___block_invoke_4(uint64_t
   [(CAShapeLayer *)volumeLayer setPath:v10];
 }
 
-- (void)setProgress:(double)a3
+- (void)setProgress:(double)progress
 {
-  if (a3 < 0.0)
+  if (progress < 0.0)
   {
-    a3 = 0.0;
+    progress = 0.0;
   }
 
-  if (a3 > 1.0)
+  if (progress > 1.0)
   {
-    a3 = 1.0;
+    progress = 1.0;
   }
 
-  self->_progress = a3;
+  self->_progress = progress;
   [(CAShapeLayer *)self->_progressLayer frame];
   v5 = v4 * 0.5;
   [(CAShapeLayer *)self->_progressLayer frame];
@@ -876,21 +876,21 @@ uint64_t __43__OKClickWheelView_updateMusicInformation___block_invoke_4(uint64_t
   [(CAShapeLayer *)progressLayer setPath:v10];
 }
 
-- (id)animationForKeyPath:(id)a3 fromValue:(id)a4 toValue:(id)a5 duration:(double)a6 timmingFunctionName:(id)a7 delegate:(id)a8
+- (id)animationForKeyPath:(id)path fromValue:(id)value toValue:(id)toValue duration:(double)duration timmingFunctionName:(id)name delegate:(id)delegate
 {
-  v14 = [MEMORY[0x277CD9E10] animation];
-  [v14 setKeyPath:a3];
-  [v14 setFromValue:a4];
-  [v14 setToValue:a5];
-  [v14 setDuration:a6];
-  [v14 setDelegate:a8];
-  [v14 setTimingFunction:{objc_msgSend(MEMORY[0x277CD9EF8], "functionWithName:", a7)}];
-  return v14;
+  animation = [MEMORY[0x277CD9E10] animation];
+  [animation setKeyPath:path];
+  [animation setFromValue:value];
+  [animation setToValue:toValue];
+  [animation setDuration:duration];
+  [animation setDelegate:delegate];
+  [animation setTimingFunction:{objc_msgSend(MEMORY[0x277CD9EF8], "functionWithName:", name)}];
+  return animation;
 }
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
-  if (![objc_msgSend(a3 "toValue")])
+  if (![objc_msgSend(stop "toValue")])
   {
     if (self->_delegateRespondWillDisappear)
     {
@@ -908,21 +908,21 @@ uint64_t __43__OKClickWheelView_updateMusicInformation___block_invoke_4(uint64_t
 
 - (BOOL)isPresented
 {
-  v3 = [(OKClickWheelView *)self superview];
-  if (v3)
+  superview = [(OKClickWheelView *)self superview];
+  if (superview)
   {
-    LOBYTE(v3) = !self->_isAnimating;
+    LOBYTE(superview) = !self->_isAnimating;
   }
 
-  return v3;
+  return superview;
 }
 
 - (void)show
 {
-  v3 = [(OKAudioPlaylist *)self->_audioPlaylist playingItem];
-  if (v3)
+  playingItem = [(OKAudioPlaylist *)self->_audioPlaylist playingItem];
+  if (playingItem)
   {
-    [(OKClickWheelView *)self updateMusicInformation:v3];
+    [(OKClickWheelView *)self updateMusicInformation:playingItem];
   }
 
   if (!self->_delegateRespondShouldAppear || [(OKClickWheelViewDelegate *)self->_delegate clickWheelViewShouldAppear])
@@ -950,35 +950,35 @@ uint64_t __43__OKClickWheelView_updateMusicInformation___block_invoke_4(uint64_t
     [(OFUIView *)self->_containerView addSubview:self->_musicInformationView];
     [(OFUIView *)self->_containerView addSubview:self->_closeButton];
     [(OFUIView *)self->_containerView addSubview:self->_beatsSentence];
-    v6 = [(OKClickWheelView *)self layer];
+    layer = [(OKClickWheelView *)self layer];
     LODWORD(v7) = 1.0;
-    [v6 setOpacity:v7];
-    v8 = [(OFUIView *)self->_musicInformationView layer];
+    [layer setOpacity:v7];
+    layer2 = [(OFUIView *)self->_musicInformationView layer];
     LODWORD(v9) = 1.0;
-    [v8 setOpacity:v9];
-    v10 = [(OFUIButton *)self->_closeButton layer];
+    [layer2 setOpacity:v9];
+    layer3 = [(OFUIButton *)self->_closeButton layer];
     LODWORD(v11) = 1.0;
-    [v10 setOpacity:v11];
-    v12 = [(UILabel *)self->_beatsSentence layer];
+    [layer3 setOpacity:v11];
+    layer4 = [(UILabel *)self->_beatsSentence layer];
     LODWORD(v13) = 1.0;
-    [v12 setOpacity:v13];
+    [layer4 setOpacity:v13];
     v14 = *MEMORY[0x277CDA7B0];
     [-[OKClickWheelView layer](self "layer")];
     v15 = [(OKClickWheelView *)self animationForKeyPath:@"opacity" fromValue:&unk_287AF1A78 toValue:&unk_287AF1A90 duration:v14 timmingFunctionName:0 delegate:0.2];
     [-[OFUIView layer](self->_musicInformationView "layer")];
     [-[OFUIButton layer](self->_closeButton "layer")];
-    v16 = [(UILabel *)self->_beatsSentence layer];
+    layer5 = [(UILabel *)self->_beatsSentence layer];
 
-    [v16 addAnimation:v15 forKey:@"fadeIn"];
+    [layer5 addAnimation:v15 forKey:@"fadeIn"];
   }
 }
 
 - (void)hide
 {
-  v3 = [(OKAudioPlaylist *)self->_audioPlaylist playingItem];
-  if (v3)
+  playingItem = [(OKAudioPlaylist *)self->_audioPlaylist playingItem];
+  if (playingItem)
   {
-    [(OKClickWheelView *)self updateMusicInformation:v3];
+    [(OKClickWheelView *)self updateMusicInformation:playingItem];
   }
 
   [(OFUIView *)self->_containerView removeGestureRecognizer:self->_allGestureRecognizer];
@@ -997,37 +997,37 @@ uint64_t __43__OKClickWheelView_updateMusicInformation___block_invoke_4(uint64_t
   [v6 cancelPreviousPerformRequestsWithTarget:self selector:sel_hide object:0];
 }
 
-- (void)audioStartedPlayingWithAVAsset:(id)a3
+- (void)audioStartedPlayingWithAVAsset:(id)asset
 {
   self->_isInformationLoaded = 0;
-  v4 = [(OKAudioPlaylist *)self->_audioPlaylist playingItem];
+  playingItem = [(OKAudioPlaylist *)self->_audioPlaylist playingItem];
 
-  [(OKClickWheelView *)self updateMusicInformation:v4];
+  [(OKClickWheelView *)self updateMusicInformation:playingItem];
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
   tapGestureRecognizer = self->_tapGestureRecognizer;
-  if (tapGestureRecognizer == a3)
+  if (tapGestureRecognizer == recognizer)
   {
     return 0;
   }
 
   allGestureRecognizer = self->_allGestureRecognizer;
-  return (tapGestureRecognizer == a4 || allGestureRecognizer != a3) && allGestureRecognizer != a4;
+  return (tapGestureRecognizer == gestureRecognizer || allGestureRecognizer != recognizer) && allGestureRecognizer != gestureRecognizer;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
   v23 = *MEMORY[0x277D85DE8];
-  if (self->_circleGestureRecognizer == a3 || self->_allGestureRecognizer == a3)
+  if (self->_circleGestureRecognizer == recognizer || self->_allGestureRecognizer == recognizer)
   {
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v7 = [(OKClickWheelView *)self subviews];
-    v8 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    subviews = [(OKClickWheelView *)self subviews];
+    v8 = [subviews countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v8)
     {
       v9 = v8;
@@ -1038,19 +1038,19 @@ LABEL_5:
       {
         if (*v19 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(subviews);
         }
 
         v12 = *(*(&v18 + 1) + 8 * v11);
         objc_opt_class();
-        if ((objc_opt_isKindOfClass() & 1) != 0 && [a4 view] == v12)
+        if ((objc_opt_isKindOfClass() & 1) != 0 && [touch view] == v12)
         {
           return 0;
         }
 
         if (v9 == ++v11)
         {
-          v9 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
+          v9 = [subviews countByEnumeratingWithState:&v18 objects:v22 count:16];
           if (v9)
           {
             goto LABEL_5;
@@ -1062,13 +1062,13 @@ LABEL_5:
     }
   }
 
-  [a4 locationInView:self->_containerView];
+  [touch locationInView:self->_containerView];
   v14 = v13;
   v16 = v15;
   [(OKClickWheelView *)self frame];
   v24.x = v14;
   v24.y = v16;
-  if (CGRectContainsPoint(v26, v24) && self->_allGestureRecognizer == a3)
+  if (CGRectContainsPoint(v26, v24) && self->_allGestureRecognizer == recognizer)
   {
     return 0;
   }
@@ -1076,17 +1076,17 @@ LABEL_5:
   [(OKClickWheelView *)self frame];
   v25.x = v14;
   v25.y = v16;
-  return !CGRectContainsPoint(v27, v25) || self->_tapGestureRecognizer != a3 || ![(OKClickWheelView *)self isPresented];
+  return !CGRectContainsPoint(v27, v25) || self->_tapGestureRecognizer != recognizer || ![(OKClickWheelView *)self isPresented];
 }
 
-- (void)notifyProgress:(id)a3
+- (void)notifyProgress:(id)progress
 {
-  if ([a3 state] == 1)
+  if ([progress state] == 1)
   {
     [MEMORY[0x277D82BB8] cancelPreviousPerformRequestsWithTarget:self selector:sel_hide object:0];
   }
 
-  else if ([a3 state] == 4 || objc_msgSend(a3, "state") == 3)
+  else if ([progress state] == 4 || objc_msgSend(progress, "state") == 3)
   {
     [(OKClickWheelView *)self performSelector:sel_hide withObject:0 afterDelay:5.0];
   }
@@ -1094,12 +1094,12 @@ LABEL_5:
   if ([(OKClickWheelView *)self wantsProgress])
   {
     [MEMORY[0x277D82BB8] cancelPreviousPerformRequestsWithTarget:self];
-    if ([a3 state] == 1)
+    if ([progress state] == 1)
     {
       [(OKAudioPlaylist *)self->_audioPlaylist stop];
     }
 
-    if ([a3 state] == 2)
+    if ([progress state] == 2)
     {
       [(OKAudioPlaylist *)self->_audioPlaylist playingMusicCurrentTime];
       v6 = v5;
@@ -1107,15 +1107,15 @@ LABEL_5:
       v8 = v7;
       audioPlaylist = self->_audioPlaylist;
       v10 = v6 / v7;
-      [a3 diffenceProgress];
+      [progress diffenceProgress];
       [(OKAudioPlaylist *)audioPlaylist setPlayingMusicCurrentTime:v8 * (v10 + v11)];
-      [a3 diffenceProgress];
+      [progress diffenceProgress];
       NSLog(&cfstr_F_0.isa, v8 * (v10 + v12));
-      [a3 diffenceProgress];
+      [progress diffenceProgress];
       [(OKClickWheelView *)self setProgress:v10 + v13];
     }
 
-    if ([a3 state] == 3)
+    if ([progress state] == 3)
     {
       [(OKAudioPlaylist *)self->_audioPlaylist play];
 
@@ -1127,7 +1127,7 @@ LABEL_5:
   {
     [(OKClickWheelView *)self volume];
     v15 = v14;
-    [a3 diffenceProgress];
+    [progress diffenceProgress];
     [(OKClickWheelView *)self setVolume:v15 + v16];
     v17 = self->_audioPlaylist;
     [(OKClickWheelView *)self volume];
@@ -1138,9 +1138,9 @@ LABEL_5:
   }
 }
 
-- (void)activateProgress:(id)a3
+- (void)activateProgress:(id)progress
 {
-  if ([a3 state] == 3)
+  if ([progress state] == 3)
   {
     NSLog(&cfstr_S_1.isa, "[OKClickWheelView activateProgress:]", @"Progress activated");
     [(OKClickWheelView *)self setWantsProgress:1];
@@ -1150,16 +1150,16 @@ LABEL_5:
   }
 }
 
-- (void)handleLongPress:(id)a3
+- (void)handleLongPress:(id)press
 {
-  if ([a3 state] == 3 && !self->_isAnimating)
+  if ([press state] == 3 && !self->_isAnimating)
   {
     self->_isAnimating = 1;
-    v5 = [(OKClickWheelView *)self superview];
-    [a3 locationInView:self->_containerView];
+    superview = [(OKClickWheelView *)self superview];
+    [press locationInView:self->_containerView];
     v8 = v6;
     v9 = v7;
-    if (v5)
+    if (superview)
     {
       [(OFUIView *)self->_musicInformationView frame];
       v39.x = v8;
@@ -1220,25 +1220,25 @@ uint64_t __36__OKClickWheelView_handleLongPress___block_invoke(uint64_t a1, uint
   return [v5 openURL:{objc_msgSend(MEMORY[0x277CBEBC0], "URLWithString:", objc_msgSend(objc_msgSend(objc_msgSend(objc_msgSend(v4, "objectForKeyedSubscript:", @"results", "objectAtIndexedSubscript:", 0), "objectForKeyedSubscript:", @"trackViewUrl", "stringByReplacingOccurrencesOfString:withString:", @"https://", @"itms://"}];
 }
 
-- (void)handleAllGestures:(id)a3
+- (void)handleAllGestures:(id)gestures
 {
-  if (([a3 state] - 3) <= 2)
+  if (([gestures state] - 3) <= 2)
   {
 
     [(OKClickWheelView *)self hide];
   }
 }
 
-- (void)buttonPressed:(id)a3
+- (void)buttonPressed:(id)pressed
 {
   [MEMORY[0x277D82BB8] cancelPreviousPerformRequestsWithTarget:self selector:sel_hide object:0];
-  if (![a3 tag] || objc_msgSend(a3, "tag") == 1)
+  if (![pressed tag] || objc_msgSend(pressed, "tag") == 1)
   {
-    [a3 setSelected:{objc_msgSend(a3, "isSelected") ^ 1}];
-    [a3 setTag:{objc_msgSend(a3, "isSelected")}];
+    [pressed setSelected:{objc_msgSend(pressed, "isSelected") ^ 1}];
+    [pressed setTag:{objc_msgSend(pressed, "isSelected")}];
   }
 
-  v5 = [a3 tag];
+  v5 = [pressed tag];
   if (v5 <= 1)
   {
     if (v5)

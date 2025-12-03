@@ -4,7 +4,7 @@
 - (void)abandon;
 - (void)dealloc;
 - (void)executeDockedAgent;
-- (void)receiveMobileAgent:(id)a3;
+- (void)receiveMobileAgent:(id)agent;
 - (void)releaseDockedAgent;
 @end
 
@@ -50,13 +50,13 @@
   pthread_mutex_unlock(&self->_mutex);
 }
 
-- (void)receiveMobileAgent:(id)a3
+- (void)receiveMobileAgent:(id)agent
 {
-  if (a3)
+  if (agent)
   {
-    v4 = a3;
+    agentCopy = agent;
     pthread_mutex_lock(&self->_mutex);
-    objc_msgSend_addObject_(self->_waitingAgents, v5, v4, v6, v7);
+    objc_msgSend_addObject_(self->_waitingAgents, v5, agentCopy, v6, v7);
 
     pthread_cond_signal(&self->_cond);
 

@@ -4,17 +4,17 @@
 - (CAFCarManager)carManager;
 - (CAFUIStatusTableView)tableView;
 - (UITextView)textView;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)appendStringWithFormat:(id)a3;
-- (void)carDidUpdate:(id)a3 accessory:(id)a4 service:(id)a5 characteristic:(id)a6;
-- (void)carDidUpdate:(id)a3 receivedAllValues:(BOOL)a4;
-- (void)carDidUpdateAccessories:(id)a3;
-- (void)carManager:(id)a3 didUpdateCurrentCar:(id)a4;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)appendStringWithFormat:(id)format;
+- (void)carDidUpdate:(id)update accessory:(id)accessory service:(id)service characteristic:(id)characteristic;
+- (void)carDidUpdate:(id)update receivedAllValues:(BOOL)values;
+- (void)carDidUpdateAccessories:(id)accessories;
+- (void)carManager:(id)manager didUpdateCurrentCar:(id)car;
 - (void)loadView;
-- (void)setCarManager:(id)a3;
+- (void)setCarManager:(id)manager;
 - (void)viewDidLoad;
 @end
 
@@ -60,15 +60,15 @@ uint64_t __43__CAFUIStatusViewController_sharedInstance__block_invoke()
   v8 = [v3 initWithFrame:{*MEMORY[0x277CBF3A0], v5, v6, v7}];
   [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v8 setEditable:0];
-  v9 = [MEMORY[0x277D75348] systemGreenColor];
-  [v8 setTextColor:v9];
+  systemGreenColor = [MEMORY[0x277D75348] systemGreenColor];
+  [v8 setTextColor:systemGreenColor];
 
   v10 = [MEMORY[0x277D74300] systemFontOfSize:10.0];
   [v8 setFont:v10];
 
   [v8 setTextContainerInset:{8.0, 8.0, 8.0, 8.0}];
-  v11 = [(CAFUIStatusViewController *)self view];
-  [v11 addSubview:v8];
+  view = [(CAFUIStatusViewController *)self view];
+  [view addSubview:v8];
 
   [(CAFUIStatusViewController *)self setTextView:v8];
   v12 = [[CAFUIStatusTableView alloc] initWithFrame:v4, v5, v6, v7];
@@ -81,58 +81,58 @@ uint64_t __43__CAFUIStatusViewController_sharedInstance__block_invoke()
   [(CAFUIStatusTableView *)v12 setDelegate:self];
   [(CAFUIStatusTableView *)v12 setAllowsSelection:0];
   [(CAFUIStatusTableView *)v12 setContentInset:4.0, 0.0, 4.0, 0.0];
-  v15 = [(CAFUIStatusViewController *)self view];
-  [v15 addSubview:v12];
+  view2 = [(CAFUIStatusViewController *)self view];
+  [view2 addSubview:v12];
 
   [(CAFUIStatusViewController *)self setTableView:v12];
   v44 = MEMORY[0x277CCAAD0];
-  v59 = [v8 topAnchor];
-  v60 = [(CAFUIStatusViewController *)self view];
-  v58 = [v60 safeAreaLayoutGuide];
-  v57 = [v58 topAnchor];
-  v56 = [v59 constraintEqualToAnchor:v57];
+  topAnchor = [v8 topAnchor];
+  view3 = [(CAFUIStatusViewController *)self view];
+  safeAreaLayoutGuide = [view3 safeAreaLayoutGuide];
+  topAnchor2 = [safeAreaLayoutGuide topAnchor];
+  v56 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v69[0] = v56;
-  v54 = [v8 bottomAnchor];
-  v55 = [(CAFUIStatusViewController *)self view];
-  v53 = [v55 safeAreaLayoutGuide];
-  v52 = [v53 bottomAnchor];
-  v51 = [v54 constraintEqualToAnchor:v52];
+  bottomAnchor = [v8 bottomAnchor];
+  view4 = [(CAFUIStatusViewController *)self view];
+  safeAreaLayoutGuide2 = [view4 safeAreaLayoutGuide];
+  bottomAnchor2 = [safeAreaLayoutGuide2 bottomAnchor];
+  v51 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v69[1] = v51;
-  v49 = [v8 leadingAnchor];
-  v50 = [(CAFUIStatusViewController *)self view];
-  v48 = [v50 safeAreaLayoutGuide];
-  v47 = [v48 leadingAnchor];
-  v46 = [v49 constraintEqualToAnchor:v47];
+  leadingAnchor = [v8 leadingAnchor];
+  view5 = [(CAFUIStatusViewController *)self view];
+  safeAreaLayoutGuide3 = [view5 safeAreaLayoutGuide];
+  leadingAnchor2 = [safeAreaLayoutGuide3 leadingAnchor];
+  v46 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v69[2] = v46;
-  v43 = [v8 widthAnchor];
-  v45 = [(CAFUIStatusViewController *)self view];
-  v42 = [v45 safeAreaLayoutGuide];
-  v41 = [v42 widthAnchor];
-  v40 = [v43 constraintEqualToAnchor:v41 multiplier:0.67];
+  widthAnchor = [v8 widthAnchor];
+  view6 = [(CAFUIStatusViewController *)self view];
+  safeAreaLayoutGuide4 = [view6 safeAreaLayoutGuide];
+  widthAnchor2 = [safeAreaLayoutGuide4 widthAnchor];
+  v40 = [widthAnchor constraintEqualToAnchor:widthAnchor2 multiplier:0.67];
   v69[3] = v40;
-  v38 = [(CAFUIStatusTableView *)v12 topAnchor];
-  v39 = [(CAFUIStatusViewController *)self view];
-  v37 = [v39 safeAreaLayoutGuide];
-  v36 = [v37 topAnchor];
-  v35 = [v38 constraintEqualToAnchor:v36];
+  topAnchor3 = [(CAFUIStatusTableView *)v12 topAnchor];
+  view7 = [(CAFUIStatusViewController *)self view];
+  safeAreaLayoutGuide5 = [view7 safeAreaLayoutGuide];
+  topAnchor4 = [safeAreaLayoutGuide5 topAnchor];
+  v35 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   v69[4] = v35;
-  v33 = [(CAFUIStatusTableView *)v12 bottomAnchor];
-  v34 = [(CAFUIStatusViewController *)self view];
-  v32 = [v34 safeAreaLayoutGuide];
-  v31 = [v32 bottomAnchor];
-  v30 = [v33 constraintEqualToAnchor:v31];
+  bottomAnchor3 = [(CAFUIStatusTableView *)v12 bottomAnchor];
+  view8 = [(CAFUIStatusViewController *)self view];
+  safeAreaLayoutGuide6 = [view8 safeAreaLayoutGuide];
+  bottomAnchor4 = [safeAreaLayoutGuide6 bottomAnchor];
+  v30 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   v69[5] = v30;
-  v16 = [(CAFUIStatusTableView *)v12 leadingAnchor];
+  leadingAnchor3 = [(CAFUIStatusTableView *)v12 leadingAnchor];
   v62 = v8;
-  v17 = [v8 trailingAnchor];
-  v18 = [v16 constraintEqualToAnchor:v17];
+  trailingAnchor = [v8 trailingAnchor];
+  v18 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor];
   v69[6] = v18;
   v61 = v12;
-  v19 = [(CAFUIStatusTableView *)v12 trailingAnchor];
-  v20 = [(CAFUIStatusViewController *)self view];
-  v21 = [v20 safeAreaLayoutGuide];
-  v22 = [v21 trailingAnchor];
-  v23 = [v19 constraintEqualToAnchor:v22];
+  trailingAnchor2 = [(CAFUIStatusTableView *)v12 trailingAnchor];
+  view9 = [(CAFUIStatusViewController *)self view];
+  safeAreaLayoutGuide7 = [view9 safeAreaLayoutGuide];
+  trailingAnchor3 = [safeAreaLayoutGuide7 trailingAnchor];
+  v23 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3];
   v69[7] = v23;
   v24 = [MEMORY[0x277CBEA60] arrayWithObjects:v69 count:8];
   [v44 activateConstraints:v24];
@@ -141,8 +141,8 @@ uint64_t __43__CAFUIStatusViewController_sharedInstance__block_invoke()
   v66 = 0u;
   v63 = 0u;
   v64 = 0u;
-  v25 = [(CAFUIStatusViewController *)self pendingMessages];
-  v26 = [v25 countByEnumeratingWithState:&v63 objects:v68 count:16];
+  pendingMessages = [(CAFUIStatusViewController *)self pendingMessages];
+  v26 = [pendingMessages countByEnumeratingWithState:&v63 objects:v68 count:16];
   if (v26)
   {
     v27 = v26;
@@ -153,13 +153,13 @@ uint64_t __43__CAFUIStatusViewController_sharedInstance__block_invoke()
       {
         if (*v64 != v28)
         {
-          objc_enumerationMutation(v25);
+          objc_enumerationMutation(pendingMessages);
         }
 
         [(CAFUIStatusViewController *)self appendStringWithFormat:*(*(&v63 + 1) + 8 * i)];
       }
 
-      v27 = [v25 countByEnumeratingWithState:&v63 objects:v68 count:16];
+      v27 = [pendingMessages countByEnumeratingWithState:&v63 objects:v68 count:16];
     }
 
     while (v27);
@@ -168,12 +168,12 @@ uint64_t __43__CAFUIStatusViewController_sharedInstance__block_invoke()
   [(CAFUIStatusViewController *)self setPendingMessages:0];
 }
 
-- (void)appendStringWithFormat:(id)a3
+- (void)appendStringWithFormat:(id)format
 {
   v10 = &v11;
   v4 = MEMORY[0x277CCACA8];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithFormat:v5 arguments:&v11];
+  formatCopy = format;
+  v6 = [[v4 alloc] initWithFormat:formatCopy arguments:&v11];
 
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -219,9 +219,9 @@ void __52__CAFUIStatusViewController_appendStringWithFormat___block_invoke(uint6
   }
 }
 
-- (void)setCarManager:(id)a3
+- (void)setCarManager:(id)manager
 {
-  obj = a3;
+  obj = manager;
   WeakRetained = objc_loadWeakRetained(&self->_carManager);
 
   v5 = obj;
@@ -242,10 +242,10 @@ void __52__CAFUIStatusViewController_appendStringWithFormat___block_invoke(uint6
   }
 }
 
-- (void)carManager:(id)a3 didUpdateCurrentCar:(id)a4
+- (void)carManager:(id)manager didUpdateCurrentCar:(id)car
 {
   v14 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  carCopy = car;
   v6 = CAFUIStatusLogForCategory(0);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -258,7 +258,7 @@ void __52__CAFUIStatusViewController_appendStringWithFormat___block_invoke(uint6
   [v7 appendStringWithFormat:@"%s", "-[CAFUIStatusViewController carManager:didUpdateCurrentCar:]"];
 
   WeakRetained = objc_loadWeakRetained(&self->_car);
-  if (WeakRetained != v5)
+  if (WeakRetained != carCopy)
   {
     v9 = objc_loadWeakRetained(&self->_car);
 
@@ -268,12 +268,12 @@ void __52__CAFUIStatusViewController_appendStringWithFormat___block_invoke(uint6
       [v10 unregisterObserver:self];
     }
 
-    v11 = objc_storeWeak(&self->_car, v5);
-    [v5 registerObserver:self];
+    v11 = objc_storeWeak(&self->_car, carCopy);
+    [carCopy registerObserver:self];
   }
 }
 
-- (void)carDidUpdateAccessories:(id)a3
+- (void)carDidUpdateAccessories:(id)accessories
 {
   v7 = *MEMORY[0x277D85DE8];
   v3 = CAFUIStatusLogForCategory(0);
@@ -288,82 +288,82 @@ void __52__CAFUIStatusViewController_appendStringWithFormat___block_invoke(uint6
   [v4 appendStringWithFormat:@"%s", "-[CAFUIStatusViewController carDidUpdateAccessories:]"];
 }
 
-- (void)carDidUpdate:(id)a3 receivedAllValues:(BOOL)a4
+- (void)carDidUpdate:(id)update receivedAllValues:(BOOL)values
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  updateCopy = update;
   v6 = CAFUIStatusLogForCategory(0);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v15 = "[CAFUIStatusViewController carDidUpdate:receivedAllValues:]";
     v16 = 1024;
-    v17 = [v5 receivedAllValues];
+    receivedAllValues = [updateCopy receivedAllValues];
     _os_log_impl(&dword_24234D000, v6, OS_LOG_TYPE_DEFAULT, "%s: %u", buf, 0x12u);
   }
 
   v7 = +[CAFUIStatusViewController sharedInstance];
-  [v7 appendStringWithFormat:@"%s: %u", "-[CAFUIStatusViewController carDidUpdate:receivedAllValues:]", objc_msgSend(v5, "receivedAllValues")];
+  [v7 appendStringWithFormat:@"%s: %u", "-[CAFUIStatusViewController carDidUpdate:receivedAllValues:]", objc_msgSend(updateCopy, "receivedAllValues")];
 
-  if ([v5 receivedAllValues])
+  if ([updateCopy receivedAllValues])
   {
     v8 = CAFUIStatusLogForCategory(0);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [v5 accessories];
-      v10 = [v9 count];
+      accessories = [updateCopy accessories];
+      v10 = [accessories count];
       *buf = 134217984;
       v15 = v10;
       _os_log_impl(&dword_24234D000, v8, OS_LOG_TYPE_DEFAULT, "✅ Car received all values with %lu accessories", buf, 0xCu);
     }
 
     v11 = +[CAFUIStatusViewController sharedInstance];
-    v12 = [v5 accessories];
-    [v11 appendStringWithFormat:@"✅ Car received all values with %lu accessories", objc_msgSend(v12, "count")];
+    accessories2 = [updateCopy accessories];
+    [v11 appendStringWithFormat:@"✅ Car received all values with %lu accessories", objc_msgSend(accessories2, "count")];
   }
 
-  v13 = [(CAFUIStatusViewController *)self tableView];
-  [v13 update];
+  tableView = [(CAFUIStatusViewController *)self tableView];
+  [tableView update];
 }
 
-- (void)carDidUpdate:(id)a3 accessory:(id)a4 service:(id)a5 characteristic:(id)a6
+- (void)carDidUpdate:(id)update accessory:(id)accessory service:(id)service characteristic:(id)characteristic
 {
   v33 = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
+  accessoryCopy = accessory;
+  serviceCopy = service;
+  characteristicCopy = characteristic;
   v12 = CAFUIStatusLogForCategory(0);
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [v9 name];
-    v14 = [v10 name];
-    v15 = [v11 name];
-    v16 = [v11 value];
+    name = [accessoryCopy name];
+    name2 = [serviceCopy name];
+    name3 = [characteristicCopy name];
+    value = [characteristicCopy value];
     *buf = 136316162;
     v24 = "[CAFUIStatusViewController carDidUpdate:accessory:service:characteristic:]";
     v25 = 2112;
-    v26 = v13;
+    v26 = name;
     v27 = 2112;
-    v28 = v14;
+    v28 = name2;
     v29 = 2112;
-    v30 = v15;
+    v30 = name3;
     v31 = 2112;
-    v32 = v16;
+    v32 = value;
     _os_log_impl(&dword_24234D000, v12, OS_LOG_TYPE_DEFAULT, "%s\n\tAccessory: %@\n\tService: %@\n\tCharacteristic: %@\n\tValue: %@", buf, 0x34u);
   }
 
   v17 = +[CAFUIStatusViewController sharedInstance];
-  v18 = [v9 name];
-  v19 = [v10 name];
-  v20 = [v11 name];
-  v21 = [v11 value];
-  [v17 appendStringWithFormat:@"%s\n\tAccessory: %@\n\tService: %@\n\tCharacteristic: %@\n\tValue: %@", "-[CAFUIStatusViewController carDidUpdate:accessory:service:characteristic:]", v18, v19, v20, v21];
+  name4 = [accessoryCopy name];
+  name5 = [serviceCopy name];
+  name6 = [characteristicCopy name];
+  value2 = [characteristicCopy value];
+  [v17 appendStringWithFormat:@"%s\n\tAccessory: %@\n\tService: %@\n\tCharacteristic: %@\n\tValue: %@", "-[CAFUIStatusViewController carDidUpdate:accessory:service:characteristic:]", name4, name5, name6, value2];
 
-  v22 = [(CAFUIStatusViewController *)self tableView];
-  [v22 update];
+  tableView = [(CAFUIStatusViewController *)self tableView];
+  [tableView update];
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
   v3 = [(CAFUIStatusViewController *)self car];
   if ([v3 receivedAllValues])
@@ -379,17 +379,17 @@ void __52__CAFUIStatusViewController_appendStringWithFormat___block_invoke(uint6
   return v4;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v6 = a3;
+  viewCopy = view;
   v7 = 1;
-  if (a4 && a4 != 2)
+  if (section && section != 2)
   {
-    if (a4 == 1)
+    if (section == 1)
     {
       v8 = [(CAFUIStatusViewController *)self car];
-      v9 = [v8 accessories];
-      v7 = [v9 count];
+      accessories = [v8 accessories];
+      v7 = [accessories count];
     }
 
     else
@@ -401,24 +401,24 @@ void __52__CAFUIStatusViewController_appendStringWithFormat___block_invoke(uint6
   return v7;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
+  pathCopy = path;
+  viewCopy = view;
   v8 = +[CAFUIStatusTableCell identifier];
-  v9 = [v7 dequeueReusableCellWithIdentifier:v8];
+  v9 = [viewCopy dequeueReusableCellWithIdentifier:v8];
 
-  v10 = [v9 defaultContentConfiguration];
-  if ([v6 section])
+  defaultContentConfiguration = [v9 defaultContentConfiguration];
+  if ([pathCopy section])
   {
-    if ([v6 section] == 1)
+    if ([pathCopy section] == 1)
     {
       v11 = [(CAFUIStatusViewController *)self car];
-      v12 = [v11 sortedAccessories];
-      v13 = [v12 objectAtIndexedSubscript:{objc_msgSend(v6, "row")}];
+      sortedAccessories = [v11 sortedAccessories];
+      v13 = [sortedAccessories objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
 
       v14 = [MEMORY[0x277D755B8] systemImageNamed:@"a.circle"];
-      [v10 setImage:v14];
+      [defaultContentConfiguration setImage:v14];
 
       if ([v13 receivedAllValues])
       {
@@ -430,11 +430,11 @@ void __52__CAFUIStatusViewController_appendStringWithFormat___block_invoke(uint6
         [MEMORY[0x277D75348] systemRedColor];
       }
       v32 = ;
-      v33 = [v10 imageProperties];
-      [v33 setTintColor:v32];
+      imageProperties = [defaultContentConfiguration imageProperties];
+      [imageProperties setTintColor:v32];
 
-      v34 = [v13 name];
-      [v10 setText:v34];
+      name = [v13 name];
+      [defaultContentConfiguration setText:name];
 
       if ([v13 receivedAllValues])
       {
@@ -446,25 +446,25 @@ void __52__CAFUIStatusViewController_appendStringWithFormat___block_invoke(uint6
         v35 = @"No";
       }
 
-      [v10 setSecondaryText:v35];
+      [defaultContentConfiguration setSecondaryText:v35];
     }
 
     else
     {
-      if ([v6 section] != 2)
+      if ([pathCopy section] != 2)
       {
         goto LABEL_22;
       }
 
       v21 = [(CAFUIStatusViewController *)self car];
-      v22 = [v21 accessories];
-      v23 = [v22 count];
+      accessories = [v21 accessories];
+      v23 = [accessories count];
 
       v24 = MEMORY[0x277CCACA8];
       v25 = MEMORY[0x277CCABB0];
       v13 = [(CAFUIStatusViewController *)self car];
-      v26 = [v13 accessories];
-      v27 = [v25 numberWithUnsignedInteger:{objc_msgSend(v26, "count")}];
+      accessories2 = [v13 accessories];
+      v27 = [v25 numberWithUnsignedInteger:{objc_msgSend(accessories2, "count")}];
       v28 = v27;
       v29 = @"accessories";
       if (v23 == 1)
@@ -473,16 +473,16 @@ void __52__CAFUIStatusViewController_appendStringWithFormat___block_invoke(uint6
       }
 
       v30 = [v24 stringWithFormat:@"%@ %@", v27, v29];
-      [v10 setText:v30];
+      [defaultContentConfiguration setText:v30];
     }
   }
 
   else
   {
     v15 = [(CAFUIStatusViewController *)self car];
-    v16 = [v15 receivedAllValues];
+    receivedAllValues = [v15 receivedAllValues];
 
-    if (v16)
+    if (receivedAllValues)
     {
       v17 = @"checkmark.square";
     }
@@ -493,56 +493,56 @@ void __52__CAFUIStatusViewController_appendStringWithFormat___block_invoke(uint6
     }
 
     v18 = [MEMORY[0x277D755B8] systemImageNamed:v17];
-    [v10 setImage:v18];
+    [defaultContentConfiguration setImage:v18];
 
-    if (v16)
+    if (receivedAllValues)
     {
-      v19 = [MEMORY[0x277D75348] systemGreenColor];
+      systemGreenColor = [MEMORY[0x277D75348] systemGreenColor];
       v20 = @"ready";
     }
 
     else
     {
-      v19 = [MEMORY[0x277D75348] systemRedColor];
+      systemGreenColor = [MEMORY[0x277D75348] systemRedColor];
       v20 = @"not ready";
     }
 
-    v31 = [v10 imageProperties];
-    [v31 setTintColor:v19];
+    imageProperties2 = [defaultContentConfiguration imageProperties];
+    [imageProperties2 setTintColor:systemGreenColor];
 
     v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"Car %@", v20];
-    [v10 setText:v13];
+    [defaultContentConfiguration setText:v13];
   }
 
 LABEL_22:
-  v36 = [v10 imageProperties];
-  [v36 setMaximumSize:{12.0, 12.0}];
+  imageProperties3 = [defaultContentConfiguration imageProperties];
+  [imageProperties3 setMaximumSize:{12.0, 12.0}];
 
-  v37 = [v10 imageProperties];
-  [v37 setReservedLayoutSize:{12.0, 12.0}];
+  imageProperties4 = [defaultContentConfiguration imageProperties];
+  [imageProperties4 setReservedLayoutSize:{12.0, 12.0}];
 
   v38 = [MEMORY[0x277D74300] systemFontOfSize:9.0];
-  v39 = [v10 textProperties];
-  [v39 setFont:v38];
+  textProperties = [defaultContentConfiguration textProperties];
+  [textProperties setFont:v38];
 
   v40 = [MEMORY[0x277D74300] systemFontOfSize:9.0];
-  v41 = [v10 secondaryTextProperties];
-  [v41 setFont:v40];
+  secondaryTextProperties = [defaultContentConfiguration secondaryTextProperties];
+  [secondaryTextProperties setFont:v40];
 
-  [v10 setImageToTextPadding:6.0];
-  [v10 setTextToSecondaryTextHorizontalPadding:0.0];
-  [v10 setTextToSecondaryTextVerticalPadding:0.0];
-  [v10 setDirectionalLayoutMargins:{2.0, 2.0, 3.0, 2.0}];
-  [v9 setContentConfiguration:v10];
+  [defaultContentConfiguration setImageToTextPadding:6.0];
+  [defaultContentConfiguration setTextToSecondaryTextHorizontalPadding:0.0];
+  [defaultContentConfiguration setTextToSecondaryTextVerticalPadding:0.0];
+  [defaultContentConfiguration setDirectionalLayoutMargins:{2.0, 2.0, 3.0, 2.0}];
+  [v9 setContentConfiguration:defaultContentConfiguration];
 
   return v9;
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
-  v4 = [a4 section];
+  section = [path section];
   result = 18.0;
-  if (v4 == 1)
+  if (section == 1)
   {
     return 25.0;
   }

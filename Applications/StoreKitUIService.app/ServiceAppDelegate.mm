@@ -1,51 +1,51 @@
 @interface ServiceAppDelegate
-- (BOOL)_handleSafariScriptDataUpdate:(id)a3;
-- (BOOL)_handleUniversalLinkInURLComponents:(id)a3 forApplication:(id)a4;
-- (BOOL)_handleUniversalLinkInUserActivity:(id)a3 forApplication:(id)a4;
-- (BOOL)application:(id)a3 openURL:(id)a4 options:(id)a5;
+- (BOOL)_handleSafariScriptDataUpdate:(id)update;
+- (BOOL)_handleUniversalLinkInURLComponents:(id)components forApplication:(id)application;
+- (BOOL)_handleUniversalLinkInUserActivity:(id)activity forApplication:(id)application;
+- (BOOL)application:(id)application openURL:(id)l options:(id)options;
 @end
 
 @implementation ServiceAppDelegate
 
-- (BOOL)application:(id)a3 openURL:(id)a4 options:(id)a5
+- (BOOL)application:(id)application openURL:(id)l options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 scheme];
-  if (![v11 isEqualToString:@"itms-ui"])
+  applicationCopy = application;
+  lCopy = l;
+  optionsCopy = options;
+  scheme = [lCopy scheme];
+  if (![scheme isEqualToString:@"itms-ui"])
   {
-    v12 = [v9 scheme];
-    v13 = [v12 isEqualToString:@"ams-ui"];
+    scheme2 = [lCopy scheme];
+    v13 = [scheme2 isEqualToString:@"ams-ui"];
 
     if (v13)
     {
       goto LABEL_4;
     }
 
-    v30 = [v9 scheme];
-    v31 = [v30 isEqualToString:@"itms-services"];
+    scheme3 = [lCopy scheme];
+    v31 = [scheme3 isEqualToString:@"itms-services"];
 
     if (v31)
     {
-      v32 = [[SKUIURL alloc] initWithURL:v9];
-      v33 = [v32 actionString];
-      if ([v33 isEqualToString:SSScriptURLSafariDataUpdate])
+      v32 = [[SKUIURL alloc] initWithURL:lCopy];
+      actionString = [v32 actionString];
+      if ([actionString isEqualToString:SSScriptURLSafariDataUpdate])
       {
         v34 = +[SSLogConfig sharedConfig];
-        v35 = [v34 shouldLog];
+        shouldLog = [v34 shouldLog];
         if ([v34 shouldLogToDisk])
         {
-          v36 = v35 | 2;
+          v36 = shouldLog | 2;
         }
 
         else
         {
-          v36 = v35;
+          v36 = shouldLog;
         }
 
-        v37 = [v34 OSLogObject];
-        if (!os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
+        oSLogObject = [v34 OSLogObject];
+        if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
         {
           v36 &= 2u;
         }
@@ -55,7 +55,7 @@
           *v102 = 138543618;
           *&v102[4] = objc_opt_class();
           *&v102[12] = 2112;
-          *&v102[14] = v9;
+          *&v102[14] = lCopy;
           v38 = *&v102[4];
           LODWORD(v91) = 22;
           v39 = _os_log_send_and_compose_impl();
@@ -76,7 +76,7 @@
         goto LABEL_91;
       }
 
-      if ([v33 isEqualToString:@"purchaseIntent"])
+      if ([actionString isEqualToString:@"purchaseIntent"])
       {
         v52 = +[SSLogConfig sharedDaemonConfig];
         if (!v52)
@@ -84,19 +84,19 @@
           v52 = +[SSLogConfig sharedConfig];
         }
 
-        v53 = [v52 shouldLog];
+        shouldLog2 = [v52 shouldLog];
         if ([v52 shouldLogToDisk])
         {
-          v54 = v53 | 2;
+          v54 = shouldLog2 | 2;
         }
 
         else
         {
-          v54 = v53;
+          v54 = shouldLog2;
         }
 
-        v55 = [v52 OSLogObject];
-        if (!os_log_type_enabled(v55, OS_LOG_TYPE_INFO))
+        oSLogObject2 = [v52 OSLogObject];
+        if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_INFO))
         {
           v54 &= 2u;
         }
@@ -106,7 +106,7 @@
           *v102 = 138412546;
           *&v102[4] = objc_opt_class();
           *&v102[12] = 2112;
-          *&v102[14] = v9;
+          *&v102[14] = lCopy;
           v56 = *&v102[4];
           LODWORD(v91) = 22;
           v90 = v102;
@@ -143,16 +143,16 @@
         v93[3] = &unk_100051668;
         v93[4] = v102;
         v93[5] = &v94;
-        [v9 enumerateQueryWithBlock:v93];
+        [lCopy enumerateQueryWithBlock:v93];
         if (!*(*&v102[8] + 40) || !v95[5])
         {
           goto LABEL_89;
         }
 
-        v74 = [v10 objectForKeyedSubscript:_UIApplicationOpenURLOptionsSourceProcessHandleKey];
-        v75 = [v74 bundleIdentifier];
+        v74 = [optionsCopy objectForKeyedSubscript:_UIApplicationOpenURLOptionsSourceProcessHandleKey];
+        bundleIdentifier = [v74 bundleIdentifier];
         v92 = v74;
-        if ([v75 isEqualToString:@"com.apple.appstored"])
+        if ([bundleIdentifier isEqualToString:@"com.apple.appstored"])
         {
           v76 = [v74 hasEntitlement:@"com.apple.itunesstored.private"];
 
@@ -167,14 +167,14 @@
         }
 
         v77 = [LSApplicationProxy applicationProxyForIdentifier:*(*&v102[8] + 40), v90];
-        v78 = [v77 appState];
-        v79 = [v78 isValid];
+        appState = [v77 appState];
+        isValid = [appState isValid];
 
-        if (v79)
+        if (isValid)
         {
-          v80 = [v77 profileValidated];
+          profileValidated = [v77 profileValidated];
 
-          if (!v80)
+          if (!profileValidated)
           {
             goto LABEL_88;
           }
@@ -183,9 +183,9 @@
         else
         {
           v84 = [LSPlugInKitProxy pluginKitProxyForIdentifier:*(*&v102[8] + 40)];
-          v85 = [v84 containingBundle];
-          v86 = [v85 bundleType];
-          v87 = [v86 isEqualToString:LSUserApplicationType];
+          containingBundle = [v84 containingBundle];
+          bundleType = [containingBundle bundleType];
+          v87 = [bundleType isEqualToString:LSUserApplicationType];
 
           if ((v87 & 1) == 0)
           {
@@ -193,9 +193,9 @@
             goto LABEL_87;
           }
 
-          v88 = [v84 profileValidated];
+          profileValidated2 = [v84 profileValidated];
 
-          if ((v88 & 1) == 0)
+          if ((profileValidated2 & 1) == 0)
           {
 LABEL_88:
 
@@ -220,22 +220,22 @@ LABEL_87:
         goto LABEL_88;
       }
 
-      if ([v9 isStoreServicesURL])
+      if ([lCopy isStoreServicesURL])
       {
         v59 = +[SSLogConfig sharedConfig];
-        v60 = [v59 shouldLog];
+        shouldLog3 = [v59 shouldLog];
         if ([v59 shouldLogToDisk])
         {
-          v61 = v60 | 2;
+          v61 = shouldLog3 | 2;
         }
 
         else
         {
-          v61 = v60;
+          v61 = shouldLog3;
         }
 
-        v62 = [v59 OSLogObject];
-        if (!os_log_type_enabled(v62, OS_LOG_TYPE_DEFAULT))
+        oSLogObject3 = [v59 OSLogObject];
+        if (!os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_DEFAULT))
         {
           v61 &= 2u;
         }
@@ -245,7 +245,7 @@ LABEL_87:
           *v102 = 138543618;
           *&v102[4] = objc_opt_class();
           *&v102[12] = 2112;
-          *&v102[14] = v9;
+          *&v102[14] = lCopy;
           v63 = *&v102[4];
           LODWORD(v91) = 22;
           v64 = _os_log_send_and_compose_impl();
@@ -263,7 +263,7 @@ LABEL_87:
         }
 
         v81 = [SSURLConnectionRequest alloc];
-        v82 = [NSURLRequest requestWithURL:v9];
+        v82 = [NSURLRequest requestWithURL:lCopy];
         v83 = [v81 initWithURLRequest:v82];
 
         [v83 start];
@@ -277,30 +277,30 @@ LABEL_70:
       goto LABEL_14;
     }
 
-    v41 = [v9 scheme];
-    v42 = [v41 isEqualToString:@"appstore-ui"];
+    scheme4 = [lCopy scheme];
+    v42 = [scheme4 isEqualToString:@"appstore-ui"];
 
     if (!v42)
     {
       goto LABEL_70;
     }
 
-    v43 = [v10 objectForKeyedSubscript:UIApplicationOpenURLOptionsSourceApplicationKey];
+    v43 = [optionsCopy objectForKeyedSubscript:UIApplicationOpenURLOptionsSourceApplicationKey];
     v44 = &MKBGetDeviceLockState_ptr;
     v45 = +[SSLogConfig sharedConfig];
-    v46 = [v45 shouldLog];
+    shouldLog4 = [v45 shouldLog];
     if ([v45 shouldLogToDisk])
     {
-      v47 = v46 | 2;
+      v47 = shouldLog4 | 2;
     }
 
     else
     {
-      v47 = v46;
+      v47 = shouldLog4;
     }
 
-    v48 = [v45 OSLogObject];
-    if (!os_log_type_enabled(v48, OS_LOG_TYPE_DEFAULT))
+    oSLogObject4 = [v45 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject4, OS_LOG_TYPE_DEFAULT))
     {
       v47 &= 2u;
     }
@@ -310,7 +310,7 @@ LABEL_70:
       *v102 = 138543874;
       *&v102[4] = objc_opt_class();
       *&v102[12] = 2112;
-      *&v102[14] = v9;
+      *&v102[14] = lCopy;
       *&v102[22] = 2112;
       v103 = v43;
       v49 = *&v102[4];
@@ -335,27 +335,27 @@ LABEL_70:
     v28 = [&off_100055080 containsObject:v43];
     if (v28)
     {
-      v66 = objc_alloc_init(ASCAppLaunchTrampoline);
-      v67 = [v66 handleURL:v9];
+      sharedConfig = objc_alloc_init(ASCAppLaunchTrampoline);
+      v67 = [sharedConfig handleURL:lCopy];
 LABEL_68:
 
       goto LABEL_14;
     }
 
-    v66 = [v44[355] sharedConfig];
-    v68 = [v66 shouldLog];
-    if ([v66 shouldLogToDisk])
+    sharedConfig = [v44[355] sharedConfig];
+    shouldLog5 = [sharedConfig shouldLog];
+    if ([sharedConfig shouldLogToDisk])
     {
-      v69 = v68 | 2;
+      v69 = shouldLog5 | 2;
     }
 
     else
     {
-      v69 = v68;
+      v69 = shouldLog5;
     }
 
-    v70 = [v66 OSLogObject];
-    if (!os_log_type_enabled(v70, OS_LOG_TYPE_ERROR))
+    oSLogObject5 = [sharedConfig OSLogObject];
+    if (!os_log_type_enabled(oSLogObject5, OS_LOG_TYPE_ERROR))
     {
       v69 &= 2u;
     }
@@ -376,7 +376,7 @@ LABEL_68:
         goto LABEL_68;
       }
 
-      v70 = [NSString stringWithCString:v73 encoding:4, v102, v91];
+      oSLogObject5 = [NSString stringWithCString:v73 encoding:4, v102, v91];
       free(v73);
       SSFileLog();
     }
@@ -385,22 +385,22 @@ LABEL_68:
   }
 
 LABEL_4:
-  v14 = [v10 objectForKeyedSubscript:_UIApplicationOpenURLOptionsSourceProcessHandleKey];
-  v15 = [v14 bundleIdentifier];
+  v14 = [optionsCopy objectForKeyedSubscript:_UIApplicationOpenURLOptionsSourceProcessHandleKey];
+  bundleIdentifier2 = [v14 bundleIdentifier];
   v16 = +[SSLogConfig sharedConfig];
-  v17 = [v16 shouldLog];
+  shouldLog6 = [v16 shouldLog];
   if ([v16 shouldLogToDisk])
   {
-    v18 = v17 | 2;
+    v18 = shouldLog6 | 2;
   }
 
   else
   {
-    v18 = v17;
+    v18 = shouldLog6;
   }
 
-  v19 = [v16 OSLogObject];
-  if (!os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
+  oSLogObject6 = [v16 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject6, OS_LOG_TYPE_DEFAULT))
   {
     v18 &= 2u;
   }
@@ -410,9 +410,9 @@ LABEL_4:
     *v102 = 138543874;
     *&v102[4] = objc_opt_class();
     *&v102[12] = 2112;
-    *&v102[14] = v9;
+    *&v102[14] = lCopy;
     *&v102[22] = 2114;
-    v103 = v15;
+    v103 = bundleIdentifier2;
     v20 = *&v102[4];
     LODWORD(v91) = 32;
     v21 = _os_log_send_and_compose_impl();
@@ -431,9 +431,9 @@ LABEL_4:
 
   v23 = dispatch_semaphore_create(0);
   v24 = objc_alloc_init(SSRemoteWebViewRequest);
-  [v24 setReferrer:v15];
-  v25 = [v9 absoluteString];
-  [v24 setURLString:v25];
+  [v24 setReferrer:bundleIdentifier2];
+  absoluteString = [lCopy absoluteString];
+  [v24 setURLString:absoluteString];
 
   v100[0] = _NSConcreteStackBlock;
   v100[1] = 3221225472;
@@ -451,22 +451,22 @@ LABEL_14:
   return v28;
 }
 
-- (BOOL)_handleUniversalLinkInUserActivity:(id)a3 forApplication:(id)a4
+- (BOOL)_handleUniversalLinkInUserActivity:(id)activity forApplication:(id)application
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 activityType];
-  v9 = [v8 isEqual:NSUserActivityTypeBrowsingWeb];
+  activityCopy = activity;
+  applicationCopy = application;
+  activityType = [activityCopy activityType];
+  v9 = [activityType isEqual:NSUserActivityTypeBrowsingWeb];
 
   if (v9)
   {
-    v10 = [v6 webpageURL];
-    if (v10)
+    webpageURL = [activityCopy webpageURL];
+    if (webpageURL)
     {
-      v11 = [[NSURLComponents alloc] initWithURL:v10 resolvingAgainstBaseURL:1];
+      v11 = [[NSURLComponents alloc] initWithURL:webpageURL resolvingAgainstBaseURL:1];
       if (v11)
       {
-        v12 = [(ServiceAppDelegate *)self _handleUniversalLinkInURLComponents:v11 forApplication:v7];
+        v12 = [(ServiceAppDelegate *)self _handleUniversalLinkInURLComponents:v11 forApplication:applicationCopy];
       }
 
       else
@@ -489,18 +489,18 @@ LABEL_14:
   return v12;
 }
 
-- (BOOL)_handleUniversalLinkInURLComponents:(id)a3 forApplication:(id)a4
+- (BOOL)_handleUniversalLinkInURLComponents:(id)components forApplication:(id)application
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 host];
-  v9 = [v8 isEqualToString:@"one.apple.com"];
+  componentsCopy = components;
+  applicationCopy = application;
+  host = [componentsCopy host];
+  v9 = [host isEqualToString:@"one.apple.com"];
 
   if (v9)
   {
-    [v6 setScheme:@"ams-ui"];
-    v10 = [v6 URL];
-    v11 = [(ServiceAppDelegate *)self application:v7 openURL:v10 options:&__NSDictionary0__struct];
+    [componentsCopy setScheme:@"ams-ui"];
+    v10 = [componentsCopy URL];
+    v11 = [(ServiceAppDelegate *)self application:applicationCopy openURL:v10 options:&__NSDictionary0__struct];
   }
 
   else
@@ -511,19 +511,19 @@ LABEL_14:
   return v11;
 }
 
-- (BOOL)_handleSafariScriptDataUpdate:(id)a3
+- (BOOL)_handleSafariScriptDataUpdate:(id)update
 {
-  v3 = [a3 underlyingURL];
-  v4 = [SSScriptURLHandler shouldHandleSafariScriptURL:v3];
+  underlyingURL = [update underlyingURL];
+  v4 = [SSScriptURLHandler shouldHandleSafariScriptURL:underlyingURL];
   if (v4)
   {
     v5 = +[NSNotificationCenter defaultCenter];
-    [v5 postNotificationName:SSScriptSafariViewControllerDataUpdateNotification object:v3];
+    [v5 postNotificationName:SSScriptSafariViewControllerDataUpdateNotification object:underlyingURL];
 
     v6 = +[ServiceHostRegistry sharedInstance];
-    v7 = [v6 registeredHostBundleId];
+    registeredHostBundleId = [v6 registeredHostBundleId];
 
-    if (!v7)
+    if (!registeredHostBundleId)
     {
 LABEL_13:
 
@@ -531,19 +531,19 @@ LABEL_13:
     }
 
     v8 = +[SSLogConfig sharedConfig];
-    v9 = [v8 shouldLog];
+    shouldLog = [v8 shouldLog];
     if ([v8 shouldLogToDisk])
     {
-      v10 = v9 | 2;
+      v10 = shouldLog | 2;
     }
 
     else
     {
-      v10 = v9;
+      v10 = shouldLog;
     }
 
-    v11 = [v8 OSLogObject];
-    if (!os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v8 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v10 &= 2u;
     }
@@ -553,7 +553,7 @@ LABEL_13:
       *v17 = 138543618;
       *&v17[4] = objc_opt_class();
       *&v17[12] = 2114;
-      *&v17[14] = v7;
+      *&v17[14] = registeredHostBundleId;
       v12 = *&v17[4];
       LODWORD(v16) = 22;
       v13 = _os_log_send_and_compose_impl();
@@ -563,12 +563,12 @@ LABEL_13:
 LABEL_12:
 
         v14 = +[FBSSystemService sharedService];
-        [v14 openApplication:v7 options:0 withResult:0];
+        [v14 openApplication:registeredHostBundleId options:0 withResult:0];
 
         goto LABEL_13;
       }
 
-      v11 = [NSString stringWithCString:v13 encoding:4, v17, v16, *v17, *&v17[16]];
+      oSLogObject = [NSString stringWithCString:v13 encoding:4, v17, v16, *v17, *&v17[16]];
       free(v13);
       SSFileLog();
     }

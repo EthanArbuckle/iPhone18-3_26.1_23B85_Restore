@@ -1,27 +1,27 @@
 @interface RMModelConfigurationDynamic
-+ (id)buildWithSchema:(id)a3 type:(id)a4 identifier:(id)a5 payload:(id)a6;
-- (BOOL)isSupportedForPlatform:(int64_t)a3 scope:(int64_t)a4 enrollmentType:(int64_t)a5;
-- (BOOL)loadPayloadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5;
-- (RMModelConfigurationDynamic)initWithSchema:(id)a3;
++ (id)buildWithSchema:(id)schema type:(id)type identifier:(id)identifier payload:(id)payload;
+- (BOOL)isSupportedForPlatform:(int64_t)platform scope:(int64_t)scope enrollmentType:(int64_t)type;
+- (BOOL)loadPayloadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error;
+- (RMModelConfigurationDynamic)initWithSchema:(id)schema;
 - (id)assetReferences;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)enumerateManagedSettingsUsingBlock:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)enumerateManagedSettingsUsingBlock:(id)block;
 @end
 
 @implementation RMModelConfigurationDynamic
 
-+ (id)buildWithSchema:(id)a3 type:(id)a4 identifier:(id)a5 payload:(id)a6
++ (id)buildWithSchema:(id)schema type:(id)type identifier:(id)identifier payload:(id)payload
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [[RMModelConfigurationDynamic alloc] initWithSchema:v12];
+  payloadCopy = payload;
+  identifierCopy = identifier;
+  typeCopy = type;
+  schemaCopy = schema;
+  v13 = [[RMModelConfigurationDynamic alloc] initWithSchema:schemaCopy];
 
-  [(RMModelDeclarationBase *)v13 setDeclarationType:v11];
-  [(RMModelDeclarationBase *)v13 setDeclarationIdentifier:v10];
+  [(RMModelDeclarationBase *)v13 setDeclarationType:typeCopy];
+  [(RMModelDeclarationBase *)v13 setDeclarationIdentifier:identifierCopy];
 
-  v14 = [v9 copy];
+  v14 = [payloadCopy copy];
   [(RMModelConfigurationDynamic *)v13 setPayload:v14];
 
   [(RMModelDeclarationBase *)v13 updateServerToken];
@@ -29,16 +29,16 @@
   return v13;
 }
 
-- (RMModelConfigurationDynamic)initWithSchema:(id)a3
+- (RMModelConfigurationDynamic)initWithSchema:(id)schema
 {
-  v5 = a3;
+  schemaCopy = schema;
   v9.receiver = self;
   v9.super_class = RMModelConfigurationDynamic;
   v6 = [(RMModelConfigurationDynamic *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_schema, a3);
+    objc_storeStrong(&v6->_schema, schema);
   }
 
   return v7;
@@ -46,27 +46,27 @@
 
 - (id)assetReferences
 {
-  v3 = [(RMModelConfigurationDynamic *)self schema];
-  v4 = [v3 assetReferences];
-  v5 = [(RMModelConfigurationDynamic *)self payload];
-  v6 = [(RMModelConfigurationBase *)self assetReferencesFromKeyPaths:v4 payloadObject:v5];
+  schema = [(RMModelConfigurationDynamic *)self schema];
+  assetReferences = [schema assetReferences];
+  payload = [(RMModelConfigurationDynamic *)self payload];
+  v6 = [(RMModelConfigurationBase *)self assetReferencesFromKeyPaths:assetReferences payloadObject:payload];
 
   return v6;
 }
 
-- (void)enumerateManagedSettingsUsingBlock:(id)a3
+- (void)enumerateManagedSettingsUsingBlock:(id)block
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  blockCopy = block;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v5 = [(RMModelConfigurationDynamic *)self schema];
-  v6 = [v5 managedSettings];
+  schema = [(RMModelConfigurationDynamic *)self schema];
+  managedSettings = [schema managedSettings];
 
-  obj = v6;
-  v7 = [v6 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  obj = managedSettings;
+  v7 = [managedSettings countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v7)
   {
     v8 = v7;
@@ -81,9 +81,9 @@ LABEL_3:
       }
 
       v11 = *(*(&v20 + 1) + 8 * v10);
-      v12 = [v11 keyPath];
-      v13 = [(RMModelConfigurationDynamic *)self payload];
-      v14 = [RMModelPayloadUtilities valueFromKeyPath:v12 payload:v13];
+      keyPath = [v11 keyPath];
+      payload = [(RMModelConfigurationDynamic *)self payload];
+      v14 = [RMModelPayloadUtilities valueFromKeyPath:keyPath payload:payload];
 
       if (v14)
       {
@@ -100,7 +100,7 @@ LABEL_3:
       }
 
       v19 = 0;
-      v4[2](v4, v11, v14, &v19);
+      blockCopy[2](blockCopy, v11, v14, &v19);
       v16 = v19;
 
       if (v16)
@@ -124,33 +124,33 @@ LABEL_3:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isSupportedForPlatform:(int64_t)a3 scope:(int64_t)a4 enrollmentType:(int64_t)a5
+- (BOOL)isSupportedForPlatform:(int64_t)platform scope:(int64_t)scope enrollmentType:(int64_t)type
 {
-  v8 = [(RMModelConfigurationDynamic *)self schema];
-  LOBYTE(a5) = [v8 isSupportedForPlatform:a3 scope:a4 enrollmentType:a5];
+  schema = [(RMModelConfigurationDynamic *)self schema];
+  LOBYTE(type) = [schema isSupportedForPlatform:platform scope:scope enrollmentType:type];
 
-  return a5;
+  return type;
 }
 
-- (BOOL)loadPayloadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5
+- (BOOL)loadPayloadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   v7 = +[RMModelConfigurationSchema schemas];
-  v8 = [(RMModelDeclarationBase *)self declarationType];
-  v9 = [v7 objectForKeyedSubscript:v8];
+  declarationType = [(RMModelDeclarationBase *)self declarationType];
+  v9 = [v7 objectForKeyedSubscript:declarationType];
   [(RMModelConfigurationDynamic *)self setSchema:v9];
 
-  v10 = [v6 copy];
+  v10 = [dictionaryCopy copy];
   [(RMModelConfigurationDynamic *)self setPayload:v10];
 
   return 1;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = RMModelConfigurationDynamic;
-  v4 = [(RMModelDeclarationBase *)&v8 copyWithZone:a3];
+  v4 = [(RMModelDeclarationBase *)&v8 copyWithZone:zone];
   objc_storeStrong(v4 + 6, self->_schema);
   v5 = [(NSDictionary *)self->_payload copy];
   v6 = v4[7];

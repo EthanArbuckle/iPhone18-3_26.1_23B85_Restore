@@ -1,15 +1,15 @@
 @interface _EFReplayObservable
-- (_EFReplayObservable)initWithCount:(unint64_t)a3;
-- (id)subscribe:(id)a3;
-- (void)_unsubscribe:(id)a3;
+- (_EFReplayObservable)initWithCount:(unint64_t)count;
+- (id)subscribe:(id)subscribe;
+- (void)_unsubscribe:(id)_unsubscribe;
 - (void)observerDidComplete;
-- (void)observerDidFailWithError:(id)a3;
-- (void)observerDidReceiveResult:(id)a3;
+- (void)observerDidFailWithError:(id)error;
+- (void)observerDidReceiveResult:(id)result;
 @end
 
 @implementation _EFReplayObservable
 
-- (_EFReplayObservable)initWithCount:(unint64_t)a3
+- (_EFReplayObservable)initWithCount:(unint64_t)count
 {
   v12.receiver = self;
   v12.super_class = _EFReplayObservable;
@@ -20,7 +20,7 @@
     lock = v4->_lock;
     v4->_lock = v5;
 
-    v7 = [EFQueue boundedQueueWithCapacity:a3];
+    v7 = [EFQueue boundedQueueWithCapacity:count];
     queue = v4->_queue;
     v4->_queue = v7;
 
@@ -32,17 +32,17 @@
   return v4;
 }
 
-- (id)subscribe:(id)a3
+- (id)subscribe:(id)subscribe
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  subscribeCopy = subscribe;
   [(NSLock *)self->_lock lock];
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = [(EFQueue *)self->_queue allObjects];
-  v6 = [v5 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  allObjects = [(EFQueue *)self->_queue allObjects];
+  v6 = [allObjects countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v6)
   {
     v7 = *v21;
@@ -52,13 +52,13 @@
       {
         if (*v21 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allObjects);
         }
 
-        [v4 observerDidReceiveResult:*(*(&v20 + 1) + 8 * i)];
+        [subscribeCopy observerDidReceiveResult:*(*(&v20 + 1) + 8 * i)];
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v6 = [allObjects countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v6);
@@ -66,12 +66,12 @@
 
   if (self->_error)
   {
-    [v4 observerDidFailWithError:?];
+    [subscribeCopy observerDidFailWithError:?];
   }
 
   else if (self->_isStopped)
   {
-    [v4 observerDidComplete];
+    [subscribeCopy observerDidComplete];
   }
 
   if (self->_isStopped)
@@ -81,13 +81,13 @@
 
   else
   {
-    [(NSMutableArray *)self->_observers addObject:v4];
+    [(NSMutableArray *)self->_observers addObject:subscribeCopy];
     v14 = MEMORY[0x1E69E9820];
     v15 = 3221225472;
     v16 = __33___EFReplayObservable_subscribe___block_invoke;
     v17 = &unk_1E82485D0;
-    v18 = self;
-    v19 = v4;
+    selfCopy = self;
+    v19 = subscribeCopy;
     v9 = [EFManualCancelationToken tokenWithCancelationBlock:&v14];
   }
 
@@ -109,22 +109,22 @@
   return v11;
 }
 
-- (void)_unsubscribe:(id)a3
+- (void)_unsubscribe:(id)_unsubscribe
 {
-  v4 = a3;
+  _unsubscribeCopy = _unsubscribe;
   [(NSLock *)self->_lock lock];
-  [(NSMutableArray *)self->_observers removeObject:v4];
+  [(NSMutableArray *)self->_observers removeObject:_unsubscribeCopy];
   [(NSLock *)self->_lock unlock];
 }
 
-- (void)observerDidReceiveResult:(id)a3
+- (void)observerDidReceiveResult:(id)result
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  resultCopy = result;
   [(NSLock *)self->_lock lock];
   if (!self->_isStopped)
   {
-    [(EFQueue *)self->_queue enqueue:v4];
+    [(EFQueue *)self->_queue enqueue:resultCopy];
     v12 = 0u;
     v13 = 0u;
     v10 = 0u;
@@ -144,7 +144,7 @@
             objc_enumerationMutation(v5);
           }
 
-          [*(*(&v10 + 1) + 8 * v8++) observerDidReceiveResult:{v4, v10}];
+          [*(*(&v10 + 1) + 8 * v8++) observerDidReceiveResult:{resultCopy, v10}];
         }
 
         while (v6 != v8);
@@ -201,15 +201,15 @@
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)observerDidFailWithError:(id)a3
+- (void)observerDidFailWithError:(id)error
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  errorCopy = error;
   [(NSLock *)self->_lock lock];
   if (!self->_isStopped)
   {
     self->_isStopped = 1;
-    objc_storeStrong(&self->_error, a3);
+    objc_storeStrong(&self->_error, error);
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
@@ -228,7 +228,7 @@
             objc_enumerationMutation(v6);
           }
 
-          [*(*(&v11 + 1) + 8 * i) observerDidFailWithError:{v5, v11}];
+          [*(*(&v11 + 1) + 8 * i) observerDidFailWithError:{errorCopy, v11}];
         }
 
         v7 = [(NSMutableArray *)v6 countByEnumeratingWithState:&v11 objects:v15 count:16];

@@ -1,52 +1,52 @@
 @interface NTKVideoPlayerListing
-+ (id)listingForDevice:(id)a3 withFilename:(id)a4;
-+ (id)listingForDevice:(id)a3 withFilename:(id)a4 andColor:(id)a5;
-+ (id)listingForDevice:(id)a3 withURL:(id)a4;
-- (BOOL)snapshotDiffers:(id)a3;
++ (id)listingForDevice:(id)device withFilename:(id)filename;
++ (id)listingForDevice:(id)device withFilename:(id)filename andColor:(id)color;
++ (id)listingForDevice:(id)device withURL:(id)l;
+- (BOOL)snapshotDiffers:(id)differs;
 - (CLKVideo)video;
 - (NSString)debugDescription;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)initForDevice:(id)a3 withFilename:(id)a4;
-- (id)initForDevice:(id)a3 withURL:(id)a4;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)initForDevice:(id)device withFilename:(id)filename;
+- (id)initForDevice:(id)device withURL:(id)l;
 - (void)discardAssets;
 @end
 
 @implementation NTKVideoPlayerListing
 
-+ (id)listingForDevice:(id)a3 withURL:(id)a4
++ (id)listingForDevice:(id)device withURL:(id)l
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[NTKVideoPlayerListing alloc] initForDevice:v6 withURL:v5];
+  lCopy = l;
+  deviceCopy = device;
+  v7 = [[NTKVideoPlayerListing alloc] initForDevice:deviceCopy withURL:lCopy];
 
   return v7;
 }
 
-+ (id)listingForDevice:(id)a3 withFilename:(id)a4
++ (id)listingForDevice:(id)device withFilename:(id)filename
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[NTKVideoPlayerListing alloc] initForDevice:v6 withFilename:v5];
+  filenameCopy = filename;
+  deviceCopy = device;
+  v7 = [[NTKVideoPlayerListing alloc] initForDevice:deviceCopy withFilename:filenameCopy];
 
   return v7;
 }
 
-+ (id)listingForDevice:(id)a3 withFilename:(id)a4 andColor:(id)a5
++ (id)listingForDevice:(id)device withFilename:(id)filename andColor:(id)color
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[NTKVideoPlayerListing alloc] initForDevice:v9 withFilename:v8];
+  colorCopy = color;
+  filenameCopy = filename;
+  deviceCopy = device;
+  v10 = [[NTKVideoPlayerListing alloc] initForDevice:deviceCopy withFilename:filenameCopy];
 
-  [v10 setColor:v7];
+  [v10 setColor:colorCopy];
 
   return v10;
 }
 
-- (id)initForDevice:(id)a3 withFilename:(id)a4
+- (id)initForDevice:(id)device withFilename:(id)filename
 {
-  v7 = a3;
-  v8 = a4;
+  deviceCopy = device;
+  filenameCopy = filename;
   v13.receiver = self;
   v13.super_class = NTKVideoPlayerListing;
   v9 = [(NTKVideoPlayerListing *)&v13 init];
@@ -56,18 +56,18 @@
     attributes = v9->_attributes;
     v9->_attributes = MEMORY[0x277CBEBF8];
 
-    objc_storeStrong(&v10->_device, a3);
+    objc_storeStrong(&v10->_device, device);
     v10->_endBehavior = 0;
-    objc_storeStrong(&v10->_filename, a4);
+    objc_storeStrong(&v10->_filename, filename);
   }
 
   return v10;
 }
 
-- (id)initForDevice:(id)a3 withURL:(id)a4
+- (id)initForDevice:(id)device withURL:(id)l
 {
-  v7 = a3;
-  v8 = a4;
+  deviceCopy = device;
+  lCopy = l;
   v17.receiver = self;
   v17.super_class = NTKVideoPlayerListing;
   v9 = [(NTKVideoPlayerListing *)&v17 init];
@@ -78,12 +78,12 @@
     v9->_attributes = MEMORY[0x277CBEBF8];
 
     v10->_endBehavior = 0;
-    objc_storeStrong(&v10->_url, a4);
-    v12 = [(NSURL *)v10->_url lastPathComponent];
+    objc_storeStrong(&v10->_url, l);
+    lastPathComponent = [(NSURL *)v10->_url lastPathComponent];
     filename = v10->_filename;
-    v10->_filename = v12;
+    v10->_filename = lastPathComponent;
 
-    objc_storeStrong(&v10->_device, a3);
+    objc_storeStrong(&v10->_device, device);
     v14 = [MEMORY[0x277CBBBC0] videoAtURL:v10->_url forDevice:v10->_device];
     video = v10->_video;
     v10->_video = v14;
@@ -111,7 +111,7 @@
   return video;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   device = self->_device;
@@ -120,13 +120,13 @@
   return [v4 initForDevice:device withFilename:filename];
 }
 
-- (BOOL)snapshotDiffers:(id)a3
+- (BOOL)snapshotDiffers:(id)differs
 {
-  v4 = a3;
+  differsCopy = differs;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = ![(NSString *)self->_filename isEqualToString:v4[3]];
+    v5 = ![(NSString *)self->_filename isEqualToString:differsCopy[3]];
   }
 
   else

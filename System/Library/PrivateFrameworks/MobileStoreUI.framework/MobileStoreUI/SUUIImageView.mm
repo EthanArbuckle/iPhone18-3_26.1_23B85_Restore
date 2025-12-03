@@ -1,11 +1,11 @@
 @interface SUUIImageView
 - (CGSize)imageSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (UITapGestureRecognizer)tapRecognizer;
 - (void)layoutSubviews;
-- (void)setContents:(id)a3;
-- (void)setImage:(id)a3;
-- (void)setPlaceholder:(id)a3;
+- (void)setContents:(id)contents;
+- (void)setImage:(id)image;
+- (void)setPlaceholder:(id)placeholder;
 @end
 
 @implementation SUUIImageView
@@ -26,13 +26,13 @@
   return tapRecognizer;
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   v14.receiver = self;
   v14.super_class = SUUIImageView;
-  [(SUUIImageView *)&v14 setImage:v4];
-  if (v4)
+  [(SUUIImageView *)&v14 setImage:imageCopy];
+  if (imageCopy)
   {
     [(SUUIImageView *)self setPlaceholder:0];
   }
@@ -40,8 +40,8 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    [v5 cornerRadius];
+    layer2 = imageCopy;
+    [layer2 cornerRadius];
     v7 = fabs(v6);
     if (v7 < 2.22044605e-16)
     {
@@ -51,30 +51,30 @@
 
     else
     {
-      v8 = [v5 cornerType];
-      if (v8 == 1)
+      cornerType = [layer2 cornerType];
+      if (cornerType == 1)
       {
-        [v5 cornerRadius];
+        [layer2 cornerRadius];
         [(SUUIImageView *)self _setCornerRadius:?];
         goto LABEL_11;
       }
 
-      if (v8)
+      if (cornerType)
       {
 LABEL_11:
         [(SUUIImageView *)self setClipsToBounds:v7 >= 2.22044605e-16];
-        v10 = [(SUUIImageView *)self layer];
-        [v5 borderWidth];
+        layer = [(SUUIImageView *)self layer];
+        [layer2 borderWidth];
         matched = SUUIGraphicsMatchViewBorderToStroke(self, v11);
-        [v10 setBorderWidth:?];
-        v13 = [v5 borderColor];
-        [v10 setBorderColor:{objc_msgSend(v13, "CGColor")}];
+        [layer setBorderWidth:?];
+        borderColor = [layer2 borderColor];
+        [layer setBorderColor:{objc_msgSend(borderColor, "CGColor")}];
 
-        [v10 setAllowsEdgeAntialiasing:fabs(matched) >= 2.22044605e-16];
+        [layer setAllowsEdgeAntialiasing:fabs(matched) >= 2.22044605e-16];
         goto LABEL_12;
       }
 
-      [v5 cornerRadius];
+      [layer2 cornerRadius];
     }
 
     [(SUUIImageView *)self _setContinuousCornerRadius:v9];
@@ -84,32 +84,32 @@ LABEL_11:
   [(SUUIImageView *)self _setContinuousCornerRadius:0.0];
   [(SUUIImageView *)self _setCornerRadius:0.0];
   [(SUUIImageView *)self setClipsToBounds:0];
-  v5 = [(SUUIImageView *)self layer];
-  [v5 setBorderWidth:0.0];
-  [v5 setBorderColor:0];
-  [v5 setAllowsEdgeAntialiasing:0];
+  layer2 = [(SUUIImageView *)self layer];
+  [layer2 setBorderWidth:0.0];
+  [layer2 setBorderColor:0];
+  [layer2 setAllowsEdgeAntialiasing:0];
 LABEL_12:
 }
 
-- (void)setPlaceholder:(id)a3
+- (void)setPlaceholder:(id)placeholder
 {
-  v5 = a3;
-  if (self->_placeholder != v5)
+  placeholderCopy = placeholder;
+  if (self->_placeholder != placeholderCopy)
   {
-    v11 = v5;
-    objc_storeStrong(&self->_placeholder, a3);
-    v6 = [(SUUIImageView *)self layer];
+    v11 = placeholderCopy;
+    objc_storeStrong(&self->_placeholder, placeholder);
+    layer = [(SUUIImageView *)self layer];
     if (v11)
     {
-      v7 = [(SUUIImagePlaceholder *)v11 borderColor];
-      [v6 setStrokeColor:{objc_msgSend(v7, "CGColor")}];
+      borderColor = [(SUUIImagePlaceholder *)v11 borderColor];
+      [layer setStrokeColor:{objc_msgSend(borderColor, "CGColor")}];
 
       [(SUUIImagePlaceholder *)v11 borderWidth];
-      [v6 setLineWidth:{SUUIGraphicsMatchViewBorderToStroke(self, v8)}];
-      v9 = [(SUUIImagePlaceholder *)v11 cornerPathBlock];
-      if (v9)
+      [layer setLineWidth:{SUUIGraphicsMatchViewBorderToStroke(self, v8)}];
+      cornerPathBlock = [(SUUIImagePlaceholder *)v11 cornerPathBlock];
+      if (cornerPathBlock)
       {
-        [(SUUIImageView *)self setCornerPathBlock:v9];
+        [(SUUIImageView *)self setCornerPathBlock:cornerPathBlock];
         self->_lastLayoutSize = *MEMORY[0x277CBF3A8];
         [(SUUIImageView *)self setNeedsLayout];
       }
@@ -117,33 +117,33 @@ LABEL_12:
       else
       {
         [(SUUIImageView *)self setCornerPathBlock:0];
-        [v6 setPath:0];
+        [layer setPath:0];
       }
 
-      v10 = [(SUUIImagePlaceholder *)v11 backgroundColor];
-      [v6 setFillColor:{objc_msgSend(v10, "CGColor")}];
+      backgroundColor = [(SUUIImagePlaceholder *)v11 backgroundColor];
+      [layer setFillColor:{objc_msgSend(backgroundColor, "CGColor")}];
     }
 
     else
     {
       [(SUUIImageView *)self setCornerPathBlock:0];
-      [v6 setStrokeColor:0];
-      [v6 setLineWidth:0.0];
-      [v6 setPath:0];
-      [v6 setFillColor:0];
+      [layer setStrokeColor:0];
+      [layer setLineWidth:0.0];
+      [layer setPath:0];
+      [layer setFillColor:0];
     }
 
-    v5 = v11;
+    placeholderCopy = v11;
   }
 }
 
-- (void)setContents:(id)a3
+- (void)setContents:(id)contents
 {
-  v6 = a3;
+  contentsCopy = contents;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(SUUIImageView *)self setImage:v6];
+    [(SUUIImageView *)self setImage:contentsCopy];
   }
 
   else
@@ -153,7 +153,7 @@ LABEL_12:
     [(SUUIImageView *)self setImage:0];
     if (isKindOfClass)
     {
-      v5 = v6;
+      v5 = contentsCopy;
     }
 
     else
@@ -180,8 +180,8 @@ LABEL_12:
     p_lastLayoutSize = &self->_lastLayoutSize;
     if (self->_lastLayoutSize.width != v5 || self->_lastLayoutSize.height != v6)
     {
-      v13 = [(SUUIImageView *)self layer];
-      [v13 lineWidth];
+      layer = [(SUUIImageView *)self layer];
+      [layer lineWidth];
       UIRoundToViewScale();
       v15 = v14;
 
@@ -191,8 +191,8 @@ LABEL_12:
       v19.size.height = v10;
       v20 = CGRectInset(v19, v15, v15);
       v16 = (*(self->_cornerPathBlock + 2))(v20.origin, *&v20.origin.y, v20.size, *&v20.size.height);
-      v17 = [(SUUIImageView *)self layer];
-      [v17 setPath:{objc_msgSend(v16, "CGPath")}];
+      layer2 = [(SUUIImageView *)self layer];
+      [layer2 setPath:{objc_msgSend(v16, "CGPath")}];
 
       p_lastLayoutSize->width = v9;
       p_lastLayoutSize->height = v10;
@@ -200,18 +200,18 @@ LABEL_12:
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   v5 = self->_imageSize.width;
   v6 = self->_imageSize.height;
   v7 = *MEMORY[0x277CBF3A8];
   v8 = *(MEMORY[0x277CBF3A8] + 8);
   if (v5 == *MEMORY[0x277CBF3A8] && v6 == v8)
   {
-    v10 = [(SUUIImageView *)self image];
-    [v10 size];
+    image = [(SUUIImageView *)self image];
+    [image size];
     v5 = v11;
     v6 = v12;
   }

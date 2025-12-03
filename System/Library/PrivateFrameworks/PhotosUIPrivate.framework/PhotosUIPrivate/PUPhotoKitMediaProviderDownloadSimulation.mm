@@ -27,9 +27,9 @@
 
   [(PUPhotoKitMediaProviderDownloadSimulation *)self _setSimulatedProgress:v10];
   [(PUPhotoKitMediaProviderDownloadSimulation *)self updateSimulationWithProgress:v10];
-  v11 = [(PUPhotoKitMediaProviderDownloadSimulation *)self shouldSimulateFailure];
+  shouldSimulateFailure = [(PUPhotoKitMediaProviderDownloadSimulation *)self shouldSimulateFailure];
   v12 = 0.75;
-  if (!v11)
+  if (!shouldSimulateFailure)
   {
     v12 = 1.0;
   }

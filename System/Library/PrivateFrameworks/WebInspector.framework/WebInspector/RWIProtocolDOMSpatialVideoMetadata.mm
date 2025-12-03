@@ -1,20 +1,20 @@
 @interface RWIProtocolDOMSpatialVideoMetadata
-- (RWIProtocolDOMSpatialVideoMetadata)initWithWidth:(double)a3 height:(double)a4 horizontalFOVDegrees:(double)a5 baseline:(double)a6 disparityAdjustment:(double)a7;
+- (RWIProtocolDOMSpatialVideoMetadata)initWithWidth:(double)width height:(double)height horizontalFOVDegrees:(double)degrees baseline:(double)baseline disparityAdjustment:(double)adjustment;
 - (double)baseline;
 - (double)disparityAdjustment;
 - (double)height;
 - (double)horizontalFOVDegrees;
 - (double)width;
-- (void)setBaseline:(double)a3;
-- (void)setDisparityAdjustment:(double)a3;
-- (void)setHeight:(double)a3;
-- (void)setHorizontalFOVDegrees:(double)a3;
-- (void)setWidth:(double)a3;
+- (void)setBaseline:(double)baseline;
+- (void)setDisparityAdjustment:(double)adjustment;
+- (void)setHeight:(double)height;
+- (void)setHorizontalFOVDegrees:(double)degrees;
+- (void)setWidth:(double)width;
 @end
 
 @implementation RWIProtocolDOMSpatialVideoMetadata
 
-- (RWIProtocolDOMSpatialVideoMetadata)initWithWidth:(double)a3 height:(double)a4 horizontalFOVDegrees:(double)a5 baseline:(double)a6 disparityAdjustment:(double)a7
+- (RWIProtocolDOMSpatialVideoMetadata)initWithWidth:(double)width height:(double)height horizontalFOVDegrees:(double)degrees baseline:(double)baseline disparityAdjustment:(double)adjustment
 {
   v16.receiver = self;
   v16.super_class = RWIProtocolDOMSpatialVideoMetadata;
@@ -22,22 +22,22 @@
   v13 = v12;
   if (v12)
   {
-    [(RWIProtocolDOMSpatialVideoMetadata *)v12 setWidth:a3];
-    [(RWIProtocolDOMSpatialVideoMetadata *)v13 setHeight:a4];
-    [(RWIProtocolDOMSpatialVideoMetadata *)v13 setHorizontalFOVDegrees:a5];
-    [(RWIProtocolDOMSpatialVideoMetadata *)v13 setBaseline:a6];
-    [(RWIProtocolDOMSpatialVideoMetadata *)v13 setDisparityAdjustment:a7];
+    [(RWIProtocolDOMSpatialVideoMetadata *)v12 setWidth:width];
+    [(RWIProtocolDOMSpatialVideoMetadata *)v13 setHeight:height];
+    [(RWIProtocolDOMSpatialVideoMetadata *)v13 setHorizontalFOVDegrees:degrees];
+    [(RWIProtocolDOMSpatialVideoMetadata *)v13 setBaseline:baseline];
+    [(RWIProtocolDOMSpatialVideoMetadata *)v13 setDisparityAdjustment:adjustment];
     v14 = v13;
   }
 
   return v13;
 }
 
-- (void)setWidth:(double)a3
+- (void)setWidth:(double)width
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolDOMSpatialVideoMetadata;
-  [(RWIProtocolJSONObject *)&v3 setDouble:@"width" forKey:a3];
+  [(RWIProtocolJSONObject *)&v3 setDouble:@"width" forKey:width];
 }
 
 - (double)width
@@ -48,11 +48,11 @@
   return result;
 }
 
-- (void)setHeight:(double)a3
+- (void)setHeight:(double)height
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolDOMSpatialVideoMetadata;
-  [(RWIProtocolJSONObject *)&v3 setDouble:@"height" forKey:a3];
+  [(RWIProtocolJSONObject *)&v3 setDouble:@"height" forKey:height];
 }
 
 - (double)height
@@ -63,11 +63,11 @@
   return result;
 }
 
-- (void)setHorizontalFOVDegrees:(double)a3
+- (void)setHorizontalFOVDegrees:(double)degrees
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolDOMSpatialVideoMetadata;
-  [(RWIProtocolJSONObject *)&v3 setDouble:@"horizontalFOVDegrees" forKey:a3];
+  [(RWIProtocolJSONObject *)&v3 setDouble:@"horizontalFOVDegrees" forKey:degrees];
 }
 
 - (double)horizontalFOVDegrees
@@ -78,11 +78,11 @@
   return result;
 }
 
-- (void)setBaseline:(double)a3
+- (void)setBaseline:(double)baseline
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolDOMSpatialVideoMetadata;
-  [(RWIProtocolJSONObject *)&v3 setDouble:@"baseline" forKey:a3];
+  [(RWIProtocolJSONObject *)&v3 setDouble:@"baseline" forKey:baseline];
 }
 
 - (double)baseline
@@ -93,11 +93,11 @@
   return result;
 }
 
-- (void)setDisparityAdjustment:(double)a3
+- (void)setDisparityAdjustment:(double)adjustment
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolDOMSpatialVideoMetadata;
-  [(RWIProtocolJSONObject *)&v3 setDouble:@"disparityAdjustment" forKey:a3];
+  [(RWIProtocolJSONObject *)&v3 setDouble:@"disparityAdjustment" forKey:adjustment];
 }
 
 - (double)disparityAdjustment

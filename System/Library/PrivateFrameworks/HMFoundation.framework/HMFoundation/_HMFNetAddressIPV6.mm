@@ -1,9 +1,9 @@
 @interface _HMFNetAddressIPV6
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_HMFNetAddressIPV6)init;
-- (_HMFNetAddressIPV6)initWithSocketAddress:(const sockaddr *)a3;
+- (_HMFNetAddressIPV6)initWithSocketAddress:(const sockaddr *)address;
 - (id)addressString;
-- (id)dataUsingEncoding:(unint64_t)a3;
+- (id)dataUsingEncoding:(unint64_t)encoding;
 @end
 
 @implementation _HMFNetAddressIPV6
@@ -21,33 +21,33 @@
   objc_exception_throw(v7);
 }
 
-- (_HMFNetAddressIPV6)initWithSocketAddress:(const sockaddr *)a3
+- (_HMFNetAddressIPV6)initWithSocketAddress:(const sockaddr *)address
 {
   v17 = *MEMORY[0x277D85DE8];
-  if (a3->sa_family == 30)
+  if (address->sa_family == 30)
   {
     v14.receiver = self;
     v14.super_class = _HMFNetAddressIPV6;
     v5 = [(_HMFNetAddressIPV6 *)&v14 init];
     if (v5)
     {
-      v6 = *&a3->sa_data[10];
-      *(v5 + 24) = *a3;
+      v6 = *&address->sa_data[10];
+      *(v5 + 24) = *address;
       *(v5 + 36) = v6;
     }
 
-    v7 = v5;
-    v8 = v7;
+    selfCopy = v5;
+    v8 = selfCopy;
   }
 
   else
   {
     v9 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      v11 = HMFGetLogIdentifier(v7);
+      v11 = HMFGetLogIdentifier(selfCopy);
       *buf = 138543362;
       v16 = v11;
       _os_log_impl(&dword_22ADEC000, v10, OS_LOG_TYPE_ERROR, "%{public}@Invalid sockaddr, must be AF_INET6", buf, 0xCu);
@@ -61,10 +61,10 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -74,7 +74,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -127,7 +127,7 @@
       v9 = strerror(*v8);
       v10 = *__error();
       v11 = [(_HMFNetAddressIPV6 *)self dataUsingEncoding:1];
-      v12 = [v11 hmf_hexadecimalRepresentation];
+      hmf_hexadecimalRepresentation = [v11 hmf_hexadecimalRepresentation];
       *buf = 138544130;
       v17 = v7;
       v18 = 2080;
@@ -135,7 +135,7 @@
       v20 = 1024;
       v21 = v10;
       v22 = 2112;
-      v23 = v12;
+      v23 = hmf_hexadecimalRepresentation;
       _os_log_impl(&dword_22ADEC000, v6, OS_LOG_TYPE_ERROR, "%{public}@inet_ntop() failed  with '%s' (%d) for sockaddr_in6: %@", buf, 0x26u);
     }
 
@@ -148,9 +148,9 @@
   return v13;
 }
 
-- (id)dataUsingEncoding:(unint64_t)a3
+- (id)dataUsingEncoding:(unint64_t)encoding
 {
-  if (a3 == 1)
+  if (encoding == 1)
   {
     v5 = [MEMORY[0x277CBEA90] dataWithBytes:&self->_in6 length:{28, v3}];
   }

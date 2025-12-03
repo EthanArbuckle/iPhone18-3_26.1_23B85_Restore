@@ -1,29 +1,29 @@
 @interface PKPassSharesListViewController
-- (PKPassSharesListViewController)initWithSharesController:(id)a3;
-- (void)_setIsLoading:(BOOL)a3;
-- (void)_showDisplayableError:(id)a3;
+- (PKPassSharesListViewController)initWithSharesController:(id)controller;
+- (void)_setIsLoading:(BOOL)loading;
+- (void)_showDisplayableError:(id)error;
 - (void)loadView;
-- (void)passSharesListSectionController:(id)a3 didSelectShare:(id)a4;
-- (void)passSharesListSectionController:(id)a3 presentAlert:(id)a4 forItem:(id)a5;
-- (void)passSharesListSectionControllerDidSelectAddShare:(id)a3;
-- (void)reloadDataAnimated:(BOOL)a3;
-- (void)shareSecureElementPassViewController:(id)a3 didFinishWithResult:(int64_t)a4;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)passSharesListSectionController:(id)controller didSelectShare:(id)share;
+- (void)passSharesListSectionController:(id)controller presentAlert:(id)alert forItem:(id)item;
+- (void)passSharesListSectionControllerDidSelectAddShare:(id)share;
+- (void)reloadDataAnimated:(BOOL)animated;
+- (void)shareSecureElementPassViewController:(id)controller didFinishWithResult:(int64_t)result;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation PKPassSharesListViewController
 
-- (PKPassSharesListViewController)initWithSharesController:(id)a3
+- (PKPassSharesListViewController)initWithSharesController:(id)controller
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  controllerCopy = controller;
   v14.receiver = self;
   v14.super_class = PKPassSharesListViewController;
   v6 = [(PKDynamicCollectionViewController *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_sharesController, a3);
+    objc_storeStrong(&v6->_sharesController, controller);
     v8 = objc_alloc_init(MEMORY[0x1E69B9248]);
     authorizer = v7->_authorizer;
     v7->_authorizer = v8;
@@ -41,22 +41,22 @@
   return v7;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v9.receiver = self;
   v9.super_class = PKPassSharesListViewController;
   [(PKDynamicCollectionViewController *)&v9 viewWillAppear:?];
   [(PKSharedPassSharesController *)self->_sharesController updateSharesWithCompletion:0];
   v8.receiver = self;
   v8.super_class = PKPassSharesListViewController;
-  [(PKDynamicCollectionViewController *)&v8 reloadDataAnimated:v3];
-  v5 = [(PKPassSharesListViewController *)self navigationController];
-  v6 = [v5 navigationBar];
-  [v6 setPrefersLargeTitles:1];
+  [(PKDynamicCollectionViewController *)&v8 reloadDataAnimated:appearCopy];
+  navigationController = [(PKPassSharesListViewController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
+  [navigationBar setPrefersLargeTitles:1];
 
-  v7 = [(PKPassSharesListViewController *)self navigationItem];
-  [v7 setLargeTitleDisplayMode:1];
+  navigationItem = [(PKPassSharesListViewController *)self navigationItem];
+  [navigationItem setLargeTitleDisplayMode:1];
 }
 
 - (void)loadView
@@ -64,51 +64,51 @@
   v9.receiver = self;
   v9.super_class = PKPassSharesListViewController;
   [(PKDynamicCollectionViewController *)&v9 loadView];
-  v3 = [(PKPassSharesListViewController *)self view];
-  v4 = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
-  v5 = [(PKDynamicCollectionViewController *)self collectionView];
-  [v5 setBackgroundColor:v4];
+  view = [(PKPassSharesListViewController *)self view];
+  secondarySystemBackgroundColor = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
+  collectionView = [(PKDynamicCollectionViewController *)self collectionView];
+  [collectionView setBackgroundColor:secondarySystemBackgroundColor];
 
-  [v3 setBackgroundColor:v4];
-  v6 = [(PKPassSharesListViewController *)self navigationItem];
+  [view setBackgroundColor:secondarySystemBackgroundColor];
+  navigationItem = [(PKPassSharesListViewController *)self navigationItem];
   v7 = PKLocalizedShareableCredentialString(&cfstr_SharesListTitl.isa);
-  [v6 setTitle:v7];
+  [navigationItem setTitle:v7];
 
   v8 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:0 target:self action:sel__donePressed];
-  [v6 setRightBarButtonItem:v8];
+  [navigationItem setRightBarButtonItem:v8];
 }
 
-- (void)_setIsLoading:(BOOL)a3
+- (void)_setIsLoading:(BOOL)loading
 {
-  if (a3)
+  if (loading)
   {
-    v9 = [objc_alloc(MEMORY[0x1E69DC638]) initWithActivityIndicatorStyle:100];
-    [v9 startAnimating];
-    v4 = [objc_alloc(MEMORY[0x1E69DC708]) initWithCustomView:v9];
-    v5 = [(PKPassSharesListViewController *)self navigationItem];
-    [v5 setRightBarButtonItem:v4];
+    collectionView2 = [objc_alloc(MEMORY[0x1E69DC638]) initWithActivityIndicatorStyle:100];
+    [collectionView2 startAnimating];
+    v4 = [objc_alloc(MEMORY[0x1E69DC708]) initWithCustomView:collectionView2];
+    navigationItem = [(PKPassSharesListViewController *)self navigationItem];
+    [navigationItem setRightBarButtonItem:v4];
 
-    v6 = [(PKDynamicCollectionViewController *)self collectionView];
-    [v6 setUserInteractionEnabled:0];
+    collectionView = [(PKDynamicCollectionViewController *)self collectionView];
+    [collectionView setUserInteractionEnabled:0];
   }
 
   else
   {
-    v7 = [(PKPassSharesListViewController *)self navigationItem];
+    navigationItem2 = [(PKPassSharesListViewController *)self navigationItem];
     v8 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:0 target:self action:sel__donePressed];
-    [v7 setRightBarButtonItem:v8];
+    [navigationItem2 setRightBarButtonItem:v8];
 
-    v9 = [(PKDynamicCollectionViewController *)self collectionView];
-    [v9 setUserInteractionEnabled:1];
+    collectionView2 = [(PKDynamicCollectionViewController *)self collectionView];
+    [collectionView2 setUserInteractionEnabled:1];
   }
 }
 
-- (void)_showDisplayableError:(id)a3
+- (void)_showDisplayableError:(id)error
 {
   v4 = MEMORY[0x1E69DC650];
-  v5 = a3;
+  errorCopy = error;
   v6 = PKTitleForDisplayableError();
-  v7 = MEMORY[0x1BFB42D10](v5);
+  v7 = MEMORY[0x1BFB42D10](errorCopy);
 
   v11 = [v4 alertControllerWithTitle:v6 message:v7 preferredStyle:1];
 
@@ -120,30 +120,30 @@
   [(PKPassSharesListViewController *)self presentViewController:v11 animated:1 completion:0];
 }
 
-- (void)reloadDataAnimated:(BOOL)a3
+- (void)reloadDataAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(PKPassSharesListViewController *)self presentedViewController];
+  animatedCopy = animated;
+  presentedViewController = [(PKPassSharesListViewController *)self presentedViewController];
 
-  if (!v5)
+  if (!presentedViewController)
   {
     v6.receiver = self;
     v6.super_class = PKPassSharesListViewController;
-    [(PKDynamicCollectionViewController *)&v6 reloadDataAnimated:v3];
+    [(PKDynamicCollectionViewController *)&v6 reloadDataAnimated:animatedCopy];
   }
 }
 
-- (void)passSharesListSectionController:(id)a3 didSelectShare:(id)a4
+- (void)passSharesListSectionController:(id)controller didSelectShare:(id)share
 {
-  v5 = a4;
+  shareCopy = share;
   authorizer = self->_authorizer;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __81__PKPassSharesListViewController_passSharesListSectionController_didSelectShare___block_invoke;
   v8[3] = &unk_1E8012FD0;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
+  v9 = shareCopy;
+  selfCopy = self;
+  v7 = shareCopy;
   [(PKShareAuthorizationSession *)authorizer authorizeDeviceOwnerWithAuthHandler:0 completion:v8];
 }
 
@@ -157,7 +157,7 @@ void __81__PKPassSharesListViewController_passSharesListSectionController_didSel
   }
 }
 
-- (void)passSharesListSectionControllerDidSelectAddShare:(id)a3
+- (void)passSharesListSectionControllerDidSelectAddShare:(id)share
 {
   sharesController = self->_sharesController;
   v4[0] = MEMORY[0x1E69E9820];
@@ -194,24 +194,24 @@ void __83__PKPassSharesListViewController_passSharesListSectionControllerDidSele
   [v4 presentViewController:v3 animated:v5 completion:0];
 }
 
-- (void)passSharesListSectionController:(id)a3 presentAlert:(id)a4 forItem:(id)a5
+- (void)passSharesListSectionController:(id)controller presentAlert:(id)alert forItem:(id)item
 {
-  v9 = a4;
-  if (a5)
+  alertCopy = alert;
+  if (item)
   {
-    v7 = [(PKDynamicCollectionViewController *)self cellForItem:a5];
-    v8 = [v9 popoverPresentationController];
-    [v8 setSourceItem:v7];
+    v7 = [(PKDynamicCollectionViewController *)self cellForItem:item];
+    popoverPresentationController = [alertCopy popoverPresentationController];
+    [popoverPresentationController setSourceItem:v7];
   }
 
-  [(PKPassSharesListViewController *)self presentViewController:v9 animated:1 completion:0];
+  [(PKPassSharesListViewController *)self presentViewController:alertCopy animated:1 completion:0];
 }
 
-- (void)shareSecureElementPassViewController:(id)a3 didFinishWithResult:(int64_t)a4
+- (void)shareSecureElementPassViewController:(id)controller didFinishWithResult:(int64_t)result
 {
   v5.receiver = self;
   v5.super_class = PKPassSharesListViewController;
-  [(PKDynamicCollectionViewController *)&v5 reloadDataAnimated:1, a4];
+  [(PKDynamicCollectionViewController *)&v5 reloadDataAnimated:1, result];
   [(PKPassSharesListViewController *)self dismissViewControllerAnimated:1 completion:0];
 }
 

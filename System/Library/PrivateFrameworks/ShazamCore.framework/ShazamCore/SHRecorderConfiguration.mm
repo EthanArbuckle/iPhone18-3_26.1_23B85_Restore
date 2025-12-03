@@ -1,15 +1,15 @@
 @interface SHRecorderConfiguration
-- (SHRecorderConfiguration)initWithPromise:(id)a3;
-- (SHRecorderConfiguration)initWithValues:(id)a3;
-- (id)cacheValuesForIdentifier:(id)a3;
-- (unint64_t)availableRecordersForClientIdentifier:(id)a3;
+- (SHRecorderConfiguration)initWithPromise:(id)promise;
+- (SHRecorderConfiguration)initWithValues:(id)values;
+- (id)cacheValuesForIdentifier:(id)identifier;
+- (unint64_t)availableRecordersForClientIdentifier:(id)identifier;
 @end
 
 @implementation SHRecorderConfiguration
 
-- (unint64_t)availableRecordersForClientIdentifier:(id)a3
+- (unint64_t)availableRecordersForClientIdentifier:(id)identifier
 {
-  v3 = [(SHRecorderConfiguration *)self cacheValuesForIdentifier:a3];
+  v3 = [(SHRecorderConfiguration *)self cacheValuesForIdentifier:identifier];
   v4 = v3;
   if (v3)
   {
@@ -47,11 +47,11 @@
   return v10;
 }
 
-- (id)cacheValuesForIdentifier:(id)a3
+- (id)cacheValuesForIdentifier:(id)identifier
 {
-  v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", @"recorders", a3];
-  v5 = [(SHRecorderConfiguration *)self cacheValues];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  identifier = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", @"recorders", identifier];
+  cacheValues = [(SHRecorderConfiguration *)self cacheValues];
+  v6 = [cacheValues objectForKeyedSubscript:identifier];
   v7 = v6;
   if (v6)
   {
@@ -60,38 +60,38 @@
 
   else
   {
-    v9 = [(SHRecorderConfiguration *)self cacheValues];
-    v8 = [v9 objectForKeyedSubscript:@"recorders"];
+    cacheValues2 = [(SHRecorderConfiguration *)self cacheValues];
+    v8 = [cacheValues2 objectForKeyedSubscript:@"recorders"];
   }
 
   return v8;
 }
 
-- (SHRecorderConfiguration)initWithValues:(id)a3
+- (SHRecorderConfiguration)initWithValues:(id)values
 {
-  v5 = a3;
+  valuesCopy = values;
   v9.receiver = self;
   v9.super_class = SHRecorderConfiguration;
   v6 = [(SHRecorderConfiguration *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_cacheValues, a3);
+    objc_storeStrong(&v6->_cacheValues, values);
   }
 
   return v7;
 }
 
-- (SHRecorderConfiguration)initWithPromise:(id)a3
+- (SHRecorderConfiguration)initWithPromise:(id)promise
 {
-  v5 = a3;
+  promiseCopy = promise;
   v13.receiver = self;
   v13.super_class = SHRecorderConfiguration;
   v6 = [(SHRecorderConfiguration *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_promise, a3);
+    objc_storeStrong(&v6->_promise, promise);
     v11[0] = 0;
     v11[1] = v11;
     v11[2] = 0x3032000000;

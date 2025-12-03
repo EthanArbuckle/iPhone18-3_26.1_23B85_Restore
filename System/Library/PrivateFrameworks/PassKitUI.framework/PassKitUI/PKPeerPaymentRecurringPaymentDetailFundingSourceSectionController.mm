@@ -1,35 +1,35 @@
 @interface PKPeerPaymentRecurringPaymentDetailFundingSourceSectionController
-- (PKPeerPaymentRecurringPaymentDetailFundingSourceSectionController)initWithFundingSource:(id)a3 useAppleCashBalance:(BOOL)a4 delegate:(id)a5;
+- (PKPeerPaymentRecurringPaymentDetailFundingSourceSectionController)initWithFundingSource:(id)source useAppleCashBalance:(BOOL)balance delegate:(id)delegate;
 - (PKPeerPaymentRecurringPaymentDetailFundingSourceSectionControllerDelegate)delegate;
 - (id)identifiers;
-- (id)snapshotWithPreviousSnapshot:(id)a3 forSectionIdentifier:(id)a4;
-- (void)_decorateListCell:(id)a3 forItem:(id)a4;
-- (void)didSelectItem:(id)a3;
-- (void)reloadItemsAnimated:(BOOL)a3;
-- (void)setFundingSource:(id)a3;
-- (void)setIsEditable:(BOOL)a3;
-- (void)setTitleColor:(id)a3;
-- (void)setUseAppleCashBalance:(BOOL)a3;
+- (id)snapshotWithPreviousSnapshot:(id)snapshot forSectionIdentifier:(id)identifier;
+- (void)_decorateListCell:(id)cell forItem:(id)item;
+- (void)didSelectItem:(id)item;
+- (void)reloadItemsAnimated:(BOOL)animated;
+- (void)setFundingSource:(id)source;
+- (void)setIsEditable:(BOOL)editable;
+- (void)setTitleColor:(id)color;
+- (void)setUseAppleCashBalance:(BOOL)balance;
 @end
 
 @implementation PKPeerPaymentRecurringPaymentDetailFundingSourceSectionController
 
-- (PKPeerPaymentRecurringPaymentDetailFundingSourceSectionController)initWithFundingSource:(id)a3 useAppleCashBalance:(BOOL)a4 delegate:(id)a5
+- (PKPeerPaymentRecurringPaymentDetailFundingSourceSectionController)initWithFundingSource:(id)source useAppleCashBalance:(BOOL)balance delegate:(id)delegate
 {
-  v9 = a3;
-  v10 = a5;
+  sourceCopy = source;
+  delegateCopy = delegate;
   v25.receiver = self;
   v25.super_class = PKPeerPaymentRecurringPaymentDetailFundingSourceSectionController;
   v11 = [(PKPeerPaymentRecurringPaymentDetailFundingSourceSectionController *)&v25 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_fundingSource, a3);
-    v12->_useAppleCashBalance = a4;
-    objc_storeWeak(&v12->_delegate, v10);
-    v13 = [MEMORY[0x1E69DC888] labelColor];
+    objc_storeStrong(&v11->_fundingSource, source);
+    v12->_useAppleCashBalance = balance;
+    objc_storeWeak(&v12->_delegate, delegateCopy);
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
     titleColor = v12->_titleColor;
-    v12->_titleColor = v13;
+    v12->_titleColor = labelColor;
 
     objc_initWeak(&location, v12);
     v15 = MEMORY[0x1E69DC800];
@@ -62,9 +62,9 @@ void __120__PKPeerPaymentRecurringPaymentDetailFundingSourceSectionController_in
   }
 }
 
-- (void)reloadItemsAnimated:(BOOL)a3
+- (void)reloadItemsAnimated:(BOOL)animated
 {
-  v5 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v6 = [(PKPeerPaymentRecurringPaymentDetailRowItem *)[PKPeerPaymentRecurringPaymentFundingSourceDetailRowItem alloc] initWithIdentifier:@"fundingSourceItem" isEditable:self->_isEditable titleColor:self->_titleColor];
   v7 = PKLocalizedPeerPaymentRecurringString(&cfstr_DetailsFunding.isa);
   [(PKPeerPaymentRecurringPaymentFundingSourceDetailRowItem *)v6 setTitle:v7];
@@ -84,8 +84,8 @@ void __120__PKPeerPaymentRecurringPaymentDetailFundingSourceSectionController_in
     [(PKDynamicListSectionController *)self setFooterText:0];
   }
 
-  [v5 addObject:v6];
-  v10 = [v5 copy];
+  [array addObject:v6];
+  v10 = [array copy];
   rowItems = self->_rowItems;
   self->_rowItems = v10;
 
@@ -94,7 +94,7 @@ void __120__PKPeerPaymentRecurringPaymentDetailFundingSourceSectionController_in
   v12[2] = __89__PKPeerPaymentRecurringPaymentDetailFundingSourceSectionController_reloadItemsAnimated___block_invoke;
   v12[3] = &unk_1E8013F80;
   v12[4] = self;
-  v13 = a3;
+  animatedCopy = animated;
   dispatch_async(MEMORY[0x1E69E96A0], v12);
 }
 
@@ -113,7 +113,7 @@ void __89__PKPeerPaymentRecurringPaymentDetailFundingSourceSectionController_rel
   return v2;
 }
 
-- (id)snapshotWithPreviousSnapshot:(id)a3 forSectionIdentifier:(id)a4
+- (id)snapshotWithPreviousSnapshot:(id)snapshot forSectionIdentifier:(id)identifier
 {
   v5 = objc_alloc_init(MEMORY[0x1E69DC5D0]);
   [v5 appendItems:self->_rowItems];
@@ -121,7 +121,7 @@ void __89__PKPeerPaymentRecurringPaymentDetailFundingSourceSectionController_rel
   return v5;
 }
 
-- (void)didSelectItem:(id)a3
+- (void)didSelectItem:(id)item
 {
   if (self->_isEditable)
   {
@@ -133,79 +133,79 @@ void __89__PKPeerPaymentRecurringPaymentDetailFundingSourceSectionController_rel
   [v5 deselectCells];
 }
 
-- (void)setFundingSource:(id)a3
+- (void)setFundingSource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   if (![(NSString *)self->_fundingSource isEqualToString:?])
   {
-    objc_storeStrong(&self->_fundingSource, a3);
+    objc_storeStrong(&self->_fundingSource, source);
     [(PKPeerPaymentRecurringPaymentDetailFundingSourceSectionController *)self reloadItemsAnimated:1];
   }
 }
 
-- (void)setUseAppleCashBalance:(BOOL)a3
+- (void)setUseAppleCashBalance:(BOOL)balance
 {
-  if (self->_useAppleCashBalance != a3)
+  if (self->_useAppleCashBalance != balance)
   {
-    self->_useAppleCashBalance = a3;
+    self->_useAppleCashBalance = balance;
     [(PKPeerPaymentRecurringPaymentDetailFundingSourceSectionController *)self reloadItemsAnimated:1];
   }
 }
 
-- (void)setIsEditable:(BOOL)a3
+- (void)setIsEditable:(BOOL)editable
 {
-  if (self->_isEditable != a3)
+  if (self->_isEditable != editable)
   {
-    self->_isEditable = a3;
+    self->_isEditable = editable;
     [(PKPeerPaymentRecurringPaymentDetailFundingSourceSectionController *)self reloadItemsAnimated:1];
   }
 }
 
-- (void)setTitleColor:(id)a3
+- (void)setTitleColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   if (([(UIColor *)self->_titleColor isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_titleColor, a3);
+    objc_storeStrong(&self->_titleColor, color);
     [(PKPeerPaymentRecurringPaymentDetailFundingSourceSectionController *)self reloadItemsAnimated:1];
   }
 }
 
-- (void)_decorateListCell:(id)a3 forItem:(id)a4
+- (void)_decorateListCell:(id)cell forItem:(id)item
 {
-  v15 = a3;
-  v5 = a4;
-  v6 = [MEMORY[0x1E69DCC28] valueCellConfiguration];
-  v7 = [v5 title];
-  [v6 setText:v7];
+  cellCopy = cell;
+  itemCopy = item;
+  valueCellConfiguration = [MEMORY[0x1E69DCC28] valueCellConfiguration];
+  title = [itemCopy title];
+  [valueCellConfiguration setText:title];
 
-  v8 = [v6 textProperties];
-  [v8 setLineBreakMode:0];
-  v9 = [v5 titleColor];
-  [v8 setColor:v9];
+  textProperties = [valueCellConfiguration textProperties];
+  [textProperties setLineBreakMode:0];
+  titleColor = [itemCopy titleColor];
+  [textProperties setColor:titleColor];
 
   v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v11 = [v5 name];
-  if ([v11 length])
+  name = [itemCopy name];
+  if ([name length])
   {
-    [v6 setSecondaryText:v11];
-    [v6 setPrefersSideBySideTextAndSecondaryText:1];
-    v12 = [v6 secondaryTextProperties];
-    [v12 setNumberOfLines:1];
+    [valueCellConfiguration setSecondaryText:name];
+    [valueCellConfiguration setPrefersSideBySideTextAndSecondaryText:1];
+    secondaryTextProperties = [valueCellConfiguration secondaryTextProperties];
+    [secondaryTextProperties setNumberOfLines:1];
 
-    v13 = [v6 secondaryTextProperties];
-    [v13 setLineBreakMode:5];
+    secondaryTextProperties2 = [valueCellConfiguration secondaryTextProperties];
+    [secondaryTextProperties2 setLineBreakMode:5];
   }
 
-  [v15 setContentConfiguration:v6];
-  if ([v5 isEditable])
+  [cellCopy setContentConfiguration:valueCellConfiguration];
+  if ([itemCopy isEditable])
   {
     v14 = objc_alloc_init(MEMORY[0x1E69DC7A8]);
     [v10 addObject:v14];
   }
 
-  [v15 setAccessories:v10];
-  [v15 setAccessibilityIdentifier:*MEMORY[0x1E69B9A50]];
+  [cellCopy setAccessories:v10];
+  [cellCopy setAccessibilityIdentifier:*MEMORY[0x1E69B9A50]];
 }
 
 - (PKPeerPaymentRecurringPaymentDetailFundingSourceSectionControllerDelegate)delegate

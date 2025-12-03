@@ -1,46 +1,46 @@
 @interface SFCollaborationCloudSharingMailResult
-- (SFCollaborationCloudSharingMailResult)initWithCoder:(id)a3;
-- (SFCollaborationCloudSharingMailResult)initWithSubject:(id)a3 body:(id)a4 containerID:(id)a5 canEdit:(id)a6 allowOthersToInvite:(id)a7 error:(id)a8;
-- (void)encodeWithCoder:(id)a3;
+- (SFCollaborationCloudSharingMailResult)initWithCoder:(id)coder;
+- (SFCollaborationCloudSharingMailResult)initWithSubject:(id)subject body:(id)body containerID:(id)d canEdit:(id)edit allowOthersToInvite:(id)invite error:(id)error;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFCollaborationCloudSharingMailResult
 
-- (SFCollaborationCloudSharingMailResult)initWithSubject:(id)a3 body:(id)a4 containerID:(id)a5 canEdit:(id)a6 allowOthersToInvite:(id)a7 error:(id)a8
+- (SFCollaborationCloudSharingMailResult)initWithSubject:(id)subject body:(id)body containerID:(id)d canEdit:(id)edit allowOthersToInvite:(id)invite error:(id)error
 {
-  v14 = a3;
-  v15 = a4;
-  v25 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
+  subjectCopy = subject;
+  bodyCopy = body;
+  dCopy = d;
+  editCopy = edit;
+  inviteCopy = invite;
+  errorCopy = error;
   v26.receiver = self;
   v26.super_class = SFCollaborationCloudSharingMailResult;
   v19 = [(SFCollaborationCloudSharingMailResult *)&v26 init];
   if (v19)
   {
-    v20 = [v14 copy];
+    v20 = [subjectCopy copy];
     subject = v19->_subject;
     v19->_subject = v20;
 
-    v22 = [v15 copy];
+    v22 = [bodyCopy copy];
     body = v19->_body;
     v19->_body = v22;
 
-    objc_storeStrong(&v19->_containerID, a5);
-    objc_storeStrong(&v19->_canEdit, a6);
-    objc_storeStrong(&v19->_allowOthersToInvite, a7);
-    objc_storeStrong(&v19->_error, a8);
+    objc_storeStrong(&v19->_containerID, d);
+    objc_storeStrong(&v19->_canEdit, edit);
+    objc_storeStrong(&v19->_allowOthersToInvite, invite);
+    objc_storeStrong(&v19->_error, error);
   }
 
   return v19;
 }
 
-- (SFCollaborationCloudSharingMailResult)initWithCoder:(id)a3
+- (SFCollaborationCloudSharingMailResult)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"subject"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"body"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"subject"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"body"];
   v16 = 0;
   v17 = &v16;
   v18 = 0x2050000000;
@@ -59,25 +59,25 @@
 
   v8 = v7;
   _Block_object_dispose(&v16, 8);
-  v9 = [v4 decodeObjectOfClass:v7 forKey:@"containerID"];
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"canEdit"];
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"allowOthersToInvite"];
-  v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"error"];
+  v9 = [coderCopy decodeObjectOfClass:v7 forKey:@"containerID"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"canEdit"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"allowOthersToInvite"];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"error"];
   v13 = [(SFCollaborationCloudSharingMailResult *)self initWithSubject:v5 body:v6 containerID:v9 canEdit:v10 allowOthersToInvite:v11 error:v12];
 
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   subject = self->_subject;
-  v5 = a3;
-  [v5 encodeObject:subject forKey:@"subject"];
-  [v5 encodeObject:self->_body forKey:@"body"];
-  [v5 encodeObject:self->_containerID forKey:@"containerID"];
-  [v5 encodeObject:self->_canEdit forKey:@"canEdit"];
-  [v5 encodeObject:self->_allowOthersToInvite forKey:@"allowOthersToInvite"];
-  [v5 encodeObject:self->_error forKey:@"error"];
+  coderCopy = coder;
+  [coderCopy encodeObject:subject forKey:@"subject"];
+  [coderCopy encodeObject:self->_body forKey:@"body"];
+  [coderCopy encodeObject:self->_containerID forKey:@"containerID"];
+  [coderCopy encodeObject:self->_canEdit forKey:@"canEdit"];
+  [coderCopy encodeObject:self->_allowOthersToInvite forKey:@"allowOthersToInvite"];
+  [coderCopy encodeObject:self->_error forKey:@"error"];
 }
 
 @end

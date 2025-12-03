@@ -11,11 +11,11 @@
 
 - (BOOL)npkIsPhoneNumber
 {
-  v1 = [a1 matchesInStringWithType:2048];
+  v1 = [self matchesInStringWithType:2048];
   if ([v1 count] == 1)
   {
-    v2 = [v1 firstObject];
-    v3 = [v2 resultType] == 2048;
+    firstObject = [v1 firstObject];
+    v3 = [firstObject resultType] == 2048;
   }
 
   else
@@ -28,15 +28,15 @@
 
 - (uint64_t)npkIsEmailAddress
 {
-  v2 = [a1 matchesInStringWithType:32];
+  v2 = [self matchesInStringWithType:32];
   if ([v2 count] == 1)
   {
-    v3 = [v2 firstObject];
-    v4 = [v3 resultType] == 32;
-    v5 = [v3 URL];
-    v6 = [v5 absoluteString];
-    v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"mailto:%@", a1];
-    v8 = [v6 isEqualToString:v7];
+    firstObject = [v2 firstObject];
+    v4 = [firstObject resultType] == 32;
+    v5 = [firstObject URL];
+    absoluteString = [v5 absoluteString];
+    v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"mailto:%@", self];
+    v8 = [absoluteString isEqualToString:v7];
 
     v9 = v4 & v8;
   }
@@ -51,13 +51,13 @@
 
 - (id)npkBaseAddress
 {
-  v2 = [a1 hasPrefix:@"mailto:"];
-  v3 = [a1 hasPrefix:@"tel:"];
+  v2 = [self hasPrefix:@"mailto:"];
+  v3 = [self hasPrefix:@"tel:"];
   if (v2)
   {
     v4 = @"mailto:";
 LABEL_5:
-    v5 = [a1 substringFromIndex:{-[__CFString length](v4, "length")}];
+    selfCopy = [self substringFromIndex:{-[__CFString length](v4, "length")}];
     goto LABEL_7;
   }
 
@@ -67,10 +67,10 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  v5 = a1;
+  selfCopy = self;
 LABEL_7:
 
-  return v5;
+  return selfCopy;
 }
 
 - (id)matchesInStringWithType:()NanoPassKit
@@ -78,7 +78,7 @@ LABEL_7:
   v4 = [MEMORY[0x277CCA948] dataDetectorWithTypes:a3 error:0];
   if (v4)
   {
-    v5 = [v4 matchesInString:a1 options:4 range:{0, objc_msgSend(a1, "length")}];
+    v5 = [v4 matchesInString:self options:4 range:{0, objc_msgSend(self, "length")}];
   }
 
   else
@@ -94,7 +94,7 @@ LABEL_7:
   v4 = [MEMORY[0x277CCA948] dataDetectorWithTypes:a3 error:0];
   if (v4)
   {
-    v5 = [v4 firstMatchInString:a1 options:4 range:{0, objc_msgSend(a1, "length")}];
+    v5 = [v4 firstMatchInString:self options:4 range:{0, objc_msgSend(self, "length")}];
     v6 = v5 != 0;
   }
 
@@ -108,17 +108,17 @@ LABEL_7:
 
 - (id)npkFirstCharacter
 {
-  if ([a1 length])
+  if ([self length])
   {
-    v2 = [a1 substringWithRange:{0, 1}];
+    selfCopy = [self substringWithRange:{0, 1}];
   }
 
   else
   {
-    v2 = a1;
+    selfCopy = self;
   }
 
-  return v2;
+  return selfCopy;
 }
 
 @end

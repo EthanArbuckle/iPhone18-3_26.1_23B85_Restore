@@ -1,12 +1,12 @@
 @interface CRJasperTest
-- (BOOL)promptContinue:(id)a3 withContext:(id)a4;
+- (BOOL)promptContinue:(id)continue withContext:(id)context;
 @end
 
 @implementation CRJasperTest
 
-- (BOOL)promptContinue:(id)a3 withContext:(id)a4
+- (BOOL)promptContinue:(id)continue withContext:(id)context
 {
-  v6 = a3;
+  continueCopy = continue;
   v37 = 0;
   v38 = &v37;
   v39 = 0x3032000000;
@@ -15,8 +15,8 @@
   v42 = 0;
   v36.receiver = self;
   v36.super_class = CRJasperTest;
-  v32 = a4;
-  if ([(CRTest *)&v36 promptContinue:v6 withContext:?])
+  contextCopy = context;
+  if ([(CRTest *)&v36 promptContinue:continueCopy withContext:?])
   {
     v47 = @"CONTINUE";
     v7 = [CRLocalization localizedStringWithKey:@"CAMERA_CALIBRATION_CONTINUE_BUTTON_TITLE"];
@@ -31,7 +31,7 @@
     v31 = [NSArray arrayWithObjects:v49 count:2];
 
     v11 = [ASTInstructionalPrompt alloc];
-    v12 = [(CRTest *)self testId];
+    testId = [(CRTest *)self testId];
     if (MGGetBoolAnswer())
     {
       v13 = @"ipad.rear.camera.badge.scope";
@@ -48,14 +48,14 @@
     v16 = [CRLocalization localizedStringWithKey:@"CAMERA_CALIBRATION_INTRO_BODY_2"];
     v44[1] = v16;
     v17 = [NSArray arrayWithObjects:v44 count:2];
-    v18 = [v11 initWithID:v12 type:0 iconLocator:v13 localizedTitle:v14 localizedSubtitle:&stru_100010A30 imageLocators:0 instructions:v17 instructionsStyle:0 options:v31];
+    v18 = [v11 initWithID:testId type:0 iconLocator:v13 localizedTitle:v14 localizedSubtitle:&stru_100010A30 imageLocators:0 instructions:v17 instructionsStyle:0 options:v31];
 
     v35[0] = _NSConcreteStackBlock;
     v35[1] = 3221225472;
     v35[2] = sub_100006B78;
     v35[3] = &unk_100010350;
     v35[4] = &v37;
-    [v6 showInstructionalPrompt:v18 withConfirmation:v35];
+    [continueCopy showInstructionalPrompt:v18 withConfirmation:v35];
     if ([v38[5] isEqualToString:@"CANCEL"])
     {
       v19 = v18;
@@ -64,7 +64,7 @@
     else
     {
       v29 = [ASTInstructionalPrompt alloc];
-      v30 = [(CRTest *)self testId];
+      testId2 = [(CRTest *)self testId];
       v21 = [CRLocalization localizedStringWithKey:@"CAMERA_CALIBRATION_INSTRUCTIONS_TITLE"];
       v22 = [CRLocalization localizedStringWithKey:@"CAMERA_CALIBRATION_INSTRUCTIONS_1"];
       v43[0] = v22;
@@ -75,14 +75,14 @@
       v25 = [CRLocalization localizedStringWithKey:@"CAMERA_CALIBRATION_INSTRUCTIONS_4"];
       v43[3] = v25;
       v26 = [NSArray arrayWithObjects:v43 count:4];
-      v19 = [v29 initWithID:v30 type:0 iconLocator:0 localizedTitle:v21 localizedSubtitle:&stru_100010A30 imageLocators:&off_100011228 instructions:v26 instructionsStyle:1 options:v31];
+      v19 = [v29 initWithID:testId2 type:0 iconLocator:0 localizedTitle:v21 localizedSubtitle:&stru_100010A30 imageLocators:&off_100011228 instructions:v26 instructionsStyle:1 options:v31];
 
       v34[0] = _NSConcreteStackBlock;
       v34[1] = 3221225472;
       v34[2] = sub_100006C44;
       v34[3] = &unk_100010350;
       v34[4] = &v37;
-      [v6 showInstructionalPrompt:v19 withConfirmation:v34];
+      [continueCopy showInstructionalPrompt:v19 withConfirmation:v34];
       if (![v38[5] isEqualToString:@"CANCEL"])
       {
         v20 = 1;

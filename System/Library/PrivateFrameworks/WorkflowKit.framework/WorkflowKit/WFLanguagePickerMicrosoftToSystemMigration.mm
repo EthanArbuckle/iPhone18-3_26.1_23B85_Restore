@@ -1,20 +1,20 @@
 @interface WFLanguagePickerMicrosoftToSystemMigration
-+ (BOOL)workflowNeedsMigration:(id)a3 fromClientVersion:(id)a4;
-- (id)localeIdentifierFromLegacySerializedParameterValue:(id)a3;
-- (id)localeIdentifierFromSerializedLocaleDisplayName:(id)a3;
-- (id)localeIdentifierFromUnmigratedValue:(id)a3;
++ (BOOL)workflowNeedsMigration:(id)migration fromClientVersion:(id)version;
+- (id)localeIdentifierFromLegacySerializedParameterValue:(id)value;
+- (id)localeIdentifierFromSerializedLocaleDisplayName:(id)name;
+- (id)localeIdentifierFromUnmigratedValue:(id)value;
 - (id)localizedLanguageDisplayNamesToLocaleIdentifiers;
 - (void)migrateWorkflow;
 @end
 
 @implementation WFLanguagePickerMicrosoftToSystemMigration
 
-+ (BOOL)workflowNeedsMigration:(id)a3 fromClientVersion:(id)a4
++ (BOOL)workflowNeedsMigration:(id)migration fromClientVersion:(id)version
 {
-  v5 = a3;
-  if (WFCompareBundleVersions(a4, @"1146.10"))
+  migrationCopy = migration;
+  if (WFCompareBundleVersions(version, @"1146.10"))
   {
-    HasActionsWithIdentifier = WFWorkflowHasActionsWithIdentifier(@"is.workflow.actions.text.translate", v5);
+    HasActionsWithIdentifier = WFWorkflowHasActionsWithIdentifier(@"is.workflow.actions.text.translate", migrationCopy);
   }
 
   else
@@ -33,8 +33,8 @@
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = [(WFLanguagePickerMicrosoftToSystemMigration *)self languagesSupportedByTranslation];
-  v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  languagesSupportedByTranslation = [(WFLanguagePickerMicrosoftToSystemMigration *)self languagesSupportedByTranslation];
+  v5 = [languagesSupportedByTranslation countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
     v6 = v5;
@@ -45,16 +45,16 @@
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(languagesSupportedByTranslation);
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
         v10 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:v9];
-        v11 = [v10 wf_displayName];
-        [v3 setObject:v9 forKey:v11];
+        wf_displayName = [v10 wf_displayName];
+        [v3 setObject:v9 forKey:wf_displayName];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v6 = [languagesSupportedByTranslation countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v6);
@@ -66,11 +66,11 @@
   return v12;
 }
 
-- (id)localeIdentifierFromSerializedLocaleDisplayName:(id)a3
+- (id)localeIdentifierFromSerializedLocaleDisplayName:(id)name
 {
-  v4 = a3;
-  v5 = [(WFLanguagePickerMicrosoftToSystemMigration *)self localizedLanguageDisplayNamesToLocaleIdentifiers];
-  v6 = [v5 objectForKey:v4];
+  nameCopy = name;
+  localizedLanguageDisplayNamesToLocaleIdentifiers = [(WFLanguagePickerMicrosoftToSystemMigration *)self localizedLanguageDisplayNamesToLocaleIdentifiers];
+  v6 = [localizedLanguageDisplayNamesToLocaleIdentifiers objectForKey:nameCopy];
 
   if (v6)
   {
@@ -87,9 +87,9 @@
   return v7;
 }
 
-- (id)localeIdentifierFromLegacySerializedParameterValue:(id)a3
+- (id)localeIdentifierFromLegacySerializedParameterValue:(id)value
 {
-  v3 = [&unk_1F4A99E60 objectForKey:a3];
+  v3 = [&unk_1F4A99E60 objectForKey:value];
   v4 = v3;
   if (v3)
   {
@@ -106,31 +106,31 @@
   return v5;
 }
 
-- (id)localeIdentifierFromUnmigratedValue:(id)a3
+- (id)localeIdentifierFromUnmigratedValue:(id)value
 {
-  v4 = a3;
-  v5 = [(WFLanguagePickerMicrosoftToSystemMigration *)self languagesSupportedByTranslation];
-  v6 = [v5 containsObject:v4];
+  valueCopy = value;
+  languagesSupportedByTranslation = [(WFLanguagePickerMicrosoftToSystemMigration *)self languagesSupportedByTranslation];
+  v6 = [languagesSupportedByTranslation containsObject:valueCopy];
 
   if (v6)
   {
-    v7 = v4;
+    v7 = valueCopy;
   }
 
   else
   {
-    v8 = [(WFLanguagePickerMicrosoftToSystemMigration *)self localizedLanguageDisplayNamesToLocaleIdentifiers];
-    v9 = [v8 allKeys];
-    v10 = [v9 containsObject:v4];
+    localizedLanguageDisplayNamesToLocaleIdentifiers = [(WFLanguagePickerMicrosoftToSystemMigration *)self localizedLanguageDisplayNamesToLocaleIdentifiers];
+    allKeys = [localizedLanguageDisplayNamesToLocaleIdentifiers allKeys];
+    v10 = [allKeys containsObject:valueCopy];
 
     if (v10)
     {
-      [(WFLanguagePickerMicrosoftToSystemMigration *)self localeIdentifierFromSerializedLocaleDisplayName:v4];
+      [(WFLanguagePickerMicrosoftToSystemMigration *)self localeIdentifierFromSerializedLocaleDisplayName:valueCopy];
     }
 
     else
     {
-      [(WFLanguagePickerMicrosoftToSystemMigration *)self localeIdentifierFromLegacySerializedParameterValue:v4];
+      [(WFLanguagePickerMicrosoftToSystemMigration *)self localeIdentifierFromLegacySerializedParameterValue:valueCopy];
     }
     v7 = ;
   }
@@ -142,13 +142,13 @@
 
 - (void)migrateWorkflow
 {
-  v3 = [(WFWorkflowMigration *)self actions];
+  actions = [(WFWorkflowMigration *)self actions];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __61__WFLanguagePickerMicrosoftToSystemMigration_migrateWorkflow__block_invoke;
   v4[3] = &unk_1E837F7F8;
   v4[4] = self;
-  [v3 enumerateObjectsUsingBlock:v4];
+  [actions enumerateObjectsUsingBlock:v4];
 
   [(WFWorkflowMigration *)self finish];
 }

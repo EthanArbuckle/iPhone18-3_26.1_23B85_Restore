@@ -1,10 +1,10 @@
 @interface ML3StatementCacheList
 - (id)description;
 - (unint64_t)count;
-- (void)appendNode:(id)a3;
+- (void)appendNode:(id)node;
 - (void)deleteAllNodes;
 - (void)deleteOldestNode;
-- (void)promoteNodeWithDictionaryKey:(id)a3;
+- (void)promoteNodeWithDictionaryKey:(id)key;
 @end
 
 @implementation ML3StatementCacheList
@@ -21,13 +21,13 @@
   v4 = 0;
   do
   {
-    v5 = [v3 next];
+    next = [v3 next];
 
     ++v4;
-    v3 = v5;
+    v3 = next;
   }
 
-  while (v5);
+  while (next);
   return v4;
 }
 
@@ -43,79 +43,79 @@
 - (void)deleteOldestNode
 {
   v5 = self->_firstNode;
-  v3 = [(ML3StatementCacheNode *)v5 next];
+  next = [(ML3StatementCacheNode *)v5 next];
   firstNode = self->_firstNode;
-  self->_firstNode = v3;
+  self->_firstNode = next;
 }
 
-- (void)promoteNodeWithDictionaryKey:(id)a3
+- (void)promoteNodeWithDictionaryKey:(id)key
 {
-  v13 = a3;
-  v4 = self->_firstNode;
+  keyCopy = key;
+  next = self->_firstNode;
   v5 = 0;
-  if (v4)
+  if (next)
   {
     while (1)
     {
-      v6 = [(ML3StatementCacheNode *)v4 dictionaryKey];
-      v7 = [v13 isEqual:v6];
+      dictionaryKey = [(ML3StatementCacheNode *)next dictionaryKey];
+      v7 = [keyCopy isEqual:dictionaryKey];
 
       if (v7)
       {
         break;
       }
 
-      v8 = v4;
+      v8 = next;
 
-      v4 = [(ML3StatementCacheNode *)v8 next];
+      next = [(ML3StatementCacheNode *)v8 next];
 
       v5 = v8;
-      if (!v4)
+      if (!next)
       {
         v5 = v8;
         goto LABEL_9;
       }
     }
 
-    if (v4 != self->_lastNode)
+    if (next != self->_lastNode)
     {
       firstNode = self->_firstNode;
-      if (v4 == firstNode)
+      if (next == firstNode)
       {
-        v10 = [(ML3StatementCacheNode *)firstNode next];
+        next2 = [(ML3StatementCacheNode *)firstNode next];
         v11 = self->_firstNode;
-        self->_firstNode = v10;
+        self->_firstNode = next2;
       }
 
-      v12 = [(ML3StatementCacheNode *)v4 next];
-      [(ML3StatementCacheNode *)v5 setNext:v12];
+      v4Next = [(ML3StatementCacheNode *)next next];
+      [(ML3StatementCacheNode *)v5 setNext:v4Next];
 
-      [(ML3StatementCacheNode *)v4 setNext:0];
-      [(ML3StatementCacheList *)self appendNode:v4];
+      [(ML3StatementCacheNode *)next setNext:0];
+      [(ML3StatementCacheList *)self appendNode:next];
     }
   }
 
 LABEL_9:
 }
 
-- (void)appendNode:(id)a3
+- (void)appendNode:(id)node
 {
-  v5 = a3;
+  nodeCopy = node;
   if (self->_firstNode)
   {
     lastNode = self->_lastNode;
     p_lastNode = &self->_lastNode;
-    [(ML3StatementCacheNode *)lastNode setNext:v5];
+    [(ML3StatementCacheNode *)lastNode setNext:nodeCopy];
   }
 
   else
   {
-    objc_storeStrong(&self->_firstNode, a3);
+    objc_storeStrong(&self->_firstNode, node);
     p_lastNode = &self->_lastNode;
   }
 
   v8 = *p_lastNode;
-  *p_lastNode = v5;
+  *p_lastNode = nodeCopy;
 }
 
 - (id)description
@@ -128,12 +128,12 @@ LABEL_9:
     do
     {
       [v3 addObject:v5];
-      v6 = [v5 next];
+      next = [v5 next];
 
-      v5 = v6;
+      v5 = next;
     }
 
-    while (v6);
+    while (next);
   }
 
   v7 = [v3 componentsJoinedByString:{@", \n\t"}];

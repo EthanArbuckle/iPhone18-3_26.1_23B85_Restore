@@ -1,8 +1,8 @@
 @interface PXGPageControl
 - (CGRect)clippingRect;
-- (PXGPageControl)initWithFrame:(CGRect)a3;
-- (void)_valueChanged:(id)a3;
-- (void)setUserData:(id)a3;
+- (PXGPageControl)initWithFrame:(CGRect)frame;
+- (void)_valueChanged:(id)changed;
+- (void)setUserData:(id)data;
 @end
 
 @implementation PXGPageControl
@@ -20,14 +20,14 @@
   return result;
 }
 
-- (void)setUserData:(id)a3
+- (void)setUserData:(id)data
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_userData != v4)
+  dataCopy = data;
+  v5 = dataCopy;
+  if (self->_userData != dataCopy)
   {
-    v9 = v4;
-    v6 = [(PXGPageControlConfiguration *)v4 isEqual:?];
+    v9 = dataCopy;
+    v6 = [(PXGPageControlConfiguration *)dataCopy isEqual:?];
     v5 = v9;
     if (!v6)
     {
@@ -43,27 +43,27 @@
   }
 }
 
-- (void)_valueChanged:(id)a3
+- (void)_valueChanged:(id)changed
 {
-  v4 = [(PXGPageControlConfiguration *)self->_userData target];
-  if (v4)
+  target = [(PXGPageControlConfiguration *)self->_userData target];
+  if (target)
   {
-    v5 = v4;
-    v6 = [(PXGPageControlConfiguration *)self->_userData action];
+    v5 = target;
+    action = [(PXGPageControlConfiguration *)self->_userData action];
 
-    if (v6)
+    if (action)
     {
-      v7 = [(PXGPageControlConfiguration *)self->_userData target];
-      [v7 performSelector:-[PXGPageControlConfiguration action](self->_userData withObject:{"action"), self}];
+      target2 = [(PXGPageControlConfiguration *)self->_userData target];
+      [target2 performSelector:-[PXGPageControlConfiguration action](self->_userData withObject:{"action"), self}];
     }
   }
 }
 
-- (PXGPageControl)initWithFrame:(CGRect)a3
+- (PXGPageControl)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = PXGPageControl;
-  v3 = [(PXGPageControl *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PXGPageControl *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x277D757E0]);

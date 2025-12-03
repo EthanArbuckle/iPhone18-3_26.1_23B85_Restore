@@ -9,15 +9,15 @@
   v21 = *MEMORY[0x1E69E9840];
   v16.receiver = self;
   v16.super_class = AMSUIWebSynchronizeTreatmentsAction;
-  v3 = [(AMSUIWebAction *)&v16 runAction];
-  v4 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-  if (!v4)
+  runAction = [(AMSUIWebAction *)&v16 runAction];
+  mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedWebUIConfig];
+  if (!mEMORY[0x1E698C968])
   {
-    v4 = [MEMORY[0x1E698C968] sharedConfig];
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
   }
 
-  v5 = [v4 OSLogObject];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v6 = objc_opt_class();
     v7 = AMSLogKey();
@@ -25,13 +25,13 @@
     v18 = v6;
     v19 = 2114;
     v20 = v7;
-    _os_log_impl(&dword_1BB036000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Synchronizing treatments", buf, 0x16u);
+    _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Synchronizing treatments", buf, 0x16u);
   }
 
-  v8 = [MEMORY[0x1E698CB68] defaultTreatmentStore];
-  v9 = [v8 synchronizeTreatments];
-  v10 = [v9 promiseAdapter];
-  v11 = [v10 thenWithBlock:&__block_literal_global_34];
+  defaultTreatmentStore = [MEMORY[0x1E698CB68] defaultTreatmentStore];
+  synchronizeTreatments = [defaultTreatmentStore synchronizeTreatments];
+  promiseAdapter = [synchronizeTreatments promiseAdapter];
+  v11 = [promiseAdapter thenWithBlock:&__block_literal_global_34];
 
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;

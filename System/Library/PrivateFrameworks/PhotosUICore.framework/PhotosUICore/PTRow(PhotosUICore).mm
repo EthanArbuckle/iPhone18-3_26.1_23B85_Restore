@@ -51,15 +51,15 @@
     }
 
     v15 = [MEMORY[0x1E696AB28] orPredicateWithSubpredicates:v8];
-    v16 = [a1 condition:v15];
+    selfCopy = [self condition:v15];
   }
 
   else
   {
-    v16 = a1;
+    selfCopy = self;
   }
 
-  return v16;
+  return selfCopy;
 }
 
 - (void)px_increment:()PhotosUICore
@@ -69,15 +69,15 @@
   v4[2] = __36__PTRow_PhotosUICore__px_increment___block_invoke;
   v4[3] = &__block_descriptor_40_e11__24__0_8_16l;
   *&v4[4] = a2;
-  [a1 setValueValidatator:v4];
-  return a1;
+  [self setValueValidatator:v4];
+  return self;
 }
 
 + (id)px_rowWithTitle:()PhotosUICore presentationStyle:viewControllerFactory:
 {
   v8 = a5;
   v9 = a3;
-  v10 = [a1 row];
+  v10 = [self row];
   [v10 setStaticTitle:v9];
 
   v11 = MEMORY[0x1E69C6658];
@@ -97,7 +97,7 @@
 + (id)px_rowWithTitle:()PhotosUICore valueKeyPath:condition:
 {
   v8 = a5;
-  v9 = [a1 rowWithTitle:a3 valueKeyPath:a4];
+  v9 = [self rowWithTitle:a3 valueKeyPath:a4];
   [v9 setCondition:v8];
 
   return v9;
@@ -112,7 +112,7 @@
   v10[3] = &unk_1E773B578;
   v11 = v6;
   v7 = v6;
-  v8 = [a1 px_rowWithTitle:a3 action:v10];
+  v8 = [self px_rowWithTitle:a3 action:v10];
 
   return v8;
 }
@@ -121,7 +121,7 @@
 {
   v6 = a4;
   v7 = a3;
-  v8 = [a1 row];
+  v8 = [self row];
   [v8 setStaticTitle:v7];
 
   v9 = MEMORY[0x1E69C6658];
@@ -141,7 +141,7 @@
 {
   v6 = a4;
   v7 = a3;
-  v8 = [a1 row];
+  v8 = [self row];
   [v8 setStaticTitle:v7];
 
   v9 = MEMORY[0x1E69C6658];
@@ -166,7 +166,7 @@
   v10[3] = &unk_1E7732308;
   v11 = v6;
   v7 = v6;
-  v8 = [a1 px_rowWithTitle:a3 action:v10];
+  v8 = [self px_rowWithTitle:a3 action:v10];
 
   return v8;
 }
@@ -180,7 +180,7 @@
   v10[3] = &unk_1E7732308;
   v11 = v6;
   v7 = v6;
-  v8 = [a1 px_rowWithTitle:a3 action:v10];
+  v8 = [self px_rowWithTitle:a3 action:v10];
 
   return v8;
 }
@@ -194,7 +194,7 @@
   v10[3] = &unk_1E77322E0;
   v11 = v6;
   v7 = v6;
-  v8 = [a1 px_rowWithTitle:a3 asynchronousOutputProducer:v10];
+  v8 = [self px_rowWithTitle:a3 asynchronousOutputProducer:v10];
 
   return v8;
 }

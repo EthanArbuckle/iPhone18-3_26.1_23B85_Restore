@@ -1,7 +1,7 @@
 @interface QLMediaItemViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)_axApplyContentOffset:(id)a3 contentOffset:(CGPoint)a4;
+- (void)_axApplyContentOffset:(id)offset contentOffset:(CGPoint)contentOffset;
 - (void)_axSetLabelForTimeLabel;
 - (void)_axSetUpScrubberView;
 - (void)_axUpdateAccessibleElements;
@@ -11,23 +11,23 @@
 
 @implementation QLMediaItemViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"UIScrollView" hasInstanceMethod:@"isDragging" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"QLVideoScrubberView" hasInstanceMethod:@"isUserInteractingWithScrubber" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"QLMediaItemViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"QLMediaItemViewController" isKindOfClass:@"QLMediaItemBaseViewController"];
-  [v3 validateClass:@"QLMediaItemViewController" hasInstanceMethod:@"timeLabelScrollView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"QLMediaItemViewController" hasInstanceMethod:@"setUpTimeLabelIfNeeded" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"QLMediaItemViewController" hasInstanceMethod:@"setTimeLabelNeedsUpdate" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"QLMediaItemBaseViewController" hasInstanceMethod:@"elapsedTime" withFullSignature:{"d", 0}];
-  [v3 validateClass:@"QLMediaItemViewController" hasInstanceVariable:@"_timeLabel" withType:"UILabel"];
-  [v3 validateClass:@"QLAudioItemViewController" isKindOfClass:@"QLMediaItemViewController"];
-  [v3 validateClass:@"QLMovieItemViewController" isKindOfClass:@"QLMediaItemViewController"];
-  [v3 validateClass:@"QLAudioItemViewController" hasInstanceVariable:@"_playButton" withType:"QLOverlayPlayButton"];
-  [v3 validateClass:@"QLMovieItemViewController"];
-  [v3 validateClass:@"QLMovieItemViewController" hasInstanceMethod:@"isEditing" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"UIScrollView" hasInstanceMethod:@"isDragging" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"QLVideoScrubberView" hasInstanceMethod:@"isUserInteractingWithScrubber" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"QLMediaItemViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"QLMediaItemViewController" isKindOfClass:@"QLMediaItemBaseViewController"];
+  [validationsCopy validateClass:@"QLMediaItemViewController" hasInstanceMethod:@"timeLabelScrollView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"QLMediaItemViewController" hasInstanceMethod:@"setUpTimeLabelIfNeeded" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"QLMediaItemViewController" hasInstanceMethod:@"setTimeLabelNeedsUpdate" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"QLMediaItemBaseViewController" hasInstanceMethod:@"elapsedTime" withFullSignature:{"d", 0}];
+  [validationsCopy validateClass:@"QLMediaItemViewController" hasInstanceVariable:@"_timeLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"QLAudioItemViewController" isKindOfClass:@"QLMediaItemViewController"];
+  [validationsCopy validateClass:@"QLMovieItemViewController" isKindOfClass:@"QLMediaItemViewController"];
+  [validationsCopy validateClass:@"QLAudioItemViewController" hasInstanceVariable:@"_playButton" withType:"QLOverlayPlayButton"];
+  [validationsCopy validateClass:@"QLMovieItemViewController"];
+  [validationsCopy validateClass:@"QLMovieItemViewController" hasInstanceMethod:@"isEditing" withFullSignature:{"B", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -38,22 +38,22 @@
   [(QLMediaItemViewControllerAccessibility *)self _axSetUpScrubberView];
 }
 
-- (void)_axApplyContentOffset:(id)a3 contentOffset:(CGPoint)a4
+- (void)_axApplyContentOffset:(id)offset contentOffset:(CGPoint)contentOffset
 {
-  y = a4.y;
-  x = a4.x;
-  v6 = a3;
+  y = contentOffset.y;
+  x = contentOffset.x;
+  offsetCopy = offset;
   objc_opt_class();
-  v7 = [v6 _accessibilityViewAncestorIsKindOf:MEMORY[0x29C2E9900](@"QLVideoScrubberView")];
+  v7 = [offsetCopy _accessibilityViewAncestorIsKindOf:MEMORY[0x29C2E9900](@"QLVideoScrubberView")];
   v8 = __UIAccessibilityCastAsSafeCategory();
 
-  [v6 _axSetIsDragging:1];
+  [offsetCopy _axSetIsDragging:1];
   [v8 _axSetIsScrubbering:1];
-  [v6 accessibilityApplyScrollContent:0 sendScrollStatus:0 animated:{x, y}];
-  v11 = v6;
+  [offsetCopy accessibilityApplyScrollContent:0 sendScrollStatus:0 animated:{x, y}];
+  v11 = offsetCopy;
   v12 = v8;
   v9 = v8;
-  v10 = v6;
+  v10 = offsetCopy;
   AXPerformBlockAsynchronouslyOnMainThread();
 }
 
@@ -195,7 +195,7 @@ void __62__QLMediaItemViewControllerAccessibility__axSetUpScrubberView__block_in
   LOBYTE(location) = 0;
   objc_opt_class();
   v3 = __UIAccessibilityCastAsClass();
-  v4 = [v3 view];
+  view = [v3 view];
 
   objc_initWeak(&location, self);
   v5[0] = MEMORY[0x29EDCA5F8];
@@ -203,7 +203,7 @@ void __62__QLMediaItemViewControllerAccessibility__axSetUpScrubberView__block_in
   v5[2] = __69__QLMediaItemViewControllerAccessibility__axUpdateAccessibleElements__block_invoke;
   v5[3] = &unk_29F2EFA40;
   objc_copyWeak(&v6, &location);
-  [v4 _setAccessibilityElementsBlock:v5];
+  [view _setAccessibilityElementsBlock:v5];
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
 }
@@ -257,14 +257,14 @@ LABEL_6:
   {
     objc_opt_class();
     v3 = __UIAccessibilityCastAsClass();
-    v4 = [v3 text];
+    text = [v3 text];
 
-    if ([v4 hasPrefix:@"-"])
+    if ([text hasPrefix:@"-"])
     {
-      v5 = [v4 stringByReplacingOccurrencesOfString:@"-" withString:&stru_2A22BA860];
+      v5 = [text stringByReplacingOccurrencesOfString:@"-" withString:&stru_2A22BA860];
 
       v6 = @"media.time.remaining";
-      v4 = v5;
+      text = v5;
     }
 
     else
@@ -303,8 +303,8 @@ LABEL_6:
   {
     v6 = *MEMORY[0x29EDC7EA8];
     v7 = [(QLMediaItemViewControllerAccessibility *)self safeValueForKey:@"_timeLabel"];
-    v8 = [v7 accessibilityLabel];
-    UIAccessibilityPostNotification(v6, v8);
+    accessibilityLabel = [v7 accessibilityLabel];
+    UIAccessibilityPostNotification(v6, accessibilityLabel);
   }
 }
 

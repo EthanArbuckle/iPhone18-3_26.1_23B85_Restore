@@ -3,34 +3,34 @@
 - (NSArray)userLibraryAssets;
 - (PHAssetCollection)createdAssetCollection;
 - (PXContentSyndicationPhotoKitAssetGroup)assetGroup;
-- (PXCreateAssetCollectionAction)initWithTitle:(id)a3 parentCollectionList:(id)a4 selectedAssets:(id)a5 keyAsset:(id)a6;
-- (void)performAction:(id)a3;
-- (void)performRedo:(id)a3;
-- (void)performUndo:(id)a3;
+- (PXCreateAssetCollectionAction)initWithTitle:(id)title parentCollectionList:(id)list selectedAssets:(id)assets keyAsset:(id)asset;
+- (void)performAction:(id)action;
+- (void)performRedo:(id)redo;
+- (void)performUndo:(id)undo;
 @end
 
 @implementation PXCreateAssetCollectionAction
 
-- (void)performRedo:(id)a3
+- (void)performRedo:(id)redo
 {
-  v4 = a3;
-  v5 = [(PXCreateAssetCollectionAction *)self createdAssetCollection];
-  v6 = v5;
-  if (v5)
+  redoCopy = redo;
+  createdAssetCollection = [(PXCreateAssetCollectionAction *)self createdAssetCollection];
+  v6 = createdAssetCollection;
+  if (createdAssetCollection)
   {
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __45__PXCreateAssetCollectionAction_performRedo___block_invoke;
     v7[3] = &unk_1E774C648;
-    v8 = v5;
-    [(PXPhotosAction *)self performChanges:v7 completionHandler:v4];
+    v8 = createdAssetCollection;
+    [(PXPhotosAction *)self performChanges:v7 completionHandler:redoCopy];
 
-    v4 = v8;
+    redoCopy = v8;
   }
 
   else
   {
-    (*(v4 + 2))(v4, 0, 0);
+    (*(redoCopy + 2))(redoCopy, 0, 0);
   }
 }
 
@@ -43,26 +43,26 @@ void __45__PXCreateAssetCollectionAction_performRedo___block_invoke(uint64_t a1)
   [v1 undeleteAssetCollections:v2];
 }
 
-- (void)performUndo:(id)a3
+- (void)performUndo:(id)undo
 {
-  v4 = a3;
-  v5 = [(PXCreateAssetCollectionAction *)self createdAssetCollection];
-  v6 = v5;
-  if (v5)
+  undoCopy = undo;
+  createdAssetCollection = [(PXCreateAssetCollectionAction *)self createdAssetCollection];
+  v6 = createdAssetCollection;
+  if (createdAssetCollection)
   {
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __45__PXCreateAssetCollectionAction_performUndo___block_invoke;
     v7[3] = &unk_1E774C648;
-    v8 = v5;
-    [(PXPhotosAction *)self performChanges:v7 completionHandler:v4];
+    v8 = createdAssetCollection;
+    [(PXPhotosAction *)self performChanges:v7 completionHandler:undoCopy];
 
-    v4 = v8;
+    undoCopy = v8;
   }
 
   else
   {
-    (*(v4 + 2))(v4, 0, 0);
+    (*(undoCopy + 2))(undoCopy, 0, 0);
   }
 }
 
@@ -75,15 +75,15 @@ void __45__PXCreateAssetCollectionAction_performUndo___block_invoke(uint64_t a1)
   [v1 deleteAssetCollections:v2];
 }
 
-- (void)performAction:(id)a3
+- (void)performAction:(id)action
 {
-  v6 = a3;
-  v4 = [(PXCreateAssetCollectionAction *)self unsavedSyndicatedAssets];
-  v5 = [v4 count];
+  actionCopy = action;
+  unsavedSyndicatedAssets = [(PXCreateAssetCollectionAction *)self unsavedSyndicatedAssets];
+  v5 = [unsavedSyndicatedAssets count];
 
   if (v5)
   {
-    (*(v6 + 2))(v6, 0, 0);
+    (*(actionCopy + 2))(actionCopy, 0, 0);
   }
 
   else
@@ -93,7 +93,7 @@ void __45__PXCreateAssetCollectionAction_performUndo___block_invoke(uint64_t a1)
     v7[2] = __47__PXCreateAssetCollectionAction_performAction___block_invoke;
     v7[3] = &unk_1E774C648;
     v7[4] = self;
-    [(PXPhotosAction *)self performChanges:v7 completionHandler:v6];
+    [(PXPhotosAction *)self performChanges:v7 completionHandler:actionCopy];
   }
 }
 
@@ -157,8 +157,8 @@ void __47__PXCreateAssetCollectionAction_performAction___block_invoke(uint64_t a
 - (PHAssetCollection)createdAssetCollection
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v3 = [(PXCreateAssetCollectionAction *)self createdCollectionIdentifier];
-  v4 = v3;
+  createdCollectionIdentifier = [(PXCreateAssetCollectionAction *)self createdCollectionIdentifier];
+  v4 = createdCollectionIdentifier;
   createdAssetCollection = self->_createdAssetCollection;
   if (createdAssetCollection)
   {
@@ -167,19 +167,19 @@ void __47__PXCreateAssetCollectionAction_performAction___block_invoke(uint64_t a
 
   else
   {
-    v6 = v3 == 0;
+    v6 = createdCollectionIdentifier == 0;
   }
 
   if (!v6)
   {
     v7 = MEMORY[0x1E6978650];
-    v15[0] = v3;
+    v15[0] = createdCollectionIdentifier;
     v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
-    v9 = [(PXPhotosAction *)self standardFetchOptions];
-    v10 = [v7 fetchAssetCollectionsWithLocalIdentifiers:v8 options:v9];
-    v11 = [v10 firstObject];
+    standardFetchOptions = [(PXPhotosAction *)self standardFetchOptions];
+    v10 = [v7 fetchAssetCollectionsWithLocalIdentifiers:v8 options:standardFetchOptions];
+    firstObject = [v10 firstObject];
     v12 = self->_createdAssetCollection;
-    self->_createdAssetCollection = v11;
+    self->_createdAssetCollection = firstObject;
 
     createdAssetCollection = self->_createdAssetCollection;
   }
@@ -191,18 +191,18 @@ void __47__PXCreateAssetCollectionAction_performAction___block_invoke(uint64_t a
 
 - (NSArray)unsavedSyndicatedAssets
 {
-  v2 = [(PXCreateAssetCollectionAction *)self assetGroup];
-  v3 = [v2 unsavedSyndicatedAssets];
+  assetGroup = [(PXCreateAssetCollectionAction *)self assetGroup];
+  unsavedSyndicatedAssets = [assetGroup unsavedSyndicatedAssets];
 
-  return v3;
+  return unsavedSyndicatedAssets;
 }
 
 - (NSArray)userLibraryAssets
 {
-  v2 = [(PXCreateAssetCollectionAction *)self assetGroup];
-  v3 = [v2 userLibraryAssets];
+  assetGroup = [(PXCreateAssetCollectionAction *)self assetGroup];
+  userLibraryAssets = [assetGroup userLibraryAssets];
 
-  return v3;
+  return userLibraryAssets;
 }
 
 - (PXContentSyndicationPhotoKitAssetGroup)assetGroup
@@ -211,8 +211,8 @@ void __47__PXCreateAssetCollectionAction_performAction___block_invoke(uint64_t a
   if (!assetGroup)
   {
     v4 = [PXContentSyndicationPhotoKitAssetGroup alloc];
-    v5 = [(PXCreateAssetCollectionAction *)self selectedAssets];
-    v6 = [(PXContentSyndicationPhotoKitAssetGroup *)v4 initWithAssets:v5];
+    selectedAssets = [(PXCreateAssetCollectionAction *)self selectedAssets];
+    v6 = [(PXContentSyndicationPhotoKitAssetGroup *)v4 initWithAssets:selectedAssets];
     v7 = self->_assetGroup;
     self->_assetGroup = v6;
 
@@ -222,26 +222,26 @@ void __47__PXCreateAssetCollectionAction_performAction___block_invoke(uint64_t a
   return assetGroup;
 }
 
-- (PXCreateAssetCollectionAction)initWithTitle:(id)a3 parentCollectionList:(id)a4 selectedAssets:(id)a5 keyAsset:(id)a6
+- (PXCreateAssetCollectionAction)initWithTitle:(id)title parentCollectionList:(id)list selectedAssets:(id)assets keyAsset:(id)asset
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [v11 photoLibrary];
+  titleCopy = title;
+  listCopy = list;
+  assetsCopy = assets;
+  assetCopy = asset;
+  photoLibrary = [listCopy photoLibrary];
   v19.receiver = self;
   v19.super_class = PXCreateAssetCollectionAction;
-  v15 = [(PXPhotosAction *)&v19 initWithPhotoLibrary:v14];
+  v15 = [(PXPhotosAction *)&v19 initWithPhotoLibrary:photoLibrary];
 
   if (v15)
   {
-    v16 = [v10 copy];
+    v16 = [titleCopy copy];
     title = v15->_title;
     v15->_title = v16;
 
-    objc_storeStrong(&v15->_parentCollectionList, a4);
-    objc_storeStrong(&v15->_selectedAssets, a5);
-    objc_storeStrong(&v15->_keyAsset, a6);
+    objc_storeStrong(&v15->_parentCollectionList, list);
+    objc_storeStrong(&v15->_selectedAssets, assets);
+    objc_storeStrong(&v15->_keyAsset, asset);
   }
 
   return v15;

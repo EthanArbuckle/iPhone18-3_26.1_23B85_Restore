@@ -5,7 +5,7 @@
 - (id)_serviceProxy;
 - (void)_destroyXPCConnection;
 - (void)dealloc;
-- (void)trainWithDetectorID:(id)a3 hallucinatorPath:(id)a4 pretrainedWeightsPath:(id)a5 resultHandler:(id)a6;
+- (void)trainWithDetectorID:(id)d hallucinatorPath:(id)path pretrainedWeightsPath:(id)weightsPath resultHandler:(id)handler;
 @end
 
 @implementation HearingMLHelperService
@@ -39,7 +39,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_251F67000, v3, OS_LOG_TYPE_DEFAULT, "HearingMLHelperService being deallocated: %@", buf, 0xCu);
   }
 
@@ -139,13 +139,13 @@ void __39__HearingMLHelperService_xpcConnection__block_invoke_47(uint64_t a1)
 - (id)_serviceProxy
 {
   objc_initWeak(&location, self);
-  v3 = [(HearingMLHelperService *)self xpcConnection];
+  xpcConnection = [(HearingMLHelperService *)self xpcConnection];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __39__HearingMLHelperService__serviceProxy__block_invoke;
   v6[3] = &unk_2796EE1C8;
   objc_copyWeak(&v7, &location);
-  v4 = [v3 remoteObjectProxyWithErrorHandler:v6];
+  v4 = [xpcConnection remoteObjectProxyWithErrorHandler:v6];
   objc_destroyWeak(&v7);
 
   objc_destroyWeak(&location);
@@ -167,14 +167,14 @@ void __39__HearingMLHelperService__serviceProxy__block_invoke(uint64_t a1, void 
   [v6 hearingMLHelperService:WeakRetained eventOccurred:3];
 }
 
-- (void)trainWithDetectorID:(id)a3 hallucinatorPath:(id)a4 pretrainedWeightsPath:(id)a5 resultHandler:(id)a6
+- (void)trainWithDetectorID:(id)d hallucinatorPath:(id)path pretrainedWeightsPath:(id)weightsPath resultHandler:(id)handler
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [(HearingMLHelperService *)self _serviceProxy];
-  [v14 trainWithDetectorID:v13 hallucinatorPath:v12 pretrainedWeightsPath:v11 resultHandler:v10];
+  handlerCopy = handler;
+  weightsPathCopy = weightsPath;
+  pathCopy = path;
+  dCopy = d;
+  _serviceProxy = [(HearingMLHelperService *)self _serviceProxy];
+  [_serviceProxy trainWithDetectorID:dCopy hallucinatorPath:pathCopy pretrainedWeightsPath:weightsPathCopy resultHandler:handlerCopy];
 }
 
 - (HearingMLHelperServiceDelegate)delegate

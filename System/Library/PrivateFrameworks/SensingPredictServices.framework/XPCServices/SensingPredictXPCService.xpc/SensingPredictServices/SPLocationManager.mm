@@ -1,32 +1,32 @@
 @interface SPLocationManager
-- (SPLocationManager)initWithQueue:(id)a3;
-- (unsigned)_getLocationCategoryFromGEOPOI:(id)a3;
-- (unsigned)_getLocationCategoryFromRTLocationOfInterestType:(int64_t)a3;
+- (SPLocationManager)initWithQueue:(id)queue;
+- (unsigned)_getLocationCategoryFromGEOPOI:(id)i;
+- (unsigned)_getLocationCategoryFromRTLocationOfInterestType:(int64_t)type;
 - (void)_requestPlaceInference;
 - (void)_startMonitoringVisits;
 - (void)_startPollingForLocationCategory;
 - (void)_stopMonitoringVisits;
 - (void)_stopPollingForLocationCategory;
-- (void)_updateLocationCategoryWithBestPlaceInferenceIdentifier:(id)a3;
-- (void)locationManager:(id)a3 didFailWithError:(id)a4;
-- (void)locationManager:(id)a3 didVisit:(id)a4;
-- (void)locationManagerDidChangeAuthorization:(id)a3;
+- (void)_updateLocationCategoryWithBestPlaceInferenceIdentifier:(id)identifier;
+- (void)locationManager:(id)manager didFailWithError:(id)error;
+- (void)locationManager:(id)manager didVisit:(id)visit;
+- (void)locationManagerDidChangeAuthorization:(id)authorization;
 - (void)start;
 - (void)stop;
 @end
 
 @implementation SPLocationManager
 
-- (SPLocationManager)initWithQueue:(id)a3
+- (SPLocationManager)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v9.receiver = self;
   v9.super_class = SPLocationManager;
   v6 = [(SPLocationManager *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dispatchQueue, a3);
+    objc_storeStrong(&v6->_dispatchQueue, queue);
   }
 
   return v7;
@@ -54,11 +54,11 @@
   dispatch_async(dispatchQueue, block);
 }
 
-- (unsigned)_getLocationCategoryFromRTLocationOfInterestType:(int64_t)a3
+- (unsigned)_getLocationCategoryFromRTLocationOfInterestType:(int64_t)type
 {
-  if (a3 < 4)
+  if (type < 4)
   {
-    v3 = a3 + 1;
+    v3 = type + 1;
   }
 
   else
@@ -74,11 +74,11 @@
   return v3;
 }
 
-- (unsigned)_getLocationCategoryFromGEOPOI:(id)a3
+- (unsigned)_getLocationCategoryFromGEOPOI:(id)i
 {
-  v3 = a3;
+  iCopy = i;
   v4 = GEOPOICategorySchool;
-  v5 = v3;
+  v5 = iCopy;
   v6 = v5;
   if (v4 == v5)
   {
@@ -396,10 +396,10 @@ LABEL_51:
   }
 }
 
-- (void)_updateLocationCategoryWithBestPlaceInferenceIdentifier:(id)a3
+- (void)_updateLocationCategoryWithBestPlaceInferenceIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     if (dword_100015DA0 <= 30 && (dword_100015DA0 != -1 || _LogCategory_Initialize()))
     {
@@ -412,21 +412,21 @@ LABEL_51:
     v6[2] = sub_100003378;
     v6[3] = &unk_100010738;
     v6[4] = self;
-    [v5 fetchLocationOfInterestWithIdentifier:v4 withHandler:v6];
+    [v5 fetchLocationOfInterestWithIdentifier:identifierCopy withHandler:v6];
   }
 }
 
-- (void)locationManagerDidChangeAuthorization:(id)a3
+- (void)locationManagerDidChangeAuthorization:(id)authorization
 {
-  v4 = [a3 authorizationStatus];
+  authorizationStatus = [authorization authorizationStatus];
   if (dword_100015DA0 <= 30 && (dword_100015DA0 != -1 || _LogCategory_Initialize()))
   {
     sub_100009A90();
   }
 
-  if (v4 >= 3)
+  if (authorizationStatus >= 3)
   {
-    if (v4 - 3 <= 1)
+    if (authorizationStatus - 3 <= 1)
     {
       [(SPLocationManager *)self _startMonitoringVisits];
     }
@@ -437,18 +437,18 @@ LABEL_51:
     [(SPLocationManager *)self _stopMonitoringVisits];
   }
 
-  self->_authorizationStatus = v4;
+  self->_authorizationStatus = authorizationStatus;
 }
 
-- (void)locationManager:(id)a3 didFailWithError:(id)a4
+- (void)locationManager:(id)manager didFailWithError:(id)error
 {
-  v7 = a4;
-  v5 = [v7 domain];
-  if ([v5 isEqualToString:kCLErrorDomain])
+  errorCopy = error;
+  domain = [errorCopy domain];
+  if ([domain isEqualToString:kCLErrorDomain])
   {
-    v6 = [v7 code];
+    code = [errorCopy code];
 
-    if (!v6)
+    if (!code)
     {
       [(SPLocationManager *)self _stopPollingForLocationCategory];
       goto LABEL_8;
@@ -467,22 +467,22 @@ LABEL_51:
 LABEL_8:
 }
 
-- (void)locationManager:(id)a3 didVisit:(id)a4
+- (void)locationManager:(id)manager didVisit:(id)visit
 {
-  v9 = a4;
-  v5 = [v9 _placeInference];
-  v6 = [v5 _loiIdentifier];
+  visitCopy = visit;
+  _placeInference = [visitCopy _placeInference];
+  _loiIdentifier = [_placeInference _loiIdentifier];
 
-  if (v6)
+  if (_loiIdentifier)
   {
     if (dword_100015DA0 <= 30 && (dword_100015DA0 != -1 || _LogCategory_Initialize()))
     {
-      sub_100009B10(v9);
+      sub_100009B10(visitCopy);
     }
 
-    v7 = [v9 _placeInference];
-    v8 = [v7 _loiIdentifier];
-    [(SPLocationManager *)self _updateLocationCategoryWithBestPlaceInferenceIdentifier:v8];
+    _placeInference2 = [visitCopy _placeInference];
+    _loiIdentifier2 = [_placeInference2 _loiIdentifier];
+    [(SPLocationManager *)self _updateLocationCategoryWithBestPlaceInferenceIdentifier:_loiIdentifier2];
   }
 
   else

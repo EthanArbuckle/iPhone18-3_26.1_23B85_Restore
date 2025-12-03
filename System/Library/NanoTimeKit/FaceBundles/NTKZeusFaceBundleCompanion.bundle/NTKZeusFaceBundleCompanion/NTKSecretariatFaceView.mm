@@ -1,17 +1,17 @@
 @interface NTKSecretariatFaceView
 - (BOOL)_wantsStatusBarIconShadow;
-- (double)_contentViewAlphaForEditMode:(int64_t)a3;
+- (double)_contentViewAlphaForEditMode:(int64_t)mode;
 - (id)createFaceColorPalette;
 - (void)_applyBreathingAndRubberbanding;
-- (void)_applyBreathingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
+- (void)_applyBreathingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot;
 - (void)_applyDataMode;
-- (void)_applyOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (void)_applyRubberBandingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (void)_applyTransitionFraction:(double)a3 fromComplication:(id)a4 toComplication:(id)a5 slot:(id)a6;
-- (void)_applyTransitionFraction:(double)a3 fromOption:(id)a4 toOption:(id)a5 forCustomEditMode:(int64_t)a6 slot:(id)a7;
-- (void)_configureComplicationView:(id)a3 forSlot:(id)a4;
-- (void)_configureForEditMode:(int64_t)a3;
-- (void)_configureForTransitionFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5;
+- (void)_applyOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_applyRubberBandingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_applyTransitionFraction:(double)fraction fromComplication:(id)complication toComplication:(id)toComplication slot:(id)slot;
+- (void)_applyTransitionFraction:(double)fraction fromOption:(id)option toOption:(id)toOption forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_configureComplicationView:(id)view forSlot:(id)slot;
+- (void)_configureForEditMode:(int64_t)mode;
+- (void)_configureForTransitionFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode;
 - (void)_loadBackgroundView;
 - (void)_loadCornerOverlayView;
 - (void)_loadLogoImageView;
@@ -20,8 +20,8 @@
 - (void)_unloadCornerOverlayView;
 - (void)_unloadLogoImageView;
 - (void)_unloadSnapshotContentViews;
-- (void)_updateComplicationColorForPalette:(id)a3 slot:(id)a4 view:(id)a5;
-- (void)_updateViewColorsWithPalette:(id)a3;
+- (void)_updateComplicationColorForPalette:(id)palette slot:(id)slot view:(id)view;
+- (void)_updateViewColorsWithPalette:(id)palette;
 - (void)layoutSubviews;
 @end
 
@@ -35,12 +35,12 @@
   [(NTKSecretariatFaceView *)self _loadBackgroundView];
   [(NTKSecretariatFaceView *)self _loadLogoImageView];
   [(NTKSecretariatFaceView *)self _loadCornerOverlayView];
-  v3 = [(NTKSecretariatFaceView *)self faceTapControl];
-  [v3 removeFromSuperview];
+  faceTapControl = [(NTKSecretariatFaceView *)self faceTapControl];
+  [faceTapControl removeFromSuperview];
 
-  v4 = [(NTKSecretariatFaceView *)self contentView];
-  v5 = [(NTKSecretariatFaceView *)self faceTapControl];
-  [v4 addSubview:v5];
+  contentView = [(NTKSecretariatFaceView *)self contentView];
+  faceTapControl2 = [(NTKSecretariatFaceView *)self faceTapControl];
+  [contentView addSubview:faceTapControl2];
 }
 
 - (void)_unloadSnapshotContentViews
@@ -62,28 +62,28 @@
 
 - (BOOL)_wantsStatusBarIconShadow
 {
-  v2 = [(NTKSecretariatFaceView *)self colorPalette];
-  v3 = [v2 isBlackColor];
+  colorPalette = [(NTKSecretariatFaceView *)self colorPalette];
+  isBlackColor = [colorPalette isBlackColor];
 
-  return v3 ^ 1;
+  return isBlackColor ^ 1;
 }
 
 - (void)_loadBackgroundView
 {
   v3 = [NTKSecretariatBackgroundView alloc];
-  v4 = [(NTKSecretariatFaceView *)self contentView];
-  [v4 bounds];
+  contentView = [(NTKSecretariatFaceView *)self contentView];
+  [contentView bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(NTKSecretariatFaceView *)self device];
-  v14 = [(NTKSecretariatBackgroundView *)v3 initWithFrame:v13 device:0 inactive:v6, v8, v10, v12];
+  device = [(NTKSecretariatFaceView *)self device];
+  v14 = [(NTKSecretariatBackgroundView *)v3 initWithFrame:device device:0 inactive:v6, v8, v10, v12];
   backgroundView = self->_backgroundView;
   self->_backgroundView = v14;
 
-  v16 = [(NTKSecretariatFaceView *)self contentView];
-  [v16 addSubview:self->_backgroundView];
+  contentView2 = [(NTKSecretariatFaceView *)self contentView];
+  [contentView2 addSubview:self->_backgroundView];
 }
 
 - (void)_unloadBackgroundView
@@ -96,19 +96,19 @@
 - (void)_loadCornerOverlayView
 {
   v3 = [NTKRoundedCornerOverlayView alloc];
-  v4 = [(NTKSecretariatFaceView *)self contentView];
-  [v4 bounds];
+  contentView = [(NTKSecretariatFaceView *)self contentView];
+  [contentView bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(NTKSecretariatFaceView *)self device];
-  v14 = [v3 initWithFrame:v13 forDeviceCornerRadius:{v6, v8, v10, v12}];
+  device = [(NTKSecretariatFaceView *)self device];
+  v14 = [v3 initWithFrame:device forDeviceCornerRadius:{v6, v8, v10, v12}];
   cornerOverlayView = self->_cornerOverlayView;
   self->_cornerOverlayView = v14;
 
-  v16 = [(NTKSecretariatFaceView *)self contentView];
-  [v16 addSubview:self->_cornerOverlayView];
+  contentView2 = [(NTKSecretariatFaceView *)self contentView];
+  [contentView2 addSubview:self->_cornerOverlayView];
 }
 
 - (void)_unloadCornerOverlayView
@@ -125,8 +125,8 @@
   logoImageView = self->_logoImageView;
   self->_logoImageView = v3;
 
-  v5 = [(NTKSecretariatFaceView *)self contentView];
-  [v5 addSubview:self->_logoImageView];
+  contentView = [(NTKSecretariatFaceView *)self contentView];
+  [contentView addSubview:self->_logoImageView];
 }
 
 - (void)_unloadLogoImageView
@@ -157,42 +157,42 @@
   [(UIImageView *)self->_logoImageView setFrame:v10, (CGRectGetMidY(v16) - v9) * 0.5, v5, v7];
 }
 
-- (void)_configureComplicationView:(id)a3 forSlot:(id)a4
+- (void)_configureComplicationView:(id)view forSlot:(id)slot
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(NTKSecretariatFaceView *)self colorPalette];
-  [(NTKSecretariatFaceView *)self _updateComplicationColorForPalette:v8 slot:v6 view:v7];
+  slotCopy = slot;
+  viewCopy = view;
+  colorPalette = [(NTKSecretariatFaceView *)self colorPalette];
+  [(NTKSecretariatFaceView *)self _updateComplicationColorForPalette:colorPalette slot:slotCopy view:viewCopy];
 }
 
-- (void)_configureForEditMode:(int64_t)a3
+- (void)_configureForEditMode:(int64_t)mode
 {
-  [(NTKSecretariatFaceView *)self _contentViewAlphaForEditMode:a3];
+  [(NTKSecretariatFaceView *)self _contentViewAlphaForEditMode:mode];
   v5 = v4;
-  v6 = [(NTKSecretariatFaceView *)self timeView];
-  [v6 setAlpha:v5];
+  timeView = [(NTKSecretariatFaceView *)self timeView];
+  [timeView setAlpha:v5];
 
-  v7 = [(NTKSecretariatFaceView *)self contentView];
-  [v7 setAlpha:v5];
+  contentView = [(NTKSecretariatFaceView *)self contentView];
+  [contentView setAlpha:v5];
 }
 
-- (void)_configureForTransitionFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5
+- (void)_configureForTransitionFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode
 {
-  [(NTKSecretariatFaceView *)self _contentViewAlphaForEditMode:a4];
-  [(NTKSecretariatFaceView *)self _contentViewAlphaForEditMode:a5];
+  [(NTKSecretariatFaceView *)self _contentViewAlphaForEditMode:mode];
+  [(NTKSecretariatFaceView *)self _contentViewAlphaForEditMode:editMode];
   CLKInterpolateBetweenFloatsClipped();
   v8 = v7;
-  v9 = [(NTKSecretariatFaceView *)self timeView];
-  [v9 setAlpha:v8];
+  timeView = [(NTKSecretariatFaceView *)self timeView];
+  [timeView setAlpha:v8];
 
-  v10 = [(NTKSecretariatFaceView *)self contentView];
-  [v10 setAlpha:v8];
+  contentView = [(NTKSecretariatFaceView *)self contentView];
+  [contentView setAlpha:v8];
 }
 
-- (double)_contentViewAlphaForEditMode:(int64_t)a3
+- (double)_contentViewAlphaForEditMode:(int64_t)mode
 {
   result = NTKEditModeDimmedAlpha;
-  if (a3 != 1)
+  if (mode != 1)
   {
     return 1.0;
   }
@@ -200,21 +200,21 @@
   return result;
 }
 
-- (void)_applyBreathingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyBreathingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  if (a4 == 10)
+  if (mode == 10)
   {
-    self->_breathingFraction = a3;
+    self->_breathingFraction = fraction;
     [(NTKSecretariatFaceView *)self _applyBreathingAndRubberbanding:10];
   }
 }
 
-- (void)_applyRubberBandingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyRubberBandingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  if (a4 == 10)
+  if (mode == 10)
   {
-    self->_rubberbandingFraction = a3;
-    [(NTKSecretariatFaceView *)self _applyBreathingAndRubberbanding:a4];
+    self->_rubberbandingFraction = fraction;
+    [(NTKSecretariatFaceView *)self _applyBreathingAndRubberbanding:mode];
     NTKAlphaForRubberBandingFraction();
 
     [(NTKSecretariatFaceView *)self setAlpha:?];
@@ -229,55 +229,55 @@
   memset(&v13, 0, sizeof(v13));
   CGAffineTransformMakeScale(&v13, v4 * v5, v4 * v5);
   v12 = v13;
-  v6 = [(NTKSecretariatFaceView *)self timeView];
+  timeView = [(NTKSecretariatFaceView *)self timeView];
   v11 = v12;
-  [v6 setTransform:&v11];
+  [timeView setTransform:&v11];
 
   v10 = v13;
-  v7 = [(NTKSecretariatFaceView *)self contentView];
+  contentView = [(NTKSecretariatFaceView *)self contentView];
   v11 = v10;
-  [v7 setTransform:&v11];
+  [contentView setTransform:&v11];
 
   v9 = v13;
-  v8 = [(NTKSecretariatFaceView *)self complicationContainerView];
+  complicationContainerView = [(NTKSecretariatFaceView *)self complicationContainerView];
   v11 = v9;
-  [v8 setTransform:&v11];
+  [complicationContainerView setTransform:&v11];
 }
 
-- (void)_applyOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  if (a4 == 10)
+  if (mode == 10)
   {
-    v7 = [(NTKSecretariatFaceView *)self colorPalette:a3];
+    v7 = [(NTKSecretariatFaceView *)self colorPalette:option];
     [(NTKSecretariatFaceView *)self _updateViewColorsWithPalette:v7];
 
-    v8 = [(NTKSecretariatFaceView *)self delegate];
-    [v8 faceViewDidChangeWantsStatusBarIconShadow];
+    delegate = [(NTKSecretariatFaceView *)self delegate];
+    [delegate faceViewDidChangeWantsStatusBarIconShadow];
   }
 }
 
-- (void)_applyTransitionFraction:(double)a3 fromOption:(id)a4 toOption:(id)a5 forCustomEditMode:(int64_t)a6 slot:(id)a7
+- (void)_applyTransitionFraction:(double)fraction fromOption:(id)option toOption:(id)toOption forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  if (a6 == 10)
+  if (mode == 10)
   {
-    v9 = [(NTKSecretariatFaceView *)self interpolatedColorPalette:a4];
+    v9 = [(NTKSecretariatFaceView *)self interpolatedColorPalette:option];
     [(NTKSecretariatFaceView *)self _updateViewColorsWithPalette:v9];
   }
 }
 
-- (void)_applyTransitionFraction:(double)a3 fromComplication:(id)a4 toComplication:(id)a5 slot:(id)a6
+- (void)_applyTransitionFraction:(double)fraction fromComplication:(id)complication toComplication:(id)toComplication slot:(id)slot
 {
-  v10 = a6;
+  slotCopy = slot;
   v15.receiver = self;
   v15.super_class = NTKSecretariatFaceView;
-  [(NTKSecretariatFaceView *)&v15 _applyTransitionFraction:a4 fromComplication:a5 toComplication:v10 slot:a3];
+  [(NTKSecretariatFaceView *)&v15 _applyTransitionFraction:complication fromComplication:toComplication toComplication:slotCopy slot:fraction];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_1B3E0;
   v12[3] = &unk_45218;
-  v13 = v10;
-  v14 = self;
-  v11 = v10;
+  v13 = slotCopy;
+  selfCopy = self;
+  v11 = slotCopy;
   [(NTKSecretariatFaceView *)self enumerateComplicationDisplayWrappersWithBlock:v12];
 }
 
@@ -288,38 +288,38 @@
   return v2;
 }
 
-- (void)_updateViewColorsWithPalette:(id)a3
+- (void)_updateViewColorsWithPalette:(id)palette
 {
-  v4 = a3;
-  v5 = [v4 logo];
-  [(UIImageView *)self->_logoImageView setTintColor:v5];
+  paletteCopy = palette;
+  logo = [paletteCopy logo];
+  [(UIImageView *)self->_logoImageView setTintColor:logo];
 
-  v6 = [v4 background];
-  [(NTKSecretariatBackgroundView *)self->_backgroundView setBackgroundColor:v6];
+  background = [paletteCopy background];
+  [(NTKSecretariatBackgroundView *)self->_backgroundView setBackgroundColor:background];
 
-  [(NTKSecretariatBackgroundView *)self->_backgroundView setPalette:v4];
-  v7 = [(NTKSecretariatFaceView *)self timeView];
-  v8 = [v4 hourMinuteHandStroke];
-  v9 = [v4 hourMinuteHandInlay];
-  [v7 applyHourMinuteHandsStrokeColor:v8 fillColor:v9];
+  [(NTKSecretariatBackgroundView *)self->_backgroundView setPalette:paletteCopy];
+  timeView = [(NTKSecretariatFaceView *)self timeView];
+  hourMinuteHandStroke = [paletteCopy hourMinuteHandStroke];
+  hourMinuteHandInlay = [paletteCopy hourMinuteHandInlay];
+  [timeView applyHourMinuteHandsStrokeColor:hourMinuteHandStroke fillColor:hourMinuteHandInlay];
 
-  v11 = [(NTKSecretariatFaceView *)self timeView];
-  v10 = [v4 secondHand];
+  timeView2 = [(NTKSecretariatFaceView *)self timeView];
+  secondHand = [paletteCopy secondHand];
 
-  [v11 applySecondHandColor:v10];
+  [timeView2 applySecondHandColor:secondHand];
 }
 
-- (void)_updateComplicationColorForPalette:(id)a3 slot:(id)a4 view:(id)a5
+- (void)_updateComplicationColorForPalette:(id)palette slot:(id)slot view:(id)view
 {
-  v7 = a5;
-  v8 = a3;
-  v9 = [v8 complication];
-  v10 = [v8 alternateComplication];
+  viewCopy = view;
+  paletteCopy = palette;
+  complication = [paletteCopy complication];
+  alternateComplication = [paletteCopy alternateComplication];
 
-  [(NTKSecretariatFaceView *)self setComplicationColor:v9];
-  [(NTKSecretariatFaceView *)self setInterpolatedComplicationColor:v9];
-  [(NTKSecretariatFaceView *)self setAlternateComplicationColor:v10];
-  v12 = v7;
+  [(NTKSecretariatFaceView *)self setComplicationColor:complication];
+  [(NTKSecretariatFaceView *)self setInterpolatedComplicationColor:complication];
+  [(NTKSecretariatFaceView *)self setAlternateComplicationColor:alternateComplication];
+  v12 = viewCopy;
   [v12 updateMonochromeColor];
   if (objc_opt_respondsToSelector())
   {

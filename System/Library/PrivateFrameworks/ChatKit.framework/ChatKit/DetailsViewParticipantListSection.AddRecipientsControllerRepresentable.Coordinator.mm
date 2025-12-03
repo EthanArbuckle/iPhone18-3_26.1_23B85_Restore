@@ -1,44 +1,44 @@
 @interface DetailsViewParticipantListSection.AddRecipientsControllerRepresentable.Coordinator
-- (BOOL)recipientSelectionIsGroup:(id)a3;
-- (UIEdgeInsets)navigationBarInsetsForRecipientSelectionController:(id)a3;
+- (BOOL)recipientSelectionIsGroup:(id)group;
+- (UIEdgeInsets)navigationBarInsetsForRecipientSelectionController:(id)controller;
 - (_TtCVV7ChatKit33DetailsViewParticipantListSection36AddRecipientsControllerRepresentable11Coordinator)init;
 - (void)handleCancelAction;
 - (void)handleDoneAction;
-- (void)recipientSelectionControllerEscapePressed:(id)a3;
-- (void)recipientSelectionControllerShouldResignFirstResponder:(id)a3;
+- (void)recipientSelectionControllerEscapePressed:(id)pressed;
+- (void)recipientSelectionControllerShouldResignFirstResponder:(id)responder;
 @end
 
 @implementation DetailsViewParticipantListSection.AddRecipientsControllerRepresentable.Coordinator
 
 - (void)handleCancelAction
 {
-  v2 = self;
+  selfCopy = self;
   sub_190C25574();
 }
 
 - (void)handleDoneAction
 {
-  v2 = self;
+  selfCopy = self;
   sub_190C256F0();
 }
 
-- (void)recipientSelectionControllerEscapePressed:(id)a3
+- (void)recipientSelectionControllerEscapePressed:(id)pressed
 {
-  v4 = a3;
-  v5 = self;
+  pressedCopy = pressed;
+  selfCopy = self;
   sub_190C26004();
 }
 
-- (BOOL)recipientSelectionIsGroup:(id)a3
+- (BOOL)recipientSelectionIsGroup:(id)group
 {
-  v4 = a3;
-  v5 = self;
+  groupCopy = group;
+  selfCopy = self;
   LOBYTE(self) = sub_190C26138();
 
   return self & 1;
 }
 
-- (UIEdgeInsets)navigationBarInsetsForRecipientSelectionController:(id)a3
+- (UIEdgeInsets)navigationBarInsetsForRecipientSelectionController:(id)controller
 {
   v3 = *MEMORY[0x1E69DDCE0];
   v4 = *(MEMORY[0x1E69DDCE0] + 8);
@@ -51,9 +51,9 @@
   return result;
 }
 
-- (void)recipientSelectionControllerShouldResignFirstResponder:(id)a3
+- (void)recipientSelectionControllerShouldResignFirstResponder:(id)responder
 {
-  v3 = self;
+  selfCopy = self;
   sub_190C256F0();
 }
 

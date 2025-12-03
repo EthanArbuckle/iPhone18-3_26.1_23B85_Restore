@@ -1,28 +1,28 @@
 @interface _SFPBShowWrapperResponseViewCommand
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBShowWrapperResponseViewCommand)initWithDictionary:(id)a3;
-- (_SFPBShowWrapperResponseViewCommand)initWithFacade:(id)a3;
-- (_SFPBShowWrapperResponseViewCommand)initWithJSON:(id)a3;
+- (_SFPBShowWrapperResponseViewCommand)initWithDictionary:(id)dictionary;
+- (_SFPBShowWrapperResponseViewCommand)initWithFacade:(id)facade;
+- (_SFPBShowWrapperResponseViewCommand)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBShowWrapperResponseViewCommand
 
-- (_SFPBShowWrapperResponseViewCommand)initWithFacade:(id)a3
+- (_SFPBShowWrapperResponseViewCommand)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBShowWrapperResponseViewCommand *)self init];
   if (v5)
   {
-    v6 = [v4 catModel];
+    catModel = [facadeCopy catModel];
 
-    if (v6)
+    if (catModel)
     {
       v7 = [_SFPBCATModel alloc];
-      v8 = [v4 catModel];
-      v9 = [(_SFPBCATModel *)v7 initWithFacade:v8];
+      catModel2 = [facadeCopy catModel];
+      v9 = [(_SFPBCATModel *)v7 initWithFacade:catModel2];
       [(_SFPBShowWrapperResponseViewCommand *)v5 setCatModel:v9];
     }
 
@@ -32,15 +32,15 @@
   return v5;
 }
 
-- (_SFPBShowWrapperResponseViewCommand)initWithDictionary:(id)a3
+- (_SFPBShowWrapperResponseViewCommand)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = _SFPBShowWrapperResponseViewCommand;
   v5 = [(_SFPBShowWrapperResponseViewCommand *)&v10 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"catModel"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"catModel"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -54,30 +54,30 @@
   return v5;
 }
 
-- (_SFPBShowWrapperResponseViewCommand)initWithJSON:(id)a3
+- (_SFPBShowWrapperResponseViewCommand)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBShowWrapperResponseViewCommand *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBShowWrapperResponseViewCommand *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBShowWrapperResponseViewCommand *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -90,38 +90,38 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_catModel)
   {
-    v4 = [(_SFPBShowWrapperResponseViewCommand *)self catModel];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    catModel = [(_SFPBShowWrapperResponseViewCommand *)self catModel];
+    dictionaryRepresentation = [catModel dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"catModel"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"catModel"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"catModel"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"catModel"];
     }
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(_SFPBShowWrapperResponseViewCommand *)self catModel];
-    v6 = [v4 catModel];
-    v7 = v6;
-    if ((v5 != 0) != (v6 == 0))
+    catModel = [(_SFPBShowWrapperResponseViewCommand *)self catModel];
+    catModel2 = [equalCopy catModel];
+    v7 = catModel2;
+    if ((catModel != 0) != (catModel2 == 0))
     {
-      v8 = [(_SFPBShowWrapperResponseViewCommand *)self catModel];
-      if (!v8)
+      catModel3 = [(_SFPBShowWrapperResponseViewCommand *)self catModel];
+      if (!catModel3)
       {
 
 LABEL_10:
@@ -129,10 +129,10 @@ LABEL_10:
         goto LABEL_8;
       }
 
-      v9 = v8;
-      v10 = [(_SFPBShowWrapperResponseViewCommand *)self catModel];
-      v11 = [v4 catModel];
-      v12 = [v10 isEqual:v11];
+      v9 = catModel3;
+      catModel4 = [(_SFPBShowWrapperResponseViewCommand *)self catModel];
+      catModel5 = [equalCopy catModel];
+      v12 = [catModel4 isEqual:catModel5];
 
       if (v12)
       {
@@ -151,11 +151,11 @@ LABEL_8:
   return v13;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
-  v4 = [(_SFPBShowWrapperResponseViewCommand *)self catModel];
-  if (v4)
+  toCopy = to;
+  catModel = [(_SFPBShowWrapperResponseViewCommand *)self catModel];
+  if (catModel)
   {
     PBDataWriterWriteSubmessage();
   }

@@ -1,33 +1,33 @@
 @interface SKUIArtworkList
-+ (BOOL)canHandleArtworkFormat:(id)a3;
-+ (id)artworkForSize:(int64_t)a3 artworkDictionaries:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (BOOL)canHandleArtworkFormat:(id)format;
++ (id)artworkForSize:(int64_t)size artworkDictionaries:(id)dictionaries;
+- (BOOL)isEqual:(id)equal;
 - (NSArray)_lookupArray;
 - (NSMutableDictionary)cacheRepresentation;
 - (NSString)description;
 - (SKUIArtwork)largestArtwork;
 - (SKUIArtwork)smallestArtwork;
-- (SKUIArtworkList)initWithArtworkListArray:(id)a3;
-- (SKUIArtworkList)initWithCacheRepresentation:(id)a3;
-- (SKUIArtworkList)initWithCoder:(id)a3;
-- (SKUIArtworkList)initWithLookupArray:(id)a3;
-- (id)artworkForSize:(int64_t)a3;
-- (id)artworkURLForSize:(int64_t)a3;
-- (id)artworkWithWidth:(int64_t)a3;
-- (id)bestArtworkForScaledSize:(CGSize)a3;
-- (id)bestArtworkForSize:(CGSize)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)preferredExactArtworkForSize:(CGSize)a3;
+- (SKUIArtworkList)initWithArtworkListArray:(id)array;
+- (SKUIArtworkList)initWithCacheRepresentation:(id)representation;
+- (SKUIArtworkList)initWithCoder:(id)coder;
+- (SKUIArtworkList)initWithLookupArray:(id)array;
+- (id)artworkForSize:(int64_t)size;
+- (id)artworkURLForSize:(int64_t)size;
+- (id)artworkWithWidth:(int64_t)width;
+- (id)bestArtworkForScaledSize:(CGSize)size;
+- (id)bestArtworkForSize:(CGSize)size;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)preferredExactArtworkForSize:(CGSize)size;
 - (unint64_t)hash;
-- (void)setArtworks:(id)a3;
+- (void)setArtworks:(id)artworks;
 @end
 
 @implementation SKUIArtworkList
 
-- (SKUIArtworkList)initWithArtworkListArray:(id)a3
+- (SKUIArtworkList)initWithArtworkListArray:(id)array
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  arrayCopy = array;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     [SKUIArtworkList initWithArtworkListArray:];
@@ -42,17 +42,17 @@
     artworks = v5->_artworks;
     v5->_artworks = v6;
 
-    if ([v4 count] == 1)
+    if ([arrayCopy count] == 1)
     {
-      v8 = [v4 firstObject];
+      firstObject = [arrayCopy firstObject];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
       if (isKindOfClass)
       {
-        v10 = [v4 firstObject];
+        firstObject2 = [arrayCopy firstObject];
 
-        v4 = v10;
+        arrayCopy = firstObject2;
       }
     }
 
@@ -60,8 +60,8 @@
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v4 = v4;
-    v11 = [v4 countByEnumeratingWithState:&v19 objects:v24 count:16];
+    arrayCopy = arrayCopy;
+    v11 = [arrayCopy countByEnumeratingWithState:&v19 objects:v24 count:16];
     if (v11)
     {
       v12 = v11;
@@ -73,7 +73,7 @@
         {
           if (*v20 != v13)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(arrayCopy);
           }
 
           v15 = *(*(&v19 + 1) + 8 * v14);
@@ -92,7 +92,7 @@
         }
 
         while (v12 != v14);
-        v12 = [v4 countByEnumeratingWithState:&v19 objects:v24 count:16];
+        v12 = [arrayCopy countByEnumeratingWithState:&v19 objects:v24 count:16];
       }
 
       while (v12);
@@ -131,10 +131,10 @@ uint64_t __44__SKUIArtworkList_initWithArtworkListArray___block_invoke(uint64_t 
   return v7;
 }
 
-- (SKUIArtworkList)initWithLookupArray:(id)a3
+- (SKUIArtworkList)initWithLookupArray:(id)array
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  arrayCopy = array;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIArtworkList initWithLookupArray:];
@@ -153,7 +153,7 @@ uint64_t __44__SKUIArtworkList_initWithArtworkListArray___block_invoke(uint64_t 
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v8 = v4;
+    v8 = arrayCopy;
     v9 = [v8 countByEnumeratingWithState:&v17 objects:v22 count:16];
     if (v9)
     {
@@ -224,7 +224,7 @@ uint64_t __39__SKUIArtworkList_initWithLookupArray___block_invoke(uint64_t a1, v
   return v7;
 }
 
-- (id)artworkForSize:(int64_t)a3
+- (id)artworkForSize:(int64_t)size
 {
   v23 = *MEMORY[0x277D85DE8];
   v18 = 0u;
@@ -254,7 +254,7 @@ uint64_t __39__SKUIArtworkList_initWithLookupArray___block_invoke(uint64_t a1, v
       }
 
       v11 = *(*(&v18 + 1) + 8 * v10);
-      v12 = [v11 width] - a3;
+      v12 = [v11 width] - size;
       if (v9 == 0x7FFFFFFFFFFFFFFFLL)
       {
         v13 = v11;
@@ -309,15 +309,15 @@ LABEL_25:
   return v13;
 }
 
-- (id)artworkURLForSize:(int64_t)a3
+- (id)artworkURLForSize:(int64_t)size
 {
-  v3 = [(SKUIArtworkList *)self artworkForSize:a3];
+  v3 = [(SKUIArtworkList *)self artworkForSize:size];
   v4 = [v3 URL];
 
   return v4;
 }
 
-- (id)artworkWithWidth:(int64_t)a3
+- (id)artworkWithWidth:(int64_t)width
 {
   v17 = *MEMORY[0x277D85DE8];
   v12 = 0u;
@@ -340,7 +340,7 @@ LABEL_25:
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
-        if ([v9 width] == a3)
+        if ([v9 width] == width)
         {
           v10 = v9;
           goto LABEL_11;
@@ -363,10 +363,10 @@ LABEL_11:
   return v10;
 }
 
-- (id)bestArtworkForSize:(CGSize)a3
+- (id)bestArtworkForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v19 = *MEMORY[0x277D85DE8];
   v14 = 0u;
   v15 = 0u;
@@ -405,9 +405,9 @@ LABEL_3:
       }
     }
 
-    v12 = v11;
+    lastObject = v11;
 
-    if (v12)
+    if (lastObject)
     {
       goto LABEL_15;
     }
@@ -420,25 +420,25 @@ LABEL_10:
 
   if ([(NSMutableArray *)self->_artworks count])
   {
-    v12 = [(NSMutableArray *)self->_artworks lastObject];
+    lastObject = [(NSMutableArray *)self->_artworks lastObject];
   }
 
   else
   {
-    v12 = 0;
+    lastObject = 0;
   }
 
 LABEL_15:
 
-  return v12;
+  return lastObject;
 }
 
-- (id)bestArtworkForScaledSize:(CGSize)a3
+- (id)bestArtworkForScaledSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [MEMORY[0x277D759A0] mainScreen];
-  [v6 scale];
+  height = size.height;
+  width = size.width;
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v8 = v7;
 
   v9 = ceil(width * v8);
@@ -447,10 +447,10 @@ LABEL_15:
   return [(SKUIArtworkList *)self bestArtworkForSize:v9, v10];
 }
 
-- (id)preferredExactArtworkForSize:(CGSize)a3
+- (id)preferredExactArtworkForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v28 = *MEMORY[0x277D85DE8];
   [(SKUIArtworkList *)self artworks];
   v23 = 0u;
@@ -480,9 +480,9 @@ LABEL_15:
 
       v13 = *(*(&v23 + 1) + 8 * i);
       v14 = objc_autoreleasePoolPush();
-      v15 = [v13 height];
-      v16 = [v13 width];
-      if (height == v15 && width == v16)
+      height = [v13 height];
+      width = [v13 width];
+      if (height == height && width == width)
       {
         v21 = v13;
 
@@ -491,7 +491,7 @@ LABEL_15:
         goto LABEL_27;
       }
 
-      v18 = [v13 height];
+      height2 = [v13 height];
       if (!v12)
       {
 LABEL_19:
@@ -499,7 +499,7 @@ LABEL_19:
         goto LABEL_22;
       }
 
-      v10 = (v18 - height);
+      v10 = (height2 - height);
       if (v12 != 0x7FFFFFFFFFFFFFFFLL && v10)
       {
         if (v12 < 0)
@@ -537,15 +537,15 @@ LABEL_27:
   return v8;
 }
 
-+ (id)artworkForSize:(int64_t)a3 artworkDictionaries:(id)a4
++ (id)artworkForSize:(int64_t)size artworkDictionaries:(id)dictionaries
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  dictionariesCopy = dictionaries;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  v6 = [dictionariesCopy countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (!v6)
   {
     v8 = 0;
@@ -562,7 +562,7 @@ LABEL_27:
     {
       if (*v20 != v9)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(dictionariesCopy);
       }
 
       v12 = *(*(&v19 + 1) + 8 * i);
@@ -570,13 +570,13 @@ LABEL_27:
       if (objc_opt_isKindOfClass())
       {
         v13 = [[SKUIArtwork alloc] initWithArtworkDictionary:v12];
-        v14 = [(SKUIArtwork *)v13 width];
+        width = [(SKUIArtwork *)v13 width];
         if (!v10)
         {
           goto LABEL_15;
         }
 
-        v15 = v14 - a3;
+        v15 = width - size;
         if (v10 != 0x7FFFFFFFFFFFFFFFLL && v15)
         {
           if (v10 < 0)
@@ -605,7 +605,7 @@ LABEL_18:
       }
     }
 
-    v7 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    v7 = [dictionariesCopy countByEnumeratingWithState:&v19 objects:v23 count:16];
   }
 
   while (v7);
@@ -614,9 +614,9 @@ LABEL_23:
   return v8;
 }
 
-+ (BOOL)canHandleArtworkFormat:(id)a3
++ (BOOL)canHandleArtworkFormat:(id)format
 {
-  v3 = a3;
+  formatCopy = format;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -625,20 +625,20 @@ LABEL_23:
 
 - (SKUIArtwork)largestArtwork
 {
-  v3 = [(NSMutableArray *)self->_artworks count];
-  if (v3)
+  lastObject = [(NSMutableArray *)self->_artworks count];
+  if (lastObject)
   {
-    v3 = [(NSMutableArray *)self->_artworks lastObject];
+    lastObject = [(NSMutableArray *)self->_artworks lastObject];
   }
 
-  return v3;
+  return lastObject;
 }
 
-- (void)setArtworks:(id)a3
+- (void)setArtworks:(id)artworks
 {
-  if (self->_artworks != a3)
+  if (self->_artworks != artworks)
   {
-    v5 = [a3 mutableCopy];
+    v5 = [artworks mutableCopy];
     artworks = self->_artworks;
     self->_artworks = v5;
 
@@ -660,7 +660,7 @@ LABEL_23:
 - (NSArray)_lookupArray
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -680,10 +680,10 @@ LABEL_23:
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v11 + 1) + 8 * i) _lookupDictionary];
-        if (v9)
+        _lookupDictionary = [*(*(&v11 + 1) + 8 * i) _lookupDictionary];
+        if (_lookupDictionary)
         {
-          [v3 addObject:v9];
+          [array addObject:_lookupDictionary];
         }
       }
 
@@ -693,18 +693,18 @@ LABEL_23:
     while (v6);
   }
 
-  return v3;
+  return array;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     artworks = self->_artworks;
-    v6 = [v4 artworks];
-    v7 = [(NSMutableArray *)artworks isEqualToArray:v6];
+    artworks = [equalCopy artworks];
+    v7 = [(NSMutableArray *)artworks isEqualToArray:artworks];
   }
 
   else
@@ -734,10 +734,10 @@ LABEL_23:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSMutableArray *)self->_artworks copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSMutableArray *)self->_artworks copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
@@ -755,15 +755,15 @@ LABEL_23:
   return v5;
 }
 
-- (SKUIArtworkList)initWithCoder:(id)a3
+- (SKUIArtworkList)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = SKUIArtworkList;
   v5 = [(SKUIArtworkList *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectForKey:@"artworks"];
+    v6 = [coderCopy decodeObjectForKey:@"artworks"];
     artworks = v5->_artworks;
     v5->_artworks = v6;
   }
@@ -771,9 +771,9 @@ LABEL_23:
   return v5;
 }
 
-- (SKUIArtworkList)initWithCacheRepresentation:(id)a3
+- (SKUIArtworkList)initWithCacheRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -782,7 +782,7 @@ LABEL_23:
     v5 = [(SKUIArtworkList *)&v11 init];
     if (v5)
     {
-      v6 = [v4 objectForKey:@"array"];
+      v6 = [representationCopy objectForKey:@"array"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {

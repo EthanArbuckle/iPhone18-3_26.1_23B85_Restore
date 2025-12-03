@@ -1,10 +1,10 @@
 @interface ActivitySettingsDetailController
 - (id)_bundleIdentifier;
-- (id)areFrequentUpdatesEnabled:(id)a3;
-- (id)areLiveActivitiesEnabled:(id)a3;
+- (id)areFrequentUpdatesEnabled:(id)enabled;
+- (id)areLiveActivitiesEnabled:(id)enabled;
 - (id)specifiers;
-- (void)setFrequentUpdatesEnabled:(id)a3 forSpecifier:(id)a4;
-- (void)setLiveActivitiesEnabled:(id)a3 forSpecifier:(id)a4;
+- (void)setFrequentUpdatesEnabled:(id)enabled forSpecifier:(id)specifier;
+- (void)setLiveActivitiesEnabled:(id)enabled forSpecifier:(id)specifier;
 - (void)viewDidLoad;
 @end
 
@@ -53,52 +53,52 @@
   return v18;
 }
 
-- (id)areLiveActivitiesEnabled:(id)a3
+- (id)areLiveActivitiesEnabled:(id)enabled
 {
   v4 = objc_alloc_init(ACActivityAuthorization);
-  v5 = [(ActivitySettingsDetailController *)self _bundleIdentifier];
-  v6 = [v4 areActivitiesEnabledForBundleId:v5];
+  _bundleIdentifier = [(ActivitySettingsDetailController *)self _bundleIdentifier];
+  v6 = [v4 areActivitiesEnabledForBundleId:_bundleIdentifier];
 
   v7 = [NSNumber numberWithBool:v6];
 
   return v7;
 }
 
-- (void)setLiveActivitiesEnabled:(id)a3 forSpecifier:(id)a4
+- (void)setLiveActivitiesEnabled:(id)enabled forSpecifier:(id)specifier
 {
-  v5 = a3;
+  enabledCopy = enabled;
   v8 = objc_alloc_init(ACActivityAuthorization);
-  v6 = [v5 BOOLValue];
+  bOOLValue = [enabledCopy BOOLValue];
 
-  v7 = [(ActivitySettingsDetailController *)self _bundleIdentifier];
-  [v8 setActivitiesEnabled:v6 forBundleId:v7];
+  _bundleIdentifier = [(ActivitySettingsDetailController *)self _bundleIdentifier];
+  [v8 setActivitiesEnabled:bOOLValue forBundleId:_bundleIdentifier];
 }
 
-- (id)areFrequentUpdatesEnabled:(id)a3
+- (id)areFrequentUpdatesEnabled:(id)enabled
 {
   v4 = objc_alloc_init(ACActivityAuthorization);
-  v5 = [(ActivitySettingsDetailController *)self _bundleIdentifier];
-  v6 = [v4 areFrequentPushesEnabledForBundleId:v5];
+  _bundleIdentifier = [(ActivitySettingsDetailController *)self _bundleIdentifier];
+  v6 = [v4 areFrequentPushesEnabledForBundleId:_bundleIdentifier];
 
   v7 = [NSNumber numberWithBool:v6];
 
   return v7;
 }
 
-- (void)setFrequentUpdatesEnabled:(id)a3 forSpecifier:(id)a4
+- (void)setFrequentUpdatesEnabled:(id)enabled forSpecifier:(id)specifier
 {
-  v5 = a3;
+  enabledCopy = enabled;
   v8 = objc_alloc_init(ACActivityAuthorization);
-  v6 = [v5 BOOLValue];
+  bOOLValue = [enabledCopy BOOLValue];
 
-  v7 = [(ActivitySettingsDetailController *)self _bundleIdentifier];
-  [v8 setFrequentPushesEnabled:v6 forBundleId:v7];
+  _bundleIdentifier = [(ActivitySettingsDetailController *)self _bundleIdentifier];
+  [v8 setFrequentPushesEnabled:bOOLValue forBundleId:_bundleIdentifier];
 }
 
 - (id)_bundleIdentifier
 {
-  v2 = [(ActivitySettingsDetailController *)self specifier];
-  v3 = [v2 propertyForKey:@"BUNDLE_ID"];
+  specifier = [(ActivitySettingsDetailController *)self specifier];
+  v3 = [specifier propertyForKey:@"BUNDLE_ID"];
 
   return v3;
 }

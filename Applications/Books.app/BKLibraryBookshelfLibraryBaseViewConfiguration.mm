@@ -37,29 +37,29 @@
 
 - (NSString)noBooksDescriptionHeader
 {
-  v2 = [(BKLibraryBookshelfLibraryBaseViewConfiguration *)self collectionID];
-  if ([v2 isEqualToString:kBKCollectionDefaultAll])
+  collectionID = [(BKLibraryBookshelfLibraryBaseViewConfiguration *)self collectionID];
+  if ([collectionID isEqualToString:kBKCollectionDefaultAll])
   {
     v3 = +[NSBundle mainBundle];
     v4 = v3;
     v5 = @"Library is Empty";
   }
 
-  else if ([v2 isEqualToString:kBKCollectionDefaultIDAudiobooks])
+  else if ([collectionID isEqualToString:kBKCollectionDefaultIDAudiobooks])
   {
     v3 = +[NSBundle mainBundle];
     v4 = v3;
     v5 = @"No Audiobooks";
   }
 
-  else if ([v2 isEqualToString:kBKCollectionDefaultIDPDFs])
+  else if ([collectionID isEqualToString:kBKCollectionDefaultIDPDFs])
   {
     v3 = +[NSBundle mainBundle];
     v4 = v3;
     v5 = @"No PDFs";
   }
 
-  else if ([v2 isEqualToString:kBKCollectionDefaultIDSamples])
+  else if ([collectionID isEqualToString:kBKCollectionDefaultIDSamples])
   {
     v3 = +[NSBundle mainBundle];
     v4 = v3;
@@ -68,7 +68,7 @@
 
   else
   {
-    v8 = [v2 isEqualToString:kBKCollectionDefaultIDDownloaded];
+    v8 = [collectionID isEqualToString:kBKCollectionDefaultIDDownloaded];
     v3 = +[NSBundle mainBundle];
     v4 = v3;
     if (v8)
@@ -89,57 +89,57 @@
 
 - (NSString)noBooksDescription
 {
-  v2 = [(BKLibraryBookshelfLibraryBaseViewConfiguration *)self collectionID];
-  if ([v2 isEqualToString:kBKCollectionDefaultAll])
+  collectionID = [(BKLibraryBookshelfLibraryBaseViewConfiguration *)self collectionID];
+  if ([collectionID isEqualToString:kBKCollectionDefaultAll])
   {
     v3 = +[NSBundle mainBundle];
     v4 = v3;
     v5 = @"Visit the store to add books and audiobooks to your library.";
   }
 
-  else if ([v2 isEqualToString:kBKCollectionDefaultIDWantToRead])
+  else if ([collectionID isEqualToString:kBKCollectionDefaultIDWantToRead])
   {
     v3 = +[NSBundle mainBundle];
     v4 = v3;
     v5 = @"To add to this collection, tap any book or audiobook in the store and select Want to Read.";
   }
 
-  else if ([v2 isEqualToString:kBKCollectionDefaultIDFinished])
+  else if ([collectionID isEqualToString:kBKCollectionDefaultIDFinished])
   {
     v3 = +[NSBundle mainBundle];
     v4 = v3;
     v5 = @"As you mark books and audiobooks finished, they’ll be added to this collection.";
   }
 
-  else if ([v2 isEqualToString:kBKCollectionDefaultIDBooks])
+  else if ([collectionID isEqualToString:kBKCollectionDefaultIDBooks])
   {
     v3 = +[NSBundle mainBundle];
     v4 = v3;
     v5 = @"All the books you purchase will automatically be added to this collection.";
   }
 
-  else if ([v2 isEqualToString:kBKCollectionDefaultIDAudiobooks])
+  else if ([collectionID isEqualToString:kBKCollectionDefaultIDAudiobooks])
   {
     v3 = +[NSBundle mainBundle];
     v4 = v3;
     v5 = @"All the audiobooks you purchase will automatically be added to this collection.";
   }
 
-  else if ([v2 isEqualToString:kBKCollectionDefaultIDPDFs])
+  else if ([collectionID isEqualToString:kBKCollectionDefaultIDPDFs])
   {
     v3 = +[NSBundle mainBundle];
     v4 = v3;
     v5 = @"PDFs in your library will automatically be added to this collection.";
   }
 
-  else if ([v2 isEqualToString:kBKCollectionDefaultIDSamples])
+  else if ([collectionID isEqualToString:kBKCollectionDefaultIDSamples])
   {
     v3 = +[NSBundle mainBundle];
     v4 = v3;
     v5 = @"To add to this collection, tap any book in the store and select Sample.";
   }
 
-  else if ([v2 isEqualToString:kBKCollectionDefaultIDDownloaded])
+  else if ([collectionID isEqualToString:kBKCollectionDefaultIDDownloaded])
   {
     v6 = +[BCDevice deviceClass];
     v3 = +[NSBundle mainBundle];

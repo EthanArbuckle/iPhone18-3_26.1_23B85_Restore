@@ -1,24 +1,24 @@
 @interface HKFHIRIdentifier
-+ (HKFHIRIdentifier)FHIRIdentifierWithString:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
++ (HKFHIRIdentifier)FHIRIdentifierWithString:(id)string error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (HKFHIRIdentifier)init;
-- (HKFHIRIdentifier)initWithCoder:(id)a3;
-- (HKFHIRIdentifier)initWithResourceType:(id)a3 identifier:(id)a4;
+- (HKFHIRIdentifier)initWithCoder:(id)coder;
+- (HKFHIRIdentifier)initWithResourceType:(id)type identifier:(id)identifier;
 - (NSString)stringValue;
 - (id)description;
-- (id)identifierForContainedResourceWithIdentifier:(id)a3 error:(id *)a4;
-- (id)parentResourceIdentifierWithError:(id *)a3;
+- (id)identifierForContainedResourceWithIdentifier:(id)identifier error:(id *)error;
+- (id)parentResourceIdentifierWithError:(id *)error;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKFHIRIdentifier
 
-+ (HKFHIRIdentifier)FHIRIdentifierWithString:(id)a3 error:(id *)a4
++ (HKFHIRIdentifier)FHIRIdentifierWithString:(id)string error:(id *)error
 {
-  v7 = a3;
-  v8 = v7;
-  if (!v7)
+  stringCopy = string;
+  v8 = stringCopy;
+  if (!stringCopy)
   {
     v10 = [MEMORY[0x1E696ABC0] hk_errorForInvalidArgument:@"@" class:objc_opt_class() selector:a2 format:@"failed to parse FHIR identifier nil identifier"];;
     if (!v10)
@@ -26,7 +26,7 @@
       goto LABEL_9;
     }
 
-    if (!a4)
+    if (!error)
     {
       goto LABEL_5;
     }
@@ -34,7 +34,7 @@
     goto LABEL_8;
   }
 
-  v9 = [v7 rangeOfString:@"/"];
+  v9 = [stringCopy rangeOfString:@"/"];
   if (v9 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v10 = [MEMORY[0x1E696ABC0] hk_errorForInvalidArgument:@"@" class:objc_opt_class() selector:a2 format:@"failed to parse FHIR identifier invalid format"];;
@@ -45,7 +45,7 @@ LABEL_9:
       goto LABEL_10;
     }
 
-    if (!a4)
+    if (!error)
     {
 LABEL_5:
       _HKLogDroppedError(v10);
@@ -55,7 +55,7 @@ LABEL_5:
 LABEL_8:
     v11 = v10;
     v12 = 0;
-    *a4 = v10;
+    *error = v10;
 LABEL_10:
     v13 = v10;
     goto LABEL_23;
@@ -68,7 +68,7 @@ LABEL_10:
   {
     if (v10 && [v10 length])
     {
-      v12 = [[a1 alloc] initWithResourceType:v13 identifier:v10];
+      v12 = [[self alloc] initWithResourceType:v13 identifier:v10];
       goto LABEL_23;
     }
 
@@ -88,10 +88,10 @@ LABEL_10:
   v19 = v18;
   if (v18)
   {
-    if (a4)
+    if (error)
     {
       v20 = v18;
-      *a4 = v19;
+      *error = v19;
     }
 
     else
@@ -106,20 +106,20 @@ LABEL_23:
   return v12;
 }
 
-- (HKFHIRIdentifier)initWithResourceType:(id)a3 identifier:(id)a4
+- (HKFHIRIdentifier)initWithResourceType:(id)type identifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  typeCopy = type;
+  identifierCopy = identifier;
   v14.receiver = self;
   v14.super_class = HKFHIRIdentifier;
   v8 = [(HKFHIRIdentifier *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [typeCopy copy];
     resourceType = v8->_resourceType;
     v8->_resourceType = v9;
 
-    v11 = [v7 copy];
+    v11 = [identifierCopy copy];
     identifier = v8->_identifier;
     v8->_identifier = v11;
   }
@@ -144,44 +144,44 @@ LABEL_23:
   return v2;
 }
 
-- (id)identifierForContainedResourceWithIdentifier:(id)a3 error:(id *)a4
+- (id)identifierForContainedResourceWithIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   if ([(NSString *)self->_identifier containsString:@"#"])
   {
-    [MEMORY[0x1E696ABC0] hk_assignError:a4 code:3 format:{@"trying to create a contained resource identifier by containing in an already contained resource: %@", self}];
+    [MEMORY[0x1E696ABC0] hk_assignError:error code:3 format:{@"trying to create a contained resource identifier by containing in an already contained resource: %@", self}];
 LABEL_5:
     v11 = 0;
     goto LABEL_7;
   }
 
-  v7 = [v6 identifier];
-  v8 = [v7 containsString:@"#"];
+  identifier = [identifierCopy identifier];
+  v8 = [identifier containsString:@"#"];
 
   if (v8)
   {
     v9 = MEMORY[0x1E696ABC0];
-    v10 = HKSensitiveLogItem(v6);
-    [v9 hk_assignError:a4 code:3 format:{@"trying to create a contained resource identifier by containing an already contained resource: %@", v10}];
+    v10 = HKSensitiveLogItem(identifierCopy);
+    [v9 hk_assignError:error code:3 format:{@"trying to create a contained resource identifier by containing an already contained resource: %@", v10}];
 
     goto LABEL_5;
   }
 
   v12 = MEMORY[0x1E696AEC0];
-  v13 = [(HKFHIRIdentifier *)self stringValue];
-  v14 = [v6 identifier];
-  v15 = [v12 stringWithFormat:@"%@%@%@", v13, @"#", v14];
+  stringValue = [(HKFHIRIdentifier *)self stringValue];
+  identifier2 = [identifierCopy identifier];
+  v15 = [v12 stringWithFormat:@"%@%@%@", stringValue, @"#", identifier2];
 
   v16 = [HKFHIRIdentifier alloc];
-  v17 = [v6 resourceType];
-  v11 = [(HKFHIRIdentifier *)v16 initWithResourceType:v17 identifier:v15];
+  resourceType = [identifierCopy resourceType];
+  v11 = [(HKFHIRIdentifier *)v16 initWithResourceType:resourceType identifier:v15];
 
 LABEL_7:
 
   return v11;
 }
 
-- (id)parentResourceIdentifierWithError:(id *)a3
+- (id)parentResourceIdentifierWithError:(id *)error
 {
   if ([(NSString *)self->_identifier containsString:@"#"])
   {
@@ -189,7 +189,7 @@ LABEL_7:
     if ([v5 count] == 2)
     {
       v6 = [v5 objectAtIndexedSubscript:0];
-      v7 = [HKFHIRIdentifier FHIRIdentifierWithString:v6 error:a3];
+      v7 = [HKFHIRIdentifier FHIRIdentifierWithString:v6 error:error];
     }
 
     else
@@ -197,7 +197,7 @@ LABEL_7:
       v8 = MEMORY[0x1E696ABC0];
       resourceType = self->_resourceType;
       v6 = HKSensitiveLogItem(self->_identifier);
-      [v8 hk_assignError:a3 code:3 format:{@"invalid FHIR identifier on %@: %@", resourceType, v6}];
+      [v8 hk_assignError:error code:3 format:{@"invalid FHIR identifier on %@: %@", resourceType, v6}];
       v7 = 0;
     }
   }
@@ -210,29 +210,29 @@ LABEL_7:
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HKFHIRIdentifier *)self resourceType];
-  [v4 encodeObject:v5 forKey:@"ResourceType"];
+  coderCopy = coder;
+  resourceType = [(HKFHIRIdentifier *)self resourceType];
+  [coderCopy encodeObject:resourceType forKey:@"ResourceType"];
 
-  v6 = [(HKFHIRIdentifier *)self identifier];
-  [v4 encodeObject:v6 forKey:@"Identifier"];
+  identifier = [(HKFHIRIdentifier *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"Identifier"];
 }
 
-- (HKFHIRIdentifier)initWithCoder:(id)a3
+- (HKFHIRIdentifier)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = HKFHIRIdentifier;
   v5 = [(HKFHIRIdentifier *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ResourceType"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ResourceType"];
     resourceType = v5->_resourceType;
     v5->_resourceType = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Identifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v8;
   }
@@ -240,34 +240,34 @@ LABEL_7:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
   v23.receiver = self;
   v23.super_class = HKFHIRIdentifier;
   if ([(HKFHIRIdentifier *)&v23 isKindOfClass:v5])
   {
-    v6 = v4;
-    v7 = [(HKFHIRIdentifier *)self resourceType];
-    v8 = [v6 resourceType];
-    v9 = v8;
-    if (v7 == v8)
+    v6 = equalCopy;
+    resourceType = [(HKFHIRIdentifier *)self resourceType];
+    resourceType2 = [v6 resourceType];
+    v9 = resourceType2;
+    if (resourceType == resourceType2)
     {
     }
 
     else
     {
-      v10 = [v6 resourceType];
-      if (!v10)
+      resourceType3 = [v6 resourceType];
+      if (!resourceType3)
       {
         goto LABEL_12;
       }
 
-      v11 = v10;
-      v12 = [(HKFHIRIdentifier *)self resourceType];
-      v13 = [v6 resourceType];
-      v14 = [v12 isEqualToString:v13];
+      v11 = resourceType3;
+      resourceType4 = [(HKFHIRIdentifier *)self resourceType];
+      resourceType5 = [v6 resourceType];
+      v14 = [resourceType4 isEqualToString:resourceType5];
 
       if (!v14)
       {
@@ -275,10 +275,10 @@ LABEL_7:
       }
     }
 
-    v7 = [(HKFHIRIdentifier *)self identifier];
-    v16 = [v6 identifier];
-    v9 = v16;
-    if (v7 == v16)
+    resourceType = [(HKFHIRIdentifier *)self identifier];
+    identifier = [v6 identifier];
+    v9 = identifier;
+    if (resourceType == identifier)
     {
 
 LABEL_15:
@@ -286,13 +286,13 @@ LABEL_15:
       goto LABEL_16;
     }
 
-    v17 = [v6 identifier];
-    if (v17)
+    identifier2 = [v6 identifier];
+    if (identifier2)
     {
-      v18 = v17;
-      v19 = [(HKFHIRIdentifier *)self identifier];
-      v20 = [v6 identifier];
-      v21 = [v19 isEqualToString:v20];
+      v18 = identifier2;
+      identifier3 = [(HKFHIRIdentifier *)self identifier];
+      identifier4 = [v6 identifier];
+      v21 = [identifier3 isEqualToString:identifier4];
 
       if (v21)
       {
@@ -319,10 +319,10 @@ LABEL_17:
 
 - (unint64_t)hash
 {
-  v3 = [(HKFHIRIdentifier *)self resourceType];
-  v4 = [v3 hash];
-  v5 = [(HKFHIRIdentifier *)self identifier];
-  v6 = [v5 hash];
+  resourceType = [(HKFHIRIdentifier *)self resourceType];
+  v4 = [resourceType hash];
+  identifier = [(HKFHIRIdentifier *)self identifier];
+  v6 = [identifier hash];
 
   return v6 ^ v4;
 }

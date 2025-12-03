@@ -1,14 +1,14 @@
 @interface OITSUDelayTimer
-- (OITSUDelayTimer)initWithTargetSerialQueue:(id)a3;
+- (OITSUDelayTimer)initWithTargetSerialQueue:(id)queue;
 - (void)_reallyCancel;
-- (void)afterDelay:(double)a3 processBlock:(id)a4;
+- (void)afterDelay:(double)delay processBlock:(id)block;
 - (void)cancel;
 - (void)dealloc;
 @end
 
 @implementation OITSUDelayTimer
 
-- (OITSUDelayTimer)initWithTargetSerialQueue:(id)a3
+- (OITSUDelayTimer)initWithTargetSerialQueue:(id)queue
 {
   v12.receiver = self;
   v12.super_class = OITSUDelayTimer;
@@ -16,9 +16,9 @@
   v5 = v4;
   if (v4)
   {
-    if (a3)
+    if (queue)
     {
-      [(OITSUDelayTimer *)v4 _setDispatchQueue:a3];
+      [(OITSUDelayTimer *)v4 _setDispatchQueue:queue];
     }
 
     else
@@ -49,18 +49,18 @@
   [(OITSUDelayTimer *)&v3 dealloc];
 }
 
-- (void)afterDelay:(double)a3 processBlock:(id)a4
+- (void)afterDelay:(double)delay processBlock:(id)block
 {
   [(OITSUDelayTimer *)self _setCancelled:0];
-  v7 = [(OITSUDelayTimer *)self _dispatchQueue];
+  _dispatchQueue = [(OITSUDelayTimer *)self _dispatchQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __43__OITSUDelayTimer_afterDelay_processBlock___block_invoke;
   block[3] = &unk_2799C6750;
-  *&block[6] = a3;
+  *&block[6] = delay;
   block[4] = self;
-  block[5] = a4;
-  dispatch_async(v7, block);
+  block[5] = block;
+  dispatch_async(_dispatchQueue, block);
 }
 
 void __43__OITSUDelayTimer_afterDelay_processBlock___block_invoke(uint64_t a1)
@@ -107,10 +107,10 @@ uint64_t __43__OITSUDelayTimer_afterDelay_processBlock___block_invoke_2(uint64_t
 
 - (void)_reallyCancel
 {
-  v3 = [(OITSUDelayTimer *)self _dispatchTimer];
-  if (v3)
+  _dispatchTimer = [(OITSUDelayTimer *)self _dispatchTimer];
+  if (_dispatchTimer)
   {
-    dispatch_source_cancel(v3);
+    dispatch_source_cancel(_dispatchTimer);
 
     [(OITSUDelayTimer *)self _setDispatchTimer:0];
   }
@@ -119,13 +119,13 @@ uint64_t __43__OITSUDelayTimer_afterDelay_processBlock___block_invoke_2(uint64_t
 - (void)cancel
 {
   [(OITSUDelayTimer *)self _setCancelled:1];
-  v3 = [(OITSUDelayTimer *)self _dispatchQueue];
+  _dispatchQueue = [(OITSUDelayTimer *)self _dispatchQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __25__OITSUDelayTimer_cancel__block_invoke;
   block[3] = &unk_2799C60B0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(_dispatchQueue, block);
 }
 
 @end

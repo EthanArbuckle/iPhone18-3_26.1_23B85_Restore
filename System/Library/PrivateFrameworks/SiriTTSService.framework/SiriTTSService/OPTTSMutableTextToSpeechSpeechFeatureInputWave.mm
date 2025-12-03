@@ -1,39 +1,39 @@
 @interface OPTTSMutableTextToSpeechSpeechFeatureInputWave
 - (OPTTSMutableTextToSpeechSpeechFeatureInputWave)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (int)sample_rate;
-- (void)pcm_data:(id)a3;
-- (void)setPcm_data:(id)a3;
+- (void)pcm_data:(id)pcm_data;
+- (void)setPcm_data:(id)pcm_data;
 @end
 
 @implementation OPTTSMutableTextToSpeechSpeechFeatureInputWave
 
-- (void)pcm_data:(id)a3
+- (void)pcm_data:(id)pcm_data
 {
-  v7 = a3;
-  v4 = [(OPTTSMutableTextToSpeechSpeechFeatureInputWave *)self pcm_data];
-  v5 = [v4 bytes];
-  v6 = [(OPTTSMutableTextToSpeechSpeechFeatureInputWave *)self pcm_data];
-  v7[2](v7, v5, [v6 length]);
+  pcm_dataCopy = pcm_data;
+  pcm_data = [(OPTTSMutableTextToSpeechSpeechFeatureInputWave *)self pcm_data];
+  bytes = [pcm_data bytes];
+  pcm_data2 = [(OPTTSMutableTextToSpeechSpeechFeatureInputWave *)self pcm_data];
+  pcm_dataCopy[2](pcm_dataCopy, bytes, [pcm_data2 length]);
 }
 
-- (void)setPcm_data:(id)a3
+- (void)setPcm_data:(id)pcm_data
 {
-  v4 = [a3 copy];
+  v4 = [pcm_data copy];
   [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
 }
 
 - (int)sample_rate
 {
   v2 = [(NSMutableDictionary *)self->super._storage objectForKeyedSubscript:@"sample_rate"];
-  v3 = [v2 intValue];
+  intValue = [v2 intValue];
 
-  return v3;
+  return intValue;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = [(NSMutableDictionary *)self->super._storage copy];
   v6 = v4[1];
   v4[1] = v5;
@@ -48,9 +48,9 @@
   v2 = [(OPTTSMutableTextToSpeechSpeechFeatureInputWave *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     storage = v2->super._storage;
-    v2->super._storage = v3;
+    v2->super._storage = dictionary;
   }
 
   return v2;

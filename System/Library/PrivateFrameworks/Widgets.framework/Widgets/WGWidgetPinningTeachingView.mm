@@ -31,8 +31,8 @@
     [(WGWidgetPinningTeachingView *)v3 _updateFonts];
     [(WGWidgetPinningTeachingView *)v3 _updateFontDependantConstraints];
     [(WGWidgetPinningTeachingView *)v3 _updateAppearance];
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v4 addObserver:v3 selector:sel__contentSizeCategoryDidChange name:*MEMORY[0x277D76810] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel__contentSizeCategoryDidChange name:*MEMORY[0x277D76810] object:0];
   }
 
   return v3;
@@ -40,19 +40,19 @@
 
 - (void)_yesButtonTapped
 {
-  v3 = [(WGWidgetPinningTeachingView *)self delegate];
+  delegate = [(WGWidgetPinningTeachingView *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v3 widgetPinningTeachingViewDidSelectYes:self];
+    [delegate widgetPinningTeachingViewDidSelectYes:self];
   }
 }
 
 - (void)_noButtonTapped
 {
-  v3 = [(WGWidgetPinningTeachingView *)self delegate];
+  delegate = [(WGWidgetPinningTeachingView *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v3 widgetPinningTeachingViewDidSelectNo:self];
+    [delegate widgetPinningTeachingViewDidSelectNo:self];
   }
 }
 
@@ -63,8 +63,8 @@
   self->_contentView = v3;
 
   v5 = self->_contentView;
-  v6 = [MEMORY[0x277D75348] systemGrayColor];
-  [(UIView *)v5 setBackgroundColor:v6];
+  systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
+  [(UIView *)v5 setBackgroundColor:systemGrayColor];
 
   [(UIView *)self->_contentView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UIView *)self->_contentView _setContinuousCornerRadius:13.0];
@@ -76,7 +76,7 @@
 
 - (void)_createContentViews
 {
-  v40 = [(WGWidgetPinningTeachingView *)self contentView];
+  contentView = [(WGWidgetPinningTeachingView *)self contentView];
   v38 = *MEMORY[0x277D769D0];
   v3 = [MEMORY[0x277D74310] preferredFontDescriptorWithTextStyle:?];
   v39 = [v3 fontDescriptorWithSymbolicTraits:2];
@@ -95,7 +95,7 @@
   v10 = [MEMORY[0x277D74300] fontWithDescriptor:v39 size:0.0];
   [(UILabel *)v9 setFont:v10];
 
-  [v40 addSubview:self->_titleLabel];
+  [contentView addSubview:self->_titleLabel];
   v11 = objc_alloc_init(MEMORY[0x277D756B8]);
   bodyLabel = self->_bodyLabel;
   self->_bodyLabel = v11;
@@ -111,7 +111,7 @@
   v17 = [MEMORY[0x277D74300] preferredFontForTextStyle:v38];
   [(UILabel *)v16 setFont:v17];
 
-  [v40 addSubview:self->_bodyLabel];
+  [contentView addSubview:self->_bodyLabel];
   v18 = objc_alloc_init(WGColorHighlightButton);
   yesButton = self->_yesButton;
   self->_yesButton = &v18->super;
@@ -127,13 +127,13 @@
   v24 = [MEMORY[0x277D75348] colorWithWhite:1.0 alpha:0.1];
   [(UIButton *)v23 setBackgroundColor:v24];
 
-  v25 = [(UIButton *)self->_yesButton titleLabel];
+  titleLabel = [(UIButton *)self->_yesButton titleLabel];
   v26 = [MEMORY[0x277D74300] preferredFontForTextStyle:v38];
-  [v25 setFont:v26];
+  [titleLabel setFont:v26];
 
-  [v25 setNumberOfLines:0];
-  [v25 setTextAlignment:1];
-  [v40 addSubview:self->_yesButton];
+  [titleLabel setNumberOfLines:0];
+  [titleLabel setTextAlignment:1];
+  [contentView addSubview:self->_yesButton];
   v27 = objc_alloc_init(WGColorHighlightButton);
   noButton = self->_noButton;
   self->_noButton = &v27->super;
@@ -149,126 +149,126 @@
   v33 = [MEMORY[0x277D75348] colorWithWhite:1.0 alpha:0.1];
   [(UIButton *)v32 setBackgroundColor:v33];
 
-  v34 = [(UIButton *)self->_noButton titleLabel];
+  titleLabel2 = [(UIButton *)self->_noButton titleLabel];
   v35 = [MEMORY[0x277D74300] preferredFontForTextStyle:v38];
-  [v34 setFont:v35];
+  [titleLabel2 setFont:v35];
 
-  [v34 setNumberOfLines:0];
-  [v34 setTextAlignment:1];
-  [v40 addSubview:self->_noButton];
+  [titleLabel2 setNumberOfLines:0];
+  [titleLabel2 setTextAlignment:1];
+  [contentView addSubview:self->_noButton];
   v36 = objc_alloc_init(WGWidgetPinningTeachingAnimationView);
   iconImageView = self->_iconImageView;
   self->_iconImageView = v36;
 
   [(WGWidgetPinningTeachingAnimationView *)self->_iconImageView setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v40 addSubview:self->_iconImageView];
+  [contentView addSubview:self->_iconImageView];
 }
 
 - (void)_createConstraints
 {
-  v64 = [(WGWidgetPinningTeachingView *)self contentView];
-  v3 = [(WGWidgetPinningTeachingView *)self heightAnchor];
-  v4 = [v64 heightAnchor];
-  v5 = [v3 constraintEqualToAnchor:v4 multiplier:1.0];
+  contentView = [(WGWidgetPinningTeachingView *)self contentView];
+  heightAnchor = [(WGWidgetPinningTeachingView *)self heightAnchor];
+  heightAnchor2 = [contentView heightAnchor];
+  v5 = [heightAnchor constraintEqualToAnchor:heightAnchor2 multiplier:1.0];
   [v5 setActive:1];
 
-  v6 = [(WGWidgetPinningTeachingView *)self widthAnchor];
-  v7 = [v64 widthAnchor];
-  v8 = [v6 constraintEqualToAnchor:v7 multiplier:1.0];
+  widthAnchor = [(WGWidgetPinningTeachingView *)self widthAnchor];
+  widthAnchor2 = [contentView widthAnchor];
+  v8 = [widthAnchor constraintEqualToAnchor:widthAnchor2 multiplier:1.0];
   [v8 setActive:1];
 
-  v9 = [(WGWidgetPinningTeachingAnimationView *)self->_iconImageView leadingAnchor];
-  v10 = [v64 leadingAnchor];
-  v11 = [v9 constraintEqualToAnchor:v10 constant:22.0];
+  leadingAnchor = [(WGWidgetPinningTeachingAnimationView *)self->_iconImageView leadingAnchor];
+  leadingAnchor2 = [contentView leadingAnchor];
+  v11 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:22.0];
   [v11 setActive:1];
 
-  v12 = [(WGWidgetPinningTeachingAnimationView *)self->_iconImageView topAnchor];
-  v13 = [v64 topAnchor];
-  v14 = [v12 constraintEqualToAnchor:v13 constant:29.5];
+  topAnchor = [(WGWidgetPinningTeachingAnimationView *)self->_iconImageView topAnchor];
+  topAnchor2 = [contentView topAnchor];
+  v14 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:29.5];
   [v14 setActive:1];
 
-  v15 = [(WGWidgetPinningTeachingAnimationView *)self->_iconImageView heightAnchor];
-  v16 = [v15 constraintEqualToConstant:51.0];
+  heightAnchor3 = [(WGWidgetPinningTeachingAnimationView *)self->_iconImageView heightAnchor];
+  v16 = [heightAnchor3 constraintEqualToConstant:51.0];
   [v16 setActive:1];
 
-  v17 = [(WGWidgetPinningTeachingAnimationView *)self->_iconImageView widthAnchor];
-  v18 = [v17 constraintEqualToConstant:63.0];
+  widthAnchor3 = [(WGWidgetPinningTeachingAnimationView *)self->_iconImageView widthAnchor];
+  v18 = [widthAnchor3 constraintEqualToConstant:63.0];
   [v18 setActive:1];
 
-  v19 = [(UILabel *)self->_titleLabel leadingAnchor];
-  v20 = [v64 leadingAnchor];
-  v21 = [v19 constraintEqualToAnchor:v20 constant:103.0];
+  leadingAnchor3 = [(UILabel *)self->_titleLabel leadingAnchor];
+  leadingAnchor4 = [contentView leadingAnchor];
+  v21 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:103.0];
   [v21 setActive:1];
 
-  v22 = [(UILabel *)self->_titleLabel trailingAnchor];
-  v23 = [v64 trailingAnchor];
-  v24 = [v22 constraintEqualToAnchor:v23 constant:-22.0];
+  trailingAnchor = [(UILabel *)self->_titleLabel trailingAnchor];
+  trailingAnchor2 = [contentView trailingAnchor];
+  v24 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-22.0];
   [v24 setActive:1];
 
-  v25 = [(UILabel *)self->_titleLabel firstBaselineAnchor];
-  v26 = [v64 topAnchor];
-  v27 = [v25 constraintEqualToAnchor:v26 constant:0.0];
+  firstBaselineAnchor = [(UILabel *)self->_titleLabel firstBaselineAnchor];
+  topAnchor3 = [contentView topAnchor];
+  v27 = [firstBaselineAnchor constraintEqualToAnchor:topAnchor3 constant:0.0];
   titleLabelTopConstraint = self->_titleLabelTopConstraint;
   self->_titleLabelTopConstraint = v27;
 
   [(NSLayoutConstraint *)self->_titleLabelTopConstraint setActive:1];
-  v29 = [(UILabel *)self->_bodyLabel firstBaselineAnchor];
-  v30 = [(UILabel *)self->_titleLabel lastBaselineAnchor];
-  v31 = [v29 constraintEqualToAnchor:v30 constant:0.0];
+  firstBaselineAnchor2 = [(UILabel *)self->_bodyLabel firstBaselineAnchor];
+  lastBaselineAnchor = [(UILabel *)self->_titleLabel lastBaselineAnchor];
+  v31 = [firstBaselineAnchor2 constraintEqualToAnchor:lastBaselineAnchor constant:0.0];
   titleLabelToBodyLabelConstraint = self->_titleLabelToBodyLabelConstraint;
   self->_titleLabelToBodyLabelConstraint = v31;
 
   [(NSLayoutConstraint *)self->_titleLabelToBodyLabelConstraint setActive:1];
-  v33 = [(UILabel *)self->_bodyLabel leadingAnchor];
-  v34 = [(UILabel *)self->_titleLabel leadingAnchor];
-  v35 = [v33 constraintEqualToAnchor:v34 constant:0.0];
+  leadingAnchor5 = [(UILabel *)self->_bodyLabel leadingAnchor];
+  leadingAnchor6 = [(UILabel *)self->_titleLabel leadingAnchor];
+  v35 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6 constant:0.0];
   [v35 setActive:1];
 
-  v36 = [(UILabel *)self->_bodyLabel trailingAnchor];
-  v37 = [(UILabel *)self->_titleLabel trailingAnchor];
-  v38 = [v36 constraintEqualToAnchor:v37 constant:0.0];
+  trailingAnchor3 = [(UILabel *)self->_bodyLabel trailingAnchor];
+  trailingAnchor4 = [(UILabel *)self->_titleLabel trailingAnchor];
+  v38 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:0.0];
   [v38 setActive:1];
 
-  v39 = [(UIButton *)self->_yesButton topAnchor];
-  v40 = [(UILabel *)self->_bodyLabel lastBaselineAnchor];
-  v41 = [v39 constraintEqualToAnchor:v40 constant:19.0];
+  topAnchor4 = [(UIButton *)self->_yesButton topAnchor];
+  lastBaselineAnchor2 = [(UILabel *)self->_bodyLabel lastBaselineAnchor];
+  v41 = [topAnchor4 constraintEqualToAnchor:lastBaselineAnchor2 constant:19.0];
   [v41 setActive:1];
 
-  v42 = [v64 bottomAnchor];
-  v43 = [(UIButton *)self->_yesButton bottomAnchor];
-  v44 = [v42 constraintEqualToAnchor:v43 constant:9.0];
+  bottomAnchor = [contentView bottomAnchor];
+  bottomAnchor2 = [(UIButton *)self->_yesButton bottomAnchor];
+  v44 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:9.0];
 
   LODWORD(v45) = 1132068864;
   [v44 setPriority:v45];
   [v44 setActive:1];
-  v46 = [(UIButton *)self->_noButton topAnchor];
-  v47 = [(UIButton *)self->_yesButton topAnchor];
-  v48 = [v46 constraintEqualToAnchor:v47 constant:0.0];
+  topAnchor5 = [(UIButton *)self->_noButton topAnchor];
+  topAnchor6 = [(UIButton *)self->_yesButton topAnchor];
+  v48 = [topAnchor5 constraintEqualToAnchor:topAnchor6 constant:0.0];
   [v48 setActive:1];
 
-  v49 = [(UIButton *)self->_noButton bottomAnchor];
-  v50 = [(UIButton *)self->_yesButton bottomAnchor];
-  v51 = [v49 constraintEqualToAnchor:v50 constant:0.0];
+  bottomAnchor3 = [(UIButton *)self->_noButton bottomAnchor];
+  bottomAnchor4 = [(UIButton *)self->_yesButton bottomAnchor];
+  v51 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4 constant:0.0];
   [v51 setActive:1];
 
-  v52 = [(UIButton *)self->_noButton leadingAnchor];
-  v53 = [v64 leadingAnchor];
-  v54 = [v52 constraintEqualToAnchor:v53 constant:9.0];
+  leadingAnchor7 = [(UIButton *)self->_noButton leadingAnchor];
+  leadingAnchor8 = [contentView leadingAnchor];
+  v54 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8 constant:9.0];
   [v54 setActive:1];
 
-  v55 = [(UIButton *)self->_yesButton leadingAnchor];
-  v56 = [(UIButton *)self->_noButton trailingAnchor];
-  v57 = [v55 constraintEqualToAnchor:v56 constant:9.0];
+  leadingAnchor9 = [(UIButton *)self->_yesButton leadingAnchor];
+  trailingAnchor5 = [(UIButton *)self->_noButton trailingAnchor];
+  v57 = [leadingAnchor9 constraintEqualToAnchor:trailingAnchor5 constant:9.0];
   [v57 setActive:1];
 
-  v58 = [v64 trailingAnchor];
-  v59 = [(UIButton *)self->_yesButton trailingAnchor];
-  v60 = [v58 constraintEqualToAnchor:v59 constant:9.0];
+  trailingAnchor6 = [contentView trailingAnchor];
+  trailingAnchor7 = [(UIButton *)self->_yesButton trailingAnchor];
+  v60 = [trailingAnchor6 constraintEqualToAnchor:trailingAnchor7 constant:9.0];
   [v60 setActive:1];
 
-  v61 = [(UIButton *)self->_noButton widthAnchor];
-  v62 = [(UIButton *)self->_yesButton widthAnchor];
-  v63 = [v61 constraintEqualToAnchor:v62];
+  widthAnchor4 = [(UIButton *)self->_noButton widthAnchor];
+  widthAnchor5 = [(UIButton *)self->_yesButton widthAnchor];
+  v63 = [widthAnchor4 constraintEqualToAnchor:widthAnchor5];
   [v63 setActive:1];
 }
 
@@ -297,54 +297,54 @@
   [(UILabel *)self->_titleLabel setFont:v5];
   v6 = [MEMORY[0x277D74300] preferredFontForTextStyle:v3];
   [(UILabel *)self->_bodyLabel setFont:v6];
-  v7 = [(UIButton *)self->_yesButton titleLabel];
-  [v7 setFont:v6];
+  titleLabel = [(UIButton *)self->_yesButton titleLabel];
+  [titleLabel setFont:v6];
 
-  v8 = [(UIButton *)self->_noButton titleLabel];
-  [v8 setFont:v6];
+  titleLabel2 = [(UIButton *)self->_noButton titleLabel];
+  [titleLabel2 setFont:v6];
 }
 
 - (void)_updateFontDependantConstraints
 {
-  v7 = [(UILabel *)self->_titleLabel font];
-  [v7 capHeight];
+  font = [(UILabel *)self->_titleLabel font];
+  [font capHeight];
   [(NSLayoutConstraint *)self->_titleLabelTopConstraint setConstant:v3 + 19.5];
-  [v7 lineHeight];
+  [font lineHeight];
   v5 = v4;
-  [v7 leading];
+  [font leading];
   [(NSLayoutConstraint *)self->_titleLabelToBodyLabelConstraint setConstant:v5 + v6 + 1.0];
 }
 
 - (void)_updateAppearance
 {
-  v3 = [(WGWidgetPinningTeachingView *)self traitCollection];
-  v4 = [v3 userInterfaceStyle];
+  traitCollection = [(WGWidgetPinningTeachingView *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  v5 = [(WGWidgetPinningTeachingView *)self contentView];
-  if (v4 == 2)
+  contentView = [(WGWidgetPinningTeachingView *)self contentView];
+  if (userInterfaceStyle == 2)
   {
-    v6 = [MEMORY[0x277D75348] systemGray6Color];
-    [v5 setBackgroundColor:v6];
+    systemGray6Color = [MEMORY[0x277D75348] systemGray6Color];
+    [contentView setBackgroundColor:systemGray6Color];
 
     titleLabel = self->_titleLabel;
-    v8 = [MEMORY[0x277D75348] whiteColor];
-    [(UILabel *)titleLabel setTextColor:v8];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [(UILabel *)titleLabel setTextColor:whiteColor];
 
     bodyLabel = self->_bodyLabel;
-    v10 = [MEMORY[0x277D75348] systemGrayColor];
-    [(UILabel *)bodyLabel setTextColor:v10];
+    systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
+    [(UILabel *)bodyLabel setTextColor:systemGrayColor];
 
     yesButton = self->_yesButton;
-    v12 = [MEMORY[0x277D75348] whiteColor];
-    [(UIButton *)yesButton setTitleColor:v12 forState:0];
+    whiteColor2 = [MEMORY[0x277D75348] whiteColor];
+    [(UIButton *)yesButton setTitleColor:whiteColor2 forState:0];
 
     v13 = self->_yesButton;
-    v14 = [MEMORY[0x277D75348] systemGray4Color];
-    [(UIButton *)v13 setBackgroundColor:v14];
+    systemGray4Color = [MEMORY[0x277D75348] systemGray4Color];
+    [(UIButton *)v13 setBackgroundColor:systemGray4Color];
 
     noButton = self->_noButton;
-    v16 = [MEMORY[0x277D75348] whiteColor];
-    [(UIButton *)noButton setTitleColor:v16 forState:0];
+    whiteColor3 = [MEMORY[0x277D75348] whiteColor];
+    [(UIButton *)noButton setTitleColor:whiteColor3 forState:0];
 
     v17 = self->_noButton;
     [MEMORY[0x277D75348] systemGray4Color];
@@ -352,28 +352,28 @@
 
   else
   {
-    v18 = [MEMORY[0x277D75348] whiteColor];
-    [v5 setBackgroundColor:v18];
+    whiteColor4 = [MEMORY[0x277D75348] whiteColor];
+    [contentView setBackgroundColor:whiteColor4];
 
     v19 = self->_titleLabel;
-    v20 = [MEMORY[0x277D75348] blackColor];
-    [(UILabel *)v19 setTextColor:v20];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    [(UILabel *)v19 setTextColor:blackColor];
 
     v21 = self->_bodyLabel;
-    v22 = [MEMORY[0x277D75348] systemGrayColor];
-    [(UILabel *)v21 setTextColor:v22];
+    systemGrayColor2 = [MEMORY[0x277D75348] systemGrayColor];
+    [(UILabel *)v21 setTextColor:systemGrayColor2];
 
     v23 = self->_yesButton;
-    v24 = [MEMORY[0x277D75348] blackColor];
-    [(UIButton *)v23 setTitleColor:v24 forState:0];
+    blackColor2 = [MEMORY[0x277D75348] blackColor];
+    [(UIButton *)v23 setTitleColor:blackColor2 forState:0];
 
     v25 = self->_yesButton;
-    v26 = [MEMORY[0x277D75348] systemGray5Color];
-    [(UIButton *)v25 setBackgroundColor:v26];
+    systemGray5Color = [MEMORY[0x277D75348] systemGray5Color];
+    [(UIButton *)v25 setBackgroundColor:systemGray5Color];
 
     v27 = self->_noButton;
-    v28 = [MEMORY[0x277D75348] blackColor];
-    [(UIButton *)v27 setTitleColor:v28 forState:0];
+    blackColor3 = [MEMORY[0x277D75348] blackColor];
+    [(UIButton *)v27 setTitleColor:blackColor3 forState:0];
 
     v17 = self->_noButton;
     [MEMORY[0x277D75348] systemGray5Color];

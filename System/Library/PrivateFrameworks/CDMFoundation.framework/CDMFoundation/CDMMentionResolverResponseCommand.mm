@@ -1,27 +1,27 @@
 @interface CDMMentionResolverResponseCommand
-- (CDMMentionResolverResponseCommand)initWithMentions:(id)a3;
-- (CDMMentionResolverResponseCommand)initWithResponse:(id)a3;
+- (CDMMentionResolverResponseCommand)initWithMentions:(id)mentions;
+- (CDMMentionResolverResponseCommand)initWithResponse:(id)response;
 @end
 
 @implementation CDMMentionResolverResponseCommand
 
-- (CDMMentionResolverResponseCommand)initWithMentions:(id)a3
+- (CDMMentionResolverResponseCommand)initWithMentions:(id)mentions
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  mentionsCopy = mentions;
   v19.receiver = self;
   v19.super_class = CDMMentionResolverResponseCommand;
   v5 = [(CDMBaseCommand *)&v19 init];
   if (v5)
   {
     v6 = objc_alloc_init(MEMORY[0x1E69D1300]);
-    if (v4)
+    if (mentionsCopy)
     {
       v17 = 0u;
       v18 = 0u;
       v15 = 0u;
       v16 = 0u;
-      v7 = v4;
+      v7 = mentionsCopy;
       v8 = [v7 countByEnumeratingWithState:&v15 objects:v20 count:16];
       if (v8)
       {
@@ -56,15 +56,15 @@
   return v5;
 }
 
-- (CDMMentionResolverResponseCommand)initWithResponse:(id)a3
+- (CDMMentionResolverResponseCommand)initWithResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   v9.receiver = self;
   v9.super_class = CDMMentionResolverResponseCommand;
   v5 = [(CDMBaseCommand *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [responseCopy copy];
     response = v5->_response;
     v5->_response = v6;
   }

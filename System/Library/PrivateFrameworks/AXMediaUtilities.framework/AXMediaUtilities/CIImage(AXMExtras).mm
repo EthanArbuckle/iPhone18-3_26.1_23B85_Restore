@@ -252,8 +252,8 @@ LABEL_15:
 
 - (uint64_t)rotatedImageWithInterfaceOrientation:()AXMExtras displayOrientation:appliedImageOrientation:
 {
-  v7 = [a1 _imageOrientationForInterfaceOrientation:? displayOrientation:?];
-  result = [a1 imageByApplyingOrientation:v7];
+  v7 = [self _imageOrientationForInterfaceOrientation:? displayOrientation:?];
+  result = [self imageByApplyingOrientation:v7];
   if (a5)
   {
     *a5 = v7;
@@ -264,8 +264,8 @@ LABEL_15:
 
 - (uint64_t)rotatedImageWithInterfaceOrientation:()AXMExtras isMirrored:appliedImageOrientation:
 {
-  v7 = [a1 _imageOrientationForInterfaceOrientation:? isMirrored:?];
-  result = [a1 imageByApplyingOrientation:v7];
+  v7 = [self _imageOrientationForInterfaceOrientation:? isMirrored:?];
+  result = [self imageByApplyingOrientation:v7];
   if (a5)
   {
     *a5 = v7;
@@ -283,8 +283,8 @@ LABEL_15:
   v11 = [v10 createCGImage:v9 fromRect:?];
 
   v12 = [objc_alloc(MEMORY[0x1E695F620]) initWithOptions:0];
-  [a1 extent];
-  v13 = [v12 createCGImage:a1 fromRect:?];
+  [self extent];
+  v13 = [v12 createCGImage:self fromRect:?];
 
   BitsPerComponent = CGImageGetBitsPerComponent(v11);
   BytesPerRow = CGImageGetBytesPerRow(v11);
@@ -332,10 +332,10 @@ LABEL_15:
 {
   v21 = *MEMORY[0x1E69E9840];
   v4 = [objc_alloc(MEMORY[0x1E695F620]) initWithOptions:0];
-  [a1 extent];
-  v5 = [v4 createCGImage:a1 fromRect:?];
+  [self extent];
+  v5 = [v4 createCGImage:self fromRect:?];
 
-  [a1 extent];
+  [self extent];
   v7 = v6;
   v9 = v8;
   v10 = v6;
@@ -386,7 +386,7 @@ LABEL_15:
   v7 = 1;
   do
   {
-    v8 = [a1 imageByApplyingOrientation:v7];
+    v8 = [self imageByApplyingOrientation:v7];
     [v8 saveToURL:v9 withOrientation:v7 metrics:v6];
 
     v7 = (v7 + 1);
@@ -399,24 +399,24 @@ LABEL_15:
 {
   v8 = a3;
   v9 = a5;
-  v10 = [MEMORY[0x1E696AC08] defaultManager];
-  v11 = [v8 path];
-  v12 = [v10 fileExistsAtPath:v11];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  path = [v8 path];
+  v12 = [defaultManager fileExistsAtPath:path];
 
-  if ((v12 & 1) != 0 || (v23 = 0, [v10 createDirectoryAtURL:v8 withIntermediateDirectories:1 attributes:0 error:&v23], (v13 = v23) == 0))
+  if ((v12 & 1) != 0 || (v23 = 0, [defaultManager createDirectoryAtURL:v8 withIntermediateDirectories:1 attributes:0 error:&v23], (v13 = v23) == 0))
   {
     v14 = objc_alloc_init(MEMORY[0x1E696AB78]);
     [v14 setDateFormat:@"MM-dd-HH-mm-ss"];
-    v16 = [MEMORY[0x1E695DF00] date];
-    v15 = [v14 stringFromDate:v16];
+    date = [MEMORY[0x1E695DF00] date];
+    v15 = [v14 stringFromDate:date];
 
     v17 = MEMORY[0x1E696AEC0];
-    [a1 extent];
+    [self extent];
     v19 = v18;
-    [a1 extent];
+    [self extent];
     v21 = [v17 stringWithFormat:@"image_%dx%d_%ld_%@.jpg", v19, v20, a4, v15];
     v22 = [v8 URLByAppendingPathComponent:v21];
-    AXMWriteImageToURL(a1, v22, v9);
+    AXMWriteImageToURL(self, v22, v9);
   }
 
   else

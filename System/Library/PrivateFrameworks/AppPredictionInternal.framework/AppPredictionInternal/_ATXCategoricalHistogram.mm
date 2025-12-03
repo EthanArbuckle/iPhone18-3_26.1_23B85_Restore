@@ -1,9 +1,9 @@
 @interface _ATXCategoricalHistogram
 - (_ATXCategoricalHistogram)init;
-- (_ATXCategoricalHistogram)initWithCoder:(id)a3;
+- (_ATXCategoricalHistogram)initWithCoder:(id)coder;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)enumerate:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)enumerate:(id)enumerate;
 @end
 
 @implementation _ATXCategoricalHistogram
@@ -31,7 +31,7 @@
   [(_ATXCategoricalHistogram *)&v3 dealloc];
 }
 
-- (void)enumerate:(id)a3
+- (void)enumerate:(id)enumerate
 {
   if (self->_count)
   {
@@ -39,7 +39,7 @@
     v6 = 0;
     do
     {
-      (*(a3 + 2))(a3, LOWORD(self->_entries[v5].var1), LOWORD(self->_entries[v5].var2), self->_entries[v5].var0);
+      (*(enumerate + 2))(enumerate, LOWORD(self->_entries[v5].var1), LOWORD(self->_entries[v5].var2), self->_entries[v5].var0);
       ++v6;
       ++v5;
     }
@@ -48,9 +48,9 @@
   }
 }
 
-- (_ATXCategoricalHistogram)initWithCoder:(id)a3
+- (_ATXCategoricalHistogram)initWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = _ATXCategoricalHistogram;
   v6 = [(_ATXCategoricalHistogram *)&v19 init];
@@ -60,10 +60,10 @@
   }
 
   v7 = objc_autoreleasePoolPush();
-  v8 = [v5 decodeInt32ForKey:@"count"];
+  v8 = [coderCopy decodeInt32ForKey:@"count"];
   v6->_count = v8;
   v6->_capacity = v8;
-  v9 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"entries"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"entries"];
   if ([v9 length] != 16 * v6->_capacity)
   {
     [(_ATXCategoricalHistogram *)a2 initWithCoder:v6];
@@ -84,9 +84,9 @@ LABEL_4:
   }
 
 LABEL_5:
-  if ([v5 containsValueForKey:@"lastDates"])
+  if ([coderCopy containsValueForKey:@"lastDates"])
   {
-    v11 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"lastDates"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastDates"];
     lastDates = v6->_lastDates;
     v6->_lastDates = v11;
   }
@@ -121,17 +121,17 @@ LABEL_12:
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  [v5 encodeInt32:self->_count forKey:@"count"];
+  coderCopy = coder;
+  [coderCopy encodeInt32:self->_count forKey:@"count"];
   if (self->_entries)
   {
     v4 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytes:self->_entries length:16 * self->_count];
-    [v5 encodeObject:v4 forKey:@"entries"];
+    [coderCopy encodeObject:v4 forKey:@"entries"];
   }
 
-  [v5 encodeObject:self->_lastDates forKey:@"lastDates"];
+  [coderCopy encodeObject:self->_lastDates forKey:@"lastDates"];
 }
 
 - (void)initWithCoder:(uint64_t)a1 .cold.1(uint64_t a1, uint64_t a2)

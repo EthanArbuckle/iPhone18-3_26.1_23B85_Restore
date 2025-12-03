@@ -1,47 +1,47 @@
 @interface PLQueryStats
 + (BOOL)allowedToTrack;
 + (id)byteCountFormatter;
-+ (id)startedQueryStatsWithContext:(id)a3;
-- (PLQueryStats)initWithContext:(id)a3;
-- (id)stopRecordingDescriptionWithFetchCount:(int64_t)a3;
++ (id)startedQueryStatsWithContext:(id)context;
+- (PLQueryStats)initWithContext:(id)context;
+- (id)stopRecordingDescriptionWithFetchCount:(int64_t)count;
 @end
 
 @implementation PLQueryStats
 
-- (id)stopRecordingDescriptionWithFetchCount:(int64_t)a3
+- (id)stopRecordingDescriptionWithFetchCount:(int64_t)count
 {
-  v5 = [(NSManagedObjectContext *)self->_context databaseStatistics];
+  databaseStatistics = [(NSManagedObjectContext *)self->_context databaseStatistics];
   [(NSManagedObjectContext *)self->_context setTrackSQLiteDatabaseStatistics:1];
-  v6 = [v5 databaseStatisticsBySubtracting:self->_preStats];
+  v6 = [databaseStatistics databaseStatisticsBySubtracting:self->_preStats];
   v7 = +[PLQueryStats byteCountFormatter];
   v8 = [v7 stringFromByteCount:{objc_msgSend(v6, "totalCachePages") * objc_msgSend(v6, "pageSize")}];
 
   v9 = +[PLQueryStats byteCountFormatter];
-  if (a3 < 1)
+  if (count < 1)
   {
     v11 = 0;
   }
 
   else
   {
-    v10 = [v6 pageSize];
-    v11 = (([v6 totalCachePages] * v10) / a3);
+    pageSize = [v6 pageSize];
+    v11 = (([v6 totalCachePages] * pageSize) / count);
   }
 
   v12 = [v9 stringFromByteCount:v11];
 
-  v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Total I/O=%@, rows=%td [%@ / row]", v8, a3, v12];
+  v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Total I/O=%@, rows=%td [%@ / row]", v8, count, v12];
 
   return v13;
 }
 
-- (PLQueryStats)initWithContext:(id)a3
+- (PLQueryStats)initWithContext:(id)context
 {
-  v6 = a3;
-  if (!v6)
+  contextCopy = context;
+  if (!contextCopy)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"PLQueryStats.m" lineNumber:24 description:{@"Invalid parameter not satisfying: %@", @"context"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLQueryStats.m" lineNumber:24 description:{@"Invalid parameter not satisfying: %@", @"context"}];
   }
 
   v13.receiver = self;
@@ -50,11 +50,11 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_context, a3);
+    objc_storeStrong(&v7->_context, context);
     [(NSManagedObjectContext *)v8->_context setTrackSQLiteDatabaseStatistics:1];
-    v9 = [(NSManagedObjectContext *)v8->_context databaseStatistics];
+    databaseStatistics = [(NSManagedObjectContext *)v8->_context databaseStatistics];
     preStats = v8->_preStats;
-    v8->_preStats = v9;
+    v8->_preStats = databaseStatistics;
   }
 
   return v8;
@@ -89,8 +89,8 @@ uint64_t __34__PLQueryStats_byteCountFormatter__block_invoke()
   HasInternalDiagnostics = PFOSVariantHasInternalDiagnostics();
   if (HasInternalDiagnostics)
   {
-    v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v4 = [v3 BOOLForKey:@"enableSQLStatisticTracking"];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    v4 = [standardUserDefaults BOOLForKey:@"enableSQLStatisticTracking"];
 
     LOBYTE(HasInternalDiagnostics) = v4;
   }
@@ -98,12 +98,12 @@ uint64_t __34__PLQueryStats_byteCountFormatter__block_invoke()
   return HasInternalDiagnostics;
 }
 
-+ (id)startedQueryStatsWithContext:(id)a3
++ (id)startedQueryStatsWithContext:(id)context
 {
-  v4 = a3;
-  if (v4 && [a1 allowedToTrack])
+  contextCopy = context;
+  if (contextCopy && [self allowedToTrack])
   {
-    v5 = [[PLQueryStats alloc] initWithContext:v4];
+    v5 = [[PLQueryStats alloc] initWithContext:contextCopy];
   }
 
   else

@@ -1,25 +1,25 @@
 @interface PKPaymentDevice
 + (id)clientHardwarePlatformInfoHTTPHeader;
 + (id)clientInfoHTTPHeader;
-- (PKPaymentDevice)initWithCallbackQueue:(id)a3;
+- (PKPaymentDevice)initWithCallbackQueue:(id)queue;
 - (id)configurationData;
 - (id)trustedDeviceEnrollmentInfo;
-- (void)SEPParingInformationWithCompletion:(id)a3;
+- (void)SEPParingInformationWithCompletion:(id)completion;
 - (void)_executeDeviceMetadataFetchTasksCompletionHandlers;
-- (void)_finishLocationFixWithLocation:(id)a3;
-- (void)_populateDeviceMetadata:(id)a3 withFields:(unint64_t)a4 completion:(id)a5;
-- (void)configurationDataWithCompletionHandler:(id)a3;
+- (void)_finishLocationFixWithLocation:(id)location;
+- (void)_populateDeviceMetadata:(id)metadata withFields:(unint64_t)fields completion:(id)completion;
+- (void)configurationDataWithCompletionHandler:(id)handler;
 - (void)dealloc;
-- (void)locationManager:(id)a3 didFailWithError:(id)a4;
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4;
-- (void)paymentDeviceMetadataFields:(unint64_t)a3 completion:(id)a4;
-- (void)provisioningDataIncludingDeviceMetadata:(BOOL)a3 withCompletionHandler:(id)a4;
-- (void)queueConnectionToTrustedServiceManagerForPushTopic:(id)a3 withCompletion:(id)a4;
-- (void)registrationDataWithAuthToken:(id)a3 completionHandler:(id)a4;
-- (void)rewrapDataWithCompletionHandler:(id)a3;
-- (void)setRegistrationRegionMap:(id)a3 primaryRegionTopic:(id)a4;
-- (void)signData:(id)a3 signatureEntanglementMode:(unint64_t)a4 withCompletionHandler:(id)a5;
-- (void)signatureForAuthToken:(id)a3 completion:(id)a4;
+- (void)locationManager:(id)manager didFailWithError:(id)error;
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations;
+- (void)paymentDeviceMetadataFields:(unint64_t)fields completion:(id)completion;
+- (void)provisioningDataIncludingDeviceMetadata:(BOOL)metadata withCompletionHandler:(id)handler;
+- (void)queueConnectionToTrustedServiceManagerForPushTopic:(id)topic withCompletion:(id)completion;
+- (void)registrationDataWithAuthToken:(id)token completionHandler:(id)handler;
+- (void)rewrapDataWithCompletionHandler:(id)handler;
+- (void)setRegistrationRegionMap:(id)map primaryRegionTopic:(id)topic;
+- (void)signData:(id)data signatureEntanglementMode:(unint64_t)mode withCompletionHandler:(id)handler;
+- (void)signatureForAuthToken:(id)token completion:(id)completion;
 @end
 
 @implementation PKPaymentDevice
@@ -30,7 +30,7 @@
   block[1] = 3221225472;
   block[2] = __39__PKPaymentDevice_clientInfoHTTPHeader__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1ED6D16E0 != -1)
   {
     dispatch_once(&qword_1ED6D16E0, block);
@@ -53,9 +53,9 @@
   return v3;
 }
 
-- (PKPaymentDevice)initWithCallbackQueue:(id)a3
+- (PKPaymentDevice)initWithCallbackQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v14.receiver = self;
   v14.super_class = PKPaymentDevice;
   v6 = [(PKPaymentDevice *)&v14 init];
@@ -69,7 +69,7 @@
     metdataFetchTasks = v6->_metdataFetchTasks;
     v6->_metdataFetchTasks = v9;
 
-    objc_storeStrong(&v6->_callbackQueue, a3);
+    objc_storeStrong(&v6->_callbackQueue, queue);
     v11 = dispatch_queue_create("PKPaymentDevice", 0);
     internalQueue = v6->_internalQueue;
     v6->_internalQueue = v11;
@@ -150,11 +150,11 @@ void __55__PKPaymentDevice_clientHardwarePlatformInfoHTTPHeader__block_invoke()
   qword_1ED6D16D8 = v1;
 }
 
-- (void)queueConnectionToTrustedServiceManagerForPushTopic:(id)a3 withCompletion:(id)a4
+- (void)queueConnectionToTrustedServiceManagerForPushTopic:(id)topic withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  topicCopy = topic;
+  completionCopy = completion;
+  v8 = completionCopy;
   secureElement = self->_secureElement;
   if (secureElement)
   {
@@ -163,8 +163,8 @@ void __55__PKPaymentDevice_clientHardwarePlatformInfoHTTPHeader__block_invoke()
     v12[2] = __85__PKPaymentDevice_queueConnectionToTrustedServiceManagerForPushTopic_withCompletion___block_invoke;
     v12[3] = &unk_1E79C4888;
     v12[4] = self;
-    v13 = v7;
-    [(PKSecureElement *)secureElement connectToServerWithPushTopic:v6 completion:v12];
+    v13 = completionCopy;
+    [(PKSecureElement *)secureElement connectToServerWithPushTopic:topicCopy completion:v12];
   }
 
   else
@@ -221,19 +221,19 @@ void __85__PKPaymentDevice_queueConnectionToTrustedServiceManagerForPushTopic_wi
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)registrationDataWithAuthToken:(id)a3 completionHandler:(id)a4
+- (void)registrationDataWithAuthToken:(id)token completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  tokenCopy = token;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __67__PKPaymentDevice_registrationDataWithAuthToken_completionHandler___block_invoke;
     aBlock[3] = &unk_1E79C4D60;
-    v14 = v6;
-    v15 = self;
-    v16 = v7;
+    v14 = tokenCopy;
+    selfCopy = self;
+    v16 = handlerCopy;
     v8 = _Block_copy(aBlock);
     v9 = v8;
     secureElement = self->_secureElement;
@@ -399,11 +399,11 @@ void __67__PKPaymentDevice_registrationDataWithAuthToken_completionHandler___blo
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)signData:(id)a3 signatureEntanglementMode:(unint64_t)a4 withCompletionHandler:(id)a5
+- (void)signData:(id)data signatureEntanglementMode:(unint64_t)mode withCompletionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  if (v8)
+  dataCopy = data;
+  handlerCopy = handler;
+  if (dataCopy)
   {
     if (PKRunningInPassd() && self->_secureElement)
     {
@@ -419,8 +419,8 @@ void __67__PKPaymentDevice_registrationDataWithAuthToken_completionHandler___blo
       v15[1] = 3221225472;
       v15[2] = __76__PKPaymentDevice_signData_signatureEntanglementMode_withCompletionHandler___block_invoke;
       v15[3] = &unk_1E79C50B8;
-      v16 = v9;
-      [(PKSecureElement *)secureElement signChallenge:v8 signatureEntanglementMode:a4 completion:v15];
+      v16 = handlerCopy;
+      [(PKSecureElement *)secureElement signChallenge:dataCopy signatureEntanglementMode:mode completion:v15];
     }
 
     else
@@ -433,7 +433,7 @@ void __67__PKPaymentDevice_registrationDataWithAuthToken_completionHandler___blo
       }
 
       v13 = +[PKPassLibrary sharedInstance];
-      [v13 signData:v8 signatureEntanglementMode:a4 withCompletionHandler:v9];
+      [v13 signData:dataCopy signatureEntanglementMode:mode withCompletionHandler:handlerCopy];
     }
   }
 
@@ -446,9 +446,9 @@ void __67__PKPaymentDevice_registrationDataWithAuthToken_completionHandler___blo
       _os_log_error_impl(&dword_1AD337000, v14, OS_LOG_TYPE_ERROR, "PKPaymentDevice: signData, no challenge provided to sign", buf, 2u);
     }
 
-    if (v9)
+    if (handlerCopy)
     {
-      (*(v9 + 2))(v9, 0, 0, 0);
+      (*(handlerCopy + 2))(handlerCopy, 0, 0, 0);
     }
   }
 }
@@ -471,13 +471,13 @@ void __76__PKPaymentDevice_signData_signatureEntanglementMode_withCompletionHand
   }
 }
 
-- (void)signatureForAuthToken:(id)a3 completion:(id)a4
+- (void)signatureForAuthToken:(id)token completion:(id)completion
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  tokenCopy = token;
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (tokenCopy)
   {
     secureElement = self->_secureElement;
     if (secureElement)
@@ -486,8 +486,8 @@ void __76__PKPaymentDevice_signData_signatureEntanglementMode_withCompletionHand
       v18[1] = 3221225472;
       v18[2] = __52__PKPaymentDevice_signatureForAuthToken_completion___block_invoke;
       v18[3] = &unk_1E79C50E0;
-      v19 = v7;
-      [(PKSecureElement *)secureElement signatureForAuthToken:v6 completion:v18];
+      v19 = completionCopy;
+      [(PKSecureElement *)secureElement signatureForAuthToken:tokenCopy completion:v18];
       v10 = v19;
 LABEL_12:
 
@@ -549,18 +549,18 @@ uint64_t __52__PKPaymentDevice_signatureForAuthToken_completion___block_invoke(u
   return result;
 }
 
-- (void)rewrapDataWithCompletionHandler:(id)a3
+- (void)rewrapDataWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  handlerCopy = handler;
+  v5 = handlerCopy;
+  if (handlerCopy)
   {
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __51__PKPaymentDevice_rewrapDataWithCompletionHandler___block_invoke;
     aBlock[3] = &unk_1E79C5108;
     aBlock[4] = self;
-    v12 = v4;
+    v12 = handlerCopy;
     v6 = _Block_copy(aBlock);
     v7 = v6;
     secureElement = self->_secureElement;
@@ -636,12 +636,12 @@ void __51__PKPaymentDevice_rewrapDataWithCompletionHandler___block_invoke_411(ui
   if (!configurationData)
   {
     v4 = objc_alloc_init(PKPaymentDeviceConfigurationData);
-    v5 = [(PKSecureElement *)self->_secureElement primarySecureElementIdentifier];
-    [(PKPaymentDeviceConfigurationData *)v4 setSecureElementIdentifier:v5];
+    primarySecureElementIdentifier = [(PKSecureElement *)self->_secureElement primarySecureElementIdentifier];
+    [(PKPaymentDeviceConfigurationData *)v4 setSecureElementIdentifier:primarySecureElementIdentifier];
 
     [(PKPaymentDeviceConfigurationData *)v4 setDevSigned:[(PKSecureElement *)self->_secureElement isProductionSigned]^ 1];
-    v6 = [(PKSecureElement *)self->_secureElement primaryJSBLSequenceCounter];
-    [(PKPaymentDeviceConfigurationData *)v4 setPrimaryJSBLSequenceCounter:v6];
+    primaryJSBLSequenceCounter = [(PKSecureElement *)self->_secureElement primaryJSBLSequenceCounter];
+    [(PKPaymentDeviceConfigurationData *)v4 setPrimaryJSBLSequenceCounter:primaryJSBLSequenceCounter];
 
     v7 = self->_configurationData;
     self->_configurationData = v4;
@@ -669,8 +669,8 @@ void __51__PKPaymentDevice_rewrapDataWithCompletionHandler___block_invoke_411(ui
   secureElement = self->_secureElement;
   if (secureElement)
   {
-    v9 = [(PKSecureElement *)secureElement primarySecureElementIdentifier];
-    [(PKTrustedDeviceEnrollmentInfo *)v4 setSecureElementIdentifier:v9];
+    primarySecureElementIdentifier = [(PKSecureElement *)secureElement primarySecureElementIdentifier];
+    [(PKTrustedDeviceEnrollmentInfo *)v4 setSecureElementIdentifier:primarySecureElementIdentifier];
 
     [(PKTrustedDeviceEnrollmentInfo *)v4 setSupportsAccessExpressMode:[(PKSecureElement *)self->_secureElement supportsExpressModeForExpressPassType:2]];
   }
@@ -678,13 +678,13 @@ void __51__PKPaymentDevice_rewrapDataWithCompletionHandler___block_invoke_411(ui
   return v4;
 }
 
-- (void)provisioningDataIncludingDeviceMetadata:(BOOL)a3 withCompletionHandler:(id)a4
+- (void)provisioningDataIncludingDeviceMetadata:(BOOL)metadata withCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v6 = a4;
-  if (v6)
+  metadataCopy = metadata;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    if (v4)
+    if (metadataCopy)
     {
       v7 = 498;
     }
@@ -700,44 +700,44 @@ void __51__PKPaymentDevice_rewrapDataWithCompletionHandler___block_invoke_411(ui
     v10[2] = __81__PKPaymentDevice_provisioningDataIncludingDeviceMetadata_withCompletionHandler___block_invoke;
     v10[3] = &unk_1E79C5158;
     v11 = v8;
-    v12 = v6;
+    v12 = handlerCopy;
     v9 = v8;
     [(PKPaymentDevice *)self _populateDeviceMetadata:v9 withFields:v7 completion:v10];
   }
 }
 
-- (void)paymentDeviceMetadataFields:(unint64_t)a3 completion:(id)a4
+- (void)paymentDeviceMetadataFields:(unint64_t)fields completion:(id)completion
 {
-  v6 = a4;
-  if (v6)
+  completionCopy = completion;
+  if (completionCopy)
   {
     v7 = objc_alloc_init(PKPaymentDeviceMetadata);
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __58__PKPaymentDevice_paymentDeviceMetadataFields_completion___block_invoke;
     v8[3] = &unk_1E79C5180;
-    v9 = v6;
-    [(PKPaymentDevice *)self _populateDeviceMetadata:v7 withFields:a3 completion:v8];
+    v9 = completionCopy;
+    [(PKPaymentDevice *)self _populateDeviceMetadata:v7 withFields:fields completion:v8];
   }
 }
 
-- (void)_populateDeviceMetadata:(id)a3 withFields:(unint64_t)a4 completion:(id)a5
+- (void)_populateDeviceMetadata:(id)metadata withFields:(unint64_t)fields completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = v9;
-  if (v9)
+  metadataCopy = metadata;
+  completionCopy = completion;
+  v10 = completionCopy;
+  if (completionCopy)
   {
-    if (v8 && a4)
+    if (metadataCopy && fields)
     {
       internalQueue = self->_internalQueue;
       v13[0] = MEMORY[0x1E69E9820];
       v13[1] = 3221225472;
       v13[2] = __65__PKPaymentDevice__populateDeviceMetadata_withFields_completion___block_invoke;
       v13[3] = &unk_1E79C4D88;
-      v17 = a4;
-      v14 = v8;
-      v15 = self;
+      fieldsCopy = fields;
+      v14 = metadataCopy;
+      selfCopy = self;
       v16 = v10;
       v12 = v13;
       block[0] = MEMORY[0x1E69E9820];
@@ -750,7 +750,7 @@ void __51__PKPaymentDevice_rewrapDataWithCompletionHandler___block_invoke_411(ui
 
     else
     {
-      (*(v9 + 2))(v9, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 }
@@ -1062,28 +1062,28 @@ void __65__PKPaymentDevice__populateDeviceMetadata_withFields_completion___block
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)setRegistrationRegionMap:(id)a3 primaryRegionTopic:(id)a4
+- (void)setRegistrationRegionMap:(id)map primaryRegionTopic:(id)topic
 {
   v13 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  mapCopy = map;
+  topicCopy = topic;
   v8 = PKLogFacilityTypeGetObject(7uLL);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412546;
-    v10 = v6;
+    v10 = mapCopy;
     v11 = 2112;
-    v12 = v7;
+    v12 = topicCopy;
     _os_log_impl(&dword_1AD337000, v8, OS_LOG_TYPE_DEFAULT, "Setting registration information on Secure Element %@ primaryRegionTopic %@", &v9, 0x16u);
   }
 
-  [(PKSecureElement *)self->_secureElement setRegistrationInformation:v6 primaryRegionTopic:v7];
+  [(PKSecureElement *)self->_secureElement setRegistrationInformation:mapCopy primaryRegionTopic:topicCopy];
 }
 
-- (void)SEPParingInformationWithCompletion:(id)a3
+- (void)SEPParingInformationWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
+  completionCopy = completion;
+  v5 = completionCopy;
   secureElement = self->_secureElement;
   if (secureElement)
   {
@@ -1091,7 +1091,7 @@ void __65__PKPaymentDevice__populateDeviceMetadata_withFields_completion___block
     v9[1] = 3221225472;
     v9[2] = __54__PKPaymentDevice_SEPParingInformationWithCompletion___block_invoke;
     v9[3] = &unk_1E79C5090;
-    v10 = v4;
+    v10 = completionCopy;
     [(PKSecureElement *)secureElement SEPPairingInfoWithCompletion:v9];
   }
 
@@ -1122,11 +1122,11 @@ uint64_t __54__PKPaymentDevice_SEPParingInformationWithCompletion___block_invoke
   return result;
 }
 
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations
 {
   v32 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  locationsCopy = locations;
   v8 = PKLogFacilityTypeGetObject(7uLL);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -1138,7 +1138,7 @@ uint64_t __54__PKPaymentDevice_SEPParingInformationWithCompletion___block_invoke
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v9 = v7;
+  v9 = locationsCopy;
   v10 = [v9 countByEnumeratingWithState:&v22 objects:v31 count:16];
   v11 = v9;
   if (!v10)
@@ -1200,14 +1200,14 @@ LABEL_16:
   }
 }
 
-- (void)locationManager:(id)a3 didFailWithError:(id)a4
+- (void)locationManager:(id)manager didFailWithError:(id)error
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [a4 code];
+  managerCopy = manager;
+  code = [error code];
   v8 = PKLogFacilityTypeGetObject(7uLL);
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
-  if (v7)
+  if (code)
   {
     if (v9)
     {
@@ -1239,16 +1239,16 @@ LABEL_16:
       *buf = 138412546;
       *&buf[4] = v13;
       *&buf[12] = 2112;
-      *&buf[14] = v6;
+      *&buf[14] = managerCopy;
       _os_log_impl(&dword_1AD337000, v8, OS_LOG_TYPE_DEFAULT, "%@: Location Manager %@ unable to retreve location, will retry.", buf, 0x16u);
     }
   }
 }
 
-- (void)_finishLocationFixWithLocation:(id)a3
+- (void)_finishLocationFixWithLocation:(id)location
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  locationCopy = location;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -1269,14 +1269,14 @@ LABEL_16:
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [v10 remaningFields];
-        if ((v11 & 0x80) != 0)
+        remaningFields = [v10 remaningFields];
+        if ((remaningFields & 0x80) != 0)
         {
-          [v10 setRemaningFields:v11 & 0xFFFFFFFFFFFFFF7FLL];
-          if (v4)
+          [v10 setRemaningFields:remaningFields & 0xFFFFFFFFFFFFFF7FLL];
+          if (locationCopy)
           {
-            v12 = [v10 deviceMetadata];
-            [v12 setLocation:v4];
+            deviceMetadata = [v10 deviceMetadata];
+            [deviceMetadata setLocation:locationCopy];
           }
         }
       }
@@ -1331,16 +1331,16 @@ LABEL_16:
 
         else
         {
-          v10 = [v9 completion];
-          v11 = v10;
-          if (v10)
+          completion = [v9 completion];
+          v11 = completion;
+          if (completion)
           {
             callbackQueue = self->_callbackQueue;
             v17[0] = MEMORY[0x1E69E9820];
             v17[1] = 3221225472;
             v18[0] = __69__PKPaymentDevice__executeDeviceMetadataFetchTasksCompletionHandlers__block_invoke;
             v18[1] = &unk_1E79C44A0;
-            v13 = v10;
+            v13 = completion;
             v18[2] = v9;
             v19 = v13;
             v14 = v17;
@@ -1378,11 +1378,11 @@ void __69__PKPaymentDevice__executeDeviceMetadataFetchTasksCompletionHandlers__b
   (*(v3 + 16))(v3, v4);
 }
 
-- (void)configurationDataWithCompletionHandler:(id)a3
+- (void)configurationDataWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  handlerCopy = handler;
+  v5 = handlerCopy;
+  if (handlerCopy)
   {
     callbackQueue = self->_callbackQueue;
     v8[0] = MEMORY[0x1E69E9820];
@@ -1390,7 +1390,7 @@ void __69__PKPaymentDevice__executeDeviceMetadataFetchTasksCompletionHandlers__b
     v8[2] = __58__PKPaymentDevice_configurationDataWithCompletionHandler___block_invoke;
     v8[3] = &unk_1E79C44A0;
     v8[4] = self;
-    v9 = v4;
+    v9 = handlerCopy;
     v7 = v8;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;

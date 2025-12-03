@@ -1,42 +1,42 @@
 @interface PKPaymentNotifyIssuerAppletDirtyRequest
-- (PKPaymentNotifyIssuerAppletDirtyRequest)initWithPassSerialNumber:(id)a3 deviceAccountIdentifier:(id)a4;
-- (id)_urlRequestWithServiceURL:(id)a3 deviceIdentifier:(id)a4 appleAccountInformation:(id)a5;
+- (PKPaymentNotifyIssuerAppletDirtyRequest)initWithPassSerialNumber:(id)number deviceAccountIdentifier:(id)identifier;
+- (id)_urlRequestWithServiceURL:(id)l deviceIdentifier:(id)identifier appleAccountInformation:(id)information;
 @end
 
 @implementation PKPaymentNotifyIssuerAppletDirtyRequest
 
-- (PKPaymentNotifyIssuerAppletDirtyRequest)initWithPassSerialNumber:(id)a3 deviceAccountIdentifier:(id)a4
+- (PKPaymentNotifyIssuerAppletDirtyRequest)initWithPassSerialNumber:(id)number deviceAccountIdentifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
+  numberCopy = number;
+  identifierCopy = identifier;
   v12.receiver = self;
   v12.super_class = PKPaymentNotifyIssuerAppletDirtyRequest;
   v9 = [(PKOverlayableWebServiceRequest *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_passSerialNumber, a3);
-    objc_storeStrong(&v10->_deviceAccountIdentifier, a4);
+    objc_storeStrong(&v9->_passSerialNumber, number);
+    objc_storeStrong(&v10->_deviceAccountIdentifier, identifier);
   }
 
   return v10;
 }
 
-- (id)_urlRequestWithServiceURL:(id)a3 deviceIdentifier:(id)a4 appleAccountInformation:(id)a5
+- (id)_urlRequestWithServiceURL:(id)l deviceIdentifier:(id)identifier appleAccountInformation:(id)information
 {
   v23[5] = *MEMORY[0x1E69E9840];
   v23[0] = @"devices";
-  v23[1] = a4;
+  v23[1] = identifier;
   passSerialNumber = self->_passSerialNumber;
   v23[2] = @"passes";
   v23[3] = passSerialNumber;
   v23[4] = @"notifyIssuerAppletStateDirty";
   v9 = MEMORY[0x1E695DEC8];
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  informationCopy = information;
+  identifierCopy = identifier;
+  lCopy = l;
   v13 = [v9 arrayWithObjects:v23 count:5];
-  v14 = [(PKPaymentWebServiceRequest *)self _murlRequestWithServiceURL:v12 endpointComponents:v13 queryParameters:0 appleAccountInformation:v10];
+  v14 = [(PKPaymentWebServiceRequest *)self _murlRequestWithServiceURL:lCopy endpointComponents:v13 queryParameters:0 appleAccountInformation:informationCopy];
 
   [v14 setHTTPMethod:@"POST"];
   [v14 setCachePolicy:1];

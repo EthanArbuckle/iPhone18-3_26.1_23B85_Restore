@@ -1,25 +1,25 @@
 @interface NSUserDefaults
 - (BOOL)_ICDebugWindowEnabled;
-- (void)set_ICDebugWindowEnabled:(BOOL)a3;
+- (void)set_ICDebugWindowEnabled:(BOOL)enabled;
 @end
 
 @implementation NSUserDefaults
 
 - (BOOL)_ICDebugWindowEnabled
 {
-  v2 = self;
+  selfCopy = self;
   v3 = String._bridgeToObjectiveC()();
-  v4 = [(NSUserDefaults *)v2 BOOLForKey:v3];
+  v4 = [(NSUserDefaults *)selfCopy BOOLForKey:v3];
 
   return v4;
 }
 
-- (void)set_ICDebugWindowEnabled:(BOOL)a3
+- (void)set_ICDebugWindowEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v5 = self;
+  enabledCopy = enabled;
+  selfCopy = self;
   v4 = String._bridgeToObjectiveC()();
-  [(NSUserDefaults *)v5 setBool:v3 forKey:v4];
+  [(NSUserDefaults *)selfCopy setBool:enabledCopy forKey:v4];
 }
 
 @end

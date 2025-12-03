@@ -1,9 +1,9 @@
 @interface CMSkiTrackerInternal
 - (CMSkiTrackerInternal)init;
-- (void)_handleUpdates:(id)a3;
-- (void)_queryUpdatesFromRecord:(id)a3 handler:(id)a4;
-- (void)_startLiveUpdatesWithHandler:(id)a3;
-- (void)_startUpdatesFromRecord:(id)a3 handler:(id)a4;
+- (void)_handleUpdates:(id)updates;
+- (void)_queryUpdatesFromRecord:(id)record handler:(id)handler;
+- (void)_startLiveUpdatesWithHandler:(id)handler;
+- (void)_startUpdatesFromRecord:(id)record handler:(id)handler;
 - (void)_stopLiveUpdates;
 - (void)_stopUpdates;
 - (void)_teardown;
@@ -49,15 +49,15 @@
   self->fLocationdConnection = 0;
 }
 
-- (void)_startUpdatesFromRecord:(id)a3 handler:(id)a4
+- (void)_startUpdatesFromRecord:(id)record handler:(id)handler
 {
   fInternalQueue = self->fInternalQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = sub_19B7319D8;
   block[3] = &unk_1E7532C80;
-  block[5] = a3;
-  block[6] = a4;
+  block[5] = record;
+  block[6] = handler;
   block[4] = self;
   dispatch_async(fInternalQueue, block);
 }
@@ -73,25 +73,25 @@
   dispatch_sync(fInternalQueue, block);
 }
 
-- (void)_queryUpdatesFromRecord:(id)a3 handler:(id)a4
+- (void)_queryUpdatesFromRecord:(id)record handler:(id)handler
 {
   fInternalQueue = self->fInternalQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = sub_19B7324D0;
   block[3] = &unk_1E7532C08;
-  block[4] = a3;
+  block[4] = record;
   block[5] = self;
-  block[6] = a4;
+  block[6] = handler;
   dispatch_async(fInternalQueue, block);
 }
 
-- (void)_handleUpdates:(id)a3
+- (void)_handleUpdates:(id)updates
 {
   v137 = *MEMORY[0x1E69E9840];
-  v5 = objc_msgSend_copy(self->fHandler, a2, a3);
-  v7 = objc_msgSend_objectForKeyedSubscript_(a3, v6, @"CMErrorMessage");
-  v9 = objc_msgSend_objectForKeyedSubscript_(a3, v8, @"CMSkiKeyDataArray");
+  v5 = objc_msgSend_copy(self->fHandler, a2, updates);
+  v7 = objc_msgSend_objectForKeyedSubscript_(updates, v6, @"CMErrorMessage");
+  v9 = objc_msgSend_objectForKeyedSubscript_(updates, v8, @"CMSkiKeyDataArray");
   if (v7)
   {
     self->fStartedUpdates = 0;
@@ -301,7 +301,7 @@ LABEL_4:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_startLiveUpdatesWithHandler:(id)a3
+- (void)_startLiveUpdatesWithHandler:(id)handler
 {
   fInternalQueue = self->fInternalQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -309,7 +309,7 @@ LABEL_4:
   v4[2] = sub_19B733428;
   v4[3] = &unk_1E7532B68;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = handler;
   dispatch_async(fInternalQueue, v4);
 }
 

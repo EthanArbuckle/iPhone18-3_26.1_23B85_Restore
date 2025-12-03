@@ -1,13 +1,13 @@
 @interface DOCCollectionViewCompositionalLayout
 + (Class)layoutAttributesClass;
-- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)a3;
-- (_TtC26DocumentManagerExecutables36DOCCollectionViewCompositionalLayout)initWithSection:(id)a3;
-- (_TtC26DocumentManagerExecutables36DOCCollectionViewCompositionalLayout)initWithSection:(id)a3 configuration:(id)a4;
-- (_TtC26DocumentManagerExecutables36DOCCollectionViewCompositionalLayout)initWithSectionProvider:(id)a3;
-- (_TtC26DocumentManagerExecutables36DOCCollectionViewCompositionalLayout)initWithSectionProvider:(id)a3 configuration:(id)a4;
-- (id)layoutAttributesForElementsInRect:(CGRect)a3;
-- (id)layoutAttributesForItemAtIndexPath:(id)a3;
-- (id)layoutAttributesForSupplementaryViewOfKind:(id)a3 atIndexPath:(id)a4;
+- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)change;
+- (_TtC26DocumentManagerExecutables36DOCCollectionViewCompositionalLayout)initWithSection:(id)section;
+- (_TtC26DocumentManagerExecutables36DOCCollectionViewCompositionalLayout)initWithSection:(id)section configuration:(id)configuration;
+- (_TtC26DocumentManagerExecutables36DOCCollectionViewCompositionalLayout)initWithSectionProvider:(id)provider;
+- (_TtC26DocumentManagerExecutables36DOCCollectionViewCompositionalLayout)initWithSectionProvider:(id)provider configuration:(id)configuration;
+- (id)layoutAttributesForElementsInRect:(CGRect)rect;
+- (id)layoutAttributesForItemAtIndexPath:(id)path;
+- (id)layoutAttributesForSupplementaryViewOfKind:(id)kind atIndexPath:(id)path;
 - (void)prepareLayout;
 @end
 
@@ -22,11 +22,11 @@
 
 - (void)prepareLayout
 {
-  v2 = self;
+  selfCopy = self;
   DOCCollectionViewCompositionalLayout.prepare()();
 }
 
-- (id)layoutAttributesForItemAtIndexPath:(id)a3
+- (id)layoutAttributesForItemAtIndexPath:(id)path
 {
   ObjectType = swift_getObjectType();
   v5 = type metadata accessor for IndexPath();
@@ -34,9 +34,9 @@
   MEMORY[0x28223BE20](v5, v7);
   v9 = &v14 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = self;
+  selfCopy = self;
   isa = IndexPath._bridgeToObjectiveC()().super.isa;
-  v14.receiver = v10;
+  v14.receiver = selfCopy;
   v14.super_class = ObjectType;
   v12 = [(DOCCollectionViewCompositionalLayout *)&v14 layoutAttributesForItemAtIndexPath:isa];
 
@@ -50,13 +50,13 @@
   return v12;
 }
 
-- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)a3
+- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)change
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = change.size.height;
+  width = change.size.width;
+  y = change.origin.y;
+  x = change.origin.x;
+  selfCopy = self;
   v10.origin.x = x;
   v10.origin.y = y;
   v10.size.width = width;
@@ -66,13 +66,13 @@
   return v8;
 }
 
-- (id)layoutAttributesForElementsInRect:(CGRect)a3
+- (id)layoutAttributesForElementsInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  selfCopy = self;
   v12.origin.x = x;
   v12.origin.y = y;
   v12.size.width = width;
@@ -93,7 +93,7 @@
   return v9.super.isa;
 }
 
-- (id)layoutAttributesForSupplementaryViewOfKind:(id)a3 atIndexPath:(id)a4
+- (id)layoutAttributesForSupplementaryViewOfKind:(id)kind atIndexPath:(id)path
 {
   v5 = type metadata accessor for IndexPath();
   v6 = *(v5 - 8);
@@ -102,7 +102,7 @@
   v10 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v12 = v11;
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v13 = self;
+  selfCopy = self;
   v14 = DOCCollectionViewCompositionalLayout.layoutAttributesForSupplementaryView(ofKind:at:)(v10, v12);
 
   (*(v6 + 8))(v9, v5);
@@ -110,7 +110,7 @@
   return v14;
 }
 
-- (_TtC26DocumentManagerExecutables36DOCCollectionViewCompositionalLayout)initWithSection:(id)a3
+- (_TtC26DocumentManagerExecutables36DOCCollectionViewCompositionalLayout)initWithSection:(id)section
 {
   ObjectType = swift_getObjectType();
   v6 = self + OBJC_IVAR____TtC26DocumentManagerExecutables36DOCCollectionViewCompositionalLayout_columnData;
@@ -125,10 +125,10 @@
   swift_unknownObjectWeakInit();
   v9.receiver = self;
   v9.super_class = ObjectType;
-  return [(DOCCollectionViewCompositionalLayout *)&v9 initWithSection:a3];
+  return [(DOCCollectionViewCompositionalLayout *)&v9 initWithSection:section];
 }
 
-- (_TtC26DocumentManagerExecutables36DOCCollectionViewCompositionalLayout)initWithSection:(id)a3 configuration:(id)a4
+- (_TtC26DocumentManagerExecutables36DOCCollectionViewCompositionalLayout)initWithSection:(id)section configuration:(id)configuration
 {
   ObjectType = swift_getObjectType();
   v8 = self + OBJC_IVAR____TtC26DocumentManagerExecutables36DOCCollectionViewCompositionalLayout_columnData;
@@ -143,23 +143,23 @@
   swift_unknownObjectWeakInit();
   v11.receiver = self;
   v11.super_class = ObjectType;
-  return [(DOCCollectionViewCompositionalLayout *)&v11 initWithSection:a3 configuration:a4];
+  return [(DOCCollectionViewCompositionalLayout *)&v11 initWithSection:section configuration:configuration];
 }
 
-- (_TtC26DocumentManagerExecutables36DOCCollectionViewCompositionalLayout)initWithSectionProvider:(id)a3
+- (_TtC26DocumentManagerExecutables36DOCCollectionViewCompositionalLayout)initWithSectionProvider:(id)provider
 {
-  v3 = _Block_copy(a3);
+  v3 = _Block_copy(provider);
   v4 = swift_allocObject();
   *(v4 + 16) = v3;
   return DOCCollectionViewCompositionalLayout.init(sectionProvider:)(thunk for @escaping @callee_unowned @convention(block) (@unowned Int, @unowned NSCollectionLayoutEnvironment) -> (@autoreleased NSCollectionLayoutSection?)partial apply, v4);
 }
 
-- (_TtC26DocumentManagerExecutables36DOCCollectionViewCompositionalLayout)initWithSectionProvider:(id)a3 configuration:(id)a4
+- (_TtC26DocumentManagerExecutables36DOCCollectionViewCompositionalLayout)initWithSectionProvider:(id)provider configuration:(id)configuration
 {
-  v5 = _Block_copy(a3);
+  v5 = _Block_copy(provider);
   v6 = swift_allocObject();
   *(v6 + 16) = v5;
-  return DOCCollectionViewCompositionalLayout.init(sectionProvider:configuration:)(partial apply for thunk for @escaping @callee_unowned @convention(block) (@unowned Int, @unowned NSCollectionLayoutEnvironment) -> (@autoreleased NSCollectionLayoutSection?), v6, a4);
+  return DOCCollectionViewCompositionalLayout.init(sectionProvider:configuration:)(partial apply for thunk for @escaping @callee_unowned @convention(block) (@unowned Int, @unowned NSCollectionLayoutEnvironment) -> (@autoreleased NSCollectionLayoutSection?), v6, configuration);
 }
 
 @end

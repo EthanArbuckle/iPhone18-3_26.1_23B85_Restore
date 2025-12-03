@@ -1,13 +1,13 @@
 @interface ContextManager
 + (id)sharedInstance;
 - (ContextManager)init;
-- (id)_pathForModule:(int64_t)a3 error:(id *)a4;
-- (id)_proxiesForContext:(id)a3;
+- (id)_pathForModule:(int64_t)module error:(id *)error;
+- (id)_proxiesForContext:(id)context;
 - (id)dumpStatus;
-- (id)loadModule:(int64_t)a3 error:(id *)a4;
-- (void)_logClass:(Class)a3 tag:(id)a4;
-- (void)addContext:(id)a3;
-- (void)addContextProxy:(id)a3;
+- (id)loadModule:(int64_t)module error:(id *)error;
+- (void)_logClass:(Class)class tag:(id)tag;
+- (void)addContext:(id)context;
+- (void)addContextProxy:(id)proxy;
 @end
 
 @implementation ContextManager
@@ -51,32 +51,32 @@
   return v2;
 }
 
-- (void)addContextProxy:(id)a3
+- (void)addContextProxy:(id)proxy
 {
   contextProxyMap = self->_contextProxyMap;
-  v4 = a3;
+  proxyCopy = proxy;
   v5 = objc_opt_new();
-  [(NSMapTable *)contextProxyMap setObject:v4 forKey:v5];
+  [(NSMapTable *)contextProxyMap setObject:proxyCopy forKey:v5];
 }
 
-- (void)addContext:(id)a3
+- (void)addContext:(id)context
 {
   contextMap = self->_contextMap;
-  v4 = a3;
-  v5 = [v4 uuid];
-  [(NSMapTable *)contextMap setObject:v4 forKey:v5];
+  contextCopy = context;
+  uuid = [contextCopy uuid];
+  [(NSMapTable *)contextMap setObject:contextCopy forKey:uuid];
 }
 
-- (id)_pathForModule:(int64_t)a3 error:(id *)a4
+- (id)_pathForModule:(int64_t)module error:(id *)error
 {
-  if (a3 != 1)
+  if (module != 1)
   {
     v7 = [NSNumber numberWithInteger:?];
     v8 = [NSString stringWithFormat:@"Unknown module: %@", v7];
     v6 = [LAErrorHelper internalErrorWithMessage:v8];
 
     v5 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_6;
     }
@@ -86,11 +86,11 @@
 
   v5 = [NSString stringWithFormat:@"/System/Library/Frameworks/LocalAuthentication.framework/Support/ModulePlugins/%@.bundle", @"ModuleACM"];
   v6 = 0;
-  if (a4)
+  if (error)
   {
 LABEL_5:
     v9 = v6;
-    *a4 = v6;
+    *error = v6;
   }
 
 LABEL_6:
@@ -98,11 +98,11 @@ LABEL_6:
   return v5;
 }
 
-- (void)_logClass:(Class)a3 tag:(id)a4
+- (void)_logClass:(Class)class tag:(id)tag
 {
-  v10 = a4;
-  [ContextManager _logClass:"_logClass:tag:level:" tag:a3 level:?];
-  Superclass = class_getSuperclass(a3);
+  tagCopy = tag;
+  [ContextManager _logClass:"_logClass:tag:level:" tag:class level:?];
+  Superclass = class_getSuperclass(class);
   if (Superclass)
   {
     v7 = Superclass;
@@ -110,7 +110,7 @@ LABEL_6:
     do
     {
       v9 = v8 + 1;
-      [(ContextManager *)self _logClass:v7 tag:v10 level:?];
+      [(ContextManager *)self _logClass:v7 tag:tagCopy level:?];
       v7 = class_getSuperclass(v7);
       v8 = v9;
     }
@@ -119,24 +119,24 @@ LABEL_6:
   }
 }
 
-- (id)loadModule:(int64_t)a3 error:(id *)a4
+- (id)loadModule:(int64_t)module error:(id *)error
 {
   v7 = LALogForCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     *buf = 67109120;
-    v27 = a3;
+    moduleCopy = module;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "Loading module:%d", buf, 8u);
   }
 
   modules = self->_modules;
-  v9 = [NSNumber numberWithInteger:a3];
-  v10 = [(NSMutableDictionary *)modules objectForKeyedSubscript:v9];
+  v9 = [NSNumber numberWithInteger:module];
+  principalClass = [(NSMutableDictionary *)modules objectForKeyedSubscript:v9];
 
-  if (v10)
+  if (principalClass)
   {
     v11 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_6;
     }
@@ -145,12 +145,12 @@ LABEL_6:
   }
 
   v25 = 0;
-  v14 = [(ContextManager *)self _pathForModule:a3 error:&v25];
+  v14 = [(ContextManager *)self _pathForModule:module error:&v25];
   v11 = v25;
   if (!v14)
   {
     v16 = 0;
-    v10 = 0;
+    principalClass = 0;
     goto LABEL_27;
   }
 
@@ -161,7 +161,7 @@ LABEL_6:
     v19 = [NSString stringWithFormat:@"Failed to load plugin: %@", v14];
     v18 = [LAErrorHelper internalErrorWithMessage:v19];
 
-    v10 = 0;
+    principalClass = 0;
 LABEL_25:
 
     goto LABEL_26;
@@ -173,12 +173,12 @@ LABEL_25:
 
   if (v17)
   {
-    v10 = [v16 principalClass];
-    if (v10)
+    principalClass = [v16 principalClass];
+    if (principalClass)
     {
-      if ([v10 isSubclassOfClass:objc_opt_class()])
+      if ([principalClass isSubclassOfClass:objc_opt_class()])
       {
-        v10 = objc_opt_new();
+        principalClass = objc_opt_new();
       }
 
       else
@@ -189,20 +189,20 @@ LABEL_25:
           sub_100022EF0(v16, v14, v21);
         }
 
-        [(ContextManager *)self _logClass:v10 tag:@"cls"];
+        [(ContextManager *)self _logClass:principalClass tag:@"cls"];
         -[ContextManager _logClass:tag:](self, "_logClass:tag:", [v16 principalClass], @"bundle.principalClass");
         [(ContextManager *)self _logClass:objc_opt_class() tag:@"Module.class"];
-        v10 = objc_opt_new();
+        principalClass = objc_opt_new();
         v22 = LALogForCategory();
         if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
         {
-          sub_100022F78(v10, v22);
+          sub_100022F78(principalClass, v22);
         }
       }
 
       v23 = self->_modules;
-      v19 = [NSNumber numberWithInteger:a3];
-      [(NSMutableDictionary *)v23 setObject:v10 forKey:v19];
+      v19 = [NSNumber numberWithInteger:module];
+      [(NSMutableDictionary *)v23 setObject:principalClass forKey:v19];
     }
 
     else
@@ -216,21 +216,21 @@ LABEL_25:
     goto LABEL_25;
   }
 
-  v10 = 0;
+  principalClass = 0;
 LABEL_26:
   v11 = v18;
 LABEL_27:
 
-  if (a4)
+  if (error)
   {
 LABEL_5:
     v12 = v11;
-    *a4 = v11;
+    *error = v11;
   }
 
 LABEL_6:
 
-  return v10;
+  return principalClass;
 }
 
 - (id)dumpStatus
@@ -242,7 +242,7 @@ LABEL_6:
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v18 = self;
+  selfCopy = self;
   obj = [(NSMapTable *)self->_contextMap objectEnumerator];
   v3 = [obj countByEnumeratingWithState:&v21 objects:v27 count:16];
   if (v3)
@@ -263,18 +263,18 @@ LABEL_6:
         v8 = [v7 description];
         v26[0] = v8;
         v25[1] = @"created";
-        v9 = [v7 plugin];
-        v10 = [v9 creationTime];
-        v11 = [v19 stringFromDate:v10];
+        plugin = [v7 plugin];
+        creationTime = [plugin creationTime];
+        v11 = [v19 stringFromDate:creationTime];
         v26[1] = v11;
         v25[2] = @"proxies";
-        v12 = [(ContextManager *)v18 _proxiesForContext:v7];
+        v12 = [(ContextManager *)selfCopy _proxiesForContext:v7];
         v26[2] = v12;
         v13 = [NSDictionary dictionaryWithObjects:v26 forKeys:v25 count:3];
 
-        v14 = [v7 uuid];
-        v15 = [v14 UUIDString];
-        [v20 setObject:v13 forKey:v15];
+        uuid = [v7 uuid];
+        uUIDString = [uuid UUIDString];
+        [v20 setObject:v13 forKey:uUIDString];
       }
 
       v4 = [obj countByEnumeratingWithState:&v21 objects:v27 count:16];
@@ -286,16 +286,16 @@ LABEL_6:
   return v20;
 }
 
-- (id)_proxiesForContext:(id)a3
+- (id)_proxiesForContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = objc_opt_new();
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v6 = [(NSMapTable *)self->_contextProxyMap objectEnumerator];
-  v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  objectEnumerator = [(NSMapTable *)self->_contextProxyMap objectEnumerator];
+  v7 = [objectEnumerator countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v7)
   {
     v8 = v7;
@@ -306,13 +306,13 @@ LABEL_6:
       {
         if (*v19 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v11 = *(*(&v18 + 1) + 8 * i);
-        v12 = [v11 managedContext];
+        managedContext = [v11 managedContext];
 
-        if (v12 == v4)
+        if (managedContext == contextCopy)
         {
           v13 = +[Caller pathFromPid:](Caller, "pathFromPid:", [v11 processId]);
           v14 = v13;
@@ -332,7 +332,7 @@ LABEL_6:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v8 = [objectEnumerator countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v8);

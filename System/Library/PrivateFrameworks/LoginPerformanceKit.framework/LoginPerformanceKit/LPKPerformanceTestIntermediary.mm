@@ -1,27 +1,27 @@
 @interface LPKPerformanceTestIntermediary
-+ (BOOL)_startUserSwitchTestForType:(unint64_t)a3 count:(int64_t)a4 username:(id)a5 password:(id)a6 loginDelay:(int64_t)a7 logoutDelay:(int64_t)a8 isPerformanceTest:(BOOL)a9;
++ (BOOL)_startUserSwitchTestForType:(unint64_t)type count:(int64_t)count username:(id)username password:(id)password loginDelay:(int64_t)delay logoutDelay:(int64_t)logoutDelay isPerformanceTest:(BOOL)test;
 + (BOOL)endUserSwitchTest;
-+ (BOOL)startPerformanceTestForType:(unint64_t)a3 count:(int64_t)a4 username:(id)a5 password:(id)a6 loginDelay:(int64_t)a7 logoutDelay:(int64_t)a8;
++ (BOOL)startPerformanceTestForType:(unint64_t)type count:(int64_t)count username:(id)username password:(id)password loginDelay:(int64_t)delay logoutDelay:(int64_t)logoutDelay;
 + (id)_generateSharedipadTraceHelperCommand;
 + (id)endPerformanceTestAndDumpResults;
 + (int64_t)_disableKtrace;
 + (int64_t)_dumpKtraceResult;
 + (int64_t)_enableKtrace;
 + (void)_removeStoredValues;
-+ (void)disableRestrictionlessLoginWithCompletionHandler:(id)a3;
-+ (void)enableRestrictionlessLoginWithCompletionHandler:(id)a3;
++ (void)disableRestrictionlessLoginWithCompletionHandler:(id)handler;
++ (void)enableRestrictionlessLoginWithCompletionHandler:(id)handler;
 @end
 
 @implementation LPKPerformanceTestIntermediary
 
-+ (BOOL)startPerformanceTestForType:(unint64_t)a3 count:(int64_t)a4 username:(id)a5 password:(id)a6 loginDelay:(int64_t)a7 logoutDelay:(int64_t)a8
++ (BOOL)startPerformanceTestForType:(unint64_t)type count:(int64_t)count username:(id)username password:(id)password loginDelay:(int64_t)delay logoutDelay:(int64_t)logoutDelay
 {
-  v13 = a5;
-  v14 = a6;
+  usernameCopy = username;
+  passwordCopy = password;
   if ([MEMORY[0x277D244C0] isInternalBuild] && !+[LPKPerformanceTestIntermediary _enableKtrace](LPKPerformanceTestIntermediary, "_enableKtrace"))
   {
     LOBYTE(v17) = 1;
-    v15 = [LPKPerformanceTestIntermediary _startUserSwitchTestForType:a3 count:a4 username:v13 password:v14 loginDelay:a7 logoutDelay:a8 isPerformanceTest:v17];
+    v15 = [LPKPerformanceTestIntermediary _startUserSwitchTestForType:type count:count username:usernameCopy password:passwordCopy loginDelay:delay logoutDelay:logoutDelay isPerformanceTest:v17];
   }
 
   else
@@ -54,15 +54,15 @@
     else
     {
       NSLog(&cfstr_DeserializePer.isa);
-      v9 = [MEMORY[0x277D244D0] sharedStorage];
-      v10 = [v9 retrieveValueForKey:@"loginctlPerfTestType"];
-      v11 = [v10 integerValue];
+      mEMORY[0x277D244D0] = [MEMORY[0x277D244D0] sharedStorage];
+      v10 = [mEMORY[0x277D244D0] retrieveValueForKey:@"loginctlPerfTestType"];
+      integerValue = [v10 integerValue];
 
-      v12 = [MEMORY[0x277D244D0] sharedStorage];
-      v13 = [v12 retrieveValueForKey:@"loginctlPerfTestCount"];
-      v14 = [v13 integerValue];
+      mEMORY[0x277D244D0]2 = [MEMORY[0x277D244D0] sharedStorage];
+      v13 = [mEMORY[0x277D244D0]2 retrieveValueForKey:@"loginctlPerfTestCount"];
+      integerValue2 = [v13 integerValue];
 
-      v2 = [LPKPerfResultAnalyzer analyzePerformanceTestResult:v7 type:v11 count:v14];
+      v2 = [LPKPerfResultAnalyzer analyzePerformanceTestResult:v7 type:integerValue count:integerValue2];
       if (!+[LPKPerformanceTestIntermediary endUserSwitchTest])
       {
         NSLog(&cfstr_NoUserSwitchTe.isa);
@@ -73,13 +73,13 @@
   return v2;
 }
 
-+ (BOOL)_startUserSwitchTestForType:(unint64_t)a3 count:(int64_t)a4 username:(id)a5 password:(id)a6 loginDelay:(int64_t)a7 logoutDelay:(int64_t)a8 isPerformanceTest:(BOOL)a9
++ (BOOL)_startUserSwitchTestForType:(unint64_t)type count:(int64_t)count username:(id)username password:(id)password loginDelay:(int64_t)delay logoutDelay:(int64_t)logoutDelay isPerformanceTest:(BOOL)test
 {
   v45[4] = *MEMORY[0x277D85DE8];
-  v15 = a5;
-  v16 = a6;
-  v17 = [MEMORY[0x277D244D0] sharedStorage];
-  v18 = [v17 retrieveValueForKey:@"LPKIsLocalUserSwitchTestOngoing"];
+  usernameCopy = username;
+  passwordCopy = password;
+  mEMORY[0x277D244D0] = [MEMORY[0x277D244D0] sharedStorage];
+  v18 = [mEMORY[0x277D244D0] retrieveValueForKey:@"LPKIsLocalUserSwitchTestOngoing"];
 
   if (v18)
   {
@@ -93,22 +93,22 @@
     v41 = &v40;
     v42 = 0x2020000000;
     v43 = 1;
-    [a1 _removeStoredValues];
+    [self _removeStoredValues];
     NSLog(&cfstr_StoringTestSta.isa);
     v29 = dispatch_semaphore_create(0);
-    v30 = [MEMORY[0x277D244D0] sharedStorage];
+    mEMORY[0x277D244D0]2 = [MEMORY[0x277D244D0] sharedStorage];
     v44[0] = @"loginctlPerfTestType";
-    v20 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+    v20 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:type];
     v45[0] = v20;
     v44[1] = @"loginctlPerfTestCount";
-    v21 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+    v21 = [MEMORY[0x277CCABB0] numberWithInteger:count];
     v45[1] = v21;
     v44[2] = @"LPKLocalUserSwitchTestIsPerformanceTest";
-    v22 = [MEMORY[0x277CCABB0] numberWithBool:a9];
+    v22 = [MEMORY[0x277CCABB0] numberWithBool:test];
     v23 = v22;
     v44[3] = @"LPKLocalUserSwitchTestRetryCount";
     v24 = &unk_28683E070;
-    if (a9)
+    if (test)
     {
       v24 = &unk_28683E058;
     }
@@ -120,16 +120,16 @@
     v31[1] = 3221225472;
     v31[2] = __127__LPKPerformanceTestIntermediary__startUserSwitchTestForType_count_username_password_loginDelay_logoutDelay_isPerformanceTest___block_invoke;
     v31[3] = &unk_279827D68;
-    v32 = v15;
-    v36 = a3;
-    v37 = a4;
-    v38 = a7;
-    v39 = a8;
-    v33 = v16;
+    v32 = usernameCopy;
+    typeCopy = type;
+    countCopy = count;
+    delayCopy = delay;
+    logoutDelayCopy = logoutDelay;
+    v33 = passwordCopy;
     v35 = &v40;
     v26 = v29;
     v34 = v26;
-    [v30 saveKeyValuePairs:v25 completionHandler:v31];
+    [mEMORY[0x277D244D0]2 saveKeyValuePairs:v25 completionHandler:v31];
 
     dispatch_semaphore_wait(v26, 0xFFFFFFFFFFFFFFFFLL);
     if (v41[3])
@@ -197,40 +197,40 @@ intptr_t __127__LPKPerformanceTestIntermediary__startUserSwitchTestForType_count
 
 + (BOOL)endUserSwitchTest
 {
-  v3 = [MEMORY[0x277D244D0] sharedStorage];
-  v4 = [v3 retrieveValueForKey:@"LPKLocalUserSwitchTestHasFinishedSuccessfully"];
-  v5 = [v4 BOOLValue];
+  mEMORY[0x277D244D0] = [MEMORY[0x277D244D0] sharedStorage];
+  v4 = [mEMORY[0x277D244D0] retrieveValueForKey:@"LPKLocalUserSwitchTestHasFinishedSuccessfully"];
+  bOOLValue = [v4 BOOLValue];
 
-  [a1 _removeStoredValues];
-  v6 = [MEMORY[0x277D244B0] sharedController];
-  [v6 interruptLocalUserSwitchTest];
+  [self _removeStoredValues];
+  mEMORY[0x277D244B0] = [MEMORY[0x277D244B0] sharedController];
+  [mEMORY[0x277D244B0] interruptLocalUserSwitchTest];
 
-  return v5;
+  return bOOLValue;
 }
 
-+ (void)enableRestrictionlessLoginWithCompletionHandler:(id)a3
++ (void)enableRestrictionlessLoginWithCompletionHandler:(id)handler
 {
   v9[1] = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277D244D0];
-  v4 = a3;
-  v5 = [v3 sharedStorage];
+  handlerCopy = handler;
+  sharedStorage = [v3 sharedStorage];
   v8 = @"isRestrictionlessLoginEnabled";
   v9[0] = MEMORY[0x277CBEC38];
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v9 forKeys:&v8 count:1];
-  [v5 saveKeyValuePairs:v6 completionHandler:v4];
+  [sharedStorage saveKeyValuePairs:v6 completionHandler:handlerCopy];
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)disableRestrictionlessLoginWithCompletionHandler:(id)a3
++ (void)disableRestrictionlessLoginWithCompletionHandler:(id)handler
 {
   v8[1] = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277D244D0];
-  v4 = a3;
-  v5 = [v3 sharedStorage];
+  handlerCopy = handler;
+  sharedStorage = [v3 sharedStorage];
   v8[0] = @"isRestrictionlessLoginEnabled";
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:1];
-  [v5 clearKeys:v6 completionHandler:v4];
+  [sharedStorage clearKeys:v6 completionHandler:handlerCopy];
 
   v7 = *MEMORY[0x277D85DE8];
 }
@@ -239,7 +239,7 @@ intptr_t __127__LPKPerformanceTestIntermediary__startUserSwitchTestForType_count
 {
   v9[11] = *MEMORY[0x277D85DE8];
   v2 = dispatch_semaphore_create(0);
-  v3 = [MEMORY[0x277D244D0] sharedStorage];
+  mEMORY[0x277D244D0] = [MEMORY[0x277D244D0] sharedStorage];
   v9[0] = @"LPKIsLocalUserSwitchTestOngoing";
   v9[1] = @"LPKLocalUserSwitchTestType";
   v9[2] = @"LPKLocalUserSwitchTestRemainCycleCount";
@@ -258,7 +258,7 @@ intptr_t __127__LPKPerformanceTestIntermediary__startUserSwitchTestForType_count
   v7[3] = &unk_279827D90;
   v8 = v2;
   v5 = v2;
-  [v3 clearKeys:v4 completionHandler:v7];
+  [mEMORY[0x277D244D0] clearKeys:v4 completionHandler:v7];
 
   dispatch_semaphore_wait(v5, 0xFFFFFFFFFFFFFFFFLL);
   v6 = *MEMORY[0x277D85DE8];
@@ -310,8 +310,8 @@ intptr_t __127__LPKPerformanceTestIntermediary__startUserSwitchTestForType_count
   NSLog(&cfstr_DumpPerfResult.isa, v3);
   if (!v4)
   {
-    v5 = [a1 _generateSharedipadTraceHelperCommand];
-    v6 = system([v5 UTF8String]);
+    _generateSharedipadTraceHelperCommand = [self _generateSharedipadTraceHelperCommand];
+    v6 = system([_generateSharedipadTraceHelperCommand UTF8String]);
 
     NSLog(&cfstr_GenerateSignpo.isa, v6);
     if (!v6)

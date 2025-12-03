@@ -4,20 +4,20 @@
 + (UIFont)labelFont;
 + (UITraitCollection)traitCollectionForImagePreferredContentSizeCategory;
 + (UITraitCollection)traitCollectionForLabelPreferredContentSizeCategory;
-+ (double)_layoutViewSideLengthScaledFromDefaultLength:(double)a3 labelContentSizeCategory:(id)a4;
++ (double)_layoutViewSideLengthScaledFromDefaultLength:(double)length labelContentSizeCategory:(id)category;
 + (double)defaultSideLength;
-+ (double)layoutViewSideLengthScaledFromDefaultLength:(double)a3;
-+ (id)_preferredContentSizeCategoryCappedByMinimumContentSizeCategory:(id)a3 maximumContentSizeCategory:(id)a4;
-+ (id)_traitCollectionForMinimumContentSizeCategory:(id)a3 maximumContentSizeCategory:(id)a4;
++ (double)layoutViewSideLengthScaledFromDefaultLength:(double)length;
++ (id)_preferredContentSizeCategoryCappedByMinimumContentSizeCategory:(id)category maximumContentSizeCategory:(id)sizeCategory;
++ (id)_traitCollectionForMinimumContentSizeCategory:(id)category maximumContentSizeCategory:(id)sizeCategory;
 + (void)labelMaximumContentSizeCategory;
-- (id)_setUpConstraintsForPreferredPositionsForItems:(id)a3 positions:(id)a4;
-- (id)_setUpConstraintsToAlignItems:(id)a3 rows:(id)a4 columns:(id)a5;
-- (id)_setUpConstraintsToAvoidCollisions:(id)a3 rows:(id)a4 columns:(id)a5 clockwiseOctagonalLocations:(id)a6;
-- (void)_enableAutoLayoutForAllItems:(id)a3;
-- (void)_enumerateListsOfLocations:(id)a3 items:(id)a4 withBlock:(id)a5;
-- (void)centerItems:(id)a3 withView:(id)a4;
-- (void)layoutItemsByLocation:(id)a3 hasBackButton:(BOOL)a4;
-- (void)layoutItemsByLocation:(id)a3 positions:(id)a4 rows:(id)a5 columns:(id)a6 clockwiseOctagonalLocations:(id)a7 horizontallyCenteredLocation:(id)a8;
+- (id)_setUpConstraintsForPreferredPositionsForItems:(id)items positions:(id)positions;
+- (id)_setUpConstraintsToAlignItems:(id)items rows:(id)rows columns:(id)columns;
+- (id)_setUpConstraintsToAvoidCollisions:(id)collisions rows:(id)rows columns:(id)columns clockwiseOctagonalLocations:(id)locations;
+- (void)_enableAutoLayoutForAllItems:(id)items;
+- (void)_enumerateListsOfLocations:(id)locations items:(id)items withBlock:(id)block;
+- (void)centerItems:(id)items withView:(id)view;
+- (void)layoutItemsByLocation:(id)location hasBackButton:(BOOL)button;
+- (void)layoutItemsByLocation:(id)location positions:(id)positions rows:(id)rows columns:(id)columns clockwiseOctagonalLocations:(id)locations horizontallyCenteredLocation:(id)centeredLocation;
 @end
 
 @implementation AXAssistiveTouchLayoutView
@@ -34,33 +34,33 @@
   return result;
 }
 
-+ (double)layoutViewSideLengthScaledFromDefaultLength:(double)a3
++ (double)layoutViewSideLengthScaledFromDefaultLength:(double)length
 {
-  v5 = [a1 labelMinimumContentSizeCategory];
-  v6 = [a1 labelMaximumContentSizeCategory];
-  v7 = [a1 _preferredContentSizeCategoryCappedByMinimumContentSizeCategory:v5 maximumContentSizeCategory:v6];
-  [a1 _layoutViewSideLengthScaledFromDefaultLength:v7 labelContentSizeCategory:a3];
+  labelMinimumContentSizeCategory = [self labelMinimumContentSizeCategory];
+  labelMaximumContentSizeCategory = [self labelMaximumContentSizeCategory];
+  v7 = [self _preferredContentSizeCategoryCappedByMinimumContentSizeCategory:labelMinimumContentSizeCategory maximumContentSizeCategory:labelMaximumContentSizeCategory];
+  [self _layoutViewSideLengthScaledFromDefaultLength:v7 labelContentSizeCategory:length];
   v9 = v8;
 
   return v9;
 }
 
-+ (double)_layoutViewSideLengthScaledFromDefaultLength:(double)a3 labelContentSizeCategory:(id)a4
++ (double)_layoutViewSideLengthScaledFromDefaultLength:(double)length labelContentSizeCategory:(id)category
 {
-  v6 = a4;
-  v7 = [a1 fontMetrics];
-  v8 = [MEMORY[0x1E69DD1B8] traitCollectionWithPreferredContentSizeCategory:v6];
-  [v7 scaledValueForValue:v8 compatibleWithTraitCollection:a3];
+  categoryCopy = category;
+  fontMetrics = [self fontMetrics];
+  v8 = [MEMORY[0x1E69DD1B8] traitCollectionWithPreferredContentSizeCategory:categoryCopy];
+  [fontMetrics scaledValueForValue:v8 compatibleWithTraitCollection:length];
   v10 = v9;
 
-  v11 = [a1 _imageMaximumContentSizeCategoryIndependentOfLabel];
-  v12 = UIContentSizeCategoryCompareToCategory(v6, v11);
+  _imageMaximumContentSizeCategoryIndependentOfLabel = [self _imageMaximumContentSizeCategoryIndependentOfLabel];
+  v12 = UIContentSizeCategoryCompareToCategory(categoryCopy, _imageMaximumContentSizeCategoryIndependentOfLabel);
 
   if (v12 == NSOrderedDescending)
   {
-    v13 = [a1 fontMetrics];
-    v14 = [MEMORY[0x1E69DD1B8] traitCollectionWithPreferredContentSizeCategory:v11];
-    [v13 scaledValueForValue:v14 compatibleWithTraitCollection:a3];
+    fontMetrics2 = [self fontMetrics];
+    v14 = [MEMORY[0x1E69DD1B8] traitCollectionWithPreferredContentSizeCategory:_imageMaximumContentSizeCategoryIndependentOfLabel];
+    [fontMetrics2 scaledValueForValue:v14 compatibleWithTraitCollection:length];
     v16 = v15;
 
     v10 = v16 + (v10 - v16) / 3.0;
@@ -78,7 +78,7 @@
   if (Width > 0.0)
   {
     v5 = Width;
-    [a1 minimumOuterPadding];
+    [self minimumOuterPadding];
     v7 = labelMaximumContentSizeCategory_cachedMaximumContentSizeCategory;
     if (!labelMaximumContentSizeCategory_cachedMaximumContentSizeCategory)
     {
@@ -118,8 +118,8 @@ LABEL_5:
           }
 
           v20 = *(*(&v25 + 1) + 8 * v19);
-          [a1 defaultSideLength];
-          [a1 _layoutViewSideLengthScaledFromDefaultLength:v20 labelContentSizeCategory:?];
+          [self defaultSideLength];
+          [self _layoutViewSideLengthScaledFromDefaultLength:v20 labelContentSizeCategory:?];
           if (v21 > v17)
           {
             break;
@@ -163,32 +163,32 @@ LABEL_5:
 
 + (NSString)imageMaximumContentSizeCategory
 {
-  v3 = [a1 labelMaximumContentSizeCategory];
-  v4 = [a1 _imageMaximumContentSizeCategoryIndependentOfLabel];
-  v5 = AXUIContentSizeCategoryMin(v3, v4);
+  labelMaximumContentSizeCategory = [self labelMaximumContentSizeCategory];
+  _imageMaximumContentSizeCategoryIndependentOfLabel = [self _imageMaximumContentSizeCategoryIndependentOfLabel];
+  v5 = AXUIContentSizeCategoryMin(labelMaximumContentSizeCategory, _imageMaximumContentSizeCategoryIndependentOfLabel);
 
   return v5;
 }
 
-+ (id)_preferredContentSizeCategoryCappedByMinimumContentSizeCategory:(id)a3 maximumContentSizeCategory:(id)a4
++ (id)_preferredContentSizeCategoryCappedByMinimumContentSizeCategory:(id)category maximumContentSizeCategory:(id)sizeCategory
 {
   v5 = MEMORY[0x1E69DC668];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v5 sharedApplication];
-  v9 = [v8 preferredContentSizeCategory];
+  sizeCategoryCopy = sizeCategory;
+  categoryCopy = category;
+  sharedApplication = [v5 sharedApplication];
+  preferredContentSizeCategory = [sharedApplication preferredContentSizeCategory];
 
-  v10 = AXUIContentSizeCategoryMax(v9, v7);
+  v10 = AXUIContentSizeCategoryMax(preferredContentSizeCategory, categoryCopy);
 
-  v11 = AXUIContentSizeCategoryMin(v10, v6);
+  v11 = AXUIContentSizeCategoryMin(v10, sizeCategoryCopy);
 
   return v11;
 }
 
-+ (id)_traitCollectionForMinimumContentSizeCategory:(id)a3 maximumContentSizeCategory:(id)a4
++ (id)_traitCollectionForMinimumContentSizeCategory:(id)category maximumContentSizeCategory:(id)sizeCategory
 {
   v4 = MEMORY[0x1E69DD1B8];
-  v5 = [a1 _preferredContentSizeCategoryCappedByMinimumContentSizeCategory:a3 maximumContentSizeCategory:a4];
+  v5 = [self _preferredContentSizeCategoryCappedByMinimumContentSizeCategory:category maximumContentSizeCategory:sizeCategory];
   v6 = [v4 traitCollectionWithPreferredContentSizeCategory:v5];
 
   return v6;
@@ -196,18 +196,18 @@ LABEL_5:
 
 + (UITraitCollection)traitCollectionForLabelPreferredContentSizeCategory
 {
-  v3 = [a1 labelMinimumContentSizeCategory];
-  v4 = [a1 labelMaximumContentSizeCategory];
-  v5 = [a1 _traitCollectionForMinimumContentSizeCategory:v3 maximumContentSizeCategory:v4];
+  labelMinimumContentSizeCategory = [self labelMinimumContentSizeCategory];
+  labelMaximumContentSizeCategory = [self labelMaximumContentSizeCategory];
+  v5 = [self _traitCollectionForMinimumContentSizeCategory:labelMinimumContentSizeCategory maximumContentSizeCategory:labelMaximumContentSizeCategory];
 
   return v5;
 }
 
 + (UITraitCollection)traitCollectionForImagePreferredContentSizeCategory
 {
-  v3 = [a1 imageMinimumContentSizeCategory];
-  v4 = [a1 imageMaximumContentSizeCategory];
-  v5 = [a1 _traitCollectionForMinimumContentSizeCategory:v3 maximumContentSizeCategory:v4];
+  imageMinimumContentSizeCategory = [self imageMinimumContentSizeCategory];
+  imageMaximumContentSizeCategory = [self imageMaximumContentSizeCategory];
+  v5 = [self _traitCollectionForMinimumContentSizeCategory:imageMinimumContentSizeCategory maximumContentSizeCategory:imageMaximumContentSizeCategory];
 
   return v5;
 }
@@ -233,21 +233,21 @@ LABEL_5:
     [v4 _lightSystemFontOfSize:v6];
   }
   v7 = ;
-  v8 = [a1 fontMetrics];
-  v9 = [a1 traitCollectionForLabelPreferredContentSizeCategory];
-  v10 = [v8 scaledFontForFont:v7 compatibleWithTraitCollection:v9];
+  fontMetrics = [self fontMetrics];
+  traitCollectionForLabelPreferredContentSizeCategory = [self traitCollectionForLabelPreferredContentSizeCategory];
+  v10 = [fontMetrics scaledFontForFont:v7 compatibleWithTraitCollection:traitCollectionForLabelPreferredContentSizeCategory];
 
   return v10;
 }
 
-- (void)layoutItemsByLocation:(id)a3 hasBackButton:(BOOL)a4
+- (void)layoutItemsByLocation:(id)location hasBackButton:(BOOL)button
 {
-  v45 = a4;
+  buttonCopy = button;
   v77 = *MEMORY[0x1E69E9840];
-  v56 = a3;
-  [v56 count];
+  locationCopy = location;
+  [locationCopy count];
   v5 = AXAssistiveTouchNamedLayout();
-  v6 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v59 = 0u;
   v60 = 0u;
   v61 = 0u;
@@ -271,7 +271,7 @@ LABEL_5:
         v13 = MEMORY[0x1E696B098];
         AXAssitiveTouchPosition();
         v14 = [v13 valueWithCGPoint:?];
-        [v6 setObject:v14 forKeyedSubscript:v12];
+        [dictionary setObject:v14 forKeyedSubscript:v12];
       }
 
       v9 = [v7 countByEnumeratingWithState:&v59 objects:v76 count:16];
@@ -290,7 +290,7 @@ LABEL_5:
   v17 = v75;
   v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v74 count:3];
   v19 = v18;
-  v55 = self;
+  selfCopy = self;
   v48 = v17;
   if ((v5 - 5) > 1)
   {
@@ -352,7 +352,7 @@ LABEL_5:
     v34 = v23;
     v35 = v23;
     v36 = v57;
-    v37 = v56;
+    v37 = locationCopy;
     v38 = v50;
 LABEL_15:
     v32[1] = v36;
@@ -374,14 +374,14 @@ LABEL_15:
     v63 = v57;
     v32 = &v63;
     v36 = v57;
-    v37 = v56;
+    v37 = locationCopy;
     v38 = v50;
     v35 = v46;
     goto LABEL_15;
   }
 
   v39 = 0;
-  v37 = v56;
+  v37 = locationCopy;
   v40 = v50;
 LABEL_17:
   v41 = 0;
@@ -415,7 +415,7 @@ LABEL_19:
     if (v5 == 1)
     {
       v42 = *MEMORY[0x1E6989490];
-      if (v45)
+      if (buttonCopy)
       {
         v42 = v26;
       }
@@ -425,51 +425,51 @@ LABEL_19:
   }
 
 LABEL_29:
-  [(AXAssistiveTouchLayoutView *)v55 layoutItemsByLocation:v37 positions:v6 rows:v52 columns:v31 clockwiseOctagonalLocations:v39 horizontallyCenteredLocation:v41];
+  [(AXAssistiveTouchLayoutView *)selfCopy layoutItemsByLocation:v37 positions:dictionary rows:v52 columns:v31 clockwiseOctagonalLocations:v39 horizontallyCenteredLocation:v41];
 }
 
-- (void)layoutItemsByLocation:(id)a3 positions:(id)a4 rows:(id)a5 columns:(id)a6 clockwiseOctagonalLocations:(id)a7 horizontallyCenteredLocation:(id)a8
+- (void)layoutItemsByLocation:(id)location positions:(id)positions rows:(id)rows columns:(id)columns clockwiseOctagonalLocations:(id)locations horizontallyCenteredLocation:(id)centeredLocation
 {
-  v32 = a3;
-  v14 = a8;
-  v15 = a7;
-  v16 = a6;
-  v17 = a5;
-  v18 = a4;
-  v19 = [v32 allValues];
-  [(AXAssistiveTouchLayoutView *)self _enableAutoLayoutForAllItems:v19];
+  locationCopy = location;
+  centeredLocationCopy = centeredLocation;
+  locationsCopy = locations;
+  columnsCopy = columns;
+  rowsCopy = rows;
+  positionsCopy = positions;
+  allValues = [locationCopy allValues];
+  [(AXAssistiveTouchLayoutView *)self _enableAutoLayoutForAllItems:allValues];
 
-  v20 = [(AXAssistiveTouchLayoutView *)self itemConstraints];
+  itemConstraints = [(AXAssistiveTouchLayoutView *)self itemConstraints];
 
-  if (v20)
+  if (itemConstraints)
   {
     v21 = MEMORY[0x1E696ACD8];
-    v22 = [(AXAssistiveTouchLayoutView *)self itemConstraints];
-    [v21 deactivateConstraints:v22];
+    itemConstraints2 = [(AXAssistiveTouchLayoutView *)self itemConstraints];
+    [v21 deactivateConstraints:itemConstraints2];
 
     [(AXAssistiveTouchLayoutView *)self setItemConstraints:0];
   }
 
-  v23 = [MEMORY[0x1E695DF70] array];
-  v24 = [(AXAssistiveTouchLayoutView *)self _setUpConstraintsForPreferredPositionsForItems:v32 positions:v18];
+  array = [MEMORY[0x1E695DF70] array];
+  v24 = [(AXAssistiveTouchLayoutView *)self _setUpConstraintsForPreferredPositionsForItems:locationCopy positions:positionsCopy];
 
-  [v23 addObjectsFromArray:v24];
-  v25 = [(AXAssistiveTouchLayoutView *)self _setUpConstraintsToAlignItems:v32 rows:v17 columns:v16];
-  [v23 addObjectsFromArray:v25];
+  [array addObjectsFromArray:v24];
+  v25 = [(AXAssistiveTouchLayoutView *)self _setUpConstraintsToAlignItems:locationCopy rows:rowsCopy columns:columnsCopy];
+  [array addObjectsFromArray:v25];
 
-  v26 = [(AXAssistiveTouchLayoutView *)self _setUpConstraintsToAvoidCollisions:v32 rows:v17 columns:v16 clockwiseOctagonalLocations:v15];
+  v26 = [(AXAssistiveTouchLayoutView *)self _setUpConstraintsToAvoidCollisions:locationCopy rows:rowsCopy columns:columnsCopy clockwiseOctagonalLocations:locationsCopy];
 
-  [v23 addObjectsFromArray:v26];
-  if (v14)
+  [array addObjectsFromArray:v26];
+  if (centeredLocationCopy)
   {
-    v27 = [v32 objectForKeyedSubscript:v14];
+    v27 = [locationCopy objectForKeyedSubscript:centeredLocationCopy];
     v28 = v27;
     if (v27)
     {
-      v29 = [v27 centerXAnchor];
-      v30 = [(AXAssistiveTouchLayoutView *)self centerXAnchor];
-      v31 = [v29 constraintEqualToAnchor:v30];
-      [v23 addObject:v31];
+      centerXAnchor = [v27 centerXAnchor];
+      centerXAnchor2 = [(AXAssistiveTouchLayoutView *)self centerXAnchor];
+      v31 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
+      [array addObject:v31];
     }
 
     else
@@ -478,21 +478,21 @@ LABEL_29:
     }
   }
 
-  [MEMORY[0x1E696ACD8] activateConstraints:v23];
-  [(AXAssistiveTouchLayoutView *)self setItemConstraints:v23];
+  [MEMORY[0x1E696ACD8] activateConstraints:array];
+  [(AXAssistiveTouchLayoutView *)self setItemConstraints:array];
 }
 
-- (id)_setUpConstraintsForPreferredPositionsForItems:(id)a3 positions:(id)a4
+- (id)_setUpConstraintsForPreferredPositionsForItems:(id)items positions:(id)positions
 {
   v68 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v44 = a4;
+  itemsCopy = items;
+  positionsCopy = positions;
   v61 = 0u;
   v62 = 0u;
   v63 = 0u;
   v64 = 0u;
-  v7 = [(AXAssistiveTouchLayoutView *)self positioningLayoutGuides];
-  v8 = [v7 countByEnumeratingWithState:&v61 objects:v67 count:16];
+  positioningLayoutGuides = [(AXAssistiveTouchLayoutView *)self positioningLayoutGuides];
+  v8 = [positioningLayoutGuides countByEnumeratingWithState:&v61 objects:v67 count:16];
   if (v8)
   {
     v9 = v8;
@@ -503,32 +503,32 @@ LABEL_29:
       {
         if (*v62 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(positioningLayoutGuides);
         }
 
         [(AXAssistiveTouchLayoutView *)self removeLayoutGuide:*(*(&v61 + 1) + 8 * i)];
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v61 objects:v67 count:16];
+      v9 = [positioningLayoutGuides countByEnumeratingWithState:&v61 objects:v67 count:16];
     }
 
     while (v9);
   }
 
-  v12 = [MEMORY[0x1E695DF70] array];
-  [(AXAssistiveTouchLayoutView *)self setPositioningLayoutGuides:v12];
+  array = [MEMORY[0x1E695DF70] array];
+  [(AXAssistiveTouchLayoutView *)self setPositioningLayoutGuides:array];
 
-  v43 = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   v57 = 0u;
   v58 = 0u;
   v59 = 0u;
   v60 = 0u;
-  obj = v6;
+  obj = itemsCopy;
   v45 = [obj countByEnumeratingWithState:&v57 objects:v66 count:16];
   if (v45)
   {
     v41 = *v58;
-    v42 = self;
+    selfCopy = self;
     do
     {
       v13 = 0;
@@ -543,54 +543,54 @@ LABEL_29:
         v14 = *(*(&v57 + 1) + 8 * v13);
         v15 = objc_alloc_init(MEMORY[0x1E69DCC20]);
         [(AXAssistiveTouchLayoutView *)self addLayoutGuide:v15];
-        v16 = [(AXAssistiveTouchLayoutView *)self positioningLayoutGuides];
-        [v16 addObject:v15];
+        positioningLayoutGuides2 = [(AXAssistiveTouchLayoutView *)self positioningLayoutGuides];
+        [positioningLayoutGuides2 addObject:v15];
 
         v17 = [obj objectForKeyedSubscript:v14];
-        v18 = [v44 objectForKeyedSubscript:v14];
+        v18 = [positionsCopy objectForKeyedSubscript:v14];
         [v18 CGPointValue];
         v20 = v19;
         v22 = v21;
 
-        v23 = [v15 widthAnchor];
-        v24 = [(AXAssistiveTouchLayoutView *)self widthAnchor];
-        v25 = [v23 constraintEqualToAnchor:v24 multiplier:v20];
+        widthAnchor = [v15 widthAnchor];
+        widthAnchor2 = [(AXAssistiveTouchLayoutView *)self widthAnchor];
+        v25 = [widthAnchor constraintEqualToAnchor:widthAnchor2 multiplier:v20];
 
         LODWORD(v26) = 1131937792;
         [v25 setPriority:v26];
-        v27 = [v15 heightAnchor];
-        v28 = [(AXAssistiveTouchLayoutView *)self heightAnchor];
-        v29 = [v27 constraintEqualToAnchor:v28 multiplier:v22];
+        heightAnchor = [v15 heightAnchor];
+        heightAnchor2 = [(AXAssistiveTouchLayoutView *)self heightAnchor];
+        v29 = [heightAnchor constraintEqualToAnchor:heightAnchor2 multiplier:v22];
 
         v52 = v29;
         LODWORD(v30) = 1131937792;
         [v29 setPriority:v30];
-        v55 = [v15 topAnchor];
-        v54 = [(AXAssistiveTouchLayoutView *)self topAnchor];
-        v53 = [v55 constraintEqualToAnchor:v54];
+        topAnchor = [v15 topAnchor];
+        topAnchor2 = [(AXAssistiveTouchLayoutView *)self topAnchor];
+        v53 = [topAnchor constraintEqualToAnchor:topAnchor2];
         v65[0] = v53;
         [v15 bottomAnchor];
         v50 = v49 = v17;
         v31 = v17;
-        v51 = [v17 imageView];
-        v48 = [v51 centerYAnchor];
-        v47 = [v50 constraintEqualToAnchor:v48];
+        imageView = [v17 imageView];
+        centerYAnchor = [imageView centerYAnchor];
+        v47 = [v50 constraintEqualToAnchor:centerYAnchor];
         v65[1] = v47;
         v65[2] = v29;
-        v32 = [v15 leftAnchor];
-        v33 = [(AXAssistiveTouchLayoutView *)self leftAnchor];
-        v34 = [v32 constraintEqualToAnchor:v33];
+        leftAnchor = [v15 leftAnchor];
+        leftAnchor2 = [(AXAssistiveTouchLayoutView *)self leftAnchor];
+        v34 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
         v65[3] = v34;
-        v35 = [v15 rightAnchor];
-        v36 = [v31 imageView];
-        v37 = [v36 centerXAnchor];
-        v38 = [v35 constraintEqualToAnchor:v37];
+        rightAnchor = [v15 rightAnchor];
+        imageView2 = [v31 imageView];
+        centerXAnchor = [imageView2 centerXAnchor];
+        v38 = [rightAnchor constraintEqualToAnchor:centerXAnchor];
         v65[4] = v38;
         v65[5] = v25;
         v39 = [MEMORY[0x1E695DEC8] arrayWithObjects:v65 count:6];
-        [v43 addObjectsFromArray:v39];
+        [array2 addObjectsFromArray:v39];
 
-        self = v42;
+        self = selfCopy;
         v13 = v56 + 1;
       }
 
@@ -601,20 +601,20 @@ LABEL_29:
     while (v45);
   }
 
-  return v43;
+  return array2;
 }
 
-- (void)_enumerateListsOfLocations:(id)a3 items:(id)a4 withBlock:(id)a5
+- (void)_enumerateListsOfLocations:(id)locations items:(id)items withBlock:(id)block
 {
   v35 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  locationsCopy = locations;
+  itemsCopy = items;
+  blockCopy = block;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v23 = [v7 countByEnumeratingWithState:&v29 objects:v34 count:16];
+  v23 = [locationsCopy countByEnumeratingWithState:&v29 objects:v34 count:16];
   if (v23)
   {
     v22 = *v30;
@@ -625,7 +625,7 @@ LABEL_29:
       {
         if (*v30 != v22)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(locationsCopy);
         }
 
         v24 = v10;
@@ -654,7 +654,7 @@ LABEL_29:
               objc_enumerationMutation(v12);
             }
 
-            v18 = [v8 objectForKeyedSubscript:*(*(&v25 + 1) + 8 * i)];
+            v18 = [itemsCopy objectForKeyedSubscript:*(*(&v25 + 1) + 8 * i)];
             v19 = v18;
             if (v18)
             {
@@ -676,7 +676,7 @@ LABEL_29:
 
             else
             {
-              v9[2](v9, v15, v18);
+              blockCopy[2](blockCopy, v15, v18);
             }
 
             v21 = v19;
@@ -695,27 +695,27 @@ LABEL_22:
       }
 
       while (v24 + 1 != v23);
-      v23 = [v7 countByEnumeratingWithState:&v29 objects:v34 count:16];
+      v23 = [locationsCopy countByEnumeratingWithState:&v29 objects:v34 count:16];
     }
 
     while (v23);
   }
 }
 
-- (id)_setUpConstraintsToAlignItems:(id)a3 rows:(id)a4 columns:(id)a5
+- (id)_setUpConstraintsToAlignItems:(id)items rows:(id)rows columns:(id)columns
 {
   v8 = MEMORY[0x1E695DF70];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [v8 array];
+  columnsCopy = columns;
+  rowsCopy = rows;
+  itemsCopy = items;
+  array = [v8 array];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __73__AXAssistiveTouchLayoutView__setUpConstraintsToAlignItems_rows_columns___block_invoke;
   v20[3] = &unk_1E812E6C8;
-  v13 = v12;
+  v13 = array;
   v21 = v13;
-  [(AXAssistiveTouchLayoutView *)self _enumerateListsOfLocations:v10 items:v11 withBlock:v20];
+  [(AXAssistiveTouchLayoutView *)self _enumerateListsOfLocations:rowsCopy items:itemsCopy withBlock:v20];
 
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
@@ -723,7 +723,7 @@ LABEL_22:
   v18[3] = &unk_1E812E6C8;
   v14 = v13;
   v19 = v14;
-  [(AXAssistiveTouchLayoutView *)self _enumerateListsOfLocations:v9 items:v11 withBlock:v18];
+  [(AXAssistiveTouchLayoutView *)self _enumerateListsOfLocations:columnsCopy items:itemsCopy withBlock:v18];
 
   v15 = v19;
   v16 = v14;
@@ -757,21 +757,21 @@ void __73__AXAssistiveTouchLayoutView__setUpConstraintsToAlignItems_rows_columns
   [v4 addObject:v9];
 }
 
-- (id)_setUpConstraintsToAvoidCollisions:(id)a3 rows:(id)a4 columns:(id)a5 clockwiseOctagonalLocations:(id)a6
+- (id)_setUpConstraintsToAvoidCollisions:(id)collisions rows:(id)rows columns:(id)columns clockwiseOctagonalLocations:(id)locations
 {
   v130 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v110 = a4;
-  v109 = a5;
-  v108 = a6;
-  v11 = [MEMORY[0x1E695DF70] array];
+  collisionsCopy = collisions;
+  rowsCopy = rows;
+  columnsCopy = columns;
+  locationsCopy = locations;
+  array = [MEMORY[0x1E695DF70] array];
   v120 = 0u;
   v121 = 0u;
   v122 = 0u;
   v123 = 0u;
-  v111 = v10;
-  v12 = [v10 allValues];
-  v13 = [v12 countByEnumeratingWithState:&v120 objects:v129 count:16];
+  v111 = collisionsCopy;
+  allValues = [collisionsCopy allValues];
+  v13 = [allValues countByEnumeratingWithState:&v120 objects:v129 count:16];
   if (v13)
   {
     v14 = v13;
@@ -782,22 +782,22 @@ void __73__AXAssistiveTouchLayoutView__setUpConstraintsToAlignItems_rows_columns
       {
         if (*v121 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(allValues);
         }
 
         v17 = *(*(&v120 + 1) + 8 * i);
-        v18 = [v17 leadingAnchor];
-        v19 = [(AXAssistiveTouchLayoutView *)self leadingAnchor];
-        v20 = [v18 constraintGreaterThanOrEqualToSystemSpacingAfterAnchor:v19 multiplier:1.0];
-        [v11 addObject:v20];
+        leadingAnchor = [v17 leadingAnchor];
+        leadingAnchor2 = [(AXAssistiveTouchLayoutView *)self leadingAnchor];
+        v20 = [leadingAnchor constraintGreaterThanOrEqualToSystemSpacingAfterAnchor:leadingAnchor2 multiplier:1.0];
+        [array addObject:v20];
 
-        v21 = [(AXAssistiveTouchLayoutView *)self trailingAnchor];
-        v22 = [v17 trailingAnchor];
-        v23 = [v21 constraintGreaterThanOrEqualToSystemSpacingAfterAnchor:v22 multiplier:1.0];
-        [v11 addObject:v23];
+        trailingAnchor = [(AXAssistiveTouchLayoutView *)self trailingAnchor];
+        trailingAnchor2 = [v17 trailingAnchor];
+        v23 = [trailingAnchor constraintGreaterThanOrEqualToSystemSpacingAfterAnchor:trailingAnchor2 multiplier:1.0];
+        [array addObject:v23];
       }
 
-      v14 = [v12 countByEnumeratingWithState:&v120 objects:v129 count:16];
+      v14 = [allValues countByEnumeratingWithState:&v120 objects:v129 count:16];
     }
 
     while (v14);
@@ -807,8 +807,8 @@ void __73__AXAssistiveTouchLayoutView__setUpConstraintsToAlignItems_rows_columns
   v119 = 0u;
   v116 = 0u;
   v117 = 0u;
-  v24 = [v111 allValues];
-  v25 = [v24 countByEnumeratingWithState:&v116 objects:v128 count:16];
+  allValues2 = [v111 allValues];
+  v25 = [allValues2 countByEnumeratingWithState:&v116 objects:v128 count:16];
   if (v25)
   {
     v26 = v25;
@@ -819,22 +819,22 @@ void __73__AXAssistiveTouchLayoutView__setUpConstraintsToAlignItems_rows_columns
       {
         if (*v117 != v27)
         {
-          objc_enumerationMutation(v24);
+          objc_enumerationMutation(allValues2);
         }
 
         v29 = *(*(&v116 + 1) + 8 * j);
-        v30 = [v29 topAnchor];
-        v31 = [(AXAssistiveTouchLayoutView *)self topAnchor];
-        v32 = [v30 constraintGreaterThanOrEqualToSystemSpacingBelowAnchor:v31 multiplier:1.0];
-        [v11 addObject:v32];
+        topAnchor = [v29 topAnchor];
+        topAnchor2 = [(AXAssistiveTouchLayoutView *)self topAnchor];
+        v32 = [topAnchor constraintGreaterThanOrEqualToSystemSpacingBelowAnchor:topAnchor2 multiplier:1.0];
+        [array addObject:v32];
 
-        v33 = [(AXAssistiveTouchLayoutView *)self bottomAnchor];
-        v34 = [v29 bottomAnchor];
-        v35 = [v33 constraintGreaterThanOrEqualToSystemSpacingBelowAnchor:v34 multiplier:1.0];
-        [v11 addObject:v35];
+        bottomAnchor = [(AXAssistiveTouchLayoutView *)self bottomAnchor];
+        bottomAnchor2 = [v29 bottomAnchor];
+        v35 = [bottomAnchor constraintGreaterThanOrEqualToSystemSpacingBelowAnchor:bottomAnchor2 multiplier:1.0];
+        [array addObject:v35];
       }
 
-      v26 = [v24 countByEnumeratingWithState:&v116 objects:v128 count:16];
+      v26 = [allValues2 countByEnumeratingWithState:&v116 objects:v128 count:16];
     }
 
     while (v26);
@@ -844,47 +844,47 @@ void __73__AXAssistiveTouchLayoutView__setUpConstraintsToAlignItems_rows_columns
   v114[1] = 3221225472;
   v114[2] = __106__AXAssistiveTouchLayoutView__setUpConstraintsToAvoidCollisions_rows_columns_clockwiseOctagonalLocations___block_invoke;
   v114[3] = &unk_1E812E6C8;
-  v36 = v11;
+  v36 = array;
   v115 = v36;
-  [(AXAssistiveTouchLayoutView *)self _enumerateListsOfLocations:v110 items:v111 withBlock:v114];
+  [(AXAssistiveTouchLayoutView *)self _enumerateListsOfLocations:rowsCopy items:v111 withBlock:v114];
   v112[0] = MEMORY[0x1E69E9820];
   v112[1] = 3221225472;
   v112[2] = __106__AXAssistiveTouchLayoutView__setUpConstraintsToAvoidCollisions_rows_columns_clockwiseOctagonalLocations___block_invoke_2;
   v112[3] = &unk_1E812E6C8;
   v37 = v36;
   v113 = v37;
-  [(AXAssistiveTouchLayoutView *)self _enumerateListsOfLocations:v109 items:v111 withBlock:v112];
-  v38 = v108;
-  if (v108)
+  [(AXAssistiveTouchLayoutView *)self _enumerateListsOfLocations:columnsCopy items:v111 withBlock:v112];
+  v38 = locationsCopy;
+  if (locationsCopy)
   {
-    if ([v108 count] != 8)
+    if ([locationsCopy count] != 8)
     {
       _AXAssert();
     }
 
     v107 = v37;
-    v39 = [v108 objectAtIndexedSubscript:0];
+    v39 = [locationsCopy objectAtIndexedSubscript:0];
     v40 = [v111 objectForKeyedSubscript:v39];
 
-    v41 = [v108 objectAtIndexedSubscript:1];
+    v41 = [locationsCopy objectAtIndexedSubscript:1];
     v106 = [v111 objectForKeyedSubscript:v41];
 
-    v42 = [v108 objectAtIndexedSubscript:2];
+    v42 = [locationsCopy objectAtIndexedSubscript:2];
     v104 = [v111 objectForKeyedSubscript:v42];
 
-    v43 = [v108 objectAtIndexedSubscript:3];
+    v43 = [locationsCopy objectAtIndexedSubscript:3];
     v102 = [v111 objectForKeyedSubscript:v43];
 
-    v44 = [v108 objectAtIndexedSubscript:4];
+    v44 = [locationsCopy objectAtIndexedSubscript:4];
     v101 = [v111 objectForKeyedSubscript:v44];
 
-    v45 = [v108 objectAtIndexedSubscript:5];
+    v45 = [locationsCopy objectAtIndexedSubscript:5];
     v105 = [v111 objectForKeyedSubscript:v45];
 
-    v46 = [v108 objectAtIndexedSubscript:6];
+    v46 = [locationsCopy objectAtIndexedSubscript:6];
     v103 = [v111 objectForKeyedSubscript:v46];
 
-    v47 = [v108 objectAtIndexedSubscript:7];
+    v47 = [locationsCopy objectAtIndexedSubscript:7];
     v48 = v40;
     v49 = [v111 objectForKeyedSubscript:v47];
 
@@ -892,17 +892,17 @@ void __73__AXAssistiveTouchLayoutView__setUpConstraintsToAlignItems_rows_columns
     v100 = v48;
     if (v48 && v49)
     {
-      v95 = [v48 label];
-      v50 = [v95 leftAnchor];
-      v51 = [v49 imageViewContainerView];
-      v52 = [v51 rightAnchor];
-      v53 = [v50 constraintGreaterThanOrEqualToAnchor:v52];
+      label = [v48 label];
+      leftAnchor = [label leftAnchor];
+      imageViewContainerView = [v49 imageViewContainerView];
+      rightAnchor = [imageViewContainerView rightAnchor];
+      v53 = [leftAnchor constraintGreaterThanOrEqualToAnchor:rightAnchor];
       v127[0] = v53;
-      v54 = [v100 label];
-      v55 = [v54 bottomAnchor];
-      v56 = [v49 label];
-      v57 = [v56 topAnchor];
-      v58 = [v55 constraintLessThanOrEqualToAnchor:v57];
+      label2 = [v100 label];
+      bottomAnchor3 = [label2 bottomAnchor];
+      label3 = [v49 label];
+      topAnchor3 = [label3 topAnchor];
+      v58 = [bottomAnchor3 constraintLessThanOrEqualToAnchor:topAnchor3];
       v127[1] = v58;
       v59 = [MEMORY[0x1E695DEC8] arrayWithObjects:v127 count:2];
       [v107 addObjectsFromArray:v59];
@@ -910,17 +910,17 @@ void __73__AXAssistiveTouchLayoutView__setUpConstraintsToAlignItems_rows_columns
 
     if (v106 && v104)
     {
-      v60 = [v106 label];
-      v96 = [v60 rightAnchor];
-      v61 = [v104 imageViewContainerView];
-      v62 = [v61 leftAnchor];
-      v63 = [v96 constraintLessThanOrEqualToAnchor:v62];
+      label4 = [v106 label];
+      rightAnchor2 = [label4 rightAnchor];
+      imageViewContainerView2 = [v104 imageViewContainerView];
+      leftAnchor2 = [imageViewContainerView2 leftAnchor];
+      v63 = [rightAnchor2 constraintLessThanOrEqualToAnchor:leftAnchor2];
       v126[0] = v63;
-      v64 = [v106 label];
-      v65 = [v64 bottomAnchor];
-      v66 = [v104 label];
-      v67 = [v66 topAnchor];
-      v68 = [v65 constraintLessThanOrEqualToAnchor:v67];
+      label5 = [v106 label];
+      bottomAnchor4 = [label5 bottomAnchor];
+      label6 = [v104 label];
+      topAnchor4 = [label6 topAnchor];
+      v68 = [bottomAnchor4 constraintLessThanOrEqualToAnchor:topAnchor4];
       v126[1] = v68;
       v69 = [MEMORY[0x1E695DEC8] arrayWithObjects:v126 count:2];
       [v107 addObjectsFromArray:v69];
@@ -928,17 +928,17 @@ void __73__AXAssistiveTouchLayoutView__setUpConstraintsToAlignItems_rows_columns
 
     if (v105 && v103)
     {
-      v70 = [v103 label];
-      v97 = [v70 rightAnchor];
-      v71 = [v105 imageViewContainerView];
-      v72 = [v71 leftAnchor];
-      v73 = [v97 constraintLessThanOrEqualToAnchor:v72];
+      label7 = [v103 label];
+      rightAnchor3 = [label7 rightAnchor];
+      imageViewContainerView3 = [v105 imageViewContainerView];
+      leftAnchor3 = [imageViewContainerView3 leftAnchor];
+      v73 = [rightAnchor3 constraintLessThanOrEqualToAnchor:leftAnchor3];
       v125[0] = v73;
-      v74 = [v103 label];
-      v75 = [v74 bottomAnchor];
-      v76 = [v105 label];
-      v77 = [v76 topAnchor];
-      v78 = [v75 constraintLessThanOrEqualToAnchor:v77];
+      label8 = [v103 label];
+      bottomAnchor5 = [label8 bottomAnchor];
+      label9 = [v105 label];
+      topAnchor5 = [label9 topAnchor];
+      v78 = [bottomAnchor5 constraintLessThanOrEqualToAnchor:topAnchor5];
       v125[1] = v78;
       v79 = [MEMORY[0x1E695DEC8] arrayWithObjects:v125 count:2];
       [v107 addObjectsFromArray:v79];
@@ -948,17 +948,17 @@ void __73__AXAssistiveTouchLayoutView__setUpConstraintsToAlignItems_rows_columns
     v80 = v102;
     if (v101 && v102)
     {
-      v82 = [v102 label];
-      v98 = [v82 leftAnchor];
-      v83 = [v101 imageViewContainerView];
-      v84 = [v83 rightAnchor];
-      v85 = [v98 constraintGreaterThanOrEqualToAnchor:v84];
+      label10 = [v102 label];
+      leftAnchor4 = [label10 leftAnchor];
+      imageViewContainerView4 = [v101 imageViewContainerView];
+      rightAnchor4 = [imageViewContainerView4 rightAnchor];
+      v85 = [leftAnchor4 constraintGreaterThanOrEqualToAnchor:rightAnchor4];
       v124[0] = v85;
-      v86 = [v102 label];
-      v87 = [v86 bottomAnchor];
-      v88 = [v101 label];
-      v89 = [v88 topAnchor];
-      v90 = [v87 constraintLessThanOrEqualToAnchor:v89];
+      label11 = [v102 label];
+      bottomAnchor6 = [label11 bottomAnchor];
+      label12 = [v101 label];
+      topAnchor6 = [label12 topAnchor];
+      v90 = [bottomAnchor6 constraintLessThanOrEqualToAnchor:topAnchor6];
       v124[1] = v90;
       v91 = [MEMORY[0x1E695DEC8] arrayWithObjects:v124 count:2];
       [v107 addObjectsFromArray:v91];
@@ -968,7 +968,7 @@ void __73__AXAssistiveTouchLayoutView__setUpConstraintsToAlignItems_rows_columns
     }
 
     v37 = v107;
-    v38 = v108;
+    v38 = locationsCopy;
   }
 
   v92 = v113;
@@ -1010,30 +1010,30 @@ void __106__AXAssistiveTouchLayoutView__setUpConstraintsToAvoidCollisions_rows_c
   [*(a1 + 32) addObject:v15];
 }
 
-- (void)centerItems:(id)a3 withView:(id)a4
+- (void)centerItems:(id)items withView:(id)view
 {
   v33 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  [(AXAssistiveTouchLayoutView *)self _enableAutoLayoutForAllItems:v6];
-  v8 = [(AXAssistiveTouchLayoutView *)self itemConstraints];
+  itemsCopy = items;
+  viewCopy = view;
+  [(AXAssistiveTouchLayoutView *)self _enableAutoLayoutForAllItems:itemsCopy];
+  itemConstraints = [(AXAssistiveTouchLayoutView *)self itemConstraints];
 
-  if (v8)
+  if (itemConstraints)
   {
     v9 = MEMORY[0x1E696ACD8];
-    v10 = [(AXAssistiveTouchLayoutView *)self itemConstraints];
-    [v9 deactivateConstraints:v10];
+    itemConstraints2 = [(AXAssistiveTouchLayoutView *)self itemConstraints];
+    [v9 deactivateConstraints:itemConstraints2];
 
     [(AXAssistiveTouchLayoutView *)self setItemConstraints:0];
   }
 
-  v27 = self;
-  v11 = [MEMORY[0x1E695DF70] array];
+  selfCopy = self;
+  array = [MEMORY[0x1E695DF70] array];
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v12 = v6;
+  v12 = itemsCopy;
   v13 = [v12 countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v13)
   {
@@ -1049,19 +1049,19 @@ void __106__AXAssistiveTouchLayoutView__setUpConstraintsToAvoidCollisions_rows_c
         }
 
         v17 = *(*(&v28 + 1) + 8 * i);
-        v18 = [v17 window];
+        window = [v17 window];
 
-        if (v18)
+        if (window)
         {
-          v19 = [v17 centerXAnchor];
-          v20 = [v7 centerXAnchor];
-          v21 = [v19 constraintEqualToAnchor:v20];
-          [v11 addObject:v21];
+          centerXAnchor = [v17 centerXAnchor];
+          centerXAnchor2 = [viewCopy centerXAnchor];
+          v21 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
+          [array addObject:v21];
 
-          v22 = [v17 centerYAnchor];
-          v23 = [v7 centerYAnchor];
-          v24 = [v22 constraintEqualToAnchor:v23];
-          [v11 addObject:v24];
+          centerYAnchor = [v17 centerYAnchor];
+          centerYAnchor2 = [viewCopy centerYAnchor];
+          v24 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
+          [array addObject:v24];
         }
       }
 
@@ -1071,21 +1071,21 @@ void __106__AXAssistiveTouchLayoutView__setUpConstraintsToAvoidCollisions_rows_c
     while (v14);
   }
 
-  [(AXAssistiveTouchLayoutView *)v27 setItemConstraints:v11];
+  [(AXAssistiveTouchLayoutView *)selfCopy setItemConstraints:array];
   v25 = MEMORY[0x1E696ACD8];
-  v26 = [(AXAssistiveTouchLayoutView *)v27 itemConstraints];
-  [v25 activateConstraints:v26];
+  itemConstraints3 = [(AXAssistiveTouchLayoutView *)selfCopy itemConstraints];
+  [v25 activateConstraints:itemConstraints3];
 }
 
-- (void)_enableAutoLayoutForAllItems:(id)a3
+- (void)_enableAutoLayoutForAllItems:(id)items
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  itemsCopy = items;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  v4 = [itemsCopy countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1096,41 +1096,41 @@ void __106__AXAssistiveTouchLayoutView__setUpConstraintsToAvoidCollisions_rows_c
       {
         if (*v24 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(itemsCopy);
         }
 
         v8 = *(*(&v23 + 1) + 8 * i);
         [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
-        v9 = [v8 imageView];
+        imageView = [v8 imageView];
         LODWORD(v10) = 1148846080;
-        [v9 setContentCompressionResistancePriority:0 forAxis:v10];
+        [imageView setContentCompressionResistancePriority:0 forAxis:v10];
 
-        v11 = [v8 imageView];
+        imageView2 = [v8 imageView];
         LODWORD(v12) = 1148846080;
-        [v11 setContentCompressionResistancePriority:1 forAxis:v12];
+        [imageView2 setContentCompressionResistancePriority:1 forAxis:v12];
 
-        v13 = [v8 label];
+        label = [v8 label];
         LODWORD(v14) = 1148846080;
-        [v13 setContentCompressionResistancePriority:1 forAxis:v14];
+        [label setContentCompressionResistancePriority:1 forAxis:v14];
 
-        v15 = [v8 imageView];
+        imageView3 = [v8 imageView];
         LODWORD(v16) = 1148846080;
-        [v15 setContentHuggingPriority:0 forAxis:v16];
+        [imageView3 setContentHuggingPriority:0 forAxis:v16];
 
-        v17 = [v8 imageView];
+        imageView4 = [v8 imageView];
         LODWORD(v18) = 1148846080;
-        [v17 setContentHuggingPriority:1 forAxis:v18];
+        [imageView4 setContentHuggingPriority:1 forAxis:v18];
 
-        v19 = [v8 label];
+        label2 = [v8 label];
         LODWORD(v20) = 1148846080;
-        [v19 setContentHuggingPriority:0 forAxis:v20];
+        [label2 setContentHuggingPriority:0 forAxis:v20];
 
-        v21 = [v8 label];
+        label3 = [v8 label];
         LODWORD(v22) = 1148846080;
-        [v21 setContentHuggingPriority:1 forAxis:v22];
+        [label3 setContentHuggingPriority:1 forAxis:v22];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v5 = [itemsCopy countByEnumeratingWithState:&v23 objects:v27 count:16];
     }
 
     while (v5);

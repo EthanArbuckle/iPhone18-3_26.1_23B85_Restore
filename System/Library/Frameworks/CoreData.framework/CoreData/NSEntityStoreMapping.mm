@@ -1,35 +1,35 @@
 @interface NSEntityStoreMapping
-- (BOOL)isEqual:(id)a3;
-- (NSEntityStoreMapping)initWithEntity:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (NSEntityStoreMapping)initWithEntity:(id)entity;
 - (id)description;
 - (uint64_t)setPropertyMappings:(uint64_t)result;
 - (void)dealloc;
-- (void)setPrimaryKeys:(uint64_t)a1;
+- (void)setPrimaryKeys:(uint64_t)keys;
 @end
 
 @implementation NSEntityStoreMapping
 
-- (NSEntityStoreMapping)initWithEntity:(id)a3
+- (NSEntityStoreMapping)initWithEntity:(id)entity
 {
   v5 = +[NSStoreMappingGenerator defaultMappingGenerator];
-  v6 = [a3 name];
+  name = [entity name];
   if (v5)
   {
-    v7 = [v6 uppercaseString];
+    uppercaseString = [name uppercaseString];
   }
 
   else
   {
-    v7 = 0;
+    uppercaseString = 0;
   }
 
   v13.receiver = self;
   v13.super_class = NSEntityStoreMapping;
-  v8 = [(NSStoreMapping *)&v13 initWithExternalName:v7];
+  v8 = [(NSStoreMapping *)&v13 initWithExternalName:uppercaseString];
   v9 = v8;
   if (v8)
   {
-    v8->_entity = a3;
+    v8->_entity = entity;
     propertyMappings = v8->_propertyMappings;
     if (propertyMappings)
     {
@@ -69,15 +69,15 @@
   return result;
 }
 
-- (void)setPrimaryKeys:(uint64_t)a1
+- (void)setPrimaryKeys:(uint64_t)keys
 {
-  if (a1)
+  if (keys)
   {
-    if (*(a1 + 32) != a2)
+    if (*(keys + 32) != a2)
     {
       v3 = [a2 copy];
 
-      *(a1 + 32) = v3;
+      *(keys + 32) = v3;
     }
   }
 }
@@ -118,30 +118,30 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v13.receiver = self;
   v13.super_class = NSEntityStoreMapping;
   v5 = [(NSStoreMapping *)&v13 isEqual:?];
   if (v5)
   {
-    v6 = [(NSEntityStoreMapping *)self entity];
-    if (v6 == [a3 entity] || (v5 = objc_msgSend(-[NSEntityStoreMapping entity](self, "entity"), "isEqual:", objc_msgSend(a3, "entity"))) != 0)
+    entity = [(NSEntityStoreMapping *)self entity];
+    if (entity == [equal entity] || (v5 = objc_msgSend(-[NSEntityStoreMapping entity](self, "entity"), "isEqual:", objc_msgSend(equal, "entity"))) != 0)
     {
-      v7 = [(NSEntityStoreMapping *)self propertyMappings];
-      if (v7 == [a3 propertyMappings] || (v5 = objc_msgSend(-[NSEntityStoreMapping propertyMappings](self, "propertyMappings"), "isEqual:", objc_msgSend(a3, "propertyMappings"))) != 0)
+      propertyMappings = [(NSEntityStoreMapping *)self propertyMappings];
+      if (propertyMappings == [equal propertyMappings] || (v5 = objc_msgSend(-[NSEntityStoreMapping propertyMappings](self, "propertyMappings"), "isEqual:", objc_msgSend(equal, "propertyMappings"))) != 0)
       {
-        v8 = [(NSEntityStoreMapping *)self primaryKeys];
-        if (v8 == [a3 primaryKeys] || (v5 = objc_msgSend(-[NSEntityStoreMapping primaryKeys](self, "primaryKeys"), "isEqual:", objc_msgSend(a3, "primaryKeys"))) != 0)
+        primaryKeys = [(NSEntityStoreMapping *)self primaryKeys];
+        if (primaryKeys == [equal primaryKeys] || (v5 = objc_msgSend(-[NSEntityStoreMapping primaryKeys](self, "primaryKeys"), "isEqual:", objc_msgSend(equal, "primaryKeys"))) != 0)
         {
-          v9 = [(NSEntityStoreMapping *)self isSingleTableEntity];
-          if (v9 == [a3 isSingleTableEntity])
+          isSingleTableEntity = [(NSEntityStoreMapping *)self isSingleTableEntity];
+          if (isSingleTableEntity == [equal isSingleTableEntity])
           {
-            v10 = [(NSEntityStoreMapping *)self subentityColumn];
-            if (v10 == [a3 subentityColumn] || (v5 = objc_msgSend(-[NSEntityStoreMapping subentityColumn](self, "subentityColumn"), "isEqual:", objc_msgSend(a3, "subentityColumn"))) != 0)
+            subentityColumn = [(NSEntityStoreMapping *)self subentityColumn];
+            if (subentityColumn == [equal subentityColumn] || (v5 = objc_msgSend(-[NSEntityStoreMapping subentityColumn](self, "subentityColumn"), "isEqual:", objc_msgSend(equal, "subentityColumn"))) != 0)
             {
-              v11 = [(NSEntityStoreMapping *)self subentityID];
-              LOBYTE(v5) = v11 == [a3 subentityID];
+              subentityID = [(NSEntityStoreMapping *)self subentityID];
+              LOBYTE(v5) = subentityID == [equal subentityID];
             }
           }
 

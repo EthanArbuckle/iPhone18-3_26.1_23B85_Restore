@@ -1,20 +1,20 @@
 @interface ICTTVectorMultiTimestamp
-- (BOOL)isEqual:(id)a3;
-- (ICTTVectorMultiTimestamp)initWithArchive:(const void *)a3 andCapacity:(unint64_t)a4;
-- (ICTTVectorMultiTimestamp)initWithCapacity:(unint64_t)a3;
-- (ICTTVectorMultiTimestamp)initWithData:(id)a3 andCapacity:(unint64_t)a4;
-- (ICTTVectorMultiTimestamp)initWithTimestamps:(id)a3;
-- (id)clockElementForUUID:(id)a3 atIndex:(unint64_t)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (ICTTVectorMultiTimestamp)initWithArchive:(const void *)archive andCapacity:(unint64_t)capacity;
+- (ICTTVectorMultiTimestamp)initWithCapacity:(unint64_t)capacity;
+- (ICTTVectorMultiTimestamp)initWithData:(id)data andCapacity:(unint64_t)capacity;
+- (ICTTVectorMultiTimestamp)initWithTimestamps:(id)timestamps;
+- (id)clockElementForUUID:(id)d atIndex:(unint64_t)index;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)serialize;
 - (id)sortedUUIDs;
-- (unint64_t)clockForUUID:(id)a3 atIndex:(unint64_t)a4;
-- (unint64_t)compareTo:(id)a3;
-- (void)mergeWithTimestamp:(id)a3;
-- (void)saveToArchive:(void *)a3;
-- (void)setClock:(unint64_t)a3 forUUID:(id)a4 atIndex:(unint64_t)a5;
-- (void)setClock:(unint64_t)a3 subclock:(unint64_t)a4 forUUID:(id)a5 atIndex:(unint64_t)a6;
+- (unint64_t)clockForUUID:(id)d atIndex:(unint64_t)index;
+- (unint64_t)compareTo:(id)to;
+- (void)mergeWithTimestamp:(id)timestamp;
+- (void)saveToArchive:(void *)archive;
+- (void)setClock:(unint64_t)clock forUUID:(id)d atIndex:(unint64_t)index;
+- (void)setClock:(unint64_t)clock subclock:(unint64_t)subclock forUUID:(id)d atIndex:(unint64_t)index;
 @end
 
 @implementation ICTTVectorMultiTimestamp
@@ -29,29 +29,29 @@
     for (i = 0; i != v5; ++i)
     {
       v7 = [(NSArray *)self->_timestamps objectAtIndexedSubscript:i];
-      v8 = [v7 allUUIDs];
-      [v3 addObjectsFromArray:v8];
+      allUUIDs = [v7 allUUIDs];
+      [v3 addObjectsFromArray:allUUIDs];
     }
   }
 
-  v9 = [v3 allObjects];
-  v10 = [v9 sortedArrayUsingSelector:sel_TTCompare_];
+  allObjects = [v3 allObjects];
+  v10 = [allObjects sortedArrayUsingSelector:sel_TTCompare_];
 
   return v10;
 }
 
-- (ICTTVectorMultiTimestamp)initWithCapacity:(unint64_t)a3
+- (ICTTVectorMultiTimestamp)initWithCapacity:(unint64_t)capacity
 {
   v10.receiver = self;
   v10.super_class = ICTTVectorMultiTimestamp;
   v4 = [(ICTTVectorMultiTimestamp *)&v10 init];
   if (v4)
   {
-    v5 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:a3];
+    v5 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:capacity];
     timestamps = v4->_timestamps;
     v4->_timestamps = v5;
 
-    if (a3)
+    if (capacity)
     {
       v7 = 0;
       do
@@ -62,22 +62,22 @@
         ++v7;
       }
 
-      while (a3 != v7);
+      while (capacity != v7);
     }
   }
 
   return v4;
 }
 
-- (ICTTVectorMultiTimestamp)initWithTimestamps:(id)a3
+- (ICTTVectorMultiTimestamp)initWithTimestamps:(id)timestamps
 {
-  v4 = a3;
+  timestampsCopy = timestamps;
   v9.receiver = self;
   v9.super_class = ICTTVectorMultiTimestamp;
   v5 = [(ICTTVectorMultiTimestamp *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [timestampsCopy copy];
     timestamps = v5->_timestamps;
     v5->_timestamps = v6;
   }
@@ -85,61 +85,61 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[ICTTVectorMultiTimestamp allocWithZone:?], "initWithCapacity:", [(NSArray *)self->_timestamps count]];
   [(ICTTVectorMultiTimestamp *)v4 mergeWithTimestamp:self];
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(ICTTVectorMultiTimestamp *)self compareTo:v4]== 0;
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(ICTTVectorMultiTimestamp *)self compareTo:equalCopy]== 0;
 
   return v5;
 }
 
-- (id)clockElementForUUID:(id)a3 atIndex:(unint64_t)a4
+- (id)clockElementForUUID:(id)d atIndex:(unint64_t)index
 {
   timestamps = self->_timestamps;
-  v6 = a3;
-  v7 = [(NSArray *)timestamps objectAtIndexedSubscript:a4];
-  v8 = [v7 clockElementForUUID:v6];
+  dCopy = d;
+  v7 = [(NSArray *)timestamps objectAtIndexedSubscript:index];
+  v8 = [v7 clockElementForUUID:dCopy];
 
   return v8;
 }
 
-- (unint64_t)clockForUUID:(id)a3 atIndex:(unint64_t)a4
+- (unint64_t)clockForUUID:(id)d atIndex:(unint64_t)index
 {
   timestamps = self->_timestamps;
-  v6 = a3;
-  v7 = [(NSArray *)timestamps objectAtIndexedSubscript:a4];
-  v8 = [v7 clockForUUID:v6];
+  dCopy = d;
+  v7 = [(NSArray *)timestamps objectAtIndexedSubscript:index];
+  v8 = [v7 clockForUUID:dCopy];
 
   return v8;
 }
 
-- (void)setClock:(unint64_t)a3 forUUID:(id)a4 atIndex:(unint64_t)a5
+- (void)setClock:(unint64_t)clock forUUID:(id)d atIndex:(unint64_t)index
 {
   timestamps = self->_timestamps;
-  v8 = a4;
-  v9 = [(NSArray *)timestamps objectAtIndexedSubscript:a5];
-  [v9 setClock:a3 forUUID:v8];
+  dCopy = d;
+  v9 = [(NSArray *)timestamps objectAtIndexedSubscript:index];
+  [v9 setClock:clock forUUID:dCopy];
 }
 
-- (void)setClock:(unint64_t)a3 subclock:(unint64_t)a4 forUUID:(id)a5 atIndex:(unint64_t)a6
+- (void)setClock:(unint64_t)clock subclock:(unint64_t)subclock forUUID:(id)d atIndex:(unint64_t)index
 {
   timestamps = self->_timestamps;
-  v10 = a5;
-  v11 = [(NSArray *)timestamps objectAtIndexedSubscript:a6];
-  [v11 setClock:a3 subclock:a4 forUUID:v10];
+  dCopy = d;
+  v11 = [(NSArray *)timestamps objectAtIndexedSubscript:index];
+  [v11 setClock:clock subclock:subclock forUUID:dCopy];
 }
 
-- (unint64_t)compareTo:(id)a3
+- (unint64_t)compareTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   v5 = [(NSArray *)self->_timestamps count];
   if (v5)
   {
@@ -148,8 +148,8 @@
     for (i = 0; i != v6; ++i)
     {
       v9 = [(NSArray *)self->_timestamps objectAtIndexedSubscript:i];
-      v10 = [v4 timestamps];
-      v11 = [v10 objectAtIndexedSubscript:i];
+      timestamps = [toCopy timestamps];
+      v11 = [timestamps objectAtIndexedSubscript:i];
       v7 |= [v9 compareTo:v11];
 
       if (v7 == 5)
@@ -167,9 +167,9 @@
   return v7;
 }
 
-- (void)mergeWithTimestamp:(id)a3
+- (void)mergeWithTimestamp:(id)timestamp
 {
-  v10 = a3;
+  timestampCopy = timestamp;
   v4 = [(NSArray *)self->_timestamps count];
   if (v4)
   {
@@ -177,8 +177,8 @@
     for (i = 0; i != v5; ++i)
     {
       v7 = [(NSArray *)self->_timestamps objectAtIndexedSubscript:i];
-      v8 = [v10 timestamps];
-      v9 = [v8 objectAtIndexedSubscript:i];
+      timestamps = [timestampCopy timestamps];
+      v9 = [timestamps objectAtIndexedSubscript:i];
       [v7 mergeWithTimestamp:v9];
     }
   }
@@ -194,16 +194,16 @@
   return v6;
 }
 
-- (ICTTVectorMultiTimestamp)initWithData:(id)a3 andCapacity:(unint64_t)a4
+- (ICTTVectorMultiTimestamp)initWithData:(id)data andCapacity:(unint64_t)capacity
 {
-  v6 = a3;
+  dataCopy = data;
   topotext::VectorTimestamp::VectorTimestamp(v12);
-  v7 = [v6 bytes];
-  v8 = ICTTBoundedCheckedCastNSUIntegerToUInt32([v6 length]);
-  if (google::protobuf::MessageLite::ParseFromArray(v12, v7, v8))
+  bytes = [dataCopy bytes];
+  v8 = ICTTBoundedCheckedCastNSUIntegerToUInt32([dataCopy length]);
+  if (google::protobuf::MessageLite::ParseFromArray(v12, bytes, v8))
   {
-    self = [(ICTTVectorMultiTimestamp *)self initWithArchive:v12 andCapacity:a4];
-    v9 = self;
+    self = [(ICTTVectorMultiTimestamp *)self initWithArchive:v12 andCapacity:capacity];
+    selfCopy = self;
   }
 
   else
@@ -214,17 +214,17 @@
       [ICTTVectorMultiTimestamp(ICTTVectorTimestampPersistenceAdditions) initWithData:v10 andCapacity:?];
     }
 
-    v9 = 0;
+    selfCopy = 0;
   }
 
   topotext::VectorTimestamp::~VectorTimestamp(v12);
 
-  return v9;
+  return selfCopy;
 }
 
-- (ICTTVectorMultiTimestamp)initWithArchive:(const void *)a3 andCapacity:(unint64_t)a4
+- (ICTTVectorMultiTimestamp)initWithArchive:(const void *)archive andCapacity:(unint64_t)capacity
 {
-  v6 = [(ICTTVectorMultiTimestamp *)self initWithCapacity:a4];
+  v6 = [(ICTTVectorMultiTimestamp *)self initWithCapacity:capacity];
   v7 = v6;
   if (!v6)
   {
@@ -233,14 +233,14 @@ LABEL_28:
     goto LABEL_29;
   }
 
-  v8 = *(a3 + 12);
+  v8 = *(archive + 12);
   v9 = v6;
   if (v8)
   {
     v10 = 0;
     while (1)
     {
-      v11 = google::protobuf::internal::RepeatedPtrFieldBase::Get<google::protobuf::RepeatedPtrField<topotext::VectorTimestamp_Clock>::TypeHandler>(a3 + 40, v10);
+      v11 = google::protobuf::internal::RepeatedPtrFieldBase::Get<google::protobuf::RepeatedPtrField<topotext::VectorTimestamp_Clock>::TypeHandler>(archive + 40, v10);
       v12 = v11;
       if ((*(v11 + 32) & 1) == 0)
       {
@@ -268,12 +268,12 @@ LABEL_28:
 
       v17 = [v15 initWithUUIDBytes:v16];
       v18 = *(v12 + 56);
-      if (v18 != a4)
+      if (v18 != capacity)
       {
         v22 = os_log_create("com.apple.notes", "Topotext");
         if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
         {
-          [(ICTTVectorMultiTimestamp(ICTTVectorTimestampPersistenceAdditions) *)v18 initWithArchive:a4 andCapacity:v22];
+          [(ICTTVectorMultiTimestamp(ICTTVectorTimestampPersistenceAdditions) *)v18 initWithArchive:capacity andCapacity:v22];
         }
 
         goto LABEL_27;
@@ -307,7 +307,7 @@ LABEL_28:
           [(ICTTVectorMultiTimestamp *)v7 setClock:v20 subclock:v21 forUUID:v17 atIndex:v19++];
         }
 
-        while (a4 != v19);
+        while (capacity != v19);
       }
 
       if (++v10 == v8)
@@ -334,7 +334,7 @@ LABEL_29:
   return v23;
 }
 
-- (void)saveToArchive:(void *)a3
+- (void)saveToArchive:(void *)archive
 {
   v31 = *MEMORY[0x277D85DE8];
   v25 = 0u;
@@ -356,20 +356,20 @@ LABEL_29:
         }
 
         v7 = *(*(&v25 + 1) + 8 * i);
-        v8 = *(a3 + 13);
-        v9 = *(a3 + 12);
+        v8 = *(archive + 13);
+        v9 = *(archive + 12);
         if (v9 >= v8)
         {
-          if (v8 == *(a3 + 14))
+          if (v8 == *(archive + 14))
           {
-            google::protobuf::internal::RepeatedPtrFieldBase::Reserve(a3 + 40, v8 + 1);
+            google::protobuf::internal::RepeatedPtrFieldBase::Reserve(archive + 40, v8 + 1);
           }
 
           google::protobuf::internal::GenericTypeHandler<topotext::VectorTimestamp_Clock>::New();
         }
 
-        v10 = *(a3 + 5);
-        *(a3 + 12) = v9 + 1;
+        v10 = *(archive + 5);
+        *(archive + 12) = v9 + 1;
         v11 = *(v10 + 8 * v9);
         v29 = 0uLL;
         [v7 getUUIDBytes:&v29];
@@ -398,8 +398,8 @@ LABEL_29:
 
         *v12 = v29;
         *(v12 + 16) = 0;
-        v13 = [(ICTTVectorMultiTimestamp *)self timestamps];
-        v14 = [v13 count];
+        timestamps = [(ICTTVectorMultiTimestamp *)self timestamps];
+        v14 = [timestamps count];
 
         if (v14)
         {
@@ -449,9 +449,9 @@ LABEL_29:
 {
   [(ICTTVectorMultiTimestamp *)self saveToArchive:v6, topotext::VectorTimestamp::VectorTimestamp(v6)];
   v2 = [objc_alloc(MEMORY[0x277CBEB28]) initWithLength:topotext::VectorTimestamp::ByteSize(v6)];
-  v3 = [v2 mutableBytes];
+  mutableBytes = [v2 mutableBytes];
   v4 = ICTTBoundedCheckedCastNSUIntegerToUInt32([v2 length]);
-  google::protobuf::MessageLite::SerializeToArray(v6, v3, v4);
+  google::protobuf::MessageLite::SerializeToArray(v6, mutableBytes, v4);
   topotext::VectorTimestamp::~VectorTimestamp(v6);
 
   return v2;

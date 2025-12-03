@@ -1,13 +1,13 @@
 @interface PPSocialHighlightMLScorer
-+ (id)_oneHotEncodeString:(id)a3 columns:(id)a4 prefix:(id)a5;
-+ (id)_scorerFromModelFactorName:(id)a3;
-+ (id)_singleItemMultiArrayValueWithConstantValue:(double)a3;
-+ (id)clientEncodingForClientId:(id)a3 applicationIdentifiers:(id)a4;
++ (id)_oneHotEncodeString:(id)string columns:(id)columns prefix:(id)prefix;
++ (id)_scorerFromModelFactorName:(id)name;
++ (id)_singleItemMultiArrayValueWithConstantValue:(double)value;
++ (id)clientEncodingForClientId:(id)id applicationIdentifiers:(id)identifiers;
 + (id)sharedFirstPassInstance;
 + (id)sharedTopKInstance;
-+ (id)variantEncodingForVariant:(id)a3;
-- (PPSocialHighlightMLScorer)initWithModel:(id)a3;
-- (double)scoreSocialHighlight:(id)a3;
++ (id)variantEncodingForVariant:(id)variant;
+- (PPSocialHighlightMLScorer)initWithModel:(id)model;
+- (double)scoreSocialHighlight:(id)highlight;
 @end
 
 @implementation PPSocialHighlightMLScorer
@@ -36,17 +36,17 @@
   return [v3 result];
 }
 
-- (double)scoreSocialHighlight:(id)a3
+- (double)scoreSocialHighlight:(id)highlight
 {
-  v4 = a3;
-  v5 = [v4 clientIdentifier];
-  v6 = [v4 applicationIdentifiers];
-  v7 = [PPSocialHighlightMLScorer clientEncodingForClientId:v5 applicationIdentifiers:v6];
+  highlightCopy = highlight;
+  clientIdentifier = [highlightCopy clientIdentifier];
+  applicationIdentifiers = [highlightCopy applicationIdentifiers];
+  v7 = [PPSocialHighlightMLScorer clientEncodingForClientId:clientIdentifier applicationIdentifiers:applicationIdentifiers];
 
-  v8 = [v4 variant];
-  v9 = [PPSocialHighlightMLScorer variantEncodingForVariant:v8];
+  variant = [highlightCopy variant];
+  v9 = [PPSocialHighlightMLScorer variantEncodingForVariant:variant];
 
-  v10 = v4;
+  v10 = highlightCopy;
   v11 = v10;
   if (v7)
   {
@@ -83,20 +83,20 @@
     v17 = v16;
     if (v16)
     {
-      v18 = [v16 multiArrayValue];
-      v19 = [v18 objectAtIndexedSubscript:0];
+      multiArrayValue = [v16 multiArrayValue];
+      v19 = [multiArrayValue objectAtIndexedSubscript:0];
       [v19 doubleValue];
       v21 = v20;
     }
 
     else
     {
-      v18 = pp_default_log_handle();
+      multiArrayValue = pp_default_log_handle();
       v21 = 0.0;
-      if (os_log_type_enabled(v18, OS_LOG_TYPE_FAULT))
+      if (os_log_type_enabled(multiArrayValue, OS_LOG_TYPE_FAULT))
       {
         *v23 = 0;
-        _os_log_fault_impl(&dword_23224A000, v18, OS_LOG_TYPE_FAULT, "PPSocialHighlightMLScorer: invalid output keys, score not found", v23, 2u);
+        _os_log_fault_impl(&dword_23224A000, multiArrayValue, OS_LOG_TYPE_FAULT, "PPSocialHighlightMLScorer: invalid output keys, score not found", v23, 2u);
       }
     }
   }
@@ -136,16 +136,16 @@ void __50__PPSocialHighlightMLScorer_scoreSocialHighlight___block_invoke(void *a
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (PPSocialHighlightMLScorer)initWithModel:(id)a3
+- (PPSocialHighlightMLScorer)initWithModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v11.receiver = self;
   v11.super_class = PPSocialHighlightMLScorer;
   v6 = [(PPSocialHighlightMLScorer *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_model, a3);
+    objc_storeStrong(&v6->_model, model);
     v8 = [MEMORY[0x277D425A0] autoreleasingSerialQueueWithLabel:"SocialHighlightScorer-queue"];
     modelQueue = v7->_modelQueue;
     v7->_modelQueue = v8;
@@ -154,16 +154,16 @@ void __50__PPSocialHighlightMLScorer_scoreSocialHighlight___block_invoke(void *a
   return v7;
 }
 
-+ (id)variantEncodingForVariant:(id)a3
++ (id)variantEncodingForVariant:(id)variant
 {
   v3 = variantEncodingForVariant___pasOnceToken22;
-  v4 = a3;
+  variantCopy = variant;
   if (v3 != -1)
   {
     dispatch_once(&variantEncodingForVariant___pasOnceToken22, &__block_literal_global_115);
   }
 
-  v5 = [PPSocialHighlightMLScorer _oneHotEncodeString:v4 columns:variantEncodingForVariant___pasExprOnceResult prefix:@"variant"];
+  v5 = [PPSocialHighlightMLScorer _oneHotEncodeString:variantCopy columns:variantEncodingForVariant___pasExprOnceResult prefix:@"variant"];
 
   return v5;
 }
@@ -181,12 +181,12 @@ void __55__PPSocialHighlightMLScorer_variantEncodingForVariant___block_invoke()
   objc_autoreleasePoolPop(v0);
 }
 
-+ (id)_oneHotEncodeString:(id)a3 columns:(id)a4 prefix:(id)a5
++ (id)_oneHotEncodeString:(id)string columns:(id)columns prefix:(id)prefix
 {
   v43 = *MEMORY[0x277D85DE8];
-  v32 = a3;
-  v7 = a4;
-  v31 = a5;
+  stringCopy = string;
+  columnsCopy = columns;
+  prefixCopy = prefix;
   v8 = objc_autoreleasePoolPush();
   v33 = objc_opt_new();
   v39 = 0;
@@ -210,7 +210,7 @@ void __55__PPSocialHighlightMLScorer_variantEncodingForVariant___block_invoke()
       v36 = 0u;
       v37 = 0u;
       v38 = 0u;
-      v15 = v7;
+      v15 = columnsCopy;
       v16 = [v15 countByEnumeratingWithState:&v35 objects:v40 count:16];
       if (v16)
       {
@@ -226,7 +226,7 @@ void __55__PPSocialHighlightMLScorer_variantEncodingForVariant___block_invoke()
             }
 
             v20 = *(*(&v35 + 1) + 8 * i);
-            if ([v32 isEqual:v20])
+            if ([stringCopy isEqual:v20])
             {
               v21 = v13;
             }
@@ -236,7 +236,7 @@ void __55__PPSocialHighlightMLScorer_variantEncodingForVariant___block_invoke()
               v21 = v14;
             }
 
-            v22 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@_%@", v31, v20];
+            v22 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@_%@", prefixCopy, v20];
             [v33 setObject:v21 forKeyedSubscript:v22];
           }
 
@@ -299,7 +299,7 @@ void __55__PPSocialHighlightMLScorer_variantEncodingForVariant___block_invoke()
   return v23;
 }
 
-+ (id)_singleItemMultiArrayValueWithConstantValue:(double)a3
++ (id)_singleItemMultiArrayValueWithConstantValue:(double)value
 {
   v15 = *MEMORY[0x277D85DE8];
   v4 = objc_autoreleasePoolPush();
@@ -308,7 +308,7 @@ void __55__PPSocialHighlightMLScorer_variantEncodingForVariant___block_invoke()
   v6 = v12;
   if (v5)
   {
-    v7 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+    v7 = [MEMORY[0x277CCABB0] numberWithDouble:value];
     [v5 setObject:v7 atIndexedSubscript:0];
 
     v8 = [MEMORY[0x277CBFEF8] featureValueWithMultiArray:v5];
@@ -333,11 +333,11 @@ void __55__PPSocialHighlightMLScorer_variantEncodingForVariant___block_invoke()
   return v8;
 }
 
-+ (id)clientEncodingForClientId:(id)a3 applicationIdentifiers:(id)a4
++ (id)clientEncodingForClientId:(id)id applicationIdentifiers:(id)identifiers
 {
   v26 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  idCopy = id;
+  identifiersCopy = identifiers;
   if (clientEncodingForClientId_applicationIdentifiers___pasOnceToken12 != -1)
   {
     dispatch_once(&clientEncodingForClientId_applicationIdentifiers___pasOnceToken12, &__block_literal_global_89);
@@ -363,19 +363,19 @@ void __55__PPSocialHighlightMLScorer_variantEncodingForVariant___block_invoke()
   }
 
   v10 = clientEncodingForClientId_applicationIdentifiers___pasExprOnceResult_92;
-  if (v5)
+  if (idCopy)
   {
-    if ((-[__CFString isEqualToString:](v5, "isEqualToString:", *MEMORY[0x277D3A590]) & 1) != 0 || (-[__CFString isEqualToString:](v5, "isEqualToString:", *MEMORY[0x277D3A5A0]) & 1) != 0 || ([v8 containsObject:v5] & 1) == 0 && +[PPSocialHighlightStorage entitlementStatusForClient:applicationIdentifiers:](PPSocialHighlightStorage, "entitlementStatusForClient:applicationIdentifiers:", v5, v6) == 2)
+    if ((-[__CFString isEqualToString:](idCopy, "isEqualToString:", *MEMORY[0x277D3A590]) & 1) != 0 || (-[__CFString isEqualToString:](idCopy, "isEqualToString:", *MEMORY[0x277D3A5A0]) & 1) != 0 || ([v8 containsObject:idCopy] & 1) == 0 && +[PPSocialHighlightStorage entitlementStatusForClient:applicationIdentifiers:](PPSocialHighlightStorage, "entitlementStatusForClient:applicationIdentifiers:", idCopy, identifiersCopy) == 2)
     {
 
-      v5 = @"WebBrowser";
+      idCopy = @"WebBrowser";
     }
 
-    v11 = [v9 dictionary];
-    v12 = [v11 mutableCopy];
+    dictionary = [v9 dictionary];
+    v12 = [dictionary mutableCopy];
 
-    v13 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@_%@", @"client", v5];
-    [v12 setObject:v10 forKeyedSubscript:v13];
+    idCopy = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@_%@", @"client", idCopy];
+    [v12 setObject:v10 forKeyedSubscript:idCopy];
 
     v21 = 0;
     v14 = [objc_alloc(MEMORY[0x277CBFED0]) initWithDictionary:v12 error:&v21];
@@ -460,13 +460,13 @@ void __52__PPSocialHighlightMLScorer_sharedFirstPassInstance__block_invoke()
   objc_autoreleasePoolPop(v0);
 }
 
-+ (id)_scorerFromModelFactorName:(id)a3
++ (id)_scorerFromModelFactorName:(id)name
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  nameCopy = name;
   v4 = +[PPTrialWrapper sharedInstance];
   v11 = 0;
-  v5 = [v4 mlModelForModelName:v3 namespaceName:@"PERSONALIZATION_PORTRAIT_SOCIAL_HIGHLIGHT" error:&v11];
+  v5 = [v4 mlModelForModelName:nameCopy namespaceName:@"PERSONALIZATION_PORTRAIT_SOCIAL_HIGHLIGHT" error:&v11];
 
   v6 = v11;
   if (!v5)

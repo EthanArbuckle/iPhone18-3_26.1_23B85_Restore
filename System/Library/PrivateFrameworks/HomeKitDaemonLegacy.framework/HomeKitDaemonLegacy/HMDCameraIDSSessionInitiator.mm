@@ -1,22 +1,22 @@
 @interface HMDCameraIDSSessionInitiator
 + (id)logCategory;
-- (HMDCameraIDSSessionInitiator)initWithSessionID:(id)a3 workQueue:(id)a4 device:(id)a5 localNetworkConfig:(id)a6 delegate:(id)a7;
-- (HMDCameraIDSSessionInitiator)initWithSessionID:(id)a3 workQueue:(id)a4 idsStreamService:(id)a5 device:(id)a6 localNetworkConfig:(id)a7 delegate:(id)a8;
+- (HMDCameraIDSSessionInitiator)initWithSessionID:(id)d workQueue:(id)queue device:(id)device localNetworkConfig:(id)config delegate:(id)delegate;
+- (HMDCameraIDSSessionInitiator)initWithSessionID:(id)d workQueue:(id)queue idsStreamService:(id)service device:(id)device localNetworkConfig:(id)config delegate:(id)delegate;
 - (HMDCameraIDSSessionInitiatorDelegate)delegate;
 - (NSNumber)mtu;
 - (id)logIdentifier;
-- (void)_callSessionEndedWithError:(id)a3;
+- (void)_callSessionEndedWithError:(id)error;
 - (void)_callSessionStarted;
 - (void)_sendInvitation;
 - (void)dealloc;
 - (void)openRelaySession;
-- (void)packetRelay:(id)a3 didStart:(BOOL)a4 error:(id)a5;
-- (void)packetRelay:(id)a3 didStop:(BOOL)a4 error:(id)a5;
-- (void)session:(id)a3 receivedInvitationAcceptFromID:(id)a4;
-- (void)session:(id)a3 receivedInvitationCancelFromID:(id)a4;
-- (void)session:(id)a3 receivedInvitationDeclineFromID:(id)a4;
-- (void)sessionEnded:(id)a3 withReason:(unsigned int)a4 error:(id)a5;
-- (void)sessionStarted:(id)a3;
+- (void)packetRelay:(id)relay didStart:(BOOL)start error:(id)error;
+- (void)packetRelay:(id)relay didStop:(BOOL)stop error:(id)error;
+- (void)session:(id)session receivedInvitationAcceptFromID:(id)d;
+- (void)session:(id)session receivedInvitationCancelFromID:(id)d;
+- (void)session:(id)session receivedInvitationDeclineFromID:(id)d;
+- (void)sessionEnded:(id)ended withReason:(unsigned int)reason error:(id)error;
+- (void)sessionStarted:(id)started;
 @end
 
 @implementation HMDCameraIDSSessionInitiator
@@ -30,21 +30,21 @@
 
 - (id)logIdentifier
 {
-  v2 = [(HMDCameraIDSSessionHandler *)self sessionID];
-  v3 = [v2 description];
+  sessionID = [(HMDCameraIDSSessionHandler *)self sessionID];
+  v3 = [sessionID description];
 
   return v3;
 }
 
-- (void)_callSessionEndedWithError:(id)a3
+- (void)_callSessionEndedWithError:(id)error
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDCameraIDSSessionHandler *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  errorCopy = error;
+  workQueue = [(HMDCameraIDSSessionHandler *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -52,15 +52,15 @@
     v12 = 138543618;
     v13 = v9;
     v14 = 2112;
-    v15 = v4;
+    v15 = errorCopy;
     _os_log_impl(&dword_2531F8000, v8, OS_LOG_TYPE_INFO, "%{public}@Calling didEndSession delegate with error %@", &v12, 0x16u);
   }
 
   objc_autoreleasePoolPop(v6);
-  v10 = [(HMDCameraIDSSessionInitiator *)v7 delegate];
+  delegate = [(HMDCameraIDSSessionInitiator *)selfCopy delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v10 sessionInitiator:v7 didEndSessionWithError:v4];
+    [delegate sessionInitiator:selfCopy didEndSessionWithError:errorCopy];
   }
 
   v11 = *MEMORY[0x277D85DE8];
@@ -69,11 +69,11 @@
 - (void)_callSessionStarted
 {
   v12 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDCameraIDSSessionHandler *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDCameraIDSSessionHandler *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v4 = objc_autoreleasePoolPush();
-  v5 = self;
+  selfCopy = self;
   v6 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -84,25 +84,25 @@
   }
 
   objc_autoreleasePoolPop(v4);
-  v8 = [(HMDCameraIDSSessionInitiator *)v5 delegate];
+  delegate = [(HMDCameraIDSSessionInitiator *)selfCopy delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v8 sessionInitiator:v5 didSetUpWithError:0];
+    [delegate sessionInitiator:selfCopy didSetUpWithError:0];
   }
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sessionEnded:(id)a3 withReason:(unsigned int)a4 error:(id)a5
+- (void)sessionEnded:(id)ended withReason:(unsigned int)reason error:(id)error
 {
   v25 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = [(HMDCameraIDSSessionHandler *)self workQueue];
-  dispatch_assert_queue_V2(v10);
+  endedCopy = ended;
+  errorCopy = error;
+  workQueue = [(HMDCameraIDSSessionHandler *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v11 = objc_autoreleasePoolPush();
-  v12 = self;
+  selfCopy = self;
   v13 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
@@ -110,30 +110,30 @@
     v17 = 138544130;
     v18 = v14;
     v19 = 2114;
-    v20 = v8;
+    v20 = endedCopy;
     v21 = 1026;
-    v22 = a4;
+    reasonCopy = reason;
     v23 = 2114;
-    v24 = v9;
+    v24 = errorCopy;
     _os_log_impl(&dword_2531F8000, v13, OS_LOG_TYPE_INFO, "%{public}@IDSSession %{public}@ has ended with reason: %{public}u and error %{public}@", &v17, 0x26u);
   }
 
   objc_autoreleasePoolPop(v11);
-  v15 = [MEMORY[0x277CCA9B8] hmInternalErrorWithCode:1030 underlyingError:v9];
-  [(HMDCameraIDSSessionInitiator *)v12 _callSessionEndedWithError:v15];
+  v15 = [MEMORY[0x277CCA9B8] hmInternalErrorWithCode:1030 underlyingError:errorCopy];
+  [(HMDCameraIDSSessionInitiator *)selfCopy _callSessionEndedWithError:v15];
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sessionStarted:(id)a3
+- (void)sessionStarted:(id)started
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDCameraIDSSessionHandler *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  startedCopy = started;
+  workQueue = [(HMDCameraIDSSessionHandler *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -141,28 +141,28 @@
     v12 = 138543618;
     v13 = v9;
     v14 = 2114;
-    v15 = v4;
+    v15 = startedCopy;
     _os_log_impl(&dword_2531F8000, v8, OS_LOG_TYPE_INFO, "%{public}@IDSSession %{public}@ has started", &v12, 0x16u);
   }
 
   objc_autoreleasePoolPop(v6);
-  v10 = [(HMDCameraIDSSessionHandler *)v7 sessionID];
-  [v10 markMilestoneFor:@"IDSSessionStartedOnInitiator"];
+  sessionID = [(HMDCameraIDSSessionHandler *)selfCopy sessionID];
+  [sessionID markMilestoneFor:@"IDSSessionStartedOnInitiator"];
 
-  [(HMDCameraIDSSessionInitiator *)v7 _callSessionStarted];
+  [(HMDCameraIDSSessionInitiator *)selfCopy _callSessionStarted];
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)session:(id)a3 receivedInvitationCancelFromID:(id)a4
+- (void)session:(id)session receivedInvitationCancelFromID:(id)d
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDCameraIDSSessionHandler *)self workQueue];
-  dispatch_assert_queue_V2(v8);
+  sessionCopy = session;
+  dCopy = d;
+  workQueue = [(HMDCameraIDSSessionHandler *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
@@ -170,28 +170,28 @@
     v14 = 138543874;
     v15 = v12;
     v16 = 2112;
-    v17 = v6;
+    v17 = sessionCopy;
     v18 = 2112;
-    v19 = v7;
+    v19 = dCopy;
     _os_log_impl(&dword_2531F8000, v11, OS_LOG_TYPE_INFO, "%{public}@Invitation for IDSSession %@ was canceled by: %@", &v14, 0x20u);
   }
 
   objc_autoreleasePoolPop(v9);
-  [(HMDCameraIDSSessionInitiator *)v10 _callSessionEndedWithError:0];
+  [(HMDCameraIDSSessionInitiator *)selfCopy _callSessionEndedWithError:0];
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)session:(id)a3 receivedInvitationDeclineFromID:(id)a4
+- (void)session:(id)session receivedInvitationDeclineFromID:(id)d
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDCameraIDSSessionHandler *)self workQueue];
-  dispatch_assert_queue_V2(v8);
+  sessionCopy = session;
+  dCopy = d;
+  workQueue = [(HMDCameraIDSSessionHandler *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
@@ -199,28 +199,28 @@
     v14 = 138543874;
     v15 = v12;
     v16 = 2112;
-    v17 = v6;
+    v17 = sessionCopy;
     v18 = 2112;
-    v19 = v7;
+    v19 = dCopy;
     _os_log_impl(&dword_2531F8000, v11, OS_LOG_TYPE_INFO, "%{public}@Invitation for IDSSession %@ has been declined by: %@", &v14, 0x20u);
   }
 
   objc_autoreleasePoolPop(v9);
-  [(HMDCameraIDSSessionInitiator *)v10 _callSessionEndedWithError:0];
+  [(HMDCameraIDSSessionInitiator *)selfCopy _callSessionEndedWithError:0];
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)session:(id)a3 receivedInvitationAcceptFromID:(id)a4
+- (void)session:(id)session receivedInvitationAcceptFromID:(id)d
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDCameraIDSSessionHandler *)self workQueue];
-  dispatch_assert_queue_V2(v8);
+  sessionCopy = session;
+  dCopy = d;
+  workQueue = [(HMDCameraIDSSessionHandler *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
@@ -228,9 +228,9 @@
     v14 = 138543874;
     v15 = v12;
     v16 = 2114;
-    v17 = v6;
+    v17 = sessionCopy;
     v18 = 2112;
-    v19 = v7;
+    v19 = dCopy;
     _os_log_impl(&dword_2531F8000, v11, OS_LOG_TYPE_INFO, "%{public}@Invitation for IDSSession %{public}@ has been accepted by: %@, waiting for session to get started", &v14, 0x20u);
   }
 
@@ -238,19 +238,19 @@
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)packetRelay:(id)a3 didStop:(BOOL)a4 error:(id)a5
+- (void)packetRelay:(id)relay didStop:(BOOL)stop error:(id)error
 {
-  v7 = a5;
-  v8 = [(HMDCameraIDSSessionHandler *)self workQueue];
+  errorCopy = error;
+  workQueue = [(HMDCameraIDSSessionHandler *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __58__HMDCameraIDSSessionInitiator_packetRelay_didStop_error___block_invoke;
   block[3] = &unk_279734938;
-  v12 = a4;
+  stopCopy = stop;
   block[4] = self;
-  v11 = v7;
-  v9 = v7;
-  dispatch_async(v8, block);
+  v11 = errorCopy;
+  v9 = errorCopy;
+  dispatch_async(workQueue, block);
 }
 
 void __58__HMDCameraIDSSessionInitiator_packetRelay_didStop_error___block_invoke(uint64_t a1)
@@ -278,19 +278,19 @@ void __58__HMDCameraIDSSessionInitiator_packetRelay_didStop_error___block_invoke
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)packetRelay:(id)a3 didStart:(BOOL)a4 error:(id)a5
+- (void)packetRelay:(id)relay didStart:(BOOL)start error:(id)error
 {
-  v7 = a5;
-  v8 = [(HMDCameraIDSSessionHandler *)self workQueue];
+  errorCopy = error;
+  workQueue = [(HMDCameraIDSSessionHandler *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __59__HMDCameraIDSSessionInitiator_packetRelay_didStart_error___block_invoke;
   block[3] = &unk_279734938;
-  v12 = a4;
+  startCopy = start;
   block[4] = self;
-  v11 = v7;
-  v9 = v7;
-  dispatch_async(v8, block);
+  v11 = errorCopy;
+  v9 = errorCopy;
+  dispatch_async(workQueue, block);
 }
 
 void __59__HMDCameraIDSSessionInitiator_packetRelay_didStart_error___block_invoke(uint64_t a1)
@@ -321,73 +321,73 @@ void __59__HMDCameraIDSSessionInitiator_packetRelay_didStart_error___block_invok
 - (void)_sendInvitation
 {
   v39 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDCameraIDSSessionHandler *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDCameraIDSSessionHandler *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v4 = [(HMDCameraIDSSessionHandler *)self idsStreamService];
-  v5 = [v4 accounts];
-  v6 = [v5 anyObject];
+  idsStreamService = [(HMDCameraIDSSessionHandler *)self idsStreamService];
+  accounts = [idsStreamService accounts];
+  anyObject = [accounts anyObject];
 
-  if (v6)
+  if (anyObject)
   {
-    v7 = [MEMORY[0x277CBEB38] dictionary];
-    [v7 setObject:&unk_286627A78 forKeyedSubscript:*MEMORY[0x277D18958]];
-    [v7 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277D18950]];
-    v8 = [(HMDCameraIDSSessionInitiator *)self localNetworkConfig];
-    v9 = [v8 ipv6];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    [dictionary setObject:&unk_286627A78 forKeyedSubscript:*MEMORY[0x277D18958]];
+    [dictionary setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277D18950]];
+    localNetworkConfig = [(HMDCameraIDSSessionInitiator *)self localNetworkConfig];
+    ipv6 = [localNetworkConfig ipv6];
 
-    if ((v9 & 1) == 0)
+    if ((ipv6 & 1) == 0)
     {
-      [v7 setObject:&unk_286627A90 forKeyedSubscript:*MEMORY[0x277D18948]];
+      [dictionary setObject:&unk_286627A90 forKeyedSubscript:*MEMORY[0x277D18948]];
     }
 
-    v10 = [(HMDCameraIDSSessionHandler *)self idsStreamService];
-    v11 = [(HMDCameraIDSSessionInitiator *)self device];
-    v12 = [v10 hmd_idsSessionWithAccount:v6 device:v11 options:v7];
+    idsStreamService2 = [(HMDCameraIDSSessionHandler *)self idsStreamService];
+    device = [(HMDCameraIDSSessionInitiator *)self device];
+    v12 = [idsStreamService2 hmd_idsSessionWithAccount:anyObject device:device options:dictionary];
     [(HMDCameraIDSSessionHandler *)self setIdsSession:v12];
 
-    v13 = [(HMDCameraIDSSessionHandler *)self idsSession];
-    v14 = [(HMDCameraIDSSessionHandler *)self workQueue];
-    [v13 setDelegate:self queue:v14];
+    idsSession = [(HMDCameraIDSSessionHandler *)self idsSession];
+    workQueue2 = [(HMDCameraIDSSessionHandler *)self workQueue];
+    [idsSession setDelegate:self queue:workQueue2];
 
     v15 = objc_autoreleasePoolPush();
-    v16 = self;
+    selfCopy = self;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
       v18 = HMFGetLogIdentifier();
-      v19 = [(HMDCameraIDSSessionHandler *)v16 idsSession];
-      v20 = [(HMDCameraIDSSessionInitiator *)v16 device];
-      v21 = [v20 shortDescription];
+      idsSession2 = [(HMDCameraIDSSessionHandler *)selfCopy idsSession];
+      device2 = [(HMDCameraIDSSessionInitiator *)selfCopy device];
+      shortDescription = [device2 shortDescription];
       *buf = 138544130;
       v32 = v18;
       v33 = 2112;
-      v34 = v19;
+      v34 = idsSession2;
       v35 = 2112;
-      v36 = v21;
+      v36 = shortDescription;
       v37 = 2112;
-      v38 = v7;
+      v38 = dictionary;
       _os_log_impl(&dword_2531F8000, v17, OS_LOG_TYPE_INFO, "%{public}@Sending out invitation for IDSSession %@ to device %@ with options: %@", buf, 0x2Au);
     }
 
     objc_autoreleasePoolPop(v15);
-    v22 = [(HMDCameraIDSSessionHandler *)v16 sessionID];
-    v23 = [v22 sessionID];
-    v30 = v23;
+    sessionID = [(HMDCameraIDSSessionHandler *)selfCopy sessionID];
+    v22SessionID = [sessionID sessionID];
+    v30 = v22SessionID;
     v24 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v30 forKeys:&v29 count:1];
 
     v25 = encodeRootObject();
-    v26 = [(HMDCameraIDSSessionHandler *)v16 idsSession];
-    [v26 sendInvitationWithData:v25];
+    idsSession3 = [(HMDCameraIDSSessionHandler *)selfCopy idsSession];
+    [idsSession3 sendInvitationWithData:v25];
 
-    v27 = [(HMDCameraIDSSessionHandler *)v16 sessionID];
-    [v27 markMilestoneFor:@"IDSSessionInvitationSent"];
+    sessionID2 = [(HMDCameraIDSSessionHandler *)selfCopy sessionID];
+    [sessionID2 markMilestoneFor:@"IDSSessionInvitationSent"];
   }
 
   else
   {
-    v7 = [MEMORY[0x277CCA9B8] hmInternalErrorWithCode:1024];
-    [(HMDCameraIDSSessionInitiator *)self _callSessionEndedWithError:v7];
+    dictionary = [MEMORY[0x277CCA9B8] hmInternalErrorWithCode:1024];
+    [(HMDCameraIDSSessionInitiator *)self _callSessionEndedWithError:dictionary];
   }
 
   v28 = *MEMORY[0x277D85DE8];
@@ -395,8 +395,8 @@ void __59__HMDCameraIDSSessionInitiator_packetRelay_didStart_error___block_invok
 
 - (void)openRelaySession
 {
-  v3 = [(HMDCameraIDSSessionHandler *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDCameraIDSSessionHandler *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   [(HMDCameraIDSSessionInitiator *)self _sendInvitation];
 }
@@ -405,7 +405,7 @@ void __59__HMDCameraIDSSessionInitiator_packetRelay_didStart_error___block_invok
 {
   v13 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -416,13 +416,13 @@ void __59__HMDCameraIDSSessionInitiator_packetRelay_didStart_error___block_invok
   }
 
   objc_autoreleasePoolPop(v3);
-  v7 = [(HMDCameraIDSSessionInitiator *)v4 packetRelay];
-  [v7 stop];
+  packetRelay = [(HMDCameraIDSSessionInitiator *)selfCopy packetRelay];
+  [packetRelay stop];
 
-  v8 = [(HMDCameraIDSSessionHandler *)v4 idsSession];
-  [v8 endSession];
+  idsSession = [(HMDCameraIDSSessionHandler *)selfCopy idsSession];
+  [idsSession endSession];
 
-  v10.receiver = v4;
+  v10.receiver = selfCopy;
   v10.super_class = HMDCameraIDSSessionInitiator;
   [(HMDCameraIDSSessionHandler *)&v10 dealloc];
   v9 = *MEMORY[0x277D85DE8];
@@ -430,11 +430,11 @@ void __59__HMDCameraIDSSessionInitiator_packetRelay_didStart_error___block_invok
 
 - (NSNumber)mtu
 {
-  v3 = [(HMDCameraIDSSessionHandler *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDCameraIDSSessionHandler *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v4 = [(HMDCameraIDSSessionInitiator *)self localNetworkConfig];
-  if ([v4 ipv6])
+  localNetworkConfig = [(HMDCameraIDSSessionInitiator *)self localNetworkConfig];
+  if ([localNetworkConfig ipv6])
   {
     v5 = 2;
   }
@@ -445,81 +445,81 @@ void __59__HMDCameraIDSSessionInitiator_packetRelay_didStart_error___block_invok
   }
 
   v6 = MEMORY[0x277CCABB0];
-  v7 = [(HMDCameraIDSSessionHandler *)self idsSession];
-  v8 = [v6 numberWithUnsignedInteger:{objc_msgSend(v7, "MTUForAddressFamily:", v5)}];
+  idsSession = [(HMDCameraIDSSessionHandler *)self idsSession];
+  v8 = [v6 numberWithUnsignedInteger:{objc_msgSend(idsSession, "MTUForAddressFamily:", v5)}];
 
   return v8;
 }
 
-- (HMDCameraIDSSessionInitiator)initWithSessionID:(id)a3 workQueue:(id)a4 idsStreamService:(id)a5 device:(id)a6 localNetworkConfig:(id)a7 delegate:(id)a8
+- (HMDCameraIDSSessionInitiator)initWithSessionID:(id)d workQueue:(id)queue idsStreamService:(id)service device:(id)device localNetworkConfig:(id)config delegate:(id)delegate
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  if (!v14)
+  dCopy = d;
+  queueCopy = queue;
+  serviceCopy = service;
+  deviceCopy = device;
+  configCopy = config;
+  delegateCopy = delegate;
+  if (!dCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_10;
   }
 
-  if (!v15)
+  if (!queueCopy)
   {
 LABEL_10:
     _HMFPreconditionFailure();
     goto LABEL_11;
   }
 
-  if (!v16)
+  if (!serviceCopy)
   {
 LABEL_11:
     _HMFPreconditionFailure();
     goto LABEL_12;
   }
 
-  if (!v17)
+  if (!deviceCopy)
   {
 LABEL_12:
     _HMFPreconditionFailure();
     goto LABEL_13;
   }
 
-  if (!v18)
+  if (!configCopy)
   {
 LABEL_13:
     v25 = _HMFPreconditionFailure();
     return [(HMDCameraIDSSessionInitiator *)v25 initWithSessionID:v26 workQueue:v27 device:v28 localNetworkConfig:v29 delegate:v30, v31];
   }
 
-  v20 = v19;
+  v20 = delegateCopy;
   v32.receiver = self;
   v32.super_class = HMDCameraIDSSessionInitiator;
-  v21 = [(HMDCameraIDSSessionHandler *)&v32 initWithSessionID:v14 workQueue:v15 idsStreamService:v16];
+  v21 = [(HMDCameraIDSSessionHandler *)&v32 initWithSessionID:dCopy workQueue:queueCopy idsStreamService:serviceCopy];
   v22 = v21;
   if (v21)
   {
-    objc_storeStrong(&v21->_device, a6);
+    objc_storeStrong(&v21->_device, device);
     objc_storeWeak(&v22->_delegate, v20);
-    objc_storeStrong(&v22->_localNetworkConfig, a7);
+    objc_storeStrong(&v22->_localNetworkConfig, config);
     v23 = +[HMDCameraPowerAssertionHandler sharedHandler];
-    [v23 registerRemoteRequestHandler:v22 forSessionID:v14];
+    [v23 registerRemoteRequestHandler:v22 forSessionID:dCopy];
   }
 
   return v22;
 }
 
-- (HMDCameraIDSSessionInitiator)initWithSessionID:(id)a3 workQueue:(id)a4 device:(id)a5 localNetworkConfig:(id)a6 delegate:(id)a7
+- (HMDCameraIDSSessionInitiator)initWithSessionID:(id)d workQueue:(id)queue device:(id)device localNetworkConfig:(id)config delegate:(id)delegate
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
+  delegateCopy = delegate;
+  configCopy = config;
+  deviceCopy = device;
+  queueCopy = queue;
+  dCopy = d;
   v17 = +[HMDIDSServiceManager sharedManager];
   v18 = [v17 serviceWithName:@"com.apple.private.alloy.willow.stream"];
-  v19 = [(HMDCameraIDSSessionInitiator *)self initWithSessionID:v16 workQueue:v15 idsStreamService:v18 device:v14 localNetworkConfig:v13 delegate:v12];
+  v19 = [(HMDCameraIDSSessionInitiator *)self initWithSessionID:dCopy workQueue:queueCopy idsStreamService:v18 device:deviceCopy localNetworkConfig:configCopy delegate:delegateCopy];
 
   return v19;
 }

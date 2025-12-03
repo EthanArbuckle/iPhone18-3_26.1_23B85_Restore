@@ -1,29 +1,29 @@
 @interface ENUISettingsValueDisclosureCell
-- (ENUISettingsValueDisclosureCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (ENUISettingsValueDisclosureCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation ENUISettingsValueDisclosureCell
 
-- (ENUISettingsValueDisclosureCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (ENUISettingsValueDisclosureCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v5.receiver = self;
   v5.super_class = ENUISettingsValueDisclosureCell;
-  return [(ENUISettingsValueDisclosureCell *)&v5 initWithStyle:1 reuseIdentifier:a4];
+  return [(ENUISettingsValueDisclosureCell *)&v5 initWithStyle:1 reuseIdentifier:identifier];
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
   v4 = PSTitleKey;
-  v5 = a3;
-  v6 = [v5 propertyForKey:v4];
-  v7 = [(ENUISettingsValueDisclosureCell *)self titleLabel];
-  [v7 setText:v6];
+  specifierCopy = specifier;
+  v6 = [specifierCopy propertyForKey:v4];
+  titleLabel = [(ENUISettingsValueDisclosureCell *)self titleLabel];
+  [titleLabel setText:v6];
 
-  v8 = [v5 propertyForKey:PSValueKey];
+  v8 = [specifierCopy propertyForKey:PSValueKey];
 
-  v9 = [(ENUISettingsValueDisclosureCell *)self detailTextLabel];
-  [v9 setText:v8];
+  detailTextLabel = [(ENUISettingsValueDisclosureCell *)self detailTextLabel];
+  [detailTextLabel setText:v8];
 
   [(ENUISettingsValueDisclosureCell *)self setAccessoryType:1];
 }

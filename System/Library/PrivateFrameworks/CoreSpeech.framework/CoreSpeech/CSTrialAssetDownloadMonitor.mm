@@ -1,24 +1,24 @@
 @interface CSTrialAssetDownloadMonitor
 + (CSTrialAssetDownloadMonitor)sharedInstance;
-- (BOOL)_handleSiriAttAssetTrailDownloadForNamespace:(id)a3;
-- (BOOL)_validateDownloadedAssetForAssetType:(unint64_t)a3;
+- (BOOL)_handleSiriAttAssetTrailDownloadForNamespace:(id)namespace;
+- (BOOL)_validateDownloadedAssetForAssetType:(unint64_t)type;
 - (CSTrialAssetDownloadMonitor)init;
-- (id)_trailStageDirectoryForAsset:(id)a3;
-- (void)_notifyTrialAssetDownloadForAssetType:(unint64_t)a3;
-- (void)_startMonitoringWithQueue:(id)a3;
-- (void)downloadAndNotifyTrialAssetsUpdateForNamespace:(id)a3 onQueue:(id)a4;
+- (id)_trailStageDirectoryForAsset:(id)asset;
+- (void)_notifyTrialAssetDownloadForAssetType:(unint64_t)type;
+- (void)_startMonitoringWithQueue:(id)queue;
+- (void)downloadAndNotifyTrialAssetsUpdateForNamespace:(id)namespace onQueue:(id)queue;
 @end
 
 @implementation CSTrialAssetDownloadMonitor
 
-- (id)_trailStageDirectoryForAsset:(id)a3
+- (id)_trailStageDirectoryForAsset:(id)asset
 {
-  v3 = a3;
+  assetCopy = asset;
   v4 = +[NSFileManager defaultManager];
   v5 = +[CSFPreferences sharedPreferences];
-  v6 = [v5 trialBaseAssetDirectory];
+  trialBaseAssetDirectory = [v5 trialBaseAssetDirectory];
 
-  v7 = [v6 stringByAppendingPathComponent:v3];
+  v7 = [trialBaseAssetDirectory stringByAppendingPathComponent:assetCopy];
 
   if ([v4 fileExistsAtPath:v7])
   {
@@ -31,13 +31,13 @@
       if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))
       {
         v18 = v10;
-        v19 = [v9 localizedDescription];
+        localizedDescription = [v9 localizedDescription];
         *buf = 136315650;
         v23 = "[CSTrialAssetDownloadMonitor _trailStageDirectoryForAsset:]";
         v24 = 2112;
         v25 = v7;
         v26 = 2114;
-        v27 = v19;
+        v27 = localizedDescription;
         _os_log_error_impl(&_mh_execute_header, v18, OS_LOG_TYPE_ERROR, "%s Failed to delete dir at %@ with err: %{public}@", buf, 0x20u);
       }
 
@@ -62,13 +62,13 @@
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))
     {
       v16 = v14;
-      v17 = [v9 localizedDescription];
+      localizedDescription2 = [v9 localizedDescription];
       *buf = 136315650;
       v23 = "[CSTrialAssetDownloadMonitor _trailStageDirectoryForAsset:]";
       v24 = 2114;
       v25 = v7;
       v26 = 2114;
-      v27 = v17;
+      v27 = localizedDescription2;
       _os_log_error_impl(&_mh_execute_header, v16, OS_LOG_TYPE_ERROR, "%s Couldn't create voice trigger audio logging directory at path %{public}@ %{public}@", buf, 0x20u);
     }
 
@@ -82,7 +82,7 @@ LABEL_12:
   return v11;
 }
 
-- (BOOL)_validateDownloadedAssetForAssetType:(unint64_t)a3
+- (BOOL)_validateDownloadedAssetForAssetType:(unint64_t)type
 {
   v8 = 0;
   v9 = &v8;
@@ -95,41 +95,41 @@ LABEL_12:
   v7[2] = sub_10016AC4C;
   v7[3] = &unk_100253A30;
   v7[4] = &v8;
-  v7[5] = a3;
-  [v4 getInstalledAssetofType:a3 forLocale:v5 completion:v7];
+  v7[5] = type;
+  [v4 getInstalledAssetofType:type forLocale:v5 completion:v7];
 
-  LOBYTE(a3) = *(v9 + 24);
+  LOBYTE(type) = *(v9 + 24);
   _Block_object_dispose(&v8, 8);
-  return a3;
+  return type;
 }
 
-- (void)_notifyTrialAssetDownloadForAssetType:(unint64_t)a3
+- (void)_notifyTrialAssetDownloadForAssetType:(unint64_t)type
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_10016B064;
   v3[3] = &unk_1002539B8;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = type;
   [(CSTrialAssetDownloadMonitor *)self enumerateObserversInQueue:v3];
 }
 
-- (void)downloadAndNotifyTrialAssetsUpdateForNamespace:(id)a3 onQueue:(id)a4
+- (void)downloadAndNotifyTrialAssetsUpdateForNamespace:(id)namespace onQueue:(id)queue
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10016B160;
   v7[3] = &unk_100253C48;
-  v8 = a3;
-  v9 = self;
-  v6 = v8;
-  dispatch_async(a4, v7);
+  namespaceCopy = namespace;
+  selfCopy = self;
+  v6 = namespaceCopy;
+  dispatch_async(queue, v7);
 }
 
-- (BOOL)_handleSiriAttAssetTrailDownloadForNamespace:(id)a3
+- (BOOL)_handleSiriAttAssetTrailDownloadForNamespace:(id)namespace
 {
-  v4 = a3;
-  v5 = [(NSDictionary *)self->_trialClientDict objectForKeyedSubscript:v4];
+  namespaceCopy = namespace;
+  v5 = [(NSDictionary *)self->_trialClientDict objectForKeyedSubscript:namespaceCopy];
   [v5 refresh];
   v6 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
@@ -139,19 +139,19 @@ LABEL_12:
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%s Got Trial experiment/rollout notification", &v17, 0xCu);
   }
 
-  v7 = [v5 levelForFactor:@"com.apple.siri.sp.invocation" withNamespaceName:v4];
-  v8 = [v7 directoryValue];
-  v9 = [v8 path];
+  v7 = [v5 levelForFactor:@"com.apple.siri.sp.invocation" withNamespaceName:namespaceCopy];
+  directoryValue = [v7 directoryValue];
+  path = [directoryValue path];
 
-  if (v9)
+  if (path)
   {
     [(CSTrialAssetDownloadMonitor *)self _notifyTrialAssetDownloadForAssetType:0];
-    v10 = [v5 levelForFactor:@"com.apple.siri.sp.mitigation" withNamespaceName:v4];
+    v10 = [v5 levelForFactor:@"com.apple.siri.sp.mitigation" withNamespaceName:namespaceCopy];
 
-    v11 = [v10 directoryValue];
-    v12 = [v11 path];
+    directoryValue2 = [v10 directoryValue];
+    path2 = [directoryValue2 path];
 
-    if (v12)
+    if (path2)
     {
       [(CSTrialAssetDownloadMonitor *)self _notifyTrialAssetDownloadForAssetType:6];
       v13 = 1;
@@ -169,8 +169,8 @@ LABEL_12:
         _os_log_error_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "%s ERR: null file download path for factor: %{public}@", &v17, 0x16u);
       }
 
-      v12 = +[CSDiagnosticReporter sharedInstance];
-      [v12 submitTrialIssueReport:kCSDiagnosticReporterTrialDownloadFailed];
+      path2 = +[CSDiagnosticReporter sharedInstance];
+      [path2 submitTrialIssueReport:kCSDiagnosticReporterTrialDownloadFailed];
       v13 = 0;
     }
 
@@ -189,17 +189,17 @@ LABEL_12:
       _os_log_error_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "%s ERR: null file download path for factor: %{public}@", &v17, 0x16u);
     }
 
-    v12 = +[CSDiagnosticReporter sharedInstance];
-    [v12 submitTrialIssueReport:kCSDiagnosticReporterTrialDownloadFailed];
+    path2 = +[CSDiagnosticReporter sharedInstance];
+    [path2 submitTrialIssueReport:kCSDiagnosticReporterTrialDownloadFailed];
     v13 = 0;
   }
 
   return v13;
 }
 
-- (void)_startMonitoringWithQueue:(id)a3
+- (void)_startMonitoringWithQueue:(id)queue
 {
-  v3 = a3;
+  queueCopy = queue;
   v4 = +[NSMutableDictionary dictionary];
   if (+[CSUtils supportTrialMitigationAssets])
   {
@@ -230,15 +230,15 @@ LABEL_12:
           objc_enumerationMutation(obj);
         }
 
-        v9 = [*(*(&v17 + 1) + 8 * i) unsignedIntegerValue];
+        unsignedIntegerValue = [*(*(&v17 + 1) + 8 * i) unsignedIntegerValue];
         v13[0] = _NSConcreteStackBlock;
         v13[1] = 3221225472;
         v13[2] = sub_10016BB90;
         v13[3] = &unk_100253990;
         v14 = v4;
         objc_copyWeak(&v16, &location);
-        v15 = v3;
-        [CSUtils getTrialIdsForAssetType:v9 withCompletion:v13];
+        v15 = queueCopy;
+        [CSUtils getTrialIdsForAssetType:unsignedIntegerValue withCompletion:v13];
 
         objc_destroyWeak(&v16);
       }
@@ -259,7 +259,7 @@ LABEL_12:
 {
   if ((+[CSUtils isDarwinOS]& 1) != 0)
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -267,10 +267,10 @@ LABEL_12:
     v5.receiver = self;
     v5.super_class = CSTrialAssetDownloadMonitor;
     self = [(CSTrialAssetDownloadMonitor *)&v5 init];
-    v3 = self;
+    selfCopy = self;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 + (CSTrialAssetDownloadMonitor)sharedInstance

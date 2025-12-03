@@ -1,17 +1,17 @@
 @interface CPLLibraryInfo
-- (CPLLibraryInfo)initWithCKRecord:(id)a3 zone:(id)a4;
-- (id)_assetCountsFromCKRecord:(id)a3;
-- (void)updateWithCKRecord:(id)a3 zone:(id)a4;
+- (CPLLibraryInfo)initWithCKRecord:(id)record zone:(id)zone;
+- (id)_assetCountsFromCKRecord:(id)record;
+- (void)updateWithCKRecord:(id)record zone:(id)zone;
 @end
 
 @implementation CPLLibraryInfo
 
-- (id)_assetCountsFromCKRecord:(id)a3
+- (id)_assetCountsFromCKRecord:(id)record
 {
-  if (a3)
+  if (record)
   {
-    v3 = a3;
-    v4 = [v3 valueForKey:@"photosCount"];
+    recordCopy = record;
+    v4 = [recordCopy valueForKey:@"photosCount"];
     v5 = v4;
     if (v4)
     {
@@ -25,7 +25,7 @@
 
     v7 = v6;
 
-    v8 = [v3 valueForKey:@"videosCount"];
+    v8 = [recordCopy valueForKey:@"videosCount"];
 
     if (v8)
     {
@@ -54,40 +54,40 @@
   return v11;
 }
 
-- (CPLLibraryInfo)initWithCKRecord:(id)a3 zone:(id)a4
+- (CPLLibraryInfo)initWithCKRecord:(id)record zone:(id)zone
 {
-  v6 = a3;
-  v7 = a4;
+  recordCopy = record;
+  zoneCopy = zone;
   v11.receiver = self;
   v11.super_class = CPLLibraryInfo;
   v8 = [(CPLLibraryInfo *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(CPLLibraryInfo *)v8 updateWithCKRecord:v6 zone:v7];
+    [(CPLLibraryInfo *)v8 updateWithCKRecord:recordCopy zone:zoneCopy];
   }
 
   return v9;
 }
 
-- (void)updateWithCKRecord:(id)a3 zone:(id)a4
+- (void)updateWithCKRecord:(id)record zone:(id)zone
 {
-  v33 = a3;
-  v5 = [(CPLLibraryInfo *)self _assetCountsFromCKRecord:v33];
+  recordCopy = record;
+  v5 = [(CPLLibraryInfo *)self _assetCountsFromCKRecord:recordCopy];
   [(CPLLibraryInfo *)self setAssetCounts:v5];
 
-  v6 = [v33 valueForKey:@"featureVersion"];
+  v6 = [recordCopy valueForKey:@"featureVersion"];
   if (v6)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [v6 unsignedIntegerValue];
+      unsignedIntegerValue = [v6 unsignedIntegerValue];
     }
 
     else
     {
-      v7 = 1;
+      unsignedIntegerValue = 1;
     }
   }
 
@@ -98,35 +98,35 @@
       sub_1001A4944();
     }
 
-    v7 = qword_1002BFA98;
+    unsignedIntegerValue = qword_1002BFA98;
   }
 
-  v8 = [[CPLFeatureVersionHistory alloc] initWithCurrentFeatureVersion:v7];
-  v9 = [v33 valueForKey:@"featureVersionHistory"];
+  v8 = [[CPLFeatureVersionHistory alloc] initWithCurrentFeatureVersion:unsignedIntegerValue];
+  v9 = [recordCopy valueForKey:@"featureVersionHistory"];
   if (v9)
   {
-    v31 = self;
+    selfCopy = self;
     v32 = v6;
     v10 = v8;
     v11 = [[CPLCloudKitFeatureVersionHistory alloc] initWithData:v9];
     v12 = v11;
     if (v11)
     {
-      v13 = [(CPLCloudKitFeatureVersionHistory *)v11 featureVersionsCount];
-      if (v13)
+      featureVersionsCount = [(CPLCloudKitFeatureVersionHistory *)v11 featureVersionsCount];
+      if (featureVersionsCount)
       {
-        v14 = v13;
+        v14 = featureVersionsCount;
         for (i = 0; i != v14; ++i)
         {
           v16 = [(CPLCloudKitFeatureVersionHistory *)v12 featureVersionAtIndex:i];
           if ([v16 hasVersion] && objc_msgSend(v16, "hasServerToken"))
           {
-            v17 = [v16 serverToken];
-            v18 = [v16 version];
-            if (v17)
+            serverToken = [v16 serverToken];
+            version = [v16 version];
+            if (serverToken)
             {
-              v19 = v18;
-              v20 = [[CKServerChangeToken alloc] initWithData:v17];
+              v19 = version;
+              v20 = [[CKServerChangeToken alloc] initWithData:serverToken];
               if (v20)
               {
                 v21 = [NSKeyedArchiver cpl_archivedDataWithRootObject:v20];
@@ -138,12 +138,12 @@
       }
     }
 
-    self = v31;
+    self = selfCopy;
     v6 = v32;
     v8 = v10;
   }
 
-  v22 = [v33 valueForKey:@"accountFlags"];
+  v22 = [recordCopy valueForKey:@"accountFlags"];
   if (v22)
   {
     [(CPLLibraryInfo *)self setAccountFlagsData:v22];
@@ -161,14 +161,14 @@
       [v24 setDefaultHEVC:{objc_msgSend(v26, "BOOLValue")}];
     }
 
-    v27 = [v24 data];
-    [(CPLLibraryInfo *)self setAccountFlagsData:v27];
+    data = [v24 data];
+    [(CPLLibraryInfo *)self setAccountFlagsData:data];
 
     v8 = v23;
   }
 
   [(CPLLibraryInfo *)self setFeatureVersionHistory:v8];
-  v28 = [v33 valueForKey:@"featureCompatibleVersion"];
+  v28 = [recordCopy valueForKey:@"featureCompatibleVersion"];
   if (v28 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     [(CPLLibraryInfo *)self setFeatureCompatibleVersion:v28];

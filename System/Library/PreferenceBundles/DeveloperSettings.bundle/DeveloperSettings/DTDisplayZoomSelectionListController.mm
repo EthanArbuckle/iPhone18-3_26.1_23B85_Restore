@@ -1,8 +1,8 @@
 @interface DTDisplayZoomSelectionListController
 - (id)specifiers;
-- (void)_updateNavigationButtonStateWithNewOption:(unint64_t)a3;
-- (void)_userDidConfirmDisplayZoomModeWithSpecifier:(id)a3;
-- (void)_userDidSelectSpecifier:(id)a3;
+- (void)_updateNavigationButtonStateWithNewOption:(unint64_t)option;
+- (void)_userDidConfirmDisplayZoomModeWithSpecifier:(id)specifier;
+- (void)_userDidSelectSpecifier:(id)specifier;
 - (void)viewDidLoad;
 @end
 
@@ -24,8 +24,8 @@
   v5 = sub_19C60(@"SET");
   v6 = [UIAction actionWithTitle:v5 image:0 identifier:0 handler:v3];
   v7 = [v4 initWithPrimaryAction:v6];
-  v8 = [(DTDisplayZoomSelectionListController *)self navigationItem];
-  [v8 setRightBarButtonItem:v7];
+  navigationItem = [(DTDisplayZoomSelectionListController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:v7];
 
   v9 = +[UIDevice currentDevice];
   LODWORD(v6) = [v9 sf_isiPad];
@@ -40,22 +40,22 @@
     objc_copyWeak(&v20, &location);
     v11 = [UIAction actionWithHandler:v19];
     v12 = [v10 initWithBarButtonSystemItem:1 primaryAction:v11];
-    v13 = [(DTDisplayZoomSelectionListController *)self navigationItem];
-    [v13 setLeftBarButtonItem:v12];
+    navigationItem2 = [(DTDisplayZoomSelectionListController *)self navigationItem];
+    [navigationItem2 setLeftBarButtonItem:v12];
 
     objc_destroyWeak(&v20);
   }
 
   v14 = +[DBSDisplayZoomConfigurationController defaultController];
-  v15 = [v14 currentDisplayZoomMode];
-  -[DTDisplayZoomSelectionListController _updateNavigationButtonStateWithNewOption:](self, "_updateNavigationButtonStateWithNewOption:", [v15 displayZoomOption]);
+  currentDisplayZoomMode = [v14 currentDisplayZoomMode];
+  -[DTDisplayZoomSelectionListController _updateNavigationButtonStateWithNewOption:](self, "_updateNavigationButtonStateWithNewOption:", [currentDisplayZoomMode displayZoomOption]);
 
   v16 = sub_19C60(@"DISPLAY_ZOOM");
   [(DTDisplayZoomSelectionListController *)self setTitle:v16];
 
   v17 = +[DBSDisplayZoomConfigurationController defaultController];
-  v18 = [v17 currentDisplayZoomMode];
-  -[DTDisplayZoomSelectionListController setSelectedDisplayZoomOption:](self, "setSelectedDisplayZoomOption:", [v18 displayZoomOption]);
+  currentDisplayZoomMode2 = [v17 currentDisplayZoomMode];
+  -[DTDisplayZoomSelectionListController setSelectedDisplayZoomOption:](self, "setSelectedDisplayZoomOption:", [currentDisplayZoomMode2 displayZoomOption]);
 
   objc_destroyWeak(&v22);
   objc_destroyWeak(&location);
@@ -73,17 +73,17 @@
     v24 = v5;
     [v4 addObject:v5];
     v6 = +[DBSDisplayZoomConfigurationController defaultController];
-    v7 = [v6 displayZoomModes];
+    displayZoomModes = [v6 displayZoomModes];
     v29[0] = _NSConcreteStackBlock;
     v29[1] = 3221225472;
     v29[2] = sub_3448;
     v29[3] = &unk_3CFF0;
-    v23 = self;
+    selfCopy = self;
     v29[4] = self;
-    v8 = [v7 na_dictionaryByMappingValues:v29];
+    v8 = [displayZoomModes na_dictionaryByMappingValues:v29];
 
     v9 = +[DBSDisplayZoomConfigurationController defaultController];
-    v10 = [v9 currentDisplayZoomMode];
+    currentDisplayZoomMode = [v9 currentDisplayZoomMode];
 
     v27 = 0u;
     v28 = 0u;
@@ -105,10 +105,10 @@
             objc_enumerationMutation(&off_41528);
           }
 
-          v16 = [*(*(&v25 + 1) + 8 * v15) unsignedIntegerValue];
+          unsignedIntegerValue = [*(*(&v25 + 1) + 8 * v15) unsignedIntegerValue];
           v17 = DBSStringForDisplayZoomOption();
           v18 = [v8 objectForKeyedSubscript:v17];
-          if (v16 == [v10 displayZoomOption])
+          if (unsignedIntegerValue == [currentDisplayZoomMode displayZoomOption])
           {
             [v24 setObject:v18 forKeyedSubscript:v14];
           }
@@ -125,22 +125,22 @@
       while (v12);
     }
 
-    v19 = *&v23->PSListController_opaque[v22];
-    *&v23->PSListController_opaque[v22] = v4;
+    v19 = *&selfCopy->PSListController_opaque[v22];
+    *&selfCopy->PSListController_opaque[v22] = v4;
     v20 = v4;
 
-    v3 = *&v23->PSListController_opaque[v22];
+    v3 = *&selfCopy->PSListController_opaque[v22];
   }
 
   return v3;
 }
 
-- (void)_userDidSelectSpecifier:(id)a3
+- (void)_userDidSelectSpecifier:(id)specifier
 {
-  v4 = a3;
-  v7 = [v4 objectForKeyedSubscript:@"displayZoomMode"];
+  specifierCopy = specifier;
+  v7 = [specifierCopy objectForKeyedSubscript:@"displayZoomMode"];
   v5 = [(DTDisplayZoomSelectionListController *)self specifierForID:@"DISPLAY_ZOOM"];
-  [v5 setProperty:v4 forKey:PSRadioGroupCheckedSpecifierKey];
+  [v5 setProperty:specifierCopy forKey:PSRadioGroupCheckedSpecifierKey];
 
   v6 = [(DTDisplayZoomSelectionListController *)self specifierForID:@"DISPLAY_ZOOM"];
   [(DTDisplayZoomSelectionListController *)self reloadSpecifier:v6 animated:1];
@@ -148,19 +148,19 @@
   -[DTDisplayZoomSelectionListController _updateNavigationButtonStateWithNewOption:](self, "_updateNavigationButtonStateWithNewOption:", [v7 displayZoomOption]);
 }
 
-- (void)_updateNavigationButtonStateWithNewOption:(unint64_t)a3
+- (void)_updateNavigationButtonStateWithNewOption:(unint64_t)option
 {
   v5 = +[DBSDisplayZoomConfigurationController defaultController];
-  v6 = [v5 currentDisplayZoomMode];
-  v7 = [v6 displayZoomOption];
+  currentDisplayZoomMode = [v5 currentDisplayZoomMode];
+  displayZoomOption = [currentDisplayZoomMode displayZoomOption];
 
-  [(DTDisplayZoomSelectionListController *)self setSelectedDisplayZoomOption:a3];
-  v9 = [(DTDisplayZoomSelectionListController *)self navigationItem];
-  v8 = [v9 rightBarButtonItem];
-  [v8 setEnabled:v7 != a3];
+  [(DTDisplayZoomSelectionListController *)self setSelectedDisplayZoomOption:option];
+  navigationItem = [(DTDisplayZoomSelectionListController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  [rightBarButtonItem setEnabled:displayZoomOption != option];
 }
 
-- (void)_userDidConfirmDisplayZoomModeWithSpecifier:(id)a3
+- (void)_userDidConfirmDisplayZoomModeWithSpecifier:(id)specifier
 {
   v3 = [(DTDisplayZoomSelectionListController *)self specifierForID:@"DISPLAY_ZOOM"];
   v7 = [v3 objectForKeyedSubscript:PSRadioGroupCheckedSpecifierKey];

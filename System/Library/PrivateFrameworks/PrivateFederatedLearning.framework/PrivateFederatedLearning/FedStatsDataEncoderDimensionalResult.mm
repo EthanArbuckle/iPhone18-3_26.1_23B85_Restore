@@ -1,32 +1,32 @@
 @interface FedStatsDataEncoderDimensionalResult
-+ (id)resultWithIndex:(id)a3 dimensionality:(id)a4;
-- (FedStatsDataEncoderDimensionalResult)initWithIndex:(id)a3 dimensionality:(id)a4;
++ (id)resultWithIndex:(id)index dimensionality:(id)dimensionality;
+- (FedStatsDataEncoderDimensionalResult)initWithIndex:(id)index dimensionality:(id)dimensionality;
 @end
 
 @implementation FedStatsDataEncoderDimensionalResult
 
-- (FedStatsDataEncoderDimensionalResult)initWithIndex:(id)a3 dimensionality:(id)a4
+- (FedStatsDataEncoderDimensionalResult)initWithIndex:(id)index dimensionality:(id)dimensionality
 {
-  v7 = a3;
-  v8 = a4;
+  indexCopy = index;
+  dimensionalityCopy = dimensionality;
   v12.receiver = self;
   v12.super_class = FedStatsDataEncoderDimensionalResult;
   v9 = [(FedStatsDataEncoderDimensionalResult *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_index, a3);
-    objc_storeStrong(&v10->_dimensionality, a4);
+    objc_storeStrong(&v9->_index, index);
+    objc_storeStrong(&v10->_dimensionality, dimensionality);
   }
 
   return v10;
 }
 
-+ (id)resultWithIndex:(id)a3 dimensionality:(id)a4
++ (id)resultWithIndex:(id)index dimensionality:(id)dimensionality
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithIndex:v7 dimensionality:v6];
+  dimensionalityCopy = dimensionality;
+  indexCopy = index;
+  v8 = [[self alloc] initWithIndex:indexCopy dimensionality:dimensionalityCopy];
 
   return v8;
 }

@@ -32,7 +32,7 @@
   [v21 doubleValue];
   v23 = v22;
 
-  v24 = [a1 initWithDate:v5 type:v8 location:v18 entry:v19 exit:v20 dataPointCount:0 confidence:v23 placeInference:0];
+  v24 = [self initWithDate:v5 type:v8 location:v18 entry:v19 exit:v20 dataPointCount:0 confidence:v23 placeInference:0];
   return v24;
 }
 

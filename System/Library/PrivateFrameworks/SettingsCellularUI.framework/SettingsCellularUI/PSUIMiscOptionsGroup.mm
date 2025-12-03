@@ -1,24 +1,24 @@
 @interface PSUIMiscOptionsGroup
 - (PSBillingPeriodSource)billingPeriodSource;
 - (PSListController)hostController;
-- (PSUIMiscOptionsGroup)initWithHostController:(id)a3 cellularManagementCache:(id)a4 carrierSpaceManager:(id)a5 dataCache:(id)a6 carrierBundleCache:(id)a7 backupManagerWrapper:(id)a8 callHistoryManager:(id)a9 appleAccountStore:(id)a10 resetStatisticsDelegate:(id)a11;
+- (PSUIMiscOptionsGroup)initWithHostController:(id)controller cellularManagementCache:(id)cache carrierSpaceManager:(id)manager dataCache:(id)dataCache carrierBundleCache:(id)bundleCache backupManagerWrapper:(id)wrapper callHistoryManager:(id)historyManager appleAccountStore:(id)self0 resetStatisticsDelegate:(id)self1;
 - (PSUIResetStatisticsGroupDelegate)resetStatisticsDelegate;
 - (id)specifiers;
 @end
 
 @implementation PSUIMiscOptionsGroup
 
-- (PSUIMiscOptionsGroup)initWithHostController:(id)a3 cellularManagementCache:(id)a4 carrierSpaceManager:(id)a5 dataCache:(id)a6 carrierBundleCache:(id)a7 backupManagerWrapper:(id)a8 callHistoryManager:(id)a9 appleAccountStore:(id)a10 resetStatisticsDelegate:(id)a11
+- (PSUIMiscOptionsGroup)initWithHostController:(id)controller cellularManagementCache:(id)cache carrierSpaceManager:(id)manager dataCache:(id)dataCache carrierBundleCache:(id)bundleCache backupManagerWrapper:(id)wrapper callHistoryManager:(id)historyManager appleAccountStore:(id)self0 resetStatisticsDelegate:(id)self1
 {
-  obj = a3;
-  v27 = a4;
-  v26 = a5;
-  v25 = a6;
-  v24 = a7;
-  v23 = a8;
-  v22 = a9;
-  v17 = a10;
-  v18 = a11;
+  obj = controller;
+  cacheCopy = cache;
+  managerCopy = manager;
+  dataCacheCopy = dataCache;
+  bundleCacheCopy = bundleCache;
+  wrapperCopy = wrapper;
+  historyManagerCopy = historyManager;
+  storeCopy = store;
+  delegateCopy = delegate;
   v29.receiver = self;
   v29.super_class = PSUIMiscOptionsGroup;
   v19 = [(PSUIMiscOptionsGroup *)&v29 init];
@@ -26,14 +26,14 @@
   if (v19)
   {
     objc_storeWeak(&v19->_hostController, obj);
-    objc_storeStrong(&v20->_managementCache, a4);
-    objc_storeStrong(&v20->_carrierSpaceManager, a5);
-    objc_storeStrong(&v20->_dataCache, a6);
-    objc_storeStrong(&v20->_carrierBundleCache, a7);
-    objc_storeStrong(&v20->_backupManagerWrapper, a8);
-    objc_storeStrong(&v20->_callHistoryManager, a9);
-    objc_storeStrong(&v20->_accountStore, a10);
-    objc_storeWeak(&v20->_resetStatisticsDelegate, v18);
+    objc_storeStrong(&v20->_managementCache, cache);
+    objc_storeStrong(&v20->_carrierSpaceManager, manager);
+    objc_storeStrong(&v20->_dataCache, dataCache);
+    objc_storeStrong(&v20->_carrierBundleCache, bundleCache);
+    objc_storeStrong(&v20->_backupManagerWrapper, wrapper);
+    objc_storeStrong(&v20->_callHistoryManager, historyManager);
+    objc_storeStrong(&v20->_accountStore, store);
+    objc_storeWeak(&v20->_resetStatisticsDelegate, delegateCopy);
   }
 
   return v20;
@@ -48,18 +48,18 @@
     v4 = +[PSUIWiFiAssistSwitchSpecifier wifiAssistGroupSpecifier];
     [v3 addObject:v4];
 
-    v5 = [[PSUIWiFiAssistSwitchSpecifier alloc] initDefault];
+    initDefault = [[PSUIWiFiAssistSwitchSpecifier alloc] initDefault];
     WeakRetained = objc_loadWeakRetained(&self->_billingPeriodSource);
-    [v5 setBillingPeriodSource:WeakRetained];
+    [initDefault setBillingPeriodSource:WeakRetained];
 
-    [v3 addObject:v5];
+    [v3 addObject:initDefault];
   }
 
   v7 = [[PSUICloudDriveCellularSwitchSpecifier alloc] initWithAppleAccountStore:self->_accountStore];
   if ([(PSUICloudDriveCellularSwitchSpecifier *)v7 shouldShowCloudDrive])
   {
-    v8 = [(PSUICloudDriveCellularSwitchSpecifier *)v7 cloudDriveGroupSpecifier];
-    [v3 addObject:v8];
+    cloudDriveGroupSpecifier = [(PSUICloudDriveCellularSwitchSpecifier *)v7 cloudDriveGroupSpecifier];
+    [v3 addObject:cloudDriveGroupSpecifier];
 
     v9 = [MEMORY[0x277CCABB0] numberWithInt:{-[PSCellularManagementCache isGlobalDataModificationRestricted](self->_managementCache, "isGlobalDataModificationRestricted") ^ 1}];
     [(PSUICloudDriveCellularSwitchSpecifier *)v7 setProperty:v9 forKey:*MEMORY[0x277D3FF38]];
@@ -70,36 +70,36 @@
   v10 = [[PSUICloudBackupCellularSwitchSpecifier alloc] initWithAppleAccountStore:self->_accountStore backupManagerWrapper:self->_backupManagerWrapper];
   if ([(PSUICloudBackupCellularSwitchSpecifier *)v10 shouldShowCloudBackupCarrier])
   {
-    v11 = [(PSUICloudBackupCellularSwitchSpecifier *)v10 cloudBackupGroupSpecifier];
-    [v3 addObject:v11];
+    cloudBackupGroupSpecifier = [(PSUICloudBackupCellularSwitchSpecifier *)v10 cloudBackupGroupSpecifier];
+    [v3 addObject:cloudBackupGroupSpecifier];
 
     [v3 addObject:v10];
   }
 
-  v12 = [(PSUICarrierSpaceManager *)self->_carrierSpaceManager capabilities];
-  if ([v12 supportsUsage])
+  capabilities = [(PSUICarrierSpaceManager *)self->_carrierSpaceManager capabilities];
+  if ([capabilities supportsUsage])
   {
 
     goto LABEL_10;
   }
 
-  v13 = [MEMORY[0x277D75418] currentDevice];
-  v14 = [v13 sf_isiPad];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  sf_isiPad = [currentDevice sf_isiPad];
 
-  if (v14)
+  if (sf_isiPad)
   {
 LABEL_10:
-    v15 = [(PSUIMiscOptionsGroup *)self getLogger];
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+    getLogger = [(PSUIMiscOptionsGroup *)self getLogger];
+    if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = [(PSUICarrierSpaceManager *)self->_carrierSpaceManager capabilities];
-      v17 = [v16 supportsUsage];
-      v18 = [MEMORY[0x277D75418] currentDevice];
+      capabilities2 = [(PSUICarrierSpaceManager *)self->_carrierSpaceManager capabilities];
+      supportsUsage = [capabilities2 supportsUsage];
+      currentDevice2 = [MEMORY[0x277D75418] currentDevice];
       v34[0] = 67109376;
-      v34[1] = v17;
+      v34[1] = supportsUsage;
       v35 = 1024;
-      v36 = [v18 sf_isiPad];
-      _os_log_impl(&dword_2658DE000, v15, OS_LOG_TYPE_DEFAULT, "Not adding call time group because it isn't supported (%d) or we're an iPad (%d)", v34, 0xEu);
+      sf_isiPad2 = [currentDevice2 sf_isiPad];
+      _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "Not adding call time group because it isn't supported (%d) or we're an iPad (%d)", v34, 0xEu);
     }
 
     goto LABEL_15;
@@ -117,8 +117,8 @@ LABEL_10:
     callTimeGroup = self->_callTimeGroup;
   }
 
-  v15 = [(PSUICallTimeGroup *)callTimeGroup specifiers];
-  [v3 addObjectsFromArray:v15];
+  getLogger = [(PSUICallTimeGroup *)callTimeGroup specifiers];
+  [v3 addObjectsFromArray:getLogger];
 LABEL_15:
 
   resetStatisticsGroup = self->_resetStatisticsGroup;
@@ -135,8 +135,8 @@ LABEL_15:
     resetStatisticsGroup = self->_resetStatisticsGroup;
   }
 
-  v31 = [(PSUIResetStatisticsGroup *)resetStatisticsGroup specifiers];
-  [v3 addObjectsFromArray:v31];
+  specifiers = [(PSUIResetStatisticsGroup *)resetStatisticsGroup specifiers];
+  [v3 addObjectsFromArray:specifiers];
 
   v32 = *MEMORY[0x277D85DE8];
 

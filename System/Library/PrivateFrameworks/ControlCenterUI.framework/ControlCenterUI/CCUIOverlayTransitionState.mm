@@ -1,31 +1,31 @@
 @interface CCUIOverlayTransitionState
-+ (BOOL)isSignificantStatusBarTransitionFrom:(id)a3 to:(id)a4;
-+ (BOOL)isSignificantTransitionFrom:(id)a3 to:(id)a4;
-+ (CCUIOverlayTransitionState)stateWithType:(unint64_t)a3 interactive:(BOOL)a4 progress:(double)a5 pagingProgress:(double)a6;
++ (BOOL)isSignificantStatusBarTransitionFrom:(id)from to:(id)to;
++ (BOOL)isSignificantTransitionFrom:(id)from to:(id)to;
++ (CCUIOverlayTransitionState)stateWithType:(unint64_t)type interactive:(BOOL)interactive progress:(double)progress pagingProgress:(double)pagingProgress;
 + (id)fullyDismissedState;
 + (id)fullyPresentedState;
 - (double)snappedStatusBarPresentationProgress;
-- (id)_initWithType:(unint64_t)a3 interactive:(BOOL)a4 progress:(double)a5 pagingProgress:(double)a6;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)_initWithType:(unint64_t)type interactive:(BOOL)interactive progress:(double)progress pagingProgress:(double)pagingProgress;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 @end
 
 @implementation CCUIOverlayTransitionState
 
-+ (BOOL)isSignificantStatusBarTransitionFrom:(id)a3 to:(id)a4
++ (BOOL)isSignificantStatusBarTransitionFrom:(id)from to:(id)to
 {
-  v6 = a3;
-  v7 = a4;
-  if ([a1 isSignificantTransitionFrom:v6 to:v7])
+  fromCopy = from;
+  toCopy = to;
+  if ([self isSignificantTransitionFrom:fromCopy to:toCopy])
   {
     LOBYTE(v8) = 1;
   }
 
   else
   {
-    [v6 snappedStatusBarPresentationProgress];
-    [v7 snappedStatusBarPresentationProgress];
+    [fromCopy snappedStatusBarPresentationProgress];
+    [toCopy snappedStatusBarPresentationProgress];
     v8 = BSFloatEqualToFloat() ^ 1;
   }
 
@@ -41,14 +41,14 @@
   return fmax(fmin(floor(v3 * (v5 / (CCUIStatusBarHeight() * 0.75))), 1.0), 0.0);
 }
 
-+ (BOOL)isSignificantTransitionFrom:(id)a3 to:(id)a4
++ (BOOL)isSignificantTransitionFrom:(id)from to:(id)to
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5 && (v7 = [v5 isInteractive], v7 == objc_msgSend(v6, "isInteractive")) && (v8 = objc_msgSend(v5, "type"), v8 == objc_msgSend(v6, "type")))
+  fromCopy = from;
+  toCopy = to;
+  if (fromCopy && (v7 = [fromCopy isInteractive], v7 == objc_msgSend(toCopy, "isInteractive")) && (v8 = objc_msgSend(fromCopy, "type"), v8 == objc_msgSend(toCopy, "type")))
   {
-    [v5 snappedPresentationProgress];
-    [v6 snappedPresentationProgress];
+    [fromCopy snappedPresentationProgress];
+    [toCopy snappedPresentationProgress];
     v9 = BSFloatEqualToFloat() ^ 1;
   }
 
@@ -98,34 +98,34 @@ void __49__CCUIOverlayTransitionState_fullyPresentedState__block_invoke()
   fullyPresentedState_transitionState = v0;
 }
 
-+ (CCUIOverlayTransitionState)stateWithType:(unint64_t)a3 interactive:(BOOL)a4 progress:(double)a5 pagingProgress:(double)a6
++ (CCUIOverlayTransitionState)stateWithType:(unint64_t)type interactive:(BOOL)interactive progress:(double)progress pagingProgress:(double)pagingProgress
 {
-  v6 = [[a1 alloc] _initWithType:a3 interactive:a4 progress:a5 pagingProgress:a6];
+  v6 = [[self alloc] _initWithType:type interactive:interactive progress:progress pagingProgress:pagingProgress];
 
   return v6;
 }
 
-- (id)_initWithType:(unint64_t)a3 interactive:(BOOL)a4 progress:(double)a5 pagingProgress:(double)a6
+- (id)_initWithType:(unint64_t)type interactive:(BOOL)interactive progress:(double)progress pagingProgress:(double)pagingProgress
 {
   v13.receiver = self;
   v13.super_class = CCUIOverlayTransitionState;
   result = [(CCUIOverlayTransitionState *)&v13 init];
   if (result)
   {
-    *(result + 2) = a3;
-    *(result + 8) = a4;
-    *(result + 3) = a5;
-    *(result + 4) = a6;
-    v11 = 1.0 - a5;
-    if (a3 != 2)
+    *(result + 2) = type;
+    *(result + 8) = interactive;
+    *(result + 3) = progress;
+    *(result + 4) = pagingProgress;
+    progressCopy = 1.0 - progress;
+    if (type != 2)
     {
-      v11 = a5;
+      progressCopy = progress;
     }
 
-    v12 = fmax(fmin(v11, 1.0), 0.0);
-    *(result + 5) = v11;
+    v12 = fmax(fmin(progressCopy, 1.0), 0.0);
+    *(result + 5) = progressCopy;
     *(result + 6) = v12;
-    *(result + 7) = fmax(v11, 0.0);
+    *(result + 7) = fmax(progressCopy, 0.0);
     *(result + 8) = floor(v12);
   }
 
@@ -134,32 +134,32 @@ void __49__CCUIOverlayTransitionState_fullyPresentedState__block_invoke()
 
 - (id)succinctDescription
 {
-  v2 = [(CCUIOverlayTransitionState *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(CCUIOverlayTransitionState *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(CCUIOverlayTransitionState *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(CCUIOverlayTransitionState *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(CCUIOverlayTransitionState *)self succinctDescriptionBuilder];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(CCUIOverlayTransitionState *)self succinctDescriptionBuilder];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __68__CCUIOverlayTransitionState_descriptionBuilderWithMultilinePrefix___block_invoke;
   v9[3] = &unk_278381DC8;
-  v6 = v5;
+  v6 = succinctDescriptionBuilder;
   v10 = v6;
-  v11 = self;
-  [v6 appendBodySectionWithName:0 multilinePrefix:v4 block:v9];
+  selfCopy = self;
+  [v6 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v9];
 
   v7 = v6;
   return v6;

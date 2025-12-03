@@ -8,7 +8,7 @@
 
 + (id)regulatoryEligibilities
 {
-  v12 = a1;
+  selfCopy = self;
   v11 = a2;
   v10 = 0;
   all_domain_answers = os_eligibility_get_all_domain_answers();
@@ -45,11 +45,11 @@
 
 + (void)reportRegulatoryEligibilityStatusToIdMS
 {
-  v15[2] = a1;
+  v15[2] = self;
   v15[1] = a2;
   v15[0] = +[AKAccountManager sharedInstance];
-  v14 = [v15[0] primaryAuthKitAccount];
-  if (v14)
+  primaryAuthKitAccount = [v15[0] primaryAuthKitAccount];
+  if (primaryAuthKitAccount)
   {
     v9 = _AKLogSystem();
     v8 = OS_LOG_TYPE_DEFAULT;
@@ -63,7 +63,7 @@
 
     objc_storeStrong(&v9, 0);
     v2 = +[AKAppleIDCheckInHelperService sharedService];
-    [v2 performCheckInForAccount:v14 event:AKPostDataEventLiveness reason:8 completion:&stru_1003249A8];
+    [v2 performCheckInForAccount:primaryAuthKitAccount event:AKPostDataEventLiveness reason:8 completion:&stru_1003249A8];
     _objc_release(v2);
     v10 = 0;
   }
@@ -84,23 +84,23 @@
     v10 = 1;
   }
 
-  objc_storeStrong(&v14, 0);
+  objc_storeStrong(&primaryAuthKitAccount, 0);
   objc_storeStrong(v15, 0);
 }
 
 + (void)reportBirthdayToOSElligibility
 {
-  v20[2] = a1;
+  v20[2] = self;
   v20[1] = a2;
   v20[0] = +[AKAccountManager sharedInstance];
-  v19 = [v20[0] primaryAuthKitAccount];
-  v18 = [v20[0] altDSIDforPrimaryiCloudAccount];
-  if (v19)
+  primaryAuthKitAccount = [v20[0] primaryAuthKitAccount];
+  altDSIDforPrimaryiCloudAccount = [v20[0] altDSIDforPrimaryiCloudAccount];
+  if (primaryAuthKitAccount)
   {
     v13 = objc_alloc_init(AKBirthDayKeychain);
     v12 = 0;
     obj = 0;
-    v3 = [v13 fetchBirthDayForAltDSID:v18 error:&obj];
+    v3 = [v13 fetchBirthDayForAltDSID:altDSIDforPrimaryiCloudAccount error:&obj];
     objc_storeStrong(&v12, obj);
     v11 = v3;
     [v3 timeIntervalSince1970];
@@ -142,8 +142,8 @@
     v14 = 1;
   }
 
-  objc_storeStrong(&v18, 0);
-  objc_storeStrong(&v19, 0);
+  objc_storeStrong(&altDSIDforPrimaryiCloudAccount, 0);
+  objc_storeStrong(&primaryAuthKitAccount, 0);
   objc_storeStrong(v20, 0);
 }
 

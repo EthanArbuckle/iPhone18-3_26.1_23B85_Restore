@@ -8,15 +8,15 @@
 {
   v4.receiver = self;
   v4.super_class = BMDeviceMetadata_v0;
-  v2 = [(BMDeviceMetadata *)&v4 platform];
-  if (v2 > 8)
+  platform = [(BMDeviceMetadata *)&v4 platform];
+  if (platform > 8)
   {
     return 0;
   }
 
   else
   {
-    return dword_185545F14[v2];
+    return dword_185545F14[platform];
   }
 }
 

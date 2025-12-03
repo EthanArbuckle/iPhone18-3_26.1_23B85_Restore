@@ -22,7 +22,7 @@
   v5 = v4;
   v9 = v5;
   v10 = &v11;
-  [a1 enumerateObjectsUsingBlock:v8];
+  [self enumerateObjectsUsingBlock:v8];
   v6 = v12[5];
 
   _Block_object_dispose(&v11, 8);
@@ -34,13 +34,13 @@
 {
   v18 = *MEMORY[0x277D85DE8];
   v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(a1, "count")}];
+  v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(self, "count")}];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = a1;
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  selfCopy = self;
+  v7 = [selfCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = v7;
@@ -51,7 +51,7 @@
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(selfCopy);
         }
 
         v11 = v4[2](v4, *(*(&v13 + 1) + 8 * i));
@@ -61,7 +61,7 @@
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v8 = [selfCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v8);
@@ -79,8 +79,8 @@
   v9[3] = &unk_278F041D0;
   v10 = v4;
   v5 = v4;
-  v6 = [a1 indexesOfObjectsPassingTest:v9];
-  v7 = [a1 objectsAtIndexes:v6];
+  v6 = [self indexesOfObjectsPassingTest:v9];
+  v7 = [self objectsAtIndexes:v6];
 
   return v7;
 }

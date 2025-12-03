@@ -1,11 +1,11 @@
 @interface CUINamedLookup
 - (BOOL)_cacheRenditionProperties;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isTintable;
-- (CUINamedLookup)initWithName:(id)a3 usingRenditionKey:(id)a4 fromTheme:(unint64_t)a5;
+- (CUINamedLookup)initWithName:(id)name usingRenditionKey:(id)key fromTheme:(unint64_t)theme;
 - (NSString)appearance;
 - (NSString)renditionName;
-- (id)_renditionForSpecificKey:(id)a3;
+- (id)_renditionForSpecificKey:(id)key;
 - (int64_t)appearanceIdentifier;
 - (int64_t)displayGamut;
 - (int64_t)graphicsClass;
@@ -34,16 +34,16 @@
 
 - (int64_t)layoutDirection
 {
-  v2 = [(CUINamedLookup *)self renditionKey];
+  renditionKey = [(CUINamedLookup *)self renditionKey];
 
-  return [(CUIRenditionKey *)v2 themeDirection];
+  return [(CUIRenditionKey *)renditionKey themeDirection];
 }
 
 - (int64_t)appearanceIdentifier
 {
-  v2 = [(CUINamedLookup *)self renditionKey];
+  renditionKey = [(CUINamedLookup *)self renditionKey];
 
-  return [(CUIRenditionKey *)v2 themeAppearance];
+  return [(CUIRenditionKey *)renditionKey themeAppearance];
 }
 
 - (NSString)appearance
@@ -58,16 +58,16 @@
   return [v3 defaultAppearanceName];
 }
 
-- (CUINamedLookup)initWithName:(id)a3 usingRenditionKey:(id)a4 fromTheme:(unint64_t)a5
+- (CUINamedLookup)initWithName:(id)name usingRenditionKey:(id)key fromTheme:(unint64_t)theme
 {
   v16.receiver = self;
   v16.super_class = CUINamedLookup;
   v8 = [(CUINamedLookup *)&v16 init];
   if (v8)
   {
-    v8->_name = [a3 copy];
-    v8->_key = [a4 copy];
-    v8->_storageRef = a5;
+    v8->_name = [name copy];
+    v8->_key = [key copy];
+    v8->_storageRef = theme;
     if ([(CUINamedLookup *)v8 _cacheRenditionProperties])
     {
       v8->_lock._os_unfair_lock_opaque = 0;
@@ -76,7 +76,7 @@
     else
     {
       [(CUINamedLookup *)v8 key];
-      _CUILog(4, "CoreUI: unable to locate asset '%@' key:%@ releasing", v9, v10, v11, v12, v13, v14, a3);
+      _CUILog(4, "CoreUI: unable to locate asset '%@' key:%@ releasing", v9, v10, v11, v12, v13, v14, name);
 
       return 0;
     }
@@ -85,74 +85,74 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
 
   objc_opt_self();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || *(a3 + 4) != self->_storageRef)
+  if ((objc_opt_isKindOfClass() & 1) == 0 || *(equal + 4) != self->_storageRef)
   {
     return 0;
   }
 
-  v5 = *(a3 + 3);
+  v5 = *(equal + 3);
   signature = self->_signature;
 
   return [v5 isEqualToString:signature];
 }
 
-- (id)_renditionForSpecificKey:(id)a3
+- (id)_renditionForSpecificKey:(id)key
 {
   v5 = _LookupStructuredThemeProvider(self->_storageRef, a2);
-  v6 = [a3 keyList];
+  keyList = [key keyList];
   signature = self->_signature;
 
-  return [v5 renditionWithKey:v6 usingKeySignature:signature];
+  return [v5 renditionWithKey:keyList usingKeySignature:signature];
 }
 
 - (NSString)renditionName
 {
-  v2 = [(CUINamedLookup *)self _rendition];
+  _rendition = [(CUINamedLookup *)self _rendition];
 
-  return [(CUIThemeRendition *)v2 name];
+  return [(CUIThemeRendition *)_rendition name];
 }
 
 - (BOOL)isTintable
 {
-  v2 = [(CUINamedLookup *)self _rendition];
+  _rendition = [(CUINamedLookup *)self _rendition];
 
-  return [(CUIThemeRendition *)v2 isTintable];
+  return [(CUIThemeRendition *)_rendition isTintable];
 }
 
 - (int64_t)memoryClass
 {
-  v2 = [(CUINamedLookup *)self renditionKey];
+  renditionKey = [(CUINamedLookup *)self renditionKey];
 
-  return [(CUIRenditionKey *)v2 themeMemoryClass];
+  return [(CUIRenditionKey *)renditionKey themeMemoryClass];
 }
 
 - (int64_t)graphicsClass
 {
-  v2 = [(CUINamedLookup *)self renditionKey];
+  renditionKey = [(CUINamedLookup *)self renditionKey];
 
-  return [(CUIRenditionKey *)v2 themeGraphicsClass];
+  return [(CUIRenditionKey *)renditionKey themeGraphicsClass];
 }
 
 - (int64_t)displayGamut
 {
-  v2 = [(CUINamedLookup *)self renditionKey];
+  renditionKey = [(CUINamedLookup *)self renditionKey];
 
-  return [(CUIRenditionKey *)v2 themeDisplayGamut];
+  return [(CUIRenditionKey *)renditionKey themeDisplayGamut];
 }
 
 - (int64_t)localization
 {
-  v2 = [(CUINamedLookup *)self renditionKey];
+  renditionKey = [(CUINamedLookup *)self renditionKey];
 
-  return [(CUIRenditionKey *)v2 themeLocalization];
+  return [(CUIRenditionKey *)renditionKey themeLocalization];
 }
 
 @end

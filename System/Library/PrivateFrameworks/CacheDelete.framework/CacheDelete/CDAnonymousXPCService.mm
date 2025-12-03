@@ -1,21 +1,21 @@
 @interface CDAnonymousXPCService
 - (BOOL)createHeartbeatConnection;
-- (CDAnonymousXPCService)initWithInfo:(id)a3 endpoint:(id)a4;
-- (void)_servicePing:(id)a3;
-- (void)obtainXPCConnection:(id)a3;
+- (CDAnonymousXPCService)initWithInfo:(id)info endpoint:(id)endpoint;
+- (void)_servicePing:(id)ping;
+- (void)obtainXPCConnection:(id)connection;
 @end
 
 @implementation CDAnonymousXPCService
 
 - (BOOL)createHeartbeatConnection
 {
-  v3 = [(CDAnonymousXPCService *)self heartbeatConnection];
-  if (v3)
+  heartbeatConnection = [(CDAnonymousXPCService *)self heartbeatConnection];
+  if (heartbeatConnection)
   {
 
 LABEL_8:
-    v20 = [(CDAnonymousXPCService *)self heartbeatConnection];
-    v21 = v20 != 0;
+    heartbeatConnection2 = [(CDAnonymousXPCService *)self heartbeatConnection];
+    v21 = heartbeatConnection2 != 0;
     goto LABEL_9;
   }
 
@@ -35,14 +35,14 @@ LABEL_8:
 
   [(CDAnonymousXPCService *)self setHaveCreatedHeartbeat:1];
   v6 = [NSXPCConnection alloc];
-  v7 = [(CDAnonymousXPCService *)self endpoint];
-  v8 = [v6 initWithListenerEndpoint:v7];
+  endpoint = [(CDAnonymousXPCService *)self endpoint];
+  v8 = [v6 initWithListenerEndpoint:endpoint];
   [(CDAnonymousXPCService *)self setHeartbeatConnection:v8];
 
-  v9 = [(CDAnonymousXPCService *)self heartbeatConnection];
-  LODWORD(v7) = v9 == 0;
+  heartbeatConnection3 = [(CDAnonymousXPCService *)self heartbeatConnection];
+  LODWORD(endpoint) = heartbeatConnection3 == 0;
 
-  if (!v7)
+  if (!endpoint)
   {
     objc_initWeak(buf, self);
     v10 = [(CDService *)self ID];
@@ -65,15 +65,15 @@ LABEL_8:
     v15 = [(CDAnonymousXPCService *)self heartbeatConnection:v24];
     [v15 setInvalidationHandler:v12];
 
-    v16 = [(CDAnonymousXPCService *)self heartbeatConnection];
-    [v16 setInterruptionHandler:v14];
+    heartbeatConnection4 = [(CDAnonymousXPCService *)self heartbeatConnection];
+    [heartbeatConnection4 setInterruptionHandler:v14];
 
     v17 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___CacheDeleteServiceProtocol];
-    v18 = [(CDAnonymousXPCService *)self heartbeatConnection];
-    [v18 setRemoteObjectInterface:v17];
+    heartbeatConnection5 = [(CDAnonymousXPCService *)self heartbeatConnection];
+    [heartbeatConnection5 setRemoteObjectInterface:v17];
 
-    v19 = [(CDAnonymousXPCService *)self heartbeatConnection];
-    [v19 resume];
+    heartbeatConnection6 = [(CDAnonymousXPCService *)self heartbeatConnection];
+    [heartbeatConnection6 resume];
 
     objc_destroyWeak(&v29);
     objc_destroyWeak(&v32);
@@ -82,13 +82,13 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  v20 = CDGetLogHandle();
-  if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
+  heartbeatConnection2 = CDGetLogHandle();
+  if (os_log_type_enabled(heartbeatConnection2, OS_LOG_TYPE_ERROR))
   {
     v23 = [(CDService *)self ID];
     *buf = 138412290;
     v34 = v23;
-    _os_log_error_impl(&_mh_execute_header, v20, OS_LOG_TYPE_ERROR, "Failed to create a heartbeat connection for service %@", buf, 0xCu);
+    _os_log_error_impl(&_mh_execute_header, heartbeatConnection2, OS_LOG_TYPE_ERROR, "Failed to create a heartbeat connection for service %@", buf, 0xCu);
   }
 
   v21 = 0;
@@ -97,18 +97,18 @@ LABEL_9:
   return v21;
 }
 
-- (CDAnonymousXPCService)initWithInfo:(id)a3 endpoint:(id)a4
+- (CDAnonymousXPCService)initWithInfo:(id)info endpoint:(id)endpoint
 {
-  v7 = a4;
+  endpointCopy = endpoint;
   v11.receiver = self;
   v11.super_class = CDAnonymousXPCService;
-  v8 = [(CDXPCService *)&v11 initWithInfo:a3];
+  v8 = [(CDXPCService *)&v11 initWithInfo:info];
   v9 = v8;
   if (v8)
   {
-    if (v7)
+    if (endpointCopy)
     {
-      objc_storeStrong(&v8->_endpoint, a4);
+      objc_storeStrong(&v8->_endpoint, endpoint);
     }
 
     else
@@ -120,9 +120,9 @@ LABEL_9:
   return v9;
 }
 
-- (void)_servicePing:(id)a3
+- (void)_servicePing:(id)ping
 {
-  v4 = a3;
+  pingCopy = ping;
   if ([(CDAnonymousXPCService *)self createHeartbeatConnection])
   {
     v5 = [(CDService *)self ID];
@@ -134,17 +134,17 @@ LABEL_9:
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Pinging heartbeat connection for service %@", buf, 0xCu);
     }
 
-    v7 = [(CDAnonymousXPCService *)self heartbeatConnection];
-    v8 = [v7 remoteObjectProxy];
+    heartbeatConnection = [(CDAnonymousXPCService *)self heartbeatConnection];
+    remoteObjectProxy = [heartbeatConnection remoteObjectProxy];
 
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = __38__CDAnonymousXPCService__servicePing___block_invoke;
     v10[3] = &unk_1000612A8;
     v11 = v5;
-    v12 = v4;
+    v12 = pingCopy;
     v9 = v5;
-    [v8 servicePing:v10];
+    [remoteObjectProxy servicePing:v10];
   }
 }
 
@@ -232,20 +232,20 @@ LABEL_10:
   }
 }
 
-- (void)obtainXPCConnection:(id)a3
+- (void)obtainXPCConnection:(id)connection
 {
-  v4 = a3;
-  v5 = [(CDXPCService *)self xpcConnection];
+  connectionCopy = connection;
+  xpcConnection = [(CDXPCService *)self xpcConnection];
 
-  if (!v5)
+  if (!xpcConnection)
   {
-    v7 = [(CDAnonymousXPCService *)self heartbeatConnection];
+    heartbeatConnection = [(CDAnonymousXPCService *)self heartbeatConnection];
 
-    if (v7)
+    if (heartbeatConnection)
     {
-      v8 = [(CDAnonymousXPCService *)self endpoint];
+      endpoint = [(CDAnonymousXPCService *)self endpoint];
 
-      if (!v8)
+      if (!endpoint)
       {
         v6 = [(CDService *)self ID];
         [NSException raise:@"com.apple.cache_delete.CDAnonymousXPCService.no_endpoint" format:@"Asked to build a connection to %@ but we have no endpoint!", v6];
@@ -253,14 +253,14 @@ LABEL_10:
       }
 
       v9 = [NSXPCConnection alloc];
-      v10 = [(CDAnonymousXPCService *)self endpoint];
-      v11 = [v9 initWithListenerEndpoint:v10];
+      endpoint2 = [(CDAnonymousXPCService *)self endpoint];
+      v11 = [v9 initWithListenerEndpoint:endpoint2];
 
       if (v11)
       {
         [(CDXPCService *)self setXpcConnection:v11];
-        v12 = [(CDXPCService *)self xpcConnection];
-        v4[2](v4, v12, 0);
+        xpcConnection2 = [(CDXPCService *)self xpcConnection];
+        connectionCopy[2](connectionCopy, xpcConnection2, 0);
       }
 
       else
@@ -277,14 +277,14 @@ LABEL_10:
           _os_log_error_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "Failed to create an XPC Connection to anonymous endpoint %@: %s", buf, 0x16u);
         }
 
-        v12 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:v14 userInfo:0];
+        xpcConnection2 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:v14 userInfo:0];
         v16 = [NSError alloc];
         v21 = NSUnderlyingErrorKey;
-        v22 = v12;
+        v22 = xpcConnection2;
         v17 = [NSDictionary dictionaryWithObjects:&v22 forKeys:&v21 count:1];
         v18 = [v16 initWithDomain:@"CacheDeleteErrorDomain" code:6 userInfo:v17];
 
-        (v4)[2](v4, 0, v18);
+        (connectionCopy)[2](connectionCopy, 0, v18);
       }
     }
 
@@ -300,7 +300,7 @@ LABEL_10:
       }
 
       v11 = [[NSError alloc] initWithDomain:@"CacheDeleteErrorDomain" code:6 userInfo:0];
-      (v4)[2](v4, 0, v11);
+      (connectionCopy)[2](connectionCopy, 0, v11);
     }
 
     goto LABEL_17;

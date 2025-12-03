@@ -1,17 +1,17 @@
 @interface _MRSetDiscoveryModeProtobufMessage
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsFeatures:(id)a3;
-- (int)StringAsMode:(id)a3;
+- (int)StringAsFeatures:(id)features;
+- (int)StringAsMode:(id)mode;
 - (int)features;
 - (int)mode;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasMode:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasMode:(BOOL)mode;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _MRSetDiscoveryModeProtobufMessage
@@ -29,9 +29,9 @@
   }
 }
 
-- (void)setHasMode:(BOOL)a3
+- (void)setHasMode:(BOOL)mode
 {
-  if (a3)
+  if (mode)
   {
     v3 = 2;
   }
@@ -44,25 +44,25 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (int)StringAsMode:(id)a3
+- (int)StringAsMode:(id)mode
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Disabled"])
+  modeCopy = mode;
+  if ([modeCopy isEqualToString:@"Disabled"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Presence"])
+  else if ([modeCopy isEqualToString:@"Presence"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"InfraOnly"])
+  else if ([modeCopy isEqualToString:@"InfraOnly"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Detailed"])
+  else if ([modeCopy isEqualToString:@"Detailed"])
   {
     v4 = 3;
   }
@@ -88,35 +88,35 @@
   }
 }
 
-- (int)StringAsFeatures:(id)a3
+- (int)StringAsFeatures:(id)features
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"None"])
+  featuresCopy = features;
+  if ([featuresCopy isEqualToString:@"None"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Audio"])
+  else if ([featuresCopy isEqualToString:@"Audio"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Screen"])
+  else if ([featuresCopy isEqualToString:@"Screen"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Video"])
+  else if ([featuresCopy isEqualToString:@"Video"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"RemoteControl"])
+  else if ([featuresCopy isEqualToString:@"RemoteControl"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"Companion"])
+  else if ([featuresCopy isEqualToString:@"Companion"])
   {
     v4 = 256;
   }
@@ -135,15 +135,15 @@
   v8.receiver = self;
   v8.super_class = _MRSetDiscoveryModeProtobufMessage;
   v4 = [(_MRSetDiscoveryModeProtobufMessage *)&v8 description];
-  v5 = [(_MRSetDiscoveryModeProtobufMessage *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(_MRSetDiscoveryModeProtobufMessage *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -158,7 +158,7 @@
       v6 = off_1E769F4D0[mode];
     }
 
-    [v3 setObject:v6 forKey:@"mode"];
+    [dictionary setObject:v6 forKey:@"mode"];
 
     has = self->_has;
   }
@@ -195,7 +195,7 @@
         case 2:
           v8 = @"Screen";
 LABEL_21:
-          [v3 setObject:v8 forKey:@"features"];
+          [dictionary setObject:v8 forKey:@"features"];
 
           goto LABEL_22;
       }
@@ -209,23 +209,23 @@ LABEL_22:
   configuration = self->_configuration;
   if (configuration)
   {
-    v10 = [(_MRDiscoverySessionConfigurationProtobuf *)configuration dictionaryRepresentation];
-    [v3 setObject:v10 forKey:@"configuration"];
+    dictionaryRepresentation = [(_MRDiscoverySessionConfigurationProtobuf *)configuration dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"configuration"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v8 = v4;
+  v8 = toCopy;
   if ((has & 2) != 0)
   {
     mode = self->_mode;
     PBDataWriterWriteInt32Field();
-    v4 = v8;
+    toCopy = v8;
     has = self->_has;
   }
 
@@ -233,44 +233,44 @@ LABEL_22:
   {
     features = self->_features;
     PBDataWriterWriteInt32Field();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_configuration)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
-    v4[5] = self->_mode;
-    *(v4 + 24) |= 2u;
+    toCopy[5] = self->_mode;
+    *(toCopy + 24) |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    v4[4] = self->_features;
-    *(v4 + 24) |= 1u;
+    toCopy[4] = self->_features;
+    *(toCopy + 24) |= 1u;
   }
 
   if (self->_configuration)
   {
-    v6 = v4;
-    [v4 setConfiguration:?];
-    v4 = v6;
+    v6 = toCopy;
+    [toCopy setConfiguration:?];
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 2) != 0)
@@ -286,31 +286,31 @@ LABEL_22:
     *(v5 + 24) |= 1u;
   }
 
-  v8 = [(_MRDiscoverySessionConfigurationProtobuf *)self->_configuration copyWithZone:a3];
+  v8 = [(_MRDiscoverySessionConfigurationProtobuf *)self->_configuration copyWithZone:zone];
   v9 = v6[1];
   v6[1] = v8;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_14;
   }
 
-  v5 = *(v4 + 24);
+  v5 = *(equalCopy + 24);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 24) & 2) == 0 || self->_mode != *(v4 + 5))
+    if ((*(equalCopy + 24) & 2) == 0 || self->_mode != *(equalCopy + 5))
     {
       goto LABEL_14;
     }
   }
 
-  else if ((*(v4 + 24) & 2) != 0)
+  else if ((*(equalCopy + 24) & 2) != 0)
   {
 LABEL_14:
     v7 = 0;
@@ -319,19 +319,19 @@ LABEL_14:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 24) & 1) == 0 || self->_features != *(v4 + 4))
+    if ((*(equalCopy + 24) & 1) == 0 || self->_features != *(equalCopy + 4))
     {
       goto LABEL_14;
     }
   }
 
-  else if (*(v4 + 24))
+  else if (*(equalCopy + 24))
   {
     goto LABEL_14;
   }
 
   configuration = self->_configuration;
-  if (configuration | *(v4 + 1))
+  if (configuration | *(equalCopy + 1))
   {
     v7 = [(_MRDiscoverySessionConfigurationProtobuf *)configuration isEqual:?];
   }
@@ -372,21 +372,21 @@ LABEL_3:
   return v7 ^ v6 ^ [(_MRDiscoverySessionConfigurationProtobuf *)self->_configuration hash:v3];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  v6 = *(v4 + 24);
+  fromCopy = from;
+  v5 = fromCopy;
+  v6 = *(fromCopy + 24);
   if ((v6 & 2) != 0)
   {
-    self->_mode = *(v4 + 5);
+    self->_mode = *(fromCopy + 5);
     *&self->_has |= 2u;
-    v6 = *(v4 + 24);
+    v6 = *(fromCopy + 24);
   }
 
   if (v6)
   {
-    self->_features = *(v4 + 4);
+    self->_features = *(fromCopy + 4);
     *&self->_has |= 1u;
   }
 

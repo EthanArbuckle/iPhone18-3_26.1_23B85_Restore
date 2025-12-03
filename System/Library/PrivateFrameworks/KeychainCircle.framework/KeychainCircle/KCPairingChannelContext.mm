@@ -1,14 +1,14 @@
 @interface KCPairingChannelContext
-- (BOOL)isEqual:(id)a3;
-- (KCPairingChannelContext)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (KCPairingChannelContext)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation KCPairingChannelContext
 
-- (KCPairingChannelContext)initWithCoder:(id)a3
+- (KCPairingChannelContext)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v32.receiver = self;
   v32.super_class = KCPairingChannelContext;
   v5 = [(KCPairingChannelContext *)&v32 init];
@@ -17,47 +17,47 @@
     goto LABEL_9;
   }
 
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"model"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"model"];
   model = v5->_model;
   v5->_model = v6;
 
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"modelVersion"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"modelVersion"];
   modelVersion = v5->_modelVersion;
   v5->_modelVersion = v8;
 
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"modelClass"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"modelClass"];
   modelClass = v5->_modelClass;
   v5->_modelClass = v10;
 
-  v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"osVersion"];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"osVersion"];
   osVersion = v5->_osVersion;
   v5->_osVersion = v12;
 
-  v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"altDSID"];
+  v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"altDSID"];
   altDSID = v5->_altDSID;
   v5->_altDSID = v14;
 
-  v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"uniqueDeviceID"];
+  v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"uniqueDeviceID"];
   uniqueDeviceID = v5->_uniqueDeviceID;
   v5->_uniqueDeviceID = v16;
 
-  v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"uniqueClientID"];
+  v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"uniqueClientID"];
   uniqueClientID = v5->_uniqueClientID;
   v5->_uniqueClientID = v18;
 
-  v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"intent"];
+  v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"intent"];
   intent = v5->_intent;
   v5->_intent = v20;
 
-  v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"capability"];
+  v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"capability"];
   capability = v5->_capability;
   v5->_capability = v22;
 
-  v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"flowID"];
+  v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"flowID"];
   flowID = v5->_flowID;
   v5->_flowID = v24;
 
-  v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"deviceSessionID"];
+  v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"deviceSessionID"];
   deviceSessionID = v5->_deviceSessionID;
   v5->_deviceSessionID = v26;
 
@@ -86,33 +86,33 @@ LABEL_11:
   return v30;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   model = self->_model;
-  v5 = a3;
-  [v5 encodeObject:model forKey:@"model"];
-  [v5 encodeObject:self->_modelVersion forKey:@"modelVersion"];
-  [v5 encodeObject:self->_modelClass forKey:@"modelClass"];
-  [v5 encodeObject:self->_osVersion forKey:@"osVersion"];
-  [v5 encodeObject:self->_altDSID forKey:@"altDSID"];
-  [v5 encodeObject:self->_uniqueDeviceID forKey:@"uniqueDeviceID"];
-  [v5 encodeObject:self->_uniqueClientID forKey:@"uniqueClientID"];
-  [v5 encodeObject:self->_intent forKey:@"intent"];
-  [v5 encodeObject:self->_capability forKey:@"capability"];
-  [v5 encodeObject:self->_flowID forKey:@"flowID"];
-  [v5 encodeObject:self->_deviceSessionID forKey:@"deviceSessionID"];
+  coderCopy = coder;
+  [coderCopy encodeObject:model forKey:@"model"];
+  [coderCopy encodeObject:self->_modelVersion forKey:@"modelVersion"];
+  [coderCopy encodeObject:self->_modelClass forKey:@"modelClass"];
+  [coderCopy encodeObject:self->_osVersion forKey:@"osVersion"];
+  [coderCopy encodeObject:self->_altDSID forKey:@"altDSID"];
+  [coderCopy encodeObject:self->_uniqueDeviceID forKey:@"uniqueDeviceID"];
+  [coderCopy encodeObject:self->_uniqueClientID forKey:@"uniqueClientID"];
+  [coderCopy encodeObject:self->_intent forKey:@"intent"];
+  [coderCopy encodeObject:self->_capability forKey:@"capability"];
+  [coderCopy encodeObject:self->_flowID forKey:@"flowID"];
+  [coderCopy encodeObject:self->_deviceSessionID forKey:@"deviceSessionID"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_24;
   }
 
   model = self->_model;
-  if (model | v4[2])
+  if (model | equalCopy[2])
   {
     if (![(NSString *)model isEqual:?])
     {
@@ -121,20 +121,20 @@ LABEL_11:
   }
 
   modelVersion = self->_modelVersion;
-  if (modelVersion | v4[3] && ![(NSString *)modelVersion isEqual:?])
+  if (modelVersion | equalCopy[3] && ![(NSString *)modelVersion isEqual:?])
   {
     goto LABEL_24;
   }
 
   modelClass = self->_modelClass;
-  if (modelClass | v4[4] && ![(NSString *)modelClass isEqual:?])
+  if (modelClass | equalCopy[4] && ![(NSString *)modelClass isEqual:?])
   {
     goto LABEL_24;
   }
 
-  if (((osVersion = self->_osVersion, !(osVersion | v4[5])) || [(NSString *)osVersion isEqual:?]) && ((uniqueDeviceID = self->_uniqueDeviceID, !(uniqueDeviceID | v4[6])) || [(NSString *)uniqueDeviceID isEqual:?]) && ((altDSID = self->_altDSID, !(altDSID | v4[8])) || [(NSString *)altDSID isEqual:?]) && ((uniqueClientID = self->_uniqueClientID, !(uniqueClientID | v4[7])) || [(NSString *)uniqueClientID isEqual:?]) && ((intent = self->_intent, !(intent | v4[11])) || [(NSString *)intent isEqual:?]) && ((capability = self->_capability, !(capability | v4[12])) || [(NSString *)capability isEqual:?]) && ((flowID = self->_flowID, !(flowID | v4[9])) || [(NSString *)flowID isEqual:?]))
+  if (((osVersion = self->_osVersion, !(osVersion | equalCopy[5])) || [(NSString *)osVersion isEqual:?]) && ((uniqueDeviceID = self->_uniqueDeviceID, !(uniqueDeviceID | equalCopy[6])) || [(NSString *)uniqueDeviceID isEqual:?]) && ((altDSID = self->_altDSID, !(altDSID | equalCopy[8])) || [(NSString *)altDSID isEqual:?]) && ((uniqueClientID = self->_uniqueClientID, !(uniqueClientID | equalCopy[7])) || [(NSString *)uniqueClientID isEqual:?]) && ((intent = self->_intent, !(intent | equalCopy[11])) || [(NSString *)intent isEqual:?]) && ((capability = self->_capability, !(capability | equalCopy[12])) || [(NSString *)capability isEqual:?]) && ((flowID = self->_flowID, !(flowID | equalCopy[9])) || [(NSString *)flowID isEqual:?]))
   {
-    if (self->_deviceSessionID | v4[10])
+    if (self->_deviceSessionID | equalCopy[10])
     {
       v15 = [(NSString *)self->_flowID isEqual:?];
     }

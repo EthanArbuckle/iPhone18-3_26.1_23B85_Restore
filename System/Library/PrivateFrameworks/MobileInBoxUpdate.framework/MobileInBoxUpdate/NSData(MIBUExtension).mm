@@ -37,11 +37,11 @@
     v7 = v6;
     if (v6)
     {
-      v8 = [v6 mutableBytes];
-      v9 = [v3 UTF8String];
+      mutableBytes = [v6 mutableBytes];
+      uTF8String = [v3 UTF8String];
       __str[2] = 0;
-      v10 = *v9;
-      if (!*v9)
+      v10 = *uTF8String;
+      if (!*uTF8String)
       {
 LABEL_11:
         v14 = [v7 copy];
@@ -50,7 +50,7 @@ LABEL_22:
         goto LABEL_23;
       }
 
-      v11 = v9 + 2;
+      v11 = uTF8String + 2;
       v12 = MEMORY[0x277D85DE0];
       while (1)
       {
@@ -73,7 +73,7 @@ LABEL_22:
           break;
         }
 
-        *v8++ = strtoul(__str, 0, 16);
+        *mutableBytes++ = strtoul(__str, 0, 16);
         v10 = *v11;
         v11 += 2;
         if (!v10)
@@ -146,12 +146,12 @@ LABEL_23:
 
 - (id)hexStringRepresentation
 {
-  v2 = [a1 length];
+  v2 = [self length];
   v3 = [MEMORY[0x277CCAB68] stringWithCapacity:2 * v2];
-  v4 = [a1 bytes];
+  bytes = [self bytes];
   if (v2)
   {
-    v5 = v4;
+    v5 = bytes;
     do
     {
       v6 = *v5++;

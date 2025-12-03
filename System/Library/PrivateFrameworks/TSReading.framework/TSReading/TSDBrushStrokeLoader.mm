@@ -3,89 +3,89 @@
 + (double)p_brushPixelScaleAt100Percent;
 + (id)p_brushStrokeLoadQueue;
 + (id)p_cacheDirectory;
-- (id)boundsForStroke:(id)a3;
-- (id)imageForStroke:(id)a3;
-- (id)lineEnd:(id)a3 forStroke:(id)a4;
-- (id)optionsForStroke:(id)a3;
-- (id)p_loadImageForBrush:(id)a3;
-- (id)pathsForStroke:(id)a3;
-- (id)textureIndexForStroke:(id)a3;
-- (void)p_loadBrushIfNeeded:(id)a3;
-- (void)p_loadLineEndTextureForBrush:(id)a3 lineEnd:(id)a4 path:(CGPath *)a5 andBounds:(CGRect)a6;
-- (void)p_loadLineEndsForBrush:(id)a3 inSVGDoc:(_xmlDoc *)a4;
-- (void)p_loadSectionsForBrush:(id)a3 inSVGDoc:(_xmlDoc *)a4;
+- (id)boundsForStroke:(id)stroke;
+- (id)imageForStroke:(id)stroke;
+- (id)lineEnd:(id)end forStroke:(id)stroke;
+- (id)optionsForStroke:(id)stroke;
+- (id)p_loadImageForBrush:(id)brush;
+- (id)pathsForStroke:(id)stroke;
+- (id)textureIndexForStroke:(id)stroke;
+- (void)p_loadBrushIfNeeded:(id)needed;
+- (void)p_loadLineEndTextureForBrush:(id)brush lineEnd:(id)end path:(CGPath *)path andBounds:(CGRect)bounds;
+- (void)p_loadLineEndsForBrush:(id)brush inSVGDoc:(_xmlDoc *)doc;
+- (void)p_loadSectionsForBrush:(id)brush inSVGDoc:(_xmlDoc *)doc;
 @end
 
 @implementation TSDBrushStrokeLoader
 
 + (TSDBrushStrokeLoader)brushStrokeLoaderForCurrentThread
 {
-  v2 = [MEMORY[0x277CCACC8] currentThread];
-  v3 = [v2 threadDictionary];
+  currentThread = [MEMORY[0x277CCACC8] currentThread];
+  threadDictionary = [currentThread threadDictionary];
 
-  v4 = [v3 objectForKeyedSubscript:@"TSDBrushStrokeLoader"];
+  v4 = [threadDictionary objectForKeyedSubscript:@"TSDBrushStrokeLoader"];
   if (!v4)
   {
     v4 = objc_alloc_init(TSDBrushStrokeLoader);
-    [v3 setObject:v4 forKeyedSubscript:@"TSDBrushStrokeLoader"];
+    [threadDictionary setObject:v4 forKeyedSubscript:@"TSDBrushStrokeLoader"];
   }
 
   return v4;
 }
 
-- (id)lineEnd:(id)a3 forStroke:(id)a4
+- (id)lineEnd:(id)end forStroke:(id)stroke
 {
-  v6 = a4;
-  v7 = a3;
-  [(TSDBrushStrokeLoader *)self p_loadBrushIfNeeded:v6];
-  v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@:%@", v6, v7];
+  strokeCopy = stroke;
+  endCopy = end;
+  [(TSDBrushStrokeLoader *)self p_loadBrushIfNeeded:strokeCopy];
+  endCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@:%@", strokeCopy, endCopy];
 
-  v9 = [(NSMutableDictionary *)self->_lineEnds objectForKeyedSubscript:v8];
+  v9 = [(NSMutableDictionary *)self->_lineEnds objectForKeyedSubscript:endCopy];
 
   return v9;
 }
 
-- (id)imageForStroke:(id)a3
+- (id)imageForStroke:(id)stroke
 {
-  v4 = a3;
-  [(TSDBrushStrokeLoader *)self p_loadBrushIfNeeded:v4];
-  v5 = [(NSMutableDictionary *)self->_images objectForKeyedSubscript:v4];
+  strokeCopy = stroke;
+  [(TSDBrushStrokeLoader *)self p_loadBrushIfNeeded:strokeCopy];
+  v5 = [(NSMutableDictionary *)self->_images objectForKeyedSubscript:strokeCopy];
 
   return v5;
 }
 
-- (id)textureIndexForStroke:(id)a3
+- (id)textureIndexForStroke:(id)stroke
 {
-  v4 = a3;
-  [(TSDBrushStrokeLoader *)self p_loadBrushIfNeeded:v4];
-  v5 = [(NSMutableDictionary *)self->_textureIndex objectForKeyedSubscript:v4];
+  strokeCopy = stroke;
+  [(TSDBrushStrokeLoader *)self p_loadBrushIfNeeded:strokeCopy];
+  v5 = [(NSMutableDictionary *)self->_textureIndex objectForKeyedSubscript:strokeCopy];
 
   return v5;
 }
 
-- (id)optionsForStroke:(id)a3
+- (id)optionsForStroke:(id)stroke
 {
-  v4 = a3;
-  [(TSDBrushStrokeLoader *)self p_loadBrushIfNeeded:v4];
-  v5 = [(NSMutableDictionary *)self->_options objectForKeyedSubscript:v4];
+  strokeCopy = stroke;
+  [(TSDBrushStrokeLoader *)self p_loadBrushIfNeeded:strokeCopy];
+  v5 = [(NSMutableDictionary *)self->_options objectForKeyedSubscript:strokeCopy];
 
   return v5;
 }
 
-- (id)pathsForStroke:(id)a3
+- (id)pathsForStroke:(id)stroke
 {
-  v4 = a3;
-  [(TSDBrushStrokeLoader *)self p_loadBrushIfNeeded:v4];
-  v5 = [(NSMutableDictionary *)self->_paths objectForKeyedSubscript:v4];
+  strokeCopy = stroke;
+  [(TSDBrushStrokeLoader *)self p_loadBrushIfNeeded:strokeCopy];
+  v5 = [(NSMutableDictionary *)self->_paths objectForKeyedSubscript:strokeCopy];
 
   return v5;
 }
 
-- (id)boundsForStroke:(id)a3
+- (id)boundsForStroke:(id)stroke
 {
-  v4 = a3;
-  [(TSDBrushStrokeLoader *)self p_loadBrushIfNeeded:v4];
-  v5 = [(NSMutableDictionary *)self->_bounds objectForKeyedSubscript:v4];
+  strokeCopy = stroke;
+  [(TSDBrushStrokeLoader *)self p_loadBrushIfNeeded:strokeCopy];
+  v5 = [(NSMutableDictionary *)self->_bounds objectForKeyedSubscript:strokeCopy];
 
   return v5;
 }
@@ -112,35 +112,35 @@ uint64_t __46__TSDBrushStrokeLoader_p_brushStrokeLoadQueue__block_invoke()
 + (id)p_cacheDirectory
 {
   v2 = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, 1uLL, 1);
-  v3 = [v2 lastObject];
+  lastObject = [v2 lastObject];
 
-  v4 = [v3 stringByAppendingPathComponent:@"Brushes"];
+  v4 = [lastObject stringByAppendingPathComponent:@"Brushes"];
 
-  v5 = [MEMORY[0x277CCAA00] defaultManager];
-  [v5 createDirectoryAtPath:v4 withIntermediateDirectories:1 attributes:0 error:0];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  [defaultManager createDirectoryAtPath:v4 withIntermediateDirectories:1 attributes:0 error:0];
 
   return v4;
 }
 
 + (double)p_brushPixelScaleAt100Percent
 {
-  v2 = [MEMORY[0x277D759A0] mainScreen];
-  [v2 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v4 = v3;
 
-  v5 = [MEMORY[0x277D759A0] mainScreen];
-  [v5 bounds];
+  mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen2 bounds];
   v7 = v6;
   v9 = v8;
 
   return fmax(v4 * sqrt(v7 * v9 / 786432.0), 1.0);
 }
 
-- (void)p_loadBrushIfNeeded:(id)a3
+- (void)p_loadBrushIfNeeded:(id)needed
 {
-  v4 = a3;
+  neededCopy = needed;
   options = self->_options;
-  if (!options || ([(NSMutableDictionary *)options objectForKey:v4], v6 = objc_claimAutoreleasedReturnValue(), v6, !v6))
+  if (!options || ([(NSMutableDictionary *)options objectForKey:neededCopy], v6 = objc_claimAutoreleasedReturnValue(), v6, !v6))
   {
     v7 = +[TSDBrushStrokeLoader p_brushStrokeLoadQueue];
     v8[0] = MEMORY[0x277D85DD0];
@@ -148,7 +148,7 @@ uint64_t __46__TSDBrushStrokeLoader_p_brushStrokeLoadQueue__block_invoke()
     v8[2] = __44__TSDBrushStrokeLoader_p_loadBrushIfNeeded___block_invoke;
     v8[3] = &unk_279D47558;
     v8[4] = self;
-    v9 = v4;
+    v9 = neededCopy;
     dispatch_sync(v7, v8);
   }
 }
@@ -308,18 +308,18 @@ void __44__TSDBrushStrokeLoader_p_loadBrushIfNeeded___block_invoke(uint64_t a1)
   }
 }
 
-- (void)p_loadLineEndTextureForBrush:(id)a3 lineEnd:(id)a4 path:(CGPath *)a5 andBounds:(CGRect)a6
+- (void)p_loadLineEndTextureForBrush:(id)brush lineEnd:(id)end path:(CGPath *)path andBounds:(CGRect)bounds
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v12 = a4;
-  v13 = a3;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  endCopy = end;
+  brushCopy = brush;
   v14 = +[TSDBrushStrokeLoader p_cacheDirectory];
-  v15 = [v14 stringByAppendingFormat:@"/TSDBrushEnd_%@_%@.png", v13, v12];
+  endCopy = [v14 stringByAppendingFormat:@"/TSDBrushEnd_%@_%@.png", brushCopy, endCopy];
 
-  v16 = [MEMORY[0x277D6C2F8] imageWithContentsOfFile:v15];
+  v16 = [MEMORY[0x277D6C2F8] imageWithContentsOfFile:endCopy];
   v17 = v16;
   if (v16)
   {
@@ -345,25 +345,25 @@ void __44__TSDBrushStrokeLoader_p_loadBrushIfNeeded___block_invoke(uint64_t a1)
     CGContextConcatCTM(v22, &transform);
     CGAffineTransformMakeTranslation(&transform, -x, -y);
     CGContextConcatCTM(v22, &transform);
-    CGContextAddPath(v22, a5);
+    CGContextAddPath(v22, path);
     CGContextFillPath(v22);
     Image = CGBitmapContextCreateImage(v22);
     v25 = [MEMORY[0x277D6C2F8] imageWithCGImage:Image];
-    v26 = [v25 PNGRepresentation];
+    pNGRepresentation = [v25 PNGRepresentation];
 
-    v27 = [MEMORY[0x277CBEBC0] tsu_fileURLWithPath:v15];
-    [v26 writeToURL:v27 atomically:1];
+    v27 = [MEMORY[0x277CBEBC0] tsu_fileURLWithPath:endCopy];
+    [pNGRepresentation writeToURL:v27 atomically:1];
     CGContextRelease(v22);
   }
 
   CGImageRelease(Image);
 }
 
-- (void)p_loadLineEndsForBrush:(id)a3 inSVGDoc:(_xmlDoc *)a4
+- (void)p_loadLineEndsForBrush:(id)brush inSVGDoc:(_xmlDoc *)doc
 {
   v78 = *MEMORY[0x277D85DE8];
-  v60 = a3;
-  PerformXPathQuery(a4, @"//svg:path['_wrap'=substring(@id,string-length(@id)-4)]");
+  brushCopy = brush;
+  PerformXPathQuery(doc, @"//svg:path['_wrap'=substring(@id,string-length(@id)-4)]");
   v73 = 0u;
   v74 = 0u;
   v75 = 0u;
@@ -377,7 +377,7 @@ void __44__TSDBrushStrokeLoader_p_loadBrushIfNeeded___block_invoke(uint64_t a1)
     v56 = *(MEMORY[0x277CBF2C0] + 16);
     v53 = *(MEMORY[0x277CBF2C0] + 40);
     v54 = *(MEMORY[0x277CBF2C0] + 32);
-    v58 = a4;
+    docCopy = doc;
     do
     {
       v6 = 0;
@@ -395,38 +395,38 @@ void __44__TSDBrushStrokeLoader_p_loadBrushIfNeeded___block_invoke(uint64_t a1)
         v9 = [v8 substringToIndex:{objc_msgSend(v8, "length") - 5}];
 
         v10 = [*(v5 + 3240) stringWithFormat:@"//svg:path[@id='%@_end']", v9];
-        v11 = PerformXPathQuery(a4, v10);
+        v11 = PerformXPathQuery(doc, v10);
 
         if ([v11 count] != 1)
         {
-          v12 = [MEMORY[0x277D6C290] currentHandler];
+          currentHandler = [MEMORY[0x277D6C290] currentHandler];
           v13 = [*(v5 + 3240) stringWithUTF8String:"-[TSDBrushStrokeLoader p_loadLineEndsForBrush:inSVGDoc:]"];
           v14 = [*(v5 + 3240) stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDBrushStrokeLoader.m"];
-          [v12 handleFailureInFunction:v13 file:v14 lineNumber:288 description:@"Arrow head needs path"];
+          [currentHandler handleFailureInFunction:v13 file:v14 lineNumber:288 description:@"Arrow head needs path"];
 
           v5 = 0x277CCA000uLL;
         }
 
         v68 = v11;
-        v15 = [v11 lastObject];
-        v16 = [v15 objectForKey:@"nodeAttributes"];
+        lastObject = [v11 lastObject];
+        v16 = [lastObject objectForKey:@"nodeAttributes"];
 
         v17 = [v16 objectForKey:@"d"];
         v18 = [*(v5 + 3240) stringWithFormat:@"//svg:rect[@id='%@_end_bounds']", v9];
-        v19 = PerformXPathQuery(a4, v18);
+        v19 = PerformXPathQuery(doc, v18);
 
         if ([v19 count] != 1)
         {
-          v20 = [MEMORY[0x277D6C290] currentHandler];
+          currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
           v21 = [*(v5 + 3240) stringWithUTF8String:"-[TSDBrushStrokeLoader p_loadLineEndsForBrush:inSVGDoc:]"];
           v22 = [*(v5 + 3240) stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDBrushStrokeLoader.m"];
-          [v20 handleFailureInFunction:v21 file:v22 lineNumber:295 description:@"Arrow head needs bounding rect"];
+          [currentHandler2 handleFailureInFunction:v21 file:v22 lineNumber:295 description:@"Arrow head needs bounding rect"];
 
           v5 = 0x277CCA000uLL;
         }
 
-        v23 = [v19 lastObject];
-        [v23 objectForKey:@"nodeAttributes"];
+        lastObject2 = [v19 lastObject];
+        [lastObject2 objectForKey:@"nodeAttributes"];
         v24 = v67 = v19;
 
         v25 = [v24 objectForKey:@"x"];
@@ -449,7 +449,7 @@ void __44__TSDBrushStrokeLoader_p_loadBrushIfNeeded___block_invoke(uint64_t a1)
 
         v36 = [v9 stringByReplacingOccurrencesOfString:@"_" withString:@" "];
 
-        v37 = [*(v5 + 3240) stringWithFormat:@"%@:%@", v60, v36];
+        v37 = [*(v5 + 3240) stringWithFormat:@"%@:%@", brushCopy, v36];
 
         *&v71.a = v55;
         *&v71.c = v56;
@@ -496,10 +496,10 @@ void __44__TSDBrushStrokeLoader_p_loadBrushIfNeeded___block_invoke(uint64_t a1)
         v80.size.width = v65;
         v80.size.height = v64;
         MidY = CGRectGetMidY(v80);
-        v50 = [TSDLineEnd lineEndWithPath:v47 wrapPath:v45 endPoint:1 isFilled:v37 identifier:tx + c * MidY + a * MaxX, ty + d * MidY + v62 * MaxX];
-        [(NSMutableDictionary *)self->_lineEnds setObject:v50 forKey:v37];
+        maxX = [TSDLineEnd lineEndWithPath:v47 wrapPath:v45 endPoint:1 isFilled:v37 identifier:tx + c * MidY + a * MaxX, ty + d * MidY + v62 * MaxX];
+        [(NSMutableDictionary *)self->_lineEnds setObject:maxX forKey:v37];
         BoundingBox = CGPathGetBoundingBox(v45);
-        [(TSDBrushStrokeLoader *)self p_loadLineEndTextureForBrush:v60 lineEnd:v37 path:v47 andBounds:BoundingBox.origin.x, BoundingBox.origin.y, BoundingBox.size.width, BoundingBox.size.height];
+        [(TSDBrushStrokeLoader *)self p_loadLineEndTextureForBrush:brushCopy lineEnd:v37 path:v47 andBounds:BoundingBox.origin.x, BoundingBox.origin.y, BoundingBox.size.width, BoundingBox.size.height];
         v51 = v46;
         v5 = 0x277CCA000;
         CGPathRelease(v51);
@@ -508,7 +508,7 @@ void __44__TSDBrushStrokeLoader_p_loadBrushIfNeeded___block_invoke(uint64_t a1)
         CGPathRelease(v45);
 
         v6 = v69 + 1;
-        a4 = v58;
+        doc = docCopy;
       }
 
       while (v61 != v69 + 1);
@@ -519,15 +519,15 @@ void __44__TSDBrushStrokeLoader_p_loadBrushIfNeeded___block_invoke(uint64_t a1)
   }
 }
 
-- (id)p_loadImageForBrush:(id)a3
+- (id)p_loadImageForBrush:(id)brush
 {
   v90 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  brushCopy = brush;
   v5 = +[TSDBrushStrokeLoader p_cacheDirectory];
-  v64 = [v5 stringByAppendingFormat:@"/TSDBrush_%@.png", v4];
+  brushCopy = [v5 stringByAppendingFormat:@"/TSDBrush_%@.png", brushCopy];
   v6 = [MEMORY[0x277D6C2F8] imageWithContentsOfFile:?];
-  v72 = v4;
-  v73 = self;
+  v72 = brushCopy;
+  selfCopy = self;
   v63 = v5;
   if (v6)
   {
@@ -539,10 +539,10 @@ void __44__TSDBrushStrokeLoader_p_loadBrushIfNeeded___block_invoke(uint64_t a1)
   v86 = 0u;
   v83 = 0u;
   v84 = 0u;
-  v7 = [(NSMutableDictionary *)self->_paths objectForKeyedSubscript:v4];
-  v8 = [v7 objectEnumerator];
+  v7 = [(NSMutableDictionary *)self->_paths objectForKeyedSubscript:brushCopy];
+  objectEnumerator = [v7 objectEnumerator];
 
-  v9 = [v8 countByEnumeratingWithState:&v83 objects:v89 count:16];
+  v9 = [objectEnumerator countByEnumeratingWithState:&v83 objects:v89 count:16];
   if (v9)
   {
     v10 = v9;
@@ -554,13 +554,13 @@ void __44__TSDBrushStrokeLoader_p_loadBrushIfNeeded___block_invoke(uint64_t a1)
       {
         if (*v84 != v12)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v11 += [*(*(&v83 + 1) + 8 * i) count];
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v83 objects:v89 count:16];
+      v10 = [objectEnumerator countByEnumeratingWithState:&v83 objects:v89 count:16];
     }
 
     while (v10);
@@ -588,9 +588,9 @@ void __44__TSDBrushStrokeLoader_p_loadBrushIfNeeded___block_invoke(uint64_t a1)
   CGContextFillRect(v15, ClipBoundingBox);
   CGContextSetRGBFillColor(v15, 1.0, 1.0, 1.0, 1.0);
   v16 = [(NSMutableDictionary *)self->_paths objectForKeyedSubscript:v72];
-  v17 = [v16 allKeys];
+  allKeys = [v16 allKeys];
 
-  v18 = [v17 sortedArrayUsingSelector:?];
+  v18 = [allKeys sortedArrayUsingSelector:?];
 
   v81 = 0u;
   v82 = 0u;
@@ -635,9 +635,9 @@ void __44__TSDBrushStrokeLoader_p_loadBrushIfNeeded___block_invoke(uint64_t a1)
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v31 = v27;
+              firstObject = v27;
 LABEL_27:
-              v32 = v31;
+              v32 = firstObject;
               goto LABEL_29;
             }
 
@@ -687,20 +687,20 @@ LABEL_29:
 
           if (![v27 count])
           {
-            v28 = [MEMORY[0x277D6C290] currentHandler];
+            currentHandler = [MEMORY[0x277D6C290] currentHandler];
             v29 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDBrushStrokeLoader p_loadImageForBrush:]"];
             v30 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDBrushStrokeLoader.m"];
-            [v28 handleFailureInFunction:v29 file:v30 lineNumber:377 description:@"got empty array in _paths"];
+            [currentHandler handleFailureInFunction:v29 file:v30 lineNumber:377 description:@"got empty array in _paths"];
           }
 
-          v31 = [v27 firstObject];
+          firstObject = [v27 firstObject];
           goto LABEL_27;
         }
 
 LABEL_32:
 
         v20 = v70 + 1;
-        self = v73;
+        self = selfCopy;
       }
 
       while ((v70 + 1) != v68);
@@ -712,20 +712,20 @@ LABEL_32:
 
   Image = CGBitmapContextCreateImage(v15);
   v66 = [MEMORY[0x277D6C2F8] imageWithCGImage:Image];
-  v44 = [v66 PNGRepresentation];
-  v45 = [MEMORY[0x277CBEBC0] tsu_fileURLWithPath:v64];
-  [v44 writeToURL:v45 atomically:1];
+  pNGRepresentation = [v66 PNGRepresentation];
+  v45 = [MEMORY[0x277CBEBC0] tsu_fileURLWithPath:brushCopy];
+  [pNGRepresentation writeToURL:v45 atomically:1];
   CGImageRelease(Image);
   CGContextRelease(v15);
 
-  v4 = v72;
+  brushCopy = v72;
 LABEL_35:
-  v46 = [MEMORY[0x277CBEB38] dictionary];
-  [(NSMutableDictionary *)self->_textureIndex setObject:v46 forKey:v4];
-  v47 = [(NSMutableDictionary *)self->_paths objectForKeyedSubscript:v4];
-  v48 = [v47 allKeys];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  [(NSMutableDictionary *)self->_textureIndex setObject:dictionary forKey:brushCopy];
+  v47 = [(NSMutableDictionary *)self->_paths objectForKeyedSubscript:brushCopy];
+  allKeys2 = [v47 allKeys];
 
-  v49 = [v48 sortedArrayUsingSelector:sel_compare_];
+  v49 = [allKeys2 sortedArrayUsingSelector:sel_compare_];
 
   v76 = 0u;
   v77 = 0u;
@@ -748,18 +748,18 @@ LABEL_35:
         }
 
         v54 = *(*(&v74 + 1) + 8 * j);
-        v55 = [(NSMutableDictionary *)self->_paths objectForKeyedSubscript:v4];
+        v55 = [(NSMutableDictionary *)self->_paths objectForKeyedSubscript:brushCopy];
         v56 = [v55 objectForKeyedSubscript:v54];
 
         v57 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v56, "count")}];
-        [v46 setObject:v57 forKeyedSubscript:v54];
+        [dictionary setObject:v57 forKeyedSubscript:v54];
 
         if ([v56 count])
         {
           v58 = 0;
           do
           {
-            v59 = [v46 objectForKeyedSubscript:v54];
+            v59 = [dictionary objectForKeyedSubscript:v54];
             v60 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v52 + v58];
             [v59 addObject:v60];
 
@@ -768,10 +768,10 @@ LABEL_35:
 
           while (v58 < [v56 count]);
           v52 += v58;
-          v4 = v72;
+          brushCopy = v72;
         }
 
-        self = v73;
+        self = selfCopy;
       }
 
       v51 = [v69 countByEnumeratingWithState:&v74 objects:v87 count:16];
@@ -786,37 +786,37 @@ LABEL_35:
   }
 
   v61 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v52];
-  [v46 setObject:v61 forKeyedSubscript:@"section-count"];
+  [dictionary setObject:v61 forKeyedSubscript:@"section-count"];
 
   return v66;
 }
 
-- (void)p_loadSectionsForBrush:(id)a3 inSVGDoc:(_xmlDoc *)a4
+- (void)p_loadSectionsForBrush:(id)brush inSVGDoc:(_xmlDoc *)doc
 {
   v64 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v52 = [(NSMutableDictionary *)self->_paths objectForKey:v5];
-  if (!v52)
+  brushCopy = brush;
+  dictionary = [(NSMutableDictionary *)self->_paths objectForKey:brushCopy];
+  if (!dictionary)
   {
-    v52 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     [NSMutableDictionary setObject:"setObject:forKey:" forKey:?];
   }
 
-  v51 = [(NSMutableDictionary *)self->_bounds objectForKey:v5];
-  if (!v51)
+  dictionary2 = [(NSMutableDictionary *)self->_bounds objectForKey:brushCopy];
+  if (!dictionary2)
   {
-    v51 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     [NSMutableDictionary setObject:"setObject:forKey:" forKey:?];
   }
 
-  v43 = self;
-  v6 = PerformXPathQuery(a4, @"//svg:path['_section'=substring(@id,string-length(@id)-7)]");
+  selfCopy = self;
+  v6 = PerformXPathQuery(doc, @"//svg:path['_section'=substring(@id,string-length(@id)-7)]");
   if (![v6 count])
   {
-    v7 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDBrushStrokeLoader p_loadSectionsForBrush:inSVGDoc:]"];
     v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDBrushStrokeLoader.m"];
-    [v7 handleFailureInFunction:v8 file:v9 lineNumber:496 description:@"No sections"];
+    [currentHandler handleFailureInFunction:v8 file:v9 lineNumber:496 description:@"No sections"];
   }
 
   v61 = 0u;
@@ -844,18 +844,18 @@ LABEL_35:
         v12 = [v11 objectForKey:@"d"];
         v13 = [v11 objectForKey:@"id"];
         v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"//svg:rect[@id='%@_bounds']", v13];
-        v15 = PerformXPathQuery(a4, v14);
+        v15 = PerformXPathQuery(doc, v14);
 
         if ([v15 count] != 1)
         {
-          v16 = [MEMORY[0x277D6C290] currentHandler];
+          currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
           v17 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDBrushStrokeLoader p_loadSectionsForBrush:inSVGDoc:]"];
           v18 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDBrushStrokeLoader.m"];
-          [v16 handleFailureInFunction:v17 file:v18 lineNumber:505 description:@"Section needs bounding rect"];
+          [currentHandler2 handleFailureInFunction:v17 file:v18 lineNumber:505 description:@"Section needs bounding rect"];
         }
 
-        v19 = [v15 lastObject];
-        v20 = [v19 objectForKey:@"nodeAttributes"];
+        lastObject = [v15 lastObject];
+        v20 = [lastObject objectForKey:@"nodeAttributes"];
 
         v21 = [v20 objectForKey:@"x"];
         [v21 doubleValue];
@@ -891,7 +891,7 @@ LABEL_35:
         [v33 transformUsingAffineTransform:&v57];
         v55 = v13;
         v34 = [v13 substringToIndex:{objc_msgSend(v13, "rangeOfString:", @"_"}];
-        if ([v5 isEqualToString:@"Chalk2"] && (objc_msgSend(v34, "isEqualToString:", @"small") & 1) == 0)
+        if ([brushCopy isEqualToString:@"Chalk2"] && (objc_msgSend(v34, "isEqualToString:", @"small") & 1) == 0)
         {
           v35 = objc_alloc_init(MEMORY[0x277CBEB18]);
           [v35 addObject:v33];
@@ -906,27 +906,27 @@ LABEL_35:
 
         v37 = v15;
         v54 = v12;
-        v38 = [v52 objectForKey:v34];
-        if (!v38)
+        array = [dictionary objectForKey:v34];
+        if (!array)
         {
-          v38 = [MEMORY[0x277CBEB18] array];
-          [v52 setObject:v38 forKey:v34];
+          array = [MEMORY[0x277CBEB18] array];
+          [dictionary setObject:array forKey:v34];
         }
 
-        v39 = v5;
-        v40 = [v51 objectForKey:v34];
-        if (!v40)
+        v39 = brushCopy;
+        array2 = [dictionary2 objectForKey:v34];
+        if (!array2)
         {
-          v40 = [MEMORY[0x277CBEB18] array];
-          [v51 setObject:v40 forKey:v34];
+          array2 = [MEMORY[0x277CBEB18] array];
+          [dictionary2 setObject:array2 forKey:v34];
         }
 
-        [v38 addObject:v35];
+        [array addObject:v35];
         v41 = [MEMORY[0x277CCAE60] valueWithCGRect:{v23, v26, v29, v32}];
-        [v40 addObject:v41];
+        [array2 addObject:v41];
 
         CGPathRelease(path);
-        v5 = v39;
+        brushCopy = v39;
       }
 
       v50 = [obj countByEnumeratingWithState:&v59 objects:v63 count:16];
@@ -935,8 +935,8 @@ LABEL_35:
     while (v50);
   }
 
-  v42 = [(TSDBrushStrokeLoader *)v43 p_loadImageForBrush:v5];
-  [(NSMutableDictionary *)v43->_images setObject:v42 forKey:v5];
+  v42 = [(TSDBrushStrokeLoader *)selfCopy p_loadImageForBrush:brushCopy];
+  [(NSMutableDictionary *)selfCopy->_images setObject:v42 forKey:brushCopy];
 }
 
 void __44__TSDBrushStrokeLoader_p_loadBrushIfNeeded___block_invoke_cold_1()

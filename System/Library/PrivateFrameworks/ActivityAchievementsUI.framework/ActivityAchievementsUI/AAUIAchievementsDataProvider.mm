@@ -1,43 +1,43 @@
 @interface AAUIAchievementsDataProvider
-- (AAUIAchievementsDataProvider)initWithHealthStore:(id)a3 layoutMode:(unint64_t)a4;
-- (BOOL)_achievementBelongsInRecents:(id)a3 replacingRecent:(id *)a4;
-- (BOOL)_achievementBelongsInRelevants:(id)a3 replacingRelevant:(id *)a4;
-- (BOOL)_builtInBelongsInRelevants:(id)a3;
-- (BOOL)_monthlyChallengeBelongsInRelevants:(id)a3;
-- (BOOL)_remoteAchievementBelongsInRelevants:(id)a3;
-- (BOOL)_shouldShowAchievement:(id)a3 activityMoveMode:(int64_t)a4 experienceType:(unint64_t)a5;
+- (AAUIAchievementsDataProvider)initWithHealthStore:(id)store layoutMode:(unint64_t)mode;
+- (BOOL)_achievementBelongsInRecents:(id)recents replacingRecent:(id *)recent;
+- (BOOL)_achievementBelongsInRelevants:(id)relevants replacingRelevant:(id *)relevant;
+- (BOOL)_builtInBelongsInRelevants:(id)relevants;
+- (BOOL)_monthlyChallengeBelongsInRelevants:(id)relevants;
+- (BOOL)_remoteAchievementBelongsInRelevants:(id)relevants;
+- (BOOL)_shouldShowAchievement:(id)achievement activityMoveMode:(int64_t)mode experienceType:(unint64_t)type;
 - (NSMutableArray)allAchievementsSortedByEarnedDate;
 - (_TtC22ActivityAchievementsUI15AAUIAwardsQuery)awardsQuery;
 - (double)queryRetryDelay;
-- (id)_achievementsRespectingOverrideDisplayState:(id)a3;
-- (id)_mainSectionIndexPathForAchievement:(id)a3;
+- (id)_achievementsRespectingOverrideDisplayState:(id)state;
+- (id)_mainSectionIndexPathForAchievement:(id)achievement;
 - (id)_oldestRecentAchievement;
-- (id)_recentAndRelevantSectionIndexPathForAchievement:(id)a3;
-- (id)achievementAtIndexPath:(id)a3;
-- (id)achievementForTemplateUniqueName:(id)a3;
-- (id)achievementsForDateComponents:(id)a3;
-- (id)headerStringForSection:(int64_t)a3 isRecentAndRelevant:(BOOL)a4;
-- (id)recentAndRelevantAchievementAtIndexPath:(id)a3;
-- (id)trophyCaseAchievementForTemplateUniqueName:(id)a3;
-- (int64_t)_deleteAchievement:(id)a3 fromUnfiltered:(BOOL)a4;
-- (int64_t)_updateAchievement:(id)a3 activityMoveMode:(int64_t)a4 experienceType:(unint64_t)a5;
-- (int64_t)numberOfItemsInRecentAndRelevantSection:(int64_t)a3;
-- (int64_t)numberOfItemsInSection:(int64_t)a3;
+- (id)_recentAndRelevantSectionIndexPathForAchievement:(id)achievement;
+- (id)achievementAtIndexPath:(id)path;
+- (id)achievementForTemplateUniqueName:(id)name;
+- (id)achievementsForDateComponents:(id)components;
+- (id)headerStringForSection:(int64_t)section isRecentAndRelevant:(BOOL)relevant;
+- (id)recentAndRelevantAchievementAtIndexPath:(id)path;
+- (id)trophyCaseAchievementForTemplateUniqueName:(id)name;
+- (int64_t)_deleteAchievement:(id)achievement fromUnfiltered:(BOOL)unfiltered;
+- (int64_t)_updateAchievement:(id)achievement activityMoveMode:(int64_t)mode experienceType:(unint64_t)type;
+- (int64_t)numberOfItemsInRecentAndRelevantSection:(int64_t)section;
+- (int64_t)numberOfItemsInSection:(int64_t)section;
 - (int64_t)numberOfSections;
 - (void)_deepCopyClientFacingModel;
-- (void)_deleteAchievementsByEarnedDateWithAchievement:(id)a3 earnedInstance:(id)a4;
-- (void)_handleDeletedAchievements:(id)a3;
-- (void)_handleUpdatedAchievements:(id)a3;
+- (void)_deleteAchievementsByEarnedDateWithAchievement:(id)achievement earnedInstance:(id)instance;
+- (void)_handleDeletedAchievements:(id)achievements;
+- (void)_handleUpdatedAchievements:(id)achievements;
 - (void)_reload;
-- (void)_updateAchievementsByEarnedDateComponentsWithAchievement:(id)a3 earnedInstance:(id)a4;
-- (void)addInitialLoadObserver:(id)a3;
-- (void)addMainSectionObserver:(id)a3;
-- (void)addRecentAndRelevantSectionObserver:(id)a3;
+- (void)_updateAchievementsByEarnedDateComponentsWithAchievement:(id)achievement earnedInstance:(id)instance;
+- (void)addInitialLoadObserver:(id)observer;
+- (void)addMainSectionObserver:(id)observer;
+- (void)addRecentAndRelevantSectionObserver:(id)observer;
 - (void)cycleQuery;
-- (void)removeInitialLoadObserver:(id)a3;
-- (void)removeMainSectionObserver:(id)a3;
-- (void)removeRecentAndRelevantSectionObserver:(id)a3;
-- (void)setDidFinishInitialLoad:(BOOL)a3;
+- (void)removeInitialLoadObserver:(id)observer;
+- (void)removeMainSectionObserver:(id)observer;
+- (void)removeRecentAndRelevantSectionObserver:(id)observer;
+- (void)setDidFinishInitialLoad:(BOOL)load;
 - (void)startFetching;
 - (void)stopFetching;
 @end
@@ -91,35 +91,35 @@ void __43__AAUIAchievementsDataProvider_awardsQuery__block_invoke(uint64_t a1, u
 
 - (void)_reload
 {
-  v2 = self;
+  selfCopy = self;
   v99 = *MEMORY[0x277D85DE8];
   os_unfair_lock_lock(&self->_modelLock);
-  v3 = [(AAUIAchievementsDataProvider *)v2 recentAchievements];
+  recentAchievements = [(AAUIAchievementsDataProvider *)selfCopy recentAchievements];
   v94 = MEMORY[0x277D85DD0];
   v95 = 3221225472;
   v96 = __AAUISortAchievementsByMostRecentEarnedDate_block_invoke;
   v97 = &__block_descriptor_33_e43_q24__0__ACHAchievement_8__ACHAchievement_16l;
   v98 = 0;
-  [v3 sortUsingComparator:&v94];
+  [recentAchievements sortUsingComparator:&v94];
 
-  v4 = [(AAUIAchievementsDataProvider *)v2 relevantAchievements];
-  [v4 sortUsingComparator:&__block_literal_global_736];
+  relevantAchievements = [(AAUIAchievementsDataProvider *)selfCopy relevantAchievements];
+  [relevantAchievements sortUsingComparator:&__block_literal_global_736];
 
   v81 = 0u;
   v82 = 0u;
   v79 = 0u;
   v80 = 0u;
-  v5 = [(AAUIAchievementsDataProvider *)v2 achievementsBySection];
-  v6 = [v5 allKeys];
+  achievementsBySection = [(AAUIAchievementsDataProvider *)selfCopy achievementsBySection];
+  allKeys = [achievementsBySection allKeys];
 
-  v69 = [v6 countByEnumeratingWithState:&v79 objects:v92 count:16];
+  v69 = [allKeys countByEnumeratingWithState:&v79 objects:v92 count:16];
   if (v69)
   {
     v7 = *v80;
     v8 = *MEMORY[0x277CE8AA0];
     v68 = *MEMORY[0x277CE8A88];
-    v64 = v6;
-    v65 = v2;
+    v64 = allKeys;
+    v65 = selfCopy;
     v62 = *MEMORY[0x277CE8AA0];
     v63 = *v80;
     do
@@ -128,11 +128,11 @@ void __43__AAUIAchievementsDataProvider_awardsQuery__block_invoke(uint64_t a1, u
       {
         if (*v80 != v7)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allKeys);
         }
 
         v10 = *(*(&v79 + 1) + 8 * i);
-        v11 = [(AAUIAchievementsDataProvider *)v2 achievementsBySection:v62];
+        v11 = [(AAUIAchievementsDataProvider *)selfCopy achievementsBySection:v62];
         v12 = [v11 objectForKeyedSubscript:v10];
 
         if ([v10 isEqualToString:v8])
@@ -148,16 +148,16 @@ void __43__AAUIAchievementsDataProvider_awardsQuery__block_invoke(uint64_t a1, u
           v17 = v8;
           v19 = v18 = v7;
           [v16 arrayByAddingObjectsFromArray:v19];
-          v21 = v20 = v2;
+          v21 = v20 = selfCopy;
 
           v7 = v18;
           v8 = v17;
 
           v22 = [MEMORY[0x277CBEB18] arrayWithArray:v21];
 
-          v2 = v20;
-          v23 = [(AAUIAchievementsDataProvider *)v20 achievementsBySection];
-          [v23 setObject:v22 forKeyedSubscript:v10];
+          selfCopy = v20;
+          achievementsBySection2 = [(AAUIAchievementsDataProvider *)v20 achievementsBySection];
+          [achievementsBySection2 setObject:v22 forKeyedSubscript:v10];
 
           v12 = v70;
           i = v72;
@@ -192,22 +192,22 @@ void __43__AAUIAchievementsDataProvider_awardsQuery__block_invoke(uint64_t a1, u
 
                 v31 = *(*(&v87 + 1) + 8 * j);
                 v32 = MEMORY[0x277CCABB0];
-                v33 = [v31 template];
-                v34 = [v32 numberWithUnsignedInteger:{objc_msgSend(v33, "displayOrder")}];
+                template = [v31 template];
+                v34 = [v32 numberWithUnsignedInteger:{objc_msgSend(template, "displayOrder")}];
                 v35 = [v25 objectForKeyedSubscript:v34];
 
                 if (!v35)
                 {
                   v36 = objc_alloc_init(MEMORY[0x277CBEB18]);
                   v37 = MEMORY[0x277CCABB0];
-                  v38 = [v31 template];
-                  v39 = [v37 numberWithUnsignedInteger:{objc_msgSend(v38, "displayOrder")}];
+                  template2 = [v31 template];
+                  v39 = [v37 numberWithUnsignedInteger:{objc_msgSend(template2, "displayOrder")}];
                   [v25 setObject:v36 forKeyedSubscript:v39];
                 }
 
                 v40 = MEMORY[0x277CCABB0];
-                v41 = [v31 template];
-                v42 = [v40 numberWithUnsignedInteger:{objc_msgSend(v41, "displayOrder")}];
+                template3 = [v31 template];
+                v42 = [v40 numberWithUnsignedInteger:{objc_msgSend(template3, "displayOrder")}];
                 v43 = [v25 objectForKeyedSubscript:v42];
                 [v43 addObject:v31];
               }
@@ -218,8 +218,8 @@ void __43__AAUIAchievementsDataProvider_awardsQuery__block_invoke(uint64_t a1, u
             while (v28);
           }
 
-          v44 = [v25 allKeys];
-          v45 = [v44 sortedArrayUsingSelector:sel_compare_];
+          allKeys2 = [v25 allKeys];
+          v45 = [allKeys2 sortedArrayUsingSelector:sel_compare_];
 
           v85 = 0u;
           v86 = 0u;
@@ -259,12 +259,12 @@ void __43__AAUIAchievementsDataProvider_awardsQuery__block_invoke(uint64_t a1, u
             while (v48);
           }
 
-          v2 = v65;
-          v53 = [(AAUIAchievementsDataProvider *)v65 achievementsBySection];
-          [v53 setObject:v66 forKeyedSubscript:v67];
+          selfCopy = v65;
+          achievementsBySection3 = [(AAUIAchievementsDataProvider *)v65 achievementsBySection];
+          [achievementsBySection3 setObject:v66 forKeyedSubscript:v67];
 
           v7 = v63;
-          v6 = v64;
+          allKeys = v64;
           v8 = v62;
           v12 = v71;
           i = v73;
@@ -276,7 +276,7 @@ void __43__AAUIAchievementsDataProvider_awardsQuery__block_invoke(uint64_t a1, u
         }
       }
 
-      v69 = [v6 countByEnumeratingWithState:&v79 objects:v92 count:16];
+      v69 = [allKeys countByEnumeratingWithState:&v79 objects:v92 count:16];
     }
 
     while (v69);
@@ -287,10 +287,10 @@ void __43__AAUIAchievementsDataProvider_awardsQuery__block_invoke(uint64_t a1, u
   v76 = 0u;
   v77 = 0u;
   v78 = 0u;
-  v55 = [(AAUIAchievementsDataProvider *)v2 achievementsByEarnedDateComponents];
-  v56 = [v55 allValues];
+  achievementsByEarnedDateComponents = [(AAUIAchievementsDataProvider *)selfCopy achievementsByEarnedDateComponents];
+  allValues = [achievementsByEarnedDateComponents allValues];
 
-  v57 = [v56 countByEnumeratingWithState:&v75 objects:v91 count:16];
+  v57 = [allValues countByEnumeratingWithState:&v75 objects:v91 count:16];
   if (v57)
   {
     v58 = v57;
@@ -301,14 +301,14 @@ void __43__AAUIAchievementsDataProvider_awardsQuery__block_invoke(uint64_t a1, u
       {
         if (*v76 != v59)
         {
-          objc_enumerationMutation(v56);
+          objc_enumerationMutation(allValues);
         }
 
-        v61 = [*(*(&v75 + 1) + 8 * m) allObjects];
-        [v54 addObjectsFromArray:v61];
+        allObjects = [*(*(&v75 + 1) + 8 * m) allObjects];
+        [v54 addObjectsFromArray:allObjects];
       }
 
-      v58 = [v56 countByEnumeratingWithState:&v75 objects:v91 count:16];
+      v58 = [allValues countByEnumeratingWithState:&v75 objects:v91 count:16];
     }
 
     while (v58);
@@ -320,27 +320,27 @@ void __43__AAUIAchievementsDataProvider_awardsQuery__block_invoke(uint64_t a1, u
   v97 = &__block_descriptor_33_e43_q24__0__ACHAchievement_8__ACHAchievement_16l;
   v98 = 0;
   [v54 sortUsingComparator:&v94];
-  [(AAUIAchievementsDataProvider *)v2 setAllAchievementsSortedByEarnedDate:v54];
-  os_unfair_lock_unlock(&v2->_modelLock);
+  [(AAUIAchievementsDataProvider *)selfCopy setAllAchievementsSortedByEarnedDate:v54];
+  os_unfair_lock_unlock(&selfCopy->_modelLock);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __39__AAUIAchievementsDataProvider__reload__block_invoke;
   block[3] = &unk_278C43800;
-  block[4] = v2;
+  block[4] = selfCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (AAUIAchievementsDataProvider)initWithHealthStore:(id)a3 layoutMode:(unint64_t)a4
+- (AAUIAchievementsDataProvider)initWithHealthStore:(id)store layoutMode:(unint64_t)mode
 {
   v116 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  storeCopy = store;
   v97.receiver = self;
   v97.super_class = AAUIAchievementsDataProvider;
   v8 = [(AAUIAchievementsDataProvider *)&v97 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_healthStore, a3);
+    objc_storeStrong(&v8->_healthStore, store);
     v10 = objc_alloc_init(MEMORY[0x277CBEB38]);
     achievementsBySection = v9->_achievementsBySection;
     v9->_achievementsBySection = v10;
@@ -366,9 +366,9 @@ void __43__AAUIAchievementsDataProvider_awardsQuery__block_invoke(uint64_t a1, u
     v9->_achievementsByEarnedDateComponents = v20;
 
     [(NSMutableDictionary *)v9->_achievementsBySection setObject:v9->_relevantAchievements forKeyedSubscript:@"GO_FOR_IT"];
-    if (a4 == 1)
+    if (mode == 1)
     {
-      v96 = v7;
+      v96 = storeCopy;
       v100[0] = @"RECENT";
       v100[1] = @"CURRENT_MONTHLY_CHALLENGE";
       v43 = *MEMORY[0x277CE8A88];
@@ -390,36 +390,36 @@ void __43__AAUIAchievementsDataProvider_awardsQuery__block_invoke(uint64_t a1, u
       v99[1] = &stru_2850CB9E8;
       v95 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v93 = [v95 localizedStringForKey:v42 value:&stru_2850CB9E8 table:?];
-      v91 = [v93 localizedUppercaseString];
-      v99[2] = v91;
+      localizedUppercaseString = [v93 localizedUppercaseString];
+      v99[2] = localizedUppercaseString;
       v89 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v87 = [v89 localizedStringForKey:v43 value:&stru_2850CB9E8 table:@"Localizable"];
-      v85 = [v87 localizedUppercaseString];
-      v99[3] = v85;
+      localizedUppercaseString2 = [v87 localizedUppercaseString];
+      v99[3] = localizedUppercaseString2;
       v83 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v81 = [v83 localizedStringForKey:@"LIMITED_EDITION_WATCH" value:&stru_2850CB9E8 table:@"Localizable"];
-      v77 = [v81 localizedUppercaseString];
-      v99[4] = v77;
+      localizedUppercaseString3 = [v81 localizedUppercaseString];
+      v99[4] = localizedUppercaseString3;
       v75 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v48 = [v75 localizedStringForKey:v44 value:&stru_2850CB9E8 table:@"Localizable"];
-      v49 = [v48 localizedUppercaseString];
-      v99[5] = v49;
+      localizedUppercaseString4 = [v48 localizedUppercaseString];
+      v99[5] = localizedUppercaseString4;
       v50 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v51 = [v50 localizedStringForKey:v45 value:&stru_2850CB9E8 table:@"Localizable"];
-      v52 = [v51 localizedUppercaseString];
-      v99[6] = v52;
+      localizedUppercaseString5 = [v51 localizedUppercaseString];
+      v99[6] = localizedUppercaseString5;
       v53 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v54 = [v53 localizedStringForKey:v79 value:&stru_2850CB9E8 table:@"Localizable"];
-      v55 = [v54 localizedUppercaseString];
-      v99[7] = v55;
+      localizedUppercaseString6 = [v54 localizedUppercaseString];
+      v99[7] = localizedUppercaseString6;
       v56 = [MEMORY[0x277CBEA60] arrayWithObjects:v99 count:8];
       orderedMainSectionHeaderStrings = v9->_orderedMainSectionHeaderStrings;
       v9->_orderedMainSectionHeaderStrings = v56;
 
       v38 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v39 = [v38 localizedStringForKey:@"RECENT" value:&stru_2850CB9E8 table:@"Localizable"];
-      v41 = [v39 localizedUppercaseString];
-      v98 = v41;
+      localizedUppercaseString7 = [v39 localizedUppercaseString];
+      v98 = localizedUppercaseString7;
       v58 = [MEMORY[0x277CBEA60] arrayWithObjects:&v98 count:1];
       orderedRecentAndRelevantHeaderStrings = v9->_orderedRecentAndRelevantHeaderStrings;
       v9->_orderedRecentAndRelevantHeaderStrings = v58;
@@ -427,7 +427,7 @@ void __43__AAUIAchievementsDataProvider_awardsQuery__block_invoke(uint64_t a1, u
 
     else
     {
-      if (a4)
+      if (mode)
       {
 LABEL_7:
         v60 = objc_alloc_init(MEMORY[0x277CE8D58]);
@@ -442,28 +442,28 @@ LABEL_7:
         observerQueue = v9->_observerQueue;
         v9->_observerQueue = v64;
 
-        v66 = [MEMORY[0x277CCA8D8] mainBundle];
-        AppIntegerValue = CFPreferencesGetAppIntegerValue(@"ACHAchievementDisplayOverrideState", [v66 bundleIdentifier], 0);
+        mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+        AppIntegerValue = CFPreferencesGetAppIntegerValue(@"ACHAchievementDisplayOverrideState", [mainBundle bundleIdentifier], 0);
 
         v9->_overrideDisplayState = AppIntegerValue;
         v9->_queryRetryDelay = 0.1;
         v9->_modelLock._os_unfair_lock_opaque = 0;
-        v68 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+        weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
         initialLoadObservers = v9->_initialLoadObservers;
-        v9->_initialLoadObservers = v68;
+        v9->_initialLoadObservers = weakObjectsHashTable;
 
-        v70 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+        weakObjectsHashTable2 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
         recentAndRelevantSectionObservers = v9->_recentAndRelevantSectionObservers;
-        v9->_recentAndRelevantSectionObservers = v70;
+        v9->_recentAndRelevantSectionObservers = weakObjectsHashTable2;
 
-        v72 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+        weakObjectsHashTable3 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
         mainSectionObservers = v9->_mainSectionObservers;
-        v9->_mainSectionObservers = v72;
+        v9->_mainSectionObservers = weakObjectsHashTable3;
 
         goto LABEL_8;
       }
 
-      v96 = v7;
+      v96 = storeCopy;
       v109[0] = @"RECENT";
       v109[1] = @"GO_FOR_IT";
       v23 = *MEMORY[0x277CE8A88];
@@ -514,11 +514,11 @@ LABEL_7:
       v39 = [v38 localizedStringForKey:@"RECENT" value:&stru_2850CB9E8 table:@"Localizable"];
       v107 = v39;
       v40 = [MEMORY[0x277CBEA60] arrayWithObjects:&v107 count:1];
-      v41 = v9->_orderedRecentAndRelevantHeaderStrings;
+      localizedUppercaseString7 = v9->_orderedRecentAndRelevantHeaderStrings;
       v9->_orderedRecentAndRelevantHeaderStrings = v40;
     }
 
-    v7 = v96;
+    storeCopy = v96;
     goto LABEL_7;
   }
 
@@ -543,8 +543,8 @@ void __43__AAUIAchievementsDataProvider_awardsQuery__block_invoke_2(uint64_t a1,
 
 - (void)cycleQuery
 {
-  v3 = [(AAUIAchievementsDataProvider *)self awardsQuery];
-  [v3 deactivate];
+  awardsQuery = [(AAUIAchievementsDataProvider *)self awardsQuery];
+  [awardsQuery deactivate];
 
   awardsQuery = self->_awardsQuery;
   self->_awardsQuery = 0;
@@ -566,17 +566,17 @@ void __43__AAUIAchievementsDataProvider_awardsQuery__block_invoke_2(uint64_t a1,
   }
 }
 
-- (void)addInitialLoadObserver:(id)a3
+- (void)addInitialLoadObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   observerQueue = self->_observerQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __55__AAUIAchievementsDataProvider_addInitialLoadObserver___block_invoke;
   v7[3] = &unk_278C437B0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_sync(observerQueue, v7);
 }
 
@@ -593,86 +593,86 @@ uint64_t __55__AAUIAchievementsDataProvider_addInitialLoadObserver___block_invok
   return [v3 addObject:v2];
 }
 
-- (void)removeInitialLoadObserver:(id)a3
+- (void)removeInitialLoadObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   observerQueue = self->_observerQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __58__AAUIAchievementsDataProvider_removeInitialLoadObserver___block_invoke;
   v7[3] = &unk_278C437B0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_sync(observerQueue, v7);
 }
 
-- (void)addRecentAndRelevantSectionObserver:(id)a3
+- (void)addRecentAndRelevantSectionObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   observerQueue = self->_observerQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __68__AAUIAchievementsDataProvider_addRecentAndRelevantSectionObserver___block_invoke;
   v7[3] = &unk_278C437B0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_sync(observerQueue, v7);
 }
 
-- (void)removeRecentAndRelevantSectionObserver:(id)a3
+- (void)removeRecentAndRelevantSectionObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   observerQueue = self->_observerQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __71__AAUIAchievementsDataProvider_removeRecentAndRelevantSectionObserver___block_invoke;
   v7[3] = &unk_278C437B0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_sync(observerQueue, v7);
 }
 
-- (void)addMainSectionObserver:(id)a3
+- (void)addMainSectionObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   observerQueue = self->_observerQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __55__AAUIAchievementsDataProvider_addMainSectionObserver___block_invoke;
   v7[3] = &unk_278C437B0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_sync(observerQueue, v7);
 }
 
-- (void)removeMainSectionObserver:(id)a3
+- (void)removeMainSectionObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   observerQueue = self->_observerQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __58__AAUIAchievementsDataProvider_removeMainSectionObserver___block_invoke;
   v7[3] = &unk_278C437B0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_sync(observerQueue, v7);
 }
 
 - (void)stopFetching
 {
-  v3 = [(AAUIAchievementsDataProvider *)self awardsQuery];
-  [v3 deactivate];
+  awardsQuery = [(AAUIAchievementsDataProvider *)self awardsQuery];
+  [awardsQuery deactivate];
 
   awardsQuery = self->_awardsQuery;
   self->_awardsQuery = 0;
 }
 
-- (void)setDidFinishInitialLoad:(BOOL)a3
+- (void)setDidFinishInitialLoad:(BOOL)load
 {
   observerQueue = self->_observerQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -680,7 +680,7 @@ uint64_t __55__AAUIAchievementsDataProvider_addInitialLoadObserver___block_invok
   v4[2] = __56__AAUIAchievementsDataProvider_setDidFinishInitialLoad___block_invoke;
   v4[3] = &unk_278C437D8;
   v4[4] = self;
-  v5 = a3;
+  loadCopy = load;
   dispatch_sync(observerQueue, v4);
 }
 
@@ -731,9 +731,9 @@ void __56__AAUIAchievementsDataProvider_setDidFinishInitialLoad___block_invoke_2
   [v0 postNotificationName:@"AAUIAchievementsDataProviderDidFinishInitialLoad" object:0];
 }
 
-- (id)headerStringForSection:(int64_t)a3 isRecentAndRelevant:(BOOL)a4
+- (id)headerStringForSection:(int64_t)section isRecentAndRelevant:(BOOL)relevant
 {
-  if (a4)
+  if (relevant)
   {
     [(AAUIAchievementsDataProvider *)self orderedRecentAndRelevantHeaderStrings];
   }
@@ -743,47 +743,47 @@ void __56__AAUIAchievementsDataProvider_setDidFinishInitialLoad___block_invoke_2
     [(AAUIAchievementsDataProvider *)self orderedMainSectionHeaderStrings];
   }
   v5 = ;
-  v6 = [v5 objectAtIndexedSubscript:a3];
+  v6 = [v5 objectAtIndexedSubscript:section];
 
   return v6;
 }
 
-- (int64_t)numberOfItemsInRecentAndRelevantSection:(int64_t)a3
+- (int64_t)numberOfItemsInRecentAndRelevantSection:(int64_t)section
 {
-  v3 = [(AAUIAchievementsDataProvider *)self clientRecentAchievements];
-  v4 = [v3 count];
+  clientRecentAchievements = [(AAUIAchievementsDataProvider *)self clientRecentAchievements];
+  v4 = [clientRecentAchievements count];
 
   return v4;
 }
 
-- (id)recentAndRelevantAchievementAtIndexPath:(id)a3
+- (id)recentAndRelevantAchievementAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(AAUIAchievementsDataProvider *)self clientRecentAchievements];
-  v6 = [v4 item];
+  pathCopy = path;
+  clientRecentAchievements = [(AAUIAchievementsDataProvider *)self clientRecentAchievements];
+  item = [pathCopy item];
 
-  v7 = [v5 objectAtIndexedSubscript:v6];
+  v7 = [clientRecentAchievements objectAtIndexedSubscript:item];
 
   return v7;
 }
 
 - (int64_t)numberOfSections
 {
-  v2 = [(AAUIAchievementsDataProvider *)self orderedSections];
-  v3 = [v2 count];
+  orderedSections = [(AAUIAchievementsDataProvider *)self orderedSections];
+  v3 = [orderedSections count];
 
   return v3;
 }
 
-- (int64_t)numberOfItemsInSection:(int64_t)a3
+- (int64_t)numberOfItemsInSection:(int64_t)section
 {
-  if (a3)
+  if (section)
   {
-    v5 = [(AAUIAchievementsDataProvider *)self orderedSections];
-    v6 = [v5 objectAtIndexedSubscript:a3];
+    orderedSections = [(AAUIAchievementsDataProvider *)self orderedSections];
+    v6 = [orderedSections objectAtIndexedSubscript:section];
 
-    v7 = [(AAUIAchievementsDataProvider *)self clientAchievementsBySection];
-    v8 = [v7 objectForKeyedSubscript:v6];
+    clientAchievementsBySection = [(AAUIAchievementsDataProvider *)self clientAchievementsBySection];
+    v8 = [clientAchievementsBySection objectForKeyedSubscript:v6];
 
     v9 = [v8 count];
     return v9;
@@ -791,55 +791,55 @@ void __56__AAUIAchievementsDataProvider_setDidFinishInitialLoad___block_invoke_2
 
   else
   {
-    v11 = [(AAUIAchievementsDataProvider *)self clientRecentAchievements];
-    v12 = [v11 count] != 0;
+    clientRecentAchievements = [(AAUIAchievementsDataProvider *)self clientRecentAchievements];
+    v12 = [clientRecentAchievements count] != 0;
 
     return v12;
   }
 }
 
-- (id)achievementAtIndexPath:(id)a3
+- (id)achievementAtIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  v5 = [(AAUIAchievementsDataProvider *)self orderedSections];
-  v6 = [v5 objectAtIndexedSubscript:{objc_msgSend(v4, "section")}];
+  orderedSections = [(AAUIAchievementsDataProvider *)self orderedSections];
+  v6 = [orderedSections objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
 
-  v7 = [(AAUIAchievementsDataProvider *)self clientAchievementsBySection];
-  v8 = [v7 objectForKeyedSubscript:v6];
+  clientAchievementsBySection = [(AAUIAchievementsDataProvider *)self clientAchievementsBySection];
+  v8 = [clientAchievementsBySection objectForKeyedSubscript:v6];
 
-  v9 = [v4 item];
-  v10 = [v8 objectAtIndexedSubscript:v9];
+  item = [pathCopy item];
+  v10 = [v8 objectAtIndexedSubscript:item];
 
   return v10;
 }
 
-- (id)trophyCaseAchievementForTemplateUniqueName:(id)a3
+- (id)trophyCaseAchievementForTemplateUniqueName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  v5 = [(AAUIAchievementsDataProvider *)self clientFilteredAchievementsByTemplateUniqueName];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  clientFilteredAchievementsByTemplateUniqueName = [(AAUIAchievementsDataProvider *)self clientFilteredAchievementsByTemplateUniqueName];
+  v6 = [clientFilteredAchievementsByTemplateUniqueName objectForKeyedSubscript:nameCopy];
 
   return v6;
 }
 
-- (id)achievementForTemplateUniqueName:(id)a3
+- (id)achievementForTemplateUniqueName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  v5 = [(AAUIAchievementsDataProvider *)self clientAchievementsByTemplateUniqueName];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  clientAchievementsByTemplateUniqueName = [(AAUIAchievementsDataProvider *)self clientAchievementsByTemplateUniqueName];
+  v6 = [clientAchievementsByTemplateUniqueName objectForKeyedSubscript:nameCopy];
 
   return v6;
 }
 
-- (id)achievementsForDateComponents:(id)a3
+- (id)achievementsForDateComponents:(id)components
 {
-  v4 = a3;
+  componentsCopy = components;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  v5 = [(AAUIAchievementsDataProvider *)self clientAchievementsByEarnedDateComponents];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  clientAchievementsByEarnedDateComponents = [(AAUIAchievementsDataProvider *)self clientAchievementsByEarnedDateComponents];
+  v6 = [clientAchievementsByEarnedDateComponents objectForKeyedSubscript:componentsCopy];
 
   if (v6)
   {
@@ -859,11 +859,11 @@ void __56__AAUIAchievementsDataProvider_setDidFinishInitialLoad___block_invoke_2
 - (NSMutableArray)allAchievementsSortedByEarnedDate
 {
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  v3 = [(AAUIAchievementsDataProvider *)self clientAllAchievementsSortedByEarnedDate];
-  v4 = v3;
-  if (v3)
+  clientAllAchievementsSortedByEarnedDate = [(AAUIAchievementsDataProvider *)self clientAllAchievementsSortedByEarnedDate];
+  v4 = clientAllAchievementsSortedByEarnedDate;
+  if (clientAllAchievementsSortedByEarnedDate)
   {
-    v5 = v3;
+    v5 = clientAllAchievementsSortedByEarnedDate;
   }
 
   else
@@ -879,30 +879,30 @@ void __56__AAUIAchievementsDataProvider_setDidFinishInitialLoad___block_invoke_2
 - (void)_deepCopyClientFacingModel
 {
   os_unfair_lock_lock(&self->_modelLock);
-  v3 = [(AAUIAchievementsDataProvider *)self recentAchievements];
-  v4 = [v3 copy];
+  recentAchievements = [(AAUIAchievementsDataProvider *)self recentAchievements];
+  v4 = [recentAchievements copy];
   [(AAUIAchievementsDataProvider *)self setClientRecentAchievements:v4];
 
-  v5 = [(AAUIAchievementsDataProvider *)self relevantAchievements];
-  v6 = [v5 copy];
+  relevantAchievements = [(AAUIAchievementsDataProvider *)self relevantAchievements];
+  v6 = [relevantAchievements copy];
   [(AAUIAchievementsDataProvider *)self setClientRelevantAchievements:v6];
 
-  v7 = [(AAUIAchievementsDataProvider *)self filteredAchievementsByTemplateUniqueName];
-  v8 = [v7 copy];
+  filteredAchievementsByTemplateUniqueName = [(AAUIAchievementsDataProvider *)self filteredAchievementsByTemplateUniqueName];
+  v8 = [filteredAchievementsByTemplateUniqueName copy];
   [(AAUIAchievementsDataProvider *)self setClientFilteredAchievementsByTemplateUniqueName:v8];
 
-  v9 = [(AAUIAchievementsDataProvider *)self achievementsByTemplateUniqueName];
-  v10 = [v9 copy];
+  achievementsByTemplateUniqueName = [(AAUIAchievementsDataProvider *)self achievementsByTemplateUniqueName];
+  v10 = [achievementsByTemplateUniqueName copy];
   [(AAUIAchievementsDataProvider *)self setClientAchievementsByTemplateUniqueName:v10];
 
   v11 = objc_alloc(MEMORY[0x277CBEAC0]);
-  v12 = [(AAUIAchievementsDataProvider *)self achievementsBySection];
-  v13 = [v11 initWithDictionary:v12 copyItems:1];
+  achievementsBySection = [(AAUIAchievementsDataProvider *)self achievementsBySection];
+  v13 = [v11 initWithDictionary:achievementsBySection copyItems:1];
   [(AAUIAchievementsDataProvider *)self setClientAchievementsBySection:v13];
 
   v14 = objc_alloc(MEMORY[0x277CBEAC0]);
-  v15 = [(AAUIAchievementsDataProvider *)self achievementsByEarnedDateComponents];
-  v16 = [v14 initWithDictionary:v15 copyItems:1];
+  achievementsByEarnedDateComponents = [(AAUIAchievementsDataProvider *)self achievementsByEarnedDateComponents];
+  v16 = [v14 initWithDictionary:achievementsByEarnedDateComponents copyItems:1];
   [(AAUIAchievementsDataProvider *)self setClientAchievementsByEarnedDateComponents:v16];
 
   v17 = [(NSMutableArray *)self->_allAchievementsSortedByEarnedDate copy];
@@ -911,19 +911,19 @@ void __56__AAUIAchievementsDataProvider_setDidFinishInitialLoad___block_invoke_2
   os_unfair_lock_unlock(&self->_modelLock);
 }
 
-- (id)_achievementsRespectingOverrideDisplayState:(id)a3
+- (id)_achievementsRespectingOverrideDisplayState:(id)state
 {
   v44 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(AAUIAchievementsDataProvider *)self overrideDisplayState];
-  if (v5 == 2)
+  stateCopy = state;
+  overrideDisplayState = [(AAUIAchievementsDataProvider *)self overrideDisplayState];
+  if (overrideDisplayState == 2)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v24 = v4;
+    v24 = stateCopy;
     v25 = [v24 countByEnumeratingWithState:&v34 objects:v42 count:16];
     if (v25)
     {
@@ -951,7 +951,7 @@ void __56__AAUIAchievementsDataProvider_setDidFinishInitialLoad___block_invoke_2
 
   else
   {
-    if (v5 != 1)
+    if (overrideDisplayState != 1)
     {
       goto LABEL_21;
     }
@@ -961,12 +961,12 @@ void __56__AAUIAchievementsDataProvider_setDidFinishInitialLoad___block_invoke_2
     v39 = 0u;
     v40 = 0u;
     v41 = 0u;
-    obj = v4;
+    obj = stateCopy;
     v7 = [obj countByEnumeratingWithState:&v38 objects:v43 count:16];
     if (v7)
     {
       v8 = v7;
-      v32 = v4;
+      v32 = stateCopy;
       v9 = *v39;
       do
       {
@@ -979,15 +979,15 @@ void __56__AAUIAchievementsDataProvider_setDidFinishInitialLoad___block_invoke_2
 
           v11 = *(*(&v38 + 1) + 8 * j);
           v12 = objc_alloc_init(MEMORY[0x277CE8D38]);
-          v13 = [v11 template];
-          v14 = [v13 canonicalUnit];
+          template = [v11 template];
+          canonicalUnit = [template canonicalUnit];
 
-          if (v14)
+          if (canonicalUnit)
           {
             v15 = MEMORY[0x277CCD7E8];
-            v16 = [v11 template];
-            v17 = [v16 canonicalUnit];
-            v18 = [v15 quantityWithUnit:v17 doubleValue:20.0];
+            template2 = [v11 template];
+            canonicalUnit2 = [template2 canonicalUnit];
+            v18 = [v15 quantityWithUnit:canonicalUnit2 doubleValue:20.0];
 
             [v12 setValue:v18];
           }
@@ -995,13 +995,13 @@ void __56__AAUIAchievementsDataProvider_setDidFinishInitialLoad___block_invoke_2
           v19 = ACHDateComponentsForYearMonthDay();
           [v12 setEarnedDateComponents:v19];
 
-          v20 = [MEMORY[0x277CBEAA8] date];
-          [v12 setCreatedDate:v20];
+          date = [MEMORY[0x277CBEAA8] date];
+          [v12 setCreatedDate:date];
 
           [v12 setCreatorDevice:2];
-          v21 = [v11 template];
-          v22 = [v21 uniqueName];
-          [v12 setTemplateUniqueName:v22];
+          template3 = [v11 template];
+          uniqueName = [template3 uniqueName];
+          [v12 setTemplateUniqueName:uniqueName];
 
           v23 = [v11 shallowCopyWithRelevantEarnedInstance:v12];
           [v6 addObject:v23];
@@ -1011,29 +1011,29 @@ void __56__AAUIAchievementsDataProvider_setDidFinishInitialLoad___block_invoke_2
       }
 
       while (v8);
-      v4 = v32;
+      stateCopy = v32;
     }
   }
 
   v30 = [MEMORY[0x277CBEB98] setWithArray:v6];
 
-  v4 = v30;
+  stateCopy = v30;
 LABEL_21:
 
-  return v4;
+  return stateCopy;
 }
 
-- (void)_handleUpdatedAchievements:(id)a3
+- (void)_handleUpdatedAchievements:(id)achievements
 {
-  v4 = a3;
-  if ([v4 count])
+  achievementsCopy = achievements;
+  if ([achievementsCopy count])
   {
     [(AAUIAchievementsDataProvider *)self setDidFinishInitialLoad:1];
   }
 
-  v5 = [(AAUIAchievementsDataProvider *)self _achievementsRespectingOverrideDisplayState:v4];
+  v5 = [(AAUIAchievementsDataProvider *)self _achievementsRespectingOverrideDisplayState:achievementsCopy];
 
-  v6 = [(AAUIAchievementsDataProvider *)self achievementsDataQueue];
+  achievementsDataQueue = [(AAUIAchievementsDataProvider *)self achievementsDataQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __59__AAUIAchievementsDataProvider__handleUpdatedAchievements___block_invoke;
@@ -1041,7 +1041,7 @@ LABEL_21:
   v8[4] = self;
   v9 = v5;
   v7 = v5;
-  dispatch_async(v6, v8);
+  dispatch_async(achievementsDataQueue, v8);
 }
 
 void __59__AAUIAchievementsDataProvider__handleUpdatedAchievements___block_invoke(uint64_t a1)
@@ -1136,18 +1136,18 @@ void __59__AAUIAchievementsDataProvider__handleUpdatedAchievements___block_invok
   }
 }
 
-- (void)_handleDeletedAchievements:(id)a3
+- (void)_handleDeletedAchievements:(id)achievements
 {
-  v4 = a3;
-  v5 = [(AAUIAchievementsDataProvider *)self achievementsDataQueue];
+  achievementsCopy = achievements;
+  achievementsDataQueue = [(AAUIAchievementsDataProvider *)self achievementsDataQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __59__AAUIAchievementsDataProvider__handleDeletedAchievements___block_invoke;
   v7[3] = &unk_278C437B0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = achievementsCopy;
+  v6 = achievementsCopy;
+  dispatch_async(achievementsDataQueue, v7);
 }
 
 void __59__AAUIAchievementsDataProvider__handleDeletedAchievements___block_invoke(uint64_t a1)
@@ -1286,26 +1286,26 @@ void __39__AAUIAchievementsDataProvider__reload__block_invoke_3()
   [v0 postNotificationName:@"AAUIAchievementsDataProviderDidUpdateAchievement" object:0];
 }
 
-- (BOOL)_shouldShowAchievement:(id)a3 activityMoveMode:(int64_t)a4 experienceType:(unint64_t)a5
+- (BOOL)_shouldShowAchievement:(id)achievement activityMoveMode:(int64_t)mode experienceType:(unint64_t)type
 {
   v22 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  if ([v8 hasClientRequiredURLs])
+  achievementCopy = achievement;
+  if ([achievementCopy hasClientRequiredURLs])
   {
-    v9 = [v8 template];
-    v10 = [v9 uniqueName];
-    if ([v10 containsString:@"MonthlyChallenge"])
+    template = [achievementCopy template];
+    uniqueName = [template uniqueName];
+    if ([uniqueName containsString:@"MonthlyChallenge"])
     {
-      v11 = [v8 unearned];
+      unearned = [achievementCopy unearned];
 
-      if (!v11)
+      if (!unearned)
       {
         IsEarnable = 1;
         goto LABEL_11;
       }
 
-      v9 = [MEMORY[0x277CBEAA8] date];
-      IsEarnable = AAUIMonthlyChallengeIsEarnable(v8, v9);
+      template = [MEMORY[0x277CBEAA8] date];
+      IsEarnable = AAUIMonthlyChallengeIsEarnable(achievementCopy, template);
     }
 
     else
@@ -1315,12 +1315,12 @@ void __39__AAUIAchievementsDataProvider__reload__block_invoke_3()
     }
 
 LABEL_11:
-    v17 = [v8 unearned];
-    v16 = IsEarnable & (v17 ^ 1);
-    if (IsEarnable && v17)
+    unearned2 = [achievementCopy unearned];
+    v16 = IsEarnable & (unearned2 ^ 1);
+    if (IsEarnable && unearned2)
     {
-      v18 = [(AAUIAchievementsDataProvider *)self visibilityEvaluator];
-      v16 = [v18 unearnedAchievementIsVisibleNow:v8 activityMoveMode:a4 experienceType:a5];
+      visibilityEvaluator = [(AAUIAchievementsDataProvider *)self visibilityEvaluator];
+      v16 = [visibilityEvaluator unearnedAchievementIsVisibleNow:achievementCopy activityMoveMode:mode experienceType:type];
     }
 
     goto LABEL_14;
@@ -1329,10 +1329,10 @@ LABEL_11:
   v13 = ACHLogAssets();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [v8 template];
-    v15 = [v14 uniqueName];
+    template2 = [achievementCopy template];
+    uniqueName2 = [template2 uniqueName];
     v20 = 138543362;
-    v21 = v15;
+    v21 = uniqueName2;
     _os_log_impl(&dword_23E4A3000, v13, OS_LOG_TYPE_DEFAULT, "AAUIAchievmentsProvider Filtering achievement from UI due to missing URLS: %{public}@", &v20, 0xCu);
   }
 
@@ -1344,19 +1344,19 @@ LABEL_14:
 
 - (id)_oldestRecentAchievement
 {
-  v3 = [MEMORY[0x277CBEA80] currentCalendar];
-  v4 = [(AAUIAchievementsDataProvider *)self recentAchievements];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  recentAchievements = [(AAUIAchievementsDataProvider *)self recentAchievements];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __56__AAUIAchievementsDataProvider__oldestRecentAchievement__block_invoke;
   v9[3] = &unk_278C43828;
-  v10 = v3;
-  v5 = v3;
-  v6 = [v4 sortedArrayUsingComparator:v9];
+  v10 = currentCalendar;
+  v5 = currentCalendar;
+  v6 = [recentAchievements sortedArrayUsingComparator:v9];
 
-  v7 = [v6 firstObject];
+  firstObject = [v6 firstObject];
 
-  return v7;
+  return firstObject;
 }
 
 uint64_t __56__AAUIAchievementsDataProvider__oldestRecentAchievement__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1377,18 +1377,18 @@ uint64_t __56__AAUIAchievementsDataProvider__oldestRecentAchievement__block_invo
   return v14;
 }
 
-- (BOOL)_achievementBelongsInRecents:(id)a3 replacingRecent:(id *)a4
+- (BOOL)_achievementBelongsInRecents:(id)recents replacingRecent:(id *)recent
 {
-  v6 = a3;
-  if (([v6 unearned] & 1) == 0)
+  recentsCopy = recents;
+  if (([recentsCopy unearned] & 1) == 0)
   {
-    v8 = [MEMORY[0x277CBEA80] currentCalendar];
-    v9 = [v6 relevantEarnedInstance];
-    v10 = [v9 earnedDateComponents];
-    v11 = [v8 dateFromComponents:v10];
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+    relevantEarnedInstance = [recentsCopy relevantEarnedInstance];
+    earnedDateComponents = [relevantEarnedInstance earnedDateComponents];
+    v11 = [currentCalendar dateFromComponents:earnedDateComponents];
 
-    v12 = [MEMORY[0x277CBEAA8] date];
-    v13 = [v8 dateByAddingUnit:16 value:-7 toDate:v12 options:0];
+    date = [MEMORY[0x277CBEAA8] date];
+    v13 = [currentCalendar dateByAddingUnit:16 value:-7 toDate:date options:0];
 
     if ([v11 compare:v13] == -1)
     {
@@ -1398,15 +1398,15 @@ LABEL_18:
       goto LABEL_19;
     }
 
-    v31 = a4;
-    v14 = [(AAUIAchievementsDataProvider *)self recentAchievements];
-    v15 = [v6 template];
-    v16 = [v15 uniqueName];
-    v17 = AAUIAchievementInArrayWithUniqueName(v14, v16);
+    recentCopy = recent;
+    recentAchievements = [(AAUIAchievementsDataProvider *)self recentAchievements];
+    template = [recentsCopy template];
+    uniqueName = [template uniqueName];
+    v17 = AAUIAchievementInArrayWithUniqueName(recentAchievements, uniqueName);
 
     if (v17)
     {
-      if (AAUICompareAchievements(v17, v6) != -1)
+      if (AAUICompareAchievements(v17, recentsCopy) != -1)
       {
         v7 = 0;
 LABEL_17:
@@ -1415,30 +1415,30 @@ LABEL_17:
       }
 
       v26 = v17;
-      *v31 = v17;
+      *recentCopy = v17;
     }
 
     else
     {
-      v18 = [(AAUIAchievementsDataProvider *)self recentAchievements];
-      v19 = [v18 count];
+      recentAchievements2 = [(AAUIAchievementsDataProvider *)self recentAchievements];
+      v19 = [recentAchievements2 count];
 
       if (v19 >= 5)
       {
-        v20 = [(AAUIAchievementsDataProvider *)self _oldestRecentAchievement];
-        v21 = [v20 relevantEarnedInstance];
-        v22 = [v21 earnedDateComponents];
-        v23 = [v8 dateFromComponents:v22];
+        _oldestRecentAchievement = [(AAUIAchievementsDataProvider *)self _oldestRecentAchievement];
+        relevantEarnedInstance2 = [_oldestRecentAchievement relevantEarnedInstance];
+        earnedDateComponents2 = [relevantEarnedInstance2 earnedDateComponents];
+        v23 = [currentCalendar dateFromComponents:earnedDateComponents2];
 
-        if ([v23 compare:v11] != -1 && (objc_msgSend(v23, "compare:", v11) || (objc_msgSend(v6, "template"), v30 = objc_claimAutoreleasedReturnValue(), v29 = objc_msgSend(v30, "displayOrder"), objc_msgSend(v20, "template"), v24 = objc_claimAutoreleasedReturnValue(), v28 = objc_msgSend(v24, "displayOrder"), v24, v30, v29 <= v28)))
+        if ([v23 compare:v11] != -1 && (objc_msgSend(v23, "compare:", v11) || (objc_msgSend(recentsCopy, "template"), v30 = objc_claimAutoreleasedReturnValue(), v29 = objc_msgSend(v30, "displayOrder"), objc_msgSend(_oldestRecentAchievement, "template"), v24 = objc_claimAutoreleasedReturnValue(), v28 = objc_msgSend(v24, "displayOrder"), v24, v30, v29 <= v28)))
         {
           v7 = 0;
         }
 
         else
         {
-          v25 = v20;
-          *v31 = v20;
+          v25 = _oldestRecentAchievement;
+          *recentCopy = _oldestRecentAchievement;
           v7 = 1;
         }
 
@@ -1456,63 +1456,63 @@ LABEL_19:
   return v7;
 }
 
-- (BOOL)_remoteAchievementBelongsInRelevants:(id)a3
+- (BOOL)_remoteAchievementBelongsInRelevants:(id)relevants
 {
   v3 = MEMORY[0x277CBEA80];
-  v4 = a3;
-  v5 = [v3 currentCalendar];
-  v6 = [v4 template];
-  v7 = [v6 availabilityStart];
-  v8 = [v5 dateFromComponents:v7];
-  v9 = [v5 startOfDayForDate:v8];
+  relevantsCopy = relevants;
+  currentCalendar = [v3 currentCalendar];
+  template = [relevantsCopy template];
+  availabilityStart = [template availabilityStart];
+  v8 = [currentCalendar dateFromComponents:availabilityStart];
+  v9 = [currentCalendar startOfDayForDate:v8];
 
-  v10 = [v4 template];
+  template2 = [relevantsCopy template];
 
-  v11 = [v10 availabilityEnd];
-  v12 = [v5 dateFromComponents:v11];
-  v13 = [v5 dateByAddingUnit:16 value:1 toDate:v12 options:0];
-  v14 = [v5 startOfDayForDate:v13];
+  availabilityEnd = [template2 availabilityEnd];
+  v12 = [currentCalendar dateFromComponents:availabilityEnd];
+  v13 = [currentCalendar dateByAddingUnit:16 value:1 toDate:v12 options:0];
+  v14 = [currentCalendar startOfDayForDate:v13];
 
   v15 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v9 endDate:v14];
-  v16 = [MEMORY[0x277CBEAA8] date];
-  LOBYTE(v12) = [v15 containsDate:v16];
+  date = [MEMORY[0x277CBEAA8] date];
+  LOBYTE(v12) = [v15 containsDate:date];
 
   return v12;
 }
 
-- (BOOL)_monthlyChallengeBelongsInRelevants:(id)a3
+- (BOOL)_monthlyChallengeBelongsInRelevants:(id)relevants
 {
   v3 = MEMORY[0x277CBEAA8];
-  v4 = a3;
-  v5 = [v3 date];
-  IsEarnable = AAUIMonthlyChallengeIsEarnable(v4, v5);
+  relevantsCopy = relevants;
+  date = [v3 date];
+  IsEarnable = AAUIMonthlyChallengeIsEarnable(relevantsCopy, date);
 
   return IsEarnable;
 }
 
-- (BOOL)_builtInBelongsInRelevants:(id)a3
+- (BOOL)_builtInBelongsInRelevants:(id)relevants
 {
-  v3 = a3;
-  v4 = [v3 template];
-  v5 = [v4 canonicalUnit];
+  relevantsCopy = relevants;
+  template = [relevantsCopy template];
+  canonicalUnit = [template canonicalUnit];
 
-  if (v5)
+  if (canonicalUnit)
   {
-    v6 = [v3 template];
-    v7 = [v6 canonicalUnit];
+    template2 = [relevantsCopy template];
+    canonicalUnit2 = [template2 canonicalUnit];
 
-    v8 = [v3 progress];
-    [v8 doubleValueForUnit:v7];
+    progress = [relevantsCopy progress];
+    [progress doubleValueForUnit:canonicalUnit2];
     v10 = v9;
 
-    v11 = [v3 goal];
-    [v11 doubleValueForUnit:v7];
+    goal = [relevantsCopy goal];
+    [goal doubleValueForUnit:canonicalUnit2];
     v13 = v12;
 
-    v14 = [v3 template];
-    v15 = [v14 uniqueName];
+    template3 = [relevantsCopy template];
+    uniqueName = [template3 uniqueName];
 
-    if (([v15 isEqualToString:@"NewMoveRecord"] & 1) != 0 || (objc_msgSend(v15, "isEqualToString:", @"NewMoveTimeRecord") & 1) != 0 || (objc_msgSend(v15, "isEqualToString:", @"NewExerciseRecord") & 1) != 0 || (objc_msgSend(v15, "isEqualToString:", @"MoveGoal200Percent") & 1) != 0 || (objc_msgSend(v15, "isEqualToString:", @"MoveGoal300Percent") & 1) != 0 || objc_msgSend(v15, "isEqualToString:", @"MoveGoal400Percent"))
+    if (([uniqueName isEqualToString:@"NewMoveRecord"] & 1) != 0 || (objc_msgSend(uniqueName, "isEqualToString:", @"NewMoveTimeRecord") & 1) != 0 || (objc_msgSend(uniqueName, "isEqualToString:", @"NewExerciseRecord") & 1) != 0 || (objc_msgSend(uniqueName, "isEqualToString:", @"MoveGoal200Percent") & 1) != 0 || (objc_msgSend(uniqueName, "isEqualToString:", @"MoveGoal300Percent") & 1) != 0 || objc_msgSend(uniqueName, "isEqualToString:", @"MoveGoal400Percent"))
     {
       v16 = v13 > 2.22044605e-16 && (v13 - v10) / v13 < 0.1;
       v17 = v13 > v10 && v16;
@@ -1523,27 +1523,27 @@ LABEL_19:
       v17 = 0;
     }
 
-    if (([v15 isEqualToString:@"PerfectWeekMove"] & 1) != 0 || (objc_msgSend(v15, "isEqualToString:", @"PerfectWeekExercise") & 1) != 0 || (objc_msgSend(v15, "isEqualToString:", @"PerfectWeekStand") & 1) != 0 || objc_msgSend(v15, "isEqualToString:", @"PerfectWeekAll"))
+    if (([uniqueName isEqualToString:@"PerfectWeekMove"] & 1) != 0 || (objc_msgSend(uniqueName, "isEqualToString:", @"PerfectWeekExercise") & 1) != 0 || (objc_msgSend(uniqueName, "isEqualToString:", @"PerfectWeekStand") & 1) != 0 || objc_msgSend(uniqueName, "isEqualToString:", @"PerfectWeekAll"))
     {
-      v18 = [MEMORY[0x277CBEA80] currentCalendar];
-      v19 = [MEMORY[0x277CBEAA8] date];
-      v17 |= AAUITrophyCaseShouldShowPerfectWeekAchievement(v18, v19, v10);
+      currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+      date = [MEMORY[0x277CBEAA8] date];
+      v17 |= AAUITrophyCaseShouldShowPerfectWeekAchievement(currentCalendar, date, v10);
     }
 
     v20 = llround(v10);
-    if ([v15 isEqualToString:@"LongestMoveStreak"])
+    if ([uniqueName isEqualToString:@"LongestMoveStreak"])
     {
-      v21 = [v3 relevantEarnedInstance];
-      v22 = [v21 value];
-      v23 = [v3 template];
-      v24 = [v23 canonicalUnit];
-      [v22 doubleValueForUnit:v24];
+      relevantEarnedInstance = [relevantsCopy relevantEarnedInstance];
+      value = [relevantEarnedInstance value];
+      template4 = [relevantsCopy template];
+      canonicalUnit3 = [template4 canonicalUnit];
+      [value doubleValueForUnit:canonicalUnit3];
       v26 = llround(v25);
 
       LOBYTE(v17) = (v20 - v26 > 0xFFFFFFFFFFFFFFFDLL) | v17;
     }
 
-    if (([v15 isEqualToString:@"100MoveGoals"] & 1) != 0 || (objc_msgSend(v15, "isEqualToString:", @"365MoveGoals") & 1) != 0 || (objc_msgSend(v15, "isEqualToString:", @"500MoveGoals") & 1) != 0 || (objc_msgSend(v15, "isEqualToString:", @"1000MoveGoals") & 1) != 0 || (objc_msgSend(v15, "isEqualToString:", @"1250MoveGoals") & 1) != 0 || (objc_msgSend(v15, "isEqualToString:", @"1500MoveGoals") & 1) != 0 || (objc_msgSend(v15, "isEqualToString:", @"1750MoveGoals") & 1) != 0 || objc_msgSend(v15, "isEqualToString:", @"2000MoveGoals"))
+    if (([uniqueName isEqualToString:@"100MoveGoals"] & 1) != 0 || (objc_msgSend(uniqueName, "isEqualToString:", @"365MoveGoals") & 1) != 0 || (objc_msgSend(uniqueName, "isEqualToString:", @"500MoveGoals") & 1) != 0 || (objc_msgSend(uniqueName, "isEqualToString:", @"1000MoveGoals") & 1) != 0 || (objc_msgSend(uniqueName, "isEqualToString:", @"1250MoveGoals") & 1) != 0 || (objc_msgSend(uniqueName, "isEqualToString:", @"1500MoveGoals") & 1) != 0 || (objc_msgSend(uniqueName, "isEqualToString:", @"1750MoveGoals") & 1) != 0 || objc_msgSend(uniqueName, "isEqualToString:", @"2000MoveGoals"))
     {
       LOBYTE(v17) = (v20 - llround(v13) > 0xFFFFFFFFFFFFFFF6) | v17;
     }
@@ -1557,50 +1557,50 @@ LABEL_19:
   return v17 & 1;
 }
 
-- (BOOL)_achievementBelongsInRelevants:(id)a3 replacingRelevant:(id *)a4
+- (BOOL)_achievementBelongsInRelevants:(id)relevants replacingRelevant:(id *)relevant
 {
-  v6 = a3;
-  v7 = [v6 relevantEarnedInstance];
-  v8 = [v7 earnedDateComponents];
-  v9 = [MEMORY[0x277CBEA80] currentCalendar];
-  v10 = [MEMORY[0x277CBEAA8] date];
-  v11 = [v9 components:28 fromDate:v10];
+  relevantsCopy = relevants;
+  relevantEarnedInstance = [relevantsCopy relevantEarnedInstance];
+  earnedDateComponents = [relevantEarnedInstance earnedDateComponents];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  date = [MEMORY[0x277CBEAA8] date];
+  v11 = [currentCalendar components:28 fromDate:date];
 
-  if (v8)
+  if (earnedDateComponents)
   {
-    v12 = ACHCompareYearMonthDayDateComponents();
-    v13 = v12 != 0;
-    if ([v6 unearned])
+    template5 = ACHCompareYearMonthDayDateComponents();
+    v13 = template5 != 0;
+    if ([relevantsCopy unearned])
     {
-      if (!v12)
+      if (!template5)
       {
         goto LABEL_26;
       }
 
 LABEL_9:
-      v16 = [v6 template];
-      v17 = [v16 sourceName];
-      v18 = [v17 isEqualToString:*MEMORY[0x277CE8CA0]];
+      template = [relevantsCopy template];
+      sourceName = [template sourceName];
+      v18 = [sourceName isEqualToString:*MEMORY[0x277CE8CA0]];
 
       if (v18)
       {
-        if (![(AAUIAchievementsDataProvider *)self _remoteAchievementBelongsInRelevants:v6])
+        if (![(AAUIAchievementsDataProvider *)self _remoteAchievementBelongsInRelevants:relevantsCopy])
         {
 LABEL_22:
-          LOBYTE(v12) = 0;
+          LOBYTE(template5) = 0;
           goto LABEL_26;
         }
       }
 
       else
       {
-        v19 = [v6 template];
-        v20 = [v19 sourceName];
-        v21 = [v20 isEqualToString:*MEMORY[0x277CE8C90]];
+        template2 = [relevantsCopy template];
+        sourceName2 = [template2 sourceName];
+        v21 = [sourceName2 isEqualToString:*MEMORY[0x277CE8C90]];
 
         if (v21)
         {
-          if (![(AAUIAchievementsDataProvider *)self _monthlyChallengeBelongsInRelevants:v6])
+          if (![(AAUIAchievementsDataProvider *)self _monthlyChallengeBelongsInRelevants:relevantsCopy])
           {
             goto LABEL_22;
           }
@@ -1608,44 +1608,44 @@ LABEL_22:
 
         else
         {
-          v22 = [v6 template];
-          v23 = [v22 sourceName];
-          v24 = [v23 isEqualToString:*MEMORY[0x277CE8C88]];
+          template3 = [relevantsCopy template];
+          sourceName3 = [template3 sourceName];
+          v24 = [sourceName3 isEqualToString:*MEMORY[0x277CE8C88]];
 
-          if (!v24 || ![(AAUIAchievementsDataProvider *)self _builtInBelongsInRelevants:v6])
+          if (!v24 || ![(AAUIAchievementsDataProvider *)self _builtInBelongsInRelevants:relevantsCopy])
           {
             goto LABEL_22;
           }
         }
       }
 
-      v25 = [(AAUIAchievementsDataProvider *)self relevantAchievements];
-      v26 = [v6 template];
-      v27 = [v26 uniqueName];
-      v28 = AAUIAchievementInArrayWithUniqueName(v25, v27);
+      relevantAchievements = [(AAUIAchievementsDataProvider *)self relevantAchievements];
+      template4 = [relevantsCopy template];
+      uniqueName = [template4 uniqueName];
+      v28 = AAUIAchievementInArrayWithUniqueName(relevantAchievements, uniqueName);
 
       if (v28)
       {
-        if ((![v28 unearned] || (objc_msgSend(v6, "unearned") & 1) == 0) && AAUICompareAchievements(v28, v6) != -1)
+        if ((![v28 unearned] || (objc_msgSend(relevantsCopy, "unearned") & 1) == 0) && AAUICompareAchievements(v28, relevantsCopy) != -1)
         {
-          LOBYTE(v12) = 0;
+          LOBYTE(template5) = 0;
 LABEL_25:
 
           goto LABEL_26;
         }
 
         v29 = v28;
-        *a4 = v28;
+        *relevant = v28;
       }
 
-      LOBYTE(v12) = 1;
+      LOBYTE(template5) = 1;
       goto LABEL_25;
     }
   }
 
   else
   {
-    if ([v6 unearned])
+    if ([relevantsCopy unearned])
     {
       goto LABEL_9;
     }
@@ -1653,42 +1653,42 @@ LABEL_25:
     v13 = 1;
   }
 
-  v12 = [v6 template];
-  v14 = [v12 earnLimit];
+  template5 = [relevantsCopy template];
+  earnLimit = [template5 earnLimit];
   v15 = *MEMORY[0x277CE8C58];
 
-  LOBYTE(v12) = 0;
-  if (v15 == v14 && v13)
+  LOBYTE(template5) = 0;
+  if (v15 == earnLimit && v13)
   {
     goto LABEL_9;
   }
 
 LABEL_26:
 
-  return v12;
+  return template5;
 }
 
-- (void)_updateAchievementsByEarnedDateComponentsWithAchievement:(id)a3 earnedInstance:(id)a4
+- (void)_updateAchievementsByEarnedDateComponentsWithAchievement:(id)achievement earnedInstance:(id)instance
 {
-  v16 = a3;
-  v6 = a4;
-  v7 = [(AAUIAchievementsDataProvider *)self achievementsByEarnedDateComponents];
-  v8 = [v6 earnedDateComponents];
-  v9 = [v7 objectForKeyedSubscript:v8];
+  achievementCopy = achievement;
+  instanceCopy = instance;
+  achievementsByEarnedDateComponents = [(AAUIAchievementsDataProvider *)self achievementsByEarnedDateComponents];
+  earnedDateComponents = [instanceCopy earnedDateComponents];
+  v9 = [achievementsByEarnedDateComponents objectForKeyedSubscript:earnedDateComponents];
 
   if (!v9)
   {
     v9 = objc_alloc_init(MEMORY[0x277CBEB58]);
   }
 
-  v10 = [v9 allObjects];
-  v11 = [v16 template];
-  v12 = [v11 uniqueName];
-  v13 = AAUIAchievementInArrayWithUniqueName(v10, v12);
+  allObjects = [v9 allObjects];
+  template = [achievementCopy template];
+  uniqueName = [template uniqueName];
+  v13 = AAUIAchievementInArrayWithUniqueName(allObjects, uniqueName);
 
   if (v13)
   {
-    if (AAUICompareAchievementsByMostRecentEarnedDate(v13, v16) == 1)
+    if (AAUICompareAchievementsByMostRecentEarnedDate(v13, achievementCopy) == 1)
     {
       goto LABEL_7;
     }
@@ -1696,68 +1696,68 @@ LABEL_26:
     [v9 removeObject:v13];
   }
 
-  [v9 addObject:v16];
+  [v9 addObject:achievementCopy];
 LABEL_7:
-  v14 = [(AAUIAchievementsDataProvider *)self achievementsByEarnedDateComponents];
-  v15 = [v6 earnedDateComponents];
-  [v14 setObject:v9 forKeyedSubscript:v15];
+  achievementsByEarnedDateComponents2 = [(AAUIAchievementsDataProvider *)self achievementsByEarnedDateComponents];
+  earnedDateComponents2 = [instanceCopy earnedDateComponents];
+  [achievementsByEarnedDateComponents2 setObject:v9 forKeyedSubscript:earnedDateComponents2];
 }
 
-- (int64_t)_updateAchievement:(id)a3 activityMoveMode:(int64_t)a4 experienceType:(unint64_t)a5
+- (int64_t)_updateAchievement:(id)achievement activityMoveMode:(int64_t)mode experienceType:(unint64_t)type
 {
   v51 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = [(AAUIAchievementsDataProvider *)self achievementsByTemplateUniqueName];
-  v10 = [v8 template];
-  v11 = [v10 uniqueName];
-  [v9 setObject:v8 forKeyedSubscript:v11];
+  achievementCopy = achievement;
+  achievementsByTemplateUniqueName = [(AAUIAchievementsDataProvider *)self achievementsByTemplateUniqueName];
+  template = [achievementCopy template];
+  uniqueName = [template uniqueName];
+  [achievementsByTemplateUniqueName setObject:achievementCopy forKeyedSubscript:uniqueName];
 
-  if ([(AAUIAchievementsDataProvider *)self _shouldShowAchievement:v8 activityMoveMode:a4 experienceType:a5])
+  if ([(AAUIAchievementsDataProvider *)self _shouldShowAchievement:achievementCopy activityMoveMode:mode experienceType:type])
   {
-    v12 = [v8 relevantEarnedInstance];
-    if (v12)
+    relevantEarnedInstance = [achievementCopy relevantEarnedInstance];
+    if (relevantEarnedInstance)
     {
-      [(AAUIAchievementsDataProvider *)self _updateAchievementsByEarnedDateComponentsWithAchievement:v8 earnedInstance:v12];
+      [(AAUIAchievementsDataProvider *)self _updateAchievementsByEarnedDateComponentsWithAchievement:achievementCopy earnedInstance:relevantEarnedInstance];
     }
 
-    v13 = [(AAUIAchievementsDataProvider *)self filteredAchievementsByTemplateUniqueName];
-    v14 = [v8 template];
-    v15 = [v14 uniqueName];
-    [v13 setObject:v8 forKeyedSubscript:v15];
+    filteredAchievementsByTemplateUniqueName = [(AAUIAchievementsDataProvider *)self filteredAchievementsByTemplateUniqueName];
+    template2 = [achievementCopy template];
+    uniqueName2 = [template2 uniqueName];
+    [filteredAchievementsByTemplateUniqueName setObject:achievementCopy forKeyedSubscript:uniqueName2];
 
-    v16 = [v8 section];
-    if (!v16)
+    section = [achievementCopy section];
+    if (!section)
     {
       v17 = ACHLogDefault();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
-        v18 = [v8 template];
-        v19 = [v18 uniqueName];
+        template3 = [achievementCopy template];
+        uniqueName3 = [template3 uniqueName];
         *buf = 138412290;
-        v50 = v19;
+        v50 = uniqueName3;
         _os_log_impl(&dword_23E4A3000, v17, OS_LOG_TYPE_DEFAULT, "SECTION NOT FOUND FOR ACHIEVEMENT %@", buf, 0xCu);
       }
 
-      v16 = @"NOT_FOUND";
+      section = @"NOT_FOUND";
     }
 
-    v20 = [(AAUIAchievementsDataProvider *)self achievementsBySection];
-    v21 = [v20 objectForKeyedSubscript:v16];
+    achievementsBySection = [(AAUIAchievementsDataProvider *)self achievementsBySection];
+    v21 = [achievementsBySection objectForKeyedSubscript:section];
 
     if (!v21)
     {
       v21 = objc_alloc_init(MEMORY[0x277CBEB18]);
-      v22 = [(AAUIAchievementsDataProvider *)self achievementsBySection];
-      [v22 setObject:v21 forKeyedSubscript:v16];
+      achievementsBySection2 = [(AAUIAchievementsDataProvider *)self achievementsBySection];
+      [achievementsBySection2 setObject:v21 forKeyedSubscript:section];
     }
 
-    v23 = [v8 template];
-    v24 = [v23 uniqueName];
-    v25 = AAUIAchievementInArrayWithUniqueName(v21, v24);
+    template4 = [achievementCopy template];
+    uniqueName4 = [template4 uniqueName];
+    v25 = AAUIAchievementInArrayWithUniqueName(v21, uniqueName4);
 
     if (v25)
     {
-      if (AAUICompareAchievements(v25, v8) == 1)
+      if (AAUICompareAchievements(v25, achievementCopy) == 1)
       {
         v26 = 0;
         goto LABEL_17;
@@ -1772,22 +1772,22 @@ LABEL_7:
       v26 = 16;
     }
 
-    [v21 addObject:v8];
+    [v21 addObject:achievementCopy];
 LABEL_17:
 
     v48 = 0;
-    v27 = [(AAUIAchievementsDataProvider *)self _achievementBelongsInRecents:v8 replacingRecent:&v48];
+    v27 = [(AAUIAchievementsDataProvider *)self _achievementBelongsInRecents:achievementCopy replacingRecent:&v48];
     v28 = v48;
     if (v27)
     {
-      v29 = [(AAUIAchievementsDataProvider *)self recentAchievements];
-      v30 = v29;
+      recentAchievements = [(AAUIAchievementsDataProvider *)self recentAchievements];
+      recentAchievements2 = recentAchievements;
       if (v28)
       {
         v26 |= 2uLL;
-        [v29 removeObject:v28];
+        [recentAchievements removeObject:v28];
 
-        v30 = [(AAUIAchievementsDataProvider *)self recentAchievements];
+        recentAchievements2 = [(AAUIAchievementsDataProvider *)self recentAchievements];
       }
 
       else
@@ -1795,25 +1795,25 @@ LABEL_17:
         v26 |= 0x20uLL;
       }
 
-      [v30 addObject:v8];
+      [recentAchievements2 addObject:achievementCopy];
     }
 
-    v31 = [v8 shallowCopyWithRelevantEarnedInstance:0];
+    v31 = [achievementCopy shallowCopyWithRelevantEarnedInstance:0];
     v47 = 0;
-    v32 = [(AAUIAchievementsDataProvider *)self _achievementBelongsInRelevants:v8 replacingRelevant:&v47];
+    v32 = [(AAUIAchievementsDataProvider *)self _achievementBelongsInRelevants:achievementCopy replacingRelevant:&v47];
     v33 = v47;
-    v46 = v12;
+    v46 = relevantEarnedInstance;
     if (v32)
     {
-      v34 = [(AAUIAchievementsDataProvider *)self relevantAchievements];
-      v35 = v34;
+      relevantAchievements = [(AAUIAchievementsDataProvider *)self relevantAchievements];
+      v35 = relevantAchievements;
       if (v33)
       {
         v26 |= 2uLL;
-        [v34 removeObject:v33];
+        [relevantAchievements removeObject:v33];
 
-        v34 = [(AAUIAchievementsDataProvider *)self relevantAchievements];
-        v35 = v34;
+        relevantAchievements = [(AAUIAchievementsDataProvider *)self relevantAchievements];
+        v35 = relevantAchievements;
       }
 
       else
@@ -1821,35 +1821,35 @@ LABEL_17:
         v26 |= 0x20uLL;
       }
 
-      [v34 addObject:v31];
+      [relevantAchievements addObject:v31];
     }
 
     else
     {
       v45 = v31;
-      v36 = v16;
-      v37 = [(AAUIAchievementsDataProvider *)self relevantAchievements];
-      v38 = [v8 template];
-      v39 = [v38 uniqueName];
-      v35 = AAUIAchievementInArrayWithUniqueName(v37, v39);
+      v36 = section;
+      relevantAchievements2 = [(AAUIAchievementsDataProvider *)self relevantAchievements];
+      template5 = [achievementCopy template];
+      uniqueName5 = [template5 uniqueName];
+      v35 = AAUIAchievementInArrayWithUniqueName(relevantAchievements2, uniqueName5);
 
       if (v35)
       {
-        v40 = [(AAUIAchievementsDataProvider *)self relevantAchievements];
-        [v40 removeObject:v35];
+        relevantAchievements3 = [(AAUIAchievementsDataProvider *)self relevantAchievements];
+        [relevantAchievements3 removeObject:v35];
 
         v26 |= 8uLL;
       }
 
-      v16 = v36;
+      section = v36;
       v31 = v45;
     }
 
-    v41 = [v8 template];
-    v42 = [v41 sourceName];
-    if ([v42 isEqualToString:*MEMORY[0x277CE8C90]])
+    template6 = [achievementCopy template];
+    sourceName = [template6 sourceName];
+    if ([sourceName isEqualToString:*MEMORY[0x277CE8C90]])
     {
-      v43 = [(AAUIAchievementsDataProvider *)self _monthlyChallengeBelongsInRelevants:v8];
+      v43 = [(AAUIAchievementsDataProvider *)self _monthlyChallengeBelongsInRelevants:achievementCopy];
 
       if (!v43)
       {
@@ -1858,68 +1858,68 @@ LABEL_34:
         goto LABEL_35;
       }
 
-      v41 = [MEMORY[0x277CBEB18] arrayWithObject:v8];
-      v42 = [(AAUIAchievementsDataProvider *)self achievementsBySection];
-      [v42 setObject:v41 forKeyedSubscript:@"CURRENT_MONTHLY_CHALLENGE"];
+      template6 = [MEMORY[0x277CBEB18] arrayWithObject:achievementCopy];
+      sourceName = [(AAUIAchievementsDataProvider *)self achievementsBySection];
+      [sourceName setObject:template6 forKeyedSubscript:@"CURRENT_MONTHLY_CHALLENGE"];
     }
 
     goto LABEL_34;
   }
 
-  v26 = [(AAUIAchievementsDataProvider *)self _deleteAchievement:v8 fromUnfiltered:0];
+  v26 = [(AAUIAchievementsDataProvider *)self _deleteAchievement:achievementCopy fromUnfiltered:0];
 LABEL_35:
 
   return v26;
 }
 
-- (void)_deleteAchievementsByEarnedDateWithAchievement:(id)a3 earnedInstance:(id)a4
+- (void)_deleteAchievementsByEarnedDateWithAchievement:(id)achievement earnedInstance:(id)instance
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(AAUIAchievementsDataProvider *)self achievementsByEarnedDateComponents];
-  v8 = [v6 earnedDateComponents];
+  achievementCopy = achievement;
+  instanceCopy = instance;
+  achievementsByEarnedDateComponents = [(AAUIAchievementsDataProvider *)self achievementsByEarnedDateComponents];
+  earnedDateComponents = [instanceCopy earnedDateComponents];
 
-  v9 = [v7 objectForKeyedSubscript:v8];
+  v9 = [achievementsByEarnedDateComponents objectForKeyedSubscript:earnedDateComponents];
 
   if (v9)
   {
-    [v9 removeObject:v10];
+    [v9 removeObject:achievementCopy];
   }
 }
 
-- (int64_t)_deleteAchievement:(id)a3 fromUnfiltered:(BOOL)a4
+- (int64_t)_deleteAchievement:(id)achievement fromUnfiltered:(BOOL)unfiltered
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(AAUIAchievementsDataProvider *)self filteredAchievementsByTemplateUniqueName];
-  v8 = [v6 template];
-  v9 = [v8 uniqueName];
-  [v7 setObject:0 forKeyedSubscript:v9];
+  unfilteredCopy = unfiltered;
+  achievementCopy = achievement;
+  filteredAchievementsByTemplateUniqueName = [(AAUIAchievementsDataProvider *)self filteredAchievementsByTemplateUniqueName];
+  template = [achievementCopy template];
+  uniqueName = [template uniqueName];
+  [filteredAchievementsByTemplateUniqueName setObject:0 forKeyedSubscript:uniqueName];
 
-  if (v4)
+  if (unfilteredCopy)
   {
-    v10 = [(AAUIAchievementsDataProvider *)self achievementsByTemplateUniqueName];
-    v11 = [v6 template];
-    v12 = [v11 uniqueName];
-    [v10 setObject:0 forKeyedSubscript:v12];
+    achievementsByTemplateUniqueName = [(AAUIAchievementsDataProvider *)self achievementsByTemplateUniqueName];
+    template2 = [achievementCopy template];
+    uniqueName2 = [template2 uniqueName];
+    [achievementsByTemplateUniqueName setObject:0 forKeyedSubscript:uniqueName2];
   }
 
-  v13 = [v6 relevantEarnedInstance];
-  if (v13)
+  relevantEarnedInstance = [achievementCopy relevantEarnedInstance];
+  if (relevantEarnedInstance)
   {
-    [(AAUIAchievementsDataProvider *)self _deleteAchievementsByEarnedDateWithAchievement:v6 earnedInstance:v13];
+    [(AAUIAchievementsDataProvider *)self _deleteAchievementsByEarnedDateWithAchievement:achievementCopy earnedInstance:relevantEarnedInstance];
   }
 
-  v14 = [v6 section];
-  v15 = [(AAUIAchievementsDataProvider *)self achievementsBySection];
-  v33 = v14;
-  v16 = [v15 objectForKeyedSubscript:v14];
+  section = [achievementCopy section];
+  achievementsBySection = [(AAUIAchievementsDataProvider *)self achievementsBySection];
+  v33 = section;
+  v16 = [achievementsBySection objectForKeyedSubscript:section];
 
   if (v16)
   {
-    v17 = [v6 template];
-    v18 = [v17 uniqueName];
-    v19 = AAUIAchievementInArrayWithUniqueName(v16, v18);
+    template3 = [achievementCopy template];
+    uniqueName3 = [template3 uniqueName];
+    v19 = AAUIAchievementInArrayWithUniqueName(v16, uniqueName3);
 
     if (v19)
     {
@@ -1938,26 +1938,26 @@ LABEL_35:
     v20 = 0;
   }
 
-  v21 = [(AAUIAchievementsDataProvider *)self recentAchievements];
-  v22 = [v6 template];
-  v23 = [v22 uniqueName];
-  v24 = AAUIAchievementInArrayWithUniqueName(v21, v23);
+  recentAchievements = [(AAUIAchievementsDataProvider *)self recentAchievements];
+  template4 = [achievementCopy template];
+  uniqueName4 = [template4 uniqueName];
+  v24 = AAUIAchievementInArrayWithUniqueName(recentAchievements, uniqueName4);
 
   if (v24)
   {
-    v25 = [(AAUIAchievementsDataProvider *)self recentAchievements];
-    [v25 removeObject:v24];
+    recentAchievements2 = [(AAUIAchievementsDataProvider *)self recentAchievements];
+    [recentAchievements2 removeObject:v24];
   }
 
-  v26 = [(AAUIAchievementsDataProvider *)self relevantAchievements];
-  v27 = [v6 template];
-  v28 = [v27 uniqueName];
-  v29 = AAUIAchievementInArrayWithUniqueName(v26, v28);
+  relevantAchievements = [(AAUIAchievementsDataProvider *)self relevantAchievements];
+  template5 = [achievementCopy template];
+  uniqueName5 = [template5 uniqueName];
+  v29 = AAUIAchievementInArrayWithUniqueName(relevantAchievements, uniqueName5);
 
   if (v29)
   {
-    v30 = [(AAUIAchievementsDataProvider *)self relevantAchievements];
-    [v30 removeObject:v29];
+    relevantAchievements2 = [(AAUIAchievementsDataProvider *)self relevantAchievements];
+    [relevantAchievements2 removeObject:v29];
   }
 
   if (v24 | v29)
@@ -1973,11 +1973,11 @@ LABEL_35:
   return v31;
 }
 
-- (id)_recentAndRelevantSectionIndexPathForAchievement:(id)a3
+- (id)_recentAndRelevantSectionIndexPathForAchievement:(id)achievement
 {
-  v4 = a3;
-  v5 = [(AAUIAchievementsDataProvider *)self recentAchievements];
-  v6 = [v5 indexOfObject:v4];
+  achievementCopy = achievement;
+  recentAchievements = [(AAUIAchievementsDataProvider *)self recentAchievements];
+  v6 = [recentAchievements indexOfObject:achievementCopy];
 
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -1992,17 +1992,17 @@ LABEL_35:
   return v7;
 }
 
-- (id)_mainSectionIndexPathForAchievement:(id)a3
+- (id)_mainSectionIndexPathForAchievement:(id)achievement
 {
-  v4 = a3;
-  v5 = [v4 section];
-  v6 = [(AAUIAchievementsDataProvider *)self orderedSections];
-  v7 = [v6 indexOfObject:v5];
+  achievementCopy = achievement;
+  section = [achievementCopy section];
+  orderedSections = [(AAUIAchievementsDataProvider *)self orderedSections];
+  v7 = [orderedSections indexOfObject:section];
 
-  v8 = [(AAUIAchievementsDataProvider *)self achievementsBySection];
-  v9 = [v8 objectForKeyedSubscript:v5];
+  achievementsBySection = [(AAUIAchievementsDataProvider *)self achievementsBySection];
+  v9 = [achievementsBySection objectForKeyedSubscript:section];
 
-  v10 = [v9 indexOfObject:v4];
+  v10 = [v9 indexOfObject:achievementCopy];
   v11 = 0;
   if (v7 != 0x7FFFFFFFFFFFFFFFLL && v10 != 0x7FFFFFFFFFFFFFFFLL)
   {

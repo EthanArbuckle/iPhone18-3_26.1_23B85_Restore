@@ -1,22 +1,22 @@
 @interface GCAdaptiveTriggersXPCProxyClientEndpoint
 - (GCAdaptiveTriggersXPCProxyClientEndpoint)init;
-- (GCAdaptiveTriggersXPCProxyClientEndpoint)initWithIdentifier:(id)a3 initialStatuses:(id)a4;
-- (void)_remoteEndpointHasSetStatuses:(id)a3;
-- (void)fetchObjectIdentifierWithReply:(id)a3;
+- (GCAdaptiveTriggersXPCProxyClientEndpoint)initWithIdentifier:(id)identifier initialStatuses:(id)statuses;
+- (void)_remoteEndpointHasSetStatuses:(id)statuses;
+- (void)fetchObjectIdentifierWithReply:(id)reply;
 - (void)invalidateConnection;
-- (void)newStatuses:(id)a3;
+- (void)newStatuses:(id)statuses;
 - (void)refreshStatuses;
-- (void)setLeftTrigger:(id)a3;
-- (void)setRemoteEndpoint:(id)a3 connection:(id)a4;
-- (void)setRightTrigger:(id)a3;
+- (void)setLeftTrigger:(id)trigger;
+- (void)setRemoteEndpoint:(id)endpoint connection:(id)connection;
+- (void)setRightTrigger:(id)trigger;
 @end
 
 @implementation GCAdaptiveTriggersXPCProxyClientEndpoint
 
-- (GCAdaptiveTriggersXPCProxyClientEndpoint)initWithIdentifier:(id)a3 initialStatuses:(id)a4
+- (GCAdaptiveTriggersXPCProxyClientEndpoint)initWithIdentifier:(id)identifier initialStatuses:(id)statuses
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  statusesCopy = statuses;
   v20.receiver = self;
   v20.super_class = GCAdaptiveTriggersXPCProxyClientEndpoint;
   v8 = [(GCAdaptiveTriggersXPCProxyClientEndpoint *)&v20 init];
@@ -27,25 +27,25 @@
       [GCAdaptiveTriggersXPCProxyClientEndpoint initWithIdentifier:initialStatuses:];
     }
 
-    v9 = [v6 copyWithZone:0];
+    v9 = [identifierCopy copyWithZone:0];
     identifier = v8->_identifier;
     v8->_identifier = v9;
 
-    v11 = [[GCDeviceAdaptiveTriggersPayload alloc] initOff];
+    initOff = [[GCDeviceAdaptiveTriggersPayload alloc] initOff];
     leftTrigger = v8->_leftTrigger;
-    v8->_leftTrigger = v11;
+    v8->_leftTrigger = initOff;
 
-    v13 = [[GCDeviceAdaptiveTriggersPayload alloc] initOff];
+    initOff2 = [[GCDeviceAdaptiveTriggersPayload alloc] initOff];
     rightTrigger = v8->_rightTrigger;
-    v8->_rightTrigger = v13;
+    v8->_rightTrigger = initOff2;
 
-    if ([v7 count] >= 2)
+    if ([statusesCopy count] >= 2)
     {
-      v15 = [v7 objectAtIndexedSubscript:0];
+      v15 = [statusesCopy objectAtIndexedSubscript:0];
       leftStatus = v8->_leftStatus;
       v8->_leftStatus = v15;
 
-      v17 = [v7 objectAtIndexedSubscript:1];
+      v17 = [statusesCopy objectAtIndexedSubscript:1];
       rightStatus = v8->_rightStatus;
       v8->_rightStatus = v17;
     }
@@ -61,10 +61,10 @@
   return 0;
 }
 
-- (void)setRemoteEndpoint:(id)a3 connection:(id)a4
+- (void)setRemoteEndpoint:(id)endpoint connection:(id)connection
 {
-  v7 = a3;
-  v8 = a4;
+  endpointCopy = endpoint;
+  connectionCopy = connection;
   objc_initWeak(&location, self);
   v15 = MEMORY[0x1E69E9820];
   v16 = 3221225472;
@@ -72,15 +72,15 @@
   v18 = &unk_1E8418D18;
   objc_copyWeak(&v19, &location);
   v9 = _Block_copy(&v15);
-  v10 = [v8 addInterruptionHandler:{v9, v15, v16, v17, v18}];
+  v10 = [connectionCopy addInterruptionHandler:{v9, v15, v16, v17, v18}];
   connectionInterruptionRegistration = self->_connectionInterruptionRegistration;
   self->_connectionInterruptionRegistration = v10;
 
-  v12 = [v8 addInvalidationHandler:v9];
+  v12 = [connectionCopy addInvalidationHandler:v9];
   connectionInvalidationRegistration = self->_connectionInvalidationRegistration;
   self->_connectionInvalidationRegistration = v12;
 
-  objc_storeStrong(&self->_serverEndpoint, a3);
+  objc_storeStrong(&self->_serverEndpoint, endpoint);
   if (gc_isInternalBuild())
   {
     v14 = getGCLogger();
@@ -114,48 +114,48 @@ void __73__GCAdaptiveTriggersXPCProxyClientEndpoint_setRemoteEndpoint_connection
   }
 }
 
-- (void)setLeftTrigger:(id)a3
+- (void)setLeftTrigger:(id)trigger
 {
-  objc_storeStrong(&self->_leftTrigger, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_leftTrigger, trigger);
+  triggerCopy = trigger;
   [(GCAdaptiveTriggersXPCProxyRemoteServerEndpointInterface *)self->_serverEndpoint newAdaptiveTriggerPayload:self->_leftTrigger index:0];
 }
 
-- (void)setRightTrigger:(id)a3
+- (void)setRightTrigger:(id)trigger
 {
-  objc_storeStrong(&self->_rightTrigger, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_rightTrigger, trigger);
+  triggerCopy = trigger;
   [(GCAdaptiveTriggersXPCProxyRemoteServerEndpointInterface *)self->_serverEndpoint newAdaptiveTriggerPayload:self->_rightTrigger index:1];
 }
 
-- (void)_remoteEndpointHasSetStatuses:(id)a3
+- (void)_remoteEndpointHasSetStatuses:(id)statuses
 {
-  v4 = a3;
+  statusesCopy = statuses;
   if (gc_isInternalBuild())
   {
     [GCAdaptiveTriggersXPCProxyClientEndpoint _remoteEndpointHasSetStatuses:];
   }
 
-  if ([v4 count] >= 2)
+  if ([statusesCopy count] >= 2)
   {
-    v5 = [v4 objectAtIndexedSubscript:0];
+    v5 = [statusesCopy objectAtIndexedSubscript:0];
     [(GCAdaptiveTriggersXPCProxyClientEndpoint *)self setLeftStatus:v5];
 
-    v6 = [v4 objectAtIndexedSubscript:1];
+    v6 = [statusesCopy objectAtIndexedSubscript:1];
     [(GCAdaptiveTriggersXPCProxyClientEndpoint *)self setRightStatus:v6];
   }
 }
 
-- (void)newStatuses:(id)a3
+- (void)newStatuses:(id)statuses
 {
-  v4 = a3;
+  statusesCopy = statuses;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __56__GCAdaptiveTriggersXPCProxyClientEndpoint_newStatuses___block_invoke;
   v6[3] = &unk_1E8418C50;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = statusesCopy;
+  v5 = statusesCopy;
   _os_activity_initiate(&dword_1D2CD5000, "(Adaptive Trigger XPC Proxy Client Endpoint) New Statuses", OS_ACTIVITY_FLAG_DEFAULT, v6);
 }
 
@@ -221,11 +221,11 @@ void __64__GCAdaptiveTriggersXPCProxyClientEndpoint_invalidateConnection__block_
   *(v6 + 16) = 0;
 }
 
-- (void)fetchObjectIdentifierWithReply:(id)a3
+- (void)fetchObjectIdentifierWithReply:(id)reply
 {
-  v5 = a3;
-  v6 = [(GCAdaptiveTriggersXPCProxyClientEndpoint *)self identifier];
-  (*(a3 + 2))(v5, v6);
+  replyCopy = reply;
+  identifier = [(GCAdaptiveTriggersXPCProxyClientEndpoint *)self identifier];
+  (*(reply + 2))(replyCopy, identifier);
 }
 
 - (void)initWithIdentifier:initialStatuses:.cold.1()

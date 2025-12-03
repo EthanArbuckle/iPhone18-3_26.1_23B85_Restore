@@ -1,27 +1,27 @@
 @interface MADAutoAssetTimed
-- (MADAutoAssetTimed)initWithCoder:(id)a3;
-- (id)initForRequest:(id)a3 withTimeout:(int64_t)a4;
+- (MADAutoAssetTimed)initWithCoder:(id)coder;
+- (id)initForRequest:(id)request withTimeout:(int64_t)timeout;
 - (id)summary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MADAutoAssetTimed
 
-- (id)initForRequest:(id)a3 withTimeout:(int64_t)a4
+- (id)initForRequest:(id)request withTimeout:(int64_t)timeout
 {
-  v7 = a3;
+  requestCopy = request;
   v15.receiver = self;
   v15.super_class = MADAutoAssetTimed;
   v8 = [(MADAutoAssetTimed *)&v15 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_requestBeingTimed, a3);
-    v9->_timeoutSecs = a4;
+    objc_storeStrong(&v8->_requestBeingTimed, request);
+    v9->_timeoutSecs = timeout;
     v10 = +[NSUUID UUID];
-    v11 = [v10 UUIDString];
+    uUIDString = [v10 UUIDString];
     timerUUID = v9->_timerUUID;
-    v9->_timerUUID = v11;
+    v9->_timerUUID = uUIDString;
 
     timerInstance = v9->_timerInstance;
     v9->_timerInstance = 0;
@@ -32,20 +32,20 @@
   return v9;
 }
 
-- (MADAutoAssetTimed)initWithCoder:(id)a3
+- (MADAutoAssetTimed)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = MADAutoAssetTimed;
   v5 = [(MADAutoAssetTimed *)&v11 init];
   if (v5)
   {
-    v5->_timeoutSecs = [v4 decodeIntegerForKey:@"timeoutSecs"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"timerUUID"];
+    v5->_timeoutSecs = [coderCopy decodeIntegerForKey:@"timeoutSecs"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"timerUUID"];
     timerUUID = v5->_timerUUID;
     v5->_timerUUID = v6;
 
-    v5->_timerInvalidated = [v4 decodeBoolForKey:@"timerInvalidated"];
+    v5->_timerInvalidated = [coderCopy decodeBoolForKey:@"timerInvalidated"];
     requestBeingTimed = v5->_requestBeingTimed;
     v5->_requestBeingTimed = 0;
 
@@ -56,20 +56,20 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  [v5 encodeInteger:-[MADAutoAssetTimed timeoutSecs](self forKey:{"timeoutSecs"), @"timeoutSecs"}];
-  v4 = [(MADAutoAssetTimed *)self timerUUID];
-  [v5 encodeObject:v4 forKey:@"timerUUID"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[MADAutoAssetTimed timeoutSecs](self forKey:{"timeoutSecs"), @"timeoutSecs"}];
+  timerUUID = [(MADAutoAssetTimed *)self timerUUID];
+  [coderCopy encodeObject:timerUUID forKey:@"timerUUID"];
 
-  [v5 encodeBool:-[MADAutoAssetTimed timerInvalidated](self forKey:{"timerInvalidated"), @"timerInvalidated"}];
+  [coderCopy encodeBool:-[MADAutoAssetTimed timerInvalidated](self forKey:{"timerInvalidated"), @"timerInvalidated"}];
 }
 
 - (id)summary
 {
-  v3 = [(MADAutoAssetTimed *)self requestBeingTimed];
-  if (v3)
+  requestBeingTimed = [(MADAutoAssetTimed *)self requestBeingTimed];
+  if (requestBeingTimed)
   {
     v4 = @"Y";
   }
@@ -79,10 +79,10 @@
     v4 = @"N";
   }
 
-  v5 = [(MADAutoAssetTimed *)self timeoutSecs];
-  v6 = [(MADAutoAssetTimed *)self timerUUID];
-  v7 = [(MADAutoAssetTimed *)self timerInstance];
-  if (v7)
+  timeoutSecs = [(MADAutoAssetTimed *)self timeoutSecs];
+  timerUUID = [(MADAutoAssetTimed *)self timerUUID];
+  timerInstance = [(MADAutoAssetTimed *)self timerInstance];
+  if (timerInstance)
   {
     v8 = @"Y";
   }
@@ -102,7 +102,7 @@
     v9 = @"N";
   }
 
-  v10 = [NSString stringWithFormat:@"|request:%@|timeout:%ld|timerUUID:%@|instance:%@|invalidated:%@|", v4, v5, v6, v8, v9];
+  v10 = [NSString stringWithFormat:@"|request:%@|timeout:%ld|timerUUID:%@|instance:%@|invalidated:%@|", v4, timeoutSecs, timerUUID, v8, v9];
 
   return v10;
 }

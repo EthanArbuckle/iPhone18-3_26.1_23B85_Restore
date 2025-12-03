@@ -16,8 +16,8 @@
     cornerRadius = v4 * 0.5;
   }
 
-  v5 = [(EKUIViewWithCornerRadius *)self layer];
-  [v5 setCornerRadius:cornerRadius];
+  layer = [(EKUIViewWithCornerRadius *)self layer];
+  [layer setCornerRadius:cornerRadius];
 }
 
 @end

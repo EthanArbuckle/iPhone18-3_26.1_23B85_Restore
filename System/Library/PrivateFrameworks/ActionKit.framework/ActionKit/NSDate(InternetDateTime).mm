@@ -12,12 +12,12 @@
   v3 = a3;
   if (v3)
   {
-    v4 = [MEMORY[0x277CBEAA8] internetDateTimeFormatter];
-    objc_sync_enter(v4);
+    internetDateTimeFormatter = [MEMORY[0x277CBEAA8] internetDateTimeFormatter];
+    objc_sync_enter(internetDateTimeFormatter);
     v5 = [MEMORY[0x277CCACA8] stringWithString:v3];
-    v6 = [v5 uppercaseString];
+    uppercaseString = [v5 uppercaseString];
 
-    v7 = [v6 stringByReplacingOccurrencesOfString:@"Z" withString:@"-0000"];
+    v7 = [uppercaseString stringByReplacingOccurrencesOfString:@"Z" withString:@"-0000"];
 
     if ([v7 length] >= 0x15)
     {
@@ -26,16 +26,16 @@
       v7 = v8;
     }
 
-    [v4 setDateFormat:@"yyyy'-'MM'-'dd'T'HH':'mm':'ssZZZ"];
-    v9 = [v4 dateFromString:v7];
+    [internetDateTimeFormatter setDateFormat:@"yyyy'-'MM'-'dd'T'HH':'mm':'ssZZZ"];
+    v9 = [internetDateTimeFormatter dateFromString:v7];
     if (!v9)
     {
-      [v4 setDateFormat:@"yyyy'-'MM'-'dd'T'HH':'mm':'ss.SSSZZZ"];
-      v9 = [v4 dateFromString:v7];
+      [internetDateTimeFormatter setDateFormat:@"yyyy'-'MM'-'dd'T'HH':'mm':'ss.SSSZZZ"];
+      v9 = [internetDateTimeFormatter dateFromString:v7];
       if (!v9)
       {
-        [v4 setDateFormat:@"yyyy'-'MM'-'dd'T'HH':'mm':'ss"];
-        v9 = [v4 dateFromString:v7];
+        [internetDateTimeFormatter setDateFormat:@"yyyy'-'MM'-'dd'T'HH':'mm':'ss"];
+        v9 = [internetDateTimeFormatter dateFromString:v7];
         if (!v9)
         {
           NSLog(&cfstr_CouldNotParseR_0.isa, v3);
@@ -44,7 +44,7 @@
       }
     }
 
-    objc_sync_exit(v4);
+    objc_sync_exit(internetDateTimeFormatter);
   }
 
   else
@@ -64,23 +64,23 @@
     goto LABEL_15;
   }
 
-  v4 = [MEMORY[0x277CBEAA8] internetDateTimeFormatter];
-  objc_sync_enter(v4);
+  internetDateTimeFormatter = [MEMORY[0x277CBEAA8] internetDateTimeFormatter];
+  objc_sync_enter(internetDateTimeFormatter);
   v5 = [MEMORY[0x277CCACA8] stringWithString:v3];
-  v6 = [v5 uppercaseString];
+  uppercaseString = [v5 uppercaseString];
 
-  if ([v6 rangeOfString:{@", "}] == 0x7FFFFFFFFFFFFFFFLL)
+  if ([uppercaseString rangeOfString:{@", "}] == 0x7FFFFFFFFFFFFFFFLL)
   {
-    [v4 setDateFormat:@"d MMM yyyy HH:mm:ss zzz"];
-    v7 = [v4 dateFromString:v6];
+    [internetDateTimeFormatter setDateFormat:@"d MMM yyyy HH:mm:ss zzz"];
+    v7 = [internetDateTimeFormatter dateFromString:uppercaseString];
     if (!v7)
     {
-      [v4 setDateFormat:@"d MMM yyyy HH:mm zzz"];
-      v7 = [v4 dateFromString:v6];
+      [internetDateTimeFormatter setDateFormat:@"d MMM yyyy HH:mm zzz"];
+      v7 = [internetDateTimeFormatter dateFromString:uppercaseString];
       if (!v7)
       {
-        [v4 setDateFormat:@"d MMM yyyy HH:mm:ss"];
-        v7 = [v4 dateFromString:v6];
+        [internetDateTimeFormatter setDateFormat:@"d MMM yyyy HH:mm:ss"];
+        v7 = [internetDateTimeFormatter dateFromString:uppercaseString];
         if (!v7)
         {
           v8 = @"d MMM yyyy HH:mm";
@@ -92,22 +92,22 @@
 
   else
   {
-    [v4 setDateFormat:@"EEE, d MMM yyyy HH:mm:ss zzz"];
-    v7 = [v4 dateFromString:v6];
+    [internetDateTimeFormatter setDateFormat:@"EEE, d MMM yyyy HH:mm:ss zzz"];
+    v7 = [internetDateTimeFormatter dateFromString:uppercaseString];
     if (!v7)
     {
-      [v4 setDateFormat:@"EEE, d MMM yyyy HH:mm zzz"];
-      v7 = [v4 dateFromString:v6];
+      [internetDateTimeFormatter setDateFormat:@"EEE, d MMM yyyy HH:mm zzz"];
+      v7 = [internetDateTimeFormatter dateFromString:uppercaseString];
       if (!v7)
       {
-        [v4 setDateFormat:@"EEE, d MMM yyyy HH:mm:ss"];
-        v7 = [v4 dateFromString:v6];
+        [internetDateTimeFormatter setDateFormat:@"EEE, d MMM yyyy HH:mm:ss"];
+        v7 = [internetDateTimeFormatter dateFromString:uppercaseString];
         if (!v7)
         {
           v8 = @"EEE, d MMM yyyy HH:mm";
 LABEL_12:
-          [v4 setDateFormat:v8];
-          v7 = [v4 dateFromString:v6];
+          [internetDateTimeFormatter setDateFormat:v8];
+          v7 = [internetDateTimeFormatter dateFromString:uppercaseString];
           if (!v7)
           {
             NSLog(&cfstr_CouldNotParseR.isa, v3);
@@ -118,7 +118,7 @@ LABEL_12:
     }
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(internetDateTimeFormatter);
 LABEL_15:
 
   return v7;
@@ -160,8 +160,8 @@ LABEL_15:
 
 + (id)internetDateTimeFormatter
 {
-  v1 = a1;
-  objc_sync_enter(v1);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   if (!_internetDateTimeFormatter)
   {
     v2 = [objc_alloc(MEMORY[0x277CBEAF8]) initWithLocaleIdentifier:@"en_US_POSIX"];
@@ -175,7 +175,7 @@ LABEL_15:
     [v5 setTimeZone:v6];
   }
 
-  objc_sync_exit(v1);
+  objc_sync_exit(selfCopy);
 
   v7 = _internetDateTimeFormatter;
 

@@ -1,8 +1,8 @@
 @interface SBSAPlatformMetricsContext
-+ (id)instanceWithBlock:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)instanceWithBlock:(id)block;
+- (BOOL)isEqual:(id)equal;
 - (SBSAPlatformMetricsContext)init;
-- (SBSAPlatformMetricsContext)initWithPlatformMetricsContext:(id)a3;
+- (SBSAPlatformMetricsContext)initWithPlatformMetricsContext:(id)context;
 - (double)customLayoutOvalCornerRadius;
 - (double)customLayoutSquareCornerRadius;
 - (double)customLayoutSquareLargeCornerRadius;
@@ -10,23 +10,23 @@
 - (double)displayCornerRadius;
 - (double)maximumCornerRadius;
 - (double)minimumEdgePadding;
-- (id)copyBySettingCustomLayoutOvalCornerRadius:(double)a3;
-- (id)copyBySettingCustomLayoutSquareCornerRadius:(double)a3;
-- (id)copyBySettingCustomLayoutSquareLargeCornerRadius:(double)a3;
-- (id)copyBySettingCustomLayoutTallRectCornerRadius:(double)a3;
-- (id)copyBySettingDisplayCornerRadius:(double)a3;
-- (id)copyBySettingMaximumCornerRadius:(double)a3;
-- (id)copyBySettingMinimumEdgePadding:(double)a3;
-- (id)copyWithBlock:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyBySettingCustomLayoutOvalCornerRadius:(double)radius;
+- (id)copyBySettingCustomLayoutSquareCornerRadius:(double)radius;
+- (id)copyBySettingCustomLayoutSquareLargeCornerRadius:(double)radius;
+- (id)copyBySettingCustomLayoutTallRectCornerRadius:(double)radius;
+- (id)copyBySettingDisplayCornerRadius:(double)radius;
+- (id)copyBySettingMaximumCornerRadius:(double)radius;
+- (id)copyBySettingMinimumEdgePadding:(double)padding;
+- (id)copyWithBlock:(id)block;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)_setCustomLayoutOvalCornerRadius:(double)a3;
-- (void)_setCustomLayoutSquareCornerRadius:(double)a3;
-- (void)_setCustomLayoutSquareLargeCornerRadius:(double)a3;
-- (void)_setCustomLayoutTallRectCornerRadius:(double)a3;
-- (void)_setDisplayCornerRadius:(double)a3;
-- (void)_setMaximumCornerRadius:(double)a3;
-- (void)_setMinimumEdgePadding:(double)a3;
+- (void)_setCustomLayoutOvalCornerRadius:(double)radius;
+- (void)_setCustomLayoutSquareCornerRadius:(double)radius;
+- (void)_setCustomLayoutSquareLargeCornerRadius:(double)radius;
+- (void)_setCustomLayoutTallRectCornerRadius:(double)radius;
+- (void)_setDisplayCornerRadius:(double)radius;
+- (void)_setMaximumCornerRadius:(double)radius;
+- (void)_setMinimumEdgePadding:(double)padding;
 @end
 
 @implementation SBSAPlatformMetricsContext
@@ -55,13 +55,13 @@
   return v4;
 }
 
-- (SBSAPlatformMetricsContext)initWithPlatformMetricsContext:(id)a3
+- (SBSAPlatformMetricsContext)initWithPlatformMetricsContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = [(SBSAPlatformMetricsContext *)self init];
   if (v5)
   {
-    v6 = [v4[1] mutableCopy];
+    v6 = [contextCopy[1] mutableCopy];
     backingDictionary = v5->_backingDictionary;
     v5->_backingDictionary = v6;
   }
@@ -69,27 +69,27 @@
   return v5;
 }
 
-- (void)_setMaximumCornerRadius:(double)a3
+- (void)_setMaximumCornerRadius:(double)radius
 {
   backingDictionary = self->_backingDictionary;
-  v4 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithDouble:radius];
   [(NSMutableDictionary *)backingDictionary setObject:v4 forKey:@"maximumCornerRadius"];
 }
 
-- (id)copyBySettingMaximumCornerRadius:(double)a3
+- (id)copyBySettingMaximumCornerRadius:(double)radius
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __63__SBSAPlatformMetricsContext_copyBySettingMaximumCornerRadius___block_invoke;
   v4[3] = &__block_descriptor_40_e8_v16__0_8l;
-  *&v4[4] = a3;
+  *&v4[4] = radius;
   return [(SBSAPlatformMetricsContext *)self copyWithBlock:v4];
 }
 
-- (void)_setCustomLayoutSquareCornerRadius:(double)a3
+- (void)_setCustomLayoutSquareCornerRadius:(double)radius
 {
   backingDictionary = self->_backingDictionary;
-  v4 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithDouble:radius];
   [(NSMutableDictionary *)backingDictionary setObject:v4 forKey:@"customLayoutSquareCornerRadius"];
 }
 
@@ -102,20 +102,20 @@
   return v4;
 }
 
-- (id)copyBySettingCustomLayoutSquareCornerRadius:(double)a3
+- (id)copyBySettingCustomLayoutSquareCornerRadius:(double)radius
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __74__SBSAPlatformMetricsContext_copyBySettingCustomLayoutSquareCornerRadius___block_invoke;
   v4[3] = &__block_descriptor_40_e8_v16__0_8l;
-  *&v4[4] = a3;
+  *&v4[4] = radius;
   return [(SBSAPlatformMetricsContext *)self copyWithBlock:v4];
 }
 
-- (void)_setCustomLayoutSquareLargeCornerRadius:(double)a3
+- (void)_setCustomLayoutSquareLargeCornerRadius:(double)radius
 {
   backingDictionary = self->_backingDictionary;
-  v4 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithDouble:radius];
   [(NSMutableDictionary *)backingDictionary setObject:v4 forKey:@"customLayoutSquareLargeCornerRadius"];
 }
 
@@ -128,20 +128,20 @@
   return v4;
 }
 
-- (id)copyBySettingCustomLayoutSquareLargeCornerRadius:(double)a3
+- (id)copyBySettingCustomLayoutSquareLargeCornerRadius:(double)radius
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __79__SBSAPlatformMetricsContext_copyBySettingCustomLayoutSquareLargeCornerRadius___block_invoke;
   v4[3] = &__block_descriptor_40_e8_v16__0_8l;
-  *&v4[4] = a3;
+  *&v4[4] = radius;
   return [(SBSAPlatformMetricsContext *)self copyWithBlock:v4];
 }
 
-- (void)_setCustomLayoutOvalCornerRadius:(double)a3
+- (void)_setCustomLayoutOvalCornerRadius:(double)radius
 {
   backingDictionary = self->_backingDictionary;
-  v4 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithDouble:radius];
   [(NSMutableDictionary *)backingDictionary setObject:v4 forKey:@"customLayoutOvalCornerRadius"];
 }
 
@@ -154,20 +154,20 @@
   return v4;
 }
 
-- (id)copyBySettingCustomLayoutOvalCornerRadius:(double)a3
+- (id)copyBySettingCustomLayoutOvalCornerRadius:(double)radius
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __72__SBSAPlatformMetricsContext_copyBySettingCustomLayoutOvalCornerRadius___block_invoke;
   v4[3] = &__block_descriptor_40_e8_v16__0_8l;
-  *&v4[4] = a3;
+  *&v4[4] = radius;
   return [(SBSAPlatformMetricsContext *)self copyWithBlock:v4];
 }
 
-- (void)_setCustomLayoutTallRectCornerRadius:(double)a3
+- (void)_setCustomLayoutTallRectCornerRadius:(double)radius
 {
   backingDictionary = self->_backingDictionary;
-  v4 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithDouble:radius];
   [(NSMutableDictionary *)backingDictionary setObject:v4 forKey:@"customLayoutTallRectCornerRadius"];
 }
 
@@ -180,20 +180,20 @@
   return v4;
 }
 
-- (id)copyBySettingCustomLayoutTallRectCornerRadius:(double)a3
+- (id)copyBySettingCustomLayoutTallRectCornerRadius:(double)radius
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __76__SBSAPlatformMetricsContext_copyBySettingCustomLayoutTallRectCornerRadius___block_invoke;
   v4[3] = &__block_descriptor_40_e8_v16__0_8l;
-  *&v4[4] = a3;
+  *&v4[4] = radius;
   return [(SBSAPlatformMetricsContext *)self copyWithBlock:v4];
 }
 
-- (void)_setMinimumEdgePadding:(double)a3
+- (void)_setMinimumEdgePadding:(double)padding
 {
   backingDictionary = self->_backingDictionary;
-  v4 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithDouble:padding];
   [(NSMutableDictionary *)backingDictionary setObject:v4 forKey:@"minimumEdgePadding"];
 }
 
@@ -206,20 +206,20 @@
   return v4;
 }
 
-- (id)copyBySettingMinimumEdgePadding:(double)a3
+- (id)copyBySettingMinimumEdgePadding:(double)padding
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __62__SBSAPlatformMetricsContext_copyBySettingMinimumEdgePadding___block_invoke;
   v4[3] = &__block_descriptor_40_e8_v16__0_8l;
-  *&v4[4] = a3;
+  *&v4[4] = padding;
   return [(SBSAPlatformMetricsContext *)self copyWithBlock:v4];
 }
 
-- (void)_setDisplayCornerRadius:(double)a3
+- (void)_setDisplayCornerRadius:(double)radius
 {
   backingDictionary = self->_backingDictionary;
-  v4 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithDouble:radius];
   [(NSMutableDictionary *)backingDictionary setObject:v4 forKey:@"displayCornerRadius"];
 }
 
@@ -232,27 +232,27 @@
   return v4;
 }
 
-- (id)copyBySettingDisplayCornerRadius:(double)a3
+- (id)copyBySettingDisplayCornerRadius:(double)radius
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __63__SBSAPlatformMetricsContext_copyBySettingDisplayCornerRadius___block_invoke;
   v4[3] = &__block_descriptor_40_e8_v16__0_8l;
-  *&v4[4] = a3;
+  *&v4[4] = radius;
   return [(SBSAPlatformMetricsContext *)self copyWithBlock:v4];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CF0C20] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
+  equalCopy = equal;
+  v5 = [MEMORY[0x277CF0C20] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
   backingDictionary = self->_backingDictionary;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __38__SBSAPlatformMetricsContext_isEqual___block_invoke;
   v11[3] = &unk_2783ACDB8;
-  v12 = v4;
-  v7 = v4;
+  v12 = equalCopy;
+  v7 = equalCopy;
   v8 = [v5 appendObject:backingDictionary counterpart:v11];
   v9 = [v8 isEqual];
 
@@ -261,37 +261,37 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x277CF0C40] builder];
-  v4 = [v3 appendObject:self->_backingDictionary];
+  builder = [MEMORY[0x277CF0C40] builder];
+  v4 = [builder appendObject:self->_backingDictionary];
   v5 = [v4 hash];
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
 
   return [v4 initWithPlatformMetricsContext:self];
 }
 
-+ (id)instanceWithBlock:(id)a3
++ (id)instanceWithBlock:(id)block
 {
-  v3 = a3;
+  blockCopy = block;
   v4 = objc_alloc_init(objc_opt_class());
-  v5 = [v4 copyWithBlock:v3];
+  v5 = [v4 copyWithBlock:blockCopy];
 
   return v5;
 }
 
-- (id)copyWithBlock:(id)a3
+- (id)copyWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = [(SBSAPlatformMetricsContext *)self copy];
-  if (v4)
+  if (blockCopy)
   {
     v6 = [objc_alloc(objc_msgSend(objc_opt_class() "mutatorClass"))];
-    v4[2](v4, v6);
+    blockCopy[2](blockCopy, v6);
   }
 
   return v5;

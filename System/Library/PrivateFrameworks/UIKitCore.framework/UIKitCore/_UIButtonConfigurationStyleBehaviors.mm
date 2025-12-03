@@ -1,20 +1,20 @@
 @interface _UIButtonConfigurationStyleBehaviors
-+ (id)behaviorForStyle:(int64_t)a3;
++ (id)behaviorForStyle:(int64_t)style;
 + (id)emptyBehaviors;
 + (id)fillBehaviors;
 + (id)grayBehaviors;
-+ (id)plainBehaviors:(int64_t)a3;
++ (id)plainBehaviors:(int64_t)behaviors;
 + (id)tintBehaviors;
-+ (int64_t)glassMonochromaticTreatmentFromBaseColor:(id)a3 traitCollection:(id)a4;
-- (_UIButtonConfigurationStyleBehaviors)initWithStyle:(int64_t)a3;
-- (id)behaviorForState:(unint64_t)a3;
-- (id)effectiveActivityIndicatorColorFromEffectiveColor:(id)a3 state:(unint64_t)a4;
-- (id)effectiveBackgroundColorFromBaseColor:(id)a3 state:(unint64_t)a4 traitCollection:(id)a5;
-- (id)effectiveBackgroundVisualEffectFromBaseColor:(id)a3 state:(unint64_t)a4 traitCollection:(id)a5;
++ (int64_t)glassMonochromaticTreatmentFromBaseColor:(id)color traitCollection:(id)collection;
+- (_UIButtonConfigurationStyleBehaviors)initWithStyle:(int64_t)style;
+- (id)behaviorForState:(unint64_t)state;
+- (id)effectiveActivityIndicatorColorFromEffectiveColor:(id)color state:(unint64_t)state;
+- (id)effectiveBackgroundColorFromBaseColor:(id)color state:(unint64_t)state traitCollection:(id)collection;
+- (id)effectiveBackgroundVisualEffectFromBaseColor:(id)color state:(unint64_t)state traitCollection:(id)collection;
 - (id)effectiveBehaviorWithoutButtonShapes;
-- (id)effectiveForegroundColorFromBaseColor:(id)a3 baseBackgroundColor:(id)a4 state:(unint64_t)a5 traitCollection:(id)a6;
-- (id)effectiveMaterialFromBaseColor:(id)a3 state:(unint64_t)a4 adaptive:(BOOL)a5 traitCollection:(id)a6;
-- (int64_t)effectiveMonochromaticTreatmentFromBaseColor:(id)a3 traitCollection:(id)a4;
+- (id)effectiveForegroundColorFromBaseColor:(id)color baseBackgroundColor:(id)backgroundColor state:(unint64_t)state traitCollection:(id)collection;
+- (id)effectiveMaterialFromBaseColor:(id)color state:(unint64_t)state adaptive:(BOOL)adaptive traitCollection:(id)collection;
+- (int64_t)effectiveMonochromaticTreatmentFromBaseColor:(id)color traitCollection:(id)collection;
 @end
 
 @implementation _UIButtonConfigurationStyleBehaviors
@@ -62,13 +62,13 @@
   return v2;
 }
 
-+ (int64_t)glassMonochromaticTreatmentFromBaseColor:(id)a3 traitCollection:(id)a4
++ (int64_t)glassMonochromaticTreatmentFromBaseColor:(id)color traitCollection:(id)collection
 {
   v6 = type metadata accessor for _GlassBackgroundStyle();
   MEMORY[0x1EEE9AC00](v6 - 8);
   v8 = &v14 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v9 = a4;
-  if (!a3)
+  collectionCopy = collection;
+  if (!color)
   {
     sub_188E1B6FC(v8);
     v10 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EA937E70);
@@ -82,10 +82,10 @@
     sub_188AD77B4(v8);
   }
 
-  v11 = a3;
-  v12 = [v9 _monochromaticTreatment];
+  colorCopy = color;
+  _monochromaticTreatment = [collectionCopy _monochromaticTreatment];
 
-  return v12;
+  return _monochromaticTreatment;
 }
 
 + (id)grayBehaviors
@@ -110,34 +110,34 @@
   return v2;
 }
 
-- (_UIButtonConfigurationStyleBehaviors)initWithStyle:(int64_t)a3
+- (_UIButtonConfigurationStyleBehaviors)initWithStyle:(int64_t)style
 {
   v5.receiver = self;
   v5.super_class = _UIButtonConfigurationStyleBehaviors;
   result = [(_UIButtonConfigurationStyleBehaviors *)&v5 init];
   if (result)
   {
-    result->_style = a3;
+    result->_style = style;
     *&result->_selectionStyle = xmmword_18A67BBC0;
   }
 
   return result;
 }
 
-- (id)effectiveForegroundColorFromBaseColor:(id)a3 baseBackgroundColor:(id)a4 state:(unint64_t)a5 traitCollection:(id)a6
+- (id)effectiveForegroundColorFromBaseColor:(id)color baseBackgroundColor:(id)backgroundColor state:(unint64_t)state traitCollection:(id)collection
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  colorCopy = color;
+  backgroundColorCopy = backgroundColor;
+  collectionCopy = collection;
   calculateForegroundColor = self->_calculateForegroundColor;
   if (calculateForegroundColor)
   {
-    v14 = calculateForegroundColor[2](calculateForegroundColor, v10, v11, a5, v12);
+    v14 = calculateForegroundColor[2](calculateForegroundColor, colorCopy, backgroundColorCopy, state, collectionCopy);
   }
 
-  else if (v10)
+  else if (colorCopy)
   {
-    v14 = v10;
+    v14 = colorCopy;
   }
 
   else
@@ -150,19 +150,19 @@
   return v15;
 }
 
-- (id)effectiveBackgroundColorFromBaseColor:(id)a3 state:(unint64_t)a4 traitCollection:(id)a5
+- (id)effectiveBackgroundColorFromBaseColor:(id)color state:(unint64_t)state traitCollection:(id)collection
 {
-  v8 = a3;
-  v9 = a5;
+  colorCopy = color;
+  collectionCopy = collection;
   calculateBackgroundColor = self->_calculateBackgroundColor;
   if (calculateBackgroundColor)
   {
-    v11 = calculateBackgroundColor[2](calculateBackgroundColor, v8, a4, v9);
+    v11 = calculateBackgroundColor[2](calculateBackgroundColor, colorCopy, state, collectionCopy);
   }
 
-  else if (v8)
+  else if (colorCopy)
   {
-    v11 = v8;
+    v11 = colorCopy;
   }
 
   else
@@ -175,31 +175,31 @@
   return v12;
 }
 
-- (id)effectiveBackgroundVisualEffectFromBaseColor:(id)a3 state:(unint64_t)a4 traitCollection:(id)a5
+- (id)effectiveBackgroundVisualEffectFromBaseColor:(id)color state:(unint64_t)state traitCollection:(id)collection
 {
   calculateBackgroundVisualEffect = self->_calculateBackgroundVisualEffect;
   if (calculateBackgroundVisualEffect)
   {
-    calculateBackgroundVisualEffect = (calculateBackgroundVisualEffect)[2](calculateBackgroundVisualEffect, a3, a4, a5);
+    calculateBackgroundVisualEffect = (calculateBackgroundVisualEffect)[2](calculateBackgroundVisualEffect, color, state, collection);
     v5 = vars8;
   }
 
   return calculateBackgroundVisualEffect;
 }
 
-- (id)effectiveActivityIndicatorColorFromEffectiveColor:(id)a3 state:(unint64_t)a4
+- (id)effectiveActivityIndicatorColorFromEffectiveColor:(id)color state:(unint64_t)state
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = v5;
-  if ((v4 & 2) != 0)
+  stateCopy = state;
+  colorCopy = color;
+  v6 = colorCopy;
+  if ((stateCopy & 2) != 0)
   {
     v7 = +[UIColor secondaryLabelColor];
   }
 
   else
   {
-    v7 = v5;
+    v7 = colorCopy;
   }
 
   v8 = v7;
@@ -207,38 +207,38 @@
   return v8;
 }
 
-- (id)effectiveMaterialFromBaseColor:(id)a3 state:(unint64_t)a4 adaptive:(BOOL)a5 traitCollection:(id)a6
+- (id)effectiveMaterialFromBaseColor:(id)color state:(unint64_t)state adaptive:(BOOL)adaptive traitCollection:(id)collection
 {
   calculateMaterial = self->_calculateMaterial;
   if (calculateMaterial)
   {
-    calculateMaterial = (calculateMaterial)[2](calculateMaterial, a3, a4, a5, a6);
+    calculateMaterial = (calculateMaterial)[2](calculateMaterial, color, state, adaptive, collection);
     v6 = vars8;
   }
 
   return calculateMaterial;
 }
 
-- (int64_t)effectiveMonochromaticTreatmentFromBaseColor:(id)a3 traitCollection:(id)a4
+- (int64_t)effectiveMonochromaticTreatmentFromBaseColor:(id)color traitCollection:(id)collection
 {
   calculateMonochromaticTreatment = self->_calculateMonochromaticTreatment;
   if (calculateMonochromaticTreatment)
   {
-    return calculateMonochromaticTreatment[2](calculateMonochromaticTreatment, a3, a4);
+    return calculateMonochromaticTreatment[2](calculateMonochromaticTreatment, color, collection);
   }
 
   else
   {
-    return [a4 _monochromaticTreatment];
+    return [collection _monochromaticTreatment];
   }
 }
 
-- (id)behaviorForState:(unint64_t)a3
+- (id)behaviorForState:(unint64_t)state
 {
-  v3 = a3;
-  v4 = self;
-  v5 = v4;
-  if ((v3 & 4) != 0 && v4->_selectionStyle != -1)
+  stateCopy = state;
+  selfCopy = self;
+  v5 = selfCopy;
+  if ((stateCopy & 4) != 0 && selfCopy->_selectionStyle != -1)
   {
     v6 = [_UIButtonConfigurationStyleBehaviors behaviorForStyle:?];
 
@@ -254,7 +254,7 @@
 
   if (v3 == self)
   {
-    v4 = effectiveBehaviorWithoutButtonShapes_plainWithoutButtonShape;
+    selfCopy = effectiveBehaviorWithoutButtonShapes_plainWithoutButtonShape;
     if (!effectiveBehaviorWithoutButtonShapes_plainWithoutButtonShape)
     {
       v5 = [[_UIButtonConfigurationStyleBehaviors alloc] initWithStyle:self->_style];
@@ -267,45 +267,45 @@
       [effectiveBehaviorWithoutButtonShapes_plainWithoutButtonShape setCornerStyle:self->_cornerStyle];
       [effectiveBehaviorWithoutButtonShapes_plainWithoutButtonShape setStyleDescription:@"plain.noShape"];
       [effectiveBehaviorWithoutButtonShapes_plainWithoutButtonShape setCalculateBackgroundColor:&__block_literal_global_9_2];
-      v4 = effectiveBehaviorWithoutButtonShapes_plainWithoutButtonShape;
+      selfCopy = effectiveBehaviorWithoutButtonShapes_plainWithoutButtonShape;
     }
   }
 
   else
   {
-    v4 = self;
+    selfCopy = self;
   }
 
-  return v4;
+  return selfCopy;
 }
 
-+ (id)behaviorForStyle:(int64_t)a3
++ (id)behaviorForStyle:(int64_t)style
 {
-  if (a3 == 1)
+  if (style == 1)
   {
-    v3 = [a1 grayBehaviors];
+    grayBehaviors = [self grayBehaviors];
   }
 
-  else if (a3 == 2)
+  else if (style == 2)
   {
-    v3 = [a1 tintBehaviors];
+    grayBehaviors = [self tintBehaviors];
   }
 
   else
   {
-    if (a3 == 3)
+    if (style == 3)
     {
-      [a1 fillBehaviors];
+      [self fillBehaviors];
     }
 
     else
     {
-      [a1 plainBehaviors:0];
+      [self plainBehaviors:0];
     }
-    v3 = ;
+    grayBehaviors = ;
   }
 
-  return v3;
+  return grayBehaviors;
 }
 
 + (id)emptyBehaviors
@@ -329,11 +329,11 @@
   return v2;
 }
 
-+ (id)plainBehaviors:(int64_t)a3
++ (id)plainBehaviors:(int64_t)behaviors
 {
-  if (a3)
+  if (behaviors)
   {
-    if (a3 != 1)
+    if (behaviors != 1)
     {
       v8 = 0;
       goto LABEL_9;
@@ -357,7 +357,7 @@
     [(_UIButtonConfigurationStyleBehaviors *)v6 setCalculateBackgroundVisualEffect:&__block_literal_global_33_5];
     [(_UIButtonConfigurationStyleBehaviors *)v6 setCalculateMonochromaticTreatment:&__block_literal_global_36_1];
     [(_UIButtonConfigurationStyleBehaviors *)v6 setSelectionStyle:2];
-    [(_UIButtonConfigurationStyleBehaviors *)v6 setCornerStyle:cornerStyleForDeviceIdiomAndConfigurationKind(a3)];
+    [(_UIButtonConfigurationStyleBehaviors *)v6 setCornerStyle:cornerStyleForDeviceIdiomAndConfigurationKind(behaviors)];
     v7 = *v4;
     *v4 = v6;
 

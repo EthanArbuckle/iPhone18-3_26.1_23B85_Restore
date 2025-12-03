@@ -1,27 +1,27 @@
 @interface _WKApplicationManifestShortcut
-- (_WKApplicationManifestShortcut)initWithCoder:(id)a3;
-- (_WKApplicationManifestShortcut)initWithCoreShortcut:(const void *)a3;
+- (_WKApplicationManifestShortcut)initWithCoder:(id)coder;
+- (_WKApplicationManifestShortcut)initWithCoreShortcut:(const void *)shortcut;
 - (id).cxx_construct;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _WKApplicationManifestShortcut
 
-- (_WKApplicationManifestShortcut)initWithCoder:(id)a3
+- (_WKApplicationManifestShortcut)initWithCoder:(id)coder
 {
   v17 = *MEMORY[0x1E69E9840];
   v4 = [(_WKApplicationManifestShortcut *)self init];
   if (v4)
   {
-    v5 = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"name", "copy"}];
+    v5 = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"name", "copy"}];
     m_ptr = v4->_name.m_ptr;
     v4->_name.m_ptr = v5;
     if (m_ptr)
     {
     }
 
-    v7 = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"url", "copy"}];
+    v7 = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"url", "copy"}];
     v8 = v4->_url.m_ptr;
     v4->_url.m_ptr = v7;
     if (v8)
@@ -33,7 +33,7 @@
     v15 = objc_opt_class();
     v16 = objc_opt_class();
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v14 count:3];
-    v11 = [objc_msgSend(a3 decodeObjectOfClasses:objc_msgSend(v9 forKey:{"setWithArray:", v10, v14, v15), @"icons", "copy"}];
+    v11 = [objc_msgSend(coder decodeObjectOfClasses:objc_msgSend(v9 forKey:{"setWithArray:", v10, v14, v15), @"icons", "copy"}];
     v12 = v4->_icons.m_ptr;
     v4->_icons.m_ptr = v11;
     if (v12)
@@ -44,16 +44,16 @@
   return v4;
 }
 
-- (_WKApplicationManifestShortcut)initWithCoreShortcut:(const void *)a3
+- (_WKApplicationManifestShortcut)initWithCoreShortcut:(const void *)shortcut
 {
   v23.receiver = self;
   v23.super_class = _WKApplicationManifestShortcut;
   v4 = [(_WKApplicationManifestShortcut *)&v23 init];
   v5 = v4;
-  if (a3 && v4)
+  if (shortcut && v4)
   {
-    v6 = *a3;
-    if (*a3)
+    v6 = *shortcut;
+    if (*shortcut)
     {
       atomic_fetch_add_explicit(v6, 2u, memory_order_relaxed);
       MEMORY[0x19EB00B70](&v22, v6);
@@ -83,7 +83,7 @@
       }
     }
 
-    WTF::URL::createCFURL(&v22, (a3 + 8));
+    WTF::URL::createCFURL(&v22, (shortcut + 8));
     v12 = v22;
     v22 = 0;
     v13 = v5->_url.m_ptr;
@@ -98,11 +98,11 @@
       }
     }
 
-    v15 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:*(a3 + 15)];
-    v16 = *(a3 + 15);
+    v15 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:*(shortcut + 15)];
+    v16 = *(shortcut + 15);
     if (v16)
     {
-      v17 = *(a3 + 6);
+      v17 = *(shortcut + 6);
       v18 = 72 * v16;
       do
       {
@@ -129,13 +129,13 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeObject:self->_name.m_ptr forKey:@"name"];
-  [a3 encodeObject:self->_url.m_ptr forKey:@"url"];
+  [coder encodeObject:self->_name.m_ptr forKey:@"name"];
+  [coder encodeObject:self->_url.m_ptr forKey:@"url"];
   m_ptr = self->_icons.m_ptr;
 
-  [a3 encodeObject:m_ptr forKey:@"icons"];
+  [coder encodeObject:m_ptr forKey:@"icons"];
 }
 
 - (void)dealloc

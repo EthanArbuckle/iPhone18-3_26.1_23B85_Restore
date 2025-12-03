@@ -1,19 +1,19 @@
 @interface UIInterfaceActionRepresentationView
 - (BOOL)_canLoadContentsIntoHierarchy;
-- (BOOL)_fittingContentViewHasItsOwnActiveMinimumSizeConstraintsWithSize:(CGSize)a3;
-- (BOOL)_handleVisualFeedbackForPress:(id)a3 pressed:(BOOL)a4;
+- (BOOL)_fittingContentViewHasItsOwnActiveMinimumSizeConstraintsWithSize:(CGSize)size;
+- (BOOL)_handleVisualFeedbackForPress:(id)press pressed:(BOOL)pressed;
 - (BOOL)_isVisibleWithinContainmentAncestor;
-- (BOOL)_shouldShowPressFeedbackForEventWithPresses:(id)a3;
-- (BOOL)_showsFocusForFocusedView:(id)a3;
+- (BOOL)_shouldShowPressFeedbackForEventWithPresses:(id)presses;
+- (BOOL)_showsFocusForFocusedView:(id)view;
 - (BOOL)canBecomeFocused;
 - (BOOL)isFocused;
-- (CGRect)_fittingContentSizingViewFrameInBounds:(CGRect)a3;
-- (CGSize)_fittingContentSizeWithFittingViewSize:(CGSize)a3;
+- (CGRect)_fittingContentSizingViewFrameInBounds:(CGRect)bounds;
+- (CGSize)_fittingContentSizeWithFittingViewSize:(CGSize)size;
 - (CGSize)intrinsicContentSize;
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority;
 - (NSString)description;
 - (UIEdgeInsets)_fittingContentSizingViewMargins;
-- (UIInterfaceActionRepresentationView)initWithAction:(id)a3;
+- (UIInterfaceActionRepresentationView)initWithAction:(id)action;
 - (UIInterfaceActionVisualStyle)visualStyle;
 - (id)__fittingContentSizingViewAllowingSelf;
 - (id)__fittingContentSizingViewIfNotSelf;
@@ -23,62 +23,62 @@
 - (void)_applyVisualStyle;
 - (void)_applyVisualStyleToLayoutMargins;
 - (void)_applyVisualStyleToMinimumSizeConstraints;
-- (void)_enforceActionRepresentationViewsCanRemoveContentFromHierarchyWhenNotVisible:(BOOL)a3;
+- (void)_enforceActionRepresentationViewsCanRemoveContentFromHierarchyWhenNotVisible:(BOOL)visible;
 - (void)_initializeHorizontalMarginsForAction;
 - (void)_loadContentsIntoHierarchyAndPrepareIfNecessary;
 - (void)_reloadBackgroundHighlightView;
 - (void)_removeLoadedContentsFromHierarchyIfNotVisible;
-- (void)_setContentsInsertedIntoViewHierarchy:(BOOL)a3;
-- (void)_setHorizontalMargins:(UIEdgeInsets)a3 preservesSuperviewLayoutMargins:(BOOL)a4;
-- (void)_showVisualFeedbackForPressed:(BOOL)a3;
+- (void)_setContentsInsertedIntoViewHierarchy:(BOOL)hierarchy;
+- (void)_setHorizontalMargins:(UIEdgeInsets)margins preservesSuperviewLayoutMargins:(BOOL)layoutMargins;
+- (void)_showVisualFeedbackForPressed:(BOOL)pressed;
 - (void)_updateFittingContentSizingViewToFitSize;
 - (void)_updateHighlightAndPressedFeedback;
 - (void)_updateLoadedContentsHierarchyByInsertingOrRemovingIfNecessary;
 - (void)dealloc;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
-- (void)interfaceAction:(id)a3 reloadDisplayedContentActionProperties:(id)a4;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
+- (void)interfaceAction:(id)action reloadDisplayedContentActionProperties:(id)properties;
 - (void)invalidateIntrinsicContentSize;
 - (void)invokeInterfaceAction;
 - (void)layoutMarginsDidChange;
 - (void)layoutSubviews;
-- (void)pressesBegan:(id)a3 withEvent:(id)a4;
-- (void)pressesCancelled:(id)a3 withEvent:(id)a4;
-- (void)pressesChanged:(id)a3 withEvent:(id)a4;
-- (void)pressesEnded:(id)a3 withEvent:(id)a4;
+- (void)pressesBegan:(id)began withEvent:(id)event;
+- (void)pressesCancelled:(id)cancelled withEvent:(id)event;
+- (void)pressesChanged:(id)changed withEvent:(id)event;
+- (void)pressesEnded:(id)ended withEvent:(id)event;
 - (void)setCanRemoveContentFromHierarchyWhenNotVisible:(BOOL)enforcedCanRemoveContentFromHierarchyWhenNotVisibleValue;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setInteractionForSpringLoading:(id)a3;
-- (void)setPressed:(BOOL)a3;
-- (void)setSpringLoaded:(BOOL)a3;
-- (void)setVisualCornerPosition:(unint64_t)a3;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setInteractionForSpringLoading:(id)loading;
+- (void)setPressed:(BOOL)pressed;
+- (void)setSpringLoaded:(BOOL)loaded;
+- (void)setVisualCornerPosition:(unint64_t)position;
 - (void)updateConstraints;
 @end
 
 @implementation UIInterfaceActionRepresentationView
 
-- (UIInterfaceActionRepresentationView)initWithAction:(id)a3
+- (UIInterfaceActionRepresentationView)initWithAction:(id)action
 {
-  v5 = a3;
+  actionCopy = action;
   v17.receiver = self;
   v17.super_class = UIInterfaceActionRepresentationView;
   v6 = [(UIView *)&v17 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_action, a3);
+    objc_storeStrong(&v6->_action, action);
     v7->_ownsActionContent = 1;
     sectionID = v7->_sectionID;
     v7->_sectionID = &stru_1EFB14550;
 
     [(UIInterfaceAction *)v7->_action _addActionDisplayPropertyObserver:v7];
     v7->_canRemoveContentFromHierarchyWhenNotVisible = 0;
-    v9 = [(UIView *)v7 widthAnchor];
-    v10 = [v9 constraintGreaterThanOrEqualToConstant:0.0];
+    widthAnchor = [(UIView *)v7 widthAnchor];
+    v10 = [widthAnchor constraintGreaterThanOrEqualToConstant:0.0];
     minimumWidthConstraint = v7->_minimumWidthConstraint;
     v7->_minimumWidthConstraint = v10;
 
-    v12 = [(UIView *)v7 heightAnchor];
-    v13 = [v12 constraintGreaterThanOrEqualToConstant:0.0];
+    heightAnchor = [(UIView *)v7 heightAnchor];
+    v13 = [heightAnchor constraintGreaterThanOrEqualToConstant:0.0];
     minimumHeightConstraint = v7->_minimumHeightConstraint;
     v7->_minimumHeightConstraint = v13;
 
@@ -97,8 +97,8 @@
   v8.receiver = self;
   v8.super_class = UIInterfaceActionRepresentationView;
   v4 = [(UIView *)&v8 description];
-  v5 = [(UIInterfaceActionRepresentationView *)self action];
-  v6 = [v3 stringWithFormat:@"%@ action = %@", v4, v5];
+  action = [(UIInterfaceActionRepresentationView *)self action];
+  v6 = [v3 stringWithFormat:@"%@ action = %@", v4, action];
 
   return v6;
 }
@@ -111,52 +111,52 @@
   [(UIView *)&v3 dealloc];
 }
 
-- (void)_setContentsInsertedIntoViewHierarchy:(BOOL)a3
+- (void)_setContentsInsertedIntoViewHierarchy:(BOOL)hierarchy
 {
-  if (self->_contentsInsertedIntoViewHierarchy != a3)
+  if (self->_contentsInsertedIntoViewHierarchy != hierarchy)
   {
-    self->_contentsInsertedIntoViewHierarchy = a3;
+    self->_contentsInsertedIntoViewHierarchy = hierarchy;
     [(UIInterfaceActionRepresentationView *)self updateContentsInsertedIntoHierarchy];
   }
 }
 
 - (void)invokeInterfaceAction
 {
-  v2 = [(UIInterfaceActionRepresentationView *)self action];
-  [v2 _invokeHandlerWithCompletionBlock:&__block_literal_global_12];
+  action = [(UIInterfaceActionRepresentationView *)self action];
+  [action _invokeHandlerWithCompletionBlock:&__block_literal_global_12];
 }
 
 - (UIInterfaceActionVisualStyle)visualStyle
 {
-  v2 = [(UIInterfaceActionRepresentationView *)self action];
-  v3 = [v2 _visualStyle];
+  action = [(UIInterfaceActionRepresentationView *)self action];
+  _visualStyle = [action _visualStyle];
 
-  return v3;
+  return _visualStyle;
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  if (self->_highlighted != a3)
+  if (self->_highlighted != highlighted)
   {
-    self->_highlighted = a3;
+    self->_highlighted = highlighted;
     [(UIInterfaceActionRepresentationView *)self _updateHighlightAndPressedFeedback];
   }
 }
 
-- (void)setPressed:(BOOL)a3
+- (void)setPressed:(BOOL)pressed
 {
-  if (self->_pressed != a3)
+  if (self->_pressed != pressed)
   {
-    self->_pressed = a3;
+    self->_pressed = pressed;
     [(UIInterfaceActionRepresentationView *)self _updateHighlightAndPressedFeedback];
   }
 }
 
-- (void)setVisualCornerPosition:(unint64_t)a3
+- (void)setVisualCornerPosition:(unint64_t)position
 {
-  if (self->_visualCornerPosition != a3)
+  if (self->_visualCornerPosition != position)
   {
-    self->_visualCornerPosition = a3;
+    self->_visualCornerPosition = position;
     [(UIInterfaceActionRepresentationView *)self _applyVisualStyle];
   }
 }
@@ -178,26 +178,26 @@
   }
 }
 
-- (void)_enforceActionRepresentationViewsCanRemoveContentFromHierarchyWhenNotVisible:(BOOL)a3
+- (void)_enforceActionRepresentationViewsCanRemoveContentFromHierarchyWhenNotVisible:(BOOL)visible
 {
-  self->_enforcedCanRemoveContentFromHierarchyWhenNotVisibleValue = a3;
+  self->_enforcedCanRemoveContentFromHierarchyWhenNotVisibleValue = visible;
   self->_enforcedCanRemoveContentFromHierarchyWhenNotVisible = 1;
   [(UIInterfaceActionRepresentationView *)self setCanRemoveContentFromHierarchyWhenNotVisible:1];
 
   [(UIInterfaceActionRepresentationView *)self _updateLoadedContentsHierarchyByInsertingOrRemovingIfNecessary];
 }
 
-- (void)interfaceAction:(id)a3 reloadDisplayedContentActionProperties:(id)a4
+- (void)interfaceAction:(id)action reloadDisplayedContentActionProperties:(id)properties
 {
-  v5 = a4;
-  v9 = [(UIInterfaceActionRepresentationView *)self visualStyle];
-  v6 = [v9 actionPropertiesAffectingActionRepresentationViewStyling];
-  v7 = [UIInterfaceAction changedProperties:v5 containsAny:v6];
+  propertiesCopy = properties;
+  visualStyle = [(UIInterfaceActionRepresentationView *)self visualStyle];
+  actionPropertiesAffectingActionRepresentationViewStyling = [visualStyle actionPropertiesAffectingActionRepresentationViewStyling];
+  v7 = [UIInterfaceAction changedProperties:propertiesCopy containsAny:actionPropertiesAffectingActionRepresentationViewStyling];
 
   if (v7)
   {
-    v8 = [(UIInterfaceActionRepresentationView *)self _actionViewState];
-    [v9 configureAttributesForActionRepresentationView:self actionViewState:v8];
+    _actionViewState = [(UIInterfaceActionRepresentationView *)self _actionViewState];
+    [visualStyle configureAttributesForActionRepresentationView:self actionViewState:_actionViewState];
   }
 }
 
@@ -257,8 +257,8 @@ uint64_t __53__UIInterfaceActionRepresentationView_layoutSubviews__block_invoke(
   v4.receiver = self;
   v4.super_class = UIInterfaceActionRepresentationView;
   [(UIView *)&v4 invalidateIntrinsicContentSize];
-  v3 = [(UIInterfaceActionRepresentationView *)self __fittingContentSizingViewIfNotSelf];
-  [v3 invalidateIntrinsicContentSize];
+  __fittingContentSizingViewIfNotSelf = [(UIInterfaceActionRepresentationView *)self __fittingContentSizingViewIfNotSelf];
+  [__fittingContentSizingViewIfNotSelf invalidateIntrinsicContentSize];
 }
 
 - (void)layoutMarginsDidChange
@@ -272,9 +272,9 @@ uint64_t __53__UIInterfaceActionRepresentationView_layoutSubviews__block_invoke(
 - (CGSize)intrinsicContentSize
 {
   [(UIInterfaceActionRepresentationView *)self _loadContentsIntoHierarchyAndPrepareIfNecessary];
-  v3 = [(UIInterfaceActionRepresentationView *)self __fittingContentSizingViewAllowingSelf];
-  v4 = v3;
-  if (v3 == self)
+  __fittingContentSizingViewAllowingSelf = [(UIInterfaceActionRepresentationView *)self __fittingContentSizingViewAllowingSelf];
+  v4 = __fittingContentSizingViewAllowingSelf;
+  if (__fittingContentSizingViewAllowingSelf == self)
   {
     v11.receiver = self;
     v11.super_class = UIInterfaceActionRepresentationView;
@@ -283,7 +283,7 @@ uint64_t __53__UIInterfaceActionRepresentationView_layoutSubviews__block_invoke(
 
   else
   {
-    [(UIView *)v3 systemLayoutSizeFittingSize:*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)];
+    [(UIView *)__fittingContentSizingViewAllowingSelf systemLayoutSizeFittingSize:*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)];
   }
 
   [(UIInterfaceActionRepresentationView *)self _fittingContentSizeWithFittingViewSize:?];
@@ -297,27 +297,27 @@ uint64_t __53__UIInterfaceActionRepresentationView_layoutSubviews__block_invoke(
   return result;
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(UIInterfaceActionRepresentationView *)self _loadContentsIntoHierarchyAndPrepareIfNecessary];
-  v10 = [(UIInterfaceActionRepresentationView *)self __fittingContentSizingViewAllowingSelf];
-  v13 = v10;
-  if (v10 == self)
+  __fittingContentSizingViewAllowingSelf = [(UIInterfaceActionRepresentationView *)self __fittingContentSizingViewAllowingSelf];
+  v13 = __fittingContentSizingViewAllowingSelf;
+  if (__fittingContentSizingViewAllowingSelf == self)
   {
     v20.receiver = self;
     v20.super_class = UIInterfaceActionRepresentationView;
-    *&v11 = a4;
-    *&v12 = a5;
+    *&v11 = priority;
+    *&v12 = fittingPriority;
     [(UIView *)&v20 systemLayoutSizeFittingSize:width withHorizontalFittingPriority:height verticalFittingPriority:v11, v12];
   }
 
   else
   {
-    *&v11 = a4;
-    *&v12 = a5;
-    [(UIInterfaceActionRepresentationView *)v10 systemLayoutSizeFittingSize:width withHorizontalFittingPriority:height verticalFittingPriority:v11, v12];
+    *&v11 = priority;
+    *&v12 = fittingPriority;
+    [(UIInterfaceActionRepresentationView *)__fittingContentSizingViewAllowingSelf systemLayoutSizeFittingSize:width withHorizontalFittingPriority:height verticalFittingPriority:v11, v12];
   }
 
   [(UIInterfaceActionRepresentationView *)self _fittingContentSizeWithFittingViewSize:?];
@@ -333,29 +333,29 @@ uint64_t __53__UIInterfaceActionRepresentationView_layoutSubviews__block_invoke(
 
 - (void)_updateFittingContentSizingViewToFitSize
 {
-  v3 = [(UIInterfaceActionRepresentationView *)self __fittingContentSizingViewIfNotSelf];
-  if (v3)
+  __fittingContentSizingViewIfNotSelf = [(UIInterfaceActionRepresentationView *)self __fittingContentSizingViewIfNotSelf];
+  if (__fittingContentSizingViewIfNotSelf)
   {
-    v4 = v3;
+    v4 = __fittingContentSizingViewIfNotSelf;
     [(UIView *)self bounds];
     [(UIInterfaceActionRepresentationView *)self _fittingContentSizingViewFrameInBounds:?];
     [v4 setFrame:?];
-    v3 = v4;
+    __fittingContentSizingViewIfNotSelf = v4;
   }
 }
 
 - (id)__fittingContentSizingViewIfNotSelf
 {
-  v3 = [(UIInterfaceActionRepresentationView *)self _fittingContentSizingView];
-  v4 = v3;
-  if (v3 == self)
+  _fittingContentSizingView = [(UIInterfaceActionRepresentationView *)self _fittingContentSizingView];
+  v4 = _fittingContentSizingView;
+  if (_fittingContentSizingView == self)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = v3;
+    v5 = _fittingContentSizingView;
   }
 
   v6 = v5;
@@ -365,17 +365,17 @@ uint64_t __53__UIInterfaceActionRepresentationView_layoutSubviews__block_invoke(
 
 - (id)__fittingContentSizingViewAllowingSelf
 {
-  v2 = self;
-  v3 = [(UIInterfaceActionRepresentationView *)self _fittingContentSizingView];
-  v4 = v3;
-  if (v3)
+  selfCopy = self;
+  _fittingContentSizingView = [(UIInterfaceActionRepresentationView *)self _fittingContentSizingView];
+  v4 = _fittingContentSizingView;
+  if (_fittingContentSizingView)
   {
-    v2 = v3;
+    selfCopy = _fittingContentSizingView;
   }
 
-  v5 = v2;
+  v5 = selfCopy;
 
-  return v2;
+  return selfCopy;
 }
 
 - (UIEdgeInsets)_fittingContentSizingViewMargins
@@ -390,10 +390,10 @@ uint64_t __53__UIInterfaceActionRepresentationView_layoutSubviews__block_invoke(
   return result;
 }
 
-- (CGSize)_fittingContentSizeWithFittingViewSize:(CGSize)a3
+- (CGSize)_fittingContentSizeWithFittingViewSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(UIInterfaceActionRepresentationView *)self _fittingContentSizingViewMargins];
   v7 = v6 + width + v5;
   v10 = v9 + height + v8;
@@ -403,12 +403,12 @@ uint64_t __53__UIInterfaceActionRepresentationView_layoutSubviews__block_invoke(
   return result;
 }
 
-- (CGRect)_fittingContentSizingViewFrameInBounds:(CGRect)a3
+- (CGRect)_fittingContentSizingViewFrameInBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(UIInterfaceActionRepresentationView *)self _fittingContentSizingViewMargins];
   v8 = y + v7;
   v11 = width - (v9 + v10);
@@ -423,11 +423,11 @@ uint64_t __53__UIInterfaceActionRepresentationView_layoutSubviews__block_invoke(
   return result;
 }
 
-- (void)setSpringLoaded:(BOOL)a3
+- (void)setSpringLoaded:(BOOL)loaded
 {
-  if ([(UIInterfaceActionRepresentationView *)self isSpringLoaded]!= a3)
+  if ([(UIInterfaceActionRepresentationView *)self isSpringLoaded]!= loaded)
   {
-    if (a3)
+    if (loaded)
     {
       v5 = objc_opt_new();
       v6 = objc_opt_new();
@@ -444,19 +444,19 @@ uint64_t __53__UIInterfaceActionRepresentationView_layoutSubviews__block_invoke(
   }
 }
 
-- (void)setInteractionForSpringLoading:(id)a3
+- (void)setInteractionForSpringLoading:(id)loading
 {
-  v5 = a3;
+  loadingCopy = loading;
   interactionForSpringLoading = self->_interactionForSpringLoading;
-  v7 = v5;
-  if (interactionForSpringLoading != v5)
+  v7 = loadingCopy;
+  if (interactionForSpringLoading != loadingCopy)
   {
     if (interactionForSpringLoading)
     {
       [(UIView *)self removeInteraction:?];
     }
 
-    objc_storeStrong(&self->_interactionForSpringLoading, a3);
+    objc_storeStrong(&self->_interactionForSpringLoading, loading);
     if (self->_interactionForSpringLoading)
     {
       [(UIView *)self addInteraction:?];
@@ -464,45 +464,45 @@ uint64_t __53__UIInterfaceActionRepresentationView_layoutSubviews__block_invoke(
   }
 }
 
-- (BOOL)_showsFocusForFocusedView:(id)a3
+- (BOOL)_showsFocusForFocusedView:(id)view
 {
-  if (self == a3)
+  if (self == view)
   {
     return 1;
   }
 
-  v4 = a3;
-  v5 = [(UIView *)self subviews];
-  v6 = [v5 containsObject:v4];
+  viewCopy = view;
+  subviews = [(UIView *)self subviews];
+  v6 = [subviews containsObject:viewCopy];
 
   return v6;
 }
 
 - (BOOL)canBecomeFocused
 {
-  v2 = [(UIInterfaceActionRepresentationView *)self action];
-  v3 = [v2 isEnabled];
+  action = [(UIInterfaceActionRepresentationView *)self action];
+  isEnabled = [action isEnabled];
 
-  return v3;
+  return isEnabled;
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
   v11.receiver = self;
   v11.super_class = UIInterfaceActionRepresentationView;
-  v6 = a3;
-  [(UIView *)&v11 didUpdateFocusInContext:v6 withAnimationCoordinator:a4];
-  v7 = [v6 nextFocusedView];
-  v8 = [(UIInterfaceActionRepresentationView *)self _showsFocusForFocusedView:v7];
+  contextCopy = context;
+  [(UIView *)&v11 didUpdateFocusInContext:contextCopy withAnimationCoordinator:coordinator];
+  nextFocusedView = [contextCopy nextFocusedView];
+  v8 = [(UIInterfaceActionRepresentationView *)self _showsFocusForFocusedView:nextFocusedView];
 
-  v9 = [v6 previouslyFocusedView];
+  previouslyFocusedView = [contextCopy previouslyFocusedView];
 
-  LODWORD(v6) = [(UIInterfaceActionRepresentationView *)self _showsFocusForFocusedView:v9];
-  if (v8 != v6)
+  LODWORD(contextCopy) = [(UIInterfaceActionRepresentationView *)self _showsFocusForFocusedView:previouslyFocusedView];
+  if (v8 != contextCopy)
   {
     [(UIInterfaceActionRepresentationView *)self setHighlighted:v8];
-    v10 = [(UIInterfaceActionRepresentationView *)self action];
-    [v10 _setIsFocused:v8];
+    action = [(UIInterfaceActionRepresentationView *)self action];
+    [action _setIsFocused:v8];
 
     if (!v8)
     {
@@ -511,79 +511,79 @@ uint64_t __53__UIInterfaceActionRepresentationView_layoutSubviews__block_invoke(
   }
 }
 
-- (void)pressesBegan:(id)a3 withEvent:(id)a4
+- (void)pressesBegan:(id)began withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  if (![(UIInterfaceActionRepresentationView *)self _handleVisualFeedbackForPress:v6 pressed:1])
+  beganCopy = began;
+  eventCopy = event;
+  if (![(UIInterfaceActionRepresentationView *)self _handleVisualFeedbackForPress:beganCopy pressed:1])
   {
     v8.receiver = self;
     v8.super_class = UIInterfaceActionRepresentationView;
-    [(UIResponder *)&v8 pressesBegan:v6 withEvent:v7];
+    [(UIResponder *)&v8 pressesBegan:beganCopy withEvent:eventCopy];
   }
 }
 
-- (void)pressesChanged:(id)a3 withEvent:(id)a4
+- (void)pressesChanged:(id)changed withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  if (![(UIInterfaceActionRepresentationView *)self _handleVisualFeedbackForPress:v6 pressed:1])
+  changedCopy = changed;
+  eventCopy = event;
+  if (![(UIInterfaceActionRepresentationView *)self _handleVisualFeedbackForPress:changedCopy pressed:1])
   {
     v8.receiver = self;
     v8.super_class = UIInterfaceActionRepresentationView;
-    [(UIResponder *)&v8 pressesChanged:v6 withEvent:v7];
+    [(UIResponder *)&v8 pressesChanged:changedCopy withEvent:eventCopy];
   }
 }
 
-- (void)pressesEnded:(id)a3 withEvent:(id)a4
+- (void)pressesEnded:(id)ended withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  if (![(UIInterfaceActionRepresentationView *)self _handleVisualFeedbackForPress:v6 pressed:0])
+  endedCopy = ended;
+  eventCopy = event;
+  if (![(UIInterfaceActionRepresentationView *)self _handleVisualFeedbackForPress:endedCopy pressed:0])
   {
     v8.receiver = self;
     v8.super_class = UIInterfaceActionRepresentationView;
-    [(UIResponder *)&v8 pressesEnded:v6 withEvent:v7];
+    [(UIResponder *)&v8 pressesEnded:endedCopy withEvent:eventCopy];
   }
 }
 
-- (void)pressesCancelled:(id)a3 withEvent:(id)a4
+- (void)pressesCancelled:(id)cancelled withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  if (![(UIInterfaceActionRepresentationView *)self _handleVisualFeedbackForPress:v6 pressed:0])
+  cancelledCopy = cancelled;
+  eventCopy = event;
+  if (![(UIInterfaceActionRepresentationView *)self _handleVisualFeedbackForPress:cancelledCopy pressed:0])
   {
     v8.receiver = self;
     v8.super_class = UIInterfaceActionRepresentationView;
-    [(UIResponder *)&v8 pressesCancelled:v6 withEvent:v7];
+    [(UIResponder *)&v8 pressesCancelled:cancelledCopy withEvent:eventCopy];
   }
 }
 
-- (BOOL)_handleVisualFeedbackForPress:(id)a3 pressed:(BOOL)a4
+- (BOOL)_handleVisualFeedbackForPress:(id)press pressed:(BOOL)pressed
 {
-  v4 = a4;
-  v6 = [(UIInterfaceActionRepresentationView *)self _shouldShowPressFeedbackForEventWithPresses:a3];
+  pressedCopy = pressed;
+  v6 = [(UIInterfaceActionRepresentationView *)self _shouldShowPressFeedbackForEventWithPresses:press];
   if (v6)
   {
-    [(UIInterfaceActionRepresentationView *)self _showVisualFeedbackForPressed:v4];
+    [(UIInterfaceActionRepresentationView *)self _showVisualFeedbackForPressed:pressedCopy];
   }
 
   return v6;
 }
 
-- (BOOL)_shouldShowPressFeedbackForEventWithPresses:(id)a3
+- (BOOL)_shouldShowPressFeedbackForEventWithPresses:(id)presses
 {
-  v4 = [a3 anyObject];
-  v5 = [v4 type];
-  if (v5 == 4)
+  anyObject = [presses anyObject];
+  type = [anyObject type];
+  if (type == 4)
   {
     v6 = 1;
   }
 
-  else if ((v5 & 0xFFFFFFFFFFFFFFFDLL) == 5)
+  else if ((type & 0xFFFFFFFFFFFFFFFDLL) == 5)
   {
-    v7 = [(UIInterfaceActionRepresentationView *)self action];
-    v6 = [v7 type] == 1;
+    action = [(UIInterfaceActionRepresentationView *)self action];
+    v6 = [action type] == 1;
   }
 
   else
@@ -594,11 +594,11 @@ uint64_t __53__UIInterfaceActionRepresentationView_layoutSubviews__block_invoke(
   return v6;
 }
 
-- (void)_showVisualFeedbackForPressed:(BOOL)a3
+- (void)_showVisualFeedbackForPressed:(BOOL)pressed
 {
-  if (self->_pressed != a3)
+  if (self->_pressed != pressed)
   {
-    self->_pressed = a3;
+    self->_pressed = pressed;
     [(UIInterfaceActionRepresentationView *)self _updateHighlightAndPressedFeedback];
   }
 }
@@ -613,8 +613,8 @@ uint64_t __53__UIInterfaceActionRepresentationView_layoutSubviews__block_invoke(
 
 - (void)_applyVisualStyleToMinimumSizeConstraints
 {
-  v3 = [(UIInterfaceActionRepresentationView *)self visualStyle];
-  [v3 minimumActionContentSize];
+  visualStyle = [(UIInterfaceActionRepresentationView *)self visualStyle];
+  [visualStyle minimumActionContentSize];
   v5 = v4;
   v7 = v6;
   if ([(UIInterfaceActionRepresentationView *)self _fittingContentViewHasItsOwnActiveMinimumSizeConstraintsWithSize:?])
@@ -654,15 +654,15 @@ void __80__UIInterfaceActionRepresentationView__applyVisualStyleToMinimumSizeCon
   }
 }
 
-- (BOOL)_fittingContentViewHasItsOwnActiveMinimumSizeConstraintsWithSize:(CGSize)a3
+- (BOOL)_fittingContentViewHasItsOwnActiveMinimumSizeConstraintsWithSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(UIInterfaceActionRepresentationView *)self _fittingContentSizingView];
+  height = size.height;
+  width = size.width;
+  _fittingContentSizingView = [(UIInterfaceActionRepresentationView *)self _fittingContentSizingView];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v5 hasActiveMinimumSizeConstraintsWithSize:{width, height}];
+    v6 = [_fittingContentSizingView hasActiveMinimumSizeConstraintsWithSize:{width, height}];
   }
 
   else
@@ -673,15 +673,15 @@ void __80__UIInterfaceActionRepresentationView__applyVisualStyleToMinimumSizeCon
   return v6;
 }
 
-- (void)_setHorizontalMargins:(UIEdgeInsets)a3 preservesSuperviewLayoutMargins:(BOOL)a4
+- (void)_setHorizontalMargins:(UIEdgeInsets)margins preservesSuperviewLayoutMargins:(BOOL)layoutMargins
 {
-  v4 = a4;
-  right = a3.right;
-  left = a3.left;
-  [(UIView *)self layoutMargins:a3.top];
-  if (left != v11 || (v8 == 0.0 ? (v12 = right == v10) : (v12 = 0), !v12 || v9 != 0.0 || [(UIView *)self preservesSuperviewLayoutMargins]!= v4))
+  layoutMarginsCopy = layoutMargins;
+  right = margins.right;
+  left = margins.left;
+  [(UIView *)self layoutMargins:margins.top];
+  if (left != v11 || (v8 == 0.0 ? (v12 = right == v10) : (v12 = 0), !v12 || v9 != 0.0 || [(UIView *)self preservesSuperviewLayoutMargins]!= layoutMarginsCopy))
   {
-    [(UIView *)self setPreservesSuperviewLayoutMargins:v4];
+    [(UIView *)self setPreservesSuperviewLayoutMargins:layoutMarginsCopy];
     [(UIView *)self setLayoutMargins:0.0, left, 0.0, right];
 
     [(UIInterfaceActionRepresentationView *)self invalidateIntrinsicContentSize];
@@ -690,9 +690,9 @@ void __80__UIInterfaceActionRepresentationView__applyVisualStyleToMinimumSizeCon
 
 - (void)_initializeHorizontalMarginsForAction
 {
-  v3 = [(UIInterfaceActionRepresentationView *)self visualStyle];
+  visualStyle = [(UIInterfaceActionRepresentationView *)self visualStyle];
 
-  if (v3)
+  if (visualStyle)
   {
 
     [(UIInterfaceActionRepresentationView *)self _applyVisualStyleToLayoutMargins];
@@ -700,10 +700,10 @@ void __80__UIInterfaceActionRepresentationView__applyVisualStyleToMinimumSizeCon
 
   else
   {
-    v4 = [(UIInterfaceActionRepresentationView *)self action];
-    v5 = [v4 _typeForDeterminingViewRepresentation];
+    action = [(UIInterfaceActionRepresentationView *)self action];
+    _typeForDeterminingViewRepresentation = [action _typeForDeterminingViewRepresentation];
 
-    if (v5 == 100)
+    if (_typeForDeterminingViewRepresentation == 100)
     {
 
       [(UIInterfaceActionRepresentationView *)self _setHorizontalMargins:1 preservesSuperviewLayoutMargins:0.0, 0.0, 0.0, 0.0];
@@ -713,10 +713,10 @@ void __80__UIInterfaceActionRepresentationView__applyVisualStyleToMinimumSizeCon
 
 - (void)_applyVisualStyleToLayoutMargins
 {
-  v3 = [(UIInterfaceActionRepresentationView *)self action];
-  v4 = [v3 _typeForDeterminingViewRepresentation];
+  action = [(UIInterfaceActionRepresentationView *)self action];
+  _typeForDeterminingViewRepresentation = [action _typeForDeterminingViewRepresentation];
 
-  if (v4 == 100)
+  if (_typeForDeterminingViewRepresentation == 100)
   {
 
     [(UIInterfaceActionRepresentationView *)self _setHorizontalMargins:1 preservesSuperviewLayoutMargins:0.0, 0.0, 0.0, 0.0];
@@ -724,20 +724,20 @@ void __80__UIInterfaceActionRepresentationView__applyVisualStyleToMinimumSizeCon
 
   else
   {
-    v5 = [(UIInterfaceActionRepresentationView *)self visualStyle];
-    [v5 contentMargin];
+    visualStyle = [(UIInterfaceActionRepresentationView *)self visualStyle];
+    [visualStyle contentMargin];
     [(UIInterfaceActionRepresentationView *)self _setHorizontalMargins:0 preservesSuperviewLayoutMargins:?];
   }
 }
 
 - (void)_reloadBackgroundHighlightView
 {
-  v3 = [(UIInterfaceActionRepresentationView *)self visualStyle];
-  if (v3)
+  visualStyle = [(UIInterfaceActionRepresentationView *)self visualStyle];
+  if (visualStyle)
   {
-    v41 = v3;
-    v4 = [(UIInterfaceActionRepresentationView *)self _actionViewState];
-    v5 = [v41 newActionBackgroundViewForViewState:v4];
+    v41 = visualStyle;
+    _actionViewState = [(UIInterfaceActionRepresentationView *)self _actionViewState];
+    v5 = [v41 newActionBackgroundViewForViewState:_actionViewState];
 
     v6 = self->_backgroundHighlightView;
     v7 = v5;
@@ -749,11 +749,11 @@ void __80__UIInterfaceActionRepresentationView__applyVisualStyleToMinimumSizeCon
       [(UIInterfaceActionVisualBackgroundDisplaying *)v6 alpha];
       if (vabdd_f64(v10, v11) <= 0.00000011920929)
       {
-        v12 = [v7 backgroundColor];
-        v13 = v12;
-        if (v12)
+        backgroundColor = [v7 backgroundColor];
+        v13 = backgroundColor;
+        if (backgroundColor)
         {
-          v14 = v12;
+          v14 = backgroundColor;
         }
 
         else
@@ -763,11 +763,11 @@ void __80__UIInterfaceActionRepresentationView__applyVisualStyleToMinimumSizeCon
 
         v15 = v14;
 
-        v16 = [(UIInterfaceActionVisualBackgroundDisplaying *)v6 backgroundColor];
-        v17 = v16;
-        if (v16)
+        backgroundColor2 = [(UIInterfaceActionVisualBackgroundDisplaying *)v6 backgroundColor];
+        v17 = backgroundColor2;
+        if (backgroundColor2)
         {
-          v18 = v16;
+          v18 = backgroundColor2;
         }
 
         else
@@ -781,18 +781,18 @@ void __80__UIInterfaceActionRepresentationView__applyVisualStyleToMinimumSizeCon
         {
           if ((objc_opt_respondsToSelector() & 1) == 0 || (objc_opt_respondsToSelector() & 1) == 0 || ([v7 fillColor], v20 = objc_claimAutoreleasedReturnValue(), -[UIInterfaceActionVisualBackgroundDisplaying fillColor](v6, "fillColor"), v21 = objc_claimAutoreleasedReturnValue(), v22 = _deferringTokenEqualToToken(v20, v21), v21, v20, v22))
           {
-            v23 = [v7 layer];
-            v24 = [v23 filters];
-            v25 = v24;
+            layer = [v7 layer];
+            filters = [layer filters];
+            v25 = filters;
             v26 = MEMORY[0x1E695E0F0];
-            v27 = (v24 ? v24 : MEMORY[0x1E695E0F0]);
+            v27 = (filters ? filters : MEMORY[0x1E695E0F0]);
             v40 = v15;
             v28 = v27;
 
-            v29 = [(UIInterfaceActionVisualBackgroundDisplaying *)v6 layer];
-            v30 = [v29 filters];
-            v31 = v30;
-            v32 = (v30 ? v30 : v26);
+            layer2 = [(UIInterfaceActionVisualBackgroundDisplaying *)v6 layer];
+            filters2 = [layer2 filters];
+            v31 = filters2;
+            v32 = (filters2 ? filters2 : v26);
             v33 = v32;
 
             v34 = [v28 isEqual:v33];
@@ -810,7 +810,7 @@ LABEL_28:
                 self->_hasLoadedBackgroundView = 1;
                 [(UIView *)self setNeedsLayout];
 
-                v3 = v41;
+                visualStyle = v41;
                 goto LABEL_29;
               }
 
@@ -852,10 +852,10 @@ LABEL_29:
     return 1;
   }
 
-  v4 = [(UIInterfaceActionRepresentationView *)self __fittingContentSizingViewIfNotSelf];
-  v3 = [v4 isFocused];
+  __fittingContentSizingViewIfNotSelf = [(UIInterfaceActionRepresentationView *)self __fittingContentSizingViewIfNotSelf];
+  isFocused = [__fittingContentSizingViewIfNotSelf isFocused];
 
-  return v3;
+  return isFocused;
 }
 
 - (void)_updateHighlightAndPressedFeedback
@@ -864,18 +864,18 @@ LABEL_29:
   [(UIInterfaceActionRepresentationView *)self _reloadBackgroundHighlightView];
   [(UIInterfaceActionVisualBackgroundDisplaying *)self->_backgroundHighlightView setPressed:[(UIInterfaceActionRepresentationView *)self isPressed]];
   [(UIInterfaceActionVisualBackgroundDisplaying *)self->_backgroundHighlightView setHighlighted:[(UIInterfaceActionRepresentationView *)self isHighlighted]];
-  v3 = [(UIInterfaceActionRepresentationView *)self visualStyle];
+  visualStyle = [(UIInterfaceActionRepresentationView *)self visualStyle];
   v19[0] = 0x1EFB16350;
   v19[1] = 0x1EFB16370;
   v19[2] = 0x1EFB16330;
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:3];
-  v5 = [v3 actionPropertiesAffectingActionRepresentationViewStyling];
-  v6 = [UIInterfaceAction changedProperties:v4 containsAny:v5];
+  actionPropertiesAffectingActionRepresentationViewStyling = [visualStyle actionPropertiesAffectingActionRepresentationViewStyling];
+  v6 = [UIInterfaceAction changedProperties:v4 containsAny:actionPropertiesAffectingActionRepresentationViewStyling];
 
   if (v6)
   {
-    v7 = [(UIInterfaceActionRepresentationView *)self _actionViewState];
-    [v3 configureAttributesForActionRepresentationView:self actionViewState:v7];
+    _actionViewState = [(UIInterfaceActionRepresentationView *)self _actionViewState];
+    [visualStyle configureAttributesForActionRepresentationView:self actionViewState:_actionViewState];
   }
 
   v14 = 0u;
@@ -892,8 +892,8 @@ LABEL_29:
 
   v16 = 0uLL;
   v17 = 0uLL;
-  v9 = [(UIInterfaceActionRepresentationView *)self viewsToDisappearWhenHighlighted];
-  v10 = [v9 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  viewsToDisappearWhenHighlighted = [(UIInterfaceActionRepresentationView *)self viewsToDisappearWhenHighlighted];
+  v10 = [viewsToDisappearWhenHighlighted countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v10)
   {
     v11 = v10;
@@ -904,13 +904,13 @@ LABEL_29:
       {
         if (*v15 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(viewsToDisappearWhenHighlighted);
         }
 
         [*(*(&v14 + 1) + 8 * i) setAlpha:v8];
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v11 = [viewsToDisappearWhenHighlighted countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v11);
@@ -952,8 +952,8 @@ LABEL_29:
   [(UIInterfaceActionRepresentationView *)self _setContentsInsertedIntoViewHierarchy:1];
   [(UIInterfaceActionRepresentationView *)self interfaceAction:self->_action reloadDisplayedContentActionProperties:0];
   action = self->_action;
-  v4 = [(UIInterfaceActionRepresentationView *)self visualStyle];
-  [(UIInterfaceActionRepresentationView *)self interfaceAction:action reloadDisplayedContentVisualStyle:v4];
+  visualStyle = [(UIInterfaceActionRepresentationView *)self visualStyle];
+  [(UIInterfaceActionRepresentationView *)self interfaceAction:action reloadDisplayedContentVisualStyle:visualStyle];
 }
 
 - (void)_addLoadedContentsToHierarchyIfAllowed
@@ -991,11 +991,11 @@ LABEL_29:
 
 - (BOOL)_isVisibleWithinContainmentAncestor
 {
-  v3 = [(UIView *)self _enclosingInterfaceActionGroupView];
-  if (v3)
+  _enclosingInterfaceActionGroupView = [(UIView *)self _enclosingInterfaceActionGroupView];
+  if (_enclosingInterfaceActionGroupView)
   {
     [(UIView *)self bounds];
-    [v3 convertRect:self fromView:?];
+    [_enclosingInterfaceActionGroupView convertRect:self fromView:?];
     x = v14.origin.x;
     y = v14.origin.y;
     width = v14.size.width;
@@ -1007,7 +1007,7 @@ LABEL_29:
 
     else
     {
-      [v3 bounds];
+      [_enclosingInterfaceActionGroupView bounds];
       v16.origin.x = v9;
       v16.origin.y = v10;
       v16.size.width = v11;
@@ -1030,8 +1030,8 @@ LABEL_29:
 
 - (id)_actionViewState
 {
-  v3 = [(UIInterfaceActionRepresentationView *)self action];
-  v4 = [UIInterfaceActionViewState viewStateForActionRepresentationView:self action:v3];
+  action = [(UIInterfaceActionRepresentationView *)self action];
+  v4 = [UIInterfaceActionViewState viewStateForActionRepresentationView:self action:action];
 
   return v4;
 }

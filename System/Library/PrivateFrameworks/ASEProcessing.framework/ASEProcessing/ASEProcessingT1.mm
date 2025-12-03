@@ -1,17 +1,17 @@
 @interface ASEProcessingT1
-- (id)populateOutputHcus:(aseConfigurationUnitsV3_t *)a3;
-- (int64_t)processFrameWithInput:(__IOSurface *)a3 Measurement:(id *)a4 callback:(id)a5;
-- (int64_t)processFrameWithInput:(__IOSurface *)a3 Measurement:(id *)a4 outputData:(id *)a5;
-- (void)DumpArray:(const char *)a3 type:(int)a4 array:(void *)a5 count:(unsigned int)a6 numberPerRow:(unsigned int)a7;
-- (void)DumpOutputHcus:(id)a3;
-- (void)DumpPiecewiseLinearCurveV3:(const char *)a3 curve:(id *)a4;
-- (void)configControlHeader_V3:(aseConfigurationUnitsV3_t *)a3;
+- (id)populateOutputHcus:(aseConfigurationUnitsV3_t *)hcus;
+- (int64_t)processFrameWithInput:(__IOSurface *)input Measurement:(id *)measurement callback:(id)callback;
+- (int64_t)processFrameWithInput:(__IOSurface *)input Measurement:(id *)measurement outputData:(id *)data;
+- (void)DumpArray:(const char *)array type:(int)type array:(void *)a5 count:(unsigned int)count numberPerRow:(unsigned int)row;
+- (void)DumpOutputHcus:(id)hcus;
+- (void)DumpPiecewiseLinearCurveV3:(const char *)v3 curve:(id *)curve;
+- (void)configControlHeader_V3:(aseConfigurationUnitsV3_t *)v3;
 - (void)dealloc;
-- (void)printAseMeasurementOutput:(id *)a3;
-- (void)processPixelWithInput:(__IOSurface *)a3 Measurement:(id *)a4 controlUnitV3:(aseConfigurationUnitsV3_t *)a5;
-- (void)processPixelWithInput_V3:(__IOSurface *)a3 Measurement:(id *)a4 Output:(aseConfigurationUnitsV3_t *)a5;
-- (void)processPixelWithMeasurement_V3:(__IOSurface *)a3 Measurement:(id *)a4 Output:(aseConfigurationUnitsV3_t *)a5;
-- (void)processPixelWithPixelControl_V3:(__IOSurface *)a3 Output:(aseConfigurationUnitsV3_t *)a4;
+- (void)printAseMeasurementOutput:(id *)output;
+- (void)processPixelWithInput:(__IOSurface *)input Measurement:(id *)measurement controlUnitV3:(aseConfigurationUnitsV3_t *)v3;
+- (void)processPixelWithInput_V3:(__IOSurface *)v3 Measurement:(id *)measurement Output:(aseConfigurationUnitsV3_t *)output;
+- (void)processPixelWithMeasurement_V3:(__IOSurface *)v3 Measurement:(id *)measurement Output:(aseConfigurationUnitsV3_t *)output;
+- (void)processPixelWithPixelControl_V3:(__IOSurface *)v3 Output:(aseConfigurationUnitsV3_t *)output;
 @end
 
 @implementation ASEProcessingT1
@@ -46,16 +46,16 @@
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)DumpArray:(const char *)a3 type:(int)a4 array:(void *)a5 count:(unsigned int)a6 numberPerRow:(unsigned int)a7
+- (void)DumpArray:(const char *)array type:(int)type array:(void *)a5 count:(unsigned int)count numberPerRow:(unsigned int)row
 {
   v29 = *MEMORY[0x277D85DE8];
-  if (!a6)
+  if (!count)
   {
     goto LABEL_25;
   }
 
   v11 = 0;
-  v12 = a6 - 1;
+  v12 = count - 1;
   LODWORD(v13) = 512;
   v14 = __str;
   do
@@ -68,18 +68,18 @@
         v15 = " ";
       }
 
-      v16 = __snprintf_chk(__str, v13, 0, 0x200uLL, "%s %s", a3, v15);
+      v16 = __snprintf_chk(__str, v13, 0, 0x200uLL, "%s %s", array, v15);
       v14 = &__str[v16];
       LODWORD(v13) = v13 - v16;
     }
 
-    if (a4 == 1)
+    if (type == 1)
     {
       v23 = *(a5 + v11);
       v18 = snprintf(v14, v13, "%s%d");
     }
 
-    else if (a4 == 2)
+    else if (type == 2)
     {
       v17 = *(a5 + v11);
       v18 = snprintf(v14, v13, "%s%f");
@@ -94,11 +94,11 @@
     v14 += v18;
     v13 = v13 - v18;
     v19 = " }";
-    v20 = a6;
+    countCopy = count;
     if (v11 != v12)
     {
-      v20 = v11 + 1;
-      if ((v11 + 1) % a7)
+      countCopy = v11 + 1;
+      if ((v11 + 1) % row)
       {
         goto LABEL_20;
       }
@@ -131,10 +131,10 @@
     }
 
 LABEL_20:
-    v11 = v20;
+    v11 = countCopy;
   }
 
-  while (v20 < a6);
+  while (countCopy < count);
   if (v18 && logLevel > 2 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315138;
@@ -146,12 +146,12 @@ LABEL_25:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)DumpPiecewiseLinearCurveV3:(const char *)a3 curve:(id *)a4
+- (void)DumpPiecewiseLinearCurveV3:(const char *)v3 curve:(id *)curve
 {
   v5 = 0;
   v23 = *MEMORY[0x277D85DE8];
   v6 = logLevel;
-  p_var2 = &a4->var0[0].var2;
+  p_var2 = &curve->var0[0].var2;
   v8 = MEMORY[0x277D86220];
   do
   {
@@ -163,7 +163,7 @@ LABEL_25:
         v10 = *(p_var2 - 1);
         v11 = *p_var2;
         *buf = 136316162;
-        v14 = a3;
+        v3Copy = v3;
         v15 = 1024;
         v16 = v5;
         v17 = 2048;
@@ -186,14 +186,14 @@ LABEL_25:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)DumpOutputHcus:(id)a3
+- (void)DumpOutputHcus:(id)hcus
 {
   v459 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 bytes];
+  hcusCopy = hcus;
+  bytes = [hcusCopy bytes];
   if (dumpOutputHcu)
   {
-    v6 = v5;
+    v6 = bytes;
     if (logLevel >= 3)
     {
       v7 = MEMORY[0x277D86220];
@@ -212,8 +212,8 @@ LABEL_25:
       }
     }
 
-    v430 = v4;
-    v431 = self;
+    v430 = hcusCopy;
+    selfCopy = self;
     if (*v6)
     {
       v11 = 0;
@@ -356,7 +356,7 @@ LABEL_32:
     v435 = 0;
     v12 = 0;
 LABEL_35:
-    v4 = v430;
+    hcusCopy = v430;
     v22 = v12;
     if ((dumpOutputHcu & 2) != 0)
     {
@@ -420,7 +420,7 @@ LABEL_35:
         }
 
         snprintf(buf, 0x100uLL, "    %s: scalingCoeffV3Hcu: coeff :", "[ASEProcessingT1 DumpOutputHcus:]");
-        [(ASEProcessingT1 *)v431 DumpFloatArray:buf array:v433 count:128 numberPerRow:8];
+        [(ASEProcessingT1 *)selfCopy DumpFloatArray:buf array:v433 count:128 numberPerRow:8];
         v357 = logLevel;
       }
 
@@ -479,7 +479,7 @@ LABEL_35:
           }
         }
 
-        [(ASEProcessingT1 *)v431 DumpPiecewiseLinearCurveV3:buf curve:v437];
+        [(ASEProcessingT1 *)selfCopy DumpPiecewiseLinearCurveV3:buf curve:v437];
         if (logLevel >= 3)
         {
           v377 = MEMORY[0x277D86220];
@@ -492,7 +492,7 @@ LABEL_35:
           }
         }
 
-        [(ASEProcessingT1 *)v431 DumpPiecewiseLinearCurveV3:buf curve:v437 + 96];
+        [(ASEProcessingT1 *)selfCopy DumpPiecewiseLinearCurveV3:buf curve:v437 + 96];
         if (logLevel >= 3)
         {
           v379 = MEMORY[0x277D86220];
@@ -505,7 +505,7 @@ LABEL_35:
           }
         }
 
-        [(ASEProcessingT1 *)v431 DumpPiecewiseLinearCurveV3:buf curve:v437 + 192];
+        [(ASEProcessingT1 *)selfCopy DumpPiecewiseLinearCurveV3:buf curve:v437 + 192];
         if (logLevel >= 3)
         {
           v381 = MEMORY[0x277D86220];
@@ -518,7 +518,7 @@ LABEL_35:
           }
         }
 
-        [(ASEProcessingT1 *)v431 DumpPiecewiseLinearCurveV3:buf curve:v437 + 288];
+        [(ASEProcessingT1 *)selfCopy DumpPiecewiseLinearCurveV3:buf curve:v437 + 288];
         if (logLevel >= 3)
         {
           v383 = MEMORY[0x277D86220];
@@ -570,7 +570,7 @@ LABEL_35:
           }
         }
 
-        [(ASEProcessingT1 *)v431 DumpPiecewiseLinearCurveV3:buf curve:v435];
+        [(ASEProcessingT1 *)selfCopy DumpPiecewiseLinearCurveV3:buf curve:v435];
         if (logLevel >= 3)
         {
           v392 = MEMORY[0x277D86220];
@@ -583,7 +583,7 @@ LABEL_35:
           }
         }
 
-        [(ASEProcessingT1 *)v431 DumpPiecewiseLinearCurveV3:buf curve:v435 + 96];
+        [(ASEProcessingT1 *)selfCopy DumpPiecewiseLinearCurveV3:buf curve:v435 + 96];
         if (logLevel >= 3)
         {
           v394 = MEMORY[0x277D86220];
@@ -596,7 +596,7 @@ LABEL_35:
           }
         }
 
-        [(ASEProcessingT1 *)v431 DumpPiecewiseLinearCurveV3:buf curve:v435 + 192];
+        [(ASEProcessingT1 *)selfCopy DumpPiecewiseLinearCurveV3:buf curve:v435 + 192];
         if (logLevel >= 3)
         {
           v396 = MEMORY[0x277D86220];
@@ -609,7 +609,7 @@ LABEL_35:
           }
         }
 
-        [(ASEProcessingT1 *)v431 DumpPiecewiseLinearCurveV3:buf curve:v435 + 288];
+        [(ASEProcessingT1 *)selfCopy DumpPiecewiseLinearCurveV3:buf curve:v435 + 288];
         if (logLevel >= 3)
         {
           v398 = MEMORY[0x277D86220];
@@ -622,7 +622,7 @@ LABEL_35:
           }
         }
 
-        [(ASEProcessingT1 *)v431 DumpPiecewiseLinearCurveV3:buf curve:v435 + 384];
+        [(ASEProcessingT1 *)selfCopy DumpPiecewiseLinearCurveV3:buf curve:v435 + 384];
         if (logLevel >= 3)
         {
           v400 = MEMORY[0x277D86220];
@@ -645,9 +645,9 @@ LABEL_35:
         }
 
         snprintf(buf, 0x100uLL, "    %s: ebeConfigV3Hcu: lowPass :", "[ASEProcessingT1 DumpOutputHcus:]");
-        [(ASEProcessingT1 *)v431 DumpUintArray:buf array:v435 + 483 count:26 numberPerRow:26];
+        [(ASEProcessingT1 *)selfCopy DumpUintArray:buf array:v435 + 483 count:26 numberPerRow:26];
         snprintf(buf, 0x100uLL, "    %s: ebeConfigV3Hcu: weightLut :", "[ASEProcessingT1 DumpOutputHcus:]");
-        [(ASEProcessingT1 *)v431 DumpUintArray:buf array:v435 + 509 count:18 numberPerRow:18];
+        [(ASEProcessingT1 *)selfCopy DumpUintArray:buf array:v435 + 509 count:18 numberPerRow:18];
       }
 
       if (v434)
@@ -690,7 +690,7 @@ LABEL_35:
           }
         }
 
-        [(ASEProcessingT1 *)v431 DumpPiecewiseLinearCurveV3:buf curve:v434 + 1];
+        [(ASEProcessingT1 *)selfCopy DumpPiecewiseLinearCurveV3:buf curve:v434 + 1];
         if (logLevel >= 3)
         {
           v410 = MEMORY[0x277D86220];
@@ -703,7 +703,7 @@ LABEL_35:
           }
         }
 
-        [(ASEProcessingT1 *)v431 DumpPiecewiseLinearCurveV3:buf curve:v434 + 97];
+        [(ASEProcessingT1 *)selfCopy DumpPiecewiseLinearCurveV3:buf curve:v434 + 97];
         if (logLevel >= 3)
         {
           v412 = MEMORY[0x277D86220];
@@ -716,7 +716,7 @@ LABEL_35:
           }
         }
 
-        [(ASEProcessingT1 *)v431 DumpPiecewiseLinearCurveV3:buf curve:v434 + 193];
+        [(ASEProcessingT1 *)selfCopy DumpPiecewiseLinearCurveV3:buf curve:v434 + 193];
         if (logLevel >= 3)
         {
           v414 = MEMORY[0x277D86220];
@@ -745,17 +745,17 @@ LABEL_35:
         }
 
         snprintf(buf, 0x100uLL, "    %s: peakingConfigV3Hcu: filt3 :", "[ASEProcessingT1 DumpOutputHcus:]");
-        [(ASEProcessingT1 *)v431 DumpIntArray:buf array:v434 + 294 count:2 numberPerRow:2];
+        [(ASEProcessingT1 *)selfCopy DumpIntArray:buf array:v434 + 294 count:2 numberPerRow:2];
         snprintf(buf, 0x100uLL, "    %s: peakingConfigV3Hcu: filt5 :", "[ASEProcessingT1 DumpOutputHcus:]");
-        [(ASEProcessingT1 *)v431 DumpIntArray:buf array:v434 + 296 count:3 numberPerRow:3];
+        [(ASEProcessingT1 *)selfCopy DumpIntArray:buf array:v434 + 296 count:3 numberPerRow:3];
         snprintf(buf, 0x100uLL, "    %s: peakingConfigV3Hcu: filt7 :", "[ASEProcessingT1 DumpOutputHcus:]");
-        [(ASEProcessingT1 *)v431 DumpIntArray:buf array:v434 + 299 count:4 numberPerRow:4];
+        [(ASEProcessingT1 *)selfCopy DumpIntArray:buf array:v434 + 299 count:4 numberPerRow:4];
         snprintf(buf, 0x100uLL, "    %s: peakingConfigV3Hcu: filt9 :", "[ASEProcessingT1 DumpOutputHcus:]");
-        [(ASEProcessingT1 *)v431 DumpIntArray:buf array:v434 + 303 count:5 numberPerRow:5];
+        [(ASEProcessingT1 *)selfCopy DumpIntArray:buf array:v434 + 303 count:5 numberPerRow:5];
         snprintf(buf, 0x100uLL, "    %s: peakingConfigV3Hcu: filt11 :", "[ASEProcessingT1 DumpOutputHcus:]");
-        [(ASEProcessingT1 *)v431 DumpIntArray:buf array:v434 + 308 count:6 numberPerRow:6];
+        [(ASEProcessingT1 *)selfCopy DumpIntArray:buf array:v434 + 308 count:6 numberPerRow:6];
         snprintf(buf, 0x100uLL, "    %s: peakingConfigV3Hcu: filt13 :", "[ASEProcessingT1 DumpOutputHcus:]");
-        [(ASEProcessingT1 *)v431 DumpIntArray:buf array:v434 + 314 count:7 numberPerRow:7];
+        [(ASEProcessingT1 *)selfCopy DumpIntArray:buf array:v434 + 314 count:7 numberPerRow:7];
       }
 
       if (v432 && logLevel >= 3)
@@ -812,7 +812,7 @@ LABEL_35:
     {
       if (v436 && logLevel >= 3)
       {
-        msrBaseAddr = v431->_msrBaseAddr;
+        msrBaseAddr = selfCopy->_msrBaseAddr;
         v24 = MEMORY[0x277D86220];
         v25 = MEMORY[0x277D86220];
         if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
@@ -845,7 +845,7 @@ LABEL_35:
 
           if (logLevel >= 3)
           {
-            v28 = v431->_msrBaseAddr;
+            v28 = selfCopy->_msrBaseAddr;
             v29 = v24;
             if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
             {
@@ -870,7 +870,7 @@ LABEL_35:
 
       if (v22 && logLevel >= 3)
       {
-        v31 = v431->_msrBaseAddr;
+        v31 = selfCopy->_msrBaseAddr;
         v32 = MEMORY[0x277D86220];
         v33 = MEMORY[0x277D86220];
         if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
@@ -931,7 +931,7 @@ LABEL_35:
 
       if (v433)
       {
-        v42 = v431->_msrBaseAddr;
+        v42 = selfCopy->_msrBaseAddr;
         v43 = logLevel;
         if (logLevel >= 3)
         {
@@ -1083,10 +1083,10 @@ LABEL_35:
       }
 
       v86 = v437;
-      v87 = v431;
+      v87 = selfCopy;
       if (v437 && logLevel >= 3)
       {
-        v88 = v431->_msrBaseAddr;
+        v88 = selfCopy->_msrBaseAddr;
         v89 = MEMORY[0x277D86220];
         v90 = MEMORY[0x277D86220];
         if (os_log_type_enabled(v89, OS_LOG_TYPE_DEFAULT))
@@ -1176,7 +1176,7 @@ LABEL_35:
 
       if (v435 && logLevel >= 3)
       {
-        v107 = v431->_msrBaseAddr;
+        v107 = selfCopy->_msrBaseAddr;
         v108 = MEMORY[0x277D86220];
         v109 = MEMORY[0x277D86220];
         if (os_log_type_enabled(v108, OS_LOG_TYPE_DEFAULT))
@@ -1436,7 +1436,7 @@ LABEL_35:
                             }
 
                             v86 = v437;
-                            v87 = v431;
+                            v87 = selfCopy;
                             if (logLevel >= 3)
                             {
                               v160 = v108;
@@ -1463,7 +1463,7 @@ LABEL_35:
                               }
 
                               v86 = v437;
-                              v87 = v431;
+                              v87 = selfCopy;
                               if (logLevel >= 3)
                               {
                                 v165 = v108;
@@ -1490,7 +1490,7 @@ LABEL_35:
                                 }
 
                                 v86 = v437;
-                                v87 = v431;
+                                v87 = selfCopy;
                                 if (logLevel >= 3)
                                 {
                                   v170 = v108;
@@ -1517,7 +1517,7 @@ LABEL_35:
                                   }
 
                                   v86 = v437;
-                                  v87 = v431;
+                                  v87 = selfCopy;
                                   if (logLevel >= 3)
                                   {
                                     v175 = v108;
@@ -1544,7 +1544,7 @@ LABEL_35:
                                     }
 
                                     v86 = v437;
-                                    v87 = v431;
+                                    v87 = selfCopy;
                                     if (logLevel >= 3)
                                     {
                                       v180 = v108;
@@ -1571,7 +1571,7 @@ LABEL_35:
                                       }
 
                                       v86 = v437;
-                                      v87 = v431;
+                                      v87 = selfCopy;
                                       if (logLevel >= 3)
                                       {
                                         v185 = v108;
@@ -1598,7 +1598,7 @@ LABEL_35:
                                         }
 
                                         v86 = v437;
-                                        v87 = v431;
+                                        v87 = selfCopy;
                                         if (logLevel >= 3)
                                         {
                                           v190 = v108;
@@ -1625,7 +1625,7 @@ LABEL_35:
                                           }
 
                                           v86 = v437;
-                                          v87 = v431;
+                                          v87 = selfCopy;
                                           if (logLevel >= 3)
                                           {
                                             v195 = v108;
@@ -1652,7 +1652,7 @@ LABEL_35:
                                             }
 
                                             v86 = v437;
-                                            v87 = v431;
+                                            v87 = selfCopy;
                                             if (logLevel >= 3)
                                             {
                                               v200 = v108;
@@ -1679,7 +1679,7 @@ LABEL_35:
                                               }
 
                                               v86 = v437;
-                                              v87 = v431;
+                                              v87 = selfCopy;
                                               if (logLevel >= 3)
                                               {
                                                 v205 = v108;
@@ -1706,7 +1706,7 @@ LABEL_35:
                                                 }
 
                                                 v86 = v437;
-                                                v87 = v431;
+                                                v87 = selfCopy;
                                                 if (logLevel >= 3)
                                                 {
                                                   v210 = v108;
@@ -1733,7 +1733,7 @@ LABEL_35:
                                                   }
 
                                                   v86 = v437;
-                                                  v87 = v431;
+                                                  v87 = selfCopy;
                                                   if (logLevel >= 3)
                                                   {
                                                     v215 = v108;
@@ -1760,7 +1760,7 @@ LABEL_35:
                                                     }
 
                                                     v86 = v437;
-                                                    v87 = v431;
+                                                    v87 = selfCopy;
                                                     if (logLevel >= 3)
                                                     {
                                                       v220 = v108;
@@ -1787,7 +1787,7 @@ LABEL_35:
                                                       }
 
                                                       v86 = v437;
-                                                      v87 = v431;
+                                                      v87 = selfCopy;
                                                       if (logLevel >= 3)
                                                       {
                                                         v225 = v108;
@@ -1810,7 +1810,7 @@ LABEL_35:
                                                         }
 
                                                         v86 = v437;
-                                                        v87 = v431;
+                                                        v87 = selfCopy;
                                                       }
                                                     }
                                                   }
@@ -1837,7 +1837,7 @@ LABEL_35:
         }
       }
 
-      v4 = v430;
+      hcusCopy = v430;
       if (v434 && logLevel >= 3)
       {
         v227 = v87->_msrBaseAddr;
@@ -2119,8 +2119,8 @@ LABEL_35:
                               _os_log_impl(&dword_23D3F2000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [1.50.3]     %s: %09llx:  %08x %08x %08x %08x\n", v438, 0x2Eu);
                             }
 
-                            v4 = v430;
-                            v87 = v431;
+                            hcusCopy = v430;
+                            v87 = selfCopy;
                             v86 = v437;
                             if (logLevel >= 3)
                             {
@@ -2148,8 +2148,8 @@ LABEL_35:
                                 _os_log_impl(&dword_23D3F2000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [1.50.3]     %s: %09llx:  %08x %08x %08x %08x\n", v438, 0x2Eu);
                               }
 
-                              v4 = v430;
-                              v87 = v431;
+                              hcusCopy = v430;
+                              v87 = selfCopy;
                               v86 = v437;
                               if (logLevel >= 3)
                               {
@@ -2177,8 +2177,8 @@ LABEL_35:
                                   _os_log_impl(&dword_23D3F2000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [1.50.3]     %s: %09llx:  %08x %08x %08x %08x\n", v438, 0x2Eu);
                                 }
 
-                                v4 = v430;
-                                v87 = v431;
+                                hcusCopy = v430;
+                                v87 = selfCopy;
                                 v86 = v437;
                                 if (logLevel >= 3)
                                 {
@@ -2202,8 +2202,8 @@ LABEL_35:
                                     _os_log_impl(&dword_23D3F2000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [1.50.3]     %s: %09llx:  %08x %s %s %s\n", v438, 0x3Au);
                                   }
 
-                                  v4 = v430;
-                                  v87 = v431;
+                                  hcusCopy = v430;
+                                  v87 = selfCopy;
                                   v86 = v437;
                                 }
                               }
@@ -2494,18 +2494,18 @@ LABEL_35:
   v356 = *MEMORY[0x277D85DE8];
 }
 
-- (void)configControlHeader_V3:(aseConfigurationUnitsV3_t *)a3
+- (void)configControlHeader_V3:(aseConfigurationUnitsV3_t *)v3
 {
-  a3->var1 = 0x1861736570;
-  a3->var3 = 0x20061736571;
-  a3->var5 = 0x5046173656BLL;
-  a3->var7 = 0x83C6173656CLL;
-  a3->var9 = 0x6106173656DLL;
-  a3->var11 = 0x86173656FLL;
-  a3->var13 = 0x146173656ELL;
+  v3->var1 = 0x1861736570;
+  v3->var3 = 0x20061736571;
+  v3->var5 = 0x5046173656BLL;
+  v3->var7 = 0x83C6173656CLL;
+  v3->var9 = 0x6106173656DLL;
+  v3->var11 = 0x86173656FLL;
+  v3->var13 = 0x146173656ELL;
 }
 
-- (void)processPixelWithInput:(__IOSurface *)a3 Measurement:(id *)a4 controlUnitV3:(aseConfigurationUnitsV3_t *)a5
+- (void)processPixelWithInput:(__IOSurface *)input Measurement:(id *)measurement controlUnitV3:(aseConfigurationUnitsV3_t *)v3
 {
   v23 = *MEMORY[0x277D85DE8];
   if (logLevel >= 4 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
@@ -2513,17 +2513,17 @@ LABEL_35:
     v16 = 136315906;
     v17 = "[ASEProcessingT1 processPixelWithInput:Measurement:controlUnitV3:]";
     v18 = 2048;
-    *v19 = a3;
+    *v19 = input;
     *&v19[8] = 2048;
-    v20 = a4;
+    measurementCopy = measurement;
     v21 = 2048;
-    v22 = a5;
+    v3Copy = v3;
     _os_log_impl(&dword_23D3F2000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [1.50.3] ++  %s : input=%p, aseMeasurementOutput=%p, aseControlUnit=%p\n", &v16, 0x2Au);
   }
 
   if (isT1OrNewer(self->super._productType))
   {
-    [(ASEProcessingT1 *)self processPixelWithInput_V3:a3 Measurement:a4 Output:a5];
+    [(ASEProcessingT1 *)self processPixelWithInput_V3:input Measurement:measurement Output:v3];
     if (logLevel < 3)
     {
       goto LABEL_14;
@@ -2531,8 +2531,8 @@ LABEL_35:
 
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
-      var0 = a5->var0.var0;
-      var1 = a5->var0.var1;
+      var0 = v3->var0.var0;
+      var1 = v3->var0.var1;
       v16 = 136315650;
       v17 = "[ASEProcessingT1 processPixelWithInput:Measurement:controlUnitV3:]";
       v18 = 1024;
@@ -2571,7 +2571,7 @@ LABEL_14:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)processPixelWithInput_V3:(__IOSurface *)a3 Measurement:(id *)a4 Output:(aseConfigurationUnitsV3_t *)a5
+- (void)processPixelWithInput_V3:(__IOSurface *)v3 Measurement:(id *)measurement Output:(aseConfigurationUnitsV3_t *)output
 {
   aseProcessingType = self->super._aseProcessingType;
   if (aseProcessingType > 7)
@@ -2582,7 +2582,7 @@ LABEL_14:
   v7 = 1 << aseProcessingType;
   if ((v7 & 0xE6) != 0)
   {
-    [(ASEProcessingT1 *)self processPixelWithPixelControl_V3:a3 Output:a5];
+    [(ASEProcessingT1 *)self processPixelWithPixelControl_V3:v3 Output:output];
     enabledHcus = self->_enabledHcus;
     if ((enabledHcus & 0x80) != 0)
     {
@@ -2609,7 +2609,7 @@ LABEL_17:
     [ASEProcessingT1 processPixelWithInput_V3:Measurement:Output:];
   }
 
-  [(ASEProcessingT1 *)self processPixelWithMeasurement_V3:a3 Measurement:a4 Output:a5];
+  [(ASEProcessingT1 *)self processPixelWithMeasurement_V3:v3 Measurement:measurement Output:output];
   v10 = self->_enabledHcus;
   if ((v10 & 0x80) == 0)
   {
@@ -2631,7 +2631,7 @@ LABEL_14:
   self->_enabledHcus = v9;
 }
 
-- (id)populateOutputHcus:(aseConfigurationUnitsV3_t *)a3
+- (id)populateOutputHcus:(aseConfigurationUnitsV3_t *)hcus
 {
   v5 = 0;
   v6 = 0;
@@ -2651,8 +2651,8 @@ LABEL_14:
   }
 
   while (v5 != 8);
-  a3->var0.var0 = v6;
-  a3->var0.var1 = v7;
+  hcus->var0.var0 = v6;
+  hcus->var0.var1 = v7;
   v11 = [MEMORY[0x277CBEB28] dataWithCapacity:v7 + 8 * v6 + 8];
   v12 = v11;
   if (!v11)
@@ -2660,7 +2660,7 @@ LABEL_14:
     goto LABEL_28;
   }
 
-  [v11 appendBytes:a3 length:8];
+  [v11 appendBytes:hcus length:8];
   v13 = 0;
   while (1)
   {
@@ -2672,13 +2672,13 @@ LABEL_14:
     v14 = getHcuSize(v13) + 8;
     if (v13 <= 3)
     {
-      p_var1 = &a3->var1;
+      p_var1 = &hcus->var1;
       if (v13 != 1)
       {
-        p_var1 = &a3->var3;
+        p_var1 = &hcus->var3;
         if (v13 != 2)
         {
-          p_var1 = &a3->var5;
+          p_var1 = &hcus->var5;
           if (v13 != 3)
           {
             goto LABEL_33;
@@ -2691,16 +2691,16 @@ LABEL_14:
 
     if (v13 <= 5)
     {
-      p_var1 = &a3->var7;
+      p_var1 = &hcus->var7;
       if (v13 != 4)
       {
-        p_var1 = &a3->var9;
+        p_var1 = &hcus->var9;
       }
 
       goto LABEL_22;
     }
 
-    p_var1 = &a3->var11;
+    p_var1 = &hcus->var11;
     if (v13 != 6)
     {
       break;
@@ -2721,7 +2721,7 @@ LABEL_33:
     [ASEProcessingT1 populateOutputHcus:];
   }
 
-  [v12 appendBytes:&a3->var13 length:v14];
+  [v12 appendBytes:&hcus->var13 length:v14];
 LABEL_24:
   if (logLevel >= 3 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
@@ -2744,7 +2744,7 @@ LABEL_28:
   return v12;
 }
 
-- (void)processPixelWithPixelControl_V3:(__IOSurface *)a3 Output:(aseConfigurationUnitsV3_t *)a4
+- (void)processPixelWithPixelControl_V3:(__IOSurface *)v3 Output:(aseConfigurationUnitsV3_t *)output
 {
   v18 = *MEMORY[0x277D85DE8];
   if (logLevel >= 4 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
@@ -2752,16 +2752,16 @@ LABEL_28:
     *buf = 136315394;
     v15 = "[ASEProcessingT1 processPixelWithPixelControl_V3:Output:]";
     v16 = 2048;
-    v17 = a4;
+    outputCopy = output;
     _os_log_impl(&dword_23D3F2000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [1.50.3] ++  %s : aseControlUnit=%p\n", buf, 0x16u);
   }
 
-  [(ASEProcessingT1 *)self configControlHeader_V3:a4];
+  [(ASEProcessingT1 *)self configControlHeader_V3:output];
   InputType = getInputType(self->super._inputType);
-  TransferFunction = getTransferFunction(a3);
+  TransferFunction = getTransferFunction(v3);
   *&v9 = self->super._enhancementStrength;
   LODWORD(v13) = TransferFunction;
-  calculate_graphics_control_setting_V3(a4, self->super._inputWidth, self->super._inputHeight, v9, v10, v11, LODWORD(self->super._numberOfProcessedFrames), self->super._productType, self->super._destinationWidth, self->super._destinationHeight, InputType, v13, self->_aseControlUnitV3Cache, &self->_enabledHcus);
+  calculate_graphics_control_setting_V3(output, self->super._inputWidth, self->super._inputHeight, v9, v10, v11, LODWORD(self->super._numberOfProcessedFrames), self->super._productType, self->super._destinationWidth, self->super._destinationHeight, InputType, v13, self->_aseControlUnitV3Cache, &self->_enabledHcus);
   if (logLevel >= 4 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315138;
@@ -2772,7 +2772,7 @@ LABEL_28:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)processPixelWithMeasurement_V3:(__IOSurface *)a3 Measurement:(id *)a4 Output:(aseConfigurationUnitsV3_t *)a5
+- (void)processPixelWithMeasurement_V3:(__IOSurface *)v3 Measurement:(id *)measurement Output:(aseConfigurationUnitsV3_t *)output
 {
   *&v22[11] = *MEMORY[0x277D85DE8];
   if (logLevel >= 4 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
@@ -2780,20 +2780,20 @@ LABEL_28:
     *buf = 136315906;
     v18 = "[ASEProcessingT1 processPixelWithMeasurement_V3:Measurement:Output:]";
     v19 = 2048;
-    *v20 = a3;
+    *v20 = v3;
     *&v20[8] = 2048;
-    *v21 = a4;
+    *v21 = measurement;
     *&v21[8] = 2048;
-    *v22 = a5;
+    *v22 = output;
     _os_log_impl(&dword_23D3F2000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [1.50.3] ++  %s : input=%p, aseMeasurementOutput=%p, aseControlUnit=%p\n", buf, 0x2Au);
   }
 
-  [(ASEProcessingT1 *)self printAseMeasurementOutput:a4];
-  [(ASEProcessingT1 *)self configControlHeader_V3:a5];
+  [(ASEProcessingT1 *)self printAseMeasurementOutput:measurement];
+  [(ASEProcessingT1 *)self configControlHeader_V3:output];
   InputType = getInputType(self->super._inputType);
-  TransferFunction = getTransferFunction(a3);
+  TransferFunction = getTransferFunction(v3);
   enhancementStrength = self->super._enhancementStrength;
-  calculate_control_setting_V3(a4, a5, self->super._inputWidth, self->super._inputHeight, LODWORD(self->super._numberOfProcessedFrames), &self->super._noiseMeterStepSize, &self->super._FD_state, &self->super._FG_count, &self->super._NFG_count, &self->super._prev_H1_7, &self->super._prev_V1_7, &self->super._prev_ratio_2D_1D, self->super._productType, self->super._destinationWidth, self->super._destinationHeight, InputType, TransferFunction, self->_aseControlUnitV3Cache, &self->_enabledHcus);
+  calculate_control_setting_V3(measurement, output, self->super._inputWidth, self->super._inputHeight, LODWORD(self->super._numberOfProcessedFrames), &self->super._noiseMeterStepSize, &self->super._FD_state, &self->super._FG_count, &self->super._NFG_count, &self->super._prev_H1_7, &self->super._prev_V1_7, &self->super._prev_ratio_2D_1D, self->super._productType, self->super._destinationWidth, self->super._destinationHeight, InputType, TransferFunction, self->_aseControlUnitV3Cache, &self->_enabledHcus);
   if (logLevel >= 4 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     destinationWidth = self->super._destinationWidth;
@@ -2816,7 +2816,7 @@ LABEL_28:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (int64_t)processFrameWithInput:(__IOSurface *)a3 Measurement:(id *)a4 outputData:(id *)a5
+- (int64_t)processFrameWithInput:(__IOSurface *)input Measurement:(id *)measurement outputData:(id *)data
 {
   v39 = *MEMORY[0x277D85DE8];
   v9 = logLevel;
@@ -2827,11 +2827,11 @@ LABEL_28:
       *buf = 136315906;
       *&buf[4] = "[ASEProcessingT1 processFrameWithInput:Measurement:outputData:]";
       *&buf[12] = 2048;
-      *&buf[14] = a3;
+      *&buf[14] = input;
       *&buf[22] = 2048;
-      *&buf[24] = a4;
+      *&buf[24] = measurement;
       *&buf[32] = 2048;
-      *&buf[34] = a5;
+      *&buf[34] = data;
       _os_log_impl(&dword_23D3F2000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [1.50.3] ++  %s : input=%p, aseMeasurementOutput=%p, aseFrameProcessingControl=%p\n", buf, 0x2Au);
     }
 
@@ -2844,12 +2844,12 @@ LABEL_28:
     {
       aseProcessingType = self->super._aseProcessingType;
       v11 = getASEProcessingType(aseProcessingType);
-      v12 = a5;
-      v13 = a3;
+      dataCopy = data;
+      inputCopy = input;
       inputWidth = self->super._inputWidth;
       inputHeight = self->super._inputHeight;
       destinationWidth = self->super._destinationWidth;
-      v17 = a4;
+      measurementCopy = measurement;
       destinationHeight = self->super._destinationHeight;
       enhancementStrength = self->super._enhancementStrength;
       InputTypeString = getInputTypeString(self->super._inputType);
@@ -2861,8 +2861,8 @@ LABEL_28:
       *&buf[20] = v11;
       *&buf[28] = 1024;
       *&buf[30] = inputWidth;
-      a3 = v13;
-      a5 = v12;
+      input = inputCopy;
+      data = dataCopy;
       *&buf[34] = 1024;
       *&buf[36] = inputHeight;
       *&buf[40] = 2048;
@@ -2871,7 +2871,7 @@ LABEL_28:
       *&buf[52] = destinationWidth;
       *&buf[56] = 1024;
       *&buf[58] = destinationHeight;
-      a4 = v17;
+      measurement = measurementCopy;
       *&buf[62] = 2080;
       *&buf[64] = InputTypeString;
       _os_log_impl(&dword_23D3F2000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [1.50.3]     %s : aseProcessingType=%d [%s], width=%d, height=%d, strength=%f, destinationWidth=%d, destinationHeight=%d, inputType=%s\n", buf, 0x48u);
@@ -2916,7 +2916,7 @@ LABEL_28:
     goto LABEL_15;
   }
 
-  if (a5)
+  if (data)
   {
     v37 = 0u;
     memset(v38, 0, sizeof(v38));
@@ -2924,9 +2924,9 @@ LABEL_28:
     v36 = 0u;
     memset(&buf[4], 0, 384);
     *buf = 1;
-    if (a4)
+    if (measurement)
     {
-      memcpy(buf, a4, 0x17CuLL);
+      memcpy(buf, measurement, 0x17CuLL);
     }
 
     if ((isT1OrNewer(self->super._productType) & 1) == 0)
@@ -2947,8 +2947,8 @@ LABEL_28:
     bzero(v29, 0x15C4uLL);
     updateConfigsPerFrame();
     ++self->super._numberOfRequestedFrames;
-    [(ASEProcessingT1 *)self processPixelWithInput:a3 Measurement:buf controlUnitV3:v29];
-    *a5 = [(ASEProcessingT1 *)self populateOutputHcus:v29];
+    [(ASEProcessingT1 *)self processPixelWithInput:input Measurement:buf controlUnitV3:v29];
+    *data = [(ASEProcessingT1 *)self populateOutputHcus:v29];
     ++self->super._numberOfProcessedFrames;
     v28 = -18000;
     goto LABEL_25;
@@ -2965,9 +2965,9 @@ LABEL_28:
     *buf = 136315906;
     *&buf[4] = "[ASEProcessingT1 processFrameWithInput:Measurement:outputData:]";
     *&buf[12] = 2048;
-    *&buf[14] = a3;
+    *&buf[14] = input;
     *&buf[22] = 2048;
-    *&buf[24] = a4;
+    *&buf[24] = measurement;
     *&buf[32] = 2048;
     *&buf[34] = 0;
     v25 = MEMORY[0x277D86220];
@@ -2997,7 +2997,7 @@ LABEL_32:
   return v28;
 }
 
-- (int64_t)processFrameWithInput:(__IOSurface *)a3 Measurement:(id *)a4 callback:(id)a5
+- (int64_t)processFrameWithInput:(__IOSurface *)input Measurement:(id *)measurement callback:(id)callback
 {
   v9 = *MEMORY[0x277D85DE8];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
@@ -3011,7 +3011,7 @@ LABEL_32:
   return -18001;
 }
 
-- (void)printAseMeasurementOutput:(id *)a3
+- (void)printAseMeasurementOutput:(id *)output
 {
   v43 = *MEMORY[0x277D85DE8];
   v30.receiver = self;
@@ -3021,12 +3021,12 @@ LABEL_32:
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
-      v4 = a3->var22[0];
-      v5 = a3->var22[1];
-      v6 = a3->var22[2];
-      v7 = a3->var22[3];
-      v8 = a3->var22[4];
-      v9 = a3->var23[0];
+      v4 = output->var22[0];
+      v5 = output->var22[1];
+      v6 = output->var22[2];
+      v7 = output->var22[3];
+      v8 = output->var22[4];
+      v9 = output->var23[0];
       *buf = 67110400;
       v32 = v4;
       v33 = 1024;
@@ -3046,12 +3046,12 @@ LABEL_32:
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
       {
-        v10 = a3->var23[0];
-        v11 = a3->var23[1];
-        v12 = a3->var23[2];
-        v13 = a3->var23[3];
-        v14 = a3->var23[4];
-        v15 = a3->var24[0];
+        v10 = output->var23[0];
+        v11 = output->var23[1];
+        v12 = output->var23[2];
+        v13 = output->var23[3];
+        v14 = output->var23[4];
+        v15 = output->var24[0];
         *buf = 67110400;
         v32 = v10;
         v33 = 1024;
@@ -3071,12 +3071,12 @@ LABEL_32:
       {
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
         {
-          v16 = a3->var24[0];
-          v17 = a3->var24[1];
-          v18 = a3->var24[2];
-          v19 = a3->var24[3];
-          v20 = a3->var24[4];
-          v21 = a3->var25[0];
+          v16 = output->var24[0];
+          v17 = output->var24[1];
+          v18 = output->var24[2];
+          v19 = output->var24[3];
+          v20 = output->var24[4];
+          v21 = output->var25[0];
           *buf = 67110400;
           v32 = v16;
           v33 = 1024;
@@ -3096,12 +3096,12 @@ LABEL_32:
         {
           if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
           {
-            v22 = a3->var25[0];
-            v23 = a3->var25[1];
-            v24 = a3->var25[2];
-            v25 = a3->var25[3];
-            v26 = a3->var25[4];
-            v27 = a3->var26;
+            v22 = output->var25[0];
+            v23 = output->var25[1];
+            v24 = output->var25[2];
+            v25 = output->var25[3];
+            v26 = output->var25[4];
+            v27 = output->var26;
             *buf = 67110400;
             v32 = v22;
             v33 = 1024;
@@ -3119,7 +3119,7 @@ LABEL_32:
 
           if (logLevel >= 3 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
           {
-            v28 = a3->var26;
+            v28 = output->var26;
             *buf = 67109120;
             v32 = v28;
             _os_log_impl(&dword_23D3F2000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [1.50.3] variance = %010d\n", buf, 8u);

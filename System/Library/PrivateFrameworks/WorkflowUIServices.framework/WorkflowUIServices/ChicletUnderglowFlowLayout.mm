@@ -1,11 +1,11 @@
 @interface ChicletUnderglowFlowLayout
-- (id)layoutAttributesForElementsInRect:(CGRect)a3;
-- (id)layoutAttributesForSupplementaryViewOfKind:(id)a3 atIndexPath:(id)a4;
+- (id)layoutAttributesForElementsInRect:(CGRect)rect;
+- (id)layoutAttributesForSupplementaryViewOfKind:(id)kind atIndexPath:(id)path;
 @end
 
 @implementation ChicletUnderglowFlowLayout
 
-- (id)layoutAttributesForSupplementaryViewOfKind:(id)a3 atIndexPath:(id)a4
+- (id)layoutAttributesForSupplementaryViewOfKind:(id)kind atIndexPath:(id)path
 {
   v5 = sub_1C840B2BC();
   v6 = *(v5 - 8);
@@ -14,7 +14,7 @@
   v9 = sub_1C840CDDC();
   v11 = v10;
   sub_1C840B2AC();
-  v12 = self;
+  selfCopy = self;
   v13 = sub_1C83C2DB4(v9, v11, v8);
 
   (*(v6 + 8))(v8, v5);
@@ -22,9 +22,9 @@
   return v13;
 }
 
-- (id)layoutAttributesForElementsInRect:(CGRect)a3
+- (id)layoutAttributesForElementsInRect:(CGRect)rect
 {
-  v3 = self;
+  selfCopy = self;
   v4 = sub_1C83C3274();
 
   if (v4)

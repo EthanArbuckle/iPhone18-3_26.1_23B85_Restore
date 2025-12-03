@@ -1,11 +1,11 @@
 @interface HMPersonFaceCrop
-- (BOOL)isEqual:(id)a3;
-- (HMPersonFaceCrop)initWithCoder:(id)a3;
-- (HMPersonFaceCrop)initWithUUID:(id)a3 dataRepresentation:(id)a4 dateCreated:(id)a5 faceBoundingBox:(CGRect)a6 personUUID:(id)a7;
-- (HMPersonFaceCrop)initWithUUID:(id)a3 dataRepresentation:(id)a4 dateCreated:(id)a5 faceBoundingBox:(CGRect)a6 personUUID:(id)a7 unassociatedFaceCropUUID:(id)a8 source:(int64_t)a9;
+- (BOOL)isEqual:(id)equal;
+- (HMPersonFaceCrop)initWithCoder:(id)coder;
+- (HMPersonFaceCrop)initWithUUID:(id)d dataRepresentation:(id)representation dateCreated:(id)created faceBoundingBox:(CGRect)box personUUID:(id)iD;
+- (HMPersonFaceCrop)initWithUUID:(id)d dataRepresentation:(id)representation dateCreated:(id)created faceBoundingBox:(CGRect)box personUUID:(id)iD unassociatedFaceCropUUID:(id)uID source:(int64_t)source;
 - (id)attributeDescriptions;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMPersonFaceCrop
@@ -14,12 +14,12 @@
 {
   v17.receiver = self;
   v17.super_class = HMPersonFaceCrop;
-  v3 = [(HMFaceCrop *)&v17 attributeDescriptions];
-  v4 = [v3 mutableCopy];
+  attributeDescriptions = [(HMFaceCrop *)&v17 attributeDescriptions];
+  v4 = [attributeDescriptions mutableCopy];
 
   v5 = objc_alloc(MEMORY[0x1E69A29C8]);
-  v6 = [(HMPersonFaceCrop *)self personUUID];
-  v7 = [v5 initWithName:@"Person UUID" value:v6];
+  personUUID = [(HMPersonFaceCrop *)self personUUID];
+  v7 = [v5 initWithName:@"Person UUID" value:personUUID];
   [v4 addObject:v7];
 
   v8 = objc_alloc(MEMORY[0x1E69A29C8]);
@@ -27,13 +27,13 @@
   v10 = [v8 initWithName:@"Source" value:v9];
   [v4 addObject:v10];
 
-  v11 = [(HMPersonFaceCrop *)self unassociatedFaceCropUUID];
+  unassociatedFaceCropUUID = [(HMPersonFaceCrop *)self unassociatedFaceCropUUID];
 
-  if (v11)
+  if (unassociatedFaceCropUUID)
   {
     v12 = objc_alloc(MEMORY[0x1E69A29C8]);
-    v13 = [(HMPersonFaceCrop *)self unassociatedFaceCropUUID];
-    v14 = [v12 initWithName:@"Unassociated Face Crop UUID" value:v13];
+    unassociatedFaceCropUUID2 = [(HMPersonFaceCrop *)self unassociatedFaceCropUUID];
+    v14 = [v12 initWithName:@"Unassociated Face Crop UUID" value:unassociatedFaceCropUUID2];
     [v4 addObject:v14];
   }
 
@@ -42,28 +42,28 @@
   return v15;
 }
 
-- (HMPersonFaceCrop)initWithCoder:(id)a3
+- (HMPersonFaceCrop)initWithCoder:(id)coder
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [[HMFaceCrop alloc] initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [[HMFaceCrop alloc] initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMPFC.ck.pu"];
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMPFC.ck.ufcu"];
-    v8 = [v4 decodeIntegerForKey:@"HMPFC.ck.s"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMPFC.ck.pu"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMPFC.ck.ufcu"];
+    v8 = [coderCopy decodeIntegerForKey:@"HMPFC.ck.s"];
     if (v6)
     {
       v9 = v8;
-      v10 = [(HMFaceCrop *)v5 UUID];
-      v11 = [(HMFaceCrop *)v5 dataRepresentation];
-      v12 = [(HMFaceCrop *)v5 dateCreated];
+      uUID = [(HMFaceCrop *)v5 UUID];
+      dataRepresentation = [(HMFaceCrop *)v5 dataRepresentation];
+      dateCreated = [(HMFaceCrop *)v5 dateCreated];
       [(HMFaceCrop *)v5 faceBoundingBox];
-      self = [(HMPersonFaceCrop *)self initWithUUID:v10 dataRepresentation:v11 dateCreated:v12 faceBoundingBox:v6 personUUID:?];
+      self = [(HMPersonFaceCrop *)self initWithUUID:uUID dataRepresentation:dataRepresentation dateCreated:dateCreated faceBoundingBox:v6 personUUID:?];
 
       [(HMPersonFaceCrop *)self setUnassociatedFaceCropUUID:v7];
       [(HMPersonFaceCrop *)self setSource:v9];
-      v13 = self;
+      selfCopy = self;
     }
 
     else
@@ -82,62 +82,62 @@
       }
 
       objc_autoreleasePoolPop(v14);
-      v13 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v13 = 0;
+    selfCopy = 0;
   }
 
   v17 = *MEMORY[0x1E69E9840];
-  return v13;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = HMPersonFaceCrop;
-  v4 = a3;
-  [(HMFaceCrop *)&v7 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(HMFaceCrop *)&v7 encodeWithCoder:coderCopy];
   v5 = [(HMPersonFaceCrop *)self personUUID:v7.receiver];
-  [v4 encodeObject:v5 forKey:@"HMPFC.ck.pu"];
+  [coderCopy encodeObject:v5 forKey:@"HMPFC.ck.pu"];
 
-  v6 = [(HMPersonFaceCrop *)self unassociatedFaceCropUUID];
-  [v4 encodeObject:v6 forKey:@"HMPFC.ck.ufcu"];
+  unassociatedFaceCropUUID = [(HMPersonFaceCrop *)self unassociatedFaceCropUUID];
+  [coderCopy encodeObject:unassociatedFaceCropUUID forKey:@"HMPFC.ck.ufcu"];
 
-  [v4 encodeInteger:-[HMPersonFaceCrop source](self forKey:{"source"), @"HMPFC.ck.s"}];
+  [coderCopy encodeInteger:-[HMPersonFaceCrop source](self forKey:{"source"), @"HMPFC.ck.s"}];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [HMMutablePersonFaceCrop allocWithZone:a3];
-  v5 = [(HMFaceCrop *)self UUID];
-  v6 = [(HMFaceCrop *)self dataRepresentation];
-  v7 = [(HMFaceCrop *)self dateCreated];
+  v4 = [HMMutablePersonFaceCrop allocWithZone:zone];
+  uUID = [(HMFaceCrop *)self UUID];
+  dataRepresentation = [(HMFaceCrop *)self dataRepresentation];
+  dateCreated = [(HMFaceCrop *)self dateCreated];
   [(HMFaceCrop *)self faceBoundingBox];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
-  v16 = [(HMPersonFaceCrop *)self personUUID];
-  v17 = [(HMPersonFaceCrop *)v4 initWithUUID:v5 dataRepresentation:v6 dateCreated:v7 faceBoundingBox:v16 personUUID:v9, v11, v13, v15];
+  personUUID = [(HMPersonFaceCrop *)self personUUID];
+  v17 = [(HMPersonFaceCrop *)v4 initWithUUID:uUID dataRepresentation:dataRepresentation dateCreated:dateCreated faceBoundingBox:personUUID personUUID:v9, v11, v13, v15];
 
-  v18 = [(HMPersonFaceCrop *)self unassociatedFaceCropUUID];
-  [(HMPersonFaceCrop *)v17 setUnassociatedFaceCropUUID:v18];
+  unassociatedFaceCropUUID = [(HMPersonFaceCrop *)self unassociatedFaceCropUUID];
+  [(HMPersonFaceCrop *)v17 setUnassociatedFaceCropUUID:unassociatedFaceCropUUID];
 
   [(HMPersonFaceCrop *)v17 setSource:[(HMPersonFaceCrop *)self source]];
   return v17;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -148,12 +148,12 @@
   v6 = v5;
   if (v6 && (v15.receiver = self, v15.super_class = HMPersonFaceCrop, [(HMFaceCrop *)&v15 isEqual:v6]))
   {
-    v7 = [(HMPersonFaceCrop *)self personUUID];
-    v8 = [v6 personUUID];
-    if ([v7 isEqual:v8] && (-[HMPersonFaceCrop unassociatedFaceCropUUID](self, "unassociatedFaceCropUUID"), v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "unassociatedFaceCropUUID"), v10 = objc_claimAutoreleasedReturnValue(), v11 = HMFEqualObjects(), v10, v9, v11))
+    personUUID = [(HMPersonFaceCrop *)self personUUID];
+    personUUID2 = [v6 personUUID];
+    if ([personUUID isEqual:personUUID2] && (-[HMPersonFaceCrop unassociatedFaceCropUUID](self, "unassociatedFaceCropUUID"), v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "unassociatedFaceCropUUID"), v10 = objc_claimAutoreleasedReturnValue(), v11 = HMFEqualObjects(), v10, v9, v11))
     {
-      v12 = [(HMPersonFaceCrop *)self source];
-      v13 = v12 == [v6 source];
+      source = [(HMPersonFaceCrop *)self source];
+      v13 = source == [v6 source];
     }
 
     else
@@ -170,56 +170,56 @@
   return v13;
 }
 
-- (HMPersonFaceCrop)initWithUUID:(id)a3 dataRepresentation:(id)a4 dateCreated:(id)a5 faceBoundingBox:(CGRect)a6 personUUID:(id)a7 unassociatedFaceCropUUID:(id)a8 source:(int64_t)a9
+- (HMPersonFaceCrop)initWithUUID:(id)d dataRepresentation:(id)representation dateCreated:(id)created faceBoundingBox:(CGRect)box personUUID:(id)iD unassociatedFaceCropUUID:(id)uID source:(int64_t)source
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v20 = a8;
-  v21 = [(HMPersonFaceCrop *)self initWithUUID:a3 dataRepresentation:a4 dateCreated:a5 faceBoundingBox:a7 personUUID:x, y, width, height];
-  v22 = v21;
-  if (v21)
+  height = box.size.height;
+  width = box.size.width;
+  y = box.origin.y;
+  x = box.origin.x;
+  uIDCopy = uID;
+  height = [(HMPersonFaceCrop *)self initWithUUID:d dataRepresentation:representation dateCreated:created faceBoundingBox:iD personUUID:x, y, width, height];
+  v22 = height;
+  if (height)
   {
-    objc_storeStrong(&v21->_unassociatedFaceCropUUID, a8);
-    v22->_source = a9;
+    objc_storeStrong(&height->_unassociatedFaceCropUUID, uID);
+    v22->_source = source;
   }
 
   return v22;
 }
 
-- (HMPersonFaceCrop)initWithUUID:(id)a3 dataRepresentation:(id)a4 dateCreated:(id)a5 faceBoundingBox:(CGRect)a6 personUUID:(id)a7
+- (HMPersonFaceCrop)initWithUUID:(id)d dataRepresentation:(id)representation dateCreated:(id)created faceBoundingBox:(CGRect)box personUUID:(id)iD
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a7;
-  if (!v15)
+  height = box.size.height;
+  width = box.size.width;
+  y = box.origin.y;
+  x = box.origin.x;
+  dCopy = d;
+  representationCopy = representation;
+  createdCopy = created;
+  iDCopy = iD;
+  if (!dCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_9;
   }
 
-  if (!v16)
+  if (!representationCopy)
   {
 LABEL_9:
     _HMFPreconditionFailure();
     goto LABEL_10;
   }
 
-  if (!v17)
+  if (!createdCopy)
   {
 LABEL_10:
     _HMFPreconditionFailure();
     goto LABEL_11;
   }
 
-  v19 = v18;
-  if (!v18)
+  v19 = iDCopy;
+  if (!iDCopy)
   {
 LABEL_11:
     v24 = _HMFPreconditionFailure();
@@ -229,15 +229,15 @@ LABEL_11:
 
   v26.receiver = self;
   v26.super_class = HMPersonFaceCrop;
-  v20 = [(HMFaceCrop *)&v26 initWithUUID:v15 dataRepresentation:v16 dateCreated:v17 faceBoundingBox:x, y, width, height];
-  if (v20)
+  height = [(HMFaceCrop *)&v26 initWithUUID:dCopy dataRepresentation:representationCopy dateCreated:createdCopy faceBoundingBox:x, y, width, height];
+  if (height)
   {
     v21 = [v19 copy];
-    personUUID = v20->_personUUID;
-    v20->_personUUID = v21;
+    personUUID = height->_personUUID;
+    height->_personUUID = v21;
   }
 
-  return v20;
+  return height;
 }
 
 @end

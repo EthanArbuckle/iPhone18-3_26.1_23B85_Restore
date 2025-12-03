@@ -1,8 +1,8 @@
 @interface _DASRemoteDeviceWakePolicy
 + (id)policyInstance;
-- (BOOL)appliesToActivity:(id)a3;
+- (BOOL)appliesToActivity:(id)activity;
 - (_DASRemoteDeviceWakePolicy)init;
-- (id)responseForActivity:(id)a3 withState:(id)a4;
+- (id)responseForActivity:(id)activity withState:(id)state;
 @end
 
 @implementation _DASRemoteDeviceWakePolicy
@@ -28,7 +28,7 @@
   block[1] = 3221225472;
   block[2] = sub_10000BA78;
   block[3] = &unk_1001B54A0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10020ADC0 != -1)
   {
     dispatch_once(&qword_10020ADC0, block);
@@ -39,13 +39,13 @@
   return v2;
 }
 
-- (BOOL)appliesToActivity:(id)a3
+- (BOOL)appliesToActivity:(id)activity
 {
-  v3 = a3;
-  v4 = [v3 remoteDevice];
-  if (v4 && [v3 requiresRemoteDeviceWake])
+  activityCopy = activity;
+  remoteDevice = [activityCopy remoteDevice];
+  if (remoteDevice && [activityCopy requiresRemoteDeviceWake])
   {
-    v5 = [v3 requestsImmediateRuntime] ^ 1;
+    v5 = [activityCopy requestsImmediateRuntime] ^ 1;
   }
 
   else
@@ -56,19 +56,19 @@
   return v5;
 }
 
-- (id)responseForActivity:(id)a3 withState:(id)a4
+- (id)responseForActivity:(id)activity withState:(id)state
 {
-  v5 = a3;
-  v6 = [v5 remoteDevice];
+  activityCopy = activity;
+  remoteDevice = [activityCopy remoteDevice];
   v7 = +[_DASDaemon sharedInstance];
   v8 = [_DASRemoteDeviceWakeMonitor sharedMonitorWithDaemon:v7];
 
-  [v8 registerRemoteDeviceWakeStateWithActivity:v5];
-  LODWORD(v5) = [v8 isRemoteDeviceAwake:v6];
+  [v8 registerRemoteDeviceWakeStateWithActivity:activityCopy];
+  LODWORD(activityCopy) = [v8 isRemoteDeviceAwake:remoteDevice];
   v9 = [[_DASPolicyResponseRationale alloc] initWithPolicyName:self->_policyName];
   v10 = v9;
   v11 = 1.0;
-  if (v5)
+  if (activityCopy)
   {
     v12 = 0;
   }

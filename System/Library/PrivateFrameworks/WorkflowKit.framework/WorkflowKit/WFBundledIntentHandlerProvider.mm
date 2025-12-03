@@ -2,18 +2,18 @@
 + (id)localIntentHandlerLaunchID;
 + (id)sharedInstance;
 - (WFBundledIntentHandlerProvider)init;
-- (id)handlerForIntent:(id)a3;
+- (id)handlerForIntent:(id)intent;
 @end
 
 @implementation WFBundledIntentHandlerProvider
 
-- (id)handlerForIntent:(id)a3
+- (id)handlerForIntent:(id)intent
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 identifier];
+  intentCopy = intent;
+  identifier = [intentCopy identifier];
 
-  if (v4)
+  if (identifier)
   {
     if (handlerForIntent__onceToken != -1)
     {
@@ -21,28 +21,28 @@
     }
 
     v5 = handlerForIntent__intentHandlerForIdentifier;
-    v6 = [v3 identifier];
-    v7 = [v5 objectForKeyedSubscript:v6];
+    identifier2 = [intentCopy identifier];
+    v7 = [v5 objectForKeyedSubscript:identifier2];
 
     v8 = handlerForIntent__intentHandlerForIdentifier;
     if (v7)
     {
-      v9 = [v3 identifier];
-      v10 = [v8 objectForKeyedSubscript:v9];
+      identifier3 = [intentCopy identifier];
+      v10 = [v8 objectForKeyedSubscript:identifier3];
     }
 
     else
     {
       [handlerForIntent__intentHandlerForIdentifier removeAllObjects];
       v12 = handlerForIntent__intentHandlerForIdentifier;
-      v13 = [v3 identifier];
-      v14 = [v3 _codableDescription];
-      v15 = [v14 typeName];
+      identifier4 = [intentCopy identifier];
+      _codableDescription = [intentCopy _codableDescription];
+      typeName = [_codableDescription typeName];
 
-      v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"WF%@IntentHandler", v15];
+      v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"WF%@IntentHandler", typeName];
       v10 = objc_alloc_init(NSClassFromString(v16));
 
-      [v12 setObject:v10 forKeyedSubscript:v13];
+      [v12 setObject:v10 forKeyedSubscript:identifier4];
     }
   }
 
@@ -54,7 +54,7 @@
       *buf = 136315394;
       v20 = "[WFBundledIntentHandlerProvider handlerForIntent:]";
       v21 = 2114;
-      v22 = v3;
+      v22 = intentCopy;
       _os_log_impl(&dword_1CA256000, v11, OS_LOG_TYPE_FAULT, "%s Unable to get handler for intent: %{public}@", buf, 0x16u);
     }
 
@@ -80,8 +80,8 @@ void __51__WFBundledIntentHandlerProvider_handlerForIntent___block_invoke()
   v2 = [(WFBundledIntentHandlerProvider *)&v6 init];
   if (v2)
   {
-    v3 = [(objc_class *)getINCLocalExtensionRegistryClass() sharedInstance];
-    [v3 registerLocalExtension:v2];
+    sharedInstance = [(objc_class *)getINCLocalExtensionRegistryClass() sharedInstance];
+    [sharedInstance registerLocalExtension:v2];
 
     v4 = v2;
   }
@@ -92,9 +92,9 @@ void __51__WFBundledIntentHandlerProvider_handlerForIntent___block_invoke()
 + (id)localIntentHandlerLaunchID
 {
   v2 = +[WFBundledIntentHandlerProvider sharedInstance];
-  v3 = [v2 localExtensionIdentifier];
+  localExtensionIdentifier = [v2 localExtensionIdentifier];
 
-  return v3;
+  return localExtensionIdentifier;
 }
 
 + (id)sharedInstance
@@ -103,7 +103,7 @@ void __51__WFBundledIntentHandlerProvider_handlerForIntent___block_invoke()
   block[1] = 3221225472;
   block[2] = __48__WFBundledIntentHandlerProvider_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken != -1)
   {
     dispatch_once(&sharedInstance_onceToken, block);

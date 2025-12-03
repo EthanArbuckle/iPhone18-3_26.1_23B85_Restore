@@ -1,100 +1,100 @@
 @interface TAFilterGeneral
-+ (BOOL)locationA:(id)a3 isSignificantlyDifferentFromLocationB:(id)a4;
-+ (BOOL)locationSegments:(id)a3 underMaxSpeed:(double)a4;
-+ (BOOL)locationSegmentsUnderPedestrianMaxSpeed:(id)a3 withFilterSettings:(id)a4;
-+ (BOOL)satisfyBeepOnMoveRequirementForAddress:(id)a3 store:(id)a4 settings:(id)a5;
-+ (BOOL)satisfyNextPLOIHomeWithStore:(id)a3;
-+ (BOOL)shouldIssuePeopleDensityScan:(unint64_t)a3 distTravel:(double)a4 durationOfTravel:(double)a5 settings:(id)a6 resultsInBuffer:(id)a7;
-+ (double)distOfTravelAlong:(id)a3;
-+ (id)dateIntervalAfterVisitAdjustment:(id)a3 intervalOfInterest:(id)a4;
-+ (id)filterSuspiciousDeviceWithStore:(id)a3 andAppendOutgoingRequestsTo:(id)a4;
-+ (id)filterSuspiciousDeviceWithStore:(id)a3 settings:(id)a4 andAppendOutgoingRequestsTo:(id)a5;
-+ (id)filteredInterVisitMetadata:(id)a3 inInterval:(id)a4 withLocRelevanceThreshold:(double)a5;
-+ (id)filteredInterVisitMetadataWithVisitAdjustment:(id)a3 inInterval:(id)a4 withLocRelevanceThreshold:(double)a5;
-+ (id)filteredPeopleDensityResults:(id)a3 within:(id)a4;
-+ (id)getDateIntervalOfInterestForFiltering:(id)a3 settings:(id)a4;
-+ (void)preprocessLocationAndAdvertisementWithEnumerator:(id)a3 addressToLocationList:(id)a4 addressToAdvertisementList:(id)a5 relevanceThreshold:(double)a6;
++ (BOOL)locationA:(id)a isSignificantlyDifferentFromLocationB:(id)b;
++ (BOOL)locationSegments:(id)segments underMaxSpeed:(double)speed;
++ (BOOL)locationSegmentsUnderPedestrianMaxSpeed:(id)speed withFilterSettings:(id)settings;
++ (BOOL)satisfyBeepOnMoveRequirementForAddress:(id)address store:(id)store settings:(id)settings;
++ (BOOL)satisfyNextPLOIHomeWithStore:(id)store;
++ (BOOL)shouldIssuePeopleDensityScan:(unint64_t)scan distTravel:(double)travel durationOfTravel:(double)ofTravel settings:(id)settings resultsInBuffer:(id)buffer;
++ (double)distOfTravelAlong:(id)along;
++ (id)dateIntervalAfterVisitAdjustment:(id)adjustment intervalOfInterest:(id)interest;
++ (id)filterSuspiciousDeviceWithStore:(id)store andAppendOutgoingRequestsTo:(id)to;
++ (id)filterSuspiciousDeviceWithStore:(id)store settings:(id)settings andAppendOutgoingRequestsTo:(id)to;
++ (id)filteredInterVisitMetadata:(id)metadata inInterval:(id)interval withLocRelevanceThreshold:(double)threshold;
++ (id)filteredInterVisitMetadataWithVisitAdjustment:(id)adjustment inInterval:(id)interval withLocRelevanceThreshold:(double)threshold;
++ (id)filteredPeopleDensityResults:(id)results within:(id)within;
++ (id)getDateIntervalOfInterestForFiltering:(id)filtering settings:(id)settings;
++ (void)preprocessLocationAndAdvertisementWithEnumerator:(id)enumerator addressToLocationList:(id)list addressToAdvertisementList:(id)advertisementList relevanceThreshold:(double)threshold;
 @end
 
 @implementation TAFilterGeneral
 
-+ (id)filterSuspiciousDeviceWithStore:(id)a3 andAppendOutgoingRequestsTo:(id)a4
++ (id)filterSuspiciousDeviceWithStore:(id)store andAppendOutgoingRequestsTo:(id)to
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[TAFilterGeneralSettings alloc] initWithDefaults];
-  v8 = [TAFilterGeneral filterSuspiciousDeviceWithStore:v6 settings:v7 andAppendOutgoingRequestsTo:v5];
+  toCopy = to;
+  storeCopy = store;
+  initWithDefaults = [[TAFilterGeneralSettings alloc] initWithDefaults];
+  v8 = [TAFilterGeneral filterSuspiciousDeviceWithStore:storeCopy settings:initWithDefaults andAppendOutgoingRequestsTo:toCopy];
 
   return v8;
 }
 
-+ (id)getDateIntervalOfInterestForFiltering:(id)a3 settings:(id)a4
++ (id)getDateIntervalOfInterestForFiltering:(id)filtering settings:(id)settings
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 clock];
-  v8 = [v6 visitState];
-  v9 = [v8 getLatestValidVisitDepartureDate];
+  settingsCopy = settings;
+  filteringCopy = filtering;
+  clock = [filteringCopy clock];
+  visitState = [filteringCopy visitState];
+  getLatestValidVisitDepartureDate = [visitState getLatestValidVisitDepartureDate];
 
-  v10 = [v6 eventBuffer];
+  eventBuffer = [filteringCopy eventBuffer];
 
-  v11 = [v10 getEarliestEventDate];
+  getEarliestEventDate = [eventBuffer getEarliestEventDate];
 
-  if (v9)
+  if (getLatestValidVisitDepartureDate)
   {
-    v12 = v9;
+    v12 = getLatestValidVisitDepartureDate;
   }
 
-  else if (v11)
+  else if (getEarliestEventDate)
   {
-    v12 = v11;
+    v12 = getEarliestEventDate;
   }
 
   else
   {
     v13 = MEMORY[0x277CBEAA8];
-    [v5 durationOfConsideration];
-    v12 = [v13 dateWithTimeInterval:v7 sinceDate:-v14];
+    [settingsCopy durationOfConsideration];
+    v12 = [v13 dateWithTimeInterval:clock sinceDate:-v14];
   }
 
   v15 = v12;
-  v16 = [MEMORY[0x277CCA970] createIntervalSafelyWithStartDate:v12 endDate:v7];
+  v16 = [MEMORY[0x277CCA970] createIntervalSafelyWithStartDate:v12 endDate:clock];
 
   return v16;
 }
 
-+ (BOOL)satisfyBeepOnMoveRequirementForAddress:(id)a3 store:(id)a4 settings:(id)a5
++ (BOOL)satisfyBeepOnMoveRequirementForAddress:(id)address store:(id)store settings:(id)settings
 {
   v35 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 deviceRecord];
-  v11 = [v10 getLatestBeepOnMoveDate:v7];
+  addressCopy = address;
+  storeCopy = store;
+  settingsCopy = settings;
+  deviceRecord = [storeCopy deviceRecord];
+  v11 = [deviceRecord getLatestBeepOnMoveDate:addressCopy];
 
   if (v11)
   {
-    v12 = [MEMORY[0x277CBEAA8] distantPast];
-    v13 = [v11 isEqualToDate:v12];
+    distantPast = [MEMORY[0x277CBEAA8] distantPast];
+    v13 = [v11 isEqualToDate:distantPast];
 
     if ((v13 & 1) == 0)
     {
-      v15 = [v8 deviceRecord];
-      v16 = [v15 getLatestAdvertisement:v7];
+      deviceRecord2 = [storeCopy deviceRecord];
+      v16 = [deviceRecord2 getLatestAdvertisement:addressCopy];
 
-      LODWORD(v15) = [v16 isPosh];
-      v17 = [v8 deviceRecord];
-      v18 = v17;
-      if (v15)
+      LODWORD(deviceRecord2) = [v16 isPosh];
+      deviceRecord3 = [storeCopy deviceRecord];
+      v18 = deviceRecord3;
+      if (deviceRecord2)
       {
-        v19 = [v17 getAccessoryInfo:v7];
+        v19 = [deviceRecord3 getAccessoryInfo:addressCopy];
 
         if (v19 && -[NSObject isCapableOfBOM](v19, "isCapableOfBOM") && ([v16 isApple] & 1) != 0)
         {
 
 LABEL_10:
-          v21 = [v8 clock];
-          v22 = [v21 dateByAddingTimeInterval:{-objc_msgSend(v9, "beepOnMoveConsiderationTimeInterval")}];
+          clock = [storeCopy clock];
+          v22 = [clock dateByAddingTimeInterval:{-objc_msgSend(settingsCopy, "beepOnMoveConsiderationTimeInterval")}];
 
           v14 = [v11 compare:v22] == 1;
 LABEL_18:
@@ -108,20 +108,20 @@ LABEL_18:
           goto LABEL_16;
         }
 
-        v24 = v23;
-        v25 = [v7 hexString];
+        hexString2 = v23;
+        hexString = [addressCopy hexString];
         v29 = 68289283;
         v30 = 0;
         v31 = 2082;
         v32 = "";
         v33 = 2113;
-        v34 = v25;
-        _os_log_impl(&dword_26F2E2000, v24, OS_LOG_TYPE_ERROR, "{msg%{public}.0s:#TAFilterGeneral found BOM on unsupported device, address:%{private}@}", &v29, 0x1Cu);
+        v34 = hexString;
+        _os_log_impl(&dword_26F2E2000, hexString2, OS_LOG_TYPE_ERROR, "{msg%{public}.0s:#TAFilterGeneral found BOM on unsupported device, address:%{private}@}", &v29, 0x1Cu);
       }
 
       else
       {
-        v20 = [v17 getDeviceType:v7];
+        v20 = [deviceRecord3 getDeviceType:addressCopy];
 
         if (v20 == 1)
         {
@@ -137,13 +137,13 @@ LABEL_17:
         }
 
         v19 = v26;
-        v24 = [v7 hexString];
+        hexString2 = [addressCopy hexString];
         v29 = 68289283;
         v30 = 0;
         v31 = 2082;
         v32 = "";
         v33 = 2113;
-        v34 = v24;
+        v34 = hexString2;
         _os_log_impl(&dword_26F2E2000, v19, OS_LOG_TYPE_ERROR, "{msg%{public}.0s:#TAFilterGeneral found BOM on non-durian device, address:%{private}@}", &v29, 0x1Cu);
       }
 
@@ -159,17 +159,17 @@ LABEL_19:
   return v14;
 }
 
-+ (BOOL)satisfyNextPLOIHomeWithStore:(id)a3
++ (BOOL)satisfyNextPLOIHomeWithStore:(id)store
 {
   v15 = *MEMORY[0x277D85DE8];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [a3 visitState];
-  v4 = [v3 nextPredictedLOIs];
+  visitState = [store visitState];
+  nextPredictedLOIs = [visitState nextPredictedLOIs];
 
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v5 = [nextPredictedLOIs countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = *v11;
@@ -179,7 +179,7 @@ LABEL_19:
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(nextPredictedLOIs);
         }
 
         if ([*(*(&v10 + 1) + 8 * i) type] == 1)
@@ -189,7 +189,7 @@ LABEL_19:
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [nextPredictedLOIs countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v5)
       {
         continue;
@@ -205,53 +205,53 @@ LABEL_11:
   return v5;
 }
 
-+ (id)filterSuspiciousDeviceWithStore:(id)a3 settings:(id)a4 andAppendOutgoingRequestsTo:(id)a5
++ (id)filterSuspiciousDeviceWithStore:(id)store settings:(id)settings andAppendOutgoingRequestsTo:(id)to
 {
   v227 = *MEMORY[0x277D85DE8];
-  v168 = a3;
-  v7 = a4;
-  v8 = a5;
-  if (!v7)
+  storeCopy = store;
+  settingsCopy = settings;
+  toCopy = to;
+  if (!settingsCopy)
   {
-    v7 = [[TAFilterGeneralSettings alloc] initWithDefaults];
+    settingsCopy = [[TAFilterGeneralSettings alloc] initWithDefaults];
   }
 
   v9 = TAStatusLog;
   if (os_log_type_enabled(TAStatusLog, OS_LOG_TYPE_DEFAULT))
   {
     v10 = v9;
-    v11 = [v168 clock];
+    clock = [storeCopy clock];
     *buf = 138477827;
-    *v200 = v11;
+    *v200 = clock;
     _os_log_impl(&dword_26F2E2000, v10, OS_LOG_TYPE_DEFAULT, "#TAFilterGeneral Current Clock Time: %{private}@", buf, 0xCu);
   }
 
-  v12 = v168;
-  v13 = [TAFilterGeneral getDateIntervalOfInterestForFiltering:v168 settings:v7];
+  v12 = storeCopy;
+  v13 = [TAFilterGeneral getDateIntervalOfInterestForFiltering:storeCopy settings:settingsCopy];
   v14 = TAStatusLog;
   if (os_log_type_enabled(TAStatusLog, OS_LOG_TYPE_DEFAULT))
   {
     v15 = v14;
-    v16 = [v13 startDate];
-    v17 = [v13 endDate];
+    startDate = [v13 startDate];
+    endDate = [v13 endDate];
     *buf = 138478083;
-    *v200 = v16;
+    *v200 = startDate;
     *&v200[8] = 2113;
-    *&v200[10] = v17;
+    *&v200[10] = endDate;
     _os_log_impl(&dword_26F2E2000, v15, OS_LOG_TYPE_DEFAULT, "#TAFilterGeneral Time Duration of Interest: Start Date - %{private}@ End Date - %{private}@", buf, 0x16u);
 
-    v12 = v168;
+    v12 = storeCopy;
   }
 
-  [(TAFilterGeneralSettings *)v7 thresholdOfLocationRelevance];
+  [(TAFilterGeneralSettings *)settingsCopy thresholdOfLocationRelevance];
   v18 = [TAFilterGeneral filteredInterVisitMetadataWithVisitAdjustment:v12 inInterval:v13 withLocRelevanceThreshold:?];
   if ([v18 count])
   {
     v145 = v13;
-    v19 = [v12 eventBuffer];
-    v154 = [v19 getAllTAEventsOf:objc_opt_class()];
+    eventBuffer = [v12 eventBuffer];
+    v154 = [eventBuffer getAllTAEventsOf:objc_opt_class()];
 
-    v156 = objc_alloc_init(MEMORY[0x277CBEB18]);
+    array = objc_alloc_init(MEMORY[0x277CBEB18]);
     v195 = 0u;
     v196 = 0u;
     v197 = 0u;
@@ -264,8 +264,8 @@ LABEL_11:
     }
 
     v162 = *v196;
-    v155 = v8;
-    v180 = v7;
+    v155 = toCopy;
+    v180 = settingsCopy;
     v163 = v18;
     while (1)
     {
@@ -284,8 +284,8 @@ LABEL_11:
         {
           v23 = v22;
           v24 = [obj objectForKeyedSubscript:v21];
-          v25 = [v24 deviceLocationHistory];
-          v26 = [v25 count];
+          deviceLocationHistory = [v24 deviceLocationHistory];
+          v26 = [deviceLocationHistory count];
           *buf = 138478083;
           *v200 = v21;
           *&v200[8] = 2049;
@@ -294,31 +294,31 @@ LABEL_11:
         }
 
         v27 = [obj objectForKeyedSubscript:v21];
-        v28 = [v27 deviceLocationHistory];
+        deviceLocationHistory2 = [v27 deviceLocationHistory];
 
-        v186 = v28;
-        [TAFilterGeneral distOfTravelAlong:v28];
+        v186 = deviceLocationHistory2;
+        [TAFilterGeneral distOfTravelAlong:deviceLocationHistory2];
         v30 = v29;
-        [(TAFilterGeneralSettings *)v7 thresholdOfSignificantDistance];
+        [(TAFilterGeneralSettings *)settingsCopy thresholdOfSignificantDistance];
         v32 = v31;
         v33 = [obj objectForKey:v21];
-        v34 = [v33 deviceObservationInterval];
+        deviceObservationInterval = [v33 deviceObservationInterval];
 
-        v184 = v34;
-        if (v34)
+        v184 = deviceObservationInterval;
+        if (deviceObservationInterval)
         {
-          [v34 duration];
+          [deviceObservationInterval duration];
           v36 = v35;
-          [(TAFilterGeneralSettings *)v7 thresholdOfSignificantDuration];
+          [(TAFilterGeneralSettings *)settingsCopy thresholdOfSignificantDuration];
           v38 = v37;
-          v39 = [v34 startDate];
-          v40 = [v34 endDate];
-          v41 = [TAVehicleCategoryLogic extractPrivateVehicleHintsFromTAStore:v12 since:v39 to:v40];
+          startDate2 = [deviceObservationInterval startDate];
+          endDate2 = [deviceObservationInterval endDate];
+          v41 = [TAVehicleCategoryLogic extractPrivateVehicleHintsFromTAStore:v12 since:startDate2 to:endDate2];
 
           v42 = [[TAPrivateVehicleClassificationReason alloc] initWithReason:2];
           v43 = [v41 containsObject:v42];
 
-          if ([(TAFilterGeneralSettings *)v7 allowNavGeoHintAsPrivateVehicleHint])
+          if ([(TAFilterGeneralSettings *)settingsCopy allowNavGeoHintAsPrivateVehicleHint])
           {
             v44 = [[TAPrivateVehicleClassificationReason alloc] initWithReason:1];
             v43 |= [v41 containsObject:v44];
@@ -349,10 +349,10 @@ LABEL_11:
                 {
                   v51 = *(*(&v189 + 1) + 8 * j);
                   v52 = v50;
-                  v53 = [v21 hexString];
+                  hexString = [v21 hexString];
                   v54 = TAPrivateVehicleClassificationReasonEnumToString([v51 reason]);
                   *buf = 138478083;
-                  *v200 = v53;
+                  *v200 = hexString;
                   *&v200[8] = 2113;
                   *&v200[10] = v54;
                   _os_log_impl(&dword_26F2E2000, v52, OS_LOG_TYPE_DEFAULT, "#TAFilterGeneral private vehicle reason for %{private}@ : %{private}@", buf, 0x16u);
@@ -369,8 +369,8 @@ LABEL_11:
           v177 = v55;
           if ([v55 count])
           {
-            v56 = [v55 lastObject];
-            v169 = [v56 peopleDensityState] == 0;
+            lastObject = [v55 lastObject];
+            v169 = [lastObject peopleDensityState] == 0;
           }
 
           else
@@ -378,10 +378,10 @@ LABEL_11:
             v169 = 0;
           }
 
-          v59 = [TADominantUserActivity getDominantUserActivityInfoInDateInterval:v184 store:v168];
+          v59 = [TADominantUserActivity getDominantUserActivityInfoInDateInterval:v184 store:storeCopy];
           v60 = [TAFilterGeneral locationSegmentsUnderPedestrianMaxSpeed:v186 withFilterSettings:v180];
-          v165 = [TAFilterGeneral satisfyBeepOnMoveRequirementForAddress:v21 store:v168 settings:v180];
-          v167 = [TAFilterGeneral satisfyNextPLOIHomeWithStore:v168];
+          v165 = [TAFilterGeneral satisfyBeepOnMoveRequirementForAddress:v21 store:storeCopy settings:v180];
+          v167 = [TAFilterGeneral satisfyNextPLOIHomeWithStore:storeCopy];
           v160 = v60;
           v61 = v59 == 2 && v60;
           v62 = v30 > v32;
@@ -423,13 +423,13 @@ LABEL_11:
           if (os_log_type_enabled(TAStatusLog, OS_LOG_TYPE_DEFAULT))
           {
             v71 = v70;
-            v72 = [v21 hexString];
+            hexString2 = [v21 hexString];
             *buf = 68292099;
             *v200 = 0;
             *&v200[4] = 2082;
             *&v200[6] = "";
             *&v200[14] = 2113;
-            *&v200[16] = v72;
+            *&v200[16] = hexString2;
             v201 = 1026;
             v202 = v64;
             v203 = 1026;
@@ -463,18 +463,18 @@ LABEL_11:
             if (os_log_type_enabled(TAStatusLog, OS_LOG_TYPE_DEFAULT))
             {
               v75 = v74;
-              v76 = [v21 hexString];
+              hexString3 = [v21 hexString];
               *buf = 138477827;
-              *v200 = v76;
+              *v200 = hexString3;
               _os_log_impl(&dword_26F2E2000, v75, OS_LOG_TYPE_DEFAULT, "#TAFilterGeneral adding %{private}@ because requirements satisfied", buf, 0xCu);
 
               v61 = v173;
             }
 
-            v12 = v168;
+            v12 = storeCopy;
             if (v178)
             {
-              v151 = [(TAFilterGeneralSettings *)v180 vehicularImmediacyType];
+              vehicularImmediacyType = [(TAFilterGeneralSettings *)v180 vehicularImmediacyType];
               v77 = 7;
               goto LABEL_62;
             }
@@ -488,7 +488,7 @@ LABEL_11:
             if (v157)
             {
               v170 = v86;
-              v151 = 1;
+              vehicularImmediacyType = 1;
             }
 
             else
@@ -497,17 +497,17 @@ LABEL_11:
               if (os_log_type_enabled(TAStatusLog, OS_LOG_TYPE_ERROR))
               {
                 v90 = v89;
-                v91 = [v21 hexString];
+                hexString4 = [v21 hexString];
                 *buf = 68289283;
                 *v200 = 0;
                 *&v200[4] = 2082;
                 *&v200[6] = "";
                 *&v200[14] = 2113;
-                *&v200[16] = v91;
+                *&v200[16] = hexString4;
                 _os_log_impl(&dword_26F2E2000, v90, OS_LOG_TYPE_ERROR, "{msg%{public}.0s:#TAFilterGeneral missing proper detection type classification, address:%{private}@}", buf, 0x1Cu);
               }
 
-              v151 = 1;
+              vehicularImmediacyType = 1;
               v77 = 1;
 LABEL_62:
               v170 = v77;
@@ -519,27 +519,27 @@ LABEL_62:
             -[TAInterVisitMetricPerDevice accumulateNumOfAssociatedLocs:](v92, "accumulateNumOfAssociatedLocs:", [v186 count]);
             [(TAInterVisitMetricPerDevice *)v92 accumulateSampledObservedLocations:v186];
             v93 = [obj objectForKeyedSubscript:v21];
-            v94 = [v93 latestObservation];
+            latestObservation = [v93 latestObservation];
             v161 = v92;
-            [(TAInterVisitMetricPerDevice *)v92 accumulateLatestAdvertisement:v94];
+            [(TAInterVisitMetricPerDevice *)v92 accumulateLatestAdvertisement:latestObservation];
 
             v158 = [TAGeneralDetectionMetrics alloc];
             v95 = [v177 count];
             if (v95)
             {
-              v146 = [v177 lastObject];
-              v96 = [v146 peopleDensityState];
+              lastObject2 = [v177 lastObject];
+              peopleDensityState = [lastObject2 peopleDensityState];
             }
 
             else
             {
-              v96 = -1;
+              peopleDensityState = -1;
             }
 
             v97 = [[TAPrivateVehicleClassificationReason alloc] initWithReason:1];
             v98 = [v45 containsObject:v97];
             v99 = [[TAPrivateVehicleClassificationReason alloc] initWithReason:2];
-            v159 = -[TAGeneralDetectionMetrics initWithInterVisitMetrics:dominantUserActivity:pdState:geoNavHint:vehicularStateHint:](v158, "initWithInterVisitMetrics:dominantUserActivity:pdState:geoNavHint:vehicularStateHint:", v161, v175, v96, v98, [v45 containsObject:v99]);
+            v159 = -[TAGeneralDetectionMetrics initWithInterVisitMetrics:dominantUserActivity:pdState:geoNavHint:vehicularStateHint:](v158, "initWithInterVisitMetrics:dominantUserActivity:pdState:geoNavHint:vehicularStateHint:", v161, v175, peopleDensityState, v98, [v45 containsObject:v99]);
 
             if (v95)
             {
@@ -547,17 +547,17 @@ LABEL_62:
 
             v100 = [TAMetricsDetection alloc];
             v101 = [obj objectForKey:v21];
-            v102 = [v101 latestObservation];
-            v176 = [(TAMetricsDetection *)v100 initWithDetectionType:v170 visitDetectionMetrics:0 generalDetectionMetrics:v159 singleVisitDetectionMetrics:0 latestAdvertisement:v102];
+            latestObservation2 = [v101 latestObservation];
+            v176 = [(TAMetricsDetection *)v100 initWithDetectionType:v170 visitDetectionMetrics:0 generalDetectionMetrics:v159 singleVisitDetectionMetrics:0 latestAdvertisement:latestObservation2];
 
             v148 = [TASuspiciousDevice alloc];
             v149 = [obj objectForKey:v21];
-            v147 = [v149 latestObservation];
-            v103 = [v168 clock];
-            v104 = [v168 deviceRecord];
-            v105 = [v104 getAccessoryInfo:v21];
-            v106 = [(TASuspiciousDevice *)v148 initWithLatestAdv:v147 detectionSummary:v183 date:v103 locHistory:v186 detectionMetrics:v176 detectionType:v170 immediacyType:v151 accessoryInfo:v105 forceSurfaceReason:0];
-            [v156 addObject:v106];
+            latestObservation3 = [v149 latestObservation];
+            clock2 = [storeCopy clock];
+            deviceRecord = [storeCopy deviceRecord];
+            v105 = [deviceRecord getAccessoryInfo:v21];
+            v106 = [(TASuspiciousDevice *)v148 initWithLatestAdv:latestObservation3 detectionSummary:v183 date:clock2 locHistory:v186 detectionMetrics:v176 detectionType:v170 immediacyType:vehicularImmediacyType accessoryInfo:v105 forceSurfaceReason:0];
+            [array addObject:v106];
 
             v107 = v173;
             v108 = v173;
@@ -565,12 +565,12 @@ LABEL_62:
             {
               v109 = [TASuspiciousDevice alloc];
               v152 = [obj objectForKey:v21];
-              v110 = [v152 latestObservation];
-              v111 = [v168 clock];
-              v112 = [v168 deviceRecord];
-              v113 = [v112 getAccessoryInfo:v21];
-              v114 = [(TASuspiciousDevice *)v109 initWithLatestAdv:v110 detectionSummary:v183 date:v111 locHistory:v186 detectionMetrics:v176 detectionType:v170 immediacyType:3 accessoryInfo:v113 forceSurfaceReason:0];
-              [v156 addObject:v114];
+              latestObservation4 = [v152 latestObservation];
+              clock3 = [storeCopy clock];
+              deviceRecord2 = [storeCopy deviceRecord];
+              v113 = [deviceRecord2 getAccessoryInfo:v21];
+              v114 = [(TASuspiciousDevice *)v109 initWithLatestAdv:latestObservation4 detectionSummary:v183 date:clock3 locHistory:v186 detectionMetrics:v176 detectionType:v170 immediacyType:3 accessoryInfo:v113 forceSurfaceReason:0];
+              [array addObject:v114];
 
               v107 = v173;
               v108 = 1;
@@ -582,26 +582,26 @@ LABEL_62:
               if (os_log_type_enabled(TAStatusLog, OS_LOG_TYPE_DEFAULT))
               {
                 v116 = v115;
-                v117 = [v21 hexString];
+                hexString5 = [v21 hexString];
                 *buf = 68289283;
                 *v200 = 0;
                 *&v200[4] = 2082;
                 *&v200[6] = "";
                 *&v200[14] = 2113;
-                *&v200[16] = v117;
+                *&v200[16] = hexString5;
                 _os_log_impl(&dword_26F2E2000, v116, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#TAFilterGeneral detected beepOnMove, address:%{private}@}", buf, 0x1Cu);
               }
 
               v171 = v108;
               if (v178)
               {
-                v153 = [(TAFilterGeneralSettings *)v180 beepOnMoveVehicularImmediacyType];
+                beepOnMoveVehicularImmediacyType = [(TAFilterGeneralSettings *)v180 beepOnMoveVehicularImmediacyType];
                 v118 = 12;
               }
 
               else if (v107)
               {
-                v153 = [(TAFilterGeneralSettings *)v180 beepOnMovePedestrianImmediacyType];
+                beepOnMoveVehicularImmediacyType = [(TAFilterGeneralSettings *)v180 beepOnMovePedestrianImmediacyType];
                 v118 = 13;
               }
 
@@ -611,29 +611,29 @@ LABEL_62:
                 if (os_log_type_enabled(TAStatusLog, OS_LOG_TYPE_FAULT))
                 {
                   v120 = v119;
-                  v121 = [v21 hexString];
+                  hexString6 = [v21 hexString];
                   *buf = 68289283;
                   *v200 = 0;
                   *&v200[4] = 2082;
                   *&v200[6] = "";
                   *&v200[14] = 2113;
-                  *&v200[16] = v121;
+                  *&v200[16] = hexString6;
                   _os_log_impl(&dword_26F2E2000, v120, OS_LOG_TYPE_FAULT, "{msg%{public}.0s:#TAFilterGeneral unhandled beepOnMove case, address:%{private}@}", buf, 0x1Cu);
                 }
 
-                v153 = 3;
+                beepOnMoveVehicularImmediacyType = 3;
                 v118 = 1;
               }
 
               v150 = v118;
               v122 = [TASuspiciousDevice alloc];
               v166 = [obj objectForKey:v21];
-              v123 = [v166 latestObservation];
-              v124 = [v168 clock];
-              v125 = [v168 deviceRecord];
-              v126 = [v125 getAccessoryInfo:v21];
-              v127 = [(TASuspiciousDevice *)v122 initWithLatestAdv:v123 detectionSummary:v183 date:v124 locHistory:v186 detectionMetrics:v176 detectionType:v150 immediacyType:v153 accessoryInfo:v126 forceSurfaceReason:0];
-              [v156 addObject:v127];
+              latestObservation5 = [v166 latestObservation];
+              clock4 = [storeCopy clock];
+              deviceRecord3 = [storeCopy deviceRecord];
+              v126 = [deviceRecord3 getAccessoryInfo:v21];
+              v127 = [(TASuspiciousDevice *)v122 initWithLatestAdv:latestObservation5 detectionSummary:v183 date:clock4 locHistory:v186 detectionMetrics:v176 detectionType:v150 immediacyType:beepOnMoveVehicularImmediacyType accessoryInfo:v126 forceSurfaceReason:0];
+              [array addObject:v127];
 
               v107 = v173;
               v108 = v171;
@@ -647,26 +647,26 @@ LABEL_62:
               if (os_log_type_enabled(TAStatusLog, OS_LOG_TYPE_DEFAULT))
               {
                 v130 = v129;
-                v131 = [v21 hexString];
+                hexString7 = [v21 hexString];
                 *buf = 68289283;
                 *v200 = 0;
                 *&v200[4] = 2082;
                 *&v200[6] = "";
                 *&v200[14] = 2113;
-                *&v200[16] = v131;
+                *&v200[16] = hexString7;
                 _os_log_impl(&dword_26F2E2000, v130, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#TAFilterGeneral detected PLOI home, address:%{private}@}", buf, 0x1Cu);
               }
 
               if (v178)
               {
-                v174 = [(TAFilterGeneralSettings *)v180 nextPLOIVehicularImmediacyType];
+                nextPLOIVehicularImmediacyType = [(TAFilterGeneralSettings *)v180 nextPLOIVehicularImmediacyType];
                 v132 = 14;
                 goto LABEL_90;
               }
 
               if (v107)
               {
-                v174 = [(TAFilterGeneralSettings *)v180 nextPLOIPedestrianImmediacyType];
+                nextPLOIVehicularImmediacyType = [(TAFilterGeneralSettings *)v180 nextPLOIPedestrianImmediacyType];
                 v132 = 15;
 LABEL_90:
                 v179 = v132;
@@ -678,28 +678,28 @@ LABEL_90:
                 if (os_log_type_enabled(TAStatusLog, OS_LOG_TYPE_FAULT))
                 {
                   v134 = v133;
-                  v135 = [v21 hexString];
+                  hexString8 = [v21 hexString];
                   *buf = 68289283;
                   *v200 = 0;
                   *&v200[4] = 2082;
                   *&v200[6] = "";
                   *&v200[14] = 2113;
-                  *&v200[16] = v135;
+                  *&v200[16] = hexString8;
                   _os_log_impl(&dword_26F2E2000, v134, OS_LOG_TYPE_FAULT, "{msg%{public}.0s:#TAFilterGeneral unhandled PLOI case, address:%{private}@}", buf, 0x1Cu);
                 }
 
                 v179 = 1;
-                v174 = 3;
+                nextPLOIVehicularImmediacyType = 3;
               }
 
               v136 = [TASuspiciousDevice alloc];
               v137 = [obj objectForKey:v21];
-              v138 = [v137 latestObservation];
-              v139 = [v168 clock];
-              v140 = [v168 deviceRecord];
-              v141 = [v140 getAccessoryInfo:v21];
-              v142 = [(TASuspiciousDevice *)v136 initWithLatestAdv:v138 detectionSummary:v183 date:v139 locHistory:v186 detectionMetrics:v176 detectionType:v179 immediacyType:v174 accessoryInfo:v141 forceSurfaceReason:0];
-              [v156 addObject:v142];
+              latestObservation6 = [v137 latestObservation];
+              clock5 = [storeCopy clock];
+              deviceRecord4 = [storeCopy deviceRecord];
+              v141 = [deviceRecord4 getAccessoryInfo:v21];
+              v142 = [(TASuspiciousDevice *)v136 initWithLatestAdv:latestObservation6 detectionSummary:v183 date:clock5 locHistory:v186 detectionMetrics:v176 detectionType:v179 immediacyType:nextPLOIVehicularImmediacyType accessoryInfo:v141 forceSurfaceReason:0];
+              [array addObject:v142];
 
               v73 = v177;
             }
@@ -717,34 +717,34 @@ LABEL_96:
             v80 = os_log_type_enabled(TAStatusLog, OS_LOG_TYPE_DEFAULT);
             if (!v78)
             {
-              v12 = v168;
+              v12 = storeCopy;
               if (v80)
               {
                 v87 = v79;
-                v88 = [v21 hexString];
+                hexString9 = [v21 hexString];
                 *buf = 138477827;
-                *v200 = v88;
+                *v200 = hexString9;
                 _os_log_impl(&dword_26F2E2000, v87, OS_LOG_TYPE_DEFAULT, "#TAFilterGeneral not adding %{private}@ because requirements not satisfied", buf, 0xCu);
               }
 
               goto LABEL_96;
             }
 
-            v12 = v168;
+            v12 = storeCopy;
             if (v80)
             {
               v81 = v79;
-              v82 = [v21 hexString];
+              hexString10 = [v21 hexString];
               *buf = 138477827;
-              *v200 = v82;
+              *v200 = hexString10;
               _os_log_impl(&dword_26F2E2000, v81, OS_LOG_TYPE_DEFAULT, "#TAFilterGeneral identified suspicious device %{private}@; issue people density scans to gather more information", buf, 0xCu);
             }
 
             if (v155)
             {
               v83 = [TAOutgoingRequests alloc];
-              v84 = [v145 endDate];
-              v85 = [(TAOutgoingRequests *)v83 initWithRequestKey:@"RequestingPeopleDensity" additionalInformation:v183 date:v84];
+              endDate3 = [v145 endDate];
+              v85 = [(TAOutgoingRequests *)v83 initWithRequestKey:@"RequestingPeopleDensity" additionalInformation:v183 date:endDate3];
               [v155 addObject:v85];
 
               goto LABEL_96;
@@ -759,8 +759,8 @@ LABEL_96:
             }
           }
 
-          v8 = v155;
-          v7 = v180;
+          toCopy = v155;
+          settingsCopy = v180;
           goto LABEL_98;
         }
 
@@ -788,40 +788,40 @@ LABEL_100:
     }
   }
 
-  v156 = [MEMORY[0x277CBEA60] array];
+  array = [MEMORY[0x277CBEA60] array];
 LABEL_102:
 
   v143 = *MEMORY[0x277D85DE8];
 
-  return v156;
+  return array;
 }
 
-+ (id)filteredInterVisitMetadataWithVisitAdjustment:(id)a3 inInterval:(id)a4 withLocRelevanceThreshold:(double)a5
++ (id)filteredInterVisitMetadataWithVisitAdjustment:(id)adjustment inInterval:(id)interval withLocRelevanceThreshold:(double)threshold
 {
-  v7 = a3;
-  v8 = [TAFilterGeneral dateIntervalAfterVisitAdjustment:v7 intervalOfInterest:a4];
-  v9 = [TAFilterGeneral filteredInterVisitMetadata:v7 inInterval:v8 withLocRelevanceThreshold:a5];
+  adjustmentCopy = adjustment;
+  v8 = [TAFilterGeneral dateIntervalAfterVisitAdjustment:adjustmentCopy intervalOfInterest:interval];
+  v9 = [TAFilterGeneral filteredInterVisitMetadata:adjustmentCopy inInterval:v8 withLocRelevanceThreshold:threshold];
 
   return v9;
 }
 
-+ (id)dateIntervalAfterVisitAdjustment:(id)a3 intervalOfInterest:(id)a4
++ (id)dateIntervalAfterVisitAdjustment:(id)adjustment intervalOfInterest:(id)interest
 {
-  v5 = a4;
-  v6 = [a3 visitState];
-  v7 = [v6 getLatestValidVisitDepartureDate];
+  interestCopy = interest;
+  visitState = [adjustment visitState];
+  getLatestValidVisitDepartureDate = [visitState getLatestValidVisitDepartureDate];
 
-  v8 = v5;
-  if (v7)
+  v8 = interestCopy;
+  if (getLatestValidVisitDepartureDate)
   {
-    v9 = [v5 startDate];
-    v10 = [v9 compare:v7];
+    startDate = [interestCopy startDate];
+    v10 = [startDate compare:getLatestValidVisitDepartureDate];
 
-    v8 = v5;
+    v8 = interestCopy;
     if (v10 == -1)
     {
-      v11 = [v5 endDate];
-      v12 = [v11 compare:v7];
+      endDate = [interestCopy endDate];
+      v12 = [endDate compare:getLatestValidVisitDepartureDate];
 
       if (v12 == -1)
       {
@@ -831,14 +831,14 @@ LABEL_102:
           [TAFilterGeneral dateIntervalAfterVisitAdjustment:v15 intervalOfInterest:?];
         }
 
-        v8 = [MEMORY[0x277CCA970] createIntervalSafelyWithStartDate:v7 endDate:v7];
+        v8 = [MEMORY[0x277CCA970] createIntervalSafelyWithStartDate:getLatestValidVisitDepartureDate endDate:getLatestValidVisitDepartureDate];
       }
 
       else
       {
         v13 = MEMORY[0x277CCA970];
-        v14 = [v5 endDate];
-        v8 = [v13 createIntervalSafelyWithStartDate:v7 endDate:v14];
+        endDate2 = [interestCopy endDate];
+        v8 = [v13 createIntervalSafelyWithStartDate:getLatestValidVisitDepartureDate endDate:endDate2];
       }
     }
   }
@@ -848,19 +848,19 @@ LABEL_102:
   return v8;
 }
 
-+ (void)preprocessLocationAndAdvertisementWithEnumerator:(id)a3 addressToLocationList:(id)a4 addressToAdvertisementList:(id)a5 relevanceThreshold:(double)a6
++ (void)preprocessLocationAndAdvertisementWithEnumerator:(id)enumerator addressToLocationList:(id)list addressToAdvertisementList:(id)advertisementList relevanceThreshold:(double)threshold
 {
   v51 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v9)
+  enumeratorCopy = enumerator;
+  listCopy = list;
+  advertisementListCopy = advertisementList;
+  if (enumeratorCopy)
   {
     v48 = 0u;
     v49 = 0u;
     v46 = 0u;
     v47 = 0u;
-    v45 = [v9 countByEnumeratingWithState:&v46 objects:v50 count:16];
+    v45 = [enumeratorCopy countByEnumeratingWithState:&v46 objects:v50 count:16];
     v12 = 0;
     if (v45)
     {
@@ -872,7 +872,7 @@ LABEL_102:
         {
           if (*v47 != v13)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(enumeratorCopy);
           }
 
           v16 = *(*(&v46 + 1) + 8 * i);
@@ -890,45 +890,45 @@ LABEL_102:
           {
             v19 = v16;
             v20 = v19;
-            if (v10)
+            if (listCopy)
             {
-              v21 = [v19 address];
-              v22 = [v10 objectForKeyedSubscript:v21];
+              address = [v19 address];
+              v22 = [listCopy objectForKeyedSubscript:address];
 
               if (!v22)
               {
                 v23 = objc_alloc_init(MEMORY[0x277CBEB18]);
-                v24 = [v20 address];
-                [v10 setObject:v23 forKey:v24];
+                address2 = [v20 address];
+                [listCopy setObject:v23 forKey:address2];
               }
 
-              v25 = [v20 address];
-              v26 = [v10 objectForKeyedSubscript:v25];
+              address3 = [v20 address];
+              v26 = [listCopy objectForKeyedSubscript:address3];
 
               if (!v12)
               {
                 goto LABEL_16;
               }
 
-              v27 = [v20 getDate];
+              getDate = [v20 getDate];
               [v12 getDate];
               v44 = v12;
               v28 = v14;
-              v29 = v11;
-              v30 = v10;
+              v29 = advertisementListCopy;
+              v30 = listCopy;
               v31 = v13;
-              v33 = v32 = v9;
-              [v27 timeIntervalSinceDate:v33];
+              v33 = v32 = enumeratorCopy;
+              [getDate timeIntervalSinceDate:v33];
               v35 = fabs(v34);
 
-              v9 = v32;
+              enumeratorCopy = v32;
               v13 = v31;
-              v10 = v30;
-              v11 = v29;
+              listCopy = v30;
+              advertisementListCopy = v29;
               v14 = v28;
               v12 = v44;
 
-              if (v35 < a6)
+              if (v35 < threshold)
               {
                 [v26 addObject:v44];
               }
@@ -936,32 +936,32 @@ LABEL_102:
               else
               {
 LABEL_16:
-                v36 = [MEMORY[0x277CBEB68] null];
-                [v26 addObject:v36];
+                null = [MEMORY[0x277CBEB68] null];
+                [v26 addObject:null];
               }
             }
 
-            if (v11)
+            if (advertisementListCopy)
             {
-              v37 = [v20 address];
-              v38 = [v11 objectForKeyedSubscript:v37];
+              address4 = [v20 address];
+              v38 = [advertisementListCopy objectForKeyedSubscript:address4];
 
               if (!v38)
               {
                 v39 = objc_alloc_init(MEMORY[0x277CBEB18]);
-                v40 = [v20 address];
-                [v11 setObject:v39 forKey:v40];
+                address5 = [v20 address];
+                [advertisementListCopy setObject:v39 forKey:address5];
               }
 
-              v41 = [v20 address];
-              v42 = [v11 objectForKeyedSubscript:v41];
+              address6 = [v20 address];
+              v42 = [advertisementListCopy objectForKeyedSubscript:address6];
 
               [v42 addObject:v20];
             }
           }
         }
 
-        v45 = [v9 countByEnumeratingWithState:&v46 objects:v50 count:16];
+        v45 = [enumeratorCopy countByEnumeratingWithState:&v46 objects:v50 count:16];
       }
 
       while (v45);
@@ -971,28 +971,28 @@ LABEL_16:
   v43 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)filteredInterVisitMetadata:(id)a3 inInterval:(id)a4 withLocRelevanceThreshold:(double)a5
++ (id)filteredInterVisitMetadata:(id)metadata inInterval:(id)interval withLocRelevanceThreshold:(double)threshold
 {
   v117 = *MEMORY[0x277D85DE8];
-  v75 = a3;
-  v76 = a4;
-  v7 = [v75 eventBuffer];
-  v77 = [v7 getAllTAEventsBetween:v76];
+  metadataCopy = metadata;
+  intervalCopy = interval;
+  eventBuffer = [metadataCopy eventBuffer];
+  v77 = [eventBuffer getAllTAEventsBetween:intervalCopy];
 
   if (![v77 count])
   {
-    v82 = [MEMORY[0x277CBEAC0] dictionary];
+    dictionary = [MEMORY[0x277CBEAC0] dictionary];
     goto LABEL_68;
   }
 
   v8 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v83 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v80 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v9 = [v77 objectEnumerator];
-  [TAFilterGeneral preprocessLocationAndAdvertisementWithEnumerator:v9 addressToLocationList:v8 addressToAdvertisementList:v80 relevanceThreshold:a5];
+  objectEnumerator = [v77 objectEnumerator];
+  [TAFilterGeneral preprocessLocationAndAdvertisementWithEnumerator:objectEnumerator addressToLocationList:v8 addressToAdvertisementList:v80 relevanceThreshold:threshold];
 
-  v10 = [v77 reverseObjectEnumerator];
-  [TAFilterGeneral preprocessLocationAndAdvertisementWithEnumerator:v10 addressToLocationList:v83 addressToAdvertisementList:0 relevanceThreshold:a5];
+  reverseObjectEnumerator = [v77 reverseObjectEnumerator];
+  [TAFilterGeneral preprocessLocationAndAdvertisementWithEnumerator:reverseObjectEnumerator addressToLocationList:v83 addressToAdvertisementList:0 relevanceThreshold:threshold];
 
   v84 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v107 = 0u;
@@ -1046,12 +1046,12 @@ LABEL_16:
               v22 = [v16 count];
               v23 = [v15 objectAtIndexedSubscript:v19];
               v24 = [v16 objectAtIndexedSubscript:(v21 + v22)];
-              v25 = [MEMORY[0x277CBEB68] null];
-              v26 = v25;
-              if (v23 == v25)
+              null = [MEMORY[0x277CBEB68] null];
+              v26 = null;
+              if (v23 == null)
               {
-                v43 = [MEMORY[0x277CBEB68] null];
-                v44 = v24 == v43;
+                null2 = [MEMORY[0x277CBEB68] null];
+                v44 = v24 == null2;
 
                 if (!v44)
                 {
@@ -1064,34 +1064,34 @@ LABEL_16:
               {
               }
 
-              v27 = [MEMORY[0x277CBEB68] null];
-              v28 = v27;
-              if (v24 != v27)
+              null3 = [MEMORY[0x277CBEB68] null];
+              v28 = null3;
+              if (v24 != null3)
               {
 
 LABEL_17:
-                v29 = [MEMORY[0x277CBEB68] null];
-                v30 = v29;
-                if (v24 == v29)
+                null4 = [MEMORY[0x277CBEB68] null];
+                v30 = null4;
+                if (v24 == null4)
                 {
                 }
 
                 else
                 {
-                  v31 = [MEMORY[0x277CBEB68] null];
-                  v32 = v23 == v31;
+                  null5 = [MEMORY[0x277CBEB68] null];
+                  v32 = v23 == null5;
 
                   if (!v32)
                   {
                     v33 = [v85 objectAtIndexedSubscript:v19];
-                    v34 = [v33 getDate];
-                    v35 = [v23 getDate];
-                    [v34 timeIntervalSinceDate:v35];
+                    getDate = [v33 getDate];
+                    getDate2 = [v23 getDate];
+                    [getDate timeIntervalSinceDate:getDate2];
                     v37 = v36;
 
-                    v38 = [v33 getDate];
-                    v39 = [v24 getDate];
-                    [v38 timeIntervalSinceDate:v39];
+                    getDate3 = [v33 getDate];
+                    getDate4 = [v24 getDate];
+                    [getDate3 timeIntervalSinceDate:getDate4];
                     v41 = v40;
 
                     if (fabs(v37) <= fabs(v41))
@@ -1111,8 +1111,8 @@ LABEL_17:
                 goto LABEL_28;
               }
 
-              v45 = [MEMORY[0x277CBEB68] null];
-              v46 = v23 == v45;
+              null6 = [MEMORY[0x277CBEB68] null];
+              v46 = v23 == null6;
 
               if (v46)
               {
@@ -1147,7 +1147,7 @@ LABEL_28:
   while (v81);
 LABEL_37:
 
-  v82 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v101 = 0u;
   v102 = 0u;
   v99 = 0u;
@@ -1182,15 +1182,15 @@ LABEL_37:
         else
         {
           v53 = [v47 objectForKeyedSubscript:v50];
-          v54 = [v53 firstObject];
+          firstObject = [v53 firstObject];
 
           v55 = [v47 objectForKeyedSubscript:v50];
-          v56 = [v55 lastObject];
+          lastObject = [v55 lastObject];
 
           v57 = [v47 objectForKeyedSubscript:v50];
           if (v57)
           {
-            v58 = v54 == 0;
+            v58 = firstObject == 0;
           }
 
           else
@@ -1198,7 +1198,7 @@ LABEL_37:
             v58 = 1;
           }
 
-          v60 = v58 || v56 == 0;
+          v60 = v58 || lastObject == 0;
 
           if (v60)
           {
@@ -1215,7 +1215,7 @@ LABEL_37:
             v93 = 0x3032000000;
             v94 = __Block_byref_object_copy_;
             v95 = __Block_byref_object_dispose_;
-            v62 = v56;
+            v62 = lastObject;
             v96 = v62;
             v63 = [v47 objectForKeyedSubscript:v50];
             v90[0] = MEMORY[0x277D85DD0];
@@ -1226,16 +1226,16 @@ LABEL_37:
             [v63 enumerateObjectsUsingBlock:v90];
 
             v64 = MEMORY[0x277CCA970];
-            v65 = [v54 getDate];
-            v66 = [v62 getDate];
-            v67 = [v64 createIntervalSafelyWithStartDate:v65 endDate:v66];
+            getDate5 = [firstObject getDate];
+            getDate6 = [v62 getDate];
+            v67 = [v64 createIntervalSafelyWithStartDate:getDate5 endDate:getDate6];
 
             v68 = [v84 objectForKey:v50];
             v69 = [TAInterVisitSummary alloc];
             v70 = [(TAInterVisitSummary *)v69 initWithObservationInterval:v67 andLocationHistory:v68 andLastObservation:v92[5]];
             if (v70)
             {
-              [v82 setObject:v70 forKey:v50];
+              [dictionary setObject:v70 forKey:v50];
             }
 
             else
@@ -1243,8 +1243,8 @@ LABEL_37:
               v71 = TAStatusLog;
               if (os_log_type_enabled(v71, OS_LOG_TYPE_ERROR))
               {
-                v72 = [v50 hexString];
-                [(TAFilterGeneral *)v72 filteredInterVisitMetadata:buf inInterval:&v112 withLocRelevanceThreshold:v71];
+                hexString = [v50 hexString];
+                [(TAFilterGeneral *)hexString filteredInterVisitMetadata:buf inInterval:&v112 withLocRelevanceThreshold:v71];
               }
             }
 
@@ -1262,7 +1262,7 @@ LABEL_37:
 LABEL_68:
   v73 = *MEMORY[0x277D85DE8];
 
-  return v82;
+  return dictionary;
 }
 
 void __83__TAFilterGeneral_filteredInterVisitMetadata_inInterval_withLocRelevanceThreshold___block_invoke(uint64_t a1, void *a2)
@@ -1274,14 +1274,14 @@ void __83__TAFilterGeneral_filteredInterVisitMetadata_inInterval_withLocRelevanc
   }
 }
 
-+ (BOOL)locationA:(id)a3 isSignificantlyDifferentFromLocationB:(id)a4
++ (BOOL)locationA:(id)a isSignificantlyDifferentFromLocationB:(id)b
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  [v5 horizontalAccuracy];
+  aCopy = a;
+  bCopy = b;
+  [aCopy horizontalAccuracy];
   v8 = v7;
-  [v6 horizontalAccuracy];
+  [bCopy horizontalAccuracy];
   if (v8 < 0.0 || (v10 = v9, v8 > 70.0) || v9 < 0.0 || v9 > 70.0)
   {
     v13 = TAStatusLog;
@@ -1299,7 +1299,7 @@ void __83__TAFilterGeneral_filteredInterVisitMetadata_inInterval_withLocRelevanc
 
   else
   {
-    [v5 distanceFromLocation:v6];
+    [aCopy distanceFromLocation:bCopy];
     v12 = v11 * v11 > v10 * v10 + v8 * v8;
   }
 
@@ -1307,24 +1307,24 @@ void __83__TAFilterGeneral_filteredInterVisitMetadata_inInterval_withLocRelevanc
   return v12;
 }
 
-+ (double)distOfTravelAlong:(id)a3
++ (double)distOfTravelAlong:(id)along
 {
-  v3 = a3;
+  alongCopy = along;
   v4 = 0.0;
-  if ([v3 count] >= 2 && objc_msgSend(v3, "count") >= 2)
+  if ([alongCopy count] >= 2 && objc_msgSend(alongCopy, "count") >= 2)
   {
     v5 = 0;
     v6 = 1;
     do
     {
-      v7 = [v3 objectAtIndexedSubscript:v6];
-      v8 = [v3 objectAtIndexedSubscript:v5];
+      v7 = [alongCopy objectAtIndexedSubscript:v6];
+      v8 = [alongCopy objectAtIndexedSubscript:v5];
       v9 = [TAFilterGeneral locationA:v7 isSignificantlyDifferentFromLocationB:v8];
 
       if (v9)
       {
-        v10 = [v3 objectAtIndexedSubscript:v6];
-        v11 = [v3 objectAtIndexedSubscript:v5];
+        v10 = [alongCopy objectAtIndexedSubscript:v6];
+        v11 = [alongCopy objectAtIndexedSubscript:v5];
         [v10 distanceFromLocation:v11];
         v4 = v4 + v12;
 
@@ -1334,20 +1334,20 @@ void __83__TAFilterGeneral_filteredInterVisitMetadata_inInterval_withLocRelevanc
       ++v6;
     }
 
-    while ([v3 count] > v6);
+    while ([alongCopy count] > v6);
   }
 
   return v4;
 }
 
-+ (BOOL)locationSegments:(id)a3 underMaxSpeed:(double)a4
++ (BOOL)locationSegments:(id)segments underMaxSpeed:(double)speed
 {
   v30 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = v5;
-  if (a4 >= 0.0)
+  segmentsCopy = segments;
+  v6 = segmentsCopy;
+  if (speed >= 0.0)
   {
-    if (v5 && [v5 count] >= 2 && objc_msgSend(v6, "count") >= 2)
+    if (segmentsCopy && [segmentsCopy count] >= 2 && objc_msgSend(v6, "count") >= 2)
     {
       v11 = 1;
       *&v8 = 134218496;
@@ -1383,7 +1383,7 @@ void __83__TAFilterGeneral_filteredInterVisitMetadata_inInterval_withLocRelevanc
           }
         }
 
-        else if (v15 > a4)
+        else if (v15 > speed)
         {
 
           goto LABEL_2;
@@ -1408,38 +1408,38 @@ LABEL_2:
   return v7;
 }
 
-+ (BOOL)locationSegmentsUnderPedestrianMaxSpeed:(id)a3 withFilterSettings:(id)a4
++ (BOOL)locationSegmentsUnderPedestrianMaxSpeed:(id)speed withFilterSettings:(id)settings
 {
-  v5 = a3;
-  [a4 capOfReasonableWalkingSpeed];
-  LOBYTE(a4) = [TAFilterGeneral locationSegments:v5 underMaxSpeed:?];
+  speedCopy = speed;
+  [settings capOfReasonableWalkingSpeed];
+  LOBYTE(settings) = [TAFilterGeneral locationSegments:speedCopy underMaxSpeed:?];
 
-  return a4;
+  return settings;
 }
 
-+ (id)filteredPeopleDensityResults:(id)a3 within:(id)a4
++ (id)filteredPeopleDensityResults:(id)results within:(id)within
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5 && v6)
+  resultsCopy = results;
+  withinCopy = within;
+  v7 = withinCopy;
+  if (resultsCopy && withinCopy)
   {
     v8 = MEMORY[0x277CCAC30];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __55__TAFilterGeneral_filteredPeopleDensityResults_within___block_invoke;
     v12[3] = &unk_279DD1908;
-    v13 = v6;
+    v13 = withinCopy;
     v9 = [v8 predicateWithBlock:v12];
-    v10 = [v5 filteredArrayUsingPredicate:v9];
+    array = [resultsCopy filteredArrayUsingPredicate:v9];
   }
 
   else
   {
-    v10 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
   }
 
-  return v10;
+  return array;
 }
 
 uint64_t __55__TAFilterGeneral_filteredPeopleDensityResults_within___block_invoke(uint64_t a1, void *a2)
@@ -1460,19 +1460,19 @@ uint64_t __55__TAFilterGeneral_filteredPeopleDensityResults_within___block_invok
   return v5;
 }
 
-+ (BOOL)shouldIssuePeopleDensityScan:(unint64_t)a3 distTravel:(double)a4 durationOfTravel:(double)a5 settings:(id)a6 resultsInBuffer:(id)a7
++ (BOOL)shouldIssuePeopleDensityScan:(unint64_t)scan distTravel:(double)travel durationOfTravel:(double)ofTravel settings:(id)settings resultsInBuffer:(id)buffer
 {
-  v11 = a7;
-  v12 = a6;
-  [v12 thresholdOfSignificantDistance];
+  bufferCopy = buffer;
+  settingsCopy = settings;
+  [settingsCopy thresholdOfSignificantDistance];
   v14 = v13;
-  [v12 thresholdOfSignificantDuration];
+  [settingsCopy thresholdOfSignificantDuration];
   v16 = v15;
 
   v17 = 0;
-  if (a3 == 3 && v14 < a4 && v16 < a5)
+  if (scan == 3 && v14 < travel && v16 < ofTravel)
   {
-    v17 = [v11 count] == 0;
+    v17 = [bufferCopy count] == 0;
   }
 
   return v17;

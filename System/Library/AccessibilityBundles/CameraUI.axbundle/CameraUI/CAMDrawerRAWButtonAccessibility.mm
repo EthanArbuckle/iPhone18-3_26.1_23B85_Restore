@@ -1,5 +1,5 @@
 @interface CAMDrawerRAWButtonAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityActivate;
 - (id)accessibilityValue;
 - (unint64_t)accessibilityTraits;
@@ -8,16 +8,16 @@
 
 @implementation CAMDrawerRAWButtonAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CAMDrawerRAWButton" hasInstanceMethod:@"rawMode" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"CAMControlDrawerMenuButton" hasInstanceMethod:@"_itemLabels" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CAMControlDrawerMenuButton" hasInstanceMethod:@"_cachedMenuItems" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CAMDrawerRAWButton" isKindOfClass:@"CAMControlDrawerButton"];
-  [v3 validateClass:@"CAMControlDrawerMenuButton" hasInstanceMethod:@"layoutSubviews" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"CAMControlDrawerMenuItem" hasInstanceMethod:@"value" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CAMDrawerRAWButton" isKindOfClass:@"CAMControlDrawerMenuButton"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CAMDrawerRAWButton" hasInstanceMethod:@"rawMode" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"CAMControlDrawerMenuButton" hasInstanceMethod:@"_itemLabels" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CAMControlDrawerMenuButton" hasInstanceMethod:@"_cachedMenuItems" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CAMDrawerRAWButton" isKindOfClass:@"CAMControlDrawerButton"];
+  [validationsCopy validateClass:@"CAMControlDrawerMenuButton" hasInstanceMethod:@"layoutSubviews" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"CAMControlDrawerMenuItem" hasInstanceMethod:@"value" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CAMDrawerRAWButton" isKindOfClass:@"CAMControlDrawerMenuButton"];
 }
 
 - (BOOL)accessibilityActivate
@@ -29,7 +29,7 @@
     v7 = 3221225472;
     v8 = __56__CAMDrawerRAWButtonAccessibility_accessibilityActivate__block_invoke;
     v9 = &unk_29F2ACC58;
-    v10 = self;
+    selfCopy = self;
     v11 = v3 == 0;
     AXPerformSafeBlock();
     return 1;
@@ -53,28 +53,28 @@ void __56__CAMDrawerRAWButtonAccessibility_accessibilityActivate__block_invoke(u
 - (id)accessibilityValue
 {
   v3 = [(CAMDrawerRAWButtonAccessibility *)self safeValueForKey:@"rawMode"];
-  v4 = [v3 integerValue];
+  integerValue = [v3 integerValue];
 
-  if (v4 == 1)
+  if (integerValue == 1)
   {
     v5 = @"RAW_MODE_BUTTON_VALUE_ON";
     goto LABEL_5;
   }
 
-  if (!v4)
+  if (!integerValue)
   {
     v5 = @"RAW_MODE_BUTTON_VALUE_OFF";
 LABEL_5:
-    v6 = accessibilityCameraUILocalizedString(v5);
+    accessibilityValue = accessibilityCameraUILocalizedString(v5);
     goto LABEL_7;
   }
 
   v8.receiver = self;
   v8.super_class = CAMDrawerRAWButtonAccessibility;
-  v6 = [(CAMDrawerRAWButtonAccessibility *)&v8 accessibilityValue];
+  accessibilityValue = [(CAMDrawerRAWButtonAccessibility *)&v8 accessibilityValue];
 LABEL_7:
 
-  return v6;
+  return accessibilityValue;
 }
 
 - (void)layoutSubviews

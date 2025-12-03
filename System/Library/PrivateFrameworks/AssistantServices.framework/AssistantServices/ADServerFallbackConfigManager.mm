@@ -1,7 +1,7 @@
 @interface ADServerFallbackConfigManager
 + (id)sharedInstance;
 - (ADServerFallbackConfigManager)init;
-- (BOOL)_shouldDisableServerFallbackABForDomainDirected:(BOOL)a3;
+- (BOOL)_shouldDisableServerFallbackABForDomainDirected:(BOOL)directed;
 - (BOOL)assistantSyncDisabled;
 - (void)_populateConfiguration;
 - (void)_registerUpdateHandler;
@@ -9,10 +9,10 @@
 
 @implementation ADServerFallbackConfigManager
 
-- (BOOL)_shouldDisableServerFallbackABForDomainDirected:(BOOL)a3
+- (BOOL)_shouldDisableServerFallbackABForDomainDirected:(BOOL)directed
 {
   v4 = @"disableFallbackNL";
-  if (a3)
+  if (directed)
   {
     v4 = @"disableFallbackDomain";
   }
@@ -43,21 +43,21 @@
   {
     if ([(__CFString *)v6 levelOneOfCase]== 10)
     {
-      v9 = [(__CFString *)v6 BOOLeanValue];
+      bOOLeanValue = [(__CFString *)v6 BOOLeanValue];
     }
 
     else
     {
-      v9 = 0;
+      bOOLeanValue = 0;
     }
   }
 
   else
   {
-    v9 = 1;
+    bOOLeanValue = 1;
   }
 
-  return v9;
+  return bOOLeanValue;
 }
 
 - (void)_populateConfiguration
@@ -117,28 +117,28 @@
   {
     if ([v9 levelOneOfCase] == 10)
     {
-      v12 = [v9 BOOLeanValue];
+      bOOLeanValue = [v9 BOOLeanValue];
     }
 
     else
     {
-      v12 = 0;
+      bOOLeanValue = 0;
     }
   }
 
   else
   {
-    v12 = 1;
+    bOOLeanValue = 1;
   }
 
-  self->_shouldDisableAssistantSync = v12;
+  self->_shouldDisableAssistantSync = bOOLeanValue;
   v13 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
   {
     *v15 = 136315394;
     *&v15[4] = "[ADServerFallbackConfigManager _populateConfiguration]";
     *&v15[12] = 1024;
-    *&v15[14] = v12;
+    *&v15[14] = bOOLeanValue;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "%s Updating value for _shouldDisableAssistantSync config-> %d", v15, 0x12u);
     if (!self->_shouldDisableAssistantSync)
     {
@@ -148,7 +148,7 @@
     goto LABEL_18;
   }
 
-  if (v12)
+  if (bOOLeanValue)
   {
 LABEL_18:
     v14 = +[ADPreferences sharedPreferences];

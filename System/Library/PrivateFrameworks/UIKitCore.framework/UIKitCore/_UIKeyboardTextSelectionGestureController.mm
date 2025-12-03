@@ -7,21 +7,21 @@
 - (CGPoint)lastPanTranslation;
 - (_UIKeyboardTextSelectionGestureController)init;
 - (_UIKeyboardTextSelectionGestureControllerDelegate)delegate;
-- (id)addDeallocationHandler:(id)a3;
-- (id)addLongPressTextSelectionInteractionsToView:(id)a3;
-- (id)addOneFingerTextSelectionInteractionsToView:(id)a3;
-- (id)addTwoFingerTextSelectionInteractionsToView:(id)a3;
+- (id)addDeallocationHandler:(id)handler;
+- (id)addLongPressTextSelectionInteractionsToView:(id)view;
+- (id)addOneFingerTextSelectionInteractionsToView:(id)view;
+- (id)addTwoFingerTextSelectionInteractionsToView:(id)view;
 - (id)selectionController;
 - (id)textSelectionInteractionForRTIForwarding;
 - (void)_cleanupDeadGesturesIfNecessary;
-- (void)configureOneFingerForcePressRecognizer:(id)a3;
-- (void)configureTwoFingerPanGestureRecognizer:(id)a3;
-- (void)configureTwoFingerTapGestureRecognizer:(id)a3;
+- (void)configureOneFingerForcePressRecognizer:(id)recognizer;
+- (void)configureTwoFingerPanGestureRecognizer:(id)recognizer;
+- (void)configureTwoFingerTapGestureRecognizer:(id)recognizer;
 - (void)dealloc;
 - (void)enableEnclosingScrollViewNestedPinching;
 - (void)redisableEnclosingScrollViewNestedPinching;
-- (void)removeDeallocationHandler:(id)a3;
-- (void)setDelegate:(id)a3;
+- (void)removeDeallocationHandler:(id)handler;
+- (void)setDelegate:(id)delegate;
 - (void)willRemoveSelectionController;
 @end
 
@@ -59,33 +59,33 @@
 
 - (void)enableEnclosingScrollViewNestedPinching
 {
-  v3 = [(_UIKeyboardTextSelectionGestureController *)self delegate];
-  v4 = [v3 textSelectionController];
+  delegate = [(_UIKeyboardTextSelectionGestureController *)self delegate];
+  textSelectionController = [delegate textSelectionController];
 
-  if (v4)
+  if (textSelectionController)
   {
-    v5 = [(_UIKeyboardTextSelectionGestureController *)self selectionController];
-    v6 = [v5 textInputView];
-    v10 = [v6 _scroller];
+    selectionController = [(_UIKeyboardTextSelectionGestureController *)self selectionController];
+    textInputView = [selectionController textInputView];
+    _scroller = [textInputView _scroller];
 
-    v7 = v10;
-    if (v10)
+    v7 = _scroller;
+    if (_scroller)
     {
-      v8 = [v10 pinchGestureRecognizer];
+      pinchGestureRecognizer = [_scroller pinchGestureRecognizer];
 
-      v7 = v10;
-      if (v8)
+      v7 = _scroller;
+      if (pinchGestureRecognizer)
       {
         [(_UIKeyboardTextSelectionGestureController *)self setWasNestedPinchingDisabled:1];
-        v9 = [v10 pinchGestureRecognizer];
+        pinchGestureRecognizer2 = [_scroller pinchGestureRecognizer];
         objc_opt_class();
-        if ((objc_opt_isKindOfClass() & 1) != 0 && v9 && (v9[313] & 1) == 0)
+        if ((objc_opt_isKindOfClass() & 1) != 0 && pinchGestureRecognizer2 && (pinchGestureRecognizer2[313] & 1) == 0)
         {
-          v9[313] = 1;
-          [(UIScrollViewPinchGestureRecognizer *)v9 _updateHysteresis];
+          pinchGestureRecognizer2[313] = 1;
+          [(UIScrollViewPinchGestureRecognizer *)pinchGestureRecognizer2 _updateHysteresis];
         }
 
-        v7 = v10;
+        v7 = _scroller;
       }
     }
   }
@@ -94,15 +94,15 @@
 - (void)_cleanupDeadGesturesIfNecessary
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v4 = [WeakRetained textSelectionController];
+  textSelectionController = [WeakRetained textSelectionController];
 
-  if (v4)
+  if (textSelectionController)
   {
     [(_UIKeyboardTextSelectionGestureController *)self redisableEnclosingScrollViewNestedPinching];
     if ([(_UIKeyboardTextSelectionGestureController *)self didSuppressSelectionGrabbers])
     {
-      v5 = [(_UIKeyboardTextSelectionGestureController *)self selectionController];
-      [v5 setRangedSelectionShouldShowGrabbers:1];
+      selectionController = [(_UIKeyboardTextSelectionGestureController *)self selectionController];
+      [selectionController setRangedSelectionShouldShowGrabbers:1];
 
       [(_UIKeyboardTextSelectionGestureController *)self setDidSuppressSelectionGrabbers:0];
     }
@@ -182,30 +182,30 @@
 - (BOOL)shouldAddForceGesture
 {
   v2 = +[UIDevice currentDevice];
-  v3 = [v2 _supportsForceTouch];
+  _supportsForceTouch = [v2 _supportsForceTouch];
 
-  return v3;
+  return _supportsForceTouch;
 }
 
 - (id)selectionController
 {
-  v2 = [(_UIKeyboardTextSelectionGestureController *)self delegate];
-  v3 = [v2 textSelectionController];
+  delegate = [(_UIKeyboardTextSelectionGestureController *)self delegate];
+  textSelectionController = [delegate textSelectionController];
 
-  return v3;
+  return textSelectionController;
 }
 
-- (id)addDeallocationHandler:(id)a3
+- (id)addDeallocationHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (!self->_deallocHandlers)
   {
-    v5 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     deallocHandlers = self->_deallocHandlers;
-    self->_deallocHandlers = v5;
+    self->_deallocHandlers = array;
   }
 
-  v7 = [v4 copy];
+  v7 = [handlerCopy copy];
   v8 = self->_deallocHandlers;
   v9 = _Block_copy(v7);
   [(NSMutableArray *)v8 addObject:v9];
@@ -215,17 +215,17 @@
   return v10;
 }
 
-- (void)removeDeallocationHandler:(id)a3
+- (void)removeDeallocationHandler:(id)handler
 {
-  if (a3)
+  if (handler)
   {
     [(NSMutableArray *)self->_deallocHandlers removeObject:?];
   }
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   [(_UIKeyboardTextSelectionGestureController *)self _cleanupDeadGesturesIfNecessary];
   objc_storeWeak(&self->_delegate, obj);
 }
@@ -239,28 +239,28 @@
 
 - (void)redisableEnclosingScrollViewNestedPinching
 {
-  v3 = [(_UIKeyboardTextSelectionGestureController *)self delegate];
-  v4 = [v3 textSelectionController];
+  delegate = [(_UIKeyboardTextSelectionGestureController *)self delegate];
+  textSelectionController = [delegate textSelectionController];
 
-  if (v4 && [(_UIKeyboardTextSelectionGestureController *)self wasNestedPinchingDisabled])
+  if (textSelectionController && [(_UIKeyboardTextSelectionGestureController *)self wasNestedPinchingDisabled])
   {
-    v5 = [(_UIKeyboardTextSelectionGestureController *)self selectionController];
-    v6 = [v5 textInputView];
-    v9 = [v6 _scroller];
+    selectionController = [(_UIKeyboardTextSelectionGestureController *)self selectionController];
+    textInputView = [selectionController textInputView];
+    _scroller = [textInputView _scroller];
 
-    v7 = v9;
-    if (v9)
+    v7 = _scroller;
+    if (_scroller)
     {
       [(_UIKeyboardTextSelectionGestureController *)self setWasNestedPinchingDisabled:0];
-      v8 = [v9 pinchGestureRecognizer];
+      pinchGestureRecognizer = [_scroller pinchGestureRecognizer];
       objc_opt_class();
-      if ((objc_opt_isKindOfClass() & 1) != 0 && v8 && v8[313])
+      if ((objc_opt_isKindOfClass() & 1) != 0 && pinchGestureRecognizer && pinchGestureRecognizer[313])
       {
-        v8[313] = 0;
-        [(UIScrollViewPinchGestureRecognizer *)v8 _updateHysteresis];
+        pinchGestureRecognizer[313] = 0;
+        [(UIScrollViewPinchGestureRecognizer *)pinchGestureRecognizer _updateHysteresis];
       }
 
-      v7 = v9;
+      v7 = _scroller;
     }
   }
 }
@@ -272,45 +272,45 @@
   return v2;
 }
 
-- (id)addOneFingerTextSelectionInteractionsToView:(id)a3
+- (id)addOneFingerTextSelectionInteractionsToView:(id)view
 {
-  v4 = a3;
-  v5 = [(_UIKeyboardTextSelectionGestureController *)self shouldAddForceGesture];
-  if ([(_UIKeyboardTextSelectionGestureController *)self _longPressAllowedForView:v4])
+  viewCopy = view;
+  shouldAddForceGesture = [(_UIKeyboardTextSelectionGestureController *)self shouldAddForceGesture];
+  if ([(_UIKeyboardTextSelectionGestureController *)self _longPressAllowedForView:viewCopy])
   {
-    v5 |= 8uLL;
+    shouldAddForceGesture |= 8uLL;
   }
 
   v6 = [objc_alloc(-[_UIKeyboardTextSelectionGestureController textInteractionClass](self "textInteractionClass"))];
   if (v6)
   {
-    [v4 addInteraction:v6];
+    [viewCopy addInteraction:v6];
   }
 
   return v6;
 }
 
-- (id)addTwoFingerTextSelectionInteractionsToView:(id)a3
+- (id)addTwoFingerTextSelectionInteractionsToView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v5 = [objc_alloc(-[_UIKeyboardTextSelectionGestureController textInteractionClass](self "textInteractionClass"))];
   if (v5)
   {
-    [v4 addInteraction:v5];
+    [viewCopy addInteraction:v5];
   }
 
   return v5;
 }
 
-- (id)addLongPressTextSelectionInteractionsToView:(id)a3
+- (id)addLongPressTextSelectionInteractionsToView:(id)view
 {
-  v4 = a3;
-  if ([(_UIKeyboardTextSelectionGestureController *)self _longPressAllowedForView:v4])
+  viewCopy = view;
+  if ([(_UIKeyboardTextSelectionGestureController *)self _longPressAllowedForView:viewCopy])
   {
     v5 = [objc_alloc(-[_UIKeyboardTextSelectionGestureController textInteractionClass](self "textInteractionClass"))];
     if (v5)
     {
-      [v4 addInteraction:v5];
+      [viewCopy addInteraction:v5];
     }
   }
 
@@ -322,22 +322,22 @@
   return v5;
 }
 
-- (void)configureTwoFingerPanGestureRecognizer:(id)a3
+- (void)configureTwoFingerPanGestureRecognizer:(id)recognizer
 {
-  v4 = a3;
-  [(objc_class *)[(_UIKeyboardTextSelectionGestureController *)self textInteractionClass] attachToExistingRecogniser:v4 owner:self forType:4];
+  recognizerCopy = recognizer;
+  [(objc_class *)[(_UIKeyboardTextSelectionGestureController *)self textInteractionClass] attachToExistingRecogniser:recognizerCopy owner:self forType:4];
 }
 
-- (void)configureTwoFingerTapGestureRecognizer:(id)a3
+- (void)configureTwoFingerTapGestureRecognizer:(id)recognizer
 {
-  v4 = a3;
-  [(objc_class *)[(_UIKeyboardTextSelectionGestureController *)self textInteractionClass] attachToExistingRecogniser:v4 owner:self forType:2];
+  recognizerCopy = recognizer;
+  [(objc_class *)[(_UIKeyboardTextSelectionGestureController *)self textInteractionClass] attachToExistingRecogniser:recognizerCopy owner:self forType:2];
 }
 
-- (void)configureOneFingerForcePressRecognizer:(id)a3
+- (void)configureOneFingerForcePressRecognizer:(id)recognizer
 {
-  v4 = a3;
-  [(objc_class *)[(_UIKeyboardTextSelectionGestureController *)self textInteractionClass] attachToExistingRecogniser:v4 owner:self forType:1];
+  recognizerCopy = recognizer;
+  [(objc_class *)[(_UIKeyboardTextSelectionGestureController *)self textInteractionClass] attachToExistingRecogniser:recognizerCopy owner:self forType:1];
 }
 
 - (CGPoint)lastPanTranslation

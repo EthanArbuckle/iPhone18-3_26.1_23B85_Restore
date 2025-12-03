@@ -4,30 +4,30 @@
 - (id)_locked_cachedSleepSchedule;
 - (id)_locked_cachedSleepSettings;
 - (id)cachedSleepEventRecord;
-- (id)cachedSleepEventRecordWithMissHandler:(id)a3;
-- (id)cachedSleepModeWithMissHandler:(id)a3;
+- (id)cachedSleepEventRecordWithMissHandler:(id)handler;
+- (id)cachedSleepModeWithMissHandler:(id)handler;
 - (id)cachedSleepSchedule;
-- (id)cachedSleepScheduleModelWithMissHandler:(id)a3;
-- (id)cachedSleepScheduleStateWithMissHandler:(id)a3;
-- (id)cachedSleepScheduleWithMissHandler:(id)a3;
+- (id)cachedSleepScheduleModelWithMissHandler:(id)handler;
+- (id)cachedSleepScheduleStateWithMissHandler:(id)handler;
+- (id)cachedSleepScheduleWithMissHandler:(id)handler;
 - (id)cachedSleepSettings;
-- (id)cachedSleepSettingsWithMissHandler:(id)a3;
-- (void)_locked_updateCachedSleepEventRecord:(id)a3;
-- (void)_locked_updateCachedSleepSchedule:(id)a3;
-- (void)_locked_updateCachedSleepSettings:(id)a3;
-- (void)_withLock:(id)a3;
+- (id)cachedSleepSettingsWithMissHandler:(id)handler;
+- (void)_locked_updateCachedSleepEventRecord:(id)record;
+- (void)_locked_updateCachedSleepSchedule:(id)schedule;
+- (void)_locked_updateCachedSleepSettings:(id)settings;
+- (void)_withLock:(id)lock;
 - (void)purgeCache;
 - (void)purgeCachedSleepEventRecord;
 - (void)purgeCachedSleepMode;
 - (void)purgeCachedSleepSchedule;
 - (void)purgeCachedSleepScheduleState;
 - (void)purgeCachedSleepSettings;
-- (void)updateCachedSleepEventRecord:(id)a3;
-- (void)updateCachedSleepMode:(int64_t)a3;
-- (void)updateCachedSleepSchedule:(id)a3;
-- (void)updateCachedSleepScheduleModel:(id)a3;
-- (void)updateCachedSleepScheduleState:(unint64_t)a3;
-- (void)updateCachedSleepSettings:(id)a3;
+- (void)updateCachedSleepEventRecord:(id)record;
+- (void)updateCachedSleepMode:(int64_t)mode;
+- (void)updateCachedSleepSchedule:(id)schedule;
+- (void)updateCachedSleepScheduleModel:(id)model;
+- (void)updateCachedSleepScheduleState:(unint64_t)state;
+- (void)updateCachedSleepSettings:(id)settings;
 @end
 
 @implementation HKSPSleepStoreModelCache
@@ -49,11 +49,11 @@
   return v3;
 }
 
-- (void)_withLock:(id)a3
+- (void)_withLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   os_unfair_lock_lock(&self->_cacheLock);
-  v4[2](v4);
+  lockCopy[2](lockCopy);
 
   os_unfair_lock_unlock(&self->_cacheLock);
 }
@@ -102,9 +102,9 @@ uint64_t __47__HKSPSleepStoreModelCache_cachedSleepSchedule__block_invoke(uint64
   }
 }
 
-- (id)cachedSleepScheduleWithMissHandler:(id)a3
+- (id)cachedSleepScheduleWithMissHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -126,7 +126,7 @@ uint64_t __47__HKSPSleepStoreModelCache_cachedSleepSchedule__block_invoke(uint64
 
   else
   {
-    v7 = v4[2](v4);
+    v7 = handlerCopy[2](handlerCopy);
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __63__HKSPSleepStoreModelCache_cachedSleepScheduleWithMissHandler___block_invoke_2;
@@ -161,22 +161,22 @@ void __63__HKSPSleepStoreModelCache_cachedSleepScheduleWithMissHandler___block_i
   [v2 updateCachedSleepSchedule:v3];
 }
 
-- (void)updateCachedSleepSchedule:(id)a3
+- (void)updateCachedSleepSchedule:(id)schedule
 {
-  v4 = a3;
+  scheduleCopy = schedule;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __54__HKSPSleepStoreModelCache_updateCachedSleepSchedule___block_invoke;
   v6[3] = &unk_279C73B58;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = scheduleCopy;
+  v5 = scheduleCopy;
   [(HKSPSleepStoreModelCache *)self _withLock:v6];
 }
 
-- (void)_locked_updateCachedSleepSchedule:(id)a3
+- (void)_locked_updateCachedSleepSchedule:(id)schedule
 {
-  v4 = [a3 copy];
+  v4 = [schedule copy];
   sleepSchedule = self->_sleepSchedule;
   self->_sleepSchedule = v4;
 
@@ -237,9 +237,9 @@ uint64_t __47__HKSPSleepStoreModelCache_cachedSleepSettings__block_invoke(uint64
   }
 }
 
-- (id)cachedSleepSettingsWithMissHandler:(id)a3
+- (id)cachedSleepSettingsWithMissHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -261,7 +261,7 @@ uint64_t __47__HKSPSleepStoreModelCache_cachedSleepSettings__block_invoke(uint64
 
   else
   {
-    v7 = v4[2](v4);
+    v7 = handlerCopy[2](handlerCopy);
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __63__HKSPSleepStoreModelCache_cachedSleepSettingsWithMissHandler___block_invoke_2;
@@ -296,22 +296,22 @@ void __63__HKSPSleepStoreModelCache_cachedSleepSettingsWithMissHandler___block_i
   [v2 updateCachedSleepSettings:v3];
 }
 
-- (void)updateCachedSleepSettings:(id)a3
+- (void)updateCachedSleepSettings:(id)settings
 {
-  v4 = a3;
+  settingsCopy = settings;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __54__HKSPSleepStoreModelCache_updateCachedSleepSettings___block_invoke;
   v6[3] = &unk_279C73B58;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = settingsCopy;
+  v5 = settingsCopy;
   [(HKSPSleepStoreModelCache *)self _withLock:v6];
 }
 
-- (void)_locked_updateCachedSleepSettings:(id)a3
+- (void)_locked_updateCachedSleepSettings:(id)settings
 {
-  v4 = [a3 copy];
+  v4 = [settings copy];
   sleepSettings = self->_sleepSettings;
   self->_sleepSettings = v4;
 
@@ -372,9 +372,9 @@ uint64_t __50__HKSPSleepStoreModelCache_cachedSleepEventRecord__block_invoke(uin
   }
 }
 
-- (id)cachedSleepEventRecordWithMissHandler:(id)a3
+- (id)cachedSleepEventRecordWithMissHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -396,7 +396,7 @@ uint64_t __50__HKSPSleepStoreModelCache_cachedSleepEventRecord__block_invoke(uin
 
   else
   {
-    v7 = v4[2](v4);
+    v7 = handlerCopy[2](handlerCopy);
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __66__HKSPSleepStoreModelCache_cachedSleepEventRecordWithMissHandler___block_invoke_2;
@@ -431,22 +431,22 @@ void __66__HKSPSleepStoreModelCache_cachedSleepEventRecordWithMissHandler___bloc
   [v2 updateCachedSleepEventRecord:v3];
 }
 
-- (void)updateCachedSleepEventRecord:(id)a3
+- (void)updateCachedSleepEventRecord:(id)record
 {
-  v4 = a3;
+  recordCopy = record;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __57__HKSPSleepStoreModelCache_updateCachedSleepEventRecord___block_invoke;
   v6[3] = &unk_279C73B58;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = recordCopy;
+  v5 = recordCopy;
   [(HKSPSleepStoreModelCache *)self _withLock:v6];
 }
 
-- (void)_locked_updateCachedSleepEventRecord:(id)a3
+- (void)_locked_updateCachedSleepEventRecord:(id)record
 {
-  v4 = [a3 copy];
+  v4 = [record copy];
   sleepEventRecord = self->_sleepEventRecord;
   self->_sleepEventRecord = v4;
 
@@ -463,9 +463,9 @@ void __66__HKSPSleepStoreModelCache_cachedSleepEventRecordWithMissHandler___bloc
   [(HKSPSleepStoreModelCache *)self _withLock:v2];
 }
 
-- (id)cachedSleepScheduleModelWithMissHandler:(id)a3
+- (id)cachedSleepScheduleModelWithMissHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -487,7 +487,7 @@ void __66__HKSPSleepStoreModelCache_cachedSleepEventRecordWithMissHandler___bloc
 
   else
   {
-    v7 = v4[2](v4);
+    v7 = handlerCopy[2](handlerCopy);
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __68__HKSPSleepStoreModelCache_cachedSleepScheduleModelWithMissHandler___block_invoke_2;
@@ -523,16 +523,16 @@ void __68__HKSPSleepStoreModelCache_cachedSleepScheduleModelWithMissHandler___bl
   [v2 updateCachedSleepScheduleModel:v3];
 }
 
-- (void)updateCachedSleepScheduleModel:(id)a3
+- (void)updateCachedSleepScheduleModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __59__HKSPSleepStoreModelCache_updateCachedSleepScheduleModel___block_invoke;
   v6[3] = &unk_279C73B58;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = modelCopy;
+  v5 = modelCopy;
   [(HKSPSleepStoreModelCache *)self _withLock:v6];
 }
 
@@ -551,9 +551,9 @@ void __59__HKSPSleepStoreModelCache_updateCachedSleepScheduleModel___block_invok
   [v6 _locked_updateCachedSleepEventRecord:v7];
 }
 
-- (id)cachedSleepModeWithMissHandler:(id)a3
+- (id)cachedSleepModeWithMissHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -575,7 +575,7 @@ void __59__HKSPSleepStoreModelCache_updateCachedSleepScheduleModel___block_invok
 
   else
   {
-    v7 = v4[2](v4);
+    v7 = handlerCopy[2](handlerCopy);
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __59__HKSPSleepStoreModelCache_cachedSleepModeWithMissHandler___block_invoke_2;
@@ -611,14 +611,14 @@ void __59__HKSPSleepStoreModelCache_cachedSleepModeWithMissHandler___block_invok
   [v2 updateCachedSleepMode:{objc_msgSend(v3, "integerValue")}];
 }
 
-- (void)updateCachedSleepMode:(int64_t)a3
+- (void)updateCachedSleepMode:(int64_t)mode
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __50__HKSPSleepStoreModelCache_updateCachedSleepMode___block_invoke;
   v3[3] = &unk_279C740B8;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = mode;
   [(HKSPSleepStoreModelCache *)self _withLock:v3];
 }
 
@@ -639,9 +639,9 @@ uint64_t __50__HKSPSleepStoreModelCache_updateCachedSleepMode___block_invoke(uin
   [(HKSPSleepStoreModelCache *)self _withLock:v2];
 }
 
-- (id)cachedSleepScheduleStateWithMissHandler:(id)a3
+- (id)cachedSleepScheduleStateWithMissHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -663,7 +663,7 @@ uint64_t __50__HKSPSleepStoreModelCache_updateCachedSleepMode___block_invoke(uin
 
   else
   {
-    v7 = v4[2](v4);
+    v7 = handlerCopy[2](handlerCopy);
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __68__HKSPSleepStoreModelCache_cachedSleepScheduleStateWithMissHandler___block_invoke_2;
@@ -699,14 +699,14 @@ void __68__HKSPSleepStoreModelCache_cachedSleepScheduleStateWithMissHandler___bl
   [v2 updateCachedSleepScheduleState:{objc_msgSend(v3, "integerValue")}];
 }
 
-- (void)updateCachedSleepScheduleState:(unint64_t)a3
+- (void)updateCachedSleepScheduleState:(unint64_t)state
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __59__HKSPSleepStoreModelCache_updateCachedSleepScheduleState___block_invoke;
   v3[3] = &unk_279C740B8;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = state;
   [(HKSPSleepStoreModelCache *)self _withLock:v3];
 }
 

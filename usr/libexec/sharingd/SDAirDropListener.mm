@@ -3,7 +3,7 @@
 - (SDAirDropListener)init;
 - (SDAirDropListenerDelegate)delegate;
 - (void)dealloc;
-- (void)networkOperation:(id)a3 event:(int64_t)a4 withResults:(id)a5;
+- (void)networkOperation:(id)operation event:(int64_t)event withResults:(id)results;
 - (void)start;
 - (void)stop;
 @end
@@ -25,12 +25,12 @@
   return v3;
 }
 
-- (void)networkOperation:(id)a3 event:(int64_t)a4 withResults:(id)a5
+- (void)networkOperation:(id)operation event:(int64_t)event withResults:(id)results
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = v9;
-  if (a4 == 12)
+  operationCopy = operation;
+  resultsCopy = results;
+  v10 = resultsCopy;
+  if (event == 12)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained listener:self informationDidChange:v10];
@@ -39,7 +39,7 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if (a4 == 10)
+  if (event == 10)
   {
     v21 = airdrop_log();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
@@ -55,20 +55,20 @@ LABEL_15:
     goto LABEL_11;
   }
 
-  if (a4 != 1)
+  if (event != 1)
   {
 LABEL_11:
     v24 = airdrop_log();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
     {
-      sub_1000FFA84(a4, v10, v24);
+      sub_1000FFA84(event, v10, v24);
     }
 
     goto LABEL_16;
   }
 
   v11 = kSFOperationHTTPServerConnectionKey;
-  v12 = [v9 objectForKeyedSubscript:kSFOperationHTTPServerConnectionKey];
+  v12 = [resultsCopy objectForKeyedSubscript:kSFOperationHTTPServerConnectionKey];
 
   if (v12)
   {

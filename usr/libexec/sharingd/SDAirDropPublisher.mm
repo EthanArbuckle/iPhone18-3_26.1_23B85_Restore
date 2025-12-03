@@ -1,11 +1,11 @@
 @interface SDAirDropPublisher
-- (SDAirDropPublisher)initWithPort:(id)a3 identity:(__SecIdentity *)a4;
+- (SDAirDropPublisher)initWithPort:(id)port identity:(__SecIdentity *)identity;
 - (SDAirDropPublisherDelegate)delegate;
 - (void)addObservers;
 - (void)dealloc;
 - (void)invalidate;
 - (void)publish;
-- (void)publishCallBack:(id *)a3;
+- (void)publishCallBack:(id *)back;
 - (void)removeObservers;
 - (void)start;
 - (void)stop;
@@ -14,16 +14,16 @@
 
 @implementation SDAirDropPublisher
 
-- (SDAirDropPublisher)initWithPort:(id)a3 identity:(__SecIdentity *)a4
+- (SDAirDropPublisher)initWithPort:(id)port identity:(__SecIdentity *)identity
 {
-  v7 = a3;
+  portCopy = port;
   v23.receiver = self;
   v23.super_class = SDAirDropPublisher;
   v8 = [(SDAirDropPublisher *)&v23 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_port, a3);
+    objc_storeStrong(&v8->_port, port);
     objc_storeWeak(&v9->_delegate, 0);
     v9->_service = 0;
     v9->_retryCount = 0;
@@ -39,9 +39,9 @@
     monitor = v9->_monitor;
     v9->_monitor = v14;
 
-    if (a4)
+    if (identity)
     {
-      v16 = CFRetain(a4);
+      v16 = CFRetain(identity);
     }
 
     else
@@ -82,11 +82,11 @@
   [(SDAirDropPublisher *)&v4 dealloc];
 }
 
-- (void)publishCallBack:(id *)a3
+- (void)publishCallBack:(id *)back
 {
-  p_var1 = &a3->var1;
-  var1 = a3->var1;
-  if (a3->var0 == kCFStreamErrorDomainNetServices && var1 == -72001)
+  p_var1 = &back->var1;
+  var1 = back->var1;
+  if (back->var0 == kCFStreamErrorDomainNetServices && var1 == -72001)
   {
     v10 = sub_10008FA28(0, 0);
     v14 = airdrop_log();
@@ -127,7 +127,7 @@ LABEL_20:
   v8 = airdrop_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
   {
-    sub_100074944(&a3->var0, p_var1);
+    sub_100074944(&back->var0, p_var1);
   }
 
   retryCount = self->_retryCount;
@@ -201,15 +201,15 @@ LABEL_21:
 
     if ([(SDStatusMonitor *)self->_monitor enableStrangers])
     {
-      v8 = [(SDStatusMonitor *)self->_monitor discoverableMode];
-      v9 = [v8 isEqual:kSFOperationDiscoverableModeEveryone];
+      discoverableMode = [(SDStatusMonitor *)self->_monitor discoverableMode];
+      v9 = [discoverableMode isEqual:kSFOperationDiscoverableModeEveryone];
 
       if (v9)
       {
         v10 = +[SDNearbyAgent sharedNearbyAgent];
-        v11 = [v10 bleAuthTag];
+        bleAuthTag = [v10 bleAuthTag];
 
-        v12 = [v11 base64EncodedStringWithOptions:0];
+        v12 = [bleAuthTag base64EncodedStringWithOptions:0];
         [(NSMutableDictionary *)*p_txtRecord setObject:v12 forKeyedSubscript:@"atag"];
       }
 

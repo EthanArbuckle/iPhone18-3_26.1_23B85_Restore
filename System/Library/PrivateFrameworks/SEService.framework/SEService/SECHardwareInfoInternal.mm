@@ -2,7 +2,7 @@
 - (NSData)casdCertificate;
 - (NSString)hardwareReleaseVersionString;
 - (_TtC9SEService23SECHardwareInfoInternal)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SECHardwareInfoInternal
@@ -28,11 +28,11 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  SECHardwareInfoInternal.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  SECHardwareInfoInternal.encode(with:)(coderCopy);
 }
 
 - (_TtC9SEService23SECHardwareInfoInternal)init

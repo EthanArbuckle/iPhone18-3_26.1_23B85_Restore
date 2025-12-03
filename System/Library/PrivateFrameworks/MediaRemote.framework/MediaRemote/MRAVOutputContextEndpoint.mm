@@ -1,104 +1,104 @@
 @interface MRAVOutputContextEndpoint
 - (BOOL)isRealized;
-- (MRAVOutputContextEndpoint)initWithCoder:(id)a3;
-- (MRAVOutputContextEndpoint)initWithOutputContext:(id)a3 uniqueIdentifier:(id)a4;
+- (MRAVOutputContextEndpoint)initWithCoder:(id)coder;
+- (MRAVOutputContextEndpoint)initWithOutputContext:(id)context uniqueIdentifier:(id)identifier;
 - (MROrigin)origin;
 - (NSArray)outputDevices;
 - (id)_externalOutputContext;
 - (id)deviceInfo;
 - (id)predictedOutputDevice;
 - (id)predictedOutputDeviceUIDs;
-- (void)_adjustOutputDeviceVolume:(int64_t)a3 outputDevice:(id)a4 details:(id)a5 queue:(id)a6 completion:(id)a7;
-- (void)_handleDeviceInfoDidChange:(id)a3;
-- (void)_modifyTopologyWithRequest:(id)a3 withReplyQueue:(id)a4 completion:(id)a5;
+- (void)_adjustOutputDeviceVolume:(int64_t)volume outputDevice:(id)device details:(id)details queue:(id)queue completion:(id)completion;
+- (void)_handleDeviceInfoDidChange:(id)change;
+- (void)_modifyTopologyWithRequest:(id)request withReplyQueue:(id)queue completion:(id)completion;
 - (void)_reloadOutputDevicesFromContext;
-- (void)_setOutputDeviceVolume:(float)a3 outputDevice:(id)a4 details:(id)a5 queue:(id)a6 completion:(id)a7;
+- (void)_setOutputDeviceVolume:(float)volume outputDevice:(id)device details:(id)details queue:(id)queue completion:(id)completion;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)removeOutputDeviceFromParentGroup:(id)a3 queue:(id)a4 completion:(id)a5;
-- (void)requestGroupSessionWithDetails:(id)a3 queue:(id)a4 completion:(id)a5;
+- (void)encodeWithCoder:(id)coder;
+- (void)removeOutputDeviceFromParentGroup:(id)group queue:(id)queue completion:(id)completion;
+- (void)requestGroupSessionWithDetails:(id)details queue:(id)queue completion:(id)completion;
 - (void)resetPredictedOutputDevice;
-- (void)setHeadTrackedSpatialAudioMode:(id)a3 outputDeviceUID:(id)a4 queue:(id)a5 completion:(id)a6;
-- (void)setListeningMode:(id)a3 outputDeviceUID:(id)a4 queue:(id)a5 completion:(id)a6;
-- (void)setOrigin:(id)a3;
-- (void)setOutputContext:(id)a3;
-- (void)setOutputContextController:(id)a3;
-- (void)setOutputDevices:(id)a3;
+- (void)setHeadTrackedSpatialAudioMode:(id)mode outputDeviceUID:(id)d queue:(id)queue completion:(id)completion;
+- (void)setListeningMode:(id)mode outputDeviceUID:(id)d queue:(id)queue completion:(id)completion;
+- (void)setOrigin:(id)origin;
+- (void)setOutputContext:(id)context;
+- (void)setOutputContextController:(id)controller;
+- (void)setOutputDevices:(id)devices;
 @end
 
 @implementation MRAVOutputContextEndpoint
 
 - (id)deviceInfo
 {
-  v2 = [(MRAVOutputContextEndpoint *)self origin];
-  v3 = [MRDeviceInfoRequest deviceInfoForOrigin:v2];
+  origin = [(MRAVOutputContextEndpoint *)self origin];
+  v3 = [MRDeviceInfoRequest deviceInfoForOrigin:origin];
 
   return v3;
 }
 
 - (MROrigin)origin
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_origin;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_origin;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (NSArray)outputDevices
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSArray *)v2->_outputDevices copy];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(NSArray *)selfCopy->_outputDevices copy];
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (void)_reloadOutputDevicesFromContext
 {
-  if (a1)
+  if (self)
   {
-    v2 = [a1[10] outputDevices];
-    [a1 setOutputDevices:v2];
+    outputDevices = [self[10] outputDevices];
+    [self setOutputDevices:outputDevices];
   }
 }
 
 - (id)predictedOutputDevice
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(MRAVConcreteOutputContext *)v2->_outputContext predictedOutputDevice];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  predictedOutputDevice = [(MRAVConcreteOutputContext *)selfCopy->_outputContext predictedOutputDevice];
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return predictedOutputDevice;
 }
 
 - (id)predictedOutputDeviceUIDs
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(MRAVConcreteOutputContext *)v2->_outputContext predictedOutputDeviceUIDs];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  predictedOutputDeviceUIDs = [(MRAVConcreteOutputContext *)selfCopy->_outputContext predictedOutputDeviceUIDs];
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return predictedOutputDeviceUIDs;
 }
 
-- (MRAVOutputContextEndpoint)initWithOutputContext:(id)a3 uniqueIdentifier:(id)a4
+- (MRAVOutputContextEndpoint)initWithOutputContext:(id)context uniqueIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  identifierCopy = identifier;
   v12.receiver = self;
   v12.super_class = MRAVOutputContextEndpoint;
-  v8 = [(MRAVEndpoint *)&v12 _init];
-  v9 = v8;
-  if (v8)
+  _init = [(MRAVEndpoint *)&v12 _init];
+  v9 = _init;
+  if (_init)
   {
-    objc_storeStrong(v8 + 7, a4);
-    [(MRAVOutputContextEndpoint *)v9 setOutputContext:v6];
-    v10 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v10 addObserver:v9 selector:sel__handleDeviceInfoDidChange_ name:@"kMRDeviceInfoDidChangeNotification" object:0];
+    objc_storeStrong(_init + 7, identifier);
+    [(MRAVOutputContextEndpoint *)v9 setOutputContext:contextCopy];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v9 selector:sel__handleDeviceInfoDidChange_ name:@"kMRDeviceInfoDidChangeNotification" object:0];
   }
 
   return v9;
@@ -106,52 +106,52 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = MRAVOutputContextEndpoint;
   [(MRAVOutputContextEndpoint *)&v4 dealloc];
 }
 
-- (void)setOutputContextController:(id)a3
+- (void)setOutputContextController:(id)controller
 {
-  v8 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [MEMORY[0x1E696AD88] defaultCenter];
-  v7 = v6;
-  if (v5->_outputContextController)
+  controllerCopy = controller;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  v7 = defaultCenter;
+  if (selfCopy->_outputContextController)
   {
-    [v6 removeObserver:v5 name:@"MROutputContextDataSourceDidReloadNotification" object:?];
+    [defaultCenter removeObserver:selfCopy name:@"MROutputContextDataSourceDidReloadNotification" object:?];
   }
 
-  objc_storeStrong(&v5->_outputContextController, a3);
-  if (v5->_outputContextController)
+  objc_storeStrong(&selfCopy->_outputContextController, controller);
+  if (selfCopy->_outputContextController)
   {
-    [v7 addObserver:v5 selector:sel_outputContextDataSourceReloaded_ name:@"MROutputContextDataSourceDidReloadNotification" object:?];
+    [v7 addObserver:selfCopy selector:sel_outputContextDataSourceReloaded_ name:@"MROutputContextDataSourceDidReloadNotification" object:?];
   }
 
-  [(MRAVEndpoint *)v5 setOutputContextDataSource:v8];
+  [(MRAVEndpoint *)selfCopy setOutputContextDataSource:controllerCopy];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 - (id)_externalOutputContext
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_outputContextController;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_outputContextController;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (MRAVOutputContextEndpoint)initWithCoder:(id)a3
+- (MRAVOutputContextEndpoint)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"outputContextUID"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"uniqueIdentifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"outputContextUID"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"uniqueIdentifier"];
 
   v7 = [MRAVConcreteOutputContext createOutputContextWithUniqueIdentifier:v5];
   v8 = [(MRAVOutputContextEndpoint *)self initWithOutputContext:v7 uniqueIdentifier:v6];
@@ -159,64 +159,64 @@
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   outputContext = self->_outputContext;
-  v6 = a3;
-  v5 = [(MRAVOutputContext *)outputContext uniqueIdentifier];
-  [v6 encodeObject:v5 forKey:@"outputContextUID"];
+  coderCopy = coder;
+  uniqueIdentifier = [(MRAVOutputContext *)outputContext uniqueIdentifier];
+  [coderCopy encodeObject:uniqueIdentifier forKey:@"outputContextUID"];
 
-  [v6 encodeObject:self->_uniqueIdentifier forKey:@"uniqueIdentifier"];
+  [coderCopy encodeObject:self->_uniqueIdentifier forKey:@"uniqueIdentifier"];
 }
 
-- (void)setOutputContext:(id)a3
+- (void)setOutputContext:(id)context
 {
-  v7 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (v5->_outputContext != v7)
+  contextCopy = context;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_outputContext != contextCopy)
   {
-    objc_storeStrong(&v5->_outputContext, a3);
-    if (v7)
+    objc_storeStrong(&selfCopy->_outputContext, context);
+    if (contextCopy)
     {
-      if ([(MRAVConcreteOutputContext *)v5->_outputContext type]== 1)
+      if ([(MRAVConcreteOutputContext *)selfCopy->_outputContext type]== 1)
       {
         v6 = +[MROutputContextController sharedOutputContextController];
       }
 
       else
       {
-        v6 = [[MROutputContextController alloc] initWithOutputContext:v7];
+        v6 = [[MROutputContextController alloc] initWithOutputContext:contextCopy];
       }
 
-      [(MRAVOutputContextEndpoint *)v5 setOutputContextController:v6];
+      [(MRAVOutputContextEndpoint *)selfCopy setOutputContextController:v6];
     }
   }
 
-  [(MRAVOutputContextEndpoint *)&v5->super.super.isa _reloadOutputDevicesFromContext];
-  objc_sync_exit(v5);
+  [(MRAVOutputContextEndpoint *)&selfCopy->super.super.isa _reloadOutputDevicesFromContext];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)setOrigin:(id)a3
+- (void)setOrigin:(id)origin
 {
-  v6 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (v5->_origin != v6)
+  originCopy = origin;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_origin != originCopy)
   {
-    objc_storeStrong(&v5->_origin, a3);
+    objc_storeStrong(&selfCopy->_origin, origin);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 - (BOOL)isRealized
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2->_outputContext)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_outputContext)
   {
-    v3 = v2->_origin != 0;
+    v3 = selfCopy->_origin != 0;
   }
 
   else
@@ -224,7 +224,7 @@
     v3 = 0;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -237,25 +237,25 @@
   objc_sync_exit(obj);
 }
 
-- (void)setOutputDevices:(id)a3
+- (void)setOutputDevices:(id)devices
 {
   v42 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  outputDevices = v5->_outputDevices;
-  if (outputDevices != v4)
+  devicesCopy = devices;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  outputDevices = selfCopy->_outputDevices;
+  if (outputDevices != devicesCopy)
   {
-    v7 = [(NSArray *)outputDevices firstObject];
-    v8 = [(NSArray *)v4 copy];
-    v9 = v5->_outputDevices;
-    v5->_outputDevices = v8;
+    firstObject = [(NSArray *)outputDevices firstObject];
+    v8 = [(NSArray *)devicesCopy copy];
+    v9 = selfCopy->_outputDevices;
+    selfCopy->_outputDevices = v8;
 
     v29 = 0u;
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v10 = v5->_outputDevices;
+    v10 = selfCopy->_outputDevices;
     v11 = [(NSArray *)v10 countByEnumeratingWithState:&v27 objects:v41 count:16];
     if (v11)
     {
@@ -269,7 +269,7 @@
             objc_enumerationMutation(v10);
           }
 
-          [*(*(&v27 + 1) + 8 * i) setEndpoint:{v5, v27}];
+          [*(*(&v27 + 1) + 8 * i) setEndpoint:{selfCopy, v27}];
         }
 
         v11 = [(NSArray *)v10 countByEnumeratingWithState:&v27 objects:v41 count:16];
@@ -278,16 +278,16 @@
       while (v11);
     }
 
-    v14 = [(NSArray *)v4 firstObject];
-    if (-[NSArray count](v4, "count") != 1 || [v14 deviceType] != 2)
+    firstObject2 = [(NSArray *)devicesCopy firstObject];
+    if (-[NSArray count](devicesCopy, "count") != 1 || [firstObject2 deviceType] != 2)
     {
       goto LABEL_17;
     }
 
-    v15 = [v7 modelID];
-    v16 = [v14 modelID];
-    v17 = v15;
-    v18 = v16;
+    modelID = [firstObject modelID];
+    modelID2 = [firstObject2 modelID];
+    v17 = modelID;
+    v18 = modelID2;
     v19 = v18;
     if (v17 == v18)
     {
@@ -300,7 +300,7 @@
       if (v20)
       {
 LABEL_17:
-        [(MRAVEndpoint *)v5 scheduleEndpointOutputDevicesDidChangeNotification];
+        [(MRAVEndpoint *)selfCopy scheduleEndpointOutputDevicesDidChangeNotification];
 
         goto LABEL_18;
       }
@@ -308,21 +308,21 @@ LABEL_17:
       v17 = _MRLogForCategory(0);
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
-        v21 = [(MRAVOutputContextEndpoint *)v5 uniqueIdentifier];
-        v22 = [(MRAVEndpoint *)v5 localizedName];
-        v23 = [v14 uid];
-        v24 = [v14 name];
-        v25 = [v14 modelID];
+        uniqueIdentifier = [(MRAVOutputContextEndpoint *)selfCopy uniqueIdentifier];
+        localizedName = [(MRAVEndpoint *)selfCopy localizedName];
+        v23 = [firstObject2 uid];
+        name = [firstObject2 name];
+        modelID3 = [firstObject2 modelID];
         *buf = 138544386;
-        v32 = v21;
+        v32 = uniqueIdentifier;
         v33 = 2114;
-        v34 = v22;
+        v34 = localizedName;
         v35 = 2114;
         v36 = v23;
         v37 = 2114;
-        v38 = v24;
+        v38 = name;
         v39 = 2114;
-        v40 = v25;
+        v40 = modelID3;
         _os_log_impl(&dword_1A2860000, v17, OS_LOG_TYPE_DEFAULT, "Updating Endpoint: %{public}@ | %{public}@ bt output device: %{public}@ | %{public}@ | %{public}@", buf, 0x34u);
       }
     }
@@ -331,23 +331,23 @@ LABEL_17:
   }
 
 LABEL_18:
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   v26 = *MEMORY[0x1E69E9840];
 }
 
-- (void)requestGroupSessionWithDetails:(id)a3 queue:(id)a4 completion:(id)a5
+- (void)requestGroupSessionWithDetails:(id)details queue:(id)queue completion:(id)completion
 {
-  v6 = a4;
-  v7 = a5;
+  queueCopy = queue;
+  completionCopy = completion;
   v12 = MEMORY[0x1E69E9820];
   v13 = 3221225472;
   v14 = __77__MRAVOutputContextEndpoint_requestGroupSessionWithDetails_queue_completion___block_invoke;
   v15 = &unk_1E769B768;
-  v16 = v6;
-  v17 = v7;
-  v8 = v7;
-  v9 = v6;
+  v16 = queueCopy;
+  v17 = completionCopy;
+  v8 = completionCopy;
+  v9 = queueCopy;
   v10 = MEMORY[0x1A58E3570](&v12);
   v11 = MRGetSharedService();
   [v11 requestGroupSessionWithCompletion:{v10, v12, v13, v14, v15}];
@@ -371,28 +371,28 @@ void __77__MRAVOutputContextEndpoint_requestGroupSessionWithDetails_queue_comple
   dispatch_async(v7, block);
 }
 
-- (void)_modifyTopologyWithRequest:(id)a3 withReplyQueue:(id)a4 completion:(id)a5
+- (void)_modifyTopologyWithRequest:(id)request withReplyQueue:(id)queue completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
+  queueCopy = queue;
+  completionCopy = completion;
   v14 = MEMORY[0x1E69E9820];
   v15 = 3221225472;
   v16 = __82__MRAVOutputContextEndpoint__modifyTopologyWithRequest_withReplyQueue_completion___block_invoke;
   v17 = &unk_1E769AB50;
-  v10 = v9;
+  v10 = completionCopy;
   v19 = v10;
-  v11 = v8;
+  v11 = queueCopy;
   v18 = v11;
-  v12 = a3;
+  requestCopy = request;
   v13 = MEMORY[0x1A58E3570](&v14);
-  if ([v12 shouldWaitForUpdatedOutputDevices])
+  if ([requestCopy shouldWaitForUpdatedOutputDevices])
   {
-    [(MROutputContextController *)self->_outputContextController modifyTopologyWithRequest:v12 completion:v13];
+    [(MROutputContextController *)self->_outputContextController modifyTopologyWithRequest:requestCopy completion:v13];
   }
 
   else
   {
-    [(MRAVConcreteOutputContext *)self->_outputContext modifyTopologyWithRequest:v12 withReplyQueue:v11 completion:v13];
+    [(MRAVConcreteOutputContext *)self->_outputContext modifyTopologyWithRequest:requestCopy withReplyQueue:v11 completion:v13];
   }
 }
 
@@ -424,16 +424,16 @@ void __82__MRAVOutputContextEndpoint__modifyTopologyWithRequest_withReplyQueue_c
   }
 }
 
-- (void)_setOutputDeviceVolume:(float)a3 outputDevice:(id)a4 details:(id)a5 queue:(id)a6 completion:(id)a7
+- (void)_setOutputDeviceVolume:(float)volume outputDevice:(id)device details:(id)details queue:(id)queue completion:(id)completion
 {
-  v12 = a6;
-  v13 = a7;
-  *&v14 = a3;
-  v15 = [(MROutputContextController *)self->_outputContextController setVolume:a4 outputDeviceUID:a5 details:v14];
-  if (v13)
+  queueCopy = queue;
+  completionCopy = completion;
+  *&v14 = volume;
+  v15 = [(MROutputContextController *)self->_outputContextController setVolume:device outputDeviceUID:details details:v14];
+  if (completionCopy)
   {
-    v16 = v12;
-    if (!v12)
+    v16 = queueCopy;
+    if (!queueCopy)
     {
       v16 = MEMORY[0x1E69E96A0];
       v17 = MEMORY[0x1E69E96A0];
@@ -443,24 +443,24 @@ void __82__MRAVOutputContextEndpoint__modifyTopologyWithRequest_withReplyQueue_c
     v18[1] = 3221225472;
     v18[2] = __90__MRAVOutputContextEndpoint__setOutputDeviceVolume_outputDevice_details_queue_completion___block_invoke;
     v18[3] = &unk_1E769AB28;
-    v20 = v13;
+    v20 = completionCopy;
     v19 = v15;
     dispatch_async(v16, v18);
-    if (!v12)
+    if (!queueCopy)
     {
     }
   }
 }
 
-- (void)_adjustOutputDeviceVolume:(int64_t)a3 outputDevice:(id)a4 details:(id)a5 queue:(id)a6 completion:(id)a7
+- (void)_adjustOutputDeviceVolume:(int64_t)volume outputDevice:(id)device details:(id)details queue:(id)queue completion:(id)completion
 {
-  v12 = a6;
-  v13 = a7;
-  v14 = [(MROutputContextController *)self->_outputContextController adjustVolume:a3 outputDeviceUID:a4 details:a5];
-  if (v13)
+  queueCopy = queue;
+  completionCopy = completion;
+  v14 = [(MROutputContextController *)self->_outputContextController adjustVolume:volume outputDeviceUID:device details:details];
+  if (completionCopy)
   {
-    v15 = v12;
-    if (!v12)
+    v15 = queueCopy;
+    if (!queueCopy)
     {
       v15 = MEMORY[0x1E69E96A0];
       v16 = MEMORY[0x1E69E96A0];
@@ -470,40 +470,40 @@ void __82__MRAVOutputContextEndpoint__modifyTopologyWithRequest_withReplyQueue_c
     v17[1] = 3221225472;
     v17[2] = __93__MRAVOutputContextEndpoint__adjustOutputDeviceVolume_outputDevice_details_queue_completion___block_invoke;
     v17[3] = &unk_1E769AB28;
-    v19 = v13;
+    v19 = completionCopy;
     v18 = v14;
     dispatch_async(v15, v17);
-    if (!v12)
+    if (!queueCopy)
     {
     }
   }
 }
 
-- (void)removeOutputDeviceFromParentGroup:(id)a3 queue:(id)a4 completion:(id)a5
+- (void)removeOutputDeviceFromParentGroup:(id)group queue:(id)queue completion:(id)completion
 {
-  v6 = a5;
-  v7 = a4;
+  completionCopy = completion;
+  queueCopy = queue;
   notify_post([@"kAirPlayWHANotification_BreakAwayFromCurrentGroup" UTF8String]);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __80__MRAVOutputContextEndpoint_removeOutputDeviceFromParentGroup_queue_completion___block_invoke;
   block[3] = &unk_1E769AD58;
-  v10 = v6;
-  v8 = v6;
-  dispatch_async(v7, block);
+  v10 = completionCopy;
+  v8 = completionCopy;
+  dispatch_async(queueCopy, block);
 }
 
-- (void)setListeningMode:(id)a3 outputDeviceUID:(id)a4 queue:(id)a5 completion:(id)a6
+- (void)setListeningMode:(id)mode outputDeviceUID:(id)d queue:(id)queue completion:(id)completion
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(MRAVEndpoint *)self outputDeviceWithUID:a4];
+  modeCopy = mode;
+  queueCopy = queue;
+  completionCopy = completion;
+  v13 = [(MRAVEndpoint *)self outputDeviceWithUID:d];
   v14 = v13;
   if (v13)
   {
     v21 = 0;
-    [v13 setCurrentBluetoothListeningMode:v10 error:&v21];
+    [v13 setCurrentBluetoothListeningMode:modeCopy error:&v21];
     v15 = v21;
   }
 
@@ -513,11 +513,11 @@ void __82__MRAVOutputContextEndpoint__modifyTopologyWithRequest_withReplyQueue_c
   }
 
   v16 = v15;
-  if (v12)
+  if (completionCopy)
   {
-    if (!v11)
+    if (!queueCopy)
     {
-      v11 = MEMORY[0x1E69E96A0];
+      queueCopy = MEMORY[0x1E69E96A0];
       v17 = MEMORY[0x1E69E96A0];
     }
 
@@ -525,23 +525,23 @@ void __82__MRAVOutputContextEndpoint__modifyTopologyWithRequest_withReplyQueue_c
     block[1] = 3221225472;
     block[2] = __79__MRAVOutputContextEndpoint_setListeningMode_outputDeviceUID_queue_completion___block_invoke;
     block[3] = &unk_1E769AB28;
-    v20 = v12;
+    v20 = completionCopy;
     v19 = v16;
-    dispatch_async(v11, block);
+    dispatch_async(queueCopy, block);
   }
 }
 
-- (void)setHeadTrackedSpatialAudioMode:(id)a3 outputDeviceUID:(id)a4 queue:(id)a5 completion:(id)a6
+- (void)setHeadTrackedSpatialAudioMode:(id)mode outputDeviceUID:(id)d queue:(id)queue completion:(id)completion
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(MRAVEndpoint *)self outputDeviceWithUID:a4];
+  modeCopy = mode;
+  queueCopy = queue;
+  completionCopy = completion;
+  v13 = [(MRAVEndpoint *)self outputDeviceWithUID:d];
   v14 = v13;
   if (v13)
   {
     v21 = 0;
-    [v13 setHeadTrackedSpatialAudioMode:v10 error:&v21];
+    [v13 setHeadTrackedSpatialAudioMode:modeCopy error:&v21];
     v15 = v21;
   }
 
@@ -551,11 +551,11 @@ void __82__MRAVOutputContextEndpoint__modifyTopologyWithRequest_withReplyQueue_c
   }
 
   v16 = v15;
-  if (v12)
+  if (completionCopy)
   {
-    if (!v11)
+    if (!queueCopy)
     {
-      v11 = MEMORY[0x1E69E96A0];
+      queueCopy = MEMORY[0x1E69E96A0];
       v17 = MEMORY[0x1E69E96A0];
     }
 
@@ -563,26 +563,26 @@ void __82__MRAVOutputContextEndpoint__modifyTopologyWithRequest_withReplyQueue_c
     block[1] = 3221225472;
     block[2] = __93__MRAVOutputContextEndpoint_setHeadTrackedSpatialAudioMode_outputDeviceUID_queue_completion___block_invoke;
     block[3] = &unk_1E769AB28;
-    v20 = v12;
+    v20 = completionCopy;
     v19 = v16;
-    dispatch_async(v11, block);
+    dispatch_async(queueCopy, block);
   }
 }
 
-- (void)_handleDeviceInfoDidChange:(id)a3
+- (void)_handleDeviceInfoDidChange:(id)change
 {
-  v11 = a3;
-  v4 = [v11 userInfo];
-  v5 = MRGetOriginFromUserInfo(v4);
+  changeCopy = change;
+  userInfo = [changeCopy userInfo];
+  v5 = MRGetOriginFromUserInfo(userInfo);
 
-  v6 = [(MRAVOutputContextEndpoint *)self origin];
-  if ([v5 isEqual:v6])
+  origin = [(MRAVOutputContextEndpoint *)self origin];
+  if ([v5 isEqual:origin])
   {
-    v7 = [v11 userInfo];
-    v8 = [v7 objectForKeyedSubscript:@"kMRPairedDeviceUserInfoKey"];
+    userInfo2 = [changeCopy userInfo];
+    v8 = [userInfo2 objectForKeyedSubscript:@"kMRPairedDeviceUserInfoKey"];
 
-    v9 = [v11 userInfo];
-    v10 = [v9 objectForKeyedSubscript:@"kMRPreviousPairedDeviceUserInfoDataKey"];
+    userInfo3 = [changeCopy userInfo];
+    v10 = [userInfo3 objectForKeyedSubscript:@"kMRPreviousPairedDeviceUserInfoDataKey"];
 
     [objc_opt_class() _notifyDeviceInfoDidChange:v8 previousDeviceInfo:v10 endpoint:self];
   }

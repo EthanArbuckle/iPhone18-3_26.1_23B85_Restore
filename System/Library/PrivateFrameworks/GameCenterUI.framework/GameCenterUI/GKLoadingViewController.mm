@@ -1,20 +1,20 @@
 @interface GKLoadingViewController
-- (GKLoadingViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (GKLoadingViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)didEnterLoadingState;
 - (void)didExitLoadingState;
-- (void)setLoadingState:(id)a3;
-- (void)setViewsToHideHidden:(BOOL)a3;
-- (void)setViewsToHideWhileLoading:(id)a3;
+- (void)setLoadingState:(id)state;
+- (void)setViewsToHideHidden:(BOOL)hidden;
+- (void)setViewsToHideWhileLoading:(id)loading;
 - (void)showLoadingIndicator;
 @end
 
 @implementation GKLoadingViewController
 
-- (GKLoadingViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (GKLoadingViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v8.receiver = self;
   v8.super_class = GKLoadingViewController;
-  v4 = [(GKLoadingViewController *)&v8 initWithNibName:a3 bundle:a4];
+  v4 = [(GKLoadingViewController *)&v8 initWithNibName:name bundle:bundle];
   if (v4)
   {
     v5 = objc_alloc_init(GKLoadableContentStateMachine);
@@ -28,56 +28,56 @@
   return v4;
 }
 
-- (void)setLoadingState:(id)a3
+- (void)setLoadingState:(id)state
 {
-  v6 = a3;
-  v4 = [(_GKStateMachine *)self->_loadingMachine currentState];
+  stateCopy = state;
+  currentState = [(_GKStateMachine *)self->_loadingMachine currentState];
 
-  v5 = v6;
-  if (v4 != v6)
+  v5 = stateCopy;
+  if (currentState != stateCopy)
   {
-    [(_GKStateMachine *)self->_loadingMachine setCurrentState:v6];
-    v5 = v6;
+    [(_GKStateMachine *)self->_loadingMachine setCurrentState:stateCopy];
+    v5 = stateCopy;
   }
 }
 
-- (void)setViewsToHideWhileLoading:(id)a3
+- (void)setViewsToHideWhileLoading:(id)loading
 {
-  v5 = a3;
-  if (self->_viewsToHideWhileLoading != v5)
+  loadingCopy = loading;
+  if (self->_viewsToHideWhileLoading != loadingCopy)
   {
-    v10 = v5;
-    objc_storeStrong(&self->_viewsToHideWhileLoading, a3);
-    v6 = [(GKLoadingViewController *)self loadingState];
-    if (v6 == @"LoadingState")
+    v10 = loadingCopy;
+    objc_storeStrong(&self->_viewsToHideWhileLoading, loading);
+    loadingState = [(GKLoadingViewController *)self loadingState];
+    if (loadingState == @"LoadingState")
     {
       v9 = 1;
     }
 
     else
     {
-      v7 = [(GKLoadingViewController *)self loadingState];
-      if (v7 == @"Initial")
+      loadingState2 = [(GKLoadingViewController *)self loadingState];
+      if (loadingState2 == @"Initial")
       {
         v9 = 1;
       }
 
       else
       {
-        v8 = [(GKLoadingViewController *)self loadingState];
-        v9 = v8 == @"RefreshingState";
+        loadingState3 = [(GKLoadingViewController *)self loadingState];
+        v9 = loadingState3 == @"RefreshingState";
       }
     }
 
     [(GKLoadingViewController *)self setViewsToHideHidden:v9];
-    v5 = v10;
+    loadingCopy = v10;
   }
 }
 
-- (void)setViewsToHideHidden:(BOOL)a3
+- (void)setViewsToHideHidden:(BOOL)hidden
 {
   v14 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (hidden)
   {
     v3 = 0.0;
   }
@@ -130,18 +130,18 @@
 
     [(UIActivityIndicatorView *)self->_activityIndicator setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIActivityIndicatorView *)self->_activityIndicator setActivityIndicatorViewStyle:101];
-    v6 = [MEMORY[0x277D0C868] sharedPalette];
-    v7 = [v6 activityIndicatorColor];
-    [(UIActivityIndicatorView *)self->_activityIndicator setColor:v7];
+    mEMORY[0x277D0C868] = [MEMORY[0x277D0C868] sharedPalette];
+    activityIndicatorColor = [mEMORY[0x277D0C868] activityIndicatorColor];
+    [(UIActivityIndicatorView *)self->_activityIndicator setColor:activityIndicatorColor];
 
-    v8 = [(GKLoadingViewController *)self view];
-    [v8 addSubview:self->_activityIndicator];
-    v9 = [MEMORY[0x277CCAAD0] constraintWithItem:self->_activityIndicator attribute:9 relatedBy:0 toItem:v8 attribute:9 multiplier:1.0 constant:0.0];
-    v10 = [MEMORY[0x277CCAAD0] constraintWithItem:self->_activityIndicator attribute:10 relatedBy:0 toItem:v8 attribute:10 multiplier:1.0 constant:0.0];
+    view = [(GKLoadingViewController *)self view];
+    [view addSubview:self->_activityIndicator];
+    v9 = [MEMORY[0x277CCAAD0] constraintWithItem:self->_activityIndicator attribute:9 relatedBy:0 toItem:view attribute:9 multiplier:1.0 constant:0.0];
+    v10 = [MEMORY[0x277CCAAD0] constraintWithItem:self->_activityIndicator attribute:10 relatedBy:0 toItem:view attribute:10 multiplier:1.0 constant:0.0];
     v12[0] = v9;
     v12[1] = v10;
     v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:2];
-    [v8 addConstraints:v11];
+    [view addConstraints:v11];
 
     activityIndicator = self->_activityIndicator;
   }
@@ -153,18 +153,18 @@
 - (void)didEnterLoadingState
 {
   v3 = ++didEnterLoadingState_globalSeed_0;
-  v4 = [(GKLoadingViewController *)self loadingMachine];
-  v5 = [v4 currentState];
+  loadingMachine = [(GKLoadingViewController *)self loadingMachine];
+  currentState = [loadingMachine currentState];
 
   v6 = dispatch_time(0, (self->_loadingIndicatorDelay * 1000000000.0));
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __47__GKLoadingViewController_didEnterLoadingState__block_invoke;
   block[3] = &unk_27966A7D0;
-  v9 = v5;
+  v9 = currentState;
   v10 = v3;
   block[4] = self;
-  v7 = v5;
+  v7 = currentState;
   dispatch_after(v6, MEMORY[0x277D85CD0], block);
 }
 

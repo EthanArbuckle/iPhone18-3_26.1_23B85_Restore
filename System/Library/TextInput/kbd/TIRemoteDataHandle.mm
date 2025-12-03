@@ -1,38 +1,38 @@
 @interface TIRemoteDataHandle
-+ (BOOL)shouldAcceptRequestForMeCardWithAuditToken:(id *)a3;
++ (BOOL)shouldAcceptRequestForMeCardWithAuditToken:(id *)token;
 + (id)localDictionaryPath;
-+ (id)localizedStringForKey:(id)a3;
++ (id)localizedStringForKey:(id)key;
 - (TITextCheckerExemptions)textCheckerExemptions;
-- (id)notificationDetailsForType:(int64_t)a3;
-- (void)addLinguisticAssetsAssertionForLanguage:(id)a3 assertionID:(id)a4 region:(id)a5 clientID:(id)a6 withHandler:(id)a7;
-- (void)alternativesForText:(id)a3 completionHandler:(id)a4;
-- (void)appendWordToTextCheckerLocalDictionary:(id)a3;
-- (void)dismissDialogWithCompletionHandler:(id)a3;
-- (void)dismissedDataSharingWithResponse:(int64_t)a3;
-- (void)fetchAssetUpdateStatusForInputModeIdentifier:(id)a3 callback:(id)a4;
-- (void)getIsSuggestingStrongPasswordsAvailableWithCompletionHandler:(id)a3;
-- (void)ingestSentence:(id)a3 language:(id)a4 phraseRanges:(id)a5;
+- (id)notificationDetailsForType:(int64_t)type;
+- (void)addLinguisticAssetsAssertionForLanguage:(id)language assertionID:(id)d region:(id)region clientID:(id)iD withHandler:(id)handler;
+- (void)alternativesForText:(id)text completionHandler:(id)handler;
+- (void)appendWordToTextCheckerLocalDictionary:(id)dictionary;
+- (void)dismissDialogWithCompletionHandler:(id)handler;
+- (void)dismissedDataSharingWithResponse:(int64_t)response;
+- (void)fetchAssetUpdateStatusForInputModeIdentifier:(id)identifier callback:(id)callback;
+- (void)getIsSuggestingStrongPasswordsAvailableWithCompletionHandler:(id)handler;
+- (void)ingestSentence:(id)sentence language:(id)language phraseRanges:(id)ranges;
 - (void)launchPencilSettings;
-- (void)performTrainingForClient:(id)a3 withCompletionHandler:(id)a4;
-- (void)presentDialogForType:(int64_t)a3 withCompletionHandler:(id)a4;
-- (void)removeAllDynamicDictionariesWithCompletionHandler:(id)a3;
-- (void)removeLinguisticAssetsAssertionWithIdentifier:(id)a3 forClientID:(id)a4 withHandler:(id)a5;
-- (void)requestLinguisticAssetsForLanguage:(id)a3 completion:(id)a4;
-- (void)requestMeCardWithCompletionHandler:(id)a3;
-- (void)requestMeContactWithCompletionHandler:(id)a3;
-- (void)requestTextCheckerLocalDictionaryWithCompletionHandler:(id)a3;
-- (void)string:(id)a3 isExemptFromTextCheckerWithCompletionHandler:(id)a4;
-- (void)updateAssetForInputModeIdentifier:(id)a3 callback:(id)a4;
-- (void)updateForActiveLocaleIdentifiers:(id)a3;
-- (void)updateKeyboardType:(unint64_t)a3 appIdentifier:(id)a4;
+- (void)performTrainingForClient:(id)client withCompletionHandler:(id)handler;
+- (void)presentDialogForType:(int64_t)type withCompletionHandler:(id)handler;
+- (void)removeAllDynamicDictionariesWithCompletionHandler:(id)handler;
+- (void)removeLinguisticAssetsAssertionWithIdentifier:(id)identifier forClientID:(id)d withHandler:(id)handler;
+- (void)requestLinguisticAssetsForLanguage:(id)language completion:(id)completion;
+- (void)requestMeCardWithCompletionHandler:(id)handler;
+- (void)requestMeContactWithCompletionHandler:(id)handler;
+- (void)requestTextCheckerLocalDictionaryWithCompletionHandler:(id)handler;
+- (void)string:(id)string isExemptFromTextCheckerWithCompletionHandler:(id)handler;
+- (void)updateAssetForInputModeIdentifier:(id)identifier callback:(id)callback;
+- (void)updateForActiveLocaleIdentifiers:(id)identifiers;
+- (void)updateKeyboardType:(unint64_t)type appIdentifier:(id)identifier;
 @end
 
 @implementation TIRemoteDataHandle
 
-+ (BOOL)shouldAcceptRequestForMeCardWithAuditToken:(id *)a3
++ (BOOL)shouldAcceptRequestForMeCardWithAuditToken:(id *)token
 {
-  v3 = *&a3->var0[4];
-  *cf.val = *a3->var0;
+  v3 = *&token->var0[4];
+  *cf.val = *token->var0;
   *&cf.val[4] = v3;
   v4 = SecTaskCreateWithAuditToken(0, &cf);
   if (!v4)
@@ -74,59 +74,59 @@
   return v9;
 }
 
-- (void)requestLinguisticAssetsForLanguage:(id)a3 completion:(id)a4
+- (void)requestLinguisticAssetsForLanguage:(id)language completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  languageCopy = language;
   v7 = +[TILinguisticAssetDownloadServer sharedServer];
   [v7 start];
 
   v8 = +[TILinguisticAssetDownloadServer sharedServer];
-  [v8 requestLinguisticAssetsForLanguage:v6 completion:v5];
+  [v8 requestLinguisticAssetsForLanguage:languageCopy completion:completionCopy];
 }
 
-- (void)addLinguisticAssetsAssertionForLanguage:(id)a3 assertionID:(id)a4 region:(id)a5 clientID:(id)a6 withHandler:(id)a7
+- (void)addLinguisticAssetsAssertionForLanguage:(id)language assertionID:(id)d region:(id)region clientID:(id)iD withHandler:(id)handler
 {
-  v11 = a7;
-  v12 = a6;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
+  handlerCopy = handler;
+  iDCopy = iD;
+  regionCopy = region;
+  dCopy = d;
+  languageCopy = language;
   v16 = +[TILinguisticAssetDownloadServer sharedServer];
   [v16 start];
 
   v17 = +[TILinguisticAssetDownloadServer sharedServer];
-  [v17 addLinguisticAssetsAssertionForLanguage:v15 assertionID:v14 region:v13 clientID:v12 withHandler:v11];
+  [v17 addLinguisticAssetsAssertionForLanguage:languageCopy assertionID:dCopy region:regionCopy clientID:iDCopy withHandler:handlerCopy];
 }
 
-- (void)removeLinguisticAssetsAssertionWithIdentifier:(id)a3 forClientID:(id)a4 withHandler:(id)a5
+- (void)removeLinguisticAssetsAssertionWithIdentifier:(id)identifier forClientID:(id)d withHandler:(id)handler
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  handlerCopy = handler;
+  dCopy = d;
+  identifierCopy = identifier;
   v10 = +[TILinguisticAssetDownloadServer sharedServer];
-  [v10 removeLinguisticAssetsAssertionWithIdentifier:v9 forClientID:v8 withHandler:v7];
+  [v10 removeLinguisticAssetsAssertionWithIdentifier:identifierCopy forClientID:dCopy withHandler:handlerCopy];
 }
 
-- (void)fetchAssetUpdateStatusForInputModeIdentifier:(id)a3 callback:(id)a4
+- (void)fetchAssetUpdateStatusForInputModeIdentifier:(id)identifier callback:(id)callback
 {
-  v5 = a4;
-  v6 = a3;
+  callbackCopy = callback;
+  identifierCopy = identifier;
   v7 = +[TILinguisticAssetDownloadServer sharedServer];
-  [v7 fetchAssetUpdateStatusForInputModeIdentifier:v6 callback:v5];
+  [v7 fetchAssetUpdateStatusForInputModeIdentifier:identifierCopy callback:callbackCopy];
 }
 
-- (void)updateAssetForInputModeIdentifier:(id)a3 callback:(id)a4
+- (void)updateAssetForInputModeIdentifier:(id)identifier callback:(id)callback
 {
-  v5 = a4;
-  v6 = a3;
+  callbackCopy = callback;
+  identifierCopy = identifier;
   v7 = +[TILinguisticAssetDownloadServer sharedServer];
-  [v7 updateAssetForInputModeIdentifier:v6 callback:v5];
+  [v7 updateAssetForInputModeIdentifier:identifierCopy callback:callbackCopy];
 }
 
-- (void)requestMeCardWithCompletionHandler:(id)a3
+- (void)requestMeCardWithCompletionHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v4 = +[NSXPCConnection currentConnection];
   v5 = v4;
   if (v4)
@@ -143,7 +143,7 @@
 
   if (v6)
   {
-    v8 = v3;
+    v8 = handlerCopy;
     TIGetMeCardAsync();
   }
 
@@ -158,13 +158,13 @@
       }
     }
 
-    (*(v3 + 2))(v3, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 
-- (void)requestMeContactWithCompletionHandler:(id)a3
+- (void)requestMeContactWithCompletionHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v4 = +[NSXPCConnection currentConnection];
   v5 = v4;
   if (v4)
@@ -181,7 +181,7 @@
 
   if (v6)
   {
-    v8 = v3;
+    v8 = handlerCopy;
     TIGetMeCardAsync();
   }
 
@@ -196,7 +196,7 @@
       }
     }
 
-    (*(v3 + 2))(v3, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 
@@ -210,56 +210,56 @@
   sub_10000B180(@"prefs:root=Pencil", v2);
 }
 
-- (void)presentDialogForType:(int64_t)a3 withCompletionHandler:(id)a4
+- (void)presentDialogForType:(int64_t)type withCompletionHandler:(id)handler
 {
-  v6 = a4;
-  if (!v6)
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     sub_10000DFF0(a2, self);
   }
 
-  v7 = v6;
+  v7 = handlerCopy;
   TIDispatchAsync();
 }
 
-- (id)notificationDetailsForType:(int64_t)a3
+- (id)notificationDetailsForType:(int64_t)type
 {
-  if (a3 == 3)
+  if (type == 3)
   {
     v22 = objc_alloc_init(sub_10000BC44());
-    v23 = [v22 dictationDataSharingOptInReminderViewModel];
-    v3 = [v23 title];
-    v9 = [v23 message];
-    v17 = [v23 confirmationButtonTitle];
+    dictationDataSharingOptInReminderViewModel = [v22 dictationDataSharingOptInReminderViewModel];
+    title = [dictationDataSharingOptInReminderViewModel title];
+    message = [dictationDataSharingOptInReminderViewModel message];
+    confirmationButtonTitle = [dictationDataSharingOptInReminderViewModel confirmationButtonTitle];
 
     v19 = 0;
-    v18 = 0;
+    optOutButtonTitle = 0;
   }
 
-  else if (a3 == 2)
+  else if (type == 2)
   {
     v20 = objc_alloc_init(sub_10000BC44());
-    v21 = [v20 dictationDataSharingOptInAlertViewModel];
-    v3 = [v21 title];
-    v9 = [v21 message];
-    v18 = [v21 optOutButtonTitle];
-    v17 = [v21 optInButtonTitle];
+    dictationDataSharingOptInAlertViewModel = [v20 dictationDataSharingOptInAlertViewModel];
+    title = [dictationDataSharingOptInAlertViewModel title];
+    message = [dictationDataSharingOptInAlertViewModel message];
+    optOutButtonTitle = [dictationDataSharingOptInAlertViewModel optOutButtonTitle];
+    confirmationButtonTitle = [dictationDataSharingOptInAlertViewModel optInButtonTitle];
 
     v19 = 0;
   }
 
-  else if (a3)
+  else if (type)
   {
-    v3 = [objc_opt_class() localizedStringForKey:@"EXTENSION_OPT_IN_TITLE"];
-    v9 = [objc_opt_class() localizedStringForKey:@"EXTENSION_OPT_IN_MESSAGE"];
-    v18 = [objc_opt_class() localizedStringForKey:@"EXTENSION_OPT_IN_ADD"];
+    title = [objc_opt_class() localizedStringForKey:@"EXTENSION_OPT_IN_TITLE"];
+    message = [objc_opt_class() localizedStringForKey:@"EXTENSION_OPT_IN_MESSAGE"];
+    optOutButtonTitle = [objc_opt_class() localizedStringForKey:@"EXTENSION_OPT_IN_ADD"];
     v19 = [objc_opt_class() localizedStringForKey:@"DICTATION_OPT_IN_ABOUT"];
-    v17 = [objc_opt_class() localizedStringForKey:@"DICTATION_OPT_IN_NOT_NOW"];
+    confirmationButtonTitle = [objc_opt_class() localizedStringForKey:@"DICTATION_OPT_IN_NOT_NOW"];
   }
 
   else
   {
-    v3 = [objc_opt_class() localizedStringForKey:@"DICTATION_OPT_IN_TITLE"];
+    title = [objc_opt_class() localizedStringForKey:@"DICTATION_OPT_IN_TITLE"];
     v4 = [objc_opt_class() localizedStringForKey:@"DICTATION_OPT_IN_ABOUT"];
     v36 = 0;
     v37 = &v36;
@@ -295,7 +295,7 @@
       v8 = @"DICTATION_OPT_IN_MESSAGE";
     }
 
-    v9 = [v7 localizedStringForKey:v8];
+    message = [v7 localizedStringForKey:v8];
     v36 = 0;
     v37 = &v36;
     v38 = 0x2050000000;
@@ -315,12 +315,12 @@
     v11 = v10;
     _Block_object_dispose(&v36, 8);
     v12 = [v10 bundleWithIdentifier:@"com.apple.onboarding.siri"];
-    v13 = [v12 privacyFlow];
-    v14 = [v13 localizedButtonTitle];
-    v15 = v14;
-    if (v14)
+    privacyFlow = [v12 privacyFlow];
+    localizedButtonTitle = [privacyFlow localizedButtonTitle];
+    v15 = localizedButtonTitle;
+    if (localizedButtonTitle)
     {
-      v16 = v14;
+      v16 = localizedButtonTitle;
     }
 
     else
@@ -328,16 +328,16 @@
       v16 = v4;
     }
 
-    v17 = v16;
+    confirmationButtonTitle = v16;
 
-    v18 = [objc_opt_class() localizedStringForKey:@"DICTATION_OPT_IN_ENABLE"];
+    optOutButtonTitle = [objc_opt_class() localizedStringForKey:@"DICTATION_OPT_IN_ENABLE"];
     v19 = [objc_opt_class() localizedStringForKey:@"DICTATION_OPT_IN_NOT_NOW"];
   }
 
   v24 = +[NSMutableDictionary dictionary];
-  [v24 setObject:v3 forKey:kCFUserNotificationAlertHeaderKey];
-  [v24 setObject:v9 forKey:kCFUserNotificationAlertMessageKey];
-  [v24 setObject:v17 forKey:kCFUserNotificationDefaultButtonTitleKey];
+  [v24 setObject:title forKey:kCFUserNotificationAlertHeaderKey];
+  [v24 setObject:message forKey:kCFUserNotificationAlertMessageKey];
+  [v24 setObject:confirmationButtonTitle forKey:kCFUserNotificationDefaultButtonTitleKey];
   v25 = [NSNumber numberWithBool:1];
   [v24 setObject:v25 forKey:@"DismissOnLock"];
 
@@ -346,9 +346,9 @@
     [v24 setObject:v19 forKey:kCFUserNotificationOtherButtonTitleKey];
   }
 
-  if (v18)
+  if (optOutButtonTitle)
   {
-    [v24 setObject:v18 forKey:kCFUserNotificationAlternateButtonTitleKey];
+    [v24 setObject:optOutButtonTitle forKey:kCFUserNotificationAlternateButtonTitleKey];
   }
 
   v26 = [NSNumber numberWithBool:1];
@@ -366,33 +366,33 @@
   return v24;
 }
 
-- (void)dismissDialogWithCompletionHandler:(id)a3
+- (void)dismissDialogWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v3 = v4;
+  handlerCopy = handler;
+  v3 = handlerCopy;
   TIDispatchAsync();
 }
 
-- (void)dismissedDataSharingWithResponse:(int64_t)a3
+- (void)dismissedDataSharingWithResponse:(int64_t)response
 {
-  if (a3 > 3)
+  if (response > 3)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = qword_100012910[a3];
+    v4 = qword_100012910[response];
   }
 
   sub_10000BEB4(v4);
-  v5 = [qword_100026620 sharedPreferences];
-  [v5 setSiriDataSharingOptInAlertPresented:1 completion:0];
+  sharedPreferences = [qword_100026620 sharedPreferences];
+  [sharedPreferences setSiriDataSharingOptInAlertPresented:1 completion:0];
 }
 
-- (void)removeAllDynamicDictionariesWithCompletionHandler:(id)a3
+- (void)removeAllDynamicDictionariesWithCompletionHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   if (TICanLogMessageAtLevel())
   {
     v4 = TIOSLogFacility();
@@ -402,7 +402,7 @@
     }
   }
 
-  v5 = v3;
+  v5 = handlerCopy;
   TIDispatchAsync();
 }
 
@@ -423,19 +423,19 @@
   return textCheckerExemptions;
 }
 
-- (void)string:(id)a3 isExemptFromTextCheckerWithCompletionHandler:(id)a4
+- (void)string:(id)string isExemptFromTextCheckerWithCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 _looksLikeNumberInput])
+  stringCopy = string;
+  handlerCopy = handler;
+  if ([stringCopy _looksLikeNumberInput])
   {
     v8 = 0;
   }
 
   else
   {
-    v9 = [(TIRemoteDataHandle *)self textCheckerExemptions];
-    v8 = [v9 stringIsExemptFromChecker:v6];
+    textCheckerExemptions = [(TIRemoteDataHandle *)self textCheckerExemptions];
+    v8 = [textCheckerExemptions stringIsExemptFromChecker:stringCopy];
   }
 
   if (TICanLogMessageAtLevel())
@@ -443,11 +443,11 @@
     v10 = TIOSLogFacility();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
-      sub_10000E3BC(v8, v6, v10);
+      sub_10000E3BC(v8, stringCopy, v10);
     }
   }
 
-  v7[2](v7, v8);
+  handlerCopy[2](handlerCopy, v8);
 }
 
 + (id)localDictionaryPath
@@ -458,9 +458,9 @@
   return v3;
 }
 
-- (void)requestTextCheckerLocalDictionaryWithCompletionHandler:(id)a3
+- (void)requestTextCheckerLocalDictionaryWithCompletionHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   if (TICanLogMessageAtLevel())
   {
     v4 = TIOSLogFacility();
@@ -472,35 +472,35 @@
 
   v5 = +[TIRemoteDataHandle localDictionaryPath];
   v6 = [NSData dataWithContentsOfFile:v5];
-  v3[2](v3, v6);
+  handlerCopy[2](handlerCopy, v6);
 }
 
-- (void)appendWordToTextCheckerLocalDictionary:(id)a3
+- (void)appendWordToTextCheckerLocalDictionary:(id)dictionary
 {
-  v3 = a3;
+  dictionaryCopy = dictionary;
   if (TICanLogMessageAtLevel())
   {
     v4 = TIOSLogFacility();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
     {
-      sub_10000E530(v3);
+      sub_10000E530(dictionaryCopy);
     }
   }
 
-  v5 = [v3 UTF8String];
+  uTF8String = [dictionaryCopy UTF8String];
   v6 = +[TIRemoteDataHandle localDictionaryPath];
   v7 = fopen([v6 fileSystemRepresentation], "a+");
   if (v7)
   {
     v8 = v7;
-    if (v3)
+    if (dictionaryCopy)
     {
-      if (v5)
+      if (uTF8String)
       {
-        v9 = strlen(v5);
+        v9 = strlen(uTF8String);
         if (v9)
         {
-          fwrite(v5, 1uLL, v9, v8);
+          fwrite(uTF8String, 1uLL, v9, v8);
           fwrite("\n", 1uLL, 1uLL, v8);
           fflush(v8);
           v10 = fileno(v8);
@@ -513,27 +513,27 @@
   }
 }
 
-+ (id)localizedStringForKey:(id)a3
++ (id)localizedStringForKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   v4 = [NSBundle bundleForClass:objc_opt_class()];
   v5 = +[NSLocale _deviceLanguage];
-  v6 = [v4 localizations];
+  localizations = [v4 localizations];
   v15 = v5;
   v7 = [NSArray arrayWithObjects:&v15 count:1];
-  v8 = [NSBundle preferredLocalizationsFromArray:v6 forPreferences:v7];
+  v8 = [NSBundle preferredLocalizationsFromArray:localizations forPreferences:v7];
 
   v9 = [v8 objectAtIndexedSubscript:0];
-  v10 = [v4 localizedStringForKey:v3 value:0 table:@"AssistantSettings" localization:v9];
+  v10 = [v4 localizedStringForKey:keyCopy value:0 table:@"AssistantSettings" localization:v9];
   v11 = v10;
-  if (v10 && ([v10 isEqualToString:v3] & 1) == 0)
+  if (v10 && ([v10 isEqualToString:keyCopy] & 1) == 0)
   {
     v12 = v11;
   }
 
   else
   {
-    v12 = [v4 localizedStringForKey:v3 value:&stru_10001CFB8 table:@"AssistantSettings"];
+    v12 = [v4 localizedStringForKey:keyCopy value:&stru_10001CFB8 table:@"AssistantSettings"];
   }
 
   v13 = v12;
@@ -541,38 +541,38 @@
   return v13;
 }
 
-- (void)performTrainingForClient:(id)a3 withCompletionHandler:(id)a4
+- (void)performTrainingForClient:(id)client withCompletionHandler:(id)handler
 {
-  v5 = a4;
-  v6 = a3;
+  handlerCopy = handler;
+  clientCopy = client;
   v7 = +[TIResponseKitTrainerImpl sharedTrainer];
-  [v7 performTrainingForClient:v6 withCompletionHandler:v5];
+  [v7 performTrainingForClient:clientCopy withCompletionHandler:handlerCopy];
 }
 
-- (void)updateForActiveLocaleIdentifiers:(id)a3
+- (void)updateForActiveLocaleIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v3 = v4;
+  identifiersCopy = identifiers;
+  v3 = identifiersCopy;
   TIDispatchAsync();
 }
 
-- (void)updateKeyboardType:(unint64_t)a3 appIdentifier:(id)a4
+- (void)updateKeyboardType:(unint64_t)type appIdentifier:(id)identifier
 {
-  v5 = a4;
-  v4 = v5;
+  identifierCopy = identifier;
+  v4 = identifierCopy;
   TIDispatchAsync();
 }
 
-- (void)alternativesForText:(id)a3 completionHandler:(id)a4
+- (void)alternativesForText:(id)text completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v5 = v8;
-  v6 = v7;
+  textCopy = text;
+  handlerCopy = handler;
+  v5 = handlerCopy;
+  v6 = textCopy;
   TIDispatchAsync();
 }
 
-- (void)ingestSentence:(id)a3 language:(id)a4 phraseRanges:(id)a5
+- (void)ingestSentence:(id)sentence language:(id)language phraseRanges:(id)ranges
 {
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
   {
@@ -580,10 +580,10 @@
   }
 }
 
-- (void)getIsSuggestingStrongPasswordsAvailableWithCompletionHandler:(id)a3
+- (void)getIsSuggestingStrongPasswordsAvailableWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  (*(a3 + 2))(v4, +[TIAppAutofillManager isSuggestingStrongPasswordsAvailable]);
+  handlerCopy = handler;
+  (*(handler + 2))(handlerCopy, +[TIAppAutofillManager isSuggestingStrongPasswordsAvailable]);
 }
 
 @end

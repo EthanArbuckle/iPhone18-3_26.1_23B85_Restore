@@ -1,18 +1,18 @@
 @interface LUILogFilterPredicateCandidateCollectionViewCell
-- (LUILogFilterPredicateCandidateCollectionViewCell)initWithFrame:(CGRect)a3;
+- (LUILogFilterPredicateCandidateCollectionViewCell)initWithFrame:(CGRect)frame;
 - (id)_createTitleLabel;
 - (void)_setupUI;
 - (void)layoutSubViews;
-- (void)setSelected:(BOOL)a3;
+- (void)setSelected:(BOOL)selected;
 @end
 
 @implementation LUILogFilterPredicateCandidateCollectionViewCell
 
-- (LUILogFilterPredicateCandidateCollectionViewCell)initWithFrame:(CGRect)a3
+- (LUILogFilterPredicateCandidateCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = LUILogFilterPredicateCandidateCollectionViewCell;
-  v3 = [(LUILogFilterPredicateCandidateCollectionViewCell *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(LUILogFilterPredicateCandidateCollectionViewCell *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -24,38 +24,38 @@
 
 - (void)_setupUI
 {
-  v3 = [(LUILogFilterPredicateCandidateCollectionViewCell *)self _createTitleLabel];
+  _createTitleLabel = [(LUILogFilterPredicateCandidateCollectionViewCell *)self _createTitleLabel];
   titleLabel = self->_titleLabel;
-  self->_titleLabel = v3;
+  self->_titleLabel = _createTitleLabel;
 
-  v5 = [(LUILogFilterPredicateCandidateCollectionViewCell *)self contentView];
-  [v5 addSubview:self->_titleLabel];
+  contentView = [(LUILogFilterPredicateCandidateCollectionViewCell *)self contentView];
+  [contentView addSubview:self->_titleLabel];
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v3 = a3;
+  selectedCopy = selected;
   v9.receiver = self;
   v9.super_class = LUILogFilterPredicateCandidateCollectionViewCell;
   [(LUILogFilterPredicateCandidateCollectionViewCell *)&v9 setSelected:?];
-  if (v3)
+  if (selectedCopy)
   {
-    v5 = [MEMORY[0x277D75348] lightGrayColor];
-    [(LUILogFilterPredicateCandidateCollectionViewCell *)self setBackgroundColor:v5];
+    lightGrayColor = [MEMORY[0x277D75348] lightGrayColor];
+    [(LUILogFilterPredicateCandidateCollectionViewCell *)self setBackgroundColor:lightGrayColor];
 
     [MEMORY[0x277D75348] darkGrayColor];
   }
 
   else
   {
-    v6 = [MEMORY[0x277D75348] clearColor];
-    [(LUILogFilterPredicateCandidateCollectionViewCell *)self setBackgroundColor:v6];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(LUILogFilterPredicateCandidateCollectionViewCell *)self setBackgroundColor:clearColor];
 
     [MEMORY[0x277D75348] whiteColor];
   }
   v7 = ;
-  v8 = [(LUILogFilterPredicateCandidateCollectionViewCell *)self titleLabel];
-  [v8 setTextColor:v7];
+  titleLabel = [(LUILogFilterPredicateCandidateCollectionViewCell *)self titleLabel];
+  [titleLabel setTextColor:v7];
 }
 
 - (void)layoutSubViews
@@ -64,8 +64,8 @@
   v3 = CGRectGetWidth(v7) + -20.0;
   [(LUILogFilterPredicateCandidateCollectionViewCell *)self frame];
   Height = CGRectGetHeight(v8);
-  v5 = [(LUILogFilterPredicateCandidateCollectionViewCell *)self titleLabel];
-  [v5 setFrame:{10.0, 0.0, v3, Height}];
+  titleLabel = [(LUILogFilterPredicateCandidateCollectionViewCell *)self titleLabel];
+  [titleLabel setFrame:{10.0, 0.0, v3, Height}];
 }
 
 - (id)_createTitleLabel
@@ -78,8 +78,8 @@
   v5 = [MEMORY[0x277D74300] systemFontOfSize:17.0 weight:*MEMORY[0x277D74410]];
   [v3 setFont:v5];
 
-  v6 = [MEMORY[0x277D75348] whiteColor];
-  [v3 setTextColor:v6];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  [v3 setTextColor:whiteColor];
 
   [v3 setTextAlignment:1];
   [v3 setAutoresizingMask:18];

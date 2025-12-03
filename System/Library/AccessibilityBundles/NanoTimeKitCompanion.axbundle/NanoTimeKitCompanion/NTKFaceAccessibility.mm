@@ -1,21 +1,21 @@
 @interface NTKFaceAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_accessibilityFaceEditOptionsDescription;
 @end
 
 @implementation NTKFaceAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"NTKFace" hasInstanceMethod:@"faceStyle" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"NTKFace" hasInstanceMethod:@"faceDescription" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NTKFace" hasInstanceMethod:@"configuration" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NTKFace" hasInstanceMethod:@"_customEditModes" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NTKEditOption"];
-  [v3 validateClass:@"NTKEditOption" hasInstanceMethod:@"localizedName" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NTKFaceConfiguration"];
-  [v3 validateClass:@"NTKFaceConfiguration" hasInstanceMethod:@"optionForCustomEditMode: slot:" withFullSignature:{"@", "q", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"NTKFace" hasInstanceMethod:@"faceStyle" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"NTKFace" hasInstanceMethod:@"faceDescription" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NTKFace" hasInstanceMethod:@"configuration" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NTKFace" hasInstanceMethod:@"_customEditModes" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NTKEditOption"];
+  [validationsCopy validateClass:@"NTKEditOption" hasInstanceMethod:@"localizedName" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NTKFaceConfiguration"];
+  [validationsCopy validateClass:@"NTKFaceConfiguration" hasInstanceMethod:@"optionForCustomEditMode: slot:" withFullSignature:{"@", "q", "@", 0}];
 }
 
 - (id)_accessibilityFaceEditOptionsDescription

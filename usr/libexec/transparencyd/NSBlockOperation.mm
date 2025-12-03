@@ -1,14 +1,14 @@
 @interface NSBlockOperation
-+ (id)named:(id)a3 withBlock:(id)a4;
++ (id)named:(id)named withBlock:(id)block;
 @end
 
 @implementation NSBlockOperation
 
-+ (id)named:(id)a3 withBlock:(id)a4
++ (id)named:(id)named withBlock:(id)block
 {
-  v5 = a3;
-  v6 = [NSBlockOperation blockOperationWithBlock:a4];
-  [v6 setName:v5];
+  namedCopy = named;
+  v6 = [NSBlockOperation blockOperationWithBlock:block];
+  [v6 setName:namedCopy];
 
   return v6;
 }

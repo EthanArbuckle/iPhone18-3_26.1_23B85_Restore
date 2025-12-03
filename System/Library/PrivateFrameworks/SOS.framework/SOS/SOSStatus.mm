@@ -6,13 +6,13 @@
 - (BOOL)shouldBlockNonEmergencyCalls;
 - (BOOL)shouldRejectNewSOSTriggers;
 - (BOOL)shouldRetriggerSOS;
-- (SOSStatus)initWithCoder:(id)a3;
-- (SOSStatus)initWithUUID:(id)a3 trigger:(int64_t)a4 timeOfDetection:(id)a5;
-- (SOSStatus)initWithUUID:(id)a3 trigger:(int64_t)a4 timeOfDetection:(id)a5 timeOfResolution:(id)a6 resolution:(int64_t)a7;
-- (SOSStatus)initWithUUID:(id)a3 trigger:(int64_t)a4 timeOfDetection:(id)a5 timeOfResolution:(id)a6 resolution:(int64_t)a7 flowState:(int64_t)a8 isPairedDeviceStatus:(BOOL)a9;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SOSStatus)initWithCoder:(id)coder;
+- (SOSStatus)initWithUUID:(id)d trigger:(int64_t)trigger timeOfDetection:(id)detection;
+- (SOSStatus)initWithUUID:(id)d trigger:(int64_t)trigger timeOfDetection:(id)detection timeOfResolution:(id)resolution resolution:(int64_t)a7;
+- (SOSStatus)initWithUUID:(id)d trigger:(int64_t)trigger timeOfDetection:(id)detection timeOfResolution:(id)resolution resolution:(int64_t)a7 flowState:(int64_t)state isPairedDeviceStatus:(BOOL)status;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)isFlowActive;
 - (void)isFlowActiveAndNotResting;
 - (void)isPreCall;
@@ -25,25 +25,25 @@
 
 - (BOOL)isValid
 {
-  v3 = [(SOSStatus *)self uuid];
+  uuid = [(SOSStatus *)self uuid];
 
-  if (!v3)
+  if (!uuid)
   {
     goto LABEL_5;
   }
 
-  v4 = [(SOSStatus *)self trigger];
-  if (v4)
+  trigger = [(SOSStatus *)self trigger];
+  if (trigger)
   {
-    v5 = [(SOSStatus *)self timeOfDetection];
-    if (!v5)
+    timeOfDetection = [(SOSStatus *)self timeOfDetection];
+    if (!timeOfDetection)
     {
       goto LABEL_5;
     }
 
-    v6 = v5;
-    v7 = [(SOSStatus *)self timeOfDetection];
-    [v7 timeIntervalSince1970];
+    v6 = timeOfDetection;
+    timeOfDetection2 = [(SOSStatus *)self timeOfDetection];
+    [timeOfDetection2 timeIntervalSince1970];
     v9 = v8;
     v10 = [MEMORY[0x277CBEAA8] now];
     [v10 timeIntervalSince1970];
@@ -52,14 +52,14 @@
     if (v9 > v12)
     {
 LABEL_5:
-      LOBYTE(v4) = 0;
-      return v4;
+      LOBYTE(trigger) = 0;
+      return trigger;
     }
 
-    LOBYTE(v4) = 1;
+    LOBYTE(trigger) = 1;
   }
 
-  return v4;
+  return trigger;
 }
 
 - (BOOL)shouldBlockNonEmergencyCalls
@@ -69,8 +69,8 @@ LABEL_5:
     goto LABEL_9;
   }
 
-  v3 = [(SOSStatus *)self trigger];
-  if (v3 >= 0xA)
+  trigger = [(SOSStatus *)self trigger];
+  if (trigger >= 0xA)
   {
     v13 = sos_default_log();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -81,9 +81,9 @@ LABEL_5:
     goto LABEL_8;
   }
 
-  v4 = dbl_264360708[v3];
-  v5 = [(SOSStatus *)self timeOfDetection];
-  [v5 timeIntervalSince1970];
+  v4 = dbl_264360708[trigger];
+  timeOfDetection = [(SOSStatus *)self timeOfDetection];
+  [timeOfDetection timeIntervalSince1970];
   v7 = v4 + v6;
   v8 = [MEMORY[0x277CBEAA8] now];
   [v8 timeIntervalSince1970];
@@ -96,8 +96,8 @@ LABEL_9:
     return v12 & 1;
   }
 
-  v11 = [(SOSStatus *)self flowState];
-  if (v11 >= 0xF)
+  flowState = [(SOSStatus *)self flowState];
+  if (flowState >= 0xF)
   {
     v13 = sos_default_log();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -110,25 +110,25 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v12 = 0x4006u >> v11;
+  v12 = 0x4006u >> flowState;
   return v12 & 1;
 }
 
-- (SOSStatus)initWithUUID:(id)a3 trigger:(int64_t)a4 timeOfDetection:(id)a5 timeOfResolution:(id)a6 resolution:(int64_t)a7
+- (SOSStatus)initWithUUID:(id)d trigger:(int64_t)trigger timeOfDetection:(id)detection timeOfResolution:(id)resolution resolution:(int64_t)a7
 {
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
+  dCopy = d;
+  detectionCopy = detection;
+  resolutionCopy = resolution;
   v19.receiver = self;
   v19.super_class = SOSStatus;
   v16 = [(SOSStatus *)&v19 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_uuid, a3);
-    v17->_trigger = a4;
-    objc_storeStrong(&v17->_timeOfDetection, a5);
-    objc_storeStrong(&v17->_timeOfResolution, a6);
+    objc_storeStrong(&v16->_uuid, d);
+    v17->_trigger = trigger;
+    objc_storeStrong(&v17->_timeOfDetection, detection);
+    objc_storeStrong(&v17->_timeOfResolution, resolution);
     v17->_resolution = a7;
     v17->_flowState = 0;
     v17->_isPairedDeviceStatus = 0;
@@ -137,19 +137,19 @@ LABEL_8:
   return v17;
 }
 
-- (SOSStatus)initWithUUID:(id)a3 trigger:(int64_t)a4 timeOfDetection:(id)a5
+- (SOSStatus)initWithUUID:(id)d trigger:(int64_t)trigger timeOfDetection:(id)detection
 {
-  v9 = a3;
-  v10 = a5;
+  dCopy = d;
+  detectionCopy = detection;
   v15.receiver = self;
   v15.super_class = SOSStatus;
   v11 = [(SOSStatus *)&v15 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_uuid, a3);
-    v12->_trigger = a4;
-    objc_storeStrong(&v12->_timeOfDetection, a5);
+    objc_storeStrong(&v11->_uuid, d);
+    v12->_trigger = trigger;
+    objc_storeStrong(&v12->_timeOfDetection, detection);
     timeOfResolution = v12->_timeOfResolution;
     v12->_timeOfResolution = 0;
 
@@ -161,24 +161,24 @@ LABEL_8:
   return v12;
 }
 
-- (SOSStatus)initWithUUID:(id)a3 trigger:(int64_t)a4 timeOfDetection:(id)a5 timeOfResolution:(id)a6 resolution:(int64_t)a7 flowState:(int64_t)a8 isPairedDeviceStatus:(BOOL)a9
+- (SOSStatus)initWithUUID:(id)d trigger:(int64_t)trigger timeOfDetection:(id)detection timeOfResolution:(id)resolution resolution:(int64_t)a7 flowState:(int64_t)state isPairedDeviceStatus:(BOOL)status
 {
-  v16 = a3;
-  v17 = a5;
-  v18 = a6;
+  dCopy = d;
+  detectionCopy = detection;
+  resolutionCopy = resolution;
   v22.receiver = self;
   v22.super_class = SOSStatus;
   v19 = [(SOSStatus *)&v22 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_uuid, a3);
-    v20->_trigger = a4;
-    objc_storeStrong(&v20->_timeOfDetection, a5);
-    objc_storeStrong(&v20->_timeOfResolution, a6);
+    objc_storeStrong(&v19->_uuid, d);
+    v20->_trigger = trigger;
+    objc_storeStrong(&v20->_timeOfDetection, detection);
+    objc_storeStrong(&v20->_timeOfResolution, resolution);
     v20->_resolution = a7;
-    v20->_flowState = a8;
-    v20->_isPairedDeviceStatus = a9;
+    v20->_flowState = state;
+    v20->_isPairedDeviceStatus = status;
   }
 
   return v20;
@@ -193,8 +193,8 @@ LABEL_7:
     return v4 & 1;
   }
 
-  v3 = [(SOSStatus *)self flowState];
-  if (v3 >= 0xF)
+  flowState = [(SOSStatus *)self flowState];
+  if (flowState >= 0xF)
   {
     v5 = sos_default_log();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -205,7 +205,7 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v4 = 0x6ABEu >> v3;
+  v4 = 0x6ABEu >> flowState;
   return v4 & 1;
 }
 
@@ -218,8 +218,8 @@ LABEL_7:
     return v4 & 1;
   }
 
-  v3 = [(SOSStatus *)self flowState];
-  if (v3 >= 0xF)
+  flowState = [(SOSStatus *)self flowState];
+  if (flowState >= 0xF)
   {
     v5 = sos_default_log();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -230,7 +230,7 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v4 = 0x40BEu >> v3;
+  v4 = 0x40BEu >> flowState;
   return v4 & 1;
 }
 
@@ -243,8 +243,8 @@ LABEL_7:
     return v4 & 1;
   }
 
-  v3 = [(SOSStatus *)self flowState];
-  if (v3 >= 0xF)
+  flowState = [(SOSStatus *)self flowState];
+  if (flowState >= 0xF)
   {
     v5 = sos_default_log();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -255,7 +255,7 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v4 = 0x4006u >> v3;
+  v4 = 0x4006u >> flowState;
   return v4 & 1;
 }
 
@@ -268,8 +268,8 @@ LABEL_8:
     return v4 & 1;
   }
 
-  v3 = [(SOSStatus *)self flowState];
-  if (v3 >= 0xF)
+  flowState = [(SOSStatus *)self flowState];
+  if (flowState >= 0xF)
   {
     v5 = sos_default_log();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -280,7 +280,7 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  v4 = 0x401Eu >> v3;
+  v4 = 0x401Eu >> flowState;
   return v4 & 1;
 }
 
@@ -291,8 +291,8 @@ LABEL_8:
     goto LABEL_11;
   }
 
-  v3 = [(SOSStatus *)self timeOfDetection];
-  [v3 timeIntervalSince1970];
+  timeOfDetection = [(SOSStatus *)self timeOfDetection];
+  [timeOfDetection timeIntervalSince1970];
   v5 = v4 + 60.0;
   v6 = [MEMORY[0x277CBEAA8] now];
   [v6 timeIntervalSince1970];
@@ -305,8 +305,8 @@ LABEL_11:
     return v10 & 1;
   }
 
-  v9 = [(SOSStatus *)self flowState];
-  if (v9 >= 0xF)
+  flowState = [(SOSStatus *)self flowState];
+  if (flowState >= 0xF)
   {
     v11 = sos_default_log();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -317,61 +317,61 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  v10 = 0x4006u >> v9;
+  v10 = 0x4006u >> flowState;
   return v10 & 1;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   uuid = self->_uuid;
-  v5 = a3;
-  [v5 encodeObject:uuid forKey:@"kSOSStatusUUID"];
-  [v5 encodeInteger:self->_trigger forKey:@"kSOSStatusTrigger"];
+  coderCopy = coder;
+  [coderCopy encodeObject:uuid forKey:@"kSOSStatusUUID"];
+  [coderCopy encodeInteger:self->_trigger forKey:@"kSOSStatusTrigger"];
   [(NSDate *)self->_timeOfDetection timeIntervalSinceReferenceDate];
-  [v5 encodeDouble:@"kSOSStatusDetectionDate" forKey:?];
+  [coderCopy encodeDouble:@"kSOSStatusDetectionDate" forKey:?];
   [(NSDate *)self->_timeOfResolution timeIntervalSinceReferenceDate];
-  [v5 encodeDouble:@"kSOSStatusResolutionDate" forKey:?];
-  [v5 encodeInteger:self->_resolution forKey:@"kSOSStatusResolution"];
-  [v5 encodeInteger:self->_flowState forKey:@"kSOSStatusFlowState"];
-  [v5 encodeBool:self->_isPairedDeviceStatus forKey:@"kSOSStatusIsPairedDeviceStatus"];
+  [coderCopy encodeDouble:@"kSOSStatusResolutionDate" forKey:?];
+  [coderCopy encodeInteger:self->_resolution forKey:@"kSOSStatusResolution"];
+  [coderCopy encodeInteger:self->_flowState forKey:@"kSOSStatusFlowState"];
+  [coderCopy encodeBool:self->_isPairedDeviceStatus forKey:@"kSOSStatusIsPairedDeviceStatus"];
 }
 
-- (SOSStatus)initWithCoder:(id)a3
+- (SOSStatus)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = SOSStatus;
   v5 = [(SOSStatus *)&v15 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectForKey:@"kSOSStatusUUID"];
+    v6 = [coderCopy decodeObjectForKey:@"kSOSStatusUUID"];
     uuid = v5->_uuid;
     v5->_uuid = v6;
 
-    v5->_trigger = [v4 decodeIntegerForKey:@"kSOSStatusTrigger"];
+    v5->_trigger = [coderCopy decodeIntegerForKey:@"kSOSStatusTrigger"];
     v8 = objc_alloc(MEMORY[0x277CBEAA8]);
-    [v4 decodeDoubleForKey:@"kSOSStatusDetectionDate"];
+    [coderCopy decodeDoubleForKey:@"kSOSStatusDetectionDate"];
     v9 = [v8 initWithTimeIntervalSinceReferenceDate:?];
     timeOfDetection = v5->_timeOfDetection;
     v5->_timeOfDetection = v9;
 
     v11 = objc_alloc(MEMORY[0x277CBEAA8]);
-    [v4 decodeDoubleForKey:@"kSOSStatusResolutionDate"];
+    [coderCopy decodeDoubleForKey:@"kSOSStatusResolutionDate"];
     v12 = [v11 initWithTimeIntervalSinceReferenceDate:?];
     timeOfResolution = v5->_timeOfResolution;
     v5->_timeOfResolution = v12;
 
-    v5->_resolution = [v4 decodeIntegerForKey:@"kSOSStatusResolution"];
-    v5->_flowState = [v4 decodeIntegerForKey:@"kSOSStatusFlowState"];
-    v5->_isPairedDeviceStatus = [v4 decodeBoolForKey:@"kSOSStatusIsPairedDeviceStatus"];
+    v5->_resolution = [coderCopy decodeIntegerForKey:@"kSOSStatusResolution"];
+    v5->_flowState = [coderCopy decodeIntegerForKey:@"kSOSStatusFlowState"];
+    v5->_isPairedDeviceStatus = [coderCopy decodeBoolForKey:@"kSOSStatusIsPairedDeviceStatus"];
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   LOBYTE(v6) = self->_isPairedDeviceStatus;
   return [v4 initWithUUID:self->_uuid trigger:self->_trigger timeOfDetection:self->_timeOfDetection timeOfResolution:self->_timeOfResolution resolution:self->_resolution flowState:self->_flowState isPairedDeviceStatus:v6];
 }
@@ -379,14 +379,14 @@ LABEL_11:
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(SOSStatus *)self uuid];
-  v5 = [(SOSStatus *)self trigger];
-  v6 = [(SOSStatus *)self timeOfDetection];
-  v7 = [(SOSStatus *)self timeOfResolution];
-  v8 = [(SOSStatus *)self resolution];
+  uuid = [(SOSStatus *)self uuid];
+  trigger = [(SOSStatus *)self trigger];
+  timeOfDetection = [(SOSStatus *)self timeOfDetection];
+  timeOfResolution = [(SOSStatus *)self timeOfResolution];
+  resolution = [(SOSStatus *)self resolution];
   v9 = sosFlowStateDescription([(SOSStatus *)self flowState]);
   v10 = [MEMORY[0x277CCABB0] numberWithBool:{-[SOSStatus isPairedDeviceStatus](self, "isPairedDeviceStatus")}];
-  v11 = [v3 stringWithFormat:@"SOSStatus - uuid: %@ trigger: %d, detectedAt: %@, resolvedAt: %@, resolution: %d, sosFlowState: %@, isPairedDeviceStatus: %@", v4, v5, v6, v7, v8, v9, v10];
+  v11 = [v3 stringWithFormat:@"SOSStatus - uuid: %@ trigger: %d, detectedAt: %@, resolvedAt: %@, resolution: %d, sosFlowState: %@, isPairedDeviceStatus: %@", uuid, trigger, timeOfDetection, timeOfResolution, resolution, v9, v10];
 
   return v11;
 }
@@ -394,7 +394,7 @@ LABEL_11:
 - (void)isFlowActive
 {
   v9 = *MEMORY[0x277D85DE8];
-  [a1 flowState];
+  [self flowState];
   OUTLINED_FUNCTION_1_1();
   OUTLINED_FUNCTION_0_5(&dword_264323000, v1, v2, "SOSStatus,isFlowActive,unexpected SOSFlowState %d", v3, v4, v5, v6, v8);
   v7 = *MEMORY[0x277D85DE8];
@@ -403,7 +403,7 @@ LABEL_11:
 - (void)isFlowActiveAndNotResting
 {
   v9 = *MEMORY[0x277D85DE8];
-  [a1 flowState];
+  [self flowState];
   OUTLINED_FUNCTION_1_1();
   OUTLINED_FUNCTION_0_5(&dword_264323000, v1, v2, "SOSStatus,isFlowActiveAndNotResting,unexpected SOSFlowState %d", v3, v4, v5, v6, v8);
   v7 = *MEMORY[0x277D85DE8];
@@ -412,7 +412,7 @@ LABEL_11:
 - (void)isPreCall
 {
   v9 = *MEMORY[0x277D85DE8];
-  [a1 flowState];
+  [self flowState];
   OUTLINED_FUNCTION_1_1();
   OUTLINED_FUNCTION_0_5(&dword_264323000, v1, v2, "SOSStatus,isPreCall,unexpected SOSFlowState %d", v3, v4, v5, v6, v8);
   v7 = *MEMORY[0x277D85DE8];
@@ -421,7 +421,7 @@ LABEL_11:
 - (void)shouldBlockNonEmergencyCalls
 {
   v9 = *MEMORY[0x277D85DE8];
-  [a1 flowState];
+  [self flowState];
   OUTLINED_FUNCTION_1_1();
   OUTLINED_FUNCTION_0_5(&dword_264323000, v1, v2, "SOSStatus,shouldBlockNonEmergencyCalls,unexpected SOSFlowState %d", v3, v4, v5, v6, v8);
   v7 = *MEMORY[0x277D85DE8];
@@ -430,7 +430,7 @@ LABEL_11:
 - (void)shouldRejectNewSOSTriggers
 {
   v9 = *MEMORY[0x277D85DE8];
-  [a1 flowState];
+  [self flowState];
   OUTLINED_FUNCTION_1_1();
   OUTLINED_FUNCTION_0_5(&dword_264323000, v1, v2, "SOSStatus,shouldRejectNewSOSTriggers,unexpected SOSFlowState %d", v3, v4, v5, v6, v8);
   v7 = *MEMORY[0x277D85DE8];
@@ -439,7 +439,7 @@ LABEL_11:
 - (void)shouldRetriggerSOS
 {
   v9 = *MEMORY[0x277D85DE8];
-  [a1 flowState];
+  [self flowState];
   OUTLINED_FUNCTION_1_1();
   OUTLINED_FUNCTION_0_5(&dword_264323000, v1, v2, "SOSStatus,shouldRetriggerSOS,unexpected SOSFlowState %d", v3, v4, v5, v6, v8);
   v7 = *MEMORY[0x277D85DE8];

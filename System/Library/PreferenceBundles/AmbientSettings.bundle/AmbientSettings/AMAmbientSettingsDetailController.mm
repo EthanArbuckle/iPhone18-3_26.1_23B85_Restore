@@ -11,8 +11,8 @@
 - (id)_secondaryDisplayGroupSpecifier;
 - (id)_secondaryNotificationsGroupSpecifier;
 - (id)specifiers;
-- (void)_setAmbientModeEnabled:(id)a3 specifier:(id)a4;
-- (void)_setNotificationsEnabled:(id)a3 specifier:(id)a4;
+- (void)_setAmbientModeEnabled:(id)enabled specifier:(id)specifier;
+- (void)_setNotificationsEnabled:(id)enabled specifier:(id)specifier;
 - (void)emitNavigationEvent;
 - (void)viewDidLoad;
 @end
@@ -22,16 +22,16 @@
 - (id)specifiers
 {
   v3 = +[NSMutableArray array];
-  v4 = [(AMAmbientSettingsDetailController *)self _ambientModeGroupSpecifier];
-  [v3 addObject:v4];
-  v5 = [(AMAmbientSettingsDetailController *)self _ambientModeSpecifier];
-  [v3 addObject:v5];
-  v6 = [v5 performGetter];
-  v7 = [v6 BOOLValue];
+  _ambientModeGroupSpecifier = [(AMAmbientSettingsDetailController *)self _ambientModeGroupSpecifier];
+  [v3 addObject:_ambientModeGroupSpecifier];
+  _ambientModeSpecifier = [(AMAmbientSettingsDetailController *)self _ambientModeSpecifier];
+  [v3 addObject:_ambientModeSpecifier];
+  performGetter = [_ambientModeSpecifier performGetter];
+  bOOLValue = [performGetter BOOLValue];
 
-  v8 = [(AMAmbientSettingsDetailController *)self _updatesForSpecifiers:v3 ambientModeEnabled:v7 animated:0];
-  v9 = [v8 currentSpecifiers];
-  [v3 setArray:v9];
+  v8 = [(AMAmbientSettingsDetailController *)self _updatesForSpecifiers:v3 ambientModeEnabled:bOOLValue animated:0];
+  currentSpecifiers = [v8 currentSpecifiers];
+  [v3 setArray:currentSpecifiers];
 
   v10 = OBJC_IVAR___PSListController__specifiers;
   v11 = *&self->PSListController_opaque[OBJC_IVAR___PSListController__specifiers];
@@ -50,8 +50,8 @@
   [v3 setProperty:@"AMBIENT_MODE_ENABLED_GROUP" forKey:PSIDKey];
   v4 = AMAmbientSettingsBundle();
   v5 = [v4 localizedStringForKey:@"AMBIENT_MODE_ENABLED_FOOTER" value:&stru_86A0 table:@"AmbientSettings"];
-  v6 = [(AMAmbientSettingsDetailController *)self _ambientFeatureName];
-  v7 = [NSString stringWithFormat:v5, v6];
+  _ambientFeatureName = [(AMAmbientSettingsDetailController *)self _ambientFeatureName];
+  v7 = [NSString stringWithFormat:v5, _ambientFeatureName];
   [v3 setProperty:v7 forKey:PSFooterTextGroupKey];
 
   return v3;
@@ -68,8 +68,8 @@
 
     v6 = AMAmbientSettingsBundle();
     v7 = [v6 localizedStringForKey:@"NIGHT_MODE_ENABLED_FOOTER" value:&stru_86A0 table:@"AmbientSettings"];
-    v8 = [(AMAmbientSettingsDetailController *)self _ambientFeatureName];
-    v9 = [NSString stringWithFormat:v7, v8];
+    _ambientFeatureName = [(AMAmbientSettingsDetailController *)self _ambientFeatureName];
+    v9 = [NSString stringWithFormat:v7, _ambientFeatureName];
     [v3 setProperty:v9 forKey:PSFooterTextGroupKey];
   }
 
@@ -86,8 +86,8 @@
 
 - (id)_ambientModeSpecifier
 {
-  v3 = [(AMAmbientSettingsDetailController *)self _ambientFeatureName];
-  v4 = [PSSpecifier preferenceSpecifierNamed:v3 target:self set:"_setAmbientModeEnabled:specifier:" get:"readPreferenceValue:" detail:0 cell:6 edit:0];
+  _ambientFeatureName = [(AMAmbientSettingsDetailController *)self _ambientFeatureName];
+  v4 = [PSSpecifier preferenceSpecifierNamed:_ambientFeatureName target:self set:"_setAmbientModeEnabled:specifier:" get:"readPreferenceValue:" detail:0 cell:6 edit:0];
 
   [v4 setProperty:&__kCFBooleanTrue forKey:PSAllowMultilineTitleKey];
   [v4 setProperty:@"AMBIENT_MODE_ENABLED" forKey:PSIDKey];
@@ -129,8 +129,8 @@
 {
   v3 = AMAmbientSettingsBundle();
   v4 = [v3 localizedStringForKey:@"NOTIFICATIONS_ENABLED_FOOTER" value:&stru_86A0 table:@"AmbientSettings"];
-  v5 = [(AMAmbientSettingsDetailController *)self _ambientFeatureName];
-  v6 = [NSString stringWithFormat:v4, v5];
+  _ambientFeatureName = [(AMAmbientSettingsDetailController *)self _ambientFeatureName];
+  v6 = [NSString stringWithFormat:v4, _ambientFeatureName];
 
   v7 = AMAmbientSettingsBundle();
   v8 = [v7 localizedStringForKey:@"NOTIFICATIONS_GROUP_HEADER" value:&stru_86A0 table:@"AmbientSettings"];
@@ -146,8 +146,8 @@
 {
   v3 = AMAmbientSettingsBundle();
   v4 = [v3 localizedStringForKey:@"NOTIFICATIONS_PREVIEW_FOOTER" value:&stru_86A0 table:@"AmbientSettings"];
-  v5 = [(AMAmbientSettingsDetailController *)self _ambientFeatureName];
-  v6 = [NSString stringWithFormat:v4, v5];
+  _ambientFeatureName = [(AMAmbientSettingsDetailController *)self _ambientFeatureName];
+  v6 = [NSString stringWithFormat:v4, _ambientFeatureName];
 
   v7 = [PSSpecifier groupSpecifierWithName:&stru_86A0];
   [v7 setProperty:@"SECONDARY_NOTIFICATIONS_GROUP" forKey:PSIDKey];
@@ -186,33 +186,33 @@
   return v5;
 }
 
-- (void)_setAmbientModeEnabled:(id)a3 specifier:(id)a4
+- (void)_setAmbientModeEnabled:(id)enabled specifier:(id)specifier
 {
-  v5 = a3;
-  CFPreferencesSetAppValue(@"AMEnableAmbientMode", v5, @"com.apple.ambient");
+  enabledCopy = enabled;
+  CFPreferencesSetAppValue(@"AMEnableAmbientMode", enabledCopy, @"com.apple.ambient");
   v6 = *&self->PSListController_opaque[OBJC_IVAR___PSListController__specifiers];
-  v7 = [v5 BOOLValue];
+  bOOLValue = [enabledCopy BOOLValue];
 
-  v8 = [(AMAmbientSettingsDetailController *)self _updatesForSpecifiers:v6 ambientModeEnabled:v7 animated:1];
+  v8 = [(AMAmbientSettingsDetailController *)self _updatesForSpecifiers:v6 ambientModeEnabled:bOOLValue animated:1];
   [(AMAmbientSettingsDetailController *)self performSpecifierUpdates:v8];
 }
 
-- (void)_setNotificationsEnabled:(id)a3 specifier:(id)a4
+- (void)_setNotificationsEnabled:(id)enabled specifier:(id)specifier
 {
-  v5 = a3;
-  CFPreferencesSetAppValue(@"AMNotificationsEnabled", v5, @"com.apple.ambient");
+  enabledCopy = enabled;
+  CFPreferencesSetAppValue(@"AMNotificationsEnabled", enabledCopy, @"com.apple.ambient");
   v6 = OBJC_IVAR___PSListController__specifiers;
   v12 = [PSSpecifierUpdates updatesWithSpecifiers:*&self->PSListController_opaque[OBJC_IVAR___PSListController__specifiers]];
-  v7 = [v5 BOOLValue];
+  bOOLValue = [enabledCopy BOOLValue];
 
-  if (v7)
+  if (bOOLValue)
   {
     v8 = objc_alloc_init(NSMutableArray);
-    v9 = [(AMAmbientSettingsDetailController *)self _secondaryNotificationsGroupSpecifier];
-    [v8 addObject:v9];
+    _secondaryNotificationsGroupSpecifier = [(AMAmbientSettingsDetailController *)self _secondaryNotificationsGroupSpecifier];
+    [v8 addObject:_secondaryNotificationsGroupSpecifier];
 
-    v10 = [(AMAmbientSettingsDetailController *)self _notificationsPreviewSpecifier];
-    [v8 addObject:v10];
+    _notificationsPreviewSpecifier = [(AMAmbientSettingsDetailController *)self _notificationsPreviewSpecifier];
+    [v8 addObject:_notificationsPreviewSpecifier];
 
     [v12 insertContiguousSpecifiers:v8 afterSpecifierWithID:@"NOTIFICATIONS_ENABLED"];
   }
@@ -222,8 +222,8 @@
     [v12 removeSpecifiersInRange:{objc_msgSend(*&self->PSListController_opaque[v6], "indexOfSpecifierWithID:", @"SECONDARY_NOTIFICATIONS_GROUP", 2}];
   }
 
-  v11 = [v12 context];
-  [v11 setAnimated:1];
+  context = [v12 context];
+  [context setAnimated:1];
 
   [(AMAmbientSettingsDetailController *)self performSpecifierUpdates:v12];
 }
@@ -241,8 +241,8 @@
   v4.receiver = self;
   v4.super_class = AMAmbientSettingsDetailController;
   [(AMAmbientSettingsDetailController *)&v4 viewDidLoad];
-  v3 = [(AMAmbientSettingsDetailController *)self _ambientFeatureName];
-  [(AMAmbientSettingsDetailController *)self setTitle:v3];
+  _ambientFeatureName = [(AMAmbientSettingsDetailController *)self _ambientFeatureName];
+  [(AMAmbientSettingsDetailController *)self setTitle:_ambientFeatureName];
 }
 
 - (void)emitNavigationEvent
@@ -251,8 +251,8 @@
   v3 = [_NSLocalizedStringResource alloc];
   v4 = +[NSLocale currentLocale];
   v5 = [NSBundle bundleForClass:objc_opt_class()];
-  v6 = [v5 bundleURL];
-  v7 = [v3 initWithKey:@"AMBIENT_FEATURE_NAME" table:@"AmbientSettings" locale:v4 bundleURL:v6];
+  bundleURL = [v5 bundleURL];
+  v7 = [v3 initWithKey:@"AMBIENT_FEATURE_NAME" table:@"AmbientSettings" locale:v4 bundleURL:bundleURL];
 
   [(AMAmbientSettingsDetailController *)self pe_emitNavigationEventForSystemSettingsWithGraphicIconIdentifier:@"com.apple.graphic-icon.standby" title:v7 localizedNavigationComponents:&__NSArray0__struct deepLink:v8];
 }

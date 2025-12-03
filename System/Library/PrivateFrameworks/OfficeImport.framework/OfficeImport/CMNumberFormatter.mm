@@ -1,16 +1,16 @@
 @interface CMNumberFormatter
-+ (id)formatterForNumberFormat:(int)a3 language:(int)a4;
-- (CMNumberFormatter)initWithNumberFormat:(int)a3 language:(int)a4;
-- (id)stringForNumber:(unint64_t)a3;
++ (id)formatterForNumberFormat:(int)format language:(int)language;
+- (CMNumberFormatter)initWithNumberFormat:(int)format language:(int)language;
+- (id)stringForNumber:(unint64_t)number;
 - (void)dealloc;
 @end
 
 @implementation CMNumberFormatter
 
-+ (id)formatterForNumberFormat:(int)a3 language:(int)a4
++ (id)formatterForNumberFormat:(int)format language:(int)language
 {
-  v4 = *&a4;
-  v5 = *&a3;
+  v4 = *&language;
+  v5 = *&format;
   if (qword_27FC698C0 != -1)
   {
     dispatch_once(&qword_27FC698C0, &__block_literal_global_105);
@@ -24,7 +24,7 @@
   v11 = v10;
   if (!v10)
   {
-    v11 = [[a1 alloc] initWithNumberFormat:v5 language:v4];
+    v11 = [[self alloc] initWithNumberFormat:v5 language:v4];
     v12 = _MergedGlobals_59;
     v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v7];
     [v12 setObject:v11 forKey:v13];
@@ -40,7 +40,7 @@ void __55__CMNumberFormatter_formatterForNumberFormat_language___block_invoke()
   _MergedGlobals_59 = v0;
 }
 
-- (CMNumberFormatter)initWithNumberFormat:(int)a3 language:(int)a4
+- (CMNumberFormatter)initWithNumberFormat:(int)format language:(int)language
 {
   v15 = *MEMORY[0x277D85DE8];
   v12.receiver = self;
@@ -49,13 +49,13 @@ void __55__CMNumberFormatter_formatterForNumberFormat_language___block_invoke()
   v7 = v6;
   if (v6)
   {
-    v6->_format = a3;
-    v6->_language = a4;
-    if ((a3 & 0xFFFFFFFE) == 6)
+    v6->_format = format;
+    v6->_language = language;
+    if ((format & 0xFFFFFFFE) == 6)
     {
       v13 = 0;
       v14 = 0;
-      v8 = OCDOfficeStringFromLanguage(a4);
+      v8 = OCDOfficeStringFromLanguage(language);
       v9 = v8;
       if (v8)
       {
@@ -65,7 +65,7 @@ void __55__CMNumberFormatter_formatterForNumberFormat_language___block_invoke()
       }
 
       v7->_numberFormatter = unum_open();
-      if (a3 == 7)
+      if (format == 7)
       {
         unum_setTextAttribute();
       }
@@ -87,44 +87,44 @@ void __55__CMNumberFormatter_formatterForNumberFormat_language___block_invoke()
   [(CMNumberFormatter *)&v3 dealloc];
 }
 
-- (id)stringForNumber:(unint64_t)a3
+- (id)stringForNumber:(unint64_t)number
 {
-  v3 = a3;
+  numberCopy = number;
   v33 = *MEMORY[0x277D85DE8];
   if (self->_numberFormatter)
   {
     memset(v32, 0, sizeof(v32));
     v5 = unum_format();
     LOWORD(v32[0]) = MEMORY[0x25F898170](0);
-    v10 = [MEMORY[0x277CCACA8] stringWithCharacters:v32 length:v5];
+    number = [MEMORY[0x277CCACA8] stringWithCharacters:v32 length:v5];
 LABEL_10:
-    v11 = v10;
+    v11 = number;
     goto LABEL_11;
   }
 
   format = self->_format;
   if (format == 22)
   {
-    v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"%.2lu", a3];
+    number = [MEMORY[0x277CCACA8] stringWithFormat:@"%.2lu", number];
     goto LABEL_10;
   }
 
   if (!format)
   {
-    v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu", a3];
+    number = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu", number];
     goto LABEL_10;
   }
 
-  if (a3)
+  if (number)
   {
-    v7 = [MEMORY[0x277CCAB68] string];
+    string = [MEMORY[0x277CCAB68] string];
     v8 = self->_format;
     v9 = 1;
     switch(v8)
     {
       case 1:
       case 2:
-        if (v3 >= 0x3E8)
+        if (numberCopy >= 0x3E8)
         {
           if (v8 == 1)
           {
@@ -138,15 +138,15 @@ LABEL_10:
 
           do
           {
-            [v7 appendString:{v13, v9}];
-            v3 -= 1000;
+            [string appendString:{v13, v9}];
+            numberCopy -= 1000;
           }
 
-          while (v3 > 0x3E7);
+          while (numberCopy > 0x3E7);
         }
 
-        v14 = v3 - 900;
-        if (v3 >= 0x384)
+        v14 = numberCopy - 900;
+        if (numberCopy >= 0x384)
         {
           if (v8 == 1)
           {
@@ -159,15 +159,15 @@ LABEL_10:
           }
 
 LABEL_28:
-          [v7 appendString:{v15, v9}];
-          v3 = v14;
+          [string appendString:{v15, v9}];
+          numberCopy = v14;
           goto LABEL_60;
         }
 
-        if (v3 < 0x1F4)
+        if (numberCopy < 0x1F4)
         {
-          v14 = v3 - 400;
-          if (v3 >= 0x190)
+          v14 = numberCopy - 400;
+          if (numberCopy >= 0x190)
           {
             if (v8 == 1)
             {
@@ -195,11 +195,11 @@ LABEL_28:
             v21 = @"d";
           }
 
-          [v7 appendString:{v21, v9}];
-          v3 -= 500;
+          [string appendString:{v21, v9}];
+          numberCopy -= 500;
         }
 
-        if (v3 >= 0x64)
+        if (numberCopy >= 0x64)
         {
           if (v8 == 1)
           {
@@ -213,16 +213,16 @@ LABEL_28:
 
           do
           {
-            [v7 appendString:v22];
-            v3 -= 100;
+            [string appendString:v22];
+            numberCopy -= 100;
           }
 
-          while (v3 > 0x63);
+          while (numberCopy > 0x63);
         }
 
 LABEL_60:
-        v23 = v3 - 90;
-        if (v3 >= 0x5A)
+        v23 = numberCopy - 90;
+        if (numberCopy >= 0x5A)
         {
           if (v8 == 1)
           {
@@ -235,15 +235,15 @@ LABEL_60:
           }
 
 LABEL_64:
-          [v7 appendString:v24];
-          v3 = v23;
+          [string appendString:v24];
+          numberCopy = v23;
           goto LABEL_79;
         }
 
-        if (v3 < 0x32)
+        if (numberCopy < 0x32)
         {
-          v23 = v3 - 40;
-          if (v3 >= 0x28)
+          v23 = numberCopy - 40;
+          if (numberCopy >= 0x28)
           {
             if (v8 == 1)
             {
@@ -271,11 +271,11 @@ LABEL_64:
             v25 = @"l";
           }
 
-          [v7 appendString:v25];
-          v3 -= 50;
+          [string appendString:v25];
+          numberCopy -= 50;
         }
 
-        if (v3 >= 0xA)
+        if (numberCopy >= 0xA)
         {
           if (v8 == 1)
           {
@@ -289,15 +289,15 @@ LABEL_64:
 
           do
           {
-            [v7 appendString:v26];
-            v3 -= 10;
+            [string appendString:v26];
+            numberCopy -= 10;
           }
 
-          while (v3 > 9);
+          while (numberCopy > 9);
         }
 
 LABEL_79:
-        if (v3 == 9)
+        if (numberCopy == 9)
         {
           v27 = @"ix";
           v28 = @"IX";
@@ -312,13 +312,13 @@ LABEL_81:
             v29 = v27;
           }
 
-          [v7 appendString:v29];
+          [string appendString:v29];
           goto LABEL_85;
         }
 
-        if (v3 < 5)
+        if (numberCopy < 5)
         {
-          if (v3 == 4)
+          if (numberCopy == 4)
           {
             v27 = @"iv";
             v28 = @"IV";
@@ -338,11 +338,11 @@ LABEL_81:
             v30 = @"v";
           }
 
-          [v7 appendString:v30];
-          v3 -= 5;
+          [string appendString:v30];
+          numberCopy -= 5;
         }
 
-        if (v3)
+        if (numberCopy)
         {
           if (v8 == 1)
           {
@@ -356,26 +356,26 @@ LABEL_81:
 
           do
           {
-            [v7 appendString:v31];
-            --v3;
+            [string appendString:v31];
+            --numberCopy;
           }
 
-          while (v3);
+          while (numberCopy);
         }
 
 LABEL_86:
-        if ([v7 length])
+        if ([string length])
         {
-          v20 = v7;
+          numberCopy = string;
         }
 
         else
         {
-          v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu", v3];
+          numberCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu", numberCopy];
         }
 
 LABEL_45:
-        v11 = v20;
+        v11 = numberCopy;
 
         break;
       case 3:
@@ -392,17 +392,17 @@ LABEL_45:
 
         do
         {
-          v17 = (v3 - 1) % 0x1A;
+          v17 = (numberCopy - 1) % 0x1A;
           v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"%c", v9, (v16 + v17)];
-          [v7 insertString:v18 atIndex:0];
+          [string insertString:v18 atIndex:0];
 
-          v19 = v3 - v17;
-          v3 = (v3 - v17) / 0x1A;
+          v19 = numberCopy - v17;
+          numberCopy = (numberCopy - v17) / 0x1A;
         }
 
         while (v19 >= 0x1A);
 LABEL_85:
-        v3 = 0;
+        numberCopy = 0;
         goto LABEL_86;
       case 10:
       case 11:
@@ -470,7 +470,7 @@ LABEL_85:
       case 48:
         v9 = 55;
 LABEL_44:
-        v20 = [MEMORY[0x277CCACA8] tswp_stringForValue:v3 withListNumberFormat:v9 includeFormatting:0];
+        numberCopy = [MEMORY[0x277CCACA8] tswp_stringForValue:numberCopy withListNumberFormat:v9 includeFormatting:0];
         goto LABEL_45;
       default:
         goto LABEL_86;

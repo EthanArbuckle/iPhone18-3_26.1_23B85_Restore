@@ -1,6 +1,6 @@
 @interface VUIMediaEntitySortIndex
 - (VUIMediaEntitySortIndex)init;
-- (VUIMediaEntitySortIndex)initWithTitle:(id)a3 startIndex:(unint64_t)a4 count:(unint64_t)a5;
+- (VUIMediaEntitySortIndex)initWithTitle:(id)title startIndex:(unint64_t)index count:(unint64_t)count;
 - (id)description;
 @end
 
@@ -16,20 +16,20 @@
   return 0;
 }
 
-- (VUIMediaEntitySortIndex)initWithTitle:(id)a3 startIndex:(unint64_t)a4 count:(unint64_t)a5
+- (VUIMediaEntitySortIndex)initWithTitle:(id)title startIndex:(unint64_t)index count:(unint64_t)count
 {
-  v8 = a3;
+  titleCopy = title;
   v13.receiver = self;
   v13.super_class = VUIMediaEntitySortIndex;
   v9 = [(VUIMediaEntitySortIndex *)&v13 init];
   if (v9)
   {
-    v10 = [v8 copy];
+    v10 = [titleCopy copy];
     title = v9->_title;
     v9->_title = v10;
 
-    v9->_startIndex = a4;
-    v9->_count = a5;
+    v9->_startIndex = index;
+    v9->_count = count;
   }
 
   return v9;
@@ -44,8 +44,8 @@
   [v3 addObject:v4];
 
   v5 = MEMORY[0x1E696AEC0];
-  v6 = [(VUIMediaEntitySortIndex *)self title];
-  v7 = [v5 stringWithFormat:@"%@=%@", @"title", v6];
+  title = [(VUIMediaEntitySortIndex *)self title];
+  v7 = [v5 stringWithFormat:@"%@=%@", @"title", title];
   [v3 addObject:v7];
 
   v8 = MEMORY[0x1E696AEC0];

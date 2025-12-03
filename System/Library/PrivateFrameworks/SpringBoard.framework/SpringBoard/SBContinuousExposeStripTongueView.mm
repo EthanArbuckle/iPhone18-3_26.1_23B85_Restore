@@ -1,25 +1,25 @@
 @interface SBContinuousExposeStripTongueView
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (SBContinuousExposeStripTongueView)initWithFrame:(CGRect)a3;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (SBContinuousExposeStripTongueView)initWithFrame:(CGRect)frame;
 - (SBContinuousExposeStripTongueViewDelegate)delegate;
 - (SBSwitcherContinuousExposeStripTongueAttributes)attributes;
-- (void)_handleTap:(id)a3;
+- (void)_handleTap:(id)tap;
 - (void)_updateContainerPosition;
 - (void)_updateContainerTransform;
 - (void)_updateSubviewLayoutForCollapsedOrExpandedState;
 - (void)_updateSubviewOpacityForCollapsedOrExpandedState;
 - (void)layoutSubviews;
-- (void)setAttributes:(SBSwitcherContinuousExposeStripTongueAttributes)a3 animated:(BOOL)a4;
+- (void)setAttributes:(SBSwitcherContinuousExposeStripTongueAttributes)attributes animated:(BOOL)animated;
 @end
 
 @implementation SBContinuousExposeStripTongueView
 
-- (SBContinuousExposeStripTongueView)initWithFrame:(CGRect)a3
+- (SBContinuousExposeStripTongueView)initWithFrame:(CGRect)frame
 {
   v36[1] = *MEMORY[0x277D85DE8];
   v35.receiver = self;
   v35.super_class = SBContinuousExposeStripTongueView;
-  v3 = [(SBContinuousExposeStripTongueView *)&v35 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SBContinuousExposeStripTongueView *)&v35 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -33,22 +33,22 @@
     tongueContainerView = v4->_tongueContainerView;
     v4->_tongueContainerView = v9;
 
-    v11 = [(UIView *)v4->_tongueContainerView layer];
-    [v11 setAnchorPoint:{1.0, 0.5}];
+    layer = [(UIView *)v4->_tongueContainerView layer];
+    [layer setAnchorPoint:{1.0, 0.5}];
 
     [(SBContinuousExposeStripTongueView *)v4 addSubview:v4->_tongueContainerView];
     v12 = [objc_alloc(MEMORY[0x277D75DE8]) initWithPrivateStyle:-2];
     backdropView = v4->_backdropView;
     v4->_backdropView = v12;
 
-    v14 = [(_UIBackdropView *)v4->_backdropView inputSettings];
-    [v14 setBlurRadius:0.0];
+    inputSettings = [(_UIBackdropView *)v4->_backdropView inputSettings];
+    [inputSettings setBlurRadius:0.0];
 
-    v15 = [(_UIBackdropView *)v4->_backdropView inputSettings];
-    [v15 setScale:1.0];
+    inputSettings2 = [(_UIBackdropView *)v4->_backdropView inputSettings];
+    [inputSettings2 setScale:1.0];
 
-    v16 = [(_UIBackdropView *)v4->_backdropView inputSettings];
-    [v16 setBackdropVisible:1];
+    inputSettings3 = [(_UIBackdropView *)v4->_backdropView inputSettings];
+    [inputSettings3 setBackdropVisible:1];
 
     [(_UIBackdropView *)v4->_backdropView setGroupName:@"SBContinuousExposeStripTongueBackdropName"];
     [(UIView *)v4->_tongueContainerView addSubview:v4->_backdropView];
@@ -57,8 +57,8 @@
     v4->_tongueMaskView = v17;
 
     [(UIView *)v4->_tongueMaskView setContentMode:0];
-    v19 = [(UIView *)v4->_tongueMaskView layer];
-    [v19 setCompositingFilter:*MEMORY[0x277CDA310]];
+    layer2 = [(UIView *)v4->_tongueMaskView layer];
+    [layer2 setCompositingFilter:*MEMORY[0x277CDA310]];
 
     [(UIView *)v4->_tongueContainerView addSubview:v4->_tongueMaskView];
     v20 = MEMORY[0x277D755B8];
@@ -71,8 +71,8 @@
 
     [(UIImageView *)v4->_chevronImageView setSemanticContentAttribute:3];
     v25 = v4->_chevronImageView;
-    v26 = [MEMORY[0x277D75348] blackColor];
-    [(UIImageView *)v25 setTintColor:v26];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    [(UIImageView *)v25 setTintColor:blackColor];
 
     v27 = [MEMORY[0x277CD9EA0] filterWithType:*MEMORY[0x277CDA640]];
     v34[2] = xmmword_21F8A8AD0;
@@ -83,10 +83,10 @@
     v28 = [MEMORY[0x277CCAE60] valueWithCAColorMatrix:v34];
     [v27 setValue:v28 forKey:@"inputColorMatrix"];
 
-    v29 = [(UIImageView *)v4->_chevronImageView layer];
+    layer3 = [(UIImageView *)v4->_chevronImageView layer];
     v36[0] = v27;
     v30 = [MEMORY[0x277CBEA60] arrayWithObjects:v36 count:1];
-    [v29 setFilters:v30];
+    [layer3 setFilters:v30];
 
     [(UIView *)v4->_tongueContainerView addSubview:v4->_chevronImageView];
     v31 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:v4 action:sel__handleTap_];
@@ -101,28 +101,28 @@
   return v4;
 }
 
-- (void)setAttributes:(SBSwitcherContinuousExposeStripTongueAttributes)a3 animated:(BOOL)a4
+- (void)setAttributes:(SBSwitcherContinuousExposeStripTongueAttributes)attributes animated:(BOOL)animated
 {
-  v4 = a4;
-  state = a3.state;
+  animatedCopy = animated;
+  state = attributes.state;
   p_attributes = &self->_attributes;
   v8 = self->_attributes.state;
-  self->_attributes = a3;
+  self->_attributes = attributes;
   v9 = +[SBAppSwitcherDomain rootSettings];
-  v10 = [v9 floatingSwitcherSettings];
+  floatingSwitcherSettings = [v9 floatingSwitcherSettings];
 
   if (v8 != state)
   {
-    if (v4)
+    if (animatedCopy)
     {
       if (p_attributes->state == 1)
       {
-        [v10 tongueExpandedToCollapsedAnimationSettings];
+        [floatingSwitcherSettings tongueExpandedToCollapsedAnimationSettings];
       }
 
       else
       {
-        [v10 tongueCollapsedToExpandedAnimationSettings];
+        [floatingSwitcherSettings tongueCollapsedToExpandedAnimationSettings];
       }
       v11 = ;
       v12 = 3;
@@ -276,20 +276,20 @@ void __60__SBContinuousExposeStripTongueView_setAttributes_animated___block_invo
   [(UIImageView *)self->_chevronImageView setAlpha:v2];
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = self;
+  y = inside.y;
+  x = inside.x;
+  selfCopy = self;
   tongueContainerView = self->_tongueContainerView;
-  v8 = a4;
-  [(SBContinuousExposeStripTongueView *)v6 convertPoint:tongueContainerView toView:x, y];
-  LOBYTE(v6) = [(UIView *)tongueContainerView pointInside:v8 withEvent:?];
+  eventCopy = event;
+  [(SBContinuousExposeStripTongueView *)selfCopy convertPoint:tongueContainerView toView:x, y];
+  LOBYTE(selfCopy) = [(UIView *)tongueContainerView pointInside:eventCopy withEvent:?];
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)_handleTap:(id)a3
+- (void)_handleTap:(id)tap
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained continuousExposeStripTongueViewTapped:self];

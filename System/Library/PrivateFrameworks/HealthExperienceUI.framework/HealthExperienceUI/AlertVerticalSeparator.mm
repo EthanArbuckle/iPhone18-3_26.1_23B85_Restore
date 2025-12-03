@@ -1,7 +1,7 @@
 @interface AlertVerticalSeparator
 - (_TtC18HealthExperienceUI22AlertVerticalSeparator)init;
-- (_TtC18HealthExperienceUI22AlertVerticalSeparator)initWithCoder:(id)a3;
-- (_TtC18HealthExperienceUI22AlertVerticalSeparator)initWithFrame:(CGRect)a3;
+- (_TtC18HealthExperienceUI22AlertVerticalSeparator)initWithCoder:(id)coder;
+- (_TtC18HealthExperienceUI22AlertVerticalSeparator)initWithFrame:(CGRect)frame;
 @end
 
 @implementation AlertVerticalSeparator
@@ -17,13 +17,13 @@
   return v2;
 }
 
-- (_TtC18HealthExperienceUI22AlertVerticalSeparator)initWithCoder:(id)a3
+- (_TtC18HealthExperienceUI22AlertVerticalSeparator)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC18HealthExperienceUI22AlertVerticalSeparator____lazy_storage___vibrancyView) = 0;
   v9.receiver = self;
   v9.super_class = type metadata accessor for AlertVerticalSeparator();
-  v4 = a3;
-  v5 = [(AlertVerticalSeparator *)&v9 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(AlertVerticalSeparator *)&v9 initWithCoder:coderCopy];
   v6 = v5;
   if (v5)
   {
@@ -34,7 +34,7 @@
   return v6;
 }
 
-- (_TtC18HealthExperienceUI22AlertVerticalSeparator)initWithFrame:(CGRect)a3
+- (_TtC18HealthExperienceUI22AlertVerticalSeparator)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

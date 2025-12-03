@@ -1,21 +1,21 @@
 @interface NCAppPickerViewHeader
-+ (double)preferredHeightForWidth:(double)a3 supportsSortByAvgNumberOfNotifications:(BOOL)a4;
++ (double)preferredHeightForWidth:(double)width supportsSortByAvgNumberOfNotifications:(BOOL)notifications;
 + (id)_descriptionText;
 + (id)_orderingDescriptionText;
 + (id)_orderingWarningText;
 + (id)_titleFont;
 + (id)_titleText;
-- (NCAppPickerViewHeader)initWithFrame:(CGRect)a3;
-- (void)configureSupportsSortByAvgNumberOfNotifications:(BOOL)a3;
+- (NCAppPickerViewHeader)initWithFrame:(CGRect)frame;
+- (void)configureSupportsSortByAvgNumberOfNotifications:(BOOL)notifications;
 @end
 
 @implementation NCAppPickerViewHeader
 
-- (NCAppPickerViewHeader)initWithFrame:(CGRect)a3
+- (NCAppPickerViewHeader)initWithFrame:(CGRect)frame
 {
   v111.receiver = self;
   v111.super_class = NCAppPickerViewHeader;
-  v3 = [(NCAppPickerViewHeader *)&v111 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(NCAppPickerViewHeader *)&v111 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x277D756B8]);
@@ -30,17 +30,17 @@
     [(UILabel *)v3->_titleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UILabel *)v3->_titleLabel setNumberOfLines:0];
     v11 = v3->_titleLabel;
-    v12 = [objc_opt_class() _titleText];
-    [(UILabel *)v11 setText:v12];
+    _titleText = [objc_opt_class() _titleText];
+    [(UILabel *)v11 setText:_titleText];
 
     v13 = v3->_titleLabel;
-    v14 = [objc_opt_class() _titleFont];
-    [(UILabel *)v13 setFont:v14];
+    _titleFont = [objc_opt_class() _titleFont];
+    [(UILabel *)v13 setFont:_titleFont];
 
     [(UILabel *)v3->_titleLabel setTextAlignment:1];
     v15 = v3->_titleLabel;
-    v16 = [MEMORY[0x277D75348] labelColor];
-    [(UILabel *)v15 setTextColor:v16];
+    labelColor = [MEMORY[0x277D75348] labelColor];
+    [(UILabel *)v15 setTextColor:labelColor];
 
     LODWORD(v17) = 0.5;
     [(UILabel *)v3->_titleLabel _setHyphenationFactor:v17];
@@ -52,17 +52,17 @@
     [(UILabel *)v3->_descriptionLabel setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UILabel *)v3->_descriptionLabel setNumberOfLines:0];
     v20 = v3->_descriptionLabel;
-    v21 = [objc_opt_class() _descriptionText];
-    [(UILabel *)v20 setText:v21];
+    _descriptionText = [objc_opt_class() _descriptionText];
+    [(UILabel *)v20 setText:_descriptionText];
 
     v22 = v3->_descriptionLabel;
-    v23 = [objc_opt_class() _descriptionFont];
-    [(UILabel *)v22 setFont:v23];
+    _descriptionFont = [objc_opt_class() _descriptionFont];
+    [(UILabel *)v22 setFont:_descriptionFont];
 
     [(UILabel *)v3->_descriptionLabel setTextAlignment:1];
     v24 = v3->_descriptionLabel;
-    v25 = [MEMORY[0x277D75348] labelColor];
-    [(UILabel *)v24 setTextColor:v25];
+    labelColor2 = [MEMORY[0x277D75348] labelColor];
+    [(UILabel *)v24 setTextColor:labelColor2];
 
     [(NCAppPickerViewHeader *)v3 addSubview:v3->_descriptionLabel];
     v26 = [objc_alloc(MEMORY[0x277D756B8]) initWithFrame:{v5, v6, v7, v8}];
@@ -72,16 +72,16 @@
     [(UILabel *)v3->_orderingDescriptionLabel setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UILabel *)v3->_orderingDescriptionLabel setNumberOfLines:0];
     v28 = v3->_orderingDescriptionLabel;
-    v29 = [objc_opt_class() _orderingDescriptionText];
-    [(UILabel *)v28 setText:v29];
+    _orderingDescriptionText = [objc_opt_class() _orderingDescriptionText];
+    [(UILabel *)v28 setText:_orderingDescriptionText];
 
     v30 = v3->_orderingDescriptionLabel;
-    v31 = [objc_opt_class() _orderingDescriptionFont];
-    [(UILabel *)v30 setFont:v31];
+    _orderingDescriptionFont = [objc_opt_class() _orderingDescriptionFont];
+    [(UILabel *)v30 setFont:_orderingDescriptionFont];
 
     v32 = v3->_orderingDescriptionLabel;
-    v33 = [MEMORY[0x277D75348] secondaryLabelColor];
-    [(UILabel *)v32 setTextColor:v33];
+    secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+    [(UILabel *)v32 setTextColor:secondaryLabelColor];
 
     [(UILabel *)v3->_orderingDescriptionLabel setTextAlignment:1];
     [(NCAppPickerViewHeader *)v3 addSubview:v3->_orderingDescriptionLabel];
@@ -91,8 +91,8 @@
 
     [(UIView *)v3->_orderingWarningContainer setTranslatesAutoresizingMaskIntoConstraints:0];
     v36 = v3->_orderingWarningContainer;
-    v37 = [MEMORY[0x277D75348] systemBlueColor];
-    v38 = [v37 colorWithAlphaComponent:0.12];
+    systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
+    v38 = [systemBlueColor colorWithAlphaComponent:0.12];
     [(UIView *)v36 setBackgroundColor:v38];
 
     [(UIView *)v3->_orderingWarningContainer _setContinuousCornerRadius:12.0];
@@ -107,8 +107,8 @@
     [(UIImageView *)v3->_orderingWarningIconImageView setImage:v109];
     [(UIImageView *)v3->_orderingWarningIconImageView setContentMode:4];
     v41 = v3->_orderingWarningIconImageView;
-    v42 = [MEMORY[0x277D75348] systemBlueColor];
-    [(UIImageView *)v41 setTintColor:v42];
+    systemBlueColor2 = [MEMORY[0x277D75348] systemBlueColor];
+    [(UIImageView *)v41 setTintColor:systemBlueColor2];
 
     [(UIView *)v3->_orderingWarningContainer addSubview:v3->_orderingWarningIconImageView];
     v43 = [objc_alloc(MEMORY[0x277D756B8]) initWithFrame:{v5, v6, v7, v8}];
@@ -118,111 +118,111 @@
     [(UILabel *)v3->_orderingWarningLabel setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UILabel *)v3->_orderingWarningLabel setNumberOfLines:0];
     v45 = v3->_orderingWarningLabel;
-    v46 = [objc_opt_class() _orderingWarningFont];
-    [(UILabel *)v45 setFont:v46];
+    _orderingWarningFont = [objc_opt_class() _orderingWarningFont];
+    [(UILabel *)v45 setFont:_orderingWarningFont];
 
     v47 = v3->_orderingWarningLabel;
-    v48 = [MEMORY[0x277D75348] secondaryLabelColor];
-    [(UILabel *)v47 setTextColor:v48];
+    secondaryLabelColor2 = [MEMORY[0x277D75348] secondaryLabelColor];
+    [(UILabel *)v47 setTextColor:secondaryLabelColor2];
 
     [(UIView *)v3->_orderingWarningContainer addSubview:v3->_orderingWarningLabel];
     v49 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v50 = [(UILabel *)v3->_titleLabel topAnchor];
-    v51 = [(NCAppPickerViewHeader *)v3 topAnchor];
-    v52 = [v50 constraintEqualToAnchor:v51 constant:2.0];
+    topAnchor = [(UILabel *)v3->_titleLabel topAnchor];
+    topAnchor2 = [(NCAppPickerViewHeader *)v3 topAnchor];
+    v52 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:2.0];
     [v49 addObject:v52];
 
-    v53 = [(UILabel *)v3->_titleLabel leadingAnchor];
-    v54 = [(NCAppPickerViewHeader *)v3 leadingAnchor];
-    v55 = [v53 constraintEqualToAnchor:v54 constant:16.0];
+    leadingAnchor = [(UILabel *)v3->_titleLabel leadingAnchor];
+    leadingAnchor2 = [(NCAppPickerViewHeader *)v3 leadingAnchor];
+    v55 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:16.0];
     [v49 addObject:v55];
 
-    v56 = [(NCAppPickerViewHeader *)v3 trailingAnchor];
-    v57 = [(UILabel *)v3->_titleLabel trailingAnchor];
-    v58 = [v56 constraintEqualToAnchor:v57 constant:16.0];
+    trailingAnchor = [(NCAppPickerViewHeader *)v3 trailingAnchor];
+    trailingAnchor2 = [(UILabel *)v3->_titleLabel trailingAnchor];
+    v58 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:16.0];
     [v49 addObject:v58];
 
-    v59 = [(UILabel *)v3->_descriptionLabel topAnchor];
-    v60 = [(UILabel *)v3->_titleLabel bottomAnchor];
-    v61 = [v59 constraintEqualToAnchor:v60 constant:8.0];
+    topAnchor3 = [(UILabel *)v3->_descriptionLabel topAnchor];
+    bottomAnchor = [(UILabel *)v3->_titleLabel bottomAnchor];
+    v61 = [topAnchor3 constraintEqualToAnchor:bottomAnchor constant:8.0];
     [v49 addObject:v61];
 
-    v62 = [(UILabel *)v3->_descriptionLabel leadingAnchor];
-    v63 = [(NCAppPickerViewHeader *)v3 leadingAnchor];
-    v64 = [v62 constraintEqualToAnchor:v63 constant:16.0];
+    leadingAnchor3 = [(UILabel *)v3->_descriptionLabel leadingAnchor];
+    leadingAnchor4 = [(NCAppPickerViewHeader *)v3 leadingAnchor];
+    v64 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:16.0];
     [v49 addObject:v64];
 
-    v65 = [(NCAppPickerViewHeader *)v3 trailingAnchor];
-    v66 = [(UILabel *)v3->_descriptionLabel trailingAnchor];
-    v67 = [v65 constraintEqualToAnchor:v66 constant:16.0];
+    trailingAnchor3 = [(NCAppPickerViewHeader *)v3 trailingAnchor];
+    trailingAnchor4 = [(UILabel *)v3->_descriptionLabel trailingAnchor];
+    v67 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:16.0];
     [v49 addObject:v67];
 
-    v68 = [(UILabel *)v3->_orderingDescriptionLabel topAnchor];
-    v69 = [(UILabel *)v3->_descriptionLabel bottomAnchor];
-    v70 = [v68 constraintEqualToAnchor:v69 constant:14.0];
+    topAnchor4 = [(UILabel *)v3->_orderingDescriptionLabel topAnchor];
+    bottomAnchor2 = [(UILabel *)v3->_descriptionLabel bottomAnchor];
+    v70 = [topAnchor4 constraintEqualToAnchor:bottomAnchor2 constant:14.0];
     [v49 addObject:v70];
 
-    v71 = [(UILabel *)v3->_orderingDescriptionLabel leadingAnchor];
-    v72 = [(NCAppPickerViewHeader *)v3 leadingAnchor];
-    v73 = [v71 constraintEqualToAnchor:v72];
+    leadingAnchor5 = [(UILabel *)v3->_orderingDescriptionLabel leadingAnchor];
+    leadingAnchor6 = [(NCAppPickerViewHeader *)v3 leadingAnchor];
+    v73 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
     [v49 addObject:v73];
 
-    v74 = [(NCAppPickerViewHeader *)v3 trailingAnchor];
-    v75 = [(UILabel *)v3->_orderingDescriptionLabel trailingAnchor];
-    v76 = [v74 constraintEqualToAnchor:v75];
+    trailingAnchor5 = [(NCAppPickerViewHeader *)v3 trailingAnchor];
+    trailingAnchor6 = [(UILabel *)v3->_orderingDescriptionLabel trailingAnchor];
+    v76 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
     [v49 addObject:v76];
 
-    v77 = [(UIView *)v3->_orderingWarningContainer topAnchor];
-    v78 = [(UILabel *)v3->_orderingWarningLabel topAnchor];
-    v79 = [v77 constraintEqualToAnchor:v78 constant:-12.0];
+    topAnchor5 = [(UIView *)v3->_orderingWarningContainer topAnchor];
+    topAnchor6 = [(UILabel *)v3->_orderingWarningLabel topAnchor];
+    v79 = [topAnchor5 constraintEqualToAnchor:topAnchor6 constant:-12.0];
     [v49 addObject:v79];
 
-    v80 = [(UIView *)v3->_orderingWarningContainer leadingAnchor];
-    v81 = [(NCAppPickerViewHeader *)v3 leadingAnchor];
-    v82 = [v80 constraintEqualToAnchor:v81];
+    leadingAnchor7 = [(UIView *)v3->_orderingWarningContainer leadingAnchor];
+    leadingAnchor8 = [(NCAppPickerViewHeader *)v3 leadingAnchor];
+    v82 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8];
     [v49 addObject:v82];
 
-    v83 = [(NCAppPickerViewHeader *)v3 trailingAnchor];
-    v84 = [(UIView *)v3->_orderingWarningContainer trailingAnchor];
-    v85 = [v83 constraintEqualToAnchor:v84];
+    trailingAnchor7 = [(NCAppPickerViewHeader *)v3 trailingAnchor];
+    trailingAnchor8 = [(UIView *)v3->_orderingWarningContainer trailingAnchor];
+    v85 = [trailingAnchor7 constraintEqualToAnchor:trailingAnchor8];
     [v49 addObject:v85];
 
-    v86 = [(UILabel *)v3->_orderingWarningLabel bottomAnchor];
-    v87 = [(UIView *)v3->_orderingWarningContainer bottomAnchor];
-    v88 = [v86 constraintEqualToAnchor:v87 constant:-12.0];
+    bottomAnchor3 = [(UILabel *)v3->_orderingWarningLabel bottomAnchor];
+    bottomAnchor4 = [(UIView *)v3->_orderingWarningContainer bottomAnchor];
+    v88 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4 constant:-12.0];
     [v49 addObject:v88];
 
-    v89 = [(NCAppPickerViewHeader *)v3 bottomAnchor];
-    v90 = [(UIView *)v3->_orderingWarningContainer bottomAnchor];
-    v91 = [v89 constraintEqualToAnchor:v90 constant:8.0];
+    bottomAnchor5 = [(NCAppPickerViewHeader *)v3 bottomAnchor];
+    bottomAnchor6 = [(UIView *)v3->_orderingWarningContainer bottomAnchor];
+    v91 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6 constant:8.0];
     [v49 addObject:v91];
 
-    v92 = [(UIImageView *)v3->_orderingWarningIconImageView centerYAnchor];
-    v93 = [(UILabel *)v3->_orderingWarningLabel centerYAnchor];
-    v94 = [v92 constraintEqualToAnchor:v93];
+    centerYAnchor = [(UIImageView *)v3->_orderingWarningIconImageView centerYAnchor];
+    centerYAnchor2 = [(UILabel *)v3->_orderingWarningLabel centerYAnchor];
+    v94 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     [v49 addObject:v94];
 
-    v95 = [(UIImageView *)v3->_orderingWarningIconImageView leadingAnchor];
-    v96 = [(UIView *)v3->_orderingWarningContainer leadingAnchor];
-    v97 = [v95 constraintEqualToAnchor:v96 constant:12.0];
+    leadingAnchor9 = [(UIImageView *)v3->_orderingWarningIconImageView leadingAnchor];
+    leadingAnchor10 = [(UIView *)v3->_orderingWarningContainer leadingAnchor];
+    v97 = [leadingAnchor9 constraintEqualToAnchor:leadingAnchor10 constant:12.0];
     [v49 addObject:v97];
 
-    v98 = [(UIImageView *)v3->_orderingWarningIconImageView heightAnchor];
-    v99 = [v98 constraintEqualToConstant:24.0];
+    heightAnchor = [(UIImageView *)v3->_orderingWarningIconImageView heightAnchor];
+    v99 = [heightAnchor constraintEqualToConstant:24.0];
     [v49 addObject:v99];
 
-    v100 = [(UIImageView *)v3->_orderingWarningIconImageView widthAnchor];
-    v101 = [v100 constraintEqualToConstant:24.0];
+    widthAnchor = [(UIImageView *)v3->_orderingWarningIconImageView widthAnchor];
+    v101 = [widthAnchor constraintEqualToConstant:24.0];
     [v49 addObject:v101];
 
-    v102 = [(UILabel *)v3->_orderingWarningLabel leadingAnchor];
-    v103 = [(UIImageView *)v3->_orderingWarningIconImageView trailingAnchor];
-    v104 = [v102 constraintEqualToAnchor:v103 constant:10.0];
+    leadingAnchor11 = [(UILabel *)v3->_orderingWarningLabel leadingAnchor];
+    trailingAnchor9 = [(UIImageView *)v3->_orderingWarningIconImageView trailingAnchor];
+    v104 = [leadingAnchor11 constraintEqualToAnchor:trailingAnchor9 constant:10.0];
     [v49 addObject:v104];
 
-    v105 = [(UIView *)v3->_orderingWarningContainer trailingAnchor];
-    v106 = [(UILabel *)v3->_orderingWarningLabel trailingAnchor];
-    v107 = [v105 constraintEqualToAnchor:v106 constant:10.0];
+    trailingAnchor10 = [(UIView *)v3->_orderingWarningContainer trailingAnchor];
+    trailingAnchor11 = [(UILabel *)v3->_orderingWarningLabel trailingAnchor];
+    v107 = [trailingAnchor10 constraintEqualToAnchor:trailingAnchor11 constant:10.0];
     [v49 addObject:v107];
 
     [MEMORY[0x277CCAAD0] activateConstraints:v49];
@@ -231,12 +231,12 @@
   return v3;
 }
 
-- (void)configureSupportsSortByAvgNumberOfNotifications:(BOOL)a3
+- (void)configureSupportsSortByAvgNumberOfNotifications:(BOOL)notifications
 {
-  v3 = a3;
+  notificationsCopy = notifications;
   [(UIView *)self->_orderingWarningContainer setHidden:?];
   orderingWarningLabel = self->_orderingWarningLabel;
-  if (v3)
+  if (notificationsCopy)
   {
     v6 = self->_orderingWarningLabel;
 
@@ -245,12 +245,12 @@
 
   else
   {
-    v7 = [objc_opt_class() _orderingWarningText];
-    [(UILabel *)orderingWarningLabel setText:v7];
+    _orderingWarningText = [objc_opt_class() _orderingWarningText];
+    [(UILabel *)orderingWarningLabel setText:_orderingWarningText];
   }
 }
 
-+ (double)preferredHeightForWidth:(double)a3 supportsSortByAvgNumberOfNotifications:(BOOL)a4
++ (double)preferredHeightForWidth:(double)width supportsSortByAvgNumberOfNotifications:(BOOL)notifications
 {
   v31[1] = *MEMORY[0x277D85DE8];
   if (!preferredHeightForWidth_supportsSortByAvgNumberOfNotifications____drawingContext)
@@ -262,40 +262,40 @@
     [preferredHeightForWidth_supportsSortByAvgNumberOfNotifications____drawingContext setWantsNumberOfLineFragments:1];
   }
 
-  v9 = fmax(a3 + -32.0, 0.0);
-  v10 = [objc_opt_class() _titleText];
+  v9 = fmax(width + -32.0, 0.0);
+  _titleText = [objc_opt_class() _titleText];
   v30 = *MEMORY[0x277D740A8];
   v11 = v30;
-  v12 = [a1 _titleFont];
-  v31[0] = v12;
+  _titleFont = [self _titleFont];
+  v31[0] = _titleFont;
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v31 forKeys:&v30 count:1];
-  [v10 boundingRectWithSize:1 options:v13 attributes:preferredHeightForWidth_supportsSortByAvgNumberOfNotifications____drawingContext context:{v9, 0.0}];
+  [_titleText boundingRectWithSize:1 options:v13 attributes:preferredHeightForWidth_supportsSortByAvgNumberOfNotifications____drawingContext context:{v9, 0.0}];
   CGRectGetHeight(v32);
 
-  v14 = [objc_opt_class() _descriptionText];
+  _descriptionText = [objc_opt_class() _descriptionText];
   v28 = v11;
-  v15 = [a1 _descriptionFont];
-  v29 = v15;
+  _descriptionFont = [self _descriptionFont];
+  v29 = _descriptionFont;
   v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v29 forKeys:&v28 count:1];
-  [v14 boundingRectWithSize:1 options:v16 attributes:preferredHeightForWidth_supportsSortByAvgNumberOfNotifications____drawingContext context:{v9, 0.0}];
+  [_descriptionText boundingRectWithSize:1 options:v16 attributes:preferredHeightForWidth_supportsSortByAvgNumberOfNotifications____drawingContext context:{v9, 0.0}];
   CGRectGetHeight(v33);
 
-  v17 = [objc_opt_class() _orderingDescriptionText];
+  _orderingDescriptionText = [objc_opt_class() _orderingDescriptionText];
   v26 = v11;
-  v18 = [a1 _orderingDescriptionFont];
-  v27 = v18;
+  _orderingDescriptionFont = [self _orderingDescriptionFont];
+  v27 = _orderingDescriptionFont;
   v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v27 forKeys:&v26 count:1];
-  [v17 boundingRectWithSize:1 options:v19 attributes:preferredHeightForWidth_supportsSortByAvgNumberOfNotifications____drawingContext context:{v9, 0.0}];
+  [_orderingDescriptionText boundingRectWithSize:1 options:v19 attributes:preferredHeightForWidth_supportsSortByAvgNumberOfNotifications____drawingContext context:{v9, 0.0}];
   CGRectGetHeight(v34);
 
-  if (!a4)
+  if (!notifications)
   {
-    v20 = [objc_opt_class() _orderingWarningText];
+    _orderingWarningText = [objc_opt_class() _orderingWarningText];
     v24 = v11;
-    v21 = [a1 _orderingWarningFont];
-    v25 = v21;
+    _orderingWarningFont = [self _orderingWarningFont];
+    v25 = _orderingWarningFont;
     v22 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v25 forKeys:&v24 count:1];
-    [v20 boundingRectWithSize:1 options:v22 attributes:preferredHeightForWidth_supportsSortByAvgNumberOfNotifications____drawingContext context:{fmax(a3 + -12.0 + -24.0 + -10.0 + -10.0, 0.0), 0.0}];
+    [_orderingWarningText boundingRectWithSize:1 options:v22 attributes:preferredHeightForWidth_supportsSortByAvgNumberOfNotifications____drawingContext context:{fmax(width + -12.0 + -24.0 + -10.0 + -10.0, 0.0), 0.0}];
     CGRectGetHeight(v35);
   }
 

@@ -1,7 +1,7 @@
 @interface ACUISOpenApplicationAction
 - (ACUISOpenApplicationAction)init;
-- (ACUISOpenApplicationAction)initWithNSUserActivity:(id)a3;
-- (ACUISOpenApplicationAction)initWithURL:(id)a3;
+- (ACUISOpenApplicationAction)initWithNSUserActivity:(id)activity;
+- (ACUISOpenApplicationAction)initWithURL:(id)l;
 - (NSSet)launchActions;
 @end
 
@@ -14,13 +14,13 @@
   return [(ACUISOpenApplicationAction *)&v3 initWithInfo:0 responder:0];
 }
 
-- (ACUISOpenApplicationAction)initWithURL:(id)a3
+- (ACUISOpenApplicationAction)initWithURL:(id)l
 {
-  if (a3)
+  if (l)
   {
-    v4 = a3;
+    lCopy = l;
     v5 = objc_opt_new();
-    [v5 setObject:v4 forSetting:0];
+    [v5 setObject:lCopy forSetting:0];
   }
 
   else
@@ -35,10 +35,10 @@
   return v6;
 }
 
-- (ACUISOpenApplicationAction)initWithNSUserActivity:(id)a3
+- (ACUISOpenApplicationAction)initWithNSUserActivity:(id)activity
 {
   v27[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  activityCopy = activity;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -51,14 +51,14 @@
   v18[2] = __Block_byref_object_copy_;
   v18[3] = __Block_byref_object_dispose_;
   v19 = 0;
-  [v4 setNeedsSave:0];
+  [activityCopy setNeedsSave:0];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __53__ACUISOpenApplicationAction_initWithNSUserActivity___block_invoke;
   v16[3] = &unk_1E72627A0;
   v16[4] = &v20;
   v16[5] = &v17;
-  [v4 _createUserActivityDataWithOptions:0 completionHandler:v16];
+  [activityCopy _createUserActivityDataWithOptions:0 completionHandler:v16];
   if (*(v18[0] + 40))
   {
     v5 = _logger();
@@ -119,8 +119,8 @@ void __53__ACUISOpenApplicationAction_initWithNSUserActivity___block_invoke(uint
 
 - (NSSet)launchActions
 {
-  v3 = [(ACUISOpenApplicationAction *)self info];
-  v4 = [v3 objectForSetting:0];
+  info = [(ACUISOpenApplicationAction *)self info];
+  v4 = [info objectForSetting:0];
 
   if (v4)
   {
@@ -134,8 +134,8 @@ void __53__ACUISOpenApplicationAction_initWithNSUserActivity___block_invoke(uint
     v6 = 0;
   }
 
-  v7 = [(ACUISOpenApplicationAction *)self info];
-  v8 = [v7 objectForSetting:1];
+  info2 = [(ACUISOpenApplicationAction *)self info];
+  v8 = [info2 objectForSetting:1];
 
   if (v8)
   {

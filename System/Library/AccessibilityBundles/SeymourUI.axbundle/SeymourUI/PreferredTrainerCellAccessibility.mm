@@ -1,6 +1,6 @@
 @interface PreferredTrainerCellAccessibility
 - (unint64_t)accessibilityTraits;
-- (void)accessibilityApplyState:(BOOL)a3;
+- (void)accessibilityApplyState:(BOOL)state;
 @end
 
 @implementation PreferredTrainerCellAccessibility
@@ -12,16 +12,16 @@
   return *MEMORY[0x29EDC7F70] | [(PreferredTrainerCellAccessibility *)&v3 accessibilityTraits];
 }
 
-- (void)accessibilityApplyState:(BOOL)a3
+- (void)accessibilityApplyState:(BOOL)state
 {
-  v3 = a3;
+  stateCopy = state;
   v8.receiver = self;
   v8.super_class = PreferredTrainerCellAccessibility;
   [(PreferredTrainerCellAccessibility *)&v8 accessibilityApplyState:?];
-  if (v3)
+  if (stateCopy)
   {
-    v5 = [(PreferredTrainerCellAccessibility *)self accessibilityTraits];
-    v6 = *MEMORY[0x29EDC7FC0] | v5;
+    accessibilityTraits = [(PreferredTrainerCellAccessibility *)self accessibilityTraits];
+    v6 = *MEMORY[0x29EDC7FC0] | accessibilityTraits;
   }
 
   else

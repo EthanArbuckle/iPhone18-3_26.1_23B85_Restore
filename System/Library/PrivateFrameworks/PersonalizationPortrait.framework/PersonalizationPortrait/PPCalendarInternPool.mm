@@ -1,13 +1,13 @@
 @interface PPCalendarInternPool
 - (PPCalendarInternPool)init;
-- (id)internedCalendarWithEKCalendar:(id)a3;
+- (id)internedCalendarWithEKCalendar:(id)calendar;
 @end
 
 @implementation PPCalendarInternPool
 
-- (id)internedCalendarWithEKCalendar:(id)a3
+- (id)internedCalendarWithEKCalendar:(id)calendar
 {
-  v4 = a3;
+  calendarCopy = calendar;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -19,7 +19,7 @@
   v9[1] = 3221225472;
   v9[2] = __55__PPCalendarInternPool_internedCalendarWithEKCalendar___block_invoke;
   v9[3] = &unk_1E77F6478;
-  v6 = v4;
+  v6 = calendarCopy;
   v10 = v6;
   v11 = &v12;
   [(_PASLock *)poolLock runWithLockAcquired:v9];

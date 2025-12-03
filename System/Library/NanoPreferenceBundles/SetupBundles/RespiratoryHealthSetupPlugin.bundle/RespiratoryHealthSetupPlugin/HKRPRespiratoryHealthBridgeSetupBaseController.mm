@@ -1,15 +1,15 @@
 @interface HKRPRespiratoryHealthBridgeSetupBaseController
-- (id)_buildPrimaryViewControllerWithSettings:(id)a3 onboardingManager:(id)a4;
+- (id)_buildPrimaryViewControllerWithSettings:(id)settings onboardingManager:(id)manager;
 - (id)viewController;
-- (void)miniFlowStepComplete:(id)a3;
-- (void)miniFlowStepComplete:(id)a3 nextControllerClass:(Class)a4;
+- (void)miniFlowStepComplete:(id)complete;
+- (void)miniFlowStepComplete:(id)complete nextControllerClass:(Class)class;
 @end
 
 @implementation HKRPRespiratoryHealthBridgeSetupBaseController
 
-- (id)_buildPrimaryViewControllerWithSettings:(id)a3 onboardingManager:(id)a4
+- (id)_buildPrimaryViewControllerWithSettings:(id)settings onboardingManager:(id)manager
 {
-  v5 = [HKRPOnboardingViewControllerFactory onboardingViewControllerWithStyle:0 settings:a3 onboardingManager:a4 onboardingDelegate:0];
+  v5 = [HKRPOnboardingViewControllerFactory onboardingViewControllerWithStyle:0 settings:settings onboardingManager:manager onboardingDelegate:0];
   [v5 setMiniFlowDelegate:self];
 
   return v5;
@@ -37,8 +37,8 @@
     }
 
     [v3 cacheCompletedOnboardingStateIfNeeded];
-    v8 = [(HKRPRespiratoryHealthBridgeSetupBaseController *)self delegate];
-    [v8 buddyControllerReleaseHoldAndSkip:self];
+    delegate = [(HKRPRespiratoryHealthBridgeSetupBaseController *)self delegate];
+    [delegate buddyControllerReleaseHoldAndSkip:self];
 
     v5 = 0;
   }
@@ -46,15 +46,15 @@
   return v5;
 }
 
-- (void)miniFlowStepComplete:(id)a3
+- (void)miniFlowStepComplete:(id)complete
 {
-  v4 = [(HKRPRespiratoryHealthBridgeSetupBaseController *)self delegate];
-  [v4 buddyControllerDone:self];
+  delegate = [(HKRPRespiratoryHealthBridgeSetupBaseController *)self delegate];
+  [delegate buddyControllerDone:self];
 }
 
-- (void)miniFlowStepComplete:(id)a3 nextControllerClass:(Class)a4
+- (void)miniFlowStepComplete:(id)complete nextControllerClass:(Class)class
 {
-  v5 = [(HKRPRespiratoryHealthBridgeSetupBaseController *)self delegate:a3];
+  v5 = [(HKRPRespiratoryHealthBridgeSetupBaseController *)self delegate:complete];
   [v5 buddyControllerDone:self];
 }
 

@@ -1,10 +1,10 @@
 @interface PartialDownloadPurgeCoordinator
 - (PartialDownloadPurgeCoordinator)init;
-- (id)allPurgeablesForVolume:(id)a3 reason:(id)a4 client:(id)a5;
+- (id)allPurgeablesForVolume:(id)volume reason:(id)reason client:(id)client;
 - (int64_t)_calculatePurgeableSpace;
-- (int64_t)_purgeForDesiredSpace:(int64_t)a3;
-- (int64_t)purgeForVolume:(id)a3 urgency:(int64_t)a4 desiredPurge:(id)a5 client:(id)a6;
-- (int64_t)purgeableForVolume:(id)a3 urgency:(int64_t)a4 client:(id)a5;
+- (int64_t)_purgeForDesiredSpace:(int64_t)space;
+- (int64_t)purgeForVolume:(id)volume urgency:(int64_t)urgency desiredPurge:(id)purge client:(id)client;
+- (int64_t)purgeableForVolume:(id)volume urgency:(int64_t)urgency client:(id)client;
 @end
 
 @implementation PartialDownloadPurgeCoordinator
@@ -29,11 +29,11 @@
   return v2;
 }
 
-- (id)allPurgeablesForVolume:(id)a3 reason:(id)a4 client:(id)a5
+- (id)allPurgeablesForVolume:(id)volume reason:(id)reason client:(id)client
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  volumeCopy = volume;
+  reasonCopy = reason;
+  clientCopy = client;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
@@ -63,16 +63,16 @@
   return v14;
 }
 
-- (int64_t)purgeForVolume:(id)a3 urgency:(int64_t)a4 desiredPurge:(id)a5 client:(id)a6
+- (int64_t)purgeForVolume:(id)volume urgency:(int64_t)urgency desiredPurge:(id)purge client:(id)client
 {
-  v8 = a5;
-  v9 = v8;
+  purgeCopy = purge;
+  v9 = purgeCopy;
   v10 = 0;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
   v19 = 0;
-  if (a4 >= 3)
+  if (urgency >= 3)
   {
     dispatchQueue = self->_dispatchQueue;
     block[0] = _NSConcreteStackBlock;
@@ -81,7 +81,7 @@
     block[3] = &unk_10051AE98;
     v15 = &v16;
     block[4] = self;
-    v14 = v8;
+    v14 = purgeCopy;
     dispatch_sync(dispatchQueue, block);
 
     v10 = v17[3];
@@ -92,14 +92,14 @@
   return v10;
 }
 
-- (int64_t)purgeableForVolume:(id)a3 urgency:(int64_t)a4 client:(id)a5
+- (int64_t)purgeableForVolume:(id)volume urgency:(int64_t)urgency client:(id)client
 {
   v5 = 0;
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
   v12 = 0;
-  if (a4 >= 3)
+  if (urgency >= 3)
   {
     dispatchQueue = self->_dispatchQueue;
     v8[0] = _NSConcreteStackBlock;
@@ -134,7 +134,7 @@
   return v3;
 }
 
-- (int64_t)_purgeForDesiredSpace:(int64_t)a3
+- (int64_t)_purgeForDesiredSpace:(int64_t)space
 {
   v24 = 0;
   v25 = &v24;
@@ -155,7 +155,7 @@
 
   [v25[5] sortUsingDescriptors:v7];
   v8 = +[BagService appstoredService];
-  v9 = [v8 lastBag];
+  lastBag = [v8 lastBag];
 
   v19 = 0;
   v20 = &v19;
@@ -167,10 +167,10 @@
   v14[2] = sub_1002D5BE4;
   v14[3] = &unk_100521980;
   v16 = &v24;
-  v11 = v9;
+  v11 = lastBag;
   v15 = v11;
   v17 = &v19;
-  v18 = a3;
+  spaceCopy = space;
   [v10 modifyUsingTransaction:v14];
 
   v12 = v20[3];

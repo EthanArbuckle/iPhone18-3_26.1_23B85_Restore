@@ -1,37 +1,37 @@
 @interface CACCorrectionUtilities
-+ (id)_spellingGuessesForString:(id)a3 languageIdentifier:(id)a4;
-+ (id)alternativesForString:(id)a3 languageIdentifier:(id)a4;
-+ (id)emojiSuggestionsForString:(id)a3;
++ (id)_spellingGuessesForString:(id)string languageIdentifier:(id)identifier;
++ (id)alternativesForString:(id)string languageIdentifier:(id)identifier;
++ (id)emojiSuggestionsForString:(id)string;
 @end
 
 @implementation CACCorrectionUtilities
 
-+ (id)alternativesForString:(id)a3 languageIdentifier:(id)a4
++ (id)alternativesForString:(id)string languageIdentifier:(id)identifier
 {
   v6 = MEMORY[0x277CBEB18];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 array];
-  v10 = [a1 _spellingGuessesForString:v8 languageIdentifier:v7];
+  identifierCopy = identifier;
+  stringCopy = string;
+  array = [v6 array];
+  v10 = [self _spellingGuessesForString:stringCopy languageIdentifier:identifierCopy];
 
-  [v9 addObjectsFromArray:v10];
-  v11 = [v8 localizedUppercaseString];
-  LOBYTE(v6) = [v11 isEqualToString:v8];
+  [array addObjectsFromArray:v10];
+  localizedUppercaseString = [stringCopy localizedUppercaseString];
+  LOBYTE(v6) = [localizedUppercaseString isEqualToString:stringCopy];
 
   if ((v6 & 1) == 0)
   {
-    [v9 addObject:v11];
+    [array addObject:localizedUppercaseString];
   }
 
-  return v9;
+  return array;
 }
 
-+ (id)_spellingGuessesForString:(id)a3 languageIdentifier:(id)a4
++ (id)_spellingGuessesForString:(id)string languageIdentifier:(id)identifier
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CBEB18] array];
+  stringCopy = string;
+  identifierCopy = identifier;
+  array = [MEMORY[0x277CBEB18] array];
   v8 = +[CACSpeechSystem speechSystem];
   [v8 recognitionSystemRef];
   v9 = RXRecognitionSystemCopyPhoneticNeighborsForText();
@@ -39,7 +39,7 @@
   if (![v9 count])
   {
     v10 = objc_opt_new();
-    v11 = [v10 guessesForWordRange:0 inString:objc_msgSend(v5 language:{"length"), v5, v6}];
+    v11 = [v10 guessesForWordRange:0 inString:objc_msgSend(stringCopy language:{"length"), stringCopy, identifierCopy}];
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
@@ -71,7 +71,7 @@
   if (![v9 count])
   {
     v16 = +[CACEmojiManager sharedManager];
-    v17 = [v16 stringByReplacingEmojisWithDescriptions:v5];
+    v17 = [v16 stringByReplacingEmojisWithDescriptions:stringCopy];
 
     if ([v17 length])
     {
@@ -82,19 +82,19 @@
   return v9;
 }
 
-+ (id)emojiSuggestionsForString:(id)a3
++ (id)emojiSuggestionsForString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v4 = +[CACEmojiManager sharedManager];
-  v5 = [v4 stringByReplacingEmojisWithDescriptions:v3];
+  v5 = [v4 stringByReplacingEmojisWithDescriptions:stringCopy];
 
-  v6 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v7 = +[CACEmojiManager sharedManager];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __52__CACCorrectionUtilities_emojiSuggestionsForString___block_invoke;
   v10[3] = &unk_279CECB90;
-  v8 = v6;
+  v8 = array;
   v11 = v8;
   [v7 enumerateEmojisInText:v5 skinToneFilter:1 usingBlock:v10];
 

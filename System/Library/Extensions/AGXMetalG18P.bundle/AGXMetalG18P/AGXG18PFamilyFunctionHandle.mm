@@ -1,5 +1,5 @@
 @interface AGXG18PFamilyFunctionHandle
-- (AGXG18PFamilyFunctionHandle)initWithHandleType:(int)a3 name:(id)a4 device:(id)a5 handle:(unint64_t)a6 dylib:(id)a7;
+- (AGXG18PFamilyFunctionHandle)initWithHandleType:(int)type name:(id)name device:(id)device handle:(unint64_t)handle dylib:(id)dylib;
 - (MTLResourceID)gpuResourceID;
 - (id).cxx_construct;
 - (unint64_t)resourceIndex;
@@ -48,15 +48,15 @@
   [(_MTLFunctionHandle *)&v2 dealloc];
 }
 
-- (AGXG18PFamilyFunctionHandle)initWithHandleType:(int)a3 name:(id)a4 device:(id)a5 handle:(unint64_t)a6 dylib:(id)a7
+- (AGXG18PFamilyFunctionHandle)initWithHandleType:(int)type name:(id)name device:(id)device handle:(unint64_t)handle dylib:(id)dylib
 {
   v10 = 5;
-  if (a3 != 2)
+  if (type != 2)
   {
     v10 = 6;
   }
 
-  if (a3 == 3)
+  if (type == 3)
   {
     v11 = 0;
   }
@@ -68,12 +68,12 @@
 
   v13.receiver = self;
   v13.super_class = AGXG18PFamilyFunctionHandle;
-  result = [(_MTLFunctionHandle *)&v13 initWithFunctionType:v11 name:a4 device:a5];
+  result = [(_MTLFunctionHandle *)&v13 initWithFunctionType:v11 name:name device:device];
   if (result)
   {
-    result->_impl.handle_type = a3;
-    result->_impl.value = a6;
-    result->_binary_dylib = a7;
+    result->_impl.handle_type = type;
+    result->_impl.value = handle;
+    result->_binary_dylib = dylib;
   }
 
   return result;

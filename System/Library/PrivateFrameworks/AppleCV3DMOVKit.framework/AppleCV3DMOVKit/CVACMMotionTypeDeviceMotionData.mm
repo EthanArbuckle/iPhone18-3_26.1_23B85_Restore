@@ -1,6 +1,6 @@
 @interface CVACMMotionTypeDeviceMotionData
 - (CVACMMotionTypeDeviceMotionData)init;
-- (CVACMMotionTypeDeviceMotionData)initWithFastPathData:(id)a3;
+- (CVACMMotionTypeDeviceMotionData)initWithFastPathData:(id)data;
 - (id)debugDescription;
 - (id)dictionary;
 @end
@@ -38,22 +38,22 @@
   return v2;
 }
 
-- (CVACMMotionTypeDeviceMotionData)initWithFastPathData:(id)a3
+- (CVACMMotionTypeDeviceMotionData)initWithFastPathData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v21.receiver = self;
   v21.super_class = CVACMMotionTypeDeviceMotionData;
   v5 = [(CVACMMotionTypeDeviceMotionData *)&v21 init];
   if (v5)
   {
-    v6 = [v4 bytes];
-    if (*v6 != 3)
+    bytes = [dataCopy bytes];
+    if (*bytes != 3)
     {
       v19 = 0;
       goto LABEL_6;
     }
 
-    v7 = v6;
+    v7 = bytes;
     v8 = [[CVACLMotionTypeDoubleVector4 alloc] initWithFastPathXYZWDataV3:*(v7 + 15), *(v7 + 16), *(v7 + 17), *(v7 + 18)];
     quaternion = v5->_quaternion;
     v5->_quaternion = v8;
@@ -193,8 +193,8 @@ LABEL_6:
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(CVACMMotionTypeDeviceMotionData *)self dictionary];
-  v6 = [v3 stringWithFormat:@"<%@: %@>", v4, v5];
+  dictionary = [(CVACMMotionTypeDeviceMotionData *)self dictionary];
+  v6 = [v3 stringWithFormat:@"<%@: %@>", v4, dictionary];
 
   return v6;
 }

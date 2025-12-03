@@ -1,12 +1,12 @@
 @interface HMAccessoryAccessCodeFetchResponseValue
 + (id)shortDescription;
-- (BOOL)isEqual:(id)a3;
-- (HMAccessoryAccessCodeFetchResponseValue)initWithAccessoryUUID:(id)a3 accessoryAccessCodeValues:(id)a4 error:(id)a5;
-- (HMAccessoryAccessCodeFetchResponseValue)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (HMAccessoryAccessCodeFetchResponseValue)initWithAccessoryUUID:(id)d accessoryAccessCodeValues:(id)values error:(id)error;
+- (HMAccessoryAccessCodeFetchResponseValue)initWithCoder:(id)coder;
 - (NSArray)attributeDescriptions;
 - (NSString)shortDescription;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMAccessoryAccessCodeFetchResponseValue
@@ -15,15 +15,15 @@
 {
   v15[3] = *MEMORY[0x1E69E9840];
   v3 = objc_alloc(MEMORY[0x1E69A29C8]);
-  v4 = [(HMAccessoryAccessCodeFetchResponseValue *)self accessoryUUID];
-  v5 = [v3 initWithName:@"accessoryUUID" value:v4];
+  accessoryUUID = [(HMAccessoryAccessCodeFetchResponseValue *)self accessoryUUID];
+  v5 = [v3 initWithName:@"accessoryUUID" value:accessoryUUID];
   v6 = objc_alloc(MEMORY[0x1E69A29C8]);
-  v7 = [(HMAccessoryAccessCodeFetchResponseValue *)self accessoryAccessCodeValues];
-  v8 = [v6 initWithName:@"accessoryAccessCodeValues" value:v7];
+  accessoryAccessCodeValues = [(HMAccessoryAccessCodeFetchResponseValue *)self accessoryAccessCodeValues];
+  v8 = [v6 initWithName:@"accessoryAccessCodeValues" value:accessoryAccessCodeValues];
   v15[1] = v8;
   v9 = objc_alloc(MEMORY[0x1E69A29C8]);
-  v10 = [(HMAccessoryAccessCodeFetchResponseValue *)self error];
-  v11 = [v9 initWithName:@"error" value:v10];
+  error = [(HMAccessoryAccessCodeFetchResponseValue *)self error];
+  v11 = [v9 initWithName:@"error" value:error];
   v15[2] = v11;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:3];
 
@@ -39,29 +39,29 @@
   return [v2 shortDescription];
 }
 
-- (HMAccessoryAccessCodeFetchResponseValue)initWithCoder:(id)a3
+- (HMAccessoryAccessCodeFetchResponseValue)initWithCoder:(id)coder
 {
   v22[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMAccessoryAccessCodeFetchResponseValueCodingKeyAccessoryUUID"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMAccessoryAccessCodeFetchResponseValueCodingKeyAccessoryUUID"];
   v6 = MEMORY[0x1E695DFD8];
   v22[0] = objc_opt_class();
   v22[1] = objc_opt_class();
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:2];
   v8 = [v6 setWithArray:v7];
-  v9 = [v4 decodeObjectOfClasses:v8 forKey:@"HMAccessoryAccessCodeFetchResponseValueCodingKeyAccessoryAccessCodeValues"];
+  v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"HMAccessoryAccessCodeFetchResponseValueCodingKeyAccessoryAccessCodeValues"];
 
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMAccessoryAccessCodeFetchResponseValueCodingKeyError"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMAccessoryAccessCodeFetchResponseValueCodingKeyError"];
   if (v5)
   {
-    v11 = [(HMAccessoryAccessCodeFetchResponseValue *)self initWithAccessoryUUID:v5 accessoryAccessCodeValues:v9 error:v10];
-    v12 = v11;
+    selfCopy = [(HMAccessoryAccessCodeFetchResponseValue *)self initWithAccessoryUUID:v5 accessoryAccessCodeValues:v9 error:v10];
+    v12 = selfCopy;
   }
 
   else
   {
     v13 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
@@ -81,38 +81,38 @@
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HMAccessoryAccessCodeFetchResponseValue *)self accessoryUUID];
-  [v4 encodeObject:v5 forKey:@"HMAccessoryAccessCodeFetchResponseValueCodingKeyAccessoryUUID"];
+  coderCopy = coder;
+  accessoryUUID = [(HMAccessoryAccessCodeFetchResponseValue *)self accessoryUUID];
+  [coderCopy encodeObject:accessoryUUID forKey:@"HMAccessoryAccessCodeFetchResponseValueCodingKeyAccessoryUUID"];
 
-  v6 = [(HMAccessoryAccessCodeFetchResponseValue *)self accessoryAccessCodeValues];
-  [v4 encodeObject:v6 forKey:@"HMAccessoryAccessCodeFetchResponseValueCodingKeyAccessoryAccessCodeValues"];
+  accessoryAccessCodeValues = [(HMAccessoryAccessCodeFetchResponseValue *)self accessoryAccessCodeValues];
+  [coderCopy encodeObject:accessoryAccessCodeValues forKey:@"HMAccessoryAccessCodeFetchResponseValueCodingKeyAccessoryAccessCodeValues"];
 
-  v7 = [(HMAccessoryAccessCodeFetchResponseValue *)self error];
-  [v4 encodeObject:v7 forKey:@"HMAccessoryAccessCodeFetchResponseValueCodingKeyError"];
+  error = [(HMAccessoryAccessCodeFetchResponseValue *)self error];
+  [coderCopy encodeObject:error forKey:@"HMAccessoryAccessCodeFetchResponseValueCodingKeyError"];
 }
 
 - (unint64_t)hash
 {
-  v3 = [(HMAccessoryAccessCodeFetchResponseValue *)self accessoryUUID];
-  v4 = [v3 hash];
-  v5 = [(HMAccessoryAccessCodeFetchResponseValue *)self accessoryAccessCodeValues];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(HMAccessoryAccessCodeFetchResponseValue *)self error];
-  v8 = [v7 hash];
+  accessoryUUID = [(HMAccessoryAccessCodeFetchResponseValue *)self accessoryUUID];
+  v4 = [accessoryUUID hash];
+  accessoryAccessCodeValues = [(HMAccessoryAccessCodeFetchResponseValue *)self accessoryAccessCodeValues];
+  v6 = [accessoryAccessCodeValues hash] ^ v4;
+  error = [(HMAccessoryAccessCodeFetchResponseValue *)self error];
+  v8 = [error hash];
 
   return v6 ^ v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -123,12 +123,12 @@
   v6 = v5;
   if (v6)
   {
-    v7 = [(HMAccessoryAccessCodeFetchResponseValue *)self accessoryUUID];
-    v8 = [v6 accessoryUUID];
-    if ([v7 isEqual:v8] && (-[HMAccessoryAccessCodeFetchResponseValue accessoryAccessCodeValues](self, "accessoryAccessCodeValues"), v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "accessoryAccessCodeValues"), v10 = objc_claimAutoreleasedReturnValue(), v11 = HMFEqualObjects(), v10, v9, v11))
+    accessoryUUID = [(HMAccessoryAccessCodeFetchResponseValue *)self accessoryUUID];
+    accessoryUUID2 = [v6 accessoryUUID];
+    if ([accessoryUUID isEqual:accessoryUUID2] && (-[HMAccessoryAccessCodeFetchResponseValue accessoryAccessCodeValues](self, "accessoryAccessCodeValues"), v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "accessoryAccessCodeValues"), v10 = objc_claimAutoreleasedReturnValue(), v11 = HMFEqualObjects(), v10, v9, v11))
     {
-      v12 = [(HMAccessoryAccessCodeFetchResponseValue *)self error];
-      v13 = [v6 error];
+      error = [(HMAccessoryAccessCodeFetchResponseValue *)self error];
+      error2 = [v6 error];
       v14 = HMFEqualObjects();
     }
 
@@ -146,25 +146,25 @@
   return v14;
 }
 
-- (HMAccessoryAccessCodeFetchResponseValue)initWithAccessoryUUID:(id)a3 accessoryAccessCodeValues:(id)a4 error:(id)a5
+- (HMAccessoryAccessCodeFetchResponseValue)initWithAccessoryUUID:(id)d accessoryAccessCodeValues:(id)values error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  valuesCopy = values;
+  errorCopy = error;
   v17.receiver = self;
   v17.super_class = HMAccessoryAccessCodeFetchResponseValue;
   v11 = [(HMAccessoryAccessCodeFetchResponseValue *)&v17 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [dCopy copy];
     accessoryUUID = v11->_accessoryUUID;
     v11->_accessoryUUID = v12;
 
-    v14 = [v9 copy];
+    v14 = [valuesCopy copy];
     accessoryAccessCodeValues = v11->_accessoryAccessCodeValues;
     v11->_accessoryAccessCodeValues = v14;
 
-    objc_storeStrong(&v11->_error, a5);
+    objc_storeStrong(&v11->_error, error);
   }
 
   return v11;

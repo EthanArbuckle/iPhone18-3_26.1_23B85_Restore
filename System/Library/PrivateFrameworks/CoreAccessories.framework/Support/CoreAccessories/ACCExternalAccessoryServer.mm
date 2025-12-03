@@ -1,34 +1,34 @@
 @interface ACCExternalAccessoryServer
 + (id)sharedServer;
-- (ACCExternalAccessoryServer)initWithXPCServiceName:(id)a3 andFeatureNotification:(const char *)a4;
-- (BOOL)accessoryClosingExternalAccessorySession:(id)a3;
-- (BOOL)externalAccessoryArrived:(id)a3;
-- (BOOL)externalAccessoryLeft:(id)a3;
-- (BOOL)handleIncomingExternalAccessoryData:(id)a3 forEASessionIdentifier:(id)a4;
-- (BOOL)handleIncomingExternalAccessoryData:(id)a3 forEASessionIdentifier:(id)a4 toExternalAccessoryClient:(id)a5;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (BOOL)sendNMEASentence:(id)a3 forAccessoryUUID:(id)a4 withTimestamps:(id)a5;
-- (BOOL)sendToClientsNotification:(id)a3 withPayload:(id)a4 aboutAccessory:(id)a5;
-- (BOOL)startDestinationSharing:(id)a3 options:(unint64_t)a4;
-- (BOOL)stopDestinationSharing:(id)a3;
-- (BOOL)vehicleStatusDidChange:(id)a3 forAccessoryUUID:(id)a4;
-- (id)_eaClientsForAccessory:(id)a3;
-- (id)_externalAccessoryForUUID:(id)a3;
-- (id)externalAccessoryClientConnected:(id)a3;
-- (void)_launchUnregisteredClientApps:(id)a3 knownClientApps:(id)a4;
-- (void)notifyClientOfConnectedAccessories:(id)a3;
-- (void)notifyClientOfConnectedDestinationSharingAccessories:(id)a3;
-- (void)notifyClientOfConnectedVehicleStatus:(id)a3;
-- (void)updateExternalAccessoryInfo:(id)a3;
+- (ACCExternalAccessoryServer)initWithXPCServiceName:(id)name andFeatureNotification:(const char *)notification;
+- (BOOL)accessoryClosingExternalAccessorySession:(id)session;
+- (BOOL)externalAccessoryArrived:(id)arrived;
+- (BOOL)externalAccessoryLeft:(id)left;
+- (BOOL)handleIncomingExternalAccessoryData:(id)data forEASessionIdentifier:(id)identifier;
+- (BOOL)handleIncomingExternalAccessoryData:(id)data forEASessionIdentifier:(id)identifier toExternalAccessoryClient:(id)client;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (BOOL)sendNMEASentence:(id)sentence forAccessoryUUID:(id)d withTimestamps:(id)timestamps;
+- (BOOL)sendToClientsNotification:(id)notification withPayload:(id)payload aboutAccessory:(id)accessory;
+- (BOOL)startDestinationSharing:(id)sharing options:(unint64_t)options;
+- (BOOL)stopDestinationSharing:(id)sharing;
+- (BOOL)vehicleStatusDidChange:(id)change forAccessoryUUID:(id)d;
+- (id)_eaClientsForAccessory:(id)accessory;
+- (id)_externalAccessoryForUUID:(id)d;
+- (id)externalAccessoryClientConnected:(id)connected;
+- (void)_launchUnregisteredClientApps:(id)apps knownClientApps:(id)clientApps;
+- (void)notifyClientOfConnectedAccessories:(id)accessories;
+- (void)notifyClientOfConnectedDestinationSharingAccessories:(id)accessories;
+- (void)notifyClientOfConnectedVehicleStatus:(id)status;
+- (void)updateExternalAccessoryInfo:(id)info;
 @end
 
 @implementation ACCExternalAccessoryServer
 
-- (ACCExternalAccessoryServer)initWithXPCServiceName:(id)a3 andFeatureNotification:(const char *)a4
+- (ACCExternalAccessoryServer)initWithXPCServiceName:(id)name andFeatureNotification:(const char *)notification
 {
   v14.receiver = self;
   v14.super_class = ACCExternalAccessoryServer;
-  v4 = [(ACCFeatureServer *)&v14 initWithXPCServiceName:a3 andFeatureNotification:a4];
+  v4 = [(ACCFeatureServer *)&v14 initWithXPCServiceName:name andFeatureNotification:notification];
   if (v4)
   {
     v5 = objc_alloc_init(NSMutableSet);
@@ -57,10 +57,10 @@
   return v4;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   if (listener_shouldAcceptNewConnection__onceToken != -1)
   {
     [ACCExternalAccessoryServer listener:shouldAcceptNewConnection:];
@@ -99,14 +99,14 @@
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "[#ExternalAccessory] New XPC connection for: %@", buf, 0xCu);
   }
 
-  [v7 setExportedInterface:listener_shouldAcceptNewConnection__serverInterface];
-  v11 = [[ACCExternalAccessoryClientInfo alloc] initWithXPCConnection:v7];
+  [connectionCopy setExportedInterface:listener_shouldAcceptNewConnection__serverInterface];
+  v11 = [[ACCExternalAccessoryClientInfo alloc] initWithXPCConnection:connectionCopy];
   v12 = [[ACCExternalAccessoryServerRemote alloc] initWithClientInfo:v11];
-  [v7 setExportedObject:v12];
+  [connectionCopy setExportedObject:v12];
 
-  [v7 setRemoteObjectInterface:listener_shouldAcceptNewConnection__clientInterface];
+  [connectionCopy setRemoteObjectInterface:listener_shouldAcceptNewConnection__clientInterface];
   objc_initWeak(&location, self);
-  objc_initWeak(&from, v7);
+  objc_initWeak(&from, connectionCopy);
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
   v21[2] = __65__ACCExternalAccessoryServer_listener_shouldAcceptNewConnection___block_invoke_110;
@@ -114,12 +114,12 @@
   objc_copyWeak(&v22, &from);
   v21[4] = self;
   objc_copyWeak(&v23, &location);
-  [v7 setInvalidationHandler:v21];
-  v13 = [(ACCExternalAccessoryServer *)self connectedAccessoryLock];
-  [v13 lock];
+  [connectionCopy setInvalidationHandler:v21];
+  connectedAccessoryLock = [(ACCExternalAccessoryServer *)self connectedAccessoryLock];
+  [connectedAccessoryLock lock];
 
-  v14 = [(ACCExternalAccessoryServer *)self eaClientConnectionsMutable];
-  [v14 addObject:v11];
+  eaClientConnectionsMutable = [(ACCExternalAccessoryServer *)self eaClientConnectionsMutable];
+  [eaClientConnectionsMutable addObject:v11];
 
   if (gLogObjects && gNumLogObjects >= 10)
   {
@@ -139,17 +139,17 @@
 
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
-    v17 = [(ACCExternalAccessoryServer *)self eaClientConnections];
-    v18 = [v17 count];
+    eaClientConnections = [(ACCExternalAccessoryServer *)self eaClientConnections];
+    v18 = [eaClientConnections count];
     *buf = 134217984;
     v27 = v18;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "[#ExternalAccessory] There are now %lu client(s).", buf, 0xCu);
   }
 
-  v19 = [(ACCExternalAccessoryServer *)self connectedAccessoryLock];
-  [v19 unlock];
+  connectedAccessoryLock2 = [(ACCExternalAccessoryServer *)self connectedAccessoryLock];
+  [connectedAccessoryLock2 unlock];
 
-  [v7 resume];
+  [connectionCopy resume];
   objc_destroyWeak(&v23);
   objc_destroyWeak(&v22);
   objc_destroyWeak(&from);
@@ -605,26 +605,26 @@ id __65__ACCExternalAccessoryServer_listener_shouldAcceptNewConnection___block_i
   return v5;
 }
 
-- (BOOL)externalAccessoryArrived:(id)a3
+- (BOOL)externalAccessoryArrived:(id)arrived
 {
-  v4 = a3;
-  if (v4)
+  arrivedCopy = arrived;
+  if (arrivedCopy)
   {
-    v5 = [(ACCExternalAccessoryServer *)self connectedAccessoryLock];
-    [v5 lock];
+    connectedAccessoryLock = [(ACCExternalAccessoryServer *)self connectedAccessoryLock];
+    [connectedAccessoryLock lock];
 
-    v6 = [(ACCExternalAccessoryServer *)self eaClientConnections];
+    eaClientConnections = [(ACCExternalAccessoryServer *)self eaClientConnections];
     v46[0] = _NSConcreteStackBlock;
     v46[1] = 3221225472;
     v46[2] = __55__ACCExternalAccessoryServer_externalAccessoryArrived___block_invoke;
     v46[3] = &unk_100226CE0;
-    v7 = v4;
+    v7 = arrivedCopy;
     v47 = v7;
-    v8 = [v6 objectsPassingTest:v46];
+    v8 = [eaClientConnections objectsPassingTest:v46];
 
-    v9 = [(ACCExternalAccessoryServer *)self eaAccessoriesMutable];
+    eaAccessoriesMutable = [(ACCExternalAccessoryServer *)self eaAccessoriesMutable];
     v38 = v7;
-    [v9 addObject:v7];
+    [eaAccessoriesMutable addObject:v7];
 
     v44 = 0u;
     v45 = 0u;
@@ -635,16 +635,16 @@ id __65__ACCExternalAccessoryServer_listener_shouldAcceptNewConnection___block_i
     if (v10)
     {
       v11 = v10;
-      v34 = self;
-      v35 = v4;
-      v12 = 0;
+      selfCopy = self;
+      v35 = arrivedCopy;
+      eAAccessoryDictionary = 0;
       v13 = *v43;
       v36 = kACCExternalAccessoryNameKey;
       v14 = &audioProductCerts_endpoint_publish_onceToken;
       do
       {
         v15 = 0;
-        v16 = v12;
+        v16 = eAAccessoryDictionary;
         do
         {
           if (*v43 != v13)
@@ -653,7 +653,7 @@ id __65__ACCExternalAccessoryServer_listener_shouldAcceptNewConnection___block_i
           }
 
           v17 = *(*(&v42 + 1) + 8 * v15);
-          v12 = [v38 EAAccessoryDictionary];
+          eAAccessoryDictionary = [v38 EAAccessoryDictionary];
 
           v18 = v14[491];
           v19 = gNumLogObjects;
@@ -692,7 +692,7 @@ id __65__ACCExternalAccessoryServer_listener_shouldAcceptNewConnection___block_i
             [v17 bundleID];
             v23 = v11;
             v25 = v24 = v14;
-            v26 = [v12 objectForKey:v36];
+            v26 = [eAAccessoryDictionary objectForKey:v36];
             *buf = 138412546;
             v49 = v25;
             v50 = 2112;
@@ -703,18 +703,18 @@ id __65__ACCExternalAccessoryServer_listener_shouldAcceptNewConnection___block_i
             v11 = v23;
           }
 
-          v27 = [v17 XPCConnection];
-          v28 = [v27 remoteObjectProxyWithErrorHandler:&__block_literal_global_117];
-          [v28 ExternalAccessoryArrived:v12];
+          xPCConnection = [v17 XPCConnection];
+          v28 = [xPCConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_117];
+          [v28 ExternalAccessoryArrived:eAAccessoryDictionary];
 
           if ([v17 canSendLaunchEvent])
           {
-            v29 = [v17 bundleID];
-            platform_system_launchApplicationToBackground(v29);
+            bundleID = [v17 bundleID];
+            platform_system_launchApplicationToBackground(bundleID);
           }
 
           v15 = v15 + 1;
-          v16 = v12;
+          v16 = eAAccessoryDictionary;
         }
 
         while (v11 != v15);
@@ -723,8 +723,8 @@ id __65__ACCExternalAccessoryServer_listener_shouldAcceptNewConnection___block_i
 
       while (v11);
 
-      self = v34;
-      v4 = v35;
+      self = selfCopy;
+      arrivedCopy = v35;
     }
 
     v30 = dispatch_get_global_queue(0, 0);
@@ -738,13 +738,13 @@ id __65__ACCExternalAccessoryServer_listener_shouldAcceptNewConnection___block_i
     v31 = obj;
     dispatch_async(v30, block);
 
-    v32 = [(ACCExternalAccessoryServer *)self connectedAccessoryLock];
-    [v32 unlock];
+    connectedAccessoryLock2 = [(ACCExternalAccessoryServer *)self connectedAccessoryLock];
+    [connectedAccessoryLock2 unlock];
 
     [(ACCFeatureServer *)self sendNotification];
   }
 
-  return v4 != 0;
+  return arrivedCopy != 0;
 }
 
 id __55__ACCExternalAccessoryServer_externalAccessoryArrived___block_invoke(uint64_t a1, void *a2)
@@ -795,43 +795,43 @@ void __55__ACCExternalAccessoryServer_externalAccessoryArrived___block_invoke_11
   }
 }
 
-- (BOOL)externalAccessoryLeft:(id)a3
+- (BOOL)externalAccessoryLeft:(id)left
 {
-  v4 = a3;
-  if (v4)
+  leftCopy = left;
+  if (leftCopy)
   {
-    v5 = [(ACCExternalAccessoryServer *)self connectedAccessoryLock];
-    [v5 lock];
+    connectedAccessoryLock = [(ACCExternalAccessoryServer *)self connectedAccessoryLock];
+    [connectedAccessoryLock lock];
 
-    v6 = [(ACCExternalAccessoryServer *)self eaClientConnections];
+    eaClientConnections = [(ACCExternalAccessoryServer *)self eaClientConnections];
     v57[0] = _NSConcreteStackBlock;
     v57[1] = 3221225472;
     v57[2] = __52__ACCExternalAccessoryServer_externalAccessoryLeft___block_invoke;
     v57[3] = &unk_100226CE0;
-    v49 = v4;
-    v7 = v4;
+    v49 = leftCopy;
+    v7 = leftCopy;
     v58 = v7;
-    v8 = [v6 objectsPassingTest:v57];
+    v8 = [eaClientConnections objectsPassingTest:v57];
 
-    v9 = [v7 EAAccessoryDictionary];
-    v10 = [v9 copy];
+    eAAccessoryDictionary = [v7 EAAccessoryDictionary];
+    v10 = [eAAccessoryDictionary copy];
 
-    v11 = [(ACCExternalAccessoryServer *)self eaAccessoriesMutable];
-    [v11 removeObject:v7];
+    eaAccessoriesMutable = [(ACCExternalAccessoryServer *)self eaAccessoriesMutable];
+    [eaAccessoriesMutable removeObject:v7];
 
-    v12 = [(ACCExternalAccessoryServer *)self activeDestinationSharingUUIDs];
+    activeDestinationSharingUUIDs = [(ACCExternalAccessoryServer *)self activeDestinationSharingUUIDs];
     v50 = v7;
-    v13 = [v7 primaryEndpointUUID];
-    v14 = [v12 containsObject:v13];
+    primaryEndpointUUID = [v7 primaryEndpointUUID];
+    v14 = [activeDestinationSharingUUIDs containsObject:primaryEndpointUUID];
 
     if (v14)
     {
-      v15 = [(ACCExternalAccessoryServer *)self activeDestinationSharingUUIDs];
-      v16 = [v7 primaryEndpointUUID];
-      [v15 removeObject:v16];
+      activeDestinationSharingUUIDs2 = [(ACCExternalAccessoryServer *)self activeDestinationSharingUUIDs];
+      primaryEndpointUUID2 = [v7 primaryEndpointUUID];
+      [activeDestinationSharingUUIDs2 removeObject:primaryEndpointUUID2];
     }
 
-    v48 = self;
+    selfCopy = self;
     v55 = 0u;
     v56 = 0u;
     v53 = 0u;
@@ -888,7 +888,7 @@ void __55__ACCExternalAccessoryServer_externalAccessoryArrived___block_invoke_11
 
           if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
           {
-            v27 = [v22 bundleID];
+            bundleID = [v22 bundleID];
             [v22 activeLocationAccessoryUUIDs];
             v28 = v19;
             v30 = v29 = v18;
@@ -896,7 +896,7 @@ void __55__ACCExternalAccessoryServer_externalAccessoryArrived___block_invoke_11
             [v17 primaryEndpointUUID];
             v33 = v32 = v10;
             *buf = 138412802;
-            v60 = v27;
+            v60 = bundleID;
             v61 = 2048;
             v62 = v31;
             v63 = 2112;
@@ -910,8 +910,8 @@ void __55__ACCExternalAccessoryServer_externalAccessoryArrived___block_invoke_11
             v19 = v28;
           }
 
-          v34 = [v17 primaryEndpointUUID];
-          [v22 removeLocationAccessoryUUID:v34];
+          primaryEndpointUUID3 = [v17 primaryEndpointUUID];
+          [v22 removeLocationAccessoryUUID:primaryEndpointUUID3];
 
           v35 = v19[491];
           v36 = gNumLogObjects;
@@ -937,23 +937,23 @@ void __55__ACCExternalAccessoryServer_externalAccessoryArrived___block_invoke_11
 
           if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
           {
-            v39 = [v22 bundleID];
+            bundleID2 = [v22 bundleID];
             v40 = [ACCExternalAccessory accessoryDictionaryForLogging:v10];
             *buf = 138412546;
-            v60 = v39;
+            v60 = bundleID2;
             v61 = 2112;
             v62 = v40;
             _os_log_impl(&_mh_execute_header, v37, OS_LOG_TYPE_DEFAULT, "Sending EAAccessoryLeft to client %@ for %@", buf, 0x16u);
           }
 
-          v41 = [v22 XPCConnection];
-          v42 = [v41 remoteObjectProxyWithErrorHandler:&__block_literal_global_122];
+          xPCConnection = [v22 XPCConnection];
+          v42 = [xPCConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_122];
           [v42 ExternalAccessoryLeft:v10];
 
           if ([v22 canSendLaunchEvent])
           {
-            v43 = [v22 bundleID];
-            platform_system_launchApplicationToBackground(v43);
+            bundleID3 = [v22 bundleID];
+            platform_system_launchApplicationToBackground(bundleID3);
           }
 
           v21 = v21 + 1;
@@ -967,17 +967,17 @@ void __55__ACCExternalAccessoryServer_externalAccessoryArrived___block_invoke_11
       while (v52);
     }
 
-    v44 = [(ACCExternalAccessoryServer *)v48 connectedAccessoryLock];
-    [v44 unlock];
+    connectedAccessoryLock2 = [(ACCExternalAccessoryServer *)selfCopy connectedAccessoryLock];
+    [connectedAccessoryLock2 unlock];
 
     v45 = +[ACCExternalAccessorySessionManager sharedManager];
     v46 = [v10 objectForKey:kACCExternalAccessoryPrimaryUUID];
     [v45 closeSessionsForPrimaryAccessoryUUID:v46];
 
-    v4 = v49;
+    leftCopy = v49;
   }
 
-  return v4 != 0;
+  return leftCopy != 0;
 }
 
 id __52__ACCExternalAccessoryServer_externalAccessoryLeft___block_invoke(uint64_t a1, void *a2)
@@ -1028,16 +1028,16 @@ void __52__ACCExternalAccessoryServer_externalAccessoryLeft___block_invoke_120(i
   }
 }
 
-- (BOOL)sendToClientsNotification:(id)a3 withPayload:(id)a4 aboutAccessory:(id)a5
+- (BOOL)sendToClientsNotification:(id)notification withPayload:(id)payload aboutAccessory:(id)accessory
 {
-  v8 = a3;
-  v40 = a4;
-  v9 = a5;
-  v10 = v9;
-  v41 = v8;
-  if (v8)
+  notificationCopy = notification;
+  payloadCopy = payload;
+  accessoryCopy = accessory;
+  v10 = accessoryCopy;
+  v41 = notificationCopy;
+  if (notificationCopy)
   {
-    v11 = v9 == 0;
+    v11 = accessoryCopy == 0;
   }
 
   else
@@ -1082,11 +1082,11 @@ void __52__ACCExternalAccessoryServer_externalAccessoryLeft___block_invoke_120(i
 
   else
   {
-    v13 = [(ACCExternalAccessoryServer *)self connectedAccessoryLock];
-    [v13 lock];
+    connectedAccessoryLock = [(ACCExternalAccessoryServer *)self connectedAccessoryLock];
+    [connectedAccessoryLock lock];
 
-    v37 = self;
-    v14 = [(ACCExternalAccessoryServer *)self eaClientConnections];
+    selfCopy = self;
+    eaClientConnections = [(ACCExternalAccessoryServer *)self eaClientConnections];
     v46[0] = _NSConcreteStackBlock;
     v46[1] = 3221225472;
     v46[2] = __83__ACCExternalAccessoryServer_sendToClientsNotification_withPayload_aboutAccessory___block_invoke;
@@ -1094,7 +1094,7 @@ void __52__ACCExternalAccessoryServer_externalAccessoryLeft___block_invoke_120(i
     v38 = v10;
     v15 = v10;
     v47 = v15;
-    v16 = [v14 objectsPassingTest:v46];
+    v16 = [eaClientConnections objectsPassingTest:v46];
 
     v44 = 0u;
     v45 = 0u;
@@ -1117,7 +1117,7 @@ void __52__ACCExternalAccessoryServer_externalAccessoryLeft___block_invoke_120(i
           }
 
           v22 = *(*(&v42 + 1) + 8 * i);
-          v23 = [v15 EAAccessoryDictionary];
+          eAAccessoryDictionary = [v15 EAAccessoryDictionary];
           v24 = gLogObjects;
           v25 = gNumLogObjects;
           if (gLogObjects)
@@ -1151,8 +1151,8 @@ void __52__ACCExternalAccessoryServer_externalAccessoryLeft___block_invoke_120(i
 
           if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
           {
-            v28 = [v22 bundleID];
-            v29 = [ACCExternalAccessory accessoryDictionaryForLogging:v23];
+            bundleID = [v22 bundleID];
+            v29 = [ACCExternalAccessory accessoryDictionaryForLogging:eAAccessoryDictionary];
             *buf = 136316418;
             v49 = "[ACCExternalAccessoryServer sendToClientsNotification:withPayload:aboutAccessory:]";
             v50 = 2112;
@@ -1160,17 +1160,17 @@ void __52__ACCExternalAccessoryServer_externalAccessoryLeft___block_invoke_120(i
             v52 = 2112;
             v53 = v41;
             v54 = 2112;
-            v55 = v40;
+            v55 = payloadCopy;
             v56 = 2112;
-            v57 = v28;
+            v57 = bundleID;
             v58 = 2112;
             v59 = v29;
             _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "%s %@ sending notification %@ with payload %@ to client %@ for %@", buf, 0x3Eu);
           }
 
-          v30 = [v22 XPCConnection];
-          v31 = [v30 remoteObjectProxyWithErrorHandler:&__block_literal_global_125];
-          [v31 handleIncomingNotification:v41 withPayload:v40 aboutAccessory:v23];
+          xPCConnection = [v22 XPCConnection];
+          v31 = [xPCConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_125];
+          [v31 handleIncomingNotification:v41 withPayload:payloadCopy aboutAccessory:eAAccessoryDictionary];
 
           v20 = &_os_log_default;
         }
@@ -1181,8 +1181,8 @@ void __52__ACCExternalAccessoryServer_externalAccessoryLeft___block_invoke_120(i
       while (v18);
     }
 
-    v32 = [(ACCExternalAccessoryServer *)v37 connectedAccessoryLock];
-    [v32 unlock];
+    connectedAccessoryLock2 = [(ACCExternalAccessoryServer *)selfCopy connectedAccessoryLock];
+    [connectedAccessoryLock2 unlock];
 
     v33 = v47;
     v10 = v38;
@@ -1239,24 +1239,24 @@ void __83__ACCExternalAccessoryServer_sendToClientsNotification_withPayload_abou
   }
 }
 
-- (void)updateExternalAccessoryInfo:(id)a3
+- (void)updateExternalAccessoryInfo:(id)info
 {
-  v4 = a3;
-  if (v4)
+  infoCopy = info;
+  if (infoCopy)
   {
-    v5 = [(ACCExternalAccessoryServer *)self connectedAccessoryLock];
-    [v5 lock];
+    connectedAccessoryLock = [(ACCExternalAccessoryServer *)self connectedAccessoryLock];
+    [connectedAccessoryLock lock];
 
-    v29 = self;
-    v6 = [(ACCExternalAccessoryServer *)self eaClientConnections];
+    selfCopy = self;
+    eaClientConnections = [(ACCExternalAccessoryServer *)self eaClientConnections];
     v37[0] = _NSConcreteStackBlock;
     v37[1] = 3221225472;
     v37[2] = __58__ACCExternalAccessoryServer_updateExternalAccessoryInfo___block_invoke;
     v37[3] = &unk_100226CE0;
-    v30 = v4;
-    v7 = v4;
+    v30 = infoCopy;
+    v7 = infoCopy;
     v38 = v7;
-    v8 = [v6 objectsPassingTest:v37];
+    v8 = [eaClientConnections objectsPassingTest:v37];
 
     v35 = 0u;
     v36 = 0u;
@@ -1280,7 +1280,7 @@ void __83__ACCExternalAccessoryServer_sendToClientsNotification_withPayload_abou
           }
 
           v13 = *(*(&v33 + 1) + 8 * v12);
-          v14 = [v7 EAAccessoryDictionary];
+          eAAccessoryDictionary = [v7 EAAccessoryDictionary];
           v15 = v10[491];
           v16 = *(v11 + 984);
           if (v15)
@@ -1319,11 +1319,11 @@ void __83__ACCExternalAccessoryServer_sendToClientsNotification_withPayload_abou
             v20 = v9;
             v21 = v11;
             v23 = v22 = v10;
-            v24 = [v7 EAName];
+            eAName = [v7 EAName];
             *buf = 138412546;
             v40 = v23;
             v41 = 2112;
-            v42 = v24;
+            v42 = eAName;
             _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "Sending updateExternalAccessoryInfo to client %@ for %@", buf, 0x16u);
 
             v10 = v22;
@@ -1331,10 +1331,10 @@ void __83__ACCExternalAccessoryServer_sendToClientsNotification_withPayload_abou
             v9 = v20;
           }
 
-          v25 = [v13 XPCConnection];
-          v26 = [v25 remoteObjectProxyWithErrorHandler:&__block_literal_global_128];
-          v27 = [v7 primaryEndpointUUID];
-          [v26 updateAccessoryInfo:v14 forUUID:v27];
+          xPCConnection = [v13 XPCConnection];
+          v26 = [xPCConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_128];
+          primaryEndpointUUID = [v7 primaryEndpointUUID];
+          [v26 updateAccessoryInfo:eAAccessoryDictionary forUUID:primaryEndpointUUID];
 
           v12 = v12 + 1;
         }
@@ -1346,10 +1346,10 @@ void __83__ACCExternalAccessoryServer_sendToClientsNotification_withPayload_abou
       while (v32);
     }
 
-    v28 = [(ACCExternalAccessoryServer *)v29 connectedAccessoryLock];
-    [v28 unlock];
+    connectedAccessoryLock2 = [(ACCExternalAccessoryServer *)selfCopy connectedAccessoryLock];
+    [connectedAccessoryLock2 unlock];
 
-    v4 = v30;
+    infoCopy = v30;
   }
 }
 
@@ -1401,9 +1401,9 @@ void __58__ACCExternalAccessoryServer_updateExternalAccessoryInfo___block_invoke
   }
 }
 
-- (id)externalAccessoryClientConnected:(id)a3
+- (id)externalAccessoryClientConnected:(id)connected
 {
-  v4 = a3;
+  connectedCopy = connected;
   if (gLogObjects)
   {
     v5 = gNumLogObjects < 10;
@@ -1432,20 +1432,20 @@ void __58__ACCExternalAccessoryServer_updateExternalAccessoryInfo___block_invoke
 
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v4 bundleID];
+    bundleID = [connectedCopy bundleID];
     *buf = 138412290;
-    v34 = v8;
+    v34 = bundleID;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Notified of client %@ connected...", buf, 0xCu);
   }
 
-  v9 = [(ACCExternalAccessoryServer *)self eaAccessories];
+  eaAccessories = [(ACCExternalAccessoryServer *)self eaAccessories];
   v31[0] = _NSConcreteStackBlock;
   v31[1] = 3221225472;
   v31[2] = __63__ACCExternalAccessoryServer_externalAccessoryClientConnected___block_invoke;
   v31[3] = &unk_100226CE0;
-  v26 = v4;
+  v26 = connectedCopy;
   v32 = v26;
-  v10 = [v9 objectsPassingTest:v31];
+  v10 = [eaAccessories objectsPassingTest:v31];
 
   v11 = +[NSMutableArray array];
   v27 = 0u;
@@ -1502,12 +1502,12 @@ void __58__ACCExternalAccessoryServer_updateExternalAccessoryInfo___block_invoke
 
         if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
         {
-          v23 = [v26 bundleID];
-          v24 = [v17 EAName];
+          bundleID2 = [v26 bundleID];
+          eAName = [v17 EAName];
           *buf = 138412546;
-          v34 = v23;
+          v34 = bundleID2;
           v35 = 2112;
-          v36 = v24;
+          v36 = eAName;
           _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "Sending initial EAAccessoryArrived in array to client %@ for %@", buf, 0x16u);
         }
 
@@ -1534,23 +1534,23 @@ id __63__ACCExternalAccessoryServer_externalAccessoryClientConnected___block_inv
   return result;
 }
 
-- (BOOL)handleIncomingExternalAccessoryData:(id)a3 forEASessionIdentifier:(id)a4
+- (BOOL)handleIncomingExternalAccessoryData:(id)data forEASessionIdentifier:(id)identifier
 {
-  v6 = a4;
-  if (v6)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v7 = a3;
-    v8 = [(ACCExternalAccessoryServer *)self eaClientConnections];
+    dataCopy = data;
+    eaClientConnections = [(ACCExternalAccessoryServer *)self eaClientConnections];
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = __89__ACCExternalAccessoryServer_handleIncomingExternalAccessoryData_forEASessionIdentifier___block_invoke;
     v14[3] = &unk_100226CE0;
-    v9 = v6;
+    v9 = identifierCopy;
     v15 = v9;
-    v10 = [v8 objectsPassingTest:v14];
+    v10 = [eaClientConnections objectsPassingTest:v14];
 
-    v11 = [v10 anyObject];
-    v12 = [(ACCExternalAccessoryServer *)self handleIncomingExternalAccessoryData:v7 forEASessionIdentifier:v9 toExternalAccessoryClient:v11];
+    anyObject = [v10 anyObject];
+    v12 = [(ACCExternalAccessoryServer *)self handleIncomingExternalAccessoryData:dataCopy forEASessionIdentifier:v9 toExternalAccessoryClient:anyObject];
   }
 
   else
@@ -1585,31 +1585,31 @@ uint64_t __89__ACCExternalAccessoryServer_handleIncomingExternalAccessoryData_fo
   return v8;
 }
 
-- (BOOL)accessoryClosingExternalAccessorySession:(id)a3
+- (BOOL)accessoryClosingExternalAccessorySession:(id)session
 {
-  v4 = a3;
-  if (v4)
+  sessionCopy = session;
+  if (sessionCopy)
   {
-    v5 = [(ACCExternalAccessoryServer *)self eaClientConnections];
+    eaClientConnections = [(ACCExternalAccessoryServer *)self eaClientConnections];
     v19[0] = _NSConcreteStackBlock;
     v19[1] = 3221225472;
     v19[2] = __71__ACCExternalAccessoryServer_accessoryClosingExternalAccessorySession___block_invoke;
     v19[3] = &unk_100226CE0;
-    v6 = v4;
+    v6 = sessionCopy;
     v20 = v6;
-    v7 = [v5 objectsPassingTest:v19];
+    v7 = [eaClientConnections objectsPassingTest:v19];
 
-    v8 = [v7 anyObject];
-    v9 = v8;
-    v10 = v8 != 0;
-    if (v8)
+    anyObject = [v7 anyObject];
+    v9 = anyObject;
+    v10 = anyObject != 0;
+    if (anyObject)
     {
-      v11 = [v8 XPCConnection];
-      v12 = [v11 remoteObjectProxyWithErrorHandler:&__block_literal_global_130];
+      xPCConnection = [anyObject XPCConnection];
+      v12 = [xPCConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_130];
       [v12 accessoryCloseExternalAccessorySession:v6];
 
-      v13 = [v9 eaSessionUUIDs];
-      [v13 removeObject:v6];
+      eaSessionUUIDs = [v9 eaSessionUUIDs];
+      [eaSessionUUIDs removeObject:v6];
 
       if (gLogObjects && gNumLogObjects >= 10)
       {
@@ -1629,11 +1629,11 @@ uint64_t __89__ACCExternalAccessoryServer_handleIncomingExternalAccessoryData_fo
 
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
-        v16 = [v9 bundleID];
+        bundleID = [v9 bundleID];
         *buf = 138412546;
         v22 = v6;
         v23 = 2112;
-        v24 = v16;
+        v24 = bundleID;
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Accessory closing eaSessionUUID %@ for client %@", buf, 0x16u);
       }
     }
@@ -1730,14 +1730,14 @@ void __71__ACCExternalAccessoryServer_accessoryClosingExternalAccessorySession__
   }
 }
 
-- (BOOL)handleIncomingExternalAccessoryData:(id)a3 forEASessionIdentifier:(id)a4 toExternalAccessoryClient:(id)a5
+- (BOOL)handleIncomingExternalAccessoryData:(id)data forEASessionIdentifier:(id)identifier toExternalAccessoryClient:(id)client
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = v8;
-  if (a3)
+  identifierCopy = identifier;
+  clientCopy = client;
+  v9 = clientCopy;
+  if (data)
   {
-    v10 = v7 == 0;
+    v10 = identifierCopy == 0;
   }
 
   else
@@ -1745,21 +1745,21 @@ void __71__ACCExternalAccessoryServer_accessoryClosingExternalAccessorySession__
     v10 = 1;
   }
 
-  v11 = v10 || v8 == 0;
+  v11 = v10 || clientCopy == 0;
   v12 = !v11;
   if (!v11)
   {
-    v13 = a3;
-    v14 = [v9 XPCConnection];
-    v15 = [v14 remoteObjectProxyWithErrorHandler:&__block_literal_global_132];
+    dataCopy = data;
+    xPCConnection = [v9 XPCConnection];
+    v15 = [xPCConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_132];
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
     v17[2] = __115__ACCExternalAccessoryServer_handleIncomingExternalAccessoryData_forEASessionIdentifier_toExternalAccessoryClient___block_invoke_133;
     v17[3] = &unk_100226DF0;
-    v18 = v7;
+    v18 = identifierCopy;
     v19 = v9;
     v20 = 0;
-    [v15 handleIncomingExternalAccessoryData:v13 forEASessionIdentifier:v18 withReply:v17];
+    [v15 handleIncomingExternalAccessoryData:dataCopy forEASessionIdentifier:v18 withReply:v17];
   }
 
   return v12;
@@ -1834,11 +1834,11 @@ void __115__ACCExternalAccessoryServer_handleIncomingExternalAccessoryData_forEA
   }
 }
 
-- (BOOL)sendNMEASentence:(id)a3 forAccessoryUUID:(id)a4 withTimestamps:(id)a5
+- (BOOL)sendNMEASentence:(id)sentence forAccessoryUUID:(id)d withTimestamps:(id)timestamps
 {
-  v38 = a3;
-  v8 = a4;
-  v37 = a5;
+  sentenceCopy = sentence;
+  dCopy = d;
+  timestampsCopy = timestamps;
   if (gLogObjects)
   {
     v9 = gNumLogObjects < 10;
@@ -1868,27 +1868,27 @@ void __115__ACCExternalAccessoryServer_handleIncomingExternalAccessoryData_forEA
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v47 = v38;
+    v47 = sentenceCopy;
     v48 = 2112;
-    v49 = v8;
+    v49 = dCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "[#Location] nmeaSentence: %@ from %@", buf, 0x16u);
   }
 
   v12 = 0;
-  if (v38 && v8)
+  if (sentenceCopy && dCopy)
   {
-    v13 = [(ACCExternalAccessoryServer *)self connectedAccessoryLock];
-    [v13 lock];
+    connectedAccessoryLock = [(ACCExternalAccessoryServer *)self connectedAccessoryLock];
+    [connectedAccessoryLock lock];
 
-    v14 = [(ACCExternalAccessoryServer *)self eaClientConnections];
+    eaClientConnections = [(ACCExternalAccessoryServer *)self eaClientConnections];
     v43[0] = _NSConcreteStackBlock;
     v43[1] = 3221225472;
     v43[2] = __79__ACCExternalAccessoryServer_sendNMEASentence_forAccessoryUUID_withTimestamps___block_invoke;
     v43[3] = &unk_100226CE0;
-    v35 = v8;
-    v15 = v8;
+    v35 = dCopy;
+    v15 = dCopy;
     v44 = v15;
-    v16 = [v14 objectsPassingTest:v43];
+    v16 = [eaClientConnections objectsPassingTest:v43];
 
     v41 = 0u;
     v42 = 0u;
@@ -1945,18 +1945,18 @@ void __115__ACCExternalAccessoryServer_handleIncomingExternalAccessoryData_forEA
 
           if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
           {
-            v31 = [v21 bundleID];
+            bundleID = [v21 bundleID];
             *buf = 138412546;
-            v47 = v31;
+            v47 = bundleID;
             v48 = 2112;
             v49 = v15;
             _os_log_debug_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEBUG, "[#Location] sending nmea sentence to location client %@ for endpoint UUID %@", buf, 0x16u);
           }
 
-          v27 = [v38 copy];
-          v28 = [v37 copy];
-          v29 = [v21 XPCConnection];
-          v30 = [v29 remoteObjectProxyWithErrorHandler:&__block_literal_global_137];
+          v27 = [sentenceCopy copy];
+          v28 = [timestampsCopy copy];
+          xPCConnection = [v21 XPCConnection];
+          v30 = [xPCConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_137];
           [v30 enqueueLocationNMEASentence:v27 forUUID:v15 withTimestamps:v28];
         }
 
@@ -1966,10 +1966,10 @@ void __115__ACCExternalAccessoryServer_handleIncomingExternalAccessoryData_forEA
       while (v18);
     }
 
-    v32 = [(ACCExternalAccessoryServer *)self connectedAccessoryLock];
-    [v32 unlock];
+    connectedAccessoryLock2 = [(ACCExternalAccessoryServer *)self connectedAccessoryLock];
+    [connectedAccessoryLock2 unlock];
 
-    v8 = v35;
+    dCopy = v35;
     v12 = v34;
   }
 
@@ -2024,17 +2024,17 @@ void __79__ACCExternalAccessoryServer_sendNMEASentence_forAccessoryUUID_withTime
   }
 }
 
-- (void)notifyClientOfConnectedAccessories:(id)a3
+- (void)notifyClientOfConnectedAccessories:(id)accessories
 {
-  v4 = a3;
-  v5 = [(ACCExternalAccessoryServer *)self eaAccessories];
+  accessoriesCopy = accessories;
+  eaAccessories = [(ACCExternalAccessoryServer *)self eaAccessories];
   v35[0] = _NSConcreteStackBlock;
   v35[1] = 3221225472;
   v35[2] = __65__ACCExternalAccessoryServer_notifyClientOfConnectedAccessories___block_invoke;
   v35[3] = &unk_100226CE0;
-  v6 = v4;
+  v6 = accessoriesCopy;
   v36 = v6;
-  v7 = [v5 objectsPassingTest:v35];
+  v7 = [eaAccessories objectsPassingTest:v35];
 
   v33 = 0u;
   v34 = 0u;
@@ -2045,7 +2045,7 @@ void __79__ACCExternalAccessoryServer_sendNMEASentence_forAccessoryUUID_withTime
   if (v8)
   {
     v9 = v8;
-    v10 = 0;
+    eAAccessoryDictionary2 = 0;
     v11 = *v32;
     v12 = &audioProductCerts_endpoint_publish_onceToken;
     v13 = &_os_log_default;
@@ -2053,7 +2053,7 @@ void __79__ACCExternalAccessoryServer_sendNMEASentence_forAccessoryUUID_withTime
     do
     {
       v14 = 0;
-      v15 = v10;
+      v15 = eAAccessoryDictionary2;
       do
       {
         if (*v32 != v11)
@@ -2095,14 +2095,14 @@ void __79__ACCExternalAccessoryServer_sendNMEASentence_forAccessoryUUID_withTime
 
         if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
         {
-          v21 = [v6 bundleID];
+          bundleID = [v6 bundleID];
           v22 = v9;
           v23 = v11;
           v24 = v12;
-          v25 = [v16 EAAccessoryDictionary];
-          v26 = [ACCExternalAccessory accessoryDictionaryForLogging:v25];
+          eAAccessoryDictionary = [v16 EAAccessoryDictionary];
+          v26 = [ACCExternalAccessory accessoryDictionaryForLogging:eAAccessoryDictionary];
           *buf = 138412546;
-          v38 = v21;
+          v38 = bundleID;
           v39 = 2112;
           v40 = v26;
           _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "[#ExternalAccessory] Sending EAAccessoryArrived to client connected %@ for %@", buf, 0x16u);
@@ -2113,14 +2113,14 @@ void __79__ACCExternalAccessoryServer_sendNMEASentence_forAccessoryUUID_withTime
           v6 = v29;
         }
 
-        v10 = [v16 EAAccessoryDictionary];
+        eAAccessoryDictionary2 = [v16 EAAccessoryDictionary];
 
-        v27 = [v6 XPCConnection];
-        v28 = [v27 remoteObjectProxyWithErrorHandler:&__block_literal_global_140];
-        [v28 ExternalAccessoryArrived:v10];
+        xPCConnection = [v6 XPCConnection];
+        v28 = [xPCConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_140];
+        [v28 ExternalAccessoryArrived:eAAccessoryDictionary2];
 
         v14 = v14 + 1;
-        v15 = v10;
+        v15 = eAAccessoryDictionary2;
         v13 = &_os_log_default;
       }
 
@@ -2178,9 +2178,9 @@ void __65__ACCExternalAccessoryServer_notifyClientOfConnectedAccessories___block
   }
 }
 
-- (void)notifyClientOfConnectedDestinationSharingAccessories:(id)a3
+- (void)notifyClientOfConnectedDestinationSharingAccessories:(id)accessories
 {
-  v4 = a3;
+  accessoriesCopy = accessories;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
@@ -2204,7 +2204,7 @@ void __65__ACCExternalAccessoryServer_notifyClientOfConnectedAccessories___block
 
         v10 = *(*(&v24 + 1) + 8 * i);
         v11 = [(ACCExternalAccessoryServer *)self _externalAccessoryForUUID:v10, v22];
-        if ([v4 canSendConnectionEventForAccessory:v11])
+        if ([accessoriesCopy canSendConnectionEventForAccessory:v11])
         {
           v12 = gLogObjects;
           v13 = gNumLogObjects;
@@ -2240,19 +2240,19 @@ void __65__ACCExternalAccessoryServer_notifyClientOfConnectedAccessories___block
 
           if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
           {
-            v17 = [v4 bundleID];
-            v18 = [v11 EAName];
+            bundleID = [accessoriesCopy bundleID];
+            eAName = [v11 EAName];
             *buf = 138412546;
-            v29 = v17;
+            v29 = bundleID;
             v30 = 2112;
-            v31 = v18;
+            v31 = eAName;
             _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Notifying Destination Sharing started to client %@ for accessory %@", buf, 0x16u);
           }
 
-          v19 = [v11 destinationSharingOptions];
-          v20 = [v4 XPCConnection];
-          v21 = [v20 remoteObjectProxyWithErrorHandler:&__block_literal_global_142];
-          [v21 startDestinationSharingForUUID:v10 options:v19];
+          destinationSharingOptions = [v11 destinationSharingOptions];
+          xPCConnection = [accessoriesCopy XPCConnection];
+          v21 = [xPCConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_142];
+          [v21 startDestinationSharingForUUID:v10 options:destinationSharingOptions];
         }
       }
 
@@ -2298,17 +2298,17 @@ void __83__ACCExternalAccessoryServer_notifyClientOfConnectedDestinationSharingA
   }
 }
 
-- (void)notifyClientOfConnectedVehicleStatus:(id)a3
+- (void)notifyClientOfConnectedVehicleStatus:(id)status
 {
-  v4 = a3;
-  v5 = [(ACCExternalAccessoryServer *)self eaAccessories];
+  statusCopy = status;
+  eaAccessories = [(ACCExternalAccessoryServer *)self eaAccessories];
   v36[0] = _NSConcreteStackBlock;
   v36[1] = 3221225472;
   v36[2] = __67__ACCExternalAccessoryServer_notifyClientOfConnectedVehicleStatus___block_invoke;
   v36[3] = &unk_100226CE0;
-  v6 = v4;
+  v6 = statusCopy;
   v37 = v6;
-  v7 = [v5 objectsPassingTest:v36];
+  v7 = [eaAccessories objectsPassingTest:v36];
 
   if ([v7 count])
   {
@@ -2334,7 +2334,7 @@ void __83__ACCExternalAccessoryServer_notifyClientOfConnectedDestinationSharingA
           }
 
           v13 = *(*(&v32 + 1) + 8 * i);
-          v14 = [v13 vehicleStatus];
+          vehicleStatus = [v13 vehicleStatus];
 
           v15 = gLogObjects;
           v16 = gNumLogObjects;
@@ -2349,7 +2349,7 @@ void __83__ACCExternalAccessoryServer_notifyClientOfConnectedDestinationSharingA
           }
 
           v18 = !v17;
-          if (v14)
+          if (vehicleStatus)
           {
             if (v18)
             {
@@ -2373,25 +2373,25 @@ void __83__ACCExternalAccessoryServer_notifyClientOfConnectedDestinationSharingA
 
             if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
             {
-              v22 = [v6 bundleID];
+              bundleID = [v6 bundleID];
               *buf = 138412290;
-              v40 = v22;
+              v40 = bundleID;
               _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "[#VehicleInfoStatus] eaAccessoryVehicleStatus has valid vehicleStatus, sending to client connected %@", buf, 0xCu);
             }
 
-            v20 = [v6 XPCConnection];
-            v23 = [v20 remoteObjectProxyWithErrorHandler:&__block_literal_global_145];
-            v24 = [v13 vehicleStatus];
-            v25 = [v24 copy];
-            v26 = [v13 primaryEndpointUUID];
-            [v23 vehicleStatusUpdate:v25 forUUID:v26];
+            xPCConnection = [v6 XPCConnection];
+            v23 = [xPCConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_145];
+            vehicleStatus2 = [v13 vehicleStatus];
+            v25 = [vehicleStatus2 copy];
+            primaryEndpointUUID = [v13 primaryEndpointUUID];
+            [v23 vehicleStatusUpdate:v25 forUUID:primaryEndpointUUID];
           }
 
           else
           {
             if (v18)
             {
-              v20 = *(gLogObjects + 72);
+              xPCConnection = *(gLogObjects + 72);
             }
 
             else
@@ -2406,15 +2406,15 @@ void __83__ACCExternalAccessoryServer_notifyClientOfConnectedDestinationSharingA
               }
 
               v27 = &_os_log_default;
-              v20 = &_os_log_default;
+              xPCConnection = &_os_log_default;
             }
 
-            if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
+            if (os_log_type_enabled(xPCConnection, OS_LOG_TYPE_DEFAULT))
             {
-              v28 = [v6 bundleID];
+              bundleID2 = [v6 bundleID];
               *buf = 138412290;
-              v40 = v28;
-              _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "[#VehicleInfoStatus] no vehicleStatus for eaAccessoryVehicleStatus for endpointUUID %@, skip notifying", buf, 0xCu);
+              v40 = bundleID2;
+              _os_log_impl(&_mh_execute_header, xPCConnection, OS_LOG_TYPE_DEFAULT, "[#VehicleInfoStatus] no vehicleStatus for eaAccessoryVehicleStatus for endpointUUID %@, skip notifying", buf, 0xCu);
             }
           }
         }
@@ -2500,16 +2500,16 @@ void __67__ACCExternalAccessoryServer_notifyClientOfConnectedVehicleStatus___blo
   }
 }
 
-- (BOOL)startDestinationSharing:(id)a3 options:(unint64_t)a4
+- (BOOL)startDestinationSharing:(id)sharing options:(unint64_t)options
 {
-  v30 = a3;
+  sharingCopy = sharing;
   v6 = [(ACCExternalAccessoryServer *)self _externalAccessoryForUUID:?];
   if (v6)
   {
-    v7 = [(ACCExternalAccessoryServer *)self activeDestinationSharingUUIDs];
-    [v7 addObject:v30];
+    activeDestinationSharingUUIDs = [(ACCExternalAccessoryServer *)self activeDestinationSharingUUIDs];
+    [activeDestinationSharingUUIDs addObject:sharingCopy];
 
-    [v6 setDestinationSharingOptions:a4];
+    [v6 setDestinationSharingOptions:options];
     v28 = v6;
     [(ACCExternalAccessoryServer *)self _eaClientsForAccessory:v6];
     v31 = 0u;
@@ -2570,22 +2570,22 @@ void __67__ACCExternalAccessoryServer_notifyClientOfConnectedVehicleStatus___blo
           {
             [v13 bundleID];
             v20 = v19 = v11;
-            v21 = [v28 EAName];
+            eAName = [v28 EAName];
             *buf = 138412802;
             v36 = v20;
             v37 = 2112;
-            v38 = v21;
+            v38 = eAName;
             v39 = 2048;
-            v40 = a4;
+            optionsCopy = options;
             _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "Sending Start Destination Sharing to client %@ for accessory %@, options %llxh", buf, 0x20u);
 
             v11 = v19;
             v10 = v27;
           }
 
-          v22 = [v13 XPCConnection];
-          v23 = [v22 remoteObjectProxyWithErrorHandler:&__block_literal_global_147];
-          [v23 startDestinationSharingForUUID:v30 options:a4];
+          xPCConnection = [v13 XPCConnection];
+          v23 = [xPCConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_147];
+          [v23 startDestinationSharingForUUID:sharingCopy options:options];
         }
 
         v9 = [obj countByEnumeratingWithState:&v31 objects:v41 count:16];
@@ -2641,14 +2641,14 @@ void __62__ACCExternalAccessoryServer_startDestinationSharing_options___block_in
   }
 }
 
-- (BOOL)stopDestinationSharing:(id)a3
+- (BOOL)stopDestinationSharing:(id)sharing
 {
-  v4 = a3;
-  v5 = [(ACCExternalAccessoryServer *)self _externalAccessoryForUUID:v4];
+  sharingCopy = sharing;
+  v5 = [(ACCExternalAccessoryServer *)self _externalAccessoryForUUID:sharingCopy];
   if (v5)
   {
-    v6 = [(ACCExternalAccessoryServer *)self activeDestinationSharingUUIDs];
-    [v6 removeObject:v4];
+    activeDestinationSharingUUIDs = [(ACCExternalAccessoryServer *)self activeDestinationSharingUUIDs];
+    [activeDestinationSharingUUIDs removeObject:sharingCopy];
 
     v32 = v5;
     [(ACCExternalAccessoryServer *)self _eaClientsForAccessory:v5];
@@ -2714,27 +2714,27 @@ void __62__ACCExternalAccessoryServer_startDestinationSharing_options___block_in
             [v14 bundleID];
             v20 = v9;
             v21 = v12;
-            v22 = v4;
+            v22 = sharingCopy;
             v23 = v11;
             v25 = v24 = v10;
-            v26 = [v32 EAName];
+            eAName = [v32 EAName];
             *buf = 138412546;
             v40 = v25;
             v41 = 2112;
-            v42 = v26;
+            v42 = eAName;
             _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "Sending Stop Destination Sharing to client %@ for accessory %@", buf, 0x16u);
 
             v10 = v24;
             v11 = v23;
-            v4 = v22;
+            sharingCopy = v22;
             v12 = v21;
             v9 = v20;
             v8 = v33;
           }
 
-          v27 = [v14 XPCConnection];
-          v28 = [v27 remoteObjectProxyWithErrorHandler:&__block_literal_global_149];
-          [v28 stopDestinationSharingForUUID:v4];
+          xPCConnection = [v14 XPCConnection];
+          v28 = [xPCConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_149];
+          [v28 stopDestinationSharingForUUID:sharingCopy];
 
           v13 = v13 + 1;
         }
@@ -2828,15 +2828,15 @@ void __97__ACCExternalAccessoryServer_destinationSharingStatus_success_successfu
   }
 }
 
-- (BOOL)vehicleStatusDidChange:(id)a3 forAccessoryUUID:(id)a4
+- (BOOL)vehicleStatusDidChange:(id)change forAccessoryUUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ACCExternalAccessoryServer *)self _externalAccessoryForUUID:v7];
+  changeCopy = change;
+  dCopy = d;
+  v8 = [(ACCExternalAccessoryServer *)self _externalAccessoryForUUID:dCopy];
   v9 = v8;
   if (v8)
   {
-    [v8 setVehicleStatus:v6];
+    [v8 setVehicleStatus:changeCopy];
     v10 = [(ACCExternalAccessoryServer *)self _eaClientsForAccessory:v9];
     if ([v10 count])
     {
@@ -2898,18 +2898,18 @@ void __97__ACCExternalAccessoryServer_destinationSharingStatus_success_successfu
 
             if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
             {
-              v23 = [v17 bundleID];
+              bundleID = [v17 bundleID];
               *buf = 138412546;
-              v39 = v7;
+              v39 = dCopy;
               v40 = 2112;
-              v41 = v23;
+              v41 = bundleID;
               _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_INFO, "[#VehicleInfoStatus] sending vehicle status for endpoint UUID %@ to client %@", buf, 0x16u);
             }
 
-            v24 = [v17 XPCConnection];
-            v25 = [v24 remoteObjectProxyWithErrorHandler:&__block_literal_global_159];
-            v26 = [v6 copy];
-            [v25 vehicleStatusUpdate:v26 forUUID:v7];
+            xPCConnection = [v17 XPCConnection];
+            v25 = [xPCConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_159];
+            v26 = [changeCopy copy];
+            [v25 vehicleStatusUpdate:v26 forUUID:dCopy];
           }
 
           v14 = [obj countByEnumeratingWithState:&v34 objects:v42 count:16];
@@ -2982,7 +2982,7 @@ void __97__ACCExternalAccessoryServer_destinationSharingStatus_success_successfu
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v39 = v7;
+      v39 = dCopy;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "[#VehicleInfoStatus] no vehicleStatusAccessory found for endpoint UUID %@", buf, 0xCu);
     }
 
@@ -3027,29 +3027,29 @@ void __70__ACCExternalAccessoryServer_vehicleStatusDidChange_forAccessoryUUID___
   }
 }
 
-- (id)_externalAccessoryForUUID:(id)a3
+- (id)_externalAccessoryForUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(ACCExternalAccessoryServer *)self eaAccessories];
+  dCopy = d;
+  eaAccessories = [(ACCExternalAccessoryServer *)self eaAccessories];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = __56__ACCExternalAccessoryServer__externalAccessoryForUUID___block_invoke;
   v10[3] = &unk_100226CE0;
-  v11 = v4;
-  v6 = v4;
-  v7 = [v5 objectsPassingTest:v10];
+  v11 = dCopy;
+  v6 = dCopy;
+  v7 = [eaAccessories objectsPassingTest:v10];
 
   if ([v7 count])
   {
-    v8 = [v7 anyObject];
+    anyObject = [v7 anyObject];
   }
 
   else
   {
-    v8 = 0;
+    anyObject = 0;
   }
 
-  return v8;
+  return anyObject;
 }
 
 id __56__ACCExternalAccessoryServer__externalAccessoryForUUID___block_invoke(uint64_t a1, void *a2, _BYTE *a3)
@@ -3065,20 +3065,20 @@ id __56__ACCExternalAccessoryServer__externalAccessoryForUUID___block_invoke(uin
   return v6;
 }
 
-- (void)_launchUnregisteredClientApps:(id)a3 knownClientApps:(id)a4
+- (void)_launchUnregisteredClientApps:(id)apps knownClientApps:(id)clientApps
 {
-  v5 = a3;
-  v56 = a4;
+  appsCopy = apps;
+  clientAppsCopy = clientApps;
   if (platform_system_unlockedSinceBoot())
   {
-    v49 = v5;
-    v6 = [v5 copyExternalAccessoryProtocols];
+    v49 = appsCopy;
+    copyExternalAccessoryProtocols = [appsCopy copyExternalAccessoryProtocols];
     v54 = +[NSMutableSet set];
     v72 = 0u;
     v73 = 0u;
     v74 = 0u;
     v75 = 0u;
-    obj = v6;
+    obj = copyExternalAccessoryProtocols;
     v52 = [obj countByEnumeratingWithState:&v72 objects:v79 count:16];
     if (v52)
     {
@@ -3159,7 +3159,7 @@ id __56__ACCExternalAccessoryServer__externalAccessoryForUUID___block_invoke(uin
                 v65 = 0u;
                 v66 = 0u;
                 v67 = 0u;
-                v17 = v56;
+                v17 = clientAppsCopy;
                 v18 = [v17 countByEnumeratingWithState:&v64 objects:v77 count:16];
                 if (!v18)
                 {
@@ -3251,8 +3251,8 @@ LABEL_62:
                       objc_enumerationMutation(v17);
                     }
 
-                    v23 = [*(*(&v64 + 1) + 8 * i) bundleID];
-                    v24 = [v16 caseInsensitiveCompare:v23];
+                    bundleID = [*(*(&v64 + 1) + 8 * i) bundleID];
+                    v24 = [v16 caseInsensitiveCompare:bundleID];
 
                     if (!v24)
                     {
@@ -3351,7 +3351,7 @@ LABEL_59:
     v61 = 0u;
     v44 = v54;
     v45 = [v44 countByEnumeratingWithState:&v60 objects:v76 count:16];
-    v5 = v49;
+    appsCopy = v49;
     if (v45)
     {
       v46 = v45;
@@ -3411,23 +3411,23 @@ LABEL_59:
   }
 }
 
-- (id)_eaClientsForAccessory:(id)a3
+- (id)_eaClientsForAccessory:(id)accessory
 {
-  v4 = a3;
-  v5 = [(ACCExternalAccessoryServer *)self connectedAccessoryLock];
-  [v5 lock];
+  accessoryCopy = accessory;
+  connectedAccessoryLock = [(ACCExternalAccessoryServer *)self connectedAccessoryLock];
+  [connectedAccessoryLock lock];
 
-  v6 = [(ACCExternalAccessoryServer *)self eaClientConnections];
+  eaClientConnections = [(ACCExternalAccessoryServer *)self eaClientConnections];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = __53__ACCExternalAccessoryServer__eaClientsForAccessory___block_invoke;
   v11[3] = &unk_100226CE0;
-  v12 = v4;
-  v7 = v4;
-  v8 = [v6 objectsPassingTest:v11];
+  v12 = accessoryCopy;
+  v7 = accessoryCopy;
+  v8 = [eaClientConnections objectsPassingTest:v11];
 
-  v9 = [(ACCExternalAccessoryServer *)self connectedAccessoryLock];
-  [v9 unlock];
+  connectedAccessoryLock2 = [(ACCExternalAccessoryServer *)self connectedAccessoryLock];
+  [connectedAccessoryLock2 unlock];
 
   return v8;
 }
@@ -3451,7 +3451,7 @@ id __53__ACCExternalAccessoryServer__eaClientsForAccessory___block_invoke(uint64
   block[1] = 3221225472;
   block[2] = __42__ACCExternalAccessoryServer_sharedServer__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedServer_once_2 != -1)
   {
     dispatch_once(&sharedServer_once_2, block);

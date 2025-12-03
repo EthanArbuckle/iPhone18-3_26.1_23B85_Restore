@@ -1,13 +1,13 @@
 @interface UIUserNotificationCategory
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSArray)actionsForContext:(UIUserNotificationActionContext)context;
 - (UIUserNotificationCategory)init;
 - (UIUserNotificationCategory)initWithCoder:(NSCoder *)coder;
-- (UIUserNotificationCategory)initWithIdentifier:(id)a3 actionsByContext:(id)a4;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (UIUserNotificationCategory)initWithIdentifier:(id)identifier actionsByContext:(id)context;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)validatedCategory;
-- (unint64_t)_maximumActionsForContext:(unint64_t)a3;
-- (void)encodeWithCoder:(id)a3;
+- (unint64_t)_maximumActionsForContext:(unint64_t)context;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UIUserNotificationCategory
@@ -19,15 +19,15 @@
   return [(UIUserNotificationCategory *)&v3 init];
 }
 
-- (UIUserNotificationCategory)initWithIdentifier:(id)a3 actionsByContext:(id)a4
+- (UIUserNotificationCategory)initWithIdentifier:(id)identifier actionsByContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  contextCopy = context;
   v8 = [(UIUserNotificationCategory *)self init];
   v9 = v8;
   if (v8)
   {
-    UIUserNotificationCategoryCommonInit(v8, v6, v7);
+    UIUserNotificationCategoryCommonInit(v8, identifierCopy, contextCopy);
   }
 
   return v9;
@@ -58,15 +58,15 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"kCategoryIdentifierKey"];
-  [v5 encodeObject:self->_actionsByContext forKey:@"kActionsByContextKey"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"kCategoryIdentifierKey"];
+  [coderCopy encodeObject:self->_actionsByContext forKey:@"kActionsByContextKey"];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [UIMutableUserNotificationCategory alloc];
   identifier = self->_identifier;
@@ -75,15 +75,15 @@
   return [(UIUserNotificationCategory *)v4 initWithIdentifier:identifier actionsByContext:actionsByContext];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4[1];
+    v5 = equalCopy[1];
     identifier = self->_identifier;
-    v7 = v4;
+    v7 = equalCopy;
     LODWORD(v5) = [v5 isEqualToString:identifier];
     v8 = v7[2];
 
@@ -109,36 +109,36 @@
 
 - (id)validatedCategory
 {
-  v2 = self;
+  selfCopy = self;
   v37 = *MEMORY[0x1E69E9840];
-  v3 = [(UIUserNotificationCategory *)self identifier];
+  identifier = [(UIUserNotificationCategory *)self identifier];
 
-  if (!v3)
+  if (!identifier)
   {
-    NSLog(&cfstr_IgnoringUiuser.isa, v2);
+    NSLog(&cfstr_IgnoringUiuser.isa, selfCopy);
     v20 = 0;
     goto LABEL_24;
   }
 
-  v25 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{-[NSDictionary count](v2->_actionsByContext, "count")}];
+  v25 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{-[NSDictionary count](selfCopy->_actionsByContext, "count")}];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v4 = [(NSDictionary *)v2->_actionsByContext allKeys];
-  v26 = [v4 countByEnumeratingWithState:&v31 objects:v36 count:16];
+  allKeys = [(NSDictionary *)selfCopy->_actionsByContext allKeys];
+  v26 = [allKeys countByEnumeratingWithState:&v31 objects:v36 count:16];
   if (!v26)
   {
 
 LABEL_22:
-    v19 = v2;
+    v19 = selfCopy;
     goto LABEL_23;
   }
 
   v5 = 0;
   v23 = *v32;
-  v24 = v2;
-  obj = v4;
+  v24 = selfCopy;
+  obj = allKeys;
   do
   {
     for (i = 0; i != v26; ++i)
@@ -149,8 +149,8 @@ LABEL_22:
       }
 
       v7 = *(*(&v31 + 1) + 8 * i);
-      v8 = [(NSDictionary *)v2->_actionsByContext objectForKey:v7];
-      v9 = -[UIUserNotificationCategory _maximumActionsForContext:](v2, "_maximumActionsForContext:", [v7 unsignedIntegerValue]);
+      v8 = [(NSDictionary *)selfCopy->_actionsByContext objectForKey:v7];
+      v9 = -[UIUserNotificationCategory _maximumActionsForContext:](selfCopy, "_maximumActionsForContext:", [v7 unsignedIntegerValue]);
       if ([v8 count] > v9)
       {
         v10 = [v8 subarrayWithRange:{0, v9}];
@@ -180,9 +180,9 @@ LABEL_22:
             }
 
             v17 = *(*(&v27 + 1) + 8 * j);
-            v18 = [v17 validatedAction];
-            v5 |= v18 != v17;
-            [v11 addObject:v18];
+            validatedAction = [v17 validatedAction];
+            v5 |= validatedAction != v17;
+            [v11 addObject:validatedAction];
           }
 
           v14 = [v12 countByEnumeratingWithState:&v27 objects:v35 count:16];
@@ -192,7 +192,7 @@ LABEL_22:
       }
 
       [v25 setObject:v11 forKey:v7];
-      v2 = v24;
+      selfCopy = v24;
     }
 
     v26 = [obj countByEnumeratingWithState:&v31 objects:v36 count:16];
@@ -214,9 +214,9 @@ LABEL_24:
   return v20;
 }
 
-- (unint64_t)_maximumActionsForContext:(unint64_t)a3
+- (unint64_t)_maximumActionsForContext:(unint64_t)context
 {
-  if (a3 == 1)
+  if (context == 1)
   {
     return 2;
   }

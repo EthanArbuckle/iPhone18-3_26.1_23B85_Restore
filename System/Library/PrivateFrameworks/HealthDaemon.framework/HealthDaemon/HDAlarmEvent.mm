@@ -1,44 +1,44 @@
 @interface HDAlarmEvent
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSDate)currentDueDate;
-- (id)_initWithClientIdentifier:(id)a3 eventIdentifier:(id)a4 dueDate:(id)a5 dueDateComponents:(id)a6 eventOptions:(unint64_t)a7 clientOptions:(unint64_t)a8;
+- (id)_initWithClientIdentifier:(id)identifier eventIdentifier:(id)eventIdentifier dueDate:(id)date dueDateComponents:(id)components eventOptions:(unint64_t)options clientOptions:(unint64_t)clientOptions;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation HDAlarmEvent
 
-- (id)_initWithClientIdentifier:(id)a3 eventIdentifier:(id)a4 dueDate:(id)a5 dueDateComponents:(id)a6 eventOptions:(unint64_t)a7 clientOptions:(unint64_t)a8
+- (id)_initWithClientIdentifier:(id)identifier eventIdentifier:(id)eventIdentifier dueDate:(id)date dueDateComponents:(id)components eventOptions:(unint64_t)options clientOptions:(unint64_t)clientOptions
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = v18;
-  if (!(v17 | v18))
+  identifierCopy = identifier;
+  eventIdentifierCopy = eventIdentifier;
+  dateCopy = date;
+  componentsCopy = components;
+  v19 = componentsCopy;
+  if (!(dateCopy | componentsCopy))
   {
-    v31 = [MEMORY[0x277CCA890] currentHandler];
-    [v31 handleFailureInMethod:a2 object:self file:@"HDAlarmEvent.m" lineNumber:105 description:{@"Invalid parameter not satisfying: %@", @"dueDate != nil || dueDateComponents != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDAlarmEvent.m" lineNumber:105 description:{@"Invalid parameter not satisfying: %@", @"dueDate != nil || dueDateComponents != nil"}];
 LABEL_12:
 
     goto LABEL_6;
   }
 
-  if (v17 && v18)
+  if (dateCopy && componentsCopy)
   {
-    v30 = [MEMORY[0x277CCA890] currentHandler];
-    [v30 handleFailureInMethod:a2 object:self file:@"HDAlarmEvent.m" lineNumber:106 description:{@"Invalid parameter not satisfying: %@", @"dueDate == nil || dueDateComponents == nil"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"HDAlarmEvent.m" lineNumber:106 description:{@"Invalid parameter not satisfying: %@", @"dueDate == nil || dueDateComponents == nil"}];
   }
 
-  else if (!v18)
+  else if (!componentsCopy)
   {
     goto LABEL_6;
   }
 
   if (([v19 isValidDate] & 1) == 0)
   {
-    v31 = [MEMORY[0x277CCA890] currentHandler];
-    [v31 handleFailureInMethod:a2 object:self file:@"HDAlarmEvent.m" lineNumber:107 description:{@"Invalid parameter not satisfying: %@", @"HDAlarmEventValidateDateComponents(dueDateComponents)"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDAlarmEvent.m" lineNumber:107 description:{@"Invalid parameter not satisfying: %@", @"HDAlarmEventValidateDateComponents(dueDateComponents)"}];
     goto LABEL_12;
   }
 
@@ -48,15 +48,15 @@ LABEL_6:
   v20 = [(HDAlarmEvent *)&v32 init];
   if (v20)
   {
-    v21 = [v15 copy];
+    v21 = [identifierCopy copy];
     clientIdentifier = v20->_clientIdentifier;
     v20->_clientIdentifier = v21;
 
-    v23 = [v16 copy];
+    v23 = [eventIdentifierCopy copy];
     eventIdentifier = v20->_eventIdentifier;
     v20->_eventIdentifier = v23;
 
-    v25 = [v17 copy];
+    v25 = [dateCopy copy];
     dueDate = v20->_dueDate;
     v20->_dueDate = v25;
 
@@ -64,8 +64,8 @@ LABEL_6:
     dueDateComponents = v20->_dueDateComponents;
     v20->_dueDateComponents = v27;
 
-    v20->_eventOptions = a7;
-    v20->_clientOptions = a8;
+    v20->_eventOptions = options;
+    v20->_clientOptions = clientOptions;
   }
 
   return v20;
@@ -73,34 +73,34 @@ LABEL_6:
 
 - (NSDate)currentDueDate
 {
-  v3 = [(HDAlarmEvent *)self dueDate];
+  dueDate = [(HDAlarmEvent *)self dueDate];
 
-  if (v3)
+  if (dueDate)
   {
-    v4 = [(HDAlarmEvent *)self dueDate];
+    dueDate2 = [(HDAlarmEvent *)self dueDate];
   }
 
   else
   {
-    v5 = [(HDAlarmEvent *)self dueDateComponents];
-    v6 = [v5 hk_populatedCalendarGregorianCalendarDefault];
+    dueDateComponents = [(HDAlarmEvent *)self dueDateComponents];
+    hk_populatedCalendarGregorianCalendarDefault = [dueDateComponents hk_populatedCalendarGregorianCalendarDefault];
 
     if (self)
     {
       [MEMORY[0x277CBEBB0] resetSystemTimeZone];
-      v7 = [(HDAlarmEvent *)self _unitTest_localTimeZoneOverride];
-      v8 = v7;
-      if (v7)
+      _unitTest_localTimeZoneOverride = [(HDAlarmEvent *)self _unitTest_localTimeZoneOverride];
+      v8 = _unitTest_localTimeZoneOverride;
+      if (_unitTest_localTimeZoneOverride)
       {
-        v9 = v7;
+        systemTimeZone = _unitTest_localTimeZoneOverride;
       }
 
       else
       {
-        v9 = [MEMORY[0x277CBEBB0] systemTimeZone];
+        systemTimeZone = [MEMORY[0x277CBEBB0] systemTimeZone];
       }
 
-      v10 = v9;
+      v10 = systemTimeZone;
     }
 
     else
@@ -108,41 +108,41 @@ LABEL_6:
       v10 = 0;
     }
 
-    [v6 setTimeZone:v10];
+    [hk_populatedCalendarGregorianCalendarDefault setTimeZone:v10];
 
-    v11 = [(HDAlarmEvent *)self dueDateComponents];
-    v4 = [v6 dateFromComponents:v11];
+    dueDateComponents2 = [(HDAlarmEvent *)self dueDateComponents];
+    dueDate2 = [hk_populatedCalendarGregorianCalendarDefault dateFromComponents:dueDateComponents2];
   }
 
-  return v4;
+  return dueDate2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     clientIdentifier = self->_clientIdentifier;
     v7 = v5[1];
     if ((clientIdentifier == v7 || v7 && [(NSString *)clientIdentifier isEqualToString:?]) && ((eventIdentifier = self->_eventIdentifier, v9 = v5[2], eventIdentifier == v9) || v9 && [(NSString *)eventIdentifier isEqualToString:?]))
     {
-      v10 = [(HDAlarmEvent *)self currentDueDate];
-      v11 = [v5 currentDueDate];
-      if (v10 == v11)
+      currentDueDate = [(HDAlarmEvent *)self currentDueDate];
+      currentDueDate2 = [v5 currentDueDate];
+      if (currentDueDate == currentDueDate2)
       {
         v15 = self->_eventOptions == v5[5] && self->_clientOptions == v5[6];
       }
 
       else
       {
-        v12 = [v5 currentDueDate];
-        if (v12)
+        currentDueDate3 = [v5 currentDueDate];
+        if (currentDueDate3)
         {
-          v13 = [(HDAlarmEvent *)self currentDueDate];
-          v14 = [v5 currentDueDate];
-          v15 = [v13 isEqualToDate:v14] && self->_eventOptions == v5[5] && self->_clientOptions == v5[6];
+          currentDueDate4 = [(HDAlarmEvent *)self currentDueDate];
+          currentDueDate5 = [v5 currentDueDate];
+          v15 = [currentDueDate4 isEqualToDate:currentDueDate5] && self->_eventOptions == v5[5] && self->_clientOptions == v5[6];
         }
 
         else
@@ -178,14 +178,14 @@ LABEL_6:
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(HDAlarmEvent *)self clientIdentifier];
-  v6 = [(HDAlarmEvent *)self eventIdentifier];
-  v7 = [(HDAlarmEvent *)self dueDate];
-  v8 = [(HDAlarmEvent *)self dueDateComponents];
-  v9 = [(HDAlarmEvent *)self eventOptions];
-  if (v9)
+  clientIdentifier = [(HDAlarmEvent *)self clientIdentifier];
+  eventIdentifier = [(HDAlarmEvent *)self eventIdentifier];
+  dueDate = [(HDAlarmEvent *)self dueDate];
+  dueDateComponents = [(HDAlarmEvent *)self dueDateComponents];
+  eventOptions = [(HDAlarmEvent *)self eventOptions];
+  if (eventOptions)
   {
-    v10 = v9;
+    v10 = eventOptions;
     v11 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v12 = v11;
     if ((v10 & 2) != 0)
@@ -206,7 +206,7 @@ LABEL_6:
     v13 = @"none";
   }
 
-  v14 = [v3 stringWithFormat:@"<%@:%p client:%@ event:%@ dueDate:%@, dueDateComponents:%@, eventOptions: %@, clientOptions: %lu>", v4, self, v5, v6, v7, v8, v13, -[HDAlarmEvent clientOptions](self, "clientOptions")];
+  v14 = [v3 stringWithFormat:@"<%@:%p client:%@ event:%@ dueDate:%@, dueDateComponents:%@, eventOptions: %@, clientOptions: %lu>", v4, self, clientIdentifier, eventIdentifier, dueDate, dueDateComponents, v13, -[HDAlarmEvent clientOptions](self, "clientOptions")];
 
   return v14;
 }

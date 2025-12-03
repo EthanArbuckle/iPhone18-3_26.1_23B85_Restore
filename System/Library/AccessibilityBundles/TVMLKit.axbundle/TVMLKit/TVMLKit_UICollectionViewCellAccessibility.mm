@@ -1,15 +1,15 @@
 @interface TVMLKit_UICollectionViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (_NSRange)accessibilityRowRange;
 @end
 
 @implementation TVMLKit_UICollectionViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"TVCarouselView"];
-  [v3 validateClass:@"TVCarouselView" hasInstanceVariable:@"_numberOfRealItemsForDataSource" withType:"Q"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"TVCarouselView"];
+  [validationsCopy validateClass:@"TVCarouselView" hasInstanceVariable:@"_numberOfRealItemsForDataSource" withType:"Q"];
 }
 
 - (_NSRange)accessibilityRowRange
@@ -21,7 +21,7 @@
 
   v13.receiver = self;
   v13.super_class = TVMLKit_UICollectionViewCellAccessibility;
-  v3 = [(TVMLKit_UICollectionViewCellAccessibility *)&v13 accessibilityRowRange];
+  accessibilityRowRange = [(TVMLKit_UICollectionViewCellAccessibility *)&v13 accessibilityRowRange];
   v5 = v4;
   objc_opt_class();
   v6 = [(TVMLKit_UICollectionViewCellAccessibility *)self _accessibilityAncestorIsKindOf:objc_opt_class()];
@@ -34,12 +34,12 @@
     v10 = [v8 safeUnsignedIntegerForKey:@"_numberOfRealItemsForDataSource"];
     if (v10)
     {
-      v3 %= v10;
+      accessibilityRowRange %= v10;
       v5 = v10;
     }
   }
 
-  v11 = v3;
+  v11 = accessibilityRowRange;
   v12 = v5;
   result.length = v12;
   result.location = v11;

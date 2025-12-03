@@ -1,88 +1,88 @@
 @interface SISchemaEnabledStatus
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (SISchemaEnabledStatus)initWithDictionary:(id)a3;
-- (SISchemaEnabledStatus)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (SISchemaEnabledStatus)initWithDictionary:(id)dictionary;
+- (SISchemaEnabledStatus)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addGradingOptInStateChanges:(id)a3;
-- (void)setHasAssistantOnLockscreen:(BOOL)a3;
-- (void)setHasDataSharingOptInStatus:(BOOL)a3;
-- (void)setHasDictationEnabled:(BOOL)a3;
-- (void)setHasHardwareButtonEnabled:(BOOL)a3;
-- (void)setHasHasHomekitHome:(BOOL)a3;
-- (void)setHasHeySiriEnabled:(BOOL)a3;
-- (void)setHasHsHangupEnablementState:(BOOL)a3;
-- (void)setHasIsAdaptiveVolumeEnabled:(BOOL)a3;
-- (void)setHasIsAlwaysListenForHeySiriEnabled:(BOOL)a3;
-- (void)setHasIsAlwaysShowSiriCaptionsEnabled:(BOOL)a3;
-- (void)setHasIsAlwaysShowSpeechEnabled:(BOOL)a3;
-- (void)setHasIsAutoPunctuationEnabled:(BOOL)a3;
-- (void)setHasIsHSHangupEnabled:(BOOL)a3;
-- (void)setHasIsMteUploadEnabled:(BOOL)a3;
-- (void)setHasIsPreciseLocationEnabled:(BOOL)a3;
-- (void)setHasIsRemoteDarwinHeySiriEnabled:(BOOL)a3;
-- (void)setHasIsServerUserDataSyncEnabled:(BOOL)a3;
-- (void)setHasIsShowAppsBehindSiriEnabled:(BOOL)a3;
-- (void)setHasIsShowAppsBehindSiriEnabledOnCarPlay:(BOOL)a3;
-- (void)setHasIsSiriCapableDigitalCarKeyAvailable:(BOOL)a3;
-- (void)setHasIsSiriInCallEnabled:(BOOL)a3;
-- (void)setHasIsVoiceOverEnabled:(BOOL)a3;
-- (void)setHasLocationAccessPermission:(BOOL)a3;
-- (void)setHasRaiseToSpeakEnabled:(BOOL)a3;
-- (void)setHasShortcutsAvailable:(BOOL)a3;
-- (void)setHasSiriInCallEnablementState:(BOOL)a3;
-- (void)setHasSiriPauseTimeState:(BOOL)a3;
-- (void)setHasSiriSpeechRate:(BOOL)a3;
-- (void)setHasSpokenNotificationsEnabled:(BOOL)a3;
-- (void)setHasTypeToSiriEnabled:(BOOL)a3;
-- (void)setHasVoiceFeedback:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addGradingOptInStateChanges:(id)changes;
+- (void)setHasAssistantOnLockscreen:(BOOL)lockscreen;
+- (void)setHasDataSharingOptInStatus:(BOOL)status;
+- (void)setHasDictationEnabled:(BOOL)enabled;
+- (void)setHasHardwareButtonEnabled:(BOOL)enabled;
+- (void)setHasHasHomekitHome:(BOOL)home;
+- (void)setHasHeySiriEnabled:(BOOL)enabled;
+- (void)setHasHsHangupEnablementState:(BOOL)state;
+- (void)setHasIsAdaptiveVolumeEnabled:(BOOL)enabled;
+- (void)setHasIsAlwaysListenForHeySiriEnabled:(BOOL)enabled;
+- (void)setHasIsAlwaysShowSiriCaptionsEnabled:(BOOL)enabled;
+- (void)setHasIsAlwaysShowSpeechEnabled:(BOOL)enabled;
+- (void)setHasIsAutoPunctuationEnabled:(BOOL)enabled;
+- (void)setHasIsHSHangupEnabled:(BOOL)enabled;
+- (void)setHasIsMteUploadEnabled:(BOOL)enabled;
+- (void)setHasIsPreciseLocationEnabled:(BOOL)enabled;
+- (void)setHasIsRemoteDarwinHeySiriEnabled:(BOOL)enabled;
+- (void)setHasIsServerUserDataSyncEnabled:(BOOL)enabled;
+- (void)setHasIsShowAppsBehindSiriEnabled:(BOOL)enabled;
+- (void)setHasIsShowAppsBehindSiriEnabledOnCarPlay:(BOOL)play;
+- (void)setHasIsSiriCapableDigitalCarKeyAvailable:(BOOL)available;
+- (void)setHasIsSiriInCallEnabled:(BOOL)enabled;
+- (void)setHasIsVoiceOverEnabled:(BOOL)enabled;
+- (void)setHasLocationAccessPermission:(BOOL)permission;
+- (void)setHasRaiseToSpeakEnabled:(BOOL)enabled;
+- (void)setHasShortcutsAvailable:(BOOL)available;
+- (void)setHasSiriInCallEnablementState:(BOOL)state;
+- (void)setHasSiriPauseTimeState:(BOOL)state;
+- (void)setHasSiriSpeechRate:(BOOL)rate;
+- (void)setHasSpokenNotificationsEnabled:(BOOL)enabled;
+- (void)setHasTypeToSiriEnabled:(BOOL)enabled;
+- (void)setHasVoiceFeedback:(BOOL)feedback;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SISchemaEnabledStatus
 
-- (SISchemaEnabledStatus)initWithDictionary:(id)a3
+- (SISchemaEnabledStatus)initWithDictionary:(id)dictionary
 {
   v92 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v90.receiver = self;
   v90.super_class = SISchemaEnabledStatus;
   v5 = [(SISchemaEnabledStatus *)&v90 init];
 
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"assistantEnabled"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"assistantEnabled"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SISchemaEnabledStatus setAssistantEnabled:](v5, "setAssistantEnabled:", [v6 BOOLValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"dictationEnabled"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"dictationEnabled"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SISchemaEnabledStatus setDictationEnabled:](v5, "setDictationEnabled:", [v7 BOOLValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"hardwareButtonEnabled"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"hardwareButtonEnabled"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SISchemaEnabledStatus setHardwareButtonEnabled:](v5, "setHardwareButtonEnabled:", [v8 BOOLValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"heySiriEnabled"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"heySiriEnabled"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SISchemaEnabledStatus setHeySiriEnabled:](v5, "setHeySiriEnabled:", [v9 BOOLValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"assistantOnLockscreen"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"assistantOnLockscreen"];
     objc_opt_class();
     v85 = v10;
     if (objc_opt_isKindOfClass())
@@ -90,7 +90,7 @@
       -[SISchemaEnabledStatus setAssistantOnLockscreen:](v5, "setAssistantOnLockscreen:", [v10 BOOLValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"raiseToSpeakEnabled"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"raiseToSpeakEnabled"];
     objc_opt_class();
     v84 = v11;
     if (objc_opt_isKindOfClass())
@@ -98,7 +98,7 @@
       -[SISchemaEnabledStatus setRaiseToSpeakEnabled:](v5, "setRaiseToSpeakEnabled:", [v11 BOOLValue]);
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"spokenNotificationsEnabled"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"spokenNotificationsEnabled"];
     objc_opt_class();
     v83 = v12;
     if (objc_opt_isKindOfClass())
@@ -106,7 +106,7 @@
       -[SISchemaEnabledStatus setSpokenNotificationsEnabled:](v5, "setSpokenNotificationsEnabled:", [v12 BOOLValue]);
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"hasHomekitHome"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"hasHomekitHome"];
     objc_opt_class();
     v82 = v13;
     if (objc_opt_isKindOfClass())
@@ -114,7 +114,7 @@
       -[SISchemaEnabledStatus setHasHomekitHome:](v5, "setHasHomekitHome:", [v13 BOOLValue]);
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"shortcutsAvailable"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"shortcutsAvailable"];
     objc_opt_class();
     v81 = v14;
     if (objc_opt_isKindOfClass())
@@ -122,7 +122,7 @@
       -[SISchemaEnabledStatus setShortcutsAvailable:](v5, "setShortcutsAvailable:", [v14 intValue]);
     }
 
-    v15 = [v4 objectForKeyedSubscript:@"dataSharingOptInStatus"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"dataSharingOptInStatus"];
     objc_opt_class();
     v80 = v15;
     if (objc_opt_isKindOfClass())
@@ -130,7 +130,7 @@
       -[SISchemaEnabledStatus setDataSharingOptInStatus:](v5, "setDataSharingOptInStatus:", [v15 intValue]);
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"typeToSiriEnabled"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"typeToSiriEnabled"];
     objc_opt_class();
     v79 = v16;
     if (objc_opt_isKindOfClass())
@@ -138,7 +138,7 @@
       -[SISchemaEnabledStatus setTypeToSiriEnabled:](v5, "setTypeToSiriEnabled:", [v16 BOOLValue]);
     }
 
-    v17 = [v4 objectForKeyedSubscript:@"isPreciseLocationEnabled"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"isPreciseLocationEnabled"];
     objc_opt_class();
     v78 = v17;
     if (objc_opt_isKindOfClass())
@@ -150,7 +150,7 @@
     v63 = v8;
     v64 = v7;
     v65 = v6;
-    v18 = [v4 objectForKeyedSubscript:@"voiceFeedback"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"voiceFeedback"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -158,7 +158,7 @@
     }
 
     v61 = v18;
-    v19 = [v4 objectForKeyedSubscript:@"announceEnabledStatus"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"announceEnabledStatus"];
     objc_opt_class();
     v77 = v19;
     if (objc_opt_isKindOfClass())
@@ -167,7 +167,7 @@
       [(SISchemaEnabledStatus *)v5 setAnnounceEnabledStatus:v20];
     }
 
-    v21 = [v4 objectForKeyedSubscript:@"isAdaptiveVolumeEnabled"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"isAdaptiveVolumeEnabled"];
     objc_opt_class();
     v76 = v21;
     if (objc_opt_isKindOfClass())
@@ -175,7 +175,7 @@
       -[SISchemaEnabledStatus setIsAdaptiveVolumeEnabled:](v5, "setIsAdaptiveVolumeEnabled:", [v21 BOOLValue]);
     }
 
-    v22 = [v4 objectForKeyedSubscript:@"adaptiveVolumeUserPreferences"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"adaptiveVolumeUserPreferences"];
     objc_opt_class();
     v75 = v22;
     if (objc_opt_isKindOfClass())
@@ -184,7 +184,7 @@
       [(SISchemaEnabledStatus *)v5 setAdaptiveVolumeUserPreferences:v23];
     }
 
-    v24 = [v4 objectForKeyedSubscript:@"isRemoteDarwinHeySiriEnabled"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"isRemoteDarwinHeySiriEnabled"];
     objc_opt_class();
     v74 = v24;
     if (objc_opt_isKindOfClass())
@@ -192,7 +192,7 @@
       -[SISchemaEnabledStatus setIsRemoteDarwinHeySiriEnabled:](v5, "setIsRemoteDarwinHeySiriEnabled:", [v24 BOOLValue]);
     }
 
-    v25 = [v4 objectForKeyedSubscript:@"gradingOptInStateChanges"];
+    v25 = [dictionaryCopy objectForKeyedSubscript:@"gradingOptInStateChanges"];
     objc_opt_class();
     v73 = v25;
     if (objc_opt_isKindOfClass())
@@ -232,14 +232,14 @@
       }
     }
 
-    v33 = [v4 objectForKeyedSubscript:@"isAutoPunctuationEnabled"];
+    v33 = [dictionaryCopy objectForKeyedSubscript:@"isAutoPunctuationEnabled"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SISchemaEnabledStatus setIsAutoPunctuationEnabled:](v5, "setIsAutoPunctuationEnabled:", [v33 BOOLValue]);
     }
 
-    v34 = [v4 objectForKeyedSubscript:@"sendWithoutConfirmation"];
+    v34 = [dictionaryCopy objectForKeyedSubscript:@"sendWithoutConfirmation"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -247,28 +247,28 @@
       [(SISchemaEnabledStatus *)v5 setSendWithoutConfirmation:v35];
     }
 
-    v36 = [v4 objectForKeyedSubscript:@"isHSHangupEnabled"];
+    v36 = [dictionaryCopy objectForKeyedSubscript:@"isHSHangupEnabled"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SISchemaEnabledStatus setIsHSHangupEnabled:](v5, "setIsHSHangupEnabled:", [v36 BOOLValue]);
     }
 
-    v37 = [v4 objectForKeyedSubscript:@"isSiriInCallEnabled"];
+    v37 = [dictionaryCopy objectForKeyedSubscript:@"isSiriInCallEnabled"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SISchemaEnabledStatus setIsSiriInCallEnabled:](v5, "setIsSiriInCallEnabled:", [v37 BOOLValue]);
     }
 
-    v38 = [v4 objectForKeyedSubscript:@"hsHangupEnablementState"];
+    v38 = [dictionaryCopy objectForKeyedSubscript:@"hsHangupEnablementState"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SISchemaEnabledStatus setHsHangupEnablementState:](v5, "setHsHangupEnablementState:", [v38 intValue]);
     }
 
-    v39 = [v4 objectForKeyedSubscript:@"siriInCallEnablementState"];
+    v39 = [dictionaryCopy objectForKeyedSubscript:@"siriInCallEnablementState"];
     objc_opt_class();
     v72 = v39;
     if (objc_opt_isKindOfClass())
@@ -276,7 +276,7 @@
       -[SISchemaEnabledStatus setSiriInCallEnablementState:](v5, "setSiriInCallEnablementState:", [v39 intValue]);
     }
 
-    v40 = [v4 objectForKeyedSubscript:@"isAlwaysShowSiriCaptionsEnabled"];
+    v40 = [dictionaryCopy objectForKeyedSubscript:@"isAlwaysShowSiriCaptionsEnabled"];
     objc_opt_class();
     v71 = v40;
     if (objc_opt_isKindOfClass())
@@ -284,7 +284,7 @@
       -[SISchemaEnabledStatus setIsAlwaysShowSiriCaptionsEnabled:](v5, "setIsAlwaysShowSiriCaptionsEnabled:", [v40 BOOLValue]);
     }
 
-    v41 = [v4 objectForKeyedSubscript:@"isAlwaysShowSpeechEnabled"];
+    v41 = [dictionaryCopy objectForKeyedSubscript:@"isAlwaysShowSpeechEnabled"];
     objc_opt_class();
     v70 = v41;
     if (objc_opt_isKindOfClass())
@@ -292,7 +292,7 @@
       -[SISchemaEnabledStatus setIsAlwaysShowSpeechEnabled:](v5, "setIsAlwaysShowSpeechEnabled:", [v41 BOOLValue]);
     }
 
-    v42 = [v4 objectForKeyedSubscript:@"isShowAppsBehindSiriEnabled"];
+    v42 = [dictionaryCopy objectForKeyedSubscript:@"isShowAppsBehindSiriEnabled"];
     objc_opt_class();
     v69 = v42;
     if (objc_opt_isKindOfClass())
@@ -300,7 +300,7 @@
       -[SISchemaEnabledStatus setIsShowAppsBehindSiriEnabled:](v5, "setIsShowAppsBehindSiriEnabled:", [v42 BOOLValue]);
     }
 
-    v43 = [v4 objectForKeyedSubscript:@"siriSpeechRate"];
+    v43 = [dictionaryCopy objectForKeyedSubscript:@"siriSpeechRate"];
     objc_opt_class();
     v68 = v43;
     if (objc_opt_isKindOfClass())
@@ -309,7 +309,7 @@
       [(SISchemaEnabledStatus *)v5 setSiriSpeechRate:?];
     }
 
-    v44 = [v4 objectForKeyedSubscript:@"isVoiceOverEnabled"];
+    v44 = [dictionaryCopy objectForKeyedSubscript:@"isVoiceOverEnabled"];
     objc_opt_class();
     v67 = v44;
     if (objc_opt_isKindOfClass())
@@ -317,7 +317,7 @@
       -[SISchemaEnabledStatus setIsVoiceOverEnabled:](v5, "setIsVoiceOverEnabled:", [v44 BOOLValue]);
     }
 
-    v45 = [v4 objectForKeyedSubscript:@"siriVoiceTriggerSettings"];
+    v45 = [dictionaryCopy objectForKeyedSubscript:@"siriVoiceTriggerSettings"];
     objc_opt_class();
     v66 = v45;
     if (objc_opt_isKindOfClass())
@@ -327,14 +327,14 @@
     }
 
     v58 = v38;
-    v47 = [v4 objectForKeyedSubscript:@"isShowAppsBehindSiriEnabledOnCarPlay"];
+    v47 = [dictionaryCopy objectForKeyedSubscript:@"isShowAppsBehindSiriEnabledOnCarPlay"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SISchemaEnabledStatus setIsShowAppsBehindSiriEnabledOnCarPlay:](v5, "setIsShowAppsBehindSiriEnabledOnCarPlay:", [v47 BOOLValue]);
     }
 
-    v48 = [v4 objectForKeyedSubscript:{@"isSiriCapableDigitalCarKeyAvailable", v47}];
+    v48 = [dictionaryCopy objectForKeyedSubscript:{@"isSiriCapableDigitalCarKeyAvailable", v47}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -342,7 +342,7 @@
     }
 
     v60 = v33;
-    v49 = [v4 objectForKeyedSubscript:@"isAlwaysListenForHeySiriEnabled"];
+    v49 = [dictionaryCopy objectForKeyedSubscript:@"isAlwaysListenForHeySiriEnabled"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -350,14 +350,14 @@
     }
 
     v59 = v34;
-    v50 = [v4 objectForKeyedSubscript:@"siriPauseTimeState"];
+    v50 = [dictionaryCopy objectForKeyedSubscript:@"siriPauseTimeState"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SISchemaEnabledStatus setSiriPauseTimeState:](v5, "setSiriPauseTimeState:", [v50 intValue]);
     }
 
-    v51 = [v4 objectForKeyedSubscript:@"isMteUploadEnabled"];
+    v51 = [dictionaryCopy objectForKeyedSubscript:@"isMteUploadEnabled"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -365,14 +365,14 @@
     }
 
     v52 = v36;
-    v53 = [v4 objectForKeyedSubscript:@"isServerUserDataSyncEnabled"];
+    v53 = [dictionaryCopy objectForKeyedSubscript:@"isServerUserDataSyncEnabled"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SISchemaEnabledStatus setIsServerUserDataSyncEnabled:](v5, "setIsServerUserDataSyncEnabled:", [v53 BOOLValue]);
     }
 
-    v54 = [v4 objectForKeyedSubscript:@"locationAccessPermission"];
+    v54 = [dictionaryCopy objectForKeyedSubscript:@"locationAccessPermission"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -385,30 +385,30 @@
   return v5;
 }
 
-- (SISchemaEnabledStatus)initWithJSON:(id)a3
+- (SISchemaEnabledStatus)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SISchemaEnabledStatus *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SISchemaEnabledStatus *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SISchemaEnabledStatus *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -422,36 +422,36 @@
 - (id)dictionaryRepresentation
 {
   v74 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_adaptiveVolumeUserPreferences)
   {
-    v4 = [(SISchemaEnabledStatus *)self adaptiveVolumeUserPreferences];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    adaptiveVolumeUserPreferences = [(SISchemaEnabledStatus *)self adaptiveVolumeUserPreferences];
+    dictionaryRepresentation = [adaptiveVolumeUserPreferences dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"adaptiveVolumeUserPreferences"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"adaptiveVolumeUserPreferences"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"adaptiveVolumeUserPreferences"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"adaptiveVolumeUserPreferences"];
     }
   }
 
   if (self->_announceEnabledStatus)
   {
-    v7 = [(SISchemaEnabledStatus *)self announceEnabledStatus];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    announceEnabledStatus = [(SISchemaEnabledStatus *)self announceEnabledStatus];
+    dictionaryRepresentation2 = [announceEnabledStatus dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"announceEnabledStatus"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"announceEnabledStatus"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"announceEnabledStatus"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"announceEnabledStatus"];
     }
   }
 
@@ -459,7 +459,7 @@
   if (*&has)
   {
     v24 = [MEMORY[0x1E696AD98] numberWithBool:{-[SISchemaEnabledStatus assistantEnabled](self, "assistantEnabled")}];
-    [v3 setObject:v24 forKeyedSubscript:@"assistantEnabled"];
+    [dictionary setObject:v24 forKeyedSubscript:@"assistantEnabled"];
 
     has = self->_has;
     if ((*&has & 0x10) == 0)
@@ -480,7 +480,7 @@ LABEL_13:
   }
 
   v25 = [MEMORY[0x1E696AD98] numberWithBool:{-[SISchemaEnabledStatus assistantOnLockscreen](self, "assistantOnLockscreen")}];
-  [v3 setObject:v25 forKeyedSubscript:@"assistantOnLockscreen"];
+  [dictionary setObject:v25 forKeyedSubscript:@"assistantOnLockscreen"];
 
   has = self->_has;
   if ((*&has & 0x200) == 0)
@@ -506,18 +506,18 @@ LABEL_55:
     v27 = off_1E78E49E0[v26];
   }
 
-  [v3 setObject:v27 forKeyedSubscript:@"dataSharingOptInStatus"];
+  [dictionary setObject:v27 forKeyedSubscript:@"dataSharingOptInStatus"];
   if ((*&self->_has & 2) != 0)
   {
 LABEL_15:
     v11 = [MEMORY[0x1E696AD98] numberWithBool:{-[SISchemaEnabledStatus dictationEnabled](self, "dictationEnabled")}];
-    [v3 setObject:v11 forKeyedSubscript:@"dictationEnabled"];
+    [dictionary setObject:v11 forKeyedSubscript:@"dictationEnabled"];
   }
 
 LABEL_16:
   if ([(NSArray *)self->_gradingOptInStateChanges count])
   {
-    v12 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v69 = 0u;
     v70 = 0u;
     v71 = 0u;
@@ -537,16 +537,16 @@ LABEL_16:
             objc_enumerationMutation(v13);
           }
 
-          v18 = [*(*(&v69 + 1) + 8 * i) dictionaryRepresentation];
-          if (v18)
+          dictionaryRepresentation3 = [*(*(&v69 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation3)
           {
-            [v12 addObject:v18];
+            [array addObject:dictionaryRepresentation3];
           }
 
           else
           {
-            v19 = [MEMORY[0x1E695DFB0] null];
-            [v12 addObject:v19];
+            null3 = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null3];
           }
         }
 
@@ -556,14 +556,14 @@ LABEL_16:
       while (v15);
     }
 
-    [v3 setObject:v12 forKeyedSubscript:@"gradingOptInStateChanges"];
+    [dictionary setObject:array forKeyedSubscript:@"gradingOptInStateChanges"];
   }
 
   v20 = self->_has;
   if ((*&v20 & 4) != 0)
   {
     v28 = [MEMORY[0x1E696AD98] numberWithBool:{-[SISchemaEnabledStatus hardwareButtonEnabled](self, "hardwareButtonEnabled")}];
-    [v3 setObject:v28 forKeyedSubscript:@"hardwareButtonEnabled"];
+    [dictionary setObject:v28 forKeyedSubscript:@"hardwareButtonEnabled"];
 
     v20 = self->_has;
     if ((*&v20 & 0x80) == 0)
@@ -584,7 +584,7 @@ LABEL_30:
   }
 
   v29 = [MEMORY[0x1E696AD98] numberWithBool:{-[SISchemaEnabledStatus hasHomekitHome](self, "hasHomekitHome")}];
-  [v3 setObject:v29 forKeyedSubscript:@"hasHomekitHome"];
+  [dictionary setObject:v29 forKeyedSubscript:@"hasHomekitHome"];
 
   v20 = self->_has;
   if ((*&v20 & 8) == 0)
@@ -600,7 +600,7 @@ LABEL_31:
 
 LABEL_59:
   v30 = [MEMORY[0x1E696AD98] numberWithBool:{-[SISchemaEnabledStatus heySiriEnabled](self, "heySiriEnabled")}];
-  [v3 setObject:v30 forKeyedSubscript:@"heySiriEnabled"];
+  [dictionary setObject:v30 forKeyedSubscript:@"heySiriEnabled"];
 
   v20 = self->_has;
   if ((*&v20 & 0x40000) == 0)
@@ -626,7 +626,7 @@ LABEL_60:
     v32 = off_1E78E49F8[v31];
   }
 
-  [v3 setObject:v32 forKeyedSubscript:@"hsHangupEnablementState"];
+  [dictionary setObject:v32 forKeyedSubscript:@"hsHangupEnablementState"];
   v20 = self->_has;
   if ((*&v20 & 0x2000) == 0)
   {
@@ -641,7 +641,7 @@ LABEL_33:
 
 LABEL_67:
   v33 = [MEMORY[0x1E696AD98] numberWithBool:{-[SISchemaEnabledStatus isAdaptiveVolumeEnabled](self, "isAdaptiveVolumeEnabled")}];
-  [v3 setObject:v33 forKeyedSubscript:@"isAdaptiveVolumeEnabled"];
+  [dictionary setObject:v33 forKeyedSubscript:@"isAdaptiveVolumeEnabled"];
 
   v20 = self->_has;
   if ((*&v20 & 0x8000000) == 0)
@@ -657,7 +657,7 @@ LABEL_34:
 
 LABEL_68:
   v34 = [MEMORY[0x1E696AD98] numberWithBool:{-[SISchemaEnabledStatus isAlwaysListenForHeySiriEnabled](self, "isAlwaysListenForHeySiriEnabled")}];
-  [v3 setObject:v34 forKeyedSubscript:@"isAlwaysListenForHeySiriEnabled"];
+  [dictionary setObject:v34 forKeyedSubscript:@"isAlwaysListenForHeySiriEnabled"];
 
   v20 = self->_has;
   if ((*&v20 & 0x100000) == 0)
@@ -673,7 +673,7 @@ LABEL_35:
 
 LABEL_69:
   v35 = [MEMORY[0x1E696AD98] numberWithBool:{-[SISchemaEnabledStatus isAlwaysShowSiriCaptionsEnabled](self, "isAlwaysShowSiriCaptionsEnabled")}];
-  [v3 setObject:v35 forKeyedSubscript:@"isAlwaysShowSiriCaptionsEnabled"];
+  [dictionary setObject:v35 forKeyedSubscript:@"isAlwaysShowSiriCaptionsEnabled"];
 
   v20 = self->_has;
   if ((*&v20 & 0x200000) == 0)
@@ -689,7 +689,7 @@ LABEL_36:
 
 LABEL_70:
   v36 = [MEMORY[0x1E696AD98] numberWithBool:{-[SISchemaEnabledStatus isAlwaysShowSpeechEnabled](self, "isAlwaysShowSpeechEnabled")}];
-  [v3 setObject:v36 forKeyedSubscript:@"isAlwaysShowSpeechEnabled"];
+  [dictionary setObject:v36 forKeyedSubscript:@"isAlwaysShowSpeechEnabled"];
 
   v20 = self->_has;
   if ((*&v20 & 0x8000) == 0)
@@ -705,7 +705,7 @@ LABEL_37:
 
 LABEL_71:
   v37 = [MEMORY[0x1E696AD98] numberWithBool:{-[SISchemaEnabledStatus isAutoPunctuationEnabled](self, "isAutoPunctuationEnabled")}];
-  [v3 setObject:v37 forKeyedSubscript:@"isAutoPunctuationEnabled"];
+  [dictionary setObject:v37 forKeyedSubscript:@"isAutoPunctuationEnabled"];
 
   v20 = self->_has;
   if ((*&v20 & 0x10000) == 0)
@@ -721,7 +721,7 @@ LABEL_38:
 
 LABEL_72:
   v38 = [MEMORY[0x1E696AD98] numberWithBool:{-[SISchemaEnabledStatus isHSHangupEnabled](self, "isHSHangupEnabled")}];
-  [v3 setObject:v38 forKeyedSubscript:@"isHSHangupEnabled"];
+  [dictionary setObject:v38 forKeyedSubscript:@"isHSHangupEnabled"];
 
   v20 = self->_has;
   if ((*&v20 & 0x20000000) == 0)
@@ -737,7 +737,7 @@ LABEL_39:
 
 LABEL_73:
   v39 = [MEMORY[0x1E696AD98] numberWithBool:{-[SISchemaEnabledStatus isMteUploadEnabled](self, "isMteUploadEnabled")}];
-  [v3 setObject:v39 forKeyedSubscript:@"isMteUploadEnabled"];
+  [dictionary setObject:v39 forKeyedSubscript:@"isMteUploadEnabled"];
 
   v20 = self->_has;
   if ((*&v20 & 0x800) == 0)
@@ -753,7 +753,7 @@ LABEL_40:
 
 LABEL_74:
   v40 = [MEMORY[0x1E696AD98] numberWithBool:{-[SISchemaEnabledStatus isPreciseLocationEnabled](self, "isPreciseLocationEnabled")}];
-  [v3 setObject:v40 forKeyedSubscript:@"isPreciseLocationEnabled"];
+  [dictionary setObject:v40 forKeyedSubscript:@"isPreciseLocationEnabled"];
 
   v20 = self->_has;
   if ((*&v20 & 0x4000) == 0)
@@ -769,7 +769,7 @@ LABEL_41:
 
 LABEL_75:
   v41 = [MEMORY[0x1E696AD98] numberWithBool:{-[SISchemaEnabledStatus isRemoteDarwinHeySiriEnabled](self, "isRemoteDarwinHeySiriEnabled")}];
-  [v3 setObject:v41 forKeyedSubscript:@"isRemoteDarwinHeySiriEnabled"];
+  [dictionary setObject:v41 forKeyedSubscript:@"isRemoteDarwinHeySiriEnabled"];
 
   v20 = self->_has;
   if ((*&v20 & 0x40000000) == 0)
@@ -785,7 +785,7 @@ LABEL_42:
 
 LABEL_76:
   v42 = [MEMORY[0x1E696AD98] numberWithBool:{-[SISchemaEnabledStatus isServerUserDataSyncEnabled](self, "isServerUserDataSyncEnabled")}];
-  [v3 setObject:v42 forKeyedSubscript:@"isServerUserDataSyncEnabled"];
+  [dictionary setObject:v42 forKeyedSubscript:@"isServerUserDataSyncEnabled"];
 
   v20 = self->_has;
   if ((*&v20 & 0x400000) == 0)
@@ -801,7 +801,7 @@ LABEL_43:
 
 LABEL_77:
   v43 = [MEMORY[0x1E696AD98] numberWithBool:{-[SISchemaEnabledStatus isShowAppsBehindSiriEnabled](self, "isShowAppsBehindSiriEnabled")}];
-  [v3 setObject:v43 forKeyedSubscript:@"isShowAppsBehindSiriEnabled"];
+  [dictionary setObject:v43 forKeyedSubscript:@"isShowAppsBehindSiriEnabled"];
 
   v20 = self->_has;
   if ((*&v20 & 0x2000000) == 0)
@@ -817,7 +817,7 @@ LABEL_44:
 
 LABEL_78:
   v44 = [MEMORY[0x1E696AD98] numberWithBool:{-[SISchemaEnabledStatus isShowAppsBehindSiriEnabledOnCarPlay](self, "isShowAppsBehindSiriEnabledOnCarPlay")}];
-  [v3 setObject:v44 forKeyedSubscript:@"isShowAppsBehindSiriEnabledOnCarPlay"];
+  [dictionary setObject:v44 forKeyedSubscript:@"isShowAppsBehindSiriEnabledOnCarPlay"];
 
   v20 = self->_has;
   if ((*&v20 & 0x4000000) == 0)
@@ -833,7 +833,7 @@ LABEL_45:
 
 LABEL_79:
   v45 = [MEMORY[0x1E696AD98] numberWithBool:{-[SISchemaEnabledStatus isSiriCapableDigitalCarKeyAvailable](self, "isSiriCapableDigitalCarKeyAvailable")}];
-  [v3 setObject:v45 forKeyedSubscript:@"isSiriCapableDigitalCarKeyAvailable"];
+  [dictionary setObject:v45 forKeyedSubscript:@"isSiriCapableDigitalCarKeyAvailable"];
 
   v20 = self->_has;
   if ((*&v20 & 0x20000) == 0)
@@ -849,7 +849,7 @@ LABEL_46:
 
 LABEL_80:
   v46 = [MEMORY[0x1E696AD98] numberWithBool:{-[SISchemaEnabledStatus isSiriInCallEnabled](self, "isSiriInCallEnabled")}];
-  [v3 setObject:v46 forKeyedSubscript:@"isSiriInCallEnabled"];
+  [dictionary setObject:v46 forKeyedSubscript:@"isSiriInCallEnabled"];
 
   v20 = self->_has;
   if ((*&v20 & 0x1000000) == 0)
@@ -865,7 +865,7 @@ LABEL_47:
 
 LABEL_81:
   v47 = [MEMORY[0x1E696AD98] numberWithBool:{-[SISchemaEnabledStatus isVoiceOverEnabled](self, "isVoiceOverEnabled")}];
-  [v3 setObject:v47 forKeyedSubscript:@"isVoiceOverEnabled"];
+  [dictionary setObject:v47 forKeyedSubscript:@"isVoiceOverEnabled"];
 
   v20 = self->_has;
   if ((*&v20 & 0x80000000) == 0)
@@ -891,28 +891,28 @@ LABEL_82:
     v49 = off_1E78E4A10[v48];
   }
 
-  [v3 setObject:v49 forKeyedSubscript:@"locationAccessPermission"];
+  [dictionary setObject:v49 forKeyedSubscript:@"locationAccessPermission"];
   if ((*&self->_has & 0x20) != 0)
   {
 LABEL_49:
     v21 = [MEMORY[0x1E696AD98] numberWithBool:{-[SISchemaEnabledStatus raiseToSpeakEnabled](self, "raiseToSpeakEnabled")}];
-    [v3 setObject:v21 forKeyedSubscript:@"raiseToSpeakEnabled"];
+    [dictionary setObject:v21 forKeyedSubscript:@"raiseToSpeakEnabled"];
   }
 
 LABEL_50:
   if (self->_sendWithoutConfirmation)
   {
-    v22 = [(SISchemaEnabledStatus *)self sendWithoutConfirmation];
-    v23 = [v22 dictionaryRepresentation];
-    if (v23)
+    sendWithoutConfirmation = [(SISchemaEnabledStatus *)self sendWithoutConfirmation];
+    dictionaryRepresentation4 = [sendWithoutConfirmation dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v23 forKeyedSubscript:@"sendWithoutConfirmation"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"sendWithoutConfirmation"];
     }
 
     else
     {
-      v50 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v50 forKeyedSubscript:@"sendWithoutConfirmation"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"sendWithoutConfirmation"];
     }
   }
 
@@ -920,7 +920,7 @@ LABEL_50:
   if ((*&v51 & 0x100) != 0)
   {
     v56 = [MEMORY[0x1E696AD98] numberWithInt:{-[SISchemaEnabledStatus shortcutsAvailable](self, "shortcutsAvailable")}];
-    [v3 setObject:v56 forKeyedSubscript:@"shortcutsAvailable"];
+    [dictionary setObject:v56 forKeyedSubscript:@"shortcutsAvailable"];
 
     v51 = self->_has;
     if ((*&v51 & 0x80000) == 0)
@@ -951,7 +951,7 @@ LABEL_88:
     v58 = off_1E78E4A40[v57];
   }
 
-  [v3 setObject:v58 forKeyedSubscript:@"siriInCallEnablementState"];
+  [dictionary setObject:v58 forKeyedSubscript:@"siriInCallEnablementState"];
   v51 = self->_has;
   if ((*&v51 & 0x10000000) == 0)
   {
@@ -976,30 +976,30 @@ LABEL_99:
     v60 = off_1E78E4A58[v59];
   }
 
-  [v3 setObject:v60 forKeyedSubscript:@"siriPauseTimeState"];
+  [dictionary setObject:v60 forKeyedSubscript:@"siriPauseTimeState"];
   if ((*&self->_has & 0x800000) != 0)
   {
 LABEL_90:
     v52 = MEMORY[0x1E696AD98];
     [(SISchemaEnabledStatus *)self siriSpeechRate];
     v53 = [v52 numberWithDouble:?];
-    [v3 setObject:v53 forKeyedSubscript:@"siriSpeechRate"];
+    [dictionary setObject:v53 forKeyedSubscript:@"siriSpeechRate"];
   }
 
 LABEL_91:
   if (self->_siriVoiceTriggerSettings)
   {
-    v54 = [(SISchemaEnabledStatus *)self siriVoiceTriggerSettings];
-    v55 = [v54 dictionaryRepresentation];
-    if (v55)
+    siriVoiceTriggerSettings = [(SISchemaEnabledStatus *)self siriVoiceTriggerSettings];
+    dictionaryRepresentation5 = [siriVoiceTriggerSettings dictionaryRepresentation];
+    if (dictionaryRepresentation5)
     {
-      [v3 setObject:v55 forKeyedSubscript:@"siriVoiceTriggerSettings"];
+      [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"siriVoiceTriggerSettings"];
     }
 
     else
     {
-      v61 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v61 forKeyedSubscript:@"siriVoiceTriggerSettings"];
+      null5 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null5 forKeyedSubscript:@"siriVoiceTriggerSettings"];
     }
   }
 
@@ -1013,7 +1013,7 @@ LABEL_91:
 
 LABEL_111:
     v64 = [MEMORY[0x1E696AD98] numberWithBool:{-[SISchemaEnabledStatus typeToSiriEnabled](self, "typeToSiriEnabled")}];
-    [v3 setObject:v64 forKeyedSubscript:@"typeToSiriEnabled"];
+    [dictionary setObject:v64 forKeyedSubscript:@"typeToSiriEnabled"];
 
     if ((*&self->_has & 0x1000) == 0)
     {
@@ -1024,7 +1024,7 @@ LABEL_111:
   }
 
   v63 = [MEMORY[0x1E696AD98] numberWithBool:{-[SISchemaEnabledStatus spokenNotificationsEnabled](self, "spokenNotificationsEnabled")}];
-  [v3 setObject:v63 forKeyedSubscript:@"spokenNotificationsEnabled"];
+  [dictionary setObject:v63 forKeyedSubscript:@"spokenNotificationsEnabled"];
 
   v62 = self->_has;
   if ((*&v62 & 0x400) != 0)
@@ -1050,12 +1050,12 @@ LABEL_112:
     v66 = off_1E78E4A70[v65];
   }
 
-  [v3 setObject:v66 forKeyedSubscript:@"voiceFeedback"];
+  [dictionary setObject:v66 forKeyedSubscript:@"voiceFeedback"];
 LABEL_116:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
-  v67 = v3;
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
+  v67 = dictionary;
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -1508,16 +1508,16 @@ LABEL_67:
   return v47 ^ v48 ^ v46 ^ v45 ^ v44 ^ v43 ^ v42 ^ v41 ^ v40 ^ v39 ^ v38 ^ v37 ^ v36 ^ v34 ^ v35 ^ v33 ^ v32 ^ v31 ^ v30 ^ v29 ^ v28 ^ v27 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v15 ^ v16 ^ v17 ^ v19 ^ v20 ^ v21 ^ v22 ^ v23 ^ v24 ^ v25;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_122;
   }
 
   has = self->_has;
-  v6 = v4[36];
+  v6 = equalCopy[36];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_122;
@@ -1526,13 +1526,13 @@ LABEL_67:
   if (*&has)
   {
     assistantEnabled = self->_assistantEnabled;
-    if (assistantEnabled != [v4 assistantEnabled])
+    if (assistantEnabled != [equalCopy assistantEnabled])
     {
       goto LABEL_122;
     }
 
     has = self->_has;
-    v6 = v4[36];
+    v6 = equalCopy[36];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -1544,13 +1544,13 @@ LABEL_67:
   if (v8)
   {
     dictationEnabled = self->_dictationEnabled;
-    if (dictationEnabled != [v4 dictationEnabled])
+    if (dictationEnabled != [equalCopy dictationEnabled])
     {
       goto LABEL_122;
     }
 
     has = self->_has;
-    v6 = v4[36];
+    v6 = equalCopy[36];
   }
 
   v10 = (*&has >> 2) & 1;
@@ -1562,13 +1562,13 @@ LABEL_67:
   if (v10)
   {
     hardwareButtonEnabled = self->_hardwareButtonEnabled;
-    if (hardwareButtonEnabled != [v4 hardwareButtonEnabled])
+    if (hardwareButtonEnabled != [equalCopy hardwareButtonEnabled])
     {
       goto LABEL_122;
     }
 
     has = self->_has;
-    v6 = v4[36];
+    v6 = equalCopy[36];
   }
 
   v12 = (*&has >> 3) & 1;
@@ -1580,13 +1580,13 @@ LABEL_67:
   if (v12)
   {
     heySiriEnabled = self->_heySiriEnabled;
-    if (heySiriEnabled != [v4 heySiriEnabled])
+    if (heySiriEnabled != [equalCopy heySiriEnabled])
     {
       goto LABEL_122;
     }
 
     has = self->_has;
-    v6 = v4[36];
+    v6 = equalCopy[36];
   }
 
   v14 = (*&has >> 4) & 1;
@@ -1598,13 +1598,13 @@ LABEL_67:
   if (v14)
   {
     assistantOnLockscreen = self->_assistantOnLockscreen;
-    if (assistantOnLockscreen != [v4 assistantOnLockscreen])
+    if (assistantOnLockscreen != [equalCopy assistantOnLockscreen])
     {
       goto LABEL_122;
     }
 
     has = self->_has;
-    v6 = v4[36];
+    v6 = equalCopy[36];
   }
 
   v16 = (*&has >> 5) & 1;
@@ -1616,13 +1616,13 @@ LABEL_67:
   if (v16)
   {
     raiseToSpeakEnabled = self->_raiseToSpeakEnabled;
-    if (raiseToSpeakEnabled != [v4 raiseToSpeakEnabled])
+    if (raiseToSpeakEnabled != [equalCopy raiseToSpeakEnabled])
     {
       goto LABEL_122;
     }
 
     has = self->_has;
-    v6 = v4[36];
+    v6 = equalCopy[36];
   }
 
   v18 = (*&has >> 6) & 1;
@@ -1634,13 +1634,13 @@ LABEL_67:
   if (v18)
   {
     spokenNotificationsEnabled = self->_spokenNotificationsEnabled;
-    if (spokenNotificationsEnabled != [v4 spokenNotificationsEnabled])
+    if (spokenNotificationsEnabled != [equalCopy spokenNotificationsEnabled])
     {
       goto LABEL_122;
     }
 
     has = self->_has;
-    v6 = v4[36];
+    v6 = equalCopy[36];
   }
 
   v20 = (*&has >> 7) & 1;
@@ -1652,13 +1652,13 @@ LABEL_67:
   if (v20)
   {
     hasHomekitHome = self->_hasHomekitHome;
-    if (hasHomekitHome != [v4 hasHomekitHome])
+    if (hasHomekitHome != [equalCopy hasHomekitHome])
     {
       goto LABEL_122;
     }
 
     has = self->_has;
-    v6 = v4[36];
+    v6 = equalCopy[36];
   }
 
   v22 = (*&has >> 8) & 1;
@@ -1670,13 +1670,13 @@ LABEL_67:
   if (v22)
   {
     shortcutsAvailable = self->_shortcutsAvailable;
-    if (shortcutsAvailable != [v4 shortcutsAvailable])
+    if (shortcutsAvailable != [equalCopy shortcutsAvailable])
     {
       goto LABEL_122;
     }
 
     has = self->_has;
-    v6 = v4[36];
+    v6 = equalCopy[36];
   }
 
   v24 = (*&has >> 9) & 1;
@@ -1688,13 +1688,13 @@ LABEL_67:
   if (v24)
   {
     dataSharingOptInStatus = self->_dataSharingOptInStatus;
-    if (dataSharingOptInStatus != [v4 dataSharingOptInStatus])
+    if (dataSharingOptInStatus != [equalCopy dataSharingOptInStatus])
     {
       goto LABEL_122;
     }
 
     has = self->_has;
-    v6 = v4[36];
+    v6 = equalCopy[36];
   }
 
   v26 = (*&has >> 10) & 1;
@@ -1706,13 +1706,13 @@ LABEL_67:
   if (v26)
   {
     typeToSiriEnabled = self->_typeToSiriEnabled;
-    if (typeToSiriEnabled != [v4 typeToSiriEnabled])
+    if (typeToSiriEnabled != [equalCopy typeToSiriEnabled])
     {
       goto LABEL_122;
     }
 
     has = self->_has;
-    v6 = v4[36];
+    v6 = equalCopy[36];
   }
 
   v28 = (*&has >> 11) & 1;
@@ -1724,13 +1724,13 @@ LABEL_67:
   if (v28)
   {
     isPreciseLocationEnabled = self->_isPreciseLocationEnabled;
-    if (isPreciseLocationEnabled != [v4 isPreciseLocationEnabled])
+    if (isPreciseLocationEnabled != [equalCopy isPreciseLocationEnabled])
     {
       goto LABEL_122;
     }
 
     has = self->_has;
-    v6 = v4[36];
+    v6 = equalCopy[36];
   }
 
   v30 = (*&has >> 12) & 1;
@@ -1742,26 +1742,26 @@ LABEL_67:
   if (v30)
   {
     voiceFeedback = self->_voiceFeedback;
-    if (voiceFeedback != [v4 voiceFeedback])
+    if (voiceFeedback != [equalCopy voiceFeedback])
     {
       goto LABEL_122;
     }
   }
 
-  v32 = [(SISchemaEnabledStatus *)self announceEnabledStatus];
-  v33 = [v4 announceEnabledStatus];
-  if ((v32 != 0) == (v33 == 0))
+  announceEnabledStatus = [(SISchemaEnabledStatus *)self announceEnabledStatus];
+  announceEnabledStatus2 = [equalCopy announceEnabledStatus];
+  if ((announceEnabledStatus != 0) == (announceEnabledStatus2 == 0))
   {
     goto LABEL_121;
   }
 
-  v34 = [(SISchemaEnabledStatus *)self announceEnabledStatus];
-  if (v34)
+  announceEnabledStatus3 = [(SISchemaEnabledStatus *)self announceEnabledStatus];
+  if (announceEnabledStatus3)
   {
-    v35 = v34;
-    v36 = [(SISchemaEnabledStatus *)self announceEnabledStatus];
-    v37 = [v4 announceEnabledStatus];
-    v38 = [v36 isEqual:v37];
+    v35 = announceEnabledStatus3;
+    announceEnabledStatus4 = [(SISchemaEnabledStatus *)self announceEnabledStatus];
+    announceEnabledStatus5 = [equalCopy announceEnabledStatus];
+    v38 = [announceEnabledStatus4 isEqual:announceEnabledStatus5];
 
     if (!v38)
     {
@@ -1774,7 +1774,7 @@ LABEL_67:
   }
 
   v39 = (*&self->_has >> 13) & 1;
-  if (v39 != ((v4[36] >> 13) & 1))
+  if (v39 != ((equalCopy[36] >> 13) & 1))
   {
     goto LABEL_122;
   }
@@ -1782,26 +1782,26 @@ LABEL_67:
   if (v39)
   {
     isAdaptiveVolumeEnabled = self->_isAdaptiveVolumeEnabled;
-    if (isAdaptiveVolumeEnabled != [v4 isAdaptiveVolumeEnabled])
+    if (isAdaptiveVolumeEnabled != [equalCopy isAdaptiveVolumeEnabled])
     {
       goto LABEL_122;
     }
   }
 
-  v32 = [(SISchemaEnabledStatus *)self adaptiveVolumeUserPreferences];
-  v33 = [v4 adaptiveVolumeUserPreferences];
-  if ((v32 != 0) == (v33 == 0))
+  announceEnabledStatus = [(SISchemaEnabledStatus *)self adaptiveVolumeUserPreferences];
+  announceEnabledStatus2 = [equalCopy adaptiveVolumeUserPreferences];
+  if ((announceEnabledStatus != 0) == (announceEnabledStatus2 == 0))
   {
     goto LABEL_121;
   }
 
-  v41 = [(SISchemaEnabledStatus *)self adaptiveVolumeUserPreferences];
-  if (v41)
+  adaptiveVolumeUserPreferences = [(SISchemaEnabledStatus *)self adaptiveVolumeUserPreferences];
+  if (adaptiveVolumeUserPreferences)
   {
-    v42 = v41;
-    v43 = [(SISchemaEnabledStatus *)self adaptiveVolumeUserPreferences];
-    v44 = [v4 adaptiveVolumeUserPreferences];
-    v45 = [v43 isEqual:v44];
+    v42 = adaptiveVolumeUserPreferences;
+    adaptiveVolumeUserPreferences2 = [(SISchemaEnabledStatus *)self adaptiveVolumeUserPreferences];
+    adaptiveVolumeUserPreferences3 = [equalCopy adaptiveVolumeUserPreferences];
+    v45 = [adaptiveVolumeUserPreferences2 isEqual:adaptiveVolumeUserPreferences3];
 
     if (!v45)
     {
@@ -1814,7 +1814,7 @@ LABEL_67:
   }
 
   v46 = (*&self->_has >> 14) & 1;
-  if (v46 != ((v4[36] >> 14) & 1))
+  if (v46 != ((equalCopy[36] >> 14) & 1))
   {
     goto LABEL_122;
   }
@@ -1822,26 +1822,26 @@ LABEL_67:
   if (v46)
   {
     isRemoteDarwinHeySiriEnabled = self->_isRemoteDarwinHeySiriEnabled;
-    if (isRemoteDarwinHeySiriEnabled != [v4 isRemoteDarwinHeySiriEnabled])
+    if (isRemoteDarwinHeySiriEnabled != [equalCopy isRemoteDarwinHeySiriEnabled])
     {
       goto LABEL_122;
     }
   }
 
-  v32 = [(SISchemaEnabledStatus *)self gradingOptInStateChanges];
-  v33 = [v4 gradingOptInStateChanges];
-  if ((v32 != 0) == (v33 == 0))
+  announceEnabledStatus = [(SISchemaEnabledStatus *)self gradingOptInStateChanges];
+  announceEnabledStatus2 = [equalCopy gradingOptInStateChanges];
+  if ((announceEnabledStatus != 0) == (announceEnabledStatus2 == 0))
   {
     goto LABEL_121;
   }
 
-  v48 = [(SISchemaEnabledStatus *)self gradingOptInStateChanges];
-  if (v48)
+  gradingOptInStateChanges = [(SISchemaEnabledStatus *)self gradingOptInStateChanges];
+  if (gradingOptInStateChanges)
   {
-    v49 = v48;
-    v50 = [(SISchemaEnabledStatus *)self gradingOptInStateChanges];
-    v51 = [v4 gradingOptInStateChanges];
-    v52 = [v50 isEqual:v51];
+    v49 = gradingOptInStateChanges;
+    gradingOptInStateChanges2 = [(SISchemaEnabledStatus *)self gradingOptInStateChanges];
+    gradingOptInStateChanges3 = [equalCopy gradingOptInStateChanges];
+    v52 = [gradingOptInStateChanges2 isEqual:gradingOptInStateChanges3];
 
     if (!v52)
     {
@@ -1854,7 +1854,7 @@ LABEL_67:
   }
 
   v53 = (*&self->_has >> 15) & 1;
-  if (v53 != ((v4[36] >> 15) & 1))
+  if (v53 != ((equalCopy[36] >> 15) & 1))
   {
     goto LABEL_122;
   }
@@ -1862,26 +1862,26 @@ LABEL_67:
   if (v53)
   {
     isAutoPunctuationEnabled = self->_isAutoPunctuationEnabled;
-    if (isAutoPunctuationEnabled != [v4 isAutoPunctuationEnabled])
+    if (isAutoPunctuationEnabled != [equalCopy isAutoPunctuationEnabled])
     {
       goto LABEL_122;
     }
   }
 
-  v32 = [(SISchemaEnabledStatus *)self sendWithoutConfirmation];
-  v33 = [v4 sendWithoutConfirmation];
-  if ((v32 != 0) == (v33 == 0))
+  announceEnabledStatus = [(SISchemaEnabledStatus *)self sendWithoutConfirmation];
+  announceEnabledStatus2 = [equalCopy sendWithoutConfirmation];
+  if ((announceEnabledStatus != 0) == (announceEnabledStatus2 == 0))
   {
     goto LABEL_121;
   }
 
-  v55 = [(SISchemaEnabledStatus *)self sendWithoutConfirmation];
-  if (v55)
+  sendWithoutConfirmation = [(SISchemaEnabledStatus *)self sendWithoutConfirmation];
+  if (sendWithoutConfirmation)
   {
-    v56 = v55;
-    v57 = [(SISchemaEnabledStatus *)self sendWithoutConfirmation];
-    v58 = [v4 sendWithoutConfirmation];
-    v59 = [v57 isEqual:v58];
+    v56 = sendWithoutConfirmation;
+    sendWithoutConfirmation2 = [(SISchemaEnabledStatus *)self sendWithoutConfirmation];
+    sendWithoutConfirmation3 = [equalCopy sendWithoutConfirmation];
+    v59 = [sendWithoutConfirmation2 isEqual:sendWithoutConfirmation3];
 
     if (!v59)
     {
@@ -1895,7 +1895,7 @@ LABEL_67:
 
   v60 = self->_has;
   v61 = HIWORD(*&v60) & 1;
-  v62 = v4[36];
+  v62 = equalCopy[36];
   if (v61 != (HIWORD(v62) & 1))
   {
     goto LABEL_122;
@@ -1904,13 +1904,13 @@ LABEL_67:
   if (v61)
   {
     isHSHangupEnabled = self->_isHSHangupEnabled;
-    if (isHSHangupEnabled != [v4 isHSHangupEnabled])
+    if (isHSHangupEnabled != [equalCopy isHSHangupEnabled])
     {
       goto LABEL_122;
     }
 
     v60 = self->_has;
-    v62 = v4[36];
+    v62 = equalCopy[36];
   }
 
   v64 = (*&v60 >> 17) & 1;
@@ -1922,13 +1922,13 @@ LABEL_67:
   if (v64)
   {
     isSiriInCallEnabled = self->_isSiriInCallEnabled;
-    if (isSiriInCallEnabled != [v4 isSiriInCallEnabled])
+    if (isSiriInCallEnabled != [equalCopy isSiriInCallEnabled])
     {
       goto LABEL_122;
     }
 
     v60 = self->_has;
-    v62 = v4[36];
+    v62 = equalCopy[36];
   }
 
   v66 = (*&v60 >> 18) & 1;
@@ -1940,13 +1940,13 @@ LABEL_67:
   if (v66)
   {
     hsHangupEnablementState = self->_hsHangupEnablementState;
-    if (hsHangupEnablementState != [v4 hsHangupEnablementState])
+    if (hsHangupEnablementState != [equalCopy hsHangupEnablementState])
     {
       goto LABEL_122;
     }
 
     v60 = self->_has;
-    v62 = v4[36];
+    v62 = equalCopy[36];
   }
 
   v68 = (*&v60 >> 19) & 1;
@@ -1958,13 +1958,13 @@ LABEL_67:
   if (v68)
   {
     siriInCallEnablementState = self->_siriInCallEnablementState;
-    if (siriInCallEnablementState != [v4 siriInCallEnablementState])
+    if (siriInCallEnablementState != [equalCopy siriInCallEnablementState])
     {
       goto LABEL_122;
     }
 
     v60 = self->_has;
-    v62 = v4[36];
+    v62 = equalCopy[36];
   }
 
   v70 = (*&v60 >> 20) & 1;
@@ -1976,13 +1976,13 @@ LABEL_67:
   if (v70)
   {
     isAlwaysShowSiriCaptionsEnabled = self->_isAlwaysShowSiriCaptionsEnabled;
-    if (isAlwaysShowSiriCaptionsEnabled != [v4 isAlwaysShowSiriCaptionsEnabled])
+    if (isAlwaysShowSiriCaptionsEnabled != [equalCopy isAlwaysShowSiriCaptionsEnabled])
     {
       goto LABEL_122;
     }
 
     v60 = self->_has;
-    v62 = v4[36];
+    v62 = equalCopy[36];
   }
 
   v72 = (*&v60 >> 21) & 1;
@@ -1994,13 +1994,13 @@ LABEL_67:
   if (v72)
   {
     isAlwaysShowSpeechEnabled = self->_isAlwaysShowSpeechEnabled;
-    if (isAlwaysShowSpeechEnabled != [v4 isAlwaysShowSpeechEnabled])
+    if (isAlwaysShowSpeechEnabled != [equalCopy isAlwaysShowSpeechEnabled])
     {
       goto LABEL_122;
     }
 
     v60 = self->_has;
-    v62 = v4[36];
+    v62 = equalCopy[36];
   }
 
   v74 = (*&v60 >> 22) & 1;
@@ -2012,13 +2012,13 @@ LABEL_67:
   if (v74)
   {
     isShowAppsBehindSiriEnabled = self->_isShowAppsBehindSiriEnabled;
-    if (isShowAppsBehindSiriEnabled != [v4 isShowAppsBehindSiriEnabled])
+    if (isShowAppsBehindSiriEnabled != [equalCopy isShowAppsBehindSiriEnabled])
     {
       goto LABEL_122;
     }
 
     v60 = self->_has;
-    v62 = v4[36];
+    v62 = equalCopy[36];
   }
 
   v76 = (*&v60 >> 23) & 1;
@@ -2030,14 +2030,14 @@ LABEL_67:
   if (v76)
   {
     siriSpeechRate = self->_siriSpeechRate;
-    [v4 siriSpeechRate];
+    [equalCopy siriSpeechRate];
     if (siriSpeechRate != v78)
     {
       goto LABEL_122;
     }
 
     v60 = self->_has;
-    v62 = v4[36];
+    v62 = equalCopy[36];
   }
 
   v79 = HIBYTE(*&v60) & 1;
@@ -2049,28 +2049,28 @@ LABEL_67:
   if (v79)
   {
     isVoiceOverEnabled = self->_isVoiceOverEnabled;
-    if (isVoiceOverEnabled != [v4 isVoiceOverEnabled])
+    if (isVoiceOverEnabled != [equalCopy isVoiceOverEnabled])
     {
       goto LABEL_122;
     }
   }
 
-  v32 = [(SISchemaEnabledStatus *)self siriVoiceTriggerSettings];
-  v33 = [v4 siriVoiceTriggerSettings];
-  if ((v32 != 0) == (v33 == 0))
+  announceEnabledStatus = [(SISchemaEnabledStatus *)self siriVoiceTriggerSettings];
+  announceEnabledStatus2 = [equalCopy siriVoiceTriggerSettings];
+  if ((announceEnabledStatus != 0) == (announceEnabledStatus2 == 0))
   {
 LABEL_121:
 
     goto LABEL_122;
   }
 
-  v81 = [(SISchemaEnabledStatus *)self siriVoiceTriggerSettings];
-  if (v81)
+  siriVoiceTriggerSettings = [(SISchemaEnabledStatus *)self siriVoiceTriggerSettings];
+  if (siriVoiceTriggerSettings)
   {
-    v82 = v81;
-    v83 = [(SISchemaEnabledStatus *)self siriVoiceTriggerSettings];
-    v84 = [v4 siriVoiceTriggerSettings];
-    v85 = [v83 isEqual:v84];
+    v82 = siriVoiceTriggerSettings;
+    siriVoiceTriggerSettings2 = [(SISchemaEnabledStatus *)self siriVoiceTriggerSettings];
+    siriVoiceTriggerSettings3 = [equalCopy siriVoiceTriggerSettings];
+    v85 = [siriVoiceTriggerSettings2 isEqual:siriVoiceTriggerSettings3];
 
     if (!v85)
     {
@@ -2084,19 +2084,19 @@ LABEL_121:
 
   v88 = self->_has;
   v89 = (*&v88 >> 25) & 1;
-  v90 = v4[36];
+  v90 = equalCopy[36];
   if (v89 == ((v90 >> 25) & 1))
   {
     if (v89)
     {
       isShowAppsBehindSiriEnabledOnCarPlay = self->_isShowAppsBehindSiriEnabledOnCarPlay;
-      if (isShowAppsBehindSiriEnabledOnCarPlay != [v4 isShowAppsBehindSiriEnabledOnCarPlay])
+      if (isShowAppsBehindSiriEnabledOnCarPlay != [equalCopy isShowAppsBehindSiriEnabledOnCarPlay])
       {
         goto LABEL_122;
       }
 
       v88 = self->_has;
-      v90 = v4[36];
+      v90 = equalCopy[36];
     }
 
     v92 = (*&v88 >> 26) & 1;
@@ -2105,13 +2105,13 @@ LABEL_121:
       if (v92)
       {
         isSiriCapableDigitalCarKeyAvailable = self->_isSiriCapableDigitalCarKeyAvailable;
-        if (isSiriCapableDigitalCarKeyAvailable != [v4 isSiriCapableDigitalCarKeyAvailable])
+        if (isSiriCapableDigitalCarKeyAvailable != [equalCopy isSiriCapableDigitalCarKeyAvailable])
         {
           goto LABEL_122;
         }
 
         v88 = self->_has;
-        v90 = v4[36];
+        v90 = equalCopy[36];
       }
 
       v94 = (*&v88 >> 27) & 1;
@@ -2120,13 +2120,13 @@ LABEL_121:
         if (v94)
         {
           isAlwaysListenForHeySiriEnabled = self->_isAlwaysListenForHeySiriEnabled;
-          if (isAlwaysListenForHeySiriEnabled != [v4 isAlwaysListenForHeySiriEnabled])
+          if (isAlwaysListenForHeySiriEnabled != [equalCopy isAlwaysListenForHeySiriEnabled])
           {
             goto LABEL_122;
           }
 
           v88 = self->_has;
-          v90 = v4[36];
+          v90 = equalCopy[36];
         }
 
         v96 = (*&v88 >> 28) & 1;
@@ -2135,13 +2135,13 @@ LABEL_121:
           if (v96)
           {
             siriPauseTimeState = self->_siriPauseTimeState;
-            if (siriPauseTimeState != [v4 siriPauseTimeState])
+            if (siriPauseTimeState != [equalCopy siriPauseTimeState])
             {
               goto LABEL_122;
             }
 
             v88 = self->_has;
-            v90 = v4[36];
+            v90 = equalCopy[36];
           }
 
           v98 = (*&v88 >> 29) & 1;
@@ -2150,13 +2150,13 @@ LABEL_121:
             if (v98)
             {
               isMteUploadEnabled = self->_isMteUploadEnabled;
-              if (isMteUploadEnabled != [v4 isMteUploadEnabled])
+              if (isMteUploadEnabled != [equalCopy isMteUploadEnabled])
               {
                 goto LABEL_122;
               }
 
               v88 = self->_has;
-              v90 = v4[36];
+              v90 = equalCopy[36];
             }
 
             v100 = (*&v88 >> 30) & 1;
@@ -2165,18 +2165,18 @@ LABEL_121:
               if (v100)
               {
                 isServerUserDataSyncEnabled = self->_isServerUserDataSyncEnabled;
-                if (isServerUserDataSyncEnabled != [v4 isServerUserDataSyncEnabled])
+                if (isServerUserDataSyncEnabled != [equalCopy isServerUserDataSyncEnabled])
                 {
                   goto LABEL_122;
                 }
 
                 v88 = self->_has;
-                v90 = v4[36];
+                v90 = equalCopy[36];
               }
 
               if (((v90 ^ *&v88) & 0x80000000) == 0)
               {
-                if ((*&v88 & 0x80000000) == 0 || (locationAccessPermission = self->_locationAccessPermission, locationAccessPermission == [v4 locationAccessPermission]))
+                if ((*&v88 & 0x80000000) == 0 || (locationAccessPermission = self->_locationAccessPermission, locationAccessPermission == [equalCopy locationAccessPermission]))
                 {
                   v86 = 1;
                   goto LABEL_123;
@@ -2196,10 +2196,10 @@ LABEL_123:
   return v86;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (*&has)
   {
@@ -2370,11 +2370,11 @@ LABEL_14:
   }
 
 LABEL_15:
-  v6 = [(SISchemaEnabledStatus *)self announceEnabledStatus];
+  announceEnabledStatus = [(SISchemaEnabledStatus *)self announceEnabledStatus];
 
-  if (v6)
+  if (announceEnabledStatus)
   {
-    v7 = [(SISchemaEnabledStatus *)self announceEnabledStatus];
+    announceEnabledStatus2 = [(SISchemaEnabledStatus *)self announceEnabledStatus];
     PBDataWriterWriteSubmessage();
   }
 
@@ -2383,11 +2383,11 @@ LABEL_15:
     PBDataWriterWriteBOOLField();
   }
 
-  v8 = [(SISchemaEnabledStatus *)self adaptiveVolumeUserPreferences];
+  adaptiveVolumeUserPreferences = [(SISchemaEnabledStatus *)self adaptiveVolumeUserPreferences];
 
-  if (v8)
+  if (adaptiveVolumeUserPreferences)
   {
-    v9 = [(SISchemaEnabledStatus *)self adaptiveVolumeUserPreferences];
+    adaptiveVolumeUserPreferences2 = [(SISchemaEnabledStatus *)self adaptiveVolumeUserPreferences];
     PBDataWriterWriteSubmessage();
   }
 
@@ -2429,11 +2429,11 @@ LABEL_15:
     PBDataWriterWriteBOOLField();
   }
 
-  v15 = [(SISchemaEnabledStatus *)self sendWithoutConfirmation];
+  sendWithoutConfirmation = [(SISchemaEnabledStatus *)self sendWithoutConfirmation];
 
-  if (v15)
+  if (sendWithoutConfirmation)
   {
-    v16 = [(SISchemaEnabledStatus *)self sendWithoutConfirmation];
+    sendWithoutConfirmation2 = [(SISchemaEnabledStatus *)self sendWithoutConfirmation];
     PBDataWriterWriteSubmessage();
   }
 
@@ -2551,11 +2551,11 @@ LABEL_43:
   }
 
 LABEL_44:
-  v18 = [(SISchemaEnabledStatus *)self siriVoiceTriggerSettings];
+  siriVoiceTriggerSettings = [(SISchemaEnabledStatus *)self siriVoiceTriggerSettings];
 
-  if (v18)
+  if (siriVoiceTriggerSettings)
   {
-    v19 = [(SISchemaEnabledStatus *)self siriVoiceTriggerSettings];
+    siriVoiceTriggerSettings2 = [(SISchemaEnabledStatus *)self siriVoiceTriggerSettings];
     PBDataWriterWriteSubmessage();
   }
 
@@ -2648,9 +2648,9 @@ LABEL_52:
 LABEL_53:
 }
 
-- (void)setHasLocationAccessPermission:(BOOL)a3
+- (void)setHasLocationAccessPermission:(BOOL)permission
 {
-  if (a3)
+  if (permission)
   {
     v3 = 0x80000000;
   }
@@ -2663,9 +2663,9 @@ LABEL_53:
   self->_has = (v3 & 0x80000000 | *&self->_has & 0x7FFFFFFF);
 }
 
-- (void)setHasIsServerUserDataSyncEnabled:(BOOL)a3
+- (void)setHasIsServerUserDataSyncEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 0x40000000;
   }
@@ -2678,9 +2678,9 @@ LABEL_53:
   self->_has = (*&self->_has & 0xBFFFFFFF | v3);
 }
 
-- (void)setHasIsMteUploadEnabled:(BOOL)a3
+- (void)setHasIsMteUploadEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 0x20000000;
   }
@@ -2693,9 +2693,9 @@ LABEL_53:
   self->_has = (*&self->_has & 0xDFFFFFFF | v3);
 }
 
-- (void)setHasSiriPauseTimeState:(BOOL)a3
+- (void)setHasSiriPauseTimeState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 0x10000000;
   }
@@ -2708,9 +2708,9 @@ LABEL_53:
   self->_has = (*&self->_has & 0xEFFFFFFF | v3);
 }
 
-- (void)setHasIsAlwaysListenForHeySiriEnabled:(BOOL)a3
+- (void)setHasIsAlwaysListenForHeySiriEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 0x8000000;
   }
@@ -2723,9 +2723,9 @@ LABEL_53:
   self->_has = (*&self->_has & 0xF7FFFFFF | v3);
 }
 
-- (void)setHasIsSiriCapableDigitalCarKeyAvailable:(BOOL)a3
+- (void)setHasIsSiriCapableDigitalCarKeyAvailable:(BOOL)available
 {
-  if (a3)
+  if (available)
   {
     v3 = 0x4000000;
   }
@@ -2738,9 +2738,9 @@ LABEL_53:
   self->_has = (*&self->_has & 0xFBFFFFFF | v3);
 }
 
-- (void)setHasIsShowAppsBehindSiriEnabledOnCarPlay:(BOOL)a3
+- (void)setHasIsShowAppsBehindSiriEnabledOnCarPlay:(BOOL)play
 {
-  if (a3)
+  if (play)
   {
     v3 = 0x2000000;
   }
@@ -2753,9 +2753,9 @@ LABEL_53:
   self->_has = (*&self->_has & 0xFDFFFFFF | v3);
 }
 
-- (void)setHasIsVoiceOverEnabled:(BOOL)a3
+- (void)setHasIsVoiceOverEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 0x1000000;
   }
@@ -2768,9 +2768,9 @@ LABEL_53:
   self->_has = (*&self->_has & 0xFEFFFFFF | v3);
 }
 
-- (void)setHasSiriSpeechRate:(BOOL)a3
+- (void)setHasSiriSpeechRate:(BOOL)rate
 {
-  if (a3)
+  if (rate)
   {
     v3 = 0x800000;
   }
@@ -2783,9 +2783,9 @@ LABEL_53:
   self->_has = (*&self->_has & 0xFF7FFFFF | v3);
 }
 
-- (void)setHasIsShowAppsBehindSiriEnabled:(BOOL)a3
+- (void)setHasIsShowAppsBehindSiriEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 0x400000;
   }
@@ -2798,9 +2798,9 @@ LABEL_53:
   self->_has = (*&self->_has & 0xFFBFFFFF | v3);
 }
 
-- (void)setHasIsAlwaysShowSpeechEnabled:(BOOL)a3
+- (void)setHasIsAlwaysShowSpeechEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 0x200000;
   }
@@ -2813,9 +2813,9 @@ LABEL_53:
   self->_has = (*&self->_has & 0xFFDFFFFF | v3);
 }
 
-- (void)setHasIsAlwaysShowSiriCaptionsEnabled:(BOOL)a3
+- (void)setHasIsAlwaysShowSiriCaptionsEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 0x100000;
   }
@@ -2828,9 +2828,9 @@ LABEL_53:
   self->_has = (*&self->_has & 0xFFEFFFFF | v3);
 }
 
-- (void)setHasSiriInCallEnablementState:(BOOL)a3
+- (void)setHasSiriInCallEnablementState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 0x80000;
   }
@@ -2843,9 +2843,9 @@ LABEL_53:
   self->_has = (*&self->_has & 0xFFF7FFFF | v3);
 }
 
-- (void)setHasHsHangupEnablementState:(BOOL)a3
+- (void)setHasHsHangupEnablementState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 0x40000;
   }
@@ -2858,9 +2858,9 @@ LABEL_53:
   self->_has = (*&self->_has & 0xFFFBFFFF | v3);
 }
 
-- (void)setHasIsSiriInCallEnabled:(BOOL)a3
+- (void)setHasIsSiriInCallEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 0x20000;
   }
@@ -2873,9 +2873,9 @@ LABEL_53:
   self->_has = (*&self->_has & 0xFFFDFFFF | v3);
 }
 
-- (void)setHasIsHSHangupEnabled:(BOOL)a3
+- (void)setHasIsHSHangupEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 0x10000;
   }
@@ -2888,9 +2888,9 @@ LABEL_53:
   self->_has = (*&self->_has & 0xFFFEFFFF | v3);
 }
 
-- (void)setHasIsAutoPunctuationEnabled:(BOOL)a3
+- (void)setHasIsAutoPunctuationEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 0x8000;
   }
@@ -2903,27 +2903,27 @@ LABEL_53:
   self->_has = (*&self->_has & 0xFFFF7FFF | v3);
 }
 
-- (void)addGradingOptInStateChanges:(id)a3
+- (void)addGradingOptInStateChanges:(id)changes
 {
-  v4 = a3;
+  changesCopy = changes;
   gradingOptInStateChanges = self->_gradingOptInStateChanges;
-  v8 = v4;
+  v8 = changesCopy;
   if (!gradingOptInStateChanges)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_gradingOptInStateChanges;
-    self->_gradingOptInStateChanges = v6;
+    self->_gradingOptInStateChanges = array;
 
-    v4 = v8;
+    changesCopy = v8;
     gradingOptInStateChanges = self->_gradingOptInStateChanges;
   }
 
-  [(NSArray *)gradingOptInStateChanges addObject:v4];
+  [(NSArray *)gradingOptInStateChanges addObject:changesCopy];
 }
 
-- (void)setHasIsRemoteDarwinHeySiriEnabled:(BOOL)a3
+- (void)setHasIsRemoteDarwinHeySiriEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 0x4000;
   }
@@ -2936,9 +2936,9 @@ LABEL_53:
   self->_has = (*&self->_has & 0xFFFFBFFF | v3);
 }
 
-- (void)setHasIsAdaptiveVolumeEnabled:(BOOL)a3
+- (void)setHasIsAdaptiveVolumeEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 0x2000;
   }
@@ -2951,9 +2951,9 @@ LABEL_53:
   self->_has = (*&self->_has & 0xFFFFDFFF | v3);
 }
 
-- (void)setHasVoiceFeedback:(BOOL)a3
+- (void)setHasVoiceFeedback:(BOOL)feedback
 {
-  if (a3)
+  if (feedback)
   {
     v3 = 4096;
   }
@@ -2966,9 +2966,9 @@ LABEL_53:
   self->_has = (*&self->_has & 0xFFFFEFFF | v3);
 }
 
-- (void)setHasIsPreciseLocationEnabled:(BOOL)a3
+- (void)setHasIsPreciseLocationEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 2048;
   }
@@ -2981,9 +2981,9 @@ LABEL_53:
   self->_has = (*&self->_has & 0xFFFFF7FF | v3);
 }
 
-- (void)setHasTypeToSiriEnabled:(BOOL)a3
+- (void)setHasTypeToSiriEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 1024;
   }
@@ -2996,9 +2996,9 @@ LABEL_53:
   self->_has = (*&self->_has & 0xFFFFFBFF | v3);
 }
 
-- (void)setHasDataSharingOptInStatus:(BOOL)a3
+- (void)setHasDataSharingOptInStatus:(BOOL)status
 {
-  if (a3)
+  if (status)
   {
     v3 = 512;
   }
@@ -3011,9 +3011,9 @@ LABEL_53:
   self->_has = (*&self->_has & 0xFFFFFDFF | v3);
 }
 
-- (void)setHasShortcutsAvailable:(BOOL)a3
+- (void)setHasShortcutsAvailable:(BOOL)available
 {
-  if (a3)
+  if (available)
   {
     v3 = 256;
   }
@@ -3026,9 +3026,9 @@ LABEL_53:
   self->_has = (*&self->_has & 0xFFFFFEFF | v3);
 }
 
-- (void)setHasHasHomekitHome:(BOOL)a3
+- (void)setHasHasHomekitHome:(BOOL)home
 {
-  if (a3)
+  if (home)
   {
     v3 = 128;
   }
@@ -3041,9 +3041,9 @@ LABEL_53:
   self->_has = (*&self->_has & 0xFFFFFF7F | v3);
 }
 
-- (void)setHasSpokenNotificationsEnabled:(BOOL)a3
+- (void)setHasSpokenNotificationsEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 64;
   }
@@ -3056,9 +3056,9 @@ LABEL_53:
   self->_has = (*&self->_has & 0xFFFFFFBF | v3);
 }
 
-- (void)setHasRaiseToSpeakEnabled:(BOOL)a3
+- (void)setHasRaiseToSpeakEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 32;
   }
@@ -3071,9 +3071,9 @@ LABEL_53:
   self->_has = (*&self->_has & 0xFFFFFFDF | v3);
 }
 
-- (void)setHasAssistantOnLockscreen:(BOOL)a3
+- (void)setHasAssistantOnLockscreen:(BOOL)lockscreen
 {
-  if (a3)
+  if (lockscreen)
   {
     v3 = 16;
   }
@@ -3086,9 +3086,9 @@ LABEL_53:
   self->_has = (*&self->_has & 0xFFFFFFEF | v3);
 }
 
-- (void)setHasHeySiriEnabled:(BOOL)a3
+- (void)setHasHeySiriEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 8;
   }
@@ -3101,9 +3101,9 @@ LABEL_53:
   self->_has = (*&self->_has & 0xFFFFFFF7 | v3);
 }
 
-- (void)setHasHardwareButtonEnabled:(BOOL)a3
+- (void)setHasHardwareButtonEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 4;
   }
@@ -3116,9 +3116,9 @@ LABEL_53:
   self->_has = (*&self->_has & 0xFFFFFFFB | v3);
 }
 
-- (void)setHasDictationEnabled:(BOOL)a3
+- (void)setHasDictationEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 2;
   }
@@ -3131,48 +3131,48 @@ LABEL_53:
   self->_has = (*&self->_has & 0xFFFFFFFD | v3);
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v21.receiver = self;
   v21.super_class = SISchemaEnabledStatus;
-  v5 = [(SISchemaInstrumentationMessage *)&v21 applySensitiveConditionsPolicy:v4];
-  v6 = [(SISchemaEnabledStatus *)self announceEnabledStatus];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v21 applySensitiveConditionsPolicy:policyCopy];
+  announceEnabledStatus = [(SISchemaEnabledStatus *)self announceEnabledStatus];
+  v7 = [announceEnabledStatus applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(SISchemaEnabledStatus *)self deleteAnnounceEnabledStatus];
   }
 
-  v9 = [(SISchemaEnabledStatus *)self adaptiveVolumeUserPreferences];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  adaptiveVolumeUserPreferences = [(SISchemaEnabledStatus *)self adaptiveVolumeUserPreferences];
+  v10 = [adaptiveVolumeUserPreferences applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(SISchemaEnabledStatus *)self deleteAdaptiveVolumeUserPreferences];
   }
 
-  v12 = [(SISchemaEnabledStatus *)self gradingOptInStateChanges];
-  v13 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v12 underConditions:v4];
+  gradingOptInStateChanges = [(SISchemaEnabledStatus *)self gradingOptInStateChanges];
+  v13 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:gradingOptInStateChanges underConditions:policyCopy];
   [(SISchemaEnabledStatus *)self setGradingOptInStateChanges:v13];
 
-  v14 = [(SISchemaEnabledStatus *)self sendWithoutConfirmation];
-  v15 = [v14 applySensitiveConditionsPolicy:v4];
-  v16 = [v15 suppressMessage];
+  sendWithoutConfirmation = [(SISchemaEnabledStatus *)self sendWithoutConfirmation];
+  v15 = [sendWithoutConfirmation applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v15 suppressMessage];
 
-  if (v16)
+  if (suppressMessage3)
   {
     [(SISchemaEnabledStatus *)self deleteSendWithoutConfirmation];
   }
 
-  v17 = [(SISchemaEnabledStatus *)self siriVoiceTriggerSettings];
-  v18 = [v17 applySensitiveConditionsPolicy:v4];
-  v19 = [v18 suppressMessage];
+  siriVoiceTriggerSettings = [(SISchemaEnabledStatus *)self siriVoiceTriggerSettings];
+  v18 = [siriVoiceTriggerSettings applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage4 = [v18 suppressMessage];
 
-  if (v19)
+  if (suppressMessage4)
   {
     [(SISchemaEnabledStatus *)self deleteSiriVoiceTriggerSettings];
   }

@@ -1,50 +1,50 @@
 @interface PEAdjustmentDataCache
-+ (CGSize)synchronousInputSizeForAsset:(id)a3 disposition:(int64_t *)a4;
-+ (id)compositionControllerForAssetIfLoaded:(id)a3 disposition:(int64_t *)a4;
-+ (id)entryForAsset:(id)a3 networkAccessAllowed:(BOOL)a4 disposition:(int64_t *)a5 originalAdjustmentData:(BOOL)a6;
-+ (id)synchronousCompositionControllerForAsset:(id)a3 networkAccessAllowed:(BOOL)a4 disposition:(int64_t *)a5 originalComposition:(BOOL)a6;
-+ (id)synchronousEditorBundleIDForAsset:(id)a3;
++ (CGSize)synchronousInputSizeForAsset:(id)asset disposition:(int64_t *)disposition;
++ (id)compositionControllerForAssetIfLoaded:(id)loaded disposition:(int64_t *)disposition;
++ (id)entryForAsset:(id)asset networkAccessAllowed:(BOOL)allowed disposition:(int64_t *)disposition originalAdjustmentData:(BOOL)data;
++ (id)synchronousCompositionControllerForAsset:(id)asset networkAccessAllowed:(BOOL)allowed disposition:(int64_t *)disposition originalComposition:(BOOL)composition;
++ (id)synchronousEditorBundleIDForAsset:(id)asset;
 + (void)initialize;
-+ (void)requestCompositionControllerForAsset:(id)a3 networkAccessAllowed:(BOOL)a4 queue:(id)a5 completion:(id)a6;
++ (void)requestCompositionControllerForAsset:(id)asset networkAccessAllowed:(BOOL)allowed queue:(id)queue completion:(id)completion;
 @end
 
 @implementation PEAdjustmentDataCache
 
-+ (id)entryForAsset:(id)a3 networkAccessAllowed:(BOOL)a4 disposition:(int64_t *)a5 originalAdjustmentData:(BOOL)a6
++ (id)entryForAsset:(id)asset networkAccessAllowed:(BOOL)allowed disposition:(int64_t *)disposition originalAdjustmentData:(BOOL)data
 {
-  v6 = a6;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[PEAdjustmentDataCacheKey alloc] initWithAsset:v9 originalAdjustmentData:v6];
+  dataCopy = data;
+  allowedCopy = allowed;
+  assetCopy = asset;
+  v10 = [[PEAdjustmentDataCacheKey alloc] initWithAsset:assetCopy originalAdjustmentData:dataCopy];
   v11 = [sCache objectForKey:v10];
   if (!v11)
   {
-    v11 = [[PEAdjustmentDataCacheEntry alloc] initWithAsset:v9 networkAccessAllowed:v8 originalAdjustmentData:v6];
+    v11 = [[PEAdjustmentDataCacheEntry alloc] initWithAsset:assetCopy networkAccessAllowed:allowedCopy originalAdjustmentData:dataCopy];
     [sCache setObject:v11 forKey:v10];
   }
 
   [(PEAdjustmentDataCacheEntry *)v11 waitForResultsWithTimeout];
-  if (a5)
+  if (disposition)
   {
     if (v11)
     {
-      v12 = [(PEAdjustmentDataCacheEntry *)v11 disposition];
+      disposition = [(PEAdjustmentDataCacheEntry *)v11 disposition];
     }
 
     else
     {
-      v12 = [v9 hasAdjustments] ^ 1;
+      disposition = [assetCopy hasAdjustments] ^ 1;
     }
 
-    *a5 = v12;
+    *disposition = disposition;
   }
 
   return v11;
 }
 
-+ (CGSize)synchronousInputSizeForAsset:(id)a3 disposition:(int64_t *)a4
++ (CGSize)synchronousInputSizeForAsset:(id)asset disposition:(int64_t *)disposition
 {
-  v4 = [PEAdjustmentDataCache entryForAsset:a3 networkAccessAllowed:1 disposition:a4 originalAdjustmentData:0];
+  v4 = [PEAdjustmentDataCache entryForAsset:asset networkAccessAllowed:1 disposition:disposition originalAdjustmentData:0];
   [v4 inputSize];
   v6 = v5;
   v8 = v7;
@@ -56,60 +56,60 @@
   return result;
 }
 
-+ (id)synchronousEditorBundleIDForAsset:(id)a3
++ (id)synchronousEditorBundleIDForAsset:(id)asset
 {
   v6 = 0;
-  v3 = [PEAdjustmentDataCache entryForAsset:a3 networkAccessAllowed:0 disposition:&v6 originalAdjustmentData:0];
-  v4 = [v3 editorBundleID];
+  v3 = [PEAdjustmentDataCache entryForAsset:asset networkAccessAllowed:0 disposition:&v6 originalAdjustmentData:0];
+  editorBundleID = [v3 editorBundleID];
 
-  return v4;
+  return editorBundleID;
 }
 
-+ (id)synchronousCompositionControllerForAsset:(id)a3 networkAccessAllowed:(BOOL)a4 disposition:(int64_t *)a5 originalComposition:(BOOL)a6
++ (id)synchronousCompositionControllerForAsset:(id)asset networkAccessAllowed:(BOOL)allowed disposition:(int64_t *)disposition originalComposition:(BOOL)composition
 {
-  v6 = [PEAdjustmentDataCache entryForAsset:a3 networkAccessAllowed:a4 disposition:a5 originalAdjustmentData:a6];
-  v7 = [v6 compositionController];
+  v6 = [PEAdjustmentDataCache entryForAsset:asset networkAccessAllowed:allowed disposition:disposition originalAdjustmentData:composition];
+  compositionController = [v6 compositionController];
 
-  return v7;
+  return compositionController;
 }
 
-+ (id)compositionControllerForAssetIfLoaded:(id)a3 disposition:(int64_t *)a4
++ (id)compositionControllerForAssetIfLoaded:(id)loaded disposition:(int64_t *)disposition
 {
-  v5 = a3;
-  v6 = [[PEAdjustmentDataCacheKey alloc] initWithAsset:v5 originalAdjustmentData:0];
+  loadedCopy = loaded;
+  v6 = [[PEAdjustmentDataCacheKey alloc] initWithAsset:loadedCopy originalAdjustmentData:0];
   v7 = [sCache objectForKey:v6];
   v8 = v7;
-  if (a4)
+  if (disposition)
   {
     if (v7)
     {
-      v9 = [v7 disposition];
+      disposition = [v7 disposition];
     }
 
     else
     {
-      v9 = [v5 hasAdjustments] ^ 1;
+      disposition = [loadedCopy hasAdjustments] ^ 1;
     }
 
-    *a4 = v9;
+    *disposition = disposition;
   }
 
-  v10 = [v8 compositionController];
+  compositionController = [v8 compositionController];
 
-  return v10;
+  return compositionController;
 }
 
-+ (void)requestCompositionControllerForAsset:(id)a3 networkAccessAllowed:(BOOL)a4 queue:(id)a5 completion:(id)a6
++ (void)requestCompositionControllerForAsset:(id)asset networkAccessAllowed:(BOOL)allowed queue:(id)queue completion:(id)completion
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
-  v12 = [[PEAdjustmentDataCacheKey alloc] initWithAsset:v9 originalAdjustmentData:0];
+  allowedCopy = allowed;
+  assetCopy = asset;
+  queueCopy = queue;
+  completionCopy = completion;
+  v12 = [[PEAdjustmentDataCacheKey alloc] initWithAsset:assetCopy originalAdjustmentData:0];
   v13 = [sCache objectForKey:v12];
   if (!v13)
   {
-    v13 = [[PEAdjustmentDataCacheEntry alloc] initWithAsset:v9 networkAccessAllowed:v8 originalAdjustmentData:0];
+    v13 = [[PEAdjustmentDataCacheEntry alloc] initWithAsset:assetCopy networkAccessAllowed:allowedCopy originalAdjustmentData:0];
     [sCache setObject:v13 forKey:v12];
   }
 
@@ -117,9 +117,9 @@
   v15[1] = 3221225472;
   v15[2] = __100__PEAdjustmentDataCache_requestCompositionControllerForAsset_networkAccessAllowed_queue_completion___block_invoke;
   v15[3] = &unk_279A30A80;
-  v16 = v11;
-  v14 = v11;
-  [(PEAdjustmentDataCacheEntry *)v13 deliverOn:v10 completion:v15];
+  v16 = completionCopy;
+  v14 = completionCopy;
+  [(PEAdjustmentDataCacheEntry *)v13 deliverOn:queueCopy completion:v15];
 }
 
 void __100__PEAdjustmentDataCache_requestCompositionControllerForAsset_networkAccessAllowed_queue_completion___block_invoke(uint64_t a1, void *a2)
@@ -134,7 +134,7 @@ void __100__PEAdjustmentDataCache_requestCompositionControllerForAsset_networkAc
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = objc_alloc_init(MEMORY[0x277CBEA78]);
     v3 = sCache;

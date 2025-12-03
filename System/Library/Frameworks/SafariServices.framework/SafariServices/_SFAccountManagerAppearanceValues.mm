@@ -3,7 +3,7 @@
 + (CGSize)preferredFormSheetContentSize;
 + (NSDirectionalEdgeInsets)edgeInsetsForTopLevelCells;
 + (id)_excessiveLineHeightCharacterSet;
-+ (id)subtitleFontForNarrowCellWithText:(id)a3;
++ (id)subtitleFontForNarrowCellWithText:(id)text;
 + (id)subtitleFontForStackViewLabel;
 + (id)titleFontForNarrowCell;
 + (id)titleFontForStackViewLabel;
@@ -21,11 +21,11 @@
   return v4;
 }
 
-+ (id)subtitleFontForNarrowCellWithText:(id)a3
++ (id)subtitleFontForNarrowCellWithText:(id)text
 {
-  v4 = a3;
-  v5 = [a1 _excessiveLineHeightCharacterSet];
-  v6 = [v4 rangeOfCharacterFromSet:v5];
+  textCopy = text;
+  _excessiveLineHeightCharacterSet = [self _excessiveLineHeightCharacterSet];
+  v6 = [textCopy rangeOfCharacterFromSet:_excessiveLineHeightCharacterSet];
 
   v7 = *MEMORY[0x1E69DDCF8];
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
@@ -70,7 +70,7 @@
 + (int64_t)preferencesTableViewStyle
 {
   v2 = objc_alloc_init(MEMORY[0x1E69DD258]);
-  v3 = [v2 view];
+  view = [v2 view];
   if (PSShouldInsetListView())
   {
     v4 = 2;

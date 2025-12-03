@@ -1,11 +1,11 @@
 @interface ARGeoTrackingStatus
 + (id)initialStatus;
-- (ARGeoTrackingStatus)initWithCoder:(id)a3;
-- (ARGeoTrackingStatus)initWithGeoTrackingState:(int64_t)a3 accuracy:(int64_t)a4 stateReason:(int64_t)a5 failureReasons:(int64_t)a6;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualPrivate:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (ARGeoTrackingStatus)initWithCoder:(id)coder;
+- (ARGeoTrackingStatus)initWithGeoTrackingState:(int64_t)state accuracy:(int64_t)accuracy stateReason:(int64_t)reason failureReasons:(int64_t)reasons;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualPrivate:(id)private;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ARGeoTrackingStatus
@@ -17,32 +17,32 @@
   return v2;
 }
 
-- (ARGeoTrackingStatus)initWithGeoTrackingState:(int64_t)a3 accuracy:(int64_t)a4 stateReason:(int64_t)a5 failureReasons:(int64_t)a6
+- (ARGeoTrackingStatus)initWithGeoTrackingState:(int64_t)state accuracy:(int64_t)accuracy stateReason:(int64_t)reason failureReasons:(int64_t)reasons
 {
   v11.receiver = self;
   v11.super_class = ARGeoTrackingStatus;
   result = [(ARGeoTrackingStatus *)&v11 init];
   if (result)
   {
-    result->_state = a3;
-    result->_accuracy = a4;
-    result->_stateReason = a5;
-    result->_failureReasons = a6;
+    result->_state = state;
+    result->_accuracy = accuracy;
+    result->_stateReason = reason;
+    result->_failureReasons = reasons;
   }
 
   return result;
 }
 
-- (BOOL)isEqualPrivate:(id)a3
+- (BOOL)isEqualPrivate:(id)private
 {
-  v4 = a3;
-  if ([(ARGeoTrackingStatus *)self isEqual:v4])
+  privateCopy = private;
+  if ([(ARGeoTrackingStatus *)self isEqual:privateCopy])
   {
-    v5 = v4;
-    v6 = [(ARGeoTrackingStatus *)self failureReasons];
-    v7 = [v5 failureReasons];
+    v5 = privateCopy;
+    failureReasons = [(ARGeoTrackingStatus *)self failureReasons];
+    failureReasons2 = [v5 failureReasons];
 
-    v8 = v6 == v7;
+    v8 = failureReasons == failureReasons2;
   }
 
   else
@@ -53,9 +53,9 @@
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_opt_class() allocWithZone:a3];
+  result = [objc_opt_class() allocWithZone:zone];
   if (result)
   {
     v5 = result;
@@ -67,16 +67,16 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (!equalCopy)
   {
     goto LABEL_7;
   }
 
-  if (self == v4)
+  if (self == equalCopy)
   {
     v10 = 1;
     goto LABEL_11;
@@ -86,11 +86,11 @@
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
-    v7 = [(ARGeoTrackingStatus *)self state];
-    if (v7 == [(ARGeoTrackingStatus *)v6 state]&& (v8 = [(ARGeoTrackingStatus *)self accuracy], v8 == [(ARGeoTrackingStatus *)v6 accuracy]))
+    state = [(ARGeoTrackingStatus *)self state];
+    if (state == [(ARGeoTrackingStatus *)v6 state]&& (v8 = [(ARGeoTrackingStatus *)self accuracy], v8 == [(ARGeoTrackingStatus *)v6 accuracy]))
     {
-      v9 = [(ARGeoTrackingStatus *)self stateReason];
-      v10 = v9 == [(ARGeoTrackingStatus *)v6 stateReason];
+      stateReason = [(ARGeoTrackingStatus *)self stateReason];
+      v10 = stateReason == [(ARGeoTrackingStatus *)v6 stateReason];
     }
 
     else
@@ -110,25 +110,25 @@ LABEL_11:
   return v10;
 }
 
-- (ARGeoTrackingStatus)initWithCoder:(id)a3
+- (ARGeoTrackingStatus)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"ARGeoTrackingStatus_state"];
-  v6 = [v4 decodeIntegerForKey:@"ARGeoTrackingStatus_accuracy"];
-  v7 = [v4 decodeIntegerForKey:@"ARGeoTrackingStatus_stateReason"];
-  v8 = [v4 decodeIntForKey:@"ARGeoTrackingStatus_failureReasons"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"ARGeoTrackingStatus_state"];
+  v6 = [coderCopy decodeIntegerForKey:@"ARGeoTrackingStatus_accuracy"];
+  v7 = [coderCopy decodeIntegerForKey:@"ARGeoTrackingStatus_stateReason"];
+  v8 = [coderCopy decodeIntForKey:@"ARGeoTrackingStatus_failureReasons"];
 
   v9 = [[ARGeoTrackingStatus alloc] initWithGeoTrackingState:v5 accuracy:v6 stateReason:v7 failureReasons:v8];
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[ARGeoTrackingStatus state](self forKey:{"state"), @"ARGeoTrackingStatus_state"}];
-  [v4 encodeInteger:-[ARGeoTrackingStatus accuracy](self forKey:{"accuracy"), @"ARGeoTrackingStatus_accuracy"}];
-  [v4 encodeInteger:-[ARGeoTrackingStatus stateReason](self forKey:{"stateReason"), @"ARGeoTrackingStatus_stateReason"}];
-  [v4 encodeInteger:-[ARGeoTrackingStatus failureReasons](self forKey:{"failureReasons"), @"ARGeoTrackingStatus_failureReasons"}];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[ARGeoTrackingStatus state](self forKey:{"state"), @"ARGeoTrackingStatus_state"}];
+  [coderCopy encodeInteger:-[ARGeoTrackingStatus accuracy](self forKey:{"accuracy"), @"ARGeoTrackingStatus_accuracy"}];
+  [coderCopy encodeInteger:-[ARGeoTrackingStatus stateReason](self forKey:{"stateReason"), @"ARGeoTrackingStatus_stateReason"}];
+  [coderCopy encodeInteger:-[ARGeoTrackingStatus failureReasons](self forKey:{"failureReasons"), @"ARGeoTrackingStatus_failureReasons"}];
 }
 
 @end

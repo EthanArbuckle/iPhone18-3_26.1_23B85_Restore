@@ -3,7 +3,7 @@
 - (MSDProfilesManager)init;
 - (MSDProfilesManagerDelegate)delegate;
 - (void)dealloc;
-- (void)profileConnectionDidReceiveProfileListChangedNotification:(id)a3 userInfo:(id)a4;
+- (void)profileConnectionDidReceiveProfileListChangedNotification:(id)notification userInfo:(id)info;
 - (void)syncStatusOfInstalledProfiles;
 @end
 
@@ -42,10 +42,10 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Fetching Installed Profiles", &v20, 2u);
   }
 
-  v4 = [objc_opt_class() fetchInstalledMediaSetupProfilesManagedDefaults];
-  v5 = [v4 count];
+  fetchInstalledMediaSetupProfilesManagedDefaults = [objc_opt_class() fetchInstalledMediaSetupProfilesManagedDefaults];
+  v5 = [fetchInstalledMediaSetupProfilesManagedDefaults count];
   v6 = +[MSDDefaultsManager sharedManager];
-  v7 = [v6 developerProfilesCount];
+  developerProfilesCount = [v6 developerProfilesCount];
 
   v8 = +[MSDDefaultsManager sharedManager];
   [v8 setDeveloperProfilesCount:v5];
@@ -53,23 +53,23 @@
   if (v5)
   {
     v9 = +[MSDDefaultsManager sharedManager];
-    v10 = [v9 profilesEverInstalled];
+    profilesEverInstalled = [v9 profilesEverInstalled];
 
     v11 = sub_100030FE4();
     v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
-    if (!v10 || v5 >= v7)
+    if (!profilesEverInstalled || v5 >= developerProfilesCount)
     {
       if (v12)
       {
-        v19 = [v4 count];
+        v19 = [fetchInstalledMediaSetupProfilesManagedDefaults count];
         v20 = 134217984;
         v21 = v19;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Found %lu matching profiles installed on device", &v20, 0xCu);
       }
 
-      v17 = [(MSDProfilesManager *)self delegate];
-      v18 = [v4 copy];
-      [v17 profilesManager:self didAddProfiles:v18];
+      delegate = [(MSDProfilesManager *)self delegate];
+      v18 = [fetchInstalledMediaSetupProfilesManagedDefaults copy];
+      [delegate profilesManager:self didAddProfiles:v18];
       goto LABEL_18;
     }
 
@@ -93,9 +93,9 @@ LABEL_13:
   }
 
   v15 = +[MSDDefaultsManager sharedManager];
-  v16 = [v15 profilesEverInstalled];
+  profilesEverInstalled2 = [v15 profilesEverInstalled];
 
-  if (v16)
+  if (profilesEverInstalled2)
   {
     v11 = sub_100030FE4();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -107,9 +107,9 @@ LABEL_13:
 
 LABEL_14:
 
-    v17 = [(MSDProfilesManager *)self delegate];
-    v18 = [v4 copy];
-    [v17 profilesManager:self didUpdateProfiles:v18];
+    delegate = [(MSDProfilesManager *)self delegate];
+    v18 = [fetchInstalledMediaSetupProfilesManagedDefaults copy];
+    [delegate profilesManager:self didUpdateProfiles:v18];
 LABEL_18:
   }
 }
@@ -146,8 +146,8 @@ LABEL_18:
         v35 = 0u;
         v36 = 0u;
         v37 = 0u;
-        v28 = [v7 payloads];
-        v8 = [v28 countByEnumeratingWithState:&v34 objects:v43 count:16];
+        payloads = [v7 payloads];
+        v8 = [payloads countByEnumeratingWithState:&v34 objects:v43 count:16];
         if (v8)
         {
           v9 = v8;
@@ -158,7 +158,7 @@ LABEL_18:
             {
               if (*v35 != v29)
               {
-                objc_enumerationMutation(v28);
+                objc_enumerationMutation(payloads);
               }
 
               v11 = *(*(&v34 + 1) + 8 * i);
@@ -180,8 +180,8 @@ LABEL_18:
               v33 = 0u;
               v30 = 0u;
               v31 = 0u;
-              v15 = [v14 domains];
-              v16 = [v15 countByEnumeratingWithState:&v30 objects:v42 count:16];
+              domains = [v14 domains];
+              v16 = [domains countByEnumeratingWithState:&v30 objects:v42 count:16];
               if (v16)
               {
                 v17 = v16;
@@ -192,7 +192,7 @@ LABEL_18:
                   {
                     if (*v31 != v18)
                     {
-                      objc_enumerationMutation(v15);
+                      objc_enumerationMutation(domains);
                     }
 
                     v20 = *(*(&v30 + 1) + 8 * j);
@@ -203,14 +203,14 @@ LABEL_18:
                     }
                   }
 
-                  v17 = [v15 countByEnumeratingWithState:&v30 objects:v42 count:16];
+                  v17 = [domains countByEnumeratingWithState:&v30 objects:v42 count:16];
                 }
 
                 while (v17);
               }
             }
 
-            v9 = [v28 countByEnumeratingWithState:&v34 objects:v43 count:16];
+            v9 = [payloads countByEnumeratingWithState:&v34 objects:v43 count:16];
           }
 
           while (v9);
@@ -231,17 +231,17 @@ LABEL_18:
   return v22;
 }
 
-- (void)profileConnectionDidReceiveProfileListChangedNotification:(id)a3 userInfo:(id)a4
+- (void)profileConnectionDidReceiveProfileListChangedNotification:(id)notification userInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
+  notificationCopy = notification;
+  infoCopy = info;
   v8 = sub_100030FE4();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412546;
-    v10 = v6;
+    v10 = notificationCopy;
     v11 = 2112;
-    v12 = v7;
+    v12 = infoCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Profile List changed notification received for profileconnection..%@ with userinfo..%@", &v9, 0x16u);
   }
 

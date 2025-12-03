@@ -1,44 +1,44 @@
 @interface BRCFetchRecordsWrapperOperation
-- (BRCFetchRecordsWrapperOperation)initWithCKFetchRecordsOperation:(id)a3 opName:(id)a4 group:(id)a5 serverZone:(id)a6 isUserWaiting:(BOOL)a7 sessionContext:(id)a8;
+- (BRCFetchRecordsWrapperOperation)initWithCKFetchRecordsOperation:(id)operation opName:(id)name group:(id)group serverZone:(id)zone isUserWaiting:(BOOL)waiting sessionContext:(id)context;
 - (id)createActivity;
 - (void)main;
 @end
 
 @implementation BRCFetchRecordsWrapperOperation
 
-- (BRCFetchRecordsWrapperOperation)initWithCKFetchRecordsOperation:(id)a3 opName:(id)a4 group:(id)a5 serverZone:(id)a6 isUserWaiting:(BOOL)a7 sessionContext:(id)a8
+- (BRCFetchRecordsWrapperOperation)initWithCKFetchRecordsOperation:(id)operation opName:(id)name group:(id)group serverZone:(id)zone isUserWaiting:(BOOL)waiting sessionContext:(id)context
 {
-  v26 = a7;
+  waitingCopy = waiting;
   v32 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a5;
-  v16 = a6;
-  v17 = a8;
-  v18 = a4;
+  operationCopy = operation;
+  groupCopy = group;
+  zoneCopy = zone;
+  contextCopy = context;
+  nameCopy = name;
   v19 = brc_bread_crumbs();
   v20 = brc_default_log();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v29 = v14;
+    v29 = operationCopy;
     v30 = 2112;
     v31 = v19;
     _os_log_impl(&dword_223E7A000, v20, OS_LOG_TYPE_INFO, "[INFO] Request to wrap and run CKFetchRecordsOperation: [%@]%@", buf, 0x16u);
   }
 
-  v21 = [@"fetch-records-wrapper/" stringByAppendingString:v18];
+  v21 = [@"fetch-records-wrapper/" stringByAppendingString:nameCopy];
 
-  v22 = [v16 metadataSyncContext];
+  metadataSyncContext = [zoneCopy metadataSyncContext];
   v27.receiver = self;
   v27.super_class = BRCFetchRecordsWrapperOperation;
-  v23 = [(_BRCOperation *)&v27 initWithName:v21 syncContext:v22 sessionContext:v17];
+  v23 = [(_BRCOperation *)&v27 initWithName:v21 syncContext:metadataSyncContext sessionContext:contextCopy];
 
   if (v23)
   {
-    [(_BRCOperation *)v23 setGroup:v15];
-    [(_BRCOperation *)v23 setNonDiscretionary:v26];
-    objc_storeStrong(&v23->_serverZone, a6);
-    objc_storeStrong(&v23->_fetchRecordsOperation, a3);
+    [(_BRCOperation *)v23 setGroup:groupCopy];
+    [(_BRCOperation *)v23 setNonDiscretionary:waitingCopy];
+    objc_storeStrong(&v23->_serverZone, zone);
+    objc_storeStrong(&v23->_fetchRecordsOperation, operation);
   }
 
   v24 = *MEMORY[0x277D85DE8];
@@ -67,14 +67,14 @@
     _os_log_impl(&dword_223E7A000, v4, OS_LOG_TYPE_INFO, "[INFO] Running CKFetchRecordsOperation: [%@]%@", buf, 0x16u);
   }
 
-  v6 = [(CKFetchRecordsOperation *)self->_fetchRecordsOperation fetchRecordsCompletionBlock];
+  fetchRecordsCompletionBlock = [(CKFetchRecordsOperation *)self->_fetchRecordsOperation fetchRecordsCompletionBlock];
   objc_initWeak(buf, self);
   v9 = MEMORY[0x277D85DD0];
   v10 = 3221225472;
   v11 = __39__BRCFetchRecordsWrapperOperation_main__block_invoke;
   v12 = &unk_278504F88;
   objc_copyWeak(&v14, buf);
-  v7 = v6;
+  v7 = fetchRecordsCompletionBlock;
   v13 = v7;
   [(CKFetchRecordsOperation *)self->_fetchRecordsOperation setFetchRecordsCompletionBlock:&v9];
   [(_BRCOperation *)self addSubOperation:self->_fetchRecordsOperation, v9, v10, v11, v12];

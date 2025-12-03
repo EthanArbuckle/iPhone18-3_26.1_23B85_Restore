@@ -1,29 +1,29 @@
 @interface MTLAccelerationStructurePassDescriptor
 + (MTLAccelerationStructurePassDescriptor)accelerationStructurePassDescriptor;
-+ (MTLAccelerationStructurePassDescriptor)allocWithZone:(_NSZone *)a3;
-- (BOOL)isEqual:(id)a3;
++ (MTLAccelerationStructurePassDescriptor)allocWithZone:(_NSZone *)zone;
+- (BOOL)isEqual:(id)equal;
 - (MTLAccelerationStructurePassDescriptor)init;
-- (id)convertToComputePassDescriptorWithConcurrentDispatch:(BOOL)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)convertToComputePassDescriptorWithConcurrentDispatch:(BOOL)dispatch;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 - (void)dealloc;
 @end
 
 @implementation MTLAccelerationStructurePassDescriptor
 
-+ (MTLAccelerationStructurePassDescriptor)allocWithZone:(_NSZone *)a3
++ (MTLAccelerationStructurePassDescriptor)allocWithZone:(_NSZone *)zone
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
-    return [MTLAccelerationStructurePassDescriptorInternal allocWithZone:a3];
+    return [MTLAccelerationStructurePassDescriptorInternal allocWithZone:zone];
   }
 
   else
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___MTLAccelerationStructurePassDescriptor;
-    return objc_msgSendSuper2(&v6, sel_allocWithZone_, a3);
+    return objc_msgSendSuper2(&v6, sel_allocWithZone_, zone);
   }
 }
 
@@ -54,7 +54,7 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_alloc_init(objc_opt_class());
   [objc_msgSend(v5 "sampleBufferAttachments")];
@@ -62,39 +62,39 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
   Class = object_getClass(self);
-  if (Class != object_getClass(a3))
+  if (Class != object_getClass(equal))
   {
     return 0;
   }
 
-  v6 = [(MTLAccelerationStructurePassDescriptor *)self enableSubstreams];
-  if (v6 != [a3 enableSubstreams])
+  enableSubstreams = [(MTLAccelerationStructurePassDescriptor *)self enableSubstreams];
+  if (enableSubstreams != [equal enableSubstreams])
   {
     return 0;
   }
 
-  v8 = [a3 sampleBufferAttachments];
-  v9 = [(MTLAccelerationStructurePassDescriptor *)self sampleBufferAttachments];
+  sampleBufferAttachments = [equal sampleBufferAttachments];
+  sampleBufferAttachments2 = [(MTLAccelerationStructurePassDescriptor *)self sampleBufferAttachments];
 
-  return [v8 isEqual:v9];
+  return [sampleBufferAttachments isEqual:sampleBufferAttachments2];
 }
 
 - (unint64_t)hash
 {
   bzero(&v4, 0x10uLL);
-  v5 = [(MTLAccelerationStructurePassDescriptor *)self enableSubstreams];
+  enableSubstreams = [(MTLAccelerationStructurePassDescriptor *)self enableSubstreams];
   return _MTLHashState(&v4, 0x10uLL);
 }
 
-- (id)convertToComputePassDescriptorWithConcurrentDispatch:(BOOL)a3
+- (id)convertToComputePassDescriptorWithConcurrentDispatch:(BOOL)dispatch
 {
   v5 = objc_alloc_init(MTLComputePassDescriptor);
   for (i = 0; i != 4; ++i)
@@ -110,7 +110,7 @@
     }
   }
 
-  if (a3)
+  if (dispatch)
   {
     [(MTLComputePassDescriptor *)v5 setDispatchType:1];
   }

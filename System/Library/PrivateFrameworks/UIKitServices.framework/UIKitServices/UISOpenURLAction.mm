@@ -1,18 +1,18 @@
 @interface UISOpenURLAction
-- (BOOL)isKindOfClass:(Class)a3;
+- (BOOL)isKindOfClass:(Class)class;
 - (BSProcessHandle)workspaceOriginatingProcess;
 - (NSURL)url;
-- (UISOpenURLAction)initWithInfo:(id)a3 timeout:(double)a4 forResponseOnQueue:(id)a5 withHandler:(id)a6;
-- (UISOpenURLAction)initWithURL:(id)a3 workspaceOriginatingProcess:(id)a4 responder:(id)a5;
-- (id)keyDescriptionForSetting:(unint64_t)a3;
+- (UISOpenURLAction)initWithInfo:(id)info timeout:(double)timeout forResponseOnQueue:(id)queue withHandler:(id)handler;
+- (UISOpenURLAction)initWithURL:(id)l workspaceOriginatingProcess:(id)process responder:(id)responder;
+- (id)keyDescriptionForSetting:(unint64_t)setting;
 @end
 
 @implementation UISOpenURLAction
 
 - (NSURL)url
 {
-  v2 = [(UISOpenURLAction *)self info];
-  v3 = [v2 objectForSetting:1];
+  info = [(UISOpenURLAction *)self info];
+  v3 = [info objectForSetting:1];
   v4 = v3;
 
   return v3;
@@ -20,40 +20,40 @@
 
 - (BSProcessHandle)workspaceOriginatingProcess
 {
-  v2 = [(UISOpenURLAction *)self info];
-  v3 = [v2 objectForSetting:2];
+  info = [(UISOpenURLAction *)self info];
+  v3 = [info objectForSetting:2];
 
   return v3;
 }
 
-- (UISOpenURLAction)initWithURL:(id)a3 workspaceOriginatingProcess:(id)a4 responder:(id)a5
+- (UISOpenURLAction)initWithURL:(id)l workspaceOriginatingProcess:(id)process responder:(id)responder
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v9)
+  lCopy = l;
+  processCopy = process;
+  responderCopy = responder;
+  if (!lCopy)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"UISOpenURLAction.m" lineNumber:35 description:{@"Invalid parameter not satisfying: %@", @"url"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UISOpenURLAction.m" lineNumber:35 description:{@"Invalid parameter not satisfying: %@", @"url"}];
   }
 
   v12 = objc_alloc_init(MEMORY[0x1E698E700]);
-  v13 = [v9 copy];
+  v13 = [lCopy copy];
   [v12 setObject:v13 forSetting:1];
 
-  [v12 setObject:v10 forSetting:2];
+  [v12 setObject:processCopy forSetting:2];
   v17.receiver = self;
   v17.super_class = UISOpenURLAction;
-  v14 = [(UISOpenURLAction *)&v17 initWithInfo:v12 responder:v11];
+  v14 = [(UISOpenURLAction *)&v17 initWithInfo:v12 responder:responderCopy];
 
   return v14;
 }
 
-- (UISOpenURLAction)initWithInfo:(id)a3 timeout:(double)a4 forResponseOnQueue:(id)a5 withHandler:(id)a6
+- (UISOpenURLAction)initWithInfo:(id)info timeout:(double)timeout forResponseOnQueue:(id)queue withHandler:(id)handler
 {
   v24 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = [v7 objectForSetting:1];
+  infoCopy = info;
+  v8 = [infoCopy objectForSetting:1];
   if (NSClassFromString(&cfstr_Nsurl.isa))
   {
     if (objc_opt_isKindOfClass())
@@ -87,7 +87,7 @@
     }
   }
 
-  v13 = [v7 objectForSetting:2];
+  v13 = [infoCopy objectForSetting:2];
 
   if (NSClassFromString(&cfstr_Bsprocesshandl.isa))
   {
@@ -126,9 +126,9 @@
   return v18;
 }
 
-- (id)keyDescriptionForSetting:(unint64_t)a3
+- (id)keyDescriptionForSetting:(unint64_t)setting
 {
-  if (a3 == 1)
+  if (setting == 1)
   {
     return @"url";
   }
@@ -139,7 +139,7 @@
   }
 }
 
-- (BOOL)isKindOfClass:(Class)a3
+- (BOOL)isKindOfClass:(Class)class
 {
   v5.receiver = self;
   v5.super_class = UISOpenURLAction;
@@ -150,7 +150,7 @@
 
   else
   {
-    return [(objc_class *)a3 isSubclassOfClass:objc_opt_class()];
+    return [(objc_class *)class isSubclassOfClass:objc_opt_class()];
   }
 }
 

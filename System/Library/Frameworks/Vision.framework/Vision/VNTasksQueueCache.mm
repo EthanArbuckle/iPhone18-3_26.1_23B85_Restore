@@ -1,9 +1,9 @@
 @interface VNTasksQueueCache
 - (VNTasksQueueCache)init;
-- (id)_queueWithUniqueAppendix:(id)a3 queueClass:(Class)a4;
+- (id)_queueWithUniqueAppendix:(id)appendix queueClass:(Class)class;
 - (void)releaseAllQueues;
-- (void)releaseQueueWithUniqueAppendix:(id)a3;
-- (void)setMaximumTasksCount:(int64_t)a3;
+- (void)releaseQueueWithUniqueAppendix:(id)appendix;
+- (void)setMaximumTasksCount:(int64_t)count;
 @end
 
 @implementation VNTasksQueueCache
@@ -18,22 +18,22 @@
   os_unfair_lock_unlock(&self->_queueNameToTasksQueueDictionaryLock);
 }
 
-- (void)releaseQueueWithUniqueAppendix:(id)a3
+- (void)releaseQueueWithUniqueAppendix:(id)appendix
 {
-  v5 = a3;
+  appendixCopy = appendix;
   os_unfair_lock_lock(&self->_queueNameToTasksQueueDictionaryLock);
-  v4 = [objc_opt_class() queueLabelWithUniqueAppendix:v5];
+  v4 = [objc_opt_class() queueLabelWithUniqueAppendix:appendixCopy];
   [(NSMutableDictionary *)self->_queueNameToTasksQueueDictionary removeObjectForKey:v4];
 
   os_unfair_lock_unlock(&self->_queueNameToTasksQueueDictionaryLock);
 }
 
-- (void)setMaximumTasksCount:(int64_t)a3
+- (void)setMaximumTasksCount:(int64_t)count
 {
-  if (a3 >= 1 && [objc_opt_class() maximumAllowedTasksInTheQueue] >= a3)
+  if (count >= 1 && [objc_opt_class() maximumAllowedTasksInTheQueue] >= count)
   {
     os_unfair_lock_lock(&self->_queueNameToTasksQueueDictionaryLock);
-    self->_maximumTasksCount = a3;
+    self->_maximumTasksCount = count;
     queueNameToTasksQueueDictionary = self->_queueNameToTasksQueueDictionary;
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
@@ -46,20 +46,20 @@
 
   else
   {
-    v6 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Maximum queue tasks count (%ld) is outside of the allowed range [1; %ld]", a3, objc_msgSend(objc_opt_class(), "maximumAllowedTasksInTheQueue")];
+    v6 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Maximum queue tasks count (%ld) is outside of the allowed range [1; %ld]", count, objc_msgSend(objc_opt_class(), "maximumAllowedTasksInTheQueue")];
     [VNError VNAssert:0 log:?];
   }
 }
 
-- (id)_queueWithUniqueAppendix:(id)a3 queueClass:(Class)a4
+- (id)_queueWithUniqueAppendix:(id)appendix queueClass:(Class)class
 {
-  v6 = a3;
+  appendixCopy = appendix;
   os_unfair_lock_lock(&self->_queueNameToTasksQueueDictionaryLock);
-  v7 = [objc_opt_class() queueLabelWithUniqueAppendix:v6];
+  v7 = [objc_opt_class() queueLabelWithUniqueAppendix:appendixCopy];
   v8 = [(NSMutableDictionary *)self->_queueNameToTasksQueueDictionary objectForKey:v7];
   if (!v8)
   {
-    v8 = [[a4 alloc] initWithDispatchQueueLabel:v7 maximumTasksCount:{objc_msgSend(objc_opt_class(), "maximumAllowedTasksInTheQueue")}];
+    v8 = [[class alloc] initWithDispatchQueueLabel:v7 maximumTasksCount:{objc_msgSend(objc_opt_class(), "maximumAllowedTasksInTheQueue")}];
     [(NSMutableDictionary *)self->_queueNameToTasksQueueDictionary setObject:v8 forKeyedSubscript:v7];
     VNValidatedLog(1, @"Created new tasks queue: %@", v9, v10, v11, v12, v13, v14, v8);
   }

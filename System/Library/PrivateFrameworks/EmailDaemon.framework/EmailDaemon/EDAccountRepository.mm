@@ -1,24 +1,24 @@
 @interface EDAccountRepository
 + (OS_os_log)log;
-- (EDAccountRepository)initWithAccountsProvider:(id)a3 hookRegistry:(id)a4;
+- (EDAccountRepository)initWithAccountsProvider:(id)provider hookRegistry:(id)registry;
 - (EDPersistenceHookRegistry)hookRegistry;
 - (id)allAccounts;
-- (id)transformAccounts:(id)a3;
-- (void)accountsAdded:(id)a3;
-- (void)accountsChanged:(id)a3;
-- (void)accountsRemoved:(id)a3;
-- (void)allAccountsWithCompletionHandler:(id)a3;
-- (void)registerObserver:(id)a3 completionHandler:(id)a4;
+- (id)transformAccounts:(id)accounts;
+- (void)accountsAdded:(id)added;
+- (void)accountsChanged:(id)changed;
+- (void)accountsRemoved:(id)removed;
+- (void)allAccountsWithCompletionHandler:(id)handler;
+- (void)registerObserver:(id)observer completionHandler:(id)handler;
 @end
 
 @implementation EDAccountRepository
 
 - (id)allAccounts
 {
-  v3 = [(EDAccountRepository *)self accountsProvider];
-  v4 = [v3 mailAccounts];
+  accountsProvider = [(EDAccountRepository *)self accountsProvider];
+  mailAccounts = [accountsProvider mailAccounts];
 
-  v5 = [(EDAccountRepository *)self transformAccounts:v4];
+  v5 = [(EDAccountRepository *)self transformAccounts:mailAccounts];
 
   return v5;
 }
@@ -29,7 +29,7 @@
   block[1] = 3221225472;
   block[2] = __26__EDAccountRepository_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken != -1)
   {
     dispatch_once(&log_onceToken, block);
@@ -48,11 +48,11 @@ void __26__EDAccountRepository_log__block_invoke(uint64_t a1)
   log_log = v1;
 }
 
-- (EDAccountRepository)initWithAccountsProvider:(id)a3 hookRegistry:(id)a4
+- (EDAccountRepository)initWithAccountsProvider:(id)provider hookRegistry:(id)registry
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  providerCopy = provider;
+  registryCopy = registry;
   v21.receiver = self;
   v21.super_class = EDAccountRepository;
   v9 = [(EDAccountRepository *)&v21 init];
@@ -62,8 +62,8 @@ void __26__EDAccountRepository_log__block_invoke(uint64_t a1)
     transformer = v9->_transformer;
     v9->_transformer = v10;
 
-    objc_storeStrong(&v9->_accountsProvider, a3);
-    objc_storeWeak(&v9->_hookRegistry, v8);
+    objc_storeStrong(&v9->_accountsProvider, provider);
+    objc_storeWeak(&v9->_hookRegistry, registryCopy);
     v9->_lock._os_unfair_lock_opaque = 0;
     v12 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     observers = v9->_observers;
@@ -86,13 +86,13 @@ void __26__EDAccountRepository_log__block_invoke(uint64_t a1)
   return v9;
 }
 
-- (void)registerObserver:(id)a3 completionHandler:(id)a4
+- (void)registerObserver:(id)observer completionHandler:(id)handler
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  observerCopy = observer;
+  handlerCopy = handler;
   os_unfair_lock_lock(&self->_lock);
-  [(NSMutableSet *)self->_observers addObject:v6];
+  [(NSMutableSet *)self->_observers addObject:observerCopy];
   os_unfair_lock_unlock(&self->_lock);
   v8 = objc_alloc_init(MEMORY[0x1E699B7F8]);
   objc_initWeak(&location, self);
@@ -101,24 +101,24 @@ void __26__EDAccountRepository_log__block_invoke(uint64_t a1)
   v14[2] = __58__EDAccountRepository_registerObserver_completionHandler___block_invoke;
   v14[3] = &unk_1E8250098;
   objc_copyWeak(&v16, &location);
-  v9 = v6;
+  v9 = observerCopy;
   v15 = v9;
   [v8 addCancelationBlock:v14];
-  v10 = [(EDAccountRepository *)self allAccounts];
+  allAccounts = [(EDAccountRepository *)self allAccounts];
   v11 = +[EDAccountRepository log];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
-    v12 = [v10 count];
+    v12 = [allAccounts count];
     *buf = 134218498;
     v19 = v9;
     v20 = 2048;
     v21 = v12;
     v22 = 2112;
-    v23 = v10;
+    v23 = allAccounts;
     _os_log_impl(&dword_1C61EF000, v11, OS_LOG_TYPE_INFO, "Registered EMAccountRepositoryObserver<%p> - Current observing accounts: Count: %lu\n %@ ", buf, 0x20u);
   }
 
-  v7[2](v7, v10, v8, 0);
+  handlerCopy[2](handlerCopy, allAccounts, v8, 0);
   objc_destroyWeak(&v16);
   objc_destroyWeak(&location);
 
@@ -138,27 +138,27 @@ void __58__EDAccountRepository_registerObserver_completionHandler___block_invoke
   }
 }
 
-- (void)allAccountsWithCompletionHandler:(id)a3
+- (void)allAccountsWithCompletionHandler:(id)handler
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(EDAccountRepository *)self allAccounts];
+  handlerCopy = handler;
+  allAccounts = [(EDAccountRepository *)self allAccounts];
   v6 = +[EDAccountRepository log];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v8 = 134217984;
-    v9 = [v5 count];
+    v9 = [allAccounts count];
     _os_log_impl(&dword_1C61EF000, v6, OS_LOG_TYPE_INFO, "Returning %lu accounts", &v8, 0xCu);
   }
 
-  v4[2](v4, v5, 0);
+  handlerCopy[2](handlerCopy, allAccounts, 0);
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (id)transformAccounts:(id)a3
+- (id)transformAccounts:(id)accounts
 {
-  v4 = a3;
-  v5 = [v4 ef_filter:&__block_literal_global_0];
+  accountsCopy = accounts;
+  v5 = [accountsCopy ef_filter:&__block_literal_global_0];
 
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
@@ -207,19 +207,19 @@ id __41__EDAccountRepository_transformAccounts___block_invoke_2(uint64_t a1, voi
   return v5;
 }
 
-- (void)accountsAdded:(id)a3
+- (void)accountsAdded:(id)added
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  addedCopy = added;
   v5 = +[EDAccountRepository log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v19 = v4;
+    v19 = addedCopy;
     _os_log_impl(&dword_1C61EF000, v5, OS_LOG_TYPE_INFO, "Handling accounts added: %@", buf, 0xCu);
   }
 
-  v6 = [(EDAccountRepository *)self transformAccounts:v4];
+  v6 = [(EDAccountRepository *)self transformAccounts:addedCopy];
   if ([v6 count])
   {
     os_unfair_lock_lock(&self->_lock);
@@ -258,29 +258,29 @@ id __41__EDAccountRepository_transformAccounts___block_invoke_2(uint64_t a1, voi
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)accountsRemoved:(id)a3
+- (void)accountsRemoved:(id)removed
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  removedCopy = removed;
   v5 = +[EDAccountRepository log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v23 = v4;
+    v23 = removedCopy;
     _os_log_impl(&dword_1C61EF000, v5, OS_LOG_TYPE_INFO, "Handling accounts removed: %@", buf, 0xCu);
   }
 
-  v6 = [(EDAccountRepository *)self transformAccounts:v4];
+  v6 = [(EDAccountRepository *)self transformAccounts:removedCopy];
   if ([v6 count])
   {
     if (_os_feature_enabled_impl())
     {
       v7 = MEMORY[0x1E695DFD8];
-      v8 = [v4 ef_map:&__block_literal_global_141];
+      v8 = [removedCopy ef_map:&__block_literal_global_141];
       v9 = [v7 setWithArray:v8];
 
-      v10 = [(EDAccountRepository *)self receiveBiomeCollector];
-      [v10 deleteEventsForAccountIDs:v9];
+      receiveBiomeCollector = [(EDAccountRepository *)self receiveBiomeCollector];
+      [receiveBiomeCollector deleteEventsForAccountIDs:v9];
     }
 
     os_unfair_lock_lock(&self->_lock);
@@ -326,19 +326,19 @@ id __39__EDAccountRepository_accountsRemoved___block_invoke(uint64_t a1, void *a
   return v2;
 }
 
-- (void)accountsChanged:(id)a3
+- (void)accountsChanged:(id)changed
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  changedCopy = changed;
   v5 = +[EDAccountRepository log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v19 = v4;
+    v19 = changedCopy;
     _os_log_impl(&dword_1C61EF000, v5, OS_LOG_TYPE_INFO, "Handling accounts changed: %@", buf, 0xCu);
   }
 
-  v6 = [(EDAccountRepository *)self transformAccounts:v4];
+  v6 = [(EDAccountRepository *)self transformAccounts:changedCopy];
   if ([v6 count])
   {
     os_unfair_lock_lock(&self->_lock);

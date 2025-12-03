@@ -1,19 +1,19 @@
 @interface NEKDatabaseFileManager
 - (id)pairingID;
 - (id)pairingStorePath;
-- (id)syncStateDBPathFor:(id)a3;
+- (id)syncStateDBPathFor:(id)for;
 @end
 
 @implementation NEKDatabaseFileManager
 
-- (id)syncStateDBPathFor:(id)a3
+- (id)syncStateDBPathFor:(id)for
 {
-  v4 = a3;
-  v5 = [(NEKDatabaseFileManager *)self pairingStorePath];
-  v6 = v5;
-  if (v5)
+  forCopy = for;
+  pairingStorePath = [(NEKDatabaseFileManager *)self pairingStorePath];
+  v6 = pairingStorePath;
+  if (pairingStorePath)
   {
-    v7 = [v5 stringByAppendingPathComponent:@"EventKitSync"];
+    v7 = [pairingStorePath stringByAppendingPathComponent:@"EventKitSync"];
     v8 = +[NSFileManager defaultManager];
     v9 = [v8 fileExistsAtPath:v7];
 
@@ -23,7 +23,7 @@
       [v10 createDirectoryAtPath:v7 withIntermediateDirectories:1 attributes:0 error:0];
     }
 
-    v11 = [v7 stringByAppendingPathComponent:v4];
+    v11 = [v7 stringByAppendingPathComponent:forCopy];
   }
 
   else

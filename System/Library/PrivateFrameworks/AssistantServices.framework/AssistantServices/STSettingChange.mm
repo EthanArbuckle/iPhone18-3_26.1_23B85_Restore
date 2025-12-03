@@ -1,6 +1,6 @@
 @interface STSettingChange
 - (id)_ad_aceSettingBooleanEntityRepresentation;
-- (id)_ad_aceSettingsResponseRepresentationForSetValueCommand:(id)a3;
+- (id)_ad_aceSettingsResponseRepresentationForSetValueCommand:(id)command;
 @end
 
 @implementation STSettingChange
@@ -8,21 +8,21 @@
 - (id)_ad_aceSettingBooleanEntityRepresentation
 {
   v3 = objc_alloc_init(SASettingBooleanEntity);
-  v4 = [(STSettingChange *)self valueBeforeUpdate];
-  [v3 setPreviousValue:v4];
+  valueBeforeUpdate = [(STSettingChange *)self valueBeforeUpdate];
+  [v3 setPreviousValue:valueBeforeUpdate];
 
-  v5 = [(STSettingChange *)self valueAfterUpdate];
-  [v3 setValue:{objc_msgSend(v5, "BOOLValue")}];
+  valueAfterUpdate = [(STSettingChange *)self valueAfterUpdate];
+  [v3 setValue:{objc_msgSend(valueAfterUpdate, "BOOLValue")}];
 
   return v3;
 }
 
-- (id)_ad_aceSettingsResponseRepresentationForSetValueCommand:(id)a3
+- (id)_ad_aceSettingsResponseRepresentationForSetValueCommand:(id)command
 {
-  v4 = a3;
-  v5 = [(STSettingChange *)self valueBeforeUpdate];
-  v6 = [(STSettingChange *)self valueAfterUpdate];
-  v7 = [v5 isEqual:v6];
+  commandCopy = command;
+  valueBeforeUpdate = [(STSettingChange *)self valueBeforeUpdate];
+  valueAfterUpdate = [(STSettingChange *)self valueAfterUpdate];
+  v7 = [valueBeforeUpdate isEqual:valueAfterUpdate];
 
   if (v7)
   {
@@ -34,14 +34,14 @@ LABEL_3:
     goto LABEL_9;
   }
 
-  if ([v4 failOnSiriDisconnectWarnings])
+  if ([commandCopy failOnSiriDisconnectWarnings])
   {
     if ([(STSettingChange *)self settingType]== 1)
     {
-      v11 = [(STSettingChange *)self valueAfterUpdate];
-      v12 = [v11 BOOLValue];
+      valueAfterUpdate2 = [(STSettingChange *)self valueAfterUpdate];
+      bOOLValue = [valueAfterUpdate2 BOOLValue];
 
-      if (v12)
+      if (bOOLValue)
       {
         v8 = objc_alloc_init(SACommandFailed);
         v9 = v8;
@@ -51,9 +51,9 @@ LABEL_3:
     }
   }
 
-  v13 = [(STSettingChange *)self _ad_aceSettingBooleanEntityRepresentation];
+  _ad_aceSettingBooleanEntityRepresentation = [(STSettingChange *)self _ad_aceSettingBooleanEntityRepresentation];
   v9 = objc_alloc_init(SASettingSetBoolResponse);
-  [v9 setSetting:v13];
+  [v9 setSetting:_ad_aceSettingBooleanEntityRepresentation];
 
 LABEL_9:
 

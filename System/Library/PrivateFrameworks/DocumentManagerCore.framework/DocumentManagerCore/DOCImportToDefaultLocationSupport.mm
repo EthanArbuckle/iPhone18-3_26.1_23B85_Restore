@@ -1,14 +1,14 @@
 @interface DOCImportToDefaultLocationSupport
-+ (id)_spi_importDocumentAtURL:(id)a3 error:(id *)a4;
++ (id)_spi_importDocumentAtURL:(id)l error:(id *)error;
 + (id)interface;
-+ (void)_spi_importDocumentAtURL:(id)a3 synchronous:(BOOL)a4 completionHandler:(id)a5;
++ (void)_spi_importDocumentAtURL:(id)l synchronous:(BOOL)synchronous completionHandler:(id)handler;
 @end
 
 @implementation DOCImportToDefaultLocationSupport
 
-+ (id)_spi_importDocumentAtURL:(id)a3 error:(id *)a4
++ (id)_spi_importDocumentAtURL:(id)l error:(id *)error
 {
-  v6 = a3;
+  lCopy = l;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -27,13 +27,13 @@
   v10[3] = &unk_278F9BA18;
   v10[4] = &v11;
   v10[5] = &v17;
-  [a1 _spi_importDocumentAtURL:v6 synchronous:1 completionHandler:v10];
-  if (a4)
+  [self _spi_importDocumentAtURL:lCopy synchronous:1 completionHandler:v10];
+  if (error)
   {
     v7 = v18[5];
     if (v7)
     {
-      *a4 = v7;
+      *error = v7;
     }
   }
 
@@ -59,12 +59,12 @@ void __68__DOCImportToDefaultLocationSupport__spi_importDocumentAtURL_error___bl
   *(v9 + 40) = v6;
 }
 
-+ (void)_spi_importDocumentAtURL:(id)a3 synchronous:(BOOL)a4 completionHandler:(id)a5
++ (void)_spi_importDocumentAtURL:(id)l synchronous:(BOOL)synchronous completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = a5;
-  v9 = [v7 startAccessingSecurityScopedResource];
+  synchronousCopy = synchronous;
+  lCopy = l;
+  handlerCopy = handler;
+  startAccessingSecurityScopedResource = [lCopy startAccessingSecurityScopedResource];
   v32[0] = 0;
   v32[1] = v32;
   v32[2] = 0x2020000000;
@@ -74,10 +74,10 @@ void __68__DOCImportToDefaultLocationSupport__spi_importDocumentAtURL_error___bl
   aBlock[2] = __92__DOCImportToDefaultLocationSupport__spi_importDocumentAtURL_synchronous_completionHandler___block_invoke;
   aBlock[3] = &unk_278F9BA40;
   v30 = v32;
-  v10 = v8;
+  v10 = handlerCopy;
   v29 = v10;
-  v31 = v9;
-  v11 = v7;
+  v31 = startAccessingSecurityScopedResource;
+  v11 = lCopy;
   v28 = v11;
   v12 = _Block_copy(aBlock);
   v26 = 0;
@@ -86,11 +86,11 @@ void __68__DOCImportToDefaultLocationSupport__spi_importDocumentAtURL_error___bl
   if (v13)
   {
     v15 = [objc_alloc(MEMORY[0x277CCAE80]) initWithServiceName:@"com.apple.DocumentManagerCore.Rename"];
-    v16 = [objc_opt_class() interface];
-    [v15 setRemoteObjectInterface:v16];
+    interface = [objc_opt_class() interface];
+    [v15 setRemoteObjectInterface:interface];
 
     [v15 resume];
-    if (v6)
+    if (synchronousCopy)
     {
       v17 = v25;
       v25[0] = MEMORY[0x277D85DD0];

@@ -1,10 +1,10 @@
 @interface LACDTOKVStoreValue
 - (BOOL)BOOLValue;
-- (BOOL)isEqual:(id)a3;
-- (LACDTOKVStoreValue)initWithBoolValue:(BOOL)a3;
-- (LACDTOKVStoreValue)initWithByte:(unsigned __int8)a3;
-- (LACDTOKVStoreValue)initWithData:(id)a3;
-- (LACDTOKVStoreValue)initWithIntegerValue:(int64_t)a3;
+- (BOOL)isEqual:(id)equal;
+- (LACDTOKVStoreValue)initWithBoolValue:(BOOL)value;
+- (LACDTOKVStoreValue)initWithByte:(unsigned __int8)byte;
+- (LACDTOKVStoreValue)initWithData:(id)data;
+- (LACDTOKVStoreValue)initWithIntegerValue:(int64_t)value;
 - (int64_t)integerValue;
 @end
 
@@ -12,8 +12,8 @@
 
 - (int64_t)integerValue
 {
-  v3 = [(LACDTOKVStoreValue *)self data];
-  if (![v3 length])
+  data = [(LACDTOKVStoreValue *)self data];
+  if (![data length])
   {
     v6 = 0x7FFFFFFFFFFFFFFFLL;
 LABEL_6:
@@ -21,13 +21,13 @@ LABEL_6:
     return v6;
   }
 
-  v4 = [(LACDTOKVStoreValue *)self data];
-  v5 = [v4 length];
+  data2 = [(LACDTOKVStoreValue *)self data];
+  v5 = [data2 length];
 
   if (v5 <= 8)
   {
-    v3 = [(LACDTOKVStoreValue *)self data];
-    v6 = *[v3 bytes];
+    data = [(LACDTOKVStoreValue *)self data];
+    v6 = *[data bytes];
     goto LABEL_6;
   }
 
@@ -47,67 +47,67 @@ LABEL_6:
   return v3;
 }
 
-- (LACDTOKVStoreValue)initWithData:(id)a3
+- (LACDTOKVStoreValue)initWithData:(id)data
 {
-  v5 = a3;
+  dataCopy = data;
   v9.receiver = self;
   v9.super_class = LACDTOKVStoreValue;
   v6 = [(LACDTOKVStoreValue *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_data, a3);
+    objc_storeStrong(&v6->_data, data);
   }
 
   return v7;
 }
 
-- (LACDTOKVStoreValue)initWithByte:(unsigned __int8)a3
+- (LACDTOKVStoreValue)initWithByte:(unsigned __int8)byte
 {
-  v7 = a3;
-  v4 = [MEMORY[0x1E695DEF0] dataWithBytes:&v7 length:1];
+  byteCopy = byte;
+  v4 = [MEMORY[0x1E695DEF0] dataWithBytes:&byteCopy length:1];
   v5 = [(LACDTOKVStoreValue *)self initWithData:v4];
 
   return v5;
 }
 
-- (LACDTOKVStoreValue)initWithBoolValue:(BOOL)a3
+- (LACDTOKVStoreValue)initWithBoolValue:(BOOL)value
 {
-  v7 = a3;
-  v4 = [MEMORY[0x1E695DEF0] dataWithBytes:&v7 length:1];
+  valueCopy = value;
+  v4 = [MEMORY[0x1E695DEF0] dataWithBytes:&valueCopy length:1];
   v5 = [(LACDTOKVStoreValue *)self initWithData:v4];
 
   return v5;
 }
 
-- (LACDTOKVStoreValue)initWithIntegerValue:(int64_t)a3
+- (LACDTOKVStoreValue)initWithIntegerValue:(int64_t)value
 {
-  v7 = a3;
-  v4 = [MEMORY[0x1E695DEF0] dataWithBytes:&v7 length:8];
+  valueCopy = value;
+  v4 = [MEMORY[0x1E695DEF0] dataWithBytes:&valueCopy length:8];
   v5 = [(LACDTOKVStoreValue *)self initWithData:v4];
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(LACDTOKVStoreValue *)self data];
-    v7 = [v5 data];
-    if (v6 == v7)
+    v5 = equalCopy;
+    data = [(LACDTOKVStoreValue *)self data];
+    data2 = [v5 data];
+    if (data == data2)
     {
       v10 = 1;
     }
 
     else
     {
-      v8 = [(LACDTOKVStoreValue *)self data];
-      v9 = [v5 data];
-      v10 = [v8 isEqual:v9];
+      data3 = [(LACDTOKVStoreValue *)self data];
+      data4 = [v5 data];
+      v10 = [data3 isEqual:data4];
     }
   }
 

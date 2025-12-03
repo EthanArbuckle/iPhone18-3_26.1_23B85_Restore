@@ -1,126 +1,126 @@
 @interface CALNTriggeredEventNotificationSourceNotificationInfo
-- (CALNTriggeredEventNotificationSourceNotificationInfo)initWithTitle:(id)a3 location:(id)a4 locationWithoutPrediction:(id)a5 preferredLocation:(id)a6 startDate:(id)a7 endDate:(id)a8 isAllDay:(BOOL)a9 isTimeSensitive:(BOOL)a10 launchURL:(id)a11 isLocationEvent:(BOOL)a12 eventID:(id)a13 eventObjectID:(id)a14 organizerPhoneNumber:(id)a15 organizerEmailAddress:(id)a16 calendarIdentifier:(id)a17 eventRepresentationDictionary:(id)a18 legacyIdentifier:(id)a19 mapItemURL:(id)a20 conferenceURL:(id)a21 conferenceURLIsBroadcast:(BOOL)a22 mailtoURL:(id)a23 hasSuggestedLocation:(BOOL)a24 eventHasAlarms:(BOOL)a25 alarmID:(id)a26 isOffsetFromTravelTimeStart:(BOOL)a27 lastFireTimeOfAlertOffsetFromTravelTime:(id)a28 allowsLocationAlerts:(BOOL)a29 hypothesis:(id)a30 travelAdvisoryTimelinessPeriod:(unint64_t)a31 forceDisplayOfNewTravelAdvisoryHypotheses:(BOOL)a32 travelAdvisoryDisabled:(BOOL)a33;
+- (CALNTriggeredEventNotificationSourceNotificationInfo)initWithTitle:(id)title location:(id)location locationWithoutPrediction:(id)prediction preferredLocation:(id)preferredLocation startDate:(id)date endDate:(id)endDate isAllDay:(BOOL)day isTimeSensitive:(BOOL)self0 launchURL:(id)self1 isLocationEvent:(BOOL)self2 eventID:(id)self3 eventObjectID:(id)self4 organizerPhoneNumber:(id)self5 organizerEmailAddress:(id)self6 calendarIdentifier:(id)self7 eventRepresentationDictionary:(id)self8 legacyIdentifier:(id)self9 mapItemURL:(id)rL conferenceURL:(id)uRL conferenceURLIsBroadcast:(BOOL)broadcast mailtoURL:(id)mailtoURL hasSuggestedLocation:(BOOL)suggestedLocation eventHasAlarms:(BOOL)alarms alarmID:(id)alarmID isOffsetFromTravelTimeStart:(BOOL)start lastFireTimeOfAlertOffsetFromTravelTime:(id)time allowsLocationAlerts:(BOOL)alerts hypothesis:(id)title0 travelAdvisoryTimelinessPeriod:(unint64_t)title1 forceDisplayOfNewTravelAdvisoryHypotheses:(BOOL)title2 travelAdvisoryDisabled:(BOOL)title3;
 - (id)description;
 @end
 
 @implementation CALNTriggeredEventNotificationSourceNotificationInfo
 
-- (CALNTriggeredEventNotificationSourceNotificationInfo)initWithTitle:(id)a3 location:(id)a4 locationWithoutPrediction:(id)a5 preferredLocation:(id)a6 startDate:(id)a7 endDate:(id)a8 isAllDay:(BOOL)a9 isTimeSensitive:(BOOL)a10 launchURL:(id)a11 isLocationEvent:(BOOL)a12 eventID:(id)a13 eventObjectID:(id)a14 organizerPhoneNumber:(id)a15 organizerEmailAddress:(id)a16 calendarIdentifier:(id)a17 eventRepresentationDictionary:(id)a18 legacyIdentifier:(id)a19 mapItemURL:(id)a20 conferenceURL:(id)a21 conferenceURLIsBroadcast:(BOOL)a22 mailtoURL:(id)a23 hasSuggestedLocation:(BOOL)a24 eventHasAlarms:(BOOL)a25 alarmID:(id)a26 isOffsetFromTravelTimeStart:(BOOL)a27 lastFireTimeOfAlertOffsetFromTravelTime:(id)a28 allowsLocationAlerts:(BOOL)a29 hypothesis:(id)a30 travelAdvisoryTimelinessPeriod:(unint64_t)a31 forceDisplayOfNewTravelAdvisoryHypotheses:(BOOL)a32 travelAdvisoryDisabled:(BOOL)a33
+- (CALNTriggeredEventNotificationSourceNotificationInfo)initWithTitle:(id)title location:(id)location locationWithoutPrediction:(id)prediction preferredLocation:(id)preferredLocation startDate:(id)date endDate:(id)endDate isAllDay:(BOOL)day isTimeSensitive:(BOOL)self0 launchURL:(id)self1 isLocationEvent:(BOOL)self2 eventID:(id)self3 eventObjectID:(id)self4 organizerPhoneNumber:(id)self5 organizerEmailAddress:(id)self6 calendarIdentifier:(id)self7 eventRepresentationDictionary:(id)self8 legacyIdentifier:(id)self9 mapItemURL:(id)rL conferenceURL:(id)uRL conferenceURLIsBroadcast:(BOOL)broadcast mailtoURL:(id)mailtoURL hasSuggestedLocation:(BOOL)suggestedLocation eventHasAlarms:(BOOL)alarms alarmID:(id)alarmID isOffsetFromTravelTimeStart:(BOOL)start lastFireTimeOfAlertOffsetFromTravelTime:(id)time allowsLocationAlerts:(BOOL)alerts hypothesis:(id)title0 travelAdvisoryTimelinessPeriod:(unint64_t)title1 forceDisplayOfNewTravelAdvisoryHypotheses:(BOOL)title2 travelAdvisoryDisabled:(BOOL)title3
 {
-  v99 = a3;
-  v98 = a4;
-  v38 = a5;
-  obj = a6;
-  v39 = a6;
-  v97 = a7;
-  v40 = a8;
-  v96 = a11;
-  v41 = a13;
-  v95 = a14;
-  v42 = a15;
-  v43 = a16;
-  v44 = a17;
-  v45 = a18;
-  v46 = a19;
-  v94 = a20;
-  v93 = a21;
-  v92 = a23;
-  v91 = a26;
-  v90 = a28;
-  v89 = a30;
+  titleCopy = title;
+  locationCopy = location;
+  predictionCopy = prediction;
+  obj = preferredLocation;
+  preferredLocationCopy = preferredLocation;
+  dateCopy = date;
+  endDateCopy = endDate;
+  lCopy = l;
+  dCopy = d;
+  iDCopy = iD;
+  numberCopy = number;
+  addressCopy = address;
+  identifierCopy = identifier;
+  dictionaryCopy = dictionary;
+  legacyIdentifierCopy = legacyIdentifier;
+  rLCopy = rL;
+  uRLCopy = uRL;
+  mailtoURLCopy = mailtoURL;
+  alarmIDCopy = alarmID;
+  timeCopy = time;
+  hypothesisCopy = hypothesis;
   v100.receiver = self;
   v100.super_class = CALNTriggeredEventNotificationSourceNotificationInfo;
   v47 = [(CALNTriggeredEventNotificationSourceNotificationInfo *)&v100 init];
   if (v47)
   {
-    v48 = [v99 copy];
+    v48 = [titleCopy copy];
     title = v47->_title;
     v47->_title = v48;
 
-    v50 = [v98 copy];
+    v50 = [locationCopy copy];
     location = v47->_location;
     v47->_location = v50;
 
-    v52 = [v38 copy];
+    v52 = [predictionCopy copy];
     locationWithoutPrediction = v47->_locationWithoutPrediction;
     v47->_locationWithoutPrediction = v52;
 
     objc_storeStrong(&v47->_preferredLocation, obj);
-    v54 = [v97 copy];
+    v54 = [dateCopy copy];
     startDate = v47->_startDate;
     v47->_startDate = v54;
 
-    v56 = [v40 copy];
+    v56 = [endDateCopy copy];
     endDate = v47->_endDate;
     v47->_endDate = v56;
 
-    v47->_isAllDay = a9;
-    v47->_isTimeSensitive = a10;
-    v58 = [v96 copy];
+    v47->_isAllDay = day;
+    v47->_isTimeSensitive = sensitive;
+    v58 = [lCopy copy];
     launchURL = v47->_launchURL;
     v47->_launchURL = v58;
 
-    v47->_isLocationEvent = a12;
-    v60 = [v41 copy];
+    v47->_isLocationEvent = event;
+    v60 = [dCopy copy];
     eventID = v47->_eventID;
     v47->_eventID = v60;
 
-    v62 = [v95 copy];
+    v62 = [iDCopy copy];
     eventObjectID = v47->_eventObjectID;
     v47->_eventObjectID = v62;
 
-    v64 = [v42 copy];
+    v64 = [numberCopy copy];
     organizerPhoneNumber = v47->_organizerPhoneNumber;
     v47->_organizerPhoneNumber = v64;
 
-    v66 = [v43 copy];
+    v66 = [addressCopy copy];
     organizerEmailAddress = v47->_organizerEmailAddress;
     v47->_organizerEmailAddress = v66;
 
-    v68 = [v44 copy];
+    v68 = [identifierCopy copy];
     calendarIdentifier = v47->_calendarIdentifier;
     v47->_calendarIdentifier = v68;
 
-    v70 = [v45 copy];
+    v70 = [dictionaryCopy copy];
     eventRepresentationDictionary = v47->_eventRepresentationDictionary;
     v47->_eventRepresentationDictionary = v70;
 
-    v72 = [v46 copy];
+    v72 = [legacyIdentifierCopy copy];
     legacyIdentifier = v47->_legacyIdentifier;
     v47->_legacyIdentifier = v72;
 
-    v74 = [v94 copy];
+    v74 = [rLCopy copy];
     mapItemURL = v47->_mapItemURL;
     v47->_mapItemURL = v74;
 
-    v76 = [v93 copy];
+    v76 = [uRLCopy copy];
     conferenceURL = v47->_conferenceURL;
     v47->_conferenceURL = v76;
 
-    v47->_conferenceURLIsBroadcast = a22;
-    v78 = [v92 copy];
+    v47->_conferenceURLIsBroadcast = broadcast;
+    v78 = [mailtoURLCopy copy];
     mailtoURL = v47->_mailtoURL;
     v47->_mailtoURL = v78;
 
-    v47->_hasSuggestedLocation = a24;
-    v47->_eventHasAlarms = a25;
-    v80 = [v91 copy];
+    v47->_hasSuggestedLocation = suggestedLocation;
+    v47->_eventHasAlarms = alarms;
+    v80 = [alarmIDCopy copy];
     alarmID = v47->_alarmID;
     v47->_alarmID = v80;
 
-    v47->_isOffsetFromTravelTimeStart = a27;
-    v82 = [v90 copy];
+    v47->_isOffsetFromTravelTimeStart = start;
+    v82 = [timeCopy copy];
     lastFireTimeOfAlertOffsetFromTravelTime = v47->_lastFireTimeOfAlertOffsetFromTravelTime;
     v47->_lastFireTimeOfAlertOffsetFromTravelTime = v82;
 
-    v47->_allowsLocationAlerts = a29;
-    v84 = [v89 copy];
+    v47->_allowsLocationAlerts = alerts;
+    v84 = [hypothesisCopy copy];
     hypothesis = v47->_hypothesis;
     v47->_hypothesis = v84;
 
-    v47->_travelAdvisoryTimelinessPeriod = a31;
-    v47->_forceDisplayOfNewTravelAdvisoryHypotheses = a32;
-    v47->_travelAdvisoryDisabled = a33;
+    v47->_travelAdvisoryTimelinessPeriod = period;
+    v47->_forceDisplayOfNewTravelAdvisoryHypotheses = hypotheses;
+    v47->_travelAdvisoryDisabled = disabled;
   }
 
   return v47;
@@ -130,10 +130,10 @@
 {
   v34 = MEMORY[0x277CCACA8];
   v33 = objc_opt_class();
-  v39 = [(CALNTriggeredEventNotificationSourceNotificationInfo *)self title];
-  v38 = [(CALNTriggeredEventNotificationSourceNotificationInfo *)self location];
-  v37 = [(CALNTriggeredEventNotificationSourceNotificationInfo *)self startDate];
-  v32 = [(CALNTriggeredEventNotificationSourceNotificationInfo *)self endDate];
+  title = [(CALNTriggeredEventNotificationSourceNotificationInfo *)self title];
+  location = [(CALNTriggeredEventNotificationSourceNotificationInfo *)self location];
+  startDate = [(CALNTriggeredEventNotificationSourceNotificationInfo *)self startDate];
+  endDate = [(CALNTriggeredEventNotificationSourceNotificationInfo *)self endDate];
   if ([(CALNTriggeredEventNotificationSourceNotificationInfo *)self isAllDay])
   {
     v3 = @"YES";
@@ -145,7 +145,7 @@
   }
 
   v31 = v3;
-  v30 = [(CALNTriggeredEventNotificationSourceNotificationInfo *)self launchURL];
+  launchURL = [(CALNTriggeredEventNotificationSourceNotificationInfo *)self launchURL];
   if ([(CALNTriggeredEventNotificationSourceNotificationInfo *)self isLocationEvent])
   {
     v4 = @"YES";
@@ -157,12 +157,12 @@
   }
 
   v29 = v4;
-  v36 = [(CALNTriggeredEventNotificationSourceNotificationInfo *)self eventID];
-  v28 = [(CALNTriggeredEventNotificationSourceNotificationInfo *)self calendarIdentifier];
-  v35 = [(CALNTriggeredEventNotificationSourceNotificationInfo *)self eventRepresentationDictionary];
-  v27 = [(CALNTriggeredEventNotificationSourceNotificationInfo *)self legacyIdentifier];
-  v26 = [(CALNTriggeredEventNotificationSourceNotificationInfo *)self mapItemURL];
-  v25 = [(CALNTriggeredEventNotificationSourceNotificationInfo *)self conferenceURL];
+  eventID = [(CALNTriggeredEventNotificationSourceNotificationInfo *)self eventID];
+  calendarIdentifier = [(CALNTriggeredEventNotificationSourceNotificationInfo *)self calendarIdentifier];
+  eventRepresentationDictionary = [(CALNTriggeredEventNotificationSourceNotificationInfo *)self eventRepresentationDictionary];
+  legacyIdentifier = [(CALNTriggeredEventNotificationSourceNotificationInfo *)self legacyIdentifier];
+  mapItemURL = [(CALNTriggeredEventNotificationSourceNotificationInfo *)self mapItemURL];
+  conferenceURL = [(CALNTriggeredEventNotificationSourceNotificationInfo *)self conferenceURL];
   if ([(CALNTriggeredEventNotificationSourceNotificationInfo *)self conferenceURLIsBroadcast])
   {
     v5 = @"YES";
@@ -174,7 +174,7 @@
   }
 
   v24 = v5;
-  v23 = [(CALNTriggeredEventNotificationSourceNotificationInfo *)self mailtoURL];
+  mailtoURL = [(CALNTriggeredEventNotificationSourceNotificationInfo *)self mailtoURL];
   if ([(CALNTriggeredEventNotificationSourceNotificationInfo *)self hasSuggestedLocation])
   {
     v6 = @"YES";
@@ -197,7 +197,7 @@
   }
 
   v21 = v7;
-  v8 = [(CALNTriggeredEventNotificationSourceNotificationInfo *)self alarmID];
+  alarmID = [(CALNTriggeredEventNotificationSourceNotificationInfo *)self alarmID];
   if ([(CALNTriggeredEventNotificationSourceNotificationInfo *)self isOffsetFromTravelTimeStart])
   {
     v9 = @"YES";
@@ -209,7 +209,7 @@
   }
 
   v20 = v9;
-  v10 = [(CALNTriggeredEventNotificationSourceNotificationInfo *)self lastFireTimeOfAlertOffsetFromTravelTime];
+  lastFireTimeOfAlertOffsetFromTravelTime = [(CALNTriggeredEventNotificationSourceNotificationInfo *)self lastFireTimeOfAlertOffsetFromTravelTime];
   if ([(CALNTriggeredEventNotificationSourceNotificationInfo *)self allowsLocationAlerts])
   {
     v11 = @"YES";
@@ -220,7 +220,7 @@
     v11 = @"NO";
   }
 
-  v12 = [(CALNTriggeredEventNotificationSourceNotificationInfo *)self hypothesis];
+  hypothesis = [(CALNTriggeredEventNotificationSourceNotificationInfo *)self hypothesis];
   v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[CALNTriggeredEventNotificationSourceNotificationInfo travelAdvisoryTimelinessPeriod](self, "travelAdvisoryTimelinessPeriod")}];
   if ([(CALNTriggeredEventNotificationSourceNotificationInfo *)self forceDisplayOfNewTravelAdvisoryHypotheses])
   {
@@ -242,9 +242,9 @@
     v15 = @"NO";
   }
 
-  v16 = [(CALNTriggeredEventNotificationSourceNotificationInfo *)self locationWithoutPrediction];
-  v17 = [(CALNTriggeredEventNotificationSourceNotificationInfo *)self preferredLocation];
-  v18 = [v34 stringWithFormat:@"<%@: %p>(title = %@, location = %@, startDate = %@, endDate = %@, isAllDay = %@, launchURL = %@, isLocationEvent = %@, eventID = %@, calendarIdentifier = %@, eventRepresentationDictionary = %@, legacyIdentifier = %@, mapItemURL = %@, conferenceURL = %@, conferenceURLIsBroadcast = %@, mailtoURL = %@, hasSuggestedLocation = %@, eventHasAlarms = %@, alarmID = %@, isOffsetFromTravelTimeStart = %@, lastFireTimeOfAlertOffsetFromTravelTime = %@, allowsLocationAlerts = %@, hypothesis = %@, travelAdvisoryTimelinessPeriod = %@, forceDisplayOfNewTravelAdvisoryHypotheses = %@, travelAdvisoryDisabled = %@, locationWithoutPrediction = %@, preferredLocation = %@)", v33, self, v39, v38, v37, v32, v31, v30, v29, v36, v28, v35, v27, v26, v25, v24, v23, v22, v21, v8, v20, v10, v11, v12, v13, v14, v15, v16, v17];
+  locationWithoutPrediction = [(CALNTriggeredEventNotificationSourceNotificationInfo *)self locationWithoutPrediction];
+  preferredLocation = [(CALNTriggeredEventNotificationSourceNotificationInfo *)self preferredLocation];
+  v18 = [v34 stringWithFormat:@"<%@: %p>(title = %@, location = %@, startDate = %@, endDate = %@, isAllDay = %@, launchURL = %@, isLocationEvent = %@, eventID = %@, calendarIdentifier = %@, eventRepresentationDictionary = %@, legacyIdentifier = %@, mapItemURL = %@, conferenceURL = %@, conferenceURLIsBroadcast = %@, mailtoURL = %@, hasSuggestedLocation = %@, eventHasAlarms = %@, alarmID = %@, isOffsetFromTravelTimeStart = %@, lastFireTimeOfAlertOffsetFromTravelTime = %@, allowsLocationAlerts = %@, hypothesis = %@, travelAdvisoryTimelinessPeriod = %@, forceDisplayOfNewTravelAdvisoryHypotheses = %@, travelAdvisoryDisabled = %@, locationWithoutPrediction = %@, preferredLocation = %@)", v33, self, title, location, startDate, endDate, v31, launchURL, v29, eventID, calendarIdentifier, eventRepresentationDictionary, legacyIdentifier, mapItemURL, conferenceURL, v24, mailtoURL, v22, v21, alarmID, v20, lastFireTimeOfAlertOffsetFromTravelTime, v11, hypothesis, v13, v14, v15, locationWithoutPrediction, preferredLocation];
 
   return v18;
 }

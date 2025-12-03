@@ -1,38 +1,38 @@
 @interface PKAccountCreditTermsUpdate
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (PKAccountCreditTermsUpdate)initWithCoder:(id)a3;
-- (PKAccountCreditTermsUpdate)initWithRecord:(id)a3;
+- (PKAccountCreditTermsUpdate)initWithCoder:(id)coder;
+- (PKAccountCreditTermsUpdate)initWithRecord:(id)record;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)encodeWithRecord:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)encodeWithRecord:(id)record;
 @end
 
 @implementation PKAccountCreditTermsUpdate
 
-- (PKAccountCreditTermsUpdate)initWithCoder:(id)a3
+- (PKAccountCreditTermsUpdate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = PKAccountCreditTermsUpdate;
   v5 = [(PKAccountCreditTermsUpdate *)&v15 init];
   if (v5)
   {
-    v5->_type = [v4 decodeIntegerForKey:@"type"];
-    v5->_initiator = [v4 decodeIntegerForKey:@"initiator"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"requestIdentifier"];
+    v5->_type = [coderCopy decodeIntegerForKey:@"type"];
+    v5->_initiator = [coderCopy decodeIntegerForKey:@"initiator"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"requestIdentifier"];
     requestIdentifier = v5->_requestIdentifier;
     v5->_requestIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"adverseActionContentIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"adverseActionContentIdentifier"];
     adverseActionContentIdentifier = v5->_adverseActionContentIdentifier;
     v5->_adverseActionContentIdentifier = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"creditLimit"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"creditLimit"];
     creditLimit = v5->_creditLimit;
     v5->_creditLimit = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"rates"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"rates"];
     rates = v5->_rates;
     v5->_rates = v12;
   }
@@ -40,28 +40,28 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   type = self->_type;
-  v5 = a3;
-  [v5 encodeInteger:type forKey:@"type"];
-  [v5 encodeInteger:self->_initiator forKey:@"initiator"];
-  [v5 encodeObject:self->_requestIdentifier forKey:@"requestIdentifier"];
-  [v5 encodeObject:self->_adverseActionContentIdentifier forKey:@"adverseActionContentIdentifier"];
-  [v5 encodeObject:self->_creditLimit forKey:@"creditLimit"];
-  [v5 encodeObject:self->_rates forKey:@"rates"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:type forKey:@"type"];
+  [coderCopy encodeInteger:self->_initiator forKey:@"initiator"];
+  [coderCopy encodeObject:self->_requestIdentifier forKey:@"requestIdentifier"];
+  [coderCopy encodeObject:self->_adverseActionContentIdentifier forKey:@"adverseActionContentIdentifier"];
+  [coderCopy encodeObject:self->_creditLimit forKey:@"creditLimit"];
+  [coderCopy encodeObject:self->_rates forKey:@"rates"];
 }
 
-- (PKAccountCreditTermsUpdate)initWithRecord:(id)a3
+- (PKAccountCreditTermsUpdate)initWithRecord:(id)record
 {
-  v4 = a3;
+  recordCopy = record;
   v41.receiver = self;
   v41.super_class = PKAccountCreditTermsUpdate;
   v5 = [(PKAccountCreditTermsUpdate *)&v41 init];
   if (v5)
   {
-    v6 = [v4 pk_encryptedStringForKey:@"currencyCode"];
-    v7 = [v4 pk_encryptedDecimalNumberForKey:@"creditLimit"];
+    v6 = [recordCopy pk_encryptedStringForKey:@"currencyCode"];
+    v7 = [recordCopy pk_encryptedDecimalNumberForKey:@"creditLimit"];
     v8 = v7;
     if (v6 && v7)
     {
@@ -70,33 +70,33 @@
       v5->_creditLimit = v9;
     }
 
-    v11 = [v4 pk_encryptedDictionaryForKey:@"rates"];
+    v11 = [recordCopy pk_encryptedDictionaryForKey:@"rates"];
     v12 = [[PKCreditAccountRates alloc] initWithDictionary:v11];
     rates = v5->_rates;
     v5->_rates = v12;
 
-    v14 = [v4 pk_encryptedStringForKey:@"requestIdentifier"];
+    v14 = [recordCopy pk_encryptedStringForKey:@"requestIdentifier"];
     requestIdentifier = v5->_requestIdentifier;
     v5->_requestIdentifier = v14;
 
-    v16 = [v4 pk_encryptedStringForKey:@"adverseActionContentIdentifier"];
+    v16 = [recordCopy pk_encryptedStringForKey:@"adverseActionContentIdentifier"];
     adverseActionContentIdentifier = v5->_adverseActionContentIdentifier;
     v5->_adverseActionContentIdentifier = v16;
 
-    v18 = [v4 pk_encryptedStringForKey:@"initiator"];
-    v19 = [v18 lowercaseString];
-    v20 = v19;
-    if (v19 == @"system")
+    v18 = [recordCopy pk_encryptedStringForKey:@"initiator"];
+    lowercaseString = [v18 lowercaseString];
+    v20 = lowercaseString;
+    if (lowercaseString == @"system")
     {
       goto LABEL_8;
     }
 
-    if (!v19)
+    if (!lowercaseString)
     {
       goto LABEL_12;
     }
 
-    v21 = [(__CFString *)v19 isEqualToString:@"system"];
+    v21 = [(__CFString *)lowercaseString isEqualToString:@"system"];
 
     if (v21)
     {
@@ -120,14 +120,14 @@ LABEL_12:
 LABEL_13:
 
     v5->_initiator = v22;
-    v26 = [v4 pk_encryptedStringForKey:@"type"];
-    v27 = [v26 lowercaseString];
-    v28 = v27;
-    if (v27 != @"creditlimitincreased")
+    v26 = [recordCopy pk_encryptedStringForKey:@"type"];
+    lowercaseString2 = [v26 lowercaseString];
+    v28 = lowercaseString2;
+    if (lowercaseString2 != @"creditlimitincreased")
     {
-      if (v27)
+      if (lowercaseString2)
       {
-        v29 = [(__CFString *)v27 isEqualToString:@"creditlimitincreased"];
+        v29 = [(__CFString *)lowercaseString2 isEqualToString:@"creditlimitincreased"];
 
         if (v29)
         {
@@ -170,21 +170,21 @@ LABEL_27:
   return v5;
 }
 
-- (void)encodeWithRecord:(id)a3
+- (void)encodeWithRecord:(id)record
 {
-  v12 = [a3 encryptedValues];
-  v4 = [(PKCurrencyAmount *)self->_creditLimit currency];
-  [v12 setObject:v4 forKey:@"currencyCode"];
+  encryptedValues = [record encryptedValues];
+  currency = [(PKCurrencyAmount *)self->_creditLimit currency];
+  [encryptedValues setObject:currency forKey:@"currencyCode"];
 
-  v5 = [(PKCurrencyAmount *)self->_creditLimit amount];
-  v6 = [v5 stringValue];
-  [v12 setObject:v6 forKey:@"creditLimit"];
+  amount = [(PKCurrencyAmount *)self->_creditLimit amount];
+  stringValue = [amount stringValue];
+  [encryptedValues setObject:stringValue forKey:@"creditLimit"];
 
-  v7 = [(PKCreditAccountRates *)self->_rates jsonString];
-  [v12 setObject:v7 forKey:@"rates"];
+  jsonString = [(PKCreditAccountRates *)self->_rates jsonString];
+  [encryptedValues setObject:jsonString forKey:@"rates"];
 
-  [v12 setObject:self->_requestIdentifier forKey:@"requestIdentifier"];
-  [v12 setObject:self->_adverseActionContentIdentifier forKey:@"adverseActionContentIdentifier"];
+  [encryptedValues setObject:self->_requestIdentifier forKey:@"requestIdentifier"];
+  [encryptedValues setObject:self->_adverseActionContentIdentifier forKey:@"adverseActionContentIdentifier"];
   initiator = self->_initiator;
   if (initiator > 2)
   {
@@ -196,7 +196,7 @@ LABEL_27:
     v9 = off_1E79C8DC8[initiator];
   }
 
-  [v12 setObject:v9 forKey:@"initiator"];
+  [encryptedValues setObject:v9 forKey:@"initiator"];
   type = self->_type;
   if (type > 4)
   {
@@ -208,12 +208,12 @@ LABEL_27:
     v11 = off_1E79C8DA0[type];
   }
 
-  [v12 setObject:v11 forKey:@"type"];
+  [encryptedValues setObject:v11 forKey:@"type"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -221,7 +221,7 @@ LABEL_27:
   }
 
   creditLimit = self->_creditLimit;
-  v6 = v4[5];
+  v6 = equalCopy[5];
   if (creditLimit && v6)
   {
     if (![(PKCurrencyAmount *)creditLimit isEqual:?])
@@ -236,7 +236,7 @@ LABEL_27:
   }
 
   rates = self->_rates;
-  v8 = v4[6];
+  v8 = equalCopy[6];
   if (rates && v8)
   {
     if (![(PKCreditAccountRates *)rates isEqual:?])
@@ -251,7 +251,7 @@ LABEL_27:
   }
 
   requestIdentifier = self->_requestIdentifier;
-  v10 = v4[3];
+  v10 = equalCopy[3];
   if (requestIdentifier && v10)
   {
     if (([(NSString *)requestIdentifier isEqual:?]& 1) == 0)
@@ -266,7 +266,7 @@ LABEL_27:
   }
 
   adverseActionContentIdentifier = self->_adverseActionContentIdentifier;
-  v12 = v4[4];
+  v12 = equalCopy[4];
   if (!adverseActionContentIdentifier || !v12)
   {
     if (adverseActionContentIdentifier == v12)
@@ -285,12 +285,12 @@ LABEL_24:
   }
 
 LABEL_22:
-  if (self->_type != v4[1])
+  if (self->_type != equalCopy[1])
   {
     goto LABEL_24;
   }
 
-  v13 = self->_initiator == v4[2];
+  v13 = self->_initiator == equalCopy[2];
 LABEL_25:
 
   return v13;
@@ -298,12 +298,12 @@ LABEL_25:
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_creditLimit];
-  [v3 safelyAddObject:self->_requestIdentifier];
-  [v3 safelyAddObject:self->_adverseActionContentIdentifier];
-  [v3 safelyAddObject:self->_rates];
-  v4 = PKCombinedHash(17, v3);
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_creditLimit];
+  [array safelyAddObject:self->_requestIdentifier];
+  [array safelyAddObject:self->_adverseActionContentIdentifier];
+  [array safelyAddObject:self->_rates];
+  v4 = PKCombinedHash(17, array);
   v5 = self->_type - v4 + 32 * v4;
   v6 = self->_initiator - v5 + 32 * v5;
 

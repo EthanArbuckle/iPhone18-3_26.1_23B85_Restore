@@ -1,14 +1,14 @@
 @interface SagaImportController
-- (BOOL)processDAAPFileAtURL:(id)a3;
+- (BOOL)processDAAPFileAtURL:(id)l;
 - (NSDictionary)cloudIDToLyricsTokenMap;
 - (SagaImportController)init;
 @end
 
 @implementation SagaImportController
 
-- (BOOL)processDAAPFileAtURL:(id)a3
+- (BOOL)processDAAPFileAtURL:(id)l
 {
-  v4 = [NSInputStream inputStreamWithURL:a3];
+  v4 = [NSInputStream inputStreamWithURL:l];
   v5 = [[DKDAAPParser alloc] initWithStream:v4];
   v6 = objc_alloc_init(SagaImportControllerParserDelegate);
   [(SagaImportControllerParserDelegate *)v6 setMutableCloudIDToLyricsTokenMap:self->_mutableCloudIDToLyricsTokenMap];
@@ -16,13 +16,13 @@
   [v5 parse];
   self->_shouldRestart = [(SagaImportControllerParserDelegate *)v6 shouldRestart];
   self->_totalItemCount = [(SagaImportControllerParserDelegate *)v6 totalItemCount];
-  v7 = [(SagaImportControllerParserDelegate *)v6 currentItemCount];
-  v8 = self->_processedItemCount + v7;
-  self->_currentItemCount = v7;
+  currentItemCount = [(SagaImportControllerParserDelegate *)v6 currentItemCount];
+  v8 = self->_processedItemCount + currentItemCount;
+  self->_currentItemCount = currentItemCount;
   self->_processedItemCount = v8;
-  v9 = [(SagaImportControllerParserDelegate *)v6 currentPaginationToken];
+  currentPaginationToken = [(SagaImportControllerParserDelegate *)v6 currentPaginationToken];
   currentPaginationToken = self->_currentPaginationToken;
-  self->_currentPaginationToken = v9;
+  self->_currentPaginationToken = currentPaginationToken;
 
   self->_includesBookmarkable = [(SagaImportControllerParserDelegate *)v6 includesBookmarkable];
   return 1;

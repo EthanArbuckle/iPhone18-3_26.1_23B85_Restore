@@ -1,120 +1,120 @@
 @interface VCVoiceShortcutClient
 + (VCVoiceShortcutClient)standardClient;
-- (BOOL)markMenuBarWorkflowAsMigratedWithIdentifiers:(id)a3 error:(id *)a4;
-- (BOOL)requestDataMigration:(id *)a3;
-- (BOOL)resetAutomationConfirmationStatusWithError:(id *)a3;
-- (BOOL)userHasAutomationsWithError:(id *)a3;
-- (VCVoiceShortcutClient)initWithListenerEndpoint:(id)a3;
-- (VCVoiceShortcutClient)initWithMachServiceName:(id)a3 options:(unint64_t)a4 interfaceSetupBlock:(id)a5;
-- (VCVoiceShortcutClient)initWithXPCConnection:(id)a3 XPCConnectionCreationBlock:(id)a4 XPCInterfaceSetupBlock:(id)a5;
-- (VCVoiceShortcutClient)initWithXPCConnectionCreationBlock:(id)a3 XPCInterfaceSetupBlock:(id)a4;
-- (id)accessibilityWatchWorkflowsWithError:(id *)a3;
-- (id)accessibilityWorkflowForIdentifier:(id)a3 error:(id *)a4;
-- (id)accessibilityWorkflowWithIdentifier:(id)a3 error:(id *)a4;
-- (id)accessibilityWorkflowsForSurface:(unint64_t)a3 error:(id *)a4;
-- (id)accessibilityWorkflowsWithError:(id *)a3;
-- (id)archiveAction:(id)a3 withActionMetadata:(id)a4 error:(id *)a5;
-- (id)asynchronousRemoteDataStoreWithErrorHandler:(id)a3 synchronous:(BOOL)a4;
-- (id)colorsForBundleIdentifier:(id)a3 error:(id *)a4;
-- (id)contextualActionsForContext:(id)a3 error:(id *)a4;
-- (id)createBookmarkWithBookmarkableString:(id)a3 path:(id)a4 workflowID:(id)a5 error:(id *)a6;
-- (id)createBookmarkWithURL:(id)a3 workflowID:(id)a4 error:(id *)a5;
-- (id)drawGlyphs:(id)a3 atSize:(CGSize)a4 withBackgroundColorValues:(id)a5 padding:(double)a6 error:(id *)a7;
-- (id)fetchURLForFPItem:(id)a3 error:(id *)a4;
-- (id)filteredContextualActions:(id)a3 forContext:(id)a4 byType:(unint64_t)a5 error:(id *)a6;
-- (id)firstUnsortedWorkflowWithBackgroundColorValue:(id *)a3 error:(id *)a4;
-- (id)foldersWithError:(id *)a3;
-- (id)getResultsForQuery:(id)a3 resultClass:(Class)a4 resultState:(id *)a5 error:(id *)a6;
-- (id)getValueForDescriptor:(id)a3 resultClass:(Class)a4 error:(id *)a5;
+- (BOOL)markMenuBarWorkflowAsMigratedWithIdentifiers:(id)identifiers error:(id *)error;
+- (BOOL)requestDataMigration:(id *)migration;
+- (BOOL)resetAutomationConfirmationStatusWithError:(id *)error;
+- (BOOL)userHasAutomationsWithError:(id *)error;
+- (VCVoiceShortcutClient)initWithListenerEndpoint:(id)endpoint;
+- (VCVoiceShortcutClient)initWithMachServiceName:(id)name options:(unint64_t)options interfaceSetupBlock:(id)block;
+- (VCVoiceShortcutClient)initWithXPCConnection:(id)connection XPCConnectionCreationBlock:(id)block XPCInterfaceSetupBlock:(id)setupBlock;
+- (VCVoiceShortcutClient)initWithXPCConnectionCreationBlock:(id)block XPCInterfaceSetupBlock:(id)setupBlock;
+- (id)accessibilityWatchWorkflowsWithError:(id *)error;
+- (id)accessibilityWorkflowForIdentifier:(id)identifier error:(id *)error;
+- (id)accessibilityWorkflowWithIdentifier:(id)identifier error:(id *)error;
+- (id)accessibilityWorkflowsForSurface:(unint64_t)surface error:(id *)error;
+- (id)accessibilityWorkflowsWithError:(id *)error;
+- (id)archiveAction:(id)action withActionMetadata:(id)metadata error:(id *)error;
+- (id)asynchronousRemoteDataStoreWithErrorHandler:(id)handler synchronous:(BOOL)synchronous;
+- (id)colorsForBundleIdentifier:(id)identifier error:(id *)error;
+- (id)contextualActionsForContext:(id)context error:(id *)error;
+- (id)createBookmarkWithBookmarkableString:(id)string path:(id)path workflowID:(id)d error:(id *)error;
+- (id)createBookmarkWithURL:(id)l workflowID:(id)d error:(id *)error;
+- (id)drawGlyphs:(id)glyphs atSize:(CGSize)size withBackgroundColorValues:(id)values padding:(double)padding error:(id *)error;
+- (id)fetchURLForFPItem:(id)item error:(id *)error;
+- (id)filteredContextualActions:(id)actions forContext:(id)context byType:(unint64_t)type error:(id *)error;
+- (id)firstUnsortedWorkflowWithBackgroundColorValue:(id *)value error:(id *)error;
+- (id)foldersWithError:(id *)error;
+- (id)getResultsForQuery:(id)query resultClass:(Class)class resultState:(id *)state error:(id *)error;
+- (id)getValueForDescriptor:(id)descriptor resultClass:(Class)class error:(id *)error;
 - (id)getVaultItemsAccessForBackgroundRunner;
-- (id)linkActionWithAppBundleIdentifier:(id)a3 appIntentIdentifier:(id)a4 serializedParameterStates:(id)a5 error:(id *)a6;
-- (id)menuBarWorkflowsWithGlyphSize:(CGSize)a3 error:(id *)a4;
-- (id)migratedAppIntentWithINIntent:(id)a3 error:(id *)a4;
-- (id)observableStingWorkflowWithIdentifier:(id)a3 error:(id *)a4;
-- (id)observableStingWorkflowsWithError:(id *)a3;
-- (id)resolveBookmarkData:(id)a3 updatedData:(id *)a4 error:(id *)a5;
-- (id)resolveCrossDeviceItemID:(id)a3 error:(id *)a4;
-- (id)resolveFilePath:(id)a3 workflowID:(id)a4 error:(id *)a5;
-- (id)runShortcutIntentForWorkflow:(id)a3 error:(id *)a4;
-- (id)serializedParametersForLinkAction:(id)a3 actionMetadata:(id)a4 error:(id *)a5;
-- (id)shareSheetWorkflowsForExtensionMatchingDictionaries:(id)a3 resolvedActivityItems:(id)a4 hostBundleIdentifier:(id)a5 iconSize:(CGSize)a6 iconScale:(double)a7 error:(id *)a8;
-- (id)shortcutWithIdentifier:(id)a3 glyphSize:(CGSize)a4 error:(id *)a5;
-- (id)shortcutsInCollectionWithIdentifier:(id)a3 error:(id *)a4;
-- (id)stingWorkflowWithIdentifier:(id)a3 error:(id *)a4;
-- (id)stingWorkflowsWithError:(id *)a3;
-- (id)unarchiveActionFromData:(id)a3 withActionMetadata:(id)a4 error:(id *)a5;
+- (id)linkActionWithAppBundleIdentifier:(id)identifier appIntentIdentifier:(id)intentIdentifier serializedParameterStates:(id)states error:(id *)error;
+- (id)menuBarWorkflowsWithGlyphSize:(CGSize)size error:(id *)error;
+- (id)migratedAppIntentWithINIntent:(id)intent error:(id *)error;
+- (id)observableStingWorkflowWithIdentifier:(id)identifier error:(id *)error;
+- (id)observableStingWorkflowsWithError:(id *)error;
+- (id)resolveBookmarkData:(id)data updatedData:(id *)updatedData error:(id *)error;
+- (id)resolveCrossDeviceItemID:(id)d error:(id *)error;
+- (id)resolveFilePath:(id)path workflowID:(id)d error:(id *)error;
+- (id)runShortcutIntentForWorkflow:(id)workflow error:(id *)error;
+- (id)serializedParametersForLinkAction:(id)action actionMetadata:(id)metadata error:(id *)error;
+- (id)shareSheetWorkflowsForExtensionMatchingDictionaries:(id)dictionaries resolvedActivityItems:(id)items hostBundleIdentifier:(id)identifier iconSize:(CGSize)size iconScale:(double)scale error:(id *)error;
+- (id)shortcutWithIdentifier:(id)identifier glyphSize:(CGSize)size error:(id *)error;
+- (id)shortcutsInCollectionWithIdentifier:(id)identifier error:(id *)error;
+- (id)stingWorkflowWithIdentifier:(id)identifier error:(id *)error;
+- (id)stingWorkflowsWithError:(id *)error;
+- (id)unarchiveActionFromData:(id)data withActionMetadata:(id)metadata error:(id *)error;
 - (id)unsafePopConnectionErrorHandlers;
-- (id)visibleShortcutsWithError:(id *)a3;
-- (void)archiveAction:(id)a3 withActionMetadata:(id)a4 completion:(id)a5;
-- (void)callErrorHandlerIfNeeded:(id)a3 withError:(id)a4;
-- (void)checkTriggerStateWithIdentifier:(id)a3 completion:(id)a4;
-- (void)checkTriggerStateWithKeyPath:(id)a3 completion:(id)a4;
-- (void)computeRepresentativeSizesForFinderResizingImages:(id)a3 toSizes:(id)a4 completion:(id)a5;
-- (void)configuredStaccatoActionFromTemplate:(id)a3 valuesByParameterKey:(id)a4 completion:(id)a5;
-- (void)createVoiceShortcut:(id)a3 phrase:(id)a4 completion:(id)a5;
+- (id)visibleShortcutsWithError:(id *)error;
+- (void)archiveAction:(id)action withActionMetadata:(id)metadata completion:(id)completion;
+- (void)callErrorHandlerIfNeeded:(id)needed withError:(id)error;
+- (void)checkTriggerStateWithIdentifier:(id)identifier completion:(id)completion;
+- (void)checkTriggerStateWithKeyPath:(id)path completion:(id)completion;
+- (void)computeRepresentativeSizesForFinderResizingImages:(id)images toSizes:(id)sizes completion:(id)completion;
+- (void)configuredStaccatoActionFromTemplate:(id)template valuesByParameterKey:(id)key completion:(id)completion;
+- (void)createVoiceShortcut:(id)shortcut phrase:(id)phrase completion:(id)completion;
 - (void)dealloc;
-- (void)defaultStaccatoActionWithCompletion:(id)a3;
-- (void)deleteTriggerWithIdentifier:(id)a3 completion:(id)a4;
-- (void)deleteVoiceShortcutWithIdentifier:(id)a3 completion:(id)a4;
-- (void)deleteVoiceShortcutWithName:(id)a3 completion:(id)a4;
-- (void)dismissToastedSessionKitSessionsWithReason:(id)a3 completion:(id)a4;
-- (void)fetchAllValueSectionsForStaccatoParameter:(id)a3 completion:(id)a4;
-- (void)fetchAllValuesForStaccatoParameter:(id)a3 completion:(id)a4;
-- (void)fetchAvailableStaccatoActions:(id)a3;
-- (void)filterContextualActions:(id)a3 forContext:(id)a4 byType:(unint64_t)a5 completion:(id)a6;
-- (void)generateSingleUseTokenForWorkflowIdentifier:(id)a3 completion:(id)a4;
-- (void)getConfiguredTriggerDescriptionsWithCompletion:(id)a3;
-- (void)getContextualActionsForContext:(id)a3 completion:(id)a4;
-- (void)getLinkActionWithAppBundleIdentifier:(id)a3 appIntentIdentifier:(id)a4 expandingParameterName:(id)a5 limit:(int64_t)a6 completion:(id)a7;
-- (void)getNumberOfVoiceShortcutsWithCompletion:(id)a3;
-- (void)getOnScreenContentWithOptions:(id)a3 completion:(id)a4;
-- (void)getOnScreenContentWithOptions:(id)a3 completionHandler:(id)a4;
-- (void)getResultsForQuery:(id)a3 resultClass:(Class)a4 completion:(id)a5;
-- (void)getShortcutSuggestionsForAllAppsWithLimit:(unint64_t)a3 completion:(id)a4;
-- (void)getShortcutSuggestionsForAppWithBundleIdentifier:(id)a3 completion:(id)a4;
-- (void)getSiriAutoShortcutsEnablementForBundleIdentifier:(id)a3 completion:(id)a4;
-- (void)getSiriPodcastsDatabaseURLWithCompletion:(id)a3;
-- (void)getSuggestedShortcutsWithLimit:(int64_t)a3 completion:(id)a4;
-- (void)getUpcomingMediaForBundleIdentifier:(id)a3 limit:(int64_t)a4 completion:(id)a5;
-- (void)getValueForDescriptor:(id)a3 resultClass:(Class)a4 completion:(id)a5;
-- (void)getVoiceShortcutWithIdentifier:(id)a3 completion:(id)a4;
-- (void)getVoiceShortcutWithPhrase:(id)a3 completion:(id)a4;
-- (void)getVoiceShortcutsForAppWithBundleIdentifier:(id)a3 completion:(id)a4;
-- (void)getVoiceShortcutsWithCompletion:(id)a3;
-- (void)getWidgetWorkflowWithIdentifier:(id)a3 completion:(id)a4;
-- (void)getWidgetWorkflowsInCollectionWithIdentifier:(id)a3 limit:(unint64_t)a4 completion:(id)a5;
+- (void)defaultStaccatoActionWithCompletion:(id)completion;
+- (void)deleteTriggerWithIdentifier:(id)identifier completion:(id)completion;
+- (void)deleteVoiceShortcutWithIdentifier:(id)identifier completion:(id)completion;
+- (void)deleteVoiceShortcutWithName:(id)name completion:(id)completion;
+- (void)dismissToastedSessionKitSessionsWithReason:(id)reason completion:(id)completion;
+- (void)fetchAllValueSectionsForStaccatoParameter:(id)parameter completion:(id)completion;
+- (void)fetchAllValuesForStaccatoParameter:(id)parameter completion:(id)completion;
+- (void)fetchAvailableStaccatoActions:(id)actions;
+- (void)filterContextualActions:(id)actions forContext:(id)context byType:(unint64_t)type completion:(id)completion;
+- (void)generateSingleUseTokenForWorkflowIdentifier:(id)identifier completion:(id)completion;
+- (void)getConfiguredTriggerDescriptionsWithCompletion:(id)completion;
+- (void)getContextualActionsForContext:(id)context completion:(id)completion;
+- (void)getLinkActionWithAppBundleIdentifier:(id)identifier appIntentIdentifier:(id)intentIdentifier expandingParameterName:(id)name limit:(int64_t)limit completion:(id)completion;
+- (void)getNumberOfVoiceShortcutsWithCompletion:(id)completion;
+- (void)getOnScreenContentWithOptions:(id)options completion:(id)completion;
+- (void)getOnScreenContentWithOptions:(id)options completionHandler:(id)handler;
+- (void)getResultsForQuery:(id)query resultClass:(Class)class completion:(id)completion;
+- (void)getShortcutSuggestionsForAllAppsWithLimit:(unint64_t)limit completion:(id)completion;
+- (void)getShortcutSuggestionsForAppWithBundleIdentifier:(id)identifier completion:(id)completion;
+- (void)getSiriAutoShortcutsEnablementForBundleIdentifier:(id)identifier completion:(id)completion;
+- (void)getSiriPodcastsDatabaseURLWithCompletion:(id)completion;
+- (void)getSuggestedShortcutsWithLimit:(int64_t)limit completion:(id)completion;
+- (void)getUpcomingMediaForBundleIdentifier:(id)identifier limit:(int64_t)limit completion:(id)completion;
+- (void)getValueForDescriptor:(id)descriptor resultClass:(Class)class completion:(id)completion;
+- (void)getVoiceShortcutWithIdentifier:(id)identifier completion:(id)completion;
+- (void)getVoiceShortcutWithPhrase:(id)phrase completion:(id)completion;
+- (void)getVoiceShortcutsForAppWithBundleIdentifier:(id)identifier completion:(id)completion;
+- (void)getVoiceShortcutsWithCompletion:(id)completion;
+- (void)getWidgetWorkflowWithIdentifier:(id)identifier completion:(id)completion;
+- (void)getWidgetWorkflowsInCollectionWithIdentifier:(id)identifier limit:(unint64_t)limit completion:(id)completion;
 - (void)handleXPCConnectionInterruption;
 - (void)handleXPCConnectionInvalidation;
-- (void)importSharedShortcutFromURL:(id)a3 completion:(id)a4;
-- (void)importSharedShortcutFromURL:(id)a3 withName:(id)a4 shortcutSource:(id)a5 completion:(id)a6;
-- (void)importShortcutWithRecordData:(id)a3 name:(id)a4 shortcutSource:(id)a5 completion:(id)a6;
-- (void)importTopLevelShortcutFromURL:(id)a3 withName:(id)a4 completion:(id)a5;
-- (void)listModulesWithCompletionHandler:(id)a3;
-- (void)loadDataWithItemProviderRequestMetadata:(id)a3 type:(id)a4 completion:(id)a5;
-- (void)logRunOfContextualAction:(id)a3;
-- (void)obliterateShortcuts:(id)a3;
-- (void)postNotificationAboutFailure:(id)a3 inWorkflow:(id)a4 dialogAttribution:(id)a5 runningContext:(id)a6;
-- (void)postNotificationWithRequest:(id)a3 presentationMode:(unint64_t)a4 runningContext:(id)a5;
-- (void)refreshTriggerWithIdentifier:(id)a3 completion:(id)a4;
-- (void)removeAllSerializedParametersForQueryName:(id)a3 completion:(id)a4;
-- (void)sendAceCommandDictionary:(id)a3 completion:(id)a4;
-- (void)serializedParametersForAppEntityIdentifier:(id)a3 completion:(id)a4;
-- (void)setInteger:(int64_t)a3 forKey:(id)a4 inDomain:(id)a5 completionHandler:(id)a6;
-- (void)setPerWorkflowStateData:(id)a3 forSmartPromptWithActionUUID:(id)a4 reference:(id)a5 completion:(id)a6;
-- (void)setShortcutSuggestions:(id)a3 forAppWithBundleIdentifier:(id)a4;
-- (void)setSpotlightAutoShortcutsEnablement:(BOOL)a3 forBundleIdentifier:(id)a4 completion:(id)a5;
-- (void)setSpotlightAutoShortcutsEnablement:(BOOL)a3 forBundleIdentifier:(id)a4 phraseSignature:(id)a5 completion:(id)a6;
-- (void)showSingleStepCompletionForWebClip:(id)a3 completion:(id)a4;
-- (void)storeSerializedParameters:(id)a3 forAppEntityIdentifier:(id)a4 queryName:(id)a5 badgeType:(unint64_t)a6 completion:(id)a7;
+- (void)importSharedShortcutFromURL:(id)l completion:(id)completion;
+- (void)importSharedShortcutFromURL:(id)l withName:(id)name shortcutSource:(id)source completion:(id)completion;
+- (void)importShortcutWithRecordData:(id)data name:(id)name shortcutSource:(id)source completion:(id)completion;
+- (void)importTopLevelShortcutFromURL:(id)l withName:(id)name completion:(id)completion;
+- (void)listModulesWithCompletionHandler:(id)handler;
+- (void)loadDataWithItemProviderRequestMetadata:(id)metadata type:(id)type completion:(id)completion;
+- (void)logRunOfContextualAction:(id)action;
+- (void)obliterateShortcuts:(id)shortcuts;
+- (void)postNotificationAboutFailure:(id)failure inWorkflow:(id)workflow dialogAttribution:(id)attribution runningContext:(id)context;
+- (void)postNotificationWithRequest:(id)request presentationMode:(unint64_t)mode runningContext:(id)context;
+- (void)refreshTriggerWithIdentifier:(id)identifier completion:(id)completion;
+- (void)removeAllSerializedParametersForQueryName:(id)name completion:(id)completion;
+- (void)sendAceCommandDictionary:(id)dictionary completion:(id)completion;
+- (void)serializedParametersForAppEntityIdentifier:(id)identifier completion:(id)completion;
+- (void)setInteger:(int64_t)integer forKey:(id)key inDomain:(id)domain completionHandler:(id)handler;
+- (void)setPerWorkflowStateData:(id)data forSmartPromptWithActionUUID:(id)d reference:(id)reference completion:(id)completion;
+- (void)setShortcutSuggestions:(id)suggestions forAppWithBundleIdentifier:(id)identifier;
+- (void)setSpotlightAutoShortcutsEnablement:(BOOL)enablement forBundleIdentifier:(id)identifier completion:(id)completion;
+- (void)setSpotlightAutoShortcutsEnablement:(BOOL)enablement forBundleIdentifier:(id)identifier phraseSignature:(id)signature completion:(id)completion;
+- (void)showSingleStepCompletionForWebClip:(id)clip completion:(id)completion;
+- (void)storeSerializedParameters:(id)parameters forAppEntityIdentifier:(id)identifier queryName:(id)name badgeType:(unint64_t)type completion:(id)completion;
 - (void)subscribeToVoiceShortcutDataUpdateNotifications;
-- (void)toastSessionKitSessionWithIdentifier:(id)a3 forDuration:(id)a4 completion:(id)a5;
-- (void)triggerFullContextualActionReindexWithCompletion:(id)a3;
-- (void)unarchiveActionFromData:(id)a3 withActionMetadata:(id)a4 completion:(id)a5;
-- (void)unregisterTriggerWithIdentifier:(id)a3 triggerBacking:(int64_t)a4 completion:(id)a5;
+- (void)toastSessionKitSessionWithIdentifier:(id)identifier forDuration:(id)duration completion:(id)completion;
+- (void)triggerFullContextualActionReindexWithCompletion:(id)completion;
+- (void)unarchiveActionFromData:(id)data withActionMetadata:(id)metadata completion:(id)completion;
+- (void)unregisterTriggerWithIdentifier:(id)identifier triggerBacking:(int64_t)backing completion:(id)completion;
 - (void)unsafeSetupXPCConnection;
 - (void)unsubscribeFromVoiceShortcutDataUpdateNotifications;
-- (void)updateAppShortcutsWithCompletion:(id)a3;
-- (void)updateVoiceShortcutWithIdentifier:(id)a3 phrase:(id)a4 shortcut:(id)a5 completion:(id)a6;
+- (void)updateAppShortcutsWithCompletion:(id)completion;
+- (void)updateVoiceShortcutWithIdentifier:(id)identifier phrase:(id)phrase shortcut:(id)shortcut completion:(id)completion;
 @end
 
 @implementation VCVoiceShortcutClient
@@ -160,16 +160,16 @@ uint64_t __39__VCVoiceShortcutClient_standardClient__block_invoke()
 {
   v24 = *MEMORY[0x1E69E9840];
   xpcConnection = self->_xpcConnection;
-  v4 = [(VCVoiceShortcutClient *)self xpcQueue];
-  [(NSXPCConnection *)xpcConnection _setQueue:v4];
+  xpcQueue = [(VCVoiceShortcutClient *)self xpcQueue];
+  [(NSXPCConnection *)xpcConnection _setQueue:xpcQueue];
 
   v5 = VCVoiceShortcutManagerXPCInterface();
-  v6 = [(VCVoiceShortcutClient *)self interfaceSetupBlock];
+  interfaceSetupBlock = [(VCVoiceShortcutClient *)self interfaceSetupBlock];
 
-  if (v6)
+  if (interfaceSetupBlock)
   {
-    v7 = [(VCVoiceShortcutClient *)self interfaceSetupBlock];
-    (v7)[2](v7, v5);
+    interfaceSetupBlock2 = [(VCVoiceShortcutClient *)self interfaceSetupBlock];
+    (interfaceSetupBlock2)[2](interfaceSetupBlock2, v5);
   }
 
   [(NSXPCConnection *)self->_xpcConnection setRemoteObjectInterface:v5];
@@ -194,7 +194,7 @@ uint64_t __39__VCVoiceShortcutClient_standardClient__block_invoke()
     *buf = 136315906;
     v17 = "[VCVoiceShortcutClient unsafeSetupXPCConnection]";
     v18 = 2112;
-    v19 = self;
+    selfCopy = self;
     v20 = 2112;
     v21 = v9;
     v22 = 2114;
@@ -236,20 +236,20 @@ uint64_t __39__VCVoiceShortcutClient_standardClient__block_invoke()
   return v3;
 }
 
-- (void)listModulesWithCompletionHandler:(id)a3
+- (void)listModulesWithCompletionHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   *(v5 + 24) = self;
-  v6 = self;
+  selfCopy = self;
 
   sub_1B1E050C0(&unk_1B1F2A340, v5);
 }
 
-- (BOOL)markMenuBarWorkflowAsMigratedWithIdentifiers:(id)a3 error:(id *)a4
+- (BOOL)markMenuBarWorkflowAsMigratedWithIdentifiers:(id)identifiers error:(id *)error
 {
-  v6 = a3;
+  identifiersCopy = identifiers;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -267,11 +267,11 @@ uint64_t __39__VCVoiceShortcutClient_standardClient__block_invoke()
   v10[2] = __85__VCVoiceShortcutClient_MenuBar__markMenuBarWorkflowAsMigratedWithIdentifiers_error___block_invoke_2;
   v10[3] = &unk_1E7B028A0;
   v10[4] = &v12;
-  [v7 markMenuBarWorkflowAsMigratedWithIdentifiers:v6 completion:v10];
+  [v7 markMenuBarWorkflowAsMigratedWithIdentifiers:identifiersCopy completion:v10];
 
-  if (a4)
+  if (error)
   {
-    *a4 = v13[5];
+    *error = v13[5];
   }
 
   v8 = v13[5] == 0;
@@ -280,9 +280,9 @@ uint64_t __39__VCVoiceShortcutClient_standardClient__block_invoke()
   return v8;
 }
 
-- (id)runShortcutIntentForWorkflow:(id)a3 error:(id *)a4
+- (id)runShortcutIntentForWorkflow:(id)workflow error:(id *)error
 {
-  v6 = a3;
+  workflowCopy = workflow;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
@@ -307,11 +307,11 @@ uint64_t __39__VCVoiceShortcutClient_standardClient__block_invoke()
   v10[3] = &unk_1E7AFFA00;
   v10[4] = &v12;
   v10[5] = &v18;
-  [v7 getRunShortcutIntentForWorkflow:v6 completion:v10];
+  [v7 getRunShortcutIntentForWorkflow:workflowCopy completion:v10];
 
-  if (a4)
+  if (error)
   {
-    *a4 = v19[5];
+    *error = v19[5];
   }
 
   v8 = v13[5];
@@ -336,40 +336,40 @@ void __69__VCVoiceShortcutClient_MenuBar__runShortcutIntentForWorkflow_error___b
   *(v9 + 40) = v6;
 }
 
-- (id)menuBarWorkflowsWithGlyphSize:(CGSize)a3 error:(id *)a4
+- (id)menuBarWorkflowsWithGlyphSize:(CGSize)size error:(id *)error
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v7 = [[WFWorkflowQuery alloc] initWithWorkflowType:@"MenuBar"];
-  v8 = [WFObservableArrayResult getResultWithQuery:v7 valueType:objc_opt_class() glyphSize:a4 error:width, height];
+  height = [WFObservableArrayResult getResultWithQuery:v7 valueType:objc_opt_class() glyphSize:error error:width, height];
 
-  return v8;
+  return height;
 }
 
-- (id)stingWorkflowWithIdentifier:(id)a3 error:(id *)a4
+- (id)stingWorkflowWithIdentifier:(id)identifier error:(id *)error
 {
-  v4 = [(VCVoiceShortcutClient *)self observableStingWorkflowWithIdentifier:a3 error:a4];
-  v5 = [v4 value];
+  v4 = [(VCVoiceShortcutClient *)self observableStingWorkflowWithIdentifier:identifier error:error];
+  value = [v4 value];
 
-  return v5;
+  return value;
 }
 
-- (id)stingWorkflowsWithError:(id *)a3
+- (id)stingWorkflowsWithError:(id *)error
 {
-  v3 = [(VCVoiceShortcutClient *)self observableStingWorkflowsWithError:a3];
-  v4 = [v3 values];
+  v3 = [(VCVoiceShortcutClient *)self observableStingWorkflowsWithError:error];
+  values = [v3 values];
 
-  return v4;
+  return values;
 }
 
-- (id)observableStingWorkflowWithIdentifier:(id)a3 error:(id *)a4
+- (id)observableStingWorkflowWithIdentifier:(id)identifier error:(id *)error
 {
   v13 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if ([v5 length])
+  identifierCopy = identifier;
+  if ([identifierCopy length])
   {
-    v6 = [[WFDatabaseObjectDescriptor alloc] initWithIdentifier:v5 objectType:0];
-    v7 = [WFObservableObjectResult getResultWithDescriptor:v6 valueType:objc_opt_class() glyphSize:a4 error:*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)];
+    v6 = [[WFDatabaseObjectDescriptor alloc] initWithIdentifier:identifierCopy objectType:0];
+    v7 = [WFObservableObjectResult getResultWithDescriptor:v6 valueType:objc_opt_class() glyphSize:error error:*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)];
   }
 
   else
@@ -389,25 +389,25 @@ void __69__VCVoiceShortcutClient_MenuBar__runShortcutIntentForWorkflow_error___b
   return v7;
 }
 
-- (id)observableStingWorkflowsWithError:(id *)a3
+- (id)observableStingWorkflowsWithError:(id *)error
 {
   v4 = [[WFWorkflowQuery alloc] initWithWorkflowType:@"Watch"];
-  v5 = [WFObservableArrayResult getResultWithQuery:v4 valueType:objc_opt_class() glyphSize:a3 error:*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)];
+  v5 = [WFObservableArrayResult getResultWithQuery:v4 valueType:objc_opt_class() glyphSize:error error:*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)];
 
   return v5;
 }
 
-- (void)loadDataWithItemProviderRequestMetadata:(id)a3 type:(id)a4 completion:(id)a5
+- (void)loadDataWithItemProviderRequestMetadata:(id)metadata type:(id)type completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __93__VCVoiceShortcutClient_AppIntents__loadDataWithItemProviderRequestMetadata_type_completion___block_invoke;
   v16[3] = &unk_1E7B02940;
-  v9 = v8;
+  v9 = completionCopy;
   v17 = v9;
-  v10 = a4;
-  v11 = a3;
+  typeCopy = type;
+  metadataCopy = metadata;
   v12 = [(VCVoiceShortcutClient *)self asynchronousRemoteDataStoreWithErrorHandler:v16];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
@@ -415,13 +415,13 @@ void __69__VCVoiceShortcutClient_MenuBar__runShortcutIntentForWorkflow_error___b
   v14[3] = &unk_1E7B01690;
   v15 = v9;
   v13 = v9;
-  [v12 loadDataWithItemProviderRequestMetadata:v11 type:v10 completion:v14];
+  [v12 loadDataWithItemProviderRequestMetadata:metadataCopy type:typeCopy completion:v14];
 }
 
-- (id)serializedParametersForLinkAction:(id)a3 actionMetadata:(id)a4 error:(id *)a5
+- (id)serializedParametersForLinkAction:(id)action actionMetadata:(id)metadata error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  actionCopy = action;
+  metadataCopy = metadata;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -446,12 +446,12 @@ void __69__VCVoiceShortcutClient_MenuBar__runShortcutIntentForWorkflow_error___b
   v14[3] = &unk_1E7B000B8;
   v14[4] = &v16;
   v14[5] = &v22;
-  [v10 getSerializedParametersForLinkAction:v8 actionMetadata:v9 completion:v14];
+  [v10 getSerializedParametersForLinkAction:actionCopy actionMetadata:metadataCopy completion:v14];
 
   v11 = v17[5];
-  if (a5 && !v11)
+  if (error && !v11)
   {
-    *a5 = v23[5];
+    *error = v23[5];
     v11 = v17[5];
   }
 
@@ -477,9 +477,9 @@ void __92__VCVoiceShortcutClient_AppIntents__serializedParametersForLinkAction_a
   *(v9 + 40) = v6;
 }
 
-- (id)migratedAppIntentWithINIntent:(id)a3 error:(id *)a4
+- (id)migratedAppIntentWithINIntent:(id)intent error:(id *)error
 {
-  v6 = a3;
+  intentCopy = intent;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -504,12 +504,12 @@ void __92__VCVoiceShortcutClient_AppIntents__serializedParametersForLinkAction_a
   v11[3] = &unk_1E7B00090;
   v11[4] = &v13;
   v11[5] = &v19;
-  [v7 getMigratedAppIntentWithINIntent:v6 completion:v11];
+  [v7 getMigratedAppIntentWithINIntent:intentCopy completion:v11];
 
   v8 = v14[5];
-  if (a4 && !v8)
+  if (error && !v8)
   {
-    *a4 = v20[5];
+    *error = v20[5];
     v8 = v14[5];
   }
 
@@ -535,11 +535,11 @@ void __73__VCVoiceShortcutClient_AppIntents__migratedAppIntentWithINIntent_error
   *(v9 + 40) = v6;
 }
 
-- (id)linkActionWithAppBundleIdentifier:(id)a3 appIntentIdentifier:(id)a4 serializedParameterStates:(id)a5 error:(id *)a6
+- (id)linkActionWithAppBundleIdentifier:(id)identifier appIntentIdentifier:(id)intentIdentifier serializedParameterStates:(id)states error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  identifierCopy = identifier;
+  intentIdentifierCopy = intentIdentifier;
+  statesCopy = states;
   v25 = 0;
   v26 = &v25;
   v27 = 0x3032000000;
@@ -564,12 +564,12 @@ void __73__VCVoiceShortcutClient_AppIntents__migratedAppIntentWithINIntent_error
   v17[3] = &unk_1E7B00068;
   v17[4] = &v19;
   v17[5] = &v25;
-  [v13 getLinkActionWithAppBundleIdentifier:v10 appIntentIdentifier:v11 serializedParameterStates:v12 completion:v17];
+  [v13 getLinkActionWithAppBundleIdentifier:identifierCopy appIntentIdentifier:intentIdentifierCopy serializedParameterStates:statesCopy completion:v17];
 
   v14 = v20[5];
-  if (a6 && !v14)
+  if (error && !v14)
   {
-    *a6 = v26[5];
+    *error = v26[5];
     v14 = v20[5];
   }
 
@@ -595,40 +595,40 @@ void __123__VCVoiceShortcutClient_AppIntents__linkActionWithAppBundleIdentifier_
   *(v9 + 40) = v6;
 }
 
-- (void)unarchiveActionFromData:(id)a3 withActionMetadata:(id)a4 completion:(id)a5
+- (void)unarchiveActionFromData:(id)data withActionMetadata:(id)metadata completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __91__VCVoiceShortcutClient_AppIntents__unarchiveActionFromData_withActionMetadata_completion___block_invoke;
   v13[3] = &unk_1E7B02940;
-  v14 = v8;
-  v9 = v8;
-  v10 = a4;
-  v11 = a3;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  metadataCopy = metadata;
+  dataCopy = data;
   v12 = [(VCVoiceShortcutClient *)self asynchronousRemoteDataStoreWithErrorHandler:v13];
-  [v12 unarchiveActionFromData:v11 withActionMetadata:v10 completion:v9];
+  [v12 unarchiveActionFromData:dataCopy withActionMetadata:metadataCopy completion:v9];
 }
 
-- (void)archiveAction:(id)a3 withActionMetadata:(id)a4 completion:(id)a5
+- (void)archiveAction:(id)action withActionMetadata:(id)metadata completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __81__VCVoiceShortcutClient_AppIntents__archiveAction_withActionMetadata_completion___block_invoke;
   v13[3] = &unk_1E7B02940;
-  v14 = v8;
-  v9 = v8;
-  v10 = a4;
-  v11 = a3;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  metadataCopy = metadata;
+  actionCopy = action;
   v12 = [(VCVoiceShortcutClient *)self asynchronousRemoteDataStoreWithErrorHandler:v13];
-  [v12 archiveAction:v11 withActionMetadata:v10 completion:v9];
+  [v12 archiveAction:actionCopy withActionMetadata:metadataCopy completion:v9];
 }
 
-- (id)unarchiveActionFromData:(id)a3 withActionMetadata:(id)a4 error:(id *)a5
+- (id)unarchiveActionFromData:(id)data withActionMetadata:(id)metadata error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  dataCopy = data;
+  metadataCopy = metadata;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -654,12 +654,12 @@ void __123__VCVoiceShortcutClient_AppIntents__linkActionWithAppBundleIdentifier_
   v14[3] = &unk_1E7B00068;
   v14[4] = &v22;
   v14[5] = &v16;
-  [v10 unarchiveActionFromData:v8 withActionMetadata:v9 completion:v14];
+  [v10 unarchiveActionFromData:dataCopy withActionMetadata:metadataCopy completion:v14];
 
   v11 = v23[5];
-  if (a5 && !v11)
+  if (error && !v11)
   {
-    *a5 = v17[5];
+    *error = v17[5];
     v11 = v23[5];
   }
 
@@ -697,10 +697,10 @@ void __86__VCVoiceShortcutClient_AppIntents__unarchiveActionFromData_withActionM
   *(v9 + 40) = v6;
 }
 
-- (id)archiveAction:(id)a3 withActionMetadata:(id)a4 error:(id *)a5
+- (id)archiveAction:(id)action withActionMetadata:(id)metadata error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  actionCopy = action;
+  metadataCopy = metadata;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -726,12 +726,12 @@ void __86__VCVoiceShortcutClient_AppIntents__unarchiveActionFromData_withActionM
   v14[3] = &unk_1E7B02C18;
   v14[4] = &v22;
   v14[5] = &v16;
-  [v10 archiveAction:v8 withActionMetadata:v9 completion:v14];
+  [v10 archiveAction:actionCopy withActionMetadata:metadataCopy completion:v14];
 
   v11 = v23[5];
-  if (a5 && !v11)
+  if (error && !v11)
   {
-    *a5 = v17[5];
+    *error = v17[5];
     v11 = v23[5];
   }
 
@@ -769,82 +769,82 @@ void __76__VCVoiceShortcutClient_AppIntents__archiveAction_withActionMetadata_er
   *(v9 + 40) = v6;
 }
 
-- (void)triggerFullContextualActionReindexWithCompletion:(id)a3
+- (void)triggerFullContextualActionReindexWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __85__VCVoiceShortcutClient_Spotlight__triggerFullContextualActionReindexWithCompletion___block_invoke;
   v7[3] = &unk_1E7B02940;
-  v8 = v4;
-  v5 = v4;
+  v8 = completionCopy;
+  v5 = completionCopy;
   v6 = [(VCVoiceShortcutClient *)self asynchronousRemoteDataStoreWithErrorHandler:v7];
   [v6 triggerFullContextualActionReindexWithCompletion:v5];
 }
 
-- (id)colorsForBundleIdentifier:(id)a3 error:(id *)a4
+- (id)colorsForBundleIdentifier:(id)identifier error:(id *)error
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v6 = objc_alloc_init(WFAppShortcutColorFetcher);
-  v7 = [(WFAppShortcutColorFetcher *)v6 colorsForBundleIdentifier:v5 error:a4];
+  v7 = [(WFAppShortcutColorFetcher *)v6 colorsForBundleIdentifier:identifierCopy error:error];
 
   return v7;
 }
 
-- (void)getLinkActionWithAppBundleIdentifier:(id)a3 appIntentIdentifier:(id)a4 expandingParameterName:(id)a5 limit:(int64_t)a6 completion:(id)a7
+- (void)getLinkActionWithAppBundleIdentifier:(id)identifier appIntentIdentifier:(id)intentIdentifier expandingParameterName:(id)name limit:(int64_t)limit completion:(id)completion
 {
-  v12 = a7;
+  completionCopy = completion;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __140__VCVoiceShortcutClient_TopHitContextual__getLinkActionWithAppBundleIdentifier_appIntentIdentifier_expandingParameterName_limit_completion___block_invoke;
   v18[3] = &unk_1E7B02940;
-  v19 = v12;
-  v13 = v12;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
+  v19 = completionCopy;
+  v13 = completionCopy;
+  nameCopy = name;
+  intentIdentifierCopy = intentIdentifier;
+  identifierCopy = identifier;
   v17 = [(VCVoiceShortcutClient *)self asynchronousRemoteDataStoreWithErrorHandler:v18];
-  [v17 getLinkActionWithAppBundleIdentifier:v16 appIntentIdentifier:v15 expandingParameterName:v14 limit:a6 completion:v13];
+  [v17 getLinkActionWithAppBundleIdentifier:identifierCopy appIntentIdentifier:intentIdentifierCopy expandingParameterName:nameCopy limit:limit completion:v13];
 }
 
-- (void)getUpcomingMediaForBundleIdentifier:(id)a3 limit:(int64_t)a4 completion:(id)a5
+- (void)getUpcomingMediaForBundleIdentifier:(id)identifier limit:(int64_t)limit completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __96__VCVoiceShortcutClient_TopHitContextual__getUpcomingMediaForBundleIdentifier_limit_completion___block_invoke;
   v12[3] = &unk_1E7B02940;
-  v13 = v8;
-  v9 = v8;
-  v10 = a3;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  identifierCopy = identifier;
   v11 = [(VCVoiceShortcutClient *)self asynchronousRemoteDataStoreWithErrorHandler:v12];
-  [v11 getUpcomingMediaForBundleIdentifier:v10 limit:a4 completion:v9];
+  [v11 getUpcomingMediaForBundleIdentifier:identifierCopy limit:limit completion:v9];
 }
 
-- (void)getSuggestedShortcutsWithLimit:(int64_t)a3 completion:(id)a4
+- (void)getSuggestedShortcutsWithLimit:(int64_t)limit completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __85__VCVoiceShortcutClient_TopHitContextual__getSuggestedShortcutsWithLimit_completion___block_invoke;
   v9[3] = &unk_1E7B02940;
-  v10 = v6;
-  v7 = v6;
+  v10 = completionCopy;
+  v7 = completionCopy;
   v8 = [(VCVoiceShortcutClient *)self asynchronousRemoteDataStoreWithErrorHandler:v9];
-  [v8 getSuggestedShortcutsWithLimit:a3 completion:v7];
+  [v8 getSuggestedShortcutsWithLimit:limit completion:v7];
 }
 
-- (void)importTopLevelShortcutFromURL:(id)a3 withName:(id)a4 completion:(id)a5
+- (void)importTopLevelShortcutFromURL:(id)l withName:(id)name completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __91__VCVoiceShortcutClient_VoiceShortcuts__importTopLevelShortcutFromURL_withName_completion___block_invoke;
   v10[3] = &unk_1E7B011E8;
   v10[4] = self;
-  v11 = v8;
-  v9 = v8;
-  [(VCVoiceShortcutClient *)self importSharedShortcutFromURL:a3 withName:a4 shortcutSource:@"ShortcutSourceSiriTopLevelShortcut" completion:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [(VCVoiceShortcutClient *)self importSharedShortcutFromURL:l withName:name shortcutSource:@"ShortcutSourceSiriTopLevelShortcut" completion:v10];
 }
 
 void __91__VCVoiceShortcutClient_VoiceShortcuts__importTopLevelShortcutFromURL_withName_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -860,15 +860,15 @@ void __91__VCVoiceShortcutClient_VoiceShortcuts__importTopLevelShortcutFromURL_w
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)deleteVoiceShortcutWithName:(id)a3 completion:(id)a4
+- (void)deleteVoiceShortcutWithName:(id)name completion:(id)completion
 {
   v25 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  nameCopy = name;
+  completionCopy = completion;
+  v9 = completionCopy;
+  if (nameCopy)
   {
-    if (v8)
+    if (completionCopy)
     {
       goto LABEL_3;
     }
@@ -876,8 +876,8 @@ void __91__VCVoiceShortcutClient_VoiceShortcuts__importTopLevelShortcutFromURL_w
 
   else
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"VCVoiceShortcutClient_VoiceShortcuts.m" lineNumber:98 description:{@"Invalid parameter not satisfying: %@", @"voiceShortcutName"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"VCVoiceShortcutClient_VoiceShortcuts.m" lineNumber:98 description:{@"Invalid parameter not satisfying: %@", @"voiceShortcutName"}];
 
     if (v9)
     {
@@ -885,8 +885,8 @@ void __91__VCVoiceShortcutClient_VoiceShortcuts__importTopLevelShortcutFromURL_w
     }
   }
 
-  v16 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v16 handleFailureInMethod:a2 object:self file:@"VCVoiceShortcutClient_VoiceShortcuts.m" lineNumber:99 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"VCVoiceShortcutClient_VoiceShortcuts.m" lineNumber:99 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
 
 LABEL_3:
   v10 = getWFVoiceShortcutClientLogObject();
@@ -895,7 +895,7 @@ LABEL_3:
     *buf = 136315394;
     v22 = "[VCVoiceShortcutClient(VoiceShortcuts) deleteVoiceShortcutWithName:completion:]";
     v23 = 2112;
-    v24 = v7;
+    v24 = nameCopy;
     _os_log_impl(&dword_1B1DE3000, v10, OS_LOG_TYPE_DEBUG, "%s Deleting VoiceShortcut with name=%@", buf, 0x16u);
   }
 
@@ -913,7 +913,7 @@ LABEL_3:
   v17[4] = self;
   v18 = v11;
   v13 = v11;
-  [v12 deleteVoiceShortcutWithIdentifier:0 name:v7 completion:v17];
+  [v12 deleteVoiceShortcutWithIdentifier:0 name:nameCopy completion:v17];
 
   v14 = *MEMORY[0x1E69E9840];
 }
@@ -930,15 +930,15 @@ void __80__VCVoiceShortcutClient_VoiceShortcuts__deleteVoiceShortcutWithName_com
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)deleteVoiceShortcutWithIdentifier:(id)a3 completion:(id)a4
+- (void)deleteVoiceShortcutWithIdentifier:(id)identifier completion:(id)completion
 {
   v25 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  identifierCopy = identifier;
+  completionCopy = completion;
+  v9 = completionCopy;
+  if (identifierCopy)
   {
-    if (v8)
+    if (completionCopy)
     {
       goto LABEL_3;
     }
@@ -946,8 +946,8 @@ void __80__VCVoiceShortcutClient_VoiceShortcuts__deleteVoiceShortcutWithName_com
 
   else
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"VCVoiceShortcutClient_VoiceShortcuts.m" lineNumber:82 description:{@"Invalid parameter not satisfying: %@", @"voiceShortcutIdentifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"VCVoiceShortcutClient_VoiceShortcuts.m" lineNumber:82 description:{@"Invalid parameter not satisfying: %@", @"voiceShortcutIdentifier"}];
 
     if (v9)
     {
@@ -955,8 +955,8 @@ void __80__VCVoiceShortcutClient_VoiceShortcuts__deleteVoiceShortcutWithName_com
     }
   }
 
-  v16 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v16 handleFailureInMethod:a2 object:self file:@"VCVoiceShortcutClient_VoiceShortcuts.m" lineNumber:83 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"VCVoiceShortcutClient_VoiceShortcuts.m" lineNumber:83 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
 
 LABEL_3:
   v10 = getWFVoiceShortcutClientLogObject();
@@ -965,7 +965,7 @@ LABEL_3:
     *buf = 136315394;
     v22 = "[VCVoiceShortcutClient(VoiceShortcuts) deleteVoiceShortcutWithIdentifier:completion:]";
     v23 = 2112;
-    v24 = v7;
+    v24 = identifierCopy;
     _os_log_impl(&dword_1B1DE3000, v10, OS_LOG_TYPE_DEBUG, "%s Deleting VoiceShortcut with id=%@", buf, 0x16u);
   }
 
@@ -983,7 +983,7 @@ LABEL_3:
   v17[4] = self;
   v18 = v11;
   v13 = v11;
-  [v12 deleteVoiceShortcutWithIdentifier:v7 name:0 completion:v17];
+  [v12 deleteVoiceShortcutWithIdentifier:identifierCopy name:0 completion:v17];
 
   v14 = *MEMORY[0x1E69E9840];
 }
@@ -1000,15 +1000,15 @@ void __86__VCVoiceShortcutClient_VoiceShortcuts__deleteVoiceShortcutWithIdentifi
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)getVoiceShortcutsForAppWithBundleIdentifier:(id)a3 completion:(id)a4
+- (void)getVoiceShortcutsForAppWithBundleIdentifier:(id)identifier completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!v7)
+  identifierCopy = identifier;
+  completionCopy = completion;
+  v9 = completionCopy;
+  if (!identifierCopy)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"VCVoiceShortcutClient_VoiceShortcuts.m" lineNumber:73 description:{@"Invalid parameter not satisfying: %@", @"bundleIdentifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"VCVoiceShortcutClient_VoiceShortcuts.m" lineNumber:73 description:{@"Invalid parameter not satisfying: %@", @"bundleIdentifier"}];
 
     if (v9)
     {
@@ -1016,13 +1016,13 @@ void __86__VCVoiceShortcutClient_VoiceShortcuts__deleteVoiceShortcutWithIdentifi
     }
 
 LABEL_5:
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"VCVoiceShortcutClient_VoiceShortcuts.m" lineNumber:74 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"VCVoiceShortcutClient_VoiceShortcuts.m" lineNumber:74 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
 
     goto LABEL_3;
   }
 
-  if (!v8)
+  if (!completionCopy)
   {
     goto LABEL_5;
   }
@@ -1035,28 +1035,28 @@ LABEL_3:
   v15 = v9;
   v10 = v9;
   v11 = [(VCVoiceShortcutClient *)self asynchronousRemoteDataStoreWithErrorHandler:v14];
-  [v11 getVoiceShortcutsForAppWithBundleIdentifier:v7 completion:v10];
+  [v11 getVoiceShortcutsForAppWithBundleIdentifier:identifierCopy completion:v10];
 }
 
-- (void)getVoiceShortcutsWithCompletion:(id)a3
+- (void)getVoiceShortcutsWithCompletion:(id)completion
 {
-  v5 = a3;
-  if (!v5)
+  completionCopy = completion;
+  if (!completionCopy)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"VCVoiceShortcutClient_VoiceShortcuts.m" lineNumber:46 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"VCVoiceShortcutClient_VoiceShortcuts.m" lineNumber:46 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
   }
 
   objc_initWeak(&location, self);
-  v6 = [(VCVoiceShortcutClient *)self voiceShortcutCache];
+  voiceShortcutCache = [(VCVoiceShortcutClient *)self voiceShortcutCache];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __73__VCVoiceShortcutClient_VoiceShortcuts__getVoiceShortcutsWithCompletion___block_invoke;
   v9[3] = &unk_1E7B01198;
   objc_copyWeak(&v11, &location);
-  v7 = v5;
+  v7 = completionCopy;
   v10 = v7;
-  [v6 getCachedVoiceShortcuts:v9];
+  [voiceShortcutCache getCachedVoiceShortcuts:v9];
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
@@ -1124,15 +1124,15 @@ void __73__VCVoiceShortcutClient_VoiceShortcuts__getVoiceShortcutsWithCompletion
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)getVoiceShortcutWithPhrase:(id)a3 completion:(id)a4
+- (void)getVoiceShortcutWithPhrase:(id)phrase completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!v7)
+  phraseCopy = phrase;
+  completionCopy = completion;
+  v9 = completionCopy;
+  if (!phraseCopy)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"VCVoiceShortcutClient_VoiceShortcuts.m" lineNumber:37 description:{@"Invalid parameter not satisfying: %@", @"phrase"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"VCVoiceShortcutClient_VoiceShortcuts.m" lineNumber:37 description:{@"Invalid parameter not satisfying: %@", @"phrase"}];
 
     if (v9)
     {
@@ -1140,13 +1140,13 @@ void __73__VCVoiceShortcutClient_VoiceShortcuts__getVoiceShortcutsWithCompletion
     }
 
 LABEL_5:
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"VCVoiceShortcutClient_VoiceShortcuts.m" lineNumber:38 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"VCVoiceShortcutClient_VoiceShortcuts.m" lineNumber:38 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
 
     goto LABEL_3;
   }
 
-  if (!v8)
+  if (!completionCopy)
   {
     goto LABEL_5;
   }
@@ -1159,18 +1159,18 @@ LABEL_3:
   v15 = v9;
   v10 = v9;
   v11 = [(VCVoiceShortcutClient *)self asynchronousRemoteDataStoreWithErrorHandler:v14];
-  [v11 getVoiceShortcutWithPhrase:v7 completion:v10];
+  [v11 getVoiceShortcutWithPhrase:phraseCopy completion:v10];
 }
 
-- (void)getVoiceShortcutWithIdentifier:(id)a3 completion:(id)a4
+- (void)getVoiceShortcutWithIdentifier:(id)identifier completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!v7)
+  identifierCopy = identifier;
+  completionCopy = completion;
+  v9 = completionCopy;
+  if (!identifierCopy)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"VCVoiceShortcutClient_VoiceShortcuts.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"voiceShortcutIdentifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"VCVoiceShortcutClient_VoiceShortcuts.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"voiceShortcutIdentifier"}];
 
     if (v9)
     {
@@ -1178,13 +1178,13 @@ LABEL_3:
     }
 
 LABEL_5:
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"VCVoiceShortcutClient_VoiceShortcuts.m" lineNumber:29 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"VCVoiceShortcutClient_VoiceShortcuts.m" lineNumber:29 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
 
     goto LABEL_3;
   }
 
-  if (!v8)
+  if (!completionCopy)
   {
     goto LABEL_5;
   }
@@ -1197,36 +1197,36 @@ LABEL_3:
   v15 = v9;
   v10 = v9;
   v11 = [(VCVoiceShortcutClient *)self asynchronousRemoteDataStoreWithErrorHandler:v14];
-  [v11 getVoiceShortcutWithIdentifier:v7 completion:v10];
+  [v11 getVoiceShortcutWithIdentifier:identifierCopy completion:v10];
 }
 
-- (void)getNumberOfVoiceShortcutsWithCompletion:(id)a3
+- (void)getNumberOfVoiceShortcutsWithCompletion:(id)completion
 {
-  v5 = a3;
-  if (!v5)
+  completionCopy = completion;
+  if (!completionCopy)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"VCVoiceShortcutClient_VoiceShortcuts.m" lineNumber:20 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"VCVoiceShortcutClient_VoiceShortcuts.m" lineNumber:20 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
   }
 
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __81__VCVoiceShortcutClient_VoiceShortcuts__getNumberOfVoiceShortcutsWithCompletion___block_invoke;
   v9[3] = &unk_1E7B02940;
-  v10 = v5;
-  v6 = v5;
+  v10 = completionCopy;
+  v6 = completionCopy;
   v7 = [(VCVoiceShortcutClient *)self asynchronousRemoteDataStoreWithErrorHandler:v9];
   [v7 getNumberOfVoiceShortcutsWithCompletion:v6];
 }
 
-- (void)updateAppShortcutsWithCompletion:(id)a3
+- (void)updateAppShortcutsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __73__VCVoiceShortcutClient_AutoShortcuts__updateAppShortcutsWithCompletion___block_invoke;
   v10[3] = &unk_1E7B02940;
-  v5 = v4;
+  v5 = completionCopy;
   v11 = v5;
   v6 = [(VCVoiceShortcutClient *)self asynchronousRemoteDataStoreWithErrorHandler:v10];
   v8[0] = MEMORY[0x1E69E9820];
@@ -1238,16 +1238,16 @@ LABEL_3:
   [v6 updateAppShortcutsWithCompletion:v8];
 }
 
-- (void)removeAllSerializedParametersForQueryName:(id)a3 completion:(id)a4
+- (void)removeAllSerializedParametersForQueryName:(id)name completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __93__VCVoiceShortcutClient_AutoShortcuts__removeAllSerializedParametersForQueryName_completion___block_invoke;
   v13[3] = &unk_1E7B02940;
-  v7 = v6;
+  v7 = completionCopy;
   v14 = v7;
-  v8 = a3;
+  nameCopy = name;
   v9 = [(VCVoiceShortcutClient *)self asynchronousRemoteDataStoreWithErrorHandler:v13];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -1255,21 +1255,21 @@ LABEL_3:
   v11[3] = &unk_1E7B02940;
   v12 = v7;
   v10 = v7;
-  [v9 removeAllSerializedParametersForQueryName:v8 completion:v11];
+  [v9 removeAllSerializedParametersForQueryName:nameCopy completion:v11];
 }
 
-- (void)storeSerializedParameters:(id)a3 forAppEntityIdentifier:(id)a4 queryName:(id)a5 badgeType:(unint64_t)a6 completion:(id)a7
+- (void)storeSerializedParameters:(id)parameters forAppEntityIdentifier:(id)identifier queryName:(id)name badgeType:(unint64_t)type completion:(id)completion
 {
-  v12 = a7;
+  completionCopy = completion;
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __120__VCVoiceShortcutClient_AutoShortcuts__storeSerializedParameters_forAppEntityIdentifier_queryName_badgeType_completion___block_invoke;
   v21[3] = &unk_1E7B02940;
-  v13 = v12;
+  v13 = completionCopy;
   v22 = v13;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
+  nameCopy = name;
+  identifierCopy = identifier;
+  parametersCopy = parameters;
   v17 = [(VCVoiceShortcutClient *)self asynchronousRemoteDataStoreWithErrorHandler:v21];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
@@ -1277,19 +1277,19 @@ LABEL_3:
   v19[3] = &unk_1E7B02940;
   v20 = v13;
   v18 = v13;
-  [v17 storeSerializedParameters:v16 forAppEntityIdentifier:v15 queryName:v14 badgeType:a6 completion:v19];
+  [v17 storeSerializedParameters:parametersCopy forAppEntityIdentifier:identifierCopy queryName:nameCopy badgeType:type completion:v19];
 }
 
-- (void)serializedParametersForAppEntityIdentifier:(id)a3 completion:(id)a4
+- (void)serializedParametersForAppEntityIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __94__VCVoiceShortcutClient_AutoShortcuts__serializedParametersForAppEntityIdentifier_completion___block_invoke;
   v13[3] = &unk_1E7B02940;
-  v7 = v6;
+  v7 = completionCopy;
   v14 = v7;
-  v8 = a3;
+  identifierCopy = identifier;
   v9 = [(VCVoiceShortcutClient *)self asynchronousRemoteDataStoreWithErrorHandler:v13];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -1297,35 +1297,35 @@ LABEL_3:
   v11[3] = &unk_1E7B01690;
   v12 = v7;
   v10 = v7;
-  [v9 serializedParametersForAppEntityIdentifier:v8 completion:v11];
+  [v9 serializedParametersForAppEntityIdentifier:identifierCopy completion:v11];
 }
 
-- (void)setSpotlightAutoShortcutsEnablement:(BOOL)a3 forBundleIdentifier:(id)a4 phraseSignature:(id)a5 completion:(id)a6
+- (void)setSpotlightAutoShortcutsEnablement:(BOOL)enablement forBundleIdentifier:(id)identifier phraseSignature:(id)signature completion:(id)completion
 {
   v6 = MEMORY[0x1E696ABC0];
-  v7 = a6;
+  completionCopy = completion;
   v8 = [v6 vc_voiceShortcutErrorWithCode:1014 reason:@"Individual App Shortcuts can no longer be hidden from Spotlight."];
-  v7[2](v7, v8);
+  completionCopy[2](completionCopy, v8);
 }
 
-- (void)setSpotlightAutoShortcutsEnablement:(BOOL)a3 forBundleIdentifier:(id)a4 completion:(id)a5
+- (void)setSpotlightAutoShortcutsEnablement:(BOOL)enablement forBundleIdentifier:(id)identifier completion:(id)completion
 {
   v5 = MEMORY[0x1E696ABC0];
-  v6 = a5;
+  completionCopy = completion;
   v7 = [v5 vc_voiceShortcutErrorWithCode:1014 reason:@"This setting is now managed by the global Show Content in Search setting."];
-  v6[2](v6, v7);
+  completionCopy[2](completionCopy, v7);
 }
 
-- (void)getSiriAutoShortcutsEnablementForBundleIdentifier:(id)a3 completion:(id)a4
+- (void)getSiriAutoShortcutsEnablementForBundleIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __101__VCVoiceShortcutClient_AutoShortcuts__getSiriAutoShortcutsEnablementForBundleIdentifier_completion___block_invoke;
   v13[3] = &unk_1E7B02940;
-  v7 = v6;
+  v7 = completionCopy;
   v14 = v7;
-  v8 = a3;
+  identifierCopy = identifier;
   v9 = [(VCVoiceShortcutClient *)self asynchronousRemoteDataStoreWithErrorHandler:v13];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -1333,41 +1333,41 @@ LABEL_3:
   v11[3] = &unk_1E7B01668;
   v12 = v7;
   v10 = v7;
-  [v9 getSiriAutoShortcutsEnablementForBundleIdentifier:v8 completion:v11];
+  [v9 getSiriAutoShortcutsEnablementForBundleIdentifier:identifierCopy completion:v11];
 }
 
-- (id)accessibilityWorkflowWithIdentifier:(id)a3 error:(id *)a4
+- (id)accessibilityWorkflowWithIdentifier:(id)identifier error:(id *)error
 {
-  v4 = [(VCVoiceShortcutClient *)self accessibilityWorkflowForIdentifier:a3 error:a4];
-  v5 = [v4 value];
+  v4 = [(VCVoiceShortcutClient *)self accessibilityWorkflowForIdentifier:identifier error:error];
+  value = [v4 value];
 
-  return v5;
+  return value;
 }
 
-- (id)accessibilityWatchWorkflowsWithError:(id *)a3
+- (id)accessibilityWatchWorkflowsWithError:(id *)error
 {
-  v3 = [(VCVoiceShortcutClient *)self accessibilityWorkflowsForSurface:1 error:a3];
-  v4 = [v3 values];
+  v3 = [(VCVoiceShortcutClient *)self accessibilityWorkflowsForSurface:1 error:error];
+  values = [v3 values];
 
-  return v4;
+  return values;
 }
 
-- (id)accessibilityWorkflowsWithError:(id *)a3
+- (id)accessibilityWorkflowsWithError:(id *)error
 {
-  v3 = [(VCVoiceShortcutClient *)self accessibilityWorkflowsForSurface:0 error:a3];
-  v4 = [v3 values];
+  v3 = [(VCVoiceShortcutClient *)self accessibilityWorkflowsForSurface:0 error:error];
+  values = [v3 values];
 
-  return v4;
+  return values;
 }
 
-- (id)accessibilityWorkflowForIdentifier:(id)a3 error:(id *)a4
+- (id)accessibilityWorkflowForIdentifier:(id)identifier error:(id *)error
 {
   v13 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if ([v5 length])
+  identifierCopy = identifier;
+  if ([identifierCopy length])
   {
-    v6 = [[WFDatabaseObjectDescriptor alloc] initWithIdentifier:v5 objectType:0];
-    v7 = [WFObservableObjectResult getResultWithDescriptor:v6 valueType:objc_opt_class() glyphSize:a4 error:*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)];
+    v6 = [[WFDatabaseObjectDescriptor alloc] initWithIdentifier:identifierCopy objectType:0];
+    v7 = [WFObservableObjectResult getResultWithDescriptor:v6 valueType:objc_opt_class() glyphSize:error error:*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)];
   }
 
   else
@@ -1387,10 +1387,10 @@ LABEL_3:
   return v7;
 }
 
-- (id)accessibilityWorkflowsForSurface:(unint64_t)a3 error:(id *)a4
+- (id)accessibilityWorkflowsForSurface:(unint64_t)surface error:(id *)error
 {
   v6 = [WFWorkflowQuery alloc];
-  if (a3 == 1)
+  if (surface == 1)
   {
     v7 = [(WFWorkflowQuery *)v6 initWithWorkflowType:@"Watch"];
   }
@@ -1401,15 +1401,15 @@ LABEL_3:
   }
 
   v8 = v7;
-  v9 = [WFObservableArrayResult getResultWithQuery:v7 valueType:objc_opt_class() glyphSize:a4 error:*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)];
+  v9 = [WFObservableArrayResult getResultWithQuery:v7 valueType:objc_opt_class() glyphSize:error error:*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)];
 
   return v9;
 }
 
-- (void)defaultStaccatoActionWithCompletion:(id)a3
+- (void)defaultStaccatoActionWithCompletion:(id)completion
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   v5 = getWFStaccatoLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1422,29 +1422,29 @@ LABEL_3:
   v9[1] = 3221225472;
   v9[2] = __71__VCVoiceShortcutClient_Staccato__defaultStaccatoActionWithCompletion___block_invoke;
   v9[3] = &unk_1E7B02940;
-  v10 = v4;
-  v6 = v4;
+  v10 = completionCopy;
+  v6 = completionCopy;
   v7 = [(VCVoiceShortcutClient *)self asynchronousRemoteDataStoreWithErrorHandler:v9];
   [v7 defaultStaccatoActionWithCompletion:v6];
 
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)configuredStaccatoActionFromTemplate:(id)a3 valuesByParameterKey:(id)a4 completion:(id)a5
+- (void)configuredStaccatoActionFromTemplate:(id)template valuesByParameterKey:(id)key completion:(id)completion
 {
   v23 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  templateCopy = template;
+  keyCopy = key;
+  completionCopy = completion;
   v11 = getWFStaccatoLogObject();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315650;
     v18 = "[VCVoiceShortcutClient(Staccato) configuredStaccatoActionFromTemplate:valuesByParameterKey:completion:]";
     v19 = 2112;
-    v20 = v8;
+    v20 = templateCopy;
     v21 = 2112;
-    v22 = v9;
+    v22 = keyCopy;
     _os_log_impl(&dword_1B1DE3000, v11, OS_LOG_TYPE_DEFAULT, "%s Client requesting configured system action from template: %@ with parameters by key: %@.", buf, 0x20u);
   }
 
@@ -1452,24 +1452,24 @@ LABEL_3:
   v15[1] = 3221225472;
   v15[2] = __104__VCVoiceShortcutClient_Staccato__configuredStaccatoActionFromTemplate_valuesByParameterKey_completion___block_invoke;
   v15[3] = &unk_1E7B02940;
-  v16 = v10;
-  v12 = v10;
+  v16 = completionCopy;
+  v12 = completionCopy;
   v13 = [(VCVoiceShortcutClient *)self asynchronousRemoteDataStoreWithErrorHandler:v15];
-  [v13 configuredStaccatoActionFromTemplate:v8 valuesByParameterKey:v9 completion:v12];
+  [v13 configuredStaccatoActionFromTemplate:templateCopy valuesByParameterKey:keyCopy completion:v12];
 
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchAllValuesForStaccatoParameter:(id)a3 completion:(id)a4
+- (void)fetchAllValuesForStaccatoParameter:(id)parameter completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __81__VCVoiceShortcutClient_Staccato__fetchAllValuesForStaccatoParameter_completion___block_invoke;
   v8[3] = &unk_1E7B026A8;
-  v9 = v6;
-  v7 = v6;
-  [(VCVoiceShortcutClient *)self fetchAllValueSectionsForStaccatoParameter:a3 completion:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [(VCVoiceShortcutClient *)self fetchAllValueSectionsForStaccatoParameter:parameter completion:v8];
 }
 
 void __81__VCVoiceShortcutClient_Staccato__fetchAllValuesForStaccatoParameter_completion___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -1489,18 +1489,18 @@ void __81__VCVoiceShortcutClient_Staccato__fetchAllValuesForStaccatoParameter_co
   }
 }
 
-- (void)fetchAllValueSectionsForStaccatoParameter:(id)a3 completion:(id)a4
+- (void)fetchAllValueSectionsForStaccatoParameter:(id)parameter completion:(id)completion
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  parameterCopy = parameter;
+  completionCopy = completion;
   v8 = getWFStaccatoLogObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v15 = "[VCVoiceShortcutClient(Staccato) fetchAllValueSectionsForStaccatoParameter:completion:]";
     v16 = 2112;
-    v17 = v6;
+    v17 = parameterCopy;
     _os_log_impl(&dword_1B1DE3000, v8, OS_LOG_TYPE_DEFAULT, "%s Client requesting all values for parameter: %@", buf, 0x16u);
   }
 
@@ -1508,18 +1508,18 @@ void __81__VCVoiceShortcutClient_Staccato__fetchAllValuesForStaccatoParameter_co
   v12[1] = 3221225472;
   v12[2] = __88__VCVoiceShortcutClient_Staccato__fetchAllValueSectionsForStaccatoParameter_completion___block_invoke;
   v12[3] = &unk_1E7B02940;
-  v13 = v7;
-  v9 = v7;
+  v13 = completionCopy;
+  v9 = completionCopy;
   v10 = [(VCVoiceShortcutClient *)self asynchronousRemoteDataStoreWithErrorHandler:v12];
-  [v10 fetchAllValueSectionsForStaccatoParameter:v6 completion:v9];
+  [v10 fetchAllValueSectionsForStaccatoParameter:parameterCopy completion:v9];
 
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchAvailableStaccatoActions:(id)a3
+- (void)fetchAvailableStaccatoActions:(id)actions
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  actionsCopy = actions;
   v5 = getWFStaccatoLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1532,15 +1532,15 @@ void __81__VCVoiceShortcutClient_Staccato__fetchAllValuesForStaccatoParameter_co
   v9[1] = 3221225472;
   v9[2] = __65__VCVoiceShortcutClient_Staccato__fetchAvailableStaccatoActions___block_invoke;
   v9[3] = &unk_1E7B02940;
-  v10 = v4;
-  v6 = v4;
+  v10 = actionsCopy;
+  v6 = actionsCopy;
   v7 = [(VCVoiceShortcutClient *)self asynchronousRemoteDataStoreWithErrorHandler:v9];
   [v7 fetchAvailableStaccatoActions:v6];
 
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)resetAutomationConfirmationStatusWithError:(id *)a3
+- (BOOL)resetAutomationConfirmationStatusWithError:(id *)error
 {
   v10 = 0;
   v11 = &v10;
@@ -1562,9 +1562,9 @@ void __81__VCVoiceShortcutClient_Staccato__fetchAllValuesForStaccatoParameter_co
   [v4 resetAutomationConfirmationStatusWithCompletion:v8];
 
   v5 = v11[5];
-  if (a3 && v5)
+  if (error && v5)
   {
-    *a3 = v5;
+    *error = v5;
     v5 = v11[5];
   }
 
@@ -1574,7 +1574,7 @@ void __81__VCVoiceShortcutClient_Staccato__fetchAllValuesForStaccatoParameter_co
   return v6;
 }
 
-- (BOOL)userHasAutomationsWithError:(id *)a3
+- (BOOL)userHasAutomationsWithError:(id *)error
 {
   v14 = 0;
   v15 = &v14;
@@ -1600,12 +1600,12 @@ void __81__VCVoiceShortcutClient_Staccato__fetchAllValuesForStaccatoParameter_co
   v8[5] = &v14;
   [v4 userHasAutomationsWithCompletion:v8];
 
-  if (a3)
+  if (error)
   {
     v5 = v15[5];
     if (v5)
     {
-      *a3 = v5;
+      *error = v5;
     }
   }
 
@@ -1616,19 +1616,19 @@ void __81__VCVoiceShortcutClient_Staccato__fetchAllValuesForStaccatoParameter_co
   return v6;
 }
 
-- (void)computeRepresentativeSizesForFinderResizingImages:(id)a3 toSizes:(id)a4 completion:(id)a5
+- (void)computeRepresentativeSizesForFinderResizingImages:(id)images toSizes:(id)sizes completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 count])
+  imagesCopy = images;
+  sizesCopy = sizes;
+  completionCopy = completion;
+  if ([imagesCopy count])
   {
-    v11 = v8;
+    v11 = imagesCopy;
     if (!v11)
     {
-      v21 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v22 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"NSArray * _Nonnull WFDrawRandomly(NSArray * _Nonnull __strong, NSUInteger)"}];
-      [v21 handleFailureInFunction:v22 file:@"VCVoiceShortcutClient_ContextualActions.m" lineNumber:169 description:{@"Invalid parameter not satisfying: %@", @"array"}];
+      [currentHandler handleFailureInFunction:v22 file:@"VCVoiceShortcutClient_ContextualActions.m" lineNumber:169 description:{@"Invalid parameter not satisfying: %@", @"array"}];
     }
 
     v12 = [v11 count];
@@ -1659,7 +1659,7 @@ void __81__VCVoiceShortcutClient_Staccato__fetchAllValuesForStaccatoParameter_co
     v25[1] = 3221225472;
     v25[2] = __113__VCVoiceShortcutClient_ContextualActions__computeRepresentativeSizesForFinderResizingImages_toSizes_completion___block_invoke;
     v25[3] = &unk_1E7B02940;
-    v19 = v10;
+    v19 = completionCopy;
     v26 = v19;
     v20 = [(VCVoiceShortcutClient *)self asynchronousRemoteDataStoreWithErrorHandler:v25];
     v23[0] = MEMORY[0x1E69E9820];
@@ -1667,12 +1667,12 @@ void __81__VCVoiceShortcutClient_Staccato__fetchAllValuesForStaccatoParameter_co
     v23[2] = __113__VCVoiceShortcutClient_ContextualActions__computeRepresentativeSizesForFinderResizingImages_toSizes_completion___block_invoke_2;
     v23[3] = &unk_1E7B01EA0;
     v24 = v19;
-    [v20 computeFinderResizedSizesForImages:v18 inSizes:v9 completion:v23];
+    [v20 computeFinderResizedSizesForImages:v18 inSizes:sizesCopy completion:v23];
   }
 
   else
   {
-    (*(v10 + 2))(v10, 0, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0, 0);
   }
 }
 
@@ -1748,26 +1748,26 @@ void __113__VCVoiceShortcutClient_ContextualActions__computeRepresentativeSizesF
   [*(*(*(a1 + 40) + 8) + 40) setObject:v16 forKeyedSubscript:v5];
 }
 
-- (void)logRunOfContextualAction:(id)a3
+- (void)logRunOfContextualAction:(id)action
 {
   v39[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  actionCopy = action;
+  if (!actionCopy)
   {
-    v28 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v28 handleFailureInMethod:a2 object:self file:@"VCVoiceShortcutClient_ContextualActions.m" lineNumber:128 description:{@"Invalid parameter not satisfying: %@", @"event"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"VCVoiceShortcutClient_ContextualActions.m" lineNumber:128 description:{@"Invalid parameter not satisfying: %@", @"event"}];
   }
 
-  v6 = [v5 action];
-  v7 = [v5 surface];
-  if (v7 > 0x12)
+  action = [actionCopy action];
+  surface = [actionCopy surface];
+  if (surface > 0x12)
   {
     v8 = 0;
   }
 
   else
   {
-    v8 = off_1E7B01520[v7];
+    v8 = off_1E7B01520[surface];
   }
 
   v9 = v8;
@@ -1781,11 +1781,11 @@ void __113__VCVoiceShortcutClient_ContextualActions__computeRepresentativeSizesF
     v10 = @"Unknown";
   }
 
-  v11 = [v5 contentTypes];
-  v12 = [v11 if_map:&__block_literal_global_14973];
+  contentTypes = [actionCopy contentTypes];
+  v12 = [contentTypes if_map:&__block_literal_global_14973];
 
-  v13 = [v6 correspondingSystemActionType];
-  if (v13 == 2)
+  correspondingSystemActionType = [action correspondingSystemActionType];
+  if (correspondingSystemActionType == 2)
   {
     v14 = [objc_alloc(getBMContextualActionParameterClass()) initWithType:@"WFNumberContentItem" metadata:&unk_1F29317B8];
     v38 = v14;
@@ -1793,7 +1793,7 @@ void __113__VCVoiceShortcutClient_ContextualActions__computeRepresentativeSizesF
     goto LABEL_13;
   }
 
-  if (v13 == 1)
+  if (correspondingSystemActionType == 1)
   {
     v14 = [objc_alloc(getBMContextualActionParameterClass()) initWithType:@"WFNumberContentItem" metadata:&unk_1F2931790];
     v39[0] = v14;
@@ -1825,9 +1825,9 @@ LABEL_15:
   v18 = v17;
   _Block_object_dispose(&v34, 8);
   v19 = [v17 alloc];
-  v20 = [v6 identifier];
-  v21 = [v6 displayString];
-  v22 = [v19 initWithIdentifier:v20 appName:v10 actionName:v21 contents:v12 parameters:v16];
+  identifier = [action identifier];
+  displayString = [action displayString];
+  v22 = [v19 initWithIdentifier:identifier appName:v10 actionName:displayString contents:v12 parameters:v16];
 
   v34 = 0;
   v35 = &v34;
@@ -1847,9 +1847,9 @@ LABEL_15:
 
   v24 = v23;
   _Block_object_dispose(&v34, 8);
-  v25 = [v23 contextualActions];
-  v26 = [v25 source];
-  [v26 sendEvent:v22];
+  contextualActions = [v23 contextualActions];
+  source = [contextualActions source];
+  [source sendEvent:v22];
 
   v27 = *MEMORY[0x1E69E9840];
 }
@@ -1882,43 +1882,43 @@ id __69__VCVoiceShortcutClient_ContextualActions__logRunOfContextualAction___blo
   return v7;
 }
 
-- (id)filteredContextualActions:(id)a3 forContext:(id)a4 byType:(unint64_t)a5 error:(id *)a6
+- (id)filteredContextualActions:(id)actions forContext:(id)context byType:(unint64_t)type error:(id *)error
 {
-  v6 = WFLocallyFilterActions(a4, a3);
+  v6 = WFLocallyFilterActions(context, actions);
 
   return v6;
 }
 
-- (void)filterContextualActions:(id)a3 forContext:(id)a4 byType:(unint64_t)a5 completion:(id)a6
+- (void)filterContextualActions:(id)actions forContext:(id)context byType:(unint64_t)type completion:(id)completion
 {
-  v8 = a6;
-  v9 = WFLocallyFilterActions(a4, a3);
-  v8[2](v8, v9, 0);
+  completionCopy = completion;
+  v9 = WFLocallyFilterActions(context, actions);
+  completionCopy[2](completionCopy, v9, 0);
 }
 
-- (id)contextualActionsForContext:(id)a3 error:(id *)a4
+- (id)contextualActionsForContext:(id)context error:(id *)error
 {
-  v4 = [a3 surface];
+  surface = [context surface];
 
-  return WFStaticContextualActionDefinitionsForSurface(v4);
+  return WFStaticContextualActionDefinitionsForSurface(surface);
 }
 
-- (void)getContextualActionsForContext:(id)a3 completion:(id)a4
+- (void)getContextualActionsForContext:(id)context completion:(id)completion
 {
-  v5 = a4;
-  v6 = WFStaticContextualActionDefinitionsForSurface([a3 surface]);
-  v5[2](v5, v6, 0);
+  completionCopy = completion;
+  v6 = WFStaticContextualActionDefinitionsForSurface([context surface]);
+  completionCopy[2](completionCopy, v6, 0);
 }
 
-- (void)generateSingleUseTokenForWorkflowIdentifier:(id)a3 completion:(id)a4
+- (void)generateSingleUseTokenForWorkflowIdentifier:(id)identifier completion:(id)completion
 {
   v22 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  identifierCopy = identifier;
+  completionCopy = completion;
+  v9 = completionCopy;
+  if (identifierCopy)
   {
-    if (v8)
+    if (completionCopy)
     {
       goto LABEL_3;
     }
@@ -1926,8 +1926,8 @@ id __69__VCVoiceShortcutClient_ContextualActions__logRunOfContextualAction___blo
 
   else
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"VCVoiceShortcutClient_ShareSheet.m" lineNumber:102 description:{@"Invalid parameter not satisfying: %@", @"workflowIdentifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"VCVoiceShortcutClient_ShareSheet.m" lineNumber:102 description:{@"Invalid parameter not satisfying: %@", @"workflowIdentifier"}];
 
     if (v9)
     {
@@ -1935,8 +1935,8 @@ id __69__VCVoiceShortcutClient_ContextualActions__logRunOfContextualAction___blo
     }
   }
 
-  v15 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v15 handleFailureInMethod:a2 object:self file:@"VCVoiceShortcutClient_ShareSheet.m" lineNumber:103 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"VCVoiceShortcutClient_ShareSheet.m" lineNumber:103 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
 
 LABEL_3:
   v10 = getWFVoiceShortcutClientLogObject();
@@ -1945,7 +1945,7 @@ LABEL_3:
     *buf = 136315394;
     v19 = "[VCVoiceShortcutClient(ShareSheet) generateSingleUseTokenForWorkflowIdentifier:completion:]";
     v20 = 2114;
-    v21 = v7;
+    v21 = identifierCopy;
     _os_log_impl(&dword_1B1DE3000, v10, OS_LOG_TYPE_DEBUG, "%s Generating a single-use token for workflow identifier %{public}@", buf, 0x16u);
   }
 
@@ -1956,33 +1956,33 @@ LABEL_3:
   v17 = v9;
   v11 = v9;
   v12 = [(VCVoiceShortcutClient *)self asynchronousRemoteDataStoreWithErrorHandler:v16];
-  [v12 generateSingleUseTokenForWorkflowIdentifier:v7 completion:v11];
+  [v12 generateSingleUseTokenForWorkflowIdentifier:identifierCopy completion:v11];
 
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (id)shareSheetWorkflowsForExtensionMatchingDictionaries:(id)a3 resolvedActivityItems:(id)a4 hostBundleIdentifier:(id)a5 iconSize:(CGSize)a6 iconScale:(double)a7 error:(id *)a8
+- (id)shareSheetWorkflowsForExtensionMatchingDictionaries:(id)dictionaries resolvedActivityItems:(id)items hostBundleIdentifier:(id)identifier iconSize:(CGSize)size iconScale:(double)scale error:(id *)error
 {
-  height = a6.height;
-  width = a6.width;
+  height = size.height;
+  width = size.width;
   v64 = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
+  dictionariesCopy = dictionaries;
+  itemsCopy = items;
+  identifierCopy = identifier;
   v18 = getWFVoiceShortcutClientLogObject();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
   {
     *buf = 136315650;
     *&buf[4] = "[VCVoiceShortcutClient(ShareSheet) shareSheetWorkflowsForExtensionMatchingDictionaries:resolvedActivityItems:hostBundleIdentifier:iconSize:iconScale:error:]";
     *&buf[12] = 2114;
-    *&buf[14] = v17;
+    *&buf[14] = identifierCopy;
     *&buf[22] = 2114;
-    v61 = v15;
+    v61 = dictionariesCopy;
     _os_log_impl(&dword_1B1DE3000, v18, OS_LOG_TYPE_DEBUG, "%s Loading share sheet shortcuts for %{public}@ with extension matching dictionaries %{public}@", buf, 0x20u);
   }
 
-  v19 = [(VCVoiceShortcutClient *)self systemSurfaceStatus];
-  v20 = [v19 statusForSystemSurface:0];
+  systemSurfaceStatus = [(VCVoiceShortcutClient *)self systemSurfaceStatus];
+  v20 = [systemSurfaceStatus statusForSystemSurface:0];
 
   if (v20 == 2)
   {
@@ -2005,8 +2005,8 @@ LABEL_14:
     if (v20)
     {
 LABEL_15:
-      v25 = [(VCVoiceShortcutClient *)self xpcQueue];
-      v26 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, v25);
+      xpcQueue = [(VCVoiceShortcutClient *)self xpcQueue];
+      v26 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, xpcQueue);
 
       v27 = dispatch_time(0, 4000000000);
       dispatch_source_set_timer(v26, v27, 0xFFFFFFFFFFFFFFFFLL, 0x2FAF080uLL);
@@ -2016,7 +2016,7 @@ LABEL_15:
       handler[3] = &unk_1E7B02180;
       v23 = v26;
       v54 = v23;
-      v55 = self;
+      selfCopy = self;
       dispatch_source_set_event_handler(v23, handler);
       dispatch_resume(v23);
       *buf = 0;
@@ -2043,7 +2043,7 @@ LABEL_15:
       v45[3] = &unk_1E7B020B8;
       v45[4] = &v47;
       v45[5] = buf;
-      [v28 getShareSheetWorkflowsForExtensionMatchingDictionaries:v15 hostBundleIdentifier:v17 completion:v45];
+      [v28 getShareSheetWorkflowsForExtensionMatchingDictionaries:dictionariesCopy hostBundleIdentifier:identifierCopy completion:v45];
       if (v48[5])
       {
         DeviceRGB = CGColorSpaceCreateDeviceRGB();
@@ -2054,7 +2054,7 @@ LABEL_15:
         aBlock[4] = DeviceRGB;
         v30 = _Block_copy(aBlock);
         v31 = [WFRemoteImageDrawingContext alloc];
-        v32 = -[WFRemoteImageDrawingContext initWithImageCount:singleImageSize:scale:colorSpace:](v31, "initWithImageCount:singleImageSize:scale:colorSpace:", [v48[5] count], DeviceRGB, width, height, a7);
+        v32 = -[WFRemoteImageDrawingContext initWithImageCount:singleImageSize:scale:colorSpace:](v31, "initWithImageCount:singleImageSize:scale:colorSpace:", [v48[5] count], DeviceRGB, width, height, scale);
         if (v32)
         {
           v33 = [v48[5] if_map:&__block_literal_global_16093];
@@ -2111,9 +2111,9 @@ LABEL_15:
         }
 
         v24 = 0;
-        if (a8)
+        if (error)
         {
-          *a8 = *(*&buf[8] + 40);
+          *error = *(*&buf[8] + 40);
         }
       }
 
@@ -2203,14 +2203,14 @@ uint64_t __157__VCVoiceShortcutClient_ShareSheet__shareSheetWorkflowsForExtensio
   return [v2 numberWithUnsignedShort:v3];
 }
 
-- (void)getShortcutSuggestionsForAllAppsWithLimit:(unint64_t)a3 completion:(id)a4
+- (void)getShortcutSuggestionsForAllAppsWithLimit:(unint64_t)limit completion:(id)completion
 {
   v17 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  if (!v7)
+  completionCopy = completion;
+  if (!completionCopy)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"VCVoiceShortcutClient_Suggestions.m" lineNumber:49 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"VCVoiceShortcutClient_Suggestions.m" lineNumber:49 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
   }
 
   v8 = getWFVoiceShortcutClientLogObject();
@@ -2225,23 +2225,23 @@ uint64_t __157__VCVoiceShortcutClient_ShareSheet__shareSheetWorkflowsForExtensio
   v13[1] = 3221225472;
   v13[2] = __91__VCVoiceShortcutClient_Suggestions__getShortcutSuggestionsForAllAppsWithLimit_completion___block_invoke;
   v13[3] = &unk_1E7B02940;
-  v14 = v7;
-  v9 = v7;
+  v14 = completionCopy;
+  v9 = completionCopy;
   v10 = [(VCVoiceShortcutClient *)self asynchronousRemoteDataStoreWithErrorHandler:v13];
-  [v10 getShortcutSuggestionsForAllAppsWithLimit:a3 completion:v9];
+  [v10 getShortcutSuggestionsForAllAppsWithLimit:limit completion:v9];
 
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)getShortcutSuggestionsForAppWithBundleIdentifier:(id)a3 completion:(id)a4
+- (void)getShortcutSuggestionsForAppWithBundleIdentifier:(id)identifier completion:(id)completion
 {
   v22 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  identifierCopy = identifier;
+  completionCopy = completion;
+  v9 = completionCopy;
+  if (identifierCopy)
   {
-    if (v8)
+    if (completionCopy)
     {
       goto LABEL_3;
     }
@@ -2249,8 +2249,8 @@ uint64_t __157__VCVoiceShortcutClient_ShareSheet__shareSheetWorkflowsForExtensio
 
   else
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"VCVoiceShortcutClient_Suggestions.m" lineNumber:38 description:{@"Invalid parameter not satisfying: %@", @"bundleIdentifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"VCVoiceShortcutClient_Suggestions.m" lineNumber:38 description:{@"Invalid parameter not satisfying: %@", @"bundleIdentifier"}];
 
     if (v9)
     {
@@ -2258,8 +2258,8 @@ uint64_t __157__VCVoiceShortcutClient_ShareSheet__shareSheetWorkflowsForExtensio
     }
   }
 
-  v15 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v15 handleFailureInMethod:a2 object:self file:@"VCVoiceShortcutClient_Suggestions.m" lineNumber:39 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"VCVoiceShortcutClient_Suggestions.m" lineNumber:39 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
 
 LABEL_3:
   v10 = getWFVoiceShortcutClientLogObject();
@@ -2268,7 +2268,7 @@ LABEL_3:
     *buf = 136315394;
     v19 = "[VCVoiceShortcutClient(Suggestions) getShortcutSuggestionsForAppWithBundleIdentifier:completion:]";
     v20 = 2114;
-    v21 = v7;
+    v21 = identifierCopy;
     _os_log_impl(&dword_1B1DE3000, v10, OS_LOG_TYPE_DEBUG, "%s Getting shortcut suggestions for app with bundleID: %{public}@", buf, 0x16u);
   }
 
@@ -2279,20 +2279,20 @@ LABEL_3:
   v17 = v9;
   v11 = v9;
   v12 = [(VCVoiceShortcutClient *)self asynchronousRemoteDataStoreWithErrorHandler:v16];
-  [v12 getShortcutSuggestionsForAppWithBundleIdentifier:v7 completion:v11];
+  [v12 getShortcutSuggestionsForAppWithBundleIdentifier:identifierCopy completion:v11];
 
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setShortcutSuggestions:(id)a3 forAppWithBundleIdentifier:(id)a4
+- (void)setShortcutSuggestions:(id)suggestions forAppWithBundleIdentifier:(id)identifier
 {
   v19 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  suggestionsCopy = suggestions;
+  identifierCopy = identifier;
+  if (!suggestionsCopy)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"VCVoiceShortcutClient_Suggestions.m" lineNumber:18 description:{@"Invalid parameter not satisfying: %@", @"shortcutSuggestions"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"VCVoiceShortcutClient_Suggestions.m" lineNumber:18 description:{@"Invalid parameter not satisfying: %@", @"shortcutSuggestions"}];
   }
 
   v9 = getWFVoiceShortcutClientLogObject();
@@ -2301,11 +2301,11 @@ LABEL_3:
     *buf = 136315394;
     v16 = "[VCVoiceShortcutClient(Suggestions) setShortcutSuggestions:forAppWithBundleIdentifier:]";
     v17 = 2112;
-    v18 = v7;
+    v18 = suggestionsCopy;
     _os_log_impl(&dword_1B1DE3000, v9, OS_LOG_TYPE_DEBUG, "%s Setting shortcut suggestions: %@", buf, 0x16u);
   }
 
-  if ([v7 count] >= 0x65)
+  if ([suggestionsCopy count] >= 0x65)
   {
     v10 = getWFVoiceShortcutClientLogObject();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -2317,15 +2317,15 @@ LABEL_3:
       _os_log_impl(&dword_1B1DE3000, v10, OS_LOG_TYPE_DEFAULT, "%s Limiting to the first %{public}lu suggestions", buf, 0x16u);
     }
 
-    v11 = [v7 subarrayWithRange:{0, 100}];
+    v11 = [suggestionsCopy subarrayWithRange:{0, 100}];
 
-    v7 = v11;
+    suggestionsCopy = v11;
   }
 
-  if (v8)
+  if (identifierCopy)
   {
     v12 = [(VCVoiceShortcutClient *)self asynchronousRemoteDataStoreWithErrorHandler:&__block_literal_global_20075];
-    [v12 setShortcutSuggestions:v7 forAppWithBundleIdentifier:v8];
+    [v12 setShortcutSuggestions:suggestionsCopy forAppWithBundleIdentifier:identifierCopy];
   }
 
   else
@@ -2342,58 +2342,58 @@ LABEL_3:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)dismissToastedSessionKitSessionsWithReason:(id)a3 completion:(id)a4
+- (void)dismissToastedSessionKitSessionsWithReason:(id)reason completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __79__VCVoiceShortcutClient_dismissToastedSessionKitSessionsWithReason_completion___block_invoke;
   v10[3] = &unk_1E7B02940;
-  v11 = v6;
-  v7 = v6;
-  v8 = a3;
+  v11 = completionCopy;
+  v7 = completionCopy;
+  reasonCopy = reason;
   v9 = [(VCVoiceShortcutClient *)self asynchronousRemoteDataStoreWithErrorHandler:v10];
-  [v9 dismissToastedSessionKitSessionsWithReason:v8 completion:v7];
+  [v9 dismissToastedSessionKitSessionsWithReason:reasonCopy completion:v7];
 }
 
-- (void)toastSessionKitSessionWithIdentifier:(id)a3 forDuration:(id)a4 completion:(id)a5
+- (void)toastSessionKitSessionWithIdentifier:(id)identifier forDuration:(id)duration completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __85__VCVoiceShortcutClient_toastSessionKitSessionWithIdentifier_forDuration_completion___block_invoke;
   v13[3] = &unk_1E7B02940;
-  v14 = v8;
-  v9 = v8;
-  v10 = a4;
-  v11 = a3;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  durationCopy = duration;
+  identifierCopy = identifier;
   v12 = [(VCVoiceShortcutClient *)self asynchronousRemoteDataStoreWithErrorHandler:v13];
-  [v12 toastSessionKitSessionWithIdentifier:v11 forDuration:v10 completion:v9];
+  [v12 toastSessionKitSessionWithIdentifier:identifierCopy forDuration:durationCopy completion:v9];
 }
 
-- (void)postNotificationAboutFailure:(id)a3 inWorkflow:(id)a4 dialogAttribution:(id)a5 runningContext:(id)a6
+- (void)postNotificationAboutFailure:(id)failure inWorkflow:(id)workflow dialogAttribution:(id)attribution runningContext:(id)context
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  contextCopy = context;
+  attributionCopy = attribution;
+  workflowCopy = workflow;
+  failureCopy = failure;
   v15 = [(VCVoiceShortcutClient *)self asynchronousRemoteDataStoreWithErrorHandler:&__block_literal_global_194_20934];
-  v14 = WFEncodableError(v13);
+  v14 = WFEncodableError(failureCopy);
 
-  [v15 postNotificationAboutFailure:v14 inWorkflow:v12 dialogAttribution:v11 runningContext:v10];
+  [v15 postNotificationAboutFailure:v14 inWorkflow:workflowCopy dialogAttribution:attributionCopy runningContext:contextCopy];
 }
 
-- (void)postNotificationWithRequest:(id)a3 presentationMode:(unint64_t)a4 runningContext:(id)a5
+- (void)postNotificationWithRequest:(id)request presentationMode:(unint64_t)mode runningContext:(id)context
 {
-  v8 = a5;
-  v9 = a3;
+  contextCopy = context;
+  requestCopy = request;
   v10 = [(VCVoiceShortcutClient *)self asynchronousRemoteDataStoreWithErrorHandler:&__block_literal_global_192];
-  [v10 postNotificationWithRequest:v9 presentationMode:a4 runningContext:v8];
+  [v10 postNotificationWithRequest:requestCopy presentationMode:mode runningContext:contextCopy];
 }
 
-- (id)fetchURLForFPItem:(id)a3 error:(id *)a4
+- (id)fetchURLForFPItem:(id)item error:(id *)error
 {
-  v6 = a3;
+  itemCopy = item;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
@@ -2418,11 +2418,11 @@ LABEL_3:
   v10[3] = &unk_1E7B02BF0;
   v10[4] = &v18;
   v10[5] = &v12;
-  [v7 fetchURLForFPItem:v6 completion:v10];
+  [v7 fetchURLForFPItem:itemCopy completion:v10];
 
-  if (a4)
+  if (error)
   {
-    *a4 = v19[5];
+    *error = v19[5];
   }
 
   v8 = v13[5];
@@ -2443,11 +2443,11 @@ void __49__VCVoiceShortcutClient_fetchURLForFPItem_error___block_invoke_2(uint64
   *(v6 + 40) = v5;
 }
 
-- (id)createBookmarkWithBookmarkableString:(id)a3 path:(id)a4 workflowID:(id)a5 error:(id *)a6
+- (id)createBookmarkWithBookmarkableString:(id)string path:(id)path workflowID:(id)d error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  stringCopy = string;
+  pathCopy = path;
+  dCopy = d;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -2472,11 +2472,11 @@ void __49__VCVoiceShortcutClient_fetchURLForFPItem_error___block_invoke_2(uint64
   v16[3] = &unk_1E7B02C18;
   v16[4] = &v18;
   v16[5] = &v24;
-  [v13 createBookmarkWithBookmarkableString:v10 path:v11 workflowID:v12 completion:v16];
+  [v13 createBookmarkWithBookmarkableString:stringCopy path:pathCopy workflowID:dCopy completion:v16];
 
-  if (a6)
+  if (error)
   {
-    *a6 = v25[5];
+    *error = v25[5];
   }
 
   v14 = v19[5];
@@ -2501,10 +2501,10 @@ void __84__VCVoiceShortcutClient_createBookmarkWithBookmarkableString_path_workf
   *(v9 + 40) = v6;
 }
 
-- (id)createBookmarkWithURL:(id)a3 workflowID:(id)a4 error:(id *)a5
+- (id)createBookmarkWithURL:(id)l workflowID:(id)d error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  lCopy = l;
+  dCopy = d;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -2529,11 +2529,11 @@ void __84__VCVoiceShortcutClient_createBookmarkWithBookmarkableString_path_workf
   v13[3] = &unk_1E7B02C18;
   v13[4] = &v15;
   v13[5] = &v21;
-  [v10 createBookmarkWithURL:v8 workflowID:v9 completion:v13];
+  [v10 createBookmarkWithURL:lCopy workflowID:dCopy completion:v13];
 
-  if (a5)
+  if (error)
   {
-    *a5 = v22[5];
+    *error = v22[5];
   }
 
   v11 = v16[5];
@@ -2558,9 +2558,9 @@ void __64__VCVoiceShortcutClient_createBookmarkWithURL_workflowID_error___block_
   *(v9 + 40) = v6;
 }
 
-- (id)resolveCrossDeviceItemID:(id)a3 error:(id *)a4
+- (id)resolveCrossDeviceItemID:(id)d error:(id *)error
 {
-  v6 = a3;
+  dCopy = d;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
@@ -2585,11 +2585,11 @@ void __64__VCVoiceShortcutClient_createBookmarkWithURL_workflowID_error___block_
   v10[3] = &unk_1E7B02BF0;
   v10[4] = &v12;
   v10[5] = &v18;
-  [v7 resolveCrossDeviceItemID:v6 completion:v10];
+  [v7 resolveCrossDeviceItemID:dCopy completion:v10];
 
-  if (a4)
+  if (error)
   {
-    *a4 = v19[5];
+    *error = v19[5];
   }
 
   v8 = v13[5];
@@ -2614,9 +2614,9 @@ void __56__VCVoiceShortcutClient_resolveCrossDeviceItemID_error___block_invoke_2
   *(v9 + 40) = v6;
 }
 
-- (id)resolveBookmarkData:(id)a3 updatedData:(id *)a4 error:(id *)a5
+- (id)resolveBookmarkData:(id)data updatedData:(id *)updatedData error:(id *)error
 {
-  v8 = a3;
+  dataCopy = data;
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
@@ -2648,16 +2648,16 @@ void __56__VCVoiceShortcutClient_resolveCrossDeviceItemID_error___block_invoke_2
   v12[4] = &v26;
   v12[5] = &v14;
   v12[6] = &v20;
-  [v9 resolveBookmarkData:v8 completion:v12];
+  [v9 resolveBookmarkData:dataCopy completion:v12];
 
-  if (a5)
+  if (error)
   {
-    *a5 = v27[5];
+    *error = v27[5];
   }
 
-  if (a4)
+  if (updatedData)
   {
-    *a4 = v15[5];
+    *updatedData = v15[5];
   }
 
   v10 = v21[5];
@@ -2685,10 +2685,10 @@ void __63__VCVoiceShortcutClient_resolveBookmarkData_updatedData_error___block_i
   *(v12 + 40) = v7;
 }
 
-- (id)resolveFilePath:(id)a3 workflowID:(id)a4 error:(id *)a5
+- (id)resolveFilePath:(id)path workflowID:(id)d error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  pathCopy = path;
+  dCopy = d;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -2713,11 +2713,11 @@ void __63__VCVoiceShortcutClient_resolveBookmarkData_updatedData_error___block_i
   v13[3] = &unk_1E7B02BA0;
   v13[4] = &v21;
   v13[5] = &v15;
-  [v10 resolveFilePath:v8 workflowID:v9 completion:v13];
+  [v10 resolveFilePath:pathCopy workflowID:dCopy completion:v13];
 
-  if (a5)
+  if (error)
   {
-    *a5 = v22[5];
+    *error = v22[5];
   }
 
   v11 = v16[5];
@@ -2738,27 +2738,27 @@ void __58__VCVoiceShortcutClient_resolveFilePath_workflowID_error___block_invoke
   *(v6 + 40) = v5;
 }
 
-- (void)showSingleStepCompletionForWebClip:(id)a3 completion:(id)a4
+- (void)showSingleStepCompletionForWebClip:(id)clip completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __71__VCVoiceShortcutClient_showSingleStepCompletionForWebClip_completion___block_invoke;
   v10[3] = &unk_1E7B02940;
-  v11 = v6;
-  v7 = v6;
-  v8 = a3;
+  v11 = completionCopy;
+  v7 = completionCopy;
+  clipCopy = clip;
   v9 = [(VCVoiceShortcutClient *)self asynchronousRemoteDataStoreWithErrorHandler:v10];
-  [v9 showSingleStepCompletionForWebClip:v8 completion:v7];
+  [v9 showSingleStepCompletionForWebClip:clipCopy completion:v7];
 }
 
-- (id)drawGlyphs:(id)a3 atSize:(CGSize)a4 withBackgroundColorValues:(id)a5 padding:(double)a6 error:(id *)a7
+- (id)drawGlyphs:(id)glyphs atSize:(CGSize)size withBackgroundColorValues:(id)values padding:(double)padding error:(id *)error
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v36 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a5;
+  glyphsCopy = glyphs;
+  valuesCopy = values;
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
@@ -2784,17 +2784,17 @@ void __58__VCVoiceShortcutClient_resolveFilePath_workflowID_error___block_invoke
       _os_log_impl(&dword_1B1DE3000, v16, OS_LOG_TYPE_ERROR, "%s Could not fetch first unsorted shortcut: %{public}@", buf, 0x16u);
     }
 
-    if (a7)
+    if (error)
     {
       v18 = 0;
-      *a7 = v27[5];
+      *error = v27[5];
       goto LABEL_16;
     }
 
     goto LABEL_11;
   }
 
-  if (![v13 count])
+  if (![glyphsCopy count])
   {
 LABEL_11:
     v18 = 0;
@@ -2802,13 +2802,13 @@ LABEL_11:
   }
 
   DeviceRGB = CGColorSpaceCreateDeviceRGB();
-  v20 = -[WFRemoteImageDrawingContext initWithImageCount:singleImageSize:scale:colorSpace:]([WFRemoteImageDrawingContext alloc], "initWithImageCount:singleImageSize:scale:colorSpace:", [v13 count], DeviceRGB, width, height, 0.0);
+  v20 = -[WFRemoteImageDrawingContext initWithImageCount:singleImageSize:scale:colorSpace:]([WFRemoteImageDrawingContext alloc], "initWithImageCount:singleImageSize:scale:colorSpace:", [glyphsCopy count], DeviceRGB, width, height, 0.0);
   CGColorSpaceRelease(DeviceRGB);
   if (v20)
   {
-    [v15 drawGlyphs:v13 withBackgroundColorValues:v14 padding:v20 intoContext:&__block_literal_global_185_20941 completion:a6];
+    [v15 drawGlyphs:glyphsCopy withBackgroundColorValues:valuesCopy padding:v20 intoContext:&__block_literal_global_185_20941 completion:padding];
     v18 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    for (i = 0; i < [v13 count]; ++i)
+    for (i = 0; i < [glyphsCopy count]; ++i)
     {
       [v18 addObject:{-[WFRemoteImageDrawingContext imageAtIndex:](v20, "imageAtIndex:", i)}];
     }
@@ -2994,19 +2994,19 @@ uint64_t __56__VCVoiceShortcutClient_handleXPCConnectionInterruption__block_invo
 
 - (id)unsafePopConnectionErrorHandlers
 {
-  v3 = [(VCVoiceShortcutClient *)self errorHandlers];
-  v4 = [v3 allObjects];
+  errorHandlers = [(VCVoiceShortcutClient *)self errorHandlers];
+  allObjects = [errorHandlers allObjects];
 
-  v5 = [(VCVoiceShortcutClient *)self errorHandlers];
-  [v5 removeAllObjects];
+  errorHandlers2 = [(VCVoiceShortcutClient *)self errorHandlers];
+  [errorHandlers2 removeAllObjects];
 
-  return v4;
+  return allObjects;
 }
 
-- (void)callErrorHandlerIfNeeded:(id)a3 withError:(id)a4
+- (void)callErrorHandlerIfNeeded:(id)needed withError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  neededCopy = needed;
+  errorCopy = error;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
@@ -3017,9 +3017,9 @@ uint64_t __56__VCVoiceShortcutClient_handleXPCConnectionInterruption__block_invo
   v11[2] = __60__VCVoiceShortcutClient_callErrorHandlerIfNeeded_withError___block_invoke;
   v11[3] = &unk_1E7B02B50;
   v11[4] = self;
-  v9 = v6;
+  v9 = neededCopy;
   v13 = v9;
-  v10 = v7;
+  v10 = errorCopy;
   v12 = v10;
   v14 = &v15;
   dispatch_sync(internalStateQueue, v11);
@@ -3067,9 +3067,9 @@ void __60__VCVoiceShortcutClient_callErrorHandlerIfNeeded_withError___block_invo
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (id)asynchronousRemoteDataStoreWithErrorHandler:(id)a3 synchronous:(BOOL)a4
+- (id)asynchronousRemoteDataStoreWithErrorHandler:(id)handler synchronous:(BOOL)synchronous
 {
-  v6 = a3;
+  handlerCopy = handler;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -3082,10 +3082,10 @@ void __60__VCVoiceShortcutClient_callErrorHandlerIfNeeded_withError___block_invo
   v11[2] = __81__VCVoiceShortcutClient_asynchronousRemoteDataStoreWithErrorHandler_synchronous___block_invoke;
   v11[3] = &unk_1E7B02B28;
   v11[4] = self;
-  v12 = v6;
+  v12 = handlerCopy;
   v13 = &v15;
-  v14 = a4;
-  v8 = v6;
+  synchronousCopy = synchronous;
+  v8 = handlerCopy;
   dispatch_sync(internalStateQueue, v11);
   v9 = v16[5];
 
@@ -3205,20 +3205,20 @@ void __81__VCVoiceShortcutClient_asynchronousRemoteDataStoreWithErrorHandler_syn
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setPerWorkflowStateData:(id)a3 forSmartPromptWithActionUUID:(id)a4 reference:(id)a5 completion:(id)a6
+- (void)setPerWorkflowStateData:(id)data forSmartPromptWithActionUUID:(id)d reference:(id)reference completion:(id)completion
 {
-  v10 = a6;
+  completionCopy = completion;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __99__VCVoiceShortcutClient_setPerWorkflowStateData_forSmartPromptWithActionUUID_reference_completion___block_invoke;
   v16[3] = &unk_1E7B02940;
-  v17 = v10;
-  v11 = v10;
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
+  v17 = completionCopy;
+  v11 = completionCopy;
+  referenceCopy = reference;
+  dCopy = d;
+  dataCopy = data;
   v15 = [(VCVoiceShortcutClient *)self synchronousRemoteDataStoreWithErrorHandler:v16];
-  [v15 setPerWorkflowStateData:v14 forSmartPromptWithActionUUID:v13 reference:v12 completion:v11];
+  [v15 setPerWorkflowStateData:dataCopy forSmartPromptWithActionUUID:dCopy reference:referenceCopy completion:v11];
 }
 
 void __99__VCVoiceShortcutClient_setPerWorkflowStateData_forSmartPromptWithActionUUID_reference_completion___block_invoke(uint64_t a1, void *a2)
@@ -3239,9 +3239,9 @@ void __99__VCVoiceShortcutClient_setPerWorkflowStateData_forSmartPromptWithActio
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (id)getValueForDescriptor:(id)a3 resultClass:(Class)a4 error:(id *)a5
+- (id)getValueForDescriptor:(id)descriptor resultClass:(Class)class error:(id *)error
 {
-  v8 = a3;
+  descriptorCopy = descriptor;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -3260,22 +3260,22 @@ void __99__VCVoiceShortcutClient_setPerWorkflowStateData_forSmartPromptWithActio
   v15[3] = &unk_1E7B028A0;
   v15[4] = &v22;
   v9 = [(VCVoiceShortcutClient *)self synchronousRemoteDataStoreWithErrorHandler:v15];
-  v10 = NSStringFromClass(a4);
+  v10 = NSStringFromClass(class);
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __65__VCVoiceShortcutClient_getValueForDescriptor_resultClass_error___block_invoke_2;
   v14[3] = &unk_1E7B02AD8;
   v14[4] = &v16;
   v14[5] = &v22;
-  [v9 getValueForDescriptor:v8 resultClassName:v10 completion:v14];
+  [v9 getValueForDescriptor:descriptorCopy resultClassName:v10 completion:v14];
 
   v11 = v23[5];
   if (v11)
   {
     v12 = 0;
-    if (a5)
+    if (error)
     {
-      *a5 = v11;
+      *error = v11;
     }
   }
 
@@ -3304,24 +3304,24 @@ void __65__VCVoiceShortcutClient_getValueForDescriptor_resultClass_error___block
   *(v9 + 40) = v6;
 }
 
-- (void)getValueForDescriptor:(id)a3 resultClass:(Class)a4 completion:(id)a5
+- (void)getValueForDescriptor:(id)descriptor resultClass:(Class)class completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __70__VCVoiceShortcutClient_getValueForDescriptor_resultClass_completion___block_invoke;
   v13[3] = &unk_1E7B02940;
-  v14 = v8;
-  v9 = v8;
-  v10 = a3;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  descriptorCopy = descriptor;
   v11 = [(VCVoiceShortcutClient *)self asynchronousRemoteDataStoreWithErrorHandler:v13];
-  v12 = NSStringFromClass(a4);
-  [v11 getValueForDescriptor:v10 resultClassName:v12 completion:v9];
+  v12 = NSStringFromClass(class);
+  [v11 getValueForDescriptor:descriptorCopy resultClassName:v12 completion:v9];
 }
 
-- (id)getResultsForQuery:(id)a3 resultClass:(Class)a4 resultState:(id *)a5 error:(id *)a6
+- (id)getResultsForQuery:(id)query resultClass:(Class)class resultState:(id *)state error:(id *)error
 {
-  v10 = a3;
+  queryCopy = query;
   v31 = 0;
   v32 = &v31;
   v33 = 0x3032000000;
@@ -3346,7 +3346,7 @@ void __65__VCVoiceShortcutClient_getValueForDescriptor_resultClass_error___block
   v18[3] = &unk_1E7B028A0;
   v18[4] = &v31;
   v11 = [(VCVoiceShortcutClient *)self synchronousRemoteDataStoreWithErrorHandler:v18];
-  v12 = NSStringFromClass(a4);
+  v12 = NSStringFromClass(class);
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __74__VCVoiceShortcutClient_getResultsForQuery_resultClass_resultState_error___block_invoke_2;
@@ -3354,26 +3354,26 @@ void __65__VCVoiceShortcutClient_getValueForDescriptor_resultClass_error___block
   v17[4] = &v19;
   v17[5] = &v25;
   v17[6] = &v31;
-  [v11 getResultsForQuery:v10 resultClassName:v12 completion:v17];
+  [v11 getResultsForQuery:queryCopy resultClassName:v12 completion:v17];
 
   v13 = v32[5];
   if (v13)
   {
     v14 = 0;
-    if (a6)
+    if (error)
     {
-      *a6 = v13;
+      *error = v13;
     }
   }
 
   else
   {
-    if (a5)
+    if (state)
     {
       v15 = v26[5];
       if (v15)
       {
-        *a5 = v15;
+        *state = v15;
       }
     }
 
@@ -3408,22 +3408,22 @@ void __74__VCVoiceShortcutClient_getResultsForQuery_resultClass_resultState_erro
   *(v15 + 40) = v9;
 }
 
-- (void)getResultsForQuery:(id)a3 resultClass:(Class)a4 completion:(id)a5
+- (void)getResultsForQuery:(id)query resultClass:(Class)class completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __67__VCVoiceShortcutClient_getResultsForQuery_resultClass_completion___block_invoke;
   v13[3] = &unk_1E7B02940;
-  v14 = v8;
-  v9 = v8;
-  v10 = a3;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  queryCopy = query;
   v11 = [(VCVoiceShortcutClient *)self asynchronousRemoteDataStoreWithErrorHandler:v13];
-  v12 = NSStringFromClass(a4);
-  [v11 getResultsForQuery:v10 resultClassName:v12 completion:v9];
+  v12 = NSStringFromClass(class);
+  [v11 getResultsForQuery:queryCopy resultClassName:v12 completion:v9];
 }
 
-- (id)firstUnsortedWorkflowWithBackgroundColorValue:(id *)a3 error:(id *)a4
+- (id)firstUnsortedWorkflowWithBackgroundColorValue:(id *)value error:(id *)error
 {
   v37 = *MEMORY[0x1E69E9840];
   v27 = 0;
@@ -3461,7 +3461,7 @@ void __74__VCVoiceShortcutClient_getResultsForQuery_resultClass_resultState_erro
   v7 = v22[5];
   if (v7)
   {
-    *a3 = v7;
+    *value = v7;
   }
 
   if (v16[5])
@@ -3478,9 +3478,9 @@ void __74__VCVoiceShortcutClient_getResultsForQuery_resultClass_resultState_erro
     }
 
     v10 = 0;
-    if (a4)
+    if (error)
     {
-      *a4 = v16[5];
+      *error = v16[5];
     }
   }
 
@@ -3518,15 +3518,15 @@ void __77__VCVoiceShortcutClient_firstUnsortedWorkflowWithBackgroundColorValue_e
   *(v15 + 40) = v9;
 }
 
-- (void)getWidgetWorkflowsInCollectionWithIdentifier:(id)a3 limit:(unint64_t)a4 completion:(id)a5
+- (void)getWidgetWorkflowsInCollectionWithIdentifier:(id)identifier limit:(unint64_t)limit completion:(id)completion
 {
-  v13 = a3;
-  v7 = a5;
-  v8 = [v13 length];
+  identifierCopy = identifier;
+  completionCopy = completion;
+  v8 = [identifierCopy length];
   v9 = [WFWorkflowQuery alloc];
   if (v8)
   {
-    v10 = [(WFWorkflowQuery *)v9 initWithFolderIdentifier:v13];
+    v10 = [(WFWorkflowQuery *)v9 initWithFolderIdentifier:identifierCopy];
   }
 
   else
@@ -3535,39 +3535,39 @@ void __77__VCVoiceShortcutClient_firstUnsortedWorkflowWithBackgroundColorValue_e
   }
 
   v11 = v10;
-  [(WFWorkflowQuery *)v10 setResultsLimit:a4];
+  [(WFWorkflowQuery *)v10 setResultsLimit:limit];
   v12 = objc_opt_class();
   +[VCWidgetWorkflow smallGlyphSize];
-  [WFObservableArrayResult getResultWithQuery:v11 valueType:v12 glyphSize:v7 completionHandler:?];
+  [WFObservableArrayResult getResultWithQuery:v11 valueType:v12 glyphSize:completionCopy completionHandler:?];
 }
 
-- (void)getWidgetWorkflowWithIdentifier:(id)a3 completion:(id)a4
+- (void)getWidgetWorkflowWithIdentifier:(id)identifier completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
-  v8 = [[WFDatabaseObjectDescriptor alloc] initWithIdentifier:v6 objectType:0];
+  completionCopy = completion;
+  identifierCopy = identifier;
+  v8 = [[WFDatabaseObjectDescriptor alloc] initWithIdentifier:identifierCopy objectType:0];
 
   v7 = objc_opt_class();
   +[VCWidgetWorkflow largeGlyphSize];
-  [WFObservableObjectResult getResultWithDescriptor:v8 valueType:v7 glyphSize:v5 completionHandler:?];
+  [WFObservableObjectResult getResultWithDescriptor:v8 valueType:v7 glyphSize:completionCopy completionHandler:?];
 }
 
-- (id)visibleShortcutsWithError:(id *)a3
+- (id)visibleShortcutsWithError:(id *)error
 {
   v4 = [[WFWorkflowQuery alloc] initWithLocation:0];
-  v5 = [WFObservableArrayResult getResultWithQuery:v4 valueType:objc_opt_class() glyphSize:a3 error:*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)];
+  v5 = [WFObservableArrayResult getResultWithQuery:v4 valueType:objc_opt_class() glyphSize:error error:*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)];
 
   return v5;
 }
 
-- (id)shortcutsInCollectionWithIdentifier:(id)a3 error:(id *)a4
+- (id)shortcutsInCollectionWithIdentifier:(id)identifier error:(id *)error
 {
-  v5 = a3;
-  v6 = [v5 length];
+  identifierCopy = identifier;
+  v6 = [identifierCopy length];
   v7 = [WFWorkflowQuery alloc];
   if (v6)
   {
-    v8 = [(WFWorkflowQuery *)v7 initWithFolderIdentifier:v5];
+    v8 = [(WFWorkflowQuery *)v7 initWithFolderIdentifier:identifierCopy];
   }
 
   else
@@ -3576,56 +3576,56 @@ void __77__VCVoiceShortcutClient_firstUnsortedWorkflowWithBackgroundColorValue_e
   }
 
   v9 = v8;
-  v10 = [WFObservableArrayResult getResultWithQuery:v8 valueType:objc_opt_class() glyphSize:a4 error:*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)];
+  v10 = [WFObservableArrayResult getResultWithQuery:v8 valueType:objc_opt_class() glyphSize:error error:*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)];
 
   return v10;
 }
 
-- (id)shortcutWithIdentifier:(id)a3 glyphSize:(CGSize)a4 error:(id *)a5
+- (id)shortcutWithIdentifier:(id)identifier glyphSize:(CGSize)size error:(id *)error
 {
-  height = a4.height;
-  width = a4.width;
-  v8 = a3;
-  v9 = [[WFDatabaseObjectDescriptor alloc] initWithIdentifier:v8 objectType:0];
+  height = size.height;
+  width = size.width;
+  identifierCopy = identifier;
+  v9 = [[WFDatabaseObjectDescriptor alloc] initWithIdentifier:identifierCopy objectType:0];
 
-  v10 = [WFObservableObjectResult getResultWithDescriptor:v9 valueType:objc_opt_class() glyphSize:a5 error:width, height];
+  height = [WFObservableObjectResult getResultWithDescriptor:v9 valueType:objc_opt_class() glyphSize:error error:width, height];
 
-  return v10;
+  return height;
 }
 
-- (id)foldersWithError:(id *)a3
+- (id)foldersWithError:(id *)error
 {
   v4 = objc_opt_new();
-  v5 = [WFObservableArrayResult getResultWithQuery:v4 valueType:objc_opt_class() glyphSize:a3 error:*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)];
+  v5 = [WFObservableArrayResult getResultWithQuery:v4 valueType:objc_opt_class() glyphSize:error error:*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)];
 
   return v5;
 }
 
-- (void)sendAceCommandDictionary:(id)a3 completion:(id)a4
+- (void)sendAceCommandDictionary:(id)dictionary completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __61__VCVoiceShortcutClient_sendAceCommandDictionary_completion___block_invoke;
   v10[3] = &unk_1E7B02940;
-  v11 = v6;
-  v7 = v6;
-  v8 = a3;
+  v11 = completionCopy;
+  v7 = completionCopy;
+  dictionaryCopy = dictionary;
   v9 = [(VCVoiceShortcutClient *)self asynchronousRemoteDataStoreWithErrorHandler:v10];
-  [v9 sendAceCommandDictionary:v8 completion:v7];
+  [v9 sendAceCommandDictionary:dictionaryCopy completion:v7];
 }
 
-- (void)importShortcutWithRecordData:(id)a3 name:(id)a4 shortcutSource:(id)a5 completion:(id)a6
+- (void)importShortcutWithRecordData:(id)data name:(id)name shortcutSource:(id)source completion:(id)completion
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = v14;
-  if (!v11)
+  dataCopy = data;
+  nameCopy = name;
+  sourceCopy = source;
+  completionCopy = completion;
+  v15 = completionCopy;
+  if (!dataCopy)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"VCVoiceShortcutClient.m" lineNumber:415 description:{@"Invalid parameter not satisfying: %@", @"workflowRecordData"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"VCVoiceShortcutClient.m" lineNumber:415 description:{@"Invalid parameter not satisfying: %@", @"workflowRecordData"}];
 
     if (v15)
     {
@@ -3633,13 +3633,13 @@ void __77__VCVoiceShortcutClient_firstUnsortedWorkflowWithBackgroundColorValue_e
     }
 
 LABEL_5:
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"VCVoiceShortcutClient.m" lineNumber:416 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"VCVoiceShortcutClient.m" lineNumber:416 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
 
     goto LABEL_3;
   }
 
-  if (!v14)
+  if (!completionCopy)
   {
     goto LABEL_5;
   }
@@ -3652,32 +3652,32 @@ LABEL_3:
   v21 = v15;
   v16 = v15;
   v17 = [(VCVoiceShortcutClient *)self asynchronousRemoteDataStoreWithErrorHandler:v20];
-  [v17 createShortcutWithRecordData:v11 name:v12 shortcutSource:v13 completion:v16];
+  [v17 createShortcutWithRecordData:dataCopy name:nameCopy shortcutSource:sourceCopy completion:v16];
 }
 
-- (void)importSharedShortcutFromURL:(id)a3 completion:(id)a4
+- (void)importSharedShortcutFromURL:(id)l completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __64__VCVoiceShortcutClient_importSharedShortcutFromURL_completion___block_invoke;
   v8[3] = &unk_1E7B02A60;
-  v9 = v6;
-  v7 = v6;
-  [(VCVoiceShortcutClient *)self importSharedShortcutFromURL:a3 withName:0 shortcutSource:0 completion:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [(VCVoiceShortcutClient *)self importSharedShortcutFromURL:l withName:0 shortcutSource:0 completion:v8];
 }
 
-- (void)importSharedShortcutFromURL:(id)a3 withName:(id)a4 shortcutSource:(id)a5 completion:(id)a6
+- (void)importSharedShortcutFromURL:(id)l withName:(id)name shortcutSource:(id)source completion:(id)completion
 {
   v47 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = v14;
-  if (v11)
+  lCopy = l;
+  nameCopy = name;
+  sourceCopy = source;
+  completionCopy = completion;
+  v15 = completionCopy;
+  if (lCopy)
   {
-    if (v14)
+    if (completionCopy)
     {
       goto LABEL_3;
     }
@@ -3685,8 +3685,8 @@ LABEL_3:
 
   else
   {
-    v31 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v31 handleFailureInMethod:a2 object:self file:@"VCVoiceShortcutClient.m" lineNumber:362 description:{@"Invalid parameter not satisfying: %@", @"URL"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"VCVoiceShortcutClient.m" lineNumber:362 description:{@"Invalid parameter not satisfying: %@", @"URL"}];
 
     if (v15)
     {
@@ -3694,8 +3694,8 @@ LABEL_3:
     }
   }
 
-  v32 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v32 handleFailureInMethod:a2 object:self file:@"VCVoiceShortcutClient.m" lineNumber:363 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"VCVoiceShortcutClient.m" lineNumber:363 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
 
 LABEL_3:
   v16 = getWFVoiceShortcutClientLogObject();
@@ -3704,7 +3704,7 @@ LABEL_3:
     *buf = 136315394;
     *&buf[4] = "[VCVoiceShortcutClient importSharedShortcutFromURL:withName:shortcutSource:completion:]";
     *&buf[12] = 2112;
-    *&buf[14] = v11;
+    *&buf[14] = lCopy;
     _os_log_impl(&dword_1B1DE3000, v16, OS_LOG_TYPE_DEBUG, "%s Importing shared shortcut at URL %@", buf, 0x16u);
   }
 
@@ -3745,23 +3745,23 @@ LABEL_3:
 
   v21 = v20;
   _Block_object_dispose(&v40, 8);
-  v22 = [v20 performSelector:sel_requestWithURL_ withObject:v11];
+  v22 = [v20 performSelector:sel_requestWithURL_ withObject:lCopy];
   v23 = [v22 performSelector:sel_subAction];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __88__VCVoiceShortcutClient_importSharedShortcutFromURL_withName_shortcutSource_completion___block_invoke;
   aBlock[3] = &unk_1E7B02A38;
-  v34 = v11;
+  v34 = lCopy;
   v35 = v19;
-  v36 = v12;
-  v37 = self;
-  v38 = v13;
+  v36 = nameCopy;
+  selfCopy = self;
+  v38 = sourceCopy;
   v39 = v15;
-  v24 = v13;
-  v25 = v12;
+  v24 = sourceCopy;
+  v25 = nameCopy;
   v26 = v19;
   v27 = v15;
-  v28 = v11;
+  v28 = lCopy;
   v29 = _Block_copy(aBlock);
   [v26 performSelector:sel_getWorkflowForIdentifier_completionHandler_ withObject:v23 withObject:v29];
 
@@ -3943,45 +3943,45 @@ void __88__VCVoiceShortcutClient_importSharedShortcutFromURL_withName_shortcutSo
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)obliterateShortcuts:(id)a3
+- (void)obliterateShortcuts:(id)shortcuts
 {
-  v4 = a3;
+  shortcutsCopy = shortcuts;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __45__VCVoiceShortcutClient_obliterateShortcuts___block_invoke;
   v7[3] = &unk_1E7B02940;
-  v8 = v4;
-  v5 = v4;
+  v8 = shortcutsCopy;
+  v5 = shortcutsCopy;
   v6 = [(VCVoiceShortcutClient *)self asynchronousRemoteDataStoreWithErrorHandler:v7];
   [v6 obliterateShortcuts:v5];
 }
 
-- (void)getOnScreenContentWithOptions:(id)a3 completionHandler:(id)a4
+- (void)getOnScreenContentWithOptions:(id)options completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __73__VCVoiceShortcutClient_getOnScreenContentWithOptions_completionHandler___block_invoke;
   v10[3] = &unk_1E7B02940;
-  v11 = v6;
-  v7 = v6;
-  v8 = a3;
+  v11 = handlerCopy;
+  v7 = handlerCopy;
+  optionsCopy = options;
   v9 = [(VCVoiceShortcutClient *)self asynchronousRemoteDataStoreWithErrorHandler:v10];
-  [v9 getOnScreenContentWithOptions:v8 completionHandler:v7];
+  [v9 getOnScreenContentWithOptions:optionsCopy completionHandler:v7];
 }
 
-- (void)getOnScreenContentWithOptions:(id)a3 completion:(id)a4
+- (void)getOnScreenContentWithOptions:(id)options completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __66__VCVoiceShortcutClient_getOnScreenContentWithOptions_completion___block_invoke;
   v10[3] = &unk_1E7B02940;
-  v11 = v6;
-  v7 = v6;
-  v8 = a3;
+  v11 = completionCopy;
+  v7 = completionCopy;
+  optionsCopy = options;
   v9 = [(VCVoiceShortcutClient *)self asynchronousRemoteDataStoreWithErrorHandler:v10];
-  [v9 getOnScreenContentWithOptions:v8 completion:v7];
+  [v9 getOnScreenContentWithOptions:optionsCopy completion:v7];
 }
 
 uint64_t __63__VCVoiceShortcutClient_getVaultItemsAccessForBackgroundRunner__block_invoke(uint64_t a1)
@@ -3994,15 +3994,15 @@ uint64_t __63__VCVoiceShortcutClient_getVaultItemsAccessForBackgroundRunner__blo
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)deleteTriggerWithIdentifier:(id)a3 completion:(id)a4
+- (void)deleteTriggerWithIdentifier:(id)identifier completion:(id)completion
 {
   v22 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  identifierCopy = identifier;
+  completionCopy = completion;
+  v9 = completionCopy;
+  if (identifierCopy)
   {
-    if (v8)
+    if (completionCopy)
     {
       goto LABEL_3;
     }
@@ -4010,8 +4010,8 @@ uint64_t __63__VCVoiceShortcutClient_getVaultItemsAccessForBackgroundRunner__blo
 
   else
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"VCVoiceShortcutClient.m" lineNumber:315 description:{@"Invalid parameter not satisfying: %@", @"triggerIdentifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"VCVoiceShortcutClient.m" lineNumber:315 description:{@"Invalid parameter not satisfying: %@", @"triggerIdentifier"}];
 
     if (v9)
     {
@@ -4019,8 +4019,8 @@ uint64_t __63__VCVoiceShortcutClient_getVaultItemsAccessForBackgroundRunner__blo
     }
   }
 
-  v15 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v15 handleFailureInMethod:a2 object:self file:@"VCVoiceShortcutClient.m" lineNumber:316 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"VCVoiceShortcutClient.m" lineNumber:316 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
 
 LABEL_3:
   v10 = getWFVoiceShortcutClientLogObject();
@@ -4029,7 +4029,7 @@ LABEL_3:
     *buf = 136315394;
     v19 = "[VCVoiceShortcutClient deleteTriggerWithIdentifier:completion:]";
     v20 = 2112;
-    v21 = v7;
+    v21 = identifierCopy;
     _os_log_impl(&dword_1B1DE3000, v10, OS_LOG_TYPE_DEBUG, "%s [Triggers] Deleting trigger (id: %@)", buf, 0x16u);
   }
 
@@ -4040,20 +4040,20 @@ LABEL_3:
   v17 = v9;
   v11 = v9;
   v12 = [(VCVoiceShortcutClient *)self asynchronousRemoteDataStoreWithErrorHandler:v16];
-  [v12 deleteTriggerWithIdentifier:v7 completion:v11];
+  [v12 deleteTriggerWithIdentifier:identifierCopy completion:v11];
 
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)checkTriggerStateWithKeyPath:(id)a3 completion:(id)a4
+- (void)checkTriggerStateWithKeyPath:(id)path completion:(id)completion
 {
   v22 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  pathCopy = path;
+  completionCopy = completion;
+  v9 = completionCopy;
+  if (pathCopy)
   {
-    if (v8)
+    if (completionCopy)
     {
       goto LABEL_3;
     }
@@ -4061,8 +4061,8 @@ LABEL_3:
 
   else
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"VCVoiceShortcutClient.m" lineNumber:306 description:{@"Invalid parameter not satisfying: %@", @"keyPath"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"VCVoiceShortcutClient.m" lineNumber:306 description:{@"Invalid parameter not satisfying: %@", @"keyPath"}];
 
     if (v9)
     {
@@ -4070,8 +4070,8 @@ LABEL_3:
     }
   }
 
-  v15 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v15 handleFailureInMethod:a2 object:self file:@"VCVoiceShortcutClient.m" lineNumber:307 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"VCVoiceShortcutClient.m" lineNumber:307 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
 
 LABEL_3:
   v10 = getWFVoiceShortcutClientLogObject();
@@ -4080,7 +4080,7 @@ LABEL_3:
     *buf = 136315394;
     v19 = "[VCVoiceShortcutClient checkTriggerStateWithKeyPath:completion:]";
     v20 = 2112;
-    v21 = v7;
+    v21 = pathCopy;
     _os_log_impl(&dword_1B1DE3000, v10, OS_LOG_TYPE_DEBUG, "%s [Triggers] Checking state for keyPath: %@", buf, 0x16u);
   }
 
@@ -4091,20 +4091,20 @@ LABEL_3:
   v17 = v9;
   v11 = v9;
   v12 = [(VCVoiceShortcutClient *)self asynchronousRemoteDataStoreWithErrorHandler:v16];
-  [v12 checkTriggerStateWithKeyPath:v7 completion:v11];
+  [v12 checkTriggerStateWithKeyPath:pathCopy completion:v11];
 
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)checkTriggerStateWithIdentifier:(id)a3 completion:(id)a4
+- (void)checkTriggerStateWithIdentifier:(id)identifier completion:(id)completion
 {
   v22 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  identifierCopy = identifier;
+  completionCopy = completion;
+  v9 = completionCopy;
+  if (identifierCopy)
   {
-    if (v8)
+    if (completionCopy)
     {
       goto LABEL_3;
     }
@@ -4112,8 +4112,8 @@ LABEL_3:
 
   else
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"VCVoiceShortcutClient.m" lineNumber:297 description:{@"Invalid parameter not satisfying: %@", @"triggerIdentifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"VCVoiceShortcutClient.m" lineNumber:297 description:{@"Invalid parameter not satisfying: %@", @"triggerIdentifier"}];
 
     if (v9)
     {
@@ -4121,8 +4121,8 @@ LABEL_3:
     }
   }
 
-  v15 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v15 handleFailureInMethod:a2 object:self file:@"VCVoiceShortcutClient.m" lineNumber:298 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"VCVoiceShortcutClient.m" lineNumber:298 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
 
 LABEL_3:
   v10 = getWFVoiceShortcutClientLogObject();
@@ -4131,7 +4131,7 @@ LABEL_3:
     *buf = 136315394;
     v19 = "[VCVoiceShortcutClient checkTriggerStateWithIdentifier:completion:]";
     v20 = 2112;
-    v21 = v7;
+    v21 = identifierCopy;
     _os_log_impl(&dword_1B1DE3000, v10, OS_LOG_TYPE_DEBUG, "%s [Triggers] Checking state for trigger (id: %@)", buf, 0x16u);
   }
 
@@ -4142,19 +4142,19 @@ LABEL_3:
   v17 = v9;
   v11 = v9;
   v12 = [(VCVoiceShortcutClient *)self asynchronousRemoteDataStoreWithErrorHandler:v16];
-  [v12 checkTriggerStateWithIdentifier:v7 completion:v11];
+  [v12 checkTriggerStateWithIdentifier:identifierCopy completion:v11];
 
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)getConfiguredTriggerDescriptionsWithCompletion:(id)a3
+- (void)getConfiguredTriggerDescriptionsWithCompletion:(id)completion
 {
   v15 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  completionCopy = completion;
+  if (!completionCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"VCVoiceShortcutClient.m" lineNumber:280 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"VCVoiceShortcutClient.m" lineNumber:280 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
   }
 
   v6 = getWFVoiceShortcutClientLogObject();
@@ -4169,23 +4169,23 @@ LABEL_3:
   v11[1] = 3221225472;
   v11[2] = __72__VCVoiceShortcutClient_getConfiguredTriggerDescriptionsWithCompletion___block_invoke;
   v11[3] = &unk_1E7B02940;
-  v12 = v5;
-  v7 = v5;
+  v12 = completionCopy;
+  v7 = completionCopy;
   v8 = [(VCVoiceShortcutClient *)self asynchronousRemoteDataStoreWithErrorHandler:v11];
   [v8 getConfiguredTriggerDescriptionsWithCompletion:v7];
 
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)unregisterTriggerWithIdentifier:(id)a3 triggerBacking:(int64_t)a4 completion:(id)a5
+- (void)unregisterTriggerWithIdentifier:(id)identifier triggerBacking:(int64_t)backing completion:(id)completion
 {
   v22 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a5;
-  if (!v10)
+  identifierCopy = identifier;
+  completionCopy = completion;
+  if (!completionCopy)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"VCVoiceShortcutClient.m" lineNumber:272 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"VCVoiceShortcutClient.m" lineNumber:272 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
   }
 
   v11 = getWFVoiceShortcutClientLogObject();
@@ -4194,7 +4194,7 @@ LABEL_3:
     *buf = 136315394;
     v19 = "[VCVoiceShortcutClient unregisterTriggerWithIdentifier:triggerBacking:completion:]";
     v20 = 2112;
-    v21 = v9;
+    v21 = identifierCopy;
     _os_log_impl(&dword_1B1DE3000, v11, OS_LOG_TYPE_DEBUG, "%s [Triggers] Unregistering trigger (id: %@)", buf, 0x16u);
   }
 
@@ -4202,23 +4202,23 @@ LABEL_3:
   v16[1] = 3221225472;
   v16[2] = __83__VCVoiceShortcutClient_unregisterTriggerWithIdentifier_triggerBacking_completion___block_invoke;
   v16[3] = &unk_1E7B02940;
-  v17 = v10;
-  v12 = v10;
+  v17 = completionCopy;
+  v12 = completionCopy;
   v13 = [(VCVoiceShortcutClient *)self asynchronousRemoteDataStoreWithErrorHandler:v16];
-  [v13 unregisterTriggerWithIdentifier:v9 triggerBacking:a4 completion:v12];
+  [v13 unregisterTriggerWithIdentifier:identifierCopy triggerBacking:backing completion:v12];
 
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)refreshTriggerWithIdentifier:(id)a3 completion:(id)a4
+- (void)refreshTriggerWithIdentifier:(id)identifier completion:(id)completion
 {
   v20 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  identifierCopy = identifier;
+  completionCopy = completion;
+  if (!completionCopy)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"VCVoiceShortcutClient.m" lineNumber:253 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"VCVoiceShortcutClient.m" lineNumber:253 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
   }
 
   v9 = getWFVoiceShortcutClientLogObject();
@@ -4227,7 +4227,7 @@ LABEL_3:
     *buf = 136315394;
     v17 = "[VCVoiceShortcutClient refreshTriggerWithIdentifier:completion:]";
     v18 = 2112;
-    v19 = v7;
+    v19 = identifierCopy;
     _os_log_impl(&dword_1B1DE3000, v9, OS_LOG_TYPE_DEBUG, "%s [Triggers] Refreshing trigger (id: %@)", buf, 0x16u);
   }
 
@@ -4235,22 +4235,22 @@ LABEL_3:
   v14[1] = 3221225472;
   v14[2] = __65__VCVoiceShortcutClient_refreshTriggerWithIdentifier_completion___block_invoke;
   v14[3] = &unk_1E7B02940;
-  v15 = v8;
-  v10 = v8;
+  v15 = completionCopy;
+  v10 = completionCopy;
   v11 = [(VCVoiceShortcutClient *)self asynchronousRemoteDataStoreWithErrorHandler:v14];
-  [v11 refreshTriggerWithIdentifier:v7 completion:v10];
+  [v11 refreshTriggerWithIdentifier:identifierCopy completion:v10];
 
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)getSiriPodcastsDatabaseURLWithCompletion:(id)a3
+- (void)getSiriPodcastsDatabaseURLWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __66__VCVoiceShortcutClient_getSiriPodcastsDatabaseURLWithCompletion___block_invoke;
   v10[3] = &unk_1E7B02940;
-  v5 = v4;
+  v5 = completionCopy;
   v11 = v5;
   v6 = [(VCVoiceShortcutClient *)self asynchronousRemoteDataStoreWithErrorHandler:v10];
   v8[0] = MEMORY[0x1E69E9820];
@@ -4321,24 +4321,24 @@ void __66__VCVoiceShortcutClient_getSiriPodcastsDatabaseURLWithCompletion___bloc
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setInteger:(int64_t)a3 forKey:(id)a4 inDomain:(id)a5 completionHandler:(id)a6
+- (void)setInteger:(int64_t)integer forKey:(id)key inDomain:(id)domain completionHandler:(id)handler
 {
   v29 = *MEMORY[0x1E69E9840];
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (v11)
+  keyCopy = key;
+  domainCopy = domain;
+  handlerCopy = handler;
+  if (keyCopy)
   {
-    if (v12)
+    if (domainCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_8:
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"VCVoiceShortcutClient.m" lineNumber:222 description:{@"Invalid parameter not satisfying: %@", @"domain"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"VCVoiceShortcutClient.m" lineNumber:222 description:{@"Invalid parameter not satisfying: %@", @"domain"}];
 
-    if (v13)
+    if (handlerCopy)
     {
       goto LABEL_4;
     }
@@ -4346,23 +4346,23 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v18 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v18 handleFailureInMethod:a2 object:self file:@"VCVoiceShortcutClient.m" lineNumber:221 description:{@"Invalid parameter not satisfying: %@", @"key"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"VCVoiceShortcutClient.m" lineNumber:221 description:{@"Invalid parameter not satisfying: %@", @"key"}];
 
-  if (!v12)
+  if (!domainCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_3:
-  if (v13)
+  if (handlerCopy)
   {
     goto LABEL_4;
   }
 
 LABEL_9:
-  v20 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v20 handleFailureInMethod:a2 object:self file:@"VCVoiceShortcutClient.m" lineNumber:223 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"VCVoiceShortcutClient.m" lineNumber:223 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
 
 LABEL_4:
   v14 = getWFVoiceShortcutClientLogObject();
@@ -4371,9 +4371,9 @@ LABEL_4:
     *buf = 136315650;
     v24 = "[VCVoiceShortcutClient setInteger:forKey:inDomain:completionHandler:]";
     v25 = 2112;
-    v26 = v11;
+    v26 = keyCopy;
     v27 = 2112;
-    v28 = v12;
+    v28 = domainCopy;
     _os_log_impl(&dword_1B1DE3000, v14, OS_LOG_TYPE_DEBUG, "%s Setting preference object for key=%@ in doamin=%@", buf, 0x20u);
   }
 
@@ -4381,10 +4381,10 @@ LABEL_4:
   v21[1] = 3221225472;
   v21[2] = __70__VCVoiceShortcutClient_setInteger_forKey_inDomain_completionHandler___block_invoke;
   v21[3] = &unk_1E7B02940;
-  v22 = v13;
-  v15 = v13;
+  v22 = handlerCopy;
+  v15 = handlerCopy;
   v16 = [(VCVoiceShortcutClient *)self asynchronousRemoteDataStoreWithErrorHandler:v21];
-  [v16 setInteger:a3 forKey:v11 inDomain:v12 completionHandler:v15];
+  [v16 setInteger:integer forKey:keyCopy inDomain:domainCopy completionHandler:v15];
 
   v17 = *MEMORY[0x1E69E9840];
 }
@@ -4407,17 +4407,17 @@ LABEL_4:
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateVoiceShortcutWithIdentifier:(id)a3 phrase:(id)a4 shortcut:(id)a5 completion:(id)a6
+- (void)updateVoiceShortcutWithIdentifier:(id)identifier phrase:(id)phrase shortcut:(id)shortcut completion:(id)completion
 {
   v29 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = v14;
-  if (v11)
+  identifierCopy = identifier;
+  phraseCopy = phrase;
+  shortcutCopy = shortcut;
+  completionCopy = completion;
+  v15 = completionCopy;
+  if (identifierCopy)
   {
-    if (v14)
+    if (completionCopy)
     {
       goto LABEL_3;
     }
@@ -4425,8 +4425,8 @@ LABEL_4:
 
   else
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"VCVoiceShortcutClient.m" lineNumber:176 description:{@"Invalid parameter not satisfying: %@", @"voiceShortcutIdentifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"VCVoiceShortcutClient.m" lineNumber:176 description:{@"Invalid parameter not satisfying: %@", @"voiceShortcutIdentifier"}];
 
     if (v15)
     {
@@ -4434,14 +4434,14 @@ LABEL_4:
     }
   }
 
-  v21 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v21 handleFailureInMethod:a2 object:self file:@"VCVoiceShortcutClient.m" lineNumber:177 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"VCVoiceShortcutClient.m" lineNumber:177 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
 
 LABEL_3:
-  if (!(v12 | v13))
+  if (!(phraseCopy | shortcutCopy))
   {
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v22 handleFailureInMethod:a2 object:self file:@"VCVoiceShortcutClient.m" lineNumber:178 description:@"Pass at least one parameter to update"];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"VCVoiceShortcutClient.m" lineNumber:178 description:@"Pass at least one parameter to update"];
   }
 
   v16 = getWFVoiceShortcutClientLogObject();
@@ -4450,7 +4450,7 @@ LABEL_3:
     *buf = 136315394;
     v26 = "[VCVoiceShortcutClient updateVoiceShortcutWithIdentifier:phrase:shortcut:completion:]";
     v27 = 2112;
-    v28 = v11;
+    v28 = identifierCopy;
     _os_log_impl(&dword_1B1DE3000, v16, OS_LOG_TYPE_DEBUG, "%s Updating VoiceShortcut with id=%@", buf, 0x16u);
   }
 
@@ -4461,29 +4461,29 @@ LABEL_3:
   v24 = v15;
   v17 = v15;
   v18 = [(VCVoiceShortcutClient *)self asynchronousRemoteDataStoreWithErrorHandler:v23];
-  [v18 updateVoiceShortcutWithIdentifier:v11 phrase:v12 shortcut:v13 completion:v17];
+  [v18 updateVoiceShortcutWithIdentifier:identifierCopy phrase:phraseCopy shortcut:shortcutCopy completion:v17];
 
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)createVoiceShortcut:(id)a3 phrase:(id)a4 completion:(id)a5
+- (void)createVoiceShortcut:(id)shortcut phrase:(id)phrase completion:(id)completion
 {
   v30 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v9)
+  shortcutCopy = shortcut;
+  phraseCopy = phrase;
+  completionCopy = completion;
+  if (shortcutCopy)
   {
-    if (v10)
+    if (phraseCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_8:
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"VCVoiceShortcutClient.m" lineNumber:151 description:{@"Invalid parameter not satisfying: %@", @"phrase"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"VCVoiceShortcutClient.m" lineNumber:151 description:{@"Invalid parameter not satisfying: %@", @"phrase"}];
 
-    if (v11)
+    if (completionCopy)
     {
       goto LABEL_4;
     }
@@ -4491,23 +4491,23 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v17 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v17 handleFailureInMethod:a2 object:self file:@"VCVoiceShortcutClient.m" lineNumber:150 description:{@"Invalid parameter not satisfying: %@", @"shortcut"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"VCVoiceShortcutClient.m" lineNumber:150 description:{@"Invalid parameter not satisfying: %@", @"shortcut"}];
 
-  if (!v10)
+  if (!phraseCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_3:
-  if (v11)
+  if (completionCopy)
   {
     goto LABEL_4;
   }
 
 LABEL_9:
-  v19 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v19 handleFailureInMethod:a2 object:self file:@"VCVoiceShortcutClient.m" lineNumber:152 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"VCVoiceShortcutClient.m" lineNumber:152 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
 
 LABEL_4:
   v12 = getWFVoiceShortcutClientLogObject();
@@ -4516,7 +4516,7 @@ LABEL_4:
     *buf = 136315395;
     v27 = "[VCVoiceShortcutClient createVoiceShortcut:phrase:completion:]";
     v28 = 2113;
-    v29 = v10;
+    v29 = phraseCopy;
     _os_log_impl(&dword_1B1DE3000, v12, OS_LOG_TYPE_DEBUG, "%s Creating VoiceShortcut for %{private}@", buf, 0x16u);
   }
 
@@ -4524,18 +4524,18 @@ LABEL_4:
   v24[1] = 3221225472;
   v24[2] = __63__VCVoiceShortcutClient_createVoiceShortcut_phrase_completion___block_invoke;
   v24[3] = &unk_1E7B02918;
-  v25 = v9;
+  v25 = shortcutCopy;
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __63__VCVoiceShortcutClient_createVoiceShortcut_phrase_completion___block_invoke_103;
   v20[3] = &unk_1E7B02968;
   v20[4] = self;
   v21 = v25;
-  v22 = v10;
-  v23 = v11;
-  v13 = v10;
+  v22 = phraseCopy;
+  v23 = completionCopy;
+  v13 = phraseCopy;
   v14 = v25;
-  v15 = v11;
+  v15 = completionCopy;
   [v14 _injectProxiesForImages:v24 completion:v20];
 
   v16 = *MEMORY[0x1E69E9840];
@@ -4607,7 +4607,7 @@ void __63__VCVoiceShortcutClient_createVoiceShortcut_phrase_completion___block_i
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)requestDataMigration:(id *)a3
+- (BOOL)requestDataMigration:(id *)migration
 {
   v15 = 0;
   v16 = &v15;
@@ -4633,9 +4633,9 @@ void __63__VCVoiceShortcutClient_createVoiceShortcut_phrase_completion___block_i
   v7[5] = &v9;
   [v4 requestDataMigration:v7];
 
-  if (a3)
+  if (migration)
   {
-    *a3 = v10[5];
+    *migration = v10[5];
   }
 
   v5 = *(v16 + 24);
@@ -4653,21 +4653,21 @@ void __63__VCVoiceShortcutClient_createVoiceShortcut_phrase_completion___block_i
   [(VCVoiceShortcutClient *)&v3 dealloc];
 }
 
-- (VCVoiceShortcutClient)initWithListenerEndpoint:(id)a3
+- (VCVoiceShortcutClient)initWithListenerEndpoint:(id)endpoint
 {
-  v5 = a3;
-  if (!v5)
+  endpointCopy = endpoint;
+  if (!endpointCopy)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"VCVoiceShortcutClient.m" lineNumber:123 description:{@"Invalid parameter not satisfying: %@", @"endpoint"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"VCVoiceShortcutClient.m" lineNumber:123 description:{@"Invalid parameter not satisfying: %@", @"endpoint"}];
   }
 
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __50__VCVoiceShortcutClient_initWithListenerEndpoint___block_invoke;
   v10[3] = &unk_1E7B02878;
-  v11 = v5;
-  v6 = v5;
+  v11 = endpointCopy;
+  v6 = endpointCopy;
   v7 = [(VCVoiceShortcutClient *)self initWithXPCConnectionCreationBlock:v10 XPCInterfaceSetupBlock:0];
 
   return v7;
@@ -4680,24 +4680,24 @@ id __50__VCVoiceShortcutClient_initWithListenerEndpoint___block_invoke(uint64_t 
   return v1;
 }
 
-- (VCVoiceShortcutClient)initWithMachServiceName:(id)a3 options:(unint64_t)a4 interfaceSetupBlock:(id)a5
+- (VCVoiceShortcutClient)initWithMachServiceName:(id)name options:(unint64_t)options interfaceSetupBlock:(id)block
 {
-  v9 = a3;
-  v10 = a5;
-  if (!v9)
+  nameCopy = name;
+  blockCopy = block;
+  if (!nameCopy)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"VCVoiceShortcutClient.m" lineNumber:116 description:{@"Invalid parameter not satisfying: %@", @"serviceName"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"VCVoiceShortcutClient.m" lineNumber:116 description:{@"Invalid parameter not satisfying: %@", @"serviceName"}];
   }
 
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __77__VCVoiceShortcutClient_initWithMachServiceName_options_interfaceSetupBlock___block_invoke;
   v15[3] = &unk_1E7B02850;
-  v16 = v9;
-  v17 = a4;
-  v11 = v9;
-  v12 = [(VCVoiceShortcutClient *)self initWithXPCConnectionCreationBlock:v15 XPCInterfaceSetupBlock:v10];
+  v16 = nameCopy;
+  optionsCopy = options;
+  v11 = nameCopy;
+  v12 = [(VCVoiceShortcutClient *)self initWithXPCConnectionCreationBlock:v15 XPCInterfaceSetupBlock:blockCopy];
 
   return v12;
 }
@@ -4709,30 +4709,30 @@ id __77__VCVoiceShortcutClient_initWithMachServiceName_options_interfaceSetupBlo
   return v1;
 }
 
-- (VCVoiceShortcutClient)initWithXPCConnectionCreationBlock:(id)a3 XPCInterfaceSetupBlock:(id)a4
+- (VCVoiceShortcutClient)initWithXPCConnectionCreationBlock:(id)block XPCInterfaceSetupBlock:(id)setupBlock
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  blockCopy = block;
+  setupBlockCopy = setupBlock;
+  if (!blockCopy)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"VCVoiceShortcutClient.m" lineNumber:111 description:{@"Invalid parameter not satisfying: %@", @"creationBlock"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"VCVoiceShortcutClient.m" lineNumber:111 description:{@"Invalid parameter not satisfying: %@", @"creationBlock"}];
   }
 
-  v9 = [(VCVoiceShortcutClient *)self initWithXPCConnection:0 XPCConnectionCreationBlock:v7 XPCInterfaceSetupBlock:v8];
+  v9 = [(VCVoiceShortcutClient *)self initWithXPCConnection:0 XPCConnectionCreationBlock:blockCopy XPCInterfaceSetupBlock:setupBlockCopy];
 
   return v9;
 }
 
-- (VCVoiceShortcutClient)initWithXPCConnection:(id)a3 XPCConnectionCreationBlock:(id)a4 XPCInterfaceSetupBlock:(id)a5
+- (VCVoiceShortcutClient)initWithXPCConnection:(id)connection XPCConnectionCreationBlock:(id)block XPCInterfaceSetupBlock:(id)setupBlock
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (!(v10 | v11))
+  connectionCopy = connection;
+  blockCopy = block;
+  setupBlockCopy = setupBlock;
+  if (!(connectionCopy | blockCopy))
   {
-    v33 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v33 handleFailureInMethod:a2 object:self file:@"VCVoiceShortcutClient.m" lineNumber:81 description:{@"Invalid parameter not satisfying: %@", @"connection || creationBlock"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"VCVoiceShortcutClient.m" lineNumber:81 description:{@"Invalid parameter not satisfying: %@", @"connection || creationBlock"}];
   }
 
   v37.receiver = self;
@@ -4750,16 +4750,16 @@ id __77__VCVoiceShortcutClient_initWithMachServiceName_options_interfaceSetupBlo
     internalStateQueue = v13->_internalStateQueue;
     v13->_internalStateQueue = v18;
 
-    v20 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     errorHandlers = v13->_errorHandlers;
-    v13->_errorHandlers = v20;
+    v13->_errorHandlers = weakObjectsHashTable;
 
-    objc_storeStrong(&v13->_xpcConnection, a3);
-    v22 = [v11 copy];
+    objc_storeStrong(&v13->_xpcConnection, connection);
+    v22 = [blockCopy copy];
     creationBlock = v13->_creationBlock;
     v13->_creationBlock = v22;
 
-    v24 = [v12 copy];
+    v24 = [setupBlockCopy copy];
     interfaceSetupBlock = v13->_interfaceSetupBlock;
     v13->_interfaceSetupBlock = v24;
 

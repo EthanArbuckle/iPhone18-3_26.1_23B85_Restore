@@ -1,6 +1,6 @@
 @interface _TUIGeneratorResultAccumulatorPolicy
 + (id)defaultPolicy;
-+ (id)policyForContext:(id)a3 enabledCandidateSources:(id)a4;
++ (id)policyForContext:(id)context enabledCandidateSources:(id)sources;
 - (_TUIGeneratorResultAccumulatorPolicy)init;
 @end
 
@@ -19,24 +19,24 @@
   return result;
 }
 
-+ (id)policyForContext:(id)a3 enabledCandidateSources:(id)a4
++ (id)policyForContext:(id)context enabledCandidateSources:(id)sources
 {
-  v5 = a3;
-  v6 = a4;
+  contextCopy = context;
+  sourcesCopy = sources;
   v7 = +[_TUIGeneratorResultAccumulatorPolicy defaultPolicy];
-  v8 = [v6 containsObject:&unk_1F03D8E40];
+  v8 = [sourcesCopy containsObject:&unk_1F03D8E40];
   v9 = 6.0;
-  if ((v8 & 1) != 0 || (v10 = [v6 containsObject:{&unk_1F03D8E58, 6.0}], v9 = 3.0, v10))
+  if ((v8 & 1) != 0 || (v10 = [sourcesCopy containsObject:{&unk_1F03D8E58, 6.0}], v9 = 3.0, v10))
   {
     [v7 setAccumulatorTimeout:v9];
   }
 
-  v11 = [v5 keyboardState];
-  v12 = [v11 documentState];
-  v13 = [v12 documentIsEmpty];
+  keyboardState = [contextCopy keyboardState];
+  documentState = [keyboardState documentState];
+  documentIsEmpty = [documentState documentIsEmpty];
 
   v14 = 1.5;
-  if (v13)
+  if (documentIsEmpty)
   {
     v14 = 0.0;
   }

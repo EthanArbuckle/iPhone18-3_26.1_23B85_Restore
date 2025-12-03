@@ -1,28 +1,28 @@
 @interface NTKEditModeConfiguration
-- (BOOL)_hasSameSlotOptions:(id)a3 andNilOption:(id)a4;
-- (BOOL)_lock_hasSameSlotOptions:(id)a3 andNilOption:(id)a4;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)_hasSameSlotOptions:(id)options andNilOption:(id)option;
+- (BOOL)_lock_hasSameSlotOptions:(id)options andNilOption:(id)option;
+- (BOOL)isEqual:(id)equal;
 - (NTKEditModeConfiguration)init;
-- (NTKEditModeConfiguration)initWithCoder:(id)a3;
-- (NTKEditModeConfiguration)initWithJSONObjectRepresentation:(id)a3 device:(id)a4 editOptionFactory:(id)a5;
-- (NTKEditModeConfiguration)initWithJSONObjectRepresentation:(id)a3 editOptionClass:(Class)a4 forDevice:(id)a5;
-- (id)JSONObjectRepresentationForFace:(id)a3;
-- (id)_lock_JSONObjectRepresentationForFace:(id)a3;
+- (NTKEditModeConfiguration)initWithCoder:(id)coder;
+- (NTKEditModeConfiguration)initWithJSONObjectRepresentation:(id)representation device:(id)device editOptionFactory:(id)factory;
+- (NTKEditModeConfiguration)initWithJSONObjectRepresentation:(id)representation editOptionClass:(Class)class forDevice:(id)device;
+- (id)JSONObjectRepresentationForFace:(id)face;
+- (id)_lock_JSONObjectRepresentationForFace:(id)face;
 - (id)_lock_alphabeticalSlots;
 - (id)_lock_dailySnapshotKey;
 - (id)_lock_description;
-- (id)_lock_editOptionForSlot:(id)a3;
+- (id)_lock_editOptionForSlot:(id)slot;
 - (id)dailySnapshotKey;
 - (id)description;
-- (id)editOptionForSlot:(id)a3;
+- (id)editOptionForSlot:(id)slot;
 - (id)optionsBySlot;
 - (unint64_t)_lock_hash;
 - (unint64_t)hash;
-- (void)_lock_encodeWithCoder:(id)a3;
-- (void)_lock_setEditOption:(id)a3 forSlot:(id)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)enumerateSlotsWithBlock:(id)a3;
-- (void)setEditOption:(id)a3 forSlot:(id)a4;
+- (void)_lock_encodeWithCoder:(id)coder;
+- (void)_lock_setEditOption:(id)option forSlot:(id)slot;
+- (void)encodeWithCoder:(id)coder;
+- (void)enumerateSlotsWithBlock:(id)block;
+- (void)setEditOption:(id)option forSlot:(id)slot;
 @end
 
 @implementation NTKEditModeConfiguration
@@ -36,21 +36,21 @@
   return v3;
 }
 
-- (void)enumerateSlotsWithBlock:(id)a3
+- (void)enumerateSlotsWithBlock:(id)block
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(NTKEditModeConfiguration *)self optionsBySlot];
-  v6 = v5;
+  blockCopy = block;
+  optionsBySlot = [(NTKEditModeConfiguration *)self optionsBySlot];
+  v6 = optionsBySlot;
   v16 = 0;
-  if (v5)
+  if (optionsBySlot)
   {
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v7 = [v5 allKeys];
-    v8 = [v7 countByEnumeratingWithState:&v12 objects:v17 count:16];
+    allKeys = [optionsBySlot allKeys];
+    v8 = [allKeys countByEnumeratingWithState:&v12 objects:v17 count:16];
     if (v8)
     {
       v9 = v8;
@@ -61,10 +61,10 @@ LABEL_4:
       {
         if (*v13 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allKeys);
         }
 
-        v4[2](v4, *(*(&v12 + 1) + 8 * v11), &v16);
+        blockCopy[2](blockCopy, *(*(&v12 + 1) + 8 * v11), &v16);
         if (v16)
         {
           break;
@@ -72,7 +72,7 @@ LABEL_4:
 
         if (v9 == ++v11)
         {
-          v9 = [v7 countByEnumeratingWithState:&v12 objects:v17 count:16];
+          v9 = [allKeys countByEnumeratingWithState:&v12 objects:v17 count:16];
           if (v9)
           {
             goto LABEL_4;
@@ -86,27 +86,27 @@ LABEL_4:
 
   else
   {
-    v4[2](v4, 0, &v16);
+    blockCopy[2](blockCopy, 0, &v16);
   }
 }
 
-- (void)setEditOption:(id)a3 forSlot:(id)a4
+- (void)setEditOption:(id)option forSlot:(id)slot
 {
-  v6 = a4;
-  v7 = a3;
+  slotCopy = slot;
+  optionCopy = option;
   os_unfair_lock_lock(&self->_lock);
-  [(NTKEditModeConfiguration *)self _lock_setEditOption:v7 forSlot:v6];
+  [(NTKEditModeConfiguration *)self _lock_setEditOption:optionCopy forSlot:slotCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)_lock_setEditOption:(id)a3 forSlot:(id)a4
+- (void)_lock_setEditOption:(id)option forSlot:(id)slot
 {
-  v14 = a3;
-  v7 = a4;
+  optionCopy = option;
+  slotCopy = slot;
   os_unfair_lock_assert_owner(&self->_lock);
   nilSlotOption = self->_nilSlotOption;
-  if (!v7)
+  if (!slotCopy)
   {
     optionsBySlot = self->_optionsBySlot;
     if (!optionsBySlot)
@@ -121,16 +121,16 @@ LABEL_4:
   {
     optionsBySlot = self->_optionsBySlot;
 LABEL_5:
-    v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"_nilSlotOption = %@, _optionsBySlot = %@, requested slot = %@", nilSlotOption, optionsBySlot, v7];
-    [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE658] format:{@"Cannot have nil and non-nil custom edit mode slots for same edit mode. (%@)", v10}];
+    slotCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"_nilSlotOption = %@, _optionsBySlot = %@, requested slot = %@", nilSlotOption, optionsBySlot, slotCopy];
+    [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE658] format:{@"Cannot have nil and non-nil custom edit mode slots for same edit mode. (%@)", slotCopy}];
 
-    if (v7)
+    if (slotCopy)
     {
       goto LABEL_6;
     }
 
 LABEL_10:
-    objc_storeStrong(&self->_nilSlotOption, a3);
+    objc_storeStrong(&self->_nilSlotOption, option);
     goto LABEL_12;
   }
 
@@ -143,37 +143,37 @@ LABEL_6:
   }
 
   v13 = self->_optionsBySlot;
-  if (v14)
+  if (optionCopy)
   {
-    [(NSMutableDictionary *)v13 setObject:v14 forKey:v7];
+    [(NSMutableDictionary *)v13 setObject:optionCopy forKey:slotCopy];
   }
 
   else
   {
-    [(NSMutableDictionary *)v13 removeObjectForKey:v7];
+    [(NSMutableDictionary *)v13 removeObjectForKey:slotCopy];
   }
 
 LABEL_12:
 }
 
-- (id)editOptionForSlot:(id)a3
+- (id)editOptionForSlot:(id)slot
 {
-  v4 = a3;
+  slotCopy = slot;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(NTKEditModeConfiguration *)self _lock_editOptionForSlot:v4];
+  v5 = [(NTKEditModeConfiguration *)self _lock_editOptionForSlot:slotCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 
   return v5;
 }
 
-- (id)_lock_editOptionForSlot:(id)a3
+- (id)_lock_editOptionForSlot:(id)slot
 {
-  v4 = a3;
+  slotCopy = slot;
   os_unfair_lock_assert_owner(&self->_lock);
-  if (v4)
+  if (slotCopy)
   {
-    v5 = [(NSMutableDictionary *)self->_optionsBySlot objectForKey:v4];
+    v5 = [(NSMutableDictionary *)self->_optionsBySlot objectForKey:slotCopy];
   }
 
   else
@@ -189,10 +189,10 @@ LABEL_12:
 - (id)dailySnapshotKey
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(NTKEditModeConfiguration *)self _lock_dailySnapshotKey];
+  _lock_dailySnapshotKey = [(NTKEditModeConfiguration *)self _lock_dailySnapshotKey];
   os_unfair_lock_unlock(&self->_lock);
 
-  return v3;
+  return _lock_dailySnapshotKey;
 }
 
 - (id)_lock_dailySnapshotKey
@@ -200,15 +200,15 @@ LABEL_12:
   v25 = *MEMORY[0x277D85DE8];
   os_unfair_lock_assert_owner(&self->_lock);
   v3 = [(NSMutableDictionary *)self->_optionsBySlot copy];
-  v4 = [(NTKEditModeConfiguration *)self _lock_alphabeticalSlots];
+  _lock_alphabeticalSlots = [(NTKEditModeConfiguration *)self _lock_alphabeticalSlots];
   if (v3)
   {
-    v5 = [MEMORY[0x277CCAB68] string];
+    string = [MEMORY[0x277CCAB68] string];
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
-    obj = v4;
+    obj = _lock_alphabeticalSlots;
     v6 = [obj countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v6)
     {
@@ -224,11 +224,11 @@ LABEL_12:
           }
 
           v10 = [v3 objectForKey:*(*(&v20 + 1) + 8 * i)];
-          v11 = [v10 dailySnapshotKey];
-          v12 = v11;
-          if (v11)
+          dailySnapshotKey = [v10 dailySnapshotKey];
+          v12 = dailySnapshotKey;
+          if (dailySnapshotKey)
           {
-            v13 = v11;
+            v13 = dailySnapshotKey;
           }
 
           else
@@ -238,7 +238,7 @@ LABEL_12:
 
           v14 = v13;
 
-          [(__CFString *)v5 appendFormat:@"(%@)", v14];
+          [(__CFString *)string appendFormat:@"(%@)", v14];
         }
 
         v7 = [obj countByEnumeratingWithState:&v20 objects:v24 count:16];
@@ -250,27 +250,27 @@ LABEL_12:
 
   else
   {
-    v15 = [(NTKEditOption *)self->_nilSlotOption dailySnapshotKey];
-    v16 = v15;
+    dailySnapshotKey2 = [(NTKEditOption *)self->_nilSlotOption dailySnapshotKey];
+    v16 = dailySnapshotKey2;
     v17 = &stru_284110E98;
-    if (v15)
+    if (dailySnapshotKey2)
     {
-      v17 = v15;
+      v17 = dailySnapshotKey2;
     }
 
-    v5 = v17;
+    string = v17;
   }
 
-  return v5;
+  return string;
 }
 
 - (id)description
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(NTKEditModeConfiguration *)self _lock_description];
+  _lock_description = [(NTKEditModeConfiguration *)self _lock_description];
   os_unfair_lock_unlock(&self->_lock);
 
-  return v3;
+  return _lock_description;
 }
 
 - (id)_lock_description
@@ -278,7 +278,7 @@ LABEL_12:
   v19 = *MEMORY[0x277D85DE8];
   os_unfair_lock_assert_owner(&self->_lock);
   v3 = [(NSMutableDictionary *)self->_optionsBySlot copy];
-  v4 = [(NTKEditModeConfiguration *)self _lock_alphabeticalSlots];
+  _lock_alphabeticalSlots = [(NTKEditModeConfiguration *)self _lock_alphabeticalSlots];
   if (v3)
   {
     v5 = objc_msgSend(MEMORY[0x277CCAB68], "stringWithString:", @"(");
@@ -286,7 +286,7 @@ LABEL_12:
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v6 = v4;
+    v6 = _lock_alphabeticalSlots;
     v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v7)
     {
@@ -335,24 +335,24 @@ LABEL_12:
 - (id)_lock_alphabeticalSlots
 {
   os_unfair_lock_assert_owner(&self->_lock);
-  v3 = [(NSMutableDictionary *)self->_optionsBySlot allKeys];
-  v4 = [v3 sortedArrayUsingSelector:sel_compare_];
+  allKeys = [(NSMutableDictionary *)self->_optionsBySlot allKeys];
+  v4 = [allKeys sortedArrayUsingSelector:sel_compare_];
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   os_unfair_lock_lock(&self->_lock);
-  [(NTKEditModeConfiguration *)self _lock_encodeWithCoder:v4];
+  [(NTKEditModeConfiguration *)self _lock_encodeWithCoder:coderCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)_lock_encodeWithCoder:(id)a3
+- (void)_lock_encodeWithCoder:(id)coder
 {
-  v6 = a3;
+  coderCopy = coder;
   os_unfair_lock_assert_owner(&self->_lock);
   optionsBySlot = self->_optionsBySlot;
   if (optionsBySlot)
@@ -366,7 +366,7 @@ LABEL_12:
     v5 = @"nilSlotOption";
   }
 
-  [v6 encodeObject:optionsBySlot forKey:v5];
+  [coderCopy encodeObject:optionsBySlot forKey:v5];
 }
 
 - (NTKEditModeConfiguration)init
@@ -382,9 +382,9 @@ LABEL_12:
   return result;
 }
 
-- (NTKEditModeConfiguration)initWithCoder:(id)a3
+- (NTKEditModeConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v18.receiver = self;
   v18.super_class = NTKEditModeConfiguration;
   v5 = [(NTKEditModeConfiguration *)&v18 init];
@@ -396,7 +396,7 @@ LABEL_12:
     v8 = objc_opt_class();
     v9 = objc_opt_class();
     v10 = [v7 setWithObjects:{v8, v9, objc_opt_class(), 0}];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"optionsBySlot"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"optionsBySlot"];
     if (v11)
     {
       v12 = objc_opt_class();
@@ -413,7 +413,7 @@ LABEL_12:
 
     else
     {
-      v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"nilSlotOption"];
+      v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"nilSlotOption"];
       v15 = 24;
     }
 
@@ -424,27 +424,27 @@ LABEL_12:
   return v6;
 }
 
-- (BOOL)_hasSameSlotOptions:(id)a3 andNilOption:(id)a4
+- (BOOL)_hasSameSlotOptions:(id)options andNilOption:(id)option
 {
-  v6 = a4;
-  v7 = a3;
+  optionCopy = option;
+  optionsCopy = options;
   os_unfair_lock_lock(&self->_lock);
-  v8 = [(NTKEditModeConfiguration *)self _lock_hasSameSlotOptions:v7 andNilOption:v6];
+  v8 = [(NTKEditModeConfiguration *)self _lock_hasSameSlotOptions:optionsCopy andNilOption:optionCopy];
 
   os_unfair_lock_unlock(&self->_lock);
   return v8;
 }
 
-- (BOOL)_lock_hasSameSlotOptions:(id)a3 andNilOption:(id)a4
+- (BOOL)_lock_hasSameSlotOptions:(id)options andNilOption:(id)option
 {
-  v6 = a4;
-  v7 = a3;
+  optionCopy = option;
+  optionsCopy = options;
   os_unfair_lock_assert_owner(&self->_lock);
-  v8 = NTKEqualObjects(self->_optionsBySlot, v7);
+  v8 = NTKEqualObjects(self->_optionsBySlot, optionsCopy);
 
   if (v8)
   {
-    v9 = NTKEqualObjects(self->_nilSlotOption, v6);
+    v9 = NTKEqualObjects(self->_nilSlotOption, optionCopy);
   }
 
   else
@@ -455,13 +455,13 @@ LABEL_12:
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     os_unfair_lock_lock(&self->_lock);
-    v5 = [v4 _hasSameSlotOptions:self->_optionsBySlot andNilOption:self->_nilSlotOption];
+    v5 = [equalCopy _hasSameSlotOptions:self->_optionsBySlot andNilOption:self->_nilSlotOption];
     os_unfair_lock_unlock(&self->_lock);
   }
 
@@ -476,9 +476,9 @@ LABEL_12:
 - (unint64_t)hash
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(NTKEditModeConfiguration *)self _lock_hash];
+  _lock_hash = [(NTKEditModeConfiguration *)self _lock_hash];
   os_unfair_lock_unlock(&self->_lock);
-  return v3;
+  return _lock_hash;
 }
 
 - (unint64_t)_lock_hash
@@ -488,21 +488,21 @@ LABEL_12:
   return [(NTKEditOption *)self->_nilSlotOption hash]+ v3;
 }
 
-- (id)JSONObjectRepresentationForFace:(id)a3
+- (id)JSONObjectRepresentationForFace:(id)face
 {
-  v4 = a3;
+  faceCopy = face;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(NTKEditModeConfiguration *)self _lock_JSONObjectRepresentationForFace:v4];
+  v5 = [(NTKEditModeConfiguration *)self _lock_JSONObjectRepresentationForFace:faceCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 
   return v5;
 }
 
-- (id)_lock_JSONObjectRepresentationForFace:(id)a3
+- (id)_lock_JSONObjectRepresentationForFace:(id)face
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  faceCopy = face;
   os_unfair_lock_assert_owner(&self->_lock);
   v5 = [(NSMutableDictionary *)self->_optionsBySlot copy];
   if (v5)
@@ -513,7 +513,7 @@ LABEL_12:
     v10[2] = __66__NTKEditModeConfiguration__lock_JSONObjectRepresentationForFace___block_invoke;
     v10[3] = &unk_278784990;
     v11 = v6;
-    v12 = v4;
+    v12 = faceCopy;
     v7 = v6;
     [v5 enumerateKeysAndObjectsUsingBlock:v10];
     v13 = @"slots";
@@ -523,7 +523,7 @@ LABEL_12:
 
   else
   {
-    v8 = [(NTKEditOption *)self->_nilSlotOption JSONObjectRepresentationForFace:v4];
+    v8 = [(NTKEditOption *)self->_nilSlotOption JSONObjectRepresentationForFace:faceCopy];
   }
 
   return v8;
@@ -537,14 +537,14 @@ void __66__NTKEditModeConfiguration__lock_JSONObjectRepresentationForFace___bloc
   [*(a1 + 32) setObject:v7 forKeyedSubscript:v6];
 }
 
-- (NTKEditModeConfiguration)initWithJSONObjectRepresentation:(id)a3 editOptionClass:(Class)a4 forDevice:(id)a5
+- (NTKEditModeConfiguration)initWithJSONObjectRepresentation:(id)representation editOptionClass:(Class)class forDevice:(id)device
 {
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __87__NTKEditModeConfiguration_initWithJSONObjectRepresentation_editOptionClass_forDevice___block_invoke;
   v6[3] = &__block_descriptor_40_e47___NTKEditOption_24__0__NSString_8__CLKDevice_16lu32l8;
-  v6[4] = a4;
-  return [(NTKEditModeConfiguration *)self initWithJSONObjectRepresentation:a3 device:a5 editOptionFactory:v6];
+  v6[4] = class;
+  return [(NTKEditModeConfiguration *)self initWithJSONObjectRepresentation:representation device:device editOptionFactory:v6];
 }
 
 id __87__NTKEditModeConfiguration_initWithJSONObjectRepresentation_editOptionClass_forDevice___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -557,11 +557,11 @@ id __87__NTKEditModeConfiguration_initWithJSONObjectRepresentation_editOptionCla
   return v7;
 }
 
-- (NTKEditModeConfiguration)initWithJSONObjectRepresentation:(id)a3 device:(id)a4 editOptionFactory:(id)a5
+- (NTKEditModeConfiguration)initWithJSONObjectRepresentation:(id)representation device:(id)device editOptionFactory:(id)factory
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  representationCopy = representation;
+  deviceCopy = device;
+  factoryCopy = factory;
   v21.receiver = self;
   v21.super_class = NTKEditModeConfiguration;
   v11 = [(NTKEditModeConfiguration *)&v21 init];
@@ -570,7 +570,7 @@ id __87__NTKEditModeConfiguration_initWithJSONObjectRepresentation_editOptionCla
   {
     v11->_lock._os_unfair_lock_opaque = 0;
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && ([v8 objectForKeyedSubscript:@"slots"], (v13 = objc_claimAutoreleasedReturnValue()) != 0))
+    if ((objc_opt_isKindOfClass() & 1) != 0 && ([representationCopy objectForKeyedSubscript:@"slots"], (v13 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       nilSlotOption = v13;
       objc_opt_class();
@@ -583,15 +583,15 @@ id __87__NTKEditModeConfiguration_initWithJSONObjectRepresentation_editOptionCla
       v17[1] = 3221225472;
       v17[2] = __86__NTKEditModeConfiguration_initWithJSONObjectRepresentation_device_editOptionFactory___block_invoke;
       v17[3] = &unk_278786928;
-      v20 = v10;
-      v18 = v9;
+      v20 = factoryCopy;
+      v18 = deviceCopy;
       v19 = v12;
       [nilSlotOption enumerateKeysAndObjectsUsingBlock:v17];
     }
 
     else
     {
-      v15 = (*(v10 + 2))(v10, v8, v9);
+      v15 = (*(factoryCopy + 2))(factoryCopy, representationCopy, deviceCopy);
       nilSlotOption = v12->_nilSlotOption;
       v12->_nilSlotOption = v15;
     }

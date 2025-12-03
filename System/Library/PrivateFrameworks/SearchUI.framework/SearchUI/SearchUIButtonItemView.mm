@@ -1,7 +1,7 @@
 @interface SearchUIButtonItemView
 - (BOOL)useHierarchicalColorRendering;
 - (CGSize)iconBackgroundViewSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (SearchUIButtonItemView)init;
 - (SearchUIButtonItemViewDelegate)delegate;
 - (UIFont)defaultButtonFont;
@@ -10,33 +10,33 @@
 - (double)effectiveFirstBaselineOffsetFromTop;
 - (double)minimumIconPadding;
 - (double)spacingBetweenImageAndText;
-- (id)contextMenuInteraction:(id)a3 configuration:(id)a4 highlightPreviewForItemWithIdentifier:(id)a5;
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4;
+- (id)contextMenuInteraction:(id)interaction configuration:(id)configuration highlightPreviewForItemWithIdentifier:(id)identifier;
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location;
 - (id)createContentView;
 - (id)resolvedButtonFont;
 - (id)resolvedIconFont;
 - (int64_t)symbolScale;
-- (void)animateIconInToSFImage:(id)a3;
-- (void)animateIconOutToSFImage:(id)a3;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
-- (void)contextMenuInteraction:(id)a3 willDisplayMenuForConfiguration:(id)a4 animator:(id)a5;
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5;
-- (void)contextMenuInteraction:(id)a3 willPerformPreviewActionForMenuWithConfiguration:(id)a4 animator:(id)a5;
+- (void)animateIconInToSFImage:(id)image;
+- (void)animateIconOutToSFImage:(id)image;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
+- (void)contextMenuInteraction:(id)interaction willDisplayMenuForConfiguration:(id)configuration animator:(id)animator;
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator;
+- (void)contextMenuInteraction:(id)interaction willPerformPreviewActionForMenuWithConfiguration:(id)configuration animator:(id)animator;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)setButtonAppearance:(id)a3;
-- (void)setButtonFont:(id)a3;
-- (void)setButtonTitle:(id)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setIconFont:(id)a3;
-- (void)setIsCompact:(BOOL)a3;
-- (void)setSfImage:(id)a3 animateTransition:(BOOL)a4 symbolTransition:(id)a5;
-- (void)tlk_updateForAppearance:(id)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)transitionIconToSFImage:(id)a3;
+- (void)setButtonAppearance:(id)appearance;
+- (void)setButtonFont:(id)font;
+- (void)setButtonTitle:(id)title;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setIconFont:(id)font;
+- (void)setIsCompact:(BOOL)compact;
+- (void)setSfImage:(id)image animateTransition:(BOOL)transition symbolTransition:(id)symbolTransition;
+- (void)tlk_updateForAppearance:(id)appearance;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)traitCollectionDidChange:(id)change;
+- (void)transitionIconToSFImage:(id)image;
 - (void)updateFonts;
 - (void)updateProminences;
 @end
@@ -49,32 +49,32 @@
 
   if (v3)
   {
-    v4 = [(SearchUIButtonItemView *)v3 createContentView];
-    [(SearchUIButtonItemView *)v3 setButtonContentBoxView:v4];
+    createContentView = [(SearchUIButtonItemView *)v3 createContentView];
+    [(SearchUIButtonItemView *)v3 setButtonContentBoxView:createContentView];
 
-    v5 = [(SearchUIButtonItemView *)v3 buttonContentBoxView];
-    [v5 setInvalidatingIntrinsicContentSizeAlsoInvalidatesSuperview:1];
+    buttonContentBoxView = [(SearchUIButtonItemView *)v3 buttonContentBoxView];
+    [buttonContentBoxView setInvalidatingIntrinsicContentSizeAlsoInvalidatesSuperview:1];
 
     [(SearchUIButtonItemView *)v3 setAllowsAnimation:1];
     v6 = objc_opt_new();
     [(SearchUIButtonItemView *)v3 setImage:v6 forState:0];
 
-    v7 = [(SearchUIButtonItemView *)v3 imageView];
-    v8 = [(SearchUIButtonItemView *)v3 buttonContentBoxView];
-    [v7 addSubview:v8];
+    imageView = [(SearchUIButtonItemView *)v3 imageView];
+    buttonContentBoxView2 = [(SearchUIButtonItemView *)v3 buttonContentBoxView];
+    [imageView addSubview:buttonContentBoxView2];
 
-    v9 = [(SearchUIButtonItemView *)v3 imageView];
-    v10 = [v9 layer];
-    [v10 setAllowsGroupOpacity:0];
+    imageView2 = [(SearchUIButtonItemView *)v3 imageView];
+    layer = [imageView2 layer];
+    [layer setAllowsGroupOpacity:0];
 
     v11 = [objc_alloc(MEMORY[0x1E69DC8E0]) initWithDelegate:v3];
     [(SearchUIButtonItemView *)v3 setContextPreviewInteraction:v11];
     [(SearchUIButtonItemView *)v3 addInteraction:v11];
-    v12 = [(SearchUIButtonItemView *)v3 layer];
-    [v12 setAllowsGroupOpacity:0];
+    layer2 = [(SearchUIButtonItemView *)v3 layer];
+    [layer2 setAllowsGroupOpacity:0];
 
-    v13 = [(SearchUIButtonItemView *)v3 buttonContentBoxView];
-    [SearchUIAutoLayout fillContainerWithView:v13];
+    buttonContentBoxView3 = [(SearchUIButtonItemView *)v3 buttonContentBoxView];
+    [SearchUIAutoLayout fillContainerWithView:buttonContentBoxView3];
   }
 
   return v3;
@@ -90,15 +90,15 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(SearchUIButtonItemView *)self imageView];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  imageView = [(SearchUIButtonItemView *)self imageView];
+  [imageView setFrame:{v4, v6, v8, v10}];
 
-  v12 = [(SearchUIButtonItemView *)self backgroundView];
+  backgroundView = [(SearchUIButtonItemView *)self backgroundView];
   [(SearchUIButtonItemView *)self cornerRadius];
   v14 = v13;
-  v15 = [(SearchUIButtonItemView *)self useContinuousCorners];
+  useContinuousCorners = [(SearchUIButtonItemView *)self useContinuousCorners];
   v16 = *MEMORY[0x1E69796E0];
-  if (v15)
+  if (useContinuousCorners)
   {
     v17 = *MEMORY[0x1E69796E8];
   }
@@ -108,11 +108,11 @@
     v17 = *MEMORY[0x1E69796E0];
   }
 
-  [v12 tlks_setCornerRadius:v17 withStyle:v14];
+  [backgroundView tlks_setCornerRadius:v17 withStyle:v14];
 
-  v18 = [(SearchUIButtonItemView *)self iconBackgroundView];
+  iconBackgroundView = [(SearchUIButtonItemView *)self iconBackgroundView];
   [(SearchUIButtonItemView *)self iconBackgroundViewSize];
-  [v18 tlks_setCornerRadius:v16 withStyle:v19 * 0.5];
+  [iconBackgroundView tlks_setCornerRadius:v16 withStyle:v19 * 0.5];
 }
 
 - (id)createContentView
@@ -124,14 +124,14 @@
     [(SearchUIButtonItemView *)self setBackgroundView:v3];
   }
 
-  v4 = [(SearchUIButtonItemView *)self drawsBackgroundPlatter]|| [(SearchUIButtonItemView *)self drawsIconBackgroundPlatter];
+  drawsIconBackgroundPlatter = [(SearchUIButtonItemView *)self drawsBackgroundPlatter]|| [(SearchUIButtonItemView *)self drawsIconBackgroundPlatter];
   v5 = objc_opt_new();
   [(SearchUIButtonItemView *)self setIconView:v5];
 
-  v6 = [(SearchUIButtonItemView *)self iconView];
-  [v6 setUseButtonColoring:1];
+  iconView = [(SearchUIButtonItemView *)self iconView];
+  [iconView setUseButtonColoring:1];
 
-  if (v4)
+  if (drawsIconBackgroundPlatter)
   {
     v7 = 4;
   }
@@ -141,48 +141,48 @@
     v7 = 6;
   }
 
-  v8 = [(SearchUIButtonItemView *)self iconView];
-  [v8 setSymbolWeight:v7];
+  iconView2 = [(SearchUIButtonItemView *)self iconView];
+  [iconView2 setSymbolWeight:v7];
 
-  v9 = [(SearchUIButtonItemView *)self iconView];
-  [v9 setHidden:1];
+  iconView3 = [(SearchUIButtonItemView *)self iconView];
+  [iconView3 setHidden:1];
 
-  v10 = [(SearchUIButtonItemView *)self iconView];
-  [SearchUIAutoLayout requireIntrinsicSizeForView:v10];
+  iconView4 = [(SearchUIButtonItemView *)self iconView];
+  [SearchUIAutoLayout requireIntrinsicSizeForView:iconView4];
 
-  v11 = [(SearchUIButtonItemView *)self iconView];
+  iconView5 = [(SearchUIButtonItemView *)self iconView];
   if ([(SearchUIButtonItemView *)self drawsIconBackgroundPlatter]&& ![(SearchUIButtonItemView *)self shouldAvoidBackgroundView])
   {
     v12 = objc_opt_new();
     [(SearchUIButtonItemView *)self setIconBackgroundView:v12];
 
     v13 = objc_alloc(MEMORY[0x1E698B718]);
-    v14 = [(SearchUIButtonItemView *)self iconBackgroundView];
-    v38[0] = v14;
-    v15 = [(SearchUIButtonItemView *)self iconView];
-    v38[1] = v15;
+    iconBackgroundView = [(SearchUIButtonItemView *)self iconBackgroundView];
+    v38[0] = iconBackgroundView;
+    iconView6 = [(SearchUIButtonItemView *)self iconView];
+    v38[1] = iconView6;
     v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v38 count:2];
     v17 = [v13 initWithArrangedSubviews:v16];
 
-    v18 = [(SearchUIButtonItemView *)self iconView];
-    [v17 setAlignment:3 forView:v18 inAxis:0];
+    iconView7 = [(SearchUIButtonItemView *)self iconView];
+    [v17 setAlignment:3 forView:iconView7 inAxis:0];
 
-    v19 = [(SearchUIButtonItemView *)self iconView];
-    [v17 setAlignment:3 forView:v19 inAxis:1];
+    iconView8 = [(SearchUIButtonItemView *)self iconView];
+    [v17 setAlignment:3 forView:iconView8 inAxis:1];
 
     [(SearchUIButtonItemView *)self setIconBoxView:v17];
-    v20 = [(SearchUIButtonItemView *)self iconBoxView];
+    iconBoxView = [(SearchUIButtonItemView *)self iconBoxView];
 
-    v11 = v20;
+    iconView5 = iconBoxView;
   }
 
   v21 = objc_opt_new();
   [(SearchUIButtonItemView *)self setTlkTitleLabel:v21];
 
-  v22 = [(SearchUIButtonItemView *)self tlkTitleLabel];
-  [v22 setUseButtonColoring:1];
+  tlkTitleLabel = [(SearchUIButtonItemView *)self tlkTitleLabel];
+  [tlkTitleLabel setUseButtonColoring:1];
 
-  if (v4)
+  if (drawsIconBackgroundPlatter)
   {
     v23 = 1;
   }
@@ -192,25 +192,25 @@
     v23 = 3;
   }
 
-  v24 = [(SearchUIButtonItemView *)self tlkTitleLabel];
-  [v24 setNumberOfLines:v23];
+  tlkTitleLabel2 = [(SearchUIButtonItemView *)self tlkTitleLabel];
+  [tlkTitleLabel2 setNumberOfLines:v23];
 
-  v25 = [(SearchUIButtonItemView *)self tlkTitleLabel];
-  [v25 setHidden:1];
+  tlkTitleLabel3 = [(SearchUIButtonItemView *)self tlkTitleLabel];
+  [tlkTitleLabel3 setHidden:1];
 
-  if (v4)
+  if (drawsIconBackgroundPlatter)
   {
-    v37[0] = v11;
-    v26 = [(SearchUIButtonItemView *)self tlkTitleLabel];
-    v37[1] = v26;
+    v37[0] = iconView5;
+    tlkTitleLabel4 = [(SearchUIButtonItemView *)self tlkTitleLabel];
+    v37[1] = tlkTitleLabel4;
     v27 = v37;
   }
 
   else
   {
-    v26 = [(SearchUIButtonItemView *)self tlkTitleLabel];
-    v36[0] = v26;
-    v36[1] = v11;
+    tlkTitleLabel4 = [(SearchUIButtonItemView *)self tlkTitleLabel];
+    v36[0] = tlkTitleLabel4;
+    v36[1] = iconView5;
     v27 = v36;
   }
 
@@ -218,15 +218,15 @@
 
   v29 = [objc_alloc(MEMORY[0x1E698B730]) initWithArrangedSubviews:v28];
   [v29 setAlignment:3];
-  [v29 setLayoutMarginsRelativeArrangement:v4];
+  [v29 setLayoutMarginsRelativeArrangement:drawsIconBackgroundPlatter];
   [v29 setAxis:{-[SearchUIButtonItemView drawsIconBackgroundPlatter](self, "drawsIconBackgroundPlatter")}];
   [(SearchUIButtonItemView *)self setImageViewAndLabelStackView:v29];
   [(SearchUIButtonItemView *)self updateProminences];
   [(SearchUIButtonItemView *)self setIsCompact:0];
   if ([(SearchUIButtonItemView *)self drawsBackgroundPlatter])
   {
-    v30 = [(SearchUIButtonItemView *)self backgroundView];
-    v35 = v30;
+    backgroundView = [(SearchUIButtonItemView *)self backgroundView];
+    v35 = backgroundView;
     v31 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v35 count:1];
     v32 = [v31 arrayByAddingObject:v29];
   }
@@ -243,15 +243,15 @@
   return v33;
 }
 
-- (void)setIsCompact:(BOOL)a3
+- (void)setIsCompact:(BOOL)compact
 {
-  self->_isCompact = a3;
-  v4 = [(SearchUIButtonItemView *)self buttonTitle];
-  [(SearchUIButtonItemView *)self setButtonTitle:v4];
+  self->_isCompact = compact;
+  buttonTitle = [(SearchUIButtonItemView *)self buttonTitle];
+  [(SearchUIButtonItemView *)self setButtonTitle:buttonTitle];
 
-  v5 = [(SearchUIButtonItemView *)self symbolScale];
-  v6 = [(SearchUIButtonItemView *)self iconView];
-  [v6 setSymbolScale:v5];
+  symbolScale = [(SearchUIButtonItemView *)self symbolScale];
+  iconView = [(SearchUIButtonItemView *)self iconView];
+  [iconView setSymbolScale:symbolScale];
 
   [(SearchUIButtonItemView *)self updateFonts];
 
@@ -261,9 +261,9 @@
 - (UIFont)defaultButtonFont
 {
   v2 = MEMORY[0x1E69D9138];
-  v3 = [MEMORY[0x1E69D9240] isMacOS];
+  isMacOS = [MEMORY[0x1E69D9240] isMacOS];
   v4 = MEMORY[0x1E69DDD28];
-  if (!v3)
+  if (!isMacOS)
   {
     v4 = MEMORY[0x1E69DDD80];
   }
@@ -274,53 +274,53 @@
   return [v2 cachedFontForTextStyle:v5 isShort:0 fontWeight:v6];
 }
 
-- (void)setIconFont:(id)a3
+- (void)setIconFont:(id)font
 {
-  objc_storeStrong(&self->_iconFont, a3);
+  objc_storeStrong(&self->_iconFont, font);
 
   [(SearchUIButtonItemView *)self updateFonts];
 }
 
-- (void)setButtonFont:(id)a3
+- (void)setButtonFont:(id)font
 {
-  objc_storeStrong(&self->_buttonFont, a3);
+  objc_storeStrong(&self->_buttonFont, font);
 
   [(SearchUIButtonItemView *)self updateFonts];
 }
 
 - (id)resolvedIconFont
 {
-  v3 = [(SearchUIButtonItemView *)self iconFont];
-  v4 = v3;
-  if (v3)
+  iconFont = [(SearchUIButtonItemView *)self iconFont];
+  v4 = iconFont;
+  if (iconFont)
   {
-    v5 = v3;
+    v5 = iconFont;
   }
 
   else
   {
-    v6 = [(SearchUIButtonItemView *)self buttonFont];
-    v7 = v6;
-    if (v6)
+    buttonFont = [(SearchUIButtonItemView *)self buttonFont];
+    v7 = buttonFont;
+    if (buttonFont)
     {
-      v5 = v6;
+      v5 = buttonFont;
     }
 
     else
     {
-      v8 = [(SearchUIButtonItemView *)self defaultIconFont];
-      v9 = v8;
-      if (v8)
+      defaultIconFont = [(SearchUIButtonItemView *)self defaultIconFont];
+      v9 = defaultIconFont;
+      if (defaultIconFont)
       {
-        v10 = v8;
+        defaultButtonFont = defaultIconFont;
       }
 
       else
       {
-        v10 = [(SearchUIButtonItemView *)self defaultButtonFont];
+        defaultButtonFont = [(SearchUIButtonItemView *)self defaultButtonFont];
       }
 
-      v5 = v10;
+      v5 = defaultButtonFont;
     }
   }
 
@@ -329,52 +329,52 @@
 
 - (id)resolvedButtonFont
 {
-  v3 = [(SearchUIButtonItemView *)self buttonFont];
-  v4 = v3;
-  if (v3)
+  buttonFont = [(SearchUIButtonItemView *)self buttonFont];
+  v4 = buttonFont;
+  if (buttonFont)
   {
-    v5 = v3;
+    defaultButtonFont = buttonFont;
   }
 
   else
   {
-    v5 = [(SearchUIButtonItemView *)self defaultButtonFont];
+    defaultButtonFont = [(SearchUIButtonItemView *)self defaultButtonFont];
   }
 
-  v6 = v5;
+  v6 = defaultButtonFont;
 
   return v6;
 }
 
 - (void)updateFonts
 {
-  v18 = [(SearchUIButtonItemView *)self resolvedButtonFont];
-  v3 = [(SearchUIButtonItemView *)self resolvedIconFont];
-  v4 = [(SearchUIButtonItemView *)self iconView];
-  [v4 setSymbolFont:v3];
+  resolvedButtonFont = [(SearchUIButtonItemView *)self resolvedButtonFont];
+  resolvedIconFont = [(SearchUIButtonItemView *)self resolvedIconFont];
+  iconView = [(SearchUIButtonItemView *)self iconView];
+  [iconView setSymbolFont:resolvedIconFont];
 
-  v5 = [(SearchUIButtonItemView *)self tlkTitleLabel];
-  [v5 setFont:v18];
+  tlkTitleLabel = [(SearchUIButtonItemView *)self tlkTitleLabel];
+  [tlkTitleLabel setFont:resolvedButtonFont];
 
   [(SearchUIButtonItemView *)self horizontalPadding];
   v7 = v6;
-  [MEMORY[0x1E69D91A8] scaledValueForValue:v18 withFont:self view:?];
+  [MEMORY[0x1E69D91A8] scaledValueForValue:resolvedButtonFont withFont:self view:?];
   v9 = v8;
-  [MEMORY[0x1E69D91A8] scaledValueForValue:v18 withFont:self view:v7];
+  [MEMORY[0x1E69D91A8] scaledValueForValue:resolvedButtonFont withFont:self view:v7];
   v11 = v10;
-  v12 = [(SearchUIButtonItemView *)self imageViewAndLabelStackView];
-  [v12 setLayoutMargins:{0.0, v9, 0.0, v11}];
+  imageViewAndLabelStackView = [(SearchUIButtonItemView *)self imageViewAndLabelStackView];
+  [imageViewAndLabelStackView setLayoutMargins:{0.0, v9, 0.0, v11}];
 
   v13 = MEMORY[0x1E69D91A8];
   [(SearchUIButtonItemView *)self spacingBetweenImageAndText];
-  [v13 scaledValueForValue:v18 withFont:self view:?];
+  [v13 scaledValueForValue:resolvedButtonFont withFont:self view:?];
   v15 = v14;
-  v16 = [(SearchUIButtonItemView *)self imageViewAndLabelStackView];
-  [v16 setSpacing:v15];
+  imageViewAndLabelStackView2 = [(SearchUIButtonItemView *)self imageViewAndLabelStackView];
+  [imageViewAndLabelStackView2 setSpacing:v15];
 
-  v17 = [(SearchUIButtonItemView *)self iconBackgroundView];
+  iconBackgroundView = [(SearchUIButtonItemView *)self iconBackgroundView];
   [(SearchUIButtonItemView *)self iconBackgroundViewSize];
-  [v17 setLayoutSize:? withContentPriority:?];
+  [iconBackgroundView setLayoutSize:? withContentPriority:?];
 }
 
 - (int64_t)symbolScale
@@ -394,13 +394,13 @@
 
 - (double)spacingBetweenImageAndText
 {
-  v2 = [(SearchUIButtonItemView *)self drawsBackgroundPlatter];
+  drawsBackgroundPlatter = [(SearchUIButtonItemView *)self drawsBackgroundPlatter];
   result = 2.0;
-  if (v2)
+  if (drawsBackgroundPlatter)
   {
-    v4 = [MEMORY[0x1E69D9240] isMacOS];
+    isMacOS = [MEMORY[0x1E69D9240] isMacOS];
     result = 6.0;
-    if (v4)
+    if (isMacOS)
     {
       return 3.0;
     }
@@ -411,9 +411,9 @@
 
 - (double)minimumIconPadding
 {
-  v2 = [(SearchUIButtonItemView *)self isCompact];
+  isCompact = [(SearchUIButtonItemView *)self isCompact];
   result = 4.0;
-  if (v2)
+  if (isCompact)
   {
     return 2.0;
   }
@@ -431,8 +431,8 @@
 
   else
   {
-    v5 = [(SearchUIButtonItemView *)self resolvedIconFont];
-    [v5 pointSize];
+    resolvedIconFont = [(SearchUIButtonItemView *)self resolvedIconFont];
+    [resolvedIconFont pointSize];
     v4 = v6 * 2.4;
   }
 
@@ -443,14 +443,14 @@
   return result;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v9.receiver = self;
   v9.super_class = SearchUIButtonItemView;
-  [(SearchUIButtonItemView *)&v9 traitCollectionDidChange:v4];
-  v5 = [(SearchUIButtonItemView *)self traitCollection];
-  if ([v5 hasDifferentColorAppearanceComparedToTraitCollection:v4])
+  [(SearchUIButtonItemView *)&v9 traitCollectionDidChange:changeCopy];
+  traitCollection = [(SearchUIButtonItemView *)self traitCollection];
+  if ([traitCollection hasDifferentColorAppearanceComparedToTraitCollection:changeCopy])
   {
 
 LABEL_4:
@@ -458,11 +458,11 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  v6 = [(SearchUIButtonItemView *)self traitCollection];
-  v7 = [v6 _vibrancy];
-  v8 = [v4 _vibrancy];
+  traitCollection2 = [(SearchUIButtonItemView *)self traitCollection];
+  _vibrancy = [traitCollection2 _vibrancy];
+  _vibrancy2 = [changeCopy _vibrancy];
 
-  if (v7 != v8)
+  if (_vibrancy != _vibrancy2)
   {
     goto LABEL_4;
   }
@@ -478,14 +478,14 @@ LABEL_5:
   [(SearchUIButtonItemView *)self tlk_updateWithCurrentAppearance];
 }
 
-- (void)tlk_updateForAppearance:(id)a3
+- (void)tlk_updateForAppearance:(id)appearance
 {
-  v4 = a3;
+  appearanceCopy = appearance;
   v30.receiver = self;
   v30.super_class = SearchUIButtonItemView;
-  [(SearchUIButtonItemView *)&v30 tlk_updateForAppearance:v4];
-  v5 = [(SearchUIButtonItemView *)self buttonAppearance];
-  v6 = [v5 tintColor];
+  [(SearchUIButtonItemView *)&v30 tlk_updateForAppearance:appearanceCopy];
+  buttonAppearance = [(SearchUIButtonItemView *)self buttonAppearance];
+  tintColor = [buttonAppearance tintColor];
 
   v24 = 0;
   v25 = &v24;
@@ -493,53 +493,53 @@ LABEL_5:
   v27 = __Block_byref_object_copy__1;
   v28 = __Block_byref_object_dispose__1;
   v29 = 0;
-  if (v6)
+  if (tintColor)
   {
-    v7 = [objc_alloc(objc_msgSend(v6 "searchUI_colorGeneratorClass"))];
-    v8 = [v4 isDark];
+    v7 = [objc_alloc(objc_msgSend(tintColor "searchUI_colorGeneratorClass"))];
+    isDark = [appearanceCopy isDark];
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __50__SearchUIButtonItemView_tlk_updateForAppearance___block_invoke;
     v23[3] = &unk_1E85B3180;
     v23[4] = &v24;
-    [v7 generateUIColorsIsDark:v8 completionHandler:v23];
+    [v7 generateUIColorsIsDark:isDark completionHandler:v23];
   }
 
   if ([(SearchUIButtonItemView *)self drawsBackgroundPlatter])
   {
     v9 = v25[5];
-    v10 = [(SearchUIButtonItemView *)self backgroundView];
-    [v10 setColor:v9];
+    backgroundView = [(SearchUIButtonItemView *)self backgroundView];
+    [backgroundView setColor:v9];
   }
 
   if ([(SearchUIButtonItemView *)self drawsIconBackgroundPlatter])
   {
     v11 = v25[5];
-    v12 = [(SearchUIButtonItemView *)self iconBackgroundView];
-    [v12 setColor:v11];
+    iconBackgroundView = [(SearchUIButtonItemView *)self iconBackgroundView];
+    [iconBackgroundView setColor:v11];
   }
 
   if (([(SearchUIButtonItemView *)self drawsBackgroundPlatter]|| [(SearchUIButtonItemView *)self drawsIconBackgroundPlatter]) && ![(SearchUIButtonItemView *)self useHierarchicalColorRendering])
   {
-    v17 = [(SearchUIButtonItemView *)self tlkTitleLabel];
-    [v17 setTextColor:0];
+    tlkTitleLabel = [(SearchUIButtonItemView *)self tlkTitleLabel];
+    [tlkTitleLabel setTextColor:0];
 
-    v18 = [(SearchUIButtonItemView *)self iconView];
-    [v18 setOverrideColor:0];
+    iconView = [(SearchUIButtonItemView *)self iconView];
+    [iconView setOverrideColor:0];
 
     if (v25[5])
     {
       v19 = [SearchUIBackgroundColorUtilities backgroundColorPrefersWhiteForegroundText:?];
-      v20 = [MEMORY[0x1E69D9108] appearanceWithVibrancyEnabled:1 isDark:v19];
-      v21 = [(SearchUIButtonItemView *)self buttonContentBoxView];
-      [v20 overrideAppearanceForView:v21];
+      buttonContentBoxView2 = [MEMORY[0x1E69D9108] appearanceWithVibrancyEnabled:1 isDark:v19];
+      buttonContentBoxView = [(SearchUIButtonItemView *)self buttonContentBoxView];
+      [buttonContentBoxView2 overrideAppearanceForView:buttonContentBoxView];
     }
 
     else
     {
       v22 = MEMORY[0x1E69D9108];
-      v20 = [(SearchUIButtonItemView *)self buttonContentBoxView];
-      [v22 disableAppearanceOverrideForView:v20];
+      buttonContentBoxView2 = [(SearchUIButtonItemView *)self buttonContentBoxView];
+      [v22 disableAppearanceOverrideForView:buttonContentBoxView2];
     }
 
     [(SearchUIButtonItemView *)self updateProminences];
@@ -548,12 +548,12 @@ LABEL_5:
   else
   {
     v13 = v25[5];
-    v14 = [(SearchUIButtonItemView *)self tlkTitleLabel];
-    [v14 setTextColor:v13];
+    tlkTitleLabel2 = [(SearchUIButtonItemView *)self tlkTitleLabel];
+    [tlkTitleLabel2 setTextColor:v13];
 
     v15 = v25[5];
-    v16 = [(SearchUIButtonItemView *)self iconView];
-    [v16 setOverrideColor:v15];
+    iconView2 = [(SearchUIButtonItemView *)self iconView];
+    [iconView2 setOverrideColor:v15];
   }
 
   _Block_object_dispose(&v24, 8);
@@ -566,19 +566,19 @@ uint64_t __50__SearchUIButtonItemView_tlk_updateForAppearance___block_invoke(uin
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setButtonAppearance:(id)a3
+- (void)setButtonAppearance:(id)appearance
 {
-  v9 = a3;
-  if (([v9 isEqual:self->_buttonAppearance] & 1) == 0)
+  appearanceCopy = appearance;
+  if (([appearanceCopy isEqual:self->_buttonAppearance] & 1) == 0)
   {
-    objc_storeStrong(&self->_buttonAppearance, a3);
-    v5 = [(SearchUIButtonItemView *)self useHierarchicalColorRendering];
-    v6 = [(SearchUIButtonItemView *)self backgroundView];
-    [v6 setUseHierarchicalColorRendering:v5];
+    objc_storeStrong(&self->_buttonAppearance, appearance);
+    useHierarchicalColorRendering = [(SearchUIButtonItemView *)self useHierarchicalColorRendering];
+    backgroundView = [(SearchUIButtonItemView *)self backgroundView];
+    [backgroundView setUseHierarchicalColorRendering:useHierarchicalColorRendering];
 
-    v7 = [(SearchUIButtonItemView *)self useHierarchicalColorRendering];
-    v8 = [(SearchUIButtonItemView *)self iconBackgroundView];
-    [v8 setUseHierarchicalColorRendering:v7];
+    useHierarchicalColorRendering2 = [(SearchUIButtonItemView *)self useHierarchicalColorRendering];
+    iconBackgroundView = [(SearchUIButtonItemView *)self iconBackgroundView];
+    [iconBackgroundView setUseHierarchicalColorRendering:useHierarchicalColorRendering2];
 
     [(SearchUIButtonItemView *)self tlk_updateWithCurrentAppearance];
   }
@@ -586,11 +586,11 @@ uint64_t __50__SearchUIButtonItemView_tlk_updateForAppearance___block_invoke(uin
 
 - (BOOL)useHierarchicalColorRendering
 {
-  v2 = [(SearchUIButtonItemView *)self buttonAppearance];
-  v3 = v2;
-  if (v2)
+  buttonAppearance = [(SearchUIButtonItemView *)self buttonAppearance];
+  v3 = buttonAppearance;
+  if (buttonAppearance)
   {
-    v4 = [v2 renderingMode] == 2;
+    v4 = [buttonAppearance renderingMode] == 2;
   }
 
   else
@@ -601,63 +601,63 @@ uint64_t __50__SearchUIButtonItemView_tlk_updateForAppearance___block_invoke(uin
   return v4;
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
   v4.receiver = self;
   v4.super_class = SearchUIButtonItemView;
-  [(SearchUIButtonItemView *)&v4 setEnabled:a3];
+  [(SearchUIButtonItemView *)&v4 setEnabled:enabled];
   [(SearchUIButtonItemView *)self updateProminences];
 }
 
 - (void)updateProminences
 {
-  v3 = [(SearchUIButtonItemView *)self buttonProminence];
-  if (!v3)
+  buttonProminence = [(SearchUIButtonItemView *)self buttonProminence];
+  if (!buttonProminence)
   {
-    v4 = [(SearchUIButtonItemView *)self buttonAppearance];
-    v5 = [v4 tintColor];
-    if (v5 || ![(SearchUIButtonItemView *)self isEnabled])
+    buttonAppearance = [(SearchUIButtonItemView *)self buttonAppearance];
+    tintColor = [buttonAppearance tintColor];
+    if (tintColor || ![(SearchUIButtonItemView *)self isEnabled])
     {
-      v3 = 0;
+      buttonProminence = 0;
     }
 
     else if ([(SearchUIButtonItemView *)self drawsBackgroundPlatter])
     {
-      v3 = 1;
+      buttonProminence = 1;
     }
 
     else if ([(SearchUIButtonItemView *)self drawsIconBackgroundPlatter])
     {
-      v3 = 1;
+      buttonProminence = 1;
     }
 
     else
     {
-      v3 = 2;
+      buttonProminence = 2;
     }
   }
 
-  v6 = [(SearchUIButtonItemView *)self tlkTitleLabel];
-  [v6 setProminence:v3];
+  tlkTitleLabel = [(SearchUIButtonItemView *)self tlkTitleLabel];
+  [tlkTitleLabel setProminence:buttonProminence];
 
-  v7 = [(SearchUIButtonItemView *)self iconView];
-  [v7 setProminence:v3];
+  iconView = [(SearchUIButtonItemView *)self iconView];
+  [iconView setProminence:buttonProminence];
 }
 
-- (void)setSfImage:(id)a3 animateTransition:(BOOL)a4 symbolTransition:(id)a5
+- (void)setSfImage:(id)image animateTransition:(BOOL)transition symbolTransition:(id)symbolTransition
 {
-  v6 = a4;
-  v9 = a3;
-  if (self->_sfImage == v9)
+  transitionCopy = transition;
+  imageCopy = image;
+  if (self->_sfImage == imageCopy)
   {
     goto LABEL_17;
   }
 
-  v25 = v9;
-  objc_storeStrong(&self->_sfImage, a3);
-  v10 = a5;
+  v25 = imageCopy;
+  objc_storeStrong(&self->_sfImage, image);
+  symbolTransitionCopy = symbolTransition;
   v11 = [SearchUIImage imageWithSFImage:v25];
-  v12 = [v11 sfImage];
+  sfImage = [v11 sfImage];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -669,22 +669,22 @@ uint64_t __50__SearchUIButtonItemView_tlk_updateForAppearance___block_invoke(uin
     v13 = 0;
   }
 
-  v14 = [(SearchUIButtonItemView *)self iconView];
-  [v14 setAlignment:v13];
+  iconView = [(SearchUIButtonItemView *)self iconView];
+  [iconView setAlignment:v13];
 
-  v15 = [(SearchUIButtonItemView *)self iconView];
-  [v15 setTransition:v10];
+  iconView2 = [(SearchUIButtonItemView *)self iconView];
+  [iconView2 setTransition:symbolTransitionCopy];
 
   if ([(SearchUIButtonItemView *)self allowsAnimation])
   {
-    v16 = [(SearchUIButtonItemView *)self delegate];
-    v17 = [v16 supportsContextMenuConfiguration];
-    if (v11 && v6 && !v17)
+    delegate = [(SearchUIButtonItemView *)self delegate];
+    supportsContextMenuConfiguration = [delegate supportsContextMenuConfiguration];
+    if (v11 && transitionCopy && !supportsContextMenuConfiguration)
     {
-      v18 = [(SearchUIButtonItemView *)self iconView];
-      v19 = [v18 currentImage];
+      iconView3 = [(SearchUIButtonItemView *)self iconView];
+      currentImage = [iconView3 currentImage];
 
-      if (v19)
+      if (currentImage)
       {
         [(SearchUIButtonItemView *)self transitionIconToSFImage:v11];
         goto LABEL_13;
@@ -696,37 +696,37 @@ uint64_t __50__SearchUIButtonItemView_tlk_updateForAppearance___block_invoke(uin
     }
   }
 
-  v20 = [(SearchUIButtonItemView *)self iconView];
-  [v20 updateWithImage:v11 animateTransition:0];
+  iconView4 = [(SearchUIButtonItemView *)self iconView];
+  [iconView4 updateWithImage:v11 animateTransition:0];
 
 LABEL_13:
-  v21 = [(SearchUIButtonItemView *)self iconView];
-  [v21 setHidden:v11 == 0];
+  iconView5 = [(SearchUIButtonItemView *)self iconView];
+  [iconView5 setHidden:v11 == 0];
 
   if (v11)
   {
-    v22 = [(SearchUIButtonItemView *)self window];
+    window = [(SearchUIButtonItemView *)self window];
 
-    if (!v22)
+    if (!window)
     {
-      v23 = [(SearchUIButtonItemView *)self iconView];
+      iconView6 = [(SearchUIButtonItemView *)self iconView];
       v24 = [MEMORY[0x1E69D9108] bestAppearanceForView:self];
-      [v23 tlk_updateForAppearance:v24];
+      [iconView6 tlk_updateForAppearance:v24];
     }
   }
 
-  v9 = v25;
+  imageCopy = v25;
 LABEL_17:
 }
 
-- (void)setButtonTitle:(id)a3
+- (void)setButtonTitle:(id)title
 {
-  v8 = a3;
-  objc_storeStrong(&self->_buttonTitle, a3);
-  v5 = [(SearchUIButtonItemView *)self tlkTitleLabel];
-  [v5 setText:v8];
+  titleCopy = title;
+  objc_storeStrong(&self->_buttonTitle, title);
+  tlkTitleLabel = [(SearchUIButtonItemView *)self tlkTitleLabel];
+  [tlkTitleLabel setText:titleCopy];
 
-  if ([v8 length])
+  if ([titleCopy length])
   {
     v6 = [(SearchUIButtonItemView *)self drawsTitle]^ 1;
   }
@@ -736,24 +736,24 @@ LABEL_17:
     v6 = 1;
   }
 
-  v7 = [(SearchUIButtonItemView *)self tlkTitleLabel];
-  [v7 setHidden:v6];
+  tlkTitleLabel2 = [(SearchUIButtonItemView *)self tlkTitleLabel];
+  [tlkTitleLabel2 setHidden:v6];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(SearchUIButtonItemView *)self buttonContentBoxView];
-  [v6 effectiveLayoutSizeFittingSize:{width, height}];
+  height = fits.height;
+  width = fits.width;
+  buttonContentBoxView = [(SearchUIButtonItemView *)self buttonContentBoxView];
+  [buttonContentBoxView effectiveLayoutSizeFittingSize:{width, height}];
   v8 = v7;
   v10 = v9;
 
   [(SearchUIButtonItemView *)self verticalPaddingFontMultipler];
   if (v11 != 0.0)
   {
-    v12 = [(SearchUIButtonItemView *)self tlkTitleLabel];
-    [v12 intrinsicContentSize];
+    tlkTitleLabel = [(SearchUIButtonItemView *)self tlkTitleLabel];
+    [tlkTitleLabel intrinsicContentSize];
     v14 = v13;
     [(SearchUIButtonItemView *)self verticalPaddingFontMultipler];
     v10 = v14 * v15;
@@ -766,24 +766,24 @@ LABEL_17:
   return result;
 }
 
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location
 {
-  v5 = [(SearchUIButtonItemView *)self delegate:a3];
-  v6 = [v5 supportsContextMenuConfiguration];
+  v5 = [(SearchUIButtonItemView *)self delegate:interaction];
+  supportsContextMenuConfiguration = [v5 supportsContextMenuConfiguration];
 
-  if (v6)
+  if (supportsContextMenuConfiguration)
   {
-    v7 = [(SearchUIButtonItemView *)self delegate];
-    v8 = [v7 previewCommandHandler];
-    [(SearchUIButtonItemView *)self setCommandHandler:v8];
+    delegate = [(SearchUIButtonItemView *)self delegate];
+    previewCommandHandler = [delegate previewCommandHandler];
+    [(SearchUIButtonItemView *)self setCommandHandler:previewCommandHandler];
 
-    v9 = [(SearchUIButtonItemView *)self delegate];
-    v10 = [v9 customPreviewMenu];
+    delegate2 = [(SearchUIButtonItemView *)self delegate];
+    customPreviewMenu = [delegate2 customPreviewMenu];
 
-    if (!v10 || (v14[0] = MEMORY[0x1E69E9820], v14[1] = 3221225472, v14[2] = __80__SearchUIButtonItemView_contextMenuInteraction_configurationForMenuAtLocation___block_invoke, v14[3] = &unk_1E85B31A8, v14[4] = self, [MEMORY[0x1E69DC8D8] configurationWithIdentifier:0 previewProvider:0 actionProvider:v14], (v11 = objc_claimAutoreleasedReturnValue()) == 0))
+    if (!customPreviewMenu || (v14[0] = MEMORY[0x1E69E9820], v14[1] = 3221225472, v14[2] = __80__SearchUIButtonItemView_contextMenuInteraction_configurationForMenuAtLocation___block_invoke, v14[3] = &unk_1E85B31A8, v14[4] = self, [MEMORY[0x1E69DC8D8] configurationWithIdentifier:0 previewProvider:0 actionProvider:v14], (v11 = objc_claimAutoreleasedReturnValue()) == 0))
     {
-      v12 = [(SearchUIButtonItemView *)self commandHandler];
-      v11 = [SearchUICollectionPeekDelegate menuConfigurationForCommandHandler:v12];
+      commandHandler = [(SearchUIButtonItemView *)self commandHandler];
+      v11 = [SearchUICollectionPeekDelegate menuConfigurationForCommandHandler:commandHandler];
     }
   }
 
@@ -803,22 +803,22 @@ id __80__SearchUIButtonItemView_contextMenuInteraction_configurationForMenuAtLoc
   return v2;
 }
 
-- (id)contextMenuInteraction:(id)a3 configuration:(id)a4 highlightPreviewForItemWithIdentifier:(id)a5
+- (id)contextMenuInteraction:(id)interaction configuration:(id)configuration highlightPreviewForItemWithIdentifier:(id)identifier
 {
   v6 = objc_opt_new();
-  v7 = [MEMORY[0x1E69DC888] clearColor];
-  [v6 setBackgroundColor:v7];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [v6 setBackgroundColor:clearColor];
 
   if ([(SearchUIButtonItemView *)self drawsIconBackgroundPlatter])
   {
-    v8 = [(SearchUIButtonItemView *)self iconBackgroundView];
-    [v8 frame];
+    iconBackgroundView = [(SearchUIButtonItemView *)self iconBackgroundView];
+    [iconBackgroundView frame];
     v10 = v9;
     v12 = v11;
     v14 = v13;
     v16 = v15;
-    v17 = [(SearchUIButtonItemView *)self iconBoxView];
-    [(SearchUIButtonItemView *)self convertRect:v17 fromView:v10, v12, v14, v16];
+    iconBoxView = [(SearchUIButtonItemView *)self iconBoxView];
+    [(SearchUIButtonItemView *)self convertRect:iconBoxView fromView:v10, v12, v14, v16];
     v19 = v18;
     v21 = v20;
     v23 = v22;
@@ -829,10 +829,10 @@ id __80__SearchUIButtonItemView_contextMenuInteraction_configurationForMenuAtLoc
 
   else
   {
-    v27 = [(SearchUIButtonItemView *)self drawsBackgroundPlatter];
+    drawsBackgroundPlatter = [(SearchUIButtonItemView *)self drawsBackgroundPlatter];
     [(SearchUIButtonItemView *)self bounds];
     v32 = -0.0;
-    if (!v27)
+    if (!drawsBackgroundPlatter)
     {
       v32 = -5.0;
     }
@@ -877,42 +877,42 @@ id __80__SearchUIButtonItemView_contextMenuInteraction_configurationForMenuAtLoc
   return v40;
 }
 
-- (void)contextMenuInteraction:(id)a3 willPerformPreviewActionForMenuWithConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willPerformPreviewActionForMenuWithConfiguration:(id)configuration animator:(id)animator
 {
-  v6 = a5;
-  v7 = [(SearchUIButtonItemView *)self commandHandler];
-  [SearchUICollectionPeekDelegate contextMenuInteractionWillPerformPreviewActionForMenuWithCommandHandler:v7 animator:v6];
+  animatorCopy = animator;
+  commandHandler = [(SearchUIButtonItemView *)self commandHandler];
+  [SearchUICollectionPeekDelegate contextMenuInteractionWillPerformPreviewActionForMenuWithCommandHandler:commandHandler animator:animatorCopy];
 }
 
-- (void)contextMenuInteraction:(id)a3 willDisplayMenuForConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willDisplayMenuForConfiguration:(id)configuration animator:(id)animator
 {
-  v8 = a5;
+  animatorCopy = animator;
   v12.receiver = self;
   v12.super_class = SearchUIButtonItemView;
-  v9 = a3;
-  [(SearchUIButtonItemView *)&v12 contextMenuInteraction:v9 willDisplayMenuForConfiguration:a4 animator:v8];
+  interactionCopy = interaction;
+  [(SearchUIButtonItemView *)&v12 contextMenuInteraction:interactionCopy willDisplayMenuForConfiguration:configuration animator:animatorCopy];
   v10 = [(SearchUIButtonItemView *)self contextPreviewInteraction:v12.receiver];
 
-  if (v10 == v9)
+  if (v10 == interactionCopy)
   {
-    v11 = [(SearchUIButtonItemView *)self commandHandler];
-    [SearchUICollectionPeekDelegate contextMenuInteractionWillDisplayMenuForCommandHandler:v11 animator:v8];
+    commandHandler = [(SearchUIButtonItemView *)self commandHandler];
+    [SearchUICollectionPeekDelegate contextMenuInteractionWillDisplayMenuForCommandHandler:commandHandler animator:animatorCopy];
   }
 }
 
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator
 {
-  v8 = a5;
+  animatorCopy = animator;
   v12.receiver = self;
   v12.super_class = SearchUIButtonItemView;
-  v9 = a3;
-  [(SearchUIButtonItemView *)&v12 contextMenuInteraction:v9 willEndForConfiguration:a4 animator:v8];
+  interactionCopy = interaction;
+  [(SearchUIButtonItemView *)&v12 contextMenuInteraction:interactionCopy willEndForConfiguration:configuration animator:animatorCopy];
   v10 = [(SearchUIButtonItemView *)self contextPreviewInteraction:v12.receiver];
 
-  if (v10 == v9)
+  if (v10 == interactionCopy)
   {
-    v11 = [(SearchUIButtonItemView *)self commandHandler];
-    [SearchUICollectionPeekDelegate contextMenuInteractionWillEndForCommandHandler:v11 animator:v8];
+    commandHandler = [(SearchUIButtonItemView *)self commandHandler];
+    [SearchUICollectionPeekDelegate contextMenuInteractionWillEndForCommandHandler:commandHandler animator:animatorCopy];
   }
 
   [(SearchUIButtonItemView *)self setCommandHandler:0];
@@ -929,8 +929,8 @@ id __80__SearchUIButtonItemView_contextMenuInteraction_configurationForMenuAtLoc
 
   else
   {
-    v4 = [(SearchUIButtonItemView *)self tlkTitleLabel];
-    [v4 effectiveFirstBaselineOffsetFromTop];
+    tlkTitleLabel = [(SearchUIButtonItemView *)self tlkTitleLabel];
+    [tlkTitleLabel effectiveFirstBaselineOffsetFromTop];
     v6 = v5;
 
     return v6;
@@ -950,8 +950,8 @@ id __80__SearchUIButtonItemView_contextMenuInteraction_configurationForMenuAtLoc
 
   else
   {
-    v4 = [(SearchUIButtonItemView *)self tlkTitleLabel];
-    [v4 effectiveBaselineOffsetFromBottom];
+    tlkTitleLabel = [(SearchUIButtonItemView *)self tlkTitleLabel];
+    [tlkTitleLabel effectiveBaselineOffsetFromBottom];
     v6 = v5;
 
     return v6;
@@ -969,17 +969,17 @@ id __80__SearchUIButtonItemView_contextMenuInteraction_configurationForMenuAtLoc
   return v4;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   v10.receiver = self;
   v10.super_class = SearchUIButtonItemView;
-  [(SearchUIButtonItemView *)&v10 touchesBegan:a3 withEvent:a4];
+  [(SearchUIButtonItemView *)&v10 touchesBegan:began withEvent:event];
   if ([(SearchUIButtonItemView *)self allowsAnimation])
   {
-    v5 = [(SearchUIButtonItemView *)self delegate];
-    v6 = [v5 supportsContextMenuConfiguration];
+    delegate = [(SearchUIButtonItemView *)self delegate];
+    supportsContextMenuConfiguration = [delegate supportsContextMenuConfiguration];
 
-    if ((v6 & 1) == 0)
+    if ((supportsContextMenuConfiguration & 1) == 0)
     {
       v7 = +[_TtC8SearchUI31SearchUISpringAnimationSettings buttonSelection];
       v9[0] = MEMORY[0x1E69E9820];
@@ -1001,17 +1001,17 @@ uint64_t __49__SearchUIButtonItemView_touchesBegan_withEvent___block_invoke(uint
   return [v2 setTransform:&v4];
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
   v10.receiver = self;
   v10.super_class = SearchUIButtonItemView;
-  [(SearchUIButtonItemView *)&v10 touchesCancelled:a3 withEvent:a4];
+  [(SearchUIButtonItemView *)&v10 touchesCancelled:cancelled withEvent:event];
   if ([(SearchUIButtonItemView *)self allowsAnimation])
   {
-    v5 = [(SearchUIButtonItemView *)self delegate];
-    v6 = [v5 supportsContextMenuConfiguration];
+    delegate = [(SearchUIButtonItemView *)self delegate];
+    supportsContextMenuConfiguration = [delegate supportsContextMenuConfiguration];
 
-    if ((v6 & 1) == 0)
+    if ((supportsContextMenuConfiguration & 1) == 0)
     {
       v7 = +[_TtC8SearchUI31SearchUISpringAnimationSettings buttonSelectionCancel];
       [(SearchUIButtonItemView *)self buttonAnimationOutDelay];
@@ -1036,17 +1036,17 @@ uint64_t __53__SearchUIButtonItemView_touchesCancelled_withEvent___block_invoke(
   return [v1 setTransform:v4];
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   v10.receiver = self;
   v10.super_class = SearchUIButtonItemView;
-  [(SearchUIButtonItemView *)&v10 touchesEnded:a3 withEvent:a4];
+  [(SearchUIButtonItemView *)&v10 touchesEnded:ended withEvent:event];
   if ([(SearchUIButtonItemView *)self allowsAnimation])
   {
-    v5 = [(SearchUIButtonItemView *)self delegate];
-    v6 = [v5 supportsContextMenuConfiguration];
+    delegate = [(SearchUIButtonItemView *)self delegate];
+    supportsContextMenuConfiguration = [delegate supportsContextMenuConfiguration];
 
-    if ((v6 & 1) == 0)
+    if ((supportsContextMenuConfiguration & 1) == 0)
     {
       v7 = +[_TtC8SearchUI31SearchUISpringAnimationSettings buttonSelection];
       [(SearchUIButtonItemView *)self buttonAnimationOutDelay];
@@ -1071,9 +1071,9 @@ uint64_t __49__SearchUIButtonItemView_touchesEnded_withEvent___block_invoke(uint
   return [v1 setTransform:v4];
 }
 
-- (void)transitionIconToSFImage:(id)a3
+- (void)transitionIconToSFImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   [(SearchUIButtonItemView *)self buttonAnimationOutDelay];
   v6 = dispatch_time(0, (v5 * 1000000000.0));
   v8[0] = MEMORY[0x1E69E9820];
@@ -1081,8 +1081,8 @@ uint64_t __49__SearchUIButtonItemView_touchesEnded_withEvent___block_invoke(uint
   v8[2] = __50__SearchUIButtonItemView_transitionIconToSFImage___block_invoke;
   v8[3] = &unk_1E85B2540;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = imageCopy;
+  v7 = imageCopy;
   dispatch_after(v6, MEMORY[0x1E69E96A0], v8);
 }
 
@@ -1100,19 +1100,19 @@ void __50__SearchUIButtonItemView_transitionIconToSFImage___block_invoke(uint64_
   dispatch_after(v2, MEMORY[0x1E69E96A0], v4);
 }
 
-- (void)animateIconOutToSFImage:(id)a3
+- (void)animateIconOutToSFImage:(id)image
 {
   v25[3] = *MEMORY[0x1E69E9840];
-  v4 = [(SearchUIButtonItemView *)self transitionIconView];
-  if (!v4)
+  transitionIconView = [(SearchUIButtonItemView *)self transitionIconView];
+  if (!transitionIconView)
   {
-    v4 = objc_opt_new();
-    [(SearchUIButtonItemView *)self setTransitionIconView:v4];
-    [v4 setUseButtonColoring:1];
-    [SearchUIAutoLayout requireIntrinsicSizeForView:v4];
+    transitionIconView = objc_opt_new();
+    [(SearchUIButtonItemView *)self setTransitionIconView:transitionIconView];
+    [transitionIconView setUseButtonColoring:1];
+    [SearchUIAutoLayout requireIntrinsicSizeForView:transitionIconView];
   }
 
-  [v4 setHidden:0];
+  [transitionIconView setHidden:0];
   if ([(SearchUIButtonItemView *)self drawsBackgroundPlatter])
   {
     v5 = 4;
@@ -1128,26 +1128,26 @@ void __50__SearchUIButtonItemView_transitionIconToSFImage___block_invoke(uint64_
     v5 = 6;
   }
 
-  [v4 setSymbolWeight:v5];
-  v6 = [(SearchUIButtonItemView *)self iconView];
-  v7 = [v6 currentImage];
-  [v4 updateWithImage:v7];
+  [transitionIconView setSymbolWeight:v5];
+  iconView = [(SearchUIButtonItemView *)self iconView];
+  currentImage = [iconView currentImage];
+  [transitionIconView updateWithImage:currentImage];
 
-  v8 = [(SearchUIButtonItemView *)self iconView];
-  [v8 frame];
-  [v4 setFrame:?];
+  iconView2 = [(SearchUIButtonItemView *)self iconView];
+  [iconView2 frame];
+  [transitionIconView setFrame:?];
 
-  v9 = [v4 imageView];
-  v10 = [v9 layer];
-  [v10 setOpacity:0.0];
+  imageView = [transitionIconView imageView];
+  layer = [imageView layer];
+  [layer setOpacity:0.0];
 
-  v11 = [(SearchUIButtonItemView *)self transitionIconView];
-  v12 = [v11 imageView];
-  [SearchUIUtilities applyGaussianBlurToView:v12 withRadius:6.0];
+  transitionIconView2 = [(SearchUIButtonItemView *)self transitionIconView];
+  imageView2 = [transitionIconView2 imageView];
+  [SearchUIUtilities applyGaussianBlurToView:imageView2 withRadius:6.0];
 
-  v13 = [(SearchUIButtonItemView *)self imageViewAndLabelStackView];
-  v14 = [(SearchUIButtonItemView *)self transitionIconView];
-  [v13 addSubview:v14];
+  imageViewAndLabelStackView = [(SearchUIButtonItemView *)self imageViewAndLabelStackView];
+  transitionIconView3 = [(SearchUIButtonItemView *)self transitionIconView];
+  [imageViewAndLabelStackView addSubview:transitionIconView3];
 
   v15 = [_TtC8SearchUI27SearchUIBasicLayerAnimation blurFrom:0.0 to:6.0];
   v16 = [_TtC8SearchUI27SearchUIBasicLayerAnimation opacityFrom:1.0 to:0.0, v15];
@@ -1157,32 +1157,32 @@ void __50__SearchUIButtonItemView_transitionIconToSFImage___block_invoke(uint64_
   v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v25 count:3];
 
   v19 = +[_TtC8SearchUI31SearchUISpringAnimationSettings buttonSelection];
-  v20 = [v4 imageView];
-  v21 = [v20 layer];
-  [_TtC8SearchUI16SearchUIAnimator animateWithLayer:v21 with:v19 key:@"disappearAnimation" animations:v18 delegate:self];
+  imageView3 = [transitionIconView imageView];
+  layer2 = [imageView3 layer];
+  [_TtC8SearchUI16SearchUIAnimator animateWithLayer:layer2 with:v19 key:@"disappearAnimation" animations:v18 delegate:self];
 
-  v22 = [(SearchUIButtonItemView *)self iconView];
-  v23 = [v22 imageView];
-  v24 = [v23 layer];
-  [v24 setOpacity:0.0];
+  iconView3 = [(SearchUIButtonItemView *)self iconView];
+  imageView4 = [iconView3 imageView];
+  layer3 = [imageView4 layer];
+  [layer3 setOpacity:0.0];
 }
 
-- (void)animateIconInToSFImage:(id)a3
+- (void)animateIconInToSFImage:(id)image
 {
   v20[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(SearchUIButtonItemView *)self iconView];
-  v6 = [v5 imageView];
-  v7 = [v6 layer];
+  imageCopy = image;
+  iconView = [(SearchUIButtonItemView *)self iconView];
+  imageView = [iconView imageView];
+  layer = [imageView layer];
   LODWORD(v8) = 1.0;
-  [v7 setOpacity:v8];
+  [layer setOpacity:v8];
 
-  v9 = [(SearchUIButtonItemView *)self iconView];
-  v10 = [v9 imageView];
-  [SearchUIUtilities applyGaussianBlurToView:v10 withRadius:0.0];
+  iconView2 = [(SearchUIButtonItemView *)self iconView];
+  imageView2 = [iconView2 imageView];
+  [SearchUIUtilities applyGaussianBlurToView:imageView2 withRadius:0.0];
 
-  v11 = [(SearchUIButtonItemView *)self iconView];
-  [v11 updateWithImage:v4 animateTransition:0];
+  iconView3 = [(SearchUIButtonItemView *)self iconView];
+  [iconView3 updateWithImage:imageCopy animateTransition:0];
 
   v12 = [_TtC8SearchUI27SearchUIBasicLayerAnimation blurFrom:6.0 to:0.0];
   v13 = [_TtC8SearchUI27SearchUIBasicLayerAnimation opacityFrom:0.0 to:1.0, v12];
@@ -1192,54 +1192,54 @@ void __50__SearchUIButtonItemView_transitionIconToSFImage___block_invoke(uint64_
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:3];
 
   v16 = +[_TtC8SearchUI31SearchUISpringAnimationSettings buttonIconAppear];
-  v17 = [(SearchUIButtonItemView *)self iconView];
-  v18 = [v17 imageView];
-  v19 = [v18 layer];
-  [_TtC8SearchUI16SearchUIAnimator animateWithLayer:v19 with:v16 key:@"appearAnimation" animations:v15 delegate:self];
+  iconView4 = [(SearchUIButtonItemView *)self iconView];
+  imageView3 = [iconView4 imageView];
+  layer2 = [imageView3 layer];
+  [_TtC8SearchUI16SearchUIAnimator animateWithLayer:layer2 with:v16 key:@"appearAnimation" animations:v15 delegate:self];
 }
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
-  v23 = a3;
+  stopCopy = stop;
   [MEMORY[0x1E6979518] begin];
-  v5 = [(SearchUIButtonItemView *)self transitionIconView];
-  v6 = [v5 imageView];
-  v7 = [v6 layer];
-  v8 = [v7 animationForKey:@"disappearAnimation"];
+  transitionIconView = [(SearchUIButtonItemView *)self transitionIconView];
+  imageView = [transitionIconView imageView];
+  layer = [imageView layer];
+  v8 = [layer animationForKey:@"disappearAnimation"];
 
-  if (v8 == v23)
+  if (v8 == stopCopy)
   {
-    v19 = [(SearchUIButtonItemView *)self transitionIconView];
-    [v19 setHidden:1];
+    transitionIconView2 = [(SearchUIButtonItemView *)self transitionIconView];
+    [transitionIconView2 setHidden:1];
   }
 
   else
   {
-    v9 = [(SearchUIButtonItemView *)self iconView];
-    v10 = [v9 imageView];
-    v11 = [v10 layer];
-    v12 = [v11 animationForKey:@"appearAnimation"];
+    iconView = [(SearchUIButtonItemView *)self iconView];
+    imageView2 = [iconView imageView];
+    layer2 = [imageView2 layer];
+    v12 = [layer2 animationForKey:@"appearAnimation"];
 
-    if (v12 != v23)
+    if (v12 != stopCopy)
     {
       goto LABEL_6;
     }
 
-    v13 = [(SearchUIButtonItemView *)self iconView];
-    v14 = [v13 imageView];
-    v15 = [v14 layer];
-    [v15 removeAllAnimations];
+    iconView2 = [(SearchUIButtonItemView *)self iconView];
+    imageView3 = [iconView2 imageView];
+    layer3 = [imageView3 layer];
+    [layer3 removeAllAnimations];
 
-    v16 = [(SearchUIButtonItemView *)self iconView];
-    v17 = [v16 imageView];
-    v18 = [v17 layer];
-    [v18 setFilters:MEMORY[0x1E695E0F0]];
+    iconView3 = [(SearchUIButtonItemView *)self iconView];
+    imageView4 = [iconView3 imageView];
+    layer4 = [imageView4 layer];
+    [layer4 setFilters:MEMORY[0x1E695E0F0]];
 
-    v19 = [(SearchUIButtonItemView *)self iconView];
-    v20 = [v19 imageView];
-    v21 = [v20 layer];
+    transitionIconView2 = [(SearchUIButtonItemView *)self iconView];
+    imageView5 = [transitionIconView2 imageView];
+    layer5 = [imageView5 layer];
     LODWORD(v22) = 1.0;
-    [v21 setOpacity:v22];
+    [layer5 setOpacity:v22];
   }
 
 LABEL_6:

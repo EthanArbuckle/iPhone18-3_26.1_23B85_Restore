@@ -13,8 +13,8 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(UIButtonAccessibility__SpotlightUI__UIKit *)self accessibilityIdentifier];
-  v12 = [v11 isEqualToString:@"SPUIShowMoreButton"];
+  accessibilityIdentifier = [(UIButtonAccessibility__SpotlightUI__UIKit *)self accessibilityIdentifier];
+  v12 = [accessibilityIdentifier isEqualToString:@"SPUIShowMoreButton"];
 
   if (v12)
   {

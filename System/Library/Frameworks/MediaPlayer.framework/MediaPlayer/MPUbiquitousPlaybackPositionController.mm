@@ -3,29 +3,29 @@
 - (BOOL)_onQueue_isEnabled;
 - (BOOL)externallyActive;
 - (MPUbiquitousPlaybackPositionController)init;
-- (id)_playbackPositionEntityWithValuesFromMusicLibraryTrackPersistentID:(int64_t)a3;
-- (id)playbackPositionForLocalEntityIdentifier:(id)a3;
-- (id)playbackPositionForLocalEntityIdentifiers:(id)a3;
-- (void)_applicationDidEnterBackgroundNotification:(id)a3;
-- (void)_applicationDidEnterForegroundNotification:(id)a3;
-- (void)_applicationWillEnterForegroundNotification:(id)a3;
-- (void)_defaultMediaLibraryDidChangeNotification:(id)a3;
+- (id)_playbackPositionEntityWithValuesFromMusicLibraryTrackPersistentID:(int64_t)d;
+- (id)playbackPositionForLocalEntityIdentifier:(id)identifier;
+- (id)playbackPositionForLocalEntityIdentifiers:(id)identifiers;
+- (void)_applicationDidEnterBackgroundNotification:(id)notification;
+- (void)_applicationDidEnterForegroundNotification:(id)notification;
+- (void)_applicationWillEnterForegroundNotification:(id)notification;
+- (void)_defaultMediaLibraryDidChangeNotification:(id)notification;
 - (void)_onServiceQueue_becomeActiveService;
 - (void)_onServiceQueue_resignActiveService;
 - (void)_onServiceQueue_updateActiveServiceIfNeeded;
 - (void)beginUsingPlaybackPositionMetadata;
 - (void)dealloc;
-- (void)noteChangedPlaybackPositionMetadataForTrackPersistentID:(int64_t)a3 isCheckpoint:(BOOL)a4;
-- (void)persistPlaybackPositionMetadataEntity:(id)a3 isCheckpoint:(BOOL)a4 completion:(id)a5;
-- (void)setExternallyActive:(BOOL)a3;
+- (void)noteChangedPlaybackPositionMetadataForTrackPersistentID:(int64_t)d isCheckpoint:(BOOL)checkpoint;
+- (void)persistPlaybackPositionMetadataEntity:(id)entity isCheckpoint:(BOOL)checkpoint completion:(id)completion;
+- (void)setExternallyActive:(BOOL)active;
 @end
 
 @implementation MPUbiquitousPlaybackPositionController
 
 + (MPUbiquitousPlaybackPositionController)sharedUbiquitousPlaybackPositionController
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"disableUPP"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"disableUPP"];
 
   if (v3)
   {
@@ -76,11 +76,11 @@
     uppServiceProxy = v3->_uppServiceProxy;
     v3->_uppServiceProxy = v16;
 
-    v18 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v18 addObserver:v3 selector:sel__applicationDidEnterBackgroundNotification_ name:*MEMORY[0x1E69DDAC8] object:0];
-    [v18 addObserver:v3 selector:sel__applicationWillEnterForegroundNotification_ name:*MEMORY[0x1E69DDBC0] object:0];
-    [v18 addObserver:v3 selector:sel__applicationDidEnterForegroundNotification_ name:*MEMORY[0x1E69DDAB0] object:0];
-    [v18 addObserver:v3 selector:sel__defaultMediaLibraryDidChangeNotification_ name:@"MPMediaLibraryDefaultMediaLibraryDidChangeNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel__applicationDidEnterBackgroundNotification_ name:*MEMORY[0x1E69DDAC8] object:0];
+    [defaultCenter addObserver:v3 selector:sel__applicationWillEnterForegroundNotification_ name:*MEMORY[0x1E69DDBC0] object:0];
+    [defaultCenter addObserver:v3 selector:sel__applicationDidEnterForegroundNotification_ name:*MEMORY[0x1E69DDAB0] object:0];
+    [defaultCenter addObserver:v3 selector:sel__defaultMediaLibraryDidChangeNotification_ name:@"MPMediaLibraryDefaultMediaLibraryDidChangeNotification" object:0];
   }
 
   return v3;
@@ -143,9 +143,9 @@ void __84__MPUbiquitousPlaybackPositionController_sharedUbiquitousPlaybackPositi
 - (BOOL)_onQueue_isEnabled
 {
   v2 = +[MPMediaLibrary defaultMediaLibrary];
-  v3 = [v2 isHomeSharingLibrary];
+  isHomeSharingLibrary = [v2 isHomeSharingLibrary];
 
-  return v3 ^ 1;
+  return isHomeSharingLibrary ^ 1;
 }
 
 uint64_t __85__MPUbiquitousPlaybackPositionController__onServiceQueue_updateActiveServiceIfNeeded__block_invoke(uint64_t a1)
@@ -193,13 +193,13 @@ uint64_t __77__MPUbiquitousPlaybackPositionController__onServiceQueue_becomeActi
   dispatch_sync(queue, block);
 }
 
-- (id)_playbackPositionEntityWithValuesFromMusicLibraryTrackPersistentID:(int64_t)a3
+- (id)_playbackPositionEntityWithValuesFromMusicLibraryTrackPersistentID:(int64_t)d
 {
-  v4 = [(MPUbiquitousPlaybackPositionController *)self uppServiceProxy];
-  if (v4)
+  uppServiceProxy = [(MPUbiquitousPlaybackPositionController *)self uppServiceProxy];
+  if (uppServiceProxy)
   {
     v5 = +[MPMediaLibrary defaultMediaLibrary];
-    v6 = [v5 itemWithPersistentID:a3];
+    v6 = [v5 itemWithPersistentID:d];
 
     v7 = [MEMORY[0x1E695DFD8] setWithObjects:{@"storeBookmarkIdentifier", @"bookmarkTime", @"hasBeenPlayed", @"playCount", 0}];
     v8 = [v6 valuesForProperties:v7];
@@ -207,7 +207,7 @@ uint64_t __77__MPUbiquitousPlaybackPositionController__onServiceQueue_becomeActi
     v9 = [v8 objectForKey:@"storeBookmarkIdentifier"];
     v10 = objc_alloc(MEMORY[0x1E69E4520]);
     v11 = *MEMORY[0x1E69E41E0];
-    v12 = [MEMORY[0x1E696AD98] numberWithLongLong:a3];
+    v12 = [MEMORY[0x1E696AD98] numberWithLongLong:d];
     v13 = [v10 initWithDomain:v11 playbackPositionKey:v9 persistentIdentifier:v12];
 
     v14 = [v8 objectForKey:@"bookmarkTime"];
@@ -233,21 +233,21 @@ uint64_t __77__MPUbiquitousPlaybackPositionController__onServiceQueue_becomeActi
   return v13;
 }
 
-- (void)persistPlaybackPositionMetadataEntity:(id)a3 isCheckpoint:(BOOL)a4 completion:(id)a5
+- (void)persistPlaybackPositionMetadataEntity:(id)entity isCheckpoint:(BOOL)checkpoint completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  entityCopy = entity;
+  completionCopy = completion;
   serviceQueue = self->_serviceQueue;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __104__MPUbiquitousPlaybackPositionController_persistPlaybackPositionMetadataEntity_isCheckpoint_completion___block_invoke;
   v13[3] = &unk_1E7677DE0;
-  v14 = v8;
-  v15 = self;
-  v17 = a4;
-  v16 = v9;
-  v11 = v9;
-  v12 = v8;
+  v14 = entityCopy;
+  selfCopy = self;
+  checkpointCopy = checkpoint;
+  v16 = completionCopy;
+  v11 = completionCopy;
+  v12 = entityCopy;
   dispatch_async(serviceQueue, v13);
 }
 
@@ -307,9 +307,9 @@ uint64_t __104__MPUbiquitousPlaybackPositionController_persistPlaybackPositionMe
   return result;
 }
 
-- (id)playbackPositionForLocalEntityIdentifiers:(id)a3
+- (id)playbackPositionForLocalEntityIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -322,8 +322,8 @@ uint64_t __104__MPUbiquitousPlaybackPositionController_persistPlaybackPositionMe
   v12 = 3221225472;
   v13 = __84__MPUbiquitousPlaybackPositionController_playbackPositionForLocalEntityIdentifiers___block_invoke;
   v14 = &unk_1E7681900;
-  v15 = self;
-  v7 = v4;
+  selfCopy = self;
+  v7 = identifiersCopy;
   v16 = v7;
   v18 = &v19;
   v8 = v5;
@@ -409,18 +409,18 @@ void __84__MPUbiquitousPlaybackPositionController_playbackPositionForLocalEntity
   [*(*(*(a1 + 32) + 8) + 40) addObject:v5];
 }
 
-- (id)playbackPositionForLocalEntityIdentifier:(id)a3
+- (id)playbackPositionForLocalEntityIdentifier:(id)identifier
 {
   v11 = *MEMORY[0x1E69E9840];
-  v10 = a3;
+  identifierCopy = identifier;
   v4 = MEMORY[0x1E695DEC8];
-  v5 = a3;
-  v6 = [v4 arrayWithObjects:&v10 count:1];
+  identifierCopy2 = identifier;
+  v6 = [v4 arrayWithObjects:&identifierCopy count:1];
 
-  v7 = [(MPUbiquitousPlaybackPositionController *)self playbackPositionForLocalEntityIdentifiers:v6, v10, v11];
-  v8 = [v7 firstObject];
+  v7 = [(MPUbiquitousPlaybackPositionController *)self playbackPositionForLocalEntityIdentifiers:v6, identifierCopy, v11];
+  firstObject = [v7 firstObject];
 
-  return v8;
+  return firstObject;
 }
 
 - (BOOL)externallyActive
@@ -442,7 +442,7 @@ void __84__MPUbiquitousPlaybackPositionController_playbackPositionForLocalEntity
   return v3;
 }
 
-- (void)setExternallyActive:(BOOL)a3
+- (void)setExternallyActive:(BOOL)active
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -450,7 +450,7 @@ void __84__MPUbiquitousPlaybackPositionController_playbackPositionForLocalEntity
   v4[2] = __62__MPUbiquitousPlaybackPositionController_setExternallyActive___block_invoke;
   v4[3] = &unk_1E7682280;
   v4[4] = self;
-  v5 = a3;
+  activeCopy = active;
   dispatch_sync(queue, v4);
 }
 
@@ -474,7 +474,7 @@ void __62__MPUbiquitousPlaybackPositionController_setExternallyActive___block_in
   }
 }
 
-- (void)noteChangedPlaybackPositionMetadataForTrackPersistentID:(int64_t)a3 isCheckpoint:(BOOL)a4
+- (void)noteChangedPlaybackPositionMetadataForTrackPersistentID:(int64_t)d isCheckpoint:(BOOL)checkpoint
 {
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
@@ -482,8 +482,8 @@ void __62__MPUbiquitousPlaybackPositionController_setExternallyActive___block_in
   block[2] = __111__MPUbiquitousPlaybackPositionController_noteChangedPlaybackPositionMetadataForTrackPersistentID_isCheckpoint___block_invoke;
   block[3] = &unk_1E7682320;
   block[4] = self;
-  block[5] = a3;
-  v6 = a4;
+  block[5] = d;
+  checkpointCopy = checkpoint;
   dispatch_sync(queue, block);
 }
 
@@ -512,7 +512,7 @@ void __111__MPUbiquitousPlaybackPositionController_noteChangedPlaybackPositionMe
   [*(*(a1 + 32) + 32) persistPlaybackPositionEntity:v2 isCheckpoint:*(a1 + 48) completionBlock:0];
 }
 
-- (void)_defaultMediaLibraryDidChangeNotification:(id)a3
+- (void)_defaultMediaLibraryDidChangeNotification:(id)notification
 {
   serviceQueue = self->_serviceQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -554,7 +554,7 @@ uint64_t __84__MPUbiquitousPlaybackPositionController__defaultMediaLibraryDidCha
   return result;
 }
 
-- (void)_applicationDidEnterForegroundNotification:(id)a3
+- (void)_applicationDidEnterForegroundNotification:(id)notification
 {
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
@@ -577,7 +577,7 @@ void __85__MPUbiquitousPlaybackPositionController__applicationDidEnterForeground
   dispatch_async(v2, block);
 }
 
-- (void)_applicationWillEnterForegroundNotification:(id)a3
+- (void)_applicationWillEnterForegroundNotification:(id)notification
 {
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
@@ -600,10 +600,10 @@ void __86__MPUbiquitousPlaybackPositionController__applicationWillEnterForegroun
   dispatch_async(v2, block);
 }
 
-- (void)_applicationDidEnterBackgroundNotification:(id)a3
+- (void)_applicationDidEnterBackgroundNotification:(id)notification
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  notificationCopy = notification;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -689,8 +689,8 @@ void __85__MPUbiquitousPlaybackPositionController__applicationDidEnterBackground
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = MPUbiquitousPlaybackPositionController;

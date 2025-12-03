@@ -1,19 +1,19 @@
 @interface PosterCoupledTitlesViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityElements;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)didTransitionFromLayout:(id)a3 toLayout:(id)a4;
+- (void)didTransitionFromLayout:(id)layout toLayout:(id)toLayout;
 @end
 
 @implementation PosterCoupledTitlesViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PosterBoard.PosterCoupledTitlesView" hasSwiftFieldOfAnyClass:@"titleLabel"];
-  [v3 validateClass:@"PosterBoard.PosterRackCollectionViewController" hasSwiftField:@"layoutMode" withSwiftType:"PRUISSwitcherLayoutMode"];
-  [v3 validateClass:@"PosterBoard.PosterCoupledTitlesView" isKindOfClass:@"UICollectionReusableView"];
-  [v3 validateClass:@"UICollectionReusableView" hasInstanceMethod:@"didTransitionFromLayout:toLayout:" withFullSignature:{"v", "@", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PosterBoard.PosterCoupledTitlesView" hasSwiftFieldOfAnyClass:@"titleLabel"];
+  [validationsCopy validateClass:@"PosterBoard.PosterRackCollectionViewController" hasSwiftField:@"layoutMode" withSwiftType:"PRUISSwitcherLayoutMode"];
+  [validationsCopy validateClass:@"PosterBoard.PosterCoupledTitlesView" isKindOfClass:@"UICollectionReusableView"];
+  [validationsCopy validateClass:@"UICollectionReusableView" hasInstanceMethod:@"didTransitionFromLayout:toLayout:" withFullSignature:{"v", "@", "@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -34,16 +34,16 @@
   return v4;
 }
 
-- (void)didTransitionFromLayout:(id)a3 toLayout:(id)a4
+- (void)didTransitionFromLayout:(id)layout toLayout:(id)toLayout
 {
-  v6 = a3;
-  v7 = a4;
+  layoutCopy = layout;
+  toLayoutCopy = toLayout;
   v13.receiver = self;
   v13.super_class = PosterCoupledTitlesViewAccessibility;
-  [(PosterCoupledTitlesViewAccessibility *)&v13 didTransitionFromLayout:v6 toLayout:v7];
+  [(PosterCoupledTitlesViewAccessibility *)&v13 didTransitionFromLayout:layoutCopy toLayout:toLayoutCopy];
   objc_opt_class();
-  v8 = [v7 collectionView];
-  v9 = [v8 dataSource];
+  collectionView = [toLayoutCopy collectionView];
+  dataSource = [collectionView dataSource];
   v10 = __UIAccessibilityCastAsClass();
 
   v11 = [v10 safeSwiftValueForKey:@"layoutMode"];

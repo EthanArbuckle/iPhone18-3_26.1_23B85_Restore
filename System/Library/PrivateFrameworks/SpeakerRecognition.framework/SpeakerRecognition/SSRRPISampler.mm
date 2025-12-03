@@ -2,15 +2,15 @@
 + (id)sharedInstance;
 + (void)deleteAllRPISampledData;
 - (SSRRPISampler)init;
-- (void)getActiveRequestIdsForLocale:(id)a3 date:(id)a4 completion:(id)a5;
-- (void)getAudioIdWithRequestId:(id)a3 languageCode:(id)a4 date:(id)a5 completion:(id)a6;
-- (void)getEnrollmentSelectionStatusWithLocale:(id)a3 completion:(id)a4;
-- (void)removeAllSamplingMetaDataWithCompletion:(id)a3;
-- (void)removeMappingOnAndBefore:(id)a3 completion:(id)a4;
-- (void)removeMappingWithLocale:(id)a3 date:(id)a4 completion:(id)a5;
-- (void)removeRequestIdToAudioIdMappingWithCompletion:(id)a3;
-- (void)updateStatus:(id)a3 languageCode:(id)a4 completion:(id)a5;
-- (void)writeIntoMappingWithRequestId:(id)a3 audioId:(id)a4 date:(id)a5 locale:(id)a6 completion:(id)a7;
+- (void)getActiveRequestIdsForLocale:(id)locale date:(id)date completion:(id)completion;
+- (void)getAudioIdWithRequestId:(id)id languageCode:(id)code date:(id)date completion:(id)completion;
+- (void)getEnrollmentSelectionStatusWithLocale:(id)locale completion:(id)completion;
+- (void)removeAllSamplingMetaDataWithCompletion:(id)completion;
+- (void)removeMappingOnAndBefore:(id)before completion:(id)completion;
+- (void)removeMappingWithLocale:(id)locale date:(id)date completion:(id)completion;
+- (void)removeRequestIdToAudioIdMappingWithCompletion:(id)completion;
+- (void)updateStatus:(id)status languageCode:(id)code completion:(id)completion;
+- (void)writeIntoMappingWithRequestId:(id)id audioId:(id)audioId date:(id)date locale:(id)locale completion:(id)completion;
 @end
 
 @implementation SSRRPISampler
@@ -29,38 +29,38 @@ void __51__SSRRPISampler__handleVoiceProfileRPICleanupEvent__block_invoke()
   v1 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeMappingOnAndBefore:(id)a3 completion:(id)a4
+- (void)removeMappingOnAndBefore:(id)before completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  beforeCopy = before;
+  completionCopy = completion;
   queue = self->_queue;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __53__SSRRPISampler_removeMappingOnAndBefore_completion___block_invoke;
   v11[3] = &unk_278579618;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = beforeCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = beforeCopy;
   dispatch_async(queue, v11);
 }
 
-- (void)getActiveRequestIdsForLocale:(id)a3 date:(id)a4 completion:(id)a5
+- (void)getActiveRequestIdsForLocale:(id)locale date:(id)date completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  localeCopy = locale;
+  dateCopy = date;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __62__SSRRPISampler_getActiveRequestIdsForLocale_date_completion___block_invoke;
   block[3] = &unk_278579218;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = localeCopy;
+  v17 = dateCopy;
+  v18 = completionCopy;
+  v12 = completionCopy;
+  v13 = dateCopy;
+  v14 = localeCopy;
   dispatch_async(queue, block);
 }
 
@@ -78,16 +78,16 @@ void __62__SSRRPISampler_getActiveRequestIdsForLocale_date_completion___block_in
   }
 }
 
-- (void)removeAllSamplingMetaDataWithCompletion:(id)a3
+- (void)removeAllSamplingMetaDataWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __57__SSRRPISampler_removeAllSamplingMetaDataWithCompletion___block_invoke;
   block[3] = &unk_2785795F0;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(queue, block);
 }
 
@@ -106,16 +106,16 @@ uint64_t __57__SSRRPISampler_removeAllSamplingMetaDataWithCompletion___block_inv
   return result;
 }
 
-- (void)removeRequestIdToAudioIdMappingWithCompletion:(id)a3
+- (void)removeRequestIdToAudioIdMappingWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __63__SSRRPISampler_removeRequestIdToAudioIdMappingWithCompletion___block_invoke;
   block[3] = &unk_2785795F0;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(queue, block);
 }
 
@@ -133,69 +133,69 @@ uint64_t __63__SSRRPISampler_removeRequestIdToAudioIdMappingWithCompletion___blo
   return result;
 }
 
-- (void)removeMappingWithLocale:(id)a3 date:(id)a4 completion:(id)a5
+- (void)removeMappingWithLocale:(id)locale date:(id)date completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  localeCopy = locale;
+  dateCopy = date;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __57__SSRRPISampler_removeMappingWithLocale_date_completion___block_invoke;
   block[3] = &unk_278579218;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = localeCopy;
+  v17 = dateCopy;
+  v18 = completionCopy;
+  v12 = completionCopy;
+  v13 = dateCopy;
+  v14 = localeCopy;
   dispatch_async(queue, block);
 }
 
-- (void)writeIntoMappingWithRequestId:(id)a3 audioId:(id)a4 date:(id)a5 locale:(id)a6 completion:(id)a7
+- (void)writeIntoMappingWithRequestId:(id)id audioId:(id)audioId date:(id)date locale:(id)locale completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  idCopy = id;
+  audioIdCopy = audioId;
+  dateCopy = date;
+  localeCopy = locale;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __78__SSRRPISampler_writeIntoMappingWithRequestId_audioId_date_locale_completion___block_invoke;
   block[3] = &unk_278579438;
-  v24 = v12;
-  v25 = v13;
-  v26 = v14;
-  v27 = v15;
-  v28 = v16;
-  v18 = v16;
-  v19 = v15;
-  v20 = v14;
-  v21 = v13;
-  v22 = v12;
+  v24 = idCopy;
+  v25 = audioIdCopy;
+  v26 = dateCopy;
+  v27 = localeCopy;
+  v28 = completionCopy;
+  v18 = completionCopy;
+  v19 = localeCopy;
+  v20 = dateCopy;
+  v21 = audioIdCopy;
+  v22 = idCopy;
   dispatch_async(queue, block);
 }
 
-- (void)getAudioIdWithRequestId:(id)a3 languageCode:(id)a4 date:(id)a5 completion:(id)a6
+- (void)getAudioIdWithRequestId:(id)id languageCode:(id)code date:(id)date completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  idCopy = id;
+  codeCopy = code;
+  dateCopy = date;
+  completionCopy = completion;
   queue = self->_queue;
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __70__SSRRPISampler_getAudioIdWithRequestId_languageCode_date_completion___block_invoke;
   v19[3] = &unk_278579508;
-  v20 = v10;
-  v21 = v11;
-  v22 = v12;
-  v23 = v13;
-  v15 = v13;
-  v16 = v12;
-  v17 = v11;
-  v18 = v10;
+  v20 = idCopy;
+  v21 = codeCopy;
+  v22 = dateCopy;
+  v23 = completionCopy;
+  v15 = completionCopy;
+  v16 = dateCopy;
+  v17 = codeCopy;
+  v18 = idCopy;
   dispatch_async(queue, v19);
 }
 
@@ -214,22 +214,22 @@ void __70__SSRRPISampler_getAudioIdWithRequestId_languageCode_date_completion___
   }
 }
 
-- (void)updateStatus:(id)a3 languageCode:(id)a4 completion:(id)a5
+- (void)updateStatus:(id)status languageCode:(id)code completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  statusCopy = status;
+  codeCopy = code;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __54__SSRRPISampler_updateStatus_languageCode_completion___block_invoke;
   block[3] = &unk_278579218;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = statusCopy;
+  v17 = codeCopy;
+  v18 = completionCopy;
+  v12 = completionCopy;
+  v13 = codeCopy;
+  v14 = statusCopy;
   dispatch_async(queue, block);
 }
 
@@ -242,19 +242,19 @@ uint64_t __54__SSRRPISampler_updateStatus_languageCode_completion___block_invoke
   return [SSREnrollmentSamplingMetaDataHelper updateSelectionStatus:v2 languageCode:v3 completion:v4];
 }
 
-- (void)getEnrollmentSelectionStatusWithLocale:(id)a3 completion:(id)a4
+- (void)getEnrollmentSelectionStatusWithLocale:(id)locale completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  localeCopy = locale;
+  completionCopy = completion;
   queue = self->_queue;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __67__SSRRPISampler_getEnrollmentSelectionStatusWithLocale_completion___block_invoke;
   v11[3] = &unk_278579618;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = localeCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = localeCopy;
   dispatch_async(queue, v11);
 }
 
@@ -283,8 +283,8 @@ void __67__SSRRPISampler_getEnrollmentSelectionStatusWithLocale_completion___blo
     queue = v2->_queue;
     v2->_queue = v3;
 
-    v5 = [MEMORY[0x277CCA9A0] defaultCenter];
-    [v5 addObserver:v2 selector:sel__handleVoiceProfileRPICleanupEvent name:@"com.apple.voiceprofile.rpicleanup" object:0];
+    defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__handleVoiceProfileRPICleanupEvent name:@"com.apple.voiceprofile.rpicleanup" object:0];
   }
 
   return v2;

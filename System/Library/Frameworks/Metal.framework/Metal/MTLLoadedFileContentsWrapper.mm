@@ -1,5 +1,5 @@
 @interface MTLLoadedFileContentsWrapper
-- (MTLLoadedFileContentsWrapper)initWithData:(id)a3;
+- (MTLLoadedFileContentsWrapper)initWithData:(id)data;
 - (void)dealloc;
 @end
 
@@ -14,16 +14,16 @@
   [(MTLLoadedFileContentsWrapper *)&v3 dealloc];
 }
 
-- (MTLLoadedFileContentsWrapper)initWithData:(id)a3
+- (MTLLoadedFileContentsWrapper)initWithData:(id)data
 {
   v7.receiver = self;
   v7.super_class = MTLLoadedFileContentsWrapper;
   v4 = [(MTLLoadedFileContentsWrapper *)&v7 init];
   if (v4)
   {
-    v5 = a3;
-    v4->_sourceContents = v5;
-    v4->_dispatchData = _MTLNSDataToDispatchData(v5, 0);
+    dataCopy = data;
+    v4->_sourceContents = dataCopy;
+    v4->_dispatchData = _MTLNSDataToDispatchData(dataCopy, 0);
   }
 
   return v4;

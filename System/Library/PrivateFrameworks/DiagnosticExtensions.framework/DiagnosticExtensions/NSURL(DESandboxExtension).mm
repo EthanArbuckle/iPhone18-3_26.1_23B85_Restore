@@ -10,24 +10,24 @@
   v2 = Log_3();
   if (os_log_type_enabled(v2, OS_LOG_TYPE_DEBUG))
   {
-    [NSURL(DESandboxExtension) generateSandboxExtensionForProcess:a1];
+    [NSURL(DESandboxExtension) generateSandboxExtensionForProcess:self];
   }
 
-  v3 = [a1 fileSystemRepresentation];
-  if (!v3)
+  fileSystemRepresentation = [self fileSystemRepresentation];
+  if (!fileSystemRepresentation)
   {
     v6 = Log_3();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      [DEAttachmentItem _generateSandboxExtensionTokenForPID:a1];
+      [DEAttachmentItem _generateSandboxExtensionTokenForPID:self];
     }
 
     goto LABEL_17;
   }
 
-  v4 = v3;
+  v4 = fileSystemRepresentation;
   v14 = 0;
-  v5 = [a1 checkResourceIsReachableAndReturnError:&v14];
+  v5 = [self checkResourceIsReachableAndReturnError:&v14];
   v6 = v14;
   if ((v5 & 1) == 0)
   {
@@ -48,7 +48,7 @@
   {
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      [NSURL(DESandboxExtension) generateSandboxExtensionForProcess:a1];
+      [NSURL(DESandboxExtension) generateSandboxExtensionForProcess:self];
     }
 
 LABEL_17:
@@ -58,7 +58,7 @@ LABEL_17:
 
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
-    [NSURL(DESandboxExtension) generateSandboxExtensionForProcess:a1];
+    [NSURL(DESandboxExtension) generateSandboxExtensionForProcess:self];
   }
 
   v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:v8];
@@ -79,7 +79,7 @@ LABEL_18:
     if (sandbox_extension_consume() == -1)
     {
       v15 = MEMORY[0x277CCACA8];
-      v16 = [a1 path];
+      path = [self path];
       v17 = __error();
       v18 = strerror(*v17);
       v19 = "Unknown";
@@ -88,7 +88,7 @@ LABEL_18:
         v19 = v18;
       }
 
-      v11 = [v15 stringWithFormat:@"Failed to consume extension token for [%@] due to error: %s", v16, v19];
+      v11 = [v15 stringWithFormat:@"Failed to consume extension token for [%@] due to error: %s", path, v19];
 
       v20 = MEMORY[0x277CCA9B8];
       v23 = *MEMORY[0x277CCA450];
@@ -104,7 +104,7 @@ LABEL_18:
       v8 = Log_3();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
       {
-        [NSURL(DESandboxExtension) accessWithSandboxExtension:a1 inBlock:?];
+        [NSURL(DESandboxExtension) accessWithSandboxExtension:self inBlock:?];
       }
 
       v7[2](v7, 0);
@@ -115,13 +115,13 @@ LABEL_18:
       {
         if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
         {
-          [NSURL(DESandboxExtension) accessWithSandboxExtension:a1 inBlock:?];
+          [NSURL(DESandboxExtension) accessWithSandboxExtension:self inBlock:?];
         }
       }
 
       else if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
       {
-        [NSURL(DESandboxExtension) accessWithSandboxExtension:a1 inBlock:?];
+        [NSURL(DESandboxExtension) accessWithSandboxExtension:self inBlock:?];
       }
     }
   }

@@ -1,29 +1,29 @@
 @interface SearchUITrailersCardSectionView
-- (SearchUITrailersCardSectionView)initWithRowModel:(id)a3 feedbackDelegate:(id)a4;
+- (SearchUITrailersCardSectionView)initWithRowModel:(id)model feedbackDelegate:(id)delegate;
 - (id)setupContentView;
 @end
 
 @implementation SearchUITrailersCardSectionView
 
-- (SearchUITrailersCardSectionView)initWithRowModel:(id)a3 feedbackDelegate:(id)a4
+- (SearchUITrailersCardSectionView)initWithRowModel:(id)model feedbackDelegate:(id)delegate
 {
   v32 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  modelCopy = model;
   v30.receiver = self;
   v30.super_class = SearchUITrailersCardSectionView;
-  v7 = [(SearchUICardSectionView *)&v30 initWithRowModel:v6 feedbackDelegate:a4];
+  v7 = [(SearchUICardSectionView *)&v30 initWithRowModel:modelCopy feedbackDelegate:delegate];
   if (v7)
   {
-    v8 = [v6 cardSection];
+    cardSection = [modelCopy cardSection];
     v9 = objc_opt_new();
-    v10 = [v8 title];
-    [v9 setText:v10];
+    title = [cardSection title];
+    [v9 setText:title];
 
-    v11 = [MEMORY[0x1E69D9138] boldBodyFont];
-    [v9 setFont:v11];
+    boldBodyFont = [MEMORY[0x1E69D9138] boldBodyFont];
+    [v9 setFont:boldBodyFont];
 
-    v12 = [(SearchUICardSectionView *)v7 contentView];
-    [v12 addArrangedSubview:v9];
+    contentView = [(SearchUICardSectionView *)v7 contentView];
+    [contentView addArrangedSubview:v9];
 
     v13 = objc_opt_new();
     [v13 setSpacing:14.0];
@@ -37,16 +37,16 @@
     [v16 setCanScrollDocumentViewVertically:0];
     [v16 setHorizontalAlignment:1];
     [MEMORY[0x1E69D9248] makeContainerShadowCompatible:v16];
-    v17 = [(SearchUICardSectionView *)v7 contentView];
-    [v17 addArrangedSubview:v16];
+    contentView2 = [(SearchUICardSectionView *)v7 contentView];
+    [contentView2 addArrangedSubview:v16];
 
     v28 = 0u;
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v25 = v8;
-    v18 = [v8 mediaItems];
-    v19 = [v18 countByEnumeratingWithState:&v26 objects:v31 count:16];
+    v25 = cardSection;
+    mediaItems = [cardSection mediaItems];
+    v19 = [mediaItems countByEnumeratingWithState:&v26 objects:v31 count:16];
     if (v19)
     {
       v20 = v19;
@@ -57,14 +57,14 @@
         {
           if (*v27 != v21)
           {
-            objc_enumerationMutation(v18);
+            objc_enumerationMutation(mediaItems);
           }
 
           v23 = [[SearchUITrailerView alloc] initWithMediaItem:*(*(&v26 + 1) + 8 * i) cardSectionView:v7];
           [v13 addArrangedSubview:v23];
         }
 
-        v20 = [v18 countByEnumeratingWithState:&v26 objects:v31 count:16];
+        v20 = [mediaItems countByEnumeratingWithState:&v26 objects:v31 count:16];
       }
 
       while (v20);
@@ -79,8 +79,8 @@
 - (id)setupContentView
 {
   v2 = objc_opt_new();
-  v3 = [v2 layer];
-  [v3 setMasksToBounds:1];
+  layer = [v2 layer];
+  [layer setMasksToBounds:1];
 
   [v2 setAxis:1];
   [v2 setLayoutMarginsRelativeArrangement:1];

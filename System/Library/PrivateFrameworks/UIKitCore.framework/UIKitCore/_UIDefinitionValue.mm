@@ -1,34 +1,34 @@
 @interface _UIDefinitionValue
-- (_UIDefinitionValue)initWithLocalizedDictionaryName:(id)a3 term:(id)a4 definition:(id)a5 longDefinition:(id)a6;
+- (_UIDefinitionValue)initWithLocalizedDictionaryName:(id)name term:(id)term definition:(id)definition longDefinition:(id)longDefinition;
 - (id)description;
 @end
 
 @implementation _UIDefinitionValue
 
-- (_UIDefinitionValue)initWithLocalizedDictionaryName:(id)a3 term:(id)a4 definition:(id)a5 longDefinition:(id)a6
+- (_UIDefinitionValue)initWithLocalizedDictionaryName:(id)name term:(id)term definition:(id)definition longDefinition:(id)longDefinition
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  nameCopy = name;
+  termCopy = term;
+  definitionCopy = definition;
+  longDefinitionCopy = longDefinition;
   v24.receiver = self;
   v24.super_class = _UIDefinitionValue;
   v14 = [(_UIDefinitionValue *)&v24 init];
   if (v14)
   {
-    v15 = [v10 copy];
+    v15 = [nameCopy copy];
     localizedDictionaryName = v14->_localizedDictionaryName;
     v14->_localizedDictionaryName = v15;
 
-    v17 = [v11 copy];
+    v17 = [termCopy copy];
     term = v14->_term;
     v14->_term = v17;
 
-    v19 = [v12 copy];
+    v19 = [definitionCopy copy];
     definition = v14->_definition;
     v14->_definition = v19;
 
-    v21 = [v13 copy];
+    v21 = [longDefinitionCopy copy];
     longDefinition = v14->_longDefinition;
     v14->_longDefinition = v21;
   }

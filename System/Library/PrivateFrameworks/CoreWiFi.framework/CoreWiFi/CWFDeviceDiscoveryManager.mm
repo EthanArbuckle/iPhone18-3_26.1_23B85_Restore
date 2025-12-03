@@ -1,26 +1,26 @@
 @interface CWFDeviceDiscoveryManager
 - (BOOL)_isRapportTeardownTimerValid;
-- (BOOL)_isSupportedModel:(id)a3;
+- (BOOL)_isSupportedModel:(id)model;
 - (BOOL)_isWiFiInfoRequestTimerValid;
 - (CWFDeviceDiscoveryManager)init;
-- (id)_interfaceForModel:(id)a3;
+- (id)_interfaceForModel:(id)model;
 - (id)_wifiInfo;
 - (id)fetchActiveDevices;
 - (void)_fetchAndUpdateActiveDevicesInfo;
-- (void)_fetchWiFiInfoForDevice:(id)a3 rapportDevice:(id)a4;
-- (void)_fetchWiFiInfoForRapportDevice:(id)a3 completion:(id)a4;
+- (void)_fetchWiFiInfoForDevice:(id)device rapportDevice:(id)rapportDevice;
+- (void)_fetchWiFiInfoForRapportDevice:(id)device completion:(id)completion;
 - (void)_invalidateRapportTeardownTimer;
 - (void)_invalidateWiFiInfoRetryRequestTimer;
 - (void)_registerExtractWiFiInfo;
-- (void)_reportFaultEventForDevices:(id)a3;
-- (void)_resetRapportClientWithInvalidation:(BOOL)a3;
-- (void)_sendRapportMessageToDevice:(id)a3 requestID:(id)a4 request:(id)a5 options:(id)a6 completion:(id)a7;
-- (void)_setupRapportClientWithReason:(unint64_t)a3;
-- (void)fetchWiFiInfoForDevice:(id)a3;
+- (void)_reportFaultEventForDevices:(id)devices;
+- (void)_resetRapportClientWithInvalidation:(BOOL)invalidation;
+- (void)_sendRapportMessageToDevice:(id)device requestID:(id)d request:(id)request options:(id)options completion:(id)completion;
+- (void)_setupRapportClientWithReason:(unint64_t)reason;
+- (void)fetchWiFiInfoForDevice:(id)device;
 - (void)invalidate;
-- (void)registerDelegate:(id)a3;
-- (void)startDiscoveringDevicesIfNeeded:(id)a3 withReason:(unint64_t)a4;
-- (void)unregisterDelegate:(id)a3;
+- (void)registerDelegate:(id)delegate;
+- (void)startDiscoveringDevicesIfNeeded:(id)needed withReason:(unint64_t)reason;
+- (void)unregisterDelegate:(id)delegate;
 @end
 
 @implementation CWFDeviceDiscoveryManager
@@ -59,31 +59,31 @@
   return v2;
 }
 
-- (void)registerDelegate:(id)a3
+- (void)registerDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   rapportQueue = self->_rapportQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = sub_1E0C6561C;
   v7[3] = &unk_1E86E6420;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = delegateCopy;
+  selfCopy = self;
+  v6 = delegateCopy;
   dispatch_async(rapportQueue, v7);
 }
 
-- (void)unregisterDelegate:(id)a3
+- (void)unregisterDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   rapportQueue = self->_rapportQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = sub_1E0C65714;
   v7[3] = &unk_1E86E6420;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = delegateCopy;
+  selfCopy = self;
+  v6 = delegateCopy;
   dispatch_async(rapportQueue, v7);
 }
 
@@ -101,9 +101,9 @@
   objc_destroyWeak(&location);
 }
 
-- (void)startDiscoveringDevicesIfNeeded:(id)a3 withReason:(unint64_t)a4
+- (void)startDiscoveringDevicesIfNeeded:(id)needed withReason:(unint64_t)reason
 {
-  v6 = a3;
+  neededCopy = needed;
   objc_initWeak(&location, self);
   rapportQueue = self->_rapportQueue;
   v9[0] = MEMORY[0x1E69E9820];
@@ -111,9 +111,9 @@
   v9[2] = sub_1E0C65B00;
   v9[3] = &unk_1E86E7460;
   objc_copyWeak(v11, &location);
-  v10 = v6;
-  v11[1] = a4;
-  v8 = v6;
+  v10 = neededCopy;
+  v11[1] = reason;
+  v8 = neededCopy;
   dispatch_async(rapportQueue, v9);
 
   objc_destroyWeak(v11);
@@ -146,7 +146,7 @@
   return v4;
 }
 
-- (void)_setupRapportClientWithReason:(unint64_t)a3
+- (void)_setupRapportClientWithReason:(unint64_t)reason
 {
   v49 = *MEMORY[0x1E69E9840];
   v5 = CWFGetPHOSLog();
@@ -176,9 +176,9 @@
     _os_log_send_and_compose_impl();
   }
 
-  v8 = [(CWFDeviceDiscoveryManager *)self rapportClient];
+  rapportClient = [(CWFDeviceDiscoveryManager *)self rapportClient];
 
-  if (v8)
+  if (rapportClient)
   {
     v9 = CWFGetPHOSLog();
     if (v9)
@@ -209,10 +209,10 @@
   else
   {
     objc_initWeak(&location, self);
-    self->_setupReason = a3;
+    self->_setupReason = reason;
     v11 = objc_alloc_init(sub_1E0C66414());
-    v12 = [(CWFDeviceDiscoveryManager *)self rapportQueue];
-    [v11 setDispatchQueue:v12];
+    rapportQueue = [(CWFDeviceDiscoveryManager *)self rapportQueue];
+    [v11 setDispatchQueue:rapportQueue];
 
     [v11 setControlFlags:72706];
     [v11 setFlags:17];
@@ -233,7 +233,7 @@
     v34[2] = sub_1E0C6674C;
     v34[3] = &unk_1E86E74D8;
     objc_copyWeak(v35, &location);
-    v35[1] = a3;
+    v35[1] = reason;
     [v11 setDeviceFoundHandler:v34];
     v32[0] = MEMORY[0x1E69E9820];
     v32[1] = 3221225472;
@@ -275,7 +275,7 @@
     v30 = v17;
     [v17 activateWithCompletion:v29];
     [(CWFDeviceDiscoveryManager *)self setRapportClient:v17];
-    if (a3 == 1)
+    if (reason == 1)
     {
       [(CWFDeviceDiscoveryManager *)self _registerExtractWiFiInfo];
     }
@@ -284,20 +284,20 @@
     v19 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, v18);
     [(CWFDeviceDiscoveryManager *)self setRapportTeardownTimer:v19];
 
-    v20 = [(CWFDeviceDiscoveryManager *)self rapportTeardownTimer];
+    rapportTeardownTimer = [(CWFDeviceDiscoveryManager *)self rapportTeardownTimer];
     handler[0] = MEMORY[0x1E69E9820];
     handler[1] = 3221225472;
     handler[2] = sub_1E0C66E90;
     handler[3] = &unk_1E86E6190;
     objc_copyWeak(&v28, &location);
-    dispatch_source_set_event_handler(v20, handler);
+    dispatch_source_set_event_handler(rapportTeardownTimer, handler);
 
     v21 = dispatch_time(0, 120000000000);
-    v22 = [(CWFDeviceDiscoveryManager *)self rapportTeardownTimer];
-    dispatch_source_set_timer(v22, v21, 0x1BF08EB000uLL, 0);
+    rapportTeardownTimer2 = [(CWFDeviceDiscoveryManager *)self rapportTeardownTimer];
+    dispatch_source_set_timer(rapportTeardownTimer2, v21, 0x1BF08EB000uLL, 0);
 
-    v23 = [(CWFDeviceDiscoveryManager *)self rapportTeardownTimer];
-    dispatch_resume(v23);
+    rapportTeardownTimer3 = [(CWFDeviceDiscoveryManager *)self rapportTeardownTimer];
+    dispatch_resume(rapportTeardownTimer3);
 
     objc_destroyWeak(&v28);
     objc_destroyWeak(&v31);
@@ -312,10 +312,10 @@
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchWiFiInfoForDevice:(id)a3
+- (void)fetchWiFiInfoForDevice:(id)device
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  deviceCopy = device;
   v5 = CWFGetPHOSLog();
   if (v5)
   {
@@ -330,7 +330,7 @@
 
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    [v4 userInfo];
+    [deviceCopy userInfo];
     v13 = 136447234;
     v15 = 2082;
     v14 = "[CWFDeviceDiscoveryManager fetchWiFiInfoForDevice:]";
@@ -349,20 +349,20 @@
   block[2] = sub_1E0C67090;
   block[3] = &unk_1E86E6420;
   block[4] = self;
-  v12 = v4;
-  v9 = v4;
+  v12 = deviceCopy;
+  v9 = deviceCopy;
   dispatch_async(rapportQueue, block);
 
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_isSupportedModel:(id)a3
+- (BOOL)_isSupportedModel:(id)model
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  modelCopy = model;
+  v4 = modelCopy;
+  if (modelCopy)
   {
-    if ([v3 hasPrefix:@"iPhone"] & 1) != 0 || (objc_msgSend(v4, "hasPrefix:", @"iPad") & 1) != 0 || (objc_msgSend(v4, "containsString:", @"Mac"))
+    if ([modelCopy hasPrefix:@"iPhone"] & 1) != 0 || (objc_msgSend(v4, "hasPrefix:", @"iPad") & 1) != 0 || (objc_msgSend(v4, "containsString:", @"Mac"))
     {
       v5 = 1;
     }
@@ -381,9 +381,9 @@
   return v5;
 }
 
-- (id)_interfaceForModel:(id)a3
+- (id)_interfaceForModel:(id)model
 {
-  if ([a3 containsString:@"RealityDevice"])
+  if ([model containsString:@"RealityDevice"])
   {
     return @"ir0";
   }
@@ -424,15 +424,15 @@
         v16 = sub_1E0BC2D50;
         v17 = sub_1E0BC61E4;
         v18 = 0;
-        v8 = [(CWFDeviceDiscoveryManager *)self rapportClient];
-        v9 = [v8 activeDevices];
+        rapportClient = [(CWFDeviceDiscoveryManager *)self rapportClient];
+        activeDevices = [rapportClient activeDevices];
         v12[0] = MEMORY[0x1E69E9820];
         v12[1] = 3221225472;
         v12[2] = sub_1E0C67558;
         v12[3] = &unk_1E86E7550;
         v12[4] = v6;
         v12[5] = &v13;
-        [v9 enumerateObjectsUsingBlock:v12];
+        [activeDevices enumerateObjectsUsingBlock:v12];
 
         [(CWFDeviceDiscoveryManager *)self _fetchWiFiInfoForDevice:v6 rapportDevice:v14[5]];
         _Block_object_dispose(&v13, 8);
@@ -451,27 +451,27 @@
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_fetchWiFiInfoForDevice:(id)a3 rapportDevice:(id)a4
+- (void)_fetchWiFiInfoForDevice:(id)device rapportDevice:(id)rapportDevice
 {
   v17[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  rapportDeviceCopy = rapportDevice;
   objc_initWeak(&location, self);
-  v8 = [(CWFDeviceDiscoveryManager *)self retryDevices];
-  v17[0] = v6;
-  v17[1] = v7;
+  retryDevices = [(CWFDeviceDiscoveryManager *)self retryDevices];
+  v17[0] = deviceCopy;
+  v17[1] = rapportDeviceCopy;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:2];
-  v10 = [v7 effectiveIdentifier];
-  [v8 setObject:v9 forKey:v10];
+  effectiveIdentifier = [rapportDeviceCopy effectiveIdentifier];
+  [retryDevices setObject:v9 forKey:effectiveIdentifier];
 
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = sub_1E0C677A0;
   v13[3] = &unk_1E86E75A0;
   objc_copyWeak(&v15, &location);
-  v11 = v6;
+  v11 = deviceCopy;
   v14 = v11;
-  [(CWFDeviceDiscoveryManager *)self _fetchWiFiInfoForRapportDevice:v7 completion:v13];
+  [(CWFDeviceDiscoveryManager *)self _fetchWiFiInfoForRapportDevice:rapportDeviceCopy completion:v13];
 
   objc_destroyWeak(&v15);
   objc_destroyWeak(&location);
@@ -508,13 +508,13 @@
     _os_log_send_and_compose_impl();
   }
 
-  v6 = [(CWFDeviceDiscoveryManager *)self rapportClient];
+  rapportClient = [(CWFDeviceDiscoveryManager *)self rapportClient];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = sub_1E0C680EC;
   v8[3] = &unk_1E86E75C8;
   objc_copyWeak(&v9, &location);
-  [v6 registerRequestID:@"com.apple.corewifi.RequestWiFiInfo" options:MEMORY[0x1E695E0F8] handler:v8];
+  [rapportClient registerRequestID:@"com.apple.corewifi.RequestWiFiInfo" options:MEMORY[0x1E695E0F8] handler:v8];
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -534,8 +534,8 @@
 
   v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%@", v3, v5];
   v13[0] = @"deviceMACAddress";
-  v7 = [(CWFDeviceDiscoveryManager *)self thisDeviceMACAddress];
-  v14[0] = v7;
+  thisDeviceMACAddress = [(CWFDeviceDiscoveryManager *)self thisDeviceMACAddress];
+  v14[0] = thisDeviceMACAddress;
   v13[1] = @"deviceMarketingName";
   v8 = MGGetStringAnswer();
   v14[1] = v8;
@@ -551,11 +551,11 @@
   return v10;
 }
 
-- (void)_fetchWiFiInfoForRapportDevice:(id)a3 completion:(id)a4
+- (void)_fetchWiFiInfoForRapportDevice:(id)device completion:(id)completion
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  completionCopy = completion;
   v8 = CWFGetPHOSLog();
   if (v8)
   {
@@ -582,34 +582,34 @@
   }
 
   v11 = dispatch_time(0, 1000000000);
-  v12 = [(CWFDeviceDiscoveryManager *)self rapportQueue];
+  rapportQueue = [(CWFDeviceDiscoveryManager *)self rapportQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = sub_1E0C685D4;
   block[3] = &unk_1E86E6CA8;
   block[4] = self;
-  v17 = v6;
-  v18 = v7;
-  v13 = v7;
-  v14 = v6;
-  dispatch_after(v11, v12, block);
+  v17 = deviceCopy;
+  v18 = completionCopy;
+  v13 = completionCopy;
+  v14 = deviceCopy;
+  dispatch_after(v11, rapportQueue, block);
 
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_sendRapportMessageToDevice:(id)a3 requestID:(id)a4 request:(id)a5 options:(id)a6 completion:(id)a7
+- (void)_sendRapportMessageToDevice:(id)device requestID:(id)d request:(id)request options:(id)options completion:(id)completion
 {
   v46 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [(CWFDeviceDiscoveryManager *)self rapportClient];
+  deviceCopy = device;
+  dCopy = d;
+  requestCopy = request;
+  optionsCopy = options;
+  completionCopy = completion;
+  rapportClient = [(CWFDeviceDiscoveryManager *)self rapportClient];
 
-  if (v17)
+  if (rapportClient)
   {
-    v18 = [MEMORY[0x1E696AFB0] UUID];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
     v19 = CWFGetPHOSLog();
     if (v19)
     {
@@ -631,28 +631,28 @@
       v40 = 1024;
       v41 = 570;
       v42 = 2112;
-      v43 = v18;
+      v43 = uUID;
       v44 = 2112;
-      v45 = v12;
+      v45 = deviceCopy;
       _os_log_send_and_compose_impl();
     }
 
     v24 = objc_alloc_init(sub_1E0C66414());
     [v24 setControlFlags:256];
-    [v24 setDestinationDevice:v12];
+    [v24 setDestinationDevice:deviceCopy];
     v28[0] = MEMORY[0x1E69E9820];
     v28[1] = 3221225472;
     v28[2] = sub_1E0C68970;
     v28[3] = &unk_1E86E7618;
-    v29 = v18;
-    v35 = v16;
-    v30 = v15;
-    v31 = v14;
+    v29 = uUID;
+    v35 = completionCopy;
+    v30 = optionsCopy;
+    v31 = requestCopy;
     v32 = v24;
-    v33 = v13;
-    v34 = v12;
+    v33 = dCopy;
+    v34 = deviceCopy;
     v25 = v24;
-    v22 = v18;
+    v22 = uUID;
     [v25 activateWithCompletion:v28];
   }
 
@@ -679,9 +679,9 @@
       v40 = 1024;
       v41 = 564;
       v42 = 2112;
-      v43 = v13;
+      v43 = dCopy;
       v44 = 2112;
-      v45 = v12;
+      v45 = deviceCopy;
       _os_log_send_and_compose_impl();
     }
   }
@@ -689,26 +689,26 @@
   v27 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_resetRapportClientWithInvalidation:(BOOL)a3
+- (void)_resetRapportClientWithInvalidation:(BOOL)invalidation
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (invalidation)
   {
-    v4 = [(CWFDeviceDiscoveryManager *)self rapportClient];
-    [v4 invalidate];
+    rapportClient = [(CWFDeviceDiscoveryManager *)self rapportClient];
+    [rapportClient invalidate];
   }
 
-  v5 = [(CWFDeviceDiscoveryManager *)self rapportClient];
-  [v5 setDeviceFoundHandler:0];
+  rapportClient2 = [(CWFDeviceDiscoveryManager *)self rapportClient];
+  [rapportClient2 setDeviceFoundHandler:0];
 
-  v6 = [(CWFDeviceDiscoveryManager *)self rapportClient];
-  [v6 setDeviceLostHandler:0];
+  rapportClient3 = [(CWFDeviceDiscoveryManager *)self rapportClient];
+  [rapportClient3 setDeviceLostHandler:0];
 
-  v7 = [(CWFDeviceDiscoveryManager *)self rapportClient];
-  [v7 setInterruptionHandler:0];
+  rapportClient4 = [(CWFDeviceDiscoveryManager *)self rapportClient];
+  [rapportClient4 setInterruptionHandler:0];
 
-  v8 = [(CWFDeviceDiscoveryManager *)self rapportClient];
-  [v8 setInvalidationHandler:0];
+  rapportClient5 = [(CWFDeviceDiscoveryManager *)self rapportClient];
+  [rapportClient5 setInvalidationHandler:0];
 
   [(CWFDeviceDiscoveryManager *)self setRapportClient:0];
   if ([(CWFDeviceDiscoveryManager *)self rapportClientActivationFailCount]> 2)
@@ -735,23 +735,23 @@
 
   else
   {
-    v9 = [(CWFDeviceDiscoveryManager *)self setupReason];
+    setupReason = [(CWFDeviceDiscoveryManager *)self setupReason];
     v10 = *MEMORY[0x1E69E9840];
 
-    [(CWFDeviceDiscoveryManager *)self _setupRapportClientWithReason:v9];
+    [(CWFDeviceDiscoveryManager *)self _setupRapportClientWithReason:setupReason];
   }
 }
 
 - (void)_invalidateWiFiInfoRetryRequestTimer
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = [(CWFDeviceDiscoveryManager *)self wifiInfoRetryRequestTimer];
-  if (v3)
+  wifiInfoRetryRequestTimer = [(CWFDeviceDiscoveryManager *)self wifiInfoRetryRequestTimer];
+  if (wifiInfoRetryRequestTimer)
   {
-    v4 = v3;
-    v5 = [(CWFDeviceDiscoveryManager *)self _isWiFiInfoRequestTimerValid];
+    v4 = wifiInfoRetryRequestTimer;
+    _isWiFiInfoRequestTimerValid = [(CWFDeviceDiscoveryManager *)self _isWiFiInfoRequestTimerValid];
 
-    if (v5)
+    if (_isWiFiInfoRequestTimerValid)
     {
       v6 = CWFGetPHOSLog();
       if (v6)
@@ -770,8 +770,8 @@
         _os_log_send_and_compose_impl();
       }
 
-      v9 = [(CWFDeviceDiscoveryManager *)self wifiInfoRetryRequestTimer];
-      dispatch_source_cancel(v9);
+      wifiInfoRetryRequestTimer2 = [(CWFDeviceDiscoveryManager *)self wifiInfoRetryRequestTimer];
+      dispatch_source_cancel(wifiInfoRetryRequestTimer2);
 
       [(CWFDeviceDiscoveryManager *)self setWifiInfoRetryRequestTimer:0];
     }
@@ -782,11 +782,11 @@
 
 - (BOOL)_isWiFiInfoRequestTimerValid
 {
-  v3 = [(CWFDeviceDiscoveryManager *)self wifiInfoRetryRequestTimer];
-  if (v3)
+  wifiInfoRetryRequestTimer = [(CWFDeviceDiscoveryManager *)self wifiInfoRetryRequestTimer];
+  if (wifiInfoRetryRequestTimer)
   {
-    v4 = [(CWFDeviceDiscoveryManager *)self wifiInfoRetryRequestTimer];
-    v5 = dispatch_source_testcancel(v4) == 0;
+    wifiInfoRetryRequestTimer2 = [(CWFDeviceDiscoveryManager *)self wifiInfoRetryRequestTimer];
+    v5 = dispatch_source_testcancel(wifiInfoRetryRequestTimer2) == 0;
   }
 
   else
@@ -800,13 +800,13 @@
 - (void)_invalidateRapportTeardownTimer
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = [(CWFDeviceDiscoveryManager *)self rapportTeardownTimer];
-  if (v3)
+  rapportTeardownTimer = [(CWFDeviceDiscoveryManager *)self rapportTeardownTimer];
+  if (rapportTeardownTimer)
   {
-    v4 = v3;
-    v5 = [(CWFDeviceDiscoveryManager *)self _isRapportTeardownTimerValid];
+    v4 = rapportTeardownTimer;
+    _isRapportTeardownTimerValid = [(CWFDeviceDiscoveryManager *)self _isRapportTeardownTimerValid];
 
-    if (v5)
+    if (_isRapportTeardownTimerValid)
     {
       v6 = CWFGetPHOSLog();
       if (v6)
@@ -825,8 +825,8 @@
         _os_log_send_and_compose_impl();
       }
 
-      v9 = [(CWFDeviceDiscoveryManager *)self rapportTeardownTimer];
-      dispatch_source_cancel(v9);
+      rapportTeardownTimer2 = [(CWFDeviceDiscoveryManager *)self rapportTeardownTimer];
+      dispatch_source_cancel(rapportTeardownTimer2);
 
       [(CWFDeviceDiscoveryManager *)self setRapportTeardownTimer:0];
     }
@@ -837,11 +837,11 @@
 
 - (BOOL)_isRapportTeardownTimerValid
 {
-  v3 = [(CWFDeviceDiscoveryManager *)self rapportTeardownTimer];
-  if (v3)
+  rapportTeardownTimer = [(CWFDeviceDiscoveryManager *)self rapportTeardownTimer];
+  if (rapportTeardownTimer)
   {
-    v4 = [(CWFDeviceDiscoveryManager *)self rapportTeardownTimer];
-    v5 = dispatch_source_testcancel(v4) == 0;
+    rapportTeardownTimer2 = [(CWFDeviceDiscoveryManager *)self rapportTeardownTimer];
+    v5 = dispatch_source_testcancel(rapportTeardownTimer2) == 0;
   }
 
   else
@@ -852,15 +852,15 @@
   return v5;
 }
 
-- (void)_reportFaultEventForDevices:(id)a3
+- (void)_reportFaultEventForDevices:(id)devices
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 count])
+  devicesCopy = devices;
+  if ([devicesCopy count])
   {
-    v5 = [v4 objectAtIndexedSubscript:1];
-    v6 = [v5 model];
-    v7 = [(CWFDeviceDiscoveryManager *)self _interfaceForModel:v6];
+    v5 = [devicesCopy objectAtIndexedSubscript:1];
+    model = [v5 model];
+    v7 = [(CWFDeviceDiscoveryManager *)self _interfaceForModel:model];
 
     v20 = 0;
     v21 = &v20;
@@ -880,13 +880,13 @@
 
     v9 = v8;
     _Block_object_dispose(&v20, 8);
-    v10 = [v8 sharedInstance];
-    v11 = [MEMORY[0x1E695DF90] dictionary];
-    v12 = [v5 model];
-    [v11 setObject:v12 forKey:@"deviceModel"];
+    sharedInstance = [v8 sharedInstance];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    model2 = [v5 model];
+    [dictionary setObject:model2 forKey:@"deviceModel"];
 
-    v13 = [v5 effectiveIdentifier];
-    [v11 setObject:v13 forKey:@"deviceRapportEffectiveIdentifier"];
+    effectiveIdentifier = [v5 effectiveIdentifier];
+    [dictionary setObject:effectiveIdentifier forKey:@"deviceRapportEffectiveIdentifier"];
 
     v14 = CWFGetPHOSLog();
     if (v14)
@@ -909,18 +909,18 @@
       *&v25[22] = 1024;
       LODWORD(v26) = 664;
       WORD2(v26) = 2112;
-      *(&v26 + 6) = v11;
+      *(&v26 + 6) = dictionary;
       HIWORD(v26) = 2112;
-      v27 = v10;
+      v27 = sharedInstance;
       v28 = 2112;
       v29 = v7;
       _os_log_send_and_compose_impl();
     }
 
-    v17 = [MEMORY[0x1E695DF00] date];
-    v24 = v11;
+    date = [MEMORY[0x1E695DF00] date];
+    v24 = dictionary;
     v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v24 count:1];
-    [v10 addFaultEvent:37 forInterface:v7 at:v17 event:v18];
+    [sharedInstance addFaultEvent:37 forInterface:v7 at:date event:v18];
   }
 
   v19 = *MEMORY[0x1E69E9840];

@@ -1,32 +1,32 @@
 @interface VMVoicemailTranscriptionTask
 + (void)resetRetranscriptionTaskState;
-- (BOOL)alreadyAttemptedVoicemailTranscriptionForVoicemail:(id)a3;
+- (BOOL)alreadyAttemptedVoicemailTranscriptionForVoicemail:(id)voicemail;
 - (BOOL)confidenceModelExistsOnDevice;
 - (BOOL)deviceHasSpeechAssets;
-- (BOOL)speechAssetHasConfidenceModel:(id)a3;
-- (BOOL)voicemailWasTranscribedWithoutConfidence:(id)a3;
+- (BOOL)speechAssetHasConfidenceModel:(id)model;
+- (BOOL)voicemailWasTranscribedWithoutConfidence:(id)confidence;
 - (VMTranscriptionService)transcriptionService;
-- (VMVoicemailTranscriptionTask)initWithTranscriptionService:(id)a3;
+- (VMVoicemailTranscriptionTask)initWithTranscriptionService:(id)service;
 - (id)allVoicemailsTranscribedWithoutConfidence;
 - (id)lastTaskExecutionDate;
 - (id)speechAssetsOnDevice;
 - (id)speechAssetsWithConfidenceModelsOnDevice;
-- (id)voicemailsMatchingFlags:(unsigned int)a3 withoutFlags:(unsigned int)a4;
+- (id)voicemailsMatchingFlags:(unsigned int)flags withoutFlags:(unsigned int)withoutFlags;
 - (void)_endRetranscribingTask;
-- (void)_startRetranscribingVoicemailsIfNecessaryTranscribingAllVoicemails:(BOOL)a3;
-- (void)cancelAttemptedVoicemailTranscriptionForVoicemail:(id)a3;
+- (void)_startRetranscribingVoicemailsIfNecessaryTranscribingAllVoicemails:(BOOL)voicemails;
+- (void)cancelAttemptedVoicemailTranscriptionForVoicemail:(id)voicemail;
 - (void)dealloc;
-- (void)processTranscriptForVoicemail:(id)a3;
+- (void)processTranscriptForVoicemail:(id)voicemail;
 - (void)retranscribeAllVoicemails;
-- (void)setAttemptedVoicemailTranscriptionForVoicemail:(id)a3;
-- (void)setLastExecutionDate:(id)a3;
+- (void)setAttemptedVoicemailTranscriptionForVoicemail:(id)voicemail;
+- (void)setLastExecutionDate:(id)date;
 @end
 
 @implementation VMVoicemailTranscriptionTask
 
-- (VMVoicemailTranscriptionTask)initWithTranscriptionService:(id)a3
+- (VMVoicemailTranscriptionTask)initWithTranscriptionService:(id)service
 {
-  v4 = a3;
+  serviceCopy = service;
   v9.receiver = self;
   v9.super_class = VMVoicemailTranscriptionTask;
   v5 = [(VMVoicemailTranscriptionTask *)&v9 init];
@@ -36,7 +36,7 @@
     taskQueue = v5->_taskQueue;
     v5->_taskQueue = v6;
 
-    objc_storeWeak(&v5->_transcriptionService, v4);
+    objc_storeWeak(&v5->_transcriptionService, serviceCopy);
   }
 
   return v5;
@@ -73,9 +73,9 @@
   }
 }
 
-- (void)setLastExecutionDate:(id)a3
+- (void)setLastExecutionDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v5 = +[NSFileManager defaultManager];
   v6 = [v5 fileExistsAtPath:@"/var/mobile/Library/Voicemail/com.apple.voicemail.transcriptiontask.plist"];
 
@@ -89,7 +89,7 @@
     +[NSMutableDictionary dictionary];
   }
   v7 = ;
-  [v7 setObject:v4 forKey:@"VMVoicemailTranscriptionTaskLastExecutionDate"];
+  [v7 setObject:dateCopy forKey:@"VMVoicemailTranscriptionTaskLastExecutionDate"];
   v14 = 0;
   v8 = [v7 writeToFile:@"/var/mobile/Library/Voicemail/com.apple.voicemail.transcriptiontask.plist" options:268435457 error:&v14];
   v9 = v14;
@@ -100,11 +100,11 @@
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v12 = NSStringFromSelector(a2);
-      v13 = [NSString stringWithFormat:@"Saved last execution date of %@ to retranscription task plist.", v4];
+      dateCopy = [NSString stringWithFormat:@"Saved last execution date of %@ to retranscription task plist.", dateCopy];
       *buf = 138412546;
       v16 = v12;
       v17 = 2112;
-      v18 = v13;
+      v18 = dateCopy;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%@: %@", buf, 0x16u);
     }
   }
@@ -159,8 +159,8 @@
 
 - (BOOL)deviceHasSpeechAssets
 {
-  v2 = [(VMVoicemailTranscriptionTask *)self speechAssetsOnDevice];
-  v3 = [v2 count] != 0;
+  speechAssetsOnDevice = [(VMVoicemailTranscriptionTask *)self speechAssetsOnDevice];
+  v3 = [speechAssetsOnDevice count] != 0;
 
   return v3;
 }
@@ -189,25 +189,25 @@
 
 - (id)speechAssetsWithConfidenceModelsOnDevice
 {
-  v3 = [(VMVoicemailTranscriptionTask *)self speechAssetsOnDevice];
+  speechAssetsOnDevice = [(VMVoicemailTranscriptionTask *)self speechAssetsOnDevice];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10006903C;
   v7[3] = &unk_1000EF0E0;
   v7[4] = self;
   v4 = [NSPredicate predicateWithBlock:v7];
-  v5 = [v3 filteredArrayUsingPredicate:v4];
+  v5 = [speechAssetsOnDevice filteredArrayUsingPredicate:v4];
 
   return v5;
 }
 
-- (BOOL)speechAssetHasConfidenceModel:(id)a3
+- (BOOL)speechAssetHasConfidenceModel:(id)model
 {
-  v4 = a3;
-  v5 = [v4 lastPathComponent];
-  v6 = [v5 stringByDeletingPathExtension];
+  modelCopy = model;
+  lastPathComponent = [modelCopy lastPathComponent];
+  stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
 
-  v7 = [&off_1000F5AA0 containsObject:v6];
+  v7 = [&off_1000F5AA0 containsObject:stringByDeletingPathExtension];
   v8 = vm_vmd_log();
   v9 = v8;
   if (v7)
@@ -234,15 +234,15 @@
 
 - (BOOL)confidenceModelExistsOnDevice
 {
-  v2 = [(VMVoicemailTranscriptionTask *)self speechAssetsWithConfidenceModelsOnDevice];
-  v3 = [v2 count] != 0;
+  speechAssetsWithConfidenceModelsOnDevice = [(VMVoicemailTranscriptionTask *)self speechAssetsWithConfidenceModelsOnDevice];
+  v3 = [speechAssetsWithConfidenceModelsOnDevice count] != 0;
 
   return v3;
 }
 
-- (void)setAttemptedVoicemailTranscriptionForVoicemail:(id)a3
+- (void)setAttemptedVoicemailTranscriptionForVoicemail:(id)voicemail
 {
-  v4 = a3;
+  voicemailCopy = voicemail;
   v5 = +[NSFileManager defaultManager];
   v6 = [v5 fileExistsAtPath:@"/var/mobile/Library/Voicemail/com.apple.voicemail.transcriptiontask.plist"];
 
@@ -269,7 +269,7 @@
     v10 = +[NSMutableArray array];
   }
 
-  v11 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v4 identifier]);
+  v11 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [voicemailCopy identifier]);
   [v10 addObject:v11];
 
   [v7 setObject:v10 forKey:@"VMVoicemailTranscriptionPreviouslyAttemptedVoicemails"];
@@ -283,7 +283,7 @@
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       v16 = NSStringFromSelector(a2);
-      v17 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"Noted in plist that we have attempted to transcribe voicemail with identifier: %lu.", [v4 identifier]);
+      v17 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"Noted in plist that we have attempted to transcribe voicemail with identifier: %lu.", [voicemailCopy identifier]);
       *buf = 138412546;
       v20 = v16;
       v21 = 2112;
@@ -298,9 +298,9 @@
   }
 }
 
-- (void)cancelAttemptedVoicemailTranscriptionForVoicemail:(id)a3
+- (void)cancelAttemptedVoicemailTranscriptionForVoicemail:(id)voicemail
 {
-  v4 = a3;
+  voicemailCopy = voicemail;
   v5 = +[NSFileManager defaultManager];
   v6 = [v5 fileExistsAtPath:@"/var/mobile/Library/Voicemail/com.apple.voicemail.transcriptiontask.plist"];
 
@@ -310,12 +310,12 @@
     v8 = [v7 objectForKey:@"VMVoicemailTranscriptionPreviouslyAttemptedVoicemails"];
     v9 = [v8 mutableCopy];
 
-    v10 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v4 identifier]);
+    v10 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [voicemailCopy identifier]);
     v11 = [v9 containsObject:v10];
 
     if (v11)
     {
-      v12 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v4 identifier]);
+      v12 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [voicemailCopy identifier]);
       [v9 removeObject:v12];
 
       [v7 setObject:v9 forKey:@"VMVoicemailTranscriptionPreviouslyAttemptedVoicemails"];
@@ -329,7 +329,7 @@
         if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
         {
           v17 = NSStringFromSelector(a2);
-          v18 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"Removing from plist that we have attempted to transcribe voicemail with identifier: %lu.", [v4 identifier]);
+          v18 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"Removing from plist that we have attempted to transcribe voicemail with identifier: %lu.", [voicemailCopy identifier]);
           *buf = 138412546;
           v21 = v17;
           v22 = 2112;
@@ -346,9 +346,9 @@
   }
 }
 
-- (BOOL)alreadyAttemptedVoicemailTranscriptionForVoicemail:(id)a3
+- (BOOL)alreadyAttemptedVoicemailTranscriptionForVoicemail:(id)voicemail
 {
-  v4 = a3;
+  voicemailCopy = voicemail;
   v5 = +[NSFileManager defaultManager];
   v6 = [v5 fileExistsAtPath:@"/var/mobile/Library/Voicemail/com.apple.voicemail.transcriptiontask.plist"];
 
@@ -360,7 +360,7 @@
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v10 = NSStringFromSelector(a2);
-      v11 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"Got previous attempts of: %@, will check to see if %lu is in it.", v8, [v4 identifier]);
+      v11 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"Got previous attempts of: %@, will check to see if %lu is in it.", v8, [voicemailCopy identifier]);
       *buf = 138412546;
       v18 = v10;
       v19 = 2112;
@@ -368,7 +368,7 @@
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%@: %@", buf, 0x16u);
     }
 
-    v12 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v4 identifier]);
+    v12 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [voicemailCopy identifier]);
     v13 = [v8 containsObject:v12];
   }
 
@@ -392,9 +392,9 @@
   return v13;
 }
 
-- (id)voicemailsMatchingFlags:(unsigned int)a3 withoutFlags:(unsigned int)a4
+- (id)voicemailsMatchingFlags:(unsigned int)flags withoutFlags:(unsigned int)withoutFlags
 {
-  v4 = VMStoreCopyOfAllRecordsWithFlags(a3, a4, 0);
+  v4 = VMStoreCopyOfAllRecordsWithFlags(flags, withoutFlags, 0);
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100069A38;
@@ -407,10 +407,10 @@
   return v6;
 }
 
-- (BOOL)voicemailWasTranscribedWithoutConfidence:(id)a3
+- (BOOL)voicemailWasTranscribedWithoutConfidence:(id)confidence
 {
-  v3 = [a3 transcript];
-  [v3 confidence];
+  transcript = [confidence transcript];
+  [transcript confidence];
   v5 = v4 <= 0.00000011921;
 
   return v5;
@@ -418,24 +418,24 @@
 
 - (id)allVoicemailsTranscribedWithoutConfidence
 {
-  v3 = [(VMVoicemailTranscriptionTask *)self allVoicemailsWithTranscription];
+  allVoicemailsWithTranscription = [(VMVoicemailTranscriptionTask *)self allVoicemailsWithTranscription];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100069BDC;
   v7[3] = &unk_1000EF130;
   v7[4] = self;
   v4 = [NSPredicate predicateWithBlock:v7];
-  v5 = [v3 filteredArrayUsingPredicate:v4];
+  v5 = [allVoicemailsWithTranscription filteredArrayUsingPredicate:v4];
 
   return v5;
 }
 
-- (void)processTranscriptForVoicemail:(id)a3
+- (void)processTranscriptForVoicemail:(id)voicemail
 {
-  v5 = a3;
+  voicemailCopy = voicemail;
   v6 = _os_feature_enabled_impl();
-  v7 = [(VMVoicemailTranscriptionTask *)self transcriptionService];
-  v8 = [v5 identifier];
+  transcriptionService = [(VMVoicemailTranscriptionTask *)self transcriptionService];
+  identifier = [voicemailCopy identifier];
   if (v6)
   {
     v14[0] = _NSConcreteStackBlock;
@@ -445,9 +445,9 @@
     v15[1] = self;
     v15[2] = a2;
     v9 = v15;
-    v15[0] = v5;
-    v10 = v5;
-    [v7 processSpeechAnalyzerTranscriptForRecordWithIdentifier:v8 priority:-4 completion:v14];
+    v15[0] = voicemailCopy;
+    v10 = voicemailCopy;
+    [transcriptionService processSpeechAnalyzerTranscriptForRecordWithIdentifier:identifier priority:-4 completion:v14];
   }
 
   else
@@ -459,18 +459,18 @@
     v13[1] = self;
     v13[2] = a2;
     v9 = v13;
-    v13[0] = v5;
-    v11 = v5;
-    [v7 processTranscriptForRecordWithIdentifier:v8 priority:-4 completion:v12];
+    v13[0] = voicemailCopy;
+    v11 = voicemailCopy;
+    [transcriptionService processTranscriptForRecordWithIdentifier:identifier priority:-4 completion:v12];
   }
 }
 
-- (void)_startRetranscribingVoicemailsIfNecessaryTranscribingAllVoicemails:(BOOL)a3
+- (void)_startRetranscribingVoicemailsIfNecessaryTranscribingAllVoicemails:(BOOL)voicemails
 {
-  v6 = [(VMVoicemailTranscriptionTask *)self isTaskRunning];
+  isTaskRunning = [(VMVoicemailTranscriptionTask *)self isTaskRunning];
   v7 = vm_vmd_log();
   v8 = v7;
-  if ((v6 & 1) == 0)
+  if ((isTaskRunning & 1) == 0)
   {
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
@@ -504,17 +504,17 @@
 
     if ([(VMVoicemailTranscriptionTask *)self deviceHasSpeechAssets])
     {
-      if (a3)
+      if (voicemails)
       {
         v14 = +[NSDate date];
         [(VMVoicemailTranscriptionTask *)self setLastExecutionDate:v14];
 
-        v15 = [(VMVoicemailTranscriptionTask *)self allVoicemails];
+        allVoicemails = [(VMVoicemailTranscriptionTask *)self allVoicemails];
         v16 = vm_vmd_log();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
         {
           v17 = NSStringFromSelector(a2);
-          v18 = [NSString stringWithFormat:@"Found %lu voicemails on device, and we were asked to transcribe all of them.", [v15 count]];
+          v18 = [NSString stringWithFormat:@"Found %lu voicemails on device, and we were asked to transcribe all of them.", [allVoicemails count]];
           *buf = 138412546;
           v23 = v17;
           v24 = 2112;
@@ -528,19 +528,19 @@
         v21[3] = &unk_1000EF180;
         v21[4] = self;
         v21[5] = a2;
-        [v15 enumerateObjectsUsingBlock:v21];
+        [allVoicemails enumerateObjectsUsingBlock:v21];
         goto LABEL_23;
       }
 
       if ([(VMVoicemailTranscriptionTask *)self shouldRunTranscriptionTask])
       {
-        v15 = +[NSDate date];
-        [(VMVoicemailTranscriptionTask *)self setLastExecutionDate:v15];
+        allVoicemails = +[NSDate date];
+        [(VMVoicemailTranscriptionTask *)self setLastExecutionDate:allVoicemails];
         goto LABEL_23;
       }
 
-      v15 = vm_vmd_log();
-      if (!os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+      allVoicemails = vm_vmd_log();
+      if (!os_log_type_enabled(allVoicemails, OS_LOG_TYPE_DEFAULT))
       {
         goto LABEL_23;
       }
@@ -555,8 +555,8 @@
 
     else
     {
-      v15 = vm_vmd_log();
-      if (!os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+      allVoicemails = vm_vmd_log();
+      if (!os_log_type_enabled(allVoicemails, OS_LOG_TYPE_DEFAULT))
       {
 LABEL_23:
 
@@ -572,7 +572,7 @@ LABEL_23:
       v25 = v20;
     }
 
-    _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "%@: %@", buf, 0x16u);
+    _os_log_impl(&_mh_execute_header, allVoicemails, OS_LOG_TYPE_DEFAULT, "%@: %@", buf, 0x16u);
 
     goto LABEL_23;
   }
@@ -585,10 +585,10 @@ LABEL_23:
 
 - (void)_endRetranscribingTask
 {
-  v4 = [(VMVoicemailTranscriptionTask *)self isTaskRunning];
+  isTaskRunning = [(VMVoicemailTranscriptionTask *)self isTaskRunning];
   v5 = vm_vmd_log();
   v6 = v5;
-  if (v4)
+  if (isTaskRunning)
   {
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {

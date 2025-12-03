@@ -9,12 +9,12 @@
 {
   v33 = *MEMORY[0x277D85DE8];
   v3 = [MEMORY[0x277CBEB58] setWithCapacity:2];
-  v4 = [(HMDBackingStoreModelObject *)self parentUUID];
+  parentUUID = [(HMDBackingStoreModelObject *)self parentUUID];
 
-  if (v4)
+  if (parentUUID)
   {
-    v5 = [(HMDBackingStoreModelObject *)self parentUUID];
-    [v3 addObject:v5];
+    parentUUID2 = [(HMDBackingStoreModelObject *)self parentUUID];
+    [v3 addObject:parentUUID2];
   }
 
   v30 = 0u;

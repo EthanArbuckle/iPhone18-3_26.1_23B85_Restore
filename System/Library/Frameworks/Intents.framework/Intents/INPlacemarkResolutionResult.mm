@@ -1,21 +1,21 @@
 @interface INPlacemarkResolutionResult
-- (id)_intentSlotValueForObject:(id)a3 slotDescription:(id)a4;
-- (id)_vocabularyValueForObject:(id)a3 slotDescription:(id)a4;
+- (id)_intentSlotValueForObject:(id)object slotDescription:(id)description;
+- (id)_vocabularyValueForObject:(id)object slotDescription:(id)description;
 @end
 
 @implementation INPlacemarkResolutionResult
 
-- (id)_vocabularyValueForObject:(id)a3 slotDescription:(id)a4
+- (id)_vocabularyValueForObject:(id)object slotDescription:(id)description
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 description];
-  v8 = [MEMORY[0x1E695DF58] systemLocale];
-  v9 = [v8 groupingSeparator];
-  if ([v6 valueType] == 27)
+  objectCopy = object;
+  descriptionCopy = description;
+  v7 = [objectCopy description];
+  systemLocale = [MEMORY[0x1E695DF58] systemLocale];
+  groupingSeparator = [systemLocale groupingSeparator];
+  if ([descriptionCopy valueType] == 27)
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) == 0 || ([v5 firstObject], v10 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v10, (isKindOfClass & 1) == 0))
+    if ((objc_opt_isKindOfClass() & 1) == 0 || ([objectCopy firstObject], v10 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v10, (isKindOfClass & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -23,27 +23,27 @@
         goto LABEL_13;
       }
 
-      v13 = [v5 name];
+      name = [objectCopy name];
       goto LABEL_12;
     }
 
 LABEL_4:
-    v12 = [v5 valueForKey:@"name"];
-    v13 = [v12 if_escapedComponentsJoinedByString:v9 forLocale:v8];
+    v12 = [objectCopy valueForKey:@"name"];
+    name = [v12 if_escapedComponentsJoinedByString:groupingSeparator forLocale:systemLocale];
 
     v7 = v12;
 LABEL_12:
 
-    v7 = v13;
+    v7 = name;
     goto LABEL_13;
   }
 
-  if ([v6 valueType] == 28 && objc_msgSend(v6, "valueStyle") != 3)
+  if ([descriptionCopy valueType] == 28 && objc_msgSend(descriptionCopy, "valueStyle") != 3)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v14 = [v5 firstObject];
+      firstObject = [objectCopy firstObject];
       objc_opt_class();
       v15 = objc_opt_isKindOfClass();
 
@@ -59,18 +59,18 @@ LABEL_13:
   return v7;
 }
 
-- (id)_intentSlotValueForObject:(id)a3 slotDescription:(id)a4
+- (id)_intentSlotValueForObject:(id)object slotDescription:(id)description
 {
   v42 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  objectCopy = object;
+  descriptionCopy = description;
   v7 = objc_alloc_init(_INPBIntentSlotValue);
-  if ([v6 valueType] == 27)
+  if ([descriptionCopy valueType] == 27)
   {
     [(_INPBIntentSlotValue *)v7 setType:6];
-    if ([v6 valueStyle] == 3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (objc_msgSend(v5, "firstObject"), v8 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v8, (isKindOfClass & 1) != 0))
+    if ([descriptionCopy valueStyle] == 3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (objc_msgSend(objectCopy, "firstObject"), v8 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v8, (isKindOfClass & 1) != 0))
     {
-      v10 = v5;
+      v10 = objectCopy;
       v36 = 0u;
       v37 = 0u;
       v38 = 0u;
@@ -90,9 +90,9 @@ LABEL_13:
             }
 
             v15 = INIntentSlotValueTransformToLocation(*(*(&v36 + 1) + 8 * i));
-            v16 = [v15 values];
-            v17 = [v16 firstObject];
-            [(_INPBIntentSlotValue *)v7 addPayloadLocation:v17];
+            values = [v15 values];
+            firstObject = [values firstObject];
+            [(_INPBIntentSlotValue *)v7 addPayloadLocation:firstObject];
           }
 
           v12 = [v10 countByEnumeratingWithState:&v36 objects:v41 count:16];
@@ -110,28 +110,28 @@ LABEL_13:
         goto LABEL_28;
       }
 
-      v10 = INIntentSlotValueTransformToLocation(v5);
-      v28 = [v10 values];
-      v29 = [v28 firstObject];
-      [(_INPBIntentSlotValue *)v7 addPayloadLocation:v29];
+      v10 = INIntentSlotValueTransformToLocation(objectCopy);
+      values2 = [v10 values];
+      firstObject2 = [values2 firstObject];
+      [(_INPBIntentSlotValue *)v7 addPayloadLocation:firstObject2];
     }
   }
 
-  else if ([v6 valueType] == 28)
+  else if ([descriptionCopy valueType] == 28)
   {
     [(_INPBIntentSlotValue *)v7 setType:55];
-    if ([v6 valueStyle] != 3)
+    if ([descriptionCopy valueStyle] != 3)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v18 = [v5 firstObject];
+        firstObject3 = [objectCopy firstObject];
         objc_opt_class();
         v19 = objc_opt_isKindOfClass();
 
         if (v19)
         {
-          v20 = v5;
+          v20 = objectCopy;
           v21 = objc_alloc_init(_INPBLocationList);
           v32 = 0u;
           v33 = 0u;

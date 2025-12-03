@@ -2,12 +2,12 @@
 + (id)sharedInstance;
 + (void)refreshCache;
 - (HomeKitStore)init;
-- (void)homeManagerDidUpdateHomes:(id)a3;
+- (void)homeManagerDidUpdateHomes:(id)homes;
 @end
 
 @implementation HomeKitStore
 
-- (void)homeManagerDidUpdateHomes:(id)a3
+- (void)homeManagerDidUpdateHomes:(id)homes
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -52,9 +52,9 @@
 + (void)refreshCache
 {
   v2 = +[AFPreferences sharedPreferences];
-  v3 = [v2 isSyncDisabledForFullUoDDevices];
+  isSyncDisabledForFullUoDDevices = [v2 isSyncDisabledForFullUoDDevices];
 
-  if (v3)
+  if (isSyncDisabledForFullUoDDevices)
   {
     v4 = +[HomeKitStore sharedInstance];
   }
@@ -78,7 +78,7 @@
   v5[2] = sub_100004360;
   v5[3] = &unk_1000144A0;
   v5[4] = &v6;
-  v5[5] = a1;
+  v5[5] = self;
   dispatch_sync(qword_10001A310, v5);
   v3 = v7[5];
   _Block_object_dispose(&v6, 8);

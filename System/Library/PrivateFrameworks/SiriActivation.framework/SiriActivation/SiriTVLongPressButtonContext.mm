@@ -1,26 +1,26 @@
 @interface SiriTVLongPressButtonContext
 - (BOOL)isPTTEligible;
-- (SiriTVLongPressButtonContext)initWithCoder:(id)a3;
+- (SiriTVLongPressButtonContext)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)isPTTEligible;
 @end
 
 @implementation SiriTVLongPressButtonContext
 
-- (SiriTVLongPressButtonContext)initWithCoder:(id)a3
+- (SiriTVLongPressButtonContext)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = SiriTVLongPressButtonContext;
-  v5 = [(SiriLongPressButtonContext *)&v12 initWithCoder:v4];
+  v5 = [(SiriLongPressButtonContext *)&v12 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"buttonDownTimestamp"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"buttonDownTimestamp"];
     [v6 doubleValue];
     [(SiriLongPressButtonContext *)v5 setButtonDownTimestamp:?];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"activeDeviceBluetoothIdentifier"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"activeDeviceBluetoothIdentifier"];
     v8 = [(__CFString *)v7 length];
     v9 = &stru_1F47C3998;
     if (v8)
@@ -31,43 +31,43 @@
     v10 = v9;
 
     [(SiriTVLongPressButtonContext *)v5 setActiveDeviceBluetoothIdentifier:v10];
-    -[SiriTVLongPressButtonContext setRemoteType:](v5, "setRemoteType:", [v4 decodeIntegerForKey:@"remoteType"]);
-    -[SiriTVLongPressButtonContext setIsListening:](v5, "setIsListening:", [v4 decodeBoolForKey:@"isListening"]);
-    -[SiriTVLongPressButtonContext setIsSourcePTTEligible:](v5, "setIsSourcePTTEligible:", [v4 decodeBoolForKey:@"isSourcePTTEligible"]);
+    -[SiriTVLongPressButtonContext setRemoteType:](v5, "setRemoteType:", [coderCopy decodeIntegerForKey:@"remoteType"]);
+    -[SiriTVLongPressButtonContext setIsListening:](v5, "setIsListening:", [coderCopy decodeBoolForKey:@"isListening"]);
+    -[SiriTVLongPressButtonContext setIsSourcePTTEligible:](v5, "setIsSourcePTTEligible:", [coderCopy decodeBoolForKey:@"isSourcePTTEligible"]);
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v8.receiver = self;
   v8.super_class = SiriTVLongPressButtonContext;
-  v4 = a3;
-  [(SiriLongPressButtonContext *)&v8 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(SiriLongPressButtonContext *)&v8 encodeWithCoder:coderCopy];
   v5 = MEMORY[0x1E696AD98];
   [(SiriLongPressButtonContext *)self buttonDownTimestamp:v8.receiver];
   v6 = [v5 numberWithDouble:?];
-  [v4 encodeObject:v6 forKey:@"buttonDownTimestamp"];
+  [coderCopy encodeObject:v6 forKey:@"buttonDownTimestamp"];
 
-  v7 = [(SiriTVLongPressButtonContext *)self activeDeviceBluetoothIdentifier];
-  [v4 encodeObject:v7 forKey:@"activeDeviceBluetoothIdentifier"];
+  activeDeviceBluetoothIdentifier = [(SiriTVLongPressButtonContext *)self activeDeviceBluetoothIdentifier];
+  [coderCopy encodeObject:activeDeviceBluetoothIdentifier forKey:@"activeDeviceBluetoothIdentifier"];
 
-  [v4 encodeInteger:-[SiriTVLongPressButtonContext remoteType](self forKey:{"remoteType"), @"remoteType"}];
-  [v4 encodeBool:-[SiriTVLongPressButtonContext isListening](self forKey:{"isListening"), @"isListening"}];
-  [v4 encodeBool:-[SiriTVLongPressButtonContext isSourcePTTEligible](self forKey:{"isSourcePTTEligible"), @"isSourcePTTEligible"}];
+  [coderCopy encodeInteger:-[SiriTVLongPressButtonContext remoteType](self forKey:{"remoteType"), @"remoteType"}];
+  [coderCopy encodeBool:-[SiriTVLongPressButtonContext isListening](self forKey:{"isListening"), @"isListening"}];
+  [coderCopy encodeBool:-[SiriTVLongPressButtonContext isSourcePTTEligible](self forKey:{"isSourcePTTEligible"), @"isSourcePTTEligible"}];
 }
 
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(SiriContext *)self contextOverride];
+  contextOverride = [(SiriContext *)self contextOverride];
   v5 = MEMORY[0x1E696AD98];
   [(SiriLongPressButtonContext *)self buttonDownTimestamp];
   v6 = [v5 numberWithDouble:?];
-  v7 = [(SiriTVLongPressButtonContext *)self activeDeviceBluetoothIdentifier];
+  activeDeviceBluetoothIdentifier = [(SiriTVLongPressButtonContext *)self activeDeviceBluetoothIdentifier];
   v8 = SiriTVStringForRemoteType([(SiriTVLongPressButtonContext *)self remoteType]);
-  v9 = [v3 stringWithFormat:@"<SiriTVLongPressButtonContext contextOverride:%@ buttonDownTimestamp:%@, activeDeviceBluetoothIdentifier:%@, remoteType:%@, isListening:%d, isSourcePTTEligible:%d>", v4, v6, v7, v8, -[SiriTVLongPressButtonContext isListening](self, "isListening"), -[SiriTVLongPressButtonContext isSourcePTTEligible](self, "isSourcePTTEligible")];
+  v9 = [v3 stringWithFormat:@"<SiriTVLongPressButtonContext contextOverride:%@ buttonDownTimestamp:%@, activeDeviceBluetoothIdentifier:%@, remoteType:%@, isListening:%d, isSourcePTTEligible:%d>", contextOverride, v6, activeDeviceBluetoothIdentifier, v8, -[SiriTVLongPressButtonContext isListening](self, "isListening"), -[SiriTVLongPressButtonContext isSourcePTTEligible](self, "isSourcePTTEligible")];
 
   return v9;
 }
@@ -110,7 +110,7 @@
 - (void)isPTTEligible
 {
   v8 = *MEMORY[0x1E69E9840];
-  v2 = *(a1 + 49);
+  v2 = *(self + 49);
   v4 = 136315394;
   v5 = "[SiriTVLongPressButtonContext isPTTEligible]";
   v6 = 1024;

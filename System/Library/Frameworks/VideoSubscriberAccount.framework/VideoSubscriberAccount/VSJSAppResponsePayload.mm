@@ -1,14 +1,14 @@
 @interface VSJSAppResponsePayload
-- (void)setUserAccounts:(id)a3;
+- (void)setUserAccounts:(id)accounts;
 @end
 
 @implementation VSJSAppResponsePayload
 
-- (void)setUserAccounts:(id)a3
+- (void)setUserAccounts:(id)accounts
 {
-  if (a3)
+  if (accounts)
   {
-    v4 = [a3 copy];
+    v4 = [accounts copy];
   }
 
   else

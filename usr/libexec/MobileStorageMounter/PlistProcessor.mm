@@ -1,10 +1,10 @@
 @interface PlistProcessor
 + (id)sharedPlistProcessor;
-- (BOOL)jobIsManagedByMSM:(id)a3;
-- (BOOL)verifyPlist:(id)a3 forMountPoint:(id)a4 withError:(id *)a5;
-- (id)copyAndFixPlist:(id)a3 forMountPoint:(id)a4 withError:(id *)a5;
-- (id)copyPlistWithMSMKeys:(id)a3 withError:(id *)a4;
-- (void)scanPlistsAtPath:(id)a3 execBlock:(id)a4;
+- (BOOL)jobIsManagedByMSM:(id)m;
+- (BOOL)verifyPlist:(id)plist forMountPoint:(id)point withError:(id *)error;
+- (id)copyAndFixPlist:(id)plist forMountPoint:(id)point withError:(id *)error;
+- (id)copyPlistWithMSMKeys:(id)keys withError:(id *)error;
+- (void)scanPlistsAtPath:(id)path execBlock:(id)block;
 @end
 
 @implementation PlistProcessor
@@ -21,16 +21,16 @@
   return v3;
 }
 
-- (void)scanPlistsAtPath:(id)a3 execBlock:(id)a4
+- (void)scanPlistsAtPath:(id)path execBlock:(id)block
 {
-  v5 = a3;
-  v6 = a4;
+  pathCopy = path;
+  blockCopy = block;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v7 = +[NSFileManager defaultManager];
-  v8 = [v7 enumeratorAtPath:v5];
+  v8 = [v7 enumeratorAtPath:pathCopy];
 
   obj = v8;
   v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -48,9 +48,9 @@
         }
 
         v13 = *(*(&v17 + 1) + 8 * i);
-        v14 = [v5 stringByAppendingPathComponent:v13];
+        v14 = [pathCopy stringByAppendingPathComponent:v13];
         v15 = [NSDictionary dictionaryWithContentsOfFile:v14];
-        if (v15 && (v6[2](v6, v15, v13) & 1) == 0)
+        if (v15 && (blockCopy[2](blockCopy, v15, v13) & 1) == 0)
         {
 
           goto LABEL_12;
@@ -70,12 +70,12 @@
 LABEL_12:
 }
 
-- (id)copyAndFixPlist:(id)a3 forMountPoint:(id)a4 withError:(id *)a5
+- (id)copyAndFixPlist:(id)plist forMountPoint:(id)point withError:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  v12 = v8;
-  if (!v7 || !v8)
+  plistCopy = plist;
+  pointCopy = point;
+  v12 = pointCopy;
+  if (!plistCopy || !pointCopy)
   {
     v38 = sub_100011E6C("[PlistProcessor copyAndFixPlist:forMountPoint:withError:]", 109, -3, 0, @"Invalid input(s).", v9, v10, v11, v46);
     v47 = 0;
@@ -86,14 +86,14 @@ LABEL_12:
     goto LABEL_15;
   }
 
-  v13 = sub_100006BC0(v8);
+  v13 = sub_100006BC0(pointCopy);
   v14 = sub_100006BC0(@"/private/var/personalized_factory");
   v15 = [v13 hasPrefix:v14];
 
   v47 = v13;
   if ((v15 & 1) == 0)
   {
-    v40 = v7;
+    v40 = plistCopy;
     v34 = 0;
     v23 = 0;
     v38 = 0;
@@ -105,16 +105,16 @@ LABEL_20:
     goto LABEL_29;
   }
 
-  v16 = [v7 objectForKey:@"Label"];
-  v17 = sub_1000072AC(v7);
+  v16 = [plistCopy objectForKey:@"Label"];
+  v17 = sub_1000072AC(plistCopy);
   if (!v17)
   {
     v36 = v16;
-    v37 = [v7 objectForKey:@"XPCServiceName"];
+    v37 = [plistCopy objectForKey:@"XPCServiceName"];
 
     if (v37)
     {
-      v40 = v7;
+      v40 = plistCopy;
       v34 = 0;
       v23 = 0;
       v38 = 0;
@@ -151,7 +151,7 @@ LABEL_15:
       v34 = [v28 componentsJoinedByString:@"/"];
       if (v34)
       {
-        v35 = [v7 mutableCopy];
+        v35 = [plistCopy mutableCopy];
         [v18 replaceObjectAtIndex:0 withObject:v34];
         [v35 setObject:v18 forKey:@"ProgramArguments"];
         [v35 removeObjectForKey:@"Program"];
@@ -163,7 +163,7 @@ LABEL_15:
         v36 = v16;
         v37 = v35;
         v38 = 0;
-        if (!a5)
+        if (!error)
         {
           goto LABEL_28;
         }
@@ -174,7 +174,7 @@ LABEL_15:
         v36 = v16;
         v38 = sub_100011E6C("[PlistProcessor copyAndFixPlist:forMountPoint:withError:]", 160, -2, 0, @"Failed to update program path %@.", v31, v32, v33, v23);
         v37 = 0;
-        if (!a5)
+        if (!error)
         {
           goto LABEL_28;
         }
@@ -197,7 +197,7 @@ LABEL_15:
   v28 = 0;
 LABEL_16:
   v34 = 0;
-  if (!a5)
+  if (!error)
   {
 LABEL_28:
     v40 = v37;
@@ -212,18 +212,18 @@ LABEL_17:
 
   v39 = v38;
   v40 = 0;
-  *a5 = v38;
+  *error = v38;
 LABEL_29:
   v44 = v40;
 
   return v44;
 }
 
-- (id)copyPlistWithMSMKeys:(id)a3 withError:(id *)a4
+- (id)copyPlistWithMSMKeys:(id)keys withError:(id *)error
 {
-  v5 = a3;
-  v9 = v5;
-  if (!v5)
+  keysCopy = keys;
+  v9 = keysCopy;
+  if (!keysCopy)
   {
     v13 = sub_100011E6C("[PlistProcessor copyPlistWithMSMKeys:withError:]", 196, -2, 0, @"Invalid input.", v6, v7, v8, v30);
     v14 = 0;
@@ -232,7 +232,7 @@ LABEL_29:
     v15 = 0;
     v16 = 0;
     v17 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_19;
     }
@@ -240,7 +240,7 @@ LABEL_29:
     goto LABEL_17;
   }
 
-  v10 = [v5 mutableCopy];
+  v10 = [keysCopy mutableCopy];
   v11 = [v10 objectForKeyedSubscript:@"_ManagedBy"];
   if (!v11)
   {
@@ -292,7 +292,7 @@ LABEL_10:
     [v10 setObject:v17 forKeyedSubscript:@"_AdditionalProperties"];
     v14 = [v10 copy];
     v13 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_19;
     }
@@ -302,7 +302,7 @@ LABEL_10:
   {
     v13 = sub_100011E6C("[PlistProcessor copyPlistWithMSMKeys:withError:]", 228, -2, 0, @"Failed to allocate dictionary.", v23, v24, v25, v30);
     v14 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_19;
     }
@@ -312,7 +312,7 @@ LABEL_17:
   if (!v14)
   {
     v27 = v13;
-    *a4 = v13;
+    *error = v13;
   }
 
 LABEL_19:
@@ -321,11 +321,11 @@ LABEL_19:
   return v28;
 }
 
-- (BOOL)jobIsManagedByMSM:(id)a3
+- (BOOL)jobIsManagedByMSM:(id)m
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  mCopy = m;
+  v4 = mCopy;
+  if (!mCopy)
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
     {
@@ -335,7 +335,7 @@ LABEL_19:
     goto LABEL_22;
   }
 
-  v5 = [v3 objectForKeyedSubscript:@"Label"];
+  v5 = [mCopy objectForKeyedSubscript:@"Label"];
   if (!v5)
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
@@ -387,29 +387,29 @@ LABEL_20:
 LABEL_21:
 
 LABEL_22:
-    v13 = 0;
+    bOOLValue = 0;
     goto LABEL_23;
   }
 
-  v13 = [v11 BOOLValue];
+  bOOLValue = [v11 BOOLValue];
 
 LABEL_23:
-  return v13;
+  return bOOLValue;
 }
 
-- (BOOL)verifyPlist:(id)a3 forMountPoint:(id)a4 withError:(id *)a5
+- (BOOL)verifyPlist:(id)plist forMountPoint:(id)point withError:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  v12 = v8;
-  if (!v7 || !v8)
+  plistCopy = plist;
+  pointCopy = point;
+  v12 = pointCopy;
+  if (!plistCopy || !pointCopy)
   {
     v35 = sub_100011E6C("[PlistProcessor verifyPlist:forMountPoint:withError:]", 302, -3, 0, @"Invalid input(s).", v9, v10, v11, v43);
     v21 = 0;
     v23 = 0;
     v27 = 0;
     v16 = 0;
-    if (!a5)
+    if (!error)
     {
       goto LABEL_20;
     }
@@ -417,7 +417,7 @@ LABEL_23:
     goto LABEL_16;
   }
 
-  v16 = [v7 objectForKey:@"Label"];
+  v16 = [plistCopy objectForKey:@"Label"];
   if (!v16)
   {
     v35 = sub_100011E6C("[PlistProcessor verifyPlist:forMountPoint:withError:]", 308, -2, 0, @"Failed to retrieve job label.", v13, v14, v15, v43);
@@ -425,7 +425,7 @@ LABEL_23:
     goto LABEL_15;
   }
 
-  v17 = sub_1000072AC(v7);
+  v17 = sub_1000072AC(plistCopy);
   v21 = v17;
   if (!v17)
   {
@@ -444,7 +444,7 @@ LABEL_23:
 LABEL_15:
     v23 = 0;
     v27 = 0;
-    if (!a5)
+    if (!error)
     {
 LABEL_20:
       v36 = 0;
@@ -454,7 +454,7 @@ LABEL_20:
 LABEL_16:
     v41 = v35;
     v36 = 0;
-    *a5 = v35;
+    *error = v35;
     goto LABEL_21;
   }
 
@@ -477,7 +477,7 @@ LABEL_16:
     {
       sub_100011E6C("[PlistProcessor verifyPlist:forMountPoint:withError:]", 335, -2, 0, @"Invalid program path: %@", v32, v33, v34, v23);
       v35 = LABEL_19:;
-      if (!a5)
+      if (!error)
       {
         goto LABEL_20;
       }

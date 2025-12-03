@@ -20,19 +20,19 @@
 - (BOOL)setupStats;
 - (BOOL)setupStatsForCPUCluster;
 - (PLCLPCAgent)init;
-- (id)trimConditionsForEntryKey:(id)a3 forTrimDate:(id)a4;
-- (void)addToLookupTableAndCache:(unint64_t)a3 forEntryKey:(id)a4 andLookupMap:(id)a5;
-- (void)constructCache:(id)a3 forEntryKey:(id)a4;
-- (void)createLookupCache:(id)a3;
+- (id)trimConditionsForEntryKey:(id)key forTrimDate:(id)date;
+- (void)addToLookupTableAndCache:(unint64_t)cache forEntryKey:(id)key andLookupMap:(id)map;
+- (void)constructCache:(id)cache forEntryKey:(id)key;
+- (void)createLookupCache:(id)cache;
 - (void)createLookupMaps;
 - (void)initOperatorDependancies;
-- (void)logCLPCCPUClusterAccumulators:(id)a3;
-- (void)logCLPCLostPerformance:(id)a3;
-- (void)logCLPCStatsAccumulators:(id)a3;
-- (void)logCLPCTGAccumulators:(id)a3;
-- (void)logCLPCTGCPUClusterAccumulators:(id)a3;
-- (void)logCLPCTGInfo:(id)a3;
-- (void)logLookupTable:(id)a3 withEntryKey:(id)a4;
+- (void)logCLPCCPUClusterAccumulators:(id)accumulators;
+- (void)logCLPCLostPerformance:(id)performance;
+- (void)logCLPCStatsAccumulators:(id)accumulators;
+- (void)logCLPCTGAccumulators:(id)accumulators;
+- (void)logCLPCTGCPUClusterAccumulators:(id)accumulators;
+- (void)logCLPCTGInfo:(id)info;
+- (void)logLookupTable:(id)table withEntryKey:(id)key;
 - (void)setEntryKeys;
 - (void)setUpDisplayStateChangeNotification;
 - (void)setupTimer;
@@ -131,7 +131,7 @@ LABEL_5:
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___PLCLPCAgent;
   objc_msgSendSuper2(&v2, sel_load);
 }
@@ -143,7 +143,7 @@ LABEL_5:
     v6.receiver = self;
     v6.super_class = PLCLPCAgent;
     self = [(PLAgent *)&v6 init];
-    v3 = self;
+    selfCopy = self;
   }
 
   else
@@ -155,24 +155,24 @@ LABEL_5:
       _os_log_impl(&dword_21A4C6000, v4, OS_LOG_TYPE_DEFAULT, "New CLPC path is not available", buf, 2u);
     }
 
-    v3 = 0;
+    selfCopy = 0;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 + (id)entryEventNoneDefinitions
 {
   v10[3] = *MEMORY[0x277D85DE8];
   v9[0] = @"LostPerformanceLookup";
-  v3 = [a1 entryEventNoneLostPerformanceLookup];
-  v10[0] = v3;
+  entryEventNoneLostPerformanceLookup = [self entryEventNoneLostPerformanceLookup];
+  v10[0] = entryEventNoneLostPerformanceLookup;
   v9[1] = @"AccumulatorsLookup";
-  v4 = [a1 entryEventNoneAccumulatorsLookup];
-  v10[1] = v4;
+  entryEventNoneAccumulatorsLookup = [self entryEventNoneAccumulatorsLookup];
+  v10[1] = entryEventNoneAccumulatorsLookup;
   v9[2] = @"CPUClusterAccumulatorsLookup";
-  v5 = [a1 entryEventNoneCPUClusterAccumulatorsLookup];
-  v10[2] = v5;
+  entryEventNoneCPUClusterAccumulatorsLookup = [self entryEventNoneCPUClusterAccumulatorsLookup];
+  v10[2] = entryEventNoneCPUClusterAccumulatorsLookup;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:v9 count:3];
 
   v7 = *MEMORY[0x277D85DE8];
@@ -193,9 +193,9 @@ LABEL_5:
   v15[0] = v3;
   v14[1] = *MEMORY[0x277D3F540];
   v10 = @"ObfuscatedValue";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_IntegerFormat];
-  v11 = v5;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+  v11 = commonTypeDict_IntegerFormat;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v11 forKeys:&v10 count:1];
   v15[1] = v6;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:v14 count:2];
@@ -218,9 +218,9 @@ LABEL_5:
   v15[0] = v3;
   v14[1] = *MEMORY[0x277D3F540];
   v10 = @"ObfuscatedValue";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_IntegerFormat];
-  v11 = v5;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+  v11 = commonTypeDict_IntegerFormat;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v11 forKeys:&v10 count:1];
   v15[1] = v6;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:v14 count:2];
@@ -243,9 +243,9 @@ LABEL_5:
   v15[0] = v3;
   v14[1] = *MEMORY[0x277D3F540];
   v10 = @"ObfuscatedValue";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_IntegerFormat];
-  v11 = v5;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+  v11 = commonTypeDict_IntegerFormat;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v11 forKeys:&v10 count:1];
   v15[1] = v6;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:v14 count:2];
@@ -259,23 +259,23 @@ LABEL_5:
 {
   v13[6] = *MEMORY[0x277D85DE8];
   v12[0] = @"LostPerformance";
-  v3 = [a1 entryEventIntervalDefinitionLostPerformance];
-  v13[0] = v3;
+  entryEventIntervalDefinitionLostPerformance = [self entryEventIntervalDefinitionLostPerformance];
+  v13[0] = entryEventIntervalDefinitionLostPerformance;
   v12[1] = @"Accumulators";
-  v4 = [a1 entryEventIntervalDefinitionAccumulators];
-  v13[1] = v4;
+  entryEventIntervalDefinitionAccumulators = [self entryEventIntervalDefinitionAccumulators];
+  v13[1] = entryEventIntervalDefinitionAccumulators;
   v12[2] = @"CPUClusterAccumulators";
-  v5 = [a1 entryEventIntervalDefinitionCPUClusterAccumulators];
-  v13[2] = v5;
+  entryEventIntervalDefinitionCPUClusterAccumulators = [self entryEventIntervalDefinitionCPUClusterAccumulators];
+  v13[2] = entryEventIntervalDefinitionCPUClusterAccumulators;
   v12[3] = @"TGInfo";
-  v6 = [a1 entryEventIntervalDefinitionTGInfo];
-  v13[3] = v6;
+  entryEventIntervalDefinitionTGInfo = [self entryEventIntervalDefinitionTGInfo];
+  v13[3] = entryEventIntervalDefinitionTGInfo;
   v12[4] = @"TGAccumulators";
-  v7 = [a1 entryEventIntervalDefinitionTGAccumulators];
-  v13[4] = v7;
+  entryEventIntervalDefinitionTGAccumulators = [self entryEventIntervalDefinitionTGAccumulators];
+  v13[4] = entryEventIntervalDefinitionTGAccumulators;
   v12[5] = @"TGCPUClusterAccumulators";
-  v8 = [a1 entryEventIntervalDefinitionTGCPUClusterAccumulators];
-  v13[5] = v8;
+  entryEventIntervalDefinitionTGCPUClusterAccumulators = [self entryEventIntervalDefinitionTGCPUClusterAccumulators];
+  v13[5] = entryEventIntervalDefinitionTGCPUClusterAccumulators;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:v12 count:6];
 
   v10 = *MEMORY[0x277D85DE8];
@@ -298,39 +298,39 @@ LABEL_5:
   v33[0] = v23;
   v32[1] = *MEMORY[0x277D3F540];
   v28[0] = @"timestampEnd";
-  v22 = [MEMORY[0x277D3F198] sharedInstance];
-  v21 = [v22 commonTypeDict_DateFormat];
-  v29[0] = v21;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_DateFormat = [mEMORY[0x277D3F198] commonTypeDict_DateFormat];
+  v29[0] = commonTypeDict_DateFormat;
   v28[1] = @"DeviceType";
-  v20 = [MEMORY[0x277D3F198] sharedInstance];
-  v19 = [v20 commonTypeDict_IntegerFormat];
-  v29[1] = v19;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+  v29[1] = commonTypeDict_IntegerFormat;
   v28[2] = @"ClusterIndex";
-  v18 = [MEMORY[0x277D3F198] sharedInstance];
-  v17 = [v18 commonTypeDict_IntegerFormat];
-  v29[2] = v17;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat];
+  v29[2] = commonTypeDict_IntegerFormat2;
   v28[3] = @"APWakeTime";
-  v16 = [MEMORY[0x277D3F198] sharedInstance];
-  v15 = [v16 commonTypeDict_IntegerFormat];
-  v29[3] = v15;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
+  v29[3] = commonTypeDict_IntegerFormat3;
   v3 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v29 forKeys:v28 count:4];
   v33[1] = v3;
   v32[2] = *MEMORY[0x277D3F500];
   v26[0] = @"key";
   v24[0] = @"ObfuscatedID";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_IntegerFormat];
+  mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat4 = [mEMORY[0x277D3F198]5 commonTypeDict_IntegerFormat];
   v24[1] = @"Transitions";
-  v25[0] = v5;
-  v6 = [MEMORY[0x277D3F198] sharedInstance];
-  v7 = [v6 commonTypeDict_IntegerFormat];
-  v25[1] = v7;
+  v25[0] = commonTypeDict_IntegerFormat4;
+  mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat5 = [mEMORY[0x277D3F198]6 commonTypeDict_IntegerFormat];
+  v25[1] = commonTypeDict_IntegerFormat5;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v25 forKeys:v24 count:2];
   v26[1] = @"value";
   v27[0] = v8;
-  v9 = [MEMORY[0x277D3F198] sharedInstance];
-  v10 = [v9 commonTypeDict_IntegerFormat];
-  v27[1] = v10;
+  mEMORY[0x277D3F198]7 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat6 = [mEMORY[0x277D3F198]7 commonTypeDict_IntegerFormat];
+  v27[1] = commonTypeDict_IntegerFormat6;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v27 forKeys:v26 count:2];
   v33[2] = v11;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v33 forKeys:v32 count:3];
@@ -355,27 +355,27 @@ LABEL_5:
   v27[0] = v17;
   v26[1] = *MEMORY[0x277D3F540];
   v22[0] = @"timestampEnd";
-  v16 = [MEMORY[0x277D3F198] sharedInstance];
-  v15 = [v16 commonTypeDict_DateFormat];
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_DateFormat = [mEMORY[0x277D3F198] commonTypeDict_DateFormat];
   v22[1] = @"APWakeTime";
-  v23[0] = v15;
-  v3 = [MEMORY[0x277D3F198] sharedInstance];
-  v4 = [v3 commonTypeDict_IntegerFormat];
-  v23[1] = v4;
+  v23[0] = commonTypeDict_DateFormat;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+  v23[1] = commonTypeDict_IntegerFormat;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v23 forKeys:v22 count:2];
   v27[1] = v5;
   v26[2] = *MEMORY[0x277D3F500];
   v20[0] = @"key";
   v18 = @"ObfuscatedID";
-  v6 = [MEMORY[0x277D3F198] sharedInstance];
-  v7 = [v6 commonTypeDict_IntegerFormat];
-  v19 = v7;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat];
+  v19 = commonTypeDict_IntegerFormat2;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v19 forKeys:&v18 count:1];
   v20[1] = @"value";
   v21[0] = v8;
-  v9 = [MEMORY[0x277D3F198] sharedInstance];
-  v10 = [v9 commonTypeDict_IntegerFormat];
-  v21[1] = v10;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
+  v21[1] = commonTypeDict_IntegerFormat3;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v21 forKeys:v20 count:2];
   v27[2] = v11;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v27 forKeys:v26 count:3];
@@ -400,31 +400,31 @@ LABEL_5:
   v29[0] = v19;
   v28[1] = *MEMORY[0x277D3F540];
   v24[0] = @"timestampEnd";
-  v18 = [MEMORY[0x277D3F198] sharedInstance];
-  v17 = [v18 commonTypeDict_DateFormat];
-  v25[0] = v17;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_DateFormat = [mEMORY[0x277D3F198] commonTypeDict_DateFormat];
+  v25[0] = commonTypeDict_DateFormat;
   v24[1] = @"ClusterIndex";
-  v16 = [MEMORY[0x277D3F198] sharedInstance];
-  v15 = [v16 commonTypeDict_IntegerFormat];
-  v25[1] = v15;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+  v25[1] = commonTypeDict_IntegerFormat;
   v24[2] = @"APWakeTime";
-  v3 = [MEMORY[0x277D3F198] sharedInstance];
-  v4 = [v3 commonTypeDict_IntegerFormat];
-  v25[2] = v4;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat];
+  v25[2] = commonTypeDict_IntegerFormat2;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v25 forKeys:v24 count:3];
   v29[1] = v5;
   v28[2] = *MEMORY[0x277D3F500];
   v22[0] = @"key";
   v20 = @"ObfuscatedID";
-  v6 = [MEMORY[0x277D3F198] sharedInstance];
-  v7 = [v6 commonTypeDict_IntegerFormat];
-  v21 = v7;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
+  v21 = commonTypeDict_IntegerFormat3;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v21 forKeys:&v20 count:1];
   v22[1] = @"value";
   v23[0] = v8;
-  v9 = [MEMORY[0x277D3F198] sharedInstance];
-  v10 = [v9 commonTypeDict_IntegerFormat];
-  v23[1] = v10;
+  mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat4 = [mEMORY[0x277D3F198]5 commonTypeDict_IntegerFormat];
+  v23[1] = commonTypeDict_IntegerFormat4;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v23 forKeys:v22 count:2];
   v29[2] = v11;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v29 forKeys:v28 count:3];
@@ -444,25 +444,25 @@ LABEL_5:
   v22[0] = v16;
   v21[1] = *MEMORY[0x277D3F540];
   v17[0] = @"timestampEnd";
-  v15 = [MEMORY[0x277D3F198] sharedInstance];
-  v14 = [v15 commonTypeDict_DateFormat];
-  v18[0] = v14;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_DateFormat = [mEMORY[0x277D3F198] commonTypeDict_DateFormat];
+  v18[0] = commonTypeDict_DateFormat;
   v17[1] = @"APWakeTime";
-  v2 = [MEMORY[0x277D3F198] sharedInstance];
-  v3 = [v2 commonTypeDict_IntegerFormat];
-  v18[1] = v3;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+  v18[1] = commonTypeDict_IntegerFormat;
   v17[2] = @"TGID";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_IntegerFormat];
-  v18[2] = v5;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat];
+  v18[2] = commonTypeDict_IntegerFormat2;
   v17[3] = @"TGType";
-  v6 = [MEMORY[0x277D3F198] sharedInstance];
-  v7 = [v6 commonTypeDict_IntegerFormat];
-  v18[3] = v7;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
+  v18[3] = commonTypeDict_IntegerFormat3;
   v17[4] = @"TGName";
-  v8 = [MEMORY[0x277D3F198] sharedInstance];
-  v9 = [v8 commonTypeDict_StringFormat];
-  v18[4] = v9;
+  mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat = [mEMORY[0x277D3F198]5 commonTypeDict_StringFormat];
+  v18[4] = commonTypeDict_StringFormat;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:5];
   v22[1] = v10;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v22 forKeys:v21 count:2];
@@ -482,33 +482,33 @@ LABEL_5:
   v26[0] = v20;
   v25[1] = *MEMORY[0x277D3F540];
   v21[0] = @"timestampEnd";
-  v19 = [MEMORY[0x277D3F198] sharedInstance];
-  v18 = [v19 commonTypeDict_DateFormat];
-  v22[0] = v18;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_DateFormat = [mEMORY[0x277D3F198] commonTypeDict_DateFormat];
+  v22[0] = commonTypeDict_DateFormat;
   v21[1] = @"APWakeTime";
-  v17 = [MEMORY[0x277D3F198] sharedInstance];
-  v16 = [v17 commonTypeDict_IntegerFormat];
-  v22[1] = v16;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+  v22[1] = commonTypeDict_IntegerFormat;
   v21[2] = @"TGID";
-  v15 = [MEMORY[0x277D3F198] sharedInstance];
-  v14 = [v15 commonTypeDict_IntegerFormat];
-  v22[2] = v14;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat];
+  v22[2] = commonTypeDict_IntegerFormat2;
   v21[3] = @"ActiveTime";
-  v2 = [MEMORY[0x277D3F198] sharedInstance];
-  v3 = [v2 commonTypeDict_IntegerFormat];
-  v22[3] = v3;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
+  v22[3] = commonTypeDict_IntegerFormat3;
   v21[4] = @"GPURunnableTime";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_IntegerFormat];
-  v22[4] = v5;
+  mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat4 = [mEMORY[0x277D3F198]5 commonTypeDict_IntegerFormat];
+  v22[4] = commonTypeDict_IntegerFormat4;
   v21[5] = @"ANEResidency";
-  v6 = [MEMORY[0x277D3F198] sharedInstance];
-  v7 = [v6 commonTypeDict_IntegerFormat];
-  v22[5] = v7;
+  mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat5 = [mEMORY[0x277D3F198]6 commonTypeDict_IntegerFormat];
+  v22[5] = commonTypeDict_IntegerFormat5;
   v21[6] = @"ANEEnergy";
-  v8 = [MEMORY[0x277D3F198] sharedInstance];
-  v9 = [v8 commonTypeDict_IntegerFormat];
-  v22[6] = v9;
+  mEMORY[0x277D3F198]7 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat6 = [mEMORY[0x277D3F198]7 commonTypeDict_IntegerFormat];
+  v22[6] = commonTypeDict_IntegerFormat6;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v22 forKeys:v21 count:7];
   v26[1] = v10;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v26 forKeys:v25 count:2];
@@ -528,37 +528,37 @@ LABEL_5:
   v28[0] = v22;
   v27[1] = *MEMORY[0x277D3F540];
   v23[0] = @"timestampEnd";
-  v21 = [MEMORY[0x277D3F198] sharedInstance];
-  v20 = [v21 commonTypeDict_DateFormat];
-  v24[0] = v20;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_DateFormat = [mEMORY[0x277D3F198] commonTypeDict_DateFormat];
+  v24[0] = commonTypeDict_DateFormat;
   v23[1] = @"APWakeTime";
-  v19 = [MEMORY[0x277D3F198] sharedInstance];
-  v18 = [v19 commonTypeDict_IntegerFormat];
-  v24[1] = v18;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+  v24[1] = commonTypeDict_IntegerFormat;
   v23[2] = @"TGID";
-  v17 = [MEMORY[0x277D3F198] sharedInstance];
-  v16 = [v17 commonTypeDict_IntegerFormat];
-  v24[2] = v16;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat];
+  v24[2] = commonTypeDict_IntegerFormat2;
   v23[3] = @"ClusterIndex";
-  v15 = [MEMORY[0x277D3F198] sharedInstance];
-  v14 = [v15 commonTypeDict_IntegerFormat];
-  v24[3] = v14;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
+  v24[3] = commonTypeDict_IntegerFormat3;
   v23[4] = @"CPUResidency";
-  v2 = [MEMORY[0x277D3F198] sharedInstance];
-  v3 = [v2 commonTypeDict_IntegerFormat];
-  v24[4] = v3;
+  mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat4 = [mEMORY[0x277D3F198]5 commonTypeDict_IntegerFormat];
+  v24[4] = commonTypeDict_IntegerFormat4;
   v23[5] = @"CPUEnergy";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_IntegerFormat];
-  v24[5] = v5;
+  mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat5 = [mEMORY[0x277D3F198]6 commonTypeDict_IntegerFormat];
+  v24[5] = commonTypeDict_IntegerFormat5;
   v23[6] = @"CPUCycles";
-  v6 = [MEMORY[0x277D3F198] sharedInstance];
-  v7 = [v6 commonTypeDict_IntegerFormat];
-  v24[6] = v7;
+  mEMORY[0x277D3F198]7 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat6 = [mEMORY[0x277D3F198]7 commonTypeDict_IntegerFormat];
+  v24[6] = commonTypeDict_IntegerFormat6;
   v23[7] = @"CPUInstructions";
-  v8 = [MEMORY[0x277D3F198] sharedInstance];
-  v9 = [v8 commonTypeDict_IntegerFormat];
-  v24[7] = v9;
+  mEMORY[0x277D3F198]8 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat7 = [mEMORY[0x277D3F198]8 commonTypeDict_IntegerFormat];
+  v24[7] = commonTypeDict_IntegerFormat7;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v24 forKeys:v23 count:8];
   v28[1] = v10;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v28 forKeys:v27 count:2];
@@ -631,9 +631,9 @@ LABEL_27:
                   _os_log_debug_impl(&dword_21A4C6000, v15, OS_LOG_TYPE_DEBUG, "In full-mode. Configuring TG Stats", buf, 2u);
                 }
 
-                v16 = [(PLCLPCAgent *)self provider];
+                provider = [(PLCLPCAgent *)self provider];
                 v41 = 0;
-                [v16 setNumberOfThreadGroups:&unk_282C12AC8 error:&v41];
+                [provider setNumberOfThreadGroups:&unk_282C12AC8 error:&v41];
                 v4 = v41;
 
                 if (v4)
@@ -692,10 +692,10 @@ LABEL_55:
                 }
               }
 
-              v20 = [(PLCLPCAgent *)self provider];
-              v21 = [(PLCLPCAgent *)self selection];
+              provider2 = [(PLCLPCAgent *)self provider];
+              selection = [(PLCLPCAgent *)self selection];
               v40 = 0;
-              [v20 enableStats:v21 error:&v40];
+              [provider2 enableStats:selection error:&v40];
               v4 = v40;
 
               if (v4)
@@ -712,10 +712,10 @@ LABEL_55:
                 goto LABEL_26;
               }
 
-              v22 = [(PLCLPCAgent *)self CPUClusterProvider];
-              v23 = [(PLCLPCAgent *)self CPUClusterSelection];
+              cPUClusterProvider = [(PLCLPCAgent *)self CPUClusterProvider];
+              cPUClusterSelection = [(PLCLPCAgent *)self CPUClusterSelection];
               v39 = 0;
-              [v22 enableStats:v23 error:&v39];
+              [cPUClusterProvider enableStats:cPUClusterSelection error:&v39];
               v4 = v39;
 
               if (v4)
@@ -733,20 +733,20 @@ LABEL_55:
               }
 
               [(PLCLPCAgent *)self setEntryKeys];
-              v24 = [MEMORY[0x277CBEAA8] monotonicDate];
-              [(PLCLPCAgent *)self setLastEntryDate:v24];
+              monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
+              [(PLCLPCAgent *)self setLastEntryDate:monotonicDate];
 
-              v25 = [MEMORY[0x277CBEAA8] monotonicDate];
-              [(PLCLPCAgent *)self setLastCPUClusterEntryDate:v25];
+              monotonicDate2 = [MEMORY[0x277CBEAA8] monotonicDate];
+              [(PLCLPCAgent *)self setLastCPUClusterEntryDate:monotonicDate2];
 
               v26 = MEMORY[0x277CCABB0];
-              v27 = [(PLCLPCAgent *)self lastEntryDate];
-              [v27 timeIntervalSinceReferenceDate];
+              lastEntryDate = [(PLCLPCAgent *)self lastEntryDate];
+              [lastEntryDate timeIntervalSinceReferenceDate];
               v28 = [v26 numberWithDouble:?];
 
-              v29 = [(PLCLPCAgent *)self provider];
+              provider3 = [(PLCLPCAgent *)self provider];
               v38 = 0;
-              [v29 setPreviousTimestamp:v28 error:&v38];
+              [provider3 setPreviousTimestamp:v28 error:&v38];
               v4 = v38;
 
               if (v4)
@@ -763,15 +763,15 @@ LABEL_55:
 
               else
               {
-                v31 = [(PLCLPCAgent *)self provider];
-                v32 = [v31 readDeltaStats:0];
+                provider4 = [(PLCLPCAgent *)self provider];
+                v32 = [provider4 readDeltaStats:0];
                 readResults = self->_readResults;
                 self->_readResults = v32;
 
                 if (self->_readResults)
                 {
-                  v34 = [(PLCLPCAgent *)self CPUClusterProvider];
-                  v35 = [v34 readDeltaStats:0];
+                  cPUClusterProvider2 = [(PLCLPCAgent *)self CPUClusterProvider];
+                  v35 = [cPUClusterProvider2 readDeltaStats:0];
                   CPUClusterReadResults = self->_CPUClusterReadResults;
                   self->_CPUClusterReadResults = v35;
 
@@ -896,9 +896,9 @@ LABEL_7:
 - (BOOL)configureLostPerformance
 {
   v10 = *MEMORY[0x277D85DE8];
-  v2 = [(PLCLPCAgent *)self selection];
+  selection = [(PLCLPCAgent *)self selection];
   v7 = 0;
-  [v2 selectStatsOfSchema:4 error:&v7];
+  [selection selectStatsOfSchema:4 error:&v7];
   v3 = v7;
 
   if (v3)
@@ -919,9 +919,9 @@ LABEL_7:
 - (BOOL)configureAccumulators
 {
   v28 = *MEMORY[0x277D85DE8];
-  v3 = [(PLCLPCAgent *)self selection];
+  selection = [(PLCLPCAgent *)self selection];
   v25 = 0;
-  [v3 selectStat:0x100000000 error:&v25];
+  [selection selectStat:0x100000000 error:&v25];
   v4 = v25;
 
   if (v4)
@@ -939,9 +939,9 @@ LABEL_28:
 
   else
   {
-    v7 = [(PLCLPCAgent *)self selection];
+    selection2 = [(PLCLPCAgent *)self selection];
     v24 = 0;
-    [v7 selectStat:0x100000002 error:&v24];
+    [selection2 selectStat:0x100000002 error:&v24];
     v4 = v24;
 
     if (v4)
@@ -958,9 +958,9 @@ LABEL_28:
 
     else
     {
-      v8 = [(PLCLPCAgent *)self selection];
+      selection3 = [(PLCLPCAgent *)self selection];
       v23 = 0;
-      [v8 selectStat:0x100000003 error:&v23];
+      [selection3 selectStat:0x100000003 error:&v23];
       v4 = v23;
 
       if (v4)
@@ -977,9 +977,9 @@ LABEL_28:
 
       else
       {
-        v9 = [(PLCLPCAgent *)self selection];
+        selection4 = [(PLCLPCAgent *)self selection];
         v22 = 0;
-        [v9 selectStat:0x100000004 error:&v22];
+        [selection4 selectStat:0x100000004 error:&v22];
         v4 = v22;
 
         if (v4)
@@ -996,9 +996,9 @@ LABEL_28:
 
         else
         {
-          v10 = [(PLCLPCAgent *)self selection];
+          selection5 = [(PLCLPCAgent *)self selection];
           v21 = 0;
-          [v10 selectStat:0x100000005 error:&v21];
+          [selection5 selectStat:0x100000005 error:&v21];
           v4 = v21;
 
           if (v4)
@@ -1015,9 +1015,9 @@ LABEL_28:
 
           else
           {
-            v11 = [(PLCLPCAgent *)self selection];
+            selection6 = [(PLCLPCAgent *)self selection];
             v20 = 0;
-            [v11 selectStat:0x100000007 error:&v20];
+            [selection6 selectStat:0x100000007 error:&v20];
             v4 = v20;
 
             if (v4)
@@ -1034,9 +1034,9 @@ LABEL_28:
 
             else
             {
-              v12 = [(PLCLPCAgent *)self selection];
+              selection7 = [(PLCLPCAgent *)self selection];
               v19 = 0;
-              [v12 selectStat:0x100000008 error:&v19];
+              [selection7 selectStat:0x100000008 error:&v19];
               v4 = v19;
 
               if (v4)
@@ -1053,9 +1053,9 @@ LABEL_28:
 
               else
               {
-                v13 = [(PLCLPCAgent *)self selection];
+                selection8 = [(PLCLPCAgent *)self selection];
                 v18 = 0;
-                [v13 selectStat:0x100000009 error:&v18];
+                [selection8 selectStat:0x100000009 error:&v18];
                 v4 = v18;
 
                 if (v4)
@@ -1072,9 +1072,9 @@ LABEL_28:
 
                 else
                 {
-                  v14 = [(PLCLPCAgent *)self selection];
+                  selection9 = [(PLCLPCAgent *)self selection];
                   v17 = 0;
-                  [v14 selectStat:0x10000000ALL error:&v17];
+                  [selection9 selectStat:0x10000000ALL error:&v17];
                   v4 = v17;
 
                   if (!v4)
@@ -1109,9 +1109,9 @@ LABEL_30:
 - (BOOL)configureCPUClusterAccumulators
 {
   v10 = *MEMORY[0x277D85DE8];
-  v2 = [(PLCLPCAgent *)self CPUClusterSelection];
+  cPUClusterSelection = [(PLCLPCAgent *)self CPUClusterSelection];
   v7 = 0;
-  [v2 selectStatsOfSchema:3 error:&v7];
+  [cPUClusterSelection selectStatsOfSchema:3 error:&v7];
   v3 = v7;
 
   if (v3)
@@ -1132,9 +1132,9 @@ LABEL_30:
 - (BOOL)configureTGInfo
 {
   v10 = *MEMORY[0x277D85DE8];
-  v2 = [(PLCLPCAgent *)self selection];
+  selection = [(PLCLPCAgent *)self selection];
   v7 = 0;
-  [v2 selectStatsOfSchema:8 error:&v7];
+  [selection selectStatsOfSchema:8 error:&v7];
   v3 = v7;
 
   if (v3)
@@ -1155,9 +1155,9 @@ LABEL_30:
 - (BOOL)configureTGAccumulators
 {
   v10 = *MEMORY[0x277D85DE8];
-  v2 = [(PLCLPCAgent *)self selection];
+  selection = [(PLCLPCAgent *)self selection];
   v7 = 0;
-  [v2 selectStatsOfSchema:9 error:&v7];
+  [selection selectStatsOfSchema:9 error:&v7];
   v3 = v7;
 
   if (v3)
@@ -1178,9 +1178,9 @@ LABEL_30:
 - (BOOL)configureTGCPUClusterAccumulators
 {
   v10 = *MEMORY[0x277D85DE8];
-  v2 = [(PLCLPCAgent *)self selection];
+  selection = [(PLCLPCAgent *)self selection];
   v7 = 0;
-  [v2 selectStatsOfSchema:10 error:&v7];
+  [selection selectStatsOfSchema:10 error:&v7];
   v3 = v7;
 
   if (v3)
@@ -1217,11 +1217,11 @@ LABEL_30:
 
 - (void)createLookupMaps
 {
-  v3 = [(PLCLPCAgent *)self setupStats];
-  v4 = [(PLCLPCAgent *)self setupStatsForCPUCluster];
-  if (v3)
+  setupStats = [(PLCLPCAgent *)self setupStats];
+  setupStatsForCPUCluster = [(PLCLPCAgent *)self setupStatsForCPUCluster];
+  if (setupStats)
   {
-    if (v4)
+    if (setupStatsForCPUCluster)
     {
       return;
     }
@@ -1377,13 +1377,13 @@ uint64_t __38__PLCLPCAgent_setupStatsForCPUCluster__block_invoke(uint64_t a1, ui
 {
   v3 = objc_alloc(MEMORY[0x277D3F250]);
   v4 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:600.0];
-  v5 = [(PLOperator *)self workQueue];
+  workQueue = [(PLOperator *)self workQueue];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __25__PLCLPCAgent_setupTimer__block_invoke;
   v10[3] = &unk_278259C40;
   v10[4] = self;
-  v6 = [v3 initWithFireDate:v4 withInterval:1 withTolerance:0 repeats:v5 withUserInfo:v10 withQueue:600.0 withBlock:0.0];
+  v6 = [v3 initWithFireDate:v4 withInterval:1 withTolerance:0 repeats:workQueue withUserInfo:v10 withQueue:600.0 withBlock:0.0];
   tenMinuteTimer = self->_tenMinuteTimer;
   self->_tenMinuteTimer = v6;
 
@@ -1399,16 +1399,16 @@ uint64_t __38__PLCLPCAgent_setupStatsForCPUCluster__block_invoke(uint64_t a1, ui
 {
   if ([MEMORY[0x277D3F180] taskMode])
   {
-    v3 = [MEMORY[0x277D3F220] sharedInstance];
-    [(PLCLPCAgent *)self setStateTracker:v3];
+    mEMORY[0x277D3F220] = [MEMORY[0x277D3F220] sharedInstance];
+    [(PLCLPCAgent *)self setStateTracker:mEMORY[0x277D3F220]];
 
-    v4 = [(PLCLPCAgent *)self stateTracker];
+    stateTracker = [(PLCLPCAgent *)self stateTracker];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __50__PLCLPCAgent_setUpDisplayStateChangeNotification__block_invoke;
     v8[3] = &unk_2782591D0;
     v8[4] = self;
-    [v4 registerForStates:4 withOperator:self withBlock:v8];
+    [stateTracker registerForStates:4 withOperator:self withBlock:v8];
 
     v5 = PLLogCLPC();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -1465,21 +1465,21 @@ void __50__PLCLPCAgent_setUpDisplayStateChangeNotification__block_invoke(uint64_
   }
 }
 
-- (void)logLookupTable:(id)a3 withEntryKey:(id)a4
+- (void)logLookupTable:(id)table withEntryKey:(id)key
 {
-  v34 = self;
+  selfCopy = self;
   v54 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  tableCopy = table;
+  keyCopy = key;
   v7 = objc_opt_new();
-  if ([v6 isEqualToString:lostPerformanceLookupEntryKey])
+  if ([keyCopy isEqualToString:lostPerformanceLookupEntryKey])
   {
     v47 = 0u;
     v48 = 0u;
     v45 = 0u;
     v46 = 0u;
-    v36 = v5;
-    v8 = v5;
+    v36 = tableCopy;
+    v8 = tableCopy;
     v9 = [v8 countByEnumeratingWithState:&v45 objects:v53 count:16];
     if (v9)
     {
@@ -1497,9 +1497,9 @@ void __50__PLCLPCAgent_setUpDisplayStateChangeNotification__block_invoke(uint64_
           v13 = *(*(&v45 + 1) + 8 * i);
           if ([v13 type] == 3)
           {
-            v14 = [v13 valueID];
-            v15 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v6];
-            [v15 setObject:v14 forKeyedSubscript:@"ObfuscatedValue"];
+            valueID = [v13 valueID];
+            v15 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:keyCopy];
+            [v15 setObject:valueID forKeyedSubscript:@"ObfuscatedValue"];
             [v7 addObject:v15];
           }
         }
@@ -1511,14 +1511,14 @@ void __50__PLCLPCAgent_setUpDisplayStateChangeNotification__block_invoke(uint64_
     }
   }
 
-  else if ([v6 isEqualToString:accumulatorsLookupEntryKey])
+  else if ([keyCopy isEqualToString:accumulatorsLookupEntryKey])
   {
     v43 = 0u;
     v44 = 0u;
     v41 = 0u;
     v42 = 0u;
-    v36 = v5;
-    v16 = v5;
+    v36 = tableCopy;
+    v16 = tableCopy;
     v17 = [v16 countByEnumeratingWithState:&v41 objects:v52 count:16];
     if (v17)
     {
@@ -1536,9 +1536,9 @@ void __50__PLCLPCAgent_setUpDisplayStateChangeNotification__block_invoke(uint64_
           v21 = *(*(&v41 + 1) + 8 * j);
           if ([v21 type] == 1 && objc_msgSend(v21, "statID") != 1)
           {
-            v22 = [v21 valueID];
-            v23 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v6];
-            [v23 setObject:v22 forKeyedSubscript:@"ObfuscatedValue"];
+            valueID2 = [v21 valueID];
+            v23 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:keyCopy];
+            [v23 setObject:valueID2 forKeyedSubscript:@"ObfuscatedValue"];
             [v7 addObject:v23];
           }
         }
@@ -1552,7 +1552,7 @@ void __50__PLCLPCAgent_setUpDisplayStateChangeNotification__block_invoke(uint64_
 
   else
   {
-    if (![v6 isEqualToString:cpuClusterAccumulatorsLookupEntryKey])
+    if (![keyCopy isEqualToString:cpuClusterAccumulatorsLookupEntryKey])
     {
       goto LABEL_36;
     }
@@ -1561,8 +1561,8 @@ void __50__PLCLPCAgent_setUpDisplayStateChangeNotification__block_invoke(uint64_
     v40 = 0u;
     v37 = 0u;
     v38 = 0u;
-    v36 = v5;
-    v24 = v5;
+    v36 = tableCopy;
+    v24 = tableCopy;
     v25 = [v24 countByEnumeratingWithState:&v37 objects:v51 count:16];
     if (v25)
     {
@@ -1580,9 +1580,9 @@ void __50__PLCLPCAgent_setUpDisplayStateChangeNotification__block_invoke(uint64_
           v29 = *(*(&v37 + 1) + 8 * k);
           if ([v29 type] == 1 && objc_msgSend(v29, "statID") != 1)
           {
-            v30 = [v29 valueID];
-            v31 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v6];
-            [v31 setObject:v30 forKeyedSubscript:@"ObfuscatedValue"];
+            valueID3 = [v29 valueID];
+            v31 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:keyCopy];
+            [v31 setObject:valueID3 forKeyedSubscript:@"ObfuscatedValue"];
             [v7 addObject:v31];
           }
         }
@@ -1594,41 +1594,41 @@ void __50__PLCLPCAgent_setUpDisplayStateChangeNotification__block_invoke(uint64_
     }
   }
 
-  v5 = v36;
+  tableCopy = v36;
 
 LABEL_36:
   if ([v7 count])
   {
-    v49 = v6;
+    v49 = keyCopy;
     v50 = v7;
     v32 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v50 forKeys:&v49 count:1];
-    [v35 logEntries:v32 withGroupID:v6];
+    [v35 logEntries:v32 withGroupID:keyCopy];
   }
 
   v33 = *MEMORY[0x277D85DE8];
 }
 
-- (void)createLookupCache:(id)a3
+- (void)createLookupCache:(id)cache
 {
   v62 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277D3F2A0] sharedCore];
-  v5 = [v4 storage];
-  v6 = [v5 entriesForKey:v3];
+  cacheCopy = cache;
+  mEMORY[0x277D3F2A0] = [MEMORY[0x277D3F2A0] sharedCore];
+  storage = [mEMORY[0x277D3F2A0] storage];
+  v6 = [storage entriesForKey:cacheCopy];
 
   v7 = PLLogCLPC();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412546;
-    v59 = v3;
+    v59 = cacheCopy;
     v60 = 2048;
     v61 = [v6 count];
     _os_log_debug_impl(&dword_21A4C6000, v7, OS_LOG_TYPE_DEBUG, "Entries  in %@ lookup table %lu", buf, 0x16u);
   }
 
-  if ([v3 isEqualToString:lostPerformanceLookupEntryKey])
+  if ([cacheCopy isEqualToString:lostPerformanceLookupEntryKey])
   {
-    v42 = v3;
+    v42 = cacheCopy;
     v8 = objc_opt_new();
     v9 = qword_2811F6390;
     qword_2811F6390 = v8;
@@ -1678,14 +1678,14 @@ LABEL_33:
     _os_log_debug_impl(&dword_21A4C6000, v18, OS_LOG_TYPE_DEBUG, v19, buf, 0xCu);
 LABEL_34:
     v6 = v41;
-    v3 = v42;
+    cacheCopy = v42;
 
     goto LABEL_35;
   }
 
-  if ([v3 isEqualToString:accumulatorsLookupEntryKey])
+  if ([cacheCopy isEqualToString:accumulatorsLookupEntryKey])
   {
-    v42 = v3;
+    v42 = cacheCopy;
     v20 = objc_opt_new();
     v21 = qword_2811F6398;
     qword_2811F6398 = v20;
@@ -1734,9 +1734,9 @@ LABEL_34:
     goto LABEL_33;
   }
 
-  if ([v3 isEqualToString:cpuClusterAccumulatorsLookupEntryKey])
+  if ([cacheCopy isEqualToString:cpuClusterAccumulatorsLookupEntryKey])
   {
-    v42 = v3;
+    v42 = cacheCopy;
     v30 = objc_opt_new();
     v31 = qword_2811F63A0;
     qword_2811F63A0 = v30;
@@ -1790,37 +1790,37 @@ LABEL_35:
   v40 = *MEMORY[0x277D85DE8];
 }
 
-- (void)constructCache:(id)a3 forEntryKey:(id)a4
+- (void)constructCache:(id)cache forEntryKey:(id)key
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277D3F2A0] sharedCore];
-  v8 = [v7 storage];
-  v9 = [v8 countOfEntriesForKey:v6];
+  cacheCopy = cache;
+  keyCopy = key;
+  mEMORY[0x277D3F2A0] = [MEMORY[0x277D3F2A0] sharedCore];
+  storage = [mEMORY[0x277D3F2A0] storage];
+  v9 = [storage countOfEntriesForKey:keyCopy];
 
   if (!v9)
   {
-    [(PLCLPCAgent *)self logLookupTable:v10 withEntryKey:v6];
+    [(PLCLPCAgent *)self logLookupTable:cacheCopy withEntryKey:keyCopy];
   }
 
-  [(PLCLPCAgent *)self createLookupCache:v6];
+  [(PLCLPCAgent *)self createLookupCache:keyCopy];
 }
 
-- (void)addToLookupTableAndCache:(unint64_t)a3 forEntryKey:(id)a4 andLookupMap:(id)a5
+- (void)addToLookupTableAndCache:(unint64_t)cache forEntryKey:(id)key andLookupMap:(id)map
 {
   v25 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
+  keyCopy = key;
+  mapCopy = map;
   v10 = PLLogCLPC();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
     v21 = 138412290;
-    v22 = v8;
+    cacheCopy = keyCopy;
     _os_log_debug_impl(&dword_21A4C6000, v10, OS_LOG_TYPE_DEBUG, "adding a new lookup ID in %@", &v21, 0xCu);
   }
 
-  v11 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v8];
-  v12 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a3];
+  v11 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:keyCopy];
+  v12 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:cache];
   [v11 setObject:v12 forKeyedSubscript:@"ObfuscatedValue"];
 
   [(PLOperator *)self logEntry:v11];
@@ -1828,9 +1828,9 @@ LABEL_35:
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
     v21 = 134218242;
-    v22 = a3;
+    cacheCopy = cache;
     v23 = 2112;
-    v24 = v8;
+    v24 = keyCopy;
     _os_log_debug_impl(&dword_21A4C6000, v13, OS_LOG_TYPE_DEBUG, "added lookup ID %llu in %@", &v21, 0x16u);
   }
 
@@ -1838,31 +1838,31 @@ LABEL_35:
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
     v21 = 138412290;
-    v22 = v9;
+    cacheCopy = mapCopy;
     _os_log_debug_impl(&dword_21A4C6000, v14, OS_LOG_TYPE_DEBUG, "adding a new lookup ID in %@", &v21, 0xCu);
   }
 
-  v15 = [(PLOperator *)self storage];
-  v16 = [v15 lastEntryForKey:v8];
+  storage = [(PLOperator *)self storage];
+  v16 = [storage lastEntryForKey:keyCopy];
 
   v17 = [v16 objectForKeyedSubscript:@"ObfuscatedValue"];
   v18 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v16, "entryID")}];
-  [v9 setObject:v18 forKeyedSubscript:v17];
+  [mapCopy setObject:v18 forKeyedSubscript:v17];
 
   v19 = PLLogCLPC();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
   {
     v21 = 138412290;
-    v22 = v9;
+    cacheCopy = mapCopy;
     _os_log_debug_impl(&dword_21A4C6000, v19, OS_LOG_TYPE_DEBUG, "Lookup map is %@", &v21, 0xCu);
   }
 
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logCLPCLostPerformance:(id)a3
+- (void)logCLPCLostPerformance:(id)performance
 {
-  v4 = a3;
+  performanceCopy = performance;
   v5 = [(PLOperator *)PLCLPCAgent entryKeyForType:*MEMORY[0x277D3F5D8] andName:@"LostPerformance"];
   readResults = self->_readResults;
   v9[0] = MEMORY[0x277D85DD0];
@@ -1870,9 +1870,9 @@ LABEL_35:
   v9[2] = __38__PLCLPCAgent_logCLPCLostPerformance___block_invoke;
   v9[3] = &unk_2782617A8;
   v10 = v5;
-  v11 = self;
-  v12 = v4;
-  v7 = v4;
+  selfCopy = self;
+  v12 = performanceCopy;
+  v7 = performanceCopy;
   v8 = v5;
   [(CLPCReportingReadResult *)readResults enumerate:v9];
 }
@@ -2071,9 +2071,9 @@ LABEL_33:
   return 1;
 }
 
-- (void)logCLPCStatsAccumulators:(id)a3
+- (void)logCLPCStatsAccumulators:(id)accumulators
 {
-  v4 = a3;
+  accumulatorsCopy = accumulators;
   v5 = [(PLOperator *)PLCLPCAgent entryKeyForType:*MEMORY[0x277D3F5D8] andName:@"Accumulators"];
   readResults = self->_readResults;
   v9[0] = MEMORY[0x277D85DD0];
@@ -2081,9 +2081,9 @@ LABEL_33:
   v9[2] = __40__PLCLPCAgent_logCLPCStatsAccumulators___block_invoke;
   v9[3] = &unk_2782617A8;
   v10 = v5;
-  v11 = self;
-  v12 = v4;
-  v7 = v4;
+  selfCopy = self;
+  v12 = accumulatorsCopy;
+  v7 = accumulatorsCopy;
   v8 = v5;
   [(CLPCReportingReadResult *)readResults enumerate:v9];
 }
@@ -2192,9 +2192,9 @@ uint64_t __40__PLCLPCAgent_logCLPCStatsAccumulators___block_invoke(uint64_t a1, 
   return 1;
 }
 
-- (void)logCLPCCPUClusterAccumulators:(id)a3
+- (void)logCLPCCPUClusterAccumulators:(id)accumulators
 {
-  v4 = a3;
+  accumulatorsCopy = accumulators;
   v5 = [(PLOperator *)PLCLPCAgent entryKeyForType:*MEMORY[0x277D3F5D8] andName:@"CPUClusterAccumulators"];
   CPUClusterReadResults = self->_CPUClusterReadResults;
   v9[0] = MEMORY[0x277D85DD0];
@@ -2202,9 +2202,9 @@ uint64_t __40__PLCLPCAgent_logCLPCStatsAccumulators___block_invoke(uint64_t a1, 
   v9[2] = __45__PLCLPCAgent_logCLPCCPUClusterAccumulators___block_invoke;
   v9[3] = &unk_2782617A8;
   v10 = v5;
-  v11 = self;
-  v12 = v4;
-  v7 = v4;
+  selfCopy = self;
+  v12 = accumulatorsCopy;
+  v7 = accumulatorsCopy;
   v8 = v5;
   [(CLPCReportingReadResult *)CPUClusterReadResults enumerate:v9];
 }
@@ -2362,9 +2362,9 @@ LABEL_27:
   return 1;
 }
 
-- (void)logCLPCTGInfo:(id)a3
+- (void)logCLPCTGInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v5 = [(PLOperator *)PLCLPCAgent entryKeyForType:*MEMORY[0x277D3F5D8] andName:@"TGInfo"];
   readResults = self->_readResults;
   v9[0] = MEMORY[0x277D85DD0];
@@ -2372,9 +2372,9 @@ LABEL_27:
   v9[2] = __29__PLCLPCAgent_logCLPCTGInfo___block_invoke;
   v9[3] = &unk_2782617A8;
   v10 = v5;
-  v11 = self;
-  v12 = v4;
-  v7 = v4;
+  selfCopy = self;
+  v12 = infoCopy;
+  v7 = infoCopy;
   v8 = v5;
   [(CLPCReportingReadResult *)readResults enumerate:v9];
 }
@@ -2547,9 +2547,9 @@ LABEL_35:
   return 1;
 }
 
-- (void)logCLPCTGAccumulators:(id)a3
+- (void)logCLPCTGAccumulators:(id)accumulators
 {
-  v4 = a3;
+  accumulatorsCopy = accumulators;
   v5 = [(PLOperator *)PLCLPCAgent entryKeyForType:*MEMORY[0x277D3F5D8] andName:@"TGAccumulators"];
   readResults = self->_readResults;
   v9[0] = MEMORY[0x277D85DD0];
@@ -2557,9 +2557,9 @@ LABEL_35:
   v9[2] = __37__PLCLPCAgent_logCLPCTGAccumulators___block_invoke;
   v9[3] = &unk_2782617A8;
   v10 = v5;
-  v11 = self;
-  v12 = v4;
-  v7 = v4;
+  selfCopy = self;
+  v12 = accumulatorsCopy;
+  v7 = accumulatorsCopy;
   v8 = v5;
   [(CLPCReportingReadResult *)readResults enumerate:v9];
 }
@@ -2673,9 +2673,9 @@ LABEL_26:
   return 1;
 }
 
-- (void)logCLPCTGCPUClusterAccumulators:(id)a3
+- (void)logCLPCTGCPUClusterAccumulators:(id)accumulators
 {
-  v4 = a3;
+  accumulatorsCopy = accumulators;
   v5 = [(PLOperator *)PLCLPCAgent entryKeyForType:*MEMORY[0x277D3F5D8] andName:@"TGCPUClusterAccumulators"];
   readResults = self->_readResults;
   v9[0] = MEMORY[0x277D85DD0];
@@ -2683,9 +2683,9 @@ LABEL_26:
   v9[2] = __47__PLCLPCAgent_logCLPCTGCPUClusterAccumulators___block_invoke;
   v9[3] = &unk_2782617A8;
   v10 = v5;
-  v11 = self;
-  v12 = v4;
-  v7 = v4;
+  selfCopy = self;
+  v12 = accumulatorsCopy;
+  v7 = accumulatorsCopy;
   v8 = v5;
   [(CLPCReportingReadResult *)readResults enumerate:v9];
 }
@@ -2833,10 +2833,10 @@ LABEL_29:
   return 1;
 }
 
-- (id)trimConditionsForEntryKey:(id)a3 forTrimDate:(id)a4
+- (id)trimConditionsForEntryKey:(id)key forTrimDate:(id)date
 {
-  v4 = a3;
-  if (([v4 isEqualToString:lostPerformanceLookupEntryKey] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", accumulatorsLookupEntryKey) & 1) != 0 || objc_msgSend(v4, "isEqualToString:", cpuClusterAccumulatorsLookupEntryKey))
+  keyCopy = key;
+  if (([keyCopy isEqualToString:lostPerformanceLookupEntryKey] & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", accumulatorsLookupEntryKey) & 1) != 0 || objc_msgSend(keyCopy, "isEqualToString:", cpuClusterAccumulatorsLookupEntryKey))
   {
     v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"ID < 0"];
   }

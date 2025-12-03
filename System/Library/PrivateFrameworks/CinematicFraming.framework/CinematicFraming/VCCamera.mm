@@ -1,24 +1,24 @@
 @interface VCCamera
 - (VCCamera)init;
-- (VCCamera)initWithDictionary:(id)a3;
-- (float)_calculateEffectiveFocalLengthFromFOV:(float)a3;
-- (float)_calculateFOVFromEffectiveFocalLength:(float)a3;
+- (VCCamera)initWithDictionary:(id)dictionary;
+- (float)_calculateEffectiveFocalLengthFromFOV:(float)v;
+- (float)_calculateFOVFromEffectiveFocalLength:(float)length;
 - (float)_calculateValidImageCircleRadius;
 - (float)fov;
 - (float)intrinsicMatrix;
 - (float)zoomFOV;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)updateWithCalibration:(id)a3;
+- (int)updateWithCalibration:(id)calibration;
 - (void)_updateModel;
 - (void)_updateModelDistortionProperties;
 - (void)_updateModelExtrinsicProperties;
 - (void)_updateModelIntrinsicProperties;
-- (void)setFisheyeFactor:(float)a3;
-- (void)setFov:(float)a3;
-- (void)setZoomFOV:(float)a3;
+- (void)setFisheyeFactor:(float)factor;
+- (void)setFov:(float)fov;
+- (void)setZoomFOV:(float)v;
 @end
 
 @implementation VCCamera
@@ -52,16 +52,16 @@
   return v2;
 }
 
-- (int)updateWithCalibration:(id)a3
+- (int)updateWithCalibration:(id)calibration
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  calibrationCopy = calibration;
+  v5 = calibrationCopy;
+  if (!calibrationCopy)
   {
     goto LABEL_32;
   }
 
-  v6 = [v4 objectForKeyedSubscript:@"IntrinsicMatrixReferenceDimensions"];
+  v6 = [calibrationCopy objectForKeyedSubscript:@"IntrinsicMatrixReferenceDimensions"];
   v7 = v6;
   if (!v6)
   {
@@ -88,10 +88,10 @@ LABEL_32:
     goto LABEL_29;
   }
 
-  v14 = [v12 bytes];
-  v15 = *v14;
-  v16 = *(v14 + 20);
-  *self->_principalPoint = *(v14 + 32);
+  bytes = [v12 bytes];
+  v15 = *bytes;
+  v16 = *(bytes + 20);
+  *self->_principalPoint = *(bytes + 32);
   if (v15 <= v16)
   {
     v17 = v16;
@@ -172,11 +172,11 @@ LABEL_29:
   return v38;
 }
 
-- (void)setFisheyeFactor:(float)a3
+- (void)setFisheyeFactor:(float)factor
 {
-  if (fabsf(a3) <= 1.0)
+  if (fabsf(factor) <= 1.0)
   {
-    self->_fisheyeFactor = a3;
+    self->_fisheyeFactor = factor;
     self->_modelState |= 1u;
   }
 }
@@ -188,7 +188,7 @@ LABEL_29:
   return result;
 }
 
-- (void)setFov:(float)a3
+- (void)setFov:(float)fov
 {
   [(VCCamera *)self _calculateEffectiveFocalLengthFromFOV:?];
   self->_focalLength = self->_focalLength * (v4 / self->_focalLength);
@@ -202,7 +202,7 @@ LABEL_29:
   return result;
 }
 
-- (void)setZoomFOV:(float)a3
+- (void)setZoomFOV:(float)v
 {
   [(VCCamera *)self _calculateEffectiveFocalLengthFromFOV:?];
   self->_zoomFactor = self->_zoomFactor * (v4 / (self->_focalLength * self->_zoomFactor));
@@ -213,7 +213,7 @@ LABEL_29:
 {
   __asm { FMOV            V2.4S, #1.0 }
 
-  return *(a1 + 280) * *(a1 + 288);
+  return *(self + 280) * *(self + 288);
 }
 
 - (void)_updateModelIntrinsicProperties
@@ -229,18 +229,18 @@ LABEL_29:
   self->_modelState &= ~1u;
 }
 
-- (float)_calculateFOVFromEffectiveFocalLength:(float)a3
+- (float)_calculateFOVFromEffectiveFocalLength:(float)length
 {
   v3 = fmaxf(COERCE_FLOAT(*self->_sensorSize), COERCE_FLOAT(HIDWORD(*self->_sensorSize))) * 0.5;
   fisheyeFactor = self->_fisheyeFactor;
   if (fisheyeFactor == 0.0)
   {
-    v5 = v3 / a3;
+    v5 = v3 / length;
   }
 
   else
   {
-    v6 = (fisheyeFactor * v3) / a3;
+    v6 = (fisheyeFactor * v3) / length;
     if (fisheyeFactor <= 0.0)
     {
       v7 = asinf(v6);
@@ -257,11 +257,11 @@ LABEL_29:
   return v5 + v5;
 }
 
-- (float)_calculateEffectiveFocalLengthFromFOV:(float)a3
+- (float)_calculateEffectiveFocalLengthFromFOV:(float)v
 {
   v3 = fmaxf(COERCE_FLOAT(*self->_sensorSize), COERCE_FLOAT(HIDWORD(*self->_sensorSize))) * 0.5;
   fisheyeFactor = self->_fisheyeFactor;
-  v5 = a3 * 0.5;
+  v5 = v * 0.5;
   if (fisheyeFactor == 0.0)
   {
     return v3 / v5;
@@ -421,13 +421,13 @@ void __44__VCCamera__updateModelDistortionProperties__block_invoke(uint64_t a1, 
   }
 }
 
-- (VCCamera)initWithDictionary:(id)a3
+- (VCCamera)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v66.receiver = self;
   v66.super_class = VCCamera;
   v5 = [(VCCamera *)&v66 init];
-  v6 = [v4 objectForKeyedSubscript:@"SensorSize"];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"SensorSize"];
   if (!v6)
   {
     goto LABEL_58;
@@ -452,7 +452,7 @@ void __44__VCCamera__updateModelDistortionProperties__block_invoke(uint64_t a1, 
   [v10 floatValue];
   *v5->_sensorSize = __PAIR64__(v11, v61);
 
-  v6 = [v4 objectForKeyedSubscript:@"PrincipalPoint"];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"PrincipalPoint"];
 
   if (!v6)
   {
@@ -478,7 +478,7 @@ void __44__VCCamera__updateModelDistortionProperties__block_invoke(uint64_t a1, 
   [v14 floatValue];
   *v5->_principalPoint = __PAIR64__(v15, v62);
 
-  v6 = [v4 objectForKeyedSubscript:@"FocalLength"];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"FocalLength"];
 
   if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
@@ -489,7 +489,7 @@ LABEL_58:
 
   [v6 floatValue];
   v5->_focalLength = v16;
-  v17 = [v4 objectForKeyedSubscript:@"FisheyeFactor"];
+  v17 = [dictionaryCopy objectForKeyedSubscript:@"FisheyeFactor"];
 
   if (!v17)
   {
@@ -504,7 +504,7 @@ LABEL_58:
 
   [v17 floatValue];
   v5->_fisheyeFactor = v18;
-  v6 = [v4 objectForKeyedSubscript:@"ZoomFactor"];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"ZoomFactor"];
 
   if (!v6)
   {
@@ -519,7 +519,7 @@ LABEL_58:
 
   [v6 floatValue];
   v5->_zoomFactor = v19;
-  v17 = [v4 objectForKeyedSubscript:@"Translation"];
+  v17 = [dictionaryCopy objectForKeyedSubscript:@"Translation"];
 
   if (!v17)
   {
@@ -553,7 +553,7 @@ LABEL_55:
   DWORD2(v25) = v26;
   *v5->_translation = v25;
 
-  v6 = [v4 objectForKeyedSubscript:@"Rotation"];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"Rotation"];
 
   if (!v6)
   {
@@ -586,24 +586,24 @@ LABEL_55:
   DWORD2(v32) = v33;
   *v5->_rotation = v32;
 
-  v34 = [v4 objectForKeyedSubscript:@"PixelSize"];
+  v34 = [dictionaryCopy objectForKeyedSubscript:@"PixelSize"];
   if (v34)
   {
-    v35 = [v4 objectForKeyedSubscript:@"GeometricDistortionCalibrationMaxRadius"];
+    v35 = [dictionaryCopy objectForKeyedSubscript:@"GeometricDistortionCalibrationMaxRadius"];
     if (v35)
     {
-      v36 = [v4 objectForKeyedSubscript:@"GeometricDistortionCenter"];
+      v36 = [dictionaryCopy objectForKeyedSubscript:@"GeometricDistortionCenter"];
       if (v36)
       {
-        v37 = [v4 objectForKeyedSubscript:@"ForwardGeometricDistortionPolynomial"];
+        v37 = [dictionaryCopy objectForKeyedSubscript:@"ForwardGeometricDistortionPolynomial"];
         if (v37)
         {
-          v38 = [v4 objectForKeyedSubscript:@"InverseGeometricDistortionPolynomial"];
+          v38 = [dictionaryCopy objectForKeyedSubscript:@"InverseGeometricDistortionPolynomial"];
 
           if (v38)
           {
             v5->_hasGeometricDistortionCalibration = 1;
-            v17 = [v4 objectForKeyedSubscript:@"PixelSize"];
+            v17 = [dictionaryCopy objectForKeyedSubscript:@"PixelSize"];
 
             if (v17)
             {
@@ -615,7 +615,7 @@ LABEL_55:
 
               [v17 floatValue];
               v5->_pixelSize = v39;
-              v6 = [v4 objectForKeyedSubscript:@"GeometricDistortionCalibrationMaxRadius"];
+              v6 = [dictionaryCopy objectForKeyedSubscript:@"GeometricDistortionCalibrationMaxRadius"];
 
               if (!v6)
               {
@@ -629,7 +629,7 @@ LABEL_55:
               }
 
               v5->_geometricDistortionCalibrationMaxRadius = [v6 intValue];
-              v17 = [v4 objectForKeyedSubscript:@"GeometricDistortionCenter"];
+              v17 = [dictionaryCopy objectForKeyedSubscript:@"GeometricDistortionCenter"];
 
               if (v17)
               {
@@ -649,7 +649,7 @@ LABEL_55:
                   [v42 floatValue];
                   *v5->_geometricDistortionCenter = __PAIR64__(v43, v65);
 
-                  v6 = [v4 objectForKeyedSubscript:@"ForwardGeometricDistortionPolynomial"];
+                  v6 = [dictionaryCopy objectForKeyedSubscript:@"ForwardGeometricDistortionPolynomial"];
 
                   if (v6)
                   {
@@ -663,18 +663,18 @@ LABEL_55:
                       }
 
                       v44 = [MEMORY[0x277CBEB28] dataWithLength:32];
-                      v45 = [(NSData *)v44 mutableBytes];
+                      mutableBytes = [(NSData *)v44 mutableBytes];
                       for (i = 0; i != 8; ++i)
                       {
                         v47 = [v7 objectAtIndexedSubscript:i];
                         [v47 floatValue];
-                        *(v45 + 4 * i) = v48;
+                        *(mutableBytes + 4 * i) = v48;
                       }
 
                       forwardGeometricDistortionPolynomial = v5->_forwardGeometricDistortionPolynomial;
                       v5->_forwardGeometricDistortionPolynomial = v44;
 
-                      v6 = [v4 objectForKeyedSubscript:@"InverseGeometricDistortionPolynomial"];
+                      v6 = [dictionaryCopy objectForKeyedSubscript:@"InverseGeometricDistortionPolynomial"];
 
                       if (v6)
                       {
@@ -685,12 +685,12 @@ LABEL_55:
                           if ([v7 count] == 8)
                           {
                             v50 = [MEMORY[0x277CBEB28] dataWithLength:32];
-                            v51 = [(NSData *)v50 mutableBytes];
+                            mutableBytes2 = [(NSData *)v50 mutableBytes];
                             for (j = 0; j != 8; ++j)
                             {
                               v53 = [v7 objectAtIndexedSubscript:j];
                               [v53 floatValue];
-                              *(v51 + 4 * j) = v54;
+                              *(mutableBytes2 + 4 * j) = v54;
                             }
 
                             inverseGeometricDistortionPolynomial = v5->_inverseGeometricDistortionPolynomial;
@@ -732,7 +732,7 @@ LABEL_56:
 LABEL_45:
   v5->_hasGeometricDistortionCalibration = 0;
 LABEL_46:
-  v56 = [v4 objectForKeyedSubscript:@"PortType"];
+  v56 = [dictionaryCopy objectForKeyedSubscript:@"PortType"];
 
   if (v56)
   {
@@ -743,7 +743,7 @@ LABEL_46:
     }
   }
 
-  v6 = [v4 objectForKeyedSubscript:@"SensorID"];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"SensorID"];
 
   if (v6)
   {
@@ -763,14 +763,14 @@ LABEL_53:
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v4 = [MEMORY[0x277CCABB0] numberWithFloat:*self->_sensorSize];
   v58[0] = v4;
   LODWORD(v5) = *&self->_sensorSize[4];
   v6 = [MEMORY[0x277CCABB0] numberWithFloat:v5];
   v58[1] = v6;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v58 count:2];
-  [v3 setObject:v7 forKeyedSubscript:@"SensorSize"];
+  [dictionary setObject:v7 forKeyedSubscript:@"SensorSize"];
 
   v8 = [MEMORY[0x277CCABB0] numberWithFloat:*self->_principalPoint];
   v57[0] = v8;
@@ -778,19 +778,19 @@ LABEL_53:
   v10 = [MEMORY[0x277CCABB0] numberWithFloat:v9];
   v57[1] = v10;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v57 count:2];
-  [v3 setObject:v11 forKeyedSubscript:@"PrincipalPoint"];
+  [dictionary setObject:v11 forKeyedSubscript:@"PrincipalPoint"];
 
   *&v12 = self->_focalLength;
   v13 = [MEMORY[0x277CCABB0] numberWithFloat:v12];
-  [v3 setObject:v13 forKeyedSubscript:@"FocalLength"];
+  [dictionary setObject:v13 forKeyedSubscript:@"FocalLength"];
 
   *&v14 = self->_fisheyeFactor;
   v15 = [MEMORY[0x277CCABB0] numberWithFloat:v14];
-  [v3 setObject:v15 forKeyedSubscript:@"FisheyeFactor"];
+  [dictionary setObject:v15 forKeyedSubscript:@"FisheyeFactor"];
 
   *&v16 = self->_zoomFactor;
   v17 = [MEMORY[0x277CCABB0] numberWithFloat:v16];
-  [v3 setObject:v17 forKeyedSubscript:@"ZoomFactor"];
+  [dictionary setObject:v17 forKeyedSubscript:@"ZoomFactor"];
 
   LODWORD(v18) = *self->_translation;
   v19 = [MEMORY[0x277CCABB0] numberWithFloat:v18];
@@ -802,7 +802,7 @@ LABEL_53:
   v23 = [MEMORY[0x277CCABB0] numberWithFloat:v22];
   v56[2] = v23;
   v24 = [MEMORY[0x277CBEA60] arrayWithObjects:v56 count:3];
-  [v3 setObject:v24 forKeyedSubscript:@"Translation"];
+  [dictionary setObject:v24 forKeyedSubscript:@"Translation"];
 
   LODWORD(v25) = *self->_rotation;
   v26 = [MEMORY[0x277CCABB0] numberWithFloat:v25];
@@ -814,16 +814,16 @@ LABEL_53:
   v30 = [MEMORY[0x277CCABB0] numberWithFloat:v29];
   v55[2] = v30;
   v31 = [MEMORY[0x277CBEA60] arrayWithObjects:v55 count:3];
-  [v3 setObject:v31 forKeyedSubscript:@"Rotation"];
+  [dictionary setObject:v31 forKeyedSubscript:@"Rotation"];
 
   if (self->_hasGeometricDistortionCalibration)
   {
     *&v32 = self->_pixelSize;
     v33 = [MEMORY[0x277CCABB0] numberWithFloat:v32];
-    [v3 setObject:v33 forKeyedSubscript:@"PixelSize"];
+    [dictionary setObject:v33 forKeyedSubscript:@"PixelSize"];
 
     v34 = [MEMORY[0x277CCABB0] numberWithInt:self->_geometricDistortionCalibrationMaxRadius];
-    [v3 setObject:v34 forKeyedSubscript:@"GeometricDistortionCalibrationMaxRadius"];
+    [dictionary setObject:v34 forKeyedSubscript:@"GeometricDistortionCalibrationMaxRadius"];
 
     v35 = [MEMORY[0x277CCABB0] numberWithFloat:*self->_geometricDistortionCenter];
     v54[0] = v35;
@@ -831,49 +831,49 @@ LABEL_53:
     v37 = [MEMORY[0x277CCABB0] numberWithFloat:{v36, v35}];
     v54[1] = v37;
     v38 = [MEMORY[0x277CBEA60] arrayWithObjects:v54 count:2];
-    [v3 setObject:v38 forKeyedSubscript:@"GeometricDistortionCenter"];
+    [dictionary setObject:v38 forKeyedSubscript:@"GeometricDistortionCenter"];
 
-    v39 = [(NSData *)self->_forwardGeometricDistortionPolynomial bytes];
+    bytes = [(NSData *)self->_forwardGeometricDistortionPolynomial bytes];
     v40 = [MEMORY[0x277CBEB18] arrayWithCapacity:8];
     for (i = 0; i != 8; ++i)
     {
-      LODWORD(v41) = v39[i];
+      LODWORD(v41) = bytes[i];
       v43 = [MEMORY[0x277CCABB0] numberWithFloat:v41];
       [v40 setObject:v43 atIndexedSubscript:i];
     }
 
-    [v3 setObject:v40 forKeyedSubscript:@"ForwardGeometricDistortionPolynomial"];
-    v44 = [(NSData *)self->_inverseGeometricDistortionPolynomial bytes];
+    [dictionary setObject:v40 forKeyedSubscript:@"ForwardGeometricDistortionPolynomial"];
+    bytes2 = [(NSData *)self->_inverseGeometricDistortionPolynomial bytes];
     v45 = [MEMORY[0x277CBEB18] arrayWithCapacity:8];
     for (j = 0; j != 8; ++j)
     {
-      LODWORD(v46) = v44[j];
+      LODWORD(v46) = bytes2[j];
       v48 = [MEMORY[0x277CCABB0] numberWithFloat:v46];
       [v45 setObject:v48 atIndexedSubscript:j];
     }
 
-    [v3 setObject:v45 forKeyedSubscript:@"InverseGeometricDistortionPolynomial"];
+    [dictionary setObject:v45 forKeyedSubscript:@"InverseGeometricDistortionPolynomial"];
   }
 
   portType = self->_portType;
   if (portType)
   {
     v50 = [(NSString *)portType copy];
-    [v3 setObject:v50 forKeyedSubscript:@"PortType"];
+    [dictionary setObject:v50 forKeyedSubscript:@"PortType"];
   }
 
   if (self->_sensorID)
   {
     v51 = [MEMORY[0x277CCABB0] numberWithInt:?];
-    [v3 setObject:v51 forKeyedSubscript:@"SensorID"];
+    [dictionary setObject:v51 forKeyedSubscript:@"SensorID"];
   }
 
-  v52 = [v3 copy];
+  v52 = [dictionary copy];
 
   return v52;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(VCCamera);
   *v4->_sensorSize = *self->_sensorSize;
@@ -967,21 +967,21 @@ LABEL_8:
 
 - (id)description
 {
-  v3 = [MEMORY[0x277CCAB68] string];
-  [v3 appendFormat:@"VCCamera<%p>\n", self];
-  [v3 appendFormat:@"  sensorSize     : %g x %g \n", COERCE_FLOAT(*self->_sensorSize), COERCE_FLOAT(HIDWORD(*self->_sensorSize))];
-  [v3 appendFormat:@"  principalPoint : %g, %g \n", COERCE_FLOAT(*self->_principalPoint), COERCE_FLOAT(HIDWORD(*self->_principalPoint))];
-  [v3 appendFormat:@"  focalLength    : %g      \n", self->_focalLength];
-  [v3 appendFormat:@"  fisheyeFactor  : %g      \n", self->_fisheyeFactor];
-  [v3 appendFormat:@"  zoomFactor     : %g      \n", self->_zoomFactor];
+  string = [MEMORY[0x277CCAB68] string];
+  [string appendFormat:@"VCCamera<%p>\n", self];
+  [string appendFormat:@"  sensorSize     : %g x %g \n", COERCE_FLOAT(*self->_sensorSize), COERCE_FLOAT(HIDWORD(*self->_sensorSize))];
+  [string appendFormat:@"  principalPoint : %g, %g \n", COERCE_FLOAT(*self->_principalPoint), COERCE_FLOAT(HIDWORD(*self->_principalPoint))];
+  [string appendFormat:@"  focalLength    : %g      \n", self->_focalLength];
+  [string appendFormat:@"  fisheyeFactor  : %g      \n", self->_fisheyeFactor];
+  [string appendFormat:@"  zoomFactor     : %g      \n", self->_zoomFactor];
   [(VCCamera *)self fov];
-  [v3 appendFormat:@"  FOV            : %g deg  \n", v4 / 3.14159265 * 180.0];
+  [string appendFormat:@"  FOV            : %g deg  \n", v4 / 3.14159265 * 180.0];
   [(VCCamera *)self zoomFOV];
-  [v3 appendFormat:@"  zoomedFOV      : %g deg  \n", v5 / 3.14159265 * 180.0];
-  [v3 appendFormat:@"\n"];
-  [v3 appendFormat:@"  rotation       : % 6.3f % 6.3f % 6.3f \n", COERCE_FLOAT(*self->_rotation), COERCE_FLOAT(HIDWORD(*self->_rotation)), COERCE_FLOAT(*&self->_rotation[8])];
-  [v3 appendFormat:@"  translation    : % 6.3f % 6.3f % 6.3f \n", COERCE_FLOAT(*self->_translation), COERCE_FLOAT(HIDWORD(*self->_translation)), COERCE_FLOAT(*&self->_translation[8])];
-  [v3 appendFormat:@"\n"];
+  [string appendFormat:@"  zoomedFOV      : %g deg  \n", v5 / 3.14159265 * 180.0];
+  [string appendFormat:@"\n"];
+  [string appendFormat:@"  rotation       : % 6.3f % 6.3f % 6.3f \n", COERCE_FLOAT(*self->_rotation), COERCE_FLOAT(HIDWORD(*self->_rotation)), COERCE_FLOAT(*&self->_rotation[8])];
+  [string appendFormat:@"  translation    : % 6.3f % 6.3f % 6.3f \n", COERCE_FLOAT(*self->_translation), COERCE_FLOAT(HIDWORD(*self->_translation)), COERCE_FLOAT(*&self->_translation[8])];
+  [string appendFormat:@"\n"];
   if (self->_hasGeometricDistortionCalibration)
   {
     v6 = @"Yes";
@@ -992,31 +992,31 @@ LABEL_8:
     v6 = @"No";
   }
 
-  [v3 appendFormat:@"  geometricDistortionCalibration : %@\n", v6];
-  [v3 appendFormat:@"\n"];
-  [v3 appendFormat:@"  portType : %@   \n", self->_portType];
-  [v3 appendFormat:@"  sensorID : 0x%x \n", self->_sensorID];
+  [string appendFormat:@"  geometricDistortionCalibration : %@\n", v6];
+  [string appendFormat:@"\n"];
+  [string appendFormat:@"  portType : %@   \n", self->_portType];
+  [string appendFormat:@"  sensorID : 0x%x \n", self->_sensorID];
 
-  return v3;
+  return string;
 }
 
 - (id)debugDescription
 {
-  v3 = [MEMORY[0x277CCAB68] string];
-  [v3 appendFormat:@"VCCamera<%p>\n", self];
-  [v3 appendFormat:@"  sensorSize     : %g x %g \n", COERCE_FLOAT(*self->_sensorSize), COERCE_FLOAT(HIDWORD(*self->_sensorSize))];
-  [v3 appendFormat:@"  principalPoint : %g, %g \n", COERCE_FLOAT(*self->_principalPoint), COERCE_FLOAT(HIDWORD(*self->_principalPoint))];
-  [v3 appendFormat:@"  focalLength    : %g      \n", self->_focalLength];
-  [v3 appendFormat:@"  fisheyeFactor  : %g      \n", self->_fisheyeFactor];
-  [v3 appendFormat:@"  zoomFactor     : %g      \n", self->_zoomFactor];
+  string = [MEMORY[0x277CCAB68] string];
+  [string appendFormat:@"VCCamera<%p>\n", self];
+  [string appendFormat:@"  sensorSize     : %g x %g \n", COERCE_FLOAT(*self->_sensorSize), COERCE_FLOAT(HIDWORD(*self->_sensorSize))];
+  [string appendFormat:@"  principalPoint : %g, %g \n", COERCE_FLOAT(*self->_principalPoint), COERCE_FLOAT(HIDWORD(*self->_principalPoint))];
+  [string appendFormat:@"  focalLength    : %g      \n", self->_focalLength];
+  [string appendFormat:@"  fisheyeFactor  : %g      \n", self->_fisheyeFactor];
+  [string appendFormat:@"  zoomFactor     : %g      \n", self->_zoomFactor];
   [(VCCamera *)self fov];
-  [v3 appendFormat:@"  FOV            : %g deg  \n", v4 / 3.14159265 * 180.0];
+  [string appendFormat:@"  FOV            : %g deg  \n", v4 / 3.14159265 * 180.0];
   [(VCCamera *)self zoomFOV];
-  [v3 appendFormat:@"  zoomedFOV      : %g deg  \n", v5 / 3.14159265 * 180.0];
-  [v3 appendFormat:@"\n"];
-  [v3 appendFormat:@"  rotation       : % 6.3f % 6.3f % 6.3f \n", COERCE_FLOAT(*self->_rotation), COERCE_FLOAT(HIDWORD(*self->_rotation)), COERCE_FLOAT(*&self->_rotation[8])];
-  [v3 appendFormat:@"  translation    : % 6.3f % 6.3f % 6.3f \n", COERCE_FLOAT(*self->_translation), COERCE_FLOAT(HIDWORD(*self->_translation)), COERCE_FLOAT(*&self->_translation[8])];
-  [v3 appendFormat:@"\n"];
+  [string appendFormat:@"  zoomedFOV      : %g deg  \n", v5 / 3.14159265 * 180.0];
+  [string appendFormat:@"\n"];
+  [string appendFormat:@"  rotation       : % 6.3f % 6.3f % 6.3f \n", COERCE_FLOAT(*self->_rotation), COERCE_FLOAT(HIDWORD(*self->_rotation)), COERCE_FLOAT(*&self->_rotation[8])];
+  [string appendFormat:@"  translation    : % 6.3f % 6.3f % 6.3f \n", COERCE_FLOAT(*self->_translation), COERCE_FLOAT(HIDWORD(*self->_translation)), COERCE_FLOAT(*&self->_translation[8])];
+  [string appendFormat:@"\n"];
   if (self->_hasGeometricDistortionCalibration)
   {
     v6 = @"Yes";
@@ -1027,36 +1027,36 @@ LABEL_8:
     v6 = @"No";
   }
 
-  [v3 appendFormat:@"  geometricDistortionCalibration : %@ \n", v6];
-  [v3 appendFormat:@"\n"];
+  [string appendFormat:@"  geometricDistortionCalibration : %@ \n", v6];
+  [string appendFormat:@"\n"];
   if (self->_hasGeometricDistortionCalibration)
   {
-    [v3 appendFormat:@"  pixelSize                               : %g          \n", self->_pixelSize];
-    [v3 appendFormat:@"  geometricDistortionCalibrationMaxRadius : %d          \n", self->_geometricDistortionCalibrationMaxRadius];
-    [v3 appendFormat:@"  geometricDistortionCalibrationCenter    : <%.2f %.2f> \n", COERCE_FLOAT(*self->_geometricDistortionCenter), COERCE_FLOAT(HIDWORD(*self->_geometricDistortionCenter))];
-    [v3 appendFormat:@"  forwardGeometricDistortionPolynomial    : "];
-    v7 = [(NSData *)self->_forwardGeometricDistortionPolynomial bytes];
+    [string appendFormat:@"  pixelSize                               : %g          \n", self->_pixelSize];
+    [string appendFormat:@"  geometricDistortionCalibrationMaxRadius : %d          \n", self->_geometricDistortionCalibrationMaxRadius];
+    [string appendFormat:@"  geometricDistortionCalibrationCenter    : <%.2f %.2f> \n", COERCE_FLOAT(*self->_geometricDistortionCenter), COERCE_FLOAT(HIDWORD(*self->_geometricDistortionCenter))];
+    [string appendFormat:@"  forwardGeometricDistortionPolynomial    : "];
+    bytes = [(NSData *)self->_forwardGeometricDistortionPolynomial bytes];
     for (i = 0; i != 32; i += 4)
     {
-      [v3 appendFormat:@"% 6.4f ", *&v7[i]];
+      [string appendFormat:@"% 6.4f ", *&bytes[i]];
     }
 
-    [v3 appendFormat:@"\n"];
-    [v3 appendFormat:@"  inverseGeometricDistortionPolynomial    : "];
-    v9 = [(NSData *)self->_inverseGeometricDistortionPolynomial bytes];
+    [string appendFormat:@"\n"];
+    [string appendFormat:@"  inverseGeometricDistortionPolynomial    : "];
+    bytes2 = [(NSData *)self->_inverseGeometricDistortionPolynomial bytes];
     for (j = 0; j != 32; j += 4)
     {
-      [v3 appendFormat:@"% 6.4f ", *&v9[j]];
+      [string appendFormat:@"% 6.4f ", *&bytes2[j]];
     }
 
-    [v3 appendFormat:@"\n"];
-    [v3 appendFormat:@"\n"];
+    [string appendFormat:@"\n"];
+    [string appendFormat:@"\n"];
   }
 
-  [v3 appendFormat:@"  portType : %@   \n", self->_portType];
-  [v3 appendFormat:@"  sensorID : 0x%x \n", self->_sensorID];
+  [string appendFormat:@"  portType : %@   \n", self->_portType];
+  [string appendFormat:@"  sensorID : 0x%x \n", self->_sensorID];
 
-  return v3;
+  return string;
 }
 
 @end

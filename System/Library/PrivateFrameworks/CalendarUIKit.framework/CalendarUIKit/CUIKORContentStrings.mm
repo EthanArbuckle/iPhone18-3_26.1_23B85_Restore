@@ -7,28 +7,28 @@
 - (NSArray)nonNilComponents
 {
   v3 = [MEMORY[0x1E695DF70] arrayWithCapacity:3];
-  v4 = [(CUIKORContentStrings *)self titleString];
+  titleString = [(CUIKORContentStrings *)self titleString];
 
-  if (v4)
+  if (titleString)
   {
-    v5 = [(CUIKORContentStrings *)self titleString];
-    [v3 addObject:v5];
+    titleString2 = [(CUIKORContentStrings *)self titleString];
+    [v3 addObject:titleString2];
   }
 
-  v6 = [(CUIKORContentStrings *)self locationString];
+  locationString = [(CUIKORContentStrings *)self locationString];
 
-  if (v6)
+  if (locationString)
   {
-    v7 = [(CUIKORContentStrings *)self locationString];
-    [v3 addObject:v7];
+    locationString2 = [(CUIKORContentStrings *)self locationString];
+    [v3 addObject:locationString2];
   }
 
-  v8 = [(CUIKORContentStrings *)self timeString];
+  timeString = [(CUIKORContentStrings *)self timeString];
 
-  if (v8)
+  if (timeString)
   {
-    v9 = [(CUIKORContentStrings *)self timeString];
-    [v3 addObject:v9];
+    timeString2 = [(CUIKORContentStrings *)self timeString];
+    [v3 addObject:timeString2];
   }
 
   v10 = [v3 copy];

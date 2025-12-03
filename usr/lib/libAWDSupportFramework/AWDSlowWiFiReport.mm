@@ -1,14 +1,14 @@
 @interface AWDSlowWiFiReport
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addLinkQualSample:(id)a3;
-- (void)copyTo:(id)a3;
+- (void)addLinkQualSample:(id)sample;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDSlowWiFiReport
@@ -22,7 +22,7 @@
   [(AWDSlowWiFiReport *)&v3 dealloc];
 }
 
-- (void)addLinkQualSample:(id)a3
+- (void)addLinkQualSample:(id)sample
 {
   linkQualSamples = self->_linkQualSamples;
   if (!linkQualSamples)
@@ -31,7 +31,7 @@
     self->_linkQualSamples = linkQualSamples;
   }
 
-  [(NSMutableArray *)linkQualSamples addObject:a3];
+  [(NSMutableArray *)linkQualSamples addObject:sample];
 }
 
 - (id)description
@@ -44,16 +44,16 @@
 - (id)dictionaryRepresentation
 {
   v18 = *MEMORY[0x29EDCA608];
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   if (*&self->_has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
   }
 
   slowNotice = self->_slowNotice;
   if (slowNotice)
   {
-    [v3 setObject:-[AWDSlowWiFiNotification dictionaryRepresentation](slowNotice forKey:{"dictionaryRepresentation"), @"slowNotice"}];
+    [dictionary setObject:-[AWDSlowWiFiNotification dictionaryRepresentation](slowNotice forKey:{"dictionaryRepresentation"), @"slowNotice"}];
   }
 
   if ([(NSMutableArray *)self->_linkQualSamples count])
@@ -87,14 +87,14 @@
       while (v8);
     }
 
-    [v3 setObject:v5 forKey:@"linkQualSample"];
+    [dictionary setObject:v5 forKey:@"linkQualSample"];
   }
 
   v11 = *MEMORY[0x29EDCA608];
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x29EDCA608];
   if (*&self->_has)
@@ -143,38 +143,38 @@
   v11 = *MEMORY[0x29EDCA608];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if (*&self->_has)
   {
-    *(a3 + 1) = self->_timestamp;
-    *(a3 + 32) |= 1u;
+    *(to + 1) = self->_timestamp;
+    *(to + 32) |= 1u;
   }
 
   if (self->_slowNotice)
   {
-    [a3 setSlowNotice:?];
+    [to setSlowNotice:?];
   }
 
   if ([(AWDSlowWiFiReport *)self linkQualSamplesCount])
   {
-    [a3 clearLinkQualSamples];
-    v5 = [(AWDSlowWiFiReport *)self linkQualSamplesCount];
-    if (v5)
+    [to clearLinkQualSamples];
+    linkQualSamplesCount = [(AWDSlowWiFiReport *)self linkQualSamplesCount];
+    if (linkQualSamplesCount)
     {
-      v6 = v5;
+      v6 = linkQualSamplesCount;
       for (i = 0; i != v6; ++i)
       {
-        [a3 addLinkQualSample:{-[AWDSlowWiFiReport linkQualSampleAtIndex:](self, "linkQualSampleAtIndex:", i)}];
+        [to addLinkQualSample:{-[AWDSlowWiFiReport linkQualSampleAtIndex:](self, "linkQualSampleAtIndex:", i)}];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v20 = *MEMORY[0x29EDCA608];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -182,7 +182,7 @@
     *(v5 + 32) |= 1u;
   }
 
-  v6[3] = [(AWDSlowWiFiNotification *)self->_slowNotice copyWithZone:a3];
+  v6[3] = [(AWDSlowWiFiNotification *)self->_slowNotice copyWithZone:zone];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -203,7 +203,7 @@
           objc_enumerationMutation(linkQualSamples);
         }
 
-        v12 = [*(*(&v15 + 1) + 8 * v11) copyWithZone:a3];
+        v12 = [*(*(&v15 + 1) + 8 * v11) copyWithZone:zone];
         [v6 addLinkQualSample:v12];
 
         ++v11;
@@ -220,21 +220,21 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
-    v6 = *(a3 + 32);
+    v6 = *(equal + 32);
     if (*&self->_has)
     {
-      if ((*(a3 + 32) & 1) == 0 || self->_timestamp != *(a3 + 1))
+      if ((*(equal + 32) & 1) == 0 || self->_timestamp != *(equal + 1))
       {
         goto LABEL_11;
       }
     }
 
-    else if (*(a3 + 32))
+    else if (*(equal + 32))
     {
 LABEL_11:
       LOBYTE(v5) = 0;
@@ -242,10 +242,10 @@ LABEL_11:
     }
 
     slowNotice = self->_slowNotice;
-    if (!(slowNotice | *(a3 + 3)) || (v5 = [(AWDSlowWiFiNotification *)slowNotice isEqual:?]) != 0)
+    if (!(slowNotice | *(equal + 3)) || (v5 = [(AWDSlowWiFiNotification *)slowNotice isEqual:?]) != 0)
     {
       linkQualSamples = self->_linkQualSamples;
-      if (linkQualSamples | *(a3 + 2))
+      if (linkQualSamples | *(equal + 2))
       {
 
         LOBYTE(v5) = [(NSMutableArray *)linkQualSamples isEqual:?];
@@ -277,17 +277,17 @@ LABEL_11:
   return v4 ^ [(NSMutableArray *)self->_linkQualSamples hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v18 = *MEMORY[0x29EDCA608];
-  if (*(a3 + 32))
+  if (*(from + 32))
   {
-    self->_timestamp = *(a3 + 1);
+    self->_timestamp = *(from + 1);
     *&self->_has |= 1u;
   }
 
   slowNotice = self->_slowNotice;
-  v6 = *(a3 + 3);
+  v6 = *(from + 3);
   if (slowNotice)
   {
     if (v6)
@@ -305,7 +305,7 @@ LABEL_11:
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v7 = *(a3 + 2);
+  v7 = *(from + 2);
   v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {

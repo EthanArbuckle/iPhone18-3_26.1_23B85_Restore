@@ -1,10 +1,10 @@
 @interface LACUIPasscodeDotView
 - (LACUIPasscodeDotView)init;
 - (void)_setup;
-- (void)drawRect:(CGRect)a3;
+- (void)drawRect:(CGRect)rect;
 - (void)showConcealed;
 - (void)showEmpty;
-- (void)showRevealed:(id)a3;
+- (void)showRevealed:(id)revealed;
 @end
 
 @implementation LACUIPasscodeDotView
@@ -23,30 +23,30 @@
   return v3;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  height = a3.size.height;
+  height = rect.size.height;
   v6.receiver = self;
   v6.super_class = LACUIPasscodeDotView;
-  [(LACUIPasscodeDotView *)&v6 drawRect:a3.origin.x, a3.origin.y, a3.size.width];
-  v5 = [(LACUIPasscodeDotView *)self layer];
-  [v5 setCornerRadius:height * 0.5];
+  [(LACUIPasscodeDotView *)&v6 drawRect:rect.origin.x, rect.origin.y, rect.size.width];
+  layer = [(LACUIPasscodeDotView *)self layer];
+  [layer setCornerRadius:height * 0.5];
 }
 
 - (void)showConcealed
 {
-  v3 = [(LACUIPasscodeDotView *)self layer];
-  [v3 setBorderWidth:0.0];
+  layer = [(LACUIPasscodeDotView *)self layer];
+  [layer setBorderWidth:0.0];
 
-  v4 = [(LACUIPasscodeDotView *)self _concealedColor];
-  v5 = [v4 CGColor];
-  v6 = [(LACUIPasscodeDotView *)self layer];
-  [v6 setBorderColor:v5];
+  _concealedColor = [(LACUIPasscodeDotView *)self _concealedColor];
+  cGColor = [_concealedColor CGColor];
+  layer2 = [(LACUIPasscodeDotView *)self layer];
+  [layer2 setBorderColor:cGColor];
 
-  v7 = [(LACUIPasscodeDotView *)self _concealedColor];
-  v8 = [v7 CGColor];
-  v9 = [(LACUIPasscodeDotView *)self layer];
-  [v9 setBackgroundColor:v8];
+  _concealedColor2 = [(LACUIPasscodeDotView *)self _concealedColor];
+  cGColor2 = [_concealedColor2 CGColor];
+  layer3 = [(LACUIPasscodeDotView *)self layer];
+  [layer3 setBackgroundColor:cGColor2];
 
   characterLabel = self->_characterLabel;
 
@@ -55,46 +55,46 @@
 
 - (void)showEmpty
 {
-  v3 = [(LACUIPasscodeDotView *)self layer];
-  [v3 setBorderWidth:1.25];
+  layer = [(LACUIPasscodeDotView *)self layer];
+  [layer setBorderWidth:1.25];
 
-  v4 = [(LACUIPasscodeDotView *)self _emptyBorderColor];
-  v5 = [v4 CGColor];
-  v6 = [(LACUIPasscodeDotView *)self layer];
-  [v6 setBorderColor:v5];
+  _emptyBorderColor = [(LACUIPasscodeDotView *)self _emptyBorderColor];
+  cGColor = [_emptyBorderColor CGColor];
+  layer2 = [(LACUIPasscodeDotView *)self layer];
+  [layer2 setBorderColor:cGColor];
 
-  v7 = [MEMORY[0x277D75348] clearColor];
-  v8 = [v7 CGColor];
-  v9 = [(LACUIPasscodeDotView *)self layer];
-  [v9 setBackgroundColor:v8];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  cGColor2 = [clearColor CGColor];
+  layer3 = [(LACUIPasscodeDotView *)self layer];
+  [layer3 setBackgroundColor:cGColor2];
 
   characterLabel = self->_characterLabel;
 
   [(UILabel *)characterLabel setText:&stru_28681D590];
 }
 
-- (void)showRevealed:(id)a3
+- (void)showRevealed:(id)revealed
 {
-  v11 = a3;
-  if ([v11 length] != 1)
+  revealedCopy = revealed;
+  if ([revealedCopy length] != 1)
   {
     [LACUIPasscodeDotView showRevealed:];
   }
 
-  v4 = [(LACUIPasscodeDotView *)self layer];
-  [v4 setBorderWidth:0.0];
+  layer = [(LACUIPasscodeDotView *)self layer];
+  [layer setBorderWidth:0.0];
 
-  v5 = [MEMORY[0x277D75348] clearColor];
-  v6 = [v5 CGColor];
-  v7 = [(LACUIPasscodeDotView *)self layer];
-  [v7 setBorderColor:v6];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  cGColor = [clearColor CGColor];
+  layer2 = [(LACUIPasscodeDotView *)self layer];
+  [layer2 setBorderColor:cGColor];
 
-  v8 = [MEMORY[0x277D75348] clearColor];
-  v9 = [v8 CGColor];
-  v10 = [(LACUIPasscodeDotView *)self layer];
-  [v10 setBackgroundColor:v9];
+  clearColor2 = [MEMORY[0x277D75348] clearColor];
+  cGColor2 = [clearColor2 CGColor];
+  layer3 = [(LACUIPasscodeDotView *)self layer];
+  [layer3 setBackgroundColor:cGColor2];
 
-  [(UILabel *)self->_characterLabel setText:v11];
+  [(UILabel *)self->_characterLabel setText:revealedCopy];
 }
 
 - (void)_setup
@@ -111,13 +111,13 @@
   [(LACUIPasscodeDotView *)self addSubview:self->_characterLabel];
   [(UILabel *)self->_characterLabel setTranslatesAutoresizingMaskIntoConstraints:0];
   v7 = MEMORY[0x277CCAAD0];
-  v8 = [(UILabel *)self->_characterLabel centerXAnchor];
-  v9 = [(LACUIPasscodeDotView *)self centerXAnchor];
-  v10 = [v8 constraintEqualToAnchor:v9];
+  centerXAnchor = [(UILabel *)self->_characterLabel centerXAnchor];
+  centerXAnchor2 = [(LACUIPasscodeDotView *)self centerXAnchor];
+  v10 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v16[0] = v10;
-  v11 = [(UILabel *)self->_characterLabel centerYAnchor];
-  v12 = [(LACUIPasscodeDotView *)self centerYAnchor];
-  v13 = [v11 constraintEqualToAnchor:v12];
+  centerYAnchor = [(UILabel *)self->_characterLabel centerYAnchor];
+  centerYAnchor2 = [(LACUIPasscodeDotView *)self centerYAnchor];
+  v13 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v16[1] = v13;
   v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:2];
   [v7 activateConstraints:v14];

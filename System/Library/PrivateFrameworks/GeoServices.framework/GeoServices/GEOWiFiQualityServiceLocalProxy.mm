@@ -1,15 +1,15 @@
 @interface GEOWiFiQualityServiceLocalProxy
 - (GEOWiFiQualityServiceLocalProxy)init;
-- (void)cancelRequestId:(id)a3;
-- (void)submitWiFiQualityServiceRequest:(id)a3 requestId:(id)a4 auditToken:(id)a5 completionQueue:(id)a6 completion:(id)a7;
-- (void)submitWiFiQualityTileLoadForKey:(id)a3 eTag:(id)a4 requestId:(id)a5 auditToken:(id)a6 completionQueue:(id)a7 completion:(id)a8;
+- (void)cancelRequestId:(id)id;
+- (void)submitWiFiQualityServiceRequest:(id)request requestId:(id)id auditToken:(id)token completionQueue:(id)queue completion:(id)completion;
+- (void)submitWiFiQualityTileLoadForKey:(id)key eTag:(id)tag requestId:(id)id auditToken:(id)token completionQueue:(id)queue completion:(id)completion;
 @end
 
 @implementation GEOWiFiQualityServiceLocalProxy
 
-- (void)cancelRequestId:(id)a3
+- (void)cancelRequestId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   v7 = 0;
   v8 = &v7;
   v9 = 0x3032000000;
@@ -17,25 +17,25 @@
   v11 = sub_100025440;
   v12 = 0;
   inflightIsolater = self->_inflightIsolater;
-  v6 = v4;
+  v6 = idCopy;
   geo_isolate_sync();
   [v8[5] cancel];
 
   _Block_object_dispose(&v7, 8);
 }
 
-- (void)submitWiFiQualityTileLoadForKey:(id)a3 eTag:(id)a4 requestId:(id)a5 auditToken:(id)a6 completionQueue:(id)a7 completion:(id)a8
+- (void)submitWiFiQualityTileLoadForKey:(id)key eTag:(id)tag requestId:(id)id auditToken:(id)token completionQueue:(id)queue completion:(id)completion
 {
-  v15 = a3;
-  v60 = a5;
-  v62 = a8;
-  v64 = a7;
-  v16 = a6;
-  v17 = a4;
+  keyCopy = key;
+  idCopy = id;
+  completionCopy = completion;
+  queueCopy = queue;
+  tokenCopy = token;
+  tagCopy = tag;
   v18 = [GEOWiFiQualityTileRequester alloc];
-  v19 = v15;
-  v20 = v17;
-  v21 = v16;
+  v19 = keyCopy;
+  v20 = tagCopy;
+  v21 = tokenCopy;
   if (v18)
   {
     block.receiver = v18;
@@ -44,9 +44,9 @@
     v18 = v22;
     if (v22)
     {
-      objc_storeStrong(&v22->_inflightRequests, a3);
-      objc_storeStrong(&v18->_eTag, a4);
-      objc_storeStrong(&v18->_auditToken, a6);
+      objc_storeStrong(&v22->_inflightRequests, key);
+      objc_storeStrong(&v18->_eTag, tag);
+      objc_storeStrong(&v18->_auditToken, token);
     }
   }
 
@@ -55,8 +55,8 @@
   v71 = 3221225472;
   v72 = sub_1000259B4;
   v73 = &unk_100083A30;
-  v74 = self;
-  v75 = v60;
+  selfCopy = self;
+  v75 = idCopy;
   v76 = v18;
   v24 = v18;
   geo_isolate_sync();
@@ -67,11 +67,11 @@
   v66[4] = self;
   v67 = v75;
   v68 = v19;
-  v69 = v62;
+  v69 = completionCopy;
   v25 = v19;
-  v26 = v62;
+  v26 = completionCopy;
   v27 = v75;
-  v28 = v64;
+  v28 = queueCopy;
   v29 = v66;
   if (v24)
   {
@@ -93,14 +93,14 @@
       if (GEOConfigGetBOOL())
       {
         v35 = +[GEOPlatform sharedPlatform];
-        v36 = [v35 osAndBuildVersion];
+        osAndBuildVersion = [v35 osAndBuildVersion];
 
-        [v33 setObject:v36 forKey:@"X-os-version"];
+        [v33 setObject:osAndBuildVersion forKey:@"X-os-version"];
       }
 
-      v37 = [objc_opt_class() requestKind];
+      requestKind = [objc_opt_class() requestKind];
       v38 = +[GEORequestCounter sharedCounter];
-      v39 = [v38 requestCounterTicketForType:v37 auditToken:v24->_auditToken traits:0];
+      v39 = [v38 requestCounterTicketForType:requestKind auditToken:v24->_auditToken traits:0];
 
       v40 = GeoServicesConfig_WiFiQualityTileAllowCellular[1];
       if (GEOConfigGetBOOL())
@@ -137,7 +137,7 @@
       GEOConfigGetDouble();
       v50 = v49;
       v51 = [v33 copy];
-      v52 = [v45 initWithKind:v37 URL:v46 auditToken:auditToken timeoutInterval:v51 additionalHTTPHeaders:0 bodyData:0 userAgent:v50 entityTag:v24->_eTag cachedData:0 requestCounterTicket:v39 multipathServiceType:0 multipathAlternatePort:0 backgroundSessionIdentifier:0 throttleToken:0 options:v44];
+      v52 = [v45 initWithKind:requestKind URL:v46 auditToken:auditToken timeoutInterval:v51 additionalHTTPHeaders:0 bodyData:0 userAgent:v50 entityTag:v24->_eTag cachedData:0 requestCounterTicket:v39 multipathServiceType:0 multipathAlternatePort:0 backgroundSessionIdentifier:0 throttleToken:0 options:v44];
 
       v53 = +[GEODataURLSession sharedDataURLSession];
       v28 = v58;
@@ -170,16 +170,16 @@
   }
 }
 
-- (void)submitWiFiQualityServiceRequest:(id)a3 requestId:(id)a4 auditToken:(id)a5 completionQueue:(id)a6 completion:(id)a7
+- (void)submitWiFiQualityServiceRequest:(id)request requestId:(id)id auditToken:(id)token completionQueue:(id)queue completion:(id)completion
 {
-  v12 = a4;
-  v13 = a7;
-  v14 = a6;
-  v15 = a5;
-  v16 = a3;
+  idCopy = id;
+  completionCopy = completion;
+  queueCopy = queue;
+  tokenCopy = token;
+  requestCopy = request;
   v17 = [GEOWiFiQualityServiceRequester alloc];
-  v18 = v16;
-  v19 = v15;
+  v18 = requestCopy;
+  v19 = tokenCopy;
   if (v17)
   {
     v42.receiver = v17;
@@ -188,8 +188,8 @@
     v17 = v20;
     if (v20)
     {
-      objc_storeStrong(&v20->_inflightRequests, a3);
-      objc_storeStrong(&v17->_token, a5);
+      objc_storeStrong(&v20->_inflightRequests, request);
+      objc_storeStrong(&v17->_token, token);
     }
   }
 
@@ -198,8 +198,8 @@
   v36 = 3221225472;
   v37 = sub_100025DAC;
   v38 = &unk_100083A30;
-  v39 = self;
-  v40 = v12;
+  selfCopy = self;
+  v40 = idCopy;
   v41 = v17;
   v22 = v17;
   geo_isolate_sync();
@@ -209,17 +209,17 @@
   v32[3] = &unk_1000822A0;
   v32[4] = self;
   v33 = v40;
-  v34 = v13;
-  v31 = v13;
+  v34 = completionCopy;
+  v31 = completionCopy;
   v23 = v40;
-  v24 = v14;
+  v24 = queueCopy;
   v25 = v32;
   if (v22)
   {
     v26 = objc_alloc_init(GEOWiFiQualityServiceDataRequestConfig);
     request = v22->_request;
     v28 = +[GEOMapService sharedService];
-    v29 = [v28 defaultTraits];
+    defaultTraits = [v28 defaultTraits];
     token = v22->_token;
     v42.receiver = _NSConcreteStackBlock;
     v42.super_class = 3221225472;
@@ -227,7 +227,7 @@
     v44 = &unk_100082DE0;
     v45 = v24;
     v46 = v25;
-    [(GEOWiFiQualityServiceRequester *)v22 _startWithRequest:request traits:v29 auditToken:token config:v26 throttleToken:0 options:0 completionHandler:&v42];
+    [(GEOWiFiQualityServiceRequester *)v22 _startWithRequest:request traits:defaultTraits auditToken:token config:v26 throttleToken:0 options:0 completionHandler:&v42];
   }
 }
 

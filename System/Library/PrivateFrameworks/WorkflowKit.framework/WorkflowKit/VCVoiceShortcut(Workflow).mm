@@ -6,10 +6,10 @@
 
 - (WFWorkflow)workflow
 {
-  v1 = [a1 shortcut];
-  if (v1)
+  shortcut = [self shortcut];
+  if (shortcut)
   {
-    v2 = [[WFWorkflow alloc] initWithShortcut:v1 error:0];
+    v2 = [[WFWorkflow alloc] initWithShortcut:shortcut error:0];
   }
 
   else

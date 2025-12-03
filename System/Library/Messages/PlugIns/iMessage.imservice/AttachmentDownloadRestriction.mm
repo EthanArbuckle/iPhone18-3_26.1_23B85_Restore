@@ -1,25 +1,25 @@
 @interface AttachmentDownloadRestriction
-- (void)collectMetricsForDownloadedFile:(id)a3;
-- (void)collectMetricsForFailureWithReportedSize:(id)a3;
+- (void)collectMetricsForDownloadedFile:(id)file;
+- (void)collectMetricsForFailureWithReportedSize:(id)size;
 @end
 
 @implementation AttachmentDownloadRestriction
 
-- (void)collectMetricsForDownloadedFile:(id)a3
+- (void)collectMetricsForDownloadedFile:(id)file
 {
-  v4 = a3;
+  fileCopy = file;
   v6 = +[IMMetricsCollector sharedInstance];
-  v5 = [(AttachmentDownloadRestriction *)self metricsContext];
-  [v6 trackAttachmentDownloadSuccess:v4 context:v5];
+  metricsContext = [(AttachmentDownloadRestriction *)self metricsContext];
+  [v6 trackAttachmentDownloadSuccess:fileCopy context:metricsContext];
 }
 
-- (void)collectMetricsForFailureWithReportedSize:(id)a3
+- (void)collectMetricsForFailureWithReportedSize:(id)size
 {
-  v4 = a3;
+  sizeCopy = size;
   v7 = +[IMMetricsCollector sharedInstance];
-  v5 = [(AttachmentDownloadRestriction *)self restrictionReason];
-  v6 = [(AttachmentDownloadRestriction *)self metricsContext];
-  [v7 trackAttachmentDownloadFailedWithFileSize:v4 reason:v5 context:v6];
+  restrictionReason = [(AttachmentDownloadRestriction *)self restrictionReason];
+  metricsContext = [(AttachmentDownloadRestriction *)self metricsContext];
+  [v7 trackAttachmentDownloadFailedWithFileSize:sizeCopy reason:restrictionReason context:metricsContext];
 }
 
 @end

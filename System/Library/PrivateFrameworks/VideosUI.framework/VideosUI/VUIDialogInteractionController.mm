@@ -1,37 +1,37 @@
 @interface VUIDialogInteractionController
-- (BOOL)interactionController:(id)a3 shouldInteractionControllerBeginForIndexPath:(id)a4;
-- (VUIDialogInteractionController)initWithPresentingViewController:(id)a3 collectionView:(id)a4 controllerToPresent:(id)a5;
+- (BOOL)interactionController:(id)controller shouldInteractionControllerBeginForIndexPath:(id)path;
+- (VUIDialogInteractionController)initWithPresentingViewController:(id)controller collectionView:(id)view controllerToPresent:(id)present;
 - (VUIDialogInteractionControllerDelegate)delegate;
-- (id)presentationControllerForPresentedViewController:(id)a3 presentingViewController:(id)a4 sourceViewController:(id)a5;
+- (id)presentationControllerForPresentedViewController:(id)controller presentingViewController:(id)viewController sourceViewController:(id)sourceViewController;
 - (void)_cleanup;
-- (void)animateTransition:(id)a3;
+- (void)animateTransition:(id)transition;
 - (void)dismissConfirmation;
-- (void)interactionController:(id)a3 didBeginForIndexPath:(id)a4;
-- (void)longPressGestureRecognizerPressed:(id)a3;
-- (void)presentViewController:(id)a3;
+- (void)interactionController:(id)controller didBeginForIndexPath:(id)path;
+- (void)longPressGestureRecognizerPressed:(id)pressed;
+- (void)presentViewController:(id)controller;
 @end
 
 @implementation VUIDialogInteractionController
 
-- (VUIDialogInteractionController)initWithPresentingViewController:(id)a3 collectionView:(id)a4 controllerToPresent:(id)a5
+- (VUIDialogInteractionController)initWithPresentingViewController:(id)controller collectionView:(id)view controllerToPresent:(id)present
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  controllerCopy = controller;
+  viewCopy = view;
+  presentCopy = present;
   v22.receiver = self;
   v22.super_class = VUIDialogInteractionController;
   v12 = [(VUIDialogInteractionController *)&v22 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_collectionView, a4);
-    objc_storeStrong(&v13->_presentingViewController, a3);
-    objc_storeStrong(&v13->_presentedViewController, a5);
-    v14 = [MEMORY[0x1E69DCEB0] mainScreen];
-    v15 = [v14 traitCollection];
-    v16 = [v15 forceTouchCapability];
+    objc_storeStrong(&v12->_collectionView, view);
+    objc_storeStrong(&v13->_presentingViewController, controller);
+    objc_storeStrong(&v13->_presentedViewController, present);
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    traitCollection = [mainScreen traitCollection];
+    forceTouchCapability = [traitCollection forceTouchCapability];
 
-    if (v16 == 2)
+    if (forceTouchCapability == 2)
     {
       v17 = [[VUIPreviewInteractionController alloc] initWithPresentingViewController:v13->_presentingViewController collectionView:v13->_collectionView controllerToPresent:v13->_presentedViewController];
       interactionController = v13->_interactionController;
@@ -64,10 +64,10 @@
     v12 = 3221225472;
     v13 = __53__VUIDialogInteractionController_dismissConfirmation__block_invoke;
     v14 = &unk_1E872D768;
-    v15 = self;
+    selfCopy = self;
     v4 = &v11;
 LABEL_3:
-    [v3 _performWithoutDeferringTransitions:{v4, v6, v7, v8, v9, v10, v11, v12, v13, v14, v15}];
+    [v3 _performWithoutDeferringTransitions:{v4, v6, v7, v8, v9, selfCopy2, v11, v12, v13, v14, selfCopy}];
     return;
   }
 
@@ -86,7 +86,7 @@ LABEL_3:
     v7 = 3221225472;
     v8 = __53__VUIDialogInteractionController_dismissConfirmation__block_invoke_3;
     v9 = &unk_1E872D768;
-    v10 = self;
+    selfCopy2 = self;
     v4 = &v6;
     goto LABEL_3;
   }
@@ -116,12 +116,12 @@ uint64_t __53__VUIDialogInteractionController_dismissConfirmation__block_invoke_
   return [v2 dismissViewControllerAnimated:0 completion:v4];
 }
 
-- (void)longPressGestureRecognizerPressed:(id)a3
+- (void)longPressGestureRecognizerPressed:(id)pressed
 {
-  v5 = a3;
-  if ([v5 state] == 1 && !self->_isPresenting)
+  pressedCopy = pressed;
+  if ([pressedCopy state] == 1 && !self->_isPresenting)
   {
-    [v5 locationInView:self->_collectionView];
+    [pressedCopy locationInView:self->_collectionView];
     v4 = [(UICollectionView *)self->_collectionView indexPathForItemAtPoint:?];
     if (v4)
     {
@@ -130,29 +130,29 @@ uint64_t __53__VUIDialogInteractionController_dismissConfirmation__block_invoke_
   }
 }
 
-- (void)presentViewController:(id)a3
+- (void)presentViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  if ([WeakRetained dialogInteractionController:self shouldBeginInteractionForIndexPath:v5])
+  if ([WeakRetained dialogInteractionController:self shouldBeginInteractionForIndexPath:controllerCopy])
   {
-    objc_storeStrong(&self->_currentIndexPath, a3);
+    objc_storeStrong(&self->_currentIndexPath, controller);
     self->_isPresenting = 1;
-    v7 = [MEMORY[0x1E69DCEB0] mainScreen];
-    v8 = [v7 traitCollection];
-    if ([v8 userInterfaceIdiom])
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    traitCollection = [mainScreen traitCollection];
+    if ([traitCollection userInterfaceIdiom])
     {
-      v9 = [MEMORY[0x1E69DCEB0] mainScreen];
-      v10 = [v9 traitCollection];
-      if ([v10 userInterfaceIdiom] == 1)
+      mainScreen2 = [MEMORY[0x1E69DCEB0] mainScreen];
+      traitCollection2 = [mainScreen2 traitCollection];
+      if ([traitCollection2 userInterfaceIdiom] == 1)
       {
-        v11 = [(UIViewController *)self->_presentingViewController traitCollection];
-        if ([v11 horizontalSizeClass] == 1)
+        traitCollection3 = [(UIViewController *)self->_presentingViewController traitCollection];
+        if ([traitCollection3 horizontalSizeClass] == 1)
         {
-          v12 = [(UIViewController *)self->_presentingViewController traitCollection];
-          v13 = [v12 verticalSizeClass];
+          traitCollection4 = [(UIViewController *)self->_presentingViewController traitCollection];
+          verticalSizeClass = [traitCollection4 verticalSizeClass];
 
-          if (v13 != 2)
+          if (verticalSizeClass != 2)
           {
             goto LABEL_14;
           }
@@ -164,9 +164,9 @@ LABEL_8:
 
           [(VUIPresentationContainerViewController *)self->_wrapperViewController setModalPresentationStyle:4];
           [(VUIPresentationContainerViewController *)self->_wrapperViewController setTransitioningDelegate:self];
-          v16 = [(VUIPresentationContainerViewController *)self->_wrapperViewController view];
-          v17 = [(UIViewController *)self->_presentedViewController view];
-          [v16 addSubview:v17];
+          view = [(VUIPresentationContainerViewController *)self->_wrapperViewController view];
+          view2 = [(UIViewController *)self->_presentedViewController view];
+          [view addSubview:view2];
 
           [(VUIPresentationContainerViewController *)self->_wrapperViewController addChildViewController:self->_presentedViewController];
           v42[0] = MEMORY[0x1E69E9820];
@@ -175,15 +175,15 @@ LABEL_8:
           v42[3] = &unk_1E872D768;
           v42[4] = self;
           [MEMORY[0x1E69DD258] _performWithoutDeferringTransitions:v42];
-          v18 = [(VUIPresentationContainerViewController *)self->_wrapperViewController presentationController];
-          v19 = [v18 containerView];
-          [v19 bounds];
+          presentationController = [(VUIPresentationContainerViewController *)self->_wrapperViewController presentationController];
+          containerView = [presentationController containerView];
+          [containerView bounds];
           Width = CGRectGetWidth(v43);
-          [v19 safeAreaInsets];
+          [containerView safeAreaInsets];
           v22 = Width - v21;
-          [v19 safeAreaInsets];
+          [containerView safeAreaInsets];
           v24 = v22 - v23 + -33.0;
-          [v19 bounds];
+          [containerView bounds];
           x = v44.origin.x;
           y = v44.origin.y;
           v27 = v44.size.width;
@@ -205,22 +205,22 @@ LABEL_8:
           }
 
           v32 = fmin(v30, 56.0);
-          [v18 setModalSize:{v31, v32}];
+          [presentationController setModalSize:{v31, v32}];
           [(UIViewController *)self->_presentedViewController setPreferredContentSize:v31, v32];
-          v33 = [v18 presentedView];
-          [v33 setFrame:{(v27 - v31) * 0.5, (height - v32) * 0.5, v31, v32}];
-          v34 = [v18 backdropView];
+          presentedView = [presentationController presentedView];
+          [presentedView setFrame:{(v27 - v31) * 0.5, (height - v32) * 0.5, v31, v32}];
+          backdropView = [presentationController backdropView];
           v35 = [VUIConfirmationBlurEffect effectWithStyle:1];
-          [v34 setEffect:v35];
+          [backdropView setEffect:v35];
           v39[0] = MEMORY[0x1E69E9820];
           v39[1] = 3221225472;
           v39[2] = __56__VUIDialogInteractionController_presentViewController___block_invoke_2;
           v39[3] = &unk_1E872D990;
-          v40 = v33;
-          v41 = v34;
-          v36 = v34;
-          v37 = v33;
-          [v18 setCompletedAnimationBlock:v39];
+          v40 = presentedView;
+          v41 = backdropView;
+          v36 = backdropView;
+          v37 = presentedView;
+          [presentationController setCompletedAnimationBlock:v39];
 
           goto LABEL_15;
         }
@@ -229,18 +229,18 @@ LABEL_8:
 LABEL_14:
       [(UIViewController *)self->_presentedViewController setModalPresentationStyle:7];
       [(UIViewController *)self->_presentingViewController presentViewController:self->_presentedViewController animated:1 completion:0];
-      v18 = [(UIViewController *)self->_presentedViewController popoverPresentationController];
-      v19 = [(UICollectionView *)self->_collectionView cellForItemAtIndexPath:v5];
-      [v18 setSourceView:v19];
-      [v19 bounds];
-      [v18 setSourceRect:?];
-      v38 = [MEMORY[0x1E69DC888] vui_primaryDynamicBackgroundColor];
-      [v18 setBackgroundColor:v38];
+      presentationController = [(UIViewController *)self->_presentedViewController popoverPresentationController];
+      containerView = [(UICollectionView *)self->_collectionView cellForItemAtIndexPath:controllerCopy];
+      [presentationController setSourceView:containerView];
+      [containerView bounds];
+      [presentationController setSourceRect:?];
+      vui_primaryDynamicBackgroundColor = [MEMORY[0x1E69DC888] vui_primaryDynamicBackgroundColor];
+      [presentationController setBackgroundColor:vui_primaryDynamicBackgroundColor];
 
-      [v18 setPermittedArrowDirections:15];
+      [presentationController setPermittedArrowDirections:15];
 LABEL_15:
 
-      [WeakRetained dialogInteractionController:self interactionDidBeginForIndexPath:v5];
+      [WeakRetained dialogInteractionController:self interactionDidBeginForIndexPath:controllerCopy];
       goto LABEL_16;
     }
 
@@ -264,14 +264,14 @@ uint64_t __56__VUIDialogInteractionController_presentViewController___block_invo
   return [v2 setEffect:0];
 }
 
-- (id)presentationControllerForPresentedViewController:(id)a3 presentingViewController:(id)a4 sourceViewController:(id)a5
+- (id)presentationControllerForPresentedViewController:(id)controller presentingViewController:(id)viewController sourceViewController:(id)sourceViewController
 {
   dialogPresentationController = self->_dialogPresentationController;
   if (!dialogPresentationController)
   {
-    v8 = a4;
-    v9 = a3;
-    v10 = [[VUIDialogPresentationController alloc] initWithPresentedViewController:v9 presentingViewController:v8];
+    viewControllerCopy = viewController;
+    controllerCopy = controller;
+    v10 = [[VUIDialogPresentationController alloc] initWithPresentedViewController:controllerCopy presentingViewController:viewControllerCopy];
 
     v11 = self->_dialogPresentationController;
     self->_dialogPresentationController = v10;
@@ -282,10 +282,10 @@ uint64_t __56__VUIDialogInteractionController_presentViewController___block_invo
   return dialogPresentationController;
 }
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
-  v4 = a3;
-  [(VUIDialogInteractionController *)self transitionDuration:v4];
+  transitionCopy = transition;
+  [(VUIDialogInteractionController *)self transitionDuration:transitionCopy];
   v6 = v5;
   v7 = MEMORY[0x1E69DD250];
   v12[0] = MEMORY[0x1E69E9820];
@@ -297,9 +297,9 @@ uint64_t __56__VUIDialogInteractionController_presentViewController___block_invo
   v9[1] = 3221225472;
   v9[2] = __52__VUIDialogInteractionController_animateTransition___block_invoke_2;
   v9[3] = &unk_1E872E9C8;
-  v10 = v4;
-  v11 = self;
-  v8 = v4;
+  v10 = transitionCopy;
+  selfCopy = self;
+  v8 = transitionCopy;
   [v7 animateWithDuration:0 delay:v12 usingSpringWithDamping:v9 initialSpringVelocity:v6 options:0.0 animations:1.0 completion:0.0];
 }
 
@@ -338,25 +338,25 @@ uint64_t __52__VUIDialogInteractionController_animateTransition___block_invoke_2
   return result;
 }
 
-- (BOOL)interactionController:(id)a3 shouldInteractionControllerBeginForIndexPath:(id)a4
+- (BOOL)interactionController:(id)controller shouldInteractionControllerBeginForIndexPath:(id)path
 {
-  v6 = a4;
+  pathCopy = path;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v8 = [WeakRetained dialogInteractionController:self shouldBeginInteractionForIndexPath:v6];
+  v8 = [WeakRetained dialogInteractionController:self shouldBeginInteractionForIndexPath:pathCopy];
 
   if (v8)
   {
-    objc_storeStrong(&self->_currentIndexPath, a4);
+    objc_storeStrong(&self->_currentIndexPath, path);
   }
 
   return v8;
 }
 
-- (void)interactionController:(id)a3 didBeginForIndexPath:(id)a4
+- (void)interactionController:(id)controller didBeginForIndexPath:(id)path
 {
-  v5 = a4;
+  pathCopy = path;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained dialogInteractionController:self interactionDidBeginForIndexPath:v5];
+  [WeakRetained dialogInteractionController:self interactionDidBeginForIndexPath:pathCopy];
 }
 
 - (void)_cleanup

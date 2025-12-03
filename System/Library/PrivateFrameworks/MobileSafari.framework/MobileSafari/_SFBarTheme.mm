@@ -1,14 +1,14 @@
 @interface _SFBarTheme
-+ (BOOL)shouldDisableBackgroundColorInBar:(id)a3 traitCollection:(id)a4;
-+ (_SFBarTheme)themeWithBarTintStyle:(int64_t)a3 preferredBarTintColor:(id)a4 controlsTintColor:(id)a5;
-+ (_SFBarTheme)themeWithTheme:(id)a3;
-+ (id)controlsTintColorForStyle:(int64_t)a3;
-- (BOOL)isEqual:(id)a3;
++ (BOOL)shouldDisableBackgroundColorInBar:(id)bar traitCollection:(id)collection;
++ (_SFBarTheme)themeWithBarTintStyle:(int64_t)style preferredBarTintColor:(id)color controlsTintColor:(id)tintColor;
++ (_SFBarTheme)themeWithTheme:(id)theme;
++ (id)controlsTintColorForStyle:(int64_t)style;
+- (BOOL)isEqual:(id)equal;
 - (NSArray)backdropEffects;
 - (_SFBarTheme)fallbackTheme;
-- (_SFBarTheme)initWithBarTintStyle:(int64_t)a3 preferredBarTintColor:(id)a4 controlsTintColor:(id)a5;
+- (_SFBarTheme)initWithBarTintStyle:(int64_t)style preferredBarTintColor:(id)color controlsTintColor:(id)tintColor;
 - (id)description;
-- (void)applyBackdropEffectsToView:(id)a3;
+- (void)applyBackdropEffectsToView:(id)view;
 @end
 
 @implementation _SFBarTheme
@@ -16,25 +16,25 @@
 - (NSArray)backdropEffects
 {
   v5[1] = *MEMORY[0x1E69E9840];
-  v2 = [(_SFBarTheme *)self backdropEffect];
-  v5[0] = v2;
+  backdropEffect = [(_SFBarTheme *)self backdropEffect];
+  v5[0] = backdropEffect;
   v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v5 count:1];
 
   return v3;
 }
 
-+ (_SFBarTheme)themeWithTheme:(id)a3
++ (_SFBarTheme)themeWithTheme:(id)theme
 {
-  v4 = a3;
+  themeCopy = theme;
   isKindOfClass = objc_opt_isKindOfClass();
-  if (!v4 || (isKindOfClass & 1) != 0)
+  if (!themeCopy || (isKindOfClass & 1) != 0)
   {
-    v6 = v4;
+    v6 = themeCopy;
   }
 
   else
   {
-    v6 = [[a1 alloc] initWithBarTintStyle:objc_msgSend(v4 preferredBarTintColor:"tintStyle") controlsTintColor:{v4[6], v4[1]}];
+    v6 = [[self alloc] initWithBarTintStyle:objc_msgSend(themeCopy preferredBarTintColor:"tintStyle") controlsTintColor:{themeCopy[6], themeCopy[1]}];
   }
 
   v7 = v6;
@@ -42,25 +42,25 @@
   return v7;
 }
 
-+ (_SFBarTheme)themeWithBarTintStyle:(int64_t)a3 preferredBarTintColor:(id)a4 controlsTintColor:(id)a5
++ (_SFBarTheme)themeWithBarTintStyle:(int64_t)style preferredBarTintColor:(id)color controlsTintColor:(id)tintColor
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [[a1 alloc] initWithBarTintStyle:a3 preferredBarTintColor:v9 controlsTintColor:v8];
+  tintColorCopy = tintColor;
+  colorCopy = color;
+  v10 = [[self alloc] initWithBarTintStyle:style preferredBarTintColor:colorCopy controlsTintColor:tintColorCopy];
 
   return v10;
 }
 
-- (_SFBarTheme)initWithBarTintStyle:(int64_t)a3 preferredBarTintColor:(id)a4 controlsTintColor:(id)a5
+- (_SFBarTheme)initWithBarTintStyle:(int64_t)style preferredBarTintColor:(id)color controlsTintColor:(id)tintColor
 {
   v43[1] = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
-  if ((a3 - 1) >= 2 && ([objc_opt_class() canTintPrivateStyles] & 1) == 0)
+  colorCopy = color;
+  tintColorCopy = tintColor;
+  if ((style - 1) >= 2 && ([objc_opt_class() canTintPrivateStyles] & 1) == 0)
   {
 
-    v8 = 0;
-    v9 = 0;
+    colorCopy = 0;
+    tintColorCopy = 0;
   }
 
   v42.receiver = self;
@@ -69,14 +69,14 @@
   v11 = v10;
   if (v10)
   {
-    v10->_tintStyle = a3;
-    if (v8)
+    v10->_tintStyle = style;
+    if (colorCopy)
     {
       if ([MEMORY[0x1E69C8880] isSolariumEnabled])
       {
-        [v8 safari_sRGBLuminance];
+        [colorCopy safari_sRGBLuminance];
         v13 = v12;
-        if (_SFIsDarkTintStyle(a3))
+        if (_SFIsDarkTintStyle(style))
         {
           v14 = v13 <= 0.7;
         }
@@ -89,29 +89,29 @@
         goto LABEL_13;
       }
 
-      v15 = [v8 sf_isDarkColor];
+      sf_isDarkColor = [colorCopy sf_isDarkColor];
     }
 
     else
     {
-      v15 = [objc_opt_class() backdropIsDarkForStyle:a3];
+      sf_isDarkColor = [objc_opt_class() backdropIsDarkForStyle:style];
     }
 
-    v14 = v15;
+    v14 = sf_isDarkColor;
 LABEL_13:
     v11->_backdropIsDark = v14;
-    v17 = a3 == 5 || v8 != 0;
+    v17 = style == 5 || colorCopy != 0;
     v11->_backdropIsTinted = v17;
-    objc_storeStrong(&v11->_preferredBarTintColor, v8);
-    objc_storeStrong(&v11->_preferredControlsTintColor, v9);
-    if (v9)
+    objc_storeStrong(&v11->_preferredBarTintColor, colorCopy);
+    objc_storeStrong(&v11->_preferredControlsTintColor, tintColorCopy);
+    if (tintColorCopy)
     {
-      v18 = v9;
+      v18 = tintColorCopy;
     }
 
     else
     {
-      v18 = [objc_opt_class() controlsTintColorForStyle:a3];
+      v18 = [objc_opt_class() controlsTintColorForStyle:style];
     }
 
     controlsTintColor = v11->_controlsTintColor;
@@ -119,29 +119,29 @@ LABEL_13:
 
     if ([MEMORY[0x1E69C8880] isSolariumEnabled])
     {
-      v20 = [MEMORY[0x1E69DC888] labelColor];
+      labelColor = [MEMORY[0x1E69DC888] labelColor];
     }
 
     else
     {
-      v20 = v11->_controlsTintColor;
+      labelColor = v11->_controlsTintColor;
     }
 
     toolbarControlsTintColor = v11->_toolbarControlsTintColor;
-    v11->_toolbarControlsTintColor = v20;
+    v11->_toolbarControlsTintColor = labelColor;
 
     v22 = v11->_controlsTintColor;
     v23 = 0.0;
-    if (a3 > 2)
+    if (style > 2)
     {
-      if (a3 != 5)
+      if (style != 5)
       {
-        if (a3 == 4)
+        if (style == 4)
         {
           v23 = 0.5;
         }
 
-        else if (a3 == 3)
+        else if (style == 3)
         {
           v23 = 0.4;
         }
@@ -150,9 +150,9 @@ LABEL_13:
       }
     }
 
-    else if ((a3 - 1) >= 2)
+    else if ((style - 1) >= 2)
     {
-      if (!a3)
+      if (!style)
       {
         v24 = 0;
 LABEL_38:
@@ -160,7 +160,7 @@ LABEL_38:
         platterProgressBarTintColor = v11->_platterProgressBarTintColor;
         v11->_platterProgressBarTintColor = v24;
 
-        if (v8)
+        if (colorCopy)
         {
           v27 = 1;
           if (v14)
@@ -181,33 +181,33 @@ LABEL_38:
 
           else
           {
-            v28 = [MEMORY[0x1E69DC730] _effectWithTintColor:v8];
+            v28 = [MEMORY[0x1E69DC730] _effectWithTintColor:colorCopy];
           }
         }
 
         else
         {
-          v29 = [MEMORY[0x1E69C8880] isSolariumEnabled];
+          isSolariumEnabled = [MEMORY[0x1E69C8880] isSolariumEnabled];
           v30 = 1;
           if (v14)
           {
             v30 = 2;
           }
 
-          if (v29)
+          if (isSolariumEnabled)
           {
             v30 = 0;
           }
 
           v11->_overrideUserInterfaceStyle = v30;
-          v28 = [objc_opt_class() backdropEffectForStyle:a3];
+          v28 = [objc_opt_class() backdropEffectForStyle:style];
         }
 
         backdropEffect = v11->_backdropEffect;
         v11->_backdropEffect = v28;
 
-        v32 = a3 - 3;
-        if ((a3 - 3) > 2)
+        v32 = style - 3;
+        if ((style - 3) > 2)
         {
           v33 = 0;
         }
@@ -222,7 +222,7 @@ LABEL_38:
 
         if (v32 >= 2)
         {
-          if (a3 == 5)
+          if (style == 5)
           {
             v38 = 2;
           }
@@ -238,7 +238,7 @@ LABEL_38:
         else
         {
           v11->_glassURLFieldUserInterfaceStyle = 2;
-          if (a3 == 4)
+          if (style == 4)
           {
             v41[0] = xmmword_18BC3E380;
             v41[1] = xmmword_18BC3E390;
@@ -258,10 +258,10 @@ LABEL_38:
       }
 
 LABEL_35:
-      if (_SFIsPrivateTintStyle(a3))
+      if (_SFIsPrivateTintStyle(style))
       {
-        v25 = [MEMORY[0x1E69DC888] whiteColor];
-        v24 = [v25 colorWithAlphaComponent:v23];
+        whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+        v24 = [whiteColor colorWithAlphaComponent:v23];
       }
 
       else
@@ -285,21 +285,21 @@ LABEL_62:
 {
   if (self->_preferredBarTintColor || self->_preferredControlsTintColor)
   {
-    v2 = [objc_alloc(objc_opt_class()) initWithBarTintStyle:self->_tintStyle preferredBarTintColor:0 controlsTintColor:0];
+    selfCopy = [objc_alloc(objc_opt_class()) initWithBarTintStyle:self->_tintStyle preferredBarTintColor:0 controlsTintColor:0];
   }
 
   else
   {
-    v2 = self;
+    selfCopy = self;
   }
 
-  return v2;
+  return selfCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v11 = 1;
   }
@@ -309,13 +309,13 @@ LABEL_62:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       tintStyle = self->_tintStyle;
       if (tintStyle == [v5 tintStyle])
       {
-        v7 = [v5 preferredBarTintColor];
+        preferredBarTintColor = [v5 preferredBarTintColor];
         preferredBarTintColor = self->_preferredBarTintColor;
-        if (preferredBarTintColor == v7 || [(UIColor *)preferredBarTintColor isEqual:v7])
+        if (preferredBarTintColor == preferredBarTintColor || [(UIColor *)preferredBarTintColor isEqual:preferredBarTintColor])
         {
           v9 = v5[1];
           preferredControlsTintColor = self->_preferredControlsTintColor;
@@ -376,11 +376,11 @@ LABEL_62:
   return v7;
 }
 
-- (void)applyBackdropEffectsToView:(id)a3
+- (void)applyBackdropEffectsToView:(id)view
 {
-  v8 = a3;
-  v4 = [(_SFBarTheme *)self backdropEffects];
-  [v8 setBackgroundEffects:v4];
+  viewCopy = view;
+  backdropEffects = [(_SFBarTheme *)self backdropEffects];
+  [viewCopy setBackgroundEffects:backdropEffects];
 
   if (self->_backdropAdjustmentEffects)
   {
@@ -392,10 +392,10 @@ LABEL_62:
     backdropAdjustmentEffects = MEMORY[0x1E695E0F0];
   }
 
-  [v8 setContentEffects:backdropAdjustmentEffects];
+  [viewCopy setContentEffects:backdropAdjustmentEffects];
   if (self->_backdropAdjustmentEffects)
   {
-    [v8 tintColor];
+    [viewCopy tintColor];
   }
 
   else
@@ -403,20 +403,20 @@ LABEL_62:
     [MEMORY[0x1E69DC888] clearColor];
   }
   v6 = ;
-  v7 = [v8 contentView];
-  [v7 setBackgroundColor:v6];
+  contentView = [viewCopy contentView];
+  [contentView setBackgroundColor:v6];
 }
 
-+ (id)controlsTintColorForStyle:(int64_t)a3
++ (id)controlsTintColorForStyle:(int64_t)style
 {
-  if (a3 == 5)
+  if (style == 5)
   {
-    v3 = [MEMORY[0x1E69DC888] whiteColor];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
   }
 
   else
   {
-    if (_SFIsPrivateTintStyle(a3))
+    if (_SFIsPrivateTintStyle(style))
     {
       [MEMORY[0x1E69DC888] labelColor];
     }
@@ -425,27 +425,27 @@ LABEL_62:
     {
       [MEMORY[0x1E69DC888] sf_safariAccentColor];
     }
-    v3 = ;
+    whiteColor = ;
   }
 
-  return v3;
+  return whiteColor;
 }
 
-+ (BOOL)shouldDisableBackgroundColorInBar:(id)a3 traitCollection:(id)a4
++ (BOOL)shouldDisableBackgroundColorInBar:(id)bar traitCollection:(id)collection
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E695E000] safari_browserDefaults];
-  if ([v7 BOOLForKey:@"NeverUseBackgroundColorInNavigationBar"])
+  barCopy = bar;
+  collectionCopy = collection;
+  safari_browserDefaults = [MEMORY[0x1E695E000] safari_browserDefaults];
+  if ([safari_browserDefaults BOOLForKey:@"NeverUseBackgroundColorInNavigationBar"])
   {
     goto LABEL_8;
   }
 
-  v8 = [v6 userInterfaceStyle];
-  v9 = [v5 sf_isDarkColorForAdaptiveGlass];
-  if (v8 != 2 || (v9 & 1) != 0)
+  userInterfaceStyle = [collectionCopy userInterfaceStyle];
+  sf_isDarkColorForAdaptiveGlass = [barCopy sf_isDarkColorForAdaptiveGlass];
+  if (userInterfaceStyle != 2 || (sf_isDarkColorForAdaptiveGlass & 1) != 0)
   {
-    if (((v8 != 2) & v9) != 1)
+    if (((userInterfaceStyle != 2) & sf_isDarkColorForAdaptiveGlass) != 1)
     {
 LABEL_9:
       v11 = 0;
@@ -460,7 +460,7 @@ LABEL_9:
     v10 = SFDisableLightBackgroundColorInDarkTabBarKey;
   }
 
-  if (([v7 BOOLForKey:*v10] & 1) == 0)
+  if (([safari_browserDefaults BOOLForKey:*v10] & 1) == 0)
   {
     goto LABEL_9;
   }

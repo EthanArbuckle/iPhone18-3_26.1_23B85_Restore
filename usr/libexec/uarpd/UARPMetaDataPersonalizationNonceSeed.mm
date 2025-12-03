@@ -1,7 +1,7 @@
 @interface UARPMetaDataPersonalizationNonceSeed
 - (UARPMetaDataPersonalizationNonceSeed)init;
-- (UARPMetaDataPersonalizationNonceSeed)initWithLength:(unint64_t)a3 value:(void *)a4;
-- (UARPMetaDataPersonalizationNonceSeed)initWithPropertyListValue:(id)a3 relativeURL:(id)a4;
+- (UARPMetaDataPersonalizationNonceSeed)initWithLength:(unint64_t)length value:(void *)value;
+- (UARPMetaDataPersonalizationNonceSeed)initWithPropertyListValue:(id)value relativeURL:(id)l;
 - (id)description;
 @end
 
@@ -23,16 +23,16 @@
   return v3;
 }
 
-- (UARPMetaDataPersonalizationNonceSeed)initWithPropertyListValue:(id)a3 relativeURL:(id)a4
+- (UARPMetaDataPersonalizationNonceSeed)initWithPropertyListValue:(id)value relativeURL:(id)l
 {
-  v5 = a3;
+  valueCopy = value;
   v6 = [(UARPMetaDataPersonalizationNonceSeed *)self init];
   v7 = v6;
   if (v6)
   {
     v12.receiver = v6;
     v12.super_class = UARPMetaDataPersonalizationNonceSeed;
-    v8 = [(UARPMetaData *)&v12 dataFromPlistValue:v5];
+    v8 = [(UARPMetaData *)&v12 dataFromPlistValue:valueCopy];
     nonceSeed = v7->_nonceSeed;
     v7->_nonceSeed = v8;
 
@@ -52,12 +52,12 @@
   return v10;
 }
 
-- (UARPMetaDataPersonalizationNonceSeed)initWithLength:(unint64_t)a3 value:(void *)a4
+- (UARPMetaDataPersonalizationNonceSeed)initWithLength:(unint64_t)length value:(void *)value
 {
   v6 = [(UARPMetaDataPersonalizationNonceSeed *)self init];
   if (v6)
   {
-    v7 = [[NSData alloc] initWithBytes:a4 length:a3];
+    v7 = [[NSData alloc] initWithBytes:value length:length];
     nonceSeed = v6->_nonceSeed;
     v6->_nonceSeed = v7;
 
@@ -69,9 +69,9 @@
 
 - (id)description
 {
-  v3 = [(UARPMetaData *)self tlvName];
-  v4 = [(UARPMetaDataPersonalizationNonceSeed *)self nonceSeed];
-  v5 = [NSString stringWithFormat:@"<%@: %@>", v3, v4];
+  tlvName = [(UARPMetaData *)self tlvName];
+  nonceSeed = [(UARPMetaDataPersonalizationNonceSeed *)self nonceSeed];
+  v5 = [NSString stringWithFormat:@"<%@: %@>", tlvName, nonceSeed];
 
   return v5;
 }

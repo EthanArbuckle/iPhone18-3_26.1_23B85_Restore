@@ -1,30 +1,30 @@
 @interface ITMLUtilities
-+ (void)image:(id)a3 didCompleteLoadingForCache:(int64_t)a4 requestRecord:(id)a5;
++ (void)image:(id)image didCompleteLoadingForCache:(int64_t)cache requestRecord:(id)record;
 @end
 
 @implementation ITMLUtilities
 
-+ (void)image:(id)a3 didCompleteLoadingForCache:(int64_t)a4 requestRecord:(id)a5
++ (void)image:(id)image didCompleteLoadingForCache:(int64_t)cache requestRecord:(id)record
 {
-  if (a5)
+  if (record)
   {
-    v7 = a5;
-    v8 = a3;
-    v9 = [v8 uiImage];
-    v10 = [v8 imageType];
+    recordCopy = record;
+    imageCopy = image;
+    uiImage = [imageCopy uiImage];
+    imageType = [imageCopy imageType];
 
-    v11 = UTTypeCopyPreferredTagWithClass(v10, *MEMORY[0x277CC1F60]);
+    v11 = UTTypeCopyPreferredTagWithClass(imageType, *MEMORY[0x277CC1F60]);
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __64__ITMLUtilities_image_didCompleteLoadingForCache_requestRecord___block_invoke;
     v15[3] = &unk_279D70EE0;
-    v16 = v10;
-    v17 = v9;
+    v16 = imageType;
+    v17 = uiImage;
     v18 = v11;
     v12 = v11;
-    v13 = v9;
-    v14 = v10;
-    [v7 didCompleteLoadingFromCache:a4 withResponseBodyBlock:v15];
+    v13 = uiImage;
+    v14 = imageType;
+    [recordCopy didCompleteLoadingFromCache:cache withResponseBodyBlock:v15];
   }
 }
 

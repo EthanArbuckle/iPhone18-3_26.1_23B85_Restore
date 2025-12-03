@@ -1,11 +1,11 @@
 @interface CNVSchemaCNVClientEvent
-+ (id)getInnerTypeStringByTag:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)getInnerTypeStringByTag:(unint64_t)tag;
+- (BOOL)isEqual:(id)equal;
 - (CNVSchemaCNVActionCandidatesCollated)actionCandidatesCollated;
 - (CNVSchemaCNVActionCandidatesGenerated)actionCandidatesGenerated;
 - (CNVSchemaCNVActionCandidatesGeneratedTier1)actionCandidatesGeneratedTier1;
-- (CNVSchemaCNVClientEvent)initWithDictionary:(id)a3;
-- (CNVSchemaCNVClientEvent)initWithJSON:(id)a3;
+- (CNVSchemaCNVClientEvent)initWithDictionary:(id)dictionary;
+- (CNVSchemaCNVClientEvent)initWithJSON:(id)n;
 - (CNVSchemaCNVDecisionEngineResponseReported)decisionEngineResponseReported;
 - (CNVSchemaCNVDisambiguationContext)disambiguationContext;
 - (CNVSchemaCNVExecutionCommitContext)executionCommitContext;
@@ -23,7 +23,7 @@
 - (CNVSchemaCNVUsoGraphTier1)cnvUsoGraphTier1;
 - (NSData)jsonData;
 - (SISchemaInstrumentationMessage)innerEvent;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)getComponentId;
 - (id)qualifiedMessageName;
@@ -48,40 +48,40 @@
 - (void)deleteIntentReformationContext;
 - (void)deletePostFlowPrepareContext;
 - (void)deletePreFlowPrepareContext;
-- (void)setActionCandidatesCollated:(id)a3;
-- (void)setActionCandidatesGenerated:(id)a3;
-- (void)setActionCandidatesGeneratedTier1:(id)a3;
-- (void)setCnvUsoGraphTier1:(id)a3;
-- (void)setDecisionEngineResponseReported:(id)a3;
-- (void)setDisambiguationContext:(id)a3;
-- (void)setExecutionCommitContext:(id)a3;
-- (void)setExecutionOverridesEvaluated:(id)a3;
-- (void)setExecutionPrepareContext:(id)a3;
-- (void)setFindFlowContext:(id)a3;
-- (void)setFlowPluginExecutionContext:(id)a3;
-- (void)setFlowPluginInputContext:(id)a3;
-- (void)setFlowPluginLoadContext:(id)a3;
-- (void)setIntentEagerExecutionContext:(id)a3;
-- (void)setIntentFinalExecutionContext:(id)a3;
-- (void)setIntentReformationContext:(id)a3;
-- (void)setPostFlowPrepareContext:(id)a3;
-- (void)setPreFlowPrepareContext:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setActionCandidatesCollated:(id)collated;
+- (void)setActionCandidatesGenerated:(id)generated;
+- (void)setActionCandidatesGeneratedTier1:(id)tier1;
+- (void)setCnvUsoGraphTier1:(id)tier1;
+- (void)setDecisionEngineResponseReported:(id)reported;
+- (void)setDisambiguationContext:(id)context;
+- (void)setExecutionCommitContext:(id)context;
+- (void)setExecutionOverridesEvaluated:(id)evaluated;
+- (void)setExecutionPrepareContext:(id)context;
+- (void)setFindFlowContext:(id)context;
+- (void)setFlowPluginExecutionContext:(id)context;
+- (void)setFlowPluginInputContext:(id)context;
+- (void)setFlowPluginLoadContext:(id)context;
+- (void)setIntentEagerExecutionContext:(id)context;
+- (void)setIntentFinalExecutionContext:(id)context;
+- (void)setIntentReformationContext:(id)context;
+- (void)setPostFlowPrepareContext:(id)context;
+- (void)setPreFlowPrepareContext:(id)context;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CNVSchemaCNVClientEvent
 
 - (id)qualifiedMessageName
 {
-  v2 = [(CNVSchemaCNVClientEvent *)self whichEvent_Type];
-  if (v2 - 2 > 0x11)
+  whichEvent_Type = [(CNVSchemaCNVClientEvent *)self whichEvent_Type];
+  if (whichEvent_Type - 2 > 0x11)
   {
     return @"com.apple.aiml.siri.cnv.CNVClientEvent";
   }
 
   else
   {
-    return off_1E78D2D10[v2 - 2];
+    return off_1E78D2D10[whichEvent_Type - 2];
   }
 }
 
@@ -355,15 +355,15 @@
   return v3;
 }
 
-- (CNVSchemaCNVClientEvent)initWithDictionary:(id)a3
+- (CNVSchemaCNVClientEvent)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v58.receiver = self;
   v58.super_class = CNVSchemaCNVClientEvent;
   v5 = [(CNVSchemaCNVClientEvent *)&v58 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"eventMetadata"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"eventMetadata"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -371,7 +371,7 @@
       [(CNVSchemaCNVClientEvent *)v5 setEventMetadata:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"intentReformationContext"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"intentReformationContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -379,7 +379,7 @@
       [(CNVSchemaCNVClientEvent *)v5 setIntentReformationContext:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"cnvUsoGraphTier1"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"cnvUsoGraphTier1"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -387,7 +387,7 @@
       [(CNVSchemaCNVClientEvent *)v5 setCnvUsoGraphTier1:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"intentEagerExecutionContext"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"intentEagerExecutionContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -395,7 +395,7 @@
       [(CNVSchemaCNVClientEvent *)v5 setIntentEagerExecutionContext:v13];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"intentFinalExecutionContext"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"intentFinalExecutionContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -403,7 +403,7 @@
       [(CNVSchemaCNVClientEvent *)v5 setIntentFinalExecutionContext:v15];
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"actionCandidatesGenerated"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"actionCandidatesGenerated"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -411,7 +411,7 @@
       [(CNVSchemaCNVClientEvent *)v5 setActionCandidatesGenerated:v17];
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"actionCandidatesGeneratedTier1"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"actionCandidatesGeneratedTier1"];
     objc_opt_class();
     v57 = v18;
     if (objc_opt_isKindOfClass())
@@ -420,7 +420,7 @@
       [(CNVSchemaCNVClientEvent *)v5 setActionCandidatesGeneratedTier1:v19];
     }
 
-    v20 = [v4 objectForKeyedSubscript:@"actionCandidatesCollated"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"actionCandidatesCollated"];
     objc_opt_class();
     v56 = v20;
     if (objc_opt_isKindOfClass())
@@ -429,7 +429,7 @@
       [(CNVSchemaCNVClientEvent *)v5 setActionCandidatesCollated:v21];
     }
 
-    v22 = [v4 objectForKeyedSubscript:@"disambiguationContext"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"disambiguationContext"];
     objc_opt_class();
     v55 = v22;
     if (objc_opt_isKindOfClass())
@@ -438,7 +438,7 @@
       [(CNVSchemaCNVClientEvent *)v5 setDisambiguationContext:v23];
     }
 
-    v24 = [v4 objectForKeyedSubscript:@"executionOverridesEvaluated"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"executionOverridesEvaluated"];
     objc_opt_class();
     v54 = v24;
     if (objc_opt_isKindOfClass())
@@ -447,7 +447,7 @@
       [(CNVSchemaCNVClientEvent *)v5 setExecutionOverridesEvaluated:v25];
     }
 
-    v26 = [v4 objectForKeyedSubscript:@"executionPrepareContext"];
+    v26 = [dictionaryCopy objectForKeyedSubscript:@"executionPrepareContext"];
     objc_opt_class();
     v53 = v26;
     if (objc_opt_isKindOfClass())
@@ -457,7 +457,7 @@
     }
 
     v50 = v10;
-    v28 = [v4 objectForKeyedSubscript:@"flowPluginLoadContext"];
+    v28 = [dictionaryCopy objectForKeyedSubscript:@"flowPluginLoadContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -466,7 +466,7 @@
     }
 
     v49 = v12;
-    v30 = [v4 objectForKeyedSubscript:{@"findFlowContext", v28}];
+    v30 = [dictionaryCopy objectForKeyedSubscript:{@"findFlowContext", v28}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -475,7 +475,7 @@
     }
 
     v48 = v14;
-    v32 = [v4 objectForKeyedSubscript:@"flowPluginInputContext"];
+    v32 = [dictionaryCopy objectForKeyedSubscript:@"flowPluginInputContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -484,7 +484,7 @@
     }
 
     v47 = v16;
-    v34 = [v4 objectForKeyedSubscript:@"flowPluginExecutionContext"];
+    v34 = [dictionaryCopy objectForKeyedSubscript:@"flowPluginExecutionContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -493,7 +493,7 @@
     }
 
     v52 = v6;
-    v36 = [v4 objectForKeyedSubscript:@"preFlowPrepareContext"];
+    v36 = [dictionaryCopy objectForKeyedSubscript:@"preFlowPrepareContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -502,7 +502,7 @@
     }
 
     v51 = v8;
-    v38 = [v4 objectForKeyedSubscript:@"postFlowPrepareContext"];
+    v38 = [dictionaryCopy objectForKeyedSubscript:@"postFlowPrepareContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -510,7 +510,7 @@
       [(CNVSchemaCNVClientEvent *)v5 setPostFlowPrepareContext:v39];
     }
 
-    v40 = [v4 objectForKeyedSubscript:@"executionCommitContext"];
+    v40 = [dictionaryCopy objectForKeyedSubscript:@"executionCommitContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -518,7 +518,7 @@
       [(CNVSchemaCNVClientEvent *)v5 setExecutionCommitContext:v41];
     }
 
-    v42 = [v4 objectForKeyedSubscript:@"decisionEngineResponseReported"];
+    v42 = [dictionaryCopy objectForKeyedSubscript:@"decisionEngineResponseReported"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -532,30 +532,30 @@
   return v5;
 }
 
-- (CNVSchemaCNVClientEvent)initWithJSON:(id)a3
+- (CNVSchemaCNVClientEvent)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(CNVSchemaCNVClientEvent *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(CNVSchemaCNVClientEvent *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(CNVSchemaCNVClientEvent *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -568,314 +568,314 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_actionCandidatesCollated)
   {
-    v4 = [(CNVSchemaCNVClientEvent *)self actionCandidatesCollated];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    actionCandidatesCollated = [(CNVSchemaCNVClientEvent *)self actionCandidatesCollated];
+    dictionaryRepresentation = [actionCandidatesCollated dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"actionCandidatesCollated"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"actionCandidatesCollated"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"actionCandidatesCollated"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"actionCandidatesCollated"];
     }
   }
 
   if (self->_actionCandidatesGenerated)
   {
-    v7 = [(CNVSchemaCNVClientEvent *)self actionCandidatesGenerated];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    actionCandidatesGenerated = [(CNVSchemaCNVClientEvent *)self actionCandidatesGenerated];
+    dictionaryRepresentation2 = [actionCandidatesGenerated dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"actionCandidatesGenerated"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"actionCandidatesGenerated"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"actionCandidatesGenerated"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"actionCandidatesGenerated"];
     }
   }
 
   if (self->_actionCandidatesGeneratedTier1)
   {
-    v10 = [(CNVSchemaCNVClientEvent *)self actionCandidatesGeneratedTier1];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    actionCandidatesGeneratedTier1 = [(CNVSchemaCNVClientEvent *)self actionCandidatesGeneratedTier1];
+    dictionaryRepresentation3 = [actionCandidatesGeneratedTier1 dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"actionCandidatesGeneratedTier1"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"actionCandidatesGeneratedTier1"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"actionCandidatesGeneratedTier1"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"actionCandidatesGeneratedTier1"];
     }
   }
 
   if (self->_cnvUsoGraphTier1)
   {
-    v13 = [(CNVSchemaCNVClientEvent *)self cnvUsoGraphTier1];
-    v14 = [v13 dictionaryRepresentation];
-    if (v14)
+    cnvUsoGraphTier1 = [(CNVSchemaCNVClientEvent *)self cnvUsoGraphTier1];
+    dictionaryRepresentation4 = [cnvUsoGraphTier1 dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v14 forKeyedSubscript:@"cnvUsoGraphTier1"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"cnvUsoGraphTier1"];
     }
 
     else
     {
-      v15 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v15 forKeyedSubscript:@"cnvUsoGraphTier1"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"cnvUsoGraphTier1"];
     }
   }
 
   if (self->_decisionEngineResponseReported)
   {
-    v16 = [(CNVSchemaCNVClientEvent *)self decisionEngineResponseReported];
-    v17 = [v16 dictionaryRepresentation];
-    if (v17)
+    decisionEngineResponseReported = [(CNVSchemaCNVClientEvent *)self decisionEngineResponseReported];
+    dictionaryRepresentation5 = [decisionEngineResponseReported dictionaryRepresentation];
+    if (dictionaryRepresentation5)
     {
-      [v3 setObject:v17 forKeyedSubscript:@"decisionEngineResponseReported"];
+      [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"decisionEngineResponseReported"];
     }
 
     else
     {
-      v18 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v18 forKeyedSubscript:@"decisionEngineResponseReported"];
+      null5 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null5 forKeyedSubscript:@"decisionEngineResponseReported"];
     }
   }
 
   if (self->_disambiguationContext)
   {
-    v19 = [(CNVSchemaCNVClientEvent *)self disambiguationContext];
-    v20 = [v19 dictionaryRepresentation];
-    if (v20)
+    disambiguationContext = [(CNVSchemaCNVClientEvent *)self disambiguationContext];
+    dictionaryRepresentation6 = [disambiguationContext dictionaryRepresentation];
+    if (dictionaryRepresentation6)
     {
-      [v3 setObject:v20 forKeyedSubscript:@"disambiguationContext"];
+      [dictionary setObject:dictionaryRepresentation6 forKeyedSubscript:@"disambiguationContext"];
     }
 
     else
     {
-      v21 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v21 forKeyedSubscript:@"disambiguationContext"];
+      null6 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null6 forKeyedSubscript:@"disambiguationContext"];
     }
   }
 
   if (self->_eventMetadata)
   {
-    v22 = [(CNVSchemaCNVClientEvent *)self eventMetadata];
-    v23 = [v22 dictionaryRepresentation];
-    if (v23)
+    eventMetadata = [(CNVSchemaCNVClientEvent *)self eventMetadata];
+    dictionaryRepresentation7 = [eventMetadata dictionaryRepresentation];
+    if (dictionaryRepresentation7)
     {
-      [v3 setObject:v23 forKeyedSubscript:@"eventMetadata"];
+      [dictionary setObject:dictionaryRepresentation7 forKeyedSubscript:@"eventMetadata"];
     }
 
     else
     {
-      v24 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v24 forKeyedSubscript:@"eventMetadata"];
+      null7 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null7 forKeyedSubscript:@"eventMetadata"];
     }
   }
 
   if (self->_executionCommitContext)
   {
-    v25 = [(CNVSchemaCNVClientEvent *)self executionCommitContext];
-    v26 = [v25 dictionaryRepresentation];
-    if (v26)
+    executionCommitContext = [(CNVSchemaCNVClientEvent *)self executionCommitContext];
+    dictionaryRepresentation8 = [executionCommitContext dictionaryRepresentation];
+    if (dictionaryRepresentation8)
     {
-      [v3 setObject:v26 forKeyedSubscript:@"executionCommitContext"];
+      [dictionary setObject:dictionaryRepresentation8 forKeyedSubscript:@"executionCommitContext"];
     }
 
     else
     {
-      v27 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v27 forKeyedSubscript:@"executionCommitContext"];
+      null8 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null8 forKeyedSubscript:@"executionCommitContext"];
     }
   }
 
   if (self->_executionOverridesEvaluated)
   {
-    v28 = [(CNVSchemaCNVClientEvent *)self executionOverridesEvaluated];
-    v29 = [v28 dictionaryRepresentation];
-    if (v29)
+    executionOverridesEvaluated = [(CNVSchemaCNVClientEvent *)self executionOverridesEvaluated];
+    dictionaryRepresentation9 = [executionOverridesEvaluated dictionaryRepresentation];
+    if (dictionaryRepresentation9)
     {
-      [v3 setObject:v29 forKeyedSubscript:@"executionOverridesEvaluated"];
+      [dictionary setObject:dictionaryRepresentation9 forKeyedSubscript:@"executionOverridesEvaluated"];
     }
 
     else
     {
-      v30 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v30 forKeyedSubscript:@"executionOverridesEvaluated"];
+      null9 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null9 forKeyedSubscript:@"executionOverridesEvaluated"];
     }
   }
 
   if (self->_executionPrepareContext)
   {
-    v31 = [(CNVSchemaCNVClientEvent *)self executionPrepareContext];
-    v32 = [v31 dictionaryRepresentation];
-    if (v32)
+    executionPrepareContext = [(CNVSchemaCNVClientEvent *)self executionPrepareContext];
+    dictionaryRepresentation10 = [executionPrepareContext dictionaryRepresentation];
+    if (dictionaryRepresentation10)
     {
-      [v3 setObject:v32 forKeyedSubscript:@"executionPrepareContext"];
+      [dictionary setObject:dictionaryRepresentation10 forKeyedSubscript:@"executionPrepareContext"];
     }
 
     else
     {
-      v33 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v33 forKeyedSubscript:@"executionPrepareContext"];
+      null10 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null10 forKeyedSubscript:@"executionPrepareContext"];
     }
   }
 
   if (self->_findFlowContext)
   {
-    v34 = [(CNVSchemaCNVClientEvent *)self findFlowContext];
-    v35 = [v34 dictionaryRepresentation];
-    if (v35)
+    findFlowContext = [(CNVSchemaCNVClientEvent *)self findFlowContext];
+    dictionaryRepresentation11 = [findFlowContext dictionaryRepresentation];
+    if (dictionaryRepresentation11)
     {
-      [v3 setObject:v35 forKeyedSubscript:@"findFlowContext"];
+      [dictionary setObject:dictionaryRepresentation11 forKeyedSubscript:@"findFlowContext"];
     }
 
     else
     {
-      v36 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v36 forKeyedSubscript:@"findFlowContext"];
+      null11 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null11 forKeyedSubscript:@"findFlowContext"];
     }
   }
 
   if (self->_flowPluginExecutionContext)
   {
-    v37 = [(CNVSchemaCNVClientEvent *)self flowPluginExecutionContext];
-    v38 = [v37 dictionaryRepresentation];
-    if (v38)
+    flowPluginExecutionContext = [(CNVSchemaCNVClientEvent *)self flowPluginExecutionContext];
+    dictionaryRepresentation12 = [flowPluginExecutionContext dictionaryRepresentation];
+    if (dictionaryRepresentation12)
     {
-      [v3 setObject:v38 forKeyedSubscript:@"flowPluginExecutionContext"];
+      [dictionary setObject:dictionaryRepresentation12 forKeyedSubscript:@"flowPluginExecutionContext"];
     }
 
     else
     {
-      v39 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v39 forKeyedSubscript:@"flowPluginExecutionContext"];
+      null12 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null12 forKeyedSubscript:@"flowPluginExecutionContext"];
     }
   }
 
   if (self->_flowPluginInputContext)
   {
-    v40 = [(CNVSchemaCNVClientEvent *)self flowPluginInputContext];
-    v41 = [v40 dictionaryRepresentation];
-    if (v41)
+    flowPluginInputContext = [(CNVSchemaCNVClientEvent *)self flowPluginInputContext];
+    dictionaryRepresentation13 = [flowPluginInputContext dictionaryRepresentation];
+    if (dictionaryRepresentation13)
     {
-      [v3 setObject:v41 forKeyedSubscript:@"flowPluginInputContext"];
+      [dictionary setObject:dictionaryRepresentation13 forKeyedSubscript:@"flowPluginInputContext"];
     }
 
     else
     {
-      v42 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v42 forKeyedSubscript:@"flowPluginInputContext"];
+      null13 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null13 forKeyedSubscript:@"flowPluginInputContext"];
     }
   }
 
   if (self->_flowPluginLoadContext)
   {
-    v43 = [(CNVSchemaCNVClientEvent *)self flowPluginLoadContext];
-    v44 = [v43 dictionaryRepresentation];
-    if (v44)
+    flowPluginLoadContext = [(CNVSchemaCNVClientEvent *)self flowPluginLoadContext];
+    dictionaryRepresentation14 = [flowPluginLoadContext dictionaryRepresentation];
+    if (dictionaryRepresentation14)
     {
-      [v3 setObject:v44 forKeyedSubscript:@"flowPluginLoadContext"];
+      [dictionary setObject:dictionaryRepresentation14 forKeyedSubscript:@"flowPluginLoadContext"];
     }
 
     else
     {
-      v45 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v45 forKeyedSubscript:@"flowPluginLoadContext"];
+      null14 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null14 forKeyedSubscript:@"flowPluginLoadContext"];
     }
   }
 
   if (self->_intentEagerExecutionContext)
   {
-    v46 = [(CNVSchemaCNVClientEvent *)self intentEagerExecutionContext];
-    v47 = [v46 dictionaryRepresentation];
-    if (v47)
+    intentEagerExecutionContext = [(CNVSchemaCNVClientEvent *)self intentEagerExecutionContext];
+    dictionaryRepresentation15 = [intentEagerExecutionContext dictionaryRepresentation];
+    if (dictionaryRepresentation15)
     {
-      [v3 setObject:v47 forKeyedSubscript:@"intentEagerExecutionContext"];
+      [dictionary setObject:dictionaryRepresentation15 forKeyedSubscript:@"intentEagerExecutionContext"];
     }
 
     else
     {
-      v48 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v48 forKeyedSubscript:@"intentEagerExecutionContext"];
+      null15 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null15 forKeyedSubscript:@"intentEagerExecutionContext"];
     }
   }
 
   if (self->_intentFinalExecutionContext)
   {
-    v49 = [(CNVSchemaCNVClientEvent *)self intentFinalExecutionContext];
-    v50 = [v49 dictionaryRepresentation];
-    if (v50)
+    intentFinalExecutionContext = [(CNVSchemaCNVClientEvent *)self intentFinalExecutionContext];
+    dictionaryRepresentation16 = [intentFinalExecutionContext dictionaryRepresentation];
+    if (dictionaryRepresentation16)
     {
-      [v3 setObject:v50 forKeyedSubscript:@"intentFinalExecutionContext"];
+      [dictionary setObject:dictionaryRepresentation16 forKeyedSubscript:@"intentFinalExecutionContext"];
     }
 
     else
     {
-      v51 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v51 forKeyedSubscript:@"intentFinalExecutionContext"];
+      null16 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null16 forKeyedSubscript:@"intentFinalExecutionContext"];
     }
   }
 
   if (self->_intentReformationContext)
   {
-    v52 = [(CNVSchemaCNVClientEvent *)self intentReformationContext];
-    v53 = [v52 dictionaryRepresentation];
-    if (v53)
+    intentReformationContext = [(CNVSchemaCNVClientEvent *)self intentReformationContext];
+    dictionaryRepresentation17 = [intentReformationContext dictionaryRepresentation];
+    if (dictionaryRepresentation17)
     {
-      [v3 setObject:v53 forKeyedSubscript:@"intentReformationContext"];
+      [dictionary setObject:dictionaryRepresentation17 forKeyedSubscript:@"intentReformationContext"];
     }
 
     else
     {
-      v54 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v54 forKeyedSubscript:@"intentReformationContext"];
+      null17 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null17 forKeyedSubscript:@"intentReformationContext"];
     }
   }
 
   if (self->_postFlowPrepareContext)
   {
-    v55 = [(CNVSchemaCNVClientEvent *)self postFlowPrepareContext];
-    v56 = [v55 dictionaryRepresentation];
-    if (v56)
+    postFlowPrepareContext = [(CNVSchemaCNVClientEvent *)self postFlowPrepareContext];
+    dictionaryRepresentation18 = [postFlowPrepareContext dictionaryRepresentation];
+    if (dictionaryRepresentation18)
     {
-      [v3 setObject:v56 forKeyedSubscript:@"postFlowPrepareContext"];
+      [dictionary setObject:dictionaryRepresentation18 forKeyedSubscript:@"postFlowPrepareContext"];
     }
 
     else
     {
-      v57 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v57 forKeyedSubscript:@"postFlowPrepareContext"];
+      null18 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null18 forKeyedSubscript:@"postFlowPrepareContext"];
     }
   }
 
   if (self->_preFlowPrepareContext)
   {
-    v58 = [(CNVSchemaCNVClientEvent *)self preFlowPrepareContext];
-    v59 = [v58 dictionaryRepresentation];
-    if (v59)
+    preFlowPrepareContext = [(CNVSchemaCNVClientEvent *)self preFlowPrepareContext];
+    dictionaryRepresentation19 = [preFlowPrepareContext dictionaryRepresentation];
+    if (dictionaryRepresentation19)
     {
-      [v3 setObject:v59 forKeyedSubscript:@"preFlowPrepareContext"];
+      [dictionary setObject:dictionaryRepresentation19 forKeyedSubscript:@"preFlowPrepareContext"];
     }
 
     else
     {
-      v60 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v60 forKeyedSubscript:@"preFlowPrepareContext"];
+      null19 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null19 forKeyedSubscript:@"preFlowPrepareContext"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -901,34 +901,34 @@
   return v18 ^ v20 ^ [(CNVSchemaCNVDecisionEngineResponseReported *)self->_decisionEngineResponseReported hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_98;
   }
 
   whichEvent_Type = self->_whichEvent_Type;
-  if (whichEvent_Type != [v4 whichEvent_Type])
+  if (whichEvent_Type != [equalCopy whichEvent_Type])
   {
     goto LABEL_98;
   }
 
-  v6 = [(CNVSchemaCNVClientEvent *)self eventMetadata];
-  v7 = [v4 eventMetadata];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(CNVSchemaCNVClientEvent *)self eventMetadata];
+  eventMetadata2 = [equalCopy eventMetadata];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_97;
   }
 
-  v8 = [(CNVSchemaCNVClientEvent *)self eventMetadata];
-  if (v8)
+  eventMetadata3 = [(CNVSchemaCNVClientEvent *)self eventMetadata];
+  if (eventMetadata3)
   {
-    v9 = v8;
-    v10 = [(CNVSchemaCNVClientEvent *)self eventMetadata];
-    v11 = [v4 eventMetadata];
-    v12 = [v10 isEqual:v11];
+    v9 = eventMetadata3;
+    eventMetadata4 = [(CNVSchemaCNVClientEvent *)self eventMetadata];
+    eventMetadata5 = [equalCopy eventMetadata];
+    v12 = [eventMetadata4 isEqual:eventMetadata5];
 
     if (!v12)
     {
@@ -940,20 +940,20 @@
   {
   }
 
-  v6 = [(CNVSchemaCNVClientEvent *)self intentReformationContext];
-  v7 = [v4 intentReformationContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(CNVSchemaCNVClientEvent *)self intentReformationContext];
+  eventMetadata2 = [equalCopy intentReformationContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_97;
   }
 
-  v13 = [(CNVSchemaCNVClientEvent *)self intentReformationContext];
-  if (v13)
+  intentReformationContext = [(CNVSchemaCNVClientEvent *)self intentReformationContext];
+  if (intentReformationContext)
   {
-    v14 = v13;
-    v15 = [(CNVSchemaCNVClientEvent *)self intentReformationContext];
-    v16 = [v4 intentReformationContext];
-    v17 = [v15 isEqual:v16];
+    v14 = intentReformationContext;
+    intentReformationContext2 = [(CNVSchemaCNVClientEvent *)self intentReformationContext];
+    intentReformationContext3 = [equalCopy intentReformationContext];
+    v17 = [intentReformationContext2 isEqual:intentReformationContext3];
 
     if (!v17)
     {
@@ -965,20 +965,20 @@
   {
   }
 
-  v6 = [(CNVSchemaCNVClientEvent *)self cnvUsoGraphTier1];
-  v7 = [v4 cnvUsoGraphTier1];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(CNVSchemaCNVClientEvent *)self cnvUsoGraphTier1];
+  eventMetadata2 = [equalCopy cnvUsoGraphTier1];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_97;
   }
 
-  v18 = [(CNVSchemaCNVClientEvent *)self cnvUsoGraphTier1];
-  if (v18)
+  cnvUsoGraphTier1 = [(CNVSchemaCNVClientEvent *)self cnvUsoGraphTier1];
+  if (cnvUsoGraphTier1)
   {
-    v19 = v18;
-    v20 = [(CNVSchemaCNVClientEvent *)self cnvUsoGraphTier1];
-    v21 = [v4 cnvUsoGraphTier1];
-    v22 = [v20 isEqual:v21];
+    v19 = cnvUsoGraphTier1;
+    cnvUsoGraphTier12 = [(CNVSchemaCNVClientEvent *)self cnvUsoGraphTier1];
+    cnvUsoGraphTier13 = [equalCopy cnvUsoGraphTier1];
+    v22 = [cnvUsoGraphTier12 isEqual:cnvUsoGraphTier13];
 
     if (!v22)
     {
@@ -990,20 +990,20 @@
   {
   }
 
-  v6 = [(CNVSchemaCNVClientEvent *)self intentEagerExecutionContext];
-  v7 = [v4 intentEagerExecutionContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(CNVSchemaCNVClientEvent *)self intentEagerExecutionContext];
+  eventMetadata2 = [equalCopy intentEagerExecutionContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_97;
   }
 
-  v23 = [(CNVSchemaCNVClientEvent *)self intentEagerExecutionContext];
-  if (v23)
+  intentEagerExecutionContext = [(CNVSchemaCNVClientEvent *)self intentEagerExecutionContext];
+  if (intentEagerExecutionContext)
   {
-    v24 = v23;
-    v25 = [(CNVSchemaCNVClientEvent *)self intentEagerExecutionContext];
-    v26 = [v4 intentEagerExecutionContext];
-    v27 = [v25 isEqual:v26];
+    v24 = intentEagerExecutionContext;
+    intentEagerExecutionContext2 = [(CNVSchemaCNVClientEvent *)self intentEagerExecutionContext];
+    intentEagerExecutionContext3 = [equalCopy intentEagerExecutionContext];
+    v27 = [intentEagerExecutionContext2 isEqual:intentEagerExecutionContext3];
 
     if (!v27)
     {
@@ -1015,20 +1015,20 @@
   {
   }
 
-  v6 = [(CNVSchemaCNVClientEvent *)self intentFinalExecutionContext];
-  v7 = [v4 intentFinalExecutionContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(CNVSchemaCNVClientEvent *)self intentFinalExecutionContext];
+  eventMetadata2 = [equalCopy intentFinalExecutionContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_97;
   }
 
-  v28 = [(CNVSchemaCNVClientEvent *)self intentFinalExecutionContext];
-  if (v28)
+  intentFinalExecutionContext = [(CNVSchemaCNVClientEvent *)self intentFinalExecutionContext];
+  if (intentFinalExecutionContext)
   {
-    v29 = v28;
-    v30 = [(CNVSchemaCNVClientEvent *)self intentFinalExecutionContext];
-    v31 = [v4 intentFinalExecutionContext];
-    v32 = [v30 isEqual:v31];
+    v29 = intentFinalExecutionContext;
+    intentFinalExecutionContext2 = [(CNVSchemaCNVClientEvent *)self intentFinalExecutionContext];
+    intentFinalExecutionContext3 = [equalCopy intentFinalExecutionContext];
+    v32 = [intentFinalExecutionContext2 isEqual:intentFinalExecutionContext3];
 
     if (!v32)
     {
@@ -1040,20 +1040,20 @@
   {
   }
 
-  v6 = [(CNVSchemaCNVClientEvent *)self actionCandidatesGenerated];
-  v7 = [v4 actionCandidatesGenerated];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(CNVSchemaCNVClientEvent *)self actionCandidatesGenerated];
+  eventMetadata2 = [equalCopy actionCandidatesGenerated];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_97;
   }
 
-  v33 = [(CNVSchemaCNVClientEvent *)self actionCandidatesGenerated];
-  if (v33)
+  actionCandidatesGenerated = [(CNVSchemaCNVClientEvent *)self actionCandidatesGenerated];
+  if (actionCandidatesGenerated)
   {
-    v34 = v33;
-    v35 = [(CNVSchemaCNVClientEvent *)self actionCandidatesGenerated];
-    v36 = [v4 actionCandidatesGenerated];
-    v37 = [v35 isEqual:v36];
+    v34 = actionCandidatesGenerated;
+    actionCandidatesGenerated2 = [(CNVSchemaCNVClientEvent *)self actionCandidatesGenerated];
+    actionCandidatesGenerated3 = [equalCopy actionCandidatesGenerated];
+    v37 = [actionCandidatesGenerated2 isEqual:actionCandidatesGenerated3];
 
     if (!v37)
     {
@@ -1065,20 +1065,20 @@
   {
   }
 
-  v6 = [(CNVSchemaCNVClientEvent *)self actionCandidatesGeneratedTier1];
-  v7 = [v4 actionCandidatesGeneratedTier1];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(CNVSchemaCNVClientEvent *)self actionCandidatesGeneratedTier1];
+  eventMetadata2 = [equalCopy actionCandidatesGeneratedTier1];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_97;
   }
 
-  v38 = [(CNVSchemaCNVClientEvent *)self actionCandidatesGeneratedTier1];
-  if (v38)
+  actionCandidatesGeneratedTier1 = [(CNVSchemaCNVClientEvent *)self actionCandidatesGeneratedTier1];
+  if (actionCandidatesGeneratedTier1)
   {
-    v39 = v38;
-    v40 = [(CNVSchemaCNVClientEvent *)self actionCandidatesGeneratedTier1];
-    v41 = [v4 actionCandidatesGeneratedTier1];
-    v42 = [v40 isEqual:v41];
+    v39 = actionCandidatesGeneratedTier1;
+    actionCandidatesGeneratedTier12 = [(CNVSchemaCNVClientEvent *)self actionCandidatesGeneratedTier1];
+    actionCandidatesGeneratedTier13 = [equalCopy actionCandidatesGeneratedTier1];
+    v42 = [actionCandidatesGeneratedTier12 isEqual:actionCandidatesGeneratedTier13];
 
     if (!v42)
     {
@@ -1090,20 +1090,20 @@
   {
   }
 
-  v6 = [(CNVSchemaCNVClientEvent *)self actionCandidatesCollated];
-  v7 = [v4 actionCandidatesCollated];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(CNVSchemaCNVClientEvent *)self actionCandidatesCollated];
+  eventMetadata2 = [equalCopy actionCandidatesCollated];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_97;
   }
 
-  v43 = [(CNVSchemaCNVClientEvent *)self actionCandidatesCollated];
-  if (v43)
+  actionCandidatesCollated = [(CNVSchemaCNVClientEvent *)self actionCandidatesCollated];
+  if (actionCandidatesCollated)
   {
-    v44 = v43;
-    v45 = [(CNVSchemaCNVClientEvent *)self actionCandidatesCollated];
-    v46 = [v4 actionCandidatesCollated];
-    v47 = [v45 isEqual:v46];
+    v44 = actionCandidatesCollated;
+    actionCandidatesCollated2 = [(CNVSchemaCNVClientEvent *)self actionCandidatesCollated];
+    actionCandidatesCollated3 = [equalCopy actionCandidatesCollated];
+    v47 = [actionCandidatesCollated2 isEqual:actionCandidatesCollated3];
 
     if (!v47)
     {
@@ -1115,20 +1115,20 @@
   {
   }
 
-  v6 = [(CNVSchemaCNVClientEvent *)self disambiguationContext];
-  v7 = [v4 disambiguationContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(CNVSchemaCNVClientEvent *)self disambiguationContext];
+  eventMetadata2 = [equalCopy disambiguationContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_97;
   }
 
-  v48 = [(CNVSchemaCNVClientEvent *)self disambiguationContext];
-  if (v48)
+  disambiguationContext = [(CNVSchemaCNVClientEvent *)self disambiguationContext];
+  if (disambiguationContext)
   {
-    v49 = v48;
-    v50 = [(CNVSchemaCNVClientEvent *)self disambiguationContext];
-    v51 = [v4 disambiguationContext];
-    v52 = [v50 isEqual:v51];
+    v49 = disambiguationContext;
+    disambiguationContext2 = [(CNVSchemaCNVClientEvent *)self disambiguationContext];
+    disambiguationContext3 = [equalCopy disambiguationContext];
+    v52 = [disambiguationContext2 isEqual:disambiguationContext3];
 
     if (!v52)
     {
@@ -1140,20 +1140,20 @@
   {
   }
 
-  v6 = [(CNVSchemaCNVClientEvent *)self executionOverridesEvaluated];
-  v7 = [v4 executionOverridesEvaluated];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(CNVSchemaCNVClientEvent *)self executionOverridesEvaluated];
+  eventMetadata2 = [equalCopy executionOverridesEvaluated];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_97;
   }
 
-  v53 = [(CNVSchemaCNVClientEvent *)self executionOverridesEvaluated];
-  if (v53)
+  executionOverridesEvaluated = [(CNVSchemaCNVClientEvent *)self executionOverridesEvaluated];
+  if (executionOverridesEvaluated)
   {
-    v54 = v53;
-    v55 = [(CNVSchemaCNVClientEvent *)self executionOverridesEvaluated];
-    v56 = [v4 executionOverridesEvaluated];
-    v57 = [v55 isEqual:v56];
+    v54 = executionOverridesEvaluated;
+    executionOverridesEvaluated2 = [(CNVSchemaCNVClientEvent *)self executionOverridesEvaluated];
+    executionOverridesEvaluated3 = [equalCopy executionOverridesEvaluated];
+    v57 = [executionOverridesEvaluated2 isEqual:executionOverridesEvaluated3];
 
     if (!v57)
     {
@@ -1165,20 +1165,20 @@
   {
   }
 
-  v6 = [(CNVSchemaCNVClientEvent *)self executionPrepareContext];
-  v7 = [v4 executionPrepareContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(CNVSchemaCNVClientEvent *)self executionPrepareContext];
+  eventMetadata2 = [equalCopy executionPrepareContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_97;
   }
 
-  v58 = [(CNVSchemaCNVClientEvent *)self executionPrepareContext];
-  if (v58)
+  executionPrepareContext = [(CNVSchemaCNVClientEvent *)self executionPrepareContext];
+  if (executionPrepareContext)
   {
-    v59 = v58;
-    v60 = [(CNVSchemaCNVClientEvent *)self executionPrepareContext];
-    v61 = [v4 executionPrepareContext];
-    v62 = [v60 isEqual:v61];
+    v59 = executionPrepareContext;
+    executionPrepareContext2 = [(CNVSchemaCNVClientEvent *)self executionPrepareContext];
+    executionPrepareContext3 = [equalCopy executionPrepareContext];
+    v62 = [executionPrepareContext2 isEqual:executionPrepareContext3];
 
     if (!v62)
     {
@@ -1190,20 +1190,20 @@
   {
   }
 
-  v6 = [(CNVSchemaCNVClientEvent *)self flowPluginLoadContext];
-  v7 = [v4 flowPluginLoadContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(CNVSchemaCNVClientEvent *)self flowPluginLoadContext];
+  eventMetadata2 = [equalCopy flowPluginLoadContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_97;
   }
 
-  v63 = [(CNVSchemaCNVClientEvent *)self flowPluginLoadContext];
-  if (v63)
+  flowPluginLoadContext = [(CNVSchemaCNVClientEvent *)self flowPluginLoadContext];
+  if (flowPluginLoadContext)
   {
-    v64 = v63;
-    v65 = [(CNVSchemaCNVClientEvent *)self flowPluginLoadContext];
-    v66 = [v4 flowPluginLoadContext];
-    v67 = [v65 isEqual:v66];
+    v64 = flowPluginLoadContext;
+    flowPluginLoadContext2 = [(CNVSchemaCNVClientEvent *)self flowPluginLoadContext];
+    flowPluginLoadContext3 = [equalCopy flowPluginLoadContext];
+    v67 = [flowPluginLoadContext2 isEqual:flowPluginLoadContext3];
 
     if (!v67)
     {
@@ -1215,20 +1215,20 @@
   {
   }
 
-  v6 = [(CNVSchemaCNVClientEvent *)self findFlowContext];
-  v7 = [v4 findFlowContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(CNVSchemaCNVClientEvent *)self findFlowContext];
+  eventMetadata2 = [equalCopy findFlowContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_97;
   }
 
-  v68 = [(CNVSchemaCNVClientEvent *)self findFlowContext];
-  if (v68)
+  findFlowContext = [(CNVSchemaCNVClientEvent *)self findFlowContext];
+  if (findFlowContext)
   {
-    v69 = v68;
-    v70 = [(CNVSchemaCNVClientEvent *)self findFlowContext];
-    v71 = [v4 findFlowContext];
-    v72 = [v70 isEqual:v71];
+    v69 = findFlowContext;
+    findFlowContext2 = [(CNVSchemaCNVClientEvent *)self findFlowContext];
+    findFlowContext3 = [equalCopy findFlowContext];
+    v72 = [findFlowContext2 isEqual:findFlowContext3];
 
     if (!v72)
     {
@@ -1240,20 +1240,20 @@
   {
   }
 
-  v6 = [(CNVSchemaCNVClientEvent *)self flowPluginInputContext];
-  v7 = [v4 flowPluginInputContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(CNVSchemaCNVClientEvent *)self flowPluginInputContext];
+  eventMetadata2 = [equalCopy flowPluginInputContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_97;
   }
 
-  v73 = [(CNVSchemaCNVClientEvent *)self flowPluginInputContext];
-  if (v73)
+  flowPluginInputContext = [(CNVSchemaCNVClientEvent *)self flowPluginInputContext];
+  if (flowPluginInputContext)
   {
-    v74 = v73;
-    v75 = [(CNVSchemaCNVClientEvent *)self flowPluginInputContext];
-    v76 = [v4 flowPluginInputContext];
-    v77 = [v75 isEqual:v76];
+    v74 = flowPluginInputContext;
+    flowPluginInputContext2 = [(CNVSchemaCNVClientEvent *)self flowPluginInputContext];
+    flowPluginInputContext3 = [equalCopy flowPluginInputContext];
+    v77 = [flowPluginInputContext2 isEqual:flowPluginInputContext3];
 
     if (!v77)
     {
@@ -1265,20 +1265,20 @@
   {
   }
 
-  v6 = [(CNVSchemaCNVClientEvent *)self flowPluginExecutionContext];
-  v7 = [v4 flowPluginExecutionContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(CNVSchemaCNVClientEvent *)self flowPluginExecutionContext];
+  eventMetadata2 = [equalCopy flowPluginExecutionContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_97;
   }
 
-  v78 = [(CNVSchemaCNVClientEvent *)self flowPluginExecutionContext];
-  if (v78)
+  flowPluginExecutionContext = [(CNVSchemaCNVClientEvent *)self flowPluginExecutionContext];
+  if (flowPluginExecutionContext)
   {
-    v79 = v78;
-    v80 = [(CNVSchemaCNVClientEvent *)self flowPluginExecutionContext];
-    v81 = [v4 flowPluginExecutionContext];
-    v82 = [v80 isEqual:v81];
+    v79 = flowPluginExecutionContext;
+    flowPluginExecutionContext2 = [(CNVSchemaCNVClientEvent *)self flowPluginExecutionContext];
+    flowPluginExecutionContext3 = [equalCopy flowPluginExecutionContext];
+    v82 = [flowPluginExecutionContext2 isEqual:flowPluginExecutionContext3];
 
     if (!v82)
     {
@@ -1290,20 +1290,20 @@
   {
   }
 
-  v6 = [(CNVSchemaCNVClientEvent *)self preFlowPrepareContext];
-  v7 = [v4 preFlowPrepareContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(CNVSchemaCNVClientEvent *)self preFlowPrepareContext];
+  eventMetadata2 = [equalCopy preFlowPrepareContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_97;
   }
 
-  v83 = [(CNVSchemaCNVClientEvent *)self preFlowPrepareContext];
-  if (v83)
+  preFlowPrepareContext = [(CNVSchemaCNVClientEvent *)self preFlowPrepareContext];
+  if (preFlowPrepareContext)
   {
-    v84 = v83;
-    v85 = [(CNVSchemaCNVClientEvent *)self preFlowPrepareContext];
-    v86 = [v4 preFlowPrepareContext];
-    v87 = [v85 isEqual:v86];
+    v84 = preFlowPrepareContext;
+    preFlowPrepareContext2 = [(CNVSchemaCNVClientEvent *)self preFlowPrepareContext];
+    preFlowPrepareContext3 = [equalCopy preFlowPrepareContext];
+    v87 = [preFlowPrepareContext2 isEqual:preFlowPrepareContext3];
 
     if (!v87)
     {
@@ -1315,20 +1315,20 @@
   {
   }
 
-  v6 = [(CNVSchemaCNVClientEvent *)self postFlowPrepareContext];
-  v7 = [v4 postFlowPrepareContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(CNVSchemaCNVClientEvent *)self postFlowPrepareContext];
+  eventMetadata2 = [equalCopy postFlowPrepareContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_97;
   }
 
-  v88 = [(CNVSchemaCNVClientEvent *)self postFlowPrepareContext];
-  if (v88)
+  postFlowPrepareContext = [(CNVSchemaCNVClientEvent *)self postFlowPrepareContext];
+  if (postFlowPrepareContext)
   {
-    v89 = v88;
-    v90 = [(CNVSchemaCNVClientEvent *)self postFlowPrepareContext];
-    v91 = [v4 postFlowPrepareContext];
-    v92 = [v90 isEqual:v91];
+    v89 = postFlowPrepareContext;
+    postFlowPrepareContext2 = [(CNVSchemaCNVClientEvent *)self postFlowPrepareContext];
+    postFlowPrepareContext3 = [equalCopy postFlowPrepareContext];
+    v92 = [postFlowPrepareContext2 isEqual:postFlowPrepareContext3];
 
     if (!v92)
     {
@@ -1340,20 +1340,20 @@
   {
   }
 
-  v6 = [(CNVSchemaCNVClientEvent *)self executionCommitContext];
-  v7 = [v4 executionCommitContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(CNVSchemaCNVClientEvent *)self executionCommitContext];
+  eventMetadata2 = [equalCopy executionCommitContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_97;
   }
 
-  v93 = [(CNVSchemaCNVClientEvent *)self executionCommitContext];
-  if (v93)
+  executionCommitContext = [(CNVSchemaCNVClientEvent *)self executionCommitContext];
+  if (executionCommitContext)
   {
-    v94 = v93;
-    v95 = [(CNVSchemaCNVClientEvent *)self executionCommitContext];
-    v96 = [v4 executionCommitContext];
-    v97 = [v95 isEqual:v96];
+    v94 = executionCommitContext;
+    executionCommitContext2 = [(CNVSchemaCNVClientEvent *)self executionCommitContext];
+    executionCommitContext3 = [equalCopy executionCommitContext];
+    v97 = [executionCommitContext2 isEqual:executionCommitContext3];
 
     if (!v97)
     {
@@ -1365,12 +1365,12 @@
   {
   }
 
-  v6 = [(CNVSchemaCNVClientEvent *)self decisionEngineResponseReported];
-  v7 = [v4 decisionEngineResponseReported];
-  if ((v6 != 0) != (v7 == 0))
+  eventMetadata = [(CNVSchemaCNVClientEvent *)self decisionEngineResponseReported];
+  eventMetadata2 = [equalCopy decisionEngineResponseReported];
+  if ((eventMetadata != 0) != (eventMetadata2 == 0))
   {
-    v98 = [(CNVSchemaCNVClientEvent *)self decisionEngineResponseReported];
-    if (!v98)
+    decisionEngineResponseReported = [(CNVSchemaCNVClientEvent *)self decisionEngineResponseReported];
+    if (!decisionEngineResponseReported)
     {
 
 LABEL_101:
@@ -1378,10 +1378,10 @@ LABEL_101:
       goto LABEL_99;
     }
 
-    v99 = v98;
-    v100 = [(CNVSchemaCNVClientEvent *)self decisionEngineResponseReported];
-    v101 = [v4 decisionEngineResponseReported];
-    v102 = [v100 isEqual:v101];
+    v99 = decisionEngineResponseReported;
+    decisionEngineResponseReported2 = [(CNVSchemaCNVClientEvent *)self decisionEngineResponseReported];
+    decisionEngineResponseReported3 = [equalCopy decisionEngineResponseReported];
+    v102 = [decisionEngineResponseReported2 isEqual:decisionEngineResponseReported3];
 
     if (v102)
     {
@@ -1401,162 +1401,162 @@ LABEL_99:
   return v103;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v43 = a3;
-  v4 = [(CNVSchemaCNVClientEvent *)self eventMetadata];
+  toCopy = to;
+  eventMetadata = [(CNVSchemaCNVClientEvent *)self eventMetadata];
 
-  if (v4)
+  if (eventMetadata)
   {
-    v5 = [(CNVSchemaCNVClientEvent *)self eventMetadata];
+    eventMetadata2 = [(CNVSchemaCNVClientEvent *)self eventMetadata];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(CNVSchemaCNVClientEvent *)self intentReformationContext];
+  intentReformationContext = [(CNVSchemaCNVClientEvent *)self intentReformationContext];
 
-  if (v6)
+  if (intentReformationContext)
   {
-    v7 = [(CNVSchemaCNVClientEvent *)self intentReformationContext];
+    intentReformationContext2 = [(CNVSchemaCNVClientEvent *)self intentReformationContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(CNVSchemaCNVClientEvent *)self cnvUsoGraphTier1];
+  cnvUsoGraphTier1 = [(CNVSchemaCNVClientEvent *)self cnvUsoGraphTier1];
 
-  if (v8)
+  if (cnvUsoGraphTier1)
   {
-    v9 = [(CNVSchemaCNVClientEvent *)self cnvUsoGraphTier1];
+    cnvUsoGraphTier12 = [(CNVSchemaCNVClientEvent *)self cnvUsoGraphTier1];
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(CNVSchemaCNVClientEvent *)self intentEagerExecutionContext];
+  intentEagerExecutionContext = [(CNVSchemaCNVClientEvent *)self intentEagerExecutionContext];
 
-  if (v10)
+  if (intentEagerExecutionContext)
   {
-    v11 = [(CNVSchemaCNVClientEvent *)self intentEagerExecutionContext];
+    intentEagerExecutionContext2 = [(CNVSchemaCNVClientEvent *)self intentEagerExecutionContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v12 = [(CNVSchemaCNVClientEvent *)self intentFinalExecutionContext];
+  intentFinalExecutionContext = [(CNVSchemaCNVClientEvent *)self intentFinalExecutionContext];
 
-  if (v12)
+  if (intentFinalExecutionContext)
   {
-    v13 = [(CNVSchemaCNVClientEvent *)self intentFinalExecutionContext];
+    intentFinalExecutionContext2 = [(CNVSchemaCNVClientEvent *)self intentFinalExecutionContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v14 = [(CNVSchemaCNVClientEvent *)self actionCandidatesGenerated];
+  actionCandidatesGenerated = [(CNVSchemaCNVClientEvent *)self actionCandidatesGenerated];
 
-  if (v14)
+  if (actionCandidatesGenerated)
   {
-    v15 = [(CNVSchemaCNVClientEvent *)self actionCandidatesGenerated];
+    actionCandidatesGenerated2 = [(CNVSchemaCNVClientEvent *)self actionCandidatesGenerated];
     PBDataWriterWriteSubmessage();
   }
 
-  v16 = [(CNVSchemaCNVClientEvent *)self actionCandidatesGeneratedTier1];
+  actionCandidatesGeneratedTier1 = [(CNVSchemaCNVClientEvent *)self actionCandidatesGeneratedTier1];
 
-  if (v16)
+  if (actionCandidatesGeneratedTier1)
   {
-    v17 = [(CNVSchemaCNVClientEvent *)self actionCandidatesGeneratedTier1];
+    actionCandidatesGeneratedTier12 = [(CNVSchemaCNVClientEvent *)self actionCandidatesGeneratedTier1];
     PBDataWriterWriteSubmessage();
   }
 
-  v18 = [(CNVSchemaCNVClientEvent *)self actionCandidatesCollated];
+  actionCandidatesCollated = [(CNVSchemaCNVClientEvent *)self actionCandidatesCollated];
 
-  if (v18)
+  if (actionCandidatesCollated)
   {
-    v19 = [(CNVSchemaCNVClientEvent *)self actionCandidatesCollated];
+    actionCandidatesCollated2 = [(CNVSchemaCNVClientEvent *)self actionCandidatesCollated];
     PBDataWriterWriteSubmessage();
   }
 
-  v20 = [(CNVSchemaCNVClientEvent *)self disambiguationContext];
+  disambiguationContext = [(CNVSchemaCNVClientEvent *)self disambiguationContext];
 
-  if (v20)
+  if (disambiguationContext)
   {
-    v21 = [(CNVSchemaCNVClientEvent *)self disambiguationContext];
+    disambiguationContext2 = [(CNVSchemaCNVClientEvent *)self disambiguationContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v22 = [(CNVSchemaCNVClientEvent *)self executionOverridesEvaluated];
+  executionOverridesEvaluated = [(CNVSchemaCNVClientEvent *)self executionOverridesEvaluated];
 
-  if (v22)
+  if (executionOverridesEvaluated)
   {
-    v23 = [(CNVSchemaCNVClientEvent *)self executionOverridesEvaluated];
+    executionOverridesEvaluated2 = [(CNVSchemaCNVClientEvent *)self executionOverridesEvaluated];
     PBDataWriterWriteSubmessage();
   }
 
-  v24 = [(CNVSchemaCNVClientEvent *)self executionPrepareContext];
+  executionPrepareContext = [(CNVSchemaCNVClientEvent *)self executionPrepareContext];
 
-  if (v24)
+  if (executionPrepareContext)
   {
-    v25 = [(CNVSchemaCNVClientEvent *)self executionPrepareContext];
+    executionPrepareContext2 = [(CNVSchemaCNVClientEvent *)self executionPrepareContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v26 = [(CNVSchemaCNVClientEvent *)self flowPluginLoadContext];
+  flowPluginLoadContext = [(CNVSchemaCNVClientEvent *)self flowPluginLoadContext];
 
-  if (v26)
+  if (flowPluginLoadContext)
   {
-    v27 = [(CNVSchemaCNVClientEvent *)self flowPluginLoadContext];
+    flowPluginLoadContext2 = [(CNVSchemaCNVClientEvent *)self flowPluginLoadContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v28 = [(CNVSchemaCNVClientEvent *)self findFlowContext];
+  findFlowContext = [(CNVSchemaCNVClientEvent *)self findFlowContext];
 
-  if (v28)
+  if (findFlowContext)
   {
-    v29 = [(CNVSchemaCNVClientEvent *)self findFlowContext];
+    findFlowContext2 = [(CNVSchemaCNVClientEvent *)self findFlowContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v30 = [(CNVSchemaCNVClientEvent *)self flowPluginInputContext];
+  flowPluginInputContext = [(CNVSchemaCNVClientEvent *)self flowPluginInputContext];
 
-  if (v30)
+  if (flowPluginInputContext)
   {
-    v31 = [(CNVSchemaCNVClientEvent *)self flowPluginInputContext];
+    flowPluginInputContext2 = [(CNVSchemaCNVClientEvent *)self flowPluginInputContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v32 = [(CNVSchemaCNVClientEvent *)self flowPluginExecutionContext];
+  flowPluginExecutionContext = [(CNVSchemaCNVClientEvent *)self flowPluginExecutionContext];
 
-  if (v32)
+  if (flowPluginExecutionContext)
   {
-    v33 = [(CNVSchemaCNVClientEvent *)self flowPluginExecutionContext];
+    flowPluginExecutionContext2 = [(CNVSchemaCNVClientEvent *)self flowPluginExecutionContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v34 = [(CNVSchemaCNVClientEvent *)self preFlowPrepareContext];
+  preFlowPrepareContext = [(CNVSchemaCNVClientEvent *)self preFlowPrepareContext];
 
-  if (v34)
+  if (preFlowPrepareContext)
   {
-    v35 = [(CNVSchemaCNVClientEvent *)self preFlowPrepareContext];
+    preFlowPrepareContext2 = [(CNVSchemaCNVClientEvent *)self preFlowPrepareContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v36 = [(CNVSchemaCNVClientEvent *)self postFlowPrepareContext];
+  postFlowPrepareContext = [(CNVSchemaCNVClientEvent *)self postFlowPrepareContext];
 
-  if (v36)
+  if (postFlowPrepareContext)
   {
-    v37 = [(CNVSchemaCNVClientEvent *)self postFlowPrepareContext];
+    postFlowPrepareContext2 = [(CNVSchemaCNVClientEvent *)self postFlowPrepareContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v38 = [(CNVSchemaCNVClientEvent *)self executionCommitContext];
+  executionCommitContext = [(CNVSchemaCNVClientEvent *)self executionCommitContext];
 
-  if (v38)
+  if (executionCommitContext)
   {
-    v39 = [(CNVSchemaCNVClientEvent *)self executionCommitContext];
+    executionCommitContext2 = [(CNVSchemaCNVClientEvent *)self executionCommitContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v40 = [(CNVSchemaCNVClientEvent *)self decisionEngineResponseReported];
+  decisionEngineResponseReported = [(CNVSchemaCNVClientEvent *)self decisionEngineResponseReported];
 
-  v41 = v43;
-  if (v40)
+  v41 = toCopy;
+  if (decisionEngineResponseReported)
   {
-    v42 = [(CNVSchemaCNVClientEvent *)self decisionEngineResponseReported];
+    decisionEngineResponseReported2 = [(CNVSchemaCNVClientEvent *)self decisionEngineResponseReported];
     PBDataWriterWriteSubmessage();
 
-    v41 = v43;
+    v41 = toCopy;
   }
 }
 
@@ -1570,9 +1570,9 @@ LABEL_99:
   }
 }
 
-- (void)setDecisionEngineResponseReported:(id)a3
+- (void)setDecisionEngineResponseReported:(id)reported
 {
-  v4 = a3;
+  reportedCopy = reported;
   intentReformationContext = self->_intentReformationContext;
   self->_intentReformationContext = 0;
 
@@ -1625,14 +1625,14 @@ LABEL_99:
   self->_executionCommitContext = 0;
 
   v22 = 19;
-  if (!v4)
+  if (!reportedCopy)
   {
     v22 = 0;
   }
 
   self->_whichEvent_Type = v22;
   decisionEngineResponseReported = self->_decisionEngineResponseReported;
-  self->_decisionEngineResponseReported = v4;
+  self->_decisionEngineResponseReported = reportedCopy;
 }
 
 - (void)deleteExecutionCommitContext
@@ -1645,9 +1645,9 @@ LABEL_99:
   }
 }
 
-- (void)setExecutionCommitContext:(id)a3
+- (void)setExecutionCommitContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   intentReformationContext = self->_intentReformationContext;
   self->_intentReformationContext = 0;
 
@@ -1700,14 +1700,14 @@ LABEL_99:
   self->_decisionEngineResponseReported = 0;
 
   v22 = 18;
-  if (!v4)
+  if (!contextCopy)
   {
     v22 = 0;
   }
 
   self->_whichEvent_Type = v22;
   executionCommitContext = self->_executionCommitContext;
-  self->_executionCommitContext = v4;
+  self->_executionCommitContext = contextCopy;
 }
 
 - (void)deletePostFlowPrepareContext
@@ -1720,9 +1720,9 @@ LABEL_99:
   }
 }
 
-- (void)setPostFlowPrepareContext:(id)a3
+- (void)setPostFlowPrepareContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   intentReformationContext = self->_intentReformationContext;
   self->_intentReformationContext = 0;
 
@@ -1775,14 +1775,14 @@ LABEL_99:
   self->_decisionEngineResponseReported = 0;
 
   v22 = 17;
-  if (!v4)
+  if (!contextCopy)
   {
     v22 = 0;
   }
 
   self->_whichEvent_Type = v22;
   postFlowPrepareContext = self->_postFlowPrepareContext;
-  self->_postFlowPrepareContext = v4;
+  self->_postFlowPrepareContext = contextCopy;
 }
 
 - (void)deletePreFlowPrepareContext
@@ -1795,9 +1795,9 @@ LABEL_99:
   }
 }
 
-- (void)setPreFlowPrepareContext:(id)a3
+- (void)setPreFlowPrepareContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   intentReformationContext = self->_intentReformationContext;
   self->_intentReformationContext = 0;
 
@@ -1849,9 +1849,9 @@ LABEL_99:
   decisionEngineResponseReported = self->_decisionEngineResponseReported;
   self->_decisionEngineResponseReported = 0;
 
-  self->_whichEvent_Type = 16 * (v4 != 0);
+  self->_whichEvent_Type = 16 * (contextCopy != 0);
   preFlowPrepareContext = self->_preFlowPrepareContext;
-  self->_preFlowPrepareContext = v4;
+  self->_preFlowPrepareContext = contextCopy;
 }
 
 - (void)deleteFlowPluginExecutionContext
@@ -1864,9 +1864,9 @@ LABEL_99:
   }
 }
 
-- (void)setFlowPluginExecutionContext:(id)a3
+- (void)setFlowPluginExecutionContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   intentReformationContext = self->_intentReformationContext;
   self->_intentReformationContext = 0;
 
@@ -1919,14 +1919,14 @@ LABEL_99:
   self->_decisionEngineResponseReported = 0;
 
   v22 = 15;
-  if (!v4)
+  if (!contextCopy)
   {
     v22 = 0;
   }
 
   self->_whichEvent_Type = v22;
   flowPluginExecutionContext = self->_flowPluginExecutionContext;
-  self->_flowPluginExecutionContext = v4;
+  self->_flowPluginExecutionContext = contextCopy;
 }
 
 - (void)deleteFlowPluginInputContext
@@ -1939,9 +1939,9 @@ LABEL_99:
   }
 }
 
-- (void)setFlowPluginInputContext:(id)a3
+- (void)setFlowPluginInputContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   intentReformationContext = self->_intentReformationContext;
   self->_intentReformationContext = 0;
 
@@ -1994,14 +1994,14 @@ LABEL_99:
   self->_decisionEngineResponseReported = 0;
 
   v22 = 14;
-  if (!v4)
+  if (!contextCopy)
   {
     v22 = 0;
   }
 
   self->_whichEvent_Type = v22;
   flowPluginInputContext = self->_flowPluginInputContext;
-  self->_flowPluginInputContext = v4;
+  self->_flowPluginInputContext = contextCopy;
 }
 
 - (void)deleteFindFlowContext
@@ -2014,9 +2014,9 @@ LABEL_99:
   }
 }
 
-- (void)setFindFlowContext:(id)a3
+- (void)setFindFlowContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   intentReformationContext = self->_intentReformationContext;
   self->_intentReformationContext = 0;
 
@@ -2069,14 +2069,14 @@ LABEL_99:
   self->_decisionEngineResponseReported = 0;
 
   v22 = 13;
-  if (!v4)
+  if (!contextCopy)
   {
     v22 = 0;
   }
 
   self->_whichEvent_Type = v22;
   findFlowContext = self->_findFlowContext;
-  self->_findFlowContext = v4;
+  self->_findFlowContext = contextCopy;
 }
 
 - (void)deleteFlowPluginLoadContext
@@ -2089,9 +2089,9 @@ LABEL_99:
   }
 }
 
-- (void)setFlowPluginLoadContext:(id)a3
+- (void)setFlowPluginLoadContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   intentReformationContext = self->_intentReformationContext;
   self->_intentReformationContext = 0;
 
@@ -2144,14 +2144,14 @@ LABEL_99:
   self->_decisionEngineResponseReported = 0;
 
   v22 = 12;
-  if (!v4)
+  if (!contextCopy)
   {
     v22 = 0;
   }
 
   self->_whichEvent_Type = v22;
   flowPluginLoadContext = self->_flowPluginLoadContext;
-  self->_flowPluginLoadContext = v4;
+  self->_flowPluginLoadContext = contextCopy;
 }
 
 - (void)deleteExecutionPrepareContext
@@ -2164,9 +2164,9 @@ LABEL_99:
   }
 }
 
-- (void)setExecutionPrepareContext:(id)a3
+- (void)setExecutionPrepareContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   intentReformationContext = self->_intentReformationContext;
   self->_intentReformationContext = 0;
 
@@ -2219,14 +2219,14 @@ LABEL_99:
   self->_decisionEngineResponseReported = 0;
 
   v22 = 11;
-  if (!v4)
+  if (!contextCopy)
   {
     v22 = 0;
   }
 
   self->_whichEvent_Type = v22;
   executionPrepareContext = self->_executionPrepareContext;
-  self->_executionPrepareContext = v4;
+  self->_executionPrepareContext = contextCopy;
 }
 
 - (void)deleteExecutionOverridesEvaluated
@@ -2239,9 +2239,9 @@ LABEL_99:
   }
 }
 
-- (void)setExecutionOverridesEvaluated:(id)a3
+- (void)setExecutionOverridesEvaluated:(id)evaluated
 {
-  v4 = a3;
+  evaluatedCopy = evaluated;
   intentReformationContext = self->_intentReformationContext;
   self->_intentReformationContext = 0;
 
@@ -2294,14 +2294,14 @@ LABEL_99:
   self->_decisionEngineResponseReported = 0;
 
   v22 = 10;
-  if (!v4)
+  if (!evaluatedCopy)
   {
     v22 = 0;
   }
 
   self->_whichEvent_Type = v22;
   executionOverridesEvaluated = self->_executionOverridesEvaluated;
-  self->_executionOverridesEvaluated = v4;
+  self->_executionOverridesEvaluated = evaluatedCopy;
 }
 
 - (void)deleteDisambiguationContext
@@ -2314,9 +2314,9 @@ LABEL_99:
   }
 }
 
-- (void)setDisambiguationContext:(id)a3
+- (void)setDisambiguationContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   intentReformationContext = self->_intentReformationContext;
   self->_intentReformationContext = 0;
 
@@ -2369,14 +2369,14 @@ LABEL_99:
   self->_decisionEngineResponseReported = 0;
 
   v22 = 9;
-  if (!v4)
+  if (!contextCopy)
   {
     v22 = 0;
   }
 
   self->_whichEvent_Type = v22;
   disambiguationContext = self->_disambiguationContext;
-  self->_disambiguationContext = v4;
+  self->_disambiguationContext = contextCopy;
 }
 
 - (void)deleteActionCandidatesCollated
@@ -2389,9 +2389,9 @@ LABEL_99:
   }
 }
 
-- (void)setActionCandidatesCollated:(id)a3
+- (void)setActionCandidatesCollated:(id)collated
 {
-  v4 = a3;
+  collatedCopy = collated;
   intentReformationContext = self->_intentReformationContext;
   self->_intentReformationContext = 0;
 
@@ -2443,9 +2443,9 @@ LABEL_99:
   decisionEngineResponseReported = self->_decisionEngineResponseReported;
   self->_decisionEngineResponseReported = 0;
 
-  self->_whichEvent_Type = 8 * (v4 != 0);
+  self->_whichEvent_Type = 8 * (collatedCopy != 0);
   actionCandidatesCollated = self->_actionCandidatesCollated;
-  self->_actionCandidatesCollated = v4;
+  self->_actionCandidatesCollated = collatedCopy;
 }
 
 - (void)deleteActionCandidatesGeneratedTier1
@@ -2458,9 +2458,9 @@ LABEL_99:
   }
 }
 
-- (void)setActionCandidatesGeneratedTier1:(id)a3
+- (void)setActionCandidatesGeneratedTier1:(id)tier1
 {
-  v4 = a3;
+  tier1Copy = tier1;
   intentReformationContext = self->_intentReformationContext;
   self->_intentReformationContext = 0;
 
@@ -2513,14 +2513,14 @@ LABEL_99:
   self->_decisionEngineResponseReported = 0;
 
   v22 = 7;
-  if (!v4)
+  if (!tier1Copy)
   {
     v22 = 0;
   }
 
   self->_whichEvent_Type = v22;
   actionCandidatesGeneratedTier1 = self->_actionCandidatesGeneratedTier1;
-  self->_actionCandidatesGeneratedTier1 = v4;
+  self->_actionCandidatesGeneratedTier1 = tier1Copy;
 }
 
 - (void)deleteActionCandidatesGenerated
@@ -2533,9 +2533,9 @@ LABEL_99:
   }
 }
 
-- (void)setActionCandidatesGenerated:(id)a3
+- (void)setActionCandidatesGenerated:(id)generated
 {
-  v4 = a3;
+  generatedCopy = generated;
   intentReformationContext = self->_intentReformationContext;
   self->_intentReformationContext = 0;
 
@@ -2588,14 +2588,14 @@ LABEL_99:
   self->_decisionEngineResponseReported = 0;
 
   v22 = 6;
-  if (!v4)
+  if (!generatedCopy)
   {
     v22 = 0;
   }
 
   self->_whichEvent_Type = v22;
   actionCandidatesGenerated = self->_actionCandidatesGenerated;
-  self->_actionCandidatesGenerated = v4;
+  self->_actionCandidatesGenerated = generatedCopy;
 }
 
 - (void)deleteIntentFinalExecutionContext
@@ -2608,9 +2608,9 @@ LABEL_99:
   }
 }
 
-- (void)setIntentFinalExecutionContext:(id)a3
+- (void)setIntentFinalExecutionContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   intentReformationContext = self->_intentReformationContext;
   self->_intentReformationContext = 0;
 
@@ -2663,14 +2663,14 @@ LABEL_99:
   self->_decisionEngineResponseReported = 0;
 
   v22 = 5;
-  if (!v4)
+  if (!contextCopy)
   {
     v22 = 0;
   }
 
   self->_whichEvent_Type = v22;
   intentFinalExecutionContext = self->_intentFinalExecutionContext;
-  self->_intentFinalExecutionContext = v4;
+  self->_intentFinalExecutionContext = contextCopy;
 }
 
 - (void)deleteIntentEagerExecutionContext
@@ -2683,9 +2683,9 @@ LABEL_99:
   }
 }
 
-- (void)setIntentEagerExecutionContext:(id)a3
+- (void)setIntentEagerExecutionContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   intentReformationContext = self->_intentReformationContext;
   self->_intentReformationContext = 0;
 
@@ -2737,9 +2737,9 @@ LABEL_99:
   decisionEngineResponseReported = self->_decisionEngineResponseReported;
   self->_decisionEngineResponseReported = 0;
 
-  self->_whichEvent_Type = 4 * (v4 != 0);
+  self->_whichEvent_Type = 4 * (contextCopy != 0);
   intentEagerExecutionContext = self->_intentEagerExecutionContext;
-  self->_intentEagerExecutionContext = v4;
+  self->_intentEagerExecutionContext = contextCopy;
 }
 
 - (void)deleteCnvUsoGraphTier1
@@ -2752,9 +2752,9 @@ LABEL_99:
   }
 }
 
-- (void)setCnvUsoGraphTier1:(id)a3
+- (void)setCnvUsoGraphTier1:(id)tier1
 {
-  v4 = a3;
+  tier1Copy = tier1;
   intentReformationContext = self->_intentReformationContext;
   self->_intentReformationContext = 0;
 
@@ -2807,14 +2807,14 @@ LABEL_99:
   self->_decisionEngineResponseReported = 0;
 
   v22 = 3;
-  if (!v4)
+  if (!tier1Copy)
   {
     v22 = 0;
   }
 
   self->_whichEvent_Type = v22;
   cnvUsoGraphTier1 = self->_cnvUsoGraphTier1;
-  self->_cnvUsoGraphTier1 = v4;
+  self->_cnvUsoGraphTier1 = tier1Copy;
 }
 
 - (void)deleteIntentReformationContext
@@ -2827,9 +2827,9 @@ LABEL_99:
   }
 }
 
-- (void)setIntentReformationContext:(id)a3
+- (void)setIntentReformationContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   cnvUsoGraphTier1 = self->_cnvUsoGraphTier1;
   self->_cnvUsoGraphTier1 = 0;
 
@@ -2881,209 +2881,209 @@ LABEL_99:
   decisionEngineResponseReported = self->_decisionEngineResponseReported;
   self->_decisionEngineResponseReported = 0;
 
-  self->_whichEvent_Type = 2 * (v4 != 0);
+  self->_whichEvent_Type = 2 * (contextCopy != 0);
   intentReformationContext = self->_intentReformationContext;
-  self->_intentReformationContext = v4;
+  self->_intentReformationContext = contextCopy;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v64.receiver = self;
   v64.super_class = CNVSchemaCNVClientEvent;
-  v5 = [(SISchemaInstrumentationMessage *)&v64 applySensitiveConditionsPolicy:v4];
-  if ([v4 isConditionSet:2])
+  v5 = [(SISchemaInstrumentationMessage *)&v64 applySensitiveConditionsPolicy:policyCopy];
+  if ([policyCopy isConditionSet:2])
   {
     [(CNVSchemaCNVClientEvent *)self deleteCnvUsoGraphTier1];
   }
 
-  if ([v4 isConditionSet:4])
+  if ([policyCopy isConditionSet:4])
   {
     [(CNVSchemaCNVClientEvent *)self deleteCnvUsoGraphTier1];
   }
 
-  if ([v4 isConditionSet:5])
+  if ([policyCopy isConditionSet:5])
   {
     [(CNVSchemaCNVClientEvent *)self deleteCnvUsoGraphTier1];
   }
 
-  if ([v4 isConditionSet:6])
+  if ([policyCopy isConditionSet:6])
   {
     [(CNVSchemaCNVClientEvent *)self deleteCnvUsoGraphTier1];
   }
 
-  if ([v4 isConditionSet:7])
+  if ([policyCopy isConditionSet:7])
   {
     [(CNVSchemaCNVClientEvent *)self deleteCnvUsoGraphTier1];
   }
 
-  v6 = [(CNVSchemaCNVClientEvent *)self eventMetadata];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  eventMetadata = [(CNVSchemaCNVClientEvent *)self eventMetadata];
+  v7 = [eventMetadata applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(CNVSchemaCNVClientEvent *)self deleteEventMetadata];
   }
 
-  v9 = [(CNVSchemaCNVClientEvent *)self intentReformationContext];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  intentReformationContext = [(CNVSchemaCNVClientEvent *)self intentReformationContext];
+  v10 = [intentReformationContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(CNVSchemaCNVClientEvent *)self deleteIntentReformationContext];
   }
 
-  v12 = [(CNVSchemaCNVClientEvent *)self cnvUsoGraphTier1];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  cnvUsoGraphTier1 = [(CNVSchemaCNVClientEvent *)self cnvUsoGraphTier1];
+  v13 = [cnvUsoGraphTier1 applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(CNVSchemaCNVClientEvent *)self deleteCnvUsoGraphTier1];
   }
 
-  v15 = [(CNVSchemaCNVClientEvent *)self intentEagerExecutionContext];
-  v16 = [v15 applySensitiveConditionsPolicy:v4];
-  v17 = [v16 suppressMessage];
+  intentEagerExecutionContext = [(CNVSchemaCNVClientEvent *)self intentEagerExecutionContext];
+  v16 = [intentEagerExecutionContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage4 = [v16 suppressMessage];
 
-  if (v17)
+  if (suppressMessage4)
   {
     [(CNVSchemaCNVClientEvent *)self deleteIntentEagerExecutionContext];
   }
 
-  v18 = [(CNVSchemaCNVClientEvent *)self intentFinalExecutionContext];
-  v19 = [v18 applySensitiveConditionsPolicy:v4];
-  v20 = [v19 suppressMessage];
+  intentFinalExecutionContext = [(CNVSchemaCNVClientEvent *)self intentFinalExecutionContext];
+  v19 = [intentFinalExecutionContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage5 = [v19 suppressMessage];
 
-  if (v20)
+  if (suppressMessage5)
   {
     [(CNVSchemaCNVClientEvent *)self deleteIntentFinalExecutionContext];
   }
 
-  v21 = [(CNVSchemaCNVClientEvent *)self actionCandidatesGenerated];
-  v22 = [v21 applySensitiveConditionsPolicy:v4];
-  v23 = [v22 suppressMessage];
+  actionCandidatesGenerated = [(CNVSchemaCNVClientEvent *)self actionCandidatesGenerated];
+  v22 = [actionCandidatesGenerated applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage6 = [v22 suppressMessage];
 
-  if (v23)
+  if (suppressMessage6)
   {
     [(CNVSchemaCNVClientEvent *)self deleteActionCandidatesGenerated];
   }
 
-  v24 = [(CNVSchemaCNVClientEvent *)self actionCandidatesGeneratedTier1];
-  v25 = [v24 applySensitiveConditionsPolicy:v4];
-  v26 = [v25 suppressMessage];
+  actionCandidatesGeneratedTier1 = [(CNVSchemaCNVClientEvent *)self actionCandidatesGeneratedTier1];
+  v25 = [actionCandidatesGeneratedTier1 applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage7 = [v25 suppressMessage];
 
-  if (v26)
+  if (suppressMessage7)
   {
     [(CNVSchemaCNVClientEvent *)self deleteActionCandidatesGeneratedTier1];
   }
 
-  v27 = [(CNVSchemaCNVClientEvent *)self actionCandidatesCollated];
-  v28 = [v27 applySensitiveConditionsPolicy:v4];
-  v29 = [v28 suppressMessage];
+  actionCandidatesCollated = [(CNVSchemaCNVClientEvent *)self actionCandidatesCollated];
+  v28 = [actionCandidatesCollated applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage8 = [v28 suppressMessage];
 
-  if (v29)
+  if (suppressMessage8)
   {
     [(CNVSchemaCNVClientEvent *)self deleteActionCandidatesCollated];
   }
 
-  v30 = [(CNVSchemaCNVClientEvent *)self disambiguationContext];
-  v31 = [v30 applySensitiveConditionsPolicy:v4];
-  v32 = [v31 suppressMessage];
+  disambiguationContext = [(CNVSchemaCNVClientEvent *)self disambiguationContext];
+  v31 = [disambiguationContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage9 = [v31 suppressMessage];
 
-  if (v32)
+  if (suppressMessage9)
   {
     [(CNVSchemaCNVClientEvent *)self deleteDisambiguationContext];
   }
 
-  v33 = [(CNVSchemaCNVClientEvent *)self executionOverridesEvaluated];
-  v34 = [v33 applySensitiveConditionsPolicy:v4];
-  v35 = [v34 suppressMessage];
+  executionOverridesEvaluated = [(CNVSchemaCNVClientEvent *)self executionOverridesEvaluated];
+  v34 = [executionOverridesEvaluated applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage10 = [v34 suppressMessage];
 
-  if (v35)
+  if (suppressMessage10)
   {
     [(CNVSchemaCNVClientEvent *)self deleteExecutionOverridesEvaluated];
   }
 
-  v36 = [(CNVSchemaCNVClientEvent *)self executionPrepareContext];
-  v37 = [v36 applySensitiveConditionsPolicy:v4];
-  v38 = [v37 suppressMessage];
+  executionPrepareContext = [(CNVSchemaCNVClientEvent *)self executionPrepareContext];
+  v37 = [executionPrepareContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage11 = [v37 suppressMessage];
 
-  if (v38)
+  if (suppressMessage11)
   {
     [(CNVSchemaCNVClientEvent *)self deleteExecutionPrepareContext];
   }
 
-  v39 = [(CNVSchemaCNVClientEvent *)self flowPluginLoadContext];
-  v40 = [v39 applySensitiveConditionsPolicy:v4];
-  v41 = [v40 suppressMessage];
+  flowPluginLoadContext = [(CNVSchemaCNVClientEvent *)self flowPluginLoadContext];
+  v40 = [flowPluginLoadContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage12 = [v40 suppressMessage];
 
-  if (v41)
+  if (suppressMessage12)
   {
     [(CNVSchemaCNVClientEvent *)self deleteFlowPluginLoadContext];
   }
 
-  v42 = [(CNVSchemaCNVClientEvent *)self findFlowContext];
-  v43 = [v42 applySensitiveConditionsPolicy:v4];
-  v44 = [v43 suppressMessage];
+  findFlowContext = [(CNVSchemaCNVClientEvent *)self findFlowContext];
+  v43 = [findFlowContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage13 = [v43 suppressMessage];
 
-  if (v44)
+  if (suppressMessage13)
   {
     [(CNVSchemaCNVClientEvent *)self deleteFindFlowContext];
   }
 
-  v45 = [(CNVSchemaCNVClientEvent *)self flowPluginInputContext];
-  v46 = [v45 applySensitiveConditionsPolicy:v4];
-  v47 = [v46 suppressMessage];
+  flowPluginInputContext = [(CNVSchemaCNVClientEvent *)self flowPluginInputContext];
+  v46 = [flowPluginInputContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage14 = [v46 suppressMessage];
 
-  if (v47)
+  if (suppressMessage14)
   {
     [(CNVSchemaCNVClientEvent *)self deleteFlowPluginInputContext];
   }
 
-  v48 = [(CNVSchemaCNVClientEvent *)self flowPluginExecutionContext];
-  v49 = [v48 applySensitiveConditionsPolicy:v4];
-  v50 = [v49 suppressMessage];
+  flowPluginExecutionContext = [(CNVSchemaCNVClientEvent *)self flowPluginExecutionContext];
+  v49 = [flowPluginExecutionContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage15 = [v49 suppressMessage];
 
-  if (v50)
+  if (suppressMessage15)
   {
     [(CNVSchemaCNVClientEvent *)self deleteFlowPluginExecutionContext];
   }
 
-  v51 = [(CNVSchemaCNVClientEvent *)self preFlowPrepareContext];
-  v52 = [v51 applySensitiveConditionsPolicy:v4];
-  v53 = [v52 suppressMessage];
+  preFlowPrepareContext = [(CNVSchemaCNVClientEvent *)self preFlowPrepareContext];
+  v52 = [preFlowPrepareContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage16 = [v52 suppressMessage];
 
-  if (v53)
+  if (suppressMessage16)
   {
     [(CNVSchemaCNVClientEvent *)self deletePreFlowPrepareContext];
   }
 
-  v54 = [(CNVSchemaCNVClientEvent *)self postFlowPrepareContext];
-  v55 = [v54 applySensitiveConditionsPolicy:v4];
-  v56 = [v55 suppressMessage];
+  postFlowPrepareContext = [(CNVSchemaCNVClientEvent *)self postFlowPrepareContext];
+  v55 = [postFlowPrepareContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage17 = [v55 suppressMessage];
 
-  if (v56)
+  if (suppressMessage17)
   {
     [(CNVSchemaCNVClientEvent *)self deletePostFlowPrepareContext];
   }
 
-  v57 = [(CNVSchemaCNVClientEvent *)self executionCommitContext];
-  v58 = [v57 applySensitiveConditionsPolicy:v4];
-  v59 = [v58 suppressMessage];
+  executionCommitContext = [(CNVSchemaCNVClientEvent *)self executionCommitContext];
+  v58 = [executionCommitContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage18 = [v58 suppressMessage];
 
-  if (v59)
+  if (suppressMessage18)
   {
     [(CNVSchemaCNVClientEvent *)self deleteExecutionCommitContext];
   }
 
-  v60 = [(CNVSchemaCNVClientEvent *)self decisionEngineResponseReported];
-  v61 = [v60 applySensitiveConditionsPolicy:v4];
-  v62 = [v61 suppressMessage];
+  decisionEngineResponseReported = [(CNVSchemaCNVClientEvent *)self decisionEngineResponseReported];
+  v61 = [decisionEngineResponseReported applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage19 = [v61 suppressMessage];
 
-  if (v62)
+  if (suppressMessage19)
   {
     [(CNVSchemaCNVClientEvent *)self deleteDecisionEngineResponseReported];
   }
@@ -3101,73 +3101,73 @@ LABEL_99:
 
 - (int)componentName
 {
-  v3 = [(CNVSchemaCNVClientEvent *)self eventMetadata];
-  v4 = [v3 cnvId];
+  eventMetadata = [(CNVSchemaCNVClientEvent *)self eventMetadata];
+  cnvId = [eventMetadata cnvId];
 
-  if (v4 && ([v4 value], (v5 = objc_claimAutoreleasedReturnValue()) != 0) && (v6 = v5, objc_msgSend(v4, "value"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "length"), v7, v6, v8))
+  if (cnvId && ([cnvId value], (v5 = objc_claimAutoreleasedReturnValue()) != 0) && (v6 = v5, objc_msgSend(cnvId, "value"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "length"), v7, v6, v8))
   {
-    LODWORD(v9) = 14;
+    LODWORD(value) = 14;
   }
 
   else
   {
-    v10 = [(CNVSchemaCNVClientEvent *)self eventMetadata];
-    v11 = [v10 requestId];
+    eventMetadata2 = [(CNVSchemaCNVClientEvent *)self eventMetadata];
+    requestId = [eventMetadata2 requestId];
 
-    if (v11 && ([v11 value], (v12 = objc_claimAutoreleasedReturnValue()) != 0) && (v13 = v12, objc_msgSend(v11, "value"), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "length"), v14, v13, v15))
+    if (requestId && ([requestId value], (v12 = objc_claimAutoreleasedReturnValue()) != 0) && (v13 = v12, objc_msgSend(requestId, "value"), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "length"), v14, v13, v15))
     {
-      LODWORD(v9) = 1;
-      v4 = v11;
+      LODWORD(value) = 1;
+      cnvId = requestId;
     }
 
     else
     {
-      v16 = [(CNVSchemaCNVClientEvent *)self eventMetadata];
-      v4 = [v16 subRequestId];
+      eventMetadata3 = [(CNVSchemaCNVClientEvent *)self eventMetadata];
+      cnvId = [eventMetadata3 subRequestId];
 
-      if (v4)
+      if (cnvId)
       {
-        v9 = [v4 value];
-        if (v9)
+        value = [cnvId value];
+        if (value)
         {
-          v17 = [v4 value];
-          v18 = [v17 length];
+          value2 = [cnvId value];
+          v18 = [value2 length];
 
           if (v18)
           {
-            LODWORD(v9) = 43;
+            LODWORD(value) = 43;
           }
 
           else
           {
-            LODWORD(v9) = 0;
+            LODWORD(value) = 0;
           }
         }
       }
 
       else
       {
-        LODWORD(v9) = 0;
+        LODWORD(value) = 0;
       }
     }
   }
 
-  return v9;
+  return value;
 }
 
 - (id)getComponentId
 {
-  v3 = [(CNVSchemaCNVClientEvent *)self eventMetadata];
-  v4 = [v3 cnvId];
+  eventMetadata = [(CNVSchemaCNVClientEvent *)self eventMetadata];
+  cnvId = [eventMetadata cnvId];
 
-  if (v4)
+  if (cnvId)
   {
-    v5 = [v4 value];
-    if (v5)
+    value = [cnvId value];
+    if (value)
     {
-      v6 = v5;
-      v7 = [v4 value];
-      v8 = [v7 length];
+      v6 = value;
+      value2 = [cnvId value];
+      v8 = [value2 length];
 
       if (v8)
       {
@@ -3176,42 +3176,42 @@ LABEL_99:
     }
   }
 
-  v9 = [(CNVSchemaCNVClientEvent *)self eventMetadata];
-  v10 = [v9 requestId];
+  eventMetadata2 = [(CNVSchemaCNVClientEvent *)self eventMetadata];
+  requestId = [eventMetadata2 requestId];
 
-  if (v10)
+  if (requestId)
   {
-    v11 = [v10 value];
-    if (v11)
+    value3 = [requestId value];
+    if (value3)
     {
-      v12 = v11;
-      v13 = [v10 value];
-      v14 = [v13 length];
+      v12 = value3;
+      value4 = [requestId value];
+      v14 = [value4 length];
 
       if (v14)
       {
-        v4 = v10;
+        cnvId = requestId;
 LABEL_11:
-        v16 = v4;
-        v4 = v16;
+        value5 = cnvId;
+        cnvId = value5;
         goto LABEL_13;
       }
     }
   }
 
-  v15 = [(CNVSchemaCNVClientEvent *)self eventMetadata];
-  v4 = [v15 subRequestId];
+  eventMetadata3 = [(CNVSchemaCNVClientEvent *)self eventMetadata];
+  cnvId = [eventMetadata3 subRequestId];
 
-  if (v4)
+  if (cnvId)
   {
-    v16 = [v4 value];
-    if (!v16)
+    value5 = [cnvId value];
+    if (!value5)
     {
       goto LABEL_13;
     }
 
-    v17 = [v4 value];
-    v18 = [v17 length];
+    value6 = [cnvId value];
+    v18 = [value6 length];
 
     if (v18)
     {
@@ -3219,38 +3219,38 @@ LABEL_11:
     }
   }
 
-  v16 = 0;
+  value5 = 0;
 LABEL_13:
 
-  return v16;
+  return value5;
 }
 
 - (SISchemaInstrumentationMessage)innerEvent
 {
-  v3 = [(CNVSchemaCNVClientEvent *)self whichEvent_Type];
-  if (v3 - 2 > 0x11)
+  whichEvent_Type = [(CNVSchemaCNVClientEvent *)self whichEvent_Type];
+  if (whichEvent_Type - 2 > 0x11)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = *(&self->super.super.super.super.isa + *off_1E78E9120[v3 - 2]);
+    v4 = *(&self->super.super.super.super.isa + *off_1E78E9120[whichEvent_Type - 2]);
   }
 
   return v4;
 }
 
-+ (id)getInnerTypeStringByTag:(unint64_t)a3
++ (id)getInnerTypeStringByTag:(unint64_t)tag
 {
-  if (a3 - 2 > 0x11)
+  if (tag - 2 > 0x11)
   {
     return 0;
   }
 
   else
   {
-    return off_1E78E91B0[a3 - 2];
+    return off_1E78E91B0[tag - 2];
   }
 }
 

@@ -1,26 +1,26 @@
 @interface NLXSchemaCDMMatchingSpanTier1
-- (BOOL)isEqual:(id)a3;
-- (NLXSchemaCDMMatchingSpanTier1)initWithDictionary:(id)a3;
-- (NLXSchemaCDMMatchingSpanTier1)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (NLXSchemaCDMMatchingSpanTier1)initWithDictionary:(id)dictionary;
+- (NLXSchemaCDMMatchingSpanTier1)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NLXSchemaCDMMatchingSpanTier1
 
-- (NLXSchemaCDMMatchingSpanTier1)initWithDictionary:(id)a3
+- (NLXSchemaCDMMatchingSpanTier1)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v16.receiver = self;
   v16.super_class = NLXSchemaCDMMatchingSpanTier1;
   v5 = [(NLXSchemaCDMMatchingSpanTier1 *)&v16 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"linkId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"linkId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -28,7 +28,7 @@
       [(NLXSchemaCDMMatchingSpanTier1 *)v5 setLinkId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"input"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"input"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -36,7 +36,7 @@
       [(NLXSchemaCDMMatchingSpanTier1 *)v5 setInput:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"internalSpanData"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"internalSpanData"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -44,7 +44,7 @@
       [(NLXSchemaCDMMatchingSpanTier1 *)v5 setInternalSpanData:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"semanticValue"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"semanticValue"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -58,30 +58,30 @@
   return v5;
 }
 
-- (NLXSchemaCDMMatchingSpanTier1)initWithJSON:(id)a3
+- (NLXSchemaCDMMatchingSpanTier1)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(NLXSchemaCDMMatchingSpanTier1 *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(NLXSchemaCDMMatchingSpanTier1 *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(NLXSchemaCDMMatchingSpanTier1 *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -94,56 +94,56 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_input)
   {
-    v4 = [(NLXSchemaCDMMatchingSpanTier1 *)self input];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"input"];
+    input = [(NLXSchemaCDMMatchingSpanTier1 *)self input];
+    v5 = [input copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"input"];
   }
 
   if (self->_internalSpanData)
   {
-    v6 = [(NLXSchemaCDMMatchingSpanTier1 *)self internalSpanData];
-    v7 = [v6 dictionaryRepresentation];
-    if (v7)
+    internalSpanData = [(NLXSchemaCDMMatchingSpanTier1 *)self internalSpanData];
+    dictionaryRepresentation = [internalSpanData dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v7 forKeyedSubscript:@"internalSpanData"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"internalSpanData"];
     }
 
     else
     {
-      v8 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v8 forKeyedSubscript:@"internalSpanData"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"internalSpanData"];
     }
   }
 
   if (self->_linkId)
   {
-    v9 = [(NLXSchemaCDMMatchingSpanTier1 *)self linkId];
-    v10 = [v9 dictionaryRepresentation];
-    if (v10)
+    linkId = [(NLXSchemaCDMMatchingSpanTier1 *)self linkId];
+    dictionaryRepresentation2 = [linkId dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v10 forKeyedSubscript:@"linkId"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"linkId"];
     }
 
     else
     {
-      v11 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v11 forKeyedSubscript:@"linkId"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"linkId"];
     }
   }
 
   if (self->_semanticValue)
   {
-    v12 = [(NLXSchemaCDMMatchingSpanTier1 *)self semanticValue];
-    v13 = [v12 copy];
-    [v3 setObject:v13 forKeyedSubscript:@"semanticValue"];
+    semanticValue = [(NLXSchemaCDMMatchingSpanTier1 *)self semanticValue];
+    v13 = [semanticValue copy];
+    [dictionary setObject:v13 forKeyedSubscript:@"semanticValue"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -154,28 +154,28 @@
   return v4 ^ v5 ^ [(NSString *)self->_semanticValue hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_22;
   }
 
-  v5 = [(NLXSchemaCDMMatchingSpanTier1 *)self linkId];
-  v6 = [v4 linkId];
-  if ((v5 != 0) == (v6 == 0))
+  linkId = [(NLXSchemaCDMMatchingSpanTier1 *)self linkId];
+  linkId2 = [equalCopy linkId];
+  if ((linkId != 0) == (linkId2 == 0))
   {
     goto LABEL_21;
   }
 
-  v7 = [(NLXSchemaCDMMatchingSpanTier1 *)self linkId];
-  if (v7)
+  linkId3 = [(NLXSchemaCDMMatchingSpanTier1 *)self linkId];
+  if (linkId3)
   {
-    v8 = v7;
-    v9 = [(NLXSchemaCDMMatchingSpanTier1 *)self linkId];
-    v10 = [v4 linkId];
-    v11 = [v9 isEqual:v10];
+    v8 = linkId3;
+    linkId4 = [(NLXSchemaCDMMatchingSpanTier1 *)self linkId];
+    linkId5 = [equalCopy linkId];
+    v11 = [linkId4 isEqual:linkId5];
 
     if (!v11)
     {
@@ -187,20 +187,20 @@
   {
   }
 
-  v5 = [(NLXSchemaCDMMatchingSpanTier1 *)self input];
-  v6 = [v4 input];
-  if ((v5 != 0) == (v6 == 0))
+  linkId = [(NLXSchemaCDMMatchingSpanTier1 *)self input];
+  linkId2 = [equalCopy input];
+  if ((linkId != 0) == (linkId2 == 0))
   {
     goto LABEL_21;
   }
 
-  v12 = [(NLXSchemaCDMMatchingSpanTier1 *)self input];
-  if (v12)
+  input = [(NLXSchemaCDMMatchingSpanTier1 *)self input];
+  if (input)
   {
-    v13 = v12;
-    v14 = [(NLXSchemaCDMMatchingSpanTier1 *)self input];
-    v15 = [v4 input];
-    v16 = [v14 isEqual:v15];
+    v13 = input;
+    input2 = [(NLXSchemaCDMMatchingSpanTier1 *)self input];
+    input3 = [equalCopy input];
+    v16 = [input2 isEqual:input3];
 
     if (!v16)
     {
@@ -212,20 +212,20 @@
   {
   }
 
-  v5 = [(NLXSchemaCDMMatchingSpanTier1 *)self internalSpanData];
-  v6 = [v4 internalSpanData];
-  if ((v5 != 0) == (v6 == 0))
+  linkId = [(NLXSchemaCDMMatchingSpanTier1 *)self internalSpanData];
+  linkId2 = [equalCopy internalSpanData];
+  if ((linkId != 0) == (linkId2 == 0))
   {
     goto LABEL_21;
   }
 
-  v17 = [(NLXSchemaCDMMatchingSpanTier1 *)self internalSpanData];
-  if (v17)
+  internalSpanData = [(NLXSchemaCDMMatchingSpanTier1 *)self internalSpanData];
+  if (internalSpanData)
   {
-    v18 = v17;
-    v19 = [(NLXSchemaCDMMatchingSpanTier1 *)self internalSpanData];
-    v20 = [v4 internalSpanData];
-    v21 = [v19 isEqual:v20];
+    v18 = internalSpanData;
+    internalSpanData2 = [(NLXSchemaCDMMatchingSpanTier1 *)self internalSpanData];
+    internalSpanData3 = [equalCopy internalSpanData];
+    v21 = [internalSpanData2 isEqual:internalSpanData3];
 
     if (!v21)
     {
@@ -237,12 +237,12 @@
   {
   }
 
-  v5 = [(NLXSchemaCDMMatchingSpanTier1 *)self semanticValue];
-  v6 = [v4 semanticValue];
-  if ((v5 != 0) != (v6 == 0))
+  linkId = [(NLXSchemaCDMMatchingSpanTier1 *)self semanticValue];
+  linkId2 = [equalCopy semanticValue];
+  if ((linkId != 0) != (linkId2 == 0))
   {
-    v22 = [(NLXSchemaCDMMatchingSpanTier1 *)self semanticValue];
-    if (!v22)
+    semanticValue = [(NLXSchemaCDMMatchingSpanTier1 *)self semanticValue];
+    if (!semanticValue)
     {
 
 LABEL_25:
@@ -250,10 +250,10 @@ LABEL_25:
       goto LABEL_23;
     }
 
-    v23 = v22;
-    v24 = [(NLXSchemaCDMMatchingSpanTier1 *)self semanticValue];
-    v25 = [v4 semanticValue];
-    v26 = [v24 isEqual:v25];
+    v23 = semanticValue;
+    semanticValue2 = [(NLXSchemaCDMMatchingSpanTier1 *)self semanticValue];
+    semanticValue3 = [equalCopy semanticValue];
+    v26 = [semanticValue2 isEqual:semanticValue3];
 
     if (v26)
     {
@@ -273,87 +273,87 @@ LABEL_23:
   return v27;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v11 = a3;
-  v4 = [(NLXSchemaCDMMatchingSpanTier1 *)self linkId];
+  toCopy = to;
+  linkId = [(NLXSchemaCDMMatchingSpanTier1 *)self linkId];
 
-  if (v4)
+  if (linkId)
   {
-    v5 = [(NLXSchemaCDMMatchingSpanTier1 *)self linkId];
+    linkId2 = [(NLXSchemaCDMMatchingSpanTier1 *)self linkId];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(NLXSchemaCDMMatchingSpanTier1 *)self input];
+  input = [(NLXSchemaCDMMatchingSpanTier1 *)self input];
 
-  if (v6)
+  if (input)
   {
     PBDataWriterWriteStringField();
   }
 
-  v7 = [(NLXSchemaCDMMatchingSpanTier1 *)self internalSpanData];
+  internalSpanData = [(NLXSchemaCDMMatchingSpanTier1 *)self internalSpanData];
 
-  if (v7)
+  if (internalSpanData)
   {
-    v8 = [(NLXSchemaCDMMatchingSpanTier1 *)self internalSpanData];
+    internalSpanData2 = [(NLXSchemaCDMMatchingSpanTier1 *)self internalSpanData];
     PBDataWriterWriteSubmessage();
   }
 
-  v9 = [(NLXSchemaCDMMatchingSpanTier1 *)self semanticValue];
+  semanticValue = [(NLXSchemaCDMMatchingSpanTier1 *)self semanticValue];
 
-  v10 = v11;
-  if (v9)
+  v10 = toCopy;
+  if (semanticValue)
   {
     PBDataWriterWriteStringField();
-    v10 = v11;
+    v10 = toCopy;
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v13.receiver = self;
   v13.super_class = NLXSchemaCDMMatchingSpanTier1;
-  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:v4];
-  if ([v4 isConditionSet:2])
+  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:policyCopy];
+  if ([policyCopy isConditionSet:2])
   {
     [(NLXSchemaCDMMatchingSpanTier1 *)self deleteInput];
   }
 
-  if ([v4 isConditionSet:4])
+  if ([policyCopy isConditionSet:4])
   {
     [(NLXSchemaCDMMatchingSpanTier1 *)self deleteInput];
   }
 
-  if ([v4 isConditionSet:5])
+  if ([policyCopy isConditionSet:5])
   {
     [(NLXSchemaCDMMatchingSpanTier1 *)self deleteInput];
   }
 
-  if ([v4 isConditionSet:6])
+  if ([policyCopy isConditionSet:6])
   {
     [(NLXSchemaCDMMatchingSpanTier1 *)self deleteInput];
   }
 
-  if ([v4 isConditionSet:7])
+  if ([policyCopy isConditionSet:7])
   {
     [(NLXSchemaCDMMatchingSpanTier1 *)self deleteInput];
   }
 
-  v6 = [(NLXSchemaCDMMatchingSpanTier1 *)self linkId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  linkId = [(NLXSchemaCDMMatchingSpanTier1 *)self linkId];
+  v7 = [linkId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(NLXSchemaCDMMatchingSpanTier1 *)self deleteLinkId];
   }
 
-  v9 = [(NLXSchemaCDMMatchingSpanTier1 *)self internalSpanData];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  internalSpanData = [(NLXSchemaCDMMatchingSpanTier1 *)self internalSpanData];
+  v10 = [internalSpanData applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(NLXSchemaCDMMatchingSpanTier1 *)self deleteInternalSpanData];
   }

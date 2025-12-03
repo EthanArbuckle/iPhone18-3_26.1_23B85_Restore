@@ -1,6 +1,6 @@
 @interface TUIElementStyle
 + (id)attributesToEvaluate;
-+ (void)configureContainingBuilder:(id)a3 withNode:(id)a4 attributes:(id)a5 context:(id)a6;
++ (void)configureContainingBuilder:(id)builder withNode:(id)node attributes:(id)attributes context:(id)context;
 @end
 
 @implementation TUIElementStyle
@@ -17,21 +17,21 @@
   return v3;
 }
 
-+ (void)configureContainingBuilder:(id)a3 withNode:(id)a4 attributes:(id)a5 context:(id)a6
++ (void)configureContainingBuilder:(id)builder withNode:(id)node attributes:(id)attributes context:(id)context
 {
-  v8 = a5;
-  v9 = a6;
+  attributesCopy = attributes;
+  contextCopy = context;
   v13 = 0uLL;
   v14 = 0;
-  if (v8)
+  if (attributesCopy)
   {
-    [v8 styleDefinitionWithNode:a4.var0 nameAttribute:137 inheritAttribute:106];
+    [attributesCopy styleDefinitionWithNode:node.var0 nameAttribute:137 inheritAttribute:106];
   }
 
-  v10 = [v8 closureForNode:a4.var0];
+  v10 = [attributesCopy closureForNode:node.var0];
   v11 = v13;
   v12 = v14;
-  [v9 defineStyle:&v11 closure:v10];
+  [contextCopy defineStyle:&v11 closure:v10];
 }
 
 @end

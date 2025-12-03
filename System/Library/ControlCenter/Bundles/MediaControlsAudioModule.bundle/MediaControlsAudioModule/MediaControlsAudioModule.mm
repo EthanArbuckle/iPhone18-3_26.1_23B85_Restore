@@ -1,7 +1,7 @@
 @interface MediaControlsAudioModule
 - (MRUVolumeViewController)volumeViewController;
-- (id)backgroundViewControllerForContext:(id)a3;
-- (id)contentViewControllerForContext:(id)a3;
+- (id)backgroundViewControllerForContext:(id)context;
+- (id)contentViewControllerForContext:(id)context;
 @end
 
 @implementation MediaControlsAudioModule
@@ -24,12 +24,12 @@
   return volumeViewController;
 }
 
-- (id)contentViewControllerForContext:(id)a3
+- (id)contentViewControllerForContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   if (objc_msgSend_isNewControlsEnabled(MEMORY[0x29EDC58F8], v5, v6, v7))
   {
-    v11 = objc_msgSend_environment(v4, v8, v9, v10) != 1;
+    v11 = objc_msgSend_environment(contextCopy, v8, v9, v10) != 1;
   }
 
   else
@@ -45,7 +45,7 @@
   return v18;
 }
 
-- (id)backgroundViewControllerForContext:(id)a3
+- (id)backgroundViewControllerForContext:(id)context
 {
   volumeBackgroundViewController = self->_volumeBackgroundViewController;
   if (!volumeBackgroundViewController)

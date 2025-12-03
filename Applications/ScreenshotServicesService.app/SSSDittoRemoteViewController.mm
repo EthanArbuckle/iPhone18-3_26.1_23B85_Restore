@@ -1,23 +1,23 @@
 @interface SSSDittoRemoteViewController
-- (SSSDittoRemoteViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (SSSDittoRemoteViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (SSSViewControllerManager)viewControllerManager;
 - (void)_addRootViewController;
 - (void)_performDismiss;
 - (void)_statusBarHeightChanged;
-- (void)becomeParentOfDittoRootViewController:(id)a3;
+- (void)becomeParentOfDittoRootViewController:(id)controller;
 - (void)cleanupRootViewController;
 - (void)dealloc;
-- (void)dittoRootViewController:(id)a3 willShowShowSharingUIWithBlock:(id)a4;
-- (void)dittoRootViewController:(id)a3 willShowTestFlightUIWithBlock:(id)a4;
-- (void)dittoRootViewController:(id)a3 willTransitionToState:(unint64_t)a4 changeBlock:(id)a5;
+- (void)dittoRootViewController:(id)controller willShowShowSharingUIWithBlock:(id)block;
+- (void)dittoRootViewController:(id)controller willShowTestFlightUIWithBlock:(id)block;
+- (void)dittoRootViewController:(id)controller willTransitionToState:(unint64_t)state changeBlock:(id)block;
 - (void)informHostThatScreenshotsHaveDismissed;
 - (void)loadView;
-- (void)stopBeingParentOfDittoRootViewController:(id)a3;
+- (void)stopBeingParentOfDittoRootViewController:(id)controller;
 - (void)tearDownScreenshotExperience;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation SSSDittoRemoteViewController
@@ -25,15 +25,15 @@
 - (void)_addRootViewController
 {
   [(SSSDittoRemoteViewController *)self addChildViewController:self->_rootViewController];
-  v3 = [(SSSDittoRemoteViewController *)self view];
-  v4 = [(SSSDittoRootViewController *)self->_rootViewController view];
-  [v3 addSubview:v4];
+  view = [(SSSDittoRemoteViewController *)self view];
+  view2 = [(SSSDittoRootViewController *)self->_rootViewController view];
+  [view addSubview:view2];
 
   [(SSSDittoRootViewController *)self->_rootViewController didMoveToParentViewController:self];
-  v5 = [(SSSDittoRootViewController *)self->_rootViewController view];
-  v6 = [(SSSDittoRemoteViewController *)self view];
-  [v6 frame];
-  [v5 setFrame:?];
+  view3 = [(SSSDittoRootViewController *)self->_rootViewController view];
+  view4 = [(SSSDittoRemoteViewController *)self view];
+  [view4 frame];
+  [view3 setFrame:?];
 
   rootViewController = self->_rootViewController;
 
@@ -42,56 +42,56 @@
 
 - (void)_performDismiss
 {
-  v2 = [(SSSDittoRemoteViewController *)self viewControllerManager];
-  [v2 screenshotsDismissed];
+  viewControllerManager = [(SSSDittoRemoteViewController *)self viewControllerManager];
+  [viewControllerManager screenshotsDismissed];
 }
 
-- (void)dittoRootViewController:(id)a3 willTransitionToState:(unint64_t)a4 changeBlock:(id)a5
+- (void)dittoRootViewController:(id)controller willTransitionToState:(unint64_t)state changeBlock:(id)block
 {
-  v11 = a3;
-  v8 = a5;
-  v9 = v8;
-  if (a4 == 1)
+  controllerCopy = controller;
+  blockCopy = block;
+  v9 = blockCopy;
+  if (state == 1)
   {
-    v10 = [(SSSDittoRemoteViewController *)self viewControllerManager];
-    [v10 moveFromRemoteViewControllerToRemoteAlertViewControllerExecutingChangeBlockWhenReady:v9];
+    viewControllerManager = [(SSSDittoRemoteViewController *)self viewControllerManager];
+    [viewControllerManager moveFromRemoteViewControllerToRemoteAlertViewControllerExecutingChangeBlockWhenReady:v9];
   }
 
-  else if (v8)
+  else if (blockCopy)
   {
-    (*(v8 + 2))(v8);
+    (*(blockCopy + 2))(blockCopy);
   }
 }
 
-- (void)dittoRootViewController:(id)a3 willShowShowSharingUIWithBlock:(id)a4
+- (void)dittoRootViewController:(id)controller willShowShowSharingUIWithBlock:(id)block
 {
-  v5 = a4;
-  v6 = [(SSSDittoRemoteViewController *)self viewControllerManager];
-  [v6 moveFromRemoteViewControllerToRemoteAlertViewControllerExecutingChangeBlockWhenReady:v5];
+  blockCopy = block;
+  viewControllerManager = [(SSSDittoRemoteViewController *)self viewControllerManager];
+  [viewControllerManager moveFromRemoteViewControllerToRemoteAlertViewControllerExecutingChangeBlockWhenReady:blockCopy];
 }
 
-- (void)dittoRootViewController:(id)a3 willShowTestFlightUIWithBlock:(id)a4
+- (void)dittoRootViewController:(id)controller willShowTestFlightUIWithBlock:(id)block
 {
-  v5 = a4;
-  v6 = [(SSSDittoRemoteViewController *)self viewControllerManager];
-  [v6 moveFromRemoteViewControllerToRemoteAlertViewControllerExecutingChangeBlockWhenReady:v5];
+  blockCopy = block;
+  viewControllerManager = [(SSSDittoRemoteViewController *)self viewControllerManager];
+  [viewControllerManager moveFromRemoteViewControllerToRemoteAlertViewControllerExecutingChangeBlockWhenReady:blockCopy];
 }
 
-- (void)becomeParentOfDittoRootViewController:(id)a3
+- (void)becomeParentOfDittoRootViewController:(id)controller
 {
-  objc_storeStrong(&self->_rootViewController, a3);
+  objc_storeStrong(&self->_rootViewController, controller);
 
   [(SSSDittoRemoteViewController *)self _addRootViewController];
 }
 
-- (void)stopBeingParentOfDittoRootViewController:(id)a3
+- (void)stopBeingParentOfDittoRootViewController:(id)controller
 {
-  v4 = a3;
-  [v4 willMoveToParentViewController:0];
-  v3 = [v4 view];
-  [v3 removeFromSuperview];
+  controllerCopy = controller;
+  [controllerCopy willMoveToParentViewController:0];
+  view = [controllerCopy view];
+  [view removeFromSuperview];
 
-  [v4 removeFromParentViewController];
+  [controllerCopy removeFromParentViewController];
 }
 
 - (void)cleanupRootViewController
@@ -101,11 +101,11 @@
   self->_rootViewController = 0;
 }
 
-- (SSSDittoRemoteViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (SSSDittoRemoteViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v7.receiver = self;
   v7.super_class = SSSDittoRemoteViewController;
-  v4 = [(SSSDittoRemoteViewController *)&v7 initWithNibName:a3 bundle:a4];
+  v4 = [(SSSDittoRemoteViewController *)&v7 initWithNibName:name bundle:bundle];
   v5 = +[NSNotificationCenter defaultCenter];
   [v5 addObserver:v4 selector:"_statusBarHeightChanged" name:UIApplicationStatusBarHeightChangedNotification object:0];
 
@@ -124,28 +124,28 @@
 
 - (void)_statusBarHeightChanged
 {
-  v3 = [(SSSDittoRemoteViewController *)self view];
-  v4 = [v3 window];
-  v5 = [v4 screen];
-  [v5 bounds];
+  view = [(SSSDittoRemoteViewController *)self view];
+  window = [view window];
+  screen = [window screen];
+  [screen bounds];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
 
-  v14 = [(SSSDittoRemoteViewController *)self view];
-  v15 = [(SSSDittoRemoteViewController *)self view];
-  v16 = [v15 window];
-  v17 = [v16 screen];
-  v18 = [v17 coordinateSpace];
-  [v14 convertRect:v18 fromCoordinateSpace:{v7, v9, v11, v13}];
+  view2 = [(SSSDittoRemoteViewController *)self view];
+  view3 = [(SSSDittoRemoteViewController *)self view];
+  window2 = [view3 window];
+  screen2 = [window2 screen];
+  coordinateSpace = [screen2 coordinateSpace];
+  [view2 convertRect:coordinateSpace fromCoordinateSpace:{v7, v9, v11, v13}];
   v20 = v19;
   v22 = v21;
   v24 = v23;
   v26 = v25;
 
-  v27 = [(SSSDittoRootViewController *)self->_rootViewController view];
-  [v27 setFrame:{v20, v22, v24, v26}];
+  view4 = [(SSSDittoRootViewController *)self->_rootViewController view];
+  [view4 setFrame:{v20, v22, v24, v26}];
 }
 
 - (void)loadView
@@ -159,43 +159,43 @@
   v5.receiver = self;
   v5.super_class = SSSDittoRemoteViewController;
   [(SSSDittoRemoteViewController *)&v5 viewDidLoad];
-  v3 = [(SSSDittoRemoteViewController *)self view];
+  view = [(SSSDittoRemoteViewController *)self view];
   v4 = +[UIColor greenColor];
   SSApplyDebuggingCustomizationsToViewIfAppropriate();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = SSSDittoRemoteViewController;
-  [(SSSDittoRemoteViewController *)&v5 viewWillAppear:a3];
-  v4 = [(SSSDittoRemoteViewController *)self loadedView];
-  [v4 setAcceptsTouches:1];
+  [(SSSDittoRemoteViewController *)&v5 viewWillAppear:appear];
+  loadedView = [(SSSDittoRemoteViewController *)self loadedView];
+  [loadedView setAcceptsTouches:1];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = SSSDittoRemoteViewController;
-  [(SSSDittoRemoteViewController *)&v5 viewDidAppear:a3];
+  [(SSSDittoRemoteViewController *)&v5 viewDidAppear:appear];
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 postNotificationName:@"SSSDittoRemoteViewControllerIsReadyForViewControllerManagerNotificationName" object:self];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v9.receiver = self;
   v9.super_class = SSSDittoRemoteViewController;
-  v7 = a4;
-  [(SSSDittoRemoteViewController *)&v9 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  coordinatorCopy = coordinator;
+  [(SSSDittoRemoteViewController *)&v9 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000547CC;
   v8[3] = &unk_1000BB2B8;
   v8[4] = self;
-  [v7 animateAlongsideTransition:v8 completion:0];
+  [coordinatorCopy animateAlongsideTransition:v8 completion:0];
 }
 
 - (void)informHostThatScreenshotsHaveDismissed
@@ -207,11 +207,11 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Service informing host that the screenshot experience dismissed", v6, 2u);
   }
 
-  v4 = [(SSSDittoRemoteViewController *)self _remoteViewControllerProxy];
-  [v4 screenshotExperienceHasDismissed];
+  _remoteViewControllerProxy = [(SSSDittoRemoteViewController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy screenshotExperienceHasDismissed];
 
-  v5 = [(SSSDittoRemoteViewController *)self _remoteViewControllerProxy];
-  [v5 dismiss];
+  _remoteViewControllerProxy2 = [(SSSDittoRemoteViewController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy2 dismiss];
 }
 
 - (void)tearDownScreenshotExperience
@@ -223,8 +223,8 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Service received request to tear down screenshot experience", v5, 2u);
   }
 
-  v4 = [(SSSDittoRemoteViewController *)self viewControllerManager];
-  [v4 dismissScreenshots];
+  viewControllerManager = [(SSSDittoRemoteViewController *)self viewControllerManager];
+  [viewControllerManager dismissScreenshots];
 }
 
 - (SSSViewControllerManager)viewControllerManager

@@ -1,15 +1,15 @@
 @interface SharedChannelPublishOffGridPayloadResponse
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsStatus:(id)a3;
+- (int)StringAsStatus:(id)status;
 - (int)status;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasStatus:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasStatus:(BOOL)status;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SharedChannelPublishOffGridPayloadResponse
@@ -27,9 +27,9 @@
   }
 }
 
-- (void)setHasStatus:(BOOL)a3
+- (void)setHasStatus:(BOOL)status
 {
-  if (a3)
+  if (status)
   {
     v3 = 2;
   }
@@ -42,50 +42,50 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (int)StringAsStatus:(id)a3
+- (int)StringAsStatus:(id)status
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"SUCCESS"])
+  statusCopy = status;
+  if ([statusCopy isEqualToString:@"SUCCESS"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"AUTH_EXPIRED"])
+  else if ([statusCopy isEqualToString:@"AUTH_EXPIRED"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"AUTH_FAILED"])
+  else if ([statusCopy isEqualToString:@"AUTH_FAILED"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"BAD_REQUEST"])
+  else if ([statusCopy isEqualToString:@"BAD_REQUEST"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"CHANNEL_IDENTITY_VALIDATION_FAILED"])
+  else if ([statusCopy isEqualToString:@"CHANNEL_IDENTITY_VALIDATION_FAILED"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"INTERNAL_ERROR"])
+  else if ([statusCopy isEqualToString:@"INTERNAL_ERROR"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"STALE_PUBLISH_REJECTED"])
+  else if ([statusCopy isEqualToString:@"STALE_PUBLISH_REJECTED"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"RATE_LIMITED"])
+  else if ([statusCopy isEqualToString:@"RATE_LIMITED"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"INVALID_NONCE"])
+  else if ([statusCopy isEqualToString:@"INVALID_NONCE"])
   {
     v4 = 8;
   }
@@ -104,15 +104,15 @@
   v8.receiver = self;
   v8.super_class = SharedChannelPublishOffGridPayloadResponse;
   v4 = [(SharedChannelPublishOffGridPayloadResponse *)&v8 description];
-  v5 = [(SharedChannelPublishOffGridPayloadResponse *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SharedChannelPublishOffGridPayloadResponse *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -127,7 +127,7 @@
       v6 = off_27843E160[status];
     }
 
-    [v3 setObject:v6 forKey:@"status"];
+    [dictionary setObject:v6 forKey:@"status"];
 
     has = self->_has;
   }
@@ -135,22 +135,22 @@
   if (has)
   {
     v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_retryIntervalSeconds];
-    [v3 setObject:v7 forKey:@"retry_interval_seconds"];
+    [dictionary setObject:v7 forKey:@"retry_interval_seconds"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v8 = v4;
+  v8 = toCopy;
   if ((has & 2) != 0)
   {
     status = self->_status;
     PBDataWriterWriteInt32Field();
-    v4 = v8;
+    toCopy = v8;
     has = self->_has;
   }
 
@@ -158,31 +158,31 @@
   {
     retryIntervalSeconds = self->_retryIntervalSeconds;
     PBDataWriterWriteUint32Field();
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
-    v4[3] = self->_status;
-    *(v4 + 16) |= 2u;
+    toCopy[3] = self->_status;
+    *(toCopy + 16) |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    v4[2] = self->_retryIntervalSeconds;
-    *(v4 + 16) |= 1u;
+    toCopy[2] = self->_retryIntervalSeconds;
+    *(toCopy + 16) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -200,33 +200,33 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_11;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 16) & 2) == 0 || self->_status != *(v4 + 3))
+    if ((*(equalCopy + 16) & 2) == 0 || self->_status != *(equalCopy + 3))
     {
       goto LABEL_11;
     }
   }
 
-  else if ((*(v4 + 16) & 2) != 0)
+  else if ((*(equalCopy + 16) & 2) != 0)
   {
 LABEL_11:
     v5 = 0;
     goto LABEL_12;
   }
 
-  v5 = (*(v4 + 16) & 1) == 0;
+  v5 = (*(equalCopy + 16) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 16) & 1) == 0 || self->_retryIntervalSeconds != *(v4 + 2))
+    if ((*(equalCopy + 16) & 1) == 0 || self->_retryIntervalSeconds != *(equalCopy + 2))
     {
       goto LABEL_11;
     }
@@ -265,20 +265,20 @@ LABEL_3:
   return v3 ^ v2;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 16);
+  fromCopy = from;
+  v5 = *(fromCopy + 16);
   if ((v5 & 2) != 0)
   {
-    self->_status = *(v4 + 3);
+    self->_status = *(fromCopy + 3);
     *&self->_has |= 2u;
-    v5 = *(v4 + 16);
+    v5 = *(fromCopy + 16);
   }
 
   if (v5)
   {
-    self->_retryIntervalSeconds = *(v4 + 2);
+    self->_retryIntervalSeconds = *(fromCopy + 2);
     *&self->_has |= 1u;
   }
 }

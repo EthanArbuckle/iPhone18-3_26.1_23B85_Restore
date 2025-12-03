@@ -1,12 +1,12 @@
 @interface DynamicTypeWizard
 + (id)_singletonInstance;
-+ (id)autoscaledConstraint:(id)a3 constant:(double)a4 withFontProvider:(id)a5;
-+ (void)autorefreshLabel:(id)a3 withFontProvider:(id)a4;
-+ (void)autoscaleStackView:(id)a3 spacing:(double)a4 withFontProvider:(id)a5;
-+ (void)makeObject:(id)a3 performSelector:(SEL)a4 whenSizeCategoryChangesWithOrder:(unint64_t)a5;
-+ (void)stopAutoscalingStackView:(id)a3;
-+ (void)unregisterObject:(id)a3;
-+ (void)updateUnscaledConstantValue:(double)a3 fontProvider:(id)a4 forConstraint:(id)a5;
++ (id)autoscaledConstraint:(id)constraint constant:(double)constant withFontProvider:(id)provider;
++ (void)autorefreshLabel:(id)label withFontProvider:(id)provider;
++ (void)autoscaleStackView:(id)view spacing:(double)spacing withFontProvider:(id)provider;
++ (void)makeObject:(id)object performSelector:(SEL)selector whenSizeCategoryChangesWithOrder:(unint64_t)order;
++ (void)stopAutoscalingStackView:(id)view;
++ (void)unregisterObject:(id)object;
++ (void)updateUnscaledConstantValue:(double)value fontProvider:(id)provider forConstraint:(id)constraint;
 - (DynamicTypeWizard)init;
 - (void)_contentSizeCategoryDidChange;
 @end
@@ -201,7 +201,7 @@
   block[1] = 3221225472;
   block[2] = sub_100F3ACD0;
   block[3] = &unk_1016611D0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10195F760 != -1)
   {
     dispatch_once(&qword_10195F760, block);
@@ -212,10 +212,10 @@
   return v2;
 }
 
-+ (void)unregisterObject:(id)a3
++ (void)unregisterObject:(id)object
 {
-  v4 = a3;
-  v5 = [a1 _singletonInstance];
+  objectCopy = object;
+  _singletonInstance = [self _singletonInstance];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -236,9 +236,9 @@
         }
 
         v10 = *(*(&v13 + 1) + 8 * v9);
-        v11 = [v5 objectToSelectorStringMaps];
-        v12 = [v11 objectForKeyedSubscript:v10];
-        [v12 removeObjectForKey:v4];
+        objectToSelectorStringMaps = [_singletonInstance objectToSelectorStringMaps];
+        v12 = [objectToSelectorStringMaps objectForKeyedSubscript:v10];
+        [v12 removeObjectForKey:objectCopy];
 
         v9 = v9 + 1;
       }
@@ -251,100 +251,100 @@
   }
 }
 
-+ (void)makeObject:(id)a3 performSelector:(SEL)a4 whenSizeCategoryChangesWithOrder:(unint64_t)a5
++ (void)makeObject:(id)object performSelector:(SEL)selector whenSizeCategoryChangesWithOrder:(unint64_t)order
 {
-  v13 = a3;
-  v8 = [a1 _singletonInstance];
+  objectCopy = object;
+  _singletonInstance = [self _singletonInstance];
   if (objc_opt_respondsToSelector())
   {
-    v9 = [v8 objectToSelectorStringMaps];
-    v10 = [NSNumber numberWithUnsignedInteger:a5];
-    v11 = [v9 objectForKeyedSubscript:v10];
-    v12 = NSStringFromSelector(a4);
-    [v11 setObject:v12 forKey:v13];
+    objectToSelectorStringMaps = [_singletonInstance objectToSelectorStringMaps];
+    v10 = [NSNumber numberWithUnsignedInteger:order];
+    v11 = [objectToSelectorStringMaps objectForKeyedSubscript:v10];
+    v12 = NSStringFromSelector(selector);
+    [v11 setObject:v12 forKey:objectCopy];
   }
 }
 
-+ (void)stopAutoscalingStackView:(id)a3
++ (void)stopAutoscalingStackView:(id)view
 {
-  if (a3)
+  if (view)
   {
-    v4 = a3;
-    v6 = [a1 _singletonInstance];
-    v5 = [v6 stackToValueMap];
-    [v5 removeObjectForKey:v4];
+    viewCopy = view;
+    _singletonInstance = [self _singletonInstance];
+    stackToValueMap = [_singletonInstance stackToValueMap];
+    [stackToValueMap removeObjectForKey:viewCopy];
   }
 }
 
-+ (void)autoscaleStackView:(id)a3 spacing:(double)a4 withFontProvider:(id)a5
++ (void)autoscaleStackView:(id)view spacing:(double)spacing withFontProvider:(id)provider
 {
-  if (a5)
+  if (provider)
   {
-    v8 = a5;
-    v9 = a3;
+    providerCopy = provider;
+    viewCopy = view;
     v12 = objc_alloc_init(DynamicTypeValue);
-    [(DynamicTypeValue *)v12 setUnscaledValue:a4];
-    [(DynamicTypeValue *)v12 setFontProvider:v8];
+    [(DynamicTypeValue *)v12 setUnscaledValue:spacing];
+    [(DynamicTypeValue *)v12 setFontProvider:providerCopy];
 
     [(DynamicTypeValue *)v12 scaledValue];
     UIRoundToViewScale();
-    [v9 setSpacing:?];
-    v10 = [a1 _singletonInstance];
-    v11 = [v10 stackToValueMap];
-    [v11 setObject:v12 forKey:v9];
+    [viewCopy setSpacing:?];
+    _singletonInstance = [self _singletonInstance];
+    stackToValueMap = [_singletonInstance stackToValueMap];
+    [stackToValueMap setObject:v12 forKey:viewCopy];
   }
 }
 
-+ (void)updateUnscaledConstantValue:(double)a3 fontProvider:(id)a4 forConstraint:(id)a5
++ (void)updateUnscaledConstantValue:(double)value fontProvider:(id)provider forConstraint:(id)constraint
 {
-  v12 = a4;
-  v8 = a5;
-  v9 = [a1 _singletonInstance];
-  v10 = [v9 constraintToValueMap];
-  v11 = [v10 objectForKey:v8];
+  providerCopy = provider;
+  constraintCopy = constraint;
+  _singletonInstance = [self _singletonInstance];
+  constraintToValueMap = [_singletonInstance constraintToValueMap];
+  v11 = [constraintToValueMap objectForKey:constraintCopy];
 
   if (v11)
   {
-    [v11 setUnscaledValue:a3];
-    [v11 setFontProvider:v12];
-    sub_100F3A928(v8, v11);
+    [v11 setUnscaledValue:value];
+    [v11 setFontProvider:providerCopy];
+    sub_100F3A928(constraintCopy, v11);
   }
 }
 
-+ (id)autoscaledConstraint:(id)a3 constant:(double)a4 withFontProvider:(id)a5
++ (id)autoscaledConstraint:(id)constraint constant:(double)constant withFontProvider:(id)provider
 {
-  v8 = a3;
-  if (a5)
+  constraintCopy = constraint;
+  if (provider)
   {
-    v9 = a5;
+    providerCopy = provider;
     v10 = objc_alloc_init(DynamicTypeValue);
-    [(DynamicTypeValue *)v10 setUnscaledValue:a4];
-    [(DynamicTypeValue *)v10 setFontProvider:v9];
+    [(DynamicTypeValue *)v10 setUnscaledValue:constant];
+    [(DynamicTypeValue *)v10 setFontProvider:providerCopy];
 
-    sub_100F3A928(v8, v10);
-    v11 = [a1 _singletonInstance];
-    v12 = [v11 constraintToValueMap];
-    [v12 setObject:v10 forKey:v8];
+    sub_100F3A928(constraintCopy, v10);
+    _singletonInstance = [self _singletonInstance];
+    constraintToValueMap = [_singletonInstance constraintToValueMap];
+    [constraintToValueMap setObject:v10 forKey:constraintCopy];
   }
 
-  return v8;
+  return constraintCopy;
 }
 
-+ (void)autorefreshLabel:(id)a3 withFontProvider:(id)a4
++ (void)autorefreshLabel:(id)label withFontProvider:(id)provider
 {
-  if (a4)
+  if (provider)
   {
-    v6 = *(a4 + 2);
-    v7 = a4;
-    v8 = a3;
-    v9 = v6(v7);
-    [v8 setFont:v9];
+    v6 = *(provider + 2);
+    providerCopy = provider;
+    labelCopy = label;
+    v9 = v6(providerCopy);
+    [labelCopy setFont:v9];
 
-    v12 = [a1 _singletonInstance];
-    v10 = [v12 labelToFontMap];
-    v11 = objc_retainBlock(v7);
+    _singletonInstance = [self _singletonInstance];
+    labelToFontMap = [_singletonInstance labelToFontMap];
+    v11 = objc_retainBlock(providerCopy);
 
-    [v10 setObject:v11 forKey:v8];
+    [labelToFontMap setObject:v11 forKey:labelCopy];
   }
 }
 

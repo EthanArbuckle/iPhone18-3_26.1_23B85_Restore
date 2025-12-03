@@ -1,47 +1,47 @@
 @interface PKOrderPhysicalCardController
-- (PKOrderPhysicalCardController)initWithAccountService:(id)a3 paymentWebService:(id)a4 paymentPass:(id)a5 account:(id)a6 accountUser:(id)a7 orderReason:(unint64_t)a8 context:(int64_t)a9 currentPhysicalCard:(id)a10;
+- (PKOrderPhysicalCardController)initWithAccountService:(id)service paymentWebService:(id)webService paymentPass:(id)pass account:(id)account accountUser:(id)user orderReason:(unint64_t)reason context:(int64_t)context currentPhysicalCard:(id)self0;
 - (id)_paymentRequest;
 - (id)_priceForRequestingPhysicalCard;
-- (void)completeOrderPhysicalCardWithApplePayTrustSignature:(id)a3 completion:(id)a4;
-- (void)nextViewControllerWithCompletion:(id)a3;
-- (void)startOrderPhysicalCardWithCompletion:(id)a3;
-- (void)updateCustomizationOptionsWithCompletion:(id)a3;
+- (void)completeOrderPhysicalCardWithApplePayTrustSignature:(id)signature completion:(id)completion;
+- (void)nextViewControllerWithCompletion:(id)completion;
+- (void)startOrderPhysicalCardWithCompletion:(id)completion;
+- (void)updateCustomizationOptionsWithCompletion:(id)completion;
 @end
 
 @implementation PKOrderPhysicalCardController
 
-- (PKOrderPhysicalCardController)initWithAccountService:(id)a3 paymentWebService:(id)a4 paymentPass:(id)a5 account:(id)a6 accountUser:(id)a7 orderReason:(unint64_t)a8 context:(int64_t)a9 currentPhysicalCard:(id)a10
+- (PKOrderPhysicalCardController)initWithAccountService:(id)service paymentWebService:(id)webService paymentPass:(id)pass account:(id)account accountUser:(id)user orderReason:(unint64_t)reason context:(int64_t)context currentPhysicalCard:(id)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v25 = a5;
-  v24 = a6;
-  v23 = a7;
-  v18 = a10;
+  serviceCopy = service;
+  webServiceCopy = webService;
+  passCopy = pass;
+  accountCopy = account;
+  userCopy = user;
+  cardCopy = card;
   v26.receiver = self;
   v26.super_class = PKOrderPhysicalCardController;
   v19 = [(PKOrderPhysicalCardController *)&v26 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_accountService, a3);
-    objc_storeStrong(&v20->_paymentWebService, a4);
-    objc_storeStrong(&v20->_paymentPass, a5);
-    objc_storeStrong(&v20->_account, a6);
-    objc_storeStrong(&v20->_accountUser, a7);
-    v20->_orderReason = a8;
+    objc_storeStrong(&v19->_accountService, service);
+    objc_storeStrong(&v20->_paymentWebService, webService);
+    objc_storeStrong(&v20->_paymentPass, pass);
+    objc_storeStrong(&v20->_account, account);
+    objc_storeStrong(&v20->_accountUser, user);
+    v20->_orderReason = reason;
     v20->_featureIdentifier = [(PKAccount *)v20->_account feature];
-    v20->_paymentSetupContext = a9;
-    objc_storeStrong(&v20->_physicalCardToReplace, a10);
+    v20->_paymentSetupContext = context;
+    objc_storeStrong(&v20->_physicalCardToReplace, card);
   }
 
   return v20;
 }
 
-- (void)nextViewControllerWithCompletion:(id)a3
+- (void)nextViewControllerWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
+  completionCopy = completion;
+  v5 = completionCopy;
   parentFlowController = self->_parentFlowController;
   if (parentFlowController)
   {
@@ -50,13 +50,13 @@
     v7[2] = __66__PKOrderPhysicalCardController_nextViewControllerWithCompletion___block_invoke;
     v7[3] = &unk_1E8019EA0;
     v7[4] = self;
-    v8 = v4;
+    v8 = completionCopy;
     [(PKSetupFlowControllerProtocol *)parentFlowController nextViewControllerWithCompletion:v7];
   }
 
   else
   {
-    (*(v4 + 2))(v4, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 }
 
@@ -68,9 +68,9 @@ void __66__PKOrderPhysicalCardController_nextViewControllerWithCompletion___bloc
   *(v2 + 136) = 0;
 }
 
-- (void)updateCustomizationOptionsWithCompletion:(id)a3
+- (void)updateCustomizationOptionsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -86,14 +86,14 @@ void __66__PKOrderPhysicalCardController_nextViewControllerWithCompletion___bloc
   v41 = __Block_byref_object_dispose__26;
   v42 = 0;
   v7 = objc_alloc_init(MEMORY[0x1E69B84F0]);
-  v8 = [(PKAccount *)self->_account accountIdentifier];
-  [v7 setAccountIdentifier:v8];
+  accountIdentifier = [(PKAccount *)self->_account accountIdentifier];
+  [v7 setAccountIdentifier:accountIdentifier];
 
-  v9 = [(PKAccount *)self->_account accountBaseURL];
-  [v7 setBaseURL:v9];
+  accountBaseURL = [(PKAccount *)self->_account accountBaseURL];
+  [v7 setBaseURL:accountBaseURL];
 
-  v10 = [(PKAccountUser *)self->_accountUser altDSID];
-  [v7 setAccountUserAltDSID:v10];
+  altDSID = [(PKAccountUser *)self->_accountUser altDSID];
+  [v7 setAccountUserAltDSID:altDSID];
 
   objc_initWeak(&location, self);
   dispatch_group_enter(v6);
@@ -118,7 +118,7 @@ void __66__PKOrderPhysicalCardController_nextViewControllerWithCompletion___bloc
   v27[2] = 0x2020000000;
   v28 = 0;
   accountService = self->_accountService;
-  v14 = [(PKAccount *)self->_account accountIdentifier];
+  accountIdentifier2 = [(PKAccount *)self->_account accountIdentifier];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __74__PKOrderPhysicalCardController_updateCustomizationOptionsWithCompletion___block_invoke_22;
@@ -128,7 +128,7 @@ void __66__PKOrderPhysicalCardController_nextViewControllerWithCompletion___bloc
   v23 = v15;
   v24 = v27;
   v25 = buf;
-  [(PKAccountService *)accountService userInfoForAccountIdentifier:v14 forceFetch:1 completion:v22];
+  [(PKAccountService *)accountService userInfoForAccountIdentifier:accountIdentifier2 forceFetch:1 completion:v22];
 
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
@@ -138,8 +138,8 @@ void __66__PKOrderPhysicalCardController_nextViewControllerWithCompletion___bloc
   v20 = v27;
   v21 = buf;
   v17[4] = self;
-  v18 = v4;
-  v16 = v4;
+  v18 = completionCopy;
+  v16 = completionCopy;
   dispatch_group_notify(v15, MEMORY[0x1E69E96A0], v17);
 
   objc_destroyWeak(&v26);
@@ -326,9 +326,9 @@ void __74__PKOrderPhysicalCardController_updateCustomizationOptionsWithCompletio
   }
 }
 
-- (void)startOrderPhysicalCardWithCompletion:(id)a3
+- (void)startOrderPhysicalCardWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -341,10 +341,10 @@ void __74__PKOrderPhysicalCardController_updateCustomizationOptionsWithCompletio
   aBlock[2] = __70__PKOrderPhysicalCardController_startOrderPhysicalCardWithCompletion___block_invoke;
   aBlock[3] = &unk_1E801A008;
   aBlock[4] = self;
-  v6 = v4;
+  v6 = completionCopy;
   v13 = v6;
   v7 = _Block_copy(aBlock);
-  v8 = [(PKPaymentWebService *)self->_paymentWebService targetDevice];
+  targetDevice = [(PKPaymentWebService *)self->_paymentWebService targetDevice];
   if (objc_opt_respondsToSelector())
   {
     paymentWebService = self->_paymentWebService;
@@ -353,7 +353,7 @@ void __74__PKOrderPhysicalCardController_updateCustomizationOptionsWithCompletio
     v10[2] = __70__PKOrderPhysicalCardController_startOrderPhysicalCardWithCompletion___block_invoke_5;
     v10[3] = &unk_1E801A030;
     v11 = v7;
-    [v8 paymentWebService:paymentWebService deviceMetadataWithFields:251 completion:v10];
+    [targetDevice paymentWebService:paymentWebService deviceMetadataWithFields:251 completion:v10];
   }
 
   else
@@ -664,10 +664,10 @@ void __70__PKOrderPhysicalCardController_startOrderPhysicalCardWithCompletion___
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
-- (void)completeOrderPhysicalCardWithApplePayTrustSignature:(id)a3 completion:(id)a4
+- (void)completeOrderPhysicalCardWithApplePayTrustSignature:(id)signature completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  signatureCopy = signature;
+  completionCopy = completion;
   v8 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -680,14 +680,14 @@ void __70__PKOrderPhysicalCardController_startOrderPhysicalCardWithCompletion___
   aBlock[2] = __96__PKOrderPhysicalCardController_completeOrderPhysicalCardWithApplePayTrustSignature_completion___block_invoke;
   aBlock[3] = &unk_1E801A058;
   aBlock[4] = self;
-  v9 = v7;
+  v9 = completionCopy;
   v18 = v9;
   v10 = _Block_copy(aBlock);
   v11 = v10;
   physicalCardRequest = self->_physicalCardRequest;
   if (physicalCardRequest)
   {
-    [(PKAccountService *)self->_accountService completePhysicalCardRequest:physicalCardRequest withSignature:v6 completion:v10];
+    [(PKAccountService *)self->_accountService completePhysicalCardRequest:physicalCardRequest withSignature:signatureCopy completion:v10];
   }
 
   else
@@ -701,7 +701,7 @@ void __70__PKOrderPhysicalCardController_startOrderPhysicalCardWithCompletion___
       v15[2] = __96__PKOrderPhysicalCardController_completeOrderPhysicalCardWithApplePayTrustSignature_completion___block_invoke_38;
       v15[3] = &unk_1E801A080;
       v16 = v10;
-      [(PKAccountService *)accountService completePhysicalCardActionRequest:replacePhysicalCardRequest withSignature:v6 completion:v15];
+      [(PKAccountService *)accountService completePhysicalCardActionRequest:replacePhysicalCardRequest withSignature:signatureCopy completion:v15];
     }
   }
 }
@@ -839,31 +839,31 @@ LABEL_12:
   v5 = PKLocalizedFeatureString();
   [v3 setLocalizedAuthorizingTitle:v5];
 
-  v6 = [(PKOrderPhysicalCardController *)self _priceForRequestingPhysicalCard];
-  v7 = [v6 amount];
+  _priceForRequestingPhysicalCard = [(PKOrderPhysicalCardController *)self _priceForRequestingPhysicalCard];
+  amount = [_priceForRequestingPhysicalCard amount];
 
-  if (!v7)
+  if (!amount)
   {
-    v8 = [MEMORY[0x1E696AB90] zero];
-    v9 = [(PKAccount *)self->_account creditDetails];
-    v10 = [v9 currencyCode];
-    v7 = PKCurrencyAmountCreate(v8, v10);
+    zero = [MEMORY[0x1E696AB90] zero];
+    creditDetails = [(PKAccount *)self->_account creditDetails];
+    currencyCode = [creditDetails currencyCode];
+    amount = PKCurrencyAmountCreate(zero, currencyCode);
   }
 
-  v11 = [v7 currency];
-  [v3 setCurrencyCode:v11];
+  currency = [amount currency];
+  [v3 setCurrencyCode:currency];
 
-  v12 = [v7 amount];
+  v7Amount = [amount amount];
   v13 = MEMORY[0x1E69B8E90];
   v14 = PKLocalizedFeatureString();
-  v15 = [v13 summaryItemWithLabel:v14 amount:v12];
+  v15 = [v13 summaryItemWithLabel:v14 amount:v7Amount];
 
   v19[0] = v15;
   v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:1];
   [v3 setPaymentSummaryItems:v16];
 
-  v17 = [MEMORY[0x1E696AB90] zero];
-  LODWORD(v14) = [v12 isEqualToNumber:v17];
+  zero2 = [MEMORY[0x1E696AB90] zero];
+  LODWORD(v14) = [v7Amount isEqualToNumber:zero2];
 
   if (v14)
   {

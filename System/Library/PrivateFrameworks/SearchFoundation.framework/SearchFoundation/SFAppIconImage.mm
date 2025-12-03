@@ -1,35 +1,35 @@
 @interface SFAppIconImage
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFAppIconImage)initWithCoder:(id)a3;
-- (SFAppIconImage)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFAppIconImage)initWithCoder:(id)coder;
+- (SFAppIconImage)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFAppIconImage
 
-- (SFAppIconImage)initWithProtobuf:(id)a3
+- (SFAppIconImage)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v10.receiver = self;
   v10.super_class = SFAppIconImage;
   v5 = [(SFAppIconImage *)&v10 init];
   if (v5)
   {
-    v6 = [v4 bundleIdentifier];
+    bundleIdentifier = [protobufCopy bundleIdentifier];
 
-    if (v6)
+    if (bundleIdentifier)
     {
-      v7 = [v4 bundleIdentifier];
-      [(SFAppIconImage *)v5 setBundleIdentifier:v7];
+      bundleIdentifier2 = [protobufCopy bundleIdentifier];
+      [(SFAppIconImage *)v5 setBundleIdentifier:bundleIdentifier2];
     }
 
-    if ([v4 iconType])
+    if ([protobufCopy iconType])
     {
-      -[SFAppIconImage setIconType:](v5, "setIconType:", [v4 iconType]);
+      -[SFAppIconImage setIconType:](v5, "setIconType:", [protobufCopy iconType]);
     }
 
     v8 = v5;
@@ -43,33 +43,33 @@
   v8.receiver = self;
   v8.super_class = SFAppIconImage;
   v3 = [(SFImage *)&v8 hash];
-  v4 = [(SFAppIconImage *)self bundleIdentifier];
-  v5 = [v4 hash];
+  bundleIdentifier = [(SFAppIconImage *)self bundleIdentifier];
+  v5 = [bundleIdentifier hash];
   v6 = v5 ^ [(SFAppIconImage *)self iconType];
 
   return v6 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
-  if (self == v6)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
   else
   {
-    if ([(SFAppIconImage *)v6 isMemberOfClass:objc_opt_class()])
+    if ([(SFAppIconImage *)equalCopy isMemberOfClass:objc_opt_class()])
     {
       v14.receiver = self;
       v14.super_class = SFAppIconImage;
-      if ([(SFImage *)&v14 isEqual:v6])
+      if ([(SFImage *)&v14 isEqual:equalCopy])
       {
-        v7 = v6;
-        v8 = [(SFAppIconImage *)self bundleIdentifier];
-        v9 = [(SFAppIconImage *)v7 bundleIdentifier];
-        if ((v8 != 0) == (v9 == 0))
+        v7 = equalCopy;
+        bundleIdentifier = [(SFAppIconImage *)self bundleIdentifier];
+        bundleIdentifier2 = [(SFAppIconImage *)v7 bundleIdentifier];
+        if ((bundleIdentifier != 0) == (bundleIdentifier2 == 0))
         {
           v11 = 0;
 LABEL_14:
@@ -77,12 +77,12 @@ LABEL_14:
           goto LABEL_15;
         }
 
-        v10 = [(SFAppIconImage *)self bundleIdentifier];
-        if (!v10 || (-[SFAppIconImage bundleIdentifier](self, "bundleIdentifier"), v3 = objc_claimAutoreleasedReturnValue(), -[SFAppIconImage bundleIdentifier](v7, "bundleIdentifier"), v4 = objc_claimAutoreleasedReturnValue(), [v3 isEqual:v4]))
+        bundleIdentifier3 = [(SFAppIconImage *)self bundleIdentifier];
+        if (!bundleIdentifier3 || (-[SFAppIconImage bundleIdentifier](self, "bundleIdentifier"), v3 = objc_claimAutoreleasedReturnValue(), -[SFAppIconImage bundleIdentifier](v7, "bundleIdentifier"), v4 = objc_claimAutoreleasedReturnValue(), [v3 isEqual:v4]))
         {
-          v12 = [(SFAppIconImage *)self iconType];
-          v11 = v12 == [(SFAppIconImage *)v7 iconType];
-          if (!v10)
+          iconType = [(SFAppIconImage *)self iconType];
+          v11 = iconType == [(SFAppIconImage *)v7 iconType];
+          if (!bundleIdentifier3)
           {
 LABEL_13:
 
@@ -107,13 +107,13 @@ LABEL_15:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = SFAppIconImage;
-  v4 = [(SFImage *)&v8 copyWithZone:a3];
-  v5 = [(SFAppIconImage *)self bundleIdentifier];
-  v6 = [v5 copy];
+  v4 = [(SFImage *)&v8 copyWithZone:zone];
+  bundleIdentifier = [(SFAppIconImage *)self bundleIdentifier];
+  v6 = [bundleIdentifier copy];
   [v4 setBundleIdentifier:v6];
 
   [v4 setIconType:{-[SFAppIconImage iconType](self, "iconType")}];
@@ -123,31 +123,31 @@ LABEL_15:
 - (NSData)jsonData
 {
   v2 = [[_SFPBAppIconImage alloc] initWithFacade:self];
-  v3 = [(_SFPBAppIconImage *)v2 jsonData];
+  jsonData = [(_SFPBAppIconImage *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBAppIconImage alloc] initWithFacade:self];
-  v3 = [(_SFPBAppIconImage *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBAppIconImage *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6 = [[_SFPBImage alloc] initWithFacade:self];
-  v5 = [(_SFPBImage *)v6 data];
-  [v4 encodeObject:v5 forKey:@"_backingStore"];
+  data = [(_SFPBImage *)v6 data];
+  [coderCopy encodeObject:data forKey:@"_backingStore"];
 }
 
-- (SFAppIconImage)initWithCoder:(id)a3
+- (SFAppIconImage)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v6 = [[_SFPBImage alloc] initWithData:v5];
   v9.receiver = self;

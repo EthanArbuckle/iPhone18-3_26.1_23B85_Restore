@@ -1,35 +1,35 @@
 @interface CRLFreehandDrawingMixedTypeEditor
 - (BOOL)canCopySubselection;
-- (BOOL)currentSelectionContainsInfo:(id)a3;
+- (BOOL)currentSelectionContainsInfo:(id)info;
 - (CRLEditorController)editorController;
-- (CRLFreehandDrawingMixedTypeEditor)initWithInteractiveCanvasController:(id)a3 currentSelectionPath:(id)a4;
+- (CRLFreehandDrawingMixedTypeEditor)initWithInteractiveCanvasController:(id)controller currentSelectionPath:(id)path;
 - (CRLInteractiveCanvasController)interactiveCanvasController;
 - (NSSet)boardItemsForDragAndDropTracing;
 - (NSSet)drawingItemsFromCurrentSelectionPath;
 - (_TtC8Freeform21CRLEditingCoordinator)editingCoordinator;
-- (id)drawingRepresetativeItemsFromBoardItems:(id)a3;
-- (id)nextEditorForSelection:(id)a3 withNewEditorStack:(id)a4 selectionPath:(id)a5;
+- (id)drawingRepresetativeItemsFromBoardItems:(id)items;
+- (id)nextEditorForSelection:(id)selection withNewEditorStack:(id)stack selectionPath:(id)path;
 - (id)parentItemsForSelectedStrokes;
 - (id)selectedItems;
-- (void)setEditorController:(id)a3;
+- (void)setEditorController:(id)controller;
 @end
 
 @implementation CRLFreehandDrawingMixedTypeEditor
 
-- (CRLFreehandDrawingMixedTypeEditor)initWithInteractiveCanvasController:(id)a3 currentSelectionPath:(id)a4
+- (CRLFreehandDrawingMixedTypeEditor)initWithInteractiveCanvasController:(id)controller currentSelectionPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  pathCopy = path;
   v23.receiver = self;
   v23.super_class = CRLFreehandDrawingMixedTypeEditor;
   v8 = [(CRLFreehandDrawingMixedTypeEditor *)&v23 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->mInteractiveCanvasController, v6);
-    objc_storeStrong(&v9->mSelectionPath, a4);
-    v10 = [v6 selectionModelTranslator];
-    v11 = [v10 infosForSelectionPath:v7];
+    objc_storeWeak(&v8->mInteractiveCanvasController, controllerCopy);
+    objc_storeStrong(&v9->mSelectionPath, path);
+    selectionModelTranslator = [controllerCopy selectionModelTranslator];
+    v11 = [selectionModelTranslator infosForSelectionPath:pathCopy];
 
     v12 = +[NSMutableSet set];
     v13 = +[NSMutableSet set];
@@ -84,28 +84,28 @@
 - (_TtC8Freeform21CRLEditingCoordinator)editingCoordinator
 {
   WeakRetained = objc_loadWeakRetained(&self->mInteractiveCanvasController);
-  v3 = [WeakRetained editingCoordinator];
+  editingCoordinator = [WeakRetained editingCoordinator];
 
-  return v3;
+  return editingCoordinator;
 }
 
 - (CRLEditorController)editorController
 {
   WeakRetained = objc_loadWeakRetained(&self->mInteractiveCanvasController);
-  v3 = [WeakRetained editorController];
+  editorController = [WeakRetained editorController];
 
-  return v3;
+  return editorController;
 }
 
-- (void)setEditorController:(id)a3
+- (void)setEditorController:(id)controller
 {
-  v4 = a3;
-  if (v4)
+  controllerCopy = controller;
+  if (controllerCopy)
   {
     WeakRetained = objc_loadWeakRetained(&self->mInteractiveCanvasController);
-    v6 = [WeakRetained editorController];
+    editorController = [WeakRetained editorController];
 
-    if (v6 != v4)
+    if (editorController != controllerCopy)
     {
       v7 = +[CRLAssertionHandler _atomicIncrementAssertCount];
       if (qword_101AD5A10 != -1)
@@ -137,7 +137,7 @@
   }
 }
 
-- (id)nextEditorForSelection:(id)a3 withNewEditorStack:(id)a4 selectionPath:(id)a5
+- (id)nextEditorForSelection:(id)selection withNewEditorStack:(id)stack selectionPath:(id)path
 {
   v6 = [CRLFreehandDrawingMixedTypeEditor alloc];
   WeakRetained = objc_loadWeakRetained(&self->mInteractiveCanvasController);
@@ -146,11 +146,11 @@
   return v8;
 }
 
-- (BOOL)currentSelectionContainsInfo:(id)a3
+- (BOOL)currentSelectionContainsInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v5 = objc_opt_class();
-  v6 = sub_100014370(v5, v4);
+  v6 = sub_100014370(v5, infoCopy);
 
   if (v6)
   {
@@ -188,15 +188,15 @@
   return v6;
 }
 
-- (id)drawingRepresetativeItemsFromBoardItems:(id)a3
+- (id)drawingRepresetativeItemsFromBoardItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   v5 = +[NSMutableSet set];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v4;
+  v6 = itemsCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -238,10 +238,10 @@
 
 - (BOOL)canCopySubselection
 {
-  v2 = [(CRLFreehandDrawingMixedTypeEditor *)self editorController];
-  v3 = [v2 selectionPath];
-  v4 = [v3 orderedSelections];
-  v5 = [v4 lastObject];
+  editorController = [(CRLFreehandDrawingMixedTypeEditor *)self editorController];
+  selectionPath = [editorController selectionPath];
+  orderedSelections = [selectionPath orderedSelections];
+  lastObject = [orderedSelections lastObject];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 

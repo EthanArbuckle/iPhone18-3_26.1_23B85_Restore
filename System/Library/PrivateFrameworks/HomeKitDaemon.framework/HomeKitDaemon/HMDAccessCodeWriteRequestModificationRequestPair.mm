@@ -1,21 +1,21 @@
 @interface HMDAccessCodeWriteRequestModificationRequestPair
-- (HMDAccessCodeWriteRequestModificationRequestPair)initWithWriteRequest:(id)a3 modificationRequests:(id)a4;
+- (HMDAccessCodeWriteRequestModificationRequestPair)initWithWriteRequest:(id)request modificationRequests:(id)requests;
 @end
 
 @implementation HMDAccessCodeWriteRequestModificationRequestPair
 
-- (HMDAccessCodeWriteRequestModificationRequestPair)initWithWriteRequest:(id)a3 modificationRequests:(id)a4
+- (HMDAccessCodeWriteRequestModificationRequestPair)initWithWriteRequest:(id)request modificationRequests:(id)requests
 {
-  v7 = a3;
-  v8 = a4;
+  requestCopy = request;
+  requestsCopy = requests;
   v14.receiver = self;
   v14.super_class = HMDAccessCodeWriteRequestModificationRequestPair;
   v9 = [(HMDAccessCodeWriteRequestModificationRequestPair *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_writeRequest, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_writeRequest, request);
+    v11 = [requestsCopy copy];
     modificationRequests = v10->_modificationRequests;
     v10->_modificationRequests = v11;
   }

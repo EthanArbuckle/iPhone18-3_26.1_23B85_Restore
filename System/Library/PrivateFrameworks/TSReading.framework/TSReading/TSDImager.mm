@@ -1,36 +1,36 @@
 @interface TSDImager
-- (BOOL)drawPageInContext:(CGContext *)a3 createPage:(BOOL)a4;
-- (BOOL)isCanvasDrawingIntoPDF:(id)a3;
+- (BOOL)drawPageInContext:(CGContext *)context createPage:(BOOL)page;
+- (BOOL)isCanvasDrawingIntoPDF:(id)f;
 - (BOOL)p_configureCanvas;
 - (CGImage)newImage;
 - (CGImage)p_newImageInReusableContext;
 - (CGRect)actualScaledClipRect;
 - (CGRect)unscaledClipRect;
-- (CGRect)visibleScaledBoundsForClippingRepsOnCanvas:(id)a3;
+- (CGRect)visibleScaledBoundsForClippingRepsOnCanvas:(id)canvas;
 - (CGSize)maximumScaledImageSize;
 - (CGSize)scaledImageSize;
-- (TSDImager)initWithDocumentRoot:(id)a3;
+- (TSDImager)initWithDocumentRoot:(id)root;
 - (UIEdgeInsets)contentInset;
 - (double)viewScale;
 - (id)pdfData;
 - (void)dealloc;
-- (void)p_drawPageInContext:(CGContext *)a3 createPage:(BOOL)a4;
-- (void)setBackgroundColor:(CGColor *)a3;
-- (void)setInfos:(id)a3;
-- (void)setMaximumScaledImageSize:(CGSize)a3;
-- (void)setScaledImageSize:(CGSize)a3;
-- (void)setViewScale:(double)a3;
+- (void)p_drawPageInContext:(CGContext *)context createPage:(BOOL)page;
+- (void)setBackgroundColor:(CGColor *)color;
+- (void)setInfos:(id)infos;
+- (void)setMaximumScaledImageSize:(CGSize)size;
+- (void)setScaledImageSize:(CGSize)size;
+- (void)setViewScale:(double)scale;
 @end
 
 @implementation TSDImager
 
-- (TSDImager)initWithDocumentRoot:(id)a3
+- (TSDImager)initWithDocumentRoot:(id)root
 {
-  if (!a3)
+  if (!root)
   {
-    v5 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDImager initWithDocumentRoot:]"];
-    [v5 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImager.m"), 51, @"invalid nil value for '%s'", "documentRoot"}];
+    [currentHandler handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImager.m"), 51, @"invalid nil value for '%s'", "documentRoot"}];
   }
 
   v12.receiver = self;
@@ -43,7 +43,7 @@
     *(v7 + 24) = *MEMORY[0x277CBF390];
     *(v7 + 40) = v9;
     *(v7 + 104) = TSDEdgeInsetsZero;
-    *(v7 + 17) = a3;
+    *(v7 + 17) = root;
     *(v7 + 7) = 0x3FF0000000000000;
     *(v7 + 120) = *&qword_26CA652C0;
     v10 = objc_alloc_init(TSDCanvas);
@@ -68,14 +68,14 @@
   [(TSDImager *)&v3 dealloc];
 }
 
-- (void)setInfos:(id)a3
+- (void)setInfos:(id)infos
 {
-  if (self->mInfos != a3)
+  if (self->mInfos != infos)
   {
-    v5 = a3;
+    infosCopy = infos;
 
-    self->mInfos = a3;
-    if (![a3 count])
+    self->mInfos = infos;
+    if (![infos count])
     {
       [(TSDCanvas *)self->mCanvas setInfosToDisplay:self->mInfos];
       mCanvas = self->mCanvas;
@@ -85,15 +85,15 @@
   }
 }
 
-- (void)setBackgroundColor:(CGColor *)a3
+- (void)setBackgroundColor:(CGColor *)color
 {
   mBackgroundColor = self->mBackgroundColor;
-  if (mBackgroundColor != a3)
+  if (mBackgroundColor != color)
   {
     CGColorRelease(mBackgroundColor);
-    if (a3)
+    if (color)
     {
-      Copy = CGColorCreateCopy(a3);
+      Copy = CGColorCreateCopy(color);
     }
 
     else
@@ -109,24 +109,24 @@
 {
   if (self->mUseScaledImageSize)
   {
-    v3 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDImager viewScale]"];
-    [v3 handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImager.m"), 125, @"Cannot call viewScale if scaledImageSize has been set."}];
+    [currentHandler handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImager.m"), 125, @"Cannot call viewScale if scaledImageSize has been set."}];
   }
 
   return self->mViewScale;
 }
 
-- (void)setViewScale:(double)a3
+- (void)setViewScale:(double)scale
 {
-  if (a3 <= 0.0)
+  if (scale <= 0.0)
   {
-    v5 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDImager setViewScale:]"];
-    [v5 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImager.m"), 131, @"Scale must be > 0."}];
+    [currentHandler handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImager.m"), 131, @"Scale must be > 0."}];
   }
 
-  self->mViewScale = a3;
+  self->mViewScale = scale;
   self->mScaledImageSize = *MEMORY[0x277CBF3A8];
   self->mUseScaledImageSize = 0;
 }
@@ -135,9 +135,9 @@
 {
   if (!self->mUseScaledImageSize)
   {
-    v3 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDImager scaledImageSize]"];
-    [v3 handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImager.m"), 139, @"Cannot call scaledImageSize if viewScale has been set."}];
+    [currentHandler handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImager.m"), 139, @"Cannot call scaledImageSize if viewScale has been set."}];
   }
 
   width = self->mScaledImageSize.width;
@@ -147,24 +147,24 @@
   return result;
 }
 
-- (void)setScaledImageSize:(CGSize)a3
+- (void)setScaledImageSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  if (a3.width <= 0.0 || a3.height <= 0.0)
+  height = size.height;
+  width = size.width;
+  if (size.width <= 0.0 || size.height <= 0.0)
   {
-    v6 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDImager setScaledImageSize:]"];
-    [v6 handleFailureInFunction:v7 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImager.m"), 145, @"can't make an image with 0 width or height"}];
+    [currentHandler handleFailureInFunction:v7 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImager.m"), 145, @"can't make an image with 0 width or height"}];
   }
 
   v9 = TSDCeilSize(width);
   v10 = v8;
   if (width != v9 || height != v8)
   {
-    v12 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
     v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDImager setScaledImageSize:]"];
-    [v12 handleFailureInFunction:v13 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImager.m"), 147, @"given a non-integral scaled image size"}];
+    [currentHandler2 handleFailureInFunction:v13 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImager.m"), 147, @"given a non-integral scaled image size"}];
   }
 
   self->mScaledImageSize.width = v9;
@@ -182,17 +182,17 @@
   return result;
 }
 
-- (void)setMaximumScaledImageSize:(CGSize)a3
+- (void)setMaximumScaledImageSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = TSDCeilSize(a3.width);
+  height = size.height;
+  width = size.width;
+  v7 = TSDCeilSize(size.width);
   v8 = v6;
   if (width != v7 || height != v6)
   {
-    v10 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDImager setMaximumScaledImageSize:]"];
-    [v10 handleFailureInFunction:v11 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImager.m"), 161, @"given a non-integral maximum image size"}];
+    [currentHandler handleFailureInFunction:v11 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImager.m"), 161, @"given a non-integral maximum image size"}];
   }
 
   self->mMaximumScaledImageSize.width = v7;
@@ -209,15 +209,15 @@
     {
       if ([(TSDImager *)self shouldReuseBitmapContext])
       {
-        v5 = [(TSDImager *)self p_newImageInReusableContext];
+        p_newImageInReusableContext = [(TSDImager *)self p_newImageInReusableContext];
       }
 
       else
       {
-        v5 = [(TSDCanvas *)self->mCanvas i_imageInScaledRect:self->mDistortedToMatch withTargetIntegralSize:self->mActualScaledClipRect.origin.x distortedToMatch:self->mActualScaledClipRect.origin.y, self->mActualScaledClipRect.size.width, self->mActualScaledClipRect.size.height, self->mScaledImageSize.width, self->mScaledImageSize.height];
+        p_newImageInReusableContext = [(TSDCanvas *)self->mCanvas i_imageInScaledRect:self->mDistortedToMatch withTargetIntegralSize:self->mActualScaledClipRect.origin.x distortedToMatch:self->mActualScaledClipRect.origin.y, self->mActualScaledClipRect.size.width, self->mActualScaledClipRect.size.height, self->mScaledImageSize.width, self->mScaledImageSize.height];
       }
 
-      v6 = v5;
+      v6 = p_newImageInReusableContext;
     }
 
     else
@@ -280,32 +280,32 @@
   return v11;
 }
 
-- (BOOL)drawPageInContext:(CGContext *)a3 createPage:(BOOL)a4
+- (BOOL)drawPageInContext:(CGContext *)context createPage:(BOOL)page
 {
-  v4 = a4;
-  v7 = [(TSDImager *)self p_configureCanvas];
-  if (v7)
+  pageCopy = page;
+  p_configureCanvas = [(TSDImager *)self p_configureCanvas];
+  if (p_configureCanvas)
   {
-    BitmapQualityInfo = TSDCGContextGetBitmapQualityInfo(a3);
+    BitmapQualityInfo = TSDCGContextGetBitmapQualityInfo(context);
     if (BitmapQualityInfo)
     {
-      [(TSDCanvas *)self->mCanvas addBitmapsToRenderingQualityInfo:BitmapQualityInfo inContext:a3];
+      [(TSDCanvas *)self->mCanvas addBitmapsToRenderingQualityInfo:BitmapQualityInfo inContext:context];
     }
 
-    [(TSDImager *)self p_drawPageInContext:a3 createPage:v4];
+    [(TSDImager *)self p_drawPageInContext:context createPage:pageCopy];
   }
 
-  return v7;
+  return p_configureCanvas;
 }
 
-- (CGRect)visibleScaledBoundsForClippingRepsOnCanvas:(id)a3
+- (CGRect)visibleScaledBoundsForClippingRepsOnCanvas:(id)canvas
 {
   mCanvas = self->mCanvas;
-  if (mCanvas != a3)
+  if (mCanvas != canvas)
   {
-    v5 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDImager visibleScaledBoundsForClippingRepsOnCanvas:]"];
-    [v5 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImager.m"), 293, @"wrong canvas"}];
+    [currentHandler handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImager.m"), 293, @"wrong canvas"}];
     mCanvas = self->mCanvas;
   }
 
@@ -324,13 +324,13 @@
   return result;
 }
 
-- (BOOL)isCanvasDrawingIntoPDF:(id)a3
+- (BOOL)isCanvasDrawingIntoPDF:(id)f
 {
-  if (self->mCanvas != a3)
+  if (self->mCanvas != f)
   {
-    v4 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDImager isCanvasDrawingIntoPDF:]"];
-    [v4 handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImager.m"), 300, @"wrong canvas"}];
+    [currentHandler handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImager.m"), 300, @"wrong canvas"}];
   }
 
   return self->mDrawingIntoPDF;
@@ -435,9 +435,9 @@
 
         if (v29 == 0.0 && v30 == 0.0)
         {
-          v31 = [MEMORY[0x277D6C290] currentHandler];
+          currentHandler = [MEMORY[0x277D6C290] currentHandler];
           v32 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDImager p_configureCanvas]"];
-          [v31 handleFailureInFunction:v32 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImager.m"), 374, @"both ratios in imager are zero!"}];
+          [currentHandler handleFailureInFunction:v32 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImager.m"), 374, @"both ratios in imager are zero!"}];
         }
 
         if (v29 <= v30)
@@ -494,9 +494,9 @@
 
         if (v47 > self->mScaledImageSize.width || v46 > self->mScaledImageSize.height)
         {
-          v48 = [MEMORY[0x277D6C290] currentHandler];
+          currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
           v49 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDImager p_configureCanvas]"];
-          [v48 handleFailureInFunction:v49 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImager.m"), 401, @"new image dimensions not calculated as expected! Image may be the wrong size."}];
+          [currentHandler2 handleFailureInFunction:v49 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImager.m"), 401, @"new image dimensions not calculated as expected! Image may be the wrong size."}];
         }
 
         self->mActualScaledClipRect.size.width = v47;
@@ -508,46 +508,46 @@
   return v20;
 }
 
-- (void)p_drawPageInContext:(CGContext *)a3 createPage:(BOOL)a4
+- (void)p_drawPageInContext:(CGContext *)context createPage:(BOOL)page
 {
-  v4 = a4;
+  pageCopy = page;
   self->mDrawingIntoPDF = 1;
-  TSDSetCGContextInfo(a3, [(TSDImager *)self isPrinting], self->mDrawingIntoPDF, 0, [(TSDCanvas *)self->mCanvas shouldSuppressBackgrounds], 1.0);
+  TSDSetCGContextInfo(context, [(TSDImager *)self isPrinting], self->mDrawingIntoPDF, 0, [(TSDCanvas *)self->mCanvas shouldSuppressBackgrounds], 1.0);
   x = self->mActualScaledClipRect.origin.x;
   y = self->mActualScaledClipRect.origin.y;
   width = self->mActualScaledClipRect.size.width;
   height = self->mActualScaledClipRect.size.height;
-  if (v4)
+  if (pageCopy)
   {
     v15.origin.x = TSDRectWithSize();
     v15.origin.y = v11;
     v15.size.width = v12;
     v15.size.height = v13;
-    CGContextBeginPage(a3, &v15);
+    CGContextBeginPage(context, &v15);
   }
 
-  CGContextTranslateCTM(a3, 0.0, height);
-  CGContextScaleCTM(a3, 1.0, -1.0);
-  CGContextTranslateCTM(a3, -x, -y);
+  CGContextTranslateCTM(context, 0.0, height);
+  CGContextScaleCTM(context, 1.0, -1.0);
+  CGContextTranslateCTM(context, -x, -y);
   v16.origin.x = x;
   v16.origin.y = y;
   v16.size.width = width;
   v16.size.height = height;
-  CGContextClipToRect(a3, v16);
-  [(TSDCanvas *)self->mCanvas i_drawBackgroundInContext:a3];
-  [(TSDCanvas *)self->mCanvas i_drawRepsInContext:a3];
+  CGContextClipToRect(context, v16);
+  [(TSDCanvas *)self->mCanvas i_drawBackgroundInContext:context];
+  [(TSDCanvas *)self->mCanvas i_drawRepsInContext:context];
   mPostRenderAction = self->mPostRenderAction;
   if (mPostRenderAction)
   {
-    mPostRenderAction[2](mPostRenderAction, a3, self->mCanvas);
+    mPostRenderAction[2](mPostRenderAction, context, self->mCanvas);
   }
 
-  if (v4)
+  if (pageCopy)
   {
-    CGContextEndPage(a3);
+    CGContextEndPage(context);
   }
 
-  TSDClearCGContextInfo(a3);
+  TSDClearCGContextInfo(context);
   self->mDrawingIntoPDF = 0;
 }
 
@@ -555,9 +555,9 @@
 {
   if (![(TSDImager *)self shouldReuseBitmapContext])
   {
-    v3 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDImager p_newImageInReusableContext]"];
-    [v3 handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImager.m"), 451, @"shouldn't be reusing context"}];
+    [currentHandler handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImager.m"), 451, @"shouldn't be reusing context"}];
   }
 
   if (!self->mReusableBitmapContext)

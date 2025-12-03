@@ -1,11 +1,11 @@
 @interface _ATXDeprecatedScoreInterpreter
 - (NSSet)subscoreNames;
-- (_ATXDeprecatedScoreInterpreter)initWithParseRoot:(id)a3;
-- (double)_evalVariable:(id)a3 withCtx:(id)a4;
-- (id)evaluateWithInputScoreDict:(id)a3 intentType:(id)a4;
-- (id)evaluateWithInputScores:(id)a3 intentType:(id)a4;
+- (_ATXDeprecatedScoreInterpreter)initWithParseRoot:(id)root;
+- (double)_evalVariable:(id)variable withCtx:(id)ctx;
+- (id)evaluateWithInputScoreDict:(id)dict intentType:(id)type;
+- (id)evaluateWithInputScores:(id)scores intentType:(id)type;
 - (unint64_t)instructionCount;
-- (void)_compileRoot:(id)a3;
+- (void)_compileRoot:(id)root;
 @end
 
 @implementation _ATXDeprecatedScoreInterpreter
@@ -31,41 +31,41 @@
 - (NSSet)subscoreNames
 {
   v3 = objc_alloc(MEMORY[0x277CBEB98]);
-  v4 = [(NSDictionary *)self->_varPrograms allKeys];
-  v5 = [v3 initWithArray:v4];
+  allKeys = [(NSDictionary *)self->_varPrograms allKeys];
+  v5 = [v3 initWithArray:allKeys];
 
   return v5;
 }
 
-- (_ATXDeprecatedScoreInterpreter)initWithParseRoot:(id)a3
+- (_ATXDeprecatedScoreInterpreter)initWithParseRoot:(id)root
 {
-  v4 = a3;
+  rootCopy = root;
   v8.receiver = self;
   v8.super_class = _ATXDeprecatedScoreInterpreter;
   v5 = [(_ATXDeprecatedScoreInterpreter *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(_ATXDeprecatedScoreInterpreter *)v5 _compileRoot:v4];
+    [(_ATXDeprecatedScoreInterpreter *)v5 _compileRoot:rootCopy];
   }
 
   return v6;
 }
 
-- (void)_compileRoot:(id)a3
+- (void)_compileRoot:(id)root
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v20 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(v4, "count")}];
+  rootCopy = root;
+  v20 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(rootCopy, "count")}];
   v19 = objc_opt_new();
   v18 = objc_opt_new();
-  v16 = self;
+  selfCopy = self;
   objc_initWeak(&location, self);
   v34 = 0u;
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v5 = v4;
+  v5 = rootCopy;
   v6 = [v5 countByEnumeratingWithState:&v32 objects:v37 count:16];
   if (v6)
   {
@@ -116,23 +116,23 @@
   }
 
   v13 = [v20 copy];
-  varPrograms = v16->_varPrograms;
-  v16->_varPrograms = v13;
+  varPrograms = selfCopy->_varPrograms;
+  selfCopy->_varPrograms = v13;
 
   objc_destroyWeak(&location);
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (double)_evalVariable:(id)a3 withCtx:(id)a4
+- (double)_evalVariable:(id)variable withCtx:(id)ctx
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  variableCopy = variable;
+  ctxCopy = ctx;
+  if (!variableCopy)
   {
     [_ATXDeprecatedScoreInterpreter _evalVariable:withCtx:];
   }
 
-  v8 = [(NSDictionary *)self->_varPrograms objectForKeyedSubscript:v6];
+  v8 = [(NSDictionary *)self->_varPrograms objectForKeyedSubscript:variableCopy];
   if (!v8)
   {
     v9 = __atxlog_handle_default();
@@ -141,12 +141,12 @@
       [_ATXDeprecatedScoreInterpreter _evalVariable:withCtx:];
     }
 
-    v10 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[_ATXDeprecatedScoreInterpreter _evalVariable:withCtx:]"];
-    [v10 handleFailureInFunction:v11 file:@"_ATXDeprecatedScoreInterpreter.m" lineNumber:649 description:{@"Invalid parameter not satisfying: %@", @"instructions"}];
+    [currentHandler handleFailureInFunction:v11 file:@"_ATXDeprecatedScoreInterpreter.m" lineNumber:649 description:{@"Invalid parameter not satisfying: %@", @"instructions"}];
   }
 
-  v12 = runInstructionsAndPopResult(v8, v7);
+  v12 = runInstructionsAndPopResult(v8, ctxCopy);
   if ((*&v12 & 0x7FFFFFFFFFFFFFFFuLL) >= 0x7FF0000000000000)
   {
     v13 = __atxlog_handle_default();
@@ -156,19 +156,19 @@
     }
   }
 
-  [v7[503] setScore:v6 forKey:v12];
+  [ctxCopy[503] setScore:variableCopy forKey:v12];
 
   return v12;
 }
 
-- (id)evaluateWithInputScores:(id)a3 intentType:(id)a4
+- (id)evaluateWithInputScores:(id)scores intentType:(id)type
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  scoresCopy = scores;
+  typeCopy = type;
   v8 = [_ATXDeprecatedScoreInterpreterCtx alloc];
-  v9 = [ATXScoreDict scoreDictFromDictionary:v6];
-  v10 = [(_ATXDeprecatedScoreInterpreterCtx *)v8 initWithInputScores:v9 intentType:v7];
+  v9 = [ATXScoreDict scoreDictFromDictionary:scoresCopy];
+  v10 = [(_ATXDeprecatedScoreInterpreterCtx *)v8 initWithInputScores:v9 intentType:typeCopy];
 
   v21 = 0u;
   v22 = 0u;
@@ -198,19 +198,19 @@
     while (v13);
   }
 
-  v16 = [v10[503] toDictionary];
+  toDictionary = [v10[503] toDictionary];
 
   v17 = *MEMORY[0x277D85DE8];
 
-  return v16;
+  return toDictionary;
 }
 
-- (id)evaluateWithInputScoreDict:(id)a3 intentType:(id)a4
+- (id)evaluateWithInputScoreDict:(id)dict intentType:(id)type
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [[_ATXDeprecatedScoreInterpreterCtx alloc] initWithInputScores:v6 intentType:v7];
+  dictCopy = dict;
+  typeCopy = type;
+  v8 = [[_ATXDeprecatedScoreInterpreterCtx alloc] initWithInputScores:dictCopy intentType:typeCopy];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;

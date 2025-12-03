@@ -1,18 +1,18 @@
 @interface TUIElementComponentViewState
-+ (void)configureContainingBuilder:(id)a3 withNode:(id)a4 attributes:(id)a5 context:(id)a6;
++ (void)configureContainingBuilder:(id)builder withNode:(id)node attributes:(id)attributes context:(id)context;
 @end
 
 @implementation TUIElementComponentViewState
 
-+ (void)configureContainingBuilder:(id)a3 withNode:(id)a4 attributes:(id)a5 context:(id)a6
++ (void)configureContainingBuilder:(id)builder withNode:(id)node attributes:(id)attributes context:(id)context
 {
-  v11 = a6;
-  v8 = [a5 bindingNameForAttribute:137 node:a4.var0];
+  contextCopy = context;
+  v8 = [attributes bindingNameForAttribute:137 node:node.var0];
   v9 = v8;
   if (TUINameIsValid(v8))
   {
-    v10 = [v11 componentViewStateWithName:v9];
-    [v11 defineComponentBindingWithName:v9 value:v10];
+    v10 = [contextCopy componentViewStateWithName:v9];
+    [contextCopy defineComponentBindingWithName:v9 value:v10];
   }
 }
 

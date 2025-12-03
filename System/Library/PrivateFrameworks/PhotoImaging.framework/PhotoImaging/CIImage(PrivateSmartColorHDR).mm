@@ -6,7 +6,7 @@
 
 - (id)smartColorHDRStatistics
 {
-  v1 = MEMORY[0x1EEE9AC00](a1);
+  v1 = MEMORY[0x1EEE9AC00](self);
   v89 = *MEMORY[0x1E69E9840];
   v2 = v1;
   context = objc_autoreleasePoolPush();
@@ -28,12 +28,12 @@
   v16 = v13;
   v17 = 4 * v11;
   v18 = [MEMORY[0x1E695DF88] dataWithLength:v17 * v13];
-  v74 = [v18 bytes];
-  v19 = [v18 mutableBytes];
+  bytes = [v18 bytes];
+  mutableBytes = [v18 mutableBytes];
   v20 = *MEMORY[0x1E695F910];
   v76 = v6;
   v78 = v2;
-  [v6 render:v2 toBitmap:v19 rowBytes:v17 bounds:v20 format:0 colorSpace:{v8, v10, v12, v14}];
+  [v6 render:v2 toBitmap:mutableBytes rowBytes:v17 bounds:v20 format:0 colorSpace:{v8, v10, v12, v14}];
   bzero(v82, 0x400uLL);
   bzero(v81, 0x400uLL);
   v75 = &v73;
@@ -45,7 +45,7 @@
   {
     v24 = 0;
     v25 = 1.0 / (v16 * v15);
-    v26 = (v74 + 2);
+    v26 = (bytes + 2);
     do
     {
       v27 = v26;

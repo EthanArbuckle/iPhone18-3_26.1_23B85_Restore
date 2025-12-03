@@ -2,15 +2,15 @@
 - (SHManagedSession)session;
 - (SHToggleManager)init;
 - (SHToggleManagerDelegate)delegate;
-- (void)finishedManagedSession:(id)a3;
+- (void)finishedManagedSession:(id)session;
 - (void)playStartRecordingSystemSound;
 - (void)playStopRecordingSystemSound;
 - (void)recognitionDidFinish;
-- (void)session:(id)a3 didFindMatch:(id)a4;
-- (void)session:(id)a3 didNotFindMatchForSignature:(id)a4 error:(id)a5;
+- (void)session:(id)session didFindMatch:(id)match;
+- (void)session:(id)session didNotFindMatchForSignature:(id)signature error:(id)error;
 - (void)stop;
 - (void)toggleRecognitionState;
-- (void)toggleToState:(int64_t)a3;
+- (void)toggleToState:(int64_t)state;
 @end
 
 @implementation SHToggleManager
@@ -35,8 +35,8 @@
   if ([(SHToggleManager *)self isToggleOn])
   {
     [(SHToggleManager *)self playStartRecordingSystemSound];
-    v3 = [(SHToggleManager *)self session];
-    [v3 matchAmbientAudioSnippet];
+    session = [(SHToggleManager *)self session];
+    [session matchAmbientAudioSnippet];
   }
 
   else
@@ -53,19 +53,19 @@
   v7 = [MEMORY[0x29EDB8DC0] dictionaryWithObjects:v11 forKeys:&v10 count:1];
   [v4 sendEvent:v5 withPayload:v7];
 
-  v8 = [(SHToggleManager *)self delegate];
-  [v8 toggleManager:self didToggleToState:{-[SHToggleManager toggleState](self, "toggleState")}];
+  delegate = [(SHToggleManager *)self delegate];
+  [delegate toggleManager:self didToggleToState:{-[SHToggleManager toggleState](self, "toggleState")}];
 
   v9 = *MEMORY[0x29EDCA608];
 }
 
-- (void)toggleToState:(int64_t)a3
+- (void)toggleToState:(int64_t)state
 {
-  if ([(SHToggleManager *)self toggleState]!= a3)
+  if ([(SHToggleManager *)self toggleState]!= state)
   {
-    [(SHToggleManager *)self setToggleState:a3];
-    v5 = [(SHToggleManager *)self delegate];
-    [v5 toggleManager:self didToggleToState:{-[SHToggleManager toggleState](self, "toggleState")}];
+    [(SHToggleManager *)self setToggleState:state];
+    delegate = [(SHToggleManager *)self delegate];
+    [delegate toggleManager:self didToggleToState:{-[SHToggleManager toggleState](self, "toggleState")}];
   }
 }
 
@@ -89,11 +89,11 @@
 
 - (void)stop
 {
-  v2 = [(SHToggleManager *)self session];
-  [v2 cancel];
+  session = [(SHToggleManager *)self session];
+  [session cancel];
 
-  v3 = [MEMORY[0x29EDB9F98] defaultCenter];
-  [v3 postNotificationName:@"com.apple.musicrecognition.cancelLiveActivity" object:0];
+  defaultCenter = [MEMORY[0x29EDB9F98] defaultCenter];
+  [defaultCenter postNotificationName:@"com.apple.musicrecognition.cancelLiveActivity" object:0];
 }
 
 - (void)recognitionDidFinish
@@ -101,8 +101,8 @@
   if ([(SHToggleManager *)self isToggleOn])
   {
     [(SHToggleManager *)self switchToggleOff];
-    v3 = [(SHToggleManager *)self delegate];
-    [v3 toggleManager:self didToggleToState:{-[SHToggleManager toggleState](self, "toggleState")}];
+    delegate = [(SHToggleManager *)self delegate];
+    [delegate toggleManager:self didToggleToState:{-[SHToggleManager toggleState](self, "toggleState")}];
 
     [(SHToggleManager *)self playStopRecordingSystemSound];
   }
@@ -125,15 +125,15 @@
   return session;
 }
 
-- (void)session:(id)a3 didFindMatch:(id)a4
+- (void)session:(id)session didFindMatch:(id)match
 {
   v10 = *MEMORY[0x29EDCA608];
-  v5 = a4;
+  matchCopy = match;
   v6 = shcore_log_object();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     v8 = 138412290;
-    v9 = v5;
+    v9 = matchCopy;
     _os_log_impl(&dword_29C9E7000, v6, OS_LOG_TYPE_DEBUG, "SHToggleManager session didFindMatch %@", &v8, 0xCu);
   }
 
@@ -141,18 +141,18 @@
   v7 = *MEMORY[0x29EDCA608];
 }
 
-- (void)session:(id)a3 didNotFindMatchForSignature:(id)a4 error:(id)a5
+- (void)session:(id)session didNotFindMatchForSignature:(id)signature error:(id)error
 {
   v15 = *MEMORY[0x29EDCA608];
-  v7 = a4;
-  v8 = a5;
+  signatureCopy = signature;
+  errorCopy = error;
   v9 = shcore_log_object();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
     v11 = 138412546;
-    v12 = v7;
+    v12 = signatureCopy;
     v13 = 2112;
-    v14 = v8;
+    v14 = errorCopy;
     _os_log_impl(&dword_29C9E7000, v9, OS_LOG_TYPE_DEBUG, "SHToggleManager session didNotFindMatchForSignature %@ error %@", &v11, 0x16u);
   }
 
@@ -160,7 +160,7 @@
   v10 = *MEMORY[0x29EDCA608];
 }
 
-- (void)finishedManagedSession:(id)a3
+- (void)finishedManagedSession:(id)session
 {
   v4 = shcore_log_object();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))

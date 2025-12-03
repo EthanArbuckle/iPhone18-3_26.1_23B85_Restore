@@ -9,16 +9,16 @@
 - (BOOL)isSparse;
 - (MTLResource)rootResource;
 - (MTLResourceID)gpuResourceID;
-- (MTLToolsTexture)initWithBaseObject:(id)a3 parent:(id)a4 buffer:(id)a5;
-- (MTLToolsTexture)initWithBaseObject:(id)a3 parent:(id)a4 parentTexture:(id)a5;
+- (MTLToolsTexture)initWithBaseObject:(id)object parent:(id)parent buffer:(id)buffer;
+- (MTLToolsTexture)initWithBaseObject:(id)object parent:(id)parent parentTexture:(id)texture;
 - (__IOSurface)iosurface;
-- (id)formattedDescription:(unint64_t)a3;
-- (id)newCompressedTextureViewWithPixelFormat:(unint64_t)a3 textureType:(unint64_t)a4 level:(unint64_t)a5 slice:(unint64_t)a6;
+- (id)formattedDescription:(unint64_t)description;
+- (id)newCompressedTextureViewWithPixelFormat:(unint64_t)format textureType:(unint64_t)type level:(unint64_t)level slice:(unint64_t)slice;
 - (id)newSharedTextureHandle;
-- (id)newTextureViewWithDescriptor:(id)a3;
-- (id)newTextureViewWithPixelFormat:(unint64_t)a3 resourceIndex:(unint64_t)a4;
-- (id)newTextureViewWithPixelFormat:(unint64_t)a3 textureType:(unint64_t)a4 levels:(_NSRange)a5 slices:(_NSRange)a6 resourceIndex:(unint64_t)a7;
-- (id)newTextureViewWithPixelFormat:(unint64_t)a3 textureType:(unint64_t)a4 levels:(_NSRange)a5 slices:(_NSRange)a6 swizzle:(id)a7 resourceIndex:(unint64_t)a8;
+- (id)newTextureViewWithDescriptor:(id)descriptor;
+- (id)newTextureViewWithPixelFormat:(unint64_t)format resourceIndex:(unint64_t)index;
+- (id)newTextureViewWithPixelFormat:(unint64_t)format textureType:(unint64_t)type levels:(_NSRange)levels slices:(_NSRange)slices resourceIndex:(unint64_t)index;
+- (id)newTextureViewWithPixelFormat:(unint64_t)format textureType:(unint64_t)type levels:(_NSRange)levels slices:(_NSRange)slices swizzle:(id)swizzle resourceIndex:(unint64_t)index;
 - (id)realRootResource;
 - (int64_t)compressionFeedback;
 - (int64_t)compressionType;
@@ -51,13 +51,13 @@
 - (unint64_t)usage;
 - (unint64_t)width;
 - (unsigned)swizzleKey;
-- (void)copyFromPixels:(const void *)a3 rowBytes:(unint64_t)a4 imageBytes:(unint64_t)a5 toSlice:(unint64_t)a6 mipmapLevel:(unint64_t)a7 origin:(id *)a8 size:(id *)a9;
-- (void)copyFromSlice:(unint64_t)a3 mipmapLevel:(unint64_t)a4 origin:(id *)a5 size:(id *)a6 toPixels:(void *)a7 rowBytes:(unint64_t)a8 imageBytes:(unint64_t)a9;
+- (void)copyFromPixels:(const void *)pixels rowBytes:(unint64_t)bytes imageBytes:(unint64_t)imageBytes toSlice:(unint64_t)slice mipmapLevel:(unint64_t)level origin:(id *)origin size:(id *)size;
+- (void)copyFromSlice:(unint64_t)slice mipmapLevel:(unint64_t)level origin:(id *)origin size:(id *)size toPixels:(void *)pixels rowBytes:(unint64_t)bytes imageBytes:(unint64_t)imageBytes;
 - (void)dealloc;
-- (void)generateMipmapLevel:(unint64_t)a3 slice:(unint64_t)a4;
-- (void)getBytes:(void *)a3 bytesPerRow:(unint64_t)a4 bytesPerImage:(unint64_t)a5 fromRegion:(id *)a6 mipmapLevel:(unint64_t)a7 slice:(unint64_t)a8;
-- (void)replaceRegion:(id *)a3 mipmapLevel:(unint64_t)a4 slice:(unint64_t)a5 withBytes:(const void *)a6 bytesPerRow:(unint64_t)a7 bytesPerImage:(unint64_t)a8;
-- (void)replaceRegion:(id *)a3 mipmapLevel:(unint64_t)a4 withBytes:(const void *)a5 bytesPerRow:(unint64_t)a6;
+- (void)generateMipmapLevel:(unint64_t)level slice:(unint64_t)slice;
+- (void)getBytes:(void *)bytes bytesPerRow:(unint64_t)row bytesPerImage:(unint64_t)image fromRegion:(id *)region mipmapLevel:(unint64_t)level slice:(unint64_t)slice;
+- (void)replaceRegion:(id *)region mipmapLevel:(unint64_t)level slice:(unint64_t)slice withBytes:(const void *)bytes bytesPerRow:(unint64_t)row bytesPerImage:(unint64_t)image;
+- (void)replaceRegion:(id *)region mipmapLevel:(unint64_t)level withBytes:(const void *)bytes bytesPerRow:(unint64_t)row;
 @end
 
 @implementation MTLToolsTexture
@@ -69,52 +69,52 @@
   [(MTLToolsResource *)&v3 dealloc];
 }
 
-- (id)formattedDescription:(unint64_t)a3
+- (id)formattedDescription:(unint64_t)description
 {
   v11[3] = *MEMORY[0x277D85DE8];
-  v5 = [@"\n" stringByPaddingToLength:a3 + 4 withString:@" " startingAtIndex:0];
+  v5 = [@"\n" stringByPaddingToLength:description + 4 withString:@" " startingAtIndex:0];
   v6 = MEMORY[0x277CCACA8];
   v7 = [-[MTLToolsObject baseObject](self "baseObject")];
   v11[0] = v5;
   v11[1] = @"label =";
   if ([(MTLToolsResource *)self label])
   {
-    v8 = [(MTLToolsResource *)self label];
+    label = [(MTLToolsResource *)self label];
   }
 
   else
   {
-    v8 = @"<none>";
+    label = @"<none>";
   }
 
-  v11[2] = v8;
+  v11[2] = label;
   result = [v6 stringWithFormat:@"%@%@", v7, objc_msgSend(objc_msgSend(MEMORY[0x277CBEA60], "arrayWithObjects:count:", v11, 3), "componentsJoinedByString:", @" "];
   v10 = *MEMORY[0x277D85DE8];
   return result;
 }
 
-- (MTLToolsTexture)initWithBaseObject:(id)a3 parent:(id)a4 parentTexture:(id)a5
+- (MTLToolsTexture)initWithBaseObject:(id)object parent:(id)parent parentTexture:(id)texture
 {
   v8.receiver = self;
   v8.super_class = MTLToolsTexture;
-  v6 = [(MTLToolsResource *)&v8 initWithBaseObject:a3 parent:a5];
+  v6 = [(MTLToolsResource *)&v8 initWithBaseObject:object parent:texture];
   if (v6)
   {
-    v6->_parentTexture = a5;
-    v6->_buffer = [a5 buffer];
+    v6->_parentTexture = texture;
+    v6->_buffer = [texture buffer];
   }
 
   return v6;
 }
 
-- (MTLToolsTexture)initWithBaseObject:(id)a3 parent:(id)a4 buffer:(id)a5
+- (MTLToolsTexture)initWithBaseObject:(id)object parent:(id)parent buffer:(id)buffer
 {
   v8.receiver = self;
   v8.super_class = MTLToolsTexture;
-  v6 = [(MTLToolsResource *)&v8 initWithBaseObject:a3 parent:a5];
+  v6 = [(MTLToolsResource *)&v8 initWithBaseObject:object parent:buffer];
   if (v6)
   {
-    v6->_buffer = a5;
+    v6->_buffer = buffer;
     v6->_parentTexture = 0;
   }
 
@@ -131,9 +131,9 @@
 
   else if ([(MTLToolsTexture *)self parentTexture])
   {
-    v4 = [(MTLToolsTexture *)self parentTexture];
+    parentTexture = [(MTLToolsTexture *)self parentTexture];
 
-    return [(MTLTexture *)v4 realRootResource];
+    return [(MTLTexture *)parentTexture realRootResource];
   }
 
   else
@@ -155,285 +155,285 @@
 
 - (unint64_t)gpuHandle
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 gpuHandle];
+  return [baseObject gpuHandle];
 }
 
 - (MTLResourceID)gpuResourceID
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 gpuResourceID];
+  return [baseObject gpuResourceID];
 }
 
 - (unint64_t)parentRelativeLevel
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 parentRelativeLevel];
+  return [baseObject parentRelativeLevel];
 }
 
 - (unint64_t)parentRelativeSlice
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 parentRelativeSlice];
+  return [baseObject parentRelativeSlice];
 }
 
 - (unint64_t)bufferOffset
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 bufferOffset];
+  return [baseObject bufferOffset];
 }
 
 - (unint64_t)bufferBytesPerRow
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 bufferBytesPerRow];
+  return [baseObject bufferBytesPerRow];
 }
 
 - ($14D77461FF5D83CAEC4252578BA76F85)swizzle
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 swizzle];
+  return [baseObject swizzle];
 }
 
 - (unsigned)swizzleKey
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 swizzleKey];
+  return [baseObject swizzleKey];
 }
 
 - (unint64_t)resourceIndex
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 resourceIndex];
+  return [baseObject resourceIndex];
 }
 
 - (unint64_t)gpuAddress
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 gpuAddress];
+  return [baseObject gpuAddress];
 }
 
 - (BOOL)isCompressed
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 isCompressed];
+  return [baseObject isCompressed];
 }
 
 - (int64_t)compressionFeedback
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 compressionFeedback];
+  return [baseObject compressionFeedback];
 }
 
 - (int64_t)compressionType
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 compressionType];
+  return [baseObject compressionType];
 }
 
 - (unint64_t)compressionFootprint
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 compressionFootprint];
+  return [baseObject compressionFootprint];
 }
 
-- (void)copyFromSlice:(unint64_t)a3 mipmapLevel:(unint64_t)a4 origin:(id *)a5 size:(id *)a6 toPixels:(void *)a7 rowBytes:(unint64_t)a8 imageBytes:(unint64_t)a9
+- (void)copyFromSlice:(unint64_t)slice mipmapLevel:(unint64_t)level origin:(id *)origin size:(id *)size toPixels:(void *)pixels rowBytes:(unint64_t)bytes imageBytes:(unint64_t)imageBytes
 {
-  *v11 = a5->var2;
-  v9 = *&a5->var0;
-  *&v11[8] = *a6;
+  *v11 = origin->var2;
+  v9 = *&origin->var0;
+  *&v11[8] = *size;
   v10[0] = v9;
   v10[1] = *v11;
   v10[2] = *&v11[16];
   v10[3] = v9;
-  [(MTLToolsTexture *)self getBytes:a7 bytesPerRow:a8 bytesPerImage:a9 fromRegion:v10 mipmapLevel:a4 slice:a3];
+  [(MTLToolsTexture *)self getBytes:pixels bytesPerRow:bytes bytesPerImage:imageBytes fromRegion:v10 mipmapLevel:level slice:slice];
 }
 
-- (void)copyFromPixels:(const void *)a3 rowBytes:(unint64_t)a4 imageBytes:(unint64_t)a5 toSlice:(unint64_t)a6 mipmapLevel:(unint64_t)a7 origin:(id *)a8 size:(id *)a9
+- (void)copyFromPixels:(const void *)pixels rowBytes:(unint64_t)bytes imageBytes:(unint64_t)imageBytes toSlice:(unint64_t)slice mipmapLevel:(unint64_t)level origin:(id *)origin size:(id *)size
 {
-  *v11 = a8->var2;
-  v9 = *&a8->var0;
-  *&v11[8] = *a9;
+  *v11 = origin->var2;
+  v9 = *&origin->var0;
+  *&v11[8] = *size;
   v10[0] = v9;
   v10[1] = *v11;
   v10[2] = *&v11[16];
   v10[3] = v9;
-  [(MTLToolsTexture *)self replaceRegion:v10 mipmapLevel:a7 slice:a6 withBytes:a3 bytesPerRow:a4 bytesPerImage:a5];
+  [(MTLToolsTexture *)self replaceRegion:v10 mipmapLevel:level slice:slice withBytes:pixels bytesPerRow:bytes bytesPerImage:imageBytes];
 }
 
-- (void)replaceRegion:(id *)a3 mipmapLevel:(unint64_t)a4 withBytes:(const void *)a5 bytesPerRow:(unint64_t)a6
+- (void)replaceRegion:(id *)region mipmapLevel:(unint64_t)level withBytes:(const void *)bytes bytesPerRow:(unint64_t)row
 {
-  v6 = *&a3->var0.var2;
-  v7[0] = *&a3->var0.var0;
+  v6 = *&region->var0.var2;
+  v7[0] = *&region->var0.var0;
   v7[1] = v6;
-  v7[2] = *&a3->var1.var1;
-  [(MTLToolsTexture *)self replaceRegion:v7 mipmapLevel:a4 slice:0 withBytes:a5 bytesPerRow:a6 bytesPerImage:0];
+  v7[2] = *&region->var1.var1;
+  [(MTLToolsTexture *)self replaceRegion:v7 mipmapLevel:level slice:0 withBytes:bytes bytesPerRow:row bytesPerImage:0];
 }
 
 - (unint64_t)textureType
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 textureType];
+  return [baseObject textureType];
 }
 
 - (unint64_t)pixelFormat
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 pixelFormat];
+  return [baseObject pixelFormat];
 }
 
 - (unint64_t)usage
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 usage];
+  return [baseObject usage];
 }
 
 - (unint64_t)width
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 width];
+  return [baseObject width];
 }
 
 - (unint64_t)height
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 height];
+  return [baseObject height];
 }
 
 - (unint64_t)depth
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 depth];
+  return [baseObject depth];
 }
 
 - (unint64_t)mipmapLevelCount
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 mipmapLevelCount];
+  return [baseObject mipmapLevelCount];
 }
 
 - (unint64_t)sampleCount
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 sampleCount];
+  return [baseObject sampleCount];
 }
 
 - (unint64_t)arrayLength
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 arrayLength];
+  return [baseObject arrayLength];
 }
 
 - (BOOL)isShareable
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 isShareable];
+  return [baseObject isShareable];
 }
 
 - (BOOL)isSparse
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 isSparse];
+  return [baseObject isSparse];
 }
 
 - (BOOL)isFramebufferOnly
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 isFramebufferOnly];
+  return [baseObject isFramebufferOnly];
 }
 
 - (unint64_t)sparseSurfaceDefaultValue
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 sparseSurfaceDefaultValue];
+  return [baseObject sparseSurfaceDefaultValue];
 }
 
 - (unint64_t)firstMipmapInTail
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 firstMipmapInTail];
+  return [baseObject firstMipmapInTail];
 }
 
 - (unint64_t)tailSize
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 tailSizeInBytes];
+  return [baseObject tailSizeInBytes];
 }
 
 - (unint64_t)tailSizeInBytes
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 tailSizeInBytes];
+  return [baseObject tailSizeInBytes];
 }
 
 - (BOOL)allowGPUOptimizedContents
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 allowGPUOptimizedContents];
+  return [baseObject allowGPUOptimizedContents];
 }
 
-- (void)getBytes:(void *)a3 bytesPerRow:(unint64_t)a4 bytesPerImage:(unint64_t)a5 fromRegion:(id *)a6 mipmapLevel:(unint64_t)a7 slice:(unint64_t)a8
+- (void)getBytes:(void *)bytes bytesPerRow:(unint64_t)row bytesPerImage:(unint64_t)image fromRegion:(id *)region mipmapLevel:(unint64_t)level slice:(unint64_t)slice
 {
-  v14 = [(MTLToolsObject *)self baseObject];
-  v15 = *&a6->var0.var2;
-  v16[0] = *&a6->var0.var0;
+  baseObject = [(MTLToolsObject *)self baseObject];
+  v15 = *&region->var0.var2;
+  v16[0] = *&region->var0.var0;
   v16[1] = v15;
-  v16[2] = *&a6->var1.var1;
-  [v14 getBytes:a3 bytesPerRow:a4 bytesPerImage:a5 fromRegion:v16 mipmapLevel:a7 slice:a8];
+  v16[2] = *&region->var1.var1;
+  [baseObject getBytes:bytes bytesPerRow:row bytesPerImage:image fromRegion:v16 mipmapLevel:level slice:slice];
 }
 
-- (void)replaceRegion:(id *)a3 mipmapLevel:(unint64_t)a4 slice:(unint64_t)a5 withBytes:(const void *)a6 bytesPerRow:(unint64_t)a7 bytesPerImage:(unint64_t)a8
+- (void)replaceRegion:(id *)region mipmapLevel:(unint64_t)level slice:(unint64_t)slice withBytes:(const void *)bytes bytesPerRow:(unint64_t)row bytesPerImage:(unint64_t)image
 {
-  v14 = [(MTLToolsObject *)self baseObject];
-  v15 = *&a3->var0.var2;
-  v16[0] = *&a3->var0.var0;
+  baseObject = [(MTLToolsObject *)self baseObject];
+  v15 = *&region->var0.var2;
+  v16[0] = *&region->var0.var0;
   v16[1] = v15;
-  v16[2] = *&a3->var1.var1;
-  [v14 replaceRegion:v16 mipmapLevel:a4 slice:a5 withBytes:a6 bytesPerRow:a7 bytesPerImage:a8];
+  v16[2] = *&region->var1.var1;
+  [baseObject replaceRegion:v16 mipmapLevel:level slice:slice withBytes:bytes bytesPerRow:row bytesPerImage:image];
 }
 
-- (id)newTextureViewWithPixelFormat:(unint64_t)a3 resourceIndex:(unint64_t)a4
+- (id)newTextureViewWithPixelFormat:(unint64_t)format resourceIndex:(unint64_t)index
 {
-  v7 = [(MTLToolsObject *)self baseObject];
-  if (a4)
+  baseObject = [(MTLToolsObject *)self baseObject];
+  if (index)
   {
-    v8 = [v7 newTextureViewWithPixelFormat:a3 resourceIndex:a4];
+    v8 = [baseObject newTextureViewWithPixelFormat:format resourceIndex:index];
   }
 
   else
   {
-    v8 = [v7 newTextureViewWithPixelFormat:a3];
+    v8 = [baseObject newTextureViewWithPixelFormat:format];
   }
 
   v9 = v8;
@@ -447,63 +447,63 @@
   return v10;
 }
 
-- (id)newTextureViewWithPixelFormat:(unint64_t)a3 textureType:(unint64_t)a4 levels:(_NSRange)a5 slices:(_NSRange)a6 resourceIndex:(unint64_t)a7
+- (id)newTextureViewWithPixelFormat:(unint64_t)format textureType:(unint64_t)type levels:(_NSRange)levels slices:(_NSRange)slices resourceIndex:(unint64_t)index
 {
-  length = a6.length;
-  location = a6.location;
-  v9 = a5.length;
-  v10 = a5.location;
-  v14 = [(MTLToolsObject *)self baseObject];
-  if (a7)
+  length = slices.length;
+  location = slices.location;
+  v9 = levels.length;
+  v10 = levels.location;
+  baseObject = [(MTLToolsObject *)self baseObject];
+  if (index)
   {
-    v15 = [v14 newTextureViewWithPixelFormat:a3 textureType:a4 levels:v10 slices:v9 resourceIndex:location, length, a7];
+    index = [baseObject newTextureViewWithPixelFormat:format textureType:type levels:v10 slices:v9 resourceIndex:location, length, index];
   }
 
   else
   {
-    v15 = [v14 newTextureViewWithPixelFormat:a3 textureType:a4 levels:v10 slices:v9, location, length];
+    index = [baseObject newTextureViewWithPixelFormat:format textureType:type levels:v10 slices:v9, location, length];
   }
 
-  v16 = v15;
-  if (!v15)
+  v16 = index;
+  if (!index)
   {
     return 0;
   }
 
-  v17 = [[MTLToolsTexture alloc] initWithBaseObject:v15 parent:self->super.super._device parentTexture:self];
+  v17 = [[MTLToolsTexture alloc] initWithBaseObject:index parent:self->super.super._device parentTexture:self];
 
   return v17;
 }
 
-- (id)newTextureViewWithPixelFormat:(unint64_t)a3 textureType:(unint64_t)a4 levels:(_NSRange)a5 slices:(_NSRange)a6 swizzle:(id)a7 resourceIndex:(unint64_t)a8
+- (id)newTextureViewWithPixelFormat:(unint64_t)format textureType:(unint64_t)type levels:(_NSRange)levels slices:(_NSRange)slices swizzle:(id)swizzle resourceIndex:(unint64_t)index
 {
-  length = a6.length;
-  location = a6.location;
-  v10 = a5.length;
-  v11 = a5.location;
-  v15 = [(MTLToolsObject *)self baseObject];
-  if (a8)
+  length = slices.length;
+  location = slices.location;
+  v10 = levels.length;
+  v11 = levels.location;
+  baseObject = [(MTLToolsObject *)self baseObject];
+  if (index)
   {
-    v16 = [v15 newTextureViewWithPixelFormat:a3 textureType:a4 levels:v11 slices:v10 swizzle:location resourceIndex:length, *&a7, a8];
+    index = [baseObject newTextureViewWithPixelFormat:format textureType:type levels:v11 slices:v10 swizzle:location resourceIndex:length, *&swizzle, index];
   }
 
   else
   {
-    v16 = [v15 newTextureViewWithPixelFormat:a3 textureType:a4 levels:v11 slices:v10 swizzle:location, length, *&a7];
+    index = [baseObject newTextureViewWithPixelFormat:format textureType:type levels:v11 slices:v10 swizzle:location, length, *&swizzle];
   }
 
-  v17 = v16;
-  if (!v16)
+  v17 = index;
+  if (!index)
   {
     return 0;
   }
 
-  v18 = [[MTLToolsTexture alloc] initWithBaseObject:v16 parent:[(MTLToolsObject *)self device] parentTexture:self];
+  v18 = [[MTLToolsTexture alloc] initWithBaseObject:index parent:[(MTLToolsObject *)self device] parentTexture:self];
 
   return v18;
 }
 
-- (id)newCompressedTextureViewWithPixelFormat:(unint64_t)a3 textureType:(unint64_t)a4 level:(unint64_t)a5 slice:(unint64_t)a6
+- (id)newCompressedTextureViewWithPixelFormat:(unint64_t)format textureType:(unint64_t)type level:(unint64_t)level slice:(unint64_t)slice
 {
   result = [-[MTLToolsObject baseObject](self "baseObject")];
   if (result)
@@ -517,7 +517,7 @@
   return result;
 }
 
-- (id)newTextureViewWithDescriptor:(id)a3
+- (id)newTextureViewWithDescriptor:(id)descriptor
 {
   result = [-[MTLToolsObject baseObject](self "baseObject")];
   if (result)
@@ -533,86 +533,86 @@
 
 - (int64_t)writeAccessPattern
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 writeAccessPattern];
+  return [baseObject writeAccessPattern];
 }
 
 - (BOOL)canGenerateMipmapLevels
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 canGenerateMipmapLevels];
+  return [baseObject canGenerateMipmapLevels];
 }
 
-- (void)generateMipmapLevel:(unint64_t)a3 slice:(unint64_t)a4
+- (void)generateMipmapLevel:(unint64_t)level slice:(unint64_t)slice
 {
-  v6 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v6 generateMipmapLevel:a3 slice:a4];
+  [baseObject generateMipmapLevel:level slice:slice];
 }
 
 - (int64_t)sparseTextureTier
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 sparseTextureTier];
+  return [baseObject sparseTextureTier];
 }
 
 - (unint64_t)rotation
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 rotation];
+  return [baseObject rotation];
 }
 
 - (id)newSharedTextureHandle
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 newSharedTextureHandle];
+  return [baseObject newSharedTextureHandle];
 }
 
 - (__IOSurface)iosurface
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 iosurface];
+  return [baseObject iosurface];
 }
 
 - (unint64_t)iosurfacePlane
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 iosurfacePlane];
+  return [baseObject iosurfacePlane];
 }
 
 - (unint64_t)numFaces
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 numFaces];
+  return [baseObject numFaces];
 }
 
 - (BOOL)isDrawable
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 isDrawable];
+  return [baseObject isDrawable];
 }
 
 - (unint64_t)uniqueIdentifier
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 uniqueIdentifier];
+  return [baseObject uniqueIdentifier];
 }
 
 - (unint64_t)colorSpaceConversionMatrix
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 colorSpaceConversionMatrix];
+  return [baseObject colorSpaceConversionMatrix];
 }
 
 @end

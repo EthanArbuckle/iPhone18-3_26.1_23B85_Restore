@@ -1,28 +1,28 @@
 @interface CloudBookmarkDatabaseLockArbiter
 - (BOOL)isDatabaseOpen;
-- (BOOL)lockForClient:(id)a3;
+- (BOOL)lockForClient:(id)client;
 - (BOOL)openDatabase;
-- (CloudBookmarkDatabaseLockArbiter)initWithDatabaseAccessor:(id)a3;
+- (CloudBookmarkDatabaseLockArbiter)initWithDatabaseAccessor:(id)accessor;
 - (CloudBookmarkDatabaseLockArbiterDelegate)delegate;
 - (int64_t)localMigrationState;
 - (void)databaseRef;
 - (void)dealloc;
-- (void)setLocalMigrationState:(int64_t)a3;
-- (void)unlockForClient:(id)a3;
+- (void)setLocalMigrationState:(int64_t)state;
+- (void)unlockForClient:(id)client;
 @end
 
 @implementation CloudBookmarkDatabaseLockArbiter
 
-- (CloudBookmarkDatabaseLockArbiter)initWithDatabaseAccessor:(id)a3
+- (CloudBookmarkDatabaseLockArbiter)initWithDatabaseAccessor:(id)accessor
 {
-  v5 = a3;
+  accessorCopy = accessor;
   v10.receiver = self;
   v10.super_class = CloudBookmarkDatabaseLockArbiter;
   v6 = [(CloudBookmarkDatabaseLockArbiter *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_databaseAccessor, a3);
+    objc_storeStrong(&v6->_databaseAccessor, accessor);
     v8 = v7;
   }
 
@@ -71,9 +71,9 @@
   return 0;
 }
 
-- (BOOL)lockForClient:(id)a3
+- (BOOL)lockForClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   v5 = +[NSThread isMainThread];
   v6 = [CloudTabGroupSyncCoordinator _bookmarksLog]_0();
   v7 = v6;
@@ -89,7 +89,7 @@
 
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    sub_10008D9A8(v4, v7);
+    sub_10008D9A8(clientCopy, v7);
   }
 
   databaseLockCount = self->_databaseLockCount;
@@ -101,16 +101,16 @@
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       v18 = 138543362;
-      v19 = v4;
+      v19 = clientCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "%{public}@ backing store was already locked", &v18, 0xCu);
     }
 
     goto LABEL_10;
   }
 
-  v12 = [(WBSBookmarkDBAccess *)self->_databaseAccessor createDatabase];
-  self->_databaseRef = v12;
-  if (!v12)
+  createDatabase = [(WBSBookmarkDBAccess *)self->_databaseAccessor createDatabase];
+  self->_databaseRef = createDatabase;
+  if (!createDatabase)
   {
     self->_databaseLockCount = 0;
     v17 = [CloudTabGroupSyncCoordinator _bookmarksLog]_0();
@@ -128,7 +128,7 @@ LABEL_9:
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
     v18 = 138543362;
-    v19 = v4;
+    v19 = clientCopy;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "%{public}@ successfully locked backing store", &v18, 0xCu);
   }
 
@@ -147,9 +147,9 @@ LABEL_10:
   return v10;
 }
 
-- (void)unlockForClient:(id)a3
+- (void)unlockForClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   if (+[NSThread isMainThread])
   {
     databaseLockCount = self->_databaseLockCount;
@@ -163,7 +163,7 @@ LABEL_10:
         if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
         {
           v12 = 138543362;
-          v13 = v4;
+          v13 = clientCopy;
           v8 = "%{public}@ did not unlock backing store due to outstanding lock requests";
 LABEL_15:
           _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, v8, &v12, 0xCu);
@@ -187,7 +187,7 @@ LABEL_15:
         if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
         {
           v12 = 138543362;
-          v13 = v4;
+          v13 = clientCopy;
           v8 = "%{public}@ unlocked backing store";
           goto LABEL_15;
         }
@@ -268,7 +268,7 @@ LABEL_15:
   return v8;
 }
 
-- (void)setLocalMigrationState:(int64_t)a3
+- (void)setLocalMigrationState:(int64_t)state
 {
   v5 = +[NSThread isMainThread];
   v6 = [CloudTabGroupSyncCoordinator _bookmarksLog]_0();
@@ -280,7 +280,7 @@ LABEL_15:
       v8 = self->_databaseLockCount != 0;
       databaseOpen = self->_databaseOpen;
       v10 = 134218496;
-      v11 = a3;
+      stateCopy = state;
       v12 = 1024;
       v13 = v8;
       v14 = 1024;
@@ -290,13 +290,13 @@ LABEL_15:
 
     if (self->_databaseOpen)
     {
-      sub_100032958(self->_databaseRef, a3, self->_databaseAccessor);
+      sub_100032958(self->_databaseRef, state, self->_databaseAccessor);
     }
 
     else if ([(CloudBookmarkDatabaseLockArbiter *)self lockForClient:@"Migration state lock arbiter property"])
     {
       [(WBSBookmarkDBAccess *)self->_databaseAccessor openDatabase:self->_databaseRef];
-      sub_100032958(self->_databaseRef, a3, self->_databaseAccessor);
+      sub_100032958(self->_databaseRef, state, self->_databaseAccessor);
       [(WBSBookmarkDBAccess *)self->_databaseAccessor closeDatabase:self->_databaseRef shouldSave:1];
       [(CloudBookmarkDatabaseLockArbiter *)self unlockForClient:@"Migration state lock arbiter property"];
     }

@@ -2,7 +2,7 @@
 - (BOOL)isDirectoryFault;
 - (BOOL)isUserVisible;
 - (BOOL)saveToDB;
-- (BRCZoneRootItem)initWithZoneRootItemID:(id)a3 session:(id)a4;
+- (BRCZoneRootItem)initWithZoneRootItemID:(id)d session:(id)session;
 - (id)parentItemID;
 - (id)parentItemOnFS;
 - (id)st;
@@ -15,10 +15,10 @@
 
 @implementation BRCZoneRootItem
 
-- (BRCZoneRootItem)initWithZoneRootItemID:(id)a3 session:(id)a4
+- (BRCZoneRootItem)initWithZoneRootItemID:(id)d session:(id)session
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  sessionCopy = session;
   v18.receiver = self;
   v18.super_class = BRCZoneRootItem;
   v9 = [(BRCZoneRootItem *)&v18 init];
@@ -29,17 +29,17 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if (([v7 isNonDesktopRoot] & 1) == 0)
+  if (([dCopy isNonDesktopRoot] & 1) == 0)
   {
     [BRCZoneRootItem initWithZoneRootItemID:session:];
   }
 
-  objc_storeStrong(&v9->super.super._itemID, a3);
-  v9->super.super._session = v8;
-  if (![v7 isSharedZoneRoot])
+  objc_storeStrong(&v9->super.super._itemID, d);
+  v9->super.super._session = sessionCopy;
+  if (![dCopy isSharedZoneRoot])
   {
-    v13 = [v7 appLibraryRowID];
-    v14 = [(BRCAccountSession *)v8 appLibraryByRowID:v13];
+    appLibraryRowID = [dCopy appLibraryRowID];
+    v14 = [(BRCAccountSession *)sessionCopy appLibraryByRowID:appLibraryRowID];
 
     if (!v14)
     {
@@ -47,9 +47,9 @@ LABEL_11:
     }
 
     [(BRCLocalItem *)v9 setAppLibrary:v14];
-    v15 = [v14 defaultClientZone];
+    defaultClientZone = [v14 defaultClientZone];
     clientZone = v9->super.super._clientZone;
-    v9->super.super._clientZone = v15;
+    v9->super.super._clientZone = defaultClientZone;
 
     v9->super.super._serverZone = [(BRCClientZone *)v9->super.super._clientZone serverZone];
     goto LABEL_11;
@@ -70,8 +70,8 @@ LABEL_12:
 
 - (BOOL)isDirectoryFault
 {
-  v2 = [(BRCLocalItem *)self appLibrary];
-  v3 = ([v2 state] & 0x2000000) == 0;
+  appLibrary = [(BRCLocalItem *)self appLibrary];
+  v3 = ([appLibrary state] & 0x2000000) == 0;
 
   return v3;
 }
@@ -109,9 +109,9 @@ LABEL_12:
     [BRCZoneRootItem parentItemID];
   }
 
-  v5 = [(BRCLocalItem *)self itemID];
+  itemID = [(BRCLocalItem *)self itemID];
 
-  return v5;
+  return itemID;
 }
 
 - (id)st
@@ -132,18 +132,18 @@ LABEL_12:
 
 - (BOOL)isUserVisible
 {
-  v2 = [(BRCLocalItem *)self appLibrary];
-  v3 = [v2 includesDataScope];
+  appLibrary = [(BRCLocalItem *)self appLibrary];
+  includesDataScope = [appLibrary includesDataScope];
 
-  return v3 ^ 1;
+  return includesDataScope ^ 1;
 }
 
 - (unsigned)itemScope
 {
-  v2 = [(BRCLocalItem *)self appLibrary];
-  v3 = [v2 includesDataScope];
+  appLibrary = [(BRCLocalItem *)self appLibrary];
+  includesDataScope = [appLibrary includesDataScope];
 
-  if (v3)
+  if (includesDataScope)
   {
     return 1;
   }

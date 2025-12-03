@@ -1,27 +1,27 @@
 @interface Slider
 - (BOOL)isEnabled;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (CGRect)hitRect;
-- (CGRect)trackRectForBounds:(CGRect)a3;
-- (void)_sliderFluidInteractionDidEnd:(id)a3;
-- (void)_sliderFluidInteractionWillBegin:(id)a3 withLocation:(CGPoint)a4;
-- (void)_sliderFluidInteractionWillContinue:(id)a3 withLocation:(CGPoint)a4;
-- (void)_sliderFluidInteractionWillEnd:(id)a3;
-- (void)_sliderFluidInteractionWillRubberband:(id)a3 insets:(UIEdgeInsets)a4;
+- (CGRect)trackRectForBounds:(CGRect)bounds;
+- (void)_sliderFluidInteractionDidEnd:(id)end;
+- (void)_sliderFluidInteractionWillBegin:(id)begin withLocation:(CGPoint)location;
+- (void)_sliderFluidInteractionWillContinue:(id)continue withLocation:(CGPoint)location;
+- (void)_sliderFluidInteractionWillEnd:(id)end;
+- (void)_sliderFluidInteractionWillRubberband:(id)rubberband insets:(UIEdgeInsets)insets;
 - (void)accessibilityDecrement;
 - (void)accessibilityIncrement;
-- (void)setEnabled:(BOOL)a3;
+- (void)setEnabled:(BOOL)enabled;
 @end
 
 @implementation Slider
 
-- (CGRect)trackRectForBounds:(CGRect)a3
+- (CGRect)trackRectForBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  v22 = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  v22 = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v24.receiver = self;
   v24.super_class = type metadata accessor for Slider();
   v7 = v24.receiver;
@@ -93,18 +93,18 @@
   return [(Slider *)&v3 isEnabled];
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v4 = *((*MEMORY[0x1E69E7D40] & self->super.super.super.super.super.isa) + 0x110);
-    v5 = self;
+    selfCopy = self;
     v6 = v4();
   }
 
   else
   {
-    v7 = self;
+    selfCopy2 = self;
     v6 = 0;
   }
 
@@ -118,12 +118,12 @@
   v18.receiver = self;
   v18.super_class = type metadata accessor for Slider();
   v2 = v18.receiver;
-  v3 = [(Slider *)&v18 hitRect];
+  hitRect = [(Slider *)&v18 hitRect];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  (*((*MEMORY[0x1E69E7D40] & *v2) + 0xA0))(v19, v3);
+  (*((*MEMORY[0x1E69E7D40] & *v2) + 0xA0))(v19, hitRect);
   v12 = *&v19[2];
   v13 = *&v19[3];
 
@@ -135,12 +135,12 @@
   return result;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = self;
-  [(Slider *)v6 hitRect];
+  y = inside.y;
+  x = inside.x;
+  selfCopy = self;
+  [(Slider *)selfCopy hitRect];
   v9.x = x;
   v9.y = y;
   v7 = CGRectContainsPoint(v10, v9);
@@ -151,7 +151,7 @@
 - (void)accessibilityIncrement
 {
   v2 = *((*MEMORY[0x1E69E7D40] & self->super.super.super.super.super.isa) + 0x128);
-  v3 = self;
+  selfCopy = self;
   v4 = v2();
   if (v4)
   {
@@ -163,7 +163,7 @@
 
   else
   {
-    v6.receiver = v3;
+    v6.receiver = selfCopy;
     v6.super_class = type metadata accessor for Slider();
     [(Slider *)&v6 accessibilityIncrement];
   }
@@ -172,7 +172,7 @@
 - (void)accessibilityDecrement
 {
   v2 = *((*MEMORY[0x1E69E7D40] & self->super.super.super.super.super.isa) + 0x140);
-  v3 = self;
+  selfCopy = self;
   v4 = v2();
   if (v4)
   {
@@ -184,85 +184,85 @@
 
   else
   {
-    v6.receiver = v3;
+    v6.receiver = selfCopy;
     v6.super_class = type metadata accessor for Slider();
     [(Slider *)&v6 accessibilityDecrement];
   }
 }
 
-- (void)_sliderFluidInteractionWillBegin:(id)a3 withLocation:(CGPoint)a4
+- (void)_sliderFluidInteractionWillBegin:(id)begin withLocation:(CGPoint)location
 {
-  y = a4.y;
-  x = a4.x;
+  y = location.y;
+  x = location.x;
   v6 = MEMORY[0x1E69E7D40];
   v7 = *((*MEMORY[0x1E69E7D40] & self->super.super.super.super.super.isa) + 0xF0);
-  v11 = self;
+  selfCopy = self;
   v7(1);
-  if ((*((*v6 & v11->super.super.super.super.super.isa) + 0x88))())
+  if ((*((*v6 & selfCopy->super.super.super.super.super.isa) + 0x88))())
   {
     v9 = v8;
     ObjectType = swift_getObjectType();
-    (*(v9 + 8))(v11, ObjectType, v9, x, y);
+    (*(v9 + 8))(selfCopy, ObjectType, v9, x, y);
     swift_unknownObjectRelease();
   }
 }
 
-- (void)_sliderFluidInteractionWillContinue:(id)a3 withLocation:(CGPoint)a4
+- (void)_sliderFluidInteractionWillContinue:(id)continue withLocation:(CGPoint)location
 {
-  y = a4.y;
-  x = a4.x;
+  y = location.y;
+  x = location.x;
   v6 = *((*MEMORY[0x1E69E7D40] & self->super.super.super.super.super.isa) + 0x88);
-  v10 = self;
+  selfCopy = self;
   if (v6())
   {
     v8 = v7;
     ObjectType = swift_getObjectType();
-    (*(v8 + 16))(v10, ObjectType, v8, x, y);
+    (*(v8 + 16))(selfCopy, ObjectType, v8, x, y);
     swift_unknownObjectRelease();
   }
 }
 
-- (void)_sliderFluidInteractionWillEnd:(id)a3
+- (void)_sliderFluidInteractionWillEnd:(id)end
 {
   v3 = *((*MEMORY[0x1E69E7D40] & self->super.super.super.super.super.isa) + 0x88);
-  v7 = self;
+  selfCopy = self;
   if (v3())
   {
     v5 = v4;
     ObjectType = swift_getObjectType();
-    (*(v5 + 24))(v7, ObjectType, v5);
+    (*(v5 + 24))(selfCopy, ObjectType, v5);
     swift_unknownObjectRelease();
   }
 }
 
-- (void)_sliderFluidInteractionDidEnd:(id)a3
+- (void)_sliderFluidInteractionDidEnd:(id)end
 {
   v3 = MEMORY[0x1E69E7D40];
   v4 = *((*MEMORY[0x1E69E7D40] & self->super.super.super.super.super.isa) + 0xF0);
-  v8 = self;
+  selfCopy = self;
   v4(0);
-  if ((*((*v3 & v8->super.super.super.super.super.isa) + 0x88))())
+  if ((*((*v3 & selfCopy->super.super.super.super.super.isa) + 0x88))())
   {
     v6 = v5;
     ObjectType = swift_getObjectType();
-    (*(v6 + 32))(v8, ObjectType, v6);
+    (*(v6 + 32))(selfCopy, ObjectType, v6);
     swift_unknownObjectRelease();
   }
 }
 
-- (void)_sliderFluidInteractionWillRubberband:(id)a3 insets:(UIEdgeInsets)a4
+- (void)_sliderFluidInteractionWillRubberband:(id)rubberband insets:(UIEdgeInsets)insets
 {
-  right = a4.right;
-  bottom = a4.bottom;
-  left = a4.left;
-  top = a4.top;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
   v8 = *((*MEMORY[0x1E69E7D40] & self->super.super.super.super.super.isa) + 0x88);
-  v12 = self;
+  selfCopy = self;
   if (v8())
   {
     v10 = v9;
     ObjectType = swift_getObjectType();
-    (*(v10 + 40))(v12, ObjectType, v10, top, left, bottom, right);
+    (*(v10 + 40))(selfCopy, ObjectType, v10, top, left, bottom, right);
     swift_unknownObjectRelease();
   }
 }

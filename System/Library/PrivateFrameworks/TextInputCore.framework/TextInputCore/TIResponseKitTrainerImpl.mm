@@ -1,18 +1,18 @@
 @interface TIResponseKitTrainerImpl
 + (id)sharedTrainer;
-- (BOOL)moveLanguageModelBundlesFromTemporaryDirectory:(id)a3 toDestination:(id)a4 error:(id *)a5;
+- (BOOL)moveLanguageModelBundlesFromTemporaryDirectory:(id)directory toDestination:(id)destination error:(id *)error;
 - (id)_init;
-- (void)performTrainingForClient:(id)a3 withCompletionHandler:(id)a4;
+- (void)performTrainingForClient:(id)client withCompletionHandler:(id)handler;
 @end
 
 @implementation TIResponseKitTrainerImpl
 
-- (void)performTrainingForClient:(id)a3 withCompletionHandler:(id)a4
+- (void)performTrainingForClient:(id)client withCompletionHandler:(id)handler
 {
-  v5 = a3;
-  v8 = a4;
-  v6 = v5;
-  v7 = v8;
+  clientCopy = client;
+  handlerCopy = handler;
+  v6 = clientCopy;
+  v7 = handlerCopy;
   TIDispatchAsync();
 }
 
@@ -108,21 +108,21 @@ uint64_t __75__TIResponseKitTrainerImpl_performTrainingForClient_withCompletionH
   return (*(a1[7] + 16))();
 }
 
-- (BOOL)moveLanguageModelBundlesFromTemporaryDirectory:(id)a3 toDestination:(id)a4 error:(id *)a5
+- (BOOL)moveLanguageModelBundlesFromTemporaryDirectory:(id)directory toDestination:(id)destination error:(id *)error
 {
   v46 = *MEMORY[0x277D85DE8];
-  v40 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CCAA00] defaultManager];
-  v39 = v7;
-  v9 = [v7 path];
-  v10 = [v8 fileExistsAtPath:v9];
+  directoryCopy = directory;
+  destinationCopy = destination;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v39 = destinationCopy;
+  path = [destinationCopy path];
+  v10 = [defaultManager fileExistsAtPath:path];
 
-  if ((v10 & 1) != 0 || ([MEMORY[0x277CCAA00] defaultManager], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "createDirectoryAtURL:withIntermediateDirectories:attributes:error:", v7, 1, 0, a5), v11, v12))
+  if ((v10 & 1) != 0 || ([MEMORY[0x277CCAA00] defaultManager], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "createDirectoryAtURL:withIntermediateDirectories:attributes:error:", destinationCopy, 1, 0, error), v11, v12))
   {
-    v13 = [MEMORY[0x277CCAA00] defaultManager];
-    v14 = [v40 path];
-    v15 = [v13 contentsOfDirectoryAtPath:v14 error:a5];
+    defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+    path2 = [directoryCopy path];
+    v15 = [defaultManager2 contentsOfDirectoryAtPath:path2 error:error];
 
     if (v15)
     {
@@ -151,16 +151,16 @@ uint64_t __75__TIResponseKitTrainerImpl_performTrainingForClient_withCompletionH
             }
 
             v23 = *(*(&v41 + 1) + 8 * i);
-            v24 = [v40 URLByAppendingPathComponent:v23];
+            v24 = [directoryCopy URLByAppendingPathComponent:v23];
             v25 = [v39 URLByAppendingPathComponent:v23];
-            v26 = [MEMORY[0x277CCAA00] defaultManager];
-            v27 = [v25 path];
-            v28 = [v26 fileExistsAtPath:v27];
+            defaultManager3 = [MEMORY[0x277CCAA00] defaultManager];
+            path3 = [v25 path];
+            v28 = [defaultManager3 fileExistsAtPath:path3];
 
             if (v28)
             {
-              v29 = [MEMORY[0x277CCAA00] defaultManager];
-              v30 = [v29 removeItemAtURL:v25 error:a5];
+              defaultManager4 = [MEMORY[0x277CCAA00] defaultManager];
+              v30 = [defaultManager4 removeItemAtURL:v25 error:error];
 
               if (!v30)
               {
@@ -168,13 +168,13 @@ uint64_t __75__TIResponseKitTrainerImpl_performTrainingForClient_withCompletionH
 LABEL_18:
                 v34 = 0;
                 v18 = obj;
-                v33 = obj;
+                defaultManager6 = obj;
                 goto LABEL_19;
               }
             }
 
-            v31 = [MEMORY[0x277CCAA00] defaultManager];
-            v32 = [v31 moveItemAtURL:v24 toURL:v25 error:a5];
+            defaultManager5 = [MEMORY[0x277CCAA00] defaultManager];
+            v32 = [defaultManager5 moveItemAtURL:v24 toURL:v25 error:error];
 
             if (!v32)
             {
@@ -193,8 +193,8 @@ LABEL_18:
         }
       }
 
-      v33 = [MEMORY[0x277CCAA00] defaultManager];
-      v34 = [v33 removeItemAtURL:v40 error:a5];
+      defaultManager6 = [MEMORY[0x277CCAA00] defaultManager];
+      v34 = [defaultManager6 removeItemAtURL:directoryCopy error:error];
 LABEL_19:
 
       v15 = v37;

@@ -1,8 +1,8 @@
 @interface CollectionViewLayoutEnvironment
 - (NSCollectionLayoutContainer)container;
 - (UITraitCollection)traitCollection;
-- (void)setContainer:(id)a3;
-- (void)setTraitCollection:(id)a3;
+- (void)setContainer:(id)container;
+- (void)setTraitCollection:(id)collection;
 @end
 
 @implementation CollectionViewLayoutEnvironment
@@ -14,11 +14,11 @@
   return v2;
 }
 
-- (void)setContainer:(id)a3
+- (void)setContainer:(id)container
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_24E12AC0C(a3);
+  selfCopy = self;
+  sub_24E12AC0C(container);
 }
 
 - (UITraitCollection)traitCollection
@@ -28,11 +28,11 @@
   return v2;
 }
 
-- (void)setTraitCollection:(id)a3
+- (void)setTraitCollection:(id)collection
 {
-  v4 = a3;
-  v5 = self;
-  sub_24E12ACC4(v4);
+  collectionCopy = collection;
+  selfCopy = self;
+  sub_24E12ACC4(collectionCopy);
 }
 
 @end

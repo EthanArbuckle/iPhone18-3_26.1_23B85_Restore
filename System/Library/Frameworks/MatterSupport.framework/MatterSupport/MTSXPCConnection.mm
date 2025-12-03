@@ -1,24 +1,24 @@
 @interface MTSXPCConnection
 - (HMFProcessInfo)processInfo;
-- (MTSXPCConnection)initWithXPCConnection:(id)a3;
+- (MTSXPCConnection)initWithXPCConnection:(id)connection;
 - (NSXPCInterface)exportedInterface;
 - (NSXPCInterface)remoteObjectInterface;
 - (id)attributeDescriptions;
 - (id)exportedObject;
 - (id)interruptionHandler;
 - (id)remoteObjectProxy;
-- (id)remoteObjectProxyWithErrorHandler:(id)a3;
-- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)a3;
-- (id)valueForEntitlement:(id)a3;
+- (id)remoteObjectProxyWithErrorHandler:(id)handler;
+- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)handler;
+- (id)valueForEntitlement:(id)entitlement;
 - (int)processIdentifier;
 - (void)activate;
 - (void)invalidate;
 - (void)resume;
-- (void)setExportedInterface:(id)a3;
-- (void)setExportedObject:(id)a3;
-- (void)setInterruptionHandler:(id)a3;
-- (void)setInvalidationHandler:(id)a3;
-- (void)setRemoteObjectInterface:(id)a3;
+- (void)setExportedInterface:(id)interface;
+- (void)setExportedObject:(id)object;
+- (void)setInterruptionHandler:(id)handler;
+- (void)setInvalidationHandler:(id)handler;
+- (void)setRemoteObjectInterface:(id)interface;
 @end
 
 @implementation MTSXPCConnection
@@ -31,9 +31,9 @@
   v5 = [v3 initWithName:@"Process ID" value:v4];
   v13[0] = v5;
   v6 = objc_alloc(MEMORY[0x277D0F778]);
-  v7 = [(MTSXPCConnection *)self processInfo];
-  v8 = [v7 name];
-  v9 = [v6 initWithName:@"Process Name" value:v8];
+  processInfo = [(MTSXPCConnection *)self processInfo];
+  name = [processInfo name];
+  v9 = [v6 initWithName:@"Process Name" value:name];
   v13[1] = v9;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:2];
 
@@ -44,154 +44,154 @@
 
 - (void)invalidate
 {
-  v2 = [(MTSXPCConnection *)self xpcConnection];
-  [v2 invalidate];
+  xpcConnection = [(MTSXPCConnection *)self xpcConnection];
+  [xpcConnection invalidate];
 }
 
 - (void)resume
 {
-  v2 = [(MTSXPCConnection *)self xpcConnection];
-  [v2 resume];
+  xpcConnection = [(MTSXPCConnection *)self xpcConnection];
+  [xpcConnection resume];
 }
 
 - (void)activate
 {
-  v2 = [(MTSXPCConnection *)self xpcConnection];
-  [v2 activate];
+  xpcConnection = [(MTSXPCConnection *)self xpcConnection];
+  [xpcConnection activate];
 }
 
-- (id)valueForEntitlement:(id)a3
+- (id)valueForEntitlement:(id)entitlement
 {
-  v4 = a3;
-  v5 = [(MTSXPCConnection *)self xpcConnection];
-  v6 = [v5 valueForEntitlement:v4];
+  entitlementCopy = entitlement;
+  xpcConnection = [(MTSXPCConnection *)self xpcConnection];
+  v6 = [xpcConnection valueForEntitlement:entitlementCopy];
 
   return v6;
 }
 
-- (void)setInvalidationHandler:(id)a3
+- (void)setInvalidationHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(MTSXPCConnection *)self xpcConnection];
-  [v5 setInvalidationHandler:v4];
+  handlerCopy = handler;
+  xpcConnection = [(MTSXPCConnection *)self xpcConnection];
+  [xpcConnection setInvalidationHandler:handlerCopy];
 }
 
-- (void)setInterruptionHandler:(id)a3
+- (void)setInterruptionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(MTSXPCConnection *)self xpcConnection];
-  [v5 setInterruptionHandler:v4];
+  handlerCopy = handler;
+  xpcConnection = [(MTSXPCConnection *)self xpcConnection];
+  [xpcConnection setInterruptionHandler:handlerCopy];
 }
 
 - (id)interruptionHandler
 {
-  v2 = [(MTSXPCConnection *)self xpcConnection];
-  v3 = [v2 interruptionHandler];
+  xpcConnection = [(MTSXPCConnection *)self xpcConnection];
+  interruptionHandler = [xpcConnection interruptionHandler];
 
-  return v3;
+  return interruptionHandler;
 }
 
-- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)a3
+- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(MTSXPCConnection *)self xpcConnection];
-  v6 = [v5 synchronousRemoteObjectProxyWithErrorHandler:v4];
+  handlerCopy = handler;
+  xpcConnection = [(MTSXPCConnection *)self xpcConnection];
+  v6 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:handlerCopy];
 
   return v6;
 }
 
-- (id)remoteObjectProxyWithErrorHandler:(id)a3
+- (id)remoteObjectProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(MTSXPCConnection *)self xpcConnection];
-  v6 = [v5 remoteObjectProxyWithErrorHandler:v4];
+  handlerCopy = handler;
+  xpcConnection = [(MTSXPCConnection *)self xpcConnection];
+  v6 = [xpcConnection remoteObjectProxyWithErrorHandler:handlerCopy];
 
   return v6;
 }
 
 - (id)remoteObjectProxy
 {
-  v2 = [(MTSXPCConnection *)self xpcConnection];
-  v3 = [v2 remoteObjectProxy];
+  xpcConnection = [(MTSXPCConnection *)self xpcConnection];
+  remoteObjectProxy = [xpcConnection remoteObjectProxy];
 
-  return v3;
+  return remoteObjectProxy;
 }
 
-- (void)setRemoteObjectInterface:(id)a3
+- (void)setRemoteObjectInterface:(id)interface
 {
-  v4 = a3;
-  v5 = [(MTSXPCConnection *)self xpcConnection];
-  [v5 setRemoteObjectInterface:v4];
+  interfaceCopy = interface;
+  xpcConnection = [(MTSXPCConnection *)self xpcConnection];
+  [xpcConnection setRemoteObjectInterface:interfaceCopy];
 }
 
 - (NSXPCInterface)remoteObjectInterface
 {
-  v2 = [(MTSXPCConnection *)self xpcConnection];
-  v3 = [v2 remoteObjectInterface];
+  xpcConnection = [(MTSXPCConnection *)self xpcConnection];
+  remoteObjectInterface = [xpcConnection remoteObjectInterface];
 
-  return v3;
+  return remoteObjectInterface;
 }
 
-- (void)setExportedInterface:(id)a3
+- (void)setExportedInterface:(id)interface
 {
-  v4 = a3;
-  v5 = [(MTSXPCConnection *)self xpcConnection];
-  [v5 setExportedInterface:v4];
+  interfaceCopy = interface;
+  xpcConnection = [(MTSXPCConnection *)self xpcConnection];
+  [xpcConnection setExportedInterface:interfaceCopy];
 }
 
 - (NSXPCInterface)exportedInterface
 {
-  v2 = [(MTSXPCConnection *)self xpcConnection];
-  v3 = [v2 exportedInterface];
+  xpcConnection = [(MTSXPCConnection *)self xpcConnection];
+  exportedInterface = [xpcConnection exportedInterface];
 
-  return v3;
+  return exportedInterface;
 }
 
-- (void)setExportedObject:(id)a3
+- (void)setExportedObject:(id)object
 {
-  v4 = a3;
-  v5 = [(MTSXPCConnection *)self xpcConnection];
-  [v5 setExportedObject:v4];
+  objectCopy = object;
+  xpcConnection = [(MTSXPCConnection *)self xpcConnection];
+  [xpcConnection setExportedObject:objectCopy];
 }
 
 - (id)exportedObject
 {
-  v2 = [(MTSXPCConnection *)self xpcConnection];
-  v3 = [v2 exportedObject];
+  xpcConnection = [(MTSXPCConnection *)self xpcConnection];
+  exportedObject = [xpcConnection exportedObject];
 
-  return v3;
+  return exportedObject;
 }
 
 - (int)processIdentifier
 {
-  v2 = [(MTSXPCConnection *)self xpcConnection];
-  v3 = [v2 processIdentifier];
+  xpcConnection = [(MTSXPCConnection *)self xpcConnection];
+  processIdentifier = [xpcConnection processIdentifier];
 
-  return v3;
+  return processIdentifier;
 }
 
 - (HMFProcessInfo)processInfo
 {
   v3 = objc_alloc(MEMORY[0x277D0F8E0]);
-  v4 = [(MTSXPCConnection *)self xpcConnection];
-  v5 = [v3 initWithXPCConnection:v4];
+  xpcConnection = [(MTSXPCConnection *)self xpcConnection];
+  v5 = [v3 initWithXPCConnection:xpcConnection];
 
   return v5;
 }
 
-- (MTSXPCConnection)initWithXPCConnection:(id)a3
+- (MTSXPCConnection)initWithXPCConnection:(id)connection
 {
-  v5 = a3;
-  if (v5)
+  connectionCopy = connection;
+  if (connectionCopy)
   {
-    v6 = v5;
+    v6 = connectionCopy;
     v12.receiver = self;
     v12.super_class = MTSXPCConnection;
     v7 = [(MTSXPCConnection *)&v12 init];
     v8 = v7;
     if (v7)
     {
-      objc_storeStrong(&v7->_xpcConnection, a3);
+      objc_storeStrong(&v7->_xpcConnection, connection);
     }
 
     return v8;

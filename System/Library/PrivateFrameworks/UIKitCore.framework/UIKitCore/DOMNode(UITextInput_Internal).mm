@@ -95,11 +95,11 @@
 
 - (id)textInputSuggestionDelegate
 {
-  v1 = [a1 _selectableText];
-  v2 = [v1 inputDelegate];
+  _selectableText = [self _selectableText];
+  inputDelegate = [_selectableText inputDelegate];
   if (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector())
   {
-    v3 = v2;
+    v3 = inputDelegate;
   }
 
   else
@@ -120,9 +120,9 @@
   }
 
   v1 = +[UIKeyboardSceneDelegate automaticTextInputSourceCache];
-  v2 = [v1 lastEventSource];
+  lastEventSource = [v1 lastEventSource];
 
-  return v2;
+  return lastEventSource;
 }
 
 - (void)set_textInputSource:()UITextInput_Internal
@@ -131,7 +131,7 @@
 
   if (v5)
   {
-    v6 = (objc_opt_respondsToSelector() & 1) != 0 && [a1 keyboardType] == 122;
+    v6 = (objc_opt_respondsToSelector() & 1) != 0 && [self keyboardType] == 122;
     if (a3 == 3 && v6)
     {
       v7 = 2;
@@ -145,15 +145,15 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = a1;
+      selfCopy = self;
     }
 
     else
     {
-      v8 = 0;
+      selfCopy = 0;
     }
 
-    v9 = v8;
+    v9 = selfCopy;
     v10 = +[UIKeyboardSceneDelegate automaticTextInputSourceCache];
     [v10 updateEventSource:a3 options:v7 responder:v9];
   }
@@ -166,14 +166,14 @@
 
 - (uint64_t)_selectedNSRange
 {
-  v2 = [a1 _selectableText];
-  v3 = v2;
-  if (v2)
+  _selectableText = [self _selectableText];
+  v3 = _selectableText;
+  if (_selectableText)
   {
-    v4 = [v2 selectedTextRange];
-    if (v4)
+    selectedTextRange = [_selectableText selectedTextRange];
+    if (selectedTextRange)
     {
-      v5 = [a1 _nsrangeForTextRange:v4];
+      v5 = [self _nsrangeForTextRange:selectedTextRange];
     }
 
     else
@@ -192,25 +192,25 @@
 
 - (uint64_t)_selectedRangeWithinMarkedText
 {
-  v1 = [a1 _selectableText];
-  v2 = v1;
-  if (v1)
+  _selectableText = [self _selectableText];
+  v2 = _selectableText;
+  if (_selectableText)
   {
-    v3 = [v1 selectedTextRange];
-    if (v3)
+    selectedTextRange = [_selectableText selectedTextRange];
+    if (selectedTextRange)
     {
-      v4 = [v2 markedTextRange];
-      v5 = v4;
-      if (!v4 || ([v4 start], v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v3, "start"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v2, "offsetFromPosition:toPosition:", v6, v7), v7, v6, v8 < 0))
+      markedTextRange = [v2 markedTextRange];
+      v5 = markedTextRange;
+      if (!markedTextRange || ([markedTextRange start], v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(selectedTextRange, "start"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v2, "offsetFromPosition:toPosition:", v6, v7), v7, v6, v8 < 0))
       {
         v8 = 0x7FFFFFFFFFFFFFFFLL;
       }
 
       else
       {
-        v9 = [v3 start];
-        v10 = [v3 end];
-        [v2 offsetFromPosition:v9 toPosition:v10];
+        start = [selectedTextRange start];
+        v10 = [selectedTextRange end];
+        [v2 offsetFromPosition:start toPosition:v10];
       }
     }
 
@@ -230,17 +230,17 @@
 
 - (void)_selectAll
 {
-  v2 = [a1 _selectableText];
-  v1 = [v2 _fullRange];
-  [v2 setSelectedTextRange:v1];
+  _selectableText = [self _selectableText];
+  _fullRange = [_selectableText _fullRange];
+  [_selectableText setSelectedTextRange:_fullRange];
 }
 
 - (uint64_t)_indexForTextPosition:()UITextInput_Internal
 {
   v4 = a3;
-  v5 = [a1 _selectableText];
-  v6 = [v5 beginningOfDocument];
-  v7 = [v5 offsetFromPosition:v6 toPosition:v4];
+  _selectableText = [self _selectableText];
+  beginningOfDocument = [_selectableText beginningOfDocument];
+  v7 = [_selectableText offsetFromPosition:beginningOfDocument toPosition:v4];
 
   return v7;
 }
@@ -248,74 +248,74 @@
 - (uint64_t)_nsrangeForTextRange:()UITextInput_Internal
 {
   v4 = a3;
-  v5 = [a1 _selectableText];
-  v6 = [v4 start];
-  v7 = [a1 _indexForTextPosition:v6];
+  _selectableText = [self _selectableText];
+  start = [v4 start];
+  v7 = [self _indexForTextPosition:start];
 
-  v8 = [v4 start];
+  start2 = [v4 start];
   v9 = [v4 end];
 
-  [v5 offsetFromPosition:v8 toPosition:v9];
+  [_selectableText offsetFromPosition:start2 toPosition:v9];
   return v7;
 }
 
 - (id)_textRangeFromNSRange:()UITextInput_Internal
 {
-  v6 = [a1 _selectableText];
-  v7 = [v6 beginningOfDocument];
-  v8 = [v6 positionFromPosition:v7 offset:a3];
+  _selectableText = [self _selectableText];
+  beginningOfDocument = [_selectableText beginningOfDocument];
+  v8 = [_selectableText positionFromPosition:beginningOfDocument offset:a3];
   v9 = v8;
   if (v8)
   {
-    v10 = v8;
+    endOfDocument = v8;
   }
 
   else
   {
-    v10 = [v6 endOfDocument];
+    endOfDocument = [_selectableText endOfDocument];
   }
 
-  v11 = v10;
+  v11 = endOfDocument;
 
-  v12 = [v6 positionFromPosition:v11 offset:a4];
+  v12 = [_selectableText positionFromPosition:v11 offset:a4];
   v13 = v12;
   if (v12)
   {
-    v14 = v12;
+    endOfDocument2 = v12;
   }
 
   else
   {
-    v14 = [v6 endOfDocument];
+    endOfDocument2 = [_selectableText endOfDocument];
   }
 
-  v15 = v14;
+  v15 = endOfDocument2;
 
-  v16 = [v6 textRangeFromPosition:v11 toPosition:v15];
+  v16 = [_selectableText textRangeFromPosition:v11 toPosition:v15];
 
   return v16;
 }
 
 - (id)_textRangeFromDirectionalRange:()UITextInput_Internal
 {
-  v6 = [a1 _selectableText];
-  v7 = [v6 selectedTextRange];
-  v8 = [v7 start];
-  v9 = [v6 positionFromPosition:v8 offset:a3];
+  _selectableText = [self _selectableText];
+  selectedTextRange = [_selectableText selectedTextRange];
+  start = [selectedTextRange start];
+  v9 = [_selectableText positionFromPosition:start offset:a3];
 
-  v10 = [v6 positionFromPosition:v9 offset:a4];
-  v11 = [v6 textRangeFromPosition:v9 toPosition:v10];
+  v10 = [_selectableText positionFromPosition:v9 offset:a4];
+  v11 = [_selectableText textRangeFromPosition:v9 toPosition:v10];
 
   return v11;
 }
 
 - (uint64_t)_characterInRelationToCaretSelection:()UITextInput_Internal
 {
-  v5 = [a1 _selectableText];
-  v6 = [v5 selectedTextRange];
-  if (v6 && (v7 = v6, [v5 selectedTextRange], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "isEmpty"), v8, v7, v9))
+  _selectableText = [self _selectableText];
+  selectedTextRange = [_selectableText selectedTextRange];
+  if (selectedTextRange && (v7 = selectedTextRange, [_selectableText selectedTextRange], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "isEmpty"), v8, v7, v9))
   {
-    v10 = [a1 _characterInRelationToRangedSelection:a3];
+    v10 = [self _characterInRelationToRangedSelection:a3];
   }
 
   else
@@ -328,10 +328,10 @@
 
 - (uint64_t)_characterInRelationToRangedSelection:()UITextInput_Internal
 {
-  v4 = [a1 _selectableText];
-  v5 = [v4 selectedTextRange];
+  _selectableText = [self _selectableText];
+  selectedTextRange = [_selectableText selectedTextRange];
 
-  if (!v5)
+  if (!selectedTextRange)
   {
     goto LABEL_4;
   }
@@ -340,12 +340,12 @@
   {
     if ((a3 & 0x80000000) == 0)
     {
-      v7 = [v4 selectedTextRange];
-      v8 = [v7 end];
+      selectedTextRange2 = [_selectableText selectedTextRange];
+      v8 = [selectedTextRange2 end];
 
       if (a3)
       {
-        v9 = [v4 positionFromPosition:v8 offset:a3];
+        v9 = [_selectableText positionFromPosition:v8 offset:a3];
 
         v8 = v9;
       }
@@ -356,12 +356,12 @@
       }
 
 LABEL_11:
-      v12 = [v4 positionFromPosition:v8 offset:1];
+      v12 = [_selectableText positionFromPosition:v8 offset:1];
       if (v12)
       {
         v13 = v12;
-        v14 = [v4 textRangeFromPosition:v8 toPosition:v12];
-        v15 = [v4 textInRange:v14];
+        v14 = [_selectableText textRangeFromPosition:v8 toPosition:v12];
+        v15 = [_selectableText textInRange:v14];
         if ([v15 length])
         {
           if ([v15 length] == 2 && (v16 = objc_msgSend(v15, "characterAtIndex:", 0), v17 = objc_msgSend(v15, "characterAtIndex:", 1), (v16 & 0xFC00) == 0xD800) && (v17 & 0xFC00) == 0xDC00)
@@ -391,9 +391,9 @@ LABEL_21:
     }
 
 LABEL_10:
-    v10 = [v4 selectedTextRange];
-    v11 = [v10 start];
-    v8 = [v4 positionFromPosition:v11 offset:a3];
+    selectedTextRange3 = [_selectableText selectedTextRange];
+    start = [selectedTextRange3 start];
+    v8 = [_selectableText positionFromPosition:start offset:a3];
 
     if (!v8)
     {
@@ -424,12 +424,12 @@ LABEL_22:
   }
 
   v6 = a3;
-  v7 = [a1 _selectableText];
-  v8 = [v7 positionFromPosition:v6 offset:a4];
+  _selectableText = [self _selectableText];
+  v8 = [_selectableText positionFromPosition:v6 offset:a4];
 
-  v9 = [v7 positionFromPosition:v8 offset:1];
-  v10 = [v7 textRangeFromPosition:v8 toPosition:v9];
-  v11 = [v7 textInRange:v10];
+  v9 = [_selectableText positionFromPosition:v8 offset:1];
+  v10 = [_selectableText textRangeFromPosition:v8 toPosition:v9];
+  v11 = [_selectableText textInRange:v10];
   if ([v11 length])
   {
     if ([v11 length] == 2 && (v12 = objc_msgSend(v11, "characterAtIndex:", 0), v13 = objc_msgSend(v11, "characterAtIndex:", 1), (v12 & 0xFC00) == 0xD800) && (v13 & 0xFC00) == 0xDC00)
@@ -453,47 +453,47 @@ LABEL_22:
 
 - (id)_wordContainingCaretSelection
 {
-  v2 = [a1 _selectableText];
-  v3 = [v2 selectedTextRange];
-  if (v3)
+  _selectableText = [self _selectableText];
+  selectedTextRange = [_selectableText selectedTextRange];
+  if (selectedTextRange)
   {
-    v4 = [v2 selectedTextRange];
-    v5 = [v4 isEmpty];
+    selectedTextRange2 = [_selectableText selectedTextRange];
+    isEmpty = [selectedTextRange2 isEmpty];
 
-    if (v5)
+    if (isEmpty)
     {
-      v6 = [v2 selectedTextRange];
-      v7 = [v6 start];
-      v8 = [a1 _rangeOfEnclosingWord:v7];
+      selectedTextRange3 = [_selectableText selectedTextRange];
+      start = [selectedTextRange3 start];
+      v8 = [self _rangeOfEnclosingWord:start];
 
       if (v8)
       {
-        v3 = [v2 textInRange:v8];
+        selectedTextRange = [_selectableText textInRange:v8];
       }
 
       else
       {
-        v3 = 0;
+        selectedTextRange = 0;
       }
     }
 
     else
     {
-      v3 = 0;
+      selectedTextRange = 0;
     }
   }
 
-  return v3;
+  return selectedTextRange;
 }
 
 - (id)_fullText
 {
-  v1 = [a1 _selectableText];
-  v2 = [v1 beginningOfDocument];
-  v3 = [v1 endOfDocument];
-  v4 = [v1 textRangeFromPosition:v2 toPosition:v3];
+  _selectableText = [self _selectableText];
+  beginningOfDocument = [_selectableText beginningOfDocument];
+  endOfDocument = [_selectableText endOfDocument];
+  v4 = [_selectableText textRangeFromPosition:beginningOfDocument toPosition:endOfDocument];
 
-  v5 = [v1 textInRange:v4];
+  v5 = [_selectableText textInRange:v4];
 
   return v5;
 }
@@ -503,29 +503,29 @@ LABEL_22:
   if (a3)
   {
     v4 = a3;
-    v6 = [a1 _selectableText];
-    v5 = [v6 textRangeFromPosition:v4 toPosition:v4];
+    _selectableText = [self _selectableText];
+    v5 = [_selectableText textRangeFromPosition:v4 toPosition:v4];
 
     if (v5)
     {
-      [v6 setSelectedTextRange:v5];
+      [_selectableText setSelectedTextRange:v5];
     }
   }
 }
 
 - (BOOL)_selectionAtWordStart
 {
-  v2 = [a1 _selectableText];
-  v3 = [v2 selectedTextRange];
-  v4 = [v3 start];
-  v5 = [a1 _rangeOfEnclosingWord:v4];
+  _selectableText = [self _selectableText];
+  selectedTextRange = [_selectableText selectedTextRange];
+  start = [selectedTextRange start];
+  v5 = [self _rangeOfEnclosingWord:start];
 
   if (v5)
   {
-    v6 = [v5 start];
-    v7 = [v2 selectedTextRange];
-    v8 = [v7 start];
-    v9 = [v2 comparePosition:v6 toPosition:v8];
+    start2 = [v5 start];
+    selectedTextRange2 = [_selectableText selectedTextRange];
+    start3 = [selectedTextRange2 start];
+    v9 = [_selectableText comparePosition:start2 toPosition:start3];
 
     v10 = v9 == 0;
   }
@@ -540,14 +540,14 @@ LABEL_22:
 
 - (BOOL)_selectionAtDocumentStart
 {
-  v1 = [a1 _selectableText];
-  v2 = [v1 selectedTextRange];
-  v3 = [v2 start];
+  _selectableText = [self _selectableText];
+  selectedTextRange = [_selectableText selectedTextRange];
+  start = [selectedTextRange start];
 
-  if (v3)
+  if (start)
   {
-    v4 = [v1 beginningOfDocument];
-    v5 = [v1 comparePosition:v4 toPosition:v3] == 0;
+    beginningOfDocument = [_selectableText beginningOfDocument];
+    v5 = [_selectableText comparePosition:beginningOfDocument toPosition:start] == 0;
   }
 
   else
@@ -560,14 +560,14 @@ LABEL_22:
 
 - (BOOL)_selectionAtDocumentEnd
 {
-  v1 = [a1 _selectableText];
-  v2 = [v1 selectedTextRange];
-  v3 = [v2 end];
+  _selectableText = [self _selectableText];
+  selectedTextRange = [_selectableText selectedTextRange];
+  v3 = [selectedTextRange end];
 
   if (v3)
   {
-    v4 = [v1 endOfDocument];
-    v5 = [v1 comparePosition:v4 toPosition:v3] == 0;
+    endOfDocument = [_selectableText endOfDocument];
+    v5 = [_selectableText comparePosition:endOfDocument toPosition:v3] == 0;
   }
 
   else
@@ -580,31 +580,31 @@ LABEL_22:
 
 - (BOOL)_isEmptySelection
 {
-  v1 = [a1 _selectableText];
-  v2 = [v1 selectedTextRange];
-  v3 = [v2 start];
-  v4 = [v2 end];
-  v5 = [v1 comparePosition:v3 toPosition:v4] == 0;
+  _selectableText = [self _selectableText];
+  selectedTextRange = [_selectableText selectedTextRange];
+  start = [selectedTextRange start];
+  v4 = [selectedTextRange end];
+  v5 = [_selectableText comparePosition:start toPosition:v4] == 0;
 
   return v5;
 }
 
 - (uint64_t)_hasMarkedTextOrRangedSelection
 {
-  v1 = [a1 _selectableText];
-  v2 = [v1 markedTextRange];
-  if (v2)
+  _selectableText = [self _selectableText];
+  markedTextRange = [_selectableText markedTextRange];
+  if (markedTextRange)
   {
     v3 = 1;
   }
 
   else
   {
-    v4 = [v1 selectedTextRange];
-    if (v4)
+    selectedTextRange = [_selectableText selectedTextRange];
+    if (selectedTextRange)
     {
-      v5 = [v1 selectedTextRange];
-      v3 = [v5 isEmpty] ^ 1;
+      selectedTextRange2 = [_selectableText selectedTextRange];
+      v3 = [selectedTextRange2 isEmpty] ^ 1;
     }
 
     else
@@ -618,67 +618,67 @@ LABEL_22:
 
 - (void)_extendCurrentSelection:()UITextInput_Internal
 {
-  v5 = [a1 _selectableText];
+  _selectableText = [self _selectableText];
   if (a3)
   {
-    v15 = v5;
-    v6 = [v5 selectedTextRange];
+    v15 = _selectableText;
+    selectedTextRange = [_selectableText selectedTextRange];
 
-    v5 = v15;
-    if (v6)
+    _selectableText = v15;
+    if (selectedTextRange)
     {
-      v7 = [v15 selectedTextRange];
-      v8 = [v7 start];
+      selectedTextRange2 = [v15 selectedTextRange];
+      start = [selectedTextRange2 start];
 
-      v9 = [v15 selectedTextRange];
-      v10 = [v9 end];
+      selectedTextRange3 = [v15 selectedTextRange];
+      v10 = [selectedTextRange3 end];
 
       if (a3 < 1)
       {
-        v13 = [a1 _clampedpositionFromPosition:v8 offset:a3];
-        v12 = v8;
-        v8 = v13;
+        v13 = [self _clampedpositionFromPosition:start offset:a3];
+        v12 = start;
+        start = v13;
       }
 
       else
       {
-        v11 = [a1 _clampedpositionFromPosition:v10 offset:a3];
+        v11 = [self _clampedpositionFromPosition:v10 offset:a3];
         v12 = v10;
         v10 = v11;
       }
 
-      v14 = [v15 textRangeFromPosition:v8 toPosition:v10];
+      v14 = [v15 textRangeFromPosition:start toPosition:v10];
       [v15 setSelectedTextRange:v14];
 
-      v5 = v15;
+      _selectableText = v15;
     }
   }
 }
 
 - (void)_moveCurrentSelection:()UITextInput_Internal
 {
-  v5 = [a1 _selectableText];
+  _selectableText = [self _selectableText];
   if (a3)
   {
-    v14 = v5;
-    v6 = [v5 selectedTextRange];
+    v14 = _selectableText;
+    selectedTextRange = [_selectableText selectedTextRange];
 
-    v5 = v14;
-    if (v6)
+    _selectableText = v14;
+    if (selectedTextRange)
     {
-      v7 = [v14 selectedTextRange];
-      v8 = [v7 isEmpty];
+      selectedTextRange2 = [v14 selectedTextRange];
+      isEmpty = [selectedTextRange2 isEmpty];
 
-      if (v8)
+      if (isEmpty)
       {
-        v9 = [v14 selectedTextRange];
-        v10 = [v9 start];
+        selectedTextRange3 = [v14 selectedTextRange];
+        start = [selectedTextRange3 start];
       }
 
       else
       {
-        v11 = [v14 selectedTextRange];
-        v10 = [v11 end];
+        selectedTextRange4 = [v14 selectedTextRange];
+        start = [selectedTextRange4 end];
 
         if (a3 < 1)
         {
@@ -691,7 +691,7 @@ LABEL_22:
         }
       }
 
-      v12 = [a1 _clampedpositionFromPosition:v10 offset:a3];
+      v12 = [self _clampedpositionFromPosition:start offset:a3];
 
       v13 = [v14 textRangeFromPosition:v12 toPosition:v12];
       if (v13)
@@ -699,19 +699,19 @@ LABEL_22:
         [v14 setSelectedTextRange:v13];
       }
 
-      v5 = v14;
+      _selectableText = v14;
     }
   }
 }
 
 - (void)_expandSelectionToBackwardDeletionClusterWithReinsertionOut:()UITextInput_Internal
 {
-  v24 = [a1 _selectableText];
-  v4 = [v24 selectedTextRange];
-  v5 = [v4 start];
-  v6 = [v4 end];
-  v7 = v5;
-  if (!v4 || ([v4 isEmpty] & 1) != 0)
+  _selectableText = [self _selectableText];
+  selectedTextRange = [_selectableText selectedTextRange];
+  start = [selectedTextRange start];
+  v6 = [selectedTextRange end];
+  v7 = start;
+  if (!selectedTextRange || ([selectedTextRange isEmpty] & 1) != 0)
   {
     v8 = &stru_1EFB14550;
     if (v7)
@@ -725,7 +725,7 @@ LABEL_18:
     goto LABEL_29;
   }
 
-  v8 = [v24 textInRange:v4];
+  v8 = [_selectableText textInRange:selectedTextRange];
   if (!v7)
   {
     goto LABEL_18;
@@ -762,14 +762,14 @@ LABEL_4:
 
     v19 = v10;
 
-    v10 = [v24 positionFromPosition:v19 offset:-1];
+    v10 = [_selectableText positionFromPosition:v19 offset:-1];
 
     if (v10)
     {
-      v17 = [v24 textRangeFromPosition:v10 toPosition:v19];
+      v17 = [_selectableText textRangeFromPosition:v10 toPosition:v19];
       if (v17)
       {
-        v18 = [v24 textInRange:v17];
+        v18 = [_selectableText textInRange:v17];
       }
 
       else
@@ -801,13 +801,13 @@ LABEL_4:
   v10 = 0;
   v8 = v11;
 LABEL_20:
-  v20 = v24;
+  v20 = _selectableText;
   if (v23 && v16 >= 1)
   {
     v21 = v10;
 
     *v23 = [(__CFString *)v8 substringToIndex:v16];
-    v20 = v24;
+    v20 = _selectableText;
     v19 = v21;
   }
 
@@ -816,7 +816,7 @@ LABEL_20:
     v22 = [v20 textRangeFromPosition:v19 toPosition:v6];
     if (v22)
     {
-      [v24 setSelectedTextRange:v22];
+      [_selectableText setSelectedTextRange:v22];
     }
   }
 
@@ -825,19 +825,19 @@ LABEL_29:
 
 - (void)_expandSelectionToStartOfWordsBeforeCaretSelection:()UITextInput_Internal
 {
-  v10 = [a1 _selectableText];
-  v4 = [v10 selectedTextRange];
-  v5 = v4;
-  if (a3 && v4)
+  _selectableText = [self _selectableText];
+  selectedTextRange = [_selectableText selectedTextRange];
+  v5 = selectedTextRange;
+  if (a3 && selectedTextRange)
   {
-    v6 = [v4 start];
-    v7 = [v10 _positionAtStartOfWords:a3 beforePosition:v6];
+    start = [selectedTextRange start];
+    v7 = [_selectableText _positionAtStartOfWords:a3 beforePosition:start];
 
     if (v7)
     {
       v8 = [v5 end];
-      v9 = [v10 textRangeFromPosition:v7 toPosition:v8];
-      [v10 setSelectedTextRange:v9];
+      v9 = [_selectableText textRangeFromPosition:v7 toPosition:v8];
+      [_selectableText setSelectedTextRange:v9];
     }
   }
 }
@@ -845,25 +845,25 @@ LABEL_29:
 - (id)_positionWithinRange:()UITextInput_Internal farthestInDirection:
 {
   v6 = a3;
-  v7 = [a1 _selectableText];
-  v8 = v7;
+  _selectableText = [self _selectableText];
+  v8 = _selectableText;
   if (a4 == 1)
   {
-    v9 = [v6 start];
+    start = [v6 start];
     goto LABEL_7;
   }
 
   if (!a4)
   {
-    v9 = [v6 end];
+    start = [v6 end];
 LABEL_7:
-    v10 = v9;
+    v10 = start;
     goto LABEL_8;
   }
 
   if (v6)
   {
-    v9 = [v7 positionWithinRange:v6 farthestInDirection:a4];
+    start = [_selectableText positionWithinRange:v6 farthestInDirection:a4];
     goto LABEL_7;
   }
 
@@ -887,14 +887,14 @@ LABEL_8:
 - (id)_positionFromPosition:()UITextInput_Internal pastTextUnit:inDirection:
 {
   v8 = a3;
-  v9 = [a1 _selectableText];
+  _selectableText = [self _selectableText];
   if (v8)
   {
     v10 = -3;
     while (!__CFADD__(v10++, 1))
     {
-      v12 = [v9 tokenizer];
-      v13 = [v12 positionFromPosition:v8 toBoundary:a4 inDirection:a5];
+      tokenizer = [_selectableText tokenizer];
+      v13 = [tokenizer positionFromPosition:v8 toBoundary:a4 inDirection:a5];
 
       if (!v13)
       {
@@ -903,8 +903,8 @@ LABEL_8:
         goto LABEL_12;
       }
 
-      v14 = [v9 tokenizer];
-      if ([v14 isPosition:v13 atBoundary:a4 inDirection:a5])
+      tokenizer2 = [_selectableText tokenizer];
+      if ([tokenizer2 isPosition:v13 atBoundary:a4 inDirection:a5])
       {
 
 LABEL_11:
@@ -913,8 +913,8 @@ LABEL_11:
         goto LABEL_12;
       }
 
-      v15 = [v9 tokenizer];
-      v16 = [v15 isPosition:v13 atBoundary:a4 inDirection:{objc_msgSend(a1, "_opposingDirectionFromDirection:", a5)}];
+      tokenizer3 = [_selectableText tokenizer];
+      v16 = [tokenizer3 isPosition:v13 atBoundary:a4 inDirection:{objc_msgSend(self, "_opposingDirectionFromDirection:", a5)}];
 
       v8 = v13;
       if (v16)
@@ -933,8 +933,8 @@ LABEL_12:
 - (id)_positionAtStartOfWords:()UITextInput_Internal beforePosition:
 {
   v6 = a4;
-  v7 = [a1 _selectableText];
-  v8 = v7;
+  _selectableText = [self _selectableText];
+  v8 = _selectableText;
   if (!a3 || !v6)
   {
     v6 = v6;
@@ -942,16 +942,16 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v9 = [v7 tokenizer];
-  v10 = [v9 rangeEnclosingPosition:v6 withGranularity:1 inDirection:1];
+  tokenizer = [_selectableText tokenizer];
+  v10 = [tokenizer rangeEnclosingPosition:v6 withGranularity:1 inDirection:1];
 
   if (v10)
   {
     goto LABEL_4;
   }
 
-  v18 = [v8 tokenizer];
-  v19 = [v18 positionFromPosition:v6 toBoundary:1 inDirection:1];
+  tokenizer2 = [v8 tokenizer];
+  v19 = [tokenizer2 positionFromPosition:v6 toBoundary:1 inDirection:1];
 
   if (!v19)
   {
@@ -959,36 +959,36 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v20 = [v8 tokenizer];
-  v10 = [v20 rangeEnclosingPosition:v19 withGranularity:1 inDirection:1];
+  tokenizer3 = [v8 tokenizer];
+  v10 = [tokenizer3 rangeEnclosingPosition:v19 withGranularity:1 inDirection:1];
 
   if (v10)
   {
 LABEL_4:
-    v11 = [v10 start];
+    start = [v10 start];
 
     if (a3 >= 2)
     {
       v12 = a3 - 1;
       while (1)
       {
-        v13 = [v8 tokenizer];
-        v14 = [v13 positionFromPosition:v11 toBoundary:1 inDirection:1];
+        tokenizer4 = [v8 tokenizer];
+        v14 = [tokenizer4 positionFromPosition:start toBoundary:1 inDirection:1];
 
         if (!v14)
         {
           break;
         }
 
-        v15 = [v8 tokenizer];
-        v16 = [v15 positionFromPosition:v14 toBoundary:1 inDirection:1];
+        tokenizer5 = [v8 tokenizer];
+        v16 = [tokenizer5 positionFromPosition:v14 toBoundary:1 inDirection:1];
 
         if (!v16)
         {
           break;
         }
 
-        v11 = v16;
+        start = v16;
         if (!--v12)
         {
           goto LABEL_12;
@@ -996,7 +996,7 @@ LABEL_4:
       }
     }
 
-    v16 = v11;
+    v16 = start;
 LABEL_12:
     v6 = v16;
 
@@ -1010,191 +1010,191 @@ LABEL_13:
 
 - (void)_setCaretSelectionAtEndOfSelection
 {
-  v6 = [a1 _selectableText];
-  v1 = [v6 selectedTextRange];
-  v2 = v1;
-  if (v1)
+  _selectableText = [self _selectableText];
+  selectedTextRange = [_selectableText selectedTextRange];
+  v2 = selectedTextRange;
+  if (selectedTextRange)
   {
-    v3 = [v1 end];
+    v3 = [selectedTextRange end];
     v4 = [v2 end];
-    v5 = [v6 textRangeFromPosition:v3 toPosition:v4];
-    [v6 setSelectedTextRange:v5];
+    v5 = [_selectableText textRangeFromPosition:v3 toPosition:v4];
+    [_selectableText setSelectedTextRange:v5];
   }
 }
 
 - (void)_deleteByWord
 {
-  v9 = [a1 _selectableText];
-  v2 = [v9 selectedTextRange];
-  v3 = [v9 inputDelegate];
-  [v3 textWillChange:v9];
+  _selectableText = [self _selectableText];
+  selectedTextRange = [_selectableText selectedTextRange];
+  inputDelegate = [_selectableText inputDelegate];
+  [inputDelegate textWillChange:_selectableText];
 
-  if ([v2 isEmpty])
+  if ([selectedTextRange isEmpty])
   {
-    v4 = [v2 start];
-    v5 = [v9 _positionAtStartOfWords:1 beforePosition:v4];
+    start = [selectedTextRange start];
+    v5 = [_selectableText _positionAtStartOfWords:1 beforePosition:start];
 
     if (v5)
     {
-      v6 = [v2 end];
-      v7 = [v9 textRangeFromPosition:v5 toPosition:v6];
+      v6 = [selectedTextRange end];
+      v7 = [_selectableText textRangeFromPosition:v5 toPosition:v6];
 
-      v2 = v7;
+      selectedTextRange = v7;
     }
   }
 
-  [a1 _deleteTextRange:v2];
-  v8 = [v9 inputDelegate];
-  [v8 textDidChange:v9];
+  [self _deleteTextRange:selectedTextRange];
+  inputDelegate2 = [_selectableText inputDelegate];
+  [inputDelegate2 textDidChange:_selectableText];
 }
 
 - (void)_deleteForwardByWord
 {
-  v17 = [a1 _selectableText];
-  v2 = [v17 selectedTextRange];
-  v3 = [v17 inputDelegate];
-  [v3 textWillChange:v17];
+  _selectableText = [self _selectableText];
+  selectedTextRange = [_selectableText selectedTextRange];
+  inputDelegate = [_selectableText inputDelegate];
+  [inputDelegate textWillChange:_selectableText];
 
-  if ([v2 isEmpty])
+  if ([selectedTextRange isEmpty])
   {
-    v4 = [a1 _selectableText];
-    v5 = v4;
-    if (v2)
+    _selectableText2 = [self _selectableText];
+    v5 = _selectableText2;
+    if (selectedTextRange)
     {
-      v6 = [v4 tokenizer];
-      v7 = [v2 end];
-      v8 = [v6 rangeEnclosingPosition:v7 withGranularity:1 inDirection:0];
+      tokenizer = [_selectableText2 tokenizer];
+      v7 = [selectedTextRange end];
+      v8 = [tokenizer rangeEnclosingPosition:v7 withGranularity:1 inDirection:0];
 
-      if (v8 || ([v5 tokenizer], v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v2, "end"), v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v13, "positionFromPosition:toBoundary:inDirection:", v14, 1, 0), v15 = objc_claimAutoreleasedReturnValue(), v14, v13, v15) && (objc_msgSend(v5, "tokenizer"), v16 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v16, "rangeEnclosingPosition:withGranularity:inDirection:", v15, 1, 0), v8 = objc_claimAutoreleasedReturnValue(), v16, v15, v8))
+      if (v8 || ([v5 tokenizer], v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend(selectedTextRange, "end"), v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v13, "positionFromPosition:toBoundary:inDirection:", v14, 1, 0), v15 = objc_claimAutoreleasedReturnValue(), v14, v13, v15) && (objc_msgSend(v5, "tokenizer"), v16 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v16, "rangeEnclosingPosition:withGranularity:inDirection:", v15, 1, 0), v8 = objc_claimAutoreleasedReturnValue(), v16, v15, v8))
       {
-        v9 = [v2 start];
+        start = [selectedTextRange start];
         v10 = [v8 end];
-        v11 = [v5 textRangeFromPosition:v9 toPosition:v10];
+        v11 = [v5 textRangeFromPosition:start toPosition:v10];
 
-        v2 = v11;
+        selectedTextRange = v11;
       }
     }
   }
 
-  [a1 _deleteTextRange:v2];
-  v12 = [v17 inputDelegate];
-  [v12 textDidChange:v17];
+  [self _deleteTextRange:selectedTextRange];
+  inputDelegate2 = [_selectableText inputDelegate];
+  [inputDelegate2 textDidChange:_selectableText];
 }
 
 - (void)_deleteToStartOfLine
 {
-  v12 = [a1 _selectableText];
-  v2 = [v12 selectedTextRange];
-  v3 = [v12 inputDelegate];
-  [v3 textWillChange:v12];
+  _selectableText = [self _selectableText];
+  selectedTextRange = [_selectableText selectedTextRange];
+  inputDelegate = [_selectableText inputDelegate];
+  [inputDelegate textWillChange:_selectableText];
 
-  if ([v2 isEmpty])
+  if ([selectedTextRange isEmpty])
   {
-    v4 = [v12 tokenizer];
-    v5 = [v2 start];
-    v6 = [v4 positionFromPosition:v5 toBoundary:4 inDirection:1];
+    tokenizer = [_selectableText tokenizer];
+    start = [selectedTextRange start];
+    v6 = [tokenizer positionFromPosition:start toBoundary:4 inDirection:1];
 
     if (v6)
     {
-      v7 = [v2 start];
-      v8 = [v12 comparePosition:v7 toPosition:v6];
+      start2 = [selectedTextRange start];
+      v8 = [_selectableText comparePosition:start2 toPosition:v6];
 
       if (v8 == 1)
       {
-        v9 = [v2 start];
-        v10 = [v12 textRangeFromPosition:v6 toPosition:v9];
+        start3 = [selectedTextRange start];
+        v10 = [_selectableText textRangeFromPosition:v6 toPosition:start3];
 
-        v2 = v10;
+        selectedTextRange = v10;
       }
     }
   }
 
-  [a1 _deleteTextRange:v2];
-  v11 = [v12 inputDelegate];
-  [v11 textDidChange:v12];
+  [self _deleteTextRange:selectedTextRange];
+  inputDelegate2 = [_selectableText inputDelegate];
+  [inputDelegate2 textDidChange:_selectableText];
 }
 
 - (void)_deleteToEndOfLine
 {
-  v12 = [a1 _selectableText];
-  v2 = [v12 selectedTextRange];
-  v3 = [v12 inputDelegate];
-  [v3 textWillChange:v12];
+  _selectableText = [self _selectableText];
+  selectedTextRange = [_selectableText selectedTextRange];
+  inputDelegate = [_selectableText inputDelegate];
+  [inputDelegate textWillChange:_selectableText];
 
-  if ([v2 isEmpty])
+  if ([selectedTextRange isEmpty])
   {
-    v4 = [v12 tokenizer];
-    v5 = [v2 end];
-    v6 = [v4 positionFromPosition:v5 toBoundary:4 inDirection:0];
+    tokenizer = [_selectableText tokenizer];
+    v5 = [selectedTextRange end];
+    v6 = [tokenizer positionFromPosition:v5 toBoundary:4 inDirection:0];
 
     if (v6)
     {
-      v7 = [v2 end];
-      v8 = [v12 comparePosition:v6 toPosition:v7];
+      v7 = [selectedTextRange end];
+      v8 = [_selectableText comparePosition:v6 toPosition:v7];
 
       if (v8 == 1)
       {
-        v9 = [v2 end];
-        v10 = [v12 textRangeFromPosition:v9 toPosition:v6];
+        v9 = [selectedTextRange end];
+        v10 = [_selectableText textRangeFromPosition:v9 toPosition:v6];
 
-        v2 = v10;
+        selectedTextRange = v10;
       }
     }
   }
 
-  [a1 _deleteTextRange:v2];
-  v11 = [v12 inputDelegate];
-  [v11 textDidChange:v12];
+  [self _deleteTextRange:selectedTextRange];
+  inputDelegate2 = [_selectableText inputDelegate];
+  [inputDelegate2 textDidChange:_selectableText];
 }
 
 - (void)_deleteToEndOfParagraph
 {
-  v12 = [a1 _selectableText];
-  v2 = [v12 selectedTextRange];
-  v3 = [v12 inputDelegate];
-  [v3 textWillChange:v12];
+  _selectableText = [self _selectableText];
+  selectedTextRange = [_selectableText selectedTextRange];
+  inputDelegate = [_selectableText inputDelegate];
+  [inputDelegate textWillChange:_selectableText];
 
-  if ([v2 isEmpty])
+  if ([selectedTextRange isEmpty])
   {
-    v4 = [v12 tokenizer];
-    v5 = [v2 end];
-    v6 = [v4 positionFromPosition:v5 toBoundary:3 inDirection:0];
+    tokenizer = [_selectableText tokenizer];
+    v5 = [selectedTextRange end];
+    v6 = [tokenizer positionFromPosition:v5 toBoundary:3 inDirection:0];
 
     if (v6)
     {
-      v7 = [v2 end];
-      v8 = [v12 comparePosition:v6 toPosition:v7];
+      v7 = [selectedTextRange end];
+      v8 = [_selectableText comparePosition:v6 toPosition:v7];
 
       if (v8 == 1)
       {
-        v9 = [v2 end];
-        v10 = [v12 textRangeFromPosition:v9 toPosition:v6];
+        v9 = [selectedTextRange end];
+        v10 = [_selectableText textRangeFromPosition:v9 toPosition:v6];
 
-        v2 = v10;
+        selectedTextRange = v10;
       }
     }
   }
 
-  [a1 _deleteTextRange:v2];
-  v11 = [v12 inputDelegate];
-  [v11 textDidChange:v12];
+  [self _deleteTextRange:selectedTextRange];
+  inputDelegate2 = [_selectableText inputDelegate];
+  [inputDelegate2 textDidChange:_selectableText];
 }
 
 - (void)_deleteTextRange:()UITextInput_Internal
 {
   v4 = a3;
-  v9 = [a1 _selectableText];
-  v5 = [v9 selectedTextRange];
-  [v9 setSelectedTextRange:v4];
+  _selectableText = [self _selectableText];
+  selectedTextRange = [_selectableText selectedTextRange];
+  [_selectableText setSelectedTextRange:v4];
 
-  v6 = [v9 selectedTextRange];
-  v7 = [v6 isEmpty];
+  selectedTextRange2 = [_selectableText selectedTextRange];
+  isEmpty = [selectedTextRange2 isEmpty];
 
-  if ((v7 & 1) == 0)
+  if ((isEmpty & 1) == 0)
   {
     if (objc_opt_respondsToSelector())
     {
-      v8 = v9;
+      v8 = _selectableText;
       if ([v8 keyboardInputShouldDelete:v8])
       {
         [v8 deleteBackward];
@@ -1202,138 +1202,138 @@ LABEL_13:
 
       else
       {
-        [v8 setSelectedTextRange:v5];
+        [v8 setSelectedTextRange:selectedTextRange];
       }
     }
 
     else
     {
-      [v9 deleteBackward];
+      [_selectableText deleteBackward];
     }
   }
 }
 
 - (void)_deleteBackwardAndNotify:()UITextInput_Internal
 {
-  v1 = [a1 _keyInput];
-  [v1 deleteBackward];
+  _keyInput = [self _keyInput];
+  [_keyInput deleteBackward];
 }
 
 - (void)_deleteForwardAndNotify:()UITextInput_Internal
 {
-  v12 = [a1 _selectableText];
-  v2 = [v12 selectedTextRange];
-  v3 = [v12 inputDelegate];
-  [v3 textWillChange:v12];
+  _selectableText = [self _selectableText];
+  selectedTextRange = [_selectableText selectedTextRange];
+  inputDelegate = [_selectableText inputDelegate];
+  [inputDelegate textWillChange:_selectableText];
 
-  if ([v2 isEmpty])
+  if ([selectedTextRange isEmpty])
   {
-    v4 = [v12 tokenizer];
-    v5 = [v2 end];
-    v6 = [v4 positionFromPosition:v5 toBoundary:0 inDirection:0];
+    tokenizer = [_selectableText tokenizer];
+    v5 = [selectedTextRange end];
+    v6 = [tokenizer positionFromPosition:v5 toBoundary:0 inDirection:0];
 
     if (v6)
     {
-      v7 = [v2 end];
-      v8 = [v12 comparePosition:v6 toPosition:v7];
+      v7 = [selectedTextRange end];
+      v8 = [_selectableText comparePosition:v6 toPosition:v7];
 
       if (v8 == 1)
       {
-        v9 = [v2 end];
-        v10 = [v12 textRangeFromPosition:v9 toPosition:v6];
+        v9 = [selectedTextRange end];
+        v10 = [_selectableText textRangeFromPosition:v9 toPosition:v6];
 
-        v2 = v10;
+        selectedTextRange = v10;
       }
     }
   }
 
-  [a1 _deleteTextRange:v2];
-  v11 = [v12 inputDelegate];
-  [v11 textDidChange:v12];
+  [self _deleteTextRange:selectedTextRange];
+  inputDelegate2 = [_selectableText inputDelegate];
+  [inputDelegate2 textDidChange:_selectableText];
 }
 
 - (void)_transpose
 {
-  v18 = [a1 _selectableText];
-  v1 = [v18 selectedTextRange];
-  if ([v1 isEmpty])
+  _selectableText = [self _selectableText];
+  selectedTextRange = [_selectableText selectedTextRange];
+  if ([selectedTextRange isEmpty])
   {
-    v2 = [v18 inputDelegate];
-    [v2 textWillChange:v18];
+    inputDelegate = [_selectableText inputDelegate];
+    [inputDelegate textWillChange:_selectableText];
 
-    v3 = [v18 tokenizer];
-    v4 = [v1 start];
-    v5 = [v3 positionFromPosition:v4 toBoundary:0 inDirection:1];
+    tokenizer = [_selectableText tokenizer];
+    start = [selectedTextRange start];
+    v5 = [tokenizer positionFromPosition:start toBoundary:0 inDirection:1];
 
-    v6 = [v18 tokenizer];
-    v7 = [v1 end];
-    v8 = [v6 positionFromPosition:v7 toBoundary:0 inDirection:0];
+    tokenizer2 = [_selectableText tokenizer];
+    v7 = [selectedTextRange end];
+    v8 = [tokenizer2 positionFromPosition:v7 toBoundary:0 inDirection:0];
 
     if (v5 && v8)
     {
-      v9 = [v1 start];
-      v10 = [v18 textRangeFromPosition:v5 toPosition:v9];
+      start2 = [selectedTextRange start];
+      v10 = [_selectableText textRangeFromPosition:v5 toPosition:start2];
 
-      v11 = [v1 end];
-      v12 = [v18 textRangeFromPosition:v11 toPosition:v8];
+      v11 = [selectedTextRange end];
+      v12 = [_selectableText textRangeFromPosition:v11 toPosition:v8];
 
       if (v10 && v12)
       {
-        v13 = [v18 textInRange:v10];
-        v14 = [v18 textInRange:v12];
+        v13 = [_selectableText textInRange:v10];
+        v14 = [_selectableText textInRange:v12];
         v15 = [v14 stringByAppendingString:v13];
-        v16 = [v18 textRangeFromPosition:v5 toPosition:v8];
+        v16 = [_selectableText textRangeFromPosition:v5 toPosition:v8];
         if (v16)
         {
-          [v18 replaceRange:v16 withText:v15];
+          [_selectableText replaceRange:v16 withText:v15];
         }
       }
     }
 
-    v17 = [v18 inputDelegate];
-    [v17 textDidChange:v18];
+    inputDelegate2 = [_selectableText inputDelegate];
+    [inputDelegate2 textDidChange:_selectableText];
   }
 }
 
 - (void)_replaceCurrentWordWithText:()UITextInput_Internal
 {
   v8 = a3;
-  v4 = [a1 _selectableText];
-  v5 = [v4 selectedTextRange];
-  v6 = [v5 start];
-  v7 = [a1 _rangeOfEnclosingWord:v6];
+  _selectableText = [self _selectableText];
+  selectedTextRange = [_selectableText selectedTextRange];
+  start = [selectedTextRange start];
+  v7 = [self _rangeOfEnclosingWord:start];
 
   if (v7)
   {
-    [v4 replaceRange:v7 withText:v8];
+    [_selectableText replaceRange:v7 withText:v8];
   }
 }
 
 - (void)_replaceDocumentWithText:()UITextInput_Internal
 {
   v7 = a3;
-  v4 = [a1 _selectableText];
-  v5 = [a1 _fullRange];
-  v6 = v5;
-  if (v5)
+  _selectableText = [self _selectableText];
+  _fullRange = [self _fullRange];
+  v6 = _fullRange;
+  if (_fullRange)
   {
-    if (([v5 isEmpty] & 1) == 0)
+    if (([_fullRange isEmpty] & 1) == 0)
     {
-      [v4 replaceRange:v6 withText:&stru_1EFB14550];
+      [_selectableText replaceRange:v6 withText:&stru_1EFB14550];
     }
 
-    [v4 insertText:v7];
+    [_selectableText insertText:v7];
   }
 }
 
 - (void)_scrollRectToVisible:()UITextInput_Internal animated:
 {
-  v14 = [a1 _selectableText];
-  v12 = [v14 textInputView];
+  _selectableText = [self _selectableText];
+  textInputView = [_selectableText textInputView];
   if (objc_opt_respondsToSelector())
   {
-    v13 = [v12 performSelector:sel__enclosingScrollerIncludingSelf];
-    [v13 convertRect:v12 fromView:{a2, a3, a4, a5}];
+    v13 = [textInputView performSelector:sel__enclosingScrollerIncludingSelf];
+    [v13 convertRect:textInputView fromView:{a2, a3, a4, a5}];
     [v13 scrollRectToVisible:a7 animated:?];
   }
 }
@@ -1352,17 +1352,17 @@ LABEL_13:
 {
   v6 = a3;
   v7 = a4;
-  v8 = [a1 _selectableText];
+  _selectableText = [self _selectableText];
   if (![v6 length])
   {
-    v11 = [v8 textRangeFromPosition:v7 toPosition:v7];
+    v11 = [_selectableText textRangeFromPosition:v7 toPosition:v7];
     goto LABEL_30;
   }
 
-  v9 = [v8 _rangeOfEnclosingWord:v7];
+  v9 = [_selectableText _rangeOfEnclosingWord:v7];
   if (v9)
   {
-    v10 = [v8 textInRange:v9];
+    v10 = [_selectableText textInRange:v9];
   }
 
   else
@@ -1372,17 +1372,17 @@ LABEL_13:
 
   if (![v10 isEqualToString:v6])
   {
-    v13 = [v8 positionFromPosition:v7 offset:{-objc_msgSend(v6, "length")}];
-    if (!v13)
+    beginningOfDocument = [_selectableText positionFromPosition:v7 offset:{-objc_msgSend(v6, "length")}];
+    if (!beginningOfDocument)
     {
-      v13 = [v8 beginningOfDocument];
+      beginningOfDocument = [_selectableText beginningOfDocument];
     }
 
-    v14 = [v8 textRangeFromPosition:v13 toPosition:v7];
+    v14 = [_selectableText textRangeFromPosition:beginningOfDocument toPosition:v7];
 
     if (v14)
     {
-      v15 = [v8 textInRange:v14];
+      v15 = [_selectableText textInRange:v14];
 
       v16 = [v15 length];
       if (v16 <= [v6 length])
@@ -1390,8 +1390,8 @@ LABEL_13:
         v12 = v14;
         v10 = v15;
 LABEL_25:
-        v21 = [a1 _normalizedStringForRangeComparison:v10];
-        v22 = [a1 _normalizedStringForRangeComparison:v6];
+        v21 = [self _normalizedStringForRangeComparison:v10];
+        v22 = [self _normalizedStringForRangeComparison:v6];
         if ([v21 isEqualToString:v22])
         {
           v11 = v12;
@@ -1408,28 +1408,28 @@ LABEL_25:
       v17 = 0;
       while (1)
       {
-        v18 = v13;
-        v13 = [v8 positionFromPosition:v13 offset:1];
+        v18 = beginningOfDocument;
+        beginningOfDocument = [_selectableText positionFromPosition:beginningOfDocument offset:1];
 
-        if (!v13)
+        if (!beginningOfDocument)
         {
           break;
         }
 
-        if ([v8 comparePosition:v13 toPosition:v7] != -1)
+        if ([_selectableText comparePosition:beginningOfDocument toPosition:v7] != -1)
         {
 
           break;
         }
 
-        v12 = [v8 textRangeFromPosition:v13 toPosition:v7];
+        v12 = [_selectableText textRangeFromPosition:beginningOfDocument toPosition:v7];
 
         if (!v12)
         {
           goto LABEL_24;
         }
 
-        v10 = [v8 textInRange:v12];
+        v10 = [_selectableText textInRange:v12];
 
         v19 = [v10 length];
         if (v19 > [v6 length])
@@ -1445,7 +1445,7 @@ LABEL_25:
         goto LABEL_25;
       }
 
-      v13 = 0;
+      beginningOfDocument = 0;
     }
 
     else
@@ -1474,14 +1474,14 @@ LABEL_30:
   v6 = a4;
   if (v6)
   {
-    v7 = [a1 _selectableText];
-    v8 = [v7 tokenizer];
-    v9 = [v8 rangeEnclosingPosition:v6 withGranularity:a3 inDirection:0];
+    _selectableText = [self _selectableText];
+    tokenizer = [_selectableText tokenizer];
+    v9 = [tokenizer rangeEnclosingPosition:v6 withGranularity:a3 inDirection:0];
 
     if (!v9)
     {
-      v10 = [v7 tokenizer];
-      v9 = [v10 rangeEnclosingPosition:v6 withGranularity:a3 inDirection:1];
+      tokenizer2 = [_selectableText tokenizer];
+      v9 = [tokenizer2 rangeEnclosingPosition:v6 withGranularity:a3 inDirection:1];
     }
   }
 
@@ -1495,10 +1495,10 @@ LABEL_30:
 
 - (id)_fullRange
 {
-  v1 = [a1 _selectableText];
-  v2 = [v1 beginningOfDocument];
-  v3 = [v1 endOfDocument];
-  v4 = [v1 textRangeFromPosition:v2 toPosition:v3];
+  _selectableText = [self _selectableText];
+  beginningOfDocument = [_selectableText beginningOfDocument];
+  endOfDocument = [_selectableText endOfDocument];
+  v4 = [_selectableText textRangeFromPosition:beginningOfDocument toPosition:endOfDocument];
 
   return v4;
 }
@@ -1512,19 +1512,19 @@ LABEL_30:
     goto LABEL_17;
   }
 
-  v7 = [a1 _selectableText];
-  v8 = [a1 _rangeOfTextUnit:a3 enclosingPosition:v6];
+  _selectableText = [self _selectableText];
+  v8 = [self _rangeOfTextUnit:a3 enclosingPosition:v6];
   if (!v8)
   {
-    v9 = [v7 tokenizer];
+    tokenizer = [_selectableText tokenizer];
     v10 = 1;
-    v11 = [v9 positionFromPosition:v6 toBoundary:a3 inDirection:1];
+    v11 = [tokenizer positionFromPosition:v6 toBoundary:a3 inDirection:1];
 
     v12 = v11;
     if (!v11)
     {
-      v13 = [v7 tokenizer];
-      v12 = [v13 positionFromPosition:v6 toBoundary:a3 inDirection:0];
+      tokenizer2 = [_selectableText tokenizer];
+      v12 = [tokenizer2 positionFromPosition:v6 toBoundary:a3 inDirection:0];
 
       if (!v12)
       {
@@ -1535,16 +1535,16 @@ LABEL_30:
       v10 = 0;
     }
 
-    v14 = [v7 tokenizer];
-    v15 = [v14 rangeEnclosingPosition:v12 withGranularity:a3 inDirection:v10];
+    tokenizer3 = [_selectableText tokenizer];
+    v15 = [tokenizer3 rangeEnclosingPosition:v12 withGranularity:a3 inDirection:v10];
 
     if (v11)
     {
-      v16 = [v15 start];
-      if (v16)
+      start = [v15 start];
+      if (start)
       {
-        v17 = v7;
-        v18 = v16;
+        v17 = _selectableText;
+        v18 = start;
         v19 = v6;
 LABEL_13:
         v8 = [v17 textRangeFromPosition:v18 toPosition:v19];
@@ -1557,12 +1557,12 @@ LABEL_15:
     }
 
 LABEL_11:
-    v16 = [v15 end];
-    if (v16)
+    start = [v15 end];
+    if (start)
     {
-      v17 = v7;
+      v17 = _selectableText;
       v18 = v6;
-      v19 = v16;
+      v19 = start;
       goto LABEL_13;
     }
 
@@ -1581,9 +1581,9 @@ LABEL_17:
 - (BOOL)_range:()UITextInput_Internal containsRange:
 {
   v6 = a4;
-  v7 = [a1 _nsrangeForTextRange:a3];
+  v7 = [self _nsrangeForTextRange:a3];
   v9 = v8;
-  v10 = [a1 _nsrangeForTextRange:v6];
+  v10 = [self _nsrangeForTextRange:v6];
   v12 = v11;
 
   if (!v12)
@@ -1602,9 +1602,9 @@ LABEL_17:
 - (BOOL)_range:()UITextInput_Internal intersectsRange:
 {
   v6 = a4;
-  v7 = [a1 _nsrangeForTextRange:a3];
+  v7 = [self _nsrangeForTextRange:a3];
   v9 = v8;
-  v10 = [a1 _nsrangeForTextRange:v6];
+  v10 = [self _nsrangeForTextRange:v6];
   v12 = v11;
 
   v14.location = v7;
@@ -1618,10 +1618,10 @@ LABEL_17:
 {
   v6 = a3;
   v7 = a4;
-  v8 = a1;
-  v9 = [v6 start];
-  v10 = [v7 start];
-  if ([v8 comparePosition:v9 toPosition:v10] == 1)
+  selfCopy = self;
+  start = [v6 start];
+  start2 = [v7 start];
+  if ([selfCopy comparePosition:start toPosition:start2] == 1)
   {
     v11 = v6;
   }
@@ -1631,11 +1631,11 @@ LABEL_17:
     v11 = v7;
   }
 
-  v12 = [v11 start];
+  start3 = [v11 start];
 
   v13 = [v6 end];
   v14 = [v7 end];
-  if ([v8 comparePosition:v13 toPosition:v14] == -1)
+  if ([selfCopy comparePosition:v13 toPosition:v14] == -1)
   {
     v15 = v6;
   }
@@ -1647,7 +1647,7 @@ LABEL_17:
 
   v16 = [v15 end];
 
-  v17 = [v8 textRangeFromPosition:v12 toPosition:v16];
+  v17 = [selfCopy textRangeFromPosition:start3 toPosition:v16];
 
   return v17;
 }
@@ -1667,14 +1667,14 @@ LABEL_17:
     v9 = 0;
     if (v6 && v7)
     {
-      v10 = a1;
-      v11 = [v6 start];
-      v12 = [v8 start];
-      v13 = [v10 comparePosition:v11 toPosition:v12];
+      selfCopy = self;
+      start = [v6 start];
+      start2 = [v8 start];
+      v13 = [selfCopy comparePosition:start toPosition:start2];
 
       v14 = [v6 end];
       v15 = [v8 end];
-      v16 = v13 | [v10 comparePosition:v14 toPosition:v15];
+      v16 = v13 | [selfCopy comparePosition:v14 toPosition:v15];
 
       v9 = v16 == 0;
     }
@@ -1689,12 +1689,12 @@ LABEL_17:
   v7 = v6;
   if (a4 == 5)
   {
-    v8 = [a1 _findDocumentBoundaryFromPosition:v6];
+    v8 = [self _findDocumentBoundaryFromPosition:v6];
   }
 
   else if (a4 == 1)
   {
-    v8 = [a1 _findPleasingWordBoundaryFromPosition:v6];
+    v8 = [self _findPleasingWordBoundaryFromPosition:v6];
   }
 
   else
@@ -1710,22 +1710,22 @@ LABEL_17:
 - (id)_findPleasingWordBoundaryFromPosition:()UITextInput_Internal
 {
   v4 = a3;
-  v5 = [a1 _selectableText];
-  v6 = [v5 tokenizer];
-  if ([v6 isPosition:v4 atBoundary:4 inDirection:0])
+  _selectableText = [self _selectableText];
+  tokenizer = [_selectableText tokenizer];
+  if ([tokenizer isPosition:v4 atBoundary:4 inDirection:0])
   {
     goto LABEL_2;
   }
 
-  v9 = [v6 isPosition:v4 withinTextUnit:1 inDirection:0];
-  v10 = [v5 tokenizer];
-  v11 = v10;
+  v9 = [tokenizer isPosition:v4 withinTextUnit:1 inDirection:0];
+  tokenizer2 = [_selectableText tokenizer];
+  v11 = tokenizer2;
   if (v9)
   {
-    v12 = [v10 rangeEnclosingPosition:v4 withGranularity:1 inDirection:0];
+    v12 = [tokenizer2 rangeEnclosingPosition:v4 withGranularity:1 inDirection:0];
 
-    v13 = [v12 start];
-    v14 = [v5 offsetFromPosition:v13 toPosition:v4];
+    start = [v12 start];
+    v14 = [_selectableText offsetFromPosition:start toPosition:v4];
 
     if (v14 > 1)
     {
@@ -1741,23 +1741,23 @@ LABEL_17:
     goto LABEL_12;
   }
 
-  v15 = [v10 isPosition:v4 atBoundary:1 inDirection:1];
+  v15 = [tokenizer2 isPosition:v4 atBoundary:1 inDirection:1];
 
   if (v15)
   {
 LABEL_2:
-    v7 = v4;
+    endOfDocument = v4;
 LABEL_3:
-    v8 = v7;
+    v8 = endOfDocument;
     goto LABEL_12;
   }
 
-  v16 = [v5 tokenizer];
-  v8 = [v16 positionFromPosition:v4 toBoundary:1 inDirection:0];
+  tokenizer3 = [_selectableText tokenizer];
+  v8 = [tokenizer3 positionFromPosition:v4 toBoundary:1 inDirection:0];
 
   if (!v8)
   {
-    v7 = [v5 endOfDocument];
+    endOfDocument = [_selectableText endOfDocument];
     goto LABEL_3;
   }
 
@@ -1769,20 +1769,20 @@ LABEL_12:
 - (id)_findDocumentBoundaryFromPosition:()UITextInput_Internal
 {
   v4 = a3;
-  v5 = [a1 _selectableText];
-  v6 = [v5 beginningOfDocument];
-  v7 = [v5 endOfDocument];
-  v8 = [v5 offsetFromPosition:v6 toPosition:v4];
-  v9 = [v5 offsetFromPosition:v4 toPosition:v7];
+  _selectableText = [self _selectableText];
+  beginningOfDocument = [_selectableText beginningOfDocument];
+  endOfDocument = [_selectableText endOfDocument];
+  v8 = [_selectableText offsetFromPosition:beginningOfDocument toPosition:v4];
+  v9 = [_selectableText offsetFromPosition:v4 toPosition:endOfDocument];
 
   if (v8 <= v9)
   {
-    v10 = v6;
+    v10 = beginningOfDocument;
   }
 
   else
   {
-    v10 = v7;
+    v10 = endOfDocument;
   }
 
   v11 = v10;
@@ -1794,26 +1794,26 @@ LABEL_12:
 - (id)_underlineRectsByDocumentLineForSelectionRange:()UITextInput_Internal
 {
   v4 = a3;
-  v5 = [a1 _selectableText];
-  v6 = [v5 tokenizer];
-  v7 = [v4 start];
-  v8 = [v6 rangeEnclosingPosition:v7 withGranularity:4 inDirection:0];
+  _selectableText = [self _selectableText];
+  tokenizer = [_selectableText tokenizer];
+  start = [v4 start];
+  v8 = [tokenizer rangeEnclosingPosition:start withGranularity:4 inDirection:0];
 
   v9 = [v4 end];
-  v10 = [v6 rangeEnclosingPosition:v9 withGranularity:4 inDirection:0];
+  v10 = [tokenizer rangeEnclosingPosition:v9 withGranularity:4 inDirection:0];
 
   if (!v8 || !v10 || ([v8 isEmpty] & 1) != 0 || (objc_msgSend(v10, "isEmpty") & 1) != 0 || (objc_msgSend(v8, "isEqual:", v10) & 1) != 0)
   {
     goto LABEL_9;
   }
 
-  v11 = [v8 start];
-  v12 = [v10 start];
-  if ([v11 isEqual:v12])
+  start2 = [v8 start];
+  start3 = [v10 start];
+  if ([start2 isEqual:start3])
   {
 
 LABEL_9:
-    v15 = [v5 selectionRectsForRange:v4];
+    v15 = [_selectableText selectionRectsForRange:v4];
     goto LABEL_10;
   }
 
@@ -1827,21 +1827,21 @@ LABEL_9:
   }
 
   v15 = objc_opt_new();
-  v17 = [v4 start];
+  start4 = [v4 start];
   v18 = [v8 end];
-  v19 = [v5 textRangeFromPosition:v17 toPosition:v18];
+  v19 = [_selectableText textRangeFromPosition:start4 toPosition:v18];
 
   v29 = v19;
-  [a1 _updateSelectedRects:v15 byTrimmingWhitespaceInRange:v19 inDocument:v5];
+  [self _updateSelectedRects:v15 byTrimmingWhitespaceInRange:v19 inDocument:_selectableText];
   v20 = [v8 end];
-  v21 = [v6 rangeEnclosingPosition:v20 withGranularity:4 inDirection:0];
+  v21 = [tokenizer rangeEnclosingPosition:v20 withGranularity:4 inDirection:0];
 
   if (v21)
   {
     while (([v21 isEqual:v10] & 1) == 0)
     {
       v22 = [v21 end];
-      v23 = [v6 rangeEnclosingPosition:v22 withGranularity:4 inDirection:0];
+      v23 = [tokenizer rangeEnclosingPosition:v22 withGranularity:4 inDirection:0];
 
       if ([v23 isEqual:v21])
       {
@@ -1849,7 +1849,7 @@ LABEL_9:
         break;
       }
 
-      v24 = [v5 selectionRectsForRange:v21];
+      v24 = [_selectableText selectionRectsForRange:v21];
       [v15 addObjectsFromArray:v24];
 
       v21 = v23;
@@ -1860,13 +1860,13 @@ LABEL_9:
     }
   }
 
-  v25 = [v10 start];
+  start5 = [v10 start];
   v26 = [v4 end];
-  v27 = [v5 textRangeFromPosition:v25 toPosition:v26];
+  v27 = [_selectableText textRangeFromPosition:start5 toPosition:v26];
 
   if (v27)
   {
-    [a1 _updateSelectedRects:v15 byTrimmingWhitespaceInRange:v27 inDocument:v5];
+    [self _updateSelectedRects:v15 byTrimmingWhitespaceInRange:v27 inDocument:_selectableText];
   }
 
 LABEL_10:
@@ -1883,16 +1883,16 @@ LABEL_10:
   if (v7)
   {
     v10 = [v8 textInRange:v7];
-    v11 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-    v12 = [v10 stringByTrimmingCharactersInSet:v11];
+    whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+    v12 = [v10 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
     if ([v12 length])
     {
-      v13 = [v7 start];
-      v14 = [v9 positionFromPosition:v13 offset:{objc_msgSend(v12, "length")}];
+      start = [v7 start];
+      v14 = [v9 positionFromPosition:start offset:{objc_msgSend(v12, "length")}];
 
-      v15 = [v7 start];
-      v16 = [v9 textRangeFromPosition:v15 toPosition:v14];
+      start2 = [v7 start];
+      v16 = [v9 textRangeFromPosition:start2 toPosition:v14];
 
       if (v16)
       {
@@ -1908,107 +1908,107 @@ LABEL_10:
   v4 = a3;
   if (v4)
   {
-    v5 = [a1 _selectableText];
+    _selectableText = [self _selectableText];
     v58 = v4;
     v6 = v4;
-    v7 = [v5 tokenizer];
-    v8 = [v6 start];
-    v9 = [v7 positionFromPosition:v8 toBoundary:2 inDirection:1];
+    tokenizer = [_selectableText tokenizer];
+    start = [v6 start];
+    v9 = [tokenizer positionFromPosition:start toBoundary:2 inDirection:1];
     v10 = v9;
     if (v9)
     {
-      v11 = v9;
+      beginningOfDocument = v9;
     }
 
     else
     {
-      v11 = [v5 beginningOfDocument];
+      beginningOfDocument = [_selectableText beginningOfDocument];
     }
 
-    v12 = v11;
+    v12 = beginningOfDocument;
 
-    v13 = [v6 start];
-    v14 = [v5 offsetFromPosition:v12 toPosition:v13];
+    start2 = [v6 start];
+    v14 = [_selectableText offsetFromPosition:v12 toPosition:start2];
 
     if (v14 >= 65)
     {
-      v15 = [v6 start];
-      v16 = [v5 positionFromPosition:v15 offset:-64];
+      start3 = [v6 start];
+      v16 = [_selectableText positionFromPosition:start3 offset:-64];
 
-      v12 = [v7 positionFromPosition:v16 toBoundary:1 inDirection:0];
+      v12 = [tokenizer positionFromPosition:v16 toBoundary:1 inDirection:0];
 
       if (!v12)
       {
-        v17 = [v6 start];
-        v18 = [v5 positionFromPosition:v17 offset:-64];
+        start4 = [v6 start];
+        v18 = [_selectableText positionFromPosition:start4 offset:-64];
 
-        v12 = [v7 positionFromPosition:v18 toBoundary:0 inDirection:0];
+        v12 = [tokenizer positionFromPosition:v18 toBoundary:0 inDirection:0];
       }
 
-      v19 = [v6 start];
-      v20 = [v5 comparePosition:v12 toPosition:v19];
+      start5 = [v6 start];
+      v20 = [_selectableText comparePosition:v12 toPosition:start5];
 
       if (v20 == 1)
       {
-        v21 = [v6 start];
-        v22 = [v7 positionFromPosition:v21 toBoundary:0 inDirection:1];
+        start6 = [v6 start];
+        v22 = [tokenizer positionFromPosition:start6 toBoundary:0 inDirection:1];
         v23 = v22;
         if (v22)
         {
-          v24 = v22;
+          start7 = v22;
         }
 
         else
         {
-          v24 = [v6 start];
+          start7 = [v6 start];
         }
 
-        v25 = v24;
+        v25 = start7;
 
         v12 = v25;
       }
     }
 
     v26 = [v6 end];
-    v27 = [v7 positionFromPosition:v26 toBoundary:2 inDirection:0];
+    v27 = [tokenizer positionFromPosition:v26 toBoundary:2 inDirection:0];
     v28 = v27;
     if (v27)
     {
-      v29 = v27;
+      endOfDocument = v27;
     }
 
     else
     {
-      v29 = [v5 endOfDocument];
+      endOfDocument = [_selectableText endOfDocument];
     }
 
-    v30 = v29;
+    v30 = endOfDocument;
 
     v31 = [v6 end];
-    v32 = [v5 offsetFromPosition:v31 toPosition:v30];
+    v32 = [_selectableText offsetFromPosition:v31 toPosition:v30];
 
     if (v32 >= 65)
     {
       v33 = [v6 end];
-      v34 = [v5 positionFromPosition:v33 offset:64];
+      v34 = [_selectableText positionFromPosition:v33 offset:64];
 
-      v30 = [v7 positionFromPosition:v34 toBoundary:1 inDirection:1];
+      v30 = [tokenizer positionFromPosition:v34 toBoundary:1 inDirection:1];
 
       if (!v30)
       {
         v35 = [v6 end];
-        v36 = [v5 positionFromPosition:v35 offset:64];
+        v36 = [_selectableText positionFromPosition:v35 offset:64];
 
-        v30 = [v7 positionFromPosition:v36 toBoundary:0 inDirection:1];
+        v30 = [tokenizer positionFromPosition:v36 toBoundary:0 inDirection:1];
       }
 
       v37 = [v6 end];
-      v38 = [v5 comparePosition:v37 toPosition:v30];
+      v38 = [_selectableText comparePosition:v37 toPosition:v30];
 
       if (v38 == 1)
       {
         v39 = [v6 end];
-        v40 = [v7 positionFromPosition:v39 toBoundary:0 inDirection:0];
+        v40 = [tokenizer positionFromPosition:v39 toBoundary:0 inDirection:0];
         v41 = v40;
         if (v40)
         {
@@ -2026,20 +2026,20 @@ LABEL_10:
       }
     }
 
-    v57 = v7;
-    v59 = [v5 textRangeFromPosition:v12 toPosition:v30];
-    if ((objc_opt_respondsToSelector() & 1) == 0 || (v44 = [v5 keyboardType], v45 = 420, v44 != 3) && v44 != 10 && v44 != 120)
+    v57 = tokenizer;
+    v59 = [_selectableText textRangeFromPosition:v12 toPosition:v30];
+    if ((objc_opt_respondsToSelector() & 1) == 0 || (v44 = [_selectableText keyboardType], v45 = 420, v44 != 3) && v44 != 10 && v44 != 120)
     {
       v45 = 428;
     }
 
-    v46 = [v5 beginningOfDocument];
+    beginningOfDocument2 = [_selectableText beginningOfDocument];
     v56 = v12;
-    v47 = [v5 offsetFromPosition:v46 toPosition:v12];
+    v47 = [_selectableText offsetFromPosition:beginningOfDocument2 toPosition:v12];
 
-    v48 = [a1 _nsrangeForTextRange:v6];
+    v48 = [self _nsrangeForTextRange:v6];
     v50 = v49;
-    v51 = [v5 textInRange:v59];
+    v51 = [_selectableText textInRange:v59];
     v61 = 0;
     v62 = &v61;
     v63 = 0x3010000000;
@@ -2057,7 +2057,7 @@ LABEL_10:
     if (v53 != 0x7FFFFFFFFFFFFFFFLL && v62[5])
     {
       v62[4] = v53 + v47;
-      v54 = [a1 _textRangeFromNSRange:?];
+      v54 = [self _textRangeFromNSRange:?];
 
       v6 = v54;
     }
@@ -2081,27 +2081,27 @@ LABEL_10:
   v7 = v6;
   if (a4)
   {
-    v8 = [a1 _selectableText];
-    v9 = v8;
+    _selectableText = [self _selectableText];
+    v9 = _selectableText;
     if (a4 < 1)
     {
-      v10 = [v8 positionFromPosition:v7 offset:a4];
-      if (!v10)
+      beginningOfDocument = [_selectableText positionFromPosition:v7 offset:a4];
+      if (!beginningOfDocument)
       {
-        v10 = [v9 beginningOfDocument];
+        beginningOfDocument = [v9 beginningOfDocument];
       }
     }
 
     else
     {
-      v10 = [v8 positionFromPosition:v7 offset:a4];
-      if (!v10)
+      beginningOfDocument = [_selectableText positionFromPosition:v7 offset:a4];
+      if (!beginningOfDocument)
       {
-        v10 = [v9 endOfDocument];
+        beginningOfDocument = [v9 endOfDocument];
       }
     }
 
-    v11 = v10;
+    v11 = beginningOfDocument;
   }
 
   else
@@ -2114,56 +2114,56 @@ LABEL_10:
 
 - (id)_rangeFromCurrentRangeWithDelta:()UITextInput_Internal
 {
-  v6 = [a1 _selectableText];
-  v7 = [v6 selectedTextRange];
-  v8 = v7;
+  _selectableText = [self _selectableText];
+  selectedTextRange = [_selectableText selectedTextRange];
+  v8 = selectedTextRange;
   if (a3 | a4)
   {
     v10 = a4 + a3;
-    v11 = [v7 start];
+    start = [selectedTextRange start];
     v12 = [v8 end];
     if (a3)
     {
-      v13 = [v6 positionFromPosition:v11 offset:a3];
+      v13 = [_selectableText positionFromPosition:start offset:a3];
 
-      v11 = v13;
+      start = v13;
       if (!v13)
       {
         if (a3 < 0)
         {
-          [v6 beginningOfDocument];
+          [_selectableText beginningOfDocument];
         }
 
         else
         {
-          [v6 endOfDocument];
+          [_selectableText endOfDocument];
         }
-        v11 = ;
+        start = ;
       }
     }
 
     if (v10)
     {
-      v14 = [v6 positionFromPosition:v12 offset:v10];
+      v14 = [_selectableText positionFromPosition:v12 offset:v10];
 
       v12 = v14;
       if (!v14)
       {
         if (v10 < 0)
         {
-          v15 = v11;
+          endOfDocument = start;
         }
 
         else
         {
-          v15 = [v6 endOfDocument];
+          endOfDocument = [_selectableText endOfDocument];
         }
 
-        v12 = v15;
+        v12 = endOfDocument;
       }
     }
 
-    v16 = [v6 textRangeFromPosition:v11 toPosition:v12];
+    v16 = [_selectableText textRangeFromPosition:start toPosition:v12];
     v17 = v16;
     if (v16)
     {
@@ -2180,7 +2180,7 @@ LABEL_10:
 
   else
   {
-    v9 = v7;
+    v9 = selectedTextRange;
   }
 
   return v9;
@@ -2190,28 +2190,28 @@ LABEL_10:
 {
   if (objc_opt_respondsToSelector())
   {
-    v2 = [a1 textColorForCaretSelection];
+    textColorForCaretSelection = [self textColorForCaretSelection];
   }
 
   else
   {
-    v3 = [a1 _selectableText];
+    _selectableText = [self _selectableText];
     if (objc_opt_respondsToSelector())
     {
-      v4 = [v3 selectedTextRange];
-      v5 = [v4 end];
+      selectedTextRange = [_selectableText selectedTextRange];
+      v5 = [selectedTextRange end];
 
       if (v5)
       {
-        v6 = [v3 endOfDocument];
-        if (v6 && [v3 comparePosition:v6 toPosition:v5] == -1)
+        endOfDocument = [_selectableText endOfDocument];
+        if (endOfDocument && [_selectableText comparePosition:endOfDocument toPosition:v5] == -1)
         {
-          v7 = v6;
+          v7 = endOfDocument;
 
           v5 = v7;
         }
 
-        v8 = [v3 textStylingAtPosition:v5 inDirection:0];
+        v8 = [_selectableText textStylingAtPosition:v5 inDirection:0];
       }
 
       else
@@ -2229,44 +2229,44 @@ LABEL_10:
         v9 = @"UITextInputTextColorKey";
       }
 
-      v2 = [v8 objectForKey:v9];
+      textColorForCaretSelection = [v8 objectForKey:v9];
     }
 
     else
     {
-      v2 = 0;
+      textColorForCaretSelection = 0;
     }
   }
 
-  return v2;
+  return textColorForCaretSelection;
 }
 
 - (id)_fontForCaretSelection
 {
   if (objc_opt_respondsToSelector())
   {
-    v2 = [a1 fontForCaretSelection];
+    fontForCaretSelection = [self fontForCaretSelection];
   }
 
   else
   {
-    v3 = [a1 _selectableText];
+    _selectableText = [self _selectableText];
     if (objc_opt_respondsToSelector())
     {
-      v4 = [v3 selectedTextRange];
-      v5 = [v4 end];
+      selectedTextRange = [_selectableText selectedTextRange];
+      v5 = [selectedTextRange end];
 
       if (v5)
       {
-        v6 = [v3 endOfDocument];
-        if (v6 && [v3 comparePosition:v6 toPosition:v5] == -1)
+        endOfDocument = [_selectableText endOfDocument];
+        if (endOfDocument && [_selectableText comparePosition:endOfDocument toPosition:v5] == -1)
         {
-          v7 = v6;
+          v7 = endOfDocument;
 
           v5 = v7;
         }
 
-        v8 = [v3 textStylingAtPosition:v5 inDirection:0];
+        v8 = [_selectableText textStylingAtPosition:v5 inDirection:0];
       }
 
       else
@@ -2284,57 +2284,57 @@ LABEL_10:
         v9 = @"UITextInputTextFontKey";
       }
 
-      v2 = [v8 objectForKey:v9];
+      fontForCaretSelection = [v8 objectForKey:v9];
     }
 
     else
     {
-      v2 = 0;
+      fontForCaretSelection = 0;
     }
   }
 
-  return v2;
+  return fontForCaretSelection;
 }
 
 - (void)_updateSelectionWithTextRange:()UITextInput_Internal withAffinityDownstream:
 {
   v6 = a3;
-  v7 = [a1 _selectableText];
-  [v7 _setSelectedTextRange:v6 withAffinityDownstream:a4];
+  _selectableText = [self _selectableText];
+  [_selectableText _setSelectedTextRange:v6 withAffinityDownstream:a4];
 }
 
 - (id)_setSelectionRangeWithHistory:()UITextInput_Internal
 {
   v4 = a3;
-  v5 = [a1 _selectableText];
-  v6 = [v4 cursor];
+  _selectableText = [self _selectableText];
+  cursor = [v4 cursor];
 
-  if (!v6)
+  if (!cursor)
   {
     goto LABEL_19;
   }
 
   if ([v4 anchor] == 1)
   {
-    v7 = [v4 cursor];
+    cursor2 = [v4 cursor];
 LABEL_5:
-    [v4 setEnd:v7];
+    [v4 setEnd:cursor2];
     goto LABEL_6;
   }
 
-  v8 = [v4 anchor];
-  v7 = [v4 cursor];
-  [v4 setStart:v7];
-  if (v8 != 2)
+  anchor = [v4 anchor];
+  cursor2 = [v4 cursor];
+  [v4 setStart:cursor2];
+  if (anchor != 2)
   {
     goto LABEL_5;
   }
 
 LABEL_6:
 
-  v9 = [v4 start];
+  start = [v4 start];
   v10 = [v4 end];
-  v11 = [v5 comparePosition:v9 toPosition:v10];
+  v11 = [_selectableText comparePosition:start toPosition:v10];
 
   if (v11 >= 1)
   {
@@ -2351,32 +2351,32 @@ LABEL_6:
     [v4 setAnchor:v12];
   }
 
-  v13 = [v4 start];
+  start2 = [v4 start];
   v14 = [v4 end];
-  v15 = [v5 textRangeFromPosition:v13 toPosition:v14];
+  v15 = [_selectableText textRangeFromPosition:start2 toPosition:v14];
 
-  [a1 _updateSelectionWithTextRange:v15 withAffinityDownstream:{objc_msgSend(v4, "affinityDownstream")}];
+  [self _updateSelectionWithTextRange:v15 withAffinityDownstream:{objc_msgSend(v4, "affinityDownstream")}];
   if ([v4 anchor])
   {
     if ([v4 anchor] == 1)
     {
-      [v5 _lastRectForRange:v15];
+      [_selectableText _lastRectForRange:v15];
     }
 
     else
     {
-      [v5 firstRectForRange:v15];
+      [_selectableText firstRectForRange:v15];
     }
 
-    [v5 _scrollRectToVisible:0 animated:?];
+    [_selectableText _scrollRectToVisible:0 animated:?];
   }
 
   else if (objc_opt_respondsToSelector())
   {
-    v16 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v17 = *MEMORY[0x1E69E3030];
-    v18 = [a1 webView];
-    [v16 postNotificationName:v17 object:v18];
+    webView = [self webView];
+    [defaultCenter postNotificationName:v17 object:webView];
   }
 
 LABEL_19:
@@ -2401,44 +2401,44 @@ LABEL_19:
     v11 = objc_alloc_init(UITextInputArrowKeyHistory);
   }
 
-  v12 = [a1 _selectableText];
-  v13 = [v12 selectedTextRange];
-  v14 = [v13 start];
-  [(UITextInputArrowKeyHistory *)v11 setStart:v14];
+  _selectableText = [self _selectableText];
+  selectedTextRange = [_selectableText selectedTextRange];
+  start = [selectedTextRange start];
+  [(UITextInputArrowKeyHistory *)v11 setStart:start];
 
-  v15 = [v12 selectedTextRange];
-  v16 = [v15 end];
+  selectedTextRange2 = [_selectableText selectedTextRange];
+  v16 = [selectedTextRange2 end];
   [(UITextInputArrowKeyHistory *)v11 setEnd:v16];
 
-  v17 = [(UITextInputArrowKeyHistory *)v11 anchor];
-  v18 = [v12 selectedTextRange];
-  v19 = v18;
+  anchor = [(UITextInputArrowKeyHistory *)v11 anchor];
+  selectedTextRange3 = [_selectableText selectedTextRange];
+  v19 = selectedTextRange3;
   if (a5 == 2)
   {
-    if (v17 == 1)
+    if (anchor == 1)
     {
 LABEL_7:
-      v20 = [v18 end];
+      start2 = [selectedTextRange3 end];
       goto LABEL_10;
     }
   }
 
-  else if (v17 != 2)
+  else if (anchor != 2)
   {
     goto LABEL_7;
   }
 
-  v20 = [v18 start];
+  start2 = [selectedTextRange3 start];
 LABEL_10:
-  v21 = v20;
-  [(UITextInputArrowKeyHistory *)v11 setCursor:v20];
+  v21 = start2;
+  [(UITextInputArrowKeyHistory *)v11 setCursor:start2];
 
-  v22 = [(UITextInputArrowKeyHistory *)v11 startPosition];
+  startPosition = [(UITextInputArrowKeyHistory *)v11 startPosition];
 
-  if (!v22)
+  if (!startPosition)
   {
-    v23 = [(UITextInputArrowKeyHistory *)v11 cursor];
-    [(UITextInputArrowKeyHistory *)v11 setStartPosition:v23];
+    cursor = [(UITextInputArrowKeyHistory *)v11 cursor];
+    [(UITextInputArrowKeyHistory *)v11 setStartPosition:cursor];
 
     if (a4)
     {
@@ -2458,7 +2458,7 @@ LABEL_17:
   }
 
 LABEL_12:
-  if (!-[UITextInputArrowKeyHistory anchor](v11, "anchor") || [a1 _isEmptySelection])
+  if (!-[UITextInputArrowKeyHistory anchor](v11, "anchor") || [self _isEmptySelection])
   {
     goto LABEL_17;
   }
@@ -2472,96 +2472,96 @@ LABEL_18:
 - (id)_moveToStartOfWord:()UITextInput_Internal withHistory:
 {
   v6 = a4;
-  v7 = [a1 _selectableText];
-  v8 = [v7 selectedTextRange];
+  _selectableText = [self _selectableText];
+  selectedTextRange = [_selectableText selectedTextRange];
 
-  if (v8)
+  if (selectedTextRange)
   {
-    v9 = [a1 _setHistory:v6 withExtending:a3 withAnchor:2 withAffinityDownstream:1];
+    v9 = [self _setHistory:v6 withExtending:a3 withAnchor:2 withAffinityDownstream:1];
 
     [v9 setAmount:0];
-    v10 = [v7 tokenizer];
-    v11 = [v9 cursor];
-    v12 = [v10 isPosition:v11 withinTextUnit:1 inDirection:1];
+    tokenizer = [_selectableText tokenizer];
+    cursor = [v9 cursor];
+    v12 = [tokenizer isPosition:cursor withinTextUnit:1 inDirection:1];
 
     if (v12)
     {
 LABEL_7:
-      v22 = [v7 tokenizer];
-      v23 = [v9 cursor];
-      v24 = [v22 positionFromPosition:v23 toBoundary:1 inDirection:1];
+      tokenizer2 = [_selectableText tokenizer];
+      cursor2 = [v9 cursor];
+      v24 = [tokenizer2 positionFromPosition:cursor2 toBoundary:1 inDirection:1];
       [v9 setCursor:v24];
 
-      v25 = [v9 cursor];
-      [v9 setStartPosition:v25];
+      cursor3 = [v9 cursor];
+      [v9 setStartPosition:cursor3];
 
-      v26 = [a1 _setSelectionRangeWithHistory:v9];
+      v26 = [self _setSelectionRangeWithHistory:v9];
       goto LABEL_9;
     }
 
-    v13 = [v7 tokenizer];
-    v14 = [v9 cursor];
-    v15 = [v13 positionFromPosition:v14 toBoundary:1 inDirection:1];
+    tokenizer3 = [_selectableText tokenizer];
+    cursor4 = [v9 cursor];
+    cursor7 = [tokenizer3 positionFromPosition:cursor4 toBoundary:1 inDirection:1];
 
-    if (v15)
+    if (cursor7)
     {
 LABEL_4:
-      v16 = [v7 tokenizer];
-      v17 = [v9 cursor];
-      v18 = [v16 isPosition:v17 withinTextUnit:1 inDirection:1];
+      tokenizer4 = [_selectableText tokenizer];
+      cursor5 = [v9 cursor];
+      v18 = [tokenizer4 isPosition:cursor5 withinTextUnit:1 inDirection:1];
 
       if ((v18 & 1) == 0)
       {
-        v19 = [v7 tokenizer];
-        v20 = [v9 cursor];
-        v21 = [v19 positionFromPosition:v20 toBoundary:1 inDirection:1];
+        tokenizer5 = [_selectableText tokenizer];
+        cursor6 = [v9 cursor];
+        v21 = [tokenizer5 positionFromPosition:cursor6 toBoundary:1 inDirection:1];
         [v9 setCursor:v21];
       }
 
       goto LABEL_7;
     }
 
-    v15 = [v9 cursor];
+    cursor7 = [v9 cursor];
     v28 = 0;
     while (1)
     {
-      v29 = [v7 beginningOfDocument];
-      v30 = [v7 comparePosition:v29 toPosition:v15];
+      beginningOfDocument = [_selectableText beginningOfDocument];
+      v30 = [_selectableText comparePosition:beginningOfDocument toPosition:cursor7];
 
       if (!v30)
       {
         break;
       }
 
-      if (v28 && ![v7 comparePosition:v28 toPosition:v15])
+      if (v28 && ![_selectableText comparePosition:v28 toPosition:cursor7])
       {
-        v35 = [v7 beginningOfDocument];
-        [v9 setCursor:v35];
+        beginningOfDocument2 = [_selectableText beginningOfDocument];
+        [v9 setCursor:beginningOfDocument2];
 
-        v36 = [v9 cursor];
-        [v9 setStartPosition:v36];
+        cursor8 = [v9 cursor];
+        [v9 setStartPosition:cursor8];
 
         break;
       }
 
-      v31 = v15;
+      v31 = cursor7;
 
-      v32 = [v7 tokenizer];
-      v15 = [v32 positionFromPosition:v31 toBoundary:3 inDirection:1];
+      tokenizer6 = [_selectableText tokenizer];
+      cursor7 = [tokenizer6 positionFromPosition:v31 toBoundary:3 inDirection:1];
 
-      v33 = [v7 tokenizer];
-      v34 = [v33 isPosition:v15 atBoundary:3 inDirection:1];
+      tokenizer7 = [_selectableText tokenizer];
+      v34 = [tokenizer7 isPosition:cursor7 atBoundary:3 inDirection:1];
 
       v28 = v31;
       if ((v34 & 1) == 0)
       {
-        [v9 setCursor:v15];
+        [v9 setCursor:cursor7];
 
         goto LABEL_4;
       }
     }
 
-    v26 = [a1 _setSelectionRangeWithHistory:v9];
+    v26 = [self _setSelectionRangeWithHistory:v9];
   }
 
   else
@@ -2578,23 +2578,23 @@ LABEL_9:
 - (id)_moveToEndOfWord:()UITextInput_Internal withHistory:
 {
   v6 = a4;
-  v7 = [a1 _selectableText];
-  v8 = [v7 selectedTextRange];
+  _selectableText = [self _selectableText];
+  selectedTextRange = [_selectableText selectedTextRange];
 
-  if (v8)
+  if (selectedTextRange)
   {
-    v9 = [a1 _setHistory:v6 withExtending:a3 withAnchor:1 withAffinityDownstream:1];
+    v9 = [self _setHistory:v6 withExtending:a3 withAnchor:1 withAffinityDownstream:1];
 
     [v9 setAmount:0];
-    v10 = [v7 tokenizer];
-    v11 = [v9 cursor];
-    v12 = [v10 isPosition:v11 withinTextUnit:1 inDirection:0];
+    tokenizer = [_selectableText tokenizer];
+    cursor = [v9 cursor];
+    v12 = [tokenizer isPosition:cursor withinTextUnit:1 inDirection:0];
 
     if ((v12 & 1) == 0)
     {
-      v13 = [v7 tokenizer];
-      v14 = [v9 cursor];
-      v15 = [v13 positionFromPosition:v14 toBoundary:1 inDirection:0];
+      tokenizer2 = [_selectableText tokenizer];
+      cursor2 = [v9 cursor];
+      v15 = [tokenizer2 positionFromPosition:cursor2 toBoundary:1 inDirection:0];
 
       if (v15)
       {
@@ -2602,23 +2602,23 @@ LABEL_9:
       }
     }
 
-    v16 = [v7 tokenizer];
-    v17 = [v9 cursor];
-    v18 = [v16 positionFromPosition:v17 toBoundary:1 inDirection:0];
+    tokenizer3 = [_selectableText tokenizer];
+    cursor3 = [v9 cursor];
+    v18 = [tokenizer3 positionFromPosition:cursor3 toBoundary:1 inDirection:0];
     [v9 setCursor:v18];
 
-    v19 = [v9 cursor];
+    cursor4 = [v9 cursor];
 
-    if (!v19)
+    if (!cursor4)
     {
-      v20 = [v7 endOfDocument];
-      [v9 setCursor:v20];
+      endOfDocument = [_selectableText endOfDocument];
+      [v9 setCursor:endOfDocument];
     }
 
-    v21 = [v9 cursor];
-    [v9 setStartPosition:v21];
+    cursor5 = [v9 cursor];
+    [v9 setStartPosition:cursor5];
 
-    v22 = [a1 _setSelectionRangeWithHistory:v9];
+    v22 = [self _setSelectionRangeWithHistory:v9];
   }
 
   else
@@ -2633,30 +2633,30 @@ LABEL_9:
 - (id)_moveToStartOfLine:()UITextInput_Internal withHistory:
 {
   v6 = a4;
-  v7 = [a1 _selectableText];
-  v8 = [v7 selectedTextRange];
+  _selectableText = [self _selectableText];
+  selectedTextRange = [_selectableText selectedTextRange];
 
-  if (!v8)
+  if (!selectedTextRange)
   {
     v17 = 0;
     v10 = v6;
     goto LABEL_11;
   }
 
-  v9 = [v6 affinityDownstream];
-  v10 = [a1 _setHistory:v6 withExtending:a3 withAnchor:2 withAffinityDownstream:1];
+  affinityDownstream = [v6 affinityDownstream];
+  v10 = [self _setHistory:v6 withExtending:a3 withAnchor:2 withAffinityDownstream:1];
 
   [v10 setAmount:0];
-  v11 = [v7 tokenizer];
-  v12 = [v7 selectedTextRange];
-  v13 = [v12 end];
-  if (([v11 isPosition:v13 atBoundary:3 inDirection:1] & 1) == 0)
+  tokenizer = [_selectableText tokenizer];
+  selectedTextRange2 = [_selectableText selectedTextRange];
+  v13 = [selectedTextRange2 end];
+  if (([tokenizer isPosition:v13 atBoundary:3 inDirection:1] & 1) == 0)
   {
-    if (v9)
+    if (affinityDownstream)
     {
-      v14 = [v7 tokenizer];
-      v15 = [v10 cursor];
-      v16 = [v14 isPosition:v15 atBoundary:4 inDirection:1];
+      tokenizer2 = [_selectableText tokenizer];
+      cursor = [v10 cursor];
+      v16 = [tokenizer2 isPosition:cursor atBoundary:4 inDirection:1];
 
       if (v16)
       {
@@ -2668,17 +2668,17 @@ LABEL_9:
     {
     }
 
-    v11 = [v7 tokenizer];
-    v12 = [v10 cursor];
-    v13 = [v11 positionFromPosition:v12 toBoundary:4 inDirection:1];
+    tokenizer = [_selectableText tokenizer];
+    selectedTextRange2 = [v10 cursor];
+    v13 = [tokenizer positionFromPosition:selectedTextRange2 toBoundary:4 inDirection:1];
     [v10 setCursor:v13];
   }
 
 LABEL_10:
-  v18 = [v10 cursor];
-  [v10 setStartPosition:v18];
+  cursor2 = [v10 cursor];
+  [v10 setStartPosition:cursor2];
 
-  v17 = [a1 _setSelectionRangeWithHistory:v10];
+  v17 = [self _setSelectionRangeWithHistory:v10];
 LABEL_11:
 
   return v17;
@@ -2687,44 +2687,44 @@ LABEL_11:
 - (id)_moveToEndOfLine:()UITextInput_Internal withHistory:
 {
   v6 = a4;
-  v7 = [a1 _selectableText];
-  v8 = [v7 selectedTextRange];
+  _selectableText = [self _selectableText];
+  selectedTextRange = [_selectableText selectedTextRange];
 
-  if (!v8)
+  if (!selectedTextRange)
   {
     v14 = 0;
     v10 = v6;
     goto LABEL_10;
   }
 
-  v9 = [v6 affinityDownstream];
-  v10 = [a1 _setHistory:v6 withExtending:a3 withAnchor:1 withAffinityDownstream:0];
+  affinityDownstream = [v6 affinityDownstream];
+  v10 = [self _setHistory:v6 withExtending:a3 withAnchor:1 withAffinityDownstream:0];
 
   [v10 setAmount:0];
-  v11 = [v7 tokenizer];
-  v12 = [v7 selectedTextRange];
-  v13 = [v12 end];
-  if ([v11 isPosition:v13 atBoundary:3 inDirection:0])
+  tokenizer = [_selectableText tokenizer];
+  selectedTextRange2 = [_selectableText selectedTextRange];
+  v13 = [selectedTextRange2 end];
+  if ([tokenizer isPosition:v13 atBoundary:3 inDirection:0])
   {
     goto LABEL_8;
   }
 
-  if (v9)
+  if (affinityDownstream)
   {
 
 LABEL_7:
-    v11 = [v7 tokenizer];
-    v12 = [v10 cursor];
-    v13 = [v11 positionFromPosition:v12 toBoundary:4 inDirection:0];
+    tokenizer = [_selectableText tokenizer];
+    selectedTextRange2 = [v10 cursor];
+    v13 = [tokenizer positionFromPosition:selectedTextRange2 toBoundary:4 inDirection:0];
     [v10 setCursor:v13];
 LABEL_8:
 
     goto LABEL_9;
   }
 
-  v15 = [v7 tokenizer];
-  v16 = [v10 cursor];
-  v17 = [v15 isPosition:v16 atBoundary:4 inDirection:0];
+  tokenizer2 = [_selectableText tokenizer];
+  cursor = [v10 cursor];
+  v17 = [tokenizer2 isPosition:cursor atBoundary:4 inDirection:0];
 
   if ((v17 & 1) == 0)
   {
@@ -2732,10 +2732,10 @@ LABEL_8:
   }
 
 LABEL_9:
-  v18 = [v10 cursor];
-  [v10 setStartPosition:v18];
+  cursor2 = [v10 cursor];
+  [v10 setStartPosition:cursor2];
 
-  v14 = [a1 _setSelectionRangeWithHistory:v10];
+  v14 = [self _setSelectionRangeWithHistory:v10];
 LABEL_10:
 
   return v14;
@@ -2744,22 +2744,22 @@ LABEL_10:
 - (id)_moveToStartOfParagraph:()UITextInput_Internal withHistory:
 {
   v6 = a4;
-  v7 = [a1 _selectableText];
-  v8 = [v7 selectedTextRange];
+  _selectableText = [self _selectableText];
+  selectedTextRange = [_selectableText selectedTextRange];
 
-  if (v8)
+  if (selectedTextRange)
   {
-    v9 = [a1 _setHistory:v6 withExtending:a3 withAnchor:2 withAffinityDownstream:1];
+    v9 = [self _setHistory:v6 withExtending:a3 withAnchor:2 withAffinityDownstream:1];
 
     [v9 setAmount:0];
-    v10 = [v7 tokenizer];
-    v11 = [v9 cursor];
-    v12 = [v10 isPosition:v11 atBoundary:3 inDirection:1];
+    tokenizer = [_selectableText tokenizer];
+    cursor = [v9 cursor];
+    v12 = [tokenizer isPosition:cursor atBoundary:3 inDirection:1];
 
     if (v12)
     {
-      v13 = [v9 cursor];
-      v14 = [v10 positionFromPosition:v13 toBoundary:0 inDirection:1];
+      cursor2 = [v9 cursor];
+      v14 = [tokenizer positionFromPosition:cursor2 toBoundary:0 inDirection:1];
 
       if (v14)
       {
@@ -2767,14 +2767,14 @@ LABEL_10:
       }
     }
 
-    v15 = [v9 cursor];
-    v16 = [v10 positionFromPosition:v15 toBoundary:3 inDirection:1];
+    cursor3 = [v9 cursor];
+    v16 = [tokenizer positionFromPosition:cursor3 toBoundary:3 inDirection:1];
     [v9 setCursor:v16];
 
-    v17 = [v9 cursor];
-    [v9 setStartPosition:v17];
+    cursor4 = [v9 cursor];
+    [v9 setStartPosition:cursor4];
 
-    v18 = [a1 _setSelectionRangeWithHistory:v9];
+    v18 = [self _setSelectionRangeWithHistory:v9];
   }
 
   else
@@ -2789,22 +2789,22 @@ LABEL_10:
 - (id)_moveToEndOfParagraph:()UITextInput_Internal withHistory:
 {
   v6 = a4;
-  v7 = [a1 _selectableText];
-  v8 = [v7 selectedTextRange];
+  _selectableText = [self _selectableText];
+  selectedTextRange = [_selectableText selectedTextRange];
 
-  if (v8)
+  if (selectedTextRange)
   {
-    v9 = [a1 _setHistory:v6 withExtending:a3 withAnchor:1 withAffinityDownstream:0];
+    v9 = [self _setHistory:v6 withExtending:a3 withAnchor:1 withAffinityDownstream:0];
 
     [v9 setAmount:0];
-    v10 = [v7 tokenizer];
-    v11 = [v9 cursor];
-    v12 = [v10 isPosition:v11 atBoundary:3 inDirection:0];
+    tokenizer = [_selectableText tokenizer];
+    cursor = [v9 cursor];
+    v12 = [tokenizer isPosition:cursor atBoundary:3 inDirection:0];
 
     if (v12)
     {
-      v13 = [v9 cursor];
-      v14 = [v10 positionFromPosition:v13 toBoundary:0 inDirection:0];
+      cursor2 = [v9 cursor];
+      v14 = [tokenizer positionFromPosition:cursor2 toBoundary:0 inDirection:0];
 
       if (v14)
       {
@@ -2812,14 +2812,14 @@ LABEL_10:
       }
     }
 
-    v15 = [v9 cursor];
-    v16 = [v10 positionFromPosition:v15 toBoundary:3 inDirection:0];
+    cursor3 = [v9 cursor];
+    v16 = [tokenizer positionFromPosition:cursor3 toBoundary:3 inDirection:0];
     [v9 setCursor:v16];
 
-    v17 = [v9 cursor];
-    [v9 setStartPosition:v17];
+    cursor4 = [v9 cursor];
+    [v9 setStartPosition:cursor4];
 
-    v18 = [a1 _setSelectionRangeWithHistory:v9];
+    v18 = [self _setSelectionRangeWithHistory:v9];
   }
 
   else
@@ -2834,21 +2834,21 @@ LABEL_10:
 - (id)_moveToStartOfDocument:()UITextInput_Internal withHistory:
 {
   v6 = a4;
-  v7 = [a1 _selectableText];
-  v8 = [v7 selectedTextRange];
+  _selectableText = [self _selectableText];
+  selectedTextRange = [_selectableText selectedTextRange];
 
-  if (v8)
+  if (selectedTextRange)
   {
-    v9 = [a1 _setHistory:v6 withExtending:a3 withAnchor:2 withAffinityDownstream:1];
+    v9 = [self _setHistory:v6 withExtending:a3 withAnchor:2 withAffinityDownstream:1];
 
     [v9 setAmount:0];
-    v10 = [v7 beginningOfDocument];
-    [v9 setCursor:v10];
+    beginningOfDocument = [_selectableText beginningOfDocument];
+    [v9 setCursor:beginningOfDocument];
 
-    v11 = [v9 cursor];
-    [v9 setStartPosition:v11];
+    cursor = [v9 cursor];
+    [v9 setStartPosition:cursor];
 
-    v12 = [a1 _setSelectionRangeWithHistory:v9];
+    v12 = [self _setSelectionRangeWithHistory:v9];
     v6 = v9;
   }
 
@@ -2863,30 +2863,30 @@ LABEL_10:
 - (id)_moveToEndOfDocument:()UITextInput_Internal withHistory:
 {
   v6 = a4;
-  v7 = [a1 _selectableText];
-  v8 = [v7 selectedTextRange];
+  _selectableText = [self _selectableText];
+  selectedTextRange = [_selectableText selectedTextRange];
 
-  if (v8)
+  if (selectedTextRange)
   {
-    v9 = [a1 _setHistory:v6 withExtending:a3 withAnchor:1 withAffinityDownstream:0];
+    v9 = [self _setHistory:v6 withExtending:a3 withAnchor:1 withAffinityDownstream:0];
 
     [v9 setAmount:0];
-    v10 = [v7 endOfDocument];
-    [v9 setCursor:v10];
+    endOfDocument = [_selectableText endOfDocument];
+    [v9 setCursor:endOfDocument];
 
-    v11 = [v9 cursor];
-    [v9 setStartPosition:v11];
+    cursor = [v9 cursor];
+    [v9 setStartPosition:cursor];
 
-    v12 = [v7 tokenizer];
-    v13 = [v9 cursor];
-    v14 = [v12 isPosition:v13 atBoundary:4 inDirection:3];
+    tokenizer = [_selectableText tokenizer];
+    cursor2 = [v9 cursor];
+    v14 = [tokenizer isPosition:cursor2 atBoundary:4 inDirection:3];
 
     if (v14)
     {
       [v9 setAffinityDownstream:1];
     }
 
-    v15 = [a1 _setSelectionRangeWithHistory:v9];
+    v15 = [self _setSelectionRangeWithHistory:v9];
   }
 
   else
@@ -2901,31 +2901,31 @@ LABEL_10:
 - (id)_moveUp:()UITextInput_Internal withHistory:
 {
   v6 = a4;
-  v7 = [a1 _selectableText];
-  v8 = [v7 selectedTextRange];
+  _selectableText = [self _selectableText];
+  selectedTextRange = [_selectableText selectedTextRange];
 
-  if (v8)
+  if (selectedTextRange)
   {
     if (v6)
     {
-      v9 = [v6 affinityDownstream];
+      affinityDownstream = [v6 affinityDownstream];
     }
 
     else
     {
-      v9 = [a1 _selectionAffinity] == 0;
+      affinityDownstream = [self _selectionAffinity] == 0;
     }
 
-    v11 = [a1 _setHistory:v6 withExtending:a3 withAnchor:2 withAffinityDownstream:v9];
+    v11 = [self _setHistory:v6 withExtending:a3 withAnchor:2 withAffinityDownstream:affinityDownstream];
 
     [v11 setAmount:{objc_msgSend(v11, "amount") + 1}];
-    v12 = [v11 cursor];
-    v13 = [v7 beginningOfDocument];
-    v14 = [v7 comparePosition:v12 toPosition:v13];
+    cursor = [v11 cursor];
+    beginningOfDocument = [_selectableText beginningOfDocument];
+    v14 = [_selectableText comparePosition:cursor toPosition:beginningOfDocument];
 
     if (v14)
     {
-      v15 = [v11 startPosition];
+      startPosition = [v11 startPosition];
       if ([v11 amount] > 0)
       {
         v16 = 4;
@@ -2936,21 +2936,21 @@ LABEL_10:
         v16 = 5;
       }
 
-      v17 = [v11 amount];
-      if (v17 >= 0)
+      amount = [v11 amount];
+      if (amount >= 0)
       {
-        v18 = v17;
+        v18 = amount;
       }
 
       else
       {
-        v18 = -v17;
+        v18 = -amount;
       }
 
-      v19 = [v7 _positionFromPosition:v15 inDirection:v16 offset:v18 withAffinityDownstream:{objc_msgSend(v11, "affinityDownstream")}];
+      v19 = [_selectableText _positionFromPosition:startPosition inDirection:v16 offset:v18 withAffinityDownstream:{objc_msgSend(v11, "affinityDownstream")}];
 
-      v20 = [v11 cursor];
-      v21 = [v7 comparePosition:v20 toPosition:v19];
+      cursor2 = [v11 cursor];
+      v21 = [_selectableText comparePosition:cursor2 toPosition:v19];
 
       if (v21)
       {
@@ -2959,8 +2959,8 @@ LABEL_10:
 
       else
       {
-        v22 = [v7 beginningOfDocument];
-        [v11 setCursor:v22];
+        beginningOfDocument2 = [_selectableText beginningOfDocument];
+        [v11 setCursor:beginningOfDocument2];
 
         [v11 setAmount:{objc_msgSend(v11, "amount") - 1}];
       }
@@ -2971,7 +2971,7 @@ LABEL_10:
       [v11 setAmount:{objc_msgSend(v11, "amount") - 1}];
     }
 
-    v10 = [a1 _setSelectionRangeWithHistory:v11];
+    v10 = [self _setSelectionRangeWithHistory:v11];
   }
 
   else
@@ -2986,31 +2986,31 @@ LABEL_10:
 - (id)_moveDown:()UITextInput_Internal withHistory:
 {
   v6 = a4;
-  v7 = [a1 _selectableText];
-  v8 = [v7 selectedTextRange];
+  _selectableText = [self _selectableText];
+  selectedTextRange = [_selectableText selectedTextRange];
 
-  if (v8)
+  if (selectedTextRange)
   {
     if (v6)
     {
-      v9 = [v6 affinityDownstream];
+      affinityDownstream = [v6 affinityDownstream];
     }
 
     else
     {
-      v9 = [a1 _selectionAffinity] == 0;
+      affinityDownstream = [self _selectionAffinity] == 0;
     }
 
-    v11 = [a1 _setHistory:v6 withExtending:a3 withAnchor:1 withAffinityDownstream:v9];
+    v11 = [self _setHistory:v6 withExtending:a3 withAnchor:1 withAffinityDownstream:affinityDownstream];
 
     [v11 setAmount:{objc_msgSend(v11, "amount") - 1}];
-    v12 = [v11 cursor];
-    v13 = [v7 endOfDocument];
-    v14 = [v7 comparePosition:v12 toPosition:v13];
+    cursor = [v11 cursor];
+    endOfDocument = [_selectableText endOfDocument];
+    v14 = [_selectableText comparePosition:cursor toPosition:endOfDocument];
 
     if (v14)
     {
-      v15 = [v11 startPosition];
+      startPosition = [v11 startPosition];
       if ([v11 amount] > 0)
       {
         v16 = 4;
@@ -3021,21 +3021,21 @@ LABEL_10:
         v16 = 5;
       }
 
-      v17 = [v11 amount];
-      if (v17 >= 0)
+      amount = [v11 amount];
+      if (amount >= 0)
       {
-        v18 = v17;
+        v18 = amount;
       }
 
       else
       {
-        v18 = -v17;
+        v18 = -amount;
       }
 
-      v19 = [v7 _positionFromPosition:v15 inDirection:v16 offset:v18 withAffinityDownstream:{objc_msgSend(v11, "affinityDownstream")}];
+      v19 = [_selectableText _positionFromPosition:startPosition inDirection:v16 offset:v18 withAffinityDownstream:{objc_msgSend(v11, "affinityDownstream")}];
 
-      v20 = [v11 cursor];
-      v21 = [v7 comparePosition:v20 toPosition:v19];
+      cursor2 = [v11 cursor];
+      v21 = [_selectableText comparePosition:cursor2 toPosition:v19];
 
       if (v21)
       {
@@ -3044,8 +3044,8 @@ LABEL_10:
 
       else
       {
-        v22 = [v7 endOfDocument];
-        [v11 setCursor:v22];
+        endOfDocument2 = [_selectableText endOfDocument];
+        [v11 setCursor:endOfDocument2];
 
         [v11 setAmount:{objc_msgSend(v11, "amount") + 1}];
       }
@@ -3056,7 +3056,7 @@ LABEL_10:
       [v11 setAmount:{objc_msgSend(v11, "amount") + 1}];
     }
 
-    v10 = [a1 _setSelectionRangeWithHistory:v11];
+    v10 = [self _setSelectionRangeWithHistory:v11];
   }
 
   else
@@ -3071,28 +3071,28 @@ LABEL_10:
 - (id)_moveLeft:()UITextInput_Internal withHistory:
 {
   v6 = a4;
-  v7 = [a1 _selectableText];
-  v8 = [v7 selectedTextRange];
+  _selectableText = [self _selectableText];
+  selectedTextRange = [_selectableText selectedTextRange];
 
-  if (v8)
+  if (selectedTextRange)
   {
-    v9 = [a1 _setHistory:v6 withExtending:a3 withAnchor:2 withAffinityDownstream:1];
+    v9 = [self _setHistory:v6 withExtending:a3 withAnchor:2 withAffinityDownstream:1];
 
     [v9 setAmount:0];
-    v10 = [v7 selectedTextRange];
-    v11 = [v10 isEmpty];
+    selectedTextRange2 = [_selectableText selectedTextRange];
+    isEmpty = [selectedTextRange2 isEmpty];
 
-    if ((v11 & 1) != 0 || a3)
+    if ((isEmpty & 1) != 0 || a3)
     {
-      v12 = [v9 cursor];
-      v13 = [v7 positionFromPosition:v12 inDirection:3 offset:1];
+      cursor = [v9 cursor];
+      v13 = [_selectableText positionFromPosition:cursor inDirection:3 offset:1];
       [v9 setCursor:v13];
     }
 
-    v14 = [v9 cursor];
-    [v9 setStartPosition:v14];
+    cursor2 = [v9 cursor];
+    [v9 setStartPosition:cursor2];
 
-    v15 = [a1 _setSelectionRangeWithHistory:v9];
+    v15 = [self _setSelectionRangeWithHistory:v9];
   }
 
   else
@@ -3107,28 +3107,28 @@ LABEL_10:
 - (id)_moveRight:()UITextInput_Internal withHistory:
 {
   v6 = a4;
-  v7 = [a1 _selectableText];
-  v8 = [v7 selectedTextRange];
+  _selectableText = [self _selectableText];
+  selectedTextRange = [_selectableText selectedTextRange];
 
-  if (v8)
+  if (selectedTextRange)
   {
-    v9 = [a1 _setHistory:v6 withExtending:a3 withAnchor:1 withAffinityDownstream:1];
+    v9 = [self _setHistory:v6 withExtending:a3 withAnchor:1 withAffinityDownstream:1];
 
     [v9 setAmount:0];
-    v10 = [v7 selectedTextRange];
-    v11 = [v10 isEmpty];
+    selectedTextRange2 = [_selectableText selectedTextRange];
+    isEmpty = [selectedTextRange2 isEmpty];
 
-    if ((v11 & 1) != 0 || a3)
+    if ((isEmpty & 1) != 0 || a3)
     {
-      v12 = [v9 cursor];
-      v13 = [v7 positionFromPosition:v12 inDirection:2 offset:1];
+      cursor = [v9 cursor];
+      v13 = [_selectableText positionFromPosition:cursor inDirection:2 offset:1];
       [v9 setCursor:v13];
     }
 
-    v14 = [v9 cursor];
-    [v9 setStartPosition:v14];
+    cursor2 = [v9 cursor];
+    [v9 setStartPosition:cursor2];
 
-    v15 = [a1 _setSelectionRangeWithHistory:v9];
+    v15 = [self _setSelectionRangeWithHistory:v9];
   }
 
   else
@@ -3143,8 +3143,8 @@ LABEL_10:
 - (id)_positionFromPosition:()UITextInput_Internal inDirection:offset:withAffinityDownstream:
 {
   v8 = a3;
-  v9 = [a1 _selectableText];
-  v10 = [v9 positionFromPosition:v8 inDirection:a4 offset:a5];
+  _selectableText = [self _selectableText];
+  v10 = [_selectableText positionFromPosition:v8 inDirection:a4 offset:a5];
 
   return v10;
 }
@@ -3154,50 +3154,50 @@ LABEL_10:
   v7 = a3;
   if (objc_opt_respondsToSelector())
   {
-    [a1 setSelectedTextRange:v7 withAffinityDownstream:a4];
+    [self setSelectedTextRange:v7 withAffinityDownstream:a4];
   }
 
   else
   {
-    v6 = [a1 _selectableText];
-    [v6 setSelectedTextRange:v7];
+    _selectableText = [self _selectableText];
+    [_selectableText setSelectedTextRange:v7];
   }
 }
 
 - (uint64_t)_selectionAffinity
 {
-  v1 = [a1 _selectableText];
+  _selectableText = [self _selectableText];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
-    v3 = [v1 tokenizer];
-    v4 = [v1 selectedTextRange];
-    v5 = [v4 start];
-    if ([v3 isPosition:v5 atBoundary:3 inDirection:1])
+    tokenizer = [_selectableText tokenizer];
+    selectedTextRange = [_selectableText selectedTextRange];
+    start = [selectedTextRange start];
+    if ([tokenizer isPosition:start atBoundary:3 inDirection:1])
     {
     }
 
     else
     {
-      v6 = [v1 tokenizer];
-      v7 = [v1 selectedTextRange];
-      v8 = [v7 end];
-      v9 = [v6 isPosition:v8 atBoundary:4 inDirection:2];
+      tokenizer2 = [_selectableText tokenizer];
+      selectedTextRange2 = [_selectableText selectedTextRange];
+      v8 = [selectedTextRange2 end];
+      v9 = [tokenizer2 isPosition:v8 atBoundary:4 inDirection:2];
 
       if (v9)
       {
-        v2 = 1;
+        selectionAffinity = 1;
         goto LABEL_8;
       }
     }
 
-    v2 = 0;
+    selectionAffinity = 0;
     goto LABEL_8;
   }
 
-  v2 = [v1 selectionAffinity];
+  selectionAffinity = [_selectableText selectionAffinity];
 LABEL_8:
 
-  return v2;
+  return selectionAffinity;
 }
 
 - (void)_setGestureRecognizers
@@ -3206,20 +3206,20 @@ LABEL_8:
   if (objc_opt_respondsToSelector())
   {
 
-    [a1 _setInternalGestureRecognizers];
+    [self _setInternalGestureRecognizers];
   }
 
   else
   {
     v2 = +[UIKeyboardImpl activeInstance];
-    v3 = [v2 markedTextOverlay];
-    [v3 removeFromSuperview];
+    markedTextOverlay = [v2 markedTextOverlay];
+    [markedTextOverlay removeFromSuperview];
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v4 = [v3 interactions];
-    v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    interactions = [markedTextOverlay interactions];
+    v5 = [interactions countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v5)
     {
       v6 = v5;
@@ -3230,49 +3230,49 @@ LABEL_8:
         {
           if (*v16 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(interactions);
           }
 
-          [v3 removeInteraction:*(*(&v15 + 1) + 8 * i)];
+          [markedTextOverlay removeInteraction:*(*(&v15 + 1) + 8 * i)];
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v6 = [interactions countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v6);
     }
 
-    v9 = [a1 _selectableText];
-    v10 = [v9 interactionAssistant];
-    v11 = v10;
-    if (v10)
+    _selectableText = [self _selectableText];
+    interactionAssistant = [_selectableText interactionAssistant];
+    v11 = interactionAssistant;
+    if (interactionAssistant)
     {
-      [v10 setGestureRecognizers];
+      [interactionAssistant setGestureRecognizers];
     }
 
-    else if ([v9 _hasMarkedText] && objc_msgSend(v2, "hasEditableMarkedText"))
+    else if ([_selectableText _hasMarkedText] && objc_msgSend(v2, "hasEditableMarkedText"))
     {
-      v12 = [v9 markedTextRange];
-      [v9 firstRectForRange:v12];
-      [v3 setFrame:?];
+      markedTextRange = [_selectableText markedTextRange];
+      [_selectableText firstRectForRange:markedTextRange];
+      [markedTextOverlay setFrame:?];
 
-      v13 = [v9 textInputView];
-      [v13 addSubview:v3];
+      textInputView = [_selectableText textInputView];
+      [textInputView addSubview:markedTextOverlay];
 
-      v14 = [[UITextPhraseBoundaryInteraction alloc] initWithTextInput:v9];
-      [v3 addInteraction:v14];
+      v14 = [[UITextPhraseBoundaryInteraction alloc] initWithTextInput:_selectableText];
+      [markedTextOverlay addInteraction:v14];
     }
   }
 }
 
 - (uint64_t)_usesAsynchronousProtocol
 {
-  v1 = [a1 _selectableText];
+  _selectableText = [self _selectableText];
   if (!+[UIKBInputDelegateManager isAsyncTextInputEnabled])
   {
     if (objc_opt_respondsToSelector())
     {
-      v3 = [v1 conformsToProtocol:&unk_1F016CC30];
+      v3 = [_selectableText conformsToProtocol:&unk_1F016CC30];
 LABEL_9:
       v2 = v3;
       goto LABEL_11;
@@ -3283,11 +3283,11 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if ((objc_opt_respondsToSelector() & 1) == 0 || ([v1 conformsToProtocolCached:&unk_1F016C7B0] & 1) == 0)
+  if ((objc_opt_respondsToSelector() & 1) == 0 || ([_selectableText conformsToProtocolCached:&unk_1F016C7B0] & 1) == 0)
   {
     if (objc_opt_respondsToSelector())
     {
-      v3 = [v1 conformsToProtocolCached:&unk_1F016C810];
+      v3 = [_selectableText conformsToProtocolCached:&unk_1F016C810];
       goto LABEL_9;
     }
 
@@ -3302,19 +3302,19 @@ LABEL_11:
 
 - (uint64_t)_hasMarkedText
 {
-  v1 = [a1 _selectableText];
-  if ([v1 _usesAsynchronousProtocol] && (!+[UIKBInputDelegateManager isAsyncTextInputEnabled](UIKBInputDelegateManager, "isAsyncTextInputEnabled") || (objc_opt_respondsToSelector() & 1) != 0 || (objc_opt_respondsToSelector() & 1) != 0))
+  _selectableText = [self _selectableText];
+  if ([_selectableText _usesAsynchronousProtocol] && (!+[UIKBInputDelegateManager isAsyncTextInputEnabled](UIKBInputDelegateManager, "isAsyncTextInputEnabled") || (objc_opt_respondsToSelector() & 1) != 0 || (objc_opt_respondsToSelector() & 1) != 0))
   {
-    v2 = [v1 hasMarkedText];
+    hasMarkedText = [_selectableText hasMarkedText];
   }
 
   else
   {
-    v3 = [v1 markedTextRange];
-    v2 = v3 != 0;
+    markedTextRange = [_selectableText markedTextRange];
+    hasMarkedText = markedTextRange != 0;
   }
 
-  return v2;
+  return hasMarkedText;
 }
 
 - (void)_setMarkedText:()UITextInput_Internal selectedRange:
@@ -3323,60 +3323,60 @@ LABEL_11:
   v9 = a3;
   v10 = [[v8 alloc] initWithString:v9];
 
-  [a1 _setAttributedMarkedText:v10 selectedRange:{a4, a5}];
+  [self _setAttributedMarkedText:v10 selectedRange:{a4, a5}];
 }
 
 - (void)_setAttributedMarkedText:()UITextInput_Internal selectedRange:
 {
   v8 = a3;
-  v27 = [a1 _selectableText];
-  v9 = [a1 _hasMarkedText];
+  _selectableText = [self _selectableText];
+  _hasMarkedText = [self _hasMarkedText];
   if (objc_opt_respondsToSelector())
   {
-    [v27 setAttributedMarkedText:v8 selectedRange:{a4, a5}];
+    [_selectableText setAttributedMarkedText:v8 selectedRange:{a4, a5}];
   }
 
   else
   {
-    v10 = [v8 string];
+    string = [v8 string];
 
-    [v27 setMarkedText:v10 selectedRange:{a4, a5}];
-    v8 = v10;
+    [_selectableText setMarkedText:string selectedRange:{a4, a5}];
+    v8 = string;
   }
 
-  v11 = [a1 _hasMarkedText];
-  if (v9 != v11)
+  _hasMarkedText2 = [self _hasMarkedText];
+  if (_hasMarkedText != _hasMarkedText2)
   {
     if (+[UITextSelectionDisplayInteraction isModernSelectionViewEnabled])
     {
-      v12 = [v27 _selectionDisplayInteraction];
-      v13 = v27;
-      v14 = v12;
+      _selectionDisplayInteraction = [_selectableText _selectionDisplayInteraction];
+      v13 = _selectableText;
+      markedTextOverlay = _selectionDisplayInteraction;
     }
 
     else
     {
-      v14 = 0;
-      v13 = v27;
+      markedTextOverlay = 0;
+      v13 = _selectableText;
     }
 
     [v13 _setGestureRecognizers];
-    v19 = [a1 _textSelectingContainer];
-    v20 = [v19 interactionAssistant];
-    if (v20)
+    _textSelectingContainer = [self _textSelectingContainer];
+    interactionAssistant = [_textSelectingContainer interactionAssistant];
+    if (interactionAssistant)
     {
-      v21 = v20;
-      v22 = [a1 _textSelectingContainer];
-      v23 = [v22 interactionAssistant];
-      v24 = [v23 externalInteractions];
+      v21 = interactionAssistant;
+      _textSelectingContainer2 = [self _textSelectingContainer];
+      interactionAssistant2 = [_textSelectingContainer2 interactionAssistant];
+      externalInteractions = [interactionAssistant2 externalInteractions];
 
-      if (v24)
+      if (externalInteractions)
       {
-        v25 = [a1 _textSelectingContainer];
-        v26 = [v25 interactionAssistant];
-        [v26 deactivateSelection];
+        _textSelectingContainer3 = [self _textSelectingContainer];
+        interactionAssistant3 = [_textSelectingContainer3 interactionAssistant];
+        [interactionAssistant3 deactivateSelection];
 
-        [v27 _setSelectionDisplayInteraction:v14];
+        [_selectableText _setSelectionDisplayInteraction:markedTextOverlay];
       }
     }
 
@@ -3387,19 +3387,19 @@ LABEL_11:
     goto LABEL_15;
   }
 
-  if (v11)
+  if (_hasMarkedText2)
   {
-    v15 = [a1 _textSelectingContainer];
-    v16 = [v15 interactionAssistant];
+    _textSelectingContainer4 = [self _textSelectingContainer];
+    interactionAssistant4 = [_textSelectingContainer4 interactionAssistant];
 
-    if (!v16)
+    if (!interactionAssistant4)
     {
       v17 = +[UIKeyboardImpl activeInstance];
-      v14 = [v17 markedTextOverlay];
+      markedTextOverlay = [v17 markedTextOverlay];
 
-      v18 = [v27 markedTextRange];
-      [v27 firstRectForRange:v18];
-      [v14 setFrame:?];
+      markedTextRange = [_selectableText markedTextRange];
+      [_selectableText firstRectForRange:markedTextRange];
+      [markedTextOverlay setFrame:?];
 
 LABEL_15:
     }
@@ -3408,41 +3408,41 @@ LABEL_15:
 
 - (void)_unmarkText
 {
-  v14 = [a1 _selectableText];
-  v2 = [a1 _hasMarkedText];
-  [v14 unmarkText];
-  if (v2)
+  _selectableText = [self _selectableText];
+  _hasMarkedText = [self _hasMarkedText];
+  [_selectableText unmarkText];
+  if (_hasMarkedText)
   {
     if (+[UITextSelectionDisplayInteraction isModernSelectionViewEnabled])
     {
-      v3 = [v14 _selectionDisplayInteraction];
-      v4 = v14;
-      v5 = v3;
+      _selectionDisplayInteraction = [_selectableText _selectionDisplayInteraction];
+      v4 = _selectableText;
+      v5 = _selectionDisplayInteraction;
     }
 
     else
     {
       v5 = 0;
-      v4 = v14;
+      v4 = _selectableText;
     }
 
     [v4 _setGestureRecognizers];
-    v6 = [a1 _textSelectingContainer];
-    v7 = [v6 interactionAssistant];
-    if (v7)
+    _textSelectingContainer = [self _textSelectingContainer];
+    interactionAssistant = [_textSelectingContainer interactionAssistant];
+    if (interactionAssistant)
     {
-      v8 = v7;
-      v9 = [a1 _textSelectingContainer];
-      v10 = [v9 interactionAssistant];
-      v11 = [v10 externalInteractions];
+      v8 = interactionAssistant;
+      _textSelectingContainer2 = [self _textSelectingContainer];
+      interactionAssistant2 = [_textSelectingContainer2 interactionAssistant];
+      externalInteractions = [interactionAssistant2 externalInteractions];
 
-      if (v11)
+      if (externalInteractions)
       {
-        v12 = [a1 _textSelectingContainer];
-        v13 = [v12 interactionAssistant];
-        [v13 deactivateSelection];
+        _textSelectingContainer3 = [self _textSelectingContainer];
+        interactionAssistant3 = [_textSelectingContainer3 interactionAssistant];
+        [interactionAssistant3 deactivateSelection];
 
-        [v14 _setSelectionDisplayInteraction:v5];
+        [_selectableText _setSelectionDisplayInteraction:v5];
       }
     }
 
@@ -3474,8 +3474,8 @@ LABEL_11:
     goto LABEL_13;
   }
 
-  v12 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-  v13 = [v8 componentsSeparatedByCharactersInSet:v12];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+  v13 = [v8 componentsSeparatedByCharactersInSet:whitespaceAndNewlineCharacterSet];
 
   v14 = [v13 count] < 8;
 LABEL_13:
@@ -3485,34 +3485,34 @@ LABEL_13:
 
 - (id)_textInteraction
 {
-  v1 = [a1 textInputView];
-  v2 = [v1 _textInteraction];
+  textInputView = [self textInputView];
+  _textInteraction = [textInputView _textInteraction];
 
-  return v2;
+  return _textInteraction;
 }
 
 - (id)inputAssistantItem
 {
-  v1 = [a1 textInputView];
-  v2 = [v1 inputAssistantItem];
+  textInputView = [self textInputView];
+  inputAssistantItem = [textInputView inputAssistantItem];
 
-  return v2;
+  return inputAssistantItem;
 }
 
 - (id)_responderWindow
 {
-  v1 = [a1 textInputView];
-  v2 = [v1 _responderWindow];
+  textInputView = [self textInputView];
+  _responderWindow = [textInputView _responderWindow];
 
-  return v2;
+  return _responderWindow;
 }
 
 - (id)_selectionDisplayInteraction
 {
-  v1 = [a1 textInputView];
-  v2 = [v1 _selectionDisplayInteraction];
+  textInputView = [self textInputView];
+  _selectionDisplayInteraction = [textInputView _selectionDisplayInteraction];
 
-  return v2;
+  return _selectionDisplayInteraction;
 }
 
 @end

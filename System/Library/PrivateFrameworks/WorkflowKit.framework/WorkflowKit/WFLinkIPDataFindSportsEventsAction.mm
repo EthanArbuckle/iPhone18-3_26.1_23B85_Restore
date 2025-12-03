@@ -10,8 +10,8 @@
 {
   v6.receiver = self;
   v6.super_class = WFLinkIPDataFindSportsEventsAction;
-  v2 = [(WFAction *)&v6 requiredResources];
-  v3 = [v2 mutableCopy];
+  requiredResources = [(WFAction *)&v6 requiredResources];
+  v3 = [requiredResources mutableCopy];
 
   v4 = +[_TtC11WorkflowKit43WFIntelligencePlatformViewAvailableResource sportsTeams];
   [v3 addObject:v4];
@@ -33,8 +33,8 @@
   v9[1] = *MEMORY[0x1E69E9840];
   v7.receiver = self;
   v7.super_class = WFLinkIPDataFindSportsEventsAction;
-  v2 = [(WFOverridableLinkAction *)&v7 parameterOverrides];
-  v3 = [v2 mutableCopy];
+  parameterOverrides = [(WFOverridableLinkAction *)&v7 parameterOverrides];
+  v3 = [parameterOverrides mutableCopy];
 
   v8 = @"PreferParameterValuePicker";
   v9[0] = MEMORY[0x1E695E118];

@@ -1,16 +1,16 @@
 @interface CHMathStrokeGroupingStrategy
-- (CHMathStrokeGroupingStrategy)initWithStrokeProvider:(id)a3;
-- (id)recognizableDrawingForStrokeGroup:(id)a3 translationVector:(CGVector)a4 originalDrawing:(id *)a5 orderedStrokesIDs:(id *)a6 rescalingFactor:(double *)a7 replacementStrokeGroup:(id *)a8;
+- (CHMathStrokeGroupingStrategy)initWithStrokeProvider:(id)provider;
+- (id)recognizableDrawingForStrokeGroup:(id)group translationVector:(CGVector)vector originalDrawing:(id *)drawing orderedStrokesIDs:(id *)ds rescalingFactor:(double *)factor replacementStrokeGroup:(id *)strokeGroup;
 @end
 
 @implementation CHMathStrokeGroupingStrategy
 
-- (CHMathStrokeGroupingStrategy)initWithStrokeProvider:(id)a3
+- (CHMathStrokeGroupingStrategy)initWithStrokeProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v10.receiver = self;
   v10.super_class = CHMathStrokeGroupingStrategy;
-  v5 = [(CHStrokeGroupingStrategy *)&v10 initWithStrokeProvider:v4];
+  v5 = [(CHStrokeGroupingStrategy *)&v10 initWithStrokeProvider:providerCopy];
   if (v5)
   {
     v6 = objc_opt_class();
@@ -22,14 +22,14 @@
   return v5;
 }
 
-- (id)recognizableDrawingForStrokeGroup:(id)a3 translationVector:(CGVector)a4 originalDrawing:(id *)a5 orderedStrokesIDs:(id *)a6 rescalingFactor:(double *)a7 replacementStrokeGroup:(id *)a8
+- (id)recognizableDrawingForStrokeGroup:(id)group translationVector:(CGVector)vector originalDrawing:(id *)drawing orderedStrokesIDs:(id *)ds rescalingFactor:(double *)factor replacementStrokeGroup:(id *)strokeGroup
 {
   v110 = *MEMORY[0x1E69E9840];
-  v96 = a3;
-  v16 = objc_msgSend_strokeIdentifiers(v96, v11, v12, v13, v14, v15);
+  groupCopy = group;
+  v16 = objc_msgSend_strokeIdentifiers(groupCopy, v11, v12, v13, v14, v15);
   v22 = objc_msgSend_allObjects(v16, v17, v18, v19, v20, v21);
-  v94 = a7;
-  v95 = a8;
+  factorCopy = factor;
+  strokeGroupCopy = strokeGroup;
   v108[0] = MEMORY[0x1E69E9820];
   v108[1] = 3221225472;
   v108[2] = sub_1837BFCF8;
@@ -38,7 +38,7 @@
   v99 = objc_msgSend_sortedArrayUsingComparator_(v22, v23, v108, v24, v25, v26);
 
   v31 = objc_msgSend_strokesForIdentifiers_(self, v27, v99, v28, v29, v30);
-  if (a5)
+  if (drawing)
   {
     v32 = objc_alloc_init(CHDrawing);
   }
@@ -100,26 +100,26 @@
     while (v36);
   }
 
-  if (a5)
+  if (drawing)
   {
     v91 = v32;
-    *a5 = v32;
+    *drawing = v32;
   }
 
-  if (a6)
+  if (ds)
   {
     v92 = v99;
-    *a6 = v99;
+    *ds = v99;
   }
 
-  if (v94)
+  if (factorCopy)
   {
-    *v94 = 1.0;
+    *factorCopy = 1.0;
   }
 
-  if (v95)
+  if (strokeGroupCopy)
   {
-    *v95 = 0;
+    *strokeGroupCopy = 0;
   }
 
   return v33;

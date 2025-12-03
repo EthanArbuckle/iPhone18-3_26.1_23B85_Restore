@@ -1,9 +1,9 @@
 @interface WrapLayer
 - (CGRect)bounds;
 - (_TtC14CarPlayAssetUIP33_D494934E4D2CED7DFF04AAA732ED178E9WrapLayer)init;
-- (_TtC14CarPlayAssetUIP33_D494934E4D2CED7DFF04AAA732ED178E9WrapLayer)initWithCoder:(id)a3;
-- (_TtC14CarPlayAssetUIP33_D494934E4D2CED7DFF04AAA732ED178E9WrapLayer)initWithLayer:(id)a3;
-- (void)setBounds:(CGRect)a3;
+- (_TtC14CarPlayAssetUIP33_D494934E4D2CED7DFF04AAA732ED178E9WrapLayer)initWithCoder:(id)coder;
+- (_TtC14CarPlayAssetUIP33_D494934E4D2CED7DFF04AAA732ED178E9WrapLayer)initWithLayer:(id)layer;
+- (void)setBounds:(CGRect)bounds;
 @end
 
 @implementation WrapLayer
@@ -20,12 +20,12 @@
   return result;
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v8.receiver = self;
   v8.super_class = type metadata accessor for WrapLayer();
   v7 = v8.receiver;
@@ -40,7 +40,7 @@
   return [(WrapLayer *)&v3 init];
 }
 
-- (_TtC14CarPlayAssetUIP33_D494934E4D2CED7DFF04AAA732ED178E9WrapLayer)initWithLayer:(id)a3
+- (_TtC14CarPlayAssetUIP33_D494934E4D2CED7DFF04AAA732ED178E9WrapLayer)initWithLayer:(id)layer
 {
   swift_unknownObjectRetain();
   sub_242F058F0();
@@ -55,12 +55,12 @@
   return v5;
 }
 
-- (_TtC14CarPlayAssetUIP33_D494934E4D2CED7DFF04AAA732ED178E9WrapLayer)initWithCoder:(id)a3
+- (_TtC14CarPlayAssetUIP33_D494934E4D2CED7DFF04AAA732ED178E9WrapLayer)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for WrapLayer();
-  v4 = a3;
-  v5 = [(WrapLayer *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(WrapLayer *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

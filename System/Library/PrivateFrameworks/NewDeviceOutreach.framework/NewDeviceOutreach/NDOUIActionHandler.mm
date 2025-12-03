@@ -1,7 +1,7 @@
 @interface NDOUIActionHandler
 - (_TtC8ndoagent18NDOUIActionHandler)init;
 - (void)ackPendingAcks;
-- (void)removeAndAckDismissedPromoFor:(int64_t)a3 actionData:(id)a4;
+- (void)removeAndAckDismissedPromoFor:(int64_t)for actionData:(id)data;
 @end
 
 @implementation NDOUIActionHandler
@@ -18,18 +18,18 @@
   v8[2] = 0;
   v8[3] = 0;
   v8[4] = self;
-  v9 = self;
+  selfCopy = self;
   sub_100041174(0, 0, v6, &unk_100081738, v8);
 }
 
-- (void)removeAndAckDismissedPromoFor:(int64_t)a3 actionData:(id)a4
+- (void)removeAndAckDismissedPromoFor:(int64_t)for actionData:(id)data
 {
-  v6 = a4;
-  v10 = self;
+  dataCopy = data;
+  selfCopy = self;
   v7 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v9 = v8;
 
-  sub_100067590(a3, v7, v9);
+  sub_100067590(for, v7, v9);
   sub_100003EBC(v7, v9);
 }
 

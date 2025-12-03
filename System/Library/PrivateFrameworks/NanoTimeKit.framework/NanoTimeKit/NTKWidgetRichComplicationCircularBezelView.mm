@@ -1,23 +1,23 @@
 @interface NTKWidgetRichComplicationCircularBezelView
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (CGPoint)circularCenterPoint;
-- (NTKWidgetRichComplicationCircularBezelView)initWithFamily:(int64_t)a3;
+- (NTKWidgetRichComplicationCircularBezelView)initWithFamily:(int64_t)family;
 - (void)_configurePreviewViewController;
 - (void)_configureWidgetHostViewController;
 - (void)_createHitTestPathIfNecessary;
 - (void)_updateBezelContentCenter;
 - (void)curvedLabelAngularWidthChanged;
 - (void)layoutSubviews;
-- (void)setPlatterColor:(id)a3;
+- (void)setPlatterColor:(id)color;
 @end
 
 @implementation NTKWidgetRichComplicationCircularBezelView
 
-- (NTKWidgetRichComplicationCircularBezelView)initWithFamily:(int64_t)a3
+- (NTKWidgetRichComplicationCircularBezelView)initWithFamily:(int64_t)family
 {
   v4.receiver = self;
   v4.super_class = NTKWidgetRichComplicationCircularBezelView;
-  return [(NTKWidgetRichComplicationInlineView *)&v4 initWithFamily:a3];
+  return [(NTKWidgetRichComplicationInlineView *)&v4 initWithFamily:family];
 }
 
 - (void)layoutSubviews
@@ -30,10 +30,10 @@
   [(UIView *)self->_backgroundPlatterView setCenter:?];
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   [(NTKWidgetRichComplicationCircularBezelView *)self _createHitTestPathIfNecessary];
   [(NTKWidgetRichComplicationCircularBezelView *)self bounds];
   v11.x = x;
@@ -59,8 +59,8 @@
     v8 = v7;
     v10 = v9;
     hitTestShape = self->_hitTestShape;
-    v12 = [(CDRichComplicationView *)self device];
-    v13 = [NTKRichComplicationBezelUtilities hitTestPathWithViewBounds:hitTestShape shape:v12 shapeFrame:v4 forDevice:v6, v8, v10, self->_hitTestShapeFrame.origin.x, self->_hitTestShapeFrame.origin.y, self->_hitTestShapeFrame.size.width, self->_hitTestShapeFrame.size.height];
+    device = [(CDRichComplicationView *)self device];
+    v13 = [NTKRichComplicationBezelUtilities hitTestPathWithViewBounds:hitTestShape shape:device shapeFrame:v4 forDevice:v6, v8, v10, self->_hitTestShapeFrame.origin.x, self->_hitTestShapeFrame.origin.y, self->_hitTestShapeFrame.size.width, self->_hitTestShapeFrame.size.height];
     hitTestPath = self->_hitTestPath;
     self->_hitTestPath = v13;
 
@@ -78,8 +78,8 @@
   v4.super_class = NTKWidgetRichComplicationCircularBezelView;
   [(NTKWidgetRichComplicationInlineView *)&v4 _configureWidgetHostViewController];
   [(NTKWidgetRichComplicationCircularBezelView *)self _updateBezelContentCenter];
-  v3 = [(NTKWidgetRichComplicationView *)self widgetHostViewController];
-  [v3 setShowsWidgetLabel:1];
+  widgetHostViewController = [(NTKWidgetRichComplicationView *)self widgetHostViewController];
+  [widgetHostViewController setShowsWidgetLabel:1];
 }
 
 - (void)_configurePreviewViewController
@@ -90,12 +90,12 @@
   [(NTKWidgetRichComplicationCircularBezelView *)self _updateBezelContentCenter];
 }
 
-- (void)setPlatterColor:(id)a3
+- (void)setPlatterColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   backgroundPlatterView = self->_backgroundPlatterView;
-  v9 = v4;
-  if (v4)
+  v9 = colorCopy;
+  if (colorCopy)
   {
     if (!backgroundPlatterView)
     {
@@ -105,11 +105,11 @@
 
       [(NTKWidgetRichComplicationCircularBezelView *)self addSubview:self->_backgroundPlatterView];
       [(NTKWidgetRichComplicationCircularBezelView *)self insertSubview:self->_backgroundPlatterView atIndex:0];
-      v4 = v9;
+      colorCopy = v9;
       backgroundPlatterView = self->_backgroundPlatterView;
     }
 
-    [(UIView *)backgroundPlatterView setBackgroundColor:v4];
+    [(UIView *)backgroundPlatterView setBackgroundColor:colorCopy];
     [(CDRichComplicationView *)self device];
     objc_claimAutoreleasedReturnValue();
     CDGraphicSubdialComplicationDiameter();
@@ -138,11 +138,11 @@
 
   else
   {
-    v4 = [(CDRichComplicationView *)self device];
-    NTKWhistlerSubdialComplicationDiameter(v4);
+    device = [(CDRichComplicationView *)self device];
+    NTKWhistlerSubdialComplicationDiameter(device);
 
     [(NTKWidgetRichComplicationCircularBezelView *)self circularCenterPoint];
-    v5 = [(CDRichComplicationView *)self device];
+    device2 = [(CDRichComplicationView *)self device];
     CLKRectCenteredAboutPointForDevice();
     v7 = v6;
     v9 = v8;
@@ -170,8 +170,8 @@
   [(NTKWidgetRichComplicationCircularBezelView *)self circularCenterPoint];
   v4 = v3;
   v6 = v5;
-  v7 = [(NTKWidgetRichComplicationView *)self widgetHostViewController];
-  [v7 setBezelContentCenter:{v4, v6}];
+  widgetHostViewController = [(NTKWidgetRichComplicationView *)self widgetHostViewController];
+  [widgetHostViewController setBezelContentCenter:{v4, v6}];
 }
 
 - (CGPoint)circularCenterPoint

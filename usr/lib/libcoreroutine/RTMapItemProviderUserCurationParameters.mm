@@ -1,14 +1,14 @@
 @interface RTMapItemProviderUserCurationParameters
-- (RTMapItemProviderUserCurationParameters)initWithDefaultsManager:(id)a3;
-- (RTMapItemProviderUserCurationParameters)initWithDistanceThreshold:(double)a3 recentCurationOverrideWindow:(double)a4;
+- (RTMapItemProviderUserCurationParameters)initWithDefaultsManager:(id)manager;
+- (RTMapItemProviderUserCurationParameters)initWithDistanceThreshold:(double)threshold recentCurationOverrideWindow:(double)window;
 @end
 
 @implementation RTMapItemProviderUserCurationParameters
 
-- (RTMapItemProviderUserCurationParameters)initWithDistanceThreshold:(double)a3 recentCurationOverrideWindow:(double)a4
+- (RTMapItemProviderUserCurationParameters)initWithDistanceThreshold:(double)threshold recentCurationOverrideWindow:(double)window
 {
-  v4 = self;
-  if (a3 <= 0.0)
+  selfCopy = self;
+  if (threshold <= 0.0)
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -26,7 +26,7 @@ LABEL_12:
     goto LABEL_9;
   }
 
-  if (a4 <= 0.0)
+  if (window <= 0.0)
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -44,24 +44,24 @@ LABEL_12:
   v7 = [(RTMapItemProviderUserCurationParameters *)&v12 init];
   if (v7)
   {
-    v7->_distanceThreshold = a3;
-    v7->_recentCurationOverrideWindow = a4;
+    v7->_distanceThreshold = threshold;
+    v7->_recentCurationOverrideWindow = window;
   }
 
-  v4 = v7;
-  v8 = v4;
+  selfCopy = v7;
+  v8 = selfCopy;
 LABEL_10:
 
   return v8;
 }
 
-- (RTMapItemProviderUserCurationParameters)initWithDefaultsManager:(id)a3
+- (RTMapItemProviderUserCurationParameters)initWithDefaultsManager:(id)manager
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  managerCopy = manager;
+  v5 = managerCopy;
+  if (managerCopy)
   {
-    v6 = [v4 objectForKey:@"RTDefaultsMapItemProviderUserCurationDistanceThreshold"];
+    v6 = [managerCopy objectForKey:@"RTDefaultsMapItemProviderUserCurationDistanceThreshold"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -89,7 +89,7 @@ LABEL_10:
 
     self = [(RTMapItemProviderUserCurationParameters *)self initWithDistanceThreshold:v8 recentCurationOverrideWindow:v13];
 
-    v10 = self;
+    selfCopy = self;
   }
 
   else
@@ -101,10 +101,10 @@ LABEL_10:
       _os_log_error_impl(&dword_2304B3000, v9, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: defaultsManager", v15, 2u);
     }
 
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 @end

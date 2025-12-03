@@ -1,19 +1,19 @@
 @interface ECTransferUndownloadedMessageAction
-- (ECTransferUndownloadedMessageAction)initWithBuilder:(id)a3;
+- (ECTransferUndownloadedMessageAction)initWithBuilder:(id)builder;
 - (NSString)description;
 @end
 
 @implementation ECTransferUndownloadedMessageAction
 
-- (ECTransferUndownloadedMessageAction)initWithBuilder:(id)a3
+- (ECTransferUndownloadedMessageAction)initWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v7.receiver = self;
   v7.super_class = ECTransferUndownloadedMessageAction;
   v5 = [(ECTransferUndownloadedMessageAction *)&v7 init];
   if (v5)
   {
-    v4[2](v4, v5);
+    builderCopy[2](builderCopy, v5);
   }
 
   return v5;
@@ -25,9 +25,9 @@
   v10.super_class = ECTransferUndownloadedMessageAction;
   v3 = [(ECLocalMessageAction *)&v10 description];
   v4 = MEMORY[0x277CCACA8];
-  v5 = [(ECTransferUndownloadedMessageAction *)self transferType];
-  v6 = [(ECTransferUndownloadedMessageAction *)self oldestPersistedRemoteID];
-  v7 = [v4 stringWithFormat:@", transfer type = %ld, persistent ID limit %@", v5, v6];
+  transferType = [(ECTransferUndownloadedMessageAction *)self transferType];
+  oldestPersistedRemoteID = [(ECTransferUndownloadedMessageAction *)self oldestPersistedRemoteID];
+  v7 = [v4 stringWithFormat:@", transfer type = %ld, persistent ID limit %@", transferType, oldestPersistedRemoteID];
   v8 = [v3 stringByAppendingString:v7];
 
   return v8;

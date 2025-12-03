@@ -1,18 +1,18 @@
 @interface PBUIPortalReplicaEffectView
 - (PBUIFakeBlurObserver)observer;
-- (PBUIPortalReplicaEffectView)initWithFrame:(CGRect)a3;
+- (PBUIPortalReplicaEffectView)initWithFrame:(CGRect)frame;
 - (double)effectWeight;
-- (void)requestStyle:(int64_t)a3;
+- (void)requestStyle:(int64_t)style;
 - (void)setNeedsSourceUpdate;
 @end
 
 @implementation PBUIPortalReplicaEffectView
 
-- (PBUIPortalReplicaEffectView)initWithFrame:(CGRect)a3
+- (PBUIPortalReplicaEffectView)initWithFrame:(CGRect)frame
 {
   v13.receiver = self;
   v13.super_class = PBUIPortalReplicaEffectView;
-  v3 = [(PBUIPortalReplicaView *)&v13 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PBUIPortalReplicaView *)&v13 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [objc_alloc(MEMORY[0x277D75DE8]) initWithPrivateStyle:-2];
@@ -27,17 +27,17 @@
     [(PBUIPortalReplicaEffectView *)v3 addSubview:v3->_effectView];
     [(PBUIPortalReplicaEffectView *)v3 setAutoresizingMask:18];
     [(PBUIPortalReplicaEffectView *)v3 setClipsToBounds:1];
-    v7 = [(PBUIPortalReplicaView *)v3 debugView];
+    debugView = [(PBUIPortalReplicaView *)v3 debugView];
 
-    if (v7)
+    if (debugView)
     {
-      v8 = [(PBUIPortalReplicaView *)v3 debugView];
-      v9 = [MEMORY[0x277D75348] greenColor];
-      v10 = [v9 colorWithAlphaComponent:0.4];
-      [v8 setColor:v10];
+      debugView2 = [(PBUIPortalReplicaView *)v3 debugView];
+      greenColor = [MEMORY[0x277D75348] greenColor];
+      v10 = [greenColor colorWithAlphaComponent:0.4];
+      [debugView2 setColor:v10];
 
-      v11 = [(PBUIPortalReplicaView *)v3 debugView];
-      [(PBUIPortalReplicaEffectView *)v3 bringSubviewToFront:v11];
+      debugView3 = [(PBUIPortalReplicaView *)v3 debugView];
+      [(PBUIPortalReplicaEffectView *)v3 bringSubviewToFront:debugView3];
     }
   }
 
@@ -51,24 +51,24 @@
   [(PBUIPortalReplicaView *)&v20 setNeedsSourceUpdate];
   if (self->_style)
   {
-    v3 = [(PBUIPortalReplicaView *)self shouldMatchWallpaperPosition];
+    shouldMatchWallpaperPosition = [(PBUIPortalReplicaView *)self shouldMatchWallpaperPosition];
   }
 
   else
   {
-    v3 = 0;
+    shouldMatchWallpaperPosition = 0;
   }
 
-  [(PBUIPortalReplicaView *)self setShouldMatchWallpaperPosition:v3];
-  v4 = [(PBUIPortalReplicaView *)self source];
-  v5 = [v4 legibilitySettings];
-  v6 = [v5 contentColor];
+  [(PBUIPortalReplicaView *)self setShouldMatchWallpaperPosition:shouldMatchWallpaperPosition];
+  source = [(PBUIPortalReplicaView *)self source];
+  legibilitySettings = [source legibilitySettings];
+  contentColor = [legibilitySettings contentColor];
 
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  _WallpaperBackdropParametersForStyleAndAverageColor(self->_style, v6, &v16);
+  _WallpaperBackdropParametersForStyleAndAverageColor(self->_style, contentColor, &v16);
   v15[0] = v16;
   v15[1] = v17;
   v15[2] = v18;
@@ -107,12 +107,12 @@
       [(MTMaterialView *)v12 setFrame:?];
       [(MTMaterialView *)self->_materialView setAutoresizingMask:18];
       [(PBUIPortalReplicaEffectView *)self addSubview:self->_materialView];
-      v13 = [(PBUIPortalReplicaView *)self debugView];
+      debugView = [(PBUIPortalReplicaView *)self debugView];
 
-      if (v13)
+      if (debugView)
       {
-        v14 = [(PBUIPortalReplicaView *)self debugView];
-        [(PBUIPortalReplicaEffectView *)self bringSubviewToFront:v14];
+        debugView2 = [(PBUIPortalReplicaView *)self debugView];
+        [(PBUIPortalReplicaEffectView *)self bringSubviewToFront:debugView2];
       }
     }
   }
@@ -130,21 +130,21 @@
   return result;
 }
 
-- (void)requestStyle:(int64_t)a3
+- (void)requestStyle:(int64_t)style
 {
-  if (a3 == -1)
+  if (style == -1)
   {
-    v3 = 0;
+    styleCopy = 0;
   }
 
   else
   {
-    v3 = a3;
+    styleCopy = style;
   }
 
-  if (self->_style != v3)
+  if (self->_style != styleCopy)
   {
-    self->_style = v3;
+    self->_style = styleCopy;
     [(PBUIPortalReplicaEffectView *)self setNeedsSourceUpdate];
   }
 }

@@ -19,8 +19,8 @@
 + (void)__MPModelStoreBrowseContentItemRelationshipTVShowCreator__MAPPING_MISSING__;
 + (void)__MPModelStoreBrowseContentItemRelationshipTVShow__MAPPING_MISSING__;
 - (id)innerObject;
-- (id)objectWithStoreLibraryPersonalizationRelativeModelObject:(id)a3;
-- (id)personalizationScopedPropertiesForProperties:(id)a3;
+- (id)objectWithStoreLibraryPersonalizationRelativeModelObject:(id)object;
+- (id)personalizationScopedPropertiesForProperties:(id)properties;
 - (id)relativeModelObjectForStoreLibraryPersonalization;
 @end
 
@@ -251,124 +251,124 @@
 
 + (void)__MPModelStoreBrowseContentItemRelationshipCreditsArtist__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelStoreBrowseContentItem.m" lineNumber:52 description:@"Translator was missing mapping for MPModelStoreBrowseContentItemRelationshipCreditsArtist"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelStoreBrowseContentItem.m" lineNumber:52 description:@"Translator was missing mapping for MPModelStoreBrowseContentItemRelationshipCreditsArtist"];
 }
 
 + (void)__MPModelStoreBrowseContentItemRelationshipRecordLabel__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelStoreBrowseContentItem.m" lineNumber:51 description:@"Translator was missing mapping for MPModelStoreBrowseContentItemRelationshipRecordLabel"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelStoreBrowseContentItem.m" lineNumber:51 description:@"Translator was missing mapping for MPModelStoreBrowseContentItemRelationshipRecordLabel"];
 }
 
 + (void)__MPModelStoreBrowseContentItemRelationshipTVShowCreator__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelStoreBrowseContentItem.m" lineNumber:50 description:@"Translator was missing mapping for MPModelStoreBrowseContentItemRelationshipTVShowCreator"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelStoreBrowseContentItem.m" lineNumber:50 description:@"Translator was missing mapping for MPModelStoreBrowseContentItemRelationshipTVShowCreator"];
 }
 
 + (void)__MPModelStoreBrowseContentItemRelationshipTVShow__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelStoreBrowseContentItem.m" lineNumber:49 description:@"Translator was missing mapping for MPModelStoreBrowseContentItemRelationshipTVShow"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelStoreBrowseContentItem.m" lineNumber:49 description:@"Translator was missing mapping for MPModelStoreBrowseContentItemRelationshipTVShow"];
 }
 
 + (void)__MPModelStoreBrowseContentItemRelationshipTVSeason__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelStoreBrowseContentItem.m" lineNumber:48 description:@"Translator was missing mapping for MPModelStoreBrowseContentItemRelationshipTVSeason"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelStoreBrowseContentItem.m" lineNumber:48 description:@"Translator was missing mapping for MPModelStoreBrowseContentItemRelationshipTVSeason"];
 }
 
 + (void)__MPModelStoreBrowseContentItemRelationshipTVEpisode__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelStoreBrowseContentItem.m" lineNumber:47 description:@"Translator was missing mapping for MPModelStoreBrowseContentItemRelationshipTVEpisode"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelStoreBrowseContentItem.m" lineNumber:47 description:@"Translator was missing mapping for MPModelStoreBrowseContentItemRelationshipTVEpisode"];
 }
 
 + (void)__MPModelStoreBrowseContentItemRelationshipSong__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelStoreBrowseContentItem.m" lineNumber:46 description:@"Translator was missing mapping for MPModelStoreBrowseContentItemRelationshipSong"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelStoreBrowseContentItem.m" lineNumber:46 description:@"Translator was missing mapping for MPModelStoreBrowseContentItemRelationshipSong"];
 }
 
 + (void)__MPModelStoreBrowseContentItemRelationshipSocialPerson__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelStoreBrowseContentItem.m" lineNumber:45 description:@"Translator was missing mapping for MPModelStoreBrowseContentItemRelationshipSocialPerson"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelStoreBrowseContentItem.m" lineNumber:45 description:@"Translator was missing mapping for MPModelStoreBrowseContentItemRelationshipSocialPerson"];
 }
 
 + (void)__MPModelStoreBrowseContentItemRelationshipRadioStation__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelStoreBrowseContentItem.m" lineNumber:44 description:@"Translator was missing mapping for MPModelStoreBrowseContentItemRelationshipRadioStation"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelStoreBrowseContentItem.m" lineNumber:44 description:@"Translator was missing mapping for MPModelStoreBrowseContentItemRelationshipRadioStation"];
 }
 
 + (void)__MPModelStoreBrowseContentItemRelationshipPlaylist__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelStoreBrowseContentItem.m" lineNumber:43 description:@"Translator was missing mapping for MPModelStoreBrowseContentItemRelationshipPlaylist"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelStoreBrowseContentItem.m" lineNumber:43 description:@"Translator was missing mapping for MPModelStoreBrowseContentItemRelationshipPlaylist"];
 }
 
 + (void)__MPModelStoreBrowseContentItemRelationshipMovie__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelStoreBrowseContentItem.m" lineNumber:42 description:@"Translator was missing mapping for MPModelStoreBrowseContentItemRelationshipMovie"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelStoreBrowseContentItem.m" lineNumber:42 description:@"Translator was missing mapping for MPModelStoreBrowseContentItemRelationshipMovie"];
 }
 
 + (void)__MPModelStoreBrowseContentItemRelationshipMediaClip__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelStoreBrowseContentItem.m" lineNumber:41 description:@"Translator was missing mapping for MPModelStoreBrowseContentItemRelationshipMediaClip"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelStoreBrowseContentItem.m" lineNumber:41 description:@"Translator was missing mapping for MPModelStoreBrowseContentItemRelationshipMediaClip"];
 }
 
 + (void)__MPModelStoreBrowseContentItemRelationshipCurator__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelStoreBrowseContentItem.m" lineNumber:40 description:@"Translator was missing mapping for MPModelStoreBrowseContentItemRelationshipCurator"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelStoreBrowseContentItem.m" lineNumber:40 description:@"Translator was missing mapping for MPModelStoreBrowseContentItemRelationshipCurator"];
 }
 
 + (void)__MPModelStoreBrowseContentItemRelationshipArtist__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelStoreBrowseContentItem.m" lineNumber:39 description:@"Translator was missing mapping for MPModelStoreBrowseContentItemRelationshipArtist"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelStoreBrowseContentItem.m" lineNumber:39 description:@"Translator was missing mapping for MPModelStoreBrowseContentItemRelationshipArtist"];
 }
 
 + (void)__MPModelStoreBrowseContentItemRelationshipAlbum__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelStoreBrowseContentItem.m" lineNumber:38 description:@"Translator was missing mapping for MPModelStoreBrowseContentItemRelationshipAlbum"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelStoreBrowseContentItem.m" lineNumber:38 description:@"Translator was missing mapping for MPModelStoreBrowseContentItemRelationshipAlbum"];
 }
 
 + (void)__MPModelStoreBrowseContentItemPropertyArtistUploadedContentType__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelStoreBrowseContentItem.m" lineNumber:37 description:@"Translator was missing mapping for MPModelStoreBrowseContentItemPropertyArtistUploadedContentType"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelStoreBrowseContentItem.m" lineNumber:37 description:@"Translator was missing mapping for MPModelStoreBrowseContentItemPropertyArtistUploadedContentType"];
 }
 
 + (void)__MPModelStoreBrowseContentItemPropertyDetailedItemType__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelStoreBrowseContentItem.m" lineNumber:36 description:@"Translator was missing mapping for MPModelStoreBrowseContentItemPropertyDetailedItemType"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelStoreBrowseContentItem.m" lineNumber:36 description:@"Translator was missing mapping for MPModelStoreBrowseContentItemPropertyDetailedItemType"];
 }
 
 + (void)__MPModelStoreBrowseContentItemPropertyItemType__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelStoreBrowseContentItem.m" lineNumber:35 description:@"Translator was missing mapping for MPModelStoreBrowseContentItemPropertyItemType"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelStoreBrowseContentItem.m" lineNumber:35 description:@"Translator was missing mapping for MPModelStoreBrowseContentItemPropertyItemType"];
 }
 
-- (id)objectWithStoreLibraryPersonalizationRelativeModelObject:(id)a3
+- (id)objectWithStoreLibraryPersonalizationRelativeModelObject:(id)object
 {
-  v4 = a3;
-  v5 = [(MPModelObject *)self identifiers];
+  objectCopy = object;
+  identifiers = [(MPModelObject *)self identifiers];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __90__MPModelStoreBrowseContentItem_objectWithStoreLibraryPersonalizationRelativeModelObject___block_invoke;
   v9[3] = &unk_1E767C828;
   v9[4] = self;
-  v10 = v4;
-  v6 = v4;
-  v7 = [(MPModelObject *)self copyWithIdentifiers:v5 block:v9];
+  v10 = objectCopy;
+  v6 = objectCopy;
+  v7 = [(MPModelObject *)self copyWithIdentifiers:identifiers block:v9];
 
   return v7;
 }
@@ -427,17 +427,17 @@ void __90__MPModelStoreBrowseContentItem_objectWithStoreLibraryPersonalizationRe
 
 - (id)relativeModelObjectForStoreLibraryPersonalization
 {
-  v2 = [(MPModelStoreBrowseContentItem *)self innerObject];
-  v3 = [v2 relativeModelObjectForStoreLibraryPersonalization];
+  innerObject = [(MPModelStoreBrowseContentItem *)self innerObject];
+  relativeModelObjectForStoreLibraryPersonalization = [innerObject relativeModelObjectForStoreLibraryPersonalization];
 
-  return v3;
+  return relativeModelObjectForStoreLibraryPersonalization;
 }
 
-- (id)personalizationScopedPropertiesForProperties:(id)a3
+- (id)personalizationScopedPropertiesForProperties:(id)properties
 {
-  v4 = [a3 relationships];
+  relationships = [properties relationships];
   v5 = [(MPModelStoreBrowseContentItem *)self itemType]- 1;
-  if (v5 > 0xE || ((0x6FFFu >> v5) & 1) == 0 || ([v4 objectForKey:off_1E767C848[v5]], (v6 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (v5 > 0xE || ((0x6FFFu >> v5) & 1) == 0 || ([relationships objectForKey:off_1E767C848[v5]], (v6 = objc_claimAutoreleasedReturnValue()) == 0))
   {
     v6 = +[MPPropertySet emptyPropertySet];
   }
@@ -450,56 +450,56 @@ void __90__MPModelStoreBrowseContentItem_objectWithStoreLibraryPersonalizationRe
   switch([(MPModelStoreBrowseContentItem *)self itemType])
   {
     case 1:
-      v3 = [(MPModelStoreBrowseContentItem *)self album];
+      album = [(MPModelStoreBrowseContentItem *)self album];
       break;
     case 2:
-      v3 = [(MPModelStoreBrowseContentItem *)self artist];
+      album = [(MPModelStoreBrowseContentItem *)self artist];
       break;
     case 3:
-      v3 = [(MPModelStoreBrowseContentItem *)self curator];
+      album = [(MPModelStoreBrowseContentItem *)self curator];
       break;
     case 4:
-      v3 = [(MPModelStoreBrowseContentItem *)self playlist];
+      album = [(MPModelStoreBrowseContentItem *)self playlist];
       break;
     case 5:
-      v3 = [(MPModelStoreBrowseContentItem *)self radioStation];
+      album = [(MPModelStoreBrowseContentItem *)self radioStation];
       break;
     case 6:
-      v3 = [(MPModelStoreBrowseContentItem *)self socialPerson];
+      album = [(MPModelStoreBrowseContentItem *)self socialPerson];
       break;
     case 7:
-      v3 = [(MPModelStoreBrowseContentItem *)self song];
+      album = [(MPModelStoreBrowseContentItem *)self song];
       break;
     case 8:
-      v3 = [(MPModelStoreBrowseContentItem *)self episode];
+      album = [(MPModelStoreBrowseContentItem *)self episode];
       break;
     case 9:
-      v3 = [(MPModelStoreBrowseContentItem *)self show];
+      album = [(MPModelStoreBrowseContentItem *)self show];
       break;
     case 10:
-      v3 = [(MPModelStoreBrowseContentItem *)self season];
+      album = [(MPModelStoreBrowseContentItem *)self season];
       break;
     case 11:
-      v3 = [(MPModelStoreBrowseContentItem *)self showCreator];
+      album = [(MPModelStoreBrowseContentItem *)self showCreator];
       break;
     case 12:
-      v3 = [(MPModelStoreBrowseContentItem *)self movie];
+      album = [(MPModelStoreBrowseContentItem *)self movie];
       break;
     case 13:
-      v3 = [(MPModelStoreBrowseContentItem *)self mediaClip];
+      album = [(MPModelStoreBrowseContentItem *)self mediaClip];
       break;
     case 14:
-      v3 = [(MPModelStoreBrowseContentItem *)self recordLabel];
+      album = [(MPModelStoreBrowseContentItem *)self recordLabel];
       break;
     case 15:
-      v3 = [(MPModelStoreBrowseContentItem *)self creditsArtist];
+      album = [(MPModelStoreBrowseContentItem *)self creditsArtist];
       break;
     default:
-      v3 = 0;
+      album = 0;
       break;
   }
 
-  return v3;
+  return album;
 }
 
 @end

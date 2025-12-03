@@ -1,7 +1,7 @@
 @interface SIPersonDetectorNetworkConfiguration
 - (SIPersonDetectorNetworkConfiguration)init;
-- (void)setModelConfig:(int64_t)a3;
-- (void)setNetworkModeEnum:(int64_t)a3;
+- (void)setModelConfig:(int64_t)config;
+- (void)setNetworkModeEnum:(int64_t)enum;
 @end
 
 @implementation SIPersonDetectorNetworkConfiguration
@@ -28,20 +28,20 @@
   return v3;
 }
 
-- (void)setNetworkModeEnum:(int64_t)a3
+- (void)setNetworkModeEnum:(int64_t)enum
 {
   networkMode = self->super._networkMode;
   self->super._networkMode = &stru_282F2BE40;
 
-  self->_networkModeEnum = a3;
+  self->_networkModeEnum = enum;
 }
 
-- (void)setModelConfig:(int64_t)a3
+- (void)setModelConfig:(int64_t)config
 {
   networkName = self->super._networkName;
   self->super._networkName = @"PersonDetector";
 
-  self->_modelConfig = a3;
+  self->_modelConfig = config;
 }
 
 @end

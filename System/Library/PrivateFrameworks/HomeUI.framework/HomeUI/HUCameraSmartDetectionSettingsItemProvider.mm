@@ -1,25 +1,25 @@
 @interface HUCameraSmartDetectionSettingsItemProvider
 - (BOOL)_homeSupportsPackageDetection;
 - (HUCameraSmartDetectionSettingsItemProvider)init;
-- (HUCameraSmartDetectionSettingsItemProvider)initWithCameraProfiles:(id)a3 settingsContext:(unint64_t)a4;
+- (HUCameraSmartDetectionSettingsItemProvider)initWithCameraProfiles:(id)profiles settingsContext:(unint64_t)context;
 - (id)reloadItems;
 @end
 
 @implementation HUCameraSmartDetectionSettingsItemProvider
 
-- (HUCameraSmartDetectionSettingsItemProvider)initWithCameraProfiles:(id)a3 settingsContext:(unint64_t)a4
+- (HUCameraSmartDetectionSettingsItemProvider)initWithCameraProfiles:(id)profiles settingsContext:(unint64_t)context
 {
-  v6 = a3;
+  profilesCopy = profiles;
   v13.receiver = self;
   v13.super_class = HUCameraSmartDetectionSettingsItemProvider;
   v7 = [(HFItemProvider *)&v13 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [profilesCopy copy];
     cameraProfiles = v7->_cameraProfiles;
     v7->_cameraProfiles = v8;
 
-    v7->_settingsContext = a4;
+    v7->_settingsContext = context;
     v10 = [MEMORY[0x277CBEB58] set];
     smartDetectionSettingsItems = v7->_smartDetectionSettingsItems;
     v7->_smartDetectionSettingsItems = v10;
@@ -30,9 +30,9 @@
 
 - (HUCameraSmartDetectionSettingsItemProvider)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithCameraProfiles_settingsContext_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HUCameraSmartDetectionSettingsItemProvider.m" lineNumber:30 description:{@"%s is unavailable; use %@ instead", "-[HUCameraSmartDetectionSettingsItemProvider init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUCameraSmartDetectionSettingsItemProvider.m" lineNumber:30 description:{@"%s is unavailable; use %@ instead", "-[HUCameraSmartDetectionSettingsItemProvider init]", v5}];
 
   return 0;
 }
@@ -172,13 +172,13 @@ id __57__HUCameraSmartDetectionSettingsItemProvider_reloadItems__block_invoke_5(
 
 - (BOOL)_homeSupportsPackageDetection
 {
-  v2 = [(HUCameraSmartDetectionSettingsItemProvider *)self cameraProfiles];
-  v3 = [v2 anyObject];
-  v4 = [v3 accessory];
-  v5 = [v4 home];
-  v6 = [v5 hf_hasResidentDeviceCapableOfSupportingEnhancedDetectionModes];
+  cameraProfiles = [(HUCameraSmartDetectionSettingsItemProvider *)self cameraProfiles];
+  anyObject = [cameraProfiles anyObject];
+  accessory = [anyObject accessory];
+  home = [accessory home];
+  hf_hasResidentDeviceCapableOfSupportingEnhancedDetectionModes = [home hf_hasResidentDeviceCapableOfSupportingEnhancedDetectionModes];
 
-  return v6;
+  return hf_hasResidentDeviceCapableOfSupportingEnhancedDetectionModes;
 }
 
 @end

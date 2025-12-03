@@ -1,6 +1,6 @@
 @interface AXAuditImageDetectionManager
 + (id)sharedManager;
-- (id)detectedTextResultsForImageData:(id)a3;
+- (id)detectedTextResultsForImageData:(id)data;
 @end
 
 @implementation AXAuditImageDetectionManager
@@ -11,7 +11,7 @@
   block[1] = 3221225472;
   block[2] = __45__AXAuditImageDetectionManager_sharedManager__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedManager_onceToken != -1)
   {
     dispatch_once(&sharedManager_onceToken, block);
@@ -30,10 +30,10 @@ uint64_t __45__AXAuditImageDetectionManager_sharedManager__block_invoke(uint64_t
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)detectedTextResultsForImageData:(id)a3
+- (id)detectedTextResultsForImageData:(id)data
 {
   v26[3] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  dataCopy = data;
   v4 = objc_opt_new();
   v5 = *MEMORY[0x277CBF6F8];
   v25[0] = *MEMORY[0x277CBF6D8];
@@ -44,8 +44,8 @@ uint64_t __45__AXAuditImageDetectionManager_sharedManager__block_invoke(uint64_t
   v26[2] = MEMORY[0x277CBEC28];
   v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v26 forKeys:v25 count:3];
   v6 = [MEMORY[0x277CBF748] detectorOfType:*MEMORY[0x277CBF720] context:0 options:?];
-  v19 = v3;
-  v7 = [objc_alloc(MEMORY[0x277D755B8]) initWithData:v3];
+  v19 = dataCopy;
+  v7 = [objc_alloc(MEMORY[0x277D755B8]) initWithData:dataCopy];
   v8 = [objc_alloc(MEMORY[0x277CBF758]) initWithImage:v7];
   v9 = [v6 featuresInImage:v8 options:MEMORY[0x277CBEC10]];
   v20 = 0u;

@@ -7,7 +7,7 @@
 - (id)initWithName:()FCAdditions
 {
   v4 = a3;
-  v8.receiver = a1;
+  v8.receiver = self;
   v8.super_class = &off_1F2EE9D48;
   v5 = objc_msgSendSuper2(&v8, sel_init);
   v6 = v5;

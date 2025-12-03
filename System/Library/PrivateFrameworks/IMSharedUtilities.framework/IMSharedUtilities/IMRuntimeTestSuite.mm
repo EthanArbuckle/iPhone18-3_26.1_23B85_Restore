@@ -1,12 +1,12 @@
 @interface IMRuntimeTestSuite
-+ (void)runTestsIfNeededWithRepeatCount:(int64_t)a3 withCount:(int64_t)a4;
++ (void)runTestsIfNeededWithRepeatCount:(int64_t)count withCount:(int64_t)withCount;
 - (IMRuntimeTestSuite)init;
 - (NSTimer)timer;
 - (void)_cancelTimer;
 - (void)_startNextTest;
-- (void)addTest:(id)a3;
+- (void)addTest:(id)test;
 - (void)currentTestDidFinish;
-- (void)removeTest:(id)a3;
+- (void)removeTest:(id)test;
 - (void)startTest;
 @end
 
@@ -27,22 +27,22 @@
   return v2;
 }
 
-- (void)addTest:(id)a3
+- (void)addTest:(id)test
 {
-  v5 = a3;
-  v4 = [v5 testName];
-  [(IMRuntimeTest *)self testLog:@"added test: %@", v4];
+  testCopy = test;
+  testName = [testCopy testName];
+  [(IMRuntimeTest *)self testLog:@"added test: %@", testName];
 
-  [(NSMutableArray *)self->_tests addObject:v5];
+  [(NSMutableArray *)self->_tests addObject:testCopy];
 }
 
-- (void)removeTest:(id)a3
+- (void)removeTest:(id)test
 {
-  v5 = a3;
-  v4 = [v5 testName];
-  [(IMRuntimeTest *)self testLog:@"removed test: %@", v4];
+  testCopy = test;
+  testName = [testCopy testName];
+  [(IMRuntimeTest *)self testLog:@"removed test: %@", testName];
 
-  [(NSMutableArray *)self->_tests removeObject:v5];
+  [(NSMutableArray *)self->_tests removeObject:testCopy];
 }
 
 - (void)startTest
@@ -57,13 +57,13 @@
 
 - (void)_cancelTimer
 {
-  v3 = [(IMRuntimeTestSuite *)self timer];
-  if (v3)
+  timer = [(IMRuntimeTestSuite *)self timer];
+  if (timer)
   {
-    v4 = v3;
-    [v3 invalidate];
+    v4 = timer;
+    [timer invalidate];
     [(IMRuntimeTestSuite *)self setTimer:0];
-    v3 = v4;
+    timer = v4;
   }
 }
 
@@ -73,8 +73,8 @@
   currentTest = self->_currentTest;
   self->_currentTest = v3;
 
-  v5 = [(IMRuntimeTest *)self->_currentTest testName];
-  [(IMRuntimeTest *)self testLog:@"starting next test in suite: %@", v5];
+  testName = [(IMRuntimeTest *)self->_currentTest testName];
+  [(IMRuntimeTest *)self testLog:@"starting next test in suite: %@", testName];
 
   [(NSMutableArray *)self->_runningTests removeObjectAtIndex:0];
   v6 = self->_currentTest;
@@ -88,8 +88,8 @@
 
 - (void)currentTestDidFinish
 {
-  v3 = [(IMRuntimeTest *)self->_currentTest testName];
-  [(IMRuntimeTest *)self testLog:@"current test in test suite did finish: %@", v3];
+  testName = [(IMRuntimeTest *)self->_currentTest testName];
+  [(IMRuntimeTest *)self testLog:@"current test in test suite did finish: %@", testName];
 
   if ([(NSMutableArray *)self->_tests count]&& [(NSMutableArray *)self->_runningTests count])
   {
@@ -107,29 +107,29 @@
   }
 }
 
-+ (void)runTestsIfNeededWithRepeatCount:(int64_t)a3 withCount:(int64_t)a4
++ (void)runTestsIfNeededWithRepeatCount:(int64_t)count withCount:(int64_t)withCount
 {
-  if (a4 >= a3)
+  if (withCount >= count)
   {
 
-    [a1 testLog:{@"Not repeating tests, all done"}];
+    [self testLog:{@"Not repeating tests, all done"}];
   }
 
   else
   {
     v7 = objc_alloc_init(objc_opt_class());
     [v7 testSuiteStartDelay];
-    [a1 testLog:{@"running test batch %ld of %ld in %f seconds", a4, a3, v8}];
+    [self testLog:{@"running test batch %ld of %ld in %f seconds", withCount, count, v8}];
     [v7 testSuiteStartDelay];
     v10 = dispatch_time(0, (v9 * 1000000000.0));
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = sub_1A869F360;
     block[3] = &unk_1E7829000;
-    v15 = a4;
-    v16 = a3;
+    withCountCopy = withCount;
+    countCopy = count;
     v13 = v7;
-    v14 = a1;
+    selfCopy = self;
     v11 = v7;
     dispatch_after(v10, MEMORY[0x1E69E96A0], block);
   }

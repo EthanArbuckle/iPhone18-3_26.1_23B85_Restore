@@ -1,29 +1,29 @@
 @interface ADFMIPListener
 + (id)sharedListener;
 - (ADFMIPListener)init;
-- (void)connection:(id)a3 didReceiveIncomingMessage:(id)a4;
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4;
+- (void)connection:(id)connection didReceiveIncomingMessage:(id)message;
+- (void)connection:(id)connection didReceivePublicToken:(id)token;
 - (void)startListening;
 @end
 
 @implementation ADFMIPListener
 
-- (void)connection:(id)a3 didReceiveIncomingMessage:(id)a4
+- (void)connection:(id)connection didReceiveIncomingMessage:(id)message
 {
-  v5 = a3;
-  v6 = a4;
+  connectionCopy = connection;
+  messageCopy = message;
   v7 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
   {
     *buf = 136315394;
     v12 = "[ADFMIPListener connection:didReceiveIncomingMessage:]";
     v13 = 2112;
-    v14 = v6;
+    v14 = messageCopy;
     _os_log_debug_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "%s %@", buf, 0x16u);
   }
 
-  v8 = [v6 topic];
-  v9 = [v8 isEqualToString:@"com.apple.icloud.fmip.voiceassistantsync"];
+  topic = [messageCopy topic];
+  v9 = [topic isEqualToString:@"com.apple.icloud.fmip.voiceassistantsync"];
 
   if (v9)
   {
@@ -32,7 +32,7 @@
   }
 }
 
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4
+- (void)connection:(id)connection didReceivePublicToken:(id)token
 {
   v4 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))

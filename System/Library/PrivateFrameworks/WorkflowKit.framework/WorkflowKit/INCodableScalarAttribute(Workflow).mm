@@ -11,15 +11,15 @@
 {
   v6 = a3;
   v7 = a4;
-  if ([a1 type] != 7)
+  if ([self type] != 7)
   {
-    v16.receiver = a1;
+    v16.receiver = self;
     v16.super_class = &off_1F4B05710;
     v12 = objc_msgSendSuper2(&v16, sel_wf_parameterStateForIntentValue_parameterDefinition_, v6, v7);
     goto LABEL_11;
   }
 
-  if (![a1 modifier])
+  if (![self modifier])
   {
     v13 = objc_opt_class();
     v9 = WFEnforceClass_1501(v6, v13);
@@ -57,19 +57,19 @@ LABEL_11:
 - (void)wf_updatedParameterDefinition:()Workflow parameterClass:localizer:
 {
   v34[1] = *MEMORY[0x1E69E9840];
-  v26.receiver = a1;
+  v26.receiver = self;
   v26.super_class = &off_1F4B05710;
   v2 = objc_msgSendSuper2(&v26, sel_wf_updatedParameterDefinition_parameterClass_localizer_);
-  if (([a1 supportsDynamicEnumeration] & 1) == 0 && objc_msgSend(a1, "type") == 7)
+  if (([self supportsDynamicEnumeration] & 1) == 0 && objc_msgSend(self, "type") == 7)
   {
-    v3 = [a1 metadata];
+    metadata = [self metadata];
     v4 = objc_opt_class();
-    v5 = WFEnforceClass_1501(v3, v4);
+    v5 = WFEnforceClass_1501(metadata, v4);
 
     v33 = @"TextAlignment";
-    v6 = [v5 isMultiline];
+    isMultiline = [v5 isMultiline];
     v7 = @"Right";
-    if (v6)
+    if (isMultiline)
     {
       v7 = @"Left";
     }
@@ -78,12 +78,12 @@ LABEL_11:
     v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v34 forKeys:&v33 count:1];
     v9 = [v2 definitionByAddingEntriesInDictionary:v8];
 
-    v10 = [v5 localizedDefaultValue];
-    v11 = v10;
-    if (v10)
+    localizedDefaultValue = [v5 localizedDefaultValue];
+    v11 = localizedDefaultValue;
+    if (localizedDefaultValue)
     {
       v31 = @"DefaultValue";
-      v32 = v10;
+      v32 = localizedDefaultValue;
       v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v32 forKeys:&v31 count:1];
       v13 = [v9 definitionByAddingEntriesInDictionary:v12];
 
@@ -105,10 +105,10 @@ LABEL_11:
     v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v30 forKeys:v29 count:4];
     v2 = [v9 definitionByAddingEntriesInDictionary:v18];
 
-    v19 = [v5 capitalization];
-    if (v19 <= 3)
+    capitalization = [v5 capitalization];
+    if (capitalization <= 3)
     {
-      v20 = off_1E8379D48[v19];
+      v20 = off_1E8379D48[capitalization];
       v27 = @"AutocapitalizationType";
       v28 = v20;
       v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v28 forKeys:&v27 count:1];
@@ -126,7 +126,7 @@ LABEL_11:
 
 - (id)wf_parameterClass
 {
-  if ([a1 type] == 7)
+  if ([self type] == 7)
   {
     v1 = objc_opt_class();
   }
@@ -141,11 +141,11 @@ LABEL_11:
 
 - (id)wf_objectClass
 {
-  v1 = [a1 type];
+  type = [self type];
   v2 = 0;
-  if (v1 <= 5)
+  if (type <= 5)
   {
-    if (v1 >= 6)
+    if (type >= 6)
     {
       goto LABEL_4;
     }
@@ -153,13 +153,13 @@ LABEL_11:
     goto LABEL_3;
   }
 
-  if (v1 == 6)
+  if (type == 6)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithBool:1];
     v2 = objc_opt_class();
   }
 
-  else if (v1 == 7 || v1 == 8)
+  else if (type == 7 || type == 8)
   {
 LABEL_3:
     v2 = objc_opt_class();

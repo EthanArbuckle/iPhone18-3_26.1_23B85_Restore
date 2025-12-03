@@ -6,7 +6,7 @@
 
 - (void)objectForKey:()NSDictionaryAdditions matching:
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   if (objc_opt_isKindOfClass())
   {
     v2 = v1;

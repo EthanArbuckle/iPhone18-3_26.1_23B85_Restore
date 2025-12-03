@@ -1,30 +1,30 @@
 @interface RXXPCCSpeechRecognitionClientService
-- (RXXPCCSpeechRecognitionClientService)initWithRXXPC:(RXXPC *)a3 externalServiceClient:(id)a4;
-- (void)forwardInvocation:(id)a3;
-- (void)legacyClientEventWithMessage:(id)a3;
-- (void)pong:(int64_t)a3;
-- (void)recognizedEventWithLegacyMessage:(id)a3 result:(id)a4;
+- (RXXPCCSpeechRecognitionClientService)initWithRXXPC:(RXXPC *)c externalServiceClient:(id)client;
+- (void)forwardInvocation:(id)invocation;
+- (void)legacyClientEventWithMessage:(id)message;
+- (void)pong:(int64_t)pong;
+- (void)recognizedEventWithLegacyMessage:(id)message result:(id)result;
 @end
 
 @implementation RXXPCCSpeechRecognitionClientService
 
-- (RXXPCCSpeechRecognitionClientService)initWithRXXPC:(RXXPC *)a3 externalServiceClient:(id)a4
+- (RXXPCCSpeechRecognitionClientService)initWithRXXPC:(RXXPC *)c externalServiceClient:(id)client
 {
-  v6 = a4;
+  clientCopy = client;
   v10.receiver = self;
   v10.super_class = RXXPCCSpeechRecognitionClientService;
   v7 = [(RXXPCCSpeechRecognitionClientService *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    v7->_xpc = a3;
-    objc_storeWeak(&v7->_externalServiceClient, v6);
+    v7->_xpc = c;
+    objc_storeWeak(&v7->_externalServiceClient, clientCopy);
   }
 
   return v8;
 }
 
-- (void)pong:(int64_t)a3
+- (void)pong:(int64_t)pong
 {
   WeakRetained = objc_loadWeakRetained(&self->_externalServiceClient);
   v5 = objc_opt_respondsToSelector();
@@ -32,28 +32,28 @@
   if (v5)
   {
     v7 = objc_loadWeakRetained(&self->_externalServiceClient);
-    [v7 pong:a3];
+    [v7 pong:pong];
   }
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
-  v7 = a3;
-  [v7 selector];
+  invocationCopy = invocation;
+  [invocationCopy selector];
   WeakRetained = objc_loadWeakRetained(&self->_externalServiceClient);
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
     v6 = objc_loadWeakRetained(&self->_externalServiceClient);
-    [v7 invokeWithTarget:v6];
+    [invocationCopy invokeWithTarget:v6];
   }
 }
 
-- (void)legacyClientEventWithMessage:(id)a3
+- (void)legacyClientEventWithMessage:(id)message
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  messageCopy = message;
   v5 = _CFXPCCreateXPCObjectFromCFObject();
   v6 = v5;
   if (v5)
@@ -68,7 +68,7 @@
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       v10 = 138412290;
-      v11 = v4;
+      v11 = messageCopy;
       _os_log_impl(&dword_26B583000, v8, OS_LOG_TYPE_ERROR, "failed to handle client event for %@\n", &v10, 0xCu);
     }
   }
@@ -76,11 +76,11 @@
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)recognizedEventWithLegacyMessage:(id)a3 result:(id)a4
+- (void)recognizedEventWithLegacyMessage:(id)message result:(id)result
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  messageCopy = message;
+  resultCopy = result;
   v7 = _CFXPCCreateXPCObjectFromCFObject();
   v8 = v7;
   if (v7)
@@ -92,7 +92,7 @@
     v13[2] = __80__RXXPCCSpeechRecognitionClientService_recognizedEventWithLegacyMessage_result___block_invoke;
     v13[3] = &unk_279CF6B38;
     v14 = v9;
-    v15 = v6;
+    v15 = resultCopy;
     v11 = v9;
     dispatch_async(v10, v13);
   }
@@ -103,7 +103,7 @@
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v17 = v5;
+      v17 = messageCopy;
       _os_log_impl(&dword_26B583000, v11, OS_LOG_TYPE_ERROR, "failed to handle recognition event for %@\n", buf, 0xCu);
     }
   }

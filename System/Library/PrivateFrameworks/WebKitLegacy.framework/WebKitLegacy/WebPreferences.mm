@@ -1,65 +1,65 @@
 @interface WebPreferences
 + (WebPreferences)standardPreferences;
 + (id)_IBCreatorID;
-+ (id)_concatenateKeyWithIBCreatorID:(id)a3;
++ (id)_concatenateKeyWithIBCreatorID:(id)d;
 + (id)_experimentalFeatures;
-+ (id)_getInstanceForIdentifier:(id)a3;
++ (id)_getInstanceForIdentifier:(id)identifier;
 + (id)_internalFeatures;
-+ (void)_checkLastReferenceForIdentifier:(id)a3;
-+ (void)_clearNetworkLoaderSession:(id)a3;
-+ (void)_removeReferenceForIdentifier:(id)a3;
-+ (void)_setCurrentNetworkLoaderSessionCookieAcceptPolicy:(unint64_t)a3;
-+ (void)_setIBCreatorID:(id)a3;
++ (void)_checkLastReferenceForIdentifier:(id)identifier;
++ (void)_clearNetworkLoaderSession:(id)session;
++ (void)_removeReferenceForIdentifier:(id)identifier;
++ (void)_setCurrentNetworkLoaderSessionCookieAcceptPolicy:(unint64_t)policy;
++ (void)_setIBCreatorID:(id)d;
 + (void)_setInitialDefaultTextEncodingToSystemEncoding;
-+ (void)_setInstance:(id)a3 forIdentifier:(id)a4;
++ (void)_setInstance:(id)instance forIdentifier:(id)identifier;
 + (void)_switchNetworkLoaderToNewTestingSession;
 + (void)initialize;
-- (BOOL)_isEnabledForFeature:(id)a3;
+- (BOOL)_isEnabledForFeature:(id)feature;
 - (BOOL)developerExtrasEnabled;
 - (NSString)_ftpDirectoryTemplatePath;
 - (NSString)_localStorageDatabasePath;
 - (NSString)mediaKeysStorageDirectory;
 - (WebPreferences)init;
-- (WebPreferences)initWithCoder:(id)a3;
-- (WebPreferences)initWithIdentifier:(id)a3 sendChangeNotification:(BOOL)a4;
-- (float)_floatValueForKey:(id)a3;
-- (id)_stringArrayValueForKey:(id)a3;
-- (id)_stringValueForKey:(id)a3;
-- (id)_valueForKey:(id)a3;
-- (int)_integerValueForKey:(id)a3;
+- (WebPreferences)initWithCoder:(id)coder;
+- (WebPreferences)initWithIdentifier:(id)identifier sendChangeNotification:(BOOL)notification;
+- (float)_floatValueForKey:(id)key;
+- (id)_stringArrayValueForKey:(id)key;
+- (id)_stringValueForKey:(id)key;
+- (id)_valueForKey:(id)key;
+- (int)_integerValueForKey:(id)key;
 - (int)editableLinkBehavior;
 - (int)textDirectionSubmenuInclusionBehavior;
-- (int64_t)_longLongValueForKey:(id)a3;
-- (unint64_t)_unsignedLongLongValueForKey:(id)a3;
-- (unsigned)_unsignedIntValueForKey:(id)a3;
-- (void)_batchUpdatePreferencesInBlock:(id)a3;
+- (int64_t)_longLongValueForKey:(id)key;
+- (unint64_t)_unsignedLongLongValueForKey:(id)key;
+- (unsigned)_unsignedIntValueForKey:(id)key;
+- (void)_batchUpdatePreferencesInBlock:(id)block;
 - (void)_invalidateCachedPreferences;
 - (void)_postCacheModelChangedNotification;
 - (void)_postPreferencesChangedAPINotification;
 - (void)_postPreferencesChangedNotification;
 - (void)_resetForTesting;
-- (void)_setBoolValue:(BOOL)a3 forKey:(id)a4;
-- (void)_setEnabled:(BOOL)a3 forFeature:(id)a4;
-- (void)_setFTPDirectoryTemplatePath:(id)a3;
-- (void)_setFloatValue:(float)a3 forKey:(id)a4;
-- (void)_setIntegerValue:(int)a3 forKey:(id)a4;
-- (void)_setLocalStorageDatabasePath:(id)a3;
-- (void)_setLongLongValue:(int64_t)a3 forKey:(id)a4;
-- (void)_setStringArrayValueForKey:(id)a3 forKey:(id)a4;
-- (void)_setStringValue:(id)a3 forKey:(id)a4;
-- (void)_setUnsignedIntValue:(unsigned int)a3 forKey:(id)a4;
-- (void)_setUnsignedLongLongValue:(unint64_t)a3 forKey:(id)a4;
+- (void)_setBoolValue:(BOOL)value forKey:(id)key;
+- (void)_setEnabled:(BOOL)enabled forFeature:(id)feature;
+- (void)_setFTPDirectoryTemplatePath:(id)path;
+- (void)_setFloatValue:(float)value forKey:(id)key;
+- (void)_setIntegerValue:(int)value forKey:(id)key;
+- (void)_setLocalStorageDatabasePath:(id)path;
+- (void)_setLongLongValue:(int64_t)value forKey:(id)key;
+- (void)_setStringArrayValueForKey:(id)key forKey:(id)forKey;
+- (void)_setStringValue:(id)value forKey:(id)key;
+- (void)_setUnsignedIntValue:(unsigned int)value forKey:(id)key;
+- (void)_setUnsignedLongLongValue:(unint64_t)value forKey:(id)key;
 - (void)_startBatchingUpdates;
 - (void)_stopBatchingUpdates;
 - (void)_synchronizeWebStoragePolicyWithCookiePolicy;
-- (void)_updatePrivateBrowsingStateTo:(BOOL)a3;
+- (void)_updatePrivateBrowsingStateTo:(BOOL)to;
 - (void)dealloc;
 - (void)didRemoveFromWebView;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAudioSessionCategoryOverride:(unsigned int)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAudioSessionCategoryOverride:(unsigned int)override;
 - (void)setCacheModel:(WebCacheModel)cacheModel;
 - (void)setPrivateBrowsingEnabled:(BOOL)privateBrowsingEnabled;
-- (void)setStorageBlockingPolicy:(int)a3;
+- (void)setStorageBlockingPolicy:(int)policy;
 @end
 
 @implementation WebPreferences
@@ -77,9 +77,9 @@
   return [(WebPreferences *)self initWithIdentifier:v4];
 }
 
-- (WebPreferences)initWithIdentifier:(id)a3 sendChangeNotification:(BOOL)a4
+- (WebPreferences)initWithIdentifier:(id)identifier sendChangeNotification:(BOOL)notification
 {
-  v5 = [objc_opt_class() _getInstanceForIdentifier:a3];
+  v5 = [objc_opt_class() _getInstanceForIdentifier:identifier];
   if (v5)
   {
     v7 = v5;
@@ -100,7 +100,7 @@
   }
 }
 
-- (WebPreferences)initWithCoder:(id)a3
+- (WebPreferences)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = WebPreferences;
@@ -112,17 +112,17 @@
   return 0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  if ([a3 allowsKeyedCoding])
+  if ([coder allowsKeyedCoding])
   {
-    [a3 encodeObject:*(self->_private + 2) forKey:@"Identifier"];
+    [coder encodeObject:*(self->_private + 2) forKey:@"Identifier"];
     v5 = *self->_private;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __34__WebPreferences_encodeWithCoder___block_invoke;
     block[3] = &unk_1E82C76A0;
-    block[4] = a3;
+    block[4] = coder;
     block[5] = self;
     dispatch_sync(v5, block);
   }
@@ -130,14 +130,14 @@
   else
   {
     v8 = 1;
-    [a3 encodeValueOfObjCType:"i" at:&v8];
-    [a3 encodeObject:*(self->_private + 2)];
+    [coder encodeValueOfObjCType:"i" at:&v8];
+    [coder encodeObject:*(self->_private + 2)];
     v6 = *self->_private;
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __34__WebPreferences_encodeWithCoder___block_invoke_2;
     v7[3] = &unk_1E82C76A0;
-    v7[4] = a3;
+    v7[4] = coder;
     v7[5] = self;
     dispatch_sync(v6, v7);
   }
@@ -216,7 +216,7 @@ uint64_t __37__WebPreferences_standardPreferences__block_invoke()
 
 + (void)initialize
 {
-  MEMORY[0x1EEE9AC00](a1, a2);
+  MEMORY[0x1EEE9AC00](self, a2);
   v2 = MEMORY[0x1E695DF20];
   v3 = MEMORY[0x1E696AD98];
   {
@@ -599,8 +599,8 @@ uint64_t __37__WebPreferences_standardPreferences__block_invoke()
   v59 = MEMORY[0x1E696AD98];
   v60 = [objc_msgSend(MEMORY[0x1E696AAE8] "mainBundle")];
   context = objc_autoreleasePoolPush();
-  v61 = [v60 UTF8String];
-  if (!v61)
+  uTF8String = [v60 UTF8String];
+  if (!uTF8String)
   {
     goto LABEL_221;
   }
@@ -615,14 +615,14 @@ uint64_t __37__WebPreferences_standardPreferences__block_invoke()
     if (v64)
     {
       v65 = strlen(cacheModelForMainBundle(NSString *)::documentViewerIDs[i]);
-      if (v65 == strlen(v61))
+      if (v65 == strlen(uTF8String))
       {
         if (!v65)
         {
           goto LABEL_82;
         }
 
-        if (*(MEMORY[0x1E696EBB8] + *v64) == *(MEMORY[0x1E696EBB8] + *v61))
+        if (*(MEMORY[0x1E696EBB8] + *v64) == *(MEMORY[0x1E696EBB8] + *uTF8String))
         {
           v66 = 0;
           v67 = v64 + 1;
@@ -638,7 +638,7 @@ uint64_t __37__WebPreferences_standardPreferences__block_invoke()
             }
 
             v68 = *(MEMORY[0x1E696EBB8] + v67[v66]);
-            v69 = *(MEMORY[0x1E696EBB8] + v61[++v66]);
+            v69 = *(MEMORY[0x1E696EBB8] + uTF8String[++v66]);
           }
 
           while (v68 == v69);
@@ -652,7 +652,7 @@ LABEL_69:
       }
     }
 
-    else if (!*v61)
+    else if (!*uTF8String)
     {
       goto LABEL_69;
     }
@@ -668,7 +668,7 @@ LABEL_69:
       break;
     }
 
-    if (!*v61)
+    if (!*uTF8String)
     {
       goto LABEL_82;
     }
@@ -676,7 +676,7 @@ LABEL_69:
 LABEL_73:
     if (++v71 == 10)
     {
-      v77 = strlen(v61);
+      v77 = strlen(uTF8String);
       if (v77 <= 21)
       {
         v22 = MEMORY[0x1E696EB88];
@@ -687,43 +687,43 @@ LABEL_73:
           v27 = v148;
           v2 = v149;
           v8 = v147;
-          if (v108 != *(MEMORY[0x1E696EBB8] + *v61))
+          if (v108 != *(MEMORY[0x1E696EBB8] + *uTF8String))
           {
             goto LABEL_221;
           }
 
           v109 = *(MEMORY[0x1E696EBB8] + 111);
-          if (v109 != *(MEMORY[0x1E696EBB8] + *(v61 + 1)))
+          if (v109 != *(MEMORY[0x1E696EBB8] + *(uTF8String + 1)))
           {
             goto LABEL_221;
           }
 
           v110 = *(MEMORY[0x1E696EBB8] + 109);
-          if (v110 != *(MEMORY[0x1E696EBB8] + *(v61 + 2)))
+          if (v110 != *(MEMORY[0x1E696EBB8] + *(uTF8String + 2)))
           {
             goto LABEL_221;
           }
 
           v111 = *(MEMORY[0x1E696EBB8] + 46);
-          if (v111 != *(MEMORY[0x1E696EBB8] + *(v61 + 3)))
+          if (v111 != *(MEMORY[0x1E696EBB8] + *(uTF8String + 3)))
           {
             goto LABEL_221;
           }
 
           v112 = *(MEMORY[0x1E696EBB8] + 97);
-          if (v112 != *(MEMORY[0x1E696EBB8] + *(v61 + 4)))
+          if (v112 != *(MEMORY[0x1E696EBB8] + *(uTF8String + 4)))
           {
             goto LABEL_221;
           }
 
           v113 = *(MEMORY[0x1E696EBB8] + 112);
-          if (v113 != *(MEMORY[0x1E696EBB8] + *(v61 + 5)) || v113 != *(MEMORY[0x1E696EBB8] + *(v61 + 6)) || *(MEMORY[0x1E696EBB8] + 52) != *(MEMORY[0x1E696EBB8] + *(v61 + 7)) || v110 != *(MEMORY[0x1E696EBB8] + *(v61 + 8)) || v112 != *(MEMORY[0x1E696EBB8] + *(v61 + 9)) || v108 != *(MEMORY[0x1E696EBB8] + *(v61 + 10)) || v111 != *(MEMORY[0x1E696EBB8] + *(v61 + 11)) || *(MEMORY[0x1E696EBB8] + 119) != *(MEMORY[0x1E696EBB8] + *(v61 + 12)) || *(MEMORY[0x1E696EBB8] + 75) != *(MEMORY[0x1E696EBB8] + *(v61 + 13)) || *(MEMORY[0x1E696EBB8] + 105) != *(MEMORY[0x1E696EBB8] + *(v61 + 14)) || v109 != *(MEMORY[0x1E696EBB8] + *(v61 + 15)) || *(MEMORY[0x1E696EBB8] + 115) != *(MEMORY[0x1E696EBB8] + *(v61 + 16)))
+          if (v113 != *(MEMORY[0x1E696EBB8] + *(uTF8String + 5)) || v113 != *(MEMORY[0x1E696EBB8] + *(uTF8String + 6)) || *(MEMORY[0x1E696EBB8] + 52) != *(MEMORY[0x1E696EBB8] + *(uTF8String + 7)) || v110 != *(MEMORY[0x1E696EBB8] + *(uTF8String + 8)) || v112 != *(MEMORY[0x1E696EBB8] + *(uTF8String + 9)) || v108 != *(MEMORY[0x1E696EBB8] + *(uTF8String + 10)) || v111 != *(MEMORY[0x1E696EBB8] + *(uTF8String + 11)) || *(MEMORY[0x1E696EBB8] + 119) != *(MEMORY[0x1E696EBB8] + *(uTF8String + 12)) || *(MEMORY[0x1E696EBB8] + 75) != *(MEMORY[0x1E696EBB8] + *(uTF8String + 13)) || *(MEMORY[0x1E696EBB8] + 105) != *(MEMORY[0x1E696EBB8] + *(uTF8String + 14)) || v109 != *(MEMORY[0x1E696EBB8] + *(uTF8String + 15)) || *(MEMORY[0x1E696EBB8] + 115) != *(MEMORY[0x1E696EBB8] + *(uTF8String + 16)))
           {
             goto LABEL_221;
           }
 
           v93 = *(MEMORY[0x1E696EBB8] + 107);
-          v94 = *(v61 + 17);
+          v94 = *(uTF8String + 17);
         }
 
         else
@@ -736,93 +736,93 @@ LABEL_73:
             goto LABEL_221;
           }
 
-          if (*(MEMORY[0x1E696EBB8] + 110) != *(MEMORY[0x1E696EBB8] + *v61))
+          if (*(MEMORY[0x1E696EBB8] + 110) != *(MEMORY[0x1E696EBB8] + *uTF8String))
           {
             goto LABEL_221;
           }
 
           v88 = *(MEMORY[0x1E696EBB8] + 101);
-          if (v88 != *(MEMORY[0x1E696EBB8] + *(v61 + 1)))
+          if (v88 != *(MEMORY[0x1E696EBB8] + *(uTF8String + 1)))
           {
             goto LABEL_221;
           }
 
           v89 = *(MEMORY[0x1E696EBB8] + 116);
-          if (v89 != *(MEMORY[0x1E696EBB8] + *(v61 + 2)))
+          if (v89 != *(MEMORY[0x1E696EBB8] + *(uTF8String + 2)))
           {
             goto LABEL_221;
           }
 
           v90 = *(MEMORY[0x1E696EBB8] + 46);
-          if (v90 != *(MEMORY[0x1E696EBB8] + *(v61 + 3)))
+          if (v90 != *(MEMORY[0x1E696EBB8] + *(uTF8String + 3)))
           {
             goto LABEL_221;
           }
 
           v91 = *(MEMORY[0x1E696EBB8] + 104);
-          if (v91 != *(MEMORY[0x1E696EBB8] + *(v61 + 4)))
+          if (v91 != *(MEMORY[0x1E696EBB8] + *(uTF8String + 4)))
           {
             goto LABEL_221;
           }
 
-          if (*(MEMORY[0x1E696EBB8] + 109) != *(MEMORY[0x1E696EBB8] + *(v61 + 5)))
+          if (*(MEMORY[0x1E696EBB8] + 109) != *(MEMORY[0x1E696EBB8] + *(uTF8String + 5)))
           {
             goto LABEL_221;
           }
 
-          if (*(MEMORY[0x1E696EBB8] + 100) != *(MEMORY[0x1E696EBB8] + *(v61 + 6)))
+          if (*(MEMORY[0x1E696EBB8] + 100) != *(MEMORY[0x1E696EBB8] + *(uTF8String + 6)))
           {
             goto LABEL_221;
           }
 
-          if (v89 != *(MEMORY[0x1E696EBB8] + *(v61 + 7)))
+          if (v89 != *(MEMORY[0x1E696EBB8] + *(uTF8String + 7)))
           {
             goto LABEL_221;
           }
 
-          if (*(MEMORY[0x1E696EBB8] + 45) != *(MEMORY[0x1E696EBB8] + *(v61 + 8)))
+          if (*(MEMORY[0x1E696EBB8] + 45) != *(MEMORY[0x1E696EBB8] + *(uTF8String + 8)))
           {
             goto LABEL_221;
           }
 
-          if (*(MEMORY[0x1E696EBB8] + 119) != *(MEMORY[0x1E696EBB8] + *(v61 + 9)))
+          if (*(MEMORY[0x1E696EBB8] + 119) != *(MEMORY[0x1E696EBB8] + *(uTF8String + 9)))
           {
             goto LABEL_221;
           }
 
-          if (v88 != *(MEMORY[0x1E696EBB8] + *(v61 + 10)))
+          if (v88 != *(MEMORY[0x1E696EBB8] + *(uTF8String + 10)))
           {
             goto LABEL_221;
           }
 
-          if (*(MEMORY[0x1E696EBB8] + 98) != *(MEMORY[0x1E696EBB8] + *(v61 + 11)))
+          if (*(MEMORY[0x1E696EBB8] + 98) != *(MEMORY[0x1E696EBB8] + *(uTF8String + 11)))
           {
             goto LABEL_221;
           }
 
-          if (v90 != *(MEMORY[0x1E696EBB8] + *(v61 + 12)))
+          if (v90 != *(MEMORY[0x1E696EBB8] + *(uTF8String + 12)))
           {
             goto LABEL_221;
           }
 
-          if (*(MEMORY[0x1E696EBB8] + 83) != *(MEMORY[0x1E696EBB8] + *(v61 + 13)))
+          if (*(MEMORY[0x1E696EBB8] + 83) != *(MEMORY[0x1E696EBB8] + *(uTF8String + 13)))
           {
             goto LABEL_221;
           }
 
-          if (v91 != *(MEMORY[0x1E696EBB8] + *(v61 + 14)))
+          if (v91 != *(MEMORY[0x1E696EBB8] + *(uTF8String + 14)))
           {
             goto LABEL_221;
           }
 
           v92 = *(MEMORY[0x1E696EBB8] + 105);
-          if (v92 != *(MEMORY[0x1E696EBB8] + *(v61 + 15)) || v92 != *(MEMORY[0x1E696EBB8] + *(v61 + 16)) || *(MEMORY[0x1E696EBB8] + 114) != *(MEMORY[0x1E696EBB8] + *(v61 + 17)))
+          if (v92 != *(MEMORY[0x1E696EBB8] + *(uTF8String + 15)) || v92 != *(MEMORY[0x1E696EBB8] + *(uTF8String + 16)) || *(MEMORY[0x1E696EBB8] + 114) != *(MEMORY[0x1E696EBB8] + *(uTF8String + 17)))
           {
             goto LABEL_221;
           }
 
           v93 = *(MEMORY[0x1E696EBB8] + 97);
-          v94 = *(v61 + 18);
+          v94 = *(uTF8String + 18);
         }
       }
 
@@ -843,45 +843,45 @@ LABEL_73:
             }
 
             v78 = *(MEMORY[0x1E696EBB8] + 99);
-            if (v78 != *(MEMORY[0x1E696EBB8] + *v61))
+            if (v78 != *(MEMORY[0x1E696EBB8] + *uTF8String))
             {
               goto LABEL_221;
             }
 
             v79 = *(MEMORY[0x1E696EBB8] + 111);
-            if (v79 != *(MEMORY[0x1E696EBB8] + *(v61 + 1)))
+            if (v79 != *(MEMORY[0x1E696EBB8] + *(uTF8String + 1)))
             {
               goto LABEL_221;
             }
 
             v80 = *(MEMORY[0x1E696EBB8] + 109);
-            if (v80 != *(MEMORY[0x1E696EBB8] + *(v61 + 2)))
+            if (v80 != *(MEMORY[0x1E696EBB8] + *(uTF8String + 2)))
             {
               goto LABEL_221;
             }
 
             v81 = *(MEMORY[0x1E696EBB8] + 46);
-            if (v81 != *(MEMORY[0x1E696EBB8] + *(v61 + 3)))
+            if (v81 != *(MEMORY[0x1E696EBB8] + *(uTF8String + 3)))
             {
               goto LABEL_221;
             }
 
             v82 = *(MEMORY[0x1E696EBB8] + 97);
-            if (v82 != *(MEMORY[0x1E696EBB8] + *(v61 + 4)) || (v83 = *(MEMORY[0x1E696EBB8] + 112), v83 != *(MEMORY[0x1E696EBB8] + *(v61 + 5))) || v83 != *(MEMORY[0x1E696EBB8] + *(v61 + 6)) || *(MEMORY[0x1E696EBB8] + 52) != *(MEMORY[0x1E696EBB8] + *(v61 + 7)) || v80 != *(MEMORY[0x1E696EBB8] + *(v61 + 8)) || v82 != *(MEMORY[0x1E696EBB8] + *(v61 + 9)) || v78 != *(MEMORY[0x1E696EBB8] + *(v61 + 10)) || v81 != *(MEMORY[0x1E696EBB8] + *(v61 + 11)) || *(MEMORY[0x1E696EBB8] + 75) != *(MEMORY[0x1E696EBB8] + *(v61 + 12)) || *(MEMORY[0x1E696EBB8] + 105) != *(MEMORY[0x1E696EBB8] + *(v61 + 13)) || *(MEMORY[0x1E696EBB8] + 100) != *(MEMORY[0x1E696EBB8] + *(v61 + 14)) || (v84 = *(MEMORY[0x1E696EBB8] + 115), v84 != *(MEMORY[0x1E696EBB8] + *(v61 + 15))) || *(MEMORY[0x1E696EBB8] + 66) != *(MEMORY[0x1E696EBB8] + *(v61 + 16)) || (v85 = *(MEMORY[0x1E696EBB8] + 114), v85 != *(MEMORY[0x1E696EBB8] + *(v61 + 17))) || v79 != *(MEMORY[0x1E696EBB8] + *(v61 + 18)) || *(MEMORY[0x1E696EBB8] + 119) != *(MEMORY[0x1E696EBB8] + *(v61 + 19)) || v84 != *(MEMORY[0x1E696EBB8] + *(v61 + 20)) || *(MEMORY[0x1E696EBB8] + 101) != *(MEMORY[0x1E696EBB8] + *(v61 + 21)) || v85 != *(MEMORY[0x1E696EBB8] + *(v61 + 22)))
+            if (v82 != *(MEMORY[0x1E696EBB8] + *(uTF8String + 4)) || (v83 = *(MEMORY[0x1E696EBB8] + 112), v83 != *(MEMORY[0x1E696EBB8] + *(uTF8String + 5))) || v83 != *(MEMORY[0x1E696EBB8] + *(uTF8String + 6)) || *(MEMORY[0x1E696EBB8] + 52) != *(MEMORY[0x1E696EBB8] + *(uTF8String + 7)) || v80 != *(MEMORY[0x1E696EBB8] + *(uTF8String + 8)) || v82 != *(MEMORY[0x1E696EBB8] + *(uTF8String + 9)) || v78 != *(MEMORY[0x1E696EBB8] + *(uTF8String + 10)) || v81 != *(MEMORY[0x1E696EBB8] + *(uTF8String + 11)) || *(MEMORY[0x1E696EBB8] + 75) != *(MEMORY[0x1E696EBB8] + *(uTF8String + 12)) || *(MEMORY[0x1E696EBB8] + 105) != *(MEMORY[0x1E696EBB8] + *(uTF8String + 13)) || *(MEMORY[0x1E696EBB8] + 100) != *(MEMORY[0x1E696EBB8] + *(uTF8String + 14)) || (v84 = *(MEMORY[0x1E696EBB8] + 115), v84 != *(MEMORY[0x1E696EBB8] + *(uTF8String + 15))) || *(MEMORY[0x1E696EBB8] + 66) != *(MEMORY[0x1E696EBB8] + *(uTF8String + 16)) || (v85 = *(MEMORY[0x1E696EBB8] + 114), v85 != *(MEMORY[0x1E696EBB8] + *(uTF8String + 17))) || v79 != *(MEMORY[0x1E696EBB8] + *(uTF8String + 18)) || *(MEMORY[0x1E696EBB8] + 119) != *(MEMORY[0x1E696EBB8] + *(uTF8String + 19)) || v84 != *(MEMORY[0x1E696EBB8] + *(uTF8String + 20)) || *(MEMORY[0x1E696EBB8] + 101) != *(MEMORY[0x1E696EBB8] + *(uTF8String + 21)) || v85 != *(MEMORY[0x1E696EBB8] + *(uTF8String + 22)))
             {
-              if (*(MEMORY[0x1E696EBB8] + 102) != *(MEMORY[0x1E696EBB8] + *(v61 + 4)))
+              if (*(MEMORY[0x1E696EBB8] + 102) != *(MEMORY[0x1E696EBB8] + *(uTF8String + 4)))
               {
                 goto LABEL_221;
               }
 
               v86 = *(MEMORY[0x1E696EBB8] + 114);
-              if (v86 != *(MEMORY[0x1E696EBB8] + *(v61 + 5)))
+              if (v86 != *(MEMORY[0x1E696EBB8] + *(uTF8String + 5)))
               {
                 goto LABEL_221;
               }
 
               v87 = *(MEMORY[0x1E696EBB8] + 101);
-              if (v87 != *(MEMORY[0x1E696EBB8] + *(v61 + 6)) || v87 != *(MEMORY[0x1E696EBB8] + *(v61 + 7)) || *(MEMORY[0x1E696EBB8] + 118) != *(MEMORY[0x1E696EBB8] + *(v61 + 8)) || v87 != *(MEMORY[0x1E696EBB8] + *(v61 + 9)) || v86 != *(MEMORY[0x1E696EBB8] + *(v61 + 10)) || *(MEMORY[0x1E696EBB8] + 115) != *(MEMORY[0x1E696EBB8] + *(v61 + 11)) || v87 != *(MEMORY[0x1E696EBB8] + *(v61 + 12)) || v81 != *(MEMORY[0x1E696EBB8] + *(v61 + 13)) || *(MEMORY[0x1E696EBB8] + 98) != *(MEMORY[0x1E696EBB8] + *(v61 + 14)) || *(MEMORY[0x1E696EBB8] + 117) != *(MEMORY[0x1E696EBB8] + *(v61 + 15)) || v80 != *(MEMORY[0x1E696EBB8] + *(v61 + 16)) || *(MEMORY[0x1E696EBB8] + 112) != *(MEMORY[0x1E696EBB8] + *(v61 + 17)) || v87 != *(MEMORY[0x1E696EBB8] + *(v61 + 18)) || v86 != *(MEMORY[0x1E696EBB8] + *(v61 + 19)) || v78 != *(MEMORY[0x1E696EBB8] + *(v61 + 20)) || *(MEMORY[0x1E696EBB8] + 97) != *(MEMORY[0x1E696EBB8] + *(v61 + 21)) || v86 != *(MEMORY[0x1E696EBB8] + *(v61 + 22)))
+              if (v87 != *(MEMORY[0x1E696EBB8] + *(uTF8String + 6)) || v87 != *(MEMORY[0x1E696EBB8] + *(uTF8String + 7)) || *(MEMORY[0x1E696EBB8] + 118) != *(MEMORY[0x1E696EBB8] + *(uTF8String + 8)) || v87 != *(MEMORY[0x1E696EBB8] + *(uTF8String + 9)) || v86 != *(MEMORY[0x1E696EBB8] + *(uTF8String + 10)) || *(MEMORY[0x1E696EBB8] + 115) != *(MEMORY[0x1E696EBB8] + *(uTF8String + 11)) || v87 != *(MEMORY[0x1E696EBB8] + *(uTF8String + 12)) || v81 != *(MEMORY[0x1E696EBB8] + *(uTF8String + 13)) || *(MEMORY[0x1E696EBB8] + 98) != *(MEMORY[0x1E696EBB8] + *(uTF8String + 14)) || *(MEMORY[0x1E696EBB8] + 117) != *(MEMORY[0x1E696EBB8] + *(uTF8String + 15)) || v80 != *(MEMORY[0x1E696EBB8] + *(uTF8String + 16)) || *(MEMORY[0x1E696EBB8] + 112) != *(MEMORY[0x1E696EBB8] + *(uTF8String + 17)) || v87 != *(MEMORY[0x1E696EBB8] + *(uTF8String + 18)) || v86 != *(MEMORY[0x1E696EBB8] + *(uTF8String + 19)) || v78 != *(MEMORY[0x1E696EBB8] + *(uTF8String + 20)) || *(MEMORY[0x1E696EBB8] + 97) != *(MEMORY[0x1E696EBB8] + *(uTF8String + 21)) || v86 != *(MEMORY[0x1E696EBB8] + *(uTF8String + 22)))
               {
                 goto LABEL_221;
               }
@@ -895,31 +895,31 @@ LABEL_220:
 
           v27 = v148;
           v2 = v149;
-          if (*(MEMORY[0x1E696EBB8] + 99) == *(MEMORY[0x1E696EBB8] + *v61))
+          if (*(MEMORY[0x1E696EBB8] + 99) == *(MEMORY[0x1E696EBB8] + *uTF8String))
           {
             v100 = *(MEMORY[0x1E696EBB8] + 111);
-            if (v100 == *(MEMORY[0x1E696EBB8] + *(v61 + 1)) && *(MEMORY[0x1E696EBB8] + 109) == *(MEMORY[0x1E696EBB8] + *(v61 + 2)))
+            if (v100 == *(MEMORY[0x1E696EBB8] + *(uTF8String + 1)) && *(MEMORY[0x1E696EBB8] + 109) == *(MEMORY[0x1E696EBB8] + *(uTF8String + 2)))
             {
               v101 = *(MEMORY[0x1E696EBB8] + 46);
-              if (v101 == *(MEMORY[0x1E696EBB8] + *(v61 + 3)))
+              if (v101 == *(MEMORY[0x1E696EBB8] + *(uTF8String + 3)))
               {
                 v102 = *(MEMORY[0x1E696EBB8] + 115);
-                if (v102 == *(MEMORY[0x1E696EBB8] + *(v61 + 4)))
+                if (v102 == *(MEMORY[0x1E696EBB8] + *(uTF8String + 4)))
                 {
                   v103 = *(MEMORY[0x1E696EBB8] + 117);
-                  if (v103 == *(MEMORY[0x1E696EBB8] + *(v61 + 5)))
+                  if (v103 == *(MEMORY[0x1E696EBB8] + *(uTF8String + 5)))
                   {
                     v104 = *(MEMORY[0x1E696EBB8] + 110);
-                    if (v104 == *(MEMORY[0x1E696EBB8] + *(v61 + 6)))
+                    if (v104 == *(MEMORY[0x1E696EBB8] + *(uTF8String + 6)))
                     {
                       v105 = *(MEMORY[0x1E696EBB8] + 114);
-                      if (v105 == *(MEMORY[0x1E696EBB8] + *(v61 + 7)))
+                      if (v105 == *(MEMORY[0x1E696EBB8] + *(uTF8String + 7)))
                       {
                         v106 = *(MEMORY[0x1E696EBB8] + 105);
-                        if (v106 == *(MEMORY[0x1E696EBB8] + *(v61 + 8)) && v102 == *(MEMORY[0x1E696EBB8] + *(v61 + 9)))
+                        if (v106 == *(MEMORY[0x1E696EBB8] + *(uTF8String + 8)) && v102 == *(MEMORY[0x1E696EBB8] + *(uTF8String + 9)))
                         {
                           v107 = *(MEMORY[0x1E696EBB8] + 101);
-                          if (v107 == *(MEMORY[0x1E696EBB8] + *(v61 + 10)) && *(MEMORY[0x1E696EBB8] + 98) == *(MEMORY[0x1E696EBB8] + *(v61 + 11)) && v105 == *(MEMORY[0x1E696EBB8] + *(v61 + 12)) && v100 == *(MEMORY[0x1E696EBB8] + *(v61 + 13)) && *(MEMORY[0x1E696EBB8] + 119) == *(MEMORY[0x1E696EBB8] + *(v61 + 14)) && v102 == *(MEMORY[0x1E696EBB8] + *(v61 + 15)) && v107 == *(MEMORY[0x1E696EBB8] + *(v61 + 16)) && v105 == *(MEMORY[0x1E696EBB8] + *(v61 + 17)) && v101 == *(MEMORY[0x1E696EBB8] + *(v61 + 18)) && *(MEMORY[0x1E696EBB8] + 83) == *(MEMORY[0x1E696EBB8] + *(v61 + 19)) && v103 == *(MEMORY[0x1E696EBB8] + *(v61 + 20)) && v104 == *(MEMORY[0x1E696EBB8] + *(v61 + 21)) && v105 == *(MEMORY[0x1E696EBB8] + *(v61 + 22)) && v106 == *(MEMORY[0x1E696EBB8] + *(v61 + 23)) && v102 == *(MEMORY[0x1E696EBB8] + *(v61 + 24)) && v107 == *(MEMORY[0x1E696EBB8] + *(v61 + 25)))
+                          if (v107 == *(MEMORY[0x1E696EBB8] + *(uTF8String + 10)) && *(MEMORY[0x1E696EBB8] + 98) == *(MEMORY[0x1E696EBB8] + *(uTF8String + 11)) && v105 == *(MEMORY[0x1E696EBB8] + *(uTF8String + 12)) && v100 == *(MEMORY[0x1E696EBB8] + *(uTF8String + 13)) && *(MEMORY[0x1E696EBB8] + 119) == *(MEMORY[0x1E696EBB8] + *(uTF8String + 14)) && v102 == *(MEMORY[0x1E696EBB8] + *(uTF8String + 15)) && v107 == *(MEMORY[0x1E696EBB8] + *(uTF8String + 16)) && v105 == *(MEMORY[0x1E696EBB8] + *(uTF8String + 17)) && v101 == *(MEMORY[0x1E696EBB8] + *(uTF8String + 18)) && *(MEMORY[0x1E696EBB8] + 83) == *(MEMORY[0x1E696EBB8] + *(uTF8String + 19)) && v103 == *(MEMORY[0x1E696EBB8] + *(uTF8String + 20)) && v104 == *(MEMORY[0x1E696EBB8] + *(uTF8String + 21)) && v105 == *(MEMORY[0x1E696EBB8] + *(uTF8String + 22)) && v106 == *(MEMORY[0x1E696EBB8] + *(uTF8String + 23)) && v102 == *(MEMORY[0x1E696EBB8] + *(uTF8String + 24)) && v107 == *(MEMORY[0x1E696EBB8] + *(uTF8String + 25)))
                           {
                             goto LABEL_220;
                           }
@@ -946,53 +946,53 @@ LABEL_221:
         v27 = v148;
         v2 = v149;
         v8 = v147;
-        if (*(MEMORY[0x1E696EBB8] + 99) != *(MEMORY[0x1E696EBB8] + *v61))
+        if (*(MEMORY[0x1E696EBB8] + 99) != *(MEMORY[0x1E696EBB8] + *uTF8String))
         {
           goto LABEL_221;
         }
 
         v95 = *(MEMORY[0x1E696EBB8] + 111);
-        if (v95 != *(MEMORY[0x1E696EBB8] + *(v61 + 1)))
+        if (v95 != *(MEMORY[0x1E696EBB8] + *(uTF8String + 1)))
         {
           goto LABEL_221;
         }
 
         v96 = *(MEMORY[0x1E696EBB8] + 109);
-        if (v96 != *(MEMORY[0x1E696EBB8] + *(v61 + 2)))
+        if (v96 != *(MEMORY[0x1E696EBB8] + *(uTF8String + 2)))
         {
           goto LABEL_221;
         }
 
         v97 = *(MEMORY[0x1E696EBB8] + 46);
-        if (v97 != *(MEMORY[0x1E696EBB8] + *(v61 + 3)))
+        if (v97 != *(MEMORY[0x1E696EBB8] + *(uTF8String + 3)))
         {
           goto LABEL_221;
         }
 
-        if (v95 != *(MEMORY[0x1E696EBB8] + *(v61 + 4)))
+        if (v95 != *(MEMORY[0x1E696EBB8] + *(uTF8String + 4)))
         {
           goto LABEL_221;
         }
 
-        if (v96 != *(MEMORY[0x1E696EBB8] + *(v61 + 5)))
+        if (v96 != *(MEMORY[0x1E696EBB8] + *(uTF8String + 5)))
         {
           goto LABEL_221;
         }
 
         v98 = *(MEMORY[0x1E696EBB8] + 110);
-        if (v98 != *(MEMORY[0x1E696EBB8] + *(v61 + 6)))
+        if (v98 != *(MEMORY[0x1E696EBB8] + *(uTF8String + 6)))
         {
           goto LABEL_221;
         }
 
         v99 = *(MEMORY[0x1E696EBB8] + 105);
-        if (v99 != *(MEMORY[0x1E696EBB8] + *(v61 + 7)) || *(MEMORY[0x1E696EBB8] + 103) != *(MEMORY[0x1E696EBB8] + *(v61 + 8)) || *(MEMORY[0x1E696EBB8] + 114) != *(MEMORY[0x1E696EBB8] + *(v61 + 9)) || v95 != *(MEMORY[0x1E696EBB8] + *(v61 + 10)) || *(MEMORY[0x1E696EBB8] + 117) != *(MEMORY[0x1E696EBB8] + *(v61 + 11)) || *(MEMORY[0x1E696EBB8] + 112) != *(MEMORY[0x1E696EBB8] + *(v61 + 12)) || v97 != *(MEMORY[0x1E696EBB8] + *(v61 + 13)) || *(MEMORY[0x1E696EBB8] + 79) != *(MEMORY[0x1E696EBB8] + *(v61 + 14)) || v96 != *(MEMORY[0x1E696EBB8] + *(v61 + 15)) || v98 != *(MEMORY[0x1E696EBB8] + *(v61 + 16)) || v99 != *(MEMORY[0x1E696EBB8] + *(v61 + 17)) || *(MEMORY[0x1E696EBB8] + 87) != *(MEMORY[0x1E696EBB8] + *(v61 + 18)) || *(MEMORY[0x1E696EBB8] + 101) != *(MEMORY[0x1E696EBB8] + *(v61 + 19)) || *(MEMORY[0x1E696EBB8] + 98) != *(MEMORY[0x1E696EBB8] + *(v61 + 20)))
+        if (v99 != *(MEMORY[0x1E696EBB8] + *(uTF8String + 7)) || *(MEMORY[0x1E696EBB8] + 103) != *(MEMORY[0x1E696EBB8] + *(uTF8String + 8)) || *(MEMORY[0x1E696EBB8] + 114) != *(MEMORY[0x1E696EBB8] + *(uTF8String + 9)) || v95 != *(MEMORY[0x1E696EBB8] + *(uTF8String + 10)) || *(MEMORY[0x1E696EBB8] + 117) != *(MEMORY[0x1E696EBB8] + *(uTF8String + 11)) || *(MEMORY[0x1E696EBB8] + 112) != *(MEMORY[0x1E696EBB8] + *(uTF8String + 12)) || v97 != *(MEMORY[0x1E696EBB8] + *(uTF8String + 13)) || *(MEMORY[0x1E696EBB8] + 79) != *(MEMORY[0x1E696EBB8] + *(uTF8String + 14)) || v96 != *(MEMORY[0x1E696EBB8] + *(uTF8String + 15)) || v98 != *(MEMORY[0x1E696EBB8] + *(uTF8String + 16)) || v99 != *(MEMORY[0x1E696EBB8] + *(uTF8String + 17)) || *(MEMORY[0x1E696EBB8] + 87) != *(MEMORY[0x1E696EBB8] + *(uTF8String + 18)) || *(MEMORY[0x1E696EBB8] + 101) != *(MEMORY[0x1E696EBB8] + *(uTF8String + 19)) || *(MEMORY[0x1E696EBB8] + 98) != *(MEMORY[0x1E696EBB8] + *(uTF8String + 20)))
         {
           goto LABEL_221;
         }
 
         v93 = *(MEMORY[0x1E696EBB8] + 53);
-        v94 = *(v61 + 21);
+        v94 = *(uTF8String + 21);
       }
 
       if (v93 != *(MEMORY[0x1E696EBB8] + v94))
@@ -1005,7 +1005,7 @@ LABEL_221:
   }
 
   v73 = strlen(cacheModelForMainBundle(NSString *)::documentBrowserIDs[v71]);
-  if (v73 != strlen(v61))
+  if (v73 != strlen(uTF8String))
   {
     goto LABEL_73;
   }
@@ -1015,7 +1015,7 @@ LABEL_221:
     goto LABEL_82;
   }
 
-  if (*(MEMORY[0x1E696EBB8] + *v72) != *(MEMORY[0x1E696EBB8] + *v61))
+  if (*(MEMORY[0x1E696EBB8] + *v72) != *(MEMORY[0x1E696EBB8] + *uTF8String))
   {
     goto LABEL_73;
   }
@@ -1024,7 +1024,7 @@ LABEL_221:
   while (v73 - 1 != v74)
   {
     v75 = *(MEMORY[0x1E696EBB8] + v72[v74 + 1]);
-    v76 = *(MEMORY[0x1E696EBB8] + v61[++v74]);
+    v76 = *(MEMORY[0x1E696EBB8] + uTF8String[++v74]);
     if (v75 != v76)
     {
       if (v74 < v73)
@@ -1204,19 +1204,19 @@ LABEL_224:
   [(WebPreferences *)&v7 dealloc];
 }
 
-- (id)_valueForKey:(id)a3
+- (id)_valueForKey:(id)key
 {
   v5 = self->_private;
   v6 = v5[2];
   if (v6)
   {
-    v7 = [v6 stringByAppendingString:a3];
+    keyCopy = [v6 stringByAppendingString:key];
     v5 = self->_private;
   }
 
   else
   {
-    v7 = a3;
+    keyCopy = key;
   }
 
   v12 = 0;
@@ -1230,7 +1230,7 @@ LABEL_224:
   block[1] = 3221225472;
   block[2] = __31__WebPreferences__valueForKey___block_invoke;
   block[3] = &unk_1E82C7958;
-  block[5] = v7;
+  block[5] = keyCopy;
   block[6] = &v12;
   block[4] = self;
   dispatch_sync(v8, block);
@@ -1239,7 +1239,7 @@ LABEL_224:
   {
     v9 = [objc_msgSend(MEMORY[0x1E695E000] "standardUserDefaults")];
     v13[5] = v9;
-    if (!v9 && v7 != a3)
+    if (!v9 && keyCopy != key)
     {
       v9 = [objc_msgSend(MEMORY[0x1E695E000] "standardUserDefaults")];
       v13[5] = v9;
@@ -1257,9 +1257,9 @@ uint64_t __31__WebPreferences__valueForKey___block_invoke(void *a1)
   return result;
 }
 
-- (id)_stringValueForKey:(id)a3
+- (id)_stringValueForKey:(id)key
 {
-  v3 = [(WebPreferences *)self _valueForKey:a3];
+  v3 = [(WebPreferences *)self _valueForKey:key];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -1272,16 +1272,16 @@ uint64_t __31__WebPreferences__valueForKey___block_invoke(void *a1)
   }
 }
 
-- (void)_setStringValue:(id)a3 forKey:(id)a4
+- (void)_setStringValue:(id)value forKey:(id)key
 {
-  v4 = a4;
-  if (([-[WebPreferences _stringValueForKey:](self _stringValueForKey:{a4), "isEqualToString:", a3}] & 1) == 0)
+  keyCopy = key;
+  if (([-[WebPreferences _stringValueForKey:](self _stringValueForKey:{key), "isEqualToString:", value}] & 1) == 0)
   {
     v7 = self->_private;
     v8 = v7[2];
     if (v8)
     {
-      v4 = [v8 stringByAppendingString:v4];
+      keyCopy = [v8 stringByAppendingString:keyCopy];
       v7 = self->_private;
     }
 
@@ -1291,8 +1291,8 @@ uint64_t __31__WebPreferences__valueForKey___block_invoke(void *a1)
     block[2] = __41__WebPreferences__setStringValue_forKey___block_invoke;
     block[3] = &unk_1E82C7980;
     block[4] = self;
-    block[5] = a3;
-    block[6] = v4;
+    block[5] = value;
+    block[6] = keyCopy;
     dispatch_barrier_sync(v9, block);
     if (*(self->_private + 25) == 1)
     {
@@ -1303,10 +1303,10 @@ uint64_t __31__WebPreferences__valueForKey___block_invoke(void *a1)
   }
 }
 
-- (id)_stringArrayValueForKey:(id)a3
+- (id)_stringArrayValueForKey:(id)key
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = [(WebPreferences *)self _valueForKey:a3];
+  v3 = [(WebPreferences *)self _valueForKey:key];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -1351,14 +1351,14 @@ uint64_t __31__WebPreferences__valueForKey___block_invoke(void *a1)
   return v3;
 }
 
-- (void)_setStringArrayValueForKey:(id)a3 forKey:(id)a4
+- (void)_setStringArrayValueForKey:(id)key forKey:(id)forKey
 {
-  v4 = a4;
+  forKeyCopy = forKey;
   v7 = self->_private;
   v8 = v7[2];
   if (v8)
   {
-    v4 = [v8 stringByAppendingString:a4];
+    forKeyCopy = [v8 stringByAppendingString:forKey];
     v7 = self->_private;
   }
 
@@ -1368,8 +1368,8 @@ uint64_t __31__WebPreferences__valueForKey___block_invoke(void *a1)
   block[2] = __52__WebPreferences__setStringArrayValueForKey_forKey___block_invoke;
   block[3] = &unk_1E82C7980;
   block[4] = self;
-  block[5] = a3;
-  block[6] = v4;
+  block[5] = key;
+  block[6] = forKeyCopy;
   dispatch_barrier_sync(v9, block);
   if (*(self->_private + 25) == 1)
   {
@@ -1379,9 +1379,9 @@ uint64_t __31__WebPreferences__valueForKey___block_invoke(void *a1)
   [(WebPreferences *)self _postPreferencesChangedNotification];
 }
 
-- (int)_integerValueForKey:(id)a3
+- (int)_integerValueForKey:(id)key
 {
-  v3 = [(WebPreferences *)self _valueForKey:a3];
+  v3 = [(WebPreferences *)self _valueForKey:key];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     return 0;
@@ -1390,16 +1390,16 @@ uint64_t __31__WebPreferences__valueForKey___block_invoke(void *a1)
   return [v3 intValue];
 }
 
-- (void)_setIntegerValue:(int)a3 forKey:(id)a4
+- (void)_setIntegerValue:(int)value forKey:(id)key
 {
-  v4 = a4;
-  if ([(WebPreferences *)self _integerValueForKey:a4]!= a3)
+  keyCopy = key;
+  if ([(WebPreferences *)self _integerValueForKey:key]!= value)
   {
     v7 = self->_private;
     v8 = v7[2];
     if (v8)
     {
-      v4 = [v8 stringByAppendingString:v4];
+      keyCopy = [v8 stringByAppendingString:keyCopy];
       v7 = self->_private;
     }
 
@@ -1408,9 +1408,9 @@ uint64_t __31__WebPreferences__valueForKey___block_invoke(void *a1)
     block[1] = 3221225472;
     block[2] = __42__WebPreferences__setIntegerValue_forKey___block_invoke;
     block[3] = &unk_1E82C79A8;
-    v11 = a3;
+    valueCopy = value;
     block[4] = self;
-    block[5] = v4;
+    block[5] = keyCopy;
     dispatch_barrier_sync(v9, block);
     if (*(self->_private + 25) == 1)
     {
@@ -1430,9 +1430,9 @@ uint64_t __42__WebPreferences__setIntegerValue_forKey___block_invoke(uint64_t a1
   return [v2 setObject:v3 forKey:v4];
 }
 
-- (unsigned)_unsignedIntValueForKey:(id)a3
+- (unsigned)_unsignedIntValueForKey:(id)key
 {
-  v3 = [(WebPreferences *)self _valueForKey:a3];
+  v3 = [(WebPreferences *)self _valueForKey:key];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     return 0;
@@ -1441,17 +1441,17 @@ uint64_t __42__WebPreferences__setIntegerValue_forKey___block_invoke(uint64_t a1
   return [v3 unsignedIntValue];
 }
 
-- (void)_setUnsignedIntValue:(unsigned int)a3 forKey:(id)a4
+- (void)_setUnsignedIntValue:(unsigned int)value forKey:(id)key
 {
-  v4 = a4;
-  v5 = *&a3;
-  if ([(WebPreferences *)self _unsignedIntValueForKey:a4]!= a3)
+  keyCopy = key;
+  v5 = *&value;
+  if ([(WebPreferences *)self _unsignedIntValueForKey:key]!= value)
   {
     v7 = self->_private;
     v8 = v7[2];
     if (v8)
     {
-      v4 = [v8 stringByAppendingString:v4];
+      keyCopy = [v8 stringByAppendingString:keyCopy];
       v7 = self->_private;
     }
 
@@ -1462,12 +1462,12 @@ uint64_t __42__WebPreferences__setIntegerValue_forKey___block_invoke(uint64_t a1
     block[3] = &unk_1E82C79A8;
     v12 = v5;
     block[4] = self;
-    block[5] = v4;
+    block[5] = keyCopy;
     dispatch_barrier_sync(v9, block);
     if (*(self->_private + 25) == 1)
     {
-      v10 = [MEMORY[0x1E695E000] standardUserDefaults];
-      [v10 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", v5), v4}];
+      standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+      [standardUserDefaults setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", v5), keyCopy}];
     }
 
     [(WebPreferences *)self _postPreferencesChangedNotification];
@@ -1483,9 +1483,9 @@ uint64_t __46__WebPreferences__setUnsignedIntValue_forKey___block_invoke(uint64_
   return [v2 setObject:v3 forKey:v4];
 }
 
-- (float)_floatValueForKey:(id)a3
+- (float)_floatValueForKey:(id)key
 {
-  v3 = [(WebPreferences *)self _valueForKey:a3];
+  v3 = [(WebPreferences *)self _valueForKey:key];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     return 0.0;
@@ -1495,16 +1495,16 @@ uint64_t __46__WebPreferences__setUnsignedIntValue_forKey___block_invoke(uint64_
   return result;
 }
 
-- (void)_setFloatValue:(float)a3 forKey:(id)a4
+- (void)_setFloatValue:(float)value forKey:(id)key
 {
   [(WebPreferences *)self _floatValueForKey:?];
-  if (v7 != a3)
+  if (v7 != value)
   {
     v8 = self->_private;
     v9 = v8[2];
     if (v9)
     {
-      a4 = [v9 stringByAppendingString:a4];
+      key = [v9 stringByAppendingString:key];
       v8 = self->_private;
     }
 
@@ -1513,15 +1513,15 @@ uint64_t __46__WebPreferences__setUnsignedIntValue_forKey___block_invoke(uint64_
     block[1] = 3221225472;
     block[2] = __40__WebPreferences__setFloatValue_forKey___block_invoke;
     block[3] = &unk_1E82C79A8;
-    v14 = a3;
+    valueCopy = value;
     block[4] = self;
-    block[5] = a4;
+    block[5] = key;
     dispatch_barrier_sync(v10, block);
     if (*(self->_private + 25) == 1)
     {
-      v11 = [MEMORY[0x1E695E000] standardUserDefaults];
-      *&v12 = a3;
-      [v11 setFloat:a4 forKey:v12];
+      standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+      *&v12 = value;
+      [standardUserDefaults setFloat:key forKey:v12];
     }
 
     [(WebPreferences *)self _postPreferencesChangedNotification];
@@ -1538,17 +1538,17 @@ uint64_t __40__WebPreferences__setFloatValue_forKey___block_invoke(uint64_t a1, 
   return [v3 setObject:v4 forKey:v5];
 }
 
-- (void)_setBoolValue:(BOOL)a3 forKey:(id)a4
+- (void)_setBoolValue:(BOOL)value forKey:(id)key
 {
-  v4 = a4;
-  v5 = a3;
-  if ([(WebPreferences *)self _BOOLValueForKey:a4]!= a3)
+  keyCopy = key;
+  valueCopy = value;
+  if ([(WebPreferences *)self _BOOLValueForKey:key]!= value)
   {
     v7 = self->_private;
     v8 = v7[2];
     if (v8)
     {
-      v4 = [v8 stringByAppendingString:v4];
+      keyCopy = [v8 stringByAppendingString:keyCopy];
       v7 = self->_private;
     }
 
@@ -1557,9 +1557,9 @@ uint64_t __40__WebPreferences__setFloatValue_forKey___block_invoke(uint64_t a1, 
     block[1] = 3221225472;
     block[2] = __39__WebPreferences__setBoolValue_forKey___block_invoke;
     block[3] = &unk_1E82C79D0;
-    v11 = v5;
+    v11 = valueCopy;
     block[4] = self;
-    block[5] = v4;
+    block[5] = keyCopy;
     dispatch_barrier_sync(v9, block);
     if (*(self->_private + 25) == 1)
     {
@@ -1579,9 +1579,9 @@ uint64_t __39__WebPreferences__setBoolValue_forKey___block_invoke(uint64_t a1)
   return [v2 setObject:v3 forKey:v4];
 }
 
-- (int64_t)_longLongValueForKey:(id)a3
+- (int64_t)_longLongValueForKey:(id)key
 {
-  v3 = [(WebPreferences *)self _valueForKey:a3];
+  v3 = [(WebPreferences *)self _valueForKey:key];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     return 0;
@@ -1590,16 +1590,16 @@ uint64_t __39__WebPreferences__setBoolValue_forKey___block_invoke(uint64_t a1)
   return [v3 longLongValue];
 }
 
-- (void)_setLongLongValue:(int64_t)a3 forKey:(id)a4
+- (void)_setLongLongValue:(int64_t)value forKey:(id)key
 {
-  v4 = a4;
-  if ([(WebPreferences *)self _longLongValueForKey:a4]!= a3)
+  keyCopy = key;
+  if ([(WebPreferences *)self _longLongValueForKey:key]!= value)
   {
     v7 = self->_private;
     v8 = v7[2];
     if (v8)
     {
-      v4 = [v8 stringByAppendingString:v4];
+      keyCopy = [v8 stringByAppendingString:keyCopy];
       v7 = self->_private;
     }
 
@@ -1608,14 +1608,14 @@ uint64_t __39__WebPreferences__setBoolValue_forKey___block_invoke(uint64_t a1)
     block[1] = 3221225472;
     block[2] = __43__WebPreferences__setLongLongValue_forKey___block_invoke;
     block[3] = &unk_1E82C79F8;
-    block[5] = v4;
-    block[6] = a3;
+    block[5] = keyCopy;
+    block[6] = value;
     block[4] = self;
     dispatch_barrier_sync(v9, block);
     if (*(self->_private + 25) == 1)
     {
-      v10 = [MEMORY[0x1E695E000] standardUserDefaults];
-      [v10 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithLongLong:", a3), v4}];
+      standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+      [standardUserDefaults setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithLongLong:", value), keyCopy}];
     }
 
     [(WebPreferences *)self _postPreferencesChangedNotification];
@@ -1631,9 +1631,9 @@ uint64_t __43__WebPreferences__setLongLongValue_forKey___block_invoke(void *a1)
   return [v2 setObject:v3 forKey:v4];
 }
 
-- (unint64_t)_unsignedLongLongValueForKey:(id)a3
+- (unint64_t)_unsignedLongLongValueForKey:(id)key
 {
-  v3 = [(WebPreferences *)self _valueForKey:a3];
+  v3 = [(WebPreferences *)self _valueForKey:key];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     return 0;
@@ -1642,16 +1642,16 @@ uint64_t __43__WebPreferences__setLongLongValue_forKey___block_invoke(void *a1)
   return [v3 unsignedLongLongValue];
 }
 
-- (void)_setUnsignedLongLongValue:(unint64_t)a3 forKey:(id)a4
+- (void)_setUnsignedLongLongValue:(unint64_t)value forKey:(id)key
 {
-  v4 = a4;
-  if ([(WebPreferences *)self _unsignedLongLongValueForKey:a4]!= a3)
+  keyCopy = key;
+  if ([(WebPreferences *)self _unsignedLongLongValueForKey:key]!= value)
   {
     v7 = self->_private;
     v8 = v7[2];
     if (v8)
     {
-      v4 = [v8 stringByAppendingString:v4];
+      keyCopy = [v8 stringByAppendingString:keyCopy];
       v7 = self->_private;
     }
 
@@ -1660,14 +1660,14 @@ uint64_t __43__WebPreferences__setLongLongValue_forKey___block_invoke(void *a1)
     block[1] = 3221225472;
     block[2] = __51__WebPreferences__setUnsignedLongLongValue_forKey___block_invoke;
     block[3] = &unk_1E82C79F8;
-    block[5] = v4;
-    block[6] = a3;
+    block[5] = keyCopy;
+    block[6] = value;
     block[4] = self;
     dispatch_barrier_sync(v9, block);
     if (*(self->_private + 25) == 1)
     {
-      v10 = [MEMORY[0x1E695E000] standardUserDefaults];
-      [v10 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedLongLong:", a3), v4}];
+      standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+      [standardUserDefaults setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedLongLong:", value), keyCopy}];
     }
 
     [(WebPreferences *)self _postPreferencesChangedNotification];
@@ -1691,47 +1691,47 @@ uint64_t __51__WebPreferences__setUnsignedLongLongValue_forKey___block_invoke(vo
   [(WebPreferences *)self _setBoolValue:v3 forKey:@"WebKitPrivateBrowsingEnabled"];
 }
 
-- (void)_updatePrivateBrowsingStateTo:(BOOL)a3
+- (void)_updatePrivateBrowsingStateTo:(BOOL)to
 {
   v3 = self->_private;
   if (v3)
   {
     v4 = v3[24];
-    if (a3 != v4)
+    if (to != v4)
     {
-      if (a3 <= v4)
+      if (to <= v4)
       {
         if (!--webPreferencesInstanceCountWithPrivateBrowsingEnabled)
         {
-          v7 = self;
-          v8 = a3;
+          selfCopy = self;
+          toCopy = to;
           NetworkStorageSessionMap::destroySession(0x8000000000000001, a2);
-          self = v7;
-          a3 = v8;
+          self = selfCopy;
+          to = toCopy;
         }
       }
 
       else
       {
-        v5 = a3;
-        v6 = self;
+        toCopy2 = to;
+        selfCopy2 = self;
         WebFrameNetworkingContext::ensurePrivateBrowsingSession(self);
-        self = v6;
-        a3 = v5;
+        self = selfCopy2;
+        to = toCopy2;
         ++webPreferencesInstanceCountWithPrivateBrowsingEnabled;
       }
 
-      *(self->_private + 24) = a3;
+      *(self->_private + 24) = to;
     }
   }
 }
 
 - (void)_postCacheModelChangedNotification
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v4 = WebPreferencesCacheModelChangedInternalNotification;
 
-  [v3 postNotificationName:v4 object:self userInfo:0];
+  [defaultCenter postNotificationName:v4 object:self userInfo:0];
 }
 
 - (void)setCacheModel:(WebCacheModel)cacheModel
@@ -1744,13 +1744,13 @@ uint64_t __51__WebPreferences__setUnsignedLongLongValue_forKey___block_invoke(vo
 
 - (BOOL)developerExtrasEnabled
 {
-  v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-  if ([v3 BOOLForKey:@"DisableWebKitDeveloperExtras"])
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  if ([standardUserDefaults BOOLForKey:@"DisableWebKitDeveloperExtras"])
   {
     return 0;
   }
 
-  if ([v3 BOOLForKey:@"WebKitDeveloperExtras"] & 1) != 0 || (objc_msgSend(v3, "BOOLForKey:", @"IncludeDebugMenu"))
+  if ([standardUserDefaults BOOLForKey:@"WebKitDeveloperExtras"] & 1) != 0 || (objc_msgSend(standardUserDefaults, "BOOLForKey:", @"IncludeDebugMenu"))
   {
     return 1;
   }
@@ -1780,9 +1780,9 @@ uint64_t __51__WebPreferences__setUnsignedLongLongValue_forKey___block_invoke(vo
   return result;
 }
 
-+ (id)_getInstanceForIdentifier:(id)a3
++ (id)_getInstanceForIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     if (byte_1ED6A6299 == 1)
     {
@@ -1796,7 +1796,7 @@ uint64_t __51__WebPreferences__setUnsignedLongLongValue_forKey___block_invoke(vo
       byte_1ED6A6299 = 1;
     }
 
-    v4 = [a1 _concatenateKeyWithIBCreatorID:?];
+    v4 = [self _concatenateKeyWithIBCreatorID:?];
 
     return [v3 objectForKey:v4];
   }
@@ -1816,9 +1816,9 @@ uint64_t __51__WebPreferences__setUnsignedLongLongValue_forKey___block_invoke(vo
   return result;
 }
 
-+ (void)_setInstance:(id)a3 forIdentifier:(id)a4
++ (void)_setInstance:(id)instance forIdentifier:(id)identifier
 {
-  if (!a4)
+  if (!identifier)
   {
     return;
   }
@@ -1834,8 +1834,8 @@ uint64_t __51__WebPreferences__setUnsignedLongLongValue_forKey___block_invoke(vo
   if (!qword_1ED6A62B0)
   {
 LABEL_4:
-    v6 = a1;
-    v7 = a4;
+    selfCopy = self;
+    identifierCopy = identifier;
     v8 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v9 = qword_1ED6A62B0;
     qword_1ED6A62B0 = v8;
@@ -1850,20 +1850,20 @@ LABEL_4:
       v5 = v8;
     }
 
-    a4 = v7;
-    a1 = v6;
+    identifier = identifierCopy;
+    self = selfCopy;
   }
 
-  v10 = [a1 _concatenateKeyWithIBCreatorID:a4];
+  v10 = [self _concatenateKeyWithIBCreatorID:identifier];
 
-  [v5 setObject:a3 forKey:v10];
+  [v5 setObject:instance forKey:v10];
 }
 
-+ (void)_checkLastReferenceForIdentifier:(id)a3
++ (void)_checkLastReferenceForIdentifier:(id)identifier
 {
   if (byte_1ED6A6299 == 1)
   {
-    if ([objc_msgSend(qword_1ED6A62B0 objectForKey:{a3), "retainCount"}] != 1)
+    if ([objc_msgSend(qword_1ED6A62B0 objectForKey:{identifier), "retainCount"}] != 1)
     {
       return;
     }
@@ -1873,7 +1873,7 @@ LABEL_4:
   {
     qword_1ED6A62B0 = 0;
     byte_1ED6A6299 = 1;
-    if ([objc_msgSend(0 objectForKey:{a3), "retainCount"}] != 1)
+    if ([objc_msgSend(0 objectForKey:{identifier), "retainCount"}] != 1)
     {
       return;
     }
@@ -1882,7 +1882,7 @@ LABEL_4:
   if (byte_1ED6A6299 == 1)
   {
     v4 = qword_1ED6A62B0;
-    v5 = a3;
+    identifierCopy2 = identifier;
   }
 
   else
@@ -1890,19 +1890,19 @@ LABEL_4:
     v4 = 0;
     qword_1ED6A62B0 = 0;
     byte_1ED6A6299 = 1;
-    v5 = a3;
+    identifierCopy2 = identifier;
   }
 
-  [v4 removeObjectForKey:v5];
+  [v4 removeObjectForKey:identifierCopy2];
 }
 
-+ (void)_removeReferenceForIdentifier:(id)a3
++ (void)_removeReferenceForIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
-    v4 = [a1 _concatenateKeyWithIBCreatorID:?];
+    v4 = [self _concatenateKeyWithIBCreatorID:?];
 
-    [a1 performSelector:sel__checkLastReferenceForIdentifier_ withObject:v4 afterDelay:0.1];
+    [self performSelector:sel__checkLastReferenceForIdentifier_ withObject:v4 afterDelay:0.1];
   }
 }
 
@@ -1941,10 +1941,10 @@ LABEL_4:
 
   else
   {
-    v5 = self;
+    selfCopy = self;
     NSLog(&cfstr_ErrorUnbalance.isa, a2);
-    self = v5;
-    v2 = v5->_private;
+    self = selfCopy;
+    v2 = selfCopy->_private;
     v6 = v2[8] - 1;
     v2[8] = v6;
     if (v6)
@@ -1970,10 +1970,10 @@ LABEL_4:
   }
 }
 
-- (void)_batchUpdatePreferencesInBlock:(id)a3
+- (void)_batchUpdatePreferencesInBlock:(id)block
 {
   [(WebPreferences *)self _startBatchingUpdates];
-  (*(a3 + 2))(a3, self);
+  (*(block + 2))(block, self);
 
   [(WebPreferences *)self _stopBatchingUpdates];
 }
@@ -2001,12 +2001,12 @@ LABEL_4:
 
   else
   {
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 postNotificationName:WebPreferencesChangedInternalNotification[0] object:self userInfo:0];
-    v6 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:WebPreferencesChangedInternalNotification[0] object:self userInfo:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
     v7 = WebPreferencesChangedNotification;
 
-    [v6 postNotificationName:v7 object:self userInfo:0];
+    [defaultCenter2 postNotificationName:v7 object:self userInfo:0];
   }
 }
 
@@ -2022,10 +2022,10 @@ LABEL_4:
 
     else
     {
-      v5 = [MEMORY[0x1E696AD88] defaultCenter];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
       v6 = WebPreferencesChangedNotification;
 
-      [v5 postNotificationName:v6 object:self userInfo:0];
+      [defaultCenter postNotificationName:v6 object:self userInfo:0];
     }
   }
 
@@ -2039,9 +2039,9 @@ LABEL_4:
 + (void)_setInitialDefaultTextEncodingToSystemEncoding
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
   v11 = @"WebKitDefaultTextEncodingName";
-  PAL::defaultTextEncodingNameForSystemLanguage(&v9, v2);
+  PAL::defaultTextEncodingNameForSystemLanguage(&v9, standardUserDefaults);
   v3 = v9;
   if (v9)
   {
@@ -2060,7 +2060,7 @@ LABEL_4:
   }
 
   v12[0] = v10;
-  -[PAL registerDefaults:](v2, "registerDefaults:", [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:&v11 count:1]);
+  -[PAL registerDefaults:](standardUserDefaults, "registerDefaults:", [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:&v11 count:1]);
   v6 = v10;
   v10 = 0;
   if (v6)
@@ -2078,9 +2078,9 @@ LABEL_4:
   }
 }
 
-+ (void)_setIBCreatorID:(id)a3
++ (void)_setIBCreatorID:(id)d
 {
-  v3 = [a3 copy];
+  v3 = [d copy];
   if (byte_1ED6A629A)
   {
     v4 = qword_1ED6A62B8;
@@ -2104,11 +2104,11 @@ LABEL_4:
   return [v2 stringByStandardizingPath];
 }
 
-- (void)_setLocalStorageDatabasePath:(id)a3
+- (void)_setLocalStorageDatabasePath:(id)path
 {
-  v4 = [a3 stringByStandardizingPath];
+  stringByStandardizingPath = [path stringByStandardizingPath];
 
-  [(WebPreferences *)self _setStringValue:v4 forKey:@"WebKitLocalStorageDatabasePathPreferenceKey"];
+  [(WebPreferences *)self _setStringValue:stringByStandardizingPath forKey:@"WebKitLocalStorageDatabasePathPreferenceKey"];
 }
 
 - (NSString)_ftpDirectoryTemplatePath
@@ -2118,11 +2118,11 @@ LABEL_4:
   return [v2 stringByStandardizingPath];
 }
 
-- (void)_setFTPDirectoryTemplatePath:(id)a3
+- (void)_setFTPDirectoryTemplatePath:(id)path
 {
-  v4 = [a3 stringByStandardizingPath];
+  stringByStandardizingPath = [path stringByStandardizingPath];
 
-  [(WebPreferences *)self _setStringValue:v4 forKey:@"WebKitFTPDirectoryTemplatePath"];
+  [(WebPreferences *)self _setStringValue:stringByStandardizingPath forKey:@"WebKitFTPDirectoryTemplatePath"];
 }
 
 - (void)didRemoveFromWebView
@@ -2132,54 +2132,54 @@ LABEL_4:
   v3[7] = v4;
   if (!v4)
   {
-    v6 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v7 = WebPreferencesRemovedNotification[0];
 
-    [v6 postNotificationName:v7 object:self userInfo:0];
+    [defaultCenter postNotificationName:v7 object:self userInfo:0];
   }
 }
 
-- (void)setAudioSessionCategoryOverride:(unsigned int)a3
+- (void)setAudioSessionCategoryOverride:(unsigned int)override
 {
-  if (a3 >= 7)
+  if (override >= 7)
   {
-    if (a3 > 1886547810)
+    if (override > 1886547810)
     {
-      switch(a3)
+      switch(override)
       {
         case 0x70726F63u:
-          *&a3 = 6;
+          *&override = 6;
           goto LABEL_7;
         case 0x72656361u:
-          *&a3 = 4;
+          *&override = 4;
           goto LABEL_7;
         case 0x736F6C6Fu:
-          *&a3 = 2;
+          *&override = 2;
           goto LABEL_7;
       }
     }
 
     else
     {
-      switch(a3)
+      switch(override)
       {
         case 0x616D6269u:
-          *&a3 = 1;
+          *&override = 1;
           goto LABEL_7;
         case 0x6D656469u:
-          *&a3 = 3;
+          *&override = 3;
           goto LABEL_7;
         case 0x706C6172u:
-          *&a3 = 5;
+          *&override = 5;
           goto LABEL_7;
       }
     }
 
-    *&a3 = 0;
+    *&override = 0;
   }
 
 LABEL_7:
-  [(WebPreferences *)self _setUnsignedIntValue:*&a3 forKey:@"WebKitAudioSessionCategoryOverride"];
+  [(WebPreferences *)self _setUnsignedIntValue:*&override forKey:@"WebKitAudioSessionCategoryOverride"];
 }
 
 - (void)_invalidateCachedPreferences
@@ -2215,26 +2215,26 @@ void __58__WebPreferences_WebPrivate___invalidateCachedPreferences__block_invoke
   if ((v3 & 0xFFFFFFFC) != 0)
   {
     v4 = 2;
-    v5 = self;
+    selfCopy2 = self;
   }
 
   else
   {
     v4 = dword_1C7B339C0[v3 & 3];
-    v5 = self;
+    selfCopy2 = self;
   }
 
-  [(WebPreferences *)v5 setStorageBlockingPolicy:v4];
+  [(WebPreferences *)selfCopy2 setStorageBlockingPolicy:v4];
 }
 
-- (void)setStorageBlockingPolicy:(int)a3
+- (void)setStorageBlockingPolicy:(int)policy
 {
-  v3 = *&a3;
+  v3 = *&policy;
   v6[1] = *MEMORY[0x1E69E9840];
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
   v5 = @"WebKitStorageBlockingPolicy";
   v6[0] = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v3];
-  [v4 registerDefaults:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v6, &v5, 1)}];
+  [standardUserDefaults registerDefaults:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v6, &v5, 1)}];
 }
 
 - (NSString)mediaKeysStorageDirectory
@@ -2257,30 +2257,30 @@ void __58__WebPreferences_WebPrivate___invalidateCachedPreferences__block_invoke
   return result;
 }
 
-+ (id)_concatenateKeyWithIBCreatorID:(id)a3
++ (id)_concatenateKeyWithIBCreatorID:(id)d
 {
   v4 = +[WebPreferences _IBCreatorID];
   if (!v4)
   {
-    return a3;
+    return d;
   }
 
-  return [v4 stringByAppendingString:a3];
+  return [v4 stringByAppendingString:d];
 }
 
-- (BOOL)_isEnabledForFeature:(id)a3
+- (BOOL)_isEnabledForFeature:(id)feature
 {
-  v4 = [a3 preferenceKey];
+  preferenceKey = [feature preferenceKey];
 
-  return [(WebPreferences *)self _BOOLValueForKey:v4];
+  return [(WebPreferences *)self _BOOLValueForKey:preferenceKey];
 }
 
-- (void)_setEnabled:(BOOL)a3 forFeature:(id)a4
+- (void)_setEnabled:(BOOL)enabled forFeature:(id)feature
 {
-  v4 = a3;
-  v6 = [a4 preferenceKey];
+  enabledCopy = enabled;
+  preferenceKey = [feature preferenceKey];
 
-  [(WebPreferences *)self _setBoolValue:v4 forKey:v6];
+  [(WebPreferences *)self _setBoolValue:enabledCopy forKey:preferenceKey];
 }
 
 + (void)_switchNetworkLoaderToNewTestingSession
@@ -2290,9 +2290,9 @@ void __58__WebPreferences_WebPrivate___invalidateCachedPreferences__block_invoke
   NetworkStorageSessionMap::switchToNewTestingSession(v2);
 }
 
-+ (void)_setCurrentNetworkLoaderSessionCookieAcceptPolicy:(unint64_t)a3
++ (void)_setCurrentNetworkLoaderSessionCookieAcceptPolicy:(unint64_t)policy
 {
-  v3 = NetworkStorageSessionMap::defaultStorageSession(a1, a2);
+  v3 = NetworkStorageSessionMap::defaultStorageSession(self, a2);
   WebCore::NetworkStorageSession::cookieStorage(&cf, v3);
   if (cf)
   {
@@ -2311,10 +2311,10 @@ void __58__WebPreferences_WebPrivate___invalidateCachedPreferences__block_invoke
   }
 }
 
-+ (void)_clearNetworkLoaderSession:(id)a3
++ (void)_clearNetworkLoaderSession:(id)session
 {
-  NetworkStorageSessionMap::defaultStorageSession(a1, a2);
-  v4 = _Block_copy(a3);
+  NetworkStorageSessionMap::defaultStorageSession(self, a2);
+  v4 = _Block_copy(session);
   v5 = WTF::fastMalloc(0x10);
   *v5 = &unk_1F472E678;
   v5[1] = v4;

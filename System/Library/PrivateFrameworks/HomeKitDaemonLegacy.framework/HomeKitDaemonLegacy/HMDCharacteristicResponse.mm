@@ -1,13 +1,13 @@
 @interface HMDCharacteristicResponse
-+ (HMDCharacteristicResponse)responseWithRequest:(id)a3 characteristicUpdateDictionary:(id)a4;
-+ (HMDCharacteristicResponse)responseWithRequest:(id)a3 error:(id)a4;
-+ (id)characteristicsUpdateDictionaryFromResponses:(id)a3;
-+ (id)responsesWithRequests:(id)a3 characteristicUpdateDictionary:(id)a4;
-+ (id)responsesWithRequests:(id)a3 error:(id)a4;
-- (HMDCharacteristicResponse)initWithRequest:(id)a3 error:(id)a4;
++ (HMDCharacteristicResponse)responseWithRequest:(id)request characteristicUpdateDictionary:(id)dictionary;
++ (HMDCharacteristicResponse)responseWithRequest:(id)request error:(id)error;
++ (id)characteristicsUpdateDictionaryFromResponses:(id)responses;
++ (id)responsesWithRequests:(id)requests characteristicUpdateDictionary:(id)dictionary;
++ (id)responsesWithRequests:(id)requests error:(id)error;
+- (HMDCharacteristicResponse)initWithRequest:(id)request error:(id)error;
 - (NSDictionary)characteristicUpdateDictionary;
 - (id)attributeDescriptions;
-- (void)setValue:(id)a3 updatedTime:(id)a4 stateNumber:(id)a5 notificationContext:(id)a6;
+- (void)setValue:(id)value updatedTime:(id)time stateNumber:(id)number notificationContext:(id)context;
 @end
 
 @implementation HMDCharacteristicResponse
@@ -15,57 +15,57 @@
 - (id)attributeDescriptions
 {
   v49[8] = *MEMORY[0x277D85DE8];
-  v3 = [(HMDCharacteristicResponse *)self request];
-  v4 = [v3 characteristic];
+  request = [(HMDCharacteristicResponse *)self request];
+  characteristic = [request characteristic];
 
-  v5 = [v4 accessory];
-  v6 = [v4 service];
+  accessory = [characteristic accessory];
+  service = [characteristic service];
   v7 = objc_alloc(MEMORY[0x277D0F778]);
   v8 = MEMORY[0x277CCACA8];
-  v48 = v5;
-  v47 = [v5 name];
-  v46 = [v5 uniqueIdentifier];
-  v45 = [v8 stringWithFormat:@"(%@/%@)", v47, v46];
+  v48 = accessory;
+  name = [accessory name];
+  uniqueIdentifier = [accessory uniqueIdentifier];
+  v45 = [v8 stringWithFormat:@"(%@/%@)", name, uniqueIdentifier];
   v44 = [v7 initWithName:@"Accessory" value:v45];
   v49[0] = v44;
   v9 = objc_alloc(MEMORY[0x277D0F778]);
   v10 = MEMORY[0x277CCACA8];
-  v43 = v6;
-  v42 = [v6 type];
-  v41 = shortHAPTypeDescription(v42);
-  v39 = [v6 instanceID];
-  v38 = [v10 stringWithFormat:@"(%@/%@)", v41, v39];
+  v43 = service;
+  type = [service type];
+  v41 = shortHAPTypeDescription(type);
+  instanceID = [service instanceID];
+  v38 = [v10 stringWithFormat:@"(%@/%@)", v41, instanceID];
   v37 = [v9 initWithName:@"Service" value:v38];
   v49[1] = v37;
   v11 = objc_alloc(MEMORY[0x277D0F778]);
   v12 = MEMORY[0x277CCACA8];
-  v40 = v4;
-  v36 = [v4 type];
-  v35 = shortHAPTypeDescription(v36);
-  v34 = [v4 instanceID];
-  v33 = [v12 stringWithFormat:@"(%@/%@)", v35, v34];
+  v40 = characteristic;
+  type2 = [characteristic type];
+  v35 = shortHAPTypeDescription(type2);
+  instanceID2 = [characteristic instanceID];
+  v33 = [v12 stringWithFormat:@"(%@/%@)", v35, instanceID2];
   v32 = [v11 initWithName:@"Characteristic" value:v33];
   v49[2] = v32;
   v13 = objc_alloc(MEMORY[0x277D0F778]);
-  v31 = [(HMDCharacteristicResponse *)self request];
-  v30 = [v31 previousValue];
-  v14 = [v13 initWithName:@"Previous Value" value:v30];
+  request2 = [(HMDCharacteristicResponse *)self request];
+  previousValue = [request2 previousValue];
+  v14 = [v13 initWithName:@"Previous Value" value:previousValue];
   v49[3] = v14;
   v15 = objc_alloc(MEMORY[0x277D0F778]);
-  v16 = [(HMDCharacteristicResponse *)self value];
-  v17 = [v15 initWithName:@"Value" value:v16];
+  value = [(HMDCharacteristicResponse *)self value];
+  v17 = [v15 initWithName:@"Value" value:value];
   v49[4] = v17;
   v18 = objc_alloc(MEMORY[0x277D0F778]);
-  v19 = [(HMDCharacteristicResponse *)self value];
+  value2 = [(HMDCharacteristicResponse *)self value];
   v20 = [v18 initWithName:@"Type" value:objc_opt_class()];
   v49[5] = v20;
   v21 = objc_alloc(MEMORY[0x277D0F778]);
-  v22 = [(HMDCharacteristicResponse *)self notificationContext];
-  v23 = [v21 initWithName:@"Notification Context" value:v22];
+  notificationContext = [(HMDCharacteristicResponse *)self notificationContext];
+  v23 = [v21 initWithName:@"Notification Context" value:notificationContext];
   v49[6] = v23;
   v24 = objc_alloc(MEMORY[0x277D0F778]);
-  v25 = [(HMDCharacteristicResponse *)self error];
-  v26 = [v24 initWithName:@"Error" value:v25];
+  error = [(HMDCharacteristicResponse *)self error];
+  v26 = [v24 initWithName:@"Error" value:error];
   v49[7] = v26;
   v27 = [MEMORY[0x277CBEA60] arrayWithObjects:v49 count:8];
 
@@ -76,156 +76,156 @@
 
 - (NSDictionary)characteristicUpdateDictionary
 {
-  v3 = [(HMDCharacteristicResponse *)self request];
-  v4 = [v3 characteristic];
+  request = [(HMDCharacteristicResponse *)self request];
+  characteristic = [request characteristic];
 
-  v5 = [v4 service];
-  v6 = [v5 accessory];
-  v7 = v6;
-  v8 = MEMORY[0x277CBEC10];
-  if (v5 && v6)
+  service = [characteristic service];
+  accessory = [service accessory];
+  v7 = accessory;
+  dictionary = MEMORY[0x277CBEC10];
+  if (service && accessory)
   {
-    v8 = [MEMORY[0x277CBEB38] dictionary];
-    v9 = [v7 uuid];
-    v10 = [v9 UUIDString];
-    [v8 setObject:v10 forKeyedSubscript:*MEMORY[0x277CCF0B0]];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    uuid = [v7 uuid];
+    uUIDString = [uuid UUIDString];
+    [dictionary setObject:uUIDString forKeyedSubscript:*MEMORY[0x277CCF0B0]];
 
-    v11 = [v5 instanceID];
-    [v8 setObject:v11 forKeyedSubscript:*MEMORY[0x277CD25F8]];
+    instanceID = [service instanceID];
+    [dictionary setObject:instanceID forKeyedSubscript:*MEMORY[0x277CD25F8]];
 
-    v12 = [v4 instanceID];
-    [v8 setObject:v12 forKeyedSubscript:*MEMORY[0x277CD2140]];
+    instanceID2 = [characteristic instanceID];
+    [dictionary setObject:instanceID2 forKeyedSubscript:*MEMORY[0x277CD2140]];
 
-    v13 = [(HMDCharacteristicResponse *)self error];
+    error = [(HMDCharacteristicResponse *)self error];
 
-    if (v13)
+    if (error)
     {
       v14 = MEMORY[0x277CCAAB0];
-      v15 = [(HMDCharacteristicResponse *)self error];
-      v16 = [v14 archivedDataWithRootObject:v15 requiringSecureCoding:1 error:0];
-      [v8 setObject:v16 forKeyedSubscript:*MEMORY[0x277CD2128]];
+      error2 = [(HMDCharacteristicResponse *)self error];
+      v16 = [v14 archivedDataWithRootObject:error2 requiringSecureCoding:1 error:0];
+      [dictionary setObject:v16 forKeyedSubscript:*MEMORY[0x277CD2128]];
     }
 
     else
     {
-      v17 = [(HMDCharacteristicResponse *)self value];
-      [v8 setObject:v17 forKeyedSubscript:*MEMORY[0x277CD21B8]];
+      value = [(HMDCharacteristicResponse *)self value];
+      [dictionary setObject:value forKeyedSubscript:*MEMORY[0x277CD21B8]];
 
-      v18 = [(HMDCharacteristicResponse *)self valueUpdatedTime];
-      if (v18)
+      valueUpdatedTime = [(HMDCharacteristicResponse *)self valueUpdatedTime];
+      if (valueUpdatedTime)
       {
-        [v8 setObject:v18 forKeyedSubscript:*MEMORY[0x277CD21E0]];
+        [dictionary setObject:valueUpdatedTime forKeyedSubscript:*MEMORY[0x277CD21E0]];
       }
 
       else
       {
-        v19 = [v4 lastKnownValueUpdateTime];
-        [v8 setObject:v19 forKeyedSubscript:*MEMORY[0x277CD21E0]];
+        lastKnownValueUpdateTime = [characteristic lastKnownValueUpdateTime];
+        [dictionary setObject:lastKnownValueUpdateTime forKeyedSubscript:*MEMORY[0x277CD21E0]];
       }
 
-      v20 = [(HMDCharacteristicResponse *)self stateNumber];
-      if (v20)
+      stateNumber = [(HMDCharacteristicResponse *)self stateNumber];
+      if (stateNumber)
       {
-        [v8 setObject:v20 forKeyedSubscript:*MEMORY[0x277CD21D0]];
-      }
-
-      else
-      {
-        v21 = [v4 stateNumber];
-        [v8 setObject:v21 forKeyedSubscript:*MEMORY[0x277CD21D0]];
-      }
-
-      v22 = [(HMDCharacteristicResponse *)self notificationContext];
-      if (v22)
-      {
-        v15 = v22;
-        [v8 setObject:v22 forKeyedSubscript:*MEMORY[0x277CD2150]];
+        [dictionary setObject:stateNumber forKeyedSubscript:*MEMORY[0x277CD21D0]];
       }
 
       else
       {
-        v23 = [v4 notificationContext];
-        [v8 setObject:v23 forKeyedSubscript:*MEMORY[0x277CD2150]];
+        stateNumber2 = [characteristic stateNumber];
+        [dictionary setObject:stateNumber2 forKeyedSubscript:*MEMORY[0x277CD21D0]];
+      }
 
-        v15 = 0;
+      notificationContext = [(HMDCharacteristicResponse *)self notificationContext];
+      if (notificationContext)
+      {
+        error2 = notificationContext;
+        [dictionary setObject:notificationContext forKeyedSubscript:*MEMORY[0x277CD2150]];
+      }
+
+      else
+      {
+        notificationContext2 = [characteristic notificationContext];
+        [dictionary setObject:notificationContext2 forKeyedSubscript:*MEMORY[0x277CD2150]];
+
+        error2 = 0;
       }
     }
   }
 
-  return v8;
+  return dictionary;
 }
 
-- (void)setValue:(id)a3 updatedTime:(id)a4 stateNumber:(id)a5 notificationContext:(id)a6
+- (void)setValue:(id)value updatedTime:(id)time stateNumber:(id)number notificationContext:(id)context
 {
-  v17 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(HMDCharacteristicResponse *)self error];
+  valueCopy = value;
+  timeCopy = time;
+  numberCopy = number;
+  contextCopy = context;
+  error = [(HMDCharacteristicResponse *)self error];
 
-  if (!v14)
+  if (!error)
   {
-    objc_storeStrong(&self->_value, a3);
-    if (v11)
+    objc_storeStrong(&self->_value, value);
+    if (timeCopy)
     {
-      v15 = v11;
+      date = timeCopy;
     }
 
     else
     {
-      v15 = [MEMORY[0x277CBEAA8] date];
+      date = [MEMORY[0x277CBEAA8] date];
     }
 
     valueUpdatedTime = self->_valueUpdatedTime;
-    self->_valueUpdatedTime = v15;
+    self->_valueUpdatedTime = date;
 
-    if (v12)
+    if (numberCopy)
     {
-      objc_storeStrong(&self->_stateNumber, a5);
+      objc_storeStrong(&self->_stateNumber, number);
     }
 
-    objc_storeStrong(&self->_notificationContext, a6);
+    objc_storeStrong(&self->_notificationContext, context);
   }
 }
 
-- (HMDCharacteristicResponse)initWithRequest:(id)a3 error:(id)a4
+- (HMDCharacteristicResponse)initWithRequest:(id)request error:(id)error
 {
-  v7 = a3;
-  v8 = a4;
+  requestCopy = request;
+  errorCopy = error;
   v15.receiver = self;
   v15.super_class = HMDCharacteristicResponse;
   v9 = [(HMDCharacteristicResponse *)&v15 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_request, a3);
-    objc_storeStrong(&v10->_error, a4);
-    v11 = [v7 characteristic];
-    v12 = [v11 value];
+    objc_storeStrong(&v9->_request, request);
+    objc_storeStrong(&v10->_error, error);
+    characteristic = [requestCopy characteristic];
+    value = [characteristic value];
     value = v10->_value;
-    v10->_value = v12;
+    v10->_value = value;
   }
 
   return v10;
 }
 
-+ (id)characteristicsUpdateDictionaryFromResponses:(id)a3
++ (id)characteristicsUpdateDictionaryFromResponses:(id)responses
 {
   v43 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB38] dictionary];
+  responsesCopy = responses;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  obj = v3;
+  obj = responsesCopy;
   v5 = [obj countByEnumeratingWithState:&v38 objects:v42 count:16];
   if (v5)
   {
     v6 = v5;
     v7 = *v39;
     v33 = *v39;
-    v34 = v4;
+    v34 = dictionary;
     do
     {
       v8 = 0;
@@ -238,15 +238,15 @@
         }
 
         v9 = *(*(&v38 + 1) + 8 * v8);
-        v10 = [v9 request];
-        v11 = [v10 characteristic];
+        request = [v9 request];
+        characteristic = [request characteristic];
 
-        v12 = [v11 service];
-        v13 = [v11 accessory];
-        v14 = v13;
-        if (v11)
+        service = [characteristic service];
+        accessory = [characteristic accessory];
+        v14 = accessory;
+        if (characteristic)
         {
-          v15 = v12 == 0;
+          v15 = service == 0;
         }
 
         else
@@ -254,52 +254,52 @@
           v15 = 1;
         }
 
-        if (!v15 && v13 != 0)
+        if (!v15 && accessory != 0)
         {
-          v17 = [v13 uuid];
-          v18 = [v17 UUIDString];
+          uuid = [accessory uuid];
+          uUIDString = [uuid UUIDString];
 
-          v19 = [v12 instanceID];
-          v20 = [v19 stringValue];
+          instanceID = [service instanceID];
+          stringValue = [instanceID stringValue];
 
-          v21 = [v11 instanceID];
-          v37 = [v21 stringValue];
+          instanceID2 = [characteristic instanceID];
+          stringValue2 = [instanceID2 stringValue];
 
-          v22 = [v4 hmf_mutableDictionaryForKey:v18];
+          v22 = [dictionary hmf_mutableDictionaryForKey:uUIDString];
           v23 = v22;
           if (v22)
           {
-            v24 = v22;
+            dictionary2 = v22;
           }
 
           else
           {
-            v24 = [MEMORY[0x277CBEB38] dictionary];
+            dictionary2 = [MEMORY[0x277CBEB38] dictionary];
           }
 
-          v25 = v24;
+          v25 = dictionary2;
 
-          [v4 setObject:v25 forKeyedSubscript:v18];
-          v26 = [v25 hmf_mutableDictionaryForKey:v20];
+          [dictionary setObject:v25 forKeyedSubscript:uUIDString];
+          v26 = [v25 hmf_mutableDictionaryForKey:stringValue];
           v27 = v26;
           if (v26)
           {
-            v28 = v26;
+            dictionary3 = v26;
           }
 
           else
           {
-            v28 = [MEMORY[0x277CBEB38] dictionary];
+            dictionary3 = [MEMORY[0x277CBEB38] dictionary];
           }
 
-          v29 = v28;
+          v29 = dictionary3;
 
-          [v25 setObject:v29 forKeyedSubscript:v20];
-          v30 = [v9 characteristicUpdateDictionary];
-          [v29 setObject:v30 forKeyedSubscript:v37];
+          [v25 setObject:v29 forKeyedSubscript:stringValue];
+          characteristicUpdateDictionary = [v9 characteristicUpdateDictionary];
+          [v29 setObject:characteristicUpdateDictionary forKeyedSubscript:stringValue2];
 
           v7 = v33;
-          v4 = v34;
+          dictionary = v34;
           v6 = v35;
         }
 
@@ -315,25 +315,25 @@
 
   v31 = *MEMORY[0x277D85DE8];
 
-  return v4;
+  return dictionary;
 }
 
-+ (id)responsesWithRequests:(id)a3 characteristicUpdateDictionary:(id)a4
++ (id)responsesWithRequests:(id)requests characteristicUpdateDictionary:(id)dictionary
 {
   v98[1] = *MEMORY[0x277D85DE8];
-  v60 = a3;
-  v6 = a4;
-  v7 = [v6 hmf_dictionaryForKey:@"kModifiedCharacteristicsForAccessoryKey"];
-  v56 = v6;
+  requestsCopy = requests;
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy hmf_dictionaryForKey:@"kModifiedCharacteristicsForAccessoryKey"];
+  v56 = dictionaryCopy;
   if (!v7)
   {
-    v7 = [v6 hmf_dictionaryForKey:@"kCharacteristicNotificationsKey"];
+    v7 = [dictionaryCopy hmf_dictionaryForKey:@"kCharacteristicNotificationsKey"];
     if (!v7)
     {
-      if ([v60 count] == 1)
+      if ([requestsCopy count] == 1)
       {
-        v8 = [v6 hmf_stringForKey:*MEMORY[0x277CCF0B0]];
-        v9 = [v6 hmf_numberForKey:*MEMORY[0x277CD2140]];
+        v8 = [dictionaryCopy hmf_stringForKey:*MEMORY[0x277CCF0B0]];
+        v9 = [dictionaryCopy hmf_numberForKey:*MEMORY[0x277CD2140]];
         v10 = HAPInstanceIDFromValue();
 
         if (v8)
@@ -349,26 +349,26 @@
         if (!v11)
         {
           v73 = v10;
-          v12 = [v60 firstObject];
-          v13 = [v12 characteristic];
-          v14 = [v13 accessory];
-          v15 = [v14 uuid];
-          v16 = [v15 UUIDString];
-          if ([v16 isEqualToString:v8])
+          firstObject = [requestsCopy firstObject];
+          characteristic = [firstObject characteristic];
+          accessory = [characteristic accessory];
+          uuid = [accessory uuid];
+          uUIDString = [uuid UUIDString];
+          if ([uUIDString isEqualToString:v8])
           {
-            v17 = [v12 characteristic];
-            [v17 instanceID];
-            v19 = v18 = a1;
+            characteristic2 = [firstObject characteristic];
+            [characteristic2 instanceID];
+            v19 = v18 = self;
             v71 = [v19 isEqualToNumber:v73];
 
-            a1 = v18;
+            self = v18;
             if (v71)
             {
-              v20 = [HMDCharacteristicResponse responseWithRequest:v12 characteristicUpdateDictionary:v6];
+              v20 = [HMDCharacteristicResponse responseWithRequest:firstObject characteristicUpdateDictionary:dictionaryCopy];
               v98[0] = v20;
               v21 = [MEMORY[0x277CBEA60] arrayWithObjects:v98 count:1];
 
-              v22 = v73;
+              array = v73;
               goto LABEL_53;
             }
           }
@@ -381,12 +381,12 @@
         }
       }
 
-      v7 = v6;
+      v7 = dictionaryCopy;
     }
   }
 
   v8 = v7;
-  v22 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v85 = 0u;
   v86 = 0u;
   v87 = 0u;
@@ -398,7 +398,7 @@
     v58 = *v86;
     v23 = 0x277CBE000uLL;
     v59 = v8;
-    v68 = a1;
+    selfCopy = self;
     do
     {
       v24 = 0;
@@ -426,22 +426,22 @@
 
         v29 = v28;
 
-        v30 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+        strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
         v83[0] = MEMORY[0x277D85DD0];
         v83[1] = 3221225472;
         v83[2] = __82__HMDCharacteristicResponse_responsesWithRequests_characteristicUpdateDictionary___block_invoke;
         v83[3] = &unk_2797357D0;
         v83[4] = v25;
-        v31 = v30;
+        v31 = strongToStrongObjectsMapTable;
         v84 = v31;
-        [v60 na_each:v83];
+        [requestsCopy na_each:v83];
         v81 = 0u;
         v82 = 0u;
         v79 = 0u;
         v80 = 0u;
         v65 = v29;
-        v63 = [v29 allKeys];
-        v66 = [v63 countByEnumeratingWithState:&v79 objects:v96 count:16];
+        allKeys = [v29 allKeys];
+        v66 = [allKeys countByEnumeratingWithState:&v79 objects:v96 count:16];
         if (v66)
         {
           v64 = *v80;
@@ -453,7 +453,7 @@
             {
               if (*v80 != v64)
               {
-                objc_enumerationMutation(v63);
+                objc_enumerationMutation(allKeys);
               }
 
               v67 = v32;
@@ -477,8 +477,8 @@
               v75 = 0u;
               v76 = 0u;
               v72 = v36;
-              v70 = [v36 allKeys];
-              v37 = [v70 countByEnumeratingWithState:&v75 objects:v95 count:16];
+              allKeys2 = [v36 allKeys];
+              v37 = [allKeys2 countByEnumeratingWithState:&v75 objects:v95 count:16];
               if (v37)
               {
                 v38 = v37;
@@ -489,7 +489,7 @@
                   {
                     if (*v76 != v74)
                     {
-                      objc_enumerationMutation(v70);
+                      objc_enumerationMutation(allKeys2);
                     }
 
                     v40 = *(*(&v75 + 1) + 8 * i);
@@ -516,14 +516,14 @@
                       if (v46)
                       {
                         v47 = [HMDCharacteristicResponse responseWithRequest:v42 characteristicUpdateDictionary:v46];
-                        [v22 addObject:v47];
+                        [array addObject:v47];
                       }
 
                       else
                       {
-                        v48 = v22;
+                        v48 = array;
                         v49 = objc_autoreleasePoolPush();
-                        v50 = a1;
+                        selfCopy2 = self;
                         v51 = HMFGetOSLogHandle();
                         if (os_log_type_enabled(v51, OS_LOG_TYPE_ERROR))
                         {
@@ -537,18 +537,18 @@
                           v94 = v53;
                           _os_log_impl(&dword_2531F8000, v51, OS_LOG_TYPE_ERROR, "%{public}@Invalid characteristic update for request: %@. Update Dict: %@", buf, 0x20u);
 
-                          a1 = v68;
+                          self = selfCopy;
                         }
 
                         objc_autoreleasePoolPop(v49);
-                        v22 = v48;
+                        array = v48;
                         v23 = 0x277CBE000;
                         v31 = v69;
                       }
                     }
                   }
 
-                  v38 = [v70 countByEnumeratingWithState:&v75 objects:v95 count:16];
+                  v38 = [allKeys2 countByEnumeratingWithState:&v75 objects:v95 count:16];
                 }
 
                 while (v38);
@@ -558,7 +558,7 @@
             }
 
             while (v67 + 1 != v66);
-            v66 = [v63 countByEnumeratingWithState:&v79 objects:v96 count:16];
+            v66 = [allKeys countByEnumeratingWithState:&v79 objects:v96 count:16];
           }
 
           while (v66);
@@ -575,8 +575,8 @@
     while (v61);
   }
 
-  v21 = [v22 copy];
-  v6 = v56;
+  v21 = [array copy];
+  dictionaryCopy = v56;
 LABEL_53:
 
   v54 = *MEMORY[0x277D85DE8];
@@ -602,37 +602,37 @@ void __82__HMDCharacteristicResponse_responsesWithRequests_characteristicUpdateD
   }
 }
 
-+ (HMDCharacteristicResponse)responseWithRequest:(id)a3 characteristicUpdateDictionary:(id)a4
++ (HMDCharacteristicResponse)responseWithRequest:(id)request characteristicUpdateDictionary:(id)dictionary
 {
-  v5 = a4;
+  dictionaryCopy = dictionary;
   v6 = *MEMORY[0x277CD2128];
-  v7 = a3;
-  v8 = [v5 errorFromDataForKey:v6];
-  v9 = [objc_opt_class() responseWithRequest:v7 error:v8];
+  requestCopy = request;
+  v8 = [dictionaryCopy errorFromDataForKey:v6];
+  v9 = [objc_opt_class() responseWithRequest:requestCopy error:v8];
 
   if (!v8)
   {
-    v10 = [v5 objectForKeyedSubscript:*MEMORY[0x277CD21B8]];
-    v11 = [v5 hmf_numberForKey:*MEMORY[0x277CD21D0]];
-    v12 = [v5 hmf_dateForKey:*MEMORY[0x277CD21E0]];
-    v13 = [v5 hmf_dataForKey:*MEMORY[0x277CD2150]];
+    v10 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x277CD21B8]];
+    v11 = [dictionaryCopy hmf_numberForKey:*MEMORY[0x277CD21D0]];
+    v12 = [dictionaryCopy hmf_dateForKey:*MEMORY[0x277CD21E0]];
+    v13 = [dictionaryCopy hmf_dataForKey:*MEMORY[0x277CD2150]];
     [v9 setValue:v10 updatedTime:v12 stateNumber:v11 notificationContext:v13];
   }
 
   return v9;
 }
 
-+ (id)responsesWithRequests:(id)a3 error:(id)a4
++ (id)responsesWithRequests:(id)requests error:(id)error
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v5, "count")}];
+  requestsCopy = requests;
+  errorCopy = error;
+  v7 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(requestsCopy, "count")}];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v8 = v5;
+  v8 = requestsCopy;
   v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v9)
   {
@@ -647,7 +647,7 @@ void __82__HMDCharacteristicResponse_responsesWithRequests_characteristicUpdateD
           objc_enumerationMutation(v8);
         }
 
-        v13 = [HMDCharacteristicResponse responseWithRequest:*(*(&v16 + 1) + 8 * i) error:v6, v16];
+        v13 = [HMDCharacteristicResponse responseWithRequest:*(*(&v16 + 1) + 8 * i) error:errorCopy, v16];
         [v7 addObject:v13];
       }
 
@@ -662,11 +662,11 @@ void __82__HMDCharacteristicResponse_responsesWithRequests_characteristicUpdateD
   return v7;
 }
 
-+ (HMDCharacteristicResponse)responseWithRequest:(id)a3 error:(id)a4
++ (HMDCharacteristicResponse)responseWithRequest:(id)request error:(id)error
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithRequest:v7 error:v6];
+  errorCopy = error;
+  requestCopy = request;
+  v8 = [[self alloc] initWithRequest:requestCopy error:errorCopy];
 
   return v8;
 }

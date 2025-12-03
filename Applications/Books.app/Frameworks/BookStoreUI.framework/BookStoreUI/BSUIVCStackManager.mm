@@ -1,15 +1,15 @@
 @interface BSUIVCStackManager
-+ (void)present:(id)a3 :(BOOL)a4 :(id)a5;
++ (void)present:(id)present :(BOOL)a4 :(id)a5;
 - (BSUIVCStackManager)init;
 @end
 
 @implementation BSUIVCStackManager
 
-+ (void)present:(id)a3 :(BOOL)a4 :(id)a5
++ (void)present:(id)present :(BOOL)a4 :(id)a5
 {
   v7 = sub_2C57E8();
-  v8 = a3;
-  _s11BookStoreUI14VCStackManagerC7presentyySo16UIViewControllerC_SbSDys11AnyHashableVypGtFZ_0(v8, a4, v7);
+  presentCopy = present;
+  _s11BookStoreUI14VCStackManagerC7presentyySo16UIViewControllerC_SbSDys11AnyHashableVypGtFZ_0(presentCopy, a4, v7);
 }
 
 - (BSUIVCStackManager)init

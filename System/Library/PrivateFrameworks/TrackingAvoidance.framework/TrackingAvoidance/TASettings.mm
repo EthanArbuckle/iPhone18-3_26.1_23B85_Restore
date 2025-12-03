@@ -1,51 +1,51 @@
 @interface TASettings
-+ (id)convertEnabledLoiTypesValueContentToNSNumberType:(id)a3;
++ (id)convertEnabledLoiTypesValueContentToNSNumberType:(id)type;
 + (id)getArraySettingsKeys;
 + (id)getBooleanSettingsKeys;
 + (id)getDoubleSettingsKeys;
 + (id)getStringSettingsKeys;
 + (id)getUnsignedIntegerSettingsKeys;
-- (TASettings)initWithSettings:(id)a3;
+- (TASettings)initWithSettings:(id)settings;
 - (id)description;
 - (void)description;
-- (void)setSettings:(id)a3;
+- (void)setSettings:(id)settings;
 @end
 
 @implementation TASettings
 
-- (TASettings)initWithSettings:(id)a3
+- (TASettings)initWithSettings:(id)settings
 {
-  v4 = a3;
+  settingsCopy = settings;
   v9.receiver = self;
   v9.super_class = TASettings;
   v5 = [(TASettings *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    [(TASettings *)v5 setSettings:v4];
+    [(TASettings *)v5 setSettings:settingsCopy];
     v7 = v6;
   }
 
   return v6;
 }
 
-- (void)setSettings:(id)a3
+- (void)setSettings:(id)settings
 {
-  v146 = a3;
-  v3 = [v146 objectForKeyedSubscript:@"TAEnable"];
+  settingsCopy = settings;
+  v3 = [settingsCopy objectForKeyedSubscript:@"TAEnable"];
   v125 = v3;
   if (v3)
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = 1;
+    bOOLValue = 1;
   }
 
-  self->_trackingAvoidanceEnabled = v4;
-  v5 = [v146 objectForKeyedSubscript:@"TAEnablePD"];
+  self->_trackingAvoidanceEnabled = bOOLValue;
+  v5 = [settingsCopy objectForKeyedSubscript:@"TAEnablePD"];
   v124 = v5;
   if (v5)
   {
@@ -53,46 +53,46 @@
   }
 
   self->_peopleDensityEnabled = v5;
-  v6 = [v146 objectForKeyedSubscript:@"TAScanMaxDailyRequests"];
+  v6 = [settingsCopy objectForKeyedSubscript:@"TAScanMaxDailyRequests"];
   v123 = v6;
   if (v6)
   {
-    v7 = [v6 unsignedIntegerValue];
+    unsignedIntegerValue = [v6 unsignedIntegerValue];
   }
 
   else
   {
-    v7 = 50;
+    unsignedIntegerValue = 50;
   }
 
-  self->_maximumDailyScans = v7;
-  v8 = [v146 objectForKeyedSubscript:@"TANotificationThrottleHours"];
+  self->_maximumDailyScans = unsignedIntegerValue;
+  v8 = [settingsCopy objectForKeyedSubscript:@"TANotificationThrottleHours"];
   v122 = v8;
   if (v8)
   {
-    v9 = [v8 unsignedIntegerValue];
+    unsignedIntegerValue2 = [v8 unsignedIntegerValue];
   }
 
   else
   {
-    v9 = 24;
+    unsignedIntegerValue2 = 24;
   }
 
-  self->_notificationThrottleHours = v9;
-  v10 = [v146 objectForKeyedSubscript:@"TANotificationThrottleMax"];
+  self->_notificationThrottleHours = unsignedIntegerValue2;
+  v10 = [settingsCopy objectForKeyedSubscript:@"TANotificationThrottleMax"];
   v121 = v10;
   if (v10)
   {
-    v11 = [v10 unsignedIntegerValue];
+    unsignedIntegerValue3 = [v10 unsignedIntegerValue];
   }
 
   else
   {
-    v11 = -1;
+    unsignedIntegerValue3 = -1;
   }
 
-  self->_notificationThrottleMaxPerPeriod = v11;
-  v12 = [v146 objectForKeyedSubscript:@"TAPersistenceInterval"];
+  self->_notificationThrottleMaxPerPeriod = unsignedIntegerValue3;
+  v12 = [settingsCopy objectForKeyedSubscript:@"TAPersistenceInterval"];
   v120 = v12;
   if (v12)
   {
@@ -105,7 +105,7 @@
   }
 
   self->_persistenceInterval = v13;
-  v14 = [v146 objectForKeyedSubscript:@"TAFutureEventToleranceInterval"];
+  v14 = [settingsCopy objectForKeyedSubscript:@"TAFutureEventToleranceInterval"];
   v119 = v14;
   if (v14)
   {
@@ -118,166 +118,166 @@
   }
 
   self->_futureEventToleranceInterval = v15;
-  v16 = [v146 objectForKeyedSubscript:@"TASettingsVersion"];
+  v16 = [settingsCopy objectForKeyedSubscript:@"TASettingsVersion"];
   v118 = v16;
   if (v16)
   {
-    v17 = [v16 unsignedIntValue];
+    unsignedIntValue = [v16 unsignedIntValue];
   }
 
   else
   {
-    v17 = 1;
+    unsignedIntValue = 1;
   }
 
-  self->_settingsVersion = v17;
-  v18 = [v146 objectForKeyedSubscript:@"TAAISFetchEnable"];
+  self->_settingsVersion = unsignedIntValue;
+  v18 = [settingsCopy objectForKeyedSubscript:@"TAAISFetchEnable"];
   v117 = v18;
   if (v18)
   {
-    v19 = [v18 BOOLValue];
+    bOOLValue2 = [v18 BOOLValue];
   }
 
   else
   {
-    v19 = 1;
+    bOOLValue2 = 1;
   }
 
-  self->_aisFetchEnabled = v19;
+  self->_aisFetchEnabled = bOOLValue2;
   v20 = [TAFilterGeneralSettings alloc];
-  v21 = [v146 objectForKeyedSubscript:@"TAFilterGeneralDurationOfConsideration"];
-  v143 = [v146 objectForKeyedSubscript:@"TAFilterGeneralThresholdOfLocationRelevance"];
-  v141 = [v146 objectForKeyedSubscript:@"TAFilterGeneralThresholdOfSignificantDuration"];
-  v139 = [v146 objectForKeyedSubscript:@"TAFilterGeneralThresholdOfSignificantDistance"];
-  v136 = [v146 objectForKeyedSubscript:@"TAFilterGeneralCapOfReasonableWalkingSpeed"];
-  v133 = [v146 objectForKeyedSubscript:@"TAFilterGeneralAllowNavGeoAsPrivateVehicleHint"];
-  v22 = [v146 objectForKeyedSubscript:@"TAFilterGeneralVehicularImmediacyType"];
-  v23 = [v146 objectForKeyedSubscript:@"TAFilterGeneralBeepOnMoveVehicularImmediacyType"];
-  v130 = [v146 objectForKeyedSubscript:@"TAFilterGeneralBeepOnMovePedestrianImmediacyType"];
-  v24 = [v146 objectForKeyedSubscript:@"TAFilterGeneralNextPLOIVehicularImmediacyType"];
-  v25 = [v146 objectForKeyedSubscript:@"TAFilterGeneralNextPLOIPedestrianImmediacyType"];
-  v26 = [v146 objectForKeyedSubscript:@"TAFilterGeneralNextBeepOnMoveConsiderationTimeInterval"];
+  v21 = [settingsCopy objectForKeyedSubscript:@"TAFilterGeneralDurationOfConsideration"];
+  v143 = [settingsCopy objectForKeyedSubscript:@"TAFilterGeneralThresholdOfLocationRelevance"];
+  v141 = [settingsCopy objectForKeyedSubscript:@"TAFilterGeneralThresholdOfSignificantDuration"];
+  v139 = [settingsCopy objectForKeyedSubscript:@"TAFilterGeneralThresholdOfSignificantDistance"];
+  v136 = [settingsCopy objectForKeyedSubscript:@"TAFilterGeneralCapOfReasonableWalkingSpeed"];
+  v133 = [settingsCopy objectForKeyedSubscript:@"TAFilterGeneralAllowNavGeoAsPrivateVehicleHint"];
+  v22 = [settingsCopy objectForKeyedSubscript:@"TAFilterGeneralVehicularImmediacyType"];
+  v23 = [settingsCopy objectForKeyedSubscript:@"TAFilterGeneralBeepOnMoveVehicularImmediacyType"];
+  v130 = [settingsCopy objectForKeyedSubscript:@"TAFilterGeneralBeepOnMovePedestrianImmediacyType"];
+  v24 = [settingsCopy objectForKeyedSubscript:@"TAFilterGeneralNextPLOIVehicularImmediacyType"];
+  v25 = [settingsCopy objectForKeyedSubscript:@"TAFilterGeneralNextPLOIPedestrianImmediacyType"];
+  v26 = [settingsCopy objectForKeyedSubscript:@"TAFilterGeneralNextBeepOnMoveConsiderationTimeInterval"];
   v27 = [(TAFilterGeneralSettings *)v20 initWithDurationOfConsiderationOrDefault:v21 thresholdOfLocationRelevanceOrDefault:v143 thresholdOfSignificantDurationOrDefault:v141 thresholdOfSignificantDistanceOrDefault:v139 capOfReasonableWalkingSpeedOrDefault:v136 allowNavGeoHintAsPrivateVehicleHintOrDefault:v133 vehicularImmediacyTypeOrDefault:v22 beepOnMoveVehicularImmediacyTypeOrDefault:v23 beepOnMovePedestrianImmediacyTypeOrDefault:v130 nextPLOIVehicularImmediacyTypeOrDefault:v24 nextPLOIPedestrianImmediacyTypeOrDefault:v25 beepOnMoveConsiderationTimeIntervalOrDefault:v26];
   filterGeneralSettings = self->_filterGeneralSettings;
   self->_filterGeneralSettings = v27;
 
-  v116 = [v146 objectForKeyedSubscript:@"TAFilterVisitsEnabledLoiTypes"];
+  v116 = [settingsCopy objectForKeyedSubscript:@"TAFilterVisitsEnabledLoiTypes"];
   v144 = [TASettings convertEnabledLoiTypesValueContentToNSNumberType:v116];
   v29 = [TAFilterVisitsSettings alloc];
-  v30 = [v146 objectForKeyedSubscript:@"TAFilterVisitsMaxDuration"];
-  v31 = [v146 objectForKeyedSubscript:@"TAFilterVisitsMinInterVisitDistance"];
-  v32 = [v146 objectForKeyedSubscript:@"TAFilterVisitsMinNSigma"];
-  v33 = [v146 objectForKeyedSubscript:@"TAFilterVisitsEntryDisplayOnBudget"];
-  v34 = [v146 objectForKeyedSubscript:@"TAFilterVisitsExitDisplayOnBudget"];
-  v35 = [v146 objectForKeyedSubscript:@"TAFilterVisitsMinObservationInterval"];
-  v36 = [v146 objectForKeyedSubscript:@"TAFilterVisitsThreeVisitImmediacyTypeKey"];
+  v30 = [settingsCopy objectForKeyedSubscript:@"TAFilterVisitsMaxDuration"];
+  v31 = [settingsCopy objectForKeyedSubscript:@"TAFilterVisitsMinInterVisitDistance"];
+  v32 = [settingsCopy objectForKeyedSubscript:@"TAFilterVisitsMinNSigma"];
+  v33 = [settingsCopy objectForKeyedSubscript:@"TAFilterVisitsEntryDisplayOnBudget"];
+  v34 = [settingsCopy objectForKeyedSubscript:@"TAFilterVisitsExitDisplayOnBudget"];
+  v35 = [settingsCopy objectForKeyedSubscript:@"TAFilterVisitsMinObservationInterval"];
+  v36 = [settingsCopy objectForKeyedSubscript:@"TAFilterVisitsThreeVisitImmediacyTypeKey"];
   v37 = [(TAFilterVisitsSettings *)v29 initWithMaxSuspiciousDurationOrDefault:v30 minInterVisitDistanceOrDefault:v31 minNSigmaBetweenVisitsOrDefault:v32 entryDisplayOnBudgetOrDefault:v33 exitDisplayOnBudgetOrDefault:v34 sensitiveLOITypesOrDefault:v144 minObservationIntervalOrDefault:v35 threeVisitImmediacyTypeOrDefault:v36];
   filterVisitsSettings = self->_filterVisitsSettings;
   self->_filterVisitsSettings = v37;
 
-  v115 = [v146 objectForKeyedSubscript:@"TAFilterSingleVisitEnabledLoiTypes"];
+  v115 = [settingsCopy objectForKeyedSubscript:@"TAFilterSingleVisitEnabledLoiTypes"];
   v142 = [TASettings convertEnabledLoiTypesValueContentToNSNumberType:v115];
   v39 = [TAFilterSingleVisitSettings alloc];
-  v40 = [v146 objectForKeyedSubscript:@"TAFilterSingleVisitThresholdOfSignificantDuration"];
-  v41 = [v146 objectForKeyedSubscript:@"TAFilterSingleVisitThresholdOfSignificantDistance"];
+  v40 = [settingsCopy objectForKeyedSubscript:@"TAFilterSingleVisitThresholdOfSignificantDuration"];
+  v41 = [settingsCopy objectForKeyedSubscript:@"TAFilterSingleVisitThresholdOfSignificantDistance"];
   v42 = self->_filterVisitsSettings;
-  v43 = [v146 objectForKeyedSubscript:@"TAFilterArrivingWorkImmediacyType"];
+  v43 = [settingsCopy objectForKeyedSubscript:@"TAFilterArrivingWorkImmediacyType"];
   v44 = [(TAFilterSingleVisitSettings *)v39 initWithThresholdOfSignificantDurationOrDefault:v40 thresholdOfSignificantDistanceOrDefault:v41 filterVisitsSettingsOrDefault:v42 enabledLoiTypesOrDefault:v142 arrivingWorkImmediacyTypeOrDefault:v43];
   filterSingleVisitSettings = self->_filterSingleVisitSettings;
   self->_filterSingleVisitSettings = v44;
 
-  v114 = [v146 objectForKeyedSubscript:@"TAFilterLeavingLOIEnabledLoiTypes"];
+  v114 = [settingsCopy objectForKeyedSubscript:@"TAFilterLeavingLOIEnabledLoiTypes"];
   v140 = [TASettings convertEnabledLoiTypesValueContentToNSNumberType:v114];
   v46 = [TAFilterLeavingLOISettings alloc];
-  v47 = [v146 objectForKeyedSubscript:@"TAFilterLeavingLOIThresholdOfSignificantDuration"];
-  v48 = [v146 objectForKeyedSubscript:@"TAFilterLeavingLOIThresholdOfSignificantDistance"];
+  v47 = [settingsCopy objectForKeyedSubscript:@"TAFilterLeavingLOIThresholdOfSignificantDuration"];
+  v48 = [settingsCopy objectForKeyedSubscript:@"TAFilterLeavingLOIThresholdOfSignificantDistance"];
   v49 = self->_filterVisitsSettings;
-  v50 = [v146 objectForKeyedSubscript:@"TAFilterLeavingHomeImmediacyType"];
-  v51 = [v146 objectForKeyedSubscript:@"TAFilterLeavingWorkImmediacyType"];
+  v50 = [settingsCopy objectForKeyedSubscript:@"TAFilterLeavingHomeImmediacyType"];
+  v51 = [settingsCopy objectForKeyedSubscript:@"TAFilterLeavingWorkImmediacyType"];
   v52 = [(TAFilterLeavingLOISettings *)v46 initWithThresholdOfSignificantDurationOrDefault:v47 thresholdOfSignificantDistanceOrDefault:v48 filterVisitsSettingsOrDefault:v49 enabledLoiTypesOrDefault:v140 leavingHomeImmediacyTypeOrDefault:v50 leavingWorkImmediacyTypeOrDefault:v51];
   filterLeavingLOISettings = self->_filterLeavingLOISettings;
   self->_filterLeavingLOISettings = v52;
 
   v54 = [TAEventBufferSettings alloc];
-  v55 = [v146 objectForKeyedSubscript:@"TAEventBufferCapacity"];
-  v56 = [v146 objectForKeyedSubscript:@"TAEventBufferTimeIntervalOfRetention"];
+  v55 = [settingsCopy objectForKeyedSubscript:@"TAEventBufferCapacity"];
+  v56 = [settingsCopy objectForKeyedSubscript:@"TAEventBufferTimeIntervalOfRetention"];
   v57 = [(TAEventBufferSettings *)v54 initWithBufferCapacityOrDefault:v55 bufferTimeIntervalOfRetentionOrDefault:v56];
   eventBufferSettings = self->_eventBufferSettings;
   self->_eventBufferSettings = v57;
 
   v59 = [TAVisitStateSettings alloc];
-  v137 = [v146 objectForKeyedSubscript:@"TAVisitStateVisitSnapshotCapacity"];
-  v134 = [v146 objectForKeyedSubscript:@"TAVisitStateVisitDisplayBufferCapacity"];
-  v131 = [v146 objectForKeyedSubscript:@"TAVisitStateInterVisitMetricSnapshotCapacity"];
-  v128 = [v146 objectForKeyedSubscript:@"TAVisitStateInterVisitSnapshotUpdateInterval"];
+  v137 = [settingsCopy objectForKeyedSubscript:@"TAVisitStateVisitSnapshotCapacity"];
+  v134 = [settingsCopy objectForKeyedSubscript:@"TAVisitStateVisitDisplayBufferCapacity"];
+  v131 = [settingsCopy objectForKeyedSubscript:@"TAVisitStateInterVisitMetricSnapshotCapacity"];
+  v128 = [settingsCopy objectForKeyedSubscript:@"TAVisitStateInterVisitSnapshotUpdateInterval"];
   v60 = objc_alloc(MEMORY[0x277CCABB0]);
   [(TAFilterGeneralSettings *)self->_filterGeneralSettings thresholdOfLocationRelevance];
   v126 = [v60 initWithDouble:?];
-  v112 = [v146 objectForKeyedSubscript:@"TAVisitStateSnapshotBufferTimeIntervalOfRetention"];
-  v61 = [v146 objectForKeyedSubscript:@"TAVisitStateLoiBufferPerTypeCapacity"];
-  v62 = [v146 objectForKeyedSubscript:@"TAVisitStateLoiBufferTimeIntervalOfRetention"];
-  v63 = [v146 objectForKeyedSubscript:@"TAVisitStateMaxNSigma"];
-  v64 = [v146 objectForKeyedSubscript:@"TAVisitStateQualitySnapshotDwellDuration"];
-  v110 = [v146 objectForKeyedSubscript:@"TAVisitStateQualitySnapshotDisplayOnDuration"];
-  v65 = [v146 objectForKeyedSubscript:@"TAVisitStateUniqueUTObservationCapPerVisit"];
+  v112 = [settingsCopy objectForKeyedSubscript:@"TAVisitStateSnapshotBufferTimeIntervalOfRetention"];
+  v61 = [settingsCopy objectForKeyedSubscript:@"TAVisitStateLoiBufferPerTypeCapacity"];
+  v62 = [settingsCopy objectForKeyedSubscript:@"TAVisitStateLoiBufferTimeIntervalOfRetention"];
+  v63 = [settingsCopy objectForKeyedSubscript:@"TAVisitStateMaxNSigma"];
+  v64 = [settingsCopy objectForKeyedSubscript:@"TAVisitStateQualitySnapshotDwellDuration"];
+  v110 = [settingsCopy objectForKeyedSubscript:@"TAVisitStateQualitySnapshotDisplayOnDuration"];
+  v65 = [settingsCopy objectForKeyedSubscript:@"TAVisitStateUniqueUTObservationCapPerVisit"];
   v66 = [(TAVisitStateSettings *)v59 initWithVisitSnapshotCapacityOrDefault:v137 visitDisplayBufferCapacityOrDefault:v134 interVisitMetricSnapshotCapacityOrDefault:v131 interVisitSnapshotUpdateIntervalOrDefault:v128 thresholdOfLocationRelevanceOrDefault:v126 snapshotBufferTimeIntervalOfRetentionOrDefault:v112 loiBufferPerTypeCapacityOrDefault:v61 loiBufferTimeIntervalOfRetentionOrDefault:v62 maxNSigmaBetweenLastLocationAndVisitOrDefault:v63 qualitySnapshotDwellDurationOrDefault:v64 qualitySnapshotDisplayOnDurationOrDefault:v110 uniqueUTObservationCapPerVisitOrDefault:v65 sensitiveLOITypesOrDefault:v144];
   visitStateSettings = self->_visitStateSettings;
   self->_visitStateSettings = v66;
 
   v108 = [TADeviceRecordSettings alloc];
-  v138 = [v146 objectForKeyedSubscript:@"TADeviceRecordExpiryTimeInterval"];
-  v135 = [v146 objectForKeyedSubscript:@"TADeviceRecordFutureExpiryTimeInterval"];
-  v132 = [v146 objectForKeyedSubscript:@"TADeviceRecordPurgeTimeInterval"];
-  v113 = [v146 objectForKeyedSubscript:@"TADeviceRecordKeepAliveInterval"];
-  v111 = [v146 objectForKeyedSubscript:@"TADeviceRecordMinimumStagingInterval"];
-  v109 = [v146 objectForKeyedSubscript:@"TADeviceRecordStagingBackstopHour"];
-  v129 = [v146 objectForKeyedSubscript:@"TADeviceRecordAssumedKeyRollHour"];
-  v68 = [v146 objectForKeyedSubscript:@"TADeviceRecordScanInterval"];
-  v127 = [v146 objectForKeyedSubscript:@"TADeviceRecordSurfaceImmediatelyBeepOnMove"];
-  v107 = [v146 objectForKeyedSubscript:@"TADeviceRecordsurfaceAfterHyperStagingIntervalBetweenBackstopAndKeyroll"];
-  v106 = [v146 objectForKeyedSubscript:@"TADeviceRecordMaxExpectedHELEWildInterval"];
-  v69 = [v146 objectForKeyedSubscript:@"TADeviceRecordMaxExpectedDurianWildInterval"];
-  v105 = [v146 objectForKeyedSubscript:@"TADeviceRecordShouldAlertHELEImmediatelyForImmediateTypes"];
-  v104 = [v146 objectForKeyedSubscript:@"TADeviceRecordMinimumHELEStagingInterval"];
-  v103 = [v146 objectForKeyedSubscript:@"TADeviceRecordStagingHELEBackstopHour"];
-  v102 = [v146 objectForKeyedSubscript:@"TADeviceRecordsurfaceHELEAfterHyperStagingIntervalBetweenBackstopAndKeyroll"];
-  v101 = [v146 objectForKeyedSubscript:@"TADeviceRecordHyperHELEStagingInterval"];
-  v70 = [v146 objectForKeyedSubscript:@"TADeviceRecordHyperStagingInterval"];
+  v138 = [settingsCopy objectForKeyedSubscript:@"TADeviceRecordExpiryTimeInterval"];
+  v135 = [settingsCopy objectForKeyedSubscript:@"TADeviceRecordFutureExpiryTimeInterval"];
+  v132 = [settingsCopy objectForKeyedSubscript:@"TADeviceRecordPurgeTimeInterval"];
+  v113 = [settingsCopy objectForKeyedSubscript:@"TADeviceRecordKeepAliveInterval"];
+  v111 = [settingsCopy objectForKeyedSubscript:@"TADeviceRecordMinimumStagingInterval"];
+  v109 = [settingsCopy objectForKeyedSubscript:@"TADeviceRecordStagingBackstopHour"];
+  v129 = [settingsCopy objectForKeyedSubscript:@"TADeviceRecordAssumedKeyRollHour"];
+  v68 = [settingsCopy objectForKeyedSubscript:@"TADeviceRecordScanInterval"];
+  v127 = [settingsCopy objectForKeyedSubscript:@"TADeviceRecordSurfaceImmediatelyBeepOnMove"];
+  v107 = [settingsCopy objectForKeyedSubscript:@"TADeviceRecordsurfaceAfterHyperStagingIntervalBetweenBackstopAndKeyroll"];
+  v106 = [settingsCopy objectForKeyedSubscript:@"TADeviceRecordMaxExpectedHELEWildInterval"];
+  v69 = [settingsCopy objectForKeyedSubscript:@"TADeviceRecordMaxExpectedDurianWildInterval"];
+  v105 = [settingsCopy objectForKeyedSubscript:@"TADeviceRecordShouldAlertHELEImmediatelyForImmediateTypes"];
+  v104 = [settingsCopy objectForKeyedSubscript:@"TADeviceRecordMinimumHELEStagingInterval"];
+  v103 = [settingsCopy objectForKeyedSubscript:@"TADeviceRecordStagingHELEBackstopHour"];
+  v102 = [settingsCopy objectForKeyedSubscript:@"TADeviceRecordsurfaceHELEAfterHyperStagingIntervalBetweenBackstopAndKeyroll"];
+  v101 = [settingsCopy objectForKeyedSubscript:@"TADeviceRecordHyperHELEStagingInterval"];
+  v70 = [settingsCopy objectForKeyedSubscript:@"TADeviceRecordHyperStagingInterval"];
   v71 = [(TADeviceRecordSettings *)v108 initWithExpiryTimeIntervalOrDefault:v138 futureExpiryTimeIntervalOrDefault:v135 purgeTimeIntervalOrDefault:v132 keepAliveIntervalOrDefault:v113 minimumStagingIntervalOrDefault:v111 stagingBackstopHourOrDefault:v109 assumedKeyRollHourOrDefault:v129 scanIntervalOrDefault:v68 surfaceImmediatelyBeepOnMoveOrDefault:v127 surfaceAfterHyperStagingIntervalBetweenBackstopAndKeyrollOrDefault:v107 maxExpectedHELEWildIntervalOrDefault:v106 maxExpectedDurianWildIntervalOrDefault:v69 shouldAlertHELEImmediatelyForImmediateTypesOrDefault:v105 minimumHELEStagingIntervalOrDefault:v104 stagingHELEBackstopHourOrDefault:v103 surfaceHELEAfterHyperStagingIntervalBetweenBackstopAndKeyrollOrDefault:v102 hyperHELEStagingIntervalOrDefault:v101 hyperStagingIntervalOrDefault:v70];
   deviceRecordSettings = self->_deviceRecordSettings;
   self->_deviceRecordSettings = v71;
 
   v73 = [TAScanRequestSettings alloc];
-  v74 = [v146 objectForKeyedSubscript:@"TAScanMinVisitEntryDisplayOnDuration"];
-  v75 = [v146 objectForKeyedSubscript:@"TAScanMinInterVisitDisplayOnDuration"];
-  v76 = [v146 objectForKeyedSubscript:@"TAScanInterVisitDelay"];
-  v77 = [v146 objectForKeyedSubscript:@"TAScanMaxInterVisitRequests"];
+  v74 = [settingsCopy objectForKeyedSubscript:@"TAScanMinVisitEntryDisplayOnDuration"];
+  v75 = [settingsCopy objectForKeyedSubscript:@"TAScanMinInterVisitDisplayOnDuration"];
+  v76 = [settingsCopy objectForKeyedSubscript:@"TAScanInterVisitDelay"];
+  v77 = [settingsCopy objectForKeyedSubscript:@"TAScanMaxInterVisitRequests"];
   v78 = [(TAScanRequestSettings *)v73 initWithMinVisitEntryDisplayOnDurationOrDefault:v74 minInterVisitDisplayOnDurationOrDefault:v75 interVisitScanDelayOrDefault:v76 maxInterVisitScanRequestsOrDefault:v77];
   scanRequestSettings = self->_scanRequestSettings;
   self->_scanRequestSettings = v78;
 
   v80 = [TATrackingAvoidanceServiceSettings alloc];
-  v81 = [v146 objectForKeyedSubscript:@"TAServiceEnableTAFilterGeneral"];
-  v82 = [v146 objectForKeyedSubscript:@"TAServiceEnableTAFilterVisits"];
-  v83 = [v146 objectForKeyedSubscript:@"TAServiceEnableTAFilterSingleVisit"];
-  v84 = [v146 objectForKeyedSubscript:@"TAServiceEnableTAFilterLeavingLOI"];
-  v85 = [v146 objectForKeyedSubscript:@"TAServiceClassificationTimeInterval"];
-  v86 = [v146 objectForKeyedSubscript:@"TAServiceDailyAlertLimit"];
+  v81 = [settingsCopy objectForKeyedSubscript:@"TAServiceEnableTAFilterGeneral"];
+  v82 = [settingsCopy objectForKeyedSubscript:@"TAServiceEnableTAFilterVisits"];
+  v83 = [settingsCopy objectForKeyedSubscript:@"TAServiceEnableTAFilterSingleVisit"];
+  v84 = [settingsCopy objectForKeyedSubscript:@"TAServiceEnableTAFilterLeavingLOI"];
+  v85 = [settingsCopy objectForKeyedSubscript:@"TAServiceClassificationTimeInterval"];
+  v86 = [settingsCopy objectForKeyedSubscript:@"TAServiceDailyAlertLimit"];
   v87 = [(TATrackingAvoidanceServiceSettings *)v80 initWithEnableTAFilterGeneralOrDefault:v81 enableTAFilterVisitsOrDefault:v82 enableTAFilterSingleVisitOrDefault:v83 enableTAFilterLeavingLOIOrDefault:v84 classificationTimeIntervalOrDefault:v85 dailyAccessoryAlertLimitOrDefault:v86];
   serviceSettings = self->_serviceSettings;
   self->_serviceSettings = v87;
 
   v89 = [TAAnalyticsManagerSettings alloc];
-  v90 = [v146 objectForKeyedSubscript:@"TAAnalyticsManagerEnableSubmission"];
+  v90 = [settingsCopy objectForKeyedSubscript:@"TAAnalyticsManagerEnableSubmission"];
   v91 = [(TAAnalyticsManagerSettings *)v89 initWithEnableSubmissionOrDefault:v90 andSettingsVersion:self->_settingsVersion];
   analyticsManagerSettings = self->_analyticsManagerSettings;
   self->_analyticsManagerSettings = v91;
 
-  v93 = [v146 objectForKeyedSubscript:@"TAPersistenceDirectory"];
+  v93 = [settingsCopy objectForKeyedSubscript:@"TAPersistenceDirectory"];
   if (v93)
   {
     v94 = MEMORY[0x277CBEBC0];
-    v95 = [v146 objectForKeyedSubscript:@"TAPersistenceDirectory"];
+    v95 = [settingsCopy objectForKeyedSubscript:@"TAPersistenceDirectory"];
     v96 = [v94 fileURLWithPath:v95];
   }
 
@@ -287,17 +287,17 @@
   }
 
   v97 = [TAPersistenceManagerSettings alloc];
-  v98 = [v146 objectForKeyedSubscript:@"TAPersistenceStoreFileName"];
+  v98 = [settingsCopy objectForKeyedSubscript:@"TAPersistenceStoreFileName"];
   v99 = [(TAPersistenceManagerSettings *)v97 initWithDirectoryURLOrDefault:v96 storeFileNameOrDefault:v98];
   persistenceManagerSettings = self->_persistenceManagerSettings;
   self->_persistenceManagerSettings = v99;
 }
 
-+ (id)convertEnabledLoiTypesValueContentToNSNumberType:(id)a3
++ (id)convertEnabledLoiTypesValueContentToNSNumberType:(id)type
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (v3)
+  typeCopy = type;
+  if (typeCopy)
   {
     v4 = [MEMORY[0x277CBEB58] set];
   }
@@ -313,7 +313,7 @@
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = v3;
+  v6 = typeCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -711,8 +711,8 @@
   v74 = [v34 numberWithDouble:?];
   v131[51] = v74;
   v130[52] = @"TAFilterSingleVisitEnabledLoiTypes";
-  v75 = [(TAFilterSingleVisitSettings *)self->_filterSingleVisitSettings enabledLoiTypesToString];
-  v131[52] = v75;
+  enabledLoiTypesToString = [(TAFilterSingleVisitSettings *)self->_filterSingleVisitSettings enabledLoiTypesToString];
+  v131[52] = enabledLoiTypesToString;
   v130[53] = @"TAFilterArrivingWorkImmediacyType";
   v73 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[TAFilterSingleVisitSettings arrivingWorkImmediacyType](self->_filterSingleVisitSettings, "arrivingWorkImmediacyType")}];
   v131[53] = v73;
@@ -727,8 +727,8 @@
   v70 = [v36 numberWithDouble:?];
   v131[55] = v70;
   v130[56] = @"TAFilterLeavingLOIEnabledLoiTypes";
-  v71 = [(TAFilterLeavingLOISettings *)self->_filterLeavingLOISettings enabledLoiTypesToString];
-  v131[56] = v71;
+  enabledLoiTypesToString2 = [(TAFilterLeavingLOISettings *)self->_filterLeavingLOISettings enabledLoiTypesToString];
+  v131[56] = enabledLoiTypesToString2;
   v130[57] = @"TAFilterLeavingHomeImmediacyType";
   v69 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[TAFilterLeavingLOISettings leavingHomeImmediacyType](self->_filterLeavingLOISettings, "leavingHomeImmediacyType")}];
   v131[57] = v69;
@@ -771,8 +771,8 @@
   v57 = [v37 numberWithDouble:?];
   v131[69] = v57;
   v130[70] = @"TAFilterVisitsEnabledLoiTypes";
-  v56 = [(TAFilterVisitsSettings *)self->_filterVisitsSettings sensitiveLOITypesToString];
-  v131[70] = v56;
+  sensitiveLOITypesToString = [(TAFilterVisitsSettings *)self->_filterVisitsSettings sensitiveLOITypesToString];
+  v131[70] = sensitiveLOITypesToString;
   v130[71] = @"TAPersistenceInterval";
   v38 = [MEMORY[0x277CCABB0] numberWithDouble:self->_persistenceInterval];
   v131[71] = v38;
@@ -780,12 +780,12 @@
   v39 = [MEMORY[0x277CCABB0] numberWithDouble:self->_futureEventToleranceInterval];
   v131[72] = v39;
   v130[73] = @"TAPersistenceDirectory";
-  v40 = [(TAPersistenceManagerSettings *)self->_persistenceManagerSettings persistenceDirectoryURL];
-  v41 = [v40 description];
+  persistenceDirectoryURL = [(TAPersistenceManagerSettings *)self->_persistenceManagerSettings persistenceDirectoryURL];
+  v41 = [persistenceDirectoryURL description];
   v131[73] = v41;
   v130[74] = @"TAPersistenceStoreFileName";
-  v42 = [(TAPersistenceManagerSettings *)self->_persistenceManagerSettings persistenceStoreFileName];
-  v43 = [v42 description];
+  persistenceStoreFileName = [(TAPersistenceManagerSettings *)self->_persistenceManagerSettings persistenceStoreFileName];
+  v43 = [persistenceStoreFileName description];
   v131[74] = v43;
   v130[75] = @"TAAnalyticsManagerEnableSubmission";
   v44 = [MEMORY[0x277CCABB0] numberWithBool:{-[TAAnalyticsManagerSettings enableSubmission](self->_analyticsManagerSettings, "enableSubmission")}];
@@ -811,15 +811,15 @@
       [(TASettings *)v51 description:v48];
     }
 
-    v52 = [MEMORY[0x277CCACA8] string];
+    string = [MEMORY[0x277CCACA8] string];
   }
 
   else
   {
-    v52 = v47;
+    string = v47;
   }
 
-  v53 = v52;
+  v53 = string;
 
   v54 = *MEMORY[0x277D85DE8];
 
@@ -829,7 +829,7 @@
 - (void)description
 {
   *buf = 138412546;
-  *(buf + 4) = a1;
+  *(buf + 4) = self;
   *(buf + 6) = 2112;
   *(buf + 14) = a2;
   _os_log_error_impl(&dword_26F2E2000, log, OS_LOG_TYPE_ERROR, "%@ instance failed to create description:%@", buf, 0x16u);

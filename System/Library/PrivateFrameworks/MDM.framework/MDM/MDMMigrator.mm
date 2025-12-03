@@ -1,9 +1,9 @@
 @interface MDMMigrator
 + (id)sharedMigrator;
-- (void)_createRMAccountWithPersonaID:(id)a3 managedAppleID:(id)a4 profileIdentifier:(id)a5 organizationName:(id)a6;
+- (void)_createRMAccountWithPersonaID:(id)d managedAppleID:(id)iD profileIdentifier:(id)identifier organizationName:(id)name;
 - (void)_migrateForRTSIfNeeded;
 - (void)_moveNonStoreManagedBooksToSystemGroupContainer;
-- (void)_moveNonStoreManagedBooksToSystemGroupContainerFromLegacyPath:(id)a3;
+- (void)_moveNonStoreManagedBooksToSystemGroupContainerFromLegacyPath:(id)path;
 - (void)_resetManagedAppRemovability;
 - (void)_resetManagedAppTapToPayScreenLock;
 - (void)_updateNonStoreBooksManifestForSystemGroupContainer;
@@ -11,7 +11,7 @@
 - (void)_updateToMDMPropertiesForDDMActiveState;
 - (void)_updateUnlockTokenSecretToClassDIfNeeded;
 - (void)_updateUserEnrollmentToUseRMAccount;
-- (void)migrateMDMWithContext:(int)a3;
+- (void)migrateMDMWithContext:(int)context;
 @end
 
 @implementation MDMMigrator
@@ -34,7 +34,7 @@
   return v5;
 }
 
-- (void)migrateMDMWithContext:(int)a3
+- (void)migrateMDMWithContext:(int)context
 {
   v21 = *MEMORY[0x277D85DE8];
   v5 = [objc_alloc(MEMORY[0x277D035A0]) initWithReason:@"mdmd-MigrateMDM"];
@@ -45,14 +45,14 @@
     _os_log_impl(&dword_2561F5000, v6, OS_LOG_TYPE_DEFAULT, "MDM migrating...", buf, 2u);
   }
 
-  if (a3)
+  if (context)
   {
     v7 = MDMManagedNonStoreBooksSystemGroupContainer();
     v8 = [v7 stringByAppendingPathComponent:@"Managed"];
 
     v17 = 0;
-    v9 = [MEMORY[0x277CCAA00] defaultManager];
-    v10 = [v9 fileExistsAtPath:v8 isDirectory:&v17];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    v10 = [defaultManager fileExistsAtPath:v8 isDirectory:&v17];
 
     if (v10 && v17 == 1)
     {
@@ -73,7 +73,7 @@
     [(MDMMigrator *)self _updateUserEnrollmentToUseRMAccount];
     [(MDMMigrator *)self _updateToMDMPropertiesForDDMActiveState];
 
-    if (a3 == 2)
+    if (context == 2)
     {
       [(MDMMigrator *)self _resetManagedAppRemovability];
       [(MDMMigrator *)self _resetManagedAppTapToPayScreenLock];
@@ -115,10 +115,10 @@
   [(MDMMigrator *)self _moveNonStoreManagedBooksToSystemGroupContainerFromLegacyPath:v3];
 }
 
-- (void)_moveNonStoreManagedBooksToSystemGroupContainerFromLegacyPath:(id)a3
+- (void)_moveNonStoreManagedBooksToSystemGroupContainerFromLegacyPath:(id)path
 {
   v48 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  pathCopy = path;
   v4 = *DMCLogObjects();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -126,15 +126,15 @@
     _os_log_impl(&dword_2561F5000, v4, OS_LOG_TYPE_DEFAULT, "Migrating non-store managed books to system group container...", buf, 2u);
   }
 
-  v5 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v43 = 0;
-  v6 = [v5 fileExistsAtPath:v3 isDirectory:&v43];
-  v7 = [MEMORY[0x277D24640] sharedConfiguration];
-  v8 = [v7 userMode];
+  v6 = [defaultManager fileExistsAtPath:pathCopy isDirectory:&v43];
+  mEMORY[0x277D24640] = [MEMORY[0x277D24640] sharedConfiguration];
+  userMode = [mEMORY[0x277D24640] userMode];
 
-  if (v8 == 1)
+  if (userMode == 1)
   {
-    [v5 removeItemAtPath:v3 error:0];
+    [defaultManager removeItemAtPath:pathCopy error:0];
     goto LABEL_56;
   }
 
@@ -145,7 +145,7 @@
   }
 
   v42 = 0;
-  v9 = [v5 contentsOfDirectoryAtPath:v3 error:&v42];
+  v9 = [defaultManager contentsOfDirectoryAtPath:pathCopy error:&v42];
   v10 = v42;
   if (![v9 count])
   {
@@ -156,8 +156,8 @@
 
   if ([v9 count] == 1)
   {
-    v11 = [v9 firstObject];
-    v12 = [v11 isEqualToString:@".Managed.plist.lock"];
+    firstObject = [v9 firstObject];
+    v12 = [firstObject isEqualToString:@".Managed.plist.lock"];
   }
 
   else
@@ -190,7 +190,7 @@ LABEL_21:
       }
 
       v39 = 0;
-      [v5 removeItemAtPath:v3 error:&v39];
+      [defaultManager removeItemAtPath:pathCopy error:&v39];
       v21 = v39;
       if (v21)
       {
@@ -247,7 +247,7 @@ LABEL_21:
     goto LABEL_39;
   }
 
-  if (![v5 fileExistsAtPath:v3])
+  if (![defaultManager fileExistsAtPath:pathCopy])
   {
 LABEL_39:
     v18 = 0;
@@ -255,7 +255,7 @@ LABEL_39:
   }
 
   v41[0] = 0;
-  [v5 removeItemAtPath:v3 error:v41];
+  [defaultManager removeItemAtPath:pathCopy error:v41];
   v18 = v41[0];
   if (v18)
   {
@@ -272,7 +272,7 @@ LABEL_20:
 
 LABEL_40:
   v25 = MDMManagedNonStoreBooksDirectory();
-  v26 = [v5 fileExistsAtPath:v25];
+  v26 = [defaultManager fileExistsAtPath:v25];
 
   if (v26)
   {
@@ -283,7 +283,7 @@ LABEL_40:
 
     v29 = MDMManagedNonStoreBooksDirectory();
     v40 = v18;
-    [v5 setAttributes:v28 ofItemAtPath:v29 error:&v40];
+    [defaultManager setAttributes:v28 ofItemAtPath:v29 error:&v40];
     v21 = v40;
 
     if (v21)
@@ -310,7 +310,7 @@ LABEL_46:
 
 LABEL_47:
   v31 = MDMManagedNonStoreBooksDirectory();
-  v32 = [v5 fileExistsAtPath:v31];
+  v32 = [defaultManager fileExistsAtPath:v31];
 
   if (!v32)
   {
@@ -367,9 +367,9 @@ LABEL_56:
     _os_log_impl(&dword_2561F5000, v2, OS_LOG_TYPE_DEFAULT, "Beginning update of non-store managed books manifest...", buf, 2u);
   }
 
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v4 = MDMManagedNonStoreBooksManifestPath();
-  v5 = [v3 fileExistsAtPath:v4];
+  v5 = [defaultManager fileExistsAtPath:v4];
 
   if (v5)
   {
@@ -403,18 +403,18 @@ LABEL_56:
       goto LABEL_37;
     }
 
-    v47 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v52 = 0u;
     v53 = 0u;
     v54 = 0u;
     v55 = 0u;
-    v11 = v10;
-    v12 = [v11 countByEnumeratingWithState:&v52 objects:v58 count:16];
+    dictionary2 = v10;
+    v12 = [dictionary2 countByEnumeratingWithState:&v52 objects:v58 count:16];
     if (v12)
     {
       v13 = v12;
       v42 = v9;
-      v43 = v3;
+      v43 = defaultManager;
       v44 = v10;
       v45 = v8;
       v46 = 0;
@@ -425,63 +425,63 @@ LABEL_56:
         {
           if (*v53 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(dictionary2);
           }
 
           v16 = [objc_alloc(MEMORY[0x277D24628]) initWithManifestDictionary:*(*(&v52 + 1) + 8 * i)];
-          v17 = [v16 persistentID];
+          persistentID = [v16 persistentID];
 
-          if (v17)
+          if (persistentID)
           {
-            v18 = [v16 fullPath];
-            if (v18)
+            fullPath = [v16 fullPath];
+            if (fullPath)
             {
-              v19 = v18;
-              v20 = [v16 fullPath];
+              v19 = fullPath;
+              fullPath2 = [v16 fullPath];
               MDMManagedNonStoreBooksDirectory();
-              v22 = v21 = v11;
-              v23 = [v20 hasPrefix:v22];
+              v22 = v21 = dictionary2;
+              v23 = [fullPath2 hasPrefix:v22];
 
-              v11 = v21;
+              dictionary2 = v21;
               if ((v23 & 1) == 0)
               {
                 v24 = MDMManagedNonStoreBooksDirectory();
-                v25 = [v16 fullPath];
-                v26 = [v25 lastPathComponent];
-                v27 = [v24 stringByAppendingPathComponent:v26];
+                fullPath3 = [v16 fullPath];
+                lastPathComponent = [fullPath3 lastPathComponent];
+                v27 = [v24 stringByAppendingPathComponent:lastPathComponent];
 
-                v11 = v21;
+                dictionary2 = v21;
                 [v16 setFullPath:v27];
 
                 v46 = 1;
               }
             }
 
-            v28 = [v16 persistentID];
-            [v47 setObject:v16 forKeyedSubscript:v28];
+            persistentID2 = [v16 persistentID];
+            [dictionary setObject:v16 forKeyedSubscript:persistentID2];
           }
         }
 
-        v13 = [v11 countByEnumeratingWithState:&v52 objects:v58 count:16];
+        v13 = [dictionary2 countByEnumeratingWithState:&v52 objects:v58 count:16];
       }
 
       while (v13);
 
-      v3 = v43;
+      defaultManager = v43;
       v10 = v44;
       if ((v46 & 1) == 0)
       {
         goto LABEL_28;
       }
 
-      v11 = [MEMORY[0x277CBEB38] dictionary];
-      v29 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v47, "count")}];
+      dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+      v29 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(dictionary, "count")}];
       v48 = 0u;
       v49 = 0u;
       v50 = 0u;
       v51 = 0u;
-      v30 = [v47 allValues];
-      v31 = [v30 countByEnumeratingWithState:&v48 objects:v57 count:16];
+      allValues = [dictionary allValues];
+      v31 = [allValues countByEnumeratingWithState:&v48 objects:v57 count:16];
       if (v31)
       {
         v32 = v31;
@@ -492,22 +492,22 @@ LABEL_56:
           {
             if (*v49 != v33)
             {
-              objc_enumerationMutation(v30);
+              objc_enumerationMutation(allValues);
             }
 
-            v35 = [*(*(&v48 + 1) + 8 * j) manifestDictionary];
-            [v29 addObject:v35];
+            manifestDictionary = [*(*(&v48 + 1) + 8 * j) manifestDictionary];
+            [v29 addObject:manifestDictionary];
           }
 
-          v32 = [v30 countByEnumeratingWithState:&v48 objects:v57 count:16];
+          v32 = [allValues countByEnumeratingWithState:&v48 objects:v57 count:16];
         }
 
         while (v32);
       }
 
-      [v11 setObject:v29 forKeyedSubscript:v42];
+      [dictionary2 setObject:v29 forKeyedSubscript:v42];
       v36 = MDMManagedNonStoreBooksManifestPath();
-      [v11 writeToFile:v36 atomically:1];
+      [dictionary2 writeToFile:v36 atomically:1];
 
       MDMSendManagedBooksChangedNotification();
       v10 = v44;
@@ -543,9 +543,9 @@ LABEL_39:
 - (void)_updateSkipBackupKeyForNonStoreBooksDirectory
 {
   v16 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v3 = MDMManagedNonStoreBooksDirectory();
-  v4 = [v2 fileExistsAtPath:v3];
+  v4 = [defaultManager fileExistsAtPath:v3];
 
   if (v4)
   {
@@ -596,20 +596,20 @@ LABEL_9:
   v2 = MEMORY[0x277D03520];
   v3 = *MEMORY[0x277D24D00];
   v4 = *MEMORY[0x277D24958];
-  v5 = [MEMORY[0x277D24648] sharedConfiguration];
-  v6 = [v5 personaID];
+  mEMORY[0x277D24648] = [MEMORY[0x277D24648] sharedConfiguration];
+  personaID = [mEMORY[0x277D24648] personaID];
   v42 = 0;
-  LOBYTE(v35) = v6 != 0;
+  LOBYTE(v35) = personaID != 0;
   v7 = [v2 dataFromService:v3 account:v4 label:0 description:0 group:0 useSystemKeychain:0 enforcePersonalPersona:v35 outError:&v42];
   v8 = v42;
 
   v9 = [MEMORY[0x277D03520] stringFromServiceData:v7];
   v10 = MEMORY[0x277D03520];
   v11 = *MEMORY[0x277D24800];
-  v12 = [MEMORY[0x277D24648] sharedConfiguration];
-  v13 = [v12 personaID];
+  mEMORY[0x277D24648]2 = [MEMORY[0x277D24648] sharedConfiguration];
+  personaID2 = [mEMORY[0x277D24648]2 personaID];
   v41 = v8;
-  LOBYTE(v36) = v13 != 0;
+  LOBYTE(v36) = personaID2 != 0;
   v38 = v11;
   v14 = [v10 dataFromService:v3 account:v11 label:0 description:0 group:0 useSystemKeychain:0 enforcePersonalPersona:v36 outError:&v41];
   v15 = v41;
@@ -620,9 +620,9 @@ LABEL_9:
   {
     v39 = v7;
     v18 = MEMORY[0x277D03520];
-    v19 = [MEMORY[0x277D24648] sharedConfiguration];
-    v20 = [v19 personaID];
-    [v18 removeItemForService:v3 account:v4 label:0 description:0 useSystemKeychain:0 enforcePersonalPersona:v20 != 0 group:0];
+    mEMORY[0x277D24648]3 = [MEMORY[0x277D24648] sharedConfiguration];
+    personaID3 = [mEMORY[0x277D24648]3 personaID];
+    [v18 removeItemForService:v3 account:v4 label:0 description:0 useSystemKeychain:0 enforcePersonalPersona:personaID3 != 0 group:0];
 
     if (v17)
     {
@@ -646,10 +646,10 @@ LABEL_9:
       v26 = v16;
       v27 = [MEMORY[0x277D03520] dataFromString:v16];
       v28 = *MEMORY[0x277CDBF00];
-      v29 = [MEMORY[0x277D24648] sharedConfiguration];
-      v30 = [v29 personaID];
+      mEMORY[0x277D24648]4 = [MEMORY[0x277D24648] sharedConfiguration];
+      personaID4 = [mEMORY[0x277D24648]4 personaID];
       v40 = v15;
-      BYTE2(v37) = v30 != 0;
+      BYTE2(v37) = personaID4 != 0;
       LOWORD(v37) = 256;
       LOBYTE(v25) = [v25 setData:v27 forService:v3 account:v38 label:0 description:0 access:v28 group:0 useSystemKeychain:v37 sysBound:&v40 enforcePersonalPersona:? outError:?];
       v31 = v40;
@@ -858,9 +858,9 @@ LABEL_13:
     return;
   }
 
-  v7 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v8 = MDMFilePath();
-  v9 = [v7 fileExistsAtPath:v8 isDirectory:0];
+  v9 = [defaultManager fileExistsAtPath:v8 isDirectory:0];
 
   if ((v9 & 1) == 0)
   {
@@ -876,14 +876,14 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  v10 = [MEMORY[0x277D24648] sharedConfiguration];
-  if ([v10 isUserEnrollment])
+  mEMORY[0x277D24648] = [MEMORY[0x277D24648] sharedConfiguration];
+  if ([mEMORY[0x277D24648] isUserEnrollment])
   {
-    v11 = [v10 rmAccountID];
+    rmAccountID = [mEMORY[0x277D24648] rmAccountID];
 
     v12 = *DMCLogObjects();
     v13 = os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT);
-    if (!v11)
+    if (!rmAccountID)
     {
       if (v13)
       {
@@ -891,17 +891,17 @@ LABEL_13:
         _os_log_impl(&dword_2561F5000, v12, OS_LOG_TYPE_DEFAULT, "MDM migration: upgrading user enrollment to add an RMAccount", v31, 2u);
       }
 
-      v18 = [v10 personaID];
-      v19 = [MEMORY[0x277D03490] managedAppleIDNameWithPersonaID:v18];
-      v20 = [v10 managingProfileIdentifier];
-      v21 = [MEMORY[0x277CB8F48] defaultStore];
-      v22 = [v21 dmc_iCloudAccountWithUsername:v19];
+      personaID = [mEMORY[0x277D24648] personaID];
+      v19 = [MEMORY[0x277D03490] managedAppleIDNameWithPersonaID:personaID];
+      managingProfileIdentifier = [mEMORY[0x277D24648] managingProfileIdentifier];
+      defaultStore = [MEMORY[0x277CB8F48] defaultStore];
+      v22 = [defaultStore dmc_iCloudAccountWithUsername:v19];
 
-      v23 = [v22 accountDescription];
-      v24 = v23;
-      if (v23)
+      accountDescription = [v22 accountDescription];
+      v24 = accountDescription;
+      if (accountDescription)
       {
-        v25 = v23;
+        v25 = accountDescription;
       }
 
       else
@@ -911,7 +911,7 @@ LABEL_13:
 
       v26 = v25;
 
-      [(MDMMigrator *)self _createRMAccountWithPersonaID:v18 managedAppleID:v19 profileIdentifier:v20 organizationName:v26];
+      [(MDMMigrator *)self _createRMAccountWithPersonaID:personaID managedAppleID:v19 profileIdentifier:managingProfileIdentifier organizationName:v26];
       v27 = *DMCLogObjects();
       if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
       {
@@ -949,13 +949,13 @@ LABEL_16:
 LABEL_25:
 }
 
-- (void)_createRMAccountWithPersonaID:(id)a3 managedAppleID:(id)a4 profileIdentifier:(id)a5 organizationName:(id)a6
+- (void)_createRMAccountWithPersonaID:(id)d managedAppleID:(id)iD profileIdentifier:(id)identifier organizationName:(id)name
 {
   v39 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  dCopy = d;
+  iDCopy = iD;
+  identifierCopy = identifier;
+  nameCopy = name;
   v31 = 0;
   v32 = &v31;
   v33 = 0x3032000000;
@@ -963,7 +963,7 @@ LABEL_25:
   v35 = __Block_byref_object_dispose__4;
   v36 = 0;
   v13 = objc_opt_new();
-  v14 = [MEMORY[0x277D031A0] enrollmentFlowController];
+  enrollmentFlowController = [MEMORY[0x277D031A0] enrollmentFlowController];
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
   v28[2] = __95__MDMMigrator__createRMAccountWithPersonaID_managedAppleID_profileIdentifier_organizationName___block_invoke;
@@ -971,44 +971,44 @@ LABEL_25:
   v30 = &v31;
   v15 = v13;
   v29 = v15;
-  [v14 updateMDMUserEnrollmentWithManagedAppleID:v10 profileIdentifier:v11 organizationName:v12 personaID:v9 completionHandler:v28];
+  [enrollmentFlowController updateMDMUserEnrollmentWithManagedAppleID:iDCopy profileIdentifier:identifierCopy organizationName:nameCopy personaID:dCopy completionHandler:v28];
   [v15 waitForCompletion];
   if (v32[5])
   {
     v16 = *DMCLogObjects();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
-      v17 = [v32[5] DMCVerboseDescription];
+      dMCVerboseDescription = [v32[5] DMCVerboseDescription];
       *buf = 138543362;
-      v38 = v17;
+      v38 = dMCVerboseDescription;
       _os_log_impl(&dword_2561F5000, v16, OS_LOG_TYPE_ERROR, "Failed to create RMAccount: %{public}@", buf, 0xCu);
     }
   }
 
   else
   {
-    v18 = [MEMORY[0x277CB8F48] defaultStore];
-    v16 = [v18 dmc_remoteManagementAccountForManagementProfileIdentifier:v11];
+    defaultStore = [MEMORY[0x277CB8F48] defaultStore];
+    v16 = [defaultStore dmc_remoteManagementAccountForManagementProfileIdentifier:identifierCopy];
 
-    v19 = [v16 identifier];
-    if (v19)
+    identifier = [v16 identifier];
+    if (identifier)
     {
       v20 = *DMCLogObjects();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138543362;
-        v38 = v19;
+        v38 = identifier;
         _os_log_impl(&dword_2561F5000, v20, OS_LOG_TYPE_DEBUG, "Created RMAccount: %{public}@", buf, 0xCu);
       }
 
-      v21 = [MEMORY[0x277D24648] sharedConfiguration];
+      mEMORY[0x277D24648] = [MEMORY[0x277D24648] sharedConfiguration];
       v26[0] = MEMORY[0x277D85DD0];
       v26[1] = 3221225472;
       v26[2] = __95__MDMMigrator__createRMAccountWithPersonaID_managedAppleID_profileIdentifier_organizationName___block_invoke_36;
       v26[3] = &unk_27982C098;
-      v27 = v19;
+      v27 = identifier;
       v25 = 0;
-      [v21 updateMDMConfigurationWithUpdateBlock:v26 error:&v25];
+      [mEMORY[0x277D24648] updateMDMConfigurationWithUpdateBlock:v26 error:&v25];
       v22 = v25;
 
       if (v22)
@@ -1038,34 +1038,34 @@ void __95__MDMMigrator__createRMAccountWithPersonaID_managedAppleID_profileIdent
 - (void)_updateToMDMPropertiesForDDMActiveState
 {
   v22 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 valueForKey:@"RMDMActive"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults valueForKey:@"RMDMActive"];
 
   if (v3)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = [v3 BOOLValue];
+      bOOLValue = [v3 BOOLValue];
       v5 = *DMCLogObjects();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
       {
         v6 = MEMORY[0x277CCABB0];
         v7 = v5;
-        v8 = [v6 numberWithBool:v4];
+        v8 = [v6 numberWithBool:bOOLValue];
         *buf = 138543362;
         v21 = v8;
         _os_log_impl(&dword_2561F5000, v7, OS_LOG_TYPE_DEBUG, "MDM migration: Got old DDM active state: %{public}@", buf, 0xCu);
       }
 
-      if (!v4)
+      if (!bOOLValue)
       {
         goto LABEL_15;
       }
 
-      v9 = [MEMORY[0x277D24648] sharedConfiguration];
+      mEMORY[0x277D24648] = [MEMORY[0x277D24648] sharedConfiguration];
       v19 = 0;
-      [v9 setPropertyForKey:@"RMDMActive" value:MEMORY[0x277CBEC38] error:&v19];
+      [mEMORY[0x277D24648] setPropertyForKey:@"RMDMActive" value:MEMORY[0x277CBEC38] error:&v19];
       v10 = v19;
       v11 = *DMCLogObjects();
       if (v10)
@@ -1094,8 +1094,8 @@ LABEL_13:
       }
 
 LABEL_15:
-      v17 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-      [v17 removeObjectForKey:@"RMDMActive"];
+      standardUserDefaults2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+      [standardUserDefaults2 removeObjectForKey:@"RMDMActive"];
 
       goto LABEL_16;
     }
@@ -1120,8 +1120,8 @@ LABEL_16:
   [v2 migrateAllFiles];
   if ([MEMORY[0x277D034F8] isAppleInternal])
   {
-    v3 = [v2 userDefaults];
-    if ([v3 count])
+    userDefaults = [v2 userDefaults];
+    if ([userDefaults count])
     {
       v23 = v2;
       v4 = *DMCLogObjects();
@@ -1135,8 +1135,8 @@ LABEL_16:
       v34 = 0u;
       v31 = 0u;
       v32 = 0u;
-      v22 = v3;
-      v5 = v3;
+      v22 = userDefaults;
+      v5 = userDefaults;
       v25 = [v5 countByEnumeratingWithState:&v31 objects:v42 count:16];
       if (v25)
       {
@@ -1188,10 +1188,10 @@ LABEL_16:
                     _os_log_impl(&dword_2561F5000, v15, OS_LOG_TYPE_DEBUG, "MDMMigrator setting user defaults (key: %{public}@, value: %{public}@, domain: %{public}@)", buf, 0x20u);
                   }
 
-                  v18 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+                  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
                   v19 = [v5 objectForKeyedSubscript:v7];
                   v20 = [v19 objectForKeyedSubscript:v13];
-                  [v18 setObject:v20 forKey:v13 inDomain:v7];
+                  [standardUserDefaults setObject:v20 forKey:v13 inDomain:v7];
                 }
 
                 v10 = [v8 countByEnumeratingWithState:&v27 objects:v41 count:16];
@@ -1210,7 +1210,7 @@ LABEL_16:
         while (v25);
       }
 
-      v3 = v22;
+      userDefaults = v22;
       v2 = v23;
     }
   }

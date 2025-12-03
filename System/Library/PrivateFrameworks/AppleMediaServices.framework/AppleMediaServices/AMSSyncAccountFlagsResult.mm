@@ -1,19 +1,19 @@
 @interface AMSSyncAccountFlagsResult
-- (AMSSyncAccountFlagsResult)initWithAccountFlags:(id)a3;
+- (AMSSyncAccountFlagsResult)initWithAccountFlags:(id)flags;
 @end
 
 @implementation AMSSyncAccountFlagsResult
 
-- (AMSSyncAccountFlagsResult)initWithAccountFlags:(id)a3
+- (AMSSyncAccountFlagsResult)initWithAccountFlags:(id)flags
 {
-  v5 = a3;
+  flagsCopy = flags;
   v9.receiver = self;
   v9.super_class = AMSSyncAccountFlagsResult;
   v6 = [(AMSSyncAccountFlagsResult *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_accountFlags, a3);
+    objc_storeStrong(&v6->_accountFlags, flags);
   }
 
   return v7;

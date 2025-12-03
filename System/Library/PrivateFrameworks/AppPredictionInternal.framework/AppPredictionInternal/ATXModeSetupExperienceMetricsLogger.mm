@@ -3,7 +3,7 @@
 - (id)generateBookmark;
 - (id)generateBookmarkURLPath;
 - (void)logMetrics;
-- (void)writeBookmarkToFile:(id)a3;
+- (void)writeBookmarkToFile:(id)file;
 @end
 
 @implementation ATXModeSetupExperienceMetricsLogger
@@ -35,9 +35,9 @@
   {
     v4 = objc_opt_class();
     v5 = NSStringFromClass(v4);
-    v6 = [MEMORY[0x277CEBCB0] metricsRootDirectory];
+    metricsRootDirectory = [MEMORY[0x277CEBCB0] metricsRootDirectory];
     v7 = objc_alloc(MEMORY[0x277CBEBC0]);
-    v8 = [v6 stringByAppendingPathComponent:v5];
+    v8 = [metricsRootDirectory stringByAppendingPathComponent:v5];
     v3 = [v7 initFileURLWithPath:v8];
   }
 
@@ -47,23 +47,23 @@
 - (id)generateBookmark
 {
   v3 = MEMORY[0x277CEBBF8];
-  v4 = [(ATXModeSetupExperienceMetricsLogger *)self generateBookmarkURLPath];
-  v5 = [v3 bookmarkFromURLPath:v4 maxFileSize:3000000 versionNumber:&unk_283A56B28];
+  generateBookmarkURLPath = [(ATXModeSetupExperienceMetricsLogger *)self generateBookmarkURLPath];
+  v5 = [v3 bookmarkFromURLPath:generateBookmarkURLPath maxFileSize:3000000 versionNumber:&unk_283A56B28];
 
   if (!v5)
   {
     v6 = objc_alloc(MEMORY[0x277CEBBF8]);
-    v7 = [(ATXModeSetupExperienceMetricsLogger *)self generateBookmarkURLPath];
-    v5 = [v6 initWithURLPath:v7 versionNumber:&unk_283A56B28 bookmark:0 metadata:0];
+    generateBookmarkURLPath2 = [(ATXModeSetupExperienceMetricsLogger *)self generateBookmarkURLPath];
+    v5 = [v6 initWithURLPath:generateBookmarkURLPath2 versionNumber:&unk_283A56B28 bookmark:0 metadata:0];
   }
 
   return v5;
 }
 
-- (void)writeBookmarkToFile:(id)a3
+- (void)writeBookmarkToFile:(id)file
 {
   v6 = 0;
-  [a3 saveBookmarkWithError:&v6];
+  [file saveBookmarkWithError:&v6];
   v4 = v6;
   if (v4)
   {
@@ -77,26 +77,26 @@
 
 - (void)logMetrics
 {
-  v3 = [MEMORY[0x277CEB440] sharedInstance];
-  v4 = [(ATXModeSetupExperienceMetricsLogger *)self generateBookmark];
-  v5 = [(ATXModeSetupExperienceMetricsLogger *)self stream];
-  v6 = [v5 publisherFromStartTime:0.0];
+  mEMORY[0x277CEB440] = [MEMORY[0x277CEB440] sharedInstance];
+  generateBookmark = [(ATXModeSetupExperienceMetricsLogger *)self generateBookmark];
+  stream = [(ATXModeSetupExperienceMetricsLogger *)self stream];
+  v6 = [stream publisherFromStartTime:0.0];
   v7 = [v6 filterWithIsIncluded:&__block_literal_global_148];
-  v8 = [v4 bookmark];
+  bookmark = [generateBookmark bookmark];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __49__ATXModeSetupExperienceMetricsLogger_logMetrics__block_invoke_2;
   v14[3] = &unk_27859EB48;
-  v15 = v4;
-  v16 = self;
+  v15 = generateBookmark;
+  selfCopy = self;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __49__ATXModeSetupExperienceMetricsLogger_logMetrics__block_invoke_17;
   v12[3] = &unk_278596F60;
-  v13 = v3;
-  v9 = v3;
-  v10 = v4;
-  v11 = [v7 sinkWithBookmark:v8 completion:v14 receiveInput:v12];
+  v13 = mEMORY[0x277CEB440];
+  v9 = mEMORY[0x277CEB440];
+  v10 = generateBookmark;
+  v11 = [v7 sinkWithBookmark:bookmark completion:v14 receiveInput:v12];
 }
 
 BOOL __49__ATXModeSetupExperienceMetricsLogger_logMetrics__block_invoke(uint64_t a1, void *a2)

@@ -1,66 +1,66 @@
 @interface WFInstapaperAddAction
 - (id)disabledOnPlatforms;
-- (id)smartPromptWithContentDescription:(id)a3 contentDestination:(id)a4 workflowName:(id)a5;
-- (void)engine:(id)a3 connection:(id)a4 didAddBookmark:(id)a5;
-- (void)runAsynchronouslyWithInput:(id)a3 selectedFolder:(id)a4;
+- (id)smartPromptWithContentDescription:(id)description contentDestination:(id)destination workflowName:(id)name;
+- (void)engine:(id)engine connection:(id)connection didAddBookmark:(id)bookmark;
+- (void)runAsynchronouslyWithInput:(id)input selectedFolder:(id)folder;
 @end
 
 @implementation WFInstapaperAddAction
 
-- (id)smartPromptWithContentDescription:(id)a3 contentDestination:(id)a4 workflowName:(id)a5
+- (id)smartPromptWithContentDescription:(id)description contentDestination:(id)destination workflowName:(id)name
 {
-  v6 = a3;
+  descriptionCopy = description;
   v7 = MEMORY[0x277CCACA8];
-  v8 = a5;
-  if (v6)
+  nameCopy = name;
+  if (descriptionCopy)
   {
     v9 = WFLocalizedString(@"Allow “%1$@” to add %2$@ to Instapaper?");
-    [v7 localizedStringWithFormat:v9, v8, v6];
+    [v7 localizedStringWithFormat:v9, nameCopy, descriptionCopy];
   }
 
   else
   {
     v9 = WFLocalizedString(@"Allow “%1$@” to add content to Instapaper?");
-    [v7 localizedStringWithFormat:v9, v8, v12];
+    [v7 localizedStringWithFormat:v9, nameCopy, v12];
   }
   v10 = ;
 
   return v10;
 }
 
-- (void)engine:(id)a3 connection:(id)a4 didAddBookmark:(id)a5
+- (void)engine:(id)engine connection:(id)connection didAddBookmark:(id)bookmark
 {
-  v11 = a4;
-  v6 = [(WFInstapaperAction *)self identifiers];
-  v7 = [v6 count];
+  connectionCopy = connection;
+  identifiers = [(WFInstapaperAction *)self identifiers];
+  v7 = [identifiers count];
 
   if (v7)
   {
-    v8 = [(WFInstapaperAction *)self identifiers];
-    v9 = [(WFInstapaperAction *)self engine];
-    v10 = [v9 identifierForConnection:v11];
-    [v8 removeObject:v10];
+    identifiers2 = [(WFInstapaperAction *)self identifiers];
+    engine = [(WFInstapaperAction *)self engine];
+    v10 = [engine identifierForConnection:connectionCopy];
+    [identifiers2 removeObject:v10];
   }
 }
 
-- (void)runAsynchronouslyWithInput:(id)a3 selectedFolder:(id)a4
+- (void)runAsynchronouslyWithInput:(id)input selectedFolder:(id)folder
 {
-  v6 = a4;
+  folderCopy = folder;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __67__WFInstapaperAddAction_runAsynchronouslyWithInput_selectedFolder___block_invoke;
   v11[3] = &unk_278C1BA80;
   v11[4] = self;
-  v12 = v6;
-  v7 = v6;
-  v8 = a3;
+  v12 = folderCopy;
+  v7 = folderCopy;
+  inputCopy = input;
   v9 = objc_opt_class();
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __67__WFInstapaperAddAction_runAsynchronouslyWithInput_selectedFolder___block_invoke_2;
   v10[3] = &unk_278C21F18;
   v10[4] = self;
-  [v8 enumerateObjectRepresentations:v11 forClass:v9 completionHandler:v10];
+  [inputCopy enumerateObjectRepresentations:v11 forClass:v9 completionHandler:v10];
 }
 
 void __67__WFInstapaperAddAction_runAsynchronouslyWithInput_selectedFolder___block_invoke(uint64_t a1, void *a2, void *a3, void *a4)
@@ -100,8 +100,8 @@ uint64_t __67__WFInstapaperAddAction_runAsynchronouslyWithInput_selectedFolder__
 {
   v5.receiver = self;
   v5.super_class = WFInstapaperAddAction;
-  v2 = [(WFInstapaperAddAction *)&v5 disabledOnPlatforms];
-  v3 = [v2 arrayByAddingObject:*MEMORY[0x277D7CC80]];
+  disabledOnPlatforms = [(WFInstapaperAddAction *)&v5 disabledOnPlatforms];
+  v3 = [disabledOnPlatforms arrayByAddingObject:*MEMORY[0x277D7CC80]];
 
   return v3;
 }

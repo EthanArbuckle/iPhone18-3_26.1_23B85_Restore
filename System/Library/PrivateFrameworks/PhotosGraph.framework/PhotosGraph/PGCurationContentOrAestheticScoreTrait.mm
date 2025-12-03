@@ -1,10 +1,10 @@
 @interface PGCurationContentOrAestheticScoreTrait
-- (PGCurationContentOrAestheticScoreTrait)initWithMinimumContentScore:(double)a3 minimumAestheticScore:(double)a4;
+- (PGCurationContentOrAestheticScoreTrait)initWithMinimumContentScore:(double)score minimumAestheticScore:(double)aestheticScore;
 @end
 
 @implementation PGCurationContentOrAestheticScoreTrait
 
-- (PGCurationContentOrAestheticScoreTrait)initWithMinimumContentScore:(double)a3 minimumAestheticScore:(double)a4
+- (PGCurationContentOrAestheticScoreTrait)initWithMinimumContentScore:(double)score minimumAestheticScore:(double)aestheticScore
 {
   v9.receiver = self;
   v9.super_class = PGCurationContentOrAestheticScoreTrait;
@@ -12,8 +12,8 @@
   v7 = v6;
   if (v6)
   {
-    [(PGCurationTrait *)v6 setMinimumScore:a3];
-    v7->_minimumAestheticScore = a4;
+    [(PGCurationTrait *)v6 setMinimumScore:score];
+    v7->_minimumAestheticScore = aestheticScore;
   }
 
   return v7;

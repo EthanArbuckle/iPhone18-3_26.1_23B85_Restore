@@ -1,14 +1,14 @@
 @interface MPModelLibraryPlaylistEditTransactionDetails
 - (NSArray)changes;
-- (id)_initWithIdentifier:(id)a3 referenceIdentifier:(id)a4 changes:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_initWithIdentifier:(id)identifier referenceIdentifier:(id)referenceIdentifier changes:(id)changes;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation MPModelLibraryPlaylistEditTransactionDetails
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = v4;
   if (v4)
   {
@@ -27,31 +27,31 @@
   return v2;
 }
 
-- (id)_initWithIdentifier:(id)a3 referenceIdentifier:(id)a4 changes:(id)a5
+- (id)_initWithIdentifier:(id)identifier referenceIdentifier:(id)referenceIdentifier changes:(id)changes
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  identifierCopy = identifier;
+  referenceIdentifierCopy = referenceIdentifier;
+  changesCopy = changes;
   v17.receiver = self;
   v17.super_class = MPModelLibraryPlaylistEditTransactionDetails;
   v12 = [(MPModelLibraryPlaylistEditTransactionDetails *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_identifier, a3);
-    objc_storeStrong(&v13->_referenceIdentifier, a4);
-    if (v11)
+    objc_storeStrong(&v12->_identifier, identifier);
+    objc_storeStrong(&v13->_referenceIdentifier, referenceIdentifier);
+    if (changesCopy)
     {
-      v14 = [v11 mutableCopy];
+      array = [changesCopy mutableCopy];
     }
 
     else
     {
-      v14 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
     }
 
     changes = v13->_changes;
-    v13->_changes = v14;
+    v13->_changes = array;
   }
 
   return v13;

@@ -1,35 +1,35 @@
 @interface ATXComplicationSuggestionGenerator
 - (ATXComplicationSet)inlineSet;
 - (ATXComplicationSuggestionGenerator)init;
-- (BOOL)_complicationIsAlreadyAdded:(id)a3 alreadyAddedComplications:(id)a4;
-- (BOOL)_layoutIsValidGivenComplications:(id)a3 allowedComplicationPersonalities:(id)a4;
-- (BOOL)_shouldAddComplication:(id)a3 andFilterFromAppsDisabledByAppProtection:(id)a4;
-- (id)_circularComplicationFromComplications:(id)a3;
-- (id)_complicationsFromFallbackSet:(id)a3 complicationDescriptors:(id)a4 alreadyAddedDescriptors:(id)a5 andFilterFromAppsDisabledByAppProtection:(id)a6;
-- (id)_getComplicationsOfFamily:(int64_t)a3 descriptors:(id)a4 alreadyAddedDescriptors:(id)a5 presetComplications:(id)a6 limit:(unint64_t)a7;
-- (id)_inlineSetDescriptors_ShouldRefresh:(BOOL)a3;
+- (BOOL)_complicationIsAlreadyAdded:(id)added alreadyAddedComplications:(id)complications;
+- (BOOL)_layoutIsValidGivenComplications:(id)complications allowedComplicationPersonalities:(id)personalities;
+- (BOOL)_shouldAddComplication:(id)complication andFilterFromAppsDisabledByAppProtection:(id)protection;
+- (id)_circularComplicationFromComplications:(id)complications;
+- (id)_complicationsFromFallbackSet:(id)set complicationDescriptors:(id)descriptors alreadyAddedDescriptors:(id)addedDescriptors andFilterFromAppsDisabledByAppProtection:(id)protection;
+- (id)_getComplicationsOfFamily:(int64_t)family descriptors:(id)descriptors alreadyAddedDescriptors:(id)addedDescriptors presetComplications:(id)complications limit:(unint64_t)limit;
+- (id)_inlineSetDescriptors_ShouldRefresh:(BOOL)refresh;
 - (id)_landscapeModularFallbackSets;
-- (id)_landscapeModularSetDescriptors_ShouldRefresh:(BOOL)a3 widgetDescriptorsAdditionalData:(id)a4 aggregatedAppLaunchData:(id)a5 bundleIdToCompanionBundleId:(id)a6;
-- (id)_modularDescriptors_ShouldRefresh:(BOOL)a3 widgetDescriptorsAdditionalData:(id)a4 aggregatedAppLaunchData:(id)a5 bundleIdToCompanionBundleId:(id)a6;
+- (id)_landscapeModularSetDescriptors_ShouldRefresh:(BOOL)refresh widgetDescriptorsAdditionalData:(id)data aggregatedAppLaunchData:(id)launchData bundleIdToCompanionBundleId:(id)id;
+- (id)_modularDescriptors_ShouldRefresh:(BOOL)refresh widgetDescriptorsAdditionalData:(id)data aggregatedAppLaunchData:(id)launchData bundleIdToCompanionBundleId:(id)id;
 - (id)_modularFallbackSets;
-- (id)_modularLayoutTypesGivenRecentsLayoutType:(int64_t)a3;
-- (id)_presetLandscapeComplicationsFromPortraitSet:(id)a3;
+- (id)_modularLayoutTypesGivenRecentsLayoutType:(int64_t)type;
+- (id)_presetLandscapeComplicationsFromPortraitSet:(id)set;
 - (id)_recentInlineComplications;
-- (id)_recentLandscapeComplicationsWithPresetDictionary:(id)a3;
-- (id)_recentsComplications_unusedComplications:(id)a3;
-- (id)_recentsSet_unusedComplications:(id)a3;
-- (id)_rectangularComplicationFromComplications:(id)a3;
+- (id)_recentLandscapeComplicationsWithPresetDictionary:(id)dictionary;
+- (id)_recentsComplications_unusedComplications:(id)complications;
+- (id)_recentsSet_unusedComplications:(id)complications;
+- (id)_rectangularComplicationFromComplications:(id)complications;
 - (id)_scoredInlineComplicationDescriptors;
-- (id)_scoredModularComplicationDescriptorsWithWidgetDescriptorsAdditionalData:(id)a3 aggregatedAppLaunchData:(id)a4 bundleIdToCompanionBundleId:(id)a5;
-- (id)_setWithDesiredLayout:(int64_t)a3 complicationDescriptors:(id)a4 unusedRecentsComplications:(id)a5 alreadyAddedComplications:(id)a6;
-- (id)descriptionForScoredSet:(id)a3;
-- (id)inputDescriptionForComplicationSuggestionSignal:(id)a3;
-- (id)landscapeModularSetsDictsWithWidgetDescriptorsAdditionalData:(id)a3 aggregatedAppLaunchData:(id)a4 bundleIdToCompanionBundleId:(id)a5 portraitSets:(id)a6;
-- (id)landscapeModularSetsWithWidgetDescriptorsAdditionalData:(id)a3 aggregatedAppLaunchData:(id)a4 bundleIdToCompanionBundleId:(id)a5 presetPortraitComplications:(id)a6;
-- (id)modularSetsWithDesiredLayouts:(id)a3 unusedRecentComplications:(id)a4 alreadyAddedComplications:(id)a5 widgetDescriptorsAdditionalData:(id)a6 aggregatedAppLaunchData:(id)a7 bundleIdToCompanionBundleId:(id)a8;
-- (id)modularSetsWithWidgetDescriptorsAdditionalData:(id)a3 aggregatedAppLaunchData:(id)a4 bundleIdToCompanionBundleId:(id)a5;
+- (id)_scoredModularComplicationDescriptorsWithWidgetDescriptorsAdditionalData:(id)data aggregatedAppLaunchData:(id)launchData bundleIdToCompanionBundleId:(id)id;
+- (id)_setWithDesiredLayout:(int64_t)layout complicationDescriptors:(id)descriptors unusedRecentsComplications:(id)complications alreadyAddedComplications:(id)addedComplications;
+- (id)descriptionForScoredSet:(id)set;
+- (id)inputDescriptionForComplicationSuggestionSignal:(id)signal;
+- (id)landscapeModularSetsDictsWithWidgetDescriptorsAdditionalData:(id)data aggregatedAppLaunchData:(id)launchData bundleIdToCompanionBundleId:(id)id portraitSets:(id)sets;
+- (id)landscapeModularSetsWithWidgetDescriptorsAdditionalData:(id)data aggregatedAppLaunchData:(id)launchData bundleIdToCompanionBundleId:(id)id presetPortraitComplications:(id)complications;
+- (id)modularSetsWithDesiredLayouts:(id)layouts unusedRecentComplications:(id)complications alreadyAddedComplications:(id)addedComplications widgetDescriptorsAdditionalData:(id)data aggregatedAppLaunchData:(id)launchData bundleIdToCompanionBundleId:(id)id;
+- (id)modularSetsWithWidgetDescriptorsAdditionalData:(id)data aggregatedAppLaunchData:(id)launchData bundleIdToCompanionBundleId:(id)id;
 - (id)scoredComplicationsDescription;
-- (int64_t)_layoutTypeForSet:(id)a3;
+- (int64_t)_layoutTypeForSet:(id)set;
 - (void)refreshComplicationCache;
 - (void)scoredComplicationsDescription;
 @end
@@ -43,9 +43,9 @@
   v2 = [(ATXComplicationSuggestionGenerator *)&v14 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CEB998] sharedInstance];
+    mEMORY[0x277CEB998] = [MEMORY[0x277CEB998] sharedInstance];
     descriptorCache = v2->_descriptorCache;
-    v2->_descriptorCache = v3;
+    v2->_descriptorCache = mEMORY[0x277CEB998];
 
     v5 = objc_opt_new();
     complicationSuggestionCache = v2->_complicationSuggestionCache;
@@ -71,15 +71,15 @@
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_2263AA000, a2, OS_LOG_TYPE_ERROR, "Could not load accessory widget descriptors for complication refresh: %@", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_recentsSet_unusedComplications:(id)a3
+- (id)_recentsSet_unusedComplications:(id)complications
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [(ATXComplicationSuggestionGenerator *)self _recentsComplications_unusedComplications:a3];
+  v3 = [(ATXComplicationSuggestionGenerator *)self _recentsComplications_unusedComplications:complications];
   v4 = v3;
   if (v3)
   {
@@ -123,19 +123,19 @@
   return v9;
 }
 
-- (id)_recentsComplications_unusedComplications:(id)a3
+- (id)_recentsComplications_unusedComplications:(id)complications
 {
   v71 = *MEMORY[0x277D85DE8];
-  v45 = a3;
-  v40 = [(ATXWidgetDescriptorCache *)self->_descriptorCache modularComplicationWidgetDescriptors];
-  v46 = [v40 _pas_mappedSetWithTransform:&__block_literal_global_109];
-  v4 = [(ATXPosterConfigurationCache *)self->_posterConfigurationCache configurations];
+  complicationsCopy = complications;
+  modularComplicationWidgetDescriptors = [(ATXWidgetDescriptorCache *)self->_descriptorCache modularComplicationWidgetDescriptors];
+  v46 = [modularComplicationWidgetDescriptors _pas_mappedSetWithTransform:&__block_literal_global_109];
+  configurations = [(ATXPosterConfigurationCache *)self->_posterConfigurationCache configurations];
   v5 = +[ATXLockscreenBlacklist appsLockedOrHiddenByAppProtection];
   v63 = 0u;
   v64 = 0u;
   v65 = 0u;
   v66 = 0u;
-  v6 = v4;
+  v6 = configurations;
   v7 = [v6 countByEnumeratingWithState:&v63 objects:v70 count:16];
   if (v7)
   {
@@ -153,8 +153,8 @@ LABEL_3:
       v11 = *(*(&v63 + 1) + 8 * v10);
       if ([v11 isSelected])
       {
-        v12 = [v11 complications];
-        if ([(ATXComplicationSuggestionGenerator *)self _layoutIsValidGivenComplications:v12 allowedComplicationPersonalities:v46])
+        complications = [v11 complications];
+        if ([(ATXComplicationSuggestionGenerator *)self _layoutIsValidGivenComplications:complications allowedComplicationPersonalities:v46])
         {
           v61[0] = MEMORY[0x277D85DD0];
           v61[1] = 3221225472;
@@ -162,7 +162,7 @@ LABEL_3:
           v61[3] = &unk_27859CFB8;
           v61[4] = self;
           v62 = v5;
-          v13 = [v12 _pas_mappedArrayWithTransform:v61];
+          v13 = [complications _pas_mappedArrayWithTransform:v61];
 
           if (v13)
           {
@@ -209,8 +209,8 @@ LABEL_13:
         v19 = *(*(&v57 + 1) + 8 * i);
         if (([v19 isSelected] & 1) == 0)
         {
-          v20 = [v19 complications];
-          if ([(ATXComplicationSuggestionGenerator *)self _layoutIsValidGivenComplications:v20 allowedComplicationPersonalities:v46])
+          complications2 = [v19 complications];
+          if ([(ATXComplicationSuggestionGenerator *)self _layoutIsValidGivenComplications:complications2 allowedComplicationPersonalities:v46])
           {
             v55[0] = MEMORY[0x277D85DD0];
             v55[1] = 3221225472;
@@ -218,7 +218,7 @@ LABEL_13:
             v55[3] = &unk_27859CFB8;
             v55[4] = self;
             v56 = v5;
-            v13 = [v20 _pas_mappedArrayWithTransform:v55];
+            v13 = [complications2 _pas_mappedArrayWithTransform:v55];
 
             goto LABEL_25;
           }
@@ -278,8 +278,8 @@ LABEL_26:
         v48 = 0u;
         v49 = 0u;
         v50 = 0u;
-        v26 = [v25 complications];
-        v27 = [v26 countByEnumeratingWithState:&v47 objects:v67 count:16];
+        complications3 = [v25 complications];
+        v27 = [complications3 countByEnumeratingWithState:&v47 objects:v67 count:16];
         if (v27)
         {
           v28 = v27;
@@ -290,22 +290,22 @@ LABEL_26:
             {
               if (*v48 != v29)
               {
-                objc_enumerationMutation(v26);
+                objc_enumerationMutation(complications3);
               }
 
               v31 = *(*(&v47 + 1) + 8 * j);
               v32 = objc_alloc(MEMORY[0x277CEB9B0]);
-              v33 = [v31 extensionBundleIdentifier];
-              v34 = [v31 kind];
-              v35 = [v32 initWithExtensionBundleId:v33 kind:v34];
+              extensionBundleIdentifier = [v31 extensionBundleIdentifier];
+              kind = [v31 kind];
+              v35 = [v32 initWithExtensionBundleId:extensionBundleIdentifier kind:kind];
 
               if (([v23 containsObject:v31] & 1) == 0 && objc_msgSend(v46, "containsObject:", v35))
               {
-                [v45 addObject:v31];
+                [complicationsCopy addObject:v31];
               }
             }
 
-            v28 = [v26 countByEnumeratingWithState:&v47 objects:v67 count:16];
+            v28 = [complications3 countByEnumeratingWithState:&v47 objects:v67 count:16];
           }
 
           while (v28);
@@ -376,16 +376,16 @@ id __80__ATXComplicationSuggestionGenerator__recentsComplications_unusedComplica
   v29 = *MEMORY[0x277D85DE8];
   v19 = objc_opt_new();
   v23 = objc_opt_new();
-  v18 = [(ATXWidgetDescriptorCache *)self->_descriptorCache inlineComplicationWidgetDescriptors];
-  v22 = [v18 _pas_mappedSetWithTransform:&__block_literal_global_31_0];
-  v20 = self;
-  v3 = [(ATXPosterConfigurationCache *)self->_posterConfigurationCache configurations];
+  inlineComplicationWidgetDescriptors = [(ATXWidgetDescriptorCache *)self->_descriptorCache inlineComplicationWidgetDescriptors];
+  v22 = [inlineComplicationWidgetDescriptors _pas_mappedSetWithTransform:&__block_literal_global_31_0];
+  selfCopy = self;
+  configurations = [(ATXPosterConfigurationCache *)self->_posterConfigurationCache configurations];
   v21 = +[ATXLockscreenBlacklist appsLockedOrHiddenByAppProtection];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v4 = v3;
+  v4 = configurations;
   v5 = [v4 countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v5)
   {
@@ -401,15 +401,15 @@ id __80__ATXComplicationSuggestionGenerator__recentsComplications_unusedComplica
         }
 
         v9 = *(*(&v24 + 1) + 8 * i);
-        v10 = [v9 inlineComplication];
-        v11 = [v10 copy];
+        inlineComplication = [v9 inlineComplication];
+        v11 = [inlineComplication copy];
 
         v12 = objc_alloc(MEMORY[0x277CEB9B0]);
-        v13 = [v11 extensionBundleIdentifier];
-        v14 = [v11 kind];
-        v15 = [v12 initWithExtensionBundleId:v13 kind:v14];
+        extensionBundleIdentifier = [v11 extensionBundleIdentifier];
+        kind = [v11 kind];
+        v15 = [v12 initWithExtensionBundleId:extensionBundleIdentifier kind:kind];
 
-        if (v11 && ([v23 containsObject:v11] & 1) == 0 && objc_msgSend(v22, "containsObject:", v15) && -[ATXComplicationSuggestionGenerator _shouldAddComplication:andFilterFromAppsDisabledByAppProtection:](v20, "_shouldAddComplication:andFilterFromAppsDisabledByAppProtection:", v11, v21))
+        if (v11 && ([v23 containsObject:v11] & 1) == 0 && objc_msgSend(v22, "containsObject:", v15) && -[ATXComplicationSuggestionGenerator _shouldAddComplication:andFilterFromAppsDisabledByAppProtection:](selfCopy, "_shouldAddComplication:andFilterFromAppsDisabledByAppProtection:", v11, v21))
         {
           if ([v9 isSelected])
           {
@@ -450,14 +450,14 @@ id __64__ATXComplicationSuggestionGenerator__recentInlineComplications__block_in
   return v7;
 }
 
-- (id)_recentLandscapeComplicationsWithPresetDictionary:(id)a3
+- (id)_recentLandscapeComplicationsWithPresetDictionary:(id)dictionary
 {
   v72 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v4 = *MEMORY[0x277CEB1E0];
-  v5 = [v3 objectForKeyedSubscript:*MEMORY[0x277CEB1E0]];
-  v6 = [v5 complications];
-  v7 = [v6 mutableCopy];
+  v5 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x277CEB1E0]];
+  complications = [v5 complications];
+  v7 = [complications mutableCopy];
   v8 = v7;
   if (v7)
   {
@@ -472,9 +472,9 @@ id __64__ATXComplicationSuggestionGenerator__recentInlineComplications__block_in
   v55 = v9;
 
   v10 = *MEMORY[0x277CEB1E8];
-  v11 = [v3 objectForKeyedSubscript:*MEMORY[0x277CEB1E8]];
-  v12 = [v11 complications];
-  v13 = [v12 mutableCopy];
+  v11 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x277CEB1E8]];
+  complications2 = [v11 complications];
+  v13 = [complications2 mutableCopy];
   v14 = v13;
   if (v13)
   {
@@ -489,12 +489,12 @@ id __64__ATXComplicationSuggestionGenerator__recentInlineComplications__block_in
   v54 = v15;
 
   v16 = *MEMORY[0x277CEB1F0];
-  v17 = [v3 objectForKeyedSubscript:*MEMORY[0x277CEB1F0]];
-  v18 = [v17 complications];
-  v19 = [v18 mutableCopy];
+  v17 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x277CEB1F0]];
+  complications3 = [v17 complications];
+  v19 = [complications3 mutableCopy];
   v20 = v19;
   v47 = v4;
-  v48 = v3;
+  v48 = dictionaryCopy;
   v46 = v16;
   if (v19)
   {
@@ -509,15 +509,15 @@ id __64__ATXComplicationSuggestionGenerator__recentInlineComplications__block_in
   v53 = v21;
 
   v60 = objc_opt_new();
-  v45 = [(ATXWidgetDescriptorCache *)self->_descriptorCache landscapeModularComplicationWidgetDescriptors];
-  v59 = [v45 _pas_mappedSetWithTransform:&__block_literal_global_33];
-  v22 = [(ATXPosterConfigurationCache *)self->_posterConfigurationCache configurations];
+  landscapeModularComplicationWidgetDescriptors = [(ATXWidgetDescriptorCache *)self->_descriptorCache landscapeModularComplicationWidgetDescriptors];
+  v59 = [landscapeModularComplicationWidgetDescriptors _pas_mappedSetWithTransform:&__block_literal_global_33];
+  configurations = [(ATXPosterConfigurationCache *)self->_posterConfigurationCache configurations];
   v57 = +[ATXLockscreenBlacklist appsLockedOrHiddenByAppProtection];
   v65 = 0u;
   v66 = 0u;
   v67 = 0u;
   v68 = 0u;
-  obj = v22;
+  obj = configurations;
   v51 = [obj countByEnumeratingWithState:&v65 objects:v71 count:16];
   if (v51)
   {
@@ -539,8 +539,8 @@ id __64__ATXComplicationSuggestionGenerator__recentInlineComplications__block_in
         v63 = 0u;
         v64 = 0u;
         v56 = v24;
-        v25 = [v24 landscapeComplications];
-        v26 = [v25 countByEnumeratingWithState:&v61 objects:v70 count:16];
+        landscapeComplications = [v24 landscapeComplications];
+        v26 = [landscapeComplications countByEnumeratingWithState:&v61 objects:v70 count:16];
         if (v26)
         {
           v27 = v26;
@@ -551,20 +551,20 @@ id __64__ATXComplicationSuggestionGenerator__recentInlineComplications__block_in
             {
               if (*v62 != v28)
               {
-                objc_enumerationMutation(v25);
+                objc_enumerationMutation(landscapeComplications);
               }
 
               v30 = *(*(&v61 + 1) + 8 * i);
               [v30 setSource:1];
               v31 = objc_alloc(MEMORY[0x277CEB9B0]);
-              v32 = [v30 extensionBundleIdentifier];
-              v33 = [v30 kind];
-              v34 = [v31 initWithExtensionBundleId:v32 kind:v33];
+              extensionBundleIdentifier = [v30 extensionBundleIdentifier];
+              kind = [v30 kind];
+              v34 = [v31 initWithExtensionBundleId:extensionBundleIdentifier kind:kind];
 
               if (v30 && ([v60 containsObject:v30] & 1) == 0 && objc_msgSend(v59, "containsObject:", v34) && -[ATXComplicationSuggestionGenerator _shouldAddComplication:andFilterFromAppsDisabledByAppProtection:](self, "_shouldAddComplication:andFilterFromAppsDisabledByAppProtection:", v30, v57))
               {
-                v35 = [v30 widgetFamily];
-                if (v35 == 1)
+                widgetFamily = [v30 widgetFamily];
+                if (widgetFamily == 1)
                 {
                   if (![v56 isSelected])
                   {
@@ -577,10 +577,10 @@ id __64__ATXComplicationSuggestionGenerator__recentInlineComplications__block_in
 
                 else
                 {
-                  v36 = v35;
-                  if (v35 != 11)
+                  v36 = widgetFamily;
+                  if (widgetFamily != 11)
                   {
-                    if (v35 == 10)
+                    if (widgetFamily == 10)
                     {
                       if ([v56 isSelected])
                       {
@@ -624,7 +624,7 @@ LABEL_33:
 LABEL_42:
             }
 
-            v27 = [v25 countByEnumeratingWithState:&v61 objects:v70 count:16];
+            v27 = [landscapeComplications countByEnumeratingWithState:&v61 objects:v70 count:16];
           }
 
           while (v27);
@@ -667,15 +667,15 @@ id __88__ATXComplicationSuggestionGenerator__recentLandscapeComplicationsWithPre
   return v7;
 }
 
-- (id)modularSetsWithWidgetDescriptorsAdditionalData:(id)a3 aggregatedAppLaunchData:(id)a4 bundleIdToCompanionBundleId:(id)a5
+- (id)modularSetsWithWidgetDescriptorsAdditionalData:(id)data aggregatedAppLaunchData:(id)launchData bundleIdToCompanionBundleId:(id)id
 {
   v38 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dataCopy = data;
+  launchDataCopy = launchData;
+  idCopy = id;
   if ([(ATXComplicationSuggestionParameters *)self->_parameters alwaysUseFallbackSets])
   {
-    v11 = [(ATXComplicationSuggestionGenerator *)self _modularFallbackSets];
+    _modularFallbackSets = [(ATXComplicationSuggestionGenerator *)self _modularFallbackSets];
   }
 
   else
@@ -684,7 +684,7 @@ id __88__ATXComplicationSuggestionGenerator__recentLandscapeComplicationsWithPre
     v12 = objc_opt_new();
     v13 = objc_opt_new();
     v14 = [(ATXComplicationSuggestionGenerator *)self _recentsSet_unusedComplications:v13];
-    v30 = v8;
+    v30 = dataCopy;
     if (v14)
     {
       [v28 addObject:v14];
@@ -692,8 +692,8 @@ id __88__ATXComplicationSuggestionGenerator__recentLandscapeComplicationsWithPre
       v34 = 0u;
       v31 = 0u;
       v32 = 0u;
-      v15 = [v14 complications];
-      v16 = [v15 countByEnumeratingWithState:&v31 objects:v37 count:16];
+      complications = [v14 complications];
+      v16 = [complications countByEnumeratingWithState:&v31 objects:v37 count:16];
       if (v16)
       {
         v17 = v16;
@@ -704,23 +704,23 @@ id __88__ATXComplicationSuggestionGenerator__recentLandscapeComplicationsWithPre
           {
             if (*v32 != v18)
             {
-              objc_enumerationMutation(v15);
+              objc_enumerationMutation(complications);
             }
 
             [v12 addObject:{*(*(&v31 + 1) + 8 * i), v28}];
           }
 
-          v17 = [v15 countByEnumeratingWithState:&v31 objects:v37 count:16];
+          v17 = [complications countByEnumeratingWithState:&v31 objects:v37 count:16];
         }
 
         while (v17);
       }
 
-      v8 = v30;
+      dataCopy = v30;
     }
 
     v20 = [(ATXComplicationSuggestionGenerator *)self _modularLayoutTypesGivenRecentsLayoutType:[(ATXComplicationSuggestionGenerator *)self _layoutTypeForSet:v14, v28]];
-    v21 = [(ATXComplicationSuggestionGenerator *)self modularSetsWithDesiredLayouts:v20 unusedRecentComplications:v13 alreadyAddedComplications:v12 widgetDescriptorsAdditionalData:v8 aggregatedAppLaunchData:v9 bundleIdToCompanionBundleId:v10];
+    v21 = [(ATXComplicationSuggestionGenerator *)self modularSetsWithDesiredLayouts:v20 unusedRecentComplications:v13 alreadyAddedComplications:v12 widgetDescriptorsAdditionalData:dataCopy aggregatedAppLaunchData:launchDataCopy bundleIdToCompanionBundleId:idCopy];
     v22 = [v21 count];
     v23 = __atxlog_handle_lock_screen();
     v24 = os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT);
@@ -735,7 +735,7 @@ id __88__ATXComplicationSuggestionGenerator__recentLandscapeComplicationsWithPre
 
       v25 = v29;
       [v29 addObjectsFromArray:v21];
-      v11 = v29;
+      _modularFallbackSets = v29;
     }
 
     else
@@ -746,30 +746,30 @@ id __88__ATXComplicationSuggestionGenerator__recentLandscapeComplicationsWithPre
         _os_log_impl(&dword_2263AA000, v23, OS_LOG_TYPE_DEFAULT, "No modular sets receiving. Returning fallback sets.", buf, 2u);
       }
 
-      v11 = [(ATXComplicationSuggestionGenerator *)self _modularFallbackSets];
+      _modularFallbackSets = [(ATXComplicationSuggestionGenerator *)self _modularFallbackSets];
       v25 = v29;
     }
 
-    v8 = v30;
+    dataCopy = v30;
   }
 
   v26 = *MEMORY[0x277D85DE8];
 
-  return v11;
+  return _modularFallbackSets;
 }
 
-- (id)modularSetsWithDesiredLayouts:(id)a3 unusedRecentComplications:(id)a4 alreadyAddedComplications:(id)a5 widgetDescriptorsAdditionalData:(id)a6 aggregatedAppLaunchData:(id)a7 bundleIdToCompanionBundleId:(id)a8
+- (id)modularSetsWithDesiredLayouts:(id)layouts unusedRecentComplications:(id)complications alreadyAddedComplications:(id)addedComplications widgetDescriptorsAdditionalData:(id)data aggregatedAppLaunchData:(id)launchData bundleIdToCompanionBundleId:(id)id
 {
   v39 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = [(ATXComplicationSuggestionGenerator *)self _modularDescriptors_ShouldRefresh:0 widgetDescriptorsAdditionalData:a6 aggregatedAppLaunchData:a7 bundleIdToCompanionBundleId:a8];
+  layoutsCopy = layouts;
+  complicationsCopy = complications;
+  addedComplicationsCopy = addedComplications;
+  v17 = [(ATXComplicationSuggestionGenerator *)self _modularDescriptors_ShouldRefresh:0 widgetDescriptorsAdditionalData:data aggregatedAppLaunchData:launchData bundleIdToCompanionBundleId:id];
   v18 = objc_opt_new();
-  if ([v14 count])
+  if ([layoutsCopy count])
   {
-    v19 = [v14 objectAtIndexedSubscript:0];
-    v20 = -[ATXComplicationSuggestionGenerator _setWithDesiredLayout:complicationDescriptors:unusedRecentsComplications:alreadyAddedComplications:](self, "_setWithDesiredLayout:complicationDescriptors:unusedRecentsComplications:alreadyAddedComplications:", [v19 longValue], v17, v15, v16);
+    v19 = [layoutsCopy objectAtIndexedSubscript:0];
+    v20 = -[ATXComplicationSuggestionGenerator _setWithDesiredLayout:complicationDescriptors:unusedRecentsComplications:alreadyAddedComplications:](self, "_setWithDesiredLayout:complicationDescriptors:unusedRecentsComplications:alreadyAddedComplications:", [v19 longValue], v17, complicationsCopy, addedComplicationsCopy);
 
     v21 = __atxlog_handle_lock_screen();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
@@ -783,10 +783,10 @@ id __88__ATXComplicationSuggestionGenerator__recentLandscapeComplicationsWithPre
     {
       v22 = [objc_alloc(MEMORY[0x277CEB418]) initWithComplications:v20];
       [v18 addObject:v22];
-      if ([v14 count] > 1)
+      if ([layoutsCopy count] > 1)
       {
-        v24 = [v14 objectAtIndexedSubscript:1];
-        v25 = -[ATXComplicationSuggestionGenerator _setWithDesiredLayout:complicationDescriptors:unusedRecentsComplications:alreadyAddedComplications:](self, "_setWithDesiredLayout:complicationDescriptors:unusedRecentsComplications:alreadyAddedComplications:", [v24 longValue], v17, v15, v16);
+        v24 = [layoutsCopy objectAtIndexedSubscript:1];
+        v25 = -[ATXComplicationSuggestionGenerator _setWithDesiredLayout:complicationDescriptors:unusedRecentsComplications:alreadyAddedComplications:](self, "_setWithDesiredLayout:complicationDescriptors:unusedRecentsComplications:alreadyAddedComplications:", [v24 longValue], v17, complicationsCopy, addedComplicationsCopy);
 
         v26 = __atxlog_handle_lock_screen();
         if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
@@ -800,11 +800,11 @@ id __88__ATXComplicationSuggestionGenerator__recentLandscapeComplicationsWithPre
         {
           v27 = [objc_alloc(MEMORY[0x277CEB418]) initWithComplications:v25];
           [v18 addObject:v27];
-          if ([v14 count] > 2)
+          if ([layoutsCopy count] > 2)
           {
             v35 = v27;
-            v28 = [v14 objectAtIndexedSubscript:2];
-            v36 = -[ATXComplicationSuggestionGenerator _setWithDesiredLayout:complicationDescriptors:unusedRecentsComplications:alreadyAddedComplications:](self, "_setWithDesiredLayout:complicationDescriptors:unusedRecentsComplications:alreadyAddedComplications:", [v28 longValue], v17, v15, v16);
+            v28 = [layoutsCopy objectAtIndexedSubscript:2];
+            v36 = -[ATXComplicationSuggestionGenerator _setWithDesiredLayout:complicationDescriptors:unusedRecentsComplications:alreadyAddedComplications:](self, "_setWithDesiredLayout:complicationDescriptors:unusedRecentsComplications:alreadyAddedComplications:", [v28 longValue], v17, complicationsCopy, addedComplicationsCopy);
 
             v29 = __atxlog_handle_lock_screen();
             if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
@@ -819,7 +819,7 @@ id __88__ATXComplicationSuggestionGenerator__recentLandscapeComplicationsWithPre
               v34 = [objc_alloc(MEMORY[0x277CEB418]) initWithComplications:v36];
               [v18 addObject:?];
               v27 = v35;
-              if ([v14 count] >= 4)
+              if ([layoutsCopy count] >= 4)
               {
                 v30 = __atxlog_handle_lock_screen();
                 if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
@@ -894,17 +894,17 @@ id __88__ATXComplicationSuggestionGenerator__recentLandscapeComplicationsWithPre
   return v23;
 }
 
-- (id)_modularDescriptors_ShouldRefresh:(BOOL)a3 widgetDescriptorsAdditionalData:(id)a4 aggregatedAppLaunchData:(id)a5 bundleIdToCompanionBundleId:(id)a6
+- (id)_modularDescriptors_ShouldRefresh:(BOOL)refresh widgetDescriptorsAdditionalData:(id)data aggregatedAppLaunchData:(id)launchData bundleIdToCompanionBundleId:(id)id
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(ATXComplicationSuggestionCache *)self->_complicationSuggestionCache fetchModularSetComplicationDescriptors];
-  v14 = v13;
-  if (a3 || ![v13 count])
+  dataCopy = data;
+  launchDataCopy = launchData;
+  idCopy = id;
+  fetchModularSetComplicationDescriptors = [(ATXComplicationSuggestionCache *)self->_complicationSuggestionCache fetchModularSetComplicationDescriptors];
+  v14 = fetchModularSetComplicationDescriptors;
+  if (refresh || ![fetchModularSetComplicationDescriptors count])
   {
-    v16 = [(ATXWidgetDescriptorCache *)self->_descriptorCache modularComplicationWidgetDescriptors];
-    v15 = [(ATXComplicationSuggestionScorer *)self->_complicationScorer complicationDescriptorsForModularSetGivenComplicationDescriptors:v16 widgetDescriptorsAdditionalData:v10 aggregatedAppLaunchData:v11 bundleIdToCompanionBundleId:v12];
+    modularComplicationWidgetDescriptors = [(ATXWidgetDescriptorCache *)self->_descriptorCache modularComplicationWidgetDescriptors];
+    v15 = [(ATXComplicationSuggestionScorer *)self->_complicationScorer complicationDescriptorsForModularSetGivenComplicationDescriptors:modularComplicationWidgetDescriptors widgetDescriptorsAdditionalData:dataCopy aggregatedAppLaunchData:launchDataCopy bundleIdToCompanionBundleId:idCopy];
     if (![(ATXComplicationSuggestionCache *)self->_complicationSuggestionCache writeComplicationsModularSetCache:v15])
     {
       v17 = __atxlog_handle_lock_screen();
@@ -924,31 +924,31 @@ id __88__ATXComplicationSuggestionGenerator__recentLandscapeComplicationsWithPre
   return v15;
 }
 
-- (id)_scoredModularComplicationDescriptorsWithWidgetDescriptorsAdditionalData:(id)a3 aggregatedAppLaunchData:(id)a4 bundleIdToCompanionBundleId:(id)a5
+- (id)_scoredModularComplicationDescriptorsWithWidgetDescriptorsAdditionalData:(id)data aggregatedAppLaunchData:(id)launchData bundleIdToCompanionBundleId:(id)id
 {
   descriptorCache = self->_descriptorCache;
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [(ATXWidgetDescriptorCache *)descriptorCache modularComplicationWidgetDescriptors];
-  v13 = [(ATXComplicationSuggestionScorer *)self->_complicationScorer scoredComplicationDescriptorsForModularSetGivenComplicationDescriptors:v12 widgetDescriptorsAdditionalData:v11 aggregatedAppLaunchData:v10 bundleIdToCompanionBundleId:v9 checkEligibility:0];
+  idCopy = id;
+  launchDataCopy = launchData;
+  dataCopy = data;
+  modularComplicationWidgetDescriptors = [(ATXWidgetDescriptorCache *)descriptorCache modularComplicationWidgetDescriptors];
+  v13 = [(ATXComplicationSuggestionScorer *)self->_complicationScorer scoredComplicationDescriptorsForModularSetGivenComplicationDescriptors:modularComplicationWidgetDescriptors widgetDescriptorsAdditionalData:dataCopy aggregatedAppLaunchData:launchDataCopy bundleIdToCompanionBundleId:idCopy checkEligibility:0];
 
   return v13;
 }
 
-- (id)landscapeModularSetsDictsWithWidgetDescriptorsAdditionalData:(id)a3 aggregatedAppLaunchData:(id)a4 bundleIdToCompanionBundleId:(id)a5 portraitSets:(id)a6
+- (id)landscapeModularSetsDictsWithWidgetDescriptorsAdditionalData:(id)data aggregatedAppLaunchData:(id)launchData bundleIdToCompanionBundleId:(id)id portraitSets:(id)sets
 {
   v30 = *MEMORY[0x277D85DE8];
-  v24 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  dataCopy = data;
+  launchDataCopy = launchData;
+  idCopy = id;
+  setsCopy = sets;
   v13 = objc_opt_new();
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  obj = v12;
+  obj = setsCopy;
   v14 = [obj countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v14)
   {
@@ -965,7 +965,7 @@ id __88__ATXComplicationSuggestionGenerator__recentLandscapeComplicationsWithPre
 
         v18 = [(ATXComplicationSuggestionGenerator *)self _presetLandscapeComplicationsFromPortraitSet:*(*(&v25 + 1) + 8 * i)];
         v19 = [v18 mutableCopy];
-        v20 = [(ATXComplicationSuggestionGenerator *)self landscapeModularSetsWithWidgetDescriptorsAdditionalData:v24 aggregatedAppLaunchData:v10 bundleIdToCompanionBundleId:v11 presetPortraitComplications:v19];
+        v20 = [(ATXComplicationSuggestionGenerator *)self landscapeModularSetsWithWidgetDescriptorsAdditionalData:dataCopy aggregatedAppLaunchData:launchDataCopy bundleIdToCompanionBundleId:idCopy presetPortraitComplications:v19];
 
         [v13 addObject:v20];
       }
@@ -981,30 +981,30 @@ id __88__ATXComplicationSuggestionGenerator__recentLandscapeComplicationsWithPre
   return v13;
 }
 
-- (id)landscapeModularSetsWithWidgetDescriptorsAdditionalData:(id)a3 aggregatedAppLaunchData:(id)a4 bundleIdToCompanionBundleId:(id)a5 presetPortraitComplications:(id)a6
+- (id)landscapeModularSetsWithWidgetDescriptorsAdditionalData:(id)data aggregatedAppLaunchData:(id)launchData bundleIdToCompanionBundleId:(id)id presetPortraitComplications:(id)complications
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dataCopy = data;
+  launchDataCopy = launchData;
+  idCopy = id;
+  complicationsCopy = complications;
   v14 = objc_autoreleasePoolPush();
   if ([(ATXComplicationSuggestionParameters *)self->_parameters alwaysUseFallbackSets])
   {
-    v15 = [(ATXComplicationSuggestionGenerator *)self _landscapeModularFallbackSets];
+    _landscapeModularFallbackSets = [(ATXComplicationSuggestionGenerator *)self _landscapeModularFallbackSets];
     goto LABEL_14;
   }
 
   v51 = v14;
   v16 = objc_opt_new();
-  v57 = [(ATXComplicationSuggestionGenerator *)self _landscapeModularSetDescriptors_ShouldRefresh:0 widgetDescriptorsAdditionalData:v10 aggregatedAppLaunchData:v11 bundleIdToCompanionBundleId:v12];
-  v55 = v10;
+  v57 = [(ATXComplicationSuggestionGenerator *)self _landscapeModularSetDescriptors_ShouldRefresh:0 widgetDescriptorsAdditionalData:dataCopy aggregatedAppLaunchData:launchDataCopy bundleIdToCompanionBundleId:idCopy];
+  v55 = dataCopy;
   v56 = objc_opt_new();
-  v53 = v12;
-  v54 = v11;
-  v52 = v13;
-  if (v13)
+  v53 = idCopy;
+  v54 = launchDataCopy;
+  v52 = complicationsCopy;
+  if (complicationsCopy)
   {
-    v17 = [(ATXComplicationSuggestionGenerator *)self _recentLandscapeComplicationsWithPresetDictionary:v13];
+    v17 = [(ATXComplicationSuggestionGenerator *)self _recentLandscapeComplicationsWithPresetDictionary:complicationsCopy];
   }
 
   else
@@ -1017,16 +1017,16 @@ id __88__ATXComplicationSuggestionGenerator__recentLandscapeComplicationsWithPre
   v20 = *MEMORY[0x277CEB1F0];
   v49 = *MEMORY[0x277CEB1F0];
   v21 = [v17 objectForKeyedSubscript:*MEMORY[0x277CEB1F0]];
-  v22 = [v21 complications];
-  v23 = [(ATXComplicationSuggestionGenerator *)self _getComplicationsOfFamily:1 descriptors:v57 alreadyAddedDescriptors:v56 presetComplications:v22 limit:2];
+  complications = [v21 complications];
+  v23 = [(ATXComplicationSuggestionGenerator *)self _getComplicationsOfFamily:1 descriptors:v57 alreadyAddedDescriptors:v56 presetComplications:complications limit:2];
   v24 = [v19 initWithComplications:v23];
   [v16 setObject:v24 forKeyedSubscript:v20];
 
   v25 = objc_alloc(MEMORY[0x277CEB418]);
   v26 = *MEMORY[0x277CEB1E8];
   v27 = [v17 objectForKeyedSubscript:*MEMORY[0x277CEB1E8]];
-  v28 = [v27 complications];
-  [(ATXComplicationSuggestionGenerator *)self _getComplicationsOfFamily:11 descriptors:v57 alreadyAddedDescriptors:v56 presetComplications:v28 limit:2];
+  complications2 = [v27 complications];
+  [(ATXComplicationSuggestionGenerator *)self _getComplicationsOfFamily:11 descriptors:v57 alreadyAddedDescriptors:v56 presetComplications:complications2 limit:2];
   v30 = v29 = v16;
   v31 = [v25 initWithComplications:v30];
   v48 = v26;
@@ -1036,22 +1036,22 @@ id __88__ATXComplicationSuggestionGenerator__recentLandscapeComplicationsWithPre
   v33 = *MEMORY[0x277CEB1E0];
   v50 = v17;
   v34 = [v17 objectForKeyedSubscript:*MEMORY[0x277CEB1E0]];
-  v35 = [v34 complications];
-  v36 = [(ATXComplicationSuggestionGenerator *)self _getComplicationsOfFamily:10 descriptors:v57 alreadyAddedDescriptors:v56 presetComplications:v35 limit:4];
+  complications3 = [v34 complications];
+  v36 = [(ATXComplicationSuggestionGenerator *)self _getComplicationsOfFamily:10 descriptors:v57 alreadyAddedDescriptors:v56 presetComplications:complications3 limit:4];
   v37 = [v32 initWithComplications:v36];
   [v29 setObject:v37 forKeyedSubscript:v33];
 
   v38 = v29;
   v39 = [v29 objectForKeyedSubscript:v49];
-  v40 = [v39 complications];
-  if ([v40 count] != 2)
+  complications4 = [v39 complications];
+  if ([complications4 count] != 2)
   {
     goto LABEL_11;
   }
 
   v41 = [v29 objectForKeyedSubscript:v48];
-  v42 = [v41 complications];
-  if ([v42 count] != 2)
+  complications5 = [v41 complications];
+  if ([complications5 count] != 2)
   {
 
 LABEL_11:
@@ -1059,43 +1059,43 @@ LABEL_11:
   }
 
   v43 = [v29 objectForKeyedSubscript:v33];
-  v44 = [v43 complications];
-  v45 = [v44 count];
+  complications6 = [v43 complications];
+  v45 = [complications6 count];
 
   v38 = v29;
   if (v45 != 4)
   {
 LABEL_12:
-    v46 = [(ATXComplicationSuggestionGenerator *)self _landscapeModularFallbackSets];
+    _landscapeModularFallbackSets2 = [(ATXComplicationSuggestionGenerator *)self _landscapeModularFallbackSets];
     goto LABEL_13;
   }
 
-  v46 = [v29 copy];
+  _landscapeModularFallbackSets2 = [v29 copy];
 LABEL_13:
-  v15 = v46;
-  v11 = v54;
-  v10 = v55;
-  v13 = v52;
-  v12 = v53;
+  _landscapeModularFallbackSets = _landscapeModularFallbackSets2;
+  launchDataCopy = v54;
+  dataCopy = v55;
+  complicationsCopy = v52;
+  idCopy = v53;
 
   v14 = v51;
 LABEL_14:
   objc_autoreleasePoolPop(v14);
 
-  return v15;
+  return _landscapeModularFallbackSets;
 }
 
-- (id)_landscapeModularSetDescriptors_ShouldRefresh:(BOOL)a3 widgetDescriptorsAdditionalData:(id)a4 aggregatedAppLaunchData:(id)a5 bundleIdToCompanionBundleId:(id)a6
+- (id)_landscapeModularSetDescriptors_ShouldRefresh:(BOOL)refresh widgetDescriptorsAdditionalData:(id)data aggregatedAppLaunchData:(id)launchData bundleIdToCompanionBundleId:(id)id
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(ATXComplicationSuggestionCache *)self->_complicationSuggestionCache fetchLandscapeModularSetComplicationDescriptors];
-  v14 = v13;
-  if (a3 || ![v13 count])
+  dataCopy = data;
+  launchDataCopy = launchData;
+  idCopy = id;
+  fetchLandscapeModularSetComplicationDescriptors = [(ATXComplicationSuggestionCache *)self->_complicationSuggestionCache fetchLandscapeModularSetComplicationDescriptors];
+  v14 = fetchLandscapeModularSetComplicationDescriptors;
+  if (refresh || ![fetchLandscapeModularSetComplicationDescriptors count])
   {
-    v16 = [(ATXWidgetDescriptorCache *)self->_descriptorCache landscapeModularComplicationWidgetDescriptors];
-    v15 = [(ATXComplicationSuggestionScorer *)self->_complicationScorer complicationDescriptorsForModularSetGivenComplicationDescriptors:v16 widgetDescriptorsAdditionalData:v10 aggregatedAppLaunchData:v11 bundleIdToCompanionBundleId:v12];
+    landscapeModularComplicationWidgetDescriptors = [(ATXWidgetDescriptorCache *)self->_descriptorCache landscapeModularComplicationWidgetDescriptors];
+    v15 = [(ATXComplicationSuggestionScorer *)self->_complicationScorer complicationDescriptorsForModularSetGivenComplicationDescriptors:landscapeModularComplicationWidgetDescriptors widgetDescriptorsAdditionalData:dataCopy aggregatedAppLaunchData:launchDataCopy bundleIdToCompanionBundleId:idCopy];
     if (![(ATXComplicationSuggestionCache *)self->_complicationSuggestionCache writeComplicationsInlineSetCache:v15])
     {
       v17 = __atxlog_handle_lock_screen();
@@ -1115,12 +1115,12 @@ LABEL_14:
   return v15;
 }
 
-- (id)_getComplicationsOfFamily:(int64_t)a3 descriptors:(id)a4 alreadyAddedDescriptors:(id)a5 presetComplications:(id)a6 limit:(unint64_t)a7
+- (id)_getComplicationsOfFamily:(int64_t)family descriptors:(id)descriptors alreadyAddedDescriptors:(id)addedDescriptors presetComplications:(id)complications limit:(unint64_t)limit
 {
   v54 = *MEMORY[0x277D85DE8];
-  v36 = a4;
-  v11 = a5;
-  v12 = a6;
+  descriptorsCopy = descriptors;
+  addedDescriptorsCopy = addedDescriptors;
+  complicationsCopy = complications;
   v38 = objc_opt_new();
   v42 = objc_opt_new();
   v40 = +[ATXLockscreenBlacklist appsLockedOrHiddenByAppProtection];
@@ -1128,7 +1128,7 @@ LABEL_14:
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
-  obj = v12;
+  obj = complicationsCopy;
   v13 = [obj countByEnumeratingWithState:&v48 objects:v53 count:16];
   if (v13)
   {
@@ -1143,14 +1143,14 @@ LABEL_3:
         objc_enumerationMutation(obj);
       }
 
-      if (!a7)
+      if (!limit)
       {
         goto LABEL_21;
       }
 
       v17 = *(*(&v48 + 1) + 8 * v16);
-      v18 = [v17 widgetDescriptor];
-      if (([v11 containsObject:v18] & 1) == 0)
+      widgetDescriptor = [v17 widgetDescriptor];
+      if (([addedDescriptorsCopy containsObject:widgetDescriptor] & 1) == 0)
       {
         break;
       }
@@ -1169,23 +1169,23 @@ LABEL_19:
       }
     }
 
-    v19 = [v17 containerBundleIdentifier];
-    if (v19)
+    containerBundleIdentifier = [v17 containerBundleIdentifier];
+    if (containerBundleIdentifier)
     {
-      v20 = v19;
+      extensionBundleIdentifier = containerBundleIdentifier;
     }
 
     else
     {
-      v20 = [v17 extensionBundleIdentifier];
-      if (!v20)
+      extensionBundleIdentifier = [v17 extensionBundleIdentifier];
+      if (!extensionBundleIdentifier)
       {
         v21 = 1;
         goto LABEL_14;
       }
     }
 
-    if ([v42 containsObject:v20])
+    if ([v42 containsObject:extensionBundleIdentifier])
     {
 LABEL_18:
 
@@ -1197,13 +1197,13 @@ LABEL_14:
     if ([(ATXComplicationSuggestionGenerator *)self _shouldAddComplication:v17 andFilterFromAppsDisabledByAppProtection:v40])
     {
       [v38 addObject:v17];
-      [v11 addObject:v18];
+      [addedDescriptorsCopy addObject:widgetDescriptor];
       if ((v21 & 1) == 0)
       {
-        [v42 addObject:v20];
+        [v42 addObject:extensionBundleIdentifier];
       }
 
-      --a7;
+      --limit;
     }
 
     goto LABEL_18;
@@ -1215,7 +1215,7 @@ LABEL_21:
   v47 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v22 = v36;
+  v22 = descriptorsCopy;
   v23 = [v22 countByEnumeratingWithState:&v44 objects:v52 count:16];
   if (v23)
   {
@@ -1231,13 +1231,13 @@ LABEL_23:
         objc_enumerationMutation(v22);
       }
 
-      if (!a7)
+      if (!limit)
       {
         goto LABEL_45;
       }
 
       v27 = *(*(&v44 + 1) + 8 * v26);
-      if (([v11 containsObject:v27] & 1) == 0)
+      if (([addedDescriptorsCopy containsObject:v27] & 1) == 0)
       {
         break;
       }
@@ -1255,25 +1255,25 @@ LABEL_43:
       }
     }
 
-    v28 = [v27 extensionIdentity];
-    v29 = [v28 containerBundleIdentifier];
-    if (v29)
+    extensionIdentity = [v27 extensionIdentity];
+    containerBundleIdentifier2 = [extensionIdentity containerBundleIdentifier];
+    if (containerBundleIdentifier2)
     {
-      v30 = v29;
+      extensionBundleIdentifier2 = containerBundleIdentifier2;
     }
 
     else
     {
-      v30 = [v27 extensionBundleIdentifier];
+      extensionBundleIdentifier2 = [v27 extensionBundleIdentifier];
 
-      if (!v30)
+      if (!extensionBundleIdentifier2)
       {
         v31 = 1;
         goto LABEL_34;
       }
     }
 
-    if ([v42 containsObject:{v30, v37}])
+    if ([v42 containsObject:{extensionBundleIdentifier2, v37}])
     {
 LABEL_42:
 
@@ -1286,15 +1286,15 @@ LABEL_34:
     [v27 supportedFamilies];
     if (CHSWidgetFamilyMaskContainsFamily() && (CHSWidgetFamilyMaskContainsFamily() & 1) == 0)
     {
-      v32 = [objc_alloc(MEMORY[0x277CEB410]) initWithWidgetDescriptor:v27 widgetFamily:a3 intent:0 source:2];
+      v32 = [objc_alloc(MEMORY[0x277CEB410]) initWithWidgetDescriptor:v27 widgetFamily:family intent:0 source:2];
       [v38 addObject:v32];
-      [v11 addObject:v27];
+      [addedDescriptorsCopy addObject:v27];
       if ((v31 & 1) == 0)
       {
-        [v42 addObject:v30];
+        [v42 addObject:extensionBundleIdentifier2];
       }
 
-      --a7;
+      --limit;
       v22 = v37;
     }
 
@@ -1320,10 +1320,10 @@ LABEL_45:
   return v33;
 }
 
-- (id)_presetLandscapeComplicationsFromPortraitSet:(id)a3
+- (id)_presetLandscapeComplicationsFromPortraitSet:(id)set
 {
   v29 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  setCopy = set;
   v22 = objc_opt_new();
   v4 = objc_opt_new();
   v5 = objc_opt_new();
@@ -1332,8 +1332,8 @@ LABEL_45:
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v7 = [v3 complications];
-  v8 = [v7 countByEnumeratingWithState:&v23 objects:v28 count:16];
+  complications = [setCopy complications];
+  v8 = [complications countByEnumeratingWithState:&v23 objects:v28 count:16];
   if (v8)
   {
     v9 = v8;
@@ -1344,25 +1344,25 @@ LABEL_45:
       {
         if (*v24 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(complications);
         }
 
         v12 = *(*(&v23 + 1) + 8 * i);
-        v13 = [v12 widgetFamily];
-        if (v13 == 1)
+        widgetFamily = [v12 widgetFamily];
+        if (widgetFamily == 1)
         {
           v15 = v6;
           goto LABEL_12;
         }
 
-        v14 = v13;
-        if (v13 == 11)
+        v14 = widgetFamily;
+        if (widgetFamily == 11)
         {
           v15 = v5;
           goto LABEL_12;
         }
 
-        if (v13 == 10)
+        if (widgetFamily == 10)
         {
           v15 = v4;
 LABEL_12:
@@ -1377,7 +1377,7 @@ LABEL_12:
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v23 objects:v28 count:16];
+      v9 = [complications countByEnumeratingWithState:&v23 objects:v28 count:16];
     }
 
     while (v9);
@@ -1402,12 +1402,12 @@ LABEL_12:
   v51 = *MEMORY[0x277D85DE8];
   v38 = +[ATXLockscreenBlacklist appsLockedOrHiddenByAppProtection];
   v3 = objc_opt_new();
-  v37 = self;
-  v4 = [(ATXComplicationSuggestionGenerator *)self _recentInlineComplications];
-  v5 = v4;
-  if (v4)
+  selfCopy = self;
+  _recentInlineComplications = [(ATXComplicationSuggestionGenerator *)self _recentInlineComplications];
+  v5 = _recentInlineComplications;
+  if (_recentInlineComplications)
   {
-    v6 = [v4 count];
+    v6 = [_recentInlineComplications count];
     if (v6 >= 3)
     {
       v7 = 3;
@@ -1451,11 +1451,11 @@ LABEL_12:
           }
 
           v18 = *(*(&v45 + 1) + 8 * i);
-          v19 = [v18 containerBundleIdentifier];
-          if (v19)
+          containerBundleIdentifier = [v18 containerBundleIdentifier];
+          if (containerBundleIdentifier)
           {
-            v20 = [v18 containerBundleIdentifier];
-            [v12 addObject:v20];
+            containerBundleIdentifier2 = [v18 containerBundleIdentifier];
+            [v12 addObject:containerBundleIdentifier2];
           }
         }
 
@@ -1465,7 +1465,7 @@ LABEL_12:
       while (v15);
     }
 
-    [(ATXComplicationSuggestionGenerator *)v37 _inlineSetDescriptors_ShouldRefresh:0];
+    [(ATXComplicationSuggestionGenerator *)selfCopy _inlineSetDescriptors_ShouldRefresh:0];
     v41 = 0u;
     v42 = 0u;
     v43 = 0u;
@@ -1491,18 +1491,18 @@ LABEL_18:
         }
 
         v26 = *(*(&v41 + 1) + 8 * v25);
-        v27 = [v26 extensionIdentity];
-        v28 = [v27 containerBundleIdentifier];
-        if (v28)
+        extensionIdentity = [v26 extensionIdentity];
+        containerBundleIdentifier3 = [extensionIdentity containerBundleIdentifier];
+        if (containerBundleIdentifier3)
         {
-          v29 = v28;
+          extensionBundleIdentifier = containerBundleIdentifier3;
         }
 
         else
         {
-          v29 = [v26 extensionBundleIdentifier];
+          extensionBundleIdentifier = [v26 extensionBundleIdentifier];
 
-          if (!v29)
+          if (!extensionBundleIdentifier)
           {
             v30 = 1;
 LABEL_28:
@@ -1511,12 +1511,12 @@ LABEL_28:
             if (CHSWidgetFamilyMaskContainsFamily() && (CHSWidgetFamilyMaskContainsFamily() & 1) == 0)
             {
               v31 = [objc_alloc(MEMORY[0x277CEB410]) initWithWidgetDescriptor:v26 widgetFamily:12 intent:0 source:2];
-              if ([(ATXComplicationSuggestionGenerator *)v37 _shouldAddComplication:v31 andFilterFromAppsDisabledByAppProtection:v38])
+              if ([(ATXComplicationSuggestionGenerator *)selfCopy _shouldAddComplication:v31 andFilterFromAppsDisabledByAppProtection:v38])
               {
                 [v13 addObject:v31];
                 if ((v30 & 1) == 0)
                 {
-                  [v12 addObject:v29];
+                  [v12 addObject:extensionBundleIdentifier];
                 }
 
                 --v23;
@@ -1537,7 +1537,7 @@ LABEL_28:
           }
         }
 
-        if (([v12 containsObject:v29] & 1) == 0)
+        if (([v12 containsObject:extensionBundleIdentifier] & 1) == 0)
         {
           v30 = 0;
           goto LABEL_28;
@@ -1577,14 +1577,14 @@ LABEL_37:
   return v32;
 }
 
-- (id)_inlineSetDescriptors_ShouldRefresh:(BOOL)a3
+- (id)_inlineSetDescriptors_ShouldRefresh:(BOOL)refresh
 {
-  v5 = [(ATXComplicationSuggestionCache *)self->_complicationSuggestionCache fetchInlineSetComplicationDescriptors];
-  v6 = v5;
-  if (a3 || ![v5 count])
+  fetchInlineSetComplicationDescriptors = [(ATXComplicationSuggestionCache *)self->_complicationSuggestionCache fetchInlineSetComplicationDescriptors];
+  v6 = fetchInlineSetComplicationDescriptors;
+  if (refresh || ![fetchInlineSetComplicationDescriptors count])
   {
-    v8 = [(ATXWidgetDescriptorCache *)self->_descriptorCache inlineComplicationWidgetDescriptors];
-    v7 = [(ATXComplicationSuggestionScorer *)self->_complicationScorer complicationDescriptorsForInlineSetGivenComplicationDescriptors:v8];
+    inlineComplicationWidgetDescriptors = [(ATXWidgetDescriptorCache *)self->_descriptorCache inlineComplicationWidgetDescriptors];
+    v7 = [(ATXComplicationSuggestionScorer *)self->_complicationScorer complicationDescriptorsForInlineSetGivenComplicationDescriptors:inlineComplicationWidgetDescriptors];
     if (![(ATXComplicationSuggestionCache *)self->_complicationSuggestionCache writeComplicationsInlineSetCache:v7])
     {
       v9 = __atxlog_handle_lock_screen();
@@ -1606,8 +1606,8 @@ LABEL_37:
 
 - (id)_scoredInlineComplicationDescriptors
 {
-  v3 = [(ATXWidgetDescriptorCache *)self->_descriptorCache inlineComplicationWidgetDescriptors];
-  v4 = [(ATXComplicationSuggestionScorer *)self->_complicationScorer scoredComplicationDescriptorsForInlineSetGivenComplicationDescriptors:v3];
+  inlineComplicationWidgetDescriptors = [(ATXWidgetDescriptorCache *)self->_descriptorCache inlineComplicationWidgetDescriptors];
+  v4 = [(ATXComplicationSuggestionScorer *)self->_complicationScorer scoredComplicationDescriptorsForInlineSetGivenComplicationDescriptors:inlineComplicationWidgetDescriptors];
 
   return v4;
 }
@@ -1633,40 +1633,40 @@ LABEL_37:
   }
 
   v9 = objc_alloc_init(MEMORY[0x277CEB388]);
-  v10 = [v9 rawLaunchCountAndDistinctDaysLaunchedOverLast28DaysForAllApps];
+  rawLaunchCountAndDistinctDaysLaunchedOverLast28DaysForAllApps = [v9 rawLaunchCountAndDistinctDaysLaunchedOverLast28DaysForAllApps];
 
-  v11 = [v10 allKeys];
-  v12 = [_TtC21AppPredictionInternal26ATXCompanionBundleIdMapper generateMappingForAppBundleIds:v11];
-  v13 = [(ATXComplicationSuggestionGenerator *)self _scoredModularComplicationDescriptorsWithWidgetDescriptorsAdditionalData:v7 aggregatedAppLaunchData:v10 bundleIdToCompanionBundleId:v12];
+  allKeys = [rawLaunchCountAndDistinctDaysLaunchedOverLast28DaysForAllApps allKeys];
+  v12 = [_TtC21AppPredictionInternal26ATXCompanionBundleIdMapper generateMappingForAppBundleIds:allKeys];
+  v13 = [(ATXComplicationSuggestionGenerator *)self _scoredModularComplicationDescriptorsWithWidgetDescriptorsAdditionalData:v7 aggregatedAppLaunchData:rawLaunchCountAndDistinctDaysLaunchedOverLast28DaysForAllApps bundleIdToCompanionBundleId:v12];
   v14 = [(ATXComplicationSuggestionGenerator *)self descriptionForScoredSet:v13];
 
   [v3 appendString:v14];
   [v3 appendString:@"\nInline Set Scores:\n"];
-  v15 = [(ATXComplicationSuggestionGenerator *)self _scoredInlineComplicationDescriptors];
-  v16 = [(ATXComplicationSuggestionGenerator *)self descriptionForScoredSet:v15];
+  _scoredInlineComplicationDescriptors = [(ATXComplicationSuggestionGenerator *)self _scoredInlineComplicationDescriptors];
+  v16 = [(ATXComplicationSuggestionGenerator *)self descriptionForScoredSet:_scoredInlineComplicationDescriptors];
 
   [v3 appendString:v16];
 
   return v3;
 }
 
-- (id)inputDescriptionForComplicationSuggestionSignal:(id)a3
+- (id)inputDescriptionForComplicationSuggestionSignal:(id)signal
 {
   descriptorCache = self->_descriptorCache;
-  v5 = a3;
-  v6 = [(ATXWidgetDescriptorCache *)descriptorCache complicationWidgetDescriptors];
-  v7 = [(ATXComplicationSuggestionScorer *)self->_complicationScorer inputDescriptionForSignal:v5 complicationDescriptors:v6];
+  signalCopy = signal;
+  complicationWidgetDescriptors = [(ATXWidgetDescriptorCache *)descriptorCache complicationWidgetDescriptors];
+  v7 = [(ATXComplicationSuggestionScorer *)self->_complicationScorer inputDescriptionForSignal:signalCopy complicationDescriptors:complicationWidgetDescriptors];
 
   return v7;
 }
 
-- (id)descriptionForScoredSet:(id)a3
+- (id)descriptionForScoredSet:(id)set
 {
   v34 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  setCopy = set;
   v4 = objc_opt_new();
-  v28 = v3;
-  [v3 keysSortedByValueUsingComparator:&__block_literal_global_45];
+  v28 = setCopy;
+  [setCopy keysSortedByValueUsingComparator:&__block_literal_global_45];
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
@@ -1694,17 +1694,17 @@ LABEL_37:
         if ((v12 & 1) == 0)
         {
           v13 = MEMORY[0x277CCACA8];
-          v27 = [v10 extensionIdentity];
-          v14 = [v27 containerBundleIdentifier];
-          v15 = [v10 extensionBundleIdentifier];
-          v16 = [v10 kind];
+          extensionIdentity = [v10 extensionIdentity];
+          containerBundleIdentifier = [extensionIdentity containerBundleIdentifier];
+          extensionBundleIdentifier = [v10 extensionBundleIdentifier];
+          kind = [v10 kind];
           [v10 supportedFamilies];
           CHSWidgetFamilyMaskDescription();
           v17 = v6;
           v18 = v8;
           v20 = v19 = v7;
           v21 = [v28 objectForKeyedSubscript:v10];
-          v22 = [v13 stringWithFormat:@"\nContainer: %@\nExtension: %@\nKind: %@\nFamilies:%@\nScore: %@\n", v14, v15, v16, v20, v21];
+          v22 = [v13 stringWithFormat:@"\nContainer: %@\nExtension: %@\nKind: %@\nFamilies:%@\nScore: %@\n", containerBundleIdentifier, extensionBundleIdentifier, kind, v20, v21];
 
           v7 = v19;
           v8 = v18;
@@ -1728,41 +1728,41 @@ LABEL_37:
   return v4;
 }
 
-- (int64_t)_layoutTypeForSet:(id)a3
+- (int64_t)_layoutTypeForSet:(id)set
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  setCopy = set;
+  v4 = setCopy;
+  if (!setCopy)
   {
     v17 = 0;
     goto LABEL_22;
   }
 
-  v5 = [v3 complications];
-  v6 = [v5 count];
+  complications = [setCopy complications];
+  v6 = [complications count];
 
-  v7 = [v4 complications];
-  v8 = v7;
+  complications2 = [v4 complications];
+  complications6 = complications2;
   if (v6 != 4)
   {
-    v18 = [v7 count];
+    v18 = [complications2 count];
 
-    v19 = [v4 complications];
-    v8 = v19;
+    complications3 = [v4 complications];
+    complications6 = complications3;
     if (v18 == 3)
     {
-      v9 = [v19 objectAtIndexedSubscript:0];
+      v9 = [complications3 objectAtIndexedSubscript:0];
       if ([v9 widgetFamily] == 11)
       {
-        v10 = [v4 complications];
-        v11 = [v10 objectAtIndexedSubscript:1];
+        complications4 = [v4 complications];
+        v11 = [complications4 objectAtIndexedSubscript:1];
         if ([v11 widgetFamily] == 10)
         {
-          v20 = [v4 complications];
-          v21 = [v20 objectAtIndexedSubscript:2];
-          v22 = [v21 widgetFamily];
+          complications5 = [v4 complications];
+          v21 = [complications5 objectAtIndexedSubscript:2];
+          widgetFamily = [v21 widgetFamily];
 
-          if (v22 == 10)
+          if (widgetFamily == 10)
           {
             v17 = 3;
             goto LABEL_22;
@@ -1779,23 +1779,23 @@ LABEL_21:
 
     else
     {
-      v23 = [v19 count];
+      v23 = [complications3 count];
 
       if (v23 != 2)
       {
         goto LABEL_21;
       }
 
-      v8 = [v4 complications];
-      v9 = [v8 objectAtIndexedSubscript:0];
+      complications6 = [v4 complications];
+      v9 = [complications6 objectAtIndexedSubscript:0];
       if ([v9 widgetFamily] == 11)
       {
-        v24 = [v4 complications];
+        complications7 = [v4 complications];
         v17 = 1;
-        v25 = [v24 objectAtIndexedSubscript:1];
-        v26 = [v25 widgetFamily];
+        v25 = [complications7 objectAtIndexedSubscript:1];
+        widgetFamily2 = [v25 widgetFamily];
 
-        if (v26 == 11)
+        if (widgetFamily2 == 11)
         {
           goto LABEL_22;
         }
@@ -1809,14 +1809,14 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  v9 = [v7 objectAtIndexedSubscript:0];
+  v9 = [complications2 objectAtIndexedSubscript:0];
   if ([v9 widgetFamily] != 10)
   {
     goto LABEL_20;
   }
 
-  v10 = [v4 complications];
-  v11 = [v10 objectAtIndexedSubscript:1];
+  complications4 = [v4 complications];
+  v11 = [complications4 objectAtIndexedSubscript:1];
   if ([v11 widgetFamily] != 10)
   {
 LABEL_19:
@@ -1824,19 +1824,19 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  v12 = [v4 complications];
-  v13 = [v12 objectAtIndexedSubscript:2];
+  complications8 = [v4 complications];
+  v13 = [complications8 objectAtIndexedSubscript:2];
   if ([v13 widgetFamily] != 10)
   {
 
     goto LABEL_19;
   }
 
-  v14 = [v4 complications];
-  v15 = [v14 objectAtIndexedSubscript:3];
-  v16 = [v15 widgetFamily];
+  complications9 = [v4 complications];
+  v15 = [complications9 objectAtIndexedSubscript:3];
+  widgetFamily3 = [v15 widgetFamily];
 
-  if (v16 != 10)
+  if (widgetFamily3 != 10)
   {
     goto LABEL_21;
   }
@@ -1847,16 +1847,16 @@ LABEL_22:
   return v17;
 }
 
-- (id)_modularLayoutTypesGivenRecentsLayoutType:(int64_t)a3
+- (id)_modularLayoutTypesGivenRecentsLayoutType:(int64_t)type
 {
-  if (a3 > 4)
+  if (type > 4)
   {
     return &unk_283A58010;
   }
 
   else
   {
-    return qword_27859CFD8[a3];
+    return qword_27859CFD8[type];
   }
 }
 
@@ -1864,15 +1864,15 @@ LABEL_22:
 {
   v28 = *MEMORY[0x277D85DE8];
   v3 = objc_opt_new();
-  v4 = [(ATXWidgetDescriptorCache *)self->_descriptorCache landscapeModularComplicationWidgetDescriptors];
+  landscapeModularComplicationWidgetDescriptors = [(ATXWidgetDescriptorCache *)self->_descriptorCache landscapeModularComplicationWidgetDescriptors];
   v5 = objc_opt_new();
   v6 = +[ATXLockscreenBlacklist appsLockedOrHiddenByAppProtection];
-  v7 = [(ATXComplicationSuggestionParameters *)self->_parameters fallbackSetsForSet1];
-  v8 = v7;
-  if (v7)
+  fallbackSetsForSet1 = [(ATXComplicationSuggestionParameters *)self->_parameters fallbackSetsForSet1];
+  v8 = fallbackSetsForSet1;
+  if (fallbackSetsForSet1)
   {
-    v9 = [v7 objectAtIndexedSubscript:{arc4random_uniform(objc_msgSend(v7, "count"))}];
-    v10 = [(ATXComplicationSuggestionGenerator *)self _complicationsFromFallbackSet:v9 complicationDescriptors:v4 alreadyAddedDescriptors:v5 andFilterFromAppsDisabledByAppProtection:v6];
+    v9 = [fallbackSetsForSet1 objectAtIndexedSubscript:{arc4random_uniform(objc_msgSend(fallbackSetsForSet1, "count"))}];
+    v10 = [(ATXComplicationSuggestionGenerator *)self _complicationsFromFallbackSet:v9 complicationDescriptors:landscapeModularComplicationWidgetDescriptors alreadyAddedDescriptors:v5 andFilterFromAppsDisabledByAppProtection:v6];
 
     if (v10)
     {
@@ -1881,12 +1881,12 @@ LABEL_22:
     }
   }
 
-  v12 = [(ATXComplicationSuggestionParameters *)self->_parameters fallbackSetsForSet2];
-  v13 = v12;
-  if (v12)
+  fallbackSetsForSet2 = [(ATXComplicationSuggestionParameters *)self->_parameters fallbackSetsForSet2];
+  v13 = fallbackSetsForSet2;
+  if (fallbackSetsForSet2)
   {
-    v14 = [v12 objectAtIndexedSubscript:{arc4random_uniform(objc_msgSend(v12, "count"))}];
-    v15 = [(ATXComplicationSuggestionGenerator *)self _complicationsFromFallbackSet:v14 complicationDescriptors:v4 alreadyAddedDescriptors:v5 andFilterFromAppsDisabledByAppProtection:v6];
+    v14 = [fallbackSetsForSet2 objectAtIndexedSubscript:{arc4random_uniform(objc_msgSend(fallbackSetsForSet2, "count"))}];
+    v15 = [(ATXComplicationSuggestionGenerator *)self _complicationsFromFallbackSet:v14 complicationDescriptors:landscapeModularComplicationWidgetDescriptors alreadyAddedDescriptors:v5 andFilterFromAppsDisabledByAppProtection:v6];
 
     if (v15)
     {
@@ -1895,12 +1895,12 @@ LABEL_22:
     }
   }
 
-  v17 = [(ATXComplicationSuggestionParameters *)self->_parameters fallbackSetsForSet3];
-  v18 = v17;
-  if (v17)
+  fallbackSetsForSet3 = [(ATXComplicationSuggestionParameters *)self->_parameters fallbackSetsForSet3];
+  v18 = fallbackSetsForSet3;
+  if (fallbackSetsForSet3)
   {
-    v19 = [v17 objectAtIndexedSubscript:{arc4random_uniform(objc_msgSend(v17, "count"))}];
-    v20 = [(ATXComplicationSuggestionGenerator *)self _complicationsFromFallbackSet:v19 complicationDescriptors:v4 alreadyAddedDescriptors:v5 andFilterFromAppsDisabledByAppProtection:v6];
+    v19 = [fallbackSetsForSet3 objectAtIndexedSubscript:{arc4random_uniform(objc_msgSend(fallbackSetsForSet3, "count"))}];
+    v20 = [(ATXComplicationSuggestionGenerator *)self _complicationsFromFallbackSet:v19 complicationDescriptors:landscapeModularComplicationWidgetDescriptors alreadyAddedDescriptors:v5 andFilterFromAppsDisabledByAppProtection:v6];
 
     if (v20)
     {
@@ -1928,17 +1928,17 @@ LABEL_22:
   v38 = *MEMORY[0x277D85DE8];
   v3 = objc_opt_new();
   v4 = +[ATXLockscreenBlacklist appsLockedOrHiddenByAppProtection];
-  v5 = [(ATXWidgetDescriptorCache *)self->_descriptorCache landscapeModularComplicationWidgetDescriptors];
+  landscapeModularComplicationWidgetDescriptors = [(ATXWidgetDescriptorCache *)self->_descriptorCache landscapeModularComplicationWidgetDescriptors];
   v6 = objc_opt_new();
-  v7 = [(ATXComplicationSuggestionParameters *)self->_parameters fallbackSetForLandscape];
-  v8 = v7;
-  if (v7)
+  fallbackSetForLandscape = [(ATXComplicationSuggestionParameters *)self->_parameters fallbackSetForLandscape];
+  v8 = fallbackSetForLandscape;
+  if (fallbackSetForLandscape)
   {
-    v9 = [v7 objectAtIndexedSubscript:{arc4random_uniform(objc_msgSend(v7, "count"))}];
+    v9 = [fallbackSetForLandscape objectAtIndexedSubscript:{arc4random_uniform(objc_msgSend(fallbackSetForLandscape, "count"))}];
     v30 = v6;
-    v31 = v5;
+    v31 = landscapeModularComplicationWidgetDescriptors;
     v32 = v4;
-    v10 = [(ATXComplicationSuggestionGenerator *)self _complicationsFromFallbackSet:v9 complicationDescriptors:v5 alreadyAddedDescriptors:v6 andFilterFromAppsDisabledByAppProtection:v4];
+    v10 = [(ATXComplicationSuggestionGenerator *)self _complicationsFromFallbackSet:v9 complicationDescriptors:landscapeModularComplicationWidgetDescriptors alreadyAddedDescriptors:v6 andFilterFromAppsDisabledByAppProtection:v4];
 
     v11 = objc_opt_new();
     v12 = objc_opt_new();
@@ -1963,17 +1963,17 @@ LABEL_22:
           }
 
           v19 = *(*(&v33 + 1) + 8 * i);
-          v20 = [v19 widgetFamily];
+          widgetFamily = [v19 widgetFamily];
           v21 = v11;
-          if (v20 != 10)
+          if (widgetFamily != 10)
           {
-            v22 = [v19 widgetFamily];
+            widgetFamily2 = [v19 widgetFamily];
             v21 = v12;
-            if (v22 != 11)
+            if (widgetFamily2 != 11)
             {
-              v23 = [v19 widgetFamily];
+              widgetFamily3 = [v19 widgetFamily];
               v21 = v13;
-              if (v23 != 1)
+              if (widgetFamily3 != 1)
               {
                 continue;
               }
@@ -1998,7 +1998,7 @@ LABEL_22:
     v26 = [objc_alloc(MEMORY[0x277CEB418]) initWithComplications:v13];
     [v3 setObject:v26 forKeyedSubscript:*MEMORY[0x277CEB1F0]];
 
-    v5 = v31;
+    landscapeModularComplicationWidgetDescriptors = v31;
     v4 = v32;
     v6 = v30;
   }
@@ -2010,23 +2010,23 @@ LABEL_22:
   return v27;
 }
 
-- (id)_setWithDesiredLayout:(int64_t)a3 complicationDescriptors:(id)a4 unusedRecentsComplications:(id)a5 alreadyAddedComplications:(id)a6
+- (id)_setWithDesiredLayout:(int64_t)layout complicationDescriptors:(id)descriptors unusedRecentsComplications:(id)complications alreadyAddedComplications:(id)addedComplications
 {
-  v9 = a4;
-  v32 = a5;
-  v10 = a6;
+  descriptorsCopy = descriptors;
+  complicationsCopy = complications;
+  addedComplicationsCopy = addedComplications;
   v29 = +[ATXLockscreenBlacklist appsLockedOrHiddenByAppProtection];
   v11 = objc_opt_new();
   v12 = 0;
   v13 = &unk_283A58040;
-  if (a3 <= 1)
+  if (layout <= 1)
   {
-    if (!a3)
+    if (!layout)
     {
       goto LABEL_47;
     }
 
-    if (a3 == 1)
+    if (layout == 1)
     {
       v13 = &unk_283A58088;
     }
@@ -2034,7 +2034,7 @@ LABEL_22:
 
   else
   {
-    switch(a3)
+    switch(layout)
     {
       case 4:
         goto LABEL_47;
@@ -2047,7 +2047,7 @@ LABEL_22:
     }
   }
 
-  if (![v9 count])
+  if (![descriptorsCopy count])
   {
 LABEL_42:
     v26 = __atxlog_handle_lock_screen();
@@ -2062,18 +2062,18 @@ LABEL_42:
   }
 
   v28 = v11;
-  v30 = v10;
+  v30 = addedComplicationsCopy;
   v14 = 0;
   v15 = 0;
   v16 = 4;
   do
   {
-    v17 = [v9 objectAtIndexedSubscript:v15];
+    v17 = [descriptorsCopy objectAtIndexedSubscript:v15];
     v18 = v17;
     if (!v16)
     {
 
-      v10 = v30;
+      addedComplicationsCopy = v30;
       v11 = v28;
       goto LABEL_46;
     }
@@ -2081,11 +2081,11 @@ LABEL_42:
     [v17 supportedFamilies];
     [v18 disfavoredFamiliesForLocation:1];
     v19 = [v13 objectAtIndexedSubscript:v14];
-    v20 = [v19 unsignedIntValue];
+    unsignedIntValue = [v19 unsignedIntValue];
 
-    if (v20 == 1)
+    if (unsignedIntValue == 1)
     {
-      v21 = [(ATXComplicationSuggestionGenerator *)self _rectangularComplicationFromComplications:v32];
+      v21 = [(ATXComplicationSuggestionGenerator *)self _rectangularComplicationFromComplications:complicationsCopy];
       [v21 setSource:1];
       if (v21)
       {
@@ -2100,7 +2100,7 @@ LABEL_42:
 LABEL_23:
         ++v14;
 LABEL_24:
-        [v32 removeObject:v21];
+        [complicationsCopy removeObject:v21];
 
         goto LABEL_40;
       }
@@ -2124,14 +2124,14 @@ LABEL_24:
     else
     {
       v22 = [v13 objectAtIndexedSubscript:v14];
-      v23 = [v22 unsignedIntValue];
+      unsignedIntValue2 = [v22 unsignedIntValue];
 
-      if (v23)
+      if (unsignedIntValue2)
       {
         goto LABEL_40;
       }
 
-      v21 = [(ATXComplicationSuggestionGenerator *)self _circularComplicationFromComplications:v32];
+      v21 = [(ATXComplicationSuggestionGenerator *)self _circularComplicationFromComplications:complicationsCopy];
       [v21 setSource:1];
       if (v21)
       {
@@ -2167,8 +2167,8 @@ LABEL_38:
 LABEL_40:
   }
 
-  while (v15 < [v9 count]);
-  v10 = v30;
+  while (v15 < [descriptorsCopy count]);
+  addedComplicationsCopy = v30;
   v11 = v28;
   if (v16)
   {
@@ -2182,15 +2182,15 @@ LABEL_47:
   return v12;
 }
 
-- (id)_rectangularComplicationFromComplications:(id)a3
+- (id)_rectangularComplicationFromComplications:(id)complications
 {
   v15 = *MEMORY[0x277D85DE8];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  complicationsCopy = complications;
+  v4 = [complicationsCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = *v11;
@@ -2200,7 +2200,7 @@ LABEL_47:
       {
         if (*v11 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(complicationsCopy);
         }
 
         v7 = *(*(&v10 + 1) + 8 * i);
@@ -2211,7 +2211,7 @@ LABEL_47:
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [complicationsCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v4)
       {
         continue;
@@ -2228,15 +2228,15 @@ LABEL_11:
   return v4;
 }
 
-- (id)_circularComplicationFromComplications:(id)a3
+- (id)_circularComplicationFromComplications:(id)complications
 {
   v15 = *MEMORY[0x277D85DE8];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  complicationsCopy = complications;
+  v4 = [complicationsCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = *v11;
@@ -2246,7 +2246,7 @@ LABEL_11:
       {
         if (*v11 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(complicationsCopy);
         }
 
         v7 = *(*(&v10 + 1) + 8 * i);
@@ -2257,7 +2257,7 @@ LABEL_11:
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [complicationsCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v4)
       {
         continue;
@@ -2274,22 +2274,22 @@ LABEL_11:
   return v4;
 }
 
-- (id)_complicationsFromFallbackSet:(id)a3 complicationDescriptors:(id)a4 alreadyAddedDescriptors:(id)a5 andFilterFromAppsDisabledByAppProtection:(id)a6
+- (id)_complicationsFromFallbackSet:(id)set complicationDescriptors:(id)descriptors alreadyAddedDescriptors:(id)addedDescriptors andFilterFromAppsDisabledByAppProtection:(id)protection
 {
   v83 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v64 = a6;
-  if (!v9)
+  setCopy = set;
+  descriptorsCopy = descriptors;
+  addedDescriptorsCopy = addedDescriptors;
+  protectionCopy = protection;
+  if (!setCopy)
   {
     v43 = 0;
     goto LABEL_64;
   }
 
   v12 = MEMORY[0x277CBEB18];
-  v13 = [v10 allObjects];
-  v14 = [v12 arrayWithArray:v13];
+  allObjects = [descriptorsCopy allObjects];
+  v14 = [v12 arrayWithArray:allObjects];
 
   v52 = v14;
   [v14 shuffle];
@@ -2298,7 +2298,7 @@ LABEL_11:
   v75 = 0u;
   v76 = 0u;
   v77 = 0u;
-  obj = v9;
+  obj = setCopy;
   v57 = [obj countByEnumeratingWithState:&v74 objects:v82 count:16];
   if (!v57)
   {
@@ -2309,10 +2309,10 @@ LABEL_11:
   v55 = *MEMORY[0x277CEB1E0];
   v50 = *MEMORY[0x277CEB1E8];
   v49 = *MEMORY[0x277CEB1F0];
-  v53 = v10;
-  v54 = v9;
+  v53 = descriptorsCopy;
+  v54 = setCopy;
   v61 = v15;
-  v62 = v11;
+  v62 = addedDescriptorsCopy;
 LABEL_4:
   v16 = 0;
   while (1)
@@ -2362,7 +2362,7 @@ LABEL_17:
     v73 = 0u;
     v70 = 0u;
     v71 = 0u;
-    v26 = v10;
+    v26 = descriptorsCopy;
     v27 = [v26 countByEnumeratingWithState:&v70 objects:v79 count:16];
     if (v27)
     {
@@ -2380,11 +2380,11 @@ LABEL_17:
 
           v31 = *(*(&v70 + 1) + 8 * i);
           [v31 disfavoredFamiliesForLocation:1];
-          v32 = [v31 extensionBundleIdentifier];
-          if ([v32 isEqualToString:v18])
+          extensionBundleIdentifier = [v31 extensionBundleIdentifier];
+          if ([extensionBundleIdentifier isEqualToString:v18])
           {
-            v33 = [v31 kind];
-            if ([v33 isEqualToString:v65] && (objc_msgSend(v31, "supportedFamilies"), (CHSWidgetFamilyMaskContainsFamily() & 1) != 0))
+            kind = [v31 kind];
+            if ([kind isEqualToString:v65] && (objc_msgSend(v31, "supportedFamilies"), (CHSWidgetFamilyMaskContainsFamily() & 1) != 0))
             {
               v34 = CHSWidgetFamilyMaskContainsFamily();
 
@@ -2398,10 +2398,10 @@ LABEL_17:
                 goto LABEL_33;
               }
 
-              v32 = [objc_alloc(MEMORY[0x277CEB410]) initWithWidgetDescriptor:v31 widgetFamily:v21 intent:0 source:3];
-              if ([(ATXComplicationSuggestionGenerator *)self _shouldAddComplication:v32 andFilterFromAppsDisabledByAppProtection:v64])
+              extensionBundleIdentifier = [objc_alloc(MEMORY[0x277CEB410]) initWithWidgetDescriptor:v31 widgetFamily:v21 intent:0 source:3];
+              if ([(ATXComplicationSuggestionGenerator *)self _shouldAddComplication:extensionBundleIdentifier andFilterFromAppsDisabledByAppProtection:protectionCopy])
               {
-                [v61 addObject:v32];
+                [v61 addObject:extensionBundleIdentifier];
                 [v62 addObject:v31];
                 v60 = 1;
               }
@@ -2418,7 +2418,7 @@ LABEL_17:
         {
 LABEL_33:
 
-          v11 = v62;
+          addedDescriptorsCopy = v62;
           if (v60)
           {
             goto LABEL_53;
@@ -2457,7 +2457,7 @@ LABEL_36:
           }
 
           v41 = *(*(&v66 + 1) + 8 * j);
-          if (([v11 containsObject:v41] & 1) == 0)
+          if (([addedDescriptorsCopy containsObject:v41] & 1) == 0)
           {
             [v41 disfavoredFamiliesForLocation:1];
             [v41 supportedFamilies];
@@ -2466,10 +2466,10 @@ LABEL_36:
               if ((CHSWidgetFamilyMaskContainsFamily() & 1) == 0)
               {
                 v42 = [objc_alloc(MEMORY[0x277CEB410]) initWithWidgetDescriptor:v41 widgetFamily:v21 intent:0 source:3];
-                if ([(ATXComplicationSuggestionGenerator *)self _shouldAddComplication:v42 andFilterFromAppsDisabledByAppProtection:v64])
+                if ([(ATXComplicationSuggestionGenerator *)self _shouldAddComplication:v42 andFilterFromAppsDisabledByAppProtection:protectionCopy])
                 {
                   [v61 addObject:v42];
-                  [v11 addObject:v41];
+                  [addedDescriptorsCopy addObject:v41];
 
                   goto LABEL_52;
                 }
@@ -2492,8 +2492,8 @@ LABEL_52:
 
 LABEL_53:
     v16 = v58 + 1;
-    v10 = v53;
-    v9 = v54;
+    descriptorsCopy = v53;
+    setCopy = v54;
     v15 = v61;
     if (v58 + 1 == v57)
     {
@@ -2547,17 +2547,17 @@ LABEL_64:
   return v43;
 }
 
-- (BOOL)_layoutIsValidGivenComplications:(id)a3 allowedComplicationPersonalities:(id)a4
+- (BOOL)_layoutIsValidGivenComplications:(id)complications allowedComplicationPersonalities:(id)personalities
 {
   v29 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  complicationsCopy = complications;
+  personalitiesCopy = personalities;
   v7 = objc_opt_new();
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  obj = v5;
+  obj = complicationsCopy;
   v8 = [obj countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v8)
   {
@@ -2575,11 +2575,11 @@ LABEL_64:
 
         v13 = *(*(&v24 + 1) + 8 * i);
         v14 = objc_alloc(MEMORY[0x277CEB9B0]);
-        v15 = [v13 extensionBundleIdentifier];
-        v16 = [v13 kind];
-        v17 = [v14 initWithExtensionBundleId:v15 kind:v16];
+        extensionBundleIdentifier = [v13 extensionBundleIdentifier];
+        kind = [v13 kind];
+        v17 = [v14 initWithExtensionBundleId:extensionBundleIdentifier kind:kind];
 
-        if (![v6 containsObject:v17] || -[ATXComplicationSuggestionGenerator _complicationIsAlreadyAdded:alreadyAddedComplications:](self, "_complicationIsAlreadyAdded:alreadyAddedComplications:", v13, v7))
+        if (![personalitiesCopy containsObject:v17] || -[ATXComplicationSuggestionGenerator _complicationIsAlreadyAdded:alreadyAddedComplications:](self, "_complicationIsAlreadyAdded:alreadyAddedComplications:", v13, v7))
         {
 LABEL_15:
 
@@ -2634,16 +2634,16 @@ LABEL_17:
   return v19;
 }
 
-- (BOOL)_complicationIsAlreadyAdded:(id)a3 alreadyAddedComplications:(id)a4
+- (BOOL)_complicationIsAlreadyAdded:(id)added alreadyAddedComplications:(id)complications
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  addedCopy = added;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v6 = a4;
-  v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  complicationsCopy = complications;
+  v7 = [complicationsCopy countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v7)
   {
     v8 = *v19;
@@ -2653,30 +2653,30 @@ LABEL_17:
       {
         if (*v19 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(complicationsCopy);
         }
 
         v10 = *(*(&v18 + 1) + 8 * i);
-        if ([v5 isEqual:{v10, v18}])
+        if ([addedCopy isEqual:{v10, v18}])
         {
-          v11 = [v5 intent];
-          if (v11)
+          intent = [addedCopy intent];
+          if (intent)
           {
           }
 
           else
           {
-            v12 = [v10 intent];
+            intent2 = [v10 intent];
 
-            if (!v12)
+            if (!intent2)
             {
               goto LABEL_14;
             }
           }
 
-          v13 = [v5 intent];
-          v14 = [v10 intent];
-          v15 = [v13 atx_isEqualToIntent:v14];
+          intent3 = [addedCopy intent];
+          intent4 = [v10 intent];
+          v15 = [intent3 atx_isEqualToIntent:intent4];
 
           if (v15)
           {
@@ -2687,7 +2687,7 @@ LABEL_14:
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v7 = [complicationsCopy countByEnumeratingWithState:&v18 objects:v22 count:16];
       if (v7)
       {
         continue;
@@ -2703,22 +2703,22 @@ LABEL_15:
   return v7;
 }
 
-- (BOOL)_shouldAddComplication:(id)a3 andFilterFromAppsDisabledByAppProtection:(id)a4
+- (BOOL)_shouldAddComplication:(id)complication andFilterFromAppsDisabledByAppProtection:(id)protection
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 containerBundleIdentifier];
-  if (v7 && (v8 = v7, [v5 containerBundleIdentifier], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v6, "containsObject:", v9), v9, v8, v10))
+  complicationCopy = complication;
+  protectionCopy = protection;
+  containerBundleIdentifier = [complicationCopy containerBundleIdentifier];
+  if (containerBundleIdentifier && (v8 = containerBundleIdentifier, [complicationCopy containerBundleIdentifier], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(protectionCopy, "containsObject:", v9), v9, v8, v10))
   {
     v11 = __atxlog_handle_home_screen();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [v5 containerBundleIdentifier];
+      containerBundleIdentifier2 = [complicationCopy containerBundleIdentifier];
       v16 = 138412546;
-      v17 = v5;
+      v17 = complicationCopy;
       v18 = 2112;
-      v19 = v12;
+      v19 = containerBundleIdentifier2;
       _os_log_impl(&dword_2263AA000, v11, OS_LOG_TYPE_DEFAULT, "ATXComplicationSuggestionGenerator: Complication: %@ is not eligible for suggestion. Reason: %@ is locked or hidden by user preference.", &v16, 0x16u);
     }
 
@@ -2747,7 +2747,7 @@ LABEL_15:
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_2263AA000, a2, OS_LOG_TYPE_ERROR, "Could not load accessory widget descriptors for scored complications description: %@", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }

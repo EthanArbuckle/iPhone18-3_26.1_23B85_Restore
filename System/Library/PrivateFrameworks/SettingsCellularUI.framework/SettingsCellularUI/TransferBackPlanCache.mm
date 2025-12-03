@@ -1,38 +1,38 @@
 @interface TransferBackPlanCache
 - (BOOL)_canLaunchSIMSetupFlow;
-- (TransferBackPlanCache)initWithDelegate:(id)a3 navigationController:(id)a4 transferBackPlan:(id)a5;
+- (TransferBackPlanCache)initWithDelegate:(id)delegate navigationController:(id)controller transferBackPlan:(id)plan;
 - (UINavigationController)navigationController;
 - (id)getLogger;
 - (void)_handleActivateExpiry;
 - (void)_prepareSIMSetupFlow;
-- (void)_presentViewController:(id)a3;
+- (void)_presentViewController:(id)controller;
 - (void)_showWifiAlert;
-- (void)cellularPlanChanged:(id)a3;
+- (void)cellularPlanChanged:(id)changed;
 - (void)dealloc;
-- (void)simSetupFlowCompleted:(unint64_t)a3;
-- (void)transferBack:(id)a3;
+- (void)simSetupFlowCompleted:(unint64_t)completed;
+- (void)transferBack:(id)back;
 @end
 
 @implementation TransferBackPlanCache
 
-- (TransferBackPlanCache)initWithDelegate:(id)a3 navigationController:(id)a4 transferBackPlan:(id)a5
+- (TransferBackPlanCache)initWithDelegate:(id)delegate navigationController:(id)controller transferBackPlan:(id)plan
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  delegateCopy = delegate;
+  controllerCopy = controller;
+  planCopy = plan;
   v16.receiver = self;
   v16.super_class = TransferBackPlanCache;
   v12 = [(TransferBackPlanCache *)&v16 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_transferBackItem, a5);
-    objc_storeStrong(&v13->_delegate, a3);
-    objc_storeWeak(&v13->_navigationController, v10);
-    v14 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v14 addObserver:v13 selector:sel_cellularPlanChanged_ name:@"PSUICellularPlanChanged" object:0];
+    objc_storeStrong(&v12->_transferBackItem, plan);
+    objc_storeStrong(&v13->_delegate, delegate);
+    objc_storeWeak(&v13->_navigationController, controllerCopy);
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v13 selector:sel_cellularPlanChanged_ name:@"PSUICellularPlanChanged" object:0];
 
-    [(TransferBackPlanCache *)v13 transferBack:v11];
+    [(TransferBackPlanCache *)v13 transferBack:planCopy];
   }
 
   return v13;
@@ -41,17 +41,17 @@
 - (void)dealloc
 {
   v10 = *MEMORY[0x277D85DE8];
-  v3 = [(TransferBackPlanCache *)self getLogger];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(TransferBackPlanCache *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     flow = self->_flow;
     *buf = 138412290;
     v9 = flow;
-    _os_log_impl(&dword_2658DE000, v3, OS_LOG_TYPE_DEFAULT, "release SS flow : %@", buf, 0xCu);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "release SS flow : %@", buf, 0xCu);
   }
 
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v7.receiver = self;
   v7.super_class = TransferBackPlanCache;
@@ -59,20 +59,20 @@
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)transferBack:(id)a3
+- (void)transferBack:(id)back
 {
   v30 = *MEMORY[0x277D85DE8];
-  v22 = a3;
-  objc_storeStrong(&self->_transferBackItem, a3);
+  backCopy = back;
+  objc_storeStrong(&self->_transferBackItem, back);
   v5 = objc_opt_new();
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v6 = +[PSUICellularPlanManagerCache sharedInstance];
-  v7 = [v6 planItems];
+  planItems = [v6 planItems];
 
-  v8 = [v7 countByEnumeratingWithState:&v23 objects:v29 count:16];
+  v8 = [planItems countByEnumeratingWithState:&v23 objects:v29 count:16];
   if (v8)
   {
     v9 = v8;
@@ -83,29 +83,29 @@
       {
         if (*v24 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(planItems);
         }
 
         v12 = *(*(&v23 + 1) + 8 * i);
-        v13 = [v12 iccid];
+        iccid = [v12 iccid];
 
-        if (v13)
+        if (iccid)
         {
-          v14 = [(TransferBackPlanCache *)self getLogger];
-          if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+          getLogger = [(TransferBackPlanCache *)self getLogger];
+          if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
           {
-            v15 = [v12 iccid];
+            iccid2 = [v12 iccid];
             *buf = 138412290;
-            v28 = v15;
-            _os_log_impl(&dword_2658DE000, v14, OS_LOG_TYPE_DEFAULT, "existed iccid : %@", buf, 0xCu);
+            v28 = iccid2;
+            _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "existed iccid : %@", buf, 0xCu);
           }
 
-          v16 = [v12 iccid];
-          [v5 addObject:v16];
+          iccid3 = [v12 iccid];
+          [v5 addObject:iccid3];
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v23 objects:v29 count:16];
+      v9 = [planItems countByEnumeratingWithState:&v23 objects:v29 count:16];
     }
 
     while (v9);
@@ -118,7 +118,7 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(TransferBackPlanCache *)self _useLine:1 forPlan:v22];
+    [(TransferBackPlanCache *)self _useLine:1 forPlan:backCopy];
     if ([(TransferBackPlanCache *)self _canLaunchSIMSetupFlow])
     {
       v19 = [MEMORY[0x277CBEBB8] scheduledTimerWithTimeInterval:self target:sel__handleActivateExpiry selector:0 userInfo:0 repeats:30.0];
@@ -132,15 +132,15 @@
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)simSetupFlowCompleted:(unint64_t)a3
+- (void)simSetupFlowCompleted:(unint64_t)completed
 {
   v11 = *MEMORY[0x277D85DE8];
-  v5 = [(TransferBackPlanCache *)self getLogger];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(TransferBackPlanCache *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v10 = a3;
-    _os_log_impl(&dword_2658DE000, v5, OS_LOG_TYPE_DEFAULT, "finish SS flow : %lu", buf, 0xCu);
+    completedCopy = completed;
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "finish SS flow : %lu", buf, 0xCu);
   }
 
   objc_initWeak(buf, self);
@@ -149,7 +149,7 @@
   block[2] = __47__TransferBackPlanCache_simSetupFlowCompleted___block_invoke;
   block[3] = &unk_279BA9FE0;
   objc_copyWeak(v8, buf);
-  v8[1] = a3;
+  v8[1] = completed;
   block[4] = self;
   dispatch_async(MEMORY[0x277D85CD0], block);
   objc_destroyWeak(v8);
@@ -221,8 +221,8 @@ LABEL_14:
 
 - (BOOL)_canLaunchSIMSetupFlow
 {
-  v3 = [self->_transferBackItem phoneNumber];
-  v4 = [v3 length];
+  phoneNumber = [self->_transferBackItem phoneNumber];
+  v4 = [phoneNumber length];
 
   result = 0;
   if (v4)
@@ -323,10 +323,10 @@ void __45__TransferBackPlanCache__prepareSIMSetupFlow__block_invoke(uint64_t a1,
   }
 }
 
-- (void)_presentViewController:(id)a3
+- (void)_presentViewController:(id)controller
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  controllerCopy = controller;
   v5 = +[PSUIDeviceWiFiState sharedInstance];
   if ([v5 isConnectedOverWiFi])
   {
@@ -339,50 +339,50 @@ void __45__TransferBackPlanCache__prepareSIMSetupFlow__block_invoke(uint64_t a1,
 
 LABEL_4:
 LABEL_5:
-    v7 = [(TransferBackPlanCache *)self getLogger];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+    getLogger = [(TransferBackPlanCache *)self getLogger];
+    if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
     {
       WeakRetained = objc_loadWeakRetained(&self->_navigationController);
-      v9 = [WeakRetained topViewController];
+      topViewController = [WeakRetained topViewController];
       v17 = 138412546;
-      v18 = v4;
+      v18 = controllerCopy;
       v19 = 2112;
-      v20 = v9;
-      _os_log_impl(&dword_2658DE000, v7, OS_LOG_TYPE_DEFAULT, "present %@. current top view controller : %@", &v17, 0x16u);
+      v20 = topViewController;
+      _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "present %@. current top view controller : %@", &v17, 0x16u);
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v10 = v4;
+      v10 = controllerCopy;
     }
 
     else
     {
-      v10 = [objc_alloc(MEMORY[0x277D757A0]) initWithRootViewController:v4];
+      v10 = [objc_alloc(MEMORY[0x277D757A0]) initWithRootViewController:controllerCopy];
       [v10 setModalPresentationStyle:2];
     }
 
     v11 = objc_loadWeakRetained(&self->_navigationController);
-    v12 = [v11 topViewController];
-    [v12 presentViewController:v10 animated:1 completion:0];
+    topViewController2 = [v11 topViewController];
+    [topViewController2 presentViewController:v10 animated:1 completion:0];
 
     goto LABEL_11;
   }
 
   v14 = +[PSUIDeviceEthernetState sharedInstance];
-  v15 = [v14 isConnectedOverEthernet];
+  isConnectedOverEthernet = [v14 isConnectedOverEthernet];
 
-  if (v15)
+  if (isConnectedOverEthernet)
   {
     goto LABEL_5;
   }
 
-  v16 = [(TransferBackPlanCache *)self getLogger];
-  if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+  getLogger2 = [(TransferBackPlanCache *)self getLogger];
+  if (os_log_type_enabled(getLogger2, OS_LOG_TYPE_DEFAULT))
   {
     LOWORD(v17) = 0;
-    _os_log_impl(&dword_2658DE000, v16, OS_LOG_TYPE_DEFAULT, "Data connectivity is not available to set up eSIM(s)", &v17, 2u);
+    _os_log_impl(&dword_2658DE000, getLogger2, OS_LOG_TYPE_DEFAULT, "Data connectivity is not available to set up eSIM(s)", &v17, 2u);
   }
 
   [(TransferBackPlanCache *)self _showWifiAlert];
@@ -396,8 +396,8 @@ LABEL_11:
   v3 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v4 = [v3 localizedStringForKey:@"NOT_CONNECTED_TO_INTERNET" value:&stru_287733598 table:@"Gemini-Gemini"];
 
-  v5 = [MEMORY[0x277D75418] currentDevice];
-  LODWORD(v3) = [v5 sf_isiPhone];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  LODWORD(v3) = [currentDevice sf_isiPhone];
   v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v7 = v6;
   if (v3)
@@ -414,9 +414,9 @@ LABEL_11:
 
   v10 = [MEMORY[0x277D75110] alertControllerWithTitle:v4 message:v9 preferredStyle:1];
   objc_initWeak(&location, self);
-  v11 = [MEMORY[0x277D75418] currentDevice];
+  currentDevice2 = [MEMORY[0x277D75418] currentDevice];
   v22 = v4;
-  if ([v11 sf_isChinaRegionCellularDevice])
+  if ([currentDevice2 sf_isChinaRegionCellularDevice])
   {
     v12 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     [v12 localizedStringForKey:@"CHOOSE_WLAN" value:&stru_287733598 table:@"Gemini-Gemini"];
@@ -450,8 +450,8 @@ LABEL_11:
 
   [v10 addAction:v19];
   WeakRetained = objc_loadWeakRetained(&self->_navigationController);
-  v21 = [WeakRetained topViewController];
-  [v21 presentViewController:v10 animated:1 completion:0];
+  topViewController = [WeakRetained topViewController];
+  [topViewController presentViewController:v10 animated:1 completion:0];
 
   objc_destroyWeak(&v24);
   objc_destroyWeak(&v26);
@@ -493,14 +493,14 @@ void __39__TransferBackPlanCache__showWifiAlert__block_invoke_2(uint64_t a1)
 {
   v2 = MEMORY[0x277D4D830];
   v3 = MEMORY[0x277CCACA8];
-  v4 = [self->_transferBackItem iccid];
-  v5 = [v3 stringWithFormat:@"reactivate.sim.model.%@", v4];
+  iccid = [self->_transferBackItem iccid];
+  v5 = [v3 stringWithFormat:@"reactivate.sim.model.%@", iccid];
   v6 = [v2 loggerWithCategory:v5];
 
   return v6;
 }
 
-- (void)cellularPlanChanged:(id)a3
+- (void)cellularPlanChanged:(id)changed
 {
   v40 = *MEMORY[0x277D85DE8];
   if (!self->_transferBackItem)
@@ -508,22 +508,22 @@ void __39__TransferBackPlanCache__showWifiAlert__block_invoke_2(uint64_t a1)
     goto LABEL_30;
   }
 
-  v4 = [(TransferBackPlanCache *)self getLogger];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
+  getLogger = [(TransferBackPlanCache *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
     v39 = @"PSUICellularPlanChanged";
-    _os_log_debug_impl(&dword_2658DE000, v4, OS_LOG_TYPE_DEBUG, "received notification %@", buf, 0xCu);
+    _os_log_debug_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEBUG, "received notification %@", buf, 0xCu);
   }
 
   v5 = +[PSUICellularPlanManagerCache sharedInstance];
-  v6 = [v5 planItems];
+  planItems = [v5 planItems];
 
   v35 = 0u;
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v7 = v6;
+  v7 = planItems;
   v8 = [v7 countByEnumeratingWithState:&v33 objects:v37 count:16];
   if (!v8)
   {
@@ -543,17 +543,17 @@ LABEL_6:
 
     v12 = *(*(&v33 + 1) + 8 * v11);
     existedIccids = self->_existedIccids;
-    v14 = [(__CFString *)v12 iccid];
-    LODWORD(existedIccids) = [(NSArray *)existedIccids hasIccid:v14];
+    iccid = [(__CFString *)v12 iccid];
+    LODWORD(existedIccids) = [(NSArray *)existedIccids hasIccid:iccid];
 
     if (!existedIccids)
     {
       goto LABEL_12;
     }
 
-    v15 = [(__CFString *)v12 iccid];
-    v16 = [self->_transferBackItem iccid];
-    v17 = [v15 isEqualToString:v16];
+    iccid2 = [(__CFString *)v12 iccid];
+    iccid3 = [self->_transferBackItem iccid];
+    v17 = [iccid2 isEqualToString:iccid3];
 
     if (v17)
     {
@@ -578,56 +578,56 @@ LABEL_21:
 LABEL_12:
     if ([(__CFString *)v12 isInstalling])
     {
-      v18 = [(__CFString *)v12 iccid];
+      iccid4 = [(__CFString *)v12 iccid];
 
-      if (v18)
+      if (iccid4)
       {
-        v19 = [(__CFString *)v12 iccid];
+        iccid5 = [(__CFString *)v12 iccid];
         installingIccid = self->_installingIccid;
-        self->_installingIccid = v19;
+        self->_installingIccid = iccid5;
       }
     }
 
     else
     {
-      v21 = [(__CFString *)v12 plan];
-      v22 = [v21 status];
+      plan = [(__CFString *)v12 plan];
+      status = [plan status];
 
-      if (!v22)
+      if (!status)
       {
         v23 = self->_installingIccid;
-        v24 = [(__CFString *)v12 iccid];
-        LODWORD(v23) = [(NSString *)v23 isEqualToString:v24];
+        iccid6 = [(__CFString *)v12 iccid];
+        LODWORD(v23) = [(NSString *)v23 isEqualToString:iccid6];
 
         if (v23)
         {
           if (([(__CFString *)v12 isSelected]& 1) == 0 && !self->_flow)
           {
-            v31 = [(TransferBackPlanCache *)self getLogger];
-            if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
+            getLogger2 = [(TransferBackPlanCache *)self getLogger];
+            if (os_log_type_enabled(getLogger2, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138412290;
               v39 = v12;
-              _os_log_impl(&dword_2658DE000, v31, OS_LOG_TYPE_DEFAULT, "transfer disabled item back as new item: %@. enable it.", buf, 0xCu);
+              _os_log_impl(&dword_2658DE000, getLogger2, OS_LOG_TYPE_DEFAULT, "transfer disabled item back as new item: %@. enable it.", buf, 0xCu);
             }
 
             [(TransferBackPlanCache *)self _useLine:1 forPlan:v12];
             goto LABEL_29;
           }
 
-          v25 = [(__CFString *)v12 phoneNumber];
-          v26 = [self->_transferBackItem phoneNumber];
-          v27 = [v25 isEqualToPhoneNumber:v26];
+          phoneNumber = [(__CFString *)v12 phoneNumber];
+          phoneNumber2 = [self->_transferBackItem phoneNumber];
+          v27 = [phoneNumber isEqualToPhoneNumber:phoneNumber2];
 
           if (v27)
           {
             if ([(__CFString *)v12 type])
             {
-              v32 = [(TransferBackPlanCache *)self getLogger];
-              if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
+              getLogger3 = [(TransferBackPlanCache *)self getLogger];
+              if (os_log_type_enabled(getLogger3, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 0;
-                _os_log_impl(&dword_2658DE000, v32, OS_LOG_TYPE_DEFAULT, "yeah, the phone number transferred back", buf, 2u);
+                _os_log_impl(&dword_2658DE000, getLogger3, OS_LOG_TYPE_DEFAULT, "yeah, the phone number transferred back", buf, 2u);
               }
 
               objc_storeStrong(&self->_transferToItem, v12);
@@ -648,11 +648,11 @@ LABEL_28:
     goto LABEL_21;
   }
 
-  v28 = [(TransferBackPlanCache *)self getLogger];
-  if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
+  getLogger4 = [(TransferBackPlanCache *)self getLogger];
+  if (os_log_type_enabled(getLogger4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
-    _os_log_impl(&dword_2658DE000, v28, OS_LOG_TYPE_DEFAULT, "the plan is activated back", buf, 2u);
+    _os_log_impl(&dword_2658DE000, getLogger4, OS_LOG_TYPE_DEFAULT, "the plan is activated back", buf, 2u);
   }
 
   [(NSTimer *)self->_activateTimer invalidate];

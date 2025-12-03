@@ -6,19 +6,19 @@
 
 - (id)analyticsDict
 {
-  v3 = [(NSPProbeHTTPErrorCodeStats *)self HTTPErrorCode];
+  hTTPErrorCode = [(NSPProbeHTTPErrorCodeStats *)self HTTPErrorCode];
 
-  if (v3)
+  if (hTTPErrorCode)
   {
     v4 = objc_alloc_init(NSMutableDictionary);
-    v5 = [(NSPProbeHTTPErrorCodeStats *)self interfaceType];
-    [v4 setObject:v5 forKeyedSubscript:@"InterfaceType"];
+    interfaceType = [(NSPProbeHTTPErrorCodeStats *)self interfaceType];
+    [v4 setObject:interfaceType forKeyedSubscript:@"InterfaceType"];
 
     v6 = [NSNumber numberWithBool:[(NSPProbeHTTPErrorCodeStats *)self directPath]];
     [v4 setObject:v6 forKeyedSubscript:@"DirectPath"];
 
-    v7 = [(NSPProbeHTTPErrorCodeStats *)self HTTPErrorCode];
-    [v4 setObject:v7 forKeyedSubscript:@"HTTPCode"];
+    hTTPErrorCode2 = [(NSPProbeHTTPErrorCodeStats *)self HTTPErrorCode];
+    [v4 setObject:hTTPErrorCode2 forKeyedSubscript:@"HTTPCode"];
   }
 
   else

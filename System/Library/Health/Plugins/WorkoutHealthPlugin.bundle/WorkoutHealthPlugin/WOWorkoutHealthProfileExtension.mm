@@ -1,31 +1,31 @@
 @interface WOWorkoutHealthProfileExtension
-+ (BOOL)_isOldWatchSeries:(id)a3;
-- (WOWorkoutHealthProfileExtension)initWithProfile:(id)a3;
-- (id)exportObjectForListener:(id)a3 client:(id)a4 error:(id *)a5;
-- (id)listenerEndpointForClient:(id)a3 error:(id *)a4;
++ (BOOL)_isOldWatchSeries:(id)series;
+- (WOWorkoutHealthProfileExtension)initWithProfile:(id)profile;
+- (id)exportObjectForListener:(id)listener client:(id)client error:(id *)error;
+- (id)listenerEndpointForClient:(id)client error:(id *)error;
 @end
 
 @implementation WOWorkoutHealthProfileExtension
 
-- (WOWorkoutHealthProfileExtension)initWithProfile:(id)a3
+- (WOWorkoutHealthProfileExtension)initWithProfile:(id)profile
 {
-  v33 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v33;
-  v33 = 0;
+  objc_storeStrong(location, profile);
+  v3 = selfCopy;
+  selfCopy = 0;
   v31.receiver = v3;
   v31.super_class = WOWorkoutHealthProfileExtension;
-  v33 = [(WOWorkoutHealthProfileExtension *)&v31 init];
-  objc_storeStrong(&v33, v33);
-  if (v33)
+  selfCopy = [(WOWorkoutHealthProfileExtension *)&v31 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
-    [(WOWorkoutHealthProfileExtension *)v33 setProfile:location[0]];
+    [(WOWorkoutHealthProfileExtension *)selfCopy setProfile:location[0]];
     v18 = +[_HKBehavior sharedBehavior];
-    v30 = [v18 currentDeviceProductType];
+    currentDeviceProductType = [v18 currentDeviceProductType];
 
-    v29 = [WOWorkoutHealthProfileExtension _isOldWatchSeries:v30];
+    v29 = [WOWorkoutHealthProfileExtension _isOldWatchSeries:currentDeviceProductType];
     v4 = [NSUserDefaults alloc];
     v19 = [v4 initWithSuiteName:kHKConnectedGymPreferencesDomain];
     v20 = [v19 BOOLForKey:@"ConnectedGymDebugDisableGymKitNFCSwitchOnAllHardware"];
@@ -101,14 +101,14 @@
     }
 
     v14 = [[HDXPCListener alloc] initWithLabel:@"WorkoutHealthPlugin"];
-    [(WOWorkoutHealthProfileExtension *)v33 setListener:?];
+    [(WOWorkoutHealthProfileExtension *)selfCopy setListener:?];
 
-    v15 = v33;
-    v16 = [(WOWorkoutHealthProfileExtension *)v33 listener];
-    [(HDXPCListener *)v16 setDelegate:v15];
+    v15 = selfCopy;
+    listener = [(WOWorkoutHealthProfileExtension *)selfCopy listener];
+    [(HDXPCListener *)listener setDelegate:v15];
 
-    v17 = [(WOWorkoutHealthProfileExtension *)v33 listener];
-    [(HDXPCListener *)v17 resume];
+    listener2 = [(WOWorkoutHealthProfileExtension *)selfCopy listener];
+    [(HDXPCListener *)listener2 resume];
 
     v9 = +[WOWorkoutExternalProviderObserver sharedInstance];
     _HKInitializeLogging();
@@ -123,21 +123,21 @@
     }
 
     objc_storeStrong(&oslog, 0);
-    objc_storeStrong(&v30, 0);
+    objc_storeStrong(&currentDeviceProductType, 0);
   }
 
-  v11 = v33;
+  v11 = selfCopy;
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v33, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v11;
 }
 
-+ (BOOL)_isOldWatchSeries:(id)a3
++ (BOOL)_isOldWatchSeries:(id)series
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, series);
   v4 = 1;
   if (([location[0] hasPrefix:HKProductTypePrefixAppleWatchFirstGeneration] & 1) == 0)
   {
@@ -176,29 +176,29 @@
   return v4 & 1;
 }
 
-- (id)listenerEndpointForClient:(id)a3 error:(id *)a4
+- (id)listenerEndpointForClient:(id)client error:(id *)error
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v5 = [(WOWorkoutHealthProfileExtension *)v8 listener];
-  v6 = [(HDXPCListener *)v5 endpoint];
+  objc_storeStrong(location, client);
+  listener = [(WOWorkoutHealthProfileExtension *)selfCopy listener];
+  endpoint = [(HDXPCListener *)listener endpoint];
 
   objc_storeStrong(location, 0);
 
-  return v6;
+  return endpoint;
 }
 
-- (id)exportObjectForListener:(id)a3 client:(id)a4 error:(id *)a5
+- (id)exportObjectForListener:(id)listener client:(id)client error:(id *)error
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, listener);
   v9 = 0;
-  objc_storeStrong(&v9, a4);
-  v8 = [WOWorkoutQueryServer serverWithClient:v9 profile:v11->_profile error:a5];
+  objc_storeStrong(&v9, client);
+  v8 = [WOWorkoutQueryServer serverWithClient:v9 profile:selfCopy->_profile error:error];
   objc_storeStrong(&v9, 0);
   objc_storeStrong(location, 0);
 

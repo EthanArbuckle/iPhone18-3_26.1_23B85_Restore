@@ -1,56 +1,56 @@
 @interface ATXCandidateRelevanceModelDatasetGenerator
-+ (BOOL)isContextMismatchForPreviousContext:(id)a3 currentContext:(id)a4;
-+ (id)candidateDataPointsForSession:(id)a3 candidate:(id)a4;
-+ (id)candidateDataPointsForSessions:(id)a3 candidate:(id)a4;
-+ (id)dataPointPublisher:(id)a3;
-+ (id)eventAndRecentContextPublisher:(id)a3;
-- (ATXCandidateRelevanceModelDatasetGenerator)initWithConfig:(id)a3;
-- (ATXCandidateRelevanceModelDatasetGenerator)initWithConfig:(id)a3 contextPublisher:(id)a4 modePublisher:(id)a5 poiCategoryPublisher:(id)a6 bluetoothPublisher:(id)a7 userFocusComputedModePublisher:(id)a8 microlocationVisitPublisher:(id)a9;
-- (ATXCandidateRelevanceModelDatasetGenerator)initWithConfig:(id)a3 inferredModeStream:(id)a4 computedModeStream:(id)a5 pointOfInterestStream:(id)a6;
++ (BOOL)isContextMismatchForPreviousContext:(id)context currentContext:(id)currentContext;
++ (id)candidateDataPointsForSession:(id)session candidate:(id)candidate;
++ (id)candidateDataPointsForSessions:(id)sessions candidate:(id)candidate;
++ (id)dataPointPublisher:(id)publisher;
++ (id)eventAndRecentContextPublisher:(id)publisher;
+- (ATXCandidateRelevanceModelDatasetGenerator)initWithConfig:(id)config;
+- (ATXCandidateRelevanceModelDatasetGenerator)initWithConfig:(id)config contextPublisher:(id)publisher modePublisher:(id)modePublisher poiCategoryPublisher:(id)categoryPublisher bluetoothPublisher:(id)bluetoothPublisher userFocusComputedModePublisher:(id)computedModePublisher microlocationVisitPublisher:(id)visitPublisher;
+- (ATXCandidateRelevanceModelDatasetGenerator)initWithConfig:(id)config inferredModeStream:(id)stream computedModeStream:(id)modeStream pointOfInterestStream:(id)interestStream;
 - (id)candidateDatasetStream;
 - (void)candidateDatasetStream;
-- (void)receiveCandidateDataPoint:(id)a3 completion:(id)a4 candidate:(id)a5;
-- (void)receiveDataPoint:(id)a3 completion:(id)a4;
-- (void)receiveDatasetSession:(id)a3 completion:(id)a4;
+- (void)receiveCandidateDataPoint:(id)point completion:(id)completion candidate:(id)candidate;
+- (void)receiveDataPoint:(id)point completion:(id)completion;
+- (void)receiveDatasetSession:(id)session completion:(id)completion;
 @end
 
 @implementation ATXCandidateRelevanceModelDatasetGenerator
 
-- (ATXCandidateRelevanceModelDatasetGenerator)initWithConfig:(id)a3
+- (ATXCandidateRelevanceModelDatasetGenerator)initWithConfig:(id)config
 {
-  v4 = a3;
+  configCopy = config;
   v16 = BiomeLibrary();
-  v15 = [v16 UserFocus];
-  v5 = [v15 InferredMode];
+  userFocus = [v16 UserFocus];
+  inferredMode = [userFocus InferredMode];
   v6 = BiomeLibrary();
-  v7 = [v6 UserFocus];
-  v8 = [v7 ComputedMode];
+  userFocus2 = [v6 UserFocus];
+  computedMode = [userFocus2 ComputedMode];
   v9 = BiomeLibrary();
-  v10 = [v9 Location];
-  v11 = [v10 PointOfInterest];
-  v12 = [v11 Category];
-  v13 = [(ATXCandidateRelevanceModelDatasetGenerator *)self initWithConfig:v4 inferredModeStream:v5 computedModeStream:v8 pointOfInterestStream:v12];
+  location = [v9 Location];
+  pointOfInterest = [location PointOfInterest];
+  category = [pointOfInterest Category];
+  v13 = [(ATXCandidateRelevanceModelDatasetGenerator *)self initWithConfig:configCopy inferredModeStream:inferredMode computedModeStream:computedMode pointOfInterestStream:category];
 
   return v13;
 }
 
-- (ATXCandidateRelevanceModelDatasetGenerator)initWithConfig:(id)a3 inferredModeStream:(id)a4 computedModeStream:(id)a5 pointOfInterestStream:(id)a6
+- (ATXCandidateRelevanceModelDatasetGenerator)initWithConfig:(id)config inferredModeStream:(id)stream computedModeStream:(id)modeStream pointOfInterestStream:(id)interestStream
 {
   v9 = MEMORY[0x277CBEAA8];
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v35 = a3;
+  interestStreamCopy = interestStream;
+  modeStreamCopy = modeStream;
+  streamCopy = stream;
+  configCopy = config;
   v13 = [[v9 alloc] initWithTimeIntervalSinceNow:-2592000.0];
   v14 = objc_opt_new();
   [v13 timeIntervalSinceReferenceDate];
   v34 = [v14 publisherFromStartTime:?];
 
-  v15 = [v12 atx_publisherFromStartDate:v13];
+  v15 = [streamCopy atx_publisherFromStartDate:v13];
 
   v33 = [v15 filterWithIsIncluded:&__block_literal_global_117_0];
 
-  v16 = [v10 atx_publisherFromStartDate:v13];
+  v16 = [interestStreamCopy atx_publisherFromStartDate:v13];
 
   v17 = [v16 filterWithIsIncluded:&__block_literal_global_119];
 
@@ -65,20 +65,20 @@
   v21 = v18;
   [v19 enumerateConnectedEventsFromStartDate:v13 endDate:v20 filterBlock:&__block_literal_global_123 limit:1000000 ascending:1 block:v37];
 
-  v22 = [v21 bpsPublisher];
-  v23 = [v22 mapWithTransform:&__block_literal_global_127];
+  bpsPublisher = [v21 bpsPublisher];
+  v23 = [bpsPublisher mapWithTransform:&__block_literal_global_127];
 
-  v24 = [v11 atx_publisherFromStartDate:v13];
+  v24 = [modeStreamCopy atx_publisherFromStartDate:v13];
 
   v25 = [v24 filterWithIsIncluded:&__block_literal_global_130];
 
   v26 = objc_opt_new();
   v27 = [MEMORY[0x277CBEAA8] now];
   v28 = [v26 fetchEventsBetweenStartDate:v13 andEndDate:v27 withPredicates:0];
-  v29 = [v28 bpsPublisher];
-  v30 = [v29 mapWithTransform:&__block_literal_global_134];
+  bpsPublisher2 = [v28 bpsPublisher];
+  v30 = [bpsPublisher2 mapWithTransform:&__block_literal_global_134];
 
-  v31 = [(ATXCandidateRelevanceModelDatasetGenerator *)self initWithConfig:v35 contextPublisher:v34 modePublisher:v33 poiCategoryPublisher:v17 bluetoothPublisher:v23 userFocusComputedModePublisher:v25 microlocationVisitPublisher:v30];
+  v31 = [(ATXCandidateRelevanceModelDatasetGenerator *)self initWithConfig:configCopy contextPublisher:v34 modePublisher:v33 poiCategoryPublisher:v17 bluetoothPublisher:v23 userFocusComputedModePublisher:v25 microlocationVisitPublisher:v30];
   return v31;
 }
 
@@ -143,39 +143,39 @@ id __121__ATXCandidateRelevanceModelDatasetGenerator_initWithConfig_inferredMode
   return v6;
 }
 
-- (ATXCandidateRelevanceModelDatasetGenerator)initWithConfig:(id)a3 contextPublisher:(id)a4 modePublisher:(id)a5 poiCategoryPublisher:(id)a6 bluetoothPublisher:(id)a7 userFocusComputedModePublisher:(id)a8 microlocationVisitPublisher:(id)a9
+- (ATXCandidateRelevanceModelDatasetGenerator)initWithConfig:(id)config contextPublisher:(id)publisher modePublisher:(id)modePublisher poiCategoryPublisher:(id)categoryPublisher bluetoothPublisher:(id)bluetoothPublisher userFocusComputedModePublisher:(id)computedModePublisher microlocationVisitPublisher:(id)visitPublisher
 {
-  v25 = a3;
-  v24 = a4;
-  v23 = a5;
-  v22 = a6;
-  v21 = a7;
-  v16 = a8;
-  v17 = a9;
+  configCopy = config;
+  publisherCopy = publisher;
+  modePublisherCopy = modePublisher;
+  categoryPublisherCopy = categoryPublisher;
+  bluetoothPublisherCopy = bluetoothPublisher;
+  computedModePublisherCopy = computedModePublisher;
+  visitPublisherCopy = visitPublisher;
   v26.receiver = self;
   v26.super_class = ATXCandidateRelevanceModelDatasetGenerator;
   v18 = [(ATXCandidateRelevanceModelDatasetGenerator *)&v26 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_config, a3);
-    objc_storeStrong(&v19->_contextPublisher, a4);
-    objc_storeStrong(&v19->_modePublisher, a5);
-    objc_storeStrong(&v19->_poiCategoryPublisher, a6);
-    objc_storeStrong(&v19->_bluetoothPublisher, a7);
-    objc_storeStrong(&v19->_userFocusComputedModePublisher, a8);
-    objc_storeStrong(&v19->_microlocationVisitPublisher, a9);
+    objc_storeStrong(&v18->_config, config);
+    objc_storeStrong(&v19->_contextPublisher, publisher);
+    objc_storeStrong(&v19->_modePublisher, modePublisher);
+    objc_storeStrong(&v19->_poiCategoryPublisher, categoryPublisher);
+    objc_storeStrong(&v19->_bluetoothPublisher, bluetoothPublisher);
+    objc_storeStrong(&v19->_userFocusComputedModePublisher, computedModePublisher);
+    objc_storeStrong(&v19->_microlocationVisitPublisher, visitPublisher);
   }
 
   return v19;
 }
 
-- (void)receiveDataPoint:(id)a3 completion:(id)a4
+- (void)receiveDataPoint:(id)point completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ATXCandidateRelevanceModelDatasetGenerator *)self candidateDatasetStream];
-  if (v8)
+  pointCopy = point;
+  completionCopy = completion;
+  candidateDatasetStream = [(ATXCandidateRelevanceModelDatasetGenerator *)self candidateDatasetStream];
+  if (candidateDatasetStream)
   {
     v13 = 0;
     v14 = &v13;
@@ -190,16 +190,16 @@ id __121__ATXCandidateRelevanceModelDatasetGenerator_initWithConfig_inferredMode
     v10[1] = 3221225472;
     v10[2] = __74__ATXCandidateRelevanceModelDatasetGenerator_receiveDataPoint_completion___block_invoke_2;
     v10[3] = &unk_27859E198;
-    v11 = v6;
-    v9 = [v8 sinkWithBookmark:0 completion:v12 receiveInput:v10];
-    v7[2](v7, *(v14 + 24));
+    v11 = pointCopy;
+    v9 = [candidateDatasetStream sinkWithBookmark:0 completion:v12 receiveInput:v10];
+    completionCopy[2](completionCopy, *(v14 + 24));
 
     _Block_object_dispose(&v13, 8);
   }
 
   else
   {
-    v7[2](v7, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 
@@ -221,10 +221,10 @@ void __74__ATXCandidateRelevanceModelDatasetGenerator_receiveDataPoint_completio
   }
 }
 
-- (void)receiveDatasetSession:(id)a3 completion:(id)a4
+- (void)receiveDatasetSession:(id)session completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  completionCopy = completion;
   v23[0] = 0;
   v23[1] = v23;
   v23[2] = 0x3032000000;
@@ -246,7 +246,7 @@ void __74__ATXCandidateRelevanceModelDatasetGenerator_receiveDataPoint_completio
   v13[2] = __79__ATXCandidateRelevanceModelDatasetGenerator_receiveDatasetSession_completion___block_invoke;
   v13[3] = &unk_27859E1C0;
   v15 = v17;
-  v14 = v6;
+  v14 = sessionCopy;
   v16 = v23;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
@@ -257,7 +257,7 @@ void __74__ATXCandidateRelevanceModelDatasetGenerator_receiveDataPoint_completio
   v11 = v23;
   v12 = &v19;
   [(ATXCandidateRelevanceModelDatasetGenerator *)self receiveDataPoint:v13 completion:v9];
-  v7[2](v7, *(v20 + 24));
+  completionCopy[2](completionCopy, *(v20 + 24));
 
   _Block_object_dispose(v17, 8);
   _Block_object_dispose(&v19, 8);
@@ -312,11 +312,11 @@ uint64_t __79__ATXCandidateRelevanceModelDatasetGenerator_receiveDatasetSession_
   return result;
 }
 
-- (void)receiveCandidateDataPoint:(id)a3 completion:(id)a4 candidate:(id)a5
+- (void)receiveCandidateDataPoint:(id)point completion:(id)completion candidate:(id)candidate
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  pointCopy = point;
+  completionCopy = completion;
+  candidateCopy = candidate;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
@@ -326,9 +326,9 @@ uint64_t __79__ATXCandidateRelevanceModelDatasetGenerator_receiveDatasetSession_
   v14[2] = __93__ATXCandidateRelevanceModelDatasetGenerator_receiveCandidateDataPoint_completion_candidate___block_invoke;
   v14[3] = &unk_27859E210;
   v14[4] = self;
-  v11 = v10;
+  v11 = candidateCopy;
   v15 = v11;
-  v12 = v8;
+  v12 = pointCopy;
   v16 = v12;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
@@ -336,7 +336,7 @@ uint64_t __79__ATXCandidateRelevanceModelDatasetGenerator_receiveDatasetSession_
   v13[3] = &unk_27859E238;
   v13[4] = &v17;
   [(ATXCandidateRelevanceModelDatasetGenerator *)self receiveDatasetSession:v14 completion:v13];
-  v9[2](v9, *(v18 + 24));
+  completionCopy[2](completionCopy, *(v18 + 24));
 
   _Block_object_dispose(&v17, 8);
 }
@@ -381,17 +381,17 @@ void __93__ATXCandidateRelevanceModelDatasetGenerator_receiveCandidateDataPoint_
   v11 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)candidateDataPointsForSessions:(id)a3 candidate:(id)a4
++ (id)candidateDataPointsForSessions:(id)sessions candidate:(id)candidate
 {
   v30 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  sessionsCopy = sessions;
+  candidateCopy = candidate;
   v7 = objc_opt_new();
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  obj = v5;
+  obj = sessionsCopy;
   v8 = [obj countByEnumeratingWithState:&v24 objects:v29 count:16];
   if (v8)
   {
@@ -406,7 +406,7 @@ void __93__ATXCandidateRelevanceModelDatasetGenerator_receiveCandidateDataPoint_
           objc_enumerationMutation(obj);
         }
 
-        v12 = [objc_opt_class() candidateDataPointsForSession:*(*(&v24 + 1) + 8 * i) candidate:v6];
+        v12 = [objc_opt_class() candidateDataPointsForSession:*(*(&v24 + 1) + 8 * i) candidate:candidateCopy];
         v20 = 0u;
         v21 = 0u;
         v22 = 0u;
@@ -446,17 +446,17 @@ void __93__ATXCandidateRelevanceModelDatasetGenerator_receiveCandidateDataPoint_
   return v7;
 }
 
-+ (id)candidateDataPointsForSession:(id)a3 candidate:(id)a4
++ (id)candidateDataPointsForSession:(id)session candidate:(id)candidate
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  sessionCopy = session;
+  candidateCopy = candidate;
   v7 = objc_opt_new();
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v8 = v5;
+  v8 = sessionCopy;
   v9 = [v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (!v9)
   {
@@ -465,7 +465,7 @@ LABEL_13:
     if ([v8 count])
     {
       v17 = [v8 objectAtIndexedSubscript:0];
-      [v17 setCandidate:v6];
+      [v17 setCandidate:candidateCopy];
       [v17 setEngaged:0];
       [v7 addObject:v17];
     }
@@ -486,8 +486,8 @@ LABEL_13:
       }
 
       v14 = *(*(&v20 + 1) + 8 * i);
-      v15 = [v14 candidate];
-      v16 = [v15 isEqual:v6];
+      candidate = [v14 candidate];
+      v16 = [candidate isEqual:candidateCopy];
 
       if (v16)
       {
@@ -517,8 +517,8 @@ LABEL_15:
 {
   v16[6] = *MEMORY[0x277D85DE8];
   config = self->_config;
-  v4 = [objc_opt_class() candidatePublisher];
-  if (v4 && self->_contextPublisher && (modePublisher = self->_modePublisher) != 0 && (poiCategoryPublisher = self->_poiCategoryPublisher) != 0 && (bluetoothPublisher = self->_bluetoothPublisher) != 0 && (userFocusComputedModePublisher = self->_userFocusComputedModePublisher) != 0 && (microlocationVisitPublisher = self->_microlocationVisitPublisher) != 0)
+  candidatePublisher = [objc_opt_class() candidatePublisher];
+  if (candidatePublisher && self->_contextPublisher && (modePublisher = self->_modePublisher) != 0 && (poiCategoryPublisher = self->_poiCategoryPublisher) != 0 && (bluetoothPublisher = self->_bluetoothPublisher) != 0 && (userFocusComputedModePublisher = self->_userFocusComputedModePublisher) != 0 && (microlocationVisitPublisher = self->_microlocationVisitPublisher) != 0)
   {
     v16[0] = self->_contextPublisher;
     v16[1] = modePublisher;
@@ -527,7 +527,7 @@ LABEL_15:
     v16[4] = userFocusComputedModePublisher;
     v16[5] = microlocationVisitPublisher;
     v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:6];
-    v11 = [v4 orderedMergeWithOthers:v10 comparator:&__block_literal_global_142];
+    v11 = [candidatePublisher orderedMergeWithOthers:v10 comparator:&__block_literal_global_142];
 
     v12 = [objc_opt_class() eventAndRecentContextPublisher:v11];
     v13 = [objc_opt_class() dataPointPublisher:v12];
@@ -565,17 +565,17 @@ uint64_t __68__ATXCandidateRelevanceModelDatasetGenerator_candidateDatasetStream
   return v11;
 }
 
-+ (id)eventAndRecentContextPublisher:(id)a3
++ (id)eventAndRecentContextPublisher:(id)publisher
 {
   v4 = MEMORY[0x277D42648];
-  v5 = a3;
+  publisherCopy = publisher;
   v6 = [v4 tupleWithFirst:0 second:0];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __77__ATXCandidateRelevanceModelDatasetGenerator_eventAndRecentContextPublisher___block_invoke;
   v9[3] = &__block_descriptor_40_e70____PASTuple2_24__0___PASTuple2_8__NSObject_ATXBMStoreEventProtocol__16l;
-  v9[4] = a1;
-  v7 = [v5 scanWithInitial:v6 nextPartialResult:v9];
+  v9[4] = self;
+  v7 = [publisherCopy scanWithInitial:v6 nextPartialResult:v9];
 
   return v7;
 }
@@ -678,9 +678,9 @@ LABEL_13:
   return v18;
 }
 
-+ (id)dataPointPublisher:(id)a3
++ (id)dataPointPublisher:(id)publisher
 {
-  v4 = a3;
+  publisherCopy = publisher;
   v17[0] = 0;
   v17[1] = v17;
   v17[2] = 0x3032000000;
@@ -694,12 +694,12 @@ LABEL_13:
   v15[4] = __Block_byref_object_dispose__61;
   v16 = 0;
   v5 = objc_opt_new();
-  v6 = [v4 filterWithIsIncluded:&__block_literal_global_154];
+  v6 = [publisherCopy filterWithIsIncluded:&__block_literal_global_154];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __65__ATXCandidateRelevanceModelDatasetGenerator_dataPointPublisher___block_invoke_2;
   v10[3] = &unk_27859E260;
-  v14 = a1;
+  selfCopy = self;
   v7 = v5;
   v11 = v7;
   v12 = v17;
@@ -784,19 +784,19 @@ ATXCandidateRelevanceModelDataPoint *__65__ATXCandidateRelevanceModelDatasetGene
   return v18;
 }
 
-+ (BOOL)isContextMismatchForPreviousContext:(id)a3 currentContext:(id)a4
++ (BOOL)isContextMismatchForPreviousContext:(id)context currentContext:(id)currentContext
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
+  contextCopy = context;
+  currentContextCopy = currentContext;
+  v7 = currentContextCopy;
   v8 = 1;
-  if (v5 && v6)
+  if (contextCopy && currentContextCopy)
   {
-    v9 = [v6 timeContext];
-    v10 = [v9 date];
-    v11 = [v5 timeContext];
-    v12 = [v11 date];
-    [v10 timeIntervalSinceDate:v12];
+    timeContext = [currentContextCopy timeContext];
+    date = [timeContext date];
+    timeContext2 = [contextCopy timeContext];
+    date2 = [timeContext2 date];
+    [date timeIntervalSinceDate:date2];
     v14 = v13;
 
     if (v14 > 1800.0)
@@ -813,12 +813,12 @@ LABEL_54:
       goto LABEL_55;
     }
 
-    v16 = [v7 timeContext];
-    v17 = [v16 dayOfWeek];
-    v18 = [v5 timeContext];
-    v19 = [v18 dayOfWeek];
+    timeContext3 = [v7 timeContext];
+    dayOfWeek = [timeContext3 dayOfWeek];
+    timeContext4 = [contextCopy timeContext];
+    dayOfWeek2 = [timeContext4 dayOfWeek];
 
-    if (v17 != v19)
+    if (dayOfWeek != dayOfWeek2)
     {
       v15 = __atxlog_handle_relevance_model();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
@@ -829,12 +829,12 @@ LABEL_54:
       goto LABEL_54;
     }
 
-    v20 = [v7 deviceStateContext];
-    v21 = [v20 wifiSSID];
-    v22 = [v5 deviceStateContext];
-    v23 = [v22 wifiSSID];
-    v24 = v21;
-    v25 = v23;
+    deviceStateContext = [v7 deviceStateContext];
+    wifiSSID = [deviceStateContext wifiSSID];
+    deviceStateContext2 = [contextCopy deviceStateContext];
+    wifiSSID2 = [deviceStateContext2 wifiSSID];
+    v24 = wifiSSID;
+    v25 = wifiSSID2;
     v26 = v25;
     if (v24 == v25)
     {
@@ -863,12 +863,12 @@ LABEL_19:
       }
     }
 
-    v28 = [v7 deviceStateContext];
-    v29 = [v28 inAirplaneMode];
-    v30 = [v5 deviceStateContext];
-    v31 = [v30 inAirplaneMode];
+    deviceStateContext3 = [v7 deviceStateContext];
+    inAirplaneMode = [deviceStateContext3 inAirplaneMode];
+    deviceStateContext4 = [contextCopy deviceStateContext];
+    inAirplaneMode2 = [deviceStateContext4 inAirplaneMode];
 
-    if (v29 != v31)
+    if (inAirplaneMode != inAirplaneMode2)
     {
       v15 = __atxlog_handle_relevance_model();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
@@ -879,12 +879,12 @@ LABEL_19:
       goto LABEL_54;
     }
 
-    v32 = [v7 locationMotionContext];
-    v33 = [v32 currentLOI];
-    v34 = [v5 locationMotionContext];
-    v35 = [v34 currentLOI];
-    v36 = v33;
-    v37 = v35;
+    locationMotionContext = [v7 locationMotionContext];
+    currentLOI = [locationMotionContext currentLOI];
+    locationMotionContext2 = [contextCopy locationMotionContext];
+    currentLOI2 = [locationMotionContext2 currentLOI];
+    v36 = currentLOI;
+    v37 = currentLOI2;
     v38 = v37;
     if (v36 == v37)
     {
@@ -913,12 +913,12 @@ LABEL_31:
       }
     }
 
-    v40 = [v7 locationMotionContext];
-    v41 = [v40 locationEnabled];
-    v42 = [v5 locationMotionContext];
-    v43 = [v42 locationEnabled];
+    locationMotionContext3 = [v7 locationMotionContext];
+    locationEnabled = [locationMotionContext3 locationEnabled];
+    locationMotionContext4 = [contextCopy locationMotionContext];
+    locationEnabled2 = [locationMotionContext4 locationEnabled];
 
-    if (v41 != v43)
+    if (locationEnabled != locationEnabled2)
     {
       v15 = __atxlog_handle_relevance_model();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
@@ -929,12 +929,12 @@ LABEL_31:
       goto LABEL_54;
     }
 
-    v44 = [v7 locationMotionContext];
-    v45 = [v44 geohash];
-    v46 = [v5 locationMotionContext];
-    v47 = [v46 geohash];
+    locationMotionContext5 = [v7 locationMotionContext];
+    geohash = [locationMotionContext5 geohash];
+    locationMotionContext6 = [contextCopy locationMotionContext];
+    geohash2 = [locationMotionContext6 geohash];
 
-    if (v45 != v47)
+    if (geohash != geohash2)
     {
       v15 = __atxlog_handle_relevance_model();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
@@ -945,12 +945,12 @@ LABEL_31:
       goto LABEL_54;
     }
 
-    v48 = [v7 locationMotionContext];
-    v49 = [v48 motionType];
-    v50 = [v5 locationMotionContext];
-    v51 = [v50 motionType];
+    locationMotionContext7 = [v7 locationMotionContext];
+    motionType = [locationMotionContext7 motionType];
+    locationMotionContext8 = [contextCopy locationMotionContext];
+    motionType2 = [locationMotionContext8 motionType];
 
-    if (v49 != v51)
+    if (motionType != motionType2)
     {
       v15 = __atxlog_handle_relevance_model();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
@@ -961,12 +961,12 @@ LABEL_31:
       goto LABEL_54;
     }
 
-    v52 = [v7 ambientLightContext];
-    v53 = [v52 ambientLightType];
-    v54 = [v5 ambientLightContext];
-    v55 = [v54 ambientLightType];
+    ambientLightContext = [v7 ambientLightContext];
+    ambientLightType = [ambientLightContext ambientLightType];
+    ambientLightContext2 = [contextCopy ambientLightContext];
+    ambientLightType2 = [ambientLightContext2 ambientLightType];
 
-    if (v53 != v55)
+    if (ambientLightType != ambientLightType2)
     {
       v15 = __atxlog_handle_relevance_model();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
@@ -977,18 +977,18 @@ LABEL_31:
       goto LABEL_54;
     }
 
-    v56 = [v7 bluetoothEvent];
-    v57 = [v5 bluetoothEvent];
-    v58 = v57;
-    if (v56 == v57)
+    bluetoothEvent = [v7 bluetoothEvent];
+    bluetoothEvent2 = [contextCopy bluetoothEvent];
+    v58 = bluetoothEvent2;
+    if (bluetoothEvent == bluetoothEvent2)
     {
     }
 
     else
     {
-      v59 = [v7 bluetoothEvent];
-      v60 = [v5 bluetoothEvent];
-      v61 = [v59 isEqual:v60];
+      bluetoothEvent3 = [v7 bluetoothEvent];
+      bluetoothEvent4 = [contextCopy bluetoothEvent];
+      v61 = [bluetoothEvent3 isEqual:bluetoothEvent4];
 
       if ((v61 & 1) == 0)
       {
@@ -1002,12 +1002,12 @@ LABEL_31:
       }
     }
 
-    v62 = [v7 inferredModeEvent];
-    v63 = [v62 modeType];
-    v64 = [v5 inferredModeEvent];
-    v65 = [v64 modeType];
+    inferredModeEvent = [v7 inferredModeEvent];
+    modeType = [inferredModeEvent modeType];
+    inferredModeEvent2 = [contextCopy inferredModeEvent];
+    modeType2 = [inferredModeEvent2 modeType];
 
-    if (v63 != v65)
+    if (modeType != modeType2)
     {
       v15 = __atxlog_handle_relevance_model();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
@@ -1018,17 +1018,17 @@ LABEL_31:
       goto LABEL_54;
     }
 
-    v66 = [v7 userFocusComputedModeEvent];
-    v67 = [v66 semanticType];
-    v68 = [v5 userFocusComputedModeEvent];
-    v69 = [v68 semanticType];
+    userFocusComputedModeEvent = [v7 userFocusComputedModeEvent];
+    semanticType = [userFocusComputedModeEvent semanticType];
+    userFocusComputedModeEvent2 = [contextCopy userFocusComputedModeEvent];
+    semanticType2 = [userFocusComputedModeEvent2 semanticType];
 
-    if (v67 == v69)
+    if (semanticType == semanticType2)
     {
-      v70 = [v7 poiCategory];
-      v71 = [v5 poiCategory];
+      poiCategory = [v7 poiCategory];
+      poiCategory2 = [contextCopy poiCategory];
 
-      if (v70 != v71)
+      if (poiCategory != poiCategory2)
       {
         v15 = __atxlog_handle_relevance_model();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
@@ -1039,14 +1039,14 @@ LABEL_31:
         goto LABEL_54;
       }
 
-      v73 = [v7 microlocationVisitEvent];
-      v74 = [v5 microlocationVisitEvent];
-      v75 = v74;
-      if (v73 != v74)
+      microlocationVisitEvent = [v7 microlocationVisitEvent];
+      microlocationVisitEvent2 = [contextCopy microlocationVisitEvent];
+      v75 = microlocationVisitEvent2;
+      if (microlocationVisitEvent != microlocationVisitEvent2)
       {
-        v76 = [v7 microlocationVisitEvent];
-        v77 = [v5 microlocationVisitEvent];
-        v78 = [v76 isEqual:v77];
+        microlocationVisitEvent3 = [v7 microlocationVisitEvent];
+        microlocationVisitEvent4 = [contextCopy microlocationVisitEvent];
+        v78 = [microlocationVisitEvent3 isEqual:microlocationVisitEvent4];
 
         if ((v78 & 1) == 0)
         {
@@ -1067,8 +1067,8 @@ LABEL_59:
 
     else
     {
-      v73 = __atxlog_handle_relevance_model();
-      if (os_log_type_enabled(v73, OS_LOG_TYPE_DEBUG))
+      microlocationVisitEvent = __atxlog_handle_relevance_model();
+      if (os_log_type_enabled(microlocationVisitEvent, OS_LOG_TYPE_DEBUG))
       {
         +[ATXCandidateRelevanceModelDatasetGenerator isContextMismatchForPreviousContext:currentContext:];
       }

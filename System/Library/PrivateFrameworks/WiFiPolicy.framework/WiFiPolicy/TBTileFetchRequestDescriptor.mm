@@ -1,8 +1,8 @@
 @interface TBTileFetchRequestDescriptor
 - (NSPredicate)localFetchPredicate;
-- (TBTileFetchRequestDescriptor)initWithTileItems:(id)a3 maxCacheAge:(id)a4;
+- (TBTileFetchRequestDescriptor)initWithTileItems:(id)items maxCacheAge:(id)age;
 - (id)_preferLocalCacheFetchRequest;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation TBTileFetchRequestDescriptor
@@ -12,31 +12,31 @@
   v17[2] = *MEMORY[0x277D85DE8];
   if (!self->_localFetchPredicate)
   {
-    v3 = [(TBTileFetchRequestDescriptor *)self tileItems];
+    tileItems = [(TBTileFetchRequestDescriptor *)self tileItems];
 
-    if (v3)
+    if (tileItems)
     {
-      v4 = [(TBTileFetchRequestDescriptor *)self tileItems];
-      v5 = [v4 tilePredicate];
+      tileItems2 = [(TBTileFetchRequestDescriptor *)self tileItems];
+      tilePredicate = [tileItems2 tilePredicate];
 
-      v6 = [(TBTileFetchRequestDescriptor *)self maxCacheAge];
+      maxCacheAge = [(TBTileFetchRequestDescriptor *)self maxCacheAge];
 
-      if (v6)
+      if (maxCacheAge)
       {
         v7 = MEMORY[0x277CCA920];
         v8 = MEMORY[0x277CCAC30];
-        v9 = [(TBTileFetchRequestDescriptor *)self maxCacheAge];
-        v10 = [v8 predicateWithFormat:@"created >= %@", v9];
+        maxCacheAge2 = [(TBTileFetchRequestDescriptor *)self maxCacheAge];
+        v10 = [v8 predicateWithFormat:@"created >= %@", maxCacheAge2];
         v17[0] = v10;
-        v17[1] = v5;
+        v17[1] = tilePredicate;
         v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:2];
         v12 = [v7 andPredicateWithSubpredicates:v11];
 
-        v5 = v12;
+        tilePredicate = v12;
       }
 
       localFetchPredicate = self->_localFetchPredicate;
-      self->_localFetchPredicate = v5;
+      self->_localFetchPredicate = tilePredicate;
     }
   }
 
@@ -53,19 +53,19 @@
   v4 = +[TBTileMO entityName];
   v5 = [v3 fetchRequestWithEntityName:v4];
 
-  v6 = [(TBTileFetchRequestDescriptor *)self tileItems];
-  v7 = [v6 tilePredicate];
+  tileItems = [(TBTileFetchRequestDescriptor *)self tileItems];
+  tilePredicate = [tileItems tilePredicate];
 
-  v8 = [(TBTileFetchRequestDescriptor *)self maxCacheAge];
+  maxCacheAge = [(TBTileFetchRequestDescriptor *)self maxCacheAge];
 
-  if (v8)
+  if (maxCacheAge)
   {
     v9 = MEMORY[0x277CCA920];
     v10 = MEMORY[0x277CCAC30];
-    v11 = [(TBTileFetchRequestDescriptor *)self maxCacheAge];
-    v12 = [v10 predicateWithFormat:@"created > %@", v11];
+    maxCacheAge2 = [(TBTileFetchRequestDescriptor *)self maxCacheAge];
+    v12 = [v10 predicateWithFormat:@"created > %@", maxCacheAge2];
     v17[0] = v12;
-    v17[1] = v7;
+    v17[1] = tilePredicate;
     v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:2];
     v14 = [v9 andPredicateWithSubpredicates:v13];
     [v5 setPredicate:v14];
@@ -79,11 +79,11 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_alloc_init(objc_opt_class());
-  v6 = [(TBTileFetchRequestDescriptor *)self tileItems];
-  v7 = [v6 copyWithZone:a3];
+  tileItems = [(TBTileFetchRequestDescriptor *)self tileItems];
+  v7 = [tileItems copyWithZone:zone];
   [v5 setTileItems:v7];
 
   [v5 setType:{-[TBTileFetchRequestDescriptor type](self, "type")}];
@@ -95,29 +95,29 @@
   [v5 setLocalFetchDescriptor:v11];
 
   v12 = [TBLocalFetchRequestDescriptor alloc];
-  v13 = [(TBTileFetchRequestDescriptor *)self _preferLocalCacheFetchRequest];
-  v14 = [(TBLocalFetchRequestDescriptor *)v12 initWithFetchRequest:v13];
+  _preferLocalCacheFetchRequest = [(TBTileFetchRequestDescriptor *)self _preferLocalCacheFetchRequest];
+  v14 = [(TBLocalFetchRequestDescriptor *)v12 initWithFetchRequest:_preferLocalCacheFetchRequest];
   [v5 setPreferLocalFetchDescriptor:v14];
 
-  v15 = [(TBTileFetchRequestDescriptor *)self localFetchPredicate];
-  v16 = [v15 copyWithZone:a3];
+  localFetchPredicate = [(TBTileFetchRequestDescriptor *)self localFetchPredicate];
+  v16 = [localFetchPredicate copyWithZone:zone];
   [v10 setPredicate:v16];
 
   return v5;
 }
 
-- (TBTileFetchRequestDescriptor)initWithTileItems:(id)a3 maxCacheAge:(id)a4
+- (TBTileFetchRequestDescriptor)initWithTileItems:(id)items maxCacheAge:(id)age
 {
-  v7 = a3;
-  v8 = a4;
+  itemsCopy = items;
+  ageCopy = age;
   v22.receiver = self;
   v22.super_class = TBTileFetchRequestDescriptor;
   v9 = [(TBTileFetchRequestDescriptor *)&v22 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_tileItems, a3);
-    objc_storeStrong(&v10->_maxCacheAge, a4);
+    objc_storeStrong(&v9->_tileItems, items);
+    objc_storeStrong(&v10->_maxCacheAge, age);
     v10->_type = 3;
     v11 = objc_alloc(MEMORY[0x277CBE428]);
     v12 = +[TBTileMO entityName];
@@ -127,12 +127,12 @@
     localFetchDescriptor = v10->_localFetchDescriptor;
     v10->_localFetchDescriptor = v14;
 
-    v16 = [(TBTileFetchRequestDescriptor *)v10 localFetchPredicate];
-    [v13 setPredicate:v16];
+    localFetchPredicate = [(TBTileFetchRequestDescriptor *)v10 localFetchPredicate];
+    [v13 setPredicate:localFetchPredicate];
 
     v17 = [TBLocalFetchRequestDescriptor alloc];
-    v18 = [(TBTileFetchRequestDescriptor *)v10 _preferLocalCacheFetchRequest];
-    v19 = [(TBLocalFetchRequestDescriptor *)v17 initWithFetchRequest:v18];
+    _preferLocalCacheFetchRequest = [(TBTileFetchRequestDescriptor *)v10 _preferLocalCacheFetchRequest];
+    v19 = [(TBLocalFetchRequestDescriptor *)v17 initWithFetchRequest:_preferLocalCacheFetchRequest];
     preferLocalFetchDescriptor = v10->_preferLocalFetchDescriptor;
     v10->_preferLocalFetchDescriptor = v19;
   }

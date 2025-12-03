@@ -1,22 +1,22 @@
 @interface TBRemoteFetchAndCacheDataSource
-- (TBRemoteFetchAndCacheDataSource)initWithFetchDataSource:(id)a3 cacheProvider:(id)a4;
+- (TBRemoteFetchAndCacheDataSource)initWithFetchDataSource:(id)source cacheProvider:(id)provider;
 @end
 
 @implementation TBRemoteFetchAndCacheDataSource
 
-- (TBRemoteFetchAndCacheDataSource)initWithFetchDataSource:(id)a3 cacheProvider:(id)a4
+- (TBRemoteFetchAndCacheDataSource)initWithFetchDataSource:(id)source cacheProvider:(id)provider
 {
-  v6 = a3;
-  v7 = a4;
+  sourceCopy = source;
+  providerCopy = provider;
   v13.receiver = self;
   v13.super_class = TBRemoteFetchAndCacheDataSource;
   v8 = [(TBRemoteFetchAndCacheDataSource *)&v13 init];
   fetchDataSource = v8->_fetchDataSource;
-  v8->_fetchDataSource = v6;
-  v10 = v6;
+  v8->_fetchDataSource = sourceCopy;
+  v10 = sourceCopy;
 
   cacheProvider = v8->_cacheProvider;
-  v8->_cacheProvider = v7;
+  v8->_cacheProvider = providerCopy;
 
   return v8;
 }

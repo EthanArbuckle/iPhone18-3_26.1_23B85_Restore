@@ -1,8 +1,8 @@
 @interface DNDSContactProvider
 + (id)sharedContactStore;
 - (DNDSContactProvider)init;
-- (id)_bestMatchForContact:(id)a3 inContacts:(id)a4;
-- (id)contactForContact:(id)a3;
+- (id)_bestMatchForContact:(id)contact inContacts:(id)contacts;
+- (id)contactForContact:(id)contact;
 @end
 
 @implementation DNDSContactProvider
@@ -35,34 +35,34 @@ uint64_t __41__DNDSContactProvider_sharedContactStore__block_invoke()
   v2 = [(DNDSContactProvider *)&v6 init];
   if (v2)
   {
-    v3 = [objc_opt_class() sharedContactStore];
+    sharedContactStore = [objc_opt_class() sharedContactStore];
     contactStore = v2->_contactStore;
-    v2->_contactStore = v3;
+    v2->_contactStore = sharedContactStore;
   }
 
   return v2;
 }
 
-- (id)contactForContact:(id)a3
+- (id)contactForContact:(id)contact
 {
-  v4 = a3;
+  contactCopy = contact;
   v5 = objc_opt_new();
-  v6 = [v4 phoneNumbers];
-  v7 = [v6 allObjects];
-  [v5 addObjectsFromArray:v7];
+  phoneNumbers = [contactCopy phoneNumbers];
+  allObjects = [phoneNumbers allObjects];
+  [v5 addObjectsFromArray:allObjects];
 
-  v8 = [v4 emailAddresses];
-  v9 = [v8 allObjects];
-  [v5 addObjectsFromArray:v9];
+  emailAddresses = [contactCopy emailAddresses];
+  allObjects2 = [emailAddresses allObjects];
+  [v5 addObjectsFromArray:allObjects2];
 
   v10 = [MEMORY[0x277CBDA58] predicateForContactsMatchingHandleStrings:v5];
-  v11 = v4;
+  v11 = contactCopy;
   if (v10)
   {
     contactStore = self->_contactStore;
-    v13 = [MEMORY[0x277D058F0] keysToFetch];
+    keysToFetch = [MEMORY[0x277D058F0] keysToFetch];
     v19 = 0;
-    v14 = [(CNContactStore *)contactStore unifiedContactsMatchingPredicate:v10 keysToFetch:v13 error:&v19];
+    v14 = [(CNContactStore *)contactStore unifiedContactsMatchingPredicate:v10 keysToFetch:keysToFetch error:&v19];
     v15 = v19;
 
     if ([v14 count] < 2)
@@ -72,7 +72,7 @@ uint64_t __41__DNDSContactProvider_sharedContactStore__block_invoke()
 
     else
     {
-      [(DNDSContactProvider *)self _bestMatchForContact:v4 inContacts:v14];
+      [(DNDSContactProvider *)self _bestMatchForContact:contactCopy inContacts:v14];
     }
     v16 = ;
     if (v16)
@@ -83,11 +83,11 @@ uint64_t __41__DNDSContactProvider_sharedContactStore__block_invoke()
     else
     {
       v17 = DNDSLogSettings;
-      v11 = v4;
+      v11 = contactCopy;
       if (os_log_type_enabled(DNDSLogSettings, OS_LOG_TYPE_ERROR))
       {
-        [(DNDSContactProvider *)v4 contactForContact:v17];
-        v11 = v4;
+        [(DNDSContactProvider *)contactCopy contactForContact:v17];
+        v11 = contactCopy;
       }
     }
   }
@@ -95,19 +95,19 @@ uint64_t __41__DNDSContactProvider_sharedContactStore__block_invoke()
   return v11;
 }
 
-- (id)_bestMatchForContact:(id)a3 inContacts:(id)a4
+- (id)_bestMatchForContact:(id)contact inContacts:(id)contacts
 {
   v109 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  contactCopy = contact;
+  contactsCopy = contacts;
   v7 = DNDSLogSettings;
   if (os_log_type_enabled(DNDSLogSettings, OS_LOG_TYPE_DEFAULT))
   {
     v8 = v7;
     *buf = 134349314;
-    v106 = [v6 count];
+    v106 = [contactsCopy count];
     v107 = 2112;
-    v108 = v5;
+    v108 = contactCopy;
     _os_log_impl(&dword_24912E000, v8, OS_LOG_TYPE_DEFAULT, "Scoring %{public}llu matches for contact %@", buf, 0x16u);
   }
 
@@ -115,7 +115,7 @@ uint64_t __41__DNDSContactProvider_sharedContactStore__block_invoke()
   v99 = 0u;
   v96 = 0u;
   v97 = 0u;
-  obj = v6;
+  obj = contactsCopy;
   v76 = [obj countByEnumeratingWithState:&v96 objects:v104 count:16];
   if (!v76)
   {
@@ -129,7 +129,7 @@ uint64_t __41__DNDSContactProvider_sharedContactStore__block_invoke()
   v75 = 0;
   *&v9 = 134349056;
   v72 = v9;
-  v79 = v5;
+  v79 = contactCopy;
   do
   {
     v10 = 0;
@@ -141,18 +141,18 @@ uint64_t __41__DNDSContactProvider_sharedContactStore__block_invoke()
       }
 
       v11 = *(*(&v96 + 1) + 8 * v10);
-      v12 = [v11 givenName];
+      givenName = [v11 givenName];
       v78 = v10;
-      if ([v12 length])
+      if ([givenName length])
       {
-        v13 = [v5 firstName];
-        if ([v13 length])
+        firstName = [contactCopy firstName];
+        if ([firstName length])
         {
-          v14 = [v11 givenName];
-          v15 = [v14 lowercaseString];
-          v16 = [v5 firstName];
-          v17 = [v16 lowercaseString];
-          v18 = [v15 isEqualToString:v17];
+          givenName2 = [v11 givenName];
+          lowercaseString = [givenName2 lowercaseString];
+          firstName2 = [contactCopy firstName];
+          lowercaseString2 = [firstName2 lowercaseString];
+          v18 = [lowercaseString isEqualToString:lowercaseString2];
 
           v19 = v18 & 1;
           goto LABEL_13;
@@ -161,17 +161,17 @@ uint64_t __41__DNDSContactProvider_sharedContactStore__block_invoke()
 
       v19 = 0;
 LABEL_13:
-      v20 = [v11 middleName];
-      if ([v20 length])
+      middleName = [v11 middleName];
+      if ([middleName length])
       {
-        v21 = [v5 middleName];
-        if ([v21 length])
+        middleName2 = [contactCopy middleName];
+        if ([middleName2 length])
         {
-          v22 = [v11 middleName];
-          v23 = [v22 lowercaseString];
-          v24 = [v5 middleName];
-          v25 = [v24 lowercaseString];
-          v26 = [v23 isEqualToString:v25];
+          middleName3 = [v11 middleName];
+          lowercaseString3 = [middleName3 lowercaseString];
+          middleName4 = [contactCopy middleName];
+          lowercaseString4 = [middleName4 lowercaseString];
+          v26 = [lowercaseString3 isEqualToString:lowercaseString4];
 
           v19 += v26 & 1;
           goto LABEL_18;
@@ -179,17 +179,17 @@ LABEL_13:
       }
 
 LABEL_18:
-      v27 = [v11 familyName];
-      if ([v27 length])
+      familyName = [v11 familyName];
+      if ([familyName length])
       {
-        v28 = [v5 lastName];
-        if ([v28 length])
+        lastName = [contactCopy lastName];
+        if ([lastName length])
         {
-          v29 = [v11 familyName];
-          v30 = [v29 lowercaseString];
-          v31 = [v5 lastName];
-          v32 = [v31 lowercaseString];
-          v33 = [v30 isEqualToString:v32];
+          familyName2 = [v11 familyName];
+          lowercaseString5 = [familyName2 lowercaseString];
+          lastName2 = [contactCopy lastName];
+          lowercaseString6 = [lastName2 lowercaseString];
+          v33 = [lowercaseString5 isEqualToString:lowercaseString6];
 
           v19 += v33 & 1;
           goto LABEL_23;
@@ -197,17 +197,17 @@ LABEL_18:
       }
 
 LABEL_23:
-      v34 = [v11 organizationName];
-      if ([v34 length])
+      organizationName = [v11 organizationName];
+      if ([organizationName length])
       {
-        v35 = [v5 organizationName];
-        if ([v35 length])
+        organizationName2 = [contactCopy organizationName];
+        if ([organizationName2 length])
         {
-          v36 = [v11 organizationName];
-          v37 = [v36 lowercaseString];
-          v38 = [v5 organizationName];
-          v39 = [v38 lowercaseString];
-          v40 = [v37 isEqualToString:v39];
+          organizationName3 = [v11 organizationName];
+          lowercaseString7 = [organizationName3 lowercaseString];
+          organizationName4 = [contactCopy organizationName];
+          lowercaseString8 = [organizationName4 lowercaseString];
+          v40 = [lowercaseString7 isEqualToString:lowercaseString8];
 
           v19 += v40 & 1;
           goto LABEL_28;
@@ -220,8 +220,8 @@ LABEL_28:
       v93 = 0u;
       v94 = 0u;
       v95 = 0u;
-      v42 = [v11 emailAddresses];
-      v43 = [v42 countByEnumeratingWithState:&v92 objects:v103 count:16];
+      emailAddresses = [v11 emailAddresses];
+      v43 = [emailAddresses countByEnumeratingWithState:&v92 objects:v103 count:16];
       if (v43)
       {
         v44 = v43;
@@ -232,14 +232,14 @@ LABEL_28:
           {
             if (*v93 != v45)
             {
-              objc_enumerationMutation(v42);
+              objc_enumerationMutation(emailAddresses);
             }
 
-            v47 = [*(*(&v92 + 1) + 8 * i) value];
-            [v41 addObject:v47];
+            value = [*(*(&v92 + 1) + 8 * i) value];
+            [v41 addObject:value];
           }
 
-          v44 = [v42 countByEnumeratingWithState:&v92 objects:v103 count:16];
+          v44 = [emailAddresses countByEnumeratingWithState:&v92 objects:v103 count:16];
         }
 
         while (v44);
@@ -249,8 +249,8 @@ LABEL_28:
       v91 = 0u;
       v88 = 0u;
       v89 = 0u;
-      v48 = [v79 emailAddresses];
-      v49 = [v48 countByEnumeratingWithState:&v88 objects:v102 count:16];
+      emailAddresses2 = [v79 emailAddresses];
+      v49 = [emailAddresses2 countByEnumeratingWithState:&v88 objects:v102 count:16];
       if (v49)
       {
         v50 = v49;
@@ -261,7 +261,7 @@ LABEL_28:
           {
             if (*v89 != v51)
             {
-              objc_enumerationMutation(v48);
+              objc_enumerationMutation(emailAddresses2);
             }
 
             if ([v41 containsObject:*(*(&v88 + 1) + 8 * j)])
@@ -270,7 +270,7 @@ LABEL_28:
             }
           }
 
-          v50 = [v48 countByEnumeratingWithState:&v88 objects:v102 count:16];
+          v50 = [emailAddresses2 countByEnumeratingWithState:&v88 objects:v102 count:16];
         }
 
         while (v50);
@@ -281,8 +281,8 @@ LABEL_28:
       v85 = 0u;
       v86 = 0u;
       v87 = 0u;
-      v54 = [v11 phoneNumbers];
-      v55 = [v54 countByEnumeratingWithState:&v84 objects:v101 count:16];
+      phoneNumbers = [v11 phoneNumbers];
+      v55 = [phoneNumbers countByEnumeratingWithState:&v84 objects:v101 count:16];
       if (v55)
       {
         v56 = v55;
@@ -293,15 +293,15 @@ LABEL_28:
           {
             if (*v85 != v57)
             {
-              objc_enumerationMutation(v54);
+              objc_enumerationMutation(phoneNumbers);
             }
 
-            v59 = [*(*(&v84 + 1) + 8 * k) value];
-            v60 = [v59 stringValue];
-            [v53 addObject:v60];
+            value2 = [*(*(&v84 + 1) + 8 * k) value];
+            stringValue = [value2 stringValue];
+            [v53 addObject:stringValue];
           }
 
-          v56 = [v54 countByEnumeratingWithState:&v84 objects:v101 count:16];
+          v56 = [phoneNumbers countByEnumeratingWithState:&v84 objects:v101 count:16];
         }
 
         while (v56);
@@ -311,9 +311,9 @@ LABEL_28:
       v83 = 0u;
       v80 = 0u;
       v81 = 0u;
-      v5 = v79;
-      v61 = [v79 phoneNumbers];
-      v62 = [v61 countByEnumeratingWithState:&v80 objects:v100 count:16];
+      contactCopy = v79;
+      phoneNumbers2 = [v79 phoneNumbers];
+      v62 = [phoneNumbers2 countByEnumeratingWithState:&v80 objects:v100 count:16];
       if (v62)
       {
         v63 = v62;
@@ -324,7 +324,7 @@ LABEL_28:
           {
             if (*v81 != v64)
             {
-              objc_enumerationMutation(v61);
+              objc_enumerationMutation(phoneNumbers2);
             }
 
             if ([v53 containsObject:*(*(&v80 + 1) + 8 * m)])
@@ -333,7 +333,7 @@ LABEL_28:
             }
           }
 
-          v63 = [v61 countByEnumeratingWithState:&v80 objects:v100 count:16];
+          v63 = [phoneNumbers2 countByEnumeratingWithState:&v80 objects:v100 count:16];
         }
 
         while (v63);

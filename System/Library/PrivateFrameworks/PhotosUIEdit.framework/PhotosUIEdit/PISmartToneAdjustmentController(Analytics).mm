@@ -10,21 +10,21 @@
   v68 = *MEMORY[0x277D85DE8];
   v2 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v61 = +[PEAnalyticsUtility adjustmentValueBucketizerFormatter];
-  v3 = [a1 adjustment];
-  if (v3)
+  adjustment = [self adjustment];
+  if (adjustment)
   {
-    v4 = v3;
-    v5 = [a1 enabled];
+    v4 = adjustment;
+    enabled = [self enabled];
 
-    if (v5)
+    if (enabled)
     {
-      v6 = [a1 visualInputKeys];
-      v7 = [a1 analyticsKeysBlocklist];
+      visualInputKeys = [self visualInputKeys];
+      analyticsKeysBlocklist = [self analyticsKeysBlocklist];
       v63 = 0u;
       v64 = 0u;
       v65 = 0u;
       v66 = 0u;
-      obj = v6;
+      obj = visualInputKeys;
       v8 = [obj countByEnumeratingWithState:&v63 objects:v67 count:16];
       if (!v8)
       {
@@ -44,14 +44,14 @@
           }
 
           v12 = *(*(&v63 + 1) + 8 * v11);
-          if (([v7 containsObject:v12] & 1) == 0)
+          if (([analyticsKeysBlocklist containsObject:v12] & 1) == 0)
           {
-            v13 = [MEMORY[0x277D3A9A0] autoKey];
-            if ([v12 isEqualToString:v13])
+            autoKey = [MEMORY[0x277D3A9A0] autoKey];
+            if ([v12 isEqualToString:autoKey])
             {
-              v14 = [a1 isAuto];
+              isAuto = [self isAuto];
 
-              if (v14)
+              if (isAuto)
               {
                 [v2 setObject:@"1" forKeyedSubscript:@"st_auto"];
                 goto LABEL_45;
@@ -62,16 +62,16 @@
             {
             }
 
-            v15 = [MEMORY[0x277D3A9A0] offsetExposureKey];
-            if ([v12 isEqualToString:v15])
+            offsetExposureKey = [MEMORY[0x277D3A9A0] offsetExposureKey];
+            if ([v12 isEqualToString:offsetExposureKey])
             {
-              [a1 offsetExposure];
+              [self offsetExposure];
               v17 = v16;
 
               if (v17 != 0.0)
               {
                 v18 = MEMORY[0x277CCABB0];
-                [a1 inputExposure];
+                [self inputExposure];
                 v19 = [v18 numberWithDouble:?];
                 v20 = [v61 stringFromNumber:v19];
                 v21 = v2;
@@ -88,16 +88,16 @@ LABEL_44:
             {
             }
 
-            v24 = [MEMORY[0x277D3A9A0] offsetLocalLightKey];
-            if ([v12 isEqualToString:v24])
+            offsetLocalLightKey = [MEMORY[0x277D3A9A0] offsetLocalLightKey];
+            if ([v12 isEqualToString:offsetLocalLightKey])
             {
-              [a1 offsetLocalLight];
+              [self offsetLocalLight];
               v26 = v25;
 
               if (v26 != 0.0)
               {
                 v27 = MEMORY[0x277CCABB0];
-                [a1 inputLocalLight];
+                [self inputLocalLight];
                 v19 = [v27 numberWithDouble:?];
                 v20 = [v61 stringFromNumber:v19];
                 v21 = v2;
@@ -111,16 +111,16 @@ LABEL_44:
             {
             }
 
-            v28 = [MEMORY[0x277D3A9A0] offsetHighlightsKey];
-            if ([v12 isEqualToString:v28])
+            offsetHighlightsKey = [MEMORY[0x277D3A9A0] offsetHighlightsKey];
+            if ([v12 isEqualToString:offsetHighlightsKey])
             {
-              [a1 offsetHighlights];
+              [self offsetHighlights];
               v30 = v29;
 
               if (v30 != 0.0)
               {
                 v31 = MEMORY[0x277CCABB0];
-                [a1 inputHighlights];
+                [self inputHighlights];
                 v19 = [v31 numberWithDouble:?];
                 v20 = [v61 stringFromNumber:v19];
                 v21 = v2;
@@ -134,16 +134,16 @@ LABEL_44:
             {
             }
 
-            v32 = [MEMORY[0x277D3A9A0] offsetShadowsKey];
-            if ([v12 isEqualToString:v32])
+            offsetShadowsKey = [MEMORY[0x277D3A9A0] offsetShadowsKey];
+            if ([v12 isEqualToString:offsetShadowsKey])
             {
-              [a1 offsetShadows];
+              [self offsetShadows];
               v34 = v33;
 
               if (v34 != 0.0)
               {
                 v35 = MEMORY[0x277CCABB0];
-                [a1 inputShadows];
+                [self inputShadows];
                 v19 = [v35 numberWithDouble:?];
                 v20 = [v61 stringFromNumber:v19];
                 v21 = v2;
@@ -157,16 +157,16 @@ LABEL_44:
             {
             }
 
-            v36 = [MEMORY[0x277D3A9A0] offsetContrastKey];
-            if ([v12 isEqualToString:v36])
+            offsetContrastKey = [MEMORY[0x277D3A9A0] offsetContrastKey];
+            if ([v12 isEqualToString:offsetContrastKey])
             {
-              [a1 offsetContrast];
+              [self offsetContrast];
               v38 = v37;
 
               if (v38 != 0.0)
               {
                 v39 = MEMORY[0x277CCABB0];
-                [a1 inputContrast];
+                [self inputContrast];
                 v19 = [v39 numberWithDouble:?];
                 v20 = [v61 stringFromNumber:v19];
                 v21 = v2;
@@ -180,16 +180,16 @@ LABEL_44:
             {
             }
 
-            v40 = [MEMORY[0x277D3A9A0] offsetBrightnessKey];
-            if ([v12 isEqualToString:v40])
+            offsetBrightnessKey = [MEMORY[0x277D3A9A0] offsetBrightnessKey];
+            if ([v12 isEqualToString:offsetBrightnessKey])
             {
-              [a1 offsetBrightness];
+              [self offsetBrightness];
               v42 = v41;
 
               if (v42 != 0.0)
               {
                 v43 = MEMORY[0x277CCABB0];
-                [a1 inputBrightness];
+                [self inputBrightness];
                 v19 = [v43 numberWithDouble:?];
                 v20 = [v61 stringFromNumber:v19];
                 v21 = v2;
@@ -203,16 +203,16 @@ LABEL_44:
             {
             }
 
-            v44 = [MEMORY[0x277D3A9A0] offsetBlackKey];
-            if ([v12 isEqualToString:v44])
+            offsetBlackKey = [MEMORY[0x277D3A9A0] offsetBlackKey];
+            if ([v12 isEqualToString:offsetBlackKey])
             {
-              [a1 offsetBlack];
+              [self offsetBlack];
               v46 = v45;
 
               if (v46 != 0.0)
               {
                 v47 = MEMORY[0x277CCABB0];
-                [a1 inputBlack];
+                [self inputBlack];
                 v19 = [v47 numberWithDouble:?];
                 v20 = [v61 stringFromNumber:v19];
                 v21 = v2;
@@ -226,16 +226,16 @@ LABEL_44:
             {
             }
 
-            v48 = [MEMORY[0x277D3A9A0] inputLightKey];
-            if ([v12 isEqualToString:v48])
+            inputLightKey = [MEMORY[0x277D3A9A0] inputLightKey];
+            if ([v12 isEqualToString:inputLightKey])
             {
-              [a1 inputLight];
+              [self inputLight];
               v50 = v49;
 
               if (v50 != 0.0)
               {
                 v51 = MEMORY[0x277CCABB0];
-                [a1 inputLight];
+                [self inputLight];
                 v19 = [v51 numberWithDouble:?];
                 v20 = [v61 stringFromNumber:v19];
                 v21 = v2;
@@ -249,7 +249,7 @@ LABEL_44:
             {
             }
 
-            v52 = [a1 valueForKey:v12];
+            v52 = [self valueForKey:v12];
             [v52 doubleValue];
             if (v53 != 0.0)
             {
@@ -291,17 +291,17 @@ LABEL_54:
 - (id)analyticsKeysBlocklist
 {
   v11 = MEMORY[0x277CBEB98];
-  v10 = [MEMORY[0x277D3A9A0] inputRawHighlightsKey];
-  v0 = [MEMORY[0x277D3A9A0] inputExposureKey];
-  v1 = [MEMORY[0x277D3A9A0] inputHighlightsKey];
-  v2 = [MEMORY[0x277D3A9A0] inputContrastKey];
-  v3 = [MEMORY[0x277D3A9A0] inputBlackKey];
-  v4 = [MEMORY[0x277D3A9A0] enabledKey];
-  v5 = [MEMORY[0x277D3A9A0] inputBrightnessKey];
-  v6 = [MEMORY[0x277D3A9A0] inputShadowsKey];
-  v7 = [MEMORY[0x277D3A9A0] inputLocalLightKey];
-  v8 = [MEMORY[0x277D3A9A0] statisticsKey];
-  v12 = [v11 setWithObjects:{v10, v0, v1, v2, v3, v4, v5, v6, v7, v8, 0}];
+  inputRawHighlightsKey = [MEMORY[0x277D3A9A0] inputRawHighlightsKey];
+  inputExposureKey = [MEMORY[0x277D3A9A0] inputExposureKey];
+  inputHighlightsKey = [MEMORY[0x277D3A9A0] inputHighlightsKey];
+  inputContrastKey = [MEMORY[0x277D3A9A0] inputContrastKey];
+  inputBlackKey = [MEMORY[0x277D3A9A0] inputBlackKey];
+  enabledKey = [MEMORY[0x277D3A9A0] enabledKey];
+  inputBrightnessKey = [MEMORY[0x277D3A9A0] inputBrightnessKey];
+  inputShadowsKey = [MEMORY[0x277D3A9A0] inputShadowsKey];
+  inputLocalLightKey = [MEMORY[0x277D3A9A0] inputLocalLightKey];
+  statisticsKey = [MEMORY[0x277D3A9A0] statisticsKey];
+  v12 = [v11 setWithObjects:{inputRawHighlightsKey, inputExposureKey, inputHighlightsKey, inputContrastKey, inputBlackKey, enabledKey, inputBrightnessKey, inputShadowsKey, inputLocalLightKey, statisticsKey, 0}];
 
   return v12;
 }

@@ -1,5 +1,5 @@
 @interface PUOneUpDetailsBarButtonController
-+ (id)defaultGlyphNameFor:(id)a3;
++ (id)defaultGlyphNameFor:(id)for;
 - (void)currentAssetDidChange;
 - (void)update;
 @end
@@ -8,14 +8,14 @@
 
 - (void)update
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B37150D4();
 }
 
-+ (id)defaultGlyphNameFor:(id)a3
++ (id)defaultGlyphNameFor:(id)for
 {
-  v3 = a3;
-  sub_1B371592C(v3);
+  forCopy = for;
+  sub_1B371592C(forCopy);
 
   v4 = sub_1B3C9C5A8();
 
@@ -24,7 +24,7 @@
 
 - (void)currentAssetDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B3715AB0();
 }
 

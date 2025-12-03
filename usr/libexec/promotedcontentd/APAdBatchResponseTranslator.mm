@@ -1,41 +1,41 @@
 @interface APAdBatchResponseTranslator
-- (id)contentDataWithError:(id)a3 identifier:(id)a4 journeyStartRelayValues:(id)a5;
-- (id)fixupFormattedText:(id)a3;
-- (id)translate:(id *)a3;
-- (void)_addContentDataWithErrorForError:(id)a3 identifier:(id)a4 toResults:(id)a5 journeyStartRelayValues:(id)a6;
+- (id)contentDataWithError:(id)error identifier:(id)identifier journeyStartRelayValues:(id)values;
+- (id)fixupFormattedText:(id)text;
+- (id)translate:(id *)translate;
+- (void)_addContentDataWithErrorForError:(id)error identifier:(id)identifier toResults:(id)results journeyStartRelayValues:(id)values;
 @end
 
 @implementation APAdBatchResponseTranslator
 
-- (id)contentDataWithError:(id)a3 identifier:(id)a4 journeyStartRelayValues:(id)a5
+- (id)contentDataWithError:(id)error identifier:(id)identifier journeyStartRelayValues:(id)values
 {
-  v6 = a3;
-  v7 = a5;
-  v8 = [v6 domain];
-  v9 = [v8 isEqualToString:@"com.apple.ap.AdValidationErrorDomain"];
+  errorCopy = error;
+  valuesCopy = values;
+  domain = [errorCopy domain];
+  v9 = [domain isEqualToString:@"com.apple.ap.AdValidationErrorDomain"];
 
   if (v9)
   {
-    v10 = [v6 code];
-    if ((v10 - 4505) >= 5)
+    code = [errorCopy code];
+    if ((code - 4505) >= 5)
     {
       v11 = 1021;
     }
 
     else
     {
-      v11 = qword_1003F07B0[(v10 - 4505)];
+      v11 = qword_1003F07B0[(code - 4505)];
     }
   }
 
   else
   {
-    v12 = [v6 domain];
-    v13 = [v12 isEqualToString:@"com.apple.ap.DaemonDiscardedErrorDomain"];
+    domain2 = [errorCopy domain];
+    v13 = [domain2 isEqualToString:@"com.apple.ap.DaemonDiscardedErrorDomain"];
 
     if (v13)
     {
-      if ([v6 code] == 2600)
+      if ([errorCopy code] == 2600)
       {
         v11 = 1020;
       }
@@ -46,7 +46,7 @@
         if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
         {
           v22 = 134217984;
-          v23 = [v6 code];
+          code2 = [errorCopy code];
           _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_ERROR, "%ld is not a valid discard reason.", &v22, 0xCu);
         }
 
@@ -56,8 +56,8 @@
 
     else
     {
-      v14 = [v6 domain];
-      v15 = [v14 isEqualToString:NSURLErrorDomain];
+      domain3 = [errorCopy domain];
+      v15 = [domain3 isEqualToString:NSURLErrorDomain];
 
       if (v15)
       {
@@ -73,64 +73,64 @@
 
   v17 = [APContentDataInternal alloc];
   v18 = +[NSUUID UUID];
-  v19 = [v18 UUIDString];
-  v20 = [(APContentDataInternal *)v17 initWithUnfilledReason:v11 error:v6 contentIdentifier:v19 contextIdentifier:0 containerSize:-1 placementType:v7 journeyStartRelayValues:0.0, 0.0];
+  uUIDString = [v18 UUIDString];
+  v20 = [(APContentDataInternal *)v17 initWithUnfilledReason:v11 error:errorCopy contentIdentifier:uUIDString contextIdentifier:0 containerSize:-1 placementType:valuesCopy journeyStartRelayValues:0.0, 0.0];
 
   return v20;
 }
 
-- (id)translate:(id *)a3
+- (id)translate:(id *)translate
 {
-  if (a3)
+  if (translate)
   {
-    v3 = a3;
+    translateCopy = translate;
     if (!+[APSystemInternal isAppleInternalInstall])
     {
       goto LABEL_8;
     }
 
     v4 = +[APMockAdServerSettings settings];
-    v5 = [v4 logAdResponsesAsText];
-    if (([v5 BOOLValue]& 1) != 0)
+    logAdResponsesAsText = [v4 logAdResponsesAsText];
+    if (([logAdResponsesAsText BOOLValue]& 1) != 0)
     {
-      v6 = [(APResponseDataTranslator *)self response];
-      v7 = [v6 formattedText];
+      response = [(APResponseDataTranslator *)self response];
+      formattedText = [response formattedText];
 
-      if (!v7)
+      if (!formattedText)
       {
         goto LABEL_8;
       }
 
-      v8 = [(APResponseDataTranslator *)self response];
-      v9 = [v8 formattedText];
-      v4 = [(APAdBatchResponseTranslator *)self fixupFormattedText:v9];
+      response2 = [(APResponseDataTranslator *)self response];
+      formattedText2 = [response2 formattedText];
+      v4 = [(APAdBatchResponseTranslator *)self fixupFormattedText:formattedText2];
 
-      v5 = APLogForCategory();
-      if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+      logAdResponsesAsText = APLogForCategory();
+      if (os_log_type_enabled(logAdResponsesAsText, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138477827;
         v107 = v4;
-        _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "APPBAdBatchResponse text:\n%{private}@", buf, 0xCu);
+        _os_log_impl(&_mh_execute_header, logAdResponsesAsText, OS_LOG_TYPE_DEFAULT, "APPBAdBatchResponse text:\n%{private}@", buf, 0xCu);
       }
     }
 
 LABEL_8:
     v10 = +[NSMutableArray array];
-    if (*v3)
+    if (*translateCopy)
     {
-      v11 = [*v3 domain];
-      v12 = [v11 isEqualToString:@"com.apple.ap.HTTPError"];
+      domain = [*translateCopy domain];
+      v12 = [domain isEqualToString:@"com.apple.ap.HTTPError"];
 
       if (v12)
       {
-        v13 = [*v3 code];
+        code = [*translateCopy code];
         v14 = 4509;
-        if ((v13 - 500) >= 0x64)
+        if ((code - 500) >= 0x64)
         {
           v14 = 0;
         }
 
-        if ((v13 - 400) >= 0x64)
+        if ((code - 400) >= 0x64)
         {
           v15 = v14;
         }
@@ -140,17 +140,17 @@ LABEL_8:
           v15 = 4508;
         }
 
-        v16 = [(APResponseDataTranslator *)self requester];
-        v17 = [v16 requestIdentifier];
-        v18 = [NSString stringWithFormat:@"Server returned HTTP error %ld for request %@", v13, v17];
-        *v3 = [APLegacyInterfaceError validationErrorWithCode:v15 andReason:v18];
+        requester = [(APResponseDataTranslator *)self requester];
+        requestIdentifier = [requester requestIdentifier];
+        v18 = [NSString stringWithFormat:@"Server returned HTTP error %ld for request %@", code, requestIdentifier];
+        *translateCopy = [APLegacyInterfaceError validationErrorWithCode:v15 andReason:v18];
       }
 
-      v19 = *v3;
+      v19 = *translateCopy;
 LABEL_17:
-      v20 = [(APResponseDataTranslator *)self requester];
-      v21 = [v20 requestIdentifier];
-      [(APAdBatchResponseTranslator *)self _addContentDataWithErrorForError:v19 identifier:v21 toResults:v10 journeyStartRelayValues:0];
+      requester2 = [(APResponseDataTranslator *)self requester];
+      requestIdentifier2 = [requester2 requestIdentifier];
+      [(APAdBatchResponseTranslator *)self _addContentDataWithErrorForError:v19 identifier:requestIdentifier2 toResults:v10 journeyStartRelayValues:0];
 
 LABEL_18:
       v22 = v10;
@@ -158,55 +158,55 @@ LABEL_18:
       goto LABEL_22;
     }
 
-    v25 = self;
-    v26 = [(APResponseDataTranslator *)self response];
-    v27 = [v26 hasError];
+    selfCopy8 = self;
+    response3 = [(APResponseDataTranslator *)self response];
+    hasError = [response3 hasError];
 
-    if (!v27)
+    if (!hasError)
     {
 LABEL_35:
-      if (*v3)
+      if (*translateCopy)
       {
 LABEL_42:
         v57 = APLogForCategory();
         if (os_log_type_enabled(v57, OS_LOG_TYPE_INFO))
         {
-          v58 = [(APResponseDataTranslator *)v25 requester];
-          v59 = [v58 requestIdentifier];
-          v60 = [*v3 code];
-          v61 = [*v3 localizedDescription];
+          requester3 = [(APResponseDataTranslator *)selfCopy8 requester];
+          requestIdentifier3 = [requester3 requestIdentifier];
+          code2 = [*translateCopy code];
+          localizedDescription = [*translateCopy localizedDescription];
           *buf = 138543874;
-          v107 = v59;
+          v107 = requestIdentifier3;
           v108 = 2048;
-          *v109 = v60;
-          v25 = self;
+          *v109 = code2;
+          selfCopy8 = self;
           *&v109[8] = 2114;
-          v110 = v61;
+          v110 = localizedDescription;
           _os_log_impl(&_mh_execute_header, v57, OS_LOG_TYPE_INFO, "Content with ID %{public}@ failed verification with error code %ld: %{public}@", buf, 0x20u);
         }
 
 LABEL_45:
-        v62 = [(APResponseDataTranslator *)v25 response];
-        v63 = [v62 ads];
+        response4 = [(APResponseDataTranslator *)selfCopy8 response];
+        v63 = [response4 ads];
         if (v63)
         {
           v64 = v63;
-          v65 = [(APResponseDataTranslator *)v25 response];
-          v66 = [v65 ads];
+          response5 = [(APResponseDataTranslator *)selfCopy8 response];
+          v66 = [response5 ads];
           v67 = [v66 count];
 
           if (v67)
           {
             v97 = v10;
-            v95 = v3;
+            v95 = translateCopy;
             v96 = +[NSDate date];
             v101 = 0u;
             v102 = 0u;
             v103 = 0u;
             v104 = 0u;
-            v68 = self;
-            v69 = [(APResponseDataTranslator *)self response];
-            v70 = [v69 ads];
+            selfCopy4 = self;
+            response6 = [(APResponseDataTranslator *)self response];
+            v70 = [response6 ads];
 
             obj = v70;
             v100 = [v70 countByEnumeratingWithState:&v101 objects:v105 count:16];
@@ -224,18 +224,18 @@ LABEL_45:
                   }
 
                   v73 = *(*(&v101 + 1) + 8 * i);
-                  v74 = [(APResponseDataTranslator *)v68 requester];
-                  v75 = [v73 adOriginalRequesterId];
-                  v76 = [v74 requestFromRequestID:v75];
+                  requester4 = [(APResponseDataTranslator *)selfCopy4 requester];
+                  adOriginalRequesterId = [v73 adOriginalRequesterId];
+                  v76 = [requester4 requestFromRequestID:adOriginalRequesterId];
 
                   if (v76)
                   {
                     v77 = [APAdDataResponseTranslator alloc];
-                    v78 = [(APResponseDataTranslator *)v68 requester];
-                    v79 = [v76 identifier];
-                    v80 = [v79 UUIDString];
-                    v81 = [v76 context];
-                    v82 = -[APAdDataResponseTranslator initWithResponse:forRequester:contentIdentifier:withContext:placement:](v77, "initWithResponse:forRequester:contentIdentifier:withContext:placement:", v73, v78, v80, v81, [v76 placementType]);
+                    requester5 = [(APResponseDataTranslator *)selfCopy4 requester];
+                    identifier = [v76 identifier];
+                    uUIDString = [identifier UUIDString];
+                    context = [v76 context];
+                    v82 = -[APAdDataResponseTranslator initWithResponse:forRequester:contentIdentifier:withContext:placement:](v77, "initWithResponse:forRequester:contentIdentifier:withContext:placement:", v73, requester5, uUIDString, context, [v76 placementType]);
 
                     v83 = [(APAdDataResponseTranslator *)v82 translate:v95];
                     if ([v76 placementType] == 7)
@@ -248,24 +248,24 @@ LABEL_45:
                       [v76 identifier];
                     }
                     v84 = ;
-                    v85 = [v84 UUIDString];
-                    v86 = [v83 content];
-                    [v86 setIdentifier:v85];
+                    uUIDString2 = [v84 UUIDString];
+                    content = [v83 content];
+                    [content setIdentifier:uUIDString2];
 
-                    v87 = [v83 content];
-                    [v87 setReceivedReferenceTime:v96];
+                    content2 = [v83 content];
+                    [content2 setReceivedReferenceTime:v96];
 
-                    v88 = [v83 privateContent];
-                    [v88 setSequenceNumber:v71];
+                    privateContent = [v83 privateContent];
+                    [privateContent setSequenceNumber:v71];
 
-                    v68 = self;
-                    v89 = [(APResponseDataTranslator *)self response];
-                    v90 = [v89 batchId];
-                    v91 = [v83 privateContent];
-                    [v91 setBatchResponseID:v90];
+                    selfCopy4 = self;
+                    response7 = [(APResponseDataTranslator *)self response];
+                    batchId = [response7 batchId];
+                    privateContent2 = [v83 privateContent];
+                    [privateContent2 setBatchResponseID:batchId];
 
-                    v92 = [v73 adOriginalRequesterId];
-                    [v83 setAdOriginalRequesterId:v92];
+                    adOriginalRequesterId2 = [v73 adOriginalRequesterId];
+                    [v83 setAdOriginalRequesterId:adOriginalRequesterId2];
 
                     [v97 addObject:v83];
                     v71 = (v71 + 1);
@@ -288,8 +288,8 @@ LABEL_45:
         {
         }
 
-        v19 = *v3;
-        if (!*v3)
+        v19 = *translateCopy;
+        if (!*translateCopy)
         {
           goto LABEL_18;
         }
@@ -297,16 +297,16 @@ LABEL_45:
         goto LABEL_17;
       }
 
-      v48 = [(APResponseDataTranslator *)v25 response];
-      v49 = [v48 ads];
+      response8 = [(APResponseDataTranslator *)selfCopy8 response];
+      v49 = [response8 ads];
       if (v49)
       {
         v50 = v49;
-        v51 = [(APResponseDataTranslator *)v25 response];
-        v52 = [v51 ads];
+        response9 = [(APResponseDataTranslator *)selfCopy8 response];
+        v52 = [response9 ads];
         v53 = [v52 count];
 
-        v25 = self;
+        selfCopy8 = self;
         if (v53)
         {
           goto LABEL_41;
@@ -317,14 +317,14 @@ LABEL_45:
       {
       }
 
-      v54 = [(APResponseDataTranslator *)v25 requester];
-      v55 = [v54 requestIdentifier];
-      v56 = [NSString stringWithFormat:@"AdBatchResponse contained no ads for request %@", v55];
-      *v3 = [APLegacyInterfaceError validationErrorWithCode:4504 andReason:v56];
+      requester6 = [(APResponseDataTranslator *)selfCopy8 requester];
+      requestIdentifier4 = [requester6 requestIdentifier];
+      v56 = [NSString stringWithFormat:@"AdBatchResponse contained no ads for request %@", requestIdentifier4];
+      *translateCopy = [APLegacyInterfaceError validationErrorWithCode:4504 andReason:v56];
 
-      v25 = self;
+      selfCopy8 = self;
 LABEL_41:
-      if (!*v3)
+      if (!*translateCopy)
       {
         goto LABEL_45;
       }
@@ -332,70 +332,70 @@ LABEL_41:
       goto LABEL_42;
     }
 
-    v28 = [(APResponseDataTranslator *)self response];
-    v29 = [v28 error];
+    response10 = [(APResponseDataTranslator *)self response];
+    error = [response10 error];
 
-    if (v29 == 1)
+    if (error == 1)
     {
-      v30 = [(APResponseDataTranslator *)self response];
-      v36 = [v30 errorDetails];
-      v32 = [(APResponseDataTranslator *)self requester];
-      v33 = [v32 requestIdentifier];
-      v34 = [NSString stringWithFormat:@"Server returned No_Qualified error %u for request %@", v36, v33];
+      response11 = [(APResponseDataTranslator *)self response];
+      errorDetails = [response11 errorDetails];
+      requester7 = [(APResponseDataTranslator *)self requester];
+      requestIdentifier5 = [requester7 requestIdentifier];
+      v33RequestIdentifier = [NSString stringWithFormat:@"Server returned No_Qualified error %u for request %@", errorDetails, requestIdentifier5];
       v35 = 4510;
     }
 
     else
     {
-      if (v29 != 2)
+      if (error != 2)
       {
-        v94 = v3;
+        v94 = translateCopy;
         v37 = APLogForCategory();
         if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
         {
-          v38 = [(APResponseDataTranslator *)self requester];
-          v39 = [v38 requestIdentifier];
-          v40 = [(APResponseDataTranslator *)self response];
-          v41 = [v40 error];
-          v42 = [(APResponseDataTranslator *)self response];
-          v43 = [v42 errorDetails];
+          requester8 = [(APResponseDataTranslator *)self requester];
+          requestIdentifier6 = [requester8 requestIdentifier];
+          response12 = [(APResponseDataTranslator *)self response];
+          error2 = [response12 error];
+          response13 = [(APResponseDataTranslator *)self response];
+          errorDetails2 = [response13 errorDetails];
           *buf = 138543874;
-          v107 = v39;
+          v107 = requestIdentifier6;
           v108 = 1024;
-          *v109 = v41;
+          *v109 = error2;
           *&v109[4] = 1024;
-          *&v109[6] = v43;
+          *&v109[6] = errorDetails2;
           _os_log_impl(&_mh_execute_header, v37, OS_LOG_TYPE_ERROR, "Serving returned AdBatchRequest for content %{public}@ with unknown error %u and error details %u", buf, 0x18u);
 
-          v25 = self;
+          selfCopy8 = self;
         }
 
-        v30 = [(APResponseDataTranslator *)v25 response];
-        v44 = [v30 error];
-        [(APResponseDataTranslator *)v25 response];
-        v32 = v45 = v25;
-        v46 = [v32 errorDetails];
-        v33 = [(APResponseDataTranslator *)v45 requester];
-        v34 = [v33 requestIdentifier];
-        v47 = [NSString stringWithFormat:@"Server returned unrecognized error %u with details %u for request %@", v44, v46, v34];
+        response11 = [(APResponseDataTranslator *)selfCopy8 response];
+        error3 = [response11 error];
+        [(APResponseDataTranslator *)selfCopy8 response];
+        requester7 = v45 = selfCopy8;
+        errorDetails3 = [requester7 errorDetails];
+        requestIdentifier5 = [(APResponseDataTranslator *)v45 requester];
+        v33RequestIdentifier = [requestIdentifier5 requestIdentifier];
+        v47 = [NSString stringWithFormat:@"Server returned unrecognized error %u with details %u for request %@", error3, errorDetails3, v33RequestIdentifier];
         [APLegacyInterfaceError validationErrorWithCode:4510 andReason:v47];
-        *v94 = v3 = v94;
+        *v94 = translateCopy = v94;
 
         goto LABEL_34;
       }
 
-      v30 = [(APResponseDataTranslator *)self response];
-      v31 = [v30 errorDetails];
-      v32 = [(APResponseDataTranslator *)self requester];
-      v33 = [v32 requestIdentifier];
-      v34 = [NSString stringWithFormat:@"Server returned configuration error %u for request %@", v31, v33];
+      response11 = [(APResponseDataTranslator *)self response];
+      errorDetails4 = [response11 errorDetails];
+      requester7 = [(APResponseDataTranslator *)self requester];
+      requestIdentifier5 = [requester7 requestIdentifier];
+      v33RequestIdentifier = [NSString stringWithFormat:@"Server returned configuration error %u for request %@", errorDetails4, requestIdentifier5];
       v35 = 4505;
     }
 
-    *v3 = [APLegacyInterfaceError validationErrorWithCode:v35 andReason:v34];
+    *translateCopy = [APLegacyInterfaceError validationErrorWithCode:v35 andReason:v33RequestIdentifier];
 LABEL_34:
 
-    v25 = self;
+    selfCopy8 = self;
     goto LABEL_35;
   }
 
@@ -412,36 +412,36 @@ LABEL_22:
   return v23;
 }
 
-- (void)_addContentDataWithErrorForError:(id)a3 identifier:(id)a4 toResults:(id)a5 journeyStartRelayValues:(id)a6
+- (void)_addContentDataWithErrorForError:(id)error identifier:(id)identifier toResults:(id)results journeyStartRelayValues:(id)values
 {
-  v10 = a3;
-  if (v10)
+  errorCopy = error;
+  if (errorCopy)
   {
-    v11 = a5;
-    v12 = [(APAdBatchResponseTranslator *)self contentDataWithError:v10 identifier:a4 journeyStartRelayValues:a6];
-    [v11 addObject:v12];
+    resultsCopy = results;
+    v12 = [(APAdBatchResponseTranslator *)self contentDataWithError:errorCopy identifier:identifier journeyStartRelayValues:values];
+    [resultsCopy addObject:v12];
 
     v13 = APLogForCategory();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
-      v14 = [v12 content];
-      v15 = [v14 identifier];
+      content = [v12 content];
+      identifier = [content identifier];
       v16 = 138543618;
-      v17 = v15;
+      v17 = identifier;
       v18 = 2114;
-      v19 = v10;
+      v19 = errorCopy;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "Content %{public}@ is being returned with an error: %{public}@", &v16, 0x16u);
     }
   }
 }
 
-- (id)fixupFormattedText:(id)a3
+- (id)fixupFormattedText:(id)text
 {
-  v3 = a3;
+  textCopy = text;
   v81 = 0;
   v4 = [[NSRegularExpression alloc] initWithPattern:@"unfilledReasonCode:\\ (\\w+)\\"" options:0 error:&v81];
   v5 = v81;
-  v6 = [v4 firstMatchInString:v3 options:0 range:{0, objc_msgSend(v3, "length")}];
+  v6 = [v4 firstMatchInString:textCopy options:0 range:{0, objc_msgSend(textCopy, "length")}];
   v7 = v6;
   if (v6)
   {
@@ -456,7 +456,7 @@ LABEL_22:
   if (v8 && [v6 numberOfRanges] >= 2)
   {
     v9 = [v7 rangeAtIndex:1];
-    v11 = [v3 substringWithRange:{v9, v10}];
+    v11 = [textCopy substringWithRange:{v9, v10}];
     if ([v11 isEqualToString:@"InventoryUnavailable"])
     {
       v12 = 201;
@@ -488,18 +488,18 @@ LABEL_22:
     }
 
     v13 = [NSNumber numberWithInt:v12];
-    v14 = [v3 length];
+    v14 = [textCopy length];
     v15 = [NSString stringWithFormat:@"unfilledReasonCode: %@", v13];
-    v16 = [v4 stringByReplacingMatchesInString:v3 options:0 range:0 withTemplate:{v14, v15}];
+    v16 = [v4 stringByReplacingMatchesInString:textCopy options:0 range:0 withTemplate:{v14, v15}];
 
-    v3 = v16;
+    textCopy = v16;
   }
 
   v80 = v5;
   v17 = [[NSRegularExpression alloc] initWithPattern:@"specification\\ \\{.\\s+type:\\ \\(\\w+)\\.\\}" options:8 error:&v80];
   v18 = v80;
 
-  v19 = [v17 matchesInString:v3 options:0 range:{0, objc_msgSend(v3, "length")}];
+  v19 = [v17 matchesInString:textCopy options:0 range:{0, objc_msgSend(textCopy, "length")}];
   v72 = v19;
   if (v19)
   {
@@ -532,7 +532,7 @@ LABEL_22:
               if ([v26 numberOfRanges] >= 2)
               {
                 v27 = [v26 rangeAtIndex:1];
-                v29 = [v3 substringWithRange:{v27, v28}];
+                v29 = [textCopy substringWithRange:{v27, v28}];
                 if ([v29 isEqualToString:@"Banner"])
                 {
                   v30 = 0;
@@ -579,11 +579,11 @@ LABEL_22:
                 }
 
                 v31 = [NSNumber numberWithInt:v30];
-                v32 = [v3 length];
+                v32 = [textCopy length];
                 v33 = [NSString stringWithFormat:@"specification {\n   type: %@\n}", v31];
-                v34 = [v17 stringByReplacingMatchesInString:v3 options:0 range:0 withTemplate:{v32, v33}];
+                v34 = [v17 stringByReplacingMatchesInString:textCopy options:0 range:0 withTemplate:{v32, v33}];
 
-                v3 = v34;
+                textCopy = v34;
               }
             }
 
@@ -603,12 +603,12 @@ LABEL_22:
   v35 = [[NSRegularExpression alloc] initWithPattern:@"action:\\ \\(\\w+)\\"" options:0 error:&v75];
   v36 = v75;
 
-  v37 = [v35 firstMatchInString:v3 options:0 range:{0, objc_msgSend(v3, "length")}];
+  v37 = [v35 firstMatchInString:textCopy options:0 range:{0, objc_msgSend(textCopy, "length")}];
 
   if (v37 && !v36 && [v37 numberOfRanges] >= 2)
   {
     v38 = [v37 rangeAtIndex:1];
-    v40 = [v3 substringWithRange:{v38, v39}];
+    v40 = [textCopy substringWithRange:{v38, v39}];
     if ([v40 isEqualToString:@"None"])
     {
       v41 = 0;
@@ -655,24 +655,24 @@ LABEL_22:
     }
 
     v42 = [NSNumber numberWithInt:v41];
-    v43 = [v3 length];
+    v43 = [textCopy length];
     v44 = [NSString stringWithFormat:@"action: %@", v42];
-    v45 = [v35 stringByReplacingMatchesInString:v3 options:0 range:0 withTemplate:{v43, v44}];
+    v45 = [v35 stringByReplacingMatchesInString:textCopy options:0 range:0 withTemplate:{v43, v44}];
 
-    v3 = v45;
+    textCopy = v45;
   }
 
   v74 = v36;
   v46 = [[NSRegularExpression alloc] initWithPattern:@"transitionType:\\ \\(\\w+)\\"" options:0 error:&v74];
   v47 = v74;
 
-  v48 = [v46 firstMatchInString:v3 options:0 range:{0, objc_msgSend(v3, "length")}];
+  v48 = [v46 firstMatchInString:textCopy options:0 range:{0, objc_msgSend(textCopy, "length")}];
 
   if (v48 && !v47 && [v48 numberOfRanges] >= 2)
   {
     v49 = 1;
     v50 = [v48 rangeAtIndex:1];
-    v52 = [v3 substringWithRange:{v50, v51}];
+    v52 = [textCopy substringWithRange:{v50, v51}];
     if (([v52 isEqualToString:@"Slide"] & 1) == 0)
     {
       if ([v52 isEqualToString:@"Fade"])
@@ -687,18 +687,18 @@ LABEL_22:
     }
 
     v53 = [NSNumber numberWithInt:v49];
-    v54 = [v3 length];
+    v54 = [textCopy length];
     v55 = [NSString stringWithFormat:@"transitionType: %@", v53];
-    v56 = [v46 stringByReplacingMatchesInString:v3 options:0 range:0 withTemplate:{v54, v55}];
+    v56 = [v46 stringByReplacingMatchesInString:textCopy options:0 range:0 withTemplate:{v54, v55}];
 
-    v3 = v56;
+    textCopy = v56;
   }
 
   v73 = v47;
   v57 = [[NSRegularExpression alloc] initWithPattern:@"adPrivacyMarkPosition:\\ \\(\\w+)\\"" options:0 error:&v73];
   v58 = v73;
 
-  v59 = [v57 firstMatchInString:v3 options:0 range:{0, objc_msgSend(v3, "length")}];
+  v59 = [v57 firstMatchInString:textCopy options:0 range:{0, objc_msgSend(textCopy, "length")}];
 
   if (v59)
   {
@@ -706,7 +706,7 @@ LABEL_22:
     if (!v58 && [v59 numberOfRanges] >= 2)
     {
       v61 = [v59 rangeAtIndex:1];
-      v63 = [v3 substringWithRange:{v61, v62}];
+      v63 = [textCopy substringWithRange:{v61, v62}];
       if ([v63 isEqualToString:@"BottomRight"])
       {
         v64 = 0;
@@ -738,11 +738,11 @@ LABEL_22:
       }
 
       v65 = [NSNumber numberWithInt:v64];
-      v66 = [v3 length];
+      v66 = [textCopy length];
       v67 = [NSString stringWithFormat:@"adPrivacyMarkPosition: %@", v65];
-      v68 = [v57 stringByReplacingMatchesInString:v3 options:0 range:0 withTemplate:{v66, v67}];
+      v68 = [v57 stringByReplacingMatchesInString:textCopy options:0 range:0 withTemplate:{v66, v67}];
 
-      v3 = v68;
+      textCopy = v68;
     }
   }
 
@@ -751,9 +751,9 @@ LABEL_22:
     v60 = v72;
   }
 
-  v69 = v3;
+  v69 = textCopy;
 
-  return v3;
+  return textCopy;
 }
 
 @end

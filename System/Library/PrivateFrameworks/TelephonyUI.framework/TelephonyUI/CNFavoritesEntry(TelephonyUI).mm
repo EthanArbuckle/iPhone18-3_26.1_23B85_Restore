@@ -8,21 +8,21 @@
 
 - (id)localizedBundleName
 {
-  v2 = [a1 bundleIdentifier];
-  if ([v2 isEqualToString:*MEMORY[0x1E695C140]])
+  bundleIdentifier = [self bundleIdentifier];
+  if ([bundleIdentifier isEqualToString:*MEMORY[0x1E695C140]])
   {
-    v3 = [a1 localizedContactPropertyLabel];
+    localizedContactPropertyLabel = [self localizedContactPropertyLabel];
   }
 
   else
   {
     v10 = 0;
-    v4 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:v2 allowPlaceholder:0 error:&v10];
+    v4 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:bundleIdentifier allowPlaceholder:0 error:&v10];
     v5 = v10;
     v6 = v5;
     if (v4)
     {
-      v3 = [v4 localizedName];
+      localizedContactPropertyLabel = [v4 localizedName];
     }
 
     else
@@ -32,35 +32,35 @@
         v7 = TPDefaultLog();
         if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
         {
-          [(CNFavoritesEntry(TelephonyUI) *)v2 localizedBundleName];
+          [(CNFavoritesEntry(TelephonyUI) *)bundleIdentifier localizedBundleName];
         }
       }
 
-      v3 = 0;
+      localizedContactPropertyLabel = 0;
     }
   }
 
-  if (![v3 length])
+  if (![localizedContactPropertyLabel length])
   {
-    v8 = [a1 localizedContactPropertyLabel];
+    localizedContactPropertyLabel2 = [self localizedContactPropertyLabel];
 
-    v3 = v8;
+    localizedContactPropertyLabel = localizedContactPropertyLabel2;
   }
 
-  return v3;
+  return localizedContactPropertyLabel;
 }
 
 - (id)localizedContactPropertyLabel
 {
-  v2 = [a1 contactProperty];
-  v3 = [v2 key];
+  contactProperty = [self contactProperty];
+  v3 = [contactProperty key];
 
   if (v3)
   {
     v4 = MEMORY[0x1E695CEE0];
-    v5 = [a1 contactProperty];
-    v6 = [v5 label];
-    v7 = [v4 localizedDisplayStringForLabel:v6 propertyName:v3];
+    contactProperty2 = [self contactProperty];
+    label = [contactProperty2 label];
+    v7 = [v4 localizedDisplayStringForLabel:label propertyName:v3];
   }
 
   else
@@ -75,7 +75,7 @@
 {
   v8 = *MEMORY[0x1E69E9840];
   v4 = 138412546;
-  v5 = a1;
+  selfCopy = self;
   v6 = 2112;
   v7 = a2;
   _os_log_error_impl(&dword_1B4894000, log, OS_LOG_TYPE_ERROR, "Attempt to obtain application record for bundle identifier %@ failed with error %@", &v4, 0x16u);

@@ -1,6 +1,6 @@
 @interface ADVisualDepthKeyframeInput
 - (ADVisualDepthKeyframeInput)init;
-- (BOOL)removeKeyframeWithUUID:(id)a3;
+- (BOOL)removeKeyframeWithUUID:(id)d;
 - (void)clear;
 @end
 
@@ -13,10 +13,10 @@
   self->_metricDepth = 0;
 }
 
-- (BOOL)removeKeyframeWithUUID:(id)a3
+- (BOOL)removeKeyframeWithUUID:(id)d
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -36,8 +36,8 @@
         }
 
         v9 = *(*(&v16 + 1) + 8 * i);
-        v10 = [v9 uuid];
-        v11 = [v10 isEqual:v4];
+        uuid = [v9 uuid];
+        v11 = [uuid isEqual:dCopy];
 
         if (v11)
         {
@@ -56,8 +56,8 @@
     }
   }
 
-  v12 = [(ADVisualDepthBuffer *)self->_metricDepth uuid];
-  v13 = [v12 isEqual:v4];
+  uuid2 = [(ADVisualDepthBuffer *)self->_metricDepth uuid];
+  v13 = [uuid2 isEqual:dCopy];
 
   if (v13)
   {

@@ -1,22 +1,22 @@
 @interface SBSUnlockOptions
-- (SBSUnlockOptions)initWithBSXPCCoder:(id)a3;
-- (SBSUnlockOptions)initWithXPCDictionary:(id)a3;
-- (void)encodeWithBSXPCCoder:(id)a3;
-- (void)encodeWithXPCDictionary:(id)a3;
+- (SBSUnlockOptions)initWithBSXPCCoder:(id)coder;
+- (SBSUnlockOptions)initWithXPCDictionary:(id)dictionary;
+- (void)encodeWithBSXPCCoder:(id)coder;
+- (void)encodeWithXPCDictionary:(id)dictionary;
 @end
 
 @implementation SBSUnlockOptions
 
-- (SBSUnlockOptions)initWithXPCDictionary:(id)a3
+- (SBSUnlockOptions)initWithXPCDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = SBSUnlockOptions;
   v5 = [(SBSUnlockOptions *)&v13 init];
   if (v5)
   {
-    v5->_aboveOtherContexts = xpc_dictionary_get_BOOL(v4, [@"aboveOtherContexts" UTF8String]);
-    string = xpc_dictionary_get_string(v4, [@"title" UTF8String]);
+    v5->_aboveOtherContexts = xpc_dictionary_get_BOOL(dictionaryCopy, [@"aboveOtherContexts" UTF8String]);
+    string = xpc_dictionary_get_string(dictionaryCopy, [@"title" UTF8String]);
     if (string)
     {
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:string];
@@ -24,7 +24,7 @@
       v5->_title = v7;
     }
 
-    v9 = xpc_dictionary_get_string(v4, [@"subtitle" UTF8String]);
+    v9 = xpc_dictionary_get_string(dictionaryCopy, [@"subtitle" UTF8String]);
     if (v9)
     {
       v10 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v9];
@@ -36,65 +36,65 @@
   return v5;
 }
 
-- (void)encodeWithXPCDictionary:(id)a3
+- (void)encodeWithXPCDictionary:(id)dictionary
 {
-  xdict = a3;
+  xdict = dictionary;
   xpc_dictionary_set_BOOL(xdict, [@"aboveOtherContexts" UTF8String], self->_aboveOtherContexts);
-  v4 = [(SBSUnlockOptions *)self title];
+  title = [(SBSUnlockOptions *)self title];
 
-  if (v4)
+  if (title)
   {
-    v5 = [(SBSUnlockOptions *)self title];
-    v6 = [v5 UTF8String];
+    title2 = [(SBSUnlockOptions *)self title];
+    uTF8String = [title2 UTF8String];
 
-    xpc_dictionary_set_string(xdict, [@"title" UTF8String], v6);
+    xpc_dictionary_set_string(xdict, [@"title" UTF8String], uTF8String);
   }
 
-  v7 = [(SBSUnlockOptions *)self subtitle];
+  subtitle = [(SBSUnlockOptions *)self subtitle];
 
-  if (v7)
+  if (subtitle)
   {
-    v8 = [(SBSUnlockOptions *)self subtitle];
-    v9 = [v8 UTF8String];
+    subtitle2 = [(SBSUnlockOptions *)self subtitle];
+    uTF8String2 = [subtitle2 UTF8String];
 
-    xpc_dictionary_set_string(xdict, [@"subtitle" UTF8String], v9);
-  }
-}
-
-- (void)encodeWithBSXPCCoder:(id)a3
-{
-  v8 = a3;
-  [v8 encodeBool:self->_aboveOtherContexts forKey:@"aboveOtherContexts"];
-  v4 = [(SBSUnlockOptions *)self title];
-
-  if (v4)
-  {
-    v5 = [(SBSUnlockOptions *)self title];
-    [v8 encodeObject:v5 forKey:@"title"];
-  }
-
-  v6 = [(SBSUnlockOptions *)self subtitle];
-
-  if (v6)
-  {
-    v7 = [(SBSUnlockOptions *)self subtitle];
-    [v8 encodeObject:v7 forKey:@"subtitle"];
+    xpc_dictionary_set_string(xdict, [@"subtitle" UTF8String], uTF8String2);
   }
 }
 
-- (SBSUnlockOptions)initWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
+  [coderCopy encodeBool:self->_aboveOtherContexts forKey:@"aboveOtherContexts"];
+  title = [(SBSUnlockOptions *)self title];
+
+  if (title)
+  {
+    title2 = [(SBSUnlockOptions *)self title];
+    [coderCopy encodeObject:title2 forKey:@"title"];
+  }
+
+  subtitle = [(SBSUnlockOptions *)self subtitle];
+
+  if (subtitle)
+  {
+    subtitle2 = [(SBSUnlockOptions *)self subtitle];
+    [coderCopy encodeObject:subtitle2 forKey:@"subtitle"];
+  }
+}
+
+- (SBSUnlockOptions)initWithBSXPCCoder:(id)coder
+{
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = SBSUnlockOptions;
   v5 = [(SBSUnlockOptions *)&v9 init];
   if (v5)
   {
-    v5->_aboveOtherContexts = [v4 decodeBoolForKey:@"aboveOtherContexts"];
-    v6 = [v4 decodeStringForKey:@"title"];
+    v5->_aboveOtherContexts = [coderCopy decodeBoolForKey:@"aboveOtherContexts"];
+    v6 = [coderCopy decodeStringForKey:@"title"];
     [(SBSUnlockOptions *)v5 _setTitle:v6];
 
-    v7 = [v4 decodeStringForKey:@"subtitle"];
+    v7 = [coderCopy decodeStringForKey:@"subtitle"];
     [(SBSUnlockOptions *)v5 _setSubtitle:v7];
   }
 

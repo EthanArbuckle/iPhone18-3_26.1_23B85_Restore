@@ -12,37 +12,37 @@
   v6 = a4;
   if ([v6 length])
   {
-    v7 = v6;
+    crk_sharingDescription = v6;
   }
 
   else if ([v5 count] == 1)
   {
-    v8 = [v5 firstObject];
-    v7 = [v8 crk_sharingDescription];
+    firstObject = [v5 firstObject];
+    crk_sharingDescription = [firstObject crk_sharingDescription];
   }
 
   else
   {
-    v7 = 0;
+    crk_sharingDescription = 0;
   }
 
-  return v7;
+  return crk_sharingDescription;
 }
 
 - (id)crk_sharingDescription
 {
-  if ([a1 isFileURL])
+  if ([self isFileURL])
   {
-    v2 = [a1 lastPathComponent];
+    lastPathComponent = [self lastPathComponent];
   }
 
   else
   {
-    v3 = [a1 host];
-    v2 = [a1 crk_stringByRemovingWWWPrefixFromString:v3];
+    host = [self host];
+    lastPathComponent = [self crk_stringByRemovingWWWPrefixFromString:host];
   }
 
-  return v2;
+  return lastPathComponent;
 }
 
 - (id)crk_stringByRemovingWWWPrefixFromString:()CRKSharingAdditions

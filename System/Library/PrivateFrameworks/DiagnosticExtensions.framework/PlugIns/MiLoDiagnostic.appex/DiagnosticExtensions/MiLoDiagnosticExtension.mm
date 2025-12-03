@@ -1,12 +1,12 @@
 @interface MiLoDiagnosticExtension
-- (id)attachmentsForParameters:(id)a3;
+- (id)attachmentsForParameters:(id)parameters;
 @end
 
 @implementation MiLoDiagnosticExtension
 
-- (id)attachmentsForParameters:(id)a3
+- (id)attachmentsForParameters:(id)parameters
 {
-  v3 = a3;
+  parametersCopy = parameters;
   if (qword_100008158 != -1)
   {
     sub_100001514();
@@ -16,17 +16,17 @@
   if (os_log_type_enabled(qword_100008160, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v3;
+    *(&buf + 4) = parametersCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "attachmentForParameters, called with parameters: %@", &buf, 0xCu);
   }
 
-  v5 = [v3 objectForKeyedSubscript:@"DEExtensionHostAppKey"];
-  v6 = [v3 objectForKeyedSubscript:@"DEExtensionAttachmentsParamConsentProvidedKey"];
-  v7 = [v6 BOOLValue];
+  v5 = [parametersCopy objectForKeyedSubscript:@"DEExtensionHostAppKey"];
+  v6 = [parametersCopy objectForKeyedSubscript:@"DEExtensionAttachmentsParamConsentProvidedKey"];
+  bOOLValue = [v6 BOOLValue];
 
   if ([v5 isEqualToString:@"com.apple.TapToRadar"])
   {
-    if (v7)
+    if (bOOLValue)
     {
 LABEL_7:
       *&buf = 0;
@@ -60,7 +60,7 @@ LABEL_7:
     }
   }
 
-  else if (v7 & 1 | (([v5 isEqualToString:@"com.apple.taptoradard"] & 1) == 0))
+  else if (bOOLValue & 1 | (([v5 isEqualToString:@"com.apple.taptoradard"] & 1) == 0))
   {
     goto LABEL_7;
   }

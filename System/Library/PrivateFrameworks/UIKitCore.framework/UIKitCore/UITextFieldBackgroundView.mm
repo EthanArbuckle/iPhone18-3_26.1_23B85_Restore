@@ -1,23 +1,23 @@
 @interface UITextFieldBackgroundView
-- (UITextFieldBackgroundView)initWithFrame:(CGRect)a3 active:(BOOL)a4;
-- (void)setActive:(BOOL)a3;
-- (void)setBounds:(CGRect)a3;
-- (void)setFillColor:(id)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setProgress:(float)a3;
+- (UITextFieldBackgroundView)initWithFrame:(CGRect)frame active:(BOOL)active;
+- (void)setActive:(BOOL)active;
+- (void)setBounds:(CGRect)bounds;
+- (void)setFillColor:(id)color;
+- (void)setFrame:(CGRect)frame;
+- (void)setProgress:(float)progress;
 @end
 
 @implementation UITextFieldBackgroundView
 
-- (UITextFieldBackgroundView)initWithFrame:(CGRect)a3 active:(BOOL)a4
+- (UITextFieldBackgroundView)initWithFrame:(CGRect)frame active:(BOOL)active
 {
   v8.receiver = self;
   v8.super_class = UITextFieldBackgroundView;
-  v5 = [(UIView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(UIView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v6 = v5;
   if (v5)
   {
-    v5->_active = a4;
+    v5->_active = active;
     v5->_progress = 0.0;
     v5->_enabled = 1;
     [(UITextFieldBackgroundView *)v5 _updateImages];
@@ -28,12 +28,12 @@
   return v6;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(UIView *)self frame];
   v9 = v8;
   v11 = v10;
@@ -46,12 +46,12 @@
   }
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(UIView *)self bounds];
   v9 = v8;
   v11 = v10;
@@ -64,22 +64,22 @@
   }
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  if (self->_active != a3)
+  if (self->_active != active)
   {
-    self->_active = a3;
+    self->_active = active;
     [(UITextFieldBackgroundView *)self _updateImages];
 
     [(UIView *)self setNeedsLayout];
   }
 }
 
-- (void)setProgress:(float)a3
+- (void)setProgress:(float)progress
 {
-  if (self->_progress != a3)
+  if (self->_progress != progress)
   {
-    self->_progress = a3;
+    self->_progress = progress;
     if (self->_active)
     {
       [(UITextFieldBackgroundView *)self _updateImages];
@@ -89,16 +89,16 @@
   }
 }
 
-- (void)setFillColor:(id)a3
+- (void)setFillColor:(id)color
 {
-  v5 = a3;
-  if (self->_fillColor != v5)
+  colorCopy = color;
+  if (self->_fillColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_fillColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_fillColor, color);
     [(UITextFieldBackgroundView *)self _updateImages];
     [(UIView *)self setNeedsLayout];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 

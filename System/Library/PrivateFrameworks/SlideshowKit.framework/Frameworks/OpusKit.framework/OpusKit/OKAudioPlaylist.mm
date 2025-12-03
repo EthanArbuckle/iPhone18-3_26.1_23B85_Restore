@@ -1,35 +1,35 @@
 @interface OKAudioPlaylist
 - (BOOL)isPlaying;
-- (OKAudioPlaylist)initWithAudioItems:(id)a3 presentation:(id)a4;
-- (OKAudioPlaylist)initWithAudioURLs:(id)a3 presentation:(id)a4;
+- (OKAudioPlaylist)initWithAudioItems:(id)items presentation:(id)presentation;
+- (OKAudioPlaylist)initWithAudioURLs:(id)ls presentation:(id)presentation;
 - (OKMediaItem)playingItem;
 - (double)playingMusicCurrentTime;
 - (double)playingMusicDuration;
 - (id)currentMedia;
-- (void)_playMediaItem:(id)a3 forMediaItem:(id)a4;
-- (void)audioFinishedPlaying:(id)a3;
+- (void)_playMediaItem:(id)item forMediaItem:(id)mediaItem;
+- (void)audioFinishedPlaying:(id)playing;
 - (void)dealloc;
 - (void)next;
 - (void)play;
 - (void)prev;
 - (void)rewind;
-- (void)setCurrentMedia:(id)a3;
-- (void)setPlaying:(BOOL)a3;
-- (void)setPlayingMusicCurrentTime:(double)a3;
+- (void)setCurrentMedia:(id)media;
+- (void)setPlaying:(BOOL)playing;
+- (void)setPlayingMusicCurrentTime:(double)time;
 - (void)stop;
 @end
 
 @implementation OKAudioPlaylist
 
-- (OKAudioPlaylist)initWithAudioURLs:(id)a3 presentation:(id)a4
+- (OKAudioPlaylist)initWithAudioURLs:(id)ls presentation:(id)presentation
 {
   v6 = [(OKAudioPlaylist *)self init];
   if (v6)
   {
     v6->_ducker = objc_alloc_init(OKAudioDucker);
-    v6->_presentation = a4;
+    v6->_presentation = presentation;
     v6->_loops = 1;
-    v6->_mediaItems = [a4 mediaItemsForURLs:a3];
+    v6->_mediaItems = [presentation mediaItemsForURLs:ls];
     v6->_mediaItemOperationQueue = objc_alloc_init(MEMORY[0x277CCABD8]);
     v6->_players = objc_opt_new();
     [(NSOperationQueue *)v6->_mediaItemOperationQueue setName:@"Audio Media Queue"];
@@ -42,11 +42,11 @@
   return v6;
 }
 
-- (OKAudioPlaylist)initWithAudioItems:(id)a3 presentation:(id)a4
+- (OKAudioPlaylist)initWithAudioItems:(id)items presentation:(id)presentation
 {
-  v6 = [a3 valueForKey:@"url"];
+  v6 = [items valueForKey:@"url"];
 
-  return [(OKAudioPlaylist *)self initWithAudioURLs:v6 presentation:a4];
+  return [(OKAudioPlaylist *)self initWithAudioURLs:v6 presentation:presentation];
 }
 
 - (void)dealloc
@@ -114,7 +114,7 @@
   return result;
 }
 
-- (void)setCurrentMedia:(id)a3
+- (void)setCurrentMedia:(id)media
 {
   accessQueue = self->_accessQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -122,7 +122,7 @@
   v4[2] = __35__OKAudioPlaylist_setCurrentMedia___block_invoke;
   v4[3] = &unk_279C90078;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = media;
   dispatch_sync(accessQueue, v4);
 }
 
@@ -166,7 +166,7 @@
   return v3;
 }
 
-- (void)setPlaying:(BOOL)a3
+- (void)setPlaying:(BOOL)playing
 {
   accessQueue = self->_accessQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -174,7 +174,7 @@
   v4[2] = __30__OKAudioPlaylist_setPlaying___block_invoke;
   v4[3] = &unk_279C90868;
   v4[4] = self;
-  v5 = a3;
+  playingCopy = playing;
   dispatch_sync(accessQueue, v4);
 }
 
@@ -210,7 +210,7 @@
   return CMTimeGetSeconds(&time);
 }
 
-- (void)setPlayingMusicCurrentTime:(double)a3
+- (void)setPlayingMusicCurrentTime:(double)time
 {
   accessQueue = self->_accessQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -218,7 +218,7 @@
   v4[2] = __46__OKAudioPlaylist_setPlayingMusicCurrentTime___block_invoke;
   v4[3] = &unk_279C903C0;
   v4[4] = self;
-  *&v4[5] = a3;
+  *&v4[5] = time;
   dispatch_sync(accessQueue, v4);
 }
 
@@ -229,9 +229,9 @@ uint64_t __46__OKAudioPlaylist_setPlayingMusicCurrentTime___block_invoke(uint64_
   return [v1 seekToTime:&v3];
 }
 
-- (void)_playMediaItem:(id)a3 forMediaItem:(id)a4
+- (void)_playMediaItem:(id)item forMediaItem:(id)mediaItem
 {
-  if (!-[NSMutableDictionary objectForKey:](self->_players, "objectForKey:", [a4 uniquePath]))
+  if (!-[NSMutableDictionary objectForKey:](self->_players, "objectForKey:", [mediaItem uniquePath]))
   {
     currentMedia = self->_currentMedia;
     if (currentMedia)
@@ -240,16 +240,16 @@ uint64_t __46__OKAudioPlaylist_setPlayingMusicCurrentTime___block_invoke(uint64_
       self->_currentMedia = 0;
     }
 
-    v8 = a3;
-    self->_currentMedia = v8;
-    [(AVPlayer *)v8 setUsesExternalPlaybackWhileExternalScreenIsActive:1];
+    itemCopy = item;
+    self->_currentMedia = itemCopy;
+    [(AVPlayer *)itemCopy setUsesExternalPlaybackWhileExternalScreenIsActive:1];
     [(AVPlayer *)self->_currentMedia setAllowsExternalPlayback:0];
-    -[NSMutableDictionary setValue:forKey:](self->_players, "setValue:forKey:", self->_currentMedia, [a4 uniquePath]);
+    -[NSMutableDictionary setValue:forKey:](self->_players, "setValue:forKey:", self->_currentMedia, [mediaItem uniquePath]);
   }
 
   self->_playing = 1;
-  v9 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v9 addObserver:self selector:sel_audioFinishedPlaying_ name:*MEMORY[0x277CE60C0] object:{-[AVPlayer currentItem](self->_currentMedia, "currentItem")}];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_audioFinishedPlaying_ name:*MEMORY[0x277CE60C0] object:{-[AVPlayer currentItem](self->_currentMedia, "currentItem")}];
   [(OKAudioDucker *)self->_ducker volume];
   [(AVPlayer *)self->_currentMedia setVolume:?];
   ducker = self->_ducker;
@@ -410,7 +410,7 @@ uint64_t __23__OKAudioPlaylist_stop__block_invoke(uint64_t result)
   self->_currentPlayerIndex = 0;
 }
 
-- (void)audioFinishedPlaying:(id)a3
+- (void)audioFinishedPlaying:(id)playing
 {
   if ([(OKAudioPlaylist *)self isPlaying])
   {

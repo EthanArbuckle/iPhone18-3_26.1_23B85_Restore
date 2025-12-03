@@ -1,18 +1,18 @@
 @interface HMMTRSyncClusterThermostat
 + (id)logCategory;
-- (id)readAttributeOccupiedHeatingOrCoolingSetpointWithParams:(id)a3;
-- (id)readAttributePluginActiveWithParams:(id)a3;
-- (id)readAttributePluginCurrentHeaterCoolerStateWithParams:(id)a3;
-- (id)readAttributePluginCurrentHeatingCoolingStateWithParams:(id)a3;
-- (id)readAttributePluginTargetHeaterCoolerStateWithParams:(id)a3;
-- (void)updatedValueForAttributeReport:(id)a3 responseHandler:(id)a4;
-- (void)updatedValuePluginActiveForAttributeReport:(id)a3 responseHandler:(id)a4;
-- (void)updatedValuePluginCurrentHeaterCoolerStateForAttributeReport:(id)a3 responseHandler:(id)a4;
-- (void)updatedValuePluginCurrentHeatingCoolingStateForAttributeReport:(id)a3 responseHandler:(id)a4;
-- (void)updatedValuePluginTargetHeaterCoolerStateForAttributeReport:(id)a3 responseHandler:(id)a4;
-- (void)writeAttributeOccupiedHeatingOrCoolingSetpointWithValue:(id)a3 expectedValueInterval:(id)a4;
-- (void)writeAttributePluginActiveWithValue:(id)a3 expectedValueInterval:(id)a4;
-- (void)writeAttributePluginTargetHeaterCoolerStateWithValue:(id)a3 expectedValueInterval:(id)a4;
+- (id)readAttributeOccupiedHeatingOrCoolingSetpointWithParams:(id)params;
+- (id)readAttributePluginActiveWithParams:(id)params;
+- (id)readAttributePluginCurrentHeaterCoolerStateWithParams:(id)params;
+- (id)readAttributePluginCurrentHeatingCoolingStateWithParams:(id)params;
+- (id)readAttributePluginTargetHeaterCoolerStateWithParams:(id)params;
+- (void)updatedValueForAttributeReport:(id)report responseHandler:(id)handler;
+- (void)updatedValuePluginActiveForAttributeReport:(id)report responseHandler:(id)handler;
+- (void)updatedValuePluginCurrentHeaterCoolerStateForAttributeReport:(id)report responseHandler:(id)handler;
+- (void)updatedValuePluginCurrentHeatingCoolingStateForAttributeReport:(id)report responseHandler:(id)handler;
+- (void)updatedValuePluginTargetHeaterCoolerStateForAttributeReport:(id)report responseHandler:(id)handler;
+- (void)writeAttributeOccupiedHeatingOrCoolingSetpointWithValue:(id)value expectedValueInterval:(id)interval;
+- (void)writeAttributePluginActiveWithValue:(id)value expectedValueInterval:(id)interval;
+- (void)writeAttributePluginTargetHeaterCoolerStateWithValue:(id)value expectedValueInterval:(id)interval;
 @end
 
 @implementation HMMTRSyncClusterThermostat
@@ -39,12 +39,12 @@ uint64_t __41__HMMTRSyncClusterThermostat_logCategory__block_invoke()
   return MEMORY[0x2821F96F8](v1, v2);
 }
 
-- (void)updatedValuePluginTargetHeaterCoolerStateForAttributeReport:(id)a3 responseHandler:(id)a4
+- (void)updatedValuePluginTargetHeaterCoolerStateForAttributeReport:(id)report responseHandler:(id)handler
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 objectForKeyedSubscript:*MEMORY[0x277CD50B8]];
+  reportCopy = report;
+  handlerCopy = handler;
+  v8 = [reportCopy objectForKeyedSubscript:*MEMORY[0x277CD50B8]];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -59,57 +59,57 @@ uint64_t __41__HMMTRSyncClusterThermostat_logCategory__block_invoke()
   v10 = v9;
 
   v11 = objc_autoreleasePoolPush();
-  v12 = self;
+  selfCopy = self;
   v13 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
     HMFGetLogIdentifier();
-    v14 = v23 = v6;
-    v15 = [v10 endpoint];
-    v16 = [v10 cluster];
-    v17 = [v10 attribute];
+    v14 = v23 = reportCopy;
+    endpoint = [v10 endpoint];
+    cluster = [v10 cluster];
+    attribute = [v10 attribute];
     v18 = [v23 objectForKeyedSubscript:*MEMORY[0x277CD50D8]];
     *buf = 138544386;
     v25 = v14;
     v26 = 2112;
-    v27 = v15;
+    v27 = endpoint;
     v28 = 2112;
-    v29 = v16;
+    v29 = cluster;
     v30 = 2112;
-    v31 = v17;
+    v31 = attribute;
     v32 = 2112;
     v33 = v18;
     _os_log_impl(&dword_22AEAE000, v13, OS_LOG_TYPE_DEBUG, "%{public}@Handling Attribute report linked to target heater cooler state (sync) - endpoint:%@ cluster:%@ attribute:%@ value:%@", buf, 0x34u);
 
-    v6 = v23;
+    reportCopy = v23;
   }
 
   objc_autoreleasePoolPop(v11);
   v19 = objc_alloc_init(MEMORY[0x277CD54D8]);
-  v20 = [(HMMTRSyncClusterThermostat *)v12 readAttributePluginTargetHeaterCoolerStateWithParams:v19];
+  v20 = [(HMMTRSyncClusterThermostat *)selfCopy readAttributePluginTargetHeaterCoolerStateWithParams:v19];
 
   if (v20)
   {
     v21 = [v20 objectForKeyedSubscript:*MEMORY[0x277CD51A0]];
-    v7[2](v7, v21, 0);
+    handlerCopy[2](handlerCopy, v21, 0);
   }
 
   else
   {
     v21 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D0F1A0] code:15 userInfo:0];
-    (v7)[2](v7, 0, v21);
+    (handlerCopy)[2](handlerCopy, 0, v21);
   }
 
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)writeAttributePluginTargetHeaterCoolerStateWithValue:(id)a3 expectedValueInterval:(id)a4
+- (void)writeAttributePluginTargetHeaterCoolerStateWithValue:(id)value expectedValueInterval:(id)interval
 {
   v33 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  valueCopy = value;
+  intervalCopy = interval;
   v8 = *MEMORY[0x277CD51A0];
-  v9 = [v6 objectForKeyedSubscript:*MEMORY[0x277CD51A0]];
+  v9 = [valueCopy objectForKeyedSubscript:*MEMORY[0x277CD51A0]];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -125,13 +125,13 @@ uint64_t __41__HMMTRSyncClusterThermostat_logCategory__block_invoke()
 
   if (v11)
   {
-    if (!v7)
+    if (!intervalCopy)
     {
-      v7 = &unk_283EE81F0;
+      intervalCopy = &unk_283EE81F0;
     }
 
-    v12 = [v11 integerValue];
-    if (v12 == 1)
+    integerValue = [v11 integerValue];
+    if (integerValue == 1)
     {
       v13 = &unk_283EE82E0;
     }
@@ -141,11 +141,11 @@ uint64_t __41__HMMTRSyncClusterThermostat_logCategory__block_invoke()
       v13 = &unk_283EE82C8;
     }
 
-    v14 = [objc_alloc(MEMORY[0x277CBEB38]) initWithDictionary:v6];
+    v14 = [objc_alloc(MEMORY[0x277CBEB38]) initWithDictionary:valueCopy];
     [v14 setValue:v13 forKey:v8];
-    [(MTRClusterThermostat *)self writeAttributeSystemModeWithValue:v14 expectedValueInterval:v7];
+    [(MTRClusterThermostat *)self writeAttributeSystemModeWithValue:v14 expectedValueInterval:intervalCopy];
     v15 = objc_autoreleasePoolPush();
-    v16 = self;
+    selfCopy = self;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
@@ -154,7 +154,7 @@ uint64_t __41__HMMTRSyncClusterThermostat_logCategory__block_invoke()
       v27 = 138543874;
       v28 = v18;
       v29 = 2112;
-      if (v12 == 1)
+      if (integerValue == 1)
       {
         v19 = @"Heat";
       }
@@ -171,12 +171,12 @@ uint64_t __41__HMMTRSyncClusterThermostat_logCategory__block_invoke()
   else
   {
     v20 = objc_autoreleasePoolPush();
-    v21 = self;
+    selfCopy2 = self;
     v22 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
     {
       v23 = HMFGetLogIdentifier();
-      v24 = [v6 objectForKeyedSubscript:v8];
+      v24 = [valueCopy objectForKeyedSubscript:v8];
       v27 = 138543618;
       v28 = v23;
       v29 = 2112;
@@ -191,11 +191,11 @@ uint64_t __41__HMMTRSyncClusterThermostat_logCategory__block_invoke()
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (id)readAttributePluginTargetHeaterCoolerStateWithParams:(id)a3
+- (id)readAttributePluginTargetHeaterCoolerStateWithParams:(id)params
 {
   v65[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(MTRClusterThermostat *)self readAttributeSystemModeWithParams:v4];
+  paramsCopy = params;
+  v5 = [(MTRClusterThermostat *)self readAttributeSystemModeWithParams:paramsCopy];
   v6 = v5;
   if (v5 && [v5 count])
   {
@@ -214,8 +214,8 @@ uint64_t __41__HMMTRSyncClusterThermostat_logCategory__block_invoke()
 
     v10 = v9;
 
-    v11 = [v10 integerValue];
-    if ((v11 & 0xFFFFFFFFFFFFFFFELL) == 4)
+    integerValue = [v10 integerValue];
+    if ((integerValue & 0xFFFFFFFFFFFFFFFELL) == 4)
     {
       v12 = *MEMORY[0x277CD5198];
       v64[0] = *MEMORY[0x277CD5188];
@@ -230,7 +230,7 @@ LABEL_17:
       goto LABEL_18;
     }
 
-    if (v11 == 6 || v11 == 3)
+    if (integerValue == 6 || integerValue == 3)
     {
       v22 = *MEMORY[0x277CD5198];
       v62[0] = *MEMORY[0x277CD5188];
@@ -243,12 +243,12 @@ LABEL_17:
       goto LABEL_17;
     }
 
-    v25 = [(MTRClusterThermostat *)self readAttributeControlSequenceOfOperationWithParams:v4];
+    v25 = [(MTRClusterThermostat *)self readAttributeControlSequenceOfOperationWithParams:paramsCopy];
     v26 = v25;
     if (!v25 || ![v25 count])
     {
       v35 = objc_autoreleasePoolPush();
-      v36 = self;
+      selfCopy = self;
       v37 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
       {
@@ -279,11 +279,11 @@ LABEL_17:
 
     if (v29)
     {
-      v30 = [v29 integerValue];
-      if (v30 <= 5)
+      integerValue2 = [v29 integerValue];
+      if (integerValue2 <= 5)
       {
         v31 = *MEMORY[0x277CD5198];
-        if (((1 << v30) & 0x33) != 0)
+        if (((1 << integerValue2) & 0x33) != 0)
         {
           v54 = *MEMORY[0x277CD5188];
           v55 = v7;
@@ -310,7 +310,7 @@ LABEL_17:
       }
 
       v46 = objc_autoreleasePoolPush();
-      v47 = self;
+      selfCopy2 = self;
       v48 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v48, OS_LOG_TYPE_ERROR))
       {
@@ -328,7 +328,7 @@ LABEL_17:
     else
     {
       v39 = objc_autoreleasePoolPush();
-      v40 = self;
+      selfCopy3 = self;
       v41 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
       {
@@ -354,7 +354,7 @@ LABEL_40:
   }
 
   v16 = objc_autoreleasePoolPush();
-  v17 = self;
+  selfCopy4 = self;
   v18 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
   {
@@ -373,12 +373,12 @@ LABEL_18:
   return v20;
 }
 
-- (void)updatedValuePluginCurrentHeaterCoolerStateForAttributeReport:(id)a3 responseHandler:(id)a4
+- (void)updatedValuePluginCurrentHeaterCoolerStateForAttributeReport:(id)report responseHandler:(id)handler
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 objectForKeyedSubscript:*MEMORY[0x277CD50B8]];
+  reportCopy = report;
+  handlerCopy = handler;
+  v8 = [reportCopy objectForKeyedSubscript:*MEMORY[0x277CD50B8]];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -393,55 +393,55 @@ LABEL_18:
   v10 = v9;
 
   v11 = objc_autoreleasePoolPush();
-  v12 = self;
+  selfCopy = self;
   v13 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
     HMFGetLogIdentifier();
-    v14 = v23 = v6;
-    v15 = [v10 endpoint];
-    v16 = [v10 cluster];
-    v17 = [v10 attribute];
+    v14 = v23 = reportCopy;
+    endpoint = [v10 endpoint];
+    cluster = [v10 cluster];
+    attribute = [v10 attribute];
     v18 = [v23 objectForKeyedSubscript:*MEMORY[0x277CD50D8]];
     *buf = 138544386;
     v25 = v14;
     v26 = 2112;
-    v27 = v15;
+    v27 = endpoint;
     v28 = 2112;
-    v29 = v16;
+    v29 = cluster;
     v30 = 2112;
-    v31 = v17;
+    v31 = attribute;
     v32 = 2112;
     v33 = v18;
     _os_log_impl(&dword_22AEAE000, v13, OS_LOG_TYPE_DEBUG, "%{public}@Handling Attribute report linked to current heater cooler state (sync) - endpoint:%@ cluster:%@ attribute:%@ value:%@", buf, 0x34u);
 
-    v6 = v23;
+    reportCopy = v23;
   }
 
   objc_autoreleasePoolPop(v11);
   v19 = objc_alloc_init(MEMORY[0x277CD54D8]);
-  v20 = [(HMMTRSyncClusterThermostat *)v12 readAttributePluginCurrentHeaterCoolerStateWithParams:v19];
+  v20 = [(HMMTRSyncClusterThermostat *)selfCopy readAttributePluginCurrentHeaterCoolerStateWithParams:v19];
 
   if (v20)
   {
     v21 = [v20 objectForKeyedSubscript:*MEMORY[0x277CD51A0]];
-    v7[2](v7, v21, 0);
+    handlerCopy[2](handlerCopy, v21, 0);
   }
 
   else
   {
     v21 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D0F1A0] code:15 userInfo:0];
-    (v7)[2](v7, 0, v21);
+    (handlerCopy)[2](handlerCopy, 0, v21);
   }
 
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (id)readAttributePluginCurrentHeaterCoolerStateWithParams:(id)a3
+- (id)readAttributePluginCurrentHeaterCoolerStateWithParams:(id)params
 {
   v93 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(MTRClusterThermostat *)self readAttributeSystemModeWithParams:v4];
+  paramsCopy = params;
+  v5 = [(MTRClusterThermostat *)self readAttributeSystemModeWithParams:paramsCopy];
   v6 = v5;
   if (v5)
   {
@@ -460,9 +460,9 @@ LABEL_18:
 
     v10 = v9;
 
-    v11 = [v10 integerValue];
+    integerValue = [v10 integerValue];
     v12 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
     {
@@ -470,12 +470,12 @@ LABEL_18:
       *buf = 138543618;
       v90 = v15;
       v91 = 2048;
-      v92 = v11;
+      v92 = integerValue;
       _os_log_impl(&dword_22AEAE000, v14, OS_LOG_TYPE_DEBUG, "%{public}@Read current heater cooler state (sync): Got systemModeValue value: %ld", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v12);
-    if (!v11)
+    if (!integerValue)
     {
       v47 = *MEMORY[0x277CD5198];
       v87[0] = *MEMORY[0x277CD5188];
@@ -486,12 +486,12 @@ LABEL_18:
       goto LABEL_53;
     }
 
-    v16 = [(MTRClusterThermostat *)v13 readAttributeLocalTemperatureWithParams:v4];
+    v16 = [(MTRClusterThermostat *)selfCopy readAttributeLocalTemperatureWithParams:paramsCopy];
     v17 = v16;
     if (!v16)
     {
       v48 = objc_autoreleasePoolPush();
-      v49 = v13;
+      v49 = selfCopy;
       v50 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v50, OS_LOG_TYPE_ERROR))
       {
@@ -521,9 +521,9 @@ LABEL_18:
 
     v20 = v19;
 
-    v21 = [v20 integerValue];
+    integerValue2 = [v20 integerValue];
     v22 = objc_autoreleasePoolPush();
-    v23 = v13;
+    v23 = selfCopy;
     v24 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
     {
@@ -531,14 +531,14 @@ LABEL_18:
       *buf = 138543618;
       v90 = v25;
       v91 = 2048;
-      v92 = v21;
+      v92 = integerValue2;
       _os_log_impl(&dword_22AEAE000, v24, OS_LOG_TYPE_DEBUG, "%{public}@Read current heater cooler state (sync): Got temperatureValue value: %ld", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v22);
-    if (v11 == 4)
+    if (integerValue == 4)
     {
-      v52 = [(MTRClusterThermostat *)v23 readAttributeOccupiedHeatingSetpointWithParams:v4];
+      v52 = [(MTRClusterThermostat *)v23 readAttributeOccupiedHeatingSetpointWithParams:paramsCopy];
       v27 = v52;
       if (v52)
       {
@@ -556,7 +556,7 @@ LABEL_18:
 
         v55 = v54;
 
-        v56 = [v55 integerValue];
+        integerValue3 = [v55 integerValue];
         v57 = objc_autoreleasePoolPush();
         v58 = v23;
         v59 = HMFGetOSLogHandle();
@@ -567,7 +567,7 @@ LABEL_18:
           *buf = 138543618;
           v90 = v61;
           v91 = 2048;
-          v92 = v56;
+          v92 = integerValue3;
           _os_log_impl(&dword_22AEAE000, v59, OS_LOG_TYPE_DEBUG, "%{public}@Read current heater cooler state (sync): Got heatPointValue value: %ld", buf, 0x16u);
 
           v27 = v60;
@@ -576,7 +576,7 @@ LABEL_18:
         objc_autoreleasePoolPop(v57);
         v62 = *MEMORY[0x277CD5188];
         v63 = *MEMORY[0x277CD5198];
-        if (v21 >= v56)
+        if (integerValue2 >= integerValue3)
         {
           v79[0] = *MEMORY[0x277CD5188];
           v79[1] = v7;
@@ -616,7 +616,7 @@ LABEL_18:
 
     else
     {
-      if (v11 != 3)
+      if (integerValue != 3)
       {
         v64 = objc_autoreleasePoolPush();
         v65 = v23;
@@ -627,7 +627,7 @@ LABEL_18:
           *buf = 138543618;
           v90 = v67;
           v91 = 2048;
-          v92 = v11;
+          v92 = integerValue;
           _os_log_impl(&dword_22AEAE000, v66, OS_LOG_TYPE_INFO, "%{public}@Read current heater cooler state (sync): Unsupported system mode: %ld", buf, 0x16u);
         }
 
@@ -642,7 +642,7 @@ LABEL_18:
         goto LABEL_52;
       }
 
-      v26 = [(MTRClusterThermostat *)v23 readAttributeOccupiedCoolingSetpointWithParams:v4];
+      v26 = [(MTRClusterThermostat *)v23 readAttributeOccupiedCoolingSetpointWithParams:paramsCopy];
       v27 = v26;
       if (v26)
       {
@@ -660,7 +660,7 @@ LABEL_18:
 
         v30 = v29;
 
-        v31 = [v30 integerValue];
+        integerValue4 = [v30 integerValue];
         v32 = objc_autoreleasePoolPush();
         v33 = v23;
         v34 = HMFGetOSLogHandle();
@@ -671,7 +671,7 @@ LABEL_18:
           *buf = 138543618;
           v90 = v36;
           v91 = 2048;
-          v92 = v31;
+          v92 = integerValue4;
           _os_log_impl(&dword_22AEAE000, v34, OS_LOG_TYPE_DEBUG, "%{public}@Read current heater cooler state (sync): Got coolPointValue value: %ld", buf, 0x16u);
 
           v27 = v35;
@@ -680,7 +680,7 @@ LABEL_18:
         objc_autoreleasePoolPop(v32);
         v37 = *MEMORY[0x277CD5188];
         v38 = *MEMORY[0x277CD5198];
-        if (v21 <= v31)
+        if (integerValue2 <= integerValue4)
         {
           v83[0] = *MEMORY[0x277CD5188];
           v83[1] = v7;
@@ -731,7 +731,7 @@ LABEL_52:
   }
 
   v42 = objc_autoreleasePoolPush();
-  v43 = self;
+  selfCopy2 = self;
   v44 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v44, OS_LOG_TYPE_ERROR))
   {
@@ -750,12 +750,12 @@ LABEL_53:
   return v46;
 }
 
-- (void)updatedValuePluginActiveForAttributeReport:(id)a3 responseHandler:(id)a4
+- (void)updatedValuePluginActiveForAttributeReport:(id)report responseHandler:(id)handler
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 objectForKeyedSubscript:*MEMORY[0x277CD50B8]];
+  reportCopy = report;
+  handlerCopy = handler;
+  v8 = [reportCopy objectForKeyedSubscript:*MEMORY[0x277CD50B8]];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -770,55 +770,55 @@ LABEL_53:
   v10 = v9;
 
   v11 = objc_autoreleasePoolPush();
-  v12 = self;
+  selfCopy = self;
   v13 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
     HMFGetLogIdentifier();
-    v14 = v23 = v6;
-    v15 = [v10 endpoint];
-    v16 = [v10 cluster];
-    v17 = [v10 attribute];
+    v14 = v23 = reportCopy;
+    endpoint = [v10 endpoint];
+    cluster = [v10 cluster];
+    attribute = [v10 attribute];
     v18 = [v23 objectForKeyedSubscript:*MEMORY[0x277CD50D8]];
     *buf = 138544386;
     v25 = v14;
     v26 = 2112;
-    v27 = v15;
+    v27 = endpoint;
     v28 = 2112;
-    v29 = v16;
+    v29 = cluster;
     v30 = 2112;
-    v31 = v17;
+    v31 = attribute;
     v32 = 2112;
     v33 = v18;
     _os_log_impl(&dword_22AEAE000, v13, OS_LOG_TYPE_DEBUG, "%{public}@Handling Attribute report linked to Active Char (sync) - endpoint:%@ cluster:%@ attribute:%@ value:%@", buf, 0x34u);
 
-    v6 = v23;
+    reportCopy = v23;
   }
 
   objc_autoreleasePoolPop(v11);
   v19 = objc_alloc_init(MEMORY[0x277CD54D8]);
-  v20 = [(HMMTRSyncClusterThermostat *)v12 readAttributePluginActiveWithParams:v19];
+  v20 = [(HMMTRSyncClusterThermostat *)selfCopy readAttributePluginActiveWithParams:v19];
 
   if (v20)
   {
     v21 = [v20 objectForKeyedSubscript:*MEMORY[0x277CD51A0]];
-    v7[2](v7, v21, 0);
+    handlerCopy[2](handlerCopy, v21, 0);
   }
 
   else
   {
     v21 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D0F1A0] code:15 userInfo:0];
-    (v7)[2](v7, 0, v21);
+    (handlerCopy)[2](handlerCopy, 0, v21);
   }
 
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)writeAttributePluginActiveWithValue:(id)a3 expectedValueInterval:(id)a4
+- (void)writeAttributePluginActiveWithValue:(id)value expectedValueInterval:(id)interval
 {
   v61 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  valueCopy = value;
+  intervalCopy = interval;
   v8 = objc_alloc_init(MEMORY[0x277CD54D8]);
   v9 = [(MTRClusterThermostat *)self readAttributeControlSequenceOfOperationWithParams:v8];
   v10 = v9;
@@ -842,7 +842,7 @@ LABEL_53:
     if (!v14)
     {
       v28 = objc_autoreleasePoolPush();
-      v29 = self;
+      selfCopy = self;
       v30 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
       {
@@ -852,11 +852,11 @@ LABEL_53:
         v56 = v54;
         v57 = 2112;
         v58 = objc_opt_class();
-        v32 = v6;
+        v32 = valueCopy;
         v33 = v58;
         _os_log_impl(&dword_22AEAE000, v30, OS_LOG_TYPE_ERROR, "%{public}@Write Occupied Heating/Cooling Setpoint (sync): Control Sequence was read with unexpected class type %@", buf, 0x16u);
 
-        v6 = v32;
+        valueCopy = v32;
         v14 = 0;
       }
 
@@ -864,9 +864,9 @@ LABEL_53:
       goto LABEL_41;
     }
 
-    v15 = [v14 integerValue];
-    v53 = v6;
-    v16 = [v6 objectForKeyedSubscript:v11];
+    integerValue = [v14 integerValue];
+    v53 = valueCopy;
+    v16 = [valueCopy objectForKeyedSubscript:v11];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -883,7 +883,7 @@ LABEL_53:
     if (!v18)
     {
       v34 = objc_autoreleasePoolPush();
-      v35 = self;
+      selfCopy2 = self;
       v36 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
       {
@@ -901,22 +901,22 @@ LABEL_53:
       }
 
       objc_autoreleasePoolPop(v34);
-      v6 = v53;
+      valueCopy = v53;
       goto LABEL_40;
     }
 
-    if (!v7)
+    if (!intervalCopy)
     {
-      v7 = &unk_283EE81F0;
+      intervalCopy = &unk_283EE81F0;
     }
 
     if ([v18 integerValue])
     {
-      v6 = v53;
-      if (v15 > 5)
+      valueCopy = v53;
+      if (integerValue > 5)
       {
         v19 = objc_autoreleasePoolPush();
-        v20 = self;
+        selfCopy4 = self;
         v21 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
         {
@@ -935,10 +935,10 @@ LABEL_39:
         goto LABEL_40;
       }
 
-      if (((1 << v15) & 0x32) != 0)
+      if (((1 << integerValue) & 0x32) != 0)
       {
         v19 = objc_autoreleasePoolPush();
-        v20 = self;
+        selfCopy4 = self;
         v21 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
         {
@@ -951,14 +951,14 @@ LABEL_39:
 LABEL_38:
           _os_log_impl(&dword_22AEAE000, v21, OS_LOG_TYPE_ERROR, v23, buf, 0x16u);
 
-          v6 = v53;
+          valueCopy = v53;
           goto LABEL_39;
         }
 
         goto LABEL_39;
       }
 
-      if (((1 << v15) & 0xC) != 0)
+      if (((1 << integerValue) & 0xC) != 0)
       {
         v46 = &unk_283EE82E0;
       }
@@ -970,9 +970,9 @@ LABEL_38:
 
       v40 = [objc_alloc(MEMORY[0x277CBEB38]) initWithDictionary:v53];
       [v40 setValue:v46 forKey:v11];
-      [(MTRClusterThermostat *)self writeAttributeSystemModeWithValue:v40 expectedValueInterval:v7];
+      [(MTRClusterThermostat *)self writeAttributeSystemModeWithValue:v40 expectedValueInterval:intervalCopy];
       context = objc_autoreleasePoolPush();
-      v47 = self;
+      selfCopy5 = self;
       v48 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v48, OS_LOG_TYPE_INFO))
       {
@@ -985,7 +985,7 @@ LABEL_38:
         v60 = v46;
         _os_log_impl(&dword_22AEAE000, v48, OS_LOG_TYPE_INFO, "%{public}@Wrote to system mode attribute for Active Characteristic, value:%@ (On), system mode:%@", buf, 0x20u);
 
-        v6 = v53;
+        valueCopy = v53;
       }
 
       v45 = context;
@@ -993,12 +993,12 @@ LABEL_38:
 
     else
     {
-      v6 = v53;
+      valueCopy = v53;
       v40 = [objc_alloc(MEMORY[0x277CBEB38]) initWithDictionary:v53];
       [v40 setValue:&unk_283EE82B0 forKey:v11];
-      [(MTRClusterThermostat *)self writeAttributeSystemModeWithValue:v40 expectedValueInterval:v7];
+      [(MTRClusterThermostat *)self writeAttributeSystemModeWithValue:v40 expectedValueInterval:intervalCopy];
       v41 = objc_autoreleasePoolPush();
-      v42 = self;
+      selfCopy6 = self;
       v43 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v43, OS_LOG_TYPE_INFO))
       {
@@ -1011,7 +1011,7 @@ LABEL_38:
         v60 = &unk_283EE82B0;
         _os_log_impl(&dword_22AEAE000, v43, OS_LOG_TYPE_INFO, "%{public}@Wrote to system mode attribute for Active Characteristic, value:%@ (Off), error:%@", buf, 0x20u);
 
-        v6 = v53;
+        valueCopy = v53;
       }
 
       v45 = v41;
@@ -1026,7 +1026,7 @@ LABEL_41:
   }
 
   v24 = objc_autoreleasePoolPush();
-  v25 = self;
+  selfCopy7 = self;
   v26 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
   {
@@ -1042,11 +1042,11 @@ LABEL_42:
   v50 = *MEMORY[0x277D85DE8];
 }
 
-- (id)readAttributePluginActiveWithParams:(id)a3
+- (id)readAttributePluginActiveWithParams:(id)params
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(MTRClusterThermostat *)self readAttributeSystemModeWithParams:v4];
+  paramsCopy = params;
+  v5 = [(MTRClusterThermostat *)self readAttributeSystemModeWithParams:paramsCopy];
   v6 = v5;
   if (v5)
   {
@@ -1065,10 +1065,10 @@ LABEL_42:
 
     v10 = v9;
 
-    v11 = [v10 integerValue];
+    integerValue = [v10 integerValue];
     v12 = *MEMORY[0x277CD5188];
     v13 = *MEMORY[0x277CD5198];
-    if (v11)
+    if (integerValue)
     {
       v24 = *MEMORY[0x277CD5188];
       v25 = v7;
@@ -1096,7 +1096,7 @@ LABEL_42:
   else
   {
     v17 = objc_autoreleasePoolPush();
-    v18 = self;
+    selfCopy = self;
     v19 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
@@ -1115,11 +1115,11 @@ LABEL_42:
   return v21;
 }
 
-- (id)readAttributePluginCurrentHeatingCoolingStateWithParams:(id)a3
+- (id)readAttributePluginCurrentHeatingCoolingStateWithParams:(id)params
 {
   v155 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(MTRClusterThermostat *)self readAttributeSystemModeWithParams:v4];
+  paramsCopy = params;
+  v5 = [(MTRClusterThermostat *)self readAttributeSystemModeWithParams:paramsCopy];
   v6 = v5;
   if (v5)
   {
@@ -1138,9 +1138,9 @@ LABEL_42:
 
     v10 = v9;
 
-    v11 = [v10 integerValue];
+    integerValue = [v10 integerValue];
     v12 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
     {
@@ -1148,12 +1148,12 @@ LABEL_42:
       *buf = 138543618;
       v152 = v15;
       v153 = 2048;
-      v154 = v11;
+      v154 = integerValue;
       _os_log_impl(&dword_22AEAE000, v14, OS_LOG_TYPE_DEBUG, "%{public}@Read current heating/cooling state (sync): Got systemModeValue value: %ld", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v12);
-    if (!v11)
+    if (!integerValue)
     {
       v44 = *MEMORY[0x277CD5198];
       v149[0] = *MEMORY[0x277CD5188];
@@ -1164,12 +1164,12 @@ LABEL_42:
       goto LABEL_97;
     }
 
-    v16 = [(MTRClusterThermostat *)v13 readAttributeLocalTemperatureWithParams:v4];
+    v16 = [(MTRClusterThermostat *)selfCopy readAttributeLocalTemperatureWithParams:paramsCopy];
     v17 = v16;
     if (!v16)
     {
       v45 = objc_autoreleasePoolPush();
-      v46 = v13;
+      v46 = selfCopy;
       v47 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v47, OS_LOG_TYPE_ERROR))
       {
@@ -1198,9 +1198,9 @@ LABEL_42:
 
     v20 = v19;
 
-    v21 = [v20 integerValue];
+    integerValue2 = [v20 integerValue];
     v22 = objc_autoreleasePoolPush();
-    v23 = v13;
+    v23 = selfCopy;
     v24 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
     {
@@ -1208,19 +1208,19 @@ LABEL_42:
       *buf = 138543618;
       v152 = v25;
       v153 = 2048;
-      v154 = v21;
+      v154 = integerValue2;
       _os_log_impl(&dword_22AEAE000, v24, OS_LOG_TYPE_DEBUG, "%{public}@Read current heating/cooling state (sync): Got temperatureValue value: %ld", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v22);
-    switch(v11)
+    switch(integerValue)
     {
       case 4:
-        v63 = [(MTRClusterThermostat *)v23 readAttributeOccupiedHeatingSetpointWithParams:v4];
+        v63 = [(MTRClusterThermostat *)v23 readAttributeOccupiedHeatingSetpointWithParams:paramsCopy];
         v27 = v63;
         if (v63)
         {
-          v127 = v21;
+          v127 = integerValue2;
           v64 = [v63 objectForKeyedSubscript:v7];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
@@ -1235,7 +1235,7 @@ LABEL_42:
 
           v66 = v65;
 
-          v67 = [v66 integerValue];
+          integerValue3 = [v66 integerValue];
           v68 = objc_autoreleasePoolPush();
           v69 = v23;
           v70 = HMFGetOSLogHandle();
@@ -1245,14 +1245,14 @@ LABEL_42:
             *buf = 138543618;
             v152 = v71;
             v153 = 2048;
-            v154 = v67;
+            v154 = integerValue3;
             _os_log_impl(&dword_22AEAE000, v70, OS_LOG_TYPE_DEBUG, "%{public}@Read current heating/cooling state (sync): Got heatPointValue value: %ld", buf, 0x16u);
           }
 
           objc_autoreleasePoolPop(v68);
           v72 = *MEMORY[0x277CD5188];
           v73 = *MEMORY[0x277CD5198];
-          if (v127 >= v67)
+          if (v127 >= integerValue3)
           {
             v131[0] = *MEMORY[0x277CD5188];
             v131[1] = v7;
@@ -1291,7 +1291,7 @@ LABEL_42:
 
         break;
       case 3:
-        v49 = [(MTRClusterThermostat *)v23 readAttributeOccupiedCoolingSetpointWithParams:v4];
+        v49 = [(MTRClusterThermostat *)v23 readAttributeOccupiedCoolingSetpointWithParams:paramsCopy];
         v27 = v49;
         if (v49)
         {
@@ -1309,27 +1309,27 @@ LABEL_42:
 
           v52 = v51;
 
-          v53 = [v52 integerValue];
+          integerValue4 = [v52 integerValue];
           v54 = objc_autoreleasePoolPush();
           v55 = v23;
           v56 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v56, OS_LOG_TYPE_DEBUG))
           {
             HMFGetLogIdentifier();
-            v57 = v126 = v21;
+            v57 = v126 = integerValue2;
             *buf = 138543618;
             v152 = v57;
             v153 = 2048;
-            v154 = v53;
+            v154 = integerValue4;
             _os_log_impl(&dword_22AEAE000, v56, OS_LOG_TYPE_DEBUG, "%{public}@Read current heating/cooling state (sync): Got coolPointValue value: %ld", buf, 0x16u);
 
-            v21 = v126;
+            integerValue2 = v126;
           }
 
           objc_autoreleasePoolPop(v54);
           v58 = *MEMORY[0x277CD5188];
           v59 = *MEMORY[0x277CD5198];
-          if (v21 <= v53)
+          if (integerValue2 <= integerValue4)
           {
             v135[0] = *MEMORY[0x277CD5188];
             v135[1] = v7;
@@ -1371,7 +1371,7 @@ LABEL_54:
 
         break;
       case 1:
-        v26 = [(MTRClusterThermostat *)v23 readAttributeThermostatRunningModeWithParams:v4];
+        v26 = [(MTRClusterThermostat *)v23 readAttributeThermostatRunningModeWithParams:paramsCopy];
         v27 = v26;
         if (v26)
         {
@@ -1389,7 +1389,7 @@ LABEL_54:
 
           v30 = v29;
 
-          v31 = [v30 integerValue];
+          integerValue5 = [v30 integerValue];
           v32 = objc_autoreleasePoolPush();
           v33 = v23;
           v34 = HMFGetOSLogHandle();
@@ -1399,7 +1399,7 @@ LABEL_54:
             *buf = 138543618;
             v152 = v35;
             v153 = 2048;
-            v154 = v31;
+            v154 = integerValue5;
             _os_log_impl(&dword_22AEAE000, v34, OS_LOG_TYPE_DEBUG, "%{public}@Read current heating/cooling state (sync): Got runningModeValue value: %ld", buf, 0x16u);
           }
 
@@ -1409,7 +1409,7 @@ LABEL_54:
           v147[1] = v7;
           v148[0] = v37;
           v147[0] = v36;
-          v38 = [MEMORY[0x277CCABB0] numberWithInteger:v31];
+          v38 = [MEMORY[0x277CCABB0] numberWithInteger:integerValue5];
           v148[1] = v38;
           v39 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v148 forKeys:v147 count:2];
         }
@@ -1428,7 +1428,7 @@ LABEL_54:
           }
 
           objc_autoreleasePoolPop(v84);
-          v88 = [(MTRClusterThermostat *)v85 readAttributeOccupiedHeatingSetpointWithParams:v4];
+          v88 = [(MTRClusterThermostat *)v85 readAttributeOccupiedHeatingSetpointWithParams:paramsCopy];
           if (v88)
           {
             v38 = v88;
@@ -1446,7 +1446,7 @@ LABEL_54:
 
             v91 = v90;
 
-            v128 = [v91 integerValue];
+            integerValue6 = [v91 integerValue];
             v92 = objc_autoreleasePoolPush();
             v93 = v85;
             v94 = HMFGetOSLogHandle();
@@ -1456,14 +1456,14 @@ LABEL_54:
               *buf = 138543618;
               v152 = v95;
               v153 = 2048;
-              v154 = v128;
+              v154 = integerValue6;
               _os_log_impl(&dword_22AEAE000, v94, OS_LOG_TYPE_DEBUG, "%{public}@Read current heating/cooling state (sync): Got heatPointValue value: %ld", buf, 0x16u);
 
               v27 = 0;
             }
 
             objc_autoreleasePoolPop(v92);
-            v96 = [(MTRClusterThermostat *)v93 readAttributeOccupiedCoolingSetpointWithParams:v4];
+            v96 = [(MTRClusterThermostat *)v93 readAttributeOccupiedCoolingSetpointWithParams:paramsCopy];
             v97 = v96;
             if (v96)
             {
@@ -1482,7 +1482,7 @@ LABEL_54:
 
               v100 = v99;
 
-              v101 = [v100 integerValue];
+              integerValue7 = [v100 integerValue];
               v102 = objc_autoreleasePoolPush();
               v103 = v93;
               v104 = HMFGetOSLogHandle();
@@ -1493,38 +1493,38 @@ LABEL_54:
                 *buf = 138543618;
                 v152 = v105;
                 v153 = 2048;
-                v154 = v101;
+                v154 = integerValue7;
                 _os_log_impl(&dword_22AEAE000, v104, OS_LOG_TYPE_DEBUG, "%{public}@Read current heating/cooling state (sync): Got coolPointValue value: %ld", buf, 0x16u);
 
                 v102 = v124;
               }
 
               objc_autoreleasePoolPop(v102);
-              v106 = v128;
-              if (v128 >= v101)
+              v106 = integerValue6;
+              if (integerValue6 >= integerValue7)
               {
-                v107 = v101;
+                v107 = integerValue7;
               }
 
               else
               {
-                v107 = v128;
+                v107 = integerValue6;
               }
 
-              if (v128 <= v101)
+              if (integerValue6 <= integerValue7)
               {
-                v106 = v101;
+                v106 = integerValue7;
               }
 
-              if (v21 <= v107 || v21 >= v106)
+              if (integerValue2 <= v107 || integerValue2 >= v106)
               {
                 v27 = 0;
                 v97 = v125;
                 v117 = *MEMORY[0x277CD5188];
                 v118 = *MEMORY[0x277CD5198];
-                if (v21 >= v128)
+                if (integerValue2 >= integerValue6)
                 {
-                  if (v21 <= v101)
+                  if (integerValue2 <= integerValue7)
                   {
                     v139[0] = *MEMORY[0x277CD5188];
                     v139[1] = v7;
@@ -1627,7 +1627,7 @@ LABEL_96:
           *buf = 138543618;
           v152 = v77;
           v153 = 2048;
-          v154 = v11;
+          v154 = integerValue;
           _os_log_impl(&dword_22AEAE000, v76, OS_LOG_TYPE_INFO, "%{public}@Read current heating/cooling state (sync): Unsupported system mode: %ld", buf, 0x16u);
         }
 
@@ -1647,7 +1647,7 @@ LABEL_96:
   }
 
   v40 = objc_autoreleasePoolPush();
-  v41 = self;
+  selfCopy2 = self;
   v42 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
   {
@@ -1666,12 +1666,12 @@ LABEL_97:
   return v39;
 }
 
-- (void)updatedValuePluginCurrentHeatingCoolingStateForAttributeReport:(id)a3 responseHandler:(id)a4
+- (void)updatedValuePluginCurrentHeatingCoolingStateForAttributeReport:(id)report responseHandler:(id)handler
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 objectForKeyedSubscript:*MEMORY[0x277CD50B8]];
+  reportCopy = report;
+  handlerCopy = handler;
+  v8 = [reportCopy objectForKeyedSubscript:*MEMORY[0x277CD50B8]];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -1686,56 +1686,56 @@ LABEL_97:
   v10 = v9;
 
   v11 = objc_autoreleasePoolPush();
-  v12 = self;
+  selfCopy = self;
   v13 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
     HMFGetLogIdentifier();
-    v14 = v23 = v6;
-    v15 = [v10 endpoint];
-    v16 = [v10 cluster];
-    v17 = [v10 attribute];
+    v14 = v23 = reportCopy;
+    endpoint = [v10 endpoint];
+    cluster = [v10 cluster];
+    attribute = [v10 attribute];
     v18 = [v23 objectForKeyedSubscript:*MEMORY[0x277CD50D8]];
     *buf = 138544386;
     v25 = v14;
     v26 = 2112;
-    v27 = v15;
+    v27 = endpoint;
     v28 = 2112;
-    v29 = v16;
+    v29 = cluster;
     v30 = 2112;
-    v31 = v17;
+    v31 = attribute;
     v32 = 2112;
     v33 = v18;
     _os_log_impl(&dword_22AEAE000, v13, OS_LOG_TYPE_DEBUG, "%{public}@Handling Attribute report linked to current heating/cooling state (sync) - endpoint:%@ cluster:%@ attribute:%@ value:%@", buf, 0x34u);
 
-    v6 = v23;
+    reportCopy = v23;
   }
 
   objc_autoreleasePoolPop(v11);
   v19 = objc_alloc_init(MEMORY[0x277CD54D8]);
-  v20 = [(HMMTRSyncClusterThermostat *)v12 readAttributePluginCurrentHeatingCoolingStateWithParams:v19];
+  v20 = [(HMMTRSyncClusterThermostat *)selfCopy readAttributePluginCurrentHeatingCoolingStateWithParams:v19];
 
   if (v20)
   {
     v21 = [v20 objectForKeyedSubscript:*MEMORY[0x277CD51A0]];
-    v7[2](v7, v21, 0);
+    handlerCopy[2](handlerCopy, v21, 0);
   }
 
   else
   {
     v21 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D0F1A0] code:15 userInfo:0];
-    (v7)[2](v7, 0, v21);
+    (handlerCopy)[2](handlerCopy, 0, v21);
   }
 
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updatedValueForAttributeReport:(id)a3 responseHandler:(id)a4
+- (void)updatedValueForAttributeReport:(id)report responseHandler:(id)handler
 {
   v69 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v58 = a4;
-  v7 = [v6 objectForKeyedSubscript:*MEMORY[0x277CD50B8]];
+  reportCopy = report;
+  handlerCopy = handler;
+  v7 = [reportCopy objectForKeyedSubscript:*MEMORY[0x277CD50B8]];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -1749,7 +1749,7 @@ LABEL_97:
 
   v9 = v8;
 
-  v10 = [v6 objectForKeyedSubscript:*MEMORY[0x277CD5128]];
+  v10 = [reportCopy objectForKeyedSubscript:*MEMORY[0x277CD5128]];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -1764,23 +1764,23 @@ LABEL_97:
   v57 = v11;
 
   v12 = objc_autoreleasePoolPush();
-  v13 = self;
+  selfCopy = self;
   v14 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
     v15 = HMFGetLogIdentifier();
-    v16 = [v9 endpoint];
-    v17 = [v9 cluster];
-    v18 = [v9 attribute];
-    v19 = [v6 objectForKeyedSubscript:*MEMORY[0x277CD50D8]];
+    endpoint = [v9 endpoint];
+    cluster = [v9 cluster];
+    attribute = [v9 attribute];
+    v19 = [reportCopy objectForKeyedSubscript:*MEMORY[0x277CD50D8]];
     *buf = 138544386;
     v60 = v15;
     v61 = 2112;
-    v62 = v16;
+    v62 = endpoint;
     v63 = 2112;
-    v64 = v17;
+    v64 = cluster;
     v65 = 2112;
-    v66 = v18;
+    v66 = attribute;
     v67 = 2112;
     v68 = v19;
     _os_log_impl(&dword_22AEAE000, v14, OS_LOG_TYPE_DEBUG, "%{public}@UpdateValueForAttributeReport (sync): Handling Attribute report endpoint:%@ cluster:%@ attribute:%@ value:%@", buf, 0x34u);
@@ -1788,7 +1788,7 @@ LABEL_97:
 
   objc_autoreleasePoolPop(v12);
   v20 = objc_alloc_init(MEMORY[0x277CD54D8]);
-  v21 = [(MTRClusterThermostat *)v13 readAttributeSystemModeWithParams:v20];
+  v21 = [(MTRClusterThermostat *)selfCopy readAttributeSystemModeWithParams:v20];
   v22 = v21;
   if (v21)
   {
@@ -1810,7 +1810,7 @@ LABEL_97:
     if (!v26)
     {
       v45 = objc_autoreleasePoolPush();
-      v46 = v13;
+      v46 = selfCopy;
       v47 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v47, OS_LOG_TYPE_ERROR))
       {
@@ -1830,15 +1830,15 @@ LABEL_97:
 
       objc_autoreleasePoolPop(v45);
       v44 = v57;
-      v43 = v58;
+      v43 = handlerCopy;
       goto LABEL_38;
     }
 
-    v27 = [v26 integerValue];
-    v28 = [v6 objectForKeyedSubscript:*MEMORY[0x277CD50D8]];
+    integerValue = [v26 integerValue];
+    v28 = [reportCopy objectForKeyedSubscript:*MEMORY[0x277CD50D8]];
     if (v28)
     {
-      v29 = v6;
+      v29 = reportCopy;
     }
 
     else
@@ -1848,18 +1848,18 @@ LABEL_97:
 
     v30 = v29;
 
-    if (v27 == 3)
+    if (integerValue == 3)
     {
-      v31 = [v9 cluster];
-      if ([v31 isEqualToNumber:&unk_283EE8208])
+      cluster2 = [v9 cluster];
+      if ([cluster2 isEqualToNumber:&unk_283EE8208])
       {
-        v52 = [v9 attribute];
-        v53 = [v52 isEqualToNumber:&unk_283EE8238];
+        attribute2 = [v9 attribute];
+        v53 = [attribute2 isEqualToNumber:&unk_283EE8238];
 
         if (v53)
         {
           v34 = objc_autoreleasePoolPush();
-          v35 = v13;
+          v35 = selfCopy;
           v36 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v36, OS_LOG_TYPE_DEBUG))
           {
@@ -1867,7 +1867,7 @@ LABEL_97:
             *buf = 138543618;
             v60 = v37;
             v61 = 2112;
-            v62 = v6;
+            v62 = reportCopy;
             v38 = "%{public}@UpdateValueForAttributeReport (sync): Report OccupiedCoolingSetpoint %@";
             goto LABEL_33;
           }
@@ -1877,8 +1877,8 @@ LABEL_34:
           objc_autoreleasePoolPop(v34);
           v54 = [HMMTRUtilities mtrBaseClusterValueFromMTRClusterReportValue:v30];
           v44 = v57;
-          v43 = v58;
-          (*(v58 + 2))(v58, v54, v57);
+          v43 = handlerCopy;
+          (*(handlerCopy + 2))(handlerCopy, v54, v57);
 LABEL_37:
 
 LABEL_38:
@@ -1887,8 +1887,8 @@ LABEL_38:
 
 LABEL_36:
         v54 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D0F1A0] code:5 userInfo:0];
-        v43 = v58;
-        (*(v58 + 2))(v58, 0, v54);
+        v43 = handlerCopy;
+        (*(handlerCopy + 2))(handlerCopy, 0, v54);
         v44 = v57;
         goto LABEL_37;
       }
@@ -1896,21 +1896,21 @@ LABEL_36:
 
     else
     {
-      if (v27 != 4)
+      if (integerValue != 4)
       {
         goto LABEL_36;
       }
 
-      v31 = [v9 cluster];
-      if ([v31 isEqualToNumber:&unk_283EE8208])
+      cluster2 = [v9 cluster];
+      if ([cluster2 isEqualToNumber:&unk_283EE8208])
       {
-        v32 = [v9 attribute];
-        v33 = [v32 isEqualToNumber:&unk_283EE8220];
+        attribute3 = [v9 attribute];
+        v33 = [attribute3 isEqualToNumber:&unk_283EE8220];
 
         if (v33)
         {
           v34 = objc_autoreleasePoolPush();
-          v35 = v13;
+          v35 = selfCopy;
           v36 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v36, OS_LOG_TYPE_DEBUG))
           {
@@ -1918,7 +1918,7 @@ LABEL_36:
             *buf = 138543618;
             v60 = v37;
             v61 = 2112;
-            v62 = v6;
+            v62 = reportCopy;
             v38 = "%{public}@UpdateValueForAttributeReport (sync): Report OccupiedHeatingSetpoint %@";
 LABEL_33:
             _os_log_impl(&dword_22AEAE000, v36, OS_LOG_TYPE_DEBUG, v38, buf, 0x16u);
@@ -1937,7 +1937,7 @@ LABEL_33:
   }
 
   v39 = objc_autoreleasePoolPush();
-  v40 = v13;
+  v40 = selfCopy;
   v41 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
   {
@@ -1949,17 +1949,17 @@ LABEL_33:
 
   objc_autoreleasePoolPop(v39);
   v44 = v57;
-  v43 = v58;
+  v43 = handlerCopy;
 LABEL_39:
 
   v55 = *MEMORY[0x277D85DE8];
 }
 
-- (id)readAttributeOccupiedHeatingOrCoolingSetpointWithParams:(id)a3
+- (id)readAttributeOccupiedHeatingOrCoolingSetpointWithParams:(id)params
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(MTRClusterThermostat *)self readAttributeSystemModeWithParams:v4];
+  paramsCopy = params;
+  v5 = [(MTRClusterThermostat *)self readAttributeSystemModeWithParams:paramsCopy];
   v6 = v5;
   if (v5)
   {
@@ -1981,7 +1981,7 @@ LABEL_39:
     if (!v10)
     {
       v14 = objc_autoreleasePoolPush();
-      v23 = self;
+      selfCopy = self;
       v16 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
@@ -1999,12 +1999,12 @@ LABEL_39:
       goto LABEL_23;
     }
 
-    v11 = [v10 integerValue];
-    if (v11 == 3)
+    integerValue = [v10 integerValue];
+    if (integerValue == 3)
     {
-      v13 = [(MTRClusterThermostat *)self readAttributeOccupiedCoolingSetpointWithParams:v4];
+      v13 = [(MTRClusterThermostat *)self readAttributeOccupiedCoolingSetpointWithParams:paramsCopy];
       v14 = objc_autoreleasePoolPush();
-      v27 = self;
+      selfCopy2 = self;
       v16 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
       {
@@ -2020,11 +2020,11 @@ LABEL_39:
 
     else
     {
-      v12 = v11;
-      if (v11 != 4)
+      v12 = integerValue;
+      if (integerValue != 4)
       {
         v28 = objc_autoreleasePoolPush();
-        v29 = self;
+        selfCopy3 = self;
         v30 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v30, OS_LOG_TYPE_DEBUG))
         {
@@ -2037,9 +2037,9 @@ LABEL_39:
         }
 
         objc_autoreleasePoolPop(v28);
-        v13 = [(MTRClusterThermostat *)v29 readAttributeLocalTemperatureWithParams:v4];
+        v13 = [(MTRClusterThermostat *)selfCopy3 readAttributeLocalTemperatureWithParams:paramsCopy];
         v14 = objc_autoreleasePoolPush();
-        v32 = v29;
+        v32 = selfCopy3;
         v16 = HMFGetOSLogHandle();
         if (!os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
         {
@@ -2055,9 +2055,9 @@ LABEL_39:
         goto LABEL_22;
       }
 
-      v13 = [(MTRClusterThermostat *)self readAttributeOccupiedHeatingSetpointWithParams:v4];
+      v13 = [(MTRClusterThermostat *)self readAttributeOccupiedHeatingSetpointWithParams:paramsCopy];
       v14 = objc_autoreleasePoolPush();
-      v15 = self;
+      selfCopy4 = self;
       v16 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
       {
@@ -2079,7 +2079,7 @@ LABEL_23:
   }
 
   v19 = objc_autoreleasePoolPush();
-  v20 = self;
+  selfCopy5 = self;
   v21 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
   {
@@ -2098,11 +2098,11 @@ LABEL_24:
   return v13;
 }
 
-- (void)writeAttributeOccupiedHeatingOrCoolingSetpointWithValue:(id)a3 expectedValueInterval:(id)a4
+- (void)writeAttributeOccupiedHeatingOrCoolingSetpointWithValue:(id)value expectedValueInterval:(id)interval
 {
   v47 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  valueCopy = value;
+  intervalCopy = interval;
   v8 = objc_alloc_init(MEMORY[0x277CD54D8]);
   v9 = [(MTRClusterThermostat *)self readAttributeSystemModeWithParams:v8];
   v10 = v9;
@@ -2126,7 +2126,7 @@ LABEL_24:
     if (!v14)
     {
       v23 = objc_autoreleasePoolPush();
-      v24 = self;
+      selfCopy = self;
       v25 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
       {
@@ -2147,8 +2147,8 @@ LABEL_24:
     }
 
     v42 = v14;
-    v15 = [v14 integerValue];
-    v16 = [v6 objectForKeyedSubscript:v11];
+    integerValue = [v14 integerValue];
+    v16 = [valueCopy objectForKeyedSubscript:v11];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -2164,15 +2164,15 @@ LABEL_24:
 
     if (v18)
     {
-      if (!v7)
+      if (!intervalCopy)
       {
-        v7 = &unk_283EE81F0;
+        intervalCopy = &unk_283EE81F0;
       }
 
-      if (!v15)
+      if (!integerValue)
       {
         v34 = objc_autoreleasePoolPush();
-        v35 = self;
+        selfCopy2 = self;
         v36 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
         {
@@ -2187,15 +2187,15 @@ LABEL_24:
       }
 
       v14 = v42;
-      if (v15 == 3)
+      if (integerValue == 3)
       {
-        [(MTRClusterThermostat *)self writeAttributeOccupiedCoolingSetpointWithValue:v6 expectedValueInterval:v7];
+        [(MTRClusterThermostat *)self writeAttributeOccupiedCoolingSetpointWithValue:valueCopy expectedValueInterval:intervalCopy];
         goto LABEL_33;
       }
 
-      if (v15 == 4)
+      if (integerValue == 4)
       {
-        [(MTRClusterThermostat *)self writeAttributeOccupiedHeatingSetpointWithValue:v6 expectedValueInterval:v7];
+        [(MTRClusterThermostat *)self writeAttributeOccupiedHeatingSetpointWithValue:valueCopy expectedValueInterval:intervalCopy];
 LABEL_33:
 
 LABEL_34:
@@ -2203,7 +2203,7 @@ LABEL_34:
       }
 
       v29 = objc_autoreleasePoolPush();
-      v30 = self;
+      selfCopy4 = self;
       v31 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
       {
@@ -2211,7 +2211,7 @@ LABEL_34:
         *buf = 138543618;
         v44 = v39;
         v45 = 2048;
-        v46 = v15;
+        v46 = integerValue;
         _os_log_impl(&dword_22AEAE000, v31, OS_LOG_TYPE_ERROR, "%{public}@Write Occupied Heating/Cooling Setpoint (sync): Thermostat Setpoint cannot be set in unexpected system mode: %ld", buf, 0x16u);
       }
     }
@@ -2219,12 +2219,12 @@ LABEL_34:
     else
     {
       v29 = objc_autoreleasePoolPush();
-      v30 = self;
+      selfCopy4 = self;
       v31 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
       {
         v41 = HMFGetLogIdentifier();
-        v32 = [v6 objectForKeyedSubscript:v11];
+        v32 = [valueCopy objectForKeyedSubscript:v11];
         *buf = 138543618;
         v44 = v41;
         v45 = 2112;
@@ -2242,7 +2242,7 @@ LABEL_32:
   }
 
   v19 = objc_autoreleasePoolPush();
-  v20 = self;
+  selfCopy5 = self;
   v21 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
   {

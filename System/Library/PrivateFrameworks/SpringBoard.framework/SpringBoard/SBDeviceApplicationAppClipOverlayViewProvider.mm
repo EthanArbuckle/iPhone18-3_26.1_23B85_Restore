@@ -1,5 +1,5 @@
 @interface SBDeviceApplicationAppClipOverlayViewProvider
-- (SBDeviceApplicationAppClipOverlayViewProvider)initWithSceneHandle:(id)a3 delegate:(id)a4;
+- (SBDeviceApplicationAppClipOverlayViewProvider)initWithSceneHandle:(id)handle delegate:(id)delegate;
 - (void)_activateIfPossible;
 - (void)_deactivateIfPossible;
 - (void)_updateOverlaySceneActivationState;
@@ -12,18 +12,18 @@
 {
   if (!self->_appClipViewController)
   {
-    v3 = [(SBDeviceApplicationSceneOverlayViewProvider *)self sceneHandle];
-    v4 = [v3 application];
-    v5 = [v4 info];
-    v6 = [v5 isAppClip];
+    sceneHandle = [(SBDeviceApplicationSceneOverlayViewProvider *)self sceneHandle];
+    application = [sceneHandle application];
+    info = [application info];
+    isAppClip = [info isAppClip];
 
-    if (v6)
+    if (isAppClip)
     {
-      v7 = [v4 bundleIdentifier];
-      v8 = [v3 sceneIdentifier];
+      bundleIdentifier = [application bundleIdentifier];
+      sceneIdentifier = [sceneHandle sceneIdentifier];
       v9 = [SBAppClipOverlayViewController alloc];
-      v10 = [SBApp appClipOverlayCoordinator];
-      v11 = [(SBAppClipOverlayViewController *)v9 initWithCoordinator:v10 bundleIdentifier:v7 sceneIdentifier:v8];
+      appClipOverlayCoordinator = [SBApp appClipOverlayCoordinator];
+      v11 = [(SBAppClipOverlayViewController *)v9 initWithCoordinator:appClipOverlayCoordinator bundleIdentifier:bundleIdentifier sceneIdentifier:sceneIdentifier];
       appClipViewController = self->_appClipViewController;
       self->_appClipViewController = v11;
 
@@ -40,18 +40,18 @@
 {
   if (self->_appClipViewController)
   {
-    v10 = [(SBDeviceApplicationSceneOverlayViewProvider *)self sceneHandle];
-    v3 = [v10 sceneIfExists];
-    v4 = v3;
-    if (v3)
+    sceneHandle = [(SBDeviceApplicationSceneOverlayViewProvider *)self sceneHandle];
+    sceneIfExists = [sceneHandle sceneIfExists];
+    v4 = sceneIfExists;
+    if (sceneIfExists)
     {
-      v5 = [v3 settings];
-      v6 = [v5 isForeground];
+      settings = [sceneIfExists settings];
+      isForeground = [settings isForeground];
 
-      v7 = [v4 settings];
-      if ([v7 isUISubclass])
+      settings2 = [v4 settings];
+      if ([settings2 isUISubclass])
       {
-        v8 = ([v7 deactivationReasons] & 0xFFFFFFFFFFFFFEFFLL) != 0;
+        v8 = ([settings2 deactivationReasons] & 0xFFFFFFFFFFFFFEFFLL) != 0;
       }
 
       else
@@ -59,7 +59,7 @@
         v8 = 0;
       }
 
-      if (v6)
+      if (isForeground)
       {
         v9 = v8;
       }
@@ -74,16 +74,16 @@
   }
 }
 
-- (SBDeviceApplicationAppClipOverlayViewProvider)initWithSceneHandle:(id)a3 delegate:(id)a4
+- (SBDeviceApplicationAppClipOverlayViewProvider)initWithSceneHandle:(id)handle delegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
+  handleCopy = handle;
+  delegateCopy = delegate;
   v16.receiver = self;
   v16.super_class = SBDeviceApplicationAppClipOverlayViewProvider;
-  v8 = [(SBDeviceApplicationSceneOverlayViewProvider *)&v16 initWithSceneHandle:v6 delegate:v7];
+  v8 = [(SBDeviceApplicationSceneOverlayViewProvider *)&v16 initWithSceneHandle:handleCopy delegate:delegateCopy];
   if (v8)
   {
-    [v6 addObserver:v8];
+    [handleCopy addObserver:v8];
     v9 = objc_alloc_init(MEMORY[0x277D75178]);
     sceneSettingsDiffInspector = v8->_sceneSettingsDiffInspector;
     v8->_sceneSettingsDiffInspector = v9;
@@ -111,8 +111,8 @@ void __78__SBDeviceApplicationAppClipOverlayViewProvider_initWithSceneHandle_del
 
 - (void)dealloc
 {
-  v3 = [(SBDeviceApplicationSceneOverlayViewProvider *)self sceneHandle];
-  [v3 removeObserver:self];
+  sceneHandle = [(SBDeviceApplicationSceneOverlayViewProvider *)self sceneHandle];
+  [sceneHandle removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = SBDeviceApplicationAppClipOverlayViewProvider;

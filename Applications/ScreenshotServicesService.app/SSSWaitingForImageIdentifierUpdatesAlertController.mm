@@ -1,14 +1,14 @@
 @interface SSSWaitingForImageIdentifierUpdatesAlertController
 + (id)newWaitingForImageIdentifierUpdatesAlertController;
 - (SSSWaitingForImageIdentifierUpdatesAlertControllerDelegate)delegate;
-- (void)setProgress:(double)a3;
+- (void)setProgress:(double)progress;
 @end
 
 @implementation SSSWaitingForImageIdentifierUpdatesAlertController
 
 + (id)newWaitingForImageIdentifierUpdatesAlertController
 {
-  v2 = [a1 alertControllerWithTitle:0 message:0 preferredStyle:1];
+  v2 = [self alertControllerWithTitle:0 message:0 preferredStyle:1];
   v3 = +[NSBundle mainBundle];
   v4 = [v3 localizedStringForKey:@"PREPARING_TO_SHARE_ALERT_TITLE" value:@"Preparing..." table:0];
   [v2 setTitle:v4];
@@ -31,10 +31,10 @@
   return v10;
 }
 
-- (void)setProgress:(double)a3
+- (void)setProgress:(double)progress
 {
-  v4 = [(SSSWaitingForImageIdentifierUpdatesAlertController *)self _waitingContentViewController];
-  [v4 setProgress:a3];
+  _waitingContentViewController = [(SSSWaitingForImageIdentifierUpdatesAlertController *)self _waitingContentViewController];
+  [_waitingContentViewController setProgress:progress];
 }
 
 - (SSSWaitingForImageIdentifierUpdatesAlertControllerDelegate)delegate

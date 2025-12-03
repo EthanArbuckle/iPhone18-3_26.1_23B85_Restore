@@ -13,21 +13,21 @@
 {
   v23 = *MEMORY[0x277D85DE8];
   v2 = objc_alloc_init(MEMORY[0x277CBEB40]);
-  v3 = [a1 contactIdentifier];
-  v4 = [v3 length];
+  contactIdentifier = [self contactIdentifier];
+  v4 = [contactIdentifier length];
 
   if (v4)
   {
-    v5 = [a1 contactIdentifier];
-    [v2 addObject:v5];
+    contactIdentifier2 = [self contactIdentifier];
+    [v2 addObject:contactIdentifier2];
   }
 
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = [a1 siriMatches];
-  v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  siriMatches = [self siriMatches];
+  v7 = [siriMatches countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v7)
   {
     v8 = v7;
@@ -38,31 +38,31 @@
       {
         if (*v19 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(siriMatches);
         }
 
         v11 = *(*(&v18 + 1) + 8 * i);
-        v12 = [v11 contactIdentifier];
-        v13 = [v12 length];
+        contactIdentifier3 = [v11 contactIdentifier];
+        v13 = [contactIdentifier3 length];
 
         if (v13)
         {
-          v14 = [v11 contactIdentifier];
-          [v2 addObject:v14];
+          contactIdentifier4 = [v11 contactIdentifier];
+          [v2 addObject:contactIdentifier4];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v8 = [siriMatches countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v8);
   }
 
-  v15 = [v2 array];
+  array = [v2 array];
 
   v16 = *MEMORY[0x277D85DE8];
 
-  return v15;
+  return array;
 }
 
 - (id)tu_matchingINPersonHandlesByContactIdentifier
@@ -73,8 +73,8 @@
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v3 = [a1 siriMatches];
-  v4 = [v3 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  siriMatches = [self siriMatches];
+  v4 = [siriMatches countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v4)
   {
     v5 = v4;
@@ -85,36 +85,36 @@
       {
         if (*v18 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(siriMatches);
         }
 
         v8 = *(*(&v17 + 1) + 8 * i);
-        v9 = [v8 contactIdentifier];
-        if ([v9 length])
+        contactIdentifier = [v8 contactIdentifier];
+        if ([contactIdentifier length])
         {
-          v10 = [v8 personHandle];
+          personHandle = [v8 personHandle];
 
-          if (!v10)
+          if (!personHandle)
           {
             continue;
           }
 
-          v11 = [v8 contactIdentifier];
-          v9 = [v2 objectForKeyedSubscript:v11];
+          contactIdentifier2 = [v8 contactIdentifier];
+          contactIdentifier = [v2 objectForKeyedSubscript:contactIdentifier2];
 
-          if (!v9)
+          if (!contactIdentifier)
           {
-            v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
-            v12 = [v8 contactIdentifier];
-            [v2 setObject:v9 forKeyedSubscript:v12];
+            contactIdentifier = objc_alloc_init(MEMORY[0x277CBEB18]);
+            contactIdentifier3 = [v8 contactIdentifier];
+            [v2 setObject:contactIdentifier forKeyedSubscript:contactIdentifier3];
           }
 
-          v13 = [v8 personHandle];
-          [v9 addObject:v13];
+          personHandle2 = [v8 personHandle];
+          [contactIdentifier addObject:personHandle2];
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v5 = [siriMatches countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v5);
@@ -129,20 +129,20 @@
 - (id)tu_personWithFormattedHandleForISOCountryCodes:()TelephonyUtilities
 {
   v4 = a3;
-  v5 = [a1 personHandle];
-  v6 = [v5 value];
-  if ([v5 type] == 2 || !objc_msgSend(v5, "type") && objc_msgSend(v6, "_appearsToBePhoneNumber"))
+  personHandle = [self personHandle];
+  value = [personHandle value];
+  if ([personHandle type] == 2 || !objc_msgSend(personHandle, "type") && objc_msgSend(value, "_appearsToBePhoneNumber"))
   {
     v7 = MEMORY[0x277CBDB70];
-    v8 = [v4 firstObject];
-    v9 = [v7 phoneNumberWithDigits:v6 countryCode:v8];
-    v10 = [v9 formattedStringValue];
+    firstObject = [v4 firstObject];
+    v9 = [v7 phoneNumberWithDigits:value countryCode:firstObject];
+    formattedStringValue = [v9 formattedStringValue];
 
-    [v5 setValue:v10 forKey:@"value"];
+    [personHandle setValue:formattedStringValue forKey:@"value"];
   }
 
-  v11 = [a1 mutableCopy];
-  [v11 setPersonHandle:v5];
+  v11 = [self mutableCopy];
+  [v11 setPersonHandle:personHandle];
 
   return v11;
 }
@@ -164,26 +164,26 @@
   }
 
   v12 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v13 = [a1 personHandle];
-  v14 = [v13 value];
-  v15 = [v14 length];
+  personHandle = [self personHandle];
+  value = [personHandle value];
+  v15 = [value length];
 
   if (v15)
   {
-    v16 = [MEMORY[0x277D6EEE8] handleWithPerson:a1];
+    v16 = [MEMORY[0x277D6EEE8] handleWithPerson:self];
     [v12 addObject:v16];
   }
 
   else
   {
-    v53 = [a1 tu_allContactIdentifiers];
+    tu_allContactIdentifiers = [self tu_allContactIdentifiers];
     v54 = v7;
     v55 = v6;
-    v17 = [a1 tu_contactsMatchingIdentifiers:? contactsDataSource:? identifierToContactCache:?];
-    v18 = [a1 personHandle];
-    v19 = [v18 type];
+    v17 = [self tu_contactsMatchingIdentifiers:? contactsDataSource:? identifierToContactCache:?];
+    personHandle2 = [self personHandle];
+    type = [personHandle2 type];
 
-    v20 = v19 < 3;
+    v20 = type < 3;
     v73 = 0u;
     v74 = 0u;
     v71 = 0u;
@@ -192,10 +192,10 @@
     v62 = [obj countByEnumeratingWithState:&v71 objects:v78 count:16];
     if (v62)
     {
-      v61 = v20 & (3u >> (v19 & 7));
-      v60 = v20 & (v19 ^ 1);
+      v61 = v20 & (3u >> (type & 7));
+      v60 = v20 & (type ^ 1);
       v59 = *v72;
-      v56 = a1;
+      selfCopy = self;
       do
       {
         for (i = 0; i != v62; ++i)
@@ -208,10 +208,10 @@
           v22 = *(*(&v71 + 1) + 8 * i);
           if (v60)
           {
-            v23 = [a1 personHandle];
-            v24 = [v23 label];
+            personHandle3 = [self personHandle];
+            label = [personHandle3 label];
             v58 = v22;
-            v25 = [v22 tu_phoneNumbersMatchingPersonHandleLabel:v24];
+            v25 = [v22 tu_phoneNumbersMatchingPersonHandleLabel:label];
 
             v69 = 0u;
             v70 = 0u;
@@ -234,9 +234,9 @@
 
                   v31 = *(*(&v67 + 1) + 8 * j);
                   v32 = objc_alloc(MEMORY[0x277D6EEE8]);
-                  v33 = [v31 value];
-                  v34 = [v33 stringValue];
-                  v35 = [v32 initWithType:2 value:v34];
+                  value2 = [v31 value];
+                  stringValue = [value2 stringValue];
+                  v35 = [v32 initWithType:2 value:stringValue];
 
                   [v12 addObject:v35];
                 }
@@ -247,15 +247,15 @@
               while (v28);
             }
 
-            a1 = v56;
+            self = selfCopy;
             v22 = v58;
           }
 
           if (v61)
           {
-            v36 = [a1 personHandle];
-            v37 = [v36 label];
-            v38 = [v22 tu_emailAddressesMatchingPersonHandleLabel:v37];
+            personHandle4 = [self personHandle];
+            label2 = [personHandle4 label];
+            v38 = [v22 tu_emailAddressesMatchingPersonHandleLabel:label2];
 
             v65 = 0u;
             v66 = 0u;
@@ -278,8 +278,8 @@
 
                   v44 = *(*(&v63 + 1) + 8 * k);
                   v45 = objc_alloc(MEMORY[0x277D6EEE8]);
-                  v46 = [v44 value];
-                  v47 = [v45 initWithType:3 value:v46];
+                  value3 = [v44 value];
+                  v47 = [v45 initWithType:3 value:value3];
 
                   [v12 addObject:v47];
                 }
@@ -300,7 +300,7 @@
 
     v7 = v54;
     v6 = v55;
-    v16 = v53;
+    v16 = tu_allContactIdentifiers;
   }
 
   v48 = IntentHandlerDefaultLog();
@@ -434,8 +434,8 @@
             }
 
             v42 = *(*(&v55 + 1) + 8 * j);
-            v43 = [v42 identifier];
-            [v9 setObject:v42 forKey:v43];
+            identifier = [v42 identifier];
+            [v9 setObject:v42 forKey:identifier];
 
             [v15 addObject:v42];
           }
@@ -497,27 +497,27 @@
     _os_log_impl(&dword_2688A7000, v15, OS_LOG_TYPE_DEFAULT, "Looking up contact in the contact store matching handle: %@", buf, 0xCu);
   }
 
-  v16 = [v7 type];
-  switch(v16)
+  type = [v7 type];
+  switch(type)
   {
     case 1:
-      v20 = [v7 value];
-      v21 = [v20 _appearsToBePhoneNumber];
+      value = [v7 value];
+      _appearsToBePhoneNumber = [value _appearsToBePhoneNumber];
 
-      if (!v21)
+      if (!_appearsToBePhoneNumber)
       {
-        v50 = [v7 value];
-        v51 = [v50 _appearsToBeEmail];
+        value2 = [v7 value];
+        _appearsToBeEmail = [value2 _appearsToBeEmail];
 
-        if (!v51)
+        if (!_appearsToBeEmail)
         {
           goto LABEL_33;
         }
 
 LABEL_9:
         v17 = MEMORY[0x277CBDA58];
-        v18 = [v7 value];
-        v19 = [v17 predicateForContactsMatchingEmailAddress:v18];
+        value3 = [v7 value];
+        v19 = [v17 predicateForContactsMatchingEmailAddress:value3];
         goto LABEL_12;
       }
 
@@ -532,8 +532,8 @@ LABEL_9:
 
   v22 = MEMORY[0x277CBDA58];
   v23 = MEMORY[0x277CBDB70];
-  v18 = [v7 value];
-  v24 = [v23 phoneNumberWithStringValue:v18];
+  value3 = [v7 value];
+  v24 = [v23 phoneNumberWithStringValue:value3];
   v19 = [v22 predicateForContactsMatchingPhoneNumber:v24];
 
 LABEL_12:
@@ -542,8 +542,8 @@ LABEL_12:
     v25 = *MEMORY[0x277CBCFC0];
     v66[0] = *MEMORY[0x277CBD098];
     v66[1] = v25;
-    v26 = [MEMORY[0x277CCAC00] descriptorForUsedKeys];
-    v66[2] = v26;
+    descriptorForUsedKeys = [MEMORY[0x277CCAC00] descriptorForUsedKeys];
+    v66[2] = descriptorForUsedKeys;
     v27 = [MEMORY[0x277CBEA60] arrayWithObjects:v66 count:3];
 
     v64 = v8;
@@ -566,13 +566,13 @@ LABEL_12:
       {
 LABEL_25:
         spid = v11;
-        v39 = [v28 firstObject];
-        v40 = v39;
+        firstObject = [v28 firstObject];
+        v40 = firstObject;
         v62 = v29;
-        if (v39)
+        if (firstObject)
         {
           v41 = v9;
-          v42 = [v39 tu_personHandleMatchingHandle:v7 isoCountryCodes:v9];
+          v42 = [firstObject tu_personHandleMatchingHandle:v7 isoCountryCodes:v9];
           v43 = [MEMORY[0x277CCAC00] componentsForContact:v40];
         }
 
@@ -586,9 +586,9 @@ LABEL_25:
         }
 
         v45 = objc_alloc(MEMORY[0x277CD3E90]);
-        v46 = [v40 identifier];
+        identifier = [v40 identifier];
         LOBYTE(v60) = 0;
-        v47 = [v45 initWithPersonHandle:v42 nameComponents:v43 displayName:0 image:0 contactIdentifier:v46 customIdentifier:0 isMe:v60];
+        v47 = [v45 initWithPersonHandle:v42 nameComponents:v43 displayName:0 image:0 contactIdentifier:identifier customIdentifier:0 isMe:v60];
 
         v48 = IntentHandlerDefaultLog();
         v49 = v48;

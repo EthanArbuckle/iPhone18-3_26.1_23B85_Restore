@@ -1,8 +1,8 @@
 @interface DedupeElementCompat
 - (BOOL)isDuplicate;
 - (DedupeElementCompat)init;
-- (DedupeElementCompat)initWithUiObject:(id)a3 isDuplicate:(BOOL)a4 screenID:(id)a5;
-- (void)setIsDuplicate:(BOOL)a3;
+- (DedupeElementCompat)initWithUiObject:(id)object isDuplicate:(BOOL)duplicate screenID:(id)d;
+- (void)setIsDuplicate:(BOOL)duplicate;
 @end
 
 @implementation DedupeElementCompat
@@ -14,16 +14,16 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setIsDuplicate:(BOOL)a3
+- (void)setIsDuplicate:(BOOL)duplicate
 {
   v5 = OBJC_IVAR___DedupeElementCompat_isDuplicate;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = duplicate;
 }
 
-- (DedupeElementCompat)initWithUiObject:(id)a3 isDuplicate:(BOOL)a4 screenID:(id)a5
+- (DedupeElementCompat)initWithUiObject:(id)object isDuplicate:(BOOL)duplicate screenID:(id)d
 {
-  if (a5)
+  if (d)
   {
     v8 = sub_2702B402C();
   }
@@ -37,13 +37,13 @@
   v10 = (self + OBJC_IVAR___DedupeElementCompat_screenID);
   *v10 = 0;
   v10[1] = 0;
-  *(&self->super.isa + OBJC_IVAR___DedupeElementCompat_uiObject) = a3;
-  *(&self->super.isa + OBJC_IVAR___DedupeElementCompat_isDuplicate) = a4;
+  *(&self->super.isa + OBJC_IVAR___DedupeElementCompat_uiObject) = object;
+  *(&self->super.isa + OBJC_IVAR___DedupeElementCompat_isDuplicate) = duplicate;
   *v10 = v8;
   v10[1] = v9;
   v13.receiver = self;
   v13.super_class = type metadata accessor for DedupeElement();
-  v11 = a3;
+  objectCopy = object;
   return [(DedupeElementCompat *)&v13 init];
 }
 

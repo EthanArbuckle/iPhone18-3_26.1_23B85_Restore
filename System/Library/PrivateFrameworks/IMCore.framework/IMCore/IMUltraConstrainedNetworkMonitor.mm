@@ -1,7 +1,7 @@
 @interface IMUltraConstrainedNetworkMonitor
 + (id)sharedInstance;
 - (IMUltraConstrainedNetworkMonitor)init;
-- (void)networkMonitorDidUpdate:(id)a3;
+- (void)networkMonitorDidUpdate:(id)update;
 @end
 
 @implementation IMUltraConstrainedNetworkMonitor
@@ -26,13 +26,13 @@
   return [(IMUltraConstrainedNetworkMonitor *)&v3 init];
 }
 
-- (void)networkMonitorDidUpdate:(id)a3
+- (void)networkMonitorDidUpdate:(id)update
 {
-  v4 = a3;
-  v7 = self;
-  v5 = [v4 isUltraConstrained];
-  v6 = *(&v7->super.isa + OBJC_IVAR___IMUltraConstrainedNetworkMonitor_isUltraConstrained);
-  *(&v7->super.isa + OBJC_IVAR___IMUltraConstrainedNetworkMonitor_isUltraConstrained) = v5;
+  updateCopy = update;
+  selfCopy = self;
+  isUltraConstrained = [updateCopy isUltraConstrained];
+  v6 = *(&selfCopy->super.isa + OBJC_IVAR___IMUltraConstrainedNetworkMonitor_isUltraConstrained);
+  *(&selfCopy->super.isa + OBJC_IVAR___IMUltraConstrainedNetworkMonitor_isUltraConstrained) = isUltraConstrained;
   sub_1A84A41F0(v6);
 }
 

@@ -1,70 +1,70 @@
 @interface MobileCalDAVDaemonAccount
-+ (int)convertToMobileCalDAVRefreshReason:(int)a3;
-+ (int)extractDARefreshReasonFromContext:(id)a3;
-- (BOOL)APSTopicHasValidPrefix:(id)a3;
-- (BOOL)_hasChangesInStore:(void *)a3 forChangesCall:(void *)a4;
++ (int)convertToMobileCalDAVRefreshReason:(int)reason;
++ (int)extractDARefreshReasonFromContext:(id)context;
+- (BOOL)APSTopicHasValidPrefix:(id)prefix;
+- (BOOL)_hasChangesInStore:(void *)store forChangesCall:(void *)call;
 - (BOOL)_isEnabled;
 - (BOOL)_shouldRefreshInResponseToDBChange;
-- (BOOL)monitorFoldersWithIDs:(id)a3;
+- (BOOL)monitorFoldersWithIDs:(id)ds;
 - (CalDAVAgent)consumer;
 - (DATrustHandler)trustHandler;
-- (MobileCalDAVDaemonAccount)initWithBackingAccount:(id)a3;
+- (MobileCalDAVDaemonAccount)initWithBackingAccount:(id)account;
 - (NSString)onBehalfOfBundleIdentifier;
 - (NSString)scheduleIdentifier;
-- (id)beginDownloadingAttachmentWithUUID:(id)a3 consumer:(id)a4;
+- (id)beginDownloadingAttachmentWithUUID:(id)d consumer:(id)consumer;
 - (id)serverTokenRegistrationURL;
-- (void)_attachmentDownloadDidFinish:(id)a3;
+- (void)_attachmentDownloadDidFinish:(id)finish;
 - (void)_cancelOptionsTimer;
 - (void)_continueRefresh;
 - (void)_probeAndSync;
-- (void)_reallyPerformSearchQuery:(id)a3;
+- (void)_reallyPerformSearchQuery:(id)query;
 - (void)_refresh;
 - (void)_serverProbeTimedOut;
 - (void)_updateWatchedCollections;
 - (void)cancelAllAttachmentDownloads;
-- (void)cancelDownloadingInstance:(id)a3 error:(id)a4;
-- (void)cancelRefreshWithCompletion:(id)a3;
+- (void)cancelDownloadingInstance:(id)instance error:(id)error;
+- (void)cancelRefreshWithCompletion:(id)completion;
 - (void)dealloc;
-- (void)discoverInitialPropertiesWithConsumer:(id)a3;
-- (void)discoveryTask:(id)a3 gotAccountInfo:(id)a4 error:(id)a5;
-- (void)promptUserForNewCoreDAVPasswordWithCompletionBlock:(id)a3;
-- (void)refreshActor:(id)a3 didCompleteWithError:(id)a4;
-- (void)saveXpcActivity:(id)a3;
-- (void)setSafeToRefresh:(BOOL)a3;
+- (void)discoverInitialPropertiesWithConsumer:(id)consumer;
+- (void)discoveryTask:(id)task gotAccountInfo:(id)info error:(id)error;
+- (void)promptUserForNewCoreDAVPasswordWithCompletionBlock:(id)block;
+- (void)refreshActor:(id)actor didCompleteWithError:(id)error;
+- (void)saveXpcActivity:(id)activity;
+- (void)setSafeToRefresh:(BOOL)refresh;
 @end
 
 @implementation MobileCalDAVDaemonAccount
 
-- (id)beginDownloadingAttachmentWithUUID:(id)a3 consumer:(id)a4
+- (id)beginDownloadingAttachmentWithUUID:(id)d consumer:(id)consumer
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  dCopy = d;
+  consumerCopy = consumer;
+  if (!dCopy)
   {
     sub_15E30();
   }
 
-  if (!v7)
+  if (!consumerCopy)
   {
     sub_15E9C();
   }
 
-  v8 = [MobileCalDAVDownloadContext contextWithAttachmentUUID:v6 consumer:v7];
-  v9 = [(MobileCalDAVDaemonAccount *)self attachmentDownloadsByAttachmentUUID];
-  objc_sync_enter(v9);
-  v10 = [(MobileCalDAVDaemonAccount *)self attachmentDownloadsByAttachmentUUID];
-  v11 = [v10 objectForKeyedSubscript:v6];
+  v8 = [MobileCalDAVDownloadContext contextWithAttachmentUUID:dCopy consumer:consumerCopy];
+  attachmentDownloadsByAttachmentUUID = [(MobileCalDAVDaemonAccount *)self attachmentDownloadsByAttachmentUUID];
+  objc_sync_enter(attachmentDownloadsByAttachmentUUID);
+  attachmentDownloadsByAttachmentUUID2 = [(MobileCalDAVDaemonAccount *)self attachmentDownloadsByAttachmentUUID];
+  v11 = [attachmentDownloadsByAttachmentUUID2 objectForKeyedSubscript:dCopy];
 
   v12 = v11;
   if (!v11)
   {
-    v12 = [[MobileCalDAVAttachmentDownloader alloc] initWithAttachmentUUID:v6 forAccount:self];
-    v13 = [(MobileCalDAVDaemonAccount *)self attachmentDownloadsByAttachmentUUID];
-    [v13 setObject:v12 forKeyedSubscript:v6];
+    v12 = [[MobileCalDAVAttachmentDownloader alloc] initWithAttachmentUUID:dCopy forAccount:self];
+    attachmentDownloadsByAttachmentUUID3 = [(MobileCalDAVDaemonAccount *)self attachmentDownloadsByAttachmentUUID];
+    [attachmentDownloadsByAttachmentUUID3 setObject:v12 forKeyedSubscript:dCopy];
   }
 
-  [(MobileCalDAVAttachmentDownloader *)v12 addConsumer:v7];
-  objc_sync_exit(v9);
+  [(MobileCalDAVAttachmentDownloader *)v12 addConsumer:consumerCopy];
+  objc_sync_exit(attachmentDownloadsByAttachmentUUID);
 
   if (!v11)
   {
@@ -73,9 +73,9 @@
     if (os_log_type_enabled(v14, v15))
     {
       v17 = 134218242;
-      v18 = v7;
+      v18 = consumerCopy;
       v19 = 2112;
-      v20 = v6;
+      v20 = dCopy;
       _os_log_impl(&dword_0, v14, v15, "Starting new attachment download for consumer %p and attachment UUID %@", &v17, 0x16u);
     }
 
@@ -85,57 +85,57 @@
   return v8;
 }
 
-- (void)cancelDownloadingInstance:(id)a3 error:(id)a4
+- (void)cancelDownloadingInstance:(id)instance error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  instanceCopy = instance;
+  errorCopy = error;
+  if (!instanceCopy)
   {
     sub_15F08();
   }
 
-  v8 = v6;
-  v9 = [v8 attachmentUUID];
-  if (!v9)
+  v8 = instanceCopy;
+  attachmentUUID = [v8 attachmentUUID];
+  if (!attachmentUUID)
   {
     sub_15F74();
   }
 
-  v10 = [v8 consumer];
-  [v10 downloadFinishedError:v7];
+  consumer = [v8 consumer];
+  [consumer downloadFinishedError:errorCopy];
 
-  v11 = [(MobileCalDAVDaemonAccount *)self attachmentDownloadsByAttachmentUUID];
-  objc_sync_enter(v11);
+  attachmentDownloadsByAttachmentUUID = [(MobileCalDAVDaemonAccount *)self attachmentDownloadsByAttachmentUUID];
+  objc_sync_enter(attachmentDownloadsByAttachmentUUID);
   v12 = DALoggingwithCategory();
   v13 = _CPLog_to_os_log_type[6];
   if (os_log_type_enabled(v12, v13))
   {
-    v14 = [v8 consumer];
+    consumer2 = [v8 consumer];
     v18 = 134218242;
-    v19 = v14;
+    v19 = consumer2;
     v20 = 2112;
-    v21 = v9;
+    v21 = attachmentUUID;
     _os_log_impl(&dword_0, v12, v13, "Cancelling new attachment download for consumer %p and attachment UUID %@", &v18, 0x16u);
   }
 
-  v15 = [(MobileCalDAVDaemonAccount *)self attachmentDownloadsByAttachmentUUID];
-  v16 = [v15 objectForKeyedSubscript:v9];
-  v17 = [v8 consumer];
-  [v16 removeConsumer:v17];
+  attachmentDownloadsByAttachmentUUID2 = [(MobileCalDAVDaemonAccount *)self attachmentDownloadsByAttachmentUUID];
+  v16 = [attachmentDownloadsByAttachmentUUID2 objectForKeyedSubscript:attachmentUUID];
+  consumer3 = [v8 consumer];
+  [v16 removeConsumer:consumer3];
 
-  objc_sync_exit(v11);
+  objc_sync_exit(attachmentDownloadsByAttachmentUUID);
 }
 
-- (void)_attachmentDownloadDidFinish:(id)a3
+- (void)_attachmentDownloadDidFinish:(id)finish
 {
-  v7 = a3;
-  v4 = [(MobileCalDAVDaemonAccount *)self attachmentDownloadsByAttachmentUUID];
-  objc_sync_enter(v4);
-  v5 = [(MobileCalDAVDaemonAccount *)self attachmentDownloadsByAttachmentUUID];
-  v6 = [v7 attachmentUUID];
-  [v5 removeObjectForKey:v6];
+  finishCopy = finish;
+  attachmentDownloadsByAttachmentUUID = [(MobileCalDAVDaemonAccount *)self attachmentDownloadsByAttachmentUUID];
+  objc_sync_enter(attachmentDownloadsByAttachmentUUID);
+  attachmentDownloadsByAttachmentUUID2 = [(MobileCalDAVDaemonAccount *)self attachmentDownloadsByAttachmentUUID];
+  attachmentUUID = [finishCopy attachmentUUID];
+  [attachmentDownloadsByAttachmentUUID2 removeObjectForKey:attachmentUUID];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(attachmentDownloadsByAttachmentUUID);
 }
 
 - (void)cancelAllAttachmentDownloads
@@ -155,10 +155,10 @@
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v5 = [(MobileCalDAVDaemonAccount *)self attachmentDownloadsByAttachmentUUID];
-  v6 = [v5 allValues];
+  attachmentDownloadsByAttachmentUUID = [(MobileCalDAVDaemonAccount *)self attachmentDownloadsByAttachmentUUID];
+  allValues = [attachmentDownloadsByAttachmentUUID allValues];
 
-  v7 = [v6 countByEnumeratingWithState:&v22 objects:v28 count:16];
+  v7 = [allValues countByEnumeratingWithState:&v22 objects:v28 count:16];
   if (v7)
   {
     v8 = *v23;
@@ -168,7 +168,7 @@
       {
         if (*v23 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allValues);
         }
 
         v10 = *(*(&v22 + 1) + 8 * i);
@@ -176,8 +176,8 @@
         v19 = 0u;
         v20 = 0u;
         v21 = 0u;
-        v11 = [v10 consumers];
-        v12 = [v11 countByEnumeratingWithState:&v18 objects:v27 count:16];
+        consumers = [v10 consumers];
+        v12 = [consumers countByEnumeratingWithState:&v18 objects:v27 count:16];
         if (v12)
         {
           v13 = *v19;
@@ -187,13 +187,13 @@
             {
               if (*v19 != v13)
               {
-                objc_enumerationMutation(v11);
+                objc_enumerationMutation(consumers);
               }
 
               [*(*(&v18 + 1) + 8 * j) downloadFinishedError:v4];
             }
 
-            v12 = [v11 countByEnumeratingWithState:&v18 objects:v27 count:16];
+            v12 = [consumers countByEnumeratingWithState:&v18 objects:v27 count:16];
           }
 
           while (v12);
@@ -202,23 +202,23 @@
         [v10 cancelDownload];
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v22 objects:v28 count:16];
+      v7 = [allValues countByEnumeratingWithState:&v22 objects:v28 count:16];
     }
 
     while (v7);
   }
 
-  v15 = [(MobileCalDAVDaemonAccount *)self attachmentDownloadsByAttachmentUUID];
-  [v15 removeAllObjects];
+  attachmentDownloadsByAttachmentUUID2 = [(MobileCalDAVDaemonAccount *)self attachmentDownloadsByAttachmentUUID];
+  [attachmentDownloadsByAttachmentUUID2 removeAllObjects];
 
   objc_sync_exit(obj);
 }
 
-- (MobileCalDAVDaemonAccount)initWithBackingAccount:(id)a3
+- (MobileCalDAVDaemonAccount)initWithBackingAccount:(id)account
 {
   v11.receiver = self;
   v11.super_class = MobileCalDAVDaemonAccount;
-  v3 = [(MobileCalDAVDaemonAccount *)&v11 initWithBackingAccount:a3];
+  v3 = [(MobileCalDAVDaemonAccount *)&v11 initWithBackingAccount:account];
   if (v3)
   {
     v4 = DALoggingwithCategory();
@@ -248,8 +248,8 @@
 
 - (void)_cancelOptionsTimer
 {
-  v3 = [(MobileCalDAVDaemonAccount *)self optionsTimeoutTimer];
-  [v3 invalidate];
+  optionsTimeoutTimer = [(MobileCalDAVDaemonAccount *)self optionsTimeoutTimer];
+  [optionsTimeoutTimer invalidate];
 
   [(MobileCalDAVDaemonAccount *)self setOptionsTimeoutTimer:0];
 }
@@ -261,7 +261,7 @@
   if (os_log_type_enabled(v3, v4))
   {
     *buf = 134217984;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_0, v3, v4, "MobileCalDAVDaemonAccount %p going away", buf, 0xCu);
   }
 
@@ -272,25 +272,25 @@
   [(MobileCalDAVDaemonAccount *)&v5 dealloc];
 }
 
-- (BOOL)APSTopicHasValidPrefix:(id)a3
+- (BOOL)APSTopicHasValidPrefix:(id)prefix
 {
-  v3 = a3;
-  if ([v3 hasPrefix:@"com.me."] & 1) != 0 || (objc_msgSend(v3, "hasPrefix:", @"com.apple.calendar."))
+  prefixCopy = prefix;
+  if ([prefixCopy hasPrefix:@"com.me."] & 1) != 0 || (objc_msgSend(prefixCopy, "hasPrefix:", @"com.apple.calendar."))
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 hasPrefix:@"com.icloud."];
+    v4 = [prefixCopy hasPrefix:@"com.icloud."];
   }
 
   return v4;
 }
 
-- (void)cancelRefreshWithCompletion:(id)a3
+- (void)cancelRefreshWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = DALoggingwithCategory();
   v6 = _CPLog_to_os_log_type[6];
   if (os_log_type_enabled(v5, v6))
@@ -304,16 +304,16 @@
   v12 = 3221225472;
   v13 = sub_107E8;
   v14 = &unk_28B70;
-  v15 = self;
-  v16 = v4;
+  selfCopy = self;
+  v16 = completionCopy;
   v10.receiver = self;
   v10.super_class = MobileCalDAVDaemonAccount;
-  v7 = v4;
+  v7 = completionCopy;
   [(MobileCalDAVDaemonAccount *)&v10 cancelRefreshWithCompletion:&v11];
   [(MobileCalDAVDaemonAccount *)self _reallyCancelAllSearchQueries:v10.receiver];
-  v8 = [(MobileCalDAVDaemonAccount *)self optionsProbe];
+  optionsProbe = [(MobileCalDAVDaemonAccount *)self optionsProbe];
   v9 = [NSError errorWithDomain:CoreDAVErrorDomain code:1 userInfo:0];
-  [v8 finishCoreDAVTaskWithError:v9];
+  [optionsProbe finishCoreDAVTaskWithError:v9];
 }
 
 - (void)_updateWatchedCollections
@@ -323,9 +323,9 @@
   v4 = _CPLog_to_os_log_type[6];
   if (os_log_type_enabled(v3, v4))
   {
-    v5 = [(MobileCalDAVDaemonAccount *)self calendars];
+    calendars = [(MobileCalDAVDaemonAccount *)self calendars];
     *buf = 134217984;
-    v23 = [v5 count];
+    v23 = [calendars count];
     _os_log_impl(&dword_0, v3, v4, "Updating watched collections for %luu calendars", buf, 0xCu);
   }
 
@@ -333,8 +333,8 @@
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = [(MobileCalDAVDaemonAccount *)self calendars];
-  v7 = [v6 countByEnumeratingWithState:&v18 objects:v26 count:16];
+  calendars2 = [(MobileCalDAVDaemonAccount *)self calendars];
+  v7 = [calendars2 countByEnumeratingWithState:&v18 objects:v26 count:16];
   if (v7)
   {
     v9 = v7;
@@ -347,40 +347,40 @@
       {
         if (*v19 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(calendars2);
         }
 
         v12 = *(*(&v18 + 1) + 8 * i);
-        v13 = [v12 pushKey];
+        pushKey = [v12 pushKey];
         v14 = DALoggingwithCategory();
         if (os_log_type_enabled(v14, v4))
         {
-          v15 = [v12 title];
-          v16 = [v12 pushKey];
+          title = [v12 title];
+          pushKey2 = [v12 pushKey];
           *buf = v17;
-          v23 = v15;
+          v23 = title;
           v24 = 2112;
-          v25 = v16;
+          v25 = pushKey2;
           _os_log_impl(&dword_0, v14, v4, "Push key for calendar %@ is %@", buf, 0x16u);
         }
 
-        if (v13)
+        if (pushKey)
         {
-          [(NSMutableSet *)self->_watchedCollections addObject:v13];
+          [(NSMutableSet *)self->_watchedCollections addObject:pushKey];
         }
       }
 
-      v9 = [v6 countByEnumeratingWithState:&v18 objects:v26 count:16];
+      v9 = [calendars2 countByEnumeratingWithState:&v18 objects:v26 count:16];
     }
 
     while (v9);
   }
 }
 
-- (void)refreshActor:(id)a3 didCompleteWithError:(id)a4
+- (void)refreshActor:(id)actor didCompleteWithError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  actorCopy = actor;
+  errorCopy = error;
   v8 = +[NSDate date];
   v9 = DALoggingwithCategory();
   v10 = _CPLog_to_os_log_type[6];
@@ -394,7 +394,7 @@
   v91 = 3221225472;
   v92 = sub_115A8;
   v93 = &unk_28B98;
-  v11 = v7;
+  v11 = errorCopy;
   v94 = v11;
   AnalyticsSendEventLazy();
   [(MobileCalDAVDaemonAccount *)self _updateWatchedCollections];
@@ -413,13 +413,13 @@
     [v14 refreshDidCompleteWithError:v11];
   }
 
-  v15 = [v11 domain];
+  domain = [v11 domain];
   v16 = &CalIsReminderBridgeEnabled_ptr;
-  if ([v15 isEqualToString:DAErrorDomain])
+  if ([domain isEqualToString:DAErrorDomain])
   {
-    v17 = [v11 code];
+    code = [v11 code];
 
-    if (v17 == &dword_4 + 2)
+    if (code == &dword_4 + 2)
     {
       goto LABEL_23;
     }
@@ -437,28 +437,28 @@
     [v19 registerDelegate:self];
   }
 
-  v20 = [(MobileCalDAVDaemonAccount *)self mainPrincipal];
-  v21 = [v20 shouldUpdatePushDelegate];
+  mainPrincipal = [(MobileCalDAVDaemonAccount *)self mainPrincipal];
+  shouldUpdatePushDelegate = [mainPrincipal shouldUpdatePushDelegate];
 
-  if ((v21 & 1) != 0 || shouldRegisterWithRefreshManager)
+  if ((shouldUpdatePushDelegate & 1) != 0 || shouldRegisterWithRefreshManager)
   {
-    v22 = [(MobileCalDAVDaemonAccount *)self mainPrincipal];
-    v23 = [v22 APSTopic];
+    mainPrincipal2 = [(MobileCalDAVDaemonAccount *)self mainPrincipal];
+    aPSTopic = [mainPrincipal2 APSTopic];
 
-    if (v23)
+    if (aPSTopic)
     {
-      v24 = [(MobileCalDAVDaemonAccount *)self mainPrincipal];
-      v25 = [v24 APSTopic];
-      v26 = [(MobileCalDAVDaemonAccount *)self APSTopicHasValidPrefix:v25];
+      mainPrincipal3 = [(MobileCalDAVDaemonAccount *)self mainPrincipal];
+      aPSTopic2 = [mainPrincipal3 APSTopic];
+      v26 = [(MobileCalDAVDaemonAccount *)self APSTopicHasValidPrefix:aPSTopic2];
 
       if (v26)
       {
         v27 = +[DARefreshManager sharedManager];
-        v28 = [(MobileCalDAVDaemonAccount *)self mainPrincipal];
-        v29 = [v28 APSTopic];
-        v30 = [(MobileCalDAVDaemonAccount *)self mainPrincipal];
-        v31 = [v30 APSEnv];
-        [v27 registerTopic:v29 forDelegate:self inEnvironment:v31];
+        mainPrincipal4 = [(MobileCalDAVDaemonAccount *)self mainPrincipal];
+        aPSTopic3 = [mainPrincipal4 APSTopic];
+        mainPrincipal5 = [(MobileCalDAVDaemonAccount *)self mainPrincipal];
+        aPSEnv = [mainPrincipal5 APSEnv];
+        [v27 registerTopic:aPSTopic3 forDelegate:self inEnvironment:aPSEnv];
 
         v16 = &CalIsReminderBridgeEnabled_ptr;
       }
@@ -469,10 +469,10 @@
         v32 = _CPLog_to_os_log_type[4];
         if (os_log_type_enabled(v27, v32))
         {
-          v33 = [(MobileCalDAVDaemonAccount *)self mainPrincipal];
-          v34 = [v33 APSTopic];
+          mainPrincipal6 = [(MobileCalDAVDaemonAccount *)self mainPrincipal];
+          aPSTopic4 = [mainPrincipal6 APSTopic];
           *buf = 138412290;
-          v96 = v34;
+          selfCopy = aPSTopic4;
           _os_log_impl(&dword_0, v27, v32, "Refusing to register for the topic %@ because it has an invalid prefix.", buf, 0xCu);
 
           v16 = &CalIsReminderBridgeEnabled_ptr;
@@ -487,27 +487,27 @@
     }
   }
 
-  v35 = [v16[166] sharedManager];
-  [v35 delegateDidCompleteRefresh:self];
+  sharedManager = [v16[166] sharedManager];
+  [sharedManager delegateDidCompleteRefresh:self];
 
 LABEL_23:
   v89.receiver = self;
   v89.super_class = MobileCalDAVDaemonAccount;
-  [(MobileCalDAVDaemonAccount *)&v89 refreshActor:v6 didCompleteWithError:v11];
+  [(MobileCalDAVDaemonAccount *)&v89 refreshActor:actorCopy didCompleteWithError:v11];
   if (v11)
   {
     goto LABEL_31;
   }
 
-  v36 = [(MobileCalDAVDaemonAccount *)self backingAccount];
-  v37 = [v36 accountInfo];
-  if ([v37 supportsAuthentication])
+  backingAccount = [(MobileCalDAVDaemonAccount *)self backingAccount];
+  accountInfo = [backingAccount accountInfo];
+  if ([accountInfo supportsAuthentication])
   {
-    v38 = [(MobileCalDAVDaemonAccount *)self backingAccount];
-    v39 = [v38 accountInfo];
-    v40 = [v39 isAuthenticated];
+    backingAccount2 = [(MobileCalDAVDaemonAccount *)self backingAccount];
+    accountInfo2 = [backingAccount2 accountInfo];
+    isAuthenticated = [accountInfo2 isAuthenticated];
 
-    if (v40)
+    if (isAuthenticated)
     {
       goto LABEL_31;
     }
@@ -517,22 +517,22 @@ LABEL_23:
     if (os_log_type_enabled(v41, v42))
     {
       *buf = 138412290;
-      v96 = self;
+      selfCopy = self;
       _os_log_impl(&dword_0, v41, v42, "Received a success response from server while account is not marked as authenticated. Set isAuthenticated flag and save account %@", buf, 0xCu);
     }
 
-    v43 = [(MobileCalDAVDaemonAccount *)self backingAccount];
-    v44 = [v43 accountInfo];
-    [v44 setAuthenticated:1];
+    backingAccount3 = [(MobileCalDAVDaemonAccount *)self backingAccount];
+    accountInfo3 = [backingAccount3 accountInfo];
+    [accountInfo3 setAuthenticated:1];
 
-    v45 = [(MobileCalDAVDaemonAccount *)self backingAccount];
-    [v45 setObject:0 forKeyedSubscript:kDAAccountIgnoreAuthenticatedProperty];
+    backingAccount4 = [(MobileCalDAVDaemonAccount *)self backingAccount];
+    [backingAccount4 setObject:0 forKeyedSubscript:kDAAccountIgnoreAuthenticatedProperty];
 
-    v46 = [(MobileCalDAVDaemonAccount *)self backingAccount];
-    [v46 saveAccountProperties];
+    backingAccount5 = [(MobileCalDAVDaemonAccount *)self backingAccount];
+    [backingAccount5 saveAccountProperties];
 
-    v36 = +[DARefreshManager sharedManager];
-    [v36 delegateDidSuccessfullyRecoverFromBeingUnauthenticated:self];
+    backingAccount = +[DARefreshManager sharedManager];
+    [backingAccount delegateDidSuccessfullyRecoverFromBeingUnauthenticated:self];
   }
 
   else
@@ -550,20 +550,20 @@ LABEL_31:
   v48 = +[DABabysitter sharedBabysitter];
   [v48 unregisterAccount:self forOperationWithName:@"CalDAVRefresh"];
 
-  v49 = [v11 domain];
-  v50 = [v49 isEqualToString:CoreDAVHTTPStatusErrorDomain];
+  domain2 = [v11 domain];
+  v50 = [domain2 isEqualToString:CoreDAVHTTPStatusErrorDomain];
   if (!v50)
   {
     v53 = 0;
     goto LABEL_37;
   }
 
-  v51 = [v11 code];
+  code2 = [v11 code];
 
-  if (v51 == &stru_1A8.reserved3 + 3)
+  if (code2 == &stru_1A8.reserved3 + 3)
   {
-    v49 = [v11 userInfo];
-    v52 = [v49 objectForKeyedSubscript:CoreDAVHTTPHeaders];
+    domain2 = [v11 userInfo];
+    v52 = [domain2 objectForKeyedSubscript:CoreDAVHTTPHeaders];
     v53 = [v52 DAObjectForKeyCaseInsensitive:@"retry-after"];
 
 LABEL_37:
@@ -573,10 +573,10 @@ LABEL_37:
   v53 = 0;
   v50 = 0;
 LABEL_39:
-  v54 = [v6 context];
-  v55 = [v54 shouldRetry];
+  context = [actorCopy context];
+  shouldRetry = [context shouldRetry];
 
-  if (v55)
+  if (shouldRetry)
   {
     v56 = DALoggingwithCategory();
     v57 = _CPLog_to_os_log_type[5];
@@ -589,8 +589,8 @@ LABEL_39:
     goto LABEL_43;
   }
 
-  v72 = [v11 domain];
-  if (([v72 isEqualToString:NSURLErrorDomain] & 1) == 0)
+  domain3 = [v11 domain];
+  if (([domain3 isEqualToString:NSURLErrorDomain] & 1) == 0)
   {
 
     if (v50)
@@ -607,9 +607,9 @@ LABEL_66:
     goto LABEL_70;
   }
 
-  v73 = [v11 code];
+  code3 = [v11 code];
 
-  if (v73 == -1001)
+  if (code3 == -1001)
   {
     v58 = 120.0;
   }
@@ -619,7 +619,7 @@ LABEL_66:
     v58 = 480.0;
   }
 
-  if (v73 == -1001)
+  if (code3 == -1001)
   {
     v74 = 1;
   }
@@ -638,8 +638,8 @@ LABEL_44:
   if (v53)
   {
     v59 = objc_opt_class();
-    v60 = [v6 context];
-    v61 = [v59 extractDARefreshReasonFromContext:v60];
+    context2 = [actorCopy context];
+    v61 = [v59 extractDARefreshReasonFromContext:context2];
 
     [v53 doubleValue];
     v63 = v62;
@@ -648,18 +648,18 @@ LABEL_44:
     if (os_log_type_enabled(v64, v65))
     {
       *buf = 134217984;
-      v96 = v63;
+      selfCopy = v63;
       _os_log_impl(&dword_0, v64, v65, "The server returned a 503 error and told us to try again in %f seconds", buf, 0xCu);
     }
 
     v66 = +[DARefreshManager sharedManager];
-    v67 = [(MobileCalDAVDaemonAccount *)self watchedCollections];
+    watchedCollections = [(MobileCalDAVDaemonAccount *)self watchedCollections];
     v68 = v66;
-    v69 = self;
-    v70 = v67;
+    selfCopy3 = self;
+    v70 = watchedCollections;
     v71 = *&v63;
 LABEL_64:
-    [v68 retryRefreshForDelegate:v69 withCollections:v70 after:v61 originalRefreshReason:v71];
+    [v68 retryRefreshForDelegate:selfCopy3 withCollections:v70 after:v61 originalRefreshReason:v71];
 
     v83 = 0;
     v84 = 1;
@@ -687,20 +687,20 @@ LABEL_64:
     {
       v80 = self->_lastRetryTimeout;
       *buf = 134217984;
-      v96 = *&v80;
+      selfCopy = *&v80;
       _os_log_impl(&dword_0, v77, v78, "We'll retry again after %f seconds", buf, 0xCu);
     }
 
     v81 = objc_opt_class();
-    v82 = [v6 context];
-    v61 = [v81 extractDARefreshReasonFromContext:v82];
+    context3 = [actorCopy context];
+    v61 = [v81 extractDARefreshReasonFromContext:context3];
 
     v66 = +[DARefreshManager sharedManager];
-    v67 = [(MobileCalDAVDaemonAccount *)self watchedCollections];
+    watchedCollections = [(MobileCalDAVDaemonAccount *)self watchedCollections];
     v71 = self->_lastRetryTimeout;
     v68 = v66;
-    v69 = self;
-    v70 = v67;
+    selfCopy3 = self;
+    v70 = watchedCollections;
     goto LABEL_64;
   }
 
@@ -727,22 +727,22 @@ LABEL_70:
 
   if (RecordCalendarDiagnostics())
   {
-    v86 = [v6 accountSyncDiagnostics];
-    v87 = [v6 context];
-    [(MobileCalDAVDaemonAccount *)self _persistAccountSyncDiagnostics:v86 withContext:v87 completionTime:v8 willAttemptToRetry:v84 hitInternalRefreshTimeout:v83 error:v11];
+    accountSyncDiagnostics = [actorCopy accountSyncDiagnostics];
+    context4 = [actorCopy context];
+    [(MobileCalDAVDaemonAccount *)self _persistAccountSyncDiagnostics:accountSyncDiagnostics withContext:context4 completionTime:v8 willAttemptToRetry:v84 hitInternalRefreshTimeout:v83 error:v11];
   }
 }
 
 - (BOOL)_isEnabled
 {
-  v3 = [(MobileCalDAVDaemonAccount *)self dbHelper];
-  v4 = [(MobileCalDAVDaemonAccount *)self accountID];
-  [v3 calOpenDatabaseAsGenericClientForAccountID:v4];
+  dbHelper = [(MobileCalDAVDaemonAccount *)self dbHelper];
+  accountID = [(MobileCalDAVDaemonAccount *)self accountID];
+  [dbHelper calOpenDatabaseAsGenericClientForAccountID:accountID];
 
-  v5 = [(MobileCalDAVDaemonAccount *)self copyCalStore];
-  if (v5)
+  copyCalStore = [(MobileCalDAVDaemonAccount *)self copyCalStore];
+  if (copyCalStore)
   {
-    v6 = v5;
+    v6 = copyCalStore;
     IsEnabled = CalStoreIsEnabled();
     CFRelease(v6);
   }
@@ -752,21 +752,21 @@ LABEL_70:
     IsEnabled = 0;
   }
 
-  v8 = [(MobileCalDAVDaemonAccount *)self dbHelper];
-  v9 = [(MobileCalDAVDaemonAccount *)self accountID];
-  [v8 calCloseDatabaseForAccountID:v9 save:0];
+  dbHelper2 = [(MobileCalDAVDaemonAccount *)self dbHelper];
+  accountID2 = [(MobileCalDAVDaemonAccount *)self accountID];
+  [dbHelper2 calCloseDatabaseForAccountID:accountID2 save:0];
 
   return IsEnabled;
 }
 
-- (void)_reallyPerformSearchQuery:(id)a3
+- (void)_reallyPerformSearchQuery:(id)query
 {
-  v4 = a3;
+  queryCopy = query;
   if ([(MobileCalDAVDaemonAccount *)self safeToRefresh])
   {
     v10.receiver = self;
     v10.super_class = MobileCalDAVDaemonAccount;
-    [(MobileCalDAVDaemonAccount *)&v10 _reallyPerformSearchQuery:v4];
+    [(MobileCalDAVDaemonAccount *)&v10 _reallyPerformSearchQuery:queryCopy];
   }
 
   else
@@ -775,25 +775,25 @@ LABEL_70:
     v6 = _CPLog_to_os_log_type[5];
     if (os_log_type_enabled(v5, v6))
     {
-      v7 = [v4 searchString];
+      searchString = [queryCopy searchString];
       *buf = 138412290;
-      v12 = v7;
+      v12 = searchString;
       _os_log_impl(&dword_0, v5, v6, "Dropping search query %@ because the agent is shut(ting) down.", buf, 0xCu);
     }
 
-    v8 = [v4 consumer];
+    consumer = [queryCopy consumer];
     v9 = [NSError errorWithDomain:DAErrorDomain code:68 userInfo:0];
-    [v8 searchQuery:v4 finishedWithError:v9];
+    [consumer searchQuery:queryCopy finishedWithError:v9];
   }
 }
 
-- (BOOL)_hasChangesInStore:(void *)a3 forChangesCall:(void *)a4
+- (BOOL)_hasChangesInStore:(void *)store forChangesCall:(void *)call
 {
-  v7 = [(MobileCalDAVDaemonAccount *)self lastSyncedSequenceNumber];
+  lastSyncedSequenceNumber = [(MobileCalDAVDaemonAccount *)self lastSyncedSequenceNumber];
   theDict = 0;
-  v8 = [(MobileCalDAVDaemonAccount *)self dbHelper];
-  v9 = [(MobileCalDAVDaemonAccount *)self accountID];
-  (a4)([v8 calDatabaseForAccountID:v9], a3, &theDict);
+  dbHelper = [(MobileCalDAVDaemonAccount *)self dbHelper];
+  accountID = [(MobileCalDAVDaemonAccount *)self accountID];
+  (call)([dbHelper calDatabaseForAccountID:accountID], store, &theDict);
 
   if (!theDict)
   {
@@ -804,7 +804,7 @@ LABEL_70:
   if (Value && (v11 = Value, Count = CFArrayGetCount(Value), v13 = Count - 1, Count >= 1))
   {
     v14 = 0;
-    v15 = (v7 + 1);
+    v15 = (lastSyncedSequenceNumber + 1);
     do
     {
       ValueAtIndex = CFArrayGetValueAtIndex(v11, v14);
@@ -829,13 +829,13 @@ LABEL_70:
 
 - (BOOL)_shouldRefreshInResponseToDBChange
 {
-  v3 = [(MobileCalDAVDaemonAccount *)self dbHelper];
-  v4 = [(MobileCalDAVDaemonAccount *)self accountID];
-  v5 = [(MobileCalDAVDaemonAccount *)self changeTrackingID];
-  [v3 calOpenDatabaseForAccountID:v4 clientID:v5];
+  dbHelper = [(MobileCalDAVDaemonAccount *)self dbHelper];
+  accountID = [(MobileCalDAVDaemonAccount *)self accountID];
+  changeTrackingID = [(MobileCalDAVDaemonAccount *)self changeTrackingID];
+  [dbHelper calOpenDatabaseForAccountID:accountID clientID:changeTrackingID];
 
-  v6 = [(MobileCalDAVDaemonAccount *)self copyCalStore];
-  if (v6)
+  copyCalStore = [(MobileCalDAVDaemonAccount *)self copyCalStore];
+  if (copyCalStore)
   {
     if ((CalStoreIsEnabled() & 1) == 0)
     {
@@ -846,24 +846,24 @@ LABEL_70:
     {
       if (CalStoreSyncDefaultAlarms())
       {
-        v7 = [(MobileCalDAVDaemonAccount *)self dbHelper];
-        v8 = [(MobileCalDAVDaemonAccount *)self accountID];
-        [v7 calDatabaseForAccountID:v8];
+        dbHelper2 = [(MobileCalDAVDaemonAccount *)self dbHelper];
+        accountID2 = [(MobileCalDAVDaemonAccount *)self accountID];
+        [dbHelper2 calDatabaseForAccountID:accountID2];
         CalDatabaseCopyStoreChangesInStore();
       }
 
-      if ([(MobileCalDAVDaemonAccount *)self _hasChangesInStore:v6 forChangesCall:&CalDatabaseCopyEventChangesInStore])
+      if ([(MobileCalDAVDaemonAccount *)self _hasChangesInStore:copyCalStore forChangesCall:&CalDatabaseCopyEventChangesInStore])
       {
         v12 = DALoggingwithCategory();
         v13 = _CPLog_to_os_log_type[5];
         if (os_log_type_enabled(v12, v13))
         {
-          v14 = [(MobileCalDAVDaemonAccount *)self accountDescription];
-          v15 = [(MobileCalDAVDaemonAccount *)self publicDescription];
+          accountDescription = [(MobileCalDAVDaemonAccount *)self accountDescription];
+          publicDescription = [(MobileCalDAVDaemonAccount *)self publicDescription];
           *buf = 138412546;
-          v29 = v14;
+          v29 = accountDescription;
           v30 = 2114;
-          v31 = v15;
+          v31 = publicDescription;
           v16 = "Found event changes for account %@ (%{public}@)";
 LABEL_35:
           _os_log_impl(&dword_0, v12, v13, v16, buf, 0x16u);
@@ -874,18 +874,18 @@ LABEL_35:
         goto LABEL_36;
       }
 
-      if ([(MobileCalDAVDaemonAccount *)self _hasChangesInStore:v6 forChangesCall:&CalDatabaseCopyAlarmChangesInStore])
+      if ([(MobileCalDAVDaemonAccount *)self _hasChangesInStore:copyCalStore forChangesCall:&CalDatabaseCopyAlarmChangesInStore])
       {
         v12 = DALoggingwithCategory();
         v13 = _CPLog_to_os_log_type[5];
         if (os_log_type_enabled(v12, v13))
         {
-          v14 = [(MobileCalDAVDaemonAccount *)self accountDescription];
-          v15 = [(MobileCalDAVDaemonAccount *)self publicDescription];
+          accountDescription = [(MobileCalDAVDaemonAccount *)self accountDescription];
+          publicDescription = [(MobileCalDAVDaemonAccount *)self publicDescription];
           *buf = 138412546;
-          v29 = v14;
+          v29 = accountDescription;
           v30 = 2114;
-          v31 = v15;
+          v31 = publicDescription;
           v16 = "Found alarm changes for account %@ (%{public}@)";
           goto LABEL_35;
         }
@@ -894,22 +894,22 @@ LABEL_36:
 
         v9 = 1;
 LABEL_41:
-        CFRelease(v6);
+        CFRelease(copyCalStore);
         goto LABEL_42;
       }
 
-      if ([(MobileCalDAVDaemonAccount *)self _hasChangesInStore:v6 forChangesCall:&CalDatabaseCopyAttendeeChangesInStore])
+      if ([(MobileCalDAVDaemonAccount *)self _hasChangesInStore:copyCalStore forChangesCall:&CalDatabaseCopyAttendeeChangesInStore])
       {
         v12 = DALoggingwithCategory();
         v13 = _CPLog_to_os_log_type[5];
         if (os_log_type_enabled(v12, v13))
         {
-          v14 = [(MobileCalDAVDaemonAccount *)self accountDescription];
-          v15 = [(MobileCalDAVDaemonAccount *)self publicDescription];
+          accountDescription = [(MobileCalDAVDaemonAccount *)self accountDescription];
+          publicDescription = [(MobileCalDAVDaemonAccount *)self publicDescription];
           *buf = 138412546;
-          v29 = v14;
+          v29 = accountDescription;
           v30 = 2114;
-          v31 = v15;
+          v31 = publicDescription;
           v16 = "Found attendee changes for account %@ (%{public}@)";
           goto LABEL_35;
         }
@@ -917,18 +917,18 @@ LABEL_41:
         goto LABEL_36;
       }
 
-      if ([(MobileCalDAVDaemonAccount *)self _hasChangesInStore:v6 forChangesCall:&CalDatabaseCopyAttachmentChangesInStore])
+      if ([(MobileCalDAVDaemonAccount *)self _hasChangesInStore:copyCalStore forChangesCall:&CalDatabaseCopyAttachmentChangesInStore])
       {
         v12 = DALoggingwithCategory();
         v13 = _CPLog_to_os_log_type[5];
         if (os_log_type_enabled(v12, v13))
         {
-          v14 = [(MobileCalDAVDaemonAccount *)self accountDescription];
-          v15 = [(MobileCalDAVDaemonAccount *)self publicDescription];
+          accountDescription = [(MobileCalDAVDaemonAccount *)self accountDescription];
+          publicDescription = [(MobileCalDAVDaemonAccount *)self publicDescription];
           *buf = 138412546;
-          v29 = v14;
+          v29 = accountDescription;
           v30 = 2114;
-          v31 = v15;
+          v31 = publicDescription;
           v16 = "Found attachment changes for account %@ (%{public}@)";
           goto LABEL_35;
         }
@@ -936,18 +936,18 @@ LABEL_41:
         goto LABEL_36;
       }
 
-      if ([(MobileCalDAVDaemonAccount *)self _hasChangesInStore:v6 forChangesCall:&CalDatabaseCopyRecurrenceChangesInStore])
+      if ([(MobileCalDAVDaemonAccount *)self _hasChangesInStore:copyCalStore forChangesCall:&CalDatabaseCopyRecurrenceChangesInStore])
       {
         v12 = DALoggingwithCategory();
         v13 = _CPLog_to_os_log_type[5];
         if (os_log_type_enabled(v12, v13))
         {
-          v14 = [(MobileCalDAVDaemonAccount *)self accountDescription];
-          v15 = [(MobileCalDAVDaemonAccount *)self publicDescription];
+          accountDescription = [(MobileCalDAVDaemonAccount *)self accountDescription];
+          publicDescription = [(MobileCalDAVDaemonAccount *)self publicDescription];
           *buf = 138412546;
-          v29 = v14;
+          v29 = accountDescription;
           v30 = 2114;
-          v31 = v15;
+          v31 = publicDescription;
           v16 = "Found recurrence changes for account %@ (%{public}@)";
           goto LABEL_35;
         }
@@ -955,18 +955,18 @@ LABEL_41:
         goto LABEL_36;
       }
 
-      if ([(MobileCalDAVDaemonAccount *)self _hasChangesInStore:v6 forChangesCall:&CalDatabaseCopyCalendarChangesInStore])
+      if ([(MobileCalDAVDaemonAccount *)self _hasChangesInStore:copyCalStore forChangesCall:&CalDatabaseCopyCalendarChangesInStore])
       {
         v12 = DALoggingwithCategory();
         v13 = _CPLog_to_os_log_type[5];
         if (os_log_type_enabled(v12, v13))
         {
-          v14 = [(MobileCalDAVDaemonAccount *)self accountDescription];
-          v15 = [(MobileCalDAVDaemonAccount *)self publicDescription];
+          accountDescription = [(MobileCalDAVDaemonAccount *)self accountDescription];
+          publicDescription = [(MobileCalDAVDaemonAccount *)self publicDescription];
           *buf = 138412546;
-          v29 = v14;
+          v29 = accountDescription;
           v30 = 2114;
-          v31 = v15;
+          v31 = publicDescription;
           v16 = "Found calendar changes for account %@ (%{public}@)";
           goto LABEL_35;
         }
@@ -974,18 +974,18 @@ LABEL_41:
         goto LABEL_36;
       }
 
-      if ([(MobileCalDAVDaemonAccount *)self _hasChangesInStore:v6 forChangesCall:&CalDatabaseCopyNotificationChangesInStore])
+      if ([(MobileCalDAVDaemonAccount *)self _hasChangesInStore:copyCalStore forChangesCall:&CalDatabaseCopyNotificationChangesInStore])
       {
         v12 = DALoggingwithCategory();
         v13 = _CPLog_to_os_log_type[5];
         if (os_log_type_enabled(v12, v13))
         {
-          v14 = [(MobileCalDAVDaemonAccount *)self accountDescription];
-          v15 = [(MobileCalDAVDaemonAccount *)self publicDescription];
+          accountDescription = [(MobileCalDAVDaemonAccount *)self accountDescription];
+          publicDescription = [(MobileCalDAVDaemonAccount *)self publicDescription];
           *buf = 138412546;
-          v29 = v14;
+          v29 = accountDescription;
           v30 = 2114;
-          v31 = v15;
+          v31 = publicDescription;
           v16 = "Found notification changes for account %@ (%{public}@)";
           goto LABEL_35;
         }
@@ -993,15 +993,15 @@ LABEL_41:
         goto LABEL_36;
       }
 
-      if ([(MobileCalDAVDaemonAccount *)self _hasChangesInStore:v6 forChangesCall:&CalDatabaseCopyShareeChangesInStore])
+      if ([(MobileCalDAVDaemonAccount *)self _hasChangesInStore:copyCalStore forChangesCall:&CalDatabaseCopyShareeChangesInStore])
       {
         v12 = DALoggingwithCategory();
         v17 = _CPLog_to_os_log_type[5];
         if (os_log_type_enabled(v12, v17))
         {
-          v18 = [(MobileCalDAVDaemonAccount *)self accountDescription];
+          accountDescription2 = [(MobileCalDAVDaemonAccount *)self accountDescription];
           *buf = 138412290;
-          v29 = v18;
+          v29 = accountDescription2;
           _os_log_impl(&dword_0, v12, v17, "Found sharee changes for account %@", buf, 0xCu);
         }
 
@@ -1032,22 +1032,22 @@ LABEL_40:
   }
 
   v9 = 1;
-  if (v6)
+  if (copyCalStore)
   {
     goto LABEL_41;
   }
 
 LABEL_42:
-  v19 = [(MobileCalDAVDaemonAccount *)self dbHelper];
-  v20 = [(MobileCalDAVDaemonAccount *)self accountID];
-  [v19 calCloseDatabaseForAccountID:v20 save:0];
+  dbHelper3 = [(MobileCalDAVDaemonAccount *)self dbHelper];
+  accountID3 = [(MobileCalDAVDaemonAccount *)self accountID];
+  [dbHelper3 calCloseDatabaseForAccountID:accountID3 save:0];
 
   v21 = DALoggingwithCategory();
   v22 = _CPLog_to_os_log_type[5];
   if (os_log_type_enabled(v21, v22))
   {
-    v23 = [(MobileCalDAVDaemonAccount *)self publicDescription];
-    v24 = v23;
+    publicDescription2 = [(MobileCalDAVDaemonAccount *)self publicDescription];
+    v24 = publicDescription2;
     v25 = @"Blocking";
     if (v9)
     {
@@ -1056,7 +1056,7 @@ LABEL_42:
 
     v26 = @"do not have";
     *buf = 138412802;
-    v29 = v23;
+    v29 = publicDescription2;
     v31 = v25;
     v30 = 2112;
     if (v9)
@@ -1088,21 +1088,21 @@ LABEL_42:
       v5 = @"calendars for ";
     }
 
-    v6 = [(MobileCalDAVDaemonAccount *)self publicDescription];
+    publicDescription = [(MobileCalDAVDaemonAccount *)self publicDescription];
     refreshReason = self->_refreshReason;
     *buf = 138543874;
     v33 = v5;
     v34 = 2112;
-    v35 = v6;
+    v35 = publicDescription;
     v36 = 1024;
     v37 = refreshReason;
     _os_log_impl(&dword_0, v3, v4, "Gatekeeper gave us the goahead. Refreshing account %{public}@ with ID %@. Reason: %x", buf, 0x1Cu);
   }
 
-  v8 = [(MobileCalDAVDaemonAccount *)self dbHelper];
-  v9 = [(MobileCalDAVDaemonAccount *)self accountID];
-  v10 = [(MobileCalDAVDaemonAccount *)self changeTrackingID];
-  [v8 calOpenDatabaseForAccountID:v9 clientID:v10];
+  dbHelper = [(MobileCalDAVDaemonAccount *)self dbHelper];
+  accountID = [(MobileCalDAVDaemonAccount *)self accountID];
+  changeTrackingID = [(MobileCalDAVDaemonAccount *)self changeTrackingID];
+  [dbHelper calOpenDatabaseForAccountID:accountID clientID:changeTrackingID];
 
   if ([(MobileCalDAVDaemonAccount *)self _shouldRefreshInResponseToDBChange])
   {
@@ -1116,24 +1116,24 @@ LABEL_42:
     [v12 setWasUserRequested:(self->_refreshReason >> 3) & 1];
     [v12 setWasDueToPush:(self->_refreshReason >> 1) & 1];
     v13 = [CalDAVDBChangeTrackingHelper alloc];
-    v14 = [(MobileCalDAVDaemonAccount *)self dbHelper];
-    v15 = [(MobileCalDAVDaemonAccount *)self accountID];
-    v16 = [v14 calDatabaseForAccountID:v15];
-    v17 = [(MobileCalDAVDaemonAccount *)self changeTrackingID];
-    v18 = [v13 initWithDatabase:v16 clientIdentifier:v17];
+    dbHelper2 = [(MobileCalDAVDaemonAccount *)self dbHelper];
+    accountID2 = [(MobileCalDAVDaemonAccount *)self accountID];
+    v16 = [dbHelper2 calDatabaseForAccountID:accountID2];
+    changeTrackingID2 = [(MobileCalDAVDaemonAccount *)self changeTrackingID];
+    v18 = [v13 initWithDatabase:v16 clientIdentifier:changeTrackingID2];
     [v12 setChangeTracker:v18];
 
-    v19 = [(MobileCalDAVDaemonAccount *)self backingAccount];
-    [v19 setShouldUseOpportunisticSockets:0];
+    backingAccount = [(MobileCalDAVDaemonAccount *)self backingAccount];
+    [backingAccount setShouldUseOpportunisticSockets:0];
 
-    v20 = [v12 wasUserRequested];
-    v21 = [(MobileCalDAVDaemonAccount *)self backingAccount];
-    [v21 setWasUserInitiated:v20];
+    wasUserRequested = [v12 wasUserRequested];
+    backingAccount2 = [(MobileCalDAVDaemonAccount *)self backingAccount];
+    [backingAccount2 setWasUserInitiated:wasUserRequested];
 
     [(MobileCalDAVDaemonAccount *)self refreshWithContext:v12 completion:0];
-    v22 = [(MobileCalDAVDaemonAccount *)self dbHelper];
-    v23 = [(MobileCalDAVDaemonAccount *)self accountID];
-    [v22 calCloseDatabaseForAccountID:v23 save:0];
+    dbHelper3 = [(MobileCalDAVDaemonAccount *)self dbHelper];
+    accountID3 = [(MobileCalDAVDaemonAccount *)self accountID];
+    [dbHelper3 calCloseDatabaseForAccountID:accountID3 save:0];
 
     self->_forcedRefresh = 0;
     self->_fullRefresh = 0;
@@ -1150,9 +1150,9 @@ LABEL_42:
       _os_log_impl(&dword_0, v24, v25, "There's no need for us to refresh right now as there are no changes in our local database", buf, 2u);
     }
 
-    v26 = [(MobileCalDAVDaemonAccount *)self dbHelper];
-    v27 = [(MobileCalDAVDaemonAccount *)self accountID];
-    [v26 calCloseDatabaseForAccountID:v27 save:0];
+    dbHelper4 = [(MobileCalDAVDaemonAccount *)self dbHelper];
+    accountID4 = [(MobileCalDAVDaemonAccount *)self accountID];
+    [dbHelper4 calCloseDatabaseForAccountID:accountID4 save:0];
 
     self->_forcedRefresh = 0;
     self->_fullRefresh = 0;
@@ -1186,8 +1186,8 @@ LABEL_42:
 
 - (void)_refresh
 {
-  v3 = [(MobileCalDAVDaemonAccount *)self backingAccount];
-  if ([v3 isEnabledForDataclass:kAccountDataclassCalendars])
+  backingAccount = [(MobileCalDAVDaemonAccount *)self backingAccount];
+  if ([backingAccount isEnabledForDataclass:kAccountDataclassCalendars])
   {
 
     goto LABEL_3;
@@ -1199,8 +1199,8 @@ LABEL_42:
     goto LABEL_24;
   }
 
-  v33 = [(MobileCalDAVDaemonAccount *)self backingAccount];
-  v34 = [v33 isEnabledForDataclass:kAccountDataclassReminders];
+  backingAccount2 = [(MobileCalDAVDaemonAccount *)self backingAccount];
+  v34 = [backingAccount2 isEnabledForDataclass:kAccountDataclassReminders];
 
   if ((v34 & 1) == 0)
   {
@@ -1209,12 +1209,12 @@ LABEL_24:
     v36 = _CPLog_to_os_log_type[3];
     if (os_log_type_enabled(v35, v36))
     {
-      v37 = [(MobileCalDAVDaemonAccount *)self accountDescription];
-      v38 = [(MobileCalDAVDaemonAccount *)self publicDescription];
+      accountDescription = [(MobileCalDAVDaemonAccount *)self accountDescription];
+      publicDescription = [(MobileCalDAVDaemonAccount *)self publicDescription];
       *buf = 138412546;
-      v50 = v37;
+      selfCopy = accountDescription;
       v51 = 2114;
-      *v52 = v38;
+      *v52 = publicDescription;
       _os_log_impl(&dword_0, v35, v36, "Account %@ (%{public}@) was told to refresh, but it is disabled for calendars. Refusing to refresh.", buf, 0x16u);
     }
 
@@ -1239,22 +1239,22 @@ LABEL_24:
   }
 
 LABEL_3:
-  v4 = [(MobileCalDAVDaemonAccount *)self backingAccount];
-  v5 = [v4 needsToVerifyTerms];
+  backingAccount3 = [(MobileCalDAVDaemonAccount *)self backingAccount];
+  needsToVerifyTerms = [backingAccount3 needsToVerifyTerms];
 
   v6 = DALoggingwithCategory();
   v7 = v6;
-  if (v5)
+  if (needsToVerifyTerms)
   {
     v8 = _CPLog_to_os_log_type[3];
     if (os_log_type_enabled(v6, v8))
     {
-      v9 = [(MobileCalDAVDaemonAccount *)self accountDescription];
-      v10 = [(MobileCalDAVDaemonAccount *)self publicDescription];
+      accountDescription2 = [(MobileCalDAVDaemonAccount *)self accountDescription];
+      publicDescription2 = [(MobileCalDAVDaemonAccount *)self publicDescription];
       *buf = 138412546;
-      v50 = v9;
+      selfCopy = accountDescription2;
       v51 = 2114;
-      *v52 = v10;
+      *v52 = publicDescription2;
       _os_log_impl(&dword_0, v7, v8, "Account %@ (%{public}@) was told to refresh, but it has terms and conditions that have not been accepted for account. Skipping refresh.", buf, 0x16u);
     }
 
@@ -1281,12 +1281,12 @@ LABEL_3:
     v17 = _CPLog_to_os_log_type[6];
     if (os_log_type_enabled(v6, v17))
     {
-      v18 = [(MobileCalDAVDaemonAccount *)self accountID];
+      accountID = [(MobileCalDAVDaemonAccount *)self accountID];
       forcedRefresh = self->_forcedRefresh;
       fullRefresh = self->_fullRefresh;
       refreshReason = self->_refreshReason;
       *buf = 138544130;
-      v50 = v18;
+      selfCopy = accountID;
       v51 = 1024;
       *v52 = forcedRefresh;
       *&v52[4] = 1024;
@@ -1330,15 +1330,15 @@ LABEL_3:
           v26 = DALoggingwithCategory();
           if (os_log_type_enabled(v26, v17))
           {
-            v27 = [v25 transactionId];
+            transactionId = [v25 transactionId];
             *buf = 138543362;
-            v50 = v27;
+            selfCopy = transactionId;
             _os_log_impl(&dword_0, v26, v17, "DATransaction starting, ID: %{public}@", buf, 0xCu);
           }
 
           v28 = [DAActivity alloc];
-          v29 = [(MobileCalDAVDaemonAccount *)self backingAccount];
-          v30 = [v28 initWithAccount:v29];
+          backingAccount4 = [(MobileCalDAVDaemonAccount *)self backingAccount];
+          v30 = [v28 initWithAccount:backingAccount4];
 
           self->_waitingForGatekeeper = 1;
           v31 = +[DALocalDBGateKeeper sharedGateKeeper];
@@ -1362,7 +1362,7 @@ LABEL_3:
       if (os_log_type_enabled(v42, v43))
       {
         *buf = 138412290;
-        v50 = self;
+        selfCopy = self;
         _os_log_impl(&dword_0, v42, v43, "This account has been put in timeout by the babysitter. Failing this sync. %@", buf, 0xCu);
       }
 
@@ -1381,12 +1381,12 @@ LABEL_34:
 
 - (void)_serverProbeTimedOut
 {
-  v3 = [(MobileCalDAVDaemonAccount *)self taskManager];
-  v4 = [v3 activeModalTask];
+  taskManager = [(MobileCalDAVDaemonAccount *)self taskManager];
+  activeModalTask = [taskManager activeModalTask];
 
   v5 = DALoggingwithCategory();
   v6 = v5;
-  if (v4)
+  if (activeModalTask)
   {
     v7 = _CPLog_to_os_log_type[6];
     if (os_log_type_enabled(v5, v7))
@@ -1401,28 +1401,28 @@ LABEL_34:
     v8 = _CPLog_to_os_log_type[4];
     if (os_log_type_enabled(v5, _CPLog_to_os_log_type[4]))
     {
-      v9 = [(MobileCalDAVDaemonAccount *)self mainPrincipal];
-      v10 = [v9 principalURL];
+      mainPrincipal = [(MobileCalDAVDaemonAccount *)self mainPrincipal];
+      principalURL = [mainPrincipal principalURL];
       +[DABehaviorOptions defaultDAVProbeTimeout];
       v14 = 138412546;
-      v15 = v10;
+      v15 = principalURL;
       v16 = 2048;
       v17 = v11;
       _os_log_impl(&dword_0, v6, v8, "We weren't able to reach the server at %@ within %lf seconds. Bailing out of this refresh early.", &v14, 0x16u);
     }
 
     [(MobileCalDAVDaemonAccount *)self _cancelOptionsTimer];
-    v12 = [(MobileCalDAVDaemonAccount *)self optionsProbe];
+    optionsProbe = [(MobileCalDAVDaemonAccount *)self optionsProbe];
     v13 = [NSError errorWithDomain:CoreDAVErrorDomain code:1 userInfo:0];
-    [v12 finishCoreDAVTaskWithError:v13];
+    [optionsProbe finishCoreDAVTaskWithError:v13];
 
     [(MobileCalDAVDaemonAccount *)self setOptionsProbe:0];
   }
 }
 
-- (void)discoverInitialPropertiesWithConsumer:(id)a3
+- (void)discoverInitialPropertiesWithConsumer:(id)consumer
 {
-  v4 = a3;
+  consumerCopy = consumer;
   v5 = +[DABabysitter sharedBabysitter];
   v6 = [v5 registerAccount:self forOperationWithName:@"CalDAVValidityCheck"];
 
@@ -1433,19 +1433,19 @@ LABEL_34:
     if (os_log_type_enabled(v17, v18))
     {
       *buf = 138412290;
-      v25 = self;
+      selfCopy = self;
       _os_log_impl(&dword_0, v17, v18, "This account has been put in timeout by the babysitter. Failing this sync. %@", buf, 0xCu);
     }
 
-    v14 = [(MobileCalDAVDaemonAccount *)self backingAccount];
+    backingAccount = [(MobileCalDAVDaemonAccount *)self backingAccount];
     v15 = DAErrorDomain;
     v16 = 6;
     goto LABEL_9;
   }
 
-  v7 = [(MobileCalDAVDaemonAccount *)self backingAccount];
-  v8 = [v7 hostWithoutPath];
-  v9 = [DAReachability hostLikelyUnreachable:v8];
+  backingAccount2 = [(MobileCalDAVDaemonAccount *)self backingAccount];
+  hostWithoutPath = [backingAccount2 hostWithoutPath];
+  v9 = [DAReachability hostLikelyUnreachable:hostWithoutPath];
 
   if (v9)
   {
@@ -1453,21 +1453,21 @@ LABEL_34:
     v11 = _CPLog_to_os_log_type[3];
     if (os_log_type_enabled(v10, v11))
     {
-      v12 = [(MobileCalDAVDaemonAccount *)self backingAccount];
-      v13 = [v12 hostWithoutPath];
+      backingAccount3 = [(MobileCalDAVDaemonAccount *)self backingAccount];
+      hostWithoutPath2 = [backingAccount3 hostWithoutPath];
       *buf = 138412546;
-      v25 = v13;
+      selfCopy = hostWithoutPath2;
       v26 = 2112;
-      v27 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_0, v10, v11, "Not even trying to discover properties because the host %@ is probably unreachable. %@", buf, 0x16u);
     }
 
-    v14 = [(MobileCalDAVDaemonAccount *)self backingAccount];
+    backingAccount = [(MobileCalDAVDaemonAccount *)self backingAccount];
     v15 = DAErrorDomain;
     v16 = 0;
 LABEL_9:
     v19 = [NSError errorWithDomain:v15 code:v16 userInfo:0];
-    [v4 account:v14 isValid:0 validationError:v19];
+    [consumerCopy account:backingAccount isValid:0 validationError:v19];
 
     goto LABEL_10;
   }
@@ -1481,18 +1481,18 @@ LABEL_9:
     v22[2] = sub_13D8C;
     v22[3] = &unk_28888;
     v22[4] = self;
-    v23 = v4;
+    v23 = consumerCopy;
     [v20 registerWaiter:self forDataclassLocks:20 completionHandler:v22];
 
     goto LABEL_11;
   }
 
-  v14 = DALoggingwithCategory();
+  backingAccount = DALoggingwithCategory();
   v21 = _CPLog_to_os_log_type[6];
-  if (os_log_type_enabled(v14, v21))
+  if (os_log_type_enabled(backingAccount, v21))
   {
     *buf = 0;
-    _os_log_impl(&dword_0, v14, v21, "Already holding (or waiting for) a gatekeeper lock, so skipping this property discovery request", buf, 2u);
+    _os_log_impl(&dword_0, backingAccount, v21, "Already holding (or waiting for) a gatekeeper lock, so skipping this property discovery request", buf, 2u);
   }
 
 LABEL_10:
@@ -1500,18 +1500,18 @@ LABEL_10:
 LABEL_11:
 }
 
-- (void)discoveryTask:(id)a3 gotAccountInfo:(id)a4 error:(id)a5
+- (void)discoveryTask:(id)task gotAccountInfo:(id)info error:(id)error
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(MobileCalDAVDaemonAccount *)self backingAccount];
-  v12 = [v11 hostWithoutPath];
-  [DAReachability recordError:v8 forHost:v12];
+  errorCopy = error;
+  infoCopy = info;
+  taskCopy = task;
+  backingAccount = [(MobileCalDAVDaemonAccount *)self backingAccount];
+  hostWithoutPath = [backingAccount hostWithoutPath];
+  [DAReachability recordError:errorCopy forHost:hostWithoutPath];
 
   v13.receiver = self;
   v13.super_class = MobileCalDAVDaemonAccount;
-  [(MobileCalDAVDaemonAccount *)&v13 discoveryTask:v10 gotAccountInfo:v9 error:v8];
+  [(MobileCalDAVDaemonAccount *)&v13 discoveryTask:taskCopy gotAccountInfo:infoCopy error:errorCopy];
 }
 
 - (void)_probeAndSync
@@ -1522,10 +1522,10 @@ LABEL_11:
     v4 = _CPLog_to_os_log_type[6];
     if (os_log_type_enabled(v3, v4))
     {
-      v5 = [(MobileCalDAVDaemonAccount *)self mainPrincipal];
-      v6 = [v5 principalURL];
+      mainPrincipal = [(MobileCalDAVDaemonAccount *)self mainPrincipal];
+      principalURL = [mainPrincipal principalURL];
       *buf = 138412290;
-      v33 = v6;
+      selfCopy = principalURL;
       _os_log_impl(&dword_0, v3, v4, "Ignoring probe request for %@ as we're already in the middle of a refresh", buf, 0xCu);
     }
 
@@ -1534,18 +1534,18 @@ LABEL_4:
     return;
   }
 
-  v7 = [(MobileCalDAVDaemonAccount *)self optionsProbe];
+  optionsProbe = [(MobileCalDAVDaemonAccount *)self optionsProbe];
 
-  if (v7)
+  if (optionsProbe)
   {
     v3 = DALoggingwithCategory();
     v8 = _CPLog_to_os_log_type[6];
     if (os_log_type_enabled(v3, v8))
     {
-      v9 = [(MobileCalDAVDaemonAccount *)self mainPrincipal];
-      v10 = [v9 principalURL];
+      mainPrincipal2 = [(MobileCalDAVDaemonAccount *)self mainPrincipal];
+      principalURL2 = [mainPrincipal2 principalURL];
       *buf = 138412290;
-      v33 = v10;
+      selfCopy = principalURL2;
       _os_log_impl(&dword_0, v3, v8, "Ignoring probe request for %@ as we already have one outstanding", buf, 0xCu);
     }
 
@@ -1567,23 +1567,23 @@ LABEL_4:
     v14 = _CPLog_to_os_log_type[5];
     if (os_log_type_enabled(v13, v14))
     {
-      v15 = [(MobileCalDAVDaemonAccount *)self mainPrincipal];
-      v16 = [v15 principalURL];
+      mainPrincipal3 = [(MobileCalDAVDaemonAccount *)self mainPrincipal];
+      principalURL3 = [mainPrincipal3 principalURL];
       +[DABehaviorOptions defaultDAVProbeTimeout];
       *buf = 138412546;
-      v33 = v16;
+      selfCopy = principalURL3;
       v34 = 2048;
       v35 = v17;
       _os_log_impl(&dword_0, v13, v14, "Probing the host at %@ to see if we have a good enough network connection. We'll wait up to %lf seconds.", buf, 0x16u);
     }
 
     v18 = [CoreDAVOptionsTask alloc];
-    v19 = [(MobileCalDAVDaemonAccount *)self mainPrincipal];
-    v20 = [v19 principalURL];
-    v21 = [v18 initWithURL:v20];
+    mainPrincipal4 = [(MobileCalDAVDaemonAccount *)self mainPrincipal];
+    principalURL4 = [mainPrincipal4 principalURL];
+    v21 = [v18 initWithURL:principalURL4];
 
-    v22 = [(MobileCalDAVDaemonAccount *)self mainPrincipal];
-    [v21 setAccountInfoProvider:v22];
+    mainPrincipal5 = [(MobileCalDAVDaemonAccount *)self mainPrincipal];
+    [v21 setAccountInfoProvider:mainPrincipal5];
 
     objc_initWeak(buf, self);
     v30[0] = _NSConcreteStackBlock;
@@ -1598,9 +1598,9 @@ LABEL_4:
     [(MobileCalDAVDaemonAccount *)self setOptionsTimeoutTimer:v23];
 
     [(MobileCalDAVDaemonAccount *)self setOptionsProbe:v21];
-    v24 = [(MobileCalDAVDaemonAccount *)self taskManager];
-    v25 = [(MobileCalDAVDaemonAccount *)self optionsProbe];
-    [v24 submitQueuedCoreDAVTask:v25];
+    taskManager = [(MobileCalDAVDaemonAccount *)self taskManager];
+    optionsProbe2 = [(MobileCalDAVDaemonAccount *)self optionsProbe];
+    [taskManager submitQueuedCoreDAVTask:optionsProbe2];
 
     objc_destroyWeak(v31);
     objc_destroyWeak(buf);
@@ -1613,7 +1613,7 @@ LABEL_4:
     if (os_log_type_enabled(v26, v27))
     {
       *buf = 138412290;
-      v33 = self;
+      selfCopy = self;
       _os_log_impl(&dword_0, v26, v27, "This account has been put in timeout by the babysitter. Failing this sync. %@", buf, 0xCu);
     }
 
@@ -1639,51 +1639,51 @@ LABEL_4:
 
   if (qword_30C40)
   {
-    v6 = qword_30C40;
+    aPSSubscriptionURL2 = qword_30C40;
   }
 
   else
   {
-    v7 = [(MobileCalDAVDaemonAccount *)self mainPrincipal];
-    v8 = [v7 APSSubscriptionURL];
+    mainPrincipal = [(MobileCalDAVDaemonAccount *)self mainPrincipal];
+    aPSSubscriptionURL = [mainPrincipal APSSubscriptionURL];
 
-    if (v8)
+    if (aPSSubscriptionURL)
     {
-      v9 = [(MobileCalDAVDaemonAccount *)self mainPrincipal];
-      v6 = [v9 APSSubscriptionURL];
+      mainPrincipal2 = [(MobileCalDAVDaemonAccount *)self mainPrincipal];
+      aPSSubscriptionURL2 = [mainPrincipal2 APSSubscriptionURL];
     }
 
     else
     {
-      v6 = 0;
+      aPSSubscriptionURL2 = 0;
     }
   }
 
-  return v6;
+  return aPSSubscriptionURL2;
 }
 
-- (void)setSafeToRefresh:(BOOL)a3
+- (void)setSafeToRefresh:(BOOL)refresh
 {
-  self->_safeToRefresh = a3;
-  if (a3)
+  self->_safeToRefresh = refresh;
+  if (refresh)
   {
     v4 = DALoggingwithCategory();
     v5 = _CPLog_to_os_log_type[5];
     if (os_log_type_enabled(v4, v5))
     {
-      v6 = [(MobileCalDAVDaemonAccount *)self accountDescription];
-      v7 = [(MobileCalDAVDaemonAccount *)self publicDescription];
+      accountDescription = [(MobileCalDAVDaemonAccount *)self accountDescription];
+      publicDescription = [(MobileCalDAVDaemonAccount *)self publicDescription];
       *buf = 138412546;
-      v16 = v6;
+      v16 = accountDescription;
       v17 = 2114;
-      v18 = v7;
+      v18 = publicDescription;
       _os_log_impl(&dword_0, v4, v5, "Account %@ (%{public}@) was told it is safe to refresh. Kicking off a refresh.", buf, 0x16u);
     }
 
     [(MobileCalDAVDaemonAccount *)self setFullRefresh:1];
-    v8 = [(MobileCalDAVDaemonAccount *)self mainPrincipal];
-    v9 = [v8 principalURL];
-    if (v9)
+    mainPrincipal = [(MobileCalDAVDaemonAccount *)self mainPrincipal];
+    principalURL = [mainPrincipal principalURL];
+    if (principalURL)
     {
     }
 
@@ -1731,28 +1731,28 @@ LABEL_4:
   }
 }
 
-- (BOOL)monitorFoldersWithIDs:(id)a3
+- (BOOL)monitorFoldersWithIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   v5 = DALoggingwithCategory();
   v6 = _CPLog_to_os_log_type[5];
   if (os_log_type_enabled(v5, v6))
   {
-    v7 = [(MobileCalDAVDaemonAccount *)self accountDescription];
-    v8 = [(MobileCalDAVDaemonAccount *)self publicDescription];
+    accountDescription = [(MobileCalDAVDaemonAccount *)self accountDescription];
+    publicDescription = [(MobileCalDAVDaemonAccount *)self publicDescription];
     v14 = 138412802;
-    v15 = v7;
+    v15 = accountDescription;
     v16 = 2114;
-    v17 = v8;
+    v17 = publicDescription;
     v18 = 2112;
-    v19 = v4;
+    v19 = dsCopy;
     _os_log_impl(&dword_0, v5, v6, "Account %@ (%{public}@) is beginning to monitor these folders: %@", &v14, 0x20u);
   }
 
   [(MobileCalDAVDaemonAccount *)self setFullRefresh:1];
-  v9 = [(MobileCalDAVDaemonAccount *)self mainPrincipal];
-  v10 = [v9 principalURL];
-  if (v10)
+  mainPrincipal = [(MobileCalDAVDaemonAccount *)self mainPrincipal];
+  principalURL = [mainPrincipal principalURL];
+  if (principalURL)
   {
   }
 
@@ -1784,13 +1784,13 @@ LABEL_11:
   return 1;
 }
 
-+ (int)extractDARefreshReasonFromContext:(id)a3
++ (int)extractDARefreshReasonFromContext:(id)context
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  contextCopy = context;
+  v4 = contextCopy;
+  if (contextCopy)
   {
-    if ([v3 wasDueToPush])
+    if ([contextCopy wasDueToPush])
     {
       v5 = 2;
     }
@@ -1814,9 +1814,9 @@ LABEL_11:
   return v5;
 }
 
-+ (int)convertToMobileCalDAVRefreshReason:(int)a3
++ (int)convertToMobileCalDAVRefreshReason:(int)reason
 {
-  if (a3 == 2)
+  if (reason == 2)
   {
     v3 = 2;
   }
@@ -1826,7 +1826,7 @@ LABEL_11:
     v3 = 4;
   }
 
-  if (a3 == 3)
+  if (reason == 3)
   {
     return 8;
   }
@@ -1837,46 +1837,46 @@ LABEL_11:
   }
 }
 
-- (void)promptUserForNewCoreDAVPasswordWithCompletionBlock:(id)a3
+- (void)promptUserForNewCoreDAVPasswordWithCompletionBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(MobileCalDAVDaemonAccount *)self backingAccount];
-  [v5 promptUserForNewCoreDAVPasswordWithCompletionBlock:v4];
+  blockCopy = block;
+  backingAccount = [(MobileCalDAVDaemonAccount *)self backingAccount];
+  [backingAccount promptUserForNewCoreDAVPasswordWithCompletionBlock:blockCopy];
 }
 
 - (DATrustHandler)trustHandler
 {
-  v2 = [(MobileCalDAVDaemonAccount *)self backingAccount];
-  v3 = [v2 daAccount];
-  v4 = [v3 trustHandler];
+  backingAccount = [(MobileCalDAVDaemonAccount *)self backingAccount];
+  daAccount = [backingAccount daAccount];
+  trustHandler = [daAccount trustHandler];
 
-  return v4;
+  return trustHandler;
 }
 
 - (NSString)onBehalfOfBundleIdentifier
 {
-  v2 = [(MobileCalDAVDaemonAccount *)self backingAccount];
-  v3 = [v2 daAccount];
-  v4 = [v3 onBehalfOfBundleIdentifier];
+  backingAccount = [(MobileCalDAVDaemonAccount *)self backingAccount];
+  daAccount = [backingAccount daAccount];
+  onBehalfOfBundleIdentifier = [daAccount onBehalfOfBundleIdentifier];
 
-  return v4;
+  return onBehalfOfBundleIdentifier;
 }
 
-- (void)saveXpcActivity:(id)a3
+- (void)saveXpcActivity:(id)activity
 {
-  v4 = a3;
-  v6 = [(MobileCalDAVDaemonAccount *)self backingAccount];
-  v5 = [v6 daAccount];
-  [v5 saveXpcActivity:v4];
+  activityCopy = activity;
+  backingAccount = [(MobileCalDAVDaemonAccount *)self backingAccount];
+  daAccount = [backingAccount daAccount];
+  [daAccount saveXpcActivity:activityCopy];
 }
 
 - (NSString)scheduleIdentifier
 {
-  v2 = [(MobileCalDAVDaemonAccount *)self backingAccount];
-  v3 = [v2 daAccount];
-  v4 = [v3 scheduleIdentifier];
+  backingAccount = [(MobileCalDAVDaemonAccount *)self backingAccount];
+  daAccount = [backingAccount daAccount];
+  scheduleIdentifier = [daAccount scheduleIdentifier];
 
-  return v4;
+  return scheduleIdentifier;
 }
 
 - (CalDAVAgent)consumer

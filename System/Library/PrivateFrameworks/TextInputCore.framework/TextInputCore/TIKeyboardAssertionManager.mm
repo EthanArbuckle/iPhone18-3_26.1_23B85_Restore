@@ -1,13 +1,13 @@
 @interface TIKeyboardAssertionManager
 + (id)sharedAssertionManager;
 + (id)singletonInstance;
-+ (void)setSharedAssertionManager:(id)a3;
++ (void)setSharedAssertionManager:(id)manager;
 - (TIKeyboardAssertionManager)init;
-- (void)addAssertionForObject:(id)a3;
+- (void)addAssertionForObject:(id)object;
 - (void)performBackgroundActivityUpdate;
 - (void)performUpdate;
 - (void)releaseBackgroundActivityAssertion;
-- (void)removeAssertionForObject:(id)a3;
+- (void)removeAssertionForObject:(id)object;
 - (void)retainBackgroundActivityAssertion;
 - (void)scheduleUpdate;
 @end
@@ -54,14 +54,14 @@
 - (void)performUpdate
 {
   [(TIKeyboardAssertionManager *)self setPendingUpdate:0];
-  v3 = [(TIKeyboardAssertionManager *)self assertions];
-  v4 = [v3 count];
+  assertions = [(TIKeyboardAssertionManager *)self assertions];
+  v4 = [assertions count];
 
   if ((v4 != 0) != [(TIKeyboardAssertionManager *)self hasAssertions])
   {
     [(TIKeyboardAssertionManager *)self setHasAssertions:v4 != 0];
-    v5 = [(TIKeyboardAssertionManager *)self delegate];
-    [v5 keyboardAssertionsDidChange];
+    delegate = [(TIKeyboardAssertionManager *)self delegate];
+    [delegate keyboardAssertionsDidChange];
   }
 }
 
@@ -139,32 +139,32 @@
   }
 }
 
-- (void)removeAssertionForObject:(id)a3
+- (void)removeAssertionForObject:(id)object
 {
-  v4 = a3;
-  v5 = [(TIKeyboardAssertionManager *)self assertions];
-  [v5 removeObject:v4];
+  objectCopy = object;
+  assertions = [(TIKeyboardAssertionManager *)self assertions];
+  [assertions removeObject:objectCopy];
 
   [(TIKeyboardAssertionManager *)self scheduleUpdate];
 }
 
-- (void)addAssertionForObject:(id)a3
+- (void)addAssertionForObject:(id)object
 {
-  v4 = a3;
-  v5 = [(TIKeyboardAssertionManager *)self assertions];
-  [v5 addObject:v4];
+  objectCopy = object;
+  assertions = [(TIKeyboardAssertionManager *)self assertions];
+  [assertions addObject:objectCopy];
 
   [(TIKeyboardAssertionManager *)self scheduleUpdate];
 }
 
 - (void)performBackgroundActivityUpdate
 {
-  v3 = [(TIKeyboardAssertionManager *)self backgroundActivityAssertions];
-  if ([(TIKeyboardAssertionManager *)self hasBackgroundActivityAssertions]!= v3 > 0)
+  backgroundActivityAssertions = [(TIKeyboardAssertionManager *)self backgroundActivityAssertions];
+  if ([(TIKeyboardAssertionManager *)self hasBackgroundActivityAssertions]!= backgroundActivityAssertions > 0)
   {
-    [(TIKeyboardAssertionManager *)self setHasBackgroundActivityAssertions:v3 > 0];
-    v4 = [(TIKeyboardAssertionManager *)self delegate];
-    [v4 backgroundActivityAssertionsDidChange];
+    [(TIKeyboardAssertionManager *)self setHasBackgroundActivityAssertions:backgroundActivityAssertions > 0];
+    delegate = [(TIKeyboardAssertionManager *)self delegate];
+    [delegate backgroundActivityAssertionsDidChange];
   }
 }
 
@@ -192,14 +192,14 @@ uint64_t __47__TIKeyboardAssertionManager_singletonInstance__block_invoke()
   return MEMORY[0x2821F96F8](v0, v1);
 }
 
-+ (void)setSharedAssertionManager:(id)a3
++ (void)setSharedAssertionManager:(id)manager
 {
-  v4 = a3;
-  if (__testingInstance_21834 != v4)
+  managerCopy = manager;
+  if (__testingInstance_21834 != managerCopy)
   {
-    v5 = v4;
-    objc_storeStrong(&__testingInstance_21834, a3);
-    v4 = v5;
+    v5 = managerCopy;
+    objc_storeStrong(&__testingInstance_21834, manager);
+    managerCopy = v5;
   }
 }
 

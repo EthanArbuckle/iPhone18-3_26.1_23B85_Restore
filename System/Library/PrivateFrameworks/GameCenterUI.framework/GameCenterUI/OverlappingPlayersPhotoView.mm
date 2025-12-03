@@ -1,10 +1,10 @@
 @interface OverlappingPlayersPhotoView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in;
 - (NSArray)playerViews;
-- (void)applyWithPlayerAvatars:(id)a3;
+- (void)applyWithPlayerAvatars:(id)avatars;
 - (void)layoutSubviews;
-- (void)setPlayerViews:(id)a3;
+- (void)setPlayerViews:(id)views;
 @end
 
 @implementation OverlappingPlayersPhotoView
@@ -18,17 +18,17 @@
   return v2;
 }
 
-- (void)setPlayerViews:(id)a3
+- (void)setPlayerViews:(id)views
 {
   sub_24DF88A8C(0, &qword_27F1E2650);
   v4 = sub_24E347F08();
-  v5 = self;
+  selfCopy = self;
   sub_24E16CE70(v4);
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v3 = self;
+  selfCopy = self;
   sub_24DFB64A4();
   v5 = v4;
   v7 = v6;
@@ -40,10 +40,10 @@
   return result;
 }
 
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in
 {
   swift_unknownObjectRetain();
-  v5 = self;
+  selfCopy = self;
   v6 = sub_24E16D2FC();
   v8 = v7;
   v10 = v9;
@@ -63,15 +63,15 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_24E16D49C();
 }
 
-- (void)applyWithPlayerAvatars:(id)a3
+- (void)applyWithPlayerAvatars:(id)avatars
 {
   sub_24DF88A8C(0, &qword_27F1DF028);
   v4 = sub_24E347F08();
-  v5 = self;
+  selfCopy = self;
   sub_24E16D6B0(v4);
 }
 

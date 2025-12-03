@@ -1,12 +1,12 @@
 @interface ICSCalendar
-+ (id)ICSStringFromCalendarServerAccess:(int)a3;
-+ (id)ICSStringFromMethod:(int)a3;
++ (id)ICSStringFromCalendarServerAccess:(int)access;
++ (id)ICSStringFromMethod:(int)method;
 + (id)calendarWithKnownTimeZones;
 + (id)defaultProdid;
-+ (int)calendarServerAccessFromICSString:(id)a3;
-+ (int)methodFromICSString:(id)a3;
-+ (int64_t)compareCalendarServerAccess:(int)a3 withAccess:(int)a4;
-+ (void)setDefaultProdid:(id)a3;
++ (int)calendarServerAccessFromICSString:(id)string;
++ (int)methodFromICSString:(id)string;
++ (int64_t)compareCalendarServerAccess:(int)access withAccess:(int)withAccess;
++ (void)setDefaultProdid:(id)prodid;
 - (ICSColor)x_apple_calendar_color;
 - (ICSDuration)x_apple_auto_refresh;
 - (NSString)calscale;
@@ -18,22 +18,22 @@
 - (NSString)x_wr_calname;
 - (NSString)x_wr_relcalid;
 - (NSString)x_wr_timezone;
-- (id)_initWithVersionAndProdID:(BOOL)a3;
-- (id)_timeZonesForComponents:(id)a3 options:(int)a4;
+- (id)_initWithVersionAndProdID:(BOOL)d;
+- (id)_timeZonesForComponents:(id)components options:(int)options;
 - (id)parsingErrors;
-- (id)systemCalendarForDate:(id)a3 options:(int)a4;
-- (id)systemTimeZoneForDate:(id)a3;
+- (id)systemCalendarForDate:(id)date options:(int)options;
+- (id)systemTimeZoneForDate:(id)date;
 - (int)method;
-- (void)_addComponent:(id)a3 withUIDGenerator:(id)a4;
-- (void)_addTimeZonesInComponent:(id)a3 toDictionary:(id)a4;
-- (void)_addTimeZonesInComponent:(id)a3 toSet:(id)a4;
-- (void)addComponent:(id)a3 withUIDGenerator:(id)a4;
+- (void)_addComponent:(id)component withUIDGenerator:(id)generator;
+- (void)_addTimeZonesInComponent:(id)component toDictionary:(id)dictionary;
+- (void)_addTimeZonesInComponent:(id)component toSet:(id)set;
+- (void)addComponent:(id)component withUIDGenerator:(id)generator;
 - (void)fixComponent;
 - (void)fixEntities;
 - (void)fixPropertiesInheritance;
-- (void)setComponents:(id)a3 timeZones:(BOOL)a4;
-- (void)setMethod:(int)a3;
-- (void)setX_apple_calendar_color:(id)a3;
+- (void)setComponents:(id)components timeZones:(BOOL)zones;
+- (void)setMethod:(int)method;
+- (void)setX_apple_calendar_color:(id)x_apple_calendar_color;
 @end
 
 @implementation ICSCalendar
@@ -45,8 +45,8 @@
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v2 = [MEMORY[0x277CBEBB0] knownTimeZoneNames];
-  v3 = [v2 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  knownTimeZoneNames = [MEMORY[0x277CBEBB0] knownTimeZoneNames];
+  v3 = [knownTimeZoneNames countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v3)
   {
     v4 = v3;
@@ -57,13 +57,13 @@
       {
         if (*v15 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(knownTimeZoneNames);
         }
 
         v7 = [ICSTimeZone timeZoneWithSystemTimeZoneName:*(*(&v14 + 1) + 8 * i)];
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v4 = [knownTimeZoneNames countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v4);
@@ -71,8 +71,8 @@
 
   v8 = objc_alloc_init(ICSCalendar);
   v9 = MEMORY[0x277CBEB18];
-  v10 = [_sCache allValues];
-  v11 = [v9 arrayWithArray:v10];
+  allValues = [_sCache allValues];
+  v11 = [v9 arrayWithArray:allValues];
   [(ICSCalendar *)v8 setComponents:v11];
 
   v12 = *MEMORY[0x277D85DE8];
@@ -80,68 +80,68 @@
   return v8;
 }
 
-+ (void)setDefaultProdid:(id)a3
++ (void)setDefaultProdid:(id)prodid
 {
-  v6 = a3;
-  v5 = a1;
-  objc_sync_enter(v5);
-  if (__defaultProdid != v6)
+  prodidCopy = prodid;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (__defaultProdid != prodidCopy)
   {
-    objc_storeStrong(&__defaultProdid, a3);
+    objc_storeStrong(&__defaultProdid, prodid);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 + (id)defaultProdid
 {
-  v2 = a1;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3 = __defaultProdid;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-+ (int)methodFromICSString:(id)a3
++ (int)methodFromICSString:(id)string
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"PUBLISH"])
+  stringCopy = string;
+  if ([stringCopy isEqualToString:@"PUBLISH"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"REQUEST"])
+  else if ([stringCopy isEqualToString:@"REQUEST"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"REPLY"])
+  else if ([stringCopy isEqualToString:@"REPLY"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"ADD"])
+  else if ([stringCopy isEqualToString:@"ADD"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"CANCEL"])
+  else if ([stringCopy isEqualToString:@"CANCEL"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"REFRESH"])
+  else if ([stringCopy isEqualToString:@"REFRESH"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"COUNTER"])
+  else if ([stringCopy isEqualToString:@"COUNTER"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"DECLINE-COUNTER"])
+  else if ([stringCopy isEqualToString:@"DECLINE-COUNTER"])
   {
     v4 = 8;
   }
@@ -154,38 +154,38 @@
   return v4;
 }
 
-+ (id)ICSStringFromMethod:(int)a3
++ (id)ICSStringFromMethod:(int)method
 {
-  if ((a3 - 1) > 7)
+  if ((method - 1) > 7)
   {
     return 0;
   }
 
   else
   {
-    return off_27A64B948[a3 - 1];
+    return off_27A64B948[method - 1];
   }
 }
 
-+ (int)calendarServerAccessFromICSString:(id)a3
++ (int)calendarServerAccessFromICSString:(id)string
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"CONFIDENTIAL"])
+  stringCopy = string;
+  if ([stringCopy isEqualToString:@"CONFIDENTIAL"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"PUBLIC"])
+  else if ([stringCopy isEqualToString:@"PUBLIC"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"PRIVATE"])
+  else if ([stringCopy isEqualToString:@"PRIVATE"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"RESTRICTED"])
+  else if ([stringCopy isEqualToString:@"RESTRICTED"])
   {
     v4 = 2;
   }
@@ -198,35 +198,35 @@
   return v4;
 }
 
-+ (id)ICSStringFromCalendarServerAccess:(int)a3
++ (id)ICSStringFromCalendarServerAccess:(int)access
 {
-  if ((a3 - 1) > 3)
+  if ((access - 1) > 3)
   {
     return 0;
   }
 
   else
   {
-    return off_27A64B988[a3 - 1];
+    return off_27A64B988[access - 1];
   }
 }
 
-+ (int64_t)compareCalendarServerAccess:(int)a3 withAccess:(int)a4
++ (int64_t)compareCalendarServerAccess:(int)access withAccess:(int)withAccess
 {
-  if (a3 < a4)
+  if (access < withAccess)
   {
     return -1;
   }
 
   else
   {
-    return a3 > a4;
+    return access > withAccess;
   }
 }
 
-- (id)_initWithVersionAndProdID:(BOOL)a3
+- (id)_initWithVersionAndProdID:(BOOL)d
 {
-  v3 = a3;
+  dCopy = d;
   v17.receiver = self;
   v17.super_class = ICSCalendar;
   v4 = [(ICSComponent *)&v17 init];
@@ -252,12 +252,12 @@
     parsingErrors = v4->_parsingErrors;
     v4->_parsingErrors = v13;
 
-    if (v3)
+    if (dCopy)
     {
       [(ICSCalendar *)v4 setVersion:@"2.0"];
       [(ICSCalendar *)v4 setCalscale:@"GREGORIAN"];
-      v15 = [objc_opt_class() defaultProdid];
-      [(ICSCalendar *)v4 setProdid:v15];
+      defaultProdid = [objc_opt_class() defaultProdid];
+      [(ICSCalendar *)v4 setProdid:defaultProdid];
     }
   }
 
@@ -267,53 +267,53 @@
 - (NSString)calscale
 {
   v2 = [(ICSComponent *)self propertiesForName:@"CALSCALE"];
-  v3 = [v2 lastObject];
-  v4 = [v3 value];
+  lastObject = [v2 lastObject];
+  value = [lastObject value];
 
-  return v4;
+  return value;
 }
 
 - (int)method
 {
   v2 = [(ICSComponent *)self propertiesForName:@"METHOD"];
-  v3 = [v2 lastObject];
-  v4 = [v3 value];
-  v5 = [v4 longValue];
+  lastObject = [v2 lastObject];
+  value = [lastObject value];
+  longValue = [value longValue];
 
-  return v5;
+  return longValue;
 }
 
-- (void)setMethod:(int)a3
+- (void)setMethod:(int)method
 {
-  v4 = [(ICSPredefinedValue *)ICSMethodValue numberWithLong:a3];
+  v4 = [(ICSPredefinedValue *)ICSMethodValue numberWithLong:method];
   [(ICSComponent *)self setPropertyValue:v4 type:5025 forName:@"METHOD"];
 }
 
 - (NSString)prodid
 {
   v2 = [(ICSComponent *)self propertiesForName:@"PRODID"];
-  v3 = [v2 lastObject];
-  v4 = [v3 value];
+  lastObject = [v2 lastObject];
+  value = [lastObject value];
 
-  return v4;
+  return value;
 }
 
 - (NSString)version
 {
   v2 = [(ICSComponent *)self propertiesForName:@"VERSION"];
-  v3 = [v2 lastObject];
-  v4 = [v3 value];
+  lastObject = [v2 lastObject];
+  value = [lastObject value];
 
-  return v4;
+  return value;
 }
 
 - (ICSDuration)x_apple_auto_refresh
 {
   v2 = [(ICSComponent *)self propertiesForName:@"X-APPLE-AUTO-REFRESH"];
-  v3 = [v2 lastObject];
-  v4 = [v3 value];
+  lastObject = [v2 lastObject];
+  value = [lastObject value];
 
-  v5 = [ICSDuration durationFromICSString:v4];
+  v5 = [ICSDuration durationFromICSString:value];
 
   return v5;
 }
@@ -321,25 +321,25 @@
 - (ICSColor)x_apple_calendar_color
 {
   v2 = [(ICSComponent *)self propertiesForName:@"X-APPLE-CALENDAR-COLOR"];
-  v3 = [v2 lastObject];
-  v4 = [v3 value];
+  lastObject = [v2 lastObject];
+  value = [lastObject value];
 
-  if (([v4 length] == 7 || objc_msgSend(v4, "length") == 9) && objc_msgSend(v4, "characterAtIndex:", 0) == 35)
+  if (([value length] == 7 || objc_msgSend(value, "length") == 9) && objc_msgSend(value, "characterAtIndex:", 0) == 35)
   {
     v18 = 0;
     v17 = 0;
     v5 = MEMORY[0x277CCAC80];
-    v6 = [v4 substringWithRange:{1, 2}];
+    v6 = [value substringWithRange:{1, 2}];
     v7 = [v5 scannerWithString:v6];
     [v7 scanHexInt:&v18 + 4];
 
     v8 = MEMORY[0x277CCAC80];
-    v9 = [v4 substringWithRange:{3, 2}];
+    v9 = [value substringWithRange:{3, 2}];
     v10 = [v8 scannerWithString:v9];
     [v10 scanHexInt:&v18];
 
     v11 = MEMORY[0x277CCAC80];
-    v12 = [v4 substringWithRange:{5, 2}];
+    v12 = [value substringWithRange:{5, 2}];
     v13 = [v11 scannerWithString:v12];
     [v13 scanHexInt:&v17];
 
@@ -355,17 +355,17 @@
   return v15;
 }
 
-- (void)setX_apple_calendar_color:(id)a3
+- (void)setX_apple_calendar_color:(id)x_apple_calendar_color
 {
-  if (a3)
+  if (x_apple_calendar_color)
   {
     v4 = MEMORY[0x277CCACA8];
-    v5 = a3;
-    v6 = [v5 red];
-    v7 = [v5 green];
-    v8 = [v5 blue];
+    x_apple_calendar_colorCopy = x_apple_calendar_color;
+    v6 = [x_apple_calendar_colorCopy red];
+    green = [x_apple_calendar_colorCopy green];
+    blue = [x_apple_calendar_colorCopy blue];
 
-    v9 = [v4 stringWithFormat:@"#%02X%02X%02X", v6, v7, v8];
+    v9 = [v4 stringWithFormat:@"#%02X%02X%02X", v6, green, blue];
   }
 
   else
@@ -380,107 +380,107 @@
 - (NSString)x_wr_caldesc
 {
   v2 = [(ICSComponent *)self propertiesForName:@"X-WR-CALDESC"];
-  v3 = [v2 lastObject];
-  v4 = [v3 value];
+  lastObject = [v2 lastObject];
+  value = [lastObject value];
 
-  return v4;
+  return value;
 }
 
 - (NSString)x_wr_calname
 {
   v2 = [(ICSComponent *)self propertiesForName:@"X-WR-CALNAME"];
-  v3 = [v2 lastObject];
-  v4 = [v3 value];
+  lastObject = [v2 lastObject];
+  value = [lastObject value];
 
-  return v4;
+  return value;
 }
 
 - (NSString)x_apple_language
 {
   v2 = [(ICSComponent *)self propertiesForName:@"X-APPLE-LANGUAGE"];
-  v3 = [v2 lastObject];
-  v4 = [v3 value];
+  lastObject = [v2 lastObject];
+  value = [lastObject value];
 
-  return v4;
+  return value;
 }
 
 - (NSString)x_apple_region
 {
   v2 = [(ICSComponent *)self propertiesForName:@"X-APPLE-REGION"];
-  v3 = [v2 lastObject];
-  v4 = [v3 value];
+  lastObject = [v2 lastObject];
+  value = [lastObject value];
 
-  return v4;
+  return value;
 }
 
 - (NSString)x_wr_relcalid
 {
   v2 = [(ICSComponent *)self propertiesForName:@"X-WR-RELCALID"];
-  v3 = [v2 lastObject];
-  v4 = [v3 value];
+  lastObject = [v2 lastObject];
+  value = [lastObject value];
 
-  return v4;
+  return value;
 }
 
 - (NSString)x_wr_timezone
 {
   v2 = [(ICSComponent *)self propertiesForName:@"X-WR-TIMEZONE"];
-  v3 = [v2 lastObject];
-  v4 = [v3 value];
+  lastObject = [v2 lastObject];
+  value = [lastObject value];
 
-  return v4;
+  return value;
 }
 
-- (id)systemTimeZoneForDate:(id)a3
+- (id)systemTimeZoneForDate:(id)date
 {
-  v4 = a3;
-  v5 = [v4 value];
+  dateCopy = date;
+  value = [dateCopy value];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v7 = [MEMORY[0x277CBEBB0] timeZoneWithName:@"UTC"];
+    tzid = [MEMORY[0x277CBEBB0] timeZoneWithName:@"UTC"];
   }
 
   else
   {
-    v7 = [v4 tzid];
+    tzid = [dateCopy tzid];
 
-    if (v7)
+    if (tzid)
     {
-      v8 = [v4 tzid];
-      v9 = [(ICSCalendar *)self timeZoneForKey:v8];
+      tzid2 = [dateCopy tzid];
+      v9 = [(ICSCalendar *)self timeZoneForKey:tzid2];
 
-      v10 = [v4 value];
-      v7 = [v9 systemTimeZoneForDate:v10];
+      value2 = [dateCopy value];
+      tzid = [v9 systemTimeZoneForDate:value2];
 
-      if (!v7)
+      if (!tzid)
       {
         v11 = MEMORY[0x277CBEBB0];
-        v12 = [v4 tzid];
-        v7 = [v11 timeZoneWithName:v12];
+        tzid3 = [dateCopy tzid];
+        tzid = [v11 timeZoneWithName:tzid3];
       }
     }
   }
 
-  return v7;
+  return tzid;
 }
 
-- (id)systemCalendarForDate:(id)a3 options:(int)a4
+- (id)systemCalendarForDate:(id)date options:(int)options
 {
   v6 = MEMORY[0x277CBEA80];
-  v7 = a3;
+  dateCopy = date;
   v8 = [v6 alloc];
   v9 = [v8 initWithCalendarIdentifier:*MEMORY[0x277CBE5C0]];
-  v10 = [(ICSCalendar *)self systemTimeZoneForDate:v7];
+  v10 = [(ICSCalendar *)self systemTimeZoneForDate:dateCopy];
 
   if (v10)
   {
     [v9 setTimeZone:v10];
   }
 
-  else if (a4 == 1)
+  else if (options == 1)
   {
     v11 = [MEMORY[0x277CBEBB0] timeZoneWithName:@"UTC"];
     [v9 setTimeZone:v11];
@@ -489,17 +489,17 @@
   return v9;
 }
 
-- (void)_addTimeZonesInComponent:(id)a3 toSet:(id)a4
+- (void)_addTimeZonesInComponent:(id)component toSet:(id)set
 {
   v46 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  componentCopy = component;
+  setCopy = set;
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v8 = [v6 components];
-  v9 = [v8 countByEnumeratingWithState:&v39 objects:v45 count:16];
+  components = [componentCopy components];
+  v9 = [components countByEnumeratingWithState:&v39 objects:v45 count:16];
   if (v9)
   {
     v10 = v9;
@@ -510,13 +510,13 @@
       {
         if (*v40 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(components);
         }
 
-        [(ICSCalendar *)self _addTimeZonesInComponent:*(*(&v39 + 1) + 8 * i) toSet:v7];
+        [(ICSCalendar *)self _addTimeZonesInComponent:*(*(&v39 + 1) + 8 * i) toSet:setCopy];
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v39 objects:v45 count:16];
+      v10 = [components countByEnumeratingWithState:&v39 objects:v45 count:16];
     }
 
     while (v10);
@@ -526,11 +526,11 @@
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v27 = v6;
-  v13 = [v6 properties];
-  v14 = [v13 allValues];
+  v27 = componentCopy;
+  properties = [componentCopy properties];
+  allValues = [properties allValues];
 
-  v29 = [v14 countByEnumeratingWithState:&v35 objects:v44 count:16];
+  v29 = [allValues countByEnumeratingWithState:&v35 objects:v44 count:16];
   if (v29)
   {
     v28 = *v36;
@@ -541,7 +541,7 @@
       {
         if (*v36 != v28)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(allValues);
         }
 
         v30 = v15;
@@ -569,16 +569,16 @@
               objc_opt_class();
               if (objc_opt_isKindOfClass())
               {
-                v23 = [v22 value];
+                value = [v22 value];
                 objc_opt_class();
                 isKindOfClass = objc_opt_isKindOfClass();
 
                 if (isKindOfClass)
                 {
-                  v25 = [v22 tzid];
-                  if (v25)
+                  tzid = [v22 tzid];
+                  if (tzid)
                   {
-                    [v7 addObject:v25];
+                    [setCopy addObject:tzid];
                   }
                 }
               }
@@ -594,7 +594,7 @@
       }
 
       while (v30 + 1 != v29);
-      v29 = [v14 countByEnumeratingWithState:&v35 objects:v44 count:16];
+      v29 = [allValues countByEnumeratingWithState:&v35 objects:v44 count:16];
     }
 
     while (v29);
@@ -603,17 +603,17 @@
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_addTimeZonesInComponent:(id)a3 toDictionary:(id)a4
+- (void)_addTimeZonesInComponent:(id)component toDictionary:(id)dictionary
 {
   v48 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  componentCopy = component;
+  dictionaryCopy = dictionary;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v8 = [v6 components];
-  v9 = [v8 countByEnumeratingWithState:&v41 objects:v47 count:16];
+  components = [componentCopy components];
+  v9 = [components countByEnumeratingWithState:&v41 objects:v47 count:16];
   if (v9)
   {
     v10 = v9;
@@ -624,13 +624,13 @@
       {
         if (*v42 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(components);
         }
 
-        [(ICSCalendar *)self _addTimeZonesInComponent:*(*(&v41 + 1) + 8 * i) toDictionary:v7];
+        [(ICSCalendar *)self _addTimeZonesInComponent:*(*(&v41 + 1) + 8 * i) toDictionary:dictionaryCopy];
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v41 objects:v47 count:16];
+      v10 = [components countByEnumeratingWithState:&v41 objects:v47 count:16];
     }
 
     while (v10);
@@ -640,11 +640,11 @@
   v40 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v29 = v6;
-  v13 = [v6 properties];
-  v14 = [v13 allValues];
+  v29 = componentCopy;
+  properties = [componentCopy properties];
+  allValues = [properties allValues];
 
-  v31 = [v14 countByEnumeratingWithState:&v37 objects:v46 count:16];
+  v31 = [allValues countByEnumeratingWithState:&v37 objects:v46 count:16];
   if (v31)
   {
     v30 = *v38;
@@ -655,7 +655,7 @@
       {
         if (*v38 != v30)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(allValues);
         }
 
         v32 = v15;
@@ -683,20 +683,20 @@
               objc_opt_class();
               if (objc_opt_isKindOfClass())
               {
-                v23 = [v22 value];
+                value = [v22 value];
                 objc_opt_class();
                 isKindOfClass = objc_opt_isKindOfClass();
 
                 if (isKindOfClass)
                 {
-                  v25 = [v22 tzid];
-                  if (v25)
+                  tzid = [v22 tzid];
+                  if (tzid)
                   {
-                    v26 = [v22 value];
-                    v27 = [v7 objectForKey:v25];
-                    if (!v27 || [v26 compare:v27] == -1)
+                    value2 = [v22 value];
+                    v27 = [dictionaryCopy objectForKey:tzid];
+                    if (!v27 || [value2 compare:v27] == -1)
                     {
-                      [v7 setObject:v26 forKey:v25];
+                      [dictionaryCopy setObject:value2 forKey:tzid];
                     }
                   }
                 }
@@ -713,7 +713,7 @@
       }
 
       while (v32 + 1 != v31);
-      v31 = [v14 countByEnumeratingWithState:&v37 objects:v46 count:16];
+      v31 = [allValues countByEnumeratingWithState:&v37 objects:v46 count:16];
     }
 
     while (v31);
@@ -722,19 +722,19 @@
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_timeZonesForComponents:(id)a3 options:(int)a4
+- (id)_timeZonesForComponents:(id)components options:(int)options
 {
   v48 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v33 = [MEMORY[0x277CBEB18] array];
+  componentsCopy = components;
+  array = [MEMORY[0x277CBEB18] array];
   v7 = objc_alloc(MEMORY[0x277CBEA80]);
   v8 = [v7 initWithCalendarIdentifier:*MEMORY[0x277CBE5C0]];
-  v9 = [MEMORY[0x277CBEAA8] date];
-  v10 = [v8 components:28 fromDate:v9];
+  date = [MEMORY[0x277CBEAA8] date];
+  v10 = [v8 components:28 fromDate:date];
 
   v11 = -[ICSDateTimeValue initWithYear:month:day:hour:minute:second:]([ICSDateTimeValue alloc], "initWithYear:month:day:hour:minute:second:", [v10 year], objc_msgSend(v10, "month"), objc_msgSend(v10, "day"), 0, 0, 0);
-  v32 = a4;
-  if ((a4 - 1) <= 1)
+  optionsCopy = options;
+  if ((options - 1) <= 1)
   {
     v28 = v10;
     v29 = v8;
@@ -743,8 +743,8 @@
     v43 = 0u;
     v44 = 0u;
     v45 = 0u;
-    v30 = v6;
-    v13 = v6;
+    v30 = componentsCopy;
+    v13 = componentsCopy;
     v14 = [v13 countByEnumeratingWithState:&v42 objects:v47 count:16];
     if (v14)
     {
@@ -776,7 +776,7 @@
     v37 = [obj countByEnumeratingWithState:&v38 objects:v46 count:16];
     if (v37)
     {
-      if (v32 == 1)
+      if (optionsCopy == 1)
       {
         v18 = 0;
       }
@@ -811,8 +811,8 @@
           v24 = [MEMORY[0x277CBEBB0] timeZoneWithName:v20];
           if (v24)
           {
-            v25 = [[ICSTimeZone alloc] initWithSystemTimeZone:v24 fromDate:v23 options:v32];
-            [v33 addObject:v25];
+            v25 = [[ICSTimeZone alloc] initWithSystemTimeZone:v24 fromDate:v23 options:optionsCopy];
+            [array addObject:v25];
           }
 
           v11 = v36;
@@ -825,28 +825,28 @@
     }
 
     v8 = v29;
-    v6 = v30;
+    componentsCopy = v30;
     v10 = v28;
   }
 
   v26 = *MEMORY[0x277D85DE8];
 
-  return v33;
+  return array;
 }
 
-- (void)_addComponent:(id)a3 withUIDGenerator:(id)a4
+- (void)_addComponent:(id)component withUIDGenerator:(id)generator
 {
-  v16 = a3;
-  v6 = a4;
-  v7 = [v16 propertiesForName:@"UID"];
-  v8 = [v7 lastObject];
-  v9 = [v8 value];
+  componentCopy = component;
+  generatorCopy = generator;
+  v7 = [componentCopy propertiesForName:@"UID"];
+  lastObject = [v7 lastObject];
+  value = [lastObject value];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
     isKindOfClass = 1;
-    if (v9)
+    if (value)
     {
       goto LABEL_11;
     }
@@ -856,7 +856,7 @@
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
-    if (v9)
+    if (value)
     {
       goto LABEL_11;
     }
@@ -864,43 +864,43 @@
 
   if (isKindOfClass)
   {
-    if (v6)
+    if (generatorCopy)
     {
-      [v6 generateUID];
+      [generatorCopy generateUID];
     }
 
     else
     {
       +[ICSComponent makeUID];
     }
-    v9 = ;
-    [v16 setUid:v9];
+    value = ;
+    [componentCopy setUid:value];
   }
 
 LABEL_11:
-  if (!v9)
+  if (!value)
   {
     goto LABEL_20;
   }
 
-  [(NSMutableSet *)self->_keys addObject:v9];
-  v11 = [v16 propertiesForName:@"RECURRENCE-ID"];
+  [(NSMutableSet *)self->_keys addObject:value];
+  v11 = [componentCopy propertiesForName:@"RECURRENCE-ID"];
 
   if (v11)
   {
-    v12 = [(NSMutableDictionary *)self->_occurrences objectForKey:v9];
+    v12 = [(NSMutableDictionary *)self->_occurrences objectForKey:value];
     if (!v12)
     {
       v12 = objc_alloc_init(MEMORY[0x277CBEB18]);
-      [(NSMutableDictionary *)self->_occurrences setObject:v12 forKey:v9];
+      [(NSMutableDictionary *)self->_occurrences setObject:v12 forKey:value];
     }
 
-    [v12 addObject:v16];
+    [v12 addObject:componentCopy];
   }
 
   else
   {
-    v13 = [(NSMutableDictionary *)self->_masters objectForKey:v9];
+    v13 = [(NSMutableDictionary *)self->_masters objectForKey:value];
 
     if (v13)
     {
@@ -909,34 +909,34 @@ LABEL_11:
         goto LABEL_20;
       }
 
-      NSLog(&cfstr_DuplicateUid.isa, v9);
+      NSLog(&cfstr_DuplicateUid.isa, value);
     }
 
-    [(NSMutableDictionary *)self->_masters setObject:v16 forKey:v9];
+    [(NSMutableDictionary *)self->_masters setObject:componentCopy forKey:value];
   }
 
 LABEL_20:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v14 = [v16 tzid];
-    if (v14)
+    tzid = [componentCopy tzid];
+    if (tzid)
     {
-      v15 = [(NSMutableDictionary *)self->_timezones objectForKey:v14];
+      v15 = [(NSMutableDictionary *)self->_timezones objectForKey:tzid];
 
       if (v15)
       {
-        NSLog(&cfstr_DuplicateTzid.isa, v14);
+        NSLog(&cfstr_DuplicateTzid.isa, tzid);
       }
 
-      [(NSMutableDictionary *)self->_timezones setObject:v16 forKey:v14];
+      [(NSMutableDictionary *)self->_timezones setObject:componentCopy forKey:tzid];
     }
   }
 }
 
-- (void)setComponents:(id)a3 timeZones:(BOOL)a4
+- (void)setComponents:(id)components timeZones:(BOOL)zones
 {
-  if (a4)
+  if (zones)
   {
     v4 = 2;
   }
@@ -946,17 +946,17 @@ LABEL_20:
     v4 = 0;
   }
 
-  [(ICSCalendar *)self setComponents:a3 options:v4];
+  [(ICSCalendar *)self setComponents:components options:v4];
 }
 
-- (void)addComponent:(id)a3 withUIDGenerator:(id)a4
+- (void)addComponent:(id)component withUIDGenerator:(id)generator
 {
   v8.receiver = self;
   v8.super_class = ICSCalendar;
-  v6 = a4;
-  v7 = a3;
-  [(ICSComponent *)&v8 addComponent:v7 withUIDGenerator:v6];
-  [(ICSCalendar *)self _addComponent:v7 withUIDGenerator:v6, v8.receiver, v8.super_class];
+  generatorCopy = generator;
+  componentCopy = component;
+  [(ICSComponent *)&v8 addComponent:componentCopy withUIDGenerator:generatorCopy];
+  [(ICSCalendar *)self _addComponent:componentCopy withUIDGenerator:generatorCopy, v8.receiver, v8.super_class];
 }
 
 - (id)parsingErrors
@@ -973,8 +973,8 @@ LABEL_20:
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v3 = [(ICSCalendar *)self componentKeys];
-  v4 = [v3 countByEnumeratingWithState:&v20 objects:v25 count:16];
+  componentKeys = [(ICSCalendar *)self componentKeys];
+  v4 = [componentKeys countByEnumeratingWithState:&v20 objects:v25 count:16];
   if (v4)
   {
     v5 = v4;
@@ -985,7 +985,7 @@ LABEL_20:
       {
         if (*v21 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(componentKeys);
         }
 
         v8 = *(*(&v20 + 1) + 8 * i);
@@ -1019,7 +1019,7 @@ LABEL_20:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v20 objects:v25 count:16];
+      v5 = [componentKeys countByEnumeratingWithState:&v20 objects:v25 count:16];
     }
 
     while (v5);
@@ -1035,8 +1035,8 @@ LABEL_20:
   if (v3)
   {
     v4 = [(ICSComponent *)self propertiesForName:@"METHOD"];
-    v5 = [v4 lastObject];
-    v6 = [v5 value];
+    lastObject = [v4 lastObject];
+    value = [lastObject value];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -1056,8 +1056,8 @@ LABEL_20:
   v12 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v3 = [(ICSComponent *)self components];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  components = [(ICSComponent *)self components];
+  v4 = [components countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1069,14 +1069,14 @@ LABEL_20:
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(components);
         }
 
         [*(*(&v9 + 1) + 8 * v7++) fixComponent];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [components countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);

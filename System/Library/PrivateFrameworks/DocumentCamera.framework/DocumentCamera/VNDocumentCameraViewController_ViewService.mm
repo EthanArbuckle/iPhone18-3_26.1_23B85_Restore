@@ -3,11 +3,11 @@
 - (DCDocumentCameraViewServiceViewController)viewServiceViewController;
 - (VNDocumentCameraViewController_ViewService)init;
 - (id)castedChildViewController;
-- (void)accelerometer:(id)a3 didChangeDeviceOrientation:(int64_t)a4;
+- (void)accelerometer:(id)accelerometer didChangeDeviceOrientation:(int64_t)orientation;
 - (void)dealloc;
 - (void)didCancel;
-- (void)didFailWithError:(id)a3;
-- (void)didFinishWithDocumentInfoCollection:(id)a3;
+- (void)didFailWithError:(id)error;
+- (void)didFinishWithDocumentInfoCollection:(id)collection;
 - (void)dismiss;
 - (void)removeSaveActionBlockerForFiles;
 - (void)viewDidLoad;
@@ -31,24 +31,24 @@
 
 - (void)dealloc
 {
-  v3 = [(VNDocumentCameraViewController_ViewService *)self accelerometer];
-  [v3 setOrientationEventsEnabled:0];
+  accelerometer = [(VNDocumentCameraViewController_ViewService *)self accelerometer];
+  [accelerometer setOrientationEventsEnabled:0];
 
-  v4 = [(VNDocumentCameraViewController_ViewService *)self accelerometer];
-  [v4 setPassiveOrientationEvents:1];
+  accelerometer2 = [(VNDocumentCameraViewController_ViewService *)self accelerometer];
+  [accelerometer2 setPassiveOrientationEvents:1];
 
-  v5 = [(VNDocumentCameraViewController_ViewService *)self accelerometer];
-  [v5 setDelegate:0];
+  accelerometer3 = [(VNDocumentCameraViewController_ViewService *)self accelerometer];
+  [accelerometer3 setDelegate:0];
 
   v6.receiver = self;
   v6.super_class = VNDocumentCameraViewController_ViewService;
   [(VNDocumentCameraViewController_ViewService *)&v6 dealloc];
 }
 
-- (void)accelerometer:(id)a3 didChangeDeviceOrientation:(int64_t)a4
+- (void)accelerometer:(id)accelerometer didChangeDeviceOrientation:(int64_t)orientation
 {
-  v5 = [(VNDocumentCameraViewController_ViewService *)self viewServiceViewController];
-  [v5 setOrientation:a4 animated:1];
+  viewServiceViewController = [(VNDocumentCameraViewController_ViewService *)self viewServiceViewController];
+  [viewServiceViewController setOrientation:orientation animated:1];
 }
 
 - (void)viewDidLoad
@@ -85,48 +85,48 @@
 
 - (id)castedChildViewController
 {
-  v2 = [(VNDocumentCameraViewController *)self childViewController];
+  childViewController = [(VNDocumentCameraViewController *)self childViewController];
   v3 = objc_opt_class();
-  v9 = DCClassAndProtocolCast(v2, v3, 1, v4, v5, v6, v7, v8, &unk_285CA5358);
+  v9 = DCClassAndProtocolCast(childViewController, v3, 1, v4, v5, v6, v7, v8, &unk_285CA5358);
 
   return v9;
 }
 
 - (DCDocumentCameraViewServiceViewController)viewServiceViewController
 {
-  v2 = [(VNDocumentCameraViewController_ViewService *)self remoteViewController];
-  v3 = [v2 viewServiceViewController];
+  remoteViewController = [(VNDocumentCameraViewController_ViewService *)self remoteViewController];
+  viewServiceViewController = [remoteViewController viewServiceViewController];
 
-  return v3;
+  return viewServiceViewController;
 }
 
 - (DCDocumentCameraRemoteViewController)remoteViewController
 {
-  v2 = [(VNDocumentCameraViewController_ViewService *)self castedChildViewController];
-  v3 = [v2 remoteViewController];
+  castedChildViewController = [(VNDocumentCameraViewController_ViewService *)self castedChildViewController];
+  remoteViewController = [castedChildViewController remoteViewController];
 
-  return v3;
+  return remoteViewController;
 }
 
 - (void)dismiss
 {
-  v3 = [(VNDocumentCameraViewController_ViewService *)self presentingViewController];
-  [v3 dismissViewControllerAnimated:1 completion:0];
+  presentingViewController = [(VNDocumentCameraViewController_ViewService *)self presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 
-  v4 = [(VNDocumentCameraViewController_ViewService *)self remoteViewController];
-  [v4 viewControllerWasDismissed];
+  remoteViewController = [(VNDocumentCameraViewController_ViewService *)self remoteViewController];
+  [remoteViewController viewControllerWasDismissed];
 }
 
 - (void)didCancel
 {
-  v3 = [(VNDocumentCameraViewController *)self delegate];
+  delegate = [(VNDocumentCameraViewController *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
-  v5 = [(VNDocumentCameraViewController *)self delegate];
-  v8 = v5;
+  delegate2 = [(VNDocumentCameraViewController *)self delegate];
+  v8 = delegate2;
   if (v4)
   {
-    [v5 documentCameraViewControllerDidCancel:self];
+    [delegate2 documentCameraViewControllerDidCancel:self];
   }
 
   else
@@ -139,46 +139,46 @@
     }
 
     v8 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CE5DC0] code:-11800 userInfo:0];
-    v7 = [(VNDocumentCameraViewController *)self delegate];
-    [v7 documentCameraViewController:self didFailWithError:v8];
+    delegate3 = [(VNDocumentCameraViewController *)self delegate];
+    [delegate3 documentCameraViewController:self didFailWithError:v8];
   }
 }
 
-- (void)didFinishWithDocumentInfoCollection:(id)a3
+- (void)didFinishWithDocumentInfoCollection:(id)collection
 {
-  v11 = a3;
-  v4 = [(VNDocumentCameraViewController *)self delegate];
+  collectionCopy = collection;
+  delegate = [(VNDocumentCameraViewController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
     v6 = [VNDocumentCameraScan alloc];
-    v7 = [(VNDocumentCameraViewController_ViewService *)self viewServiceSession];
-    v8 = [v7 docCamImageCache];
-    v9 = [(VNDocumentCameraScan *)v6 initWithDocInfoCollection:v11 imageCache:v8];
+    viewServiceSession = [(VNDocumentCameraViewController_ViewService *)self viewServiceSession];
+    docCamImageCache = [viewServiceSession docCamImageCache];
+    v9 = [(VNDocumentCameraScan *)v6 initWithDocInfoCollection:collectionCopy imageCache:docCamImageCache];
 
-    v10 = [(VNDocumentCameraViewController *)self delegate];
-    [v10 documentCameraViewController:self didFinishWithScan:v9];
+    delegate2 = [(VNDocumentCameraViewController *)self delegate];
+    [delegate2 documentCameraViewController:self didFinishWithScan:v9];
   }
 }
 
-- (void)didFailWithError:(id)a3
+- (void)didFailWithError:(id)error
 {
-  v7 = a3;
-  v4 = [(VNDocumentCameraViewController *)self delegate];
+  errorCopy = error;
+  delegate = [(VNDocumentCameraViewController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(VNDocumentCameraViewController *)self delegate];
-    [v6 documentCameraViewController:self didFailWithError:v7];
+    delegate2 = [(VNDocumentCameraViewController *)self delegate];
+    [delegate2 documentCameraViewController:self didFailWithError:errorCopy];
   }
 }
 
 - (void)removeSaveActionBlockerForFiles
 {
-  v2 = [(VNDocumentCameraViewController_ViewService *)self viewServiceViewController];
-  [v2 removeSaveActionBlockerForFiles];
+  viewServiceViewController = [(VNDocumentCameraViewController_ViewService *)self viewServiceViewController];
+  [viewServiceViewController removeSaveActionBlockerForFiles];
 }
 
 @end

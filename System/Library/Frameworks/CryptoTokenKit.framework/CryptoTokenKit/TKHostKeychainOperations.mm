@@ -1,13 +1,13 @@
 @interface TKHostKeychainOperations
-- (BOOL)updateForTokenID:(id)a3 items:(id)a4;
-- (id)query:(id)a3;
+- (BOOL)updateForTokenID:(id)d items:(id)items;
+- (id)query:(id)query;
 @end
 
 @implementation TKHostKeychainOperations
 
-- (id)query:(id)a3
+- (id)query:(id)query
 {
-  v3 = [a3 mutableCopy];
+  v3 = [query mutableCopy];
   [v3 setObject:kSecMatchLimitAll forKeyedSubscript:kSecMatchLimit];
   if (+[TKHostKeychainOperations useSystemKeychain])
   {
@@ -36,10 +36,10 @@
   return v7;
 }
 
-- (BOOL)updateForTokenID:(id)a3 items:(id)a4
+- (BOOL)updateForTokenID:(id)d items:(id)items
 {
-  v5 = a3;
-  v6 = a4;
+  dCopy = d;
+  itemsCopy = items;
   if (_os_feature_enabled_impl())
   {
     v17[0] = kSecAttrAccessGroupToken;
@@ -78,7 +78,7 @@ LABEL_12:
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     v13 = 138543618;
-    v14 = v5;
+    v14 = dCopy;
     v15 = 1024;
     v16 = v9;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "Failed to update keychain with token items of token %{public}@ - error %d", &v13, 0x12u);

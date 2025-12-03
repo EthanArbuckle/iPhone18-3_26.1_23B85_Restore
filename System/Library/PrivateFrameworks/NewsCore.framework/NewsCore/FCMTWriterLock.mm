@@ -1,11 +1,11 @@
 @interface FCMTWriterLock
-- (BOOL)readBool:(id)a3;
+- (BOOL)readBool:(id)bool;
 - (FCMTWriterLock)init;
-- (FCMTWriterLock)initWithUnderlyingLock:(id)a3;
-- (id)readObject:(id)a3;
+- (FCMTWriterLock)initWithUnderlyingLock:(id)lock;
+- (id)readObject:(id)object;
 - (void)lock;
-- (void)performReadSync:(id)a3;
-- (void)performWriteSync:(id)a3;
+- (void)performReadSync:(id)sync;
+- (void)performWriteSync:(id)sync;
 - (void)unlock;
 @end
 
@@ -39,51 +39,51 @@
   [(FCMTWriterLock *)self unlock];
 }
 
-- (FCMTWriterLock)initWithUnderlyingLock:(id)a3
+- (FCMTWriterLock)initWithUnderlyingLock:(id)lock
 {
-  v5 = a3;
+  lockCopy = lock;
   v9.receiver = self;
   v9.super_class = FCMTWriterLock;
   v6 = [(FCMTWriterLock *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_underlyingLock, a3);
+    objc_storeStrong(&v6->_underlyingLock, lock);
   }
 
   return v7;
 }
 
-- (void)performReadSync:(id)a3
+- (void)performReadSync:(id)sync
 {
-  v4 = a3;
+  syncCopy = sync;
   if ([MEMORY[0x1E696AF00] isMainThread])
   {
-    v4[2]();
+    syncCopy[2]();
   }
 
   else
   {
     [(FCMTWriterLock *)self lock];
-    v4[2]();
+    syncCopy[2]();
     [(FCMTWriterLock *)self unlock];
   }
 }
 
-- (void)performWriteSync:(id)a3
+- (void)performWriteSync:(id)sync
 {
   v4 = MEMORY[0x1E696AF00];
-  v5 = a3;
+  syncCopy = sync;
   [v4 isMainThread];
   [(FCMTWriterLock *)self lock];
-  v5[2](v5);
+  syncCopy[2](syncCopy);
 
   [(FCMTWriterLock *)self unlock];
 }
 
-- (BOOL)readBool:(id)a3
+- (BOOL)readBool:(id)bool
 {
-  v4 = a3;
+  boolCopy = bool;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -93,7 +93,7 @@
   v7[2] = __27__FCMTWriterLock_readBool___block_invoke;
   v7[3] = &unk_1E7C46F78;
   v9 = &v10;
-  v5 = v4;
+  v5 = boolCopy;
   v8 = v5;
   [(FCMTWriterLock *)self performReadSync:v7];
   LOBYTE(self) = *(v11 + 24);
@@ -109,9 +109,9 @@ uint64_t __27__FCMTWriterLock_readBool___block_invoke(uint64_t a1)
   return result;
 }
 
-- (id)readObject:(id)a3
+- (id)readObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -123,7 +123,7 @@ uint64_t __27__FCMTWriterLock_readBool___block_invoke(uint64_t a1)
   v8[2] = __29__FCMTWriterLock_readObject___block_invoke;
   v8[3] = &unk_1E7C46F78;
   v10 = &v11;
-  v5 = v4;
+  v5 = objectCopy;
   v9 = v5;
   [(FCMTWriterLock *)self performReadSync:v8];
   v6 = v12[5];

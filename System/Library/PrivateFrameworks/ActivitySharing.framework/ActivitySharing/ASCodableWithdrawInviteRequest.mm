@@ -1,11 +1,11 @@
 @interface ASCodableWithdrawInviteRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ASCodableWithdrawInviteRequest
@@ -16,26 +16,26 @@
   v8.receiver = self;
   v8.super_class = ASCodableWithdrawInviteRequest;
   v4 = [(ASCodableWithdrawInviteRequest *)&v8 description];
-  v5 = [(ASCodableWithdrawInviteRequest *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ASCodableWithdrawInviteRequest *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   handshakeToken = self->_handshakeToken;
   if (handshakeToken)
   {
-    [v3 setObject:handshakeToken forKey:@"handshakeToken"];
+    [dictionary setObject:handshakeToken forKey:@"handshakeToken"];
   }
 
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (self->_handshakeToken)
   {
@@ -43,32 +43,32 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   handshakeToken = self->_handshakeToken;
   if (handshakeToken)
   {
-    [a3 setHandshakeToken:handshakeToken];
+    [to setHandshakeToken:handshakeToken];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_handshakeToken copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_handshakeToken copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     handshakeToken = self->_handshakeToken;
-    if (handshakeToken | v4[1])
+    if (handshakeToken | equalCopy[1])
     {
       v6 = [(NSString *)handshakeToken isEqual:?];
     }
@@ -87,9 +87,9 @@
   return v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if (*(a3 + 1))
+  if (*(from + 1))
   {
     [(ASCodableWithdrawInviteRequest *)self setHandshakeToken:?];
   }

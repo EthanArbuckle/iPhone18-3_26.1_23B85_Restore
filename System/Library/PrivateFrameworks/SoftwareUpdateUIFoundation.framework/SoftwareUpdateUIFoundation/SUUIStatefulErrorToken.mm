@@ -1,7 +1,7 @@
 @interface SUUIStatefulErrorToken
-+ (id)bodyTokenWithType:(int64_t)a3 parameters:(id)a4;
-+ (id)headingTokenWithType:(int64_t)a3 parameters:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)bodyTokenWithType:(int64_t)type parameters:(id)parameters;
++ (id)headingTokenWithType:(int64_t)type parameters:(id)parameters;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 - (int64_t)body;
 - (int64_t)heading;
@@ -10,15 +10,15 @@
 
 @implementation SUUIStatefulErrorToken
 
-+ (id)headingTokenWithType:(int64_t)a3 parameters:(id)a4
++ (id)headingTokenWithType:(int64_t)type parameters:(id)parameters
 {
-  v12 = a1;
+  selfCopy = self;
   v11 = a2;
-  v10 = a3;
+  typeCopy = type;
   location = 0;
-  objc_storeStrong(&location, a4);
-  v8 = objc_alloc_init(v12);
-  v8[1] = v10;
+  objc_storeStrong(&location, parameters);
+  v8 = objc_alloc_init(selfCopy);
+  v8[1] = typeCopy;
   v8[2] = 0;
   v4 = [location copy];
   v5 = v8[3];
@@ -31,15 +31,15 @@
   return v7;
 }
 
-+ (id)bodyTokenWithType:(int64_t)a3 parameters:(id)a4
++ (id)bodyTokenWithType:(int64_t)type parameters:(id)parameters
 {
-  v12 = a1;
+  selfCopy = self;
   v11 = a2;
-  v10 = a3;
+  typeCopy = type;
   location = 0;
-  objc_storeStrong(&location, a4);
-  v8 = objc_alloc_init(v12);
-  v8[1] = v10;
+  objc_storeStrong(&location, parameters);
+  v8 = objc_alloc_init(selfCopy);
+  v8[1] = typeCopy;
   v8[2] = 1;
   v4 = [location copy];
   v5 = v8[3];
@@ -72,13 +72,13 @@
   return self->_value._heading;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (v18 != location[0])
+  objc_storeStrong(location, equal);
+  if (selfCopy != location[0])
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -89,8 +89,8 @@
     }
 
     v15 = MEMORY[0x277D82BE0](location[0]);
-    v10 = [(SUUIStatefulErrorToken *)v18 type];
-    if (v10 != [v15 type])
+    type = [(SUUIStatefulErrorToken *)selfCopy type];
+    if (type != [v15 type])
     {
       v19 = 0;
       v16 = 1;
@@ -99,13 +99,13 @@ LABEL_22:
       goto LABEL_23;
     }
 
-    v9 = [(SUUIStatefulErrorToken *)v18 type];
-    if (v9)
+    type2 = [(SUUIStatefulErrorToken *)selfCopy type];
+    if (type2)
     {
-      if (v9 == 1)
+      if (type2 == 1)
       {
-        v7 = [(SUUIStatefulErrorToken *)v18 body];
-        if (v7 != [v15 body])
+        body = [(SUUIStatefulErrorToken *)selfCopy body];
+        if (body != [v15 body])
         {
           v19 = 0;
           v16 = 1;
@@ -116,8 +116,8 @@ LABEL_22:
 
     else
     {
-      v8 = [(SUUIStatefulErrorToken *)v18 heading];
-      if (v8 != [v15 heading])
+      heading = [(SUUIStatefulErrorToken *)selfCopy heading];
+      if (heading != [v15 heading])
       {
         v19 = 0;
         v16 = 1;
@@ -125,33 +125,33 @@ LABEL_22:
       }
     }
 
-    v4 = [(SUUIStatefulErrorToken *)v18 formatParameters];
-    v5 = [v15 formatParameters];
+    formatParameters = [(SUUIStatefulErrorToken *)selfCopy formatParameters];
+    formatParameters2 = [v15 formatParameters];
     v13 = 0;
     v11 = 0;
     v6 = 1;
-    if (v4 != v5)
+    if (formatParameters != formatParameters2)
     {
-      v14 = [(SUUIStatefulErrorToken *)v18 formatParameters];
+      formatParameters3 = [(SUUIStatefulErrorToken *)selfCopy formatParameters];
       v13 = 1;
-      v12 = [v15 formatParameters];
+      formatParameters4 = [v15 formatParameters];
       v11 = 1;
-      v6 = [(NSDictionary *)v14 isEqualToDictionary:?];
+      v6 = [(NSDictionary *)formatParameters3 isEqualToDictionary:?];
     }
 
     v19 = v6 & 1;
     if (v11)
     {
-      MEMORY[0x277D82BD8](v12);
+      MEMORY[0x277D82BD8](formatParameters4);
     }
 
     if (v13)
     {
-      MEMORY[0x277D82BD8](v14);
+      MEMORY[0x277D82BD8](formatParameters3);
     }
 
-    MEMORY[0x277D82BD8](v5);
-    MEMORY[0x277D82BD8](v4);
+    MEMORY[0x277D82BD8](formatParameters2);
+    MEMORY[0x277D82BD8](formatParameters);
     v16 = 1;
     goto LABEL_22;
   }
@@ -165,25 +165,25 @@ LABEL_23:
 
 - (unint64_t)hash
 {
-  v7 = 0;
-  v6 = [(SUUIStatefulErrorToken *)self type];
-  if (v6)
+  body = 0;
+  type = [(SUUIStatefulErrorToken *)self type];
+  if (type)
   {
-    if (v6 == 1)
+    if (type == 1)
     {
-      v7 = [(SUUIStatefulErrorToken *)self body];
+      body = [(SUUIStatefulErrorToken *)self body];
     }
   }
 
   else
   {
-    v7 = [(SUUIStatefulErrorToken *)self heading];
+    body = [(SUUIStatefulErrorToken *)self heading];
   }
 
-  v3 = [(SUUIStatefulErrorToken *)self type]^ v7;
-  v4 = [(SUUIStatefulErrorToken *)self formatParameters];
-  v5 = v3 ^ [(NSDictionary *)v4 hash];
-  MEMORY[0x277D82BD8](v4);
+  v3 = [(SUUIStatefulErrorToken *)self type]^ body;
+  formatParameters = [(SUUIStatefulErrorToken *)self formatParameters];
+  v5 = v3 ^ [(NSDictionary *)formatParameters hash];
+  MEMORY[0x277D82BD8](formatParameters);
   return v5;
 }
 
@@ -213,15 +213,15 @@ LABEL_23:
 
   else
   {
-    v15 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
     v14 = 1;
-    v4 = MEMORY[0x277D82BE0](v15);
+    v4 = MEMORY[0x277D82BE0](null);
   }
 
   v17 = v4;
   if (v14)
   {
-    MEMORY[0x277D82BD8](v15);
+    MEMORY[0x277D82BD8](null);
   }
 
   objc_storeStrong(&location, 0);

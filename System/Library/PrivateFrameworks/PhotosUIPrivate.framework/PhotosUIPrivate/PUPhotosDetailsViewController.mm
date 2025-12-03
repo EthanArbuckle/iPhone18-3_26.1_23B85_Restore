@@ -1,29 +1,29 @@
 @interface PUPhotosDetailsViewController
-- (BOOL)contentAreaContainsPoint:(CGPoint)a3 inCoordinateSpace:(id)a4;
-- (CGRect)contentBoundsInCoordinateSpace:(id)a3;
+- (BOOL)contentAreaContainsPoint:(CGPoint)point inCoordinateSpace:(id)space;
+- (CGRect)contentBoundsInCoordinateSpace:(id)space;
 - (CGSize)minimumContentSize;
 - (CGSize)preferredContentSize;
 - (PUAccessoryContentViewControllerDelegate)accessoryContentViewControllerDelegate;
-- (PUPhotosDetailsViewController)initWithContext:(id)a3 configuration:(id)a4 assetViewModel:(id)a5;
-- (PUPhotosDetailsViewController)initWithContext:(id)a3 options:(unint64_t)a4;
+- (PUPhotosDetailsViewController)initWithContext:(id)context configuration:(id)configuration assetViewModel:(id)model;
+- (PUPhotosDetailsViewController)initWithContext:(id)context options:(unint64_t)options;
 - (UIEdgeInsets)px_safeAreaInsets;
 - (id)_oneUpViewController;
 - (unint64_t)occludedContentEdges;
 - (void)_configurePresentViewController;
 - (void)_configureShazamEventInfo;
 - (void)_configureVisualSearchTopResultItem;
-- (void)_presentViewController:(id)a3;
-- (void)_sendVisualSearchLookupAnalyticsForResultItem:(id)a3;
-- (void)_updateContentUnavailableConfigurationUsingState:(id)a3;
+- (void)_presentViewController:(id)controller;
+- (void)_sendVisualSearchLookupAnalyticsForResultItem:(id)item;
+- (void)_updateContentUnavailableConfigurationUsingState:(id)state;
 - (void)_updatePhototypeSupport;
-- (void)editingDidChange:(BOOL)a3;
+- (void)editingDidChange:(BOOL)change;
 - (void)editorHeightDidChange;
-- (void)scrollViewControllerContentBoundsDidChange:(id)a3;
-- (void)scrollViewControllerDidScroll:(id)a3;
-- (void)setContentInsets:(UIEdgeInsets)a3 changeReason:(int64_t)a4;
-- (void)setEmpty:(BOOL)a3;
-- (void)setMaxVisibleContentInsetsWhenInEdit:(UIEdgeInsets)a3;
-- (void)viewModel:(id)a3 didChange:(id)a4;
+- (void)scrollViewControllerContentBoundsDidChange:(id)change;
+- (void)scrollViewControllerDidScroll:(id)scroll;
+- (void)setContentInsets:(UIEdgeInsets)insets changeReason:(int64_t)reason;
+- (void)setEmpty:(BOOL)empty;
+- (void)setMaxVisibleContentInsetsWhenInEdit:(UIEdgeInsets)edit;
+- (void)viewModel:(id)model didChange:(id)change;
 - (void)visualSearchLookupWidgetDidTap;
 @end
 
@@ -36,20 +36,20 @@
   return WeakRetained;
 }
 
-- (void)viewModel:(id)a3 didChange:(id)a4
+- (void)viewModel:(id)model didChange:(id)change
 {
-  v8 = a3;
-  v6 = a4;
-  if ([v6 isInEditModeChanged])
+  modelCopy = model;
+  changeCopy = change;
+  if ([changeCopy isInEditModeChanged])
   {
-    if ([v8 isInEditMode])
+    if ([modelCopy isInEditMode])
     {
       goto LABEL_10;
     }
 
-    if ([v8 lastEditStyleChangeReason] != 2)
+    if ([modelCopy lastEditStyleChangeReason] != 2)
     {
-      v7 = 2 * ([v8 lastEditStyleChangeReason] != 1);
+      v7 = 2 * ([modelCopy lastEditStyleChangeReason] != 1);
 LABEL_9:
       [(PXPhotosDetailsUIViewController *)self requestExitEditModeWithChangeSavingMode:v7];
       goto LABEL_10;
@@ -60,59 +60,59 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if ([v6 accessoryViewVisibilityChanged] && (objc_msgSend(v8, "isAccessoryViewVisible") & 1) == 0 && objc_msgSend(v8, "editStyle") == 2)
+  if ([changeCopy accessoryViewVisibilityChanged] && (objc_msgSend(modelCopy, "isAccessoryViewVisible") & 1) == 0 && objc_msgSend(modelCopy, "editStyle") == 2)
   {
     goto LABEL_8;
   }
 
 LABEL_10:
-  if ([v6 visualImageAnalysisChanged])
+  if ([changeCopy visualImageAnalysisChanged])
   {
     [(PUPhotosDetailsViewController *)self _configureVisualSearchTopResultItem];
   }
 
-  if ([v6 shazamEventInfoChanged])
+  if ([changeCopy shazamEventInfoChanged])
   {
     [(PUPhotosDetailsViewController *)self _configureShazamEventInfo];
   }
 
-  if (([v6 phototypeAccessoryViewSupportChanged] & 1) != 0 || objc_msgSend(v6, "phototypeInfoButtonSupportChanged"))
+  if (([changeCopy phototypeAccessoryViewSupportChanged] & 1) != 0 || objc_msgSend(changeCopy, "phototypeInfoButtonSupportChanged"))
   {
     [(PUPhotosDetailsViewController *)self _updatePhototypeSupport];
   }
 }
 
-- (void)scrollViewControllerContentBoundsDidChange:(id)a3
+- (void)scrollViewControllerContentBoundsDidChange:(id)change
 {
   if (self->_superRespondsTo.scrollViewControllerContentBoundsDidChange)
   {
     v5.receiver = self;
     v5.super_class = PUPhotosDetailsViewController;
-    [(PUPhotosDetailsViewController *)&v5 scrollViewControllerContentBoundsDidChange:a3];
+    [(PUPhotosDetailsViewController *)&v5 scrollViewControllerContentBoundsDidChange:change];
   }
 
-  v4 = [(PUPhotosDetailsViewController *)self accessoryContentViewControllerDelegate];
-  [v4 accessoryContentViewControllerContentBoundsDidChange:self];
+  accessoryContentViewControllerDelegate = [(PUPhotosDetailsViewController *)self accessoryContentViewControllerDelegate];
+  [accessoryContentViewControllerDelegate accessoryContentViewControllerContentBoundsDidChange:self];
 }
 
-- (void)scrollViewControllerDidScroll:(id)a3
+- (void)scrollViewControllerDidScroll:(id)scroll
 {
-  v4 = a3;
+  scrollCopy = scroll;
   if (self->_superRespondsTo.scrollViewControllerDidScroll)
   {
     v7.receiver = self;
     v7.super_class = PUPhotosDetailsViewController;
-    [(PXPhotosDetailsUIViewController *)&v7 scrollViewControllerDidScroll:v4];
+    [(PXPhotosDetailsUIViewController *)&v7 scrollViewControllerDidScroll:scrollCopy];
   }
 
-  v5 = [(PUPhotosDetailsViewController *)self assetViewModel];
-  if ([v5 isInEditMode] && (objc_msgSend(v4, "isAnimatingScroll") & 1) == 0 && ((objc_msgSend(v4, "isDecelerating") & 1) != 0 || (objc_msgSend(v4, "isDragging") & 1) != 0 || objc_msgSend(v4, "isTracking")))
+  assetViewModel = [(PUPhotosDetailsViewController *)self assetViewModel];
+  if ([assetViewModel isInEditMode] && (objc_msgSend(scrollCopy, "isAnimatingScroll") & 1) == 0 && ((objc_msgSend(scrollCopy, "isDecelerating") & 1) != 0 || (objc_msgSend(scrollCopy, "isDragging") & 1) != 0 || objc_msgSend(scrollCopy, "isTracking")))
   {
     [(PXPhotosDetailsUIViewController *)self requestExitEditModeWithChangeSavingMode:1];
   }
 
-  v6 = [(PUPhotosDetailsViewController *)self accessoryContentViewControllerDelegate];
-  [v6 accessoryContentViewControllerContentBoundsDidChange:self];
+  accessoryContentViewControllerDelegate = [(PUPhotosDetailsViewController *)self accessoryContentViewControllerDelegate];
+  [accessoryContentViewControllerDelegate accessoryContentViewControllerContentBoundsDidChange:self];
 }
 
 - (UIEdgeInsets)px_safeAreaInsets
@@ -124,11 +124,11 @@ LABEL_10:
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(PUPhotosDetailsViewController *)self parentViewController];
-  v12 = v11;
-  if (v11)
+  parentViewController = [(PUPhotosDetailsViewController *)self parentViewController];
+  v12 = parentViewController;
+  if (parentViewController)
   {
-    [v11 px_safeAreaInsets];
+    [parentViewController px_safeAreaInsets];
     v4 = v13;
     v6 = v14;
     v8 = v15;
@@ -146,22 +146,22 @@ LABEL_10:
   return result;
 }
 
-- (CGRect)contentBoundsInCoordinateSpace:(id)a3
+- (CGRect)contentBoundsInCoordinateSpace:(id)space
 {
-  v4 = a3;
-  v5 = [(PXPhotosDetailsUIViewController *)self scrollViewController];
-  [v5 contentBounds];
+  spaceCopy = space;
+  scrollViewController = [(PXPhotosDetailsUIViewController *)self scrollViewController];
+  [scrollViewController contentBounds];
 
-  v6 = [(PXPhotosDetailsUIViewController *)self scrollViewController];
-  [v6 contentInset];
+  scrollViewController2 = [(PXPhotosDetailsUIViewController *)self scrollViewController];
+  [scrollViewController2 contentInset];
 
   PXEdgeInsetsInsetRect();
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  v15 = [(PXPhotosDetailsUIViewController *)self scrollViewController];
-  [v15 presentedContentSize];
+  scrollViewController3 = [(PXPhotosDetailsUIViewController *)self scrollViewController];
+  [scrollViewController3 presentedContentSize];
   v17 = v16;
 
   if (!PXSizeIsEmpty())
@@ -169,10 +169,10 @@ LABEL_10:
     v14 = v17;
   }
 
-  v18 = [(PXPhotosDetailsUIViewController *)self scrollViewController];
-  v19 = [v18 scrollView];
+  scrollViewController4 = [(PXPhotosDetailsUIViewController *)self scrollViewController];
+  scrollView = [scrollViewController4 scrollView];
 
-  [v19 convertRect:v4 toCoordinateSpace:{v8, v10, v12, v14}];
+  [scrollView convertRect:spaceCopy toCoordinateSpace:{v8, v10, v12, v14}];
   v21 = v20;
   v23 = v22;
   v25 = v24;
@@ -189,18 +189,18 @@ LABEL_10:
   return result;
 }
 
-- (BOOL)contentAreaContainsPoint:(CGPoint)a3 inCoordinateSpace:(id)a4
+- (BOOL)contentAreaContainsPoint:(CGPoint)point inCoordinateSpace:(id)space
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(PUPhotosDetailsViewController *)self view];
-  [v8 bounds];
+  y = point.y;
+  x = point.x;
+  spaceCopy = space;
+  view = [(PUPhotosDetailsViewController *)self view];
+  [view bounds];
   v10 = v9;
   v12 = v11;
   v14 = v13;
   v16 = v15;
-  [v8 convertPoint:v7 fromCoordinateSpace:{x, y}];
+  [view convertPoint:spaceCopy fromCoordinateSpace:{x, y}];
   v18 = v17;
   v20 = v19;
 
@@ -210,44 +210,44 @@ LABEL_10:
   v23.size.height = v16;
   v22.x = v18;
   v22.y = v20;
-  LOBYTE(v7) = CGRectContainsPoint(v23, v22);
+  LOBYTE(spaceCopy) = CGRectContainsPoint(v23, v22);
 
-  return v7;
+  return spaceCopy;
 }
 
-- (void)setContentInsets:(UIEdgeInsets)a3 changeReason:(int64_t)a4
+- (void)setContentInsets:(UIEdgeInsets)insets changeReason:(int64_t)reason
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
   [(PXPhotosDetailsUIViewController *)self contentEdgeInsets];
   if (left != v13 || top != v10 || right != v12 || bottom != v11)
   {
     [(PXPhotosDetailsUIViewController *)self setContentEdgeInsets:top, left, bottom, right];
-    if (a4 == 2)
+    if (reason == 2)
     {
-      v17 = [(PXPhotosDetailsUIViewController *)self scrollViewController];
-      v18 = [v17 scrollView];
-      if (([v18 px_isScrolledAtEdge:1] & 1) == 0 && (objc_msgSend(v17, "isDecelerating") & 1) == 0 && (objc_msgSend(v17, "isDragging") & 1) == 0 && (objc_msgSend(v17, "isTracking") & 1) == 0)
+      scrollViewController = [(PXPhotosDetailsUIViewController *)self scrollViewController];
+      scrollView = [scrollViewController scrollView];
+      if (([scrollView px_isScrolledAtEdge:1] & 1) == 0 && (objc_msgSend(scrollViewController, "isDecelerating") & 1) == 0 && (objc_msgSend(scrollViewController, "isDragging") & 1) == 0 && (objc_msgSend(scrollViewController, "isTracking") & 1) == 0)
       {
-        [v18 px_scrollToEdge:1 animated:0];
+        [scrollView px_scrollToEdge:1 animated:0];
       }
     }
 
-    v19 = [(PUPhotosDetailsViewController *)self accessoryContentViewControllerDelegate];
-    [v19 accessoryContentViewControllerContentBoundsDidChange:self];
+    accessoryContentViewControllerDelegate = [(PUPhotosDetailsViewController *)self accessoryContentViewControllerDelegate];
+    [accessoryContentViewControllerDelegate accessoryContentViewControllerContentBoundsDidChange:self];
   }
 }
 
-- (void)setMaxVisibleContentInsetsWhenInEdit:(UIEdgeInsets)a3
+- (void)setMaxVisibleContentInsetsWhenInEdit:(UIEdgeInsets)edit
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
-  v8 = [(PUPhotosDetailsViewController *)self view];
-  [v8 bounds];
+  right = edit.right;
+  bottom = edit.bottom;
+  left = edit.left;
+  top = edit.top;
+  view = [(PUPhotosDetailsViewController *)self view];
+  [view bounds];
   v10 = v9;
   v12 = v11;
   v14 = v13;
@@ -303,10 +303,10 @@ LABEL_10:
   return result;
 }
 
-- (void)_sendVisualSearchLookupAnalyticsForResultItem:(id)a3
+- (void)_sendVisualSearchLookupAnalyticsForResultItem:(id)item
 {
-  v3 = [a3 glyphName];
-  v4 = [v3 containsString:@"leaf"];
+  glyphName = [item glyphName];
+  v4 = [glyphName containsString:@"leaf"];
 
   if (v4)
   {
@@ -319,29 +319,29 @@ LABEL_10:
 - (void)visualSearchLookupWidgetDidTap
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [(PUPhotosDetailsViewController *)self assetViewModel];
-  v4 = [v3 visualImageAnalysis];
-  v5 = [v4 resultItems];
-  v6 = [v5 firstObject];
+  assetViewModel = [(PUPhotosDetailsViewController *)self assetViewModel];
+  visualImageAnalysis = [assetViewModel visualImageAnalysis];
+  resultItems = [visualImageAnalysis resultItems];
+  firstObject = [resultItems firstObject];
 
-  v7 = [v3 visualSearchImageAnalysisInteraction];
-  [v7 showVisualSearchForResultItem:v6];
-  if (v7)
+  visualSearchImageAnalysisInteraction = [assetViewModel visualSearchImageAnalysisInteraction];
+  [visualSearchImageAnalysisInteraction showVisualSearchForResultItem:firstObject];
+  if (visualSearchImageAnalysisInteraction)
   {
-    [(PUPhotosDetailsViewController *)self _sendVisualSearchLookupAnalyticsForResultItem:v6];
+    [(PUPhotosDetailsViewController *)self _sendVisualSearchLookupAnalyticsForResultItem:firstObject];
     v8 = PLVisualIntelligenceGetLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
-      v9 = [v3 asset];
-      v10 = [v9 uuid];
+      asset = [assetViewModel asset];
+      uuid = [asset uuid];
       v12 = 138413058;
-      v13 = v10;
+      v13 = uuid;
       v14 = 2112;
-      v15 = v4;
+      v15 = visualImageAnalysis;
       v16 = 2112;
-      v17 = v6;
+      v17 = firstObject;
       v18 = 2112;
-      v19 = v7;
+      v19 = visualSearchImageAnalysisInteraction;
       _os_log_impl(&dword_1B36F3000, v8, OS_LOG_TYPE_INFO, "Visual Lookup item was tapped in 1Up's info panel (asset: %@, analysis: %@, top item: %@, interaction: %@)", &v12, 0x2Au);
 LABEL_6:
     }
@@ -352,15 +352,15 @@ LABEL_6:
     v8 = PLVisualIntelligenceGetLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      v9 = [v3 asset];
-      v10 = [v9 uuid];
-      v11 = [MEMORY[0x1E696AD98] numberWithInt:v3 != 0];
+      asset = [assetViewModel asset];
+      uuid = [asset uuid];
+      v11 = [MEMORY[0x1E696AD98] numberWithInt:assetViewModel != 0];
       v12 = 138413058;
-      v13 = v10;
+      v13 = uuid;
       v14 = 2112;
-      v15 = v4;
+      v15 = visualImageAnalysis;
       v16 = 2112;
-      v17 = v6;
+      v17 = firstObject;
       v18 = 2112;
       v19 = v11;
       _os_log_impl(&dword_1B36F3000, v8, OS_LOG_TYPE_ERROR, "Visual Lookup item was tapped in 1Up's info panel but interaction is nil (asset: %@, analysis: %@, top item: %@, assetViewModel non-nil? %@)", &v12, 0x2Au);
@@ -378,20 +378,20 @@ LABEL_6:
   if (vabdd_f64(v5, v4) >= 1.0)
   {
     v6 = v5 - v4;
-    v7 = [(PUPhotosDetailsViewController *)self accessoryContentViewControllerDelegate];
-    [v7 accessoryContentViewController:self editorHeightDidChange:v6];
+    accessoryContentViewControllerDelegate = [(PUPhotosDetailsViewController *)self accessoryContentViewControllerDelegate];
+    [accessoryContentViewControllerDelegate accessoryContentViewController:self editorHeightDidChange:v6];
   }
 }
 
-- (void)editingDidChange:(BOOL)a3
+- (void)editingDidChange:(BOOL)change
 {
-  v3 = a3;
-  v5 = [(PUPhotosDetailsViewController *)self assetViewModel];
-  v6 = [v5 isInEditMode];
+  changeCopy = change;
+  assetViewModel = [(PUPhotosDetailsViewController *)self assetViewModel];
+  isInEditMode = [assetViewModel isInEditMode];
 
-  if (v6 != v3)
+  if (isInEditMode != changeCopy)
   {
-    if (v3)
+    if (changeCopy)
     {
       v7 = 0;
     }
@@ -401,7 +401,7 @@ LABEL_6:
       v7 = 2;
     }
 
-    if (v3)
+    if (changeCopy)
     {
       v8 = 2;
     }
@@ -411,7 +411,7 @@ LABEL_6:
       v8 = 0;
     }
 
-    v9 = [(PUPhotosDetailsViewController *)self assetViewModel];
+    assetViewModel2 = [(PUPhotosDetailsViewController *)self assetViewModel];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __50__PUPhotosDetailsViewController_editingDidChange___block_invoke;
@@ -419,7 +419,7 @@ LABEL_6:
     v10[5] = v8;
     v10[6] = v7;
     v10[4] = self;
-    [v9 performChanges:v10];
+    [assetViewModel2 performChanges:v10];
   }
 }
 
@@ -464,19 +464,19 @@ void __50__PUPhotosDetailsViewController_editingDidChange___block_invoke(uint64_
   *&v4 = 500.0;
   if ([(PUPhotosDetailsViewController *)self isViewLoaded])
   {
-    v5 = [(PXPhotosDetailsUIViewController *)self scrollViewController];
+    scrollViewController = [(PXPhotosDetailsUIViewController *)self scrollViewController];
 
-    if (v5)
+    if (scrollViewController)
     {
-      v6 = [(PXPhotosDetailsUIViewController *)self scrollViewController];
-      [v6 presentedContentSize];
+      scrollViewController2 = [(PXPhotosDetailsUIViewController *)self scrollViewController];
+      [scrollViewController2 presentedContentSize];
       v3 = v7;
       v4 = v8;
 
       if (PXSizeIsEmpty())
       {
-        v9 = [(PUPhotosDetailsViewController *)self view];
-        [(PUPhotosDetailsViewController *)self contentBoundsInCoordinateSpace:v9];
+        view = [(PUPhotosDetailsViewController *)self view];
+        [(PUPhotosDetailsViewController *)self contentBoundsInCoordinateSpace:view];
         v3 = v10;
         v4 = v11;
       }
@@ -490,16 +490,16 @@ void __50__PUPhotosDetailsViewController_editingDidChange___block_invoke(uint64_
   return result;
 }
 
-- (void)_updateContentUnavailableConfigurationUsingState:(id)a3
+- (void)_updateContentUnavailableConfigurationUsingState:(id)state
 {
-  v7 = a3;
+  stateCopy = state;
   if ([(PXPhotosDetailsUIViewController *)self isEmpty])
   {
-    v4 = [MEMORY[0x1E69DC8C8] px_containerized_defaultConfiguration];
+    px_containerized_defaultConfiguration = [MEMORY[0x1E69DC8C8] px_containerized_defaultConfiguration];
     v5 = PULocalizedString(@"PUPhotosDetailsViewControllerContentUnavailableTitle");
-    [v4 setText:v5];
+    [px_containerized_defaultConfiguration setText:v5];
 
-    v6 = [v4 updatedConfigurationForState:v7];
+    v6 = [px_containerized_defaultConfiguration updatedConfigurationForState:stateCopy];
     [(PUPhotosDetailsViewController *)self _setContentUnavailableConfiguration:v6];
   }
 
@@ -509,23 +509,23 @@ void __50__PUPhotosDetailsViewController_editingDidChange___block_invoke(uint64_
   }
 }
 
-- (void)setEmpty:(BOOL)a3
+- (void)setEmpty:(BOOL)empty
 {
   v4.receiver = self;
   v4.super_class = PUPhotosDetailsViewController;
-  [(PXPhotosDetailsUIViewController *)&v4 setEmpty:a3];
+  [(PXPhotosDetailsUIViewController *)&v4 setEmpty:empty];
   [(PUPhotosDetailsViewController *)self _setNeedsUpdateContentUnavailableConfiguration];
 }
 
 - (void)_updatePhototypeSupport
 {
-  v3 = [(PXPhotosDetailsUIViewController *)self context];
+  context = [(PXPhotosDetailsUIViewController *)self context];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __56__PUPhotosDetailsViewController__updatePhototypeSupport__block_invoke;
   v4[3] = &unk_1E7B7CD48;
   v4[4] = self;
-  [v3 performChanges:v4];
+  [context performChanges:v4];
 }
 
 void __56__PUPhotosDetailsViewController__updatePhototypeSupport__block_invoke(uint64_t a1, void *a2)
@@ -543,10 +543,10 @@ void __56__PUPhotosDetailsViewController__updatePhototypeSupport__block_invoke(u
 
 - (id)_oneUpViewController
 {
-  v2 = self;
-  if (v2)
+  selfCopy = self;
+  if (selfCopy)
   {
-    v3 = v2;
+    v3 = selfCopy;
     while (1)
     {
       v4 = v3;
@@ -558,19 +558,19 @@ void __56__PUPhotosDetailsViewController__updatePhototypeSupport__block_invoke(u
         }
       }
 
-      v5 = [(PUPhotosDetailsViewController *)v4 parentViewController];
-      v6 = v5;
-      if (v5)
+      parentViewController = [(PUPhotosDetailsViewController *)v4 parentViewController];
+      v6 = parentViewController;
+      if (parentViewController)
       {
-        v7 = v5;
+        presentingViewController = parentViewController;
       }
 
       else
       {
-        v7 = [(PUPhotosDetailsViewController *)v4 presentingViewController];
+        presentingViewController = [(PUPhotosDetailsViewController *)v4 presentingViewController];
       }
 
-      v3 = v7;
+      v3 = presentingViewController;
 
       if (!v3)
       {
@@ -590,24 +590,24 @@ LABEL_9:
   return v8;
 }
 
-- (void)_presentViewController:(id)a3
+- (void)_presentViewController:(id)controller
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PUPhotosDetailsViewController *)self _oneUpViewController];
-  if (v5)
+  controllerCopy = controller;
+  _oneUpViewController = [(PUPhotosDetailsViewController *)self _oneUpViewController];
+  if (_oneUpViewController)
   {
-    if ([v4 modalPresentationStyle])
+    if ([controllerCopy modalPresentationStyle])
     {
       v6 = 0;
     }
 
     else
     {
-      v8 = [MEMORY[0x1E69C3BF8] defaultFreezer];
-      v6 = [v8 freezeContentOfViewController:v5 timeout:1.0];
+      defaultFreezer = [MEMORY[0x1E69C3BF8] defaultFreezer];
+      v6 = [defaultFreezer freezeContentOfViewController:_oneUpViewController timeout:1.0];
 
-      [v5 hideAccessoryView];
+      [_oneUpViewController hideAccessoryView];
     }
 
     v9[0] = MEMORY[0x1E69E9820];
@@ -616,7 +616,7 @@ LABEL_9:
     v9[3] = &unk_1E7B80DD0;
     v10 = v6;
     v7 = v6;
-    [v5 presentViewController:v4 animated:1 completion:v9];
+    [_oneUpViewController presentViewController:controllerCopy animated:1 completion:v9];
   }
 
   else
@@ -625,7 +625,7 @@ LABEL_9:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v12 = v4;
+      v12 = controllerCopy;
       _os_log_impl(&dword_1B36F3000, v7, OS_LOG_TYPE_ERROR, "can't present %@ because 1-up view controller is missing", buf, 0xCu);
     }
   }
@@ -633,13 +633,13 @@ LABEL_9:
 
 - (void)_configurePresentViewController
 {
-  v3 = [(PXPhotosDetailsUIViewController *)self context];
+  context = [(PXPhotosDetailsUIViewController *)self context];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __64__PUPhotosDetailsViewController__configurePresentViewController__block_invoke;
   v4[3] = &unk_1E7B7CD48;
   v4[4] = self;
-  [v3 performChanges:v4];
+  [context performChanges:v4];
 }
 
 void __64__PUPhotosDetailsViewController__configurePresentViewController__block_invoke(uint64_t a1, void *a2)
@@ -665,33 +665,33 @@ void __64__PUPhotosDetailsViewController__configurePresentViewController__block_
 
 - (void)_configureShazamEventInfo
 {
-  v3 = [(PUPhotosDetailsViewController *)self assetViewModel];
-  v4 = [v3 shazamEventInfo];
+  assetViewModel = [(PUPhotosDetailsViewController *)self assetViewModel];
+  shazamEventInfo = [assetViewModel shazamEventInfo];
 
-  v5 = [(PXPhotosDetailsUIViewController *)self context];
+  context = [(PXPhotosDetailsUIViewController *)self context];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __58__PUPhotosDetailsViewController__configureShazamEventInfo__block_invoke;
   v7[3] = &unk_1E7B7CD48;
-  v8 = v4;
-  v6 = v4;
-  [v5 performChanges:v7];
+  v8 = shazamEventInfo;
+  v6 = shazamEventInfo;
+  [context performChanges:v7];
 }
 
 - (void)_configureVisualSearchTopResultItem
 {
-  v3 = [(PUPhotosDetailsViewController *)self assetViewModel];
-  v4 = [v3 visualImageAnalysis];
-  v5 = [v4 resultItems];
-  v6 = [v5 firstObject];
+  assetViewModel = [(PUPhotosDetailsViewController *)self assetViewModel];
+  visualImageAnalysis = [assetViewModel visualImageAnalysis];
+  resultItems = [visualImageAnalysis resultItems];
+  firstObject = [resultItems firstObject];
 
-  if (v6)
+  if (firstObject)
   {
     v7 = objc_alloc(MEMORY[0x1E69C38C0]);
-    v8 = [v6 glyphName];
-    v9 = [v6 displayLabel];
-    v10 = [v6 displayMessage];
-    v11 = [v7 initWithGlyphName:v8 visualDomain:v9 displayMessage:v10];
+    glyphName = [firstObject glyphName];
+    displayLabel = [firstObject displayLabel];
+    displayMessage = [firstObject displayMessage];
+    v11 = [v7 initWithGlyphName:glyphName visualDomain:displayLabel displayMessage:displayMessage];
   }
 
   else
@@ -699,26 +699,26 @@ void __64__PUPhotosDetailsViewController__configurePresentViewController__block_
     v11 = 0;
   }
 
-  v12 = [(PXPhotosDetailsUIViewController *)self context];
+  context = [(PXPhotosDetailsUIViewController *)self context];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __68__PUPhotosDetailsViewController__configureVisualSearchTopResultItem__block_invoke;
   v14[3] = &unk_1E7B7CD48;
   v15 = v11;
   v13 = v11;
-  [v12 performChanges:v14];
+  [context performChanges:v14];
 }
 
-- (PUPhotosDetailsViewController)initWithContext:(id)a3 configuration:(id)a4 assetViewModel:(id)a5
+- (PUPhotosDetailsViewController)initWithContext:(id)context configuration:(id)configuration assetViewModel:(id)model
 {
-  v9 = a5;
+  modelCopy = model;
   v14.receiver = self;
   v14.super_class = PUPhotosDetailsViewController;
-  v10 = [(PXPhotosDetailsUIViewController *)&v14 initWithContext:a3 configuration:a4];
+  v10 = [(PXPhotosDetailsUIViewController *)&v14 initWithContext:context configuration:configuration];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_assetViewModel, a5);
+    objc_storeStrong(&v10->_assetViewModel, model);
     [(PUAssetViewModel *)v11->_assetViewModel registerChangeObserver:v11];
     [(PUPhotosDetailsViewController *)v11 _configureVisualSearchTopResultItem];
     [(PUPhotosDetailsViewController *)v11 _configureShazamEventInfo];
@@ -732,13 +732,13 @@ void __64__PUPhotosDetailsViewController__configurePresentViewController__block_
   return v11;
 }
 
-- (PUPhotosDetailsViewController)initWithContext:(id)a3 options:(unint64_t)a4
+- (PUPhotosDetailsViewController)initWithContext:(id)context options:(unint64_t)options
 {
   v6 = MEMORY[0x1E69C3880];
-  v7 = a3;
+  contextCopy = context;
   v8 = objc_alloc_init(v6);
-  [v8 setOptions:a4];
-  v9 = [(PUPhotosDetailsViewController *)self initWithContext:v7 configuration:v8 assetViewModel:0];
+  [v8 setOptions:options];
+  v9 = [(PUPhotosDetailsViewController *)self initWithContext:contextCopy configuration:v8 assetViewModel:0];
 
   return v9;
 }

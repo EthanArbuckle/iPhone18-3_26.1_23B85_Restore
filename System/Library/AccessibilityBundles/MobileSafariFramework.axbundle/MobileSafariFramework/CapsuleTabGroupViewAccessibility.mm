@@ -1,30 +1,30 @@
 @interface CapsuleTabGroupViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_axIsInteractionEnabled;
 - (BOOL)accessibilityActivate;
-- (BOOL)accessibilityScroll:(int64_t)a3;
+- (BOOL)accessibilityScroll:(int64_t)scroll;
 - (_NSRange)accessibilityRowRange;
 - (id)_accessibilityAllTabGroups;
 - (id)_accessibilityCapsuleCollectionView;
 - (id)accessibilityLabel;
-- (int64_t)_accessibilityIndexOfSelfIn:(id)a3;
+- (int64_t)_accessibilityIndexOfSelfIn:(id)in;
 - (unint64_t)accessibilityTraits;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation CapsuleTabGroupViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SFCapsuleTabGroupView" hasSwiftField:@"titleLabel" withSwiftType:"UILabel"];
-  [v3 validateClass:@"SFCapsuleTabGroupView" hasSwiftField:@"isSelected" withSwiftType:"Bool"];
-  [v3 validateClass:@"MobileSafari.ScrollingCapsuleCollectionView" hasInstanceMethod:@"accessibilityTapItemAtIndex:" withFullSignature:{"v", "q", 0}];
-  [v3 validateClass:@"SFScrollingCapsuleCollectionViewLayout" hasSwiftField:@"content" withSwiftType:"Content"];
-  [v3 validateSwiftStruct:@"MobileSafari.ScrollingCapsuleCollectionView[class].Content" hasSwiftField:@"items" withSwiftType:"Array<Item>"];
-  [v3 validateSwiftStruct:@"MobileSafari.ScrollingCapsuleCollectionView[class].Item" hasSwiftField:@"isInteractivelyInserted" withSwiftType:"Bool"];
-  [v3 validateSwiftStruct:@"MobileSafari.ScrollingCapsuleCollectionView[class].Item" hasSwiftField:@"id" withSwiftType:"UUID"];
-  [v3 validateClass:@"UILabel" hasInstanceMethod:@"text" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SFCapsuleTabGroupView" hasSwiftField:@"titleLabel" withSwiftType:"UILabel"];
+  [validationsCopy validateClass:@"SFCapsuleTabGroupView" hasSwiftField:@"isSelected" withSwiftType:"Bool"];
+  [validationsCopy validateClass:@"MobileSafari.ScrollingCapsuleCollectionView" hasInstanceMethod:@"accessibilityTapItemAtIndex:" withFullSignature:{"v", "q", 0}];
+  [validationsCopy validateClass:@"SFScrollingCapsuleCollectionViewLayout" hasSwiftField:@"content" withSwiftType:"Content"];
+  [validationsCopy validateSwiftStruct:@"MobileSafari.ScrollingCapsuleCollectionView[class].Content" hasSwiftField:@"items" withSwiftType:"Array<Item>"];
+  [validationsCopy validateSwiftStruct:@"MobileSafari.ScrollingCapsuleCollectionView[class].Item" hasSwiftField:@"isInteractivelyInserted" withSwiftType:"Bool"];
+  [validationsCopy validateSwiftStruct:@"MobileSafari.ScrollingCapsuleCollectionView[class].Item" hasSwiftField:@"id" withSwiftType:"UUID"];
+  [validationsCopy validateClass:@"UILabel" hasInstanceMethod:@"text" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -38,18 +38,18 @@
 
 - (BOOL)accessibilityActivate
 {
-  v3 = [(CapsuleTabGroupViewAccessibility *)self _axIsInteractionEnabled];
-  if (v3)
+  _axIsInteractionEnabled = [(CapsuleTabGroupViewAccessibility *)self _axIsInteractionEnabled];
+  if (_axIsInteractionEnabled)
   {
-    v4 = [(CapsuleTabGroupViewAccessibility *)self _accessibilityAllTabGroups];
-    [(CapsuleTabGroupViewAccessibility *)self _accessibilityIndexOfSelfIn:v4];
-    v7 = [(CapsuleTabGroupViewAccessibility *)self _accessibilityCapsuleCollectionView];
-    v5 = v7;
+    _accessibilityAllTabGroups = [(CapsuleTabGroupViewAccessibility *)self _accessibilityAllTabGroups];
+    [(CapsuleTabGroupViewAccessibility *)self _accessibilityIndexOfSelfIn:_accessibilityAllTabGroups];
+    _accessibilityCapsuleCollectionView = [(CapsuleTabGroupViewAccessibility *)self _accessibilityCapsuleCollectionView];
+    v5 = _accessibilityCapsuleCollectionView;
     AXPerformSafeBlock();
     UIAccessibilityPostNotification(*MEMORY[0x29EDC7ED8], self);
   }
 
-  return v3;
+  return _axIsInteractionEnabled;
 }
 
 - (unint64_t)accessibilityTraits
@@ -65,9 +65,9 @@
   }
 
   v6 = v3 | v5;
-  v7 = [(CapsuleTabGroupViewAccessibility *)self _axIsInteractionEnabled];
+  _axIsInteractionEnabled = [(CapsuleTabGroupViewAccessibility *)self _axIsInteractionEnabled];
   v8 = *MEMORY[0x29EDC7FA8];
-  if (v7)
+  if (_axIsInteractionEnabled)
   {
     v8 = 0;
   }
@@ -85,17 +85,17 @@
   return v4;
 }
 
-- (BOOL)accessibilityScroll:(int64_t)a3
+- (BOOL)accessibilityScroll:(int64_t)scroll
 {
   if (![(CapsuleTabGroupViewAccessibility *)self _axIsInteractionEnabled])
   {
     return 0;
   }
 
-  v5 = [(CapsuleTabGroupViewAccessibility *)self _accessibilityCapsuleCollectionView];
-  v6 = [(CapsuleTabGroupViewAccessibility *)self _accessibilityAllTabGroups];
-  v7 = [(CapsuleTabGroupViewAccessibility *)self _accessibilityIndexOfSelfIn:v6];
-  v8 = [v5 safeSwiftValueForKey:@"$__lazy_storage_$_scrollView"];
+  _accessibilityCapsuleCollectionView = [(CapsuleTabGroupViewAccessibility *)self _accessibilityCapsuleCollectionView];
+  _accessibilityAllTabGroups = [(CapsuleTabGroupViewAccessibility *)self _accessibilityAllTabGroups];
+  v7 = [(CapsuleTabGroupViewAccessibility *)self _accessibilityIndexOfSelfIn:_accessibilityAllTabGroups];
+  v8 = [_accessibilityCapsuleCollectionView safeSwiftValueForKey:@"$__lazy_storage_$_scrollView"];
   if (v8)
   {
     v9 = 0;
@@ -106,7 +106,7 @@
       v18[2] = 0x3032000000;
       v18[3] = __Block_byref_object_copy__0;
       v18[4] = __Block_byref_object_dispose__0;
-      v10 = [v6 objectAtIndexedSubscript:v7];
+      v10 = [_accessibilityAllTabGroups objectAtIndexedSubscript:v7];
       v11 = [v10 safeSwiftValueForKey:@"id"];
       v19 = [v11 safeStringForKey:@"UUIDString"];
 
@@ -115,15 +115,15 @@
       v17[2] = __56__CapsuleTabGroupViewAccessibility_accessibilityScroll___block_invoke;
       v17[3] = &unk_29F2D6830;
       v17[4] = v18;
-      v12 = [v6 indexOfObjectPassingTest:v17];
-      if (v12 == 0x7FFFFFFFFFFFFFFFLL || (a3 - 1) > 5 || (v13 = v12 + qword_29BFDEBD8[a3 - 1], v13 < 0) || v13 >= [v6 count])
+      v12 = [_accessibilityAllTabGroups indexOfObjectPassingTest:v17];
+      if (v12 == 0x7FFFFFFFFFFFFFFFLL || (scroll - 1) > 5 || (v13 = v12 + qword_29BFDEBD8[scroll - 1], v13 < 0) || v13 >= [_accessibilityAllTabGroups count])
       {
         v9 = 0;
       }
 
       else
       {
-        v16 = v5;
+        v16 = _accessibilityCapsuleCollectionView;
         AXPerformSafeBlock();
         v15 = v16;
         AXPerformBlockOnMainThreadAfterDelay();
@@ -199,9 +199,9 @@ LABEL_12:
 
 - (_NSRange)accessibilityRowRange
 {
-  v3 = [(CapsuleTabGroupViewAccessibility *)self _accessibilityAllTabGroups];
-  v4 = [(CapsuleTabGroupViewAccessibility *)self _accessibilityIndexOfSelfIn:v3];
-  if (v4 == -1 || (v5 = v4, v4 >= [v3 count]))
+  _accessibilityAllTabGroups = [(CapsuleTabGroupViewAccessibility *)self _accessibilityAllTabGroups];
+  v4 = [(CapsuleTabGroupViewAccessibility *)self _accessibilityIndexOfSelfIn:_accessibilityAllTabGroups];
+  if (v4 == -1 || (v5 = v4, v4 >= [_accessibilityAllTabGroups count]))
   {
     v5 = 0;
     v6 = 0;
@@ -209,7 +209,7 @@ LABEL_12:
 
   else
   {
-    v6 = [v3 count];
+    v6 = [_accessibilityAllTabGroups count];
   }
 
   v7 = v5;
@@ -221,8 +221,8 @@ LABEL_12:
 
 - (id)_accessibilityAllTabGroups
 {
-  v2 = [(CapsuleTabGroupViewAccessibility *)self _accessibilityCapsuleCollectionView];
-  v3 = [v2 safeSwiftValueForKey:@"$__lazy_storage_$_layout"];
+  _accessibilityCapsuleCollectionView = [(CapsuleTabGroupViewAccessibility *)self _accessibilityCapsuleCollectionView];
+  v3 = [_accessibilityCapsuleCollectionView safeSwiftValueForKey:@"$__lazy_storage_$_layout"];
   v4 = [v3 safeSwiftValueForKey:@"content"];
   v5 = [v4 safeSwiftValueForKey:@"items"];
 
@@ -233,10 +233,10 @@ LABEL_12:
 
 - (id)_accessibilityCapsuleCollectionView
 {
-  v2 = self;
-  if (v2)
+  selfCopy = self;
+  if (selfCopy)
   {
-    v3 = v2;
+    v3 = selfCopy;
     do
     {
       MEMORY[0x29C2E0540](@"MobileSafari.ScrollingCapsuleCollectionView");
@@ -250,40 +250,40 @@ LABEL_12:
         v4 = 0;
       }
 
-      v5 = [(CapsuleTabGroupViewAccessibility *)v3 superview];
+      superview = [(CapsuleTabGroupViewAccessibility *)v3 superview];
 
       if (v4)
       {
         break;
       }
 
-      v3 = v5;
+      v3 = superview;
     }
 
-    while (v5);
+    while (superview);
   }
 
   else
   {
-    v5 = 0;
+    superview = 0;
     v4 = 0;
   }
 
   return v4;
 }
 
-- (int64_t)_accessibilityIndexOfSelfIn:(id)a3
+- (int64_t)_accessibilityIndexOfSelfIn:(id)in
 {
-  v4 = a3;
+  inCopy = in;
   v5 = [(CapsuleTabGroupViewAccessibility *)self safeSwiftValueForKey:@"titleLabel"];
   v6 = [v5 safeValueForKey:@"text"];
 
-  if (v6 && [v4 count])
+  if (v6 && [inCopy count])
   {
     v7 = 0;
     while (1)
     {
-      v8 = [v4 objectAtIndexedSubscript:v7];
+      v8 = [inCopy objectAtIndexedSubscript:v7];
       v9 = [v8 safeSwiftStringForKey:@"title"];
       v10 = [v9 isEqualToString:v6];
 
@@ -292,7 +292,7 @@ LABEL_12:
         break;
       }
 
-      if (++v7 >= [v4 count])
+      if (++v7 >= [inCopy count])
       {
         goto LABEL_6;
       }
@@ -310,9 +310,9 @@ LABEL_6:
 
 - (BOOL)_axIsInteractionEnabled
 {
-  v2 = [(CapsuleTabGroupViewAccessibility *)self _accessibilityCapsuleCollectionView];
+  _accessibilityCapsuleCollectionView = [(CapsuleTabGroupViewAccessibility *)self _accessibilityCapsuleCollectionView];
   objc_opt_class();
-  v3 = [v2 safeSwiftValueForKey:@"scrollView"];
+  v3 = [_accessibilityCapsuleCollectionView safeSwiftValueForKey:@"scrollView"];
   v4 = __UIAccessibilityCastAsClass();
 
   LOBYTE(v3) = [v4 isUserInteractionEnabled];

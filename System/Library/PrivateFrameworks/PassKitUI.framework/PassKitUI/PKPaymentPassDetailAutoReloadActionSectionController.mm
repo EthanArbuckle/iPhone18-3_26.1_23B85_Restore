@@ -1,66 +1,66 @@
 @interface PKPaymentPassDetailAutoReloadActionSectionController
-+ (BOOL)validForPaymentPass:(id)a3;
-- (PKPaymentPassDetailAutoReloadActionSectionController)initWithPass:(id)a3 paymentDataProvider:(id)a4 viewStyle:(int64_t)a5 delegate:(id)a6;
++ (BOOL)validForPaymentPass:(id)pass;
+- (PKPaymentPassDetailAutoReloadActionSectionController)initWithPass:(id)pass paymentDataProvider:(id)provider viewStyle:(int64_t)style delegate:(id)delegate;
 - (PKPaymentPassDetailAutoReloadActionSectionControllerDelegate)setupDelegate;
 - (id)allSectionIdentifiers;
 - (id)sectionIdentifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4 sectionIdentifier:(id)a5;
-- (id)titleForFooterInSectionIdentifier:(id)a3;
-- (void)autoReloadSetupController:(id)a3 requestsDismissViewController:(id)a4;
-- (void)autoReloadSetupController:(id)a3 requestsPopViewController:(id)a4;
-- (void)autoReloadSetupController:(id)a3 requestsPresentViewController:(id)a4;
-- (void)autoReloadSetupController:(id)a3 requestsPushViewController:(id)a4;
-- (void)autoReloadSetupControllerDidCancel:(id)a3;
-- (void)autoReloadSetupControllerDidCompleteWithAmount:(id)a3 threshold:(id)a4;
-- (void)launchURL:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path sectionIdentifier:(id)identifier;
+- (id)titleForFooterInSectionIdentifier:(id)identifier;
+- (void)autoReloadSetupController:(id)controller requestsDismissViewController:(id)viewController;
+- (void)autoReloadSetupController:(id)controller requestsPopViewController:(id)viewController;
+- (void)autoReloadSetupController:(id)controller requestsPresentViewController:(id)viewController;
+- (void)autoReloadSetupController:(id)controller requestsPushViewController:(id)viewController;
+- (void)autoReloadSetupControllerDidCancel:(id)cancel;
+- (void)autoReloadSetupControllerDidCompleteWithAmount:(id)amount threshold:(id)threshold;
+- (void)launchURL:(id)l;
 - (void)presentAutoReloadSetupViewController;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4 sectionIdentifier:(id)a5;
-- (void)updateAutoReloadSection:(id)a3;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path sectionIdentifier:(id)identifier;
+- (void)updateAutoReloadSection:(id)section;
 @end
 
 @implementation PKPaymentPassDetailAutoReloadActionSectionController
 
-- (PKPaymentPassDetailAutoReloadActionSectionController)initWithPass:(id)a3 paymentDataProvider:(id)a4 viewStyle:(int64_t)a5 delegate:(id)a6
+- (PKPaymentPassDetailAutoReloadActionSectionController)initWithPass:(id)pass paymentDataProvider:(id)provider viewStyle:(int64_t)style delegate:(id)delegate
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  passCopy = pass;
+  providerCopy = provider;
+  delegateCopy = delegate;
   v25.receiver = self;
   v25.super_class = PKPaymentPassDetailAutoReloadActionSectionController;
   v14 = [(PKPaymentPassDetailSectionController *)&v25 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_pass, a3);
-    objc_storeWeak(&v15->_delegate, v13);
-    v16 = [v11 autoTopUpMerchantTokenIdentifier];
-    if (v16)
+    objc_storeStrong(&v14->_pass, pass);
+    objc_storeWeak(&v15->_delegate, delegateCopy);
+    autoTopUpMerchantTokenIdentifier = [passCopy autoTopUpMerchantTokenIdentifier];
+    if (autoTopUpMerchantTokenIdentifier)
     {
-      v17 = 0;
+      isAutoTopEnabled = 0;
     }
 
     else
     {
-      v17 = [v11 isAutoTopEnabled];
+      isAutoTopEnabled = [passCopy isAutoTopEnabled];
     }
 
-    v15->_isMerchantAutoTopEnabled = v17;
+    v15->_isMerchantAutoTopEnabled = isAutoTopEnabled;
 
-    v18 = [v11 autoTopUpMerchantTokenIdentifier];
-    v19 = v18;
-    if (v18)
+    autoTopUpMerchantTokenIdentifier2 = [passCopy autoTopUpMerchantTokenIdentifier];
+    v19 = autoTopUpMerchantTokenIdentifier2;
+    if (autoTopUpMerchantTokenIdentifier2)
     {
-      LOBYTE(v18) = [v11 isAutoTopEnabled];
+      LOBYTE(autoTopUpMerchantTokenIdentifier2) = [passCopy isAutoTopEnabled];
     }
 
-    v15->_isWalletAutoTopEnabled = v18;
+    v15->_isWalletAutoTopEnabled = autoTopUpMerchantTokenIdentifier2;
 
-    v20 = [v11 localizedDescription];
+    localizedDescription = [passCopy localizedDescription];
     name = v15->_name;
-    v15->_name = v20;
+    v15->_name = localizedDescription;
 
-    v15->_viewStyle = a5;
-    v22 = [[PKPaymentAutoReloadSetupController alloc] initWithPass:v11 paymentDataProvider:v12 viewStyle:v15->_viewStyle delegate:v15];
+    v15->_viewStyle = style;
+    v22 = [[PKPaymentAutoReloadSetupController alloc] initWithPass:passCopy paymentDataProvider:providerCopy viewStyle:v15->_viewStyle delegate:v15];
     autoReloadSetupController = v15->_autoReloadSetupController;
     v15->_autoReloadSetupController = v22;
   }
@@ -68,35 +68,35 @@
   return v15;
 }
 
-- (void)updateAutoReloadSection:(id)a3
+- (void)updateAutoReloadSection:(id)section
 {
-  v11 = a3;
-  objc_storeStrong(&self->_pass, a3);
-  v5 = [v11 autoTopUpMerchantTokenIdentifier];
-  if (v5)
+  sectionCopy = section;
+  objc_storeStrong(&self->_pass, section);
+  autoTopUpMerchantTokenIdentifier = [sectionCopy autoTopUpMerchantTokenIdentifier];
+  if (autoTopUpMerchantTokenIdentifier)
   {
-    v6 = 0;
+    isAutoTopEnabled = 0;
   }
 
   else
   {
-    v6 = [v11 isAutoTopEnabled];
+    isAutoTopEnabled = [sectionCopy isAutoTopEnabled];
   }
 
-  self->_isMerchantAutoTopEnabled = v6;
+  self->_isMerchantAutoTopEnabled = isAutoTopEnabled;
 
-  v7 = [v11 autoTopUpMerchantTokenIdentifier];
-  v8 = v7;
-  if (v7)
+  autoTopUpMerchantTokenIdentifier2 = [sectionCopy autoTopUpMerchantTokenIdentifier];
+  v8 = autoTopUpMerchantTokenIdentifier2;
+  if (autoTopUpMerchantTokenIdentifier2)
   {
-    LOBYTE(v7) = [v11 isAutoTopEnabled];
+    LOBYTE(autoTopUpMerchantTokenIdentifier2) = [sectionCopy isAutoTopEnabled];
   }
 
-  self->_isWalletAutoTopEnabled = v7;
+  self->_isWalletAutoTopEnabled = autoTopUpMerchantTokenIdentifier2;
 
-  v9 = [v11 localizedDescription];
+  localizedDescription = [sectionCopy localizedDescription];
   name = self->_name;
-  self->_name = v9;
+  self->_name = localizedDescription;
 
   [(PKPaymentAutoReloadSetupController *)self->_autoReloadSetupController updateAutoReloadSection:self->_pass];
 }
@@ -114,46 +114,46 @@
 {
   if ([(PKPaymentPassDetailSectionController *)self currentSegment])
   {
-    v3 = MEMORY[0x1E695E0F0];
+    allSectionIdentifiers = MEMORY[0x1E695E0F0];
   }
 
   else
   {
-    v3 = [(PKPaymentPassDetailAutoReloadActionSectionController *)self allSectionIdentifiers];
+    allSectionIdentifiers = [(PKPaymentPassDetailAutoReloadActionSectionController *)self allSectionIdentifiers];
   }
 
-  return v3;
+  return allSectionIdentifiers;
 }
 
-+ (BOOL)validForPaymentPass:(id)a3
++ (BOOL)validForPaymentPass:(id)pass
 {
-  v3 = a3;
-  if ([v3 activationState])
+  passCopy = pass;
+  if ([passCopy activationState])
   {
-    v4 = 0;
+    isAutoTopEnabled = 0;
   }
 
   else
   {
-    v5 = [PKPaymentPassDetailAutoReloadSectionController autoTopUpActionForPass:v3];
+    v5 = [PKPaymentPassDetailAutoReloadSectionController autoTopUpActionForPass:passCopy];
     if (v5)
     {
-      v4 = 1;
+      isAutoTopEnabled = 1;
     }
 
     else
     {
-      v4 = [v3 isAutoTopEnabled];
+      isAutoTopEnabled = [passCopy isAutoTopEnabled];
     }
   }
 
-  return v4;
+  return isAutoTopEnabled;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4 sectionIdentifier:(id)a5
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path sectionIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = [v6 dequeueReusableCellWithIdentifier:@"AutoReloadCellIdentifier"];
+  viewCopy = view;
+  v7 = [viewCopy dequeueReusableCellWithIdentifier:@"AutoReloadCellIdentifier"];
   if (!v7)
   {
     v7 = [objc_alloc(MEMORY[0x1E69DD028]) initWithStyle:0 reuseIdentifier:@"AutoReloadCellIdentifier"];
@@ -163,7 +163,7 @@
   v9 = PKLocalizedPaymentString(&cfstr_PassDetailsAut.isa);
   if (isMerchantAutoTopEnabled)
   {
-    v10 = [(PKPaymentPassDetailSectionController *)self infoCellWithPrimaryText:v9 detailText:self->_name cellStyle:1 forTableView:v6];
+    v10 = [(PKPaymentPassDetailSectionController *)self infoCellWithPrimaryText:v9 detailText:self->_name cellStyle:1 forTableView:viewCopy];
   }
 
   else
@@ -179,7 +179,7 @@
     }
 
     v12 = PKLocalizedPaymentString(&v11->isa);
-    v10 = [(PKPaymentPassDetailSectionController *)self infoCellWithPrimaryText:v9 detailText:v12 cellStyle:1 forTableView:v6];
+    v10 = [(PKPaymentPassDetailSectionController *)self infoCellWithPrimaryText:v9 detailText:v12 cellStyle:1 forTableView:viewCopy];
 
     v7 = v12;
   }
@@ -189,7 +189,7 @@
   return v10;
 }
 
-- (id)titleForFooterInSectionIdentifier:(id)a3
+- (id)titleForFooterInSectionIdentifier:(id)identifier
 {
   if (self->_isMerchantAutoTopEnabled || self->_isWalletAutoTopEnabled)
   {
@@ -204,16 +204,16 @@
   return v4;
 }
 
-- (void)launchURL:(id)a3
+- (void)launchURL:(id)l
 {
-  v7 = a3;
+  lCopy = l;
   WeakRetained = objc_loadWeakRetained(&self->_setupDelegate);
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
     v6 = objc_loadWeakRetained(&self->_setupDelegate);
-    [v6 launchURL:v7];
+    [v6 launchURL:lCopy];
   }
 }
 
@@ -243,27 +243,27 @@
   [WeakRetained presentViewController:v6 animated:1 completion:0];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4 sectionIdentifier:(id)a5
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path sectionIdentifier:(id)identifier
 {
-  v11 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   if (PKEqualObjects())
   {
-    [v11 deselectRowAtIndexPath:v7 animated:1];
+    [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
     if (self->_isMerchantAutoTopEnabled)
     {
       v8 = [[PKPaymentPassDetailAutoReloadMerchantViewController alloc] initWithPass:self->_pass viewStyle:self->_viewStyle delegate:self];
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
-      v10 = [WeakRetained navigationController];
+      navigationController = [WeakRetained navigationController];
 
-      if ([v10 pk_settings_useStateDrivenNavigation])
+      if ([navigationController pk_settings_useStateDrivenNavigation])
       {
-        [v10 pk_settings_pushViewController:v8];
+        [navigationController pk_settings_pushViewController:v8];
       }
 
       else
       {
-        [v10 pushViewController:v8 animated:1];
+        [navigationController pushViewController:v8 animated:1];
       }
     }
 
@@ -274,13 +274,13 @@
   }
 }
 
-- (void)autoReloadSetupControllerDidCompleteWithAmount:(id)a3 threshold:(id)a4
+- (void)autoReloadSetupControllerDidCompleteWithAmount:(id)amount threshold:(id)threshold
 {
   WeakRetained = objc_loadWeakRetained(&self->_setupDelegate);
   [WeakRetained autoReloadSetupControllerDidComplete];
 }
 
-- (void)autoReloadSetupControllerDidCancel:(id)a3
+- (void)autoReloadSetupControllerDidCancel:(id)cancel
 {
   self->_isWalletAutoTopEnabled = 0;
   self->_isMerchantAutoTopEnabled = 0;
@@ -288,49 +288,49 @@
   [WeakRetained reloadSectionIdentifier:@"AutoReloadActionSection"];
 }
 
-- (void)autoReloadSetupController:(id)a3 requestsPushViewController:(id)a4
+- (void)autoReloadSetupController:(id)controller requestsPushViewController:(id)viewController
 {
-  v5 = a4;
+  viewControllerCopy = viewController;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v7 = [WeakRetained navigationController];
+  navigationController = [WeakRetained navigationController];
 
-  if ([v7 pk_settings_useStateDrivenNavigation])
+  if ([navigationController pk_settings_useStateDrivenNavigation])
   {
-    [v7 pk_settings_pushViewController:v5];
+    [navigationController pk_settings_pushViewController:viewControllerCopy];
   }
 
   else
   {
-    [v7 pushViewController:v5 animated:1];
+    [navigationController pushViewController:viewControllerCopy animated:1];
   }
 }
 
-- (void)autoReloadSetupController:(id)a3 requestsDismissViewController:(id)a4
+- (void)autoReloadSetupController:(id)controller requestsDismissViewController:(id)viewController
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)autoReloadSetupController:(id)a3 requestsPresentViewController:(id)a4
+- (void)autoReloadSetupController:(id)controller requestsPresentViewController:(id)viewController
 {
-  v5 = a4;
+  viewControllerCopy = viewController;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained presentViewController:v5 animated:1 completion:0];
+  [WeakRetained presentViewController:viewControllerCopy animated:1 completion:0];
 }
 
-- (void)autoReloadSetupController:(id)a3 requestsPopViewController:(id)a4
+- (void)autoReloadSetupController:(id)controller requestsPopViewController:(id)viewController
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v6 = [WeakRetained navigationController];
+  navigationController = [WeakRetained navigationController];
 
-  if ([v6 pk_settings_useStateDrivenNavigation])
+  if ([navigationController pk_settings_useStateDrivenNavigation])
   {
-    [v6 pk_settings_popViewController];
+    [navigationController pk_settings_popViewController];
   }
 
   else
   {
-    v5 = [v6 popViewControllerAnimated:1];
+    v5 = [navigationController popViewControllerAnimated:1];
   }
 }
 

@@ -7,10 +7,10 @@
 
 - (id)contentsImage
 {
-  v3 = [(UIStatusBarAppIconItemView *)self _appBundleIdentifier];
-  v4 = [(UIStatusBarItemView *)self foregroundStyle];
-  [v4 scale];
-  v5 = [UIImage _applicationIconImageForBundleIdentifier:v3 format:9 scale:?];
+  _appBundleIdentifier = [(UIStatusBarAppIconItemView *)self _appBundleIdentifier];
+  foregroundStyle = [(UIStatusBarItemView *)self foregroundStyle];
+  [foregroundStyle scale];
+  v5 = [UIImage _applicationIconImageForBundleIdentifier:_appBundleIdentifier format:9 scale:?];
 
   v6 = [_UILegibilityImageSet imageFromImage:v5 withShadowImage:0];
 
@@ -19,8 +19,8 @@
 
 - (id)highlightImage
 {
-  v2 = [(UIStatusBarItemView *)self foregroundStyle];
-  v3 = [v2 untintedImageNamed:@"AppIcon_Highlight"];
+  foregroundStyle = [(UIStatusBarItemView *)self foregroundStyle];
+  v3 = [foregroundStyle untintedImageNamed:@"AppIcon_Highlight"];
   v4 = [_UILegibilityImageSet imageFromImage:v3 withShadowImage:0];
 
   return v4;

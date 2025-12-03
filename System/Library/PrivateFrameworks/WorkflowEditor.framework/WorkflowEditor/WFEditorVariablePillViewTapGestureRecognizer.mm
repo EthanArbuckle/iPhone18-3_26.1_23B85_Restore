@@ -1,20 +1,20 @@
 @interface WFEditorVariablePillViewTapGestureRecognizer
-- (_TtC14WorkflowEditorP33_614F1DFEBF3DEBC915070CB296BEEF1944WFEditorVariablePillViewTapGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
-- (void)handleTap:(id)a3;
+- (_TtC14WorkflowEditorP33_614F1DFEBF3DEBC915070CB296BEEF1944WFEditorVariablePillViewTapGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
+- (void)handleTap:(id)tap;
 @end
 
 @implementation WFEditorVariablePillViewTapGestureRecognizer
 
-- (void)handleTap:(id)a3
+- (void)handleTap:(id)tap
 {
-  v4 = a3;
-  v5 = self;
+  tapCopy = tap;
+  selfCopy = self;
   sub_274593388();
 }
 
-- (_TtC14WorkflowEditorP33_614F1DFEBF3DEBC915070CB296BEEF1944WFEditorVariablePillViewTapGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (_TtC14WorkflowEditorP33_614F1DFEBF3DEBC915070CB296BEEF1944WFEditorVariablePillViewTapGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
-  if (a3)
+  if (target)
   {
     swift_unknownObjectRetain();
     sub_27463C13C();

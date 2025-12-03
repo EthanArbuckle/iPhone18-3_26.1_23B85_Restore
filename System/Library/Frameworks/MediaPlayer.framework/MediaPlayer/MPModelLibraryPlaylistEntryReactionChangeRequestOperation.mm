@@ -1,58 +1,58 @@
 @interface MPModelLibraryPlaylistEntryReactionChangeRequestOperation
-- (void)_finishOperationWithError:(id)a3;
-- (void)_performSetReactionRequestForPlaylistWithPlaylist:(id)a3 playlistEntry:(id)a4 reactionText:(id)a5;
+- (void)_finishOperationWithError:(id)error;
+- (void)_performSetReactionRequestForPlaylistWithPlaylist:(id)playlist playlistEntry:(id)entry reactionText:(id)text;
 - (void)execute;
 @end
 
 @implementation MPModelLibraryPlaylistEntryReactionChangeRequestOperation
 
-- (void)_finishOperationWithError:(id)a3
+- (void)_finishOperationWithError:(id)error
 {
-  v5 = a3;
-  v4 = [(MPModelLibraryPlaylistEntryReactionChangeRequestOperation *)self responseHandler];
-  (v4)[2](v4, v5);
+  errorCopy = error;
+  responseHandler = [(MPModelLibraryPlaylistEntryReactionChangeRequestOperation *)self responseHandler];
+  (responseHandler)[2](responseHandler, errorCopy);
 
-  [(MPAsyncOperation *)self finishWithError:v5];
+  [(MPAsyncOperation *)self finishWithError:errorCopy];
 }
 
-- (void)_performSetReactionRequestForPlaylistWithPlaylist:(id)a3 playlistEntry:(id)a4 reactionText:(id)a5
+- (void)_performSetReactionRequestForPlaylistWithPlaylist:(id)playlist playlistEntry:(id)entry reactionText:(id)text
 {
   v31 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
-  v10 = [a3 identifiers];
-  v11 = [v10 library];
-  v12 = [v11 persistentID];
+  entryCopy = entry;
+  textCopy = text;
+  identifiers = [playlist identifiers];
+  library = [identifiers library];
+  persistentID = [library persistentID];
 
-  v13 = [v8 universalIdentifier];
+  universalIdentifier = [entryCopy universalIdentifier];
   v14 = os_log_create("com.apple.amp.mediaplayer", "PlaylistEditing");
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
-    v26 = self;
+    selfCopy = self;
     v27 = 2048;
-    v28 = v12;
+    v28 = persistentID;
     v29 = 2114;
-    v30 = v13;
+    v30 = universalIdentifier;
     _os_log_impl(&dword_1A238D000, v14, OS_LOG_TYPE_DEFAULT, "%{public}@ Updating reaction text on playlist %lld/%{public}@", buf, 0x20u);
   }
 
-  v15 = [(MPAsyncOperation *)self userIdentity];
-  v16 = [MPMediaLibrary deviceMediaLibraryWithUserIdentity:v15];
+  userIdentity = [(MPAsyncOperation *)self userIdentity];
+  v16 = [MPMediaLibrary deviceMediaLibraryWithUserIdentity:userIdentity];
 
-  v17 = [[MPMediaPlaylist alloc] initWithPersistentID:v12 mediaLibrary:v16];
-  v18 = [v8 position];
+  v17 = [[MPMediaPlaylist alloc] initWithPersistentID:persistentID mediaLibrary:v16];
+  position = [entryCopy position];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __138__MPModelLibraryPlaylistEntryReactionChangeRequestOperation__performSetReactionRequestForPlaylistWithPlaylist_playlistEntry_reactionText___block_invoke;
   v21[3] = &unk_1E767B628;
   v21[4] = self;
-  v22 = v9;
-  v23 = v13;
-  v24 = v12;
-  v19 = v13;
-  v20 = v9;
-  [(MPMediaPlaylist *)v17 setReactionText:v20 onEntryAtPosition:v18 completion:v21];
+  v22 = textCopy;
+  v23 = universalIdentifier;
+  v24 = persistentID;
+  v19 = universalIdentifier;
+  v20 = textCopy;
+  [(MPMediaPlaylist *)v17 setReactionText:v20 onEntryAtPosition:position completion:v21];
 }
 
 void __138__MPModelLibraryPlaylistEntryReactionChangeRequestOperation__performSetReactionRequestForPlaylistWithPlaylist_playlistEntry_reactionText___block_invoke(uint64_t a1, char a2, void *a3)
@@ -129,42 +129,42 @@ void __138__MPModelLibraryPlaylistEntryReactionChangeRequestOperation__performSe
 - (void)execute
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = [(MPModelLibraryPlaylistEntryReactionChangeRequest *)self->_request playlist];
-  v5 = [(MPModelLibraryPlaylistEntryReactionChangeRequest *)self->_request playlistEntry];
-  v6 = [(MPModelLibraryPlaylistEntryReactionChangeRequest *)self->_request reactionText];
-  v7 = [v4 identifiers];
-  v8 = [v7 library];
-  v9 = [v8 persistentID];
+  playlist = [(MPModelLibraryPlaylistEntryReactionChangeRequest *)self->_request playlist];
+  playlistEntry = [(MPModelLibraryPlaylistEntryReactionChangeRequest *)self->_request playlistEntry];
+  reactionText = [(MPModelLibraryPlaylistEntryReactionChangeRequest *)self->_request reactionText];
+  identifiers = [playlist identifiers];
+  library = [identifiers library];
+  persistentID = [library persistentID];
 
-  if (!v9)
+  if (!persistentID)
   {
-    v23 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v23 handleFailureInMethod:a2 object:self file:@"MPModelLibraryPlaylistEntryReactionChangeRequestOperation.m" lineNumber:27 description:@"Must be a playlist in the library"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelLibraryPlaylistEntryReactionChangeRequestOperation.m" lineNumber:27 description:@"Must be a playlist in the library"];
   }
 
-  if ([v5 hasLoadedValueForKey:@"MPModelPropertyPlaylistEntryUniversalIdentifier"])
+  if ([playlistEntry hasLoadedValueForKey:@"MPModelPropertyPlaylistEntryUniversalIdentifier"])
   {
-    v10 = [v5 universalIdentifier];
-  }
-
-  else
-  {
-    v10 = 0;
-  }
-
-  if ([v10 length])
-  {
-    [(MPModelLibraryPlaylistEntryReactionChangeRequestOperation *)self _performSetReactionRequestForPlaylistWithPlaylist:v4 playlistEntry:v5 reactionText:v6];
+    universalIdentifier = [playlistEntry universalIdentifier];
   }
 
   else
   {
-    v25 = v6;
+    universalIdentifier = 0;
+  }
+
+  if ([universalIdentifier length])
+  {
+    [(MPModelLibraryPlaylistEntryReactionChangeRequestOperation *)self _performSetReactionRequestForPlaylistWithPlaylist:playlist playlistEntry:playlistEntry reactionText:reactionText];
+  }
+
+  else
+  {
+    v25 = reactionText;
     v11 = os_log_create("com.apple.amp.mediaplayer", "PlaylistEditing");
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v36 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1A238D000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@ Reloading playlist entry to get required properties", buf, 0xCu);
     }
 
@@ -194,7 +194,7 @@ void __138__MPModelLibraryPlaylistEntryReactionChangeRequestOperation__performSe
     [(MPModelRequest *)v15 setItemKind:v21];
 
     [(MPModelRequest *)v15 setItemProperties:v24];
-    v31 = v4;
+    v31 = playlist;
     v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v31 count:1];
     [(MPModelLibraryRequest *)v15 setScopedContainers:v22];
 
@@ -203,9 +203,9 @@ void __138__MPModelLibraryPlaylistEntryReactionChangeRequestOperation__performSe
     v27[2] = __68__MPModelLibraryPlaylistEntryReactionChangeRequestOperation_execute__block_invoke;
     v27[3] = &unk_1E767B600;
     v27[4] = self;
-    v28 = v5;
-    v29 = v4;
-    v6 = v25;
+    v28 = playlistEntry;
+    v29 = playlist;
+    reactionText = v25;
     v30 = v25;
     [(MPModelLibraryRequest *)v15 performWithResponseHandler:v27];
   }

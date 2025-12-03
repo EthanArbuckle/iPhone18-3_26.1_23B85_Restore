@@ -3,16 +3,16 @@
 + (id)_condensedPaletteColors;
 + (id)_incomingCallRainbowTextStyle;
 + (id)_standardPaletteColors;
-+ (id)defaultPaletteForContext:(unint64_t)a3 role:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)defaultPaletteForContext:(unint64_t)context role:(id)role;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (PUIStylePalette)initWithBSXPCCoder:(id)a3;
-- (PUIStylePalette)initWithCoder:(id)a3;
-- (PUIStylePalette)initWithStyles:(id)a3 context:(unint64_t)a4 role:(id)a5 localizedName:(id)a6 defaultPalette:(BOOL)a7;
+- (PUIStylePalette)initWithBSXPCCoder:(id)coder;
+- (PUIStylePalette)initWithCoder:(id)coder;
+- (PUIStylePalette)initWithStyles:(id)styles context:(unint64_t)context role:(id)role localizedName:(id)name defaultPalette:(BOOL)palette;
 - (unint64_t)hash;
-- (void)appendDescriptionToFormatter:(id)a3;
-- (void)encodeWithBSXPCCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)appendDescriptionToFormatter:(id)formatter;
+- (void)encodeWithBSXPCCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PUIStylePalette
@@ -89,10 +89,10 @@
   v11[2] = v5;
   v6 = [MEMORY[0x1E69DC888] colorNamed:@"desaturatedBrown" inBundle:v2 compatibleWithTraitCollection:0];
   v11[3] = v6;
-  v7 = [MEMORY[0x1E69DC888] whiteColor];
-  v11[4] = v7;
-  v8 = [MEMORY[0x1E69DC888] blackColor];
-  v11[5] = v8;
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  v11[4] = whiteColor;
+  blackColor = [MEMORY[0x1E69DC888] blackColor];
+  v11[5] = blackColor;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:6];
 
   return v9;
@@ -121,23 +121,23 @@
   return v10;
 }
 
-+ (id)defaultPaletteForContext:(unint64_t)a3 role:(id)a4
++ (id)defaultPaletteForContext:(unint64_t)context role:(id)role
 {
   v21[2] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [MEMORY[0x1E69DC938] currentDevice];
-  if ([v7 userInterfaceIdiom] == 1)
+  roleCopy = role;
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  if ([currentDevice userInterfaceIdiom] == 1)
   {
-    [a1 _condensedPaletteColors];
+    [self _condensedPaletteColors];
   }
 
   else
   {
-    [a1 _standardPaletteColors];
+    [self _standardPaletteColors];
   }
   v8 = ;
 
-  if (a3 == 2)
+  if (context == 2)
   {
     v9 = objc_alloc_init(PUIStyleVibrantMaterial);
     v21[0] = v9;
@@ -147,7 +147,7 @@
 
     if (_os_feature_enabled_impl())
     {
-      v12 = [v6 isEqualToString:*MEMORY[0x1E69C5218]];
+      v12 = [roleCopy isEqualToString:*MEMORY[0x1E69C5218]];
     }
 
     else
@@ -158,13 +158,13 @@
     v16 = _os_feature_enabled_impl();
     if (v16)
     {
-      v16 = [v6 isEqualToString:*MEMORY[0x1E69C5220]];
+      v16 = [roleCopy isEqualToString:*MEMORY[0x1E69C5220]];
     }
 
     if ((v12 | v16))
     {
-      v17 = [objc_opt_class() _incomingCallRainbowTextStyle];
-      v18 = [v11 arrayByAddingObject:v17];
+      _incomingCallRainbowTextStyle = [objc_opt_class() _incomingCallRainbowTextStyle];
+      v18 = [v11 arrayByAddingObject:_incomingCallRainbowTextStyle];
 
       v11 = v18;
     }
@@ -175,13 +175,13 @@
 
   else
   {
-    v13 = [a1 _additionalColorsForExtendedPalette];
-    v14 = [v8 arrayByAddingObjectsFromArray:v13];
+    _additionalColorsForExtendedPalette = [self _additionalColorsForExtendedPalette];
+    v14 = [v8 arrayByAddingObjectsFromArray:_additionalColorsForExtendedPalette];
 
     v15 = [v14 bs_map:&__block_literal_global_70];
   }
 
-  v19 = [[a1 alloc] initWithStyles:v15 context:a3 role:v6 localizedName:0 defaultPalette:1];
+  v19 = [[self alloc] initWithStyles:v15 context:context role:roleCopy localizedName:0 defaultPalette:1];
 
   return v19;
 }
@@ -212,33 +212,33 @@ PUIStyleDiscreteColors *__49__PUIStylePalette_defaultPaletteForContext_role___bl
   return v5;
 }
 
-- (PUIStylePalette)initWithStyles:(id)a3 context:(unint64_t)a4 role:(id)a5 localizedName:(id)a6 defaultPalette:(BOOL)a7
+- (PUIStylePalette)initWithStyles:(id)styles context:(unint64_t)context role:(id)role localizedName:(id)name defaultPalette:(BOOL)palette
 {
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
+  stylesCopy = styles;
+  roleCopy = role;
+  nameCopy = name;
   v20.receiver = self;
   v20.super_class = PUIStylePalette;
   v16 = [(PUIStylePalette *)&v20 init];
   if (v16)
   {
-    v17 = [v15 copy];
+    v17 = [nameCopy copy];
     localizedName = v16->_localizedName;
     v16->_localizedName = v17;
 
-    objc_storeStrong(&v16->_styles, a3);
-    v16->_context = a4;
-    objc_storeStrong(&v16->_role, a5);
-    v16->_defaultPalette = a7;
+    objc_storeStrong(&v16->_styles, styles);
+    v16->_context = context;
+    objc_storeStrong(&v16->_role, role);
+    v16->_defaultPalette = palette;
   }
 
   return v16;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v13 = 1;
   }
@@ -250,15 +250,15 @@ PUIStyleDiscreteColors *__49__PUIStylePalette_defaultPaletteForContext_role___bl
 
     if (isKindOfClass)
     {
-      v7 = v4;
-      v8 = [(PUIStylePalette *)self localizedName];
-      v9 = [(PUIStylePalette *)v7 localizedName];
+      v7 = equalCopy;
+      localizedName = [(PUIStylePalette *)self localizedName];
+      localizedName2 = [(PUIStylePalette *)v7 localizedName];
       v10 = BSEqualStrings();
 
       if (v10)
       {
-        v11 = [(PUIStylePalette *)self styles];
-        v12 = [(PUIStylePalette *)v7 styles];
+        styles = [(PUIStylePalette *)self styles];
+        styles2 = [(PUIStylePalette *)v7 styles];
         v13 = BSEqualObjects();
       }
 
@@ -279,10 +279,10 @@ PUIStyleDiscreteColors *__49__PUIStylePalette_defaultPaletteForContext_role___bl
 
 - (unint64_t)hash
 {
-  v3 = [(PUIStylePalette *)self styles];
-  v4 = [v3 hash];
-  v5 = [(PUIStylePalette *)self localizedName];
-  v6 = [v5 hash];
+  styles = [(PUIStylePalette *)self styles];
+  v4 = [styles hash];
+  localizedName = [(PUIStylePalette *)self localizedName];
+  v6 = [localizedName hash];
 
   return v6 ^ v4;
 }
@@ -294,7 +294,7 @@ PUIStyleDiscreteColors *__49__PUIStylePalette_defaultPaletteForContext_role___bl
   v8 = 3221225472;
   v9 = __30__PUIStylePalette_description__block_invoke;
   v10 = &unk_1E78548A0;
-  v11 = self;
+  selfCopy = self;
   v12 = v3;
   v4 = v3;
   [v4 appendProem:self block:&v7];
@@ -303,10 +303,10 @@ PUIStyleDiscreteColors *__49__PUIStylePalette_defaultPaletteForContext_role___bl
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   [(PUIStylePalette *)self styles];
   v14 = 0u;
   v15 = 0u;
@@ -347,34 +347,34 @@ PUIStyleDiscreteColors *__49__PUIStylePalette_defaultPaletteForContext_role___bl
     }
   }
 
-  v10 = [(PUIStylePalette *)self styles];
-  [v4 encodeObject:v10 forKey:@"styles"];
+  styles = [(PUIStylePalette *)self styles];
+  [coderCopy encodeObject:styles forKey:@"styles"];
 
   role = self->_role;
   if (role)
   {
-    [v4 encodeObject:role forKey:@"role"];
+    [coderCopy encodeObject:role forKey:@"role"];
   }
 
-  v12 = [(PUIStylePalette *)self localizedName];
-  [v4 encodeObject:v12 forKey:@"localizedName"];
+  localizedName = [(PUIStylePalette *)self localizedName];
+  [coderCopy encodeObject:localizedName forKey:@"localizedName"];
 
   v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[PUIStylePalette context](self, "context")}];
-  [v4 encodeObject:v13 forKey:@"context"];
+  [coderCopy encodeObject:v13 forKey:@"context"];
 LABEL_13:
 }
 
-- (PUIStylePalette)initWithCoder:(id)a3
+- (PUIStylePalette)initWithCoder:(id)coder
 {
   v16[6] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"context"];
-  v6 = [v5 unsignedIntegerValue];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"context"];
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"role"];
-  if (v6)
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"role"];
+  if (unsignedIntegerValue)
   {
-    v8 = [objc_opt_class() defaultPaletteForContext:v6 role:v7];
+    selfCopy = [objc_opt_class() defaultPaletteForContext:unsignedIntegerValue role:v7];
   }
 
   else
@@ -388,22 +388,22 @@ LABEL_13:
     v16[5] = objc_opt_class();
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:6];
     v11 = [v9 setWithArray:v10];
-    v12 = [v4 decodeArrayOfObjectsOfClasses:v11 forKey:@"styles"];
+    v12 = [coderCopy decodeArrayOfObjectsOfClasses:v11 forKey:@"styles"];
 
     v13 = objc_opt_self();
-    v14 = [v4 decodeObjectOfClass:v13 forKey:@"localizedName"];
+    v14 = [coderCopy decodeObjectOfClass:v13 forKey:@"localizedName"];
 
     self = [(PUIStylePalette *)self initWithStyles:v12 context:0 role:v7 localizedName:v14 defaultPalette:0];
-    v8 = self;
+    selfCopy = self;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   [(PUIStylePalette *)self styles];
   v27 = 0u;
   v28 = 0u;
@@ -441,7 +441,7 @@ LABEL_13:
   }
 
   v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v5, "count")}];
-  [v4 encodeObject:v10 forKey:@"styleCount"];
+  [coderCopy encodeObject:v10 forKey:@"styleCount"];
 
   v25 = 0u;
   v26 = 0u;
@@ -466,7 +466,7 @@ LABEL_13:
 
         v17 = *(*(&v23 + 1) + 8 * j);
         v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"style%ld", v14];
-        [v4 encodeObject:v17 forKey:v18];
+        [coderCopy encodeObject:v17 forKey:v18];
         ++v14;
       }
 
@@ -479,50 +479,50 @@ LABEL_13:
   role = self->_role;
   if (role)
   {
-    [v4 encodeObject:role forKey:@"role"];
+    [coderCopy encodeObject:role forKey:@"role"];
   }
 
-  v20 = [(PUIStylePalette *)self localizedName];
-  [v4 encodeObject:v20 forKey:@"localizedName"];
+  localizedName = [(PUIStylePalette *)self localizedName];
+  [coderCopy encodeObject:localizedName forKey:@"localizedName"];
 
   v21 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[PUIStylePalette context](self, "context")}];
-  [v4 encodeObject:v21 forKey:@"context"];
+  [coderCopy encodeObject:v21 forKey:@"context"];
   v5 = v22;
 LABEL_20:
 }
 
-- (PUIStylePalette)initWithBSXPCCoder:(id)a3
+- (PUIStylePalette)initWithBSXPCCoder:(id)coder
 {
   v37[5] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"context"];
-  v6 = [v5 unsignedIntegerValue];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"context"];
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
 
   v7 = 0x1E696A000uLL;
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"role"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"role"];
   v9 = v8;
-  if (v6)
+  if (unsignedIntegerValue)
   {
-    v10 = [objc_opt_class() defaultPaletteForContext:v6 role:v8];
+    selfCopy2 = [objc_opt_class() defaultPaletteForContext:unsignedIntegerValue role:v8];
   }
 
   else
   {
     v28 = v8;
-    v29 = self;
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"styleCount"];
-    v12 = [v11 integerValue];
+    selfCopy = self;
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"styleCount"];
+    integerValue = [v11 integerValue];
 
-    v30 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v37[0] = objc_opt_class();
     v37[1] = objc_opt_class();
     v37[2] = objc_opt_class();
     v37[3] = objc_opt_class();
     v37[4] = objc_opt_class();
     v31 = [MEMORY[0x1E695DEC8] arrayWithObjects:v37 count:5];
-    if (v12)
+    if (integerValue)
     {
-      v13 = v12;
+      v13 = integerValue;
       for (i = 0; i != v13; ++i)
       {
         v15 = v7;
@@ -546,11 +546,11 @@ LABEL_20:
                 objc_enumerationMutation(v17);
               }
 
-              v22 = [v4 decodeObjectOfClass:*(*(&v32 + 1) + 8 * j) forKey:v16];
+              v22 = [coderCopy decodeObjectOfClass:*(*(&v32 + 1) + 8 * j) forKey:v16];
               if (v22)
               {
                 v23 = v22;
-                [v30 addObject:v22];
+                [array addObject:v22];
 
                 goto LABEL_15;
               }
@@ -573,41 +573,41 @@ LABEL_15:
     }
 
     v24 = objc_opt_self();
-    v25 = [v4 decodeObjectOfClass:v24 forKey:@"localizedName"];
+    v25 = [coderCopy decodeObjectOfClass:v24 forKey:@"localizedName"];
 
-    v26 = [v30 copy];
+    v26 = [array copy];
     v9 = v28;
-    self = [(PUIStylePalette *)v29 initWithStyles:v26 context:0 role:v28 localizedName:v25 defaultPalette:0];
+    self = [(PUIStylePalette *)selfCopy initWithStyles:v26 context:0 role:v28 localizedName:v25 defaultPalette:0];
 
-    v10 = self;
+    selfCopy2 = self;
   }
 
-  return v10;
+  return selfCopy2;
 }
 
-- (void)appendDescriptionToFormatter:(id)a3
+- (void)appendDescriptionToFormatter:(id)formatter
 {
-  v4 = a3;
-  v5 = [(PUIStylePalette *)self context];
-  if (v5 > 2)
+  formatterCopy = formatter;
+  context = [(PUIStylePalette *)self context];
+  if (context > 2)
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = off_1E78548C0[v5];
+    v6 = off_1E78548C0[context];
   }
 
-  [v4 appendString:v6 withName:@"context"];
-  v7 = [(PUIStylePalette *)self role];
-  [v4 appendString:v7 withName:@"role"];
+  [formatterCopy appendString:v6 withName:@"context"];
+  role = [(PUIStylePalette *)self role];
+  [formatterCopy appendString:role withName:@"role"];
 
-  v8 = [(PUIStylePalette *)self styles];
-  v9 = [v4 appendObject:v8 withName:@"styles"];
+  styles = [(PUIStylePalette *)self styles];
+  v9 = [formatterCopy appendObject:styles withName:@"styles"];
 
-  v10 = [(PUIStylePalette *)self localizedName];
-  [v4 appendString:v10 withName:@"localizedName" skipIfEmpty:1];
+  localizedName = [(PUIStylePalette *)self localizedName];
+  [formatterCopy appendString:localizedName withName:@"localizedName" skipIfEmpty:1];
 }
 
 @end

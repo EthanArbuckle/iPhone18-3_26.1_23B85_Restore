@@ -1,12 +1,12 @@
 @interface UserIdentifyIntentResponse
-- (UserIdentifyIntentResponse)initWithPropertiesByName:(id)a3;
+- (UserIdentifyIntentResponse)initWithPropertiesByName:(id)name;
 @end
 
 @implementation UserIdentifyIntentResponse
 
-- (UserIdentifyIntentResponse)initWithPropertiesByName:(id)a3
+- (UserIdentifyIntentResponse)initWithPropertiesByName:(id)name
 {
-  if (a3)
+  if (name)
   {
     v3 = sub_266E9CFC4();
   }

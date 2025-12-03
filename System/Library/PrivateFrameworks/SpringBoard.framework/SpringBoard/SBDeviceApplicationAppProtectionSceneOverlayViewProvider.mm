@@ -1,5 +1,5 @@
 @interface SBDeviceApplicationAppProtectionSceneOverlayViewProvider
-- (SBDeviceApplicationAppProtectionSceneOverlayViewProvider)initWithSceneHandle:(id)a3 delegate:(id)a4;
+- (SBDeviceApplicationAppProtectionSceneOverlayViewProvider)initWithSceneHandle:(id)handle delegate:(id)delegate;
 - (id)_appProtectionAssistant;
 - (void)_acquireKeyboardFocusPreventionAssertionIfNeeded;
 - (void)_acquireVisibilityAssertionIfNeeded;
@@ -7,30 +7,30 @@
 - (void)_deactivateIfPossible;
 - (void)_invalidateKeyboardFocusPreventionAssertion;
 - (void)_invalidateVisibilityAssertion;
-- (void)appProtectionAssistantShouldShieldDidChange:(id)a3;
+- (void)appProtectionAssistantShouldShieldDidChange:(id)change;
 - (void)dealloc;
-- (void)hideContentWithAnimation:(BOOL)a3 completionHandler:(id)a4;
+- (void)hideContentWithAnimation:(BOOL)animation completionHandler:(id)handler;
 - (void)invalidate;
-- (void)sceneHandle:(id)a3 didChangeEffectiveForegroundness:(BOOL)a4;
-- (void)sceneHandle:(id)a3 didCreateScene:(id)a4;
-- (void)sceneHandle:(id)a3 replacedWithSceneHandle:(id)a4;
-- (void)showContentWithAnimation:(BOOL)a3 completionHandler:(id)a4;
+- (void)sceneHandle:(id)handle didChangeEffectiveForegroundness:(BOOL)foregroundness;
+- (void)sceneHandle:(id)handle didCreateScene:(id)scene;
+- (void)sceneHandle:(id)handle replacedWithSceneHandle:(id)sceneHandle;
+- (void)showContentWithAnimation:(BOOL)animation completionHandler:(id)handler;
 @end
 
 @implementation SBDeviceApplicationAppProtectionSceneOverlayViewProvider
 
 - (void)_activateIfPossible
 {
-  v6 = [(SBDeviceApplicationAppProtectionSceneOverlayViewProvider *)self _appProtectionAssistant];
-  if ([v6 shouldShield])
+  _appProtectionAssistant = [(SBDeviceApplicationAppProtectionSceneOverlayViewProvider *)self _appProtectionAssistant];
+  if ([_appProtectionAssistant shouldShield])
   {
-    v3 = [(SBDeviceApplicationAppProtectionSceneOverlayViewProvider *)self shieldViewController];
+    shieldViewController = [(SBDeviceApplicationAppProtectionSceneOverlayViewProvider *)self shieldViewController];
 
-    if (!v3)
+    if (!shieldViewController)
     {
-      v4 = [(SBDeviceApplicationAppProtectionSceneOverlayViewProvider *)self _appProtectionAssistant];
-      v5 = [v4 createShieldUIViewController];
-      [(SBDeviceApplicationAppProtectionSceneOverlayViewProvider *)self setShieldViewController:v5];
+      _appProtectionAssistant2 = [(SBDeviceApplicationAppProtectionSceneOverlayViewProvider *)self _appProtectionAssistant];
+      createShieldUIViewController = [_appProtectionAssistant2 createShieldUIViewController];
+      [(SBDeviceApplicationAppProtectionSceneOverlayViewProvider *)self setShieldViewController:createShieldUIViewController];
 
       v7.receiver = self;
       v7.super_class = SBDeviceApplicationAppProtectionSceneOverlayViewProvider;
@@ -45,25 +45,25 @@
 
 - (id)_appProtectionAssistant
 {
-  v2 = [(SBDeviceApplicationSceneOverlayViewProvider *)self sceneHandle];
-  v3 = [v2 application];
-  v4 = [SBApplicationAppProtectionAssistant assistantForApplication:v3];
+  sceneHandle = [(SBDeviceApplicationSceneOverlayViewProvider *)self sceneHandle];
+  application = [sceneHandle application];
+  v4 = [SBApplicationAppProtectionAssistant assistantForApplication:application];
 
   return v4;
 }
 
 - (void)_acquireVisibilityAssertionIfNeeded
 {
-  v3 = [(SBDeviceApplicationAppProtectionSceneOverlayViewProvider *)self visibilityAssertion];
+  visibilityAssertion = [(SBDeviceApplicationAppProtectionSceneOverlayViewProvider *)self visibilityAssertion];
 
-  if (!v3)
+  if (!visibilityAssertion)
   {
-    v8 = [(SBDeviceApplicationAppProtectionSceneOverlayViewProvider *)self _appProtectionAssistant];
-    v4 = [(SBDeviceApplicationAppProtectionSceneOverlayViewProvider *)self sceneIdentifier];
-    v5 = v4;
-    if (v4)
+    _appProtectionAssistant = [(SBDeviceApplicationAppProtectionSceneOverlayViewProvider *)self _appProtectionAssistant];
+    sceneIdentifier = [(SBDeviceApplicationAppProtectionSceneOverlayViewProvider *)self sceneIdentifier];
+    v5 = sceneIdentifier;
+    if (sceneIdentifier)
     {
-      v6 = v4;
+      v6 = sceneIdentifier;
     }
 
     else
@@ -71,28 +71,28 @@
       v6 = @"NULL scene";
     }
 
-    v7 = [v8 acquireVisibilityAssertionForReason:v6];
+    v7 = [_appProtectionAssistant acquireVisibilityAssertionForReason:v6];
     [(SBDeviceApplicationAppProtectionSceneOverlayViewProvider *)self setVisibilityAssertion:v7];
   }
 }
 
-- (SBDeviceApplicationAppProtectionSceneOverlayViewProvider)initWithSceneHandle:(id)a3 delegate:(id)a4
+- (SBDeviceApplicationAppProtectionSceneOverlayViewProvider)initWithSceneHandle:(id)handle delegate:(id)delegate
 {
-  v6 = a3;
+  handleCopy = handle;
   v12.receiver = self;
   v12.super_class = SBDeviceApplicationAppProtectionSceneOverlayViewProvider;
-  v7 = [(SBDeviceApplicationSceneOverlayViewProvider *)&v12 initWithSceneHandle:v6 delegate:a4];
+  v7 = [(SBDeviceApplicationSceneOverlayViewProvider *)&v12 initWithSceneHandle:handleCopy delegate:delegate];
   v8 = v7;
   if (v7)
   {
-    v9 = [(SBDeviceApplicationAppProtectionSceneOverlayViewProvider *)v7 _appProtectionAssistant];
-    [v9 addObserver:v8];
+    _appProtectionAssistant = [(SBDeviceApplicationAppProtectionSceneOverlayViewProvider *)v7 _appProtectionAssistant];
+    [_appProtectionAssistant addObserver:v8];
 
-    [v6 addObserver:v8];
-    if ([v6 isEffectivelyForeground])
+    [handleCopy addObserver:v8];
+    if ([handleCopy isEffectivelyForeground])
     {
-      v10 = [v6 sceneIdentifier];
-      [(SBDeviceApplicationAppProtectionSceneOverlayViewProvider *)v8 setSceneIdentifier:v10];
+      sceneIdentifier = [handleCopy sceneIdentifier];
+      [(SBDeviceApplicationAppProtectionSceneOverlayViewProvider *)v8 setSceneIdentifier:sceneIdentifier];
 
       [(SBDeviceApplicationAppProtectionSceneOverlayViewProvider *)v8 _acquireVisibilityAssertionIfNeeded];
     }
@@ -114,29 +114,29 @@
   v5.receiver = self;
   v5.super_class = SBDeviceApplicationAppProtectionSceneOverlayViewProvider;
   [(SBDeviceApplicationSceneOverlayViewProvider *)&v5 invalidate];
-  v3 = [(SBDeviceApplicationAppProtectionSceneOverlayViewProvider *)self _appProtectionAssistant];
-  [v3 removeObserver:self];
+  _appProtectionAssistant = [(SBDeviceApplicationAppProtectionSceneOverlayViewProvider *)self _appProtectionAssistant];
+  [_appProtectionAssistant removeObserver:self];
 
-  v4 = [(SBDeviceApplicationSceneOverlayViewProvider *)self sceneHandle];
-  [v4 removeObserver:self];
+  sceneHandle = [(SBDeviceApplicationSceneOverlayViewProvider *)self sceneHandle];
+  [sceneHandle removeObserver:self];
 
   [(SBDeviceApplicationAppProtectionSceneOverlayViewProvider *)self _invalidateVisibilityAssertion];
   [(SBDeviceApplicationAppProtectionSceneOverlayViewProvider *)self _invalidateKeyboardFocusPreventionAssertion];
   [(SBDeviceApplicationAppProtectionSceneOverlayViewProvider *)self setDeallocating:1];
 }
 
-- (void)sceneHandle:(id)a3 didCreateScene:(id)a4
+- (void)sceneHandle:(id)handle didCreateScene:(id)scene
 {
-  if ([a3 isEffectivelyForeground])
+  if ([handle isEffectivelyForeground])
   {
 
     [(SBDeviceApplicationAppProtectionSceneOverlayViewProvider *)self _acquireVisibilityAssertionIfNeeded];
   }
 }
 
-- (void)sceneHandle:(id)a3 didChangeEffectiveForegroundness:(BOOL)a4
+- (void)sceneHandle:(id)handle didChangeEffectiveForegroundness:(BOOL)foregroundness
 {
-  if (a4)
+  if (foregroundness)
   {
     [(SBDeviceApplicationAppProtectionSceneOverlayViewProvider *)self _acquireVisibilityAssertionIfNeeded];
   }
@@ -147,29 +147,29 @@
   }
 }
 
-- (void)sceneHandle:(id)a3 replacedWithSceneHandle:(id)a4
+- (void)sceneHandle:(id)handle replacedWithSceneHandle:(id)sceneHandle
 {
-  v6 = a4;
-  [a3 removeObserver:self];
-  [v6 addObserver:self];
+  sceneHandleCopy = sceneHandle;
+  [handle removeObserver:self];
+  [sceneHandleCopy addObserver:self];
 }
 
 - (void)_deactivateIfPossible
 {
-  v3 = [(SBDeviceApplicationAppProtectionSceneOverlayViewProvider *)self shieldViewController];
-  if (v3)
+  shieldViewController = [(SBDeviceApplicationAppProtectionSceneOverlayViewProvider *)self shieldViewController];
+  if (shieldViewController)
   {
-    v4 = v3;
+    v4 = shieldViewController;
     if ([(SBDeviceApplicationAppProtectionSceneOverlayViewProvider *)self isDeallocating])
     {
     }
 
     else
     {
-      v5 = [(SBDeviceApplicationAppProtectionSceneOverlayViewProvider *)self _appProtectionAssistant];
-      v6 = [v5 shouldShield];
+      _appProtectionAssistant = [(SBDeviceApplicationAppProtectionSceneOverlayViewProvider *)self _appProtectionAssistant];
+      shouldShield = [_appProtectionAssistant shouldShield];
 
-      if (v6)
+      if (shouldShield)
       {
         return;
       }
@@ -182,28 +182,28 @@
   }
 }
 
-- (void)showContentWithAnimation:(BOOL)a3 completionHandler:(id)a4
+- (void)showContentWithAnimation:(BOOL)animation completionHandler:(id)handler
 {
   v5.receiver = self;
   v5.super_class = SBDeviceApplicationAppProtectionSceneOverlayViewProvider;
-  [(SBDeviceApplicationSceneOverlayViewProvider *)&v5 showContentWithAnimation:a3 completionHandler:a4];
+  [(SBDeviceApplicationSceneOverlayViewProvider *)&v5 showContentWithAnimation:animation completionHandler:handler];
   [(SBDeviceApplicationAppProtectionSceneOverlayViewProvider *)self _acquireKeyboardFocusPreventionAssertionIfNeeded];
 }
 
-- (void)hideContentWithAnimation:(BOOL)a3 completionHandler:(id)a4
+- (void)hideContentWithAnimation:(BOOL)animation completionHandler:(id)handler
 {
   v5.receiver = self;
   v5.super_class = SBDeviceApplicationAppProtectionSceneOverlayViewProvider;
-  [(SBDeviceApplicationSceneOverlayViewProvider *)&v5 hideContentWithAnimation:a3 completionHandler:a4];
+  [(SBDeviceApplicationSceneOverlayViewProvider *)&v5 hideContentWithAnimation:animation completionHandler:handler];
   [(SBDeviceApplicationAppProtectionSceneOverlayViewProvider *)self _invalidateKeyboardFocusPreventionAssertion];
 }
 
-- (void)appProtectionAssistantShouldShieldDidChange:(id)a3
+- (void)appProtectionAssistantShouldShieldDidChange:(id)change
 {
-  v4 = [(SBDeviceApplicationAppProtectionSceneOverlayViewProvider *)self _appProtectionAssistant];
-  v5 = [v4 shouldShield];
+  _appProtectionAssistant = [(SBDeviceApplicationAppProtectionSceneOverlayViewProvider *)self _appProtectionAssistant];
+  shouldShield = [_appProtectionAssistant shouldShield];
 
-  if (v5)
+  if (shouldShield)
   {
 
     [(SBDeviceApplicationAppProtectionSceneOverlayViewProvider *)self _activateIfPossible];
@@ -218,32 +218,32 @@
 
 - (void)_invalidateVisibilityAssertion
 {
-  v3 = [(SBDeviceApplicationAppProtectionSceneOverlayViewProvider *)self visibilityAssertion];
+  visibilityAssertion = [(SBDeviceApplicationAppProtectionSceneOverlayViewProvider *)self visibilityAssertion];
   [(SBDeviceApplicationAppProtectionSceneOverlayViewProvider *)self setVisibilityAssertion:0];
-  [v3 invalidate];
+  [visibilityAssertion invalidate];
 }
 
 - (void)_acquireKeyboardFocusPreventionAssertionIfNeeded
 {
-  v3 = [(SBDeviceApplicationAppProtectionSceneOverlayViewProvider *)self keyboardFocusPreventionAssertion];
+  keyboardFocusPreventionAssertion = [(SBDeviceApplicationAppProtectionSceneOverlayViewProvider *)self keyboardFocusPreventionAssertion];
 
-  if (!v3)
+  if (!keyboardFocusPreventionAssertion)
   {
     v9 = +[SBWorkspace mainWorkspace];
-    v4 = [v9 keyboardFocusController];
-    v5 = [(SBDeviceApplicationSceneOverlayViewProvider *)self sceneHandle];
-    v6 = [v5 sceneIfExists];
-    v7 = [v6 identityToken];
-    v8 = [v4 preventFocusForSceneWithIdentityToken:v7 reason:@"embedded app protection scene overlay preventing focus"];
+    keyboardFocusController = [v9 keyboardFocusController];
+    sceneHandle = [(SBDeviceApplicationSceneOverlayViewProvider *)self sceneHandle];
+    sceneIfExists = [sceneHandle sceneIfExists];
+    identityToken = [sceneIfExists identityToken];
+    v8 = [keyboardFocusController preventFocusForSceneWithIdentityToken:identityToken reason:@"embedded app protection scene overlay preventing focus"];
     [(SBDeviceApplicationAppProtectionSceneOverlayViewProvider *)self setKeyboardFocusPreventionAssertion:v8];
   }
 }
 
 - (void)_invalidateKeyboardFocusPreventionAssertion
 {
-  v3 = [(SBDeviceApplicationAppProtectionSceneOverlayViewProvider *)self keyboardFocusPreventionAssertion];
+  keyboardFocusPreventionAssertion = [(SBDeviceApplicationAppProtectionSceneOverlayViewProvider *)self keyboardFocusPreventionAssertion];
   [(SBDeviceApplicationAppProtectionSceneOverlayViewProvider *)self setKeyboardFocusPreventionAssertion:0];
-  [v3 invalidate];
+  [keyboardFocusPreventionAssertion invalidate];
 }
 
 @end

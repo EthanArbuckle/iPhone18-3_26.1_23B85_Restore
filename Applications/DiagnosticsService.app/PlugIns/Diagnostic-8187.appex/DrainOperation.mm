@@ -66,45 +66,45 @@
 
 - (void)pause
 {
-  v3 = [(DrainOperation *)self pauseLock];
-  [v3 lock];
+  pauseLock = [(DrainOperation *)self pauseLock];
+  [pauseLock lock];
 
   [(DrainOperation *)self setIsPaused:1];
-  v4 = [(DrainOperation *)self pauseLock];
-  [v4 unlock];
+  pauseLock2 = [(DrainOperation *)self pauseLock];
+  [pauseLock2 unlock];
 }
 
 - (void)resume
 {
-  v3 = [(DrainOperation *)self pauseLock];
-  [v3 lock];
+  pauseLock = [(DrainOperation *)self pauseLock];
+  [pauseLock lock];
 
   [(DrainOperation *)self setIsPaused:0];
-  v4 = [(DrainOperation *)self pauseLock];
-  [v4 signal];
+  pauseLock2 = [(DrainOperation *)self pauseLock];
+  [pauseLock2 signal];
 
-  v5 = [(DrainOperation *)self pauseLock];
-  [v5 unlock];
+  pauseLock3 = [(DrainOperation *)self pauseLock];
+  [pauseLock3 unlock];
 }
 
 - (void)waitIfPaused
 {
-  v3 = [(DrainOperation *)self pauseLock];
-  [v3 lock];
+  pauseLock = [(DrainOperation *)self pauseLock];
+  [pauseLock lock];
 
   if ([(DrainOperation *)self isPaused])
   {
     do
     {
-      v4 = [(DrainOperation *)self pauseLock];
-      [v4 wait];
+      pauseLock2 = [(DrainOperation *)self pauseLock];
+      [pauseLock2 wait];
     }
 
     while ([(DrainOperation *)self isPaused]);
   }
 
-  v5 = [(DrainOperation *)self pauseLock];
-  [v5 unlock];
+  pauseLock3 = [(DrainOperation *)self pauseLock];
+  [pauseLock3 unlock];
 }
 
 @end

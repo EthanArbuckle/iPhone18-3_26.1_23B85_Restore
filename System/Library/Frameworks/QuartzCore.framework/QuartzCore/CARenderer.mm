@@ -1,19 +1,19 @@
 @interface CARenderer
-+ (CARenderer)rendererWithEAGLContext:(id)a3 options:(id)a4;
++ (CARenderer)rendererWithEAGLContext:(id)context options:(id)options;
 + (CARenderer)rendererWithMTLTexture:(id)tex options:(NSDictionary *)dict;
 - (CFTimeInterval)nextFrameTime;
 - (CGRect)bounds;
 - (CGRect)updateBounds;
-- (id)_initWithEAGLContext:(id)a3 options:(id)a4;
-- (id)_initWithMTLTexture:(id)a3 options:(id)a4;
-- (id)_initWithOptions:(id)a3;
+- (id)_initWithEAGLContext:(id)context options:(id)options;
+- (id)_initWithMTLTexture:(id)texture options:(id)options;
+- (id)_initWithOptions:(id)options;
 - (void)addUpdateRect:(CGRect)r;
 - (void)beginFrameAtTime:(CFTimeInterval)t timeStamp:(CVTimeStamp *)ts;
 - (void)dealloc;
 - (void)endFrame;
 - (void)render;
-- (void)setContext:(id)a3;
-- (void)setDelegate:(id)a3;
+- (void)setContext:(id)context;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation CARenderer
@@ -66,7 +66,7 @@
 
     if (priv[4])
     {
-      v6 = [MEMORY[0x1E6977FE8] currentContext];
+      currentContext = [MEMORY[0x1E6977FE8] currentContext];
       v7 = self->_priv;
       v8 = *(v7 + 2);
       if (v8)
@@ -98,7 +98,7 @@
       CA::OGL::Renderer::collect(*(self->_priv + 4), *(self->_priv + 10), v13);
       if (*(self->_priv + 2))
       {
-        [MEMORY[0x1E6977FE8] setCurrentContext:v6];
+        [MEMORY[0x1E6977FE8] setCurrentContext:currentContext];
       }
 
       if (BYTE6(ca_debug_options) == 1)
@@ -315,22 +315,22 @@ LABEL_9:
   [(CARenderer *)&v8 dealloc];
 }
 
-- (id)_initWithEAGLContext:(id)a3 options:(id)a4
+- (id)_initWithEAGLContext:(id)context options:(id)options
 {
   v18 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!context)
   {
 
     return 0;
   }
 
-  v5 = [(CARenderer *)self _initWithOptions:a4];
+  v5 = [(CARenderer *)self _initWithOptions:options];
   if (!v5)
   {
     return v5;
   }
 
-  v6 = [a3 API];
+  v6 = [context API];
   if (v6 != 3)
   {
     if (x_log_get_api::once[0] != -1)
@@ -357,7 +357,7 @@ LABEL_9:
   v7 = malloc_type_zone_calloc(malloc_zone, 1uLL, 0xB00uLL, 0xDEEC3011uLL);
   if (v7)
   {
-    v7 = CA::OGL::GLESContext::GLESContext(v7, a3);
+    v7 = CA::OGL::GLESContext::GLESContext(v7, context);
   }
 
   *(v5[1] + 24) = v7;
@@ -397,27 +397,27 @@ LABEL_9:
   CA::OGL::Context::set_colorspace(v12, *(v11 + 72));
   *(*(v5[1] + 24) + 1384) |= 2u;
   *(*(v5[1] + 24) + 1384) |= 4u;
-  *(v5[1] + 16) = a3;
-  CFRetain(a3);
+  *(v5[1] + 16) = context;
+  CFRetain(context);
   return v5;
 }
 
-- (id)_initWithMTLTexture:(id)a3 options:(id)a4
+- (id)_initWithMTLTexture:(id)texture options:(id)options
 {
-  if (!a3)
+  if (!texture)
   {
 
     return 0;
   }
 
-  v6 = [(CARenderer *)self _initWithOptions:a4];
+  v6 = [(CARenderer *)self _initWithOptions:options];
   if (!v6)
   {
     return v6;
   }
 
-  v7 = [a3 device];
-  v8 = [a4 objectForKey:@"kCARendererMetalCommandQueue"];
+  device = [texture device];
+  v8 = [options objectForKey:@"kCARendererMetalCommandQueue"];
   v9 = v6[1];
   if (v8)
   {
@@ -425,7 +425,7 @@ LABEL_9:
     v9 = v6[1];
   }
 
-  *(v6[1] + 24) = CA::OGL::new_metal_context(v7, v8, 0, *(v9 + 88), 0, @"com.apple.coreanimation.CARenderer");
+  *(v6[1] + 24) = CA::OGL::new_metal_context(device, v8, 0, *(v9 + 88), 0, @"com.apple.coreanimation.CARenderer");
   v10 = *(v6[1] + 24);
   if (!v10)
   {
@@ -433,7 +433,7 @@ LABEL_9:
     return 0;
   }
 
-  (*(*v10 + 16))(v10, 0, a3, 0);
+  (*(*v10 + 16))(v10, 0, texture, 0);
   if (x_malloc_get_zone::once != -1)
   {
     dispatch_once_f(&x_malloc_get_zone::once, 0, malloc_zone_init);
@@ -460,7 +460,7 @@ LABEL_9:
   return v6;
 }
 
-- (id)_initWithOptions:(id)a3
+- (id)_initWithOptions:(id)options
 {
   v15 = *MEMORY[0x1E69E9840];
   v14.receiver = self;
@@ -490,9 +490,9 @@ LABEL_9:
       v9 = v4->_priv;
       v9[15] = 3968;
       *(v9 + 27) = 1;
-      if (a3)
+      if (options)
       {
-        *(v4->_priv + 9) = [a3 objectForKey:@"kCARendererColorSpace"];
+        *(v4->_priv + 9) = [options objectForKey:@"kCARendererColorSpace"];
         v9 = v4->_priv;
       }
 
@@ -508,13 +508,13 @@ LABEL_9:
       }
 
       CGColorSpaceRetain(*(v4->_priv + 9));
-      v11 = [a3 objectForKey:@"kCARendererFlags"];
+      v11 = [options objectForKey:@"kCARendererFlags"];
       if (v11)
       {
         *(v4->_priv + 22) = [v11 unsignedIntValue];
       }
 
-      if ([objc_msgSend(a3 objectForKeyedSubscript:{@"kCARendererClearsDestination", "BOOLValue"}])
+      if ([objc_msgSend(options objectForKeyedSubscript:{@"kCARendererClearsDestination", "BOOLValue"}])
       {
         v12 = 256;
       }
@@ -539,26 +539,26 @@ LABEL_9:
 
 + (CARenderer)rendererWithMTLTexture:(id)tex options:(NSDictionary *)dict
 {
-  v4 = [[a1 alloc] _initWithMTLTexture:tex options:dict];
+  v4 = [[self alloc] _initWithMTLTexture:tex options:dict];
 
   return v4;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  if (*(self->_priv + 1) != a3)
+  if (*(self->_priv + 1) != delegate)
   {
     remove_observer(self);
-    *(self->_priv + 1) = a3;
+    *(self->_priv + 1) = delegate;
 
     add_observer(self);
   }
 }
 
-- (void)setContext:(id)a3
+- (void)setContext:(id)context
 {
   priv = self->_priv;
-  if (*priv != a3)
+  if (*priv != context)
   {
     if (*priv)
     {
@@ -567,10 +567,10 @@ LABEL_9:
       priv = self->_priv;
     }
 
-    *priv = a3;
-    if (a3)
+    *priv = context;
+    if (context)
     {
-      CFRetain(a3);
+      CFRetain(context);
       add_observer(self);
       v6 = self->_priv;
       if (v6[9])
@@ -583,9 +583,9 @@ LABEL_9:
   }
 }
 
-+ (CARenderer)rendererWithEAGLContext:(id)a3 options:(id)a4
++ (CARenderer)rendererWithEAGLContext:(id)context options:(id)options
 {
-  v4 = [[a1 alloc] _initWithEAGLContext:a3 options:a4];
+  v4 = [[self alloc] _initWithEAGLContext:context options:options];
 
   return v4;
 }

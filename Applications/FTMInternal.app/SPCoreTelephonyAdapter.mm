@@ -4,10 +4,10 @@
 - (dispatch_queue_s)get_queue;
 - (id)getPDPInfo;
 - (id)getTrafficDescriptors;
-- (id)setApplicationCategory:(id)a3;
-- (void)nrSliceAppStateChanged:(id)a3 status:(BOOL)a4 trafficDescriptors:(id)a5;
-- (void)nrSlicedRunningAppStateChanged:(id)a3;
-- (void)updateDelegate:(id)a3 status:(BOOL)a4 trafficDescriptors:(id)a5;
+- (id)setApplicationCategory:(id)category;
+- (void)nrSliceAppStateChanged:(id)changed status:(BOOL)status trafficDescriptors:(id)descriptors;
+- (void)nrSlicedRunningAppStateChanged:(id)changed;
+- (void)updateDelegate:(id)delegate status:(BOOL)status trafficDescriptors:(id)descriptors;
 @end
 
 @implementation SPCoreTelephonyAdapter
@@ -37,53 +37,53 @@
   return qword_10037A538;
 }
 
-- (id)setApplicationCategory:(id)a3
+- (id)setApplicationCategory:(id)category
 {
-  v4 = a3;
+  categoryCopy = category;
   v5 = qword_100382458;
   if (os_log_type_enabled(qword_100382458, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412290;
-    v11 = v4;
+    v11 = categoryCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "settings application category to %@", &v10, 0xCu);
   }
 
-  v6 = [(SPCoreTelephonyAdapter *)self client];
-  v7 = [v6 setApplicationCategory:v4];
+  client = [(SPCoreTelephonyAdapter *)self client];
+  v7 = [client setApplicationCategory:categoryCopy];
 
   if (v7)
   {
     v8 = qword_100382458;
     if (os_log_type_enabled(qword_100382458, OS_LOG_TYPE_ERROR))
     {
-      sub_100285B5C(v4, v7, v8);
+      sub_100285B5C(categoryCopy, v7, v8);
     }
   }
 
   return v7;
 }
 
-- (void)updateDelegate:(id)a3 status:(BOOL)a4 trafficDescriptors:(id)a5
+- (void)updateDelegate:(id)delegate status:(BOOL)status trafficDescriptors:(id)descriptors
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(SPCoreTelephonyAdapter *)self delegate];
-  if (v10)
+  delegateCopy = delegate;
+  descriptorsCopy = descriptors;
+  delegate = [(SPCoreTelephonyAdapter *)self delegate];
+  if (delegate)
   {
-    v11 = v10;
-    v12 = [(SPCoreTelephonyAdapter *)self delegate];
+    v11 = delegate;
+    delegate2 = [(SPCoreTelephonyAdapter *)self delegate];
     v13 = objc_opt_respondsToSelector();
 
     if (v13)
     {
-      [SPSlicingDescriptor _coreTelephonyContainer:v9];
+      [SPSlicingDescriptor _coreTelephonyContainer:descriptorsCopy];
       v15[0] = _NSConcreteStackBlock;
       v15[1] = 3221225472;
       v15[2] = sub_1000A8BA0;
       v15[3] = &unk_100317CD8;
       v16 = v15[4] = self;
-      v17 = v8;
-      v18 = a4;
+      v17 = delegateCopy;
+      statusCopy = status;
       v14 = v16;
       dispatch_async(&_dispatch_main_q, v15);
     }
@@ -92,9 +92,9 @@
 
 - (id)getTrafficDescriptors
 {
-  v2 = [(SPCoreTelephonyAdapter *)self client];
+  client = [(SPCoreTelephonyAdapter *)self client];
   v9 = 0;
-  v3 = [v2 getSliceTrafficDescriptors:&v9];
+  v3 = [client getSliceTrafficDescriptors:&v9];
   v4 = v9;
 
   if (v4)
@@ -110,8 +110,8 @@
 
   else
   {
-    v7 = [v3 trafficDescriptors];
-    v6 = [SPSlicingDescriptor _coreTelephonyDescritorList:v7];
+    trafficDescriptors = [v3 trafficDescriptors];
+    v6 = [SPSlicingDescriptor _coreTelephonyDescritorList:trafficDescriptors];
   }
 
   return v6;
@@ -119,9 +119,9 @@
 
 - (id)getPDPInfo
 {
-  v3 = [(SPCoreTelephonyAdapter *)self client];
+  client = [(SPCoreTelephonyAdapter *)self client];
   v18 = 0;
-  v4 = [v3 getCurrentDataSubscriptionContextSync:&v18];
+  v4 = [client getCurrentDataSubscriptionContextSync:&v18];
   v5 = v18;
 
   if (v5)
@@ -136,32 +136,32 @@
 
   if (v6)
   {
-    v8 = &stru_10032B7E0;
+    interfaceName3 = &stru_10032B7E0;
   }
 
   else
   {
     v5 = 0;
     v7 = 28;
-    v8 = &stru_10032B7E0;
+    interfaceName3 = &stru_10032B7E0;
     while (1)
     {
       v9 = v5;
-      v10 = [(SPCoreTelephonyAdapter *)self client];
+      client2 = [(SPCoreTelephonyAdapter *)self client];
       v17 = v5;
-      v11 = [v10 getConnectionState:v4 connectionType:v7 error:&v17];
+      v11 = [client2 getConnectionState:v4 connectionType:v7 error:&v17];
       v5 = v17;
 
       if (v11)
       {
         if (!v5)
         {
-          v12 = [v11 interfaceName];
-          if (v12)
+          interfaceName = [v11 interfaceName];
+          if (interfaceName)
           {
-            v13 = v12;
-            v14 = [v11 interfaceName];
-            v15 = [v14 isEqualToString:&stru_10032B7E0];
+            v13 = interfaceName;
+            interfaceName2 = [v11 interfaceName];
+            v15 = [interfaceName2 isEqualToString:&stru_10032B7E0];
 
             if (!v15)
             {
@@ -178,40 +178,40 @@
       }
     }
 
-    v8 = [v11 interfaceName];
+    interfaceName3 = [v11 interfaceName];
     v5 = v11;
   }
 
 LABEL_14:
 
-  return v8;
+  return interfaceName3;
 }
 
-- (void)nrSliceAppStateChanged:(id)a3 status:(BOOL)a4 trafficDescriptors:(id)a5
+- (void)nrSliceAppStateChanged:(id)changed status:(BOOL)status trafficDescriptors:(id)descriptors
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  statusCopy = status;
+  changedCopy = changed;
+  descriptorsCopy = descriptors;
   v10 = qword_100382458;
   if (os_log_type_enabled(qword_100382458, OS_LOG_TYPE_DEFAULT))
   {
     v11 = @"false";
     *buf = 138412802;
-    v23 = v8;
+    v23 = changedCopy;
     v24 = 2112;
-    if (v6)
+    if (statusCopy)
     {
       v11 = @"true";
     }
 
     v25 = v11;
     v26 = 2112;
-    v27 = v9;
+    v27 = descriptorsCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Slicing AppId=%@ state changed status=%@ %@", buf, 0x20u);
   }
 
-  v12 = [(SPCoreTelephonyAdapter *)self delegate];
-  if (v12 && (v13 = v12, [(SPCoreTelephonyAdapter *)self delegate], v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_opt_respondsToSelector(), v14, v13, (v15 & 1) != 0))
+  delegate = [(SPCoreTelephonyAdapter *)self delegate];
+  if (delegate && (v13 = delegate, [(SPCoreTelephonyAdapter *)self delegate], v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_opt_respondsToSelector(), v14, v13, (v15 & 1) != 0))
   {
     objc_initWeak(buf, self);
     v17[0] = _NSConcreteStackBlock;
@@ -219,9 +219,9 @@ LABEL_14:
     v17[2] = sub_1000A9070;
     v17[3] = &unk_100317D00;
     objc_copyWeak(&v20, buf);
-    v18 = v8;
-    v21 = v6;
-    v19 = v9;
+    v18 = changedCopy;
+    v21 = statusCopy;
+    v19 = descriptorsCopy;
     dispatch_async(&_dispatch_main_q, v17);
 
     objc_destroyWeak(&v20);
@@ -239,20 +239,20 @@ LABEL_14:
   }
 }
 
-- (void)nrSlicedRunningAppStateChanged:(id)a3
+- (void)nrSlicedRunningAppStateChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   v5 = qword_100382458;
   if (os_log_type_enabled(qword_100382458, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v16 = v4;
+    v16 = changedCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Slicing App state changed %@", buf, 0xCu);
   }
 
-  v6 = [SPSlicingApplicationContainer _coreTelephonyAppInfoContainer:v4];
-  v7 = [(SPCoreTelephonyAdapter *)self delegate];
-  if (v7 && (v8 = v7, [(SPCoreTelephonyAdapter *)self delegate], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_opt_respondsToSelector(), v9, v8, (v10 & 1) != 0))
+  v6 = [SPSlicingApplicationContainer _coreTelephonyAppInfoContainer:changedCopy];
+  delegate = [(SPCoreTelephonyAdapter *)self delegate];
+  if (delegate && (v8 = delegate, [(SPCoreTelephonyAdapter *)self delegate], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_opt_respondsToSelector(), v9, v8, (v10 & 1) != 0))
   {
     objc_initWeak(buf, self);
     v12[0] = _NSConcreteStackBlock;

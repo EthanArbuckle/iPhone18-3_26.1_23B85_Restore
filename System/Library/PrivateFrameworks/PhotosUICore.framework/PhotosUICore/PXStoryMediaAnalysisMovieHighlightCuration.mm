@@ -1,7 +1,7 @@
 @interface PXStoryMediaAnalysisMovieHighlightCuration
-+ (id)movieHighlightCurationsFromMediaAnalysisResults:(id)a3;
++ (id)movieHighlightCurationsFromMediaAnalysisResults:(id)results;
 - (PXStoryMediaAnalysisMovieHighlightCuration)init;
-- (PXStoryMediaAnalysisMovieHighlightCuration)initWithMediaAnalysis:(id)a3;
+- (PXStoryMediaAnalysisMovieHighlightCuration)initWithMediaAnalysis:(id)analysis;
 - (PXStoryMovieHighlight)bestHighlight;
 @end
 
@@ -14,8 +14,8 @@
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v2 = [(PXStoryMediaAnalysisMovieHighlightCuration *)self highlights];
-  v3 = [v2 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  highlights = [(PXStoryMediaAnalysisMovieHighlightCuration *)self highlights];
+  v3 = [highlights countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v3)
   {
     v4 = v3;
@@ -27,7 +27,7 @@
       {
         if (*v15 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(highlights);
         }
 
         v8 = *(*(&v14 + 1) + 8 * i);
@@ -42,7 +42,7 @@
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v4 = [highlights countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v4);
@@ -56,15 +56,15 @@
   return v5;
 }
 
-- (PXStoryMediaAnalysisMovieHighlightCuration)initWithMediaAnalysis:(id)a3
+- (PXStoryMediaAnalysisMovieHighlightCuration)initWithMediaAnalysis:(id)analysis
 {
-  v4 = a3;
+  analysisCopy = analysis;
   v11.receiver = self;
   v11.super_class = PXStoryMediaAnalysisMovieHighlightCuration;
   v5 = [(PXStoryMediaAnalysisMovieHighlightCuration *)&v11 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [analysisCopy copy];
     analysis = v5->_analysis;
     v5->_analysis = v6;
 
@@ -78,22 +78,22 @@
 
 - (PXStoryMediaAnalysisMovieHighlightCuration)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXStoryMovieHighlight.m" lineNumber:957 description:{@"%s is not available as initializer", "-[PXStoryMediaAnalysisMovieHighlightCuration init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryMovieHighlight.m" lineNumber:957 description:{@"%s is not available as initializer", "-[PXStoryMediaAnalysisMovieHighlightCuration init]"}];
 
   abort();
 }
 
-+ (id)movieHighlightCurationsFromMediaAnalysisResults:(id)a3
++ (id)movieHighlightCurationsFromMediaAnalysisResults:(id)results
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v3, "count")}];
+  resultsCopy = results;
+  v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(resultsCopy, "count")}];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = resultsCopy;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {

@@ -1,24 +1,24 @@
 @interface PKFDICSignageView
-- (BOOL)isEqualToFooter:(id)a3;
-- (CGSize)_layoutWithBounds:(CGRect)a3 isTemplateLayout:(BOOL)a4;
+- (BOOL)isEqualToFooter:(id)footer;
+- (CGSize)_layoutWithBounds:(CGRect)bounds isTemplateLayout:(BOOL)layout;
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKFDICSignageView)initWithConfiguration:(id)a3;
-- (PKFDICSignageView)initWithFeature:(unint64_t)a3 displayingBankName:(BOOL)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKFDICSignageView)initWithConfiguration:(id)configuration;
+- (PKFDICSignageView)initWithFeature:(unint64_t)feature displayingBankName:(BOOL)name;
 - (UIEdgeInsets)contentInsets;
-- (id)_fdicInsuredAttributedStringWithLineBreak:(int64_t)a3;
-- (void)_updateFDICInsuredTextWithLineBreak:(int64_t)a3;
+- (id)_fdicInsuredAttributedStringWithLineBreak:(int64_t)break;
+- (void)_updateFDICInsuredTextWithLineBreak:(int64_t)break;
 - (void)layoutSubviews;
-- (void)setContentInsets:(UIEdgeInsets)a3;
+- (void)setContentInsets:(UIEdgeInsets)insets;
 @end
 
 @implementation PKFDICSignageView
 
-- (PKFDICSignageView)initWithFeature:(unint64_t)a3 displayingBankName:(BOOL)a4
+- (PKFDICSignageView)initWithFeature:(unint64_t)feature displayingBankName:(BOOL)name
 {
-  if ((a3 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((feature & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
-    v4 = a4;
+    nameCopy = name;
     v33.receiver = self;
     v33.super_class = PKFDICSignageView;
     v6 = *MEMORY[0x1E695F058];
@@ -29,8 +29,8 @@
     p_isa = &v10->super.super.super.isa;
     if (v10)
     {
-      v10->_feature = a3;
-      v10->_displayingBankName = v4;
+      v10->_feature = feature;
+      v10->_displayingBankName = nameCopy;
       v12 = [objc_alloc(MEMORY[0x1E69DC888]) initWithDynamicProvider:&__block_literal_global_143];
       v13 = objc_alloc(MEMORY[0x1E69DCAE0]);
       v14 = PKUIImageNamed(@"FDICLogo");
@@ -49,7 +49,7 @@
       [p_isa[56] setNumberOfLines:0];
       [p_isa _updateFDICInsuredTextWithLineBreak:0];
       [p_isa addSubview:p_isa[56]];
-      if (v4)
+      if (nameCopy)
       {
         v20 = objc_alloc_init(MEMORY[0x1E69DCC10]);
         v21 = p_isa[53];
@@ -81,15 +81,15 @@
     }
 
     self = p_isa;
-    v31 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v31 = 0;
+    selfCopy = 0;
   }
 
-  return v31;
+  return selfCopy;
 }
 
 id __56__PKFDICSignageView_initWithFeature_displayingBankName___block_invoke(uint64_t a1, void *a2)
@@ -149,22 +149,22 @@ id __56__PKFDICSignageView_initWithFeature_displayingBankName___block_invoke_4(u
   return v2;
 }
 
-- (PKFDICSignageView)initWithConfiguration:(id)a3
+- (PKFDICSignageView)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [v4 feature];
-  v6 = [v4 displayingBankName];
+  configurationCopy = configuration;
+  feature = [configurationCopy feature];
+  displayingBankName = [configurationCopy displayingBankName];
 
-  return [(PKFDICSignageView *)self initWithFeature:v5 displayingBankName:v6];
+  return [(PKFDICSignageView *)self initWithFeature:feature displayingBankName:displayingBankName];
 }
 
-- (void)_updateFDICInsuredTextWithLineBreak:(int64_t)a3
+- (void)_updateFDICInsuredTextWithLineBreak:(int64_t)break
 {
-  v4 = [(PKFDICSignageView *)self _fdicInsuredAttributedStringWithLineBreak:a3];
+  v4 = [(PKFDICSignageView *)self _fdicInsuredAttributedStringWithLineBreak:break];
   [(UILabel *)self->_fdicInsuredLabel setAttributedText:v4];
 }
 
-- (id)_fdicInsuredAttributedStringWithLineBreak:(int64_t)a3
+- (id)_fdicInsuredAttributedStringWithLineBreak:(int64_t)break
 {
   v11[2] = *MEMORY[0x1E69E9840];
   v3 = PKLocalizedFeatureString();
@@ -174,8 +174,8 @@ id __56__PKFDICSignageView_initWithFeature_displayingBankName___block_invoke_4(u
   v10[0] = *MEMORY[0x1E69DB688];
   v10[1] = v5;
   v11[0] = v4;
-  v6 = [MEMORY[0x1E69DB878] pk_fdicSignageFont];
-  v11[1] = v6;
+  pk_fdicSignageFont = [MEMORY[0x1E69DB878] pk_fdicSignageFont];
+  v11[1] = pk_fdicSignageFont;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:v10 count:2];
 
   v8 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v3 attributes:v7];
@@ -192,9 +192,9 @@ id __56__PKFDICSignageView_initWithFeature_displayingBankName___block_invoke_4(u
   [(PKFDICSignageView *)self _layoutWithBounds:0 isTemplateLayout:?];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(PKFDICSignageView *)self _layoutWithBounds:1 isTemplateLayout:0.0, 0.0, a3.width, a3.height];
+  [(PKFDICSignageView *)self _layoutWithBounds:1 isTemplateLayout:0.0, 0.0, fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
@@ -208,27 +208,27 @@ id __56__PKFDICSignageView_initWithFeature_displayingBankName___block_invoke_4(u
   return result;
 }
 
-- (CGSize)_layoutWithBounds:(CGRect)a3 isTemplateLayout:(BOOL)a4
+- (CGSize)_layoutWithBounds:(CGRect)bounds isTemplateLayout:(BOOL)layout
 {
-  v4 = a4;
+  layoutCopy = layout;
   memset(&slice, 0, sizeof(slice));
   p_contentInsets = &self->_contentInsets;
   top = self->_contentInsets.top;
   left = self->_contentInsets.left;
   right = self->_contentInsets.right;
-  v10 = a3.origin.x + left;
-  v11 = a3.origin.y + top;
-  v12 = a3.size.width - (left + right);
-  v13 = a3.size.height - (top + self->_contentInsets.bottom);
-  v47.origin.x = a3.origin.x + left;
-  v47.origin.y = a3.origin.y + top;
+  v10 = bounds.origin.x + left;
+  v11 = bounds.origin.y + top;
+  v12 = bounds.size.width - (left + right);
+  v13 = bounds.size.height - (top + self->_contentInsets.bottom);
+  v47.origin.x = bounds.origin.x + left;
+  v47.origin.y = bounds.origin.y + top;
   v47.size.width = v12;
   v47.size.height = v13;
   v15 = *MEMORY[0x1E695F060];
   v14 = *(MEMORY[0x1E695F060] + 8);
   if (self->_displayingBankName)
   {
-    [(UILabel *)self->_bankNameLabel sizeThatFits:a3.size.width - (left + right), 1.79769313e308];
+    [(UILabel *)self->_bankNameLabel sizeThatFits:bounds.size.width - (left + right), 1.79769313e308];
     v17 = v16;
     v19 = v18;
     v50.origin.x = v10;
@@ -236,7 +236,7 @@ id __56__PKFDICSignageView_initWithFeature_displayingBankName___block_invoke_4(u
     v50.size.width = v12;
     v50.size.height = v13;
     CGRectDivide(v50, &slice, &v47, v17, CGRectMinXEdge);
-    if (!v4)
+    if (!layoutCopy)
     {
       bankNameLabel = self->_bankNameLabel;
       PKContentAlignmentMake();
@@ -248,7 +248,7 @@ id __56__PKFDICSignageView_initWithFeature_displayingBankName___block_invoke_4(u
     v21 = v15 + v17 + 12.0;
     v22 = PKUIPixelLength();
     CGRectDivide(v47, &slice, &v47, v22, CGRectMinXEdge);
-    if (!v4)
+    if (!layoutCopy)
     {
       divider = self->_divider;
       PKContentAlignmentMake();
@@ -267,7 +267,7 @@ id __56__PKFDICSignageView_initWithFeature_displayingBankName___block_invoke_4(u
   v28 = v27;
 
   CGRectDivide(v47, &slice, &v47, v26, CGRectMinXEdge);
-  if (!v4)
+  if (!layoutCopy)
   {
     PKSizeAlignedInRect();
     [(UIImageView *)self->_fdicLogoView setFrame:?];
@@ -284,7 +284,7 @@ id __56__PKFDICSignageView_initWithFeature_displayingBankName___block_invoke_4(u
       v36 = v42;
       [(UILabel *)self->_fdicInsuredLabel setAttributedText:v40];
 
-      if (v4)
+      if (layoutCopy)
       {
         goto LABEL_23;
       }
@@ -297,7 +297,7 @@ LABEL_19:
       [(UILabel *)self->_fdicInsuredLabel sizeThatFits:v47.size.width, 1.79769313e308];
       v34 = v43;
       v36 = v44;
-      if (v4)
+      if (layoutCopy)
       {
         goto LABEL_23;
       }
@@ -336,7 +336,7 @@ LABEL_19:
 
   [(UILabel *)self->_fdicInsuredLabel setAttributedText:v31];
 
-  if (!v4)
+  if (!layoutCopy)
   {
 LABEL_22:
     PKContentAlignmentMake();
@@ -353,23 +353,23 @@ LABEL_23:
   return result;
 }
 
-- (void)setContentInsets:(UIEdgeInsets)a3
+- (void)setContentInsets:(UIEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.left;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_contentInsets.top, v3), vceqq_f64(*&self->_contentInsets.bottom, v4)))) & 1) == 0)
   {
-    self->_contentInsets = a3;
+    self->_contentInsets = insets;
     [(PKFDICSignageView *)self setNeedsLayout];
   }
 }
 
-- (BOOL)isEqualToFooter:(id)a3
+- (BOOL)isEqualToFooter:(id)footer
 {
-  v4 = a3;
-  v5 = [v4 isMemberOfClass:objc_opt_class()] && self->_feature == *(v4 + 51) && self->_displayingBankName == v4[416];
+  footerCopy = footer;
+  v5 = [footerCopy isMemberOfClass:objc_opt_class()] && self->_feature == *(footerCopy + 51) && self->_displayingBankName == footerCopy[416];
 
   return v5;
 }

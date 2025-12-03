@@ -1,11 +1,11 @@
 @interface NFMProtoPlaySoundAndFlashLEDRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NFMProtoPlaySoundAndFlashLEDRequest
@@ -16,25 +16,25 @@
   v8.receiver = self;
   v8.super_class = NFMProtoPlaySoundAndFlashLEDRequest;
   v4 = [(NFMProtoPlaySoundAndFlashLEDRequest *)&v8 description];
-  v5 = [(NFMProtoPlaySoundAndFlashLEDRequest *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NFMProtoPlaySoundAndFlashLEDRequest *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x277CCABB0] numberWithDouble:self->_timeStamp];
-    [v3 setObject:v4 forKey:@"timeStamp"];
+    [dictionary setObject:v4 forKey:@"timeStamp"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (*&self->_has)
   {
@@ -43,18 +43,18 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if (*&self->_has)
   {
-    *(a3 + 1) = *&self->_timeStamp;
-    *(a3 + 16) |= 1u;
+    *(to + 1) = *&self->_timeStamp;
+    *(to + 16) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (*&self->_has)
   {
     *(result + 1) = *&self->_timeStamp;
@@ -64,18 +64,18 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_6;
   }
 
-  v5 = (*(v4 + 16) & 1) == 0;
+  v5 = (*(equalCopy + 16) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 16) & 1) != 0 && self->_timeStamp == *(v4 + 1))
+    if ((*(equalCopy + 16) & 1) != 0 && self->_timeStamp == *(equalCopy + 1))
     {
       v5 = 1;
       goto LABEL_7;

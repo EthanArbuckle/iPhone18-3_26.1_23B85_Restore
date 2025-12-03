@@ -1,5 +1,5 @@
 @interface PRRenderingServiceSceneComponent
-- (PRRenderingServiceSceneComponent)initWithScene:(id)a3;
+- (PRRenderingServiceSceneComponent)initWithScene:(id)scene;
 - (void)_acquireDeviceMotionActiveAssertion;
 - (void)_invalidateDeviceMotionActiveAssertion;
 - (void)_sceneContentReadinessDidChange;
@@ -7,29 +7,29 @@
 - (void)deviceMotionEventGenerationDidStop;
 - (void)deviceMotionEventGenerationWillStart;
 - (void)invalidate;
-- (void)renderingServiceServer:(id)a3 didActivateConnection:(id)a4;
-- (void)renderingServiceServer:(id)a3 didInvalidateConnection:(id)a4;
-- (void)renderingServiceServerKeepAliveAssertionManager:(id)a3 didActivateRenderingServiceServer:(id)a4;
-- (void)scene:(id)a3 didUpdateClientSettingsWithDiff:(id)a4 oldClientSettings:(id)a5 transitionContext:(id)a6;
-- (void)sceneDidActivate:(id)a3;
-- (void)sceneWillDeactivate:(id)a3 withError:(id)a4;
-- (void)setDeviceMotionEventGenerationActive:(BOOL)a3;
-- (void)setRenderingServiceEndpoint:(id)a3;
-- (void)updateMotionWithRotation:(_OWORD *)a3;
+- (void)renderingServiceServer:(id)server didActivateConnection:(id)connection;
+- (void)renderingServiceServer:(id)server didInvalidateConnection:(id)connection;
+- (void)renderingServiceServerKeepAliveAssertionManager:(id)manager didActivateRenderingServiceServer:(id)server;
+- (void)scene:(id)scene didUpdateClientSettingsWithDiff:(id)diff oldClientSettings:(id)settings transitionContext:(id)context;
+- (void)sceneDidActivate:(id)activate;
+- (void)sceneWillDeactivate:(id)deactivate withError:(id)error;
+- (void)setDeviceMotionEventGenerationActive:(BOOL)active;
+- (void)setRenderingServiceEndpoint:(id)endpoint;
+- (void)updateMotionWithRotation:(_OWORD *)rotation;
 @end
 
 @implementation PRRenderingServiceSceneComponent
 
-- (PRRenderingServiceSceneComponent)initWithScene:(id)a3
+- (PRRenderingServiceSceneComponent)initWithScene:(id)scene
 {
-  v5 = a3;
+  sceneCopy = scene;
   v11.receiver = self;
   v11.super_class = PRRenderingServiceSceneComponent;
   v6 = [(PRRenderingServiceSceneComponent *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_scene, a3);
+    objc_storeStrong(&v6->_scene, scene);
     v8 = +[PRRenderingServiceServerKeepAliveAssertionManager sharedInstance];
     renderingServiceServerKeepAliveAssertionManager = v7->_renderingServiceServerKeepAliveAssertionManager;
     v7->_renderingServiceServerKeepAliveAssertionManager = v8;
@@ -84,15 +84,15 @@
   self->_activeRenderingServiceConnection = 0;
 }
 
-- (void)setRenderingServiceEndpoint:(id)a3
+- (void)setRenderingServiceEndpoint:(id)endpoint
 {
-  v8 = a3;
+  endpointCopy = endpoint;
   if (([(BSServiceConnectionEndpoint *)self->_renderingServiceEndpoint isEqualToServiceEndpoint:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_renderingServiceEndpoint, a3);
+    objc_storeStrong(&self->_renderingServiceEndpoint, endpoint);
     if (self->_scene)
     {
-      v5 = [[PRRenderingServiceEndpointDidChangeAction alloc] initWithEndpoint:v8];
+      v5 = [[PRRenderingServiceEndpointDidChangeAction alloc] initWithEndpoint:endpointCopy];
       scene = self->_scene;
       v7 = [MEMORY[0x1E695DFD8] setWithObject:v5];
       [(FBScene *)scene pui_safelySendActions:v7 outError:0];
@@ -100,12 +100,12 @@
   }
 }
 
-- (void)setDeviceMotionEventGenerationActive:(BOOL)a3
+- (void)setDeviceMotionEventGenerationActive:(BOOL)active
 {
-  if (self->_deviceMotionEventGenerationActive != a3)
+  if (self->_deviceMotionEventGenerationActive != active)
   {
-    self->_deviceMotionEventGenerationActive = a3;
-    if (a3)
+    self->_deviceMotionEventGenerationActive = active;
+    if (active)
     {
       [(PRRenderingServiceSceneComponent *)self deviceMotionEventGenerationWillStart];
     }
@@ -157,13 +157,13 @@
   }
 }
 
-- (void)updateMotionWithRotation:(_OWORD *)a3
+- (void)updateMotionWithRotation:(_OWORD *)rotation
 {
-  v3 = *(a1 + 24);
+  v3 = *(self + 24);
   if (v3)
   {
-    v4 = a3[1];
-    v13[0] = *a3;
+    v4 = rotation[1];
+    v13[0] = *rotation;
     v13[1] = v4;
     [v3 updateMotionWithRotation:v13];
   }
@@ -181,27 +181,27 @@
 - (void)_sceneContentReadinessDidChange
 {
   BSDispatchQueueAssertMain();
-  v3 = [(FBScene *)self->_scene isActive];
-  v4 = [(FBScene *)self->_scene contentState];
-  v5 = [(FBScene *)self->_scene clientSettings];
-  v6 = [v5 pui_didFinishInitialization];
+  isActive = [(FBScene *)self->_scene isActive];
+  contentState = [(FBScene *)self->_scene contentState];
+  clientSettings = [(FBScene *)self->_scene clientSettings];
+  pui_didFinishInitialization = [clientSettings pui_didFinishInitialization];
 
-  v7 = [(PRRenderingServiceServerKeepAliveAssertionManager *)self->_renderingServiceServerKeepAliveAssertionManager renderingServiceServer];
+  renderingServiceServer = [(PRRenderingServiceServerKeepAliveAssertionManager *)self->_renderingServiceServerKeepAliveAssertionManager renderingServiceServer];
   renderingServiceServer = self->_renderingServiceServer;
-  self->_renderingServiceServer = v7;
+  self->_renderingServiceServer = renderingServiceServer;
 
-  if (v3)
+  if (isActive)
   {
-    if (v4 == 2)
+    if (contentState == 2)
     {
-      if (v6)
+      if (pui_didFinishInitialization)
       {
         v9 = self->_renderingServiceServer;
         if (v9)
         {
           [(PRRenderingServiceServer *)v9 addObserver:self];
-          v10 = [(PRRenderingServiceServer *)self->_renderingServiceServer endpoint];
-          [(PRRenderingServiceSceneComponent *)self setRenderingServiceEndpoint:v10];
+          endpoint = [(PRRenderingServiceServer *)self->_renderingServiceServer endpoint];
+          [(PRRenderingServiceSceneComponent *)self setRenderingServiceEndpoint:endpoint];
         }
       }
     }
@@ -212,7 +212,7 @@
 {
   v7 = *MEMORY[0x1E69E9840];
   v3 = 138543618;
-  v4 = a1;
+  selfCopy = self;
   v5 = 2114;
   v6 = a2;
   _os_log_error_impl(&dword_1A8AA7000, log, OS_LOG_TYPE_ERROR, "FAILURE acquireDeviceMotionActiveAssertion target:'%{public}@': %{public}@", &v3, 0x16u);
@@ -236,36 +236,36 @@
   }
 }
 
-- (void)scene:(id)a3 didUpdateClientSettingsWithDiff:(id)a4 oldClientSettings:(id)a5 transitionContext:(id)a6
+- (void)scene:(id)scene didUpdateClientSettingsWithDiff:(id)diff oldClientSettings:(id)settings transitionContext:(id)context
 {
-  v8 = a5;
-  v10 = [a3 clientSettings];
-  LODWORD(a3) = [v10 pui_didFinishInitialization];
-  v9 = [v8 pui_didFinishInitialization];
+  settingsCopy = settings;
+  clientSettings = [scene clientSettings];
+  LODWORD(scene) = [clientSettings pui_didFinishInitialization];
+  pui_didFinishInitialization = [settingsCopy pui_didFinishInitialization];
 
-  if (a3 != v9)
+  if (scene != pui_didFinishInitialization)
   {
     [(PRRenderingServiceSceneComponent *)self _sceneContentReadinessDidChange];
   }
 }
 
-- (void)sceneDidActivate:(id)a3
+- (void)sceneDidActivate:(id)activate
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  activateCopy = activate;
   v5 = PRLogRenderingService();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 identifier];
+    identifier = [activateCopy identifier];
     *buf = 138412290;
-    v14 = v6;
+    v14 = identifier;
     _os_log_impl(&dword_1A8AA7000, v5, OS_LOG_TYPE_DEFAULT, "PRRenderingServiceSceneComponent: Acquiring rendering service server keep alive assertion for scene activation (scene identifier: %@)", buf, 0xCu);
   }
 
   renderingServiceServerKeepAliveAssertionManager = self->_renderingServiceServerKeepAliveAssertionManager;
   v8 = MEMORY[0x1E696AEC0];
-  v9 = [v4 identifier];
-  v10 = [v8 stringWithFormat:@"Scene-%@", v9];
+  identifier2 = [activateCopy identifier];
+  v10 = [v8 stringWithFormat:@"Scene-%@", identifier2];
   v11 = [(PRRenderingServiceServerKeepAliveAssertionManager *)renderingServiceServerKeepAliveAssertionManager acquireRenderingServiceServerKeepAliveAssertionForReason:v10];
   renderingServiceServerKeepAliveAssertion = self->_renderingServiceServerKeepAliveAssertion;
   self->_renderingServiceServerKeepAliveAssertion = v11;
@@ -273,20 +273,20 @@
   [(PRRenderingServiceSceneComponent *)self _sceneContentReadinessDidChange];
 }
 
-- (void)sceneWillDeactivate:(id)a3 withError:(id)a4
+- (void)sceneWillDeactivate:(id)deactivate withError:(id)error
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 clientHandle];
-  v7 = [v6 processHandle];
-  v8 = [v7 pid];
+  deactivateCopy = deactivate;
+  clientHandle = [deactivateCopy clientHandle];
+  processHandle = [clientHandle processHandle];
+  v8 = [processHandle pid];
 
   v9 = PRLogRenderingService();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v5 identifier];
+    identifier = [deactivateCopy identifier];
     v12 = 138412546;
-    v13 = v10;
+    v13 = identifier;
     v14 = 1024;
     v15 = v8;
     _os_log_impl(&dword_1A8AA7000, v9, OS_LOG_TYPE_DEFAULT, "PRRenderingServiceSceneComponent: Invalidating rendering service server keep alive assertion because scene will deactivate (scene identifier: %@, PID: %d)", &v12, 0x12u);
@@ -297,13 +297,13 @@
   self->_renderingServiceServerKeepAliveAssertion = 0;
 }
 
-- (void)renderingServiceServer:(id)a3 didActivateConnection:(id)a4
+- (void)renderingServiceServer:(id)server didActivateConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  serverCopy = server;
+  connectionCopy = connection;
   objc_initWeak(&location, self);
   objc_copyWeak(&v9, &location);
-  v8 = v7;
+  v8 = connectionCopy;
   BSDispatchMain();
 
   objc_destroyWeak(&v9);
@@ -347,13 +347,13 @@ void __81__PRRenderingServiceSceneComponent_renderingServiceServer_didActivateCo
   }
 }
 
-- (void)renderingServiceServer:(id)a3 didInvalidateConnection:(id)a4
+- (void)renderingServiceServer:(id)server didInvalidateConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  serverCopy = server;
+  connectionCopy = connection;
   objc_initWeak(&location, self);
   objc_copyWeak(&v9, &location);
-  v8 = v7;
+  v8 = connectionCopy;
   BSDispatchMain();
 
   objc_destroyWeak(&v9);
@@ -390,10 +390,10 @@ void __83__PRRenderingServiceSceneComponent_renderingServiceServer_didInvalidate
   }
 }
 
-- (void)renderingServiceServerKeepAliveAssertionManager:(id)a3 didActivateRenderingServiceServer:(id)a4
+- (void)renderingServiceServerKeepAliveAssertionManager:(id)manager didActivateRenderingServiceServer:(id)server
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  serverCopy = server;
   objc_initWeak(&location, self);
   objc_copyWeak(&v8, &location);
   BSDispatchMain();

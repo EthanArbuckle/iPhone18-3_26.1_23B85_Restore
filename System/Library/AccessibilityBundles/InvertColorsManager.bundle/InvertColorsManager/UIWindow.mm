@@ -13,12 +13,12 @@
 
   else
   {
-    v4 = [(UIWindow *)self _accessibilityInvertColorsActsAsDarkWindowBlock];
+    _accessibilityInvertColorsActsAsDarkWindowBlock = [(UIWindow *)self _accessibilityInvertColorsActsAsDarkWindowBlock];
 
-    if (!v4)
+    if (!_accessibilityInvertColorsActsAsDarkWindowBlock)
     {
-      v5 = [(UIWindow *)self traitCollection];
-      v6 = [v5 userInterfaceStyle] == &dword_0 + 2;
+      traitCollection = [(UIWindow *)self traitCollection];
+      v6 = [traitCollection userInterfaceStyle] == &dword_0 + 2;
 
       return v6;
     }

@@ -9,38 +9,38 @@
   v22.receiver = self;
   v22.super_class = WFFileAccessDialogViewController;
   [(WFCompactDialogViewController *)&v22 loadView];
-  v3 = [(WFCompactDialogViewController *)self request];
-  v4 = [v3 message];
-  v5 = [(WFCompactPlatterViewController *)self platterView];
-  [v5 setSecondaryText:v4];
+  request = [(WFCompactDialogViewController *)self request];
+  message = [request message];
+  platterView = [(WFCompactPlatterViewController *)self platterView];
+  [platterView setSecondaryText:message];
 
   objc_initWeak(&location, self);
   v6 = objc_opt_new();
-  v7 = [v3 cancelButton];
+  cancelButton = [request cancelButton];
 
-  if (v7)
+  if (cancelButton)
   {
-    v8 = [v3 cancelButton];
+    cancelButton2 = [request cancelButton];
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __44__WFFileAccessDialogViewController_loadView__block_invoke;
     v19[3] = &unk_279EE8908;
     objc_copyWeak(&v20, &location);
-    v9 = [WFCompactDialogAction actionForButton:v8 handler:v19];
+    v9 = [WFCompactDialogAction actionForButton:cancelButton2 handler:v19];
     [v6 addObject:v9];
 
     objc_destroyWeak(&v20);
   }
 
-  v10 = [v3 okButton];
+  okButton = [request okButton];
   v13 = MEMORY[0x277D85DD0];
   v14 = 3221225472;
   v15 = __44__WFFileAccessDialogViewController_loadView__block_invoke_2;
   v16 = &unk_279EE8630;
   objc_copyWeak(&v18, &location);
-  v11 = v3;
+  v11 = request;
   v17 = v11;
-  v12 = [WFCompactDialogAction actionForButton:v10 handler:&v13];
+  v12 = [WFCompactDialogAction actionForButton:okButton handler:&v13];
   [v6 addObject:{v12, v13, v14, v15, v16}];
 
   [(WFCompactDialogViewController *)self configureActionGroupWithActions:v6];

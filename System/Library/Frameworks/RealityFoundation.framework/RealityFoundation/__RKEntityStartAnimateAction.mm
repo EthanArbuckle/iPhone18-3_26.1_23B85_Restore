@@ -1,10 +1,10 @@
 @interface __RKEntityStartAnimateAction
-- (id)copyWithZone:(void *)a3;
+- (id)copyWithZone:(void *)zone;
 @end
 
 @implementation __RKEntityStartAnimateAction
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
 
   __RKEntityStartAnimateAction.copy(with:)(v5);

@@ -1,14 +1,14 @@
 @interface VNFaceLegacyFaceCore
-+ (void)_setFaceExpressionFeatureScoreIfDetected:(id)a3 features:(id)a4 detectionKey:(id)a5 scoreKey:(id)a6 featureKey:(id)a7;
-- (BOOL)isEqual:(id)a3;
++ (void)_setFaceExpressionFeatureScoreIfDetected:(id)detected features:(id)features detectionKey:(id)key scoreKey:(id)scoreKey featureKey:(id)featureKey;
+- (BOOL)isEqual:(id)equal;
 - (CGPoint)faceCenter;
 - (CGPoint)leftEye;
 - (CGPoint)mouth;
 - (CGPoint)rightEye;
 - (CGRect)faceBoundingBox;
-- (VNFaceLegacyFaceCore)initWithCoder:(id)a3;
-- (VNFaceLegacyFaceCore)initWithFace:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (VNFaceLegacyFaceCore)initWithCoder:(id)coder;
+- (VNFaceLegacyFaceCore)initWithFace:(id)face;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VNFaceLegacyFaceCore
@@ -62,10 +62,10 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v13 = 1;
     goto LABEL_10;
@@ -78,9 +78,9 @@
     goto LABEL_10;
   }
 
-  v5 = v4;
-  v6 = [(VNFaceLegacyFaceCore *)self profile];
-  if (v6 != [(VNFaceLegacyFaceCore *)v5 profile])
+  v5 = equalCopy;
+  profile = [(VNFaceLegacyFaceCore *)self profile];
+  if (profile != [(VNFaceLegacyFaceCore *)v5 profile])
   {
     goto LABEL_6;
   }
@@ -170,12 +170,12 @@
     goto LABEL_7;
   }
 
-  v51 = [(VNFaceLegacyFaceCore *)self trackID];
-  if (v51 == [(VNFaceLegacyFaceCore *)v5 trackID]&& (v52 = [(VNFaceLegacyFaceCore *)self trackDuration], v52 == [(VNFaceLegacyFaceCore *)v5 trackDuration]))
+  trackID = [(VNFaceLegacyFaceCore *)self trackID];
+  if (trackID == [(VNFaceLegacyFaceCore *)v5 trackID]&& (v52 = [(VNFaceLegacyFaceCore *)self trackDuration], v52 == [(VNFaceLegacyFaceCore *)v5 trackDuration]))
   {
-    v53 = [(VNFaceLegacyFaceCore *)self features];
-    v54 = [(VNFaceLegacyFaceCore *)v5 features];
-    v13 = [v53 isEqual:v54];
+    features = [(VNFaceLegacyFaceCore *)self features];
+    features2 = [(VNFaceLegacyFaceCore *)v5 features];
+    v13 = [features isEqual:features2];
   }
 
   else
@@ -190,55 +190,55 @@ LABEL_10:
   return v13;
 }
 
-- (VNFaceLegacyFaceCore)initWithCoder:(id)a3
+- (VNFaceLegacyFaceCore)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v26.receiver = self;
   v26.super_class = VNFaceLegacyFaceCore;
   v5 = [(VNFaceLegacyFaceCore *)&v26 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"VNFaceLegacyFaceCore"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"VNFaceLegacyFaceCore"];
     v7 = v6;
     if (v6 && ![v6 unsignedIntValue])
     {
-      v5->_profile = [v4 decodeIntForKey:@"fcr_profile"];
-      [v4 decodeFloatForKey:@"fcr_size"];
+      v5->_profile = [coderCopy decodeIntForKey:@"fcr_profile"];
+      [coderCopy decodeFloatForKey:@"fcr_size"];
       v5->_faceSize = v9;
-      [v4 decodeFloatForKey:@"fcr_angle"];
+      [coderCopy decodeFloatForKey:@"fcr_angle"];
       v5->_faceAngle = v10;
-      [v4 vn_decodePointForKey:@"fcr_center"];
+      [coderCopy vn_decodePointForKey:@"fcr_center"];
       v5->_faceCenter.x = v11;
       v5->_faceCenter.y = v12;
-      [v4 vn_decodeRectForKey:@"fcr_bbox"];
+      [coderCopy vn_decodeRectForKey:@"fcr_bbox"];
       v5->_faceBoundingBox.origin.x = v13;
       v5->_faceBoundingBox.origin.y = v14;
       v5->_faceBoundingBox.size.width = v15;
       v5->_faceBoundingBox.size.height = v16;
-      [v4 vn_decodePointForKey:@"fcr_lefteye"];
+      [coderCopy vn_decodePointForKey:@"fcr_lefteye"];
       v5->_leftEye.x = v17;
       v5->_leftEye.y = v18;
-      [v4 vn_decodePointForKey:@"fcr_righteye"];
+      [coderCopy vn_decodePointForKey:@"fcr_righteye"];
       v5->_rightEye.x = v19;
       v5->_rightEye.y = v20;
-      [v4 vn_decodePointForKey:@"fcr_mouth"];
+      [coderCopy vn_decodePointForKey:@"fcr_mouth"];
       v5->_mouth.x = v21;
       v5->_mouth.y = v22;
-      v5->_trackID = [v4 decodeIntForKey:@"fcr_trackid"];
-      v5->_trackDuration = [v4 decodeIntForKey:@"fcr_trackduration"];
-      if ([v4 containsValueForKey:@"fcr_features"])
+      v5->_trackID = [coderCopy decodeIntForKey:@"fcr_trackid"];
+      v5->_trackDuration = [coderCopy decodeIntForKey:@"fcr_trackduration"];
+      if ([coderCopy containsValueForKey:@"fcr_features"])
       {
         if ([VNFaceLegacyFaceCore initWithCoder:]::ourFeaturesClassSetOnceToken != -1)
         {
           dispatch_once(&[VNFaceLegacyFaceCore initWithCoder:]::ourFeaturesClassSetOnceToken, &__block_literal_global_23404);
         }
 
-        v23 = [v4 decodeObjectOfClasses:-[VNFaceLegacyFaceCore initWithCoder:]::ourFeaturesClassSet forKey:@"fcr_features"];
+        v23 = [coderCopy decodeObjectOfClasses:-[VNFaceLegacyFaceCore initWithCoder:]::ourFeaturesClassSet forKey:@"fcr_features"];
       }
 
       else
       {
-        v23 = [objc_alloc(MEMORY[0x1E695DF20]) initWithCoder:v4];
+        v23 = [objc_alloc(MEMORY[0x1E695DF20]) initWithCoder:coderCopy];
       }
 
       features = v5->_features;
@@ -271,38 +271,38 @@ uint64_t __38__VNFaceLegacyFaceCore_initWithCoder___block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v8 = a3;
+  coderCopy = coder;
   v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:0];
-  [v8 encodeObject:v4 forKey:@"VNFaceLegacyFaceCore"];
+  [coderCopy encodeObject:v4 forKey:@"VNFaceLegacyFaceCore"];
 
-  [v8 encodeInt:-[VNFaceLegacyFaceCore profile](self forKey:{"profile"), @"fcr_profile"}];
+  [coderCopy encodeInt:-[VNFaceLegacyFaceCore profile](self forKey:{"profile"), @"fcr_profile"}];
   [(VNFaceLegacyFaceCore *)self faceSize];
   *&v5 = v5;
-  [v8 encodeFloat:@"fcr_size" forKey:v5];
+  [coderCopy encodeFloat:@"fcr_size" forKey:v5];
   [(VNFaceLegacyFaceCore *)self faceAngle];
   *&v6 = v6;
-  [v8 encodeFloat:@"fcr_angle" forKey:v6];
+  [coderCopy encodeFloat:@"fcr_angle" forKey:v6];
   [(VNFaceLegacyFaceCore *)self faceCenter];
-  [v8 vn_encodePoint:@"fcr_center" forKey:?];
+  [coderCopy vn_encodePoint:@"fcr_center" forKey:?];
   [(VNFaceLegacyFaceCore *)self faceBoundingBox];
-  [v8 vn_encodeRect:@"fcr_bbox" forKey:?];
+  [coderCopy vn_encodeRect:@"fcr_bbox" forKey:?];
   [(VNFaceLegacyFaceCore *)self leftEye];
-  [v8 vn_encodePoint:@"fcr_lefteye" forKey:?];
+  [coderCopy vn_encodePoint:@"fcr_lefteye" forKey:?];
   [(VNFaceLegacyFaceCore *)self rightEye];
-  [v8 vn_encodePoint:@"fcr_righteye" forKey:?];
+  [coderCopy vn_encodePoint:@"fcr_righteye" forKey:?];
   [(VNFaceLegacyFaceCore *)self mouth];
-  [v8 vn_encodePoint:@"fcr_mouth" forKey:?];
-  [v8 encodeInt:-[VNFaceLegacyFaceCore trackID](self forKey:{"trackID"), @"fcr_trackid"}];
-  [v8 encodeInt:-[VNFaceLegacyFaceCore trackDuration](self forKey:{"trackDuration"), @"fcr_trackduration"}];
-  v7 = [(VNFaceLegacyFaceCore *)self features];
-  [v8 encodeObject:v7 forKey:@"fcr_features"];
+  [coderCopy vn_encodePoint:@"fcr_mouth" forKey:?];
+  [coderCopy encodeInt:-[VNFaceLegacyFaceCore trackID](self forKey:{"trackID"), @"fcr_trackid"}];
+  [coderCopy encodeInt:-[VNFaceLegacyFaceCore trackDuration](self forKey:{"trackDuration"), @"fcr_trackduration"}];
+  features = [(VNFaceLegacyFaceCore *)self features];
+  [coderCopy encodeObject:features forKey:@"fcr_features"];
 }
 
-- (VNFaceLegacyFaceCore)initWithFace:(id)a3
+- (VNFaceLegacyFaceCore)initWithFace:(id)face
 {
-  v4 = a3;
+  faceCopy = face;
   v29.receiver = self;
   v29.super_class = VNFaceLegacyFaceCore;
   v5 = [(VNFaceLegacyFaceCore *)&v29 init];
@@ -311,8 +311,8 @@ uint64_t __38__VNFaceLegacyFaceCore_initWithCoder___block_invoke()
     goto LABEL_6;
   }
 
-  v6 = [v4 faceType];
-  if (v6 >= 3)
+  faceType = [faceCopy faceType];
+  if (faceType >= 3)
   {
     VNValidatedLog(4, @"VNFaceLegacyFaceCore:initWithFace: unsupported face profile\n", v7, v8, v9, v10, v11, v12, v26);
 LABEL_6:
@@ -320,23 +320,23 @@ LABEL_6:
     goto LABEL_9;
   }
 
-  *(v5 + 1) = v6;
-  [v4 faceSize];
+  *(v5 + 1) = faceType;
+  [faceCopy faceSize];
   *(v5 + 2) = v13;
-  [v4 faceAngle];
+  [faceCopy faceAngle];
   *(v5 + 3) = v14;
-  if (v4)
+  if (faceCopy)
   {
-    [v4 face];
+    [faceCopy face];
     *(v5 + 56) = v26;
-    [v4 face];
+    [faceCopy face];
     *(v5 + 120) = v27;
     *(v5 + 136) = v28;
-    [v4 leftEye];
+    [faceCopy leftEye];
     *(v5 + 72) = v26;
-    [v4 rightEye];
+    [faceCopy rightEye];
     *(v5 + 88) = v26;
-    [v4 mouth];
+    [faceCopy mouth];
   }
 
   else
@@ -353,21 +353,21 @@ LABEL_6:
   }
 
   *(v5 + 104) = v26;
-  *(v5 + 4) = [v4 trackID];
-  *(v5 + 5) = [v4 trackDuration];
+  *(v5 + 4) = [faceCopy trackID];
+  *(v5 + 5) = [faceCopy trackDuration];
   v16 = objc_opt_class();
   v17 = MEMORY[0x1E695DF90];
-  v18 = [v4 expressionFeatures];
-  v19 = [v17 dictionaryWithCapacity:{objc_msgSend(v18, "count")}];
+  expressionFeatures = [faceCopy expressionFeatures];
+  v19 = [v17 dictionaryWithCapacity:{objc_msgSend(expressionFeatures, "count")}];
 
-  v20 = [v4 expressionFeatures];
-  [v16 _setFaceExpressionFeatureScoreIfDetected:v20 features:v19 detectionKey:*MEMORY[0x1E6984A80] scoreKey:*MEMORY[0x1E6984A88] featureKey:@"VNFaceLegacyFaceCoreFeature_LeftEyeClosedScore"];
+  expressionFeatures2 = [faceCopy expressionFeatures];
+  [v16 _setFaceExpressionFeatureScoreIfDetected:expressionFeatures2 features:v19 detectionKey:*MEMORY[0x1E6984A80] scoreKey:*MEMORY[0x1E6984A88] featureKey:@"VNFaceLegacyFaceCoreFeature_LeftEyeClosedScore"];
 
-  v21 = [v4 expressionFeatures];
-  [v16 _setFaceExpressionFeatureScoreIfDetected:v21 features:v19 detectionKey:*MEMORY[0x1E6984A90] scoreKey:*MEMORY[0x1E6984A98] featureKey:@"VNFaceLegacyFaceCoreFeature_RightEyeClosedScore"];
+  expressionFeatures3 = [faceCopy expressionFeatures];
+  [v16 _setFaceExpressionFeatureScoreIfDetected:expressionFeatures3 features:v19 detectionKey:*MEMORY[0x1E6984A90] scoreKey:*MEMORY[0x1E6984A98] featureKey:@"VNFaceLegacyFaceCoreFeature_RightEyeClosedScore"];
 
-  v22 = [v4 expressionFeatures];
-  [v16 _setFaceExpressionFeatureScoreIfDetected:v22 features:v19 detectionKey:*MEMORY[0x1E6984AA0] scoreKey:*MEMORY[0x1E6984AA8] featureKey:@"VNFaceLegacyFaceCoreFeature_SmileScore"];
+  expressionFeatures4 = [faceCopy expressionFeatures];
+  [v16 _setFaceExpressionFeatureScoreIfDetected:expressionFeatures4 features:v19 detectionKey:*MEMORY[0x1E6984AA0] scoreKey:*MEMORY[0x1E6984AA8] featureKey:@"VNFaceLegacyFaceCoreFeature_SmileScore"];
 
   v23 = [v19 copy];
   v24 = *(v5 + 6);
@@ -379,20 +379,20 @@ LABEL_9:
   return v15;
 }
 
-+ (void)_setFaceExpressionFeatureScoreIfDetected:(id)a3 features:(id)a4 detectionKey:(id)a5 scoreKey:(id)a6 featureKey:(id)a7
++ (void)_setFaceExpressionFeatureScoreIfDetected:(id)detected features:(id)features detectionKey:(id)key scoreKey:(id)scoreKey featureKey:(id)featureKey
 {
-  v17 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = a7;
-  v14 = [v17 objectForKey:a5];
+  detectedCopy = detected;
+  featuresCopy = features;
+  scoreKeyCopy = scoreKey;
+  featureKeyCopy = featureKey;
+  v14 = [detectedCopy objectForKey:key];
   v15 = v14;
   if (v14 && ([v14 isEqual:MEMORY[0x1E695E110]] & 1) == 0)
   {
-    v16 = [v17 objectForKey:v12];
+    v16 = [detectedCopy objectForKey:scoreKeyCopy];
     if (v16)
     {
-      [v11 setObject:v16 forKeyedSubscript:v13];
+      [featuresCopy setObject:v16 forKeyedSubscript:featureKeyCopy];
     }
   }
 }

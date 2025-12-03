@@ -1,22 +1,22 @@
 @interface TICandidateRequestToken
-+ (id)tokenForKeyboardState:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isSameRequestAs:(id)a3;
++ (id)tokenForKeyboardState:(id)state;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isSameRequestAs:(id)as;
 - (TICandidateRequestToken)init;
-- (TICandidateRequestToken)initWithCoder:(id)a3;
+- (TICandidateRequestToken)initWithCoder:(id)coder;
 - (id)description;
-- (id)initForKeyboardState:(id)a3;
+- (id)initForKeyboardState:(id)state;
 - (id)shortIdentifier;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TICandidateRequestToken
 
 - (id)shortIdentifier
 {
-  v2 = [(TICandidateRequestToken *)self UUID];
-  v3 = [v2 description];
+  uUID = [(TICandidateRequestToken *)self UUID];
+  v3 = [uUID description];
 
   v4 = [v3 substringToIndex:8];
 
@@ -25,38 +25,38 @@
 
 - (id)description
 {
-  v3 = [(TICandidateRequestToken *)self shiftState];
-  if (v3 > 3)
+  shiftState = [(TICandidateRequestToken *)self shiftState];
+  if (shiftState > 3)
   {
     v4 = "unknown";
   }
 
   else
   {
-    v4 = off_1E6F4CC10[v3];
+    v4 = off_1E6F4CC10[shiftState];
   }
 
   v5 = MEMORY[0x1E696AEC0];
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
-  v8 = [(TICandidateRequestToken *)self UUID];
-  v9 = [(TICandidateRequestToken *)self documentState];
-  v10 = [v5 stringWithFormat:@"<%@: %p UUID=%@ docState=%@ shiftState=%s>", v7, self, v8, v9, v4];;
+  uUID = [(TICandidateRequestToken *)self UUID];
+  documentState = [(TICandidateRequestToken *)self documentState];
+  v10 = [v5 stringWithFormat:@"<%@: %p UUID=%@ docState=%@ shiftState=%s>", v7, self, uUID, documentState, v4];;
 
   return v10;
 }
 
-- (BOOL)isSameRequestAs:(id)a3
+- (BOOL)isSameRequestAs:(id)as
 {
-  v4 = a3;
-  v5 = [(TICandidateRequestToken *)self UUID];
-  v6 = [v4 UUID];
-  v7 = [v5 isEqual:v6];
+  asCopy = as;
+  uUID = [(TICandidateRequestToken *)self UUID];
+  uUID2 = [asCopy UUID];
+  v7 = [uUID isEqual:uUID2];
 
-  if (v7 && (-[TICandidateRequestToken documentState](self, "documentState"), v8 = objc_claimAutoreleasedReturnValue(), [v4 documentState], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v8, "isEqual:", v9), v9, v8, v10))
+  if (v7 && (-[TICandidateRequestToken documentState](self, "documentState"), v8 = objc_claimAutoreleasedReturnValue(), [asCopy documentState], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v8, "isEqual:", v9), v9, v8, v10))
   {
-    v11 = [(TICandidateRequestToken *)self shiftState];
-    v12 = v11 == [v4 shiftState];
+    shiftState = [(TICandidateRequestToken *)self shiftState];
+    v12 = shiftState == [asCopy shiftState];
   }
 
   else
@@ -67,13 +67,13 @@
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
   if ([v5 isMemberOfClass:objc_opt_class()])
   {
-    v6 = [(TICandidateRequestToken *)self isSameRequestAs:v4];
+    v6 = [(TICandidateRequestToken *)self isSameRequestAs:equalCopy];
   }
 
   else
@@ -86,75 +86,75 @@
 
 - (unint64_t)hash
 {
-  v3 = [(TICandidateRequestToken *)self UUID];
-  v4 = [v3 hash];
+  uUID = [(TICandidateRequestToken *)self UUID];
+  v4 = [uUID hash];
 
-  v5 = [(TICandidateRequestToken *)self documentState];
-  v6 = [v5 hash] + 257 * v4;
+  documentState = [(TICandidateRequestToken *)self documentState];
+  v6 = [documentState hash] + 257 * v4;
 
   return 257 * v6 + self->_shiftState;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   UUID = self->_UUID;
-  v7 = v4;
+  v7 = coderCopy;
   if (UUID)
   {
-    [v4 encodeObject:UUID forKey:@"UUID"];
-    v4 = v7;
+    [coderCopy encodeObject:UUID forKey:@"UUID"];
+    coderCopy = v7;
   }
 
   documentState = self->_documentState;
   if (documentState)
   {
     [v7 encodeObject:documentState forKey:@"documentState"];
-    v4 = v7;
+    coderCopy = v7;
   }
 
-  [v4 encodeInteger:self->_shiftState forKey:@"shiftState"];
+  [coderCopy encodeInteger:self->_shiftState forKey:@"shiftState"];
 }
 
-- (TICandidateRequestToken)initWithCoder:(id)a3
+- (TICandidateRequestToken)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = TICandidateRequestToken;
   v5 = [(TICandidateRequestToken *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UUID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UUID"];
     UUID = v5->_UUID;
     v5->_UUID = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"documentState"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"documentState"];
     documentState = v5->_documentState;
     v5->_documentState = v8;
 
-    v5->_shiftState = [v4 decodeIntegerForKey:@"shiftState"];
+    v5->_shiftState = [coderCopy decodeIntegerForKey:@"shiftState"];
   }
 
   return v5;
 }
 
-- (id)initForKeyboardState:(id)a3
+- (id)initForKeyboardState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v13.receiver = self;
   v13.super_class = TICandidateRequestToken;
   v5 = [(TICandidateRequestToken *)&v13 init];
   if (v5)
   {
-    v6 = [MEMORY[0x1E696AFB0] UUID];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
     UUID = v5->_UUID;
-    v5->_UUID = v6;
+    v5->_UUID = uUID;
 
-    v8 = [v4 documentState];
-    v9 = v8;
-    if (v8)
+    documentState = [stateCopy documentState];
+    v9 = documentState;
+    if (documentState)
     {
-      v10 = v8;
+      v10 = documentState;
     }
 
     else
@@ -165,7 +165,7 @@
     documentState = v5->_documentState;
     v5->_documentState = v10;
 
-    v5->_shiftState = [v4 shiftState];
+    v5->_shiftState = [stateCopy shiftState];
   }
 
   return v5;
@@ -179,10 +179,10 @@
   return v4;
 }
 
-+ (id)tokenForKeyboardState:(id)a3
++ (id)tokenForKeyboardState:(id)state
 {
-  v3 = a3;
-  v4 = [[TICandidateRequestToken alloc] initForKeyboardState:v3];
+  stateCopy = state;
+  v4 = [[TICandidateRequestToken alloc] initForKeyboardState:stateCopy];
 
   return v4;
 }

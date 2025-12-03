@@ -1,18 +1,18 @@
 @interface MSCriterion
-- (MSCriterion)initWithCoder:(id)a3;
-- (MSCriterion)initWithCriteria:(id)a3 allRequired:(BOOL)a4;
-- (MSCriterion)initWithType:(id)a3 qualifier:(id)a4 expression:(id)a5;
-- (id)_initWithType:(id)a3 qualifier:(id)a4 criteria:(id)a5;
-- (void)encodeWithCoder:(id)a3;
+- (MSCriterion)initWithCoder:(id)coder;
+- (MSCriterion)initWithCriteria:(id)criteria allRequired:(BOOL)required;
+- (MSCriterion)initWithType:(id)type qualifier:(id)qualifier expression:(id)expression;
+- (id)_initWithType:(id)type qualifier:(id)qualifier criteria:(id)criteria;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MSCriterion
 
-- (id)_initWithType:(id)a3 qualifier:(id)a4 criteria:(id)a5
+- (id)_initWithType:(id)type qualifier:(id)qualifier criteria:(id)criteria
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  typeCopy = type;
+  qualifierCopy = qualifier;
+  criteriaCopy = criteria;
   v28.receiver = self;
   v28.super_class = MSCriterion;
   v12 = [(MSCriterion *)&v28 init];
@@ -20,9 +20,9 @@
   v14 = &v12->super.isa;
   if (v12)
   {
-    objc_storeStrong(&v12->_type, a3);
-    objc_storeStrong(p_isa + 2, a4);
-    objc_storeStrong(p_isa + 3, a5);
+    objc_storeStrong(&v12->_type, type);
+    objc_storeStrong(p_isa + 2, qualifier);
+    objc_storeStrong(p_isa + 3, criteria);
     if ([v14[1] isEqual:@"_MSCriterionTypeComplex"])
     {
       v15 = p_isa[3];
@@ -104,24 +104,24 @@ LABEL_19:
   return v14;
 }
 
-- (MSCriterion)initWithType:(id)a3 qualifier:(id)a4 expression:(id)a5
+- (MSCriterion)initWithType:(id)type qualifier:(id)qualifier expression:(id)expression
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v10 copy];
+  typeCopy = type;
+  qualifierCopy = qualifier;
+  expressionCopy = expression;
+  v11 = [expressionCopy copy];
 
-  v12 = [(MSCriterion *)self _initWithType:v8 qualifier:v9 criteria:v11];
+  v12 = [(MSCriterion *)self _initWithType:typeCopy qualifier:qualifierCopy criteria:v11];
   return v12;
 }
 
-- (MSCriterion)initWithCriteria:(id)a3 allRequired:(BOOL)a4
+- (MSCriterion)initWithCriteria:(id)criteria allRequired:(BOOL)required
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [v6 copy];
+  requiredCopy = required;
+  criteriaCopy = criteria;
+  v7 = [criteriaCopy copy];
 
-  if (v4)
+  if (requiredCopy)
   {
     v8 = @"_MSCriterionQualifierAllRequired";
   }
@@ -136,11 +136,11 @@ LABEL_19:
   return v9;
 }
 
-- (MSCriterion)initWithCoder:(id)a3
+- (MSCriterion)initWithCoder:(id)coder
 {
   v22[5] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 allowsKeyedCoding] && objc_msgSend(v4, "containsValueForKey:", @"_MSCodingKeyVersion") && objc_msgSend(v4, "decodeInt32ForKey:", @"_MSCodingKeyVersion") == 1)
+  coderCopy = coder;
+  if ([coderCopy allowsKeyedCoding] && objc_msgSend(coderCopy, "containsValueForKey:", @"_MSCodingKeyVersion") && objc_msgSend(coderCopy, "decodeInt32ForKey:", @"_MSCodingKeyVersion") == 1)
   {
     v5 = MEMORY[0x1E695DFD8];
     v22[0] = objc_opt_class();
@@ -151,19 +151,19 @@ LABEL_19:
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:5];
     v7 = [v5 setWithArray:v6];
 
-    v8 = [v4 decodeObjectOfClasses:v7 forKey:@"_MSCodingKeyCriteria"];
+    v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"_MSCodingKeyCriteria"];
     if (!v8)
     {
       [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"MSCriterion requires the criterion criteria not be nil."];
     }
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_MSCodingKeyType"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_MSCodingKeyType"];
     if (!v9)
     {
       [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"MSCriterion requires the criterion type be a NSString."];
     }
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_MSCodingKeyQualifier"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_MSCodingKeyQualifier"];
     if (!v10)
     {
       [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"MSCriterion requires the criterion qualifier be a NSString."];
@@ -242,18 +242,18 @@ LABEL_24:
   return v15;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  if (([v4 allowsKeyedCoding] & 1) == 0)
+  coderCopy = coder;
+  if (([coderCopy allowsKeyedCoding] & 1) == 0)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"A Keyed archiver is required for encoding MSCriterion."];
   }
 
-  [v4 encodeInt32:1 forKey:@"_MSCodingKeyVersion"];
-  [v4 encodeObject:self->_type forKey:@"_MSCodingKeyType"];
-  [v4 encodeObject:self->_qualifier forKey:@"_MSCodingKeyQualifier"];
-  [v4 encodeObject:self->_criteria forKey:@"_MSCodingKeyCriteria"];
+  [coderCopy encodeInt32:1 forKey:@"_MSCodingKeyVersion"];
+  [coderCopy encodeObject:self->_type forKey:@"_MSCodingKeyType"];
+  [coderCopy encodeObject:self->_qualifier forKey:@"_MSCodingKeyQualifier"];
+  [coderCopy encodeObject:self->_criteria forKey:@"_MSCodingKeyCriteria"];
 }
 
 @end

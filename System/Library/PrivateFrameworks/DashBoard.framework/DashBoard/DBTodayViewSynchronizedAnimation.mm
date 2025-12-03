@@ -12,10 +12,10 @@
   v4 = [(DBTodayViewSynchronizedAnimation *)&v11 description];
   [(DBTodayViewSynchronizedAnimation *)self ready];
   v5 = NSStringFromBOOL();
-  v6 = [(DBTodayViewSynchronizedAnimation *)self client];
-  v7 = [(DBTodayViewSynchronizedAnimation *)self animationBlock];
-  v8 = _Block_copy(v7);
-  v9 = [v3 stringWithFormat:@"%@ [ready: %@, client: %@, animation block: %@]", v4, v5, v6, v8];
+  client = [(DBTodayViewSynchronizedAnimation *)self client];
+  animationBlock = [(DBTodayViewSynchronizedAnimation *)self animationBlock];
+  v8 = _Block_copy(animationBlock);
+  v9 = [v3 stringWithFormat:@"%@ [ready: %@, client: %@, animation block: %@]", v4, v5, client, v8];
 
   return v9;
 }

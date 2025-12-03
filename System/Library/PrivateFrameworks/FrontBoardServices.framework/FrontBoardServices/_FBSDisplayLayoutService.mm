@@ -1,12 +1,12 @@
 @interface _FBSDisplayLayoutService
-- (id)_initWithEndpoint:(id)a3 qos:(char)a4;
+- (id)_initWithEndpoint:(id)endpoint qos:(char)qos;
 - (id)currentLayout;
 - (void)_noteDisconnected;
-- (void)addObserver:(id)a3 forKey:(id)a4;
+- (void)addObserver:(id)observer forKey:(id)key;
 - (void)dealloc;
 - (void)invalidate;
-- (void)removeObserverForKey:(id)a3;
-- (void)updateLayout:(id)a3 withTransition:(id)a4;
+- (void)removeObserverForKey:(id)key;
+- (void)updateLayout:(id)layout withTransition:(id)transition;
 @end
 
 @implementation _FBSDisplayLayoutService
@@ -55,25 +55,25 @@
   [(_FBSDisplayLayoutService *)&v3 dealloc];
 }
 
-- (id)_initWithEndpoint:(id)a3 qos:(char)a4
+- (id)_initWithEndpoint:(id)endpoint qos:(char)qos
 {
-  v4 = a4;
-  v7 = a3;
+  qosCopy = qos;
+  endpointCopy = endpoint;
   v30.receiver = self;
   v30.super_class = _FBSDisplayLayoutService;
   v8 = [(_FBSDisplayLayoutService *)&v30 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_endpoint, a3);
+    objc_storeStrong(&v8->_endpoint, endpoint);
     v10 = MEMORY[0x1E696AEC0];
-    v11 = [v7 service];
-    v12 = [v7 targetDescription];
-    v13 = [v7 instance];
-    v14 = _NSStringFromFBSDisplayLayoutQOS(v4);
-    v15 = [v10 stringWithFormat:@"%@:%@-%@-%@", v11, v12, v13, v14];
+    service = [endpointCopy service];
+    targetDescription = [endpointCopy targetDescription];
+    instance = [endpointCopy instance];
+    v14 = _NSStringFromFBSDisplayLayoutQOS(qosCopy);
+    v15 = [v10 stringWithFormat:@"%@:%@-%@-%@", service, targetDescription, instance, v14];
 
-    v16 = _serviceQualityForFBSDisplayLayoutQOS(v4);
+    v16 = _serviceQualityForFBSDisplayLayoutQOS(qosCopy);
     v17 = [off_1E76BCA48 queueWithName:v15 serviceQuality:v16];
     callOutQueue = v9->_callOutQueue;
     v9->_callOutQueue = v17;
@@ -82,8 +82,8 @@
     v28[1] = 3221225472;
     v28[2] = __50___FBSDisplayLayoutService__initWithEndpoint_qos___block_invoke;
     v28[3] = &__block_descriptor_33_e25_v16__0___BSXPCEncoding__8l;
-    v29 = v4;
-    v19 = [off_1E76BCA28 connectionWithEndpoint:v7 clientContextBuilder:v28];
+    v29 = qosCopy;
+    v19 = [off_1E76BCA28 connectionWithEndpoint:endpointCopy clientContextBuilder:v28];
     connection = v9->_connection;
     v9->_connection = v19;
 
@@ -106,16 +106,16 @@
   return v9;
 }
 
-- (void)addObserver:(id)a3 forKey:(id)a4
+- (void)addObserver:(id)observer forKey:(id)key
 {
-  v7 = a4;
-  v8 = [a3 copy];
+  keyCopy = key;
+  v8 = [observer copy];
   if (!v8)
   {
     [_FBSDisplayLayoutService addObserver:a2 forKey:?];
   }
 
-  if (!v7)
+  if (!keyCopy)
   {
     [_FBSDisplayLayoutService addObserver:a2 forKey:?];
   }
@@ -124,7 +124,7 @@
   os_unfair_lock_lock(&self->_lock);
   lock_keyedObservers = self->_lock_keyedObservers;
   v11 = MEMORY[0x1A58E80F0](v9);
-  [(NSMapTable *)lock_keyedObservers setObject:v11 forKey:v7];
+  [(NSMapTable *)lock_keyedObservers setObject:v11 forKey:keyCopy];
 
   lock_layoutGeneration = self->_lock_layoutGeneration;
   os_unfair_lock_unlock(&self->_lock);
@@ -132,9 +132,9 @@
   v18 = 3221225472;
   v19 = __47___FBSDisplayLayoutService_addObserver_forKey___block_invoke;
   v20 = &unk_1E76BE6D0;
-  v21 = self;
+  selfCopy = self;
   v24 = lock_layoutGeneration;
-  v13 = v7;
+  v13 = keyCopy;
   v22 = v13;
   v14 = v9;
   v23 = v14;
@@ -142,33 +142,33 @@
   callOutQueue = self->_callOutQueue;
   if (lock_layoutGeneration)
   {
-    [(BSServiceDispatchQueue *)callOutQueue performAsync:v15, v17, v18, v19, v20, v21, v22];
+    [(BSServiceDispatchQueue *)callOutQueue performAsync:v15, v17, v18, v19, v20, selfCopy, v22];
   }
 
   else
   {
-    [(BSServiceDispatchQueue *)callOutQueue performAfter:v15 withBlock:1.0, v17, v18, v19, v20, v21, v22];
+    [(BSServiceDispatchQueue *)callOutQueue performAfter:v15 withBlock:1.0, v17, v18, v19, v20, selfCopy, v22];
   }
 }
 
-- (void)removeObserverForKey:(id)a3
+- (void)removeObserverForKey:(id)key
 {
-  v5 = a3;
-  if (!v5)
+  keyCopy = key;
+  if (!keyCopy)
   {
     [_FBSDisplayLayoutService removeObserverForKey:a2];
   }
 
-  v6 = v5;
+  v6 = keyCopy;
   os_unfair_lock_lock(&self->_lock);
   [(NSMapTable *)self->_lock_keyedObservers removeObjectForKey:v6];
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)updateLayout:(id)a3 withTransition:(id)a4
+- (void)updateLayout:(id)layout withTransition:(id)transition
 {
   v5 = *MEMORY[0x1E69E9840];
-  v4 = a4;
+  transitionCopy = transition;
   BSCreateDeserializedBSXPCEncodableObjectFromXPCDictionary();
 }
 

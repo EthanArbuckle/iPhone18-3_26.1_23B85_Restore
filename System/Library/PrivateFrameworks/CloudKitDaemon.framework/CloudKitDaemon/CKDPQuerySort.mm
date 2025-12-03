@@ -1,15 +1,15 @@
 @interface CKDPQuerySort
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)orderAsString:(int)a3;
-- (int)StringAsOrder:(id)a3;
+- (id)orderAsString:(int)string;
+- (int)StringAsOrder:(id)order;
 - (int)order;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CKDPQuerySort
@@ -27,33 +27,33 @@
   }
 }
 
-- (id)orderAsString:(int)a3
+- (id)orderAsString:(int)string
 {
-  if (a3 == 1)
+  if (string == 1)
   {
     v4 = @"ascending";
   }
 
-  else if (a3 == 2)
+  else if (string == 2)
   {
     v4 = @"descending";
   }
 
   else
   {
-    v4 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], a2, @"(unknown: %i)", a3);
+    v4 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], a2, @"(unknown: %i)", string);
   }
 
   return v4;
 }
 
-- (int)StringAsOrder:(id)a3
+- (int)StringAsOrder:(id)order
 {
-  v3 = a3;
+  orderCopy = order;
   v6 = 1;
-  if ((objc_msgSend_isEqualToString_(v3, v4, @"ascending") & 1) == 0)
+  if ((objc_msgSend_isEqualToString_(orderCopy, v4, @"ascending") & 1) == 0)
   {
-    if (objc_msgSend_isEqualToString_(v3, v5, @"descending"))
+    if (objc_msgSend_isEqualToString_(orderCopy, v5, @"descending"))
     {
       v6 = 2;
     }
@@ -121,61 +121,61 @@
   return v6;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_fieldName)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
     order = self->_order;
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_coordinate)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   fieldName = self->_fieldName;
-  v8 = v4;
+  v8 = toCopy;
   if (fieldName)
   {
-    objc_msgSend_setFieldName_(v4, v5, fieldName);
-    v4 = v8;
+    objc_msgSend_setFieldName_(toCopy, v5, fieldName);
+    toCopy = v8;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 6) = self->_order;
-    *(v4 + 28) |= 1u;
+    *(toCopy + 6) = self->_order;
+    *(toCopy + 28) |= 1u;
   }
 
   coordinate = self->_coordinate;
   if (coordinate)
   {
     objc_msgSend_setCoordinate_(v8, v5, coordinate);
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
-  v12 = objc_msgSend_copyWithZone_(self->_fieldName, v11, a3);
+  v12 = objc_msgSend_copyWithZone_(self->_fieldName, v11, zone);
   v13 = *(v10 + 16);
   *(v10 + 16) = v12;
 
@@ -185,24 +185,24 @@
     *(v10 + 28) |= 1u;
   }
 
-  v15 = objc_msgSend_copyWithZone_(self->_coordinate, v14, a3);
+  v15 = objc_msgSend_copyWithZone_(self->_coordinate, v14, zone);
   v16 = *(v10 + 8);
   *(v10 + 8) = v15;
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (!objc_msgSend_isMemberOfClass_(v4, v6, v5))
+  if (!objc_msgSend_isMemberOfClass_(equalCopy, v6, v5))
   {
     goto LABEL_11;
   }
 
   fieldName = self->_fieldName;
-  v9 = v4[2];
+  v9 = equalCopy[2];
   if (fieldName | v9)
   {
     if (!objc_msgSend_isEqual_(fieldName, v7, v9))
@@ -211,16 +211,16 @@
     }
   }
 
-  v10 = *(v4 + 28);
+  v10 = *(equalCopy + 28);
   if (*&self->_has)
   {
-    if ((*(v4 + 28) & 1) == 0 || self->_order != *(v4 + 6))
+    if ((*(equalCopy + 28) & 1) == 0 || self->_order != *(equalCopy + 6))
     {
       goto LABEL_11;
     }
   }
 
-  else if (*(v4 + 28))
+  else if (*(equalCopy + 28))
   {
 LABEL_11:
     isEqual = 0;
@@ -228,7 +228,7 @@ LABEL_11:
   }
 
   coordinate = self->_coordinate;
-  v12 = v4[1];
+  v12 = equalCopy[1];
   if (coordinate | v12)
   {
     isEqual = objc_msgSend_isEqual_(coordinate, v7, v12);
@@ -260,12 +260,12 @@ LABEL_12:
   return v7 ^ objc_msgSend_hash(self->_coordinate, v4, v5) ^ v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   fieldName = self->_fieldName;
-  v6 = *(v4 + 2);
-  v9 = v4;
+  v6 = *(fromCopy + 2);
+  v9 = fromCopy;
   if (fieldName)
   {
     if (!v6)
@@ -273,7 +273,7 @@ LABEL_12:
       goto LABEL_7;
     }
 
-    objc_msgSend_mergeFrom_(fieldName, v4, v6);
+    objc_msgSend_mergeFrom_(fieldName, fromCopy, v6);
   }
 
   else
@@ -283,30 +283,30 @@ LABEL_12:
       goto LABEL_7;
     }
 
-    objc_msgSend_setFieldName_(self, v4, v6);
+    objc_msgSend_setFieldName_(self, fromCopy, v6);
   }
 
-  v4 = v9;
+  fromCopy = v9;
 LABEL_7:
-  if (*(v4 + 28))
+  if (*(fromCopy + 28))
   {
-    self->_order = *(v4 + 6);
+    self->_order = *(fromCopy + 6);
     *&self->_has |= 1u;
   }
 
   coordinate = self->_coordinate;
-  v8 = *(v4 + 1);
+  v8 = *(fromCopy + 1);
   if (coordinate)
   {
     if (v8)
     {
-      objc_msgSend_mergeFrom_(coordinate, v4, v8);
+      objc_msgSend_mergeFrom_(coordinate, fromCopy, v8);
     }
   }
 
   else if (v8)
   {
-    objc_msgSend_setCoordinate_(self, v4, v8);
+    objc_msgSend_setCoordinate_(self, fromCopy, v8);
   }
 
   MEMORY[0x2821F96F8]();

@@ -1,7 +1,7 @@
 @interface WhiteTabsTestRunner
 - (WhiteTabsTestRunner)init;
 - (void)collectPPTResults;
-- (void)finishedTestPage:(id)a3;
+- (void)finishedTestPage:(id)page;
 @end
 
 @implementation WhiteTabsTestRunner
@@ -36,19 +36,19 @@
   [(PurplePageLoadTestRunner *)self pptResultFor:@"Summary" measure:@"Average live tabs" value:@"tabs" units:v3];
 }
 
-- (void)finishedTestPage:(id)a3
+- (void)finishedTestPage:(id)page
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(PageLoadTestRunner *)self browserController];
-  v6 = [v5 tabController];
+  pageCopy = page;
+  browserController = [(PageLoadTestRunner *)self browserController];
+  tabController = [browserController tabController];
 
-  v7 = [v6 tabDocuments];
+  tabDocuments = [tabController tabDocuments];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v8 = [tabDocuments countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v8)
   {
     v9 = v8;
@@ -61,15 +61,15 @@
       {
         if (*v18 != v12)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(tabDocuments);
         }
 
-        v14 = [*(*(&v17 + 1) + 8 * i) isAlive];
-        v10 = (v10 + v14);
-        v11 = v11 + (v14 ^ 1);
+        isAlive = [*(*(&v17 + 1) + 8 * i) isAlive];
+        v10 = (v10 + isAlive);
+        v11 = v11 + (isAlive ^ 1);
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v9 = [tabDocuments countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v9);
@@ -81,7 +81,7 @@
     v11 = 0;
   }
 
-  if ([v7 count] == 36)
+  if ([tabDocuments count] == 36)
   {
     ++self->_runCount;
     self->_totalHibernatedTabs += v11;
@@ -99,7 +99,7 @@
     v16 = 0.0;
   }
 
-  -[PageLoadTestRunner log:](self, "log:", @"Total tabs = %2d livetabs = %2d hibernatedTabs = %2d Run count = %4d Avg number of live tabs = %2.2f - Finished loading page %@", [v7 count], v10, v11, self->_runCount, *&v16, v4);
+  -[PageLoadTestRunner log:](self, "log:", @"Total tabs = %2d livetabs = %2d hibernatedTabs = %2d Run count = %4d Avg number of live tabs = %2.2f - Finished loading page %@", [tabDocuments count], v10, v11, self->_runCount, *&v16, pageCopy);
 }
 
 @end

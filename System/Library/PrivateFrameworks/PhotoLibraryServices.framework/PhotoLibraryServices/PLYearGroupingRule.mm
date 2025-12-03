@@ -1,56 +1,56 @@
 @interface PLYearGroupingRule
-- (BOOL)highlightItem:(id)a3 belongsToHighlightItemList:(id)a4;
+- (BOOL)highlightItem:(id)item belongsToHighlightItemList:(id)list;
 - (PLYearGroupingRule)init;
-- (unint64_t)dominantYearForStartDate:(id)a3 endDate:(id)a4;
-- (void)titlesForHighlightItemList:(id)a3 dateRangeTitleGenerator:(id)a4 forceUpdateLocale:(BOOL)a5 resultBlock:(id)a6;
+- (unint64_t)dominantYearForStartDate:(id)date endDate:(id)endDate;
+- (void)titlesForHighlightItemList:(id)list dateRangeTitleGenerator:(id)generator forceUpdateLocale:(BOOL)locale resultBlock:(id)block;
 @end
 
 @implementation PLYearGroupingRule
 
-- (BOOL)highlightItem:(id)a3 belongsToHighlightItemList:(id)a4
+- (BOOL)highlightItem:(id)item belongsToHighlightItemList:(id)list
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v6 startDate];
-  v9 = [v6 endDate];
+  listCopy = list;
+  itemCopy = item;
+  startDate = [listCopy startDate];
+  endDate = [listCopy endDate];
 
-  v10 = [(PLYearGroupingRule *)self dominantYearForStartDate:v8 endDate:v9];
-  v11 = [v7 startDate];
-  v12 = [v7 endDate];
+  v10 = [(PLYearGroupingRule *)self dominantYearForStartDate:startDate endDate:endDate];
+  startDate2 = [itemCopy startDate];
+  endDate2 = [itemCopy endDate];
 
-  v13 = [(PLYearGroupingRule *)self dominantYearForStartDate:v11 endDate:v12];
+  v13 = [(PLYearGroupingRule *)self dominantYearForStartDate:startDate2 endDate:endDate2];
   return v10 == v13;
 }
 
-- (unint64_t)dominantYearForStartDate:(id)a3 endDate:(id)a4
+- (unint64_t)dominantYearForStartDate:(id)date endDate:(id)endDate
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PLYearGroupingRule *)self calendar];
-  [v6 timeIntervalSinceDate:v7];
+  endDateCopy = endDate;
+  dateCopy = date;
+  calendar = [(PLYearGroupingRule *)self calendar];
+  [endDateCopy timeIntervalSinceDate:dateCopy];
   v10 = v9;
 
-  v11 = [v7 dateByAddingTimeInterval:v10 * 0.5];
+  v11 = [dateCopy dateByAddingTimeInterval:v10 * 0.5];
 
-  v12 = [v8 component:4 fromDate:v11];
+  v12 = [calendar component:4 fromDate:v11];
   return v12;
 }
 
-- (void)titlesForHighlightItemList:(id)a3 dateRangeTitleGenerator:(id)a4 forceUpdateLocale:(BOOL)a5 resultBlock:(id)a6
+- (void)titlesForHighlightItemList:(id)list dateRangeTitleGenerator:(id)generator forceUpdateLocale:(BOOL)locale resultBlock:(id)block
 {
-  v6 = a5;
-  v9 = a6;
-  v10 = a4;
-  v18 = [a3 sortedChildHighlightItems];
-  v11 = [v18 firstObject];
-  v12 = [v18 lastObject];
-  v13 = [v11 endDate];
-  v14 = [v12 startDate];
-  [v14 timeIntervalSinceDate:v13];
-  v16 = [v13 dateByAddingTimeInterval:v15 * 0.5];
-  v17 = [v10 dateRangeTitleWithStartDate:v16 endDate:v16 category:0 kind:2 type:0 options:v6];
+  localeCopy = locale;
+  blockCopy = block;
+  generatorCopy = generator;
+  sortedChildHighlightItems = [list sortedChildHighlightItems];
+  firstObject = [sortedChildHighlightItems firstObject];
+  lastObject = [sortedChildHighlightItems lastObject];
+  endDate = [firstObject endDate];
+  startDate = [lastObject startDate];
+  [startDate timeIntervalSinceDate:endDate];
+  v16 = [endDate dateByAddingTimeInterval:v15 * 0.5];
+  v17 = [generatorCopy dateRangeTitleWithStartDate:v16 endDate:v16 category:0 kind:2 type:0 options:localeCopy];
 
-  v9[2](v9, v17, 0);
+  blockCopy[2](blockCopy, v17, 0);
 }
 
 - (PLYearGroupingRule)init
@@ -60,9 +60,9 @@
   v2 = [(PLYearGroupingRule *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DEE8] currentCalendar];
+    currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
     calendar = v2->_calendar;
-    v2->_calendar = v3;
+    v2->_calendar = currentCalendar;
   }
 
   return v2;

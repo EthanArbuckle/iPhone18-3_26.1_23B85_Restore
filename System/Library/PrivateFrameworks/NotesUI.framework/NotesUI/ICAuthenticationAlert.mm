@@ -1,48 +1,48 @@
 @interface ICAuthenticationAlert
-+ (BOOL)shouldPresentSwitchToDevicePasswordPromptForAccount:(id)a3;
++ (BOOL)shouldPresentSwitchToDevicePasswordPromptForAccount:(id)account;
 + (id)aboutLockedNotesInfoAlert;
-+ (id)cannotAddAttachmentsInfoAlertWithAttachmentCount:(unint64_t)a3;
-+ (id)cannotLockInfoAlertWithReason:(unint64_t)a3;
++ (id)cannotAddAttachmentsInfoAlertWithAttachmentCount:(unint64_t)count;
++ (id)cannotLockInfoAlertWithReason:(unint64_t)reason;
 + (id)cannotSetCustomPasswordInfoAlert;
 + (id)cannotUnlockInfoAlert;
-+ (id)customAccountNameForAccount:(id)a3;
++ (id)customAccountNameForAccount:(id)account;
 + (id)customPasswordConfirmationAlert;
-+ (id)devicePasswordIncompatibleConfirmationAlertWithAccount:(id)a3 incompatibilityMessage:(id)a4;
-+ (id)enableBiometricsActionAlertShownKeyWithAccount:(id)a3;
-+ (id)enableBiometricsActionAlertWithAccount:(id)a3;
++ (id)devicePasswordIncompatibleConfirmationAlertWithAccount:(id)account incompatibilityMessage:(id)message;
++ (id)enableBiometricsActionAlertShownKeyWithAccount:(id)account;
++ (id)enableBiometricsActionAlertWithAccount:(id)account;
 + (id)enableKeychainActionAlert;
 + (id)forgotCustomPasswordSwitchAnywayConfirmationAlert;
-+ (id)incorrectCustomPasswordInfoAlertWithObject:(id)a3 showHint:(BOOL)a4;
++ (id)incorrectCustomPasswordInfoAlertWithObject:(id)object showHint:(BOOL)hint;
 + (id)keychainItemMissingInfoAlert;
-+ (id)messageForPreventLockReason:(unint64_t)a3;
++ (id)messageForPreventLockReason:(unint64_t)reason;
 + (id)mismatchedCustomPasswordInfoAlert;
 + (id)missingCustomPasswordInfoAlert;
-+ (id)rememberCustomPasswordInfoAlertPresentedKeyForAccount:(id)a3;
-+ (id)rememberCustomPasswordInfoAlertWithAccount:(id)a3;
-+ (id)resetCustomPasswordConfirmationAlertWithAccount:(id)a3;
-+ (id)resetCustomPasswordInfoAlertWithAccount:(id)a3;
++ (id)rememberCustomPasswordInfoAlertPresentedKeyForAccount:(id)account;
++ (id)rememberCustomPasswordInfoAlertWithAccount:(id)account;
++ (id)resetCustomPasswordConfirmationAlertWithAccount:(id)account;
++ (id)resetCustomPasswordInfoAlertWithAccount:(id)account;
 + (id)setDevicePasswordActionAlert;
 + (id)setDevicePasswordInfoAlert;
-+ (id)signIntoCloudAccountActionAlertWithAccount:(id)a3;
-+ (id)switchToDevicePasswordInSettingsInfoAlertWithAccount:(id)a3;
-+ (id)switchToDevicePasswordPromptPresentedCountKeyForAccount:(id)a3;
-+ (id)switchedModeInfoAlertWithAccount:(id)a3;
-+ (id)switchedToCustomPasswordModeInfoAlertWithAccount:(id)a3;
-+ (id)switchedToDevicePasswordModeInfoAlertWithAccount:(id)a3;
++ (id)signIntoCloudAccountActionAlertWithAccount:(id)account;
++ (id)switchToDevicePasswordInSettingsInfoAlertWithAccount:(id)account;
++ (id)switchToDevicePasswordPromptPresentedCountKeyForAccount:(id)account;
++ (id)switchedModeInfoAlertWithAccount:(id)account;
++ (id)switchedToCustomPasswordModeInfoAlertWithAccount:(id)account;
++ (id)switchedToDevicePasswordModeInfoAlertWithAccount:(id)account;
 + (id)updateDivergedCustomPasswordAttachmentsActionAlert;
-+ (id)updateDivergedCustomPasswordModeActionAlertWithAccount:(id)a3 incompatibilityMessage:(id)a4;
++ (id)updateDivergedCustomPasswordModeActionAlertWithAccount:(id)account incompatibilityMessage:(id)message;
 + (id)updateDivergedCustomPasswordNotesActionAlert;
-+ (id)updateDivergedDevicePasswordModeActionAlertWithAccount:(id)a3;
++ (id)updateDivergedDevicePasswordModeActionAlertWithAccount:(id)account;
 + (id)upgradeToLockNotesInfoAlert;
-+ (void)markSwitchToDevicePasswordPromptPresentedForAccount:(id)a3;
-+ (void)presentAlertsIfNeeded:(id)a3 window:(id)a4 completionHandler:(id)a5;
-+ (void)resetPresentationsForAccount:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (void)markSwitchToDevicePasswordPromptPresentedForAccount:(id)account;
++ (void)presentAlertsIfNeeded:(id)needed window:(id)window completionHandler:(id)handler;
++ (void)resetPresentationsForAccount:(id)account;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)shouldPresent;
 - (ICAuthenticationAlert)init;
 - (id)description;
 - (unint64_t)hash;
-- (void)presentInWindow:(id)a3 completionHandler:(id)a4;
+- (void)presentInWindow:(id)window completionHandler:(id)handler;
 @end
 
 @implementation ICAuthenticationAlert
@@ -114,12 +114,12 @@ uint64_t __50__ICAuthenticationAlert_aboutLockedNotesInfoAlert__block_invoke_2()
   return v2;
 }
 
-+ (id)messageForPreventLockReason:(unint64_t)a3
++ (id)messageForPreventLockReason:(unint64_t)reason
 {
   v3 = 0;
-  if (a3 > 3)
+  if (reason > 3)
   {
-    switch(a3)
+    switch(reason)
     {
       case 4uLL:
         v4 = @"Quick Notes can’t be locked.";
@@ -137,7 +137,7 @@ uint64_t __50__ICAuthenticationAlert_aboutLockedNotesInfoAlert__block_invoke_2()
 
   else
   {
-    switch(a3)
+    switch(reason)
     {
       case 1uLL:
         v4 = @"This note is too large to lock. You need to remove or reduce attachments and other content, then try again.";
@@ -159,13 +159,13 @@ LABEL_15:
   return v3;
 }
 
-+ (id)cannotLockInfoAlertWithReason:(unint64_t)a3
++ (id)cannotLockInfoAlertWithReason:(unint64_t)reason
 {
   v5 = objc_alloc_init(ICAuthenticationAlert);
   v6 = __ICLocalizedFrameworkString_impl(@"Can’t Lock Note", @"Can’t Lock Note", 0, 1);
   [(ICAuthenticationAlert *)v5 setTitle:v6];
 
-  v7 = [a1 messageForPreventLockReason:a3];
+  v7 = [self messageForPreventLockReason:reason];
   [(ICAuthenticationAlert *)v5 setMessage:v7];
 
   v8 = __ICLocalizedFrameworkString_impl(@"OK", @"OK", 0, 1);
@@ -174,10 +174,10 @@ LABEL_15:
   return v5;
 }
 
-+ (id)cannotAddAttachmentsInfoAlertWithAttachmentCount:(unint64_t)a3
++ (id)cannotAddAttachmentsInfoAlertWithAttachmentCount:(unint64_t)count
 {
   v4 = objc_alloc_init(ICAuthenticationAlert);
-  if (a3 == 1)
+  if (count == 1)
   {
     v5 = @"Can’t Add Attachment";
   }
@@ -199,19 +199,19 @@ LABEL_15:
   return v4;
 }
 
-+ (id)enableBiometricsActionAlertShownKeyWithAccount:(id)a3
++ (id)enableBiometricsActionAlertShownKeyWithAccount:(id)account
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [a3 identifier];
-  v5 = [v3 stringWithFormat:@"ICAuthenticationAlertEnableBiometricActionAlertPresented-%@", v4];
+  identifier = [account identifier];
+  v5 = [v3 stringWithFormat:@"ICAuthenticationAlertEnableBiometricActionAlertPresented-%@", identifier];
 
   return v5;
 }
 
-+ (id)enableBiometricsActionAlertWithAccount:(id)a3
++ (id)enableBiometricsActionAlertWithAccount:(id)account
 {
-  v4 = a3;
-  v5 = [a1 enableBiometricsActionAlertShownKeyWithAccount:v4];
+  accountCopy = account;
+  v5 = [self enableBiometricsActionAlertShownKeyWithAccount:accountCopy];
   v6 = objc_alloc_init(ICAuthenticationAlert);
   [(ICAuthenticationAlert *)v6 setPrefersSheet:1];
   if ([MEMORY[0x1E69B77C8] biometricsType] == 4)
@@ -266,7 +266,7 @@ LABEL_15:
   v23[3] = &unk_1E846D048;
   v11 = v5;
   v24 = v11;
-  v12 = v4;
+  v12 = accountCopy;
   v25 = v12;
   [(ICAuthenticationAlert *)v6 setActionHandler:v23];
   v13 = __ICLocalizedFrameworkString_impl(@"Not Now", @"Not Now", 0, 1);
@@ -329,17 +329,17 @@ uint64_t __64__ICAuthenticationAlert_enableBiometricsActionAlertWithAccount___bl
   return v3;
 }
 
-+ (id)devicePasswordIncompatibleConfirmationAlertWithAccount:(id)a3 incompatibilityMessage:(id)a4
++ (id)devicePasswordIncompatibleConfirmationAlertWithAccount:(id)account incompatibilityMessage:(id)message
 {
-  v4 = a4;
+  messageCopy = message;
   v5 = __ICLocalizedFrameworkString_impl(@"Notes locked using your device passcode are only viewable on iOS 16, iPadOS 16, and macOS 13 and later. Your devices that need upgrading:", @"Notes locked using your device passcode are only viewable on iOS 16, iPadOS 16, and macOS 13 and later. Your devices that need upgrading:", 0, 1);
   v6 = objc_alloc_init(ICAuthenticationAlert);
   v7 = __ICLocalizedFrameworkString_impl(@"Locked Notes Not Viewable on Some Devices", @"Locked Notes Not Viewable on Some Devices", 0, 1);
   [(ICAuthenticationAlert *)v6 setTitle:v7];
 
-  v8 = [MEMORY[0x1E696AEC0] localizedStringWithFormat:@"%@\n\n%@", v5, v4];
+  messageCopy = [MEMORY[0x1E696AEC0] localizedStringWithFormat:@"%@\n\n%@", v5, messageCopy];
 
-  [(ICAuthenticationAlert *)v6 setMessage:v8];
+  [(ICAuthenticationAlert *)v6 setMessage:messageCopy];
   v9 = __ICLocalizedFrameworkString_impl(@"Continue", @"Continue", 0, 1);
   [(ICAuthenticationAlert *)v6 setActionTitle:v9];
 
@@ -349,13 +349,13 @@ uint64_t __64__ICAuthenticationAlert_enableBiometricsActionAlertWithAccount___bl
   return v6;
 }
 
-+ (id)switchedToCustomPasswordModeInfoAlertWithAccount:(id)a3
++ (id)switchedToCustomPasswordModeInfoAlertWithAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   v5 = __ICLocalizedFrameworkString_impl(@"Updated to Custom Password", @"Updated to Custom Password", 0, 1);
   v6 = __ICLocalizedFrameworkString_impl(@"Use the password you created to manage your locked notes.", @"Use the password you created to manage your locked notes.", 0, 1);
   v7 = __ICLocalizedFrameworkString_impl(@"Use the password you created to manage locked notes in your “%@” account.", @"Use the password you created to manage locked notes in your “%@” account.", 0, 1);
-  v8 = [a1 customAccountNameForAccount:v4];
+  v8 = [self customAccountNameForAccount:accountCopy];
 
   v9 = objc_alloc_init(ICAuthenticationAlert);
   [(ICAuthenticationAlert *)v9 setTitle:v5];
@@ -376,12 +376,12 @@ uint64_t __64__ICAuthenticationAlert_enableBiometricsActionAlertWithAccount___bl
   return v9;
 }
 
-+ (id)switchedToDevicePasswordModeInfoAlertWithAccount:(id)a3
++ (id)switchedToDevicePasswordModeInfoAlertWithAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   v5 = __ICLocalizedFrameworkString_impl(@"Use your device passcode to manage your locked notes.", @"Use your device passcode to manage your locked notes.", 0, 1);
   v6 = __ICLocalizedFrameworkString_impl(@"Use your device passcode to manage locked notes in your “%@” account.", @"Use your device passcode to manage locked notes in your “%@” account.", 0, 1);
-  v7 = [a1 customAccountNameForAccount:v4];
+  v7 = [self customAccountNameForAccount:accountCopy];
 
   v8 = objc_alloc_init(ICAuthenticationAlert);
   v9 = __ICLocalizedFrameworkString_impl(@"Updated to Device Passcode", @"Updated to Device Passcode", 0, 1);
@@ -404,23 +404,23 @@ uint64_t __64__ICAuthenticationAlert_enableBiometricsActionAlertWithAccount___bl
   return v8;
 }
 
-+ (id)switchedModeInfoAlertWithAccount:(id)a3
++ (id)switchedModeInfoAlertWithAccount:(id)account
 {
-  v5 = a3;
-  v6 = [v5 resolvedLockedNotesMode];
-  if (v6 >= 2)
+  accountCopy = account;
+  resolvedLockedNotesMode = [accountCopy resolvedLockedNotesMode];
+  if (resolvedLockedNotesMode >= 2)
   {
-    if (v6 != 2)
+    if (resolvedLockedNotesMode != 2)
     {
       goto LABEL_6;
     }
 
-    v7 = [a1 switchedToDevicePasswordModeInfoAlertWithAccount:v5];
+    v7 = [self switchedToDevicePasswordModeInfoAlertWithAccount:accountCopy];
   }
 
   else
   {
-    v7 = [a1 switchedToCustomPasswordModeInfoAlertWithAccount:v5];
+    v7 = [self switchedToCustomPasswordModeInfoAlertWithAccount:accountCopy];
   }
 
   v3 = v7;
@@ -429,9 +429,9 @@ LABEL_6:
   return v3;
 }
 
-+ (id)switchToDevicePasswordInSettingsInfoAlertWithAccount:(id)a3
++ (id)switchToDevicePasswordInSettingsInfoAlertWithAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   v5 = objc_alloc_init(ICAuthenticationAlert);
   [(ICAuthenticationAlert *)v5 setPrefersSheet:1];
   v6 = __ICLocalizedFrameworkString_impl(@"Switch at Any Time", @"Switch at Any Time", 0, 1);
@@ -447,9 +447,9 @@ LABEL_6:
   v11[1] = 3221225472;
   v11[2] = __78__ICAuthenticationAlert_switchToDevicePasswordInSettingsInfoAlertWithAccount___block_invoke;
   v11[3] = &unk_1E846D0C0;
-  v12 = v4;
-  v13 = a1;
-  v9 = v4;
+  v12 = accountCopy;
+  selfCopy = self;
+  v9 = accountCopy;
   [(ICAuthenticationAlert *)v5 setShouldPresentHandler:v11];
 
   return v5;
@@ -474,32 +474,32 @@ LABEL_6:
   return v2;
 }
 
-+ (id)switchToDevicePasswordPromptPresentedCountKeyForAccount:(id)a3
++ (id)switchToDevicePasswordPromptPresentedCountKeyForAccount:(id)account
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [a3 identifier];
-  v5 = [v3 stringWithFormat:@"ICAuthenticationAlertSwitchToDevicePasswordPromptPresentedCount-%@", v4];
+  identifier = [account identifier];
+  v5 = [v3 stringWithFormat:@"ICAuthenticationAlertSwitchToDevicePasswordPromptPresentedCount-%@", identifier];
 
   return v5;
 }
 
-+ (BOOL)shouldPresentSwitchToDevicePasswordPromptForAccount:(id)a3
++ (BOOL)shouldPresentSwitchToDevicePasswordPromptForAccount:(id)account
 {
-  v3 = [a1 switchToDevicePasswordPromptPresentedCountKeyForAccount:a3];
-  v4 = [MEMORY[0x1E69B7A30] sharedAppGroupDefaults];
-  v5 = [v4 integerForKey:v3] < 2;
+  v3 = [self switchToDevicePasswordPromptPresentedCountKeyForAccount:account];
+  mEMORY[0x1E69B7A30] = [MEMORY[0x1E69B7A30] sharedAppGroupDefaults];
+  v5 = [mEMORY[0x1E69B7A30] integerForKey:v3] < 2;
 
   return v5;
 }
 
-+ (void)markSwitchToDevicePasswordPromptPresentedForAccount:(id)a3
++ (void)markSwitchToDevicePasswordPromptPresentedForAccount:(id)account
 {
-  v6 = [a1 switchToDevicePasswordPromptPresentedCountKeyForAccount:a3];
-  v3 = [MEMORY[0x1E69B7A30] sharedAppGroupDefaults];
-  v4 = [v3 integerForKey:v6];
+  v6 = [self switchToDevicePasswordPromptPresentedCountKeyForAccount:account];
+  mEMORY[0x1E69B7A30] = [MEMORY[0x1E69B7A30] sharedAppGroupDefaults];
+  v4 = [mEMORY[0x1E69B7A30] integerForKey:v6];
 
-  v5 = [MEMORY[0x1E69B7A30] sharedAppGroupDefaults];
-  [v5 setInteger:v4 + 1 forKey:v6];
+  mEMORY[0x1E69B7A30]2 = [MEMORY[0x1E69B7A30] sharedAppGroupDefaults];
+  [mEMORY[0x1E69B7A30]2 setInteger:v4 + 1 forKey:v6];
 }
 
 + (id)customPasswordConfirmationAlert
@@ -521,19 +521,19 @@ LABEL_6:
   return v2;
 }
 
-+ (id)rememberCustomPasswordInfoAlertPresentedKeyForAccount:(id)a3
++ (id)rememberCustomPasswordInfoAlertPresentedKeyForAccount:(id)account
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [a3 identifier];
-  v5 = [v3 stringWithFormat:@"ICAuthenticationAlertSwitchToDevicePasswordPromptPresentedCount-%@", v4];
+  identifier = [account identifier];
+  v5 = [v3 stringWithFormat:@"ICAuthenticationAlertSwitchToDevicePasswordPromptPresentedCount-%@", identifier];
 
   return v5;
 }
 
-+ (id)rememberCustomPasswordInfoAlertWithAccount:(id)a3
++ (id)rememberCustomPasswordInfoAlertWithAccount:(id)account
 {
   v4 = MEMORY[0x1E69B77C8];
-  v5 = a3;
+  accountCopy = account;
   if ([v4 biometricsType] == 4)
   {
     v6 = @"Forgetting your notes password can cause you to lose access to your locked notes, even if Optic ID is enabled.\n\nIf you have forgotten your notes password, tap Learn More for next steps.";
@@ -576,11 +576,11 @@ LABEL_6:
   }
 
   v9 = __ICLocalizedFrameworkString_impl(v8, v8, 0, 1);
-  v10 = [a1 customAccountNameForAccount:v5];
+  v10 = [self customAccountNameForAccount:accountCopy];
   v11 = MEMORY[0x1E696AEC0];
-  v12 = [v5 identifier];
+  identifier = [accountCopy identifier];
 
-  v13 = [v11 stringWithFormat:@"ICPasswordUtilitiesAlertOfDontForgetPasswordHasShownKey_%@", v12];
+  v13 = [v11 stringWithFormat:@"ICPasswordUtilitiesAlertOfDontForgetPasswordHasShownKey_%@", identifier];
 
   v14 = objc_alloc_init(ICAuthenticationAlert);
   v15 = __ICLocalizedFrameworkString_impl(@"Don’t Forget Your Notes Password", @"Don’t Forget Your Notes Password", 0, 1);
@@ -690,18 +690,18 @@ uint64_t __68__ICAuthenticationAlert_rememberCustomPasswordInfoAlertWithAccount_
   return v2;
 }
 
-+ (id)incorrectCustomPasswordInfoAlertWithObject:(id)a3 showHint:(BOOL)a4
++ (id)incorrectCustomPasswordInfoAlertWithObject:(id)object showHint:(BOOL)hint
 {
-  v4 = a4;
-  v5 = a3;
+  hintCopy = hint;
+  objectCopy = object;
   v6 = __ICLocalizedFrameworkString_impl(@"Please try again.", @"Please try again.", 0, 1);
   v7 = __ICLocalizedFrameworkString_impl(@"Hint: %@", @"Hint: %@", 0, 1);
-  v8 = [v5 passwordHint];
-  if ([v8 length])
+  passwordHint = [objectCopy passwordHint];
+  if ([passwordHint length])
   {
     v9 = MEMORY[0x1E696AEC0];
-    v10 = [v5 passwordHint];
-    v11 = [v9 localizedStringWithFormat:v7, v10];
+    passwordHint2 = [objectCopy passwordHint];
+    v11 = [v9 localizedStringWithFormat:v7, passwordHint2];
   }
 
   else
@@ -713,7 +713,7 @@ uint64_t __68__ICAuthenticationAlert_rememberCustomPasswordInfoAlertWithAccount_
   v13 = __ICLocalizedFrameworkString_impl(@"That’s not the correct password.", @"That’s not the correct password.", 0, 1);
   [(ICAuthenticationAlert *)v12 setTitle:v13];
 
-  if (v4 && v11)
+  if (hintCopy && v11)
   {
     v14 = [MEMORY[0x1E696AEC0] localizedStringWithFormat:@"%@\n\n%@", v6, v11];
     [(ICAuthenticationAlert *)v12 setMessage:v14];
@@ -766,20 +766,20 @@ uint64_t __68__ICAuthenticationAlert_rememberCustomPasswordInfoAlertWithAccount_
   return v2;
 }
 
-+ (id)updateDivergedCustomPasswordModeActionAlertWithAccount:(id)a3 incompatibilityMessage:(id)a4
++ (id)updateDivergedCustomPasswordModeActionAlertWithAccount:(id)account incompatibilityMessage:(id)message
 {
-  v5 = a3;
-  v6 = a4;
+  accountCopy = account;
+  messageCopy = message;
   v7 = __ICLocalizedFrameworkString_impl(@"This note is using an old password. Would you like to update it to use your device passcode?", @"This note is using an old password. Would you like to update it to use your device passcode?", 0, 1);
   v8 = __ICLocalizedFrameworkString_impl(@"This note is using an old password. If you update it to use your device passcode, it won’t be viewable on the following devices:", @"This note is using an old password. If you update it to use your device passcode, it won’t be viewable on the following devices:", 0, 1);
   v9 = objc_alloc_init(ICAuthenticationAlert);
   v10 = __ICLocalizedFrameworkString_impl(@"Update Password?", @"Update Password?", 0, 1);
   [(ICAuthenticationAlert *)v9 setTitle:v10];
 
-  if (v6)
+  if (messageCopy)
   {
-    v11 = [MEMORY[0x1E696AEC0] localizedStringWithFormat:@"%@\n\n%@", v8, v6];
-    [(ICAuthenticationAlert *)v9 setMessage:v11];
+    messageCopy = [MEMORY[0x1E696AEC0] localizedStringWithFormat:@"%@\n\n%@", v8, messageCopy];
+    [(ICAuthenticationAlert *)v9 setMessage:messageCopy];
   }
 
   else
@@ -794,8 +794,8 @@ uint64_t __68__ICAuthenticationAlert_rememberCustomPasswordInfoAlertWithAccount_
   v16[1] = 3221225472;
   v16[2] = __103__ICAuthenticationAlert_updateDivergedCustomPasswordModeActionAlertWithAccount_incompatibilityMessage___block_invoke;
   v16[3] = &unk_1E846D070;
-  v17 = v5;
-  v13 = v5;
+  v17 = accountCopy;
+  v13 = accountCopy;
   [(ICAuthenticationAlert *)v9 setActionHandler:v16];
   v14 = __ICLocalizedFrameworkString_impl(@"Not Now", @"Not Now", 0, 1);
   [(ICAuthenticationAlert *)v9 setDismissTitle:v14];
@@ -827,12 +827,12 @@ void __103__ICAuthenticationAlert_updateDivergedCustomPasswordModeActionAlertWit
   }
 }
 
-+ (id)resetCustomPasswordInfoAlertWithAccount:(id)a3
++ (id)resetCustomPasswordInfoAlertWithAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   v5 = __ICLocalizedFrameworkString_impl(@"This allows you to create a new password for notes you lock from now on. Notes that already have a password aren’t affected.", @"This allows you to create a new password for notes you lock from now on. Notes that already have a password aren’t affected.", 0, 1);
   v6 = __ICLocalizedFrameworkString_impl(@"This allows you to create a new password for notes you lock in your “%@” account from now on. Notes that already have a password aren’t affected.", @"This allows you to create a new password for notes you lock in your “%@” account from now on. Notes that already have a password aren’t affected.", 0, 1);
-  v7 = [a1 customAccountNameForAccount:v4];
+  v7 = [self customAccountNameForAccount:accountCopy];
 
   v8 = objc_alloc_init(ICAuthenticationAlert);
   [(ICAuthenticationAlert *)v8 setPrefersSheet:1];
@@ -859,12 +859,12 @@ void __103__ICAuthenticationAlert_updateDivergedCustomPasswordModeActionAlertWit
   return v8;
 }
 
-+ (id)resetCustomPasswordConfirmationAlertWithAccount:(id)a3
++ (id)resetCustomPasswordConfirmationAlertWithAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   v5 = __ICLocalizedFrameworkString_impl(@"This will change the password you use for your notes from now on.", @"This will change the password you use for your notes from now on.", 0, 1);
   v6 = __ICLocalizedFrameworkString_impl(@"This will change the password you use for notes in your “%@” account from now on.", @"This will change the password you use for notes in your “%@” account from now on.", 0, 1);
-  v7 = [a1 customAccountNameForAccount:v4];
+  v7 = [self customAccountNameForAccount:accountCopy];
 
   v8 = objc_alloc_init(ICAuthenticationAlert);
   [(ICAuthenticationAlert *)v8 setPrefersSheet:1];
@@ -921,8 +921,8 @@ void __53__ICAuthenticationAlert_setDevicePasswordActionAlert__block_invoke()
 + (id)setDevicePasswordInfoAlert
 {
   objc_opt_class();
-  v2 = [MEMORY[0x1E69B7A30] sharedAppGroupDefaults];
-  v3 = [v2 objectForKey:@"ICAuthenticationSetDevicePasswordInfoPresentedAt"];
+  mEMORY[0x1E69B7A30] = [MEMORY[0x1E69B7A30] sharedAppGroupDefaults];
+  v3 = [mEMORY[0x1E69B7A30] objectForKey:@"ICAuthenticationSetDevicePasswordInfoPresentedAt"];
   v4 = ICDynamicCast();
 
   v5 = objc_alloc_init(ICAuthenticationAlert);
@@ -981,9 +981,9 @@ BOOL __51__ICAuthenticationAlert_setDevicePasswordInfoAlert__block_invoke_3(uint
   return v2 <= -2592000.0;
 }
 
-+ (id)signIntoCloudAccountActionAlertWithAccount:(id)a3
++ (id)signIntoCloudAccountActionAlertWithAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   if (ICInternalSettingsIsAppleAccountBrandingEnabled())
   {
     v5 = @"To use your device’s passcode for locked notes, this device must be signed in to an Apple Account with iCloud Keychain enabled.";
@@ -997,7 +997,7 @@ BOOL __51__ICAuthenticationAlert_setDevicePasswordInfoAlert__block_invoke_3(uint
   v6 = __ICLocalizedFrameworkString_impl(v5, v5, 0, 1);
   v7 = __ICLocalizedFrameworkString_impl(@"To use your device’s passcode for locked notes in your “%@” account, this device must be signed in to an Apple Account with iCloud Keychain enabled.", @"To use your device’s passcode for locked notes in your “%@” account, this device must be signed in to an Apple Account with iCloud Keychain enabled.", 0, 1);
   v8 = __ICLocalizedFrameworkString_impl(@"To use your device’s passcode for locked notes in your “%@” account, this device must be signed in to an iCloud account with iCloud Keychain enabled.", @"To use your device’s passcode for locked notes in your “%@” account, this device must be signed in to an iCloud account with iCloud Keychain enabled.", 0, 1);
-  v9 = [a1 customAccountNameForAccount:v4];
+  v9 = [self customAccountNameForAccount:accountCopy];
 
   v10 = objc_alloc_init(ICAuthenticationAlert);
   if (ICInternalSettingsIsAppleAccountBrandingEnabled())
@@ -1105,9 +1105,9 @@ void __50__ICAuthenticationAlert_enableKeychainActionAlert__block_invoke()
   return v2;
 }
 
-+ (id)updateDivergedDevicePasswordModeActionAlertWithAccount:(id)a3
++ (id)updateDivergedDevicePasswordModeActionAlertWithAccount:(id)account
 {
-  v3 = a3;
+  accountCopy = account;
   v4 = objc_alloc_init(ICAuthenticationAlert);
   v5 = __ICLocalizedFrameworkString_impl(@"Update Password?", @"Update Password?", 0, 1);
   [(ICAuthenticationAlert *)v4 setTitle:v5];
@@ -1122,8 +1122,8 @@ void __50__ICAuthenticationAlert_enableKeychainActionAlert__block_invoke()
   v11[1] = 3221225472;
   v11[2] = __80__ICAuthenticationAlert_updateDivergedDevicePasswordModeActionAlertWithAccount___block_invoke;
   v11[3] = &unk_1E846D070;
-  v12 = v3;
-  v8 = v3;
+  v12 = accountCopy;
+  v8 = accountCopy;
   [(ICAuthenticationAlert *)v4 setActionHandler:v11];
   v9 = __ICLocalizedFrameworkString_impl(@"Not Now", @"Not Now", 0, 1);
   [(ICAuthenticationAlert *)v4 setDismissTitle:v9];
@@ -1161,23 +1161,23 @@ void __80__ICAuthenticationAlert_updateDivergedDevicePasswordModeActionAlertWith
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
   v6 = [MEMORY[0x1E696AD98] numberWithBool:{-[ICAuthenticationAlert shouldPresent](self, "shouldPresent")}];
-  v7 = [(ICAuthenticationAlert *)self title];
-  v8 = [(ICAuthenticationAlert *)self message];
-  v9 = [v3 stringWithFormat:@"<%@: %p, shouldPresent: %@, title: %@, message: %@>", v5, self, v6, v7, v8];
+  title = [(ICAuthenticationAlert *)self title];
+  message = [(ICAuthenticationAlert *)self message];
+  v9 = [v3 stringWithFormat:@"<%@: %p, shouldPresent: %@, title: %@, message: %@>", v5, self, v6, title, message];
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 != self)
+  if (equal != self)
   {
-    v4 = a3;
+    equalCopy = equal;
     objc_opt_class();
     v5 = ICDynamicCast();
 
-    LODWORD(v4) = [v5 prefersSheet];
-    if (v4 != [(ICAuthenticationAlert *)self prefersSheet])
+    LODWORD(equalCopy) = [v5 prefersSheet];
+    if (equalCopy != [(ICAuthenticationAlert *)self prefersSheet])
     {
       LOBYTE(v6) = 0;
 LABEL_47:
@@ -1185,9 +1185,9 @@ LABEL_47:
       return v6;
     }
 
-    v7 = [v5 title];
-    v8 = [(ICAuthenticationAlert *)self title];
-    if (![v7 isEqualToString:v8])
+    title = [v5 title];
+    title2 = [(ICAuthenticationAlert *)self title];
+    if (![title isEqualToString:title2])
     {
       LOBYTE(v6) = 0;
 LABEL_46:
@@ -1195,35 +1195,35 @@ LABEL_46:
       goto LABEL_47;
     }
 
-    v9 = [(ICAuthenticationAlert *)self message];
-    v10 = [v5 message];
+    message = [(ICAuthenticationAlert *)self message];
+    message2 = [v5 message];
     v11 = *MEMORY[0x1E695E738];
-    if (*MEMORY[0x1E695E738] == v9)
+    if (*MEMORY[0x1E695E738] == message)
     {
       v12 = 0;
     }
 
     else
     {
-      v12 = v9;
+      v12 = message;
     }
 
     v13 = v12;
-    v33 = v10;
-    if (v11 == v10)
+    v33 = message2;
+    if (v11 == message2)
     {
       v14 = 0;
     }
 
     else
     {
-      v14 = v10;
+      v14 = message2;
     }
 
     v15 = v14;
     if (v13 | v15)
     {
-      v16 = v15;
+      actionTitle = v15;
       LOBYTE(v6) = 0;
       if (!v13 || !v15)
       {
@@ -1241,8 +1241,8 @@ LABEL_45:
       }
     }
 
-    v13 = [(ICAuthenticationAlert *)self actionTitle:v9];
-    v16 = [v5 actionTitle];
+    v13 = [(ICAuthenticationAlert *)self actionTitle:message];
+    actionTitle = [v5 actionTitle];
     if (v11 == v13)
     {
       v18 = 0;
@@ -1253,60 +1253,60 @@ LABEL_45:
       v18 = v13;
     }
 
-    v19 = v18;
-    if (v11 == v16)
+    dismissTitle = v18;
+    if (v11 == actionTitle)
     {
       v20 = 0;
     }
 
     else
     {
-      v20 = v16;
+      v20 = actionTitle;
     }
 
     v21 = v20;
-    if (v19 | v21)
+    if (dismissTitle | v21)
     {
-      v22 = v21;
+      dismissTitle2 = v21;
       LOBYTE(v6) = 0;
-      if (!v19 || !v21)
+      if (!dismissTitle || !v21)
       {
         goto LABEL_42;
       }
 
-      v6 = [v19 isEqual:v21];
+      v6 = [dismissTitle isEqual:v21];
 
       if (!v6)
       {
 LABEL_43:
-        v9 = v32;
+        message = v32;
 LABEL_44:
 
         goto LABEL_45;
       }
     }
 
-    v23 = [v5 actionIsDestructive];
-    if (v23 != [(ICAuthenticationAlert *)self actionIsDestructive])
+    actionIsDestructive = [v5 actionIsDestructive];
+    if (actionIsDestructive != [(ICAuthenticationAlert *)self actionIsDestructive])
     {
       LOBYTE(v6) = 0;
       goto LABEL_43;
     }
 
-    v19 = [(ICAuthenticationAlert *)self dismissTitle];
-    v22 = [v5 dismissTitle];
-    if (v11 == v19)
+    dismissTitle = [(ICAuthenticationAlert *)self dismissTitle];
+    dismissTitle2 = [v5 dismissTitle];
+    if (v11 == dismissTitle)
     {
       v24 = 0;
     }
 
     else
     {
-      v24 = v19;
+      v24 = dismissTitle;
     }
 
     v25 = v24;
-    v26 = v11 == v22;
+    v26 = v11 == dismissTitle2;
     v27 = v25;
     if (v26)
     {
@@ -1315,7 +1315,7 @@ LABEL_44:
 
     else
     {
-      v28 = v22;
+      v28 = dismissTitle2;
     }
 
     v29 = v28;
@@ -1346,48 +1346,48 @@ LABEL_42:
 {
   v3 = [MEMORY[0x1E696AD98] numberWithBool:{-[ICAuthenticationAlert prefersSheet](self, "prefersSheet")}];
   v19 = [v3 hash];
-  v4 = [(ICAuthenticationAlert *)self title];
-  v5 = [v4 hash];
-  v6 = [(ICAuthenticationAlert *)self message];
-  [v6 hash];
-  v7 = [(ICAuthenticationAlert *)self actionTitle];
-  [v7 hash];
+  title = [(ICAuthenticationAlert *)self title];
+  v5 = [title hash];
+  message = [(ICAuthenticationAlert *)self message];
+  [message hash];
+  actionTitle = [(ICAuthenticationAlert *)self actionTitle];
+  [actionTitle hash];
   v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[ICAuthenticationAlert actionIsDestructive](self, "actionIsDestructive")}];
   [v8 hash];
-  v9 = [(ICAuthenticationAlert *)self dismissTitle];
-  [v9 hash];
+  dismissTitle = [(ICAuthenticationAlert *)self dismissTitle];
+  [dismissTitle hash];
   v17 = ICHashWithHashKeys(v19, v10, v11, v12, v13, v14, v15, v16, v5);
 
   return v17;
 }
 
-+ (id)customAccountNameForAccount:(id)a3
++ (id)customAccountNameForAccount:(id)account
 {
-  v3 = a3;
+  accountCopy = account;
   v4 = MEMORY[0x1E69B7658];
-  v5 = [v3 managedObjectContext];
-  v6 = [v4 allActiveAccountsInContext:v5];
+  managedObjectContext = [accountCopy managedObjectContext];
+  v6 = [v4 allActiveAccountsInContext:managedObjectContext];
   if ([v6 count] < 2)
   {
-    v8 = 0;
+    ic_trimmedString = 0;
   }
 
   else
   {
-    v7 = [v3 localizedName];
-    v8 = [v7 ic_trimmedString];
+    localizedName = [accountCopy localizedName];
+    ic_trimmedString = [localizedName ic_trimmedString];
   }
 
-  return v8;
+  return ic_trimmedString;
 }
 
 - (BOOL)shouldPresent
 {
-  v3 = [(ICAuthenticationAlert *)self shouldPresentHandler];
-  if (v3)
+  shouldPresentHandler = [(ICAuthenticationAlert *)self shouldPresentHandler];
+  if (shouldPresentHandler)
   {
-    v4 = [(ICAuthenticationAlert *)self shouldPresentHandler];
-    v5 = v4[2]();
+    shouldPresentHandler2 = [(ICAuthenticationAlert *)self shouldPresentHandler];
+    v5 = shouldPresentHandler2[2]();
   }
 
   else
@@ -1398,14 +1398,14 @@ LABEL_42:
   return v5;
 }
 
-- (void)presentInWindow:(id)a3 completionHandler:(id)a4
+- (void)presentInWindow:(id)window completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  windowCopy = window;
+  handlerCopy = handler;
   if ([(ICAuthenticationAlert *)self prefersSheet])
   {
-    v8 = [MEMORY[0x1E69DC938] currentDevice];
-    v9 = [v8 userInterfaceIdiom] != 0;
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    v9 = [currentDevice userInterfaceIdiom] != 0;
   }
 
   else
@@ -1413,14 +1413,14 @@ LABEL_42:
     v9 = 1;
   }
 
-  v10 = [(ICAuthenticationAlert *)self title];
-  v11 = [(ICAuthenticationAlert *)self message];
-  v12 = [ICAlertController alertControllerWithTitle:v10 message:v11 preferredStyle:v9];
+  title = [(ICAuthenticationAlert *)self title];
+  message = [(ICAuthenticationAlert *)self message];
+  v12 = [ICAlertController alertControllerWithTitle:title message:message preferredStyle:v9];
 
-  [v12 setDismissWithoutActionBlock:v7];
-  v13 = [(ICAuthenticationAlert *)self actionTitle];
+  [v12 setDismissWithoutActionBlock:handlerCopy];
+  actionTitle = [(ICAuthenticationAlert *)self actionTitle];
 
-  if (v13)
+  if (actionTitle)
   {
     if ([(ICAuthenticationAlert *)self actionIsDestructive])
     {
@@ -1433,44 +1433,44 @@ LABEL_42:
     }
 
     v15 = MEMORY[0x1E69DC648];
-    v16 = [(ICAuthenticationAlert *)self actionTitle];
+    actionTitle2 = [(ICAuthenticationAlert *)self actionTitle];
     v34[0] = MEMORY[0x1E69E9820];
     v34[1] = 3221225472;
     v34[2] = __59__ICAuthenticationAlert_presentInWindow_completionHandler___block_invoke;
     v34[3] = &unk_1E846D138;
     v17 = v12;
     v35 = v17;
-    v36 = self;
-    v37 = v6;
-    v38 = v7;
-    v18 = [v15 actionWithTitle:v16 style:v14 handler:v34];
+    selfCopy = self;
+    v37 = windowCopy;
+    v38 = handlerCopy;
+    v18 = [v15 actionWithTitle:actionTitle2 style:v14 handler:v34];
 
     [v17 addAction:v18];
   }
 
-  v19 = [(ICAuthenticationAlert *)self dismissTitle];
+  dismissTitle = [(ICAuthenticationAlert *)self dismissTitle];
 
-  if (v19)
+  if (dismissTitle)
   {
     v20 = MEMORY[0x1E69DC648];
-    v21 = [(ICAuthenticationAlert *)self dismissTitle];
+    dismissTitle2 = [(ICAuthenticationAlert *)self dismissTitle];
     v26 = MEMORY[0x1E69E9820];
     v27 = 3221225472;
     v28 = __59__ICAuthenticationAlert_presentInWindow_completionHandler___block_invoke_2;
     v29 = &unk_1E846D138;
     v22 = v12;
     v30 = v22;
-    v31 = self;
-    v32 = v6;
-    v33 = v7;
-    v23 = [v20 actionWithTitle:v21 style:1 handler:&v26];
+    selfCopy2 = self;
+    v32 = windowCopy;
+    v33 = handlerCopy;
+    v23 = [v20 actionWithTitle:dismissTitle2 style:1 handler:&v26];
 
     [v22 addAction:{v23, v26, v27, v28, v29}];
   }
 
-  v24 = [v6 rootViewController];
-  v25 = [v24 ic_topViewController];
-  [v25 presentViewController:v12 animated:1 completion:0];
+  rootViewController = [windowCopy rootViewController];
+  ic_topViewController = [rootViewController ic_topViewController];
+  [ic_topViewController presentViewController:v12 animated:1 completion:0];
 }
 
 uint64_t __59__ICAuthenticationAlert_presentInWindow_completionHandler___block_invoke(uint64_t a1)
@@ -1517,35 +1517,35 @@ uint64_t __59__ICAuthenticationAlert_presentInWindow_completionHandler___block_i
   return result;
 }
 
-+ (void)presentAlertsIfNeeded:(id)a3 window:(id)a4 completionHandler:(id)a5
++ (void)presentAlertsIfNeeded:(id)needed window:(id)window completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 firstObject];
-  v12 = [v11 shouldPresent];
+  neededCopy = needed;
+  windowCopy = window;
+  handlerCopy = handler;
+  firstObject = [neededCopy firstObject];
+  shouldPresent = [firstObject shouldPresent];
 
-  if (v12)
+  if (shouldPresent)
   {
-    v15 = v8;
-    v16 = v9;
-    v17 = v10;
+    v15 = neededCopy;
+    v16 = windowCopy;
+    v17 = handlerCopy;
     dispatchMainAfterDelay();
   }
 
   else
   {
-    v13 = [v8 firstObject];
+    firstObject2 = [neededCopy firstObject];
 
-    if (v13)
+    if (firstObject2)
     {
-      v14 = [v8 ic_subarrayFromIndex:1];
-      [a1 presentAlertsIfNeeded:v14 window:v9 completionHandler:v10];
+      v14 = [neededCopy ic_subarrayFromIndex:1];
+      [self presentAlertsIfNeeded:v14 window:windowCopy completionHandler:handlerCopy];
     }
 
-    else if (v10)
+    else if (handlerCopy)
     {
-      v10[2](v10);
+      handlerCopy[2](handlerCopy);
     }
   }
 }
@@ -1577,14 +1577,14 @@ void __72__ICAuthenticationAlert_presentAlertsIfNeeded_window_completionHandler_
   [v2 presentAlertsIfNeeded:v3 window:*(a1 + 40) completionHandler:*(a1 + 48)];
 }
 
-+ (void)resetPresentationsForAccount:(id)a3
++ (void)resetPresentationsForAccount:(id)account
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  accountCopy = account;
   v5 = MEMORY[0x1E69B7658];
-  v6 = [MEMORY[0x1E69B7800] sharedContext];
-  v7 = [v6 managedObjectContext];
-  v8 = [v5 allActiveAccountsInContext:v7];
+  mEMORY[0x1E69B7800] = [MEMORY[0x1E69B7800] sharedContext];
+  managedObjectContext = [mEMORY[0x1E69B7800] managedObjectContext];
+  v8 = [v5 allActiveAccountsInContext:managedObjectContext];
 
   v27 = 0u;
   v28 = 0u;
@@ -1607,11 +1607,11 @@ void __72__ICAuthenticationAlert_presentAlertsIfNeeded_window_completionHandler_
         }
 
         v14 = *(*(&v25 + 1) + 8 * v13);
-        v15 = [MEMORY[0x1E69B7708] sharedController];
-        [v15 clearCachedDevicesForAccount:v14];
+        mEMORY[0x1E69B7708] = [MEMORY[0x1E69B7708] sharedController];
+        [mEMORY[0x1E69B7708] clearCachedDevicesForAccount:v14];
 
-        v16 = [MEMORY[0x1E69B76D0] sharedState];
-        [v16 setBiometricsEnabled:0 forAccount:v14];
+        mEMORY[0x1E69B76D0] = [MEMORY[0x1E69B76D0] sharedState];
+        [mEMORY[0x1E69B76D0] setBiometricsEnabled:0 forAccount:v14];
 
         ++v13;
       }
@@ -1623,23 +1623,23 @@ void __72__ICAuthenticationAlert_presentAlertsIfNeeded_window_completionHandler_
     while (v11);
   }
 
-  v17 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v17 setBool:0 forKey:@"ICNoteAddPasswordFirstTimeMessageCompletedKey"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults setBool:0 forKey:@"ICNoteAddPasswordFirstTimeMessageCompletedKey"];
 
-  v18 = [MEMORY[0x1E69B7A30] sharedAppGroupDefaults];
-  v19 = [a1 enableBiometricsActionAlertShownKeyWithAccount:v4];
-  [v18 setBool:0 forKey:v19];
+  mEMORY[0x1E69B7A30] = [MEMORY[0x1E69B7A30] sharedAppGroupDefaults];
+  v19 = [self enableBiometricsActionAlertShownKeyWithAccount:accountCopy];
+  [mEMORY[0x1E69B7A30] setBool:0 forKey:v19];
 
-  v20 = [MEMORY[0x1E69B7A30] sharedAppGroupDefaults];
-  v21 = [a1 switchToDevicePasswordPromptPresentedCountKeyForAccount:v4];
-  [v20 setInteger:0 forKey:v21];
+  mEMORY[0x1E69B7A30]2 = [MEMORY[0x1E69B7A30] sharedAppGroupDefaults];
+  v21 = [self switchToDevicePasswordPromptPresentedCountKeyForAccount:accountCopy];
+  [mEMORY[0x1E69B7A30]2 setInteger:0 forKey:v21];
 
-  v22 = [MEMORY[0x1E69B7A30] sharedAppGroupDefaults];
-  v23 = [a1 rememberCustomPasswordInfoAlertPresentedKeyForAccount:v4];
-  [v22 setBool:0 forKey:v23];
+  mEMORY[0x1E69B7A30]3 = [MEMORY[0x1E69B7A30] sharedAppGroupDefaults];
+  v23 = [self rememberCustomPasswordInfoAlertPresentedKeyForAccount:accountCopy];
+  [mEMORY[0x1E69B7A30]3 setBool:0 forKey:v23];
 
-  v24 = [MEMORY[0x1E69B7A30] sharedAppGroupDefaults];
-  [v24 setObject:0 forKey:@"ICAuthenticationSetDevicePasswordInfoPresentedAt"];
+  mEMORY[0x1E69B7A30]4 = [MEMORY[0x1E69B7A30] sharedAppGroupDefaults];
+  [mEMORY[0x1E69B7A30]4 setObject:0 forKey:@"ICAuthenticationSetDevicePasswordInfoPresentedAt"];
 }
 
 @end

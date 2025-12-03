@@ -16,13 +16,13 @@
     }
 
     v3 = objc_alloc_init(NSMutableArray);
-    v4 = [(THFlowSectionLayout *)self layoutController];
+    layoutController = [(THFlowSectionLayout *)self layoutController];
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v5 = [-[THFlowSectionLayout info](self info];
-    v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    info = [-[THFlowSectionLayout info](self info];
+    v6 = [info countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v6)
     {
       v7 = v6;
@@ -33,11 +33,11 @@
         {
           if (*v14 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(info);
           }
 
           v10 = *(*(&v13 + 1) + 8 * i);
-          v11 = [v4 layoutForInfo:v10 childOfLayout:self];
+          v11 = [layoutController layoutForInfo:v10 childOfLayout:self];
           if (!v11)
           {
             v11 = [objc_alloc(objc_msgSend(v10 "layoutClass"))];
@@ -51,7 +51,7 @@
           [v3 addObject:v11];
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v7 = [info countByEnumeratingWithState:&v13 objects:v17 count:16];
       }
 
       while (v7);

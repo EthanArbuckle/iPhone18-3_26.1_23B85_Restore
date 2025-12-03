@@ -1,8 +1,8 @@
 @interface TSDTrackerManipulatorCoordinator
-+ (void)p_dynamicallySubclassGRForNotification:(id)a3;
-+ (void)p_removeDynamicSubclass:(id)a3;
-- (BOOL)relinquishTrackerManipulatorControl:(id)a3;
-- (BOOL)takeControlWithTrackerManipulator:(id)a3;
++ (void)p_dynamicallySubclassGRForNotification:(id)notification;
++ (void)p_removeDynamicSubclass:(id)subclass;
+- (BOOL)relinquishTrackerManipulatorControl:(id)control;
+- (BOOL)takeControlWithTrackerManipulator:(id)manipulator;
 - (TSDTrackerManipulatorCoordinator)init;
 - (void)dealloc;
 - (void)operationDidEnd;
@@ -32,26 +32,26 @@
   [(TSDTrackerManipulatorCoordinator *)&v3 dealloc];
 }
 
-- (BOOL)takeControlWithTrackerManipulator:(id)a3
+- (BOOL)takeControlWithTrackerManipulator:(id)manipulator
 {
-  if (self->mControllingTM == a3)
+  if (self->mControllingTM == manipulator)
   {
     LOBYTE(v9) = 1;
   }
 
   else
   {
-    if (a3 && ![(TSDTrackerManipulatorCoordinator *)self hasRegisteredTrackerManipulator:a3])
+    if (manipulator && ![(TSDTrackerManipulatorCoordinator *)self hasRegisteredTrackerManipulator:manipulator])
     {
-      v5 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDTrackerManipulatorCoordinator takeControlWithTrackerManipulator:]"];
-      [v5 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDTrackerManipulatorCoordinator.m"), 76, @"attempting to take control with an unregistered TM %@", a3}];
+      [currentHandler handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDTrackerManipulatorCoordinator.m"), 76, @"attempting to take control with an unregistered TM %@", manipulator}];
     }
 
     mControllingTM = self->mControllingTM;
     if (mControllingTM)
     {
-      v8 = mControllingTM == a3;
+      v8 = mControllingTM == manipulator;
     }
 
     else
@@ -61,7 +61,7 @@
 
     if (!v8)
     {
-      v9 = [(TSDTrackerManipulator *)mControllingTM allowTrackerManipulatorToTakeControl:a3];
+      v9 = [(TSDTrackerManipulator *)mControllingTM allowTrackerManipulatorToTakeControl:manipulator];
       if (!v9)
       {
         return v9;
@@ -77,8 +77,8 @@
       self->mControllingTM = 0;
     }
 
-    [objc_opt_class() p_dynamicallySubclassGRForNotification:a3];
-    self->mControllingTM = a3;
+    [objc_opt_class() p_dynamicallySubclassGRForNotification:manipulator];
+    self->mControllingTM = manipulator;
     if (objc_opt_respondsToSelector())
     {
       [(TSDTrackerManipulator *)self->mControllingTM willTakeControl];
@@ -91,10 +91,10 @@
   return v9;
 }
 
-- (BOOL)relinquishTrackerManipulatorControl:(id)a3
+- (BOOL)relinquishTrackerManipulatorControl:(id)control
 {
   mControllingTM = self->mControllingTM;
-  if (mControllingTM == a3)
+  if (mControllingTM == control)
   {
     v5 = [(TSDTrackerManipulator *)mControllingTM allowTrackerManipulatorToTakeControl:0];
     if (v5)
@@ -197,11 +197,11 @@
   [(TSDTrackerManipulatorCoordinator *)self relinquishTrackerManipulatorControl:self->mControllingTM];
   if (self->mControllingTM)
   {
-    v8 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDTrackerManipulatorCoordinator operationDidEnd]"];
     v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDTrackerManipulatorCoordinator.m"];
     v11 = objc_opt_class();
-    [v8 handleFailureInFunction:v9 file:v10 lineNumber:151 description:{@"Controlling TM %@ would not give up control at the end of an operation", NSStringFromClass(v11)}];
+    [currentHandler handleFailureInFunction:v9 file:v10 lineNumber:151 description:{@"Controlling TM %@ would not give up control at the end of an operation", NSStringFromClass(v11)}];
   }
 }
 
@@ -245,7 +245,7 @@
   }
 }
 
-+ (void)p_dynamicallySubclassGRForNotification:(id)a3
++ (void)p_dynamicallySubclassGRForNotification:(id)notification
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -260,12 +260,12 @@
     sClassMap = objc_alloc_init(MEMORY[0x277D6C320]);
   }
 
-  Class = object_getClass(a3);
+  Class = object_getClass(notification);
   if ([objc_msgSend(sClassMap "allValues")])
   {
-    v6 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[TSDTrackerManipulatorCoordinator p_dynamicallySubclassGRForNotification:]"];
-    [v6 handleFailureInFunction:v7 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDTrackerManipulatorCoordinator.m"), 208, @"trying to subclass something that is already subclassed %@", a3}];
+    [currentHandler handleFailureInFunction:v7 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDTrackerManipulatorCoordinator.m"), 208, @"trying to subclass something that is already subclassed %@", notification}];
   }
 
   else
@@ -279,11 +279,11 @@
       v8 = ClassPair;
       if (!ClassPair)
       {
-        v12 = [MEMORY[0x277D6C290] currentHandler];
+        currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
         v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[TSDTrackerManipulatorCoordinator p_dynamicallySubclassGRForNotification:]"];
         v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDTrackerManipulatorCoordinator.m"];
         v15 = objc_opt_class();
-        [v12 handleFailureInFunction:v13 file:v14 lineNumber:227 description:{@"No dynamic subclass for %@!", NSStringFromClass(v15)}];
+        [currentHandler2 handleFailureInFunction:v13 file:v14 lineNumber:227 description:{@"No dynamic subclass for %@!", NSStringFromClass(v15)}];
         goto LABEL_11;
       }
 
@@ -292,7 +292,7 @@
       [sClassMap setObject:v8 forUncopiedKey:Class];
     }
 
-    object_setClass(a3, v8);
+    object_setClass(notification, v8);
   }
 
 LABEL_11:
@@ -300,25 +300,25 @@ LABEL_11:
   objc_sync_exit(v4);
 }
 
-+ (void)p_removeDynamicSubclass:(id)a3
++ (void)p_removeDynamicSubclass:(id)subclass
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v4 = objc_opt_class();
     objc_sync_enter(v4);
-    Class = object_getClass(a3);
+    Class = object_getClass(subclass);
     if ([objc_msgSend(sClassMap "allValues")])
     {
       Superclass = class_getSuperclass(Class);
-      object_setClass(a3, Superclass);
+      object_setClass(subclass, Superclass);
     }
 
     else
     {
-      v7 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[TSDTrackerManipulatorCoordinator p_removeDynamicSubclass:]"];
-      [v7 handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDTrackerManipulatorCoordinator.m"), 242, @"removing dynamic subclass from GR %@ that doesn't have one!", a3}];
+      [currentHandler handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDTrackerManipulatorCoordinator.m"), 242, @"removing dynamic subclass from GR %@ that doesn't have one!", subclass}];
     }
 
     objc_sync_exit(v4);

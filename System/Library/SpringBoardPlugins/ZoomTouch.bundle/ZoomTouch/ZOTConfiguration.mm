@@ -2,13 +2,13 @@
 + (id)configurationManager;
 - (BOOL)didStartForFirstTime;
 - (BOOL)perApplicationZoomLevelEnabled;
-- (BOOL)zoomedForKey:(id)a3;
-- (CGPoint)zoomLocationForKey:(id)a3 currentLocation:(CGPoint)a4;
+- (BOOL)zoomedForKey:(id)key;
+- (CGPoint)zoomLocationForKey:(id)key currentLocation:(CGPoint)location;
 - (ZOTConfiguration)init;
-- (double)zoomLevelForKey:(id)a3 currentLevel:(double)a4;
-- (id)valueForKey:(id)a3;
+- (double)zoomLevelForKey:(id)key currentLevel:(double)level;
+- (id)valueForKey:(id)key;
 - (void)dealloc;
-- (void)setValue:(id)a3 forKey:(id)a4;
+- (void)setValue:(id)value forKey:(id)key;
 @end
 
 @implementation ZOTConfiguration
@@ -65,10 +65,10 @@
   return v3;
 }
 
-- (id)valueForKey:(id)a3
+- (id)valueForKey:(id)key
 {
-  v3 = a3;
-  if ([(__CFString *)v3 isEqualToString:@"ZoomLevel"])
+  keyCopy = key;
+  if ([(__CFString *)keyCopy isEqualToString:@"ZoomLevel"])
   {
     v4 = +[AXSettings sharedInstance];
     [v4 zoomScale];
@@ -77,19 +77,19 @@
 
   else
   {
-    v5 = CFPreferencesCopyAppValue(v3, @"com.apple.ZoomTouch");
+    v5 = CFPreferencesCopyAppValue(keyCopy, @"com.apple.ZoomTouch");
   }
 
   return v5;
 }
 
-- (void)setValue:(id)a3 forKey:(id)a4
+- (void)setValue:(id)value forKey:(id)key
 {
-  key = a4;
-  v6 = a3;
+  key = key;
+  valueCopy = value;
   if ([(__CFString *)key isEqualToString:@"ZoomLevel"])
   {
-    [v6 floatValue];
+    [valueCopy floatValue];
     v8 = v7;
 
     v9 = +[AXSettings sharedInstance];
@@ -98,26 +98,26 @@
 
   else
   {
-    CFPreferencesSetAppValue(key, v6, @"com.apple.ZoomTouch");
+    CFPreferencesSetAppValue(key, valueCopy, @"com.apple.ZoomTouch");
 
     [(SCRCTargetSelectorTimer *)self->_syncTimer dispatchAfterDelay:1.0];
   }
 }
 
-- (double)zoomLevelForKey:(id)a3 currentLevel:(double)a4
+- (double)zoomLevelForKey:(id)key currentLevel:(double)level
 {
-  v6 = a3;
-  v7 = [(ZOTConfiguration *)self perApplicationZoomLevelEnabled];
-  if (v6 && (v7 & 1) != 0)
+  keyCopy = key;
+  perApplicationZoomLevelEnabled = [(ZOTConfiguration *)self perApplicationZoomLevelEnabled];
+  if (keyCopy && (perApplicationZoomLevelEnabled & 1) != 0)
   {
-    v8 = [(ZOTConfiguration *)self valueForKey:v6];
+    v8 = [(ZOTConfiguration *)self valueForKey:keyCopy];
     v9 = [v8 objectForKey:@"ZoomLevel"];
 
     if (v9)
     {
 LABEL_6:
       [v9 floatValue];
-      a4 = v11;
+      level = v11;
 
       goto LABEL_9;
     }
@@ -129,7 +129,7 @@ LABEL_6:
       goto LABEL_6;
     }
 
-    a4 = AXZoomDefaultZoomLevel;
+    level = AXZoomDefaultZoomLevel;
   }
 
   else
@@ -139,28 +139,28 @@ LABEL_6:
     {
       v13 = v12;
       [v12 floatValue];
-      a4 = v14;
+      level = v14;
     }
   }
 
 LABEL_9:
-  if (a4 < AXZoomMinimumZoomLevel + 0.000001)
+  if (level < AXZoomMinimumZoomLevel + 0.000001)
   {
-    a4 = AXZoomDefaultZoomLevel;
+    level = AXZoomDefaultZoomLevel;
   }
 
-  return a4;
+  return level;
 }
 
-- (CGPoint)zoomLocationForKey:(id)a3 currentLocation:(CGPoint)a4
+- (CGPoint)zoomLocationForKey:(id)key currentLocation:(CGPoint)location
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3;
-  v8 = [(ZOTConfiguration *)self perApplicationZoomLevelEnabled];
-  if (v7 && (v8 & 1) != 0)
+  y = location.y;
+  x = location.x;
+  keyCopy = key;
+  perApplicationZoomLevelEnabled = [(ZOTConfiguration *)self perApplicationZoomLevelEnabled];
+  if (keyCopy && (perApplicationZoomLevelEnabled & 1) != 0)
   {
-    v9 = [(ZOTConfiguration *)self valueForKey:v7];
+    v9 = [(ZOTConfiguration *)self valueForKey:keyCopy];
     v10 = [v9 objectForKey:@"ZoomLocationX"];
     v11 = [v9 objectForKey:@"ZoomLocationY"];
     v12 = v11;
@@ -210,13 +210,13 @@ LABEL_9:
   return result;
 }
 
-- (BOOL)zoomedForKey:(id)a3
+- (BOOL)zoomedForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(ZOTConfiguration *)self perApplicationZoomLevelEnabled];
-  if (v4 && (v5 & 1) != 0)
+  keyCopy = key;
+  perApplicationZoomLevelEnabled = [(ZOTConfiguration *)self perApplicationZoomLevelEnabled];
+  if (keyCopy && (perApplicationZoomLevelEnabled & 1) != 0)
   {
-    v6 = [(ZOTConfiguration *)self valueForKey:v4];
+    v6 = [(ZOTConfiguration *)self valueForKey:keyCopy];
     v7 = [v6 objectForKey:@"Zoomed"];
   }
 
@@ -229,9 +229,9 @@ LABEL_9:
     }
   }
 
-  v8 = [v7 BOOLValue];
+  bOOLValue = [v7 BOOLValue];
 
-  return v8;
+  return bOOLValue;
 }
 
 - (BOOL)perApplicationZoomLevelEnabled
@@ -240,15 +240,15 @@ LABEL_9:
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 @end

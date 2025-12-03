@@ -1,6 +1,6 @@
 @interface SnapshotView
-- (_TtC33GradientBackgroundPosterExtension12SnapshotView)initWithCoder:(id)a3;
-- (_TtC33GradientBackgroundPosterExtension12SnapshotView)initWithFrame:(CGRect)a3;
+- (_TtC33GradientBackgroundPosterExtension12SnapshotView)initWithCoder:(id)coder;
+- (_TtC33GradientBackgroundPosterExtension12SnapshotView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
@@ -8,11 +8,11 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_100006784();
 }
 
-- (_TtC33GradientBackgroundPosterExtension12SnapshotView)initWithFrame:(CGRect)a3
+- (_TtC33GradientBackgroundPosterExtension12SnapshotView)initWithFrame:(CGRect)frame
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC33GradientBackgroundPosterExtension12SnapshotView_snapshotManagerSet) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC33GradientBackgroundPosterExtension12SnapshotView_snapshotReader) = 0;
@@ -23,7 +23,7 @@
   return result;
 }
 
-- (_TtC33GradientBackgroundPosterExtension12SnapshotView)initWithCoder:(id)a3
+- (_TtC33GradientBackgroundPosterExtension12SnapshotView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC33GradientBackgroundPosterExtension12SnapshotView_snapshotManagerSet) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC33GradientBackgroundPosterExtension12SnapshotView_snapshotReader) = 0;

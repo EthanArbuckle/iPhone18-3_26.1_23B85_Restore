@@ -1,25 +1,25 @@
 @interface PHQueryChangeDetectionCriteria
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (PHQueryChangeDetectionCriteria)init;
-- (PHQueryChangeDetectionCriteria)initWithPLQueryChangeDetectionCriteria:(id)a3;
-- (id)changeDetectionCriteriaByAddingChangeDetectionCriteria:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)enumerateEntitiesAndAttributeIndexesUsingBlock:(id)a3;
-- (void)enumerateEntitiesAndRelationshipIndexesBlock:(id)a3;
+- (PHQueryChangeDetectionCriteria)initWithPLQueryChangeDetectionCriteria:(id)criteria;
+- (id)changeDetectionCriteriaByAddingChangeDetectionCriteria:(id)criteria;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)enumerateEntitiesAndAttributeIndexesUsingBlock:(id)block;
+- (void)enumerateEntitiesAndRelationshipIndexesBlock:(id)block;
 @end
 
 @implementation PHQueryChangeDetectionCriteria
 
-- (void)enumerateEntitiesAndRelationshipIndexesBlock:(id)a3
+- (void)enumerateEntitiesAndRelationshipIndexesBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   relationshipIndexValuesByEntityName = self->_relationshipIndexValuesByEntityName;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __79__PHQueryChangeDetectionCriteria_enumerateEntitiesAndRelationshipIndexesBlock___block_invoke;
   v7[3] = &unk_1E75A5E10;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   [(NSMutableDictionary *)relationshipIndexValuesByEntityName enumerateKeysAndObjectsUsingBlock:v7];
 }
 
@@ -30,16 +30,16 @@ void __79__PHQueryChangeDetectionCriteria_enumerateEntitiesAndRelationshipIndexe
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)enumerateEntitiesAndAttributeIndexesUsingBlock:(id)a3
+- (void)enumerateEntitiesAndAttributeIndexesUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   attributeIndexValuesByEntityName = self->_attributeIndexValuesByEntityName;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __81__PHQueryChangeDetectionCriteria_enumerateEntitiesAndAttributeIndexesUsingBlock___block_invoke;
   v7[3] = &unk_1E75A5E10;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   [(NSMutableDictionary *)attributeIndexValuesByEntityName enumerateKeysAndObjectsUsingBlock:v7];
 }
 
@@ -50,24 +50,24 @@ void __81__PHQueryChangeDetectionCriteria_enumerateEntitiesAndAttributeIndexesUs
   (*(*(a1 + 32) + 16))();
 }
 
-- (id)changeDetectionCriteriaByAddingChangeDetectionCriteria:(id)a3
+- (id)changeDetectionCriteriaByAddingChangeDetectionCriteria:(id)criteria
 {
-  v5 = a3;
-  if (!v5)
+  criteriaCopy = criteria;
+  if (!criteriaCopy)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PHQueryChangeDetectionCriteria.m" lineNumber:71 description:{@"Invalid parameter not satisfying: %@", @"criteria"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHQueryChangeDetectionCriteria.m" lineNumber:71 description:{@"Invalid parameter not satisfying: %@", @"criteria"}];
   }
 
   v6 = [(PHQueryChangeDetectionCriteria *)self copy];
-  v7 = v5[1];
+  v7 = criteriaCopy[1];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __89__PHQueryChangeDetectionCriteria_changeDetectionCriteriaByAddingChangeDetectionCriteria___block_invoke;
   v13[3] = &unk_1E75A7CC0;
   v13[4] = v6;
   [v7 enumerateKeysAndObjectsUsingBlock:v13];
-  v8 = v5[2];
+  v8 = criteriaCopy[2];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __89__PHQueryChangeDetectionCriteria_changeDetectionCriteriaByAddingChangeDetectionCriteria___block_invoke_2;
@@ -101,13 +101,13 @@ void __89__PHQueryChangeDetectionCriteria_changeDetectionCriteriaByAddingChangeD
   [*(*(a1 + 32) + 16) setObject:v9 forKeyedSubscript:v5];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     if ([v5[1] isEqual:self->_attributeIndexValuesByEntityName])
     {
       v6 = [v5[2] isEqual:self->_relationshipIndexValuesByEntityName];
@@ -127,7 +127,7 @@ void __89__PHQueryChangeDetectionCriteria_changeDetectionCriteriaByAddingChangeD
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   v5 = [(NSMutableDictionary *)self->_attributeIndexValuesByEntityName mutableCopy];
@@ -141,13 +141,13 @@ void __89__PHQueryChangeDetectionCriteria_changeDetectionCriteriaByAddingChangeD
   return v4;
 }
 
-- (PHQueryChangeDetectionCriteria)initWithPLQueryChangeDetectionCriteria:(id)a3
+- (PHQueryChangeDetectionCriteria)initWithPLQueryChangeDetectionCriteria:(id)criteria
 {
-  v4 = a3;
+  criteriaCopy = criteria;
   v5 = [(PHQueryChangeDetectionCriteria *)self init];
   if (v5)
   {
-    if ([v4 isEmpty])
+    if ([criteriaCopy isEmpty])
     {
 
       v5 = 0;
@@ -161,14 +161,14 @@ void __89__PHQueryChangeDetectionCriteria_changeDetectionCriteriaByAddingChangeD
       v10[3] = &unk_1E75A5DE8;
       v6 = v5;
       v11 = v6;
-      [v4 enumerateEntitiesAndAttributesUsingBlock:v10];
+      [criteriaCopy enumerateEntitiesAndAttributesUsingBlock:v10];
       v8[0] = MEMORY[0x1E69E9820];
       v8[1] = 3221225472;
       v8[2] = __73__PHQueryChangeDetectionCriteria_initWithPLQueryChangeDetectionCriteria___block_invoke_2;
       v8[3] = &unk_1E75A5DE8;
       v5 = v6;
       v9 = v5;
-      [v4 enumerateEntitiesAndRelationshipsUsingBlock:v8];
+      [criteriaCopy enumerateEntitiesAndRelationshipsUsingBlock:v8];
     }
   }
 

@@ -1,10 +1,10 @@
 @interface HDCloudSyncValidatePushTargetOperation
 + (id)operationTagDependencies;
-- (HDCloudSyncValidatePushTargetOperation)initWithConfiguration:(id)a3;
-- (uint64_t)_validateAnchorRangesForSequenceRecord:(void *)a3 target:(void *)a4 errorOut:;
-- (uint64_t)_validateCurrentSequenceForTarget:(void *)a3 errorOut:;
-- (uint64_t)_validateTargets:(void *)a3 errorOut:;
-- (void)_requireRebaseForTarget:(void *)a1;
+- (HDCloudSyncValidatePushTargetOperation)initWithConfiguration:(id)configuration;
+- (uint64_t)_validateAnchorRangesForSequenceRecord:(void *)record target:(void *)target errorOut:;
+- (uint64_t)_validateCurrentSequenceForTarget:(void *)target errorOut:;
+- (uint64_t)_validateTargets:(void *)targets errorOut:;
+- (void)_requireRebaseForTarget:(void *)target;
 - (void)_rollOwnershipIdentiferAndFinish;
 - (void)main;
 @end
@@ -21,11 +21,11 @@
   return v2;
 }
 
-- (HDCloudSyncValidatePushTargetOperation)initWithConfiguration:(id)a3
+- (HDCloudSyncValidatePushTargetOperation)initWithConfiguration:(id)configuration
 {
   v7.receiver = self;
   v7.super_class = HDCloudSyncValidatePushTargetOperation;
-  v3 = [(HDCloudSyncOperation *)&v7 initWithConfiguration:a3 cloudState:0];
+  v3 = [(HDCloudSyncOperation *)&v7 initWithConfiguration:configuration cloudState:0];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x277CBEB38]);
@@ -39,11 +39,11 @@
 - (void)main
 {
   v47 = *MEMORY[0x277D85DE8];
-  v3 = [(HDCloudSyncOperation *)self configuration];
-  v4 = [v3 computedState];
-  v5 = [v4 pushTargets];
+  configuration = [(HDCloudSyncOperation *)self configuration];
+  computedState = [configuration computedState];
+  pushTargets = [computedState pushTargets];
   targets = self->_targets;
-  self->_targets = v5;
+  self->_targets = pushTargets;
 
   if ([(NSArray *)self->_targets count])
   {
@@ -68,9 +68,9 @@
           }
 
           v13 = *(*(&v39 + 1) + 8 * i);
-          v14 = [v13 store];
+          store = [v13 store];
 
-          if (!v14)
+          if (!store)
           {
             v20 = [MEMORY[0x277CCA9B8] hk_error:3 format:{@"Target's %@ push store not set when beginning push target validation.", v13}];
             v19 = v20;
@@ -83,11 +83,11 @@
             goto LABEL_16;
           }
 
-          v15 = [v13 store];
-          v16 = [v15 shardPredicate];
-          v17 = [v16 type];
+          store2 = [v13 store];
+          shardPredicate = [store2 shardPredicate];
+          type = [shardPredicate type];
 
-          if (v17 != 2)
+          if (type != 2)
           {
             [v7 addObject:v13];
           }
@@ -129,15 +129,15 @@ LABEL_33:
           if ([(NSMutableDictionary *)self->_targetsBySequenceToDelete count])
           {
             v33 = [HDCloudSyncDeleteSequenceOperation alloc];
-            v34 = [(HDCloudSyncOperation *)self configuration];
+            configuration2 = [(HDCloudSyncOperation *)self configuration];
             v35 = [(NSMutableDictionary *)self->_targetsBySequenceToDelete copy];
-            v36 = [(HDCloudSyncDeleteSequenceOperation *)v33 initWithConfiguration:v34 targetsBySequence:v35];
+            v36 = [(HDCloudSyncDeleteSequenceOperation *)v33 initWithConfiguration:configuration2 targetsBySequence:v35];
 
             *&buf = MEMORY[0x277D85DD0];
             *(&buf + 1) = 3221225472;
             v44 = __76__HDCloudSyncValidatePushTargetOperation__deleteOldSequenceRecordsAndFinish__block_invoke;
             v45 = &unk_278613088;
-            v46 = self;
+            selfCopy = self;
             [(HDCloudSyncOperation *)v36 setOnError:&buf];
             *&v39 = MEMORY[0x277D85DD0];
             *(&v39 + 1) = 3221225472;
@@ -150,19 +150,19 @@ LABEL_33:
             goto LABEL_33;
           }
 
-          v30 = self;
+          selfCopy3 = self;
           v31 = 1;
           v32 = 0;
         }
 
         else
         {
-          v30 = self;
+          selfCopy3 = self;
           v31 = 0;
           v32 = v24;
         }
 
-        [(HDCloudSyncOperation *)v30 finishWithSuccess:v31 error:v32];
+        [(HDCloudSyncOperation *)selfCopy3 finishWithSuccess:v31 error:v32];
         goto LABEL_33;
       }
 
@@ -175,19 +175,19 @@ LABEL_33:
         _os_log_impl(&dword_228986000, v29, OS_LOG_TYPE_DEFAULT, "%{public}@: No filtered targets to validate.", &buf, 0xCu);
       }
 
-      v26 = self;
+      selfCopy5 = self;
       v27 = 1;
       v28 = 0;
     }
 
     else
     {
-      v26 = self;
+      selfCopy5 = self;
       v27 = 0;
       v28 = v22;
     }
 
-    [(HDCloudSyncOperation *)v26 finishWithSuccess:v27 error:v28];
+    [(HDCloudSyncOperation *)selfCopy5 finishWithSuccess:v27 error:v28];
 LABEL_34:
 
     goto LABEL_35;
@@ -207,12 +207,12 @@ LABEL_35:
   v37 = *MEMORY[0x277D85DE8];
 }
 
-- (uint64_t)_validateTargets:(void *)a3 errorOut:
+- (uint64_t)_validateTargets:(void *)targets errorOut:
 {
   v29 = *MEMORY[0x277D85DE8];
   v4 = a2;
   v5 = v4;
-  if (a1)
+  if (self)
   {
     v26 = 0u;
     v27 = 0u;
@@ -234,7 +234,7 @@ LABEL_4:
           objc_enumerationMutation(v6);
         }
 
-        v11 = *(a1 + 120);
+        v11 = *(self + 120);
         if (v11)
         {
 LABEL_21:
@@ -243,17 +243,17 @@ LABEL_21:
         }
 
         v12 = *(*(&v24 + 1) + 8 * v10);
-        v13 = [v12 storeRecord];
-        v14 = [v13 currentSequenceHeaderRecord];
+        storeRecord = [v12 storeRecord];
+        currentSequenceHeaderRecord = [storeRecord currentSequenceHeaderRecord];
 
-        if (v14)
+        if (currentSequenceHeaderRecord)
         {
-          v15 = [v12 storeRecord];
-          v16 = [v15 oldSequenceHeaderRecord];
+          storeRecord2 = [v12 storeRecord];
+          oldSequenceHeaderRecord = [storeRecord2 oldSequenceHeaderRecord];
 
-          if (!v16)
+          if (!oldSequenceHeaderRecord)
           {
-            v19 = [(HDCloudSyncValidatePushTargetOperation *)a1 _validateCurrentSequenceForTarget:v12 errorOut:a3];
+            v19 = [(HDCloudSyncValidatePushTargetOperation *)self _validateCurrentSequenceForTarget:v12 errorOut:targets];
 
             if ((v19 & 1) == 0)
             {
@@ -263,10 +263,10 @@ LABEL_21:
             goto LABEL_18;
           }
 
-          v17 = [v14 isActive];
-          if (v17 != [v16 isActive] && (!objc_msgSend(v14, "isActive") || (objc_msgSend(v16, "isActive") & 1) != 0))
+          isActive = [currentSequenceHeaderRecord isActive];
+          if (isActive != [oldSequenceHeaderRecord isActive] && (!objc_msgSend(currentSequenceHeaderRecord, "isActive") || (objc_msgSend(oldSequenceHeaderRecord, "isActive") & 1) != 0))
           {
-            v18 = [(HDCloudSyncValidatePushTargetOperation *)a1 _validateCurrentSequenceForTarget:v12 errorOut:a3];
+            v18 = [(HDCloudSyncValidatePushTargetOperation *)self _validateCurrentSequenceForTarget:v12 errorOut:targets];
 
             if ((v18 & 1) == 0)
             {
@@ -276,7 +276,7 @@ LABEL_21:
             goto LABEL_18;
           }
 
-          [*(a1 + 112) setObject:v12 forKeyedSubscript:{v16, v22}];
+          [*(self + 112) setObject:v12 forKeyedSubscript:{oldSequenceHeaderRecord, v22}];
         }
 
 LABEL_18:
@@ -309,47 +309,47 @@ LABEL_23:
 
 - (void)_rollOwnershipIdentiferAndFinish
 {
-  if (a1)
+  if (self)
   {
-    v2 = [a1 profile];
-    v3 = [v2 cloudSyncManager];
-    v4 = [v3 ownerIdentifierManager];
+    profile = [self profile];
+    cloudSyncManager = [profile cloudSyncManager];
+    ownerIdentifierManager = [cloudSyncManager ownerIdentifierManager];
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __74__HDCloudSyncValidatePushTargetOperation__rollOwnershipIdentiferAndFinish__block_invoke;
     v5[3] = &unk_2786130B0;
-    v5[4] = a1;
-    [v4 rollOwnerDifferentiatorForReason:@"Found anchors from the future" completion:v5];
+    v5[4] = self;
+    [ownerIdentifierManager rollOwnerDifferentiatorForReason:@"Found anchors from the future" completion:v5];
   }
 }
 
-- (uint64_t)_validateCurrentSequenceForTarget:(void *)a3 errorOut:
+- (uint64_t)_validateCurrentSequenceForTarget:(void *)target errorOut:
 {
   v159 = *MEMORY[0x277D85DE8];
   v4 = a2;
-  v5 = [v4 storeRecord];
-  v6 = [v5 currentSequenceHeaderRecord];
+  storeRecord = [v4 storeRecord];
+  currentSequenceHeaderRecord = [storeRecord currentSequenceHeaderRecord];
 
-  if ([v6 childRecordCount] >= 501)
+  if ([currentSequenceHeaderRecord childRecordCount] >= 501)
   {
-    v7 = [a1 configuration];
-    v8 = [v7 rebaseProhibited];
+    configuration = [self configuration];
+    rebaseProhibited = [configuration rebaseProhibited];
 
     _HKInitializeLogging();
     v9 = *MEMORY[0x277CCC328];
     v10 = os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT);
-    if (v8)
+    if (rebaseProhibited)
     {
       if (v10)
       {
         v11 = v9;
         v12 = HDCloudSyncRebaseReasonToString(0);
         *buf = 138543874;
-        *&buf[4] = a1;
+        *&buf[4] = self;
         *&buf[12] = 2114;
         *&buf[14] = v12;
         *&buf[22] = 2114;
-        v146 = v6;
+        v146 = currentSequenceHeaderRecord;
         _os_log_impl(&dword_228986000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@: rebase required but prohibited (%{public}@) for sequence record %{public}@", buf, 0x20u);
       }
     }
@@ -361,11 +361,11 @@ LABEL_23:
         v13 = v9;
         v14 = HDCloudSyncRebaseReasonToString(0);
         *buf = 138543874;
-        *&buf[4] = a1;
+        *&buf[4] = self;
         *&buf[12] = 2114;
         *&buf[14] = v14;
         *&buf[22] = 2114;
-        v146 = v6;
+        v146 = currentSequenceHeaderRecord;
         _os_log_impl(&dword_228986000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@: rebase required (%{public}@) for sequence record %{public}@", buf, 0x20u);
       }
 
@@ -375,30 +375,30 @@ LABEL_23:
       *buf = &unk_283CB0BE8;
       *&buf[8] = &unk_283CB0BE8;
       v142 = @"record-count";
-      v16 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v6, "childRecordCount")}];
+      v16 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(currentSequenceHeaderRecord, "childRecordCount")}];
       *&buf[16] = v16;
       v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:buf forKeys:&v140 count:3];
       HDPowerLog(v15, v17, 2);
 
-      [(HDCloudSyncValidatePushTargetOperation *)a1 _requireRebaseForTarget:v4];
+      [(HDCloudSyncValidatePushTargetOperation *)self _requireRebaseForTarget:v4];
     }
   }
 
   v123 = v4;
-  v18 = [v123 storeRecord];
-  v19 = [v18 currentSequenceHeaderRecord];
+  storeRecord2 = [v123 storeRecord];
+  currentSequenceHeaderRecord2 = [storeRecord2 currentSequenceHeaderRecord];
 
   v20 = v123;
-  if (v19 && ([(HDCloudSyncValidatePushTargetOperation *)a1 _validateAnchorRangesForSequenceRecord:v19 target:v123 errorOut:a3]& 1) == 0)
+  if (currentSequenceHeaderRecord2 && ([(HDCloudSyncValidatePushTargetOperation *)self _validateAnchorRangesForSequenceRecord:currentSequenceHeaderRecord2 target:v123 errorOut:target]& 1) == 0)
   {
     goto LABEL_16;
   }
 
-  v21 = [v123 storeRecord];
-  v22 = [v21 oldSequenceHeaderRecord];
+  storeRecord3 = [v123 storeRecord];
+  oldSequenceHeaderRecord = [storeRecord3 oldSequenceHeaderRecord];
 
   v20 = v123;
-  if (v22 && ([(HDCloudSyncValidatePushTargetOperation *)a1 _validateAnchorRangesForSequenceRecord:v22 target:v123 errorOut:a3]& 1) == 0)
+  if (oldSequenceHeaderRecord && ([(HDCloudSyncValidatePushTargetOperation *)self _validateAnchorRangesForSequenceRecord:oldSequenceHeaderRecord target:v123 errorOut:target]& 1) == 0)
   {
 
 LABEL_16:
@@ -407,29 +407,29 @@ LABEL_16:
   }
 
   v23 = v123;
-  v24 = [v23 store];
+  store = [v23 store];
   v135[0] = 0;
-  v25 = [v24 persistedStateWithError:v135];
+  v25 = [store persistedStateWithError:v135];
   v26 = v135[0];
 
   if (v25)
   {
-    v27 = [a1 configuration];
-    if ([v27 rebaseProhibited])
+    configuration2 = [self configuration];
+    if ([configuration2 rebaseProhibited])
     {
     }
 
     else
     {
-      v32 = [v25 rebaseDeadline];
-      v33 = v32 == 0;
+      rebaseDeadline = [v25 rebaseDeadline];
+      v33 = rebaseDeadline == 0;
 
       if (!v33)
       {
-        v34 = [v25 rebaseDeadline];
-        v35 = [a1 configuration];
-        v36 = [v35 syncDate];
-        [v34 timeIntervalSinceDate:v36];
+        rebaseDeadline2 = [v25 rebaseDeadline];
+        configuration3 = [self configuration];
+        syncDate = [configuration3 syncDate];
+        [rebaseDeadline2 timeIntervalSinceDate:syncDate];
         v38 = v37;
 
         v39 = MEMORY[0x277CCE2B8];
@@ -440,18 +440,18 @@ LABEL_16:
           if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
           {
             v41 = v40;
-            v42 = [v23 store];
+            store2 = [v23 store];
             v43 = HDCloudSyncRebaseReasonToString(1);
-            v44 = [v25 rebaseDeadline];
+            rebaseDeadline3 = [v25 rebaseDeadline];
             v45 = *v39;
             *buf = 138544642;
-            *&buf[4] = a1;
+            *&buf[4] = self;
             *&buf[12] = 2114;
-            *&buf[14] = v42;
+            *&buf[14] = store2;
             *&buf[22] = 2114;
             v146 = v43;
             v147 = 2114;
-            v148 = v44;
+            v148 = rebaseDeadline3;
             v149 = 2048;
             v150 = v45;
             v151 = 2048;
@@ -466,39 +466,39 @@ LABEL_16:
           v141 = &unk_283CB0C00;
           *&v154 = @"deadline";
           v47 = MEMORY[0x277CCABB0];
-          v48 = [v25 rebaseDeadline];
-          [v48 timeIntervalSinceReferenceDate];
+          rebaseDeadline4 = [v25 rebaseDeadline];
+          [rebaseDeadline4 timeIntervalSinceReferenceDate];
           v49 = [v47 numberWithDouble:?];
           v142 = v49;
           v50 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v140 forKeys:&v153 count:3];
           HDPowerLog(v46, v50, 2);
 
-          [(HDCloudSyncValidatePushTargetOperation *)a1 _requireRebaseForTarget:v23];
+          [(HDCloudSyncValidatePushTargetOperation *)self _requireRebaseForTarget:v23];
         }
       }
     }
 
 LABEL_26:
     v122 = v23;
-    v51 = [a1 configuration];
-    v52 = [v51 repository];
-    v53 = [v122 zoneIdentifier];
-    v54 = [v53 containerIdentifier];
-    *&v121[4] = [v52 containerForContainerIdentifier:v54];
+    configuration4 = [self configuration];
+    repository = [configuration4 repository];
+    zoneIdentifier = [v122 zoneIdentifier];
+    containerIdentifier = [zoneIdentifier containerIdentifier];
+    *&v121[4] = [repository containerForContainerIdentifier:containerIdentifier];
 
     if (!*&v121[4])
     {
       v86 = MEMORY[0x277CCA9B8];
-      v87 = [v122 zoneIdentifier];
-      v88 = [v87 containerIdentifier];
-      v89 = [v86 hk_error:723 format:{@"Unable to find container for identifier %@", v88}];
+      zoneIdentifier2 = [v122 zoneIdentifier];
+      containerIdentifier2 = [zoneIdentifier2 containerIdentifier];
+      v89 = [v86 hk_error:723 format:{@"Unable to find container for identifier %@", containerIdentifier2}];
       *v121 = v89 == 0;
       if (v89)
       {
-        if (a3)
+        if (target)
         {
           v90 = v89;
-          *a3 = v89;
+          *target = v89;
         }
 
         else
@@ -510,10 +510,10 @@ LABEL_26:
       goto LABEL_70;
     }
 
-    v55 = [v122 storeRecord];
-    v56 = [v55 currentSequenceHeaderRecord];
+    storeRecord4 = [v122 storeRecord];
+    currentSequenceHeaderRecord3 = [storeRecord4 currentSequenceHeaderRecord];
 
-    if (!v56)
+    if (!currentSequenceHeaderRecord3)
     {
       *v121 = 1;
 LABEL_70:
@@ -523,14 +523,14 @@ LABEL_70:
       goto LABEL_71;
     }
 
-    v57 = [v122 storeRecord];
+    storeRecord5 = [v122 storeRecord];
     v58 = [HDCloudSyncCachedZone alloc];
-    v59 = [v122 zoneIdentifier];
-    v60 = [a1 configuration];
-    v61 = [v60 repository];
-    v62 = [a1 configuration];
-    v63 = [v62 accessibilityAssertion];
-    v64 = [(HDCloudSyncCachedZone *)v58 initForZoneIdentifier:v59 repository:v61 accessibilityAssertion:v63];
+    zoneIdentifier3 = [v122 zoneIdentifier];
+    configuration5 = [self configuration];
+    repository2 = [configuration5 repository];
+    configuration6 = [self configuration];
+    accessibilityAssertion = [configuration6 accessibilityAssertion];
+    v64 = [(HDCloudSyncCachedZone *)v58 initForZoneIdentifier:zoneIdentifier3 repository:repository2 accessibilityAssertion:accessibilityAssertion];
 
     v65 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v66 = objc_opt_class();
@@ -539,8 +539,8 @@ LABEL_70:
     v127[1] = 3221225472;
     v127[2] = __92__HDCloudSyncValidatePushTargetOperation__validateCurrentSequenceChangesForTarget_errorOut___block_invoke;
     v127[3] = &unk_27861D8D0;
-    v127[4] = a1;
-    v117 = v57;
+    v127[4] = self;
+    v117 = storeRecord5;
     v128 = v117;
     v120 = v65;
     v129 = v120;
@@ -554,11 +554,11 @@ LABEL_70:
       if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_ERROR))
       {
         v109 = v91;
-        v110 = [v64 zoneIdentifier];
+        zoneIdentifier4 = [v64 zoneIdentifier];
         *buf = 138543618;
-        *&buf[4] = a1;
+        *&buf[4] = self;
         *&buf[12] = 2114;
-        *&buf[14] = v110;
+        *&buf[14] = zoneIdentifier4;
         _os_log_error_impl(&dword_228986000, v109, OS_LOG_TYPE_ERROR, "%{public}@ Failed to retrieve cached change records from zone %{public}@", buf, 0x16u);
       }
 
@@ -566,10 +566,10 @@ LABEL_70:
       v93 = v92;
       if (v92)
       {
-        if (a3)
+        if (target)
         {
           v94 = v92;
-          *a3 = v93;
+          *target = v93;
         }
 
         else
@@ -583,22 +583,22 @@ LABEL_70:
 
     [v120 sortUsingSelector:sel_compare_];
     v67 = v120;
-    v68 = [v67 lastObject];
-    v116 = v68;
-    if (v68)
+    lastObject = [v67 lastObject];
+    v116 = lastObject;
+    if (lastObject)
     {
-      v69 = [v68 finalForSequence];
+      finalForSequence = [lastObject finalForSequence];
       _HKInitializeLogging();
       v70 = *MEMORY[0x277CCC328];
       v71 = *MEMORY[0x277CCC328];
-      if (v69)
+      if (finalForSequence)
       {
         if (os_log_type_enabled(v71, OS_LOG_TYPE_INFO))
         {
           v72 = v70;
           v73 = [v67 count];
           *v157 = 138543618;
-          *&v157[4] = a1;
+          *&v157[4] = self;
           *&v157[12] = 2048;
           *&v157[14] = v73;
           _os_log_impl(&dword_228986000, v72, OS_LOG_TYPE_INFO, "%{public}@: Checking for hole in %ld fetched records", v157, 0x16u);
@@ -629,7 +629,7 @@ LABEL_70:
               }
 
               v78 = *(*(&v153 + 1) + 8 * i);
-              v79 = [v78 decodedSyncAnchorRangeMap];
+              decodedSyncAnchorRangeMap = [v78 decodedSyncAnchorRangeMap];
               _HKInitializeLogging();
               v80 = *MEMORY[0x277CCC328];
               if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_INFO))
@@ -637,34 +637,34 @@ LABEL_70:
                 v81 = v80;
                 if (os_log_type_enabled(v81, OS_LOG_TYPE_INFO))
                 {
-                  v82 = [v78 record];
-                  v83 = [v82 recordID];
-                  v84 = [v83 recordName];
+                  record = [v78 record];
+                  recordID = [record recordID];
+                  recordName = [recordID recordName];
                   *v143 = 67109634;
                   *v144 = v74;
                   *&v144[4] = 2114;
-                  *&v144[6] = v84;
+                  *&v144[6] = recordName;
                   *&v144[14] = 2114;
-                  *&v144[16] = v79;
+                  *&v144[16] = decodedSyncAnchorRangeMap;
                   _os_log_impl(&dword_228986000, v81, OS_LOG_TYPE_INFO, "\t%02d: [Record: %{public}@] %{public}@", v143, 0x1Cu);
 
                   ++v74;
                 }
               }
 
-              if (!v79 || ![v79 anchorRangeCount])
+              if (!decodedSyncAnchorRangeMap || ![decodedSyncAnchorRangeMap anchorRangeCount])
               {
                 _HKInitializeLogging();
                 v97 = *MEMORY[0x277CCC328];
                 if (os_log_type_enabled(v97, OS_LOG_TYPE_ERROR))
                 {
-                  v112 = [v78 record];
-                  v113 = [v112 recordID];
-                  v114 = [v113 recordName];
+                  record2 = [v78 record];
+                  recordID2 = [record2 recordID];
+                  recordName2 = [recordID2 recordName];
                   *v143 = 138543618;
-                  *v144 = a1;
+                  *v144 = self;
                   *&v144[8] = 2114;
-                  *&v144[10] = v114;
+                  *&v144[10] = recordName2;
                   _os_log_error_impl(&dword_228986000, v97, OS_LOG_TYPE_ERROR, "%{public}@: [Record: %{public}@]: ordered change record with nil or empty anchor range map found, this may indicate a hole in the sequence", v143, 0x16u);
                 }
 
@@ -679,10 +679,10 @@ LABEL_75:
               v135[2] = __85__HDCloudSyncValidatePushTargetOperation__orderedChangeRecordSequenceRequiresRebase___block_invoke;
               v135[3] = &unk_27861D8F8;
               v136 = v115;
-              v137 = a1;
+              selfCopy = self;
               v138 = v78;
               v139 = v157;
-              [v79 enumerateAnchorRangesAndEntityIdentifiersWithBlock:v135];
+              [decodedSyncAnchorRangeMap enumerateAnchorRangesAndEntityIdentifiersWithBlock:v135];
               v85 = *(*&v157[8] + 24);
 
               if (v85)
@@ -716,7 +716,7 @@ LABEL_76:
         {
           v111 = [obj count];
           *v143 = 138543618;
-          *v144 = a1;
+          *v144 = self;
           *&v144[8] = 2048;
           *&v144[10] = v111;
           _os_log_error_impl(&dword_228986000, v98, OS_LOG_TYPE_ERROR, "%{public}@: Found hole in %ld fetched records", v143, 0x16u);
@@ -741,20 +741,20 @@ LABEL_76:
               }
 
               v102 = *(*(&v131 + 1) + 8 * j);
-              v103 = [v102 decodedSyncAnchorRangeMap];
+              decodedSyncAnchorRangeMap2 = [v102 decodedSyncAnchorRangeMap];
               _HKInitializeLogging();
               v104 = *MEMORY[0x277CCC328];
               if (os_log_type_enabled(v104, OS_LOG_TYPE_DEFAULT))
               {
-                v105 = [v102 record];
-                v106 = [v105 recordID];
-                v107 = [v106 recordName];
+                record3 = [v102 record];
+                recordID3 = [record3 recordID];
+                recordName3 = [recordID3 recordName];
                 *v143 = 67109634;
                 *v144 = v74;
                 *&v144[4] = 2114;
-                *&v144[6] = v107;
+                *&v144[6] = recordName3;
                 *&v144[14] = 2114;
-                *&v144[16] = v103;
+                *&v144[16] = decodedSyncAnchorRangeMap2;
                 _os_log_impl(&dword_228986000, v104, OS_LOG_TYPE_DEFAULT, "\t%02d: [Record: %{public}@] %{public}@", v143, 0x1Cu);
 
                 ++v74;
@@ -781,14 +781,14 @@ LABEL_76:
         if (os_log_type_enabled(v71, OS_LOG_TYPE_ERROR))
         {
           *v157 = 138543618;
-          *&v157[4] = a1;
+          *&v157[4] = self;
           *&v157[12] = 2114;
           *&v157[14] = v116;
           _os_log_error_impl(&dword_228986000, v70, OS_LOG_TYPE_ERROR, "%{public}@: Final ordered change record (%{public}@) is not final for sequence; rebase required to repair damage.", v157, 0x16u);
         }
       }
 
-      [(HDCloudSyncValidatePushTargetOperation *)a1 _requireRebaseForTarget:v122];
+      [(HDCloudSyncValidatePushTargetOperation *)self _requireRebaseForTarget:v122];
     }
 
     else
@@ -808,10 +808,10 @@ LABEL_69:
   }
 
   v30 = v29;
-  if (a3)
+  if (target)
   {
     v31 = v29;
-    *a3 = v30;
+    *target = v30;
   }
 
   else
@@ -876,18 +876,18 @@ void __74__HDCloudSyncValidatePushTargetOperation__rollOwnershipIdentiferAndFini
   }
 }
 
-- (uint64_t)_validateAnchorRangesForSequenceRecord:(void *)a3 target:(void *)a4 errorOut:
+- (uint64_t)_validateAnchorRangesForSequenceRecord:(void *)record target:(void *)target errorOut:
 {
   v46 = *MEMORY[0x277D85DE8];
   v7 = a2;
-  v8 = a3;
-  v9 = [a1 configuration];
-  v10 = [v9 rebaseProhibited];
+  recordCopy = record;
+  configuration = [self configuration];
+  rebaseProhibited = [configuration rebaseProhibited];
 
-  if ((v10 & 1) == 0)
+  if ((rebaseProhibited & 1) == 0)
   {
-    v12 = [v8 store];
-    v13 = [v12 syncStoreForEpoch:{objc_msgSend(v7, "baselineEpoch")}];
+    store = [recordCopy store];
+    v13 = [store syncStoreForEpoch:{objc_msgSend(v7, "baselineEpoch")}];
 
     v41 = 0;
     v14 = [v13 getPersistedAnchorMapWithError:&v41];
@@ -895,13 +895,13 @@ void __74__HDCloudSyncValidatePushTargetOperation__rollOwnershipIdentiferAndFini
     v16 = v15;
     if (v14)
     {
-      v17 = [a1 configuration];
-      v18 = [HDCloudSyncPushSequenceOperation unfrozenChangeRecordsForPushTarget:v8 sequenceRecord:v7 configuration:v17 error:a4];
+      configuration2 = [self configuration];
+      v18 = [HDCloudSyncPushSequenceOperation unfrozenChangeRecordsForPushTarget:recordCopy sequenceRecord:v7 configuration:configuration2 error:target];
 
       if (v18)
       {
-        v19 = [a1 configuration];
-        v20 = [HDCloudSyncPushSequenceOperation shouldPerformRecentRecordRollingForUnfrozenRecords:v18 configuration:v19];
+        configuration3 = [self configuration];
+        v20 = [HDCloudSyncPushSequenceOperation shouldPerformRecentRecordRollingForUnfrozenRecords:v18 configuration:configuration3];
 
         if (v20)
         {
@@ -932,7 +932,7 @@ void __74__HDCloudSyncValidatePushTargetOperation__rollOwnershipIdentiferAndFini
           v30[3] = &unk_27861D8A8;
           v36 = v20;
           v31 = v14;
-          v32 = a1;
+          selfCopy = self;
           v26 = v25;
           v33 = v26;
           v34 = v13;
@@ -940,13 +940,13 @@ void __74__HDCloudSyncValidatePushTargetOperation__rollOwnershipIdentiferAndFini
           [v23 enumerateAnchorsAndEntityIdentifiersWithBlock:v30];
           if (*(v38 + 24) == 1)
           {
-            a1[120] = 1;
+            self[120] = 1;
             _HKInitializeLogging();
             v27 = *MEMORY[0x277CCC328];
             if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_ERROR))
             {
               *buf = 138543618;
-              v43 = a1;
+              selfCopy2 = self;
               v44 = 2112;
               v45 = v26;
               _os_log_error_impl(&dword_228986000, v27, OS_LOG_TYPE_ERROR, "%{public}@: Found %@ anchors from the future", buf, 0x16u);
@@ -971,11 +971,11 @@ LABEL_19:
         goto LABEL_22;
       }
 
-      if (a4)
+      if (target)
       {
         v22 = v21;
         v11 = 0;
-        *a4 = v18;
+        *target = v18;
 LABEL_22:
 
         goto LABEL_23;
@@ -1055,17 +1055,17 @@ void __97__HDCloudSyncValidatePushTargetOperation__validateAnchorRangesForSequen
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_requireRebaseForTarget:(void *)a1
+- (void)_requireRebaseForTarget:(void *)target
 {
   v9[1] = *MEMORY[0x277D85DE8];
   v3 = a2;
   v4 = [v3 targetByAddingOptions:1];
 
-  v5 = [a1 configuration];
-  v6 = [v5 computedState];
+  configuration = [target configuration];
+  computedState = [configuration computedState];
   v9[0] = v4;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];
-  [v6 replaceTargets:v7];
+  [computedState replaceTargets:v7];
 
   v8 = *MEMORY[0x277D85DE8];
 }

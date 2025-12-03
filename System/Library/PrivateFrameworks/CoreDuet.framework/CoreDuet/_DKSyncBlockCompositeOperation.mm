@@ -1,13 +1,13 @@
 @interface _DKSyncBlockCompositeOperation
-+ (uint64_t)blockCompositeOperationWithBlock:(uint64_t)a1;
-- (_DWORD)initWithParent:(void *)a3 block:;
++ (uint64_t)blockCompositeOperationWithBlock:(uint64_t)block;
+- (_DWORD)initWithParent:(void *)parent block:;
 - (id)executionBlocks;
 - (void)main;
 @end
 
 @implementation _DKSyncBlockCompositeOperation
 
-+ (uint64_t)blockCompositeOperationWithBlock:(uint64_t)a1
++ (uint64_t)blockCompositeOperationWithBlock:(uint64_t)block
 {
   v2 = a2;
   v3 = objc_opt_self();
@@ -33,8 +33,8 @@
 
 - (void)main
 {
-  v3 = [(_DKSyncBlockCompositeOperation *)self executionBlocks];
-  __DKSYNCBLOCKOPERATION_IS_CALLING_EXECUTION_BLOCKS__(v3);
+  executionBlocks = [(_DKSyncBlockCompositeOperation *)self executionBlocks];
+  __DKSYNCBLOCKOPERATION_IS_CALLING_EXECUTION_BLOCKS__(executionBlocks);
 
   os_unfair_lock_lock(&self->_lock);
   blocks = self->_blocks;
@@ -43,12 +43,12 @@
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (_DWORD)initWithParent:(void *)a3 block:
+- (_DWORD)initWithParent:(void *)parent block:
 {
-  v5 = a3;
-  if (a1)
+  parentCopy = parent;
+  if (self)
   {
-    v13.receiver = a1;
+    v13.receiver = self;
     v13.super_class = _DKSyncBlockCompositeOperation;
     v6 = objc_msgSendSuper2(&v13, sel_initWithParent_, a2);
     v7 = v6;
@@ -59,10 +59,10 @@
       v9 = *(v7 + 38);
       *(v7 + 38) = v8;
 
-      if (v5)
+      if (parentCopy)
       {
         v10 = *(v7 + 38);
-        v11 = MEMORY[0x193B00C50](v5);
+        v11 = MEMORY[0x193B00C50](parentCopy);
         [v10 addObject:v11];
       }
     }

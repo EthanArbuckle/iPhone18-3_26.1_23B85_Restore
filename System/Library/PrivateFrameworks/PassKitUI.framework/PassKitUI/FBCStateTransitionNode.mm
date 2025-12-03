@@ -1,35 +1,35 @@
 @interface FBCStateTransitionNode
-- (void)_initWithState:(void *)a3 transitions:;
+- (void)_initWithState:(void *)state transitions:;
 @end
 
 @implementation FBCStateTransitionNode
 
-- (void)_initWithState:(void *)a3 transitions:
+- (void)_initWithState:(void *)state transitions:
 {
-  result = a3;
+  result = state;
   v6 = result;
-  if (!a1)
+  if (!self)
   {
     goto LABEL_5;
   }
 
   if (result)
   {
-    v10.receiver = a1;
+    v10.receiver = self;
     v10.super_class = FBCStateTransitionNode;
     v7 = objc_msgSendSuper2(&v10, sel_init);
-    a1 = v7;
+    self = v7;
     if (v7)
     {
       *(v7 + 8) = a2;
       v8 = [v6 copy];
-      v9 = a1[2];
-      a1[2] = v8;
+      v9 = self[2];
+      self[2] = v8;
     }
 
 LABEL_5:
 
-    return a1;
+    return self;
   }
 
   __break(1u);

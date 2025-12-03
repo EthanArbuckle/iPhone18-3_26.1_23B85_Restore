@@ -1,17 +1,17 @@
 @interface MapsSuggestionsRealFindMyConnector
-- (void)latestLocationFor:(NSString *)a3 completionHandler:(id)a4;
-- (void)listOfFriendsWithCompletionHandler:(id)a3;
-- (void)locationFor:(NSString *)a3 completionHandler:(id)a4;
+- (void)latestLocationFor:(NSString *)for completionHandler:(id)handler;
+- (void)listOfFriendsWithCompletionHandler:(id)handler;
+- (void)locationFor:(NSString *)for completionHandler:(id)handler;
 @end
 
 @implementation MapsSuggestionsRealFindMyConnector
 
-- (void)listOfFriendsWithCompletionHandler:(id)a3
+- (void)listOfFriendsWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EC156340);
   MEMORY[0x1EEE9AC00](v5 - 8);
   v7 = &v14 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   *(v9 + 24) = self;
@@ -27,18 +27,18 @@
   v12[3] = 0;
   v12[4] = &unk_1C52A9570;
   v12[5] = v11;
-  v13 = self;
+  selfCopy = self;
   sub_1C5264C18(0, 0, v7, &unk_1C52A9578, v12);
 }
 
-- (void)locationFor:(NSString *)a3 completionHandler:(id)a4
+- (void)locationFor:(NSString *)for completionHandler:(id)handler
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EC156340);
   MEMORY[0x1EEE9AC00](v7 - 8);
   v9 = &v17 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = for;
   v11[3] = v10;
   v11[4] = self;
   v12 = sub_1C529D85C();
@@ -53,19 +53,19 @@
   v14[3] = 0;
   v14[4] = &unk_1C52A9550;
   v14[5] = v13;
-  v15 = a3;
-  v16 = self;
+  forCopy = for;
+  selfCopy = self;
   sub_1C5264C18(0, 0, v9, &unk_1C52A9558, v14);
 }
 
-- (void)latestLocationFor:(NSString *)a3 completionHandler:(id)a4
+- (void)latestLocationFor:(NSString *)for completionHandler:(id)handler
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EC156340);
   MEMORY[0x1EEE9AC00](v7 - 8);
   v9 = &v17 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = for;
   v11[3] = v10;
   v11[4] = self;
   v12 = sub_1C529D85C();
@@ -80,8 +80,8 @@
   v14[3] = 0;
   v14[4] = &unk_1C52A9530;
   v14[5] = v13;
-  v15 = a3;
-  v16 = self;
+  forCopy = for;
+  selfCopy = self;
   sub_1C5264C18(0, 0, v9, &unk_1C52A9538, v14);
 }
 

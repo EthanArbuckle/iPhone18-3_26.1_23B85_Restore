@@ -43,8 +43,8 @@
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v4 = [(MXCoreSessionBase *)self reporterIDs];
-    v5 = [(NSArray *)v4 countByEnumeratingWithState:&v12 objects:v18 count:16];
+    reporterIDs = [(MXCoreSessionBase *)self reporterIDs];
+    v5 = [(NSArray *)reporterIDs countByEnumeratingWithState:&v12 objects:v18 count:16];
     if (v5)
     {
       v6 = v5;
@@ -55,13 +55,13 @@
         {
           if (*v13 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(reporterIDs);
           }
 
           CMSUtility_SetAudioServiceTypeForReporterID(self, [*(*(&v12 + 1) + 8 * i) longLongValue]);
         }
 
-        v6 = [(NSArray *)v4 countByEnumeratingWithState:&v12 objects:v18 count:16];
+        v6 = [(NSArray *)reporterIDs countByEnumeratingWithState:&v12 objects:v18 count:16];
       }
 
       while (v6);

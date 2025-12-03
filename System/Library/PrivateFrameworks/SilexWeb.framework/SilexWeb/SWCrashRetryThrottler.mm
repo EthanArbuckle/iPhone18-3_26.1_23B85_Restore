@@ -6,13 +6,13 @@
 
 - (BOOL)shouldReloadAfterWebProcessCrash
 {
-  v3 = [(SWCrashRetryThrottler *)self crashed];
-  if (!v3)
+  crashed = [(SWCrashRetryThrottler *)self crashed];
+  if (!crashed)
   {
     [(SWCrashRetryThrottler *)self setCrashed:1];
   }
 
-  return !v3;
+  return !crashed;
 }
 
 @end

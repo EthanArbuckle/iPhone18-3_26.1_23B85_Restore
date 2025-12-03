@@ -1,26 +1,26 @@
 @interface HMIExternalPersonDataSourceDisk
-- (void)addPerson:(id)a3 completion:(id)a4;
-- (void)addPersonFaceCrops:(id)a3 completion:(id)a4;
-- (void)fetchSettingsWithCompletion:(id)a3;
+- (void)addPerson:(id)person completion:(id)completion;
+- (void)addPersonFaceCrops:(id)crops completion:(id)completion;
+- (void)fetchSettingsWithCompletion:(id)completion;
 @end
 
 @implementation HMIExternalPersonDataSourceDisk
 
-- (void)addPerson:(id)a3 completion:(id)a4
+- (void)addPerson:(id)person completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMIPersonDataSourceDisk *)self workQueue];
+  personCopy = person;
+  completionCopy = completion;
+  workQueue = [(HMIPersonDataSourceDisk *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __56__HMIExternalPersonDataSourceDisk_addPerson_completion___block_invoke;
   block[3] = &unk_2787526C0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = personCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = personCopy;
+  dispatch_async(workQueue, block);
 }
 
 void __56__HMIExternalPersonDataSourceDisk_addPerson_completion___block_invoke(uint64_t a1)
@@ -80,21 +80,21 @@ void __56__HMIExternalPersonDataSourceDisk_addPerson_completion___block_invoke(u
   }
 }
 
-- (void)addPersonFaceCrops:(id)a3 completion:(id)a4
+- (void)addPersonFaceCrops:(id)crops completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMIPersonDataSourceDisk *)self workQueue];
+  cropsCopy = crops;
+  completionCopy = completion;
+  workQueue = [(HMIPersonDataSourceDisk *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __65__HMIExternalPersonDataSourceDisk_addPersonFaceCrops_completion___block_invoke;
   block[3] = &unk_2787526C0;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = cropsCopy;
+  selfCopy = self;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = cropsCopy;
+  dispatch_async(workQueue, block);
 }
 
 void __65__HMIExternalPersonDataSourceDisk_addPersonFaceCrops_completion___block_invoke(uint64_t a1)
@@ -213,12 +213,12 @@ LABEL_11:
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)fetchSettingsWithCompletion:(id)a3
+- (void)fetchSettingsWithCompletion:(id)completion
 {
   v4 = MEMORY[0x277CCA9B8];
-  v5 = a3;
+  completionCopy = completion;
   v6 = [v4 hmfErrorWithCode:5];
-  (*(a3 + 2))(v5, 0, v6);
+  (*(completion + 2))(completionCopy, 0, v6);
 }
 
 @end

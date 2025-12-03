@@ -2,7 +2,7 @@
 - (CGRect)primitiveSliceRect;
 - (CGRect)sliceRect;
 - (void)awakeFromFetch;
-- (void)setSliceRect:(CGRect)a3;
+- (void)setSliceRect:(CGRect)rect;
 @end
 
 @implementation TDSlice
@@ -20,12 +20,12 @@
   return result;
 }
 
-- (void)setSliceRect:(CGRect)a3
+- (void)setSliceRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   [(TDSlice *)self willChangeValueForKey:@"sliceRect"];
   self->_sliceRect.origin.x = x;
   self->_sliceRect.origin.y = y;

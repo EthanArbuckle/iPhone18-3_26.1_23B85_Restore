@@ -1,31 +1,31 @@
 @interface PDCollaborationStateChangePublish
-- (BOOL)processPayloadFromResponse:(id)a3 error:(id *)a4;
-- (id)assetsPayloadsForStateChange:(id)a3;
+- (BOOL)processPayloadFromResponse:(id)response error:(id *)error;
+- (id)assetsPayloadsForStateChange:(id)change;
 - (id)requestData;
 - (int64_t)maxExecutionCount;
 - (void)consolidateChangesByTargetAndOwner;
-- (void)mergeExistingLocalStateIntoRequestStateChange:(id)a3;
+- (void)mergeExistingLocalStateIntoRequestStateChange:(id)change;
 @end
 
 @implementation PDCollaborationStateChangePublish
 
 - (int64_t)maxExecutionCount
 {
-  v3 = [(PDEndpointRequestOperation *)self endpointInfo];
-  if (!v3)
+  endpointInfo = [(PDEndpointRequestOperation *)self endpointInfo];
+  if (!endpointInfo)
   {
     goto LABEL_13;
   }
 
-  v4 = v3;
-  v5 = [(PDEndpointRequestOperation *)self endpointInfo];
-  if (!v5)
+  v4 = endpointInfo;
+  endpointInfo2 = [(PDEndpointRequestOperation *)self endpointInfo];
+  if (!endpointInfo2)
   {
 
     goto LABEL_13;
   }
 
-  v6 = v5[8];
+  v6 = endpointInfo2[8];
 
   if (v6 < 1)
   {
@@ -36,10 +36,10 @@ LABEL_13:
   }
 
   v7 = *(&self->super.super._responseStatusError + 3);
-  v8 = [(PDEndpointRequestOperation *)self endpointInfo];
-  if (v8)
+  endpointInfo3 = [(PDEndpointRequestOperation *)self endpointInfo];
+  if (endpointInfo3)
   {
-    v9 = v8[8];
+    v9 = endpointInfo3[8];
   }
 
   else
@@ -51,15 +51,15 @@ LABEL_13:
 
   v15.receiver = self;
   v15.super_class = PDCollaborationStateChangePublish;
-  v11 = [(PDOperation *)&v15 maxExecutionCount];
-  if (v10 + 1 > v11)
+  maxExecutionCount = [(PDOperation *)&v15 maxExecutionCount];
+  if (v10 + 1 > maxExecutionCount)
   {
     v12 = v10 + 1;
   }
 
   else
   {
-    v12 = v11;
+    v12 = maxExecutionCount;
   }
 
   if (v12 >= 67)
@@ -73,22 +73,22 @@ LABEL_13:
   }
 }
 
-- (void)mergeExistingLocalStateIntoRequestStateChange:(id)a3
+- (void)mergeExistingLocalStateIntoRequestStateChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
-  obj = [v4 states];
+  obj = [changeCopy states];
   v5 = [obj countByEnumeratingWithState:&v51 objects:v56 count:16];
   if (v5)
   {
     v6 = v5;
     v7 = *v52;
     v8 = &CLSLogAsset_ptr;
-    v40 = self;
-    v41 = v4;
+    selfCopy = self;
+    v41 = changeCopy;
     v39 = *v52;
     do
     {
@@ -103,49 +103,49 @@ LABEL_13:
 
         v10 = *(*(&v51 + 1) + 8 * v9);
         v11 = v8[75];
-        v12 = [v4 targetObjectID];
-        v13 = [v4 ownerPersonID];
-        v14 = [v11 identifierForTargetObjectID:v12 ownerPersonID:v13 domain:{objc_msgSend(v10, "domain")}];
+        targetObjectID = [changeCopy targetObjectID];
+        ownerPersonID = [changeCopy ownerPersonID];
+        v14 = [v11 identifierForTargetObjectID:targetObjectID ownerPersonID:ownerPersonID domain:{objc_msgSend(v10, "domain")}];
 
         v15 = v14;
-        v16 = [(PDOperation *)self database];
+        database = [(PDOperation *)self database];
         v17 = v8[75];
-        v18 = [v16 select:objc_opt_class() identity:v15];
+        v18 = [database select:objc_opt_class() identity:v15];
 
         if (v18)
         {
           [v10 setServerStatus:{objc_msgSend(v18, "serverStatus")}];
-          v19 = [v18 serverExecutionID];
-          [v10 setServerExecutionID:v19];
+          serverExecutionID = [v18 serverExecutionID];
+          [v10 setServerExecutionID:serverExecutionID];
 
-          v20 = [v18 serverETag];
-          [v10 setServerETag:v20];
+          serverETag = [v18 serverETag];
+          [v10 setServerETag:serverETag];
         }
 
         v46 = v18;
-        v21 = [v18 info];
+        info = [v18 info];
 
-        v22 = [v10 info];
+        info2 = [v10 info];
 
-        if (v22)
+        if (info2)
         {
           v23 = v46;
-          if (!v21)
+          if (!info)
           {
             goto LABEL_28;
           }
 
           v44 = v15;
           v45 = v9;
-          v24 = [v10 info];
-          v25 = [v24 mutableCopy];
+          info3 = [v10 info];
+          v25 = [info3 mutableCopy];
 
           v49 = 0u;
           v50 = 0u;
           v47 = 0u;
           v48 = 0u;
-          v26 = [v46 info];
-          v27 = [v26 countByEnumeratingWithState:&v47 objects:v55 count:16];
+          info4 = [v46 info];
+          v27 = [info4 countByEnumeratingWithState:&v47 objects:v55 count:16];
           if (v27)
           {
             v28 = v27;
@@ -156,12 +156,12 @@ LABEL_13:
               {
                 if (*v48 != v29)
                 {
-                  objc_enumerationMutation(v26);
+                  objc_enumerationMutation(info4);
                 }
 
                 v31 = *(*(&v47 + 1) + 8 * i);
-                v32 = [v10 info];
-                v33 = [v32 objectForKeyedSubscript:v31];
+                info5 = [v10 info];
+                v33 = [info5 objectForKeyedSubscript:v31];
 
                 if (v33)
                 {
@@ -176,13 +176,13 @@ LABEL_13:
 
                 else
                 {
-                  v36 = [v46 info];
-                  v37 = [v36 objectForKeyedSubscript:v31];
+                  info6 = [v46 info];
+                  v37 = [info6 objectForKeyedSubscript:v31];
                   [v25 setObject:v37 forKeyedSubscript:v31];
                 }
               }
 
-              v28 = [v26 countByEnumeratingWithState:&v47 objects:v55 count:16];
+              v28 = [info4 countByEnumeratingWithState:&v47 objects:v55 count:16];
             }
 
             while (v28);
@@ -190,16 +190,16 @@ LABEL_13:
 
           if ([v25 count])
           {
-            v38 = v25;
+            info7 = v25;
           }
 
           else
           {
-            v38 = 0;
+            info7 = 0;
           }
 
-          self = v40;
-          v4 = v41;
+          self = selfCopy;
+          changeCopy = v41;
           v7 = v39;
           v8 = &CLSLogAsset_ptr;
           v6 = v42;
@@ -210,17 +210,17 @@ LABEL_13:
         else
         {
           v23 = v46;
-          if (!v21)
+          if (!info)
           {
             goto LABEL_28;
           }
 
           v45 = v9;
-          v38 = [v46 info];
-          v25 = v38;
+          info7 = [v46 info];
+          v25 = info7;
         }
 
-        [v10 setInfo:v38];
+        [v10 setInfo:info7];
 
         v9 = v45;
 LABEL_28:
@@ -236,15 +236,15 @@ LABEL_28:
   }
 }
 
-- (id)assetsPayloadsForStateChange:(id)a3
+- (id)assetsPayloadsForStateChange:(id)change
 {
-  v3 = a3;
+  changeCopy = change;
   v53 = objc_opt_new();
   v65 = 0u;
   v66 = 0u;
   v67 = 0u;
   v68 = 0u;
-  obj = [v3 states];
+  obj = [changeCopy states];
   v48 = [obj countByEnumeratingWithState:&v65 objects:v72 count:16];
   if (v48)
   {
@@ -263,10 +263,10 @@ LABEL_28:
         v5 = *(*(&v65 + 1) + 8 * v4);
         v6 = objc_opt_new();
         v7 = objc_opt_new();
-        v8 = [(PDOperation *)self database];
+        database = [(PDOperation *)self database];
         v9 = objc_opt_class();
-        v10 = [v5 objectID];
-        v71 = v10;
+        objectID = [v5 objectID];
+        v71 = objectID;
         v11 = [NSArray arrayWithObjects:&v71 count:1];
         v62[0] = _NSConcreteStackBlock;
         v62[1] = 3221225472;
@@ -276,15 +276,15 @@ LABEL_28:
         v63 = v49;
         v52 = v7;
         v64 = v52;
-        [v8 selectAll:v9 where:@"parentObjectID = ?" bindings:v11 block:v62];
+        [database selectAll:v9 where:@"parentObjectID = ?" bindings:v11 block:v62];
 
-        v12 = [v5 assetsToAddOrUpdate];
-        v13 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v12, "count")}];
+        assetsToAddOrUpdate = [v5 assetsToAddOrUpdate];
+        v13 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(assetsToAddOrUpdate, "count")}];
         v58 = 0u;
         v59 = 0u;
         v60 = 0u;
         v61 = 0u;
-        v51 = v12;
+        v51 = assetsToAddOrUpdate;
         v14 = [v51 countByEnumeratingWithState:&v58 objects:v70 count:16];
         if (v14)
         {
@@ -300,17 +300,17 @@ LABEL_28:
               }
 
               v18 = *(*(&v58 + 1) + 8 * i);
-              v19 = [v5 objectID];
-              [v18 setParentObjectID:v19];
+              objectID2 = [v5 objectID];
+              [v18 setParentObjectID:objectID2];
 
               [v18 setParentEntityType:6];
-              v20 = [v18 objectID];
-              [v13 addObject:v20];
+              objectID3 = [v18 objectID];
+              [v13 addObject:objectID3];
 
               v21 = objc_alloc_init(PDDPPayload);
               [(PDDPPayload *)v21 setType:15];
-              v22 = [v18 objectID];
-              v23 = [v52 containsObject:v22];
+              objectID4 = [v18 objectID];
+              v23 = [v52 containsObject:objectID4];
 
               if (v23)
               {
@@ -327,10 +327,10 @@ LABEL_28:
               [(PDDPPayload *)v21 setAsset:v25];
 
               v26 = [NSMutableArray alloc];
-              v27 = [v3 targetClassID];
-              v28 = [v26 initWithObjects:{v27, 0}];
-              v29 = [(PDDPPayload *)v21 asset];
-              [v29 setClassIds:v28];
+              targetClassID = [changeCopy targetClassID];
+              v28 = [v26 initWithObjects:{targetClassID, 0}];
+              asset = [(PDDPPayload *)v21 asset];
+              [asset setClassIds:v28];
 
               [v53 addObject:v21];
             }
@@ -361,8 +361,8 @@ LABEL_28:
               }
 
               v35 = *(*(&v54 + 1) + 8 * j);
-              v36 = [v35 objectID];
-              v37 = [v13 containsObject:v36];
+              objectID5 = [v35 objectID];
+              v37 = [v13 containsObject:objectID5];
 
               if ((v37 & 1) == 0)
               {
@@ -373,10 +373,10 @@ LABEL_28:
                 [(PDDPPayload *)v38 setAsset:v39];
 
                 v40 = [NSMutableArray alloc];
-                v41 = [v3 targetClassID];
-                v42 = [v40 initWithObjects:{v41, 0}];
-                v43 = [(PDDPPayload *)v38 asset];
-                [v43 setClassIds:v42];
+                targetClassID2 = [changeCopy targetClassID];
+                v42 = [v40 initWithObjects:{targetClassID2, 0}];
+                asset2 = [(PDDPPayload *)v38 asset];
+                [asset2 setClassIds:v42];
 
                 [v53 addObject:v38];
               }
@@ -404,7 +404,7 @@ LABEL_28:
 - (void)consolidateChangesByTargetAndOwner
 {
   v3 = objc_opt_new();
-  v17 = self;
+  selfCopy = self;
   v18 = objc_opt_new();
   v20 = 0u;
   v21 = 0u;
@@ -426,10 +426,10 @@ LABEL_28:
         }
 
         v8 = *(*(&v20 + 1) + 8 * i);
-        v9 = [v8 targetObjectID];
-        v10 = [v8 ownerPersonID];
-        v11 = [v8 recipientPersonID];
-        v12 = [NSString stringWithFormat:@"%@/%@/%@", v9, v10, v11];
+        targetObjectID = [v8 targetObjectID];
+        ownerPersonID = [v8 ownerPersonID];
+        recipientPersonID = [v8 recipientPersonID];
+        v12 = [NSString stringWithFormat:@"%@/%@/%@", targetObjectID, ownerPersonID, recipientPersonID];
 
         v13 = [v3 objectForKeyedSubscript:v12];
         v14 = v13;
@@ -452,15 +452,15 @@ LABEL_28:
   }
 
   v15 = [NSArray arrayWithArray:v18];
-  v16 = *(&v17->super._responseStatusPayloadFailed + 3);
-  *(&v17->super._responseStatusPayloadFailed + 3) = v15;
+  v16 = *(&selfCopy->super._responseStatusPayloadFailed + 3);
+  *(&selfCopy->super._responseStatusPayloadFailed + 3) = v15;
 }
 
 - (id)requestData
 {
   if ([(PDOperation *)self isFinished])
   {
-    v3 = 0;
+    immutableData = 0;
   }
 
   else
@@ -468,7 +468,7 @@ LABEL_28:
     [(PDCollaborationStateChangePublish *)self consolidateChangesByTargetAndOwner];
     v4 = objc_alloc_init(PBDataWriter);
     v5 = objc_alloc_init(PDDPPublishStateChangeRequest);
-    v86 = [(PDURLRequestOperation *)self operationID];
+    operationID = [(PDURLRequestOperation *)self operationID];
     v95 = 0u;
     v96 = 0u;
     v97 = 0u;
@@ -508,21 +508,21 @@ LABEL_28:
             [(PDDPPublishStateChangeRequest *)v5 addPayload:v13];
             [(PDDPPublishStateChangeRequest *)v5 writeTo:v4];
             [(PDDPPublishStateChangeRequest *)v5 clearPayloads];
-            v15 = [v4 data];
-            v16 = [v15 length];
-            v17 = [(PDURLRequestOperation *)self stats];
-            if (v17)
+            data = [v4 data];
+            v16 = [data length];
+            stats = [(PDURLRequestOperation *)self stats];
+            if (stats)
             {
-              v17[10] = v16;
+              stats[10] = v16;
             }
 
             v79 = v10;
             v81 = v8;
 
-            v18 = [(PDURLRequestOperation *)self stats];
-            if (v18)
+            stats2 = [(PDURLRequestOperation *)self stats];
+            if (stats2)
             {
-              ++v18[14];
+              ++stats2[14];
             }
 
             v19 = [(PDCollaborationStateChangePublish *)self assetsPayloadsForStateChange:v11];
@@ -550,34 +550,34 @@ LABEL_28:
                   [(PDDPPublishStateChangeRequest *)v5 addPayload:v25];
                   [(PDDPPublishStateChangeRequest *)v5 writeTo:v4];
                   [(PDDPPublishStateChangeRequest *)v5 clearPayloads];
-                  v26 = [v4 data];
-                  v27 = [v26 length];
-                  v28 = [(PDURLRequestOperation *)self stats];
-                  if (v28)
+                  data2 = [v4 data];
+                  v27 = [data2 length];
+                  stats3 = [(PDURLRequestOperation *)self stats];
+                  if (stats3)
                   {
-                    v28[10] = v27;
+                    stats3[10] = v27;
                   }
 
-                  v29 = [(PDURLRequestOperation *)self stats];
-                  if (v29)
+                  stats4 = [(PDURLRequestOperation *)self stats];
+                  if (stats4)
                   {
-                    ++v29[14];
+                    ++stats4[14];
                   }
 
                   CLSInitLog();
-                  v30 = [(PDCollaborationStateChangePublish *)self logSubsystem];
-                  if (os_log_type_enabled(v30, OS_LOG_TYPE_DEBUG))
+                  logSubsystem = [(PDCollaborationStateChangePublish *)self logSubsystem];
+                  if (os_log_type_enabled(logSubsystem, OS_LOG_TYPE_DEBUG))
                   {
                     v31 = objc_opt_class();
                     v32 = v31;
-                    v33 = [v25 dictionaryRepresentation];
+                    dictionaryRepresentation = [v25 dictionaryRepresentation];
                     *buf = 138543874;
                     v101 = v31;
                     v102 = 2114;
-                    v103 = v86;
+                    v103 = operationID;
                     v104 = 2112;
-                    v105 = v33;
-                    _os_log_debug_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEBUG, "%{public}@: %{public}@ added asset payload item %@ ", buf, 0x20u);
+                    v105 = dictionaryRepresentation;
+                    _os_log_debug_impl(&_mh_execute_header, logSubsystem, OS_LOG_TYPE_DEBUG, "%{public}@: %{public}@ added asset payload item %@ ", buf, 0x20u);
 
                     v20 = v85;
                   }
@@ -590,63 +590,63 @@ LABEL_28:
             }
 
             CLSInitLog();
-            v34 = [(PDCollaborationStateChangePublish *)self logSubsystem];
-            if (os_log_type_enabled(v34, OS_LOG_TYPE_DEBUG))
+            logSubsystem2 = [(PDCollaborationStateChangePublish *)self logSubsystem];
+            if (os_log_type_enabled(logSubsystem2, OS_LOG_TYPE_DEBUG))
             {
               v55 = objc_opt_class();
               v56 = v55;
-              v57 = [(PDDPPayload *)v82 dictionaryRepresentation];
+              dictionaryRepresentation2 = [(PDDPPayload *)v82 dictionaryRepresentation];
               *buf = 138543874;
               v101 = v55;
               v102 = 2114;
-              v103 = v86;
+              v103 = operationID;
               v104 = 2112;
-              v105 = v57;
-              _os_log_debug_impl(&_mh_execute_header, v34, OS_LOG_TYPE_DEBUG, "%{public}@: %{public}@ added payload item %@ ", buf, 0x20u);
+              v105 = dictionaryRepresentation2;
+              _os_log_debug_impl(&_mh_execute_header, logSubsystem2, OS_LOG_TYPE_DEBUG, "%{public}@: %{public}@ added payload item %@ ", buf, 0x20u);
             }
 
             v35 = +[PDUserDefaults sharedDefaults];
-            v36 = [v35 enableVerboseLogging];
+            enableVerboseLogging = [v35 enableVerboseLogging];
 
-            if (v36)
+            if (enableVerboseLogging)
             {
               CLSInitLog();
-              v37 = [(PDCollaborationStateChangePublish *)self logSubsystem];
-              if (os_log_type_enabled(v37, OS_LOG_TYPE_DEBUG))
+              logSubsystem3 = [(PDCollaborationStateChangePublish *)self logSubsystem];
+              if (os_log_type_enabled(logSubsystem3, OS_LOG_TYPE_DEBUG))
               {
                 v58 = objc_opt_class();
                 v84 = v58;
-                v75 = [(PDDPPayload *)v82 stateChange];
-                v59 = [v75 targetEntityName];
-                v74 = [(PDDPPayload *)v82 stateChange];
-                v72 = [v74 targetObjectId];
-                v73 = [(PDDPPayload *)v82 stateChange];
-                v60 = [v73 targetOwnerPersonId];
-                v61 = [(PDDPPayload *)v82 stateChange];
-                v62 = [v61 targetClassId];
+                stateChange = [(PDDPPayload *)v82 stateChange];
+                targetEntityName = [stateChange targetEntityName];
+                stateChange2 = [(PDDPPayload *)v82 stateChange];
+                targetObjectId = [stateChange2 targetObjectId];
+                stateChange3 = [(PDDPPayload *)v82 stateChange];
+                targetOwnerPersonId = [stateChange3 targetOwnerPersonId];
+                stateChange4 = [(PDDPPayload *)v82 stateChange];
+                targetClassId = [stateChange4 targetClassId];
                 *buf = 138544642;
                 v101 = v58;
                 v102 = 2114;
-                v103 = v86;
+                v103 = operationID;
                 v104 = 2112;
-                v105 = v59;
+                v105 = targetEntityName;
                 v106 = 2112;
-                v107 = v72;
+                v107 = targetObjectId;
                 v108 = 2112;
-                v109 = v60;
+                v109 = targetOwnerPersonId;
                 v110 = 2112;
-                v111 = v62;
-                _os_log_debug_impl(&_mh_execute_header, v37, OS_LOG_TYPE_DEBUG, "%{public}@: %{public}@ state change payload targetEntity:%@ targetObjectID:%@ ownerPersonID:%@ targetClassID:%@", buf, 0x3Eu);
+                v111 = targetClassId;
+                _os_log_debug_impl(&_mh_execute_header, logSubsystem3, OS_LOG_TYPE_DEBUG, "%{public}@: %{public}@ state change payload targetEntity:%@ targetObjectID:%@ ownerPersonID:%@ targetClassID:%@", buf, 0x3Eu);
               }
 
               v89 = 0u;
               v90 = 0u;
               v87 = 0u;
               v88 = 0u;
-              v38 = [(PDDPPayload *)v82 stateChange];
-              v39 = [v38 stateChangePayloads];
+              stateChange5 = [(PDDPPayload *)v82 stateChange];
+              stateChangePayloads = [stateChange5 stateChangePayloads];
 
-              v40 = [v39 countByEnumeratingWithState:&v87 objects:v99 count:16];
+              v40 = [stateChangePayloads countByEnumeratingWithState:&v87 objects:v99 count:16];
               if (v40)
               {
                 v41 = v40;
@@ -657,40 +657,40 @@ LABEL_28:
                   {
                     if (*v88 != v42)
                     {
-                      objc_enumerationMutation(v39);
+                      objc_enumerationMutation(stateChangePayloads);
                     }
 
                     v44 = *(*(&v87 + 1) + 8 * j);
                     CLSInitLog();
-                    v45 = [(PDCollaborationStateChangePublish *)self logSubsystem];
-                    if (os_log_type_enabled(v45, OS_LOG_TYPE_DEBUG))
+                    logSubsystem4 = [(PDCollaborationStateChangePublish *)self logSubsystem];
+                    if (os_log_type_enabled(logSubsystem4, OS_LOG_TYPE_DEBUG))
                     {
                       v46 = objc_opt_class();
                       v83 = v46;
-                      v47 = [v44 dictionaryRepresentation];
+                      dictionaryRepresentation3 = [v44 dictionaryRepresentation];
                       *buf = 138543874;
                       v101 = v46;
                       v102 = 2114;
-                      v103 = v86;
+                      v103 = operationID;
                       v104 = 2112;
-                      v105 = v47;
-                      _os_log_debug_impl(&_mh_execute_header, v45, OS_LOG_TYPE_DEBUG, "%{public}@: %{public}@ state change: %@", buf, 0x20u);
+                      v105 = dictionaryRepresentation3;
+                      _os_log_debug_impl(&_mh_execute_header, logSubsystem4, OS_LOG_TYPE_DEBUG, "%{public}@: %{public}@ state change: %@", buf, 0x20u);
                     }
                   }
 
-                  v41 = [v39 countByEnumeratingWithState:&v87 objects:v99 count:16];
+                  v41 = [stateChangePayloads countByEnumeratingWithState:&v87 objects:v99 count:16];
                 }
 
                 while (v41);
               }
             }
 
-            v48 = [(PDURLRequestOperation *)self stats];
-            v49 = v48;
+            stats5 = [(PDURLRequestOperation *)self stats];
+            v49 = stats5;
             v10 = v79;
-            if (v48)
+            if (stats5)
             {
-              v50 = *(v48 + 80);
+              v50 = *(stats5 + 80);
             }
 
             else
@@ -698,11 +698,11 @@ LABEL_28:
               v50 = 0;
             }
 
-            v51 = [(PDURLRequestOperation *)self stats];
-            v52 = v51;
-            if (v51)
+            stats6 = [(PDURLRequestOperation *)self stats];
+            v52 = stats6;
+            if (stats6)
             {
-              v53 = *(v51 + 112);
+              v53 = *(stats6 + 112);
             }
 
             else
@@ -716,16 +716,16 @@ LABEL_28:
             if (v54)
             {
               CLSInitLog();
-              v64 = [(PDCollaborationStateChangePublish *)self logSubsystem];
-              if (os_log_type_enabled(v64, OS_LOG_TYPE_DEBUG))
+              logSubsystem5 = [(PDCollaborationStateChangePublish *)self logSubsystem];
+              if (os_log_type_enabled(logSubsystem5, OS_LOG_TYPE_DEBUG))
               {
                 v69 = objc_opt_class();
                 *buf = 138543618;
                 v101 = v69;
                 v102 = 2114;
-                v103 = v86;
+                v103 = operationID;
                 v70 = v69;
-                _os_log_debug_impl(&_mh_execute_header, v64, OS_LOG_TYPE_DEBUG, "%{public}@: %{public}@ payload limit reached.", buf, 0x16u);
+                _os_log_debug_impl(&_mh_execute_header, logSubsystem5, OS_LOG_TYPE_DEBUG, "%{public}@: %{public}@ payload limit reached.", buf, 0x16u);
               }
 
               objc_autoreleasePoolPop(v80);
@@ -760,8 +760,8 @@ LABEL_28:
 
 LABEL_57:
 
-    v65 = [(PDURLRequestOperation *)self stats];
-    if (v65 && (v66 = v65[14], v65, v66))
+    stats7 = [(PDURLRequestOperation *)self stats];
+    if (stats7 && (v66 = stats7[14], stats7, v66))
     {
       if (v8 >= 1)
       {
@@ -770,57 +770,57 @@ LABEL_57:
         *(&self->super._responseStatusPayloadFailed + 3) = v67;
       }
 
-      v3 = [v4 immutableData];
+      immutableData = [v4 immutableData];
     }
 
     else
     {
       [(PDEndpointRequestOperation *)self markAsFinished];
-      v3 = 0;
+      immutableData = 0;
     }
   }
 
-  return v3;
+  return immutableData;
 }
 
-- (BOOL)processPayloadFromResponse:(id)a3 error:(id *)a4
+- (BOOL)processPayloadFromResponse:(id)response error:(id *)error
 {
-  v6 = a3;
+  responseCopy = response;
   v44.receiver = self;
   v44.super_class = PDCollaborationStateChangePublish;
-  v7 = [(PDAbstractClassZoneOperation *)&v44 processPayloadFromResponse:v6 error:a4];
-  if ([v6 type] == 19)
+  v7 = [(PDAbstractClassZoneOperation *)&v44 processPayloadFromResponse:responseCopy error:error];
+  if ([responseCopy type] == 19)
   {
-    v8 = [v6 stateChange];
-    v9 = sub_10001A6C0(v8);
+    stateChange = [responseCopy stateChange];
+    v9 = sub_10001A6C0(stateChange);
 
-    if ([v6 hasStatus])
+    if ([responseCopy hasStatus])
     {
-      v10 = [v6 status];
-      v11 = [v10 code];
+      status = [responseCopy status];
+      code = [status code];
 
-      v12 = [v6 status];
-      v13 = [v12 code];
+      status2 = [responseCopy status];
+      code2 = [status2 code];
 
-      if (v11 != 1 || !v7)
+      if (code != 1 || !v7)
       {
-        if (v13 == 112)
+        if (code2 == 112)
         {
           CLSInitLog();
-          v15 = [(PDCollaborationStateChangePublish *)self logSubsystem];
-          if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
+          logSubsystem = [(PDCollaborationStateChangePublish *)self logSubsystem];
+          if (os_log_type_enabled(logSubsystem, OS_LOG_TYPE_DEBUG))
           {
             v39 = objc_opt_class();
             v40 = v39;
-            v41 = [(PDURLRequestOperation *)self operationID];
-            v42 = [v6 dictionaryRepresentation];
+            operationID = [(PDURLRequestOperation *)self operationID];
+            dictionaryRepresentation = [responseCopy dictionaryRepresentation];
             *buf = 138543874;
             v46 = v39;
             v47 = 2114;
-            v48 = v41;
+            v48 = operationID;
             v49 = 2112;
-            v50 = v42;
-            _os_log_debug_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEBUG, "%{public}@: %{public}@ detected conflicted response payload for item %@", buf, 0x20u);
+            v50 = dictionaryRepresentation;
+            _os_log_debug_impl(&_mh_execute_header, logSubsystem, OS_LOG_TYPE_DEBUG, "%{public}@: %{public}@ detected conflicted response payload for item %@", buf, 0x20u);
           }
 
           v16 = *(&self->_statesByError + 3);
@@ -837,9 +837,9 @@ LABEL_57:
         }
 
 LABEL_16:
-        v19 = [v6 status];
+        status3 = [responseCopy status];
 
-        if (v19)
+        if (status3)
         {
           if (!*(&self->_totalStateChanges + 3))
           {
@@ -848,38 +848,38 @@ LABEL_16:
             *(&self->_totalStateChanges + 3) = v20;
           }
 
-          v22 = [v6 status];
-          v23 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", sub_100105358([v22 code]));
-          v24 = [v23 stringValue];
+          status4 = [responseCopy status];
+          v23 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", sub_100105358([status4 code]));
+          stringValue = [v23 stringValue];
 
           CLSInitLog();
-          v25 = [(PDCollaborationStateChangePublish *)self logSubsystem];
-          if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
+          logSubsystem2 = [(PDCollaborationStateChangePublish *)self logSubsystem];
+          if (os_log_type_enabled(logSubsystem2, OS_LOG_TYPE_DEBUG))
           {
             v34 = objc_opt_class();
             v43 = v34;
-            v35 = [(PDURLRequestOperation *)self operationID];
-            v36 = [v6 dictionaryRepresentation];
-            v37 = *a4;
+            operationID2 = [(PDURLRequestOperation *)self operationID];
+            dictionaryRepresentation2 = [responseCopy dictionaryRepresentation];
+            v37 = *error;
             *buf = 138544386;
             v46 = v34;
             v47 = 2114;
-            v48 = v35;
+            v48 = operationID2;
             v49 = 2112;
-            v50 = v24;
+            v50 = stringValue;
             v51 = 2112;
-            v52 = v36;
-            v38 = v36;
+            v52 = dictionaryRepresentation2;
+            v38 = dictionaryRepresentation2;
             v53 = 2112;
             v54 = v37;
-            _os_log_debug_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEBUG, "%{public}@: %{public}@ errorKey %@ for payload item %@ with error %@", buf, 0x34u);
+            _os_log_debug_impl(&_mh_execute_header, logSubsystem2, OS_LOG_TYPE_DEBUG, "%{public}@: %{public}@ errorKey %@ for payload item %@ with error %@", buf, 0x34u);
           }
 
-          v26 = [*(&self->_totalStateChanges + 3) objectForKey:v24];
+          v26 = [*(&self->_totalStateChanges + 3) objectForKey:stringValue];
 
           if (v26)
           {
-            v27 = [*(&self->_totalStateChanges + 3) valueForKey:v24];
+            v27 = [*(&self->_totalStateChanges + 3) valueForKey:stringValue];
             [v27 addObjectsFromArray:v9];
           }
 
@@ -887,30 +887,30 @@ LABEL_16:
           {
             v27 = objc_alloc_init(NSMutableArray);
             [v27 addObjectsFromArray:v9];
-            [*(&self->_totalStateChanges + 3) setObject:v27 forKey:v24];
+            [*(&self->_totalStateChanges + 3) setObject:v27 forKey:stringValue];
           }
         }
 
         else
         {
           CLSInitLog();
-          v24 = [(PDCollaborationStateChangePublish *)self logSubsystem];
-          if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
+          stringValue = [(PDCollaborationStateChangePublish *)self logSubsystem];
+          if (os_log_type_enabled(stringValue, OS_LOG_TYPE_DEBUG))
           {
             v28 = objc_opt_class();
             v29 = v28;
-            v30 = [(PDURLRequestOperation *)self operationID];
-            v31 = [v6 dictionaryRepresentation];
-            v32 = *a4;
+            operationID3 = [(PDURLRequestOperation *)self operationID];
+            dictionaryRepresentation3 = [responseCopy dictionaryRepresentation];
+            v32 = *error;
             *buf = 138544130;
             v46 = v28;
             v47 = 2114;
-            v48 = v30;
+            v48 = operationID3;
             v49 = 2112;
-            v50 = v31;
+            v50 = dictionaryRepresentation3;
             v51 = 2112;
             v52 = v32;
-            _os_log_debug_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEBUG, "%{public}@: %{public}@ ignoring response payload item %@ with error %@", buf, 0x2Au);
+            _os_log_debug_impl(&_mh_execute_header, stringValue, OS_LOG_TYPE_DEBUG, "%{public}@: %{public}@ ignoring response payload item %@ with error %@", buf, 0x2Au);
           }
         }
 

@@ -1,19 +1,19 @@
 @interface _ASAgentCredentialExchangeListener
-- (BOOL)_atLeastOneAppAvailableForImportForConnection:(id)a3;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)_atLeastOneAppAvailableForImportForConnection:(id)connection;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (_ASAgentCredentialExchangeListener)init;
-- (void)_highestCommonVersionNumber:(NSString *)a3 credentialProviderBundleIdentifier:(NSString *)a4 importerBundleIdentifier:(NSString *)a5 completionHandler:(id)a6;
-- (void)_requestExportWithConnection:(NSXPCConnection *)a3 credentialProviderBundleIdentifier:(NSString *)a4 windowSceneIdentifier:(NSString *)a5 completionHandler:(id)a6;
-- (void)_setSelectedImporterBundleIdentifierForCurrentOperation:(id)a3;
-- (void)_setUpExporterConnection:(id)a3 forOperation:(id)a4;
-- (void)_setUpImporterConnection:(id)a3 forOperation:(id)a4;
-- (void)_showErrorAlert:(unint64_t)a3;
+- (void)_highestCommonVersionNumber:(NSString *)number credentialProviderBundleIdentifier:(NSString *)identifier importerBundleIdentifier:(NSString *)bundleIdentifier completionHandler:(id)handler;
+- (void)_requestExportWithConnection:(NSXPCConnection *)connection credentialProviderBundleIdentifier:(NSString *)identifier windowSceneIdentifier:(NSString *)sceneIdentifier completionHandler:(id)handler;
+- (void)_setSelectedImporterBundleIdentifierForCurrentOperation:(id)operation;
+- (void)_setUpExporterConnection:(id)connection forOperation:(id)operation;
+- (void)_setUpImporterConnection:(id)connection forOperation:(id)operation;
+- (void)_showErrorAlert:(unint64_t)alert;
 - (void)cancelCurrentOperation;
-- (void)continueExportWithCredentials:(id)a3 completionHandler:(id)a4;
-- (void)getExportedCredentialData:(id)a3;
-- (void)importCredentialsWithToken:(id)a3 completionHandler:(id)a4;
-- (void)requestExportForCredentialProvider:(id)a3 windowSceneIdentifier:(id)a4 completionHandler:(id)a5;
-- (void)setTokenForImport:(id)a3;
+- (void)continueExportWithCredentials:(id)credentials completionHandler:(id)handler;
+- (void)getExportedCredentialData:(id)data;
+- (void)importCredentialsWithToken:(id)token completionHandler:(id)handler;
+- (void)requestExportForCredentialProvider:(id)provider windowSceneIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)setTokenForImport:(id)import;
 @end
 
 @implementation _ASAgentCredentialExchangeListener
@@ -38,17 +38,17 @@
   return v2;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v38 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  listenerCopy = listener;
+  connectionCopy = connection;
+  v8 = connectionCopy;
   v34 = 0u;
   v35 = 0u;
-  if (v7)
+  if (connectionCopy)
   {
-    [v7 auditToken];
+    [connectionCopy auditToken];
   }
 
   v9 = *MEMORY[0x1E69C8E68];
@@ -68,8 +68,8 @@
       v14 = v33;
       if ([v13 length])
       {
-        v15 = [(_ASAgentCredentialExchangeOperation *)v11 selectedImporterBundleIdentifier];
-        v16 = [v13 isEqualToString:v15];
+        selectedImporterBundleIdentifier = [(_ASAgentCredentialExchangeOperation *)v11 selectedImporterBundleIdentifier];
+        v16 = [v13 isEqualToString:selectedImporterBundleIdentifier];
 
         if (v16)
         {
@@ -96,8 +96,8 @@ LABEL_22:
         v22 = WBS_LOG_CHANNEL_PREFIXCredentialExchange();
         if (os_log_type_enabled(v22, OS_LOG_TYPE_FAULT))
         {
-          v23 = [v14 safari_privacyPreservingDescription];
-          [(_ASAgentCredentialExchangeListener *)v12 listener:v23 shouldAcceptNewConnection:buf, v22];
+          safari_privacyPreservingDescription = [v14 safari_privacyPreservingDescription];
+          [(_ASAgentCredentialExchangeListener *)v12 listener:safari_privacyPreservingDescription shouldAcceptNewConnection:buf, v22];
         }
       }
 
@@ -133,64 +133,64 @@ LABEL_23:
   return v20;
 }
 
-- (void)_setUpExporterConnection:(id)a3 forOperation:(id)a4
+- (void)_setUpExporterConnection:(id)connection forOperation:(id)operation
 {
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  operationCopy = operation;
   v8 = ASAgentCredentialExchangeExporterInterface();
-  [v6 setExportedInterface:v8];
+  [connectionCopy setExportedInterface:v8];
 
-  [v6 setExportedObject:self];
-  [v7 setExporterConnection:v6];
+  [connectionCopy setExportedObject:self];
+  [operationCopy setExporterConnection:connectionCopy];
   objc_initWeak(&location, self);
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __76___ASAgentCredentialExchangeListener__setUpExporterConnection_forOperation___block_invoke;
   v9[3] = &unk_1E7AF75E0;
   objc_copyWeak(&v10, &location);
-  [v6 setInvalidationHandler:v9];
+  [connectionCopy setInvalidationHandler:v9];
   objc_destroyWeak(&v10);
   objc_destroyWeak(&location);
 }
 
-- (void)_setUpImporterConnection:(id)a3 forOperation:(id)a4
+- (void)_setUpImporterConnection:(id)connection forOperation:(id)operation
 {
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  operationCopy = operation;
   v8 = ASAgentCredentialExchangeImporterInterface();
-  [v6 setExportedInterface:v8];
+  [connectionCopy setExportedInterface:v8];
 
-  [v6 setExportedObject:self];
-  [v7 setImporterConnection:v6];
+  [connectionCopy setExportedObject:self];
+  [operationCopy setImporterConnection:connectionCopy];
   objc_initWeak(&location, self);
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __76___ASAgentCredentialExchangeListener__setUpImporterConnection_forOperation___block_invoke;
   v9[3] = &unk_1E7AF75E0;
   objc_copyWeak(&v10, &location);
-  [v6 setInvalidationHandler:v9];
+  [connectionCopy setInvalidationHandler:v9];
   objc_destroyWeak(&v10);
   objc_destroyWeak(&location);
 }
 
-- (void)requestExportForCredentialProvider:(id)a3 windowSceneIdentifier:(id)a4 completionHandler:(id)a5
+- (void)requestExportForCredentialProvider:(id)provider windowSceneIdentifier:(id)identifier completionHandler:(id)handler
 {
   v32[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  providerCopy = provider;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   os_unfair_lock_lock(&self->_internalLock);
   currentOperation = self->_currentOperation;
   if (currentOperation)
   {
     v12 = currentOperation;
-    v13 = [(_ASAgentCredentialExchangeOperation *)v12 exporterConnection];
+    exporterConnection = [(_ASAgentCredentialExchangeOperation *)v12 exporterConnection];
     if ([MEMORY[0x1E69C8880] isCredentialExchangeEnabled])
     {
       v14 = os_transaction_create();
       [(_ASAgentCredentialExchangeOperation *)v12 setTransaction:v14];
 
-      [(_ASAgentCredentialExchangeListener *)self _requestExportWithConnection:v13 credentialProviderBundleIdentifier:v8 windowSceneIdentifier:v9 completionHandler:v10];
+      [(_ASAgentCredentialExchangeListener *)self _requestExportWithConnection:exporterConnection credentialProviderBundleIdentifier:providerCopy windowSceneIdentifier:identifierCopy completionHandler:handlerCopy];
     }
 
     else
@@ -206,7 +206,7 @@ LABEL_23:
       v30 = @"Developer mode must be enabled for this API. You can find the toggle for this in Settings › Developer in the Authentication Services Testing section.";
       v26 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v30 forKeys:&v29 count:1];
       v27 = [v25 errorWithDomain:*MEMORY[0x1E698DF70] code:19 userInfo:v26];
-      v10[2](v10, 0, v27);
+      handlerCopy[2](handlerCopy, 0, v27);
 
       [(_ASAgentCredentialExchangeListener *)self _showErrorAlert:0];
     }
@@ -224,19 +224,19 @@ LABEL_23:
     v31 = *MEMORY[0x1E696A588];
     v32[0] = @"No export in progress.";
     v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v32 forKeys:&v31 count:1];
-    v13 = [v23 errorWithDomain:*MEMORY[0x1E698DF70] code:19 userInfo:v12];
-    v10[2](v10, 0, v13);
+    exporterConnection = [v23 errorWithDomain:*MEMORY[0x1E698DF70] code:19 userInfo:v12];
+    handlerCopy[2](handlerCopy, 0, exporterConnection);
   }
 
   os_unfair_lock_unlock(&self->_internalLock);
   v28 = *MEMORY[0x1E69E9840];
 }
 
-- (void)continueExportWithCredentials:(id)a3 completionHandler:(id)a4
+- (void)continueExportWithCredentials:(id)credentials completionHandler:(id)handler
 {
   v37[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  credentialsCopy = credentials;
+  handlerCopy = handler;
   os_unfair_lock_lock(&self->_internalLock);
   currentOperation = self->_currentOperation;
   if (currentOperation)
@@ -251,9 +251,9 @@ LABEL_23:
         _os_log_impl(&dword_1B1C8D000, v10, OS_LOG_TYPE_INFO, "Received export data.", buf, 2u);
       }
 
-      v11 = [(_ASAgentCredentialExchangeOperation *)v9 exportDataFetchCompletionHandler];
+      exportDataFetchCompletionHandler = [(_ASAgentCredentialExchangeOperation *)v9 exportDataFetchCompletionHandler];
 
-      if (v11)
+      if (exportDataFetchCompletionHandler)
       {
         v12 = WBS_LOG_CHANNEL_PREFIXAuthenticationServicesAgent();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
@@ -262,11 +262,11 @@ LABEL_23:
           _os_log_impl(&dword_1B1C8D000, v12, OS_LOG_TYPE_INFO, "Returning export data to view service.", buf, 2u);
         }
 
-        v13 = [(_ASAgentCredentialExchangeOperation *)v9 exportDataFetchCompletionHandler];
-        (v13)[2](v13, v6);
+        exportDataFetchCompletionHandler2 = [(_ASAgentCredentialExchangeOperation *)v9 exportDataFetchCompletionHandler];
+        (exportDataFetchCompletionHandler2)[2](exportDataFetchCompletionHandler2, credentialsCopy);
       }
 
-      [(_ASAgentCredentialExchangeOperation *)v9 setExportedCredentialData:v6];
+      [(_ASAgentCredentialExchangeOperation *)v9 setExportedCredentialData:credentialsCopy];
       v14 = MEMORY[0x1E695DFF0];
       v31[0] = MEMORY[0x1E69E9820];
       v31[1] = 3221225472;
@@ -275,7 +275,7 @@ LABEL_23:
       v31[4] = self;
       v32 = v9;
       v15 = [v14 scheduledTimerWithTimeInterval:0 repeats:v31 block:300.0];
-      v7[2](v7, 0);
+      handlerCopy[2](handlerCopy, 0);
     }
 
     else
@@ -291,7 +291,7 @@ LABEL_23:
       v35 = @"Developer mode must be enabled for this API. You can find the toggle for this in Settings › Developer in the Authentication Services Testing section.";
       v28 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v35 forKeys:&v34 count:1];
       v29 = [v27 errorWithDomain:*MEMORY[0x1E698DF70] code:19 userInfo:v28];
-      (v7)[2](v7, v29);
+      (handlerCopy)[2](handlerCopy, v29);
 
       [(_ASAgentCredentialExchangeListener *)self _showErrorAlert:0];
     }
@@ -310,20 +310,20 @@ LABEL_23:
     v37[0] = @"No export in progress.";
     v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v37 forKeys:&v36 count:1];
     v25 = [v24 errorWithDomain:*MEMORY[0x1E698DF70] code:19 userInfo:v9];
-    (v7)[2](v7, v25);
+    (handlerCopy)[2](handlerCopy, v25);
   }
 
   os_unfair_lock_unlock(&self->_internalLock);
   v30 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_atLeastOneAppAvailableForImportForConnection:(id)a3
+- (BOOL)_atLeastOneAppAvailableForImportForConnection:(id)connection
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  connectionCopy = connection;
+  v4 = connectionCopy;
+  if (connectionCopy)
   {
-    [v3 auditToken];
+    [connectionCopy auditToken];
   }
 
   else
@@ -337,8 +337,8 @@ LABEL_23:
   v6 = [v5 safari_bundleIdentifierFromApplicationIdentifier:&v11];
   if (v6)
   {
-    v7 = [MEMORY[0x1E69C8DE0] sharedManager];
-    v8 = [v7 atLeastOneAvailableExtensionSupportsCredentialExchange:v6];
+    mEMORY[0x1E69C8DE0] = [MEMORY[0x1E69C8DE0] sharedManager];
+    v8 = [mEMORY[0x1E69C8DE0] atLeastOneAvailableExtensionSupportsCredentialExchange:v6];
   }
 
   else
@@ -355,14 +355,14 @@ LABEL_23:
   return v8;
 }
 
-- (void)setTokenForImport:(id)a3
+- (void)setTokenForImport:(id)import
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E696B0B8] currentConnection];
-  v6 = v5;
-  if (v5)
+  importCopy = import;
+  currentConnection = [MEMORY[0x1E696B0B8] currentConnection];
+  v6 = currentConnection;
+  if (currentConnection)
   {
-    [v5 auditToken];
+    [currentConnection auditToken];
   }
 
   v7 = *MEMORY[0x1E698DF78];
@@ -371,7 +371,7 @@ LABEL_23:
     os_unfair_lock_lock(&self->_internalLock);
     if (self->_currentOperation)
     {
-      v8 = [v4 copy];
+      v8 = [importCopy copy];
       [(_ASAgentCredentialExchangeOperation *)self->_currentOperation setImporterToken:v8];
     }
 
@@ -397,14 +397,14 @@ LABEL_23:
   }
 }
 
-- (void)getExportedCredentialData:(id)a3
+- (void)getExportedCredentialData:(id)data
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E696B0B8] currentConnection];
-  v6 = v5;
-  if (v5)
+  dataCopy = data;
+  currentConnection = [MEMORY[0x1E696B0B8] currentConnection];
+  v6 = currentConnection;
+  if (currentConnection)
   {
-    [v5 auditToken];
+    [currentConnection auditToken];
   }
 
   else
@@ -439,8 +439,8 @@ LABEL_23:
           _os_log_impl(&dword_1B1C8D000, v12, OS_LOG_TYPE_INFO, "Export data is already available.", &v31, 2u);
         }
 
-        v13 = [(_ASAgentCredentialExchangeOperation *)v9 exportedCredentialData];
-        v4[2](v4, v13);
+        exportedCredentialData = [(_ASAgentCredentialExchangeOperation *)v9 exportedCredentialData];
+        dataCopy[2](dataCopy, exportedCredentialData);
       }
 
       else
@@ -452,7 +452,7 @@ LABEL_23:
           _os_log_impl(&dword_1B1C8D000, v30, OS_LOG_TYPE_INFO, "Export data is not yet available.", &v31, 2u);
         }
 
-        [(_ASAgentCredentialExchangeOperation *)v9 setExportDataFetchCompletionHandler:v4];
+        [(_ASAgentCredentialExchangeOperation *)v9 setExportDataFetchCompletionHandler:dataCopy];
       }
     }
 
@@ -464,7 +464,7 @@ LABEL_23:
         [(_ASAgentCredentialExchangeListener *)v22 getExportedCredentialData:v23, v24, v25, v26, v27, v28, v29];
       }
 
-      v4[2](v4, 0);
+      dataCopy[2](dataCopy, 0);
     }
 
     os_unfair_lock_unlock(&self->_internalLock);
@@ -478,15 +478,15 @@ LABEL_23:
       [(_ASAgentCredentialExchangeListener *)v14 getExportedCredentialData:v15, v16, v17, v18, v19, v20, v21];
     }
 
-    v4[2](v4, 0);
+    dataCopy[2](dataCopy, 0);
   }
 }
 
-- (void)importCredentialsWithToken:(id)a3 completionHandler:(id)a4
+- (void)importCredentialsWithToken:(id)token completionHandler:(id)handler
 {
   v45[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  tokenCopy = token;
+  handlerCopy = handler;
   os_unfair_lock_lock(&self->_internalLock);
   currentOperation = self->_currentOperation;
   if (currentOperation)
@@ -494,17 +494,17 @@ LABEL_23:
     v9 = currentOperation;
     if ([MEMORY[0x1E69C8880] isCredentialExchangeEnabled])
     {
-      v10 = [(_ASAgentCredentialExchangeOperation *)v9 importerToken];
-      v11 = [v6 isEqual:v10];
+      importerToken = [(_ASAgentCredentialExchangeOperation *)v9 importerToken];
+      v11 = [tokenCopy isEqual:importerToken];
 
       if (v11)
       {
-        v12 = [(_ASAgentCredentialExchangeOperation *)v9 exportedCredentialData];
+        exportedCredentialData = [(_ASAgentCredentialExchangeOperation *)v9 exportedCredentialData];
 
-        if (v12)
+        if (exportedCredentialData)
         {
-          v13 = [(_ASAgentCredentialExchangeOperation *)v9 exportedCredentialData];
-          v7[2](v7, v13, 0);
+          exportedCredentialData2 = [(_ASAgentCredentialExchangeOperation *)v9 exportedCredentialData];
+          handlerCopy[2](handlerCopy, exportedCredentialData2, 0);
 
           v14 = self->_currentOperation;
           self->_currentOperation = 0;
@@ -523,7 +523,7 @@ LABEL_23:
           v39 = @"Exported credential data not found.";
           v35 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v39 forKeys:&v38 count:1];
           v36 = [v34 errorWithDomain:*MEMORY[0x1E698DF70] code:1 userInfo:v35];
-          (v7)[2](v7, 0, v36);
+          (handlerCopy)[2](handlerCopy, 0, v36);
         }
       }
 
@@ -540,7 +540,7 @@ LABEL_23:
         v41 = @"The import request came from a client that did not match the one selected by the user for import.";
         v31 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v41 forKeys:&v40 count:1];
         v32 = [v30 errorWithDomain:*MEMORY[0x1E698DF70] code:18 userInfo:v31];
-        (v7)[2](v7, 0, v32);
+        (handlerCopy)[2](handlerCopy, 0, v32);
       }
     }
 
@@ -557,7 +557,7 @@ LABEL_23:
       v43 = @"Developer mode must be enabled for this API. You can find the toggle for this in Settings › Developer in the Authentication Services Testing section.";
       v27 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v43 forKeys:&v42 count:1];
       v28 = [v26 errorWithDomain:*MEMORY[0x1E698DF70] code:18 userInfo:v27];
-      (v7)[2](v7, 0, v28);
+      (handlerCopy)[2](handlerCopy, 0, v28);
 
       [(_ASAgentCredentialExchangeListener *)self _showErrorAlert:0];
     }
@@ -576,7 +576,7 @@ LABEL_23:
     v45[0] = @"No export in progress";
     v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v45 forKeys:&v44 count:1];
     v24 = [v23 errorWithDomain:*MEMORY[0x1E698DF70] code:1 userInfo:v9];
-    (v7)[2](v7, 0, v24);
+    (handlerCopy)[2](handlerCopy, 0, v24);
   }
 
   os_unfair_lock_unlock(&self->_internalLock);
@@ -592,16 +592,16 @@ LABEL_23:
   os_unfair_lock_unlock(&self->_internalLock);
 }
 
-- (void)_showErrorAlert:(unint64_t)a3
+- (void)_showErrorAlert:(unint64_t)alert
 {
   v3 = 0;
   v13[3] = *MEMORY[0x1E69E9840];
-  if (a3 <= 1)
+  if (alert <= 1)
   {
-    if (a3)
+    if (alert)
     {
       v4 = 0;
-      if (a3 != 1)
+      if (alert != 1)
       {
         goto LABEL_8;
       }
@@ -610,10 +610,10 @@ LABEL_23:
     goto LABEL_7;
   }
 
-  if (a3 != 2)
+  if (alert != 2)
   {
     v4 = 0;
-    if (a3 != 3)
+    if (alert != 3)
     {
 LABEL_8:
       v5 = *MEMORY[0x1E695EE60];
@@ -645,14 +645,14 @@ LABEL_9:
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_setSelectedImporterBundleIdentifierForCurrentOperation:(id)a3
+- (void)_setSelectedImporterBundleIdentifierForCurrentOperation:(id)operation
 {
-  v4 = a3;
+  operationCopy = operation;
   os_unfair_lock_lock(&self->_internalLock);
   currentOperation = self->_currentOperation;
   if (currentOperation)
   {
-    [(_ASAgentCredentialExchangeOperation *)currentOperation setSelectedImporterBundleIdentifier:v4];
+    [(_ASAgentCredentialExchangeOperation *)currentOperation setSelectedImporterBundleIdentifier:operationCopy];
   }
 
   else
@@ -667,17 +667,17 @@ LABEL_9:
   os_unfair_lock_unlock(&self->_internalLock);
 }
 
-- (void)_requestExportWithConnection:(NSXPCConnection *)a3 credentialProviderBundleIdentifier:(NSString *)a4 windowSceneIdentifier:(NSString *)a5 completionHandler:(id)a6
+- (void)_requestExportWithConnection:(NSXPCConnection *)connection credentialProviderBundleIdentifier:(NSString *)identifier windowSceneIdentifier:(NSString *)sceneIdentifier completionHandler:(id)handler
 {
   v11 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EB775460, &qword_1B1D86860);
   v12 = *(*(v11 - 8) + 64);
   MEMORY[0x1EEE9AC00](v11 - 8);
   v14 = &v24 - v13;
-  v15 = _Block_copy(a6);
+  v15 = _Block_copy(handler);
   v16 = swift_allocObject();
-  v16[2] = a3;
-  v16[3] = a4;
-  v16[4] = a5;
+  v16[2] = connection;
+  v16[3] = identifier;
+  v16[4] = sceneIdentifier;
   v16[5] = v15;
   v16[6] = self;
   v17 = sub_1B1D7BF4C();
@@ -692,24 +692,24 @@ LABEL_9:
   v19[3] = 0;
   v19[4] = &unk_1B1D861F8;
   v19[5] = v18;
-  v20 = a3;
-  v21 = a4;
-  v22 = a5;
-  v23 = self;
+  connectionCopy = connection;
+  identifierCopy = identifier;
+  sceneIdentifierCopy = sceneIdentifier;
+  selfCopy = self;
   sub_1B1D22574(0, 0, v14, &unk_1B1D86200, v19);
 }
 
-- (void)_highestCommonVersionNumber:(NSString *)a3 credentialProviderBundleIdentifier:(NSString *)a4 importerBundleIdentifier:(NSString *)a5 completionHandler:(id)a6
+- (void)_highestCommonVersionNumber:(NSString *)number credentialProviderBundleIdentifier:(NSString *)identifier importerBundleIdentifier:(NSString *)bundleIdentifier completionHandler:(id)handler
 {
   v11 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EB775460, &qword_1B1D86860);
   v12 = *(*(v11 - 8) + 64);
   MEMORY[0x1EEE9AC00](v11 - 8);
   v14 = &v24 - v13;
-  v15 = _Block_copy(a6);
+  v15 = _Block_copy(handler);
   v16 = swift_allocObject();
-  v16[2] = a3;
-  v16[3] = a4;
-  v16[4] = a5;
+  v16[2] = number;
+  v16[3] = identifier;
+  v16[4] = bundleIdentifier;
   v16[5] = v15;
   v16[6] = self;
   v17 = sub_1B1D7BF4C();
@@ -724,10 +724,10 @@ LABEL_9:
   v19[3] = 0;
   v19[4] = &unk_1B1D885D0;
   v19[5] = v18;
-  v20 = a3;
-  v21 = a4;
-  v22 = a5;
-  v23 = self;
+  numberCopy = number;
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
+  selfCopy = self;
   sub_1B1D22574(0, 0, v14, &unk_1B1D86880, v19);
 }
 

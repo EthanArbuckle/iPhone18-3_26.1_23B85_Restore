@@ -1,23 +1,23 @@
 @interface WDMedicalRecordDetailAttributedSubtitleCell
 - (NSAttributedString)attributedSubtitle;
-- (void)setSubtitle:(id)a3;
+- (void)setSubtitle:(id)subtitle;
 @end
 
 @implementation WDMedicalRecordDetailAttributedSubtitleCell
 
-- (void)setSubtitle:(id)a3
+- (void)setSubtitle:(id)subtitle
 {
-  v4 = a3;
-  v5 = [(WDMedicalRecordDetailSubtitleCell *)self subtitleLabel];
-  [v5 setAttributedText:v4];
+  subtitleCopy = subtitle;
+  subtitleLabel = [(WDMedicalRecordDetailSubtitleCell *)self subtitleLabel];
+  [subtitleLabel setAttributedText:subtitleCopy];
 }
 
 - (NSAttributedString)attributedSubtitle
 {
-  v2 = [(WDMedicalRecordDetailSubtitleCell *)self subtitleLabel];
-  v3 = [v2 text];
+  subtitleLabel = [(WDMedicalRecordDetailSubtitleCell *)self subtitleLabel];
+  text = [subtitleLabel text];
 
-  return v3;
+  return text;
 }
 
 @end

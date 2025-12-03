@@ -1,8 +1,8 @@
 @interface CKVTokenChainBuilder
 - (CKVTokenChainBuilder)init;
-- (CKVTokenChainBuilder)initWithString:(id)a3 locale:(id)a4;
+- (CKVTokenChainBuilder)initWithString:(id)string locale:(id)locale;
 - (id)build;
-- (void)addToken:(id)a3;
+- (void)addToken:(id)token;
 @end
 
 @implementation CKVTokenChainBuilder
@@ -14,11 +14,11 @@
   return v2;
 }
 
-- (void)addToken:(id)a3
+- (void)addToken:(id)token
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  tokenCopy = token;
+  if (!tokenCopy)
   {
     v5 = CKLogContextVocabulary;
     if (os_log_type_enabled(CKLogContextVocabulary, OS_LOG_TYPE_ERROR))
@@ -31,11 +31,11 @@
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"Cannot add nil token"];
   }
 
-  v6 = [(NSMutableArray *)self->_tokens lastObject];
-  if (v6)
+  lastObject = [(NSMutableArray *)self->_tokens lastObject];
+  if (lastObject)
   {
-    v7 = [v4 beginIndex];
-    if (v7 < [v6 endIndex])
+    beginIndex = [tokenCopy beginIndex];
+    if (beginIndex < [lastObject endIndex])
     {
       v8 = CKLogContextVocabulary;
       if (os_log_type_enabled(CKLogContextVocabulary, OS_LOG_TYPE_ERROR))
@@ -49,7 +49,7 @@
     }
   }
 
-  [(NSMutableArray *)self->_tokens addObject:v4];
+  [(NSMutableArray *)self->_tokens addObject:tokenCopy];
 }
 
 - (CKVTokenChainBuilder)init
@@ -58,18 +58,18 @@
   objc_exception_throw(v2);
 }
 
-- (CKVTokenChainBuilder)initWithString:(id)a3 locale:(id)a4
+- (CKVTokenChainBuilder)initWithString:(id)string locale:(id)locale
 {
-  v7 = a3;
-  v8 = a4;
+  stringCopy = string;
+  localeCopy = locale;
   v14.receiver = self;
   v14.super_class = CKVTokenChainBuilder;
   v9 = [(CKVTokenChainBuilder *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_normalizedString, a3);
-    objc_storeStrong(&v10->_locale, a4);
+    objc_storeStrong(&v9->_normalizedString, string);
+    objc_storeStrong(&v10->_locale, locale);
     v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
     tokens = v10->_tokens;
     v10->_tokens = v11;

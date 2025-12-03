@@ -1,24 +1,24 @@
 @interface ISSoftwareMap
 + (BOOL)currentMapIsValid;
-+ (BOOL)haveApplicationsOfType:(id)a3;
-+ (id)_newSoftwareUpdateDictionaryForApplication:(id)a3;
-+ (id)applicationForBundleIdentifier:(id)a3 applicationType:(id)a4;
-+ (id)applicationForPluginBundleIdentifier:(id)a3 extensionType:(id)a4;
-+ (id)containerPathForApp:(id)a3 homeDirectory:(id)a4 systemMetadataDirectory:(id)a5;
-+ (id)copySoftwareUpdatesPropertyListWithApplications:(id)a3 updatesContext:(id)a4;
++ (BOOL)haveApplicationsOfType:(id)type;
++ (id)_newSoftwareUpdateDictionaryForApplication:(id)application;
++ (id)applicationForBundleIdentifier:(id)identifier applicationType:(id)type;
++ (id)applicationForPluginBundleIdentifier:(id)identifier extensionType:(id)type;
++ (id)containerPathForApp:(id)app homeDirectory:(id)directory systemMetadataDirectory:(id)metadataDirectory;
++ (id)copySoftwareUpdatesPropertyListWithApplications:(id)applications updatesContext:(id)context;
 + (id)currentMap;
 + (id)loadedMap;
 + (void)_startWatchingInstallationNotifications;
-+ (void)enumerateApplicationsForProxies:(id)a3 usingBlock:(id)a4;
-+ (void)enumerateApplicationsOfType:(unint64_t)a3 usingBlock:(id)a4;
++ (void)enumerateApplicationsForProxies:(id)proxies usingBlock:(id)block;
++ (void)enumerateApplicationsOfType:(unint64_t)type usingBlock:(id)block;
 + (void)invalidateCurrentMap;
-+ (void)removableSystemApplicationsWithCompletionBlock:(id)a3;
-+ (void)setCurrentMap:(id)a3;
++ (void)removableSystemApplicationsWithCompletionBlock:(id)block;
++ (void)setCurrentMap:(id)map;
 - (ISSoftwareMap)init;
 - (NSArray)applications;
-- (id)applicationForBundleIdentifier:(id)a3;
-- (id)applicationForItemIdentifier:(id)a3;
-- (id)copySoftwareUpdatesPropertyListWithUpdatesContext:(id)a3;
+- (id)applicationForBundleIdentifier:(id)identifier;
+- (id)applicationForItemIdentifier:(id)identifier;
+- (id)copySoftwareUpdatesPropertyListWithUpdatesContext:(id)context;
 - (void)_loadFromMobileInstallation;
 - (void)dealloc;
 @end
@@ -49,7 +49,7 @@
   [(ISSoftwareMap *)&v3 dealloc];
 }
 
-+ (BOOL)haveApplicationsOfType:(id)a3
++ (BOOL)haveApplicationsOfType:(id)type
 {
   v27 = *MEMORY[0x277D85DE8];
   v21 = 0;
@@ -58,12 +58,12 @@
   v24 = 0;
   if (SSIsDaemon())
   {
-    if ([a3 isEqualToString:*MEMORY[0x277CC1E30]])
+    if ([type isEqualToString:*MEMORY[0x277CC1E30]])
     {
       v4 = 1;
     }
 
-    else if ([a3 isEqualToString:*MEMORY[0x277CC1E08]])
+    else if ([type isEqualToString:*MEMORY[0x277CC1E08]])
     {
       v4 = 2;
     }
@@ -73,41 +73,41 @@
       v4 = 0;
     }
 
-    v14 = [MEMORY[0x277CC1E80] defaultWorkspace];
+    defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __40__ISSoftwareMap_haveApplicationsOfType___block_invoke;
     v20[3] = &unk_27A6711F8;
     v20[4] = &v21;
-    [v14 enumerateApplicationsOfType:v4 block:v20];
+    [defaultWorkspace enumerateApplicationsOfType:v4 block:v20];
   }
 
   else
   {
     if (SSIsInternalBuild() && _os_feature_enabled_impl())
     {
-      v5 = [MEMORY[0x277D69B38] sharedStoreServicesConfig];
-      if (!v5)
+      mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedStoreServicesConfig];
+      if (!mEMORY[0x277D69B38])
       {
-        v5 = [MEMORY[0x277D69B38] sharedConfig];
+        mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedConfig];
       }
 
-      v6 = [v5 shouldLog];
-      v7 = [v5 shouldLogToDisk];
-      v8 = [v5 OSLogObject];
-      if (v7)
+      shouldLog = [mEMORY[0x277D69B38] shouldLog];
+      shouldLogToDisk = [mEMORY[0x277D69B38] shouldLogToDisk];
+      oSLogObject = [mEMORY[0x277D69B38] OSLogObject];
+      if (shouldLogToDisk)
       {
-        v6 |= 2u;
+        shouldLog |= 2u;
       }
 
-      if (os_log_type_enabled(v8, OS_LOG_TYPE_FAULT))
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_FAULT))
       {
-        v9 = v6;
+        v9 = shouldLog;
       }
 
       else
       {
-        v9 = v6 & 2;
+        v9 = shouldLog & 2;
       }
 
       if (v9)
@@ -193,9 +193,9 @@ intptr_t __40__ISSoftwareMap_haveApplicationsOfType___block_invoke_21(uint64_t a
   pthread_mutex_lock(&__CurrentMapLock);
   __CurrentMapIsValid = 0;
   pthread_mutex_unlock(&__CurrentMapLock);
-  v2 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
 
-  [v2 postNotificationName:@"ISSoftwareMapInvalidatedNotification" object:0];
+  [defaultCenter postNotificationName:@"ISSoftwareMapInvalidatedNotification" object:0];
 }
 
 + (id)loadedMap
@@ -215,22 +215,22 @@ intptr_t __40__ISSoftwareMap_haveApplicationsOfType___block_invoke_21(uint64_t a
   return v3;
 }
 
-+ (void)setCurrentMap:(id)a3
++ (void)setCurrentMap:(id)map
 {
   pthread_mutex_lock(&__CurrentMapLock);
-  if (__CurrentMap != a3)
+  if (__CurrentMap != map)
   {
 
-    a3 = a3;
-    __CurrentMap = a3;
+    map = map;
+    __CurrentMap = map;
   }
 
-  __CurrentMapIsValid = a3 != 0;
+  __CurrentMapIsValid = map != 0;
 
   pthread_mutex_unlock(&__CurrentMapLock);
 }
 
-+ (id)applicationForBundleIdentifier:(id)a3 applicationType:(id)a4
++ (id)applicationForBundleIdentifier:(id)identifier applicationType:(id)type
 {
   v32 = *MEMORY[0x277D85DE8];
   v24 = 0;
@@ -240,10 +240,10 @@ intptr_t __40__ISSoftwareMap_haveApplicationsOfType___block_invoke_21(uint64_t a
   v28 = __Block_byref_object_dispose__9;
   v29 = 0;
   [objc_opt_class() startObservingNotifications];
-  v7 = [a1 currentMap];
-  if (v7 && [a1 currentMapIsValid] && objc_msgSend(a4, "isEqualToString:", *MEMORY[0x277CC1E40]))
+  currentMap = [self currentMap];
+  if (currentMap && [self currentMapIsValid] && objc_msgSend(type, "isEqualToString:", *MEMORY[0x277CC1E40]))
   {
-    v8 = [v7 applicationForBundleIdentifier:a3];
+    v8 = [currentMap applicationForBundleIdentifier:identifier];
 LABEL_8:
     v25[5] = v8;
     goto LABEL_22;
@@ -251,7 +251,7 @@ LABEL_8:
 
   if (SSIsDaemon())
   {
-    v9 = [MEMORY[0x277CC1E60] applicationProxyForIdentifier:a3];
+    v9 = [MEMORY[0x277CC1E60] applicationProxyForIdentifier:identifier];
     if ([objc_msgSend(v9 "bundleType")])
     {
       v8 = [[ISSoftwareApplication alloc] initWithLaunchServicesApplication:v9];
@@ -263,28 +263,28 @@ LABEL_8:
   {
     if (SSIsInternalBuild() && _os_feature_enabled_impl())
     {
-      v10 = [MEMORY[0x277D69B38] sharedStoreServicesConfig];
-      if (!v10)
+      mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedStoreServicesConfig];
+      if (!mEMORY[0x277D69B38])
       {
-        v10 = [MEMORY[0x277D69B38] sharedConfig];
+        mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedConfig];
       }
 
-      v11 = [v10 shouldLog];
-      v12 = [v10 shouldLogToDisk];
-      v13 = [v10 OSLogObject];
-      if (v12)
+      shouldLog = [mEMORY[0x277D69B38] shouldLog];
+      shouldLogToDisk = [mEMORY[0x277D69B38] shouldLogToDisk];
+      oSLogObject = [mEMORY[0x277D69B38] OSLogObject];
+      if (shouldLogToDisk)
       {
-        v11 |= 2u;
+        shouldLog |= 2u;
       }
 
-      if (os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_FAULT))
       {
-        v14 = v11;
+        v14 = shouldLog;
       }
 
       else
       {
-        v14 = v11 & 2;
+        v14 = shouldLog & 2;
       }
 
       if (v14)
@@ -338,9 +338,9 @@ intptr_t __64__ISSoftwareMap_applicationForBundleIdentifier_applicationType___bl
   return dispatch_semaphore_signal(v4);
 }
 
-+ (id)applicationForPluginBundleIdentifier:(id)a3 extensionType:(id)a4
++ (id)applicationForPluginBundleIdentifier:(id)identifier extensionType:(id)type
 {
-  if (SSIsDaemon() && ((v6 = [MEMORY[0x277CC1ED8] pluginKitProxyForIdentifier:a3], v7 = v6, !a4) || objc_msgSend(objc_msgSend(v6, "protocol"), "isEqualToString:", a4)) && (objc_msgSend(v7, "containingBundle"), objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (v8 = objc_msgSend(objc_msgSend(v7, "containingBundle"), "bundleType"), objc_msgSend(v8, "isEqualToString:", *MEMORY[0x277CC1E40])))
+  if (SSIsDaemon() && ((v6 = [MEMORY[0x277CC1ED8] pluginKitProxyForIdentifier:identifier], v7 = v6, !type) || objc_msgSend(objc_msgSend(v6, "protocol"), "isEqualToString:", type)) && (objc_msgSend(v7, "containingBundle"), objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (v8 = objc_msgSend(objc_msgSend(v7, "containingBundle"), "bundleType"), objc_msgSend(v8, "isEqualToString:", *MEMORY[0x277CC1E40])))
   {
     v9 = -[ISSoftwareApplication initWithLaunchServicesApplication:]([ISSoftwareApplication alloc], "initWithLaunchServicesApplication:", [v7 containingBundle]);
   }
@@ -353,7 +353,7 @@ intptr_t __64__ISSoftwareMap_applicationForBundleIdentifier_applicationType___bl
   return v9;
 }
 
-- (id)applicationForBundleIdentifier:(id)a3
+- (id)applicationForBundleIdentifier:(id)identifier
 {
   v16 = *MEMORY[0x277D85DE8];
   v11 = 0u;
@@ -403,7 +403,7 @@ LABEL_11:
   return result;
 }
 
-- (id)applicationForItemIdentifier:(id)a3
+- (id)applicationForItemIdentifier:(id)identifier
 {
   v16 = *MEMORY[0x277D85DE8];
   v11 = 0u;
@@ -460,18 +460,18 @@ LABEL_11:
   return v2;
 }
 
-- (id)copySoftwareUpdatesPropertyListWithUpdatesContext:(id)a3
+- (id)copySoftwareUpdatesPropertyListWithUpdatesContext:(id)context
 {
   v5 = objc_opt_class();
   applications = self->_applications;
 
-  return [v5 copySoftwareUpdatesPropertyListWithApplications:applications updatesContext:a3];
+  return [v5 copySoftwareUpdatesPropertyListWithApplications:applications updatesContext:context];
 }
 
-+ (id)containerPathForApp:(id)a3 homeDirectory:(id)a4 systemMetadataDirectory:(id)a5
++ (id)containerPathForApp:(id)app homeDirectory:(id)directory systemMetadataDirectory:(id)metadataDirectory
 {
-  v8 = [a3 bundleContainerURL];
-  if (v8 && (v9 = v8, ![v8 isEqual:a4]))
+  bundleContainerURL = [app bundleContainerURL];
+  if (bundleContainerURL && (v9 = bundleContainerURL, ![bundleContainerURL isEqual:directory]))
   {
 
     return [v9 path];
@@ -479,27 +479,27 @@ LABEL_11:
 
   else
   {
-    v10 = [a3 bundleIdentifier];
+    bundleIdentifier = [app bundleIdentifier];
 
-    return [a5 stringByAppendingPathComponent:v10];
+    return [metadataDirectory stringByAppendingPathComponent:bundleIdentifier];
   }
 }
 
-+ (id)copySoftwareUpdatesPropertyListWithApplications:(id)a3 updatesContext:(id)a4
++ (id)copySoftwareUpdatesPropertyListWithApplications:(id)applications updatesContext:(id)context
 {
   v31 = *MEMORY[0x277D85DE8];
-  if (![a3 count])
+  if (![applications count])
   {
     v12 = 0;
     goto LABEL_35;
   }
 
-  v7 = [a3 mutableCopy];
-  v8 = [a4 softwareTypes];
-  v9 = v8;
-  if (v8)
+  v7 = [applications mutableCopy];
+  softwareTypes = [context softwareTypes];
+  v9 = softwareTypes;
+  if (softwareTypes)
   {
-    v10 = [v8 containsObject:*MEMORY[0x277D6A5E0]] ^ 1;
+    v10 = [softwareTypes containsObject:*MEMORY[0x277D6A5E0]] ^ 1;
     v11 = [v9 containsObject:*MEMORY[0x277D6A5E8]] ^ 1;
     if (v10)
     {
@@ -585,7 +585,7 @@ LABEL_20:
         v22 = *(*(&v26 + 1) + 8 * i);
         if (([v22 isPlaceholder] & 1) == 0)
         {
-          v23 = [a1 _newSoftwareUpdateDictionaryForApplication:v22];
+          v23 = [self _newSoftwareUpdateDictionaryForApplication:v22];
           if ([v23 count])
           {
             [v17 addObject:v23];
@@ -615,7 +615,7 @@ LABEL_35:
   return v12;
 }
 
-+ (void)enumerateApplicationsForProxies:(id)a3 usingBlock:(id)a4
++ (void)enumerateApplicationsForProxies:(id)proxies usingBlock:(id)block
 {
   v24[4] = *MEMORY[0x277D85DE8];
   v5 = CPSharedResourcesDirectory();
@@ -639,7 +639,7 @@ LABEL_35:
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v8 = [a3 countByEnumeratingWithState:&v19 objects:v23 count:{16, a3}];
+  v8 = [proxies countByEnumeratingWithState:&v19 objects:v23 count:{16, proxies}];
   if (v8)
   {
     v9 = v8;
@@ -655,10 +655,10 @@ LABEL_35:
 
         v12 = *(*(&v19 + 1) + 8 * i);
         v13 = objc_autoreleasePoolPush();
-        v14 = -[ISSoftwareApplication initWithLaunchServicesApplication:containerPath:]([ISSoftwareApplication alloc], "initWithLaunchServicesApplication:containerPath:", v12, [a1 containerPathForApp:v12 homeDirectory:v6 systemMetadataDirectory:v5]);
+        v14 = -[ISSoftwareApplication initWithLaunchServicesApplication:containerPath:]([ISSoftwareApplication alloc], "initWithLaunchServicesApplication:containerPath:", v12, [self containerPathForApp:v12 homeDirectory:v6 systemMetadataDirectory:v5]);
         if ([(ISSoftwareApplication *)v14 bundleIdentifier])
         {
-          (*(a4 + 2))(a4, v14);
+          (*(block + 2))(block, v14);
         }
 
         objc_autoreleasePoolPop(v13);
@@ -673,7 +673,7 @@ LABEL_35:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)enumerateApplicationsOfType:(unint64_t)a3 usingBlock:(id)a4
++ (void)enumerateApplicationsOfType:(unint64_t)type usingBlock:(id)block
 {
   v13[4] = *MEMORY[0x277D85DE8];
   v7 = CPSharedResourcesDirectory();
@@ -693,16 +693,16 @@ LABEL_35:
     v8 = 0;
   }
 
-  v10 = [MEMORY[0x277CC1E80] defaultWorkspace];
+  defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __56__ISSoftwareMap_enumerateApplicationsOfType_usingBlock___block_invoke;
   v12[3] = &unk_27A671248;
-  v12[4] = a1;
+  v12[4] = self;
   v12[5] = v8;
   v12[6] = v7;
-  v12[7] = a4;
-  [v10 enumerateApplicationsOfType:a3 block:v12];
+  v12[7] = block;
+  [defaultWorkspace enumerateApplicationsOfType:type block:v12];
   v11 = *MEMORY[0x277D85DE8];
 }
 
@@ -722,25 +722,25 @@ void __56__ISSoftwareMap_enumerateApplicationsOfType_usingBlock___block_invoke(u
   }
 }
 
-+ (void)removableSystemApplicationsWithCompletionBlock:(id)a3
++ (void)removableSystemApplicationsWithCompletionBlock:(id)block
 {
-  v4 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v5 = objc_alloc_init(RemovableSoftwareLookupTable);
   if (SSIsDaemon())
   {
-    v6 = [MEMORY[0x277CC1E80] defaultWorkspace];
+    defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __64__ISSoftwareMap_removableSystemApplicationsWithCompletionBlock___block_invoke;
     v7[3] = &unk_27A671270;
     v7[4] = v5;
-    v7[5] = v4;
-    [v6 enumerateApplicationsOfType:1 block:v7];
+    v7[5] = array;
+    [defaultWorkspace enumerateApplicationsOfType:1 block:v7];
   }
 
-  if (a3)
+  if (block)
   {
-    (*(a3 + 2))(a3, [v4 copy]);
+    (*(block + 2))(block, [array copy]);
   }
 }
 
@@ -772,19 +772,19 @@ void __64__ISSoftwareMap_removableSystemApplicationsWithCompletionBlock___block_
   }
 }
 
-+ (id)_newSoftwareUpdateDictionaryForApplication:(id)a3
++ (id)_newSoftwareUpdateDictionaryForApplication:(id)application
 {
   v4 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v5 = [a3 itemIdentifier];
-  if (v5)
+  itemIdentifier = [application itemIdentifier];
+  if (itemIdentifier)
   {
-    [v4 setObject:v5 forKey:@"adam-id"];
+    [v4 setObject:itemIdentifier forKey:@"adam-id"];
   }
 
-  v6 = [a3 versionIdentifier];
-  if (v6)
+  versionIdentifier = [application versionIdentifier];
+  if (versionIdentifier)
   {
-    [v4 setObject:v6 forKey:@"installed-version-identifier"];
+    [v4 setObject:versionIdentifier forKey:@"installed-version-identifier"];
   }
 
   return v4;
@@ -793,11 +793,11 @@ void __64__ISSoftwareMap_removableSystemApplicationsWithCompletionBlock___block_
 + (void)_startWatchingInstallationNotifications
 {
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
-  CFNotificationCenterAddObserver(DarwinNotifyCenter, a1, __SoftwareMappingChangedNotification, @"com.apple.itunesstored.invalidatedSoftwareMap", 0, CFNotificationSuspensionBehaviorCoalesce);
+  CFNotificationCenterAddObserver(DarwinNotifyCenter, self, __SoftwareMappingChangedNotification, @"com.apple.itunesstored.invalidatedSoftwareMap", 0, CFNotificationSuspensionBehaviorCoalesce);
   DistributedCenter = CFNotificationCenterGetDistributedCenter();
-  CFNotificationCenterAddObserver(DistributedCenter, a1, __SoftwareMappingChangedNotification, @"com.apple.LaunchServices.applicationRegistered", 0, CFNotificationSuspensionBehaviorCoalesce);
+  CFNotificationCenterAddObserver(DistributedCenter, self, __SoftwareMappingChangedNotification, @"com.apple.LaunchServices.applicationRegistered", 0, CFNotificationSuspensionBehaviorCoalesce);
 
-  CFNotificationCenterAddObserver(DistributedCenter, a1, __SoftwareMappingChangedNotification, @"com.apple.LaunchServices.applicationUnregistered", 0, CFNotificationSuspensionBehaviorCoalesce);
+  CFNotificationCenterAddObserver(DistributedCenter, self, __SoftwareMappingChangedNotification, @"com.apple.LaunchServices.applicationUnregistered", 0, CFNotificationSuspensionBehaviorCoalesce);
 }
 
 - (void)_loadFromMobileInstallation
@@ -830,24 +830,24 @@ void __64__ISSoftwareMap_removableSystemApplicationsWithCompletionBlock___block_
   {
     if (SSIsInternalBuild() && _os_feature_enabled_impl())
     {
-      v7 = [MEMORY[0x277D69B38] sharedStoreServicesConfig];
-      if (!v7)
+      mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedStoreServicesConfig];
+      if (!mEMORY[0x277D69B38])
       {
-        v7 = [MEMORY[0x277D69B38] sharedConfig];
+        mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedConfig];
       }
 
-      v8 = [v7 shouldLog];
-      if ([v7 shouldLogToDisk])
+      shouldLog = [mEMORY[0x277D69B38] shouldLog];
+      if ([mEMORY[0x277D69B38] shouldLogToDisk])
       {
-        v9 = v8 | 2;
+        v9 = shouldLog | 2;
       }
 
       else
       {
-        v9 = v8;
+        v9 = shouldLog;
       }
 
-      if (os_log_type_enabled([v7 OSLogObject], OS_LOG_TYPE_FAULT))
+      if (os_log_type_enabled([mEMORY[0x277D69B38] OSLogObject], OS_LOG_TYPE_FAULT))
       {
         v10 = v9;
       }

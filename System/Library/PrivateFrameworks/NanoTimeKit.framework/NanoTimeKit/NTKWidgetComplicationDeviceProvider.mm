@@ -1,9 +1,9 @@
 @interface NTKWidgetComplicationDeviceProvider
 + (NTKWidgetComplicationDeviceProvider)sharedInstance;
 - (NSString)activeDeviceID;
-- (void)addObserver:(id)a3;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
-- (void)removeObserver:(id)a3;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation NTKWidgetComplicationDeviceProvider
@@ -23,7 +23,7 @@
 - (NSString)activeDeviceID
 {
   v2 = (self + OBJC_IVAR___NTKWidgetComplicationDeviceProvider_activeDeviceIDLock);
-  v3 = self;
+  selfCopy = self;
   os_unfair_lock_lock(v2);
   v4 = *&v2[4]._os_unfair_lock_opaque;
 
@@ -46,7 +46,7 @@
 {
   ObjectType = swift_getObjectType();
   v4 = (self + OBJC_IVAR___NTKWidgetComplicationDeviceProvider_taskLock);
-  v5 = self;
+  selfCopy = self;
   os_unfair_lock_lock(v4);
   if (*&v4[2]._os_unfair_lock_opaque)
   {
@@ -54,16 +54,16 @@
   }
 
   os_unfair_lock_unlock(v4);
-  v6.receiver = v5;
+  v6.receiver = selfCopy;
   v6.super_class = ObjectType;
   [(NTKWidgetComplicationDeviceProvider *)&v6 dealloc];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_22DCB64BC();
     swift_unknownObjectRelease();
@@ -72,7 +72,7 @@
   else
   {
     memset(v6, 0, sizeof(v6));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   WidgetComplicationDeviceProvider.addObserver(_:)(v6);
@@ -80,11 +80,11 @@
   sub_22D9CA164(v6, &qword_27DA2D188);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
   v5 = self + OBJC_IVAR___NTKWidgetComplicationDeviceProvider_observersLock;
   swift_unknownObjectRetain();
-  v6 = self;
+  selfCopy = self;
   os_unfair_lock_lock(v5);
   [*(v5 + 1) removeObject_];
   os_unfair_lock_unlock(v5);

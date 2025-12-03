@@ -1,6 +1,6 @@
 @interface NSXPCConnection
-- (BOOL)_connectionHasEntitlement:(id)a3;
-- (BOOL)sd_connectionHasEntitlement:(id)a3;
+- (BOOL)_connectionHasEntitlement:(id)entitlement;
+- (BOOL)sd_connectionHasEntitlement:(id)entitlement;
 - (NSString)sd_connectionBundleID;
 - (NSString)sd_connectionProcessName;
 - (NSString)sd_description;
@@ -10,12 +10,12 @@
 
 - (NSString)sd_description
 {
-  v3 = [(NSXPCConnection *)self sd_connectionBundleID];
-  v4 = v3;
+  sd_connectionBundleID = [(NSXPCConnection *)self sd_connectionBundleID];
+  v4 = sd_connectionBundleID;
   v5 = @"N/A";
-  if (v3)
+  if (sd_connectionBundleID)
   {
-    v5 = v3;
+    v5 = sd_connectionBundleID;
   }
 
   v6 = v5;
@@ -27,8 +27,8 @@
 
 - (NSString)sd_connectionBundleID
 {
-  v3 = [(NSXPCConnection *)self _xpcConnection];
-  v4 = sub_10000C344(v3);
+  _xpcConnection = [(NSXPCConnection *)self _xpcConnection];
+  v4 = sub_10000C344(_xpcConnection);
 
   if (!v4)
   {
@@ -53,36 +53,36 @@
   return v2;
 }
 
-- (BOOL)sd_connectionHasEntitlement:(id)a3
+- (BOOL)sd_connectionHasEntitlement:(id)entitlement
 {
-  v3 = [(NSXPCConnection *)self valueForEntitlement:a3];
+  v3 = [(NSXPCConnection *)self valueForEntitlement:entitlement];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
-- (BOOL)_connectionHasEntitlement:(id)a3
+- (BOOL)_connectionHasEntitlement:(id)entitlement
 {
-  v3 = [(NSXPCConnection *)self valueForEntitlement:a3];
+  v3 = [(NSXPCConnection *)self valueForEntitlement:entitlement];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 @end

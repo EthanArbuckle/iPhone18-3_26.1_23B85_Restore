@@ -1,6 +1,6 @@
 @interface UITableViewHeaderFooterViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (BOOL)_accessibilityScrollToVisibleForNextElementRetrieval:(int64_t)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (BOOL)_accessibilityScrollToVisibleForNextElementRetrieval:(int64_t)retrieval;
 - (BOOL)accessibilityRespondsToUserInteraction;
 - (BOOL)isAccessibilityElement;
 - (CGRect)accessibilityFrame;
@@ -10,14 +10,14 @@
 
 @implementation UITableViewHeaderFooterViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v6 = location;
   obj = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v4 = @"UITableViewHeaderFooterView";
   [location[0] validateClass:0 hasInstanceMethod:? withFullSignature:?];
   v3 = "@";
@@ -30,20 +30,20 @@
 
 - (BOOL)accessibilityRespondsToUserInteraction
 {
-  v12 = [(UITableViewHeaderFooterViewAccessibility *)self storedAccessibilityRespondsToUserInteraction];
-  *&v2 = MEMORY[0x29EDC9740](v12).n128_u64[0];
-  if (v12)
+  storedAccessibilityRespondsToUserInteraction = [(UITableViewHeaderFooterViewAccessibility *)self storedAccessibilityRespondsToUserInteraction];
+  *&v2 = MEMORY[0x29EDC9740](storedAccessibilityRespondsToUserInteraction).n128_u64[0];
+  if (storedAccessibilityRespondsToUserInteraction)
   {
-    v11 = [(UITableViewHeaderFooterViewAccessibility *)self storedAccessibilityRespondsToUserInteraction];
-    v16 = [v11 BOOLValue] & 1;
-    MEMORY[0x29EDC9740](v11);
+    storedAccessibilityRespondsToUserInteraction2 = [(UITableViewHeaderFooterViewAccessibility *)self storedAccessibilityRespondsToUserInteraction];
+    v16 = [storedAccessibilityRespondsToUserInteraction2 BOOLValue] & 1;
+    MEMORY[0x29EDC9740](storedAccessibilityRespondsToUserInteraction2);
   }
 
   else
   {
-    v9 = [(UITableViewHeaderFooterViewAccessibility *)self accessibilityCustomActions];
-    v10 = [v9 count];
-    MEMORY[0x29EDC9740](v9);
+    accessibilityCustomActions = [(UITableViewHeaderFooterViewAccessibility *)self accessibilityCustomActions];
+    v10 = [accessibilityCustomActions count];
+    MEMORY[0x29EDC9740](accessibilityCustomActions);
     if (v10)
     {
       return 1;
@@ -52,35 +52,35 @@
     else
     {
       v13 = 0;
-      v8 = 0;
+      assistiveTouchScannerSpeechEnabled = 0;
       if (AXRequestingClient() == 4)
       {
-        v14 = [MEMORY[0x29EDBDFA0] sharedInstance];
+        mEMORY[0x29EDBDFA0] = [MEMORY[0x29EDBDFA0] sharedInstance];
         v13 = 1;
-        v8 = [v14 assistiveTouchScannerSpeechEnabled];
+        assistiveTouchScannerSpeechEnabled = [mEMORY[0x29EDBDFA0] assistiveTouchScannerSpeechEnabled];
       }
 
       if (v13)
       {
-        MEMORY[0x29EDC9740](v14);
+        MEMORY[0x29EDC9740](mEMORY[0x29EDBDFA0]);
       }
 
-      if (v8)
+      if (assistiveTouchScannerSpeechEnabled)
       {
-        v7 = [(UITableViewHeaderFooterViewAccessibility *)self accessibilityLabel];
-        v6 = [MEMORY[0x29EDB9F50] whitespaceAndNewlineCharacterSet];
-        v5 = [v7 stringByTrimmingCharactersInSet:?];
+        accessibilityLabel = [(UITableViewHeaderFooterViewAccessibility *)self accessibilityLabel];
+        whitespaceAndNewlineCharacterSet = [MEMORY[0x29EDB9F50] whitespaceAndNewlineCharacterSet];
+        v5 = [accessibilityLabel stringByTrimmingCharactersInSet:?];
         v16 = [v5 length] != 0;
         MEMORY[0x29EDC9740](v5);
-        MEMORY[0x29EDC9740](v6);
-        MEMORY[0x29EDC9740](v7);
+        MEMORY[0x29EDC9740](whitespaceAndNewlineCharacterSet);
+        MEMORY[0x29EDC9740](accessibilityLabel);
       }
 
       else
       {
-        v4 = [(UITableViewHeaderFooterViewAccessibility *)self _accessibilityInternalTextLinks];
-        v16 = [v4 count] != 0;
-        MEMORY[0x29EDC9740](v4);
+        _accessibilityInternalTextLinks = [(UITableViewHeaderFooterViewAccessibility *)self _accessibilityInternalTextLinks];
+        v16 = [_accessibilityInternalTextLinks count] != 0;
+        MEMORY[0x29EDC9740](_accessibilityInternalTextLinks);
       }
     }
   }
@@ -90,24 +90,24 @@
 
 - (BOOL)isAccessibilityElement
 {
-  v9 = [(UITableViewHeaderFooterViewAccessibility *)self isAccessibilityUserDefinedElement];
-  *&v2 = MEMORY[0x29EDC9740](v9).n128_u64[0];
-  if (v9)
+  isAccessibilityUserDefinedElement = [(UITableViewHeaderFooterViewAccessibility *)self isAccessibilityUserDefinedElement];
+  *&v2 = MEMORY[0x29EDC9740](isAccessibilityUserDefinedElement).n128_u64[0];
+  if (isAccessibilityUserDefinedElement)
   {
-    v8 = [(UITableViewHeaderFooterViewAccessibility *)self isAccessibilityUserDefinedElement];
-    v11 = [v8 BOOLValue] & 1;
-    MEMORY[0x29EDC9740](v8);
+    isAccessibilityUserDefinedElement2 = [(UITableViewHeaderFooterViewAccessibility *)self isAccessibilityUserDefinedElement];
+    v11 = [isAccessibilityUserDefinedElement2 BOOLValue] & 1;
+    MEMORY[0x29EDC9740](isAccessibilityUserDefinedElement2);
   }
 
   else
   {
-    v6 = [(UITableViewHeaderFooterViewAccessibility *)self accessibilityLabel];
-    v5 = [MEMORY[0x29EDB9F50] whitespaceAndNewlineCharacterSet];
-    v4 = [v6 stringByTrimmingCharactersInSet:?];
+    accessibilityLabel = [(UITableViewHeaderFooterViewAccessibility *)self accessibilityLabel];
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x29EDB9F50] whitespaceAndNewlineCharacterSet];
+    v4 = [accessibilityLabel stringByTrimmingCharactersInSet:?];
     v7 = [v4 length];
     MEMORY[0x29EDC9740](v4);
-    MEMORY[0x29EDC9740](v5);
-    MEMORY[0x29EDC9740](v6);
+    MEMORY[0x29EDC9740](whitespaceAndNewlineCharacterSet);
+    MEMORY[0x29EDC9740](accessibilityLabel);
     return v7 != 0;
   }
 
@@ -116,26 +116,26 @@
 
 - (id)accessibilityLabel
 {
-  v14 = self;
+  selfCopy = self;
   v13[1] = a2;
   v13[0] = [(UITableViewHeaderFooterViewAccessibility *)self accessibilityUserDefinedLabel];
   if (!v13[0])
   {
-    v13[0] = [(UITableViewHeaderFooterViewAccessibility *)v14 safeValueForKey:@"text"];
+    v13[0] = [(UITableViewHeaderFooterViewAccessibility *)selfCopy safeValueForKey:@"text"];
     MEMORY[0x29EDC9740](0);
   }
 
   if (![v13[0] length])
   {
-    v11 = [(UITableViewHeaderFooterViewAccessibility *)v14 safeValueForKey:@"contentConfiguration"];
-    v2 = [v11 accessibilityLabel];
+    v11 = [(UITableViewHeaderFooterViewAccessibility *)selfCopy safeValueForKey:@"contentConfiguration"];
+    accessibilityLabel = [v11 accessibilityLabel];
     v3 = v13[0];
-    v13[0] = v2;
+    v13[0] = accessibilityLabel;
     MEMORY[0x29EDC9740](v3);
     MEMORY[0x29EDC9740](v11);
   }
 
-  v10 = [(UITableViewHeaderFooterViewAccessibility *)v14 safeValueForKey:@"_detailLabel"];
+  v10 = [(UITableViewHeaderFooterViewAccessibility *)selfCopy safeValueForKey:@"_detailLabel"];
   location = [v10 accessibilityLabel];
   MEMORY[0x29EDC9740](v10);
   v4 = __UIAXStringForVariables();
@@ -149,7 +149,7 @@
     MEMORY[0x29EDC9740](v7);
   }
 
-  if (([(UITableViewHeaderFooterViewAccessibility *)v14 _accessibilityBoolValueForKey:@"SkipConvertToLowercase"]& 1) == 0)
+  if (([(UITableViewHeaderFooterViewAccessibility *)selfCopy _accessibilityBoolValueForKey:@"SkipConvertToLowercase"]& 1) == 0)
   {
     [v13[0] setAttribute:MEMORY[0x29EDB8EB0] forKey:*MEMORY[0x29EDBD890]];
   }
@@ -163,20 +163,20 @@
 
 - (CGRect)accessibilityFrame
 {
-  v15 = self;
+  selfCopy = self;
   v14 = a2;
   v13 = 0;
   objc_opt_class();
   v12 = __UIAccessibilityCastAsClass();
   v11 = MEMORY[0x29EDC9748](v12);
   objc_storeStrong(&v12, 0);
-  v10 = [v11 contentView];
-  [v10 accessibilityFrame];
+  contentView = [v11 contentView];
+  [contentView accessibilityFrame];
   v16 = v2;
   v17 = v3;
   v18 = v4;
   v19 = v5;
-  MEMORY[0x29EDC9740](v10);
+  MEMORY[0x29EDC9740](contentView);
   MEMORY[0x29EDC9740](v11);
   v6 = v16;
   v7 = v17;
@@ -191,27 +191,27 @@
 
 - (unint64_t)accessibilityTraits
 {
-  v8 = self;
+  selfCopy = self;
   v7 = a2;
   v5.receiver = self;
   v5.super_class = UITableViewHeaderFooterViewAccessibility;
-  v6 = [(UITableViewHeaderFooterViewAccessibility *)&v5 accessibilityTraits];
-  v3 = [(UITableViewHeaderFooterViewAccessibility *)v8 safeValueForKey:@"sectionHeader"];
-  v4 = [v3 BOOLValue];
+  accessibilityTraits = [(UITableViewHeaderFooterViewAccessibility *)&v5 accessibilityTraits];
+  v3 = [(UITableViewHeaderFooterViewAccessibility *)selfCopy safeValueForKey:@"sectionHeader"];
+  bOOLValue = [v3 BOOLValue];
   MEMORY[0x29EDC9740](v3);
-  if (v4)
+  if (bOOLValue)
   {
-    v6 |= *MEMORY[0x29EDC7F80];
+    accessibilityTraits |= *MEMORY[0x29EDC7F80];
   }
 
-  return v6;
+  return accessibilityTraits;
 }
 
-- (BOOL)_accessibilityScrollToVisibleForNextElementRetrieval:(int64_t)a3
+- (BOOL)_accessibilityScrollToVisibleForNextElementRetrieval:(int64_t)retrieval
 {
-  v42 = self;
+  selfCopy = self;
   v41 = a2;
-  v40 = a3;
+  retrievalCopy = retrieval;
   location = [(UITableViewHeaderFooterViewAccessibility *)self _accessibilityAncestorIsKindOf:objc_opt_class()];
   if (([location isScrollEnabled] & 1) == 0)
   {
@@ -224,11 +224,11 @@
   v36 = v5;
   v37 = v6;
   v38 = v6;
-  v20 = [location visibleCells];
+  visibleCells = [location visibleCells];
   v21 = 1;
-  if ([v20 count])
+  if ([visibleCells count])
   {
-    [(UIView *)v42 frame];
+    [(UIView *)selfCopy frame];
     v30 = v7;
     v31 = v8;
     v32 = v9;
@@ -236,15 +236,15 @@
     v21 = v10 >= v38;
   }
 
-  MEMORY[0x29EDC9740](v20);
+  MEMORY[0x29EDC9740](visibleCells);
   if (v21)
   {
-    [(UIView *)v42 bounds];
+    [(UIView *)selfCopy bounds];
     rect.origin.x = v11;
     rect.origin.y = v12;
     rect.size.width = v13;
     rect.size.height = v14;
-    if (v40 == 1)
+    if (retrievalCopy == 1)
     {
       rect.origin.y = rect.origin.y + rect.size.height - v38 / 2.0;
       [location contentSize];
@@ -268,9 +268,9 @@
       }
     }
 
-    v44 = UIAccessibilityConvertFrameToScreenCoordinates(rect, v42);
+    v44 = UIAccessibilityConvertFrameToScreenCoordinates(rect, selfCopy);
     v24 = v44;
-    [location _accessibilityScrollToFrame:v42 forView:{v44.origin.x, v44.origin.y, v44.size.width, v44.size.height}];
+    [location _accessibilityScrollToFrame:selfCopy forView:{v44.origin.x, v44.origin.y, v44.size.width, v44.size.height}];
     [location _accessibilityOpaqueElementScrollCleanup];
     v43 = 1;
     v23 = 1;
@@ -279,7 +279,7 @@
   else
   {
 LABEL_12:
-    v22.receiver = v42;
+    v22.receiver = selfCopy;
     v22.super_class = UITableViewHeaderFooterViewAccessibility;
     v43 = [(UITableViewHeaderFooterViewAccessibility *)&v22 _accessibilityScrollToVisible]& 1;
     v23 = 1;

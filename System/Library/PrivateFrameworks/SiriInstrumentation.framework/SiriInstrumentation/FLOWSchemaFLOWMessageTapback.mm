@@ -1,49 +1,49 @@
 @interface FLOWSchemaFLOWMessageTapback
-- (BOOL)isEqual:(id)a3;
-- (FLOWSchemaFLOWMessageTapback)initWithDictionary:(id)a3;
-- (FLOWSchemaFLOWMessageTapback)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (FLOWSchemaFLOWMessageTapback)initWithDictionary:(id)dictionary;
+- (FLOWSchemaFLOWMessageTapback)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasIsGUITapback:(BOOL)a3;
-- (void)setHasIsTapbackRemoved:(BOOL)a3;
-- (void)setHasTapbackWasChanged:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasIsGUITapback:(BOOL)tapback;
+- (void)setHasIsTapbackRemoved:(BOOL)removed;
+- (void)setHasTapbackWasChanged:(BOOL)changed;
+- (void)writeTo:(id)to;
 @end
 
 @implementation FLOWSchemaFLOWMessageTapback
 
-- (FLOWSchemaFLOWMessageTapback)initWithDictionary:(id)a3
+- (FLOWSchemaFLOWMessageTapback)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = FLOWSchemaFLOWMessageTapback;
   v5 = [(FLOWSchemaFLOWMessageTapback *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"isTapback"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"isTapback"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[FLOWSchemaFLOWMessageTapback setIsTapback:](v5, "setIsTapback:", [v6 BOOLValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"isTapbackRemoved"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"isTapbackRemoved"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[FLOWSchemaFLOWMessageTapback setIsTapbackRemoved:](v5, "setIsTapbackRemoved:", [v7 BOOLValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"isGUITapback"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"isGUITapback"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[FLOWSchemaFLOWMessageTapback setIsGUITapback:](v5, "setIsGUITapback:", [v8 BOOLValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"tapbackWasChanged"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"tapbackWasChanged"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -56,30 +56,30 @@
   return v5;
 }
 
-- (FLOWSchemaFLOWMessageTapback)initWithJSON:(id)a3
+- (FLOWSchemaFLOWMessageTapback)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(FLOWSchemaFLOWMessageTapback *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(FLOWSchemaFLOWMessageTapback *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(FLOWSchemaFLOWMessageTapback *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -92,12 +92,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 4) != 0)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[FLOWSchemaFLOWMessageTapback isGUITapback](self, "isGUITapback")}];
-    [v3 setObject:v7 forKeyedSubscript:@"isGUITapback"];
+    [dictionary setObject:v7 forKeyedSubscript:@"isGUITapback"];
 
     has = self->_has;
     if ((has & 1) == 0)
@@ -118,7 +118,7 @@ LABEL_3:
   }
 
   v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[FLOWSchemaFLOWMessageTapback isTapback](self, "isTapback")}];
-  [v3 setObject:v8 forKeyedSubscript:@"isTapback"];
+  [dictionary setObject:v8 forKeyedSubscript:@"isTapback"];
 
   has = self->_has;
   if ((has & 2) == 0)
@@ -134,19 +134,19 @@ LABEL_4:
 
 LABEL_11:
   v9 = [MEMORY[0x1E696AD98] numberWithBool:{-[FLOWSchemaFLOWMessageTapback isTapbackRemoved](self, "isTapbackRemoved")}];
-  [v3 setObject:v9 forKeyedSubscript:@"isTapbackRemoved"];
+  [dictionary setObject:v9 forKeyedSubscript:@"isTapbackRemoved"];
 
   if ((*&self->_has & 8) != 0)
   {
 LABEL_5:
     v5 = [MEMORY[0x1E696AD98] numberWithBool:{-[FLOWSchemaFLOWMessageTapback tapbackWasChanged](self, "tapbackWasChanged")}];
-    [v3 setObject:v5 forKeyedSubscript:@"tapbackWasChanged"];
+    [dictionary setObject:v5 forKeyedSubscript:@"tapbackWasChanged"];
   }
 
 LABEL_6:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -203,16 +203,16 @@ LABEL_5:
   return v3 ^ v2 ^ v4 ^ v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_18;
   }
 
   has = self->_has;
-  v6 = v4[12];
+  v6 = equalCopy[12];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_18;
@@ -221,13 +221,13 @@ LABEL_5:
   if (*&has)
   {
     isTapback = self->_isTapback;
-    if (isTapback != [v4 isTapback])
+    if (isTapback != [equalCopy isTapback])
     {
       goto LABEL_18;
     }
 
     has = self->_has;
-    v6 = v4[12];
+    v6 = equalCopy[12];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -239,13 +239,13 @@ LABEL_5:
   if (v8)
   {
     isTapbackRemoved = self->_isTapbackRemoved;
-    if (isTapbackRemoved != [v4 isTapbackRemoved])
+    if (isTapbackRemoved != [equalCopy isTapbackRemoved])
     {
       goto LABEL_18;
     }
 
     has = self->_has;
-    v6 = v4[12];
+    v6 = equalCopy[12];
   }
 
   v10 = (*&has >> 2) & 1;
@@ -257,10 +257,10 @@ LABEL_5:
   if (v10)
   {
     isGUITapback = self->_isGUITapback;
-    if (isGUITapback == [v4 isGUITapback])
+    if (isGUITapback == [equalCopy isGUITapback])
     {
       has = self->_has;
-      v6 = v4[12];
+      v6 = equalCopy[12];
       goto LABEL_14;
     }
 
@@ -279,7 +279,7 @@ LABEL_14:
   if (v12)
   {
     tapbackWasChanged = self->_tapbackWasChanged;
-    if (tapbackWasChanged != [v4 tapbackWasChanged])
+    if (tapbackWasChanged != [equalCopy tapbackWasChanged])
     {
       goto LABEL_18;
     }
@@ -291,9 +291,9 @@ LABEL_19:
   return v14;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -340,9 +340,9 @@ LABEL_5:
 LABEL_6:
 }
 
-- (void)setHasTapbackWasChanged:(BOOL)a3
+- (void)setHasTapbackWasChanged:(BOOL)changed
 {
-  if (a3)
+  if (changed)
   {
     v3 = 8;
   }
@@ -355,9 +355,9 @@ LABEL_6:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasIsGUITapback:(BOOL)a3
+- (void)setHasIsGUITapback:(BOOL)tapback
 {
-  if (a3)
+  if (tapback)
   {
     v3 = 4;
   }
@@ -370,9 +370,9 @@ LABEL_6:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasIsTapbackRemoved:(BOOL)a3
+- (void)setHasIsTapbackRemoved:(BOOL)removed
 {
-  if (a3)
+  if (removed)
   {
     v3 = 2;
   }

@@ -1,7 +1,7 @@
 @interface HUQuickControlPushButtonViewProfile
 - (HFNumberValueConstraints)primaryValueConstraints;
 - (HUQuickControlPushButtonViewProfile)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation HUQuickControlPushButtonViewProfile
@@ -20,11 +20,11 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = HUQuickControlPushButtonViewProfile;
-  v4 = [(HUQuickControlViewProfile *)&v6 copyWithZone:a3];
+  v4 = [(HUQuickControlViewProfile *)&v6 copyWithZone:zone];
   [v4 setToggleColorScheme:{-[HUQuickControlPushButtonViewProfile toggleColorScheme](self, "toggleColorScheme")}];
   return v4;
 }

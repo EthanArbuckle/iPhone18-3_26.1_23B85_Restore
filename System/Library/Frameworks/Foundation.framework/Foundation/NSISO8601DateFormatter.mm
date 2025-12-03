@@ -1,15 +1,15 @@
 @interface NSISO8601DateFormatter
 + (NSString)stringFromDate:(NSDate *)date timeZone:(NSTimeZone *)timeZone formatOptions:(NSISO8601DateFormatOptions)formatOptions;
-- (BOOL)getObjectValue:(id *)a3 forString:(id)a4 errorDescription:(id *)a5;
-- (BOOL)getObjectValue:(id *)a3 forString:(id)a4 range:(_NSRange *)a5 error:(id *)a6;
+- (BOOL)getObjectValue:(id *)value forString:(id)string errorDescription:(id *)description;
+- (BOOL)getObjectValue:(id *)value forString:(id)string range:(_NSRange *)range error:(id *)error;
 - (NSDate)dateFromString:(NSString *)string;
 - (NSISO8601DateFormatter)init;
-- (NSISO8601DateFormatter)initWithCoder:(id)a3;
+- (NSISO8601DateFormatter)initWithCoder:(id)coder;
 - (NSString)stringFromDate:(NSDate *)date;
 - (NSTimeZone)timeZone;
-- (id)stringForObjectValue:(id)a3;
+- (id)stringForObjectValue:(id)value;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)setFormatOptions:(NSISO8601DateFormatOptions)formatOptions;
 - (void)setTimeZone:(NSTimeZone *)timeZone;
 - (void)updateFormatter;
@@ -135,9 +135,9 @@ LABEL_7:
   }
 }
 
-- (id)stringForObjectValue:(id)a3
+- (id)stringForObjectValue:(id)value
 {
-  if (!a3)
+  if (!value)
   {
     return 0;
   }
@@ -153,7 +153,7 @@ LABEL_7:
     return 0;
   }
 
-  StringWithDate = CFDateFormatterCreateStringWithDate(*MEMORY[0x1E695E4A8], formatter, a3);
+  StringWithDate = CFDateFormatterCreateStringWithDate(*MEMORY[0x1E695E4A8], formatter, value);
   if (!StringWithDate)
   {
     return 0;
@@ -182,11 +182,11 @@ LABEL_7:
   }
 }
 
-- (BOOL)getObjectValue:(id *)a3 forString:(id)a4 errorDescription:(id *)a5
+- (BOOL)getObjectValue:(id *)value forString:(id)string errorDescription:(id *)description
 {
   v10 = *MEMORY[0x1E69E9840];
   v9 = 0;
-  if (a5)
+  if (description)
   {
     v6 = &v9;
   }
@@ -196,37 +196,37 @@ LABEL_7:
     v6 = 0;
   }
 
-  v7 = [(NSISO8601DateFormatter *)self getObjectValue:a3 forString:a4 range:0 error:v6, v9, v10];
+  v7 = [(NSISO8601DateFormatter *)self getObjectValue:value forString:string range:0 error:v6, v9, v10];
   if (v9)
   {
-    *a5 = [v9 localizedDescription];
+    *description = [v9 localizedDescription];
   }
 
   return v7;
 }
 
-- (BOOL)getObjectValue:(id *)a3 forString:(id)a4 range:(_NSRange *)a5 error:(id *)a6
+- (BOOL)getObjectValue:(id *)value forString:(id)string range:(_NSRange *)range error:(id *)error
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  if (!a4 || [a4 isEqual:&stru_1EEEFDF90])
+  if (!string || [string isEqual:&stru_1EEEFDF90])
   {
-    if (a3)
+    if (value)
     {
-      *a3 = 0;
+      *value = 0;
     }
 
     return 1;
   }
 
-  if (a5)
+  if (range)
   {
-    location = a5->location;
-    length = a5->length;
+    location = range->location;
+    length = range->length;
   }
 
   else
   {
-    length = [a4 length];
+    length = [string length];
     location = 0;
   }
 
@@ -235,41 +235,41 @@ LABEL_7:
   formatter = self->_formatter;
   if (formatter)
   {
-    v15 = CFDateFormatterCreateDateFromString(*MEMORY[0x1E695E4A8], formatter, a4, &v18);
+    v15 = CFDateFormatterCreateDateFromString(*MEMORY[0x1E695E4A8], formatter, string, &v18);
     if (v15)
     {
       v16 = v15;
       CFAutorelease(v15);
-      if (a5)
+      if (range)
       {
-        *a5 = v18;
+        *range = v18;
       }
 
-      if (a3)
+      if (value)
       {
-        *a3 = v16;
+        *value = v16;
       }
 
       return 1;
     }
   }
 
-  if (!a6)
+  if (!error)
   {
     return 0;
   }
 
   v19 = @"NSInvalidValue";
-  v20[0] = a4;
+  v20[0] = string;
   v17 = +[NSError errorWithDomain:code:userInfo:](NSError, "errorWithDomain:code:userInfo:", @"NSCocoaErrorDomain", 2048, [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:&v19 count:1]);
   result = 0;
-  *a6 = v17;
+  *error = v17;
   return result;
 }
 
 + (NSString)stringFromDate:(NSDate *)date timeZone:(NSTimeZone *)timeZone formatOptions:(NSISO8601DateFormatOptions)formatOptions
 {
-  v8 = objc_alloc_init(a1);
+  v8 = objc_alloc_init(self);
   [v8 setTimeZone:timeZone];
   [v8 setFormatOptions:formatOptions];
   v9 = [v8 stringFromDate:date];
@@ -277,25 +277,25 @@ LABEL_7:
   return v9;
 }
 
-- (NSISO8601DateFormatter)initWithCoder:(id)a3
+- (NSISO8601DateFormatter)initWithCoder:(id)coder
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
 
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"NSISO8601DateFormatter cannot be decoded by non-keyed archivers" userInfo:0]);
   }
 
-  v5 = [a3 decodeIntegerForKey:@"NS.formatOptions"];
-  if ([a3 containsValueForKey:@"NS.timeZone"])
+  v5 = [coder decodeIntegerForKey:@"NS.formatOptions"];
+  if ([coder containsValueForKey:@"NS.timeZone"])
   {
-    v6 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"NS.timeZone"];
+    v6 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"NS.timeZone"];
     if (!v6)
     {
 
       v10 = @"NSLocalizedDescription";
       v11[0] = @"Timezone has been corrupted!";
-      [a3 failWithError:{+[NSError errorWithDomain:code:userInfo:](NSError, "errorWithDomain:code:userInfo:", @"NSCocoaErrorDomain", 4864, objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v11, &v10, 1))}];
+      [coder failWithError:{+[NSError errorWithDomain:code:userInfo:](NSError, "errorWithDomain:code:userInfo:", @"NSCocoaErrorDomain", 4864, objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v11, &v10, 1))}];
       return 0;
     }
   }
@@ -316,18 +316,18 @@ LABEL_7:
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"Encoder does not allow key encoding" userInfo:0]);
   }
 
-  [a3 encodeInteger:self->_formatOptions forKey:@"NS.formatOptions"];
+  [coder encodeInteger:self->_formatOptions forKey:@"NS.formatOptions"];
   if (self->_timeZone)
   {
 
-    [a3 encodeObject:? forKey:?];
+    [coder encodeObject:? forKey:?];
   }
 }
 

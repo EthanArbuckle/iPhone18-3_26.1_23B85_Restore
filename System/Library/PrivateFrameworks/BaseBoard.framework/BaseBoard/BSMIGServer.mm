@@ -1,29 +1,29 @@
 @interface BSMIGServer
 - (BSMIGServer)init;
-- (BSMIGServer)initWithPortName:(id)a3 subsystem:(mig_subsystem *)a4 separateThread:(BOOL)a5;
+- (BSMIGServer)initWithPortName:(id)name subsystem:(mig_subsystem *)subsystem separateThread:(BOOL)thread;
 - (NSString)threadName;
 - (int)threadPriority;
 - (uint64_t)_start;
-- (void)setThreadPriority:(int)a3;
+- (void)setThreadPriority:(int)priority;
 @end
 
 @implementation BSMIGServer
 
-- (BSMIGServer)initWithPortName:(id)a3 subsystem:(mig_subsystem *)a4 separateThread:(BOOL)a5
+- (BSMIGServer)initWithPortName:(id)name subsystem:(mig_subsystem *)subsystem separateThread:(BOOL)thread
 {
-  v5 = a5;
-  v8 = a3;
+  threadCopy = thread;
+  nameCopy = name;
   v15.receiver = self;
   v15.super_class = BSMIGServer;
   v9 = [(BSMIGServer *)&v15 init];
   if (v9)
   {
-    v10 = [v8 copy];
+    v10 = [nameCopy copy];
     portName = v9->_portName;
     v9->_portName = v10;
 
-    v9->_subsystem = a4;
-    if (v5)
+    v9->_subsystem = subsystem;
+    if (threadCopy)
     {
       v13[0] = MEMORY[0x1E69E9820];
       v13[1] = 3221225472;
@@ -162,8 +162,8 @@ void __57__BSMIGServer_initWithPortName_subsystem_separateThread___block_invoke(
 
 - (BSMIGServer)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"BSMIGServer.m" lineNumber:83 description:@"wrong initializer"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"BSMIGServer.m" lineNumber:83 description:@"wrong initializer"];
 
   return 0;
 }
@@ -177,13 +177,13 @@ void __57__BSMIGServer_initWithPortName_subsystem_separateThread___block_invoke(
   return v5.sched_priority;
 }
 
-- (void)setThreadPriority:(int)a3
+- (void)setThreadPriority:(int)priority
 {
   if (!pthread_main_np())
   {
     thread = self->_thread;
 
-    BSPthreadSetFixedPriority(thread, a3);
+    BSPthreadSetFixedPriority(thread, priority);
   }
 }
 

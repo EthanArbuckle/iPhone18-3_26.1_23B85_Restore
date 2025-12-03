@@ -1,34 +1,34 @@
 @interface NetworkRelayAgent
-+ (BOOL)_shouldSilentlyRetryNetworkRelayPairingForError:(id)a3;
-+ (id)networkRelayIdentifierForBluetoothIdentifier:(id)a3;
++ (BOOL)_shouldSilentlyRetryNetworkRelayPairingForError:(id)error;
++ (id)networkRelayIdentifierForBluetoothIdentifier:(id)identifier;
 + (id)sharedInstance;
 - (NSSet)migrationCandidates;
 - (NSString)description;
 - (NetworkRelayAgent)init;
-- (void)_notifyDelegatesOfPairingCompletionWithIdentifier:(id)a3 error:(id)a4;
-- (void)_notifyDelegatesOfPreviouslyPairedBluetoothIdentifiers:(id)a3;
-- (void)_notifyDelegatesOfUnpairingCompletionWithError:(id)a3;
-- (void)_pairWithCandidate:(id)a3 withPreSharedAuthData:(id)a4 isAltAccountPairing:(BOOL)a5;
-- (void)_requestPINPairingForCandidateWithIdentifier:(id)a3;
+- (void)_notifyDelegatesOfPairingCompletionWithIdentifier:(id)identifier error:(id)error;
+- (void)_notifyDelegatesOfPreviouslyPairedBluetoothIdentifiers:(id)identifiers;
+- (void)_notifyDelegatesOfUnpairingCompletionWithError:(id)error;
+- (void)_pairWithCandidate:(id)candidate withPreSharedAuthData:(id)data isAltAccountPairing:(BOOL)pairing;
+- (void)_requestPINPairingForCandidateWithIdentifier:(id)identifier;
 - (void)abortCurrentPairing;
-- (void)addDelegate:(id)a3;
-- (void)addMigrationScanCandidates:(id)a3;
+- (void)addDelegate:(id)delegate;
+- (void)addMigrationScanCandidates:(id)candidates;
 - (void)dealloc;
-- (void)deviceHasUnpairedBluetooth:(id)a3;
-- (void)deviceLinkTypeDidChange:(id)a3 linkType:(unsigned __int8)a4;
+- (void)deviceHasUnpairedBluetooth:(id)bluetooth;
+- (void)deviceLinkTypeDidChange:(id)change linkType:(unsigned __int8)type;
 - (void)invalidatePairingManagerIfIdle;
-- (void)migrationPairWithCandidateWithBluetoothIdentifier:(id)a3 isAltAccountPairing:(BOOL)a4 completion:(id)a5;
-- (void)passPINAuthDataToPairingCandidate:(id)a3 isAltAccountPairing:(BOOL)a4;
+- (void)migrationPairWithCandidateWithBluetoothIdentifier:(id)identifier isAltAccountPairing:(BOOL)pairing completion:(id)completion;
+- (void)passPINAuthDataToPairingCandidate:(id)candidate isAltAccountPairing:(BOOL)pairing;
 - (void)removeAllMigrationScanCandidates;
-- (void)removeDelegate:(id)a3;
-- (void)removeMigrationScanCandidates:(id)a3;
-- (void)requestMigrationFromCandidateWithNetworkRelayIdentifier:(id)a3 completion:(id)a4;
-- (void)requestPINPairingForCandidateWithIdentifier:(id)a3;
-- (void)requestPreSharedAuthForCandidateWithIdentifier:(id)a3 preSharedAuthData:(id)a4 isAltAccountPairing:(BOOL)a5;
+- (void)removeDelegate:(id)delegate;
+- (void)removeMigrationScanCandidates:(id)candidates;
+- (void)requestMigrationFromCandidateWithNetworkRelayIdentifier:(id)identifier completion:(id)completion;
+- (void)requestPINPairingForCandidateWithIdentifier:(id)identifier;
+- (void)requestPreSharedAuthForCandidateWithIdentifier:(id)identifier preSharedAuthData:(id)data isAltAccountPairing:(BOOL)pairing;
 - (void)reset;
 - (void)resetMigrationPairingManager;
-- (void)setHasPairingClients:(BOOL)a3;
-- (void)startMonitoringDeviceWithBluetoothUUID:(id)a3;
+- (void)setHasPairingClients:(BOOL)clients;
+- (void)startMonitoringDeviceWithBluetoothUUID:(id)d;
 - (void)startPushingCandidates;
 - (void)startScanningForCandidates;
 - (void)startScanningForMigrationCandidates;
@@ -36,7 +36,7 @@
 - (void)stopPushingCandidates;
 - (void)stopScanningForCandidates;
 - (void)stopScanningForMigrationCandidates;
-- (void)unpairNetworkRelayDeviceWithNetworkRelayIdentifier:(id)a3;
+- (void)unpairNetworkRelayDeviceWithNetworkRelayIdentifier:(id)identifier;
 @end
 
 @implementation NetworkRelayAgent
@@ -154,7 +154,7 @@
   self->_pendingIsAltAccountPairing = 0;
 }
 
-- (void)setHasPairingClients:(BOOL)a3
+- (void)setHasPairingClients:(BOOL)clients
 {
   queue = self->_queue;
   v4[0] = _NSConcreteStackBlock;
@@ -162,7 +162,7 @@
   v4[2] = sub_100064740;
   v4[3] = &unk_100176198;
   v4[4] = self;
-  v5 = a3;
+  clientsCopy = clients;
   dispatch_async(queue, v4);
 }
 
@@ -177,11 +177,11 @@
   dispatch_async(queue, block);
 }
 
-- (void)addDelegate:(id)a3
+- (void)addDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  delegateCopy = delegate;
+  v5 = delegateCopy;
+  if (delegateCopy)
   {
     queue = self->_queue;
     v7[0] = _NSConcreteStackBlock;
@@ -189,16 +189,16 @@
     v7[2] = sub_1000649A0;
     v7[3] = &unk_100175598;
     v7[4] = self;
-    v8 = v4;
+    v8 = delegateCopy;
     dispatch_async(queue, v7);
   }
 }
 
-- (void)removeDelegate:(id)a3
+- (void)removeDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  delegateCopy = delegate;
+  v5 = delegateCopy;
+  if (delegateCopy)
   {
     queue = self->_queue;
     v7[0] = _NSConcreteStackBlock;
@@ -206,24 +206,24 @@
     v7[2] = sub_100064A54;
     v7[3] = &unk_100175598;
     v7[4] = self;
-    v8 = v4;
+    v8 = delegateCopy;
     dispatch_async(queue, v7);
   }
 }
 
-- (void)startMonitoringDeviceWithBluetoothUUID:(id)a3
+- (void)startMonitoringDeviceWithBluetoothUUID:(id)d
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  dCopy = d;
+  v5 = dCopy;
+  if (dCopy)
   {
     queue = self->_queue;
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_100064B48;
     v8[3] = &unk_100175598;
-    v9 = v4;
-    v10 = self;
+    v9 = dCopy;
+    selfCopy = self;
     dispatch_async(queue, v8);
     v7 = v9;
   }
@@ -424,15 +424,15 @@
   dispatch_async(queue, block);
 }
 
-- (void)requestPreSharedAuthForCandidateWithIdentifier:(id)a3 preSharedAuthData:(id)a4 isAltAccountPairing:(BOOL)a5
+- (void)requestPreSharedAuthForCandidateWithIdentifier:(id)identifier preSharedAuthData:(id)data isAltAccountPairing:(BOOL)pairing
 {
-  v8 = a3;
-  v9 = a4;
+  identifierCopy = identifier;
+  dataCopy = data;
   v10 = networkrelay_pairing_log_handle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v19 = v8;
+    v19 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Starting to pair using pre-shared auth data with candidate with identifier = %{public}@", buf, 0xCu);
   }
 
@@ -442,19 +442,19 @@
   v14[2] = sub_100066D80;
   v14[3] = &unk_100175CE0;
   v14[4] = self;
-  v15 = v8;
-  v16 = v9;
-  v17 = a5;
-  v12 = v9;
-  v13 = v8;
+  v15 = identifierCopy;
+  v16 = dataCopy;
+  pairingCopy = pairing;
+  v12 = dataCopy;
+  v13 = identifierCopy;
   dispatch_async(queue, v14);
 }
 
-- (void)_pairWithCandidate:(id)a3 withPreSharedAuthData:(id)a4 isAltAccountPairing:(BOOL)a5
+- (void)_pairWithCandidate:(id)candidate withPreSharedAuthData:(id)data isAltAccountPairing:(BOOL)pairing
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  pairingCopy = pairing;
+  candidateCopy = candidate;
+  dataCopy = data;
   pendingPreSharedPairingCandidateIdentifier = self->_pendingPreSharedPairingCandidateIdentifier;
   if (*&self->_pendingPreSharedPairingCandidateIdentifier != 0)
   {
@@ -468,10 +468,10 @@
   }
 
   v12 = objc_alloc_init(NRDevicePairingTarget);
-  [v12 setCandidate:v8];
+  [v12 setCandidate:candidateCopy];
   [v12 setAuthMethod:1];
-  [v12 setAuthData:v9];
-  if (v5)
+  [v12 setAuthData:dataCopy];
+  if (pairingCopy)
   {
     v13 = objc_alloc_init(NRDevicePairingProperties);
     [v13 setIsAltAccountPairing:1];
@@ -483,11 +483,11 @@
   v31[2] = sub_100067198;
   v31[3] = &unk_100177D68;
   v31[4] = self;
-  v14 = v8;
+  v14 = candidateCopy;
   v32 = v14;
-  v15 = v9;
+  v15 = dataCopy;
   v33 = v15;
-  v34 = v5;
+  v34 = pairingCopy;
   v16 = objc_retainBlock(v31);
   v29[0] = 0;
   v29[1] = v29;
@@ -503,7 +503,7 @@
   v18 = v14;
   v28 = v29;
   v25 = v18;
-  v26 = self;
+  selfCopy = self;
   v27 = v16;
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
@@ -519,28 +519,28 @@
   _Block_object_dispose(v29, 8);
 }
 
-- (void)requestPINPairingForCandidateWithIdentifier:(id)a3
+- (void)requestPINPairingForCandidateWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000678D0;
   v7[3] = &unk_100175598;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = identifierCopy;
+  v6 = identifierCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)_requestPINPairingForCandidateWithIdentifier:(id)a3
+- (void)_requestPINPairingForCandidateWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = networkrelay_pairing_log_handle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v16 = v4;
+    v16 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Requesting PIN pairing for candidate with identifier = %{public}@", buf, 0xCu);
   }
 
@@ -552,7 +552,7 @@
     self->_pairingInProgress = 1;
   }
 
-  v7 = [(NSMutableDictionary *)self->_identifierCandidateMap objectForKeyedSubscript:v4];
+  v7 = [(NSMutableDictionary *)self->_identifierCandidateMap objectForKeyedSubscript:identifierCopy];
   v8 = networkrelay_pairing_log_handle();
   v9 = v8;
   if (v7)
@@ -572,7 +572,7 @@
     v13[2] = sub_100067BF4;
     v13[3] = &unk_100177960;
     v13[4] = self;
-    v14 = v4;
+    v14 = identifierCopy;
     [(NRDevicePairingManager *)pairingManager requestAuthMethodForDevice:v7 authMethod:2 withCompletion:v13];
   }
 
@@ -581,7 +581,7 @@
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v16 = v4;
+      v16 = identifierCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "Unable to call requestAuthMethodForDevice on an unknown candidate with identifier %@", buf, 0xCu);
     }
 
@@ -593,21 +593,21 @@
   }
 }
 
-- (void)passPINAuthDataToPairingCandidate:(id)a3 isAltAccountPairing:(BOOL)a4
+- (void)passPINAuthDataToPairingCandidate:(id)candidate isAltAccountPairing:(BOOL)pairing
 {
-  v6 = a3;
+  candidateCopy = candidate;
   v7 = networkrelay_pairing_log_handle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     requestedPINPairingCandidateIdentifier = self->_requestedPINPairingCandidateIdentifier;
     *buf = 138412546;
-    v15 = v6;
+    v15 = candidateCopy;
     v16 = 2114;
     v17 = requestedPINPairingCandidateIdentifier;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Passing PIN data %@ for pairing with candidate with identifier %{public}@", buf, 0x16u);
   }
 
-  if (v6 && self->_requestedPINPairingCandidateIdentifier && [v6 length])
+  if (candidateCopy && self->_requestedPINPairingCandidateIdentifier && [candidateCopy length])
   {
     queue = self->_queue;
     v10[0] = _NSConcreteStackBlock;
@@ -616,25 +616,25 @@
     v10[3] = &unk_100177E58;
     v10[4] = self;
     v12 = 2;
-    v11 = v6;
-    v13 = a4;
+    v11 = candidateCopy;
+    pairingCopy = pairing;
     dispatch_async(queue, v10);
   }
 }
 
-+ (BOOL)_shouldSilentlyRetryNetworkRelayPairingForError:(id)a3
++ (BOOL)_shouldSilentlyRetryNetworkRelayPairingForError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 domain];
-  if (![v4 isEqual:NRDevicePairingErrorDomain] || objc_msgSend(v3, "code") != -3006 && objc_msgSend(v3, "code") != -3007 || (objc_msgSend(v3, "userInfo"), (v5 = objc_claimAutoreleasedReturnValue()) == 0))
+  errorCopy = error;
+  domain = [errorCopy domain];
+  if (![domain isEqual:NRDevicePairingErrorDomain] || objc_msgSend(errorCopy, "code") != -3006 && objc_msgSend(errorCopy, "code") != -3007 || (objc_msgSend(errorCopy, "userInfo"), (v5 = objc_claimAutoreleasedReturnValue()) == 0))
   {
 
     goto LABEL_10;
   }
 
   v6 = v5;
-  v7 = [v3 userInfo];
-  v8 = [v7 objectForKeyedSubscript:NRDevicePairingErrorOriginalNRUUIDKey];
+  userInfo = [errorCopy userInfo];
+  v8 = [userInfo objectForKeyedSubscript:NRDevicePairingErrorOriginalNRUUIDKey];
 
   if (!v8)
   {
@@ -658,26 +658,26 @@ LABEL_11:
 
 - (NSSet)migrationCandidates
 {
-  v2 = [(NSMutableDictionary *)self->_migrationCandidates allKeys];
-  v3 = [NSSet setWithArray:v2];
+  allKeys = [(NSMutableDictionary *)self->_migrationCandidates allKeys];
+  v3 = [NSSet setWithArray:allKeys];
 
   return v3;
 }
 
-- (void)addMigrationScanCandidates:(id)a3
+- (void)addMigrationScanCandidates:(id)candidates
 {
-  v4 = a3;
+  candidatesCopy = candidates;
   v5 = networkrelay_pairing_log_handle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 136315394;
     v9 = "[NetworkRelayAgent addMigrationScanCandidates:]";
     v10 = 2112;
-    v11 = v4;
+    v11 = candidatesCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s: %@", &v8, 0x16u);
   }
 
-  [(NSMutableSet *)self->_requestedMigrationScanIdentifiers unionSet:v4];
+  [(NSMutableSet *)self->_requestedMigrationScanIdentifiers unionSet:candidatesCopy];
   v6 = networkrelay_pairing_log_handle();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
@@ -690,20 +690,20 @@ LABEL_11:
   }
 }
 
-- (void)removeMigrationScanCandidates:(id)a3
+- (void)removeMigrationScanCandidates:(id)candidates
 {
-  v4 = a3;
+  candidatesCopy = candidates;
   v5 = networkrelay_pairing_log_handle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 136315394;
     v9 = "[NetworkRelayAgent removeMigrationScanCandidates:]";
     v10 = 2112;
-    v11 = v4;
+    v11 = candidatesCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s: %@", &v8, 0x16u);
   }
 
-  [(NSMutableSet *)self->_requestedMigrationScanIdentifiers minusSet:v4];
+  [(NSMutableSet *)self->_requestedMigrationScanIdentifiers minusSet:candidatesCopy];
   v6 = networkrelay_pairing_log_handle();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
@@ -918,21 +918,21 @@ LABEL_11:
   self->_activeMigrationScanIdentifiers = 0;
 }
 
-- (void)requestMigrationFromCandidateWithNetworkRelayIdentifier:(id)a3 completion:(id)a4
+- (void)requestMigrationFromCandidateWithNetworkRelayIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v8 = networkrelay_pairing_log_handle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v18 = "[NetworkRelayAgent requestMigrationFromCandidateWithNetworkRelayIdentifier:completion:]";
     v19 = 2112;
-    v20 = v6;
+    v20 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%s NetworkRelay identifier: %@", buf, 0x16u);
   }
 
-  v9 = [(NSMutableDictionary *)self->_migrationCandidates objectForKeyedSubscript:v6];
+  v9 = [(NSMutableDictionary *)self->_migrationCandidates objectForKeyedSubscript:identifierCopy];
   v10 = networkrelay_pairing_log_handle();
   v11 = v10;
   if (v9)
@@ -942,7 +942,7 @@ LABEL_11:
       *buf = 134218242;
       v18 = 3;
       v19 = 2112;
-      v20 = v6;
+      v20 = identifierCopy;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Requesting auth method %lu from migration candidate with NetworkRelay identifier: %@", buf, 0x16u);
     }
 
@@ -951,8 +951,8 @@ LABEL_11:
     v14[1] = 3221225472;
     v14[2] = sub_10006A130;
     v14[3] = &unk_100177938;
-    v15 = v6;
-    v16 = v7;
+    v15 = identifierCopy;
+    v16 = completionCopy;
     [(NRDevicePairingManager *)migrationPairingManager requestAuthMethodForDevice:v9 authMethod:3 withCompletion:v14];
 
     v13 = v15;
@@ -962,36 +962,36 @@ LABEL_11:
   if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412290;
-    v18 = v6;
+    v18 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, "Unable to locate migration candidate with NetworkRelay identifier: %@", buf, 0xCu);
   }
 
-  if (v7)
+  if (completionCopy)
   {
     v13 = [NSError errorWithDomain:@"com.apple.nanoregistry.pairingerror" code:6153 userInfo:0];
-    (*(v7 + 2))(v7, v13);
+    (*(completionCopy + 2))(completionCopy, v13);
 LABEL_11:
   }
 }
 
-- (void)migrationPairWithCandidateWithBluetoothIdentifier:(id)a3 isAltAccountPairing:(BOOL)a4 completion:(id)a5
+- (void)migrationPairWithCandidateWithBluetoothIdentifier:(id)identifier isAltAccountPairing:(BOOL)pairing completion:(id)completion
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  pairingCopy = pairing;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v10 = networkrelay_pairing_log_handle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315650;
     *&buf[4] = "[NetworkRelayAgent migrationPairWithCandidateWithBluetoothIdentifier:isAltAccountPairing:completion:]";
     *&buf[12] = 2112;
-    *&buf[14] = v8;
+    *&buf[14] = identifierCopy;
     *&buf[22] = 1024;
-    LODWORD(v24) = v6;
+    LODWORD(v24) = pairingCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%s bluetooth identifier: %@, isAltAccount: %{BOOL}d", buf, 0x1Cu);
   }
 
-  v11 = [(NSMutableDictionary *)self->_migrationCandidates objectForKeyedSubscript:v8];
+  v11 = [(NSMutableDictionary *)self->_migrationCandidates objectForKeyedSubscript:identifierCopy];
   if (v11)
   {
     v12 = objc_alloc_init(NRDevicePairingTarget);
@@ -1000,7 +1000,7 @@ LABEL_11:
     v13 = +[NSData data];
     [v12 setAuthData:v13];
 
-    if (v6)
+    if (pairingCopy)
     {
       v14 = objc_alloc_init(NRDevicePairingProperties);
       [v14 setIsAltAccountPairing:1];
@@ -1051,22 +1051,22 @@ LABEL_11:
   if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412290;
-    *&buf[4] = v8;
+    *&buf[4] = identifierCopy;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "Unable to locate migration candidate with bluetooth identifier: %@", buf, 0xCu);
   }
 
-  if (v9)
+  if (completionCopy)
   {
     v12 = [NSError errorWithDomain:@"com.apple.nanoregistry.pairingerror" code:6154 userInfo:0];
-    v9[2](v9, v12);
+    completionCopy[2](completionCopy, v12);
 LABEL_13:
   }
 }
 
-- (void)_notifyDelegatesOfPairingCompletionWithIdentifier:(id)a3 error:(id)a4
+- (void)_notifyDelegatesOfPairingCompletionWithIdentifier:(id)identifier error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  errorCopy = error;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -1090,7 +1090,7 @@ LABEL_13:
         v13 = *(*(&v14 + 1) + 8 * v12);
         if (objc_opt_respondsToSelector())
         {
-          [v13 networkRelayPairingCompletedWithIdentifier:v6 error:{v7, v14}];
+          [v13 networkRelayPairingCompletedWithIdentifier:identifierCopy error:{errorCopy, v14}];
         }
 
         v12 = v12 + 1;
@@ -1104,33 +1104,33 @@ LABEL_13:
   }
 }
 
-- (void)unpairNetworkRelayDeviceWithNetworkRelayIdentifier:(id)a3
+- (void)unpairNetworkRelayDeviceWithNetworkRelayIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = networkrelay_pairing_log_handle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 UUIDString];
+    uUIDString = [identifierCopy UUIDString];
     *buf = 138543362;
-    v14 = v6;
+    v14 = uUIDString;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Unpairing NetworkRelay device with Network Relay Identifier %{public}@", buf, 0xCu);
   }
 
-  v7 = [[NRDeviceIdentifier alloc] initWithUUID:v4];
+  v7 = [[NRDeviceIdentifier alloc] initWithUUID:identifierCopy];
   queue = self->_queue;
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10006AB50;
   v10[3] = &unk_100177960;
   v11 = v7;
-  v12 = self;
+  selfCopy = self;
   v9 = v7;
   [NRDevicePairingManager unpairDevice:v9 queue:queue withCompletion:v10];
 }
 
-- (void)_notifyDelegatesOfUnpairingCompletionWithError:(id)a3
+- (void)_notifyDelegatesOfUnpairingCompletionWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -1154,7 +1154,7 @@ LABEL_13:
         v10 = *(*(&v11 + 1) + 8 * v9);
         if (objc_opt_respondsToSelector())
         {
-          [v10 networkRelayUnpairingCompletedWithError:{v4, v11}];
+          [v10 networkRelayUnpairingCompletedWithError:{errorCopy, v11}];
         }
 
         v9 = v9 + 1;
@@ -1168,9 +1168,9 @@ LABEL_13:
   }
 }
 
-- (void)_notifyDelegatesOfPreviouslyPairedBluetoothIdentifiers:(id)a3
+- (void)_notifyDelegatesOfPreviouslyPairedBluetoothIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -1194,7 +1194,7 @@ LABEL_13:
         v10 = *(*(&v11 + 1) + 8 * v9);
         if (objc_opt_respondsToSelector())
         {
-          [v10 networkRelayPairFoundPreviouslyPairedBluetoothIdentifiers:{v4, v11}];
+          [v10 networkRelayPairFoundPreviouslyPairedBluetoothIdentifiers:{identifiersCopy, v11}];
         }
 
         v9 = v9 + 1;
@@ -1220,20 +1220,20 @@ LABEL_13:
   return v3;
 }
 
-+ (id)networkRelayIdentifierForBluetoothIdentifier:(id)a3
++ (id)networkRelayIdentifierForBluetoothIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v3 = [NRDeviceIdentifier newDeviceIdentifierWithBluetoothUUID:?];
     v4 = v3;
     if (v3)
     {
-      v5 = [v3 nrDeviceIdentifier];
+      nrDeviceIdentifier = [v3 nrDeviceIdentifier];
     }
 
     else
     {
-      v5 = 0;
+      nrDeviceIdentifier = 0;
     }
   }
 
@@ -1251,37 +1251,37 @@ LABEL_13:
       }
     }
 
-    v5 = 0;
+    nrDeviceIdentifier = 0;
   }
 
-  return v5;
+  return nrDeviceIdentifier;
 }
 
-- (void)deviceLinkTypeDidChange:(id)a3 linkType:(unsigned __int8)a4
+- (void)deviceLinkTypeDidChange:(id)change linkType:(unsigned __int8)type
 {
-  v4 = a3;
+  changeCopy = change;
   v5 = link_monitor_log_handle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 deviceIdentifier];
+    deviceIdentifier = [changeCopy deviceIdentifier];
     StringFromNRLinkType = createStringFromNRLinkType();
     v8 = 138412546;
-    v9 = v6;
+    v9 = deviceIdentifier;
     v10 = 2112;
     v11 = StringFromNRLinkType;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "deviceLinkTypeDidChange:%@ linkType:%@", &v8, 0x16u);
   }
 }
 
-- (void)deviceHasUnpairedBluetooth:(id)a3
+- (void)deviceHasUnpairedBluetooth:(id)bluetooth
 {
-  v4 = a3;
+  bluetoothCopy = bluetooth;
   v5 = link_monitor_log_handle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 deviceIdentifier];
+    deviceIdentifier = [bluetoothCopy deviceIdentifier];
     *buf = 138412290;
-    v19 = v6;
+    v19 = deviceIdentifier;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "deviceHasUnpairedBluetooth:%@", buf, 0xCu);
   }
 

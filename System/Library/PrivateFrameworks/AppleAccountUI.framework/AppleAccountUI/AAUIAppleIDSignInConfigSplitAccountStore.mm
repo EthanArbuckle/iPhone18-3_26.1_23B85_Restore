@@ -1,36 +1,36 @@
 @interface AAUIAppleIDSignInConfigSplitAccountStore
-- (AAUIAppleIDSignInConfigSplitAccountStore)initWithNavController:(id)a3;
+- (AAUIAppleIDSignInConfigSplitAccountStore)initWithNavController:(id)controller;
 - (BOOL)_isRunningInSetup;
 - (id)_serviceContext;
 @end
 
 @implementation AAUIAppleIDSignInConfigSplitAccountStore
 
-- (AAUIAppleIDSignInConfigSplitAccountStore)initWithNavController:(id)a3
+- (AAUIAppleIDSignInConfigSplitAccountStore)initWithNavController:(id)controller
 {
   v13[1] = *MEMORY[0x1E69E9840];
   v12.receiver = self;
   v12.super_class = AAUIAppleIDSignInConfigSplitAccountStore;
-  v3 = [(AAUIAppleIDSignInConfiguration *)&v12 initWithNavController:a3];
+  v3 = [(AAUIAppleIDSignInConfiguration *)&v12 initWithNavController:controller];
   if (v3)
   {
     v13[0] = *MEMORY[0x1E698C238];
     v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1];
-    v5 = [(AAUIAppleIDSignInConfiguration *)v3 signInConfiguration];
-    [v5 setServiceTypes:v4];
+    signInConfiguration = [(AAUIAppleIDSignInConfiguration *)v3 signInConfiguration];
+    [signInConfiguration setServiceTypes:v4];
 
-    v6 = [(AAUIAppleIDSignInConfiguration *)v3 signInConfiguration];
-    [v6 setSplitSignIn:1];
+    signInConfiguration2 = [(AAUIAppleIDSignInConfiguration *)v3 signInConfiguration];
+    [signInConfiguration2 setSplitSignIn:1];
 
-    v7 = [(AAUIAppleIDSignInConfiguration *)v3 signInConfiguration];
-    [v7 setHidesBackOrCancelButton:1];
+    signInConfiguration3 = [(AAUIAppleIDSignInConfiguration *)v3 signInConfiguration];
+    [signInConfiguration3 setHidesBackOrCancelButton:1];
 
-    v8 = [(AAUIAppleIDSignInConfiguration *)v3 signInConfiguration];
-    [v8 setAllowSkip:1];
+    signInConfiguration4 = [(AAUIAppleIDSignInConfiguration *)v3 signInConfiguration];
+    [signInConfiguration4 setAllowSkip:1];
 
-    v9 = [(AAUIAppleIDSignInConfigSplitAccountStore *)v3 _serviceContext];
-    v10 = [(AAUIAppleIDSignInConfiguration *)v3 signInConfiguration];
-    [v10 setServiceContext:v9];
+    _serviceContext = [(AAUIAppleIDSignInConfigSplitAccountStore *)v3 _serviceContext];
+    signInConfiguration5 = [(AAUIAppleIDSignInConfiguration *)v3 signInConfiguration];
+    [signInConfiguration5 setServiceContext:_serviceContext];
   }
 
   return v3;
@@ -57,9 +57,9 @@
 
 - (BOOL)_isRunningInSetup
 {
-  v2 = [MEMORY[0x1E696AAE8] mainBundle];
-  v3 = [v2 bundleIdentifier];
-  v4 = [v3 isEqualToString:@"com.apple.purplebuddy"];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v4 = [bundleIdentifier isEqualToString:@"com.apple.purplebuddy"];
 
   return v4;
 }

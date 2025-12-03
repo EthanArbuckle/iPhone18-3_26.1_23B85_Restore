@@ -1,10 +1,10 @@
 @interface FCPersonalizationOntologyLevelConfig
 - (FCPersonalizationOntologyLevelConfig)init;
-- (FCPersonalizationOntologyLevelConfig)initWithCoder:(id)a3;
-- (FCPersonalizationOntologyLevelConfig)initWithConfig:(id)a3;
-- (FCPersonalizationOntologyLevelConfig)initWithConfig:(id)a3 defaultConfig:(id)a4;
-- (FCPersonalizationOntologyLevelConfig)initWithTagWeightMapping:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (FCPersonalizationOntologyLevelConfig)initWithCoder:(id)coder;
+- (FCPersonalizationOntologyLevelConfig)initWithConfig:(id)config;
+- (FCPersonalizationOntologyLevelConfig)initWithConfig:(id)config defaultConfig:(id)defaultConfig;
+- (FCPersonalizationOntologyLevelConfig)initWithTagWeightMapping:(id)mapping;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FCPersonalizationOntologyLevelConfig
@@ -35,16 +35,16 @@
   objc_exception_throw(v6);
 }
 
-- (FCPersonalizationOntologyLevelConfig)initWithConfig:(id)a3
+- (FCPersonalizationOntologyLevelConfig)initWithConfig:(id)config
 {
-  v4 = a3;
+  configCopy = config;
   v14.receiver = self;
   v14.super_class = FCPersonalizationOntologyLevelConfig;
   v5 = [(FCPersonalizationOntologyLevelConfig *)&v14 init];
   if (v5)
   {
     v6 = v5;
-    v7 = FCAppConfigurationDictionaryValueWithDefaultValue(v4, @"tagWeightMapping", 0);
+    v7 = FCAppConfigurationDictionaryValueWithDefaultValue(configCopy, @"tagWeightMapping", 0);
     v8 = v7;
     if (v7)
     {
@@ -95,22 +95,22 @@ id __55__FCPersonalizationOntologyLevelConfig_initWithConfig___block_invoke_2(ui
   return v3;
 }
 
-- (FCPersonalizationOntologyLevelConfig)initWithConfig:(id)a3 defaultConfig:(id)a4
+- (FCPersonalizationOntologyLevelConfig)initWithConfig:(id)config defaultConfig:(id)defaultConfig
 {
-  v6 = a3;
-  v7 = a4;
+  configCopy = config;
+  defaultConfigCopy = defaultConfig;
   v18.receiver = self;
   v18.super_class = FCPersonalizationOntologyLevelConfig;
   v8 = [(FCPersonalizationOntologyLevelConfig *)&v18 init];
   if (v8)
   {
     v9 = v8;
-    v10 = FCAppConfigurationDictionaryValueWithDefaultValue(v6, @"tagWeightMapping", 0);
+    v10 = FCAppConfigurationDictionaryValueWithDefaultValue(configCopy, @"tagWeightMapping", 0);
 
     if (v10)
     {
-      v11 = FCAppConfigurationDictionaryValueWithDefaultValue(v6, @"tagWeightMapping", 0);
-      v12 = v11;
+      v11 = FCAppConfigurationDictionaryValueWithDefaultValue(configCopy, @"tagWeightMapping", 0);
+      tagWeightMapping = v11;
       if (v11)
       {
         v13 = [v11 fc_dictionaryByTransformingKeysWithBlock:&__block_literal_global_13_0];
@@ -129,8 +129,8 @@ id __55__FCPersonalizationOntologyLevelConfig_initWithConfig___block_invoke_2(ui
 
     else
     {
-      v12 = [v7 tagWeightMapping];
-      v14 = [(FCPersonalizationOntologyLevelConfig *)v9 initWithTagWeightMapping:v12];
+      tagWeightMapping = [defaultConfigCopy tagWeightMapping];
+      v14 = [(FCPersonalizationOntologyLevelConfig *)v9 initWithTagWeightMapping:tagWeightMapping];
       v15 = v14;
     }
   }
@@ -168,34 +168,34 @@ id __69__FCPersonalizationOntologyLevelConfig_initWithConfig_defaultConfig___blo
   return v3;
 }
 
-- (FCPersonalizationOntologyLevelConfig)initWithTagWeightMapping:(id)a3
+- (FCPersonalizationOntologyLevelConfig)initWithTagWeightMapping:(id)mapping
 {
-  v5 = a3;
+  mappingCopy = mapping;
   v9.receiver = self;
   v9.super_class = FCPersonalizationOntologyLevelConfig;
   v6 = [(FCPersonalizationOntologyLevelConfig *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_tagWeightMapping, a3);
+    objc_storeStrong(&v6->_tagWeightMapping, mapping);
   }
 
   return v7;
 }
 
-- (FCPersonalizationOntologyLevelConfig)initWithCoder:(id)a3
+- (FCPersonalizationOntologyLevelConfig)initWithCoder:(id)coder
 {
-  v4 = [a3 decodeObjectForKey:@"tagWeightMapping"];
+  v4 = [coder decodeObjectForKey:@"tagWeightMapping"];
   v5 = [(FCPersonalizationOntologyLevelConfig *)self initWithTagWeightMapping:v4];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(FCPersonalizationOntologyLevelConfig *)self tagWeightMapping];
-  [v4 encodeObject:v5 forKey:@"tagWeightMapping"];
+  coderCopy = coder;
+  tagWeightMapping = [(FCPersonalizationOntologyLevelConfig *)self tagWeightMapping];
+  [coderCopy encodeObject:tagWeightMapping forKey:@"tagWeightMapping"];
 }
 
 @end

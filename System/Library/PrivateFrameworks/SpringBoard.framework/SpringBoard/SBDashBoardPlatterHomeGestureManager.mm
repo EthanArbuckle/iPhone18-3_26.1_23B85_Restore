@@ -1,18 +1,18 @@
 @interface SBDashBoardPlatterHomeGestureManager
 - (id)_platterHomeGestureManager;
-- (id)homeGestureContextForViewController:(id)a3;
-- (id)platterHomeGestureManager:(id)a3 windowForParticipant:(id)a4;
-- (void)unregisterHomeGestureContextForViewController:(id)a3;
+- (id)homeGestureContextForViewController:(id)controller;
+- (id)platterHomeGestureManager:(id)manager windowForParticipant:(id)participant;
+- (void)unregisterHomeGestureContextForViewController:(id)controller;
 @end
 
 @implementation SBDashBoardPlatterHomeGestureManager
 
-- (id)homeGestureContextForViewController:(id)a3
+- (id)homeGestureContextForViewController:(id)controller
 {
-  v4 = a3;
-  if ([(SBDashBoardPlatterHomeGestureManager *)self _isViewControllerPlatterHomeGestureParticipant:v4])
+  controllerCopy = controller;
+  if ([(SBDashBoardPlatterHomeGestureManager *)self _isViewControllerPlatterHomeGestureParticipant:controllerCopy])
   {
-    v5 = v4;
+    v5 = controllerCopy;
   }
 
   else
@@ -21,11 +21,11 @@
   }
 
   v6 = v5;
-  v7 = [v4 _sbWindowScene];
+  _sbWindowScene = [controllerCopy _sbWindowScene];
   if (v6)
   {
-    v8 = [(SBDashBoardPlatterHomeGestureManager *)self _platterHomeGestureManager];
-    v9 = [v8 registerParticipant:v6 windowScene:v7];
+    _platterHomeGestureManager = [(SBDashBoardPlatterHomeGestureManager *)self _platterHomeGestureManager];
+    v9 = [_platterHomeGestureManager registerParticipant:v6 windowScene:_sbWindowScene];
   }
 
   else
@@ -36,33 +36,33 @@
   return v9;
 }
 
-- (void)unregisterHomeGestureContextForViewController:(id)a3
+- (void)unregisterHomeGestureContextForViewController:(id)controller
 {
-  v6 = a3;
-  v4 = [(SBDashBoardPlatterHomeGestureManager *)self _isViewControllerPlatterHomeGestureParticipant:v6];
-  v5 = v6;
-  if (v6 && v4)
+  controllerCopy = controller;
+  v4 = [(SBDashBoardPlatterHomeGestureManager *)self _isViewControllerPlatterHomeGestureParticipant:controllerCopy];
+  v5 = controllerCopy;
+  if (controllerCopy && v4)
   {
-    [(SBPlatterHomeGestureManager *)self->_platterHomeGestureManager unregisterParticipant:v6];
-    v5 = v6;
+    [(SBPlatterHomeGestureManager *)self->_platterHomeGestureManager unregisterParticipant:controllerCopy];
+    v5 = controllerCopy;
   }
 }
 
-- (id)platterHomeGestureManager:(id)a3 windowForParticipant:(id)a4
+- (id)platterHomeGestureManager:(id)manager windowForParticipant:(id)participant
 {
-  v4 = a4;
+  participantCopy = participant;
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v4 view];
-    v6 = [v5 window];
+    view = [participantCopy view];
+    window = [view window];
   }
 
   else
   {
-    v6 = 0;
+    window = 0;
   }
 
-  return v6;
+  return window;
 }
 
 - (id)_platterHomeGestureManager

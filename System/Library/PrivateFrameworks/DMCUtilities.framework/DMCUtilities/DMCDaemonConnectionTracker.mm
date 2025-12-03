@@ -1,14 +1,14 @@
 @interface DMCDaemonConnectionTracker
-- (DMCDaemonConnectionTracker)initWithProcessName:(id)a3 connectionThreshold:(unint64_t)a4 requestThreshold:(unint64_t)a5;
-- (void)trackConnectionFromPID:(int)a3;
-- (void)trackRequestFromPID:(int)a3;
+- (DMCDaemonConnectionTracker)initWithProcessName:(id)name connectionThreshold:(unint64_t)threshold requestThreshold:(unint64_t)requestThreshold;
+- (void)trackConnectionFromPID:(int)d;
+- (void)trackRequestFromPID:(int)d;
 @end
 
 @implementation DMCDaemonConnectionTracker
 
-- (DMCDaemonConnectionTracker)initWithProcessName:(id)a3 connectionThreshold:(unint64_t)a4 requestThreshold:(unint64_t)a5
+- (DMCDaemonConnectionTracker)initWithProcessName:(id)name connectionThreshold:(unint64_t)threshold requestThreshold:(unint64_t)requestThreshold
 {
-  v8 = a3;
+  nameCopy = name;
   if (+[DMCFeatureFlags isAppleInternal])
   {
     v24.receiver = self;
@@ -17,8 +17,8 @@
     if (v9)
     {
       v10 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_BACKGROUND, 0);
-      v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_connection_tracker", v8];
-      v12 = dispatch_queue_create([v11 UTF8String], v10);
+      nameCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_connection_tracker", nameCopy];
+      v12 = dispatch_queue_create([nameCopy UTF8String], v10);
       queue = v9->_queue;
       v9->_queue = v12;
 
@@ -34,27 +34,27 @@
       pidNameCache = v9->_pidNameCache;
       v9->_pidNameCache = v18;
 
-      v20 = [v8 copy];
+      v20 = [nameCopy copy];
       clientName = v9->_clientName;
       v9->_clientName = v20;
 
-      v9->_connectionThreshold = a4 * 3.0;
-      v9->_requestThreshold = a5 * 3.0;
+      v9->_connectionThreshold = threshold * 3.0;
+      v9->_requestThreshold = requestThreshold * 3.0;
     }
 
     self = v9;
-    v22 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v22 = 0;
+    selfCopy = 0;
   }
 
-  return v22;
+  return selfCopy;
 }
 
-- (void)trackConnectionFromPID:(int)a3
+- (void)trackConnectionFromPID:(int)d
 {
   v5 = [MEMORY[0x1E695DF00] now];
   queue = self->_queue;
@@ -62,7 +62,7 @@
   block[1] = 3221225472;
   block[2] = __53__DMCDaemonConnectionTracker_trackConnectionFromPID___block_invoke;
   block[3] = &unk_1E7ADC4C0;
-  v10 = a3;
+  dCopy = d;
   block[4] = self;
   v9 = v5;
   v7 = v5;
@@ -159,7 +159,7 @@ void __53__DMCDaemonConnectionTracker_trackConnectionFromPID___block_invoke(uint
   v28 = *MEMORY[0x1E69E9840];
 }
 
-- (void)trackRequestFromPID:(int)a3
+- (void)trackRequestFromPID:(int)d
 {
   v5 = [MEMORY[0x1E695DF00] now];
   queue = self->_queue;
@@ -167,7 +167,7 @@ void __53__DMCDaemonConnectionTracker_trackConnectionFromPID___block_invoke(uint
   block[1] = 3221225472;
   block[2] = __50__DMCDaemonConnectionTracker_trackRequestFromPID___block_invoke;
   block[3] = &unk_1E7ADC4C0;
-  v10 = a3;
+  dCopy = d;
   block[4] = self;
   v9 = v5;
   v7 = v5;

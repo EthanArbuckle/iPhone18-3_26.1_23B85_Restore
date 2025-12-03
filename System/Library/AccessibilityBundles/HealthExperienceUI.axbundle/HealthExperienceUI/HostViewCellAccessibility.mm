@@ -9,9 +9,9 @@
 - (id)_axButton
 {
   v2 = [(HostViewCellAccessibility *)self _accessibilityFindSubviewDescendantsPassingTest:&__block_literal_global_7];
-  v3 = [v2 firstObject];
+  firstObject = [v2 firstObject];
 
-  return v3;
+  return firstObject;
 }
 
 uint64_t __38__HostViewCellAccessibility__axButton__block_invoke(uint64_t a1, void *a2)
@@ -25,11 +25,11 @@ uint64_t __38__HostViewCellAccessibility__axButton__block_invoke(uint64_t a1, vo
 
 - (CGPoint)accessibilityActivationPoint
 {
-  v3 = [(HostViewCellAccessibility *)self _axButton];
-  v4 = v3;
-  if (v3)
+  _axButton = [(HostViewCellAccessibility *)self _axButton];
+  v4 = _axButton;
+  if (_axButton)
   {
-    [v3 accessibilityActivationPoint];
+    [_axButton accessibilityActivationPoint];
   }
 
   else
@@ -53,14 +53,14 @@ uint64_t __38__HostViewCellAccessibility__axButton__block_invoke(uint64_t a1, vo
 {
   v6.receiver = self;
   v6.super_class = HostViewCellAccessibility;
-  v3 = [(HostViewCellAccessibility *)&v6 accessibilityTraits];
-  v4 = [(HostViewCellAccessibility *)self _axButton];
-  if (v4)
+  accessibilityTraits = [(HostViewCellAccessibility *)&v6 accessibilityTraits];
+  _axButton = [(HostViewCellAccessibility *)self _axButton];
+  if (_axButton)
   {
 
 LABEL_4:
-    v3 |= *MEMORY[0x29EDC7F70];
-    return v3;
+    accessibilityTraits |= *MEMORY[0x29EDC7F70];
+    return accessibilityTraits;
   }
 
   if ([(HealthExperienceUI_CollectionViewCellAccessibility *)self _axIsSelectable])
@@ -68,7 +68,7 @@ LABEL_4:
     goto LABEL_4;
   }
 
-  return v3;
+  return accessibilityTraits;
 }
 
 @end

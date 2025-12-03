@@ -1,6 +1,6 @@
 @interface PHEmergencyEndCallAlert
-+ (id)alertWithDialRequest:(id)a3 dialAction:(id)a4 title:(id)a5 buttonTitle:(id)a6;
-- (PHEmergencyEndCallAlert)initWithDialRequest:(id)a3 dialAction:(id)a4 title:(id)a5 buttonTitle:(id)a6;
++ (id)alertWithDialRequest:(id)request dialAction:(id)action title:(id)title buttonTitle:(id)buttonTitle;
+- (PHEmergencyEndCallAlert)initWithDialRequest:(id)request dialAction:(id)action title:(id)title buttonTitle:(id)buttonTitle;
 - (id)alternateButtonTitle;
 - (id)defaultButtonTitle;
 - (id)message;
@@ -11,117 +11,117 @@
 
 @implementation PHEmergencyEndCallAlert
 
-+ (id)alertWithDialRequest:(id)a3 dialAction:(id)a4 title:(id)a5 buttonTitle:(id)a6
++ (id)alertWithDialRequest:(id)request dialAction:(id)action title:(id)title buttonTitle:(id)buttonTitle
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [[a1 alloc] initWithDialRequest:v13 dialAction:v12 title:v11 buttonTitle:v10];
+  buttonTitleCopy = buttonTitle;
+  titleCopy = title;
+  actionCopy = action;
+  requestCopy = request;
+  v14 = [[self alloc] initWithDialRequest:requestCopy dialAction:actionCopy title:titleCopy buttonTitle:buttonTitleCopy];
 
   return v14;
 }
 
 - (id)title
 {
-  v2 = [(PHEmergencyEndCallAlert *)self alertController];
-  v3 = [v2 title];
+  alertController = [(PHEmergencyEndCallAlert *)self alertController];
+  title = [alertController title];
 
-  return v3;
+  return title;
 }
 
 - (id)message
 {
-  v2 = [(PHEmergencyEndCallAlert *)self alertController];
-  v3 = [v2 message];
+  alertController = [(PHEmergencyEndCallAlert *)self alertController];
+  message = [alertController message];
 
-  return v3;
+  return message;
 }
 
 - (id)defaultButtonTitle
 {
-  v2 = [(PHEmergencyEndCallAlert *)self alertController];
-  v3 = [v2 actions];
+  alertController = [(PHEmergencyEndCallAlert *)self alertController];
+  actions = [alertController actions];
 
-  if ([v3 count])
+  if ([actions count])
   {
-    v4 = [v3 lastObject];
-    v5 = [v4 title];
+    lastObject = [actions lastObject];
+    title = [lastObject title];
   }
 
   else
   {
-    v5 = 0;
+    title = 0;
   }
 
-  return v5;
+  return title;
 }
 
 - (id)alternateButtonTitle
 {
-  v2 = [(PHEmergencyEndCallAlert *)self alertController];
-  v3 = [v2 actions];
+  alertController = [(PHEmergencyEndCallAlert *)self alertController];
+  actions = [alertController actions];
 
-  if ([v3 count] < 2)
+  if ([actions count] < 2)
   {
-    v5 = 0;
+    title = 0;
   }
 
   else
   {
-    v4 = [v3 firstObject];
-    v5 = [v4 title];
+    firstObject = [actions firstObject];
+    title = [firstObject title];
   }
 
-  return v5;
+  return title;
 }
 
 - (void)defaultResponse
 {
-  v2 = [(PHEmergencyEndCallAlert *)self alertController];
-  v5 = [v2 actions];
+  alertController = [(PHEmergencyEndCallAlert *)self alertController];
+  actions = [alertController actions];
 
-  if ([v5 count])
+  if ([actions count])
   {
-    v3 = [v5 lastObject];
-    v4 = [v3 handler];
+    lastObject = [actions lastObject];
+    handler = [lastObject handler];
 
-    if (v4)
+    if (handler)
     {
-      v4[2](v4, 0);
+      handler[2](handler, 0);
     }
   }
 }
 
 - (void)alternateResponse
 {
-  v2 = [(PHEmergencyEndCallAlert *)self alertController];
-  v5 = [v2 actions];
+  alertController = [(PHEmergencyEndCallAlert *)self alertController];
+  actions = [alertController actions];
 
-  if ([v5 count] >= 2)
+  if ([actions count] >= 2)
   {
-    v3 = [v5 firstObject];
-    v4 = [v3 handler];
+    firstObject = [actions firstObject];
+    handler = [firstObject handler];
 
-    if (v4)
+    if (handler)
     {
-      v4[2](v4, 0);
+      handler[2](handler, 0);
     }
   }
 }
 
-- (PHEmergencyEndCallAlert)initWithDialRequest:(id)a3 dialAction:(id)a4 title:(id)a5 buttonTitle:(id)a6
+- (PHEmergencyEndCallAlert)initWithDialRequest:(id)request dialAction:(id)action title:(id)title buttonTitle:(id)buttonTitle
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  requestCopy = request;
+  actionCopy = action;
+  titleCopy = title;
+  buttonTitleCopy = buttonTitle;
   v18.receiver = self;
   v18.super_class = PHEmergencyEndCallAlert;
   v14 = [(PHEmergencyEndCallAlert *)&v18 init];
   if (v14)
   {
-    v15 = [UIAlertController callEndStewieControllerWithDialRequest:v10 dialAction:v11 title:v12 buttonTitle:v13];
+    v15 = [UIAlertController callEndStewieControllerWithDialRequest:requestCopy dialAction:actionCopy title:titleCopy buttonTitle:buttonTitleCopy];
     alertController = v14->_alertController;
     v14->_alertController = v15;
   }

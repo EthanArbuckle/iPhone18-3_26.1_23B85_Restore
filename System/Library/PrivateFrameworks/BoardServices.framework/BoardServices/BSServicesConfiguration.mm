@@ -1,24 +1,24 @@
 @interface BSServicesConfiguration
-+ (id)_bootstrapConfigOfService:(void *)a3 withEnv:(void *)a4 info:;
-+ (id)_configOfService:(void *)a3 fromPlist:(char)a4 isViewService:(void *)a5 postfixBlock:;
-+ (id)_configOfService:(void *)a3 withViewServiceDomainsDictionary:;
-+ (id)_parseFeatureFlagsForDomain:(void *)a3 parameterName:(void *)a4 featureFlags:;
-+ (id)activateManualDomain:(id)a3;
++ (id)_bootstrapConfigOfService:(void *)service withEnv:(void *)env info:;
++ (id)_configOfService:(void *)service fromPlist:(char)plist isViewService:(void *)viewService postfixBlock:;
++ (id)_configOfService:(void *)service withViewServiceDomainsDictionary:;
++ (id)_parseFeatureFlagsForDomain:(void *)domain parameterName:(void *)name featureFlags:;
++ (id)activateManualDomain:(id)domain;
 + (id)bootstrapConfiguration;
 + (id)extendAutomaticBootstrapCompletion;
-+ (id)registerDynamicDomainsFromPlist:(id)a3;
++ (id)registerDynamicDomainsFromPlist:(id)plist;
 + (id)viewServiceConfiguration;
 + (void)activateViewServiceConfiguration;
 + (void)activateXPCService;
 + (void)registerViewServiceConfiguration;
 - (BSServicesConfiguration)init;
 - (NSSet)disabledDomains;
-- (id)_initWithDomainsByIdentifier:(void *)a3 disabledDomainsByIdentifier:;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)domainForIdentifier:(id)a3;
-- (id)domainForMachName:(id)a3;
-- (id)domainsContainingServiceIdentifier:(id)a3;
+- (id)_initWithDomainsByIdentifier:(void *)identifier disabledDomainsByIdentifier:;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)domainForIdentifier:(id)identifier;
+- (id)domainForMachName:(id)name;
+- (id)domainsContainingServiceIdentifier:(id)identifier;
 - (id)succinctDescription;
 @end
 
@@ -107,7 +107,7 @@ void __49__BSServicesConfiguration_bootstrapConfiguration__block_invoke()
     v12 = 2114;
     v13 = v7;
     v14 = 2048;
-    v15 = self;
+    selfCopy = self;
     v16 = 2114;
     v17 = @"BSServicesConfiguration.m";
     v18 = 1024;
@@ -124,35 +124,35 @@ void __49__BSServicesConfiguration_bootstrapConfiguration__block_invoke()
   return result;
 }
 
-- (id)_initWithDomainsByIdentifier:(void *)a3 disabledDomainsByIdentifier:
+- (id)_initWithDomainsByIdentifier:(void *)identifier disabledDomainsByIdentifier:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  identifierCopy = identifier;
+  if (self)
   {
-    v17.receiver = a1;
+    v17.receiver = self;
     v17.super_class = BSServicesConfiguration;
-    a1 = objc_msgSendSuper2(&v17, sel_init);
-    if (a1)
+    self = objc_msgSendSuper2(&v17, sel_init);
+    if (self)
     {
       v7 = [v5 copy];
-      v8 = a1[1];
-      a1[1] = v7;
+      v8 = self[1];
+      self[1] = v7;
 
-      v9 = [v6 copy];
-      v10 = a1[2];
-      a1[2] = v9;
+      v9 = [identifierCopy copy];
+      v10 = self[2];
+      self[2] = v9;
 
       v11 = MEMORY[0x1E695DFB8];
-      v12 = [a1[1] allValues];
-      v13 = [v12 sortedArrayUsingComparator:&__block_literal_global_6];
+      allValues = [self[1] allValues];
+      v13 = [allValues sortedArrayUsingComparator:&__block_literal_global_6];
       v14 = [v11 orderedSetWithArray:v13];
-      v15 = a1[3];
-      a1[3] = v14;
+      v15 = self[3];
+      self[3] = v14;
     }
   }
 
-  return a1;
+  return self;
 }
 
 uint64_t __84__BSServicesConfiguration__initWithDomainsByIdentifier_disabledDomainsByIdentifier___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -165,28 +165,28 @@ uint64_t __84__BSServicesConfiguration__initWithDomainsByIdentifier_disabledDoma
   return v7;
 }
 
-+ (id)_configOfService:(void *)a3 fromPlist:(char)a4 isViewService:(void *)a5 postfixBlock:
++ (id)_configOfService:(void *)service fromPlist:(char)plist isViewService:(void *)viewService postfixBlock:
 {
   v53 = *MEMORY[0x1E69E9840];
   v29 = a2;
-  v8 = a3;
-  v30 = a5;
+  serviceCopy = service;
+  viewServiceCopy = viewService;
   v9 = objc_opt_self();
   v10 = objc_autoreleasePoolPush();
-  v11 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v39[0] = MEMORY[0x1E69E9820];
   v39[1] = 3221225472;
   v39[2] = __81__BSServicesConfiguration__configOfService_fromPlist_isViewService_postfixBlock___block_invoke;
   v39[3] = &unk_1E7520A58;
-  v28 = v11;
+  v28 = dictionary;
   v40 = v28;
   v12 = MEMORY[0x19A908200](v39);
-  if (v8)
+  if (serviceCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v23 = [MEMORY[0x1E696AEC0] stringWithFormat:@"domainsInfo was of an unexpected type : %@", v8];
+      serviceCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"domainsInfo was of an unexpected type : %@", serviceCopy];
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
         v24 = NSStringFromSelector(sel__configOfService_fromPlist_isViewService_postfixBlock_);
@@ -203,40 +203,40 @@ uint64_t __84__BSServicesConfiguration__initWithDomainsByIdentifier_disabledDoma
         v49 = 1024;
         v50 = 98;
         v51 = 2114;
-        v52 = v23;
+        v52 = serviceCopy;
         _os_log_error_impl(&dword_19A821000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "failure in %{public}@ of <%{public}@:%p> (%{public}@:%i) : %{public}@", buf, 0x3Au);
       }
 
-      v27 = v23;
-      [v23 UTF8String];
+      v27 = serviceCopy;
+      [serviceCopy UTF8String];
       _bs_set_crash_log_message();
       __break(0);
       JUMPOUT(0x19A84C8D8);
     }
   }
 
-  v13 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v8, "count")}];
-  v14 = [MEMORY[0x1E695DF90] dictionary];
+  v13 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(serviceCopy, "count")}];
+  dictionary2 = [MEMORY[0x1E695DF90] dictionary];
   v31[0] = MEMORY[0x1E69E9820];
   v31[1] = 3221225472;
   v31[2] = __81__BSServicesConfiguration__configOfService_fromPlist_isViewService_postfixBlock___block_invoke_14;
   v31[3] = &unk_1E7520AD0;
   v36 = sel__configOfService_fromPlist_isViewService_postfixBlock_;
   v37 = v9;
-  v38 = a4;
+  plistCopy = plist;
   v15 = v12;
   v35 = v15;
   v16 = v29;
   v32 = v16;
-  v17 = v14;
+  v17 = dictionary2;
   v33 = v17;
   v18 = v13;
   v34 = v18;
-  [v8 enumerateKeysAndObjectsUsingBlock:v31];
+  [serviceCopy enumerateKeysAndObjectsUsingBlock:v31];
   v19 = [[BSServicesConfiguration alloc] _initWithDomainsByIdentifier:v18 disabledDomainsByIdentifier:v17];
-  if (v30)
+  if (viewServiceCopy)
   {
-    v20 = v30[2]();
+    v20 = viewServiceCopy[2]();
 
     v19 = v20;
   }
@@ -1335,12 +1335,12 @@ void __81__BSServicesConfiguration__configOfService_fromPlist_isViewService_post
   v19 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)_parseFeatureFlagsForDomain:(void *)a3 parameterName:(void *)a4 featureFlags:
++ (id)_parseFeatureFlagsForDomain:(void *)domain parameterName:(void *)name featureFlags:
 {
   v55 = *MEMORY[0x1E69E9840];
   v6 = a2;
-  v7 = a3;
-  v8 = a4;
+  domainCopy = domain;
+  nameCopy = name;
   v9 = objc_opt_self();
   v36 = 0;
   v37 = &v36;
@@ -1359,7 +1359,7 @@ void __81__BSServicesConfiguration__configOfService_fromPlist_isViewService_post
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    (v10)[2](v10, v8);
+    (v10)[2](v10, nameCopy);
   }
 
   else
@@ -1434,7 +1434,7 @@ void __81__BSServicesConfiguration__configOfService_fromPlist_isViewService_post
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v11 = v8;
+    v11 = nameCopy;
     v12 = [v11 countByEnumeratingWithState:&v31 objects:v42 count:16];
     if (v12)
     {
@@ -1555,20 +1555,20 @@ void __82__BSServicesConfiguration__parseFeatureFlagsForDomain_parameterName_fea
   v11 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)_bootstrapConfigOfService:(void *)a3 withEnv:(void *)a4 info:
++ (id)_bootstrapConfigOfService:(void *)service withEnv:(void *)env info:
 {
   v62 = *MEMORY[0x1E69E9840];
   v6 = a2;
-  v7 = a3;
-  v8 = a4;
+  serviceCopy = service;
+  envCopy = env;
   v9 = objc_opt_self();
   v10 = objc_autoreleasePoolPush();
-  if (v7)
+  if (serviceCopy)
   {
-    v11 = [v7 UTF8String];
-    if (!v11)
+    uTF8String = [serviceCopy UTF8String];
+    if (!uTF8String)
     {
-      v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"BSServiceDomains of environment could not be converted to UTF8String : %@", v7];
+      serviceCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"BSServiceDomains of environment could not be converted to UTF8String : %@", serviceCopy];
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
         v20 = NSStringFromSelector(sel__bootstrapConfigOfService_withEnv_info_);
@@ -1585,21 +1585,21 @@ void __82__BSServicesConfiguration__parseFeatureFlagsForDomain_parameterName_fea
         v58 = 1024;
         v59 = 427;
         v60 = 2114;
-        v61 = v19;
+        v61 = serviceCopy;
         _os_log_error_impl(&dword_19A821000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "failure in %{public}@ of <%{public}@:%p> (%{public}@:%i) : %{public}@", buf, 0x3Au);
       }
 
-      v23 = v19;
-      [v19 UTF8String];
+      v23 = serviceCopy;
+      [serviceCopy UTF8String];
       _bs_set_crash_log_message();
       __break(0);
       JUMPOUT(0x19A850500);
     }
 
-    v12 = [MEMORY[0x1E695DEF0] dataWithBytes:v11 length:strlen(v11)];
+    v12 = [MEMORY[0x1E695DEF0] dataWithBytes:uTF8String length:strlen(uTF8String)];
     if (!v12)
     {
-      v24 = [MEMORY[0x1E696AEC0] stringWithFormat:@"BSServiceDomains of environment could not be converted to NSData : %@", v7];
+      serviceCopy2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"BSServiceDomains of environment could not be converted to NSData : %@", serviceCopy];
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
         v25 = NSStringFromSelector(sel__bootstrapConfigOfService_withEnv_info_);
@@ -1616,12 +1616,12 @@ void __82__BSServicesConfiguration__parseFeatureFlagsForDomain_parameterName_fea
         v58 = 1024;
         v59 = 429;
         v60 = 2114;
-        v61 = v24;
+        v61 = serviceCopy2;
         _os_log_error_impl(&dword_19A821000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "failure in %{public}@ of <%{public}@:%p> (%{public}@:%i) : %{public}@", buf, 0x3Au);
       }
 
-      v28 = v24;
-      [v24 UTF8String];
+      v28 = serviceCopy2;
+      [serviceCopy2 UTF8String];
       _bs_set_crash_log_message();
       __break(0);
       JUMPOUT(0x19A8505FCLL);
@@ -1632,7 +1632,7 @@ void __82__BSServicesConfiguration__parseFeatureFlagsForDomain_parameterName_fea
     v14 = v49;
     if (!v13)
     {
-      v29 = [MEMORY[0x1E696AEC0] stringWithFormat:@"BSServiceDomains of environment could not be deserialized due to %@ : %@", v14, v7];
+      serviceCopy3 = [MEMORY[0x1E696AEC0] stringWithFormat:@"BSServiceDomains of environment could not be deserialized due to %@ : %@", v14, serviceCopy];
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
         v30 = NSStringFromSelector(sel__bootstrapConfigOfService_withEnv_info_);
@@ -1649,20 +1649,20 @@ void __82__BSServicesConfiguration__parseFeatureFlagsForDomain_parameterName_fea
         v58 = 1024;
         v59 = 432;
         v60 = 2114;
-        v61 = v29;
+        v61 = serviceCopy3;
         _os_log_error_impl(&dword_19A821000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "failure in %{public}@ of <%{public}@:%p> (%{public}@:%i) : %{public}@", buf, 0x3Au);
       }
 
-      v33 = v29;
-      [v29 UTF8String];
+      v33 = serviceCopy3;
+      [serviceCopy3 UTF8String];
       _bs_set_crash_log_message();
       __break(0);
       JUMPOUT(0x19A8506F8);
     }
 
-    if (v8)
+    if (envCopy)
     {
-      v34 = [MEMORY[0x1E696AEC0] stringWithFormat:@"BSServiceDomains cannot be defined in both the environment and the Info.plist : env=%@ info=%@", v13, v8];
+      envCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"BSServiceDomains cannot be defined in both the environment and the Info.plist : env=%@ info=%@", v13, envCopy];
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
         v35 = NSStringFromSelector(sel__bootstrapConfigOfService_withEnv_info_);
@@ -1679,12 +1679,12 @@ void __82__BSServicesConfiguration__parseFeatureFlagsForDomain_parameterName_fea
         v58 = 1024;
         v59 = 436;
         v60 = 2114;
-        v61 = v34;
+        v61 = envCopy;
         _os_log_error_impl(&dword_19A821000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "failure in %{public}@ of <%{public}@:%p> (%{public}@:%i) : %{public}@", buf, 0x3Au);
       }
 
-      v38 = v34;
-      [v34 UTF8String];
+      v38 = envCopy;
+      [envCopy UTF8String];
       _bs_set_crash_log_message();
       __break(0);
       JUMPOUT(0x19A8507F4);
@@ -1726,7 +1726,7 @@ void __82__BSServicesConfiguration__parseFeatureFlagsForDomain_parameterName_fea
 
   else
   {
-    if (v8)
+    if (envCopy)
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -1759,7 +1759,7 @@ void __82__BSServicesConfiguration__parseFeatureFlagsForDomain_parameterName_fea
         JUMPOUT(0x19A8509ECLL);
       }
 
-      v16 = [BSServicesConfiguration _configOfService:v6 fromPlist:v8 isViewService:0 postfixBlock:&__block_literal_global_213];
+      v16 = [BSServicesConfiguration _configOfService:v6 fromPlist:envCopy isViewService:0 postfixBlock:&__block_literal_global_213];
     }
 
     else
@@ -1780,18 +1780,18 @@ void __82__BSServicesConfiguration__parseFeatureFlagsForDomain_parameterName_fea
 - (NSSet)disabledDomains
 {
   v2 = MEMORY[0x1E695DFD8];
-  v3 = [(NSDictionary *)self->_disabledDomainsByIdentifier allValues];
-  v4 = [v2 setWithArray:v3];
+  allValues = [(NSDictionary *)self->_disabledDomainsByIdentifier allValues];
+  v4 = [v2 setWithArray:allValues];
 
   return v4;
 }
 
-- (id)domainForIdentifier:(id)a3
+- (id)domainForIdentifier:(id)identifier
 {
   v31 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  identifierCopy = identifier;
   NSClassFromString(&cfstr_Nsstring.isa);
-  if (!v5)
+  if (!identifierCopy)
   {
     v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"_bs_assert_object != nil"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -1804,7 +1804,7 @@ void __82__BSServicesConfiguration__parseFeatureFlagsForDomain_parameterName_fea
       v21 = 2114;
       v22 = v12;
       v23 = 2048;
-      v24 = self;
+      selfCopy2 = self;
       v25 = 2114;
       v26 = @"BSServicesConfiguration.m";
       v27 = 1024;
@@ -1834,7 +1834,7 @@ void __82__BSServicesConfiguration__parseFeatureFlagsForDomain_parameterName_fea
       v21 = 2114;
       v22 = v17;
       v23 = 2048;
-      v24 = self;
+      selfCopy2 = self;
       v25 = 2114;
       v26 = @"BSServicesConfiguration.m";
       v27 = 1024;
@@ -1851,19 +1851,19 @@ void __82__BSServicesConfiguration__parseFeatureFlagsForDomain_parameterName_fea
     JUMPOUT(0x19A850E70);
   }
 
-  v6 = [(NSDictionary *)self->_domainsByIdentifier objectForKey:v5];
+  v6 = [(NSDictionary *)self->_domainsByIdentifier objectForKey:identifierCopy];
 
   v7 = *MEMORY[0x1E69E9840];
 
   return v6;
 }
 
-- (id)domainForMachName:(id)a3
+- (id)domainForMachName:(id)name
 {
   v42 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  nameCopy = name;
   NSClassFromString(&cfstr_Nsstring.isa);
-  if (!v5)
+  if (!nameCopy)
   {
     v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"_bs_assert_object != nil"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -1876,7 +1876,7 @@ void __82__BSServicesConfiguration__parseFeatureFlagsForDomain_parameterName_fea
       v32 = 2114;
       v33 = v18;
       v34 = 2048;
-      v35 = self;
+      selfCopy2 = self;
       v36 = 2114;
       v37 = @"BSServicesConfiguration.m";
       v38 = 1024;
@@ -1906,7 +1906,7 @@ void __82__BSServicesConfiguration__parseFeatureFlagsForDomain_parameterName_fea
       v32 = 2114;
       v33 = v23;
       v34 = 2048;
-      v35 = self;
+      selfCopy2 = self;
       v36 = 2114;
       v37 = @"BSServicesConfiguration.m";
       v38 = 1024;
@@ -1942,8 +1942,8 @@ void __82__BSServicesConfiguration__parseFeatureFlagsForDomain_parameterName_fea
         }
 
         v10 = *(*(&v25 + 1) + 8 * i);
-        v11 = [v10 machName];
-        v12 = [v11 isEqualToString:v5];
+        machName = [v10 machName];
+        v12 = [machName isEqualToString:nameCopy];
 
         if (v12)
         {
@@ -1969,12 +1969,12 @@ LABEL_13:
   return v7;
 }
 
-- (id)domainsContainingServiceIdentifier:(id)a3
+- (id)domainsContainingServiceIdentifier:(id)identifier
 {
   v42 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  identifierCopy = identifier;
   NSClassFromString(&cfstr_Nsstring.isa);
-  if (!v5)
+  if (!identifierCopy)
   {
     v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"_bs_assert_object != nil"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -1987,7 +1987,7 @@ LABEL_13:
       v32 = 2114;
       v33 = v18;
       v34 = 2048;
-      v35 = self;
+      selfCopy2 = self;
       v36 = 2114;
       v37 = @"BSServicesConfiguration.m";
       v38 = 1024;
@@ -2017,7 +2017,7 @@ LABEL_13:
       v32 = 2114;
       v33 = v23;
       v34 = 2048;
-      v35 = self;
+      selfCopy2 = self;
       v36 = 2114;
       v37 = @"BSServicesConfiguration.m";
       v38 = 1024;
@@ -2054,7 +2054,7 @@ LABEL_13:
         }
 
         v11 = *(*(&v25 + 1) + 8 * i);
-        v12 = [v11 serviceForIdentifier:v5];
+        v12 = [v11 serviceForIdentifier:identifierCopy];
         if (v12)
         {
           [v6 addObject:v11];
@@ -2075,18 +2075,18 @@ LABEL_13:
 + (id)extendAutomaticBootstrapCompletion
 {
   v2 = +[BSServiceManager sharedInstance];
-  v3 = [(BSServiceManager *)v2 extendAutomaticBootstrapCompletion];
+  extendAutomaticBootstrapCompletion = [(BSServiceManager *)v2 extendAutomaticBootstrapCompletion];
 
-  return v3;
+  return extendAutomaticBootstrapCompletion;
 }
 
-+ (id)registerDynamicDomainsFromPlist:(id)a3
++ (id)registerDynamicDomainsFromPlist:(id)plist
 {
   v30 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  plistCopy = plist;
   v6 = +[BSServiceManager sharedInstance];
-  v7 = [(BSServiceConnection *)v6 _connection];
-  v8 = [BSServicesConfiguration _configOfService:v7 fromPlist:v5 isViewService:0 postfixBlock:0];
+  _connection = [(BSServiceConnection *)v6 _connection];
+  v8 = [BSServicesConfiguration _configOfService:_connection fromPlist:plistCopy isViewService:0 postfixBlock:0];
 
   v9 = [(BSServiceManager *)v6 registerDynamicConfiguration:v8];
   if (!v9)
@@ -2102,7 +2102,7 @@ LABEL_13:
       *&v21[12] = 2114;
       *&v21[14] = v19;
       v22 = 2048;
-      v23 = a1;
+      selfCopy = self;
       v24 = 2114;
       v25 = @"BSServicesConfiguration.m";
       v26 = 1024;
@@ -2140,11 +2140,11 @@ LABEL_13:
   return v10;
 }
 
-+ (id)activateManualDomain:(id)a3
++ (id)activateManualDomain:(id)domain
 {
-  v3 = a3;
+  domainCopy = domain;
   v4 = +[BSServiceManager sharedInstance];
-  v5 = [(BSServiceManager *)v4 activateManualDomain:v3];
+  v5 = [(BSServiceManager *)v4 activateManualDomain:domainCopy];
 
   return v5;
 }
@@ -2280,44 +2280,44 @@ id *__66__BSServicesConfiguration__bootstrapConfigOfService_withEnv_info___block
   return v35;
 }
 
-+ (id)_configOfService:(void *)a3 withViewServiceDomainsDictionary:
++ (id)_configOfService:(void *)service withViewServiceDomainsDictionary:
 {
   v4 = a2;
-  v5 = a3;
+  serviceCopy = service;
   objc_opt_self();
-  v6 = [BSServicesConfiguration _configOfService:v4 fromPlist:v5 isViewService:1 postfixBlock:0];
+  v6 = [BSServicesConfiguration _configOfService:v4 fromPlist:serviceCopy isViewService:1 postfixBlock:0];
 
   return v6;
 }
 
 - (id)succinctDescription
 {
-  v2 = [(BSServicesConfiguration *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(BSServicesConfiguration *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(BSServicesConfiguration *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(BSServicesConfiguration *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(BSServicesConfiguration *)self succinctDescriptionBuilder];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(BSServicesConfiguration *)self succinctDescriptionBuilder];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __65__BSServicesConfiguration_descriptionBuilderWithMultilinePrefix___block_invoke;
   v9[3] = &unk_1E75209E8;
-  v6 = v5;
+  v6 = succinctDescriptionBuilder;
   v10 = v6;
-  v11 = self;
-  [v6 appendBodySectionWithName:0 multilinePrefix:v4 block:v9];
+  selfCopy = self;
+  [v6 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v9];
   v7 = v6;
 
   return v6;

@@ -1,8 +1,8 @@
 @interface AXUISettingsListController
 - (AXUISettingsListController)init;
-- (id)specifierForKey:(id)a3;
+- (id)specifierForKey:(id)key;
 - (void)dealloc;
-- (void)setButtonCellStatus:(BOOL)a3 forSpecifier:(id)a4;
+- (void)setButtonCellStatus:(BOOL)status forSpecifier:(id)specifier;
 @end
 
 @implementation AXUISettingsListController
@@ -31,10 +31,10 @@
   [(AXUISettingsSetupCapableListController *)&v4 dealloc];
 }
 
-- (id)specifierForKey:(id)a3
+- (id)specifierForKey:(id)key
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  keyCopy = key;
   [(AXUISettingsListController *)self specifiers];
   v16 = 0u;
   v17 = 0u;
@@ -57,7 +57,7 @@
 
         v11 = *(*(&v16 + 1) + 8 * i);
         v12 = [v11 propertyForKey:{v9, v16}];
-        v13 = [v12 isEqualToString:v4];
+        v13 = [v12 isEqualToString:keyCopy];
 
         if (v13)
         {
@@ -82,13 +82,13 @@ LABEL_11:
   return v14;
 }
 
-- (void)setButtonCellStatus:(BOOL)a3 forSpecifier:(id)a4
+- (void)setButtonCellStatus:(BOOL)status forSpecifier:(id)specifier
 {
-  if (a4)
+  if (specifier)
   {
-    v4 = a3;
-    v5 = [a4 propertyForKey:*MEMORY[0x1E69C5990]];
-    [v5 setCellEnabled:v4];
+    statusCopy = status;
+    v5 = [specifier propertyForKey:*MEMORY[0x1E69C5990]];
+    [v5 setCellEnabled:statusCopy];
   }
 }
 

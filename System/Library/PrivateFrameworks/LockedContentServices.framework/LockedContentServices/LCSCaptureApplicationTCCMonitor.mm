@@ -1,19 +1,19 @@
 @interface LCSCaptureApplicationTCCMonitor
 + (LCSCaptureApplicationTCCMonitor)sharedMonitor;
 + (id)TCCServer;
-- (BOOL)_bundleHasCameraEntitlement:(id)a3;
+- (BOOL)_bundleHasCameraEntitlement:(id)entitlement;
 - (LCSCaptureApplicationTCCMonitor)init;
-- (id)_fetchCameraTCCUpdatesForBundleIdentifiers:(id)a3;
-- (id)_tccUpdateForAuthorizationRecord:(id)a3;
-- (id)addObserver:(id)a3 forBundleIdentifiers:(id)a4;
-- (unint64_t)cameraTCCStatusForBundleIdentifier:(id)a3;
+- (id)_fetchCameraTCCUpdatesForBundleIdentifiers:(id)identifiers;
+- (id)_tccUpdateForAuthorizationRecord:(id)record;
+- (id)addObserver:(id)observer forBundleIdentifiers:(id)identifiers;
+- (unint64_t)cameraTCCStatusForBundleIdentifier:(id)identifier;
 - (void)_beginObservingTCC;
-- (void)_notifyObserversOfUpdates:(id)a3;
+- (void)_notifyObserversOfUpdates:(id)updates;
 - (void)_observerQueue_fetchInitialTCCStateForUpdatedBundleIdentifiers;
-- (void)_observerQueue_notifyObserversOfUpdates:(id)a3;
-- (void)_removeObserver:(id)a3;
+- (void)_observerQueue_notifyObserversOfUpdates:(id)updates;
+- (void)_removeObserver:(id)observer;
 - (void)_setupQueue_setupTCCEventsSubscription;
-- (void)_tccUpdatesAccessQueue_handleTCCEventOfType:(unint64_t)a3 authorizationRecord:(id)a4;
+- (void)_tccUpdatesAccessQueue_handleTCCEventOfType:(unint64_t)type authorizationRecord:(id)record;
 @end
 
 @implementation LCSCaptureApplicationTCCMonitor
@@ -82,12 +82,12 @@ void __44__LCSCaptureApplicationTCCMonitor_TCCServer__block_invoke()
   return v2;
 }
 
-- (id)addObserver:(id)a3 forBundleIdentifiers:(id)a4
+- (id)addObserver:(id)observer forBundleIdentifiers:(id)identifiers
 {
-  v6 = a3;
-  v7 = [MEMORY[0x277CBEB98] setWithArray:a4];
+  observerCopy = observer;
+  v7 = [MEMORY[0x277CBEB98] setWithArray:identifiers];
   v8 = objc_alloc_init(_LCSCaptureApplicationTCCObservationToken);
-  [(_LCSCaptureApplicationTCCObservationToken *)v8 setObserver:v6];
+  [(_LCSCaptureApplicationTCCObservationToken *)v8 setObserver:observerCopy];
   [(_LCSCaptureApplicationTCCObservationToken *)v8 setBundleIdentifiers:v7];
   objc_initWeak(&location, self);
   observerQueue = self->_observerQueue;
@@ -96,13 +96,13 @@ void __44__LCSCaptureApplicationTCCMonitor_TCCServer__block_invoke()
   v15[2] = __68__LCSCaptureApplicationTCCMonitor_addObserver_forBundleIdentifiers___block_invoke;
   v15[3] = &unk_279825048;
   objc_copyWeak(&v20, &location);
-  v16 = v6;
+  v16 = observerCopy;
   v17 = v7;
   v10 = v8;
   v18 = v10;
-  v19 = self;
+  selfCopy = self;
   v11 = v7;
-  v12 = v6;
+  v12 = observerCopy;
   dispatch_async(observerQueue, v15);
   v13 = v10;
 
@@ -180,9 +180,9 @@ BOOL __68__LCSCaptureApplicationTCCMonitor_addObserver_forBundleIdentifiers___bl
   return v4;
 }
 
-- (unint64_t)cameraTCCStatusForBundleIdentifier:(id)a3
+- (unint64_t)cameraTCCStatusForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -193,9 +193,9 @@ BOOL __68__LCSCaptureApplicationTCCMonitor_addObserver_forBundleIdentifiers___bl
   block[2] = __70__LCSCaptureApplicationTCCMonitor_cameraTCCStatusForBundleIdentifier___block_invoke;
   block[3] = &unk_279825070;
   block[4] = self;
-  v10 = v4;
+  v10 = identifierCopy;
   v11 = &v12;
-  v6 = v4;
+  v6 = identifierCopy;
   dispatch_sync(tccUpdatesAccessQueue, block);
   v7 = v13[3];
 
@@ -244,9 +244,9 @@ void __70__LCSCaptureApplicationTCCMonitor_cameraTCCStatusForBundleIdentifier___
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_removeObserver:(id)a3
+- (void)_removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   objc_initWeak(&location, self);
   observerQueue = self->_observerQueue;
   v7[0] = MEMORY[0x277D85DD0];
@@ -254,9 +254,9 @@ void __70__LCSCaptureApplicationTCCMonitor_cameraTCCStatusForBundleIdentifier___
   v7[2] = __51__LCSCaptureApplicationTCCMonitor__removeObserver___block_invoke;
   v7[3] = &unk_279825098;
   objc_copyWeak(&v10, &location);
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = observerCopy;
+  selfCopy = self;
+  v6 = observerCopy;
   dispatch_async(observerQueue, v7);
 
   objc_destroyWeak(&v10);
@@ -327,9 +327,9 @@ BOOL __51__LCSCaptureApplicationTCCMonitor__removeObserver___block_invoke_2(uint
             objc_enumerationMutation(v4);
           }
 
-          v9 = [*(*(&v18 + 1) + 8 * v8) bundleIdentifiers];
-          v10 = [v9 allObjects];
-          [v3 addObjectsFromArray:v10];
+          bundleIdentifiers = [*(*(&v18 + 1) + 8 * v8) bundleIdentifiers];
+          allObjects = [bundleIdentifiers allObjects];
+          [v3 addObjectsFromArray:allObjects];
 
           ++v8;
         }
@@ -538,26 +538,26 @@ void __97__LCSCaptureApplicationTCCMonitor__observerQueue_fetchInitialTCCStateFo
   }
 }
 
-- (id)_fetchCameraTCCUpdatesForBundleIdentifiers:(id)a3
+- (id)_fetchCameraTCCUpdatesForBundleIdentifiers:(id)identifiers
 {
   v44 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
-  v6 = [MEMORY[0x277CBEB18] array];
+  identifiersCopy = identifiers;
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   v7 = *MEMORY[0x277D6C120];
   v8 = tcc_service_singleton_for_CF_name();
   v9 = tcc_message_options_create();
   tcc_message_options_set_reply_handler_policy();
   tcc_message_options_set_request_prompt_policy();
-  v10 = [objc_opt_class() TCCServer];
+  tCCServer = [objc_opt_class() TCCServer];
   v35 = MEMORY[0x277D85DD0];
   v36 = 3221225472;
   v37 = __78__LCSCaptureApplicationTCCMonitor__fetchCameraTCCUpdatesForBundleIdentifiers___block_invoke;
   v38 = &unk_2798250E8;
-  v39 = self;
-  v40 = v4;
-  v41 = v5;
-  v11 = v6;
+  selfCopy = self;
+  v40 = identifiersCopy;
+  v41 = array;
+  v11 = array2;
   v42 = v11;
   v27 = v9;
   v28 = v8;
@@ -645,12 +645,12 @@ void __78__LCSCaptureApplicationTCCMonitor__fetchCameraTCCUpdatesForBundleIdenti
   }
 }
 
-- (BOOL)_bundleHasCameraEntitlement:(id)a3
+- (BOOL)_bundleHasCameraEntitlement:(id)entitlement
 {
-  v3 = [MEMORY[0x277CC1E90] bundleRecordWithBundleIdentifier:a3 allowPlaceholder:1 error:0];
-  v4 = [v3 entitlements];
+  v3 = [MEMORY[0x277CC1E90] bundleRecordWithBundleIdentifier:entitlement allowPlaceholder:1 error:0];
+  entitlements = [v3 entitlements];
   v5 = objc_opt_self();
-  v6 = [v4 objectForKey:@"com.apple.private.tcc.allow" ofClass:v5];
+  v6 = [entitlements objectForKey:@"com.apple.private.tcc.allow" ofClass:v5];
 
   LOBYTE(v5) = [v6 containsObject:*MEMORY[0x277D6C120]];
   return v5;
@@ -719,9 +719,9 @@ void __53__LCSCaptureApplicationTCCMonitor__beginObservingTCC__block_invoke(uint
           objc_enumerationMutation(v7);
         }
 
-        v11 = [*(*(&v29 + 1) + 8 * i) bundleIdentifiers];
-        v12 = [v11 allObjects];
-        [v6 addObjectsFromArray:v12];
+        bundleIdentifiers = [*(*(&v29 + 1) + 8 * i) bundleIdentifiers];
+        allObjects = [bundleIdentifiers allObjects];
+        [v6 addObjectsFromArray:allObjects];
       }
 
       v8 = [v7 countByEnumeratingWithState:&v29 objects:v43 count:16];
@@ -786,17 +786,17 @@ void __73__LCSCaptureApplicationTCCMonitor__setupQueue_setupTCCEventsSubscriptio
   }
 }
 
-- (void)_tccUpdatesAccessQueue_handleTCCEventOfType:(unint64_t)a3 authorizationRecord:(id)a4
+- (void)_tccUpdatesAccessQueue_handleTCCEventOfType:(unint64_t)type authorizationRecord:(id)record
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  if (a4)
+  if (record)
   {
-    v5 = [(LCSCaptureApplicationTCCMonitor *)self _tccUpdateForAuthorizationRecord:a4];
+    v5 = [(LCSCaptureApplicationTCCMonitor *)self _tccUpdateForAuthorizationRecord:record];
     if (v5)
     {
       v6 = [(NSDictionary *)self->_tccUpdatesAccessQueue_latestTCCUpdatesByBundleIdentifier mutableCopy];
-      v7 = [v5 bundleIdentifier];
-      [v6 setObject:v5 forKeyedSubscript:v7];
+      bundleIdentifier = [v5 bundleIdentifier];
+      [v6 setObject:v5 forKeyedSubscript:bundleIdentifier];
 
       v8 = [v6 copy];
       tccUpdatesAccessQueue_latestTCCUpdatesByBundleIdentifier = self->_tccUpdatesAccessQueue_latestTCCUpdatesByBundleIdentifier;
@@ -811,9 +811,9 @@ void __73__LCSCaptureApplicationTCCMonitor__setupQueue_setupTCCEventsSubscriptio
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_tccUpdateForAuthorizationRecord:(id)a3
+- (id)_tccUpdateForAuthorizationRecord:(id)record
 {
-  v3 = a3;
+  recordCopy = record;
   v4 = tcc_authorization_record_get_subject_identity();
   if (tcc_identity_get_type())
   {
@@ -841,9 +841,9 @@ void __73__LCSCaptureApplicationTCCMonitor__setupQueue_setupTCCEventsSubscriptio
   return v5;
 }
 
-- (void)_notifyObserversOfUpdates:(id)a3
+- (void)_notifyObserversOfUpdates:(id)updates
 {
-  v4 = a3;
+  updatesCopy = updates;
   objc_initWeak(&location, self);
   observerQueue = self->_observerQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -851,8 +851,8 @@ void __73__LCSCaptureApplicationTCCMonitor__setupQueue_setupTCCEventsSubscriptio
   block[2] = __61__LCSCaptureApplicationTCCMonitor__notifyObserversOfUpdates___block_invoke;
   block[3] = &unk_2798250C0;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = updatesCopy;
+  v6 = updatesCopy;
   dispatch_async(observerQueue, block);
 
   objc_destroyWeak(&v9);
@@ -870,12 +870,12 @@ void __61__LCSCaptureApplicationTCCMonitor__notifyObserversOfUpdates___block_inv
   }
 }
 
-- (void)_observerQueue_notifyObserversOfUpdates:(id)a3
+- (void)_observerQueue_notifyObserversOfUpdates:(id)updates
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(NSSet *)self->_observerQueue_observerTokens allObjects];
-  v6 = [v5 copy];
+  updatesCopy = updates;
+  allObjects = [(NSSet *)self->_observerQueue_observerTokens allObjects];
+  v6 = [allObjects copy];
 
   if ([v6 count])
   {
@@ -904,9 +904,9 @@ void __61__LCSCaptureApplicationTCCMonitor__notifyObserversOfUpdates___block_inv
           v16[2] = __75__LCSCaptureApplicationTCCMonitor__observerQueue_notifyObserversOfUpdates___block_invoke;
           v16[3] = &unk_279825160;
           v16[4] = v11;
-          v12 = [v4 bs_filter:v16];
-          v13 = [v11 observer];
-          [v13 tccMonitor:self didUpdateCameraTCCStatuses:v12];
+          v12 = [updatesCopy bs_filter:v16];
+          observer = [v11 observer];
+          [observer tccMonitor:self didUpdateCameraTCCStatuses:v12];
         }
 
         v8 = [obj countByEnumeratingWithState:&v17 objects:v21 count:16];

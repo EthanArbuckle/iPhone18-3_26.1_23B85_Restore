@@ -8,7 +8,7 @@
 - (id)cmsCoded
 {
   v2 = cmsDateFormatter();
-  v3 = [v2 stringFromDate:a1];
+  v3 = [v2 stringFromDate:self];
 
   return v3;
 }

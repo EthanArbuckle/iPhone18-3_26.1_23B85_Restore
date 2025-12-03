@@ -1,29 +1,29 @@
 @interface WFStringSubstitutableState
-+ (id)serializedRepresentationFromValue:(id)a3;
-+ (id)valueFromSerializedRepresentation:(id)a3 variableProvider:(id)a4 parameter:(id)a5;
++ (id)serializedRepresentationFromValue:(id)value;
++ (id)valueFromSerializedRepresentation:(id)representation variableProvider:(id)provider parameter:(id)parameter;
 @end
 
 @implementation WFStringSubstitutableState
 
-+ (id)serializedRepresentationFromValue:(id)a3
++ (id)serializedRepresentationFromValue:(id)value
 {
-  v5 = a3;
+  valueCopy = value;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:a1 file:@"WFStringSubstitutableState.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"[value isKindOfClass:[NSString class]]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFStringSubstitutableState.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"[value isKindOfClass:[NSString class]]"}];
   }
 
-  return v5;
+  return valueCopy;
 }
 
-+ (id)valueFromSerializedRepresentation:(id)a3 variableProvider:(id)a4 parameter:(id)a5
++ (id)valueFromSerializedRepresentation:(id)representation variableProvider:(id)provider parameter:(id)parameter
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  representationCopy = representation;
   v6 = objc_opt_class();
-  v7 = v5;
+  v7 = representationCopy;
   if (v7 && (objc_opt_isKindOfClass() & 1) == 0)
   {
     v9 = getWFGeneralLogObject();

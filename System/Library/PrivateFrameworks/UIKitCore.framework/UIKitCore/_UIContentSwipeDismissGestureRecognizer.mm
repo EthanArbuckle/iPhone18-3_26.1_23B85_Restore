@@ -1,17 +1,17 @@
 @interface _UIContentSwipeDismissGestureRecognizer
 - (BOOL)_willScrollX;
 - (BOOL)_willScrollY;
-- (_TtC5UIKit39_UIContentSwipeDismissGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
+- (_TtC5UIKit39_UIContentSwipeDismissGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
 - (int64_t)state;
 - (void)reset;
-- (void)setState:(int64_t)a3;
+- (void)setState:(int64_t)state;
 @end
 
 @implementation _UIContentSwipeDismissGestureRecognizer
 
-- (_TtC5UIKit39_UIContentSwipeDismissGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (_TtC5UIKit39_UIContentSwipeDismissGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
-  if (a3)
+  if (target)
   {
     swift_unknownObjectRetain();
     sub_18A4A7DE8();
@@ -23,12 +23,12 @@
     memset(v6, 0, sizeof(v6));
   }
 
-  return sub_188C85D98(v6, a4);
+  return sub_188C85D98(v6, action);
 }
 
 - (BOOL)_willScrollX
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_189006D9C();
 
   return v3 & 1;
@@ -36,7 +36,7 @@
 
 - (BOOL)_willScrollY
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_189007114();
 
   return v3 & 1;
@@ -58,10 +58,10 @@
   return [(UIGestureRecognizer *)&v3 state];
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
-  v4 = self;
-  sub_189006F84(a3);
+  selfCopy = self;
+  sub_189006F84(state);
 }
 
 @end

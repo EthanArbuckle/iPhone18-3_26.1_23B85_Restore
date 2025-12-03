@@ -1,22 +1,22 @@
 @interface NotificationCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation NotificationCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"UITableViewCell" hasInstanceMethod:@"_imageView:" withFullSignature:{"@", "B", 0}];
-  [v3 validateClass:@"NotificationCell" isKindOfClass:@"UITableViewCell"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"UITableViewCell" hasInstanceMethod:@"_imageView:" withFullSignature:{"@", "B", 0}];
+  [validationsCopy validateClass:@"NotificationCell" isKindOfClass:@"UITableViewCell"];
 }
 
 - (unint64_t)accessibilityTraits
 {
   v17.receiver = self;
   v17.super_class = NotificationCellAccessibility;
-  v2 = [(NotificationCellAccessibility *)&v17 accessibilityTraits];
+  accessibilityTraits = [(NotificationCellAccessibility *)&v17 accessibilityTraits];
   v16 = 0;
   v10 = 0;
   v11 = &v10;
@@ -35,9 +35,9 @@
     abort();
   }
 
-  v5 = [v4 image];
-  v6 = [v5 accessibilityIdentification];
-  v7 = [v6 hasPrefix:@"UIPreferencesBlueCheck"];
+  image = [v4 image];
+  accessibilityIdentification = [image accessibilityIdentification];
+  v7 = [accessibilityIdentification hasPrefix:@"UIPreferencesBlueCheck"];
 
   if (v7)
   {
@@ -49,7 +49,7 @@
     v8 = 0;
   }
 
-  return v8 | v2;
+  return v8 | accessibilityTraits;
 }
 
 uint64_t __52__NotificationCellAccessibility_accessibilityTraits__block_invoke(uint64_t a1)

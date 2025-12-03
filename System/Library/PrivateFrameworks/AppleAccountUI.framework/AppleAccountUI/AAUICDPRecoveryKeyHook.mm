@@ -1,33 +1,33 @@
 @interface AAUICDPRecoveryKeyHook
-+ (id)helperWithPresenter:(id)a3 forceInline:(BOOL)a4;
-- (BOOL)_shouldMatchAction:(id)a3;
-- (BOOL)shouldMatchElement:(id)a3;
-- (BOOL)shouldMatchModel:(id)a3;
++ (id)helperWithPresenter:(id)presenter forceInline:(BOOL)inline;
+- (BOOL)_shouldMatchAction:(id)action;
+- (BOOL)shouldMatchElement:(id)element;
+- (BOOL)shouldMatchModel:(id)model;
 - (RUIServerHookDelegate)delegate;
-- (void)_deleteRecoveryKey:(id)a3;
-- (void)_generateRecoveryKeyWithType:(int64_t)a3 attributes:(id)a4 completion:(id)a5;
-- (void)_verifyRecoveryKeyWithType:(int64_t)a3 attributes:(id)a4 completion:(id)a5;
-- (void)processElement:(id)a3 attributes:(id)a4 objectModel:(id)a5 completion:(id)a6;
-- (void)processObjectModel:(id)a3 completion:(id)a4;
+- (void)_deleteRecoveryKey:(id)key;
+- (void)_generateRecoveryKeyWithType:(int64_t)type attributes:(id)attributes completion:(id)completion;
+- (void)_verifyRecoveryKeyWithType:(int64_t)type attributes:(id)attributes completion:(id)completion;
+- (void)processElement:(id)element attributes:(id)attributes objectModel:(id)model completion:(id)completion;
+- (void)processObjectModel:(id)model completion:(id)completion;
 @end
 
 @implementation AAUICDPRecoveryKeyHook
 
-- (BOOL)shouldMatchElement:(id)a3
+- (BOOL)shouldMatchElement:(id)element
 {
-  v4 = [a3 name];
-  LOBYTE(self) = [(AAUICDPRecoveryKeyHook *)self _shouldMatchAction:v4];
+  name = [element name];
+  LOBYTE(self) = [(AAUICDPRecoveryKeyHook *)self _shouldMatchAction:name];
 
   return self;
 }
 
-- (BOOL)shouldMatchModel:(id)a3
+- (BOOL)shouldMatchModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   objc_opt_class();
-  v5 = [v4 clientInfo];
+  clientInfo = [modelCopy clientInfo];
 
-  v6 = [v5 objectForKeyedSubscript:*MEMORY[0x1E69C7058]];
+  v6 = [clientInfo objectForKeyedSubscript:*MEMORY[0x1E69C7058]];
   if (objc_opt_isKindOfClass())
   {
     v7 = v6;
@@ -42,67 +42,67 @@
   return v8;
 }
 
-- (BOOL)_shouldMatchAction:(id)a3
+- (BOOL)_shouldMatchAction:(id)action
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"rk:regenerate"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"rk:enable") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"rk:disable"))
+  actionCopy = action;
+  if ([actionCopy isEqualToString:@"rk:regenerate"] & 1) != 0 || (objc_msgSend(actionCopy, "isEqualToString:", @"rk:enable") & 1) != 0 || (objc_msgSend(actionCopy, "isEqualToString:", @"rk:disable"))
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"rk:verify"];
+    v4 = [actionCopy isEqualToString:@"rk:verify"];
   }
 
   return v4;
 }
 
-- (void)processElement:(id)a3 attributes:(id)a4 objectModel:(id)a5 completion:(id)a6
+- (void)processElement:(id)element attributes:(id)attributes objectModel:(id)model completion:(id)completion
 {
-  v19 = a3;
-  v9 = a4;
-  v10 = a6;
-  v11 = [v19 name];
-  v12 = [v11 isEqualToString:@"rk:regenerate"];
+  elementCopy = element;
+  attributesCopy = attributes;
+  completionCopy = completion;
+  name = [elementCopy name];
+  v12 = [name isEqualToString:@"rk:regenerate"];
 
   if (v12)
   {
-    v13 = self;
+    selfCopy2 = self;
     v14 = 4;
 LABEL_5:
-    [(AAUICDPRecoveryKeyHook *)v13 _generateRecoveryKeyWithType:v14 attributes:v9 completion:v10];
+    [(AAUICDPRecoveryKeyHook *)selfCopy2 _generateRecoveryKeyWithType:v14 attributes:attributesCopy completion:completionCopy];
     goto LABEL_6;
   }
 
-  v15 = [v19 name];
-  v16 = [v15 isEqualToString:@"rk:enable"];
+  name2 = [elementCopy name];
+  v16 = [name2 isEqualToString:@"rk:enable"];
 
   if (v16)
   {
-    v13 = self;
+    selfCopy2 = self;
     v14 = 5;
     goto LABEL_5;
   }
 
-  v17 = [v19 name];
-  v18 = [v17 isEqualToString:@"rk:disable"];
+  name3 = [elementCopy name];
+  v18 = [name3 isEqualToString:@"rk:disable"];
 
   if (v18)
   {
-    [(AAUICDPRecoveryKeyHook *)self _deleteRecoveryKey:v10];
+    [(AAUICDPRecoveryKeyHook *)self _deleteRecoveryKey:completionCopy];
   }
 
 LABEL_6:
 }
 
-- (void)processObjectModel:(id)a3 completion:(id)a4
+- (void)processObjectModel:(id)model completion:(id)completion
 {
-  v13 = a3;
-  v6 = a4;
+  modelCopy = model;
+  completionCopy = completion;
   objc_opt_class();
-  v7 = [v13 clientInfo];
-  v8 = [v7 objectForKeyedSubscript:*MEMORY[0x1E69C7058]];
+  clientInfo = [modelCopy clientInfo];
+  v8 = [clientInfo objectForKeyedSubscript:*MEMORY[0x1E69C7058]];
   if (objc_opt_isKindOfClass())
   {
     v9 = v8;
@@ -115,11 +115,11 @@ LABEL_6:
 
   if ([v9 isEqualToString:@"rk:regenerate"])
   {
-    v10 = [v13 clientInfo];
-    v11 = self;
+    clientInfo2 = [modelCopy clientInfo];
+    selfCopy2 = self;
     v12 = 4;
 LABEL_8:
-    [(AAUICDPRecoveryKeyHook *)v11 _generateRecoveryKeyWithType:v12 attributes:v10 completion:v6];
+    [(AAUICDPRecoveryKeyHook *)selfCopy2 _generateRecoveryKeyWithType:v12 attributes:clientInfo2 completion:completionCopy];
 LABEL_9:
 
     goto LABEL_10;
@@ -127,30 +127,30 @@ LABEL_9:
 
   if ([v9 isEqualToString:@"rk:enable"])
   {
-    v10 = [v13 clientInfo];
-    v11 = self;
+    clientInfo2 = [modelCopy clientInfo];
+    selfCopy2 = self;
     v12 = 5;
     goto LABEL_8;
   }
 
   if ([v9 isEqualToString:@"rk:verify"])
   {
-    v10 = [v13 clientInfo];
-    [(AAUICDPRecoveryKeyHook *)self _verifyRecoveryKeyWithType:8 attributes:v10 completion:v6];
+    clientInfo2 = [modelCopy clientInfo];
+    [(AAUICDPRecoveryKeyHook *)self _verifyRecoveryKeyWithType:8 attributes:clientInfo2 completion:completionCopy];
     goto LABEL_9;
   }
 
   if ([v9 isEqualToString:@"rk:disable"])
   {
-    [(AAUICDPRecoveryKeyHook *)self _deleteRecoveryKey:v6];
+    [(AAUICDPRecoveryKeyHook *)self _deleteRecoveryKey:completionCopy];
   }
 
 LABEL_10:
 }
 
-- (void)_deleteRecoveryKey:(id)a3
+- (void)_deleteRecoveryKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   v4 = objc_alloc(MEMORY[0x1E6997800]);
   v5 = +[AAUICDPHelper cdpContextForPrimaryAccount];
   v6 = [v4 initWithContext:v5];
@@ -159,8 +159,8 @@ LABEL_10:
   v8[1] = 3221225472;
   v8[2] = __45__AAUICDPRecoveryKeyHook__deleteRecoveryKey___block_invoke;
   v8[3] = &unk_1E820C308;
-  v9 = v3;
-  v7 = v3;
+  v9 = keyCopy;
+  v7 = keyCopy;
   [v6 deleteRecoveryKey:v8];
 }
 
@@ -208,10 +208,10 @@ void __45__AAUICDPRecoveryKeyHook__deleteRecoveryKey___block_invoke_49(uint64_t 
   }
 }
 
-- (void)_generateRecoveryKeyWithType:(int64_t)a3 attributes:(id)a4 completion:(id)a5
+- (void)_generateRecoveryKeyWithType:(int64_t)type attributes:(id)attributes completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
+  attributesCopy = attributes;
+  completionCopy = completion;
   v10 = _AAUILogSystem();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
@@ -220,7 +220,7 @@ void __45__AAUICDPRecoveryKeyHook__deleteRecoveryKey___block_invoke_49(uint64_t 
   }
 
   objc_opt_class();
-  v11 = [v8 objectForKeyedSubscript:*MEMORY[0x1E69C7068]];
+  v11 = [attributesCopy objectForKeyedSubscript:*MEMORY[0x1E69C7068]];
   if (objc_opt_isKindOfClass())
   {
     v12 = v11;
@@ -241,18 +241,18 @@ void __45__AAUICDPRecoveryKeyHook__deleteRecoveryKey___block_invoke_49(uint64_t 
   v15 = [WeakRetained presentationContextForHook:self];
   v27 = [v13 helperWithPresenter:v15 forceInline:{objc_msgSend(v12, "BOOLValue")}];
 
-  v16 = [*(v23 + 5) cdpStateControllerForPrimaryAccount];
-  v17 = [v16 context];
-  [v17 setType:a3];
+  cdpStateControllerForPrimaryAccount = [*(v23 + 5) cdpStateControllerForPrimaryAccount];
+  context = [cdpStateControllerForPrimaryAccount context];
+  [context setType:type];
 
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __77__AAUICDPRecoveryKeyHook__generateRecoveryKeyWithType_attributes_completion___block_invoke;
   v19[3] = &unk_1E820C408;
-  v18 = v9;
+  v18 = completionCopy;
   v20 = v18;
   v21 = buf;
-  [v16 generateNewRecoveryKey:v19];
+  [cdpStateControllerForPrimaryAccount generateNewRecoveryKey:v19];
 
   _Block_object_dispose(buf, 8);
 }
@@ -305,10 +305,10 @@ void __77__AAUICDPRecoveryKeyHook__generateRecoveryKeyWithType_attributes_comple
   }
 }
 
-- (void)_verifyRecoveryKeyWithType:(int64_t)a3 attributes:(id)a4 completion:(id)a5
+- (void)_verifyRecoveryKeyWithType:(int64_t)type attributes:(id)attributes completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
+  attributesCopy = attributes;
+  completionCopy = completion;
   v10 = _AAUILogSystem();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
@@ -317,7 +317,7 @@ void __77__AAUICDPRecoveryKeyHook__generateRecoveryKeyWithType_attributes_comple
   }
 
   objc_opt_class();
-  v11 = [v8 objectForKeyedSubscript:*MEMORY[0x1E69C7068]];
+  v11 = [attributesCopy objectForKeyedSubscript:*MEMORY[0x1E69C7068]];
   if (objc_opt_isKindOfClass())
   {
     v12 = v11;
@@ -338,24 +338,24 @@ void __77__AAUICDPRecoveryKeyHook__generateRecoveryKeyWithType_attributes_comple
   v15 = [WeakRetained presentationContextForHook:self];
   v31 = [v13 helperWithPresenter:v15 forceInline:{objc_msgSend(v12, "BOOLValue")}];
 
-  v16 = [*(v27 + 5) cdpStateControllerForPrimaryAccount];
+  cdpStateControllerForPrimaryAccount = [*(v27 + 5) cdpStateControllerForPrimaryAccount];
   v25 = 0;
-  LOBYTE(v15) = [v16 isRecoveryKeyAvailableWithError:&v25];
+  LOBYTE(v15) = [cdpStateControllerForPrimaryAccount isRecoveryKeyAvailableWithError:&v25];
   v17 = v25;
   if (v15)
   {
-    v18 = [v16 context];
-    [v18 setType:a3];
+    context = [cdpStateControllerForPrimaryAccount context];
+    [context setType:type];
 
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __75__AAUICDPRecoveryKeyHook__verifyRecoveryKeyWithType_attributes_completion___block_invoke;
     v20[3] = &unk_1E820C430;
     v20[4] = self;
-    v21 = v8;
-    v22 = v9;
+    v21 = attributesCopy;
+    v22 = completionCopy;
     v23 = buf;
-    [v16 verifyRecoveryKey:v20];
+    [cdpStateControllerForPrimaryAccount verifyRecoveryKey:v20];
   }
 
   else
@@ -372,7 +372,7 @@ void __77__AAUICDPRecoveryKeyHook__generateRecoveryKeyWithType_attributes_comple
       v17 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E69977D8] code:-5211 userInfo:0];
     }
 
-    (*(v9 + 2))(v9, 0, v17);
+    (*(completionCopy + 2))(completionCopy, 0, v17);
   }
 
   _Block_object_dispose(buf, 8);
@@ -418,22 +418,22 @@ void __75__AAUICDPRecoveryKeyHook__verifyRecoveryKeyWithType_attributes_completi
   }
 }
 
-+ (id)helperWithPresenter:(id)a3 forceInline:(BOOL)a4
++ (id)helperWithPresenter:(id)presenter forceInline:(BOOL)inline
 {
-  v4 = a4;
+  inlineCopy = inline;
   v13 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  presenterCopy = presenter;
   v6 = _AAUILogSystem();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [MEMORY[0x1E696AD98] numberWithBool:v4];
+    v7 = [MEMORY[0x1E696AD98] numberWithBool:inlineCopy];
     v11 = 138412290;
     v12 = v7;
     _os_log_impl(&dword_1C5355000, v6, OS_LOG_TYPE_DEFAULT, "creating controller with inline forced: %@", &v11, 0xCu);
   }
 
-  v8 = [AAUICDPHelper helperWithPresenter:v5];
-  if (v4)
+  v8 = [AAUICDPHelper helperWithPresenter:presenterCopy];
+  if (inlineCopy)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();

@@ -1,55 +1,55 @@
 @interface EKCalendarWrapper
-- (EKCalendarWrapper)initWithCalendar:(id)a3;
-- (EKCalendarWrapper)initWithCoder:(id)a3;
-- (id)calendarInEventStore:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (EKCalendarWrapper)initWithCalendar:(id)calendar;
+- (EKCalendarWrapper)initWithCoder:(id)coder;
+- (id)calendarInEventStore:(id)store;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation EKCalendarWrapper
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   calendarObjectID = self->_calendarObjectID;
-  v8 = v4;
+  v8 = coderCopy;
   if (calendarObjectID)
   {
-    [v4 encodeObject:calendarObjectID forKey:@"objectID"];
-    v4 = v8;
+    [coderCopy encodeObject:calendarObjectID forKey:@"objectID"];
+    coderCopy = v8;
   }
 
   calendarIdentifier = self->_calendarIdentifier;
   if (calendarIdentifier)
   {
     [v8 encodeObject:calendarIdentifier forKey:@"calendarIdentifier"];
-    v4 = v8;
+    coderCopy = v8;
   }
 
   constraints = self->_constraints;
   if (constraints)
   {
     [v8 encodeObject:constraints forKey:@"constraints"];
-    v4 = v8;
+    coderCopy = v8;
   }
 }
 
-- (EKCalendarWrapper)initWithCoder:(id)a3
+- (EKCalendarWrapper)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = EKCalendarWrapper;
   v5 = [(EKCalendarWrapper *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"objectID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"objectID"];
     calendarObjectID = v5->_calendarObjectID;
     v5->_calendarObjectID = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"calendarIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"calendarIdentifier"];
     calendarIdentifier = v5->_calendarIdentifier;
     v5->_calendarIdentifier = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"constraints"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"constraints"];
     constraints = v5->_constraints;
     v5->_constraints = v10;
   }
@@ -57,52 +57,52 @@
   return v5;
 }
 
-- (EKCalendarWrapper)initWithCalendar:(id)a3
+- (EKCalendarWrapper)initWithCalendar:(id)calendar
 {
-  v4 = a3;
+  calendarCopy = calendar;
   v12.receiver = self;
   v12.super_class = EKCalendarWrapper;
   v5 = [(EKCalendarWrapper *)&v12 init];
   if (v5)
   {
-    if ([v4 allowEvents])
+    if ([calendarCopy allowEvents])
     {
-      v6 = [v4 objectID];
+      objectID = [calendarCopy objectID];
       calendarObjectID = v5->_calendarObjectID;
-      v5->_calendarObjectID = v6;
+      v5->_calendarObjectID = objectID;
 
-      v8 = [v4 constraints];
+      constraints = [calendarCopy constraints];
       v9 = 24;
     }
 
     else
     {
-      v8 = [v4 calendarIdentifier];
+      constraints = [calendarCopy calendarIdentifier];
       v9 = 8;
     }
 
     v10 = *(&v5->super.isa + v9);
-    *(&v5->super.isa + v9) = v8;
+    *(&v5->super.isa + v9) = constraints;
   }
 
   return v5;
 }
 
-- (id)calendarInEventStore:(id)a3
+- (id)calendarInEventStore:(id)store
 {
-  v4 = a3;
-  v5 = v4;
+  storeCopy = store;
+  v5 = storeCopy;
   if (self->_calendarObjectID)
   {
-    v6 = [v4 publicObjectWithObjectID:?];
+    v6 = [storeCopy publicObjectWithObjectID:?];
     v7 = v6;
     if (v6)
     {
       constraints = self->_constraints;
       if (constraints)
       {
-        v9 = [v6 CADObjectID];
-        [v5 cacheConstraints:constraints forObjectWithCADObjectID:v9];
+        cADObjectID = [v6 CADObjectID];
+        [v5 cacheConstraints:constraints forObjectWithCADObjectID:cADObjectID];
       }
 
       v10 = v7;
@@ -111,7 +111,7 @@
 
   else
   {
-    v7 = [v4 calendarWithIdentifier:self->_calendarIdentifier];
+    v7 = [storeCopy calendarWithIdentifier:self->_calendarIdentifier];
   }
 
   return v7;

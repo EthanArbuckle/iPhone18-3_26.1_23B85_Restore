@@ -1,25 +1,25 @@
 @interface CCToolKitToolAssistantSchemaVersion
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4;
-- (CCToolKitToolAssistantSchemaVersion)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (CCToolKitToolAssistantSchemaVersion)initWithMajor:(id)a3 minor:(id)a4 patch:(id)a5 error:(id *)a6;
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error;
+- (CCToolKitToolAssistantSchemaVersion)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (CCToolKitToolAssistantSchemaVersion)initWithMajor:(id)major minor:(id)minor patch:(id)patch error:(id *)error;
 - (id)jsonDictionary;
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4;
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type;
 @end
 
 @implementation CCToolKitToolAssistantSchemaVersion
 
-- (CCToolKitToolAssistantSchemaVersion)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (CCToolKitToolAssistantSchemaVersion)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
   v8 = 0;
   if (IsInstanceOfExpectedClass)
   {
-    v9 = [v6 objectForKeyedSubscript:@"major"];
-    v10 = [v6 objectForKeyedSubscript:@"minor"];
-    v11 = [v6 objectForKeyedSubscript:@"patch"];
-    v12 = [[CCToolKitToolAssistantSchemaVersion alloc] initWithMajor:v9 minor:v10 patch:v11 error:a4];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"major"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"minor"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"patch"];
+    v12 = [[CCToolKitToolAssistantSchemaVersion alloc] initWithMajor:v9 minor:v10 patch:v11 error:error];
   }
 
   else
@@ -57,33 +57,33 @@
   return v7;
 }
 
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type
 {
-  v9 = a3;
+  blockCopy = block;
   v5 = MEMORY[0x1E69939A8];
   if (self->_hasMajor)
   {
     v6 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:*MEMORY[0x1E69939A8] uint64Value:self->_major];
-    v9[2](v9, v6);
+    blockCopy[2](blockCopy, v6);
   }
 
   if (self->_hasMinor)
   {
     v7 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:*v5 uint64Value:self->_minor];
-    v9[2](v9, v7);
+    blockCopy[2](blockCopy, v7);
   }
 
   if (self->_hasPatch)
   {
     v8 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:*v5 uint64Value:self->_patch];
-    v9[2](v9, v8);
+    blockCopy[2](blockCopy, v8);
   }
 }
 
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:v6];
+  dataCopy = data;
+  v7 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:dataCopy];
   v8 = MEMORY[0x1E6993AB8];
   v9 = MEMORY[0x1E6993AB0];
   v10 = MEMORY[0x1E6993AA8];
@@ -94,7 +94,7 @@
 
   v11 = 0;
   v12 = MEMORY[0x1E6993AA0];
-  v57 = self;
+  selfCopy = self;
   while (2)
   {
     if (*&v7[*v10])
@@ -267,14 +267,14 @@ LABEL_50:
           {
             v47 = objc_opt_class();
             NSStringFromClass(v47);
-            v48 = a4;
-            v50 = v49 = v6;
+            errorCopy = error;
+            v50 = v49 = dataCopy;
             v51 = *&v7[*v10];
             v11 = CCSkipFieldErrorForMessage();
 
-            v6 = v49;
-            a4 = v48;
-            self = v57;
+            dataCopy = v49;
+            error = errorCopy;
+            self = selfCopy;
           }
 
 LABEL_61:
@@ -363,13 +363,13 @@ LABEL_68:
   return v55;
 }
 
-- (CCToolKitToolAssistantSchemaVersion)initWithMajor:(id)a3 minor:(id)a4 patch:(id)a5 error:(id *)a6
+- (CCToolKitToolAssistantSchemaVersion)initWithMajor:(id)major minor:(id)minor patch:(id)patch error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  majorCopy = major;
+  minorCopy = minor;
+  patchCopy = patch;
   v13 = objc_opt_new();
-  if (v10)
+  if (majorCopy)
   {
     objc_opt_class();
     IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
@@ -379,13 +379,13 @@ LABEL_68:
       goto LABEL_7;
     }
 
-    [v10 unsignedLongLongValue];
+    [majorCopy unsignedLongLongValue];
     CCPBDataWriterWriteUint64Field();
-    if (!v11)
+    if (!minorCopy)
     {
 LABEL_4:
       v16 = v15;
-      if (v12)
+      if (patchCopy)
       {
         goto LABEL_5;
       }
@@ -399,7 +399,7 @@ LABEL_11:
   else
   {
     v15 = 0;
-    if (!v11)
+    if (!minorCopy)
     {
       goto LABEL_4;
     }
@@ -412,14 +412,14 @@ LABEL_11:
   if (!v19)
   {
     CCSetError();
-    v18 = 0;
+    selfCopy = 0;
     v15 = v16;
     goto LABEL_14;
   }
 
-  [v11 unsignedLongLongValue];
+  [minorCopy unsignedLongLongValue];
   CCPBDataWriterWriteUint64Field();
-  if (!v12)
+  if (!patchCopy)
   {
     goto LABEL_11;
   }
@@ -431,22 +431,22 @@ LABEL_5:
 
   if (v17)
   {
-    [v12 unsignedLongLongValue];
+    [patchCopy unsignedLongLongValue];
     CCPBDataWriterWriteUint64Field();
 LABEL_12:
-    v20 = [v13 immutableData];
-    self = [(CCItemMessage *)self initWithData:v20 error:a6];
+    immutableData = [v13 immutableData];
+    self = [(CCItemMessage *)self initWithData:immutableData error:error];
 
-    v18 = self;
+    selfCopy = self;
     goto LABEL_14;
   }
 
 LABEL_7:
   CCSetError();
-  v18 = 0;
+  selfCopy = 0;
 LABEL_14:
 
-  return v18;
+  return selfCopy;
 }
 
 @end

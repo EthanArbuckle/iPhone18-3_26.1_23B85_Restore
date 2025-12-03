@@ -1,16 +1,16 @@
 @interface RecentlyPlayedObserver
 - (_TtC5Music22RecentlyPlayedObserver)init;
-- (void)registerHandler:(id)a3;
+- (void)registerHandler:(id)handler;
 @end
 
 @implementation RecentlyPlayedObserver
 
-- (void)registerHandler:(id)a3
+- (void)registerHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
-  v6 = self;
+  selfCopy = self;
   sub_10072A018(sub_10072B348, v5);
 }
 

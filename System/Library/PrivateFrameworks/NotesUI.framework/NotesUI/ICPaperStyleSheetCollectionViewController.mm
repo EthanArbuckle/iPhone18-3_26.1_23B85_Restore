@@ -1,25 +1,25 @@
 @interface ICPaperStyleSheetCollectionViewController
 - (CGSize)preferredContentSize;
-- (ICPaperStyleSheetCollectionViewController)initWithInitialPaperStyleType:(unint64_t)a3 delegate:(id)a4;
+- (ICPaperStyleSheetCollectionViewController)initWithInitialPaperStyleType:(unint64_t)type delegate:(id)delegate;
 - (ICPaperStyleSheetCollectionViewControllerDelegate)paperStyleDelegate;
 - (id)indexPathForInitialSelection;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
 @implementation ICPaperStyleSheetCollectionViewController
 
-- (ICPaperStyleSheetCollectionViewController)initWithInitialPaperStyleType:(unint64_t)a3 delegate:(id)a4
+- (ICPaperStyleSheetCollectionViewController)initWithInitialPaperStyleType:(unint64_t)type delegate:(id)delegate
 {
-  v6 = a4;
+  delegateCopy = delegate;
   v10.receiver = self;
   v10.super_class = ICPaperStyleSheetCollectionViewController;
   v7 = [(ICPaperStyleCollectionViewController *)&v10 initWithLargeIcons:0 forPreferences:0];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_paperStyleDelegate, v6);
-    v8->_initialPaperStyleType = a3;
+    objc_storeWeak(&v7->_paperStyleDelegate, delegateCopy);
+    v8->_initialPaperStyleType = type;
   }
 
   return v8;
@@ -34,22 +34,22 @@
   v3 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:1 target:self action:sel_cancelAction_];
   v7[0] = v3;
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v7 count:1];
-  v5 = [(ICPaperStyleSheetCollectionViewController *)self navigationItem];
-  [v5 setLeftBarButtonItems:v4];
+  navigationItem = [(ICPaperStyleSheetCollectionViewController *)self navigationItem];
+  [navigationItem setLeftBarButtonItems:v4];
 }
 
 - (id)indexPathForInitialSelection
 {
-  v3 = [(ICPaperStyleSheetCollectionViewController *)self initialPaperStyleType];
+  initialPaperStyleType = [(ICPaperStyleSheetCollectionViewController *)self initialPaperStyleType];
 
-  return [(ICPaperStyleCollectionViewController *)self indexPathFromPaperStyleType:v3];
+  return [(ICPaperStyleCollectionViewController *)self indexPathFromPaperStyleType:initialPaperStyleType];
 }
 
 - (CGSize)preferredContentSize
 {
-  v3 = [(ICPaperStyleSheetCollectionViewController *)self collectionView];
-  v4 = [(ICPaperStyleSheetCollectionViewController *)self collectionViewLayout];
-  [(ICPaperStyleCollectionViewController *)self collectionView:v3 layout:v4 referenceSizeForHeaderInSection:0];
+  collectionView = [(ICPaperStyleSheetCollectionViewController *)self collectionView];
+  collectionViewLayout = [(ICPaperStyleSheetCollectionViewController *)self collectionViewLayout];
+  [(ICPaperStyleCollectionViewController *)self collectionView:collectionView layout:collectionViewLayout referenceSizeForHeaderInSection:0];
   v6 = v5;
 
   [(ICPaperStyleCollectionViewController *)self itemSize];
@@ -62,15 +62,15 @@
   return result;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  if (a4)
+  if (path)
   {
-    v5 = a4;
-    v6 = [(ICPaperStyleSheetCollectionViewController *)self paperStyleDelegate];
-    v7 = [(ICPaperStyleCollectionViewController *)self paperStyleTypeFromIndexPath:v5];
+    pathCopy = path;
+    paperStyleDelegate = [(ICPaperStyleSheetCollectionViewController *)self paperStyleDelegate];
+    v7 = [(ICPaperStyleCollectionViewController *)self paperStyleTypeFromIndexPath:pathCopy];
 
-    [v6 paperStyleSheetCollectionViewController:self didFinishWithPaperStyleType:v7];
+    [paperStyleDelegate paperStyleSheetCollectionViewController:self didFinishWithPaperStyleType:v7];
   }
 
   [(ICPaperStyleSheetCollectionViewController *)self dismissViewControllerAnimated:1 completion:0];

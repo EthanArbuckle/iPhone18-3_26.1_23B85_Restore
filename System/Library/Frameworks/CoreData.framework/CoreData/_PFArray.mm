@@ -1,19 +1,19 @@
 @interface _PFArray
-- (_PFArray)initWithObjects:(id *)a3 count:(unsigned int)a4 andFlags:(unsigned int)a5 andContext:(id)a6;
+- (_PFArray)initWithObjects:(id *)objects count:(unsigned int)count andFlags:(unsigned int)flags andContext:(id)context;
 - (id)arrayFromObjectIDs;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)managedObjectIDAtIndex:(unint64_t)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)managedObjectIDAtIndex:(unint64_t)index;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)newArrayFromObjectIDs;
-- (id)objectAtIndex:(unint64_t)a3;
-- (id)subarrayWithRange:(_NSRange)a3;
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5;
-- (unint64_t)indexOfManagedObjectForObjectID:(id)a3;
-- (unint64_t)indexOfObject:(id)a3;
-- (unint64_t)indexOfObject:(id)a3 inRange:(_NSRange)a4;
-- (unint64_t)indexOfObjectIdenticalTo:(id)a3 inRange:(_NSRange)a4;
+- (id)objectAtIndex:(unint64_t)index;
+- (id)subarrayWithRange:(_NSRange)range;
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count;
+- (unint64_t)indexOfManagedObjectForObjectID:(id)d;
+- (unint64_t)indexOfObject:(id)object;
+- (unint64_t)indexOfObject:(id)object inRange:(_NSRange)range;
+- (unint64_t)indexOfObjectIdenticalTo:(id)to inRange:(_NSRange)range;
 - (void)dealloc;
-- (void)getObjects:(id *)a3 range:(_NSRange)a4;
+- (void)getObjects:(id *)objects range:(_NSRange)range;
 @end
 
 @implementation _PFArray
@@ -76,9 +76,9 @@ LABEL_10:
 
 - (id)arrayFromObjectIDs
 {
-  v2 = [(_PFArray *)self newArrayFromObjectIDs];
+  newArrayFromObjectIDs = [(_PFArray *)self newArrayFromObjectIDs];
 
-  return v2;
+  return newArrayFromObjectIDs;
 }
 
 - (id)newArrayFromObjectIDs
@@ -142,28 +142,28 @@ LABEL_17:
   return v10;
 }
 
-- (_PFArray)initWithObjects:(id *)a3 count:(unsigned int)a4 andFlags:(unsigned int)a5 andContext:(id)a6
+- (_PFArray)initWithObjects:(id *)objects count:(unsigned int)count andFlags:(unsigned int)flags andContext:(id)context
 {
-  v7 = a5;
+  flagsCopy = flags;
   v17.receiver = self;
   v17.super_class = _PFArray;
   v10 = [(_PFArray *)&v17 init];
   v11 = v10;
   if (v10)
   {
-    v10->_count = a4;
-    v12 = *&v10->_flags & 0xFFFFFFFFFFFFFFF0 | v7 & 3 | (v7 & 8) | 0x10;
-    if ((v7 & 0x10) == 0)
+    v10->_count = count;
+    v12 = *&v10->_flags & 0xFFFFFFFFFFFFFFF0 | flagsCopy & 3 | (flagsCopy & 8) | 0x10;
+    if ((flagsCopy & 0x10) == 0)
     {
-      v12 = *&v10->_flags & 0xFFFFFFFFFFFFFFE0 | v7 & 0xB;
+      v12 = *&v10->_flags & 0xFFFFFFFFFFFFFFE0 | flagsCopy & 0xB;
     }
 
-    if ((v7 & 0x20) != 0)
+    if ((flagsCopy & 0x20) != 0)
     {
       v10->_flags = (v12 | 0x20);
-      if (a6 && _PF_shouldAsyncProcessReferenceQueue && ([a6 concurrencyType] == 1 || objc_msgSend(a6, "concurrencyType") == 2))
+      if (context && _PF_shouldAsyncProcessReferenceQueue && ([context concurrencyType] == 1 || objc_msgSend(context, "concurrencyType") == 2))
       {
-        v11->_weakContext = [[_PFWeakReference alloc] initWithObject:a6];
+        v11->_weakContext = [[_PFWeakReference alloc] initWithObject:context];
       }
     }
 
@@ -174,18 +174,18 @@ LABEL_17:
 
     flags = v11->_flags;
     v11->_flags = (*&flags & 0xF8000000FFFFFFFFLL);
-    if (a4)
+    if (count)
     {
       if ((*&flags & 0x10) != 0)
       {
-        v11->_array = PF_ALLOCATE_OBJECT_ARRAY(a4);
+        v11->_array = PF_ALLOCATE_OBJECT_ARRAY(count);
         *&v11->_flags |= 8uLL;
-        memmove(v11->_array, a3, 8 * a4);
+        memmove(v11->_array, objects, 8 * count);
       }
 
       else
       {
-        v11->_array = a3;
+        v11->_array = objects;
       }
 
       if (*&v11->_flags)
@@ -196,7 +196,7 @@ LABEL_17:
           v15 = v11->_array[v14++];
         }
 
-        while (a4 != v14);
+        while (count != v14);
       }
     }
   }
@@ -204,38 +204,38 @@ LABEL_17:
   return v11;
 }
 
-- (unint64_t)indexOfObject:(id)a3
+- (unint64_t)indexOfObject:(id)object
 {
   count = self->_count;
   if ((*&self->_flags & 0x20) != 0)
   {
-    return [(_PFArray *)self indexOfObjectIdenticalTo:a3 inRange:0, count];
+    return [(_PFArray *)self indexOfObjectIdenticalTo:object inRange:0, count];
   }
 
   else
   {
-    return [(_PFArray *)self indexOfObject:a3 inRange:0, count];
+    return [(_PFArray *)self indexOfObject:object inRange:0, count];
   }
 }
 
-- (unint64_t)indexOfObject:(id)a3 inRange:(_NSRange)a4
+- (unint64_t)indexOfObject:(id)object inRange:(_NSRange)range
 {
-  if (!a3)
+  if (!object)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  length = a4.length;
-  location = a4.location;
-  v8 = a4.location + a4.length;
-  v9 = [a3 methodForSelector:sel_isEqual_];
+  length = range.length;
+  location = range.location;
+  v8 = range.location + range.length;
+  v9 = [object methodForSelector:sel_isEqual_];
   if (location >= v8)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
   v10 = v9;
-  while (self->_array[location] != a3 && (v10(a3, sel_isEqual_) & 1) == 0)
+  while (self->_array[location] != object && (v10(object, sel_isEqual_) & 1) == 0)
   {
     ++location;
     if (!--length)
@@ -247,28 +247,28 @@ LABEL_17:
   return location;
 }
 
-- (unint64_t)indexOfObjectIdenticalTo:(id)a3 inRange:(_NSRange)a4
+- (unint64_t)indexOfObjectIdenticalTo:(id)to inRange:(_NSRange)range
 {
-  if (!a3 || a4.location >= a4.location + a4.length)
+  if (!to || range.location >= range.location + range.length)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  while (self->_array[a4.location] != a3)
+  while (self->_array[range.location] != to)
   {
-    ++a4.location;
-    if (!--a4.length)
+    ++range.location;
+    if (!--range.length)
     {
       return 0x7FFFFFFFFFFFFFFFLL;
     }
   }
 
-  return a4.location;
+  return range.location;
 }
 
-- (unint64_t)indexOfManagedObjectForObjectID:(id)a3
+- (unint64_t)indexOfManagedObjectForObjectID:(id)d
 {
-  if (!a3)
+  if (!d)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
@@ -278,7 +278,7 @@ LABEL_17:
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v5 = [a3 methodForSelector:sel_isEqual_];
+  v5 = [d methodForSelector:sel_isEqual_];
   count = self->_count;
   if (!count)
   {
@@ -287,7 +287,7 @@ LABEL_17:
 
   v7 = v5;
   v8 = 0;
-  while (*(self->_array[v8] + 5) != a3 && (v7(a3, sel_isEqual_) & 1) == 0)
+  while (*(self->_array[v8] + 5) != d && (v7(d, sel_isEqual_) & 1) == 0)
   {
     if (count == ++v8)
     {
@@ -298,9 +298,9 @@ LABEL_17:
   return v8;
 }
 
-- (id)managedObjectIDAtIndex:(unint64_t)a3
+- (id)managedObjectIDAtIndex:(unint64_t)index
 {
-  v3 = self->_array[a3];
+  v3 = self->_array[index];
   if ((*&self->_flags & 0x20) != 0)
   {
     return v3[5];
@@ -318,9 +318,9 @@ LABEL_17:
   }
 }
 
-- (id)subarrayWithRange:(_NSRange)a3
+- (id)subarrayWithRange:(_NSRange)range
 {
-  if (a3.location + a3.length <= self->_count)
+  if (range.location + range.length <= self->_count)
   {
     if ((*&self->_flags & 0x20) != 0)
     {
@@ -332,7 +332,7 @@ LABEL_17:
       v4 = 27;
     }
 
-    v5 = [[_PFArray alloc] initWithObjects:&self->_array[a3.location] count:a3.length andFlags:v4];
+    v5 = [[_PFArray alloc] initWithObjects:&self->_array[range.location] count:range.length andFlags:v4];
 
     return v5;
   }
@@ -341,32 +341,32 @@ LABEL_17:
   {
     v6.receiver = self;
     v6.super_class = _PFArray;
-    return [(_PFArray *)&v6 subarrayWithRange:a3.location, a3.length];
+    return [(_PFArray *)&v6 subarrayWithRange:range.location, range.length];
   }
 }
 
-- (id)objectAtIndex:(unint64_t)a3
+- (id)objectAtIndex:(unint64_t)index
 {
-  if (self->_count > a3)
+  if (self->_count > index)
   {
-    return self->_array[a3];
+    return self->_array[index];
   }
 
-  [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695DA20] format:{@"%@: index (%lu) beyond bounds (%lu)", _NSMethodExceptionProem(), a3, self->_count}];
+  [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695DA20] format:{@"%@: index (%lu) beyond bounds (%lu)", _NSMethodExceptionProem(), index, self->_count}];
   return 0;
 }
 
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count
 {
-  var0 = a3->var0;
-  if (!a3->var0)
+  var0 = state->var0;
+  if (!state->var0)
   {
-    a3->var2 = &self->_count;
+    state->var2 = &self->_count;
   }
 
   v6 = 0;
-  a3->var1 = a4;
-  if (a5)
+  state->var1 = objects;
+  if (count)
   {
     count = self->_count;
     if (var0 < count)
@@ -374,36 +374,36 @@ LABEL_17:
       v6 = 0;
       do
       {
-        a4[v6] = *(&self->_array[var0] + v6);
+        objects[v6] = *(&self->_array[var0] + v6);
       }
 
-      while (++v6 + var0 < count && v6 < a5);
+      while (++v6 + var0 < count && v6 < count);
       var0 += v6;
     }
   }
 
-  a3->var0 = var0;
+  state->var0 = var0;
   return v6;
 }
 
-- (void)getObjects:(id *)a3 range:(_NSRange)a4
+- (void)getObjects:(id *)objects range:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  if (a4.location + a4.length > self->_count)
+  length = range.length;
+  location = range.location;
+  if (range.location + range.length > self->_count)
   {
-    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695DA20] format:{@"%@: index (%lu) beyond bounds (%lu)", _NSMethodExceptionProem(), a4.location + a4.length - 1, self->_count}];
+    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695DA20] format:{@"%@: index (%lu) beyond bounds (%lu)", _NSMethodExceptionProem(), range.location + range.length - 1, self->_count}];
   }
 
   if (length)
   {
     v8 = &self->_array[location];
 
-    memmove(a3, v8, 8 * length);
+    memmove(objects, v8, 8 * length);
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(MEMORY[0x1E695DEC8]);
   array = self->_array;
@@ -412,7 +412,7 @@ LABEL_17:
   return [v4 initWithObjects:array count:count];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(MEMORY[0x1E695DF70]);
   array = self->_array;

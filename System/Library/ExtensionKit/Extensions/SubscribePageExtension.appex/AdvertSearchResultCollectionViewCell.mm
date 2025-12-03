@@ -1,12 +1,12 @@
 @interface AdvertSearchResultCollectionViewCell
-- (_TtC22SubscribePageExtension36AdvertSearchResultCollectionViewCell)initWithCoder:(id)a3;
+- (_TtC22SubscribePageExtension36AdvertSearchResultCollectionViewCell)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 @end
 
 @implementation AdvertSearchResultCollectionViewCell
 
-- (_TtC22SubscribePageExtension36AdvertSearchResultCollectionViewCell)initWithCoder:(id)a3
+- (_TtC22SubscribePageExtension36AdvertSearchResultCollectionViewCell)initWithCoder:(id)coder
 {
   result = sub_100754644();
   __break(1u);

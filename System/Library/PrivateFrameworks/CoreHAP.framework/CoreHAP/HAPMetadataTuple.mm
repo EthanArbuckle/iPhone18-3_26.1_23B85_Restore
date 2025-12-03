@@ -1,6 +1,6 @@
 @interface HAPMetadataTuple
-- (BOOL)isEqual:(id)a3;
-- (HAPMetadataTuple)initWithCharacteristicType:(id)a3 serviceType:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (HAPMetadataTuple)initWithCharacteristicType:(id)type serviceType:(id)serviceType;
 - (NSString)index;
 - (unint64_t)hash;
 @end
@@ -9,18 +9,18 @@
 
 - (unint64_t)hash
 {
-  v3 = [(HAPMetadataTuple *)self characteristicType];
-  v4 = [v3 hash];
-  v5 = [(HAPMetadataTuple *)self serviceType];
-  v6 = [v5 hash];
+  characteristicType = [(HAPMetadataTuple *)self characteristicType];
+  v4 = [characteristicType hash];
+  serviceType = [(HAPMetadataTuple *)self serviceType];
+  v6 = [serviceType hash];
 
   return v6 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
@@ -30,7 +30,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -41,13 +41,13 @@
     v6 = v5;
     if (v6)
     {
-      v7 = [(HAPMetadataTuple *)self characteristicType];
-      v8 = [(HAPMetadataTuple *)v6 characteristicType];
-      if ([v7 isEqualToString:v8])
+      characteristicType = [(HAPMetadataTuple *)self characteristicType];
+      characteristicType2 = [(HAPMetadataTuple *)v6 characteristicType];
+      if ([characteristicType isEqualToString:characteristicType2])
       {
-        v9 = [(HAPMetadataTuple *)self serviceType];
-        v10 = [(HAPMetadataTuple *)v6 serviceType];
-        v11 = [v9 isEqualToString:v10];
+        serviceType = [(HAPMetadataTuple *)self serviceType];
+        serviceType2 = [(HAPMetadataTuple *)v6 serviceType];
+        v11 = [serviceType isEqualToString:serviceType2];
       }
 
       else
@@ -68,20 +68,20 @@
 - (NSString)index
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HAPMetadataTuple *)self serviceType];
-  v5 = [(HAPMetadataTuple *)self characteristicType];
-  v6 = [v3 stringWithFormat:@"%@+%@", v4, v5];
+  serviceType = [(HAPMetadataTuple *)self serviceType];
+  characteristicType = [(HAPMetadataTuple *)self characteristicType];
+  v6 = [v3 stringWithFormat:@"%@+%@", serviceType, characteristicType];
 
   return v6;
 }
 
-- (HAPMetadataTuple)initWithCharacteristicType:(id)a3 serviceType:(id)a4
+- (HAPMetadataTuple)initWithCharacteristicType:(id)type serviceType:(id)serviceType
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  v10 = 0;
-  if (v7 && v8)
+  typeCopy = type;
+  serviceTypeCopy = serviceType;
+  v9 = serviceTypeCopy;
+  selfCopy = 0;
+  if (typeCopy && serviceTypeCopy)
   {
     v14.receiver = self;
     v14.super_class = HAPMetadataTuple;
@@ -89,15 +89,15 @@
     p_isa = &v11->super.super.isa;
     if (v11)
     {
-      objc_storeStrong(&v11->_characteristicType, a3);
-      objc_storeStrong(p_isa + 2, a4);
+      objc_storeStrong(&v11->_characteristicType, type);
+      objc_storeStrong(p_isa + 2, serviceType);
     }
 
     self = p_isa;
-    v10 = self;
+    selfCopy = self;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 @end

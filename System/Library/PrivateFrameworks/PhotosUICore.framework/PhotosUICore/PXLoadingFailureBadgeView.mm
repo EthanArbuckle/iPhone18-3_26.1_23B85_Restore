@@ -1,16 +1,16 @@
 @interface PXLoadingFailureBadgeView
-+ (CGSize)sizeForSizeClass:(int64_t)a3;
-+ (id)_imageForSizeClass:(int64_t)a3;
-+ (int64_t)_sizeClassForSize:(CGSize)a3;
-- (PXLoadingFailureBadgeView)initWithCoder:(id)a3;
-- (PXLoadingFailureBadgeView)initWithFrame:(CGRect)a3 error:(id)a4;
++ (CGSize)sizeForSizeClass:(int64_t)class;
++ (id)_imageForSizeClass:(int64_t)class;
++ (int64_t)_sizeClassForSize:(CGSize)size;
+- (PXLoadingFailureBadgeView)initWithCoder:(id)coder;
+- (PXLoadingFailureBadgeView)initWithFrame:(CGRect)frame error:(id)error;
 - (UIImageView)imageView;
 - (void)_handlePrimaryAction;
-- (void)_handleTap:(id)a3;
+- (void)_handleTap:(id)tap;
 - (void)_installGestureRecognizers;
 - (void)layoutSubviews;
-- (void)setImage:(id)a3;
-- (void)setSizeClass:(int64_t)a3;
+- (void)setImage:(id)image;
+- (void)setSizeClass:(int64_t)class;
 @end
 
 @implementation PXLoadingFailureBadgeView
@@ -18,11 +18,11 @@
 - (void)_handlePrimaryAction
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v2 = [(PXLoadingFailureBadgeView *)self error];
-  v3 = v2;
-  if (v2)
+  error = [(PXLoadingFailureBadgeView *)self error];
+  v3 = error;
+  if (error)
   {
-    v4 = v2;
+    v4 = error;
   }
 
   else
@@ -39,9 +39,9 @@
   v9 = [off_1E7721438 showForError:v4];
 }
 
-- (void)_handleTap:(id)a3
+- (void)_handleTap:(id)tap
 {
-  if ([a3 state] == 3)
+  if ([tap state] == 3)
   {
 
     [(PXLoadingFailureBadgeView *)self _handlePrimaryAction];
@@ -71,26 +71,26 @@
   return imageView;
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v5 = a3;
-  if (self->_image != v5)
+  imageCopy = image;
+  if (self->_image != imageCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_image, a3);
-    v6 = [(PXLoadingFailureBadgeView *)self imageView];
-    [v6 setImage:v7];
+    v7 = imageCopy;
+    objc_storeStrong(&self->_image, image);
+    imageView = [(PXLoadingFailureBadgeView *)self imageView];
+    [imageView setImage:v7];
 
-    v5 = v7;
+    imageCopy = v7;
   }
 }
 
-- (void)setSizeClass:(int64_t)a3
+- (void)setSizeClass:(int64_t)class
 {
-  if (self->_sizeClass != a3)
+  if (self->_sizeClass != class)
   {
-    self->_sizeClass = a3;
-    v5 = [objc_opt_class() _imageForSizeClass:a3];
+    self->_sizeClass = class;
+    v5 = [objc_opt_class() _imageForSizeClass:class];
     [(PXLoadingFailureBadgeView *)self setImage:v5];
   }
 }
@@ -103,43 +103,43 @@
   v8 = v7;
   v10 = v9;
   -[PXLoadingFailureBadgeView setSizeClass:](self, "setSizeClass:", [objc_opt_class() _sizeClassForSize:{v7, v9}]);
-  v11 = [(PXLoadingFailureBadgeView *)self imageView];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  imageView = [(PXLoadingFailureBadgeView *)self imageView];
+  [imageView setFrame:{v4, v6, v8, v10}];
 }
 
-- (PXLoadingFailureBadgeView)initWithCoder:(id)a3
+- (PXLoadingFailureBadgeView)initWithCoder:(id)coder
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"PXLoadingFailureBadgeView.m" lineNumber:60 description:{@"%s is not available as initializer", "-[PXLoadingFailureBadgeView initWithCoder:]"}];
+  coderCopy = coder;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXLoadingFailureBadgeView.m" lineNumber:60 description:{@"%s is not available as initializer", "-[PXLoadingFailureBadgeView initWithCoder:]"}];
 
   abort();
 }
 
-- (PXLoadingFailureBadgeView)initWithFrame:(CGRect)a3 error:(id)a4
+- (PXLoadingFailureBadgeView)initWithFrame:(CGRect)frame error:(id)error
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  errorCopy = error;
   v14.receiver = self;
   v14.super_class = PXLoadingFailureBadgeView;
-  v10 = [(PXLoadingFailureBadgeView *)&v14 initWithFrame:x, y, width, height];
-  if (v10)
+  height = [(PXLoadingFailureBadgeView *)&v14 initWithFrame:x, y, width, height];
+  if (height)
   {
-    v11 = [v9 copy];
-    error = v10->_error;
-    v10->_error = v11;
+    v11 = [errorCopy copy];
+    error = height->_error;
+    height->_error = v11;
   }
 
-  return v10;
+  return height;
 }
 
-+ (id)_imageForSizeClass:(int64_t)a3
++ (id)_imageForSizeClass:(int64_t)class
 {
   v6 = *MEMORY[0x1E69E9840];
-  switch(a3)
+  switch(class)
   {
     case 2:
       v3 = @"PXLoadingErrorRegular";
@@ -159,10 +159,10 @@
   return v4;
 }
 
-+ (int64_t)_sizeClassForSize:(CGSize)a3
++ (int64_t)_sizeClassForSize:(CGSize)size
 {
-  width = a3.width;
-  [a1 sizeForSizeClass:{2, a3.width, a3.height}];
+  width = size.width;
+  [self sizeForSizeClass:{2, size.width, size.height}];
   if (width < v4)
   {
     return 1;
@@ -174,10 +174,10 @@
   }
 }
 
-+ (CGSize)sizeForSizeClass:(int64_t)a3
++ (CGSize)sizeForSizeClass:(int64_t)class
 {
   v5 = *MEMORY[0x1E69E9840];
-  if (a3 == 1)
+  if (class == 1)
   {
     v3 = 22.0;
     v4 = 22.0;
@@ -185,7 +185,7 @@
 
   else
   {
-    if (a3 != 2)
+    if (class != 2)
     {
       PXAssertGetLog();
     }

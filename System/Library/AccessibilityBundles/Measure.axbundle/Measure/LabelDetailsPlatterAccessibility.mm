@@ -1,23 +1,23 @@
 @interface LabelDetailsPlatterAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityPerformEscape;
 - (BOOL)accessibilityViewIsModal;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_axAnnotateCloseButton;
 - (void)didMoveToWindow;
-- (void)setAlpha:(double)a3;
+- (void)setAlpha:(double)alpha;
 @end
 
 @implementation LabelDetailsPlatterAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"Measure.LabelDetailsPlatter" isKindOfClass:@"UIView"];
-  [v3 validateClass:@"Measure.LabelDetailsPlatter" isKindOfClass:@"Measure.GenericPlatter"];
-  [v3 validateClass:@"UIView" hasInstanceMethod:@"setAlpha:" withFullSignature:{"v", "d", 0}];
-  [v3 validateClass:@"UIView" hasInstanceMethod:@"didMoveToWindow" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"Measure.GenericPlatter" hasInstanceMethod:@"close" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"Measure.LabelDetailsPlatter" isKindOfClass:@"UIView"];
+  [validationsCopy validateClass:@"Measure.LabelDetailsPlatter" isKindOfClass:@"Measure.GenericPlatter"];
+  [validationsCopy validateClass:@"UIView" hasInstanceMethod:@"setAlpha:" withFullSignature:{"v", "d", 0}];
+  [validationsCopy validateClass:@"UIView" hasInstanceMethod:@"didMoveToWindow" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"Measure.GenericPlatter" hasInstanceMethod:@"close" withFullSignature:{"v", 0}];
 }
 
 - (void)_axAnnotateCloseButton
@@ -128,7 +128,7 @@ LABEL_13:
   [(LabelDetailsPlatterAccessibility *)self _axAnnotateCloseButton];
 }
 
-- (void)setAlpha:(double)a3
+- (void)setAlpha:(double)alpha
 {
   v10 = 0;
   objc_opt_class();
@@ -137,7 +137,7 @@ LABEL_13:
   v7 = v6;
   v9.receiver = self;
   v9.super_class = LabelDetailsPlatterAccessibility;
-  [(LabelDetailsPlatterAccessibility *)&v9 setAlpha:a3];
+  [(LabelDetailsPlatterAccessibility *)&v9 setAlpha:alpha];
   [v5 alpha];
   if (vabdd_f64(v7, v8) >= 2.22044605e-16)
   {

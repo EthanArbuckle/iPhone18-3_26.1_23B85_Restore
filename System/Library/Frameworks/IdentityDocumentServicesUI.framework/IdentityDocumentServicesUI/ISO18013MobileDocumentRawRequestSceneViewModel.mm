@@ -1,18 +1,18 @@
 @interface ISO18013MobileDocumentRawRequestSceneViewModel
 - (_TtC26IdentityDocumentServicesUI46ISO18013MobileDocumentRawRequestSceneViewModel)init;
-- (void)requestDocumentWithRequest:(_TtC13CoreIDVShared43XPCMobileDocumentProviderPresentmentRequest *)a3 completionHandler:(id)a4;
+- (void)requestDocumentWithRequest:(_TtC13CoreIDVShared43XPCMobileDocumentProviderPresentmentRequest *)request completionHandler:(id)handler;
 @end
 
 @implementation ISO18013MobileDocumentRawRequestSceneViewModel
 
-- (void)requestDocumentWithRequest:(_TtC13CoreIDVShared43XPCMobileDocumentProviderPresentmentRequest *)a3 completionHandler:(id)a4
+- (void)requestDocumentWithRequest:(_TtC13CoreIDVShared43XPCMobileDocumentProviderPresentmentRequest *)request completionHandler:(id)handler
 {
   v7 = (*(*(__swift_instantiateConcreteTypeFromMangledNameV2(&qword_27DF4A268, &qword_238A3BE20) - 8) + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
   MEMORY[0x28223BE20]();
   v9 = &v17 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = request;
   v11[3] = v10;
   v11[4] = self;
   v12 = sub_238A3B17C();
@@ -27,8 +27,8 @@
   v14[3] = 0;
   v14[4] = &unk_238A3BAF0;
   v14[5] = v13;
-  v15 = a3;
-  v16 = self;
+  requestCopy = request;
+  selfCopy = self;
   sub_238A2C804(0, 0, v9, &unk_238A3BAF8, v14);
 }
 

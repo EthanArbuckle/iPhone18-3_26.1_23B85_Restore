@@ -1,20 +1,20 @@
 @interface DYMTLTextureRenderer
-- (DYMTLTextureRenderer)initWithDevice:(id)a3;
+- (DYMTLTextureRenderer)initWithDevice:(id)device;
 - (id).cxx_construct;
-- (unint64_t)_renderPassPixelFormatFromDescriptor:(id)a3;
-- (void)setBlendColorRed:(float)a3 green:(float)a4 blue:(float)a5 alpha:(float)a6;
+- (unint64_t)_renderPassPixelFormatFromDescriptor:(id)descriptor;
+- (void)setBlendColorRed:(float)red green:(float)green blue:(float)blue alpha:(float)alpha;
 @end
 
 @implementation DYMTLTextureRenderer
 
-- (DYMTLTextureRenderer)initWithDevice:(id)a3
+- (DYMTLTextureRenderer)initWithDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v43.receiver = self;
   v43.super_class = DYMTLTextureRenderer;
   v6 = [(DYMTLTextureRenderer *)&v43 init];
   v7 = v6;
-  if (!v6 || (objc_storeStrong(&v6->_device, a3), (device = v7->_device) == 0))
+  if (!v6 || (objc_storeStrong(&v6->_device, device), (device = v7->_device) == 0))
   {
     v39 = 0;
     goto LABEL_9;
@@ -52,8 +52,8 @@
   renderPipelineDescriptor = v7->_renderPipelineDescriptor;
   v7->_renderPipelineDescriptor = v21;
 
-  v23 = [(MTLRenderPipelineDescriptor *)v7->_renderPipelineDescriptor colorAttachments];
-  v24 = [v23 objectAtIndexedSubscript:0];
+  colorAttachments = [(MTLRenderPipelineDescriptor *)v7->_renderPipelineDescriptor colorAttachments];
+  v24 = [colorAttachments objectAtIndexedSubscript:0];
 
   [v24 setBlendingEnabled:0];
   [v24 setSourceRGBBlendFactor:4];
@@ -84,11 +84,11 @@
     goto LABEL_14;
   }
 
-  v30 = [(MTLBuffer *)v29 contents];
-  *v30 = [DYMTLTextureRenderer initWithDevice:]::positionList;
-  v30[1] = unk_24D740CA0;
-  v30[2] = xmmword_24D740CB0;
-  v30[3] = unk_24D740CC0;
+  contents = [(MTLBuffer *)v29 contents];
+  *contents = [DYMTLTextureRenderer initWithDevice:]::positionList;
+  contents[1] = unk_24D740CA0;
+  contents[2] = xmmword_24D740CB0;
+  contents[3] = unk_24D740CC0;
   v31 = [(MTLDevice *)v7->_device newBufferWithLength:32 options:0];
   texCoordBuffer = v7->_texCoordBuffer;
   v7->_texCoordBuffer = v31;
@@ -101,9 +101,9 @@ LABEL_14:
     __assert_rtn("[DYMTLTextureRenderer initWithDevice:]", "", 0, v41);
   }
 
-  v34 = [(MTLBuffer *)v33 contents];
-  *v34 = [DYMTLTextureRenderer initWithDevice:]::texCoordList;
-  v34[1] = unk_24D740CE0;
+  contents2 = [(MTLBuffer *)v33 contents];
+  *contents2 = [DYMTLTextureRenderer initWithDevice:]::texCoordList;
+  contents2[1] = unk_24D740CE0;
   v35 = objc_opt_new();
   [v35 setMinFilter:1];
   [v35 setMagFilter:1];
@@ -126,19 +126,19 @@ LABEL_9:
   return v39;
 }
 
-- (unint64_t)_renderPassPixelFormatFromDescriptor:(id)a3
+- (unint64_t)_renderPassPixelFormatFromDescriptor:(id)descriptor
 {
   v4 = 0;
   while (1)
   {
-    v5 = [a3 colorAttachments];
-    v6 = [v5 objectAtIndexedSubscript:v4];
+    colorAttachments = [descriptor colorAttachments];
+    v6 = [colorAttachments objectAtIndexedSubscript:v4];
 
-    v7 = [v6 texture];
-    v8 = v7;
-    if (v7)
+    texture = [v6 texture];
+    v8 = texture;
+    if (texture)
     {
-      if ([v7 width] && objc_msgSend(v8, "height"))
+      if ([texture width] && objc_msgSend(v8, "height"))
       {
         break;
       }
@@ -150,17 +150,17 @@ LABEL_9:
     }
   }
 
-  v9 = [v8 pixelFormat];
+  pixelFormat = [v8 pixelFormat];
 
-  return v9;
+  return pixelFormat;
 }
 
-- (void)setBlendColorRed:(float)a3 green:(float)a4 blue:(float)a5 alpha:(float)a6
+- (void)setBlendColorRed:(float)red green:(float)green blue:(float)blue alpha:(float)alpha
 {
-  self->_uniformData.blendColor[0] = a3;
-  self->_uniformData.blendColor[1] = a4;
-  self->_uniformData.blendColor[2] = a5;
-  self->_uniformData.blendColor[3] = a6;
+  self->_uniformData.blendColor[0] = red;
+  self->_uniformData.blendColor[1] = green;
+  self->_uniformData.blendColor[2] = blue;
+  self->_uniformData.blendColor[3] = alpha;
 }
 
 - (id).cxx_construct

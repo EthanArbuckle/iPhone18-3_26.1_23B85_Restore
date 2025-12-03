@@ -1,22 +1,22 @@
 @interface BookReaderActionTarget
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
 - (NSArray)keyCommands;
 - (_TtC5Books22BookReaderActionTarget)init;
-- (void)books_disableTheme:(id)a3;
-- (void)books_editTheme:(id)a3;
-- (void)books_enableTheme:(id)a3;
-- (void)books_search:(id)a3;
-- (void)books_toggleBookmark:(id)a3;
-- (void)books_toggleTheme:(id)a3;
-- (void)copy:(id)a3;
-- (void)validateCommand:(id)a3;
+- (void)books_disableTheme:(id)theme;
+- (void)books_editTheme:(id)theme;
+- (void)books_enableTheme:(id)theme;
+- (void)books_search:(id)books_search;
+- (void)books_toggleBookmark:(id)bookmark;
+- (void)books_toggleTheme:(id)theme;
+- (void)copy:(id)copy;
+- (void)validateCommand:(id)command;
 @end
 
 @implementation BookReaderActionTarget
 
 - (NSArray)keyCommands
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1004E1298();
 
   if (v3)
@@ -33,11 +33,11 @@
   return v4.super.isa;
 }
 
-- (void)copy:(id)a3
+- (void)copy:(id)copy
 {
-  if (a3)
+  if (copy)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_1007A3504();
     swift_unknownObjectRelease();
@@ -46,7 +46,7 @@
   else
   {
     memset(v6, 0, sizeof(v6));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   if (swift_unknownObjectWeakLoadStrong())
@@ -64,11 +64,11 @@
   }
 }
 
-- (void)books_toggleBookmark:(id)a3
+- (void)books_toggleBookmark:(id)bookmark
 {
-  if (a3)
+  if (bookmark)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_1007A3504();
     swift_unknownObjectRelease();
@@ -77,7 +77,7 @@
   else
   {
     memset(v7, 0, sizeof(v7));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   if (swift_unknownObjectWeakLoadStrong())
@@ -96,11 +96,11 @@
   }
 }
 
-- (void)books_search:(id)a3
+- (void)books_search:(id)books_search
 {
-  if (a3)
+  if (books_search)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_1007A3504();
     swift_unknownObjectRelease();
@@ -109,7 +109,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   if (swift_unknownObjectWeakLoadStrong())
@@ -127,14 +127,14 @@
   sub_100007840(v8, &unk_100AD5B40);
 }
 
-- (void)books_toggleTheme:(id)a3
+- (void)books_toggleTheme:(id)theme
 {
   v5 = sub_1001F1160(&qword_100AD67D0);
   __chkstk_darwin(v5 - 8);
   v7 = v15 - v6;
-  if (a3)
+  if (theme)
   {
-    v8 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_1007A3504();
     swift_unknownObjectRelease();
@@ -143,33 +143,33 @@
   else
   {
     memset(v15, 0, sizeof(v15));
-    v9 = self;
+    selfCopy2 = self;
   }
 
   v10 = sub_1004E8A10(v15);
   v11 = sub_1007A2744();
   (*(*(v11 - 8) + 56))(v7, 1, 1, v11);
   sub_1007A26F4();
-  v12 = self;
+  selfCopy3 = self;
   v13 = sub_1007A26E4();
   v14 = swift_allocObject();
   *(v14 + 16) = v13;
   *(v14 + 24) = &protocol witness table for MainActor;
-  *(v14 + 32) = v12;
+  *(v14 + 32) = selfCopy3;
   *(v14 + 40) = v10;
   sub_1003457A0(0, 0, v7, &unk_10082CA38, v14);
 
   sub_100007840(v15, &unk_100AD5B40);
 }
 
-- (void)books_enableTheme:(id)a3
+- (void)books_enableTheme:(id)theme
 {
   v5 = sub_1001F1160(&qword_100AD67D0);
   __chkstk_darwin(v5 - 8);
   v7 = v15 - v6;
-  if (a3)
+  if (theme)
   {
-    v8 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_1007A3504();
     swift_unknownObjectRelease();
@@ -178,33 +178,33 @@
   else
   {
     memset(v15, 0, sizeof(v15));
-    v9 = self;
+    selfCopy2 = self;
   }
 
   v10 = sub_1004E97B8(v15);
   v11 = sub_1007A2744();
   (*(*(v11 - 8) + 56))(v7, 1, 1, v11);
   sub_1007A26F4();
-  v12 = self;
+  selfCopy3 = self;
   v13 = sub_1007A26E4();
   v14 = swift_allocObject();
   *(v14 + 16) = v13;
   *(v14 + 24) = &protocol witness table for MainActor;
-  *(v14 + 32) = v12;
+  *(v14 + 32) = selfCopy3;
   *(v14 + 40) = v10;
   sub_1003457A0(0, 0, v7, &unk_10082CA30, v14);
 
   sub_100007840(v15, &unk_100AD5B40);
 }
 
-- (void)books_disableTheme:(id)a3
+- (void)books_disableTheme:(id)theme
 {
   v5 = sub_1001F1160(&qword_100AD67D0);
   __chkstk_darwin(v5 - 8);
   v7 = v14 - v6;
-  if (a3)
+  if (theme)
   {
-    v8 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_1007A3504();
     swift_unknownObjectRelease();
@@ -213,33 +213,33 @@
   else
   {
     memset(v14, 0, sizeof(v14));
-    v9 = self;
+    selfCopy2 = self;
   }
 
   v10 = sub_1007A2744();
   (*(*(v10 - 8) + 56))(v7, 1, 1, v10);
   sub_1007A26F4();
-  v11 = self;
+  selfCopy3 = self;
   v12 = sub_1007A26E4();
   v13 = swift_allocObject();
   *(v13 + 16) = v12;
   *(v13 + 24) = &protocol witness table for MainActor;
-  *(v13 + 32) = v11;
+  *(v13 + 32) = selfCopy3;
   *(v13 + 40) = 0;
   sub_1003457A0(0, 0, v7, &unk_10082CA28, v13);
 
   sub_100007840(v14, &unk_100AD5B40);
 }
 
-- (void)books_editTheme:(id)a3
+- (void)books_editTheme:(id)theme
 {
   v5 = sub_10079EF54();
   v6 = *(v5 - 8);
   __chkstk_darwin(v5);
   v8 = v11 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
-  if (a3)
+  if (theme)
   {
-    v9 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_1007A3504();
     swift_unknownObjectRelease();
@@ -248,7 +248,7 @@
   else
   {
     memset(v11, 0, sizeof(v11));
-    v10 = self;
+    selfCopy2 = self;
   }
 
   if (swift_unknownObjectWeakLoadStrong())
@@ -263,11 +263,11 @@
   sub_100007840(v11, &unk_100AD5B40);
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  if (a4)
+  if (sender)
   {
-    v6 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_1007A3504();
     swift_unknownObjectRelease();
@@ -276,20 +276,20 @@
   else
   {
     memset(v10, 0, sizeof(v10));
-    v7 = self;
+    selfCopy2 = self;
   }
 
-  v8 = sub_1004E5EA8(a3, v10);
+  v8 = sub_1004E5EA8(action, v10);
 
   sub_100007840(v10, &unk_100AD5B40);
   return v8 & 1;
 }
 
-- (void)validateCommand:(id)a3
+- (void)validateCommand:(id)command
 {
-  v4 = a3;
-  v5 = self;
-  sub_1004E6FE0(v4);
+  commandCopy = command;
+  selfCopy = self;
+  sub_1004E6FE0(commandCopy);
 }
 
 - (_TtC5Books22BookReaderActionTarget)init

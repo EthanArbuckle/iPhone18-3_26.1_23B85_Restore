@@ -1,26 +1,26 @@
 @interface WBSGeolocationPreferenceManager
-- (WBSGeolocationPreferenceManager)initWithPerSitePreferencesStore:(id)a3;
-- (id)defaultPreferenceValueForPreferenceIfNotCustomized:(id)a3;
-- (id)localizedStringForValue:(id)a3 inPreference:(id)a4;
-- (id)perSitePreferenceValueForGeolocationSetting:(int64_t)a3;
+- (WBSGeolocationPreferenceManager)initWithPerSitePreferencesStore:(id)store;
+- (id)defaultPreferenceValueForPreferenceIfNotCustomized:(id)customized;
+- (id)localizedStringForValue:(id)value inPreference:(id)preference;
+- (id)perSitePreferenceValueForGeolocationSetting:(int64_t)setting;
 - (id)preferences;
-- (void)_removePermissionsPassingTest:(id)a3 completionHandler:(id)a4;
-- (void)_setValue:(id)a3 forDomain:(id)a4 shouldIncludeTimestamp:(BOOL)a5 completionHandler:(id)a6;
-- (void)getAllDomainsConfiguredForPreference:(id)a3 usingBlock:(id)a4;
-- (void)getGeolocationSettingForDomain:(id)a3 completionHandler:(id)a4;
-- (void)getValueOfPreference:(id)a3 forDomain:(id)a4 withTimeout:(id)a5 usingBlock:(id)a6;
-- (void)removeAllPermissionsWithCompletionHandler:(id)a3;
-- (void)removePermissionsAddedAfterDate:(id)a3 completionHandler:(id)a4;
-- (void)removeTemporaryPermissionsAddedAfterDate:(id)a3 completionHandler:(id)a4;
-- (void)setDefaultGeolocationSetting:(int64_t)a3 completionHandler:(id)a4;
-- (void)setGeolocationSetting:(int64_t)a3 forDomain:(id)a4 completionHandler:(id)a5;
+- (void)_removePermissionsPassingTest:(id)test completionHandler:(id)handler;
+- (void)_setValue:(id)value forDomain:(id)domain shouldIncludeTimestamp:(BOOL)timestamp completionHandler:(id)handler;
+- (void)getAllDomainsConfiguredForPreference:(id)preference usingBlock:(id)block;
+- (void)getGeolocationSettingForDomain:(id)domain completionHandler:(id)handler;
+- (void)getValueOfPreference:(id)preference forDomain:(id)domain withTimeout:(id)timeout usingBlock:(id)block;
+- (void)removeAllPermissionsWithCompletionHandler:(id)handler;
+- (void)removePermissionsAddedAfterDate:(id)date completionHandler:(id)handler;
+- (void)removeTemporaryPermissionsAddedAfterDate:(id)date completionHandler:(id)handler;
+- (void)setDefaultGeolocationSetting:(int64_t)setting completionHandler:(id)handler;
+- (void)setGeolocationSetting:(int64_t)setting forDomain:(id)domain completionHandler:(id)handler;
 @end
 
 @implementation WBSGeolocationPreferenceManager
 
-- (WBSGeolocationPreferenceManager)initWithPerSitePreferencesStore:(id)a3
+- (WBSGeolocationPreferenceManager)initWithPerSitePreferencesStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v11.receiver = self;
   v11.super_class = WBSGeolocationPreferenceManager;
   v6 = [(WBSGeolocationPreferenceManager *)&v11 init];
@@ -30,7 +30,7 @@
     geolocationPreference = v6->_geolocationPreference;
     v6->_geolocationPreference = v7;
 
-    objc_storeStrong(&v6->_perSitePreferencesStore, a3);
+    objc_storeStrong(&v6->_perSitePreferencesStore, store);
     [(WBSPerSitePreferenceManager *)v6 setDefaultsDelegate:v6];
     v9 = v6;
   }
@@ -38,22 +38,22 @@
   return v6;
 }
 
-- (void)getGeolocationSettingForDomain:(id)a3 completionHandler:(id)a4
+- (void)getGeolocationSettingForDomain:(id)domain completionHandler:(id)handler
 {
   v9[0] = 0;
   v9[1] = v9;
   v9[2] = 0x3032000000;
   v9[3] = __Block_byref_object_copy__16;
   v9[4] = __Block_byref_object_dispose__16;
-  v6 = a3;
-  v10 = MEMORY[0x1BFB13CE0](a4);
+  domainCopy = domain;
+  v10 = MEMORY[0x1BFB13CE0](handler);
   geolocationPreference = self->_geolocationPreference;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __84__WBSGeolocationPreferenceManager_getGeolocationSettingForDomain_completionHandler___block_invoke;
   v8[3] = &unk_1E7FC6628;
   v8[4] = v9;
-  [(WBSGeolocationPreferenceManager *)self getValueOfPreference:geolocationPreference forDomain:v6 withTimeout:0 usingBlock:v8];
+  [(WBSGeolocationPreferenceManager *)self getValueOfPreference:geolocationPreference forDomain:domainCopy withTimeout:0 usingBlock:v8];
 
   _Block_object_dispose(v9, 8);
 }
@@ -81,24 +81,24 @@ void __84__WBSGeolocationPreferenceManager_getGeolocationSettingForDomain_comple
   *(v3 + 40) = 0;
 }
 
-- (void)setGeolocationSetting:(int64_t)a3 forDomain:(id)a4 completionHandler:(id)a5
+- (void)setGeolocationSetting:(int64_t)setting forDomain:(id)domain completionHandler:(id)handler
 {
-  v10 = a4;
-  v8 = a5;
-  v9 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  [(WBSGeolocationPreferenceManager *)self _setValue:v9 forDomain:v10 shouldIncludeTimestamp:(a3 - 3) < 2 completionHandler:v8];
+  domainCopy = domain;
+  handlerCopy = handler;
+  v9 = [MEMORY[0x1E696AD98] numberWithInteger:setting];
+  [(WBSGeolocationPreferenceManager *)self _setValue:v9 forDomain:domainCopy shouldIncludeTimestamp:(setting - 3) < 2 completionHandler:handlerCopy];
 }
 
-- (void)setDefaultGeolocationSetting:(int64_t)a3 completionHandler:(id)a4
+- (void)setDefaultGeolocationSetting:(int64_t)setting completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [(WBSGeolocationPreferenceManager *)self perSitePreferenceValueForGeolocationSetting:a3];
+  handlerCopy = handler;
+  v7 = [(WBSGeolocationPreferenceManager *)self perSitePreferenceValueForGeolocationSetting:setting];
   geolocationPreference = self->_geolocationPreference;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __82__WBSGeolocationPreferenceManager_setDefaultGeolocationSetting_completionHandler___block_invoke;
   v10[3] = &unk_1E7FC5E58;
-  v9 = v6;
+  v9 = handlerCopy;
   v11 = v9;
   [(WBSPerSitePreferenceManager *)self setDefaultValue:v7 ofPreference:geolocationPreference completionHandler:v10];
 }
@@ -122,17 +122,17 @@ BOOL __64__WBSGeolocationPreferenceManager_removeAllTemporaryPermissions__block_
   return (v3 - 3) < 2;
 }
 
-- (void)removeAllPermissionsWithCompletionHandler:(id)a3
+- (void)removeAllPermissionsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   perSitePreferencesStore = self->_perSitePreferencesStore;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __77__WBSGeolocationPreferenceManager_removeAllPermissionsWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7FB6B98;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   [(WBSPerSitePreferencesSQLiteStore *)perSitePreferencesStore removeAllPreferenceValuesFromPreference:@"PerSitePreferencesGeolocation" completionHandler:v7];
 }
 
@@ -159,16 +159,16 @@ uint64_t __77__WBSGeolocationPreferenceManager_removeAllPermissionsWithCompletio
   return result;
 }
 
-- (void)removeTemporaryPermissionsAddedAfterDate:(id)a3 completionHandler:(id)a4
+- (void)removeTemporaryPermissionsAddedAfterDate:(id)date completionHandler:(id)handler
 {
-  v6 = a3;
+  dateCopy = date;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __94__WBSGeolocationPreferenceManager_removeTemporaryPermissionsAddedAfterDate_completionHandler___block_invoke;
   v8[3] = &unk_1E7FC6670;
-  v9 = v6;
-  v7 = v6;
-  [(WBSGeolocationPreferenceManager *)self _removePermissionsPassingTest:v8 completionHandler:a4];
+  v9 = dateCopy;
+  v7 = dateCopy;
+  [(WBSGeolocationPreferenceManager *)self _removePermissionsPassingTest:v8 completionHandler:handler];
 }
 
 BOOL __94__WBSGeolocationPreferenceManager_removeTemporaryPermissionsAddedAfterDate_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -191,16 +191,16 @@ BOOL __94__WBSGeolocationPreferenceManager_removeTemporaryPermissionsAddedAfterD
   return v6;
 }
 
-- (void)removePermissionsAddedAfterDate:(id)a3 completionHandler:(id)a4
+- (void)removePermissionsAddedAfterDate:(id)date completionHandler:(id)handler
 {
-  v6 = a3;
+  dateCopy = date;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __85__WBSGeolocationPreferenceManager_removePermissionsAddedAfterDate_completionHandler___block_invoke;
   v8[3] = &unk_1E7FC6670;
-  v9 = v6;
-  v7 = v6;
-  [(WBSGeolocationPreferenceManager *)self _removePermissionsPassingTest:v8 completionHandler:a4];
+  v9 = dateCopy;
+  v7 = dateCopy;
+  [(WBSGeolocationPreferenceManager *)self _removePermissionsPassingTest:v8 completionHandler:handler];
 }
 
 BOOL __85__WBSGeolocationPreferenceManager_removePermissionsAddedAfterDate_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -211,20 +211,20 @@ BOOL __85__WBSGeolocationPreferenceManager_removePermissionsAddedAfterDate_compl
   return v4;
 }
 
-- (void)_removePermissionsPassingTest:(id)a3 completionHandler:(id)a4
+- (void)_removePermissionsPassingTest:(id)test completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  testCopy = test;
+  handlerCopy = handler;
   perSitePreferencesStore = self->_perSitePreferencesStore;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __83__WBSGeolocationPreferenceManager__removePermissionsPassingTest_completionHandler___block_invoke;
   v11[3] = &unk_1E7FC66C0;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = testCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = testCopy;
   [(WBSPerSitePreferencesSQLiteStore *)perSitePreferencesStore getAllPreferenceInformationForPreference:@"PerSitePreferencesGeolocation" completionHandler:v11];
 }
 
@@ -316,14 +316,14 @@ void __83__WBSGeolocationPreferenceManager__removePermissionsPassingTest_complet
   return v2;
 }
 
-- (id)localizedStringForValue:(id)a3 inPreference:(id)a4
+- (id)localizedStringForValue:(id)value inPreference:(id)preference
 {
-  v4 = a3;
-  v5 = [v4 integerValue];
+  valueCopy = value;
+  integerValue = [valueCopy integerValue];
   v6 = &stru_1F3A5E418;
-  if (v5 <= 1)
+  if (integerValue <= 1)
   {
-    if (v5 > 1)
+    if (integerValue > 1)
     {
       goto LABEL_8;
     }
@@ -331,7 +331,7 @@ void __83__WBSGeolocationPreferenceManager__removePermissionsPassingTest_complet
     goto LABEL_7;
   }
 
-  if (v5 == 2 || v5 == 3 || v5 == 4)
+  if (integerValue == 2 || integerValue == 3 || integerValue == 4)
   {
 LABEL_7:
     v6 = _WBSLocalizedString();
@@ -342,20 +342,20 @@ LABEL_8:
   return v6;
 }
 
-- (void)getValueOfPreference:(id)a3 forDomain:(id)a4 withTimeout:(id)a5 usingBlock:(id)a6
+- (void)getValueOfPreference:(id)preference forDomain:(id)domain withTimeout:(id)timeout usingBlock:(id)block
 {
-  v8 = a4;
-  v9 = a6;
+  domainCopy = domain;
+  blockCopy = block;
   perSitePreferencesStore = self->_perSitePreferencesStore;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __89__WBSGeolocationPreferenceManager_getValueOfPreference_forDomain_withTimeout_usingBlock___block_invoke;
   v13[3] = &unk_1E7FC66E8;
-  v14 = v8;
-  v15 = v9;
+  v14 = domainCopy;
+  v15 = blockCopy;
   v13[4] = self;
-  v11 = v8;
-  v12 = v9;
+  v11 = domainCopy;
+  v12 = blockCopy;
   [(WBSPerSitePreferencesSQLiteStore *)perSitePreferencesStore getTimestampAndValueOfPreference:@"PerSitePreferencesGeolocation" forDomain:v11 completionHandler:v13];
 }
 
@@ -406,17 +406,17 @@ LABEL_9:
 LABEL_10:
 }
 
-- (void)getAllDomainsConfiguredForPreference:(id)a3 usingBlock:(id)a4
+- (void)getAllDomainsConfiguredForPreference:(id)preference usingBlock:(id)block
 {
-  v5 = a4;
+  blockCopy = block;
   perSitePreferencesStore = self->_perSitePreferencesStore;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __83__WBSGeolocationPreferenceManager_getAllDomainsConfiguredForPreference_usingBlock___block_invoke;
   v8[3] = &unk_1E7FC6710;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = blockCopy;
+  v7 = blockCopy;
   [(WBSPerSitePreferencesSQLiteStore *)perSitePreferencesStore getAllPreferenceInformationForPreference:@"PerSitePreferencesGeolocation" completionHandler:v8];
 }
 
@@ -501,32 +501,32 @@ LABEL_7:
   (*(*(a1 + 48) + 16))();
 }
 
-- (id)defaultPreferenceValueForPreferenceIfNotCustomized:(id)a3
+- (id)defaultPreferenceValueForPreferenceIfNotCustomized:(id)customized
 {
   v3 = [(WBSGeolocationPreferenceManager *)self perSitePreferenceValueForGeolocationSetting:0];
 
   return v3;
 }
 
-- (id)perSitePreferenceValueForGeolocationSetting:(int64_t)a3
+- (id)perSitePreferenceValueForGeolocationSetting:(int64_t)setting
 {
-  if (a3 > 4)
+  if (setting > 4)
   {
     return &unk_1F3A9ADF0;
   }
 
   else
   {
-    return qword_1E7FC6758[a3];
+    return qword_1E7FC6758[setting];
   }
 }
 
-- (void)_setValue:(id)a3 forDomain:(id)a4 shouldIncludeTimestamp:(BOOL)a5 completionHandler:(id)a6
+- (void)_setValue:(id)value forDomain:(id)domain shouldIncludeTimestamp:(BOOL)timestamp completionHandler:(id)handler
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  timestampCopy = timestamp;
+  valueCopy = value;
+  domainCopy = domain;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   perSitePreferencesStore = self->_perSitePreferencesStore;
   v17[0] = MEMORY[0x1E69E9820];
@@ -534,13 +534,13 @@ LABEL_7:
   v17[2] = __96__WBSGeolocationPreferenceManager__setValue_forDomain_shouldIncludeTimestamp_completionHandler___block_invoke;
   v17[3] = &unk_1E7FC6738;
   objc_copyWeak(&v21, &location);
-  v18 = v11;
-  v19 = v10;
-  v20 = v12;
-  v14 = v12;
-  v15 = v10;
-  v16 = v11;
-  [(WBSPerSitePreferencesSQLiteStore *)perSitePreferencesStore setValue:v15 ofPreference:@"PerSitePreferencesGeolocation" forDomain:v16 includeTimestamp:v7 completionHandler:v17];
+  v18 = domainCopy;
+  v19 = valueCopy;
+  v20 = handlerCopy;
+  v14 = handlerCopy;
+  v15 = valueCopy;
+  v16 = domainCopy;
+  [(WBSPerSitePreferencesSQLiteStore *)perSitePreferencesStore setValue:v15 ofPreference:@"PerSitePreferencesGeolocation" forDomain:v16 includeTimestamp:timestampCopy completionHandler:v17];
 
   objc_destroyWeak(&v21);
   objc_destroyWeak(&location);

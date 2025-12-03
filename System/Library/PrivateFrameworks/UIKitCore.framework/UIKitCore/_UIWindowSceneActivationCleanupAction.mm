@@ -1,19 +1,19 @@
 @interface _UIWindowSceneActivationCleanupAction
-+ (id)actionWithInteractionIdentifier:(id)a3 responseHandler:(id)a4;
++ (id)actionWithInteractionIdentifier:(id)identifier responseHandler:(id)handler;
 - (NSString)interactionIdentifier;
 @end
 
 @implementation _UIWindowSceneActivationCleanupAction
 
-+ (id)actionWithInteractionIdentifier:(id)a3 responseHandler:(id)a4
++ (id)actionWithInteractionIdentifier:(id)identifier responseHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  identifierCopy = identifier;
   v8 = objc_opt_new();
-  [v8 setObject:v7 forSetting:1];
+  [v8 setObject:identifierCopy forSetting:1];
 
-  v9 = [a1 alloc];
-  v10 = [MEMORY[0x1E698E5F8] responderWithHandler:v6];
+  v9 = [self alloc];
+  v10 = [MEMORY[0x1E698E5F8] responderWithHandler:handlerCopy];
 
   v11 = [v9 initWithInfo:v8 responder:v10];
 
@@ -22,8 +22,8 @@
 
 - (NSString)interactionIdentifier
 {
-  v2 = [(_UIWindowSceneActivationCleanupAction *)self info];
-  v3 = [v2 objectForSetting:1];
+  info = [(_UIWindowSceneActivationCleanupAction *)self info];
+  v3 = [info objectForSetting:1];
 
   return v3;
 }

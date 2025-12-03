@@ -1,29 +1,29 @@
 @interface GGMController
 - ($43C834F0531B50B92CAF4577069D180C)setDefaultControllerConfig;
-- (GGMController)initWithConfig:(id *)a3 metalContext:(id)a4 imageDimensions:(id)a5 tuningParameters:(id)a6 forDetection:(BOOL)a7;
-- (id)buildInputParamsToRepairFromMetaInfo:(id)a3 andDetectedResults:(id)a4 lookaheadDetectedResults:(id)a5;
-- (id)createInputParamsToRepairFromMetaInfo:(id)a3 metaContainerBuffer:(id)a4 futureMetaContainerBuffers:(id)a5 metaContainerBuffer_HW:(id)a6 futureMetaContainerBuffers_HW:(id)a7;
-- (id)detectGreenGhostFor:(__CVBuffer *)a3 metaData:(id)a4 frameNum:(int64_t)a5 timeStamp:(id *)a6 keyPoint:(__CVBuffer *)a7 lightSourceMask:(__CVBuffer *)a8 futureFrames:(id *)a9;
+- (GGMController)initWithConfig:(id *)config metalContext:(id)context imageDimensions:(id)dimensions tuningParameters:(id)parameters forDetection:(BOOL)detection;
+- (id)buildInputParamsToRepairFromMetaInfo:(id)info andDetectedResults:(id)results lookaheadDetectedResults:(id)detectedResults;
+- (id)createInputParamsToRepairFromMetaInfo:(id)info metaContainerBuffer:(id)buffer futureMetaContainerBuffers:(id)buffers metaContainerBuffer_HW:(id)w futureMetaContainerBuffers_HW:(id)hW;
+- (id)detectGreenGhostFor:(__CVBuffer *)for metaData:(id)data frameNum:(int64_t)num timeStamp:(id *)stamp keyPoint:(__CVBuffer *)point lightSourceMask:(__CVBuffer *)mask futureFrames:(id *)frames;
 - (int64_t)processDetection;
-- (int64_t)repairGreenGhostFor:(__CVBuffer *)a3 inputParamsToRepair:(id)a4 parsedMetaData:(id)a5 lookaheadDetResult:(id)a6 mitigated:(__CVBuffer *)a7;
+- (int64_t)repairGreenGhostFor:(__CVBuffer *)for inputParamsToRepair:(id)repair parsedMetaData:(id)data lookaheadDetResult:(id)result mitigated:(__CVBuffer *)mitigated;
 - (uint64_t)processDetection;
 - (void)resetIntermediateVariables;
 - (void)resetState;
-- (void)setConfigureFromDefaultsWrite:(id *)a3;
-- (void)setIspTimeStamp:(id *)a3;
-- (void)updateConfig:(id *)a3 withConfigureDict:(id)a4;
+- (void)setConfigureFromDefaultsWrite:(id *)write;
+- (void)setIspTimeStamp:(id *)stamp;
+- (void)updateConfig:(id *)config withConfigureDict:(id)dict;
 @end
 
 @implementation GGMController
 
-- (void)updateConfig:(id *)a3 withConfigureDict:(id)a4
+- (void)updateConfig:(id *)config withConfigureDict:(id)dict
 {
-  v5 = a4;
+  dictCopy = dict;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v13 count:16];
+  v6 = [dictCopy countByEnumeratingWithState:&v14 objects:v13 count:16];
   if (v6)
   {
     v7 = v6;
@@ -35,49 +35,49 @@
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(dictCopy);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
-        v11 = [v5 objectForKeyedSubscript:{v10, v12}];
+        v11 = [dictCopy objectForKeyedSubscript:{v10, v12}];
         if ([v10 isEqualToString:@"LightMode"])
         {
-          a3->var0 = [v11 intValue];
+          config->var0 = [v11 intValue];
         }
 
         else if ([v10 isEqualToString:@"HomographyType"])
         {
-          a3->var1 = [v11 intValue];
+          config->var1 = [v11 intValue];
         }
 
         else if ([v10 isEqualToString:@"DetectionType"])
         {
-          a3->var2 = [v11 intValue];
+          config->var2 = [v11 intValue];
         }
 
         else if ([v10 isEqualToString:@"TemporalRepairMode"])
         {
-          a3->var3 = [v11 intValue];
+          config->var3 = [v11 intValue];
         }
 
         else if ([v10 isEqualToString:@"RepairFrameDelay"])
         {
-          a3->var4 = [v11 intValue];
+          config->var4 = [v11 intValue];
         }
 
         else if ([v10 isEqualToString:@"DrawBoundingBox"])
         {
-          a3->var5 = [v11 BOOLValue];
+          config->var5 = [v11 BOOLValue];
         }
 
         else if ([v10 isEqualToString:@"NoMetaData"])
         {
-          a3->var6 = [v11 BOOLValue];
+          config->var6 = [v11 BOOLValue];
         }
 
         else if ([v10 isEqualToString:@"BackgroundDetection"])
         {
-          a3->var7 = [v11 BOOLValue];
+          config->var7 = [v11 BOOLValue];
         }
 
         else
@@ -86,19 +86,19 @@
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v13 count:16];
+      v7 = [dictCopy countByEnumeratingWithState:&v14 objects:v13 count:16];
     }
 
     while (v7);
   }
 }
 
-- (GGMController)initWithConfig:(id *)a3 metalContext:(id)a4 imageDimensions:(id)a5 tuningParameters:(id)a6 forDetection:(BOOL)a7
+- (GGMController)initWithConfig:(id *)config metalContext:(id)context imageDimensions:(id)dimensions tuningParameters:(id)parameters forDetection:(BOOL)detection
 {
-  v7 = a7;
-  v13 = a4;
-  v14 = a6;
-  if (!v13)
+  detectionCopy = detection;
+  contextCopy = context;
+  parametersCopy = parameters;
+  if (!contextCopy)
   {
     [GGMController initWithConfig:? metalContext:? imageDimensions:? tuningParameters:? forDetection:?];
     goto LABEL_13;
@@ -110,21 +110,21 @@
   v16 = v15;
   if (v15)
   {
-    v17 = *&a3->var0.var0;
-    v18 = *&a3->var0.var7;
-    v19 = *&a3->var1.var4;
-    *&v15->_configure.externalCfg.lightMode = *&a3->var1.var0;
+    v17 = *&config->var0.var0;
+    v18 = *&config->var0.var7;
+    v19 = *&config->var1.var4;
+    *&v15->_configure.externalCfg.lightMode = *&config->var1.var0;
     *&v15->_configure.externalCfg.frameDelay = v19;
     *&v15->_configure.internalCfg.clipThreshold = v17;
     *&v15->_configure.internalCfg.enableColorMask = v18;
-    objc_storeStrong(&v15->_metalContext, a4);
-    objc_storeStrong(&v16->_tuningParamDict, a6);
-    v20 = [v14 objectForKeyedSubscript:@"hwMode"];
+    objc_storeStrong(&v15->_metalContext, context);
+    objc_storeStrong(&v16->_tuningParamDict, parameters);
+    v20 = [parametersCopy objectForKeyedSubscript:@"hwMode"];
     v16->_hwMode = [v20 BOOLValue];
 
-    if (v7)
+    if (detectionCopy)
     {
-      v21 = [[VideoDeghostingDetectionV3 alloc] initWithMetalContext:v16->_metalContext config:a3 tuningParamDict:v16->_tuningParamDict imageDimensions:a5];
+      v21 = [[VideoDeghostingDetectionV3 alloc] initWithMetalContext:v16->_metalContext config:config tuningParamDict:v16->_tuningParamDict imageDimensions:dimensions];
       GGDetector = v16->_GGDetector;
       v16->_GGDetector = v21;
 
@@ -139,7 +139,7 @@ LABEL_13:
 
     else
     {
-      v23 = [[VideoMitigation alloc] initWithConfig:a3 metalContext:v16->_metalContext imageDimensions:a5 tuningParameters:v16->_tuningParamDict];
+      v23 = [[VideoMitigation alloc] initWithConfig:config metalContext:v16->_metalContext imageDimensions:dimensions tuningParameters:v16->_tuningParamDict];
       GGMitigator = v16->_GGMitigator;
       v16->_GGMitigator = v23;
 
@@ -202,13 +202,13 @@ LABEL_9:
   return result;
 }
 
-- (void)setConfigureFromDefaultsWrite:(id *)a3
+- (void)setConfigureFromDefaultsWrite:(id *)write
 {
-  a3->var1.var11 = FigGetCFPreferenceNumberWithDefault() == 0;
-  var12 = a3->var1.var12;
-  a3->var1.var12 = FigGetCFPreferenceNumberWithDefault();
-  a3->var1.var13 = FigGetCFPreferenceNumberWithDefault();
-  a3->var1.var14 = FigGetCFPreferenceNumberWithDefault();
+  write->var1.var11 = FigGetCFPreferenceNumberWithDefault() == 0;
+  var12 = write->var1.var12;
+  write->var1.var12 = FigGetCFPreferenceNumberWithDefault();
+  write->var1.var13 = FigGetCFPreferenceNumberWithDefault();
+  write->var1.var14 = FigGetCFPreferenceNumberWithDefault();
 }
 
 - (int64_t)processDetection
@@ -251,40 +251,40 @@ LABEL_6:
   return result;
 }
 
-- (id)detectGreenGhostFor:(__CVBuffer *)a3 metaData:(id)a4 frameNum:(int64_t)a5 timeStamp:(id *)a6 keyPoint:(__CVBuffer *)a7 lightSourceMask:(__CVBuffer *)a8 futureFrames:(id *)a9
+- (id)detectGreenGhostFor:(__CVBuffer *)for metaData:(id)data frameNum:(int64_t)num timeStamp:(id *)stamp keyPoint:(__CVBuffer *)point lightSourceMask:(__CVBuffer *)mask futureFrames:(id *)frames
 {
-  v14 = a4;
-  CVPixelBufferRetain(a3);
-  if (a7)
+  dataCopy = data;
+  CVPixelBufferRetain(for);
+  if (point)
   {
-    CFRetain(a7);
+    CFRetain(point);
   }
 
-  CVPixelBufferRetain(a8);
+  CVPixelBufferRetain(mask);
   v15 = objc_autoreleasePoolPush();
   GGDetector = self->_GGDetector;
-  v19 = *&a6->var0;
-  var3 = a6->var3;
-  v17 = [(VideoDeghostingDetectionV3 *)GGDetector process:a3 metaData:v14 ispTimeStamp:&v19 keypoints:a7 lightSourceMask:a8 futureFrames:a9];
+  v19 = *&stamp->var0;
+  var3 = stamp->var3;
+  v17 = [(VideoDeghostingDetectionV3 *)GGDetector process:for metaData:dataCopy ispTimeStamp:&v19 keypoints:point lightSourceMask:mask futureFrames:frames];
   objc_autoreleasePoolPop(v15);
-  CVPixelBufferRelease(a3);
-  if (a7)
+  CVPixelBufferRelease(for);
+  if (point)
   {
-    CFRelease(a7);
+    CFRelease(point);
   }
 
-  CVPixelBufferRelease(a8);
+  CVPixelBufferRelease(mask);
 
   return v17;
 }
 
-- (int64_t)repairGreenGhostFor:(__CVBuffer *)a3 inputParamsToRepair:(id)a4 parsedMetaData:(id)a5 lookaheadDetResult:(id)a6 mitigated:(__CVBuffer *)a7
+- (int64_t)repairGreenGhostFor:(__CVBuffer *)for inputParamsToRepair:(id)repair parsedMetaData:(id)data lookaheadDetResult:(id)result mitigated:(__CVBuffer *)mitigated
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = v13;
-  if (!a3)
+  repairCopy = repair;
+  dataCopy = data;
+  resultCopy = result;
+  v14 = resultCopy;
+  if (!for)
   {
     [GGMController repairGreenGhostFor:inputParamsToRepair:parsedMetaData:lookaheadDetResult:mitigated:];
 LABEL_13:
@@ -292,26 +292,26 @@ LABEL_13:
     goto LABEL_7;
   }
 
-  if (!v12)
+  if (!dataCopy)
   {
     [GGMController repairGreenGhostFor:inputParamsToRepair:parsedMetaData:lookaheadDetResult:mitigated:];
     goto LABEL_13;
   }
 
-  if (!v11)
+  if (!repairCopy)
   {
     [GGMController repairGreenGhostFor:inputParamsToRepair:parsedMetaData:lookaheadDetResult:mitigated:];
     goto LABEL_13;
   }
 
-  if (!v13)
+  if (!resultCopy)
   {
     [GGMController repairGreenGhostFor:inputParamsToRepair:parsedMetaData:lookaheadDetResult:mitigated:];
     goto LABEL_13;
   }
 
-  v15 = [(GGMController *)self buildInputParamsToRepairFromMetaInfo:v12 andDetectedResults:v11 lookaheadDetectedResults:v13];
-  v16 = [v11 objectForKeyedSubscript:@"InputTexture"];
+  v15 = [(GGMController *)self buildInputParamsToRepairFromMetaInfo:dataCopy andDetectedResults:repairCopy lookaheadDetectedResults:resultCopy];
+  v16 = [repairCopy objectForKeyedSubscript:@"InputTexture"];
   v17 = v16;
   if (!v15)
   {
@@ -319,50 +319,50 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  v18 = [(VideoMitigation *)self->_GGMitigator mitigate:a3 info:v15 futureFrames:self->_futureFramesToDetectionAndRepair inputTexture:v16];
+  v18 = [(VideoMitigation *)self->_GGMitigator mitigate:for info:v15 futureFrames:self->_futureFramesToDetectionAndRepair inputTexture:v16];
 
 LABEL_7:
   return v18;
 }
 
-- (id)createInputParamsToRepairFromMetaInfo:(id)a3 metaContainerBuffer:(id)a4 futureMetaContainerBuffers:(id)a5 metaContainerBuffer_HW:(id)a6 futureMetaContainerBuffers_HW:(id)a7
+- (id)createInputParamsToRepairFromMetaInfo:(id)info metaContainerBuffer:(id)buffer futureMetaContainerBuffers:(id)buffers metaContainerBuffer_HW:(id)w futureMetaContainerBuffers_HW:(id)hW
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  infoCopy = info;
+  bufferCopy = buffer;
+  buffersCopy = buffers;
+  wCopy = w;
+  hWCopy = hW;
   v17 = +[NSMutableDictionary dictionary];
-  if (v14)
+  if (buffersCopy)
   {
-    [(RepairWeightsProcessor *)self->_repairWeightsProcessor temporalFilterBlendingWeights:v13 lookaheadMetaBufs:v14 metaBuf_HW:v15 lookaheadMetaBufs_HW:v16 hwMode:self->_hwMode];
+    [(RepairWeightsProcessor *)self->_repairWeightsProcessor temporalFilterBlendingWeights:bufferCopy lookaheadMetaBufs:buffersCopy metaBuf_HW:wCopy lookaheadMetaBufs_HW:hWCopy hwMode:self->_hwMode];
   }
 
-  if (v12)
+  if (infoCopy)
   {
-    [v17 setObject:v12 forKey:@"MetaData"];
+    [v17 setObject:infoCopy forKey:@"MetaData"];
   }
 
-  if (v13)
+  if (bufferCopy)
   {
-    [v17 setObject:v13 forKey:@"RepairMetaContainer"];
+    [v17 setObject:bufferCopy forKey:@"RepairMetaContainer"];
   }
 
-  if (v15)
+  if (wCopy)
   {
-    [v17 setObject:v15 forKey:@"RepairMetaContainer_HW"];
+    [v17 setObject:wCopy forKey:@"RepairMetaContainer_HW"];
   }
 
   return v17;
 }
 
-- (id)buildInputParamsToRepairFromMetaInfo:(id)a3 andDetectedResults:(id)a4 lookaheadDetectedResults:(id)a5
+- (id)buildInputParamsToRepairFromMetaInfo:(id)info andDetectedResults:(id)results lookaheadDetectedResults:(id)detectedResults
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 objectForKeyedSubscript:@"RepairMeta"];
-  v12 = [v9 objectForKeyedSubscript:@"RepairMeta_HW"];
+  infoCopy = info;
+  resultsCopy = results;
+  detectedResultsCopy = detectedResults;
+  v11 = [resultsCopy objectForKeyedSubscript:@"RepairMeta"];
+  v12 = [resultsCopy objectForKeyedSubscript:@"RepairMeta_HW"];
   v13 = v12;
   if (!v11)
   {
@@ -383,9 +383,9 @@ LABEL_40:
   }
 
   v33 = v11;
-  v14 = [v11 mutableBytes];
-  v15 = [v13 mutableBytes];
-  if (!v14 || (v14[2168] & 1) == 0)
+  mutableBytes = [v11 mutableBytes];
+  mutableBytes2 = [v13 mutableBytes];
+  if (!mutableBytes || (mutableBytes[2168] & 1) == 0)
   {
     [GGMController buildInputParamsToRepairFromMetaInfo:andDetectedResults:lookaheadDetectedResults:];
 LABEL_34:
@@ -395,31 +395,31 @@ LABEL_34:
     goto LABEL_37;
   }
 
-  if (!v15 || v15[2576])
+  if (!mutableBytes2 || mutableBytes2[2576])
   {
     [GGMController buildInputParamsToRepairFromMetaInfo:andDetectedResults:lookaheadDetectedResults:];
     goto LABEL_34;
   }
 
-  v31 = v9;
-  v32 = v8;
+  v31 = resultsCopy;
+  v32 = infoCopy;
   v16 = objc_alloc_init(NSMutableArray);
   v17 = objc_alloc_init(NSMutableArray);
-  if (!v10 || ![v10 count])
+  if (!detectedResultsCopy || ![detectedResultsCopy count])
   {
 LABEL_25:
-    v28 = self;
-    v8 = v32;
+    selfCopy = self;
+    infoCopy = v32;
     v29 = v33;
-    v11 = [(GGMController *)v28 createInputParamsToRepairFromMetaInfo:v32 metaContainerBuffer:v33 futureMetaContainerBuffers:v16 metaContainerBuffer_HW:v13 futureMetaContainerBuffers_HW:v17];
-    v9 = v31;
+    v11 = [(GGMController *)selfCopy createInputParamsToRepairFromMetaInfo:v32 metaContainerBuffer:v33 futureMetaContainerBuffers:v16 metaContainerBuffer_HW:v13 futureMetaContainerBuffers_HW:v17];
+    resultsCopy = v31;
     goto LABEL_26;
   }
 
   v18 = 0;
   while (1)
   {
-    v19 = [v10 objectAtIndexedSubscript:v18];
+    v19 = [detectedResultsCopy objectAtIndexedSubscript:v18];
     v20 = v19;
     if (!v19 || ([v19 objectForKey:@"RepairMeta"], v21 = objc_claimAutoreleasedReturnValue(), v21, !v21))
     {
@@ -436,8 +436,8 @@ LABEL_24:
       goto LABEL_36;
     }
 
-    v24 = [v22 mutableBytes];
-    if (!v24 || (v24[2168] & 1) == 0)
+    mutableBytes3 = [v22 mutableBytes];
+    if (!mutableBytes3 || (mutableBytes3[2168] & 1) == 0)
     {
       [GGMController buildInputParamsToRepairFromMetaInfo:andDetectedResults:lookaheadDetectedResults:];
       goto LABEL_36;
@@ -464,8 +464,8 @@ LABEL_24:
       break;
     }
 
-    v27 = [v26 mutableBytes];
-    if (!v27 || v27[2576])
+    mutableBytes4 = [v26 mutableBytes];
+    if (!mutableBytes4 || mutableBytes4[2576])
     {
       [GGMController buildInputParamsToRepairFromMetaInfo:andDetectedResults:lookaheadDetectedResults:];
       goto LABEL_36;
@@ -474,7 +474,7 @@ LABEL_24:
     [v17 addObject:v23];
 
 LABEL_22:
-    if ([v10 count] <= ++v18)
+    if ([detectedResultsCopy count] <= ++v18)
     {
       goto LABEL_25;
     }
@@ -484,8 +484,8 @@ LABEL_22:
 LABEL_36:
 
   v11 = 0;
-  v9 = v31;
-  v8 = v32;
+  resultsCopy = v31;
+  infoCopy = v32;
 LABEL_37:
   v29 = v33;
 LABEL_26:
@@ -493,10 +493,10 @@ LABEL_26:
   return v11;
 }
 
-- (void)setIspTimeStamp:(id *)a3
+- (void)setIspTimeStamp:(id *)stamp
 {
-  v3 = *&a3->var0;
-  self->_ispTimeStamp.epoch = a3->var3;
+  v3 = *&stamp->var0;
+  self->_ispTimeStamp.epoch = stamp->var3;
   *&self->_ispTimeStamp.value = v3;
 }
 

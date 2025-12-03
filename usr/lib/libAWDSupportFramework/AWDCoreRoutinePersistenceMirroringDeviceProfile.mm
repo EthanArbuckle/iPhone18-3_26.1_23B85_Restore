@@ -1,25 +1,25 @@
 @interface AWDCoreRoutinePersistenceMirroringDeviceProfile
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAgeOfDevice:(BOOL)a3;
-- (void)setHasDeviceClass:(BOOL)a3;
-- (void)setHasPlacesAssociatedToDevice:(BOOL)a3;
-- (void)setHasTimeIntervalSinceLastRecordAssociation:(BOOL)a3;
-- (void)setHasTransitionsAssociatedToDevice:(BOOL)a3;
-- (void)setHasVisitsAssociatedToDevice:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasAgeOfDevice:(BOOL)device;
+- (void)setHasDeviceClass:(BOOL)class;
+- (void)setHasPlacesAssociatedToDevice:(BOOL)device;
+- (void)setHasTimeIntervalSinceLastRecordAssociation:(BOOL)association;
+- (void)setHasTransitionsAssociatedToDevice:(BOOL)device;
+- (void)setHasVisitsAssociatedToDevice:(BOOL)device;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDCoreRoutinePersistenceMirroringDeviceProfile
 
-- (void)setHasDeviceClass:(BOOL)a3
+- (void)setHasDeviceClass:(BOOL)class
 {
-  if (a3)
+  if (class)
   {
     v3 = 4;
   }
@@ -32,9 +32,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasAgeOfDevice:(BOOL)a3
+- (void)setHasAgeOfDevice:(BOOL)device
 {
-  if (a3)
+  if (device)
   {
     v3 = 2;
   }
@@ -47,9 +47,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasVisitsAssociatedToDevice:(BOOL)a3
+- (void)setHasVisitsAssociatedToDevice:(BOOL)device
 {
-  if (a3)
+  if (device)
   {
     v3 = 64;
   }
@@ -62,9 +62,9 @@
   *&self->_has = *&self->_has & 0xBF | v3;
 }
 
-- (void)setHasPlacesAssociatedToDevice:(BOOL)a3
+- (void)setHasPlacesAssociatedToDevice:(BOOL)device
 {
-  if (a3)
+  if (device)
   {
     v3 = 8;
   }
@@ -77,9 +77,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasTransitionsAssociatedToDevice:(BOOL)a3
+- (void)setHasTransitionsAssociatedToDevice:(BOOL)device
 {
-  if (a3)
+  if (device)
   {
     v3 = 32;
   }
@@ -92,9 +92,9 @@
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasTimeIntervalSinceLastRecordAssociation:(BOOL)a3
+- (void)setHasTimeIntervalSinceLastRecordAssociation:(BOOL)association
 {
-  if (a3)
+  if (association)
   {
     v3 = 16;
   }
@@ -116,11 +116,11 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if (has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -139,7 +139,7 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_deviceClass), @"deviceClass"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_deviceClass), @"deviceClass"}];
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -153,7 +153,7 @@ LABEL_4:
   }
 
 LABEL_12:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_ageOfDevice), @"ageOfDevice"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_ageOfDevice), @"ageOfDevice"}];
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -167,7 +167,7 @@ LABEL_5:
   }
 
 LABEL_13:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_visitsAssociatedToDevice), @"visitsAssociatedToDevice"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_visitsAssociatedToDevice), @"visitsAssociatedToDevice"}];
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -178,17 +178,17 @@ LABEL_6:
     }
 
 LABEL_15:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_transitionsAssociatedToDevice), @"transitionsAssociatedToDevice"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_transitionsAssociatedToDevice), @"transitionsAssociatedToDevice"}];
     if ((*&self->_has & 0x10) == 0)
     {
-      return v3;
+      return dictionary;
     }
 
     goto LABEL_8;
   }
 
 LABEL_14:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_placesAssociatedToDevice), @"placesAssociatedToDevice"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_placesAssociatedToDevice), @"placesAssociatedToDevice"}];
   has = self->_has;
   if ((has & 0x20) != 0)
   {
@@ -199,13 +199,13 @@ LABEL_7:
   if ((has & 0x10) != 0)
   {
 LABEL_8:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_timeIntervalSinceLastRecordAssociation), @"timeIntervalSinceLastRecordAssociation"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_timeIntervalSinceLastRecordAssociation), @"timeIntervalSinceLastRecordAssociation"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if (has)
@@ -303,13 +303,13 @@ LABEL_15:
   PBDataWriterWriteInt32Field();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if (has)
   {
-    *(a3 + 1) = self->_timestamp;
-    *(a3 + 40) |= 1u;
+    *(to + 1) = self->_timestamp;
+    *(to + 40) |= 1u;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -328,8 +328,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(a3 + 5) = self->_deviceClass;
-  *(a3 + 40) |= 4u;
+  *(to + 5) = self->_deviceClass;
+  *(to + 40) |= 4u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -343,8 +343,8 @@ LABEL_4:
   }
 
 LABEL_11:
-  *(a3 + 4) = self->_ageOfDevice;
-  *(a3 + 40) |= 2u;
+  *(to + 4) = self->_ageOfDevice;
+  *(to + 40) |= 2u;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -358,8 +358,8 @@ LABEL_5:
   }
 
 LABEL_12:
-  *(a3 + 9) = self->_visitsAssociatedToDevice;
-  *(a3 + 40) |= 0x40u;
+  *(to + 9) = self->_visitsAssociatedToDevice;
+  *(to + 40) |= 0x40u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -373,8 +373,8 @@ LABEL_6:
   }
 
 LABEL_13:
-  *(a3 + 6) = self->_placesAssociatedToDevice;
-  *(a3 + 40) |= 8u;
+  *(to + 6) = self->_placesAssociatedToDevice;
+  *(to + 40) |= 8u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -385,23 +385,23 @@ LABEL_7:
     }
 
 LABEL_15:
-    *(a3 + 7) = self->_timeIntervalSinceLastRecordAssociation;
-    *(a3 + 40) |= 0x10u;
+    *(to + 7) = self->_timeIntervalSinceLastRecordAssociation;
+    *(to + 40) |= 0x10u;
     return;
   }
 
 LABEL_14:
-  *(a3 + 8) = self->_transitionsAssociatedToDevice;
-  *(a3 + 40) |= 0x20u;
+  *(to + 8) = self->_transitionsAssociatedToDevice;
+  *(to + 40) |= 0x20u;
   if ((*&self->_has & 0x10) != 0)
   {
     goto LABEL_15;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if (has)
   {
@@ -498,20 +498,20 @@ LABEL_8:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     if (*&self->_has)
     {
-      if ((*(a3 + 40) & 1) == 0 || self->_timestamp != *(a3 + 1))
+      if ((*(equal + 40) & 1) == 0 || self->_timestamp != *(equal + 1))
       {
         goto LABEL_36;
       }
     }
 
-    else if (*(a3 + 40))
+    else if (*(equal + 40))
     {
 LABEL_36:
       LOBYTE(v5) = 0;
@@ -520,73 +520,73 @@ LABEL_36:
 
     if ((*&self->_has & 4) != 0)
     {
-      if ((*(a3 + 40) & 4) == 0 || self->_deviceClass != *(a3 + 5))
+      if ((*(equal + 40) & 4) == 0 || self->_deviceClass != *(equal + 5))
       {
         goto LABEL_36;
       }
     }
 
-    else if ((*(a3 + 40) & 4) != 0)
+    else if ((*(equal + 40) & 4) != 0)
     {
       goto LABEL_36;
     }
 
     if ((*&self->_has & 2) != 0)
     {
-      if ((*(a3 + 40) & 2) == 0 || self->_ageOfDevice != *(a3 + 4))
+      if ((*(equal + 40) & 2) == 0 || self->_ageOfDevice != *(equal + 4))
       {
         goto LABEL_36;
       }
     }
 
-    else if ((*(a3 + 40) & 2) != 0)
+    else if ((*(equal + 40) & 2) != 0)
     {
       goto LABEL_36;
     }
 
     if ((*&self->_has & 0x40) != 0)
     {
-      if ((*(a3 + 40) & 0x40) == 0 || self->_visitsAssociatedToDevice != *(a3 + 9))
+      if ((*(equal + 40) & 0x40) == 0 || self->_visitsAssociatedToDevice != *(equal + 9))
       {
         goto LABEL_36;
       }
     }
 
-    else if ((*(a3 + 40) & 0x40) != 0)
+    else if ((*(equal + 40) & 0x40) != 0)
     {
       goto LABEL_36;
     }
 
     if ((*&self->_has & 8) != 0)
     {
-      if ((*(a3 + 40) & 8) == 0 || self->_placesAssociatedToDevice != *(a3 + 6))
+      if ((*(equal + 40) & 8) == 0 || self->_placesAssociatedToDevice != *(equal + 6))
       {
         goto LABEL_36;
       }
     }
 
-    else if ((*(a3 + 40) & 8) != 0)
+    else if ((*(equal + 40) & 8) != 0)
     {
       goto LABEL_36;
     }
 
     if ((*&self->_has & 0x20) != 0)
     {
-      if ((*(a3 + 40) & 0x20) == 0 || self->_transitionsAssociatedToDevice != *(a3 + 8))
+      if ((*(equal + 40) & 0x20) == 0 || self->_transitionsAssociatedToDevice != *(equal + 8))
       {
         goto LABEL_36;
       }
     }
 
-    else if ((*(a3 + 40) & 0x20) != 0)
+    else if ((*(equal + 40) & 0x20) != 0)
     {
       goto LABEL_36;
     }
 
-    LOBYTE(v5) = (*(a3 + 40) & 0x10) == 0;
+    LOBYTE(v5) = (*(equal + 40) & 0x10) == 0;
     if ((*&self->_has & 0x10) != 0)
     {
-      if ((*(a3 + 40) & 0x10) == 0 || self->_timeIntervalSinceLastRecordAssociation != *(a3 + 7))
+      if ((*(equal + 40) & 0x10) == 0 || self->_timeIntervalSinceLastRecordAssociation != *(equal + 7))
       {
         goto LABEL_36;
       }
@@ -694,14 +694,14 @@ LABEL_8:
   return v3 ^ v2 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v3 = *(a3 + 40);
+  v3 = *(from + 40);
   if (v3)
   {
-    self->_timestamp = *(a3 + 1);
+    self->_timestamp = *(from + 1);
     *&self->_has |= 1u;
-    v3 = *(a3 + 40);
+    v3 = *(from + 40);
     if ((v3 & 4) == 0)
     {
 LABEL_3:
@@ -714,14 +714,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(a3 + 40) & 4) == 0)
+  else if ((*(from + 40) & 4) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_deviceClass = *(a3 + 5);
+  self->_deviceClass = *(from + 5);
   *&self->_has |= 4u;
-  v3 = *(a3 + 40);
+  v3 = *(from + 40);
   if ((v3 & 2) == 0)
   {
 LABEL_4:
@@ -734,9 +734,9 @@ LABEL_4:
   }
 
 LABEL_11:
-  self->_ageOfDevice = *(a3 + 4);
+  self->_ageOfDevice = *(from + 4);
   *&self->_has |= 2u;
-  v3 = *(a3 + 40);
+  v3 = *(from + 40);
   if ((v3 & 0x40) == 0)
   {
 LABEL_5:
@@ -749,9 +749,9 @@ LABEL_5:
   }
 
 LABEL_12:
-  self->_visitsAssociatedToDevice = *(a3 + 9);
+  self->_visitsAssociatedToDevice = *(from + 9);
   *&self->_has |= 0x40u;
-  v3 = *(a3 + 40);
+  v3 = *(from + 40);
   if ((v3 & 8) == 0)
   {
 LABEL_6:
@@ -764,9 +764,9 @@ LABEL_6:
   }
 
 LABEL_13:
-  self->_placesAssociatedToDevice = *(a3 + 6);
+  self->_placesAssociatedToDevice = *(from + 6);
   *&self->_has |= 8u;
-  v3 = *(a3 + 40);
+  v3 = *(from + 40);
   if ((v3 & 0x20) == 0)
   {
 LABEL_7:
@@ -776,15 +776,15 @@ LABEL_7:
     }
 
 LABEL_15:
-    self->_timeIntervalSinceLastRecordAssociation = *(a3 + 7);
+    self->_timeIntervalSinceLastRecordAssociation = *(from + 7);
     *&self->_has |= 0x10u;
     return;
   }
 
 LABEL_14:
-  self->_transitionsAssociatedToDevice = *(a3 + 8);
+  self->_transitionsAssociatedToDevice = *(from + 8);
   *&self->_has |= 0x20u;
-  if ((*(a3 + 40) & 0x10) != 0)
+  if ((*(from + 40) & 0x10) != 0)
   {
     goto LABEL_15;
   }

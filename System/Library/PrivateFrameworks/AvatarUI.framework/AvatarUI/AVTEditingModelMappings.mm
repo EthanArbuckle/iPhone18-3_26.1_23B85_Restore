@@ -1,12 +1,12 @@
 @interface AVTEditingModelMappings
 + (id)paletteCategories;
-+ (id)presetCategoryForColorPaletteName:(id)a3;
-+ (id)presetCategoryFromCategoryName:(id)a3;
++ (id)presetCategoryForColorPaletteName:(id)name;
++ (id)presetCategoryFromCategoryName:(id)name;
 @end
 
 @implementation AVTEditingModelMappings
 
-+ (id)presetCategoryFromCategoryName:(id)a3
++ (id)presetCategoryFromCategoryName:(id)name
 {
   v3 = MEMORY[0x1E696AD98];
   v4 = AVTPresetCategoryFromString();
@@ -14,7 +14,7 @@
   return [v3 numberWithInteger:v4];
 }
 
-+ (id)presetCategoryForColorPaletteName:(id)a3
++ (id)presetCategoryForColorPaletteName:(id)name
 {
   v3 = MEMORY[0x1E696AD98];
   v4 = AVTColorCategoryFromString();

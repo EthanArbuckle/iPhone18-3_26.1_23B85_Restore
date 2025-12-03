@@ -1,10 +1,10 @@
 @interface JavaLangSystemClassLoader
 + (void)initialize;
 - (JavaLangSystemClassLoader)init;
-- (id)findClassWithNSString:(id)a3;
-- (id)findResourceWithNSString:(id)a3;
-- (id)findResourcesWithNSString:(id)a3;
-- (id)loadClassWithNSString:(id)a3 withBoolean:(BOOL)a4;
+- (id)findClassWithNSString:(id)string;
+- (id)findResourceWithNSString:(id)string;
+- (id)findResourcesWithNSString:(id)string;
+- (id)loadClassWithNSString:(id)string withBoolean:(BOOL)boolean;
 @end
 
 @implementation JavaLangSystemClassLoader
@@ -17,9 +17,9 @@
   return self;
 }
 
-- (id)findClassWithNSString:(id)a3
+- (id)findClassWithNSString:(id)string
 {
-  if (!a3)
+  if (!string)
   {
     JreThrowNullPointerException();
   }
@@ -27,14 +27,14 @@
   return [IOSClass forName:"forName:initialize:classLoader:" initialize:? classLoader:?];
 }
 
-- (id)findResourceWithNSString:(id)a3
+- (id)findResourceWithNSString:(id)string
 {
-  if (!a3)
+  if (!string)
   {
     return 0;
   }
 
-  v3 = [+[NSBundle mainBundle](NSBundle URLForResource:"URLForResource:withExtension:" withExtension:a3, 0];
+  v3 = [+[NSBundle mainBundle](NSBundle URLForResource:"URLForResource:withExtension:" withExtension:string, 0];
   if (!v3)
   {
     return 0;
@@ -45,9 +45,9 @@
   return v4;
 }
 
-- (id)findResourcesWithNSString:(id)a3
+- (id)findResourcesWithNSString:(id)string
 {
-  if (a3)
+  if (string)
   {
     v4 = objc_alloc_init(JavaUtilArrayList);
     v12 = 0u;
@@ -70,7 +70,7 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v12 + 1) + 8 * v9) URLForResource:a3 withExtension:0];
+          v10 = [*(*(&v12 + 1) + 8 * v9) URLForResource:string withExtension:0];
           if (v10)
           {
             -[JavaUtilArrayList addWithId:](v4, "addWithId:", -[JavaNetURL initWithNSString:]([JavaNetURL alloc], "initWithNSString:", [v10 description]));
@@ -97,17 +97,17 @@
   }
 }
 
-- (id)loadClassWithNSString:(id)a3 withBoolean:(BOOL)a4
+- (id)loadClassWithNSString:(id)string withBoolean:(BOOL)boolean
 {
   objc_sync_enter(self);
-  v6 = [(JavaLangSystemClassLoader *)self findClassWithNSString:a3];
+  v6 = [(JavaLangSystemClassLoader *)self findClassWithNSString:string];
   objc_sync_exit(self);
   return v6;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = new_JavaLangSystemClassLoader_init();
     JreStrongAssignAndConsume(&JavaLangSystemClassLoader_loader_, v2);

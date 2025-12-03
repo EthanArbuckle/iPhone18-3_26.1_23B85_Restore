@@ -1,25 +1,25 @@
 @interface FMUWBAvailabilityHelper
 - (_TtC11FMFindingUI23FMUWBAvailabilityHelper)init;
-- (void)session:(id)a3 didFailWithError:(id)a4;
-- (void)systemConfigurator:(id)a3 didUpdateState:(id)a4;
+- (void)session:(id)session didFailWithError:(id)error;
+- (void)systemConfigurator:(id)configurator didUpdateState:(id)state;
 @end
 
 @implementation FMUWBAvailabilityHelper
 
-- (void)systemConfigurator:(id)a3 didUpdateState:(id)a4
+- (void)systemConfigurator:(id)configurator didUpdateState:(id)state
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_24A61B4A4(v7);
+  configuratorCopy = configurator;
+  stateCopy = state;
+  selfCopy = self;
+  sub_24A61B4A4(stateCopy);
 }
 
-- (void)session:(id)a3 didFailWithError:(id)a4
+- (void)session:(id)session didFailWithError:(id)error
 {
-  v6 = a3;
-  v8 = a4;
-  v7 = self;
-  sub_24A61B564(v8);
+  sessionCopy = session;
+  errorCopy = error;
+  selfCopy = self;
+  sub_24A61B564(errorCopy);
 }
 
 - (_TtC11FMFindingUI23FMUWBAvailabilityHelper)init

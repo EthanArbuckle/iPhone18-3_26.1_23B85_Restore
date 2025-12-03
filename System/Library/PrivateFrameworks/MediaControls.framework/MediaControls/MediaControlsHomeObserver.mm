@@ -1,15 +1,15 @@
 @interface MediaControlsHomeObserver
-- (BOOL)hasAccessoryWithUID:(id)a3;
+- (BOOL)hasAccessoryWithUID:(id)d;
 - (MediaControlsHomeObserver)init;
 - (MediaControlsHomeObserverDelegate)delegate;
 - (void)_notifyDelegate;
 - (void)_updateUIDs;
 - (void)beginObserving;
-- (void)home:(id)a3 didAddAccessory:(id)a4;
-- (void)home:(id)a3 didRemoveAccessory:(id)a4;
-- (void)homeManager:(id)a3 didAddHome:(id)a4;
-- (void)homeManager:(id)a3 didRemoveHome:(id)a4;
-- (void)homeManagerDidUpdateHomes:(id)a3;
+- (void)home:(id)home didAddAccessory:(id)accessory;
+- (void)home:(id)home didRemoveAccessory:(id)accessory;
+- (void)homeManager:(id)manager didAddHome:(id)home;
+- (void)homeManager:(id)manager didRemoveHome:(id)home;
+- (void)homeManagerDidUpdateHomes:(id)homes;
 - (void)stopObserving;
 @end
 
@@ -24,9 +24,9 @@
   if (v2)
   {
     v4 = [(MediaControlsHomeObserver *)v2 description];
-    v5 = [v4 UTF8String];
+    uTF8String = [v4 UTF8String];
 
-    v6 = dispatch_queue_create(v5, 0);
+    v6 = dispatch_queue_create(uTF8String, 0);
     serialQueue = v3->_serialQueue;
     v3->_serialQueue = v6;
 
@@ -38,15 +38,15 @@
     knownUIDs = v3->_knownUIDs;
     v3->_knownUIDs = v10;
 
-    v12 = [MEMORY[0x1E696CC08] defaultPrivateConfiguration];
-    [v12 setOptions:1344];
-    [v12 setDiscretionary:1];
+    defaultPrivateConfiguration = [MEMORY[0x1E696CC08] defaultPrivateConfiguration];
+    [defaultPrivateConfiguration setOptions:1344];
+    [defaultPrivateConfiguration setDiscretionary:1];
     v13 = objc_alloc_init(MEMORY[0x1E696ADC8]);
     [v13 setUnderlyingQueue:v3->_serialQueue];
     [v13 setQualityOfService:-1];
-    [v12 setDelegateQueue:v13];
-    [v12 setAdaptive:1];
-    v14 = [objc_alloc(MEMORY[0x1E696CBA0]) initWithHomeMangerConfiguration:v12];
+    [defaultPrivateConfiguration setDelegateQueue:v13];
+    [defaultPrivateConfiguration setAdaptive:1];
+    v14 = [objc_alloc(MEMORY[0x1E696CBA0]) initWithHomeMangerConfiguration:defaultPrivateConfiguration];
     homeManager = v3->_homeManager;
     v3->_homeManager = v14;
 
@@ -70,8 +70,8 @@
   v11 = 0u;
   v8 = 0u;
   v9 = 0u;
-  v3 = [(HMHomeManager *)self->_homeManager homes];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  homes = [(HMHomeManager *)self->_homeManager homes];
+  v4 = [homes countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -83,14 +83,14 @@
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(homes);
         }
 
         [*(*(&v8 + 1) + 8 * v7++) setDelegate:self];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [homes countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
@@ -105,8 +105,8 @@
   v11 = 0u;
   v8 = 0u;
   v9 = 0u;
-  v3 = [(HMHomeManager *)self->_homeManager homes];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  homes = [(HMHomeManager *)self->_homeManager homes];
+  v4 = [homes countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -118,23 +118,23 @@
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(homes);
         }
 
         [*(*(&v8 + 1) + 8 * v7++) setDelegate:0];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [homes countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
   }
 }
 
-- (BOOL)hasAccessoryWithUID:(id)a3
+- (BOOL)hasAccessoryWithUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -144,10 +144,10 @@
   block[1] = 3221225472;
   block[2] = __49__MediaControlsHomeObserver_hasAccessoryWithUID___block_invoke;
   block[3] = &unk_1E7664168;
-  v9 = v4;
+  v9 = dCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
+  v6 = dCopy;
   dispatch_sync(serialQueue, block);
   LOBYTE(serialQueue) = *(v12 + 24);
 
@@ -190,8 +190,8 @@ uint64_t __49__MediaControlsHomeObserver_hasAccessoryWithUID___block_invoke(void
         v17 = 0u;
         v18 = 0u;
         v19 = 0u;
-        v8 = [v7 accessories];
-        v9 = [v8 countByEnumeratingWithState:&v16 objects:v24 count:16];
+        accessories = [v7 accessories];
+        v9 = [accessories countByEnumeratingWithState:&v16 objects:v24 count:16];
         if (v9)
         {
           v10 = v9;
@@ -203,22 +203,22 @@ uint64_t __49__MediaControlsHomeObserver_hasAccessoryWithUID___block_invoke(void
             {
               if (*v17 != v11)
               {
-                objc_enumerationMutation(v8);
+                objc_enumerationMutation(accessories);
               }
 
-              v13 = [*(*(&v16 + 1) + 8 * v12) mediaProfile];
-              v14 = [v13 routeUID];
+              mediaProfile = [*(*(&v16 + 1) + 8 * v12) mediaProfile];
+              routeUID = [mediaProfile routeUID];
 
-              if ([v14 length])
+              if ([routeUID length])
               {
-                [(NSMutableSet *)self->_knownUIDs addObject:v14];
+                [(NSMutableSet *)self->_knownUIDs addObject:routeUID];
               }
 
               ++v12;
             }
 
             while (v10 != v12);
-            v10 = [v8 countByEnumeratingWithState:&v16 objects:v24 count:16];
+            v10 = [accessories countByEnumeratingWithState:&v16 objects:v24 count:16];
           }
 
           while (v10);
@@ -239,7 +239,7 @@ uint64_t __49__MediaControlsHomeObserver_hasAccessoryWithUID___block_invoke(void
 
 - (void)_notifyDelegate
 {
-  v3 = [(MediaControlsHomeObserver *)self delegate];
+  delegate = [(MediaControlsHomeObserver *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
@@ -260,15 +260,15 @@ void __44__MediaControlsHomeObserver__notifyDelegate__block_invoke(uint64_t a1)
   [v2 homeObserverDidUpdateKnownUIDs:*(a1 + 32)];
 }
 
-- (void)homeManagerDidUpdateHomes:(id)a3
+- (void)homeManagerDidUpdateHomes:(id)homes
 {
   v14 = *MEMORY[0x1E69E9840];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [a3 homes];
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  homes = [homes homes];
+  v5 = [homes countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -280,14 +280,14 @@ void __44__MediaControlsHomeObserver__notifyDelegate__block_invoke(uint64_t a1)
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(homes);
         }
 
         [*(*(&v9 + 1) + 8 * v8++) setDelegate:self];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [homes countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
@@ -296,17 +296,17 @@ void __44__MediaControlsHomeObserver__notifyDelegate__block_invoke(uint64_t a1)
   [(MediaControlsHomeObserver *)self _updateUIDs];
 }
 
-- (void)homeManager:(id)a3 didAddHome:(id)a4
+- (void)homeManager:(id)manager didAddHome:(id)home
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  [v5 setDelegate:self];
+  homeCopy = home;
+  [homeCopy setDelegate:self];
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = [v5 accessories];
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  accessories = [homeCopy accessories];
+  v7 = [accessories countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = v7;
@@ -318,15 +318,15 @@ void __44__MediaControlsHomeObserver__notifyDelegate__block_invoke(uint64_t a1)
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(accessories);
         }
 
-        v11 = [*(*(&v13 + 1) + 8 * v10) mediaProfile];
-        v12 = [v11 routeUID];
+        mediaProfile = [*(*(&v13 + 1) + 8 * v10) mediaProfile];
+        routeUID = [mediaProfile routeUID];
 
-        if ([v12 length])
+        if ([routeUID length])
         {
-          [(NSMutableSet *)self->_knownUIDs addObject:v12];
+          [(NSMutableSet *)self->_knownUIDs addObject:routeUID];
           [(MediaControlsHomeObserver *)self _notifyDelegate];
         }
 
@@ -334,22 +334,22 @@ void __44__MediaControlsHomeObserver__notifyDelegate__block_invoke(uint64_t a1)
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v8 = [accessories countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v8);
   }
 }
 
-- (void)homeManager:(id)a3 didRemoveHome:(id)a4
+- (void)homeManager:(id)manager didRemoveHome:(id)home
 {
   v17 = *MEMORY[0x1E69E9840];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [a4 accessories];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  accessories = [home accessories];
+  v6 = [accessories countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -361,15 +361,15 @@ void __44__MediaControlsHomeObserver__notifyDelegate__block_invoke(uint64_t a1)
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(accessories);
         }
 
-        v10 = [*(*(&v12 + 1) + 8 * v9) mediaProfile];
-        v11 = [v10 routeUID];
+        mediaProfile = [*(*(&v12 + 1) + 8 * v9) mediaProfile];
+        routeUID = [mediaProfile routeUID];
 
-        if ([v11 length])
+        if ([routeUID length])
         {
-          [(NSMutableSet *)self->_knownUIDs removeObject:v11];
+          [(NSMutableSet *)self->_knownUIDs removeObject:routeUID];
           [(MediaControlsHomeObserver *)self _notifyDelegate];
         }
 
@@ -377,33 +377,33 @@ void __44__MediaControlsHomeObserver__notifyDelegate__block_invoke(uint64_t a1)
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [accessories countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)home:(id)a3 didAddAccessory:(id)a4
+- (void)home:(id)home didAddAccessory:(id)accessory
 {
-  v5 = [a4 mediaProfile];
-  v6 = [v5 routeUID];
+  mediaProfile = [accessory mediaProfile];
+  routeUID = [mediaProfile routeUID];
 
-  if ([v6 length])
+  if ([routeUID length])
   {
-    [(NSMutableSet *)self->_knownUIDs addObject:v6];
+    [(NSMutableSet *)self->_knownUIDs addObject:routeUID];
     [(MediaControlsHomeObserver *)self _notifyDelegate];
   }
 }
 
-- (void)home:(id)a3 didRemoveAccessory:(id)a4
+- (void)home:(id)home didRemoveAccessory:(id)accessory
 {
-  v5 = [a4 mediaProfile];
-  v6 = [v5 routeUID];
+  mediaProfile = [accessory mediaProfile];
+  routeUID = [mediaProfile routeUID];
 
-  if ([v6 length])
+  if ([routeUID length])
   {
-    [(NSMutableSet *)self->_knownUIDs removeObject:v6];
+    [(NSMutableSet *)self->_knownUIDs removeObject:routeUID];
     [(MediaControlsHomeObserver *)self _notifyDelegate];
   }
 }

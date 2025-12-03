@@ -1,68 +1,68 @@
 @interface _SBDisplayItemFlexibleGrid
 - (CGSize)maxSize;
 - (CGSize)minSize;
-- (CGSize)nearestGridSizeForSize:(CGSize)a3 countOnStage:(unint64_t)a4;
-- (CGSize)sizeAtIndexFromFullWidthForBounds:(unint64_t)a3;
-- (_SBDisplayItemFlexibleGrid)initWithBounds:(CGRect)a3 screenScale:(double)a4 windowingConfiguration:(id)a5;
-- (id)_gridHeightsForSafeHeight:(double)a3 minimumHeight:(double)a4;
-- (id)_gridWidthsForSafeWidth:(double)a3 minimumWidth:(double)a4;
+- (CGSize)nearestGridSizeForSize:(CGSize)size countOnStage:(unint64_t)stage;
+- (CGSize)sizeAtIndexFromFullWidthForBounds:(unint64_t)bounds;
+- (_SBDisplayItemFlexibleGrid)initWithBounds:(CGRect)bounds screenScale:(double)scale windowingConfiguration:(id)configuration;
+- (id)_gridHeightsForSafeHeight:(double)height minimumHeight:(double)minimumHeight;
+- (id)_gridWidthsForSafeWidth:(double)width minimumWidth:(double)minimumWidth;
 - (id)allHeights;
 - (id)allWidths;
-- (void)_buildGridWithScreenScale:(double)a3;
+- (void)_buildGridWithScreenScale:(double)scale;
 @end
 
 @implementation _SBDisplayItemFlexibleGrid
 
-- (_SBDisplayItemFlexibleGrid)initWithBounds:(CGRect)a3 screenScale:(double)a4 windowingConfiguration:(id)a5
+- (_SBDisplayItemFlexibleGrid)initWithBounds:(CGRect)bounds screenScale:(double)scale windowingConfiguration:(id)configuration
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v12 = a5;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  configurationCopy = configuration;
   v18.receiver = self;
   v18.super_class = _SBDisplayItemFlexibleGrid;
   v13 = [(_SBDisplayItemFlexibleGrid *)&v18 init];
   if (v13)
   {
     v14 = +[SBAppSwitcherDomain rootSettings];
-    v15 = [v14 windowingSettings];
+    windowingSettings = [v14 windowingSettings];
     settings = v13->_settings;
-    v13->_settings = v15;
+    v13->_settings = windowingSettings;
 
-    objc_storeStrong(&v13->_windowingConfiguration, a5);
+    objc_storeStrong(&v13->_windowingConfiguration, configuration);
     v13->_bounds.origin.x = x;
     v13->_bounds.origin.y = y;
     v13->_bounds.size.width = width;
     v13->_bounds.size.height = height;
-    [(_SBDisplayItemFlexibleGrid *)v13 _buildGridWithScreenScale:a4];
+    [(_SBDisplayItemFlexibleGrid *)v13 _buildGridWithScreenScale:scale];
   }
 
   return v13;
 }
 
-- (void)_buildGridWithScreenScale:(double)a3
+- (void)_buildGridWithScreenScale:(double)scale
 {
-  v4 = [(SBSwitcherWindowingConfiguration *)self->_windowingConfiguration gridWidths];
+  gridWidths = [(SBSwitcherWindowingConfiguration *)self->_windowingConfiguration gridWidths];
   widths = self->_widths;
-  self->_widths = v4;
+  self->_widths = gridWidths;
 
-  v6 = [(SBSwitcherWindowingConfiguration *)self->_windowingConfiguration gridHeights];
+  gridHeights = [(SBSwitcherWindowingConfiguration *)self->_windowingConfiguration gridHeights];
   heights = self->_heights;
-  self->_heights = v6;
+  self->_heights = gridHeights;
 }
 
-- (id)_gridWidthsForSafeWidth:(double)a3 minimumWidth:(double)a4
+- (id)_gridWidthsForSafeWidth:(double)width minimumWidth:(double)minimumWidth
 {
   [(SBSwitcherWindowingConfiguration *)self->_windowingConfiguration stageInterItemSpacing];
   v7 = v6;
-  v8 = v6 + a4;
+  v8 = v6 + minimumWidth;
   v9 = objc_opt_new();
   if (v8 > 0.0)
   {
-    v26 = floor(a3 / v8);
-    v10 = vcvtmd_u64_f64(a3 / v8);
-    v11 = floor(((a3 - v7) * 0.5 + (a3 - v7) * 0.5) * 0.5);
+    v26 = floor(width / v8);
+    v10 = vcvtmd_u64_f64(width / v8);
+    v11 = floor(((width - v7) * 0.5 + (width - v7) * 0.5) * 0.5);
     v12 = (v11 + v11) * 0.5;
     while (1)
     {
@@ -70,7 +70,7 @@
       if (v10 == 1)
       {
         v20 = MEMORY[0x277CCABB0];
-        v22 = a3;
+        widthCopy = width;
         goto LABEL_10;
       }
 
@@ -85,22 +85,22 @@
       }
 
       v14 = v10;
-      v15 = floor((a3 - (v10 + -1.0) * v7) / v10);
+      v15 = floor((width - (v10 + -1.0) * v7) / v10);
       v16 = floor((v15 + v15) * 0.5);
       v17 = [MEMORY[0x277CCABB0] numberWithDouble:(v16 + v16) * 0.5];
       [v9 addObject:v17];
 
-      v18 = floor((a3 - v7 - v15 + a3 - v7 - v15) * 0.5);
+      v18 = floor((width - v7 - v15 + width - v7 - v15) * 0.5);
       v19 = [MEMORY[0x277CCABB0] numberWithDouble:(v18 + v18) * 0.5];
       [v9 addObject:v19];
 
       if (v26 == v14)
       {
         v20 = MEMORY[0x277CCABB0];
-        v21 = floor((a3 - v15 * 0.5 + a3 - v15 * 0.5) * 0.5);
-        v22 = (v21 + v21) * 0.5;
+        v21 = floor((width - v15 * 0.5 + width - v15 * 0.5) * 0.5);
+        widthCopy = (v21 + v21) * 0.5;
 LABEL_10:
-        v23 = [v20 numberWithDouble:v22];
+        v23 = [v20 numberWithDouble:widthCopy];
         [v9 addObject:v23];
       }
 
@@ -108,7 +108,7 @@ LABEL_10:
     }
 
     v20 = MEMORY[0x277CCABB0];
-    v22 = v12;
+    widthCopy = v12;
     goto LABEL_10;
   }
 
@@ -123,32 +123,32 @@ LABEL_15:
   return v9;
 }
 
-- (id)_gridHeightsForSafeHeight:(double)a3 minimumHeight:(double)a4
+- (id)_gridHeightsForSafeHeight:(double)height minimumHeight:(double)minimumHeight
 {
-  v7 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   [(SBSwitcherWindowingConfiguration *)self->_windowingConfiguration stageInterItemSpacing];
-  if (a3 >= a4)
+  if (height >= minimumHeight)
   {
-    v9 = (a3 + (a3 - v8) * -0.5) * 0.25;
+    v9 = (height + (height - v8) * -0.5) * 0.25;
     do
     {
-      v10 = floor((a3 + a3) * 0.5);
+      v10 = floor((height + height) * 0.5);
       v11 = [MEMORY[0x277CCABB0] numberWithDouble:(v10 + v10) * 0.5];
-      [v7 addObject:v11];
+      [array addObject:v11];
 
-      a3 = a3 - v9;
+      height = height - v9;
     }
 
-    while (a3 >= a4);
+    while (height >= minimumHeight);
   }
 
-  return v7;
+  return array;
 }
 
-- (CGSize)nearestGridSizeForSize:(CGSize)a3 countOnStage:(unint64_t)a4
+- (CGSize)nearestGridSizeForSize:(CGSize)size countOnStage:(unint64_t)stage
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v8 = MEMORY[0x277CBF3A8];
   v9 = *MEMORY[0x277CBF3A8];
   if ([(NSArray *)self->_widths count])
@@ -200,7 +200,7 @@ LABEL_15:
 
   [(_SBDisplayItemFlexibleGrid *)self maxSize];
   v23 = BSSizeEqualToSize();
-  if (a4 == 1 && (v23 & 1) != 0)
+  if (stage == 1 && (v23 & 1) != 0)
   {
     v9 = self->_bounds.size.width;
     v16 = self->_bounds.size.height;
@@ -215,12 +215,12 @@ LABEL_15:
 
 - (CGSize)minSize
 {
-  v3 = [(NSArray *)self->_widths firstObject];
-  [v3 doubleValue];
+  firstObject = [(NSArray *)self->_widths firstObject];
+  [firstObject doubleValue];
   v5 = v4;
 
-  v6 = [(NSArray *)self->_heights firstObject];
-  [v6 doubleValue];
+  firstObject2 = [(NSArray *)self->_heights firstObject];
+  [firstObject2 doubleValue];
   v8 = v7;
 
   v9 = v5;
@@ -232,12 +232,12 @@ LABEL_15:
 
 - (CGSize)maxSize
 {
-  v3 = [(NSArray *)self->_widths lastObject];
-  [v3 doubleValue];
+  lastObject = [(NSArray *)self->_widths lastObject];
+  [lastObject doubleValue];
   v5 = v4;
 
-  v6 = [(NSArray *)self->_heights lastObject];
-  [v6 doubleValue];
+  lastObject2 = [(NSArray *)self->_heights lastObject];
+  [lastObject2 doubleValue];
   v8 = v7;
 
   v9 = v5;
@@ -247,13 +247,13 @@ LABEL_15:
   return result;
 }
 
-- (CGSize)sizeAtIndexFromFullWidthForBounds:(unint64_t)a3
+- (CGSize)sizeAtIndexFromFullWidthForBounds:(unint64_t)bounds
 {
   v5 = [(NSArray *)self->_widths count];
   v6 = [(NSArray *)self->_heights count];
-  if (((v5 - 1) & ~((v5 - 1) >> 63)) >= ((v5 - 1 - a3) & ~((v5 - 1 - a3) >> 63)))
+  if (((v5 - 1) & ~((v5 - 1) >> 63)) >= ((v5 - 1 - bounds) & ~((v5 - 1 - bounds) >> 63)))
   {
-    v7 = (v5 - 1 - a3) & ~((v5 - 1 - a3) >> 63);
+    v7 = (v5 - 1 - bounds) & ~((v5 - 1 - bounds) >> 63);
   }
 
   else
@@ -261,9 +261,9 @@ LABEL_15:
     v7 = (v5 - 1) & ~((v5 - 1) >> 63);
   }
 
-  if (((v6 - 1) & ~((v6 - 1) >> 63)) >= ((v6 - 1 - a3) & ~((v6 - 1 - a3) >> 63)))
+  if (((v6 - 1) & ~((v6 - 1) >> 63)) >= ((v6 - 1 - bounds) & ~((v6 - 1 - bounds) >> 63)))
   {
-    v8 = (v6 - 1 - a3) & ~((v6 - 1 - a3) >> 63);
+    v8 = (v6 - 1 - bounds) & ~((v6 - 1 - bounds) >> 63);
   }
 
   else

@@ -10,9 +10,9 @@
 - (unint64_t)_cacheCount;
 - (void)_lockedEvictEntriesFromCache;
 - (void)clearCache;
-- (void)getPCSDataFromCacheForID:(id)a3 databaseScope:(int64_t)a4 withCompletionHandler:(id)a5;
+- (void)getPCSDataFromCacheForID:(id)d databaseScope:(int64_t)scope withCompletionHandler:(id)handler;
 - (void)runCacheEviction;
-- (void)setPCSData:(id)a3 forItemID:(id)a4 databaseScope:(int64_t)a5 withCompletionHandler:(id)a6;
+- (void)setPCSData:(id)data forItemID:(id)d databaseScope:(int64_t)scope withCompletionHandler:(id)handler;
 @end
 
 @implementation CKDPCSMemoryCache
@@ -70,7 +70,7 @@ LABEL_10:
         *buf = 134218240;
         v78 = v10;
         v79 = 2048;
-        v80 = self;
+        selfCopy2 = self;
         _os_log_debug_impl(&dword_22506F000, v39, OS_LOG_TYPE_DEBUG, "Attempting to evict %lu items from PCS memory cache %p", buf, 0x16u);
       }
 
@@ -148,7 +148,7 @@ LABEL_33:
             *buf = 134218240;
             v78 = v46;
             v79 = 2048;
-            v80 = self;
+            selfCopy2 = self;
             _os_log_debug_impl(&dword_22506F000, v63, OS_LOG_TYPE_DEBUG, "Evicted %lu items from PCS memory cache %p", buf, 0x16u);
           }
 
@@ -211,11 +211,11 @@ LABEL_33:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
-    objc_msgSend_setupMemoryNotifications(a1, v3, v4);
+    objc_msgSend_setupMemoryNotifications(self, v3, v4);
 
-    MEMORY[0x2821F9670](a1, sel_registerEvictionTimer, v5);
+    MEMORY[0x2821F9670](self, sel_registerEvictionTimer, v5);
   }
 }
 
@@ -280,7 +280,7 @@ LABEL_33:
   block[1] = 3221225472;
   block[2] = sub_2252B57EC;
   block[3] = &unk_278545AD0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_280D586E8 != -1)
   {
     dispatch_once(&qword_280D586E8, block);
@@ -316,16 +316,16 @@ LABEL_33:
   return v2;
 }
 
-- (void)getPCSDataFromCacheForID:(id)a3 databaseScope:(int64_t)a4 withCompletionHandler:(id)a5
+- (void)getPCSDataFromCacheForID:(id)d databaseScope:(int64_t)scope withCompletionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a3;
+  handlerCopy = handler;
+  dCopy = d;
   v12 = objc_msgSend_accessQueue(self, v10, v11);
   dispatch_assert_queue_not_V2(v12);
 
   v15 = objc_msgSend_memoryCacheRequestCount(self, v13, v14);
   objc_msgSend_setMemoryCacheRequestCount_(self, v16, v15 + 1);
-  v17 = sub_2250A0C50(v9, a4);
+  v17 = sub_2250A0C50(dCopy, scope);
 
   v20 = objc_msgSend_accessQueue(self, v18, v19);
   block[0] = MEMORY[0x277D85DD0];
@@ -334,34 +334,34 @@ LABEL_33:
   block[3] = &unk_278546C30;
   block[4] = self;
   v24 = v17;
-  v25 = v8;
-  v21 = v8;
+  v25 = handlerCopy;
+  v21 = handlerCopy;
   v22 = v17;
   dispatch_async(v20, block);
 }
 
-- (void)setPCSData:(id)a3 forItemID:(id)a4 databaseScope:(int64_t)a5 withCompletionHandler:(id)a6
+- (void)setPCSData:(id)data forItemID:(id)d databaseScope:(int64_t)scope withCompletionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = a4;
+  dataCopy = data;
+  handlerCopy = handler;
+  dCopy = d;
   v15 = objc_msgSend_accessQueue(self, v13, v14);
   dispatch_assert_queue_not_V2(v15);
 
-  v16 = sub_2250A0C50(v12, a5);
+  v16 = sub_2250A0C50(dCopy, scope);
 
   v19 = objc_msgSend_accessQueue(self, v17, v18);
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = sub_2252B5FDC;
   v23[3] = &unk_2785488E0;
-  v24 = v10;
-  v25 = self;
+  v24 = dataCopy;
+  selfCopy = self;
   v26 = v16;
-  v27 = v11;
-  v20 = v11;
+  v27 = handlerCopy;
+  v20 = handlerCopy;
   v21 = v16;
-  v22 = v10;
+  v22 = dataCopy;
   dispatch_async(v19, v23);
 }
 

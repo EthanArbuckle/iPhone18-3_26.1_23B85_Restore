@@ -1,45 +1,45 @@
 @interface SFStoreButtonItem
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFStoreButtonItem)initWithCoder:(id)a3;
-- (SFStoreButtonItem)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFStoreButtonItem)initWithCoder:(id)coder;
+- (SFStoreButtonItem)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFStoreButtonItem
 
-- (SFStoreButtonItem)initWithProtobuf:(id)a3
+- (SFStoreButtonItem)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v10.receiver = self;
   v10.super_class = SFStoreButtonItem;
   v5 = [(SFStoreButtonItem *)&v10 init];
   if (v5)
   {
-    v6 = [v4 identifier];
+    identifier = [protobufCopy identifier];
 
-    if (v6)
+    if (identifier)
     {
-      v7 = [v4 identifier];
-      [(SFStoreButtonItem *)v5 setIdentifier:v7];
+      identifier2 = [protobufCopy identifier];
+      [(SFStoreButtonItem *)v5 setIdentifier:identifier2];
     }
 
-    if ([v4 shouldOpenAppAfterInstallCompletes])
+    if ([protobufCopy shouldOpenAppAfterInstallCompletes])
     {
-      -[SFStoreButtonItem setShouldOpenAppAfterInstallCompletes:](v5, "setShouldOpenAppAfterInstallCompletes:", [v4 shouldOpenAppAfterInstallCompletes]);
+      -[SFStoreButtonItem setShouldOpenAppAfterInstallCompletes:](v5, "setShouldOpenAppAfterInstallCompletes:", [protobufCopy shouldOpenAppAfterInstallCompletes]);
     }
 
-    if ([v4 identifierType])
+    if ([protobufCopy identifierType])
     {
-      -[SFStoreButtonItem setIdentifierType:](v5, "setIdentifierType:", [v4 identifierType]);
+      -[SFStoreButtonItem setIdentifierType:](v5, "setIdentifierType:", [protobufCopy identifierType]);
     }
 
-    if ([v4 uniqueId])
+    if ([protobufCopy uniqueId])
     {
-      -[SFButtonItem setUniqueId:](v5, "setUniqueId:", [v4 uniqueId]);
+      -[SFButtonItem setUniqueId:](v5, "setUniqueId:", [protobufCopy uniqueId]);
     }
 
     v8 = v5;
@@ -53,8 +53,8 @@
   v10.receiver = self;
   v10.super_class = SFStoreButtonItem;
   v3 = [(SFButtonItem *)&v10 hash];
-  v4 = [(SFStoreButtonItem *)self identifier];
-  v5 = [v4 hash];
+  identifier = [(SFStoreButtonItem *)self identifier];
+  v5 = [identifier hash];
   v6 = v5 ^ [(SFStoreButtonItem *)self shouldOpenAppAfterInstallCompletes];
   v7 = v6 ^ [(SFStoreButtonItem *)self identifierType];
   v8 = v7 ^ [(SFButtonItem *)self uniqueId];
@@ -62,26 +62,26 @@
   return v8 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
-  if (self == v6)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
 
   else
   {
-    if ([(SFStoreButtonItem *)v6 isMemberOfClass:objc_opt_class()])
+    if ([(SFStoreButtonItem *)equalCopy isMemberOfClass:objc_opt_class()])
     {
       v17.receiver = self;
       v17.super_class = SFStoreButtonItem;
-      if ([(SFButtonItem *)&v17 isEqual:v6])
+      if ([(SFButtonItem *)&v17 isEqual:equalCopy])
       {
-        v7 = v6;
-        v8 = [(SFStoreButtonItem *)self identifier];
-        v9 = [(SFStoreButtonItem *)v7 identifier];
-        if ((v8 != 0) == (v9 == 0))
+        v7 = equalCopy;
+        identifier = [(SFStoreButtonItem *)self identifier];
+        identifier2 = [(SFStoreButtonItem *)v7 identifier];
+        if ((identifier != 0) == (identifier2 == 0))
         {
           v12 = 0;
 LABEL_18:
@@ -89,16 +89,16 @@ LABEL_18:
           goto LABEL_19;
         }
 
-        v10 = [(SFStoreButtonItem *)self identifier];
-        if (!v10 || (-[SFStoreButtonItem identifier](self, "identifier"), v3 = objc_claimAutoreleasedReturnValue(), -[SFStoreButtonItem identifier](v7, "identifier"), v4 = objc_claimAutoreleasedReturnValue(), [v3 isEqual:v4]))
+        identifier3 = [(SFStoreButtonItem *)self identifier];
+        if (!identifier3 || (-[SFStoreButtonItem identifier](self, "identifier"), v3 = objc_claimAutoreleasedReturnValue(), -[SFStoreButtonItem identifier](v7, "identifier"), v4 = objc_claimAutoreleasedReturnValue(), [v3 isEqual:v4]))
         {
-          v13 = [(SFStoreButtonItem *)self shouldOpenAppAfterInstallCompletes];
-          if (v13 == [(SFStoreButtonItem *)v7 shouldOpenAppAfterInstallCompletes]&& (v14 = [(SFStoreButtonItem *)self identifierType], v14 == [(SFStoreButtonItem *)v7 identifierType]))
+          shouldOpenAppAfterInstallCompletes = [(SFStoreButtonItem *)self shouldOpenAppAfterInstallCompletes];
+          if (shouldOpenAppAfterInstallCompletes == [(SFStoreButtonItem *)v7 shouldOpenAppAfterInstallCompletes]&& (v14 = [(SFStoreButtonItem *)self identifierType], v14 == [(SFStoreButtonItem *)v7 identifierType]))
           {
-            v15 = [(SFButtonItem *)self uniqueId];
-            v11 = v15 == [(SFButtonItem *)v7 uniqueId];
+            uniqueId = [(SFButtonItem *)self uniqueId];
+            v11 = uniqueId == [(SFButtonItem *)v7 uniqueId];
             v12 = v11;
-            if (!v10)
+            if (!identifier3)
             {
               goto LABEL_17;
             }
@@ -108,7 +108,7 @@ LABEL_18:
           {
             v11 = 0;
             v12 = 0;
-            if (!v10)
+            if (!identifier3)
             {
 LABEL_17:
 
@@ -135,13 +135,13 @@ LABEL_19:
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = SFStoreButtonItem;
-  v4 = [(SFButtonItem *)&v8 copyWithZone:a3];
-  v5 = [(SFStoreButtonItem *)self identifier];
-  v6 = [v5 copy];
+  v4 = [(SFButtonItem *)&v8 copyWithZone:zone];
+  identifier = [(SFStoreButtonItem *)self identifier];
+  v6 = [identifier copy];
   [v4 setIdentifier:v6];
 
   [v4 setShouldOpenAppAfterInstallCompletes:{-[SFStoreButtonItem shouldOpenAppAfterInstallCompletes](self, "shouldOpenAppAfterInstallCompletes")}];
@@ -153,31 +153,31 @@ LABEL_19:
 - (NSData)jsonData
 {
   v2 = [[_SFPBStoreButtonItem alloc] initWithFacade:self];
-  v3 = [(_SFPBStoreButtonItem *)v2 jsonData];
+  jsonData = [(_SFPBStoreButtonItem *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBStoreButtonItem alloc] initWithFacade:self];
-  v3 = [(_SFPBStoreButtonItem *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBStoreButtonItem *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6 = [[_SFPBStoreButtonItem alloc] initWithFacade:self];
-  v5 = [(_SFPBStoreButtonItem *)v6 data];
-  [v4 encodeObject:v5 forKey:@"_backingStore"];
+  data = [(_SFPBStoreButtonItem *)v6 data];
+  [coderCopy encodeObject:data forKey:@"_backingStore"];
 }
 
-- (SFStoreButtonItem)initWithCoder:(id)a3
+- (SFStoreButtonItem)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v6 = [[_SFPBStoreButtonItem alloc] initWithData:v5];
   v7 = [(SFStoreButtonItem *)self initWithProtobuf:v6];

@@ -1,21 +1,21 @@
 @interface WiFiUsageLQMFeature
-- (BOOL)isEqual:(id)a3;
-- (WiFiUsageLQMFeature)initWithField:(id)a3 andPerSecond:(BOOL)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (WiFiUsageLQMFeature)initWithField:(id)field andPerSecond:(BOOL)second;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
 @implementation WiFiUsageLQMFeature
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     fieldName = self->_fieldName;
-    v6 = [v4 fieldName];
-    v7 = [(NSString *)fieldName isEqual:v6];
+    fieldName = [equalCopy fieldName];
+    v7 = [(NSString *)fieldName isEqual:fieldName];
   }
 
   else
@@ -26,20 +26,20 @@
   return v7;
 }
 
-- (WiFiUsageLQMFeature)initWithField:(id)a3 andPerSecond:(BOOL)a4
+- (WiFiUsageLQMFeature)initWithField:(id)field andPerSecond:(BOOL)second
 {
-  v6 = a3;
+  fieldCopy = field;
   v10.receiver = self;
   v10.super_class = WiFiUsageLQMFeature;
   v7 = [(WiFiUsageLQMFeature *)&v10 init];
   fieldName = v7->_fieldName;
-  v7->_fieldName = v6;
+  v7->_fieldName = fieldCopy;
 
-  v7->_isPerSecond = a4;
+  v7->_isPerSecond = second;
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_new();
   [v4 setFieldName:self->_fieldName];

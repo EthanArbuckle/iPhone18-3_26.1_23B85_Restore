@@ -4,37 +4,37 @@
 - (id)_init;
 - (id)_remoteOSMService;
 - (void)_cleanUpAllModels;
-- (void)_finishRunningCurrentSpeakableWithResult:(int64_t)a3 error:(id)a4;
-- (void)_loadModelWithType:(int64_t)a3 completion:(id)a4;
+- (void)_finishRunningCurrentSpeakableWithResult:(int64_t)result error:(id)error;
+- (void)_loadModelWithType:(int64_t)type completion:(id)completion;
 - (void)_processEnqueuedSpeakables;
-- (void)_recordImmediateNotificationInteractionAfterRecommendation:(int64_t)a3 forSpeakable:(id)a4;
+- (void)_recordImmediateNotificationInteractionAfterRecommendation:(int64_t)recommendation forSpeakable:(id)speakable;
 - (void)_resetConnectionToOSMService;
-- (void)_withAllModelsExecute:(id)a3;
-- (void)modelWithIdentifier:(id)a3 didUpdateScore:(float)a4 forSpeakable:(id)a5;
-- (void)recordSpokenRequestCancelledForSpeakable:(id)a3;
-- (void)recordSpokenRequestCompletedForSpeakable:(id)a3;
-- (void)requestsToSpeak:(id)a3 withHandler:(id)a4;
+- (void)_withAllModelsExecute:(id)execute;
+- (void)modelWithIdentifier:(id)identifier didUpdateScore:(float)score forSpeakable:(id)speakable;
+- (void)recordSpokenRequestCancelledForSpeakable:(id)speakable;
+- (void)recordSpokenRequestCompletedForSpeakable:(id)speakable;
+- (void)requestsToSpeak:(id)speak withHandler:(id)handler;
 @end
 
 @implementation ADOpportuneSpeakingModule
 
-- (void)modelWithIdentifier:(id)a3 didUpdateScore:(float)a4 forSpeakable:(id)a5
+- (void)modelWithIdentifier:(id)identifier didUpdateScore:(float)score forSpeakable:(id)speakable
 {
-  v8 = a3;
-  v9 = a5;
+  identifierCopy = identifier;
+  speakableCopy = speakable;
   v10 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
   {
     v14 = v10;
-    v15 = [v9 speakableDescription];
+    speakableDescription = [speakableCopy speakableDescription];
     *buf = 136315906;
     v22 = "[ADOpportuneSpeakingModule modelWithIdentifier:didUpdateScore:forSpeakable:]";
     v23 = 2112;
-    v24 = v8;
+    v24 = identifierCopy;
     v25 = 2048;
-    v26 = a4;
+    scoreCopy = score;
     v27 = 2112;
-    v28 = v15;
+    v28 = speakableDescription;
     _os_log_debug_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEBUG, "%s model with identifier %@ returned score: %f speakable: %@", buf, 0x2Au);
   }
 
@@ -43,19 +43,19 @@
   v16[1] = 3221225472;
   v16[2] = sub_100296400;
   v16[3] = &unk_10051B508;
-  v17 = v9;
-  v18 = self;
-  v20 = a4;
-  v19 = v8;
-  v12 = v8;
-  v13 = v9;
+  v17 = speakableCopy;
+  selfCopy = self;
+  scoreCopy2 = score;
+  v19 = identifierCopy;
+  v12 = identifierCopy;
+  v13 = speakableCopy;
   dispatch_async(queue, v16);
 }
 
 - (id)_remoteOSMService
 {
-  v2 = [(ADOpportuneSpeakingModule *)self _connectionToOSMService];
-  v3 = [v2 remoteObjectProxyWithErrorHandler:&stru_100519528];
+  _connectionToOSMService = [(ADOpportuneSpeakingModule *)self _connectionToOSMService];
+  v3 = [_connectionToOSMService remoteObjectProxyWithErrorHandler:&stru_100519528];
 
   return v3;
 }
@@ -104,8 +104,8 @@
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v3 = [(NSMutableDictionary *)self->_modelMap allValues];
-  v4 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  allValues = [(NSMutableDictionary *)self->_modelMap allValues];
+  v4 = [allValues countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v4)
   {
     v5 = v4;
@@ -117,7 +117,7 @@
       {
         if (*v15 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v14 + 1) + 8 * v7) stop];
@@ -125,7 +125,7 @@
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v5 = [allValues countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v5);
@@ -156,8 +156,8 @@
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v4 = [(NSMutableDictionary *)self->_typeMap allKeys];
-  v5 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  allKeys = [(NSMutableDictionary *)self->_typeMap allKeys];
+  v5 = [allKeys countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v5)
   {
     v6 = v5;
@@ -168,16 +168,16 @@
       {
         if (*v18 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allKeys);
         }
 
         v9 = *(*(&v17 + 1) + 8 * i);
         v10 = [(NSMutableDictionary *)self->_typeMap objectForKey:v9];
         v11 = [(NSMutableDictionary *)self->_modelMap objectForKey:v10];
-        v12 = [v9 integerValue];
-        if ((v12 - 2) >= 2)
+        integerValue = [v9 integerValue];
+        if ((integerValue - 2) >= 2)
         {
-          if (v12 == 1)
+          if (integerValue == 1)
           {
             [(NSMutableDictionary *)v3 setObject:v10 forKey:v9];
           }
@@ -197,7 +197,7 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v6 = [allKeys countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v6);
@@ -212,9 +212,9 @@
   self->_connection = 0;
 }
 
-- (void)_loadModelWithType:(int64_t)a3 completion:(id)a4
+- (void)_loadModelWithType:(int64_t)type completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = AFOpportuneSpeakingModelTypeGetDescription();
   v8 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
@@ -226,9 +226,9 @@
     _os_log_debug_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "%s loading model with type: %@", buf, 0x16u);
   }
 
-  if ((a3 - 2) >= 2)
+  if ((type - 2) >= 2)
   {
-    if (a3 != 1)
+    if (type != 1)
     {
       v12 = AFSiriLogContextDaemon;
       if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_ERROR))
@@ -238,18 +238,18 @@
         v21 = 2112;
         v22 = v7;
         _os_log_error_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "%s Unsupported model type: %@", buf, 0x16u);
-        if (!v6)
+        if (!completionCopy)
         {
           goto LABEL_8;
         }
       }
 
-      else if (!v6)
+      else if (!completionCopy)
       {
         goto LABEL_8;
       }
 
-      v6[2](v6);
+      completionCopy[2](completionCopy);
       goto LABEL_8;
     }
 
@@ -260,22 +260,22 @@
     v13[3] = &unk_10051BFA8;
     v13[4] = self;
     v15 = 1;
-    v14 = v6;
+    v14 = completionCopy;
     dispatch_async(queue, v13);
     v10 = v14;
   }
 
   else
   {
-    v9 = [(ADOpportuneSpeakingModule *)self _remoteOSMService];
+    _remoteOSMService = [(ADOpportuneSpeakingModule *)self _remoteOSMService];
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v16[2] = sub_100296F60;
     v16[3] = &unk_100519508;
     v16[4] = self;
-    v18 = a3;
-    v17 = v6;
-    [v9 createModelWithType:a3 completion:v16];
+    typeCopy = type;
+    v17 = completionCopy;
+    [_remoteOSMService createModelWithType:type completion:v16];
 
     v10 = v17;
   }
@@ -283,18 +283,18 @@
 LABEL_8:
 }
 
-- (void)_withAllModelsExecute:(id)a3
+- (void)_withAllModelsExecute:(id)execute
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  executeCopy = execute;
+  v5 = executeCopy;
+  if (executeCopy)
   {
     v22[0] = _NSConcreteStackBlock;
     v22[1] = 3221225472;
     v22[2] = sub_100297628;
     v22[3] = &unk_10051E038;
     v22[4] = self;
-    v23 = v4;
+    v23 = executeCopy;
     v6 = objc_retainBlock(v22);
     if (AFIsInternalInstall())
     {
@@ -379,49 +379,49 @@ LABEL_8:
   }
 }
 
-- (void)recordSpokenRequestCompletedForSpeakable:(id)a3
+- (void)recordSpokenRequestCompletedForSpeakable:(id)speakable
 {
-  v7 = a3;
+  speakableCopy = speakable;
   if (AFIsInternalInstall())
   {
-    v4 = [(ADOpportuneSpeakingModule *)self _remoteOSMService];
-    v5 = [v7 speakableIdentifier];
-    [v4 recordFeedbackOfType:1 forSpeakableId:v5];
+    _remoteOSMService = [(ADOpportuneSpeakingModule *)self _remoteOSMService];
+    speakableIdentifier = [speakableCopy speakableIdentifier];
+    [_remoteOSMService recordFeedbackOfType:1 forSpeakableId:speakableIdentifier];
   }
 
   v6 = [(NSMutableDictionary *)self->_modelMap objectForKey:self->_executionModelIdentifier];
-  [v6 recordFeedbackOfType:1 forSpeakable:v7];
+  [v6 recordFeedbackOfType:1 forSpeakable:speakableCopy];
 }
 
-- (void)recordSpokenRequestCancelledForSpeakable:(id)a3
+- (void)recordSpokenRequestCancelledForSpeakable:(id)speakable
 {
-  v7 = a3;
+  speakableCopy = speakable;
   if (AFIsInternalInstall())
   {
-    v4 = [(ADOpportuneSpeakingModule *)self _remoteOSMService];
-    v5 = [v7 speakableIdentifier];
-    [v4 recordFeedbackOfType:2 forSpeakableId:v5];
+    _remoteOSMService = [(ADOpportuneSpeakingModule *)self _remoteOSMService];
+    speakableIdentifier = [speakableCopy speakableIdentifier];
+    [_remoteOSMService recordFeedbackOfType:2 forSpeakableId:speakableIdentifier];
   }
 
   v6 = [(NSMutableDictionary *)self->_modelMap objectForKey:self->_executionModelIdentifier];
-  [v6 recordFeedbackOfType:2 forSpeakable:v7];
+  [v6 recordFeedbackOfType:2 forSpeakable:speakableCopy];
 }
 
-- (void)requestsToSpeak:(id)a3 withHandler:(id)a4
+- (void)requestsToSpeak:(id)speak withHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  speakCopy = speak;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     v8 = AFSiriLogContextDaemon;
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
     {
       v10 = v8;
-      v11 = [v6 speakableDescription];
+      speakableDescription = [speakCopy speakableDescription];
       *buf = 136315394;
       v16 = "[ADOpportuneSpeakingModule requestsToSpeak:withHandler:]";
       v17 = 2112;
-      v18 = v11;
+      v18 = speakableDescription;
       _os_log_debug_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEBUG, "%s %@", buf, 0x16u);
     }
 
@@ -431,8 +431,8 @@ LABEL_8:
     block[2] = sub_100297A98;
     block[3] = &unk_10051E088;
     block[4] = self;
-    v14 = v7;
-    v13 = v6;
+    v14 = handlerCopy;
+    v13 = speakCopy;
     dispatch_async(queue, block);
   }
 }
@@ -441,9 +441,9 @@ LABEL_8:
 {
   if (!self->_currentSpeakable && [(NSMutableArray *)self->_queuedSpeakables count])
   {
-    v3 = [(NSMutableArray *)self->_queuedSpeakables firstObject];
+    firstObject = [(NSMutableArray *)self->_queuedSpeakables firstObject];
     currentSpeakable = self->_currentSpeakable;
-    self->_currentSpeakable = v3;
+    self->_currentSpeakable = firstObject;
 
     [(NSMutableArray *)self->_queuedSpeakables removeObjectAtIndex:0];
     if (AFIsInternalInstall() && _AFPreferencesSpokenNotificationIsAlwaysOpportune())
@@ -493,37 +493,37 @@ LABEL_8:
   }
 }
 
-- (void)_recordImmediateNotificationInteractionAfterRecommendation:(int64_t)a3 forSpeakable:(id)a4
+- (void)_recordImmediateNotificationInteractionAfterRecommendation:(int64_t)recommendation forSpeakable:(id)speakable
 {
-  v6 = a4;
-  v7 = [v6 speakableDate];
-  v8 = [v7 dateByAddingTimeInterval:60.0];
+  speakableCopy = speakable;
+  speakableDate = [speakableCopy speakableDate];
+  v8 = [speakableDate dateByAddingTimeInterval:60.0];
   if (AFIsInternalInstall())
   {
-    v9 = [(ADOpportuneSpeakingModule *)self _remoteOSMService];
-    v10 = [v6 speakableIdentifier];
+    _remoteOSMService = [(ADOpportuneSpeakingModule *)self _remoteOSMService];
+    speakableIdentifier = [speakableCopy speakableIdentifier];
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_100298060;
     v11[3] = &unk_100519490;
-    v13 = a3;
+    recommendationCopy = recommendation;
     v11[4] = self;
-    v12 = v6;
-    [v9 recordNotificationUsageForSpeakableId:v10 withStartDate:v7 withEndDate:v8 withCompletion:v11];
+    v12 = speakableCopy;
+    [_remoteOSMService recordNotificationUsageForSpeakableId:speakableIdentifier withStartDate:speakableDate withEndDate:v8 withCompletion:v11];
   }
 }
 
-- (void)_finishRunningCurrentSpeakableWithResult:(int64_t)a3 error:(id)a4
+- (void)_finishRunningCurrentSpeakableWithResult:(int64_t)result error:(id)error
 {
-  v6 = a4;
-  v7 = [(AFOpportuneSpeakable *)self->_currentSpeakable speakableIdentifier];
-  v8 = [(NSMutableDictionary *)self->_handlersBySpeakableID objectForKey:v7];
+  errorCopy = error;
+  speakableIdentifier = [(AFOpportuneSpeakable *)self->_currentSpeakable speakableIdentifier];
+  v8 = [(NSMutableDictionary *)self->_handlersBySpeakableID objectForKey:speakableIdentifier];
   v9 = v8;
   if (v8)
   {
-    (*(v8 + 16))(v8, a3, v6);
-    [(ADOpportuneSpeakingModule *)self _recordImmediateNotificationInteractionAfterRecommendation:a3 forSpeakable:self->_currentSpeakable];
-    [(NSMutableDictionary *)self->_handlersBySpeakableID removeObjectForKey:v7];
+    (*(v8 + 16))(v8, result, errorCopy);
+    [(ADOpportuneSpeakingModule *)self _recordImmediateNotificationInteractionAfterRecommendation:result forSpeakable:self->_currentSpeakable];
+    [(NSMutableDictionary *)self->_handlersBySpeakableID removeObjectForKey:speakableIdentifier];
   }
 
   currentSpeakable = self->_currentSpeakable;

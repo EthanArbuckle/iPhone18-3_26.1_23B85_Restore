@@ -7,7 +7,7 @@
 
 + (id)sp_URLFromFileID:()SPAdditions filename:parentFileID:documentID:
 {
-  v1 = [a1 _sp_URLFromFileID:? filename:? parentFileID:? documentID:?];
+  v1 = [self _sp_URLFromFileID:? filename:? parentFileID:? documentID:?];
   if (v1 && _CFURLIsItemPromiseAtURL())
   {
     v5 = 0;
@@ -47,7 +47,7 @@
     goto LABEL_37;
   }
 
-  v14 = [v12 unsignedIntValue];
+  unsignedIntValue = [v12 unsignedIntValue];
   if (v9)
   {
     [v9 unsignedLongValue];
@@ -60,8 +60,8 @@
       bzero(v40, 0x410uLL);
       if (fgetattrlist(v16, &v38, v40, 0x410uLL, 0x21u) < 0)
       {
-        v19 = PRSLogCategoryDefault();
-        if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
+        defaultManager = PRSLogCategoryDefault();
+        if (os_log_type_enabled(defaultManager, OS_LOG_TYPE_ERROR))
         {
           +[NSURL(SPAdditions) _sp_URLFromFileID:filename:parentFileID:documentID:];
         }
@@ -69,19 +69,19 @@
 
       else
       {
-        if (v41 == v14)
+        if (v41 == unsignedIntValue)
         {
           v17 = v42;
           v18 = MEMORY[0x1E695DFF8];
-          v19 = [MEMORY[0x1E696AC08] defaultManager];
-          v20 = [v19 stringWithFileSystemRepresentation:&v42 + v17 length:v43];
+          defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+          v20 = [defaultManager stringWithFileSystemRepresentation:&v42 + v17 length:v43];
           v21 = [v18 fileURLWithPath:v20];
 
           goto LABEL_14;
         }
 
-        v19 = PRSLogCategoryDefault();
-        if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
+        defaultManager = PRSLogCategoryDefault();
+        if (os_log_type_enabled(defaultManager, OS_LOG_TYPE_ERROR))
         {
           [NSURL(SPAdditions) _sp_URLFromFileID:? filename:? parentFileID:? documentID:?];
         }
@@ -128,8 +128,8 @@ LABEL_14:
   bzero(v40, 0x410uLL);
   if (fgetattrlist(v25, &v38, v40, 0x410uLL, 0x21u) < 0)
   {
-    v28 = PRSLogCategoryDefault();
-    if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
+    defaultManager2 = PRSLogCategoryDefault();
+    if (os_log_type_enabled(defaultManager2, OS_LOG_TYPE_ERROR))
     {
       +[NSURL(SPAdditions) _sp_URLFromFileID:filename:parentFileID:documentID:];
     }
@@ -137,19 +137,19 @@ LABEL_14:
 
   else
   {
-    if (v41 == v14)
+    if (v41 == unsignedIntValue)
     {
       v26 = v42;
       v27 = MEMORY[0x1E695DFF8];
-      v28 = [MEMORY[0x1E696AC08] defaultManager];
-      v29 = [v28 stringWithFileSystemRepresentation:&v42 + v26 length:v43];
+      defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+      v29 = [defaultManager2 stringWithFileSystemRepresentation:&v42 + v26 length:v43];
       v21 = [v27 fileURLWithPath:v29];
 
       goto LABEL_27;
     }
 
-    v28 = PRSLogCategoryDefault();
-    if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
+    defaultManager2 = PRSLogCategoryDefault();
+    if (os_log_type_enabled(defaultManager2, OS_LOG_TYPE_ERROR))
     {
       [NSURL(SPAdditions) _sp_URLFromFileID:? filename:? parentFileID:? documentID:?];
     }
@@ -197,8 +197,8 @@ LABEL_38:
   bzero(v40, 0x410uLL);
   if (fgetattrlist(v31, &v38, v40, 0x410uLL, 0x21u) < 0)
   {
-    v34 = PRSLogCategoryDefault();
-    if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
+    defaultManager3 = PRSLogCategoryDefault();
+    if (os_log_type_enabled(defaultManager3, OS_LOG_TYPE_ERROR))
     {
       +[NSURL(SPAdditions) _sp_URLFromFileID:filename:parentFileID:documentID:];
     }
@@ -206,10 +206,10 @@ LABEL_38:
     goto LABEL_43;
   }
 
-  if (v41 != v14)
+  if (v41 != unsignedIntValue)
   {
-    v34 = PRSLogCategoryDefault();
-    if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
+    defaultManager3 = PRSLogCategoryDefault();
+    if (os_log_type_enabled(defaultManager3, OS_LOG_TYPE_ERROR))
     {
       [NSURL(SPAdditions) _sp_URLFromFileID:? filename:? parentFileID:? documentID:?];
     }
@@ -221,8 +221,8 @@ LABEL_43:
 
   v32 = v42;
   v33 = MEMORY[0x1E695DFF8];
-  v34 = [MEMORY[0x1E696AC08] defaultManager];
-  v35 = [v34 stringWithFileSystemRepresentation:&v42 + v32 length:v43];
+  defaultManager3 = [MEMORY[0x1E696AC08] defaultManager];
+  v35 = [defaultManager3 stringWithFileSystemRepresentation:&v42 + v32 length:v43];
   v21 = [v33 fileURLWithPath:v35];
 
 LABEL_44:

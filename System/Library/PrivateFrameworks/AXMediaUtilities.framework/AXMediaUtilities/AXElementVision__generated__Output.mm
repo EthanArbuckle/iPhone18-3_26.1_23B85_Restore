@@ -1,27 +1,27 @@
 @interface AXElementVision__generated__Output
-- (AXElementVision__generated__Output)initWithConfidence:(id)a3 coordinates:(id)a4;
-- (id)featureValueForName:(id)a3;
+- (AXElementVision__generated__Output)initWithConfidence:(id)confidence coordinates:(id)coordinates;
+- (id)featureValueForName:(id)name;
 @end
 
 @implementation AXElementVision__generated__Output
 
-- (AXElementVision__generated__Output)initWithConfidence:(id)a3 coordinates:(id)a4
+- (AXElementVision__generated__Output)initWithConfidence:(id)confidence coordinates:(id)coordinates
 {
-  v7 = a3;
-  v8 = a4;
+  confidenceCopy = confidence;
+  coordinatesCopy = coordinates;
   if (self)
   {
-    objc_storeStrong(&self->_confidence, a3);
-    objc_storeStrong(&self->_coordinates, a4);
+    objc_storeStrong(&self->_confidence, confidence);
+    objc_storeStrong(&self->_coordinates, coordinates);
   }
 
   return self;
 }
 
-- (id)featureValueForName:(id)a3
+- (id)featureValueForName:(id)name
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"confidence"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"confidence"])
   {
     v5 = 8;
 LABEL_5:
@@ -29,7 +29,7 @@ LABEL_5:
     goto LABEL_7;
   }
 
-  if ([v4 isEqualToString:@"coordinates"])
+  if ([nameCopy isEqualToString:@"coordinates"])
   {
     v5 = 16;
     goto LABEL_5;

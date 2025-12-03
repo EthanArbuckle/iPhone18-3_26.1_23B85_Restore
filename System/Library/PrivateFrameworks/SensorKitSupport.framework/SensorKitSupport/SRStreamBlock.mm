@@ -1,14 +1,14 @@
 @interface SRStreamBlock
 - (NSDictionary)dictionary;
 - (_TtC16SensorKitSupport13SRStreamBlock)init;
-- (_TtC16SensorKitSupport13SRStreamBlock)initWithBinaryRep:(id)a3;
+- (_TtC16SensorKitSupport13SRStreamBlock)initWithBinaryRep:(id)rep;
 @end
 
 @implementation SRStreamBlock
 
-- (_TtC16SensorKitSupport13SRStreamBlock)initWithBinaryRep:(id)a3
+- (_TtC16SensorKitSupport13SRStreamBlock)initWithBinaryRep:(id)rep
 {
-  v3 = a3;
+  repCopy = rep;
   v4 = sub_2655FE2DC();
   v6 = v5;
 
@@ -17,7 +17,7 @@
 
 - (NSDictionary)dictionary
 {
-  v2 = self;
+  selfCopy = self;
   sub_2655F1478();
   v3 = sub_2655FE52C();
 

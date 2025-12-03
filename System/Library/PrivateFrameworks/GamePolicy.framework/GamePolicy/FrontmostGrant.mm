@@ -1,12 +1,12 @@
 @interface FrontmostGrant
 - (NSString)description;
 - (_TtC10GamePolicy14FrontmostGrant)init;
-- (_TtC10GamePolicy14FrontmostGrant)initWithCoder:(id)a3;
+- (_TtC10GamePolicy14FrontmostGrant)initWithCoder:(id)coder;
 @end
 
 @implementation FrontmostGrant
 
-- (_TtC10GamePolicy14FrontmostGrant)initWithCoder:(id)a3
+- (_TtC10GamePolicy14FrontmostGrant)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = type metadata accessor for GamePolicyAssertion.Attribute();

@@ -1,10 +1,10 @@
 @interface HCSAppDelegate
-- (BOOL)application:(id)a3 willFinishLaunchingWithOptions:(id)a4;
+- (BOOL)application:(id)application willFinishLaunchingWithOptions:(id)options;
 @end
 
 @implementation HCSAppDelegate
 
-- (BOOL)application:(id)a3 willFinishLaunchingWithOptions:(id)a4
+- (BOOL)application:(id)application willFinishLaunchingWithOptions:(id)options
 {
   v4 = HFPlatformSpecificHomeAppBundleID();
   [CLLocationManager setDefaultEffectiveBundleIdentifier:v4];

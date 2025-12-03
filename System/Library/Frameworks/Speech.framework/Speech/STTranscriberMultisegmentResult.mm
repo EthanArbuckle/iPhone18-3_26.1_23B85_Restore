@@ -1,6 +1,6 @@
 @interface STTranscriberMultisegmentResult
 - ($105C7F46451D331BD7843CF46B2B4F94)recognitionAudioRange;
-- (STTranscriberMultisegmentResult)initWithSegments:(id)a3 transcriptions:(id)a4 earResultType:(unint64_t)a5 nBestChoices:(id)a6 recognitionAudioRange:(id *)a7 bestFormattedString:(id)a8 bestFormattedStringSegmentConfidence:(double)a9;
+- (STTranscriberMultisegmentResult)initWithSegments:(id)segments transcriptions:(id)transcriptions earResultType:(unint64_t)type nBestChoices:(id)choices recognitionAudioRange:(id *)range bestFormattedString:(id)string bestFormattedStringSegmentConfidence:(double)confidence;
 @end
 
 @implementation STTranscriberMultisegmentResult
@@ -14,41 +14,41 @@
   return self;
 }
 
-- (STTranscriberMultisegmentResult)initWithSegments:(id)a3 transcriptions:(id)a4 earResultType:(unint64_t)a5 nBestChoices:(id)a6 recognitionAudioRange:(id *)a7 bestFormattedString:(id)a8 bestFormattedStringSegmentConfidence:(double)a9
+- (STTranscriberMultisegmentResult)initWithSegments:(id)segments transcriptions:(id)transcriptions earResultType:(unint64_t)type nBestChoices:(id)choices recognitionAudioRange:(id *)range bestFormattedString:(id)string bestFormattedStringSegmentConfidence:(double)confidence
 {
   v31.receiver = self;
   v31.super_class = STTranscriberMultisegmentResult;
-  v15 = a8;
-  v16 = a6;
-  v17 = a4;
-  v18 = a3;
+  stringCopy = string;
+  choicesCopy = choices;
+  transcriptionsCopy = transcriptions;
+  segmentsCopy = segments;
   v19 = [(STTranscriberMultisegmentResult *)&v31 init];
-  v20 = [v18 copy];
+  v20 = [segmentsCopy copy];
 
   v21 = *(v19 + 1);
   *(v19 + 1) = v20;
 
-  v22 = [v17 copy];
+  v22 = [transcriptionsCopy copy];
   v23 = *(v19 + 2);
   *(v19 + 2) = v22;
 
-  *(v19 + 3) = a5;
-  v24 = [v16 copy];
+  *(v19 + 3) = type;
+  v24 = [choicesCopy copy];
 
   v25 = *(v19 + 4);
   *(v19 + 4) = v24;
 
-  v26 = *&a7->var0.var0;
-  v27 = *&a7->var0.var3;
-  *(v19 + 88) = *&a7->var1.var1;
+  v26 = *&range->var0.var0;
+  v27 = *&range->var0.var3;
+  *(v19 + 88) = *&range->var1.var1;
   *(v19 + 72) = v27;
   *(v19 + 56) = v26;
-  v28 = [v15 copy];
+  v28 = [stringCopy copy];
 
   v29 = *(v19 + 5);
   *(v19 + 5) = v28;
 
-  *(v19 + 6) = a9;
+  *(v19 + 6) = confidence;
   return v19;
 }
 

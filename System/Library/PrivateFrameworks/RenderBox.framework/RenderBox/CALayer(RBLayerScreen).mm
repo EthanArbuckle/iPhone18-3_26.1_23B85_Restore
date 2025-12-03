@@ -6,18 +6,18 @@
 
 - (void)observeDisplayHeadroomChanges:()RBLayerScreen
 {
-  WeakRetained = objc_loadWeakRetained(a1);
+  WeakRetained = objc_loadWeakRetained(self);
   v3 = WeakRetained;
   if (WeakRetained && [WeakRetained displayHeadroomMayHaveChanged])
   {
     v4 = dispatch_time(0, 250000000);
-    dispatch_after_f(v4, MEMORY[0x1E69E96A0], a1, [CALayer(RBLayerScreen) observeDisplayHeadroomChanges:]::HeadroomObserver::callback);
+    dispatch_after_f(v4, MEMORY[0x1E69E96A0], self, [CALayer(RBLayerScreen) observeDisplayHeadroomChanges:]::HeadroomObserver::callback);
   }
 
-  else if (a1)
+  else if (self)
   {
-    objc_destroyWeak(a1);
-    MEMORY[0x19A8C09E0](a1, 0x80C40B8603338);
+    objc_destroyWeak(self);
+    MEMORY[0x19A8C09E0](self, 0x80C40B8603338);
   }
 }
 

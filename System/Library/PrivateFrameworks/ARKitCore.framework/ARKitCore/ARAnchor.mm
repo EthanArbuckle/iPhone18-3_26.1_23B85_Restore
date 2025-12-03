@@ -1,22 +1,22 @@
 @interface ARAnchor
-- (ARAnchor)initWithAnchor:(id)a3;
-- (ARAnchor)initWithCoder:(id)a3;
-- (ARAnchor)initWithIdentifier:(double)a3 transform:(double)a4;
-- (ARAnchor)initWithIdentifier:(double)a3 transform:(double)a4 name:(double)a5;
-- (ARAnchor)initWithIdentifier:(double)a3 transform:(double)a4 name:(double)a5 hiddenFromPublicDelegate:(uint64_t)a6;
+- (ARAnchor)initWithAnchor:(id)anchor;
+- (ARAnchor)initWithCoder:(id)coder;
+- (ARAnchor)initWithIdentifier:(double)identifier transform:(double)transform;
+- (ARAnchor)initWithIdentifier:(double)identifier transform:(double)transform name:(double)name;
+- (ARAnchor)initWithIdentifier:(double)identifier transform:(double)transform name:(double)name hiddenFromPublicDelegate:(uint64_t)delegate;
 - (ARAnchor)initWithName:(NSString *)name transform:(simd_float4x4)transform;
 - (ARAnchor)initWithTransform:(simd_float4x4)transform;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToAnchor:(id)a3;
-- (__n128)setReferenceTransform:(__n128)a3;
-- (__n128)setTransform:(__n128)a3;
-- (id)_description:(BOOL)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToAnchor:(id)anchor;
+- (__n128)setReferenceTransform:(__n128)transform;
+- (__n128)setTransform:(__n128)transform;
+- (id)_description:(BOOL)_description;
+- (id)copyWithZone:(_NSZone *)zone;
 - (simd_float4x4)transform;
-- (uint64_t)updateTransformToCoordinateSpace:(float32x4_t)a3 withTimestamp:(float32x4_t)a4;
+- (uint64_t)updateTransformToCoordinateSpace:(float32x4_t)space withTimestamp:(float32x4_t)timestamp;
 - (unint64_t)hash;
-- (void)_commonInit:(__n128)a3 transform:(__n128)a4 name:(__n128)a5;
-- (void)encodeWithCoder:(id)a3;
+- (void)_commonInit:(__n128)init transform:(__n128)transform name:(__n128)name;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ARAnchor
@@ -32,40 +32,40 @@
   v3 = [(ARAnchor *)&v10 init];
   if (v3)
   {
-    v4 = [MEMORY[0x1E696AFB0] UUID];
-    [(ARAnchor *)v3 _commonInit:v4 transform:0 name:v6, v7, v8, v9];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    [(ARAnchor *)v3 _commonInit:uUID transform:0 name:v6, v7, v8, v9];
   }
 
   return v3;
 }
 
-- (ARAnchor)initWithIdentifier:(double)a3 transform:(double)a4 name:(double)a5
+- (ARAnchor)initWithIdentifier:(double)identifier transform:(double)transform name:(double)name
 {
   v10 = a7;
   v11 = a8;
-  v19.receiver = a1;
+  v19.receiver = self;
   v19.super_class = ARAnchor;
   v12 = [(ARAnchor *)&v19 init];
   if (v12)
   {
     v13 = [v11 copy];
-    [(ARAnchor *)v12 _commonInit:v10 transform:v13 name:a2, a3, a4, a5];
+    [(ARAnchor *)v12 _commonInit:v10 transform:v13 name:a2, identifier, transform, name];
   }
 
   return v12;
 }
 
-- (ARAnchor)initWithIdentifier:(double)a3 transform:(double)a4 name:(double)a5 hiddenFromPublicDelegate:(uint64_t)a6
+- (ARAnchor)initWithIdentifier:(double)identifier transform:(double)transform name:(double)name hiddenFromPublicDelegate:(uint64_t)delegate
 {
   v12 = a7;
   v13 = a8;
-  v21.receiver = a1;
+  v21.receiver = self;
   v21.super_class = ARAnchor;
   v14 = [(ARAnchor *)&v21 init];
   if (v14)
   {
     v15 = [v13 copy];
-    [(ARAnchor *)v14 _commonInit:v12 transform:v15 name:a2, a3, a4, a5];
+    [(ARAnchor *)v14 _commonInit:v12 transform:v15 name:a2, identifier, transform, name];
 
     v14->_isHiddenFromPublicDelegate = a9;
   }
@@ -85,92 +85,92 @@
   v6 = [(ARAnchor *)&v14 init];
   if (v6)
   {
-    v7 = [MEMORY[0x1E696AFB0] UUID];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
     v8 = [(NSString *)v5 copy];
-    [(ARAnchor *)v6 _commonInit:v7 transform:v8 name:v10, v11, v12, v13];
+    [(ARAnchor *)v6 _commonInit:uUID transform:v8 name:v10, v11, v12, v13];
   }
 
   return v6;
 }
 
-- (ARAnchor)initWithIdentifier:(double)a3 transform:(double)a4
+- (ARAnchor)initWithIdentifier:(double)identifier transform:(double)transform
 {
   v8 = a7;
-  v16.receiver = a1;
+  v16.receiver = self;
   v16.super_class = ARAnchor;
   v9 = [(ARAnchor *)&v16 init];
   if (v9)
   {
     v10 = [v8 copy];
-    [(ARAnchor *)v9 _commonInit:v10 transform:0 name:a2, a3, a4, a5];
+    [(ARAnchor *)v9 _commonInit:v10 transform:0 name:a2, identifier, transform, a5];
   }
 
   return v9;
 }
 
-- (void)_commonInit:(__n128)a3 transform:(__n128)a4 name:(__n128)a5
+- (void)_commonInit:(__n128)init transform:(__n128)transform name:(__n128)name
 {
   v18 = a7;
   v10 = a8;
   if (v18)
   {
-    v11 = v18;
+    uUID = v18;
   }
 
   else
   {
-    v11 = [MEMORY[0x1E696AFB0] UUID];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
   }
 
-  v12 = a1[1].n128_u64[0];
-  a1[1].n128_u64[0] = v11;
+  v12 = self[1].n128_u64[0];
+  self[1].n128_u64[0] = uUID;
 
-  a1[3] = a2;
-  a1[4] = a3;
-  a1[5] = a4;
-  a1[6] = a5;
-  a1[7] = a2;
-  a1[8] = a3;
-  a1[9] = a4;
-  a1[10] = a5;
-  v13 = a1[1].n128_u64[1];
-  a1[1].n128_u64[1] = v10;
+  self[3] = a2;
+  self[4] = init;
+  self[5] = transform;
+  self[6] = name;
+  self[7] = a2;
+  self[8] = init;
+  self[9] = transform;
+  self[10] = name;
+  v13 = self[1].n128_u64[1];
+  self[1].n128_u64[1] = v10;
 
-  a1->n128_u8[8] = 0;
+  self->n128_u8[8] = 0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  [v5 encodeObject:self->_identifier forKey:@"identifier"];
-  [v5 ar_encodeMatrix4x4:@"transform" forKey:{*self->_anon_30, *&self->_anon_30[16], *&self->_anon_30[32], *&self->_anon_30[48]}];
-  [v5 ar_encodeMatrix4x4:@"referenceTransform" forKey:{*&self[1].super.isa, *&self[1]._identifier, *&self[1]._sessionIdentifier, *self[1]._anon_30}];
-  [v5 encodeDouble:@"lastUpdateTimestamp" forKey:self->_lastUpdateTimestamp];
-  [v5 encodeBool:self->_isHiddenFromPublicDelegate forKey:@"isHiddenFromPublicDelegate"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_identifier forKey:@"identifier"];
+  [coderCopy ar_encodeMatrix4x4:@"transform" forKey:{*self->_anon_30, *&self->_anon_30[16], *&self->_anon_30[32], *&self->_anon_30[48]}];
+  [coderCopy ar_encodeMatrix4x4:@"referenceTransform" forKey:{*&self[1].super.isa, *&self[1]._identifier, *&self[1]._sessionIdentifier, *self[1]._anon_30}];
+  [coderCopy encodeDouble:@"lastUpdateTimestamp" forKey:self->_lastUpdateTimestamp];
+  [coderCopy encodeBool:self->_isHiddenFromPublicDelegate forKey:@"isHiddenFromPublicDelegate"];
   name = self->_name;
   if (name)
   {
-    [v5 encodeObject:name forKey:@"name"];
+    [coderCopy encodeObject:name forKey:@"name"];
   }
 }
 
-- (ARAnchor)initWithCoder:(id)a3
+- (ARAnchor)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
   if (v5)
   {
-    [v4 ar_decodeMatrix4x4ForKey:@"transform"];
+    [coderCopy ar_decodeMatrix4x4ForKey:@"transform"];
     v29 = v6;
     v27 = v8;
     v28 = v7;
     v26 = v9;
-    [v4 ar_decodeMatrix4x4ForKey:@"referenceTransform"];
+    [coderCopy ar_decodeMatrix4x4ForKey:@"referenceTransform"];
     v24 = v11;
     v25 = v10;
     v22 = v13;
     v23 = v12;
-    [v4 decodeDoubleForKey:@"lastUpdateTimestamp"];
+    [coderCopy decodeDoubleForKey:@"lastUpdateTimestamp"];
     v15 = v14;
     v30.receiver = self;
     v30.super_class = ARAnchor;
@@ -188,85 +188,85 @@
       *&v17[1]._sessionIdentifier = v23;
       *v17[1]._anon_30 = v22;
       v17->_lastUpdateTimestamp = v15;
-      v17->_isHiddenFromPublicDelegate = [v4 decodeBoolForKey:@"isHiddenFromPublicDelegate"];
-      v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+      v17->_isHiddenFromPublicDelegate = [coderCopy decodeBoolForKey:@"isHiddenFromPublicDelegate"];
+      v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
       name = v17->_name;
       v17->_name = v18;
     }
 
     self = v17;
-    v20 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v20 = 0;
+    selfCopy = 0;
   }
 
-  return v20;
+  return selfCopy;
 }
 
-- (ARAnchor)initWithAnchor:(id)a3
+- (ARAnchor)initWithAnchor:(id)anchor
 {
-  v4 = a3;
+  anchorCopy = anchor;
   v24.receiver = self;
   v24.super_class = ARAnchor;
   v5 = [(ARAnchor *)&v24 init];
   if (v5)
   {
-    v6 = [v4 identifier];
-    v7 = [v6 copy];
+    identifier = [anchorCopy identifier];
+    v7 = [identifier copy];
     identifier = v5->_identifier;
     v5->_identifier = v7;
 
-    v9 = [v4 name];
-    v10 = [v9 copy];
+    name = [anchorCopy name];
+    v10 = [name copy];
     name = v5->_name;
     v5->_name = v10;
 
-    v12 = [v4 sessionIdentifier];
+    sessionIdentifier = [anchorCopy sessionIdentifier];
     sessionIdentifier = v5->_sessionIdentifier;
-    v5->_sessionIdentifier = v12;
+    v5->_sessionIdentifier = sessionIdentifier;
 
-    [v4 transform];
+    [anchorCopy transform];
     *v5->_anon_30 = v14;
     *&v5->_anon_30[16] = v15;
     *&v5->_anon_30[32] = v16;
     *&v5->_anon_30[48] = v17;
-    [v4 referenceTransform];
+    [anchorCopy referenceTransform];
     *&v5[1].super.isa = v18;
     *&v5[1]._identifier = v19;
     *&v5[1]._sessionIdentifier = v20;
     *v5[1]._anon_30 = v21;
-    [v4 lastUpdateTimestamp];
+    [anchorCopy lastUpdateTimestamp];
     v5->_lastUpdateTimestamp = v22;
-    v5->_isHiddenFromPublicDelegate = [v4 isHiddenFromPublicDelegate];
+    v5->_isHiddenFromPublicDelegate = [anchorCopy isHiddenFromPublicDelegate];
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
 
   return [v4 initWithAnchor:self];
 }
 
 - (unint64_t)hash
 {
-  v2 = [(ARAnchor *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(ARAnchor *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v7.receiver = self;
   v7.super_class = ARAnchor;
-  if ([(ARAnchor *)&v7 isEqual:v4])
+  if ([(ARAnchor *)&v7 isEqual:equalCopy])
   {
     v5 = 1;
   }
@@ -274,55 +274,55 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(ARAnchor *)self isEqualToAnchor:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(ARAnchor *)self isEqualToAnchor:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToAnchor:(id)a3
+- (BOOL)isEqualToAnchor:(id)anchor
 {
-  v4 = a3;
-  v5 = [(ARAnchor *)self identifier];
-  v6 = [v4 identifier];
+  anchorCopy = anchor;
+  identifier = [(ARAnchor *)self identifier];
+  identifier2 = [anchorCopy identifier];
 
-  LOBYTE(v4) = [v5 isEqual:v6];
-  return v4;
+  LOBYTE(anchorCopy) = [identifier isEqual:identifier2];
+  return anchorCopy;
 }
 
-- (id)_description:(BOOL)a3
+- (id)_description:(BOOL)_description
 {
-  v3 = a3;
+  _descriptionCopy = _description;
   v5 = MEMORY[0x1E696AD60];
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
   v8 = [v5 stringWithFormat:@"<%@: %p", v7, self];
 
-  v9 = [(ARAnchor *)self identifier];
-  [v8 appendFormat:@" identifier=%@", v9];
+  identifier = [(ARAnchor *)self identifier];
+  [v8 appendFormat:@" identifier=%@", identifier];
 
-  v10 = [(ARAnchor *)self sessionIdentifier];
+  sessionIdentifier = [(ARAnchor *)self sessionIdentifier];
 
-  if (v10)
+  if (sessionIdentifier)
   {
-    v11 = [(ARAnchor *)self sessionIdentifier];
-    v12 = [v11 UUIDString];
-    [v8 appendFormat:@" sessionIdentifier=%@", v12];
+    sessionIdentifier2 = [(ARAnchor *)self sessionIdentifier];
+    uUIDString = [sessionIdentifier2 UUIDString];
+    [v8 appendFormat:@" sessionIdentifier=%@", uUIDString];
   }
 
-  v13 = [(ARAnchor *)self name];
+  name = [(ARAnchor *)self name];
 
-  if (v13)
+  if (name)
   {
-    v14 = [(ARAnchor *)self name];
-    [v8 appendFormat:@" name=%@", v14];
+    name2 = [(ARAnchor *)self name];
+    [v8 appendFormat:@" name=%@", name2];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v15 = [(ARAnchor *)self isTracked];
+    isTracked = [(ARAnchor *)self isTracked];
     v16 = @"NO";
-    if (v15)
+    if (isTracked)
     {
       v16 = @"YES";
     }
@@ -331,7 +331,7 @@
   }
 
   [(ARAnchor *)self transform];
-  v21 = ARMatrix4x4Description(v3, v17, v18, v19, v20);
+  v21 = ARMatrix4x4Description(_descriptionCopy, v17, v18, v19, v20);
   [v8 appendFormat:@" transform=%@", v21];
 
   [v8 appendString:@">"];
@@ -339,9 +339,9 @@
   return v8;
 }
 
-- (uint64_t)updateTransformToCoordinateSpace:(float32x4_t)a3 withTimestamp:(float32x4_t)a4
+- (uint64_t)updateTransformToCoordinateSpace:(float32x4_t)space withTimestamp:(float32x4_t)timestamp
 {
-  [a1 transform];
+  [self transform];
   v8 = 0;
   v18[0] = v9;
   v18[1] = v10;
@@ -353,16 +353,16 @@
   v22 = 0u;
   do
   {
-    *(&v19 + v8 * 16) = vmlaq_laneq_f32(vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(a2, COERCE_FLOAT(v18[v8])), a3, *&v18[v8], 1), a4, v18[v8], 2), a5, v18[v8], 3);
+    *(&v19 + v8 * 16) = vmlaq_laneq_f32(vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(a2, COERCE_FLOAT(v18[v8])), space, *&v18[v8], 1), timestamp, v18[v8], 2), a5, v18[v8], 3);
     ++v8;
   }
 
   while (v8 != 4);
-  result = [a1 setTransform:{*&v19, *&v20, *&v21, *&v22}];
+  result = [self setTransform:{*&v19, *&v20, *&v21, *&v22}];
   if (a6 != 0.0)
   {
 
-    return [a1 setLastUpdateTimestamp:a6];
+    return [self setLastUpdateTimestamp:a6];
   }
 
   return result;
@@ -381,19 +381,19 @@
   return result;
 }
 
-- (__n128)setTransform:(__n128)a3
+- (__n128)setTransform:(__n128)transform
 {
   result[3] = a2;
-  result[4] = a3;
+  result[4] = transform;
   result[5] = a4;
   result[6] = a5;
   return result;
 }
 
-- (__n128)setReferenceTransform:(__n128)a3
+- (__n128)setReferenceTransform:(__n128)transform
 {
   result[7] = a2;
-  result[8] = a3;
+  result[8] = transform;
   result[9] = a4;
   result[10] = a5;
   return result;

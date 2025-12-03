@@ -1,30 +1,30 @@
 @interface ATXOneHotCategoricalFeatureCross
-- (ATXOneHotCategoricalFeatureCross)initWithFeatures:(id)a3;
-- (id)categoricalFeatureValueForContext:(id)a3 candidate:(id)a4;
+- (ATXOneHotCategoricalFeatureCross)initWithFeatures:(id)features;
+- (id)categoricalFeatureValueForContext:(id)context candidate:(id)candidate;
 @end
 
 @implementation ATXOneHotCategoricalFeatureCross
 
-- (ATXOneHotCategoricalFeatureCross)initWithFeatures:(id)a3
+- (ATXOneHotCategoricalFeatureCross)initWithFeatures:(id)features
 {
-  v5 = a3;
+  featuresCopy = features;
   v9.receiver = self;
   v9.super_class = ATXOneHotCategoricalFeatureCross;
   v6 = [(ATXCandidateRelevanceModelMultiHotCategoricalFeaturizer *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_features, a3);
+    objc_storeStrong(&v6->_features, features);
   }
 
   return v7;
 }
 
-- (id)categoricalFeatureValueForContext:(id)a3 candidate:(id)a4
+- (id)categoricalFeatureValueForContext:(id)context candidate:(id)candidate
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  candidateCopy = candidate;
   v8 = objc_opt_new();
   v18 = 0u;
   v19 = 0u;
@@ -45,7 +45,7 @@
           objc_enumerationMutation(v9);
         }
 
-        v14 = [*(*(&v18 + 1) + 8 * i) categoricalFeatureValueForContext:v6 candidate:{v7, v18}];
+        v14 = [*(*(&v18 + 1) + 8 * i) categoricalFeatureValueForContext:contextCopy candidate:{candidateCopy, v18}];
         [v8 addObject:v14];
       }
 

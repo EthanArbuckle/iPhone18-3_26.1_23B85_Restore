@@ -1,21 +1,21 @@
 @interface MTLTelemetryParallelRenderCommandEncoder
-- (MTLTelemetryParallelRenderCommandEncoder)initWithBaseRenderPass:(id)a3 commandBuffer:(id)a4 descriptor:(id)a5;
+- (MTLTelemetryParallelRenderCommandEncoder)initWithBaseRenderPass:(id)pass commandBuffer:(id)buffer descriptor:(id)descriptor;
 - (id)renderCommandEncoder;
 - (void)endEncoding;
 @end
 
 @implementation MTLTelemetryParallelRenderCommandEncoder
 
-- (MTLTelemetryParallelRenderCommandEncoder)initWithBaseRenderPass:(id)a3 commandBuffer:(id)a4 descriptor:(id)a5
+- (MTLTelemetryParallelRenderCommandEncoder)initWithBaseRenderPass:(id)pass commandBuffer:(id)buffer descriptor:(id)descriptor
 {
   v9.receiver = self;
   v9.super_class = MTLTelemetryParallelRenderCommandEncoder;
-  v7 = [MTLToolsParallelRenderCommandEncoder initWithParallelRenderCommandEncoder:sel_initWithParallelRenderCommandEncoder_parent_descriptor_ parent:a3 descriptor:?];
+  v7 = [MTLToolsParallelRenderCommandEncoder initWithParallelRenderCommandEncoder:sel_initWithParallelRenderCommandEncoder_parent_descriptor_ parent:pass descriptor:?];
   if (v7)
   {
-    v7->_descriptor = [a5 copy];
+    v7->_descriptor = [descriptor copy];
     v7->_telemetryDevice = [(MTLToolsObject *)v7 device];
-    v7->_telemetryCommandBuffer = a4;
+    v7->_telemetryCommandBuffer = buffer;
     v7->_encoderCount = 0;
   }
 
@@ -68,9 +68,9 @@ LABEL_9:
     ++self->_telemetryCommandBuffer->parallellRenderEncoderDistribution->count;
   }
 
-  v6 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v6 endEncoding];
+  [baseObject endEncoding];
 }
 
 @end

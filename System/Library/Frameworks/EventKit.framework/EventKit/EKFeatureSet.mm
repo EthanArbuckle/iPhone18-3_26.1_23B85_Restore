@@ -15,9 +15,9 @@
 
 + (void)userAcknowledgedSplashScreen
 {
-  v2 = [a1 _currentSplashScreenVersion];
+  _currentSplashScreenVersion = [self _currentSplashScreenVersion];
   v3 = +[EKPreferences shared];
-  [v3 setLastConfirmedSplashScreenVersion:v2];
+  [v3 setLastConfirmedSplashScreenVersion:_currentSplashScreenVersion];
 
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
 

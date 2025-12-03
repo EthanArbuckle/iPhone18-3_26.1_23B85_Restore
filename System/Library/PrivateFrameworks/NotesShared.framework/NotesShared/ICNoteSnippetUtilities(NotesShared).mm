@@ -8,22 +8,22 @@
 + (id)titleForAttributedContent:()NotesShared truncated:attributedTitleIfNecessary:
 {
   v8 = a3;
-  v9 = [v8 string];
-  v10 = [a1 rangeForTitleInContent:v9 truncated:a4];
+  string = [v8 string];
+  v10 = [self rangeForTitleInContent:string truncated:a4];
   v12 = v11;
 
   v13 = [v8 attributedSubstringFromRange:{v10, v12}];
 
-  v14 = [MEMORY[0x277D36228] snippetAndTitleTrimCharacterSet];
-  v15 = [v13 ic_attributedStringByTrimmingCharactersInSet:v14];
+  snippetAndTitleTrimCharacterSet = [MEMORY[0x277D36228] snippetAndTitleTrimCharacterSet];
+  v15 = [v13 ic_attributedStringByTrimmingCharactersInSet:snippetAndTitleTrimCharacterSet];
 
-  v16 = [v15 string];
+  string2 = [v15 string];
   if (a5)
   {
     *a5 = [v15 ic_attributedStringWithOnlyAdaptiveImageAttributeIfNecessary];
   }
 
-  return v16;
+  return string2;
 }
 
 + (id)snippetForAttributedContent:()NotesShared attributedSnippetIfNecessary:
@@ -35,21 +35,21 @@
     v7 = [v6 ic_attributedSubstringFromRange:{0, 255}];
   }
 
-  v8 = [a1 snippetAndTitleTrimCharacterSet];
-  v9 = [v7 ic_attributedStringByTrimmingCharactersInSet:v8];
+  snippetAndTitleTrimCharacterSet = [self snippetAndTitleTrimCharacterSet];
+  v9 = [v7 ic_attributedStringByTrimmingCharactersInSet:snippetAndTitleTrimCharacterSet];
 
-  v10 = [v9 ic_whitespaceAndNewlineCoalescedAttributedString];
+  ic_whitespaceAndNewlineCoalescedAttributedString = [v9 ic_whitespaceAndNewlineCoalescedAttributedString];
 
-  v11 = [v10 string];
-  v12 = [v10 ic_attributedStringWithOnlyAdaptiveImageAttributeIfNecessary];
+  string = [ic_whitespaceAndNewlineCoalescedAttributedString string];
+  ic_attributedStringWithOnlyAdaptiveImageAttributeIfNecessary = [ic_whitespaceAndNewlineCoalescedAttributedString ic_attributedStringWithOnlyAdaptiveImageAttributeIfNecessary];
 
   if (a4)
   {
-    v13 = v12;
-    *a4 = v12;
+    v13 = ic_attributedStringWithOnlyAdaptiveImageAttributeIfNecessary;
+    *a4 = ic_attributedStringWithOnlyAdaptiveImageAttributeIfNecessary;
   }
 
-  return v11;
+  return string;
 }
 
 @end

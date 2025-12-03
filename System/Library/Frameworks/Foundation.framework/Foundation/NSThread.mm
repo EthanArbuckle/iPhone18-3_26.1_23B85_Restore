@@ -10,8 +10,8 @@
 + (void)detachNewThreadWithBlock:(void *)block;
 + (void)sleepForTimeInterval:(NSTimeInterval)ti;
 + (void)sleepUntilDate:(NSDate *)date;
-- (BOOL)_setThreadPriority:(double)a3;
-- (BOOL)startAndReturnError:(id *)a3;
+- (BOOL)_setThreadPriority:(double)priority;
+- (BOOL)startAndReturnError:(id *)error;
 - (NSQualityOfService)qualityOfService;
 - (NSString)name;
 - (NSThread)init;
@@ -21,9 +21,9 @@
 - (double)threadPriority;
 - (id)description;
 - (id)runLoop;
-- (pthread_override_s)_beginQoSOverride:(unsigned int)a3 relativePriority:(int)a4;
-- (void)_endQoSOverride:(pthread_override_s *)a3;
-- (void)_nq:(id)a3;
+- (pthread_override_s)_beginQoSOverride:(unsigned int)override relativePriority:(int)priority;
+- (void)_endQoSOverride:(pthread_override_s *)override;
+- (void)_nq:(id)_nq;
 - (void)cancel;
 - (void)dealloc;
 - (void)main;
@@ -425,7 +425,7 @@
   v8 = *MEMORY[0x1E69E9840];
   if (!block)
   {
-    v5 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: block targets for threads cannot be nil", _NSMethodExceptionProem(a1, a2)), 0}];
+    v5 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: block targets for threads cannot be nil", _NSMethodExceptionProem(self, a2)), 0}];
     objc_exception_throw(v5);
   }
 
@@ -482,15 +482,15 @@
       v6 = *(self->_private + 6);
       if (v6)
       {
-        v7 = [v6 UTF8String];
+        uTF8String = [v6 UTF8String];
       }
 
       else
       {
-        v7 = "";
+        uTF8String = "";
       }
 
-      pthread_setname_np(v7);
+      pthread_setname_np(uTF8String);
     }
   }
 }
@@ -509,9 +509,9 @@
     {
       v4 = MEMORY[0x1E695DF30];
       v5 = *MEMORY[0x1E695D940];
-      v6 = [NSString stringWithFormat:@"Can't set stack size to %lu (it must be a multiple of the system page size and greater than %d)", v3, 0x4000];
+      0x4000 = [NSString stringWithFormat:@"Can't set stack size to %lu (it must be a multiple of the system page size and greater than %d)", v3, 0x4000];
 LABEL_9:
-      objc_exception_throw([v4 exceptionWithName:v5 reason:v6 userInfo:0]);
+      objc_exception_throw([v4 exceptionWithName:v5 reason:0x4000 userInfo:0]);
     }
   }
 
@@ -519,7 +519,7 @@ LABEL_9:
   {
     v4 = MEMORY[0x1E695DF30];
     v5 = *MEMORY[0x1E695D940];
-    v6 = [NSString stringWithFormat:@"Can't set stack size to a value lower than %d (requested %lu)", 0x4000, v3];
+    0x4000 = [NSString stringWithFormat:@"Can't set stack size to a value lower than %d (requested %lu)", 0x4000, v3];
     goto LABEL_9;
   }
 }
@@ -546,7 +546,7 @@ LABEL_9:
   }
 }
 
-- (pthread_override_s)_beginQoSOverride:(unsigned int)a3 relativePriority:(int)a4
+- (pthread_override_s)_beginQoSOverride:(unsigned int)override relativePriority:(int)priority
 {
   v7 = *(self->_private + 18);
   if (v7 == pthread_main_thread_np())
@@ -556,36 +556,36 @@ LABEL_9:
 
   v8 = *(self->_private + 18);
 
-  return pthread_override_qos_class_start_np(v8, a3, a4);
+  return pthread_override_qos_class_start_np(v8, override, priority);
 }
 
-- (void)_endQoSOverride:(pthread_override_s *)a3
+- (void)_endQoSOverride:(pthread_override_s *)override
 {
-  if (a3)
+  if (override)
   {
-    pthread_override_qos_class_end_np(a3);
+    pthread_override_qos_class_end_np(override);
   }
 }
 
-- (BOOL)_setThreadPriority:(double)a3
+- (BOOL)_setThreadPriority:(double)priority
 {
   v11 = *MEMORY[0x1E69E9840];
-  if (a3 < 0.0)
+  if (priority < 0.0)
   {
-    a3 = 0.0;
+    priority = 0.0;
   }
 
-  if (a3 <= 1.0)
+  if (priority <= 1.0)
   {
-    v4 = a3;
+    priorityCopy = priority;
   }
 
   else
   {
-    v4 = 1.0;
+    priorityCopy = 1.0;
   }
 
-  *(self->_private + 19) = v4;
+  *(self->_private + 19) = priorityCopy;
   if (pthread_equal(*(self->_private + 18), 0))
   {
     *(self->_private + 61) = 0;
@@ -595,7 +595,7 @@ LABEL_9:
   {
     pthread_attr_setschedpolicy((self->_private + 80), 1);
     *v10.__opaque = 0;
-    v10.sched_priority = (v4 * 62.0 + 0.5);
+    v10.sched_priority = (priorityCopy * 62.0 + 0.5);
     v5 = pthread_attr_setschedparam((self->_private + 80), &v10);
   }
 
@@ -604,7 +604,7 @@ LABEL_9:
     v10.sched_priority = 1;
     v6 = pthread_mach_thread_np(*(self->_private + 18));
     thread_policy_set(v6, 1u, &v10, 1u);
-    policy_info = (v4 * 62.0 + 0.5) - 31;
+    policy_info = (priorityCopy * 62.0 + 0.5) - 31;
     v7 = pthread_mach_thread_np(*(self->_private + 18));
     v5 = thread_policy_set(v7, 3u, &policy_info, 1u);
   }
@@ -620,7 +620,7 @@ LABEL_9:
   }
 }
 
-- (BOOL)startAndReturnError:(id *)a3
+- (BOOL)startAndReturnError:(id *)error
 {
   v5 = 0;
   v18 = *MEMORY[0x1E69E9840];
@@ -662,9 +662,9 @@ LABEL_9:
     if (v10)
     {
       v11 = v10;
-      if (a3)
+      if (error)
       {
-        *a3 = [NSError errorWithDomain:@"NSPOSIXErrorDomain" code:v10 userInfo:0];
+        *error = [NSError errorWithDomain:@"NSPOSIXErrorDomain" code:v10 userInfo:0];
       }
 
       else
@@ -685,7 +685,7 @@ LABEL_9:
   return 1;
 }
 
-- (void)_nq:(id)a3
+- (void)_nq:(id)_nq
 {
   v19 = *MEMORY[0x1E69E9840];
   objc_sync_enter(self);
@@ -696,7 +696,7 @@ LABEL_9:
     v5 = *(self->_private + 8);
   }
 
-  [v5 addObject:a3];
+  [v5 addObject:_nq];
   v6 = threadRunLoop(*(self->_private + 18));
   if (v6)
   {
@@ -709,12 +709,12 @@ LABEL_9:
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    if (a3)
+    if (_nq)
     {
-      a3 = *(a3 + 5);
+      _nq = *(_nq + 5);
     }
 
-    v7 = [a3 countByEnumeratingWithState:&v15 objects:v14 count:16];
+    v7 = [_nq countByEnumeratingWithState:&v15 objects:v14 count:16];
     if (v7)
     {
       v8 = *v16;
@@ -725,7 +725,7 @@ LABEL_9:
         {
           if (*v16 != v8)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(_nq);
           }
 
           v11 = *(*(&v15 + 1) + 8 * i);
@@ -745,7 +745,7 @@ LABEL_9:
           CFRunLoopSourceSignal(v12);
         }
 
-        v7 = [a3 countByEnumeratingWithState:&v15 objects:v14 count:16];
+        v7 = [_nq countByEnumeratingWithState:&v15 objects:v14 count:16];
       }
 
       while (v7);

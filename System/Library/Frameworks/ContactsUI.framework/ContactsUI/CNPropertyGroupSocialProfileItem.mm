@@ -1,69 +1,69 @@
 @interface CNPropertyGroupSocialProfileItem
-+ (id)displayLabelForSocialProfile:(id)a3 forPropertyKey:(id)a4;
-+ (id)displayStringForSocialProfile:(id)a3;
-+ (id)emptyValueForLabel:(id)a3;
-- (BOOL)isEquivalentToItem:(id)a3;
++ (id)displayLabelForSocialProfile:(id)profile forPropertyKey:(id)key;
++ (id)displayStringForSocialProfile:(id)profile;
++ (id)emptyValueForLabel:(id)label;
+- (BOOL)isEquivalentToItem:(id)item;
 - (CNSocialProfile)profile;
 - (id)defaultActionURL;
 - (id)displayLabel;
-- (id)displayStringForValue:(id)a3;
+- (id)displayStringForValue:(id)value;
 - (id)editingStringValue;
-- (id)valueForDisplayString:(id)a3;
+- (id)valueForDisplayString:(id)string;
 @end
 
 @implementation CNPropertyGroupSocialProfileItem
 
-- (BOOL)isEquivalentToItem:(id)a3
+- (BOOL)isEquivalentToItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v29.receiver = self;
   v29.super_class = CNPropertyGroupSocialProfileItem;
-  if (![(CNPropertyGroupItem *)&v29 isEquivalentToItem:v4])
+  if (![(CNPropertyGroupItem *)&v29 isEquivalentToItem:itemCopy])
   {
-    v6 = [(CNPropertyGroupItem *)self contact];
-    v7 = [v4 contact];
+    contact = [(CNPropertyGroupItem *)self contact];
+    contact2 = [itemCopy contact];
 
-    if (v6 == v7)
+    if (contact == contact2)
     {
       v5 = 0;
       goto LABEL_22;
     }
 
-    v8 = [(CNPropertyGroupSocialProfileItem *)self profile];
-    v9 = [v8 service];
+    profile = [(CNPropertyGroupSocialProfileItem *)self profile];
+    service = [profile service];
 
-    v10 = [v4 profile];
-    v11 = [v10 service];
+    profile2 = [itemCopy profile];
+    service2 = [profile2 service];
 
-    if (!v9 || !v11 || ![v9 isEqualToString:v11])
+    if (!service || !service2 || ![service isEqualToString:service2])
     {
       goto LABEL_17;
     }
 
-    v12 = [(CNPropertyGroupSocialProfileItem *)self profile];
-    v13 = [v12 username];
+    profile3 = [(CNPropertyGroupSocialProfileItem *)self profile];
+    username = [profile3 username];
 
-    v14 = [v4 profile];
-    v15 = [v14 username];
+    profile4 = [itemCopy profile];
+    username2 = [profile4 username];
 
-    if (v13 && v15)
+    if (username && username2)
     {
-      v16 = [v13 isEqualToString:v15];
+      v16 = [username isEqualToString:username2];
 
       if ((v16 & 1) == 0)
       {
 LABEL_17:
-        v22 = [(CNPropertyGroupSocialProfileItem *)self profile];
-        v23 = [v22 urlString];
+        profile5 = [(CNPropertyGroupSocialProfileItem *)self profile];
+        urlString = [profile5 urlString];
 
-        v24 = [v4 profile];
-        v25 = [v24 urlString];
+        profile6 = [itemCopy profile];
+        urlString2 = [profile6 urlString];
 
         v5 = 0;
-        if (v23 && v25)
+        if (urlString && urlString2)
         {
-          v26 = [MEMORY[0x1E695DFF8] URLWithString:v23];
-          v27 = [MEMORY[0x1E695DFF8] URLWithString:v25];
+          v26 = [MEMORY[0x1E695DFF8] URLWithString:urlString];
+          v27 = [MEMORY[0x1E695DFF8] URLWithString:urlString2];
           v5 = [v26 isEqual:v27];
         }
 
@@ -73,19 +73,19 @@ LABEL_17:
 
     else
     {
-      v17 = [(CNPropertyGroupSocialProfileItem *)self profile];
-      v18 = [v17 userIdentifier];
+      profile7 = [(CNPropertyGroupSocialProfileItem *)self profile];
+      userIdentifier = [profile7 userIdentifier];
 
-      v19 = [(CNPropertyGroupSocialProfileItem *)self profile];
-      v20 = [v19 userIdentifier];
+      profile8 = [(CNPropertyGroupSocialProfileItem *)self profile];
+      userIdentifier2 = [profile8 userIdentifier];
 
-      if (!v18 || !v20)
+      if (!userIdentifier || !userIdentifier2)
       {
 
         goto LABEL_17;
       }
 
-      v21 = [v18 isEqualToString:v20];
+      v21 = [userIdentifier isEqualToString:userIdentifier2];
 
       if ((v21 & 1) == 0)
       {
@@ -107,50 +107,50 @@ LABEL_22:
 
 - (id)editingStringValue
 {
-  v3 = [(CNPropertyGroupSocialProfileItem *)self profile];
-  v4 = [v3 username];
-  v5 = [v4 length];
+  profile = [(CNPropertyGroupSocialProfileItem *)self profile];
+  username = [profile username];
+  v5 = [username length];
 
-  v6 = [(CNPropertyGroupSocialProfileItem *)self profile];
-  v7 = v6;
+  profile2 = [(CNPropertyGroupSocialProfileItem *)self profile];
+  v7 = profile2;
   if (v5)
   {
-    [(CNPropertyGroupSocialProfileItem *)self displayStringForValue:v6];
+    [(CNPropertyGroupSocialProfileItem *)self displayStringForValue:profile2];
   }
 
   else
   {
-    [v6 userIdentifier];
+    [profile2 userIdentifier];
   }
   v8 = ;
 
   return v8;
 }
 
-- (id)valueForDisplayString:(id)a3
+- (id)valueForDisplayString:(id)string
 {
-  v4 = a3;
-  v5 = [(CNPropertyGroupSocialProfileItem *)self profile];
-  v6 = [v5 mutableCopy];
+  stringCopy = string;
+  profile = [(CNPropertyGroupSocialProfileItem *)self profile];
+  v6 = [profile mutableCopy];
 
-  if ([v4 length] && objc_msgSend(v4, "characterAtIndex:", 0) == 64)
+  if ([stringCopy length] && objc_msgSend(stringCopy, "characterAtIndex:", 0) == 64)
   {
-    v7 = [v4 substringFromIndex:1];
+    v7 = [stringCopy substringFromIndex:1];
     [v6 setUsername:v7];
   }
 
   else
   {
-    [v6 setUsername:v4];
+    [v6 setUsername:stringCopy];
   }
 
   return v6;
 }
 
-- (id)displayStringForValue:(id)a3
+- (id)displayStringForValue:(id)value
 {
-  v3 = a3;
-  v4 = [objc_opt_class() displayStringForSocialProfile:v3];
+  valueCopy = value;
+  v4 = [objc_opt_class() displayStringForSocialProfile:valueCopy];
 
   return v4;
 }
@@ -158,9 +158,9 @@ LABEL_22:
 - (id)displayLabel
 {
   v3 = objc_opt_class();
-  v4 = [(CNPropertyGroupSocialProfileItem *)self profile];
-  v5 = [(CNPropertyGroupItem *)self property];
-  v6 = [v3 displayLabelForSocialProfile:v4 forPropertyKey:v5];
+  profile = [(CNPropertyGroupSocialProfileItem *)self profile];
+  property = [(CNPropertyGroupItem *)self property];
+  v6 = [v3 displayLabelForSocialProfile:profile forPropertyKey:property];
 
   return v6;
 }
@@ -168,42 +168,42 @@ LABEL_22:
 - (id)defaultActionURL
 {
   v2 = MEMORY[0x1E695DFF8];
-  v3 = [(CNPropertyGroupSocialProfileItem *)self profile];
-  v4 = [v3 urlString];
-  v5 = [v2 URLWithString:v4];
+  profile = [(CNPropertyGroupSocialProfileItem *)self profile];
+  urlString = [profile urlString];
+  v5 = [v2 URLWithString:urlString];
 
   return v5;
 }
 
 - (CNSocialProfile)profile
 {
-  v2 = [(CNPropertyGroupItem *)self labeledValue];
-  v3 = [v2 value];
+  labeledValue = [(CNPropertyGroupItem *)self labeledValue];
+  value = [labeledValue value];
 
-  return v3;
+  return value;
 }
 
-+ (id)displayStringForSocialProfile:(id)a3
++ (id)displayStringForSocialProfile:(id)profile
 {
-  v3 = a3;
+  profileCopy = profile;
   v4 = *MEMORY[0x1E6996568];
-  v5 = [v3 displayname];
-  v6 = (*(v4 + 16))(v4, v5);
+  displayname = [profileCopy displayname];
+  v6 = (*(v4 + 16))(v4, displayname);
 
   if (v6)
   {
-    v7 = [v3 username];
-    v8 = (*(v4 + 16))(v4, v7);
+    username = [profileCopy username];
+    v8 = (*(v4 + 16))(v4, username);
 
     if (v8)
     {
-      v9 = [v3 userIdentifier];
-      v10 = (*(v4 + 16))(v4, v9);
+      userIdentifier = [profileCopy userIdentifier];
+      v10 = (*(v4 + 16))(v4, userIdentifier);
 
       if (v10)
       {
-        v11 = [v3 urlString];
-        v12 = (*(v4 + 16))(v4, v11);
+        urlString = [profileCopy urlString];
+        v12 = (*(v4 + 16))(v4, urlString);
 
         if (v12)
         {
@@ -211,44 +211,44 @@ LABEL_22:
           goto LABEL_11;
         }
 
-        v14 = [v3 urlString];
+        urlString2 = [profileCopy urlString];
       }
 
       else
       {
-        v14 = [v3 userIdentifier];
+        urlString2 = [profileCopy userIdentifier];
       }
     }
 
     else
     {
-      v14 = [v3 username];
+      urlString2 = [profileCopy username];
     }
   }
 
   else
   {
-    v14 = [v3 displayname];
+    urlString2 = [profileCopy displayname];
   }
 
-  v13 = v14;
+  v13 = urlString2;
 LABEL_11:
   if ((*(v4 + 16))(v4, v13))
   {
-    v15 = v13;
+    service = v13;
     v13 = &stru_1F0CE7398;
   }
 
   else
   {
-    v15 = [v3 service];
-    if (((*(v4 + 16))(v4, v15) & 1) == 0)
+    service = [profileCopy service];
+    if (((*(v4 + 16))(v4, service) & 1) == 0)
     {
-      v16 = [v3 username];
-      if (((*(v4 + 16))(v4, v16) & 1) == 0)
+      username2 = [profileCopy username];
+      if (((*(v4 + 16))(v4, username2) & 1) == 0)
       {
-        v17 = [v3 service];
-        if ([v17 compare:*MEMORY[0x1E695CC78] options:1])
+        service2 = [profileCopy service];
+        if ([service2 compare:*MEMORY[0x1E695CC78] options:1])
         {
         }
 
@@ -262,9 +262,9 @@ LABEL_11:
           }
 
           v19 = MEMORY[0x1E696AEC0];
-          v15 = [v3 username];
-          [v19 stringWithFormat:@"@%@", v15];
-          v13 = v16 = v13;
+          service = [profileCopy username];
+          [v19 stringWithFormat:@"@%@", service];
+          v13 = username2 = v13;
         }
       }
     }
@@ -275,46 +275,46 @@ LABEL_21:
   return v13;
 }
 
-+ (id)displayLabelForSocialProfile:(id)a3 forPropertyKey:(id)a4
++ (id)displayLabelForSocialProfile:(id)profile forPropertyKey:(id)key
 {
-  v5 = a3;
-  v6 = a4;
+  profileCopy = profile;
+  keyCopy = key;
   v7 = *MEMORY[0x1E6996568];
-  v8 = [v5 service];
-  LOBYTE(v7) = (*(v7 + 16))(v7, v8);
+  service = [profileCopy service];
+  LOBYTE(v7) = (*(v7 + 16))(v7, service);
 
   if (v7)
   {
-    v9 = [MEMORY[0x1E695CD58] localizedStringForKey:v6];
+    v9 = [MEMORY[0x1E695CD58] localizedStringForKey:keyCopy];
   }
 
   else
   {
     v10 = MEMORY[0x1E695CFA0];
-    v11 = [v5 service];
-    v12 = [v10 localizedStringForService:v11];
+    service2 = [profileCopy service];
+    v12 = [v10 localizedStringForService:service2];
     v13 = v12;
     if (v12)
     {
-      v14 = v12;
+      service3 = v12;
     }
 
     else
     {
-      v14 = [v5 service];
+      service3 = [profileCopy service];
     }
 
-    v9 = v14;
+    v9 = service3;
   }
 
   return v9;
 }
 
-+ (id)emptyValueForLabel:(id)a3
++ (id)emptyValueForLabel:(id)label
 {
   v3 = MEMORY[0x1E695CFA0];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithUrlString:&stru_1F0CE7398 username:&stru_1F0CE7398 userIdentifier:&stru_1F0CE7398 service:v4];
+  labelCopy = label;
+  v5 = [[v3 alloc] initWithUrlString:&stru_1F0CE7398 username:&stru_1F0CE7398 userIdentifier:&stru_1F0CE7398 service:labelCopy];
 
   return v5;
 }

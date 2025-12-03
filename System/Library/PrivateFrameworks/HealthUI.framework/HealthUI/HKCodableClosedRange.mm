@@ -1,10 +1,10 @@
 @interface HKCodableClosedRange
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HKCodableClosedRange
@@ -15,43 +15,43 @@
   v8.receiver = self;
   v8.super_class = HKCodableClosedRange;
   v4 = [(HKCodableClosedRange *)&v8 description];
-  v5 = [(HKCodableClosedRange *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HKCodableClosedRange *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = [MEMORY[0x1E696AD98] numberWithDouble:self->_lowerBound];
-  [v3 setObject:v4 forKey:@"lowerBound"];
+  [dictionary setObject:v4 forKey:@"lowerBound"];
 
   v5 = [MEMORY[0x1E696AD98] numberWithDouble:self->_upperBound];
-  [v3 setObject:v5 forKey:@"upperBound"];
+  [dictionary setObject:v5 forKey:@"upperBound"];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v3 = a3;
+  toCopy = to;
   PBDataWriterWriteDoubleField();
   PBDataWriterWriteDoubleField();
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(result + 1) = *&self->_lowerBound;
   *(result + 2) = *&self->_upperBound;
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [v4 isMemberOfClass:objc_opt_class()] && self->_lowerBound == v4[1] && self->_upperBound == v4[2];
+  equalCopy = equal;
+  v5 = [equalCopy isMemberOfClass:objc_opt_class()] && self->_lowerBound == equalCopy[1] && self->_upperBound == equalCopy[2];
 
   return v5;
 }

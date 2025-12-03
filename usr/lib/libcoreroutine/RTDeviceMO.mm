@@ -1,40 +1,40 @@
 @interface RTDeviceMO
 + (id)fetchRequest;
-+ (id)managedObjectWithIdentifier:(id)a3 deviceName:(id)a4 deviceClass:(id)a5 deviceModel:(id)a6 creationDate:(id)a7 inManagedObjectContext:(id)a8;
++ (id)managedObjectWithIdentifier:(id)identifier deviceName:(id)name deviceClass:(id)class deviceModel:(id)model creationDate:(id)date inManagedObjectContext:(id)context;
 - (RTDeviceMO)device;
-- (void)setDevice:(id)a3;
+- (void)setDevice:(id)device;
 @end
 
 @implementation RTDeviceMO
 
-+ (id)managedObjectWithIdentifier:(id)a3 deviceName:(id)a4 deviceClass:(id)a5 deviceModel:(id)a6 creationDate:(id)a7 inManagedObjectContext:(id)a8
++ (id)managedObjectWithIdentifier:(id)identifier deviceName:(id)name deviceClass:(id)class deviceModel:(id)model creationDate:(id)date inManagedObjectContext:(id)context
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  if (v18)
+  identifierCopy = identifier;
+  nameCopy = name;
+  classCopy = class;
+  modelCopy = model;
+  dateCopy = date;
+  contextCopy = context;
+  if (contextCopy)
   {
-    v19 = [[RTDeviceMO alloc] initWithContext:v18];
-    [(RTCloudManagedObject *)v19 setIdentifier:v13];
-    [(RTDeviceMO *)v19 setDeviceName:v14];
-    [(RTDeviceMO *)v19 setDeviceClass:v15];
-    [(RTDeviceMO *)v19 setDeviceModel:v16];
-    if (v17)
+    v19 = [[RTDeviceMO alloc] initWithContext:contextCopy];
+    [(RTCloudManagedObject *)v19 setIdentifier:identifierCopy];
+    [(RTDeviceMO *)v19 setDeviceName:nameCopy];
+    [(RTDeviceMO *)v19 setDeviceClass:classCopy];
+    [(RTDeviceMO *)v19 setDeviceModel:modelCopy];
+    if (dateCopy)
     {
-      [(RTDeviceMO *)v19 setCreationDate:v17];
+      [(RTDeviceMO *)v19 setCreationDate:dateCopy];
     }
 
     else
     {
-      v21 = [MEMORY[0x277CBEAA8] date];
-      [(RTDeviceMO *)v19 setCreationDate:v21];
+      date = [MEMORY[0x277CBEAA8] date];
+      [(RTDeviceMO *)v19 setCreationDate:date];
     }
 
-    v22 = [MEMORY[0x277CBEAA8] distantFuture];
-    [(RTDeviceMO *)v19 setExpirationDate:v22];
+    distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+    [(RTDeviceMO *)v19 setExpirationDate:distantFuture];
   }
 
   else
@@ -75,7 +75,7 @@
   return 0;
 }
 
-- (void)setDevice:(id)a3
+- (void)setDevice:(id)device
 {
   v8 = *MEMORY[0x277D85DE8];
   v3 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);

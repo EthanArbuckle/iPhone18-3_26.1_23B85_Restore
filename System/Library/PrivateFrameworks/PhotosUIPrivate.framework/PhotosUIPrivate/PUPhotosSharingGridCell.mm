@@ -1,21 +1,21 @@
 @interface PUPhotosSharingGridCell
-- (PUPhotosSharingGridCell)initWithFrame:(CGRect)a3;
+- (PUPhotosSharingGridCell)initWithFrame:(CGRect)frame;
 - (void)_updateHighlight;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setHighlighted:(BOOL)a3;
+- (void)setHighlighted:(BOOL)highlighted;
 @end
 
 @implementation PUPhotosSharingGridCell
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
-  v5 = [(PUPhotosSharingGridCell *)self isHighlighted];
+  highlightedCopy = highlighted;
+  isHighlighted = [(PUPhotosSharingGridCell *)self isHighlighted];
   v6.receiver = self;
   v6.super_class = PUPhotosSharingGridCell;
-  [(PUPhotosSharingGridCell *)&v6 setHighlighted:v3];
-  if (v5 != [(PUPhotosSharingGridCell *)self isHighlighted])
+  [(PUPhotosSharingGridCell *)&v6 setHighlighted:highlightedCopy];
+  if (isHighlighted != [(PUPhotosSharingGridCell *)self isHighlighted])
   {
     [(PUPhotosSharingGridCell *)self _updateHighlight];
   }
@@ -26,8 +26,8 @@
   [(PUPhotosSharingGridCell *)self bounds];
   v4 = v3;
   v6 = v5;
-  v7 = [(PUPhotosSharingGridCell *)self photoView];
-  [v7 sizeThatFits:{v4, v6}];
+  photoView = [(PUPhotosSharingGridCell *)self photoView];
+  [photoView sizeThatFits:{v4, v6}];
   v9 = v8;
   v11 = v10;
 
@@ -44,13 +44,13 @@
   v5.receiver = self;
   v5.super_class = PUPhotosSharingGridCell;
   [(PUPhotosSharingGridCell *)&v5 prepareForReuse];
-  v3 = [(PUPhotosSharingGridCell *)self photoView];
-  v4 = [v3 contentHelper];
+  photoView = [(PUPhotosSharingGridCell *)self photoView];
+  contentHelper = [photoView contentHelper];
 
-  [v4 setPhotoImage:0];
-  [v4 setPlaceHolderImage:0];
-  [v4 setLivePhoto:0];
-  [v4 setLoopingVideoAsset:0];
+  [contentHelper setPhotoImage:0];
+  [contentHelper setPlaceHolderImage:0];
+  [contentHelper setLivePhoto:0];
+  [contentHelper setLoopingVideoAsset:0];
   [(PUPhotosSharingGridCell *)self setCurrentImageRequestID:0];
 }
 
@@ -73,8 +73,8 @@
 
       [(UIView *)self->_highlightOverlayView setUserInteractionEnabled:0];
       v8 = self->_highlightOverlayView;
-      v9 = [MEMORY[0x1E69DC888] labelColor];
-      [(UIView *)v8 setBackgroundColor:v9];
+      labelColor = [MEMORY[0x1E69DC888] labelColor];
+      [(UIView *)v8 setBackgroundColor:labelColor];
 
       [(UIView *)self->_highlightOverlayView setAlpha:0.5];
       [(PUPhotosSharingGridCell *)self addSubview:self->_highlightOverlayView];
@@ -89,24 +89,24 @@
   [(PUPhotosSharingGridCell *)self setNeedsLayout];
 }
 
-- (PUPhotosSharingGridCell)initWithFrame:(CGRect)a3
+- (PUPhotosSharingGridCell)initWithFrame:(CGRect)frame
 {
   v14.receiver = self;
   v14.super_class = PUPhotosSharingGridCell;
-  v3 = [(PUPhotosSharingGridCell *)&v14 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PUPhotosSharingGridCell *)&v14 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(PUPhotosSharingGridCell *)v3 contentView];
-    [v5 bounds];
+    contentView = [(PUPhotosSharingGridCell *)v3 contentView];
+    [contentView bounds];
     v10 = [[PUPhotoView alloc] initWithFrame:v6, v7, v8, v9];
     photoView = v4->_photoView;
     v4->_photoView = v10;
 
-    v12 = [(PUPhotoView *)v4->_photoView contentHelper];
-    [v12 setFillMode:1];
+    contentHelper = [(PUPhotoView *)v4->_photoView contentHelper];
+    [contentHelper setFillMode:1];
 
-    [v5 addSubview:v4->_photoView];
+    [contentView addSubview:v4->_photoView];
   }
 
   return v4;

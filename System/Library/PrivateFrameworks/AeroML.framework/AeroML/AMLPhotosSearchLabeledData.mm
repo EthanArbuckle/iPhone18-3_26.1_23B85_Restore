@@ -1,64 +1,64 @@
 @interface AMLPhotosSearchLabeledData
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsUiSurface:(id)a3;
+- (int)StringAsUiSurface:(id)surface;
 - (int)uiSurface;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasClickCountGivenDayCategoryInLastMonthNormalizedAcrossItems:(BOOL)a3;
-- (void)setHasClickCountGivenDayCategoryInLastWeekNormalizedAcrossItems:(BOOL)a3;
-- (void)setHasClickCountGivenFaceCountCategoryInLastMonthNormalizedAcrossItems:(BOOL)a3;
-- (void)setHasClickCountGivenFaceCountCategoryInLastWeekNormalizedAcrossItems:(BOOL)a3;
-- (void)setHasClickCountGivenLocationInLastMonthNormalizedAcrossItems:(BOOL)a3;
-- (void)setHasClickCountGivenLocationInLastWeekNormalizedAcrossItems:(BOOL)a3;
-- (void)setHasClickCountGivenRecencyCategoryInLastMonthNormalizedAcrossItems:(BOOL)a3;
-- (void)setHasClickCountGivenRecencyCategoryInLastWeekNormalizedAcrossItems:(BOOL)a3;
-- (void)setHasClickCountGivenSceneCategoryInLastMonthNormalizedAcrossItems:(BOOL)a3;
-- (void)setHasClickCountGivenSceneCategoryInLastWeekNormalizedAcrossItems:(BOOL)a3;
-- (void)setHasClickCountGivenTimeOfDayInLastMonthNormalizedAcrossItems:(BOOL)a3;
-- (void)setHasClickCountGivenTimeOfDayInLastWeekNormalizedAcrossItems:(BOOL)a3;
-- (void)setHasClickCountInLastMonthNormalizedAcrossItems:(BOOL)a3;
-- (void)setHasClickCountInLastWeekNormalizedAcrossItems:(BOOL)a3;
-- (void)setHasClickOrder:(BOOL)a3;
-- (void)setHasClicked:(BOOL)a3;
-- (void)setHasClipScore:(BOOL)a3;
-- (void)setHasCurationScore:(BOOL)a3;
-- (void)setHasFavorited:(BOOL)a3;
-- (void)setHasFreshness:(BOOL)a3;
-- (void)setHasHasEverClickInLastMonth:(BOOL)a3;
-- (void)setHasHasEverClickInLastWeek:(BOOL)a3;
-- (void)setHasHasEverShareInLastMonth:(BOOL)a3;
-- (void)setHasHasEverShareInLastWeek:(BOOL)a3;
-- (void)setHasIsCompleteMatch:(BOOL)a3;
-- (void)setHasIsDuplicate:(BOOL)a3;
-- (void)setHasItemPosition:(BOOL)a3;
-- (void)setHasL1Score:(BOOL)a3;
-- (void)setHasL2ModelScore:(BOOL)a3;
-- (void)setHasMatchedFieldsCount:(BOOL)a3;
-- (void)setHasMatchedLocationRatio:(BOOL)a3;
-- (void)setHasMatchedOCRCharacterRatio:(BOOL)a3;
-- (void)setHasMatchedOCRImportance:(BOOL)a3;
-- (void)setHasMatchedPeopleRatio:(BOOL)a3;
-- (void)setHasMatchedSceneBoundingBox:(BOOL)a3;
-- (void)setHasMatchedSceneConfidence:(BOOL)a3;
-- (void)setHasMatchedSceneRatio:(BOOL)a3;
-- (void)setHasShareCountGivenDayCategoryInLastMonthNormalizedAcrossItems:(BOOL)a3;
-- (void)setHasShareCountGivenDayCategoryInLastWeekNormalizedAcrossItems:(BOOL)a3;
-- (void)setHasShareCountGivenFaceCountCategoryInLastMonthNormalizedAcrossItems:(BOOL)a3;
-- (void)setHasShareCountGivenFaceCountCategoryInLastWeekNormalizedAcrossItems:(BOOL)a3;
-- (void)setHasShareCountGivenLocationInLastMonthNormalizedAcrossItems:(BOOL)a3;
-- (void)setHasShareCountGivenLocationInLastWeekNormalizedAcrossItems:(BOOL)a3;
-- (void)setHasShareCountGivenSceneCategoryInLastMonthNormalizedAcrossItems:(BOOL)a3;
-- (void)setHasShareCountGivenSceneCategoryInLastWeekNormalizedAcrossItems:(BOOL)a3;
-- (void)setHasShareCountGivenTimeOfDayInLastMonthNormalizedAcrossItems:(BOOL)a3;
-- (void)setHasShareCountGivenTimeOfDayInLastWeekNormalizedAcrossItems:(BOOL)a3;
-- (void)setHasShareCountInLastMonthNormalizedAcrossItems:(BOOL)a3;
-- (void)setHasShareCountInLastWeekNormalizedAcrossItems:(BOOL)a3;
-- (void)setHasUiSurface:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasClickCountGivenDayCategoryInLastMonthNormalizedAcrossItems:(BOOL)items;
+- (void)setHasClickCountGivenDayCategoryInLastWeekNormalizedAcrossItems:(BOOL)items;
+- (void)setHasClickCountGivenFaceCountCategoryInLastMonthNormalizedAcrossItems:(BOOL)items;
+- (void)setHasClickCountGivenFaceCountCategoryInLastWeekNormalizedAcrossItems:(BOOL)items;
+- (void)setHasClickCountGivenLocationInLastMonthNormalizedAcrossItems:(BOOL)items;
+- (void)setHasClickCountGivenLocationInLastWeekNormalizedAcrossItems:(BOOL)items;
+- (void)setHasClickCountGivenRecencyCategoryInLastMonthNormalizedAcrossItems:(BOOL)items;
+- (void)setHasClickCountGivenRecencyCategoryInLastWeekNormalizedAcrossItems:(BOOL)items;
+- (void)setHasClickCountGivenSceneCategoryInLastMonthNormalizedAcrossItems:(BOOL)items;
+- (void)setHasClickCountGivenSceneCategoryInLastWeekNormalizedAcrossItems:(BOOL)items;
+- (void)setHasClickCountGivenTimeOfDayInLastMonthNormalizedAcrossItems:(BOOL)items;
+- (void)setHasClickCountGivenTimeOfDayInLastWeekNormalizedAcrossItems:(BOOL)items;
+- (void)setHasClickCountInLastMonthNormalizedAcrossItems:(BOOL)items;
+- (void)setHasClickCountInLastWeekNormalizedAcrossItems:(BOOL)items;
+- (void)setHasClickOrder:(BOOL)order;
+- (void)setHasClicked:(BOOL)clicked;
+- (void)setHasClipScore:(BOOL)score;
+- (void)setHasCurationScore:(BOOL)score;
+- (void)setHasFavorited:(BOOL)favorited;
+- (void)setHasFreshness:(BOOL)freshness;
+- (void)setHasHasEverClickInLastMonth:(BOOL)month;
+- (void)setHasHasEverClickInLastWeek:(BOOL)week;
+- (void)setHasHasEverShareInLastMonth:(BOOL)month;
+- (void)setHasHasEverShareInLastWeek:(BOOL)week;
+- (void)setHasIsCompleteMatch:(BOOL)match;
+- (void)setHasIsDuplicate:(BOOL)duplicate;
+- (void)setHasItemPosition:(BOOL)position;
+- (void)setHasL1Score:(BOOL)score;
+- (void)setHasL2ModelScore:(BOOL)score;
+- (void)setHasMatchedFieldsCount:(BOOL)count;
+- (void)setHasMatchedLocationRatio:(BOOL)ratio;
+- (void)setHasMatchedOCRCharacterRatio:(BOOL)ratio;
+- (void)setHasMatchedOCRImportance:(BOOL)importance;
+- (void)setHasMatchedPeopleRatio:(BOOL)ratio;
+- (void)setHasMatchedSceneBoundingBox:(BOOL)box;
+- (void)setHasMatchedSceneConfidence:(BOOL)confidence;
+- (void)setHasMatchedSceneRatio:(BOOL)ratio;
+- (void)setHasShareCountGivenDayCategoryInLastMonthNormalizedAcrossItems:(BOOL)items;
+- (void)setHasShareCountGivenDayCategoryInLastWeekNormalizedAcrossItems:(BOOL)items;
+- (void)setHasShareCountGivenFaceCountCategoryInLastMonthNormalizedAcrossItems:(BOOL)items;
+- (void)setHasShareCountGivenFaceCountCategoryInLastWeekNormalizedAcrossItems:(BOOL)items;
+- (void)setHasShareCountGivenLocationInLastMonthNormalizedAcrossItems:(BOOL)items;
+- (void)setHasShareCountGivenLocationInLastWeekNormalizedAcrossItems:(BOOL)items;
+- (void)setHasShareCountGivenSceneCategoryInLastMonthNormalizedAcrossItems:(BOOL)items;
+- (void)setHasShareCountGivenSceneCategoryInLastWeekNormalizedAcrossItems:(BOOL)items;
+- (void)setHasShareCountGivenTimeOfDayInLastMonthNormalizedAcrossItems:(BOOL)items;
+- (void)setHasShareCountGivenTimeOfDayInLastWeekNormalizedAcrossItems:(BOOL)items;
+- (void)setHasShareCountInLastMonthNormalizedAcrossItems:(BOOL)items;
+- (void)setHasShareCountInLastWeekNormalizedAcrossItems:(BOOL)items;
+- (void)setHasUiSurface:(BOOL)surface;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AMLPhotosSearchLabeledData
@@ -76,10 +76,10 @@
   }
 }
 
-- (void)setHasUiSurface:(BOOL)a3
+- (void)setHasUiSurface:(BOOL)surface
 {
   v3 = 0x1000000000000;
-  if (!a3)
+  if (!surface)
   {
     v3 = 0;
   }
@@ -87,25 +87,25 @@
   self->_has = (*&self->_has & 0xFFFEFFFFFFFFFFFFLL | v3);
 }
 
-- (int)StringAsUiSurface:(id)a3
+- (int)StringAsUiSurface:(id)surface
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"AMLUISurfaceTypeUnknown"])
+  surfaceCopy = surface;
+  if ([surfaceCopy isEqualToString:@"AMLUISurfaceTypeUnknown"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"AMLUISurfaceTypeSpotlight"])
+  else if ([surfaceCopy isEqualToString:@"AMLUISurfaceTypeSpotlight"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"AMLUISurfaceTypePhotosApp"])
+  else if ([surfaceCopy isEqualToString:@"AMLUISurfaceTypePhotosApp"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"AMLUISurfaceTypeStoryTellingBackground"])
+  else if ([surfaceCopy isEqualToString:@"AMLUISurfaceTypeStoryTellingBackground"])
   {
     v4 = 3;
   }
@@ -118,10 +118,10 @@
   return v4;
 }
 
-- (void)setHasMatchedPeopleRatio:(BOOL)a3
+- (void)setHasMatchedPeopleRatio:(BOOL)ratio
 {
   v3 = 0x20000000;
-  if (!a3)
+  if (!ratio)
   {
     v3 = 0;
   }
@@ -129,10 +129,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFDFFFFFFFLL | v3);
 }
 
-- (void)setHasMatchedLocationRatio:(BOOL)a3
+- (void)setHasMatchedLocationRatio:(BOOL)ratio
 {
   v3 = 0x4000000;
-  if (!a3)
+  if (!ratio)
   {
     v3 = 0;
   }
@@ -140,10 +140,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFBFFFFFFLL | v3);
 }
 
-- (void)setHasMatchedSceneRatio:(BOOL)a3
+- (void)setHasMatchedSceneRatio:(BOOL)ratio
 {
   v3 = 0x100000000;
-  if (!a3)
+  if (!ratio)
   {
     v3 = 0;
   }
@@ -151,10 +151,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFEFFFFFFFFLL | v3);
 }
 
-- (void)setHasMatchedSceneConfidence:(BOOL)a3
+- (void)setHasMatchedSceneConfidence:(BOOL)confidence
 {
   v3 = 0x80000000;
-  if (!a3)
+  if (!confidence)
   {
     v3 = 0;
   }
@@ -162,10 +162,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFF7FFFFFFFLL | v3);
 }
 
-- (void)setHasMatchedSceneBoundingBox:(BOOL)a3
+- (void)setHasMatchedSceneBoundingBox:(BOOL)box
 {
   v3 = 0x40000000;
-  if (!a3)
+  if (!box)
   {
     v3 = 0;
   }
@@ -173,10 +173,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFBFFFFFFFLL | v3);
 }
 
-- (void)setHasMatchedOCRCharacterRatio:(BOOL)a3
+- (void)setHasMatchedOCRCharacterRatio:(BOOL)ratio
 {
   v3 = 0x8000000;
-  if (!a3)
+  if (!ratio)
   {
     v3 = 0;
   }
@@ -184,10 +184,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFF7FFFFFFLL | v3);
 }
 
-- (void)setHasMatchedOCRImportance:(BOOL)a3
+- (void)setHasMatchedOCRImportance:(BOOL)importance
 {
   v3 = 0x10000000;
-  if (!a3)
+  if (!importance)
   {
     v3 = 0;
   }
@@ -195,10 +195,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFEFFFFFFFLL | v3);
 }
 
-- (void)setHasMatchedFieldsCount:(BOOL)a3
+- (void)setHasMatchedFieldsCount:(BOOL)count
 {
   v3 = 0x800000000000;
-  if (!a3)
+  if (!count)
   {
     v3 = 0;
   }
@@ -206,10 +206,10 @@
   self->_has = (*&self->_has & 0xFFFF7FFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasL1Score:(BOOL)a3
+- (void)setHasL1Score:(BOOL)score
 {
   v3 = 0x1000000;
-  if (!a3)
+  if (!score)
   {
     v3 = 0;
   }
@@ -217,10 +217,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFEFFFFFFLL | v3);
 }
 
-- (void)setHasFreshness:(BOOL)a3
+- (void)setHasFreshness:(BOOL)freshness
 {
   v3 = 0x20000;
-  if (!a3)
+  if (!freshness)
   {
     v3 = 0;
   }
@@ -228,10 +228,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFDFFFFLL | v3);
 }
 
-- (void)setHasFavorited:(BOOL)a3
+- (void)setHasFavorited:(BOOL)favorited
 {
   v3 = 0x4000000000000;
-  if (!a3)
+  if (!favorited)
   {
     v3 = 0;
   }
@@ -239,10 +239,10 @@
   self->_has = (*&self->_has & 0xFFFBFFFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasCurationScore:(BOOL)a3
+- (void)setHasCurationScore:(BOOL)score
 {
   v3 = 0x10000;
-  if (!a3)
+  if (!score)
   {
     v3 = 0;
   }
@@ -250,10 +250,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFEFFFFLL | v3);
 }
 
-- (void)setHasHasEverClickInLastWeek:(BOOL)a3
+- (void)setHasHasEverClickInLastWeek:(BOOL)week
 {
   v3 = 0x80000;
-  if (!a3)
+  if (!week)
   {
     v3 = 0;
   }
@@ -261,10 +261,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFF7FFFFLL | v3);
 }
 
-- (void)setHasHasEverClickInLastMonth:(BOOL)a3
+- (void)setHasHasEverClickInLastMonth:(BOOL)month
 {
   v3 = 0x40000;
-  if (!a3)
+  if (!month)
   {
     v3 = 0;
   }
@@ -272,10 +272,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFBFFFFLL | v3);
 }
 
-- (void)setHasHasEverShareInLastWeek:(BOOL)a3
+- (void)setHasHasEverShareInLastWeek:(BOOL)week
 {
   v3 = 0x200000;
-  if (!a3)
+  if (!week)
   {
     v3 = 0;
   }
@@ -283,10 +283,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFDFFFFFLL | v3);
 }
 
-- (void)setHasHasEverShareInLastMonth:(BOOL)a3
+- (void)setHasHasEverShareInLastMonth:(BOOL)month
 {
   v3 = 0x100000;
-  if (!a3)
+  if (!month)
   {
     v3 = 0;
   }
@@ -294,10 +294,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFEFFFFFLL | v3);
 }
 
-- (void)setHasClickCountInLastWeekNormalizedAcrossItems:(BOOL)a3
+- (void)setHasClickCountInLastWeekNormalizedAcrossItems:(BOOL)items
 {
   v3 = 0x4000;
-  if (!a3)
+  if (!items)
   {
     v3 = 0;
   }
@@ -305,10 +305,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFBFFFLL | v3);
 }
 
-- (void)setHasClickCountInLastMonthNormalizedAcrossItems:(BOOL)a3
+- (void)setHasClickCountInLastMonthNormalizedAcrossItems:(BOOL)items
 {
   v3 = 0x2000;
-  if (!a3)
+  if (!items)
   {
     v3 = 0;
   }
@@ -316,10 +316,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFDFFFLL | v3);
 }
 
-- (void)setHasShareCountInLastWeekNormalizedAcrossItems:(BOOL)a3
+- (void)setHasShareCountInLastWeekNormalizedAcrossItems:(BOOL)items
 {
   v3 = 0x100000000000;
-  if (!a3)
+  if (!items)
   {
     v3 = 0;
   }
@@ -327,10 +327,10 @@
   self->_has = (*&self->_has & 0xFFFFEFFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasShareCountInLastMonthNormalizedAcrossItems:(BOOL)a3
+- (void)setHasShareCountInLastMonthNormalizedAcrossItems:(BOOL)items
 {
   v3 = 0x80000000000;
-  if (!a3)
+  if (!items)
   {
     v3 = 0;
   }
@@ -338,10 +338,10 @@
   self->_has = (*&self->_has & 0xFFFFF7FFFFFFFFFFLL | v3);
 }
 
-- (void)setHasClickCountGivenTimeOfDayInLastWeekNormalizedAcrossItems:(BOOL)a3
+- (void)setHasClickCountGivenTimeOfDayInLastWeekNormalizedAcrossItems:(BOOL)items
 {
   v3 = 4096;
-  if (!a3)
+  if (!items)
   {
     v3 = 0;
   }
@@ -349,10 +349,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFEFFFLL | v3);
 }
 
-- (void)setHasClickCountGivenTimeOfDayInLastMonthNormalizedAcrossItems:(BOOL)a3
+- (void)setHasClickCountGivenTimeOfDayInLastMonthNormalizedAcrossItems:(BOOL)items
 {
   v3 = 2048;
-  if (!a3)
+  if (!items)
   {
     v3 = 0;
   }
@@ -360,10 +360,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFF7FFLL | v3);
 }
 
-- (void)setHasClickCountGivenLocationInLastWeekNormalizedAcrossItems:(BOOL)a3
+- (void)setHasClickCountGivenLocationInLastWeekNormalizedAcrossItems:(BOOL)items
 {
   v3 = 64;
-  if (!a3)
+  if (!items)
   {
     v3 = 0;
   }
@@ -371,10 +371,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFFBFLL | v3);
 }
 
-- (void)setHasClickCountGivenLocationInLastMonthNormalizedAcrossItems:(BOOL)a3
+- (void)setHasClickCountGivenLocationInLastMonthNormalizedAcrossItems:(BOOL)items
 {
   v3 = 32;
-  if (!a3)
+  if (!items)
   {
     v3 = 0;
   }
@@ -382,10 +382,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFFDFLL | v3);
 }
 
-- (void)setHasClickCountGivenDayCategoryInLastWeekNormalizedAcrossItems:(BOOL)a3
+- (void)setHasClickCountGivenDayCategoryInLastWeekNormalizedAcrossItems:(BOOL)items
 {
   v3 = 4;
-  if (!a3)
+  if (!items)
   {
     v3 = 0;
   }
@@ -393,10 +393,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFFFBLL | v3);
 }
 
-- (void)setHasClickCountGivenDayCategoryInLastMonthNormalizedAcrossItems:(BOOL)a3
+- (void)setHasClickCountGivenDayCategoryInLastMonthNormalizedAcrossItems:(BOOL)items
 {
   v3 = 2;
-  if (!a3)
+  if (!items)
   {
     v3 = 0;
   }
@@ -404,10 +404,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFFFDLL | v3);
 }
 
-- (void)setHasClickCountGivenRecencyCategoryInLastWeekNormalizedAcrossItems:(BOOL)a3
+- (void)setHasClickCountGivenRecencyCategoryInLastWeekNormalizedAcrossItems:(BOOL)items
 {
   v3 = 256;
-  if (!a3)
+  if (!items)
   {
     v3 = 0;
   }
@@ -415,10 +415,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFEFFLL | v3);
 }
 
-- (void)setHasClickCountGivenRecencyCategoryInLastMonthNormalizedAcrossItems:(BOOL)a3
+- (void)setHasClickCountGivenRecencyCategoryInLastMonthNormalizedAcrossItems:(BOOL)items
 {
   v3 = 128;
-  if (!a3)
+  if (!items)
   {
     v3 = 0;
   }
@@ -426,10 +426,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFF7FLL | v3);
 }
 
-- (void)setHasClickCountGivenSceneCategoryInLastWeekNormalizedAcrossItems:(BOOL)a3
+- (void)setHasClickCountGivenSceneCategoryInLastWeekNormalizedAcrossItems:(BOOL)items
 {
   v3 = 1024;
-  if (!a3)
+  if (!items)
   {
     v3 = 0;
   }
@@ -437,10 +437,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFBFFLL | v3);
 }
 
-- (void)setHasClickCountGivenSceneCategoryInLastMonthNormalizedAcrossItems:(BOOL)a3
+- (void)setHasClickCountGivenSceneCategoryInLastMonthNormalizedAcrossItems:(BOOL)items
 {
   v3 = 512;
-  if (!a3)
+  if (!items)
   {
     v3 = 0;
   }
@@ -448,10 +448,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFDFFLL | v3);
 }
 
-- (void)setHasClickCountGivenFaceCountCategoryInLastWeekNormalizedAcrossItems:(BOOL)a3
+- (void)setHasClickCountGivenFaceCountCategoryInLastWeekNormalizedAcrossItems:(BOOL)items
 {
   v3 = 16;
-  if (!a3)
+  if (!items)
   {
     v3 = 0;
   }
@@ -459,10 +459,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFFEFLL | v3);
 }
 
-- (void)setHasClickCountGivenFaceCountCategoryInLastMonthNormalizedAcrossItems:(BOOL)a3
+- (void)setHasClickCountGivenFaceCountCategoryInLastMonthNormalizedAcrossItems:(BOOL)items
 {
   v3 = 8;
-  if (!a3)
+  if (!items)
   {
     v3 = 0;
   }
@@ -470,10 +470,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFFF7 | v3);
 }
 
-- (void)setHasShareCountGivenTimeOfDayInLastWeekNormalizedAcrossItems:(BOOL)a3
+- (void)setHasShareCountGivenTimeOfDayInLastWeekNormalizedAcrossItems:(BOOL)items
 {
   v3 = 0x40000000000;
-  if (!a3)
+  if (!items)
   {
     v3 = 0;
   }
@@ -481,10 +481,10 @@
   self->_has = (*&self->_has & 0xFFFFFBFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasShareCountGivenTimeOfDayInLastMonthNormalizedAcrossItems:(BOOL)a3
+- (void)setHasShareCountGivenTimeOfDayInLastMonthNormalizedAcrossItems:(BOOL)items
 {
   v3 = 0x20000000000;
-  if (!a3)
+  if (!items)
   {
     v3 = 0;
   }
@@ -492,10 +492,10 @@
   self->_has = (*&self->_has & 0xFFFFFDFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasShareCountGivenLocationInLastWeekNormalizedAcrossItems:(BOOL)a3
+- (void)setHasShareCountGivenLocationInLastWeekNormalizedAcrossItems:(BOOL)items
 {
   v3 = 0x4000000000;
-  if (!a3)
+  if (!items)
   {
     v3 = 0;
   }
@@ -503,10 +503,10 @@
   self->_has = (*&self->_has & 0xFFFFFFBFFFFFFFFFLL | v3);
 }
 
-- (void)setHasShareCountGivenLocationInLastMonthNormalizedAcrossItems:(BOOL)a3
+- (void)setHasShareCountGivenLocationInLastMonthNormalizedAcrossItems:(BOOL)items
 {
   v3 = 0x2000000000;
-  if (!a3)
+  if (!items)
   {
     v3 = 0;
   }
@@ -514,10 +514,10 @@
   self->_has = (*&self->_has & 0xFFFFFFDFFFFFFFFFLL | v3);
 }
 
-- (void)setHasShareCountGivenDayCategoryInLastWeekNormalizedAcrossItems:(BOOL)a3
+- (void)setHasShareCountGivenDayCategoryInLastWeekNormalizedAcrossItems:(BOOL)items
 {
   v3 = 0x400000000;
-  if (!a3)
+  if (!items)
   {
     v3 = 0;
   }
@@ -525,10 +525,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFBFFFFFFFFLL | v3);
 }
 
-- (void)setHasShareCountGivenDayCategoryInLastMonthNormalizedAcrossItems:(BOOL)a3
+- (void)setHasShareCountGivenDayCategoryInLastMonthNormalizedAcrossItems:(BOOL)items
 {
   v3 = 0x200000000;
-  if (!a3)
+  if (!items)
   {
     v3 = 0;
   }
@@ -536,10 +536,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFDFFFFFFFFLL | v3);
 }
 
-- (void)setHasShareCountGivenSceneCategoryInLastWeekNormalizedAcrossItems:(BOOL)a3
+- (void)setHasShareCountGivenSceneCategoryInLastWeekNormalizedAcrossItems:(BOOL)items
 {
   v3 = 0x10000000000;
-  if (!a3)
+  if (!items)
   {
     v3 = 0;
   }
@@ -547,10 +547,10 @@
   self->_has = (*&self->_has & 0xFFFFFEFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasShareCountGivenSceneCategoryInLastMonthNormalizedAcrossItems:(BOOL)a3
+- (void)setHasShareCountGivenSceneCategoryInLastMonthNormalizedAcrossItems:(BOOL)items
 {
   v3 = 0x8000000000;
-  if (!a3)
+  if (!items)
   {
     v3 = 0;
   }
@@ -558,10 +558,10 @@
   self->_has = (*&self->_has & 0xFFFFFF7FFFFFFFFFLL | v3);
 }
 
-- (void)setHasShareCountGivenFaceCountCategoryInLastWeekNormalizedAcrossItems:(BOOL)a3
+- (void)setHasShareCountGivenFaceCountCategoryInLastWeekNormalizedAcrossItems:(BOOL)items
 {
   v3 = 0x1000000000;
-  if (!a3)
+  if (!items)
   {
     v3 = 0;
   }
@@ -569,10 +569,10 @@
   self->_has = (*&self->_has & 0xFFFFFFEFFFFFFFFFLL | v3);
 }
 
-- (void)setHasShareCountGivenFaceCountCategoryInLastMonthNormalizedAcrossItems:(BOOL)a3
+- (void)setHasShareCountGivenFaceCountCategoryInLastMonthNormalizedAcrossItems:(BOOL)items
 {
   v3 = 0x800000000;
-  if (!a3)
+  if (!items)
   {
     v3 = 0;
   }
@@ -580,10 +580,10 @@
   self->_has = (*&self->_has & 0xFFFFFFF7FFFFFFFFLL | v3);
 }
 
-- (void)setHasClipScore:(BOOL)a3
+- (void)setHasClipScore:(BOOL)score
 {
   v3 = 0x8000;
-  if (!a3)
+  if (!score)
   {
     v3 = 0;
   }
@@ -591,10 +591,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFF7FFFLL | v3);
 }
 
-- (void)setHasClicked:(BOOL)a3
+- (void)setHasClicked:(BOOL)clicked
 {
   v3 = 0x2000000000000;
-  if (!a3)
+  if (!clicked)
   {
     v3 = 0;
   }
@@ -602,10 +602,10 @@
   self->_has = (*&self->_has & 0xFFFDFFFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasClickOrder:(BOOL)a3
+- (void)setHasClickOrder:(BOOL)order
 {
   v3 = 0x200000000000;
-  if (!a3)
+  if (!order)
   {
     v3 = 0;
   }
@@ -613,10 +613,10 @@
   self->_has = (*&self->_has & 0xFFFFDFFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasItemPosition:(BOOL)a3
+- (void)setHasItemPosition:(BOOL)position
 {
   v3 = 0x400000000000;
-  if (!a3)
+  if (!position)
   {
     v3 = 0;
   }
@@ -624,10 +624,10 @@
   self->_has = (*&self->_has & 0xFFFFBFFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasL2ModelScore:(BOOL)a3
+- (void)setHasL2ModelScore:(BOOL)score
 {
   v3 = 0x2000000;
-  if (!a3)
+  if (!score)
   {
     v3 = 0;
   }
@@ -635,10 +635,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFDFFFFFFLL | v3);
 }
 
-- (void)setHasIsDuplicate:(BOOL)a3
+- (void)setHasIsDuplicate:(BOOL)duplicate
 {
   v3 = 0x800000;
-  if (!a3)
+  if (!duplicate)
   {
     v3 = 0;
   }
@@ -646,10 +646,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFF7FFFFFLL | v3);
 }
 
-- (void)setHasIsCompleteMatch:(BOOL)a3
+- (void)setHasIsCompleteMatch:(BOOL)match
 {
   v3 = 0x400000;
-  if (!a3)
+  if (!match)
   {
     v3 = 0;
   }
@@ -663,20 +663,20 @@
   v8.receiver = self;
   v8.super_class = AMLPhotosSearchLabeledData;
   v4 = [(AMLPhotosSearchLabeledData *)&v8 description];
-  v5 = [(AMLPhotosSearchLabeledData *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(AMLPhotosSearchLabeledData *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   searchSessionUUID = self->_searchSessionUUID;
   if (searchSessionUUID)
   {
-    [v3 setObject:searchSessionUUID forKey:@"searchSessionUUID"];
+    [dictionary setObject:searchSessionUUID forKey:@"searchSessionUUID"];
   }
 
   has = self->_has;
@@ -1489,14 +1489,14 @@ LABEL_59:
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v57 = v4;
+  toCopy = to;
+  v57 = toCopy;
   if (self->_searchSessionUUID)
   {
     PBDataWriterWriteStringField();
-    v4 = v57;
+    toCopy = v57;
   }
 
   has = self->_has;
@@ -1504,7 +1504,7 @@ LABEL_59:
   {
     uiSurface = self->_uiSurface;
     PBDataWriterWriteInt32Field();
-    v4 = v57;
+    toCopy = v57;
     has = self->_has;
     if ((*&has & 0x20000000) == 0)
     {
@@ -1525,7 +1525,7 @@ LABEL_5:
 
   matchedPeopleRatio = self->_matchedPeopleRatio;
   PBDataWriterWriteDoubleField();
-  v4 = v57;
+  toCopy = v57;
   has = self->_has;
   if ((*&has & 0x4000000) == 0)
   {
@@ -1541,7 +1541,7 @@ LABEL_6:
 LABEL_60:
   matchedLocationRatio = self->_matchedLocationRatio;
   PBDataWriterWriteDoubleField();
-  v4 = v57;
+  toCopy = v57;
   has = self->_has;
   if ((*&has & 0x100000000) == 0)
   {
@@ -1557,7 +1557,7 @@ LABEL_7:
 LABEL_61:
   matchedSceneRatio = self->_matchedSceneRatio;
   PBDataWriterWriteDoubleField();
-  v4 = v57;
+  toCopy = v57;
   has = self->_has;
   if ((*&has & 0x80000000) == 0)
   {
@@ -1573,7 +1573,7 @@ LABEL_8:
 LABEL_62:
   matchedSceneConfidence = self->_matchedSceneConfidence;
   PBDataWriterWriteDoubleField();
-  v4 = v57;
+  toCopy = v57;
   has = self->_has;
   if ((*&has & 0x40000000) == 0)
   {
@@ -1589,7 +1589,7 @@ LABEL_9:
 LABEL_63:
   matchedSceneBoundingBox = self->_matchedSceneBoundingBox;
   PBDataWriterWriteDoubleField();
-  v4 = v57;
+  toCopy = v57;
   has = self->_has;
   if ((*&has & 0x8000000) == 0)
   {
@@ -1605,7 +1605,7 @@ LABEL_10:
 LABEL_64:
   matchedOCRCharacterRatio = self->_matchedOCRCharacterRatio;
   PBDataWriterWriteDoubleField();
-  v4 = v57;
+  toCopy = v57;
   has = self->_has;
   if ((*&has & 0x10000000) == 0)
   {
@@ -1621,7 +1621,7 @@ LABEL_11:
 LABEL_65:
   matchedOCRImportance = self->_matchedOCRImportance;
   PBDataWriterWriteDoubleField();
-  v4 = v57;
+  toCopy = v57;
   has = self->_has;
   if ((*&has & 0x800000000000) == 0)
   {
@@ -1637,7 +1637,7 @@ LABEL_12:
 LABEL_66:
   matchedFieldsCount = self->_matchedFieldsCount;
   PBDataWriterWriteUint32Field();
-  v4 = v57;
+  toCopy = v57;
   has = self->_has;
   if ((*&has & 0x1000000) == 0)
   {
@@ -1653,7 +1653,7 @@ LABEL_13:
 LABEL_67:
   l1Score = self->_l1Score;
   PBDataWriterWriteDoubleField();
-  v4 = v57;
+  toCopy = v57;
   has = self->_has;
   if ((*&has & 0x20000) == 0)
   {
@@ -1669,7 +1669,7 @@ LABEL_14:
 LABEL_68:
   freshness = self->_freshness;
   PBDataWriterWriteDoubleField();
-  v4 = v57;
+  toCopy = v57;
   has = self->_has;
   if ((*&has & 0x4000000000000) == 0)
   {
@@ -1685,7 +1685,7 @@ LABEL_15:
 LABEL_69:
   favorited = self->_favorited;
   PBDataWriterWriteBOOLField();
-  v4 = v57;
+  toCopy = v57;
   has = self->_has;
   if ((*&has & 1) == 0)
   {
@@ -1701,7 +1701,7 @@ LABEL_16:
 LABEL_70:
   aestheticScore = self->_aestheticScore;
   PBDataWriterWriteDoubleField();
-  v4 = v57;
+  toCopy = v57;
   has = self->_has;
   if ((*&has & 0x10000) == 0)
   {
@@ -1717,7 +1717,7 @@ LABEL_17:
 LABEL_71:
   curationScore = self->_curationScore;
   PBDataWriterWriteDoubleField();
-  v4 = v57;
+  toCopy = v57;
   has = self->_has;
   if ((*&has & 0x80000) == 0)
   {
@@ -1733,7 +1733,7 @@ LABEL_18:
 LABEL_72:
   hasEverClickInLastWeek = self->_hasEverClickInLastWeek;
   PBDataWriterWriteDoubleField();
-  v4 = v57;
+  toCopy = v57;
   has = self->_has;
   if ((*&has & 0x40000) == 0)
   {
@@ -1749,7 +1749,7 @@ LABEL_19:
 LABEL_73:
   hasEverClickInLastMonth = self->_hasEverClickInLastMonth;
   PBDataWriterWriteDoubleField();
-  v4 = v57;
+  toCopy = v57;
   has = self->_has;
   if ((*&has & 0x200000) == 0)
   {
@@ -1765,7 +1765,7 @@ LABEL_20:
 LABEL_74:
   hasEverShareInLastWeek = self->_hasEverShareInLastWeek;
   PBDataWriterWriteDoubleField();
-  v4 = v57;
+  toCopy = v57;
   has = self->_has;
   if ((*&has & 0x100000) == 0)
   {
@@ -1781,7 +1781,7 @@ LABEL_21:
 LABEL_75:
   hasEverShareInLastMonth = self->_hasEverShareInLastMonth;
   PBDataWriterWriteDoubleField();
-  v4 = v57;
+  toCopy = v57;
   has = self->_has;
   if ((*&has & 0x4000) == 0)
   {
@@ -1797,7 +1797,7 @@ LABEL_22:
 LABEL_76:
   clickCountInLastWeekNormalizedAcrossItems = self->_clickCountInLastWeekNormalizedAcrossItems;
   PBDataWriterWriteDoubleField();
-  v4 = v57;
+  toCopy = v57;
   has = self->_has;
   if ((*&has & 0x2000) == 0)
   {
@@ -1813,7 +1813,7 @@ LABEL_23:
 LABEL_77:
   clickCountInLastMonthNormalizedAcrossItems = self->_clickCountInLastMonthNormalizedAcrossItems;
   PBDataWriterWriteDoubleField();
-  v4 = v57;
+  toCopy = v57;
   has = self->_has;
   if ((*&has & 0x100000000000) == 0)
   {
@@ -1829,7 +1829,7 @@ LABEL_24:
 LABEL_78:
   shareCountInLastWeekNormalizedAcrossItems = self->_shareCountInLastWeekNormalizedAcrossItems;
   PBDataWriterWriteDoubleField();
-  v4 = v57;
+  toCopy = v57;
   has = self->_has;
   if ((*&has & 0x80000000000) == 0)
   {
@@ -1845,7 +1845,7 @@ LABEL_25:
 LABEL_79:
   shareCountInLastMonthNormalizedAcrossItems = self->_shareCountInLastMonthNormalizedAcrossItems;
   PBDataWriterWriteDoubleField();
-  v4 = v57;
+  toCopy = v57;
   has = self->_has;
   if ((*&has & 0x1000) == 0)
   {
@@ -1861,7 +1861,7 @@ LABEL_26:
 LABEL_80:
   clickCountGivenTimeOfDayInLastWeekNormalizedAcrossItems = self->_clickCountGivenTimeOfDayInLastWeekNormalizedAcrossItems;
   PBDataWriterWriteDoubleField();
-  v4 = v57;
+  toCopy = v57;
   has = self->_has;
   if ((*&has & 0x800) == 0)
   {
@@ -1877,7 +1877,7 @@ LABEL_27:
 LABEL_81:
   clickCountGivenTimeOfDayInLastMonthNormalizedAcrossItems = self->_clickCountGivenTimeOfDayInLastMonthNormalizedAcrossItems;
   PBDataWriterWriteDoubleField();
-  v4 = v57;
+  toCopy = v57;
   has = self->_has;
   if ((*&has & 0x40) == 0)
   {
@@ -1893,7 +1893,7 @@ LABEL_28:
 LABEL_82:
   clickCountGivenLocationInLastWeekNormalizedAcrossItems = self->_clickCountGivenLocationInLastWeekNormalizedAcrossItems;
   PBDataWriterWriteDoubleField();
-  v4 = v57;
+  toCopy = v57;
   has = self->_has;
   if ((*&has & 0x20) == 0)
   {
@@ -1909,7 +1909,7 @@ LABEL_29:
 LABEL_83:
   clickCountGivenLocationInLastMonthNormalizedAcrossItems = self->_clickCountGivenLocationInLastMonthNormalizedAcrossItems;
   PBDataWriterWriteDoubleField();
-  v4 = v57;
+  toCopy = v57;
   has = self->_has;
   if ((*&has & 4) == 0)
   {
@@ -1925,7 +1925,7 @@ LABEL_30:
 LABEL_84:
   clickCountGivenDayCategoryInLastWeekNormalizedAcrossItems = self->_clickCountGivenDayCategoryInLastWeekNormalizedAcrossItems;
   PBDataWriterWriteDoubleField();
-  v4 = v57;
+  toCopy = v57;
   has = self->_has;
   if ((*&has & 2) == 0)
   {
@@ -1941,7 +1941,7 @@ LABEL_31:
 LABEL_85:
   clickCountGivenDayCategoryInLastMonthNormalizedAcrossItems = self->_clickCountGivenDayCategoryInLastMonthNormalizedAcrossItems;
   PBDataWriterWriteDoubleField();
-  v4 = v57;
+  toCopy = v57;
   has = self->_has;
   if ((*&has & 0x100) == 0)
   {
@@ -1957,7 +1957,7 @@ LABEL_32:
 LABEL_86:
   clickCountGivenRecencyCategoryInLastWeekNormalizedAcrossItems = self->_clickCountGivenRecencyCategoryInLastWeekNormalizedAcrossItems;
   PBDataWriterWriteDoubleField();
-  v4 = v57;
+  toCopy = v57;
   has = self->_has;
   if ((*&has & 0x80) == 0)
   {
@@ -1973,7 +1973,7 @@ LABEL_33:
 LABEL_87:
   clickCountGivenRecencyCategoryInLastMonthNormalizedAcrossItems = self->_clickCountGivenRecencyCategoryInLastMonthNormalizedAcrossItems;
   PBDataWriterWriteDoubleField();
-  v4 = v57;
+  toCopy = v57;
   has = self->_has;
   if ((*&has & 0x400) == 0)
   {
@@ -1989,7 +1989,7 @@ LABEL_34:
 LABEL_88:
   clickCountGivenSceneCategoryInLastWeekNormalizedAcrossItems = self->_clickCountGivenSceneCategoryInLastWeekNormalizedAcrossItems;
   PBDataWriterWriteDoubleField();
-  v4 = v57;
+  toCopy = v57;
   has = self->_has;
   if ((*&has & 0x200) == 0)
   {
@@ -2005,7 +2005,7 @@ LABEL_35:
 LABEL_89:
   clickCountGivenSceneCategoryInLastMonthNormalizedAcrossItems = self->_clickCountGivenSceneCategoryInLastMonthNormalizedAcrossItems;
   PBDataWriterWriteDoubleField();
-  v4 = v57;
+  toCopy = v57;
   has = self->_has;
   if ((*&has & 0x10) == 0)
   {
@@ -2021,7 +2021,7 @@ LABEL_36:
 LABEL_90:
   clickCountGivenFaceCountCategoryInLastWeekNormalizedAcrossItems = self->_clickCountGivenFaceCountCategoryInLastWeekNormalizedAcrossItems;
   PBDataWriterWriteDoubleField();
-  v4 = v57;
+  toCopy = v57;
   has = self->_has;
   if ((*&has & 8) == 0)
   {
@@ -2037,7 +2037,7 @@ LABEL_37:
 LABEL_91:
   clickCountGivenFaceCountCategoryInLastMonthNormalizedAcrossItems = self->_clickCountGivenFaceCountCategoryInLastMonthNormalizedAcrossItems;
   PBDataWriterWriteDoubleField();
-  v4 = v57;
+  toCopy = v57;
   has = self->_has;
   if ((*&has & 0x40000000000) == 0)
   {
@@ -2053,7 +2053,7 @@ LABEL_38:
 LABEL_92:
   shareCountGivenTimeOfDayInLastWeekNormalizedAcrossItems = self->_shareCountGivenTimeOfDayInLastWeekNormalizedAcrossItems;
   PBDataWriterWriteDoubleField();
-  v4 = v57;
+  toCopy = v57;
   has = self->_has;
   if ((*&has & 0x20000000000) == 0)
   {
@@ -2069,7 +2069,7 @@ LABEL_39:
 LABEL_93:
   shareCountGivenTimeOfDayInLastMonthNormalizedAcrossItems = self->_shareCountGivenTimeOfDayInLastMonthNormalizedAcrossItems;
   PBDataWriterWriteDoubleField();
-  v4 = v57;
+  toCopy = v57;
   has = self->_has;
   if ((*&has & 0x4000000000) == 0)
   {
@@ -2085,7 +2085,7 @@ LABEL_40:
 LABEL_94:
   shareCountGivenLocationInLastWeekNormalizedAcrossItems = self->_shareCountGivenLocationInLastWeekNormalizedAcrossItems;
   PBDataWriterWriteDoubleField();
-  v4 = v57;
+  toCopy = v57;
   has = self->_has;
   if ((*&has & 0x2000000000) == 0)
   {
@@ -2101,7 +2101,7 @@ LABEL_41:
 LABEL_95:
   shareCountGivenLocationInLastMonthNormalizedAcrossItems = self->_shareCountGivenLocationInLastMonthNormalizedAcrossItems;
   PBDataWriterWriteDoubleField();
-  v4 = v57;
+  toCopy = v57;
   has = self->_has;
   if ((*&has & 0x400000000) == 0)
   {
@@ -2117,7 +2117,7 @@ LABEL_42:
 LABEL_96:
   shareCountGivenDayCategoryInLastWeekNormalizedAcrossItems = self->_shareCountGivenDayCategoryInLastWeekNormalizedAcrossItems;
   PBDataWriterWriteDoubleField();
-  v4 = v57;
+  toCopy = v57;
   has = self->_has;
   if ((*&has & 0x200000000) == 0)
   {
@@ -2133,7 +2133,7 @@ LABEL_43:
 LABEL_97:
   shareCountGivenDayCategoryInLastMonthNormalizedAcrossItems = self->_shareCountGivenDayCategoryInLastMonthNormalizedAcrossItems;
   PBDataWriterWriteDoubleField();
-  v4 = v57;
+  toCopy = v57;
   has = self->_has;
   if ((*&has & 0x10000000000) == 0)
   {
@@ -2149,7 +2149,7 @@ LABEL_44:
 LABEL_98:
   shareCountGivenSceneCategoryInLastWeekNormalizedAcrossItems = self->_shareCountGivenSceneCategoryInLastWeekNormalizedAcrossItems;
   PBDataWriterWriteDoubleField();
-  v4 = v57;
+  toCopy = v57;
   has = self->_has;
   if ((*&has & 0x8000000000) == 0)
   {
@@ -2165,7 +2165,7 @@ LABEL_45:
 LABEL_99:
   shareCountGivenSceneCategoryInLastMonthNormalizedAcrossItems = self->_shareCountGivenSceneCategoryInLastMonthNormalizedAcrossItems;
   PBDataWriterWriteDoubleField();
-  v4 = v57;
+  toCopy = v57;
   has = self->_has;
   if ((*&has & 0x1000000000) == 0)
   {
@@ -2181,7 +2181,7 @@ LABEL_46:
 LABEL_100:
   shareCountGivenFaceCountCategoryInLastWeekNormalizedAcrossItems = self->_shareCountGivenFaceCountCategoryInLastWeekNormalizedAcrossItems;
   PBDataWriterWriteDoubleField();
-  v4 = v57;
+  toCopy = v57;
   has = self->_has;
   if ((*&has & 0x800000000) == 0)
   {
@@ -2197,7 +2197,7 @@ LABEL_47:
 LABEL_101:
   shareCountGivenFaceCountCategoryInLastMonthNormalizedAcrossItems = self->_shareCountGivenFaceCountCategoryInLastMonthNormalizedAcrossItems;
   PBDataWriterWriteDoubleField();
-  v4 = v57;
+  toCopy = v57;
   has = self->_has;
   if ((*&has & 0x8000) == 0)
   {
@@ -2213,7 +2213,7 @@ LABEL_48:
 LABEL_102:
   clipScore = self->_clipScore;
   PBDataWriterWriteDoubleField();
-  v4 = v57;
+  toCopy = v57;
   has = self->_has;
   if ((*&has & 0x2000000000000) == 0)
   {
@@ -2229,7 +2229,7 @@ LABEL_49:
 LABEL_103:
   clicked = self->_clicked;
   PBDataWriterWriteBOOLField();
-  v4 = v57;
+  toCopy = v57;
   has = self->_has;
   if ((*&has & 0x200000000000) == 0)
   {
@@ -2245,7 +2245,7 @@ LABEL_50:
 LABEL_104:
   clickOrder = self->_clickOrder;
   PBDataWriterWriteUint32Field();
-  v4 = v57;
+  toCopy = v57;
   has = self->_has;
   if ((*&has & 0x400000000000) == 0)
   {
@@ -2261,7 +2261,7 @@ LABEL_51:
 LABEL_105:
   itemPosition = self->_itemPosition;
   PBDataWriterWriteUint32Field();
-  v4 = v57;
+  toCopy = v57;
   has = self->_has;
   if ((*&has & 0x2000000) == 0)
   {
@@ -2277,7 +2277,7 @@ LABEL_52:
 LABEL_106:
   l2ModelScore = self->_l2ModelScore;
   PBDataWriterWriteDoubleField();
-  v4 = v57;
+  toCopy = v57;
   has = self->_has;
   if ((*&has & 0x800000) == 0)
   {
@@ -2293,33 +2293,33 @@ LABEL_53:
 LABEL_107:
   isDuplicate = self->_isDuplicate;
   PBDataWriterWriteDoubleField();
-  v4 = v57;
+  toCopy = v57;
   if ((*&self->_has & 0x400000) != 0)
   {
 LABEL_54:
     isCompleteMatch = self->_isCompleteMatch;
     PBDataWriterWriteDoubleField();
-    v4 = v57;
+    toCopy = v57;
   }
 
 LABEL_55:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_searchSessionUUID)
   {
-    v6 = v4;
-    [v4 setSearchSessionUUID:?];
-    v4 = v6;
+    v6 = toCopy;
+    [toCopy setSearchSessionUUID:?];
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((*&has & 0x1000000000000) != 0)
   {
-    *(v4 + 98) = self->_uiSurface;
-    *(v4 + 50) |= 0x1000000000000uLL;
+    *(toCopy + 98) = self->_uiSurface;
+    *(toCopy + 50) |= 0x1000000000000uLL;
     has = self->_has;
     if ((*&has & 0x20000000) == 0)
     {
@@ -2338,8 +2338,8 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  *(v4 + 30) = *&self->_matchedPeopleRatio;
-  *(v4 + 50) |= 0x20000000uLL;
+  *(toCopy + 30) = *&self->_matchedPeopleRatio;
+  *(toCopy + 50) |= 0x20000000uLL;
   has = self->_has;
   if ((*&has & 0x4000000) == 0)
   {
@@ -2353,8 +2353,8 @@ LABEL_6:
   }
 
 LABEL_60:
-  *(v4 + 27) = *&self->_matchedLocationRatio;
-  *(v4 + 50) |= 0x4000000uLL;
+  *(toCopy + 27) = *&self->_matchedLocationRatio;
+  *(toCopy + 50) |= 0x4000000uLL;
   has = self->_has;
   if ((*&has & 0x100000000) == 0)
   {
@@ -2368,8 +2368,8 @@ LABEL_7:
   }
 
 LABEL_61:
-  *(v4 + 33) = *&self->_matchedSceneRatio;
-  *(v4 + 50) |= 0x100000000uLL;
+  *(toCopy + 33) = *&self->_matchedSceneRatio;
+  *(toCopy + 50) |= 0x100000000uLL;
   has = self->_has;
   if ((*&has & 0x80000000) == 0)
   {
@@ -2383,8 +2383,8 @@ LABEL_8:
   }
 
 LABEL_62:
-  *(v4 + 32) = *&self->_matchedSceneConfidence;
-  *(v4 + 50) |= 0x80000000uLL;
+  *(toCopy + 32) = *&self->_matchedSceneConfidence;
+  *(toCopy + 50) |= 0x80000000uLL;
   has = self->_has;
   if ((*&has & 0x40000000) == 0)
   {
@@ -2398,8 +2398,8 @@ LABEL_9:
   }
 
 LABEL_63:
-  *(v4 + 31) = *&self->_matchedSceneBoundingBox;
-  *(v4 + 50) |= 0x40000000uLL;
+  *(toCopy + 31) = *&self->_matchedSceneBoundingBox;
+  *(toCopy + 50) |= 0x40000000uLL;
   has = self->_has;
   if ((*&has & 0x8000000) == 0)
   {
@@ -2413,8 +2413,8 @@ LABEL_10:
   }
 
 LABEL_64:
-  *(v4 + 28) = *&self->_matchedOCRCharacterRatio;
-  *(v4 + 50) |= 0x8000000uLL;
+  *(toCopy + 28) = *&self->_matchedOCRCharacterRatio;
+  *(toCopy + 50) |= 0x8000000uLL;
   has = self->_has;
   if ((*&has & 0x10000000) == 0)
   {
@@ -2428,8 +2428,8 @@ LABEL_11:
   }
 
 LABEL_65:
-  *(v4 + 29) = *&self->_matchedOCRImportance;
-  *(v4 + 50) |= 0x10000000uLL;
+  *(toCopy + 29) = *&self->_matchedOCRImportance;
+  *(toCopy + 50) |= 0x10000000uLL;
   has = self->_has;
   if ((*&has & 0x800000000000) == 0)
   {
@@ -2443,8 +2443,8 @@ LABEL_12:
   }
 
 LABEL_66:
-  *(v4 + 94) = self->_matchedFieldsCount;
-  *(v4 + 50) |= 0x800000000000uLL;
+  *(toCopy + 94) = self->_matchedFieldsCount;
+  *(toCopy + 50) |= 0x800000000000uLL;
   has = self->_has;
   if ((*&has & 0x1000000) == 0)
   {
@@ -2458,8 +2458,8 @@ LABEL_13:
   }
 
 LABEL_67:
-  *(v4 + 25) = *&self->_l1Score;
-  *(v4 + 50) |= 0x1000000uLL;
+  *(toCopy + 25) = *&self->_l1Score;
+  *(toCopy + 50) |= 0x1000000uLL;
   has = self->_has;
   if ((*&has & 0x20000) == 0)
   {
@@ -2473,8 +2473,8 @@ LABEL_14:
   }
 
 LABEL_68:
-  *(v4 + 18) = *&self->_freshness;
-  *(v4 + 50) |= 0x20000uLL;
+  *(toCopy + 18) = *&self->_freshness;
+  *(toCopy + 50) |= 0x20000uLL;
   has = self->_has;
   if ((*&has & 0x4000000000000) == 0)
   {
@@ -2488,8 +2488,8 @@ LABEL_15:
   }
 
 LABEL_69:
-  *(v4 + 397) = self->_favorited;
-  *(v4 + 50) |= 0x4000000000000uLL;
+  *(toCopy + 397) = self->_favorited;
+  *(toCopy + 50) |= 0x4000000000000uLL;
   has = self->_has;
   if ((*&has & 1) == 0)
   {
@@ -2503,8 +2503,8 @@ LABEL_16:
   }
 
 LABEL_70:
-  *(v4 + 1) = *&self->_aestheticScore;
-  *(v4 + 50) |= 1uLL;
+  *(toCopy + 1) = *&self->_aestheticScore;
+  *(toCopy + 50) |= 1uLL;
   has = self->_has;
   if ((*&has & 0x10000) == 0)
   {
@@ -2518,8 +2518,8 @@ LABEL_17:
   }
 
 LABEL_71:
-  *(v4 + 17) = *&self->_curationScore;
-  *(v4 + 50) |= 0x10000uLL;
+  *(toCopy + 17) = *&self->_curationScore;
+  *(toCopy + 50) |= 0x10000uLL;
   has = self->_has;
   if ((*&has & 0x80000) == 0)
   {
@@ -2533,8 +2533,8 @@ LABEL_18:
   }
 
 LABEL_72:
-  *(v4 + 20) = *&self->_hasEverClickInLastWeek;
-  *(v4 + 50) |= 0x80000uLL;
+  *(toCopy + 20) = *&self->_hasEverClickInLastWeek;
+  *(toCopy + 50) |= 0x80000uLL;
   has = self->_has;
   if ((*&has & 0x40000) == 0)
   {
@@ -2548,8 +2548,8 @@ LABEL_19:
   }
 
 LABEL_73:
-  *(v4 + 19) = *&self->_hasEverClickInLastMonth;
-  *(v4 + 50) |= 0x40000uLL;
+  *(toCopy + 19) = *&self->_hasEverClickInLastMonth;
+  *(toCopy + 50) |= 0x40000uLL;
   has = self->_has;
   if ((*&has & 0x200000) == 0)
   {
@@ -2563,8 +2563,8 @@ LABEL_20:
   }
 
 LABEL_74:
-  *(v4 + 22) = *&self->_hasEverShareInLastWeek;
-  *(v4 + 50) |= 0x200000uLL;
+  *(toCopy + 22) = *&self->_hasEverShareInLastWeek;
+  *(toCopy + 50) |= 0x200000uLL;
   has = self->_has;
   if ((*&has & 0x100000) == 0)
   {
@@ -2578,8 +2578,8 @@ LABEL_21:
   }
 
 LABEL_75:
-  *(v4 + 21) = *&self->_hasEverShareInLastMonth;
-  *(v4 + 50) |= 0x100000uLL;
+  *(toCopy + 21) = *&self->_hasEverShareInLastMonth;
+  *(toCopy + 50) |= 0x100000uLL;
   has = self->_has;
   if ((*&has & 0x4000) == 0)
   {
@@ -2593,8 +2593,8 @@ LABEL_22:
   }
 
 LABEL_76:
-  *(v4 + 15) = *&self->_clickCountInLastWeekNormalizedAcrossItems;
-  *(v4 + 50) |= 0x4000uLL;
+  *(toCopy + 15) = *&self->_clickCountInLastWeekNormalizedAcrossItems;
+  *(toCopy + 50) |= 0x4000uLL;
   has = self->_has;
   if ((*&has & 0x2000) == 0)
   {
@@ -2608,8 +2608,8 @@ LABEL_23:
   }
 
 LABEL_77:
-  *(v4 + 14) = *&self->_clickCountInLastMonthNormalizedAcrossItems;
-  *(v4 + 50) |= 0x2000uLL;
+  *(toCopy + 14) = *&self->_clickCountInLastMonthNormalizedAcrossItems;
+  *(toCopy + 50) |= 0x2000uLL;
   has = self->_has;
   if ((*&has & 0x100000000000) == 0)
   {
@@ -2623,8 +2623,8 @@ LABEL_24:
   }
 
 LABEL_78:
-  *(v4 + 45) = *&self->_shareCountInLastWeekNormalizedAcrossItems;
-  *(v4 + 50) |= 0x100000000000uLL;
+  *(toCopy + 45) = *&self->_shareCountInLastWeekNormalizedAcrossItems;
+  *(toCopy + 50) |= 0x100000000000uLL;
   has = self->_has;
   if ((*&has & 0x80000000000) == 0)
   {
@@ -2638,8 +2638,8 @@ LABEL_25:
   }
 
 LABEL_79:
-  *(v4 + 44) = *&self->_shareCountInLastMonthNormalizedAcrossItems;
-  *(v4 + 50) |= 0x80000000000uLL;
+  *(toCopy + 44) = *&self->_shareCountInLastMonthNormalizedAcrossItems;
+  *(toCopy + 50) |= 0x80000000000uLL;
   has = self->_has;
   if ((*&has & 0x1000) == 0)
   {
@@ -2653,8 +2653,8 @@ LABEL_26:
   }
 
 LABEL_80:
-  *(v4 + 13) = *&self->_clickCountGivenTimeOfDayInLastWeekNormalizedAcrossItems;
-  *(v4 + 50) |= 0x1000uLL;
+  *(toCopy + 13) = *&self->_clickCountGivenTimeOfDayInLastWeekNormalizedAcrossItems;
+  *(toCopy + 50) |= 0x1000uLL;
   has = self->_has;
   if ((*&has & 0x800) == 0)
   {
@@ -2668,8 +2668,8 @@ LABEL_27:
   }
 
 LABEL_81:
-  *(v4 + 12) = *&self->_clickCountGivenTimeOfDayInLastMonthNormalizedAcrossItems;
-  *(v4 + 50) |= 0x800uLL;
+  *(toCopy + 12) = *&self->_clickCountGivenTimeOfDayInLastMonthNormalizedAcrossItems;
+  *(toCopy + 50) |= 0x800uLL;
   has = self->_has;
   if ((*&has & 0x40) == 0)
   {
@@ -2683,8 +2683,8 @@ LABEL_28:
   }
 
 LABEL_82:
-  *(v4 + 7) = *&self->_clickCountGivenLocationInLastWeekNormalizedAcrossItems;
-  *(v4 + 50) |= 0x40uLL;
+  *(toCopy + 7) = *&self->_clickCountGivenLocationInLastWeekNormalizedAcrossItems;
+  *(toCopy + 50) |= 0x40uLL;
   has = self->_has;
   if ((*&has & 0x20) == 0)
   {
@@ -2698,8 +2698,8 @@ LABEL_29:
   }
 
 LABEL_83:
-  *(v4 + 6) = *&self->_clickCountGivenLocationInLastMonthNormalizedAcrossItems;
-  *(v4 + 50) |= 0x20uLL;
+  *(toCopy + 6) = *&self->_clickCountGivenLocationInLastMonthNormalizedAcrossItems;
+  *(toCopy + 50) |= 0x20uLL;
   has = self->_has;
   if ((*&has & 4) == 0)
   {
@@ -2713,8 +2713,8 @@ LABEL_30:
   }
 
 LABEL_84:
-  *(v4 + 3) = *&self->_clickCountGivenDayCategoryInLastWeekNormalizedAcrossItems;
-  *(v4 + 50) |= 4uLL;
+  *(toCopy + 3) = *&self->_clickCountGivenDayCategoryInLastWeekNormalizedAcrossItems;
+  *(toCopy + 50) |= 4uLL;
   has = self->_has;
   if ((*&has & 2) == 0)
   {
@@ -2728,8 +2728,8 @@ LABEL_31:
   }
 
 LABEL_85:
-  *(v4 + 2) = *&self->_clickCountGivenDayCategoryInLastMonthNormalizedAcrossItems;
-  *(v4 + 50) |= 2uLL;
+  *(toCopy + 2) = *&self->_clickCountGivenDayCategoryInLastMonthNormalizedAcrossItems;
+  *(toCopy + 50) |= 2uLL;
   has = self->_has;
   if ((*&has & 0x100) == 0)
   {
@@ -2743,8 +2743,8 @@ LABEL_32:
   }
 
 LABEL_86:
-  *(v4 + 9) = *&self->_clickCountGivenRecencyCategoryInLastWeekNormalizedAcrossItems;
-  *(v4 + 50) |= 0x100uLL;
+  *(toCopy + 9) = *&self->_clickCountGivenRecencyCategoryInLastWeekNormalizedAcrossItems;
+  *(toCopy + 50) |= 0x100uLL;
   has = self->_has;
   if ((*&has & 0x80) == 0)
   {
@@ -2758,8 +2758,8 @@ LABEL_33:
   }
 
 LABEL_87:
-  *(v4 + 8) = *&self->_clickCountGivenRecencyCategoryInLastMonthNormalizedAcrossItems;
-  *(v4 + 50) |= 0x80uLL;
+  *(toCopy + 8) = *&self->_clickCountGivenRecencyCategoryInLastMonthNormalizedAcrossItems;
+  *(toCopy + 50) |= 0x80uLL;
   has = self->_has;
   if ((*&has & 0x400) == 0)
   {
@@ -2773,8 +2773,8 @@ LABEL_34:
   }
 
 LABEL_88:
-  *(v4 + 11) = *&self->_clickCountGivenSceneCategoryInLastWeekNormalizedAcrossItems;
-  *(v4 + 50) |= 0x400uLL;
+  *(toCopy + 11) = *&self->_clickCountGivenSceneCategoryInLastWeekNormalizedAcrossItems;
+  *(toCopy + 50) |= 0x400uLL;
   has = self->_has;
   if ((*&has & 0x200) == 0)
   {
@@ -2788,8 +2788,8 @@ LABEL_35:
   }
 
 LABEL_89:
-  *(v4 + 10) = *&self->_clickCountGivenSceneCategoryInLastMonthNormalizedAcrossItems;
-  *(v4 + 50) |= 0x200uLL;
+  *(toCopy + 10) = *&self->_clickCountGivenSceneCategoryInLastMonthNormalizedAcrossItems;
+  *(toCopy + 50) |= 0x200uLL;
   has = self->_has;
   if ((*&has & 0x10) == 0)
   {
@@ -2803,8 +2803,8 @@ LABEL_36:
   }
 
 LABEL_90:
-  *(v4 + 5) = *&self->_clickCountGivenFaceCountCategoryInLastWeekNormalizedAcrossItems;
-  *(v4 + 50) |= 0x10uLL;
+  *(toCopy + 5) = *&self->_clickCountGivenFaceCountCategoryInLastWeekNormalizedAcrossItems;
+  *(toCopy + 50) |= 0x10uLL;
   has = self->_has;
   if ((*&has & 8) == 0)
   {
@@ -2818,8 +2818,8 @@ LABEL_37:
   }
 
 LABEL_91:
-  *(v4 + 4) = *&self->_clickCountGivenFaceCountCategoryInLastMonthNormalizedAcrossItems;
-  *(v4 + 50) |= 8uLL;
+  *(toCopy + 4) = *&self->_clickCountGivenFaceCountCategoryInLastMonthNormalizedAcrossItems;
+  *(toCopy + 50) |= 8uLL;
   has = self->_has;
   if ((*&has & 0x40000000000) == 0)
   {
@@ -2833,8 +2833,8 @@ LABEL_38:
   }
 
 LABEL_92:
-  *(v4 + 43) = *&self->_shareCountGivenTimeOfDayInLastWeekNormalizedAcrossItems;
-  *(v4 + 50) |= 0x40000000000uLL;
+  *(toCopy + 43) = *&self->_shareCountGivenTimeOfDayInLastWeekNormalizedAcrossItems;
+  *(toCopy + 50) |= 0x40000000000uLL;
   has = self->_has;
   if ((*&has & 0x20000000000) == 0)
   {
@@ -2848,8 +2848,8 @@ LABEL_39:
   }
 
 LABEL_93:
-  *(v4 + 42) = *&self->_shareCountGivenTimeOfDayInLastMonthNormalizedAcrossItems;
-  *(v4 + 50) |= 0x20000000000uLL;
+  *(toCopy + 42) = *&self->_shareCountGivenTimeOfDayInLastMonthNormalizedAcrossItems;
+  *(toCopy + 50) |= 0x20000000000uLL;
   has = self->_has;
   if ((*&has & 0x4000000000) == 0)
   {
@@ -2863,8 +2863,8 @@ LABEL_40:
   }
 
 LABEL_94:
-  *(v4 + 39) = *&self->_shareCountGivenLocationInLastWeekNormalizedAcrossItems;
-  *(v4 + 50) |= 0x4000000000uLL;
+  *(toCopy + 39) = *&self->_shareCountGivenLocationInLastWeekNormalizedAcrossItems;
+  *(toCopy + 50) |= 0x4000000000uLL;
   has = self->_has;
   if ((*&has & 0x2000000000) == 0)
   {
@@ -2878,8 +2878,8 @@ LABEL_41:
   }
 
 LABEL_95:
-  *(v4 + 38) = *&self->_shareCountGivenLocationInLastMonthNormalizedAcrossItems;
-  *(v4 + 50) |= 0x2000000000uLL;
+  *(toCopy + 38) = *&self->_shareCountGivenLocationInLastMonthNormalizedAcrossItems;
+  *(toCopy + 50) |= 0x2000000000uLL;
   has = self->_has;
   if ((*&has & 0x400000000) == 0)
   {
@@ -2893,8 +2893,8 @@ LABEL_42:
   }
 
 LABEL_96:
-  *(v4 + 35) = *&self->_shareCountGivenDayCategoryInLastWeekNormalizedAcrossItems;
-  *(v4 + 50) |= 0x400000000uLL;
+  *(toCopy + 35) = *&self->_shareCountGivenDayCategoryInLastWeekNormalizedAcrossItems;
+  *(toCopy + 50) |= 0x400000000uLL;
   has = self->_has;
   if ((*&has & 0x200000000) == 0)
   {
@@ -2908,8 +2908,8 @@ LABEL_43:
   }
 
 LABEL_97:
-  *(v4 + 34) = *&self->_shareCountGivenDayCategoryInLastMonthNormalizedAcrossItems;
-  *(v4 + 50) |= 0x200000000uLL;
+  *(toCopy + 34) = *&self->_shareCountGivenDayCategoryInLastMonthNormalizedAcrossItems;
+  *(toCopy + 50) |= 0x200000000uLL;
   has = self->_has;
   if ((*&has & 0x10000000000) == 0)
   {
@@ -2923,8 +2923,8 @@ LABEL_44:
   }
 
 LABEL_98:
-  *(v4 + 41) = *&self->_shareCountGivenSceneCategoryInLastWeekNormalizedAcrossItems;
-  *(v4 + 50) |= 0x10000000000uLL;
+  *(toCopy + 41) = *&self->_shareCountGivenSceneCategoryInLastWeekNormalizedAcrossItems;
+  *(toCopy + 50) |= 0x10000000000uLL;
   has = self->_has;
   if ((*&has & 0x8000000000) == 0)
   {
@@ -2938,8 +2938,8 @@ LABEL_45:
   }
 
 LABEL_99:
-  *(v4 + 40) = *&self->_shareCountGivenSceneCategoryInLastMonthNormalizedAcrossItems;
-  *(v4 + 50) |= 0x8000000000uLL;
+  *(toCopy + 40) = *&self->_shareCountGivenSceneCategoryInLastMonthNormalizedAcrossItems;
+  *(toCopy + 50) |= 0x8000000000uLL;
   has = self->_has;
   if ((*&has & 0x1000000000) == 0)
   {
@@ -2953,8 +2953,8 @@ LABEL_46:
   }
 
 LABEL_100:
-  *(v4 + 37) = *&self->_shareCountGivenFaceCountCategoryInLastWeekNormalizedAcrossItems;
-  *(v4 + 50) |= 0x1000000000uLL;
+  *(toCopy + 37) = *&self->_shareCountGivenFaceCountCategoryInLastWeekNormalizedAcrossItems;
+  *(toCopy + 50) |= 0x1000000000uLL;
   has = self->_has;
   if ((*&has & 0x800000000) == 0)
   {
@@ -2968,8 +2968,8 @@ LABEL_47:
   }
 
 LABEL_101:
-  *(v4 + 36) = *&self->_shareCountGivenFaceCountCategoryInLastMonthNormalizedAcrossItems;
-  *(v4 + 50) |= 0x800000000uLL;
+  *(toCopy + 36) = *&self->_shareCountGivenFaceCountCategoryInLastMonthNormalizedAcrossItems;
+  *(toCopy + 50) |= 0x800000000uLL;
   has = self->_has;
   if ((*&has & 0x8000) == 0)
   {
@@ -2983,8 +2983,8 @@ LABEL_48:
   }
 
 LABEL_102:
-  *(v4 + 16) = *&self->_clipScore;
-  *(v4 + 50) |= 0x8000uLL;
+  *(toCopy + 16) = *&self->_clipScore;
+  *(toCopy + 50) |= 0x8000uLL;
   has = self->_has;
   if ((*&has & 0x2000000000000) == 0)
   {
@@ -2998,8 +2998,8 @@ LABEL_49:
   }
 
 LABEL_103:
-  *(v4 + 396) = self->_clicked;
-  *(v4 + 50) |= 0x2000000000000uLL;
+  *(toCopy + 396) = self->_clicked;
+  *(toCopy + 50) |= 0x2000000000000uLL;
   has = self->_has;
   if ((*&has & 0x200000000000) == 0)
   {
@@ -3013,8 +3013,8 @@ LABEL_50:
   }
 
 LABEL_104:
-  *(v4 + 92) = self->_clickOrder;
-  *(v4 + 50) |= 0x200000000000uLL;
+  *(toCopy + 92) = self->_clickOrder;
+  *(toCopy + 50) |= 0x200000000000uLL;
   has = self->_has;
   if ((*&has & 0x400000000000) == 0)
   {
@@ -3028,8 +3028,8 @@ LABEL_51:
   }
 
 LABEL_105:
-  *(v4 + 93) = self->_itemPosition;
-  *(v4 + 50) |= 0x400000000000uLL;
+  *(toCopy + 93) = self->_itemPosition;
+  *(toCopy + 50) |= 0x400000000000uLL;
   has = self->_has;
   if ((*&has & 0x2000000) == 0)
   {
@@ -3043,8 +3043,8 @@ LABEL_52:
   }
 
 LABEL_106:
-  *(v4 + 26) = *&self->_l2ModelScore;
-  *(v4 + 50) |= 0x2000000uLL;
+  *(toCopy + 26) = *&self->_l2ModelScore;
+  *(toCopy + 50) |= 0x2000000uLL;
   has = self->_has;
   if ((*&has & 0x800000) == 0)
   {
@@ -3058,22 +3058,22 @@ LABEL_53:
   }
 
 LABEL_107:
-  *(v4 + 24) = *&self->_isDuplicate;
-  *(v4 + 50) |= 0x800000uLL;
+  *(toCopy + 24) = *&self->_isDuplicate;
+  *(toCopy + 50) |= 0x800000uLL;
   if ((*&self->_has & 0x400000) != 0)
   {
 LABEL_54:
-    *(v4 + 23) = *&self->_isCompleteMatch;
-    *(v4 + 50) |= 0x400000uLL;
+    *(toCopy + 23) = *&self->_isCompleteMatch;
+    *(toCopy + 50) |= 0x400000uLL;
   }
 
 LABEL_55:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_searchSessionUUID copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_searchSessionUUID copyWithZone:zone];
   v7 = *(v5 + 384);
   *(v5 + 384) = v6;
 
@@ -3835,16 +3835,16 @@ LABEL_53:
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_265;
   }
 
   searchSessionUUID = self->_searchSessionUUID;
-  if (searchSessionUUID | *(v4 + 48))
+  if (searchSessionUUID | *(equalCopy + 48))
   {
     if (![(NSString *)searchSessionUUID isEqual:?])
     {
@@ -3853,10 +3853,10 @@ LABEL_53:
   }
 
   has = self->_has;
-  v7 = *(v4 + 50);
+  v7 = *(equalCopy + 50);
   if ((*&has & 0x1000000000000) != 0)
   {
-    if ((v7 & 0x1000000000000) == 0 || self->_uiSurface != *(v4 + 98))
+    if ((v7 & 0x1000000000000) == 0 || self->_uiSurface != *(equalCopy + 98))
     {
       goto LABEL_265;
     }
@@ -3869,7 +3869,7 @@ LABEL_53:
 
   if ((*&has & 0x20000000) != 0)
   {
-    if ((v7 & 0x20000000) == 0 || self->_matchedPeopleRatio != *(v4 + 30))
+    if ((v7 & 0x20000000) == 0 || self->_matchedPeopleRatio != *(equalCopy + 30))
     {
       goto LABEL_265;
     }
@@ -3882,7 +3882,7 @@ LABEL_53:
 
   if ((*&has & 0x4000000) != 0)
   {
-    if ((v7 & 0x4000000) == 0 || self->_matchedLocationRatio != *(v4 + 27))
+    if ((v7 & 0x4000000) == 0 || self->_matchedLocationRatio != *(equalCopy + 27))
     {
       goto LABEL_265;
     }
@@ -3895,7 +3895,7 @@ LABEL_53:
 
   if ((*&has & 0x100000000) != 0)
   {
-    if ((v7 & 0x100000000) == 0 || self->_matchedSceneRatio != *(v4 + 33))
+    if ((v7 & 0x100000000) == 0 || self->_matchedSceneRatio != *(equalCopy + 33))
     {
       goto LABEL_265;
     }
@@ -3908,7 +3908,7 @@ LABEL_53:
 
   if ((*&has & 0x80000000) != 0)
   {
-    if ((v7 & 0x80000000) == 0 || self->_matchedSceneConfidence != *(v4 + 32))
+    if ((v7 & 0x80000000) == 0 || self->_matchedSceneConfidence != *(equalCopy + 32))
     {
       goto LABEL_265;
     }
@@ -3921,7 +3921,7 @@ LABEL_53:
 
   if ((*&has & 0x40000000) != 0)
   {
-    if ((v7 & 0x40000000) == 0 || self->_matchedSceneBoundingBox != *(v4 + 31))
+    if ((v7 & 0x40000000) == 0 || self->_matchedSceneBoundingBox != *(equalCopy + 31))
     {
       goto LABEL_265;
     }
@@ -3934,7 +3934,7 @@ LABEL_53:
 
   if ((*&has & 0x8000000) != 0)
   {
-    if ((v7 & 0x8000000) == 0 || self->_matchedOCRCharacterRatio != *(v4 + 28))
+    if ((v7 & 0x8000000) == 0 || self->_matchedOCRCharacterRatio != *(equalCopy + 28))
     {
       goto LABEL_265;
     }
@@ -3947,7 +3947,7 @@ LABEL_53:
 
   if ((*&has & 0x10000000) != 0)
   {
-    if ((v7 & 0x10000000) == 0 || self->_matchedOCRImportance != *(v4 + 29))
+    if ((v7 & 0x10000000) == 0 || self->_matchedOCRImportance != *(equalCopy + 29))
     {
       goto LABEL_265;
     }
@@ -3960,7 +3960,7 @@ LABEL_53:
 
   if ((*&has & 0x800000000000) != 0)
   {
-    if ((v7 & 0x800000000000) == 0 || self->_matchedFieldsCount != *(v4 + 94))
+    if ((v7 & 0x800000000000) == 0 || self->_matchedFieldsCount != *(equalCopy + 94))
     {
       goto LABEL_265;
     }
@@ -3973,7 +3973,7 @@ LABEL_53:
 
   if ((*&has & 0x1000000) != 0)
   {
-    if ((v7 & 0x1000000) == 0 || self->_l1Score != *(v4 + 25))
+    if ((v7 & 0x1000000) == 0 || self->_l1Score != *(equalCopy + 25))
     {
       goto LABEL_265;
     }
@@ -3986,7 +3986,7 @@ LABEL_53:
 
   if ((*&has & 0x20000) != 0)
   {
-    if ((v7 & 0x20000) == 0 || self->_freshness != *(v4 + 18))
+    if ((v7 & 0x20000) == 0 || self->_freshness != *(equalCopy + 18))
     {
       goto LABEL_265;
     }
@@ -4004,16 +4004,16 @@ LABEL_53:
       goto LABEL_265;
     }
 
-    v8 = *(v4 + 397);
+    v8 = *(equalCopy + 397);
     if (self->_favorited)
     {
-      if ((*(v4 + 397) & 1) == 0)
+      if ((*(equalCopy + 397) & 1) == 0)
       {
         goto LABEL_265;
       }
     }
 
-    else if (*(v4 + 397))
+    else if (*(equalCopy + 397))
     {
       goto LABEL_265;
     }
@@ -4026,7 +4026,7 @@ LABEL_53:
 
   if (*&has)
   {
-    if ((v7 & 1) == 0 || self->_aestheticScore != *(v4 + 1))
+    if ((v7 & 1) == 0 || self->_aestheticScore != *(equalCopy + 1))
     {
       goto LABEL_265;
     }
@@ -4039,7 +4039,7 @@ LABEL_53:
 
   if ((*&has & 0x10000) != 0)
   {
-    if ((v7 & 0x10000) == 0 || self->_curationScore != *(v4 + 17))
+    if ((v7 & 0x10000) == 0 || self->_curationScore != *(equalCopy + 17))
     {
       goto LABEL_265;
     }
@@ -4052,7 +4052,7 @@ LABEL_53:
 
   if ((*&has & 0x80000) != 0)
   {
-    if ((v7 & 0x80000) == 0 || self->_hasEverClickInLastWeek != *(v4 + 20))
+    if ((v7 & 0x80000) == 0 || self->_hasEverClickInLastWeek != *(equalCopy + 20))
     {
       goto LABEL_265;
     }
@@ -4065,7 +4065,7 @@ LABEL_53:
 
   if ((*&has & 0x40000) != 0)
   {
-    if ((v7 & 0x40000) == 0 || self->_hasEverClickInLastMonth != *(v4 + 19))
+    if ((v7 & 0x40000) == 0 || self->_hasEverClickInLastMonth != *(equalCopy + 19))
     {
       goto LABEL_265;
     }
@@ -4078,7 +4078,7 @@ LABEL_53:
 
   if ((*&has & 0x200000) != 0)
   {
-    if ((v7 & 0x200000) == 0 || self->_hasEverShareInLastWeek != *(v4 + 22))
+    if ((v7 & 0x200000) == 0 || self->_hasEverShareInLastWeek != *(equalCopy + 22))
     {
       goto LABEL_265;
     }
@@ -4091,7 +4091,7 @@ LABEL_53:
 
   if ((*&has & 0x100000) != 0)
   {
-    if ((v7 & 0x100000) == 0 || self->_hasEverShareInLastMonth != *(v4 + 21))
+    if ((v7 & 0x100000) == 0 || self->_hasEverShareInLastMonth != *(equalCopy + 21))
     {
       goto LABEL_265;
     }
@@ -4104,7 +4104,7 @@ LABEL_53:
 
   if ((*&has & 0x4000) != 0)
   {
-    if ((v7 & 0x4000) == 0 || self->_clickCountInLastWeekNormalizedAcrossItems != *(v4 + 15))
+    if ((v7 & 0x4000) == 0 || self->_clickCountInLastWeekNormalizedAcrossItems != *(equalCopy + 15))
     {
       goto LABEL_265;
     }
@@ -4117,7 +4117,7 @@ LABEL_53:
 
   if ((*&has & 0x2000) != 0)
   {
-    if ((v7 & 0x2000) == 0 || self->_clickCountInLastMonthNormalizedAcrossItems != *(v4 + 14))
+    if ((v7 & 0x2000) == 0 || self->_clickCountInLastMonthNormalizedAcrossItems != *(equalCopy + 14))
     {
       goto LABEL_265;
     }
@@ -4130,7 +4130,7 @@ LABEL_53:
 
   if ((*&has & 0x100000000000) != 0)
   {
-    if ((v7 & 0x100000000000) == 0 || self->_shareCountInLastWeekNormalizedAcrossItems != *(v4 + 45))
+    if ((v7 & 0x100000000000) == 0 || self->_shareCountInLastWeekNormalizedAcrossItems != *(equalCopy + 45))
     {
       goto LABEL_265;
     }
@@ -4143,7 +4143,7 @@ LABEL_53:
 
   if ((*&has & 0x80000000000) != 0)
   {
-    if ((v7 & 0x80000000000) == 0 || self->_shareCountInLastMonthNormalizedAcrossItems != *(v4 + 44))
+    if ((v7 & 0x80000000000) == 0 || self->_shareCountInLastMonthNormalizedAcrossItems != *(equalCopy + 44))
     {
       goto LABEL_265;
     }
@@ -4156,7 +4156,7 @@ LABEL_53:
 
   if ((*&has & 0x1000) != 0)
   {
-    if ((v7 & 0x1000) == 0 || self->_clickCountGivenTimeOfDayInLastWeekNormalizedAcrossItems != *(v4 + 13))
+    if ((v7 & 0x1000) == 0 || self->_clickCountGivenTimeOfDayInLastWeekNormalizedAcrossItems != *(equalCopy + 13))
     {
       goto LABEL_265;
     }
@@ -4169,7 +4169,7 @@ LABEL_53:
 
   if ((*&has & 0x800) != 0)
   {
-    if ((v7 & 0x800) == 0 || self->_clickCountGivenTimeOfDayInLastMonthNormalizedAcrossItems != *(v4 + 12))
+    if ((v7 & 0x800) == 0 || self->_clickCountGivenTimeOfDayInLastMonthNormalizedAcrossItems != *(equalCopy + 12))
     {
       goto LABEL_265;
     }
@@ -4182,7 +4182,7 @@ LABEL_53:
 
   if ((*&has & 0x40) != 0)
   {
-    if ((v7 & 0x40) == 0 || self->_clickCountGivenLocationInLastWeekNormalizedAcrossItems != *(v4 + 7))
+    if ((v7 & 0x40) == 0 || self->_clickCountGivenLocationInLastWeekNormalizedAcrossItems != *(equalCopy + 7))
     {
       goto LABEL_265;
     }
@@ -4195,7 +4195,7 @@ LABEL_53:
 
   if ((*&has & 0x20) != 0)
   {
-    if ((v7 & 0x20) == 0 || self->_clickCountGivenLocationInLastMonthNormalizedAcrossItems != *(v4 + 6))
+    if ((v7 & 0x20) == 0 || self->_clickCountGivenLocationInLastMonthNormalizedAcrossItems != *(equalCopy + 6))
     {
       goto LABEL_265;
     }
@@ -4208,7 +4208,7 @@ LABEL_53:
 
   if ((*&has & 4) != 0)
   {
-    if ((v7 & 4) == 0 || self->_clickCountGivenDayCategoryInLastWeekNormalizedAcrossItems != *(v4 + 3))
+    if ((v7 & 4) == 0 || self->_clickCountGivenDayCategoryInLastWeekNormalizedAcrossItems != *(equalCopy + 3))
     {
       goto LABEL_265;
     }
@@ -4221,7 +4221,7 @@ LABEL_53:
 
   if ((*&has & 2) != 0)
   {
-    if ((v7 & 2) == 0 || self->_clickCountGivenDayCategoryInLastMonthNormalizedAcrossItems != *(v4 + 2))
+    if ((v7 & 2) == 0 || self->_clickCountGivenDayCategoryInLastMonthNormalizedAcrossItems != *(equalCopy + 2))
     {
       goto LABEL_265;
     }
@@ -4234,7 +4234,7 @@ LABEL_53:
 
   if ((*&has & 0x100) != 0)
   {
-    if ((v7 & 0x100) == 0 || self->_clickCountGivenRecencyCategoryInLastWeekNormalizedAcrossItems != *(v4 + 9))
+    if ((v7 & 0x100) == 0 || self->_clickCountGivenRecencyCategoryInLastWeekNormalizedAcrossItems != *(equalCopy + 9))
     {
       goto LABEL_265;
     }
@@ -4247,7 +4247,7 @@ LABEL_53:
 
   if ((*&has & 0x80) != 0)
   {
-    if ((v7 & 0x80) == 0 || self->_clickCountGivenRecencyCategoryInLastMonthNormalizedAcrossItems != *(v4 + 8))
+    if ((v7 & 0x80) == 0 || self->_clickCountGivenRecencyCategoryInLastMonthNormalizedAcrossItems != *(equalCopy + 8))
     {
       goto LABEL_265;
     }
@@ -4260,7 +4260,7 @@ LABEL_53:
 
   if ((*&has & 0x400) != 0)
   {
-    if ((v7 & 0x400) == 0 || self->_clickCountGivenSceneCategoryInLastWeekNormalizedAcrossItems != *(v4 + 11))
+    if ((v7 & 0x400) == 0 || self->_clickCountGivenSceneCategoryInLastWeekNormalizedAcrossItems != *(equalCopy + 11))
     {
       goto LABEL_265;
     }
@@ -4273,7 +4273,7 @@ LABEL_53:
 
   if ((*&has & 0x200) != 0)
   {
-    if ((v7 & 0x200) == 0 || self->_clickCountGivenSceneCategoryInLastMonthNormalizedAcrossItems != *(v4 + 10))
+    if ((v7 & 0x200) == 0 || self->_clickCountGivenSceneCategoryInLastMonthNormalizedAcrossItems != *(equalCopy + 10))
     {
       goto LABEL_265;
     }
@@ -4286,7 +4286,7 @@ LABEL_53:
 
   if ((*&has & 0x10) != 0)
   {
-    if ((v7 & 0x10) == 0 || self->_clickCountGivenFaceCountCategoryInLastWeekNormalizedAcrossItems != *(v4 + 5))
+    if ((v7 & 0x10) == 0 || self->_clickCountGivenFaceCountCategoryInLastWeekNormalizedAcrossItems != *(equalCopy + 5))
     {
       goto LABEL_265;
     }
@@ -4299,7 +4299,7 @@ LABEL_53:
 
   if ((*&has & 8) != 0)
   {
-    if ((v7 & 8) == 0 || self->_clickCountGivenFaceCountCategoryInLastMonthNormalizedAcrossItems != *(v4 + 4))
+    if ((v7 & 8) == 0 || self->_clickCountGivenFaceCountCategoryInLastMonthNormalizedAcrossItems != *(equalCopy + 4))
     {
       goto LABEL_265;
     }
@@ -4312,7 +4312,7 @@ LABEL_53:
 
   if ((*&has & 0x40000000000) != 0)
   {
-    if ((v7 & 0x40000000000) == 0 || self->_shareCountGivenTimeOfDayInLastWeekNormalizedAcrossItems != *(v4 + 43))
+    if ((v7 & 0x40000000000) == 0 || self->_shareCountGivenTimeOfDayInLastWeekNormalizedAcrossItems != *(equalCopy + 43))
     {
       goto LABEL_265;
     }
@@ -4325,7 +4325,7 @@ LABEL_53:
 
   if ((*&has & 0x20000000000) != 0)
   {
-    if ((v7 & 0x20000000000) == 0 || self->_shareCountGivenTimeOfDayInLastMonthNormalizedAcrossItems != *(v4 + 42))
+    if ((v7 & 0x20000000000) == 0 || self->_shareCountGivenTimeOfDayInLastMonthNormalizedAcrossItems != *(equalCopy + 42))
     {
       goto LABEL_265;
     }
@@ -4338,7 +4338,7 @@ LABEL_53:
 
   if ((*&has & 0x4000000000) != 0)
   {
-    if ((v7 & 0x4000000000) == 0 || self->_shareCountGivenLocationInLastWeekNormalizedAcrossItems != *(v4 + 39))
+    if ((v7 & 0x4000000000) == 0 || self->_shareCountGivenLocationInLastWeekNormalizedAcrossItems != *(equalCopy + 39))
     {
       goto LABEL_265;
     }
@@ -4351,7 +4351,7 @@ LABEL_53:
 
   if ((*&has & 0x2000000000) != 0)
   {
-    if ((v7 & 0x2000000000) == 0 || self->_shareCountGivenLocationInLastMonthNormalizedAcrossItems != *(v4 + 38))
+    if ((v7 & 0x2000000000) == 0 || self->_shareCountGivenLocationInLastMonthNormalizedAcrossItems != *(equalCopy + 38))
     {
       goto LABEL_265;
     }
@@ -4364,7 +4364,7 @@ LABEL_53:
 
   if ((*&has & 0x400000000) != 0)
   {
-    if ((v7 & 0x400000000) == 0 || self->_shareCountGivenDayCategoryInLastWeekNormalizedAcrossItems != *(v4 + 35))
+    if ((v7 & 0x400000000) == 0 || self->_shareCountGivenDayCategoryInLastWeekNormalizedAcrossItems != *(equalCopy + 35))
     {
       goto LABEL_265;
     }
@@ -4377,7 +4377,7 @@ LABEL_53:
 
   if ((*&has & 0x200000000) != 0)
   {
-    if ((v7 & 0x200000000) == 0 || self->_shareCountGivenDayCategoryInLastMonthNormalizedAcrossItems != *(v4 + 34))
+    if ((v7 & 0x200000000) == 0 || self->_shareCountGivenDayCategoryInLastMonthNormalizedAcrossItems != *(equalCopy + 34))
     {
       goto LABEL_265;
     }
@@ -4390,7 +4390,7 @@ LABEL_53:
 
   if ((*&has & 0x10000000000) != 0)
   {
-    if ((v7 & 0x10000000000) == 0 || self->_shareCountGivenSceneCategoryInLastWeekNormalizedAcrossItems != *(v4 + 41))
+    if ((v7 & 0x10000000000) == 0 || self->_shareCountGivenSceneCategoryInLastWeekNormalizedAcrossItems != *(equalCopy + 41))
     {
       goto LABEL_265;
     }
@@ -4403,7 +4403,7 @@ LABEL_53:
 
   if ((*&has & 0x8000000000) != 0)
   {
-    if ((v7 & 0x8000000000) == 0 || self->_shareCountGivenSceneCategoryInLastMonthNormalizedAcrossItems != *(v4 + 40))
+    if ((v7 & 0x8000000000) == 0 || self->_shareCountGivenSceneCategoryInLastMonthNormalizedAcrossItems != *(equalCopy + 40))
     {
       goto LABEL_265;
     }
@@ -4416,7 +4416,7 @@ LABEL_53:
 
   if ((*&has & 0x1000000000) != 0)
   {
-    if ((v7 & 0x1000000000) == 0 || self->_shareCountGivenFaceCountCategoryInLastWeekNormalizedAcrossItems != *(v4 + 37))
+    if ((v7 & 0x1000000000) == 0 || self->_shareCountGivenFaceCountCategoryInLastWeekNormalizedAcrossItems != *(equalCopy + 37))
     {
       goto LABEL_265;
     }
@@ -4429,7 +4429,7 @@ LABEL_53:
 
   if ((*&has & 0x800000000) != 0)
   {
-    if ((v7 & 0x800000000) == 0 || self->_shareCountGivenFaceCountCategoryInLastMonthNormalizedAcrossItems != *(v4 + 36))
+    if ((v7 & 0x800000000) == 0 || self->_shareCountGivenFaceCountCategoryInLastMonthNormalizedAcrossItems != *(equalCopy + 36))
     {
       goto LABEL_265;
     }
@@ -4442,7 +4442,7 @@ LABEL_53:
 
   if ((*&has & 0x8000) != 0)
   {
-    if ((v7 & 0x8000) == 0 || self->_clipScore != *(v4 + 16))
+    if ((v7 & 0x8000) == 0 || self->_clipScore != *(equalCopy + 16))
     {
       goto LABEL_265;
     }
@@ -4457,10 +4457,10 @@ LABEL_53:
   {
     if ((v7 & 0x2000000000000) != 0)
     {
-      v9 = *(v4 + 396);
+      v9 = *(equalCopy + 396);
       if (self->_clicked)
       {
-        if ((*(v4 + 396) & 1) == 0)
+        if ((*(equalCopy + 396) & 1) == 0)
         {
           goto LABEL_265;
         }
@@ -4468,7 +4468,7 @@ LABEL_53:
         goto LABEL_240;
       }
 
-      if ((*(v4 + 396) & 1) == 0)
+      if ((*(equalCopy + 396) & 1) == 0)
       {
         goto LABEL_240;
       }
@@ -4487,7 +4487,7 @@ LABEL_265:
 LABEL_240:
   if ((*&has & 0x200000000000) != 0)
   {
-    if ((v7 & 0x200000000000) == 0 || self->_clickOrder != *(v4 + 92))
+    if ((v7 & 0x200000000000) == 0 || self->_clickOrder != *(equalCopy + 92))
     {
       goto LABEL_265;
     }
@@ -4500,7 +4500,7 @@ LABEL_240:
 
   if ((*&has & 0x400000000000) != 0)
   {
-    if ((v7 & 0x400000000000) == 0 || self->_itemPosition != *(v4 + 93))
+    if ((v7 & 0x400000000000) == 0 || self->_itemPosition != *(equalCopy + 93))
     {
       goto LABEL_265;
     }
@@ -4513,7 +4513,7 @@ LABEL_240:
 
   if ((*&has & 0x2000000) != 0)
   {
-    if ((v7 & 0x2000000) == 0 || self->_l2ModelScore != *(v4 + 26))
+    if ((v7 & 0x2000000) == 0 || self->_l2ModelScore != *(equalCopy + 26))
     {
       goto LABEL_265;
     }
@@ -4526,7 +4526,7 @@ LABEL_240:
 
   if ((*&has & 0x800000) != 0)
   {
-    if ((v7 & 0x800000) == 0 || self->_isDuplicate != *(v4 + 24))
+    if ((v7 & 0x800000) == 0 || self->_isDuplicate != *(equalCopy + 24))
     {
       goto LABEL_265;
     }
@@ -4537,10 +4537,10 @@ LABEL_240:
     goto LABEL_265;
   }
 
-  v10 = *(v4 + 50);
+  v10 = *(equalCopy + 50);
   if ((*&has & 0x400000) != 0)
   {
-    if ((v10 & 0x400000) == 0 || self->_isCompleteMatch != *(v4 + 23))
+    if ((v10 & 0x400000) == 0 || self->_isCompleteMatch != *(equalCopy + 23))
     {
       goto LABEL_265;
     }
@@ -6208,22 +6208,22 @@ LABEL_369:
   return v217 ^ v3 ^ v233 ^ v232 ^ v231 ^ v230 ^ v229 ^ v228 ^ v227 ^ v226 ^ v225 ^ v224 ^ v223 ^ v222 ^ v180 ^ v185 ^ v189 ^ v221 ^ v220 ^ v219 ^ v216 ^ v215 ^ v213 ^ v211 ^ v209 ^ v190 ^ v197 ^ v218 ^ v103 ^ v177 ^ v187 ^ v176 ^ v214 ^ v210 ^ v171 ^ v212 ^ v186 ^ v192 ^ v184 ^ v181 ^ v179 ^ v183 ^ v191 ^ v208 ^ v167 ^ v172 ^ v178 ^ v182 ^ v188 ^ v193 ^ v198 ^ v203;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 48))
+  fromCopy = from;
+  if (*(fromCopy + 48))
   {
-    v6 = v4;
+    v6 = fromCopy;
     [(AMLPhotosSearchLabeledData *)self setSearchSessionUUID:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 50);
+  v5 = *(fromCopy + 50);
   if ((v5 & 0x1000000000000) != 0)
   {
-    self->_uiSurface = *(v4 + 98);
+    self->_uiSurface = *(fromCopy + 98);
     *&self->_has |= 0x1000000000000uLL;
-    v5 = *(v4 + 50);
+    v5 = *(fromCopy + 50);
     if ((v5 & 0x20000000) == 0)
     {
 LABEL_5:
@@ -6241,9 +6241,9 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  self->_matchedPeopleRatio = *(v4 + 30);
+  self->_matchedPeopleRatio = *(fromCopy + 30);
   *&self->_has |= 0x20000000uLL;
-  v5 = *(v4 + 50);
+  v5 = *(fromCopy + 50);
   if ((v5 & 0x4000000) == 0)
   {
 LABEL_6:
@@ -6256,9 +6256,9 @@ LABEL_6:
   }
 
 LABEL_60:
-  self->_matchedLocationRatio = *(v4 + 27);
+  self->_matchedLocationRatio = *(fromCopy + 27);
   *&self->_has |= 0x4000000uLL;
-  v5 = *(v4 + 50);
+  v5 = *(fromCopy + 50);
   if ((v5 & 0x100000000) == 0)
   {
 LABEL_7:
@@ -6271,9 +6271,9 @@ LABEL_7:
   }
 
 LABEL_61:
-  self->_matchedSceneRatio = *(v4 + 33);
+  self->_matchedSceneRatio = *(fromCopy + 33);
   *&self->_has |= 0x100000000uLL;
-  v5 = *(v4 + 50);
+  v5 = *(fromCopy + 50);
   if ((v5 & 0x80000000) == 0)
   {
 LABEL_8:
@@ -6286,9 +6286,9 @@ LABEL_8:
   }
 
 LABEL_62:
-  self->_matchedSceneConfidence = *(v4 + 32);
+  self->_matchedSceneConfidence = *(fromCopy + 32);
   *&self->_has |= 0x80000000uLL;
-  v5 = *(v4 + 50);
+  v5 = *(fromCopy + 50);
   if ((v5 & 0x40000000) == 0)
   {
 LABEL_9:
@@ -6301,9 +6301,9 @@ LABEL_9:
   }
 
 LABEL_63:
-  self->_matchedSceneBoundingBox = *(v4 + 31);
+  self->_matchedSceneBoundingBox = *(fromCopy + 31);
   *&self->_has |= 0x40000000uLL;
-  v5 = *(v4 + 50);
+  v5 = *(fromCopy + 50);
   if ((v5 & 0x8000000) == 0)
   {
 LABEL_10:
@@ -6316,9 +6316,9 @@ LABEL_10:
   }
 
 LABEL_64:
-  self->_matchedOCRCharacterRatio = *(v4 + 28);
+  self->_matchedOCRCharacterRatio = *(fromCopy + 28);
   *&self->_has |= 0x8000000uLL;
-  v5 = *(v4 + 50);
+  v5 = *(fromCopy + 50);
   if ((v5 & 0x10000000) == 0)
   {
 LABEL_11:
@@ -6331,9 +6331,9 @@ LABEL_11:
   }
 
 LABEL_65:
-  self->_matchedOCRImportance = *(v4 + 29);
+  self->_matchedOCRImportance = *(fromCopy + 29);
   *&self->_has |= 0x10000000uLL;
-  v5 = *(v4 + 50);
+  v5 = *(fromCopy + 50);
   if ((v5 & 0x800000000000) == 0)
   {
 LABEL_12:
@@ -6346,9 +6346,9 @@ LABEL_12:
   }
 
 LABEL_66:
-  self->_matchedFieldsCount = *(v4 + 94);
+  self->_matchedFieldsCount = *(fromCopy + 94);
   *&self->_has |= 0x800000000000uLL;
-  v5 = *(v4 + 50);
+  v5 = *(fromCopy + 50);
   if ((v5 & 0x1000000) == 0)
   {
 LABEL_13:
@@ -6361,9 +6361,9 @@ LABEL_13:
   }
 
 LABEL_67:
-  self->_l1Score = *(v4 + 25);
+  self->_l1Score = *(fromCopy + 25);
   *&self->_has |= 0x1000000uLL;
-  v5 = *(v4 + 50);
+  v5 = *(fromCopy + 50);
   if ((v5 & 0x20000) == 0)
   {
 LABEL_14:
@@ -6376,9 +6376,9 @@ LABEL_14:
   }
 
 LABEL_68:
-  self->_freshness = *(v4 + 18);
+  self->_freshness = *(fromCopy + 18);
   *&self->_has |= 0x20000uLL;
-  v5 = *(v4 + 50);
+  v5 = *(fromCopy + 50);
   if ((v5 & 0x4000000000000) == 0)
   {
 LABEL_15:
@@ -6391,9 +6391,9 @@ LABEL_15:
   }
 
 LABEL_69:
-  self->_favorited = *(v4 + 397);
+  self->_favorited = *(fromCopy + 397);
   *&self->_has |= 0x4000000000000uLL;
-  v5 = *(v4 + 50);
+  v5 = *(fromCopy + 50);
   if ((v5 & 1) == 0)
   {
 LABEL_16:
@@ -6406,9 +6406,9 @@ LABEL_16:
   }
 
 LABEL_70:
-  self->_aestheticScore = *(v4 + 1);
+  self->_aestheticScore = *(fromCopy + 1);
   *&self->_has |= 1uLL;
-  v5 = *(v4 + 50);
+  v5 = *(fromCopy + 50);
   if ((v5 & 0x10000) == 0)
   {
 LABEL_17:
@@ -6421,9 +6421,9 @@ LABEL_17:
   }
 
 LABEL_71:
-  self->_curationScore = *(v4 + 17);
+  self->_curationScore = *(fromCopy + 17);
   *&self->_has |= 0x10000uLL;
-  v5 = *(v4 + 50);
+  v5 = *(fromCopy + 50);
   if ((v5 & 0x80000) == 0)
   {
 LABEL_18:
@@ -6436,9 +6436,9 @@ LABEL_18:
   }
 
 LABEL_72:
-  self->_hasEverClickInLastWeek = *(v4 + 20);
+  self->_hasEverClickInLastWeek = *(fromCopy + 20);
   *&self->_has |= 0x80000uLL;
-  v5 = *(v4 + 50);
+  v5 = *(fromCopy + 50);
   if ((v5 & 0x40000) == 0)
   {
 LABEL_19:
@@ -6451,9 +6451,9 @@ LABEL_19:
   }
 
 LABEL_73:
-  self->_hasEverClickInLastMonth = *(v4 + 19);
+  self->_hasEverClickInLastMonth = *(fromCopy + 19);
   *&self->_has |= 0x40000uLL;
-  v5 = *(v4 + 50);
+  v5 = *(fromCopy + 50);
   if ((v5 & 0x200000) == 0)
   {
 LABEL_20:
@@ -6466,9 +6466,9 @@ LABEL_20:
   }
 
 LABEL_74:
-  self->_hasEverShareInLastWeek = *(v4 + 22);
+  self->_hasEverShareInLastWeek = *(fromCopy + 22);
   *&self->_has |= 0x200000uLL;
-  v5 = *(v4 + 50);
+  v5 = *(fromCopy + 50);
   if ((v5 & 0x100000) == 0)
   {
 LABEL_21:
@@ -6481,9 +6481,9 @@ LABEL_21:
   }
 
 LABEL_75:
-  self->_hasEverShareInLastMonth = *(v4 + 21);
+  self->_hasEverShareInLastMonth = *(fromCopy + 21);
   *&self->_has |= 0x100000uLL;
-  v5 = *(v4 + 50);
+  v5 = *(fromCopy + 50);
   if ((v5 & 0x4000) == 0)
   {
 LABEL_22:
@@ -6496,9 +6496,9 @@ LABEL_22:
   }
 
 LABEL_76:
-  self->_clickCountInLastWeekNormalizedAcrossItems = *(v4 + 15);
+  self->_clickCountInLastWeekNormalizedAcrossItems = *(fromCopy + 15);
   *&self->_has |= 0x4000uLL;
-  v5 = *(v4 + 50);
+  v5 = *(fromCopy + 50);
   if ((v5 & 0x2000) == 0)
   {
 LABEL_23:
@@ -6511,9 +6511,9 @@ LABEL_23:
   }
 
 LABEL_77:
-  self->_clickCountInLastMonthNormalizedAcrossItems = *(v4 + 14);
+  self->_clickCountInLastMonthNormalizedAcrossItems = *(fromCopy + 14);
   *&self->_has |= 0x2000uLL;
-  v5 = *(v4 + 50);
+  v5 = *(fromCopy + 50);
   if ((v5 & 0x100000000000) == 0)
   {
 LABEL_24:
@@ -6526,9 +6526,9 @@ LABEL_24:
   }
 
 LABEL_78:
-  self->_shareCountInLastWeekNormalizedAcrossItems = *(v4 + 45);
+  self->_shareCountInLastWeekNormalizedAcrossItems = *(fromCopy + 45);
   *&self->_has |= 0x100000000000uLL;
-  v5 = *(v4 + 50);
+  v5 = *(fromCopy + 50);
   if ((v5 & 0x80000000000) == 0)
   {
 LABEL_25:
@@ -6541,9 +6541,9 @@ LABEL_25:
   }
 
 LABEL_79:
-  self->_shareCountInLastMonthNormalizedAcrossItems = *(v4 + 44);
+  self->_shareCountInLastMonthNormalizedAcrossItems = *(fromCopy + 44);
   *&self->_has |= 0x80000000000uLL;
-  v5 = *(v4 + 50);
+  v5 = *(fromCopy + 50);
   if ((v5 & 0x1000) == 0)
   {
 LABEL_26:
@@ -6556,9 +6556,9 @@ LABEL_26:
   }
 
 LABEL_80:
-  self->_clickCountGivenTimeOfDayInLastWeekNormalizedAcrossItems = *(v4 + 13);
+  self->_clickCountGivenTimeOfDayInLastWeekNormalizedAcrossItems = *(fromCopy + 13);
   *&self->_has |= 0x1000uLL;
-  v5 = *(v4 + 50);
+  v5 = *(fromCopy + 50);
   if ((v5 & 0x800) == 0)
   {
 LABEL_27:
@@ -6571,9 +6571,9 @@ LABEL_27:
   }
 
 LABEL_81:
-  self->_clickCountGivenTimeOfDayInLastMonthNormalizedAcrossItems = *(v4 + 12);
+  self->_clickCountGivenTimeOfDayInLastMonthNormalizedAcrossItems = *(fromCopy + 12);
   *&self->_has |= 0x800uLL;
-  v5 = *(v4 + 50);
+  v5 = *(fromCopy + 50);
   if ((v5 & 0x40) == 0)
   {
 LABEL_28:
@@ -6586,9 +6586,9 @@ LABEL_28:
   }
 
 LABEL_82:
-  self->_clickCountGivenLocationInLastWeekNormalizedAcrossItems = *(v4 + 7);
+  self->_clickCountGivenLocationInLastWeekNormalizedAcrossItems = *(fromCopy + 7);
   *&self->_has |= 0x40uLL;
-  v5 = *(v4 + 50);
+  v5 = *(fromCopy + 50);
   if ((v5 & 0x20) == 0)
   {
 LABEL_29:
@@ -6601,9 +6601,9 @@ LABEL_29:
   }
 
 LABEL_83:
-  self->_clickCountGivenLocationInLastMonthNormalizedAcrossItems = *(v4 + 6);
+  self->_clickCountGivenLocationInLastMonthNormalizedAcrossItems = *(fromCopy + 6);
   *&self->_has |= 0x20uLL;
-  v5 = *(v4 + 50);
+  v5 = *(fromCopy + 50);
   if ((v5 & 4) == 0)
   {
 LABEL_30:
@@ -6616,9 +6616,9 @@ LABEL_30:
   }
 
 LABEL_84:
-  self->_clickCountGivenDayCategoryInLastWeekNormalizedAcrossItems = *(v4 + 3);
+  self->_clickCountGivenDayCategoryInLastWeekNormalizedAcrossItems = *(fromCopy + 3);
   *&self->_has |= 4uLL;
-  v5 = *(v4 + 50);
+  v5 = *(fromCopy + 50);
   if ((v5 & 2) == 0)
   {
 LABEL_31:
@@ -6631,9 +6631,9 @@ LABEL_31:
   }
 
 LABEL_85:
-  self->_clickCountGivenDayCategoryInLastMonthNormalizedAcrossItems = *(v4 + 2);
+  self->_clickCountGivenDayCategoryInLastMonthNormalizedAcrossItems = *(fromCopy + 2);
   *&self->_has |= 2uLL;
-  v5 = *(v4 + 50);
+  v5 = *(fromCopy + 50);
   if ((v5 & 0x100) == 0)
   {
 LABEL_32:
@@ -6646,9 +6646,9 @@ LABEL_32:
   }
 
 LABEL_86:
-  self->_clickCountGivenRecencyCategoryInLastWeekNormalizedAcrossItems = *(v4 + 9);
+  self->_clickCountGivenRecencyCategoryInLastWeekNormalizedAcrossItems = *(fromCopy + 9);
   *&self->_has |= 0x100uLL;
-  v5 = *(v4 + 50);
+  v5 = *(fromCopy + 50);
   if ((v5 & 0x80) == 0)
   {
 LABEL_33:
@@ -6661,9 +6661,9 @@ LABEL_33:
   }
 
 LABEL_87:
-  self->_clickCountGivenRecencyCategoryInLastMonthNormalizedAcrossItems = *(v4 + 8);
+  self->_clickCountGivenRecencyCategoryInLastMonthNormalizedAcrossItems = *(fromCopy + 8);
   *&self->_has |= 0x80uLL;
-  v5 = *(v4 + 50);
+  v5 = *(fromCopy + 50);
   if ((v5 & 0x400) == 0)
   {
 LABEL_34:
@@ -6676,9 +6676,9 @@ LABEL_34:
   }
 
 LABEL_88:
-  self->_clickCountGivenSceneCategoryInLastWeekNormalizedAcrossItems = *(v4 + 11);
+  self->_clickCountGivenSceneCategoryInLastWeekNormalizedAcrossItems = *(fromCopy + 11);
   *&self->_has |= 0x400uLL;
-  v5 = *(v4 + 50);
+  v5 = *(fromCopy + 50);
   if ((v5 & 0x200) == 0)
   {
 LABEL_35:
@@ -6691,9 +6691,9 @@ LABEL_35:
   }
 
 LABEL_89:
-  self->_clickCountGivenSceneCategoryInLastMonthNormalizedAcrossItems = *(v4 + 10);
+  self->_clickCountGivenSceneCategoryInLastMonthNormalizedAcrossItems = *(fromCopy + 10);
   *&self->_has |= 0x200uLL;
-  v5 = *(v4 + 50);
+  v5 = *(fromCopy + 50);
   if ((v5 & 0x10) == 0)
   {
 LABEL_36:
@@ -6706,9 +6706,9 @@ LABEL_36:
   }
 
 LABEL_90:
-  self->_clickCountGivenFaceCountCategoryInLastWeekNormalizedAcrossItems = *(v4 + 5);
+  self->_clickCountGivenFaceCountCategoryInLastWeekNormalizedAcrossItems = *(fromCopy + 5);
   *&self->_has |= 0x10uLL;
-  v5 = *(v4 + 50);
+  v5 = *(fromCopy + 50);
   if ((v5 & 8) == 0)
   {
 LABEL_37:
@@ -6721,9 +6721,9 @@ LABEL_37:
   }
 
 LABEL_91:
-  self->_clickCountGivenFaceCountCategoryInLastMonthNormalizedAcrossItems = *(v4 + 4);
+  self->_clickCountGivenFaceCountCategoryInLastMonthNormalizedAcrossItems = *(fromCopy + 4);
   *&self->_has |= 8uLL;
-  v5 = *(v4 + 50);
+  v5 = *(fromCopy + 50);
   if ((v5 & 0x40000000000) == 0)
   {
 LABEL_38:
@@ -6736,9 +6736,9 @@ LABEL_38:
   }
 
 LABEL_92:
-  self->_shareCountGivenTimeOfDayInLastWeekNormalizedAcrossItems = *(v4 + 43);
+  self->_shareCountGivenTimeOfDayInLastWeekNormalizedAcrossItems = *(fromCopy + 43);
   *&self->_has |= 0x40000000000uLL;
-  v5 = *(v4 + 50);
+  v5 = *(fromCopy + 50);
   if ((v5 & 0x20000000000) == 0)
   {
 LABEL_39:
@@ -6751,9 +6751,9 @@ LABEL_39:
   }
 
 LABEL_93:
-  self->_shareCountGivenTimeOfDayInLastMonthNormalizedAcrossItems = *(v4 + 42);
+  self->_shareCountGivenTimeOfDayInLastMonthNormalizedAcrossItems = *(fromCopy + 42);
   *&self->_has |= 0x20000000000uLL;
-  v5 = *(v4 + 50);
+  v5 = *(fromCopy + 50);
   if ((v5 & 0x4000000000) == 0)
   {
 LABEL_40:
@@ -6766,9 +6766,9 @@ LABEL_40:
   }
 
 LABEL_94:
-  self->_shareCountGivenLocationInLastWeekNormalizedAcrossItems = *(v4 + 39);
+  self->_shareCountGivenLocationInLastWeekNormalizedAcrossItems = *(fromCopy + 39);
   *&self->_has |= 0x4000000000uLL;
-  v5 = *(v4 + 50);
+  v5 = *(fromCopy + 50);
   if ((v5 & 0x2000000000) == 0)
   {
 LABEL_41:
@@ -6781,9 +6781,9 @@ LABEL_41:
   }
 
 LABEL_95:
-  self->_shareCountGivenLocationInLastMonthNormalizedAcrossItems = *(v4 + 38);
+  self->_shareCountGivenLocationInLastMonthNormalizedAcrossItems = *(fromCopy + 38);
   *&self->_has |= 0x2000000000uLL;
-  v5 = *(v4 + 50);
+  v5 = *(fromCopy + 50);
   if ((v5 & 0x400000000) == 0)
   {
 LABEL_42:
@@ -6796,9 +6796,9 @@ LABEL_42:
   }
 
 LABEL_96:
-  self->_shareCountGivenDayCategoryInLastWeekNormalizedAcrossItems = *(v4 + 35);
+  self->_shareCountGivenDayCategoryInLastWeekNormalizedAcrossItems = *(fromCopy + 35);
   *&self->_has |= 0x400000000uLL;
-  v5 = *(v4 + 50);
+  v5 = *(fromCopy + 50);
   if ((v5 & 0x200000000) == 0)
   {
 LABEL_43:
@@ -6811,9 +6811,9 @@ LABEL_43:
   }
 
 LABEL_97:
-  self->_shareCountGivenDayCategoryInLastMonthNormalizedAcrossItems = *(v4 + 34);
+  self->_shareCountGivenDayCategoryInLastMonthNormalizedAcrossItems = *(fromCopy + 34);
   *&self->_has |= 0x200000000uLL;
-  v5 = *(v4 + 50);
+  v5 = *(fromCopy + 50);
   if ((v5 & 0x10000000000) == 0)
   {
 LABEL_44:
@@ -6826,9 +6826,9 @@ LABEL_44:
   }
 
 LABEL_98:
-  self->_shareCountGivenSceneCategoryInLastWeekNormalizedAcrossItems = *(v4 + 41);
+  self->_shareCountGivenSceneCategoryInLastWeekNormalizedAcrossItems = *(fromCopy + 41);
   *&self->_has |= 0x10000000000uLL;
-  v5 = *(v4 + 50);
+  v5 = *(fromCopy + 50);
   if ((v5 & 0x8000000000) == 0)
   {
 LABEL_45:
@@ -6841,9 +6841,9 @@ LABEL_45:
   }
 
 LABEL_99:
-  self->_shareCountGivenSceneCategoryInLastMonthNormalizedAcrossItems = *(v4 + 40);
+  self->_shareCountGivenSceneCategoryInLastMonthNormalizedAcrossItems = *(fromCopy + 40);
   *&self->_has |= 0x8000000000uLL;
-  v5 = *(v4 + 50);
+  v5 = *(fromCopy + 50);
   if ((v5 & 0x1000000000) == 0)
   {
 LABEL_46:
@@ -6856,9 +6856,9 @@ LABEL_46:
   }
 
 LABEL_100:
-  self->_shareCountGivenFaceCountCategoryInLastWeekNormalizedAcrossItems = *(v4 + 37);
+  self->_shareCountGivenFaceCountCategoryInLastWeekNormalizedAcrossItems = *(fromCopy + 37);
   *&self->_has |= 0x1000000000uLL;
-  v5 = *(v4 + 50);
+  v5 = *(fromCopy + 50);
   if ((v5 & 0x800000000) == 0)
   {
 LABEL_47:
@@ -6871,9 +6871,9 @@ LABEL_47:
   }
 
 LABEL_101:
-  self->_shareCountGivenFaceCountCategoryInLastMonthNormalizedAcrossItems = *(v4 + 36);
+  self->_shareCountGivenFaceCountCategoryInLastMonthNormalizedAcrossItems = *(fromCopy + 36);
   *&self->_has |= 0x800000000uLL;
-  v5 = *(v4 + 50);
+  v5 = *(fromCopy + 50);
   if ((v5 & 0x8000) == 0)
   {
 LABEL_48:
@@ -6886,9 +6886,9 @@ LABEL_48:
   }
 
 LABEL_102:
-  self->_clipScore = *(v4 + 16);
+  self->_clipScore = *(fromCopy + 16);
   *&self->_has |= 0x8000uLL;
-  v5 = *(v4 + 50);
+  v5 = *(fromCopy + 50);
   if ((v5 & 0x2000000000000) == 0)
   {
 LABEL_49:
@@ -6901,9 +6901,9 @@ LABEL_49:
   }
 
 LABEL_103:
-  self->_clicked = *(v4 + 396);
+  self->_clicked = *(fromCopy + 396);
   *&self->_has |= 0x2000000000000uLL;
-  v5 = *(v4 + 50);
+  v5 = *(fromCopy + 50);
   if ((v5 & 0x200000000000) == 0)
   {
 LABEL_50:
@@ -6916,9 +6916,9 @@ LABEL_50:
   }
 
 LABEL_104:
-  self->_clickOrder = *(v4 + 92);
+  self->_clickOrder = *(fromCopy + 92);
   *&self->_has |= 0x200000000000uLL;
-  v5 = *(v4 + 50);
+  v5 = *(fromCopy + 50);
   if ((v5 & 0x400000000000) == 0)
   {
 LABEL_51:
@@ -6931,9 +6931,9 @@ LABEL_51:
   }
 
 LABEL_105:
-  self->_itemPosition = *(v4 + 93);
+  self->_itemPosition = *(fromCopy + 93);
   *&self->_has |= 0x400000000000uLL;
-  v5 = *(v4 + 50);
+  v5 = *(fromCopy + 50);
   if ((v5 & 0x2000000) == 0)
   {
 LABEL_52:
@@ -6946,9 +6946,9 @@ LABEL_52:
   }
 
 LABEL_106:
-  self->_l2ModelScore = *(v4 + 26);
+  self->_l2ModelScore = *(fromCopy + 26);
   *&self->_has |= 0x2000000uLL;
-  v5 = *(v4 + 50);
+  v5 = *(fromCopy + 50);
   if ((v5 & 0x800000) == 0)
   {
 LABEL_53:
@@ -6961,12 +6961,12 @@ LABEL_53:
   }
 
 LABEL_107:
-  self->_isDuplicate = *(v4 + 24);
+  self->_isDuplicate = *(fromCopy + 24);
   *&self->_has |= 0x800000uLL;
-  if ((*(v4 + 50) & 0x400000) != 0)
+  if ((*(fromCopy + 50) & 0x400000) != 0)
   {
 LABEL_54:
-    self->_isCompleteMatch = *(v4 + 23);
+    self->_isCompleteMatch = *(fromCopy + 23);
     *&self->_has |= 0x400000uLL;
   }
 

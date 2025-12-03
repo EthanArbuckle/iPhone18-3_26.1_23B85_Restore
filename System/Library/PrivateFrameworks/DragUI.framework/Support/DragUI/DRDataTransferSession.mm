@@ -1,43 +1,43 @@
 @interface DRDataTransferSession
-+ (BOOL)_shouldRestrictOpenInPlaceFor:(id)a3 destinationAuditToken:(id *)a4;
-- (BOOL)_isRepresentationAllowed:(id)a3 forDestination:(id)a4;
-- (BOOL)setDestinationAuditToken:(id *)a3;
-- (DRDataTransferSession)initWithSourceItemCollection:(id)a3 sourceAuditToken:(id *)a4 dataProviderEndpoint:(id)a5 filter:(id)a6;
++ (BOOL)_shouldRestrictOpenInPlaceFor:(id)for destinationAuditToken:(id *)token;
+- (BOOL)_isRepresentationAllowed:(id)allowed forDestination:(id)destination;
+- (BOOL)setDestinationAuditToken:(id *)token;
+- (DRDataTransferSession)initWithSourceItemCollection:(id)collection sourceAuditToken:(id *)token dataProviderEndpoint:(id)endpoint filter:(id)filter;
 - (DRDataTransferSessionDelegate)delegate;
 - (PBItemCollection)destinationItemCollection;
-- (id)_copyItemCollectionForDestinationWithFilter:(id)a3;
-- (id)_registerRequestFromSourceItem:(id)a3 typeIdentifier:(id)a4 completionHandler:(id)a5;
+- (id)_copyItemCollectionForDestinationWithFilter:(id)filter;
+- (id)_registerRequestFromSourceItem:(id)item typeIdentifier:(id)identifier completionHandler:(id)handler;
 - (id)destinationDataProviderEndpoint;
-- (void)_setupItem:(id)a3 forLoadingFromSourceItem:(id)a4 destination:(id)a5;
+- (void)_setupItem:(id)item forLoadingFromSourceItem:(id)sourceItem destination:(id)destination;
 - (void)_transferQueue_scheduleNextTransfer;
 - (void)_transferQueue_sendDelegateCallbacksIfNeeded;
 - (void)clearDestinationAuditToken;
-- (void)dataTransferMonitorBeganTransfers:(id)a3;
-- (void)dataTransferMonitorFinishedTransfers:(id)a3;
-- (void)setDataProviderEndpoint:(id)a3 auditToken:(id *)a4;
-- (void)setSourceItemCollection:(id)a3;
+- (void)dataTransferMonitorBeganTransfers:(id)transfers;
+- (void)dataTransferMonitorFinishedTransfers:(id)transfers;
+- (void)setDataProviderEndpoint:(id)endpoint auditToken:(id *)token;
+- (void)setSourceItemCollection:(id)collection;
 - (void)startSendingDelegateCallbacks;
 @end
 
 @implementation DRDataTransferSession
 
-- (DRDataTransferSession)initWithSourceItemCollection:(id)a3 sourceAuditToken:(id *)a4 dataProviderEndpoint:(id)a5 filter:(id)a6
+- (DRDataTransferSession)initWithSourceItemCollection:(id)collection sourceAuditToken:(id *)token dataProviderEndpoint:(id)endpoint filter:(id)filter
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
+  collectionCopy = collection;
+  endpointCopy = endpoint;
+  filterCopy = filter;
   v30.receiver = self;
   v30.super_class = DRDataTransferSession;
   v14 = [(DRDataTransferSession *)&v30 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_sourceItemCollection, a3);
-    [(PBItemCollection *)v15->_sourceItemCollection setDataProviderEndpoint:v12];
+    objc_storeStrong(&v14->_sourceItemCollection, collection);
+    [(PBItemCollection *)v15->_sourceItemCollection setDataProviderEndpoint:endpointCopy];
     [(PBItemCollection *)v15->_sourceItemCollection establishConnectionToDataProviderCompletionBlock:&stru_100055150];
     v16 = [DRProcessInfo alloc];
-    v17 = *&a4->var0[4];
-    v29[0] = *a4->var0;
+    v17 = *&token->var0[4];
+    v29[0] = *token->var0;
     v29[1] = v17;
     v18 = [(DRProcessInfo *)v16 initWithAuditToken:v29];
     sourceProcessInfo = v15->_sourceProcessInfo;
@@ -57,7 +57,7 @@
     transferQueue_requestsInProgress = v15->_transferQueue_requestsInProgress;
     v15->_transferQueue_requestsInProgress = v24;
 
-    v26 = objc_retainBlock(v13);
+    v26 = objc_retainBlock(filterCopy);
     filter = v15->_filter;
     v15->_filter = v26;
   }
@@ -65,20 +65,20 @@
   return v15;
 }
 
-- (void)setSourceItemCollection:(id)a3
+- (void)setSourceItemCollection:(id)collection
 {
-  objc_storeStrong(&self->_sourceItemCollection, a3);
-  v6 = a3;
+  objc_storeStrong(&self->_sourceItemCollection, collection);
+  collectionCopy = collection;
   sub_10000F97C(self->_sourceItemCollection, self->_sourceProcessInfo);
   destinationItemCollection = self->_destinationItemCollection;
   self->_destinationItemCollection = 0;
 }
 
-- (BOOL)setDestinationAuditToken:(id *)a3
+- (BOOL)setDestinationAuditToken:(id *)token
 {
   v5 = [DRProcessInfo alloc];
-  v6 = *&a3->var0[4];
-  v11[0] = *a3->var0;
+  v6 = *&token->var0[4];
+  v11[0] = *token->var0;
   v11[1] = v6;
   v7 = [(DRProcessInfo *)v5 initWithAuditToken:v11];
   destinationProcessInfo = self->_destinationProcessInfo;
@@ -115,37 +115,37 @@
   self->_destinationItemCollection = 0;
 }
 
-- (id)_copyItemCollectionForDestinationWithFilter:(id)a3
+- (id)_copyItemCollectionForDestinationWithFilter:(id)filter
 {
-  v4 = a3;
+  filterCopy = filter;
   if (self->_destinationProcessInfo)
   {
     [(PBItemCollection *)self->_sourceItemCollection originatorDataOwner];
-    v5 = [(DRProcessInfo *)self->_sourceProcessInfo bundleID];
-    v6 = [(DRProcessInfo *)self->_destinationProcessInfo bundleID];
+    bundleID = [(DRProcessInfo *)self->_sourceProcessInfo bundleID];
+    bundleID2 = [(DRProcessInfo *)self->_destinationProcessInfo bundleID];
     v7 = _UIDropAllowedBetweenApps();
 
     if (v7)
     {
-      v8 = [(PBItemCollection *)self->_sourceItemCollection copyWithDoNothingLoaders];
-      v9 = [(PBItemCollection *)self->_sourceItemCollection items];
-      v10 = [v9 count];
+      copyWithDoNothingLoaders = [(PBItemCollection *)self->_sourceItemCollection copyWithDoNothingLoaders];
+      items = [(PBItemCollection *)self->_sourceItemCollection items];
+      v10 = [items count];
 
       if (v10)
       {
         v11 = 0;
         do
         {
-          v12 = [(PBItemCollection *)self->_sourceItemCollection items];
-          v13 = [v12 objectAtIndexedSubscript:v11];
+          items2 = [(PBItemCollection *)self->_sourceItemCollection items];
+          v13 = [items2 objectAtIndexedSubscript:v11];
 
-          v14 = [v8 items];
-          v15 = [v14 objectAtIndexedSubscript:v11];
+          items3 = [copyWithDoNothingLoaders items];
+          v15 = [items3 objectAtIndexedSubscript:v11];
 
           [(DRDataTransferSession *)self _setupItem:v15 forLoadingFromSourceItem:v13 destination:self->_destinationProcessInfo];
           ++v11;
-          v16 = [(PBItemCollection *)self->_sourceItemCollection items];
-          v17 = [v16 count];
+          items4 = [(PBItemCollection *)self->_sourceItemCollection items];
+          v17 = [items4 count];
         }
 
         while (v11 < v17);
@@ -155,11 +155,11 @@
     else
     {
       v18 = [NSMutableArray alloc];
-      v19 = [(PBItemCollection *)self->_sourceItemCollection items];
-      v20 = [v18 initWithCapacity:{objc_msgSend(v19, "count")}];
+      items5 = [(PBItemCollection *)self->_sourceItemCollection items];
+      v20 = [v18 initWithCapacity:{objc_msgSend(items5, "count")}];
 
-      v21 = [(PBItemCollection *)self->_sourceItemCollection items];
-      v22 = [v21 count];
+      items6 = [(PBItemCollection *)self->_sourceItemCollection items];
+      v22 = [items6 count];
 
       if (v22)
       {
@@ -170,56 +170,56 @@
           [v20 addObject:v24];
 
           ++v23;
-          v25 = [(PBItemCollection *)self->_sourceItemCollection items];
-          v26 = [v25 count];
+          items7 = [(PBItemCollection *)self->_sourceItemCollection items];
+          v26 = [items7 count];
         }
 
         while (v23 < v26);
       }
 
-      v8 = [(PBItemCollection *)self->_sourceItemCollection copyWithItems:v20];
+      copyWithDoNothingLoaders = [(PBItemCollection *)self->_sourceItemCollection copyWithItems:v20];
     }
   }
 
   else
   {
-    v8 = 0;
+    copyWithDoNothingLoaders = 0;
   }
 
-  return v8;
+  return copyWithDoNothingLoaders;
 }
 
 - (id)destinationDataProviderEndpoint
 {
   [(PBItemCollection *)self->_sourceItemCollection originatorDataOwner];
-  v3 = [(DRProcessInfo *)self->_sourceProcessInfo bundleID];
-  v4 = [(DRProcessInfo *)self->_destinationProcessInfo bundleID];
+  bundleID = [(DRProcessInfo *)self->_sourceProcessInfo bundleID];
+  bundleID2 = [(DRProcessInfo *)self->_destinationProcessInfo bundleID];
   v5 = _UIDropAllowedBetweenApps();
 
   if (v5)
   {
-    v6 = [(DRDataTransferSession *)self destinationItemCollection];
-    v7 = [v6 dataConsumersEndpoint];
+    destinationItemCollection = [(DRDataTransferSession *)self destinationItemCollection];
+    dataConsumersEndpoint = [destinationItemCollection dataConsumersEndpoint];
   }
 
   else
   {
-    v7 = 0;
+    dataConsumersEndpoint = 0;
   }
 
-  return v7;
+  return dataConsumersEndpoint;
 }
 
-+ (BOOL)_shouldRestrictOpenInPlaceFor:(id)a3 destinationAuditToken:(id *)a4
++ (BOOL)_shouldRestrictOpenInPlaceFor:(id)for destinationAuditToken:(id *)token
 {
-  v5 = a3;
-  if (v5)
+  forCopy = for;
+  if (forCopy)
   {
-    v6 = *&a4->var0[4];
-    v11[0] = *a4->var0;
+    v6 = *&token->var0[4];
+    v11[0] = *token->var0;
     v11[1] = v6;
     v7 = sub_100001E3C(v11, 0xD0000u);
-    v8 = v5;
+    v8 = forCopy;
     v9 = !v7 && FPURLIsLocatedOnRemovableStorage() != 0;
     CFRelease(v8);
   }
@@ -232,20 +232,20 @@
   return v9;
 }
 
-- (BOOL)_isRepresentationAllowed:(id)a3 forDestination:(id)a4
+- (BOOL)_isRepresentationAllowed:(id)allowed forDestination:(id)destination
 {
-  v6 = a3;
-  v7 = a4;
+  allowedCopy = allowed;
+  destinationCopy = destination;
   if (qword_1000635A8 != -1)
   {
     sub_100030000();
   }
 
-  if (![v7 isAppleProcess] || objc_msgSend(v7, "isAnotherDevice"))
+  if (![destinationCopy isAppleProcess] || objc_msgSend(destinationCopy, "isAnotherDevice"))
   {
     v8 = qword_1000635A0;
-    v9 = [v6 typeIdentifier];
-    LOBYTE(v8) = [v8 containsObject:v9];
+    typeIdentifier = [allowedCopy typeIdentifier];
+    LOBYTE(v8) = [v8 containsObject:typeIdentifier];
 
     if (v8)
     {
@@ -253,7 +253,7 @@
     }
   }
 
-  if (self->_filter && (v10 = (-[PBItemCollection originatorDataOwner](self->_sourceItemCollection, "originatorDataOwner") & 0xFFFFFFFFFFFFFFFELL) == 2, filter = self->_filter, [v6 typeIdentifier], v12 = objc_claimAutoreleasedReturnValue(), LODWORD(v10) = filter[2](filter, v12, v10, self->_sourceProcessInfo, v7), v12, !v10))
+  if (self->_filter && (v10 = (-[PBItemCollection originatorDataOwner](self->_sourceItemCollection, "originatorDataOwner") & 0xFFFFFFFFFFFFFFFELL) == 2, filter = self->_filter, [allowedCopy typeIdentifier], v12 = objc_claimAutoreleasedReturnValue(), LODWORD(v10) = filter[2](filter, v12, v10, self->_sourceProcessInfo, destinationCopy), v12, !v10))
   {
 LABEL_11:
     v15 = 0;
@@ -261,21 +261,21 @@ LABEL_11:
 
   else
   {
-    v13 = [v6 visibility];
-    if (v13 == 1)
+    visibility = [allowedCopy visibility];
+    if (visibility == 1)
     {
-      v14 = [v7 isSameTeamAsSource:self->_sourceProcessInfo];
+      v14 = [destinationCopy isSameTeamAsSource:self->_sourceProcessInfo];
     }
 
     else
     {
-      if (v13 != 3)
+      if (visibility != 3)
       {
         v15 = 1;
         goto LABEL_15;
       }
 
-      v14 = [v7 isSameProcessAsSource:self->_sourceProcessInfo];
+      v14 = [destinationCopy isSameProcessAsSource:self->_sourceProcessInfo];
     }
 
     v15 = v14;
@@ -286,34 +286,34 @@ LABEL_15:
   return v15;
 }
 
-- (void)_setupItem:(id)a3 forLoadingFromSourceItem:(id)a4 destination:(id)a5
+- (void)_setupItem:(id)item forLoadingFromSourceItem:(id)sourceItem destination:(id)destination
 {
-  v8 = a3;
-  val = a4;
-  v9 = a5;
+  itemCopy = item;
+  val = sourceItem;
+  destinationCopy = destination;
   if (qword_1000635B8 != -1)
   {
     sub_100030014();
   }
 
-  v10 = [val metadata];
-  v11 = [v10 mutableCopy];
+  metadata = [val metadata];
+  v11 = [metadata mutableCopy];
 
-  if (([v9 isSameTeamAsSource:self->_sourceProcessInfo] & 1) == 0)
+  if (([destinationCopy isSameTeamAsSource:self->_sourceProcessInfo] & 1) == 0)
   {
     [v11 removeObjectsForKeys:qword_1000635B0];
   }
 
   v24 = v11;
-  [v8 setMetadata:v11];
+  [itemCopy setMetadata:v11];
   objc_initWeak(&location, val);
   v26 = +[NSMutableArray array];
   v39 = 0u;
   v40 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v12 = [v8 representations];
-  v13 = [v12 countByEnumeratingWithState:&v37 objects:v43 count:16];
+  representations = [itemCopy representations];
+  v13 = [representations countByEnumeratingWithState:&v37 objects:v43 count:16];
   if (v13)
   {
     v14 = *v38;
@@ -323,12 +323,12 @@ LABEL_15:
       {
         if (*v38 != v14)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(representations);
         }
 
         v16 = *(*(&v37 + 1) + 8 * i);
-        v17 = [v16 typeIdentifier];
-        if ([(DRDataTransferSession *)self _isRepresentationAllowed:v16 forDestination:v9])
+        typeIdentifier = [v16 typeIdentifier];
+        if ([(DRDataTransferSession *)self _isRepresentationAllowed:v16 forDestination:destinationCopy])
         {
           objc_initWeak(&from, self);
           v31[0] = _NSConcreteStackBlock;
@@ -336,9 +336,9 @@ LABEL_15:
           v31[2] = sub_100010558;
           v31[3] = &unk_100055230;
           objc_copyWeak(&v34, &location);
-          v32 = v17;
+          v32 = typeIdentifier;
           objc_copyWeak(&v35, &from);
-          v33 = v9;
+          v33 = destinationCopy;
           [v16 setLoaderBlock:v31];
 
           objc_destroyWeak(&v35);
@@ -348,12 +348,12 @@ LABEL_15:
 
         else
         {
-          v18 = [v16 typeIdentifier];
-          [v26 addObject:v18];
+          typeIdentifier2 = [v16 typeIdentifier];
+          [v26 addObject:typeIdentifier2];
         }
       }
 
-      v13 = [v12 countByEnumeratingWithState:&v37 objects:v43 count:16];
+      v13 = [representations countByEnumeratingWithState:&v37 objects:v43 count:16];
     }
 
     while (v13);
@@ -380,7 +380,7 @@ LABEL_15:
         v23 = *(*(&v27 + 1) + 8 * j);
         if (objc_opt_respondsToSelector())
         {
-          [v8 removeRepresentationOfType:v23];
+          [itemCopy removeRepresentationOfType:v23];
         }
       }
 
@@ -393,11 +393,11 @@ LABEL_15:
   objc_destroyWeak(&location);
 }
 
-- (id)_registerRequestFromSourceItem:(id)a3 typeIdentifier:(id)a4 completionHandler:(id)a5
+- (id)_registerRequestFromSourceItem:(id)item typeIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  itemCopy = item;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v25 = 0;
   v26 = &v25;
   v27 = 0x3032000000;
@@ -407,11 +407,11 @@ LABEL_15:
   v11 = DRLogTarget();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
-    v12 = [v8 UUID];
+    uUID = [itemCopy UUID];
     *buf = 138412546;
-    v32 = v12;
+    v32 = uUID;
     v33 = 2112;
-    v34 = v9;
+    v34 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "Registering request for item UUID %@, type: %@", buf, 0x16u);
   }
 
@@ -420,14 +420,14 @@ LABEL_15:
   block[1] = 3221225472;
   block[2] = sub_10001104C;
   block[3] = &unk_100055258;
-  v20 = v8;
-  v21 = v9;
-  v23 = v10;
+  v20 = itemCopy;
+  v21 = identifierCopy;
+  v23 = handlerCopy;
   v24 = &v25;
-  v22 = self;
-  v14 = v10;
-  v15 = v9;
-  v16 = v8;
+  selfCopy = self;
+  v14 = handlerCopy;
+  v15 = identifierCopy;
+  v16 = itemCopy;
   dispatch_sync(v13, block);
 
   v17 = v26[5];
@@ -513,12 +513,12 @@ LABEL_33:
   {
     v8 = [(NSMutableArray *)self->_transferQueue_requestsQueue objectAtIndex:0];
     [(NSMutableArray *)self->_transferQueue_requestsQueue removeObjectAtIndex:0];
-    v9 = [v8 typeIdentifier];
-    v10 = [v8 sourceItem];
-    v11 = [v10 UUID];
+    typeIdentifier = [v8 typeIdentifier];
+    sourceItem = [v8 sourceItem];
+    uUID = [sourceItem UUID];
 
-    v12 = [v8 sourceItem];
-    v13 = [v12 representationConformingToType:v9];
+    sourceItem2 = [v8 sourceItem];
+    v13 = [sourceItem2 representationConformingToType:typeIdentifier];
 
     v14 = DRLogTarget();
     v15 = v14;
@@ -527,9 +527,9 @@ LABEL_33:
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v39 = v9;
+        v39 = typeIdentifier;
         v40 = 2112;
-        v41 = v11;
+        v41 = uUID;
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Scheduling load for type %@ from item UUID %@", buf, 0x16u);
       }
 
@@ -538,11 +538,11 @@ LABEL_33:
       v33[1] = 3221225472;
       v33[2] = sub_100011684;
       v33[3] = &unk_100055280;
-      v34 = v9;
-      v35 = v11;
+      v34 = typeIdentifier;
+      v35 = uUID;
       v16 = v8;
       v36 = v16;
-      v37 = self;
+      selfCopy = self;
       v17 = objc_retainBlock(v33);
       if (qword_1000635E0 != -1)
       {
@@ -571,19 +571,19 @@ LABEL_33:
         v18 = [v13 loadWithCompletionHandler:v17];
       }
 
-      v19 = [v16 progress];
-      [v19 addChild:v18 withPendingUnitCount:100];
+      progress = [v16 progress];
+      [progress addChild:v18 withPendingUnitCount:100];
 
       v15 = v34;
     }
 
     else if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
-      v20 = [v8 typeIdentifier];
+      typeIdentifier2 = [v8 typeIdentifier];
       *buf = 138412546;
-      v39 = v20;
+      v39 = typeIdentifier2;
       v40 = 2112;
-      v41 = v11;
+      v41 = uUID;
       _os_log_error_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "Could not find representation for type %@ in item UUID %@", buf, 0x16u);
     }
 
@@ -648,7 +648,7 @@ LABEL_33:
   dispatch_async(v3, block);
 }
 
-- (void)dataTransferMonitorBeganTransfers:(id)a3
+- (void)dataTransferMonitorBeganTransfers:(id)transfers
 {
   v4 = sub_100011008();
   block[0] = _NSConcreteStackBlock;
@@ -659,7 +659,7 @@ LABEL_33:
   dispatch_async(v4, block);
 }
 
-- (void)dataTransferMonitorFinishedTransfers:(id)a3
+- (void)dataTransferMonitorFinishedTransfers:(id)transfers
 {
   v4 = sub_100011008();
   block[0] = _NSConcreteStackBlock;
@@ -670,13 +670,13 @@ LABEL_33:
   dispatch_async(v4, block);
 }
 
-- (void)setDataProviderEndpoint:(id)a3 auditToken:(id *)a4
+- (void)setDataProviderEndpoint:(id)endpoint auditToken:(id *)token
 {
-  [(PBItemCollection *)self->_sourceItemCollection setDataProviderEndpoint:a3];
+  [(PBItemCollection *)self->_sourceItemCollection setDataProviderEndpoint:endpoint];
   [(PBItemCollection *)self->_sourceItemCollection establishConnectionToDataProviderCompletionBlock:&stru_1000552F0];
   v6 = [DRProcessInfo alloc];
-  v7 = *&a4->var0[4];
-  v10[0] = *a4->var0;
+  v7 = *&token->var0[4];
+  v10[0] = *token->var0;
   v10[1] = v7;
   v8 = [(DRProcessInfo *)v6 initWithAuditToken:v10];
   sourceProcessInfo = self->_sourceProcessInfo;

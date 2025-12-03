@@ -1,11 +1,11 @@
 @interface CKTranscriptBalloonCell
 - (BOOL)_disableRasterizeInAnimations;
-- (BOOL)_isCommSafetyRestrictedForChatItem:(id)a3;
+- (BOOL)_isCommSafetyRestrictedForChatItem:(id)item;
 - (BOOL)_replyLineMaterialsEnabled;
 - (BOOL)allowsSwipeToReply;
 - (BOOL)isAudioMessage;
-- (BOOL)isPointInAllowedSwipingArea:(CGPoint)a3;
-- (CGRect)_createLineViewFrameForThreadGroupLayoutAttributes:(id)a3;
+- (BOOL)isPointInAllowedSwipingArea:(CGPoint)area;
+- (CGRect)_createLineViewFrameForThreadGroupLayoutAttributes:(id)attributes;
 - (CGRect)_swipeToReplySafeSwipeRect;
 - (CKBalloonSwipeController)balloonSwipeController;
 - (CKTranscriptBalloonCell)init;
@@ -13,59 +13,59 @@
 - (CKTranscriptBalloonCellTextEffectsDelegate)textEffectsDelegate;
 - (NSString)description;
 - (UIEdgeInsets)messageDisplayViewTailInsets;
-- (double)insertionDurationForInsertionType:(int64_t)a3;
+- (double)insertionDurationForInsertionType:(int64_t)type;
 - (double)swipeToReplyLayoutOffset;
-- (id)_createLinePathForFrame:(CGRect)a3 withThreadGroupLayoutAttributes:(id)a4;
-- (id)_drawLowerBracketLoopForPath:(id)a3 withLayout:(id)a4 lineViewMaxY:(double)a5;
-- (id)_extendPath:(id *)a3 withFrame:(CGRect)a4;
-- (id)_lineDescriptionForThreadGroupLayoutAttributes:(id)a3 setLineType:(BOOL)a4;
-- (id)animationWithKeyPath:(id)a3 fromValue:(id)a4 toValue:(id)a5 beginTime:(double)a6 duration:(double)a7 timingFunction:(id)a8;
-- (id)animationWithKeyPath:(id)a3 fromValue:(id)a4 toValue:(id)a5 beginTime:(double)a6 duration:(double)a7 timingFunctionName:(id)a8;
-- (id)customTextRenderingDisplayLinkForTextBalloonViewTextView:(id)a3;
-- (id)messageDisplayViewLayoutAttributesForMessageDisplayViewFrame:(CGRect)a3 inContainerFrame:(CGRect)a4;
+- (id)_createLinePathForFrame:(CGRect)frame withThreadGroupLayoutAttributes:(id)attributes;
+- (id)_drawLowerBracketLoopForPath:(id)path withLayout:(id)layout lineViewMaxY:(double)y;
+- (id)_extendPath:(id *)path withFrame:(CGRect)frame;
+- (id)_lineDescriptionForThreadGroupLayoutAttributes:(id)attributes setLineType:(BOOL)type;
+- (id)animationWithKeyPath:(id)path fromValue:(id)value toValue:(id)toValue beginTime:(double)time duration:(double)duration timingFunction:(id)function;
+- (id)animationWithKeyPath:(id)path fromValue:(id)value toValue:(id)toValue beginTime:(double)time duration:(double)duration timingFunctionName:(id)name;
+- (id)customTextRenderingDisplayLinkForTextBalloonViewTextView:(id)view;
+- (id)messageDisplayViewLayoutAttributesForMessageDisplayViewFrame:(CGRect)frame inContainerFrame:(CGRect)containerFrame;
 - (int64_t)insertionAnimationType;
-- (unint64_t)textBalloonViewAllowedLayoutActionForTextBalloonView:(id)a3;
-- (void)_addQuickActionButtonIfNeededAnimated:(BOOL)a3;
-- (void)_animateLineExtension:(id)a3;
-- (void)_animateLowerBracketToLoop:(id)a3;
-- (void)_animateReplyContextPreview:(id)a3;
-- (void)_animateUpperBracket:(id)a3;
-- (void)_ck_setEditing:(BOOL)a3 animated:(BOOL)a4;
-- (void)_drawLoopForPath:(id *)a3 withLayout:(id)a4;
-- (void)_drawLowerBracketForPath:(id *)a3 lineViewMaxX:(double)a4 lineViewMaxY:(double)a5;
-- (void)_drawStraightLineForPath:(id *)a3 withLayout:(id)a4 lineViewMaxY:(double)a5 isTerminal:(BOOL)a6 prevLineSegmentType:(unint64_t)a7;
-- (void)_drawUpperBracketForPath:(id *)a3 withLayout:(id)a4 lineViewMaxX:(double)a5 lineViewMaxY:(double)a6;
-- (void)_fadeInBalloonAlpha:(double)a3 atBeginTime:(double)a4;
-- (void)_fadeInContactImageAlpha:(double)a3 atBeginTime:(double)a4;
-- (void)_removeQuickActionButtonIfNeededAnimated:(BOOL)a3;
-- (void)_slideContactImageWithTranslate:(double)a3 duration:(double)a4 beginTime:(double)a5;
-- (void)_updateLineForThreadGroupLayoutAttributes:(id)a3;
-- (void)addFilter:(id)a3 fromTriggeringMessage:(BOOL)a4;
-- (void)applyLayoutAttributes:(id)a3;
+- (unint64_t)textBalloonViewAllowedLayoutActionForTextBalloonView:(id)view;
+- (void)_addQuickActionButtonIfNeededAnimated:(BOOL)animated;
+- (void)_animateLineExtension:(id)extension;
+- (void)_animateLowerBracketToLoop:(id)loop;
+- (void)_animateReplyContextPreview:(id)preview;
+- (void)_animateUpperBracket:(id)bracket;
+- (void)_ck_setEditing:(BOOL)editing animated:(BOOL)animated;
+- (void)_drawLoopForPath:(id *)path withLayout:(id)layout;
+- (void)_drawLowerBracketForPath:(id *)path lineViewMaxX:(double)x lineViewMaxY:(double)y;
+- (void)_drawStraightLineForPath:(id *)path withLayout:(id)layout lineViewMaxY:(double)y isTerminal:(BOOL)terminal prevLineSegmentType:(unint64_t)type;
+- (void)_drawUpperBracketForPath:(id *)path withLayout:(id)layout lineViewMaxX:(double)x lineViewMaxY:(double)y;
+- (void)_fadeInBalloonAlpha:(double)alpha atBeginTime:(double)time;
+- (void)_fadeInContactImageAlpha:(double)alpha atBeginTime:(double)time;
+- (void)_removeQuickActionButtonIfNeededAnimated:(BOOL)animated;
+- (void)_slideContactImageWithTranslate:(double)translate duration:(double)duration beginTime:(double)time;
+- (void)_updateLineForThreadGroupLayoutAttributes:(id)attributes;
+- (void)addFilter:(id)filter fromTriggeringMessage:(BOOL)message;
+- (void)applyLayoutAttributes:(id)attributes;
 - (void)clearFilters;
 - (void)configureContactImageStrokeView;
-- (void)configureForChatItem:(id)a3 context:(id)a4 animated:(BOOL)a5 animationDuration:(double)a6 animationCurve:(int64_t)a7;
-- (void)configureQuickActionButtonForChatItem:(id)a3;
+- (void)configureForChatItem:(id)item context:(id)context animated:(BOOL)animated animationDuration:(double)duration animationCurve:(int64_t)curve;
+- (void)configureQuickActionButtonForChatItem:(id)item;
 - (void)dealloc;
 - (void)layoutSubviewsForAlignmentContents;
 - (void)layoutSubviewsForContents;
-- (void)performInsertion:(id)a3;
+- (void)performInsertion:(id)insertion;
 - (void)prepareForReuse;
-- (void)quickActionButtonAnimationDidEnd:(id)a3;
-- (void)quickActionButtonWasTapped:(id)a3;
-- (void)setAnimationDelegate:(id)a3;
-- (void)setAnimationPauseReasons:(int64_t)a3;
-- (void)setBalloonView:(id)a3;
-- (void)setCanShowQuickActionButton:(BOOL)a3;
-- (void)setSyndicationIdentifiers:(id)a3;
-- (void)setThreadGroupLayoutAttributes:(id)a3;
-- (void)swipeToReplyGestureHandler:(id)a3;
-- (void)textBalloonViewDidLayoutSubviews:(id)a3;
-- (void)textBalloonViewTextView:(id)a3 didChangeTextEffectPlaybackCandidateStatus:(BOOL)a4;
-- (void)textBalloonViewTextViewDidChangeRenderBounds:(id)a3;
-- (void)textBalloonViewWillLayoutSubviews:(id)a3;
+- (void)quickActionButtonAnimationDidEnd:(id)end;
+- (void)quickActionButtonWasTapped:(id)tapped;
+- (void)setAnimationDelegate:(id)delegate;
+- (void)setAnimationPauseReasons:(int64_t)reasons;
+- (void)setBalloonView:(id)view;
+- (void)setCanShowQuickActionButton:(BOOL)button;
+- (void)setSyndicationIdentifiers:(id)identifiers;
+- (void)setThreadGroupLayoutAttributes:(id)attributes;
+- (void)swipeToReplyGestureHandler:(id)handler;
+- (void)textBalloonViewDidLayoutSubviews:(id)subviews;
+- (void)textBalloonViewTextView:(id)view didChangeTextEffectPlaybackCandidateStatus:(BOOL)status;
+- (void)textBalloonViewTextViewDidChangeRenderBounds:(id)bounds;
+- (void)textBalloonViewWillLayoutSubviews:(id)subviews;
 - (void)updateQuickActionButtonVisibility;
-- (void)willLayoutDrawerLabelFrame:(CGRect *)a3;
+- (void)willLayoutDrawerLabelFrame:(CGRect *)frame;
 @end
 
 @implementation CKTranscriptBalloonCell
@@ -99,41 +99,41 @@
   v8.receiver = self;
   v8.super_class = CKTranscriptBalloonCell;
   v4 = [(CKTranscriptMessageCell *)&v8 description];
-  v5 = [(CKTranscriptBalloonCell *)self balloonView];
-  v6 = [v3 stringWithFormat:@"%@ balloonView:%@", v4, v5];
+  balloonView = [(CKTranscriptBalloonCell *)self balloonView];
+  v6 = [v3 stringWithFormat:@"%@ balloonView:%@", v4, balloonView];
 
   return v6;
 }
 
 - (BOOL)isAudioMessage
 {
-  v2 = [(CKTranscriptBalloonCell *)self balloonView];
+  balloonView = [(CKTranscriptBalloonCell *)self balloonView];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return isKindOfClass & 1;
 }
 
-- (void)_ck_setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)_ck_setEditing:(BOOL)editing animated:(BOOL)animated
 {
-  v4 = a3;
+  editingCopy = editing;
   v7.receiver = self;
   v7.super_class = CKTranscriptBalloonCell;
-  [(CKEditableCollectionViewCell *)&v7 _ck_setEditing:a3 animated:a4];
-  v6 = [(CKTranscriptBalloonCell *)self balloonView];
-  [v6 setUserInteractionEnabled:!v4];
+  [(CKEditableCollectionViewCell *)&v7 _ck_setEditing:editing animated:animated];
+  balloonView = [(CKTranscriptBalloonCell *)self balloonView];
+  [balloonView setUserInteractionEnabled:!editingCopy];
 }
 
 - (BOOL)_disableRasterizeInAnimations
 {
-  v3 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v4 = [v3 isBalloonMaterialsEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isBalloonMaterialsEnabled = [mEMORY[0x1E69A8070] isBalloonMaterialsEnabled];
 
-  if (v4)
+  if (isBalloonMaterialsEnabled)
   {
-    v5 = [(CKTranscriptBalloonCell *)self balloonView];
-    v6 = v5;
-    if (v5)
+    balloonView = [(CKTranscriptBalloonCell *)self balloonView];
+    v6 = balloonView;
+    if (balloonView)
     {
       v18 = 0u;
       v19 = 0u;
@@ -143,8 +143,8 @@
       v15 = 0u;
       v12 = 0u;
       v13 = 0u;
-      [v5 balloonDescriptor];
-      v7 = [(CKTranscriptBalloonCell *)self traitCollection];
+      [balloonView balloonDescriptor];
+      traitCollection = [(CKTranscriptBalloonCell *)self traitCollection];
       v11[4] = v16;
       v11[5] = v17;
       v11[6] = v18;
@@ -153,14 +153,14 @@
       v11[1] = v13;
       v11[2] = v14;
       v11[3] = v15;
-      v8 = [CKBalloonDescriptorObjcWrapper needsBubbleMaterialForDescriptor:v11 traitCollection:v7];
+      _disableRasterizeInAnimations = [CKBalloonDescriptorObjcWrapper needsBubbleMaterialForDescriptor:v11 traitCollection:traitCollection];
     }
 
     else
     {
       v20.receiver = self;
       v20.super_class = CKTranscriptBalloonCell;
-      v8 = [(CKTranscriptBalloonCell *)&v20 _disableRasterizeInAnimations];
+      _disableRasterizeInAnimations = [(CKTranscriptBalloonCell *)&v20 _disableRasterizeInAnimations];
     }
   }
 
@@ -171,26 +171,26 @@
     return [(CKTranscriptBalloonCell *)&v10 _disableRasterizeInAnimations];
   }
 
-  return v8;
+  return _disableRasterizeInAnimations;
 }
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
-  v4 = a3;
-  if (![(CKTranscriptCollectionViewLayoutAttributes *)self->_layoutAttributes isEqual:v4])
+  attributesCopy = attributes;
+  if (![(CKTranscriptCollectionViewLayoutAttributes *)self->_layoutAttributes isEqual:attributesCopy])
   {
     v7.receiver = self;
     v7.super_class = CKTranscriptBalloonCell;
-    [(CKTranscriptBalloonCell *)&v7 applyLayoutAttributes:v4];
-    [(CKTranscriptBalloonCell *)self setLayoutAttributes:v4];
-    if (v4)
+    [(CKTranscriptBalloonCell *)&v7 applyLayoutAttributes:attributesCopy];
+    [(CKTranscriptBalloonCell *)self setLayoutAttributes:attributesCopy];
+    if (attributesCopy)
     {
-      v5 = [v4[81] mutableCopy];
-      [v5 addObject:v4];
+      v5 = [attributesCopy[81] mutableCopy];
+      [v5 addObject:attributesCopy];
       [(CKTranscriptBalloonCell *)self setThreadGroupLayoutAttributes:v5];
     }
 
-    if ([v4 isInsertingReply])
+    if ([attributesCopy isInsertingReply])
     {
       [(CKTranscriptBalloonCell *)self setInsertingReply:1];
     }
@@ -212,28 +212,28 @@
   }
 }
 
-- (id)messageDisplayViewLayoutAttributesForMessageDisplayViewFrame:(CGRect)a3 inContainerFrame:(CGRect)a4
+- (id)messageDisplayViewLayoutAttributesForMessageDisplayViewFrame:(CGRect)frame inContainerFrame:(CGRect)containerFrame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3.size.height;
-  v9 = a3.size.width;
-  v10 = a3.origin.y;
-  v11 = a3.origin.x;
+  height = containerFrame.size.height;
+  width = containerFrame.size.width;
+  y = containerFrame.origin.y;
+  x = containerFrame.origin.x;
+  v8 = frame.size.height;
+  v9 = frame.size.width;
+  v10 = frame.origin.y;
+  v11 = frame.origin.x;
   v22.receiver = self;
   v22.super_class = CKTranscriptBalloonCell;
   v13 = [CKTranscriptMessageContentCell messageDisplayViewLayoutAttributesForMessageDisplayViewFrame:sel_messageDisplayViewLayoutAttributesForMessageDisplayViewFrame_inContainerFrame_ inContainerFrame:?];
-  v14 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v15 = [v14 isExpressiveTextEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isExpressiveTextEnabled = [mEMORY[0x1E69A8070] isExpressiveTextEnabled];
 
-  if (v15 && (v16 = objc_loadWeakRetained(&self->_textEffectsDelegate), v16, v16))
+  if (isExpressiveTextEnabled && (v16 = objc_loadWeakRetained(&self->_textEffectsDelegate), v16, v16))
   {
-    v17 = [(CKTranscriptBalloonCell *)self balloonView];
-    if (v17 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    balloonView = [(CKTranscriptBalloonCell *)self balloonView];
+    if (balloonView && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v18 = v17;
+      v18 = balloonView;
       WeakRetained = objc_loadWeakRetained(&self->_textEffectsDelegate);
       v20 = [WeakRetained transcriptBalloonCell:self layoutAttributesForTextBalloonView:v18 messageDisplayViewFrame:v13 inContainerFrame:v11 proposedAttributes:{v10, v9, v8, x, y, width, height}];
     }
@@ -314,8 +314,8 @@
     [v3 transcriptQuickActionButtonDiameter];
     v5 = v4;
 
-    v6 = [(CKEditableCollectionViewCell *)self contentView];
-    [v6 bounds];
+    contentView = [(CKEditableCollectionViewCell *)self contentView];
+    [contentView bounds];
     v8 = v7;
     v10 = v9;
     if (CKMainScreenScale_once_11 != -1)
@@ -331,8 +331,8 @@
 
     v12 = floor((v8 + (v10 - v5) * 0.5) * v11) / v11;
 
-    v13 = [(CKTranscriptBalloonCell *)self balloonView];
-    [v13 frame];
+    balloonView = [(CKTranscriptBalloonCell *)self balloonView];
+    [balloonView frame];
     v15 = v14;
     v17 = v16;
     v19 = v18;
@@ -369,33 +369,33 @@ LABEL_11:
   }
 }
 
-- (void)performInsertion:(id)a3
+- (void)performInsertion:(id)insertion
 {
-  v4 = a3;
-  v5 = [(CKTranscriptCell *)self insertionType];
-  if ([(CKTranscriptMessageCell *)self isReplyContextPreview]&& v5)
+  insertionCopy = insertion;
+  insertionType = [(CKTranscriptCell *)self insertionType];
+  if ([(CKTranscriptMessageCell *)self isReplyContextPreview]&& insertionType)
   {
-    [(CKTranscriptBalloonCell *)self _animateReplyContextPreview:v4];
+    [(CKTranscriptBalloonCell *)self _animateReplyContextPreview:insertionCopy];
   }
 
   else
   {
-    switch(v5)
+    switch(insertionType)
     {
       case 3:
-        [(CKTranscriptBalloonCell *)self _animateLowerBracketToLoop:v4];
+        [(CKTranscriptBalloonCell *)self _animateLowerBracketToLoop:insertionCopy];
         break;
       case 2:
-        [(CKTranscriptBalloonCell *)self _animateLineExtension:v4];
+        [(CKTranscriptBalloonCell *)self _animateLineExtension:insertionCopy];
         break;
       case 1:
-        [(CKTranscriptBalloonCell *)self _animateUpperBracket:v4];
+        [(CKTranscriptBalloonCell *)self _animateUpperBracket:insertionCopy];
         break;
       default:
         [(CKTranscriptBalloonCell *)self setInsertingReply:0];
         v6.receiver = self;
         v6.super_class = CKTranscriptBalloonCell;
-        [(CKEditableCollectionViewCell *)&v6 performInsertion:v4];
+        [(CKEditableCollectionViewCell *)&v6 performInsertion:insertionCopy];
         break;
     }
   }
@@ -426,18 +426,18 @@ LABEL_11:
   }
 }
 
-- (double)insertionDurationForInsertionType:(int64_t)a3
+- (double)insertionDurationForInsertionType:(int64_t)type
 {
-  v5 = [(CKTranscriptMessageCell *)self isReplyContextPreview];
+  isReplyContextPreview = [(CKTranscriptMessageCell *)self isReplyContextPreview];
   result = 0.3;
-  if (!v5 && a3 != 1)
+  if (!isReplyContextPreview && type != 1)
   {
-    if (a3 == 3)
+    if (type == 3)
     {
       return 1.1;
     }
 
-    else if (a3 == 2)
+    else if (type == 2)
     {
       [(CKTranscriptBalloonCell *)self _createLineViewFrameForThreadGroupLayoutAttributes:self->_threadGroupLayoutAttributes, 0.3];
       return fmax(fmin(v7 * 0.0026 + 0.06868, 0.3), 0.1);
@@ -452,62 +452,62 @@ LABEL_11:
   return result;
 }
 
-- (void)addFilter:(id)a3 fromTriggeringMessage:(BOOL)a4
+- (void)addFilter:(id)filter fromTriggeringMessage:(BOOL)message
 {
-  v4 = a4;
-  v15 = a3;
-  v6 = [(CKTranscriptBalloonCell *)self balloonView];
-  [v6 prepareForDisplayIfNeeded];
+  messageCopy = message;
+  filterCopy = filter;
+  balloonView = [(CKTranscriptBalloonCell *)self balloonView];
+  [balloonView prepareForDisplayIfNeeded];
 
-  v7 = [(CKTranscriptBalloonCell *)self balloonView];
-  if (v7)
+  balloonView2 = [(CKTranscriptBalloonCell *)self balloonView];
+  if (balloonView2)
   {
-    v8 = v7;
-    v9 = [(CKTranscriptBalloonCell *)self animatingInDarkEffect];
+    v8 = balloonView2;
+    animatingInDarkEffect = [(CKTranscriptBalloonCell *)self animatingInDarkEffect];
 
-    if (v9 || v4)
+    if (animatingInDarkEffect || messageCopy)
     {
-      v10 = [(CKTranscriptBalloonCell *)self balloonView];
-      [v10 addFilter:v15];
+      balloonView3 = [(CKTranscriptBalloonCell *)self balloonView];
+      [balloonView3 addFilter:filterCopy];
     }
   }
 
-  v11 = [(CKTranscriptBalloonCell *)self lineView];
-  if (v11)
+  lineView = [(CKTranscriptBalloonCell *)self lineView];
+  if (lineView)
   {
-    v12 = v11;
-    v13 = [(CKTranscriptBalloonCell *)self animatingInDarkEffect];
+    v12 = lineView;
+    animatingInDarkEffect2 = [(CKTranscriptBalloonCell *)self animatingInDarkEffect];
 
-    if (v13)
+    if (animatingInDarkEffect2)
     {
-      v14 = [(CKTranscriptBalloonCell *)self lineView];
-      [v14 addFilter:v15];
+      lineView2 = [(CKTranscriptBalloonCell *)self lineView];
+      [lineView2 addFilter:filterCopy];
     }
   }
 }
 
 - (void)clearFilters
 {
-  v3 = [(CKTranscriptBalloonCell *)self balloonView];
-  [v3 clearFilters];
+  balloonView = [(CKTranscriptBalloonCell *)self balloonView];
+  [balloonView clearFilters];
 
-  v4 = [(CKTranscriptBalloonCell *)self lineView];
+  lineView = [(CKTranscriptBalloonCell *)self lineView];
 
-  if (v4)
+  if (lineView)
   {
-    v5 = [(CKTranscriptBalloonCell *)self lineView];
-    [v5 clearFilters];
+    lineView2 = [(CKTranscriptBalloonCell *)self lineView];
+    [lineView2 clearFilters];
   }
 }
 
-- (void)willLayoutDrawerLabelFrame:(CGRect *)a3
+- (void)willLayoutDrawerLabelFrame:(CGRect *)frame
 {
   v17 = 0u;
-  v5 = [(CKTranscriptBalloonCell *)self balloonView];
-  v6 = v5;
-  if (v5)
+  balloonView = [(CKTranscriptBalloonCell *)self balloonView];
+  v6 = balloonView;
+  if (balloonView)
   {
-    [v5 balloonDescriptor];
+    [balloonView balloonDescriptor];
   }
 
   else
@@ -517,22 +517,22 @@ LABEL_11:
 
   if (BYTE9(v17) == 1)
   {
-    v7 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-    v8 = [v7 isRoundTailedBalloonShapeEnabled];
+    mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+    isRoundTailedBalloonShapeEnabled = [mEMORY[0x1E69A8070] isRoundTailedBalloonShapeEnabled];
 
-    if ((v8 & 1) == 0)
+    if ((isRoundTailedBalloonShapeEnabled & 1) == 0)
     {
       v9 = +[CKUIBehavior sharedBehaviors];
       [v9 balloonMaskTailSizeForTailShape:0];
       if (v10 > 0.0)
       {
         v11 = v10;
-        v12 = [(CKEditableCollectionViewCell *)self contentView];
-        v13 = [v12 layer];
-        v14 = v13;
-        if (v13)
+        contentView = [(CKEditableCollectionViewCell *)self contentView];
+        layer = [contentView layer];
+        v14 = layer;
+        if (layer)
         {
-          [v13 transform];
+          [layer transform];
           v15 = v16;
         }
 
@@ -541,7 +541,7 @@ LABEL_11:
           v15 = 0.0;
         }
 
-        a3->size.height = a3->size.height - v11 * v15;
+        frame->size.height = frame->size.height - v11 * v15;
       }
     }
   }
@@ -549,8 +549,8 @@ LABEL_11:
 
 - (UIEdgeInsets)messageDisplayViewTailInsets
 {
-  v2 = [(CKTranscriptBalloonCell *)self balloonView];
-  [v2 tailInsets];
+  balloonView = [(CKTranscriptBalloonCell *)self balloonView];
+  [balloonView tailInsets];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -567,16 +567,16 @@ LABEL_11:
   return result;
 }
 
-- (void)setAnimationPauseReasons:(int64_t)a3
+- (void)setAnimationPauseReasons:(int64_t)reasons
 {
   v7.receiver = self;
   v7.super_class = CKTranscriptBalloonCell;
   [(CKTranscriptMessageContentCell *)&v7 setAnimationPauseReasons:?];
-  v5 = [(CKTranscriptBalloonCell *)self balloonView];
-  [v5 setInvisibleInkEffectPaused:a3 != 0];
+  balloonView = [(CKTranscriptBalloonCell *)self balloonView];
+  [balloonView setInvisibleInkEffectPaused:reasons != 0];
 
-  v6 = [(CKTranscriptBalloonCell *)self balloonView];
-  [v6 setAnimationPaused:(a3 >> 1) & 1];
+  balloonView2 = [(CKTranscriptBalloonCell *)self balloonView];
+  [balloonView2 setAnimationPaused:(reasons >> 1) & 1];
 }
 
 - (CKBalloonSwipeController)balloonSwipeController
@@ -639,70 +639,70 @@ void __49__CKTranscriptBalloonCell_balloonSwipeController__block_invoke_2(uint64
   [v8 layoutIfNeeded];
 }
 
-- (void)setBalloonView:(id)a3
+- (void)setBalloonView:(id)view
 {
-  v5 = a3;
-  if (self->_balloonView != v5)
+  viewCopy = view;
+  if (self->_balloonView != viewCopy)
   {
-    v16 = v5;
-    v6 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-    v7 = [v6 isExpressiveTextEnabled];
+    v16 = viewCopy;
+    mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+    isExpressiveTextEnabled = [mEMORY[0x1E69A8070] isExpressiveTextEnabled];
 
-    if (v7)
+    if (isExpressiveTextEnabled)
     {
-      v8 = [(CKBalloonView *)self->_balloonView asTextBalloonView];
-      [v8 setTextEffectsDelegate:0];
+      asTextBalloonView = [(CKBalloonView *)self->_balloonView asTextBalloonView];
+      [asTextBalloonView setTextEffectsDelegate:0];
     }
 
     [(CKBalloonView *)self->_balloonView removeFromSuperview];
-    objc_storeStrong(&self->_balloonView, a3);
-    v9 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-    v10 = [v9 isExpressiveTextEnabled];
+    objc_storeStrong(&self->_balloonView, view);
+    mEMORY[0x1E69A8070]2 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+    isExpressiveTextEnabled2 = [mEMORY[0x1E69A8070]2 isExpressiveTextEnabled];
 
-    if (v10)
+    if (isExpressiveTextEnabled2)
     {
-      v11 = [(CKBalloonView *)self->_balloonView asTextBalloonView];
-      [v11 setTextEffectsDelegate:self];
+      asTextBalloonView2 = [(CKBalloonView *)self->_balloonView asTextBalloonView];
+      [asTextBalloonView2 setTextEffectsDelegate:self];
     }
 
     balloonView = self->_balloonView;
-    v13 = [(CKTranscriptBalloonCell *)self balloonSwipeController];
-    [v13 setBalloonView:balloonView];
+    balloonSwipeController = [(CKTranscriptBalloonCell *)self balloonSwipeController];
+    [balloonSwipeController setBalloonView:balloonView];
 
-    v14 = [(CKEditableCollectionViewCell *)self contentView];
-    [v14 addSubview:self->_balloonView];
+    contentView = [(CKEditableCollectionViewCell *)self contentView];
+    [contentView addSubview:self->_balloonView];
 
-    v15 = [(CKTranscriptBalloonCell *)self layer];
-    [v15 setAllowsGroupOpacity:{-[CKBalloonView needsGroupOpacity](self->_balloonView, "needsGroupOpacity")}];
+    layer = [(CKTranscriptBalloonCell *)self layer];
+    [layer setAllowsGroupOpacity:{-[CKBalloonView needsGroupOpacity](self->_balloonView, "needsGroupOpacity")}];
 
     [(CKTranscriptBalloonCell *)self setNeedsLayout];
-    v5 = v16;
+    viewCopy = v16;
   }
 }
 
-- (void)setAnimationDelegate:(id)a3
+- (void)setAnimationDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(CKTranscriptCell *)self animationDelegate];
+  delegateCopy = delegate;
+  animationDelegate = [(CKTranscriptCell *)self animationDelegate];
 
-  if (v5 != v4)
+  if (animationDelegate != delegateCopy)
   {
     v7.receiver = self;
     v7.super_class = CKTranscriptBalloonCell;
-    [(CKTranscriptCell *)&v7 setAnimationDelegate:v4];
-    v6 = [(CKTranscriptBalloonCell *)self balloonView];
-    [v6 setAnimationDelegate:v4];
+    [(CKTranscriptCell *)&v7 setAnimationDelegate:delegateCopy];
+    balloonView = [(CKTranscriptBalloonCell *)self balloonView];
+    [balloonView setAnimationDelegate:delegateCopy];
   }
 }
 
 - (double)swipeToReplyLayoutOffset
 {
-  v3 = [(CKTranscriptBalloonCell *)self layoutAttributes];
-  v4 = v3;
-  if (!v3 || (v5 = *(v3 + 448), v5 <= 0.0))
+  layoutAttributes = [(CKTranscriptBalloonCell *)self layoutAttributes];
+  v4 = layoutAttributes;
+  if (!layoutAttributes || (v5 = *(layoutAttributes + 448), v5 <= 0.0))
   {
-    v6 = [(CKTranscriptBalloonCell *)self balloonSwipeController];
-    [v6 offsetDelta];
+    balloonSwipeController = [(CKTranscriptBalloonCell *)self balloonSwipeController];
+    [balloonSwipeController offsetDelta];
     v5 = v7;
   }
 
@@ -711,19 +711,19 @@ void __49__CKTranscriptBalloonCell_balloonSwipeController__block_invoke_2(uint64
 
 - (BOOL)allowsSwipeToReply
 {
-  v3 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v4 = [v3 isTextSelectionEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isTextSelectionEnabled = [mEMORY[0x1E69A8070] isTextSelectionEnabled];
 
-  if (v4)
+  if (isTextSelectionEnabled)
   {
-    v5 = [(CKTranscriptBalloonCell *)self balloonView];
+    balloonView = [(CKTranscriptBalloonCell *)self balloonView];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [v5 textView];
-      if ([v6 isSelectable])
+      textView = [balloonView textView];
+      if ([textView isSelectable])
       {
-        [v6 selectedRange];
+        [textView selectedRange];
         if (v7)
         {
 
@@ -734,16 +734,16 @@ void __49__CKTranscriptBalloonCell_balloonSwipeController__block_invoke_2(uint64
     }
   }
 
-  v9 = [(CKTranscriptBalloonCell *)self canInlineReply];
-  v10 = [(CKTranscriptMessageCell *)self isReplyContextPreview];
-  v11 = [(CKEditableCollectionViewCell *)self isInReplyContext];
-  v8 = (v11 | [(CKTranscriptBalloonCell *)self isAudioMessage]) ^ 1;
-  if (v10)
+  canInlineReply = [(CKTranscriptBalloonCell *)self canInlineReply];
+  isReplyContextPreview = [(CKTranscriptMessageCell *)self isReplyContextPreview];
+  isInReplyContext = [(CKEditableCollectionViewCell *)self isInReplyContext];
+  v8 = (isInReplyContext | [(CKTranscriptBalloonCell *)self isAudioMessage]) ^ 1;
+  if (isReplyContextPreview)
   {
     LOBYTE(v8) = 0;
   }
 
-  if (!v9)
+  if (!canInlineReply)
   {
     LOBYTE(v8) = 0;
   }
@@ -751,10 +751,10 @@ void __49__CKTranscriptBalloonCell_balloonSwipeController__block_invoke_2(uint64
   return v8 & 1;
 }
 
-- (BOOL)isPointInAllowedSwipingArea:(CGPoint)a3
+- (BOOL)isPointInAllowedSwipingArea:(CGPoint)area
 {
-  y = a3.y;
-  x = a3.x;
+  y = area.y;
+  x = area.x;
   [(CKTranscriptBalloonCell *)self _swipeToReplySafeSwipeRect];
   v9 = x;
   v10 = y;
@@ -769,21 +769,21 @@ void __49__CKTranscriptBalloonCell_balloonSwipeController__block_invoke_2(uint64
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(CKTranscriptBalloonCell *)self _shouldReverseLayoutDirection];
-  v12 = [(CKEditableCollectionViewCell *)self orientation];
+  _shouldReverseLayoutDirection = [(CKTranscriptBalloonCell *)self _shouldReverseLayoutDirection];
+  orientation = [(CKEditableCollectionViewCell *)self orientation];
   v13 = v4 + -28.0;
-  if (!v12)
+  if (!orientation)
   {
     v13 = v4;
   }
 
   v14 = v4 + 28.0;
-  if (v12)
+  if (orientation)
   {
     v14 = v4;
   }
 
-  if (v11)
+  if (_shouldReverseLayoutDirection)
   {
     v15 = v13;
   }
@@ -815,35 +815,35 @@ void __49__CKTranscriptBalloonCell_balloonSwipeController__block_invoke_2(uint64
   return result;
 }
 
-- (void)swipeToReplyGestureHandler:(id)a3
+- (void)swipeToReplyGestureHandler:(id)handler
 {
-  v6 = a3;
+  handlerCopy = handler;
   [(CKTranscriptCell *)self drawerPercentRevealed];
   if (v4 <= 0.0)
   {
-    v5 = [(CKTranscriptBalloonCell *)self balloonSwipeController];
-    [v5 swipeToReplyGestureHandler:v6];
+    balloonSwipeController = [(CKTranscriptBalloonCell *)self balloonSwipeController];
+    [balloonSwipeController swipeToReplyGestureHandler:handlerCopy];
   }
 }
 
 - (void)prepareForReuse
 {
-  v3 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v4 = [v3 isExpressiveTextEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isExpressiveTextEnabled = [mEMORY[0x1E69A8070] isExpressiveTextEnabled];
 
-  if (v4)
+  if (isExpressiveTextEnabled)
   {
-    v5 = [(CKTranscriptBalloonCell *)self balloonView];
+    balloonView = [(CKTranscriptBalloonCell *)self balloonView];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v7 = [(CKTranscriptBalloonCell *)self balloonView];
-      v8 = [v7 textView];
-      if ([v8 allowsTextAnimations])
+      balloonView2 = [(CKTranscriptBalloonCell *)self balloonView];
+      textView = [balloonView2 textView];
+      if ([textView allowsTextAnimations])
       {
-        [v8 ck_invalidateAllAnimators];
+        [textView ck_invalidateAllAnimators];
       }
     }
   }
@@ -855,67 +855,67 @@ void __49__CKTranscriptBalloonCell_balloonSwipeController__block_invoke_2(uint64
   [(CKTranscriptBalloonCell *)self setThreadGroupLayoutAttributes:0];
   [(CKTranscriptBalloonCell *)self setInsertingReply:0];
   [(CKTranscriptBalloonCell *)self setLineType:0];
-  v9 = [(CKPhoneTranscriptMessageCell *)self contactImageView];
-  v10 = [v9 layer];
+  contactImageView = [(CKPhoneTranscriptMessageCell *)self contactImageView];
+  layer = [contactImageView layer];
 
   LODWORD(v11) = 1.0;
-  [v10 setOpacity:v11];
-  [v10 removeAllAnimations];
-  v12 = [(CKTranscriptBalloonCell *)self balloonView];
-  v13 = [v12 layer];
+  [layer setOpacity:v11];
+  [layer removeAllAnimations];
+  balloonView3 = [(CKTranscriptBalloonCell *)self balloonView];
+  layer2 = [balloonView3 layer];
 
   LODWORD(v14) = 1.0;
-  [v13 setOpacity:v14];
-  [v13 removeAllAnimations];
-  v15 = [(CKTranscriptBalloonCell *)self quickActionButton];
-  [v15 removeFromSuperview];
+  [layer2 setOpacity:v14];
+  [layer2 removeAllAnimations];
+  quickActionButton = [(CKTranscriptBalloonCell *)self quickActionButton];
+  [quickActionButton removeFromSuperview];
 
   quickActionButton = self->_quickActionButton;
   self->_quickActionButton = 0;
 
-  v17 = [MEMORY[0x1E69A5C30] sharedInstance];
-  [v17 unregisterPhotoLibraryPersistenceManagerListener:self];
+  mEMORY[0x1E69A5C30] = [MEMORY[0x1E69A5C30] sharedInstance];
+  [mEMORY[0x1E69A5C30] unregisterPhotoLibraryPersistenceManagerListener:self];
 
   [(CKTranscriptBalloonCell *)self setHasQueuedQuickActionButtonRemoval:0];
-  v18 = [(CKTranscriptBalloonCell *)self balloonView];
-  [v18 setHidden:0];
+  balloonView4 = [(CKTranscriptBalloonCell *)self balloonView];
+  [balloonView4 setHidden:0];
 
-  v19 = [(CKTranscriptBalloonCell *)self balloonSwipeController];
-  [v19 prepareForReuse];
+  balloonSwipeController = [(CKTranscriptBalloonCell *)self balloonSwipeController];
+  [balloonSwipeController prepareForReuse];
 
   [(CKTranscriptBalloonCell *)self setBalloonCellDelegate:0];
 }
 
 - (BOOL)_replyLineMaterialsEnabled
 {
-  v3 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  if ([v3 isBalloonMaterialsEnabled])
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  if ([mEMORY[0x1E69A8070] isBalloonMaterialsEnabled])
   {
-    v4 = [(CKTranscriptBalloonCell *)self traitCollection];
-    v5 = [v4 isTranscriptBackgroundActive];
+    traitCollection = [(CKTranscriptBalloonCell *)self traitCollection];
+    isTranscriptBackgroundActive = [traitCollection isTranscriptBackgroundActive];
   }
 
   else
   {
-    v5 = 0;
+    isTranscriptBackgroundActive = 0;
   }
 
-  return v5;
+  return isTranscriptBackgroundActive;
 }
 
-- (void)setThreadGroupLayoutAttributes:(id)a3
+- (void)setThreadGroupLayoutAttributes:(id)attributes
 {
-  v23 = a3;
-  v5 = [(CKTranscriptBalloonCell *)self _replyLineMaterialsEnabled];
-  v6 = [(CKTranscriptBalloonCell *)self threadGroupLayoutAttributes];
-  v7 = [v23 isEqualToArray:v6];
+  attributesCopy = attributes;
+  _replyLineMaterialsEnabled = [(CKTranscriptBalloonCell *)self _replyLineMaterialsEnabled];
+  threadGroupLayoutAttributes = [(CKTranscriptBalloonCell *)self threadGroupLayoutAttributes];
+  v7 = [attributesCopy isEqualToArray:threadGroupLayoutAttributes];
 
   if ((v7 & 1) == 0)
   {
-    objc_storeStrong(&self->_threadGroupLayoutAttributes, a3);
+    objc_storeStrong(&self->_threadGroupLayoutAttributes, attributes);
     threadGroupLayoutAttributes = self->_threadGroupLayoutAttributes;
-    v9 = [(CKTranscriptBalloonCell *)self lineView];
-    v10 = v9;
+    lineView = [(CKTranscriptBalloonCell *)self lineView];
+    v10 = lineView;
     if (threadGroupLayoutAttributes)
     {
 
@@ -923,14 +923,14 @@ void __49__CKTranscriptBalloonCell_balloonSwipeController__block_invoke_2(uint64
       {
         v11 = [CKLineView alloc];
         v12 = [(CKLineView *)v11 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
-        v13 = [(CKLineView *)v12 lineShapeLayer];
-        [v13 setFillColor:0];
+        lineShapeLayer = [(CKLineView *)v12 lineShapeLayer];
+        [lineShapeLayer setFillColor:0];
 
-        v14 = [(CKLineView *)v12 lineShapeLayer];
-        if (v5)
+        lineShapeLayer2 = [(CKLineView *)v12 lineShapeLayer];
+        if (_replyLineMaterialsEnabled)
         {
-          v15 = [MEMORY[0x1E69DC888] blackColor];
-          [v14 setStrokeColor:{objc_msgSend(v15, "CGColor")}];
+          blackColor = [MEMORY[0x1E69DC888] blackColor];
+          [lineShapeLayer2 setStrokeColor:{objc_msgSend(blackColor, "CGColor")}];
 
           [(CKLineView *)v12 setMaterialsEnabled:1];
         }
@@ -938,21 +938,21 @@ void __49__CKTranscriptBalloonCell_balloonSwipeController__block_invoke_2(uint64
         else
         {
           v16 = +[CKUIBehavior sharedBehaviors];
-          v17 = [v16 theme];
-          v18 = [v17 replyLineColor];
-          [v14 setStrokeColor:{objc_msgSend(v18, "CGColor")}];
+          theme = [v16 theme];
+          replyLineColor = [theme replyLineColor];
+          [lineShapeLayer2 setStrokeColor:{objc_msgSend(replyLineColor, "CGColor")}];
         }
 
-        v19 = [(CKLineView *)v12 lineShapeLayer];
+        lineShapeLayer3 = [(CKLineView *)v12 lineShapeLayer];
         v20 = +[CKUIBehavior sharedBehaviors];
         [v20 replyLineWidth];
-        [v19 setLineWidth:?];
+        [lineShapeLayer3 setLineWidth:?];
 
-        v21 = [(CKLineView *)v12 lineShapeLayer];
-        [v21 setLineCap:*MEMORY[0x1E6979E78]];
+        lineShapeLayer4 = [(CKLineView *)v12 lineShapeLayer];
+        [lineShapeLayer4 setLineCap:*MEMORY[0x1E6979E78]];
 
-        v22 = [(CKLineView *)v12 lineShapeLayer];
-        [v22 setLineJoin:*MEMORY[0x1E6979E98]];
+        lineShapeLayer5 = [(CKLineView *)v12 lineShapeLayer];
+        [lineShapeLayer5 setLineJoin:*MEMORY[0x1E6979E98]];
 
         [(CKTranscriptBalloonCell *)self setLineView:v12];
         [(CKTranscriptBalloonCell *)self addSubview:v12];
@@ -961,7 +961,7 @@ void __49__CKTranscriptBalloonCell_balloonSwipeController__block_invoke_2(uint64
 
     else
     {
-      [v9 removeFromSuperview];
+      [lineView removeFromSuperview];
 
       [(CKTranscriptBalloonCell *)self setLineView:0];
     }
@@ -970,17 +970,17 @@ void __49__CKTranscriptBalloonCell_balloonSwipeController__block_invoke_2(uint64
   }
 }
 
-- (void)_updateLineForThreadGroupLayoutAttributes:(id)a3
+- (void)_updateLineForThreadGroupLayoutAttributes:(id)attributes
 {
-  v4 = a3;
-  if (v4)
+  attributesCopy = attributes;
+  if (attributesCopy)
   {
     if (!self->_insertingReply)
     {
-      v17 = v4;
-      v5 = [(CKTranscriptCell *)self shouldFreezeReplyDecorationsForTimestampReveal];
-      v4 = v17;
-      if (!v5)
+      v17 = attributesCopy;
+      shouldFreezeReplyDecorationsForTimestampReveal = [(CKTranscriptCell *)self shouldFreezeReplyDecorationsForTimestampReveal];
+      attributesCopy = v17;
+      if (!shouldFreezeReplyDecorationsForTimestampReveal)
       {
         [(CKTranscriptBalloonCell *)self _createLineViewFrameForThreadGroupLayoutAttributes:v17];
         v7 = v6;
@@ -992,50 +992,50 @@ void __49__CKTranscriptBalloonCell_balloonSwipeController__block_invoke_2(uint64
         -[CKLineView setLineViewPath:](self->_lineView, "setLineViewPath:", [v14 CGPath]);
         if ([(CKTranscriptBalloonCell *)self _replyLineMaterialsEnabled])
         {
-          v15 = [(CKTranscriptBalloonCell *)self traitCollection];
-          [v15 transcriptBackgroundLuminosity];
-          -[CKLineView _updateMaterialWithLuminance:interfaceStyle:](self->_lineView, "_updateMaterialWithLuminance:interfaceStyle:", [v15 userInterfaceStyle], v16);
+          traitCollection = [(CKTranscriptBalloonCell *)self traitCollection];
+          [traitCollection transcriptBackgroundLuminosity];
+          -[CKLineView _updateMaterialWithLuminance:interfaceStyle:](self->_lineView, "_updateMaterialWithLuminance:interfaceStyle:", [traitCollection userInterfaceStyle], v16);
         }
 
-        v4 = v17;
+        attributesCopy = v17;
       }
     }
   }
 }
 
-- (CGRect)_createLineViewFrameForThreadGroupLayoutAttributes:(id)a3
+- (CGRect)_createLineViewFrameForThreadGroupLayoutAttributes:(id)attributes
 {
   if (self->_lineView)
   {
-    v4 = a3;
+    attributesCopy = attributes;
     [(CKEditableCollectionViewCell *)self contentAlignmentRect];
     v73.origin.x = v5;
     v73.origin.y = v6;
     v73.size.width = v7;
     v73.size.height = v8;
-    v9 = [v4 firstObject];
-    [v9 frame];
+    firstObject = [attributesCopy firstObject];
+    [firstObject frame];
     v11 = v10;
     v13 = v12;
     v15 = v14;
     v17 = v16;
-    v70.origin.x = v9[44];
-    v70.origin.y = v9[45];
-    v70.size.width = v9[46];
-    v70.size.height = v9[47];
-    v18 = [v9 chatItem];
-    v19 = [v4 lastObject];
+    v70.origin.x = firstObject[44];
+    v70.origin.y = firstObject[45];
+    v70.size.width = firstObject[46];
+    v70.size.height = firstObject[47];
+    chatItem = [firstObject chatItem];
+    lastObject = [attributesCopy lastObject];
 
-    [v19 frame];
+    [lastObject frame];
     v71.origin.x = v20;
     v71.origin.y = v21;
     v71.size.width = v22;
     v71.size.height = v23;
-    v72.origin.x = v19[44];
-    v72.origin.y = v19[45];
-    v72.size.width = v19[46];
-    v72.size.height = v19[47];
-    v24 = [v19 chatItem];
+    v72.origin.x = lastObject[44];
+    v72.origin.y = lastObject[45];
+    v72.size.width = lastObject[46];
+    v72.size.height = lastObject[47];
+    chatItem2 = [lastObject chatItem];
     v25 = +[CKUIBehavior sharedBehaviors];
     [v25 transcriptContactImageDiameter];
     v27 = v26;
@@ -1052,12 +1052,12 @@ void __49__CKTranscriptBalloonCell_balloonSwipeController__block_invoke_2(uint64
     [v34 replyLineWidth];
     v36 = v35;
 
-    v37 = [v18 itemIsFromMe];
+    itemIsFromMe = [chatItem itemIsFromMe];
     v38 = v11;
     v39 = v13;
     v40 = v15;
     v41 = v17;
-    if (v37)
+    if (itemIsFromMe)
     {
       MidY = CGRectGetMidY(*&v38);
       v43 = CGRectGetMidY(v70);
@@ -1072,15 +1072,15 @@ void __49__CKTranscriptBalloonCell_balloonSwipeController__block_invoke_2(uint64
     self->_lineViewReferenceY = MidY;
     v48 = v27;
     v49 = v36;
-    if ([v24 itemIsFromMe])
+    if ([chatItem2 itemIsFromMe])
     {
       v50 = v36 + 1.0;
       v51 = v50 + CGRectGetMidY(v71);
       v52 = v50 + CGRectGetMidY(v72);
       v53 = v50 + CGRectGetMidY(v73);
-      v54 = [(CKTranscriptMessageCell *)self chatEligibleForContactImage];
+      chatEligibleForContactImage = [(CKTranscriptMessageCell *)self chatEligibleForContactImage];
       v55 = 0.0;
-      if (v54)
+      if (chatEligibleForContactImage)
       {
         v55 = 1.0;
       }
@@ -1090,9 +1090,9 @@ void __49__CKTranscriptBalloonCell_balloonSwipeController__block_invoke_2(uint64
 
     else
     {
-      v57 = [(CKPhoneTranscriptMessageCell *)self contactImageView];
+      contactImageView = [(CKPhoneTranscriptMessageCell *)self contactImageView];
 
-      if (v57)
+      if (contactImageView)
       {
         v58 = v27 + v33;
         v51 = CGRectGetMaxY(v71) - v58;
@@ -1152,13 +1152,13 @@ void __49__CKTranscriptBalloonCell_balloonSwipeController__block_invoke_2(uint64
   return result;
 }
 
-- (id)_createLinePathForFrame:(CGRect)a3 withThreadGroupLayoutAttributes:(id)a4
+- (id)_createLinePathForFrame:(CGRect)frame withThreadGroupLayoutAttributes:(id)attributes
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  attributesCopy = attributes;
   v10 = +[CKUIBehavior sharedBehaviors];
   [v10 replyLineWidth];
   v12 = v11;
@@ -1174,9 +1174,9 @@ void __49__CKTranscriptBalloonCell_balloonSwipeController__block_invoke_2(uint64
   v40.size.width = width;
   v40.size.height = height;
   v15 = CGRectGetWidth(v40);
-  v16 = [MEMORY[0x1E69DC728] bezierPath];
-  [v16 moveToPoint:{v13, v13}];
-  v17 = [(CKTranscriptBalloonCell *)self _lineDescriptionForThreadGroupLayoutAttributes:v9 setLineType:1];
+  bezierPath = [MEMORY[0x1E69DC728] bezierPath];
+  [bezierPath moveToPoint:{v13, v13}];
+  v17 = [(CKTranscriptBalloonCell *)self _lineDescriptionForThreadGroupLayoutAttributes:attributesCopy setLineType:1];
   threadLineDescription = self->_threadLineDescription;
   self->_threadLineDescription = v17;
 
@@ -1187,23 +1187,23 @@ void __49__CKTranscriptBalloonCell_balloonSwipeController__block_invoke_2(uint64
     v21 = v15 - v13;
     do
     {
-      v22 = [v9 objectAtIndex:v19];
+      v22 = [attributesCopy objectAtIndex:v19];
       v23 = [(NSArray *)self->_threadLineDescription objectAtIndex:v19];
-      v24 = [v23 unsignedIntegerValue];
+      unsignedIntegerValue = [v23 unsignedIntegerValue];
 
-      if (v24 > 2)
+      if (unsignedIntegerValue > 2)
       {
-        if (v24 == 3)
+        if (unsignedIntegerValue == 3)
         {
-          v35 = v16;
+          v35 = bezierPath;
           v25 = &v35;
           [(CKTranscriptBalloonCell *)self _drawLowerBracketForPath:&v35 lineViewMaxX:v21 lineViewMaxY:v20];
           goto LABEL_17;
         }
 
-        if (v24 == 4)
+        if (unsignedIntegerValue == 4)
         {
-          v34 = v16;
+          v34 = bezierPath;
           v25 = &v34;
           [(CKTranscriptBalloonCell *)self _drawLoopForPath:&v34 withLayout:v22];
           goto LABEL_17;
@@ -1212,7 +1212,7 @@ void __49__CKTranscriptBalloonCell_balloonSwipeController__block_invoke_2(uint64
 
       else
       {
-        if (v24 == 1)
+        if (unsignedIntegerValue == 1)
         {
           if (self->_lineType == 3)
           {
@@ -1229,30 +1229,30 @@ void __49__CKTranscriptBalloonCell_balloonSwipeController__block_invoke_2(uint64
           if (v19)
           {
             v29 = [(NSArray *)self->_threadLineDescription objectAtIndex:v19 - 1];
-            v30 = [v29 unsignedIntegerValue];
+            unsignedIntegerValue2 = [v29 unsignedIntegerValue];
           }
 
           else
           {
-            v30 = 0;
+            unsignedIntegerValue2 = 0;
           }
 
           v31 = v19 + 1 == [(NSArray *)self->_threadLineDescription count];
-          v37 = v16;
+          v37 = bezierPath;
           v25 = &v37;
-          [(CKTranscriptBalloonCell *)self _drawStraightLineForPath:&v37 withLayout:v22 lineViewMaxY:v31 isTerminal:v30 prevLineSegmentType:v20];
+          [(CKTranscriptBalloonCell *)self _drawStraightLineForPath:&v37 withLayout:v22 lineViewMaxY:v31 isTerminal:unsignedIntegerValue2 prevLineSegmentType:v20];
           goto LABEL_17;
         }
 
-        if (v24 == 2)
+        if (unsignedIntegerValue == 2)
         {
-          v36 = v16;
+          v36 = bezierPath;
           v25 = &v36;
           [(CKTranscriptBalloonCell *)self _drawUpperBracketForPath:&v36 withLayout:v22 lineViewMaxX:v21 lineViewMaxY:v20];
 LABEL_17:
           v32 = *v25;
 
-          v16 = v32;
+          bezierPath = v32;
         }
       }
 
@@ -1264,14 +1264,14 @@ LABEL_18:
     while (v19 < [(NSArray *)self->_threadLineDescription count]);
   }
 
-  return v16;
+  return bezierPath;
 }
 
-- (id)_lineDescriptionForThreadGroupLayoutAttributes:(id)a3 setLineType:(BOOL)a4
+- (id)_lineDescriptionForThreadGroupLayoutAttributes:(id)attributes setLineType:(BOOL)type
 {
-  v4 = a4;
-  v6 = a3;
-  if ([v6 count])
+  typeCopy = type;
+  attributesCopy = attributes;
+  if ([attributesCopy count])
   {
     v31 = 0;
     v32 = &v31;
@@ -1294,26 +1294,26 @@ LABEL_18:
     v23[0] = 0;
     v23[1] = v23;
     v23[2] = 0x2020000000;
-    v23[3] = [v6 count];
+    v23[3] = [attributesCopy count];
     v17 = 0;
     v18 = &v17;
     v19 = 0x3032000000;
     v20 = __Block_byref_object_copy__7;
     v21 = __Block_byref_object_dispose__7;
-    v22 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __86__CKTranscriptBalloonCell__lineDescriptionForThreadGroupLayoutAttributes_setLineType___block_invoke;
     v9[3] = &unk_1E72ED1A0;
     v11 = v23;
-    v10 = v6;
+    v10 = attributesCopy;
     v12 = v25;
     v13 = &v31;
     v14 = &v27;
     v15 = v24;
     v16 = &v17;
     [v10 enumerateObjectsUsingBlock:v9];
-    if (v4)
+    if (typeCopy)
     {
       self->_lineType = v32[3];
       self->_lineIsExtended = *(v28 + 24);
@@ -1332,7 +1332,7 @@ LABEL_18:
 
   else
   {
-    if (v4)
+    if (typeCopy)
     {
       self->_lineType = 0;
     }
@@ -1453,20 +1453,20 @@ LABEL_33:
 LABEL_34:
 }
 
-- (void)_drawStraightLineForPath:(id *)a3 withLayout:(id)a4 lineViewMaxY:(double)a5 isTerminal:(BOOL)a6 prevLineSegmentType:(unint64_t)a7
+- (void)_drawStraightLineForPath:(id *)path withLayout:(id)layout lineViewMaxY:(double)y isTerminal:(BOOL)terminal prevLineSegmentType:(unint64_t)type
 {
-  v8 = a6;
-  v16 = a4;
-  if (a3)
+  terminalCopy = terminal;
+  layoutCopy = layout;
+  if (path)
   {
-    [*a3 currentPoint];
+    [*path currentPoint];
     v14 = v13;
     v15 = v12;
-    if (!v8)
+    if (!terminalCopy)
     {
-      [v16 frame];
-      a5 = fmin(CGRectGetMidY(v18) - self->_lineViewReferenceY, a5);
-      if (a5 <= v15)
+      [layoutCopy frame];
+      y = fmin(CGRectGetMidY(v18) - self->_lineViewReferenceY, y);
+      if (y <= v15)
       {
         goto LABEL_8;
       }
@@ -1474,36 +1474,36 @@ LABEL_34:
       goto LABEL_7;
     }
 
-    if (a7 != 2 || v12 + 5.0 < a5)
+    if (type != 2 || v12 + 5.0 < y)
     {
 LABEL_7:
-      [*a3 addLineToPoint:{v14, a5}];
+      [*path addLineToPoint:{v14, y}];
     }
   }
 
 LABEL_8:
 }
 
-- (void)_drawUpperBracketForPath:(id *)a3 withLayout:(id)a4 lineViewMaxX:(double)a5 lineViewMaxY:(double)a6
+- (void)_drawUpperBracketForPath:(id *)path withLayout:(id)layout lineViewMaxX:(double)x lineViewMaxY:(double)y
 {
-  v10 = a4;
-  if (a3)
+  layoutCopy = layout;
+  if (path)
   {
-    v23 = v10;
+    v23 = layoutCopy;
     v11 = +[CKUIBehavior sharedBehaviors];
     [v11 replyLineBracketRadius];
     v13 = v12;
 
-    [*a3 currentPoint];
+    [*path currentPoint];
     v15 = v14;
     v17 = v16;
-    [*a3 moveToPoint:a5];
-    [*a3 addCurveToPoint:v15 + v13 * 0.631494 controlPoint1:v17 + v13 * 0.0749114 controlPoint2:{v15 + v13 * 1.08849, v17, v15 + v13 * 0.868407, v17}];
-    [*a3 addCurveToPoint:v15 + v13 * 0.0749114 controlPoint1:v17 + v13 * 0.631494 controlPoint2:{v15 + v13 * 0.372824, v17 + v13 * 0.16906, v15 + v13 * 0.16906, v17 + v13 * 0.372824}];
-    v18 = fmin(a6, v17 + v13 * 1.52866);
+    [*path moveToPoint:x];
+    [*path addCurveToPoint:v15 + v13 * 0.631494 controlPoint1:v17 + v13 * 0.0749114 controlPoint2:{v15 + v13 * 1.08849, v17, v15 + v13 * 0.868407, v17}];
+    [*path addCurveToPoint:v15 + v13 * 0.0749114 controlPoint1:v17 + v13 * 0.631494 controlPoint2:{v15 + v13 * 0.372824, v17 + v13 * 0.16906, v15 + v13 * 0.16906, v17 + v13 * 0.372824}];
+    v18 = fmin(y, v17 + v13 * 1.52866);
     v19 = CKIsRunningInMacCatalyst();
-    v10 = v23;
-    if (v18 <= a6)
+    layoutCopy = v23;
+    if (v18 <= y)
     {
       v20 = fmax(v18, v17 + v13 * 1.08849);
       v21 = 4.0;
@@ -1512,74 +1512,74 @@ LABEL_8:
         v21 = 1.0;
       }
 
-      if (v20 <= v21 + a6)
+      if (v20 <= v21 + y)
       {
-        [*a3 addCurveToPoint:v15 controlPoint1:v18 controlPoint2:{v15, v17 + v13 * 0.868407, v15}];
+        [*path addCurveToPoint:v15 controlPoint1:v18 controlPoint2:{v15, v17 + v13 * 0.868407, v15}];
         [v23 frame];
         MaxY = CGRectGetMaxY(v25);
-        v10 = v23;
-        if (fmin(a6, MaxY - self->_lineViewReferenceY) > v18)
+        layoutCopy = v23;
+        if (fmin(y, MaxY - self->_lineViewReferenceY) > v18)
         {
-          [*a3 addLineToPoint:v15];
-          v10 = v23;
+          [*path addLineToPoint:v15];
+          layoutCopy = v23;
         }
       }
     }
   }
 }
 
-- (void)_drawLowerBracketForPath:(id *)a3 lineViewMaxX:(double)a4 lineViewMaxY:(double)a5
+- (void)_drawLowerBracketForPath:(id *)path lineViewMaxX:(double)x lineViewMaxY:(double)y
 {
-  if (a3)
+  if (path)
   {
     v8 = +[CKUIBehavior sharedBehaviors];
     [v8 replyLineBracketRadius];
     v10 = v9;
 
-    [*a3 currentPoint];
+    [*path currentPoint];
     v12 = v11;
-    v14 = fmax(v13, a5 + v10 * -1.52866);
-    [*a3 addLineToPoint:{v11, v14}];
-    [*a3 addCurveToPoint:v12 + v10 * 0.0749114 controlPoint1:a5 - v10 * 0.631494 controlPoint2:{v12, fmax(v14, a5 - v10 * 1.08849), v12, a5 - v10 * 0.868407}];
-    [*a3 addCurveToPoint:v12 + v10 * 0.631494 controlPoint1:a5 - v10 * 0.0749114 controlPoint2:{v12 + v10 * 0.16906, a5 - v10 * 0.372824, v12 + v10 * 0.372824, a5 - v10 * 0.16906}];
-    v15 = *a3;
+    v14 = fmax(v13, y + v10 * -1.52866);
+    [*path addLineToPoint:{v11, v14}];
+    [*path addCurveToPoint:v12 + v10 * 0.0749114 controlPoint1:y - v10 * 0.631494 controlPoint2:{v12, fmax(v14, y - v10 * 1.08849), v12, y - v10 * 0.868407}];
+    [*path addCurveToPoint:v12 + v10 * 0.631494 controlPoint1:y - v10 * 0.0749114 controlPoint2:{v12 + v10 * 0.16906, y - v10 * 0.372824, v12 + v10 * 0.372824, y - v10 * 0.16906}];
+    v15 = *path;
 
-    [v15 addCurveToPoint:a4 controlPoint1:a5 controlPoint2:{v12 + v10 * 0.868407, a5, v12 + v10 * 1.08849, a5}];
+    [v15 addCurveToPoint:x controlPoint1:y controlPoint2:{v12 + v10 * 0.868407, y, v12 + v10 * 1.08849, y}];
   }
 }
 
-- (void)_drawLoopForPath:(id *)a3 withLayout:(id)a4
+- (void)_drawLoopForPath:(id *)path withLayout:(id)layout
 {
-  if (a3)
+  if (path)
   {
-    v6 = a4;
+    layoutCopy = layout;
     v7 = +[CKUIBehavior sharedBehaviors];
     [v7 textBalloonMinHeight];
     v9 = v8;
 
     lineViewExpansionFactor = self->_lineViewExpansionFactor;
     v11 = fmax(lineViewExpansionFactor * -2.77777778 + 9.37777778, 3.5);
-    [v6 frame];
+    [layoutCopy frame];
     v12 = CGRectGetMidY(v31) - self->_lineViewReferenceY;
     v13 = fmax(lineViewExpansionFactor * -1.11111111 + 4.41111111, 2.0);
     v14 = v13 * 0.3333;
-    [*a3 currentPoint];
+    [*path currentPoint];
     v16 = v15;
     v29 = v13 * 0.8333 + v15;
     v17 = v11 + v13 + v15;
-    [v6 frame];
+    [layoutCopy frame];
     v18 = CGRectGetMinY(v32) - self->_lineViewReferenceY;
-    [v6 frame];
+    [layoutCopy frame];
     v19 = fmax(v18, CGRectGetMidY(v33) - self->_lineViewReferenceY - v9 * 0.5);
-    [*a3 addLineToPoint:{v16, v19}];
-    [*a3 addCurveToPoint:v29 controlPoint1:v12 controlPoint2:{v16, v19 + (v12 - v11 - v19) * 0.552285}];
-    [*a3 addCurveToPoint:v17 controlPoint1:v11 + v12 controlPoint2:?];
-    [*a3 addCurveToPoint:? controlPoint1:? controlPoint2:?];
-    [*a3 addCurveToPoint:v17 controlPoint1:? controlPoint2:?];
-    [*a3 addCurveToPoint:v29 controlPoint1:v12 controlPoint2:{v17 - v11 * 0.552285, v12 - v11, v14 + v29, v12 - v11 * 0.552285}];
-    [v6 frame];
+    [*path addLineToPoint:{v16, v19}];
+    [*path addCurveToPoint:v29 controlPoint1:v12 controlPoint2:{v16, v19 + (v12 - v11 - v19) * 0.552285}];
+    [*path addCurveToPoint:v17 controlPoint1:v11 + v12 controlPoint2:?];
+    [*path addCurveToPoint:? controlPoint1:? controlPoint2:?];
+    [*path addCurveToPoint:v17 controlPoint1:? controlPoint2:?];
+    [*path addCurveToPoint:v29 controlPoint1:v12 controlPoint2:{v17 - v11 * 0.552285, v12 - v11, v14 + v29, v12 - v11 * 0.552285}];
+    [layoutCopy frame];
     CGRectGetMaxY(v34);
-    [v6 frame];
+    [layoutCopy frame];
     v21 = v20;
     v23 = v22;
     v25 = v24;
@@ -1590,27 +1590,27 @@ LABEL_8:
     v35.size.width = v25;
     v35.size.height = v27;
     CGRectGetMidY(v35);
-    v28 = *a3;
+    v28 = *path;
 
     [v28 addCurveToPoint:? controlPoint1:? controlPoint2:?];
   }
 }
 
-- (void)_animateReplyContextPreview:(id)a3
+- (void)_animateReplyContextPreview:(id)preview
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  previewCopy = preview;
   [MEMORY[0x1E6979518] begin];
-  v5 = [(CKTranscriptBalloonCell *)self layer];
+  layer = [(CKTranscriptBalloonCell *)self layer];
   [(CKTranscriptCell *)self insertionBeginTime];
-  [v5 convertTime:0 fromLayer:?];
+  [layer convertTime:0 fromLayer:?];
   v7 = v6;
 
   v8 = +[CKUIBehavior sharedBehaviors];
   [v8 transcriptReplyPreviewContextContactAlpha];
   [CKTranscriptBalloonCell _fadeInContactImageAlpha:"_fadeInContactImageAlpha:atBeginTime:" atBeginTime:?];
 
-  v9 = [(CKTranscriptBalloonCell *)self balloonView];
+  balloonView = [(CKTranscriptBalloonCell *)self balloonView];
   objc_opt_class();
   v10 = 1.0;
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -1622,10 +1622,10 @@ LABEL_8:
 
   [(CKTranscriptBalloonCell *)self _fadeInBalloonAlpha:v10 atBeginTime:v7];
   [MEMORY[0x1E6979518] commit];
-  v13 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v14 = [v13 fullTranscriptLoggingEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  fullTranscriptLoggingEnabled = [mEMORY[0x1E69A8070] fullTranscriptLoggingEnabled];
 
-  if (v14 && IMOSLoggingEnabled())
+  if (fullTranscriptLoggingEnabled && IMOSLoggingEnabled())
   {
     v15 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
@@ -1637,32 +1637,32 @@ LABEL_8:
   }
 
   [(CKTranscriptBalloonCell *)self setInsertingReply:0];
-  if (v4)
+  if (previewCopy)
   {
-    v4[2](v4, 1);
+    previewCopy[2](previewCopy, 1);
   }
 }
 
-- (void)_animateUpperBracket:(id)a3
+- (void)_animateUpperBracket:(id)bracket
 {
   v49 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  bracketCopy = bracket;
   [(CKTranscriptCell *)self insertionDuration];
   v6 = v5;
   [MEMORY[0x1E6979518] begin];
   v7 = [(NSArray *)self->_threadGroupLayoutAttributes subarrayWithRange:0, [(NSArray *)self->_threadGroupLayoutAttributes count]- 1];
-  v8 = [v7 lastObject];
-  v9 = [v8 chatItem];
+  lastObject = [v7 lastObject];
+  chatItem = [lastObject chatItem];
 
-  v10 = [(CKTranscriptBalloonCell *)self balloonCellDelegate];
-  v11 = [v10 cellForChatItem:v9];
+  balloonCellDelegate = [(CKTranscriptBalloonCell *)self balloonCellDelegate];
+  v11 = [balloonCellDelegate cellForChatItem:chatItem];
 
-  v12 = [v7 lastObject];
-  [v12 frame];
+  lastObject2 = [v7 lastObject];
+  [lastObject2 frame];
   v14 = v13;
-  v15 = [v11 layer];
-  v16 = [v15 presentationLayer];
-  [v16 frame];
+  layer = [v11 layer];
+  presentationLayer = [layer presentationLayer];
+  [presentationLayer frame];
   v18 = v14 - v17;
 
   [(CKTranscriptBalloonCell *)self _createLineViewFrameForThreadGroupLayoutAttributes:self->_threadGroupLayoutAttributes];
@@ -1697,9 +1697,9 @@ LABEL_8:
     v28 = 0.0;
   }
 
-  v29 = [(CKTranscriptBalloonCell *)self layer];
+  layer2 = [(CKTranscriptBalloonCell *)self layer];
   [(CKTranscriptCell *)self insertionBeginTime];
-  [v29 convertTime:0 fromLayer:?];
+  [layer2 convertTime:0 fromLayer:?];
   v31 = v30;
 
   if (v18 < 0.0)
@@ -1724,10 +1724,10 @@ LABEL_8:
   [(CKTranscriptBalloonCell *)self _fadeInContactImageAlpha:1.0 atBeginTime:v6 + v32];
   [(CKTranscriptBalloonCell *)self _fadeInBalloonAlpha:1.0 atBeginTime:v6 + v32];
   [MEMORY[0x1E6979518] commit];
-  v35 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v36 = [v35 fullTranscriptLoggingEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  fullTranscriptLoggingEnabled = [mEMORY[0x1E69A8070] fullTranscriptLoggingEnabled];
 
-  if (v36)
+  if (fullTranscriptLoggingEnabled)
   {
     [(CKTranscriptCell *)self insertionBeginTime];
     v38 = v37;
@@ -1750,32 +1750,32 @@ LABEL_8:
   }
 
   [(CKTranscriptBalloonCell *)self setInsertingReply:0];
-  if (v4)
+  if (bracketCopy)
   {
-    v4[2](v4, 1);
+    bracketCopy[2](bracketCopy, 1);
   }
 }
 
-- (void)_animateLineExtension:(id)a3
+- (void)_animateLineExtension:(id)extension
 {
   v70 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  extensionCopy = extension;
   [(CKTranscriptCell *)self insertionDuration];
   v6 = v5;
   [MEMORY[0x1E6979518] begin];
   v7 = [(NSArray *)self->_threadGroupLayoutAttributes subarrayWithRange:0, [(NSArray *)self->_threadGroupLayoutAttributes count]- 1];
-  v8 = [v7 lastObject];
-  v9 = [v8 chatItem];
+  lastObject = [v7 lastObject];
+  chatItem = [lastObject chatItem];
 
-  v10 = [(CKTranscriptBalloonCell *)self balloonCellDelegate];
-  v11 = [v10 cellForChatItem:v9];
+  balloonCellDelegate = [(CKTranscriptBalloonCell *)self balloonCellDelegate];
+  v11 = [balloonCellDelegate cellForChatItem:chatItem];
 
-  v12 = [v7 lastObject];
-  [v12 frame];
+  lastObject2 = [v7 lastObject];
+  [lastObject2 frame];
   v14 = v13;
-  v15 = [v11 layer];
-  v16 = [v15 presentationLayer];
-  [v16 frame];
+  layer = [v11 layer];
+  presentationLayer = [layer presentationLayer];
+  [presentationLayer frame];
   v18 = v14 - v17;
 
   [(CKTranscriptBalloonCell *)self _createLineViewFrameForThreadGroupLayoutAttributes:v7];
@@ -1833,9 +1833,9 @@ LABEL_8:
     v40 = 0.0;
   }
 
-  v41 = [(CKTranscriptBalloonCell *)self layer];
+  layer2 = [(CKTranscriptBalloonCell *)self layer];
   [(CKTranscriptCell *)self insertionBeginTime];
-  [v41 convertTime:0 fromLayer:?];
+  [layer2 convertTime:0 fromLayer:?];
   v43 = v42;
 
   if (v39)
@@ -1873,10 +1873,10 @@ LABEL_8:
   }
 
   [MEMORY[0x1E6979518] commit];
-  v49 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v50 = [v49 fullTranscriptLoggingEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  fullTranscriptLoggingEnabled = [mEMORY[0x1E69A8070] fullTranscriptLoggingEnabled];
 
-  if (v50)
+  if (fullTranscriptLoggingEnabled)
   {
     [(CKTranscriptCell *)self insertionBeginTime];
     v52 = v51;
@@ -1899,15 +1899,15 @@ LABEL_8:
   }
 
   [(CKTranscriptBalloonCell *)self setInsertingReply:0];
-  if (v4)
+  if (extensionCopy)
   {
-    v4[2](v4, 1);
+    extensionCopy[2](extensionCopy, 1);
   }
 }
 
-- (void)_animateLowerBracketToLoop:(id)a3
+- (void)_animateLowerBracketToLoop:(id)loop
 {
-  v67 = a3;
+  loopCopy = loop;
   [(CKTranscriptCell *)self insertionDuration];
   v65 = v4;
   [MEMORY[0x1E6979518] begin];
@@ -1917,20 +1917,20 @@ LABEL_8:
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  v14 = [v5 lastObject];
-  v15 = [v14 chatItem];
+  lastObject = [v5 lastObject];
+  chatItem = [lastObject chatItem];
 
-  v16 = [(CKTranscriptBalloonCell *)self balloonCellDelegate];
-  v68 = v15;
-  v17 = [v16 cellForChatItem:v15];
+  balloonCellDelegate = [(CKTranscriptBalloonCell *)self balloonCellDelegate];
+  v68 = chatItem;
+  v17 = [balloonCellDelegate cellForChatItem:chatItem];
 
-  v18 = [v5 lastObject];
-  [v18 frame];
+  lastObject2 = [v5 lastObject];
+  [lastObject2 frame];
   v20 = v19;
   v66 = v17;
-  v21 = [v17 layer];
-  v22 = [v21 presentationLayer];
-  [v22 frame];
+  layer = [v17 layer];
+  presentationLayer = [layer presentationLayer];
+  [presentationLayer frame];
   v24 = v20 - v23;
 
   if (v24 >= 0.0)
@@ -1965,7 +1965,7 @@ LABEL_8:
     [(CKLineView *)self->_lineView setFrame:v31, v32 - v24, v33, v34, *&v31, *&v33, *&v34];
   }
 
-  v40 = [v5 lastObject];
+  lastObject3 = [v5 lastObject];
   v72.origin.x = v35;
   v72.origin.y = v39;
   v72.size.width = v37;
@@ -1975,8 +1975,8 @@ LABEL_8:
   [v42 replyLineWidth];
   v44 = Height + v43 * -0.5;
 
-  v64 = v40;
-  v45 = [(CKTranscriptBalloonCell *)self _drawLowerBracketLoopForPath:v26 withLayout:v40 lineViewMaxY:v44];
+  v64 = lastObject3;
+  v45 = [(CKTranscriptBalloonCell *)self _drawLowerBracketLoopForPath:v26 withLayout:lastObject3 lineViewMaxY:v44];
   v46 = calculateLengthPercentageToPointInLine([v45 CGPath], v28, v30);
   [(CKLineView *)self->_lineView frame];
   v47 = [(CKTranscriptBalloonCell *)self _createLinePathForFrame:self->_threadGroupLayoutAttributes withThreadGroupLayoutAttributes:?];
@@ -1994,9 +1994,9 @@ LABEL_8:
     [MEMORY[0x1E69DD250] animateWithDuration:4 delay:v71 options:0 animations:0.3 completion:0.0];
   }
 
-  v48 = [(CKTranscriptBalloonCell *)self layer];
+  layer2 = [(CKTranscriptBalloonCell *)self layer];
   [(CKTranscriptCell *)self insertionBeginTime];
-  [v48 convertTime:0 fromLayer:?];
+  [layer2 convertTime:0 fromLayer:?];
   v50 = v49;
 
   LODWORD(v51) = 1060424070;
@@ -2021,8 +2021,8 @@ LABEL_8:
   block[2] = __54__CKTranscriptBalloonCell__animateLowerBracketToLoop___block_invoke_2;
   block[3] = &unk_1E72ED1C8;
   block[4] = self;
-  v70 = v67;
-  v60 = v67;
+  v70 = loopCopy;
+  v60 = loopCopy;
   dispatch_after(v59, MEMORY[0x1E69E96A0], block);
 }
 
@@ -2040,16 +2040,16 @@ uint64_t __54__CKTranscriptBalloonCell__animateLowerBracketToLoop___block_invoke
   return result;
 }
 
-- (void)_slideContactImageWithTranslate:(double)a3 duration:(double)a4 beginTime:(double)a5
+- (void)_slideContactImageWithTranslate:(double)translate duration:(double)duration beginTime:(double)time
 {
-  v9 = [(CKPhoneTranscriptMessageCell *)self contactImageView];
-  v10 = [v9 layer];
-  v11 = v10;
+  contactImageView = [(CKPhoneTranscriptMessageCell *)self contactImageView];
+  layer = [contactImageView layer];
+  v11 = layer;
   v12 = 0uLL;
   memset(&v18, 0, sizeof(v18));
-  if (v10)
+  if (layer)
   {
-    [v10 transform];
+    [layer transform];
     v12 = 0uLL;
   }
 
@@ -2062,88 +2062,88 @@ uint64_t __54__CKTranscriptBalloonCell__animateLowerBracketToLoop___block_invoke
   *&v17.m11 = v12;
   *&v17.m13 = v12;
   v16 = v18;
-  CATransform3DTranslate(&v17, &v16, 0.0, a3, 0.0);
+  CATransform3DTranslate(&v17, &v16, 0.0, translate, 0.0);
   v16 = v17;
   v13 = [MEMORY[0x1E696B098] valueWithCATransform3D:&v16];
   v16 = v18;
   v14 = [MEMORY[0x1E696B098] valueWithCATransform3D:&v16];
-  v15 = [(CKTranscriptBalloonCell *)self animationWithKeyPath:@"transform" fromValue:v13 toValue:v14 beginTime:*MEMORY[0x1E6979ED8] duration:a5 timingFunctionName:a4];
+  v15 = [(CKTranscriptBalloonCell *)self animationWithKeyPath:@"transform" fromValue:v13 toValue:v14 beginTime:*MEMORY[0x1E6979ED8] duration:time timingFunctionName:duration];
 
   [v11 addAnimation:v15 forKey:@"contactImageSlide"];
 }
 
-- (void)_fadeInContactImageAlpha:(double)a3 atBeginTime:(double)a4
+- (void)_fadeInContactImageAlpha:(double)alpha atBeginTime:(double)time
 {
-  v11 = [(CKPhoneTranscriptMessageCell *)self contactImageView];
-  v7 = [v11 layer];
-  [v7 setOpacity:0.0];
-  v8 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-  v9 = [(CKTranscriptBalloonCell *)self animationWithKeyPath:@"opacity" fromValue:&unk_1F04E8708 toValue:v8 beginTime:*MEMORY[0x1E6979EA0] duration:a4 timingFunctionName:0.3];
+  contactImageView = [(CKPhoneTranscriptMessageCell *)self contactImageView];
+  layer = [contactImageView layer];
+  [layer setOpacity:0.0];
+  v8 = [MEMORY[0x1E696AD98] numberWithDouble:alpha];
+  v9 = [(CKTranscriptBalloonCell *)self animationWithKeyPath:@"opacity" fromValue:&unk_1F04E8708 toValue:v8 beginTime:*MEMORY[0x1E6979EA0] duration:time timingFunctionName:0.3];
 
-  [v7 addAnimation:v9 forKey:@"contactImageFadeIn"];
-  *&v10 = a3;
-  [v7 setOpacity:v10];
+  [layer addAnimation:v9 forKey:@"contactImageFadeIn"];
+  *&v10 = alpha;
+  [layer setOpacity:v10];
 }
 
-- (void)_fadeInBalloonAlpha:(double)a3 atBeginTime:(double)a4
+- (void)_fadeInBalloonAlpha:(double)alpha atBeginTime:(double)time
 {
-  v11 = [(CKTranscriptBalloonCell *)self balloonView];
-  v7 = [v11 layer];
-  [v7 setOpacity:0.0];
-  v8 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-  v9 = [(CKTranscriptBalloonCell *)self animationWithKeyPath:@"opacity" fromValue:&unk_1F04E8708 toValue:v8 beginTime:*MEMORY[0x1E6979EA0] duration:a4 timingFunctionName:0.3];
+  balloonView = [(CKTranscriptBalloonCell *)self balloonView];
+  layer = [balloonView layer];
+  [layer setOpacity:0.0];
+  v8 = [MEMORY[0x1E696AD98] numberWithDouble:alpha];
+  v9 = [(CKTranscriptBalloonCell *)self animationWithKeyPath:@"opacity" fromValue:&unk_1F04E8708 toValue:v8 beginTime:*MEMORY[0x1E6979EA0] duration:time timingFunctionName:0.3];
 
-  [v7 addAnimation:v9 forKey:@"balloonFadeIn"];
-  *&v10 = a3;
-  [v7 setOpacity:v10];
+  [layer addAnimation:v9 forKey:@"balloonFadeIn"];
+  *&v10 = alpha;
+  [layer setOpacity:v10];
 }
 
-- (id)animationWithKeyPath:(id)a3 fromValue:(id)a4 toValue:(id)a5 beginTime:(double)a6 duration:(double)a7 timingFunctionName:(id)a8
+- (id)animationWithKeyPath:(id)path fromValue:(id)value toValue:(id)toValue beginTime:(double)time duration:(double)duration timingFunctionName:(id)name
 {
   v13 = MEMORY[0x1E6979318];
-  v14 = a8;
-  v15 = a5;
-  v16 = a4;
-  v17 = [v13 animationWithKeyPath:a3];
-  [v17 setFromValue:v16];
+  nameCopy = name;
+  toValueCopy = toValue;
+  valueCopy = value;
+  v17 = [v13 animationWithKeyPath:path];
+  [v17 setFromValue:valueCopy];
 
-  [v17 setToValue:v15];
+  [v17 setToValue:toValueCopy];
   [v17 setFillMode:*MEMORY[0x1E69797E0]];
   [v17 setRemovedOnCompletion:1];
-  v18 = [MEMORY[0x1E69793D0] functionWithName:v14];
+  v18 = [MEMORY[0x1E69793D0] functionWithName:nameCopy];
 
   [v17 setTimingFunction:v18];
-  [v17 setBeginTime:a6];
-  [v17 setDuration:a7];
+  [v17 setBeginTime:time];
+  [v17 setDuration:duration];
 
   return v17;
 }
 
-- (id)animationWithKeyPath:(id)a3 fromValue:(id)a4 toValue:(id)a5 beginTime:(double)a6 duration:(double)a7 timingFunction:(id)a8
+- (id)animationWithKeyPath:(id)path fromValue:(id)value toValue:(id)toValue beginTime:(double)time duration:(double)duration timingFunction:(id)function
 {
   v13 = MEMORY[0x1E6979318];
-  v14 = a8;
-  v15 = a5;
-  v16 = a4;
-  v17 = [v13 animationWithKeyPath:a3];
-  [v17 setFromValue:v16];
+  functionCopy = function;
+  toValueCopy = toValue;
+  valueCopy = value;
+  v17 = [v13 animationWithKeyPath:path];
+  [v17 setFromValue:valueCopy];
 
-  [v17 setToValue:v15];
+  [v17 setToValue:toValueCopy];
   [v17 setFillMode:*MEMORY[0x1E69797E0]];
   [v17 setRemovedOnCompletion:1];
-  [v17 setTimingFunction:v14];
+  [v17 setTimingFunction:functionCopy];
 
-  [v17 setBeginTime:a6];
-  [v17 setDuration:a7];
+  [v17 setBeginTime:time];
+  [v17 setDuration:duration];
 
   return v17;
 }
 
-- (id)_drawLowerBracketLoopForPath:(id)a3 withLayout:(id)a4 lineViewMaxY:(double)a5
+- (id)_drawLowerBracketLoopForPath:(id)path withLayout:(id)layout lineViewMaxY:(double)y
 {
-  v8 = a3;
+  pathCopy = path;
   lineView = self->_lineView;
-  v10 = a4;
+  layoutCopy = layout;
   [(CKLineView *)lineView frame];
   v12 = v11;
   v14 = v13;
@@ -2159,20 +2159,20 @@ uint64_t __54__CKTranscriptBalloonCell__animateLowerBracketToLoop___block_invoke
   v42.size.width = v16;
   v42.size.height = v18;
   v23 = v22 + CGRectGetWidth(v42) * 0.5;
-  v24 = v8;
+  v24 = pathCopy;
   [v24 currentPoint];
   v26 = v25 + -30.0;
   [v24 addCurveToPoint:v23 controlPoint1:v25 + -30.0 controlPoint2:v27 + 15.0];
   v28 = v26 + 5.0;
-  [v10 frame];
+  [layoutCopy frame];
   v29 = CGRectGetMidY(v43) - self->_lineViewReferenceY + -10.0;
-  [v10 frame];
+  [layoutCopy frame];
   [v24 addCurveToPoint:v22 controlPoint1:CGRectGetMidY(v44) - self->_lineViewReferenceY controlPoint2:{v22, v28, v22, v29}];
-  [v10 frame];
+  [layoutCopy frame];
   v30 = CGRectGetMidY(v45) - self->_lineViewReferenceY + 15.0;
-  [v10 frame];
+  [layoutCopy frame];
   v31 = CGRectGetMaxY(v46) - self->_lineViewReferenceY + -15.0;
-  [v10 frame];
+  [layoutCopy frame];
   v33 = v32;
   v35 = v34;
   v37 = v36;
@@ -2183,23 +2183,23 @@ uint64_t __54__CKTranscriptBalloonCell__animateLowerBracketToLoop___block_invoke
   v47.size.width = v37;
   v47.size.height = v39;
   [v24 addCurveToPoint:v22 controlPoint1:CGRectGetMaxY(v47) - self->_lineViewReferenceY controlPoint2:{v22, v30, v22, v31}];
-  [v24 addLineToPoint:{v22, a5}];
+  [v24 addLineToPoint:{v22, y}];
 
   return v24;
 }
 
-- (id)_extendPath:(id *)a3 withFrame:(CGRect)a4
+- (id)_extendPath:(id *)path withFrame:(CGRect)frame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v9 = +[CKUIBehavior sharedBehaviors];
   [v9 replyLineWidth];
   v11 = v10;
 
   v12 = v11 * -0.5;
-  v13 = [*a3 copy];
+  v13 = [*path copy];
   [v13 currentPoint];
   v15 = v14;
   v18.origin.x = x;
@@ -2211,9 +2211,9 @@ uint64_t __54__CKTranscriptBalloonCell__animateLowerBracketToLoop___block_invoke
   return v13;
 }
 
-- (void)_removeQuickActionButtonIfNeededAnimated:(BOOL)a3
+- (void)_removeQuickActionButtonIfNeededAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if ([(CKQuickActionButton *)self->_quickActionButton isAnimating])
   {
 
@@ -2229,7 +2229,7 @@ uint64_t __54__CKTranscriptBalloonCell__animateLowerBracketToLoop___block_invoke
     aBlock[4] = self;
     v5 = _Block_copy(aBlock);
     v6 = v5;
-    if (v3)
+    if (animatedCopy)
     {
       v7 = MEMORY[0x1E69DD250];
       v10[0] = MEMORY[0x1E69E9820];
@@ -2260,9 +2260,9 @@ void __68__CKTranscriptBalloonCell__removeQuickActionButtonIfNeededAnimated___bl
   *(v2 + 1048) = 0;
 }
 
-- (void)_addQuickActionButtonIfNeededAnimated:(BOOL)a3
+- (void)_addQuickActionButtonIfNeededAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if ([(CKTranscriptBalloonCell *)self hasQueuedQuickActionButtonRemoval])
   {
     [(CKTranscriptBalloonCell *)self setHasQueuedQuickActionButtonRemoval:0];
@@ -2270,9 +2270,9 @@ void __68__CKTranscriptBalloonCell__removeQuickActionButtonIfNeededAnimated___bl
 
   if (!self->_quickActionButton)
   {
-    v5 = [(CKTranscriptBalloonCell *)self isRichLink];
+    isRichLink = [(CKTranscriptBalloonCell *)self isRichLink];
     v6 = off_1E72E5540;
-    if (!v5)
+    if (!isRichLink)
     {
       v6 = off_1E72E5548;
     }
@@ -2283,14 +2283,14 @@ void __68__CKTranscriptBalloonCell__removeQuickActionButtonIfNeededAnimated___bl
 
     [(CKQuickActionButton *)self->_quickActionButton setAnimationDelegate:self];
     [(CKQuickActionButton *)self->_quickActionButton setDelegate:self];
-    if (v3)
+    if (animatedCopy)
     {
       [(CKQuickActionButton *)self->_quickActionButton setAlpha:0.0];
-      v9 = [(CKEditableCollectionViewCell *)self contentView];
-      [v9 addSubview:self->_quickActionButton];
+      contentView = [(CKEditableCollectionViewCell *)self contentView];
+      [contentView addSubview:self->_quickActionButton];
 
-      v10 = [(CKEditableCollectionViewCell *)self contentView];
-      [v10 sendSubviewToBack:self->_quickActionButton];
+      contentView2 = [(CKEditableCollectionViewCell *)self contentView];
+      [contentView2 sendSubviewToBack:self->_quickActionButton];
 
       [(CKTranscriptBalloonCell *)self setNeedsLayout];
       v13[0] = MEMORY[0x1E69E9820];
@@ -2303,37 +2303,37 @@ void __68__CKTranscriptBalloonCell__removeQuickActionButtonIfNeededAnimated___bl
 
     else
     {
-      v11 = [(CKEditableCollectionViewCell *)self contentView];
-      [v11 addSubview:self->_quickActionButton];
+      contentView3 = [(CKEditableCollectionViewCell *)self contentView];
+      [contentView3 addSubview:self->_quickActionButton];
 
-      v12 = [(CKEditableCollectionViewCell *)self contentView];
-      [v12 sendSubviewToBack:self->_quickActionButton];
+      contentView4 = [(CKEditableCollectionViewCell *)self contentView];
+      [contentView4 sendSubviewToBack:self->_quickActionButton];
 
       [(CKTranscriptBalloonCell *)self setNeedsLayout];
     }
   }
 }
 
-- (void)setCanShowQuickActionButton:(BOOL)a3
+- (void)setCanShowQuickActionButton:(BOOL)button
 {
-  v3 = a3;
-  if (![(CKEditableCollectionViewCell *)self isInReplyContext]&& self->_canShowQuickActionButton != v3)
+  buttonCopy = button;
+  if (![(CKEditableCollectionViewCell *)self isInReplyContext]&& self->_canShowQuickActionButton != buttonCopy)
   {
-    self->_canShowQuickActionButton = v3;
+    self->_canShowQuickActionButton = buttonCopy;
 
     [(CKTranscriptBalloonCell *)self updateQuickActionButtonVisibility];
   }
 }
 
-- (void)setSyndicationIdentifiers:(id)a3
+- (void)setSyndicationIdentifiers:(id)identifiers
 {
-  v5 = a3;
-  if (self->_syndicationIdentifiers != v5)
+  identifiersCopy = identifiers;
+  if (self->_syndicationIdentifiers != identifiersCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_syndicationIdentifiers, a3);
+    v6 = identifiersCopy;
+    objc_storeStrong(&self->_syndicationIdentifiers, identifiers);
     [(CKTranscriptBalloonCell *)self updateQuickActionButtonVisibility];
-    v5 = v6;
+    identifiersCopy = v6;
   }
 }
 
@@ -2352,8 +2352,8 @@ void __68__CKTranscriptBalloonCell__removeQuickActionButtonIfNeededAnimated___bl
   else
   {
     v14 = 0;
-    v4 = [(CKTranscriptBalloonCell *)self numberOfMomentSharePhotos];
-    v5 = [(CKTranscriptBalloonCell *)self numberOfMomentShareVideos]+ v4;
+    numberOfMomentSharePhotos = [(CKTranscriptBalloonCell *)self numberOfMomentSharePhotos];
+    v5 = [(CKTranscriptBalloonCell *)self numberOfMomentShareVideos]+ numberOfMomentSharePhotos;
     if (v5)
     {
       if ([(CKTranscriptBalloonCell *)self numberOfMomentShareSavedAssets]== v5)
@@ -2368,16 +2368,16 @@ LABEL_8:
       return;
     }
 
-    v6 = [MEMORY[0x1E69A5C30] sharedInstance];
-    [v6 registerPhotoLibraryPersistenceManagerListener:self];
-    v7 = [(CKTranscriptBalloonCell *)self syndicationIdentifiers];
-    v8 = [v7 count];
+    mEMORY[0x1E69A5C30] = [MEMORY[0x1E69A5C30] sharedInstance];
+    [mEMORY[0x1E69A5C30] registerPhotoLibraryPersistenceManagerListener:self];
+    syndicationIdentifiers = [(CKTranscriptBalloonCell *)self syndicationIdentifiers];
+    v8 = [syndicationIdentifiers count];
 
-    v9 = [MEMORY[0x1E69A5C30] sharedInstance];
+    mEMORY[0x1E69A5C30]2 = [MEMORY[0x1E69A5C30] sharedInstance];
     v10 = MEMORY[0x1E695DFD8];
-    v11 = [(CKTranscriptBalloonCell *)self syndicationIdentifiers];
-    v12 = [v10 setWithArray:v11];
-    v13 = [v9 cachedCountOfSyndicationIdentifiersSavedToSystemPhotoLibrary:v12 shouldFetchAndNotifyAsNeeded:1 didStartFetch:&v14];
+    syndicationIdentifiers2 = [(CKTranscriptBalloonCell *)self syndicationIdentifiers];
+    v12 = [v10 setWithArray:syndicationIdentifiers2];
+    v13 = [mEMORY[0x1E69A5C30]2 cachedCountOfSyndicationIdentifiersSavedToSystemPhotoLibrary:v12 shouldFetchAndNotifyAsNeeded:1 didStartFetch:&v14];
 
     v3 = v13 != v8;
     if ((v14 & 1) == 0)
@@ -2398,28 +2398,28 @@ LABEL_10:
   }
 }
 
-- (void)quickActionButtonWasTapped:(id)a3
+- (void)quickActionButtonWasTapped:(id)tapped
 {
-  v4 = a3;
-  v5 = [(CKTranscriptBalloonCell *)self quickActionButtonTappedCallback];
+  tappedCopy = tapped;
+  quickActionButtonTappedCallback = [(CKTranscriptBalloonCell *)self quickActionButtonTappedCallback];
 
-  if (v5)
+  if (quickActionButtonTappedCallback)
   {
-    v6 = [(CKTranscriptBalloonCell *)self quickActionButtonTappedCallback];
-    (*(v6 + 16))(v6, v4);
+    quickActionButtonTappedCallback2 = [(CKTranscriptBalloonCell *)self quickActionButtonTappedCallback];
+    (*(quickActionButtonTappedCallback2 + 16))(quickActionButtonTappedCallback2, tappedCopy);
   }
 
   else
   {
-    v6 = IMLogHandleForCategory();
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    quickActionButtonTappedCallback2 = IMLogHandleForCategory();
+    if (os_log_type_enabled(quickActionButtonTappedCallback2, OS_LOG_TYPE_ERROR))
     {
-      [CKTranscriptBalloonCell quickActionButtonWasTapped:v6];
+      [CKTranscriptBalloonCell quickActionButtonWasTapped:quickActionButtonTappedCallback2];
     }
   }
 }
 
-- (void)quickActionButtonAnimationDidEnd:(id)a3
+- (void)quickActionButtonAnimationDidEnd:(id)end
 {
   if ([(CKTranscriptBalloonCell *)self hasQueuedQuickActionButtonRemoval])
   {
@@ -2428,39 +2428,39 @@ LABEL_10:
   }
 }
 
-- (void)textBalloonViewWillLayoutSubviews:(id)a3
+- (void)textBalloonViewWillLayoutSubviews:(id)subviews
 {
-  v6 = a3;
+  subviewsCopy = subviews;
   WeakRetained = objc_loadWeakRetained(&self->_textEffectsDelegate);
 
   if (WeakRetained)
   {
     v5 = objc_loadWeakRetained(&self->_textEffectsDelegate);
-    [v5 transcriptBalloonCell:self willLayoutTextBalloonView:v6];
+    [v5 transcriptBalloonCell:self willLayoutTextBalloonView:subviewsCopy];
   }
 }
 
-- (void)textBalloonViewDidLayoutSubviews:(id)a3
+- (void)textBalloonViewDidLayoutSubviews:(id)subviews
 {
-  v6 = a3;
+  subviewsCopy = subviews;
   WeakRetained = objc_loadWeakRetained(&self->_textEffectsDelegate);
 
   if (WeakRetained)
   {
     v5 = objc_loadWeakRetained(&self->_textEffectsDelegate);
-    [v5 transcriptBalloonCell:self didLayoutTextBalloonView:v6];
+    [v5 transcriptBalloonCell:self didLayoutTextBalloonView:subviewsCopy];
   }
 }
 
-- (unint64_t)textBalloonViewAllowedLayoutActionForTextBalloonView:(id)a3
+- (unint64_t)textBalloonViewAllowedLayoutActionForTextBalloonView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   WeakRetained = objc_loadWeakRetained(&self->_textEffectsDelegate);
 
   if (WeakRetained)
   {
     v6 = objc_loadWeakRetained(&self->_textEffectsDelegate);
-    v7 = [v6 transcriptBalloonCell:self allowedLayoutActionForTextBalloonView:v4];
+    v7 = [v6 transcriptBalloonCell:self allowedLayoutActionForTextBalloonView:viewCopy];
   }
 
   else
@@ -2471,27 +2471,27 @@ LABEL_10:
   return v7;
 }
 
-- (void)textBalloonViewTextViewDidChangeRenderBounds:(id)a3
+- (void)textBalloonViewTextViewDidChangeRenderBounds:(id)bounds
 {
-  v6 = a3;
+  boundsCopy = bounds;
   WeakRetained = objc_loadWeakRetained(&self->_textEffectsDelegate);
 
   if (WeakRetained)
   {
     v5 = objc_loadWeakRetained(&self->_textEffectsDelegate);
-    [v5 transcriptBalloonCell:self didChangeRenderBoundsOfTextBalloonView:v6];
+    [v5 transcriptBalloonCell:self didChangeRenderBoundsOfTextBalloonView:boundsCopy];
   }
 }
 
-- (id)customTextRenderingDisplayLinkForTextBalloonViewTextView:(id)a3
+- (id)customTextRenderingDisplayLinkForTextBalloonViewTextView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   WeakRetained = objc_loadWeakRetained(&self->_textEffectsDelegate);
 
   if (WeakRetained)
   {
     v6 = objc_loadWeakRetained(&self->_textEffectsDelegate);
-    v7 = [v6 transcriptBalloonCell:self customTextRenderingDisplayLinkForTextBalloonViewTextView:v4];
+    v7 = [v6 transcriptBalloonCell:self customTextRenderingDisplayLinkForTextBalloonViewTextView:viewCopy];
   }
 
   else
@@ -2502,16 +2502,16 @@ LABEL_10:
   return v7;
 }
 
-- (void)textBalloonViewTextView:(id)a3 didChangeTextEffectPlaybackCandidateStatus:(BOOL)a4
+- (void)textBalloonViewTextView:(id)view didChangeTextEffectPlaybackCandidateStatus:(BOOL)status
 {
-  v4 = a4;
-  v8 = a3;
+  statusCopy = status;
+  viewCopy = view;
   WeakRetained = objc_loadWeakRetained(&self->_textEffectsDelegate);
 
   if (WeakRetained)
   {
     v7 = objc_loadWeakRetained(&self->_textEffectsDelegate);
-    [v7 transcriptBalloonCell:self textBalloonView:v8 didChangeTextEffectPlaybackCandidateStatus:v4];
+    [v7 transcriptBalloonCell:self textBalloonView:viewCopy didChangeTextEffectPlaybackCandidateStatus:statusCopy];
   }
 }
 
@@ -2529,37 +2529,37 @@ LABEL_10:
   return WeakRetained;
 }
 
-- (void)configureForChatItem:(id)a3 context:(id)a4 animated:(BOOL)a5 animationDuration:(double)a6 animationCurve:(int64_t)a7
+- (void)configureForChatItem:(id)item context:(id)context animated:(BOOL)animated animationDuration:(double)duration animationCurve:(int64_t)curve
 {
-  v9 = a5;
+  animatedCopy = animated;
   v67 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
+  itemCopy = item;
+  contextCopy = context;
   v64.receiver = self;
   v64.super_class = CKTranscriptBalloonCell;
-  [(CKTranscriptMessageContentCell *)&v64 configureForChatItem:v12 context:v13 animated:v9 animationDuration:a7 animationCurve:a6];
+  [(CKTranscriptMessageContentCell *)&v64 configureForChatItem:itemCopy context:contextCopy animated:animatedCopy animationDuration:curve animationCurve:duration];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (([v12 itemIsReplyContextPreview] & 1) == 0)
+    if (([itemCopy itemIsReplyContextPreview] & 1) == 0)
     {
-      -[CKTranscriptMessageCell setFailed:](self, "setFailed:", [v12 failed]);
-      v14 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-      v15 = [v14 stewieEnabled];
+      -[CKTranscriptMessageCell setFailed:](self, "setFailed:", [itemCopy failed]);
+      mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+      stewieEnabled = [mEMORY[0x1E69A8070] stewieEnabled];
 
-      if (v15)
+      if (stewieEnabled)
       {
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v16 = [v12 stewieConversationID];
-          v17 = [v12 failed];
-          v18 = v16 >= 0 ? v17 : 0;
+          stewieConversationID = [itemCopy stewieConversationID];
+          failed = [itemCopy failed];
+          v18 = stewieConversationID >= 0 ? failed : 0;
           if (v18 == 1)
           {
-            v19 = [v12 message];
-            v20 = [v19 messageSubject];
-            v21 = [v20 length] == 0;
+            message = [itemCopy message];
+            messageSubject = [message messageSubject];
+            v21 = [messageSubject length] == 0;
 
             if (!v21)
             {
@@ -2569,7 +2569,7 @@ LABEL_10:
                 if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
                 {
                   *buf = 134217984;
-                  v66 = v16;
+                  v66 = stewieConversationID;
                   _os_log_impl(&dword_19020E000, v22, OS_LOG_TYPE_INFO, "Disable failure button on initial Stewie start message for conversation ID: %ld", buf, 0xCu);
                 }
               }
@@ -2580,38 +2580,38 @@ LABEL_10:
         }
       }
 
-      if ([v12 isBlackholed])
+      if ([itemCopy isBlackholed])
       {
-        v23 = [(CKTranscriptMessageCell *)self failureButton];
+        failureButton = [(CKTranscriptMessageCell *)self failureButton];
         v24 = +[CKUIBehavior sharedBehaviors];
-        v25 = [v24 theme];
-        v26 = [v25 statusTextColor];
-        [v23 setTintColor:v26];
+        theme = [v24 theme];
+        statusTextColor = [theme statusTextColor];
+        [failureButton setTintColor:statusTextColor];
       }
     }
 
-    v27 = [v12 balloonViewClass];
-    v28 = [(CKTranscriptBalloonCell *)self balloonView];
-    if (v28 && objc_opt_class() == v27)
+    balloonViewClass = [itemCopy balloonViewClass];
+    balloonView = [(CKTranscriptBalloonCell *)self balloonView];
+    if (balloonView && objc_opt_class() == balloonViewClass)
     {
-      v29 = v28;
+      balloonView2 = balloonView;
     }
 
     else
     {
-      v29 = CKBalloonViewForClass(v27);
-      [(CKTranscriptBalloonCell *)self setBalloonView:v29];
-      if (v28)
+      balloonView2 = CKBalloonViewForClass(balloonViewClass);
+      [(CKTranscriptBalloonCell *)self setBalloonView:balloonView2];
+      if (balloonView)
       {
-        [v28 frame];
-        [v29 setFrame:?];
+        [balloonView frame];
+        [balloonView2 setFrame:?];
       }
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v29 configureForLocatingChatItem:v12];
+      [balloonView2 configureForLocatingChatItem:itemCopy];
     }
 
     else
@@ -2625,13 +2625,13 @@ LABEL_10:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v53 = v29;
-            v54 = [v53 mayReparentPluginViews];
+            v53 = balloonView2;
+            mayReparentPluginViews = [v53 mayReparentPluginViews];
             [v53 setMayReparentPluginViews:{-[CKTranscriptBalloonCell mayReparentPluginViews](self, "mayReparentPluginViews")}];
-            [v53 configureForTranscriptPlugin:v12 context:v13];
-            [v53 setMayReparentPluginViews:v54];
+            [v53 configureForTranscriptPlugin:itemCopy context:contextCopy];
+            [v53 setMayReparentPluginViews:mayReparentPluginViews];
 
-            [(CKTranscriptBalloonCell *)self configureQuickActionButtonForChatItem:v12];
+            [(CKTranscriptBalloonCell *)self configureQuickActionButtonForChatItem:itemCopy];
             goto LABEL_31;
           }
 
@@ -2650,7 +2650,7 @@ LABEL_10:
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              [v29 configureForTUConversationChatItem:v12];
+              [balloonView2 configureForTUConversationChatItem:itemCopy];
             }
 
             else
@@ -2658,14 +2658,14 @@ LABEL_10:
               objc_opt_class();
               if (objc_opt_isKindOfClass())
               {
-                v55 = v12;
-                [v29 configureForMessagePart:v55];
+                v55 = itemCopy;
+                [balloonView2 configureForMessagePart:v55];
                 [(CKTranscriptBalloonCell *)self configureQuickActionButtonForChatItem:v55];
               }
 
               else
               {
-                [v29 configureForChatItem:v12];
+                [balloonView2 configureForChatItem:itemCopy];
               }
             }
 
@@ -2673,39 +2673,39 @@ LABEL_10:
           }
         }
 
-        [v29 configureForTranscriptPlugin:v12];
+        [balloonView2 configureForTranscriptPlugin:itemCopy];
         goto LABEL_31;
       }
 
-      [v29 configureForLocationShareOfferChatItem:v12];
+      [balloonView2 configureForLocationShareOfferChatItem:itemCopy];
     }
 
 LABEL_31:
-    [v29 frame];
+    [balloonView2 frame];
     v32 = v31;
     v34 = v33;
     v36 = v35;
     v38 = v37;
-    [v12 size];
+    [itemCopy size];
     v40 = v39;
     v42 = v41;
-    v43 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-    v44 = [v43 isCAShapeLayerBalloonsEnabled];
+    mEMORY[0x1E69A8070]2 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+    isCAShapeLayerBalloonsEnabled = [mEMORY[0x1E69A8070]2 isCAShapeLayerBalloonsEnabled];
 
-    if (v44)
+    if (isCAShapeLayerBalloonsEnabled)
     {
-      [v29 tailInsetsForPillSize:{v40, v42}];
+      [balloonView2 tailInsetsForPillSize:{v40, v42}];
       v42 = v46 + v42 + v45;
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v47 = [v12 layoutRecipe];
-      v48 = v47;
-      if (v47)
+      layoutRecipe = [itemCopy layoutRecipe];
+      v48 = layoutRecipe;
+      if (layoutRecipe)
       {
-        [v47 targetSize];
+        [layoutRecipe targetSize];
         v40 = v49;
         v42 = v50;
       }
@@ -2721,14 +2721,14 @@ LABEL_31:
       v60 = v34;
       v61 = v40;
       v62 = v42;
-      v57 = v29;
-      v58 = self;
-      v63 = v9;
+      v57 = balloonView2;
+      selfCopy = self;
+      v63 = animatedCopy;
       v51 = _Block_copy(aBlock);
       v52 = v51;
-      if (v9)
+      if (animatedCopy)
       {
-        [MEMORY[0x1E69DD250] animateWithDuration:a7 << 16 delay:v51 options:0 animations:a6 completion:0.0];
+        [MEMORY[0x1E69DD250] animateWithDuration:curve << 16 delay:v51 options:0 animations:duration completion:0.0];
       }
 
       else
@@ -2737,7 +2737,7 @@ LABEL_31:
       }
     }
 
-    -[CKTranscriptBalloonCell setCanInlineReply:](self, "setCanInlineReply:", [v12 canInlineReply]);
+    -[CKTranscriptBalloonCell setCanInlineReply:](self, "setCanInlineReply:", [itemCopy canInlineReply]);
     goto LABEL_47;
   }
 
@@ -2747,8 +2747,8 @@ LABEL_31:
     [CKTranscriptBalloonCell(CKChatItem) configureForChatItem:context:animated:animationDuration:animationCurve:];
   }
 
-  v29 = [(CKTranscriptBalloonCell *)self balloonView];
-  [v29 prepareForReuse];
+  balloonView2 = [(CKTranscriptBalloonCell *)self balloonView];
+  [balloonView2 prepareForReuse];
 LABEL_47:
 }
 
@@ -2766,11 +2766,11 @@ uint64_t __110__CKTranscriptBalloonCell_CKChatItem__configureForChatItem_context
   return result;
 }
 
-- (void)configureQuickActionButtonForChatItem:(id)a3
+- (void)configureQuickActionButtonForChatItem:(id)item
 {
-  v20 = a3;
-  v4 = [MEMORY[0x1E6994658] sharedSystemShellSwitcher];
-  v5 = [v4 isClarityBoardEnabled];
+  itemCopy = item;
+  mEMORY[0x1E6994658] = [MEMORY[0x1E6994658] sharedSystemShellSwitcher];
+  isClarityBoardEnabled = [mEMORY[0x1E6994658] isClarityBoardEnabled];
 
   if (CKIsRunningInMessagesViewService() || CKIsRunningInMessagesNotificationExtension() || CKIsRunningInRemoteIntentClient())
   {
@@ -2779,21 +2779,21 @@ uint64_t __110__CKTranscriptBalloonCell_CKChatItem__configureForChatItem_context
 
   else
   {
-    v6 = [v20 canPerformQuickAction] & (v5 ^ 1);
+    v6 = [itemCopy canPerformQuickAction] & (isClarityBoardEnabled ^ 1);
   }
 
-  v7 = [v20 IMChatItem];
+  iMChatItem = [itemCopy IMChatItem];
   if (objc_opt_respondsToSelector())
   {
-    v8 = [v7 type];
+    type = [iMChatItem type];
   }
 
   else
   {
-    v8 = 0;
+    type = 0;
   }
 
-  if ([v8 isEqualToString:@"com.apple.messages.URLBalloonProvider"])
+  if ([type isEqualToString:@"com.apple.messages.URLBalloonProvider"])
   {
     [(CKTranscriptBalloonCell *)self setIsRichLink:1];
     [(CKTranscriptBalloonCell *)self updateQuickActionButtonVisibility];
@@ -2807,57 +2807,57 @@ LABEL_10:
 
   else
   {
-    v10 = [v20 IMChatItem];
+    iMChatItem2 = [itemCopy IMChatItem];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v12 = [v20 IMChatItem];
+      iMChatItem3 = [itemCopy IMChatItem];
       [(CKTranscriptBalloonCell *)self setIsRichLink:0];
-      -[CKTranscriptBalloonCell setNumberOfMomentShareSavedAssets:](self, "setNumberOfMomentShareSavedAssets:", [v12 numberOfMomentShareSavedAssets]);
-      -[CKTranscriptBalloonCell setNumberOfMomentSharePhotos:](self, "setNumberOfMomentSharePhotos:", [v12 numberOfMomentSharePhotos]);
-      -[CKTranscriptBalloonCell setNumberOfMomentShareVideos:](self, "setNumberOfMomentShareVideos:", [v12 numberOfMomentShareVideos]);
+      -[CKTranscriptBalloonCell setNumberOfMomentShareSavedAssets:](self, "setNumberOfMomentShareSavedAssets:", [iMChatItem3 numberOfMomentShareSavedAssets]);
+      -[CKTranscriptBalloonCell setNumberOfMomentSharePhotos:](self, "setNumberOfMomentSharePhotos:", [iMChatItem3 numberOfMomentSharePhotos]);
+      -[CKTranscriptBalloonCell setNumberOfMomentShareVideos:](self, "setNumberOfMomentShareVideos:", [iMChatItem3 numberOfMomentShareVideos]);
     }
 
     objc_opt_class();
     v13 = objc_opt_isKindOfClass();
     if (v13 & v6)
     {
-      v14 = [v20 layoutRecipe];
-      v15 = [v14 isLastItem];
+      layoutRecipe = [itemCopy layoutRecipe];
+      isLastItem = [layoutRecipe isLastItem];
     }
 
     else
     {
-      v15 = (v13 ^ 1) & v6;
+      isLastItem = (v13 ^ 1) & v6;
     }
 
     v16 = MEMORY[0x1E69A5C30];
-    v17 = [v20 message];
-    v18 = [v20 IMChatItem];
-    v19 = [v16 photosSyndicationIdentifiersForMessage:v17 transcriptChatItem:v18];
+    message = [itemCopy message];
+    iMChatItem4 = [itemCopy IMChatItem];
+    v19 = [v16 photosSyndicationIdentifiersForMessage:message transcriptChatItem:iMChatItem4];
 
     [(CKTranscriptBalloonCell *)self setSyndicationIdentifiers:v19];
-    if ((v15 & 1) == 0)
+    if ((isLastItem & 1) == 0)
     {
       goto LABEL_10;
     }
   }
 
-  v9 = [(CKTranscriptBalloonCell *)self _isCommSafetyRestrictedForChatItem:v20]^ 1;
+  v9 = [(CKTranscriptBalloonCell *)self _isCommSafetyRestrictedForChatItem:itemCopy]^ 1;
 LABEL_18:
   [(CKTranscriptBalloonCell *)self setCanShowQuickActionButton:v9];
 }
 
-- (BOOL)_isCommSafetyRestrictedForChatItem:(id)a3
+- (BOOL)_isCommSafetyRestrictedForChatItem:(id)item
 {
-  v3 = a3;
-  if ([v3 supportsCommunicationSafety] && (objc_msgSend(v3, "commSafetyTransferGUID"), v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "length"), v4, v5))
+  itemCopy = item;
+  if ([itemCopy supportsCommunicationSafety] && (objc_msgSend(itemCopy, "commSafetyTransferGUID"), v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "length"), v4, v5))
   {
-    v6 = [MEMORY[0x1E69A5B80] sharedInstance];
-    v7 = [v3 commSafetyTransferGUID];
-    v8 = [v6 transferForGUID:v7];
+    mEMORY[0x1E69A5B80] = [MEMORY[0x1E69A5B80] sharedInstance];
+    commSafetyTransferGUID = [itemCopy commSafetyTransferGUID];
+    v8 = [mEMORY[0x1E69A5B80] transferForGUID:commSafetyTransferGUID];
 
     v9 = [CKCommSafetyHelper shouldDisableTranscriptCapabilitiesForFileTransfer:v8];
   }
@@ -2872,7 +2872,7 @@ LABEL_18:
 
 - (void)configureContactImageStrokeView
 {
-  v2 = self;
+  selfCopy = self;
   CKTranscriptBalloonCell.configureContactImageStrokeView()();
 }
 

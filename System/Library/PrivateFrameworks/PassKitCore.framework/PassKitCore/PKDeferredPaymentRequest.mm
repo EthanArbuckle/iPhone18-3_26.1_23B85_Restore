@@ -1,58 +1,58 @@
 @interface PKDeferredPaymentRequest
-+ (PKDeferredPaymentRequest)deferredPaymentRequestWithProtobuf:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToDeferredPaymentRequest:(id)a3;
-- (PKDeferredPaymentRequest)initWithCoder:(id)a3;
++ (PKDeferredPaymentRequest)deferredPaymentRequestWithProtobuf:(id)protobuf;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToDeferredPaymentRequest:(id)request;
+- (PKDeferredPaymentRequest)initWithCoder:(id)coder;
 - (PKDeferredPaymentRequest)initWithPaymentDescription:(NSString *)paymentDescription deferredBilling:(PKDeferredPaymentSummaryItem *)deferredBilling managementURL:(NSURL *)managementURL;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)protobuf;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)sanitize;
 @end
 
 @implementation PKDeferredPaymentRequest
 
-+ (PKDeferredPaymentRequest)deferredPaymentRequestWithProtobuf:(id)a3
++ (PKDeferredPaymentRequest)deferredPaymentRequestWithProtobuf:(id)protobuf
 {
-  v3 = a3;
-  v4 = [v3 paymentDescription];
+  protobufCopy = protobuf;
+  paymentDescription = [protobufCopy paymentDescription];
   v5 = MEMORY[0x1E695DFF8];
-  v6 = [v3 managementURL];
-  v7 = [v5 URLWithString:v6];
+  managementURL = [protobufCopy managementURL];
+  v7 = [v5 URLWithString:managementURL];
 
-  v8 = [v3 deferredBilling];
-  v9 = [PKPaymentSummaryItem itemWithProtobuf:v8];
+  deferredBilling = [protobufCopy deferredBilling];
+  v9 = [PKPaymentSummaryItem itemWithProtobuf:deferredBilling];
 
-  v10 = [[PKDeferredPaymentRequest alloc] initWithPaymentDescription:v4 deferredBilling:v9 managementURL:v7];
-  if ([v3 hasBillingAgreement])
+  v10 = [[PKDeferredPaymentRequest alloc] initWithPaymentDescription:paymentDescription deferredBilling:v9 managementURL:v7];
+  if ([protobufCopy hasBillingAgreement])
   {
-    v11 = [v3 billingAgreement];
-    [(PKDeferredPaymentRequest *)v10 setBillingAgreement:v11];
+    billingAgreement = [protobufCopy billingAgreement];
+    [(PKDeferredPaymentRequest *)v10 setBillingAgreement:billingAgreement];
   }
 
-  if ([v3 hasTokenNotificationURL])
+  if ([protobufCopy hasTokenNotificationURL])
   {
     v12 = MEMORY[0x1E695DFF8];
-    v13 = [v3 tokenNotificationURL];
-    v14 = [v12 URLWithString:v13];
+    tokenNotificationURL = [protobufCopy tokenNotificationURL];
+    v14 = [v12 URLWithString:tokenNotificationURL];
     [(PKDeferredPaymentRequest *)v10 setTokenNotificationURL:v14];
   }
 
-  if ([v3 hasFreeCancellationDate])
+  if ([protobufCopy hasFreeCancellationDate])
   {
     v15 = MEMORY[0x1E695DF00];
-    [v3 freeCancellationDate];
+    [protobufCopy freeCancellationDate];
     v16 = [v15 dateWithTimeIntervalSinceReferenceDate:?];
     [(PKDeferredPaymentRequest *)v10 setFreeCancellationDate:v16];
   }
 
-  if ([v3 hasFreeCancellationDateTimeZone])
+  if ([protobufCopy hasFreeCancellationDateTimeZone])
   {
     v17 = objc_alloc(MEMORY[0x1E695DFE8]);
-    v18 = [v3 freeCancellationDateTimeZone];
-    v19 = [v17 initWithName:v18];
+    freeCancellationDateTimeZone = [protobufCopy freeCancellationDateTimeZone];
+    v19 = [v17 initWithName:freeCancellationDateTimeZone];
     [(PKDeferredPaymentRequest *)v10 setFreeCancellationDateTimeZone:v19];
   }
 
@@ -62,50 +62,50 @@
 - (id)protobuf
 {
   v3 = objc_alloc_init(PKProtobufDeferredPaymentRequest);
-  v4 = [(PKDeferredPaymentRequest *)self paymentDescription];
-  [(PKProtobufDeferredPaymentRequest *)v3 setPaymentDescription:v4];
+  paymentDescription = [(PKDeferredPaymentRequest *)self paymentDescription];
+  [(PKProtobufDeferredPaymentRequest *)v3 setPaymentDescription:paymentDescription];
 
-  v5 = [(PKDeferredPaymentRequest *)self deferredBilling];
-  v6 = [v5 summaryItemProtobuf];
-  [(PKProtobufDeferredPaymentRequest *)v3 setDeferredBilling:v6];
+  deferredBilling = [(PKDeferredPaymentRequest *)self deferredBilling];
+  summaryItemProtobuf = [deferredBilling summaryItemProtobuf];
+  [(PKProtobufDeferredPaymentRequest *)v3 setDeferredBilling:summaryItemProtobuf];
 
-  v7 = [(PKDeferredPaymentRequest *)self managementURL];
-  v8 = [v7 absoluteString];
-  [(PKProtobufDeferredPaymentRequest *)v3 setManagementURL:v8];
+  managementURL = [(PKDeferredPaymentRequest *)self managementURL];
+  absoluteString = [managementURL absoluteString];
+  [(PKProtobufDeferredPaymentRequest *)v3 setManagementURL:absoluteString];
 
-  v9 = [(PKDeferredPaymentRequest *)self billingAgreement];
+  billingAgreement = [(PKDeferredPaymentRequest *)self billingAgreement];
 
-  if (v9)
+  if (billingAgreement)
   {
-    v10 = [(PKDeferredPaymentRequest *)self billingAgreement];
-    [(PKProtobufDeferredPaymentRequest *)v3 setBillingAgreement:v10];
+    billingAgreement2 = [(PKDeferredPaymentRequest *)self billingAgreement];
+    [(PKProtobufDeferredPaymentRequest *)v3 setBillingAgreement:billingAgreement2];
   }
 
-  v11 = [(PKDeferredPaymentRequest *)self tokenNotificationURL];
+  tokenNotificationURL = [(PKDeferredPaymentRequest *)self tokenNotificationURL];
 
-  if (v11)
+  if (tokenNotificationURL)
   {
-    v12 = [(PKDeferredPaymentRequest *)self tokenNotificationURL];
-    v13 = [v12 absoluteString];
-    [(PKProtobufDeferredPaymentRequest *)v3 setManagementURL:v13];
+    tokenNotificationURL2 = [(PKDeferredPaymentRequest *)self tokenNotificationURL];
+    absoluteString2 = [tokenNotificationURL2 absoluteString];
+    [(PKProtobufDeferredPaymentRequest *)v3 setManagementURL:absoluteString2];
   }
 
-  v14 = [(PKDeferredPaymentRequest *)self freeCancellationDate];
+  freeCancellationDate = [(PKDeferredPaymentRequest *)self freeCancellationDate];
 
-  if (v14)
+  if (freeCancellationDate)
   {
-    v15 = [(PKDeferredPaymentRequest *)self freeCancellationDate];
-    [v15 timeIntervalSinceReferenceDate];
+    freeCancellationDate2 = [(PKDeferredPaymentRequest *)self freeCancellationDate];
+    [freeCancellationDate2 timeIntervalSinceReferenceDate];
     [(PKProtobufDeferredPaymentRequest *)v3 setFreeCancellationDate:?];
   }
 
-  v16 = [(PKDeferredPaymentRequest *)self freeCancellationDateTimeZone];
+  freeCancellationDateTimeZone = [(PKDeferredPaymentRequest *)self freeCancellationDateTimeZone];
 
-  if (v16)
+  if (freeCancellationDateTimeZone)
   {
-    v17 = [(PKDeferredPaymentRequest *)self freeCancellationDateTimeZone];
-    v18 = [v17 name];
-    [(PKProtobufDeferredPaymentRequest *)v3 setFreeCancellationDateTimeZone:v18];
+    freeCancellationDateTimeZone2 = [(PKDeferredPaymentRequest *)self freeCancellationDateTimeZone];
+    name = [freeCancellationDateTimeZone2 name];
+    [(PKProtobufDeferredPaymentRequest *)v3 setFreeCancellationDateTimeZone:name];
   }
 
   return v3;
@@ -137,73 +137,73 @@
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_alloc_init(objc_opt_class());
-  v6 = [(NSString *)self->_paymentDescription copyWithZone:a3];
+  v6 = [(NSString *)self->_paymentDescription copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(PKDeferredPaymentSummaryItem *)self->_deferredBilling copyWithZone:a3];
+  v8 = [(PKDeferredPaymentSummaryItem *)self->_deferredBilling copyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 
-  v10 = [(NSString *)self->_billingAgreement copyWithZone:a3];
+  v10 = [(NSString *)self->_billingAgreement copyWithZone:zone];
   v11 = v5[3];
   v5[3] = v10;
 
-  v12 = [(NSURL *)self->_managementURL copyWithZone:a3];
+  v12 = [(NSURL *)self->_managementURL copyWithZone:zone];
   v13 = v5[4];
   v5[4] = v12;
 
-  v14 = [(NSURL *)self->_tokenNotificationURL copyWithZone:a3];
+  v14 = [(NSURL *)self->_tokenNotificationURL copyWithZone:zone];
   v15 = v5[5];
   v5[5] = v14;
 
-  v16 = [(NSDate *)self->_freeCancellationDate copyWithZone:a3];
+  v16 = [(NSDate *)self->_freeCancellationDate copyWithZone:zone];
   v17 = v5[6];
   v5[6] = v16;
 
-  v18 = [(NSTimeZone *)self->_freeCancellationDateTimeZone copyWithZone:a3];
+  v18 = [(NSTimeZone *)self->_freeCancellationDateTimeZone copyWithZone:zone];
   v19 = v5[7];
   v5[7] = v18;
 
   return v5;
 }
 
-- (PKDeferredPaymentRequest)initWithCoder:(id)a3
+- (PKDeferredPaymentRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v21.receiver = self;
   v21.super_class = PKDeferredPaymentRequest;
   v5 = [(PKDeferredPaymentRequest *)&v21 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"paymentDescription"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"paymentDescription"];
     paymentDescription = v5->_paymentDescription;
     v5->_paymentDescription = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"deferredBilling"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"deferredBilling"];
     deferredBilling = v5->_deferredBilling;
     v5->_deferredBilling = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"billingAgreement"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"billingAgreement"];
     billingAgreement = v5->_billingAgreement;
     v5->_billingAgreement = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"managementURL"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"managementURL"];
     managementURL = v5->_managementURL;
     v5->_managementURL = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"tokenNotificationURL"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"tokenNotificationURL"];
     tokenNotificationURL = v5->_tokenNotificationURL;
     v5->_tokenNotificationURL = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"freeCancellationDate"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"freeCancellationDate"];
     freeCancellationDate = v5->_freeCancellationDate;
     v5->_freeCancellationDate = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"freeCancellationDateTimeZone"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"freeCancellationDateTimeZone"];
     freeCancellationDateTimeZone = v5->_freeCancellationDateTimeZone;
     v5->_freeCancellationDateTimeZone = v18;
   }
@@ -211,17 +211,17 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   paymentDescription = self->_paymentDescription;
-  v5 = a3;
-  [v5 encodeObject:paymentDescription forKey:@"paymentDescription"];
-  [v5 encodeObject:self->_deferredBilling forKey:@"deferredBilling"];
-  [v5 encodeObject:self->_billingAgreement forKey:@"billingAgreement"];
-  [v5 encodeObject:self->_managementURL forKey:@"managementURL"];
-  [v5 encodeObject:self->_tokenNotificationURL forKey:@"tokenNotificationURL"];
-  [v5 encodeObject:self->_freeCancellationDate forKey:@"freeCancellationDate"];
-  [v5 encodeObject:self->_freeCancellationDateTimeZone forKey:@"freeCancellationDateTimeZone"];
+  coderCopy = coder;
+  [coderCopy encodeObject:paymentDescription forKey:@"paymentDescription"];
+  [coderCopy encodeObject:self->_deferredBilling forKey:@"deferredBilling"];
+  [coderCopy encodeObject:self->_billingAgreement forKey:@"billingAgreement"];
+  [coderCopy encodeObject:self->_managementURL forKey:@"managementURL"];
+  [coderCopy encodeObject:self->_tokenNotificationURL forKey:@"tokenNotificationURL"];
+  [coderCopy encodeObject:self->_freeCancellationDate forKey:@"freeCancellationDate"];
+  [coderCopy encodeObject:self->_freeCancellationDateTimeZone forKey:@"freeCancellationDateTimeZone"];
 }
 
 - (id)description
@@ -271,27 +271,27 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKDeferredPaymentRequest *)self isEqualToDeferredPaymentRequest:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKDeferredPaymentRequest *)self isEqualToDeferredPaymentRequest:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToDeferredPaymentRequest:(id)a3
+- (BOOL)isEqualToDeferredPaymentRequest:(id)request
 {
-  v4 = a3;
-  v5 = v4[1];
+  requestCopy = request;
+  v5 = requestCopy[1];
   v6 = self->_paymentDescription;
   v7 = v5;
   v8 = v7;
@@ -325,7 +325,7 @@
   }
 
   deferredBilling = self->_deferredBilling;
-  v12 = v4[2];
+  v12 = requestCopy[2];
   if (deferredBilling && v12)
   {
     if (![(PKDeferredPaymentSummaryItem *)deferredBilling isEqual:?])
@@ -339,7 +339,7 @@
     goto LABEL_15;
   }
 
-  v15 = v4[3];
+  v15 = requestCopy[3];
   v6 = self->_billingAgreement;
   v16 = v15;
   v8 = v16;
@@ -365,7 +365,7 @@ LABEL_7:
 
 LABEL_23:
   managementURL = self->_managementURL;
-  v19 = v4[4];
+  v19 = requestCopy[4];
   if (managementURL && v19)
   {
     if (([(NSURL *)managementURL isEqual:?]& 1) == 0)
@@ -380,7 +380,7 @@ LABEL_23:
   }
 
   tokenNotificationURL = self->_tokenNotificationURL;
-  v21 = v4[5];
+  v21 = requestCopy[5];
   if (tokenNotificationURL && v21)
   {
     if (([(NSURL *)tokenNotificationURL isEqual:?]& 1) == 0)
@@ -395,7 +395,7 @@ LABEL_23:
   }
 
   freeCancellationDate = self->_freeCancellationDate;
-  v23 = v4[6];
+  v23 = requestCopy[6];
   if (freeCancellationDate && v23)
   {
     if (([(NSDate *)freeCancellationDate isEqual:?]& 1) != 0)
@@ -415,7 +415,7 @@ LABEL_15:
 
 LABEL_38:
   freeCancellationDateTimeZone = self->_freeCancellationDateTimeZone;
-  v25 = v4[7];
+  v25 = requestCopy[7];
   if (freeCancellationDateTimeZone && v25)
   {
     v13 = [(NSTimeZone *)freeCancellationDateTimeZone isEqual:?];
@@ -433,9 +433,9 @@ LABEL_16:
 
 - (void)sanitize
 {
-  v3 = [(NSString *)self->_billingAgreement pk_merchantTokensSanitizedBillingAgreement];
+  pk_merchantTokensSanitizedBillingAgreement = [(NSString *)self->_billingAgreement pk_merchantTokensSanitizedBillingAgreement];
   billingAgreement = self->_billingAgreement;
-  self->_billingAgreement = v3;
+  self->_billingAgreement = pk_merchantTokensSanitizedBillingAgreement;
 }
 
 @end

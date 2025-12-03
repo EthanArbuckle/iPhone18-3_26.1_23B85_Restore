@@ -1,17 +1,17 @@
 @interface SearchUIPrivacyDetailsViewController
 - (SearchUIPrivacyDetailsViewController)init;
-- (SearchUIPrivacyDetailsViewController)initWithBundleIdentifier:(id)a3;
+- (SearchUIPrivacyDetailsViewController)initWithBundleIdentifier:(id)identifier;
 @end
 
 @implementation SearchUIPrivacyDetailsViewController
 
 - (SearchUIPrivacyDetailsViewController)init
 {
-  v3 = [MEMORY[0x1E696AAE8] mainBundle];
-  v4 = [v3 bundleIdentifier];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
 
   v5 = [SearchUIUtilities bundleIdentifierForApp:22];
-  v6 = [v4 isEqualToString:v5];
+  v6 = [bundleIdentifier isEqualToString:v5];
 
   if (v6)
   {
@@ -28,9 +28,9 @@
   return v8;
 }
 
-- (SearchUIPrivacyDetailsViewController)initWithBundleIdentifier:(id)a3
+- (SearchUIPrivacyDetailsViewController)initWithBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2050000000;
@@ -49,15 +49,15 @@
 
   v6 = v5;
   _Block_object_dispose(&v14, 8);
-  v7 = [v5 splashPageWithBundleIdentifier:v4];
+  v7 = [v5 splashPageWithBundleIdentifier:identifierCopy];
   v12.receiver = self;
   v12.super_class = SearchUIPrivacyDetailsViewController;
   v8 = [(SearchUIPrivacyDetailsViewController *)&v12 initWithRootViewController:v7];
   if (v8)
   {
     v9 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:0 target:v8 action:sel_dismiss];
-    v10 = [v7 navigationItem];
-    [v10 setRightBarButtonItem:v9];
+    navigationItem = [v7 navigationItem];
+    [navigationItem setRightBarButtonItem:v9];
 
     [(SearchUIPrivacyDetailsViewController *)v8 setModalPresentationStyle:2];
   }

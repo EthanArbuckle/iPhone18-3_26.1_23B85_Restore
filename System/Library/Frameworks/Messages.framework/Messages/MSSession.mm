@@ -1,8 +1,8 @@
 @interface MSSession
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (MSSession)init;
-- (MSSession)initWithCoder:(id)a3;
-- (MSSession)initWithIdentifier:(id)a3;
+- (MSSession)initWithCoder:(id)coder;
+- (MSSession)initWithIdentifier:(id)identifier;
 - (id)description;
 @end
 
@@ -10,36 +10,36 @@
 
 - (MSSession)init
 {
-  v3 = [MEMORY[0x1E696AFB0] UUID];
-  v4 = [(MSSession *)self initWithIdentifier:v3];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  v4 = [(MSSession *)self initWithIdentifier:uUID];
 
   return v4;
 }
 
-- (MSSession)initWithIdentifier:(id)a3
+- (MSSession)initWithIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = MSSession;
   v6 = [(MSSession *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_identifier, a3);
+    objc_storeStrong(&v6->_identifier, identifier);
   }
 
   return v7;
 }
 
-- (MSSession)initWithCoder:(id)a3
+- (MSSession)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = MSSession;
   v5 = [(MSSession *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
   }
@@ -47,10 +47,10 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -61,8 +61,8 @@
     if ([v5 isEqual:objc_opt_class()])
     {
       identifier = self->_identifier;
-      v7 = [(MSSession *)v4 identifier];
-      v8 = [(NSUUID *)identifier isEqual:v7];
+      identifier = [(MSSession *)equalCopy identifier];
+      v8 = [(NSUUID *)identifier isEqual:identifier];
     }
 
     else
@@ -79,8 +79,8 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(NSUUID *)self->_identifier UUIDString];
-  v7 = [v3 stringWithFormat:@"<%@ %lx> - %@", v5, self, v6];
+  uUIDString = [(NSUUID *)self->_identifier UUIDString];
+  v7 = [v3 stringWithFormat:@"<%@ %lx> - %@", v5, self, uUIDString];
 
   return v7;
 }

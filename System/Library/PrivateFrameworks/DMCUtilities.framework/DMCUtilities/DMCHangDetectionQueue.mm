@@ -1,20 +1,20 @@
 @interface DMCHangDetectionQueue
 - (BOOL)shouldDumpStackshot;
 - (BOOL)verboseLogEnabled;
-- (DMCHangDetectionQueue)initWithQoS:(int64_t)a3 hangThreshold:(double)a4 owner:(id)a5;
-- (unsigned)_qosClassFromNSQualityOfService:(int64_t)a3;
-- (void)queueBlock:(id)a3;
-- (void)queueBlock:(id)a3 afterDelay:(double)a4;
-- (void)setShouldDumpStackshot:(BOOL)a3;
-- (void)setVerboseLogEnabled:(BOOL)a3;
+- (DMCHangDetectionQueue)initWithQoS:(int64_t)s hangThreshold:(double)threshold owner:(id)owner;
+- (unsigned)_qosClassFromNSQualityOfService:(int64_t)service;
+- (void)queueBlock:(id)block;
+- (void)queueBlock:(id)block afterDelay:(double)delay;
+- (void)setShouldDumpStackshot:(BOOL)stackshot;
+- (void)setVerboseLogEnabled:(BOOL)enabled;
 - (void)waitUntilAllBlocksAreFinished;
 @end
 
 @implementation DMCHangDetectionQueue
 
-- (DMCHangDetectionQueue)initWithQoS:(int64_t)a3 hangThreshold:(double)a4 owner:(id)a5
+- (DMCHangDetectionQueue)initWithQoS:(int64_t)s hangThreshold:(double)threshold owner:(id)owner
 {
-  v8 = a5;
+  ownerCopy = owner;
   v22.receiver = self;
   v22.super_class = DMCHangDetectionQueue;
   v9 = [(DMCHangDetectionQueue *)&v22 init];
@@ -26,17 +26,17 @@
     v9->_workerQueue = v11;
 
     [(NSOperationQueue *)v9->_workerQueue setMaxConcurrentOperationCount:1];
-    [(NSOperationQueue *)v9->_workerQueue setQualityOfService:a3];
-    v13 = [v8 stringByAppendingString:@"_hang_detection_worker_queue"];
+    [(NSOperationQueue *)v9->_workerQueue setQualityOfService:s];
+    v13 = [ownerCopy stringByAppendingString:@"_hang_detection_worker_queue"];
     [(NSOperationQueue *)v9->_workerQueue setName:v13];
 
-    v14 = [v8 stringByAppendingString:@"_hang_detection_log_queue"];
+    v14 = [ownerCopy stringByAppendingString:@"_hang_detection_log_queue"];
     v15 = dispatch_queue_create([v14 UTF8String], v10);
     logQueue = v9->_logQueue;
     v9->_logQueue = v15;
 
-    v9->_threshold = a4;
-    v17 = [v8 copy];
+    v9->_threshold = threshold;
+    v17 = [ownerCopy copy];
     owner = v9->_owner;
     v9->_owner = v17;
 
@@ -52,25 +52,25 @@
   return v9;
 }
 
-- (void)queueBlock:(id)a3 afterDelay:(double)a4
+- (void)queueBlock:(id)block afterDelay:(double)delay
 {
-  v6 = a3;
-  v7 = dispatch_time(0, (a4 * 1000000000.0));
+  blockCopy = block;
+  v7 = dispatch_time(0, (delay * 1000000000.0));
   v8 = dispatch_get_global_queue([(DMCHangDetectionQueue *)self _qosClassFromNSQualityOfService:[(NSOperationQueue *)self->_workerQueue qualityOfService]], 0);
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __47__DMCHangDetectionQueue_queueBlock_afterDelay___block_invoke;
   v10[3] = &unk_1E7ADC950;
   v10[4] = self;
-  v11 = v6;
-  v9 = v6;
+  v11 = blockCopy;
+  v9 = blockCopy;
   dispatch_after(v7, v8, v10);
 }
 
-- (void)queueBlock:(id)a3
+- (void)queueBlock:(id)block
 {
   v40 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   atomic_fetch_add(&self->_blockNum, 1u);
   v5 = atomic_load(&self->_blockNum);
   if (queueBlock__onceToken != -1)
@@ -80,13 +80,13 @@
 
   v6 = queueBlock__isInternal;
   v7 = [(DMCHangDetectionQueue *)self shouldDumpStackshot]& v6;
-  v8 = [(DMCHangDetectionQueue *)self verboseLogEnabled];
-  v9 = v8;
+  verboseLogEnabled = [(DMCHangDetectionQueue *)self verboseLogEnabled];
+  v9 = verboseLogEnabled;
   v32[0] = 0;
   v32[1] = v32;
   v32[2] = 0x2020000000;
   v33 = 0;
-  if ((v7 & 1) != 0 || (v10 = 0, v8))
+  if ((v7 & 1) != 0 || (v10 = 0, verboseLogEnabled))
   {
     v10 = +[DMCBacktraceLogger callerOfCurrentMethod];
     if (v9)
@@ -94,9 +94,9 @@
       v11 = *DMCLogObjects();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
       {
-        v12 = [(DMCHangDetectionQueue *)self owner];
+        owner = [(DMCHangDetectionQueue *)self owner];
         *buf = 138543874;
-        v35 = v12;
+        v35 = owner;
         v36 = 1024;
         v37 = v5;
         v38 = 2114;
@@ -112,7 +112,7 @@
       {
         [(DMCHangDetectionQueue *)self threshold];
         v15 = dispatch_time(0, (v14 * 1000000000.0));
-        v16 = [(DMCHangDetectionQueue *)self logQueue];
+        logQueue = [(DMCHangDetectionQueue *)self logQueue];
         block[0] = MEMORY[0x1E69E9820];
         block[1] = 3221225472;
         block[2] = __36__DMCHangDetectionQueue_queueBlock___block_invoke_10;
@@ -122,26 +122,26 @@
         v31 = v5;
         v10 = v10;
         v29 = v10;
-        dispatch_after(v15, v16, block);
+        dispatch_after(v15, logQueue, block);
       }
     }
   }
 
-  v17 = [(DMCHangDetectionQueue *)self workerQueue];
+  workerQueue = [(DMCHangDetectionQueue *)self workerQueue];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __36__DMCHangDetectionQueue_queueBlock___block_invoke_17;
   v21[3] = &unk_1E7ADC9C8;
   v26 = v7;
   v21[4] = self;
-  v18 = v4;
+  v18 = blockCopy;
   v23 = v18;
   v27 = v9;
   v25 = v5;
   v19 = v10;
   v22 = v19;
   v24 = v32;
-  [v17 addOperationWithBlock:v21];
+  [workerQueue addOperationWithBlock:v21];
 
   _Block_object_dispose(v32, 8);
   v20 = *MEMORY[0x1E69E9840];
@@ -284,86 +284,86 @@ uint64_t __36__DMCHangDetectionQueue_queueBlock___block_invoke_18(uint64_t resul
 
 - (BOOL)shouldDumpStackshot
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(DMCHangDetectionQueue *)self logQueue];
+  logQueue = [(DMCHangDetectionQueue *)self logQueue];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __44__DMCHangDetectionQueue_shouldDumpStackshot__block_invoke;
   v5[3] = &unk_1E7ADC9F0;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_async_and_wait(v3, v5);
+  dispatch_async_and_wait(logQueue, v5);
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
-- (void)setShouldDumpStackshot:(BOOL)a3
+- (void)setShouldDumpStackshot:(BOOL)stackshot
 {
-  v5 = [(DMCHangDetectionQueue *)self logQueue];
+  logQueue = [(DMCHangDetectionQueue *)self logQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __48__DMCHangDetectionQueue_setShouldDumpStackshot___block_invoke;
   v6[3] = &unk_1E7ADCA18;
   v6[4] = self;
-  v7 = a3;
-  dispatch_async(v5, v6);
+  stackshotCopy = stackshot;
+  dispatch_async(logQueue, v6);
 }
 
 - (BOOL)verboseLogEnabled
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(DMCHangDetectionQueue *)self logQueue];
+  logQueue = [(DMCHangDetectionQueue *)self logQueue];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __42__DMCHangDetectionQueue_verboseLogEnabled__block_invoke;
   v5[3] = &unk_1E7ADC9F0;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_async_and_wait(v3, v5);
+  dispatch_async_and_wait(logQueue, v5);
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
-- (void)setVerboseLogEnabled:(BOOL)a3
+- (void)setVerboseLogEnabled:(BOOL)enabled
 {
-  v5 = [(DMCHangDetectionQueue *)self logQueue];
+  logQueue = [(DMCHangDetectionQueue *)self logQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __46__DMCHangDetectionQueue_setVerboseLogEnabled___block_invoke;
   v6[3] = &unk_1E7ADCA18;
   v6[4] = self;
-  v7 = a3;
-  dispatch_async(v5, v6);
+  enabledCopy = enabled;
+  dispatch_async(logQueue, v6);
 }
 
 - (void)waitUntilAllBlocksAreFinished
 {
-  v2 = [(DMCHangDetectionQueue *)self workerQueue];
-  [v2 waitUntilAllOperationsAreFinished];
+  workerQueue = [(DMCHangDetectionQueue *)self workerQueue];
+  [workerQueue waitUntilAllOperationsAreFinished];
 }
 
-- (unsigned)_qosClassFromNSQualityOfService:(int64_t)a3
+- (unsigned)_qosClassFromNSQualityOfService:(int64_t)service
 {
-  if (a3 <= 16)
+  if (service <= 16)
   {
-    if (a3 == -1)
+    if (service == -1)
     {
       return 21;
     }
 
-    if (a3 == 9)
+    if (service == 9)
     {
       return 9;
     }
@@ -371,7 +371,7 @@ uint64_t __36__DMCHangDetectionQueue_queueBlock___block_invoke_18(uint64_t resul
 
   else
   {
-    switch(a3)
+    switch(service)
     {
       case 17:
         return 17;

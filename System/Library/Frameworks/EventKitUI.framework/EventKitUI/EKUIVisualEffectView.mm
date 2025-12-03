@@ -1,7 +1,7 @@
 @interface EKUIVisualEffectView
 - (EKUITintColorUpdateDelegate)tintColorDelegate;
-- (EKUIVisualEffectView)initWithFrame:(CGRect)a3;
-- (void)viewTintColorDidChangeForView:(id)a3 toColor:(id)a4;
+- (EKUIVisualEffectView)initWithFrame:(CGRect)frame;
+- (void)viewTintColorDidChangeForView:(id)view toColor:(id)color;
 @end
 
 @implementation EKUIVisualEffectView
@@ -13,11 +13,11 @@
   return WeakRetained;
 }
 
-- (EKUIVisualEffectView)initWithFrame:(CGRect)a3
+- (EKUIVisualEffectView)initWithFrame:(CGRect)frame
 {
   v10.receiver = self;
   v10.super_class = EKUIVisualEffectView;
-  v3 = [(EKUIVisualEffectView *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(EKUIVisualEffectView *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [TintColorUpdateView alloc];
@@ -26,29 +26,29 @@
     v3->_updateView = v5;
 
     [(TintColorUpdateView *)v3->_updateView setHidden:1];
-    v7 = [MEMORY[0x1E69DC888] clearColor];
-    [(TintColorUpdateView *)v3->_updateView setBackgroundColor:v7];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(TintColorUpdateView *)v3->_updateView setBackgroundColor:clearColor];
 
     [(TintColorUpdateView *)v3->_updateView setTintColorUpdateDelegate:v3];
-    v8 = [(EKUIVisualEffectView *)v3 contentView];
-    [v8 addSubview:v3->_updateView];
+    contentView = [(EKUIVisualEffectView *)v3 contentView];
+    [contentView addSubview:v3->_updateView];
   }
 
   return v3;
 }
 
-- (void)viewTintColorDidChangeForView:(id)a3 toColor:(id)a4
+- (void)viewTintColorDidChangeForView:(id)view toColor:(id)color
 {
-  v7 = a4;
-  v5 = [(EKUIVisualEffectView *)self tintColorDelegate];
+  colorCopy = color;
+  tintColorDelegate = [(EKUIVisualEffectView *)self tintColorDelegate];
 
-  if (v5)
+  if (tintColorDelegate)
   {
-    v6 = [(EKUIVisualEffectView *)self tintColorDelegate];
-    [v6 viewTintColorDidChangeForView:self toColor:v7];
+    tintColorDelegate2 = [(EKUIVisualEffectView *)self tintColorDelegate];
+    [tintColorDelegate2 viewTintColorDidChangeForView:self toColor:colorCopy];
   }
 
-  [(EKUIVisualEffectView *)self subTintColorUpdatedToColor:v7];
+  [(EKUIVisualEffectView *)self subTintColorUpdatedToColor:colorCopy];
 }
 
 @end

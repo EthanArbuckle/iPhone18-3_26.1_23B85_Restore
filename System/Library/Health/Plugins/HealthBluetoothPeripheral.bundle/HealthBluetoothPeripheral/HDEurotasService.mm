@@ -1,7 +1,7 @@
 @interface HDEurotasService
 - (id)servicesInProfile;
-- (void)peripheral:(id)a3 didDiscoverCharacteristic:(id)a4;
-- (void)peripheral:(id)a3 didUpdateValueForCharacteristic:(id)a4 updateTime:(id)a5 error:(id)a6;
+- (void)peripheral:(id)peripheral didDiscoverCharacteristic:(id)characteristic;
+- (void)peripheral:(id)peripheral didUpdateValueForCharacteristic:(id)characteristic updateTime:(id)time error:(id)error;
 @end
 
 @implementation HDEurotasService
@@ -17,19 +17,19 @@
   return v4;
 }
 
-- (void)peripheral:(id)a3 didDiscoverCharacteristic:(id)a4
+- (void)peripheral:(id)peripheral didDiscoverCharacteristic:(id)characteristic
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 UUID];
+  peripheralCopy = peripheral;
+  characteristicCopy = characteristic;
+  uUID = [characteristicCopy UUID];
   v9 = +[HDEurotasData uuid];
-  v10 = [v8 isEqual:v9];
+  v10 = [uUID isEqual:v9];
 
   if (v10)
   {
-    if (([v7 properties] & 4) != 0)
+    if (([characteristicCopy properties] & 4) != 0)
     {
-      [(HDHealthService *)self setWritableCharacteristic:v7];
+      [(HDHealthService *)self setWritableCharacteristic:characteristicCopy];
     }
 
     else
@@ -38,7 +38,7 @@
       v11 = HKLogServices;
       if (os_log_type_enabled(HKLogServices, OS_LOG_TYPE_ERROR))
       {
-        sub_3A328(v7, v11);
+        sub_3A328(characteristicCopy, v11);
       }
     }
   }
@@ -46,48 +46,48 @@
   else
   {
     v12 = +[HDEnhancedFTMSData uuid];
-    v13 = [v8 isEqual:v12];
+    v13 = [uUID isEqual:v12];
 
     if (v13)
     {
-      [v6 setNotifyValue:1 forCharacteristic:v7];
+      [peripheralCopy setNotifyValue:1 forCharacteristic:characteristicCopy];
     }
   }
 }
 
-- (void)peripheral:(id)a3 didUpdateValueForCharacteristic:(id)a4 updateTime:(id)a5 error:(id)a6
+- (void)peripheral:(id)peripheral didUpdateValueForCharacteristic:(id)characteristic updateTime:(id)time error:(id)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (v13)
+  peripheralCopy = peripheral;
+  characteristicCopy = characteristic;
+  timeCopy = time;
+  errorCopy = error;
+  if (errorCopy)
   {
     _HKInitializeLogging();
     v14 = HKLogServices;
     if (os_log_type_enabled(HKLogServices, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412802;
-      v25 = v10;
+      v25 = peripheralCopy;
       v26 = 2112;
-      v27 = v11;
+      v27 = characteristicCopy;
       v28 = 2114;
-      v29 = v13;
+      v29 = errorCopy;
       _os_log_error_impl(&dword_0, v14, OS_LOG_TYPE_ERROR, "Error on characteristic update for peripheral: %@ characteristic: %@; %{public}@", buf, 0x20u);
     }
   }
 
   else
   {
-    v15 = [v11 UUID];
+    uUID = [characteristicCopy UUID];
     v16 = +[HDEnhancedFTMSData uuid];
-    v17 = [v15 isEqual:v16];
+    v17 = [uUID isEqual:v16];
 
     if (v17)
     {
-      v18 = [v11 value];
+      value = [characteristicCopy value];
       v23 = 0;
-      v19 = [(HDHealthServiceCharacteristic *)HDEnhancedFTMSData buildWithBinaryValue:v18 updateTime:v12 error:&v23];
+      v19 = [(HDHealthServiceCharacteristic *)HDEnhancedFTMSData buildWithBinaryValue:value updateTime:timeCopy error:&v23];
       v20 = v23;
 
       if (v19)
@@ -102,9 +102,9 @@
         if (os_log_type_enabled(HKLogServices, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412802;
-          v25 = v10;
+          v25 = peripheralCopy;
           v26 = 2112;
-          v27 = v11;
+          v27 = characteristicCopy;
           v28 = 2114;
           v29 = v20;
           _os_log_error_impl(&dword_0, v22, OS_LOG_TYPE_ERROR, "Error handling characteristic update for peripheral: %@ characteristic: %@; %{public}@", buf, 0x20u);
@@ -118,7 +118,7 @@
       v21 = HKLogServices;
       if (os_log_type_enabled(HKLogServices, OS_LOG_TYPE_ERROR))
       {
-        sub_3A3A0(v21, v11);
+        sub_3A3A0(v21, characteristicCopy);
       }
     }
   }

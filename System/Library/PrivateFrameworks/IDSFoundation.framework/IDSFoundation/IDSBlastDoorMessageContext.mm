@@ -1,26 +1,26 @@
 @interface IDSBlastDoorMessageContext
-- (IDSBlastDoorMessageContext)initWithService:(id)a3 command:(id)a4;
+- (IDSBlastDoorMessageContext)initWithService:(id)service command:(id)command;
 - (id)description;
 - (id)dictionaryRepresentation;
 @end
 
 @implementation IDSBlastDoorMessageContext
 
-- (IDSBlastDoorMessageContext)initWithService:(id)a3 command:(id)a4
+- (IDSBlastDoorMessageContext)initWithService:(id)service command:(id)command
 {
-  v6 = a3;
-  v7 = a4;
+  serviceCopy = service;
+  commandCopy = command;
   v12.receiver = self;
   v12.super_class = IDSBlastDoorMessageContext;
   v8 = [(IDSBlastDoorMessageContext *)&v12 init];
   if (v8)
   {
-    v9 = [v6 pushTopic];
+    pushTopic = [serviceCopy pushTopic];
     topic = v8->_topic;
-    v8->_topic = v9;
+    v8->_topic = pushTopic;
 
-    v8->_isInvitationService = [v6 isInvitationService];
-    objc_storeStrong(&v8->_command, a4);
+    v8->_isInvitationService = [serviceCopy isInvitationService];
+    objc_storeStrong(&v8->_command, command);
   }
 
   return v8;
@@ -74,8 +74,8 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(IDSBlastDoorMessageContext *)self topic];
-  v5 = [(IDSBlastDoorMessageContext *)self command];
+  topic = [(IDSBlastDoorMessageContext *)self topic];
+  command = [(IDSBlastDoorMessageContext *)self command];
   if ([(IDSBlastDoorMessageContext *)self isInvitationService])
   {
     v6 = @"YES";
@@ -86,7 +86,7 @@
     v6 = @"NO";
   }
 
-  v7 = [v3 stringWithFormat:@"<IDSBlastDoorMessageContext %p>: topic %@ command %@ isInviationService %@ payloadType %ld", self, v4, v5, v6, -[IDSBlastDoorMessageContext payloadType](self, "payloadType")];
+  v7 = [v3 stringWithFormat:@"<IDSBlastDoorMessageContext %p>: topic %@ command %@ isInviationService %@ payloadType %ld", self, topic, command, v6, -[IDSBlastDoorMessageContext payloadType](self, "payloadType")];
 
   return v7;
 }

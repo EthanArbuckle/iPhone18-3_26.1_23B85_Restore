@@ -1,30 +1,30 @@
 @interface NTKRichComplicationBezelBaseCircularView
-+ (void)updateCustomDataAnimationFromEarlierView:(id)a3 laterView:(id)a4 isForward:(BOOL)a5 animationType:(unint64_t)a6 animationDuration:(double)a7 animationFraction:(float)a8 bezelTextUpdateHandler:(id)a9;
++ (void)updateCustomDataAnimationFromEarlierView:(id)view laterView:(id)laterView isForward:(BOOL)forward animationType:(unint64_t)type animationDuration:(double)duration animationFraction:(float)fraction bezelTextUpdateHandler:(id)handler;
 - (CGPoint)circularViewCenter;
-- (Class)_circularViewClassFromFromTemplate:(id)a3;
+- (Class)_circularViewClassFromFromTemplate:(id)template;
 - (NSString)description;
 - (NTKRichComplicationBezelBaseCircularView)init;
-- (id)_bezelTextProviderFromTemplate:(id)a3;
-- (id)_circularTemplateFromTemplate:(id)a3;
+- (id)_bezelTextProviderFromTemplate:(id)template;
+- (id)_circularTemplateFromTemplate:(id)template;
 - (void)_applyPausedUpdate;
 - (void)_createBezelLabel;
 - (void)_editingDidEnd;
-- (void)_enumerateLabelsWithBlock:(id)a3;
-- (void)_handleTemplate:(id)a3 reason:(int64_t)a4;
+- (void)_enumerateLabelsWithBlock:(id)block;
+- (void)_handleTemplate:(id)template reason:(int64_t)reason;
 - (void)_layoutBezelLabel;
 - (void)_layoutCircularView;
-- (void)_setEditingTransitionFraction:(double)a3 direction:(int64_t)a4 position:(int64_t)a5 type:(int64_t)a6;
-- (void)_setWhistlerAnalogEditingTransitonFraction:(double)a3 direction:(int64_t)a4 position:(int64_t)a5;
-- (void)_transitThemeFromTheme:(int64_t)a3 toTheme:(int64_t)a4 fraction:(double)a5;
-- (void)_transitToHighlightState:(BOOL)a3 fraction:(double)a4;
-- (void)_updateNewDataAnimationFinalAlpha:(double)a3 finalBezelLabelScale:(double)a4 finalCircularViewScale:(double)a5 animationApplierBlock:(id)a6 animationFraction:(float)a7;
-- (void)complicationDisplay:(id)a3 renderStatsWithTime:(double)a4 cost:(double)a5;
+- (void)_setEditingTransitionFraction:(double)fraction direction:(int64_t)direction position:(int64_t)position type:(int64_t)type;
+- (void)_setWhistlerAnalogEditingTransitonFraction:(double)fraction direction:(int64_t)direction position:(int64_t)position;
+- (void)_transitThemeFromTheme:(int64_t)theme toTheme:(int64_t)toTheme fraction:(double)fraction;
+- (void)_transitToHighlightState:(BOOL)state fraction:(double)fraction;
+- (void)_updateNewDataAnimationFinalAlpha:(double)alpha finalBezelLabelScale:(double)scale finalCircularViewScale:(double)viewScale animationApplierBlock:(id)block animationFraction:(float)fraction;
+- (void)complicationDisplay:(id)display renderStatsWithTime:(double)time cost:(double)cost;
 - (void)layoutSubviews;
-- (void)setBezelLabelCircularRadius:(double)a3;
-- (void)setBezelTextColor:(id)a3;
-- (void)setForegroundColor:(id)a3;
-- (void)setTimeTravelDate:(id)a3 animated:(BOOL)a4;
-- (void)transitionToMonochromeWithFraction:(double)a3;
+- (void)setBezelLabelCircularRadius:(double)radius;
+- (void)setBezelTextColor:(id)color;
+- (void)setForegroundColor:(id)color;
+- (void)setTimeTravelDate:(id)date animated:(BOOL)animated;
+- (void)transitionToMonochromeWithFraction:(double)fraction;
 - (void)updateMonochromeColor;
 @end
 
@@ -70,18 +70,18 @@
   [(NTKRichComplicationBezelView *)self _updateHitTestShape:v3 frame:?];
 }
 
-- (void)setBezelTextColor:(id)a3
+- (void)setBezelTextColor:(id)color
 {
   v5.receiver = self;
   v5.super_class = NTKRichComplicationBezelBaseCircularView;
-  v4 = a3;
-  [(NTKRichComplicationBezelView *)&v5 setBezelTextColor:v4];
-  [(CLKUICurvedColoringLabel *)self->_bezelTextLabel setColor:v4, v5.receiver, v5.super_class];
+  colorCopy = color;
+  [(NTKRichComplicationBezelView *)&v5 setBezelTextColor:colorCopy];
+  [(CLKUICurvedColoringLabel *)self->_bezelTextLabel setColor:colorCopy, v5.receiver, v5.super_class];
 }
 
-- (void)setBezelLabelCircularRadius:(double)a3
+- (void)setBezelLabelCircularRadius:(double)radius
 {
-  self->_bezelLabelCircularRadius = a3;
+  self->_bezelLabelCircularRadius = radius;
   [(CLKUICurvedColoringLabel *)self->_bezelTextLabel setCircleRadius:?];
 
   [(NTKRichComplicationBezelBaseCircularView *)self setNeedsLayout];
@@ -94,8 +94,8 @@
   v6 = v5;
   v11 = 0;
   memset(v10, 0, sizeof(v10));
-  v7 = [(CDRichComplicationView *)self device];
-  ___LayoutConstants_block_invoke_26(v7, v10);
+  device = [(CDRichComplicationView *)self device];
+  ___LayoutConstants_block_invoke_26(device, v10);
 
   v8 = v4 * 0.5;
   v9 = v6 * 0.5 - *v10;
@@ -110,15 +110,15 @@
   v8.receiver = self;
   v8.super_class = NTKRichComplicationBezelBaseCircularView;
   v4 = [(NTKRichComplicationBezelBaseCircularView *)&v8 description];
-  v5 = [(CLKUICurvedColoringLabel *)self->_bezelTextLabel text];
-  v6 = [v3 stringWithFormat:@"%@ [%@ %@]", v4, v5, self->_circularView];
+  text = [(CLKUICurvedColoringLabel *)self->_bezelTextLabel text];
+  v6 = [v3 stringWithFormat:@"%@ [%@ %@]", v4, text, self->_circularView];
 
   return v6;
 }
 
-- (void)_handleTemplate:(id)a3 reason:(int64_t)a4
+- (void)_handleTemplate:(id)template reason:(int64_t)reason
 {
-  v16 = a3;
+  templateCopy = template;
   v6 = [(NTKRichComplicationBezelBaseCircularView *)self _circularViewClassFromFromTemplate:?];
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -130,10 +130,10 @@
 
     [(CDRichComplicationTemplateView *)self->_circularView setFilterProvider:self];
     [(CDRichComplicationTemplateView *)self->_circularView setDisplayObserver:self];
-    v9 = [(CDRichComplicationView *)self timeTravelDate];
-    if (v9)
+    timeTravelDate = [(CDRichComplicationView *)self timeTravelDate];
+    if (timeTravelDate)
     {
-      [(CDRichComplicationTemplateView *)self->_circularView setTimeTravelDate:v9 animated:0];
+      [(CDRichComplicationTemplateView *)self->_circularView setTimeTravelDate:timeTravelDate animated:0];
     }
 
     [(CDRichComplicationTemplateView *)self->_circularView setPaused:[(CDRichComplicationView *)self paused]];
@@ -141,8 +141,8 @@
   }
 
   [(CDRichComplicationTemplateView *)self->_circularView transitThemeFromTheme:self->_fromTheme toTheme:self->_toTheme fraction:self->_themeFraction];
-  v10 = [(NTKRichComplicationBezelBaseCircularView *)self _circularTemplateFromTemplate:v16];
-  [(CDRichComplicationTemplateView *)self->_circularView setComplicationTemplate:v10 reason:a4];
+  v10 = [(NTKRichComplicationBezelBaseCircularView *)self _circularTemplateFromTemplate:templateCopy];
+  [(CDRichComplicationTemplateView *)self->_circularView setComplicationTemplate:v10 reason:reason];
   v11 = self->_circularView;
   if (self->_inMonochromeModeFraction == 1.0)
   {
@@ -154,7 +154,7 @@
     [(CDRichComplicationTemplateView *)v11 transitionToMonochromeWithFraction:?];
   }
 
-  v12 = [(NTKRichComplicationBezelBaseCircularView *)self _bezelTextProviderFromTemplate:v16];
+  v12 = [(NTKRichComplicationBezelBaseCircularView *)self _bezelTextProviderFromTemplate:templateCopy];
   bezelTextLabel = self->_bezelTextLabel;
   if (v12)
   {
@@ -177,16 +177,16 @@
 - (void)_applyPausedUpdate
 {
   circularView = self->_circularView;
-  v3 = [(CDRichComplicationView *)self paused];
+  paused = [(CDRichComplicationView *)self paused];
 
-  [(CDRichComplicationTemplateView *)circularView setPaused:v3];
+  [(CDRichComplicationTemplateView *)circularView setPaused:paused];
 }
 
-- (void)_setEditingTransitionFraction:(double)a3 direction:(int64_t)a4 position:(int64_t)a5 type:(int64_t)a6
+- (void)_setEditingTransitionFraction:(double)fraction direction:(int64_t)direction position:(int64_t)position type:(int64_t)type
 {
-  if (!a6)
+  if (!type)
   {
-    [(NTKRichComplicationBezelBaseCircularView *)self _setWhistlerAnalogEditingTransitonFraction:a4 direction:a5 position:a3];
+    [(NTKRichComplicationBezelBaseCircularView *)self _setWhistlerAnalogEditingTransitonFraction:direction direction:position position:fraction];
   }
 }
 
@@ -199,9 +199,9 @@
 
 - (void)_layoutBezelLabel
 {
-  v3 = [(CLKUICurvedColoringLabel *)self->_bezelTextLabel textProvider];
+  textProvider = [(CLKUICurvedColoringLabel *)self->_bezelTextLabel textProvider];
 
-  if (v3)
+  if (textProvider)
   {
     v17 = 0.0;
     v18 = 0.0;
@@ -248,21 +248,21 @@
 
   if (self->_allowNofityingDelegateWithBezelTextUpdate)
   {
-    v12 = [(NTKRichComplicationBezelView *)self delegate];
+    delegate = [(NTKRichComplicationBezelView *)self delegate];
     v13 = objc_opt_respondsToSelector();
 
     if (v13)
     {
-      v14 = [(NTKRichComplicationBezelView *)self delegate];
-      [v14 didUpdateBezelTextForRichComplicationBezelView:self];
+      delegate2 = [(NTKRichComplicationBezelView *)self delegate];
+      [delegate2 didUpdateBezelTextForRichComplicationBezelView:self];
     }
   }
 }
 
 - (void)_layoutCircularView
 {
-  v3 = [(CDRichComplicationView *)self device];
-  v4 = NTKWhistlerSubdialComplicationDiameter(v3);
+  device = [(CDRichComplicationView *)self device];
+  v4 = NTKWhistlerSubdialComplicationDiameter(device);
 
   circularView = self->_circularView;
   v6 = *(MEMORY[0x277CBF2C0] + 16);
@@ -291,15 +291,15 @@
   [(CDRichComplicationTemplateView *)v10 setTransform:&v12];
 }
 
-- (void)_transitThemeFromTheme:(int64_t)a3 toTheme:(int64_t)a4 fraction:(double)a5
+- (void)_transitThemeFromTheme:(int64_t)theme toTheme:(int64_t)toTheme fraction:(double)fraction
 {
-  self->_fromTheme = a3;
-  self->_toTheme = a4;
-  self->_themeFraction = a5;
+  self->_fromTheme = theme;
+  self->_toTheme = toTheme;
+  self->_themeFraction = fraction;
   [CDRichComplicationTemplateView transitThemeFromTheme:"transitThemeFromTheme:toTheme:fraction:" toTheme:? fraction:?];
 }
 
-- (void)_transitToHighlightState:(BOOL)a3 fraction:(double)a4
+- (void)_transitToHighlightState:(BOOL)state fraction:(double)fraction
 {
   CLKInterpolateBetweenFloatsClipped();
   self->_newDataAnimationBezelLabelScale = v5;
@@ -310,105 +310,105 @@
   [(NTKRichComplicationBezelBaseCircularView *)self _layoutBezelLabel];
 }
 
-- (void)setTimeTravelDate:(id)a3 animated:(BOOL)a4
+- (void)setTimeTravelDate:(id)date animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v7.receiver = self;
   v7.super_class = NTKRichComplicationBezelBaseCircularView;
-  v6 = a3;
-  [(CDRichComplicationTemplateView *)&v7 setTimeTravelDate:v6 animated:v4];
-  [(CDRichComplicationTemplateView *)self->_circularView setTimeTravelDate:v6 animated:v4, v7.receiver, v7.super_class];
+  dateCopy = date;
+  [(CDRichComplicationTemplateView *)&v7 setTimeTravelDate:dateCopy animated:animatedCopy];
+  [(CDRichComplicationTemplateView *)self->_circularView setTimeTravelDate:dateCopy animated:animatedCopy, v7.receiver, v7.super_class];
 }
 
-- (void)setForegroundColor:(id)a3
+- (void)setForegroundColor:(id)color
 {
   v5.receiver = self;
   v5.super_class = NTKRichComplicationBezelBaseCircularView;
-  v4 = a3;
-  [(CDRichComplicationView *)&v5 setForegroundColor:v4];
-  [(CDRichComplicationTemplateView *)self->_circularView setForegroundColor:v4, v5.receiver, v5.super_class];
+  colorCopy = color;
+  [(CDRichComplicationView *)&v5 setForegroundColor:colorCopy];
+  [(CDRichComplicationTemplateView *)self->_circularView setForegroundColor:colorCopy, v5.receiver, v5.super_class];
 }
 
-- (id)_bezelTextProviderFromTemplate:(id)a3
+- (id)_bezelTextProviderFromTemplate:(id)template
 {
-  v3 = a3;
+  templateCopy = template;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 textProvider];
+    textProvider = [templateCopy textProvider];
   }
 
   else
   {
-    v4 = 0;
+    textProvider = 0;
   }
 
-  return v4;
+  return textProvider;
 }
 
-- (id)_circularTemplateFromTemplate:(id)a3
+- (id)_circularTemplateFromTemplate:(id)template
 {
-  v3 = a3;
+  templateCopy = template;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 circularTemplate];
+    circularTemplate = [templateCopy circularTemplate];
   }
 
   else
   {
-    v4 = v3;
+    circularTemplate = templateCopy;
   }
 
-  v5 = v4;
+  v5 = circularTemplate;
 
   return v5;
 }
 
-- (void)_enumerateLabelsWithBlock:(id)a3
+- (void)_enumerateLabelsWithBlock:(id)block
 {
   v5.receiver = self;
   v5.super_class = NTKRichComplicationBezelBaseCircularView;
-  v4 = a3;
-  [(CDRichComplicationView *)&v5 _enumerateLabelsWithBlock:v4];
-  v4[2](v4, self->_bezelTextLabel);
-  [(CDRichComplicationTemplateView *)self->_circularView _enumerateLabelsWithBlock:v4, v5.receiver, v5.super_class];
+  blockCopy = block;
+  [(CDRichComplicationView *)&v5 _enumerateLabelsWithBlock:blockCopy];
+  blockCopy[2](blockCopy, self->_bezelTextLabel);
+  [(CDRichComplicationTemplateView *)self->_circularView _enumerateLabelsWithBlock:blockCopy, v5.receiver, v5.super_class];
 }
 
-- (void)transitionToMonochromeWithFraction:(double)a3
+- (void)transitionToMonochromeWithFraction:(double)fraction
 {
-  self->_inMonochromeModeFraction = a3;
-  v5 = [(CDRichComplicationView *)self filterProvider];
-  v7 = [v5 filtersForView:self style:1 fraction:a3];
+  self->_inMonochromeModeFraction = fraction;
+  filterProvider = [(CDRichComplicationView *)self filterProvider];
+  v7 = [filterProvider filtersForView:self style:1 fraction:fraction];
 
   if (v7)
   {
-    v6 = [(CLKUICurvedColoringLabel *)self->_bezelTextLabel layer];
-    [v6 setFilters:v7];
+    layer = [(CLKUICurvedColoringLabel *)self->_bezelTextLabel layer];
+    [layer setFilters:v7];
   }
 
-  [(CDRichComplicationTemplateView *)self->_circularView transitionToMonochromeWithFraction:a3];
+  [(CDRichComplicationTemplateView *)self->_circularView transitionToMonochromeWithFraction:fraction];
 }
 
 - (void)updateMonochromeColor
 {
   self->_inMonochromeModeFraction = 1.0;
-  v3 = [(CDRichComplicationView *)self filterProvider];
-  v5 = [v3 filtersForView:self style:1];
+  filterProvider = [(CDRichComplicationView *)self filterProvider];
+  v5 = [filterProvider filtersForView:self style:1];
 
   if (v5)
   {
-    v4 = [(CLKUICurvedColoringLabel *)self->_bezelTextLabel layer];
-    [v4 setFilters:v5];
+    layer = [(CLKUICurvedColoringLabel *)self->_bezelTextLabel layer];
+    [layer setFilters:v5];
   }
 
   [(CDRichComplicationTemplateView *)self->_circularView updateMonochromeColor];
 }
 
-- (void)complicationDisplay:(id)a3 renderStatsWithTime:(double)a4 cost:(double)a5
+- (void)complicationDisplay:(id)display renderStatsWithTime:(double)time cost:(double)cost
 {
-  v8 = [(CDRichComplicationView *)self displayObserver];
-  [v8 complicationDisplay:self renderStatsWithTime:a4 cost:a5];
+  displayObserver = [(CDRichComplicationView *)self displayObserver];
+  [displayObserver complicationDisplay:self renderStatsWithTime:time cost:cost];
 }
 
 - (void)_createBezelLabel
@@ -418,14 +418,14 @@
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v3 = [(CDRichComplicationView *)self device];
-  ___LayoutConstants_block_invoke_26(v3, &v17);
+  device = [(CDRichComplicationView *)self device];
+  ___LayoutConstants_block_invoke_26(device, &v17);
 
   v4 = objc_opt_new();
   v5 = [MEMORY[0x277CBBB08] systemFontOfSize:*MEMORY[0x277CBB6C0] weight:*(&v17 + 1) design:*MEMORY[0x277D74410]];
-  v6 = [v5 CLKFontWithAlternativePunctuation];
+  cLKFontWithAlternativePunctuation = [v5 CLKFontWithAlternativePunctuation];
 
-  [v4 setFont:v6];
+  [v4 setFont:cLKFontWithAlternativePunctuation];
   [v4 setUsesLegibility:0];
   [v4 setUppercase:1];
   [v4 setAlpha:1.0];
@@ -445,8 +445,8 @@
   [v4 setNeedsResizeHandler:v12];
   [v4 setInterior:0];
   [v4 setCenterAngle:*&v18];
-  v7 = [MEMORY[0x277CBEAF8] currentLocale];
-  v8 = [v7 objectForKey:*MEMORY[0x277CBE6C8]];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  v8 = [currentLocale objectForKey:*MEMORY[0x277CBE6C8]];
 
   v9 = [v8 isEqualToString:@"ar"];
   v10 = 24;
@@ -488,25 +488,25 @@ void __61__NTKRichComplicationBezelBaseCircularView__createBezelLabel__block_inv
   [v1 complicationDisplayNeedsResize:WeakRetained];
 }
 
-- (void)_setWhistlerAnalogEditingTransitonFraction:(double)a3 direction:(int64_t)a4 position:(int64_t)a5
+- (void)_setWhistlerAnalogEditingTransitonFraction:(double)fraction direction:(int64_t)direction position:(int64_t)position
 {
-  if (a5 <= 1)
+  if (position <= 1)
   {
     CLKCompressFraction();
   }
 
-  v7 = [(CDRichComplicationView *)self device:a4];
+  v7 = [(CDRichComplicationView *)self device:direction];
   ___LayoutConstants_block_invoke_26(v7, &v10);
 
   CLKInterpolateBetweenFloatsClipped();
-  if (a5 == 1)
+  if (position == 1)
   {
     v8 = -v8;
   }
 
   self->_bezelTextLabelRotationInDegree = v8;
   CLKInterpolateBetweenFloatsClipped();
-  if (a5 == 1)
+  if (position == 1)
   {
     v9 = -v9;
   }
@@ -516,11 +516,11 @@ void __61__NTKRichComplicationBezelBaseCircularView__createBezelLabel__block_inv
   [(NTKRichComplicationBezelBaseCircularView *)self setNeedsLayout];
 }
 
-- (void)_updateNewDataAnimationFinalAlpha:(double)a3 finalBezelLabelScale:(double)a4 finalCircularViewScale:(double)a5 animationApplierBlock:(id)a6 animationFraction:(float)a7
+- (void)_updateNewDataAnimationFinalAlpha:(double)alpha finalBezelLabelScale:(double)scale finalCircularViewScale:(double)viewScale animationApplierBlock:(id)block animationFraction:(float)fraction
 {
-  v15 = a6;
+  blockCopy = block;
   [(NTKRichComplicationBezelBaseCircularView *)self alpha];
-  v9 = a7;
+  fractionCopy = fraction;
   CLKInterpolateBetweenFloatsClipped();
   v11 = v10;
   [(NTKRichComplicationBezelBaseCircularView *)self setAlpha:?];
@@ -531,47 +531,47 @@ void __61__NTKRichComplicationBezelBaseCircularView__createBezelLabel__block_inv
   self->_newDataAnimationBezelLabelScale = v13;
   [(NTKRichComplicationBezelBaseCircularView *)self setNeedsLayout];
   [(NTKRichComplicationBezelBaseCircularView *)self layoutIfNeeded];
-  v14 = v15;
-  if (v15)
+  v14 = blockCopy;
+  if (blockCopy)
   {
-    (*(v15 + 2))(v15, v9);
-    v14 = v15;
+    (*(blockCopy + 2))(blockCopy, fractionCopy);
+    v14 = blockCopy;
   }
 }
 
-+ (void)updateCustomDataAnimationFromEarlierView:(id)a3 laterView:(id)a4 isForward:(BOOL)a5 animationType:(unint64_t)a6 animationDuration:(double)a7 animationFraction:(float)a8 bezelTextUpdateHandler:(id)a9
++ (void)updateCustomDataAnimationFromEarlierView:(id)view laterView:(id)laterView isForward:(BOOL)forward animationType:(unint64_t)type animationDuration:(double)duration animationFraction:(float)fraction bezelTextUpdateHandler:(id)handler
 {
-  v12 = a5;
-  v14 = a3;
-  v15 = a4;
-  v16 = a9;
-  if (v12)
+  forwardCopy = forward;
+  viewCopy = view;
+  laterViewCopy = laterView;
+  handlerCopy = handler;
+  if (forwardCopy)
   {
-    v17 = v14;
+    v17 = viewCopy;
   }
 
   else
   {
-    v17 = v15;
+    v17 = laterViewCopy;
   }
 
-  if (v12)
+  if (forwardCopy)
   {
-    v18 = v15;
+    v18 = laterViewCopy;
   }
 
   else
   {
-    v18 = v14;
+    v18 = viewCopy;
   }
 
   v19 = v17;
   v20 = v18;
   [v19 setAlpha:1.0];
   [v20 setAlpha:0.0];
-  if (a6)
+  if (type)
   {
-    if (a6 != 1)
+    if (type != 1)
     {
       goto LABEL_12;
     }
@@ -592,10 +592,10 @@ void __61__NTKRichComplicationBezelBaseCircularView__createBezelLabel__block_inv
   *(v20 + 86) = v22;
 LABEL_12:
   *(v20 + 697) = 0;
-  [v14 setNeedsLayout];
-  [v14 layoutIfNeeded];
-  [v15 setNeedsLayout];
-  [v15 layoutIfNeeded];
+  [viewCopy setNeedsLayout];
+  [viewCopy layoutIfNeeded];
+  [laterViewCopy setNeedsLayout];
+  [laterViewCopy layoutIfNeeded];
   [v20 bezelTextWidthInRadius];
   v24 = v23;
   [v19 bezelTextWidthInRadius];
@@ -611,12 +611,12 @@ LABEL_12:
   aBlock[1] = 3221225472;
   aBlock[2] = __178__NTKRichComplicationBezelBaseCircularView_updateCustomDataAnimationFromEarlierView_laterView_isForward_animationType_animationDuration_animationFraction_bezelTextUpdateHandler___block_invoke;
   aBlock[3] = &unk_2787823E0;
-  v42 = v16;
+  v42 = handlerCopy;
   v27 = v19;
   v40 = v27;
   v28 = v20;
   v41 = v28;
-  v29 = v16;
+  v29 = handlerCopy;
   v30 = _Block_copy(aBlock);
   CLKCompressFraction();
   v32 = v31;
@@ -647,7 +647,7 @@ LABEL_12:
   *(v28 + 696) = v32 >= 1.0;
   *&v38 = v35;
   [v28 _updateNewDataAnimationFinalAlpha:v37 finalBezelLabelScale:1.0 finalCircularViewScale:1.0 animationApplierBlock:1.0 animationFraction:v38];
-  if (a8 >= 1.0)
+  if (fraction >= 1.0)
   {
     *(v28 + 696) = 1;
     *(v28 + 697) = 1;
@@ -668,7 +668,7 @@ uint64_t __178__NTKRichComplicationBezelBaseCircularView_updateCustomDataAnimati
   return v8(v4, v9, v7, v10);
 }
 
-- (Class)_circularViewClassFromFromTemplate:(id)a3
+- (Class)_circularViewClassFromFromTemplate:(id)template
 {
   objc_opt_class();
   NSRequestConcreteImplementation();

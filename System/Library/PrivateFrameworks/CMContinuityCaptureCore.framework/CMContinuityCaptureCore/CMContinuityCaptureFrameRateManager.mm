@@ -1,12 +1,12 @@
 @interface CMContinuityCaptureFrameRateManager
 - (CMContinuityCaptureFrameRateManager)init;
-- (id)allowedFrameRateRangeForDevice:(id)a3;
+- (id)allowedFrameRateRangeForDevice:(id)device;
 - (id)throttledFrameRateByActiveStreamingEntities;
 - (id)throttledFrameRateByThermalLevelAndLowPowerMode;
 - (void)dealloc;
-- (void)lowPowerModeChanged:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)reportStreamStatus:(BOOL)a3 forDevice:(id)a4;
+- (void)lowPowerModeChanged:(id)changed;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)reportStreamStatus:(BOOL)status forDevice:(id)device;
 - (void)updateAllowedFPS;
 @end
 
@@ -22,23 +22,23 @@
   {
     v4 = v2;
     objc_sync_enter(v4);
-    v5 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     activeStreamingDevices = v4->_activeStreamingDevices;
-    v4->_activeStreamingDevices = v5;
+    v4->_activeStreamingDevices = weakObjectsHashTable;
 
-    v7 = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
     allowedFrameRateRangeForDevice = v4->_allowedFrameRateRangeForDevice;
-    v4->_allowedFrameRateRangeForDevice = v7;
+    v4->_allowedFrameRateRangeForDevice = weakToStrongObjectsMapTable;
 
-    v9 = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable2 = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
     clientRequestedFrameRateRangeForDevice = v4->_clientRequestedFrameRateRangeForDevice;
-    v4->_clientRequestedFrameRateRangeForDevice = v9;
+    v4->_clientRequestedFrameRateRangeForDevice = weakToStrongObjectsMapTable2;
 
     v11 = +[CMContinuityCaptureThermalMonitor sharedInstance];
     [v11 addObserver:v4 forKeyPath:@"thermalLevel" options:3 context:0];
 
-    v12 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v12 addObserver:v4 selector:sel_lowPowerModeChanged_ name:*MEMORY[0x277CCA5E8] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v4 selector:sel_lowPowerModeChanged_ name:*MEMORY[0x277CCA5E8] object:0];
 
     v4->_currentThermalLevel = 1;
     objc_sync_exit(v4);
@@ -54,41 +54,41 @@
   v3 = +[CMContinuityCaptureThermalMonitor sharedInstance];
   [v3 removeObserver:self forKeyPath:@"thermalLevel" context:0];
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:self name:*MEMORY[0x277CCA5E8] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277CCA5E8] object:0];
 
   v5.receiver = self;
   v5.super_class = CMContinuityCaptureFrameRateManager;
   [(CMContinuityCaptureFrameRateManager *)&v5 dealloc];
 }
 
-- (id)allowedFrameRateRangeForDevice:(id)a3
+- (id)allowedFrameRateRangeForDevice:(id)device
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(NSMapTable *)v5->_allowedFrameRateRangeForDevice objectForKey:v4];
-  objc_sync_exit(v5);
+  deviceCopy = device;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(NSMapTable *)selfCopy->_allowedFrameRateRangeForDevice objectForKey:deviceCopy];
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = self;
-  objc_sync_enter(v12);
-  if ([v9 isEqualToString:@"thermalLevel"])
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([pathCopy isEqualToString:@"thermalLevel"])
   {
     v13 = CMContinuityCaptureLog(2);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [v11 objectForKeyedSubscript:*MEMORY[0x277CCA300]];
-      v15 = [v11 objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
+      v14 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA300]];
+      v15 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
       v16 = 138543874;
-      v17 = v12;
+      v17 = selfCopy;
       v18 = 2112;
       v19 = v14;
       v20 = 2112;
@@ -96,29 +96,29 @@
       _os_log_impl(&dword_242545000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@ Evaluate FPS Throttle due to change in thermal level(%@ -> %@)", &v16, 0x20u);
     }
 
-    [(CMContinuityCaptureFrameRateManager *)v12 updateAllowedFPS];
+    [(CMContinuityCaptureFrameRateManager *)selfCopy updateAllowedFPS];
   }
 
-  objc_sync_exit(v12);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)lowPowerModeChanged:(id)a3
+- (void)lowPowerModeChanged:(id)changed
 {
-  v4 = [a3 name];
-  v5 = [v4 isEqualToString:*MEMORY[0x277CCA5E8]];
+  name = [changed name];
+  v5 = [name isEqualToString:*MEMORY[0x277CCA5E8]];
 
   if (v5)
   {
-    v6 = [MEMORY[0x277CCAC38] processInfo];
-    v7 = [v6 isLowPowerModeEnabled];
+    processInfo = [MEMORY[0x277CCAC38] processInfo];
+    isLowPowerModeEnabled = [processInfo isLowPowerModeEnabled];
 
     v8 = CMContinuityCaptureLog(0);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138543618;
-      v10 = self;
+      selfCopy = self;
       v11 = 1024;
-      v12 = v7;
+      v12 = isLowPowerModeEnabled;
       _os_log_impl(&dword_242545000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ Device PowerState has changed - lowPowerModeEnabled(%d)", &v9, 0x12u);
     }
 
@@ -128,14 +128,14 @@
 
 - (id)throttledFrameRateByThermalLevelAndLowPowerMode
 {
-  v3 = [MEMORY[0x277CCAC38] processInfo];
-  v4 = [v3 isLowPowerModeEnabled];
+  processInfo = [MEMORY[0x277CCAC38] processInfo];
+  isLowPowerModeEnabled = [processInfo isLowPowerModeEnabled];
 
   v5 = +[CMContinuityCaptureThermalMonitor sharedInstance];
-  v6 = [v5 thermalLevel];
+  thermalLevel = [v5 thermalLevel];
   currentThermalLevel = self->_currentThermalLevel;
 
-  if (v6 > currentThermalLevel)
+  if (thermalLevel > currentThermalLevel)
   {
     v8 = +[CMContinuityCaptureThermalMonitor sharedInstance];
     self->_currentThermalLevel = [v8 thermalLevel];
@@ -143,7 +143,7 @@
 
   v9 = self->_currentThermalLevel;
   v10 = v9 > 3;
-  v11 = (v9 == 3) | v4 & 1;
+  v11 = (v9 == 3) | isLowPowerModeEnabled & 1;
   if (v10)
   {
     v11 = 2;
@@ -168,9 +168,9 @@
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     v15 = 138543874;
-    v16 = self;
+    selfCopy = self;
     v17 = 1024;
-    v18 = v4;
+    v18 = isLowPowerModeEnabled;
     v19 = 2112;
     v20 = v12;
     _os_log_impl(&dword_242545000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@ Throttle Reason: Thermal/LPM (%d). Throttled frame rate: %@", &v15, 0x1Cu);
@@ -190,7 +190,7 @@
   if (v4)
   {
     v5 = v4;
-    v26 = self;
+    selfCopy = self;
     v6 = 0;
     v7 = 0;
     v8 = *v38;
@@ -211,26 +211,26 @@
         }
 
         v12 = *(*(&v37 + 1) + 8 * v11);
-        v13 = [v12 activeConfiguration];
-        v14 = [v13 entity];
+        activeConfiguration = [v12 activeConfiguration];
+        entity = [activeConfiguration entity];
 
-        if (v14 == 2)
+        if (entity == 2)
         {
           v7 = 1;
         }
 
         else
         {
-          v15 = [v12 activeConfiguration];
-          if ([v15 entity] == 1)
+          activeConfiguration2 = [v12 activeConfiguration];
+          if ([activeConfiguration2 entity] == 1)
           {
-            v16 = [v12 videoDevice];
-            v17 = [v16 deviceType];
-            if ([v17 isEqualToString:v9])
+            videoDevice = [v12 videoDevice];
+            deviceType = [videoDevice deviceType];
+            if ([deviceType isEqualToString:v9])
             {
-              v18 = [v12 companionDevice];
-              v19 = [v18 videoDevice];
-              [v19 deviceType];
+              companionDevice = [v12 companionDevice];
+              videoDevice2 = [companionDevice videoDevice];
+              [videoDevice2 deviceType];
               v20 = v7;
               v21 = v6;
               v23 = v22 = v3;
@@ -268,7 +268,7 @@
     if (os_log_type_enabled(&v3->super, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v33 = v26;
+      v33 = selfCopy;
       v34 = 2112;
       v35 = &unk_2854ECAD0;
       _os_log_impl(&dword_242545000, &v3->super, OS_LOG_TYPE_DEFAULT, "%{public}@ Throttle Reason: DeskCam. Throttled frame rate: %@", buf, 0x16u);
@@ -285,29 +285,29 @@
 
 - (void)updateAllowedFPS
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v46 = v2;
-  v3 = [(CMContinuityCaptureFrameRateManager *)v2 throttledFrameRateByThermalLevelAndLowPowerMode];
-  v4 = v3;
-  if (v3)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v46 = selfCopy;
+  throttledFrameRateByThermalLevelAndLowPowerMode = [(CMContinuityCaptureFrameRateManager *)selfCopy throttledFrameRateByThermalLevelAndLowPowerMode];
+  v4 = throttledFrameRateByThermalLevelAndLowPowerMode;
+  if (throttledFrameRateByThermalLevelAndLowPowerMode)
   {
-    v5 = [v3 unsignedIntValue];
+    unsignedIntValue = [throttledFrameRateByThermalLevelAndLowPowerMode unsignedIntValue];
   }
 
   else
   {
-    v5 = -1;
+    unsignedIntValue = -1;
   }
 
-  v6 = [(CMContinuityCaptureFrameRateManager *)v46 throttledFrameRateByActiveStreamingEntities];
-  v7 = v6;
-  if (v6)
+  throttledFrameRateByActiveStreamingEntities = [(CMContinuityCaptureFrameRateManager *)v46 throttledFrameRateByActiveStreamingEntities];
+  v7 = throttledFrameRateByActiveStreamingEntities;
+  if (throttledFrameRateByActiveStreamingEntities)
   {
-    v8 = [v6 unsignedIntValue];
-    if (v8 < v5)
+    unsignedIntValue2 = [throttledFrameRateByActiveStreamingEntities unsignedIntValue];
+    if (unsignedIntValue2 < unsignedIntValue)
     {
-      v5 = v8;
+      unsignedIntValue = unsignedIntValue2;
     }
   }
 
@@ -323,7 +323,7 @@
   {
     v45 = 0;
     v43 = *v65;
-    v42 = v5;
+    v42 = unsignedIntValue;
     do
     {
       v10 = 0;
@@ -340,33 +340,33 @@
         v13 = v12;
         if (v12)
         {
-          v14 = [v12 maxFrameRate];
-          v15 = [v14 unsignedIntValue];
+          maxFrameRate = [v12 maxFrameRate];
+          unsignedIntValue3 = [maxFrameRate unsignedIntValue];
 
-          v16 = [v13 minFrameRate];
-          v17 = [v16 unsignedIntValue];
+          minFrameRate = [v13 minFrameRate];
+          unsignedIntValue4 = [minFrameRate unsignedIntValue];
 
-          if (v15 >= v5)
+          if (unsignedIntValue3 >= unsignedIntValue)
           {
-            v18 = v5;
+            v18 = unsignedIntValue;
           }
 
           else
           {
-            v18 = v15;
+            v18 = unsignedIntValue3;
           }
 
-          if (v17 >= v18)
+          if (unsignedIntValue4 >= v18)
           {
             v19 = v18;
           }
 
           else
           {
-            v19 = v17;
+            v19 = unsignedIntValue4;
           }
 
-          v20 = v5 < v15;
+          v20 = unsignedIntValue < unsignedIntValue3;
           allowedFrameRateRangeForDevice = v46->_allowedFrameRateRangeForDevice;
           v22 = [CMContinuityCaptureFrameRateRange frameRateRangeWithMinRate:v19 maxFrameRate:?];
           [(NSMapTable *)allowedFrameRateRangeForDevice setObject:v22 forKey:v11];
@@ -375,16 +375,16 @@
           v45 |= v20;
           if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
           {
-            v41 = [v11 activeConfiguration];
-            v24 = CMContinuityCaptureStringForEntity([v41 entity]);
+            activeConfiguration = [v11 activeConfiguration];
+            v24 = CMContinuityCaptureStringForEntity([activeConfiguration entity]);
             v40 = [(NSMapTable *)v46->_clientRequestedFrameRateRangeForDevice objectForKey:v11];
-            v39 = [v40 minFrameRate];
+            minFrameRate2 = [v40 minFrameRate];
             v25 = [(NSMapTable *)v46->_clientRequestedFrameRateRangeForDevice objectForKey:v11];
-            v26 = [v25 maxFrameRate];
+            maxFrameRate2 = [v25 maxFrameRate];
             v27 = [(NSMapTable *)v46->_allowedFrameRateRangeForDevice objectForKey:v11];
-            v28 = [v27 minFrameRate];
+            minFrameRate3 = [v27 minFrameRate];
             v29 = [(NSMapTable *)v46->_allowedFrameRateRangeForDevice objectForKey:v11];
-            v30 = [v29 maxFrameRate];
+            maxFrameRate3 = [v29 maxFrameRate];
             if (v42 == -1)
             {
               v31 = @"INT_MAX";
@@ -401,13 +401,13 @@
             v49 = 2112;
             v50 = v24;
             v51 = 2112;
-            v52 = v39;
+            v52 = minFrameRate2;
             v53 = 2112;
-            v54 = v26;
+            v54 = maxFrameRate2;
             v55 = 2112;
-            v56 = v28;
+            v56 = minFrameRate3;
             v57 = 2112;
-            v58 = v30;
+            v58 = maxFrameRate3;
             v59 = 1024;
             v60 = v45 & 1;
             v61 = 2112;
@@ -417,7 +417,7 @@
             {
             }
 
-            v5 = v42;
+            unsignedIntValue = v42;
           }
         }
 
@@ -460,27 +460,27 @@
   }
 }
 
-- (void)reportStreamStatus:(BOOL)a3 forDevice:(id)a4
+- (void)reportStreamStatus:(BOOL)status forDevice:(id)device
 {
-  v4 = a3;
-  v6 = a4;
+  statusCopy = status;
+  deviceCopy = device;
   v7 = CMContinuityCaptureLog(2);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v6 activeConfiguration];
-    v9 = CMContinuityCaptureStringForEntity([v8 entity]);
+    activeConfiguration = [deviceCopy activeConfiguration];
+    v9 = CMContinuityCaptureStringForEntity([activeConfiguration entity]);
     v24 = 138543874;
-    v25 = self;
+    selfCopy = self;
     v26 = 1024;
-    v27 = v4;
+    v27 = statusCopy;
     v28 = 2112;
     v29 = v9;
     _os_log_impl(&dword_242545000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ report stream status %d for device %@", &v24, 0x1Cu);
   }
 
-  v10 = [v6 videoDevice];
+  videoDevice = [deviceCopy videoDevice];
 
-  if (!v10)
+  if (!videoDevice)
   {
     v11 = CMContinuityCaptureLog(2);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -489,53 +489,53 @@
     }
   }
 
-  v12 = self;
-  objc_sync_enter(v12);
-  activeStreamingDevices = v12->_activeStreamingDevices;
-  if (v4)
+  selfCopy2 = self;
+  objc_sync_enter(selfCopy2);
+  activeStreamingDevices = selfCopy2->_activeStreamingDevices;
+  if (statusCopy)
   {
-    [(NSHashTable *)activeStreamingDevices addObject:v6];
-    clientRequestedFrameRateRangeForDevice = v12->_clientRequestedFrameRateRangeForDevice;
-    v15 = [v6 activeConfiguration];
-    v16 = [v15 minFrameRate];
-    v17 = [v6 activeConfiguration];
-    v18 = +[CMContinuityCaptureFrameRateRange frameRateRangeWithMinRate:maxFrameRate:](CMContinuityCaptureFrameRateRange, "frameRateRangeWithMinRate:maxFrameRate:", v16, [v17 maxFrameRate]);
-    [(NSMapTable *)clientRequestedFrameRateRangeForDevice setObject:v18 forKey:v6];
+    [(NSHashTable *)activeStreamingDevices addObject:deviceCopy];
+    clientRequestedFrameRateRangeForDevice = selfCopy2->_clientRequestedFrameRateRangeForDevice;
+    activeConfiguration2 = [deviceCopy activeConfiguration];
+    minFrameRate = [activeConfiguration2 minFrameRate];
+    activeConfiguration3 = [deviceCopy activeConfiguration];
+    activeConfiguration5 = +[CMContinuityCaptureFrameRateRange frameRateRangeWithMinRate:maxFrameRate:](CMContinuityCaptureFrameRateRange, "frameRateRangeWithMinRate:maxFrameRate:", minFrameRate, [activeConfiguration3 maxFrameRate]);
+    [(NSMapTable *)clientRequestedFrameRateRangeForDevice setObject:activeConfiguration5 forKey:deviceCopy];
   }
 
   else
   {
-    [(NSHashTable *)activeStreamingDevices removeObject:v6];
-    v19 = [(NSMapTable *)v12->_clientRequestedFrameRateRangeForDevice objectForKey:v6];
-    v15 = v19;
+    [(NSHashTable *)activeStreamingDevices removeObject:deviceCopy];
+    v19 = [(NSMapTable *)selfCopy2->_clientRequestedFrameRateRangeForDevice objectForKey:deviceCopy];
+    activeConfiguration2 = v19;
     if (!v19)
     {
       goto LABEL_12;
     }
 
-    v20 = [v19 maxFrameRate];
-    v21 = [v20 unsignedIntValue];
-    v22 = [v6 activeConfiguration];
-    [v22 setMaxFrameRate:v21];
+    maxFrameRate = [v19 maxFrameRate];
+    unsignedIntValue = [maxFrameRate unsignedIntValue];
+    activeConfiguration4 = [deviceCopy activeConfiguration];
+    [activeConfiguration4 setMaxFrameRate:unsignedIntValue];
 
-    v17 = [v15 minFrameRate];
-    v23 = [v17 unsignedIntValue];
-    v18 = [v6 activeConfiguration];
-    [v18 setMinFrameRate:v23];
+    activeConfiguration3 = [activeConfiguration2 minFrameRate];
+    unsignedIntValue2 = [activeConfiguration3 unsignedIntValue];
+    activeConfiguration5 = [deviceCopy activeConfiguration];
+    [activeConfiguration5 setMinFrameRate:unsignedIntValue2];
   }
 
 LABEL_12:
-  if (![(NSHashTable *)v12->_activeStreamingDevices count])
+  if (![(NSHashTable *)selfCopy2->_activeStreamingDevices count])
   {
-    v12->_currentThermalLevel = 1;
-    v12->_throttledDeskCamMultipleCamerasInUse = 0;
+    selfCopy2->_currentThermalLevel = 1;
+    selfCopy2->_throttledDeskCamMultipleCamerasInUse = 0;
   }
 
-  objc_sync_exit(v12);
+  objc_sync_exit(selfCopy2);
 
-  if ([(NSHashTable *)v12->_activeStreamingDevices count])
+  if ([(NSHashTable *)selfCopy2->_activeStreamingDevices count])
   {
-    [(CMContinuityCaptureFrameRateManager *)v12 updateAllowedFPS];
+    [(CMContinuityCaptureFrameRateManager *)selfCopy2 updateAllowedFPS];
   }
 }
 

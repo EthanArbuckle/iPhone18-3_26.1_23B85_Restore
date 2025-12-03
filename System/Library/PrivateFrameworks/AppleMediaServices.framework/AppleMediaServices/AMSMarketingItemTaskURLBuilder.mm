@@ -1,11 +1,11 @@
 @interface AMSMarketingItemTaskURLBuilder
 + (AMSBagKeySet)bagKeySet;
 - (id)_additionalQueryItems;
-- (id)_formattedURLPathWithBag:(id)a3;
-- (id)_languageTagFromBag:(id)a3 fallback:(id)a4;
-- (id)_realmOverridesFromBag:(id)a3;
-- (id)_stringForKey:(id)a3 fromBag:(id)a4;
-- (id)urlWithServiceType:(id)a3 placement:(id)a4 bag:(id)a5 hydrateRelatedContents:(BOOL)a6 offerHints:(id)a7 additionalParameters:(id)a8;
+- (id)_formattedURLPathWithBag:(id)bag;
+- (id)_languageTagFromBag:(id)bag fallback:(id)fallback;
+- (id)_realmOverridesFromBag:(id)bag;
+- (id)_stringForKey:(id)key fromBag:(id)bag;
+- (id)urlWithServiceType:(id)type placement:(id)placement bag:(id)bag hydrateRelatedContents:(BOOL)contents offerHints:(id)hints additionalParameters:(id)parameters;
 @end
 
 @implementation AMSMarketingItemTaskURLBuilder
@@ -23,39 +23,39 @@
   return v2;
 }
 
-- (id)urlWithServiceType:(id)a3 placement:(id)a4 bag:(id)a5 hydrateRelatedContents:(BOOL)a6 offerHints:(id)a7 additionalParameters:(id)a8
+- (id)urlWithServiceType:(id)type placement:(id)placement bag:(id)bag hydrateRelatedContents:(BOOL)contents offerHints:(id)hints additionalParameters:(id)parameters
 {
-  v10 = a6;
-  v14 = a3;
-  v39 = a4;
-  v15 = a5;
-  v16 = a7;
-  v17 = a8;
-  v18 = [v14 uppercaseString];
-  v19 = [(AMSMarketingItemTaskURLBuilder *)self _realmOverridesFromBag:v15];
-  v20 = [v19 valueForKey:v18];
+  contentsCopy = contents;
+  typeCopy = type;
+  placementCopy = placement;
+  bagCopy = bag;
+  hintsCopy = hints;
+  parametersCopy = parameters;
+  uppercaseString = [typeCopy uppercaseString];
+  v19 = [(AMSMarketingItemTaskURLBuilder *)self _realmOverridesFromBag:bagCopy];
+  v20 = [v19 valueForKey:uppercaseString];
 
-  v21 = [(AMSMarketingItemTaskURLBuilder *)self _formattedURLPathWithBag:v15];
+  v21 = [(AMSMarketingItemTaskURLBuilder *)self _formattedURLPathWithBag:bagCopy];
   v22 = v21;
   if (v20 && v21)
   {
-    v38 = v16;
-    v36 = v17;
-    v23 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:v17];
+    v38 = hintsCopy;
+    v36 = parametersCopy;
+    v23 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:parametersCopy];
     [v23 setObject:@"priceDiffsForDisplay" forKeyedSubscript:@"extend[marketing-items]"];
     v24 = +[AMSDevice language];
-    v25 = [(AMSMarketingItemTaskURLBuilder *)self _languageTagFromBag:v15 fallback:v24];
+    v25 = [(AMSMarketingItemTaskURLBuilder *)self _languageTagFromBag:bagCopy fallback:v24];
     [v23 setObject:v25 forKeyedSubscript:@"l"];
 
     [v23 setObject:@"metrics" forKeyedSubscript:@"meta[marketing-items]"];
-    [v23 setObject:v39 forKeyedSubscript:@"placement"];
-    [v23 setObject:v14 forKeyedSubscript:@"serviceType"];
-    if (v10)
+    [v23 setObject:placementCopy forKeyedSubscript:@"placement"];
+    [v23 setObject:typeCopy forKeyedSubscript:@"serviceType"];
+    if (contentsCopy)
     {
       [v23 setObject:@"contents" forKeyedSubscript:@"include"];
     }
 
-    v37 = v14;
+    v37 = typeCopy;
     if (v38)
     {
       [v23 setObject:v38 forKeyedSubscript:@"offerHints"];
@@ -67,8 +67,8 @@
     v29 = [v27 queryItemsFromDictionary:v28];
     v30 = [v26 arrayWithArray:v29];
 
-    v31 = [(AMSMarketingItemTaskURLBuilder *)self _additionalQueryItems];
-    [v30 addObjectsFromArray:v31];
+    _additionalQueryItems = [(AMSMarketingItemTaskURLBuilder *)self _additionalQueryItems];
+    [v30 addObjectsFromArray:_additionalQueryItems];
 
     [v30 sortUsingComparator:&__block_literal_global_79];
     v32 = objc_opt_new();
@@ -79,9 +79,9 @@
     v33 = [v32 URL];
     v34 = [AMSPromise promiseWithResult:v33];
 
-    v16 = v38;
-    v17 = v36;
-    v14 = v37;
+    hintsCopy = v38;
+    parametersCopy = v36;
+    typeCopy = v37;
   }
 
   else
@@ -103,11 +103,11 @@ uint64_t __122__AMSMarketingItemTaskURLBuilder_urlWithServiceType_placement_bag_
   return v7;
 }
 
-- (id)_languageTagFromBag:(id)a3 fallback:(id)a4
+- (id)_languageTagFromBag:(id)bag fallback:(id)fallback
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [(AMSMarketingItemTaskURLBuilder *)self _stringForKey:@"language-tag" fromBag:a3];
+  fallbackCopy = fallback;
+  v7 = [(AMSMarketingItemTaskURLBuilder *)self _stringForKey:@"language-tag" fromBag:bag];
   v8 = v7;
   if (!v7)
   {
@@ -117,8 +117,8 @@ uint64_t __122__AMSMarketingItemTaskURLBuilder_urlWithServiceType_placement_bag_
       v9 = +[AMSLogConfig sharedConfig];
     }
 
-    v10 = [v9 OSLogObject];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v9 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v11 = objc_opt_class();
       v12 = AMSLogKey();
@@ -127,11 +127,11 @@ uint64_t __122__AMSMarketingItemTaskURLBuilder_urlWithServiceType_placement_bag_
       v17 = 2114;
       v18 = v12;
       v19 = 2114;
-      v20 = v6;
-      _os_log_impl(&dword_192869000, v10, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Retrieving language tag from bag failed, using fallback: %{public}@", &v15, 0x20u);
+      v20 = fallbackCopy;
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Retrieving language tag from bag failed, using fallback: %{public}@", &v15, 0x20u);
     }
 
-    v8 = v6;
+    v8 = fallbackCopy;
   }
 
   v13 = v8;
@@ -139,10 +139,10 @@ uint64_t __122__AMSMarketingItemTaskURLBuilder_urlWithServiceType_placement_bag_
   return v13;
 }
 
-- (id)_realmOverridesFromBag:(id)a3
+- (id)_realmOverridesFromBag:(id)bag
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = [a3 dictionaryForKey:@"marketing-item-media-api-realm-mappings"];
+  v3 = [bag dictionaryForKey:@"marketing-item-media-api-realm-mappings"];
   v16 = 0;
   v4 = [v3 valueWithError:&v16];
   v5 = v16;
@@ -155,8 +155,8 @@ uint64_t __122__AMSMarketingItemTaskURLBuilder_urlWithServiceType_placement_bag_
       v6 = +[AMSLogConfig sharedConfig];
     }
 
-    v7 = [v6 OSLogObject];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v6 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v8 = objc_opt_class();
       v9 = AMSLogKey();
@@ -164,7 +164,7 @@ uint64_t __122__AMSMarketingItemTaskURLBuilder_urlWithServiceType_placement_bag_
       v18 = v8;
       v19 = 2114;
       v20 = v9;
-      _os_log_impl(&dword_192869000, v7, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Error retrieving realm mappings.", buf, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Error retrieving realm mappings.", buf, 0x16u);
     }
 
     v10 = +[AMSLogConfig sharedMarketingItemConfig];
@@ -173,8 +173,8 @@ uint64_t __122__AMSMarketingItemTaskURLBuilder_urlWithServiceType_placement_bag_
       v10 = +[AMSLogConfig sharedConfig];
     }
 
-    v11 = [v10 OSLogObject];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    oSLogObject2 = [v10 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
     {
       v12 = objc_opt_class();
       v13 = AMSLogKey();
@@ -185,17 +185,17 @@ uint64_t __122__AMSMarketingItemTaskURLBuilder_urlWithServiceType_placement_bag_
       v20 = v13;
       v21 = 2114;
       v22 = v14;
-      _os_log_impl(&dword_192869000, v11, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] %{public}@", buf, 0x20u);
     }
   }
 
   return v4;
 }
 
-- (id)_stringForKey:(id)a3 fromBag:(id)a4
+- (id)_stringForKey:(id)key fromBag:(id)bag
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = [a4 stringForKey:a3];
+  v4 = [bag stringForKey:key];
   v13 = 0;
   v5 = [v4 valueWithError:&v13];
   v6 = v13;
@@ -208,8 +208,8 @@ uint64_t __122__AMSMarketingItemTaskURLBuilder_urlWithServiceType_placement_bag_
       v7 = +[AMSLogConfig sharedConfig];
     }
 
-    v8 = [v7 OSLogObject];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v7 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v9 = objc_opt_class();
       v10 = AMSLogKey();
@@ -220,18 +220,18 @@ uint64_t __122__AMSMarketingItemTaskURLBuilder_urlWithServiceType_placement_bag_
       v17 = v10;
       v18 = 2114;
       v19 = v11;
-      _os_log_impl(&dword_192869000, v8, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] %{public}@", buf, 0x20u);
     }
   }
 
   return v5;
 }
 
-- (id)_formattedURLPathWithBag:(id)a3
+- (id)_formattedURLPathWithBag:(id)bag
 {
-  v4 = a3;
-  v5 = [(AMSMarketingItemTaskURLBuilder *)self _urlPathFromBag:v4];
-  v6 = [(AMSMarketingItemTaskURLBuilder *)self _countryCodeFromBag:v4];
+  bagCopy = bag;
+  v5 = [(AMSMarketingItemTaskURLBuilder *)self _urlPathFromBag:bagCopy];
+  v6 = [(AMSMarketingItemTaskURLBuilder *)self _countryCodeFromBag:bagCopy];
 
   v7 = 0;
   if (v5 && v6)

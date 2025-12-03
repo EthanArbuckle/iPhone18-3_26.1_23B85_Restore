@@ -1,11 +1,11 @@
 @interface ICRemoteRequestOperation
-- (ICRemoteRequestOperation)initWithCoder:(id)a3;
+- (ICRemoteRequestOperation)initWithCoder:(id)coder;
 - (void)_execute;
 @end
 
 @implementation ICRemoteRequestOperation
 
-- (ICRemoteRequestOperation)initWithCoder:(id)a3
+- (ICRemoteRequestOperation)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = ICRemoteRequestOperation;
@@ -24,11 +24,11 @@
   else
   {
     v5 = [[ICRemoteRequestOperationExecutionContext alloc] initWithRemoteRequestOperation:self];
-    v6 = [MEMORY[0x1E696ADC8] currentQueue];
-    v7 = v6;
-    if (v6)
+    currentQueue = [MEMORY[0x1E696ADC8] currentQueue];
+    v7 = currentQueue;
+    if (currentQueue)
     {
-      -[ICRemoteRequestOperationExecutionContext setQualityOfService:](v5, "setQualityOfService:", [v6 qualityOfService]);
+      -[ICRemoteRequestOperationExecutionContext setQualityOfService:](v5, "setQualityOfService:", [currentQueue qualityOfService]);
     }
 
     v8 = +[ICRemoteRequestOperationController sharedRemoteRequestOperationController];

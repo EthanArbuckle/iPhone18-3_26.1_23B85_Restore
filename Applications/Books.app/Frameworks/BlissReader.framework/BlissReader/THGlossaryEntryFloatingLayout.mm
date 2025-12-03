@@ -1,10 +1,10 @@
 @interface THGlossaryEntryFloatingLayout
 - (CGRect)boundingBoxForChildren;
-- (CGSize)maximumFrameSizeForChild:(id)a3;
+- (CGSize)maximumFrameSizeForChild:(id)child;
 - (id)childrenForWrappingDependents;
 - (id)computeLayoutGeometry;
 - (id)floatingLayouts;
-- (void)p_addWrappingRequirementsForLayout:(id)a3 toArray:(id)a4;
+- (void)p_addWrappingRequirementsForLayout:(id)layout toArray:(id)array;
 - (void)updateChildrenFromInfo;
 @end
 
@@ -14,7 +14,7 @@
 {
   v3 = [-[THGlossaryEntryFloatingLayout info](self "info")];
   v4 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v3, "count")}];
-  v5 = [(THGlossaryEntryFloatingLayout *)self layoutController];
+  layoutController = [(THGlossaryEntryFloatingLayout *)self layoutController];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -34,7 +34,7 @@
           objc_enumerationMutation(v3);
         }
 
-        v10 = [v5 layoutForInfo:*(*(&v12 + 1) + 8 * v9)];
+        v10 = [layoutController layoutForInfo:*(*(&v12 + 1) + 8 * v9)];
         if (v10)
         {
           [v4 addObject:v10];
@@ -59,14 +59,14 @@
   y = CGRectNull.origin.y;
   width = CGRectNull.size.width;
   height = CGRectNull.size.height;
-  v6 = [(THGlossaryEntryFloatingLayout *)self floatingLayouts];
-  if ([v6 count])
+  floatingLayouts = [(THGlossaryEntryFloatingLayout *)self floatingLayouts];
+  if ([floatingLayouts count])
   {
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v7 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    v7 = [floatingLayouts countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v7)
     {
       v8 = v7;
@@ -78,7 +78,7 @@
         {
           if (*v20 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(floatingLayouts);
           }
 
           [objc_msgSend(*(*(&v19 + 1) + 8 * v10) "geometry")];
@@ -99,7 +99,7 @@
         }
 
         while (v8 != v10);
-        v8 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v8 = [floatingLayouts countByEnumeratingWithState:&v19 objects:v23 count:16];
       }
 
       while (v8);
@@ -129,14 +129,14 @@
   return result;
 }
 
-- (void)p_addWrappingRequirementsForLayout:(id)a3 toArray:(id)a4
+- (void)p_addWrappingRequirementsForLayout:(id)layout toArray:(id)array
 {
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [a3 children];
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  children = [layout children];
+  v7 = [children countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -147,7 +147,7 @@
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(children);
         }
 
         v11 = *(*(&v14 + 1) + 8 * i);
@@ -161,13 +161,13 @@
           }
 
           v12 = v13;
-          [(THGlossaryEntryFloatingLayout *)self p_addWrappingRequirementsForLayout:v11 toArray:a4];
+          [(THGlossaryEntryFloatingLayout *)self p_addWrappingRequirementsForLayout:v11 toArray:array];
         }
 
-        [a4 addObject:v12];
+        [array addObject:v12];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [children countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v8);
@@ -188,7 +188,7 @@
   {
     v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [objc_msgSend(-[THGlossaryEntryFloatingLayout info](self "info")]);
     v5 = [-[THGlossaryEntryFloatingLayout info](self "info")];
-    v6 = [(THGlossaryEntryFloatingLayout *)self layoutController];
+    layoutController = [(THGlossaryEntryFloatingLayout *)self layoutController];
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
@@ -208,7 +208,7 @@
           }
 
           v11 = *(*(&v14 + 1) + 8 * i);
-          v12 = [v6 layoutForInfo:v11 childOfLayout:self];
+          v12 = [layoutController layoutForInfo:v11 childOfLayout:self];
           if (!v12)
           {
             v12 = [objc_alloc(objc_msgSend(v11 "layoutClass"))];
@@ -248,7 +248,7 @@
   return v8;
 }
 
-- (CGSize)maximumFrameSizeForChild:(id)a3
+- (CGSize)maximumFrameSizeForChild:(id)child
 {
   objc_opt_class();
   [(THGlossaryEntryFloatingLayout *)self parent];
@@ -256,14 +256,14 @@
   if (v5)
   {
 
-    [v5 maximumFrameSizeForChild:a3];
+    [v5 maximumFrameSizeForChild:child];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = THGlossaryEntryFloatingLayout;
-    [(THGlossaryEntryFloatingLayout *)&v8 maximumFrameSizeForChild:a3];
+    [(THGlossaryEntryFloatingLayout *)&v8 maximumFrameSizeForChild:child];
   }
 
   result.height = v7;

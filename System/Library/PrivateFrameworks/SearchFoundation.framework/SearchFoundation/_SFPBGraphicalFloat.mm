@@ -1,17 +1,17 @@
 @interface _SFPBGraphicalFloat
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBGraphicalFloat)initWithCGFloat:(double)a3;
-- (_SFPBGraphicalFloat)initWithDictionary:(id)a3;
-- (_SFPBGraphicalFloat)initWithJSON:(id)a3;
+- (_SFPBGraphicalFloat)initWithCGFloat:(double)float;
+- (_SFPBGraphicalFloat)initWithDictionary:(id)dictionary;
+- (_SFPBGraphicalFloat)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBGraphicalFloat
 
-- (_SFPBGraphicalFloat)initWithCGFloat:(double)a3
+- (_SFPBGraphicalFloat)initWithCGFloat:(double)float
 {
   v8.receiver = self;
   v8.super_class = _SFPBGraphicalFloat;
@@ -19,22 +19,22 @@
   v5 = v4;
   if (v4)
   {
-    [(_SFPBGraphicalFloat *)v4 setDoubleValue:a3];
+    [(_SFPBGraphicalFloat *)v4 setDoubleValue:float];
     v6 = v5;
   }
 
   return v5;
 }
 
-- (_SFPBGraphicalFloat)initWithDictionary:(id)a3
+- (_SFPBGraphicalFloat)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = _SFPBGraphicalFloat;
   v5 = [(_SFPBGraphicalFloat *)&v9 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"doubleValue"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"doubleValue"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -48,30 +48,30 @@
   return v5;
 }
 
-- (_SFPBGraphicalFloat)initWithJSON:(id)a3
+- (_SFPBGraphicalFloat)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBGraphicalFloat *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBGraphicalFloat *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBGraphicalFloat *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -84,16 +84,16 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_doubleValue != 0.0)
   {
     v4 = MEMORY[0x1E696AD98];
     [(_SFPBGraphicalFloat *)self doubleValue];
     v5 = [v4 numberWithDouble:?];
-    [v3 setObject:v5 forKeyedSubscript:@"doubleValue"];
+    [dictionary setObject:v5 forKeyedSubscript:@"doubleValue"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -131,13 +131,13 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     doubleValue = self->_doubleValue;
-    [v4 doubleValue];
+    [equalCopy doubleValue];
     v7 = doubleValue == v6;
   }
 
@@ -149,9 +149,9 @@
   return v7;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   [(_SFPBGraphicalFloat *)self doubleValue];
   if (v4 != 0.0)
   {

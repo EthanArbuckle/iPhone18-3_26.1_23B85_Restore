@@ -1,16 +1,16 @@
 @interface JETreatmentProfile
-+ (id)treatmentProfileWithConfiguration:(id)a3 topic:(id)a4;
-- (JETreatmentProfile)initWithConfigDictionary:(id)a3 topic:(id)a4;
-- (id)performTreatments:(id)a3;
++ (id)treatmentProfileWithConfiguration:(id)configuration topic:(id)topic;
+- (JETreatmentProfile)initWithConfigDictionary:(id)dictionary topic:(id)topic;
+- (id)performTreatments:(id)treatments;
 @end
 
 @implementation JETreatmentProfile
 
-+ (id)treatmentProfileWithConfiguration:(id)a3 topic:(id)a4
++ (id)treatmentProfileWithConfiguration:(id)configuration topic:(id)topic
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v5;
+  configurationCopy = configuration;
+  topicCopy = topic;
+  v7 = configurationCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -24,7 +24,7 @@
 
   if (v7)
   {
-    v9 = [[JETreatmentProfile alloc] initWithConfigDictionary:v8 topic:v6];
+    v9 = [[JETreatmentProfile alloc] initWithConfigDictionary:v8 topic:topicCopy];
   }
 
   else
@@ -35,11 +35,11 @@
   return v9;
 }
 
-- (JETreatmentProfile)initWithConfigDictionary:(id)a3 topic:(id)a4
+- (JETreatmentProfile)initWithConfigDictionary:(id)dictionary topic:(id)topic
 {
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  topicCopy = topic;
   v33.receiver = self;
   v33.super_class = JETreatmentProfile;
   v8 = [(JETreatmentProfile *)&v33 init];
@@ -48,7 +48,7 @@
     goto LABEL_28;
   }
 
-  v9 = [v6 objectForKeyedSubscript:@"version"];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"version"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -62,7 +62,7 @@
 
   if (v10 && [v10 integerValue] > 1)
   {
-    v14 = [v6 objectForKeyedSubscript:@"treatments"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"treatments"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -74,7 +74,7 @@
       v15 = 0;
     }
 
-    v16 = [v6 objectForKeyedSubscript:@"treatments"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"treatments"];
 
     if (v16 && !v15)
     {
@@ -110,7 +110,7 @@
             objc_enumerationMutation(v18);
           }
 
-          v23 = [JETreatment treatmentWithConfiguration:*(*(&v28 + 1) + 8 * i) topic:v7];
+          v23 = [JETreatment treatmentWithConfiguration:*(*(&v28 + 1) + 8 * i) topic:topicCopy];
           if (v23)
           {
             [v17 addObject:v23];
@@ -149,10 +149,10 @@ LABEL_29:
   return v13;
 }
 
-- (id)performTreatments:(id)a3
+- (id)performTreatments:(id)treatments
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  treatmentsCopy = treatments;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -167,14 +167,14 @@ LABEL_29:
     treatments = 0;
   }
 
-  v6 = treatments;
-  v7 = [(NSArray *)v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
-  v8 = v4;
+  treatmentsCopy2 = treatments;
+  v7 = [(NSArray *)treatmentsCopy2 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v8 = treatmentsCopy;
   if (v7)
   {
     v9 = v7;
     v10 = *v15;
-    v8 = v4;
+    v8 = treatmentsCopy;
     while (2)
     {
       v11 = 0;
@@ -183,7 +183,7 @@ LABEL_29:
       {
         if (*v15 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(treatmentsCopy2);
         }
 
         if (!v12)
@@ -199,7 +199,7 @@ LABEL_29:
       }
 
       while (v9 != v11);
-      v9 = [(NSArray *)v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v9 = [(NSArray *)treatmentsCopy2 countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v9)
       {
         continue;

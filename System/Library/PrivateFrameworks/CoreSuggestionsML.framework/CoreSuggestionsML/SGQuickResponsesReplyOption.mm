@@ -1,53 +1,53 @@
 @interface SGQuickResponsesReplyOption
-+ (double)totalDisplayedCountForRecords:(id)a3;
-+ (double)ucbCombinedForSelected:(double)a3 displayed:(double)a4 actualOptionsDisplayed:(double)a5 matched:(double)a6 imputedDisplayed:(double)a7 imputedOptionsDisplayed:(double)a8 explorationFactor:(double)a9;
-+ (double)ucbCombinedWithMeanA:(double)a3 meanB:(double)a4 varianceA:(double)a5 varianceB:(double)a6 explorationFactor:(double)a7;
-+ (double)ucbTunedVarianceForMean:(double)a3 displayed:(double)a4 totalDisplayed:(double)a5;
-+ (double)ucbWithMean:(double)a3 varianceOfMean:(double)a4 explorationFactor:(double)a5;
-+ (id)imputedDisplayedForRecords:(id)a3 config:(id)a4;
-+ (id)sortedReplyOptionsForRecords:(id)a3 config:(id)a4;
-- (SGQuickResponsesReplyOption)initWithPosition:(unint64_t)a3 records:(id)a4 actualOptionsDisplayedCount:(double)a5 imputedOptionsDisplayedCount:(double)a6 imputedOptionsDisplayed:(id)a7 config:(id)a8;
-- (int64_t)compare:(id)a3;
++ (double)totalDisplayedCountForRecords:(id)records;
++ (double)ucbCombinedForSelected:(double)selected displayed:(double)displayed actualOptionsDisplayed:(double)optionsDisplayed matched:(double)matched imputedDisplayed:(double)imputedDisplayed imputedOptionsDisplayed:(double)imputedOptionsDisplayed explorationFactor:(double)factor;
++ (double)ucbCombinedWithMeanA:(double)a meanB:(double)b varianceA:(double)varianceA varianceB:(double)varianceB explorationFactor:(double)factor;
++ (double)ucbTunedVarianceForMean:(double)mean displayed:(double)displayed totalDisplayed:(double)totalDisplayed;
++ (double)ucbWithMean:(double)mean varianceOfMean:(double)ofMean explorationFactor:(double)factor;
++ (id)imputedDisplayedForRecords:(id)records config:(id)config;
++ (id)sortedReplyOptionsForRecords:(id)records config:(id)config;
+- (SGQuickResponsesReplyOption)initWithPosition:(unint64_t)position records:(id)records actualOptionsDisplayedCount:(double)count imputedOptionsDisplayedCount:(double)displayedCount imputedOptionsDisplayed:(id)displayed config:(id)config;
+- (int64_t)compare:(id)compare;
 @end
 
 @implementation SGQuickResponsesReplyOption
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
+  compareCopy = compare;
   v5 = [(SGQuickResponsesReplyOption *)self ucb];
-  v6 = [v4 ucb];
+  v6 = [compareCopy ucb];
   v7 = [v5 isEqualToNumber:v6];
 
   if (v7)
   {
-    v8 = [(SGQuickResponsesReplyOption *)self position];
-    [v4 position];
+    position = [(SGQuickResponsesReplyOption *)self position];
+    [compareCopy position];
   }
 
   else
   {
-    v8 = [v4 ucb];
+    position = [compareCopy ucb];
     [(SGQuickResponsesReplyOption *)self ucb];
   }
   v9 = ;
-  v10 = [v8 compare:v9];
+  v10 = [position compare:v9];
 
   return v10;
 }
 
-- (SGQuickResponsesReplyOption)initWithPosition:(unint64_t)a3 records:(id)a4 actualOptionsDisplayedCount:(double)a5 imputedOptionsDisplayedCount:(double)a6 imputedOptionsDisplayed:(id)a7 config:(id)a8
+- (SGQuickResponsesReplyOption)initWithPosition:(unint64_t)position records:(id)records actualOptionsDisplayedCount:(double)count imputedOptionsDisplayedCount:(double)displayedCount imputedOptionsDisplayed:(id)displayed config:(id)config
 {
-  v14 = a4;
-  v15 = a7;
-  v16 = a8;
+  recordsCopy = records;
+  displayedCopy = displayed;
+  configCopy = config;
   v38.receiver = self;
   v38.super_class = SGQuickResponsesReplyOption;
   v17 = [(SGQuickResponsesReplyOption *)&v38 init];
   if (v17)
   {
-    v18 = [v14 replyRecords];
-    v19 = [v18 objectAtIndexedSubscript:a3];
+    replyRecords = [recordsCopy replyRecords];
+    v19 = [replyRecords objectAtIndexedSubscript:position];
 
     [v19 selected];
     v21 = v20;
@@ -55,15 +55,15 @@
     v23 = v22;
     [v19 matched];
     v25 = v24;
-    v26 = [v15 objectAtIndexedSubscript:a3];
+    v26 = [displayedCopy objectAtIndexedSubscript:position];
     [v26 doubleValue];
     v28 = v27;
-    v29 = [v16 predictionParams];
-    [v29 personalizationExplorationFactor];
-    [SGQuickResponsesReplyOption ucbCombinedForSelected:v21 displayed:v23 actualOptionsDisplayed:a5 matched:v25 imputedDisplayed:v28 imputedOptionsDisplayed:a6 explorationFactor:v30];
+    predictionParams = [configCopy predictionParams];
+    [predictionParams personalizationExplorationFactor];
+    [SGQuickResponsesReplyOption ucbCombinedForSelected:v21 displayed:v23 actualOptionsDisplayed:count matched:v25 imputedDisplayed:v28 imputedOptionsDisplayed:displayedCount explorationFactor:v30];
     v32 = v31;
 
-    v33 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInteger:a3];
+    v33 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInteger:position];
     position = v17->_position;
     v17->_position = v33;
 
@@ -75,23 +75,23 @@
   return v17;
 }
 
-+ (id)imputedDisplayedForRecords:(id)a3 config:(id)a4
++ (id)imputedDisplayedForRecords:(id)records config:(id)config
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  [v4 totalDisplayed];
+  recordsCopy = records;
+  [recordsCopy totalDisplayed];
   v6 = v5;
-  [v4 totalSelected];
+  [recordsCopy totalSelected];
   v8 = v7;
-  [v4 totalUnmatched];
+  [recordsCopy totalUnmatched];
   v10 = v9;
   v11 = objc_opt_new();
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v12 = [v4 replyRecords];
-  v13 = [v12 countByEnumeratingWithState:&v27 objects:v31 count:16];
+  replyRecords = [recordsCopy replyRecords];
+  v13 = [replyRecords countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v13)
   {
     v14 = v13;
@@ -103,7 +103,7 @@
       {
         if (*v28 != v16)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(replyRecords);
         }
 
         v18 = *(*(&v27 + 1) + 8 * i);
@@ -116,7 +116,7 @@
         [v11 addObject:v24];
       }
 
-      v14 = [v12 countByEnumeratingWithState:&v27 objects:v31 count:16];
+      v14 = [replyRecords countByEnumeratingWithState:&v27 objects:v31 count:16];
     }
 
     while (v14);
@@ -127,15 +127,15 @@
   return v11;
 }
 
-+ (double)totalDisplayedCountForRecords:(id)a3
++ (double)totalDisplayedCountForRecords:(id)records
 {
   v17 = *MEMORY[0x277D85DE8];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = [a3 replyRecords];
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  replyRecords = [records replyRecords];
+  v4 = [replyRecords countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -147,14 +147,14 @@
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(replyRecords);
         }
 
         [*(*(&v12 + 1) + 8 * i) displayed];
         v7 = v7 + v9;
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [replyRecords countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v5);
@@ -169,32 +169,32 @@
   return v7;
 }
 
-+ (id)sortedReplyOptionsForRecords:(id)a3 config:(id)a4
++ (id)sortedReplyOptionsForRecords:(id)records config:(id)config
 {
-  v5 = a3;
-  v6 = a4;
-  [SGQuickResponsesReplyOption totalDisplayedCountForRecords:v5];
+  recordsCopy = records;
+  configCopy = config;
+  [SGQuickResponsesReplyOption totalDisplayedCountForRecords:recordsCopy];
   v8 = v7;
-  v9 = [SGQuickResponsesReplyOption imputedDisplayedForRecords:v5 config:v6];
+  v9 = [SGQuickResponsesReplyOption imputedDisplayedForRecords:recordsCopy config:configCopy];
   v10 = [v9 valueForKeyPath:@"@sum.self"];
   [v10 doubleValue];
   v12 = v11;
 
   v13 = objc_opt_new();
-  v14 = [v5 replyRecords];
-  v15 = [v14 count];
+  replyRecords = [recordsCopy replyRecords];
+  v15 = [replyRecords count];
 
   if (v15)
   {
     v16 = 0;
     do
     {
-      v17 = [[SGQuickResponsesReplyOption alloc] initWithPosition:v16 records:v5 actualOptionsDisplayedCount:v9 imputedOptionsDisplayedCount:v6 imputedOptionsDisplayed:v8 config:v12];
+      v17 = [[SGQuickResponsesReplyOption alloc] initWithPosition:v16 records:recordsCopy actualOptionsDisplayedCount:v9 imputedOptionsDisplayedCount:configCopy imputedOptionsDisplayed:v8 config:v12];
       [v13 addObject:v17];
 
       ++v16;
-      v18 = [v5 replyRecords];
-      v19 = [v18 count];
+      replyRecords2 = [recordsCopy replyRecords];
+      v19 = [replyRecords2 count];
     }
 
     while (v16 < v19);
@@ -205,9 +205,9 @@
   return v13;
 }
 
-+ (double)ucbCombinedForSelected:(double)a3 displayed:(double)a4 actualOptionsDisplayed:(double)a5 matched:(double)a6 imputedDisplayed:(double)a7 imputedOptionsDisplayed:(double)a8 explorationFactor:(double)a9
++ (double)ucbCombinedForSelected:(double)selected displayed:(double)displayed actualOptionsDisplayed:(double)optionsDisplayed matched:(double)matched imputedDisplayed:(double)imputedDisplayed imputedOptionsDisplayed:(double)imputedOptionsDisplayed explorationFactor:(double)factor
 {
-  v12 = a3 / a4;
+  v12 = selected / displayed;
   if (v12 <= 1.0)
   {
     v13 = v12;
@@ -218,9 +218,9 @@
     v13 = 1.0;
   }
 
-  if (a6 / a7 <= 1.0)
+  if (matched / imputedDisplayed <= 1.0)
   {
-    v14 = a6 / a7;
+    v14 = matched / imputedDisplayed;
   }
 
   else
@@ -230,22 +230,22 @@
 
   [SGQuickResponsesReplyOption ucbTunedVarianceForMean:"ucbTunedVarianceForMean:displayed:totalDisplayed:" displayed:v13 totalDisplayed:?];
   v16 = v15;
-  [SGQuickResponsesReplyOption ucbTunedVarianceForMean:v14 displayed:a7 totalDisplayed:a8];
+  [SGQuickResponsesReplyOption ucbTunedVarianceForMean:v14 displayed:imputedDisplayed totalDisplayed:imputedOptionsDisplayed];
 
-  [SGQuickResponsesReplyOption ucbCombinedWithMeanA:v13 meanB:v14 varianceA:v16 varianceB:v17 explorationFactor:a9];
+  [SGQuickResponsesReplyOption ucbCombinedWithMeanA:v13 meanB:v14 varianceA:v16 varianceB:v17 explorationFactor:factor];
   return result;
 }
 
-+ (double)ucbCombinedWithMeanA:(double)a3 meanB:(double)a4 varianceA:(double)a5 varianceB:(double)a6 explorationFactor:(double)a7
++ (double)ucbCombinedWithMeanA:(double)a meanB:(double)b varianceA:(double)varianceA varianceB:(double)varianceB explorationFactor:(double)factor
 {
-  v7 = 1.0 / a5 / (1.0 / a5 + 1.0 / a6);
-  [SGQuickResponsesReplyOption ucbWithMean:(1.0 - v7) * a4 + v7 * a3 varianceOfMean:(1.0 - v7) * a6 + v7 * a5 + v7 * (1.0 - v7) * ((a3 - a4) * (a3 - a4)) explorationFactor:a7];
+  v7 = 1.0 / varianceA / (1.0 / varianceA + 1.0 / varianceB);
+  [SGQuickResponsesReplyOption ucbWithMean:(1.0 - v7) * b + v7 * a varianceOfMean:(1.0 - v7) * varianceB + v7 * varianceA + v7 * (1.0 - v7) * ((a - b) * (a - b)) explorationFactor:factor];
   return result;
 }
 
-+ (double)ucbWithMean:(double)a3 varianceOfMean:(double)a4 explorationFactor:(double)a5
++ (double)ucbWithMean:(double)mean varianceOfMean:(double)ofMean explorationFactor:(double)factor
 {
-  result = sqrt(a4) * a5 + a3;
+  result = sqrt(ofMean) * factor + mean;
   if (result > 1.0)
   {
     return 1.0;
@@ -254,10 +254,10 @@
   return result;
 }
 
-+ (double)ucbTunedVarianceForMean:(double)a3 displayed:(double)a4 totalDisplayed:(double)a5
++ (double)ucbTunedVarianceForMean:(double)mean displayed:(double)displayed totalDisplayed:(double)totalDisplayed
 {
-  v5 = (1.0 - a3) * a3;
-  v6 = log(a5) / a4;
+  v5 = (1.0 - mean) * mean;
+  v6 = log(totalDisplayed) / displayed;
   v7 = v5 + sqrt(v6 + v6);
   if (v7 > 0.25)
   {

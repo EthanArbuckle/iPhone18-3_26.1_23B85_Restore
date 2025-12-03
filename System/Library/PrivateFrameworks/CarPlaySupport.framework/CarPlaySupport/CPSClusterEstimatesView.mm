@@ -11,9 +11,9 @@
   v15[1] = a2;
   v7 = MEMORY[0x277D74310];
   v6 = *MEMORY[0x277D76968];
-  v8 = [(CPSClusterEstimatesView *)self traitCollection];
+  traitCollection = [(CPSClusterEstimatesView *)self traitCollection];
   v15[0] = [v7 preferredFontDescriptorWithTextStyle:v6 compatibleWithTraitCollection:?];
-  MEMORY[0x277D82BD8](v8);
+  MEMORY[0x277D82BD8](traitCollection);
   v18 = *MEMORY[0x277D74430];
   v9 = [MEMORY[0x277CCABB0] numberWithDouble:*MEMORY[0x277D743F8]];
   v19[0] = v9;

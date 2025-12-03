@@ -1,23 +1,23 @@
 @interface NTKSharkFaceView
-+ (id)_swatchForEditModeDependsOnOptions:(int64_t)a3 forDevice:(id)a4;
++ (id)_swatchForEditModeDependsOnOptions:(int64_t)options forDevice:(id)device;
 - (BOOL)_wantsStatusBarHidden;
 - (CGRect)contentViewFrame;
-- (NTKSharkFaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5;
-- (double)_complicationAlphaForEditMode:(int64_t)a3;
-- (double)_contentAlphaForEditMode:(int64_t)a3;
-- (double)_timeViewAlphaForEditMode:(int64_t)a3;
-- (id)_swatchImageForEditOption:(id)a3 mode:(int64_t)a4 withSelectedOptions:(id)a5;
+- (NTKSharkFaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier;
+- (double)_complicationAlphaForEditMode:(int64_t)mode;
+- (double)_contentAlphaForEditMode:(int64_t)mode;
+- (double)_timeViewAlphaForEditMode:(int64_t)mode;
+- (id)_swatchImageForEditOption:(id)option mode:(int64_t)mode withSelectedOptions:(id)options;
 - (id)createController;
 - (id)createFaceColorPalette;
-- (void)_applyBreathingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
+- (void)_applyBreathingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot;
 - (void)_applyDataMode;
-- (void)_applyOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (void)_applyRubberBandingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (void)_applyTransitionFraction:(double)a3 fromOption:(id)a4 toOption:(id)a5 forCustomEditMode:(int64_t)a6 slot:(id)a7;
+- (void)_applyOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_applyRubberBandingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_applyTransitionFraction:(double)fraction fromOption:(id)option toOption:(id)toOption forCustomEditMode:(int64_t)mode slot:(id)slot;
 - (void)_cleanupAfterEditing;
-- (void)_configureComplicationView:(id)a3 forSlot:(id)a4;
-- (void)_configureForEditMode:(int64_t)a3;
-- (void)_configureForTransitionFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5;
+- (void)_configureComplicationView:(id)view forSlot:(id)slot;
+- (void)_configureForEditMode:(int64_t)mode;
+- (void)_configureForTransitionFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode;
 - (void)_loadSnapshotContentViews;
 - (void)_prepareForEditing;
 - (void)_prepareForSnapshotting;
@@ -25,24 +25,24 @@
 - (void)_unloadSnapshotContentViews;
 - (void)createView;
 - (void)layoutSubviews;
-- (void)setOverrideDate:(id)a3 duration:(double)a4;
-- (void)updateComplicationsColorWithPalette:(id)a3;
-- (void)updateTimeViewColor:(id)a3;
+- (void)setOverrideDate:(id)date duration:(double)duration;
+- (void)updateComplicationsColorWithPalette:(id)palette;
+- (void)updateTimeViewColor:(id)color;
 @end
 
 @implementation NTKSharkFaceView
 
-- (NTKSharkFaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5
+- (NTKSharkFaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier
 {
-  v8 = a4;
+  deviceCopy = device;
   v14.receiver = self;
   v14.super_class = NTKSharkFaceView;
-  v9 = [(NTKSharkFaceView *)&v14 initWithFaceStyle:a3 forDevice:v8 clientIdentifier:a5];
+  v9 = [(NTKSharkFaceView *)&v14 initWithFaceStyle:style forDevice:deviceCopy clientIdentifier:identifier];
   if (v9)
   {
     v10 = [NTKWhistlerAnalogFaceViewComplicationFactory alloc];
-    v11 = [(NTKSharkFaceView *)v9 device];
-    v12 = [v10 initWithFaceView:v9 dialDiameter:v8 device:{sub_4794(v11, v11)}];
+    device = [(NTKSharkFaceView *)v9 device];
+    v12 = [v10 initWithFaceView:v9 dialDiameter:deviceCopy device:{sub_4794(device, device)}];
 
     [v12 setUsesNarrowTopSlots:1];
     [(NTKSharkFaceView *)v9 setComplicationFactory:v12];
@@ -53,19 +53,19 @@
 
 - (void)_applyDataMode
 {
-  v3 = [(NTKSharkFaceView *)self alaskanContentController];
-  [v3 setDatamode:{-[NTKSharkFaceView dataMode](self, "dataMode")}];
+  alaskanContentController = [(NTKSharkFaceView *)self alaskanContentController];
+  [alaskanContentController setDatamode:{-[NTKSharkFaceView dataMode](self, "dataMode")}];
 
-  v5 = [(NTKSharkFaceView *)self delegate];
-  v4 = [(NTKSharkFaceView *)self alaskanContentController];
-  [v5 faceViewWantsStatusBarHidden:objc_msgSend(v4 animated:{"wantsStatusBarHidden"), 0}];
+  delegate = [(NTKSharkFaceView *)self delegate];
+  alaskanContentController2 = [(NTKSharkFaceView *)self alaskanContentController];
+  [delegate faceViewWantsStatusBarHidden:objc_msgSend(alaskanContentController2 animated:{"wantsStatusBarHidden"), 0}];
 }
 
-- (void)setOverrideDate:(id)a3 duration:(double)a4
+- (void)setOverrideDate:(id)date duration:(double)duration
 {
   v4.receiver = self;
   v4.super_class = NTKSharkFaceView;
-  [(NTKSharkFaceView *)&v4 setOverrideDate:a3 duration:a4];
+  [(NTKSharkFaceView *)&v4 setOverrideDate:date duration:duration];
 }
 
 - (void)_prepareForSnapshotting
@@ -114,11 +114,11 @@
 
 - (CGRect)contentViewFrame
 {
-  v3 = [(NTKSharkFaceView *)self device];
-  sub_4794(v3, v3);
+  device = [(NTKSharkFaceView *)self device];
+  sub_4794(device, device);
 
   [(NTKSharkFaceView *)self bounds];
-  v4 = [(NTKSharkFaceView *)self device];
+  device2 = [(NTKSharkFaceView *)self device];
   CLKRectCenteredIntegralRectForDevice();
   v6 = v5;
   v8 = v7;
@@ -139,8 +139,8 @@
 - (id)createController
 {
   v3 = [NTKAlaskanChronographStyleController alloc];
-  v4 = [(NTKSharkFaceView *)self alaskanContentView];
-  v5 = [(NTKAlaskanChronographStyleController *)v3 initWithContentView:v4 crownInputHandler:0];
+  alaskanContentView = [(NTKSharkFaceView *)self alaskanContentView];
+  v5 = [(NTKAlaskanChronographStyleController *)v3 initWithContentView:alaskanContentView crownInputHandler:0];
 
   [(NTKAlaskanChronographStyleController *)v5 setFaceView:self];
   [(NTKAlaskanChronographStyleController *)v5 setDatamode:[(NTKSharkFaceView *)self dataMode]];
@@ -150,10 +150,10 @@
 
 - (BOOL)_wantsStatusBarHidden
 {
-  v2 = [(NTKSharkFaceView *)self alaskanContentController];
-  v3 = [v2 wantsStatusBarHidden];
+  alaskanContentController = [(NTKSharkFaceView *)self alaskanContentController];
+  wantsStatusBarHidden = [alaskanContentController wantsStatusBarHidden];
 
-  return v3;
+  return wantsStatusBarHidden;
 }
 
 - (void)_prepareForEditing
@@ -161,8 +161,8 @@
   v4.receiver = self;
   v4.super_class = NTKSharkFaceView;
   [(NTKSharkFaceView *)&v4 _prepareForEditing];
-  v3 = [(NTKSharkFaceView *)self alaskanContentController];
-  [v3 prepareForEditing];
+  alaskanContentController = [(NTKSharkFaceView *)self alaskanContentController];
+  [alaskanContentController prepareForEditing];
 }
 
 - (void)_cleanupAfterEditing
@@ -170,159 +170,159 @@
   v4.receiver = self;
   v4.super_class = NTKSharkFaceView;
   [(NTKSharkFaceView *)&v4 _cleanupAfterEditing];
-  v3 = [(NTKSharkFaceView *)self alaskanContentController];
-  [v3 cleanupAfterEditing];
+  alaskanContentController = [(NTKSharkFaceView *)self alaskanContentController];
+  [alaskanContentController cleanupAfterEditing];
 }
 
-- (void)_applyOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v13 = a3;
-  v8 = a5;
-  if (a4 == 10)
+  optionCopy = option;
+  slotCopy = slot;
+  if (mode == 10)
   {
-    v11 = [(NTKSharkFaceView *)self alaskanContentView];
-    v12 = [(NTKSharkFaceView *)self chronoPalette];
-    [v11 setPalette:v12];
+    alaskanContentView = [(NTKSharkFaceView *)self alaskanContentView];
+    chronoPalette = [(NTKSharkFaceView *)self chronoPalette];
+    [alaskanContentView setPalette:chronoPalette];
 
-    v10 = [(NTKSharkFaceView *)self chronoPalette];
-    [(NTKSharkFaceView *)self updateComplicationsColorWithPalette:v10];
+    chronoPalette2 = [(NTKSharkFaceView *)self chronoPalette];
+    [(NTKSharkFaceView *)self updateComplicationsColorWithPalette:chronoPalette2];
   }
 
   else
   {
-    if (a4 != 11)
+    if (mode != 11)
     {
       goto LABEL_6;
     }
 
-    v9 = [v13 timescale];
-    v10 = [(NTKSharkFaceView *)self alaskanContentView];
-    [v10 setTimeScale:v9];
+    timescale = [optionCopy timescale];
+    chronoPalette2 = [(NTKSharkFaceView *)self alaskanContentView];
+    [chronoPalette2 setTimeScale:timescale];
   }
 
 LABEL_6:
 }
 
-- (void)_applyTransitionFraction:(double)a3 fromOption:(id)a4 toOption:(id)a5 forCustomEditMode:(int64_t)a6 slot:(id)a7
+- (void)_applyTransitionFraction:(double)fraction fromOption:(id)option toOption:(id)toOption forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v20 = a4;
-  v12 = a5;
-  v13 = a7;
-  if (a6 == 10)
+  optionCopy = option;
+  toOptionCopy = toOption;
+  slotCopy = slot;
+  if (mode == 10)
   {
-    v17 = [(NTKSharkFaceView *)self interpolatedColorPalette];
-    [(NTKSharkFaceView *)self updateComplicationsColorWithPalette:v17];
+    interpolatedColorPalette = [(NTKSharkFaceView *)self interpolatedColorPalette];
+    [(NTKSharkFaceView *)self updateComplicationsColorWithPalette:interpolatedColorPalette];
 
-    v18 = [(NTKSharkFaceView *)self alaskanContentView];
-    v19 = [(NTKSharkFaceView *)self interpolatedColorPalette];
-    [v18 applyPalette:v19];
+    alaskanContentView = [(NTKSharkFaceView *)self alaskanContentView];
+    interpolatedColorPalette2 = [(NTKSharkFaceView *)self interpolatedColorPalette];
+    [alaskanContentView applyPalette:interpolatedColorPalette2];
 
-    v16 = [(NTKSharkFaceView *)self interpolatedColorPalette];
-    [(NTKSharkFaceView *)self updateTimeViewColor:v16];
+    interpolatedColorPalette3 = [(NTKSharkFaceView *)self interpolatedColorPalette];
+    [(NTKSharkFaceView *)self updateTimeViewColor:interpolatedColorPalette3];
   }
 
   else
   {
-    if (a6 != 11)
+    if (mode != 11)
     {
       goto LABEL_6;
     }
 
-    v14 = [v20 timescale];
-    v15 = [v12 timescale];
-    v16 = [(NTKSharkFaceView *)self alaskanContentView];
-    [v16 applyTransitionFromTimeScale:v14 toTimeScale:v15 fraction:a3];
+    timescale = [optionCopy timescale];
+    timescale2 = [toOptionCopy timescale];
+    interpolatedColorPalette3 = [(NTKSharkFaceView *)self alaskanContentView];
+    [interpolatedColorPalette3 applyTransitionFromTimeScale:timescale toTimeScale:timescale2 fraction:fraction];
   }
 
 LABEL_6:
 }
 
-- (void)_configureForTransitionFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5
+- (void)_configureForTransitionFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode
 {
   v26.receiver = self;
   v26.super_class = NTKSharkFaceView;
   [NTKSharkFaceView _configureForTransitionFraction:"_configureForTransitionFraction:fromEditMode:toEditMode:" fromEditMode:? toEditMode:?];
   v9 = [(NTKSharkFaceView *)self optionForCustomEditMode:11 slot:0];
-  v10 = [v9 timescale];
-  if (a4 != 11 && a5 == 11)
+  timescale = [v9 timescale];
+  if (mode != 11 && editMode == 11)
   {
-    v11 = [(NTKSharkFaceView *)self alaskanContentView];
-    [v11 setIsChronoMode:1];
+    alaskanContentView = [(NTKSharkFaceView *)self alaskanContentView];
+    [alaskanContentView setIsChronoMode:1];
 
-    v12 = [(NTKSharkFaceView *)self alaskanContentView];
-    v13 = v12;
-    v14 = v10;
-    v15 = a3;
+    alaskanContentView2 = [(NTKSharkFaceView *)self alaskanContentView];
+    v13 = alaskanContentView2;
+    v14 = timescale;
+    fractionCopy = fraction;
 LABEL_7:
-    [v12 applyTransitionFromTimeScale:0 toTimeScale:v14 fraction:v15];
+    [alaskanContentView2 applyTransitionFromTimeScale:0 toTimeScale:v14 fraction:fractionCopy];
 
     goto LABEL_8;
   }
 
-  if (a4 == 11 && a5 != 11)
+  if (mode == 11 && editMode != 11)
   {
-    v16 = [(NTKSharkFaceView *)self alaskanContentView];
-    [v16 setIsChronoMode:1];
+    alaskanContentView3 = [(NTKSharkFaceView *)self alaskanContentView];
+    [alaskanContentView3 setIsChronoMode:1];
 
-    v12 = [(NTKSharkFaceView *)self alaskanContentView];
-    v13 = v12;
-    v15 = 1.0 - a3;
-    v14 = v10;
+    alaskanContentView2 = [(NTKSharkFaceView *)self alaskanContentView];
+    v13 = alaskanContentView2;
+    fractionCopy = 1.0 - fraction;
+    v14 = timescale;
     goto LABEL_7;
   }
 
 LABEL_8:
-  [(NTKSharkFaceView *)self _contentAlphaForEditMode:a4];
-  [(NTKSharkFaceView *)self _contentAlphaForEditMode:a5];
+  [(NTKSharkFaceView *)self _contentAlphaForEditMode:mode];
+  [(NTKSharkFaceView *)self _contentAlphaForEditMode:editMode];
   CLKInterpolateBetweenFloatsClipped();
   v18 = v17;
-  v19 = [(NTKSharkFaceView *)self alaskanContentView];
-  [v19 setAlpha:v18];
+  alaskanContentView4 = [(NTKSharkFaceView *)self alaskanContentView];
+  [alaskanContentView4 setAlpha:v18];
 
-  [(NTKSharkFaceView *)self _timeViewAlphaForEditMode:a4];
-  [(NTKSharkFaceView *)self _timeViewAlphaForEditMode:a5];
+  [(NTKSharkFaceView *)self _timeViewAlphaForEditMode:mode];
+  [(NTKSharkFaceView *)self _timeViewAlphaForEditMode:editMode];
   CLKInterpolateBetweenFloatsClipped();
   v21 = v20;
-  v22 = [(NTKSharkFaceView *)self timeView];
-  [v22 setAlpha:v21];
+  timeView = [(NTKSharkFaceView *)self timeView];
+  [timeView setAlpha:v21];
 
-  [(NTKSharkFaceView *)self _complicationAlphaForEditMode:a4];
-  [(NTKSharkFaceView *)self _complicationAlphaForEditMode:a5];
+  [(NTKSharkFaceView *)self _complicationAlphaForEditMode:mode];
+  [(NTKSharkFaceView *)self _complicationAlphaForEditMode:editMode];
   CLKInterpolateBetweenFloatsClipped();
   v24 = v23;
-  v25 = [(NTKSharkFaceView *)self complicationContainerView];
-  [v25 setAlpha:v24];
+  complicationContainerView = [(NTKSharkFaceView *)self complicationContainerView];
+  [complicationContainerView setAlpha:v24];
 }
 
-- (void)_configureForEditMode:(int64_t)a3
+- (void)_configureForEditMode:(int64_t)mode
 {
   v18.receiver = self;
   v18.super_class = NTKSharkFaceView;
   [(NTKSharkFaceView *)&v18 _configureForEditMode:?];
-  [(NTKSharkFaceView *)self _contentAlphaForEditMode:a3];
+  [(NTKSharkFaceView *)self _contentAlphaForEditMode:mode];
   v6 = v5;
-  v7 = [(NTKSharkFaceView *)self alaskanContentView];
-  [v7 setAlpha:v6];
+  alaskanContentView = [(NTKSharkFaceView *)self alaskanContentView];
+  [alaskanContentView setAlpha:v6];
 
-  [(NTKSharkFaceView *)self _timeViewAlphaForEditMode:a3];
+  [(NTKSharkFaceView *)self _timeViewAlphaForEditMode:mode];
   v9 = v8;
-  v10 = [(NTKSharkFaceView *)self timeView];
-  [v10 setAlpha:v9];
+  timeView = [(NTKSharkFaceView *)self timeView];
+  [timeView setAlpha:v9];
 
-  [(NTKSharkFaceView *)self _complicationAlphaForEditMode:a3];
+  [(NTKSharkFaceView *)self _complicationAlphaForEditMode:mode];
   v12 = v11;
-  v13 = [(NTKSharkFaceView *)self complicationContainerView];
-  [v13 setAlpha:v12];
+  complicationContainerView = [(NTKSharkFaceView *)self complicationContainerView];
+  [complicationContainerView setAlpha:v12];
 
-  v14 = [(NTKSharkFaceView *)self alaskanContentView];
-  [v14 setIsChronoMode:a3 == 11];
+  alaskanContentView2 = [(NTKSharkFaceView *)self alaskanContentView];
+  [alaskanContentView2 setIsChronoMode:mode == 11];
 
-  if (a3 == 11)
+  if (mode == 11)
   {
     v15 = [(NTKSharkFaceView *)self optionForCustomEditMode:11 slot:0];
-    v16 = [v15 timescale];
-    v17 = [(NTKSharkFaceView *)self alaskanContentView];
-    [v17 setTimeScale:v16];
+    timescale = [v15 timescale];
+    alaskanContentView3 = [(NTKSharkFaceView *)self alaskanContentView];
+    [alaskanContentView3 setTimeScale:timescale];
   }
 }
 
@@ -330,8 +330,8 @@ LABEL_8:
 {
   if ([(NTKSharkFaceView *)self viewsLoaded])
   {
-    v3 = [(NTKSharkFaceView *)self alaskanContentView];
-    [v3 removeFromSuperview];
+    alaskanContentView = [(NTKSharkFaceView *)self alaskanContentView];
+    [alaskanContentView removeFromSuperview];
 
     v4 = [NTKAlaskanChronographView alloc];
     [(NTKSharkFaceView *)self contentViewFrame];
@@ -339,90 +339,90 @@ LABEL_8:
     [(NTKSharkFaceView *)self setAlaskanContentView:v5];
 
     v6 = [(NTKSharkFaceView *)self optionForCustomEditMode:11 slot:0];
-    v7 = [v6 timescale];
-    v8 = [(NTKSharkFaceView *)self alaskanContentView];
-    [v8 setTimeScale:v7];
+    timescale = [v6 timescale];
+    alaskanContentView2 = [(NTKSharkFaceView *)self alaskanContentView];
+    [alaskanContentView2 setTimeScale:timescale];
 
-    v9 = [(NTKSharkFaceView *)self createController];
-    [(NTKSharkFaceView *)self setAlaskanContentController:v9];
+    createController = [(NTKSharkFaceView *)self createController];
+    [(NTKSharkFaceView *)self setAlaskanContentController:createController];
 
-    v10 = [(NTKSharkFaceView *)self contentView];
-    v11 = [(NTKSharkFaceView *)self alaskanContentView];
-    [v10 addSubview:v11];
+    contentView = [(NTKSharkFaceView *)self contentView];
+    alaskanContentView3 = [(NTKSharkFaceView *)self alaskanContentView];
+    [contentView addSubview:alaskanContentView3];
 
     if (([(NTKSharkFaceView *)self editing]& 1) == 0)
     {
-      v12 = [(NTKSharkFaceView *)self delegate];
-      v13 = [(NTKSharkFaceView *)self alaskanContentController];
-      [v12 faceViewWantsStatusBarHidden:objc_msgSend(v13 animated:{"wantsStatusBarHidden"), 0}];
+      delegate = [(NTKSharkFaceView *)self delegate];
+      alaskanContentController = [(NTKSharkFaceView *)self alaskanContentController];
+      [delegate faceViewWantsStatusBarHidden:objc_msgSend(alaskanContentController animated:{"wantsStatusBarHidden"), 0}];
     }
 
-    v14 = [(NTKSharkFaceView *)self alaskanContentView];
-    v15 = [(NTKSharkFaceView *)self chronoPalette];
-    [v14 setPalette:v15];
+    alaskanContentView4 = [(NTKSharkFaceView *)self alaskanContentView];
+    chronoPalette = [(NTKSharkFaceView *)self chronoPalette];
+    [alaskanContentView4 setPalette:chronoPalette];
   }
 
-  v16 = [(NTKSharkFaceView *)self chronoPalette];
-  [(NTKSharkFaceView *)self updateComplicationsColorWithPalette:v16];
+  chronoPalette2 = [(NTKSharkFaceView *)self chronoPalette];
+  [(NTKSharkFaceView *)self updateComplicationsColorWithPalette:chronoPalette2];
 
-  v17 = [(NTKSharkFaceView *)self chronoPalette];
-  [(NTKSharkFaceView *)self updateTimeViewColor:v17];
+  chronoPalette3 = [(NTKSharkFaceView *)self chronoPalette];
+  [(NTKSharkFaceView *)self updateTimeViewColor:chronoPalette3];
 
-  v18 = [(NTKSharkFaceView *)self alaskanContentController];
-  [v18 applyVisibilityWithFraction:1.0];
+  alaskanContentController2 = [(NTKSharkFaceView *)self alaskanContentController];
+  [alaskanContentController2 applyVisibilityWithFraction:1.0];
 }
 
-- (void)updateTimeViewColor:(id)a3
+- (void)updateTimeViewColor:(id)color
 {
-  v4 = a3;
-  v21 = [(NTKSharkFaceView *)self timeView];
-  v5 = [v4 clockHands];
-  v6 = [v21 hourHandView];
-  [v6 setColor:v5];
+  colorCopy = color;
+  timeView = [(NTKSharkFaceView *)self timeView];
+  clockHands = [colorCopy clockHands];
+  hourHandView = [timeView hourHandView];
+  [hourHandView setColor:clockHands];
 
-  v7 = [v4 clockHands];
-  v8 = [v21 minuteHandView];
-  [v8 setColor:v7];
+  clockHands2 = [colorCopy clockHands];
+  minuteHandView = [timeView minuteHandView];
+  [minuteHandView setColor:clockHands2];
 
-  v9 = [v4 clockHandsInlay];
-  v10 = [v21 hourHandView];
-  [v10 setInlayColor:v9];
+  clockHandsInlay = [colorCopy clockHandsInlay];
+  hourHandView2 = [timeView hourHandView];
+  [hourHandView2 setInlayColor:clockHandsInlay];
 
-  v11 = [v4 clockHandsInlay];
-  v12 = [v21 minuteHandView];
-  [v12 setInlayColor:v11];
+  clockHandsInlay2 = [colorCopy clockHandsInlay];
+  minuteHandView2 = [timeView minuteHandView];
+  [minuteHandView2 setInlayColor:clockHandsInlay2];
 
-  v13 = [v4 secondsHand];
+  secondsHand = [colorCopy secondsHand];
 
-  v14 = [v21 secondHandView];
-  [v14 setColor:v13];
+  secondHandView = [timeView secondHandView];
+  [secondHandView setColor:secondsHand];
 
   v15 = +[UIColor blackColor];
-  v16 = [v21 hourHandView];
-  [v16 setHandDotColor:v15];
+  hourHandView3 = [timeView hourHandView];
+  [hourHandView3 setHandDotColor:v15];
 
   v17 = +[UIColor blackColor];
-  v18 = [v21 minuteHandView];
-  [v18 setHandDotColor:v17];
+  minuteHandView3 = [timeView minuteHandView];
+  [minuteHandView3 setHandDotColor:v17];
 
   v19 = +[UIColor blackColor];
-  v20 = [v21 secondHandView];
-  [v20 setHandDotColor:v19];
+  secondHandView2 = [timeView secondHandView];
+  [secondHandView2 setHandDotColor:v19];
 }
 
-- (void)updateComplicationsColorWithPalette:(id)a3
+- (void)updateComplicationsColorWithPalette:(id)palette
 {
-  v4 = a3;
-  v6 = [v4 cornerComplication];
-  v5 = [v4 cornerComplicationSecondary];
+  paletteCopy = palette;
+  cornerComplication = [paletteCopy cornerComplication];
+  cornerComplicationSecondary = [paletteCopy cornerComplicationSecondary];
 
-  [(NTKSharkFaceView *)self updateRichCornerComplicationsInnerColor:v6 outerColor:v5];
+  [(NTKSharkFaceView *)self updateRichCornerComplicationsInnerColor:cornerComplication outerColor:cornerComplicationSecondary];
 }
 
-- (double)_complicationAlphaForEditMode:(int64_t)a3
+- (double)_complicationAlphaForEditMode:(int64_t)mode
 {
   result = NTKEditModeDimmedAlpha;
-  if (a3 != 11)
+  if (mode != 11)
   {
     return 1.0;
   }
@@ -430,10 +430,10 @@ LABEL_8:
   return result;
 }
 
-- (double)_contentAlphaForEditMode:(int64_t)a3
+- (double)_contentAlphaForEditMode:(int64_t)mode
 {
   result = 0.2;
-  if (a3 != 1)
+  if (mode != 1)
   {
     return 1.0;
   }
@@ -441,10 +441,10 @@ LABEL_8:
   return result;
 }
 
-- (double)_timeViewAlphaForEditMode:(int64_t)a3
+- (double)_timeViewAlphaForEditMode:(int64_t)mode
 {
   result = NTKEditModeDimmedAlpha;
-  if (!a3)
+  if (!mode)
   {
     return 1.0;
   }
@@ -452,13 +452,13 @@ LABEL_8:
   return result;
 }
 
-- (void)_configureComplicationView:(id)a3 forSlot:(id)a4
+- (void)_configureComplicationView:(id)view forSlot:(id)slot
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  slotCopy = slot;
   v18.receiver = self;
   v18.super_class = NTKSharkFaceView;
-  [(NTKSharkFaceView *)&v18 _configureComplicationView:v6 forSlot:v7];
+  [(NTKSharkFaceView *)&v18 _configureComplicationView:viewCopy forSlot:slotCopy];
   v8 = qword_46A60;
   if (!qword_46A60)
   {
@@ -474,54 +474,54 @@ LABEL_8:
     v8 = qword_46A60;
   }
 
-  if ([v8 containsObject:v7])
+  if ([v8 containsObject:slotCopy])
   {
-    v12 = v6;
-    v13 = [(NTKSharkFaceView *)self chronoPalette];
-    v14 = [v13 cornerComplication];
-    [(NTKSharkFaceView *)self setComplicationColor:v14];
+    v12 = viewCopy;
+    chronoPalette = [(NTKSharkFaceView *)self chronoPalette];
+    cornerComplication = [chronoPalette cornerComplication];
+    [(NTKSharkFaceView *)self setComplicationColor:cornerComplication];
 
-    v15 = [(NTKSharkFaceView *)self complicationColor];
-    [(NTKSharkFaceView *)self setInterpolatedComplicationColor:v15];
+    complicationColor = [(NTKSharkFaceView *)self complicationColor];
+    [(NTKSharkFaceView *)self setInterpolatedComplicationColor:complicationColor];
 
-    v16 = [(NTKSharkFaceView *)self chronoPalette];
-    v17 = [v16 cornerComplicationSecondary];
-    [(NTKSharkFaceView *)self setAlternateComplicationColor:v17];
+    chronoPalette2 = [(NTKSharkFaceView *)self chronoPalette];
+    cornerComplicationSecondary = [chronoPalette2 cornerComplicationSecondary];
+    [(NTKSharkFaceView *)self setAlternateComplicationColor:cornerComplicationSecondary];
 
     [v12 updateMonochromeColor];
   }
 }
 
-- (void)_applyBreathingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyBreathingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot
 {
   v13.receiver = self;
   v13.super_class = NTKSharkFaceView;
-  [(NTKSharkFaceView *)&v13 _applyBreathingFraction:a4 forCustomEditMode:a5 slot:?];
-  if (a4 != 1)
+  [(NTKSharkFaceView *)&v13 _applyBreathingFraction:mode forCustomEditMode:slot slot:?];
+  if (mode != 1)
   {
     NTKScaleForBreathingFraction();
     memset(&v12, 0, sizeof(v12));
     CGAffineTransformMakeScale(&v12, v7, v7);
-    v8 = [(NTKSharkFaceView *)self contentView];
+    contentView = [(NTKSharkFaceView *)self contentView];
     v11 = v12;
-    [v8 setTransform:&v11];
+    [contentView setTransform:&v11];
 
-    v9 = [(NTKSharkFaceView *)self timeView];
+    timeView = [(NTKSharkFaceView *)self timeView];
     v11 = v12;
-    [v9 setTransform:&v11];
+    [timeView setTransform:&v11];
 
-    v10 = [(NTKSharkFaceView *)self complicationContainerView];
+    complicationContainerView = [(NTKSharkFaceView *)self complicationContainerView];
     v11 = v12;
-    [v10 setTransform:&v11];
+    [complicationContainerView setTransform:&v11];
   }
 }
 
-- (void)_applyRubberBandingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyRubberBandingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot
 {
   v10.receiver = self;
   v10.super_class = NTKSharkFaceView;
-  [(NTKSharkFaceView *)&v10 _applyRubberBandingFraction:a4 forCustomEditMode:a5 slot:?];
-  if (a4 == 11)
+  [(NTKSharkFaceView *)&v10 _applyRubberBandingFraction:mode forCustomEditMode:slot slot:?];
+  if (mode == 11)
   {
     NTKScaleForRubberBandingFraction();
     memset(&v9, 0, sizeof(v9));
@@ -531,9 +531,9 @@ LABEL_8:
   }
 }
 
-+ (id)_swatchForEditModeDependsOnOptions:(int64_t)a3 forDevice:(id)a4
++ (id)_swatchForEditModeDependsOnOptions:(int64_t)options forDevice:(id)device
 {
-  if (a3 == 11)
+  if (options == 11)
   {
     return &off_3ACD0;
   }
@@ -544,16 +544,16 @@ LABEL_8:
   }
 }
 
-- (id)_swatchImageForEditOption:(id)a3 mode:(int64_t)a4 withSelectedOptions:(id)a5
+- (id)_swatchImageForEditOption:(id)option mode:(int64_t)mode withSelectedOptions:(id)options
 {
-  v8 = a3;
-  if (a4 == 11)
+  optionCopy = option;
+  if (mode == 11)
   {
-    v9 = a5;
-    v10 = [v9 objectForKeyedSubscript:&off_3A338];
-    v11 = v8;
+    optionsCopy = options;
+    v10 = [optionsCopy objectForKeyedSubscript:&off_3A338];
+    v11 = optionCopy;
 
-    v12 = [v9 objectForKeyedSubscript:&off_3A320];
+    v12 = [optionsCopy objectForKeyedSubscript:&off_3A320];
 
     if (!qword_46A68)
     {
@@ -567,19 +567,19 @@ LABEL_8:
     if (!v16)
     {
       v17 = [NTKSharkFaceView alloc];
-      v18 = [(NTKSharkFaceView *)self device];
-      v19 = [(NTKSharkFaceView *)v17 initWithFaceStyle:44 forDevice:v18 clientIdentifier:0];
+      device = [(NTKSharkFaceView *)self device];
+      v19 = [(NTKSharkFaceView *)v17 initWithFaceStyle:44 forDevice:device clientIdentifier:0];
 
       [(NTKSharkFaceView *)self frame];
       [(NTKSharkFaceView *)v19 setFrame:?];
       [(NTKSharkFaceView *)v19 _loadSnapshotContentViews];
       [(NTKSharkFaceView *)v19 setOption:v11 forCustomEditMode:11 slot:0];
       [(NTKSharkFaceView *)v19 setOption:v12 forCustomEditMode:10 slot:0];
-      v20 = [(NTKSharkFaceView *)v19 alaskanContentView];
-      [v20 setIsChronoMode:1];
+      alaskanContentView = [(NTKSharkFaceView *)v19 alaskanContentView];
+      [alaskanContentView setIsChronoMode:1];
 
-      v21 = [(NTKSharkFaceView *)v19 alaskanContentView];
-      [v21 setIsEditing:1];
+      alaskanContentView2 = [(NTKSharkFaceView *)v19 alaskanContentView];
+      [alaskanContentView2 setIsEditing:1];
 
       v22 = NTKIdealizedDate();
       [(NTKSharkFaceView *)v19 setOverrideDate:v22 duration:0.0];
@@ -590,8 +590,8 @@ LABEL_8:
       v30.width = v23;
       v30.height = v24;
       UIGraphicsBeginImageContextWithOptions(v30, 0, 0.0);
-      v25 = [(NTKSharkFaceView *)v19 layer];
-      [v25 renderInContext:UIGraphicsGetCurrentContext()];
+      layer = [(NTKSharkFaceView *)v19 layer];
+      [layer renderInContext:UIGraphicsGetCurrentContext()];
 
       v16 = UIGraphicsGetImageFromCurrentImageContext();
       UIGraphicsEndImageContext();
@@ -603,8 +603,8 @@ LABEL_8:
   {
     v28.receiver = self;
     v28.super_class = NTKSharkFaceView;
-    v26 = a5;
-    v16 = [(NTKSharkFaceView *)&v28 _swatchImageForEditOption:v8 mode:a4 withSelectedOptions:v26];
+    optionsCopy2 = options;
+    v16 = [(NTKSharkFaceView *)&v28 _swatchImageForEditOption:optionCopy mode:mode withSelectedOptions:optionsCopy2];
   }
 
   return v16;

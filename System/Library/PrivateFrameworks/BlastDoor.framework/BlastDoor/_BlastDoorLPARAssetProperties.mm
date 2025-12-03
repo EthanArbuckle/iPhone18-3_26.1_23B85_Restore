@@ -1,17 +1,17 @@
 @interface _BlastDoorLPARAssetProperties
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation _BlastDoorLPARAssetProperties
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [_BlastDoorLPARAssetProperties allocWithZone:a3];
+  v4 = [_BlastDoorLPARAssetProperties allocWithZone:zone];
   if (v4)
   {
-    v5 = [(_BlastDoorLPARAssetProperties *)self accessibilityText];
-    v6 = [v5 copy];
+    accessibilityText = [(_BlastDoorLPARAssetProperties *)self accessibilityText];
+    v6 = [accessibilityText copy];
     [(_BlastDoorLPARAssetProperties *)v4 setAccessibilityText:v6];
 
     v7 = v4;
@@ -20,13 +20,13 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  equalCopy = equal;
   v9.receiver = self;
   v9.super_class = _BlastDoorLPARAssetProperties;
-  if ([(_BlastDoorLPARAssetProperties *)&v9 isEqual:v4])
+  if ([(_BlastDoorLPARAssetProperties *)&v9 isEqual:equalCopy])
   {
     goto LABEL_2;
   }
@@ -38,7 +38,7 @@
     goto LABEL_7;
   }
 
-  v6 = v4[1];
+  v6 = equalCopy[1];
   if (!(v6 | self->_accessibilityText))
   {
 LABEL_2:

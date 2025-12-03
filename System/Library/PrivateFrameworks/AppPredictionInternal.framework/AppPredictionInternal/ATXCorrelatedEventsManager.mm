@@ -1,19 +1,19 @@
 @interface ATXCorrelatedEventsManager
-+ (BOOL)eventsOverlapForEventA:(id)a3 withDateBuffer:(id)a4 eventB:(id)a5 withDateBuffer:(id)a6;
-- (ATXCorrelatedEventsManager)initWithFirstEventType:(Class)a3 firstEventTypeDateBuffer:(id)a4 secondEventType:(Class)a5 secondEventTypeDateBuffer:(id)a6;
++ (BOOL)eventsOverlapForEventA:(id)a withDateBuffer:(id)buffer eventB:(id)b withDateBuffer:(id)dateBuffer;
+- (ATXCorrelatedEventsManager)initWithFirstEventType:(Class)type firstEventTypeDateBuffer:(id)buffer secondEventType:(Class)eventType secondEventTypeDateBuffer:(id)dateBuffer;
 - (id)correlatedEvents;
 - (void)correlateEvents;
-- (void)insertEvents:(id)a3 forEventType:(int64_t)a4;
+- (void)insertEvents:(id)events forEventType:(int64_t)type;
 @end
 
 @implementation ATXCorrelatedEventsManager
 
-- (ATXCorrelatedEventsManager)initWithFirstEventType:(Class)a3 firstEventTypeDateBuffer:(id)a4 secondEventType:(Class)a5 secondEventTypeDateBuffer:(id)a6
+- (ATXCorrelatedEventsManager)initWithFirstEventType:(Class)type firstEventTypeDateBuffer:(id)buffer secondEventType:(Class)eventType secondEventTypeDateBuffer:(id)dateBuffer
 {
-  v11 = a4;
-  v12 = a6;
-  v13 = v12;
-  if (a5 && a3 && v11 && v12)
+  bufferCopy = buffer;
+  dateBufferCopy = dateBuffer;
+  v13 = dateBufferCopy;
+  if (eventType && type && bufferCopy && dateBufferCopy)
   {
     v34.receiver = self;
     v34.super_class = ATXCorrelatedEventsManager;
@@ -21,10 +21,10 @@
     v15 = v14;
     if (v14)
     {
-      objc_storeStrong(&v14->_firstEventType, a3);
-      objc_storeStrong(&v15->_firstEventTypeDateBuffer, a4);
-      objc_storeStrong(&v15->_secondEventType, a5);
-      objc_storeStrong(&v15->_secondEventTypeDateBuffer, a6);
+      objc_storeStrong(&v14->_firstEventType, type);
+      objc_storeStrong(&v15->_firstEventTypeDateBuffer, buffer);
+      objc_storeStrong(&v15->_secondEventType, eventType);
+      objc_storeStrong(&v15->_secondEventTypeDateBuffer, dateBuffer);
       v16 = objc_opt_new();
       v17 = objc_opt_new();
       v18 = *(v16 + 8);
@@ -58,7 +58,7 @@
     }
 
     self = v15;
-    v31 = self;
+    selfCopy = self;
   }
 
   else
@@ -69,19 +69,19 @@
       [ATXCorrelatedEventsManager initWithFirstEventType:firstEventTypeDateBuffer:secondEventType:secondEventTypeDateBuffer:];
     }
 
-    v31 = 0;
+    selfCopy = 0;
   }
 
-  return v31;
+  return selfCopy;
 }
 
-- (void)insertEvents:(id)a3 forEventType:(int64_t)a4
+- (void)insertEvents:(id)events forEventType:(int64_t)type
 {
-  v6 = a3;
-  v7 = v6;
-  if (a4 == 1)
+  eventsCopy = events;
+  v7 = eventsCopy;
+  if (type == 1)
   {
-    v14 = [v6 firstObject];
+    firstObject = [eventsCopy firstObject];
     secondEventType = self->_secondEventType;
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -107,7 +107,7 @@
     goto LABEL_14;
   }
 
-  if (a4)
+  if (type)
   {
     v17 = __atxlog_handle_default();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -118,7 +118,7 @@
     goto LABEL_14;
   }
 
-  v8 = [v6 firstObject];
+  firstObject2 = [eventsCopy firstObject];
   firstEventType = self->_firstEventType;
   v10 = objc_opt_isKindOfClass();
 
@@ -151,19 +151,19 @@ LABEL_7:
 LABEL_15:
 }
 
-+ (BOOL)eventsOverlapForEventA:(id)a3 withDateBuffer:(id)a4 eventB:(id)a5 withDateBuffer:(id)a6
++ (BOOL)eventsOverlapForEventA:(id)a withDateBuffer:(id)buffer eventB:(id)b withDateBuffer:(id)dateBuffer
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [v11 startDateWithBufferForEvent:v12];
-  v14 = [v9 endDateWithBufferForEvent:v10];
+  dateBufferCopy = dateBuffer;
+  bCopy = b;
+  bufferCopy = buffer;
+  aCopy = a;
+  v13 = [bufferCopy startDateWithBufferForEvent:aCopy];
+  v14 = [dateBufferCopy endDateWithBufferForEvent:bCopy];
   v15 = [v13 compare:v14];
 
-  v16 = [v11 endDateWithBufferForEvent:v12];
+  v16 = [bufferCopy endDateWithBufferForEvent:aCopy];
 
-  v17 = [v9 startDateWithBufferForEvent:v10];
+  v17 = [dateBufferCopy startDateWithBufferForEvent:bCopy];
 
   v18 = [v16 compare:v17];
   return (v15 + 1) < 2 && v18 < 2;

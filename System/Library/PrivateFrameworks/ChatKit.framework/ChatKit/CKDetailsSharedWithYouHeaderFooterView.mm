@@ -1,24 +1,24 @@
 @interface CKDetailsSharedWithYouHeaderFooterView
 + (double)bottomPadding;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (void)layoutSubviews;
-- (void)setSharedWithYouTextView:(id)a3;
+- (void)setSharedWithYouTextView:(id)view;
 @end
 
 @implementation CKDetailsSharedWithYouHeaderFooterView
 
-- (void)setSharedWithYouTextView:(id)a3
+- (void)setSharedWithYouTextView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   if (!self->_sharedWithYouTextView)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_sharedWithYouTextView, a3);
-    v6 = [(CKDetailsSharedWithYouHeaderFooterView *)self contentView];
-    [v6 addSubview:self->_sharedWithYouTextView];
+    v7 = viewCopy;
+    objc_storeStrong(&self->_sharedWithYouTextView, view);
+    contentView = [(CKDetailsSharedWithYouHeaderFooterView *)self contentView];
+    [contentView addSubview:self->_sharedWithYouTextView];
 
     [(CKDetailsSharedWithYouHeaderFooterView *)self setNeedsLayout];
-    v5 = v7;
+    viewCopy = v7;
   }
 }
 
@@ -27,28 +27,28 @@
   *&rect.size.width = self;
   *&rect.size.height = CKDetailsSharedWithYouHeaderFooterView;
   [(CGSize *)&rect.size layoutSubviews];
-  v3 = [(CKDetailsSharedWithYouHeaderFooterView *)self contentView];
+  contentView = [(CKDetailsSharedWithYouHeaderFooterView *)self contentView];
   v4 = +[CKUIBehavior sharedBehaviors];
-  v5 = [v4 theme];
-  v6 = [v5 detailsHeaderFooterContentViewBackgroundColor];
-  [v3 setBackgroundColor:v6];
+  theme = [v4 theme];
+  detailsHeaderFooterContentViewBackgroundColor = [theme detailsHeaderFooterContentViewBackgroundColor];
+  [contentView setBackgroundColor:detailsHeaderFooterContentViewBackgroundColor];
 
-  v7 = [(CKDetailsSharedWithYouHeaderFooterView *)self backgroundView];
+  backgroundView = [(CKDetailsSharedWithYouHeaderFooterView *)self backgroundView];
   v8 = +[CKUIBehavior sharedBehaviors];
-  v9 = [v8 theme];
-  v10 = [v9 detailsHeaderFooterContentViewBackgroundColor];
-  [v7 setBackgroundColor:v10];
+  theme2 = [v8 theme];
+  detailsHeaderFooterContentViewBackgroundColor2 = [theme2 detailsHeaderFooterContentViewBackgroundColor];
+  [backgroundView setBackgroundColor:detailsHeaderFooterContentViewBackgroundColor2];
 
-  v11 = [(CKDetailsSharedWithYouHeaderFooterView *)self contentView];
-  [v11 bounds];
+  contentView2 = [(CKDetailsSharedWithYouHeaderFooterView *)self contentView];
+  [contentView2 bounds];
   v13 = v12;
   v15 = v14;
   v17 = v16;
   v19 = v18;
 
-  v20 = [(CKDetailsSharedWithYouHeaderFooterView *)self sharedWithYouTextView];
-  v21 = [(CKDetailsSharedWithYouHeaderFooterView *)self contentView];
-  [v21 layoutMargins];
+  sharedWithYouTextView = [(CKDetailsSharedWithYouHeaderFooterView *)self sharedWithYouTextView];
+  contentView3 = [(CKDetailsSharedWithYouHeaderFooterView *)self contentView];
+  [contentView3 layoutMargins];
   v23 = v22;
   v25 = v24;
 
@@ -56,7 +56,7 @@
   v32.origin.y = v15;
   v32.size.width = v17;
   v32.size.height = v19;
-  [v20 sizeThatFits:{CGRectGetWidth(v32) - (v23 + v25), 1.79769313e308}];
+  [sharedWithYouTextView sizeThatFits:{CGRectGetWidth(v32) - (v23 + v25), 1.79769313e308}];
   v27 = v26;
   rect.origin.y = v28;
   [objc_opt_class() topPadding];
@@ -71,15 +71,15 @@
     v23 = v25;
   }
 
-  [v20 setFrame:{v23, v30, v27, rect.origin.y, *&v13}];
+  [sharedWithYouTextView setFrame:{v23, v30, v27, rect.origin.y, *&v13}];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(CKDetailsSharedWithYouHeaderFooterView *)self sharedWithYouTextView];
-  [v5 sizeThatFits:{width, height}];
+  height = fits.height;
+  width = fits.width;
+  sharedWithYouTextView = [(CKDetailsSharedWithYouHeaderFooterView *)self sharedWithYouTextView];
+  [sharedWithYouTextView sizeThatFits:{width, height}];
   v7 = v6;
   v9 = v8;
 

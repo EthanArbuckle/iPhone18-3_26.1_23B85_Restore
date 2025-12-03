@@ -1,20 +1,20 @@
 @interface EGStillImageLearnedFusionRoutingNode
-- (EGStillImageLearnedFusionRoutingNode)initWithName:(id)a3 numSampleBufferInputs:(int)a4;
+- (EGStillImageLearnedFusionRoutingNode)initWithName:(id)name numSampleBufferInputs:(int)inputs;
 - (void)dealloc;
-- (void)receiveData:(id)a3 fromInput:(id)a4;
+- (void)receiveData:(id)data fromInput:(id)input;
 @end
 
 @implementation EGStillImageLearnedFusionRoutingNode
 
-- (EGStillImageLearnedFusionRoutingNode)initWithName:(id)a3 numSampleBufferInputs:(int)a4
+- (EGStillImageLearnedFusionRoutingNode)initWithName:(id)name numSampleBufferInputs:(int)inputs
 {
   v14.receiver = self;
   v14.super_class = EGStillImageLearnedFusionRoutingNode;
-  v5 = [(EGNode *)&v14 initWithName:a3];
+  v5 = [(EGNode *)&v14 initWithName:name];
   if (v5)
   {
     v5->_sampleBufferInputs = objc_alloc_init(MEMORY[0x1E695DF70]);
-    if (a4 >= 1)
+    if (inputs >= 1)
     {
       v6 = 0;
       do
@@ -26,7 +26,7 @@
         v6 = (v6 + 1);
       }
 
-      while (a4 != v6);
+      while (inputs != v6);
     }
 
     v9 = [(EGOutput *)[EGStillImageOutput alloc] initWithName:@"evZero"];
@@ -53,9 +53,9 @@
   [(EGNode *)&v3 dealloc];
 }
 
-- (void)receiveData:(id)a3 fromInput:(id)a4
+- (void)receiveData:(id)data fromInput:(id)input
 {
-  v6 = BWStillImageCaptureFrameFlagsForSampleBuffer([a3 sampleBuffer]);
+  v6 = BWStillImageCaptureFrameFlagsForSampleBuffer([data sampleBuffer]);
   if ((v6 & 4) != 0)
   {
     v7 = &OBJC_IVAR___EGStillImageLearnedFusionRoutingNode__evMinusOutput;
@@ -84,7 +84,7 @@
   if (v8)
   {
 
-    [v8 emitPayload:a3];
+    [v8 emitPayload:data];
   }
 }
 

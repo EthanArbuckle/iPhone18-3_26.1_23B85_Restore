@@ -1,33 +1,33 @@
 @interface ANAnalyticsStorage
 - (ANAnalyticsStorage)init;
-- (ANAnalyticsStorage)initWithDefaults:(id)a3;
+- (ANAnalyticsStorage)initWithDefaults:(id)defaults;
 - (NSDictionary)eventsToReport;
 - (void)_synchronizedSave;
 - (void)erase;
-- (void)save:(id)a3 counter:(id)a4;
-- (void)save:(id)a3 payload:(id)a4;
+- (void)save:(id)save counter:(id)counter;
+- (void)save:(id)save payload:(id)payload;
 @end
 
 @implementation ANAnalyticsStorage
 
 - (ANAnalyticsStorage)init
 {
-  v3 = [MEMORY[0x277CEAB80] sharedInstance];
-  v4 = [(ANAnalyticsStorage *)self initWithDefaults:v3];
+  mEMORY[0x277CEAB80] = [MEMORY[0x277CEAB80] sharedInstance];
+  v4 = [(ANAnalyticsStorage *)self initWithDefaults:mEMORY[0x277CEAB80]];
 
   return v4;
 }
 
-- (ANAnalyticsStorage)initWithDefaults:(id)a3
+- (ANAnalyticsStorage)initWithDefaults:(id)defaults
 {
-  v5 = a3;
+  defaultsCopy = defaults;
   v13.receiver = self;
   v13.super_class = ANAnalyticsStorage;
   v6 = [(ANAnalyticsStorage *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_defaults, a3);
+    objc_storeStrong(&v6->_defaults, defaults);
     v8 = [(ANDefaults *)v7->_defaults objectForDefault:*MEMORY[0x277CEA828]];
     v9 = v8;
     if (v8)
@@ -60,47 +60,47 @@
 
 - (NSDictionary)eventsToReport
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(ANAnalyticsStorage *)v2 eventPayloads];
-  v4 = [v3 copy];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  eventPayloads = [(ANAnalyticsStorage *)selfCopy eventPayloads];
+  v4 = [eventPayloads copy];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
 
-- (void)save:(id)a3 payload:(id)a4
+- (void)save:(id)save payload:(id)payload
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = self;
-  objc_sync_enter(v7);
-  v8 = [(ANAnalyticsStorage *)v7 eventPayloads];
-  [v8 setObject:v6 forKeyedSubscript:v9];
+  saveCopy = save;
+  payloadCopy = payload;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  eventPayloads = [(ANAnalyticsStorage *)selfCopy eventPayloads];
+  [eventPayloads setObject:payloadCopy forKeyedSubscript:saveCopy];
 
-  [(ANAnalyticsStorage *)v7 _synchronizedSave];
-  objc_sync_exit(v7);
+  [(ANAnalyticsStorage *)selfCopy _synchronizedSave];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)save:(id)a3 counter:(id)a4
+- (void)save:(id)save counter:(id)counter
 {
-  v6 = a4;
-  v7 = a3;
-  [v6 finished];
+  counterCopy = counter;
+  saveCopy = save;
+  [counterCopy finished];
   v8 = MEMORY[0x277CCABB0];
-  v9 = [v6 hexCount];
+  hexCount = [counterCopy hexCount];
 
-  v10 = [v8 numberWithUnsignedLongLong:v9];
-  [(ANAnalyticsStorage *)self save:v7 payload:v10];
+  v10 = [v8 numberWithUnsignedLongLong:hexCount];
+  [(ANAnalyticsStorage *)self save:saveCopy payload:v10];
 }
 
 - (void)_synchronizedSave
 {
-  v5 = [(ANAnalyticsStorage *)self defaults];
-  v3 = [(ANAnalyticsStorage *)self eventPayloads];
-  v4 = [v3 copy];
-  [v5 setObject:v4 forDefault:*MEMORY[0x277CEA828]];
+  defaults = [(ANAnalyticsStorage *)self defaults];
+  eventPayloads = [(ANAnalyticsStorage *)self eventPayloads];
+  v4 = [eventPayloads copy];
+  [defaults setObject:v4 forDefault:*MEMORY[0x277CEA828]];
 }
 
 @end

@@ -1,31 +1,31 @@
 @interface MSVSegmentedCodingPackage
-- (BOOL)deleteWithError:(id *)a3;
-- (BOOL)saveWithError:(id *)a3;
-- (BOOL)writeWithError:(id *)a3;
-- (MSVSegmentedCodingPackage)initWithURL:(id)a3;
+- (BOOL)deleteWithError:(id *)error;
+- (BOOL)saveWithError:(id *)error;
+- (BOOL)writeWithError:(id *)error;
+- (MSVSegmentedCodingPackage)initWithURL:(id)l;
 - (NSDictionary)allVersions;
-- (id)decodersWithError:(id *)a3;
-- (id)encoderForSegment:(id)a3 version:(int64_t)a4;
+- (id)decodersWithError:(id *)error;
+- (id)encoderForSegment:(id)segment version:(int64_t)version;
 - (void)reset;
-- (void)setArchivedClass:(Class)a3;
+- (void)setArchivedClass:(Class)class;
 @end
 
 @implementation MSVSegmentedCodingPackage
 
-- (BOOL)deleteWithError:(id *)a3
+- (BOOL)deleteWithError:(id *)error
 {
-  v5 = [MEMORY[0x1E696AC08] defaultManager];
-  LOBYTE(a3) = [v5 removeItemAtURL:self->_packageURL error:a3];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  LOBYTE(error) = [defaultManager removeItemAtURL:self->_packageURL error:error];
 
-  return a3;
+  return error;
 }
 
-- (BOOL)saveWithError:(id *)a3
+- (BOOL)saveWithError:(id *)error
 {
-  v5 = [MEMORY[0x1E696AC08] defaultManager];
-  v6 = [(NSURL *)self->_packageURL path];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  path = [(NSURL *)self->_packageURL path];
   v25 = 0;
-  v7 = [v5 createDirectoryAtPath:v6 withIntermediateDirectories:1 attributes:0 error:&v25];
+  v7 = [defaultManager createDirectoryAtPath:path withIntermediateDirectories:1 attributes:0 error:&v25];
   v8 = v25;
 
   if (v7)
@@ -34,11 +34,11 @@
     [(MSVSegmentedCodingPackage *)self writeWithError:&v24];
     v9 = v24;
     v10 = v9;
-    if (a3 && v9)
+    if (error && v9)
     {
       v11 = v9;
       v12 = 0;
-      *a3 = v10;
+      *error = v10;
 LABEL_17:
 
       goto LABEL_18;
@@ -55,10 +55,10 @@ LABEL_17:
       {
         v18 = v17;
 LABEL_14:
-        if (a3)
+        if (error)
         {
           v20 = v18;
-          *a3 = v18;
+          *error = v18;
         }
 
         v12 = 0;
@@ -79,11 +79,11 @@ LABEL_14:
     goto LABEL_17;
   }
 
-  if (a3)
+  if (error)
   {
     v13 = v8;
     v12 = 0;
-    *a3 = v8;
+    *error = v8;
   }
 
   else
@@ -119,9 +119,9 @@ void __40__MSVSegmentedCodingPackage_allVersions__block_invoke(uint64_t a1, void
   [*(a1 + 32) setObject:v6 forKeyedSubscript:v5];
 }
 
-- (id)decodersWithError:(id *)a3
+- (id)decodersWithError:(id *)error
 {
-  v5 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v6 = [(NSMutableDictionary *)self->_infoDictionary objectForKeyedSubscript:@"segments"];
   v14 = 0;
   v15 = &v14;
@@ -135,12 +135,12 @@ void __40__MSVSegmentedCodingPackage_allVersions__block_invoke(uint64_t a1, void
   v11[3] = &unk_1E7982128;
   v11[4] = self;
   v13 = &v14;
-  v7 = v5;
+  v7 = array;
   v12 = v7;
   [v6 enumerateKeysAndObjectsUsingBlock:v11];
-  if (a3)
+  if (error)
   {
-    *a3 = v15[5];
+    *error = v15[5];
   }
 
   v8 = v12;
@@ -206,47 +206,47 @@ void __47__MSVSegmentedCodingPackage_decodersWithError___block_invoke(uint64_t a
   }
 }
 
-- (id)encoderForSegment:(id)a3 version:(int64_t)a4
+- (id)encoderForSegment:(id)segment version:(int64_t)version
 {
-  v6 = a3;
+  segmentCopy = segment;
   v7 = [(NSMutableDictionary *)self->_infoDictionary objectForKeyedSubscript:@"segments"];
-  v8 = [v7 objectForKeyedSubscript:v6];
+  v8 = [v7 objectForKeyedSubscript:segmentCopy];
   v9 = [v8 objectForKeyedSubscript:@"version"];
 
-  if (a4 && v9 && [v9 integerValue] >= a4)
+  if (version && v9 && [v9 integerValue] >= version)
   {
     v11 = 0;
   }
 
   else
   {
-    v10 = [(MSVSegmentedCodingPackage *)self coderTypeForSegment:v6];
+    v10 = [(MSVSegmentedCodingPackage *)self coderTypeForSegment:segmentCopy];
     if (([v10 isEqualToString:@"MSVOPACKCoder"] & 1) == 0)
     {
-      v19 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v20 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSCoder<MSVSegmentedSubEncoder> * _Nonnull _MSVSegmentedCodingPackageEncoderForCoderType(NSString * _Nonnull __strong)"];
-      [v19 handleFailureInFunction:v20 file:@"MSVSegmentedCodingPackage.m" lineNumber:36 description:{@"Unsupported coder type %@", v10}];
+      [currentHandler handleFailureInFunction:v20 file:@"MSVSegmentedCodingPackage.m" lineNumber:36 description:{@"Unsupported coder type %@", v10}];
 
       abort();
     }
 
     v11 = objc_alloc_init(MSVOPACKEncoder);
 
-    [(NSMutableDictionary *)self->_segmentEncoderMap setObject:v11 forKeyedSubscript:v6];
+    [(NSMutableDictionary *)self->_segmentEncoderMap setObject:v11 forKeyedSubscript:segmentCopy];
     v12 = [(NSMutableDictionary *)self->_infoDictionary objectForKeyedSubscript:@"segments"];
-    v13 = [v12 objectForKeyedSubscript:v6];
+    v13 = [v12 objectForKeyedSubscript:segmentCopy];
 
     if (!v13)
     {
-      v14 = [MEMORY[0x1E695DF90] dictionary];
-      [v12 setObject:v14 forKeyedSubscript:v6];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
+      [v12 setObject:dictionary forKeyedSubscript:segmentCopy];
     }
 
-    v15 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
-    v16 = [v12 objectForKeyedSubscript:v6];
+    v15 = [MEMORY[0x1E696AD98] numberWithInteger:version];
+    v16 = [v12 objectForKeyedSubscript:segmentCopy];
     [v16 setObject:v15 forKeyedSubscript:@"version"];
 
-    v17 = [v12 objectForKeyedSubscript:v6];
+    v17 = [v12 objectForKeyedSubscript:segmentCopy];
     [v17 setObject:v10 forKeyedSubscript:@"coder"];
 
     self->_needsInfoDictionaryUpdate = 1;
@@ -255,7 +255,7 @@ void __47__MSVSegmentedCodingPackage_decodersWithError___block_invoke(uint64_t a
   return v11;
 }
 
-- (BOOL)writeWithError:(id *)a3
+- (BOOL)writeWithError:(id *)error
 {
   v11 = 0;
   v12 = &v11;
@@ -273,7 +273,7 @@ void __47__MSVSegmentedCodingPackage_decodersWithError___block_invoke(uint64_t a
   [(NSMutableDictionary *)segmentEncoderMap enumerateKeysAndObjectsUsingBlock:v10];
   [(NSMutableDictionary *)self->_segmentEncoderMap removeAllObjects];
   v6 = v12[5];
-  if (a3)
+  if (error)
   {
     v7 = v6 == 0;
   }
@@ -286,7 +286,7 @@ void __47__MSVSegmentedCodingPackage_decodersWithError___block_invoke(uint64_t a
   v8 = v7;
   if (!v7)
   {
-    *a3 = v6;
+    *error = v6;
   }
 
   _Block_object_dispose(&v11, 8);
@@ -341,19 +341,19 @@ void __44__MSVSegmentedCodingPackage_writeWithError___block_invoke(uint64_t a1, 
 
 - (void)reset
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   infoDictionary = self->_infoDictionary;
-  self->_infoDictionary = v3;
+  self->_infoDictionary = dictionary;
 
-  v5 = [objc_opt_class() packageTypeIdentifier];
-  [(NSMutableDictionary *)self->_infoDictionary setObject:v5 forKeyedSubscript:@"packageType"];
+  packageTypeIdentifier = [objc_opt_class() packageTypeIdentifier];
+  [(NSMutableDictionary *)self->_infoDictionary setObject:packageTypeIdentifier forKeyedSubscript:@"packageType"];
 
   v6 = [(NSMutableDictionary *)self->_infoDictionary objectForKeyedSubscript:@"segments"];
 
   if (!v6)
   {
-    v7 = [MEMORY[0x1E695DF90] dictionary];
-    [(NSMutableDictionary *)self->_infoDictionary setObject:v7 forKeyedSubscript:@"segments"];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+    [(NSMutableDictionary *)self->_infoDictionary setObject:dictionary2 forKeyedSubscript:@"segments"];
   }
 
   self->_needsInfoDictionaryUpdate = 1;
@@ -362,13 +362,13 @@ void __44__MSVSegmentedCodingPackage_writeWithError___block_invoke(uint64_t a1, 
   [(NSMutableDictionary *)segmentEncoderMap removeAllObjects];
 }
 
-- (void)setArchivedClass:(Class)a3
+- (void)setArchivedClass:(Class)class
 {
   archivedClass = self->_archivedClass;
   p_archivedClass = &self->_archivedClass;
-  if (archivedClass != a3)
+  if (archivedClass != class)
   {
-    objc_storeStrong(p_archivedClass, a3);
+    objc_storeStrong(p_archivedClass, class);
     v6 = NSStringFromClass(self->_archivedClass);
     [(NSMutableDictionary *)self->_infoDictionary setObject:v6 forKeyedSubscript:@"archivedClass"];
 
@@ -376,15 +376,15 @@ void __44__MSVSegmentedCodingPackage_writeWithError___block_invoke(uint64_t a1, 
   }
 }
 
-- (MSVSegmentedCodingPackage)initWithURL:(id)a3
+- (MSVSegmentedCodingPackage)initWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v23.receiver = self;
   v23.super_class = MSVSegmentedCodingPackage;
   v5 = [(MSVSegmentedCodingPackage *)&v23 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [lCopy copy];
     packageURL = v5->_packageURL;
     v5->_packageURL = v6;
 
@@ -397,8 +397,8 @@ void __44__MSVSegmentedCodingPackage_writeWithError___block_invoke(uint64_t a1, 
       v5->_infoDictionary = v10;
 
       v12 = [(NSMutableDictionary *)v5->_infoDictionary objectForKeyedSubscript:@"packageType"];
-      v13 = [objc_opt_class() packageTypeIdentifier];
-      v14 = [v12 isEqualToString:v13];
+      packageTypeIdentifier = [objc_opt_class() packageTypeIdentifier];
+      v14 = [v12 isEqualToString:packageTypeIdentifier];
 
       if (!v14)
       {
@@ -420,9 +420,9 @@ void __44__MSVSegmentedCodingPackage_writeWithError___block_invoke(uint64_t a1, 
     archivedClass = v5->_archivedClass;
     v5->_archivedClass = v17;
 
-    v19 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     segmentEncoderMap = v5->_segmentEncoderMap;
-    v5->_segmentEncoderMap = v19;
+    v5->_segmentEncoderMap = dictionary;
   }
 
   v21 = v5;

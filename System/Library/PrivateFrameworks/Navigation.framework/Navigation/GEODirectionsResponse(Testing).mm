@@ -8,7 +8,7 @@
 {
   v43 = a5;
   v12 = a6;
-  if ([a1 waypointRoutesCount] > a4)
+  if ([self waypointRoutesCount] > a4)
   {
     GEOConfigGetUInteger();
     v13 = [MNTrafficIncidentAlert createFakeTrafficBannerTextWithType:a3 mainRouteInfo:v43 alternateRouteInfo:v12 incidentDistance:50];
@@ -19,40 +19,40 @@
       [v13 setTriggerRange:v14];
 
       UInteger = GEOConfigGetUInteger();
-      v16 = [v13 triggerRange];
-      [v16 setDisplayTime:UInteger];
+      triggerRange = [v13 triggerRange];
+      [triggerRange setDisplayTime:UInteger];
 
       [v13 setMinDisplayTime:GEOConfigGetUInteger()];
       [v13 setPriority:GEOConfigGetUInteger()];
       v17 = objc_alloc_init(MEMORY[0x1E69A2698]);
-      v18 = [v13 triggerRange];
-      [v18 setShowAtPoint:v17];
+      triggerRange2 = [v13 triggerRange];
+      [triggerRange2 setShowAtPoint:v17];
 
       v19 = 100 * (a7 - GEOConfigGetUInteger());
-      v20 = [v13 triggerRange];
-      v21 = [v20 showAtPoint];
-      [v21 setReferenceOffsetCm:v19];
+      triggerRange3 = [v13 triggerRange];
+      showAtPoint = [triggerRange3 showAtPoint];
+      [showAtPoint setReferenceOffsetCm:v19];
 
       BOOL = GEOConfigGetBOOL();
-      v23 = [v13 triggerRange];
-      v24 = [v23 showAtPoint];
-      [v24 setAllowsShifting:BOOL];
+      triggerRange4 = [v13 triggerRange];
+      showAtPoint2 = [triggerRange4 showAtPoint];
+      [showAtPoint2 setAllowsShifting:BOOL];
 
       if (GEOConfigGetBOOL())
       {
         v25 = objc_alloc_init(MEMORY[0x1E69A2698]);
-        v26 = [v13 triggerRange];
-        [v26 setHideAtPoint:v25];
+        triggerRange5 = [v13 triggerRange];
+        [triggerRange5 setHideAtPoint:v25];
 
         v27 = 100 * (a7 - GEOConfigGetUInteger());
-        v28 = [v13 triggerRange];
-        v29 = [v28 hideAtPoint];
-        [v29 setReferenceOffsetCm:v27];
+        triggerRange6 = [v13 triggerRange];
+        hideAtPoint = [triggerRange6 hideAtPoint];
+        [hideAtPoint setReferenceOffsetCm:v27];
 
         v30 = GEOConfigGetBOOL();
-        v31 = [v13 triggerRange];
-        v32 = [v31 hideAtPoint];
-        [v32 setAllowsShifting:v30];
+        triggerRange7 = [v13 triggerRange];
+        hideAtPoint2 = [triggerRange7 hideAtPoint];
+        [hideAtPoint2 setAllowsShifting:v30];
       }
 
       if (GEOConfigGetBOOL())
@@ -61,22 +61,22 @@
         [v13 setProgressBarRange:v33];
 
         v34 = GEOConfigGetUInteger();
-        v35 = [v13 progressBarRange];
-        [v35 setDisplayTime:v34];
+        progressBarRange = [v13 progressBarRange];
+        [progressBarRange setDisplayTime:v34];
 
         v36 = objc_alloc_init(MEMORY[0x1E69A2698]);
-        v37 = [v13 progressBarRange];
-        [v37 setShowAtPoint:v36];
+        progressBarRange2 = [v13 progressBarRange];
+        [progressBarRange2 setShowAtPoint:v36];
 
         v38 = 100 * (a7 - GEOConfigGetUInteger());
-        v39 = [v13 progressBarRange];
-        v40 = [v39 showAtPoint];
-        [v40 setReferenceOffsetCm:v38];
+        progressBarRange3 = [v13 progressBarRange];
+        showAtPoint3 = [progressBarRange3 showAtPoint];
+        [showAtPoint3 setReferenceOffsetCm:v38];
       }
     }
 
-    v41 = [a1 waypointRoutes];
-    v42 = [v41 objectAtIndexedSubscript:a4];
+    waypointRoutes = [self waypointRoutes];
+    v42 = [waypointRoutes objectAtIndexedSubscript:a4];
     [v42 addTrafficBannerText:v13];
   }
 }

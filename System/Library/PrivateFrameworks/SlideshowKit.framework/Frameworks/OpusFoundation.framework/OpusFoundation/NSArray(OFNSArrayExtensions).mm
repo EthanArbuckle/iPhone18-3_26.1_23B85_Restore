@@ -32,7 +32,7 @@ LABEL_3:
       objc_enumerationMutation(a3);
     }
 
-    result = [a1 containsObject:*(*(&v10 + 1) + 8 * v8)];
+    result = [self containsObject:*(*(&v10 + 1) + 8 * v8)];
     if (!result)
     {
       return result;
@@ -73,7 +73,7 @@ LABEL_3:
           objc_enumerationMutation(a3);
         }
 
-        if ([a1 containsObject:*(*(&v9 + 1) + 8 * v8)])
+        if ([self containsObject:*(*(&v9 + 1) + 8 * v8)])
         {
           return 1;
         }
@@ -98,26 +98,26 @@ LABEL_3:
 
 - (uint64_t)objectPassingTest:()OFNSArrayExtensions
 {
-  v2 = [a1 indexOfObjectPassingTest:?];
+  v2 = [self indexOfObjectPassingTest:?];
   if (v2 == 0x7FFFFFFFFFFFFFFFLL)
   {
     return 0;
   }
 
-  return [a1 objectAtIndex:v2];
+  return [self objectAtIndex:v2];
 }
 
 - (uint64_t)objectsPassingTest:()OFNSArrayExtensions
 {
-  v2 = [a1 indexesOfObjectsPassingTest:?];
+  v2 = [self indexesOfObjectsPassingTest:?];
 
-  return [a1 objectsAtIndexes:v2];
+  return [self objectsAtIndexes:v2];
 }
 
 - (void)indexesOfObjects:()OFNSArrayExtensions
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277CCAB58] indexSet];
+  indexSet = [MEMORY[0x277CCAB58] indexSet];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -137,10 +137,10 @@ LABEL_3:
           objc_enumerationMutation(a3);
         }
 
-        v10 = [a1 indexOfObject:*(*(&v12 + 1) + 8 * v9)];
+        v10 = [self indexOfObject:*(*(&v12 + 1) + 8 * v9)];
         if (v10 != 0x7FFFFFFFFFFFFFFFLL)
         {
-          [v5 addIndex:v10];
+          [indexSet addIndex:v10];
         }
 
         ++v9;
@@ -153,7 +153,7 @@ LABEL_3:
     while (v7);
   }
 
-  return v5;
+  return indexSet;
 }
 
 @end

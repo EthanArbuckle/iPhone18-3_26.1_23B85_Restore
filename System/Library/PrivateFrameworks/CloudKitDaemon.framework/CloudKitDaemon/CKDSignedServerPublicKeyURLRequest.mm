@@ -1,46 +1,46 @@
 @interface CKDSignedServerPublicKeyURLRequest
-+ (BOOL)serverResponseIsComplete:(id)a3 requireProtectionSource:(BOOL)a4;
-+ (BOOL)verifyInteger:(int64_t)a3 withSignature:(id)a4 usingKey:(__SecKey *)a5 verifyFullInteger:(BOOL)a6;
-+ (__SecTrust)createTrustEvalFromCertificateList:(id)a3 verifiedWithPolicy:(__SecPolicy *)a4;
-+ (id)certificateListServerPlist:(id)a3;
-+ (id)nearestExpirationInCertificateList:(id)a3;
-- (BOOL)canVerifySignedPlistValues:(id)a3 withKey:(__SecKey *)a4;
-- (CKDSignedServerPublicKeyURLRequest)initWithOperation:(id)a3 plistURL:(id)a4 verifyWithPolicy:(__SecPolicy *)a5;
++ (BOOL)serverResponseIsComplete:(id)complete requireProtectionSource:(BOOL)source;
++ (BOOL)verifyInteger:(int64_t)integer withSignature:(id)signature usingKey:(__SecKey *)key verifyFullInteger:(BOOL)fullInteger;
++ (__SecTrust)createTrustEvalFromCertificateList:(id)list verifiedWithPolicy:(__SecPolicy *)policy;
++ (id)certificateListServerPlist:(id)plist;
++ (id)nearestExpirationInCertificateList:(id)list;
+- (BOOL)canVerifySignedPlistValues:(id)values withKey:(__SecKey *)key;
+- (CKDSignedServerPublicKeyURLRequest)initWithOperation:(id)operation plistURL:(id)l verifyWithPolicy:(__SecPolicy *)policy;
 - (void)dealloc;
-- (void)fillOutEquivalencyPropertiesBuilder:(id)a3;
-- (void)requestDidParsePlistObject:(id)a3;
+- (void)fillOutEquivalencyPropertiesBuilder:(id)builder;
+- (void)requestDidParsePlistObject:(id)object;
 @end
 
 @implementation CKDSignedServerPublicKeyURLRequest
 
-- (CKDSignedServerPublicKeyURLRequest)initWithOperation:(id)a3 plistURL:(id)a4 verifyWithPolicy:(__SecPolicy *)a5
+- (CKDSignedServerPublicKeyURLRequest)initWithOperation:(id)operation plistURL:(id)l verifyWithPolicy:(__SecPolicy *)policy
 {
-  v9 = a4;
+  lCopy = l;
   v13.receiver = self;
   v13.super_class = CKDSignedServerPublicKeyURLRequest;
-  v10 = [(CKDURLRequest *)&v13 initWithOperation:a3];
+  v10 = [(CKDURLRequest *)&v13 initWithOperation:operation];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_plistURL, a4);
-    v11->_certificateTrustPolicy = a5;
-    if (a5)
+    objc_storeStrong(&v10->_plistURL, l);
+    v11->_certificateTrustPolicy = policy;
+    if (policy)
     {
-      CFRetain(a5);
+      CFRetain(policy);
     }
   }
 
   return v11;
 }
 
-- (void)fillOutEquivalencyPropertiesBuilder:(id)a3
+- (void)fillOutEquivalencyPropertiesBuilder:(id)builder
 {
   v9.receiver = self;
   v9.super_class = CKDSignedServerPublicKeyURLRequest;
-  v4 = a3;
-  [(CKDURLRequest *)&v9 fillOutEquivalencyPropertiesBuilder:v4];
+  builderCopy = builder;
+  [(CKDURLRequest *)&v9 fillOutEquivalencyPropertiesBuilder:builderCopy];
   v7 = objc_msgSend_plistURL(self, v5, v6, v9.receiver, v9.super_class);
-  objc_msgSend_setObject_forKeyedSubscript_(v4, v8, v7, @"plistURL");
+  objc_msgSend_setObject_forKeyedSubscript_(builderCopy, v8, v7, @"plistURL");
 }
 
 - (void)dealloc
@@ -57,12 +57,12 @@
   [(CKDURLRequest *)&v4 dealloc];
 }
 
-- (void)requestDidParsePlistObject:(id)a3
+- (void)requestDidParsePlistObject:(id)object
 {
-  v67 = a3;
+  objectCopy = object;
   v4 = objc_opt_class();
   v7 = objc_msgSend_requiresProtectionSource(self, v5, v6);
-  if ((objc_msgSend_serverResponseIsComplete_requireProtectionSource_(v4, v8, v67, v7) & 1) == 0)
+  if ((objc_msgSend_serverResponseIsComplete_requireProtectionSource_(v4, v8, objectCopy, v7) & 1) == 0)
   {
     v12 = objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v9, *MEMORY[0x277CBC120], 1005, @"Invalid server public key payload");
     objc_msgSend_finishWithError_(self, v49, v12);
@@ -70,7 +70,7 @@
   }
 
   v10 = objc_opt_class();
-  v12 = objc_msgSend_certificateListServerPlist_(v10, v11, v67);
+  v12 = objc_msgSend_certificateListServerPlist_(v10, v11, objectCopy);
   v13 = objc_opt_class();
   v16 = objc_msgSend_certificateTrustPolicy(self, v14, v15);
   TrustEvalFromCertificateList_verifiedWithPolicy = objc_msgSend_createTrustEvalFromCertificateList_verifiedWithPolicy_(v13, v17, v12, v16);
@@ -78,10 +78,10 @@
   if (TrustEvalFromCertificateList_verifiedWithPolicy)
   {
     v21 = SecTrustCopyKey(TrustEvalFromCertificateList_verifiedWithPolicy);
-    if (objc_msgSend_canVerifySignedPlistValues_withKey_(self, v22, v67, v21))
+    if (objc_msgSend_canVerifySignedPlistValues_withKey_(self, v22, objectCopy, v21))
     {
       v24 = MEMORY[0x277CBEAA8];
-      v25 = objc_msgSend_objectForKeyedSubscript_(v67, v23, @"expiration");
+      v25 = objc_msgSend_objectForKeyedSubscript_(objectCopy, v23, @"expiration");
       objc_msgSend_doubleValue(v25, v26, v27);
       v30 = objc_msgSend_dateWithTimeIntervalSince1970_(v24, v28, v29);
 
@@ -122,13 +122,13 @@
         v48 = 0;
       }
 
-      v51 = objc_msgSend_objectForKeyedSubscript_(v67, v45, @"public key");
-      v53 = objc_msgSend_objectForKeyedSubscript_(v67, v52, @"version");
+      v51 = objc_msgSend_objectForKeyedSubscript_(objectCopy, v45, @"public key");
+      v53 = objc_msgSend_objectForKeyedSubscript_(objectCopy, v52, @"version");
       v56 = objc_msgSend_integerValue(v53, v54, v55);
 
       if (objc_msgSend_requiresProtectionSource(self, v57, v58))
       {
-        v60 = objc_msgSend_objectForKeyedSubscript_(v67, v59, @"protection source");
+        v60 = objc_msgSend_objectForKeyedSubscript_(objectCopy, v59, @"protection source");
       }
 
       else
@@ -154,7 +154,7 @@
 
   else
   {
-    objc_msgSend_canVerifySignedPlistValues_withKey_(self, v19, v67, 0);
+    objc_msgSend_canVerifySignedPlistValues_withKey_(self, v19, objectCopy, 0);
     v50 = 0;
     v21 = 0;
   }
@@ -176,43 +176,43 @@ LABEL_21:
 LABEL_25:
 }
 
-+ (BOOL)serverResponseIsComplete:(id)a3 requireProtectionSource:(BOOL)a4
++ (BOOL)serverResponseIsComplete:(id)complete requireProtectionSource:(BOOL)source
 {
-  v40 = a4;
+  sourceCopy = source;
   v46 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v6 = objc_msgSend_objectForKeyedSubscript_(v4, v5, @"public key");
+  completeCopy = complete;
+  v6 = objc_msgSend_objectForKeyedSubscript_(completeCopy, v5, @"public key");
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  v9 = objc_msgSend_objectForKeyedSubscript_(v4, v8, @"public key signature");
+  v9 = objc_msgSend_objectForKeyedSubscript_(completeCopy, v8, @"public key signature");
   objc_opt_class();
   v10 = objc_opt_isKindOfClass();
 
-  v12 = objc_msgSend_objectForKeyedSubscript_(v4, v11, @"version");
+  v12 = objc_msgSend_objectForKeyedSubscript_(completeCopy, v11, @"version");
   objc_opt_class();
   v13 = objc_opt_isKindOfClass();
 
-  v15 = objc_msgSend_objectForKeyedSubscript_(v4, v14, @"version signature");
+  v15 = objc_msgSend_objectForKeyedSubscript_(completeCopy, v14, @"version signature");
   objc_opt_class();
   v16 = objc_opt_isKindOfClass();
 
-  v18 = objc_msgSend_objectForKeyedSubscript_(v4, v17, @"expiration");
+  v18 = objc_msgSend_objectForKeyedSubscript_(completeCopy, v17, @"expiration");
   objc_opt_class();
   v19 = objc_opt_isKindOfClass();
 
-  v21 = objc_msgSend_objectForKeyedSubscript_(v4, v20, @"expiration signature");
+  v21 = objc_msgSend_objectForKeyedSubscript_(completeCopy, v20, @"expiration signature");
   objc_opt_class();
   v22 = objc_opt_isKindOfClass();
 
-  v28 = objc_msgSend_objectForKeyedSubscript_(v4, v23, @"certs");
+  v28 = objc_msgSend_objectForKeyedSubscript_(completeCopy, v23, @"certs");
   objc_opt_class();
   v24 = v28;
   v25 = objc_opt_isKindOfClass();
   LOBYTE(v28) = 0;
   if ((isKindOfClass & 1) == 0 || (v10 & 1) == 0 || (v13 & 1) == 0 || (v16 & 1) == 0 || (v19 & 1) == 0 || (v22 & 1) == 0)
   {
-    if (!v40)
+    if (!sourceCopy)
     {
       goto LABEL_18;
     }
@@ -254,10 +254,10 @@ LABEL_25:
     }
   }
 
-  if (v40)
+  if (sourceCopy)
   {
 LABEL_17:
-    v37 = objc_msgSend_objectForKeyedSubscript_(v4, v26, @"protection source");
+    v37 = objc_msgSend_objectForKeyedSubscript_(completeCopy, v26, @"protection source");
     objc_opt_class();
     LOBYTE(v28) = v28 & objc_opt_isKindOfClass();
   }
@@ -268,24 +268,24 @@ LABEL_18:
   return v28 & 1;
 }
 
-+ (id)certificateListServerPlist:(id)a3
++ (id)certificateListServerPlist:(id)plist
 {
-  v3 = objc_msgSend_objectForKeyedSubscript_(a3, a2, @"certs");
+  v3 = objc_msgSend_objectForKeyedSubscript_(plist, a2, @"certs");
   v5 = objc_msgSend_CKCompactMap_(v3, v4, &unk_28385E400);
 
   return v5;
 }
 
-+ (id)nearestExpirationInCertificateList:(id)a3
++ (id)nearestExpirationInCertificateList:(id)list
 {
   v27 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  listCopy = list;
   v6 = objc_msgSend_distantFuture(MEMORY[0x277CBEAA8], v4, v5);
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v7 = v3;
+  v7 = listCopy;
   v9 = objc_msgSend_countByEnumeratingWithState_objects_count_(v7, v8, &v22, v26, 16);
   if (v9)
   {
@@ -323,11 +323,11 @@ LABEL_18:
   return v6;
 }
 
-+ (__SecTrust)createTrustEvalFromCertificateList:(id)a3 verifiedWithPolicy:(__SecPolicy *)a4
++ (__SecTrust)createTrustEvalFromCertificateList:(id)list verifiedWithPolicy:(__SecPolicy *)policy
 {
   v19 = *MEMORY[0x277D85DE8];
   trust = 0;
-  v4 = SecTrustCreateWithCertificates(a3, a4, &trust);
+  v4 = SecTrustCreateWithCertificates(list, policy, &trust);
   if (trust)
   {
     v5 = v4 == 0;
@@ -420,58 +420,58 @@ LABEL_28:
   return result;
 }
 
-- (BOOL)canVerifySignedPlistValues:(id)a3 withKey:(__SecKey *)a4
+- (BOOL)canVerifySignedPlistValues:(id)values withKey:(__SecKey *)key
 {
   LOBYTE(v4) = 0;
-  if (a3 && a4)
+  if (values && key)
   {
-    v7 = a3;
-    v9 = objc_msgSend_objectForKeyedSubscript_(v7, v8, @"public key");
-    v11 = objc_msgSend_objectForKeyedSubscript_(v7, v10, @"version");
+    valuesCopy = values;
+    v9 = objc_msgSend_objectForKeyedSubscript_(valuesCopy, v8, @"public key");
+    v11 = objc_msgSend_objectForKeyedSubscript_(valuesCopy, v10, @"version");
     v14 = objc_msgSend_longLongValue(v11, v12, v13);
 
-    v16 = objc_msgSend_objectForKeyedSubscript_(v7, v15, @"expiration");
+    v16 = objc_msgSend_objectForKeyedSubscript_(valuesCopy, v15, @"expiration");
     v19 = objc_msgSend_longLongValue(v16, v17, v18);
 
-    v21 = objc_msgSend_objectForKeyedSubscript_(v7, v20, @"public key signature");
-    v23 = objc_msgSend_objectForKeyedSubscript_(v7, v22, @"version signature");
-    v25 = objc_msgSend_objectForKeyedSubscript_(v7, v24, @"expiration signature");
+    v21 = objc_msgSend_objectForKeyedSubscript_(valuesCopy, v20, @"public key signature");
+    v23 = objc_msgSend_objectForKeyedSubscript_(valuesCopy, v22, @"version signature");
+    v25 = objc_msgSend_objectForKeyedSubscript_(valuesCopy, v24, @"expiration signature");
 
     v26 = objc_opt_class();
-    LODWORD(v7) = objc_msgSend_verifyData_withSignature_usingKey_(v26, v27, v9, v21, a4);
+    LODWORD(valuesCopy) = objc_msgSend_verifyData_withSignature_usingKey_(v26, v27, v9, v21, key);
     v28 = objc_opt_class();
     v31 = objc_msgSend_verifyFullIntegers(self, v29, v30);
-    LODWORD(v7) = v7 & objc_msgSend_verifyInteger_withSignature_usingKey_verifyFullInteger_(v28, v32, v14, v23, a4, v31 ^ 1u);
+    LODWORD(valuesCopy) = valuesCopy & objc_msgSend_verifyInteger_withSignature_usingKey_verifyFullInteger_(v28, v32, v14, v23, key, v31 ^ 1u);
     v33 = objc_opt_class();
     v36 = objc_msgSend_verifyFullIntegers(self, v34, v35);
-    v4 = v7 & objc_msgSend_verifyInteger_withSignature_usingKey_verifyFullInteger_(v33, v37, v19, v25, a4, v36 ^ 1u);
+    v4 = valuesCopy & objc_msgSend_verifyInteger_withSignature_usingKey_verifyFullInteger_(v33, v37, v19, v25, key, v36 ^ 1u);
   }
 
   return v4;
 }
 
-+ (BOOL)verifyInteger:(int64_t)a3 withSignature:(id)a4 usingKey:(__SecKey *)a5 verifyFullInteger:(BOOL)a6
++ (BOOL)verifyInteger:(int64_t)integer withSignature:(id)signature usingKey:(__SecKey *)key verifyFullInteger:(BOOL)fullInteger
 {
-  v6 = a6;
-  v10 = a4;
-  if (a3 == a3 || v6)
+  fullIntegerCopy = fullInteger;
+  signatureCopy = signature;
+  if (integer == integer || fullIntegerCopy)
   {
-    if (v6)
+    if (fullIntegerCopy)
     {
-      v21 = bswap32(a3);
+      v21 = bswap32(integer);
       v12 = objc_alloc(MEMORY[0x277CBEA90]);
       v14 = objc_msgSend_initWithBytes_length_(v12, v13, &v21, 4, v20);
     }
 
     else
     {
-      v20 = bswap64(a3);
+      v20 = bswap64(integer);
       v16 = objc_alloc(MEMORY[0x277CBEA90]);
       v14 = objc_msgSend_initWithBytes_length_(v16, v17, &v20, 8, v20);
     }
 
     v18 = v14;
-    v11 = objc_msgSend_verifyData_withSignature_usingKey_(a1, v15, v14, v10, a5);
+    v11 = objc_msgSend_verifyData_withSignature_usingKey_(self, v15, v14, signatureCopy, key);
   }
 
   else

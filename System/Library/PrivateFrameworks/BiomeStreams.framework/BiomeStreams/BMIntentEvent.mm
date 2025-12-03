@@ -1,64 +1,64 @@
 @interface BMIntentEvent
-+ (id)eventWithDKEvent:(id)a3;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
-- (BMIntentEvent)initWithAbsoluteTime:(double)a3 bundleId:(id)a4 sourceId:(id)a5 intentClass:(id)a6 intentVerb:(id)a7 intentType:(int64_t)a8 intentHandlingStatus:(int64_t)a9 interaction:(id)a10 itemID:(id)a11 donatedBySiri:(BOOL)a12 interactionDirection:(int64_t)a13 groupIdentifier:(id)a14;
-- (BMIntentEvent)initWithCoder:(id)a3;
-- (BMIntentEvent)initWithProto:(id)a3;
-- (BMIntentEvent)initWithProtoData:(id)a3;
-- (BOOL)checkAndReportDecodingFailureIfNeededForCFAbsoluteTime:(double)a3 key:(id)a4 coder:(id)a5 errorDomain:(id)a6 errorCode:(int64_t)a7;
-- (BOOL)checkAndReportDecodingFailureIfNeededForid:(id)a3 key:(id)a4 coder:(id)a5 errorDomain:(id)a6 errorCode:(int64_t)a7;
-- (BOOL)checkAndReportDecodingFailureIfNeededForuint32_t:(unsigned int)a3 key:(id)a4 coder:(id)a5 errorDomain:(id)a6 errorCode:(int64_t)a7;
-- (BOOL)isEqual:(id)a3;
++ (id)eventWithDKEvent:(id)event;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
+- (BMIntentEvent)initWithAbsoluteTime:(double)time bundleId:(id)id sourceId:(id)sourceId intentClass:(id)class intentVerb:(id)verb intentType:(int64_t)type intentHandlingStatus:(int64_t)status interaction:(id)self0 itemID:(id)self1 donatedBySiri:(BOOL)self2 interactionDirection:(int64_t)self3 groupIdentifier:(id)self4;
+- (BMIntentEvent)initWithCoder:(id)coder;
+- (BMIntentEvent)initWithProto:(id)proto;
+- (BMIntentEvent)initWithProtoData:(id)data;
+- (BOOL)checkAndReportDecodingFailureIfNeededForCFAbsoluteTime:(double)time key:(id)key coder:(id)coder errorDomain:(id)domain errorCode:(int64_t)code;
+- (BOOL)checkAndReportDecodingFailureIfNeededForid:(id)forid key:(id)key coder:(id)coder errorDomain:(id)domain errorCode:(int64_t)code;
+- (BOOL)checkAndReportDecodingFailureIfNeededForuint32_t:(unsigned int)foruint32_t key:(id)key coder:(id)coder errorDomain:(id)domain errorCode:(int64_t)code;
+- (BOOL)isEqual:(id)equal;
 - (id)encodeAsProto;
 - (id)proto;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BMIntentEvent
 
-+ (id)eventWithDKEvent:(id)a3
++ (id)eventWithDKEvent:(id)event
 {
   v54 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 metadata];
-  v5 = [get_DKIntentMetadataKeyClass() serializedInteraction];
-  v6 = [v4 objectForKeyedSubscript:v5];
+  eventCopy = event;
+  metadata = [eventCopy metadata];
+  serializedInteraction = [get_DKIntentMetadataKeyClass() serializedInteraction];
+  v6 = [metadata objectForKeyedSubscript:serializedInteraction];
 
   if (v6)
   {
-    v7 = [v3 metadata];
+    metadata2 = [eventCopy metadata];
     v31 = [BMIntentEvent alloc];
-    v47 = [v3 startDate];
-    [v47 timeIntervalSinceReferenceDate];
+    startDate = [eventCopy startDate];
+    [startDate timeIntervalSinceReferenceDate];
     v9 = v8;
-    v46 = [v3 source];
-    v45 = [v46 bundleID];
-    v44 = [v3 source];
-    v43 = [v44 sourceID];
-    v42 = [get_DKIntentMetadataKeyClass() intentClass];
-    v41 = [v7 objectForKeyedSubscript:?];
-    v40 = [get_DKIntentMetadataKeyClass() intentVerb];
-    v39 = [v7 objectForKeyedSubscript:?];
-    v38 = [get_DKIntentMetadataKeyClass() intentType];
-    v37 = [v7 objectForKeyedSubscript:?];
-    v48 = [v37 integerValue];
-    v10 = [v3 metadata];
-    v35 = [get_DKIntentMetadataKeyClass() intentHandlingStatus];
-    v36 = v10;
-    v34 = [v10 objectForKeyedSubscript:?];
-    v30 = [v34 integerValue];
-    v33 = [get_DKIntentMetadataKeyClass() serializedInteraction];
-    v11 = [v7 objectForKeyedSubscript:?];
-    v32 = [v3 source];
-    v12 = [v32 itemID];
-    v29 = [get_DKIntentMetadataKeyClass() donatedBySiri];
-    v28 = [v7 objectForKeyedSubscript:?];
-    v13 = [v28 BOOLValue];
-    v14 = [get_DKIntentMetadataKeyClass() direction];
-    v15 = [v7 objectForKeyedSubscript:v14];
-    v16 = [v15 integerValue];
-    if (v16 >= 4)
+    source = [eventCopy source];
+    bundleID = [source bundleID];
+    source2 = [eventCopy source];
+    sourceID = [source2 sourceID];
+    intentClass = [get_DKIntentMetadataKeyClass() intentClass];
+    v41 = [metadata2 objectForKeyedSubscript:?];
+    intentVerb = [get_DKIntentMetadataKeyClass() intentVerb];
+    v39 = [metadata2 objectForKeyedSubscript:?];
+    intentType = [get_DKIntentMetadataKeyClass() intentType];
+    v37 = [metadata2 objectForKeyedSubscript:?];
+    integerValue = [v37 integerValue];
+    metadata3 = [eventCopy metadata];
+    intentHandlingStatus = [get_DKIntentMetadataKeyClass() intentHandlingStatus];
+    v36 = metadata3;
+    v34 = [metadata3 objectForKeyedSubscript:?];
+    integerValue2 = [v34 integerValue];
+    serializedInteraction2 = [get_DKIntentMetadataKeyClass() serializedInteraction];
+    v11 = [metadata2 objectForKeyedSubscript:?];
+    source3 = [eventCopy source];
+    itemID = [source3 itemID];
+    donatedBySiri = [get_DKIntentMetadataKeyClass() donatedBySiri];
+    v28 = [metadata2 objectForKeyedSubscript:?];
+    bOOLValue = [v28 BOOLValue];
+    direction = [get_DKIntentMetadataKeyClass() direction];
+    v15 = [metadata2 objectForKeyedSubscript:direction];
+    integerValue3 = [v15 integerValue];
+    if (integerValue3 >= 4)
     {
       v22 = __biome_log_for_category();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -71,29 +71,29 @@
 
     else
     {
-      v17 = qword_184D27580[v16];
+      v17 = qword_184D27580[integerValue3];
     }
 
-    v23 = [v3 source];
-    v24 = [v23 groupID];
-    LOBYTE(v27) = v13;
-    v49 = [(BMIntentEvent *)v31 initWithAbsoluteTime:v45 bundleId:v43 sourceId:v41 intentClass:v39 intentVerb:v48 intentType:v30 intentHandlingStatus:v9 interaction:v11 itemID:v12 donatedBySiri:v27 interactionDirection:v17 groupIdentifier:v24];
+    source4 = [eventCopy source];
+    groupID = [source4 groupID];
+    LOBYTE(v27) = bOOLValue;
+    v49 = [(BMIntentEvent *)v31 initWithAbsoluteTime:bundleID bundleId:sourceID sourceId:v41 intentClass:v39 intentVerb:integerValue intentType:integerValue2 intentHandlingStatus:v9 interaction:v11 itemID:itemID donatedBySiri:v27 interactionDirection:v17 groupIdentifier:groupID];
   }
 
   else
   {
-    v7 = __biome_log_for_category();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
+    metadata2 = __biome_log_for_category();
+    if (os_log_type_enabled(metadata2, OS_LOG_TYPE_INFO))
     {
-      v18 = [v3 source];
-      v19 = [v18 bundleID];
-      v20 = [v3 source];
-      v21 = [v20 sourceID];
+      source5 = [eventCopy source];
+      bundleID2 = [source5 bundleID];
+      source6 = [eventCopy source];
+      sourceID2 = [source6 sourceID];
       *buf = 138543618;
-      v51 = v19;
+      v51 = bundleID2;
       v52 = 2112;
-      v53 = v21;
-      _os_log_impl(&dword_1848EE000, v7, OS_LOG_TYPE_INFO, "nil interaction found on event bundle:%{public}@ source:%{}@", buf, 0x16u);
+      v53 = sourceID2;
+      _os_log_impl(&dword_1848EE000, metadata2, OS_LOG_TYPE_INFO, "nil interaction found on event bundle:%{public}@ source:%{}@", buf, 0x16u);
     }
 
     v49 = 0;
@@ -104,16 +104,16 @@
   return v49;
 }
 
-- (BMIntentEvent)initWithAbsoluteTime:(double)a3 bundleId:(id)a4 sourceId:(id)a5 intentClass:(id)a6 intentVerb:(id)a7 intentType:(int64_t)a8 intentHandlingStatus:(int64_t)a9 interaction:(id)a10 itemID:(id)a11 donatedBySiri:(BOOL)a12 interactionDirection:(int64_t)a13 groupIdentifier:(id)a14
+- (BMIntentEvent)initWithAbsoluteTime:(double)time bundleId:(id)id sourceId:(id)sourceId intentClass:(id)class intentVerb:(id)verb intentType:(int64_t)type intentHandlingStatus:(int64_t)status interaction:(id)self0 itemID:(id)self1 donatedBySiri:(BOOL)self2 interactionDirection:(int64_t)self3 groupIdentifier:(id)self4
 {
-  v20 = a4;
-  v21 = a5;
-  v22 = a6;
-  v23 = a7;
-  v24 = a10;
-  v25 = a11;
-  v26 = a14;
-  if (!v24)
+  idCopy = id;
+  sourceIdCopy = sourceId;
+  classCopy = class;
+  verbCopy = verb;
+  interactionCopy = interaction;
+  dCopy = d;
+  identifierCopy = identifier;
+  if (!interactionCopy)
   {
     [BMIntentEvent initWithAbsoluteTime:a2 bundleId:self sourceId:? intentClass:? intentVerb:? intentType:? intentHandlingStatus:? interaction:? itemID:? donatedBySiri:? interactionDirection:? groupIdentifier:?];
   }
@@ -124,38 +124,38 @@
   v28 = v27;
   if (v27)
   {
-    [(BMIntentEvent *)v27 setAbsoluteTimestamp:a3];
-    [(BMIntentEvent *)v28 setBundleID:v20];
-    [(BMIntentEvent *)v28 setSourceId:v21];
-    [(BMIntentEvent *)v28 setIntentClass:v22];
-    [(BMIntentEvent *)v28 setIntentVerb:v23];
+    [(BMIntentEvent *)v27 setAbsoluteTimestamp:time];
+    [(BMIntentEvent *)v28 setBundleID:idCopy];
+    [(BMIntentEvent *)v28 setSourceId:sourceIdCopy];
+    [(BMIntentEvent *)v28 setIntentClass:classCopy];
+    [(BMIntentEvent *)v28 setIntentVerb:verbCopy];
     [(BMIntentEvent *)v28 setIntentType:v31];
-    [(BMIntentEvent *)v28 setIntentHandlingStatus:a9];
-    [(BMIntentEvent *)v28 setInteraction:v24];
-    [(BMIntentEvent *)v28 setItemID:v25];
-    [(BMIntentEvent *)v28 setDonatedBySiri:a12];
-    [(BMIntentEvent *)v28 setInteractionDirection:a13];
-    [(BMIntentEvent *)v28 setGroupIdentifier:v26];
+    [(BMIntentEvent *)v28 setIntentHandlingStatus:status];
+    [(BMIntentEvent *)v28 setInteraction:interactionCopy];
+    [(BMIntentEvent *)v28 setItemID:dCopy];
+    [(BMIntentEvent *)v28 setDonatedBySiri:siri];
+    [(BMIntentEvent *)v28 setInteractionDirection:direction];
+    [(BMIntentEvent *)v28 setGroupIdentifier:identifierCopy];
   }
 
   return v28;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  v6 = a3;
-  if (a4 == 12)
+  dataCopy = data;
+  if (version == 12)
   {
-    v11 = BMIntentEvent_v12;
+    selfCopy = BMIntentEvent_v12;
 LABEL_10:
-    v10 = [[v11 alloc] initWithProtoData:v6];
+    v10 = [[selfCopy alloc] initWithProtoData:dataCopy];
     goto LABEL_16;
   }
 
-  if (a4 == 9)
+  if (version == 9)
   {
     v14 = 0;
-    v7 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:v6 error:&v14];
+    v7 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:dataCopy error:&v14];
     v8 = v7;
     if (v14)
     {
@@ -176,9 +176,9 @@ LABEL_10:
     goto LABEL_16;
   }
 
-  if ((a4 & 0xFFFFFFFE) == 0xA)
+  if ((version & 0xFFFFFFFE) == 0xA)
   {
-    v11 = a1;
+    selfCopy = self;
     goto LABEL_10;
   }
 
@@ -194,32 +194,32 @@ LABEL_16:
   return v10;
 }
 
-- (BOOL)checkAndReportDecodingFailureIfNeededForCFAbsoluteTime:(double)a3 key:(id)a4 coder:(id)a5 errorDomain:(id)a6 errorCode:(int64_t)a7
+- (BOOL)checkAndReportDecodingFailureIfNeededForCFAbsoluteTime:(double)time key:(id)key coder:(id)coder errorDomain:(id)domain errorCode:(int64_t)code
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (a3 == 0.0)
+  keyCopy = key;
+  coderCopy = coder;
+  domainCopy = domain;
+  if (time == 0.0)
   {
-    v15 = [v12 error];
+    error = [coderCopy error];
 
-    if (v15)
+    if (error)
     {
       v14 = 1;
       goto LABEL_7;
     }
 
-    if (([v12 containsValueForKey:v11] & 1) == 0)
+    if (([coderCopy containsValueForKey:keyCopy] & 1) == 0)
     {
       v16 = MEMORY[0x1E696ABC0];
-      v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to decode key %@", v11, *MEMORY[0x1E696A578]];
+      v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to decode key %@", keyCopy, *MEMORY[0x1E696A578]];
       v23[0] = v17;
       v14 = 1;
       v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:&v22 count:1];
-      v19 = [v16 errorWithDomain:v13 code:a7 userInfo:v18];
+      v19 = [v16 errorWithDomain:domainCopy code:code userInfo:v18];
 
-      [v12 failWithError:v19];
+      [coderCopy failWithError:v19];
       goto LABEL_7;
     }
   }
@@ -231,32 +231,32 @@ LABEL_7:
   return v14;
 }
 
-- (BOOL)checkAndReportDecodingFailureIfNeededForid:(id)a3 key:(id)a4 coder:(id)a5 errorDomain:(id)a6 errorCode:(int64_t)a7
+- (BOOL)checkAndReportDecodingFailureIfNeededForid:(id)forid key:(id)key coder:(id)coder errorDomain:(id)domain errorCode:(int64_t)code
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!a3)
+  keyCopy = key;
+  coderCopy = coder;
+  domainCopy = domain;
+  if (!forid)
   {
-    v15 = [v12 error];
+    error = [coderCopy error];
 
-    if (v15)
+    if (error)
     {
       v14 = 1;
       goto LABEL_7;
     }
 
-    if (([v12 containsValueForKey:v11] & 1) == 0)
+    if (([coderCopy containsValueForKey:keyCopy] & 1) == 0)
     {
       v16 = MEMORY[0x1E696ABC0];
-      v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to decode key %@", v11, *MEMORY[0x1E696A578]];
+      v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to decode key %@", keyCopy, *MEMORY[0x1E696A578]];
       v23[0] = v17;
       v14 = 1;
       v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:&v22 count:1];
-      v19 = [v16 errorWithDomain:v13 code:a7 userInfo:v18];
+      v19 = [v16 errorWithDomain:domainCopy code:code userInfo:v18];
 
-      [v12 failWithError:v19];
+      [coderCopy failWithError:v19];
       goto LABEL_7;
     }
   }
@@ -268,32 +268,32 @@ LABEL_7:
   return v14;
 }
 
-- (BOOL)checkAndReportDecodingFailureIfNeededForuint32_t:(unsigned int)a3 key:(id)a4 coder:(id)a5 errorDomain:(id)a6 errorCode:(int64_t)a7
+- (BOOL)checkAndReportDecodingFailureIfNeededForuint32_t:(unsigned int)foruint32_t key:(id)key coder:(id)coder errorDomain:(id)domain errorCode:(int64_t)code
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!a3)
+  keyCopy = key;
+  coderCopy = coder;
+  domainCopy = domain;
+  if (!foruint32_t)
   {
-    v15 = [v12 error];
+    error = [coderCopy error];
 
-    if (v15)
+    if (error)
     {
       v14 = 1;
       goto LABEL_7;
     }
 
-    if (([v12 containsValueForKey:v11] & 1) == 0)
+    if (([coderCopy containsValueForKey:keyCopy] & 1) == 0)
     {
       v16 = MEMORY[0x1E696ABC0];
-      v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to decode key %@", v11, *MEMORY[0x1E696A578]];
+      v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to decode key %@", keyCopy, *MEMORY[0x1E696A578]];
       v23[0] = v17;
       v14 = 1;
       v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:&v22 count:1];
-      v19 = [v16 errorWithDomain:v13 code:a7 userInfo:v18];
+      v19 = [v16 errorWithDomain:domainCopy code:code userInfo:v18];
 
-      [v12 failWithError:v19];
+      [coderCopy failWithError:v19];
       goto LABEL_7;
     }
   }
@@ -305,52 +305,52 @@ LABEL_7:
   return v14;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(BMIntentEvent *)self encodeAsProto];
-  [v4 encodeObject:v5 forKey:@"protoData"];
+  coderCopy = coder;
+  encodeAsProto = [(BMIntentEvent *)self encodeAsProto];
+  [coderCopy encodeObject:encodeAsProto forKey:@"protoData"];
 }
 
-- (BMIntentEvent)initWithCoder:(id)a3
+- (BMIntentEvent)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"protoData"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"protoData"];
   if (v5)
   {
     self = [(BMIntentEvent *)self initWithProtoData:v5];
-    v6 = self;
+    selfCopy2 = self;
   }
 
   else
   {
     v7 = objc_opt_class();
     v8 = NSStringFromClass(v7);
-    [v4 decodeDoubleForKey:@"absoluteTime"];
+    [coderCopy decodeDoubleForKey:@"absoluteTime"];
     v10 = v9;
-    if ([(BMIntentEvent *)self checkAndReportDecodingFailureIfNeededForCFAbsoluteTime:@"absoluteTime" key:v4 coder:v8 errorDomain:-1 errorCode:?])
+    if ([(BMIntentEvent *)self checkAndReportDecodingFailureIfNeededForCFAbsoluteTime:@"absoluteTime" key:coderCopy coder:v8 errorDomain:-1 errorCode:?])
     {
-      v6 = 0;
+      selfCopy2 = 0;
     }
 
     else
     {
-      v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleId"];
-      v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sourceId"];
-      v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"intentClass"];
-      v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"intentVerb"];
-      v19 = [v4 decodeIntegerForKey:@"intentType"];
-      v18 = [v4 decodeIntegerForKey:@"intentHandlingStatus"];
-      v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"interaction"];
-      v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"itemID"];
+      v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleId"];
+      v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sourceId"];
+      v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"intentClass"];
+      v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"intentVerb"];
+      v19 = [coderCopy decodeIntegerForKey:@"intentType"];
+      v18 = [coderCopy decodeIntegerForKey:@"intentHandlingStatus"];
+      v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"interaction"];
+      v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"itemID"];
       LOBYTE(v17) = 0;
       self = [(BMIntentEvent *)self initWithAbsoluteTime:v11 bundleId:v12 sourceId:v20 intentClass:v13 intentVerb:v19 intentType:v18 intentHandlingStatus:v10 interaction:v14 itemID:v15 donatedBySiri:v17 interactionDirection:0 groupIdentifier:0];
 
-      v6 = self;
+      selfCopy2 = self;
     }
   }
 
-  return v6;
+  return selfCopy2;
 }
 
 - (unint64_t)hash
@@ -359,37 +359,37 @@ LABEL_7:
   [(BMIntentEvent *)self absoluteTimestamp];
   v26 = [v3 numberWithDouble:?];
   v4 = [v26 hash];
-  v25 = [(BMIntentEvent *)self bundleID];
-  v5 = [v25 hash];
-  v24 = [(BMIntentEvent *)self sourceId];
-  v6 = v5 ^ [v24 hash];
-  v23 = [(BMIntentEvent *)self intentClass];
-  v7 = v6 ^ [v23 hash];
-  v8 = [(BMIntentEvent *)self intentVerb];
-  v9 = v7 ^ [v8 hash] ^ v4;
+  bundleID = [(BMIntentEvent *)self bundleID];
+  v5 = [bundleID hash];
+  sourceId = [(BMIntentEvent *)self sourceId];
+  v6 = v5 ^ [sourceId hash];
+  intentClass = [(BMIntentEvent *)self intentClass];
+  v7 = v6 ^ [intentClass hash];
+  intentVerb = [(BMIntentEvent *)self intentVerb];
+  v9 = v7 ^ [intentVerb hash] ^ v4;
   v10 = [MEMORY[0x1E696AD98] numberWithInteger:{-[BMIntentEvent intentType](self, "intentType")}];
   v11 = [v10 hash];
   v12 = [MEMORY[0x1E696AD98] numberWithInteger:{-[BMIntentEvent intentHandlingStatus](self, "intentHandlingStatus")}];
   v13 = v9 ^ v11 ^ [v12 hash];
-  v14 = [(BMIntentEvent *)self interaction];
-  v15 = [v14 hash];
+  interaction = [(BMIntentEvent *)self interaction];
+  v15 = [interaction hash];
   v16 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMIntentEvent donatedBySiri](self, "donatedBySiri")}];
   v17 = v15 ^ [v16 hash];
   v18 = [MEMORY[0x1E696AD98] numberWithInteger:{-[BMIntentEvent interactionDirection](self, "interactionDirection")}];
   v19 = v13 ^ v17 ^ [v18 hash];
-  v20 = [(BMIntentEvent *)self groupIdentifier];
-  v21 = [v20 hash];
+  groupIdentifier = [(BMIntentEvent *)self groupIdentifier];
+  v21 = [groupIdentifier hash];
 
   return v19 ^ v21;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v7 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v7;
+    v8 = equalCopy;
     [(BMIntentEvent *)self absoluteTimestamp];
     v10 = v9;
     [v8 absoluteTimestamp];
@@ -401,24 +401,24 @@ LABEL_44:
       goto LABEL_45;
     }
 
-    v12 = [(BMIntentEvent *)self bundleID];
-    if (v12 || ([v8 bundleID], (v57 = objc_claimAutoreleasedReturnValue()) != 0))
+    bundleID = [(BMIntentEvent *)self bundleID];
+    if (bundleID || ([v8 bundleID], (v57 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v3 = [(BMIntentEvent *)self bundleID];
-      v4 = [v8 bundleID];
-      if (([v3 isEqual:v4] & 1) == 0)
+      bundleID2 = [(BMIntentEvent *)self bundleID];
+      bundleID3 = [v8 bundleID];
+      if (([bundleID2 isEqual:bundleID3] & 1) == 0)
       {
 
         v14 = 0;
 LABEL_41:
-        if (!v12)
+        if (!bundleID)
         {
         }
 
         goto LABEL_44;
       }
 
-      v54 = v3;
+      v54 = bundleID2;
       v13 = 1;
     }
 
@@ -428,13 +428,13 @@ LABEL_41:
       v13 = 0;
     }
 
-    v15 = [(BMIntentEvent *)self intentClass];
-    if (v15 || ([v8 intentClass], (v52 = objc_claimAutoreleasedReturnValue()) != 0))
+    intentClass = [(BMIntentEvent *)self intentClass];
+    if (intentClass || ([v8 intentClass], (v52 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v16 = [(BMIntentEvent *)self intentClass];
-      v5 = [v8 intentClass];
-      v56 = v16;
-      if (![v16 isEqual:v5])
+      intentClass2 = [(BMIntentEvent *)self intentClass];
+      intentClass3 = [v8 intentClass];
+      v56 = intentClass2;
+      if (![intentClass2 isEqual:intentClass3])
       {
         v14 = 0;
         goto LABEL_36;
@@ -449,26 +449,26 @@ LABEL_41:
       v53 = 0;
     }
 
-    v55 = [(BMIntentEvent *)self intentVerb];
-    if (!v55)
+    intentVerb = [(BMIntentEvent *)self intentVerb];
+    if (!intentVerb)
     {
-      v47 = [v8 intentVerb];
-      if (!v47)
+      intentVerb2 = [v8 intentVerb];
+      if (!intentVerb2)
       {
-        v49 = v5;
+        v49 = intentClass3;
         v17 = v13;
         v19 = v57;
-        v47 = 0;
+        intentVerb2 = 0;
         v51 = 0;
 LABEL_26:
-        v21 = [(BMIntentEvent *)self intentHandlingStatus];
+        intentHandlingStatus = [(BMIntentEvent *)self intentHandlingStatus];
         v57 = v19;
-        if (v21 != [v8 intentHandlingStatus])
+        if (intentHandlingStatus != [v8 intentHandlingStatus])
         {
           v14 = 0;
           v13 = v17;
           v23 = v48;
-          v5 = v49;
+          intentClass3 = v49;
           if ((v51 & 1) == 0)
           {
             goto LABEL_33;
@@ -477,19 +477,19 @@ LABEL_26:
           goto LABEL_32;
         }
 
-        v45 = [(BMIntentEvent *)self interaction];
-        if (v45 || ([v8 interaction], (v40 = objc_claimAutoreleasedReturnValue()) != 0))
+        interaction = [(BMIntentEvent *)self interaction];
+        if (interaction || ([v8 interaction], (v40 = objc_claimAutoreleasedReturnValue()) != 0))
         {
-          v22 = [(BMIntentEvent *)self interaction];
-          v43 = [v8 interaction];
-          v44 = v22;
+          interaction2 = [(BMIntentEvent *)self interaction];
+          interaction3 = [v8 interaction];
+          v44 = interaction2;
           v13 = v17;
-          if (![v22 isEqual:?])
+          if (![interaction2 isEqual:?])
           {
             v14 = 0;
             v23 = v48;
-            v5 = v49;
-            v26 = v45;
+            intentClass3 = v49;
+            v26 = interaction;
 LABEL_69:
 
             goto LABEL_70;
@@ -505,24 +505,24 @@ LABEL_69:
           v13 = v17;
         }
 
-        v41 = [(BMIntentEvent *)self itemID];
-        if (v41 || ([v8 itemID], (v38 = objc_claimAutoreleasedReturnValue()) != 0))
+        itemID = [(BMIntentEvent *)self itemID];
+        if (itemID || ([v8 itemID], (v38 = objc_claimAutoreleasedReturnValue()) != 0))
         {
-          v27 = [(BMIntentEvent *)self itemID];
-          v3 = [v8 itemID];
-          v5 = v49;
-          if (([v27 isEqual:v3] & 1) == 0)
+          itemID2 = [(BMIntentEvent *)self itemID];
+          bundleID2 = [v8 itemID];
+          intentClass3 = v49;
+          if (([itemID2 isEqual:bundleID2] & 1) == 0)
           {
 
-            v28 = v41;
-            if (!v41)
+            v28 = itemID;
+            if (!itemID)
             {
               v28 = v38;
             }
 
             v14 = 0;
             v23 = v48;
-            v26 = v45;
+            v26 = interaction;
             if (v42)
             {
               goto LABEL_69;
@@ -531,7 +531,7 @@ LABEL_69:
             goto LABEL_70;
           }
 
-          v37 = v27;
+          v37 = itemID2;
           v39 = 1;
         }
 
@@ -539,11 +539,11 @@ LABEL_69:
         {
           v38 = 0;
           v39 = 0;
-          v5 = v49;
+          intentClass3 = v49;
         }
 
-        v29 = [(BMIntentEvent *)self donatedBySiri];
-        if (v29 != [v8 donatedBySiri] || (v30 = -[BMIntentEvent interactionDirection](self, "interactionDirection"), v30 != objc_msgSend(v8, "interactionDirection")))
+        donatedBySiri = [(BMIntentEvent *)self donatedBySiri];
+        if (donatedBySiri != [v8 donatedBySiri] || (v30 = -[BMIntentEvent interactionDirection](self, "interactionDirection"), v30 != objc_msgSend(v8, "interactionDirection")))
         {
           v14 = 0;
           if (!v39)
@@ -554,19 +554,19 @@ LABEL_69:
           goto LABEL_65;
         }
 
-        v31 = [(BMIntentEvent *)self groupIdentifier];
-        if (v31 || ([v8 groupIdentifier], (v35 = objc_claimAutoreleasedReturnValue()) != 0))
+        groupIdentifier = [(BMIntentEvent *)self groupIdentifier];
+        if (groupIdentifier || ([v8 groupIdentifier], (v35 = objc_claimAutoreleasedReturnValue()) != 0))
         {
-          v50 = v3;
-          v36 = [(BMIntentEvent *)self groupIdentifier];
+          v50 = bundleID2;
+          groupIdentifier2 = [(BMIntentEvent *)self groupIdentifier];
           [v8 groupIdentifier];
-          v33 = v32 = v31;
-          v14 = [v36 isEqual:v33];
+          v33 = v32 = groupIdentifier;
+          v14 = [groupIdentifier2 isEqual:v33];
 
           if (v32)
           {
 
-            v3 = v50;
+            bundleID2 = v50;
             if ((v39 & 1) == 0)
             {
               goto LABEL_66;
@@ -576,7 +576,7 @@ LABEL_69:
           }
 
           v34 = v35;
-          v3 = v50;
+          bundleID2 = v50;
         }
 
         else
@@ -588,12 +588,12 @@ LABEL_69:
         if ((v39 & 1) == 0)
         {
 LABEL_66:
-          if (!v41)
+          if (!itemID)
           {
           }
 
           v23 = v48;
-          v26 = v45;
+          v26 = interaction;
           if (v42)
           {
             goto LABEL_69;
@@ -607,8 +607,8 @@ LABEL_70:
           if (!v51)
           {
 LABEL_33:
-            v24 = v55;
-            if (!v55)
+            v24 = intentVerb;
+            if (!intentVerb)
             {
 
               v24 = 0;
@@ -634,22 +634,22 @@ LABEL_65:
     }
 
     v17 = v13;
-    v18 = [(BMIntentEvent *)self intentVerb];
-    v3 = [v8 intentVerb];
-    if ([v18 isEqual:v3])
+    intentVerb3 = [(BMIntentEvent *)self intentVerb];
+    bundleID2 = [v8 intentVerb];
+    if ([intentVerb3 isEqual:bundleID2])
     {
-      v48 = v3;
-      v49 = v5;
-      v46 = v18;
+      v48 = bundleID2;
+      v49 = intentClass3;
+      v46 = intentVerb3;
       v19 = v57;
       v51 = 1;
       goto LABEL_26;
     }
 
-    v20 = v55;
-    if (!v55)
+    v20 = intentVerb;
+    if (!intentVerb)
     {
-      v20 = v47;
+      v20 = intentVerb2;
     }
 
     v14 = 0;
@@ -662,7 +662,7 @@ LABEL_65:
 LABEL_36:
 
 LABEL_37:
-    if (!v15)
+    if (!intentClass)
     {
     }
 
@@ -681,24 +681,24 @@ LABEL_45:
 
 - (id)encodeAsProto
 {
-  v2 = [(BMIntentEvent *)self proto];
-  v3 = [v2 data];
+  proto = [(BMIntentEvent *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (BMIntentEvent)initWithProto:(id)a3
+- (BMIntentEvent)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (v4)
+  protoCopy = proto;
+  if (protoCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = protoCopy;
       v23 = typeWithBMPBIntentType([v5 intentType]);
-      v6 = [v5 intentHandlingStatus];
-      if (v6 >= 7)
+      intentHandlingStatus = [v5 intentHandlingStatus];
+      if (intentHandlingStatus >= 7)
       {
         v8 = __biome_log_for_category();
         if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -711,24 +711,24 @@ LABEL_45:
 
       else
       {
-        v22 = v6;
+        v22 = intentHandlingStatus;
       }
 
       v21 = interactionDirectionWithPB([v5 interactionDirection]);
       [v5 absoluteTimestamp];
       v10 = v9;
-      v20 = [v5 bundleID];
-      v11 = [v5 sourceId];
-      v12 = [v5 intentClass];
-      v13 = [v5 intentVerb];
-      v14 = [v5 interaction];
-      v15 = [v5 itemID];
-      v16 = [v5 donatedBySiri];
-      v17 = [v5 groupIdentifier];
-      LOBYTE(v19) = v16;
-      self = [(BMIntentEvent *)self initWithAbsoluteTime:v20 bundleId:v11 sourceId:v12 intentClass:v13 intentVerb:v23 intentType:v22 intentHandlingStatus:v10 interaction:v14 itemID:v15 donatedBySiri:v19 interactionDirection:v21 groupIdentifier:v17];
+      bundleID = [v5 bundleID];
+      sourceId = [v5 sourceId];
+      intentClass = [v5 intentClass];
+      intentVerb = [v5 intentVerb];
+      interaction = [v5 interaction];
+      itemID = [v5 itemID];
+      donatedBySiri = [v5 donatedBySiri];
+      groupIdentifier = [v5 groupIdentifier];
+      LOBYTE(v19) = donatedBySiri;
+      self = [(BMIntentEvent *)self initWithAbsoluteTime:bundleID bundleId:sourceId sourceId:intentClass intentClass:intentVerb intentVerb:v23 intentType:v22 intentHandlingStatus:v10 interaction:interaction itemID:itemID donatedBySiri:v19 interactionDirection:v21 groupIdentifier:groupIdentifier];
 
-      v7 = self;
+      selfCopy = self;
     }
 
     else
@@ -739,35 +739,35 @@ LABEL_45:
         [BMIntentEvent initWithProto:];
       }
 
-      v7 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (BMIntentEvent)initWithProtoData:(id)a3
+- (BMIntentEvent)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[BMPBIntentEvent alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[BMPBIntentEvent alloc] initWithData:dataCopy];
 
     self = [(BMIntentEvent *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)proto
@@ -775,23 +775,23 @@ LABEL_45:
   v3 = objc_opt_new();
   [(BMIntentEvent *)self absoluteTimestamp];
   [v3 setAbsoluteTimestamp:?];
-  v4 = [(BMIntentEvent *)self bundleID];
-  [v3 setBundleID:v4];
+  bundleID = [(BMIntentEvent *)self bundleID];
+  [v3 setBundleID:bundleID];
 
-  v5 = [(BMIntentEvent *)self sourceId];
-  [v3 setSourceId:v5];
+  sourceId = [(BMIntentEvent *)self sourceId];
+  [v3 setSourceId:sourceId];
 
-  v6 = [(BMIntentEvent *)self intentClass];
-  [v3 setIntentClass:v6];
+  intentClass = [(BMIntentEvent *)self intentClass];
+  [v3 setIntentClass:intentClass];
 
-  v7 = [(BMIntentEvent *)self intentVerb];
-  [v3 setIntentVerb:v7];
+  intentVerb = [(BMIntentEvent *)self intentVerb];
+  [v3 setIntentVerb:intentVerb];
 
-  v8 = [(BMIntentEvent *)self intentType];
-  v9 = v8;
-  if (v8 > 1)
+  intentType = [(BMIntentEvent *)self intentType];
+  v9 = intentType;
+  if (intentType > 1)
   {
-    if (v8 != 2 && v8 != 3)
+    if (intentType != 2 && intentType != 3)
     {
       goto LABEL_18;
     }
@@ -801,7 +801,7 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  if (v8 < 2)
+  if (intentType < 2)
   {
     goto LABEL_6;
   }
@@ -816,10 +816,10 @@ LABEL_18:
   v9 = 0;
   v10 = 1;
 LABEL_7:
-  v11 = [(BMIntentEvent *)self intentHandlingStatus];
-  if (v11 <= 2)
+  intentHandlingStatus = [(BMIntentEvent *)self intentHandlingStatus];
+  if (intentHandlingStatus <= 2)
   {
-    switch(v11)
+    switch(intentHandlingStatus)
     {
       case 0:
         v12 = 0;
@@ -835,9 +835,9 @@ LABEL_7:
 
   else
   {
-    if (v11 <= 4)
+    if (intentHandlingStatus <= 4)
     {
-      if (v11 == 3)
+      if (intentHandlingStatus == 3)
       {
         v12 = 3;
       }
@@ -850,13 +850,13 @@ LABEL_7:
       goto LABEL_28;
     }
 
-    if (v11 == 5)
+    if (intentHandlingStatus == 5)
     {
       v12 = 5;
       goto LABEL_28;
     }
 
-    if (v11 == 6)
+    if (intentHandlingStatus == 6)
     {
       v12 = 6;
       goto LABEL_28;
@@ -872,8 +872,8 @@ LABEL_7:
   v12 = 0;
   v10 = 1;
 LABEL_28:
-  v15 = [(BMIntentEvent *)self interactionDirection];
-  if (v15 >= 4)
+  interactionDirection = [(BMIntentEvent *)self interactionDirection];
+  if (interactionDirection >= 4)
   {
     v20 = __biome_log_for_category();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -886,16 +886,16 @@ LABEL_28:
   {
     [v3 setIntentType:v9];
     [v3 setIntentHandlingStatus:v12];
-    v16 = [(BMIntentEvent *)self interaction];
-    [v3 setInteraction:v16];
+    interaction = [(BMIntentEvent *)self interaction];
+    [v3 setInteraction:interaction];
 
-    v17 = [(BMIntentEvent *)self itemID];
-    [v3 setItemID:v17];
+    itemID = [(BMIntentEvent *)self itemID];
+    [v3 setItemID:itemID];
 
     [v3 setDonatedBySiri:{-[BMIntentEvent donatedBySiri](self, "donatedBySiri")}];
-    [v3 setInteractionDirection:v15];
-    v18 = [(BMIntentEvent *)self groupIdentifier];
-    [v3 setGroupIdentifier:v18];
+    [v3 setInteractionDirection:interactionDirection];
+    groupIdentifier = [(BMIntentEvent *)self groupIdentifier];
+    [v3 setGroupIdentifier:groupIdentifier];
 
     v19 = v3;
     goto LABEL_35;

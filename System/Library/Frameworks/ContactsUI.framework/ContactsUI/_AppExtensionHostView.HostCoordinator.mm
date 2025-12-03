@@ -1,16 +1,16 @@
 @interface _AppExtensionHostView.HostCoordinator
 - (_TtCV10ContactsUI21_AppExtensionHostView15HostCoordinator)init;
-- (void)hostViewControllerDidActivate:(id)a3;
+- (void)hostViewControllerDidActivate:(id)activate;
 - (void)hostViewControllerWillDeactivate:error:;
 @end
 
 @implementation _AppExtensionHostView.HostCoordinator
 
-- (void)hostViewControllerDidActivate:(id)a3
+- (void)hostViewControllerDidActivate:(id)activate
 {
-  v4 = a3;
-  v5 = self;
-  sub_199AF9BE4(v4);
+  activateCopy = activate;
+  selfCopy = self;
+  sub_199AF9BE4(activateCopy);
 }
 
 - (_TtCV10ContactsUI21_AppExtensionHostView15HostCoordinator)init

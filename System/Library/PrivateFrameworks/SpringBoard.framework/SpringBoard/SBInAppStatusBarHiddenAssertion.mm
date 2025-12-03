@@ -1,26 +1,26 @@
 @interface SBInAppStatusBarHiddenAssertion
-- (SBInAppStatusBarHiddenAssertion)initWithIdentifier:(id)a3 forReason:(id)a4 invalidationBlock:(id)a5;
+- (SBInAppStatusBarHiddenAssertion)initWithIdentifier:(id)identifier forReason:(id)reason invalidationBlock:(id)block;
 - (void)dealloc;
-- (void)invalidateWithAnimation:(BOOL)a3;
+- (void)invalidateWithAnimation:(BOOL)animation;
 @end
 
 @implementation SBInAppStatusBarHiddenAssertion
 
-- (SBInAppStatusBarHiddenAssertion)initWithIdentifier:(id)a3 forReason:(id)a4 invalidationBlock:(id)a5
+- (SBInAppStatusBarHiddenAssertion)initWithIdentifier:(id)identifier forReason:(id)reason invalidationBlock:(id)block
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v9)
+  identifierCopy = identifier;
+  reasonCopy = reason;
+  blockCopy = block;
+  if (identifierCopy)
   {
-    if (v10)
+    if (reasonCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_8:
     [SBInAppStatusBarHiddenAssertion initWithIdentifier:a2 forReason:self invalidationBlock:?];
-    if (v11)
+    if (blockCopy)
     {
       goto LABEL_4;
     }
@@ -29,13 +29,13 @@ LABEL_8:
   }
 
   [SBInAppStatusBarHiddenAssertion initWithIdentifier:a2 forReason:self invalidationBlock:?];
-  if (!v10)
+  if (!reasonCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_3:
-  if (v11)
+  if (blockCopy)
   {
     goto LABEL_4;
   }
@@ -48,15 +48,15 @@ LABEL_4:
   v12 = [(SBInAppStatusBarHiddenAssertion *)&v20 init];
   if (v12)
   {
-    v13 = [v9 copy];
+    v13 = [identifierCopy copy];
     identifier = v12->_identifier;
     v12->_identifier = v13;
 
-    v15 = [v10 copy];
+    v15 = [reasonCopy copy];
     reason = v12->_reason;
     v12->_reason = v15;
 
-    v17 = [v11 copy];
+    v17 = [blockCopy copy];
     invalidationBlock = v12->_invalidationBlock;
     v12->_invalidationBlock = v17;
   }
@@ -72,12 +72,12 @@ LABEL_4:
   [(SBInAppStatusBarHiddenAssertion *)&v3 dealloc];
 }
 
-- (void)invalidateWithAnimation:(BOOL)a3
+- (void)invalidateWithAnimation:(BOOL)animation
 {
   invalidationBlock = self->_invalidationBlock;
   if (invalidationBlock)
   {
-    invalidationBlock[2](invalidationBlock, self, a3);
+    invalidationBlock[2](invalidationBlock, self, animation);
     v5 = self->_invalidationBlock;
     self->_invalidationBlock = 0;
   }

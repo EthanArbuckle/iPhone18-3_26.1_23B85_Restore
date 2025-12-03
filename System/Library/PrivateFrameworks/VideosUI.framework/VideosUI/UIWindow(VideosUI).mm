@@ -24,34 +24,34 @@
 
 + (id)vui_keyWindow
 {
-  v0 = [MEMORY[0x1E69DD2E8] _applicationKeyWindow];
-  if (!v0)
+  _applicationKeyWindow = [MEMORY[0x1E69DD2E8] _applicationKeyWindow];
+  if (!_applicationKeyWindow)
   {
-    v1 = [MEMORY[0x1E69DC668] sharedApplication];
-    v2 = [v1 delegate];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+    delegate = [mEMORY[0x1E69DC668] delegate];
     v3 = objc_opt_respondsToSelector();
 
     if (v3)
     {
-      v4 = [MEMORY[0x1E69DC668] sharedApplication];
-      v5 = [v4 delegate];
-      v0 = [v5 window];
+      mEMORY[0x1E69DC668]2 = [MEMORY[0x1E69DC668] sharedApplication];
+      delegate2 = [mEMORY[0x1E69DC668]2 delegate];
+      _applicationKeyWindow = [delegate2 window];
     }
 
     else
     {
-      v0 = 0;
+      _applicationKeyWindow = 0;
     }
   }
 
-  return v0;
+  return _applicationKeyWindow;
 }
 
 + (double)vui_padding
 {
   v2 = objc_opt_class();
-  v3 = [a1 vui_keyWindow];
-  [v3 bounds];
+  vui_keyWindow = [self vui_keyWindow];
+  [vui_keyWindow bounds];
   [v2 vui_paddingForWindowWidth:CGRectGetWidth(v7)];
   v5 = v4;
 
@@ -60,8 +60,8 @@
 
 + (uint64_t)vui_paddingForWindowWidth:()VideosUI
 {
-  v2 = [objc_opt_class() vui_currentSizeClassForWindowWidth:a1];
-  [objc_opt_class() _safeAreaInsetsForDeviceWithWindowWidth:a1];
+  v2 = [objc_opt_class() vui_currentSizeClassForWindowWidth:self];
+  [objc_opt_class() _safeAreaInsetsForDeviceWithWindowWidth:self];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -99,8 +99,8 @@
 + (double)vui_itemWidthForGridStyle:()VideosUI gridType:numGridColumns:
 {
   v9 = objc_opt_class();
-  v10 = [a1 vui_keyWindow];
-  [v10 bounds];
+  vui_keyWindow = [self vui_keyWindow];
+  [vui_keyWindow bounds];
   [v9 vui_itemWidthForGridStyle:a3 gridType:a4 numGridColumns:a5 windowWidth:CGRectGetWidth(v14)];
   v12 = v11;
 
@@ -109,7 +109,7 @@
 
 + (uint64_t)vui_itemWidthForGridStyle:()VideosUI gridType:numGridColumns:windowWidth:
 {
-  v10 = [objc_opt_class() vui_currentSizeClassForWindowWidth:a1];
+  v10 = [objc_opt_class() vui_currentSizeClassForWindowWidth:self];
   if (a4 == 22)
   {
     v11 = *MEMORY[0x1E69DDCE0];
@@ -120,7 +120,7 @@
 
   else
   {
-    [objc_opt_class() vui_paddingForWindowWidth:a1];
+    [objc_opt_class() vui_paddingForWindowWidth:self];
     v11 = v15;
     v12 = v16;
     v13 = v17;
@@ -129,7 +129,7 @@
 
   v19 = objc_opt_class();
 
-  return [v19 _vui_itemWidthForGridStyle:a4 gridType:a5 numGridColumns:a6 windowWidth:v10 sizeClass:a1 padding:{v11, v12, v13, v14}];
+  return [v19 _vui_itemWidthForGridStyle:a4 gridType:a5 numGridColumns:a6 windowWidth:v10 sizeClass:self padding:{v11, v12, v13, v14}];
 }
 
 + (double)_vui_itemWidthForGridStyle:()VideosUI gridType:numGridColumns:windowWidth:sizeClass:padding:
@@ -148,14 +148,14 @@
     v22 = v21;
   }
 
-  return floor(v19 * (a10 - 1) + (a1 - (a3 + a5) - (v22 - 1) * v19) / v20 * a10);
+  return floor(v19 * (a10 - 1) + (self - (a3 + a5) - (v22 - 1) * v19) / v20 * a10);
 }
 
 + (double)vui_collectionInteritemSpace:()VideosUI gridType:
 {
   v7 = objc_opt_class();
-  v8 = [a1 vui_keyWindow];
-  [v8 bounds];
+  vui_keyWindow = [self vui_keyWindow];
+  [vui_keyWindow bounds];
   [v7 vui_collectionInteritemSpace:a3 gridType:a4 windowWidth:CGRectGetWidth(v12)];
   v10 = v9;
 
@@ -164,7 +164,7 @@
 
 + (uint64_t)vui_collectionInteritemSpace:()VideosUI gridType:windowWidth:
 {
-  v6 = [objc_opt_class() vui_currentSizeClassForWindowWidth:a1];
+  v6 = [objc_opt_class() vui_currentSizeClassForWindowWidth:self];
   v7 = objc_opt_class();
 
   return [v7 _vui_interitemSpaceForSizeClass:v6 gridType:a5];
@@ -173,8 +173,8 @@
 + (uint64_t)vui_currentSizeClass
 {
   v2 = objc_opt_class();
-  v3 = [a1 vui_keyWindow];
-  [v3 bounds];
+  vui_keyWindow = [self vui_keyWindow];
+  [vui_keyWindow bounds];
   v4 = [v2 vui_currentSizeClassForWindowWidth:CGRectGetWidth(v6)];
 
   return v4;
@@ -182,14 +182,14 @@
 
 + (uint64_t)vui_currentSizeClassForWindowWidth:()VideosUI
 {
-  [objc_opt_class() _safeAreaInsetsForDeviceWithWindowWidth:a1];
+  [objc_opt_class() _safeAreaInsetsForDeviceWithWindowWidth:self];
   v3 = v2;
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v10 = objc_opt_class();
 
-  return [v10 _vui_currentSizeClassForWindowWidth:a1 safeArea:{v3, v5, v7, v9}];
+  return [v10 _vui_currentSizeClassForWindowWidth:self safeArea:{v3, v5, v7, v9}];
 }
 
 + (uint64_t)_vui_currentSizeClassForWindowWidth:()VideosUI safeArea:
@@ -199,16 +199,16 @@
     return 7;
   }
 
-  v9 = [MEMORY[0x1E69DF6F0] isPad];
+  isPad = [MEMORY[0x1E69DF6F0] isPad];
   result = 0;
-  v10 = v9 == 0;
+  v10 = isPad == 0;
   v11 = 3;
   if (v10)
   {
     v11 = 0;
   }
 
-  v12 = a1 - (a3 + a5);
+  v12 = self - (a3 + a5);
   if (v12 > 374.0)
   {
     if (v12 < 375.0 || v12 > 460.0)
@@ -266,13 +266,13 @@
 
 + (uint64_t)vui_interfaceOrientation
 {
-  v0 = [MEMORY[0x1E69DC668] sharedApplication];
-  v1 = [v0 windows];
-  v2 = [v1 firstObject];
-  v3 = [v2 windowScene];
-  v4 = [v3 interfaceOrientation];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  windows = [mEMORY[0x1E69DC668] windows];
+  firstObject = [windows firstObject];
+  windowScene = [firstObject windowScene];
+  interfaceOrientation = [windowScene interfaceOrientation];
 
-  return v4;
+  return interfaceOrientation;
 }
 
 + (double)_numColumnsForGridStyle:()VideosUI gridType:sizeClass:

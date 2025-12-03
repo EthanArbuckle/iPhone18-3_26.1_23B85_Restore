@@ -1,19 +1,19 @@
 @interface SUUIItemBrowseTableViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation SUUIItemBrowseTableViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SUUIItemBrowseTableViewCell" hasInstanceMethod:@"layout" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SUUIItemBrowseCellLayout" hasInstanceMethod:@"category" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SUUIItemBrowseCellLayout" hasInstanceMethod:@"numberOfUserRatings" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"SUUIItemBrowseCellLayout" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SUUIItemBrowseCellLayout" hasInstanceMethod:@"indexNumberString" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SUUIItemBrowseCellLayout" hasInstanceVariable:@"_userRating" withType:"d"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SUUIItemBrowseTableViewCell" hasInstanceMethod:@"layout" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SUUIItemBrowseCellLayout" hasInstanceMethod:@"category" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SUUIItemBrowseCellLayout" hasInstanceMethod:@"numberOfUserRatings" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"SUUIItemBrowseCellLayout" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SUUIItemBrowseCellLayout" hasInstanceMethod:@"indexNumberString" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SUUIItemBrowseCellLayout" hasInstanceVariable:@"_userRating" withType:"d"];
 }
 
 - (id)accessibilityLabel

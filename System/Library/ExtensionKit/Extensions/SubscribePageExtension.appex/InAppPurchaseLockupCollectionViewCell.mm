@@ -1,11 +1,11 @@
 @interface InAppPurchaseLockupCollectionViewCell
-- (_TtC22SubscribePageExtension37InAppPurchaseLockupCollectionViewCell)initWithCoder:(id)a3;
+- (_TtC22SubscribePageExtension37InAppPurchaseLockupCollectionViewCell)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
 @implementation InAppPurchaseLockupCollectionViewCell
 
-- (_TtC22SubscribePageExtension37InAppPurchaseLockupCollectionViewCell)initWithCoder:(id)a3
+- (_TtC22SubscribePageExtension37InAppPurchaseLockupCollectionViewCell)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC22SubscribePageExtension37InAppPurchaseLockupCollectionViewCell_itemLayoutContext;
   v5 = sub_1007469A4();
@@ -23,7 +23,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_100701208();
 }
 

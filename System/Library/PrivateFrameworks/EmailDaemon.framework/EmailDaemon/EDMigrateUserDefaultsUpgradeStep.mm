@@ -12,8 +12,8 @@
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [a1 propertiesToMigrate];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  propertiesToMigrate = [self propertiesToMigrate];
+  v3 = [propertiesToMigrate countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = *v9;
@@ -24,14 +24,14 @@
       {
         if (*v9 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(propertiesToMigrate);
         }
 
         [MEMORY[0x1E695E000] em_migrateDefault:*(*(&v8 + 1) + 8 * v5++)];
       }
 
       while (v3 != v5);
-      v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v3 = [propertiesToMigrate countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v3);

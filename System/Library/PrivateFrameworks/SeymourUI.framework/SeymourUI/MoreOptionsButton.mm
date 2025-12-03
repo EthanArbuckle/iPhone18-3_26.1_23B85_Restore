@@ -1,5 +1,5 @@
 @interface MoreOptionsButton
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5;
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator;
 - (void)layoutSubviews;
 @end
 
@@ -19,15 +19,15 @@
   }
 }
 
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator
 {
   v13.receiver = self;
   v13.super_class = type metadata accessor for MoreOptionsButton();
-  v8 = a3;
-  v9 = a4;
+  interactionCopy = interaction;
+  configurationCopy = configuration;
   v10 = v13.receiver;
   swift_unknownObjectRetain();
-  [(MoreOptionsButton *)&v13 contextMenuInteraction:v8 willEndForConfiguration:v9 animator:a5];
+  [(MoreOptionsButton *)&v13 contextMenuInteraction:interactionCopy willEndForConfiguration:configurationCopy animator:animator];
   v11 = *&v10[OBJC_IVAR____TtC9SeymourUI17MoreOptionsButton_onMenuDismissed];
   if (v11)
   {

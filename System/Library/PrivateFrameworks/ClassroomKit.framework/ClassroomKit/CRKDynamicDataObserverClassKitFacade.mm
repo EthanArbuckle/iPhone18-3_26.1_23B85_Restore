@@ -1,12 +1,12 @@
 @interface CRKDynamicDataObserverClassKitFacade
-+ (id)dynamicDataObserverFacadeWithClassKitFacade:(id)a3 expectedUserRole:(int64_t)a4;
-- (CRKDynamicDataObserverClassKitFacade)initWithClassKitFacade:(id)a3 expectedUserRole:(int64_t)a4;
-- (void)addDataObserver:(id)a3;
++ (id)dynamicDataObserverFacadeWithClassKitFacade:(id)facade expectedUserRole:(int64_t)role;
+- (CRKDynamicDataObserverClassKitFacade)initWithClassKitFacade:(id)facade expectedUserRole:(int64_t)role;
+- (void)addDataObserver:(id)observer;
 - (void)dealloc;
 - (void)deregisterDataObservers;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)registerDataObservers;
-- (void)removeDataObserver:(id)a3;
+- (void)removeDataObserver:(id)observer;
 - (void)startObservingCurrentUser;
 - (void)stopObservingCurrentUser;
 - (void)updateCurrentUserState;
@@ -23,31 +23,31 @@
   [(CRKDynamicDataObserverClassKitFacade *)&v3 dealloc];
 }
 
-+ (id)dynamicDataObserverFacadeWithClassKitFacade:(id)a3 expectedUserRole:(int64_t)a4
++ (id)dynamicDataObserverFacadeWithClassKitFacade:(id)facade expectedUserRole:(int64_t)role
 {
-  v5 = a3;
-  v6 = [objc_alloc(objc_opt_class()) initWithClassKitFacade:v5 expectedUserRole:a4];
+  facadeCopy = facade;
+  v6 = [objc_alloc(objc_opt_class()) initWithClassKitFacade:facadeCopy expectedUserRole:role];
 
   [v6 startObservingCurrentUser];
 
   return v6;
 }
 
-- (CRKDynamicDataObserverClassKitFacade)initWithClassKitFacade:(id)a3 expectedUserRole:(int64_t)a4
+- (CRKDynamicDataObserverClassKitFacade)initWithClassKitFacade:(id)facade expectedUserRole:(int64_t)role
 {
-  v6 = a3;
+  facadeCopy = facade;
   v14.receiver = self;
   v14.super_class = CRKDynamicDataObserverClassKitFacade;
-  v7 = [(CRKClassKitFacadeDecoratorBase *)&v14 initWithClassKitFacade:v6];
+  v7 = [(CRKClassKitFacadeDecoratorBase *)&v14 initWithClassKitFacade:facadeCopy];
   v8 = v7;
   if (v7)
   {
-    v7->_expectedUserRole = a4;
+    v7->_expectedUserRole = role;
     v9 = objc_opt_new();
     dataObservers = v8->_dataObservers;
     v8->_dataObservers = v9;
 
-    v11 = [[CRKClassKitCurrentUserProvider alloc] initWithClassKitFacade:v6];
+    v11 = [[CRKClassKitCurrentUserProvider alloc] initWithClassKitFacade:facadeCopy];
     currentUserProvider = v8->_currentUserProvider;
     v8->_currentUserProvider = v11;
   }
@@ -57,26 +57,26 @@
 
 - (void)updateCurrentUserState
 {
-  v3 = [(CRKDynamicDataObserverClassKitFacade *)self currentUserProvider];
-  v5 = [v3 currentUser];
+  currentUserProvider = [(CRKDynamicDataObserverClassKitFacade *)self currentUserProvider];
+  currentUser = [currentUserProvider currentUser];
 
-  if (-[CRKDynamicDataObserverClassKitFacade expectedUserRole](self, "expectedUserRole") == 1 && ([v5 isStudent] & 1) != 0)
+  if (-[CRKDynamicDataObserverClassKitFacade expectedUserRole](self, "expectedUserRole") == 1 && ([currentUser isStudent] & 1) != 0)
   {
-    v4 = 1;
+    isInstructor = 1;
   }
 
   else
   {
     if ([(CRKDynamicDataObserverClassKitFacade *)self expectedUserRole]!= 2)
     {
-      [v5 hasEDUAccount];
+      [currentUser hasEDUAccount];
       goto LABEL_10;
     }
 
-    v4 = [v5 isInstructor];
+    isInstructor = [currentUser isInstructor];
   }
 
-  if ([v5 hasEDUAccount] && v4)
+  if ([currentUser hasEDUAccount] && isInstructor)
   {
     [(CRKDynamicDataObserverClassKitFacade *)self registerDataObservers];
     goto LABEL_11;
@@ -97,8 +97,8 @@ LABEL_11:
     v13 = 0u;
     v10 = 0u;
     v11 = 0u;
-    v3 = [(CRKDynamicDataObserverClassKitFacade *)self dataObservers];
-    v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    dataObservers = [(CRKDynamicDataObserverClassKitFacade *)self dataObservers];
+    v4 = [dataObservers countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v4)
     {
       v5 = v4;
@@ -110,18 +110,18 @@ LABEL_11:
         {
           if (*v11 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(dataObservers);
           }
 
           v8 = *(*(&v10 + 1) + 8 * v7);
-          v9 = [(CRKClassKitFacadeDecoratorBase *)self underlyingClassKitFacade];
-          [v9 registerDataObserver:v8];
+          underlyingClassKitFacade = [(CRKClassKitFacadeDecoratorBase *)self underlyingClassKitFacade];
+          [underlyingClassKitFacade registerDataObserver:v8];
 
           ++v7;
         }
 
         while (v5 != v7);
-        v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v5 = [dataObservers countByEnumeratingWithState:&v10 objects:v14 count:16];
       }
 
       while (v5);
@@ -139,8 +139,8 @@ LABEL_11:
     v13 = 0u;
     v10 = 0u;
     v11 = 0u;
-    v3 = [(CRKDynamicDataObserverClassKitFacade *)self dataObservers];
-    v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    dataObservers = [(CRKDynamicDataObserverClassKitFacade *)self dataObservers];
+    v4 = [dataObservers countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v4)
     {
       v5 = v4;
@@ -152,18 +152,18 @@ LABEL_11:
         {
           if (*v11 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(dataObservers);
           }
 
           v8 = *(*(&v10 + 1) + 8 * v7);
-          v9 = [(CRKClassKitFacadeDecoratorBase *)self underlyingClassKitFacade];
-          [v9 deregisterDataObserver:v8];
+          underlyingClassKitFacade = [(CRKClassKitFacadeDecoratorBase *)self underlyingClassKitFacade];
+          [underlyingClassKitFacade deregisterDataObserver:v8];
 
           ++v7;
         }
 
         while (v5 != v7);
-        v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v5 = [dataObservers countByEnumeratingWithState:&v10 objects:v14 count:16];
       }
 
       while (v5);
@@ -171,60 +171,60 @@ LABEL_11:
   }
 }
 
-- (void)addDataObserver:(id)a3
+- (void)addDataObserver:(id)observer
 {
-  v7 = a3;
+  observerCopy = observer;
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [(CRKDynamicDataObserverClassKitFacade *)a2 addDataObserver:?];
   }
 
-  v5 = [(CRKDynamicDataObserverClassKitFacade *)self dataObservers];
-  [v5 addObject:v7];
+  dataObservers = [(CRKDynamicDataObserverClassKitFacade *)self dataObservers];
+  [dataObservers addObject:observerCopy];
 
   if ([(CRKDynamicDataObserverClassKitFacade *)self dataObserversAreRegistered])
   {
-    v6 = [(CRKClassKitFacadeDecoratorBase *)self underlyingClassKitFacade];
-    [v6 registerDataObserver:v7];
+    underlyingClassKitFacade = [(CRKClassKitFacadeDecoratorBase *)self underlyingClassKitFacade];
+    [underlyingClassKitFacade registerDataObserver:observerCopy];
   }
 }
 
-- (void)removeDataObserver:(id)a3
+- (void)removeDataObserver:(id)observer
 {
-  v7 = a3;
+  observerCopy = observer;
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [(CRKDynamicDataObserverClassKitFacade *)a2 removeDataObserver:?];
   }
 
-  v5 = [(CRKDynamicDataObserverClassKitFacade *)self dataObservers];
-  [v5 removeObject:v7];
+  dataObservers = [(CRKDynamicDataObserverClassKitFacade *)self dataObservers];
+  [dataObservers removeObject:observerCopy];
 
   if ([(CRKDynamicDataObserverClassKitFacade *)self dataObserversAreRegistered])
   {
-    v6 = [(CRKClassKitFacadeDecoratorBase *)self underlyingClassKitFacade];
-    [v6 deregisterDataObserver:v7];
+    underlyingClassKitFacade = [(CRKClassKitFacadeDecoratorBase *)self underlyingClassKitFacade];
+    [underlyingClassKitFacade deregisterDataObserver:observerCopy];
   }
 }
 
 - (void)startObservingCurrentUser
 {
-  v3 = [(CRKDynamicDataObserverClassKitFacade *)self currentUserProvider];
-  [v3 addObserver:self forKeyPath:@"currentUser" options:4 context:@"ObservationContext"];
+  currentUserProvider = [(CRKDynamicDataObserverClassKitFacade *)self currentUserProvider];
+  [currentUserProvider addObserver:self forKeyPath:@"currentUser" options:4 context:@"ObservationContext"];
 }
 
 - (void)stopObservingCurrentUser
 {
-  v3 = [(CRKDynamicDataObserverClassKitFacade *)self currentUserProvider];
-  [v3 removeObserver:self forKeyPath:@"currentUser" context:@"ObservationContext"];
+  currentUserProvider = [(CRKDynamicDataObserverClassKitFacade *)self currentUserProvider];
+  [currentUserProvider removeObserver:self forKeyPath:@"currentUser" context:@"ObservationContext"];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (a6 == @"ObservationContext")
+  if (context == @"ObservationContext")
   {
 
-    [(CRKDynamicDataObserverClassKitFacade *)self updateCurrentUserState:a3];
+    [(CRKDynamicDataObserverClassKitFacade *)self updateCurrentUserState:path];
   }
 
   else
@@ -233,7 +233,7 @@ LABEL_11:
     v10 = v7;
     v8.receiver = self;
     v8.super_class = CRKDynamicDataObserverClassKitFacade;
-    [(CRKDynamicDataObserverClassKitFacade *)&v8 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(CRKDynamicDataObserverClassKitFacade *)&v8 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 

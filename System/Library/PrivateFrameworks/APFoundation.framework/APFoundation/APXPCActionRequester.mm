@@ -3,11 +3,11 @@
 + (BOOL)canShareConnection;
 + (id)machService;
 - (APXPCActionRequester)init;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (id)remoteObjectInterface;
 - (id)remoteObjectProxy;
-- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)a3;
+- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)handler;
 - (id)xpcConnection;
 - (void)connectionInterrupted;
 - (void)connectionInvalidated;
@@ -202,22 +202,22 @@
   objc_exception_throw(v16);
 }
 
-- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)a3
+- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v8 = objc_msgSend_xpcConnection(self, v5, v6, v7);
-  v11 = objc_msgSend_synchronousRemoteObjectProxyWithErrorHandler_(v8, v9, v4, v10);
+  v11 = objc_msgSend_synchronousRemoteObjectProxyWithErrorHandler_(v8, v9, handlerCopy, v10);
 
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 && (v5 = objc_opt_class(), v6 = objc_opt_class(), objc_msgSend_isEqual_(v5, v7, v6, v8)))
+  equalCopy = equal;
+  if (equalCopy && (v5 = objc_opt_class(), v6 = objc_opt_class(), objc_msgSend_isEqual_(v5, v7, v6, v8)))
   {
     delegateID = self->_delegateID;
-    v13 = objc_msgSend_delegateID(v4, v9, v10, v11);
+    v13 = objc_msgSend_delegateID(equalCopy, v9, v10, v11);
     isEqual = objc_msgSend_isEqual_(delegateID, v14, v13, v15);
   }
 

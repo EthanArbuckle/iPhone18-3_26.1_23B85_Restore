@@ -1,10 +1,10 @@
 @interface MetalVideoTextureProvider.OutputObserver
-- (void)outputMediaDataWillChange:(id)a3;
+- (void)outputMediaDataWillChange:(id)change;
 @end
 
 @implementation MetalVideoTextureProvider.OutputObserver
 
-- (void)outputMediaDataWillChange:(id)a3
+- (void)outputMediaDataWillChange:(id)change
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EC1930A0);
   MEMORY[0x1EEE9AC00](v5 - 8);
@@ -17,10 +17,10 @@
     v10 = sub_1C5BCB214();
     (*(*(v10 - 8) + 56))(v7, 1, 1, v10);
     sub_1C5BCB1E4();
-    v11 = a3;
-    v12 = self;
-    v13 = v11;
-    v14 = v12;
+    changeCopy = change;
+    selfCopy = self;
+    v13 = changeCopy;
+    v14 = selfCopy;
     v15 = sub_1C5BCB1D4();
     v16 = swift_allocObject();
     v17 = MEMORY[0x1E69E85E0];

@@ -1,22 +1,22 @@
 @interface _UIPresentationControllerDefaultVisualStyleProvider
 + (id)sharedInstance;
-- (Class)presentationControllerClassForModalPresentationStyle:(int64_t)a3 inIdiom:(int64_t)a4;
+- (Class)presentationControllerClassForModalPresentationStyle:(int64_t)style inIdiom:(int64_t)idiom;
 - (_UISheetPresentationMetrics)defaultSheetMetrics;
 - (id)_init;
-- (id)_providerForIdiom:(int64_t)a3;
-- (id)_providerForPresentationController:(id)a3;
-- (id)_providerForViewController:(id)a3;
-- (id)defaultStyleForPresentationController:(id)a3;
-- (id)presentationControllerForPresentedViewController:(id)a3;
-- (id)presentationControllerForPresentedViewController:(id)a3 inIdiom:(int64_t)a4;
-- (id)styleForAlertPresentationController:(id)a3;
-- (id)styleForPopoverPresentationController:(id)a3;
-- (id)styleForRootPresentationController:(id)a3;
-- (id)styleForSearchPresentationController:(id)a3;
-- (id)styleForSheetPresentationController:(id)a3;
-- (int64_t)defaultConcretePresentationStyleForViewController:(id)a3;
-- (int64_t)defaultConcreteTransitionStyleForViewController:(id)a3;
-- (void)registerVisualStyleProvider:(id)a3 forIdiom:(int64_t)a4;
+- (id)_providerForIdiom:(int64_t)idiom;
+- (id)_providerForPresentationController:(id)controller;
+- (id)_providerForViewController:(id)controller;
+- (id)defaultStyleForPresentationController:(id)controller;
+- (id)presentationControllerForPresentedViewController:(id)controller;
+- (id)presentationControllerForPresentedViewController:(id)controller inIdiom:(int64_t)idiom;
+- (id)styleForAlertPresentationController:(id)controller;
+- (id)styleForPopoverPresentationController:(id)controller;
+- (id)styleForRootPresentationController:(id)controller;
+- (id)styleForSearchPresentationController:(id)controller;
+- (id)styleForSheetPresentationController:(id)controller;
+- (int64_t)defaultConcretePresentationStyleForViewController:(id)controller;
+- (int64_t)defaultConcreteTransitionStyleForViewController:(id)controller;
+- (void)registerVisualStyleProvider:(id)provider forIdiom:(int64_t)idiom;
 @end
 
 @implementation _UIPresentationControllerDefaultVisualStyleProvider
@@ -45,9 +45,9 @@
     fallbackProvider = self->_fallbackProvider;
   }
 
-  v7 = [(_UIPresentationControllerNullVisualStyleProvider *)fallbackProvider defaultSheetMetrics];
+  defaultSheetMetrics = [(_UIPresentationControllerNullVisualStyleProvider *)fallbackProvider defaultSheetMetrics];
 
-  return v7;
+  return defaultSheetMetrics;
 }
 
 - (id)_init
@@ -69,19 +69,19 @@
   return v2;
 }
 
-- (void)registerVisualStyleProvider:(id)a3 forIdiom:(int64_t)a4
+- (void)registerVisualStyleProvider:(id)provider forIdiom:(int64_t)idiom
 {
   providerByIdiom = self->_providerByIdiom;
   v6 = MEMORY[0x1E696AD98];
-  v7 = a3;
-  v8 = [v6 numberWithInteger:a4];
-  [(NSMutableDictionary *)providerByIdiom setObject:v7 forKeyedSubscript:v8];
+  providerCopy = provider;
+  v8 = [v6 numberWithInteger:idiom];
+  [(NSMutableDictionary *)providerByIdiom setObject:providerCopy forKeyedSubscript:v8];
 }
 
-- (id)_providerForIdiom:(int64_t)a3
+- (id)_providerForIdiom:(int64_t)idiom
 {
   providerByIdiom = self->_providerByIdiom;
-  v5 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v5 = [MEMORY[0x1E696AD98] numberWithInteger:idiom];
   v6 = [(NSMutableDictionary *)providerByIdiom objectForKeyedSubscript:v5];
   fallbackProvider = v6;
   if (!v6)
@@ -94,80 +94,80 @@
   return fallbackProvider;
 }
 
-- (id)_providerForViewController:(id)a3
+- (id)_providerForViewController:(id)controller
 {
-  v4 = [a3 traitCollection];
-  v5 = -[_UIPresentationControllerDefaultVisualStyleProvider _providerForIdiom:](self, "_providerForIdiom:", [v4 userInterfaceIdiom]);
+  traitCollection = [controller traitCollection];
+  v5 = -[_UIPresentationControllerDefaultVisualStyleProvider _providerForIdiom:](self, "_providerForIdiom:", [traitCollection userInterfaceIdiom]);
 
   return v5;
 }
 
-- (id)_providerForPresentationController:(id)a3
+- (id)_providerForPresentationController:(id)controller
 {
-  v4 = [a3 traitCollection];
-  v5 = -[_UIPresentationControllerDefaultVisualStyleProvider _providerForIdiom:](self, "_providerForIdiom:", [v4 userInterfaceIdiom]);
+  traitCollection = [controller traitCollection];
+  v5 = -[_UIPresentationControllerDefaultVisualStyleProvider _providerForIdiom:](self, "_providerForIdiom:", [traitCollection userInterfaceIdiom]);
 
   return v5;
 }
 
-- (id)defaultStyleForPresentationController:(id)a3
+- (id)defaultStyleForPresentationController:(id)controller
 {
-  v4 = a3;
-  v5 = [(_UIPresentationControllerDefaultVisualStyleProvider *)self _providerForPresentationController:v4];
-  v6 = [v5 defaultStyleForPresentationController:v4];
+  controllerCopy = controller;
+  v5 = [(_UIPresentationControllerDefaultVisualStyleProvider *)self _providerForPresentationController:controllerCopy];
+  v6 = [v5 defaultStyleForPresentationController:controllerCopy];
 
   return v6;
 }
 
-- (id)styleForRootPresentationController:(id)a3
+- (id)styleForRootPresentationController:(id)controller
 {
-  v4 = a3;
-  v5 = [(_UIPresentationControllerDefaultVisualStyleProvider *)self _providerForPresentationController:v4];
-  v6 = [v5 styleForRootPresentationController:v4];
+  controllerCopy = controller;
+  v5 = [(_UIPresentationControllerDefaultVisualStyleProvider *)self _providerForPresentationController:controllerCopy];
+  v6 = [v5 styleForRootPresentationController:controllerCopy];
 
   return v6;
 }
 
-- (id)styleForAlertPresentationController:(id)a3
+- (id)styleForAlertPresentationController:(id)controller
 {
-  v4 = a3;
-  v5 = [(_UIPresentationControllerDefaultVisualStyleProvider *)self _providerForPresentationController:v4];
-  v6 = [v5 styleForAlertPresentationController:v4];
+  controllerCopy = controller;
+  v5 = [(_UIPresentationControllerDefaultVisualStyleProvider *)self _providerForPresentationController:controllerCopy];
+  v6 = [v5 styleForAlertPresentationController:controllerCopy];
 
   return v6;
 }
 
-- (id)styleForSheetPresentationController:(id)a3
+- (id)styleForSheetPresentationController:(id)controller
 {
-  v4 = a3;
-  v5 = [(_UIPresentationControllerDefaultVisualStyleProvider *)self _providerForPresentationController:v4];
-  v6 = [v5 styleForSheetPresentationController:v4];
+  controllerCopy = controller;
+  v5 = [(_UIPresentationControllerDefaultVisualStyleProvider *)self _providerForPresentationController:controllerCopy];
+  v6 = [v5 styleForSheetPresentationController:controllerCopy];
 
   return v6;
 }
 
-- (id)styleForPopoverPresentationController:(id)a3
+- (id)styleForPopoverPresentationController:(id)controller
 {
-  v4 = a3;
-  v5 = [(_UIPresentationControllerDefaultVisualStyleProvider *)self _providerForPresentationController:v4];
-  v6 = [v5 styleForPopoverPresentationController:v4];
+  controllerCopy = controller;
+  v5 = [(_UIPresentationControllerDefaultVisualStyleProvider *)self _providerForPresentationController:controllerCopy];
+  v6 = [v5 styleForPopoverPresentationController:controllerCopy];
 
   return v6;
 }
 
-- (id)styleForSearchPresentationController:(id)a3
+- (id)styleForSearchPresentationController:(id)controller
 {
-  v4 = a3;
-  v5 = [(_UIPresentationControllerDefaultVisualStyleProvider *)self _providerForPresentationController:v4];
-  v6 = [v5 styleForSearchPresentationController:v4];
+  controllerCopy = controller;
+  v5 = [(_UIPresentationControllerDefaultVisualStyleProvider *)self _providerForPresentationController:controllerCopy];
+  v6 = [v5 styleForSearchPresentationController:controllerCopy];
 
   return v6;
 }
 
-- (int64_t)defaultConcretePresentationStyleForViewController:(id)a3
+- (int64_t)defaultConcretePresentationStyleForViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [(_UIPresentationControllerDefaultVisualStyleProvider *)self _providerForViewController:v4];
+  controllerCopy = controller;
+  v5 = [(_UIPresentationControllerDefaultVisualStyleProvider *)self _providerForViewController:controllerCopy];
   v6 = objc_opt_respondsToSelector();
   fallbackProvider = v5;
   if ((v6 & 1) == 0)
@@ -175,14 +175,14 @@
     fallbackProvider = self->_fallbackProvider;
   }
 
-  v8 = [(_UIPresentationControllerNullVisualStyleProvider *)fallbackProvider defaultConcretePresentationStyleForViewController:v4];
+  v8 = [(_UIPresentationControllerNullVisualStyleProvider *)fallbackProvider defaultConcretePresentationStyleForViewController:controllerCopy];
 
   return v8;
 }
 
-- (int64_t)defaultConcreteTransitionStyleForViewController:(id)a3
+- (int64_t)defaultConcreteTransitionStyleForViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v5 = +[UIDevice currentDevice];
   v6 = -[_UIPresentationControllerDefaultVisualStyleProvider _providerForIdiom:](self, "_providerForIdiom:", [v5 userInterfaceIdiom]);
 
@@ -193,18 +193,18 @@
     fallbackProvider = self->_fallbackProvider;
   }
 
-  v9 = [(_UIPresentationControllerNullVisualStyleProvider *)fallbackProvider defaultConcreteTransitionStyleForViewController:v4];
+  v9 = [(_UIPresentationControllerNullVisualStyleProvider *)fallbackProvider defaultConcreteTransitionStyleForViewController:controllerCopy];
 
   return v9;
 }
 
-- (id)presentationControllerForPresentedViewController:(id)a3 inIdiom:(int64_t)a4
+- (id)presentationControllerForPresentedViewController:(id)controller inIdiom:(int64_t)idiom
 {
-  v6 = a3;
-  v7 = [(_UIPresentationControllerDefaultVisualStyleProvider *)self _providerForIdiom:a4];
+  controllerCopy = controller;
+  v7 = [(_UIPresentationControllerDefaultVisualStyleProvider *)self _providerForIdiom:idiom];
   if (objc_opt_respondsToSelector())
   {
-    v8 = [v7 presentationControllerForPresentedViewController:v6 inIdiom:a4];
+    v8 = [v7 presentationControllerForPresentedViewController:controllerCopy inIdiom:idiom];
   }
 
   else
@@ -216,18 +216,18 @@ LABEL_6:
       fallbackProvider = self->_fallbackProvider;
       if (v10)
       {
-        [(_UIPresentationControllerNullVisualStyleProvider *)fallbackProvider presentationControllerForPresentedViewController:v6 inIdiom:a4];
+        [(_UIPresentationControllerNullVisualStyleProvider *)fallbackProvider presentationControllerForPresentedViewController:controllerCopy inIdiom:idiom];
       }
 
       else
       {
-        [(_UIPresentationControllerNullVisualStyleProvider *)fallbackProvider presentationControllerForPresentedViewController:v6];
+        [(_UIPresentationControllerNullVisualStyleProvider *)fallbackProvider presentationControllerForPresentedViewController:controllerCopy];
       }
       v9 = ;
       goto LABEL_10;
     }
 
-    v8 = [v7 presentationControllerForPresentedViewController:v6];
+    v8 = [v7 presentationControllerForPresentedViewController:controllerCopy];
   }
 
   v9 = v8;
@@ -241,21 +241,21 @@ LABEL_10:
   return v9;
 }
 
-- (id)presentationControllerForPresentedViewController:(id)a3
+- (id)presentationControllerForPresentedViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [v4 traitCollection];
-  v6 = -[_UIPresentationControllerDefaultVisualStyleProvider presentationControllerForPresentedViewController:inIdiom:](self, "presentationControllerForPresentedViewController:inIdiom:", v4, [v5 userInterfaceIdiom]);
+  controllerCopy = controller;
+  traitCollection = [controllerCopy traitCollection];
+  v6 = -[_UIPresentationControllerDefaultVisualStyleProvider presentationControllerForPresentedViewController:inIdiom:](self, "presentationControllerForPresentedViewController:inIdiom:", controllerCopy, [traitCollection userInterfaceIdiom]);
 
   return v6;
 }
 
-- (Class)presentationControllerClassForModalPresentationStyle:(int64_t)a3 inIdiom:(int64_t)a4
+- (Class)presentationControllerClassForModalPresentationStyle:(int64_t)style inIdiom:(int64_t)idiom
 {
-  v7 = [(_UIPresentationControllerDefaultVisualStyleProvider *)self _providerForIdiom:a4];
-  if ((objc_opt_respondsToSelector() & 1) == 0 || (v8 = [v7 presentationControllerClassForModalPresentationStyle:a3 inIdiom:a4]) == 0)
+  v7 = [(_UIPresentationControllerDefaultVisualStyleProvider *)self _providerForIdiom:idiom];
+  if ((objc_opt_respondsToSelector() & 1) == 0 || (v8 = [v7 presentationControllerClassForModalPresentationStyle:style inIdiom:idiom]) == 0)
   {
-    v8 = [(_UIPresentationControllerNullVisualStyleProvider *)self->_fallbackProvider presentationControllerClassForModalPresentationStyle:a3 inIdiom:a4];
+    v8 = [(_UIPresentationControllerNullVisualStyleProvider *)self->_fallbackProvider presentationControllerClassForModalPresentationStyle:style inIdiom:idiom];
   }
 
   v9 = v8;

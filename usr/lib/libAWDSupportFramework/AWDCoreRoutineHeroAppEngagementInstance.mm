@@ -1,15 +1,15 @@
 @interface AWDCoreRoutineHeroAppEngagementInstance
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasActionType:(BOOL)a3;
-- (void)setHasUiPlacement:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasActionType:(BOOL)type;
+- (void)setHasUiPlacement:(BOOL)placement;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDCoreRoutineHeroAppEngagementInstance
@@ -22,9 +22,9 @@
   [(AWDCoreRoutineHeroAppEngagementInstance *)&v3 dealloc];
 }
 
-- (void)setHasActionType:(BOOL)a3
+- (void)setHasActionType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -37,9 +37,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasUiPlacement:(BOOL)a3
+- (void)setHasUiPlacement:(BOOL)placement
 {
-  if (a3)
+  if (placement)
   {
     v3 = 4;
   }
@@ -61,34 +61,34 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   if (*&self->_has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
   }
 
   suggestionId = self->_suggestionId;
   if (suggestionId)
   {
-    [v3 setObject:suggestionId forKey:@"suggestionId"];
+    [dictionary setObject:suggestionId forKey:@"suggestionId"];
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_actionType), @"actionType"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_actionType), @"actionType"}];
     has = self->_has;
   }
 
   if ((has & 4) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_uiPlacement), @"uiPlacement"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_uiPlacement), @"uiPlacement"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (*&self->_has)
   {
@@ -117,37 +117,37 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if (*&self->_has)
   {
-    *(a3 + 1) = self->_timestamp;
-    *(a3 + 36) |= 1u;
+    *(to + 1) = self->_timestamp;
+    *(to + 36) |= 1u;
   }
 
   if (self->_suggestionId)
   {
-    [a3 setSuggestionId:?];
+    [to setSuggestionId:?];
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(a3 + 4) = self->_actionType;
-    *(a3 + 36) |= 2u;
+    *(to + 4) = self->_actionType;
+    *(to + 36) |= 2u;
     has = self->_has;
   }
 
   if ((has & 4) != 0)
   {
-    *(a3 + 8) = self->_uiPlacement;
-    *(a3 + 36) |= 4u;
+    *(to + 8) = self->_uiPlacement;
+    *(to + 36) |= 4u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -155,7 +155,7 @@
     *(v5 + 36) |= 1u;
   }
 
-  *(v6 + 24) = [(NSString *)self->_suggestionId copyWithZone:a3];
+  *(v6 + 24) = [(NSString *)self->_suggestionId copyWithZone:zone];
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -173,22 +173,22 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     has = self->_has;
-    v7 = *(a3 + 36);
+    v7 = *(equal + 36);
     if (has)
     {
-      if ((*(a3 + 36) & 1) == 0 || self->_timestamp != *(a3 + 1))
+      if ((*(equal + 36) & 1) == 0 || self->_timestamp != *(equal + 1))
       {
         goto LABEL_19;
       }
     }
 
-    else if (*(a3 + 36))
+    else if (*(equal + 36))
     {
 LABEL_19:
       LOBYTE(v5) = 0;
@@ -196,7 +196,7 @@ LABEL_19:
     }
 
     suggestionId = self->_suggestionId;
-    if (suggestionId | *(a3 + 3))
+    if (suggestionId | *(equal + 3))
     {
       v5 = [(NSString *)suggestionId isEqual:?];
       if (!v5)
@@ -209,21 +209,21 @@ LABEL_19:
 
     if ((has & 2) != 0)
     {
-      if ((*(a3 + 36) & 2) == 0 || self->_actionType != *(a3 + 4))
+      if ((*(equal + 36) & 2) == 0 || self->_actionType != *(equal + 4))
       {
         goto LABEL_19;
       }
     }
 
-    else if ((*(a3 + 36) & 2) != 0)
+    else if ((*(equal + 36) & 2) != 0)
     {
       goto LABEL_19;
     }
 
-    LOBYTE(v5) = (*(a3 + 36) & 4) == 0;
+    LOBYTE(v5) = (*(equal + 36) & 4) == 0;
     if ((has & 4) != 0)
     {
-      if ((*(a3 + 36) & 4) == 0 || self->_uiPlacement != *(a3 + 8))
+      if ((*(equal + 36) & 4) == 0 || self->_uiPlacement != *(equal + 8))
       {
         goto LABEL_19;
       }
@@ -272,30 +272,30 @@ LABEL_6:
   return v4 ^ v3 ^ v5 ^ v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if (*(a3 + 36))
+  if (*(from + 36))
   {
-    self->_timestamp = *(a3 + 1);
+    self->_timestamp = *(from + 1);
     *&self->_has |= 1u;
   }
 
-  if (*(a3 + 3))
+  if (*(from + 3))
   {
     [(AWDCoreRoutineHeroAppEngagementInstance *)self setSuggestionId:?];
   }
 
-  v5 = *(a3 + 36);
+  v5 = *(from + 36);
   if ((v5 & 2) != 0)
   {
-    self->_actionType = *(a3 + 4);
+    self->_actionType = *(from + 4);
     *&self->_has |= 2u;
-    v5 = *(a3 + 36);
+    v5 = *(from + 36);
   }
 
   if ((v5 & 4) != 0)
   {
-    self->_uiPlacement = *(a3 + 8);
+    self->_uiPlacement = *(from + 8);
     *&self->_has |= 4u;
   }
 }

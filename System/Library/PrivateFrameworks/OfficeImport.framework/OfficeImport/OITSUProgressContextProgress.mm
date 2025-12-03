@@ -1,23 +1,23 @@
 @interface OITSUProgressContextProgress
-- (OITSUProgressContextProgress)initWithProgressContext:(id)a3;
+- (OITSUProgressContextProgress)initWithProgressContext:(id)context;
 - (double)value;
-- (id)addProgressObserverWithValueInterval:(double)a3 queue:(id)a4 handler:(id)a5;
+- (id)addProgressObserverWithValueInterval:(double)interval queue:(id)queue handler:(id)handler;
 - (void)dealloc;
-- (void)p_progressDidChange:(id)a3;
+- (void)p_progressDidChange:(id)change;
 - (void)p_updateProgressContextObserver;
-- (void)removeProgressObserver:(id)a3;
+- (void)removeProgressObserver:(id)observer;
 @end
 
 @implementation OITSUProgressContextProgress
 
-- (OITSUProgressContextProgress)initWithProgressContext:(id)a3
+- (OITSUProgressContextProgress)initWithProgressContext:(id)context
 {
   v6.receiver = self;
   v6.super_class = OITSUProgressContextProgress;
   v4 = [(OITSUProgress *)&v6 init];
   if (v4)
   {
-    v4->mProgressContext = a3;
+    v4->mProgressContext = context;
     v4->mProgressContextObserverQueue = dispatch_queue_create("com.apple.iWork.TSUProgressContextProgress", 0);
   }
 
@@ -49,20 +49,20 @@
   return result;
 }
 
-- (id)addProgressObserverWithValueInterval:(double)a3 queue:(id)a4 handler:(id)a5
+- (id)addProgressObserverWithValueInterval:(double)interval queue:(id)queue handler:(id)handler
 {
   v8.receiver = self;
   v8.super_class = OITSUProgressContextProgress;
-  v6 = [(OITSUProgress *)&v8 addProgressObserverWithValueInterval:a4 queue:a5 handler:a3];
+  v6 = [(OITSUProgress *)&v8 addProgressObserverWithValueInterval:queue queue:handler handler:interval];
   [(OITSUProgressContextProgress *)self p_updateProgressContextObserver];
   return v6;
 }
 
-- (void)removeProgressObserver:(id)a3
+- (void)removeProgressObserver:(id)observer
 {
   v4.receiver = self;
   v4.super_class = OITSUProgressContextProgress;
-  [(OITSUProgress *)&v4 removeProgressObserver:a3];
+  [(OITSUProgress *)&v4 removeProgressObserver:observer];
   [(OITSUProgressContextProgress *)self p_updateProgressContextObserver];
 }
 
@@ -99,9 +99,9 @@ void __63__OITSUProgressContextProgress_p_updateProgressContextObserver__block_i
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)p_progressDidChange:(id)a3
+- (void)p_progressDidChange:(id)change
 {
-  v4 = [objc_msgSend(a3 "userInfo")];
+  v4 = [objc_msgSend(change "userInfo")];
   if (v4)
   {
     [(OITSUProgress *)self setMessage:v4];

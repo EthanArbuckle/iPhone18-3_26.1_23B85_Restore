@@ -6,21 +6,21 @@
 
 - (uint64_t)predictedPreferredContentSizeForOrbPlatter
 {
-  if (([a1 hasDeterminedPredictedPreferredContentSizeForOrbPlatter] & 1) == 0)
+  if (([self hasDeterminedPredictedPreferredContentSizeForOrbPlatter] & 1) == 0)
   {
-    v2 = [a1 previewItemURL];
+    previewItemURL = [self previewItemURL];
 
-    if (v2)
+    if (previewItemURL)
     {
-      v3 = [a1 previewItemURL];
-      [a1 preferredContentSizeForOrbPlatterWithURL:v3];
-      [a1 setPreferredContentSizeForOrbPlatter:?];
+      previewItemURL2 = [self previewItemURL];
+      [self preferredContentSizeForOrbPlatterWithURL:previewItemURL2];
+      [self setPreferredContentSizeForOrbPlatter:?];
     }
   }
 
-  [a1 setHasDeterminedPredictedPreferredContentSizeForOrbPlatter:1];
+  [self setHasDeterminedPredictedPreferredContentSizeForOrbPlatter:1];
 
-  return [a1 preferredContentSizeForOrbPlatter];
+  return [self preferredContentSizeForOrbPlatter];
 }
 
 @end

@@ -1,14 +1,14 @@
 @interface WDBuddyFlowUserInfo
-+ (id)buddyFlowUserInfoWithDemographicsInformation:(id)a3;
++ (id)buddyFlowUserInfoWithDemographicsInformation:(id)information;
 - (WDBuddyFlowUserInfo)init;
 - (WDBuddyFlowUserInfoDelegate)delegate;
 - (id)_createDateOfBirthEntryItem;
 - (id)_createSexEntryItem;
-- (id)_dataEntryItemForRegistrantField:(unint64_t)a3;
+- (id)_dataEntryItemForRegistrantField:(unint64_t)field;
 - (id)_todayBirthdayDateComponents;
 - (id)defaultDataEntryItems;
-- (void)dataEntryItemDidUpdateValue:(id)a3;
-- (void)saveChangesToHealthStore:(id)a3 andSaveNameCompletion:(id)a4 andOverallCompletion:(id)a5;
+- (void)dataEntryItemDidUpdateValue:(id)value;
+- (void)saveChangesToHealthStore:(id)store andSaveNameCompletion:(id)completion andOverallCompletion:(id)overallCompletion;
 @end
 
 @implementation WDBuddyFlowUserInfo
@@ -20,9 +20,9 @@
   v2 = [(WDBuddyFlowUserInfo *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     dataEntryItems = v2->_dataEntryItems;
-    v2->_dataEntryItems = v3;
+    v2->_dataEntryItems = dictionary;
 
     v5 = HKCreateSerialDispatchQueueWithQOSClass();
     queue = v2->_queue;
@@ -32,35 +32,35 @@
   return v2;
 }
 
-+ (id)buddyFlowUserInfoWithDemographicsInformation:(id)a3
++ (id)buddyFlowUserInfoWithDemographicsInformation:(id)information
 {
-  v3 = a3;
+  informationCopy = information;
   v4 = objc_alloc_init(WDBuddyFlowUserInfo);
-  v5 = [v3 firstName];
-  [(WDBuddyFlowUserInfo *)v4 setFirstName:v5];
+  firstName = [informationCopy firstName];
+  [(WDBuddyFlowUserInfo *)v4 setFirstName:firstName];
 
-  v6 = [v3 lastName];
-  [(WDBuddyFlowUserInfo *)v4 setLastName:v6];
+  lastName = [informationCopy lastName];
+  [(WDBuddyFlowUserInfo *)v4 setLastName:lastName];
 
-  v7 = [v3 dateOfBirthComponents];
-  [(WDBuddyFlowUserInfo *)v4 setDateOfBirthComponents:v7];
+  dateOfBirthComponents = [informationCopy dateOfBirthComponents];
+  [(WDBuddyFlowUserInfo *)v4 setDateOfBirthComponents:dateOfBirthComponents];
 
   v8 = MEMORY[0x277CCABB0];
-  v9 = [v3 biologicalSexObject];
-  v10 = [v8 numberWithInteger:{objc_msgSend(v9, "biologicalSex")}];
+  biologicalSexObject = [informationCopy biologicalSexObject];
+  v10 = [v8 numberWithInteger:{objc_msgSend(biologicalSexObject, "biologicalSex")}];
   [(WDBuddyFlowUserInfo *)v4 setSex:v10];
 
   v11 = MEMORY[0x277CCABB0];
-  v12 = [v3 heightQuantity];
+  heightQuantity = [informationCopy heightQuantity];
   v13 = [MEMORY[0x277CCDAB0] meterUnitWithMetricPrefix:5];
-  [v12 doubleValueForUnit:v13];
+  [heightQuantity doubleValueForUnit:v13];
   v14 = [v11 numberWithDouble:?];
 
   v15 = MEMORY[0x277CCABB0];
-  v16 = [v3 weightQuantity];
+  weightQuantity = [informationCopy weightQuantity];
 
   v17 = [MEMORY[0x277CCDAB0] gramUnitWithMetricPrefix:9];
-  [v16 doubleValueForUnit:v17];
+  [weightQuantity doubleValueForUnit:v17];
   v18 = [v15 numberWithDouble:?];
 
   [(WDBuddyFlowUserInfo *)v4 setOriginalHeightInCm:v14];
@@ -88,50 +88,50 @@
 
 - (id)defaultDataEntryItems
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v4 = objc_alloc_init(MEMORY[0x277CCAC00]);
-  v5 = [v4 isGivenNameFirst];
-  v6 = v5;
-  v7 = [(WDBuddyFlowUserInfo *)self _dataEntryItemForRegistrantField:v5 ^ 1];
-  [v3 addObject:v7];
+  isGivenNameFirst = [v4 isGivenNameFirst];
+  v6 = isGivenNameFirst;
+  v7 = [(WDBuddyFlowUserInfo *)self _dataEntryItemForRegistrantField:isGivenNameFirst ^ 1];
+  [array addObject:v7];
 
   v8 = [(WDBuddyFlowUserInfo *)self _dataEntryItemForRegistrantField:v6];
-  [v3 addObject:v8];
+  [array addObject:v8];
 
   v9 = [(WDBuddyFlowUserInfo *)self _dataEntryItemForRegistrantField:2];
-  [v3 addObject:v9];
+  [array addObject:v9];
 
   v10 = [(WDBuddyFlowUserInfo *)self _dataEntryItemForRegistrantField:3];
-  [v3 addObject:v10];
+  [array addObject:v10];
 
   v11 = [(WDBuddyFlowUserInfo *)self _dataEntryItemForRegistrantField:4];
-  [v3 addObject:v11];
+  [array addObject:v11];
 
   v12 = [(WDBuddyFlowUserInfo *)self _dataEntryItemForRegistrantField:5];
-  [v3 addObject:v12];
+  [array addObject:v12];
 
-  return v3;
+  return array;
 }
 
-- (void)saveChangesToHealthStore:(id)a3 andSaveNameCompletion:(id)a4 andOverallCompletion:(id)a5
+- (void)saveChangesToHealthStore:(id)store andSaveNameCompletion:(id)completion andOverallCompletion:(id)overallCompletion
 {
-  v8 = a3;
-  v9 = a4;
-  v30 = a5;
-  v10 = [MEMORY[0x277CBEAA8] date];
-  v11 = [(NSString *)self->_firstName hk_copyNonEmptyString];
-  v12 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-  v13 = [v11 stringByTrimmingCharactersInSet:v12];
+  storeCopy = store;
+  completionCopy = completion;
+  overallCompletionCopy = overallCompletion;
+  date = [MEMORY[0x277CBEAA8] date];
+  hk_copyNonEmptyString = [(NSString *)self->_firstName hk_copyNonEmptyString];
+  whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+  v13 = [hk_copyNonEmptyString stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
-  v14 = [(NSString *)self->_lastName hk_copyNonEmptyString];
-  v15 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-  v16 = [v14 stringByTrimmingCharactersInSet:v15];
+  hk_copyNonEmptyString2 = [(NSString *)self->_lastName hk_copyNonEmptyString];
+  whitespaceCharacterSet2 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+  v16 = [hk_copyNonEmptyString2 stringByTrimmingCharactersInSet:whitespaceCharacterSet2];
 
-  v17 = [MEMORY[0x277CBEB38] dictionary];
-  v18 = v17;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v18 = dictionary;
   if (v13)
   {
-    [v17 setObject:v13 forKeyedSubscript:*MEMORY[0x277CCE598]];
+    [dictionary setObject:v13 forKeyedSubscript:*MEMORY[0x277CCE598]];
   }
 
   if (v16)
@@ -140,17 +140,17 @@
   }
 
   v19 = dispatch_group_create();
-  v20 = [MEMORY[0x277CCD570] healthAppDefaultsDomainWithHealthStore:v8];
+  v20 = [MEMORY[0x277CCD570] healthAppDefaultsDomainWithHealthStore:storeCopy];
   dispatch_group_enter(v19);
   v21 = *MEMORY[0x277CCE5A8];
   v37[0] = MEMORY[0x277D85DD0];
   v37[1] = 3221225472;
   v37[2] = __91__WDBuddyFlowUserInfo_saveChangesToHealthStore_andSaveNameCompletion_andOverallCompletion___block_invoke;
   v37[3] = &unk_2796E7F38;
-  v39 = v9;
+  v39 = completionCopy;
   v22 = v19;
   v38 = v22;
-  v23 = v9;
+  v23 = completionCopy;
   [v20 setPropertyListValue:v18 forKey:v21 completion:v37];
   dispatch_group_enter(v22);
   queue = self->_queue;
@@ -159,20 +159,20 @@
   block[2] = __91__WDBuddyFlowUserInfo_saveChangesToHealthStore_andSaveNameCompletion_andOverallCompletion___block_invoke_319;
   block[3] = &unk_2796E7148;
   block[4] = self;
-  v34 = v8;
-  v35 = v10;
+  v34 = storeCopy;
+  v35 = date;
   v36 = v22;
   v25 = v22;
-  v26 = v10;
-  v27 = v8;
+  v26 = date;
+  v27 = storeCopy;
   dispatch_async(queue, block);
   v28 = self->_queue;
   v31[0] = MEMORY[0x277D85DD0];
   v31[1] = 3221225472;
   v31[2] = __91__WDBuddyFlowUserInfo_saveChangesToHealthStore_andSaveNameCompletion_andOverallCompletion___block_invoke_325;
   v31[3] = &unk_2796E7F60;
-  v32 = v30;
-  v29 = v30;
+  v32 = overallCompletionCopy;
+  v29 = overallCompletionCopy;
   dispatch_group_notify(v25, v28, v31);
 }
 
@@ -302,27 +302,27 @@ void __91__WDBuddyFlowUserInfo_saveChangesToHealthStore_andSaveNameCompletion_an
   dispatch_group_leave(*(a1 + 32));
 }
 
-- (id)_dataEntryItemForRegistrantField:(unint64_t)a3
+- (id)_dataEntryItemForRegistrantField:(unint64_t)field
 {
   v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:?];
   v6 = [(NSMutableDictionary *)self->_dataEntryItems objectForKeyedSubscript:v5];
   if (!v6)
   {
-    if (a3 > 2)
+    if (field > 2)
     {
-      switch(a3)
+      switch(field)
       {
         case 3uLL:
-          v7 = [(WDBuddyFlowUserInfo *)self _createSexEntryItem];
-          v6 = v7;
+          _createSexEntryItem = [(WDBuddyFlowUserInfo *)self _createSexEntryItem];
+          v6 = _createSexEntryItem;
           v8 = @"SexEntry";
           goto LABEL_13;
         case 4uLL:
           v22 = objc_alloc(MEMORY[0x277D12A58]);
           v23 = WDBundle();
           v24 = [v23 localizedStringForKey:@"HEIGHT" value:&stru_28641D9B8 table:@"WellnessDashboard-Localizable"];
-          v25 = [(WDBuddyFlowUserInfo *)self heightInCm];
-          v6 = [v22 initWithTitle:v24 registrantModelKey:@"heightInCm" heightInCm:v25 defaultHeightInCm:0];
+          heightInCm = [(WDBuddyFlowUserInfo *)self heightInCm];
+          v6 = [v22 initWithTitle:v24 registrantModelKey:@"heightInCm" heightInCm:heightInCm defaultHeightInCm:0];
 
           v13 = @"HeightEntry";
           break;
@@ -330,8 +330,8 @@ void __91__WDBuddyFlowUserInfo_saveChangesToHealthStore_andSaveNameCompletion_an
           v9 = objc_alloc(MEMORY[0x277D12A70]);
           v10 = WDBundle();
           v11 = [v10 localizedStringForKey:@"WEIGHT" value:&stru_28641D9B8 table:@"WellnessDashboard-Localizable"];
-          v12 = [(WDBuddyFlowUserInfo *)self weightInKg];
-          v6 = [v9 initWithTitle:v11 registrantModelKey:@"weightInKg" weightInKg:v12 defaultWeightInKg:0];
+          weightInKg = [(WDBuddyFlowUserInfo *)self weightInKg];
+          v6 = [v9 initWithTitle:v11 registrantModelKey:@"weightInKg" weightInKg:weightInKg defaultWeightInKg:0];
 
           v13 = @"WeightEntry";
           break;
@@ -340,17 +340,17 @@ void __91__WDBuddyFlowUserInfo_saveChangesToHealthStore_andSaveNameCompletion_an
       }
     }
 
-    else if (a3)
+    else if (field)
     {
-      if (a3 != 1)
+      if (field != 1)
       {
-        if (a3 == 2)
+        if (field == 2)
         {
-          v7 = [(WDBuddyFlowUserInfo *)self _createDateOfBirthEntryItem];
-          v6 = v7;
+          _createSexEntryItem = [(WDBuddyFlowUserInfo *)self _createDateOfBirthEntryItem];
+          v6 = _createSexEntryItem;
           v8 = @"DateOfBirthEntry";
 LABEL_13:
-          [v7 setAccessibilityIdentifier:v8];
+          [_createSexEntryItem setAccessibilityIdentifier:v8];
         }
 
 LABEL_17:
@@ -362,8 +362,8 @@ LABEL_17:
       v18 = objc_alloc(MEMORY[0x277D12A68]);
       v19 = WDBundle();
       v20 = [v19 localizedStringForKey:@"LAST_NAME" value:&stru_28641D9B8 table:@"WellnessDashboard-Localizable"];
-      v21 = [(WDBuddyFlowUserInfo *)self lastName];
-      v6 = [v18 initWithTitle:v20 registrantModelKey:@"lastName" defaultText:v21 intention:2];
+      lastName = [(WDBuddyFlowUserInfo *)self lastName];
+      v6 = [v18 initWithTitle:v20 registrantModelKey:@"lastName" defaultText:lastName intention:2];
 
       v13 = @"LastNameEntry";
     }
@@ -373,8 +373,8 @@ LABEL_17:
       v14 = objc_alloc(MEMORY[0x277D12A68]);
       v15 = WDBundle();
       v16 = [v15 localizedStringForKey:@"FIRST_NAME" value:&stru_28641D9B8 table:@"WellnessDashboard-Localizable"];
-      v17 = [(WDBuddyFlowUserInfo *)self firstName];
-      v6 = [v14 initWithTitle:v16 registrantModelKey:@"firstName" defaultText:v17 intention:0];
+      firstName = [(WDBuddyFlowUserInfo *)self firstName];
+      v6 = [v14 initWithTitle:v16 registrantModelKey:@"firstName" defaultText:firstName intention:0];
 
       v13 = @"FirstNameEntry";
     }
@@ -391,15 +391,15 @@ LABEL_18:
 
 - (id)_createDateOfBirthEntryItem
 {
-  v3 = [(WDBuddyFlowUserInfo *)self _todayBirthdayDateComponents];
-  v4 = [MEMORY[0x277D12A50] gregorianGMTCalendar];
-  v15 = v3;
-  v5 = [v4 dateFromComponents:v3];
-  v6 = [v4 dateByAddingUnit:4 value:-130 toDate:v5 options:0];
-  v7 = [v4 dateByAddingUnit:4 value:-30 toDate:v5 options:0];
+  _todayBirthdayDateComponents = [(WDBuddyFlowUserInfo *)self _todayBirthdayDateComponents];
+  gregorianGMTCalendar = [MEMORY[0x277D12A50] gregorianGMTCalendar];
+  v15 = _todayBirthdayDateComponents;
+  v5 = [gregorianGMTCalendar dateFromComponents:_todayBirthdayDateComponents];
+  v6 = [gregorianGMTCalendar dateByAddingUnit:4 value:-130 toDate:v5 options:0];
+  v7 = [gregorianGMTCalendar dateByAddingUnit:4 value:-30 toDate:v5 options:0];
   if (self->_dateOfBirthComponents)
   {
-    v8 = [v4 dateFromComponents:?];
+    v8 = [gregorianGMTCalendar dateFromComponents:?];
   }
 
   else
@@ -459,22 +459,22 @@ LABEL_18:
 
 - (id)_todayBirthdayDateComponents
 {
-  v2 = [MEMORY[0x277D12A50] gregorianGMTCalendar];
-  v3 = [MEMORY[0x277CBEAA8] date];
-  v4 = [v2 hk_dateOfBirthDateComponentsWithDate:v3];
+  gregorianGMTCalendar = [MEMORY[0x277D12A50] gregorianGMTCalendar];
+  date = [MEMORY[0x277CBEAA8] date];
+  v4 = [gregorianGMTCalendar hk_dateOfBirthDateComponentsWithDate:date];
 
   return v4;
 }
 
-- (void)dataEntryItemDidUpdateValue:(id)a3
+- (void)dataEntryItemDidUpdateValue:(id)value
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = [a3 formattedKeyAndValue];
+  formattedKeyAndValue = [value formattedKeyAndValue];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v5 = [formattedKeyAndValue countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -485,11 +485,11 @@ LABEL_18:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(formattedKeyAndValue);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v4 objectForKeyedSubscript:v9];
+        v10 = [formattedKeyAndValue objectForKeyedSubscript:v9];
         v11 = [(WDBuddyFlowUserInfo *)self valueForKey:v9];
         if (([v10 isEqual:v11] & 1) == 0)
         {
@@ -497,7 +497,7 @@ LABEL_18:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [formattedKeyAndValue countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);

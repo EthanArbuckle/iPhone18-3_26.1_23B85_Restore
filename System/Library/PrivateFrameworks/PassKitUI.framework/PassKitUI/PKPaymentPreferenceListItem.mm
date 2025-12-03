@@ -1,53 +1,53 @@
 @interface PKPaymentPreferenceListItem
-- (PKPaymentPreferenceListItem)initWithSectionPreference:(id)a3;
+- (PKPaymentPreferenceListItem)initWithSectionPreference:(id)preference;
 - (id)configuration;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation PKPaymentPreferenceListItem
 
-- (PKPaymentPreferenceListItem)initWithSectionPreference:(id)a3
+- (PKPaymentPreferenceListItem)initWithSectionPreference:(id)preference
 {
-  v5 = a3;
+  preferenceCopy = preference;
   v9.receiver = self;
   v9.super_class = PKPaymentPreferenceListItem;
   v6 = [(PKPaymentPreferenceListItem *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_sectionPreference, a3);
+    objc_storeStrong(&v6->_sectionPreference, preference);
   }
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   objc_storeStrong(v4 + 1, self->_sectionPreference);
   return v4;
 }
 
 - (id)configuration
 {
-  v3 = [(PKPaymentPreferenceListItem *)self _internalConfiguration];
-  v4 = [(PKPaymentPreferenceListItem *)self _text];
-  [v3 setText:v4];
+  _internalConfiguration = [(PKPaymentPreferenceListItem *)self _internalConfiguration];
+  _text = [(PKPaymentPreferenceListItem *)self _text];
+  [_internalConfiguration setText:_text];
 
-  v5 = [(PKPaymentPreferenceListItem *)self _secondaryText];
-  [v3 setSecondaryText:v5];
+  _secondaryText = [(PKPaymentPreferenceListItem *)self _secondaryText];
+  [_internalConfiguration setSecondaryText:_secondaryText];
 
-  v6 = [(PKPaymentPreferenceListItem *)self _image];
-  [v3 setImage:v6];
+  _image = [(PKPaymentPreferenceListItem *)self _image];
+  [_internalConfiguration setImage:_image];
 
-  v7 = [v3 secondaryTextProperties];
-  v8 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  [v7 setColor:v8];
+  secondaryTextProperties = [_internalConfiguration secondaryTextProperties];
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  [secondaryTextProperties setColor:secondaryLabelColor];
 
-  [v3 directionalLayoutMargins];
-  [v3 setDirectionalLayoutMargins:10.0];
+  [_internalConfiguration directionalLayoutMargins];
+  [_internalConfiguration setDirectionalLayoutMargins:10.0];
 
-  return v3;
+  return _internalConfiguration;
 }
 
 @end

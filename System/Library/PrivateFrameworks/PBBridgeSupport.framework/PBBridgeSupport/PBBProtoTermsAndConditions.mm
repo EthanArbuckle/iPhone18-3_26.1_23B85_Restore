@@ -1,12 +1,12 @@
 @interface PBBProtoTermsAndConditions
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PBBProtoTermsAndConditions
@@ -17,20 +17,20 @@
   v8.receiver = self;
   v8.super_class = PBBProtoTermsAndConditions;
   v4 = [(PBBProtoTermsAndConditions *)&v8 description];
-  v5 = [(PBBProtoTermsAndConditions *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(PBBProtoTermsAndConditions *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   license = self->_license;
   if (license)
   {
-    [v3 setObject:license forKey:@"license"];
+    [dictionary setObject:license forKey:@"license"];
   }
 
   multiterms = self->_multiterms;
@@ -102,224 +102,224 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_license)
   {
     PBDataWriterWriteDataField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_multiterms)
   {
     PBDataWriterWriteDataField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_warranty)
   {
     PBDataWriterWriteDataField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_licenseLabel)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_warrantyLabel)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_agreeDialogTitle)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_agreeDialogText)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_agreeLabel)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_cancelLabel)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_disagreeLabel)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_serverTerms)
   {
     PBDataWriterWriteDataField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_userAgent)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_license)
   {
-    [v4 setLicense:?];
-    v4 = v5;
+    [toCopy setLicense:?];
+    toCopy = v5;
   }
 
   if (self->_multiterms)
   {
     [v5 setMultiterms:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_warranty)
   {
     [v5 setWarranty:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_licenseLabel)
   {
     [v5 setLicenseLabel:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_warrantyLabel)
   {
     [v5 setWarrantyLabel:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_agreeDialogTitle)
   {
     [v5 setAgreeDialogTitle:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_agreeDialogText)
   {
     [v5 setAgreeDialogText:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_agreeLabel)
   {
     [v5 setAgreeLabel:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_cancelLabel)
   {
     [v5 setCancelLabel:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_disagreeLabel)
   {
     [v5 setDisagreeLabel:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_serverTerms)
   {
     [v5 setServerTerms:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_userAgent)
   {
     [v5 setUserAgent:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSData *)self->_license copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSData *)self->_license copyWithZone:zone];
   v7 = v5[6];
   v5[6] = v6;
 
-  v8 = [(NSData *)self->_multiterms copyWithZone:a3];
+  v8 = [(NSData *)self->_multiterms copyWithZone:zone];
   v9 = v5[8];
   v5[8] = v8;
 
-  v10 = [(NSData *)self->_warranty copyWithZone:a3];
+  v10 = [(NSData *)self->_warranty copyWithZone:zone];
   v11 = v5[11];
   v5[11] = v10;
 
-  v12 = [(NSString *)self->_licenseLabel copyWithZone:a3];
+  v12 = [(NSString *)self->_licenseLabel copyWithZone:zone];
   v13 = v5[7];
   v5[7] = v12;
 
-  v14 = [(NSString *)self->_warrantyLabel copyWithZone:a3];
+  v14 = [(NSString *)self->_warrantyLabel copyWithZone:zone];
   v15 = v5[12];
   v5[12] = v14;
 
-  v16 = [(NSString *)self->_agreeDialogTitle copyWithZone:a3];
+  v16 = [(NSString *)self->_agreeDialogTitle copyWithZone:zone];
   v17 = v5[2];
   v5[2] = v16;
 
-  v18 = [(NSString *)self->_agreeDialogText copyWithZone:a3];
+  v18 = [(NSString *)self->_agreeDialogText copyWithZone:zone];
   v19 = v5[1];
   v5[1] = v18;
 
-  v20 = [(NSString *)self->_agreeLabel copyWithZone:a3];
+  v20 = [(NSString *)self->_agreeLabel copyWithZone:zone];
   v21 = v5[3];
   v5[3] = v20;
 
-  v22 = [(NSString *)self->_cancelLabel copyWithZone:a3];
+  v22 = [(NSString *)self->_cancelLabel copyWithZone:zone];
   v23 = v5[4];
   v5[4] = v22;
 
-  v24 = [(NSString *)self->_disagreeLabel copyWithZone:a3];
+  v24 = [(NSString *)self->_disagreeLabel copyWithZone:zone];
   v25 = v5[5];
   v5[5] = v24;
 
-  v26 = [(NSData *)self->_serverTerms copyWithZone:a3];
+  v26 = [(NSData *)self->_serverTerms copyWithZone:zone];
   v27 = v5[9];
   v5[9] = v26;
 
-  v28 = [(NSString *)self->_userAgent copyWithZone:a3];
+  v28 = [(NSString *)self->_userAgent copyWithZone:zone];
   v29 = v5[10];
   v5[10] = v28;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_26;
   }
 
   license = self->_license;
-  if (license | v4[6])
+  if (license | equalCopy[6])
   {
     if (![(NSData *)license isEqual:?])
     {
@@ -328,27 +328,27 @@
   }
 
   multiterms = self->_multiterms;
-  if (multiterms | v4[8] && ![(NSData *)multiterms isEqual:?])
+  if (multiterms | equalCopy[8] && ![(NSData *)multiterms isEqual:?])
   {
     goto LABEL_26;
   }
 
   warranty = self->_warranty;
-  if (warranty | v4[11] && ![(NSData *)warranty isEqual:?])
+  if (warranty | equalCopy[11] && ![(NSData *)warranty isEqual:?])
   {
     goto LABEL_26;
   }
 
   licenseLabel = self->_licenseLabel;
-  if (licenseLabel | v4[7] && ![(NSString *)licenseLabel isEqual:?])
+  if (licenseLabel | equalCopy[7] && ![(NSString *)licenseLabel isEqual:?])
   {
     goto LABEL_26;
   }
 
-  if (((warrantyLabel = self->_warrantyLabel, !(warrantyLabel | v4[12])) || [(NSString *)warrantyLabel isEqual:?]) && ((agreeDialogTitle = self->_agreeDialogTitle, !(agreeDialogTitle | v4[2])) || [(NSString *)agreeDialogTitle isEqual:?]) && ((agreeDialogText = self->_agreeDialogText, !(agreeDialogText | v4[1])) || [(NSString *)agreeDialogText isEqual:?]) && ((agreeLabel = self->_agreeLabel, !(agreeLabel | v4[3])) || [(NSString *)agreeLabel isEqual:?]) && ((cancelLabel = self->_cancelLabel, !(cancelLabel | v4[4])) || [(NSString *)cancelLabel isEqual:?]) && ((disagreeLabel = self->_disagreeLabel, !(disagreeLabel | v4[5])) || [(NSString *)disagreeLabel isEqual:?]) && ((serverTerms = self->_serverTerms, !(serverTerms | v4[9])) || [(NSData *)serverTerms isEqual:?]))
+  if (((warrantyLabel = self->_warrantyLabel, !(warrantyLabel | equalCopy[12])) || [(NSString *)warrantyLabel isEqual:?]) && ((agreeDialogTitle = self->_agreeDialogTitle, !(agreeDialogTitle | equalCopy[2])) || [(NSString *)agreeDialogTitle isEqual:?]) && ((agreeDialogText = self->_agreeDialogText, !(agreeDialogText | equalCopy[1])) || [(NSString *)agreeDialogText isEqual:?]) && ((agreeLabel = self->_agreeLabel, !(agreeLabel | equalCopy[3])) || [(NSString *)agreeLabel isEqual:?]) && ((cancelLabel = self->_cancelLabel, !(cancelLabel | equalCopy[4])) || [(NSString *)cancelLabel isEqual:?]) && ((disagreeLabel = self->_disagreeLabel, !(disagreeLabel | equalCopy[5])) || [(NSString *)disagreeLabel isEqual:?]) && ((serverTerms = self->_serverTerms, !(serverTerms | equalCopy[9])) || [(NSData *)serverTerms isEqual:?]))
   {
     userAgent = self->_userAgent;
-    if (userAgent | v4[10])
+    if (userAgent | equalCopy[10])
     {
       v17 = [(NSString *)userAgent isEqual:?];
     }
@@ -384,65 +384,65 @@ LABEL_26:
   return v13 ^ [(NSString *)self->_userAgent hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (v4[6])
+  fromCopy = from;
+  if (fromCopy[6])
   {
     [(PBBProtoTermsAndConditions *)self setLicense:?];
   }
 
-  if (v4[8])
+  if (fromCopy[8])
   {
     [(PBBProtoTermsAndConditions *)self setMultiterms:?];
   }
 
-  if (v4[11])
+  if (fromCopy[11])
   {
     [(PBBProtoTermsAndConditions *)self setWarranty:?];
   }
 
-  if (v4[7])
+  if (fromCopy[7])
   {
     [(PBBProtoTermsAndConditions *)self setLicenseLabel:?];
   }
 
-  if (v4[12])
+  if (fromCopy[12])
   {
     [(PBBProtoTermsAndConditions *)self setWarrantyLabel:?];
   }
 
-  if (v4[2])
+  if (fromCopy[2])
   {
     [(PBBProtoTermsAndConditions *)self setAgreeDialogTitle:?];
   }
 
-  if (v4[1])
+  if (fromCopy[1])
   {
     [(PBBProtoTermsAndConditions *)self setAgreeDialogText:?];
   }
 
-  if (v4[3])
+  if (fromCopy[3])
   {
     [(PBBProtoTermsAndConditions *)self setAgreeLabel:?];
   }
 
-  if (v4[4])
+  if (fromCopy[4])
   {
     [(PBBProtoTermsAndConditions *)self setCancelLabel:?];
   }
 
-  if (v4[5])
+  if (fromCopy[5])
   {
     [(PBBProtoTermsAndConditions *)self setDisagreeLabel:?];
   }
 
-  if (v4[9])
+  if (fromCopy[9])
   {
     [(PBBProtoTermsAndConditions *)self setServerTerms:?];
   }
 
-  if (v4[10])
+  if (fromCopy[10])
   {
     [(PBBProtoTermsAndConditions *)self setUserAgent:?];
   }

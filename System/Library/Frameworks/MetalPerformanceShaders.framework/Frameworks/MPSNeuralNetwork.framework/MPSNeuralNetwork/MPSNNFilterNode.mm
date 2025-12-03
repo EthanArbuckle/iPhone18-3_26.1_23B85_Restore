@@ -1,6 +1,6 @@
 @interface MPSNNFilterNode
 - (FilterGraphNode)newFilterNode;
-- (MPSNNFilterNode)initWithSourceImages:(id)a3 sourceStates:(id)a4 paddingPolicy:(id)a5;
+- (MPSNNFilterNode)initWithSourceImages:(id)images sourceStates:(id)states paddingPolicy:(id)policy;
 - (MPSNNGradientFilterNode)gradientFilterWithSource:(MPSNNImageNode *)gradientImage;
 - (MPSNNGradientFilterNode)gradientFilterWithSources:(NSArray *)gradientImages;
 - (MPSNNStateNode)resultState;
@@ -14,9 +14,9 @@
 
 @implementation MPSNNFilterNode
 
-- (MPSNNFilterNode)initWithSourceImages:(id)a3 sourceStates:(id)a4 paddingPolicy:(id)a5
+- (MPSNNFilterNode)initWithSourceImages:(id)images sourceStates:(id)states paddingPolicy:(id)policy
 {
-  if (!a3)
+  if (!images)
   {
     if (MTLReportFailureTypeEnabled())
     {
@@ -26,9 +26,9 @@
     goto LABEL_38;
   }
 
-  v9 = a5;
-  objc_msgSend_count(a3, a2, a3, a4, a5, v5, v6, v7);
-  if (!objc_msgSend_count(a3, v13, v14, v15, v16, v17, v18, v19))
+  policyCopy = policy;
+  objc_msgSend_count(images, a2, images, states, policy, v5, v6, v7);
+  if (!objc_msgSend_count(images, v13, v14, v15, v16, v17, v18, v19))
   {
     if (MTLReportFailureTypeEnabled())
     {
@@ -38,10 +38,10 @@
     goto LABEL_38;
   }
 
-  if (a4)
+  if (states)
   {
-    objc_msgSend_count(a4, v20, v21, v22, v23, v24, v25, v26);
-    if (!objc_msgSend_count(a4, v27, v28, v29, v30, v31, v32, v33))
+    objc_msgSend_count(states, v20, v21, v22, v23, v24, v25, v26);
+    if (!objc_msgSend_count(states, v27, v28, v29, v30, v31, v32, v33))
     {
       if (MTLReportFailureTypeEnabled())
       {
@@ -62,17 +62,17 @@ LABEL_38:
   v40 = [(MPSNNFilterNode *)&v171 init];
   if (v40)
   {
-    if (!v9)
+    if (!policyCopy)
     {
-      v9 = objc_msgSend_paddingWithMethod_(MPSNNDefaultPadding, v34, 16, v35, v36, v37, v38, v39);
+      policyCopy = objc_msgSend_paddingWithMethod_(MPSNNDefaultPadding, v34, 16, v35, v36, v37, v38, v39);
     }
 
-    objc_msgSend_setPaddingPolicy_(v40, v34, v9, v35, v36, v37, v38, v39);
-    v48 = objc_msgSend_count(a3, v41, v42, v43, v44, v45, v46, v47);
+    objc_msgSend_setPaddingPolicy_(v40, v34, policyCopy, v35, v36, v37, v38, v39);
+    v48 = objc_msgSend_count(images, v41, v42, v43, v44, v45, v46, v47);
     v49 = objc_alloc(MEMORY[0x277CBEB18]);
     v56 = objc_msgSend_initWithCapacity_(v49, v50, v48, v51, v52, v53, v54, v55);
     v40->_sourceImages = v56;
-    objc_msgSend_setArray_(v56, v57, a3, v58, v59, v60, v61, v62);
+    objc_msgSend_setArray_(v56, v57, images, v58, v59, v60, v61, v62);
     if (v48)
     {
       v69 = 0;
@@ -100,13 +100,13 @@ LABEL_38:
       }
     }
 
-    if (a4)
+    if (states)
     {
       v88 = objc_alloc(MEMORY[0x277CBEB18]);
-      v96 = objc_msgSend_count(a4, v89, v90, v91, v92, v93, v94, v95);
+      v96 = objc_msgSend_count(states, v89, v90, v91, v92, v93, v94, v95);
       v103 = objc_msgSend_initWithCapacity_(v88, v97, v96, v98, v99, v100, v101, v102);
       v40->_sourceStates = v103;
-      objc_msgSend_setArray_(v103, v104, a4, v105, v106, v107, v108, v109);
+      objc_msgSend_setArray_(v103, v104, states, v105, v106, v107, v108, v109);
       v117 = objc_msgSend_count(v40->_sourceStates, v110, v111, v112, v113, v114, v115, v116);
       if (v117)
       {

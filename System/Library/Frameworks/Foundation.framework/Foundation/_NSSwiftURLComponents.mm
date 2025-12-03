@@ -1,14 +1,14 @@
 @interface _NSSwiftURLComponents
-- (BOOL)_setEncodedHost:(id)a3;
-- (BOOL)_setPercentEncodedFragment:(id)a3;
-- (BOOL)_setPercentEncodedHost:(id)a3;
-- (BOOL)_setPercentEncodedPassword:(id)a3;
-- (BOOL)_setPercentEncodedPath:(id)a3;
-- (BOOL)_setPercentEncodedQuery:(id)a3;
-- (BOOL)_setPercentEncodedQueryItems:(id)a3;
-- (BOOL)_setPercentEncodedUser:(id)a3;
-- (BOOL)_setPort:(id)a3;
-- (BOOL)_setScheme:(id)a3;
+- (BOOL)_setEncodedHost:(id)host;
+- (BOOL)_setPercentEncodedFragment:(id)fragment;
+- (BOOL)_setPercentEncodedHost:(id)host;
+- (BOOL)_setPercentEncodedPassword:(id)password;
+- (BOOL)_setPercentEncodedPath:(id)path;
+- (BOOL)_setPercentEncodedQuery:(id)query;
+- (BOOL)_setPercentEncodedQueryItems:(id)items;
+- (BOOL)_setPercentEncodedUser:(id)user;
+- (BOOL)_setPort:(id)port;
+- (BOOL)_setScheme:(id)scheme;
 - (NSNumber)_port;
 - (NSURL)URL;
 - (_NSRange)rangeOfFragment;
@@ -20,25 +20,25 @@
 - (_NSRange)rangeOfScheme;
 - (_NSRange)rangeOfUser;
 - (_NSSwiftURLComponents)init;
-- (_NSSwiftURLComponents)initWithString:(id)a3;
-- (_NSSwiftURLComponents)initWithString:(id)a3 encodingInvalidCharacters:(BOOL)a4;
-- (_NSSwiftURLComponents)initWithURL:(id)a3 resolvingAgainstBaseURL:(BOOL)a4;
-- (id)URLRelativeToURL:(id)a3;
+- (_NSSwiftURLComponents)initWithString:(id)string;
+- (_NSSwiftURLComponents)initWithString:(id)string encodingInvalidCharacters:(BOOL)characters;
+- (_NSSwiftURLComponents)initWithURL:(id)l resolvingAgainstBaseURL:(BOOL)rL;
+- (id)URLRelativeToURL:(id)l;
 - (int64_t)hash;
-- (void)setFragment:(id)a3;
-- (void)setHost:(id)a3;
-- (void)setPassword:(id)a3;
-- (void)setPath:(id)a3;
-- (void)setQuery:(id)a3;
-- (void)setQueryItems:(id)a3;
-- (void)setUser:(id)a3;
+- (void)setFragment:(id)fragment;
+- (void)setHost:(id)host;
+- (void)setPassword:(id)password;
+- (void)setPath:(id)path;
+- (void)setQuery:(id)query;
+- (void)setQueryItems:(id)items;
+- (void)setUser:(id)user;
 @end
 
 @implementation _NSSwiftURLComponents
 
 - (NSURL)URL
 {
-  v2 = self;
+  selfCopy = self;
   _NSSwiftURLComponents.url.getter(v7);
 
   if (v7[0])
@@ -57,17 +57,17 @@
   return v5;
 }
 
-- (BOOL)_setPercentEncodedQueryItems:(id)a3
+- (BOOL)_setPercentEncodedQueryItems:(id)items
 {
-  v3 = self;
-  if (a3)
+  selfCopy = self;
+  if (items)
   {
-    self = _sSa10FoundationE36_unconditionallyBridgeFromObjectiveCySayxGSo7NSArrayCSgFZAA12URLQueryItemV_Tt0g5(a3);
+    self = _sSa10FoundationE36_unconditionallyBridgeFromObjectiveCySayxGSo7NSArrayCSgFZAA12URLQueryItemV_Tt0g5(items);
   }
 
-  v4 = *(&v3->super.super.super.isa + OBJC_IVAR____NSSwiftURLComponents_lock);
+  v4 = *(&selfCopy->super.super.super.isa + OBJC_IVAR____NSSwiftURLComponents_lock);
   MEMORY[0x1EEE9AC00](self);
-  v5 = v3;
+  v5 = selfCopy;
   os_unfair_lock_lock(v4 + 43);
   partial apply for closure #1 in _NSSwiftURLComponents._setPercentEncodedQueryItems(_:)(&v4[4]);
   os_unfair_lock_unlock(v4 + 43);
@@ -75,11 +75,11 @@
   return 1;
 }
 
-- (void)setFragment:(id)a3
+- (void)setFragment:(id)fragment
 {
-  if (a3)
+  if (fragment)
   {
-    v4 = static String._unconditionallyBridgeFromObjectiveC(_:)(a3);
+    v4 = static String._unconditionallyBridgeFromObjectiveC(_:)(fragment);
   }
 
   else
@@ -89,34 +89,34 @@
 
   v5 = *(&self->super.super.super.isa + OBJC_IVAR____NSSwiftURLComponents_lock);
   MEMORY[0x1EEE9AC00](v4);
-  v6 = self;
+  selfCopy = self;
   os_unfair_lock_lock(v5 + 43);
   partial apply for closure #1 in _NSSwiftURLComponents.fragment.setter(&v5[4]);
   os_unfair_lock_unlock(v5 + 43);
 }
 
-- (void)setQueryItems:(id)a3
+- (void)setQueryItems:(id)items
 {
-  v3 = self;
-  if (a3)
+  selfCopy = self;
+  if (items)
   {
-    self = _sSa10FoundationE36_unconditionallyBridgeFromObjectiveCySayxGSo7NSArrayCSgFZAA12URLQueryItemV_Tt0g5(a3);
+    self = _sSa10FoundationE36_unconditionallyBridgeFromObjectiveCySayxGSo7NSArrayCSgFZAA12URLQueryItemV_Tt0g5(items);
   }
 
-  v4 = *(&v3->super.super.super.isa + OBJC_IVAR____NSSwiftURLComponents_lock);
+  v4 = *(&selfCopy->super.super.super.isa + OBJC_IVAR____NSSwiftURLComponents_lock);
   MEMORY[0x1EEE9AC00](self);
-  v5 = v3;
+  v5 = selfCopy;
   os_unfair_lock_lock(v4 + 43);
   v6.value._rawValue = &v4[4];
   partial apply for closure #1 in _NSSwiftURLComponents.queryItems.setter(v6);
   os_unfair_lock_unlock(v4 + 43);
 }
 
-- (void)setPath:(id)a3
+- (void)setPath:(id)path
 {
-  if (a3)
+  if (path)
   {
-    v4 = static String._unconditionallyBridgeFromObjectiveC(_:)(a3);
+    v4 = static String._unconditionallyBridgeFromObjectiveC(_:)(path);
   }
 
   else
@@ -126,17 +126,17 @@
 
   v5 = *(&self->super.super.super.isa + OBJC_IVAR____NSSwiftURLComponents_lock);
   MEMORY[0x1EEE9AC00](v4);
-  v6 = self;
+  selfCopy = self;
   os_unfair_lock_lock(v5 + 43);
   partial apply for closure #1 in _NSSwiftURLComponents.path.setter(&v5[4]);
   os_unfair_lock_unlock(v5 + 43);
 }
 
-- (BOOL)_setScheme:(id)a3
+- (BOOL)_setScheme:(id)scheme
 {
-  if (a3)
+  if (scheme)
   {
-    v4 = static String._unconditionallyBridgeFromObjectiveC(_:)(a3);
+    v4 = static String._unconditionallyBridgeFromObjectiveC(_:)(scheme);
   }
 
   else
@@ -146,7 +146,7 @@
 
   v5 = *(&self->super.super.super.isa + OBJC_IVAR____NSSwiftURLComponents_lock);
   MEMORY[0x1EEE9AC00](v4);
-  v6 = self;
+  selfCopy = self;
   os_unfair_lock_lock((v5 + 172));
   partial apply for closure #1 in _NSSwiftURLComponents._setScheme(_:)((v5 + 16));
   os_unfair_lock_unlock((v5 + 172));
@@ -154,11 +154,11 @@
   return 1;
 }
 
-- (void)setHost:(id)a3
+- (void)setHost:(id)host
 {
-  if (a3)
+  if (host)
   {
-    v4 = static String._unconditionallyBridgeFromObjectiveC(_:)(a3);
+    v4 = static String._unconditionallyBridgeFromObjectiveC(_:)(host);
   }
 
   else
@@ -168,17 +168,17 @@
 
   v5 = *(&self->super.super.super.isa + OBJC_IVAR____NSSwiftURLComponents_lock);
   MEMORY[0x1EEE9AC00](v4);
-  v6 = self;
+  selfCopy = self;
   os_unfair_lock_lock(v5 + 43);
   partial apply for closure #1 in _NSSwiftURLComponents.host.setter();
   os_unfair_lock_unlock(v5 + 43);
 }
 
-- (void)setUser:(id)a3
+- (void)setUser:(id)user
 {
-  if (a3)
+  if (user)
   {
-    v4 = static String._unconditionallyBridgeFromObjectiveC(_:)(a3);
+    v4 = static String._unconditionallyBridgeFromObjectiveC(_:)(user);
   }
 
   else
@@ -188,7 +188,7 @@
 
   v5 = *(&self->super.super.super.isa + OBJC_IVAR____NSSwiftURLComponents_lock);
   MEMORY[0x1EEE9AC00](v4);
-  v6 = self;
+  selfCopy = self;
   os_unfair_lock_lock(v5 + 43);
   partial apply for closure #1 in _NSSwiftURLComponents.user.setter(&v5[4]);
   os_unfair_lock_unlock(v5 + 43);
@@ -196,7 +196,7 @@
 
 - (_NSRange)rangeOfPath
 {
-  v2 = self;
+  selfCopy = self;
   v3 = _NSSwiftURLComponents.rangeOfPath.getter();
   v5 = v4;
 
@@ -209,7 +209,7 @@
 
 - (_NSRange)rangeOfQuery
 {
-  v2 = self;
+  selfCopy = self;
   v3 = _NSSwiftURLComponents.rangeOfQuery.getter();
   v5 = v4;
 
@@ -220,11 +220,11 @@
   return result;
 }
 
-- (void)setQuery:(id)a3
+- (void)setQuery:(id)query
 {
-  if (a3)
+  if (query)
   {
-    v4 = static String._unconditionallyBridgeFromObjectiveC(_:)(a3);
+    v4 = static String._unconditionallyBridgeFromObjectiveC(_:)(query);
   }
 
   else
@@ -234,17 +234,17 @@
 
   v5 = *(&self->super.super.super.isa + OBJC_IVAR____NSSwiftURLComponents_lock);
   MEMORY[0x1EEE9AC00](v4);
-  v6 = self;
+  selfCopy = self;
   os_unfair_lock_lock(v5 + 43);
   partial apply for closure #1 in _NSSwiftURLComponents.query.setter(&v5[4]);
   os_unfair_lock_unlock(v5 + 43);
 }
 
-- (void)setPassword:(id)a3
+- (void)setPassword:(id)password
 {
-  if (a3)
+  if (password)
   {
-    v4 = static String._unconditionallyBridgeFromObjectiveC(_:)(a3);
+    v4 = static String._unconditionallyBridgeFromObjectiveC(_:)(password);
   }
 
   else
@@ -254,7 +254,7 @@
 
   v5 = *(&self->super.super.super.isa + OBJC_IVAR____NSSwiftURLComponents_lock);
   MEMORY[0x1EEE9AC00](v4);
-  v6 = self;
+  selfCopy = self;
   os_unfair_lock_lock(v5 + 43);
   partial apply for closure #1 in _NSSwiftURLComponents.password.setter(&v5[4]);
   os_unfair_lock_unlock(v5 + 43);
@@ -286,9 +286,9 @@
   return [(NSURLComponents *)&v9 init];
 }
 
-- (_NSSwiftURLComponents)initWithString:(id)a3
+- (_NSSwiftURLComponents)initWithString:(id)string
 {
-  v4 = static String._unconditionallyBridgeFromObjectiveC(_:)(a3);
+  v4 = static String._unconditionallyBridgeFromObjectiveC(_:)(string);
   specialized URLComponents._URLComponents.init(string:encodingInvalidCharacters:)(v4, v5, 1, v13);
   if (_s10Foundation13URLComponentsV01_B0VSgWOg(v13) == 1)
   {
@@ -323,17 +323,17 @@
   }
 }
 
-- (_NSSwiftURLComponents)initWithURL:(id)a3 resolvingAgainstBaseURL:(BOOL)a4
+- (_NSSwiftURLComponents)initWithURL:(id)l resolvingAgainstBaseURL:(BOOL)rL
 {
-  static URL._unconditionallyBridgeFromObjectiveC(_:)(a3, &v7);
+  static URL._unconditionallyBridgeFromObjectiveC(_:)(l, &v7);
   v6 = v7;
-  return _NSSwiftURLComponents.init(url:resolvingAgainstBaseURL:)(&v6, a4);
+  return _NSSwiftURLComponents.init(url:resolvingAgainstBaseURL:)(&v6, rL);
 }
 
 - (int64_t)hash
 {
   v2 = *(&self->super.super.super.isa + OBJC_IVAR____NSSwiftURLComponents_lock);
-  v3 = self;
+  selfCopy = self;
   os_unfair_lock_lock((v2 + 172));
   v4 = *(v2 + 128);
   v18 = *(v2 + 112);
@@ -367,11 +367,11 @@
   return v8;
 }
 
-- (id)URLRelativeToURL:(id)a3
+- (id)URLRelativeToURL:(id)l
 {
-  if (a3)
+  if (l)
   {
-    static URL._unconditionallyBridgeFromObjectiveC(_:)(a3, &v11);
+    static URL._unconditionallyBridgeFromObjectiveC(_:)(l, &v11);
     v4 = v11;
   }
 
@@ -381,7 +381,7 @@
   }
 
   v10 = v4;
-  v5 = self;
+  selfCopy = self;
   _NSSwiftURLComponents.url(relativeTo:)(&v10, &v11);
 
   swift_unknownObjectRelease();
@@ -403,17 +403,17 @@
 
 - (NSNumber)_port
 {
-  v2 = self;
+  selfCopy = self;
   v3 = _NSSwiftURLComponents._port.getter();
 
   return v3;
 }
 
-- (BOOL)_setPort:(id)a3
+- (BOOL)_setPort:(id)port
 {
   v4 = *(&self->super.super.super.isa + OBJC_IVAR____NSSwiftURLComponents_lock);
-  v5 = a3;
-  v6 = self;
+  portCopy = port;
+  selfCopy = self;
   os_unfair_lock_lock(v4 + 43);
   partial apply for closure #1 in _NSSwiftURLComponents._setPort(_:)(&v4[4]);
   os_unfair_lock_unlock(v4 + 43);
@@ -421,11 +421,11 @@
   return 1;
 }
 
-- (BOOL)_setPercentEncodedUser:(id)a3
+- (BOOL)_setPercentEncodedUser:(id)user
 {
-  if (a3)
+  if (user)
   {
-    v4 = static String._unconditionallyBridgeFromObjectiveC(_:)(a3);
+    v4 = static String._unconditionallyBridgeFromObjectiveC(_:)(user);
   }
 
   else
@@ -435,7 +435,7 @@
 
   v5 = *(&self->super.super.super.isa + OBJC_IVAR____NSSwiftURLComponents_lock);
   MEMORY[0x1EEE9AC00](v4);
-  v6 = self;
+  selfCopy = self;
   os_unfair_lock_lock(v5 + 43);
   partial apply for closure #1 in _NSSwiftURLComponents._setPercentEncodedUser(_:)(&v5[4]);
   os_unfair_lock_unlock(v5 + 43);
@@ -443,11 +443,11 @@
   return 1;
 }
 
-- (BOOL)_setPercentEncodedPassword:(id)a3
+- (BOOL)_setPercentEncodedPassword:(id)password
 {
-  if (a3)
+  if (password)
   {
-    v4 = static String._unconditionallyBridgeFromObjectiveC(_:)(a3);
+    v4 = static String._unconditionallyBridgeFromObjectiveC(_:)(password);
   }
 
   else
@@ -457,7 +457,7 @@
 
   v5 = *(&self->super.super.super.isa + OBJC_IVAR____NSSwiftURLComponents_lock);
   MEMORY[0x1EEE9AC00](v4);
-  v6 = self;
+  selfCopy = self;
   os_unfair_lock_lock(v5 + 43);
   partial apply for closure #1 in _NSSwiftURLComponents._setPercentEncodedPassword(_:)(&v5[4]);
   os_unfair_lock_unlock(v5 + 43);
@@ -465,11 +465,11 @@
   return 1;
 }
 
-- (BOOL)_setPercentEncodedHost:(id)a3
+- (BOOL)_setPercentEncodedHost:(id)host
 {
-  if (a3)
+  if (host)
   {
-    v4 = static String._unconditionallyBridgeFromObjectiveC(_:)(a3);
+    v4 = static String._unconditionallyBridgeFromObjectiveC(_:)(host);
   }
 
   else
@@ -479,7 +479,7 @@
 
   v5 = *(&self->super.super.super.isa + OBJC_IVAR____NSSwiftURLComponents_lock);
   MEMORY[0x1EEE9AC00](v4);
-  v6 = self;
+  selfCopy = self;
   os_unfair_lock_lock(v5 + 43);
   partial apply for closure #1 in _NSSwiftURLComponents._setPercentEncodedHost(_:)(&v5[4]);
   os_unfair_lock_unlock(v5 + 43);
@@ -487,11 +487,11 @@
   return 1;
 }
 
-- (BOOL)_setEncodedHost:(id)a3
+- (BOOL)_setEncodedHost:(id)host
 {
-  if (a3)
+  if (host)
   {
-    v4 = static String._unconditionallyBridgeFromObjectiveC(_:)(a3);
+    v4 = static String._unconditionallyBridgeFromObjectiveC(_:)(host);
   }
 
   else
@@ -501,7 +501,7 @@
 
   v5 = *(&self->super.super.super.isa + OBJC_IVAR____NSSwiftURLComponents_lock);
   MEMORY[0x1EEE9AC00](v4);
-  v6 = self;
+  selfCopy = self;
   os_unfair_lock_lock(v5 + 43);
   partial apply for closure #1 in _NSSwiftURLComponents._setEncodedHost(_:)(&v5[4]);
   os_unfair_lock_unlock(v5 + 43);
@@ -509,11 +509,11 @@
   return 1;
 }
 
-- (BOOL)_setPercentEncodedPath:(id)a3
+- (BOOL)_setPercentEncodedPath:(id)path
 {
-  if (a3)
+  if (path)
   {
-    v4 = static String._unconditionallyBridgeFromObjectiveC(_:)(a3);
+    v4 = static String._unconditionallyBridgeFromObjectiveC(_:)(path);
   }
 
   else
@@ -523,7 +523,7 @@
 
   v5 = *(&self->super.super.super.isa + OBJC_IVAR____NSSwiftURLComponents_lock);
   MEMORY[0x1EEE9AC00](v4);
-  v6 = self;
+  selfCopy = self;
   os_unfair_lock_lock(v5 + 43);
   partial apply for closure #1 in _NSSwiftURLComponents._setPercentEncodedPath(_:)(&v5[4]);
   os_unfair_lock_unlock(v5 + 43);
@@ -531,11 +531,11 @@
   return 1;
 }
 
-- (BOOL)_setPercentEncodedQuery:(id)a3
+- (BOOL)_setPercentEncodedQuery:(id)query
 {
-  if (a3)
+  if (query)
   {
-    v4 = static String._unconditionallyBridgeFromObjectiveC(_:)(a3);
+    v4 = static String._unconditionallyBridgeFromObjectiveC(_:)(query);
   }
 
   else
@@ -545,7 +545,7 @@
 
   v5 = *(&self->super.super.super.isa + OBJC_IVAR____NSSwiftURLComponents_lock);
   MEMORY[0x1EEE9AC00](v4);
-  v6 = self;
+  selfCopy = self;
   os_unfair_lock_lock(v5 + 43);
   partial apply for closure #1 in _NSSwiftURLComponents._setPercentEncodedQuery(_:)(&v5[4]);
   os_unfair_lock_unlock(v5 + 43);
@@ -553,11 +553,11 @@
   return 1;
 }
 
-- (BOOL)_setPercentEncodedFragment:(id)a3
+- (BOOL)_setPercentEncodedFragment:(id)fragment
 {
-  if (a3)
+  if (fragment)
   {
-    v4 = static String._unconditionallyBridgeFromObjectiveC(_:)(a3);
+    v4 = static String._unconditionallyBridgeFromObjectiveC(_:)(fragment);
   }
 
   else
@@ -567,7 +567,7 @@
 
   v5 = *(&self->super.super.super.isa + OBJC_IVAR____NSSwiftURLComponents_lock);
   MEMORY[0x1EEE9AC00](v4);
-  v6 = self;
+  selfCopy = self;
   os_unfair_lock_lock(v5 + 43);
   partial apply for closure #1 in _NSSwiftURLComponents._setPercentEncodedFragment(_:)(&v5[4]);
   os_unfair_lock_unlock(v5 + 43);
@@ -577,7 +577,7 @@
 
 - (_NSRange)rangeOfScheme
 {
-  v2 = self;
+  selfCopy = self;
   v3 = _NSSwiftURLComponents.rangeOfScheme.getter();
   v5 = v4;
 
@@ -590,7 +590,7 @@
 
 - (_NSRange)rangeOfUser
 {
-  v2 = self;
+  selfCopy = self;
   v3 = _NSSwiftURLComponents.rangeOfUser.getter();
   v5 = v4;
 
@@ -603,7 +603,7 @@
 
 - (_NSRange)rangeOfPassword
 {
-  v2 = self;
+  selfCopy = self;
   v3 = _NSSwiftURLComponents.rangeOfPassword.getter();
   v5 = v4;
 
@@ -616,7 +616,7 @@
 
 - (_NSRange)rangeOfHost
 {
-  v2 = self;
+  selfCopy = self;
   v3 = _NSSwiftURLComponents.rangeOfHost.getter();
   v5 = v4;
 
@@ -629,7 +629,7 @@
 
 - (_NSRange)rangeOfPort
 {
-  v2 = self;
+  selfCopy = self;
   v3 = _NSSwiftURLComponents.rangeOfPort.getter();
   v5 = v4;
 
@@ -642,7 +642,7 @@
 
 - (_NSRange)rangeOfFragment
 {
-  v2 = self;
+  selfCopy = self;
   v3 = _NSSwiftURLComponents.rangeOfFragment.getter();
   v5 = v4;
 
@@ -653,7 +653,7 @@
   return result;
 }
 
-- (_NSSwiftURLComponents)initWithString:(id)a3 encodingInvalidCharacters:(BOOL)a4
+- (_NSSwiftURLComponents)initWithString:(id)string encodingInvalidCharacters:(BOOL)characters
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

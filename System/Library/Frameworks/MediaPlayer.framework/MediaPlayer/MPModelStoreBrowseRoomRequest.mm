@@ -1,29 +1,29 @@
 @interface MPModelStoreBrowseRoomRequest
-- (MPModelStoreBrowseRoomRequest)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)newOperationWithResponseHandler:(id)a3;
-- (void)configureWithParentSection:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (MPModelStoreBrowseRoomRequest)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)newOperationWithResponseHandler:(id)handler;
+- (void)configureWithParentSection:(id)section;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MPModelStoreBrowseRoomRequest
 
-- (void)configureWithParentSection:(id)a3
+- (void)configureWithParentSection:(id)section
 {
-  v4 = a3;
-  v5 = [v4 loadAdditionalContentURL];
-  [(MPModelStoreBrowseRoomRequest *)self setLoadAdditionalContentURL:v5];
+  sectionCopy = section;
+  loadAdditionalContentURL = [sectionCopy loadAdditionalContentURL];
+  [(MPModelStoreBrowseRoomRequest *)self setLoadAdditionalContentURL:loadAdditionalContentURL];
 
-  v6 = [v4 previouslyRetrievedNestedResponse];
+  previouslyRetrievedNestedResponse = [sectionCopy previouslyRetrievedNestedResponse];
 
-  [(MPModelStoreBrowseRoomRequest *)self setPreviousRetrievedNestedResponse:v6];
+  [(MPModelStoreBrowseRoomRequest *)self setPreviousRetrievedNestedResponse:previouslyRetrievedNestedResponse];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = MPModelStoreBrowseRoomRequest;
-  v4 = [(MPStoreModelRequest *)&v7 copyWithZone:a3];
+  v4 = [(MPStoreModelRequest *)&v7 copyWithZone:zone];
   v5 = v4;
   if (v4)
   {
@@ -35,24 +35,24 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = MPModelStoreBrowseRoomRequest;
-  v4 = a3;
-  [(MPStoreModelRequest *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_loadAdditionalContentURL forKey:{@"MPModelStoreBrowseRequestLoadAdditionalContentURL", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(MPStoreModelRequest *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_loadAdditionalContentURL forKey:{@"MPModelStoreBrowseRequestLoadAdditionalContentURL", v5.receiver, v5.super_class}];
 }
 
-- (MPModelStoreBrowseRoomRequest)initWithCoder:(id)a3
+- (MPModelStoreBrowseRoomRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = MPModelStoreBrowseRoomRequest;
-  v5 = [(MPStoreModelRequest *)&v9 initWithCoder:v4];
+  v5 = [(MPStoreModelRequest *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MPModelStoreBrowseRequestLoadAdditionalContentURL"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MPModelStoreBrowseRequestLoadAdditionalContentURL"];
     loadAdditionalContentURL = v5->_loadAdditionalContentURL;
     v5->_loadAdditionalContentURL = v6;
   }
@@ -60,12 +60,12 @@
   return v5;
 }
 
-- (id)newOperationWithResponseHandler:(id)a3
+- (id)newOperationWithResponseHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = [MPModelStoreBrowseRoomMusicKitRequestOperation alloc];
   v6 = [(MPModelStoreBrowseRoomRequest *)self copy];
-  v7 = [(MPStoreModelRequestOperation *)v5 initWithRequest:v6 responseHandler:v4];
+  v7 = [(MPStoreModelRequestOperation *)v5 initWithRequest:v6 responseHandler:handlerCopy];
 
   return v7;
 }

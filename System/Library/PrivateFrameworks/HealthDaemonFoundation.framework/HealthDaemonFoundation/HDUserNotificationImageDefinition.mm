@@ -1,11 +1,11 @@
 @interface HDUserNotificationImageDefinition
 - (_TtC22HealthDaemonFoundation33HDUserNotificationImageDefinition)init;
-- (_TtC22HealthDaemonFoundation33HDUserNotificationImageDefinition)initWithSystemColorName:(id)a3 systemImageName:(id)a4;
+- (_TtC22HealthDaemonFoundation33HDUserNotificationImageDefinition)initWithSystemColorName:(id)name systemImageName:(id)imageName;
 @end
 
 @implementation HDUserNotificationImageDefinition
 
-- (_TtC22HealthDaemonFoundation33HDUserNotificationImageDefinition)initWithSystemColorName:(id)a3 systemImageName:(id)a4
+- (_TtC22HealthDaemonFoundation33HDUserNotificationImageDefinition)initWithSystemColorName:(id)name systemImageName:(id)imageName
 {
   v5 = sub_2515BB8EC();
   v7 = v6;

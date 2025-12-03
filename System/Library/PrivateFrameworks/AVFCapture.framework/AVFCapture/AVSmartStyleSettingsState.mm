@@ -1,21 +1,21 @@
 @interface AVSmartStyleSettingsState
 + (id)_smartStyleSettingsQueue;
-+ (id)smartStyleSettingsStateForBundleID:(id)a3;
++ (id)smartStyleSettingsStateForBundleID:(id)d;
 - (BOOL)systemStyleEnabled;
-- (id)initForBundleID:(id)a3;
+- (id)initForBundleID:(id)d;
 - (id)systemStyle;
-- (void)_proprietaryDefaultChanged:(id)a3 keyPath:(id)a4;
+- (void)_proprietaryDefaultChanged:(id)changed keyPath:(id)path;
 - (void)dealloc;
 - (void)installProprietaryDefaultListeners;
-- (void)setSystemStyle:(id)a3;
-- (void)setSystemStyleEnabled:(BOOL)a3;
+- (void)setSystemStyle:(id)style;
+- (void)setSystemStyleEnabled:(BOOL)enabled;
 @end
 
 @implementation AVSmartStyleSettingsState
 
-+ (id)smartStyleSettingsStateForBundleID:(id)a3
++ (id)smartStyleSettingsStateForBundleID:(id)d
 {
-  v3 = [objc_alloc(objc_opt_class()) initForBundleID:a3];
+  v3 = [objc_alloc(objc_opt_class()) initForBundleID:d];
 
   return v3;
 }
@@ -37,19 +37,19 @@ dispatch_queue_t __53__AVSmartStyleSettingsState__smartStyleSettingsQueue__block
   return result;
 }
 
-- (id)initForBundleID:(id)a3
+- (id)initForBundleID:(id)d
 {
   v21.receiver = self;
   v21.super_class = AVSmartStyleSettingsState;
   v4 = [(AVSmartStyleSettingsState *)&v21 init];
   if (v4)
   {
-    v4->_bundleID = a3;
+    v4->_bundleID = d;
     v4->_queue = +[AVSmartStyleSettingsState _smartStyleSettingsQueue];
     v5 = AVSmartStyleSettingsSystemStyle;
-    if (([a3 isEqualToString:AVSmartStyleSettingsSystemStyle] & 1) == 0)
+    if (([d isEqualToString:AVSmartStyleSettingsSystemStyle] & 1) == 0)
     {
-      v5 = AVControlCenterPreferencesDomainForPreferencesDomain(a3);
+      v5 = AVControlCenterPreferencesDomainForPreferencesDomain(d);
     }
 
     v4->_systemStyleKey = AVSmartStyleSettingsSystemStylePreferenceKey(v5);
@@ -129,18 +129,18 @@ dispatch_queue_t __53__AVSmartStyleSettingsState__smartStyleSettingsQueue__block
   [(AVSmartStyleSettingsState *)&v3 dealloc];
 }
 
-- (void)_proprietaryDefaultChanged:(id)a3 keyPath:(id)a4
+- (void)_proprietaryDefaultChanged:(id)changed keyPath:(id)path
 {
-  if ([a4 isEqualToString:self->_systemStyleKey])
+  if ([path isEqualToString:self->_systemStyleKey])
   {
-    if (a3)
+    if (changed)
     {
-      v7 = [a3 objectForKeyedSubscript:AVSmartStyleSettingsCastTypeKey];
-      [objc_msgSend(a3 objectForKeyedSubscript:{AVSmartStyleSettingsCastIntensityKey), "floatValue"}];
+      v7 = [changed objectForKeyedSubscript:AVSmartStyleSettingsCastTypeKey];
+      [objc_msgSend(changed objectForKeyedSubscript:{AVSmartStyleSettingsCastIntensityKey), "floatValue"}];
       v9 = v8;
-      [objc_msgSend(a3 objectForKeyedSubscript:{AVSmartStyleSettingsToneBiasKey), "floatValue"}];
+      [objc_msgSend(changed objectForKeyedSubscript:{AVSmartStyleSettingsToneBiasKey), "floatValue"}];
       v11 = v10;
-      [objc_msgSend(a3 objectForKeyedSubscript:{AVSmartStyleSettingsColorBiasKey), "floatValue"}];
+      [objc_msgSend(changed objectForKeyedSubscript:{AVSmartStyleSettingsColorBiasKey), "floatValue"}];
       LODWORD(v13) = v12;
       LODWORD(v14) = v9;
       LODWORD(v15) = v11;
@@ -164,16 +164,16 @@ dispatch_queue_t __53__AVSmartStyleSettingsState__smartStyleSettingsQueue__block
 
     if ([(NSString *)self->_bundleID isEqualToString:AVSmartStyleSettingsSystemStyle])
     {
-      v23 = +[AVCaptureSmartStyle identityStyle];
+      null = +[AVCaptureSmartStyle identityStyle];
     }
 
     else
     {
-      v23 = [MEMORY[0x1E695DFB0] null];
+      null = [MEMORY[0x1E695DFB0] null];
     }
 
-    v16 = v23;
-    if (![(AVCaptureSmartStyle *)v23 isEqual:self->_systemStyle])
+    v16 = null;
+    if (![(AVCaptureSmartStyle *)null isEqual:self->_systemStyle])
     {
       v17 = AVSmartStyleSettingsSystemStyleDidChangedNotification;
       v25 = self->_bundleID;
@@ -199,10 +199,10 @@ LABEL_19:
     }
   }
 
-  else if ([a4 isEqualToString:self->_systemStyleEnabledKey])
+  else if ([path isEqualToString:self->_systemStyleEnabledKey])
   {
-    v22 = a3 && [a3 objectForKeyedSubscript:self->_bundleID] ? objc_msgSend(objc_msgSend(a3, "objectForKeyedSubscript:", self->_bundleID), "BOOLValue") : 1;
-    if ([a3 objectForKeyedSubscript:self->_bundleID] && self->_systemStyleEnabled != v22)
+    v22 = changed && [changed objectForKeyedSubscript:self->_bundleID] ? objc_msgSend(objc_msgSend(changed, "objectForKeyedSubscript:", self->_bundleID), "BOOLValue") : 1;
+    if ([changed objectForKeyedSubscript:self->_bundleID] && self->_systemStyleEnabled != v22)
     {
       v17 = AVSmartStyleSettingsSystemStyleEnabledDidChangedNotification;
       v27[1] = [MEMORY[0x1E696AD98] numberWithBool:{v22, AVSmartStyleSettingsBundleIDKey, AVSmartStyleSettingsEnabledKey, self->_bundleID}];
@@ -247,7 +247,7 @@ void __40__AVSmartStyleSettingsState_systemStyle__block_invoke(uint64_t a1)
   }
 }
 
-- (void)setSystemStyle:(id)a3
+- (void)setSystemStyle:(id)style
 {
   objc_initWeak(&location, self);
   queue = self->_queue;
@@ -256,7 +256,7 @@ void __40__AVSmartStyleSettingsState_systemStyle__block_invoke(uint64_t a1)
   v6[2] = __44__AVSmartStyleSettingsState_setSystemStyle___block_invoke;
   v6[3] = &unk_1E786EB40;
   objc_copyWeak(&v7, &location);
-  v6[4] = a3;
+  v6[4] = style;
   v6[5] = self;
   dispatch_async(queue, v6);
   objc_destroyWeak(&v7);
@@ -360,7 +360,7 @@ void __47__AVSmartStyleSettingsState_systemStyleEnabled__block_invoke(uint64_t a
   }
 }
 
-- (void)setSystemStyleEnabled:(BOOL)a3
+- (void)setSystemStyleEnabled:(BOOL)enabled
 {
   if ([(NSString *)self->_bundleID isEqualToString:AVSmartStyleSettingsSystemStyle])
   {
@@ -382,7 +382,7 @@ void __47__AVSmartStyleSettingsState_systemStyleEnabled__block_invoke(uint64_t a
     block[2] = __51__AVSmartStyleSettingsState_setSystemStyleEnabled___block_invoke;
     block[3] = &unk_1E786EB68;
     objc_copyWeak(&v8, &location);
-    v9 = a3;
+    enabledCopy = enabled;
     dispatch_async(queue, block);
     objc_destroyWeak(&v8);
     objc_destroyWeak(&location);

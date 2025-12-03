@@ -1,52 +1,52 @@
 @interface AVAssetWriterWritingHelper
-+ (id)finalStepWorkaroundOperationWithFigAssetWriter:(OpaqueFigAssetWriter *)a3;
-+ (id)finishWritingDelegateOperationWithAssetWriter:(id)a3 andFigAssetWriter:(OpaqueFigAssetWriter *)a4 andDelegate:(id)a5;
-+ (id)prepareInputsOperationsWithInputs:(id)a3;
-- (AVAssetWriterWritingHelper)initWithConfigurationState:(id)a3 assetWriter:(id)a4 error:(id *)a5;
++ (id)finalStepWorkaroundOperationWithFigAssetWriter:(OpaqueFigAssetWriter *)writer;
++ (id)finishWritingDelegateOperationWithAssetWriter:(id)writer andFigAssetWriter:(OpaqueFigAssetWriter *)assetWriter andDelegate:(id)delegate;
++ (id)prepareInputsOperationsWithInputs:(id)inputs;
+- (AVAssetWriterWritingHelper)initWithConfigurationState:(id)state assetWriter:(id)writer error:(id *)error;
 - (BOOL)_isDefunct;
-- (BOOL)areAllInputsPreferredMediaChunkAlignmentEqualTo:(int64_t)a3;
+- (BOOL)areAllInputsPreferredMediaChunkAlignmentEqualTo:(int64_t)to;
 - (BOOL)areAudioAndVideoOutputSettingsPassthrough;
-- (BOOL)checkAVAssetWriterInputConfigurationToOutputSegmentDataForFragmentedMPEG4FileTypeProfile:(id)a3 preferredOutputSegmentInterval:(id *)a4 returningDebugDescription:(id *)a5;
-- (BOOL)checkConfigurationToOutputSegmentDataReturningDebugDescription:(id *)a3;
+- (BOOL)checkAVAssetWriterInputConfigurationToOutputSegmentDataForFragmentedMPEG4FileTypeProfile:(id)profile preferredOutputSegmentInterval:(id *)interval returningDebugDescription:(id *)description;
+- (BOOL)checkConfigurationToOutputSegmentDataReturningDebugDescription:(id *)description;
 - (BOOL)hasProRes4KHighFPSVideoOutputSetting;
 - (BOOL)hasProResVideoOutputSetting;
 - (BOOL)isConfiguredForFragmentedMPEG4;
 - (BOOL)isOutputFileOnExternalStorageDevice;
 - (OpaqueFigAssetWriter)_retainedFigAssetWriter;
-- (id)_makeFinishWritingOperationsWithCustomFigAssetWriterFinishOperation:(id)a3;
-- (id)_transitionToFinishWritingHelperWithFinishWritingOperations:(id)a3;
+- (id)_makeFinishWritingOperationsWithCustomFigAssetWriterFinishOperation:(id)operation;
+- (id)_transitionToFinishWritingHelperWithFinishWritingOperations:(id)operations;
 - (id)figTrackReferences;
 - (id)storageSpacePreallocationSize;
-- (id)writerInputForTrackID:(int)a3;
+- (id)writerInputForTrackID:(int)d;
 - (void)cancelWriting;
 - (void)dealloc;
-- (void)endSessionAtSourceTime:(id *)a3;
+- (void)endSessionAtSourceTime:(id *)time;
 - (void)finishWriting;
-- (void)finishWritingWithCompletionHandler:(id)a3;
+- (void)finishWritingWithCompletionHandler:(id)handler;
 - (void)flushSegment;
 - (void)prepareEncodedSampleBuffersForPaddedWrites;
-- (void)setAllInputsFigPreferredChunkAlignmentTo:(int64_t)a3;
-- (void)startSessionAtSourceTime:(id *)a3;
-- (void)transitionToFailedStatusWithError:(id)a3;
+- (void)setAllInputsFigPreferredChunkAlignmentTo:(int64_t)to;
+- (void)startSessionAtSourceTime:(id *)time;
+- (void)transitionToFailedStatusWithError:(id)error;
 @end
 
 @implementation AVAssetWriterWritingHelper
 
-- (AVAssetWriterWritingHelper)initWithConfigurationState:(id)a3 assetWriter:(id)a4 error:(id *)a5
+- (AVAssetWriterWritingHelper)initWithConfigurationState:(id)state assetWriter:(id)writer error:(id *)error
 {
   v157[1] = *MEMORY[0x1E69E9840];
   v151.receiver = self;
   v151.super_class = AVAssetWriterWritingHelper;
   v152 = 0;
-  v7 = [(AVAssetWriterHelper *)&v151 initWithConfigurationState:a3];
+  v7 = [(AVAssetWriterHelper *)&v151 initWithConfigurationState:state];
   v8 = v7;
   if (!v7)
   {
     goto LABEL_158;
   }
 
-  v9 = [(NSURL *)[(AVAssetWriterHelper *)v7 outputURL] pathExtension];
-  if (v9 && [AVUnsupportedOutputURLPathExtensions() containsObject:v9])
+  pathExtension = [(NSURL *)[(AVAssetWriterHelper *)v7 outputURL] pathExtension];
+  if (pathExtension && [AVUnsupportedOutputURLPathExtensions() containsObject:pathExtension])
   {
     v10 = -11843;
 LABEL_5:
@@ -57,7 +57,7 @@ LABEL_5:
   *time1 = 0;
   if ([(AVAssetWriterWritingHelper *)v8 checkConfigurationToOutputSegmentDataReturningDebugDescription:time1])
   {
-    v12 = [(AVAssetWriterHelper *)v8 outputURL];
+    outputURL = [(AVAssetWriterHelper *)v8 outputURL];
     [(AVAssetWriterHelper *)v8 delegate];
     if (objc_opt_respondsToSelector())
     {
@@ -69,8 +69,8 @@ LABEL_5:
       v120 = objc_opt_respondsToSelector();
     }
 
-    v122 = v12;
-    v124 = a5;
+    v122 = outputURL;
+    errorCopy = error;
     if (objc_opt_respondsToSelector())
     {
       v119 = 1;
@@ -85,21 +85,21 @@ LABEL_5:
     v14 = [MEMORY[0x1E696AD98] numberWithBool:{-[AVAssetWriterHelper shouldOptimizeForNetworkUse](v8, "shouldOptimizeForNetworkUse")}];
     v15 = [v13 dictionaryWithObjectsAndKeys:{v14, *MEMORY[0x1E6971578], 0}];
     v16 = MEMORY[0x1E695DF90];
-    v17 = [(AVMediaFileType *)[(AVAssetWriterHelper *)v8 mediaFileType] figFormatReaderFileFormat];
-    v121 = [v16 dictionaryWithObjectsAndKeys:{v17, *MEMORY[0x1E6971B28], 0}];
+    figFormatReaderFileFormat = [(AVMediaFileType *)[(AVAssetWriterHelper *)v8 mediaFileType] figFormatReaderFileFormat];
+    v121 = [v16 dictionaryWithObjectsAndKeys:{figFormatReaderFileFormat, *MEMORY[0x1E6971B28], 0}];
     CFRunLoopGetCurrent();
-    v18 = [(AVAssetWriterHelper *)v8 directoryForTemporaryFiles];
+    directoryForTemporaryFiles = [(AVAssetWriterHelper *)v8 directoryForTemporaryFiles];
     v19 = [AVMediaFileType figFileTypeProfileFromAVFileTypeProfile:[(AVAssetWriterHelper *)v8 outputFileTypeProfile]];
     v147 = 0u;
     v148 = 0u;
     v149 = 0u;
     v150 = 0u;
-    v20 = [(AVAssetWriterHelper *)v8 inputs];
-    v21 = [(NSArray *)v20 countByEnumeratingWithState:&v147 objects:v155 count:16];
+    inputs = [(AVAssetWriterHelper *)v8 inputs];
+    v21 = [(NSArray *)inputs countByEnumeratingWithState:&v147 objects:v155 count:16];
     if (v21)
     {
       v22 = v21;
-      LOBYTE(v23) = 0;
+      LOBYTE(expectsMediaDataInRealTime) = 0;
       v24 = *v148;
       do
       {
@@ -107,25 +107,25 @@ LABEL_5:
         {
           if (*v148 != v24)
           {
-            objc_enumerationMutation(v20);
+            objc_enumerationMutation(inputs);
           }
 
-          if (v23)
+          if (expectsMediaDataInRealTime)
           {
-            v23 = 1;
+            expectsMediaDataInRealTime = 1;
           }
 
           else
           {
-            v23 = [*(*(&v147 + 1) + 8 * i) expectsMediaDataInRealTime];
+            expectsMediaDataInRealTime = [*(*(&v147 + 1) + 8 * i) expectsMediaDataInRealTime];
           }
         }
 
-        v22 = [(NSArray *)v20 countByEnumeratingWithState:&v147 objects:v155 count:16];
+        v22 = [(NSArray *)inputs countByEnumeratingWithState:&v147 objects:v155 count:16];
       }
 
       while (v22);
-      if (v18)
+      if (directoryForTemporaryFiles)
       {
         goto LABEL_27;
       }
@@ -133,16 +133,16 @@ LABEL_5:
 
     else
     {
-      v23 = 0;
-      if (v18)
+      expectsMediaDataInRealTime = 0;
+      if (directoryForTemporaryFiles)
       {
 LABEL_27:
-        [v15 setObject:v18 forKey:*MEMORY[0x1E69735B8]];
+        [v15 setObject:directoryForTemporaryFiles forKey:*MEMORY[0x1E69735B8]];
       }
     }
 
-    a5 = v124;
-    if (v23)
+    error = errorCopy;
+    if (expectsMediaDataInRealTime)
     {
       [v15 setObject:MEMORY[0x1E695E118] forKey:*MEMORY[0x1E6971580]];
     }
@@ -150,7 +150,7 @@ LABEL_27:
     if (!FigGetCFPreferenceBooleanWithDefault())
     {
       v27 = 0;
-      if (!v23)
+      if (!expectsMediaDataInRealTime)
       {
         goto LABEL_46;
       }
@@ -160,10 +160,10 @@ LABEL_42:
       {
         if ([(AVAssetWriterWritingHelper *)v8 hasProRes4KHighFPSVideoOutputSetting])
         {
-          v28 = [(AVAssetWriterWritingHelper *)v8 storageSpacePreallocationSize];
-          if (v28)
+          storageSpacePreallocationSize = [(AVAssetWriterWritingHelper *)v8 storageSpacePreallocationSize];
+          if (storageSpacePreallocationSize)
           {
-            [v15 setObject:v28 forKey:*MEMORY[0x1E6971598]];
+            [v15 setObject:storageSpacePreallocationSize forKey:*MEMORY[0x1E6971598]];
           }
         }
       }
@@ -322,11 +322,11 @@ LABEL_63:
             }
           }
 
-          v54 = [(AVAssetWriterHelper *)v8 initialMovieFragmentSequenceNumber];
-          if (v54 >= 1)
+          initialMovieFragmentSequenceNumber = [(AVAssetWriterHelper *)v8 initialMovieFragmentSequenceNumber];
+          if (initialMovieFragmentSequenceNumber >= 1)
           {
             v55 = v8->_figAssetWriter;
-            v56 = [MEMORY[0x1E696AD98] numberWithInteger:v54];
+            v56 = [MEMORY[0x1E696AD98] numberWithInteger:initialMovieFragmentSequenceNumber];
             v57 = *(*(CMBaseObjectGetVTable() + 16) + 56);
             if (v57)
             {
@@ -367,11 +367,11 @@ LABEL_63:
             }
           }
 
-          v65 = [(AVAssetWriterHelper *)v8 metadata];
-          if (v65)
+          metadata = [(AVAssetWriterHelper *)v8 metadata];
+          if (metadata)
           {
-            v66 = v65;
-            if ([(NSArray *)v65 count])
+            v66 = metadata;
+            if ([(NSArray *)metadata count])
             {
               v67 = [AVMetadataItem _figMetadataPropertyFromMetadataItems:v66];
               v68 = FigAssetWriterGetFigBaseObject();
@@ -383,11 +383,11 @@ LABEL_63:
             }
           }
 
-          v70 = [(AVAssetWriterHelper *)v8 movieTimeScale];
-          if (v70)
+          movieTimeScale = [(AVAssetWriterHelper *)v8 movieTimeScale];
+          if (movieTimeScale)
           {
             v71 = v8->_figAssetWriter;
-            v72 = [MEMORY[0x1E696AD98] numberWithInteger:v70];
+            v72 = [MEMORY[0x1E696AD98] numberWithInteger:movieTimeScale];
             v73 = *(*(CMBaseObjectGetVTable() + 16) + 56);
             if (v73)
             {
@@ -432,15 +432,15 @@ LABEL_63:
             v82(v80, *MEMORY[0x1E6973848], v81);
           }
 
-          v83 = [(AVAssetWriterHelper *)v8 singlePassFileSize];
-          v84 = [(AVAssetWriterHelper *)v8 singlePassMediaDataSize];
-          if (v83)
+          singlePassFileSize = [(AVAssetWriterHelper *)v8 singlePassFileSize];
+          singlePassMediaDataSize = [(AVAssetWriterHelper *)v8 singlePassMediaDataSize];
+          if (singlePassFileSize)
           {
-            v85 = v84;
-            if (v84)
+            v85 = singlePassMediaDataSize;
+            if (singlePassMediaDataSize)
             {
               v86 = MEMORY[0x1E695DF20];
-              v87 = [MEMORY[0x1E696AD98] numberWithLongLong:v83];
+              v87 = [MEMORY[0x1E696AD98] numberWithLongLong:singlePassFileSize];
               v88 = *MEMORY[0x1E6971BD0];
               v89 = [MEMORY[0x1E696AD98] numberWithLongLong:v85];
               v90 = [v86 dictionaryWithObjectsAndKeys:{v87, v88, v89, *MEMORY[0x1E6971BC8], 0}];
@@ -457,12 +457,12 @@ LABEL_63:
           v132 = 0u;
           v129 = 0u;
           v130 = 0u;
-          v93 = [(AVAssetWriterHelper *)v8 inputs];
-          v94 = [(NSArray *)v93 countByEnumeratingWithState:&v129 objects:v154 count:16];
+          inputs2 = [(AVAssetWriterHelper *)v8 inputs];
+          v94 = [(NSArray *)inputs2 countByEnumeratingWithState:&v129 objects:v154 count:16];
           if (v94)
           {
             v95 = v94;
-            LOBYTE(v96) = 0;
+            LOBYTE(maximizePowerEfficiency) = 0;
             v97 = *v130;
             do
             {
@@ -470,25 +470,25 @@ LABEL_63:
               {
                 if (*v130 != v97)
                 {
-                  objc_enumerationMutation(v93);
+                  objc_enumerationMutation(inputs2);
                 }
 
-                if (v96)
+                if (maximizePowerEfficiency)
                 {
-                  v96 = 1;
+                  maximizePowerEfficiency = 1;
                 }
 
                 else
                 {
-                  v96 = [*(*(&v129 + 1) + 8 * j) maximizePowerEfficiency];
+                  maximizePowerEfficiency = [*(*(&v129 + 1) + 8 * j) maximizePowerEfficiency];
                 }
               }
 
-              v95 = [(NSArray *)v93 countByEnumeratingWithState:&v129 objects:v154 count:16];
+              v95 = [(NSArray *)inputs2 countByEnumeratingWithState:&v129 objects:v154 count:16];
             }
 
             while (v95);
-            if (v96)
+            if (maximizePowerEfficiency)
             {
               v99 = FigAssetWriterGetFigBaseObject();
               v100 = *(*(CMBaseObjectGetVTable() + 8) + 56);
@@ -503,20 +503,20 @@ LABEL_63:
           v128 = 0u;
           v125 = 0u;
           v126 = 0u;
-          v101 = [(AVAssetWriterHelper *)v8 inputs];
-          v102 = [(NSArray *)v101 countByEnumeratingWithState:&v125 objects:v153 count:16];
+          inputs3 = [(AVAssetWriterHelper *)v8 inputs];
+          v102 = [(NSArray *)inputs3 countByEnumeratingWithState:&v125 objects:v153 count:16];
           if (!v102)
           {
 LABEL_139:
-            v106 = [(AVAssetWriterWritingHelper *)v8 figTrackReferences];
+            figTrackReferences = [(AVAssetWriterWritingHelper *)v8 figTrackReferences];
             v107 = v8->_figAssetWriter;
             v108 = *(*(CMBaseObjectGetVTable() + 16) + 56);
             if (v108)
             {
-              v108(v107, *MEMORY[0x1E6971C68], v106);
+              v108(v107, *MEMORY[0x1E6971C68], figTrackReferences);
             }
 
-            v109 = [v106 objectForKey:*MEMORY[0x1E6973B28]];
+            v109 = [figTrackReferences objectForKey:*MEMORY[0x1E6973B28]];
             if (v109)
             {
               v110 = v109;
@@ -531,15 +531,15 @@ LABEL_139:
                     v113 = [v110 objectAtIndex:v111];
                     if (v113)
                     {
-                      v114 = [v113 intValue];
-                      v115 = [-[AVAssetWriterWritingHelper writerInputForTrackID:](v8 writerInputForTrackID:{v114), "mediaDataLocation"}];
+                      intValue = [v113 intValue];
+                      v115 = [-[AVAssetWriterWritingHelper writerInputForTrackID:](v8 writerInputForTrackID:{intValue), "mediaDataLocation"}];
                       if (([v115 isEqualToString:@"AVAssetWriterInputMediaDataLocationInterleavedWithMainMediaData"] & 1) != 0 || objc_msgSend(v115, "isEqualToString:", @"AVAssetWriterInputMediaDataLocationSparselyInterleavedWithMainMediaData"))
                       {
                         v116 = v8->_figAssetWriter;
                         v117 = *(*(CMBaseObjectGetVTable() + 16) + 64);
                         if (v117)
                         {
-                          v117(v116, v114, v112, &unk_1F0AD34C0);
+                          v117(v116, intValue, v112, &unk_1F0AD34C0);
                         }
                       }
                     }
@@ -558,7 +558,7 @@ LABEL_139:
             }
 
             v8->_figAssetWriterAccessQueue = dispatch_queue_create("com.apple.avfoundation.avassetwriter.writing.assetwriteraccessqueue", 0);
-            a5 = v124;
+            error = errorCopy;
             goto LABEL_158;
           }
 
@@ -570,7 +570,7 @@ LABEL_133:
           {
             if (*v126 != v104)
             {
-              objc_enumerationMutation(v101);
+              objc_enumerationMutation(inputs3);
             }
 
             if (([*(*(&v125 + 1) + 8 * v105) _prepareForWritingWithFigAssetWriter:v8->_figAssetWriter mediaFileType:-[AVAssetWriterHelper mediaFileType](v8 error:{"mediaFileType"), &v152}] & 1) == 0)
@@ -580,7 +580,7 @@ LABEL_133:
 
             if (v103 == ++v105)
             {
-              v103 = [(NSArray *)v101 countByEnumeratingWithState:&v125 objects:v153 count:16];
+              v103 = [(NSArray *)inputs3 countByEnumeratingWithState:&v125 objects:v153 count:16];
               if (v103)
               {
                 goto LABEL_133;
@@ -636,7 +636,7 @@ LABEL_59:
       goto LABEL_58;
     }
 
-    if (((v122 != 0) & v23) == 1 && [(AVAssetWriterWritingHelper *)v8 hasProResVideoOutputSetting]&& [(AVAssetWriterWritingHelper *)v8 areAllInputsPreferredMediaChunkAlignmentEqualTo:0])
+    if (((v122 != 0) & expectsMediaDataInRealTime) == 1 && [(AVAssetWriterWritingHelper *)v8 hasProResVideoOutputSetting]&& [(AVAssetWriterWritingHelper *)v8 areAllInputsPreferredMediaChunkAlignmentEqualTo:0])
     {
       v26 = 1;
     }
@@ -655,7 +655,7 @@ LABEL_59:
     [(AVAssetWriterWritingHelper *)v8 prepareEncodedSampleBuffersForPaddedWrites];
     v27 = v26;
 LABEL_37:
-    if (!v23)
+    if (!expectsMediaDataInRealTime)
     {
       goto LABEL_46;
     }
@@ -673,23 +673,23 @@ LABEL_11:
 
   v8 = 0;
 LABEL_158:
-  if (a5)
+  if (error)
   {
-    *a5 = v152;
+    *error = v152;
   }
 
   return v8;
 }
 
-- (id)writerInputForTrackID:(int)a3
+- (id)writerInputForTrackID:(int)d
 {
   v16 = *MEMORY[0x1E69E9840];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(AVAssetWriterHelper *)self inputs];
-  v5 = [(NSArray *)v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  inputs = [(AVAssetWriterHelper *)self inputs];
+  v5 = [(NSArray *)inputs countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -701,11 +701,11 @@ LABEL_158:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(inputs);
         }
 
         v9 = *(*(&v11 + 1) + 8 * v8);
-        if ([v9 outputTrackID] == a3)
+        if ([v9 outputTrackID] == d)
         {
           v5 = v9;
           return v5;
@@ -715,7 +715,7 @@ LABEL_158:
       }
 
       while (v6 != v8);
-      v5 = [(NSArray *)v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [(NSArray *)inputs countByEnumeratingWithState:&v11 objects:v15 count:16];
       v6 = v5;
       if (v5)
       {
@@ -731,11 +731,11 @@ LABEL_158:
 
 - (BOOL)isConfiguredForFragmentedMPEG4
 {
-  v3 = [(AVAssetWriterHelper *)self outputFileTypeProfile];
+  outputFileTypeProfile = [(AVAssetWriterHelper *)self outputFileTypeProfile];
   v4 = [(NSString *)[(AVMediaFileType *)[(AVAssetWriterHelper *)self mediaFileType] UTI] isEqual:@"public.mpeg-4"];
   if (v4)
   {
-    if ([(NSString *)v3 isEqualToString:@"MPEG4AppleHLS"])
+    if ([(NSString *)outputFileTypeProfile isEqualToString:@"MPEG4AppleHLS"])
     {
       LOBYTE(v4) = 1;
     }
@@ -743,16 +743,16 @@ LABEL_158:
     else
     {
 
-      LOBYTE(v4) = [(NSString *)v3 isEqualToString:@"MPEG4CMAFCompliant"];
+      LOBYTE(v4) = [(NSString *)outputFileTypeProfile isEqualToString:@"MPEG4CMAFCompliant"];
     }
   }
 
   return v4;
 }
 
-- (BOOL)checkConfigurationToOutputSegmentDataReturningDebugDescription:(id *)a3
+- (BOOL)checkConfigurationToOutputSegmentDataReturningDebugDescription:(id *)description
 {
-  v5 = [(AVAssetWriterHelper *)self outputURL];
+  outputURL = [(AVAssetWriterHelper *)self outputURL];
   [(AVAssetWriterHelper *)self delegate];
   if (objc_opt_respondsToSelector())
   {
@@ -776,7 +776,7 @@ LABEL_158:
 
   v22 = 0;
   v8 = v6 ^ 1;
-  if (v5 && (v8 & 1) == 0)
+  if (outputURL && (v8 & 1) == 0)
   {
     LOBYTE(v8) = 0;
     v9 = @"The outputURL and the delegate method to output segment data cannot be specified at same time. Only one of them must be specified.";
@@ -784,7 +784,7 @@ LABEL_158:
   }
 
   v10 = v7 ^ 1;
-  if (v5 && (v10 & 1) == 0)
+  if (outputURL && (v10 & 1) == 0)
   {
     LOBYTE(v8) = 0;
     v9 = @"The outputURL and the delegate method to produce fragmented data cannot be specified at same time. Only one of them must be specified.";
@@ -798,15 +798,15 @@ LABEL_158:
     goto LABEL_52;
   }
 
-  if (!((v5 != 0) | (v6 | v7) & 1))
+  if (!((outputURL != 0) | (v6 | v7) & 1))
   {
     LOBYTE(v8) = 0;
     v9 = @"Neither the outputURL nor the delegate method to output segment data is specified. One of them must be specified.";
     goto LABEL_52;
   }
 
-  v11 = [(AVAssetWriterHelper *)self outputFileTypeProfile];
-  v12 = [(NSString *)v11 isEqualToString:@"MPEG4AppleHLS"]|| [(NSString *)v11 isEqualToString:@"MPEG4CMAFCompliant"];
+  outputFileTypeProfile = [(AVAssetWriterHelper *)self outputFileTypeProfile];
+  v12 = [(NSString *)outputFileTypeProfile isEqualToString:@"MPEG4AppleHLS"]|| [(NSString *)outputFileTypeProfile isEqualToString:@"MPEG4CMAFCompliant"];
   memset(&v21, 0, sizeof(v21));
   if (self)
   {
@@ -870,7 +870,7 @@ LABEL_28:
         if (v12)
         {
           time2 = v21;
-          LOBYTE(v8) = [(AVAssetWriterWritingHelper *)self checkAVAssetWriterInputConfigurationToOutputSegmentDataForFragmentedMPEG4FileTypeProfile:v11 preferredOutputSegmentInterval:&time2 returningDebugDescription:&v22];
+          LOBYTE(v8) = [(AVAssetWriterWritingHelper *)self checkAVAssetWriterInputConfigurationToOutputSegmentDataForFragmentedMPEG4FileTypeProfile:outputFileTypeProfile preferredOutputSegmentInterval:&time2 returningDebugDescription:&v22];
           v9 = v22;
         }
 
@@ -898,7 +898,7 @@ LABEL_48:
     if (v12)
     {
 LABEL_43:
-      v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"AVAssetWriter supports file type profile %@ if the delegate method to output segment data is implemented. Please use -initWithContentType: initializer and implement -assetWriter:didOutputSegmentData:segmentType:segmentReport: or -assetWriter:didOutputSegmentData:segmentType: delegate method.", v11];
+      v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"AVAssetWriter supports file type profile %@ if the delegate method to output segment data is implemented. Please use -initWithContentType: initializer and implement -assetWriter:didOutputSegmentData:segmentType:segmentReport: or -assetWriter:didOutputSegmentData:segmentType: delegate method.", outputFileTypeProfile];
 LABEL_44:
       LOBYTE(v8) = 0;
       goto LABEL_52;
@@ -931,19 +931,19 @@ LABEL_49:
   }
 
 LABEL_52:
-  *a3 = v9;
+  *description = v9;
   return v8 & 1;
 }
 
-- (BOOL)checkAVAssetWriterInputConfigurationToOutputSegmentDataForFragmentedMPEG4FileTypeProfile:(id)a3 preferredOutputSegmentInterval:(id *)a4 returningDebugDescription:(id *)a5
+- (BOOL)checkAVAssetWriterInputConfigurationToOutputSegmentDataForFragmentedMPEG4FileTypeProfile:(id)profile preferredOutputSegmentInterval:(id *)interval returningDebugDescription:(id *)description
 {
   v37 = *MEMORY[0x1E69E9840];
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v5 = [(AVAssetWriterHelper *)self inputs];
-  v6 = [(NSArray *)v5 countByEnumeratingWithState:&v32 objects:v36 count:16];
+  inputs = [(AVAssetWriterHelper *)self inputs];
+  v6 = [(NSArray *)inputs countByEnumeratingWithState:&v32 objects:v36 count:16];
   if (v6)
   {
     v7 = v6;
@@ -962,15 +962,15 @@ LABEL_52:
       {
         if (*v33 != v10)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(inputs);
         }
 
         v12 = *(*(&v32 + 1) + 8 * v11);
-        v13 = [v12 outputSettings];
-        v14 = [v12 mediaType];
-        if (([v14 isEqual:@"vide"] & 1) != 0 || (objc_msgSend(v14, "isEqual:", @"auxv") & 1) != 0 || objc_msgSend(v14, "isEqual:", @"scen"))
+        outputSettings = [v12 outputSettings];
+        mediaType = [v12 mediaType];
+        if (([mediaType isEqual:@"vide"] & 1) != 0 || (objc_msgSend(mediaType, "isEqual:", @"auxv") & 1) != 0 || objc_msgSend(mediaType, "isEqual:", @"scen"))
         {
-          if (v13)
+          if (outputSettings)
           {
             ++v9;
           }
@@ -981,9 +981,9 @@ LABEL_52:
           }
         }
 
-        else if ([v14 isEqual:@"soun"])
+        else if ([mediaType isEqual:@"soun"])
         {
-          if (v13)
+          if (outputSettings)
           {
             ++v29;
           }
@@ -994,9 +994,9 @@ LABEL_52:
           }
         }
 
-        else if ([v14 isEqual:@"clcp"])
+        else if ([mediaType isEqual:@"clcp"])
         {
-          if (v13)
+          if (outputSettings)
           {
             ++v26;
           }
@@ -1009,9 +1009,9 @@ LABEL_52:
 
         else
         {
-          if (![v14 isEqual:@"meta"])
+          if (![mediaType isEqual:@"meta"])
           {
-            v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Media type '%@' is not allowed for file type profile %@.", v14, a3];
+            profile = [MEMORY[0x1E696AEC0] stringWithFormat:@"Media type '%@' is not allowed for file type profile %@.", mediaType, profile];
             goto LABEL_55;
           }
 
@@ -1022,7 +1022,7 @@ LABEL_52:
       }
 
       while (v7 != v11);
-      v15 = [(NSArray *)v5 countByEnumeratingWithState:&v32 objects:v36 count:16];
+      v15 = [(NSArray *)inputs countByEnumeratingWithState:&v32 objects:v36 count:16];
       v7 = v15;
     }
 
@@ -1040,23 +1040,23 @@ LABEL_52:
     v9 = 0;
   }
 
-  if ([a3 isEqualToString:@"MPEG4CMAFCompliant"])
+  if ([profile isEqualToString:@"MPEG4CMAFCompliant"])
   {
     if ([(NSArray *)[(AVAssetWriterHelper *)self inputs] count]>= 2)
     {
-      v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"More than one track is not allowed for file type profile %@.", a3, v20];
+      profile = [MEMORY[0x1E696AEC0] stringWithFormat:@"More than one track is not allowed for file type profile %@.", profile, v20];
       goto LABEL_55;
     }
 
     if (v25 + v26 >= 1)
     {
-      v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Closed caption track is not allowed for file type profile %@.", a3, v20];
+      profile = [MEMORY[0x1E696AEC0] stringWithFormat:@"Closed caption track is not allowed for file type profile %@.", profile, v20];
       goto LABEL_55;
     }
 
     if (v28 >= 1)
     {
-      v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Metadata track is not allowed for file type profile %@.", a3, v20];
+      profile = [MEMORY[0x1E696AEC0] stringWithFormat:@"Metadata track is not allowed for file type profile %@.", profile, v20];
       goto LABEL_55;
     }
   }
@@ -1078,84 +1078,84 @@ LABEL_52:
               {
                 if (v29 < 1 || v8 < 1)
                 {
-                  if ((a4->var2 & 0x1D) == 1 && (time1 = **&MEMORY[0x1E6960CC0], time2 = *a4, CMTimeCompare(&time1, &time2) < 0) && v8 >= 1 && v27 >= 1)
+                  if ((interval->var2 & 0x1D) == 1 && (time1 = **&MEMORY[0x1E6960CC0], time2 = *interval, CMTimeCompare(&time1, &time2) < 0) && v8 >= 1 && v27 >= 1)
                   {
-                    v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"If the value of the preferredOutputSegmentInterval property is a positive numeric time, AVAssetWriter does not support passthrough of video track and audio track at same time for file type profile %@. Please specify a non-nil output settings dictionary for both AVAssetWriterInput. Otherwise, please add one of them.", a3, v20];
+                    profile = [MEMORY[0x1E696AEC0] stringWithFormat:@"If the value of the preferredOutputSegmentInterval property is a positive numeric time, AVAssetWriter does not support passthrough of video track and audio track at same time for file type profile %@. Please specify a non-nil output settings dictionary for both AVAssetWriterInput. Otherwise, please add one of them.", profile, v20];
                   }
 
                   else
                   {
-                    time1 = *a4;
+                    time1 = *interval;
                     time2 = **&MEMORY[0x1E6960C68];
                     if (CMTimeCompare(&time1, &time2) || v29 <= 0 && v9 <= 0 && v26 < 1)
                     {
-                      v16 = 0;
+                      profile = 0;
                       v18 = 1;
                       goto LABEL_56;
                     }
 
-                    v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"If the value of the preferredOutputSegmentInterval property is kCMTimeIndefinite, AVAssetWriter only supports pssthrough for file type profile %@. Please specify nil for all AVAssetWriterInput's output settings.", a3, v20];
+                    profile = [MEMORY[0x1E696AEC0] stringWithFormat:@"If the value of the preferredOutputSegmentInterval property is kCMTimeIndefinite, AVAssetWriter only supports pssthrough for file type profile %@. Please specify nil for all AVAssetWriterInput's output settings.", profile, v20];
                   }
                 }
 
                 else
                 {
-                  v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"AVAssetWriter does not support encoding of audio track and passthrough of video track at same time for file type profile %@. Please match both AVAssetWriterInput's output settings.", a3, v20];
+                  profile = [MEMORY[0x1E696AEC0] stringWithFormat:@"AVAssetWriter does not support encoding of audio track and passthrough of video track at same time for file type profile %@. Please match both AVAssetWriterInput's output settings.", profile, v20];
                 }
               }
 
               else
               {
-                v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"AVAssetWriter does not support encoding of video track and passthrough of audio track at same time for file type profile %@. Please match both AVAssetWriterInput's output settings.", a3, v20];
+                profile = [MEMORY[0x1E696AEC0] stringWithFormat:@"AVAssetWriter does not support encoding of video track and passthrough of audio track at same time for file type profile %@. Please match both AVAssetWriterInput's output settings.", profile, v20];
               }
             }
 
             else
             {
-              v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Metadata track must accompany video track or audio track for file type profile %@.", a3, v20];
+              profile = [MEMORY[0x1E696AEC0] stringWithFormat:@"Metadata track must accompany video track or audio track for file type profile %@.", profile, v20];
             }
           }
 
           else
           {
-            v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Closed caption track must accompany video track for file type profile %@.", a3, v20];
+            profile = [MEMORY[0x1E696AEC0] stringWithFormat:@"Closed caption track must accompany video track for file type profile %@.", profile, v20];
           }
         }
 
         else
         {
-          v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"More than one metadata track is not allowed for file type profile %@.", a3, v20];
+          profile = [MEMORY[0x1E696AEC0] stringWithFormat:@"More than one metadata track is not allowed for file type profile %@.", profile, v20];
         }
       }
 
       else
       {
-        v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"More than one closed caption track is not allowed for file type profile %@.", a3, v20];
+        profile = [MEMORY[0x1E696AEC0] stringWithFormat:@"More than one closed caption track is not allowed for file type profile %@.", profile, v20];
       }
     }
 
     else
     {
-      v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"More than one audio track is not allowed for file type profile %@.", a3, v20];
+      profile = [MEMORY[0x1E696AEC0] stringWithFormat:@"More than one audio track is not allowed for file type profile %@.", profile, v20];
     }
   }
 
   else
   {
-    v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"More than one video track is not allowed for file type profile %@.", a3, v20];
+    profile = [MEMORY[0x1E696AEC0] stringWithFormat:@"More than one video track is not allowed for file type profile %@.", profile, v20];
   }
 
 LABEL_55:
   v18 = 0;
 LABEL_56:
-  *a5 = v16;
+  *description = profile;
   return v18;
 }
 
 - (id)figTrackReferences
 {
   v44 = *MEMORY[0x1E69E9840];
-  v28 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
@@ -1177,16 +1177,16 @@ LABEL_56:
 
         v24 = v3;
         v4 = *(*(&v37 + 1) + 8 * v3);
-        v5 = [v4 outputTrackID];
-        v6 = [MEMORY[0x1E696AD98] numberWithInteger:v5];
-        v7 = [v4 _trackReferences];
+        outputTrackID = [v4 outputTrackID];
+        v6 = [MEMORY[0x1E696AD98] numberWithInteger:outputTrackID];
+        _trackReferences = [v4 _trackReferences];
         v33 = 0u;
         v34 = 0u;
         v35 = 0u;
         v36 = 0u;
-        v27 = v7;
-        v25 = [v7 keyEnumerator];
-        v8 = [v25 countByEnumeratingWithState:&v33 objects:v42 count:16];
+        v27 = _trackReferences;
+        keyEnumerator = [_trackReferences keyEnumerator];
+        v8 = [keyEnumerator countByEnumeratingWithState:&v33 objects:v42 count:16];
         if (v8)
         {
           v9 = v8;
@@ -1197,15 +1197,15 @@ LABEL_56:
             {
               if (*v34 != v26)
               {
-                objc_enumerationMutation(v25);
+                objc_enumerationMutation(keyEnumerator);
               }
 
               v11 = *(*(&v33 + 1) + 8 * i);
-              v12 = [v28 objectForKey:v11];
-              if (!v12)
+              array = [dictionary objectForKey:v11];
+              if (!array)
               {
-                v12 = [MEMORY[0x1E695DF70] array];
-                [v28 setObject:v12 forKey:v11];
+                array = [MEMORY[0x1E695DF70] array];
+                [dictionary setObject:array forKey:v11];
               }
 
               v13 = [v27 objectForKey:v11];
@@ -1227,10 +1227,10 @@ LABEL_56:
                       objc_enumerationMutation(v13);
                     }
 
-                    v18 = [*(*(&v29 + 1) + 8 * j) outputTrackID];
-                    v19 = [MEMORY[0x1E696AD98] numberWithInteger:v18];
-                    [v12 addObject:v6];
-                    [v12 addObject:v19];
+                    outputTrackID2 = [*(*(&v29 + 1) + 8 * j) outputTrackID];
+                    v19 = [MEMORY[0x1E696AD98] numberWithInteger:outputTrackID2];
+                    [array addObject:v6];
+                    [array addObject:v19];
                   }
 
                   v15 = [v13 countByEnumeratingWithState:&v29 objects:v41 count:16];
@@ -1240,7 +1240,7 @@ LABEL_56:
               }
             }
 
-            v9 = [v25 countByEnumeratingWithState:&v33 objects:v42 count:16];
+            v9 = [keyEnumerator countByEnumeratingWithState:&v33 objects:v42 count:16];
           }
 
           while (v9);
@@ -1256,9 +1256,9 @@ LABEL_56:
     while (v23);
   }
 
-  if ([v28 count])
+  if ([dictionary count])
   {
-    return v28;
+    return dictionary;
   }
 
   else
@@ -1267,15 +1267,15 @@ LABEL_56:
   }
 }
 
-- (BOOL)areAllInputsPreferredMediaChunkAlignmentEqualTo:(int64_t)a3
+- (BOOL)areAllInputsPreferredMediaChunkAlignmentEqualTo:(int64_t)to
 {
   v15 = *MEMORY[0x1E69E9840];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [(AVAssetWriterHelper *)self inputs];
-  v5 = [(NSArray *)v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  inputs = [(AVAssetWriterHelper *)self inputs];
+  v5 = [(NSArray *)inputs countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1287,10 +1287,10 @@ LABEL_56:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(inputs);
         }
 
-        if ([*(*(&v10 + 1) + 8 * v8) preferredMediaChunkAlignment] != a3)
+        if ([*(*(&v10 + 1) + 8 * v8) preferredMediaChunkAlignment] != to)
         {
           return 0;
         }
@@ -1299,7 +1299,7 @@ LABEL_56:
       }
 
       while (v6 != v8);
-      v6 = [(NSArray *)v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [(NSArray *)inputs countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v6)
       {
         continue;
@@ -1312,7 +1312,7 @@ LABEL_56:
   return 1;
 }
 
-- (void)setAllInputsFigPreferredChunkAlignmentTo:(int64_t)a3
+- (void)setAllInputsFigPreferredChunkAlignmentTo:(int64_t)to
 {
   v20 = *MEMORY[0x1E69E9840];
   v15 = 0u;
@@ -1335,13 +1335,13 @@ LABEL_56:
           objc_enumerationMutation(obj);
         }
 
-        v9 = [*(*(&v15 + 1) + 8 * i) outputTrackID];
+        outputTrackID = [*(*(&v15 + 1) + 8 * i) outputTrackID];
         figAssetWriter = self->_figAssetWriter;
-        v11 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+        v11 = [MEMORY[0x1E696AD98] numberWithInteger:to];
         v12 = *(*(CMBaseObjectGetVTable() + 16) + 64);
         if (v12)
         {
-          v12(figAssetWriter, v9, v13, v11);
+          v12(figAssetWriter, outputTrackID, v13, v11);
         }
       }
 
@@ -1359,8 +1359,8 @@ LABEL_56:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(AVAssetWriterHelper *)self inputs];
-  v3 = [(NSArray *)v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  inputs = [(AVAssetWriterHelper *)self inputs];
+  v3 = [(NSArray *)inputs countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v3)
   {
     v4 = v3;
@@ -1371,21 +1371,21 @@ LABEL_56:
       {
         if (*v10 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(inputs);
         }
 
         v7 = *(*(&v9 + 1) + 8 * i);
         if ([objc_msgSend(v7 "mediaType")])
         {
-          v8 = [v7 _outputSettingsObject];
-          if (v8)
+          _outputSettingsObject = [v7 _outputSettingsObject];
+          if (_outputSettingsObject)
           {
-            [v8 setShouldPrepareEncodedSampleBuffersForPaddedWrites:1];
+            [_outputSettingsObject setShouldPrepareEncodedSampleBuffersForPaddedWrites:1];
           }
         }
       }
 
-      v4 = [(NSArray *)v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [(NSArray *)inputs countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v4);
@@ -1399,8 +1399,8 @@ LABEL_56:
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(AVAssetWriterHelper *)self inputs];
-  v3 = [(NSArray *)v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  inputs = [(AVAssetWriterHelper *)self inputs];
+  v3 = [(NSArray *)inputs countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v3)
   {
     v4 = v3;
@@ -1411,18 +1411,18 @@ LABEL_56:
       {
         if (*v11 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(inputs);
         }
 
         v7 = *(*(&v10 + 1) + 8 * i);
-        v8 = [v7 mediaType];
-        if ((([v8 isEqual:@"soun"] & 1) != 0 || objc_msgSend(v8, "isEqual:", @"vide")) && objc_msgSend(v7, "_outputSettingsObject"))
+        mediaType = [v7 mediaType];
+        if ((([mediaType isEqual:@"soun"] & 1) != 0 || objc_msgSend(mediaType, "isEqual:", @"vide")) && objc_msgSend(v7, "_outputSettingsObject"))
         {
           return 0;
         }
       }
 
-      v4 = [(NSArray *)v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [(NSArray *)inputs countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v4)
       {
         continue;
@@ -1442,8 +1442,8 @@ LABEL_56:
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(AVAssetWriterHelper *)self inputs];
-  v3 = [(NSArray *)v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  inputs = [(AVAssetWriterHelper *)self inputs];
+  v3 = [(NSArray *)inputs countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v3)
   {
     v4 = v3;
@@ -1455,16 +1455,16 @@ LABEL_56:
       {
         if (*v11 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(inputs);
         }
 
         v7 = *(*(&v10 + 1) + 8 * v6);
         if ([objc_msgSend(v7 "mediaType")])
         {
-          v8 = [v7 _outputSettingsObject];
-          if (v8)
+          _outputSettingsObject = [v7 _outputSettingsObject];
+          if (_outputSettingsObject)
           {
-            if ([v8 isProRes4KHighFPSSetting])
+            if ([_outputSettingsObject isProRes4KHighFPSSetting])
             {
               LOBYTE(v3) = 1;
               return v3;
@@ -1476,7 +1476,7 @@ LABEL_56:
       }
 
       while (v4 != v6);
-      v3 = [(NSArray *)v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v3 = [(NSArray *)inputs countByEnumeratingWithState:&v10 objects:v14 count:16];
       v4 = v3;
       if (v3)
       {
@@ -1497,8 +1497,8 @@ LABEL_56:
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(AVAssetWriterHelper *)self inputs];
-  v3 = [(NSArray *)v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  inputs = [(AVAssetWriterHelper *)self inputs];
+  v3 = [(NSArray *)inputs countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v3)
   {
     v4 = v3;
@@ -1510,16 +1510,16 @@ LABEL_56:
       {
         if (*v11 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(inputs);
         }
 
         v7 = *(*(&v10 + 1) + 8 * v6);
         if ([objc_msgSend(v7 "mediaType")])
         {
-          v8 = [v7 _outputSettingsObject];
-          if (v8)
+          _outputSettingsObject = [v7 _outputSettingsObject];
+          if (_outputSettingsObject)
           {
-            if ([v8 isProRes])
+            if ([_outputSettingsObject isProRes])
             {
               LOBYTE(v3) = 1;
               return v3;
@@ -1531,7 +1531,7 @@ LABEL_56:
       }
 
       while (v4 != v6);
-      v3 = [(NSArray *)v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v3 = [(NSArray *)inputs countByEnumeratingWithState:&v10 objects:v14 count:16];
       v4 = v3;
       if (v3)
       {
@@ -1547,17 +1547,17 @@ LABEL_56:
 
 - (BOOL)isOutputFileOnExternalStorageDevice
 {
-  v2 = [(AVAssetWriterHelper *)self outputURL];
-  if (v2)
+  outputURL = [(AVAssetWriterHelper *)self outputURL];
+  if (outputURL)
   {
-    v2 = [(NSURL *)v2 absoluteURL];
-    if (v2)
+    outputURL = [(NSURL *)outputURL absoluteURL];
+    if (outputURL)
     {
-      LOBYTE(v2) = FigFileIsFileOnExternalStorageDevice() != 0;
+      LOBYTE(outputURL) = FigFileIsFileOnExternalStorageDevice() != 0;
     }
   }
 
-  return v2;
+  return outputURL;
 }
 
 - (void)dealloc
@@ -1585,15 +1585,15 @@ LABEL_56:
   [(AVAssetWriterHelper *)&v5 dealloc];
 }
 
-- (void)startSessionAtSourceTime:(id *)a3
+- (void)startSessionAtSourceTime:(id *)time
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = [(AVAssetWriterWritingHelper *)self _retainedFigAssetWriter];
-  if (v5)
+  _retainedFigAssetWriter = [(AVAssetWriterWritingHelper *)self _retainedFigAssetWriter];
+  if (_retainedFigAssetWriter)
   {
-    v6 = v5;
-    v17 = *&a3->var0;
-    var3 = a3->var3;
+    v6 = _retainedFigAssetWriter;
+    v17 = *&time->var0;
+    var3 = time->var3;
     v7 = *(*(CMBaseObjectGetVTable() + 16) + 72);
     if (v7)
     {
@@ -1607,8 +1607,8 @@ LABEL_56:
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v8 = [(AVAssetWriterHelper *)self inputs];
-    v9 = [(NSArray *)v8 countByEnumeratingWithState:&v13 objects:v21 count:16];
+    inputs = [(AVAssetWriterHelper *)self inputs];
+    v9 = [(NSArray *)inputs countByEnumeratingWithState:&v13 objects:v21 count:16];
     if (v9)
     {
       v10 = v9;
@@ -1619,13 +1619,13 @@ LABEL_56:
         {
           if (*v14 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(inputs);
           }
 
           [*(*(&v13 + 1) + 8 * i) _didStartInitialSession];
         }
 
-        v10 = [(NSArray *)v8 countByEnumeratingWithState:&v13 objects:v21 count:16];
+        v10 = [(NSArray *)inputs countByEnumeratingWithState:&v13 objects:v21 count:16];
       }
 
       while (v10);
@@ -1635,15 +1635,15 @@ LABEL_56:
   }
 }
 
-- (void)endSessionAtSourceTime:(id *)a3
+- (void)endSessionAtSourceTime:(id *)time
 {
   v33 = *MEMORY[0x1E69E9840];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v6 = [(AVAssetWriterHelper *)self inputs];
-  v7 = [(NSArray *)v6 countByEnumeratingWithState:&v26 objects:v32 count:16];
+  inputs = [(AVAssetWriterHelper *)self inputs];
+  v7 = [(NSArray *)inputs countByEnumeratingWithState:&v26 objects:v32 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1654,24 +1654,24 @@ LABEL_56:
       {
         if (*v27 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(inputs);
         }
 
         [*(*(&v26 + 1) + 8 * i) _prepareToEndSession];
       }
 
-      v8 = [(NSArray *)v6 countByEnumeratingWithState:&v26 objects:v32 count:16];
+      v8 = [(NSArray *)inputs countByEnumeratingWithState:&v26 objects:v32 count:16];
     }
 
     while (v8);
   }
 
-  v11 = [(AVAssetWriterWritingHelper *)self _retainedFigAssetWriter];
-  if (v11)
+  _retainedFigAssetWriter = [(AVAssetWriterWritingHelper *)self _retainedFigAssetWriter];
+  if (_retainedFigAssetWriter)
   {
-    v12 = v11;
-    v24 = *&a3->var0;
-    var3 = a3->var3;
+    v12 = _retainedFigAssetWriter;
+    v24 = *&time->var0;
+    var3 = time->var3;
     v13 = *(*(CMBaseObjectGetVTable() + 16) + 112);
     if (v13)
     {
@@ -1770,8 +1770,8 @@ uint64_t __43__AVAssetWriterWritingHelper_cancelWriting__block_invoke(uint64_t r
 
 - (void)finishWriting
 {
-  v3 = [MEMORY[0x1E696AF00] currentThread];
-  if ([v3 isEqual:{objc_msgSend(MEMORY[0x1E696AF00], "mainThread")}])
+  currentThread = [MEMORY[0x1E696AF00] currentThread];
+  if ([currentThread isEqual:{objc_msgSend(MEMORY[0x1E696AF00], "mainThread")}])
   {
     NSLog(&cfstr_WarningFinishw.isa);
     v4 = [AVBlockOperation alloc];
@@ -1840,7 +1840,7 @@ uint64_t __43__AVAssetWriterWritingHelper_finishWriting__block_invoke(uint64_t a
   return v9;
 }
 
-- (void)finishWritingWithCompletionHandler:(id)a3
+- (void)finishWritingWithCompletionHandler:(id)handler
 {
   v18 = *MEMORY[0x1E69E9840];
   v5 = +[AVGlobalOperationQueue defaultQueue];
@@ -1850,7 +1850,7 @@ uint64_t __43__AVAssetWriterWritingHelper_finishWriting__block_invoke(uint64_t a
   v16[1] = 3221225472;
   v16[2] = __65__AVAssetWriterWritingHelper_finishWritingWithCompletionHandler___block_invoke;
   v16[3] = &unk_1E7462628;
-  v16[4] = a3;
+  v16[4] = handler;
   [v7 setCompletionBlock:v16];
   v14 = 0u;
   v15 = 0u;
@@ -1884,23 +1884,23 @@ uint64_t __43__AVAssetWriterWritingHelper_finishWriting__block_invoke(uint64_t a
   [v5 enqueueOperation:v7];
 }
 
-- (id)_makeFinishWritingOperationsWithCustomFigAssetWriterFinishOperation:(id)a3
+- (id)_makeFinishWritingOperationsWithCustomFigAssetWriterFinishOperation:(id)operation
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = [MEMORY[0x1E695DF70] array];
-  v6 = [(AVWeakReference *)[(AVAssetWriterHelper *)self weakReferenceToAssetWriter] referencedObject];
-  v7 = [(AVAssetWriterWritingHelper *)self _retainedFigAssetWriter];
-  v8 = [v6 finishWritingDelegate];
+  array = [MEMORY[0x1E695DF70] array];
+  referencedObject = [(AVWeakReference *)[(AVAssetWriterHelper *)self weakReferenceToAssetWriter] referencedObject];
+  _retainedFigAssetWriter = [(AVAssetWriterWritingHelper *)self _retainedFigAssetWriter];
+  finishWritingDelegate = [referencedObject finishWritingDelegate];
   if (!self->_startSessionCalled)
   {
     goto LABEL_15;
   }
 
-  v9 = v8;
-  if (!v8)
+  v9 = finishWritingDelegate;
+  if (!finishWritingDelegate)
   {
     v10 = 0;
-    if (a3)
+    if (operation)
     {
       goto LABEL_5;
     }
@@ -1908,21 +1908,21 @@ uint64_t __43__AVAssetWriterWritingHelper_finishWriting__block_invoke(uint64_t a
     goto LABEL_4;
   }
 
-  v10 = [objc_opt_class() finishWritingDelegateOperationWithAssetWriter:v6 andFigAssetWriter:v7 andDelegate:v8];
-  [v5 addObject:v10];
-  if (!a3)
+  v10 = [objc_opt_class() finishWritingDelegateOperationWithAssetWriter:referencedObject andFigAssetWriter:_retainedFigAssetWriter andDelegate:finishWritingDelegate];
+  [array addObject:v10];
+  if (!operation)
   {
 LABEL_4:
-    a3 = [[AVFigAssetWriterFinishWritingAsyncOperation alloc] initWithFigAssetWriter:v7];
+    operation = [[AVFigAssetWriterFinishWritingAsyncOperation alloc] initWithFigAssetWriter:_retainedFigAssetWriter];
   }
 
 LABEL_5:
-  [v5 addObject:a3];
-  [a3 setName:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"Finish writing file at %@, initiated by %@", -[AVAssetWriterHelper outputURL](self, "outputURL"), v6)}];
+  [array addObject:operation];
+  [operation setName:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"Finish writing file at %@, initiated by %@", -[AVAssetWriterHelper outputURL](self, "outputURL"), referencedObject)}];
   v11 = [objc_opt_class() prepareInputsOperationsWithInputs:{-[AVAssetWriterHelper inputs](self, "inputs")}];
-  [v5 addObjectsFromArray:v11];
-  v18 = [objc_opt_class() finalStepWorkaroundOperationWithFigAssetWriter:v7];
-  [v5 addObject:?];
+  [array addObjectsFromArray:v11];
+  v18 = [objc_opt_class() finalStepWorkaroundOperationWithFigAssetWriter:_retainedFigAssetWriter];
+  [array addObject:?];
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
@@ -1947,7 +1947,7 @@ LABEL_5:
           [*(*(&v19 + 1) + 8 * i) addDependency:v10];
         }
 
-        [a3 addDependency:v16];
+        [operation addDependency:v16];
       }
 
       v13 = [v11 countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -1956,37 +1956,37 @@ LABEL_5:
     while (v13);
   }
 
-  [v18 addDependency:a3];
+  [v18 addDependency:operation];
 LABEL_15:
-  if (v7)
+  if (_retainedFigAssetWriter)
   {
-    CFRelease(v7);
+    CFRelease(_retainedFigAssetWriter);
   }
 
-  return v5;
+  return array;
 }
 
-- (id)_transitionToFinishWritingHelperWithFinishWritingOperations:(id)a3
+- (id)_transitionToFinishWritingHelperWithFinishWritingOperations:(id)operations
 {
-  v4 = [[AVAssetWriterFinishWritingHelper alloc] initWithConfigurationState:[(AVAssetWriterHelper *)self configurationState] finishWritingOperations:a3 figAssetWriterCallbackContextToken:self->_figAssetWriterCallbackContextToken figAssetWriter:self->_figAssetWriter figAssetWriterIsRemote:self->_figAssetWriterIsRemote];
+  v4 = [[AVAssetWriterFinishWritingHelper alloc] initWithConfigurationState:[(AVAssetWriterHelper *)self configurationState] finishWritingOperations:operations figAssetWriterCallbackContextToken:self->_figAssetWriterCallbackContextToken figAssetWriter:self->_figAssetWriter figAssetWriterIsRemote:self->_figAssetWriterIsRemote];
   self->_figAssetWriterCallbackContextToken = 0;
-  v5 = [(AVAssetWriterFinishWritingHelper *)v4 transitionToTerminalStatusOperation];
-  v6 = [(AVWeakReference *)[(AVAssetWriterHelper *)self weakReferenceToAssetWriter] referencedObject];
+  transitionToTerminalStatusOperation = [(AVAssetWriterFinishWritingHelper *)v4 transitionToTerminalStatusOperation];
+  referencedObject = [(AVWeakReference *)[(AVAssetWriterHelper *)self weakReferenceToAssetWriter] referencedObject];
   [(AVAssetWriterFigAssetWriterNotificationHandler *)self->_notificationHandler setDelegate:0];
-  [v6 _setHelper:v4 ifCurrentHelper:self];
+  [referencedObject _setHelper:v4 ifCurrentHelper:self];
 
-  return v5;
+  return transitionToTerminalStatusOperation;
 }
 
-+ (id)prepareInputsOperationsWithInputs:(id)a3
++ (id)prepareInputsOperationsWithInputs:(id)inputs
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v5 = [inputs countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1997,7 +1997,7 @@ LABEL_15:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(inputs);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
@@ -2009,16 +2009,16 @@ LABEL_15:
         v13[4] = v9;
         v11 = [(AVBlockOperation *)v10 initWithBlock:v13];
         -[AVBlockOperation setName:](v11, "setName:", [MEMORY[0x1E696AEC0] stringWithFormat:@"Prepare for finishing input %@", v9]);
-        [v4 addObject:v11];
+        [array addObject:v11];
       }
 
-      v6 = [a3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [inputs countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);
   }
 
-  return v4;
+  return array;
 }
 
 uint64_t __64__AVAssetWriterWritingHelper_prepareInputsOperationsWithInputs___block_invoke(uint64_t a1, uint64_t a2)
@@ -2034,9 +2034,9 @@ uint64_t __64__AVAssetWriterWritingHelper_prepareInputsOperationsWithInputs___bl
   }
 }
 
-+ (id)finishWritingDelegateOperationWithAssetWriter:(id)a3 andFigAssetWriter:(OpaqueFigAssetWriter *)a4 andDelegate:(id)a5
++ (id)finishWritingDelegateOperationWithAssetWriter:(id)writer andFigAssetWriter:(OpaqueFigAssetWriter *)assetWriter andDelegate:(id)delegate
 {
-  if (!a3)
+  if (!writer)
   {
     v14 = MEMORY[0x1E695DF30];
     v15 = *MEMORY[0x1E695D940];
@@ -2044,31 +2044,31 @@ uint64_t __64__AVAssetWriterWritingHelper_prepareInputsOperationsWithInputs___bl
     goto LABEL_6;
   }
 
-  if (!a4)
+  if (!assetWriter)
   {
     v14 = MEMORY[0x1E695DF30];
     v15 = *MEMORY[0x1E695D940];
     v16 = "figAssetWriter != NULL";
 LABEL_6:
-    v17 = [v14 exceptionWithName:v15 reason:AVMethodExceptionReasonWithObjectAndSelector(a1 userInfo:{a2, @"invalid parameter not satisfying: %s", a4, a5, v5, v6, v7, v16), 0}];
+    v17 = [v14 exceptionWithName:v15 reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"invalid parameter not satisfying: %s", assetWriter, delegate, v5, v6, v7, v16), 0}];
     objc_exception_throw(v17);
   }
 
-  CFRetain(a4);
+  CFRetain(assetWriter);
   v11 = [AVBlockOperation alloc];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __106__AVAssetWriterWritingHelper_finishWritingDelegateOperationWithAssetWriter_andFigAssetWriter_andDelegate___block_invoke;
   v19[3] = &unk_1E7463760;
-  v19[4] = a5;
-  v19[5] = a3;
-  v19[6] = a4;
+  v19[4] = delegate;
+  v19[5] = writer;
+  v19[6] = assetWriter;
   v12 = [(AVBlockOperation *)v11 initWithBlock:v19];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __106__AVAssetWriterWritingHelper_finishWritingDelegateOperationWithAssetWriter_andFigAssetWriter_andDelegate___block_invoke_2;
   v18[3] = &__block_descriptor_40_e5_v8__0l;
-  v18[4] = a4;
+  v18[4] = assetWriter;
   [(AVBlockOperation *)v12 setCompletionBlock:v18];
   [(AVBlockOperation *)v12 setName:@"Call finish-writing delegate"];
   return v12;
@@ -2190,27 +2190,27 @@ uint64_t __106__AVAssetWriterWritingHelper_finishWritingDelegateOperationWithAss
   return result;
 }
 
-+ (id)finalStepWorkaroundOperationWithFigAssetWriter:(OpaqueFigAssetWriter *)a3
++ (id)finalStepWorkaroundOperationWithFigAssetWriter:(OpaqueFigAssetWriter *)writer
 {
-  if (!a3)
+  if (!writer)
   {
-    v12 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector(a1 userInfo:{a2, @"invalid parameter not satisfying: %s", v3, v4, v5, v6, v7, "figAssetWriter != NULL"), 0}];
+    v12 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"invalid parameter not satisfying: %s", v3, v4, v5, v6, v7, "figAssetWriter != NULL"), 0}];
     objc_exception_throw(v12);
   }
 
-  CFRetain(a3);
+  CFRetain(writer);
   v9 = [AVBlockOperation alloc];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __77__AVAssetWriterWritingHelper_finalStepWorkaroundOperationWithFigAssetWriter___block_invoke;
   v14[3] = &__block_descriptor_40_e9_q16__0__8l;
-  v14[4] = a3;
+  v14[4] = writer;
   v10 = [(AVBlockOperation *)v9 initWithBlock:v14];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __77__AVAssetWriterWritingHelper_finalStepWorkaroundOperationWithFigAssetWriter___block_invoke_2;
   v13[3] = &__block_descriptor_40_e5_v8__0l;
-  v13[4] = a3;
+  v13[4] = writer;
   [(AVBlockOperation *)v10 setCompletionBlock:v13];
   [(AVBlockOperation *)v10 setName:@"Invalidate FigAssetWriter, to ensure that audio files are finalized properly"];
   return v10;
@@ -2232,7 +2232,7 @@ uint64_t __77__AVAssetWriterWritingHelper_finalStepWorkaroundOperationWithFigAss
   return 2;
 }
 
-- (void)transitionToFailedStatusWithError:(id)a3
+- (void)transitionToFailedStatusWithError:(id)error
 {
   FigBaseObject = FigAssetWriterGetFigBaseObject();
   if (FigBaseObject)
@@ -2247,15 +2247,15 @@ uint64_t __77__AVAssetWriterWritingHelper_finalStepWorkaroundOperationWithFigAss
 
   v8.receiver = self;
   v8.super_class = AVAssetWriterWritingHelper;
-  [(AVAssetWriterHelper *)&v8 transitionToFailedStatusWithError:a3];
+  [(AVAssetWriterHelper *)&v8 transitionToFailedStatusWithError:error];
 }
 
 - (void)flushSegment
 {
-  v2 = [(AVAssetWriterWritingHelper *)self _retainedFigAssetWriter];
-  if (v2)
+  _retainedFigAssetWriter = [(AVAssetWriterWritingHelper *)self _retainedFigAssetWriter];
+  if (_retainedFigAssetWriter)
   {
-    v3 = v2;
+    v3 = _retainedFigAssetWriter;
     v4 = *(*(CMBaseObjectGetVTable() + 16) + 168);
     if (v4)
     {
@@ -2316,7 +2316,7 @@ uint64_t __77__AVAssetWriterWritingHelper_finalStepWorkaroundOperationWithFigAss
   result = [(AVAssetWriterHelper *)self outputURL];
   if (result)
   {
-    v3 = [result URLByDeletingLastPathComponent];
+    uRLByDeletingLastPathComponent = [result URLByDeletingLastPathComponent];
     result = [objc_msgSend(MEMORY[0x1E696AC08] "defaultManager")];
     if (result)
     {
@@ -2327,10 +2327,10 @@ uint64_t __77__AVAssetWriterWritingHelper_finalStepWorkaroundOperationWithFigAss
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v5 = [v4 longLongValue];
-          if (v5 <= 0x8000000001)
+          longLongValue = [v4 longLongValue];
+          if (longLongValue <= 0x8000000001)
           {
-            v6 = v5 / 2;
+            v6 = longLongValue / 2;
           }
 
           else

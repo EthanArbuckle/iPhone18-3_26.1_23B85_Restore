@@ -1,15 +1,15 @@
 @interface _UISceneHostingTraitCollectionPropagationSettings
 - (UIColor)tintColor;
 - (UITraitCollection)traitCollection;
-- (void)setTintColor:(id)a3;
-- (void)setTraitCollection:(id)a3;
+- (void)setTintColor:(id)color;
+- (void)setTraitCollection:(id)collection;
 @end
 
 @implementation _UISceneHostingTraitCollectionPropagationSettings
 
-- (void)setTraitCollection:(id)a3
+- (void)setTraitCollection:(id)collection
 {
-  v5 = [MEMORY[0x1E695DEF0] bs_secureDataFromObject:a3];
+  v5 = [MEMORY[0x1E695DEF0] bs_secureDataFromObject:collection];
   [(_UISceneHostingTraitCollectionPropagationSettings *)self setValue:v5 forProperty:a2];
 }
 
@@ -21,9 +21,9 @@
   return v3;
 }
 
-- (void)setTintColor:(id)a3
+- (void)setTintColor:(id)color
 {
-  v5 = [MEMORY[0x1E695DEF0] bs_secureDataFromObject:a3];
+  v5 = [MEMORY[0x1E695DEF0] bs_secureDataFromObject:color];
   [(_UISceneHostingTraitCollectionPropagationSettings *)self setValue:v5 forProperty:a2];
 }
 

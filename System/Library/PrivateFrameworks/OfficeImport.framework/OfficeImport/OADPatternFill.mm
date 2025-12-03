@@ -1,18 +1,18 @@
 @interface OADPatternFill
 + (id)defaultProperties;
 - (BOOL)isAnythingOverridden;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (OADPatternFill)initWithDefaults;
 - (id)bgColor;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)fgColor;
-- (id)namedImageDataWithBlipCollection:(id)a3;
+- (id)namedImageDataWithBlipCollection:(id)collection;
 - (id)pattern;
 - (unint64_t)hash;
-- (void)fixPropertiesForChangingParentPreservingEffectiveValues:(id)a3;
+- (void)fixPropertiesForChangingParentPreservingEffectiveValues:(id)values;
 - (void)removeUnnecessaryOverrides;
-- (void)setParent:(id)a3;
-- (void)setStyleColor:(id)a3;
+- (void)setParent:(id)parent;
+- (void)setStyleColor:(id)color;
 @end
 
 @implementation OADPatternFill
@@ -33,21 +33,21 @@
 {
   v8.receiver = self;
   v8.super_class = OADPatternFill;
-  v2 = [(OADProperties *)&v8 initWithDefaults];
-  if (v2)
+  initWithDefaults = [(OADProperties *)&v8 initWithDefaults];
+  if (initWithDefaults)
   {
     v3 = +[OADPresetPattern defaultProperties];
     v4 = [v3 copy];
-    [(OADPatternFill *)v2 setPattern:v4];
+    [(OADPatternFill *)initWithDefaults setPattern:v4];
 
     v5 = +[OADRgbColor black];
-    [(OADPatternFill *)v2 setFgColor:v5];
+    [(OADPatternFill *)initWithDefaults setFgColor:v5];
 
     v6 = +[OADRgbColor white];
-    [(OADPatternFill *)v2 setBgColor:v6];
+    [(OADPatternFill *)initWithDefaults setBgColor:v6];
   }
 
-  return v2;
+  return initWithDefaults;
 }
 
 - (unint64_t)hash
@@ -80,27 +80,27 @@
   return [(OADFill *)&v8 hash]^ v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = *&self->super.mDefinedByStyle;
   if (v6)
   {
-    v7 = [v6 copyWithZone:a3];
+    v7 = [v6 copyWithZone:zone];
     [v5 setFgColor:v7];
   }
 
   mFgColor = self->mFgColor;
   if (mFgColor)
   {
-    v9 = [(OADColor *)mFgColor copyWithZone:a3];
+    v9 = [(OADColor *)mFgColor copyWithZone:zone];
     [v5 setBgColor:v9];
   }
 
   mBgColor = self->mBgColor;
   if (mBgColor)
   {
-    v11 = [(OADColor *)mBgColor copyWithZone:a3];
+    v11 = [(OADColor *)mBgColor copyWithZone:zone];
     [v5 setPattern:v11];
   }
 
@@ -114,21 +114,21 @@ void __35__OADPatternFill_defaultProperties__block_invoke()
   +[OADPatternFill defaultProperties]::defaultProperties = v0;
 }
 
-- (void)setParent:(id)a3
+- (void)setParent:(id)parent
 {
-  v4 = a3;
+  parentCopy = parent;
   v6.receiver = self;
   v6.super_class = OADPatternFill;
-  [(OADProperties *)&v6 setParent:v4];
+  [(OADProperties *)&v6 setParent:parentCopy];
   if (self->mBgColor)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [v4 pattern];
-      if ([v5 isMemberOfClass:objc_opt_class()])
+      pattern = [parentCopy pattern];
+      if ([pattern isMemberOfClass:objc_opt_class()])
       {
-        [(OADColor *)self->mBgColor setParent:v5];
+        [(OADColor *)self->mBgColor setParent:pattern];
       }
     }
   }
@@ -141,39 +141,39 @@ void __35__OADPatternFill_defaultProperties__block_invoke()
   return [(OADProperties *)&v4 isAnythingOverridden]|| [(OADPatternFill *)self isFgColorOverridden]|| [(OADPatternFill *)self isBgColorOverridden]|| [(OADPatternFill *)self isPatternOverridden];
 }
 
-- (void)fixPropertiesForChangingParentPreservingEffectiveValues:(id)a3
+- (void)fixPropertiesForChangingParentPreservingEffectiveValues:(id)values
 {
-  v4 = a3;
+  valuesCopy = values;
   v27.receiver = self;
   v27.super_class = OADPatternFill;
-  [(OADProperties *)&v27 fixPropertiesForChangingParentPreservingEffectiveValues:v4];
-  if ([(OADPatternFill *)self isFgColorOverridden]|| ([(OADProperties *)self parent], v5 = objc_claimAutoreleasedReturnValue(), v5, v5 != v4))
+  [(OADProperties *)&v27 fixPropertiesForChangingParentPreservingEffectiveValues:valuesCopy];
+  if ([(OADPatternFill *)self isFgColorOverridden]|| ([(OADProperties *)self parent], v5 = objc_claimAutoreleasedReturnValue(), v5, v5 != valuesCopy))
   {
     v6 = [(OADProperties *)self possiblyInexistentOverrideForSelector:sel_isFgColorOverridden];
 
     if (v6)
     {
-      v7 = [(OADPatternFill *)self fgColor];
+      fgColor = [(OADPatternFill *)self fgColor];
     }
 
     else
     {
-      v7 = 0;
+      fgColor = 0;
     }
 
-    v8 = [v4 possiblyInexistentOverrideForSelector:sel_isFgColorOverridden];
+    v8 = [valuesCopy possiblyInexistentOverrideForSelector:sel_isFgColorOverridden];
 
     if (v8)
     {
-      v9 = [v4 fgColor];
+      fgColor2 = [valuesCopy fgColor];
     }
 
     else
     {
-      v9 = 0;
+      fgColor2 = 0;
     }
 
-    v10 = TCObjectEqual(v7, v9);
+    v10 = TCObjectEqual(fgColor, fgColor2);
     v11 = *&self->super.mDefinedByStyle;
     if (v10)
     {
@@ -182,37 +182,37 @@ void __35__OADPatternFill_defaultProperties__block_invoke()
 
     else if (!v11 && v6)
     {
-      [(OADPatternFill *)self setFgColor:v7];
+      [(OADPatternFill *)self setFgColor:fgColor];
     }
   }
 
-  if ([(OADPatternFill *)self isBgColorOverridden]|| ([(OADProperties *)self parent], v12 = objc_claimAutoreleasedReturnValue(), v12, v12 != v4))
+  if ([(OADPatternFill *)self isBgColorOverridden]|| ([(OADProperties *)self parent], v12 = objc_claimAutoreleasedReturnValue(), v12, v12 != valuesCopy))
   {
     v13 = [(OADProperties *)self possiblyInexistentOverrideForSelector:sel_isBgColorOverridden];
 
     if (v13)
     {
-      v14 = [(OADPatternFill *)self bgColor];
+      bgColor = [(OADPatternFill *)self bgColor];
     }
 
     else
     {
-      v14 = 0;
+      bgColor = 0;
     }
 
-    v15 = [v4 possiblyInexistentOverrideForSelector:sel_isBgColorOverridden];
+    v15 = [valuesCopy possiblyInexistentOverrideForSelector:sel_isBgColorOverridden];
 
     if (v15)
     {
-      v16 = [v4 bgColor];
+      bgColor2 = [valuesCopy bgColor];
     }
 
     else
     {
-      v16 = 0;
+      bgColor2 = 0;
     }
 
-    v17 = TCObjectEqual(v14, v16);
+    v17 = TCObjectEqual(bgColor, bgColor2);
     mFgColor = self->mFgColor;
     if (v17)
     {
@@ -221,39 +221,39 @@ void __35__OADPatternFill_defaultProperties__block_invoke()
 
     else if (!mFgColor && v13)
     {
-      [(OADPatternFill *)self setBgColor:v14];
+      [(OADPatternFill *)self setBgColor:bgColor];
     }
   }
 
-  if (self->mBgColor || ([(OADProperties *)self parent], v19 = objc_claimAutoreleasedReturnValue(), v19, v19 != v4))
+  if (self->mBgColor || ([(OADProperties *)self parent], v19 = objc_claimAutoreleasedReturnValue(), v19, v19 != valuesCopy))
   {
-    v20 = [(OADPatternFill *)self pattern];
+    pattern = [(OADPatternFill *)self pattern];
     v21 = objc_alloc_init(objc_opt_class());
 
-    v22 = [(OADPatternFill *)self pattern];
-    [v21 setParent:v22];
+    pattern2 = [(OADPatternFill *)self pattern];
+    [v21 setParent:pattern2];
 
     objc_storeStrong(&self->mBgColor, v21);
-    v23 = [v4 possiblyInexistentOverrideForSelector:sel_isPatternOverridden];
+    pattern3 = [valuesCopy possiblyInexistentOverrideForSelector:sel_isPatternOverridden];
 
-    if (v23)
+    if (pattern3)
     {
-      v23 = [v4 pattern];
+      pattern3 = [valuesCopy pattern];
     }
 
     mBgColor = self->mBgColor;
-    if (mBgColor != v23)
+    if (mBgColor != pattern3)
     {
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
       if ((isKindOfClass & 1) == 0)
       {
-        v26 = [objc_opt_class() defaultProperties];
+        defaultProperties = [objc_opt_class() defaultProperties];
 
-        v23 = v26;
+        pattern3 = defaultProperties;
       }
 
-      [(OADColor *)self->mBgColor changeParentPreservingEffectiveValues:v23];
+      [(OADColor *)self->mBgColor changeParentPreservingEffectiveValues:pattern3];
       if ((isKindOfClass & 1) == 0 || ([(OADColor *)self->mBgColor isAnythingOverridden]& 1) != 0)
       {
         goto LABEL_40;
@@ -270,12 +270,12 @@ LABEL_40:
 
 - (void)removeUnnecessaryOverrides
 {
-  v3 = [(OADProperties *)self parent];
+  parent = [(OADProperties *)self parent];
 
-  if (v3)
+  if (parent)
   {
-    v4 = [(OADProperties *)self isMerged];
-    v5 = [(OADProperties *)self isMergedWithParent];
+    isMerged = [(OADProperties *)self isMerged];
+    isMergedWithParent = [(OADProperties *)self isMergedWithParent];
     [(OADProperties *)self setMerged:0];
     [(OADProperties *)self setMergedWithParent:0];
     if (![(OADPatternFill *)self isFgColorOverridden])
@@ -283,30 +283,30 @@ LABEL_40:
       goto LABEL_10;
     }
 
-    v6 = [(OADProperties *)self parent];
-    v7 = [(OADPatternFill *)self fgColor];
-    v8 = [v6 fgColor];
+    parent2 = [(OADProperties *)self parent];
+    fgColor = [(OADPatternFill *)self fgColor];
+    fgColor2 = [parent2 fgColor];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(objc_object *)v7 removeUnnecessaryOverrides];
+      [(objc_object *)fgColor removeUnnecessaryOverrides];
       v9 = objc_opt_class();
       if (v9 != objc_opt_class())
       {
         goto LABEL_9;
       }
 
-      v10 = [(objc_object *)v7 isMergedWithParent];
-      [(objc_object *)v7 setMergedWithParent:0];
-      v11 = [(objc_object *)v7 isAnythingOverridden];
-      [(objc_object *)v7 setMergedWithParent:v10];
-      if (v11)
+      isMergedWithParent2 = [(objc_object *)fgColor isMergedWithParent];
+      [(objc_object *)fgColor setMergedWithParent:0];
+      isAnythingOverridden = [(objc_object *)fgColor isAnythingOverridden];
+      [(objc_object *)fgColor setMergedWithParent:isMergedWithParent2];
+      if (isAnythingOverridden)
       {
         goto LABEL_9;
       }
     }
 
-    else if (!TCObjectEqual(v7, v8))
+    else if (!TCObjectEqual(fgColor, fgColor2))
     {
 LABEL_9:
 
@@ -316,30 +316,30 @@ LABEL_10:
         goto LABEL_18;
       }
 
-      v13 = [(OADProperties *)self parent];
-      v14 = [(OADPatternFill *)self bgColor];
-      v15 = [v13 bgColor];
+      parent3 = [(OADProperties *)self parent];
+      bgColor = [(OADPatternFill *)self bgColor];
+      bgColor2 = [parent3 bgColor];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [(objc_object *)v14 removeUnnecessaryOverrides];
+        [(objc_object *)bgColor removeUnnecessaryOverrides];
         v16 = objc_opt_class();
         if (v16 != objc_opt_class())
         {
           goto LABEL_17;
         }
 
-        v17 = [(objc_object *)v14 isMergedWithParent];
-        [(objc_object *)v14 setMergedWithParent:0];
-        v18 = [(objc_object *)v14 isAnythingOverridden];
-        [(objc_object *)v14 setMergedWithParent:v17];
-        if (v18)
+        isMergedWithParent3 = [(objc_object *)bgColor isMergedWithParent];
+        [(objc_object *)bgColor setMergedWithParent:0];
+        isAnythingOverridden2 = [(objc_object *)bgColor isAnythingOverridden];
+        [(objc_object *)bgColor setMergedWithParent:isMergedWithParent3];
+        if (isAnythingOverridden2)
         {
           goto LABEL_17;
         }
       }
 
-      else if (!TCObjectEqual(v14, v15))
+      else if (!TCObjectEqual(bgColor, bgColor2))
       {
 LABEL_17:
 
@@ -347,38 +347,38 @@ LABEL_18:
         if (![(OADPatternFill *)self isPatternOverridden])
         {
 LABEL_26:
-          [(OADProperties *)self setMerged:v4];
-          [(OADProperties *)self setMergedWithParent:v5];
+          [(OADProperties *)self setMerged:isMerged];
+          [(OADProperties *)self setMergedWithParent:isMergedWithParent];
           v27.receiver = self;
           v27.super_class = OADPatternFill;
           [(OADProperties *)&v27 removeUnnecessaryOverrides];
           return;
         }
 
-        v20 = [(OADProperties *)self parent];
-        v21 = [(OADPatternFill *)self pattern];
-        v22 = [v20 pattern];
+        parent4 = [(OADProperties *)self parent];
+        pattern = [(OADPatternFill *)self pattern];
+        pattern2 = [parent4 pattern];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          [(objc_object *)v21 removeUnnecessaryOverrides];
+          [(objc_object *)pattern removeUnnecessaryOverrides];
           v23 = objc_opt_class();
           if (v23 != objc_opt_class())
           {
             goto LABEL_25;
           }
 
-          v24 = [(objc_object *)v21 isMergedWithParent];
-          [(objc_object *)v21 setMergedWithParent:0];
-          v25 = [(objc_object *)v21 isAnythingOverridden];
-          [(objc_object *)v21 setMergedWithParent:v24];
-          if (v25)
+          isMergedWithParent4 = [(objc_object *)pattern isMergedWithParent];
+          [(objc_object *)pattern setMergedWithParent:0];
+          isAnythingOverridden3 = [(objc_object *)pattern isAnythingOverridden];
+          [(objc_object *)pattern setMergedWithParent:isMergedWithParent4];
+          if (isAnythingOverridden3)
           {
             goto LABEL_25;
           }
         }
 
-        else if (!TCObjectEqual(v21, v22))
+        else if (!TCObjectEqual(pattern, pattern2))
         {
 LABEL_25:
 
@@ -431,24 +431,24 @@ LABEL_25:
   return v3;
 }
 
-- (void)setStyleColor:(id)a3
+- (void)setStyleColor:(id)color
 {
-  v6 = a3;
+  colorCopy = color;
   v4 = [*&self->super.mDefinedByStyle colorForStyleColor:?];
   [(OADPatternFill *)self setFgColor:v4];
 
-  v5 = [(OADColor *)self->mFgColor colorForStyleColor:v6];
+  v5 = [(OADColor *)self->mFgColor colorForStyleColor:colorCopy];
   [(OADPatternFill *)self setBgColor:v5];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v8.receiver = self;
   v8.super_class = OADPatternFill;
-  if ([(OADFill *)&v8 isEqual:v4])
+  if ([(OADFill *)&v8 isEqual:equalCopy])
   {
-    v5 = v4;
+    v5 = equalCopy;
     if (TCObjectEqual(*&self->super.mDefinedByStyle, v5[3]) && TCObjectEqual(self->mFgColor, v5[4]))
     {
       v6 = TCObjectEqual(self->mBgColor, v5[5]);
@@ -468,9 +468,9 @@ LABEL_25:
   return v6;
 }
 
-- (id)namedImageDataWithBlipCollection:(id)a3
+- (id)namedImageDataWithBlipCollection:(id)collection
 {
-  v4 = a3;
+  collectionCopy = collection;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -478,26 +478,26 @@ LABEL_25:
     goto LABEL_13;
   }
 
-  v5 = [(OADColor *)self->mBgColor blipRef];
-  v6 = [v5 blip];
-  if (!v6)
+  blipRef = [(OADColor *)self->mBgColor blipRef];
+  blip = [blipRef blip];
+  if (!blip)
   {
-    v6 = [v4 blipAtIndex:{objc_msgSend(v5, "index")}];
+    blip = [collectionCopy blipAtIndex:{objc_msgSend(blipRef, "index")}];
   }
 
-  v7 = [v6 mainSubBlip];
-  if (([v7 isLoaded] & 1) == 0)
+  mainSubBlip = [blip mainSubBlip];
+  if (([mainSubBlip isLoaded] & 1) == 0)
   {
-    [v7 load];
+    [mainSubBlip load];
   }
 
-  v8 = [v7 data];
-  v9 = [v5 name];
-  if (![(__CFString *)v9 length])
+  data = [mainSubBlip data];
+  name = [blipRef name];
+  if (![(__CFString *)name length])
   {
 
-    v9 = @"pattern";
-    if (v7)
+    name = @"pattern";
+    if (mainSubBlip)
     {
       goto LABEL_8;
     }
@@ -507,18 +507,18 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if (!v7)
+  if (!mainSubBlip)
   {
     goto LABEL_11;
   }
 
 LABEL_8:
-  v10 = +[OADBlip pathExtensionForBlipType:](OADBlip, "pathExtensionForBlipType:", [v7 type]);
-  v11 = [(__CFString *)v9 stringByAppendingPathExtension:v10];
+  v10 = +[OADBlip pathExtensionForBlipType:](OADBlip, "pathExtensionForBlipType:", [mainSubBlip type]);
+  v11 = [(__CFString *)name stringByAppendingPathExtension:v10];
 
-  v12 = [TCNamedData namedDataWithData:v8 named:v11];
+  v12 = [TCNamedData namedDataWithData:data named:v11];
 
-  v9 = v11;
+  name = v11;
 LABEL_12:
 
 LABEL_13:

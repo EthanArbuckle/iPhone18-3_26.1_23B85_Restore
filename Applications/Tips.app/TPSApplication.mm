@@ -1,5 +1,5 @@
 @interface TPSApplication
-- (BOOL)runTest:(id)a3 options:(id)a4;
+- (BOOL)runTest:(id)test options:(id)options;
 - (id)appCoordinator;
 - (id)appDelegate;
 @end
@@ -9,57 +9,57 @@
 - (id)appDelegate
 {
   v2 = +[UIApplication sharedApplication];
-  v3 = [v2 delegate];
+  delegate = [v2 delegate];
 
-  return v3;
+  return delegate;
 }
 
 - (id)appCoordinator
 {
-  v2 = [(TPSApplication *)self appDelegate];
-  v3 = [v2 appCoordinator];
+  appDelegate = [(TPSApplication *)self appDelegate];
+  appCoordinator = [appDelegate appCoordinator];
 
-  return v3;
+  return appCoordinator;
 }
 
-- (BOOL)runTest:(id)a3 options:(id)a4
+- (BOOL)runTest:(id)test options:(id)options
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TPSApplication *)self appDelegate];
-  [v8 resetCacheDefaults];
+  testCopy = test;
+  optionsCopy = options;
+  appDelegate = [(TPSApplication *)self appDelegate];
+  [appDelegate resetCacheDefaults];
 
-  v9 = [v7 objectForKeyedSubscript:@"iterations"];
-  v10 = [v9 intValue];
+  v9 = [optionsCopy objectForKeyedSubscript:@"iterations"];
+  intValue = [v9 intValue];
 
-  v11 = [v7 objectForKeyedSubscript:@"delta"];
-  v12 = [v11 intValue];
+  v11 = [optionsCopy objectForKeyedSubscript:@"delta"];
+  intValue2 = [v11 intValue];
 
-  v13 = [v7 objectForKeyedSubscript:@"recapBased"];
-  v14 = [v13 BOOLValue];
+  v13 = [optionsCopy objectForKeyedSubscript:@"recapBased"];
+  bOOLValue = [v13 BOOLValue];
 
-  if ([v6 hasPrefix:@"ScrollCollectionsView"])
+  if ([testCopy hasPrefix:@"ScrollCollectionsView"])
   {
-    v15 = [(TPSApplication *)self appCoordinator];
-    [v15 handleScrollCollectionViewTestFlowWithTestName:v6 testOptions:v7];
+    appCoordinator = [(TPSApplication *)self appCoordinator];
+    [appCoordinator handleScrollCollectionViewTestFlowWithTestName:testCopy testOptions:optionsCopy];
 LABEL_5:
 
     goto LABEL_6;
   }
 
-  if ([v6 hasPrefix:@"ScrollTipListView"])
+  if ([testCopy hasPrefix:@"ScrollTipListView"])
   {
-    v15 = [(TPSApplication *)self appCoordinator];
+    appCoordinator = [(TPSApplication *)self appCoordinator];
     v16 = +[TPSCommonDefines softwareWelcomeCollectionIdentifier];
-    [v15 handleTipsListViewTestFlowWithTestName:v6 testOptions:v7 collectionID:v16];
+    [appCoordinator handleTipsListViewTestFlowWithTestName:testCopy testOptions:optionsCopy collectionID:v16];
 
     goto LABEL_5;
   }
 
-  if ([v6 hasPrefix:@"ScrollTipsForCollection"])
+  if ([testCopy hasPrefix:@"ScrollTipsForCollection"])
   {
-    v18 = [(TPSApplication *)self appCoordinator];
-    [v18 handleContentsCollectionViewTestFlow];
+    appCoordinator2 = [(TPSApplication *)self appCoordinator];
+    [appCoordinator2 handleContentsCollectionViewTestFlow];
 
     v19 = dispatch_time(0, 1000000000);
     v24[0] = _NSConcreteStackBlock;
@@ -67,19 +67,19 @@ LABEL_5:
     v24[2] = sub_100007FC8;
     v24[3] = &unk_1000A2EF8;
     v24[4] = self;
-    v28 = v14;
-    v25 = v6;
-    v26 = v10;
-    v27 = v12;
+    v28 = bOOLValue;
+    v25 = testCopy;
+    v26 = intValue;
+    v27 = intValue2;
     dispatch_after(v19, &_dispatch_main_q, v24);
   }
 
-  else if ([v6 hasPrefix:@"ResizeCollectionsView"])
+  else if ([testCopy hasPrefix:@"ResizeCollectionsView"])
   {
     v20 = [RPTResizeTestParameters alloc];
-    v21 = [(TPSApplication *)self appCoordinator];
-    v22 = [v21 mainViewControllerWindow];
-    v23 = [v20 initWithTestName:v6 window:v22 completionHandler:0];
+    appCoordinator3 = [(TPSApplication *)self appCoordinator];
+    mainViewControllerWindow = [appCoordinator3 mainViewControllerWindow];
+    v23 = [v20 initWithTestName:testCopy window:mainViewControllerWindow completionHandler:0];
 
     [v23 setMinimumWindowSize:{300.0, 300.0}];
     [v23 setMaximumWindowSize:{600.0, 600.0}];

@@ -1,6 +1,6 @@
 @interface SBIdleTimerFactory
 + (id)_attentionAwareTimer;
-+ (id)idleTimerForDescriptor:(id)a3 didLogDescriptor:(BOOL *)a4;
++ (id)idleTimerForDescriptor:(id)descriptor didLogDescriptor:(BOOL *)logDescriptor;
 @end
 
 @implementation SBIdleTimerFactory
@@ -17,41 +17,41 @@
   return v3;
 }
 
-+ (id)idleTimerForDescriptor:(id)a3 didLogDescriptor:(BOOL *)a4
++ (id)idleTimerForDescriptor:(id)descriptor didLogDescriptor:(BOOL *)logDescriptor
 {
-  v6 = a3;
-  *a4 = 0;
-  v7 = [v6 timerMode];
-  if (v7 >= 3)
+  descriptorCopy = descriptor;
+  *logDescriptor = 0;
+  timerMode = [descriptorCopy timerMode];
+  if (timerMode >= 3)
   {
-    if (v7 == 3)
+    if (timerMode == 3)
     {
-      v8 = objc_alloc_init(SBDisabledIdleTimer);
+      _attentionAwareTimer = objc_alloc_init(SBDisabledIdleTimer);
     }
 
     else
     {
-      v8 = 0;
+      _attentionAwareTimer = 0;
     }
   }
 
   else
   {
-    v8 = [a1 _attentionAwareTimer];
-    v9 = [(SBDisabledIdleTimer *)v8 descriptor];
-    v10 = [v9 isEqual:v6];
+    _attentionAwareTimer = [self _attentionAwareTimer];
+    descriptor = [(SBDisabledIdleTimer *)_attentionAwareTimer descriptor];
+    v10 = [descriptor isEqual:descriptorCopy];
 
     if ((v10 & 1) == 0)
     {
-      [(SBDisabledIdleTimer *)v8 setDescriptor:v6];
+      [(SBDisabledIdleTimer *)_attentionAwareTimer setDescriptor:descriptorCopy];
       v11 = SBLogIdleTimer();
-      [v6 logAuditReasons:v11];
+      [descriptorCopy logAuditReasons:v11];
 
-      *a4 = 1;
+      *logDescriptor = 1;
     }
   }
 
-  return v8;
+  return _attentionAwareTimer;
 }
 
 void __42__SBIdleTimerFactory__attentionAwareTimer__block_invoke()

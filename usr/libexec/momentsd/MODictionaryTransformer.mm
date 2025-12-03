@@ -1,14 +1,14 @@
 @interface MODictionaryTransformer
-- (id)reverseTransformedValue:(id)a3;
-- (id)transformedValue:(id)a3;
+- (id)reverseTransformedValue:(id)value;
+- (id)transformedValue:(id)value;
 @end
 
 @implementation MODictionaryTransformer
 
-- (id)transformedValue:(id)a3
+- (id)transformedValue:(id)value
 {
-  v5 = a3;
-  if (!v5)
+  valueCopy = value;
+  if (!valueCopy)
   {
     goto LABEL_8;
   }
@@ -29,7 +29,7 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [MODictionaryEncoder encodeDictionary:v5];
+    v8 = [MODictionaryEncoder encodeDictionary:valueCopy];
   }
 
   else
@@ -41,10 +41,10 @@ LABEL_8:
   return v8;
 }
 
-- (id)reverseTransformedValue:(id)a3
+- (id)reverseTransformedValue:(id)value
 {
-  v5 = a3;
-  if (!v5)
+  valueCopy = value;
+  if (!valueCopy)
   {
     goto LABEL_8;
   }
@@ -65,7 +65,7 @@ LABEL_8:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [MODictionaryEncoder decodeToDictionary:v5];
+    v8 = [MODictionaryEncoder decodeToDictionary:valueCopy];
   }
 
   else

@@ -1,25 +1,25 @@
 @interface REFeatureValuePair
-- (BOOL)isEqual:(id)a3;
-- (REFeatureValuePair)initWithFeature:(id)a3 value:(unint64_t)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (REFeatureValuePair)initWithFeature:(id)feature value:(unint64_t)value;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)dealloc;
 @end
 
 @implementation REFeatureValuePair
 
-- (REFeatureValuePair)initWithFeature:(id)a3 value:(unint64_t)a4
+- (REFeatureValuePair)initWithFeature:(id)feature value:(unint64_t)value
 {
-  v7 = a3;
+  featureCopy = feature;
   v11.receiver = self;
   v11.super_class = REFeatureValuePair;
   v8 = [(REFeatureValuePair *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_feature, a3);
-    v9->_value = a4;
-    RERetainFeatureValueTaggedPointer(a4);
+    objc_storeStrong(&v8->_feature, feature);
+    v9->_value = value;
+    RERetainFeatureValueTaggedPointer(value);
   }
 
   return v9;
@@ -33,10 +33,10 @@
   [(REFeatureValuePair *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -46,7 +46,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       feature = v5->_feature;
       v7 = self->_feature;
       v8 = v7;
@@ -110,9 +110,9 @@ LABEL_15:
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   feature = self->_feature;
   value = self->_value;
 

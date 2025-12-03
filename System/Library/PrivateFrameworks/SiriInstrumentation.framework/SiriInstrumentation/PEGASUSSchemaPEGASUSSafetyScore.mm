@@ -1,33 +1,33 @@
 @interface PEGASUSSchemaPEGASUSSafetyScore
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (PEGASUSSchemaPEGASUSSafetyScore)initWithDictionary:(id)a3;
-- (PEGASUSSchemaPEGASUSSafetyScore)initWithJSON:(id)a3;
+- (PEGASUSSchemaPEGASUSSafetyScore)initWithDictionary:(id)dictionary;
+- (PEGASUSSchemaPEGASUSSafetyScore)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasScore:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasScore:(BOOL)score;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PEGASUSSchemaPEGASUSSafetyScore
 
-- (PEGASUSSchemaPEGASUSSafetyScore)initWithDictionary:(id)a3
+- (PEGASUSSchemaPEGASUSSafetyScore)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = PEGASUSSchemaPEGASUSSafetyScore;
   v5 = [(PEGASUSSchemaPEGASUSSafetyScore *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"scoreClass"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"scoreClass"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PEGASUSSchemaPEGASUSSafetyScore setScoreClass:](v5, "setScoreClass:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"score"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"score"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -35,7 +35,7 @@
       [(PEGASUSSchemaPEGASUSSafetyScore *)v5 setScore:?];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"scoreLabel"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"scoreLabel"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -49,30 +49,30 @@
   return v5;
 }
 
-- (PEGASUSSchemaPEGASUSSafetyScore)initWithJSON:(id)a3
+- (PEGASUSSchemaPEGASUSSafetyScore)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PEGASUSSchemaPEGASUSSafetyScore *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(PEGASUSSchemaPEGASUSSafetyScore *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(PEGASUSSchemaPEGASUSSafetyScore *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -85,14 +85,14 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
     v5 = MEMORY[0x1E696AD98];
     [(PEGASUSSchemaPEGASUSSafetyScore *)self score];
     v6 = [v5 numberWithFloat:?];
-    [v3 setObject:v6 forKeyedSubscript:@"score"];
+    [dictionary setObject:v6 forKeyedSubscript:@"score"];
 
     has = self->_has;
   }
@@ -100,19 +100,19 @@
   if (has)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithInt:{-[PEGASUSSchemaPEGASUSSafetyScore scoreClass](self, "scoreClass")}];
-    [v3 setObject:v7 forKeyedSubscript:@"scoreClass"];
+    [dictionary setObject:v7 forKeyedSubscript:@"scoreClass"];
   }
 
   if (self->_scoreLabel)
   {
-    v8 = [(PEGASUSSchemaPEGASUSSafetyScore *)self scoreLabel];
-    v9 = [v8 copy];
-    [v3 setObject:v9 forKeyedSubscript:@"scoreLabel"];
+    scoreLabel = [(PEGASUSSchemaPEGASUSSafetyScore *)self scoreLabel];
+    v9 = [scoreLabel copy];
+    [dictionary setObject:v9 forKeyedSubscript:@"scoreLabel"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -170,16 +170,16 @@ LABEL_3:
   return v13 ^ v8 ^ [(NSString *)self->_scoreLabel hash:v3];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_14;
   }
 
   has = self->_has;
-  v6 = v4[24];
+  v6 = equalCopy[24];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_14;
@@ -188,27 +188,27 @@ LABEL_3:
   if (*&has)
   {
     scoreClass = self->_scoreClass;
-    if (scoreClass != [v4 scoreClass])
+    if (scoreClass != [equalCopy scoreClass])
     {
       goto LABEL_14;
     }
 
     has = self->_has;
-    v6 = v4[24];
+    v6 = equalCopy[24];
   }
 
   v8 = (*&has >> 1) & 1;
   if (v8 == ((v6 >> 1) & 1))
   {
-    if (!v8 || (score = self->_score, [v4 score], score == v10))
+    if (!v8 || (score = self->_score, [equalCopy score], score == v10))
     {
-      v11 = [(PEGASUSSchemaPEGASUSSafetyScore *)self scoreLabel];
-      v12 = [v4 scoreLabel];
-      v13 = v12;
-      if ((v11 != 0) != (v12 == 0))
+      scoreLabel = [(PEGASUSSchemaPEGASUSSafetyScore *)self scoreLabel];
+      scoreLabel2 = [equalCopy scoreLabel];
+      v13 = scoreLabel2;
+      if ((scoreLabel != 0) != (scoreLabel2 == 0))
       {
-        v14 = [(PEGASUSSchemaPEGASUSSafetyScore *)self scoreLabel];
-        if (!v14)
+        scoreLabel3 = [(PEGASUSSchemaPEGASUSSafetyScore *)self scoreLabel];
+        if (!scoreLabel3)
         {
 
 LABEL_17:
@@ -216,10 +216,10 @@ LABEL_17:
           goto LABEL_15;
         }
 
-        v15 = v14;
-        v16 = [(PEGASUSSchemaPEGASUSSafetyScore *)self scoreLabel];
-        v17 = [v4 scoreLabel];
-        v18 = [v16 isEqual:v17];
+        v15 = scoreLabel3;
+        scoreLabel4 = [(PEGASUSSchemaPEGASUSSafetyScore *)self scoreLabel];
+        scoreLabel5 = [equalCopy scoreLabel];
+        v18 = [scoreLabel4 isEqual:scoreLabel5];
 
         if (v18)
         {
@@ -240,9 +240,9 @@ LABEL_15:
   return v19;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v7 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -255,19 +255,19 @@ LABEL_15:
     PBDataWriterWriteFloatField();
   }
 
-  v5 = [(PEGASUSSchemaPEGASUSSafetyScore *)self scoreLabel];
+  scoreLabel = [(PEGASUSSchemaPEGASUSSafetyScore *)self scoreLabel];
 
-  v6 = v7;
-  if (v5)
+  v6 = toCopy;
+  if (scoreLabel)
   {
     PBDataWriterWriteStringField();
-    v6 = v7;
+    v6 = toCopy;
   }
 }
 
-- (void)setHasScore:(BOOL)a3
+- (void)setHasScore:(BOOL)score
 {
-  if (a3)
+  if (score)
   {
     v3 = 2;
   }

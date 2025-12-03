@@ -1,22 +1,22 @@
 @interface AAAppleIDSettingsRequest
-- (AAAppleIDSettingsRequest)initWithGrandSlamAccount:(id)a3 accountStore:(id)a4;
+- (AAAppleIDSettingsRequest)initWithGrandSlamAccount:(id)account accountStore:(id)store;
 - (id)urlRequest;
 @end
 
 @implementation AAAppleIDSettingsRequest
 
-- (AAAppleIDSettingsRequest)initWithGrandSlamAccount:(id)a3 accountStore:(id)a4
+- (AAAppleIDSettingsRequest)initWithGrandSlamAccount:(id)account accountStore:(id)store
 {
-  v7 = a3;
-  v8 = a4;
+  accountCopy = account;
+  storeCopy = store;
   v12.receiver = self;
   v12.super_class = AAAppleIDSettingsRequest;
   v9 = [(AAAppleIDSettingsRequest *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_grandSlamAccount, a3);
-    objc_storeStrong(&v10->_store, a4);
+    objc_storeStrong(&v9->_grandSlamAccount, account);
+    objc_storeStrong(&v10->_store, store);
     v10->_forceGSToken = 1;
   }
 
@@ -28,8 +28,8 @@
   v29[1] = *MEMORY[0x1E69E9840];
   v28.receiver = self;
   v28.super_class = AAAppleIDSettingsRequest;
-  v3 = [(AARequest *)&v28 urlRequest];
-  v4 = [v3 mutableCopy];
+  urlRequest = [(AARequest *)&v28 urlRequest];
+  v4 = [urlRequest mutableCopy];
 
   [v4 setHTTPMethod:@"GET"];
   grandSlamAccount = self->_grandSlamAccount;
@@ -50,8 +50,8 @@
     grandSlamAccount = self->_grandSlamAccount;
   }
 
-  v7 = [(ACAccount *)grandSlamAccount aida_dsid];
-  [v4 aa_addDeviceProvisioningInfoHeadersWithDSID:v7];
+  aida_dsid = [(ACAccount *)grandSlamAccount aida_dsid];
+  [v4 aa_addDeviceProvisioningInfoHeadersWithDSID:aida_dsid];
 
   v6 = [(ACAccountStore *)self->_store credentialForAccount:self->_grandSlamAccount serviceID:@"com.apple.gs.appleid.auth"];
   *buf = 0;
@@ -59,7 +59,7 @@
   v24 = 0x3032000000;
   v25 = __Block_byref_object_copy__8;
   v26 = __Block_byref_object_dispose__8;
-  v27 = [v6 token];
+  token = [v6 token];
   if (!*(v23 + 5) && [(AAAppleIDSettingsRequest *)self forceGSToken])
   {
     v8 = _AALogSystem();
@@ -87,8 +87,8 @@
     dispatch_semaphore_wait(v13, 0xFFFFFFFFFFFFFFFFLL);
   }
 
-  v14 = [(ACAccount *)self->_grandSlamAccount aida_alternateDSID];
-  [v4 aa_addGrandslamAuthorizationHeaderWithAltDSID:v14 grandslamToken:*(v23 + 5)];
+  aida_alternateDSID = [(ACAccount *)self->_grandSlamAccount aida_alternateDSID];
+  [v4 aa_addGrandslamAuthorizationHeaderWithAltDSID:aida_alternateDSID grandslamToken:*(v23 + 5)];
 
   v15 = +[AADeviceInfo udid];
   [v4 addValue:v15 forHTTPHeaderField:@"X-AppleID-Device-Udid"];

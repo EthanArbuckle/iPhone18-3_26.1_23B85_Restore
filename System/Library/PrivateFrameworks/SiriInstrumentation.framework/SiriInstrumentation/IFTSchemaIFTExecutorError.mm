@@ -1,31 +1,31 @@
 @interface IFTSchemaIFTExecutorError
-- (BOOL)isEqual:(id)a3;
-- (IFTSchemaIFTExecutorError)initWithDictionary:(id)a3;
-- (IFTSchemaIFTExecutorError)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (IFTSchemaIFTExecutorError)initWithDictionary:(id)dictionary;
+- (IFTSchemaIFTExecutorError)initWithJSON:(id)n;
 - (IFTSchemaIFTIntelligenceFlowError)other;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
 - (void)deleteFailedToExecute;
 - (void)deleteOther;
-- (void)setFailedToExecute:(BOOL)a3;
-- (void)setOther:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setFailedToExecute:(BOOL)execute;
+- (void)setOther:(id)other;
+- (void)writeTo:(id)to;
 @end
 
 @implementation IFTSchemaIFTExecutorError
 
-- (IFTSchemaIFTExecutorError)initWithDictionary:(id)a3
+- (IFTSchemaIFTExecutorError)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = IFTSchemaIFTExecutorError;
   v5 = [(IFTSchemaIFTExecutorError *)&v11 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"other"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"other"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -33,7 +33,7 @@
       [(IFTSchemaIFTExecutorError *)v5 setOther:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"failedToExecute"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"failedToExecute"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -46,30 +46,30 @@
   return v5;
 }
 
-- (IFTSchemaIFTExecutorError)initWithJSON:(id)a3
+- (IFTSchemaIFTExecutorError)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(IFTSchemaIFTExecutorError *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(IFTSchemaIFTExecutorError *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(IFTSchemaIFTExecutorError *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -82,32 +82,32 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_whichOneof_Executorerror == 2)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithBool:{-[IFTSchemaIFTExecutorError failedToExecute](self, "failedToExecute")}];
-    [v3 setObject:v4 forKeyedSubscript:@"failedToExecute"];
+    [dictionary setObject:v4 forKeyedSubscript:@"failedToExecute"];
   }
 
   if (self->_other)
   {
-    v5 = [(IFTSchemaIFTExecutorError *)self other];
-    v6 = [v5 dictionaryRepresentation];
-    if (v6)
+    other = [(IFTSchemaIFTExecutorError *)self other];
+    dictionaryRepresentation = [other dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v6 forKeyedSubscript:@"other"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"other"];
     }
 
     else
     {
-      v7 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v7 forKeyedSubscript:@"other"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"other"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -126,33 +126,33 @@
   return v4 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     whichOneof_Executorerror = self->_whichOneof_Executorerror;
-    if (whichOneof_Executorerror == [v4 whichOneof_Executorerror])
+    if (whichOneof_Executorerror == [equalCopy whichOneof_Executorerror])
     {
-      v6 = [(IFTSchemaIFTExecutorError *)self other];
-      v7 = [v4 other];
-      v8 = v7;
-      if ((v6 != 0) != (v7 == 0))
+      other = [(IFTSchemaIFTExecutorError *)self other];
+      other2 = [equalCopy other];
+      v8 = other2;
+      if ((other != 0) != (other2 == 0))
       {
-        v9 = [(IFTSchemaIFTExecutorError *)self other];
-        if (!v9)
+        other3 = [(IFTSchemaIFTExecutorError *)self other];
+        if (!other3)
         {
 
 LABEL_11:
           failedToExecute = self->_failedToExecute;
-          v14 = failedToExecute == [v4 failedToExecute];
+          v14 = failedToExecute == [equalCopy failedToExecute];
           goto LABEL_9;
         }
 
-        v10 = v9;
-        v11 = [(IFTSchemaIFTExecutorError *)self other];
-        v12 = [v4 other];
-        v13 = [v11 isEqual:v12];
+        v10 = other3;
+        other4 = [(IFTSchemaIFTExecutorError *)self other];
+        other5 = [equalCopy other];
+        v13 = [other4 isEqual:other5];
 
         if (v13)
         {
@@ -172,14 +172,14 @@ LABEL_9:
   return v14;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
-  v4 = [(IFTSchemaIFTExecutorError *)self other];
+  toCopy = to;
+  other = [(IFTSchemaIFTExecutorError *)self other];
 
-  if (v4)
+  if (other)
   {
-    v5 = [(IFTSchemaIFTExecutorError *)self other];
+    other2 = [(IFTSchemaIFTExecutorError *)self other];
     PBDataWriterWriteSubmessage();
   }
 
@@ -198,13 +198,13 @@ LABEL_9:
   }
 }
 
-- (void)setFailedToExecute:(BOOL)a3
+- (void)setFailedToExecute:(BOOL)execute
 {
   other = self->_other;
   self->_other = 0;
 
   self->_whichOneof_Executorerror = 2;
-  self->_failedToExecute = a3;
+  self->_failedToExecute = execute;
 }
 
 - (void)deleteOther
@@ -232,24 +232,24 @@ LABEL_9:
   return v3;
 }
 
-- (void)setOther:(id)a3
+- (void)setOther:(id)other
 {
   self->_failedToExecute = 0;
-  self->_whichOneof_Executorerror = a3 != 0;
-  objc_storeStrong(&self->_other, a3);
+  self->_whichOneof_Executorerror = other != 0;
+  objc_storeStrong(&self->_other, other);
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = IFTSchemaIFTExecutorError;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(IFTSchemaIFTExecutorError *)self other:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(IFTSchemaIFTExecutorError *)self deleteOther];
   }

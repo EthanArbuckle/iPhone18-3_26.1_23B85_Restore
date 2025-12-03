@@ -1,13 +1,13 @@
 @interface ICSettingsCloudContextDelegate
-- (BOOL)cloudContext:(id)a3 hasContextOptions:(unint64_t)a4;
-- (BOOL)deleteCloudObject:(id)a3;
+- (BOOL)cloudContext:(id)context hasContextOptions:(unint64_t)options;
+- (BOOL)deleteCloudObject:(id)object;
 - (ICSettingsCloudContextDelegate)init;
-- (id)accountIDsForCloudContext:(id)a3 managedObjectContext:(id)a4;
-- (id)backgroundContextForCloudContext:(id)a3;
-- (id)persistentStoreCoordinatorForCloudContext:(id)a3;
-- (id)viewContextForCloudContext:(id)a3;
-- (void)cloudContext:(id)a3 sharedZoneWasDeleted:(id)a4 accountID:(id)a5;
-- (void)cloudContext:(id)a3 userDidDeleteRecordZoneWithID:(id)a4 accountID:(id)a5;
+- (id)accountIDsForCloudContext:(id)context managedObjectContext:(id)objectContext;
+- (id)backgroundContextForCloudContext:(id)context;
+- (id)persistentStoreCoordinatorForCloudContext:(id)context;
+- (id)viewContextForCloudContext:(id)context;
+- (void)cloudContext:(id)context sharedZoneWasDeleted:(id)deleted accountID:(id)d;
+- (void)cloudContext:(id)context userDidDeleteRecordZoneWithID:(id)d accountID:(id)iD;
 @end
 
 @implementation ICSettingsCloudContextDelegate
@@ -19,17 +19,17 @@
   return [(ICSettingsCloudContextDelegate *)&v3 init];
 }
 
-- (void)cloudContext:(id)a3 userDidDeleteRecordZoneWithID:(id)a4 accountID:(id)a5
+- (void)cloudContext:(id)context userDidDeleteRecordZoneWithID:(id)d accountID:(id)iD
 {
-  v7 = a4;
-  v8 = a5;
+  dCopy = d;
+  iDCopy = iD;
   v9 = +[ICCloudContext notesZoneID];
-  v10 = [v7 isEqual:v9];
+  v10 = [dCopy isEqual:v9];
 
   if (v10)
   {
     v11 = +[ICNoteContext sharedContext];
-    v12 = [v11 snapshotManagedObjectContext];
+    snapshotManagedObjectContext = [v11 snapshotManagedObjectContext];
 
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
@@ -37,10 +37,10 @@
     v23[3] = &unk_278194DC0;
     v13 = &v24;
     v14 = v25;
-    v24 = v8;
-    v25[0] = v12;
+    v24 = iDCopy;
+    v25[0] = snapshotManagedObjectContext;
     v25[1] = self;
-    v15 = v12;
+    v15 = snapshotManagedObjectContext;
     [v15 performBlockAndWait:v23];
 LABEL_5:
 
@@ -48,22 +48,22 @@ LABEL_5:
   }
 
   v16 = +[ICCloudContext metadataZoneID];
-  v17 = [v7 isEqual:v16];
+  v17 = [dCopy isEqual:v16];
 
   if (v17)
   {
     v18 = +[ICNoteContext sharedContext];
-    v19 = [v18 managedObjectContext];
+    managedObjectContext = [v18 managedObjectContext];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __87__ICSettingsCloudContextDelegate_cloudContext_userDidDeleteRecordZoneWithID_accountID___block_invoke_15;
     v20[3] = &unk_278194AD8;
     v13 = &v21;
     v14 = &v22;
-    v21 = v8;
+    v21 = iDCopy;
     v22 = v18;
     v15 = v18;
-    [v19 performBlock:v20];
+    [managedObjectContext performBlock:v20];
 
     goto LABEL_5;
   }
@@ -218,18 +218,18 @@ void __87__ICSettingsCloudContextDelegate_cloudContext_userDidDeleteRecordZoneWi
   [v3 setNeedsToBeFetchedFromCloud:1];
 }
 
-- (BOOL)deleteCloudObject:(id)a3
+- (BOOL)deleteCloudObject:(id)object
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (([v4 isDeleted] & 1) == 0)
+  objectCopy = object;
+  if (([objectCopy isDeleted] & 1) == 0)
   {
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v5 = [v4 objectsToBeDeletedBeforeThisObject];
-    v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    objectsToBeDeletedBeforeThisObject = [objectCopy objectsToBeDeletedBeforeThisObject];
+    v6 = [objectsToBeDeletedBeforeThisObject countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v6)
     {
       v7 = v6;
@@ -240,7 +240,7 @@ void __87__ICSettingsCloudContextDelegate_cloudContext_userDidDeleteRecordZoneWi
         {
           if (*v13 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(objectsToBeDeletedBeforeThisObject);
           }
 
           if (![(ICSettingsCloudContextDelegate *)self deleteCloudObject:*(*(&v12 + 1) + 8 * i)])
@@ -251,7 +251,7 @@ void __87__ICSettingsCloudContextDelegate_cloudContext_userDidDeleteRecordZoneWi
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v7 = [objectsToBeDeletedBeforeThisObject countByEnumeratingWithState:&v12 objects:v16 count:16];
         if (v7)
         {
           continue;
@@ -261,7 +261,7 @@ void __87__ICSettingsCloudContextDelegate_cloudContext_userDidDeleteRecordZoneWi
       }
     }
 
-    [v4 deleteFromLocalDatabase];
+    [objectCopy deleteFromLocalDatabase];
   }
 
   v10 = 1;
@@ -270,35 +270,35 @@ LABEL_13:
   return v10;
 }
 
-- (void)cloudContext:(id)a3 sharedZoneWasDeleted:(id)a4 accountID:(id)a5
+- (void)cloudContext:(id)context sharedZoneWasDeleted:(id)deleted accountID:(id)d
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a5;
+  deletedCopy = deleted;
+  dCopy = d;
   v8 = os_log_create("com.apple.notes", "Cloud");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v6 ic_loggingDescription];
+    ic_loggingDescription = [deletedCopy ic_loggingDescription];
     *buf = 138412546;
-    v20 = v7;
+    v20 = dCopy;
     v21 = 2112;
-    v22 = v9;
+    v22 = ic_loggingDescription;
     _os_log_impl(&dword_214D51000, v8, OS_LOG_TYPE_DEFAULT, "Shared zone was deleted for account ID %@: %@", buf, 0x16u);
   }
 
   v10 = +[ICNoteContext sharedContext];
-  v11 = [v10 snapshotManagedObjectContext];
+  snapshotManagedObjectContext = [v10 snapshotManagedObjectContext];
 
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __78__ICSettingsCloudContextDelegate_cloudContext_sharedZoneWasDeleted_accountID___block_invoke;
   v15[3] = &unk_278194DC0;
-  v16 = v6;
-  v17 = v11;
-  v18 = v7;
-  v12 = v7;
-  v13 = v11;
-  v14 = v6;
+  v16 = deletedCopy;
+  v17 = snapshotManagedObjectContext;
+  v18 = dCopy;
+  v12 = dCopy;
+  v13 = snapshotManagedObjectContext;
+  v14 = deletedCopy;
   [v13 performBlockAndWait:v15];
 }
 
@@ -391,21 +391,21 @@ void __78__ICSettingsCloudContextDelegate_cloudContext_sharedZoneWasDeleted_acco
   [*(a1 + 40) ic_save];
 }
 
-- (id)accountIDsForCloudContext:(id)a3 managedObjectContext:(id)a4
+- (id)accountIDsForCloudContext:(id)context managedObjectContext:(id)objectContext
 {
-  v5 = a3;
-  v6 = a4;
+  contextCopy = context;
+  objectContextCopy = objectContext;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
   v19 = __Block_byref_object_copy__10;
   v20 = __Block_byref_object_dispose__10;
-  v21 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v10 = MEMORY[0x277D85DD0];
   v11 = 3221225472;
   v12 = __81__ICSettingsCloudContextDelegate_accountIDsForCloudContext_managedObjectContext___block_invoke;
   v13 = &unk_278194D68;
-  v7 = v6;
+  v7 = objectContextCopy;
   v14 = v7;
   v15 = &v16;
   [v7 performBlockAndWait:&v10];
@@ -458,36 +458,36 @@ void __81__ICSettingsCloudContextDelegate_accountIDsForCloudContext_managedObjec
   }
 }
 
-- (id)persistentStoreCoordinatorForCloudContext:(id)a3
+- (id)persistentStoreCoordinatorForCloudContext:(id)context
 {
   v3 = +[ICNoteContext sharedContext];
-  v4 = [v3 persistentStoreCoordinator];
+  persistentStoreCoordinator = [v3 persistentStoreCoordinator];
 
-  return v4;
+  return persistentStoreCoordinator;
 }
 
-- (id)viewContextForCloudContext:(id)a3
+- (id)viewContextForCloudContext:(id)context
 {
   v3 = +[ICNoteContext sharedContext];
-  v4 = [v3 managedObjectContext];
+  managedObjectContext = [v3 managedObjectContext];
 
-  return v4;
+  return managedObjectContext;
 }
 
-- (id)backgroundContextForCloudContext:(id)a3
+- (id)backgroundContextForCloudContext:(id)context
 {
   v3 = +[ICNoteContext sharedContext];
-  v4 = [v3 workerManagedObjectContext];
+  workerManagedObjectContext = [v3 workerManagedObjectContext];
 
-  return v4;
+  return workerManagedObjectContext;
 }
 
-- (BOOL)cloudContext:(id)a3 hasContextOptions:(unint64_t)a4
+- (BOOL)cloudContext:(id)context hasContextOptions:(unint64_t)options
 {
   v5 = +[ICNoteContext sharedContext];
-  LOBYTE(a4) = [v5 hasContextOptions:a4];
+  LOBYTE(options) = [v5 hasContextOptions:options];
 
-  return a4;
+  return options;
 }
 
 void __87__ICSettingsCloudContextDelegate_cloudContext_userDidDeleteRecordZoneWithID_accountID___block_invoke_cold_1(uint64_t *a1, NSObject *a2)

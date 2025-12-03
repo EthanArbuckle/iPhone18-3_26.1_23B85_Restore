@@ -1,14 +1,14 @@
 @interface HomeAppRemovalService
 - (id)_appSupportDirectoryURL;
 - (id)_deleteAllUserDefaults;
-- (void)removeAppWithReply:(id)a3;
+- (void)removeAppWithReply:(id)reply;
 @end
 
 @implementation HomeAppRemovalService
 
-- (void)removeAppWithReply:(id)a3
+- (void)removeAppWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v5 = os_log_appremoval();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -17,10 +17,10 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Removing User Defaults for %@", buf, 0xCu);
   }
 
-  v6 = [(HomeAppRemovalService *)self _deleteAllUserDefaults];
-  if (v6)
+  _deleteAllUserDefaults = [(HomeAppRemovalService *)self _deleteAllUserDefaults];
+  if (_deleteAllUserDefaults)
   {
-    v7 = v6;
+    v7 = _deleteAllUserDefaults;
     v8 = os_log_appremoval();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
@@ -31,13 +31,13 @@
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Error removing user defaults %@: %@", buf, 0x16u);
     }
 
-    v4[2](v4, v7);
+    replyCopy[2](replyCopy, v7);
   }
 
   else
   {
-    v9 = [(HomeAppRemovalService *)self _appSupportDirectoryURL];
-    if (!v9)
+    _appSupportDirectoryURL = [(HomeAppRemovalService *)self _appSupportDirectoryURL];
+    if (!_appSupportDirectoryURL)
     {
       goto LABEL_14;
     }
@@ -46,13 +46,13 @@
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v15 = v9;
+      v15 = _appSupportDirectoryURL;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Removing App Support Directory @ %@", buf, 0xCu);
     }
 
     v11 = +[NSFileManager defaultManager];
     v13 = 0;
-    [v11 removeItemAtURL:v9 error:&v13];
+    [v11 removeItemAtURL:_appSupportDirectoryURL error:&v13];
     v7 = v13;
 
     if (v7)
@@ -61,19 +61,19 @@
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v15 = v9;
+        v15 = _appSupportDirectoryURL;
         v16 = 2112;
         v17 = v7;
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Error removing App Support Directory '%@': %@", buf, 0x16u);
       }
 
-      v4[2](v4, v7);
+      replyCopy[2](replyCopy, v7);
     }
 
     else
     {
 LABEL_14:
-      v4[2](v4, 0);
+      replyCopy[2](replyCopy, 0);
       v7 = 0;
     }
   }
@@ -86,10 +86,10 @@ LABEL_14:
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v3 = [v2 dictionaryRepresentation];
-  v4 = [v3 allKeys];
+  dictionaryRepresentation = [v2 dictionaryRepresentation];
+  allKeys = [dictionaryRepresentation allKeys];
 
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v22 count:16];
+  v5 = [allKeys countByEnumeratingWithState:&v14 objects:v22 count:16];
   if (v5)
   {
     v6 = v5;
@@ -100,7 +100,7 @@ LABEL_14:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allKeys);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
@@ -115,7 +115,7 @@ LABEL_14:
         [v2 removeObjectForKey:v9];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v22 count:16];
+      v6 = [allKeys countByEnumeratingWithState:&v14 objects:v22 count:16];
     }
 
     while (v6);
@@ -142,8 +142,8 @@ LABEL_14:
 - (id)_appSupportDirectoryURL
 {
   v2 = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, 1uLL, 1);
-  v3 = [v2 firstObject];
-  v4 = [v3 stringByAppendingPathComponent:@"com.apple.Home"];
+  firstObject = [v2 firstObject];
+  v4 = [firstObject stringByAppendingPathComponent:@"com.apple.Home"];
   v5 = [NSURL fileURLWithPath:v4 isDirectory:1];
   v6 = 0;
   if ([v5 checkResourceIsReachableAndReturnError:0])

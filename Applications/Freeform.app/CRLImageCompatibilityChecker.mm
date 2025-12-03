@@ -1,14 +1,14 @@
 @interface CRLImageCompatibilityChecker
 + (void)initialize;
-- (CRLImageCompatibilityChecker)initWithImageData:(id)a3;
-- (void)checkCompatibilityUpToLevel:(int64_t)a3 completionHandler:(id)a4;
+- (CRLImageCompatibilityChecker)initWithImageData:(id)data;
+- (void)checkCompatibilityUpToLevel:(int64_t)level completionHandler:(id)handler;
 @end
 
 @implementation CRLImageCompatibilityChecker
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = [[CRLWidthLimitedQueue alloc] initWithLimit:10];
     v3 = qword_101A34660;
@@ -16,10 +16,10 @@
   }
 }
 
-- (CRLImageCompatibilityChecker)initWithImageData:(id)a3
+- (CRLImageCompatibilityChecker)initWithImageData:(id)data
 {
-  v5 = a3;
-  if (!v5)
+  dataCopy = data;
+  if (!dataCopy)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -54,16 +54,16 @@
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_imageData, a3);
+    objc_storeStrong(&v9->_imageData, data);
   }
 
   return v10;
 }
 
-- (void)checkCompatibilityUpToLevel:(int64_t)a3 completionHandler:(id)a4
+- (void)checkCompatibilityUpToLevel:(int64_t)level completionHandler:(id)handler
 {
-  v6 = a4;
-  if (a3 <= 1)
+  handlerCopy = handler;
+  if (level <= 1)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -97,10 +97,10 @@
   v12[1] = 3221225472;
   v12[2] = sub_100132BC0;
   v12[3] = &unk_10183F0D0;
-  v13 = v6;
-  v14 = a3;
+  v13 = handlerCopy;
+  levelCopy = level;
   v12[4] = self;
-  v11 = v6;
+  v11 = handlerCopy;
   [v10 performAsync:v12];
 }
 

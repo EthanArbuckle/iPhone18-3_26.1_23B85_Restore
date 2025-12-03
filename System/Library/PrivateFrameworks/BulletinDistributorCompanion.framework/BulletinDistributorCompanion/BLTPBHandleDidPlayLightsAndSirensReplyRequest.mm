@@ -1,20 +1,20 @@
 @interface BLTPBHandleDidPlayLightsAndSirensReplyRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDidPlayLightsAndSirens:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasDidPlayLightsAndSirens:(BOOL)sirens;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BLTPBHandleDidPlayLightsAndSirensReplyRequest
 
-- (void)setHasDidPlayLightsAndSirens:(BOOL)a3
+- (void)setHasDidPlayLightsAndSirens:(BOOL)sirens
 {
-  if (a3)
+  if (sirens)
   {
     v3 = 2;
   }
@@ -33,123 +33,123 @@
   v8.receiver = self;
   v8.super_class = BLTPBHandleDidPlayLightsAndSirensReplyRequest;
   v4 = [(BLTPBHandleDidPlayLightsAndSirensReplyRequest *)&v8 description];
-  v5 = [(BLTPBHandleDidPlayLightsAndSirensReplyRequest *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(BLTPBHandleDidPlayLightsAndSirensReplyRequest *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if ((*&self->_has & 2) != 0)
   {
     v4 = [MEMORY[0x277CCABB0] numberWithBool:self->_didPlayLightsAndSirens];
-    [v3 setObject:v4 forKey:@"didPlayLightsAndSirens"];
+    [dictionary setObject:v4 forKey:@"didPlayLightsAndSirens"];
   }
 
   publisherMatchID = self->_publisherMatchID;
   if (publisherMatchID)
   {
-    [v3 setObject:publisherMatchID forKey:@"publisherMatchID"];
+    [dictionary setObject:publisherMatchID forKey:@"publisherMatchID"];
   }
 
   phoneSectionID = self->_phoneSectionID;
   if (phoneSectionID)
   {
-    [v3 setObject:phoneSectionID forKey:@"phoneSectionID"];
+    [dictionary setObject:phoneSectionID forKey:@"phoneSectionID"];
   }
 
   if (*&self->_has)
   {
     v7 = [MEMORY[0x277CCABB0] numberWithDouble:self->_date];
-    [v3 setObject:v7 forKey:@"date"];
+    [dictionary setObject:v7 forKey:@"date"];
   }
 
   replyToken = self->_replyToken;
   if (replyToken)
   {
-    [v3 setObject:replyToken forKey:@"replyToken"];
+    [dictionary setObject:replyToken forKey:@"replyToken"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v7 = v4;
+  toCopy = to;
+  v7 = toCopy;
   if ((*&self->_has & 2) != 0)
   {
     didPlayLightsAndSirens = self->_didPlayLightsAndSirens;
     PBDataWriterWriteBOOLField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_publisherMatchID)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_phoneSectionID)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (*&self->_has)
   {
     date = self->_date;
     PBDataWriterWriteDoubleField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_replyToken)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 2) != 0)
   {
-    v4[40] = self->_didPlayLightsAndSirens;
-    v4[44] |= 2u;
+    toCopy[40] = self->_didPlayLightsAndSirens;
+    toCopy[44] |= 2u;
   }
 
-  v5 = v4;
+  v5 = toCopy;
   if (self->_publisherMatchID)
   {
-    [v4 setPublisherMatchID:?];
-    v4 = v5;
+    [toCopy setPublisherMatchID:?];
+    toCopy = v5;
   }
 
   if (self->_phoneSectionID)
   {
     [v5 setPhoneSectionID:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 1) = *&self->_date;
-    v4[44] |= 1u;
+    *(toCopy + 1) = *&self->_date;
+    toCopy[44] |= 1u;
   }
 
   if (self->_replyToken)
   {
     [v5 setReplyToken:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if ((*&self->_has & 2) != 0)
   {
@@ -157,11 +157,11 @@
     *(v5 + 44) |= 2u;
   }
 
-  v7 = [(NSString *)self->_publisherMatchID copyWithZone:a3];
+  v7 = [(NSString *)self->_publisherMatchID copyWithZone:zone];
   v8 = *(v6 + 24);
   *(v6 + 24) = v7;
 
-  v9 = [(NSString *)self->_phoneSectionID copyWithZone:a3];
+  v9 = [(NSString *)self->_phoneSectionID copyWithZone:zone];
   v10 = *(v6 + 16);
   *(v6 + 16) = v9;
 
@@ -171,57 +171,57 @@
     *(v6 + 44) |= 1u;
   }
 
-  v11 = [(NSString *)self->_replyToken copyWithZone:a3];
+  v11 = [(NSString *)self->_replyToken copyWithZone:zone];
   v12 = *(v6 + 32);
   *(v6 + 32) = v11;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = *(v4 + 44);
+  v5 = *(equalCopy + 44);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 44) & 2) == 0)
+    if ((*(equalCopy + 44) & 2) == 0)
     {
       goto LABEL_12;
     }
 
-    v11 = *(v4 + 40);
+    v11 = *(equalCopy + 40);
     if (self->_didPlayLightsAndSirens)
     {
-      if ((*(v4 + 40) & 1) == 0)
+      if ((*(equalCopy + 40) & 1) == 0)
       {
         goto LABEL_12;
       }
     }
 
-    else if (*(v4 + 40))
+    else if (*(equalCopy + 40))
     {
       goto LABEL_12;
     }
   }
 
-  else if ((*(v4 + 44) & 2) != 0)
+  else if ((*(equalCopy + 44) & 2) != 0)
   {
     goto LABEL_12;
   }
 
   publisherMatchID = self->_publisherMatchID;
-  if (publisherMatchID | *(v4 + 3) && ![(NSString *)publisherMatchID isEqual:?])
+  if (publisherMatchID | *(equalCopy + 3) && ![(NSString *)publisherMatchID isEqual:?])
   {
     goto LABEL_12;
   }
 
   phoneSectionID = self->_phoneSectionID;
-  if (phoneSectionID | *(v4 + 2))
+  if (phoneSectionID | *(equalCopy + 2))
   {
     if (![(NSString *)phoneSectionID isEqual:?])
     {
@@ -229,10 +229,10 @@
     }
   }
 
-  v8 = *(v4 + 44);
+  v8 = *(equalCopy + 44);
   if (*&self->_has)
   {
-    if ((*(v4 + 44) & 1) != 0 && self->_date == *(v4 + 1))
+    if ((*(equalCopy + 44) & 1) != 0 && self->_date == *(equalCopy + 1))
     {
       goto LABEL_21;
     }
@@ -242,14 +242,14 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if (*(v4 + 44))
+  if (*(equalCopy + 44))
   {
     goto LABEL_12;
   }
 
 LABEL_21:
   replyToken = self->_replyToken;
-  if (replyToken | *(v4 + 4))
+  if (replyToken | *(equalCopy + 4))
   {
     v9 = [(NSString *)replyToken isEqual:?];
   }
@@ -314,38 +314,38 @@ LABEL_13:
   return v4 ^ v3 ^ v5 ^ v8 ^ [(NSString *)self->_replyToken hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if ((*(v4 + 44) & 2) != 0)
+  fromCopy = from;
+  if ((*(fromCopy + 44) & 2) != 0)
   {
-    self->_didPlayLightsAndSirens = *(v4 + 40);
+    self->_didPlayLightsAndSirens = *(fromCopy + 40);
     *&self->_has |= 2u;
   }
 
-  v5 = v4;
-  if (*(v4 + 3))
+  v5 = fromCopy;
+  if (*(fromCopy + 3))
   {
     [(BLTPBHandleDidPlayLightsAndSirensReplyRequest *)self setPublisherMatchID:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(BLTPBHandleDidPlayLightsAndSirensReplyRequest *)self setPhoneSectionID:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 44))
+  if (*(fromCopy + 44))
   {
-    self->_date = *(v4 + 1);
+    self->_date = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(BLTPBHandleDidPlayLightsAndSirensReplyRequest *)self setReplyToken:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 

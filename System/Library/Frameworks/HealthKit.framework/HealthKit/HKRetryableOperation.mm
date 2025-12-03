@@ -1,23 +1,23 @@
 @interface HKRetryableOperation
-- (HKRetryableOperation)initWithQueue:(id)a3 retryCount:(int)a4;
+- (HKRetryableOperation)initWithQueue:(id)queue retryCount:(int)count;
 - (NSMutableArray)pendingOperations;
-- (void)_queue_performPendingOperation:(id)a3;
-- (void)_queue_performRetryableOperation:(id)a3 completion:(id)a4;
+- (void)_queue_performPendingOperation:(id)operation;
+- (void)_queue_performRetryableOperation:(id)operation completion:(id)completion;
 @end
 
 @implementation HKRetryableOperation
 
-- (HKRetryableOperation)initWithQueue:(id)a3 retryCount:(int)a4
+- (HKRetryableOperation)initWithQueue:(id)queue retryCount:(int)count
 {
-  v7 = a3;
+  queueCopy = queue;
   v13.receiver = self;
   v13.super_class = HKRetryableOperation;
   v8 = [(HKRetryableOperation *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_queue, a3);
-    v9->_retryCount = a4;
+    objc_storeStrong(&v8->_queue, queue);
+    v9->_retryCount = count;
     v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
     pendingOperations = v9->_pendingOperations;
     v9->_pendingOperations = v10;
@@ -26,13 +26,13 @@
   return v9;
 }
 
-- (void)_queue_performRetryableOperation:(id)a3 completion:(id)a4
+- (void)_queue_performRetryableOperation:(id)operation completion:(id)completion
 {
   queue = self->_queue;
-  v7 = a4;
-  v8 = a3;
+  completionCopy = completion;
+  operationCopy = operation;
   dispatch_assert_queue_V2(queue);
-  v10 = [HKPendingOperationRecord pendingOperation:v8 completion:v7];
+  v10 = [HKPendingOperationRecord pendingOperation:operationCopy completion:completionCopy];
 
   v9 = [(NSMutableArray *)self->_pendingOperations count];
   [(NSMutableArray *)self->_pendingOperations addObject:v10];
@@ -42,19 +42,19 @@
   }
 }
 
-- (void)_queue_performPendingOperation:(id)a3
+- (void)_queue_performPendingOperation:(id)operation
 {
-  v4 = a3;
-  v5 = [v4 operationHandler];
+  operationCopy = operation;
+  operationHandler = [operationCopy operationHandler];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __55__HKRetryableOperation__queue_performPendingOperation___block_invoke;
   v8[3] = &unk_1E7379FE8;
-  v9 = v4;
-  v10 = self;
-  v6 = v5[2];
-  v7 = v4;
-  v6(v5, v8);
+  v9 = operationCopy;
+  selfCopy = self;
+  v6 = operationHandler[2];
+  v7 = operationCopy;
+  v6(operationHandler, v8);
 }
 
 void __55__HKRetryableOperation__queue_performPendingOperation___block_invoke(uint64_t a1, char a2, char a3, void *a4)

@@ -1,20 +1,20 @@
 @interface BLSBacklightChangeSourceEventDisplayTapMetadata
-- (BLSBacklightChangeSourceEventDisplayTapMetadata)initWithCoder:(id)a3;
-- (BLSBacklightChangeSourceEventDisplayTapMetadata)initWithPosition:(CGPoint)a3;
-- (BLSBacklightChangeSourceEventDisplayTapMetadata)initWithXPCDictionary:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BLSBacklightChangeSourceEventDisplayTapMetadata)initWithCoder:(id)coder;
+- (BLSBacklightChangeSourceEventDisplayTapMetadata)initWithPosition:(CGPoint)position;
+- (BLSBacklightChangeSourceEventDisplayTapMetadata)initWithXPCDictionary:(id)dictionary;
+- (BOOL)isEqual:(id)equal;
 - (CGPoint)position;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithXPCDictionary:(id)a3;
+- (void)encodeWithXPCDictionary:(id)dictionary;
 @end
 
 @implementation BLSBacklightChangeSourceEventDisplayTapMetadata
 
-- (BLSBacklightChangeSourceEventDisplayTapMetadata)initWithPosition:(CGPoint)a3
+- (BLSBacklightChangeSourceEventDisplayTapMetadata)initWithPosition:(CGPoint)position
 {
-  y = a3.y;
-  x = a3.x;
+  y = position.y;
+  x = position.x;
   v6.receiver = self;
   v6.super_class = BLSBacklightChangeSourceEventDisplayTapMetadata;
   result = [(BLSBacklightChangeSourceEventDisplayTapMetadata *)&v6 init];
@@ -31,24 +31,24 @@
 {
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
   v4 = [v3 appendPoint:@"position" withName:{self->_position.x, self->_position.y}];
-  v5 = [v3 build];
+  build = [v3 build];
 
-  return v5;
+  return build;
 }
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x277CF0C40] builder];
-  v4 = [v3 appendCGPoint:{self->_position.x, self->_position.y}];
-  v5 = [v3 hash];
+  builder = [MEMORY[0x277CF0C40] builder];
+  v4 = [builder appendCGPoint:{self->_position.x, self->_position.y}];
+  v5 = [builder hash];
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -59,7 +59,7 @@
     if (objc_opt_isKindOfClass())
     {
       p_position = &self->_position;
-      [(BLSBacklightChangeSourceEventDisplayTapMetadata *)v4 position];
+      [(BLSBacklightChangeSourceEventDisplayTapMetadata *)equalCopy position];
       v8 = p_position->y == v7 && p_position->x == v6;
     }
 
@@ -72,9 +72,9 @@
   return v8;
 }
 
-- (BLSBacklightChangeSourceEventDisplayTapMetadata)initWithXPCDictionary:(id)a3
+- (BLSBacklightChangeSourceEventDisplayTapMetadata)initWithXPCDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   [@"position" UTF8String];
   BSDeserializeCGPointFromXPCDictionaryWithKey();
   v6 = v5;
@@ -83,18 +83,18 @@
   return [(BLSBacklightChangeSourceEventDisplayTapMetadata *)self initWithPosition:v6, v8];
 }
 
-- (void)encodeWithXPCDictionary:(id)a3
+- (void)encodeWithXPCDictionary:(id)dictionary
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   [@"position" UTF8String];
   x = self->_position.x;
   y = self->_position.y;
   BSSerializeCGPointToXPCDictionaryWithKey();
 }
 
-- (BLSBacklightChangeSourceEventDisplayTapMetadata)initWithCoder:(id)a3
+- (BLSBacklightChangeSourceEventDisplayTapMetadata)initWithCoder:(id)coder
 {
-  [a3 decodePointForKey:@"position"];
+  [coder decodePointForKey:@"position"];
 
   return [(BLSBacklightChangeSourceEventDisplayTapMetadata *)self initWithPosition:?];
 }

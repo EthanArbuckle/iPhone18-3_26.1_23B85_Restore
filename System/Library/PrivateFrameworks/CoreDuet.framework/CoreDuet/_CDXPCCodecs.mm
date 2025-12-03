@@ -1,23 +1,23 @@
 @interface _CDXPCCodecs
-+ (BOOL)addDeviceIDs:(id)a3 toDictionary:(id)a4 error:(id *)a5;
-+ (BOOL)keepAliveFromKeepAliveEvent:(id)a3 error:(id *)a4;
-+ (BOOL)parseNotificationEvent:(id)a3 registrationIdentifier:(id *)a4 info:(id *)a5 error:(id *)a6;
++ (BOOL)addDeviceIDs:(id)ds toDictionary:(id)dictionary error:(id *)error;
++ (BOOL)keepAliveFromKeepAliveEvent:(id)event error:(id *)error;
++ (BOOL)parseNotificationEvent:(id)event registrationIdentifier:(id *)identifier info:(id *)info error:(id *)error;
 + (id)_log;
-+ (id)deviceIDsFromDictionary:(id)a3 error:(id *)a4;
-+ (id)errorFromReply:(id)a3;
-+ (id)fetchPropertiesReplyWithEvent:(id)a3 error:(id)a4;
++ (id)deviceIDsFromDictionary:(id)dictionary error:(id *)error;
++ (id)errorFromReply:(id)reply;
++ (id)fetchPropertiesReplyWithEvent:(id)event error:(id)error;
 + (id)fetchProxySourceDeviceUUIDEvent;
-+ (id)fetchProxySourceDeviceUUIDReplyWithEvent:(id)a3 sourceDeviceUUID:(id)a4 error:(id)a5;
-+ (id)keepAliveEventWithKeepAlive:(BOOL)a3 error:(id *)a4;
-+ (id)keepAliveReplyWithEvent:(id)a3 error:(id)a4;
-+ (id)messageTypeFromEvent:(id)a3;
-+ (id)notificationEventWithRegistrationIdentifier:(id)a3 info:(id)a4 error:(id *)a5;
-+ (id)parseProxySourceDeviceUUIDEvent:(id)a3 error:(id *)a4;
++ (id)fetchProxySourceDeviceUUIDReplyWithEvent:(id)event sourceDeviceUUID:(id)d error:(id)error;
++ (id)keepAliveEventWithKeepAlive:(BOOL)alive error:(id *)error;
++ (id)keepAliveReplyWithEvent:(id)event error:(id)error;
++ (id)messageTypeFromEvent:(id)event;
++ (id)notificationEventWithRegistrationIdentifier:(id)identifier info:(id)info error:(id *)error;
++ (id)parseProxySourceDeviceUUIDEvent:(id)event error:(id *)error;
 + (id)requestActivateDevicesEvent;
-+ (id)requestActivateDevicesReplyWithEvent:(id)a3 error:(id)a4;
++ (id)requestActivateDevicesReplyWithEvent:(id)event error:(id)error;
 + (id)supportedClassesToUnarchive;
-+ (int64_t)eventTypeWithEvent:(id)a3;
-+ (void)addError:(id)a3 toReply:(id)a4;
++ (int64_t)eventTypeWithEvent:(id)event;
++ (void)addError:(id)error toReply:(id)reply;
 @end
 
 @implementation _CDXPCCodecs
@@ -34,17 +34,17 @@
   return v3;
 }
 
-+ (BOOL)addDeviceIDs:(id)a3 toDictionary:(id)a4 error:(id *)a5
++ (BOOL)addDeviceIDs:(id)ds toDictionary:(id)dictionary error:(id *)error
 {
   v32 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  xdict = a4;
+  dsCopy = ds;
+  xdict = dictionary;
   v7 = xpc_array_create(0, 0);
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v8 = v6;
+  v8 = dsCopy;
   v9 = [v8 countByEnumeratingWithState:&v25 objects:v31 count:16];
   if (v9)
   {
@@ -60,10 +60,10 @@
         }
 
         v13 = *(*(&v25 + 1) + 8 * i);
-        v14 = [v13 UTF8String];
-        if (v14)
+        uTF8String = [v13 UTF8String];
+        if (uTF8String)
         {
-          v15 = xpc_string_create(v14);
+          v15 = xpc_string_create(uTF8String);
           if (v15)
           {
             xpc_array_append_value(v7, v15);
@@ -103,8 +103,8 @@
   {
     v18 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.coreduetd" code:7 userInfo:0];
     v17 = xdict;
-    v19 = a5;
-    if (!a5)
+    errorCopy2 = error;
+    if (!error)
     {
       goto LABEL_19;
     }
@@ -115,12 +115,12 @@
   v17 = xdict;
   xpc_dictionary_set_value(xdict, "ids", v7);
   v18 = 0;
-  v19 = a5;
-  if (a5)
+  errorCopy2 = error;
+  if (error)
   {
 LABEL_18:
     v20 = v18;
-    *v19 = v18;
+    *errorCopy2 = v18;
   }
 
 LABEL_19:
@@ -129,9 +129,9 @@ LABEL_19:
   return v18 == 0;
 }
 
-+ (id)deviceIDsFromDictionary:(id)a3 error:(id *)a4
++ (id)deviceIDsFromDictionary:(id)dictionary error:(id *)error
 {
-  v5 = xpc_dictionary_get_array(a3, "ids");
+  v5 = xpc_dictionary_get_array(dictionary, "ids");
   if (v5)
   {
     v6 = objc_opt_new();
@@ -177,11 +177,11 @@ LABEL_12:
 
   v15 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.coreduetd" code:6 userInfo:0];
   v14 = v15;
-  if (a4)
+  if (error)
   {
     v16 = v15;
     v6 = 0;
-    *a4 = v14;
+    *error = v14;
   }
 
   else
@@ -194,30 +194,30 @@ LABEL_17:
   return v6;
 }
 
-+ (void)addError:(id)a3 toReply:(id)a4
++ (void)addError:(id)error toReply:(id)reply
 {
-  if (a3 && a4)
+  if (error && reply)
   {
-    xdict = a4;
-    v5 = a3;
-    v6 = [v5 domain];
-    v7 = [v6 UTF8String];
+    xdict = reply;
+    errorCopy = error;
+    domain = [errorCopy domain];
+    uTF8String = [domain UTF8String];
 
-    xpc_dictionary_set_string(xdict, "error_domain", v7);
-    v8 = [v5 code];
+    xpc_dictionary_set_string(xdict, "error_domain", uTF8String);
+    code = [errorCopy code];
 
-    xpc_dictionary_set_int64(xdict, "error_code", v8);
+    xpc_dictionary_set_int64(xdict, "error_code", code);
   }
 }
 
-+ (id)errorFromReply:(id)a3
++ (id)errorFromReply:(id)reply
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && (string = xpc_dictionary_get_string(v3, "error_domain")) != 0)
+  replyCopy = reply;
+  v4 = replyCopy;
+  if (replyCopy && (string = xpc_dictionary_get_string(replyCopy, "error_domain")) != 0)
   {
-    v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s", string];
-    v7 = [MEMORY[0x1E696ABC0] errorWithDomain:v6 code:xpc_dictionary_get_int64(v4 userInfo:{"error_code"), 0}];
+    string = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s", string];
+    v7 = [MEMORY[0x1E696ABC0] errorWithDomain:string code:xpc_dictionary_get_int64(v4 userInfo:{"error_code"), 0}];
   }
 
   else
@@ -228,53 +228,53 @@ LABEL_17:
   return v7;
 }
 
-+ (int64_t)eventTypeWithEvent:(id)a3
++ (int64_t)eventTypeWithEvent:(id)event
 {
-  v3 = a3;
+  eventCopy = event;
   if (eventTypeWithEvent__initialized != -1)
   {
     +[_CDXPCCodecs eventTypeWithEvent:];
   }
 
-  string = xpc_dictionary_get_string(v3, "msgtype");
+  string = xpc_dictionary_get_string(eventCopy, "msgtype");
   if (string)
   {
     v5 = [MEMORY[0x1E696AEC0] stringWithUTF8String:string];
     v6 = [eventTypeWithEvent__eventTypeByMsgType objectForKeyedSubscript:v5];
-    v7 = [v6 integerValue];
+    integerValue = [v6 integerValue];
   }
 
   else
   {
-    v7 = 0;
+    integerValue = 0;
   }
 
-  return v7;
+  return integerValue;
 }
 
-+ (id)fetchPropertiesReplyWithEvent:(id)a3 error:(id)a4
++ (id)fetchPropertiesReplyWithEvent:(id)event error:(id)error
 {
-  v6 = a4;
-  reply = xpc_dictionary_create_reply(a3);
-  if (v6)
+  errorCopy = error;
+  reply = xpc_dictionary_create_reply(event);
+  if (errorCopy)
   {
-    [a1 addError:v6 toReply:reply];
+    [self addError:errorCopy toReply:reply];
   }
 
   return reply;
 }
 
-+ (id)keepAliveEventWithKeepAlive:(BOOL)a3 error:(id *)a4
++ (id)keepAliveEventWithKeepAlive:(BOOL)alive error:(id *)error
 {
   keys[1] = *MEMORY[0x1E69E9840];
   values = xpc_string_create("keep-alive");
   keys[0] = "msgtype";
   v6 = values;
   v7 = xpc_dictionary_create(keys, &values, 1uLL);
-  xpc_dictionary_set_BOOL(v7, "keepAlive", a3);
-  if (a4)
+  xpc_dictionary_set_BOOL(v7, "keepAlive", alive);
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
   v8 = *MEMORY[0x1E69E9840];
@@ -282,10 +282,10 @@ LABEL_17:
   return v7;
 }
 
-+ (BOOL)keepAliveFromKeepAliveEvent:(id)a3 error:(id *)a4
++ (BOOL)keepAliveFromKeepAliveEvent:(id)event error:(id *)error
 {
-  v5 = a3;
-  string = xpc_dictionary_get_string(v5, "msgtype");
+  eventCopy = event;
+  string = xpc_dictionary_get_string(eventCopy, "msgtype");
   if (string)
   {
     v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:string];
@@ -293,9 +293,9 @@ LABEL_17:
 
     if (v8)
     {
-      v9 = xpc_dictionary_get_BOOL(v5, "keepAlive");
+      v9 = xpc_dictionary_get_BOOL(eventCopy, "keepAlive");
       v10 = 0;
-      if (!a4)
+      if (!error)
       {
         goto LABEL_11;
       }
@@ -304,7 +304,7 @@ LABEL_17:
     }
   }
 
-  v11 = MEMORY[0x193B01150](v5);
+  v11 = MEMORY[0x193B01150](eventCopy);
   v12 = +[_CDXPCCodecs _log];
   if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
   {
@@ -318,11 +318,11 @@ LABEL_17:
 
   v10 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.coreduetd" code:6 userInfo:0];
   v9 = 0;
-  if (a4)
+  if (error)
   {
 LABEL_10:
     v10 = v10;
-    *a4 = v10;
+    *error = v10;
   }
 
 LABEL_11:
@@ -330,37 +330,37 @@ LABEL_11:
   return v9;
 }
 
-+ (id)keepAliveReplyWithEvent:(id)a3 error:(id)a4
++ (id)keepAliveReplyWithEvent:(id)event error:(id)error
 {
-  v6 = a4;
-  reply = xpc_dictionary_create_reply(a3);
-  if (v6)
+  errorCopy = error;
+  reply = xpc_dictionary_create_reply(event);
+  if (errorCopy)
   {
-    [a1 addError:v6 toReply:reply];
+    [self addError:errorCopy toReply:reply];
   }
 
   return reply;
 }
 
-+ (id)notificationEventWithRegistrationIdentifier:(id)a3 info:(id)a4 error:(id *)a5
++ (id)notificationEventWithRegistrationIdentifier:(id)identifier info:(id)info error:(id *)error
 {
   keys[1] = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a3;
+  infoCopy = info;
+  identifierCopy = identifier;
   keys[0] = "msgtype";
   v9 = xpc_string_create("notification");
   values = v9;
   v10 = xpc_dictionary_create(keys, &values, 1uLL);
-  v11 = [v8 UTF8String];
+  uTF8String = [identifierCopy UTF8String];
 
-  xpc_dictionary_set_string(v10, "id", v11);
+  xpc_dictionary_set_string(v10, "id", uTF8String);
   v18 = 0;
-  v12 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v7 requiringSecureCoding:0 error:&v18];
+  v12 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:infoCopy requiringSecureCoding:0 error:&v18];
   v13 = v18;
   if (v12)
   {
     xpc_dictionary_set_data(v10, "info", [v12 bytes], objc_msgSend(v12, "length"));
-    if (!a5)
+    if (!error)
     {
       goto LABEL_4;
     }
@@ -375,11 +375,11 @@ LABEL_11:
   }
 
   v10 = 0;
-  if (a5)
+  if (error)
   {
 LABEL_3:
     v14 = v13;
-    *a5 = v13;
+    *error = v13;
   }
 
 LABEL_4:
@@ -389,10 +389,10 @@ LABEL_4:
   return v10;
 }
 
-+ (BOOL)parseNotificationEvent:(id)a3 registrationIdentifier:(id *)a4 info:(id *)a5 error:(id *)a6
++ (BOOL)parseNotificationEvent:(id)event registrationIdentifier:(id *)identifier info:(id *)info error:(id *)error
 {
-  v10 = a3;
-  string = xpc_dictionary_get_string(v10, "msgtype");
+  eventCopy = event;
+  string = xpc_dictionary_get_string(eventCopy, "msgtype");
   if (string)
   {
     v12 = [MEMORY[0x1E696AEC0] stringWithUTF8String:string];
@@ -400,9 +400,9 @@ LABEL_4:
 
     if (v13)
     {
-      if (a4)
+      if (identifier)
       {
-        v14 = xpc_dictionary_get_string(v10, "id");
+        v14 = xpc_dictionary_get_string(eventCopy, "id");
         if (v14)
         {
           v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s", v14];
@@ -416,15 +416,15 @@ LABEL_4:
         }
 
         v18 = v15;
-        *a4 = v15;
+        *identifier = v15;
         length = 0;
-        data = xpc_dictionary_get_data(v10, "info", &length);
+        data = xpc_dictionary_get_data(eventCopy, "info", &length);
         if (data)
         {
           v20 = [MEMORY[0x1E695DEF0] dataWithBytes:data length:length];
-          v21 = [a1 supportedClassesToUnarchive];
+          supportedClassesToUnarchive = [self supportedClassesToUnarchive];
           v30 = v16;
-          v22 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClasses:v21 fromData:v20 error:&v30];
+          v22 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClasses:supportedClassesToUnarchive fromData:v20 error:&v30];
           v17 = v30;
 
           if (!v22)
@@ -437,7 +437,7 @@ LABEL_4:
           }
 
           v24 = v22;
-          *a5 = v22;
+          *info = v22;
 
           v16 = v22;
         }
@@ -471,7 +471,7 @@ LABEL_24:
   }
 
 LABEL_18:
-  v25 = MEMORY[0x193B01150](v10);
+  v25 = MEMORY[0x193B01150](eventCopy);
   v26 = +[_CDXPCCodecs _log];
   if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
   {
@@ -483,11 +483,11 @@ LABEL_18:
     free(v25);
   }
 
-  if (a6)
+  if (error)
   {
     v27 = v17;
     v28 = 0;
-    *a6 = v17;
+    *error = v17;
   }
 
   else
@@ -513,15 +513,15 @@ LABEL_26:
   return v3;
 }
 
-+ (id)fetchProxySourceDeviceUUIDReplyWithEvent:(id)a3 sourceDeviceUUID:(id)a4 error:(id)a5
++ (id)fetchProxySourceDeviceUUIDReplyWithEvent:(id)event sourceDeviceUUID:(id)d error:(id)error
 {
   v16 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
-  reply = xpc_dictionary_create_reply(a3);
-  if (v9)
+  dCopy = d;
+  errorCopy = error;
+  reply = xpc_dictionary_create_reply(event);
+  if (errorCopy)
   {
-    [a1 addError:v9 toReply:reply];
+    [self addError:errorCopy toReply:reply];
   }
 
   else
@@ -530,7 +530,7 @@ LABEL_26:
     xpc_dictionary_set_value(reply, "msgtype", v11);
     *uuid = 0;
     v15 = 0;
-    [v8 getUUIDBytes:uuid];
+    [dCopy getUUIDBytes:uuid];
     xpc_dictionary_set_uuid(reply, "uuid", uuid);
   }
 
@@ -539,11 +539,11 @@ LABEL_26:
   return reply;
 }
 
-+ (id)parseProxySourceDeviceUUIDEvent:(id)a3 error:(id *)a4
++ (id)parseProxySourceDeviceUUIDEvent:(id)event error:(id *)error
 {
-  v5 = a3;
-  string = xpc_dictionary_get_string(v5, "msgtype");
-  if (string && ([MEMORY[0x1E696AEC0] stringWithUTF8String:string], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "isEqualToString:", @"fetch-uuid"), v7, v8) && (v9 = xpc_dictionary_get_string(v5, "uuid")) != 0 && (v10 = objc_msgSend(objc_alloc(MEMORY[0x1E696AFB0]), "initWithUUIDBytes:", v9)) != 0)
+  eventCopy = event;
+  string = xpc_dictionary_get_string(eventCopy, "msgtype");
+  if (string && ([MEMORY[0x1E696AEC0] stringWithUTF8String:string], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "isEqualToString:", @"fetch-uuid"), v7, v8) && (v9 = xpc_dictionary_get_string(eventCopy, "uuid")) != 0 && (v10 = objc_msgSend(objc_alloc(MEMORY[0x1E696AFB0]), "initWithUUIDBytes:", v9)) != 0)
   {
     v11 = v10;
     v12 = 0;
@@ -557,7 +557,7 @@ LABEL_26:
       goto LABEL_13;
     }
 
-    v13 = MEMORY[0x193B01150](v5);
+    v13 = MEMORY[0x193B01150](eventCopy);
     v14 = +[_CDXPCCodecs _log];
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
@@ -569,11 +569,11 @@ LABEL_26:
       free(v13);
     }
 
-    if (a4)
+    if (error)
     {
       v15 = v12;
       v11 = 0;
-      *a4 = v12;
+      *error = v12;
     }
 
     else
@@ -599,13 +599,13 @@ LABEL_13:
   return v3;
 }
 
-+ (id)requestActivateDevicesReplyWithEvent:(id)a3 error:(id)a4
++ (id)requestActivateDevicesReplyWithEvent:(id)event error:(id)error
 {
-  v6 = a4;
-  reply = xpc_dictionary_create_reply(a3);
-  if (v6)
+  errorCopy = error;
+  reply = xpc_dictionary_create_reply(event);
+  if (errorCopy)
   {
-    [a1 addError:v6 toReply:reply];
+    [self addError:errorCopy toReply:reply];
   }
 
   else
@@ -617,9 +617,9 @@ LABEL_13:
   return reply;
 }
 
-+ (id)messageTypeFromEvent:(id)a3
++ (id)messageTypeFromEvent:(id)event
 {
-  string = xpc_dictionary_get_string(a3, "msgtype");
+  string = xpc_dictionary_get_string(event, "msgtype");
   if (string)
   {
     string = [MEMORY[0x1E696AEC0] stringWithUTF8String:string];

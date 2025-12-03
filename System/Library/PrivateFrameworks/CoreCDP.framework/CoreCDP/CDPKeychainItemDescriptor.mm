@@ -1,15 +1,15 @@
 @interface CDPKeychainItemDescriptor
 + (id)recoveryKeyDescriptor;
-+ (id)recoveryKeyDescriptorForAltDSID:(id)a3;
++ (id)recoveryKeyDescriptorForAltDSID:(id)d;
 @end
 
 @implementation CDPKeychainItemDescriptor
 
-+ (id)recoveryKeyDescriptorForAltDSID:(id)a3
++ (id)recoveryKeyDescriptorForAltDSID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = +[CDPKeychainItemDescriptor recoveryKeyDescriptor];
-  [v4 setAccount:v3];
+  [v4 setAccount:dCopy];
 
   return v4;
 }

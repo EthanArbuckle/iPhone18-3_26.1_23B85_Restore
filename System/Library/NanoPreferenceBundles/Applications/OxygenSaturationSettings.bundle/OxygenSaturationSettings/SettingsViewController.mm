@@ -1,28 +1,28 @@
 @interface SettingsViewController
-- (_TtC24OxygenSaturationSettings22SettingsViewController)initWithCoder:(id)a3;
-- (_TtC24OxygenSaturationSettings22SettingsViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)backgroundRecordingDisabledTextWithSpecifier:(id)a3;
-- (id)recordingsEnabledValueWithSpecifier:(id)a3;
+- (_TtC24OxygenSaturationSettings22SettingsViewController)initWithCoder:(id)coder;
+- (_TtC24OxygenSaturationSettings22SettingsViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)backgroundRecordingDisabledTextWithSpecifier:(id)specifier;
+- (id)recordingsEnabledValueWithSpecifier:(id)specifier;
 - (id)specifiers;
 - (void)dealloc;
-- (void)enablePressedWithAppropriateRegion:(BOOL)a3;
-- (void)onboardingScrollViewDidScroll:(id)a3;
+- (void)enablePressedWithAppropriateRegion:(BOOL)region;
+- (void)onboardingScrollViewDidScroll:(id)scroll;
 - (void)openArticle;
 - (void)openPasscodeSettings;
-- (void)oxygenSaturationSettingsDidChange:(id)a3;
-- (void)setWithRecordingsEnabledValue:(id)a3 specifier:(id)a4;
+- (void)oxygenSaturationSettingsDidChange:(id)change;
+- (void)setWithRecordingsEnabledValue:(id)value specifier:(id)specifier;
 - (void)setupLaterPressed;
 - (void)showStartingControllerIfNeeded;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation SettingsViewController
 
-- (_TtC24OxygenSaturationSettings22SettingsViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC24OxygenSaturationSettings22SettingsViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_5B80();
   }
@@ -30,7 +30,7 @@
   return sub_56F4();
 }
 
-- (_TtC24OxygenSaturationSettings22SettingsViewController)initWithCoder:(id)a3
+- (_TtC24OxygenSaturationSettings22SettingsViewController)initWithCoder:(id)coder
 {
   *&self->PSListController_opaque[OBJC_IVAR____TtC24OxygenSaturationSettings22SettingsViewController_startingController] = 0;
   self->PSListController_opaque[OBJC_IVAR____TtC24OxygenSaturationSettings22SettingsViewController_tabBarHidden] = 0;
@@ -45,11 +45,11 @@
 - (void)dealloc
 {
   v3 = objc_opt_self();
-  v4 = self;
-  v5 = [v3 defaultCenter];
-  [v5 removeObserver:v4 name:UIApplicationWillEnterForegroundNotification object:0];
+  selfCopy = self;
+  defaultCenter = [v3 defaultCenter];
+  [defaultCenter removeObserver:selfCopy name:UIApplicationWillEnterForegroundNotification object:0];
 
-  v6.receiver = v4;
+  v6.receiver = selfCopy;
   v6.super_class = type metadata accessor for SettingsViewController();
   [(SettingsViewController *)&v6 dealloc];
 }
@@ -60,32 +60,32 @@
   v4.super_class = type metadata accessor for SettingsViewController();
   v2 = v4.receiver;
   [(SettingsViewController *)&v4 viewDidLoad];
-  v3 = [objc_opt_self() defaultCenter];
-  [v3 addObserver:v2 selector:"showStartingControllerIfNeeded" name:UIApplicationWillEnterForegroundNotification object:0];
+  defaultCenter = [objc_opt_self() defaultCenter];
+  [defaultCenter addObserver:v2 selector:"showStartingControllerIfNeeded" name:UIApplicationWillEnterForegroundNotification object:0];
 }
 
 - (void)showStartingControllerIfNeeded
 {
-  v2 = self;
+  selfCopy = self;
   sub_1DD4();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
-  v4 = self;
-  sub_1F6C(v3);
+  appearCopy = appear;
+  selfCopy = self;
+  sub_1F6C(appearCopy);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_2414(a3);
+  selfCopy = self;
+  sub_2414(disappear);
 }
 
 - (id)specifiers
 {
-  v2 = self;
+  selfCopy = self;
   sub_2BD0();
   v4 = v3;
 
@@ -102,7 +102,7 @@
   return v5.super.isa;
 }
 
-- (id)backgroundRecordingDisabledTextWithSpecifier:(id)a3
+- (id)backgroundRecordingDisabledTextWithSpecifier:(id)specifier
 {
   v3 = sub_5B60();
   v4 = HKRPLocalizedString();
@@ -116,19 +116,19 @@
   return v4;
 }
 
-- (void)setWithRecordingsEnabledValue:(id)a3 specifier:(id)a4
+- (void)setWithRecordingsEnabledValue:(id)value specifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  valueCopy = value;
+  specifierCopy = specifier;
+  selfCopy = self;
   sub_57D8();
 }
 
-- (id)recordingsEnabledValueWithSpecifier:(id)a3
+- (id)recordingsEnabledValueWithSpecifier:(id)specifier
 {
   v4 = OBJC_IVAR____TtC24OxygenSaturationSettings22SettingsViewController_settings;
   v5 = *&self->PSListController_opaque[OBJC_IVAR____TtC24OxygenSaturationSettings22SettingsViewController_settings];
-  v6 = self;
+  selfCopy = self;
   v7 = [v5 backgroundRecordingsEnabled] && (objc_msgSend(*&self->PSListController_opaque[v4], "oxygenSaturationDisabled") & 1) == 0 && !sub_1848();
   sub_59AC(0, &qword_CB30, NSNumber_ptr);
   v8.super.super.isa = sub_5C60(v7).super.super.isa;
@@ -138,41 +138,41 @@
 
 - (void)openArticle
 {
-  v2 = self;
+  selfCopy = self;
   sub_413C();
 }
 
-- (void)enablePressedWithAppropriateRegion:(BOOL)a3
+- (void)enablePressedWithAppropriateRegion:(BOOL)region
 {
-  v4 = self;
-  sub_43C4(a3);
+  selfCopy = self;
+  sub_43C4(region);
 }
 
 - (void)setupLaterPressed
 {
-  v6 = self;
-  v2 = [(SettingsViewController *)v6 navigationController];
-  if (v2)
+  selfCopy = self;
+  navigationController = [(SettingsViewController *)selfCopy navigationController];
+  if (navigationController)
   {
-    v3 = v2;
-    v4 = [v2 navigationController];
+    v3 = navigationController;
+    v2NavigationController = [navigationController navigationController];
 
-    if (v4)
+    if (v2NavigationController)
     {
-      v5 = [v4 popViewControllerAnimated:1];
+      v5 = [v2NavigationController popViewControllerAnimated:1];
     }
   }
 }
 
-- (void)onboardingScrollViewDidScroll:(id)a3
+- (void)onboardingScrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
-  v7 = self;
-  v5 = [(SettingsViewController *)v7 table];
-  if (v5)
+  scrollCopy = scroll;
+  selfCopy = self;
+  table = [(SettingsViewController *)selfCopy table];
+  if (table)
   {
-    v6 = v5;
-    [v4 contentOffset];
+    v6 = table;
+    [scrollCopy contentOffset];
     [v6 setContentOffset:?];
   }
 
@@ -194,9 +194,9 @@
   (*(v3 + 8))(v6, v2);
 }
 
-- (void)oxygenSaturationSettingsDidChange:(id)a3
+- (void)oxygenSaturationSettingsDidChange:(id)change
 {
-  v3 = self;
+  selfCopy = self;
   sub_5C20();
   if (qword_C940 != -1)
   {
@@ -216,7 +216,7 @@
   *(v4 + 40) = v7;
   sub_5B30();
 
-  [(SettingsViewController *)v3 reloadSpecifiers];
+  [(SettingsViewController *)selfCopy reloadSpecifiers];
 }
 
 @end

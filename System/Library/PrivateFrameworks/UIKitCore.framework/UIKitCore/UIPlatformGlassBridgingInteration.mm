@@ -1,8 +1,8 @@
 @interface UIPlatformGlassBridgingInteration
 - (UIView)view;
 - (_TtC5UIKitP33_F83AB3ECBB2C378B4FCEB681A4D7DB7433UIPlatformGlassBridgingInteration)init;
-- (void)didMoveToView:(id)a3;
-- (void)willMoveToView:(id)a3;
+- (void)didMoveToView:(id)view;
+- (void)willMoveToView:(id)view;
 @end
 
 @implementation UIPlatformGlassBridgingInteration
@@ -14,18 +14,18 @@
   return Strong;
 }
 
-- (void)willMoveToView:(id)a3
+- (void)willMoveToView:(id)view
 {
-  v5 = a3;
-  v6 = self;
-  sub_188C4D9A8(a3);
+  viewCopy = view;
+  selfCopy = self;
+  sub_188C4D9A8(view);
 }
 
-- (void)didMoveToView:(id)a3
+- (void)didMoveToView:(id)view
 {
-  v5 = a3;
-  v6 = self;
-  sub_188C4DCD8(a3);
+  viewCopy = view;
+  selfCopy = self;
+  sub_188C4DCD8(view);
 }
 
 - (_TtC5UIKitP33_F83AB3ECBB2C378B4FCEB681A4D7DB7433UIPlatformGlassBridgingInteration)init

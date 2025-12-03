@@ -1,41 +1,41 @@
 @interface NRLinkManager
-- (BOOL)endpointsAreCompatible:(id)a3 remoteEndpoint:(id)a4;
-- (BOOL)shouldCreateLinkForNRUUID:(id)a3;
-- (id)initManagerWithQueue:(id)a3 managerDelegate:(id)a4;
-- (void)reportEvent:(unsigned int)a3 details:(id)a4;
+- (BOOL)endpointsAreCompatible:(id)compatible remoteEndpoint:(id)endpoint;
+- (BOOL)shouldCreateLinkForNRUUID:(id)d;
+- (id)initManagerWithQueue:(id)queue managerDelegate:(id)delegate;
+- (void)reportEvent:(unsigned int)event details:(id)details;
 @end
 
 @implementation NRLinkManager
 
-- (BOOL)endpointsAreCompatible:(id)a3 remoteEndpoint:(id)a4
+- (BOOL)endpointsAreCompatible:(id)compatible remoteEndpoint:(id)endpoint
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 addressFamily];
-  if (v7 != [v6 addressFamily])
+  compatibleCopy = compatible;
+  endpointCopy = endpoint;
+  addressFamily = [compatibleCopy addressFamily];
+  if (addressFamily != [endpointCopy addressFamily])
   {
     goto LABEL_3;
   }
 
-  v8 = [v5 hostname];
-  v9 = [v6 hostname];
-  v10 = [v8 isEqualToString:v9];
+  hostname = [compatibleCopy hostname];
+  hostname2 = [endpointCopy hostname];
+  v10 = [hostname isEqualToString:hostname2];
 
   if (v10)
   {
     goto LABEL_3;
   }
 
-  v13 = [v5 address];
-  v14 = [v6 address];
-  if ([v5 addressFamily] != 2)
+  address = [compatibleCopy address];
+  address2 = [endpointCopy address];
+  if ([compatibleCopy addressFamily] != 2)
   {
-    if ([v5 addressFamily] == 30)
+    if ([compatibleCopy addressFamily] == 30)
     {
-      v15 = v13[8] == 254 && (v13[9] & 0xC0) == 128;
-      if (v14[8] == 254)
+      v15 = address[8] == 254 && (address[9] & 0xC0) == 128;
+      if (address2[8] == 254)
       {
-        if (v15 == ((v14[9] & 0xC0) == 128))
+        if (v15 == ((address2[9] & 0xC0) == 128))
         {
           goto LABEL_16;
         }
@@ -54,7 +54,7 @@ LABEL_16:
     goto LABEL_4;
   }
 
-  if ((*(v13 + 2) == -343) != (*(v14 + 2) != -343))
+  if ((*(address + 2) == -343) != (*(address2 + 2) != -343))
   {
     goto LABEL_16;
   }
@@ -66,14 +66,14 @@ LABEL_4:
   return v11;
 }
 
-- (BOOL)shouldCreateLinkForNRUUID:(id)a3
+- (BOOL)shouldCreateLinkForNRUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   if (self)
   {
     if (self->_type)
     {
-      v5 = sub_100163A30(NRDLocalDevice, v4);
+      v5 = sub_100163A30(NRDLocalDevice, dCopy);
       v6 = v5;
       if (v5)
       {
@@ -100,9 +100,9 @@ LABEL_4:
         }
 
         v10 = v9;
-        v11 = [v10 allowedLinkTypes];
+        allowedLinkTypes = [v10 allowedLinkTypes];
         v12 = [NSNumber numberWithUnsignedChar:self->_type];
-        LOBYTE(self) = [v11 containsObject:v12];
+        LOBYTE(self) = [allowedLinkTypes containsObject:v12];
       }
 
       else
@@ -120,18 +120,18 @@ LABEL_4:
   return self;
 }
 
-- (void)reportEvent:(unsigned int)a3 details:(id)a4
+- (void)reportEvent:(unsigned int)event details:(id)details
 {
-  v6 = a4;
-  v7 = [(NRLinkManager *)self copyName];
-  sub_1000059A8(0, a3, v7, v6);
+  detailsCopy = details;
+  copyName = [(NRLinkManager *)self copyName];
+  sub_1000059A8(0, event, copyName, detailsCopy);
 }
 
-- (id)initManagerWithQueue:(id)a3 managerDelegate:(id)a4
+- (id)initManagerWithQueue:(id)queue managerDelegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  queueCopy = queue;
+  delegateCopy = delegate;
+  if (!queueCopy)
   {
     v13 = sub_1000E7D20();
     IsLevelEnabled = _NRLogIsLevelEnabled();
@@ -144,8 +144,8 @@ LABEL_4:
     goto LABEL_10;
   }
 
-  dispatch_assert_queue_V2(v7);
-  if (!v8)
+  dispatch_assert_queue_V2(queueCopy);
+  if (!delegateCopy)
   {
     v15 = sub_1000E7D20();
     v16 = _NRLogIsLevelEnabled();
@@ -156,12 +156,12 @@ LABEL_9:
       v17 = sub_1000E7D20();
       _NRLogWithArgs();
 
-      v11 = 0;
+      selfCopy = 0;
       goto LABEL_5;
     }
 
 LABEL_10:
-    v11 = 0;
+    selfCopy = 0;
     goto LABEL_5;
   }
 
@@ -191,13 +191,13 @@ LABEL_10:
   p_isa = &v9->super.isa;
   v9->_type = 0;
   v9->_state = 1001;
-  objc_storeWeak(&v9->_managerDelegate, v8);
-  objc_storeStrong(p_isa + 3, a3);
+  objc_storeWeak(&v9->_managerDelegate, delegateCopy);
+  objc_storeStrong(p_isa + 3, queue);
   self = p_isa;
-  v11 = self;
+  selfCopy = self;
 LABEL_5:
 
-  return v11;
+  return selfCopy;
 }
 
 @end

@@ -1,37 +1,37 @@
 @interface CRKASMCertificateParserResult
-+ (BOOL)certificate:(id)a3 hasCommonNameWithPrefix:(id)a4;
-+ (id)resultForCertificate:(id)a3 expectedCommonNamePrefix:(id)a4 expectedUserIdentifier:(id)a5;
-- (BOOL)isCertificateValidWithError:(id *)a3;
-- (CRKASMCertificateParserResult)initWithUserIdentifier:(id)a3 validationError:(id)a4;
++ (BOOL)certificate:(id)certificate hasCommonNameWithPrefix:(id)prefix;
++ (id)resultForCertificate:(id)certificate expectedCommonNamePrefix:(id)prefix expectedUserIdentifier:(id)identifier;
+- (BOOL)isCertificateValidWithError:(id *)error;
+- (CRKASMCertificateParserResult)initWithUserIdentifier:(id)identifier validationError:(id)error;
 @end
 
 @implementation CRKASMCertificateParserResult
 
-- (CRKASMCertificateParserResult)initWithUserIdentifier:(id)a3 validationError:(id)a4
+- (CRKASMCertificateParserResult)initWithUserIdentifier:(id)identifier validationError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  errorCopy = error;
   v12.receiver = self;
   v12.super_class = CRKASMCertificateParserResult;
   v8 = [(CRKASMCertificateParserResult *)&v12 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [identifierCopy copy];
     userIdentifier = v8->_userIdentifier;
     v8->_userIdentifier = v9;
 
-    objc_storeStrong(&v8->_validationError, a4);
+    objc_storeStrong(&v8->_validationError, error);
   }
 
   return v8;
 }
 
-+ (id)resultForCertificate:(id)a3 expectedCommonNamePrefix:(id)a4 expectedUserIdentifier:(id)a5
++ (id)resultForCertificate:(id)certificate expectedCommonNamePrefix:(id)prefix expectedUserIdentifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8)
+  certificateCopy = certificate;
+  prefixCopy = prefix;
+  identifierCopy = identifier;
+  if (!certificateCopy)
   {
     v14 = &unk_285672388;
     v15 = 2;
@@ -41,20 +41,20 @@ LABEL_9:
     goto LABEL_14;
   }
 
-  if (([a1 certificate:v8 hasCommonNameWithPrefix:v9] & 1) == 0)
+  if (([self certificate:certificateCopy hasCommonNameWithPrefix:prefixCopy] & 1) == 0)
   {
     v15 = 34;
     v14 = 0;
     goto LABEL_9;
   }
 
-  v11 = [CRKASMCertificateUserIdentifierExtractor userIdentifierFromCertificate:v8];
+  v11 = [CRKASMCertificateUserIdentifierExtractor userIdentifierFromCertificate:certificateCopy];
   v12 = v11;
   if (v11)
   {
-    if ([v11 isEqualToString:v10])
+    if ([v11 isEqualToString:identifierCopy])
     {
-      if ([v8 isTemporallyValid])
+      if ([certificateCopy isTemporallyValid])
       {
         v13 = 0;
         goto LABEL_14;
@@ -76,33 +76,33 @@ LABEL_9:
 
   v13 = CRKErrorWithCodeAndUserInfo(v16, 0);
 LABEL_14:
-  v17 = [[a1 alloc] initWithUserIdentifier:v12 validationError:v13];
+  v17 = [[self alloc] initWithUserIdentifier:v12 validationError:v13];
 
   return v17;
 }
 
-- (BOOL)isCertificateValidWithError:(id *)a3
+- (BOOL)isCertificateValidWithError:(id *)error
 {
-  v5 = [(CRKASMCertificateParserResult *)self validationError];
+  validationError = [(CRKASMCertificateParserResult *)self validationError];
 
-  if (a3 && v5)
+  if (error && validationError)
   {
-    *a3 = [(CRKASMCertificateParserResult *)self validationError];
+    *error = [(CRKASMCertificateParserResult *)self validationError];
   }
 
-  return v5 == 0;
+  return validationError == 0;
 }
 
-+ (BOOL)certificate:(id)a3 hasCommonNameWithPrefix:(id)a4
++ (BOOL)certificate:(id)certificate hasCommonNameWithPrefix:(id)prefix
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  prefixCopy = prefix;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = [a3 commonNames];
-  v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  commonNames = [certificate commonNames];
+  v7 = [commonNames countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
     v8 = *v12;
@@ -112,17 +112,17 @@ LABEL_14:
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(commonNames);
         }
 
-        if ([*(*(&v11 + 1) + 8 * i) hasPrefix:v5])
+        if ([*(*(&v11 + 1) + 8 * i) hasPrefix:prefixCopy])
         {
           LOBYTE(v7) = 1;
           goto LABEL_11;
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [commonNames countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v7)
       {
         continue;

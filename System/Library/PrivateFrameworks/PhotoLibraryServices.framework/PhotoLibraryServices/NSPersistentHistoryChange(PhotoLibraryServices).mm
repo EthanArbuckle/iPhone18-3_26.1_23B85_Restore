@@ -7,33 +7,33 @@
 - (id)_pl_prettyDescriptionWithIndent:()PhotoLibraryServices
 {
   v32 = *MEMORY[0x1E69E9840];
-  v2 = [a1 changedObjectID];
-  v3 = [v2 pl_shortURI];
+  changedObjectID = [self changedObjectID];
+  pl_shortURI = [changedObjectID pl_shortURI];
 
-  if ([a1 changeType] == 1)
+  if ([self changeType] == 1)
   {
-    v4 = [a1 updatedProperties];
-    v5 = PLDescriptionForUpdateProperties(v4);
+    updatedProperties = [self updatedProperties];
+    string = PLDescriptionForUpdateProperties(updatedProperties);
   }
 
   else
   {
-    if ([a1 changeType] != 2)
+    if ([self changeType] != 2)
     {
-      v5 = &stru_1F0F06D80;
+      string = &stru_1F0F06D80;
       goto LABEL_17;
     }
 
-    v6 = [a1 tombstone];
-    v4 = v6;
-    if (v6)
+    tombstone = [self tombstone];
+    updatedProperties = tombstone;
+    if (tombstone)
     {
-      v25 = v3;
-      v7 = [v6 allKeys];
-      v8 = [v7 sortedArrayUsingSelector:sel_compare_];
+      v25 = pl_shortURI;
+      allKeys = [tombstone allKeys];
+      v8 = [allKeys sortedArrayUsingSelector:sel_compare_];
 
-      v5 = [MEMORY[0x1E696AD60] string];
-      [(__CFString *)v5 appendString:@" {"];
+      string = [MEMORY[0x1E696AD60] string];
+      [(__CFString *)string appendString:@" {"];
       v29 = 0u;
       v30 = 0u;
       v27 = 0u;
@@ -49,16 +49,16 @@
         {
           for (i = 0; i != v10; ++i)
           {
-            v14 = v5;
+            v14 = string;
             if (*v28 != v11)
             {
               objc_enumerationMutation(obj);
             }
 
             v15 = *(*(&v27 + 1) + 8 * i);
-            v16 = [v4 objectForKeyedSubscript:v15];
+            v16 = [updatedProperties objectForKeyedSubscript:v15];
             v24 = v15;
-            v5 = v14;
+            string = v14;
             [(__CFString *)v14 appendFormat:@"%@%@: %@", v12, v24, v16];
 
             v12 = @", ";
@@ -71,33 +71,33 @@
         while (v10);
       }
 
-      [(__CFString *)v5 appendString:@"}"];
-      v3 = v25;
+      [(__CFString *)string appendString:@"}"];
+      pl_shortURI = v25;
     }
 
     else
     {
-      v5 = &stru_1F0F06D80;
+      string = &stru_1F0F06D80;
     }
   }
 
 LABEL_17:
   v17 = MEMORY[0x1E696AEC0];
   v18 = PLIndentToString();
-  v19 = [a1 changeID];
-  v20 = [a1 changeType];
+  changeID = [self changeID];
+  changeType = [self changeType];
   v21 = @"insert";
-  if (v20 == 1)
+  if (changeType == 1)
   {
     v21 = @"update";
   }
 
-  if (v20 == 2)
+  if (changeType == 2)
   {
     v21 = @"delete";
   }
 
-  v22 = [v17 stringWithFormat:@"%@Change %08lld: %@ %@%@\n", v18, v19, v21, v3, v5];
+  v22 = [v17 stringWithFormat:@"%@Change %08lld: %@ %@%@\n", v18, changeID, v21, pl_shortURI, string];
 
   return v22;
 }

@@ -13,24 +13,24 @@
   v2 = v5.receiver;
   [(ArcadeDownloadPackViewController *)&v5 viewDidLoad];
   [v2 setModalInPresentation:{1, v5.receiver, v5.super_class}];
-  v3 = [v2 navigationItem];
-  [v3 setHidesBackButton:1];
+  navigationItem = [v2 navigationItem];
+  [navigationItem setHidesBackButton:1];
 
-  v4 = [v2 navigationItem];
-  [v4 setBackButtonDisplayMode:1];
+  navigationItem2 = [v2 navigationItem];
+  [navigationItem2 setBackButtonDisplayMode:1];
 }
 
 - (void)didTapContinueButton
 {
-  v2 = self;
+  selfCopy = self;
   sub_764120();
 }
 
 - (void)didTapSkipButton
 {
-  v2 = self;
+  selfCopy = self;
   sub_764110();
-  [(ArcadeDownloadPackCategoriesViewController *)v2 dismissViewControllerAnimated:1 completion:0];
+  [(ArcadeDownloadPackCategoriesViewController *)selfCopy dismissViewControllerAnimated:1 completion:0];
 }
 
 @end

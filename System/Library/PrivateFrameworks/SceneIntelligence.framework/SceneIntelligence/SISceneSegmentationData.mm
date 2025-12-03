@@ -1,18 +1,18 @@
 @interface SISceneSegmentationData
-- (BOOL)saveToDisk:(id)a3 identifier:(id)a4;
-- (CGSize)_resolutionByConfig:(id)a3;
+- (BOOL)saveToDisk:(id)disk identifier:(id)identifier;
+- (CGSize)_resolutionByConfig:(id)config;
 - (CGSize)resolution;
-- (SISceneSegmentationData)initWithConfig:(id)a3;
-- (SISceneSegmentationData)initWithOutputResolution:(CGSize)a3;
-- (SISceneSegmentationData)initWithOutputSemanticBuffer:(__CVBuffer *)a3 confidenceBuffer:(__CVBuffer *)a4 uncertaintyBuffer:(__CVBuffer *)a5;
+- (SISceneSegmentationData)initWithConfig:(id)config;
+- (SISceneSegmentationData)initWithOutputResolution:(CGSize)resolution;
+- (SISceneSegmentationData)initWithOutputSemanticBuffer:(__CVBuffer *)buffer confidenceBuffer:(__CVBuffer *)confidenceBuffer uncertaintyBuffer:(__CVBuffer *)uncertaintyBuffer;
 - (void)dealloc;
 @end
 
 @implementation SISceneSegmentationData
 
-- (SISceneSegmentationData)initWithConfig:(id)a3
+- (SISceneSegmentationData)initWithConfig:(id)config
 {
-  v4 = a3;
+  configCopy = config;
   v14.receiver = self;
   v14.super_class = SISceneSegmentationData;
   v5 = [(SISceneSegmentationData *)&v14 init];
@@ -20,7 +20,7 @@
   if (v5)
   {
     p_width = &v5->_resolution.width;
-    [(SISceneSegmentationData *)v5 _resolutionByConfig:v4];
+    [(SISceneSegmentationData *)v5 _resolutionByConfig:configCopy];
     *p_width = v8;
     v6->_resolution.height = v9;
     v10 = v8;
@@ -34,10 +34,10 @@
   return v6;
 }
 
-- (SISceneSegmentationData)initWithOutputResolution:(CGSize)a3
+- (SISceneSegmentationData)initWithOutputResolution:(CGSize)resolution
 {
-  height = a3.height;
-  width = a3.width;
+  height = resolution.height;
+  width = resolution.width;
   v9.receiver = self;
   v9.super_class = SISceneSegmentationData;
   v5 = [(SISceneSegmentationData *)&v9 init];
@@ -55,7 +55,7 @@
   return v6;
 }
 
-- (SISceneSegmentationData)initWithOutputSemanticBuffer:(__CVBuffer *)a3 confidenceBuffer:(__CVBuffer *)a4 uncertaintyBuffer:(__CVBuffer *)a5
+- (SISceneSegmentationData)initWithOutputSemanticBuffer:(__CVBuffer *)buffer confidenceBuffer:(__CVBuffer *)confidenceBuffer uncertaintyBuffer:(__CVBuffer *)uncertaintyBuffer
 {
   v12.receiver = self;
   v12.super_class = SISceneSegmentationData;
@@ -65,30 +65,30 @@
   {
     v8->_resolution.width = CVPixelBufferGetWidth(v8->_semantic);
     v9->_resolution.height = CVPixelBufferGetHeight(v9->_semantic);
-    v9->_semantic = CVPixelBufferRetain(a3);
-    v9->_confidence = CVPixelBufferRetain(a4);
-    v9->_uncertainty = CVPixelBufferRetain(a5);
+    v9->_semantic = CVPixelBufferRetain(buffer);
+    v9->_confidence = CVPixelBufferRetain(confidenceBuffer);
+    v9->_uncertainty = CVPixelBufferRetain(uncertaintyBuffer);
     v10 = v9;
   }
 
   return v9;
 }
 
-- (CGSize)_resolutionByConfig:(id)a3
+- (CGSize)_resolutionByConfig:(id)config
 {
-  v3 = [a3 networkModeEnum];
+  networkModeEnum = [config networkModeEnum];
 
-  SupportedResolution = SISceneSegmentationGetSupportedResolution(v3);
+  SupportedResolution = SISceneSegmentationGetSupportedResolution(networkModeEnum);
   result.height = v5;
   result.width = SupportedResolution;
   return result;
 }
 
-- (BOOL)saveToDisk:(id)a3 identifier:(id)a4
+- (BOOL)saveToDisk:(id)disk identifier:(id)identifier
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  diskCopy = disk;
+  identifierCopy = identifier;
   v24.receiver = self;
   v24.super_class = SISceneSegmentationData;
   if ([-[SISceneSegmentationData class](&v24 class)])
@@ -99,20 +99,20 @@
     v21 = __49__SISceneSegmentationData_saveToDisk_identifier___block_invoke;
     v22 = &__block_descriptor_40_e5_v8__0l;
     v23 = v8;
-    v9 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@/color_semantic_%@.png", v6, v7];
-    if (SISavePixelBufferPNG(v8, v9))
+    identifierCopy = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@/color_semantic_%@.png", diskCopy, identifierCopy];
+    if (SISavePixelBufferPNG(v8, identifierCopy))
     {
       semantic = self->_semantic;
-      v11 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@/semantic_%@.png", v6, v7];
-      if (SISavePixelBufferPNG(semantic, v11))
+      identifierCopy2 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@/semantic_%@.png", diskCopy, identifierCopy];
+      if (SISavePixelBufferPNG(semantic, identifierCopy2))
       {
         confidence = self->_confidence;
-        v13 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@/semantic_confidence_%@.tiff", v6, v7];
-        if (SISavePixelBufferTIFF(confidence, v13))
+        identifierCopy3 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@/semantic_confidence_%@.tiff", diskCopy, identifierCopy];
+        if (SISavePixelBufferTIFF(confidence, identifierCopy3))
         {
           uncertainty = self->_uncertainty;
-          v15 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@/semantic_uncertainty_%@.tiff", v6, v7];
-          v16 = SISavePixelBufferTIFF(uncertainty, v15);
+          identifierCopy4 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@/semantic_uncertainty_%@.tiff", diskCopy, identifierCopy];
+          v16 = SISavePixelBufferTIFF(uncertainty, identifierCopy4);
         }
 
         else
@@ -145,7 +145,7 @@
       v27 = 1025;
       v28 = 86;
       v29 = 2112;
-      v30 = v6;
+      v30 = diskCopy;
       _os_log_impl(&dword_21DE0D000, v17, OS_LOG_TYPE_ERROR, " %{private}s:%{private}d *** %@ is not a directory, or failed to create a directory ***", buf, 0x1Cu);
     }
 

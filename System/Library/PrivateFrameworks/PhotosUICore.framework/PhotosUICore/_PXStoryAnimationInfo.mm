@@ -1,6 +1,6 @@
 @interface _PXStoryAnimationInfo
 - (PXStoryAnimation)animation;
-- (_PXStoryAnimationInfo)initWithAnimation:(id)a3 startTime:(id *)a4;
+- (_PXStoryAnimationInfo)initWithAnimation:(id)animation startTime:(id *)time;
 @end
 
 @implementation _PXStoryAnimationInfo
@@ -12,22 +12,22 @@
   return WeakRetained;
 }
 
-- (_PXStoryAnimationInfo)initWithAnimation:(id)a3 startTime:(id *)a4
+- (_PXStoryAnimationInfo)initWithAnimation:(id)animation startTime:(id *)time
 {
-  v6 = a3;
+  animationCopy = animation;
   v13.receiver = self;
   v13.super_class = _PXStoryAnimationInfo;
   v7 = [(_PXStoryAnimationInfo *)&v13 init];
   if (v7)
   {
-    v8 = [v6 identifier];
-    v9 = [v8 copy];
+    identifier = [animationCopy identifier];
+    v9 = [identifier copy];
     v10 = *(v7 + 1);
     *(v7 + 1) = v9;
 
-    objc_storeWeak(v7 + 2, v6);
-    var3 = a4->var3;
-    *(v7 + 24) = *&a4->var0;
+    objc_storeWeak(v7 + 2, animationCopy);
+    var3 = time->var3;
+    *(v7 + 24) = *&time->var0;
     *(v7 + 5) = var3;
   }
 

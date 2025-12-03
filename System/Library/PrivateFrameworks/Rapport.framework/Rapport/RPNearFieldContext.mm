@@ -1,17 +1,17 @@
 @interface RPNearFieldContext
-- (BOOL)isEqual:(id)a3;
-- (RPNearFieldContext)initWithApplicationLabel:(id)a3 supportedApplicationLabels:(id)a4 pkData:(id)a5 bonjourListenerUUID:(id)a6;
-- (RPNearFieldContext)initWithCoder:(id)a3;
-- (id)initWitApplicationLabel:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (RPNearFieldContext)initWithApplicationLabel:(id)label supportedApplicationLabels:(id)labels pkData:(id)data bonjourListenerUUID:(id)d;
+- (RPNearFieldContext)initWithCoder:(id)coder;
+- (id)initWitApplicationLabel:(id)label;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RPNearFieldContext
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
@@ -21,11 +21,11 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(RPNearFieldContext *)self applicationLabel];
-      v7 = [(RPNearFieldContext *)v5 applicationLabel];
-      v8 = v6;
-      v9 = v7;
+      v5 = equalCopy;
+      applicationLabel = [(RPNearFieldContext *)self applicationLabel];
+      applicationLabel2 = [(RPNearFieldContext *)v5 applicationLabel];
+      v8 = applicationLabel;
+      v9 = applicationLabel2;
       v10 = v9;
       if (v8 == v9)
       {
@@ -52,10 +52,10 @@ LABEL_32:
         }
       }
 
-      v13 = [(RPNearFieldContext *)self supportedApplicationLabels];
-      v14 = [(RPNearFieldContext *)v5 supportedApplicationLabels];
-      v15 = v13;
-      v16 = v14;
+      supportedApplicationLabels = [(RPNearFieldContext *)self supportedApplicationLabels];
+      supportedApplicationLabels2 = [(RPNearFieldContext *)v5 supportedApplicationLabels];
+      v15 = supportedApplicationLabels;
+      v16 = supportedApplicationLabels2;
       v17 = v16;
       if (v15 == v16)
       {
@@ -82,10 +82,10 @@ LABEL_31:
         }
       }
 
-      v19 = [(RPNearFieldContext *)self pkData];
-      v20 = [(RPNearFieldContext *)v5 pkData];
-      v21 = v19;
-      v22 = v20;
+      pkData = [(RPNearFieldContext *)self pkData];
+      pkData2 = [(RPNearFieldContext *)v5 pkData];
+      v21 = pkData;
+      v22 = pkData2;
       v23 = v22;
       if (v21 == v22)
       {
@@ -116,10 +116,10 @@ LABEL_30:
       }
 
       v30 = v21;
-      v25 = [(RPNearFieldContext *)self bonjourListenerUUID];
-      v26 = [(RPNearFieldContext *)v5 bonjourListenerUUID];
-      v21 = v25;
-      v27 = v26;
+      bonjourListenerUUID = [(RPNearFieldContext *)self bonjourListenerUUID];
+      bonjourListenerUUID2 = [(RPNearFieldContext *)v5 bonjourListenerUUID];
+      v21 = bonjourListenerUUID;
+      v27 = bonjourListenerUUID2;
       v28 = v27;
       if (v21 == v27)
       {
@@ -147,16 +147,16 @@ LABEL_33:
   return v12;
 }
 
-- (RPNearFieldContext)initWithCoder:(id)a3
+- (RPNearFieldContext)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(RPNearFieldContext *)self init];
   if (!v5)
   {
     goto LABEL_5;
   }
 
-  v6 = v4;
+  v6 = coderCopy;
   objc_opt_class();
   NSDecodeObjectIfPresent();
 
@@ -189,73 +189,73 @@ LABEL_5:
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   applicationLabel = self->_applicationLabel;
-  v9 = v4;
+  v9 = coderCopy;
   if (applicationLabel)
   {
-    [v4 encodeObject:applicationLabel forKey:@"applicationLabel"];
-    v4 = v9;
+    [coderCopy encodeObject:applicationLabel forKey:@"applicationLabel"];
+    coderCopy = v9;
   }
 
   supportedApplicationLabels = self->_supportedApplicationLabels;
   if (supportedApplicationLabels)
   {
     [v9 encodeObject:supportedApplicationLabels forKey:@"supportedApplicationLabels"];
-    v4 = v9;
+    coderCopy = v9;
   }
 
   pkData = self->_pkData;
   if (pkData)
   {
     [v9 encodeObject:pkData forKey:@"pkData"];
-    v4 = v9;
+    coderCopy = v9;
   }
 
   bonjourListenerUUID = self->_bonjourListenerUUID;
   if (bonjourListenerUUID)
   {
     [v9 encodeObject:bonjourListenerUUID forKey:@"bonjourListenerUUID"];
-    v4 = v9;
+    coderCopy = v9;
   }
 }
 
-- (id)initWitApplicationLabel:(id)a3
+- (id)initWitApplicationLabel:(id)label
 {
-  v4 = a3;
+  labelCopy = label;
   v5 = NSRandomData();
-  v6 = [MEMORY[0x1E696AFB0] UUID];
-  v7 = [(RPNearFieldContext *)self initWithApplicationLabel:v4 pkData:v5 bonjourListenerUUID:v6];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  v7 = [(RPNearFieldContext *)self initWithApplicationLabel:labelCopy pkData:v5 bonjourListenerUUID:uUID];
 
   return v7;
 }
 
-- (RPNearFieldContext)initWithApplicationLabel:(id)a3 supportedApplicationLabels:(id)a4 pkData:(id)a5 bonjourListenerUUID:(id)a6
+- (RPNearFieldContext)initWithApplicationLabel:(id)label supportedApplicationLabels:(id)labels pkData:(id)data bonjourListenerUUID:(id)d
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  labelCopy = label;
+  labelsCopy = labels;
+  dataCopy = data;
+  dCopy = d;
   v22.receiver = self;
   v22.super_class = RPNearFieldContext;
   v14 = [(RPNearFieldContext *)&v22 init];
   if (v14)
   {
-    v15 = [v10 copy];
+    v15 = [labelCopy copy];
     applicationLabel = v14->_applicationLabel;
     v14->_applicationLabel = v15;
 
-    v17 = [v11 copy];
+    v17 = [labelsCopy copy];
     supportedApplicationLabels = v14->_supportedApplicationLabels;
     v14->_supportedApplicationLabels = v17;
 
-    v19 = [v12 copy];
+    v19 = [dataCopy copy];
     pkData = v14->_pkData;
     v14->_pkData = v19;
 
-    objc_storeStrong(&v14->_bonjourListenerUUID, a6);
+    objc_storeStrong(&v14->_bonjourListenerUUID, d);
   }
 
   return v14;

@@ -1,47 +1,47 @@
 @interface WFAnyToolKitVariableContent
-+ (id)objectWithVariableContent:(id)a3;
-- (WFAnyToolKitVariableContent)initWithCoder:(id)a3;
-- (WFAnyToolKitVariableContent)initWithVariableContent:(id)a3;
-- (void)encodeWithCoder:(id)a3;
++ (id)objectWithVariableContent:(id)content;
+- (WFAnyToolKitVariableContent)initWithCoder:(id)coder;
+- (WFAnyToolKitVariableContent)initWithVariableContent:(id)content;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFAnyToolKitVariableContent
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(WFAnyToolKitVariableContent *)self variableContent];
-  [v4 encodeObject:v5 forKey:@"variableContent"];
+  coderCopy = coder;
+  variableContent = [(WFAnyToolKitVariableContent *)self variableContent];
+  [coderCopy encodeObject:variableContent forKey:@"variableContent"];
 }
 
-- (WFAnyToolKitVariableContent)initWithCoder:(id)a3
+- (WFAnyToolKitVariableContent)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
+  coderCopy = coder;
   v6 = [v4 setWithObjects:{objc_opt_class(), 0}];
-  v7 = [v5 decodeObjectOfClasses:v6 forKey:@"variableContent"];
+  v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"variableContent"];
 
   if (v7)
   {
     self = [(WFAnyToolKitVariableContent *)self initWithVariableContent:v7];
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (WFAnyToolKitVariableContent)initWithVariableContent:(id)a3
+- (WFAnyToolKitVariableContent)initWithVariableContent:(id)content
 {
-  v6 = a3;
-  if (!v6)
+  contentCopy = content;
+  if (!contentCopy)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"WFSageWorkflowRunnerClient.m" lineNumber:248 description:{@"Invalid parameter not satisfying: %@", @"variableContent"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFSageWorkflowRunnerClient.m" lineNumber:248 description:{@"Invalid parameter not satisfying: %@", @"variableContent"}];
   }
 
   v12.receiver = self;
@@ -50,19 +50,19 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_variableContent, a3);
+    objc_storeStrong(&v7->_variableContent, content);
     v9 = v8;
   }
 
   return v8;
 }
 
-+ (id)objectWithVariableContent:(id)a3
++ (id)objectWithVariableContent:(id)content
 {
-  if (a3)
+  if (content)
   {
-    v4 = a3;
-    v5 = [[a1 alloc] initWithVariableContent:v4];
+    contentCopy = content;
+    v5 = [[self alloc] initWithVariableContent:contentCopy];
   }
 
   else

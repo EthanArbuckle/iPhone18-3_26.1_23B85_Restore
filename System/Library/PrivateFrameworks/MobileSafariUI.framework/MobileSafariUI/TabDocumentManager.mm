@@ -13,14 +13,14 @@
   v2 = [(TabDocumentManager *)&v9 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277D28C70] sharedFeatureManager];
-    v4 = [v3 allowsUnlimitedTabs];
+    mEMORY[0x277D28C70] = [MEMORY[0x277D28C70] sharedFeatureManager];
+    allowsUnlimitedTabs = [mEMORY[0x277D28C70] allowsUnlimitedTabs];
 
-    if (v4)
+    if (allowsUnlimitedTabs)
     {
-      v5 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+      weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
       tabs = v2->_tabs;
-      v2->_tabs = v5;
+      v2->_tabs = weakObjectsHashTable;
     }
 
     v7 = v2;
@@ -51,21 +51,21 @@ void __35__TabDocumentManager_sharedManager__block_invoke()
 - (void)reclaimTabsIfNeeded
 {
   v27 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277D28C70] sharedFeatureManager];
-  v4 = [v3 allowsUnlimitedTabs];
+  mEMORY[0x277D28C70] = [MEMORY[0x277D28C70] sharedFeatureManager];
+  allowsUnlimitedTabs = [mEMORY[0x277D28C70] allowsUnlimitedTabs];
 
-  if (v4 && !self->_suppressTabRecycling)
+  if (allowsUnlimitedTabs && !self->_suppressTabRecycling)
   {
-    v5 = [MEMORY[0x277CBEBD0] safari_browserDefaults];
-    [v5 safari_doubleForKey:@"DebugTabDocumentCapacity" defaultValue:1000.0];
+    safari_browserDefaults = [MEMORY[0x277CBEBD0] safari_browserDefaults];
+    [safari_browserDefaults safari_doubleForKey:@"DebugTabDocumentCapacity" defaultValue:1000.0];
     v7 = v6;
 
     v8 = v7 >= 1 ? v7 : 0x7FFFFFFFLL;
     v9 = [(NSHashTable *)self->_tabs count]- v8;
     if (v9 >= 1)
     {
-      v10 = [(NSHashTable *)self->_tabs allObjects];
-      v11 = [v10 safari_filterObjectsUsingBlock:&__block_literal_global_7_0];
+      allObjects = [(NSHashTable *)self->_tabs allObjects];
+      v11 = [allObjects safari_filterObjectsUsingBlock:&__block_literal_global_7_0];
 
       v12 = [v11 sortedArrayUsingComparator:&__block_literal_global_10];
 
@@ -92,9 +92,9 @@ void __35__TabDocumentManager_sharedManager__block_invoke()
 
             v19 = *(*(&v22 + 1) + 8 * i);
             [(NSHashTable *)self->_tabs removeObject:v19, v22];
-            v20 = [v19 browserController];
-            v21 = [v20 tabController];
-            [(TabController *)v21 _hibernateTab:v19];
+            browserController = [v19 browserController];
+            tabController = [browserController tabController];
+            [(TabController *)tabController _hibernateTab:v19];
           }
 
           v16 = [v14 countByEnumeratingWithState:&v22 objects:v26 count:16];

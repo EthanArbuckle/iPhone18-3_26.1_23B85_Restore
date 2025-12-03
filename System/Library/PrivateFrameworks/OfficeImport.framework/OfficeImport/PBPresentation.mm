@@ -1,28 +1,28 @@
 @interface PBPresentation
-+ (id)drawingGroupHolderWithDocumentContainerHolder:(id)a3;
-+ (void)addHeadersFootersToDocumentContainer:(id)a3 instance:(int)a4;
-+ (void)processLayoutTypesFromDocument:(id)a3 masterLayoutMap:(id)a4 state:(id)a5;
-+ (void)readCommentAuthorsFrom:(id)a3 state:(id)a4;
-+ (void)readDefaultTextListStyle:(id)a3 fromDocumentContainer:(id)a4 state:(id)a5;
-+ (void)readFrom:(void *)a3 to:(id)a4 cancel:(id)a5 asThumbnail:(BOOL)a6 delegate:(id)a7;
-+ (void)readMasterAndLayouts:(id)a3 masterLayoutMap:(id)a4 state:(id)a5;
-+ (void)readNotes:(id)a3 masterLayoutMap:(id)a4 slideIdMap:(id)a5 state:(id)a6 delegate:(id)a7;
-+ (void)readSlideListWithInstance:(int)a3 documentContainerHolder:(id)a4 state:(id)a5 block:(id)a6;
-+ (void)readSlides:(id)a3 masterLayoutMap:(id)a4 slideIdMap:(id)a5 state:(id)a6 isThumbnail:(BOOL)a7 delegate:(id)a8;
-+ (void)readTextStyleFromNotesMaster:(id)a3 toNotesMaster:(id)a4 slideMaster:(id)a5 state:(id)a6;
-+ (void)readTextStylesFromSlideMaster:(id)a3 toSlideMaster:(id)a4 state:(id)a5;
-+ (void)readThemeFromSlideMaster:(id)a3 document:(id)a4 theme:(id)a5 colorMap:(id)a6 state:(id)a7;
-+ (void)readXmlLayoutsFromSlideMaster:(id)a3 document:(id)a4 masterInfo:(id)a5 state:(id)a6;
-+ (void)scanSlideListForLayoutTypes:(id)a3 slideListHolder:(id)a4 masterLayoutMap:(id)a5;
-+ (void)setDefaultTextStyleWithEnvironmentHolder:(id)a3 state:(id)a4;
-+ (void)setFontEntites:(id)a3 environmentHolder:(id)a4;
++ (id)drawingGroupHolderWithDocumentContainerHolder:(id)holder;
++ (void)addHeadersFootersToDocumentContainer:(id)container instance:(int)instance;
++ (void)processLayoutTypesFromDocument:(id)document masterLayoutMap:(id)map state:(id)state;
++ (void)readCommentAuthorsFrom:(id)from state:(id)state;
++ (void)readDefaultTextListStyle:(id)style fromDocumentContainer:(id)container state:(id)state;
++ (void)readFrom:(void *)from to:(id)to cancel:(id)cancel asThumbnail:(BOOL)thumbnail delegate:(id)delegate;
++ (void)readMasterAndLayouts:(id)layouts masterLayoutMap:(id)map state:(id)state;
++ (void)readNotes:(id)notes masterLayoutMap:(id)map slideIdMap:(id)idMap state:(id)state delegate:(id)delegate;
++ (void)readSlideListWithInstance:(int)instance documentContainerHolder:(id)holder state:(id)state block:(id)block;
++ (void)readSlides:(id)slides masterLayoutMap:(id)map slideIdMap:(id)idMap state:(id)state isThumbnail:(BOOL)thumbnail delegate:(id)delegate;
++ (void)readTextStyleFromNotesMaster:(id)master toNotesMaster:(id)notesMaster slideMaster:(id)slideMaster state:(id)state;
++ (void)readTextStylesFromSlideMaster:(id)master toSlideMaster:(id)slideMaster state:(id)state;
++ (void)readThemeFromSlideMaster:(id)master document:(id)document theme:(id)theme colorMap:(id)map state:(id)state;
++ (void)readXmlLayoutsFromSlideMaster:(id)master document:(id)document masterInfo:(id)info state:(id)state;
++ (void)scanSlideListForLayoutTypes:(id)types slideListHolder:(id)holder masterLayoutMap:(id)map;
++ (void)setDefaultTextStyleWithEnvironmentHolder:(id)holder state:(id)state;
++ (void)setFontEntites:(id)entites environmentHolder:(id)holder;
 @end
 
 @implementation PBPresentation
 
-+ (id)drawingGroupHolderWithDocumentContainerHolder:(id)a3
++ (id)drawingGroupHolderWithDocumentContainerHolder:(id)holder
 {
-  v3 = [a3 firstChildOfType:1035];
+  v3 = [holder firstChildOfType:1035];
   objc_opt_class();
   v4 = (objc_opt_isKindOfClass() & 1) != 0 && [v3 childCount] == 1;
   TCVerifyInputMeetsCondition(v4);
@@ -34,17 +34,17 @@
   return v5;
 }
 
-+ (void)readFrom:(void *)a3 to:(id)a4 cancel:(id)a5 asThumbnail:(BOOL)a6 delegate:(id)a7
++ (void)readFrom:(void *)from to:(id)to cancel:(id)cancel asThumbnail:(BOOL)thumbnail delegate:(id)delegate
 {
-  v47 = a6;
-  v50 = a4;
-  v11 = a5;
-  v49 = a7;
-  v12 = [[PBPresentationReaderState alloc] initWithReader:a3 tgtPresentation:v50];
-  [(PBPresentationReaderState *)v12 setCancelDelegate:v11];
+  thumbnailCopy = thumbnail;
+  toCopy = to;
+  cancelCopy = cancel;
+  delegateCopy = delegate;
+  v12 = [[PBPresentationReaderState alloc] initWithReader:from tgtPresentation:toCopy];
+  [(PBPresentationReaderState *)v12 setCancelDelegate:cancelCopy];
   v13 = [[ESDRoot alloc] initWithPbState:v12];
   [(PBPresentationReaderState *)v12 setDocumentRoot:v13];
-  v14 = [(ESDRoot *)v13 pbReferenceWithID:PptBinaryReader::getDocumentRef(a3)];
+  v14 = [(ESDRoot *)v13 pbReferenceWithID:PptBinaryReader::getDocumentRef(from)];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   TCVerifyInputMeetsCondition(isKindOfClass & 1);
@@ -53,8 +53,8 @@
   objc_opt_class();
   v17 = objc_opt_isKindOfClass();
   TCVerifyInputMeetsCondition(v17 & 1);
-  [a1 setFontEntites:v12 environmentHolder:v16];
-  [a1 setDefaultTextStyleWithEnvironmentHolder:v16 state:v12];
+  [self setFontEntites:v12 environmentHolder:v16];
+  [self setDefaultTextStyleWithEnvironmentHolder:v16 state:v12];
   v18 = [v14 firstChildOfType:1001];
   Atom = ESDAtomAccess<PptDocumentAtom>::extractAtom(v18, 1);
 
@@ -65,15 +65,15 @@
   TCVerifyInputMeetsCondition(v20 & 1);
   objc_opt_class();
   [PBProgTag readDocumentList:v48 state:v12];
-  [v50 setSlideSize:{(Atom[12] / 8), (Atom[13] / 8)}];
-  [v50 setNotesSize:{(Atom[14] / 8), (Atom[15] / 8)}];
-  [v50 setIsCommentsVisible:*(Atom + 82) != 0];
+  [toCopy setSlideSize:{(Atom[12] / 8), (Atom[13] / 8)}];
+  [toCopy setNotesSize:{(Atom[14] / 8), (Atom[15] / 8)}];
+  [toCopy setIsCommentsVisible:*(Atom + 82) != 0];
   v21 = [v14 firstChildOfType:1025];
   v44 = v21;
   if (v21)
   {
-    v22 = [v21 eshObject];
-    if (v22)
+    eshObject = [v21 eshObject];
+    if (eshObject)
     {
     }
 
@@ -83,30 +83,30 @@
     }
 
     TCVerifyInputMeetsCondition(v23 != 0);
-    [v50 setIsLooping:*(v23 + 101)];
-    [v50 setIsKiosk:v23[24] == 32];
+    [toCopy setIsLooping:*(v23 + 101)];
+    [toCopy setIsKiosk:v23[24] == 32];
   }
 
-  v46 = [a1 drawingGroupHolderWithDocumentContainerHolder:v14];
-  v24 = [(PBPresentationReaderState *)v12 officeArtState];
-  [OABDrawingGroup readBlipsFromDrawingGroup:v46 toDocument:v50 state:v24];
+  v46 = [self drawingGroupHolderWithDocumentContainerHolder:v14];
+  officeArtState = [(PBPresentationReaderState *)v12 officeArtState];
+  [OABDrawingGroup readBlipsFromDrawingGroup:v46 toDocument:toCopy state:officeArtState];
 
   v25 = [v16 firstChildOfType:4009];
   v26 = ESDAtomAccess<PptTextDefaultSpecialInfoAtom>::extractAtom(v25, 0);
 
   if (v26)
   {
-    v27 = [v50 defaultTextStyle];
-    v28 = [v27 defaultProperties];
-    [PBCharacterProperties readCharacterProperties:v28 specialInfo:v26 + 48 state:v12];
+    defaultTextStyle = [toCopy defaultTextStyle];
+    defaultProperties = [defaultTextStyle defaultProperties];
+    [PBCharacterProperties readCharacterProperties:defaultProperties specialInfo:v26 + 48 state:v12];
   }
 
-  v29 = [(PBPresentationReaderState *)v12 officeArtState];
-  v45 = [v29 xmlDocumentState];
-  v30 = [(PBPresentationReaderState *)v12 officeArtState];
-  v31 = [v30 useXmlBlobs];
+  officeArtState2 = [(PBPresentationReaderState *)v12 officeArtState];
+  xmlDocumentState = [officeArtState2 xmlDocumentState];
+  officeArtState3 = [(PBPresentationReaderState *)v12 officeArtState];
+  useXmlBlobs = [officeArtState3 useXmlBlobs];
 
-  if (v31)
+  if (useXmlBlobs)
   {
     v32 = [v14 firstChildOfType:1064];
     v33 = ESDAtomAccess<PptRoundTripCustomTableStylesAtom>::extractAtom(v32, 0);
@@ -117,30 +117,30 @@
       v35 = v34;
       if (v34)
       {
-        v43 = v11;
+        v43 = cancelCopy;
         v42 = [v34 partByRelationshipType:@"http://schemas.openxmlformats.org/officeDocument/2006/relationships/tableStyles"];
-        v36 = [v45 tableStyleCache];
-        v37 = [v45 officeArtState];
-        [OAXTable cacheTableStylesInPart:v42 cache:v36 drawingState:v37];
+        tableStyleCache = [xmlDocumentState tableStyleCache];
+        officeArtState4 = [xmlDocumentState officeArtState];
+        [OAXTable cacheTableStylesInPart:v42 cache:tableStyleCache drawingState:officeArtState4];
 
-        v11 = v43;
+        cancelCopy = v43;
       }
     }
   }
 
   v38 = +[PBMasterLayoutMap masterLayoutMap];
-  [a1 readMasterAndLayouts:v14 masterLayoutMap:v38 state:v12];
+  [self readMasterAndLayouts:v14 masterLayoutMap:v38 state:v12];
   v39 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  [a1 readSlides:v14 masterLayoutMap:v38 slideIdMap:v39 state:v12 isThumbnail:v47 delegate:v49];
-  if (!v47)
+  [self readSlides:v14 masterLayoutMap:v38 slideIdMap:v39 state:v12 isThumbnail:thumbnailCopy delegate:delegateCopy];
+  if (!thumbnailCopy)
   {
-    [a1 readNotes:v14 masterLayoutMap:v38 slideIdMap:v39 state:v12 delegate:v49];
+    [self readNotes:v14 masterLayoutMap:v38 slideIdMap:v39 state:v12 delegate:delegateCopy];
   }
 
-  v40 = [v50 summary];
-  if (a3)
+  summary = [toCopy summary];
+  if (from)
   {
-    v41 = a3 + 8;
+    v41 = from + 8;
   }
 
   else
@@ -148,35 +148,35 @@
     v41 = 0;
   }
 
-  [OCBSummary readSummary:v40 reader:v41];
+  [OCBSummary readSummary:summary reader:v41];
 
-  if (v49 && (objc_opt_respondsToSelector() & 1) != 0)
+  if (delegateCopy && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v49 readerDidEndDocument:v50];
+    [delegateCopy readerDidEndDocument:toCopy];
   }
 }
 
-+ (void)setFontEntites:(id)a3 environmentHolder:(id)a4
++ (void)setFontEntites:(id)entites environmentHolder:(id)holder
 {
-  v15 = a3;
-  v5 = a4;
-  v6 = [v5 firstChildOfType:2005];
+  entitesCopy = entites;
+  holderCopy = holder;
+  v6 = [holderCopy firstChildOfType:2005];
   if (v6)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
     TCVerifyInputMeetsCondition(isKindOfClass & 1);
-    v8 = [v6 childCount];
-    if (v8)
+    childCount = [v6 childCount];
+    if (childCount)
     {
-      for (i = 0; i != v8; ++i)
+      for (i = 0; i != childCount; ++i)
       {
         v10 = [v6 childAt:i];
-        v11 = [v10 eshObject];
-        if ((*(*v11 + 16))(v11) == 4023)
+        eshObject = [v10 eshObject];
+        if ((*(*eshObject + 16))(eshObject) == 4023)
         {
-          v12 = [v10 eshObject];
-          if (v12)
+          eshObject2 = [v10 eshObject];
+          if (eshObject2)
           {
           }
 
@@ -186,60 +186,60 @@
           }
 
           v14 = [MEMORY[0x277CCACA8] stringWithCsString:v13 + 48];
-          [v15 addFontEntity:v14 charSet:v13[73] type:v13[72] & 3 family:v13[72] & 0xF0];
+          [entitesCopy addFontEntity:v14 charSet:v13[73] type:v13[72] & 3 family:v13[72] & 0xF0];
         }
       }
     }
   }
 }
 
-+ (void)addHeadersFootersToDocumentContainer:(id)a3 instance:(int)a4
++ (void)addHeadersFootersToDocumentContainer:(id)container instance:(int)instance
 {
-  v4 = a4;
-  [a3 addPptContainerChildOfType:4057];
-  v5 = [objc_claimAutoreleasedReturnValue() eshContainer];
-  EshRecord::setInstance(v5, v4);
+  instanceCopy = instance;
+  [container addPptContainerChildOfType:4057];
+  eshContainer = [objc_claimAutoreleasedReturnValue() eshContainer];
+  EshRecord::setInstance(eshContainer, instanceCopy);
   operator new();
 }
 
-+ (void)setDefaultTextStyleWithEnvironmentHolder:(id)a3 state:(id)a4
++ (void)setDefaultTextStyleWithEnvironmentHolder:(id)holder state:(id)state
 {
-  v14 = a3;
-  v5 = a4;
-  v6 = [v14 indexOfFirstChildOfType:4003 afterIndex:0];
+  holderCopy = holder;
+  stateCopy = state;
+  v6 = [holderCopy indexOfFirstChildOfType:4003 afterIndex:0];
   while (v6 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v7 = [v14 childAt:v6];
+    v7 = [holderCopy childAt:v6];
     TCVerifyInputMeetsCondition(v7 != 0);
-    v8 = [v7 eshObject];
-    if (v8)
+    eshObject = [v7 eshObject];
+    if (eshObject)
     {
       if (v9)
       {
         v10 = v9;
         Instance = EshRecord::getInstance(v9);
         TCVerifyInputMeetsCondition(Instance < 9);
-        *[v5 docSourceMasterStyleInfoOfType:Instance] = v10;
+        *[stateCopy docSourceMasterStyleInfoOfType:Instance] = v10;
         if (Instance == 4)
         {
-          v12 = [v5 tgtPresentation];
-          v13 = [v12 defaultTextStyle];
-          [PBMasterStyle readMasterStyleAtom:v10 baseMasterStyleAtom:0 masterBulletStyleAtom:0 textListStyle:v13 state:v5];
+          tgtPresentation = [stateCopy tgtPresentation];
+          defaultTextStyle = [tgtPresentation defaultTextStyle];
+          [PBMasterStyle readMasterStyleAtom:v10 baseMasterStyleAtom:0 masterBulletStyleAtom:0 textListStyle:defaultTextStyle state:stateCopy];
         }
       }
     }
 
-    v6 = [v14 indexOfFirstChildOfType:4003 afterIndex:v6];
+    v6 = [holderCopy indexOfFirstChildOfType:4003 afterIndex:v6];
   }
 }
 
-+ (void)readDefaultTextListStyle:(id)a3 fromDocumentContainer:(id)a4 state:(id)a5
++ (void)readDefaultTextListStyle:(id)style fromDocumentContainer:(id)container state:(id)state
 {
-  v27 = a3;
-  v7 = a4;
-  v8 = a5;
-  v25 = v7;
-  v26 = [v7 firstChildOfType:1010];
+  styleCopy = style;
+  containerCopy = container;
+  stateCopy = state;
+  v25 = containerCopy;
+  v26 = [containerCopy firstChildOfType:1010];
   v9 = [v26 firstChildOfType:4005];
   Atom = ESDAtomAccess<PptTextDefaultParagraphStyleAtom>::extractAtom(v9, 0);
 
@@ -254,10 +254,10 @@
   v15 = [v22 firstChildOfType:4016];
   ESDAtomAccess<PptTextDefaultStyle9Atom>::extractAtom(v15, 0);
 
-  v24 = [v27 defaultProperties];
+  defaultProperties = [styleCopy defaultProperties];
   if (v14)
   {
-    [PBCharacterProperties readCharacterProperties:v24 specialInfo:v14 + 48 state:v8];
+    [PBCharacterProperties readCharacterProperties:defaultProperties specialInfo:v14 + 48 state:stateCopy];
   }
 
   v16 = [v26 childOfType:4003 instance:4];
@@ -270,10 +270,10 @@
     v20 = 0;
     do
     {
-      v21 = [v27 propertiesForListLevel:v20];
+      v21 = [styleCopy propertiesForListLevel:v20];
       if (v14)
       {
-        [PBCharacterProperties readCharacterProperties:v21 specialInfo:v14 + 48 state:v8];
+        [PBCharacterProperties readCharacterProperties:v21 specialInfo:v14 + 48 state:stateCopy];
       }
 
       if (Atom)
@@ -293,22 +293,22 @@
   }
 }
 
-+ (void)readThemeFromSlideMaster:(id)a3 document:(id)a4 theme:(id)a5 colorMap:(id)a6 state:(id)a7
++ (void)readThemeFromSlideMaster:(id)master document:(id)document theme:(id)theme colorMap:(id)map state:(id)state
 {
-  v44 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = [v44 firstChildOfType:1038];
+  masterCopy = master;
+  documentCopy = document;
+  themeCopy = theme;
+  mapCopy = map;
+  stateCopy = state;
+  v16 = [masterCopy firstChildOfType:1038];
   Atom = ESDAtomAccess<PptRoundTripThemeAtom>::extractAtom(v16, 0);
 
-  v18 = [v15 officeArtState];
-  v19 = [v18 useXmlBlobs];
+  officeArtState = [stateCopy officeArtState];
+  useXmlBlobs = [officeArtState useXmlBlobs];
 
   if (Atom)
   {
-    v20 = v19;
+    v20 = useXmlBlobs;
   }
 
   else
@@ -320,11 +320,11 @@
   {
     v21 = Atom[9];
     v22 = *(Atom + 16);
-    v23 = [v15 officeArtState];
-    v24 = [v23 xmlDrawingState];
-    [OAXTheme readFromThemeData:v21 themeDataSize:v22 toTheme:v13 xmlDrawingState:v24];
+    officeArtState2 = [stateCopy officeArtState];
+    xmlDrawingState = [officeArtState2 xmlDrawingState];
+    [OAXTheme readFromThemeData:v21 themeDataSize:v22 toTheme:themeCopy xmlDrawingState:xmlDrawingState];
 
-    v25 = [v44 firstChildOfType:1039];
+    v25 = [masterCopy firstChildOfType:1039];
     v26 = ESDAtomAccess<PptRoundTripColorMappingAtom>::extractAtom(v25, 0);
 
     if (v26)
@@ -332,7 +332,7 @@
       v27 = CXGetRootElement(*(v26 + 9), *(v26 + 16));
       if (v27)
       {
-        [OAXColorMap readFromXmlNode:v27 toColorMap:v14];
+        [OAXColorMap readFromXmlNode:v27 toColorMap:mapCopy];
         xmlFreeDoc(v27->doc);
       }
     }
@@ -340,56 +340,56 @@
 
   else
   {
-    v28 = [v13 baseStyles];
-    v29 = [v28 colorScheme];
-    [PBSlideBase readColorScheme:v44 colorScheme:v29 colorMap:v14 state:v15];
+    baseStyles = [themeCopy baseStyles];
+    colorScheme = [baseStyles colorScheme];
+    [PBSlideBase readColorScheme:masterCopy colorScheme:colorScheme colorMap:mapCopy state:stateCopy];
 
-    v30 = [a1 drawingGroupHolderWithDocumentContainerHolder:v12];
-    v31 = [v13 drawableDefaults];
-    v32 = [v31 addShapeDefaults];
+    v30 = [self drawingGroupHolderWithDocumentContainerHolder:documentCopy];
+    drawableDefaults = [themeCopy drawableDefaults];
+    addShapeDefaults = [drawableDefaults addShapeDefaults];
 
-    v33 = [v13 drawableDefaults];
-    v34 = [v33 addLineDefaults];
+    drawableDefaults2 = [themeCopy drawableDefaults];
+    addLineDefaults = [drawableDefaults2 addLineDefaults];
 
-    v35 = [v13 drawableDefaults];
-    v36 = [v35 addTextDefaults];
+    drawableDefaults3 = [themeCopy drawableDefaults];
+    addTextDefaults = [drawableDefaults3 addTextDefaults];
 
-    v37 = [v15 officeArtState];
-    [OABDrawingGroup readGraphicalDefaultsFromDrawingGroup:v30 toTheme:v13 state:v37];
+    officeArtState3 = [stateCopy officeArtState];
+    [OABDrawingGroup readGraphicalDefaultsFromDrawingGroup:v30 toTheme:themeCopy state:officeArtState3];
 
-    v38 = [v13 drawableDefaults];
-    v39 = [v38 shapeDefaults];
-    v40 = [v39 textListStyle];
-    [a1 readDefaultTextListStyle:v40 fromDocumentContainer:v12 state:v15];
+    drawableDefaults4 = [themeCopy drawableDefaults];
+    shapeDefaults = [drawableDefaults4 shapeDefaults];
+    textListStyle = [shapeDefaults textListStyle];
+    [self readDefaultTextListStyle:textListStyle fromDocumentContainer:documentCopy state:stateCopy];
 
-    v41 = [v13 drawableDefaults];
-    v42 = [v41 textDefaults];
-    v43 = [v42 textListStyle];
-    [a1 readDefaultTextListStyle:v43 fromDocumentContainer:v12 state:v15];
+    drawableDefaults5 = [themeCopy drawableDefaults];
+    textDefaults = [drawableDefaults5 textDefaults];
+    textListStyle2 = [textDefaults textListStyle];
+    [self readDefaultTextListStyle:textListStyle2 fromDocumentContainer:documentCopy state:stateCopy];
   }
 }
 
-+ (void)readXmlLayoutsFromSlideMaster:(id)a3 document:(id)a4 masterInfo:(id)a5 state:(id)a6
++ (void)readXmlLayoutsFromSlideMaster:(id)master document:(id)document masterInfo:(id)info state:(id)state
 {
-  v26 = a3;
-  v23 = a4;
-  v25 = a5;
-  v24 = a6;
+  masterCopy = master;
+  documentCopy = document;
+  infoCopy = info;
+  stateCopy = state;
   v9 = 0;
   while (1)
   {
-    v9 = [v26 indexOfFirstChildOfType:1054 afterIndex:v9];
+    v9 = [masterCopy indexOfFirstChildOfType:1054 afterIndex:v9];
     if (v9 == 0x7FFFFFFFFFFFFFFFLL)
     {
       break;
     }
 
-    v10 = [v26 childAt:v9];
+    v10 = [masterCopy childAt:v9];
     v11 = v10;
     if (v10)
     {
-      v12 = [v10 eshObject];
-      if (v12)
+      eshObject = [v10 eshObject];
+      if (eshObject)
       {
         if (v13)
         {
@@ -401,15 +401,15 @@
             v17 = [v15 partByRelationshipType:@"http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideLayout"];
             if (v17)
             {
-              v18 = [v25 slideMaster];
-              v19 = [v18 addSlideLayout];
+              slideMaster = [infoCopy slideMaster];
+              addSlideLayout = [slideMaster addSlideLayout];
 
               Instance = EshRecord::getInstance(v14);
-              v21 = [v24 officeArtState];
-              v22 = [v21 xmlDocumentState];
-              [PXSlideLayout readFromPackagePart:v17 toSlideLayout:v19 presentationState:v22];
+              officeArtState = [stateCopy officeArtState];
+              xmlDocumentState = [officeArtState xmlDocumentState];
+              [PXSlideLayout readFromPackagePart:v17 toSlideLayout:addSlideLayout presentationState:xmlDocumentState];
 
-              [v25 setSlideLayout:v19 forXmlLayoutId:Instance];
+              [infoCopy setSlideLayout:addSlideLayout forXmlLayoutId:Instance];
             }
           }
         }
@@ -418,20 +418,20 @@
   }
 }
 
-+ (void)readTextStylesFromSlideMaster:(id)a3 toSlideMaster:(id)a4 state:(id)a5
++ (void)readTextStylesFromSlideMaster:(id)master toSlideMaster:(id)slideMaster state:(id)state
 {
-  v20 = a3;
-  v7 = a4;
-  v8 = a5;
-  v9 = [v20 firstChildOfType:1059];
+  masterCopy = master;
+  slideMasterCopy = slideMaster;
+  stateCopy = state;
+  v9 = [masterCopy firstChildOfType:1059];
   Atom = ESDAtomAccess<PptRoundTripOfficeArtTextStylesAtom>::extractAtom(v9, 0);
 
-  v11 = [v8 officeArtState];
-  v12 = [v11 useXmlBlobs];
+  officeArtState = [stateCopy officeArtState];
+  useXmlBlobs = [officeArtState useXmlBlobs];
 
   if (Atom)
   {
-    v13 = v12;
+    v13 = useXmlBlobs;
   }
 
   else
@@ -447,33 +447,33 @@
     {
       v16 = [v14 partByRelationshipType:@"http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideMaster"];
       v17 = OCXGetRootElement([v16 xmlDocument]);
-      v18 = [v8 officeArtState];
-      v19 = [v18 xmlDocumentState];
-      [PXSlideMaster readTextStylesFromNode:v17 slideMaster:v7 state:v19];
+      officeArtState2 = [stateCopy officeArtState];
+      xmlDocumentState = [officeArtState2 xmlDocumentState];
+      [PXSlideMaster readTextStylesFromNode:v17 slideMaster:slideMasterCopy state:xmlDocumentState];
     }
   }
 
   else
   {
-    [PBSlideMaster setSlideMasterTextStyles:v7 state:v8];
+    [PBSlideMaster setSlideMasterTextStyles:slideMasterCopy state:stateCopy];
   }
 }
 
-+ (void)readTextStyleFromNotesMaster:(id)a3 toNotesMaster:(id)a4 slideMaster:(id)a5 state:(id)a6
++ (void)readTextStyleFromNotesMaster:(id)master toNotesMaster:(id)notesMaster slideMaster:(id)slideMaster state:(id)state
 {
-  v33 = a3;
-  v9 = a4;
-  v32 = a5;
-  v10 = a6;
-  v11 = [v33 firstChildOfType:1063];
+  masterCopy = master;
+  notesMasterCopy = notesMaster;
+  slideMasterCopy = slideMaster;
+  stateCopy = state;
+  v11 = [masterCopy firstChildOfType:1063];
   Atom = ESDAtomAccess<PptRoundTripNotesMasterTextStylesAtom>::extractAtom(v11, 0);
 
-  v13 = [v10 officeArtState];
-  v14 = [v13 useXmlBlobs];
+  officeArtState = [stateCopy officeArtState];
+  useXmlBlobs = [officeArtState useXmlBlobs];
 
   if (Atom)
   {
-    v15 = v14;
+    v15 = useXmlBlobs;
   }
 
   else
@@ -483,20 +483,20 @@
 
   if ((v15 & 1) == 0)
   {
-    v17 = [v10 masterStyles:v32];
+    v17 = [stateCopy masterStyles:slideMasterCopy];
     v28 = [MEMORY[0x277CCABB0] numberWithLong:2];
     v18 = [v17 objectForKey:v28];
 
-    v29 = [v9 notesTextStyle];
-    [v29 overrideWithTextStyle:v18];
+    notesTextStyle = [notesMasterCopy notesTextStyle];
+    [notesTextStyle overrideWithTextStyle:v18];
 
-    v30 = [v9 theme];
-    v31 = [v30 baseStyles];
-    v24 = [v31 fontScheme];
+    theme = [notesMasterCopy theme];
+    baseStyles = [theme baseStyles];
+    fontScheme = [baseStyles fontScheme];
 
-    v25 = [v24 minorFont];
-    v26 = [v18 propertiesForListLevel:0];
-    [PBSlideMaster setFont:v25 fromCharacterProperties:v26];
+    minorFont = [fontScheme minorFont];
+    xmlDocumentState2 = [v18 propertiesForListLevel:0];
+    [PBSlideMaster setFont:minorFont fromCharacterProperties:xmlDocumentState2];
     goto LABEL_9;
   }
 
@@ -509,18 +509,18 @@
 
   v18 = [v16 partByRelationshipType:@"http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideMaster"];
   v19 = OCXGetRootElement([v18 xmlDocument]);
-  v20 = [v10 officeArtState];
-  v21 = [v20 xmlDocumentState];
-  v22 = [v21 PXPresentationMLNamespace];
-  v23 = OCXFindChild(v19, v22, "bodyStyle");
+  officeArtState2 = [stateCopy officeArtState];
+  xmlDocumentState = [officeArtState2 xmlDocumentState];
+  pXPresentationMLNamespace = [xmlDocumentState PXPresentationMLNamespace];
+  v23 = OCXFindChild(v19, pXPresentationMLNamespace, "bodyStyle");
 
   if (v23)
   {
-    v24 = [v9 notesTextStyle];
-    v25 = [v10 officeArtState];
-    v26 = [v25 xmlDocumentState];
-    v27 = [v26 officeArtState];
-    [OAXTextListStyle readNode:v23 textListStyle:v24 state:v27];
+    fontScheme = [notesMasterCopy notesTextStyle];
+    minorFont = [stateCopy officeArtState];
+    xmlDocumentState2 = [minorFont xmlDocumentState];
+    officeArtState3 = [xmlDocumentState2 officeArtState];
+    [OAXTextListStyle readNode:v23 textListStyle:fontScheme state:officeArtState3];
 
 LABEL_9:
   }
@@ -528,22 +528,22 @@ LABEL_9:
 LABEL_11:
 }
 
-+ (void)readSlideListWithInstance:(int)a3 documentContainerHolder:(id)a4 state:(id)a5 block:(id)a6
++ (void)readSlideListWithInstance:(int)instance documentContainerHolder:(id)holder state:(id)state block:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v48 = a6;
-  v50 = [v10 documentRoot];
-  v11 = [v9 childOfType:4080 instance:v8];
-  v12 = [v11 childCount];
-  [v10 setSourceSlideListHolder:v11];
-  v13 = [v10 currentSlideTextBlockRecordIndexRangeVector];
+  instanceCopy = instance;
+  holderCopy = holder;
+  stateCopy = state;
+  blockCopy = block;
+  documentRoot = [stateCopy documentRoot];
+  v11 = [holderCopy childOfType:4080 instance:instanceCopy];
+  childCount = [v11 childCount];
+  [stateCopy setSourceSlideListHolder:v11];
+  currentSlideTextBlockRecordIndexRangeVector = [stateCopy currentSlideTextBlockRecordIndexRangeVector];
   v14 = 0;
-  v49 = v12;
+  v49 = childCount;
   do
   {
-    if (v14 >= v12 || ([v10 isCancelled] & 1) != 0)
+    if (v14 >= childCount || ([stateCopy isCancelled] & 1) != 0)
     {
       break;
     }
@@ -556,20 +556,20 @@ LABEL_11:
     {
       v51 = Atom;
       v17 = Atom[13];
-      v18 = *v13;
-      v13[1] = *v13;
+      v18 = *currentSlideTextBlockRecordIndexRangeVector;
+      currentSlideTextBlockRecordIndexRangeVector[1] = *currentSlideTextBlockRecordIndexRangeVector;
       v52 = v17;
       if (v17 >= 1)
       {
         v19 = 0;
         do
         {
-          v20 = v13[2];
+          v20 = currentSlideTextBlockRecordIndexRangeVector[2];
           if (v18 >= v20)
           {
-            v22 = *v13;
-            v23 = v18 - *v13;
-            v24 = (v20 - *v13) >> 4;
+            v22 = *currentSlideTextBlockRecordIndexRangeVector;
+            v23 = v18 - *currentSlideTextBlockRecordIndexRangeVector;
+            v24 = (v20 - *currentSlideTextBlockRecordIndexRangeVector) >> 4;
             if (2 * v24 <= (v23 >> 4) + 1)
             {
               v25 = (v23 >> 4) + 1;
@@ -592,11 +592,11 @@ LABEL_11:
 
             if (v26)
             {
-              std::__allocate_at_least[abi:ne200100]<std::allocator<_NSRange>>(v13, v26);
+              std::__allocate_at_least[abi:ne200100]<std::allocator<_NSRange>>(currentSlideTextBlockRecordIndexRangeVector, v26);
             }
 
             v27 = (v23 & 0xFFFFFFFF0);
-            v28 = &v27[-(v18 - *v13)];
+            v28 = &v27[-(v18 - *currentSlideTextBlockRecordIndexRangeVector)];
             *v27 = xmmword_25D6FA740;
             v21 = (v27 + 16);
             if (v22 != v18)
@@ -610,12 +610,12 @@ LABEL_11:
               }
 
               while (v22 != v18);
-              v22 = *v13;
+              v22 = *currentSlideTextBlockRecordIndexRangeVector;
             }
 
-            *v13 = v28;
-            v13[1] = v21;
-            v13[2] = 0;
+            *currentSlideTextBlockRecordIndexRangeVector = v28;
+            currentSlideTextBlockRecordIndexRangeVector[1] = v21;
+            currentSlideTextBlockRecordIndexRangeVector[2] = 0;
             if (v22)
             {
               operator delete(v22);
@@ -628,7 +628,7 @@ LABEL_11:
             v21 = v18 + 1;
           }
 
-          v13[1] = v21;
+          currentSlideTextBlockRecordIndexRangeVector[1] = v21;
           ++v19;
           v18 = v21;
         }
@@ -639,7 +639,7 @@ LABEL_11:
       v31 = [v11 indexOfFirstChildOfType:1011 afterIndex:v14];
       if (v31 == 0x7FFFFFFFFFFFFFFFLL)
       {
-        v32 = v12;
+        v32 = childCount;
       }
 
       else
@@ -678,13 +678,13 @@ LABEL_11:
           {
             v37 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[PBPresentation(Private) readSlideListWithInstance:documentContainerHolder:state:block:]"];
             v38 = v11;
-            v39 = v10;
-            v40 = v9;
+            v39 = stateCopy;
+            v40 = holderCopy;
             v41 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/OfficeImport/OfficeParser/compatibility/PowerPoint/Binary/Mapper/PBPresentation.mm"];
             [OITSUAssertionHandler handleFailureInFunction:v37 file:v41 lineNumber:1697 isFatal:0 description:"If the text block start index was < the start index of the next slide, then the text block must have a positive length"];
 
-            v9 = v40;
-            v10 = v39;
+            holderCopy = v40;
+            stateCopy = v39;
             v11 = v38;
             +[OITSUAssertionHandler logBacktraceThrottled];
           }
@@ -703,7 +703,7 @@ LABEL_11:
           }
 
           TCVerifyInputMeetsCondition(v44);
-          v45 = &(*v13)[EshRecord::getInstance(v43)];
+          v45 = &(*currentSlideTextBlockRecordIndexRangeVector)[EshRecord::getInstance(v43)];
           *v45 = v33;
           v45[1] = v36 - v33;
           v33 = v36;
@@ -712,19 +712,19 @@ LABEL_11:
         while (v35 < v53);
       }
 
-      v46 = [v50 pbReferenceWithID:v51[12]];
+      v46 = [documentRoot pbReferenceWithID:v51[12]];
       if (v46)
       {
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
         TCVerifyInputMeetsCondition(isKindOfClass & 1);
-        v48[2](v48, v46, v51, &v54);
+        blockCopy[2](blockCopy, v46, v51, &v54);
       }
 
-      v13[1] = *v13;
+      currentSlideTextBlockRecordIndexRangeVector[1] = *currentSlideTextBlockRecordIndexRangeVector;
 
       v14 = v53;
-      v12 = v49;
+      childCount = v49;
     }
 
     else
@@ -736,36 +736,36 @@ LABEL_11:
   while ((v54 & 1) == 0);
 }
 
-+ (void)readMasterAndLayouts:(id)a3 masterLayoutMap:(id)a4 state:(id)a5
++ (void)readMasterAndLayouts:(id)layouts masterLayoutMap:(id)map state:(id)state
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v10 tgtPresentation];
+  layoutsCopy = layouts;
+  mapCopy = map;
+  stateCopy = state;
+  tgtPresentation = [stateCopy tgtPresentation];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __70__PBPresentation_Private__readMasterAndLayouts_masterLayoutMap_state___block_invoke;
   v19[3] = &unk_2799CDAB8;
-  v12 = v11;
+  v12 = tgtPresentation;
   v20 = v12;
-  v13 = v10;
+  v13 = stateCopy;
   v21 = v13;
-  v14 = v9;
+  v14 = mapCopy;
   v22 = v14;
-  v24 = a1;
-  v15 = v8;
+  selfCopy = self;
+  v15 = layoutsCopy;
   v23 = v15;
-  [a1 readSlideListWithInstance:1 documentContainerHolder:v15 state:v13 block:v19];
+  [self readSlideListWithInstance:1 documentContainerHolder:v15 state:v13 block:v19];
   v16 = [v15 childOfType:4080 instance:0];
   if (v16)
   {
-    v17 = [v13 documentRoot];
-    [a1 scanSlideListForLayoutTypes:v17 slideListHolder:v16 masterLayoutMap:v14];
+    documentRoot = [v13 documentRoot];
+    [self scanSlideListForLayoutTypes:documentRoot slideListHolder:v16 masterLayoutMap:v14];
   }
 
-  [a1 readCommentAuthorsFrom:v15 state:v13];
-  v18 = [v13 documentRoot];
-  [a1 processLayoutTypesFromDocument:v18 masterLayoutMap:v14 state:v13];
+  [self readCommentAuthorsFrom:v15 state:v13];
+  documentRoot2 = [v13 documentRoot];
+  [self processLayoutTypesFromDocument:documentRoot2 masterLayoutMap:v14 state:v13];
 }
 
 void __70__PBPresentation_Private__readMasterAndLayouts_masterLayoutMap_state___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -890,24 +890,24 @@ void __70__PBPresentation_Private__readMasterAndLayouts_masterLayoutMap_state___
   }
 }
 
-+ (void)scanSlideListForLayoutTypes:(id)a3 slideListHolder:(id)a4 masterLayoutMap:(id)a5
++ (void)scanSlideListForLayoutTypes:(id)types slideListHolder:(id)holder masterLayoutMap:(id)map
 {
-  v17 = a3;
-  v7 = a4;
-  v8 = a5;
-  v9 = [v7 childCount];
-  if (v9)
+  typesCopy = types;
+  holderCopy = holder;
+  mapCopy = map;
+  childCount = [holderCopy childCount];
+  if (childCount)
   {
-    for (i = 0; i != v9; ++i)
+    for (i = 0; i != childCount; ++i)
     {
-      v11 = [v7 childAt:i];
-      v12 = [v11 eshObject];
-      if ((*(*v12 + 16))(v12) == 1011 && (*(*v12 + 80))(v12))
+      v11 = [holderCopy childAt:i];
+      eshObject = [v11 eshObject];
+      if ((*(*eshObject + 16))(eshObject) == 1011 && (*(*eshObject + 80))(eshObject))
         v13 = {;
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
         TCVerifyInputMeetsCondition(isKindOfClass & 1);
-        v15 = [v8 masterInfoForSlideHolder:v13];
+        v15 = [mapCopy masterInfoForSlideHolder:v13];
         v16 = [v15 slideLayoutForSlideHolder:v13];
         if (!v16)
         {
@@ -918,11 +918,11 @@ void __70__PBPresentation_Private__readMasterAndLayouts_masterLayoutMap_state___
   }
 }
 
-+ (void)readCommentAuthorsFrom:(id)a3 state:(id)a4
++ (void)readCommentAuthorsFrom:(id)from state:(id)state
 {
-  v21 = a3;
-  v5 = a4;
-  v20 = [v21 firstChildOfType:2000];
+  fromCopy = from;
+  stateCopy = state;
+  v20 = [fromCopy firstChildOfType:2000];
   v6 = [PBProgTag binaryTagDataWithName:L"___PPT10" inProgTagsParent:v20];
   for (i = 0; ; i = v8 + 1)
   {
@@ -933,28 +933,28 @@ void __70__PBPresentation_Private__readMasterAndLayouts_masterLayoutMap_state___
     }
 
     v9 = [v6 childAt:i];
-    v10 = [v9 eshObject];
-    if ((*(*v10 + 16))(v10) == 12004)
+    eshObject = [v9 eshObject];
+    if ((*(*eshObject + 16))(eshObject) == 12004)
     {
       v11 = objc_alloc_init(PDCommentAuthor);
-      v12 = [v5 tgtPresentation];
-      -[PDCommentAuthor setId:](v11, "setId:", [v12 commentAuthorCount]);
+      tgtPresentation = [stateCopy tgtPresentation];
+      -[PDCommentAuthor setId:](v11, "setId:", [tgtPresentation commentAuthorCount]);
 
-      v13 = [v5 tgtPresentation];
-      [v13 addCommentAuthor:v11];
+      tgtPresentation2 = [stateCopy tgtPresentation];
+      [tgtPresentation2 addCommentAuthor:v11];
 
       v14 = [v9 firstChildOfType:12005];
-      v15 = [v14 eshObject];
+      eshObject2 = [v14 eshObject];
 
-      if (v15)
+      if (eshObject2)
       {
-        [(PDCommentAuthor *)v11 setColorIndex:*(v15 + 48)];
-        [(PDCommentAuthor *)v11 setLastCommentIndex:(*(v15 + 52) - 1)];
+        [(PDCommentAuthor *)v11 setColorIndex:*(eshObject2 + 48)];
+        [(PDCommentAuthor *)v11 setLastCommentIndex:(*(eshObject2 + 52) - 1)];
       }
 
       v16 = [v9 firstChildOfType:4026];
-      v17 = [v16 eshObject];
-      if (v17)
+      eshObject3 = [v16 eshObject];
+      if (eshObject3)
       {
         if (v18)
         {
@@ -966,11 +966,11 @@ void __70__PBPresentation_Private__readMasterAndLayouts_masterLayoutMap_state___
   }
 }
 
-+ (void)processLayoutTypesFromDocument:(id)a3 masterLayoutMap:(id)a4 state:(id)a5
++ (void)processLayoutTypesFromDocument:(id)document masterLayoutMap:(id)map state:(id)state
 {
-  v147 = a3;
-  v149 = a4;
-  v164 = a5;
+  documentCopy = document;
+  mapCopy = map;
+  stateCopy = state;
   if ((+[PBPresentation(Private) processLayoutTypesFromDocument:masterLayoutMap:state:]::defaultBoundsInitialized & 1) == 0)
   {
     +[PBPresentation(Private) processLayoutTypesFromDocument:masterLayoutMap:state:]::defaultBoundsInitialized = 1;
@@ -1064,8 +1064,8 @@ void __70__PBPresentation_Private__readMasterAndLayouts_masterLayoutMap_state___
   x = v206.origin.x;
   height = v206.size.height;
   width = v206.size.width;
-  v60 = [v164 tgtPresentation];
-  [v60 slideSize];
+  tgtPresentation = [stateCopy tgtPresentation];
+  [tgtPresentation slideSize];
   v62 = v61;
   v64 = v63;
 
@@ -1073,8 +1073,8 @@ void __70__PBPresentation_Private__readMasterAndLayouts_masterLayoutMap_state___
   CGAffineTransformMakeScale(&v202, v62 / 5760.0, v64 / 4320.0);
   v159 = v59[1];
   v160 = *v59;
-  v148 = [v149 allMasterIds];
-  v65 = [v148 count];
+  allMasterIds = [mapCopy allMasterIds];
+  v65 = [allMasterIds count];
   v66 = v65;
   if (v65)
   {
@@ -1085,12 +1085,12 @@ void __70__PBPresentation_Private__readMasterAndLayouts_masterLayoutMap_state___
     do
     {
       v150 = v67;
-      v68 = [v148 objectAtIndex:v147];
-      v69 = [v68 intValue];
+      v68 = [allMasterIds objectAtIndex:documentCopy];
+      intValue = [v68 intValue];
 
-      v153 = [v149 masterInfoForMasterId:v69];
-      v174 = [v153 slideMaster];
-      v165 = [v164 masterStyles:v174];
+      v153 = [mapCopy masterInfoForMasterId:intValue];
+      slideMaster = [v153 slideMaster];
+      v165 = [stateCopy masterStyles:slideMaster];
       v205 = v202;
       v207.origin.y = v187;
       v207.origin.x = v188;
@@ -1101,13 +1101,13 @@ void __70__PBPresentation_Private__readMasterAndLayouts_masterLayoutMap_state___
       v192 = v208.origin.x;
       v189 = v208.size.height;
       v190 = v208.size.width;
-      v70 = [v174 placeholderWithType:0 placeholderTypeIndex:0 overrideIndex:1];
+      v70 = [slideMaster placeholderWithType:0 placeholderTypeIndex:0 overrideIndex:1];
       v152 = v70;
       if (v70)
       {
-        v71 = [v70 drawableProperties];
-        v72 = [v71 orientedBounds];
-        [v72 bounds];
+        drawableProperties = [v70 drawableProperties];
+        orientedBounds = [drawableProperties orientedBounds];
+        [orientedBounds bounds];
         v191 = v74;
         v192 = v73;
         v189 = v76;
@@ -1124,13 +1124,13 @@ void __70__PBPresentation_Private__readMasterAndLayouts_masterLayoutMap_state___
       v182 = v210.origin.x;
       v179 = v210.size.height;
       v180 = v210.size.width;
-      v77 = [v174 placeholderWithType:1 placeholderTypeIndex:0 overrideIndex:1];
+      v77 = [slideMaster placeholderWithType:1 placeholderTypeIndex:0 overrideIndex:1];
       v151 = v77;
       if (v77)
       {
-        v78 = [v77 drawableProperties];
-        v79 = [v78 orientedBounds];
-        [v79 bounds];
+        drawableProperties2 = [v77 drawableProperties];
+        orientedBounds2 = [drawableProperties2 orientedBounds];
+        [orientedBounds2 bounds];
         v181 = v81;
         v182 = v80;
         v179 = v83;
@@ -1150,18 +1150,18 @@ void __70__PBPresentation_Private__readMasterAndLayouts_masterLayoutMap_state___
       v173 = v212.origin.x;
       v170 = v212.size.height;
       v171 = v212.size.width;
-      v84 = [v174 slideLayoutCount];
-      if (v84)
+      slideLayoutCount = [slideMaster slideLayoutCount];
+      if (slideLayoutCount)
       {
-        for (i = 0; i != v84; ++i)
+        for (i = 0; i != slideLayoutCount; ++i)
         {
-          v86 = [v174 slideLayoutAtIndex:i];
+          v86 = [slideMaster slideLayoutAtIndex:i];
           [PBSlideMaster flattenPlaceholderTextStylesIntoLayout:v86 layoutType:0 masterStyleMap:v165];
         }
       }
 
-      v163 = [v153 allTargetLayoutTypes];
-      v87 = [v163 count];
+      allTargetLayoutTypes = [v153 allTargetLayoutTypes];
+      v87 = [allTargetLayoutTypes count];
       v88 = v87;
       if (v87)
       {
@@ -1169,15 +1169,15 @@ void __70__PBPresentation_Private__readMasterAndLayouts_masterLayoutMap_state___
         v155 = v87;
         do
         {
-          v90 = [v163 objectAtIndex:v89];
-          v91 = [v90 intValue];
+          v90 = [allTargetLayoutTypes objectAtIndex:v89];
+          intValue2 = [v90 intValue];
 
-          v92 = [v174 slideLayoutOfType:v91];
+          v92 = [slideMaster slideLayoutOfType:intValue2];
           if (!v92)
           {
-            v158 = [v174 addSlideLayout];
-            [v158 setSlideLayoutType:v91];
-            v93 = v91 - 1;
+            addSlideLayout = [slideMaster addSlideLayout];
+            [addSlideLayout setSlideLayoutType:intValue2];
+            v93 = intValue2 - 1;
             v94 = 18;
             v95 = 13;
             v96 = 14;
@@ -1196,7 +1196,7 @@ void __70__PBPresentation_Private__readMasterAndLayouts_masterLayoutMap_state___
             v109 = &+[PBPresentation(Private) processLayoutTypesFromDocument:masterLayoutMap:state:]::title2BodiesOverBodyLayoutBoundsArray;
             v110 = &+[PBPresentation(Private) processLayoutTypesFromDocument:masterLayoutMap:state:]::largeBodyLayoutBoundsArray;
             v111 = &+[PBPresentation(Private) processLayoutTypesFromDocument:masterLayoutMap:state:]::verticalTitleBodyOverBodyLayoutBoundsArray;
-            switch(v91)
+            switch(intValue2)
             {
               case 1:
               case 3:
@@ -1243,14 +1243,14 @@ LABEL_27:
               case 8:
 LABEL_28:
                 v103 = v106;
-                v96 = v91;
+                v96 = intValue2;
 LABEL_29:
                 v112 = &_ZZL43pptPlaceholderTypeArrayForPDSlideLayoutType17PDSlideLayoutTypeE23pptPlaceholderTypeArray__26_;
                 goto LABEL_54;
               case 9:
 LABEL_24:
                 v103 = v107;
-                v96 = v91;
+                v96 = intValue2;
                 v112 = &pptPlaceholderTypeArrayForPDSlideLayoutType(PDSlideLayoutType)::pptPlaceholderTypeArray;
                 goto LABEL_54;
               case 11:
@@ -1313,7 +1313,7 @@ LABEL_17:
                 v105 = v102;
                 v98 = v101;
                 v106 = v102;
-                LODWORD(v91) = v101;
+                LODWORD(intValue2) = v101;
                 v107 = v102;
                 v108 = v102;
                 v99 = v101;
@@ -1554,8 +1554,8 @@ LABEL_54:
                     v221.size.width = v195;
                     v222 = CGRectApplyAffineTransform(v221, &v205);
                     v142 = [[OADOrientedBounds alloc] initWithBounds:v222.origin.x, v222.origin.y, v222.size.width, v222.size.height];
-                    v143 = [(OADDrawable *)v122 drawableProperties];
-                    [v143 setOrientedBounds:v142];
+                    drawableProperties3 = [(OADDrawable *)v122 drawableProperties];
+                    [drawableProperties3 setOrientedBounds:v142];
 
                     v144 = objc_alloc_init(OADTextBody);
                     [(OADShape *)v122 setTextBody:v144];
@@ -1563,8 +1563,8 @@ LABEL_54:
                     v62 = v184;
                     if (v127 == 1)
                     {
-                      v145 = [(OADTextBody *)v144 properties];
-                      [v145 setFlowType:6];
+                      properties = [(OADTextBody *)v144 properties];
+                      [properties setFlowType:6];
                     }
 
                     v117 = v121[v119];
@@ -1575,18 +1575,18 @@ LABEL_54:
                 }
 
                 TCVerifyInputMeetsCondition(v118 == 255);
-                [PBHeadersFooters readHeadersFootersToSlideLayout:v158 drawables:v193 state:v164];
+                [PBHeadersFooters readHeadersFootersToSlideLayout:addSlideLayout drawables:v193 state:stateCopy];
                 v66 = v154;
                 v88 = v155;
                 v89 = v157;
-                [v158 setDrawables:v193];
-                v146 = [v164 tgtPresentation];
-                [v146 cacheGraphicStylesForSlideBase:v158];
+                [addSlideLayout setDrawables:v193];
+                tgtPresentation2 = [stateCopy tgtPresentation];
+                [tgtPresentation2 cacheGraphicStylesForSlideBase:addSlideLayout];
 
-                [PBSlideBase mapSlideNumberPlaceholder:v174 tgtSlideBase:v158 state:v164];
-                [PBSlideMaster flattenPlaceholderTextStylesIntoLayout:v158 layoutType:v156 masterStyleMap:v165];
+                [PBSlideBase mapSlideNumberPlaceholder:slideMaster tgtSlideBase:addSlideLayout state:stateCopy];
+                [PBSlideMaster flattenPlaceholderTextStylesIntoLayout:addSlideLayout layoutType:v156 masterStyleMap:v165];
 
-                v92 = v158;
+                v92 = addSlideLayout;
                 break;
             }
           }
@@ -1606,27 +1606,27 @@ LABEL_54:
   }
 }
 
-+ (void)readSlides:(id)a3 masterLayoutMap:(id)a4 slideIdMap:(id)a5 state:(id)a6 isThumbnail:(BOOL)a7 delegate:(id)a8
++ (void)readSlides:(id)slides masterLayoutMap:(id)map slideIdMap:(id)idMap state:(id)state isThumbnail:(BOOL)thumbnail delegate:(id)delegate
 {
-  v13 = a3;
-  v31 = a4;
-  v14 = a6;
-  v15 = a8;
-  v30 = v14;
-  v16 = [v14 tgtPresentation];
-  if (v15)
+  slidesCopy = slides;
+  mapCopy = map;
+  stateCopy = state;
+  delegateCopy = delegate;
+  v30 = stateCopy;
+  tgtPresentation = [stateCopy tgtPresentation];
+  if (delegateCopy)
   {
     if (objc_opt_respondsToSelector())
     {
       v17 = objc_opt_respondsToSelector();
       if (v17)
       {
-        v18 = [v13 childOfType:4080 instance:0];
+        v18 = [slidesCopy childOfType:4080 instance:0];
         v19 = v18;
         if (v18)
         {
           v20 = [v18 indexOfFirstChildOfType:1011 afterIndex:-1];
-          v21 = a1;
+          selfCopy3 = self;
           if (v20 != 0x7FFFFFFFFFFFFFFFLL)
           {
             v22 = 0;
@@ -1643,13 +1643,13 @@ LABEL_54:
 
         else
         {
-          v21 = a1;
+          selfCopy3 = self;
         }
 
         v22 = 0;
 LABEL_16:
-        v23 = v16;
-        [v15 readerDidStartDocument:v16 withElementCount:v22];
+        v23 = tgtPresentation;
+        [delegateCopy readerDidStartDocument:tgtPresentation withElementCount:v22];
         v24 = v17 & 1;
 
         v25 = 1;
@@ -1658,8 +1658,8 @@ LABEL_16:
     }
   }
 
-  v21 = a1;
-  v23 = v16;
+  selfCopy3 = self;
+  v23 = tgtPresentation;
   v24 = 0;
   v25 = 0;
 LABEL_10:
@@ -1679,17 +1679,17 @@ LABEL_10:
   v32[3] = &unk_2799CDAE0;
   v26 = v30;
   v33 = v26;
-  v27 = v31;
-  v39 = a7;
+  v27 = mapCopy;
+  thumbnailCopy = thumbnail;
   v40 = v24;
   v34 = v27;
   v37 = &v45;
-  v28 = v15;
+  v28 = delegateCopy;
   v35 = v28;
   v38 = &v41;
   v29 = v23;
   v36 = v29;
-  [v21 readSlideListWithInstance:0 documentContainerHolder:v13 state:v26 block:v32];
+  [selfCopy3 readSlideListWithInstance:0 documentContainerHolder:slidesCopy state:v26 block:v32];
   if (v25 && v46[5])
   {
     ++v42[3];
@@ -1740,60 +1740,60 @@ void __92__PBPresentation_Private__readSlides_masterLayoutMap_slideIdMap_state_i
   [*(a1 + 32) setSourceSlideId:0xFFFFFFFFLL];
 }
 
-+ (void)readNotes:(id)a3 masterLayoutMap:(id)a4 slideIdMap:(id)a5 state:(id)a6 delegate:(id)a7
++ (void)readNotes:(id)notes masterLayoutMap:(id)map slideIdMap:(id)idMap state:(id)state delegate:(id)delegate
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  v32 = a7;
-  v33 = [v13 documentRoot];
-  v14 = [v13 tgtPresentation];
+  notesCopy = notes;
+  mapCopy = map;
+  stateCopy = state;
+  delegateCopy = delegate;
+  documentRoot = [stateCopy documentRoot];
+  tgtPresentation = [stateCopy tgtPresentation];
   v15 = objc_alloc_init(PDNotesMaster);
-  [v14 addNotesMaster:v15];
-  v16 = [v11 firstChildOfType:1001];
+  [tgtPresentation addNotesMaster:v15];
+  v16 = [notesCopy firstChildOfType:1001];
   Atom = ESDAtomAccess<PptDocumentAtom>::extractAtom(v16, 1);
 
   if (Atom[16])
   {
-    v18 = [v33 pbReferenceWithID:?];
+    v18 = [documentRoot pbReferenceWithID:?];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
     TCVerifyInputMeetsCondition(isKindOfClass & 1);
     v20 = [v18 firstChildOfType:1009];
     v21 = ESDAtomAccess<PptNotesAtom>::extractAtom(v20, 1);
 
-    v22 = [v12 masterInfoForMasterId:v21[12]];
+    v22 = [mapCopy masterInfoForMasterId:v21[12]];
     if (!v22)
     {
-      v23 = [v12 allMasterIds];
-      v24 = [v23 sortedArrayUsingSelector:sel_compare_];
-      v25 = [v24 firstObject];
+      allMasterIds = [mapCopy allMasterIds];
+      v24 = [allMasterIds sortedArrayUsingSelector:sel_compare_];
+      firstObject = [v24 firstObject];
 
-      TCVerifyInputMeetsCondition(v25 != 0);
-      v22 = [v12 masterInfoForMasterId:{objc_msgSend(v25, "intValue")}];
+      TCVerifyInputMeetsCondition(firstObject != 0);
+      v22 = [mapCopy masterInfoForMasterId:{objc_msgSend(firstObject, "intValue")}];
     }
 
     TCVerifyInputMeetsCondition(v22 != 0);
-    [v13 setCurrentSourceMasterStyleInfoVector:{objc_msgSend(v22, "sourceTextStyling")}];
-    v26 = [(PDNotesMaster *)v15 theme];
-    v27 = [(PDNotesMaster *)v15 colorMap];
-    [a1 readThemeFromSlideMaster:v18 document:v11 theme:v26 colorMap:v27 state:v13];
+    [stateCopy setCurrentSourceMasterStyleInfoVector:{objc_msgSend(v22, "sourceTextStyling")}];
+    theme = [(PDNotesMaster *)v15 theme];
+    colorMap = [(PDNotesMaster *)v15 colorMap];
+    [self readThemeFromSlideMaster:v18 document:notesCopy theme:theme colorMap:colorMap state:stateCopy];
 
-    v28 = [v22 slideMaster];
-    [a1 readTextStyleFromNotesMaster:v18 toNotesMaster:v15 slideMaster:v28 state:v13];
+    slideMaster = [v22 slideMaster];
+    [self readTextStyleFromNotesMaster:v18 toNotesMaster:v15 slideMaster:slideMaster state:stateCopy];
   }
 
   v34[0] = MEMORY[0x277D85DD0];
   v34[1] = 3221225472;
   v34[2] = __79__PBPresentation_Private__readNotes_masterLayoutMap_slideIdMap_state_delegate___block_invoke;
   v34[3] = &unk_2799CDB08;
-  v29 = v13;
+  v29 = stateCopy;
   v35 = v29;
-  v30 = v32;
+  v30 = delegateCopy;
   v36 = v30;
-  v31 = v14;
+  v31 = tgtPresentation;
   v37 = v31;
-  [a1 readSlideListWithInstance:2 documentContainerHolder:v11 state:v29 block:v34];
+  [self readSlideListWithInstance:2 documentContainerHolder:notesCopy state:v29 block:v34];
   [v29 setCurrentSourceMasterStyleInfoVector:0];
 }
 

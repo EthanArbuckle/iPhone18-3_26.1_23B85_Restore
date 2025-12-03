@@ -1,14 +1,14 @@
 @interface UGCInlinePOIEnrichmentViewController
 - (UGCInlinePOIEnrichmentController)enrichmentController;
-- (UGCInlinePOIEnrichmentViewController)initWithPOIEnrichmentForm:(id)a3;
-- (void)formDidChange:(id)a3;
-- (void)poiEnrichmentViewController:(id)a3 captureUserAction:(int)a4 value:(id)a5 target:(int)a6;
-- (void)poiEnrichmentViewController:(id)a3 captureUserActionForRatingCategoryState:(int64_t)a4 value:(id)a5 target:(int)a6;
-- (void)poiEnrichmentViewController:(id)a3 didSelectAddPhotosUsingSourceType:(int64_t)a4 presentationOptions:(id)a5;
-- (void)poiEnrichmentViewController:(id)a3 didSelectTermsOfServiceURL:(id)a4;
-- (void)poiEnrichmentViewController:(id)a3 presentInformedConsentIfNeededWithCompletion:(id)a4;
-- (void)poiEnrichmentViewControllerPresentPOIEnrichment:(id)a3;
-- (void)setFormInteractionEnabled:(BOOL)a3;
+- (UGCInlinePOIEnrichmentViewController)initWithPOIEnrichmentForm:(id)form;
+- (void)formDidChange:(id)change;
+- (void)poiEnrichmentViewController:(id)controller captureUserAction:(int)action value:(id)value target:(int)target;
+- (void)poiEnrichmentViewController:(id)controller captureUserActionForRatingCategoryState:(int64_t)state value:(id)value target:(int)target;
+- (void)poiEnrichmentViewController:(id)controller didSelectAddPhotosUsingSourceType:(int64_t)type presentationOptions:(id)options;
+- (void)poiEnrichmentViewController:(id)controller didSelectTermsOfServiceURL:(id)l;
+- (void)poiEnrichmentViewController:(id)controller presentInformedConsentIfNeededWithCompletion:(id)completion;
+- (void)poiEnrichmentViewControllerPresentPOIEnrichment:(id)enrichment;
+- (void)setFormInteractionEnabled:(BOOL)enabled;
 - (void)viewDidLoad;
 @end
 
@@ -21,53 +21,53 @@
   return WeakRetained;
 }
 
-- (void)poiEnrichmentViewControllerPresentPOIEnrichment:(id)a3
+- (void)poiEnrichmentViewControllerPresentPOIEnrichment:(id)enrichment
 {
-  v3 = [(UGCInlinePOIEnrichmentViewController *)self enrichmentController];
-  [v3 presentPOIEnrichment];
+  enrichmentController = [(UGCInlinePOIEnrichmentViewController *)self enrichmentController];
+  [enrichmentController presentPOIEnrichment];
 }
 
-- (void)poiEnrichmentViewController:(id)a3 didSelectTermsOfServiceURL:(id)a4
+- (void)poiEnrichmentViewController:(id)controller didSelectTermsOfServiceURL:(id)l
 {
-  v5 = a4;
-  v6 = [(UGCInlinePOIEnrichmentViewController *)self enrichmentController];
-  [v6 openTermsOfServiceURL:v5];
+  lCopy = l;
+  enrichmentController = [(UGCInlinePOIEnrichmentViewController *)self enrichmentController];
+  [enrichmentController openTermsOfServiceURL:lCopy];
 }
 
-- (void)poiEnrichmentViewController:(id)a3 captureUserAction:(int)a4 value:(id)a5 target:(int)a6
+- (void)poiEnrichmentViewController:(id)controller captureUserAction:(int)action value:(id)value target:(int)target
 {
-  v6 = *&a6;
-  v7 = *&a4;
-  v9 = a5;
-  v10 = [(UGCInlinePOIEnrichmentViewController *)self enrichmentController];
-  [v10 captureUserAction:v7 value:v9 target:v6];
+  v6 = *&target;
+  v7 = *&action;
+  valueCopy = value;
+  enrichmentController = [(UGCInlinePOIEnrichmentViewController *)self enrichmentController];
+  [enrichmentController captureUserAction:v7 value:valueCopy target:v6];
 }
 
-- (void)poiEnrichmentViewController:(id)a3 captureUserActionForRatingCategoryState:(int64_t)a4 value:(id)a5 target:(int)a6
+- (void)poiEnrichmentViewController:(id)controller captureUserActionForRatingCategoryState:(int64_t)state value:(id)value target:(int)target
 {
-  v6 = *&a6;
-  v9 = a5;
-  v10 = [(UGCInlinePOIEnrichmentViewController *)self enrichmentController];
-  [v10 captureUserActionForRatingState:a4 value:v9 target:v6];
+  v6 = *&target;
+  valueCopy = value;
+  enrichmentController = [(UGCInlinePOIEnrichmentViewController *)self enrichmentController];
+  [enrichmentController captureUserActionForRatingState:state value:valueCopy target:v6];
 }
 
-- (void)poiEnrichmentViewController:(id)a3 didSelectAddPhotosUsingSourceType:(int64_t)a4 presentationOptions:(id)a5
+- (void)poiEnrichmentViewController:(id)controller didSelectAddPhotosUsingSourceType:(int64_t)type presentationOptions:(id)options
 {
-  v7 = a5;
-  v8 = [(UGCInlinePOIEnrichmentViewController *)self enrichmentController];
-  [v8 requestAddPhotosWithSourceType:a4 presentationOptions:v7];
+  optionsCopy = options;
+  enrichmentController = [(UGCInlinePOIEnrichmentViewController *)self enrichmentController];
+  [enrichmentController requestAddPhotosWithSourceType:type presentationOptions:optionsCopy];
 }
 
-- (void)poiEnrichmentViewController:(id)a3 presentInformedConsentIfNeededWithCompletion:(id)a4
+- (void)poiEnrichmentViewController:(id)controller presentInformedConsentIfNeededWithCompletion:(id)completion
 {
-  v5 = a4;
-  v6 = [(UGCInlinePOIEnrichmentViewController *)self enrichmentController];
-  [v6 presentInformedConsentIfNeededWithCompletion:v5];
+  completionCopy = completion;
+  enrichmentController = [(UGCInlinePOIEnrichmentViewController *)self enrichmentController];
+  [enrichmentController presentInformedConsentIfNeededWithCompletion:completionCopy];
 }
 
-- (void)formDidChange:(id)a3
+- (void)formDidChange:(id)change
 {
-  v3 = [(UGCPOIEnrichmentForm *)self->_poiEnrichmentForm isComplete];
+  isComplete = [(UGCPOIEnrichmentForm *)self->_poiEnrichmentForm isComplete];
   if (qword_10195F098 != -1)
   {
     dispatch_once(&qword_10195F098, &stru_101651A48);
@@ -75,7 +75,7 @@
 
   v4 = qword_10195F090;
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_INFO);
-  if (v3)
+  if (isComplete)
   {
     if (v5)
     {
@@ -96,17 +96,17 @@ LABEL_8:
   }
 }
 
-- (void)setFormInteractionEnabled:(BOOL)a3
+- (void)setFormInteractionEnabled:(BOOL)enabled
 {
-  if (self->_formInteractionEnabled != a3)
+  if (self->_formInteractionEnabled != enabled)
   {
-    v3 = a3;
-    self->_formInteractionEnabled = a3;
+    enabledCopy = enabled;
+    self->_formInteractionEnabled = enabled;
     if ([(UGCInlinePOIEnrichmentViewController *)self isViewLoaded])
     {
       contentVC = self->_contentVC;
 
-      [(UGCPOIEnrichmentViewController *)contentVC setFormInteractionEnabled:v3];
+      [(UGCPOIEnrichmentViewController *)contentVC setFormInteractionEnabled:enabledCopy];
     }
   }
 }
@@ -124,37 +124,37 @@ LABEL_8:
   [(UGCPOIEnrichmentViewController *)self->_contentVC setIsInlineMode:1];
   [(UGCPOIEnrichmentViewController *)self->_contentVC setFormInteractionEnabled:self->_formInteractionEnabled];
   [(UGCPOIEnrichmentViewController *)self->_contentVC setDelegate:self];
-  v5 = [(UGCPOIEnrichmentViewController *)self->_contentVC view];
-  [v5 setPreservesSuperviewLayoutMargins:1];
+  view = [(UGCPOIEnrichmentViewController *)self->_contentVC view];
+  [view setPreservesSuperviewLayoutMargins:1];
 
-  v6 = [(UGCInlinePOIEnrichmentViewController *)self view];
-  v7 = [(UGCPOIEnrichmentViewController *)self->_contentVC view];
-  [v6 addSubview:v7];
+  view2 = [(UGCInlinePOIEnrichmentViewController *)self view];
+  view3 = [(UGCPOIEnrichmentViewController *)self->_contentVC view];
+  [view2 addSubview:view3];
 
   [(UGCInlinePOIEnrichmentViewController *)self addChildViewController:self->_contentVC];
   [(UGCPOIEnrichmentViewController *)self->_contentVC didMoveToParentViewController:self];
   v8 = [MUEdgeLayout alloc];
-  v9 = [(UGCPOIEnrichmentViewController *)self->_contentVC view];
-  v10 = [(UGCInlinePOIEnrichmentViewController *)self view];
-  v11 = [v8 initWithItem:v9 container:v10];
+  view4 = [(UGCPOIEnrichmentViewController *)self->_contentVC view];
+  view5 = [(UGCInlinePOIEnrichmentViewController *)self view];
+  v11 = [v8 initWithItem:view4 container:view5];
 
   v14 = v11;
   v12 = [NSArray arrayWithObjects:&v14 count:1];
   [NSLayoutConstraint _mapsui_activateLayouts:v12];
 }
 
-- (UGCInlinePOIEnrichmentViewController)initWithPOIEnrichmentForm:(id)a3
+- (UGCInlinePOIEnrichmentViewController)initWithPOIEnrichmentForm:(id)form
 {
-  v5 = a3;
+  formCopy = form;
   v10.receiver = self;
   v10.super_class = UGCInlinePOIEnrichmentViewController;
   v6 = [(UGCInlinePOIEnrichmentViewController *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_poiEnrichmentForm, a3);
-    v8 = [(UGCPOIEnrichmentForm *)v7->_poiEnrichmentForm ratingsForm];
-    [v8 addObserver:v7];
+    objc_storeStrong(&v6->_poiEnrichmentForm, form);
+    ratingsForm = [(UGCPOIEnrichmentForm *)v7->_poiEnrichmentForm ratingsForm];
+    [ratingsForm addObserver:v7];
   }
 
   return v7;

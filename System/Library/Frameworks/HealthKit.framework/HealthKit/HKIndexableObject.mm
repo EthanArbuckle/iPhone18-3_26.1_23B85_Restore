@@ -1,11 +1,11 @@
 @interface HKIndexableObject
-+ (id)indexableObjectWithObject:(id)a3;
-+ (id)indexableObjectWithObject:(id)a3 compoundIndex:(unint64_t)a4;
-+ (id)indexableObjectsByApplyingOutermostIndex:(id)a3 expectedCount:(int64_t)a4 error:(id *)a5;
++ (id)indexableObjectWithObject:(id)object;
++ (id)indexableObjectWithObject:(id)object compoundIndex:(unint64_t)index;
++ (id)indexableObjectsByApplyingOutermostIndex:(id)index expectedCount:(int64_t)count error:(id *)error;
 - (HKIndexableObject)init;
-- (HKIndexableObject)initWithObject:(id)a3 compoundIndex:(unint64_t)a4;
-- (id)indexableObjectCollectingPushingIndex:(unsigned __int8)a3 error:(id *)a4;
-- (id)indexableObjectPoppingIndexWithError:(id *)a3;
+- (HKIndexableObject)initWithObject:(id)object compoundIndex:(unint64_t)index;
+- (id)indexableObjectCollectingPushingIndex:(unsigned __int8)index error:(id *)error;
+- (id)indexableObjectPoppingIndexWithError:(id *)error;
 @end
 
 @implementation HKIndexableObject
@@ -20,26 +20,26 @@
   return 0;
 }
 
-+ (id)indexableObjectWithObject:(id)a3
++ (id)indexableObjectWithObject:(id)object
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithObject:v4 compoundIndex:0];
+  objectCopy = object;
+  v5 = [[self alloc] initWithObject:objectCopy compoundIndex:0];
 
   return v5;
 }
 
-+ (id)indexableObjectWithObject:(id)a3 compoundIndex:(unint64_t)a4
++ (id)indexableObjectWithObject:(id)object compoundIndex:(unint64_t)index
 {
-  v6 = a3;
-  v7 = [[a1 alloc] initWithObject:v6 compoundIndex:a4];
+  objectCopy = object;
+  v7 = [[self alloc] initWithObject:objectCopy compoundIndex:index];
 
   return v7;
 }
 
-- (HKIndexableObject)initWithObject:(id)a3 compoundIndex:(unint64_t)a4
+- (HKIndexableObject)initWithObject:(id)object compoundIndex:(unint64_t)index
 {
-  v7 = a3;
-  if (!v7)
+  objectCopy = object;
+  if (!objectCopy)
   {
     [HKIndexableObject initWithObject:a2 compoundIndex:self];
   }
@@ -49,17 +49,17 @@
   v8 = [(HKIndexableObject *)&v12 init];
   if (v8)
   {
-    v9 = [v7 copy];
+    v9 = [objectCopy copy];
     object = v8->_object;
     v8->_object = v9;
 
-    v8->_compoundIndex = a4;
+    v8->_compoundIndex = index;
   }
 
   return v8;
 }
 
-- (id)indexableObjectPoppingIndexWithError:(id *)a3
+- (id)indexableObjectPoppingIndexWithError:(id *)error
 {
   if ((self->_compoundIndex & 0x80) != 0)
   {
@@ -68,45 +68,45 @@
 
   else
   {
-    [MEMORY[0x1E696ABC0] hk_assignError:a3 code:3 format:@"Failed to create a new indexable object by popping index; no outermost index"];
+    [MEMORY[0x1E696ABC0] hk_assignError:error code:3 format:@"Failed to create a new indexable object by popping index; no outermost index"];
     v3 = 0;
   }
 
   return v3;
 }
 
-- (id)indexableObjectCollectingPushingIndex:(unsigned __int8)a3 error:(id *)a4
+- (id)indexableObjectCollectingPushingIndex:(unsigned __int8)index error:(id *)error
 {
   if ((self->_compoundIndex & 0x8000000000000000) != 0)
   {
-    [MEMORY[0x1E696ABC0] hk_assignError:a4 code:3 format:@"Failed to create a new indexable object by pushing index; already full"];
+    [MEMORY[0x1E696ABC0] hk_assignError:error code:3 format:@"Failed to create a new indexable object by pushing index; already full"];
     v4 = 0;
   }
 
   else
   {
-    v4 = [objc_alloc(objc_opt_class()) initWithObject:self->_object compoundIndex:a3 | 0x80u | (self->_compoundIndex << 8)];
+    v4 = [objc_alloc(objc_opt_class()) initWithObject:self->_object compoundIndex:index | 0x80u | (self->_compoundIndex << 8)];
   }
 
   return v4;
 }
 
-+ (id)indexableObjectsByApplyingOutermostIndex:(id)a3 expectedCount:(int64_t)a4 error:(id *)a5
++ (id)indexableObjectsByApplyingOutermostIndex:(id)index expectedCount:(int64_t)count error:(id *)error
 {
-  v7 = a3;
-  if ([v7 count] && (objc_msgSend(v7, "lastObject"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "outermostIndex"), v8, v9 >= a4))
+  indexCopy = index;
+  if ([indexCopy count] && (objc_msgSend(indexCopy, "lastObject"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "outermostIndex"), v8, v9 >= count))
   {
     v19 = MEMORY[0x1E696ABC0];
-    v10 = [v7 lastObject];
-    [v19 hk_assignError:a5 code:3 format:{@"Attempt to partition index with an expected count of %ld and a maximum index of %d", a4, objc_msgSend(v10, "outermostIndex")}];
+    lastObject = [indexCopy lastObject];
+    [v19 hk_assignError:error code:3 format:{@"Attempt to partition index with an expected count of %ld and a maximum index of %d", count, objc_msgSend(lastObject, "outermostIndex")}];
     v18 = 0;
   }
 
   else
   {
-    v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v11 = [v7 mutableCopy];
-    if (a4 >= 1)
+    lastObject = objc_alloc_init(MEMORY[0x1E695DF70]);
+    v11 = [indexCopy mutableCopy];
+    if (count >= 1)
     {
       v12 = 0;
       while (2)
@@ -114,16 +114,16 @@
         v13 = objc_alloc_init(MEMORY[0x1E695DF70]);
         while ([v11 count])
         {
-          v14 = [v11 firstObject];
-          v15 = [v14 outermostIndex];
+          firstObject = [v11 firstObject];
+          outermostIndex = [firstObject outermostIndex];
 
-          if (v12 < v15)
+          if (v12 < outermostIndex)
           {
             break;
           }
 
-          v16 = [v11 firstObject];
-          v17 = [v16 indexableObjectPoppingIndexWithError:a5];
+          firstObject2 = [v11 firstObject];
+          v17 = [firstObject2 indexableObjectPoppingIndexWithError:error];
 
           if (!v17)
           {
@@ -136,9 +136,9 @@
           [v11 removeObjectAtIndex:0];
         }
 
-        [v10 addObject:v13];
+        [lastObject addObject:v13];
 
-        if (++v12 != a4)
+        if (++v12 != count)
         {
           continue;
         }
@@ -147,7 +147,7 @@
       }
     }
 
-    v18 = [v10 copy];
+    v18 = [lastObject copy];
 LABEL_13:
   }
 

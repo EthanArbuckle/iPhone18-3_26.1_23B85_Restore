@@ -1,8 +1,8 @@
 @interface MetalHUDLocationPreferences
 + (id)allLocationCandidates;
-- (id)init:(id)a3;
+- (id)init:(id)init;
 - (void)_updatePreferences;
-- (void)setLocation:(id)a3;
+- (void)setLocation:(id)location;
 - (void)setToDefault;
 @end
 
@@ -20,18 +20,18 @@
   return v3;
 }
 
-- (id)init:(id)a3
+- (id)init:(id)init
 {
-  v5 = a3;
+  initCopy = init;
   v13.receiver = self;
   v13.super_class = MetalHUDLocationPreferences;
   v6 = [(MetalHUDLocationPreferences *)&v13 init];
   p_isa = &v6->super.isa;
   if (v6)
   {
-    objc_storeStrong(&v6->_preferences, a3);
-    v8 = [p_isa[1] preferences];
-    v9 = [v8 objectForKeyedSubscript:@"MTL_HUD_ALIGNMENT"];
+    objc_storeStrong(&v6->_preferences, init);
+    preferences = [p_isa[1] preferences];
+    v9 = [preferences objectForKeyedSubscript:@"MTL_HUD_ALIGNMENT"];
     v10 = v9;
     if (v9)
     {
@@ -52,8 +52,8 @@
 - (void)_updatePreferences
 {
   location = self->_location;
-  v4 = [(MetalHUDPreferences *)self->_preferences preferences];
-  [v4 setObject:location forKeyedSubscript:@"MTL_HUD_ALIGNMENT"];
+  preferences = [(MetalHUDPreferences *)self->_preferences preferences];
+  [preferences setObject:location forKeyedSubscript:@"MTL_HUD_ALIGNMENT"];
 
   preferences = self->_preferences;
 
@@ -68,12 +68,12 @@
   [(MetalHUDLocationPreferences *)self _updatePreferences];
 }
 
-- (void)setLocation:(id)a3
+- (void)setLocation:(id)location
 {
-  v7 = a3;
-  objc_storeStrong(&self->_location, a3);
+  locationCopy = location;
+  objc_storeStrong(&self->_location, location);
   v5 = +[MetalHUDLocationPreferences allLocationCandidates];
-  v6 = [v5 containsObject:v7];
+  v6 = [v5 containsObject:locationCopy];
 
   if (v6)
   {

@@ -83,15 +83,15 @@
     v9 = v4;
   }
 
-  return (*(*(a1 + 8) + 16))();
+  return (*(*(self + 8) + 16))();
 }
 
 + (uint64_t)_removeDataStoreWithIdentifier:()WKPrivate completionHandler:
 {
-  *a1 = &unk_1F10FA240;
-  _Block_release(a1[1]);
+  *self = &unk_1F10FA240;
+  _Block_release(self[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(self, v2);
 }
 
 + (void)_removeDataStoreWithIdentifier:()WKPrivate completionHandler:
@@ -120,7 +120,7 @@
 
     v13[0] = v11;
     v9 = [v4 initWithDomain:@"WKWebSiteDataStore" code:1 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v13, &v12, 1, v11)}];
-    (*(*(a1 + 8) + 16))();
+    (*(*(self + 8) + 16))();
     if (v9)
     {
     }
@@ -134,7 +134,7 @@
 
   else
   {
-    v7 = *(*(a1 + 8) + 16);
+    v7 = *(*(self + 8) + 16);
 
     v7();
   }
@@ -198,7 +198,7 @@ LABEL_15:
 
   v12 = v11;
 LABEL_10:
-  (*(*(a1 + 8) + 16))();
+  (*(*(self + 8) + 16))();
   if (v11)
   {
   }
@@ -210,28 +210,15 @@ LABEL_10:
 
 - (uint64_t)_setResourceLoadStatisticsTestingCallback:()WKPrivate
 {
-  *a1 = &unk_1F10FA290;
-  v2 = *(a1 + 16);
-  *(a1 + 16) = 0;
+  *self = &unk_1F10FA290;
+  v2 = *(self + 16);
+  *(self + 16) = 0;
   if (v2)
   {
   }
 
-  _Block_release(*(a1 + 8));
-  return a1;
-}
-
-{
-  *a1 = &unk_1F10FA290;
-  v2 = *(a1 + 16);
-  *(a1 + 16) = 0;
-  if (v2)
-  {
-  }
-
-  _Block_release(*(a1 + 8));
-
-  return WTF::fastFree(a1, v3);
+  _Block_release(*(self + 8));
+  return self;
 }
 
 - (void)_setResourceLoadStatisticsTestingCallback:()WKPrivate
@@ -253,7 +240,7 @@ LABEL_10:
     v5 = &stru_1F1147748;
   }
 
-  (*(*(a1 + 8) + 16))();
+  (*(*(self + 8) + 16))();
   v6 = v7;
   v7 = 0;
   if (v6)
@@ -329,7 +316,7 @@ LABEL_20:
 
   v17 = v16;
 LABEL_15:
-  (*(*(a1 + 8) + 16))(*(a1 + 8), v16, v14);
+  (*(*(self + 8) + 16))(*(self + 8), v16, v14);
   if (v16)
   {
   }
@@ -340,66 +327,66 @@ LABEL_15:
 
 - (uint64_t)_scheduleCookieBlockingUpdate:()WKPrivate
 {
-  *a1 = &unk_1F10FA2E0;
-  _Block_release(a1[1]);
+  *self = &unk_1F10FA2E0;
+  _Block_release(self[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(self, v2);
 }
 
 - (uint64_t)_logUserInteraction:()WKPrivate completionHandler:
 {
-  *a1 = &unk_1F10FA308;
-  _Block_release(a1[1]);
+  *self = &unk_1F10FA308;
+  _Block_release(self[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(self, v2);
 }
 
 - (uint64_t)_setPrevalentDomain:()WKPrivate completionHandler:
 {
-  *a1 = &unk_1F10FA330;
-  _Block_release(a1[1]);
+  *self = &unk_1F10FA330;
+  _Block_release(self[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(self, v2);
 }
 
 - (uint64_t)_getIsPrevalentDomain:()WKPrivate completionHandler:
 {
-  *a1 = &unk_1F10FA358;
-  _Block_release(a1[1]);
+  *self = &unk_1F10FA358;
+  _Block_release(self[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(self, v2);
 }
 
 - (uint64_t)_clearPrevalentDomain:()WKPrivate completionHandler:
 {
-  *a1 = &unk_1F10FA380;
-  _Block_release(a1[1]);
+  *self = &unk_1F10FA380;
+  _Block_release(self[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(self, v2);
 }
 
 - (uint64_t)_clearResourceLoadStatistics:()WKPrivate
 {
-  *a1 = &unk_1F10FA3A8;
-  _Block_release(a1[1]);
+  *self = &unk_1F10FA3A8;
+  _Block_release(self[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(self, v2);
 }
 
 - (uint64_t)_closeDatabases:()WKPrivate
 {
-  *a1 = &unk_1F10FA3D0;
-  _Block_release(a1[1]);
+  *self = &unk_1F10FA3D0;
+  _Block_release(self[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(self, v2);
 }
 
 - (uint64_t)_getResourceLoadStatisticsDataSummary:()WKPrivate
 {
-  *a1 = &unk_1F10FA3F8;
-  _Block_release(a1[1]);
+  *self = &unk_1F10FA3F8;
+  _Block_release(self[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(self, v2);
 }
 
 - (void)_getResourceLoadStatisticsDataSummary:()WKPrivate
@@ -456,7 +443,7 @@ LABEL_14:
     while (v6 != v7);
   }
 
-  (*(*(a1 + 8) + 16))();
+  (*(*(self + 8) + 16))();
   if (v15)
   {
   }
@@ -464,58 +451,58 @@ LABEL_14:
 
 - (uint64_t)_isRelationshipOnlyInDatabaseOnce:()WKPrivate thirdParty:completionHandler:
 {
-  *a1 = &unk_1F10FA448;
-  _Block_release(a1[1]);
+  *self = &unk_1F10FA448;
+  _Block_release(self[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(self, v2);
 }
 
 - (uint64_t)_isRegisteredAsSubresourceUnderFirstParty:()WKPrivate thirdParty:completionHandler:
 {
-  *a1 = &unk_1F10FA470;
-  _Block_release(a1[1]);
+  *self = &unk_1F10FA470;
+  _Block_release(self[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(self, v2);
 }
 
 - (uint64_t)_statisticsDatabaseHasAllTables:()WKPrivate
 {
-  *a1 = &unk_1F10FA498;
-  _Block_release(a1[1]);
+  *self = &unk_1F10FA498;
+  _Block_release(self[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(self, v2);
 }
 
 - (uint64_t)_processStatisticsAndDataRecords:()WKPrivate
 {
-  *a1 = &unk_1F10FA4C0;
-  _Block_release(a1[1]);
+  *self = &unk_1F10FA4C0;
+  _Block_release(self[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(self, v2);
 }
 
 - (uint64_t)_setThirdPartyCookieBlockingMode:()WKPrivate onlyOnSitesWithoutUserInteraction:completionHandler:
 {
-  *a1 = &unk_1F10FA4E8;
-  _Block_release(a1[1]);
+  *self = &unk_1F10FA4E8;
+  _Block_release(self[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(self, v2);
 }
 
 - (uint64_t)_renameOrigin:()WKPrivate to:forDataOfTypes:completionHandler:
 {
-  *a1 = &unk_1F10FA510;
-  _Block_release(a1[1]);
+  *self = &unk_1F10FA510;
+  _Block_release(self[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(self, v2);
 }
 
 - (uint64_t)_setUserAgentStringQuirkForTesting:()WKPrivate withUserAgent:completionHandler:
 {
-  *a1 = &unk_1F10FA538;
-  _Block_release(a1[1]);
+  *self = &unk_1F10FA538;
+  _Block_release(self[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(self, v2);
 }
 
 - (uint64_t)_appBoundDomains:()WKPrivate
@@ -587,7 +574,7 @@ LABEL_21:
   }
 
 LABEL_16:
-  (*(*(a1 + 8) + 16))();
+  (*(*(self + 8) + 16))();
   if (v14)
   {
   }
@@ -668,7 +655,7 @@ LABEL_23:
   }
 
 LABEL_17:
-  (*(*(a1 + 8) + 16))();
+  (*(*(self + 8) + 16))();
   if (v13)
   {
   }
@@ -679,26 +666,26 @@ LABEL_17:
 
 - (uint64_t)_sendNetworkProcessPrepareToSuspend:()WKPrivate
 {
-  *a1 = &unk_1F10FA710;
-  _Block_release(a1[1]);
+  *self = &unk_1F10FA710;
+  _Block_release(self[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(self, v2);
 }
 
 - (uint64_t)_countNonDefaultSessionSets:()WKPrivate
 {
-  *a1 = &unk_1F10FA738;
-  _Block_release(a1[1]);
+  *self = &unk_1F10FA738;
+  _Block_release(self[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(self, v2);
 }
 
 - (uint64_t)_getPendingPushMessage:()WKPrivate
 {
-  *a1 = &unk_1F10FA760;
-  _Block_release(a1[1]);
+  *self = &unk_1F10FA760;
+  _Block_release(self[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(self, v2);
 }
 
 - (void)_getPendingPushMessage:()WKPrivate
@@ -727,7 +714,7 @@ LABEL_17:
     _os_log_impl(&dword_19D52D000, v6, OS_LOG_TYPE_DEFAULT, "Giving application %d pending push messages", v7, 8u);
   }
 
-  (*(*(a1 + 8) + 16))();
+  (*(*(self + 8) + 16))();
   if (v4)
   {
   }
@@ -735,10 +722,10 @@ LABEL_17:
 
 - (uint64_t)_getPendingPushMessages:()WKPrivate
 {
-  *a1 = &unk_1F10FA788;
-  _Block_release(a1[1]);
+  *self = &unk_1F10FA788;
+  _Block_release(self[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(self, v2);
 }
 
 - (void)_getPendingPushMessages:()WKPrivate
@@ -769,7 +756,7 @@ LABEL_17:
     _os_log_impl(&dword_19D52D000, v8, OS_LOG_TYPE_DEFAULT, "Giving application %zu pending push messages", &v10, 0xCu);
   }
 
-  (*(*(a1 + 8) + 16))();
+  (*(*(self + 8) + 16))();
   if (v4)
   {
   }
@@ -786,7 +773,7 @@ LABEL_17:
     _os_log_impl(&dword_19D52D000, v4, OS_LOG_TYPE_DEFAULT, "Push message processing complete. Callback result: %d", v6, 8u);
   }
 
-  return (*(*(a1 + 8) + 16))();
+  return (*(*(self + 8) + 16))();
 }
 
 - (uint64_t)_processWebCorePersistentNotificationClick:()WKPrivate completionHandler:
@@ -800,7 +787,7 @@ LABEL_17:
     _os_log_impl(&dword_19D52D000, v4, OS_LOG_TYPE_DEFAULT, "Notification click event processing complete. Callback result: %d", v6, 8u);
   }
 
-  return (*(*(a1 + 8) + 16))();
+  return (*(*(self + 8) + 16))();
 }
 
 - (uint64_t)_processWebCorePersistentNotificationClose:()WKPrivate completionHandler:
@@ -814,7 +801,7 @@ LABEL_17:
     _os_log_impl(&dword_19D52D000, v4, OS_LOG_TYPE_DEFAULT, "Notification close event processing complete. Callback result: %d", v6, 8u);
   }
 
-  return (*(*(a1 + 8) + 16))();
+  return (*(*(self + 8) + 16))();
 }
 
 - (uint64_t)_getAllBackgroundFetchIdentifiers:()WKPrivate
@@ -873,7 +860,7 @@ LABEL_17:
     v12 = v4;
   }
 
-  (*(*(a1 + 8) + 16))();
+  (*(*(self + 8) + 16))();
   return WTF::Vector<WTF::String,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::~Vector(&v15, v13);
 }
 
@@ -889,7 +876,7 @@ LABEL_17:
     WebKit::BackgroundFetchState::toDictionary(v9);
   }
 
-  result = (*(*(a1 + 8) + 16))();
+  result = (*(*(self + 8) + 16))();
   if (v14 == 1)
   {
     v5 = v13;
@@ -925,58 +912,58 @@ LABEL_17:
 
 - (uint64_t)_abortBackgroundFetch:()WKPrivate completionHandler:
 {
-  *a1 = &unk_1F10FA878;
-  _Block_release(a1[1]);
+  *self = &unk_1F10FA878;
+  _Block_release(self[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(self, v2);
 }
 
 - (uint64_t)_pauseBackgroundFetch:()WKPrivate completionHandler:
 {
-  *a1 = &unk_1F10FA8A0;
-  _Block_release(a1[1]);
+  *self = &unk_1F10FA8A0;
+  _Block_release(self[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(self, v2);
 }
 
 - (uint64_t)_resumeBackgroundFetch:()WKPrivate completionHandler:
 {
-  *a1 = &unk_1F10FA8C8;
-  _Block_release(a1[1]);
+  *self = &unk_1F10FA8C8;
+  _Block_release(self[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(self, v2);
 }
 
 - (uint64_t)_clickBackgroundFetch:()WKPrivate completionHandler:
 {
-  *a1 = &unk_1F10FA8F0;
-  _Block_release(a1[1]);
+  *self = &unk_1F10FA8F0;
+  _Block_release(self[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(self, v2);
 }
 
 - (uint64_t)_storeServiceWorkerRegistrations:()WKPrivate
 {
-  *a1 = &unk_1F10FA918;
-  _Block_release(a1[1]);
+  *self = &unk_1F10FA918;
+  _Block_release(self[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(self, v2);
 }
 
 - (uint64_t)_scopeURL:()WKPrivate hasPushSubscriptionForTesting:
 {
-  *a1 = &unk_1F10FA940;
-  _Block_release(a1[1]);
+  *self = &unk_1F10FA940;
+  _Block_release(self[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(self, v2);
 }
 
 - (uint64_t)_originDirectoryForTesting:()WKPrivate topOrigin:type:completionHandler:
 {
-  *a1 = &unk_1F10FA968;
-  _Block_release(a1[1]);
+  *self = &unk_1F10FA968;
+  _Block_release(self[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(self, v2);
 }
 
 - (void)_originDirectoryForTesting:()WKPrivate topOrigin:type:completionHandler:
@@ -999,7 +986,7 @@ LABEL_17:
     v5 = &stru_1F1147748;
   }
 
-  (*(*(a1 + 8) + 16))();
+  (*(*(self + 8) + 16))();
   v7 = v8;
   v8 = 0;
   if (v7)
@@ -1017,18 +1004,18 @@ LABEL_17:
 
 - (uint64_t)_setBackupExclusionPeriodForTesting:()WKPrivate completionHandler:
 {
-  *a1 = &unk_1F10FA990;
-  _Block_release(a1[1]);
+  *self = &unk_1F10FA990;
+  _Block_release(self[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(self, v2);
 }
 
 - (uint64_t)_setCompletionHandlerForRemovalFromNetworkProcess:()WKPrivate
 {
-  *a1 = &unk_1F10FA9B8;
-  _Block_release(a1[1]);
+  *self = &unk_1F10FA9B8;
+  _Block_release(self[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(self, v2);
 }
 
 - (void)_setCompletionHandlerForRemovalFromNetworkProcess:()WKPrivate
@@ -1049,7 +1036,7 @@ LABEL_17:
 
     v11[0] = v9;
     v6 = [v4 initWithDomain:@"WKWebSiteDataStore" code:1 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v11, &v10, 1)}];
-    (*(*(a1 + 8) + 16))();
+    (*(*(self + 8) + 16))();
     if (v6)
     {
     }
@@ -1063,7 +1050,7 @@ LABEL_17:
 
   else
   {
-    (*(*(a1 + 8) + 16))();
+    (*(*(self + 8) + 16))();
     if (!v3)
     {
       return;
@@ -1083,17 +1070,17 @@ LABEL_17:
     [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a2];
   }
 
-  v4 = *(*(a1 + 8) + 16);
+  v4 = *(*(self + 8) + 16);
 
   return v4();
 }
 
 - (uint64_t)_runningOrTerminatingServiceWorkerCountForTesting:()WKPrivate
 {
-  *a1 = &unk_1F10FAA08;
-  _Block_release(a1[1]);
+  *self = &unk_1F10FAA08;
+  _Block_release(self[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(self, v2);
 }
 
 @end

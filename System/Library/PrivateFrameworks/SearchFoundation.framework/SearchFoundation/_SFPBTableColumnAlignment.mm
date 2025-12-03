@@ -1,35 +1,35 @@
 @interface _SFPBTableColumnAlignment
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBTableColumnAlignment)initWithDictionary:(id)a3;
-- (_SFPBTableColumnAlignment)initWithFacade:(id)a3;
-- (_SFPBTableColumnAlignment)initWithJSON:(id)a3;
+- (_SFPBTableColumnAlignment)initWithDictionary:(id)dictionary;
+- (_SFPBTableColumnAlignment)initWithFacade:(id)facade;
+- (_SFPBTableColumnAlignment)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBTableColumnAlignment
 
-- (_SFPBTableColumnAlignment)initWithFacade:(id)a3
+- (_SFPBTableColumnAlignment)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBTableColumnAlignment *)self init];
   if (v5)
   {
-    if ([v4 hasColumnAlignment])
+    if ([facadeCopy hasColumnAlignment])
     {
-      -[_SFPBTableColumnAlignment setColumnAlignment:](v5, "setColumnAlignment:", [v4 columnAlignment]);
+      -[_SFPBTableColumnAlignment setColumnAlignment:](v5, "setColumnAlignment:", [facadeCopy columnAlignment]);
     }
 
-    if ([v4 hasDataAlignment])
+    if ([facadeCopy hasDataAlignment])
     {
-      -[_SFPBTableColumnAlignment setDataAlignment:](v5, "setDataAlignment:", [v4 dataAlignment]);
+      -[_SFPBTableColumnAlignment setDataAlignment:](v5, "setDataAlignment:", [facadeCopy dataAlignment]);
     }
 
-    if ([v4 hasIsEqualWidth])
+    if ([facadeCopy hasIsEqualWidth])
     {
-      -[_SFPBTableColumnAlignment setIsEqualWidth:](v5, "setIsEqualWidth:", [v4 isEqualWidth]);
+      -[_SFPBTableColumnAlignment setIsEqualWidth:](v5, "setIsEqualWidth:", [facadeCopy isEqualWidth]);
     }
 
     v6 = v5;
@@ -38,29 +38,29 @@
   return v5;
 }
 
-- (_SFPBTableColumnAlignment)initWithDictionary:(id)a3
+- (_SFPBTableColumnAlignment)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = _SFPBTableColumnAlignment;
   v5 = [(_SFPBTableColumnAlignment *)&v11 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"columnAlignment"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"columnAlignment"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[_SFPBTableColumnAlignment setColumnAlignment:](v5, "setColumnAlignment:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"dataAlignment"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"dataAlignment"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[_SFPBTableColumnAlignment setDataAlignment:](v5, "setDataAlignment:", [v7 intValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"isEqualWidth"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"isEqualWidth"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -73,30 +73,30 @@
   return v5;
 }
 
-- (_SFPBTableColumnAlignment)initWithJSON:(id)a3
+- (_SFPBTableColumnAlignment)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBTableColumnAlignment *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBTableColumnAlignment *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBTableColumnAlignment *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -109,46 +109,46 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_columnAlignment)
   {
-    v4 = [(_SFPBTableColumnAlignment *)self columnAlignment];
-    if (v4 >= 3)
+    columnAlignment = [(_SFPBTableColumnAlignment *)self columnAlignment];
+    if (columnAlignment >= 3)
     {
-      v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v4];
+      v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", columnAlignment];
     }
 
     else
     {
-      v5 = off_1E7ACE548[v4];
+      v5 = off_1E7ACE548[columnAlignment];
     }
 
-    [v3 setObject:v5 forKeyedSubscript:@"columnAlignment"];
+    [dictionary setObject:v5 forKeyedSubscript:@"columnAlignment"];
   }
 
   if (self->_dataAlignment)
   {
-    v6 = [(_SFPBTableColumnAlignment *)self dataAlignment];
-    if (v6 >= 3)
+    dataAlignment = [(_SFPBTableColumnAlignment *)self dataAlignment];
+    if (dataAlignment >= 3)
     {
-      v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v6];
+      v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", dataAlignment];
     }
 
     else
     {
-      v7 = off_1E7ACE548[v6];
+      v7 = off_1E7ACE548[dataAlignment];
     }
 
-    [v3 setObject:v7 forKeyedSubscript:@"dataAlignment"];
+    [dictionary setObject:v7 forKeyedSubscript:@"dataAlignment"];
   }
 
   if (self->_isEqualWidth)
   {
     v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[_SFPBTableColumnAlignment isEqualWidth](self, "isEqualWidth")}];
-    [v3 setObject:v8 forKeyedSubscript:@"isEqualWidth"];
+    [dictionary setObject:v8 forKeyedSubscript:@"isEqualWidth"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -162,13 +162,13 @@
   return (2654435761 * self->_dataAlignment) ^ (2654435761 * self->_columnAlignment) ^ v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && (columnAlignment = self->_columnAlignment, columnAlignment == objc_msgSend(v4, "columnAlignment")) && (dataAlignment = self->_dataAlignment, dataAlignment == objc_msgSend(v4, "dataAlignment")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && (columnAlignment = self->_columnAlignment, columnAlignment == objc_msgSend(equalCopy, "columnAlignment")) && (dataAlignment = self->_dataAlignment, dataAlignment == objc_msgSend(equalCopy, "dataAlignment")))
   {
     isEqualWidth = self->_isEqualWidth;
-    v8 = isEqualWidth == [v4 isEqualWidth];
+    v8 = isEqualWidth == [equalCopy isEqualWidth];
   }
 
   else
@@ -179,9 +179,9 @@
   return v8;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ([(_SFPBTableColumnAlignment *)self columnAlignment])
   {
     PBDataWriterWriteInt32Field();

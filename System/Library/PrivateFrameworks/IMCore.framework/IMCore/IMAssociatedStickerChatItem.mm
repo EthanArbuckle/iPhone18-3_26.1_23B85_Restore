@@ -1,7 +1,7 @@
 @interface IMAssociatedStickerChatItem
-- (id)_initWithItem:(id)a3 sender:(id)a4 transferGUID:(id)a5;
+- (id)_initWithItem:(id)item sender:(id)sender transferGUID:(id)d;
 - (id)commSafetyMessageGUID;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)stickerPositionVersion;
 - (void)_refreshGeometryDescriptorFromStickerUserInfo;
@@ -28,7 +28,7 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   v7 = objc_msgSend__item(self, v5, v6);
@@ -38,15 +38,15 @@
   return v12;
 }
 
-- (id)_initWithItem:(id)a3 sender:(id)a4 transferGUID:(id)a5
+- (id)_initWithItem:(id)item sender:(id)sender transferGUID:(id)d
 {
-  v8 = a5;
+  dCopy = d;
   v17.receiver = self;
   v17.super_class = IMAssociatedStickerChatItem;
-  v11 = [(IMAssociatedMessageChatItem *)&v17 _initWithItem:a3 sender:a4];
+  v11 = [(IMAssociatedMessageChatItem *)&v17 _initWithItem:item sender:sender];
   if (v11)
   {
-    v12 = objc_msgSend_copy(v8, v9, v10);
+    v12 = objc_msgSend_copy(dCopy, v9, v10);
     v13 = v11[20];
     v11[20] = v12;
 

@@ -1,50 +1,50 @@
 @interface FCPersonalizationUtilities
-+ (id)diversifyItems:(id)a3 withPreselectedItems:(id)a4 limit:(unint64_t)a5 similarityStartExpectation:(double)a6 similarityEndExpectation:(double)a7 publisherDiversificationSlope:(double)a8 publisherDiversificationYIntercept:(double)a9;
++ (id)diversifyItems:(id)items withPreselectedItems:(id)preselectedItems limit:(unint64_t)limit similarityStartExpectation:(double)expectation similarityEndExpectation:(double)endExpectation publisherDiversificationSlope:(double)slope publisherDiversificationYIntercept:(double)intercept;
 @end
 
 @implementation FCPersonalizationUtilities
 
-+ (id)diversifyItems:(id)a3 withPreselectedItems:(id)a4 limit:(unint64_t)a5 similarityStartExpectation:(double)a6 similarityEndExpectation:(double)a7 publisherDiversificationSlope:(double)a8 publisherDiversificationYIntercept:(double)a9
++ (id)diversifyItems:(id)items withPreselectedItems:(id)preselectedItems limit:(unint64_t)limit similarityStartExpectation:(double)expectation similarityEndExpectation:(double)endExpectation publisherDiversificationSlope:(double)slope publisherDiversificationYIntercept:(double)intercept
 {
   v52 = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v16 = a4;
+  itemsCopy = items;
+  preselectedItemsCopy = preselectedItems;
   v17 = FCPersonalizationLog;
   if (os_log_type_enabled(FCPersonalizationLog, OS_LOG_TYPE_DEBUG))
   {
     v26 = MEMORY[0x1E696AD98];
     v27 = v17;
-    v28 = [v26 numberWithUnsignedInteger:{objc_msgSend(v15, "count")}];
-    v29 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a5];
+    v28 = [v26 numberWithUnsignedInteger:{objc_msgSend(itemsCopy, "count")}];
+    v29 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:limit];
     *buf = 138412546;
     v49 = v28;
     v50 = 2112;
     v51 = v29;
     _os_log_debug_impl(&dword_1B63EF000, v27, OS_LOG_TYPE_DEBUG, "Diversifying set of %@ items down to %@", buf, 0x16u);
 
-    if (a5)
+    if (limit)
     {
       goto LABEL_3;
     }
   }
 
-  else if (a5)
+  else if (limit)
   {
 LABEL_3:
-    if ([v15 count] <= a5)
+    if ([itemsCopy count] <= limit)
     {
       v43 = MEMORY[0x1E69E9820];
       v44 = 3221225472;
       v45 = __189__FCPersonalizationUtilities_diversifyItems_withPreselectedItems_limit_similarityStartExpectation_similarityEndExpectation_publisherDiversificationSlope_publisherDiversificationYIntercept___block_invoke_2;
       v46 = &unk_1E7C3B578;
-      v47 = v15;
+      v47 = itemsCopy;
       v22 = v47;
       v25 = v22;
     }
 
     else
     {
-      v18 = [v15 fc_subarrayWithMaxCount:10 * a5];
+      limit = [itemsCopy fc_subarrayWithMaxCount:10 * limit];
       aBlock[0] = MEMORY[0x1E69E9820];
       aBlock[1] = 3221225472;
       aBlock[2] = __189__FCPersonalizationUtilities_diversifyItems_withPreselectedItems_limit_similarityStartExpectation_similarityEndExpectation_publisherDiversificationSlope_publisherDiversificationYIntercept___block_invoke_4;
@@ -55,22 +55,22 @@ LABEL_3:
       v40[1] = 3221225472;
       v40[2] = __189__FCPersonalizationUtilities_diversifyItems_withPreselectedItems_limit_similarityStartExpectation_similarityEndExpectation_publisherDiversificationSlope_publisherDiversificationYIntercept___block_invoke_6;
       v40[3] = &__block_descriptor_48_e8_Q16__0Q8l;
-      *&v40[4] = a8;
-      *&v40[5] = a9;
+      *&v40[4] = slope;
+      *&v40[5] = intercept;
       v20 = _Block_copy(v40);
       v21 = MEMORY[0x1E695DEC8];
       v32[0] = MEMORY[0x1E69E9820];
       v32[1] = 3221225472;
       v32[2] = __189__FCPersonalizationUtilities_diversifyItems_withPreselectedItems_limit_similarityStartExpectation_similarityEndExpectation_publisherDiversificationSlope_publisherDiversificationYIntercept___block_invoke_7;
       v32[3] = &unk_1E7C3B6C8;
-      v33 = v16;
-      v34 = v18;
+      v33 = preselectedItemsCopy;
+      v34 = limit;
       v36 = v19;
-      v37 = a5;
-      v38 = a6;
-      v39 = a7;
+      limitCopy = limit;
+      expectationCopy = expectation;
+      endExpectationCopy = endExpectation;
       v35 = v20;
-      v22 = v18;
+      v22 = limit;
       v23 = v20;
       v24 = v19;
       v25 = [v21 fc_array:v32];

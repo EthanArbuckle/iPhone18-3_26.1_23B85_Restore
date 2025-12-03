@@ -1,55 +1,55 @@
 @interface _UIPreviewInteractionCrossBlurViewControllerTransition
-- (void)performAppearanceTransitionFromView:(id)a3 toView:(id)a4 containerView:(id)a5;
-- (void)performDisappearanceTransitionFromView:(id)a3 toView:(id)a4 containerView:(id)a5;
-- (void)performTransitionFromView:(id)a3 toView:(id)a4 containerView:(id)a5;
-- (void)prepareAppearanceTransitionFromView:(id)a3 toView:(id)a4 containerView:(id)a5;
-- (void)prepareTransitionFromView:(id)a3 toView:(id)a4 containerView:(id)a5;
+- (void)performAppearanceTransitionFromView:(id)view toView:(id)toView containerView:(id)containerView;
+- (void)performDisappearanceTransitionFromView:(id)view toView:(id)toView containerView:(id)containerView;
+- (void)performTransitionFromView:(id)view toView:(id)toView containerView:(id)containerView;
+- (void)prepareAppearanceTransitionFromView:(id)view toView:(id)toView containerView:(id)containerView;
+- (void)prepareTransitionFromView:(id)view toView:(id)toView containerView:(id)containerView;
 @end
 
 @implementation _UIPreviewInteractionCrossBlurViewControllerTransition
 
-- (void)prepareTransitionFromView:(id)a3 toView:(id)a4 containerView:(id)a5
+- (void)prepareTransitionFromView:(id)view toView:(id)toView containerView:(id)containerView
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  containerViewCopy = containerView;
+  toViewCopy = toView;
+  viewCopy = view;
   if ([(_UIPreviewInteractionCrossBlurViewControllerTransition *)self isDismissTransition])
   {
-    [(_UIPreviewInteractionCrossBlurViewControllerTransition *)self prepareDisappearanceTransitionFromView:v10 toView:v9 containerView:v8];
+    [(_UIPreviewInteractionCrossBlurViewControllerTransition *)self prepareDisappearanceTransitionFromView:viewCopy toView:toViewCopy containerView:containerViewCopy];
   }
 
   else
   {
-    [(_UIPreviewInteractionCrossBlurViewControllerTransition *)self prepareAppearanceTransitionFromView:v10 toView:v9 containerView:v8];
+    [(_UIPreviewInteractionCrossBlurViewControllerTransition *)self prepareAppearanceTransitionFromView:viewCopy toView:toViewCopy containerView:containerViewCopy];
   }
 }
 
-- (void)performTransitionFromView:(id)a3 toView:(id)a4 containerView:(id)a5
+- (void)performTransitionFromView:(id)view toView:(id)toView containerView:(id)containerView
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  containerViewCopy = containerView;
+  toViewCopy = toView;
+  viewCopy = view;
   if ([(_UIPreviewInteractionCrossBlurViewControllerTransition *)self isDismissTransition])
   {
-    [(_UIPreviewInteractionCrossBlurViewControllerTransition *)self performDisappearanceTransitionFromView:v10 toView:v9 containerView:v8];
+    [(_UIPreviewInteractionCrossBlurViewControllerTransition *)self performDisappearanceTransitionFromView:viewCopy toView:toViewCopy containerView:containerViewCopy];
   }
 
   else
   {
-    [(_UIPreviewInteractionCrossBlurViewControllerTransition *)self performAppearanceTransitionFromView:v10 toView:v9 containerView:v8];
+    [(_UIPreviewInteractionCrossBlurViewControllerTransition *)self performAppearanceTransitionFromView:viewCopy toView:toViewCopy containerView:containerViewCopy];
   }
 }
 
-- (void)prepareAppearanceTransitionFromView:(id)a3 toView:(id)a4 containerView:(id)a5
+- (void)prepareAppearanceTransitionFromView:(id)view toView:(id)toView containerView:(id)containerView
 {
-  v7 = a4;
-  v8 = a3;
-  [v7 frame];
+  toViewCopy = toView;
+  viewCopy = view;
+  [toViewCopy frame];
   v10 = v9;
   v12 = v11;
   v14 = v13;
   v16 = v15;
-  [v8 frame];
+  [viewCopy frame];
   v18 = v17;
   v20 = v19;
   v22 = v21;
@@ -109,19 +109,19 @@
   self->_finalPlatterRect.size.width = v31;
   self->_finalPlatterRect.size.height = v16;
   v37 = v38;
-  [v7 setTransform:&v37];
-  v30 = v7;
+  [toViewCopy setTransform:&v37];
+  v30 = toViewCopy;
   [v30 setBlurRadius:128.0];
   [v30 setDropShadowEnabled:0];
   [v30 setAlpha:0.0];
 }
 
-- (void)performAppearanceTransitionFromView:(id)a3 toView:(id)a4 containerView:(id)a5
+- (void)performAppearanceTransitionFromView:(id)view toView:(id)toView containerView:(id)containerView
 {
   v35[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  [v7 frame];
+  viewCopy = view;
+  toViewCopy = toView;
+  [viewCopy frame];
   v10 = v9;
   v12 = v11;
   v14 = v13;
@@ -166,9 +166,9 @@
   v32 = v33;
   CGAffineTransformScale(&v33, &v32, 1.2, 1.0);
   v34 = v33;
-  [v7 setTransform:&v33];
-  [v7 setAlpha:0.0];
-  v25 = v7;
+  [viewCopy setTransform:&v33];
+  [viewCopy setAlpha:0.0];
+  v25 = viewCopy;
   v26 = [UIBlurEffect effectWithBlurRadius:4.0];
   v35[0] = v26;
   v27 = [MEMORY[0x1E695DEC8] arrayWithObjects:v35 count:1];
@@ -177,32 +177,32 @@
   *&v34.a = v31;
   *&v34.c = v30;
   *&v34.tx = v29;
-  v28 = v8;
+  v28 = toViewCopy;
   [v28 setTransform:&v34];
   [v28 setAlpha:1.0];
   [v28 setBlurRadius:0.0];
   [v28 setDropShadowEnabled:1];
 }
 
-- (void)performDisappearanceTransitionFromView:(id)a3 toView:(id)a4 containerView:(id)a5
+- (void)performDisappearanceTransitionFromView:(id)view toView:(id)toView containerView:(id)containerView
 {
-  v6 = a4;
+  toViewCopy = toView;
   v28 = *(MEMORY[0x1E695EFD0] + 16);
   *&v32.a = *MEMORY[0x1E695EFD0];
   v29 = *&v32.a;
   *&v32.c = v28;
   *&v32.tx = *(MEMORY[0x1E695EFD0] + 32);
   v27 = *&v32.tx;
-  v7 = a3;
-  [v6 setTransform:&v32];
-  [v6 setAlpha:1.0];
-  [v6 setContentEffects:MEMORY[0x1E695E0F0]];
-  [v7 frame];
+  viewCopy = view;
+  [toViewCopy setTransform:&v32];
+  [toViewCopy setAlpha:1.0];
+  [toViewCopy setContentEffects:MEMORY[0x1E695E0F0]];
+  [viewCopy frame];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
-  [v7 frame];
+  [viewCopy frame];
   x = v33.origin.x;
   y = v33.origin.y;
   width = v33.size.width;
@@ -244,8 +244,8 @@
   v30 = v32;
   CGAffineTransformScale(&v31, &v30, sxa, sxa);
   v32 = v31;
-  [v7 setTransform:&v31];
-  [v7 setAlpha:0.0];
+  [viewCopy setTransform:&v31];
+  [viewCopy setAlpha:0.0];
 }
 
 @end

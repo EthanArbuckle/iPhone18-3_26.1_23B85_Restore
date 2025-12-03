@@ -1,36 +1,36 @@
 @interface RadialGradientSectionDecorationView
-- (void)applyLayoutAttributes:(id)a3;
+- (void)applyLayoutAttributes:(id)attributes;
 - (void)didMoveToSuperview;
 - (void)layoutSubviews;
-- (void)willMoveToSuperview:(id)a3;
+- (void)willMoveToSuperview:(id)superview;
 @end
 
 @implementation RadialGradientSectionDecorationView
 
-- (void)willMoveToSuperview:(id)a3
+- (void)willMoveToSuperview:(id)superview
 {
-  v5 = a3;
-  v6 = self;
-  RadialGradientSectionDecorationView.willMove(toSuperview:)(a3);
+  superviewCopy = superview;
+  selfCopy = self;
+  RadialGradientSectionDecorationView.willMove(toSuperview:)(superview);
 }
 
 - (void)didMoveToSuperview
 {
-  v2 = self;
+  selfCopy = self;
   RadialGradientSectionDecorationView.didMoveToSuperview()();
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   RadialGradientSectionDecorationView.layoutSubviews()();
 }
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = self;
-  RadialGradientSectionDecorationView.apply(_:)(v4);
+  attributesCopy = attributes;
+  selfCopy = self;
+  RadialGradientSectionDecorationView.apply(_:)(attributesCopy);
 }
 
 @end

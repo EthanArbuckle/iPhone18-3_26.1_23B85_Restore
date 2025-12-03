@@ -1,26 +1,26 @@
 @interface MonthTitleView
-- (MonthTitleView)initWithFrame:(CGRect)a3;
+- (MonthTitleView)initWithFrame:(CGRect)frame;
 - (id)backgroundImage;
-- (void)animateVisible:(BOOL)a3 duration:(double)a4 completion:(id)a5;
-- (void)setCalendarDate:(id)a3;
+- (void)animateVisible:(BOOL)visible duration:(double)duration completion:(id)completion;
+- (void)setCalendarDate:(id)date;
 @end
 
 @implementation MonthTitleView
 
-- (MonthTitleView)initWithFrame:(CGRect)a3
+- (MonthTitleView)initWithFrame:(CGRect)frame
 {
-  y = a3.origin.y;
-  x = a3.origin.x;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v20.receiver = self;
   v20.super_class = MonthTitleView;
-  v5 = [(MonthTitleView *)&v20 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(MonthTitleView *)&v20 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v6 = v5;
   if (v5)
   {
-    v7 = [(MonthTitleView *)v5 backgroundImage];
-    [v7 size];
+    backgroundImage = [(MonthTitleView *)v5 backgroundImage];
+    [backgroundImage size];
     [(MonthTitleView *)v6 setFrame:x, y, v8, v9];
-    v10 = [UIColor colorWithPatternImage:v7];
+    v10 = [UIColor colorWithPatternImage:backgroundImage];
     [(MonthTitleView *)v6 setBackgroundColor:v10];
 
     [(MonthTitleView *)v6 setAlpha:0.0];
@@ -62,21 +62,21 @@
   return v4;
 }
 
-- (void)animateVisible:(BOOL)a3 duration:(double)a4 completion:(id)a5
+- (void)animateVisible:(BOOL)visible duration:(double)duration completion:(id)completion
 {
-  v6 = a3;
+  visibleCopy = visible;
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_100036B18;
   v12[3] = &unk_10020EAD8;
   v12[4] = self;
-  v13 = a3;
-  v8 = a5;
-  [UIView animateWithDuration:327684 delay:v12 options:v8 animations:a4 completion:0.0];
-  v9 = a4 * 0.8;
-  if (v6)
+  visibleCopy2 = visible;
+  completionCopy = completion;
+  [UIView animateWithDuration:327684 delay:v12 options:completionCopy animations:duration completion:0.0];
+  durationCopy = duration * 0.8;
+  if (visibleCopy)
   {
-    v9 = a4;
+    durationCopy = duration;
   }
 
   v10[0] = _NSConcreteStackBlock;
@@ -84,19 +84,19 @@
   v10[2] = sub_100036B34;
   v10[3] = &unk_10020EAD8;
   v10[4] = self;
-  v11 = v6;
-  [UIView animateWithDuration:327684 delay:v10 options:v8 animations:v9 completion:0.0];
+  v11 = visibleCopy;
+  [UIView animateWithDuration:327684 delay:v10 options:completionCopy animations:durationCopy completion:0.0];
 }
 
-- (void)setCalendarDate:(id)a3
+- (void)setCalendarDate:(id)date
 {
-  v4 = a3;
-  v5 = [v4 year];
-  if (v5 != -[EKCalendarDate year](self->_calendarDate, "year") || (v6 = [v4 month], v6 != -[EKCalendarDate month](self->_calendarDate, "month")))
+  dateCopy = date;
+  year = [dateCopy year];
+  if (year != -[EKCalendarDate year](self->_calendarDate, "year") || (v6 = [dateCopy month], v6 != -[EKCalendarDate month](self->_calendarDate, "month")))
   {
-    if (v4)
+    if (dateCopy)
     {
-      v7 = [v4 date];
+      date = [dateCopy date];
       v8 = CUIKStringForMonthYear();
       [(UILabel *)self->_titleLabel setText:v8];
     }
@@ -115,7 +115,7 @@
   }
 
   calendarDate = self->_calendarDate;
-  self->_calendarDate = v4;
+  self->_calendarDate = dateCopy;
 }
 
 @end

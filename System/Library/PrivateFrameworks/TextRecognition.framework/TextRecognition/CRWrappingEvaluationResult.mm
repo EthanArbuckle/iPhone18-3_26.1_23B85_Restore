@@ -7,41 +7,41 @@
 - (CGSize)imageSize;
 - (CGSize)lastFeatureSize;
 - (CRLineWrappingContext)context;
-- (CRWrappingEvaluationResult)initWithTextFeature:(id)a3 context:(id)a4 imageSize:(CGSize)a5 parameters:(id)a6 skipTextComputation:(BOOL)a7;
+- (CRWrappingEvaluationResult)initWithTextFeature:(id)feature context:(id)context imageSize:(CGSize)size parameters:(id)parameters skipTextComputation:(BOOL)computation;
 - (double)eosLMScore;
 - (double)lmScore;
 - (double)verticalSpacingToHeightRatio;
 - (id).cxx_construct;
-- (id)_spaceSeparatedTokens:(id)a3;
+- (id)_spaceSeparatedTokens:(id)tokens;
 - (id)description;
-- (id)resultByMerging:(id)a3;
-- (int64_t)_tokenCountForString:(id)a3;
-- (int64_t)caseWrappingScoreUsingCustomConfiguration:(BOOL)a3;
-- (int64_t)punctuationWrappingScoreUsingCustomConfiguration:(BOOL)a3;
+- (id)resultByMerging:(id)merging;
+- (int64_t)_tokenCountForString:(id)string;
+- (int64_t)caseWrappingScoreUsingCustomConfiguration:(BOOL)configuration;
+- (int64_t)punctuationWrappingScoreUsingCustomConfiguration:(BOOL)configuration;
 - (int64_t)textBasedEvaluation;
 - (int64_t)textContentWrappingScore;
 - (int64_t)tokenCountDiff;
 - (int64_t)wordCountWrappingScore;
 - (vector<unsigned)featureTokens;
 - (void)_computeCharLMScores;
-- (void)_computeDDPropertiesWithContext:(id)a3;
+- (void)_computeDDPropertiesWithContext:(id)context;
 - (void)_computeGeometricProperties;
-- (void)_computeIsHyphenatedPrefixOfWord:(id)a3;
-- (void)_computeLMScoreComputingEOS:(BOOL)a3;
-- (void)_computeNoTextWithContext:(id)a3;
-- (void)_processDDWithCombinedString:(id)a3 locale:(id)a4 withResultBlock:(id)a5;
-- (void)_setParagraphTextWithString:(id)a3 context:(id)a4;
+- (void)_computeIsHyphenatedPrefixOfWord:(id)word;
+- (void)_computeLMScoreComputingEOS:(BOOL)s;
+- (void)_computeNoTextWithContext:(id)context;
+- (void)_processDDWithCombinedString:(id)string locale:(id)locale withResultBlock:(id)block;
+- (void)_setParagraphTextWithString:(id)string context:(id)context;
 @end
 
 @implementation CRWrappingEvaluationResult
 
-- (CRWrappingEvaluationResult)initWithTextFeature:(id)a3 context:(id)a4 imageSize:(CGSize)a5 parameters:(id)a6 skipTextComputation:(BOOL)a7
+- (CRWrappingEvaluationResult)initWithTextFeature:(id)feature context:(id)context imageSize:(CGSize)size parameters:(id)parameters skipTextComputation:(BOOL)computation
 {
-  height = a5.height;
-  width = a5.width;
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
+  height = size.height;
+  width = size.width;
+  featureCopy = feature;
+  contextCopy = context;
+  parametersCopy = parameters;
   v27.receiver = self;
   v27.super_class = CRWrappingEvaluationResult;
   v17 = [(CRWrappingEvaluationResult *)&v27 init];
@@ -49,60 +49,60 @@
   v19 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_featureInTest, a3);
-    objc_storeWeak(p_isa + 15, v15);
-    objc_storeStrong(p_isa + 14, a6);
-    v20 = [v15 locale];
-    v21 = [p_isa[11] locale];
-    v22 = [v21 languageIdentifier];
-    v19->_matchingLocales = [v20 isEqualToString:v22];
+    objc_storeStrong(&v17->_featureInTest, feature);
+    objc_storeWeak(p_isa + 15, contextCopy);
+    objc_storeStrong(p_isa + 14, parameters);
+    locale = [contextCopy locale];
+    locale2 = [p_isa[11] locale];
+    languageIdentifier = [locale2 languageIdentifier];
+    v19->_matchingLocales = [locale isEqualToString:languageIdentifier];
 
     *&v19->_isHyphenatedPrefixOfWord = 256;
     if (v19->_matchingLocales)
     {
-      v23 = [v14 text];
-      v19->_shouldAllowWhitespaceDelimiter = [v15 shouldAllowWhitespaceDelimiterForString:v23];
+      text = [featureCopy text];
+      v19->_shouldAllowWhitespaceDelimiter = [contextCopy shouldAllowWhitespaceDelimiterForString:text];
     }
 
     [(CRWrappingEvaluationResult *)v19 _computeGeometricProperties];
-    if ([v15 lineCount] && v19->_matchingLocales && !a7)
+    if ([contextCopy lineCount] && v19->_matchingLocales && !computation)
     {
-      [(CRWrappingEvaluationResult *)v19 _computeDDPropertiesWithContext:v15];
-      [(CRWrappingEvaluationResult *)v19 _computeNoTextWithContext:v15];
-      [(CRWrappingEvaluationResult *)v19 _computeIsHyphenatedPrefixOfWord:v15];
-      v24 = [p_isa[11] text];
-      v19->_f2StartOfSentence = [v24 _crIsStartOfSentence];
+      [(CRWrappingEvaluationResult *)v19 _computeDDPropertiesWithContext:contextCopy];
+      [(CRWrappingEvaluationResult *)v19 _computeNoTextWithContext:contextCopy];
+      [(CRWrappingEvaluationResult *)v19 _computeIsHyphenatedPrefixOfWord:contextCopy];
+      text2 = [p_isa[11] text];
+      v19->_f2StartOfSentence = [text2 _crIsStartOfSentence];
     }
 
     v19->_imageSize.width = width;
     v19->_imageSize.height = height;
-    if (!a7)
+    if (!computation)
     {
-      v25 = [v14 text];
-      [(CRWrappingEvaluationResult *)v19 _setParagraphTextWithString:v25 context:v15];
+      text3 = [featureCopy text];
+      [(CRWrappingEvaluationResult *)v19 _setParagraphTextWithString:text3 context:contextCopy];
     }
   }
 
   return v19;
 }
 
-- (id)resultByMerging:(id)a3
+- (id)resultByMerging:(id)merging
 {
-  v4 = a3;
-  if ([v4 isOversegmented])
+  mergingCopy = merging;
+  if ([mergingCopy isOversegmented])
   {
-    v5 = [(CRWrappingEvaluationResult *)self featureInTest];
-    v6 = [v4 featureInTest];
-    [v5 mergeWithLine:v6];
+    featureInTest = [(CRWrappingEvaluationResult *)self featureInTest];
+    featureInTest2 = [mergingCopy featureInTest];
+    [featureInTest mergeWithLine:featureInTest2];
 
     v7 = [CRWrappingEvaluationResult alloc];
-    v8 = [(CRWrappingEvaluationResult *)self featureInTest];
-    v9 = [(CRWrappingEvaluationResult *)self context];
+    featureInTest3 = [(CRWrappingEvaluationResult *)self featureInTest];
+    context = [(CRWrappingEvaluationResult *)self context];
     [(CRWrappingEvaluationResult *)self imageSize];
     v11 = v10;
     v13 = v12;
-    v14 = [(CRWrappingEvaluationResult *)self parameters];
-    v15 = [(CRWrappingEvaluationResult *)v7 initWithTextFeature:v8 context:v9 imageSize:v14 parameters:1 skipTextComputation:v11, v13];
+    parameters = [(CRWrappingEvaluationResult *)self parameters];
+    selfCopy = [(CRWrappingEvaluationResult *)v7 initWithTextFeature:featureInTest3 context:context imageSize:parameters parameters:1 skipTextComputation:v11, v13];
   }
 
   else
@@ -114,20 +114,20 @@
       _os_log_impl(&dword_1B40D2000, v16, OS_LOG_TYPE_ERROR, "Unable to merge results that are not due to oversegmentation", v18, 2u);
     }
 
-    v15 = self;
+    selfCopy = self;
   }
 
-  return v15;
+  return selfCopy;
 }
 
-- (void)_setParagraphTextWithString:(id)a3 context:(id)a4
+- (void)_setParagraphTextWithString:(id)string context:(id)context
 {
-  v14 = a3;
-  v6 = a4;
-  if ([v6 lineCount])
+  stringCopy = string;
+  contextCopy = context;
+  if ([contextCopy lineCount])
   {
-    v7 = [v6 text];
-    if ([v7 _crEndsWithHyphen])
+    text = [contextCopy text];
+    if ([text _crEndsWithHyphen])
     {
       isHyphenatedPrefixOfWord = self->_isHyphenatedPrefixOfWord;
     }
@@ -137,53 +137,53 @@
       isHyphenatedPrefixOfWord = 0;
     }
 
-    v10 = [v6 text];
-    v11 = [v6 locale];
-    v12 = [v10 _crStringByAppendingString:v14 locale:v11 mergeHyphenatedWord:isHyphenatedPrefixOfWord allowWhitespaceDelimiter:self->_shouldAllowWhitespaceDelimiter];
+    text2 = [contextCopy text];
+    locale = [contextCopy locale];
+    v12 = [text2 _crStringByAppendingString:stringCopy locale:locale mergeHyphenatedWord:isHyphenatedPrefixOfWord allowWhitespaceDelimiter:self->_shouldAllowWhitespaceDelimiter];
     paragraphText = self->_paragraphText;
     self->_paragraphText = v12;
   }
 
   else
   {
-    v9 = v14;
-    v10 = self->_paragraphText;
+    v9 = stringCopy;
+    text2 = self->_paragraphText;
     self->_paragraphText = v9;
   }
 }
 
-- (void)_computeNoTextWithContext:(id)a3
+- (void)_computeNoTextWithContext:(id)context
 {
-  v6 = a3;
-  v4 = [v6 text];
-  self->_contextNoText = [v4 _crContainsText] ^ 1;
+  contextCopy = context;
+  text = [contextCopy text];
+  self->_contextNoText = [text _crContainsText] ^ 1;
 
-  v5 = [(CRLineWrappable *)self->_featureInTest text];
-  self->_featureInTestNoText = [v5 _crContainsText] ^ 1;
+  text2 = [(CRLineWrappable *)self->_featureInTest text];
+  self->_featureInTestNoText = [text2 _crContainsText] ^ 1;
 }
 
-- (void)_computeIsHyphenatedPrefixOfWord:(id)a3
+- (void)_computeIsHyphenatedPrefixOfWord:(id)word
 {
-  v4 = a3;
+  wordCopy = word;
   self->_isHyphenatedPrefixOfWord = 0;
-  v14 = v4;
-  v5 = [v4 text];
-  v6 = [(CRWrappingEvaluationResult *)self _spaceSeparatedTokens:v5];
-  v7 = [v6 lastObject];
+  v14 = wordCopy;
+  text = [wordCopy text];
+  v6 = [(CRWrappingEvaluationResult *)self _spaceSeparatedTokens:text];
+  lastObject = [v6 lastObject];
 
-  if (v7 && [v7 length] >= 3 && objc_msgSend(v7, "_crEndsWithHyphen"))
+  if (lastObject && [lastObject length] >= 3 && objc_msgSend(lastObject, "_crEndsWithHyphen"))
   {
-    v8 = [(CRLineWrappable *)self->_featureInTest text];
-    v9 = [(CRWrappingEvaluationResult *)self _spaceSeparatedTokens:v8];
-    v10 = [v9 firstObject];
+    text2 = [(CRLineWrappable *)self->_featureInTest text];
+    v9 = [(CRWrappingEvaluationResult *)self _spaceSeparatedTokens:text2];
+    firstObject = [v9 firstObject];
 
-    if (v10 && [v10 length])
+    if (firstObject && [firstObject length])
     {
       v11 = MEMORY[0x1E696AD60];
-      v12 = [v7 substringToIndex:{objc_msgSend(v7, "length") - 1}];
+      v12 = [lastObject substringToIndex:{objc_msgSend(lastObject, "length") - 1}];
       v13 = [v11 stringWithString:v12];
 
-      [v13 appendString:v10];
+      [v13 appendString:firstObject];
       self->_isHyphenatedPrefixOfWord = [v14 isValidWordString:v13];
     }
   }
@@ -192,33 +192,33 @@
 - (void)_computeGeometricProperties
 {
   v226 = *MEMORY[0x1E69E9840];
-  v3 = [(CRWrappingEvaluationResult *)self context];
+  context = [(CRWrappingEvaluationResult *)self context];
 
-  if (v3)
+  if (context)
   {
-    v221 = [(CRWrappingEvaluationResult *)self featureInTest];
-    v4 = [v221 boundingQuad];
-    v5 = [v4 denormalizedQuad];
-    [v5 size];
+    featureInTest = [(CRWrappingEvaluationResult *)self featureInTest];
+    boundingQuad = [featureInTest boundingQuad];
+    denormalizedQuad = [boundingQuad denormalizedQuad];
+    [denormalizedQuad size];
     [(CRWrappingEvaluationResult *)self setFeatureInTestSize:?];
 
-    v222 = [(CRWrappingEvaluationResult *)self context];
-    v6 = [v222 lineCount];
+    context2 = [(CRWrappingEvaluationResult *)self context];
+    lineCount = [context2 lineCount];
 
-    if (!v6)
+    if (!lineCount)
     {
       return;
     }
 
-    v7 = [(CRWrappingEvaluationResult *)self context];
-    v223 = [v7 lastFeature];
+    context3 = [(CRWrappingEvaluationResult *)self context];
+    lastFeature = [context3 lastFeature];
 
-    v8 = [v223 boundingQuad];
-    v9 = [v8 denormalizedQuad];
+    boundingQuad2 = [lastFeature boundingQuad];
+    denormalizedQuad2 = [boundingQuad2 denormalizedQuad];
 
-    [v9 size];
+    [denormalizedQuad2 size];
     [(CRWrappingEvaluationResult *)self setLastFeatureSize:?];
-    [v9 size];
+    [denormalizedQuad2 size];
     v11 = v10;
     v13 = v12;
     [(CRWrappingEvaluationResult *)self featureInTestSize];
@@ -231,8 +231,8 @@
 
     else
     {
-      v8 = [(CRWrappingEvaluationResult *)self context];
-      [v8 averageLineHeight];
+      boundingQuad2 = [(CRWrappingEvaluationResult *)self context];
+      [boundingQuad2 averageLineHeight];
       v19 = v18 / v17;
       *&v19 = v19;
     }
@@ -250,10 +250,10 @@
     }
 
     [(CRWrappingEvaluationResult *)self setTextWidthRatio:v21];
-    v22 = [(CRWrappingEvaluationResult *)self context];
-    v23 = [v22 lastFeature];
-    v24 = [v23 boundingQuad];
-    [v24 baselineAngle];
+    context4 = [(CRWrappingEvaluationResult *)self context];
+    lastFeature2 = [context4 lastFeature];
+    boundingQuad3 = [lastFeature2 boundingQuad];
+    [boundingQuad3 baselineAngle];
     v26 = v25;
     if (v25 <= 3.14159265)
     {
@@ -272,9 +272,9 @@
 
     v26 = v26 + v27;
 LABEL_19:
-    v28 = [(CRWrappingEvaluationResult *)self featureInTest];
-    v29 = [v28 boundingQuad];
-    [v29 baselineAngle];
+    featureInTest2 = [(CRWrappingEvaluationResult *)self featureInTest];
+    boundingQuad4 = [featureInTest2 boundingQuad];
+    [boundingQuad4 baselineAngle];
     if (v30 <= 3.14159265)
     {
       if (v30 > -3.14159265)
@@ -301,40 +301,40 @@ LABEL_29:
         *&v32 = v32;
         [(CRWrappingEvaluationResult *)self setAngleDiff:v32];
 
-        v34 = [v223 boundingQuad];
-        v35 = [(CRWrappingEvaluationResult *)self featureInTest];
-        v36 = [v35 boundingQuad];
+        boundingQuad5 = [lastFeature boundingQuad];
+        featureInTest3 = [(CRWrappingEvaluationResult *)self featureInTest];
+        boundingQuad6 = [featureInTest3 boundingQuad];
 
-        v37 = [(CRWrappingEvaluationResult *)self context];
-        v38 = [v37 lastFeature];
-        v39 = [v38 boundingQuad];
-        [v39 baselineAngle];
+        context5 = [(CRWrappingEvaluationResult *)self context];
+        lastFeature3 = [context5 lastFeature];
+        boundingQuad7 = [lastFeature3 boundingQuad];
+        [boundingQuad7 baselineAngle];
         v41 = v40;
-        v42 = [(CRWrappingEvaluationResult *)self featureInTest];
-        v43 = [v42 boundingQuad];
-        [v43 baselineAngle];
+        featureInTest4 = [(CRWrappingEvaluationResult *)self featureInTest];
+        boundingQuad8 = [featureInTest4 boundingQuad];
+        [boundingQuad8 baselineAngle];
         v45 = (1.0 - v11 / (v11 + v15)) * v44 + v41 * (v11 / (v11 + v15));
 
         *&v45 = v45;
         LODWORD(v46) = LODWORD(v45);
-        v47 = [v34 rotatedAroundNormalizedPoint:0.5 angle:{0.5, v46}];
-        v48 = [v47 denormalizedQuad];
+        v47 = [boundingQuad5 rotatedAroundNormalizedPoint:0.5 angle:{0.5, v46}];
+        denormalizedQuad3 = [v47 denormalizedQuad];
 
         LODWORD(v49) = LODWORD(v45);
-        v50 = [v36 rotatedAroundNormalizedPoint:0.5 angle:{0.5, v49}];
-        v51 = [v50 denormalizedQuad];
+        v50 = [boundingQuad6 rotatedAroundNormalizedPoint:0.5 angle:{0.5, v49}];
+        denormalizedQuad4 = [v50 denormalizedQuad];
 
-        [v51 topLeft];
+        [denormalizedQuad4 topLeft];
         v53 = v52;
-        [v48 bottomLeft];
+        [denormalizedQuad3 bottomLeft];
         [(CRWrappingEvaluationResult *)self setVerticalSpacing:v53 - v54];
-        [v34 topLeft];
+        [boundingQuad5 topLeft];
         v56 = v55;
         v58 = v57;
-        [v36 topLeft];
+        [boundingQuad6 topLeft];
         v60 = v59;
         v62 = v61;
-        [v34 normalizationSize];
+        [boundingQuad5 normalizationSize];
         if (v63 > 0.0)
         {
           v65 = v64 <= 0.0;
@@ -354,13 +354,13 @@ LABEL_29:
         v70 = sqrt((v58 - v62) * (v58 - v62) + (v56 - v60) * (v56 - v60));
         *&v70 = v70;
         [(CRWrappingEvaluationResult *)self setTopDistanceLeft:v70];
-        [v34 topRight];
+        [boundingQuad5 topRight];
         v72 = v71;
         v74 = v73;
-        [v36 topLeft];
+        [boundingQuad6 topLeft];
         v76 = v75;
         v78 = v77;
-        [v34 normalizationSize];
+        [boundingQuad5 normalizationSize];
         if (v79 > 0.0 && v80 > 0.0)
         {
           v72 = v72 * v79;
@@ -372,15 +372,15 @@ LABEL_29:
         v81 = sqrt((v74 - v78) * (v74 - v78) + (v72 - v76) * (v72 - v76));
         *&v81 = v81;
         [(CRWrappingEvaluationResult *)self setTopDistanceRight:v81];
-        [v34 topRight];
+        [boundingQuad5 topRight];
         v83 = v82;
         v85 = v84;
-        v86 = [(CRWrappingEvaluationResult *)self featureInTest];
-        v87 = [v86 boundingQuad];
-        [v87 bottomLeft];
+        featureInTest5 = [(CRWrappingEvaluationResult *)self featureInTest];
+        boundingQuad9 = [featureInTest5 boundingQuad];
+        [boundingQuad9 bottomLeft];
         v89 = v88;
         v91 = v90;
-        [v34 normalizationSize];
+        [boundingQuad5 normalizationSize];
         if (v92 > 0.0 && v93 > 0.0)
         {
           v83 = v83 * v92;
@@ -393,13 +393,13 @@ LABEL_29:
         *&v94 = v94;
         [(CRWrappingEvaluationResult *)self setTopDistanceRightToBottomLeft:v94];
 
-        [v34 bottomLeft];
+        [boundingQuad5 bottomLeft];
         v96 = v95;
         v98 = v97;
-        [v36 topLeft];
+        [boundingQuad6 topLeft];
         v100 = v99;
         v102 = v101;
-        [v34 normalizationSize];
+        [boundingQuad5 normalizationSize];
         if (v103 > 0.0 && v104 > 0.0)
         {
           v96 = v96 * v103;
@@ -411,13 +411,13 @@ LABEL_29:
         v105 = sqrt((v98 - v102) * (v98 - v102) + (v96 - v100) * (v96 - v100));
         *&v105 = v105;
         [(CRWrappingEvaluationResult *)self setLeftDistance:v105];
-        [v34 bottomRight];
+        [boundingQuad5 bottomRight];
         v107 = v106;
         v109 = v108;
-        [v36 topRight];
+        [boundingQuad6 topRight];
         v111 = v110;
         v113 = v112;
-        [v34 normalizationSize];
+        [boundingQuad5 normalizationSize];
         if (v114 > 0.0 && v115 > 0.0)
         {
           v107 = v107 * v114;
@@ -429,13 +429,13 @@ LABEL_29:
         v116 = sqrt((v109 - v113) * (v109 - v113) + (v107 - v111) * (v107 - v111));
         *&v116 = v116;
         [(CRWrappingEvaluationResult *)self setRightDistance:v116];
-        [v34 midPoint];
+        [boundingQuad5 midPoint];
         v118 = v117;
         v120 = v119;
-        [v36 midPoint];
+        [boundingQuad6 midPoint];
         v122 = v121;
         v124 = v123;
-        [v34 normalizationSize];
+        [boundingQuad5 normalizationSize];
         if (v125 > 0.0 && v126 > 0.0)
         {
           v118 = v118 * v125;
@@ -447,27 +447,27 @@ LABEL_29:
         v127 = sqrt((v120 - v124) * (v120 - v124) + (v118 - v122) * (v118 - v122));
         *&v127 = v127;
         [(CRWrappingEvaluationResult *)self setMidDistance:v127];
-        [v51 topRight];
+        [denormalizedQuad4 topRight];
         v129 = v128;
-        [v48 topLeft];
+        [denormalizedQuad3 topLeft];
         v131 = v129 - v130;
         *&v131 = v131;
         [(CRWrappingEvaluationResult *)self setHorizontalOverlap:v131];
-        [v51 bottomLeft];
+        [denormalizedQuad4 bottomLeft];
         v133 = v132;
-        [v48 topLeft];
+        [denormalizedQuad3 topLeft];
         v135 = v133 - v134;
         *&v135 = v133 - v134;
         [(CRWrappingEvaluationResult *)self setVerticalOverlap:v135];
-        [v51 topLeft];
+        [denormalizedQuad4 topLeft];
         v137 = v136;
-        [v48 topRight];
+        [denormalizedQuad3 topRight];
         v139 = v137 - v138;
         *&v139 = v139;
         [(CRWrappingEvaluationResult *)self setXSpace:v139];
-        [v48 topRight];
+        [denormalizedQuad3 topRight];
         v141 = v140;
-        [v51 bottomLeft];
+        [denormalizedQuad4 bottomLeft];
         v143 = v141 - v142;
         *&v143 = v141 - v142;
         [(CRWrappingEvaluationResult *)self setYSpace:v143];
@@ -488,8 +488,8 @@ LABEL_29:
           {
             [(CRWrappingEvaluationResult *)self topDistanceRight];
             v151 = v150;
-            v152 = [(CRWrappingEvaluationResult *)self parameters];
-            [v152 oversegmentedDistanceHeightRatioTolerance];
+            parameters = [(CRWrappingEvaluationResult *)self parameters];
+            [parameters oversegmentedDistanceHeightRatioTolerance];
             v154 = (v13 + v17) * v153 * 0.5;
 
             if (v154 > v151)
@@ -497,22 +497,22 @@ LABEL_29:
               [(CRWrappingEvaluationResult *)self setIsOversegmented:1];
             }
 
-            v155 = [(CRWrappingEvaluationResult *)self context];
-            v156 = [v155 lineCount];
+            context6 = [(CRWrappingEvaluationResult *)self context];
+            lineCount2 = [context6 lineCount];
 
-            if (v156 == 1)
+            if (lineCount2 == 1)
             {
               if (-[CRWrappingEvaluationResult isOversegmented](self, "isOversegmented") || (-[CRWrappingEvaluationResult topDistanceRight](self, "topDistanceRight"), v158 = v157, -[CRWrappingEvaluationResult parameters](self, "parameters"), v159 = objc_claimAutoreleasedReturnValue(), [v159 oversegmentedDistanceHeightRatioListItemTolerance], v161 = (v13 + v17) * v160 * 0.5, v159, v161 > v158))
               {
-                v162 = [(CRWrappingEvaluationResult *)self context];
-                v163 = [v162 text];
-                if ([v163 _crIsListItemMarker])
+                context7 = [(CRWrappingEvaluationResult *)self context];
+                text = [context7 text];
+                if ([text _crIsListItemMarker])
                 {
-                  v219 = [(CRWrappingEvaluationResult *)self featureInTest];
-                  v164 = [v219 text];
-                  v165 = [v164 _crContainsText];
+                  featureInTest6 = [(CRWrappingEvaluationResult *)self featureInTest];
+                  text2 = [featureInTest6 text];
+                  _crContainsText = [text2 _crContainsText];
 
-                  if (v165)
+                  if (_crContainsText)
                   {
                     [(CRWrappingEvaluationResult *)self setOversegmentedListItem:1];
                     [(CRWrappingEvaluationResult *)self setIsOversegmented:1];
@@ -534,14 +534,14 @@ LABEL_29:
 
         [(CRWrappingEvaluationResult *)self verticalSpacing];
         v167 = v166;
-        v168 = [(CRWrappingEvaluationResult *)self parameters];
-        [v168 verticalSpacingRatioTolerance];
+        parameters2 = [(CRWrappingEvaluationResult *)self parameters];
+        [parameters2 verticalSpacingRatioTolerance];
         v170 = v13 * v169;
 
         if (v167 < v170)
         {
-          v171 = [(CRWrappingEvaluationResult *)self context];
-          if ([v171 isRTL])
+          context8 = [(CRWrappingEvaluationResult *)self context];
+          if ([context8 isRTL])
           {
             [(CRWrappingEvaluationResult *)self rightDistance];
           }
@@ -553,25 +553,25 @@ LABEL_29:
 
           v173 = v172;
 
-          v174 = [(CRWrappingEvaluationResult *)self context];
-          if ([v174 isRTL])
+          context9 = [(CRWrappingEvaluationResult *)self context];
+          if ([context9 isRTL])
           {
-            [v48 topRight];
+            [denormalizedQuad3 topRight];
             v176 = v175;
-            [v51 topLeft];
+            [denormalizedQuad4 topLeft];
             v178 = v176 > v177;
           }
 
           else
           {
-            [v48 topLeft];
+            [denormalizedQuad3 topLeft];
             v180 = v179;
-            [v51 topRight];
+            [denormalizedQuad4 topRight];
             v178 = v180 < v181;
           }
 
-          v182 = [(CRWrappingEvaluationResult *)self parameters];
-          [v182 leadingDistanceRatioTolerance];
+          parameters3 = [(CRWrappingEvaluationResult *)self parameters];
+          [parameters3 leadingDistanceRatioTolerance];
           v183 = v173;
           v185 = v13 * v184;
 
@@ -580,16 +580,16 @@ LABEL_29:
             goto LABEL_78;
           }
 
-          v186 = [(CRWrappingEvaluationResult *)self context];
-          v187 = [v186 lineCount] == 1 && v178;
+          context10 = [(CRWrappingEvaluationResult *)self context];
+          v187 = [context10 lineCount] == 1 && v178;
 
           if (v187 != 1)
           {
             goto LABEL_79;
           }
 
-          v188 = [(CRWrappingEvaluationResult *)self parameters];
-          [v188 newParagraphIndentDistanceRatioTolerance];
+          parameters4 = [(CRWrappingEvaluationResult *)self parameters];
+          [parameters4 newParagraphIndentDistanceRatioTolerance];
           v190 = v13 * v189;
 
           if (fabs(v183) >= v190)
@@ -597,12 +597,12 @@ LABEL_29:
             goto LABEL_79;
           }
 
-          v191 = [(CRWrappingEvaluationResult *)self context];
-          if ([v191 isRTL])
+          context11 = [(CRWrappingEvaluationResult *)self context];
+          if ([context11 isRTL])
           {
-            [v48 topLeft];
+            [denormalizedQuad3 topLeft];
             v193 = v192;
-            [v51 topLeft];
+            [denormalizedQuad4 topLeft];
             v195 = v194;
 
             if (v193 > v195)
@@ -613,9 +613,9 @@ LABEL_29:
 
           else
           {
-            [v48 topRight];
+            [denormalizedQuad3 topRight];
             v197 = v196;
-            [v51 topRight];
+            [denormalizedQuad4 topRight];
             v199 = v198;
 
             if (v197 < v199)
@@ -626,21 +626,21 @@ LABEL_78:
             }
           }
 
-          v220 = [(CRWrappingEvaluationResult *)self context];
-          v218 = [v220 lastFeature];
-          v200 = [v218 text];
-          if ([v200 _crStartsWithListItemIndicator])
+          context12 = [(CRWrappingEvaluationResult *)self context];
+          lastFeature4 = [context12 lastFeature];
+          text3 = [lastFeature4 text];
+          if ([text3 _crStartsWithListItemIndicator])
           {
 
             goto LABEL_78;
           }
 
-          v217 = [(CRWrappingEvaluationResult *)self context];
-          v201 = [v217 lastFeature];
-          v202 = [v201 text];
-          v203 = [v202 _crStartsWithDigit];
+          context13 = [(CRWrappingEvaluationResult *)self context];
+          lastFeature5 = [context13 lastFeature];
+          text4 = [lastFeature5 text];
+          _crStartsWithDigit = [text4 _crStartsWithDigit];
 
-          if (v203)
+          if (_crStartsWithDigit)
           {
             goto LABEL_78;
           }
@@ -653,20 +653,20 @@ LABEL_79:
           [(CRWrappingEvaluationResult *)self setCenterAligned:1];
         }
 
-        v205 = [(CRWrappingEvaluationResult *)self context];
-        v206 = [v205 lastFeature];
-        v207 = [v206 text];
-        v208 = [(CRWrappingEvaluationResult *)self _tokenCountForString:v207];
+        context14 = [(CRWrappingEvaluationResult *)self context];
+        lastFeature6 = [context14 lastFeature];
+        text5 = [lastFeature6 text];
+        v208 = [(CRWrappingEvaluationResult *)self _tokenCountForString:text5];
 
         if (![(CRWrappingEvaluationResult *)self centerAligned])
         {
-          v209 = [(CRWrappingEvaluationResult *)self leadingAligned];
-          v210 = v208 < 3 || v209;
+          leadingAligned = [(CRWrappingEvaluationResult *)self leadingAligned];
+          v210 = v208 < 3 || leadingAligned;
           if ((v210 & 1) == 0)
           {
-            v211 = [(CRWrappingEvaluationResult *)self featureInTest];
-            v212 = [v211 text];
-            v213 = [v212 length];
+            featureInTest7 = [(CRWrappingEvaluationResult *)self featureInTest];
+            text6 = [featureInTest7 text];
+            v213 = [text6 length];
 
             if (v213 >= 3)
             {
@@ -713,14 +713,14 @@ LABEL_91:
   }
 }
 
-- (void)_processDDWithCombinedString:(id)a3 locale:(id)a4 withResultBlock:(id)a5
+- (void)_processDDWithCombinedString:(id)string locale:(id)locale withResultBlock:(id)block
 {
   v39 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v32 = a5;
-  v30 = v8;
-  v29 = [MEMORY[0x1E6999A90] _crConfigForLocale:a4];
-  [MEMORY[0x1E6999A88] scanString:v8 range:0 configuration:{objc_msgSend(v8, "length"), v29}];
+  stringCopy = string;
+  blockCopy = block;
+  v30 = stringCopy;
+  v29 = [MEMORY[0x1E6999A90] _crConfigForLocale:locale];
+  [MEMORY[0x1E6999A88] scanString:stringCopy range:0 configuration:{objc_msgSend(stringCopy, "length"), v29}];
   v36 = 0u;
   v37 = 0u;
   v34 = 0u;
@@ -741,44 +741,44 @@ LABEL_3:
       v12 = *(*(&v34 + 1) + 8 * v11);
       if ([v12 category])
       {
-        v13 = [v12 urlificationRange];
+        urlificationRange = [v12 urlificationRange];
         v15 = v14;
-        v16 = [(CRWrappingEvaluationResult *)self sentencePuncStringToCheck];
-        v17 = v13 < [v16 length];
+        sentencePuncStringToCheck = [(CRWrappingEvaluationResult *)self sentencePuncStringToCheck];
+        v17 = urlificationRange < [sentencePuncStringToCheck length];
 
         if (v17)
         {
-          if (v13 <= 2)
+          if (urlificationRange <= 2)
           {
-            v13 = 2;
+            urlificationRange = 2;
           }
 
-          v18 = [(CRWrappingEvaluationResult *)self sentencePuncStringToCheck];
-          v19 = v13 - 2;
+          sentencePuncStringToCheck2 = [(CRWrappingEvaluationResult *)self sentencePuncStringToCheck];
+          v19 = urlificationRange - 2;
           v20 = v15 + 2;
-          if ([v18 length] - v19 < (v15 + 2))
+          if ([sentencePuncStringToCheck2 length] - v19 < (v15 + 2))
           {
-            v21 = [(CRWrappingEvaluationResult *)self sentencePuncStringToCheck];
-            v22 = [v21 length];
+            sentencePuncStringToCheck3 = [(CRWrappingEvaluationResult *)self sentencePuncStringToCheck];
+            v22 = [sentencePuncStringToCheck3 length];
 
             v20 = v22 - v19;
           }
 
           v23 = [v30 substringWithRange:{v19, v20}];
-          v24 = [MEMORY[0x1E696AB08] punctuationCharacterSet];
-          v25 = [v23 _crContainsCharactersInSet:v24];
+          punctuationCharacterSet = [MEMORY[0x1E696AB08] punctuationCharacterSet];
+          v25 = [v23 _crContainsCharactersInSet:punctuationCharacterSet];
 
           if (v25)
           {
-            v26 = [(CRWrappingEvaluationResult *)self sentencePuncStringToCheck];
+            sentencePuncStringToCheck4 = [(CRWrappingEvaluationResult *)self sentencePuncStringToCheck];
             v27 = [&stru_1F2BB4348 stringByPaddingToLength:v20 withString:@"-" startingAtIndex:0];
-            v28 = [v26 stringByReplacingCharactersInRange:v19 withString:{v20, v27}];
+            v28 = [sentencePuncStringToCheck4 stringByReplacingCharactersInRange:v19 withString:{v20, v27}];
             [(CRWrappingEvaluationResult *)self setSentencePuncStringToCheck:v28];
           }
         }
 
         v33 = 0;
-        v32[2](v32, v12, &v33);
+        blockCopy[2](blockCopy, v12, &v33);
         if (v33)
         {
           break;
@@ -799,23 +799,23 @@ LABEL_3:
   }
 }
 
-- (void)_computeDDPropertiesWithContext:(id)a3
+- (void)_computeDDPropertiesWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [v4 text];
-  v6 = [v5 _crDDFriendlyTextWithIndexMapping:0];
+  contextCopy = context;
+  text = [contextCopy text];
+  v6 = [text _crDDFriendlyTextWithIndexMapping:0];
 
-  v7 = [(CRLineWrappable *)self->_featureInTest text];
-  v8 = [v7 _crDDFriendlyTextWithIndexMapping:0];
+  text2 = [(CRLineWrappable *)self->_featureInTest text];
+  v8 = [text2 _crDDFriendlyTextWithIndexMapping:0];
 
   if ([(CRWrappingEvaluationResult *)self matchingLocales])
   {
-    v9 = [v4 locale];
+    locale = [contextCopy locale];
   }
 
   else
   {
-    v9 = 0;
+    locale = 0;
   }
 
   [(CRWrappingEvaluationResult *)self setSentencePuncStringToCheck:v6];
@@ -828,7 +828,7 @@ LABEL_3:
   v16[3] = &unk_1E7BC2EC8;
   v17 = v18;
   v16[4] = self;
-  [(CRWrappingEvaluationResult *)self _processDDWithCombinedString:v10 locale:v9 withResultBlock:v16];
+  [(CRWrappingEvaluationResult *)self _processDDWithCombinedString:v10 locale:locale withResultBlock:v16];
   if (-[CRWrappingEvaluationResult multilineDD](self, "multilineDD") || ([MEMORY[0x1E696AB08] decimalDigitCharacterSet], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v10, "_crContainsCharactersInSet:", v11), v11, !v12))
   {
     v13 = v10;
@@ -836,7 +836,7 @@ LABEL_3:
 
   else
   {
-    v13 = [v6 _crStringByAppendingString:v8 locale:v9 appendedStringRange:&v18];
+    v13 = [v6 _crStringByAppendingString:v8 locale:locale appendedStringRange:&v18];
 
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
@@ -844,7 +844,7 @@ LABEL_3:
     v14[3] = &unk_1E7BC2EC8;
     v15 = v18;
     v14[4] = self;
-    [(CRWrappingEvaluationResult *)self _processDDWithCombinedString:v13 locale:v9 withResultBlock:v14];
+    [(CRWrappingEvaluationResult *)self _processDDWithCombinedString:v13 locale:locale withResultBlock:v14];
   }
 }
 
@@ -915,13 +915,13 @@ void __62__CRWrappingEvaluationResult__computeDDPropertiesWithContext___block_in
 {
   v24 = MEMORY[0x1E696AEC0];
   v30 = [MEMORY[0x1E696AD98] numberWithBool:self->_matchingLocales];
-  v28 = [(CRWrappingEvaluationResult *)self context];
-  v29 = [v28 locale];
-  v26 = [(CRWrappingEvaluationResult *)self featureInTest];
-  v27 = [v26 locale];
-  v22 = [(CRWrappingEvaluationResult *)self textContentWrappingScore];
+  context = [(CRWrappingEvaluationResult *)self context];
+  locale = [context locale];
+  featureInTest = [(CRWrappingEvaluationResult *)self featureInTest];
+  locale2 = [featureInTest locale];
+  textContentWrappingScore = [(CRWrappingEvaluationResult *)self textContentWrappingScore];
   v21 = [(CRWrappingEvaluationResult *)self caseWrappingScoreUsingCustomConfiguration:1];
-  v19 = [(CRWrappingEvaluationResult *)self wordCountWrappingScore];
+  wordCountWrappingScore = [(CRWrappingEvaluationResult *)self wordCountWrappingScore];
   v18 = [(CRWrappingEvaluationResult *)self punctuationWrappingScoreUsingCustomConfiguration:1];
   [(CRWrappingEvaluationResult *)self textHeightRatio];
   v4 = v3;
@@ -933,13 +933,13 @@ void __62__CRWrappingEvaluationResult__computeDDPropertiesWithContext___block_in
   v23 = [MEMORY[0x1E696AD98] numberWithBool:{-[CRWrappingEvaluationResult leadingAligned](self, "leadingAligned")}];
   v20 = [MEMORY[0x1E696AD98] numberWithBool:{-[CRWrappingEvaluationResult centerAligned](self, "centerAligned")}];
   v17 = [MEMORY[0x1E696AD98] numberWithBool:{-[CRWrappingEvaluationResult continuesToNewColumn](self, "continuesToNewColumn")}];
-  v16 = [(CRWrappingEvaluationResult *)self paragraphText];
+  paragraphText = [(CRWrappingEvaluationResult *)self paragraphText];
   v15 = [MEMORY[0x1E696AD98] numberWithBool:{-[CRWrappingEvaluationResult lmScoreSet](self, "lmScoreSet")}];
   [(CRWrappingEvaluationResult *)self cachedLMScore];
   v10 = v9;
   v11 = [MEMORY[0x1E696AD98] numberWithBool:{-[CRWrappingEvaluationResult eosLMScoreSet](self, "eosLMScoreSet")}];
   [(CRWrappingEvaluationResult *)self cachedEOSLMScore];
-  v13 = [v24 stringWithFormat:@"{\nmatchingLocales:\t%@ -(%@/%@)\ntextContentWrappingScore/caseScore/wcScore/puncScore:\t%ld/%ld/%ld/%ld\ntextHeightRatio/textWidthRatio/angleDiff:\t%f/%f/%f\noverSegmented/leadingAligned/centerAligned/newColumn:\t%@/%@/%@/%@\ntext:%@\nlmScoreSet/lmScore/eosScoreSet/eosLMScore:%@/%.4f/%@/%.4f\n}", v30, v29, v27, v22, v21, v19, v18, v4, v6, v8, v25, v23, v20, v17, v16, v15, v10, v11, v12];
+  v13 = [v24 stringWithFormat:@"{\nmatchingLocales:\t%@ -(%@/%@)\ntextContentWrappingScore/caseScore/wcScore/puncScore:\t%ld/%ld/%ld/%ld\ntextHeightRatio/textWidthRatio/angleDiff:\t%f/%f/%f\noverSegmented/leadingAligned/centerAligned/newColumn:\t%@/%@/%@/%@\ntext:%@\nlmScoreSet/lmScore/eosScoreSet/eosLMScore:%@/%.4f/%@/%.4f\n}", v30, locale, locale2, textContentWrappingScore, v21, wordCountWrappingScore, v18, v4, v6, v8, v25, v23, v20, v17, paragraphText, v15, v10, v11, v12];
 
   return v13;
 }
@@ -958,20 +958,20 @@ void __62__CRWrappingEvaluationResult__computeDDPropertiesWithContext___block_in
 
   if (![(CRWrappingEvaluationResult *)self contextNoText]&& ![(CRWrappingEvaluationResult *)self featureInTestNoText])
   {
-    v5 = [(CRWrappingEvaluationResult *)self featureInTest];
-    v6 = [v5 text];
-    if ([v6 _crIsProgrammingStatement])
+    featureInTest = [(CRWrappingEvaluationResult *)self featureInTest];
+    text = [featureInTest text];
+    if ([text _crIsProgrammingStatement])
     {
     }
 
     else
     {
-      v7 = [(CRWrappingEvaluationResult *)self context];
-      v8 = [v7 lastFeature];
-      v9 = [v8 text];
-      v10 = [v9 _crIsProgrammingStatement];
+      context = [(CRWrappingEvaluationResult *)self context];
+      lastFeature = [context lastFeature];
+      text2 = [lastFeature text];
+      _crIsProgrammingStatement = [text2 _crIsProgrammingStatement];
 
-      if ((v10 & 1) == 0 && ![(CRWrappingEvaluationResult *)self f2StartOfSentence])
+      if ((_crIsProgrammingStatement & 1) == 0 && ![(CRWrappingEvaluationResult *)self f2StartOfSentence])
       {
         if (![(CRWrappingEvaluationResult *)self f1EndsWithDD]|| ![(CRWrappingEvaluationResult *)self f2BeginsWithDD])
         {
@@ -980,18 +980,18 @@ void __62__CRWrappingEvaluationResult__computeDDPropertiesWithContext___block_in
             return -2;
           }
 
-          v11 = [(CRWrappingEvaluationResult *)self featureInTest];
-          v12 = [v11 text];
-          if ([v12 length] <= 1)
+          featureInTest2 = [(CRWrappingEvaluationResult *)self featureInTest];
+          text3 = [featureInTest2 text];
+          if ([text3 length] <= 1)
           {
           }
 
           else
           {
-            v13 = [(CRWrappingEvaluationResult *)self context];
-            v14 = [v13 lastFeature];
-            v15 = [v14 text];
-            v16 = [v15 length];
+            context2 = [(CRWrappingEvaluationResult *)self context];
+            lastFeature2 = [context2 lastFeature];
+            text4 = [lastFeature2 text];
+            v16 = [text4 length];
 
             if (v16 > 1)
             {
@@ -1016,67 +1016,67 @@ void __62__CRWrappingEvaluationResult__computeDDPropertiesWithContext___block_in
   return v3;
 }
 
-- (int64_t)caseWrappingScoreUsingCustomConfiguration:(BOOL)a3
+- (int64_t)caseWrappingScoreUsingCustomConfiguration:(BOOL)configuration
 {
-  v3 = a3;
+  configurationCopy = configuration;
   v30 = *MEMORY[0x1E69E9840];
-  v5 = [(CRWrappingEvaluationResult *)self context];
+  context = [(CRWrappingEvaluationResult *)self context];
 
-  if (v5)
+  if (context)
   {
     if (![(CRWrappingEvaluationResult *)self multilineDD])
     {
-      v6 = [(CRWrappingEvaluationResult *)self context];
-      v7 = [v6 shouldConsiderLetterCase];
+      context2 = [(CRWrappingEvaluationResult *)self context];
+      shouldConsiderLetterCase = [context2 shouldConsiderLetterCase];
 
-      if (v7)
+      if (shouldConsiderLetterCase)
       {
-        v8 = [(CRWrappingEvaluationResult *)self context];
-        v9 = [v8 lastFeature];
-        v10 = [v9 text];
-        v11 = [(CRWrappingEvaluationResult *)self _spaceSeparatedTokens:v10];
-        v12 = [v11 lastObject];
+        context3 = [(CRWrappingEvaluationResult *)self context];
+        lastFeature = [context3 lastFeature];
+        text = [lastFeature text];
+        v11 = [(CRWrappingEvaluationResult *)self _spaceSeparatedTokens:text];
+        lastObject = [v11 lastObject];
 
-        v13 = [(CRWrappingEvaluationResult *)self featureInTest];
-        v14 = [v13 text];
-        v15 = [(CRWrappingEvaluationResult *)self _spaceSeparatedTokens:v14];
-        v16 = [v15 firstObject];
+        featureInTest = [(CRWrappingEvaluationResult *)self featureInTest];
+        text2 = [featureInTest text];
+        v15 = [(CRWrappingEvaluationResult *)self _spaceSeparatedTokens:text2];
+        firstObject = [v15 firstObject];
 
         if (-[CRWrappingEvaluationResult f1EndsWithDD](self, "f1EndsWithDD") || -[CRWrappingEvaluationResult f2BeginsWithDD](self, "f2BeginsWithDD") || (-[CRWrappingEvaluationResult featureInTest](self, "featureInTest"), v17 = objc_claimAutoreleasedReturnValue(), [v17 text], v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v18, "_crStartsWithLowercase"), v18, v17, !v19))
         {
-          if ([v12 _crIsAllCaps] && objc_msgSend(v16, "_crIsAllCaps") && !-[CRWrappingEvaluationResult f1EndsWithDD](self, "f1EndsWithDD") && !-[CRWrappingEvaluationResult f2BeginsWithDD](self, "f2BeginsWithDD"))
+          if ([lastObject _crIsAllCaps] && objc_msgSend(firstObject, "_crIsAllCaps") && !-[CRWrappingEvaluationResult f1EndsWithDD](self, "f1EndsWithDD") && !-[CRWrappingEvaluationResult f2BeginsWithDD](self, "f2BeginsWithDD"))
           {
-            v21 = 6;
+            caseWrappingScoreWithNoCapitalization = 6;
           }
 
           else
           {
-            v24 = [v12 _crIsAllCaps];
-            if (v24 != [v16 _crIsAllCaps] && objc_msgSend(v12, "_crContainsText") && objc_msgSend(v16, "_crContainsText") && objc_msgSend(v12, "length") >= 2 && objc_msgSend(v16, "length") > 1)
+            _crIsAllCaps = [lastObject _crIsAllCaps];
+            if (_crIsAllCaps != [firstObject _crIsAllCaps] && objc_msgSend(lastObject, "_crContainsText") && objc_msgSend(firstObject, "_crContainsText") && objc_msgSend(lastObject, "length") >= 2 && objc_msgSend(firstObject, "length") > 1)
             {
-              v21 = -6;
+              caseWrappingScoreWithNoCapitalization = -6;
             }
 
             else
             {
               if (![(CRWrappingEvaluationResult *)self contextNoText]&& ![(CRWrappingEvaluationResult *)self featureInTestNoText])
               {
-                v25 = [(CRWrappingEvaluationResult *)self featureInTest];
-                v26 = [v25 text];
-                if ([v26 _crStartsWithUppercase])
+                featureInTest2 = [(CRWrappingEvaluationResult *)self featureInTest];
+                text3 = [featureInTest2 text];
+                if ([text3 _crStartsWithUppercase])
                 {
-                  v27 = [v16 isEqualToString:@"I"];
+                  v27 = [firstObject isEqualToString:@"I"];
 
-                  if ((v27 & 1) == 0 && ([v12 _crStartsWithUppercase] & 1) == 0)
+                  if ((v27 & 1) == 0 && ([lastObject _crStartsWithUppercase] & 1) == 0)
                   {
                     if ([(CRWrappingEvaluationResult *)self f2BeginsWithDD])
                     {
-                      v21 = 0;
+                      caseWrappingScoreWithNoCapitalization = 0;
                     }
 
                     else
                     {
-                      v21 = -2;
+                      caseWrappingScoreWithNoCapitalization = -2;
                     }
 
                     goto LABEL_34;
@@ -1088,25 +1088,25 @@ void __62__CRWrappingEvaluationResult__computeDDPropertiesWithContext___block_in
                 }
               }
 
-              v21 = 0;
+              caseWrappingScoreWithNoCapitalization = 0;
             }
           }
         }
 
-        else if (v3)
+        else if (configurationCopy)
         {
-          v20 = [(CRWrappingEvaluationResult *)self parameters];
-          v21 = [v20 caseWrappingScoreWithNoCapitalization];
+          parameters = [(CRWrappingEvaluationResult *)self parameters];
+          caseWrappingScoreWithNoCapitalization = [parameters caseWrappingScoreWithNoCapitalization];
         }
 
         else
         {
-          v21 = 10;
+          caseWrappingScoreWithNoCapitalization = 10;
         }
 
 LABEL_34:
 
-        return v21;
+        return caseWrappingScoreWithNoCapitalization;
       }
     }
   }
@@ -1128,9 +1128,9 @@ LABEL_34:
 - (int64_t)wordCountWrappingScore
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = [(CRWrappingEvaluationResult *)self context];
+  context = [(CRWrappingEvaluationResult *)self context];
 
-  if (!v3)
+  if (!context)
   {
     v14 = CROSLogForCategory(0);
     if (os_log_type_enabled(v14, OS_LOG_TYPE_FAULT))
@@ -1143,40 +1143,40 @@ LABEL_34:
     return 0;
   }
 
-  v4 = [(CRWrappingEvaluationResult *)self context];
-  v5 = [v4 usesWordTokens];
+  context2 = [(CRWrappingEvaluationResult *)self context];
+  usesWordTokens = [context2 usesWordTokens];
 
-  if (!v5)
+  if (!usesWordTokens)
   {
     return 0;
   }
 
-  v6 = [(CRWrappingEvaluationResult *)self context];
-  v7 = [v6 lastFeature];
-  v8 = [v7 text];
-  v9 = [(CRWrappingEvaluationResult *)self _tokenCountForString:v8];
+  context3 = [(CRWrappingEvaluationResult *)self context];
+  lastFeature = [context3 lastFeature];
+  text = [lastFeature text];
+  v9 = [(CRWrappingEvaluationResult *)self _tokenCountForString:text];
 
-  v10 = [(CRWrappingEvaluationResult *)self featureInTest];
-  v11 = [v10 text];
-  v12 = [(CRWrappingEvaluationResult *)self _tokenCountForString:v11];
+  featureInTest = [(CRWrappingEvaluationResult *)self featureInTest];
+  text2 = [featureInTest text];
+  v12 = [(CRWrappingEvaluationResult *)self _tokenCountForString:text2];
 
   if (v9 != 1 || v12 < 3)
   {
     if (v12 == 1)
     {
-      v15 = [(CRWrappingEvaluationResult *)self featureInTest];
-      v16 = [v15 text];
-      if ([v16 _crEndsWithEOS])
+      featureInTest2 = [(CRWrappingEvaluationResult *)self featureInTest];
+      text3 = [featureInTest2 text];
+      if ([text3 _crEndsWithEOS])
       {
 
         return 6;
       }
 
-      v17 = [(CRWrappingEvaluationResult *)self featureInTest];
-      v18 = [v17 text];
-      v19 = [v18 _crEndsWithClosingPunctuation];
+      featureInTest3 = [(CRWrappingEvaluationResult *)self featureInTest];
+      text4 = [featureInTest3 text];
+      _crEndsWithClosingPunctuation = [text4 _crEndsWithClosingPunctuation];
 
-      if (v19)
+      if (_crEndsWithClosingPunctuation)
       {
         return 6;
       }
@@ -1196,13 +1196,13 @@ LABEL_34:
   }
 }
 
-- (int64_t)punctuationWrappingScoreUsingCustomConfiguration:(BOOL)a3
+- (int64_t)punctuationWrappingScoreUsingCustomConfiguration:(BOOL)configuration
 {
-  v3 = a3;
+  configurationCopy = configuration;
   v57 = *MEMORY[0x1E69E9840];
-  v5 = [(CRWrappingEvaluationResult *)self context];
+  context = [(CRWrappingEvaluationResult *)self context];
 
-  if (!v5)
+  if (!context)
   {
     v12 = CROSLogForCategory(0);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_FAULT))
@@ -1215,62 +1215,62 @@ LABEL_34:
     return 0;
   }
 
-  v6 = [(CRWrappingEvaluationResult *)self context];
-  v7 = [v6 lastFeature];
-  v8 = [v7 text];
-  if (![v8 _crEndsWithEOS])
+  context2 = [(CRWrappingEvaluationResult *)self context];
+  lastFeature = [context2 lastFeature];
+  text = [lastFeature text];
+  if (![text _crEndsWithEOS])
   {
 
 LABEL_10:
-    v14 = [(CRWrappingEvaluationResult *)self context];
-    v15 = [v14 lastFeature];
-    v16 = [v15 text];
-    v17 = [v16 _crEndsWithMOS];
+    context3 = [(CRWrappingEvaluationResult *)self context];
+    lastFeature2 = [context3 lastFeature];
+    text2 = [lastFeature2 text];
+    _crEndsWithMOS = [text2 _crEndsWithMOS];
 
-    if (v17)
+    if (_crEndsWithMOS)
     {
-      if (!v3)
+      if (!configurationCopy)
       {
         return 10;
       }
 
-      v18 = [(CRWrappingEvaluationResult *)self parameters];
-      v19 = [v18 punctuationWrappingScoreWithEndingMOS];
+      parameters = [(CRWrappingEvaluationResult *)self parameters];
+      punctuationWrappingScoreWithEndingMOS = [parameters punctuationWrappingScoreWithEndingMOS];
       goto LABEL_13;
     }
 
     if (![(CRWrappingEvaluationResult *)self wrappedDD])
     {
-      v20 = [(CRWrappingEvaluationResult *)self context];
-      v54 = [v20 lastFeature];
-      v53 = [v54 text];
-      v21 = [v53 _crStartsWithDigit];
-      v22 = v21;
-      if (v21)
+      context4 = [(CRWrappingEvaluationResult *)self context];
+      lastFeature3 = [context4 lastFeature];
+      text3 = [lastFeature3 text];
+      _crStartsWithDigit = [text3 _crStartsWithDigit];
+      v22 = _crStartsWithDigit;
+      if (_crStartsWithDigit)
       {
-        v52 = [(CRWrappingEvaluationResult *)self featureInTest];
-        v51 = [v52 text];
-        if ([v51 _crStartsWithDigit])
+        featureInTest = [(CRWrappingEvaluationResult *)self featureInTest];
+        text4 = [featureInTest text];
+        if ([text4 _crStartsWithDigit])
         {
 
           return -6;
         }
       }
 
-      v23 = [(CRWrappingEvaluationResult *)self context];
-      v24 = [v23 lastFeature];
-      v25 = [v24 text];
-      if ([v25 _crEndsWithDigit])
+      context5 = [(CRWrappingEvaluationResult *)self context];
+      lastFeature4 = [context5 lastFeature];
+      text5 = [lastFeature4 text];
+      if ([text5 _crEndsWithDigit])
       {
-        v26 = [(CRWrappingEvaluationResult *)self featureInTest];
-        v27 = [v26 text];
-        v28 = [v27 _crEndsWithDigit];
+        featureInTest2 = [(CRWrappingEvaluationResult *)self featureInTest];
+        text6 = [featureInTest2 text];
+        _crEndsWithDigit = [text6 _crEndsWithDigit];
 
         if (v22)
         {
         }
 
-        if (v28)
+        if (_crEndsWithDigit)
         {
           return -6;
         }
@@ -1287,12 +1287,12 @@ LABEL_10:
 
     if (-[CRWrappingEvaluationResult textContentWrappingScore](self, "textContentWrappingScore") < 0 || (-[CRWrappingEvaluationResult sentencePuncStringToCheck](self, "sentencePuncStringToCheck"), v31 = objc_claimAutoreleasedReturnValue(), -[CRWrappingEvaluationResult context](self, "context"), v32 = objc_claimAutoreleasedReturnValue(), v33 = [v31 _crIsSentencePunctuatedIncludingWhitespace:{objc_msgSend(v32, "usesWordTokens")}], v32, v31, !v33))
     {
-      v38 = [(CRWrappingEvaluationResult *)self context];
-      v39 = [v38 lastFeature];
-      v40 = [v39 text];
-      v41 = [v40 _crEndsWithClosingPunctuation];
+      context6 = [(CRWrappingEvaluationResult *)self context];
+      lastFeature5 = [context6 lastFeature];
+      text7 = [lastFeature5 text];
+      _crEndsWithClosingPunctuation = [text7 _crEndsWithClosingPunctuation];
 
-      if (v41)
+      if (_crEndsWithClosingPunctuation)
       {
         return -2;
       }
@@ -1303,34 +1303,34 @@ LABEL_10:
       }
     }
 
-    v34 = [(CRWrappingEvaluationResult *)self context];
-    v35 = [v34 lastFeature];
-    v36 = [v35 text];
-    v37 = [v36 _crEndsWithClosingPunctuation];
+    context7 = [(CRWrappingEvaluationResult *)self context];
+    lastFeature6 = [context7 lastFeature];
+    text8 = [lastFeature6 text];
+    _crEndsWithClosingPunctuation2 = [text8 _crEndsWithClosingPunctuation];
 
-    if (v37)
+    if (_crEndsWithClosingPunctuation2)
     {
       return 2;
     }
 
-    if (!v3)
+    if (!configurationCopy)
     {
-      v18 = [(CRWrappingEvaluationResult *)self context];
-      v43 = [v18 lastFeature];
-      v44 = [v43 locale];
-      v45 = [v44 languageIdentifier];
-      if ([CRImageReader languageIsChinese:v45])
+      parameters = [(CRWrappingEvaluationResult *)self context];
+      lastFeature7 = [parameters lastFeature];
+      locale = [lastFeature7 locale];
+      languageIdentifier = [locale languageIdentifier];
+      if ([CRImageReader languageIsChinese:languageIdentifier])
       {
         v13 = 2;
       }
 
       else
       {
-        v46 = [(CRWrappingEvaluationResult *)self context];
-        v47 = [v46 lastFeature];
-        v48 = [v47 locale];
-        v49 = [v48 languageIdentifier];
-        v50 = [CRImageReader languageIsJapanese:v49];
+        context8 = [(CRWrappingEvaluationResult *)self context];
+        lastFeature8 = [context8 lastFeature];
+        locale2 = [lastFeature8 locale];
+        languageIdentifier2 = [locale2 languageIdentifier];
+        v50 = [CRImageReader languageIsJapanese:languageIdentifier2];
 
         if (v50)
         {
@@ -1346,34 +1346,34 @@ LABEL_10:
       goto LABEL_14;
     }
 
-    v18 = [(CRWrappingEvaluationResult *)self parameters];
-    v19 = [v18 punctuationWrappingScoreWithNoClosingPunctuation];
+    parameters = [(CRWrappingEvaluationResult *)self parameters];
+    punctuationWrappingScoreWithEndingMOS = [parameters punctuationWrappingScoreWithNoClosingPunctuation];
 LABEL_13:
-    v13 = v19;
+    v13 = punctuationWrappingScoreWithEndingMOS;
 LABEL_14:
 
     return v13;
   }
 
-  v9 = [(CRWrappingEvaluationResult *)self oversegmentedListItem];
+  oversegmentedListItem = [(CRWrappingEvaluationResult *)self oversegmentedListItem];
 
-  if (v9)
+  if (oversegmentedListItem)
   {
     goto LABEL_10;
   }
 
-  v10 = [(CRWrappingEvaluationResult *)self featureInTest];
-  v11 = [v10 text];
-  if ([v11 _crStartsWithUppercase])
+  featureInTest3 = [(CRWrappingEvaluationResult *)self featureInTest];
+  text9 = [featureInTest3 text];
+  if ([text9 _crStartsWithUppercase])
   {
 
     return -10;
   }
 
-  v29 = [(CRWrappingEvaluationResult *)self context];
-  v30 = [v29 shouldConsiderLetterCase];
+  context9 = [(CRWrappingEvaluationResult *)self context];
+  shouldConsiderLetterCase = [context9 shouldConsiderLetterCase];
 
-  if ((v30 & 1) == 0)
+  if ((shouldConsiderLetterCase & 1) == 0)
   {
     return -10;
   }
@@ -1383,21 +1383,21 @@ LABEL_14:
 
 - (BOOL)similarHeights
 {
-  v3 = [(CRWrappingEvaluationResult *)self parameters];
-  [v3 heightSimilarityRatio];
+  parameters = [(CRWrappingEvaluationResult *)self parameters];
+  [parameters heightSimilarityRatio];
   v5 = v4;
 
-  v6 = [(CRWrappingEvaluationResult *)self context];
-  v7 = [v6 text];
-  if ([v7 length] <= 2)
+  context = [(CRWrappingEvaluationResult *)self context];
+  text = [context text];
+  if ([text length] <= 2)
   {
   }
 
   else
   {
-    v8 = [(CRWrappingEvaluationResult *)self featureInTest];
-    v9 = [v8 text];
-    v10 = [v9 length];
+    featureInTest = [(CRWrappingEvaluationResult *)self featureInTest];
+    text2 = [featureInTest text];
+    v10 = [text2 length];
 
     if (v10 > 2)
     {
@@ -1413,21 +1413,21 @@ LABEL_6:
 
 - (BOOL)similarAngles
 {
-  v3 = [(CRWrappingEvaluationResult *)self parameters];
-  [v3 angleSimilarityThreshold];
+  parameters = [(CRWrappingEvaluationResult *)self parameters];
+  [parameters angleSimilarityThreshold];
   v5 = v4;
 
-  v6 = [(CRWrappingEvaluationResult *)self context];
-  v7 = [v6 text];
-  if ([v7 length] <= 2)
+  context = [(CRWrappingEvaluationResult *)self context];
+  text = [context text];
+  if ([text length] <= 2)
   {
   }
 
   else
   {
-    v8 = [(CRWrappingEvaluationResult *)self featureInTest];
-    v9 = [v8 text];
-    v10 = [v9 length];
+    featureInTest = [(CRWrappingEvaluationResult *)self featureInTest];
+    text2 = [featureInTest text];
+    v10 = [text2 length];
 
     if (v10 > 2)
     {
@@ -1444,9 +1444,9 @@ LABEL_6:
 - (BOOL)excessiveVerticalDistance
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [(CRWrappingEvaluationResult *)self context];
+  context = [(CRWrappingEvaluationResult *)self context];
 
-  if (!v3)
+  if (!context)
   {
     v5 = CROSLogForCategory(0);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))
@@ -1459,24 +1459,24 @@ LABEL_6:
     return 0;
   }
 
-  v4 = [(CRWrappingEvaluationResult *)self context];
-  if ([v4 lineCount] < 2)
+  context2 = [(CRWrappingEvaluationResult *)self context];
+  if ([context2 lineCount] < 2)
   {
 
     return 0;
   }
 
-  v6 = [(CRWrappingEvaluationResult *)self contributesToVerticalSpacing];
+  contributesToVerticalSpacing = [(CRWrappingEvaluationResult *)self contributesToVerticalSpacing];
 
-  if (!v6)
+  if (!contributesToVerticalSpacing)
   {
     return 0;
   }
 
   [(CRWrappingEvaluationResult *)self verticalSpacingToHeightRatio];
   v8 = v7;
-  v9 = [(CRWrappingEvaluationResult *)self parameters];
-  [v9 smallestVerticalDistanceHeightRatio];
+  parameters = [(CRWrappingEvaluationResult *)self parameters];
+  [parameters smallestVerticalDistanceHeightRatio];
   if (v8 > v10)
   {
     [(CRWrappingEvaluationResult *)self verticalSpacingToHeightRatio];
@@ -1485,13 +1485,13 @@ LABEL_6:
 
   else
   {
-    v11 = [(CRWrappingEvaluationResult *)self parameters];
-    [v11 smallestVerticalDistanceHeightRatio];
+    parameters2 = [(CRWrappingEvaluationResult *)self parameters];
+    [parameters2 smallestVerticalDistanceHeightRatio];
     v13 = v12;
   }
 
-  v17 = [(CRWrappingEvaluationResult *)self parameters];
-  [v17 maximumVerticalDistanceGrowthRatio];
+  parameters3 = [(CRWrappingEvaluationResult *)self parameters];
+  [parameters3 maximumVerticalDistanceGrowthRatio];
   v14 = v13 > v18;
 
   return v14;
@@ -1512,32 +1512,32 @@ LABEL_6:
 
 - (double)verticalSpacingToHeightRatio
 {
-  v3 = [(CRWrappingEvaluationResult *)self context];
-  v4 = [v3 lineCount];
+  context = [(CRWrappingEvaluationResult *)self context];
+  lineCount = [context lineCount];
 
   [(CRWrappingEvaluationResult *)self featureInTestSize];
   v6 = v5;
-  v7 = [(CRWrappingEvaluationResult *)self context];
-  [v7 averageLineHeight];
+  context2 = [(CRWrappingEvaluationResult *)self context];
+  [context2 averageLineHeight];
   v9 = v8;
 
-  v10 = [(CRWrappingEvaluationResult *)self context];
-  [v10 averageVerticalSpacing];
+  context3 = [(CRWrappingEvaluationResult *)self context];
+  [context3 averageVerticalSpacing];
   v12 = v11;
-  v13 = [(CRWrappingEvaluationResult *)self parameters];
-  [v13 smallestVerticalDistanceHeightRatio];
-  v14 = (1.0 - 1.0 / (v4 + 1)) * v9 + v6 * (1.0 / (v4 + 1));
+  parameters = [(CRWrappingEvaluationResult *)self parameters];
+  [parameters smallestVerticalDistanceHeightRatio];
+  v14 = (1.0 - 1.0 / (lineCount + 1)) * v9 + v6 * (1.0 / (lineCount + 1));
   if (v12 <= v14 * v15)
   {
-    v16 = [(CRWrappingEvaluationResult *)self parameters];
-    [v16 smallestVerticalDistanceHeightRatio];
+    parameters2 = [(CRWrappingEvaluationResult *)self parameters];
+    [parameters2 smallestVerticalDistanceHeightRatio];
     v18 = v14 * v19;
   }
 
   else
   {
-    v16 = [(CRWrappingEvaluationResult *)self context];
-    [v16 averageVerticalSpacing];
+    parameters2 = [(CRWrappingEvaluationResult *)self context];
+    [parameters2 averageVerticalSpacing];
     v18 = v17;
   }
 
@@ -1547,13 +1547,13 @@ LABEL_6:
 
 - (int64_t)tokenCountDiff
 {
-  v3 = [(CRWrappingEvaluationResult *)self featureInTest];
-  v4 = [v3 text];
-  v5 = [(CRWrappingEvaluationResult *)self _tokenCountForString:v4];
-  v6 = [(CRWrappingEvaluationResult *)self context];
-  v7 = [v6 lastFeature];
-  v8 = [v7 text];
-  v9 = v5 - [(CRWrappingEvaluationResult *)self _tokenCountForString:v8];
+  featureInTest = [(CRWrappingEvaluationResult *)self featureInTest];
+  text = [featureInTest text];
+  v5 = [(CRWrappingEvaluationResult *)self _tokenCountForString:text];
+  context = [(CRWrappingEvaluationResult *)self context];
+  lastFeature = [context lastFeature];
+  text2 = [lastFeature text];
+  v9 = v5 - [(CRWrappingEvaluationResult *)self _tokenCountForString:text2];
 
   return v9;
 }
@@ -1589,15 +1589,15 @@ LABEL_6:
   return result;
 }
 
-- (void)_computeLMScoreComputingEOS:(BOOL)a3
+- (void)_computeLMScoreComputingEOS:(BOOL)s
 {
-  v3 = a3;
+  sCopy = s;
   v14 = *MEMORY[0x1E69E9840];
-  v5 = [(CRWrappingEvaluationResult *)self context];
+  context = [(CRWrappingEvaluationResult *)self context];
 
-  if (v5)
+  if (context)
   {
-    if (v3)
+    if (sCopy)
     {
       if ([(CRWrappingEvaluationResult *)self eosLMScoreSet])
       {
@@ -1610,16 +1610,16 @@ LABEL_6:
       return;
     }
 
-    v7 = [(CRWrappingEvaluationResult *)self context];
-    v8 = [v7 usesWordTokens];
+    context2 = [(CRWrappingEvaluationResult *)self context];
+    usesWordTokens = [context2 usesWordTokens];
 
-    if (v8)
+    if (usesWordTokens)
     {
-      v9 = [(CRWrappingEvaluationResult *)self context];
-      v10 = v9;
-      if (v3)
+      context3 = [(CRWrappingEvaluationResult *)self context];
+      v10 = context3;
+      if (sCopy)
       {
-        [v9 wordLMScoreByAddingToken:2];
+        [context3 wordLMScoreByAddingToken:2];
         self->_cachedEOSLMScore = v11;
 
         [(CRWrappingEvaluationResult *)self setEosLMScoreSet:1];
@@ -1662,10 +1662,10 @@ LABEL_6:
 - (void)_computeCharLMScores
 {
   v7 = 0.0;
-  v3 = [(CRWrappingEvaluationResult *)self context];
-  v4 = [(CRWrappingEvaluationResult *)self featureInTest];
-  v5 = [v4 text];
-  [v3 charLMScoreByAddingString:v5 eosScore:&v7];
+  context = [(CRWrappingEvaluationResult *)self context];
+  featureInTest = [(CRWrappingEvaluationResult *)self featureInTest];
+  text = [featureInTest text];
+  [context charLMScoreByAddingString:text eosScore:&v7];
   self->_cachedLMScore = v6;
 
   self->_cachedEOSLMScore = v7;
@@ -1676,23 +1676,23 @@ LABEL_6:
 - (vector<unsigned)featureTokens
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = [(CRWrappingEvaluationResult *)self context];
+  context = [(CRWrappingEvaluationResult *)self context];
 
-  if (v4)
+  if (context)
   {
     if (![(CRWrappingEvaluationResult *)self featureTokensSet])
     {
-      v5 = [(CRWrappingEvaluationResult *)self context];
-      v6 = [v5 usesWordTokens];
+      context2 = [(CRWrappingEvaluationResult *)self context];
+      usesWordTokens = [context2 usesWordTokens];
 
-      if (v6)
+      if (usesWordTokens)
       {
-        v7 = [(CRWrappingEvaluationResult *)self context];
-        v8 = [(CRWrappingEvaluationResult *)self featureInTest];
-        v9 = [v8 text];
-        if (v7)
+        context3 = [(CRWrappingEvaluationResult *)self context];
+        featureInTest = [(CRWrappingEvaluationResult *)self featureInTest];
+        text = [featureInTest text];
+        if (context3)
         {
-          [v7 tokenizeStringIntoWords:v9];
+          [context3 tokenizeStringIntoWords:text];
         }
 
         else
@@ -1728,29 +1728,29 @@ LABEL_6:
   return [(CRWrappingEvaluationResult *)self cachedFeatureTokens];
 }
 
-- (int64_t)_tokenCountForString:(id)a3
+- (int64_t)_tokenCountForString:(id)string
 {
-  v4 = a3;
-  v5 = [(CRWrappingEvaluationResult *)self context];
-  v6 = [v5 usesWordTokens];
+  stringCopy = string;
+  context = [(CRWrappingEvaluationResult *)self context];
+  usesWordTokens = [context usesWordTokens];
 
-  if (v6)
+  if (usesWordTokens)
   {
-    v7 = [(CRWrappingEvaluationResult *)self _spaceSeparatedTokens:v4];
+    v7 = [(CRWrappingEvaluationResult *)self _spaceSeparatedTokens:stringCopy];
     v8 = [v7 count];
   }
 
   else
   {
-    v8 = [v4 length];
+    v8 = [stringCopy length];
   }
 
   return v8;
 }
 
-- (id)_spaceSeparatedTokens:(id)a3
+- (id)_spaceSeparatedTokens:(id)tokens
 {
-  v3 = [a3 componentsSeparatedByString:@" "];
+  v3 = [tokens componentsSeparatedByString:@" "];
 
   return v3;
 }

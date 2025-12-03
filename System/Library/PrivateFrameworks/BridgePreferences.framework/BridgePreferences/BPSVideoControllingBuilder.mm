@@ -1,11 +1,11 @@
 @interface BPSVideoControllingBuilder
-+ (id)videoControllerWithFileName:(id)a3 fileExtension:(id)a4 bundle:(id)a5 autoPlay:(BOOL)a6 startDelay:(double)a7 shouldLoop:(BOOL)a8 volume:(float)a9;
++ (id)videoControllerWithFileName:(id)name fileExtension:(id)extension bundle:(id)bundle autoPlay:(BOOL)play startDelay:(double)delay shouldLoop:(BOOL)loop volume:(float)volume;
 - (BPSVideoControllingBuilder)init;
 @end
 
 @implementation BPSVideoControllingBuilder
 
-+ (id)videoControllerWithFileName:(id)a3 fileExtension:(id)a4 bundle:(id)a5 autoPlay:(BOOL)a6 startDelay:(double)a7 shouldLoop:(BOOL)a8 volume:(float)a9
++ (id)videoControllerWithFileName:(id)name fileExtension:(id)extension bundle:(id)bundle autoPlay:(BOOL)play startDelay:(double)delay shouldLoop:(BOOL)loop volume:(float)volume
 {
   sub_241EA9E38();
   sub_241EA9E28();
@@ -17,10 +17,10 @@
 
   v15 = sub_241EA9D38();
   v17 = v16;
-  if (a4)
+  if (extension)
   {
     v18 = sub_241EA9D38();
-    a4 = v19;
+    extension = v19;
   }
 
   else
@@ -28,8 +28,8 @@
     v18 = 0;
   }
 
-  v20 = a5;
-  v21 = sub_241E9C5B0(v15, v17, v18, a4, a5, a6, a8, a7, a9);
+  bundleCopy = bundle;
+  v21 = sub_241E9C5B0(v15, v17, v18, extension, bundle, play, loop, delay, volume);
 
   return v21;
 }

@@ -1,6 +1,6 @@
 @interface MTRMessagesClusterMessageStruct
 - (MTRMessagesClusterMessageStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -13,9 +13,9 @@
   v2 = [(MTRMessagesClusterMessageStruct *)&v12 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEA90] data];
+    data = [MEMORY[0x277CBEA90] data];
     messageID = v2->_messageID;
-    v2->_messageID = v3;
+    v2->_messageID = data;
 
     priority = v2->_priority;
     v2->_priority = &unk_284C3E588;
@@ -39,29 +39,29 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRMessagesClusterMessageStruct);
-  v5 = [(MTRMessagesClusterMessageStruct *)self messageID];
-  [(MTRMessagesClusterMessageStruct *)v4 setMessageID:v5];
+  messageID = [(MTRMessagesClusterMessageStruct *)self messageID];
+  [(MTRMessagesClusterMessageStruct *)v4 setMessageID:messageID];
 
-  v6 = [(MTRMessagesClusterMessageStruct *)self priority];
-  [(MTRMessagesClusterMessageStruct *)v4 setPriority:v6];
+  priority = [(MTRMessagesClusterMessageStruct *)self priority];
+  [(MTRMessagesClusterMessageStruct *)v4 setPriority:priority];
 
-  v7 = [(MTRMessagesClusterMessageStruct *)self messageControl];
-  [(MTRMessagesClusterMessageStruct *)v4 setMessageControl:v7];
+  messageControl = [(MTRMessagesClusterMessageStruct *)self messageControl];
+  [(MTRMessagesClusterMessageStruct *)v4 setMessageControl:messageControl];
 
-  v8 = [(MTRMessagesClusterMessageStruct *)self startTime];
-  [(MTRMessagesClusterMessageStruct *)v4 setStartTime:v8];
+  startTime = [(MTRMessagesClusterMessageStruct *)self startTime];
+  [(MTRMessagesClusterMessageStruct *)v4 setStartTime:startTime];
 
-  v9 = [(MTRMessagesClusterMessageStruct *)self duration];
-  [(MTRMessagesClusterMessageStruct *)v4 setDuration:v9];
+  duration = [(MTRMessagesClusterMessageStruct *)self duration];
+  [(MTRMessagesClusterMessageStruct *)v4 setDuration:duration];
 
-  v10 = [(MTRMessagesClusterMessageStruct *)self messageText];
-  [(MTRMessagesClusterMessageStruct *)v4 setMessageText:v10];
+  messageText = [(MTRMessagesClusterMessageStruct *)self messageText];
+  [(MTRMessagesClusterMessageStruct *)v4 setMessageText:messageText];
 
-  v11 = [(MTRMessagesClusterMessageStruct *)self responses];
-  [(MTRMessagesClusterMessageStruct *)v4 setResponses:v11];
+  responses = [(MTRMessagesClusterMessageStruct *)self responses];
+  [(MTRMessagesClusterMessageStruct *)v4 setResponses:responses];
 
   return v4;
 }

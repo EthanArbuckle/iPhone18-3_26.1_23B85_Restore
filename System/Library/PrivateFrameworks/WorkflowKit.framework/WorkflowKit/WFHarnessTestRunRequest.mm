@@ -1,9 +1,9 @@
 @interface WFHarnessTestRunRequest
-- (WFHarnessTestRunRequest)initWithCoder:(id)a3;
-- (WFHarnessTestRunRequest)initWithTestBundleURL:(id)a3 xcTestClass:(id)a4 xcTestMethodName:(id)a5 testIdentifier:(id)a6 automationType:(id)a7;
+- (WFHarnessTestRunRequest)initWithCoder:(id)coder;
+- (WFHarnessTestRunRequest)initWithTestBundleURL:(id)l xcTestClass:(id)class xcTestMethodName:(id)name testIdentifier:(id)identifier automationType:(id)type;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
-- (void)getInputWithCompletionHandler:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)getInputWithCompletionHandler:(id)handler;
 @end
 
 @implementation WFHarnessTestRunRequest
@@ -13,29 +13,29 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(WFHarnessTestRunDescriptor *)self->_testRunDescriptor xcTestClass];
-  v7 = [(WFHarnessTestRunDescriptor *)self->_testRunDescriptor xcTestMethodName];
-  v8 = [(WFHarnessTestRunDescriptor *)self->_testRunDescriptor testIdentifier];
-  v9 = [v3 stringWithFormat:@"<%@: %p, %@ %@, testIdentifier: %@>", v5, self, v6, v7, v8];
+  xcTestClass = [(WFHarnessTestRunDescriptor *)self->_testRunDescriptor xcTestClass];
+  xcTestMethodName = [(WFHarnessTestRunDescriptor *)self->_testRunDescriptor xcTestMethodName];
+  testIdentifier = [(WFHarnessTestRunDescriptor *)self->_testRunDescriptor testIdentifier];
+  v9 = [v3 stringWithFormat:@"<%@: %p, %@ %@, testIdentifier: %@>", v5, self, xcTestClass, xcTestMethodName, testIdentifier];
 
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = WFHarnessTestRunRequest;
-  v4 = a3;
-  [(WFWorkflowRunRequest *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(WFWorkflowRunRequest *)&v6 encodeWithCoder:coderCopy];
   v5 = [(WFHarnessTestRunRequest *)self testRunDescriptor:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"testRunDescriptor"];
+  [coderCopy encodeObject:v5 forKey:@"testRunDescriptor"];
 }
 
-- (WFHarnessTestRunRequest)initWithCoder:(id)a3
+- (WFHarnessTestRunRequest)initWithCoder:(id)coder
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"testRunDescriptor"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"testRunDescriptor"];
   if (!v5)
   {
     v8 = getWFTestHarnessLogObject();
@@ -52,7 +52,7 @@
 
   v11.receiver = self;
   v11.super_class = WFHarnessTestRunRequest;
-  v6 = [(WFWorkflowRunRequest *)&v11 initWithCoder:v4];
+  v6 = [(WFWorkflowRunRequest *)&v11 initWithCoder:coderCopy];
   if (v6)
   {
     v7 = v5;
@@ -65,21 +65,21 @@ LABEL_7:
   return v6;
 }
 
-- (void)getInputWithCompletionHandler:(id)a3
+- (void)getInputWithCompletionHandler:(id)handler
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(WFHarnessTestRunRequest *)self testRunDescriptor];
+  handlerCopy = handler;
+  testRunDescriptor = [(WFHarnessTestRunRequest *)self testRunDescriptor];
   v11 = 0;
-  v6 = [v5 loadTestCaseWithError:&v11];
+  v6 = [testRunDescriptor loadTestCaseWithError:&v11];
   v7 = v11;
 
   if (v6)
   {
-    v8 = [v6 input];
-    v4[2](v4, v8, 0);
+    input = [v6 input];
+    handlerCopy[2](handlerCopy, input, 0);
 
-    v4 = v8;
+    handlerCopy = input;
   }
 
   else
@@ -94,27 +94,27 @@ LABEL_7:
       _os_log_impl(&dword_1CA256000, v9, OS_LOG_TYPE_ERROR, "%s Can't load harness test case when getting shortcut input: %@", buf, 0x16u);
     }
 
-    (v4)[2](v4, 0, v7);
+    (handlerCopy)[2](handlerCopy, 0, v7);
   }
 
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (WFHarnessTestRunRequest)initWithTestBundleURL:(id)a3 xcTestClass:(id)a4 xcTestMethodName:(id)a5 testIdentifier:(id)a6 automationType:(id)a7
+- (WFHarnessTestRunRequest)initWithTestBundleURL:(id)l xcTestClass:(id)class xcTestMethodName:(id)name testIdentifier:(id)identifier automationType:(id)type
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  lCopy = l;
+  classCopy = class;
+  nameCopy = name;
+  identifierCopy = identifier;
+  typeCopy = type;
   v17 = [(WFWorkflowRunRequest *)self initWithInput:0 presentationMode:3];
   if (v17)
   {
-    v18 = [[WFHarnessTestRunDescriptor alloc] initWithTestBundleURL:v12 xcTestClass:v13 xcTestMethodName:v14 testIdentifier:v15];
+    v18 = [[WFHarnessTestRunDescriptor alloc] initWithTestBundleURL:lCopy xcTestClass:classCopy xcTestMethodName:nameCopy testIdentifier:identifierCopy];
     testRunDescriptor = v17->_testRunDescriptor;
     v17->_testRunDescriptor = v18;
 
-    v20 = [v16 copy];
+    v20 = [typeCopy copy];
     [(WFWorkflowRunRequest *)v17 setAutomationType:v20];
 
     [(WFWorkflowRunRequest *)v17 setOutputBehavior:2];

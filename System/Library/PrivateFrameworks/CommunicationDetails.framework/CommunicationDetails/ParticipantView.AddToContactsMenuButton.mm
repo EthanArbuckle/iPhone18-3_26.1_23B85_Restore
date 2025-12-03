@@ -1,13 +1,13 @@
 @interface ParticipantView.AddToContactsMenuButton
 - (NSArray)accessibilityCustomActions;
 - (NSString)accessibilityLabel;
-- (_TtCV20CommunicationDetails15ParticipantView23AddToContactsMenuButton)initWithCoder:(id)a3;
-- (_TtCV20CommunicationDetails15ParticipantView23AddToContactsMenuButton)initWithFrame:(CGRect)a3;
+- (_TtCV20CommunicationDetails15ParticipantView23AddToContactsMenuButton)initWithCoder:(id)coder;
+- (_TtCV20CommunicationDetails15ParticipantView23AddToContactsMenuButton)initWithFrame:(CGRect)frame;
 @end
 
 @implementation ParticipantView.AddToContactsMenuButton
 
-- (_TtCV20CommunicationDetails15ParticipantView23AddToContactsMenuButton)initWithCoder:(id)a3
+- (_TtCV20CommunicationDetails15ParticipantView23AddToContactsMenuButton)initWithCoder:(id)coder
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -45,7 +45,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
+  selfCopy = self;
   ParticipantView.AddToContactsMenuButton.accessibilityCustomActions.getter();
   v5 = v4;
 
@@ -64,7 +64,7 @@
   return v6.super.isa;
 }
 
-- (_TtCV20CommunicationDetails15ParticipantView23AddToContactsMenuButton)initWithFrame:(CGRect)a3
+- (_TtCV20CommunicationDetails15ParticipantView23AddToContactsMenuButton)initWithFrame:(CGRect)frame
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();

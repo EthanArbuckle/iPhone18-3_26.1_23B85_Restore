@@ -7,7 +7,7 @@
 
 - (NSDictionary)dictionary
 {
-  v2 = self;
+  selfCopy = self;
   UniversalMetricsDictionary.dictionary.getter();
 
   v3.super.isa = sub_3ED084().super.isa;
@@ -21,8 +21,8 @@
   v4 = sub_13CF5C();
   v6 = v5;
   v8 = v7;
-  v9 = [objc_opt_self() ams_sharedAccountStore];
-  *(&self->super.isa + OBJC_IVAR____TtC8ShelfKit26UniversalMetricsDictionary_accountStore) = v9;
+  ams_sharedAccountStore = [objc_opt_self() ams_sharedAccountStore];
+  *(&self->super.isa + OBJC_IVAR____TtC8ShelfKit26UniversalMetricsDictionary_accountStore) = ams_sharedAccountStore;
   v10 = (self + OBJC_IVAR____TtC8ShelfKit26UniversalMetricsDictionary_screenSize);
   *v10 = v4;
   *(v10 + 1) = v6;

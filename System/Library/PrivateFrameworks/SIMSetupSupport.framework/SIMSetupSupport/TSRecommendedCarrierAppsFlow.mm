@@ -1,11 +1,11 @@
 @interface TSRecommendedCarrierAppsFlow
 - (TSRecommendedCarrierAppsFlow)init;
 - (id)_createFirstViewController;
-- (id)_getValueFromCountryBunbleByKey:(id)a3;
+- (id)_getValueFromCountryBunbleByKey:(id)key;
 - (id)firstViewController;
-- (void)_requestCarrierAppsWithCompletion:(id)a3;
+- (void)_requestCarrierAppsWithCompletion:(id)completion;
 - (void)firstViewController;
-- (void)firstViewController:(id)a3;
+- (void)firstViewController:(id)controller;
 @end
 
 @implementation TSRecommendedCarrierAppsFlow
@@ -43,17 +43,17 @@
   return 0;
 }
 
-- (void)firstViewController:(id)a3
+- (void)firstViewController:(id)controller
 {
-  v4 = a3;
-  if (v4)
+  controllerCopy = controller;
+  if (controllerCopy)
   {
     objc_initWeak(&location, self);
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __52__TSRecommendedCarrierAppsFlow_firstViewController___block_invoke;
     v10[3] = &unk_279B44C30;
-    v11 = v4;
+    v11 = controllerCopy;
     v5 = MEMORY[0x2667315D0](v10);
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
@@ -91,13 +91,13 @@ void __52__TSRecommendedCarrierAppsFlow_firstViewController___block_invoke_2(uin
   }
 }
 
-- (void)_requestCarrierAppsWithCompletion:(id)a3
+- (void)_requestCarrierAppsWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
     objc_initWeak(&location, self);
-    v5 = MEMORY[0x2667315D0](v4);
+    v5 = MEMORY[0x2667315D0](completionCopy);
     if (_requestCarrierAppsWithCompletion__onceToken != -1)
     {
       [TSRecommendedCarrierAppsFlow _requestCarrierAppsWithCompletion:];
@@ -235,27 +235,27 @@ void __66__TSRecommendedCarrierAppsFlow__requestCarrierAppsWithCompletion___bloc
   return v6;
 }
 
-- (id)_getValueFromCountryBunbleByKey:(id)a3
+- (id)_getValueFromCountryBunbleByKey:(id)key
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  keyCopy = key;
   client = self->_client;
   v26 = 0;
   v6 = [(CoreTelephonyClient *)client getSubscriptionInfoWithError:&v26];
   v7 = v26;
   if (!v7)
   {
-    v9 = [v6 subscriptions];
-    if (v9)
+    subscriptions = [v6 subscriptions];
+    if (subscriptions)
     {
       v11 = [objc_alloc(MEMORY[0x277CC3620]) initWithBundleType:6];
       memset(v25, 0, sizeof(v25));
-      if ([v9 countByEnumeratingWithState:v25 objects:v27 count:16])
+      if ([subscriptions countByEnumeratingWithState:v25 objects:v27 count:16])
       {
         v12 = **(&v25[0] + 1);
         v13 = self->_client;
         v24 = 0;
-        v14 = [(CoreTelephonyClient *)v13 copyCarrierBundleValue:v12 key:v4 bundleType:v11 error:&v24];
+        v14 = [(CoreTelephonyClient *)v13 copyCarrierBundleValue:v12 key:keyCopy bundleType:v11 error:&v24];
         v8 = v24;
         v10 = v14;
 
@@ -279,10 +279,10 @@ LABEL_11:
   }
 
   v8 = v7;
-  v9 = _TSLogDomain();
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+  subscriptions = _TSLogDomain();
+  if (os_log_type_enabled(subscriptions, OS_LOG_TYPE_ERROR))
   {
-    [(TSRecommendedCarrierAppsFlow *)v8 _getValueFromCountryBunbleByKey:v9];
+    [(TSRecommendedCarrierAppsFlow *)v8 _getValueFromCountryBunbleByKey:subscriptions];
   }
 
   v10 = 0;
@@ -296,7 +296,7 @@ LABEL_12:
 - (void)firstViewController
 {
   v9 = *MEMORY[0x277D85DE8];
-  OUTLINED_FUNCTION_0_0(&dword_262AA8000, a1, a3, "[E](UIViewController *)firstViewController is deprecated, please use (void)firstViewController:(void (^)(UIViewController *))completion @%s", a5, a6, a7, a8, 2u);
+  OUTLINED_FUNCTION_0_0(&dword_262AA8000, self, a3, "[E](UIViewController *)firstViewController is deprecated, please use (void)firstViewController:(void (^)(UIViewController *))completion @%s", a5, a6, a7, a8, 2u);
   v8 = *MEMORY[0x277D85DE8];
 }
 

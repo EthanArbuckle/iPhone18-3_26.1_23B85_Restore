@@ -1,14 +1,14 @@
 @interface MTIDCache
-+ (BOOL)idInfo:(id)a3 isValidForDate:(id)a4;
++ (BOOL)idInfo:(id)info isValidForDate:(id)date;
 - (MTIDCache)init;
-- (id)IDInfoForScheme:(id)a3 options:(id)a4;
-- (id)optionsDescription:(id)a3;
-- (id)promiseKeyForScheme:(id)a3 options:(id)a4;
-- (void)addIDInfo:(id)a3 reset:(BOOL)a4;
-- (void)addIdInfoPromise:(id)a3 forScheme:(id)a4 options:(id)a5;
+- (id)IDInfoForScheme:(id)scheme options:(id)options;
+- (id)optionsDescription:(id)description;
+- (id)promiseKeyForScheme:(id)scheme options:(id)options;
+- (void)addIDInfo:(id)info reset:(BOOL)reset;
+- (void)addIdInfoPromise:(id)promise forScheme:(id)scheme options:(id)options;
 - (void)removeAllNamespaces;
-- (void)removeNamespace:(id)a3;
-- (void)removeNamespaces:(id)a3;
+- (void)removeNamespace:(id)namespace;
+- (void)removeNamespaces:(id)namespaces;
 - (void)removeUnsyncedNamespaces;
 @end
 
@@ -21,50 +21,50 @@
   v2 = [(MTIDCache *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB38] dictionary];
-    [(MTIDCache *)v2 setCache:v3];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    [(MTIDCache *)v2 setCache:dictionary];
 
-    v4 = [MEMORY[0x277CBEB38] dictionary];
-    [(MTIDCache *)v2 setPromiseCache:v4];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+    [(MTIDCache *)v2 setPromiseCache:dictionary2];
   }
 
   return v2;
 }
 
-+ (BOOL)idInfo:(id)a3 isValidForDate:(id)a4
++ (BOOL)idInfo:(id)info isValidForDate:(id)date
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 effectiveDate];
-  v8 = v7;
-  if (v7 && [v7 compare:v6] == 1)
+  infoCopy = info;
+  dateCopy = date;
+  effectiveDate = [infoCopy effectiveDate];
+  v8 = effectiveDate;
+  if (effectiveDate && [effectiveDate compare:dateCopy] == 1)
   {
     v9 = 0;
   }
 
   else
   {
-    v10 = [v5 expirationDate];
-    v11 = v10;
-    v9 = !v10 || [v10 compare:v6] != -1;
+    expirationDate = [infoCopy expirationDate];
+    v11 = expirationDate;
+    v9 = !expirationDate || [expirationDate compare:dateCopy] != -1;
   }
 
   return v9;
 }
 
-- (id)optionsDescription:(id)a3
+- (id)optionsDescription:(id)description
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v3, "count")}];
+  descriptionCopy = description;
+  v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(descriptionCopy, "count")}];
   v5 = +[MTIDCommon idOptions];
   v10 = MEMORY[0x277D85DD0];
   v11 = 3221225472;
   v12 = __32__MTIDCache_optionsDescription___block_invoke;
   v13 = &unk_2798CDDC8;
-  v14 = v3;
+  v14 = descriptionCopy;
   v15 = v4;
   v6 = v4;
-  v7 = v3;
+  v7 = descriptionCopy;
   [v5 enumerateObjectsUsingBlock:&v10];
 
   v8 = [v6 componentsJoinedByString:{@", ", v10, v11, v12, v13}];
@@ -96,12 +96,12 @@ void __32__MTIDCache_optionsDescription___block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (id)promiseKeyForScheme:(id)a3 options:(id)a4
+- (id)promiseKeyForScheme:(id)scheme options:(id)options
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v6 mutableCopy];
-  v9 = [v6 objectForKeyedSubscript:@"date"];
+  optionsCopy = options;
+  schemeCopy = scheme;
+  v8 = [optionsCopy mutableCopy];
+  v9 = [optionsCopy objectForKeyedSubscript:@"date"];
 
   if (v9)
   {
@@ -127,11 +127,11 @@ LABEL_5:
   [v8 setObject:v14 forKeyedSubscript:@"date"];
 
   v15 = MEMORY[0x277CCACA8];
-  v16 = [v7 idNamespace];
+  idNamespace = [schemeCopy idNamespace];
 
-  if (v16)
+  if (idNamespace)
   {
-    v17 = v16;
+    v17 = idNamespace;
   }
 
   else
@@ -145,13 +145,13 @@ LABEL_5:
   return v19;
 }
 
-- (id)IDInfoForScheme:(id)a3 options:(id)a4
+- (id)IDInfoForScheme:(id)scheme options:(id)options
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  objc_sync_enter(v8);
-  v9 = [v7 objectForKeyedSubscript:@"date"];
+  schemeCopy = scheme;
+  optionsCopy = options;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v9 = [optionsCopy objectForKeyedSubscript:@"date"];
   v10 = v9;
   if (v9)
   {
@@ -165,7 +165,7 @@ LABEL_5:
 
   v12 = v11;
 
-  v13 = [v7 objectForKeyedSubscript:@"dsId"];
+  v13 = [optionsCopy objectForKeyedSubscript:@"dsId"];
   v14 = v13;
   v15 = &unk_286A4C2A8;
   if (v13)
@@ -175,28 +175,28 @@ LABEL_5:
 
   v16 = v15;
 
-  v17 = [(MTIDCache *)v8 cache];
-  v18 = [v6 idNamespace];
-  v19 = [v17 objectForKeyedSubscript:v18];
+  cache = [(MTIDCache *)selfCopy cache];
+  idNamespace = [schemeCopy idNamespace];
+  v19 = [cache objectForKeyedSubscript:idNamespace];
 
   if (!v19)
   {
     goto LABEL_13;
   }
 
-  v20 = [v19 scheme];
-  if (![v20 isEqual:v6] || !+[MTIDCache idInfo:isValidForDate:](MTIDCache, "idInfo:isValidForDate:", v19, v12))
+  scheme = [v19 scheme];
+  if (![scheme isEqual:schemeCopy] || !+[MTIDCache idInfo:isValidForDate:](MTIDCache, "idInfo:isValidForDate:", v19, v12))
   {
 
     goto LABEL_13;
   }
 
-  v21 = [v19 dsId];
-  v22 = v21;
-  if (v21 != v16)
+  dsId = [v19 dsId];
+  v22 = dsId;
+  if (dsId != v16)
   {
-    v23 = [v19 dsId];
-    v24 = [v16 isEqual:v23];
+    dsId2 = [v19 dsId];
+    v24 = [v16 isEqual:dsId2];
 
     if (v24)
     {
@@ -204,9 +204,9 @@ LABEL_5:
     }
 
 LABEL_13:
-    v25 = [(MTIDCache *)v8 promiseKeyForScheme:v6 options:v7];
-    v26 = [(MTIDCache *)v8 promiseCache];
-    v27 = [v26 objectForKeyedSubscript:v25];
+    v25 = [(MTIDCache *)selfCopy promiseKeyForScheme:schemeCopy options:optionsCopy];
+    promiseCache = [(MTIDCache *)selfCopy promiseCache];
+    v27 = [promiseCache objectForKeyedSubscript:v25];
 
     goto LABEL_14;
   }
@@ -215,27 +215,27 @@ LABEL_18:
   v27 = [MTPromise promiseWithResult:v19];
 LABEL_14:
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
 
   return v27;
 }
 
-- (void)addIdInfoPromise:(id)a3 forScheme:(id)a4 options:(id)a5
+- (void)addIdInfoPromise:(id)promise forScheme:(id)scheme options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(MTIDCache *)self promiseKeyForScheme:v9 options:v10];
-  v12 = [v10 objectForKeyedSubscript:@"reset"];
-  v13 = [v12 BOOLValue];
+  promiseCopy = promise;
+  schemeCopy = scheme;
+  optionsCopy = options;
+  v11 = [(MTIDCache *)self promiseKeyForScheme:schemeCopy options:optionsCopy];
+  v12 = [optionsCopy objectForKeyedSubscript:@"reset"];
+  bOOLValue = [v12 BOOLValue];
 
-  v14 = self;
-  objc_sync_enter(v14);
-  v15 = [(MTIDCache *)v14 promiseCache];
-  [v15 setObject:v8 forKeyedSubscript:v11];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  promiseCache = [(MTIDCache *)selfCopy promiseCache];
+  [promiseCache setObject:promiseCopy forKeyedSubscript:v11];
 
-  objc_sync_exit(v14);
-  objc_initWeak(&location, v14);
+  objc_sync_exit(selfCopy);
+  objc_initWeak(&location, selfCopy);
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __48__MTIDCache_addIdInfoPromise_forScheme_options___block_invoke;
@@ -243,8 +243,8 @@ LABEL_14:
   objc_copyWeak(&v19, &location);
   v16 = v11;
   v18 = v16;
-  v20 = v13;
-  [v8 addFinishBlock:v17];
+  v20 = bOOLValue;
+  [promiseCopy addFinishBlock:v17];
 
   objc_destroyWeak(&v19);
   objc_destroyWeak(&location);
@@ -272,41 +272,41 @@ void __48__MTIDCache_addIdInfoPromise_forScheme_options___block_invoke(uint64_t 
   }
 }
 
-- (void)addIDInfo:(id)a3 reset:(BOOL)a4
+- (void)addIDInfo:(id)info reset:(BOOL)reset
 {
-  v4 = a4;
-  v17 = a3;
-  v6 = self;
-  objc_sync_enter(v6);
-  v7 = [(MTIDCache *)v6 cache];
-  v8 = [v17 scheme];
-  v9 = [v8 idNamespace];
-  v10 = [v7 objectForKeyedSubscript:v9];
+  resetCopy = reset;
+  infoCopy = info;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  cache = [(MTIDCache *)selfCopy cache];
+  scheme = [infoCopy scheme];
+  idNamespace = [scheme idNamespace];
+  v10 = [cache objectForKeyedSubscript:idNamespace];
 
-  if (v10 == v17 || ([v10 isEqual:v17] & 1) != 0)
+  if (v10 == infoCopy || ([v10 isEqual:infoCopy] & 1) != 0)
   {
 
-    objc_sync_exit(v6);
+    objc_sync_exit(selfCopy);
 LABEL_4:
 
     goto LABEL_5;
   }
 
-  v11 = [v17 scheme];
-  v12 = [v11 idNamespace];
-  [(MTIDCache *)v6 removeNamespace:v12];
+  scheme2 = [infoCopy scheme];
+  idNamespace2 = [scheme2 idNamespace];
+  [(MTIDCache *)selfCopy removeNamespace:idNamespace2];
 
-  v13 = [(MTIDCache *)v6 cache];
-  v14 = [v17 scheme];
-  v15 = [v14 idNamespace];
-  [v13 setObject:v17 forKeyedSubscript:v15];
+  cache2 = [(MTIDCache *)selfCopy cache];
+  scheme3 = [infoCopy scheme];
+  idNamespace3 = [scheme3 idNamespace];
+  [cache2 setObject:infoCopy forKeyedSubscript:idNamespace3];
 
-  objc_sync_exit(v6);
-  if (v4)
+  objc_sync_exit(selfCopy);
+  if (resetCopy)
   {
-    v6 = [v17 scheme];
-    v16 = [(MTIDCache *)v6 idNamespace];
-    [MTInterprocessChangeNotifier notify:v16];
+    selfCopy = [infoCopy scheme];
+    idNamespace4 = [(MTIDCache *)selfCopy idNamespace];
+    [MTInterprocessChangeNotifier notify:idNamespace4];
 
     goto LABEL_4;
   }
@@ -314,24 +314,24 @@ LABEL_4:
 LABEL_5:
 }
 
-- (void)removeNamespace:(id)a3
+- (void)removeNamespace:(id)namespace
 {
   v9 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  namespaceCopy = namespace;
   v4 = MEMORY[0x277CBEA60];
-  v5 = a3;
-  v6 = [v4 arrayWithObjects:&v8 count:1];
+  namespaceCopy2 = namespace;
+  v6 = [v4 arrayWithObjects:&namespaceCopy count:1];
 
-  [(MTIDCache *)self removeNamespaces:v6, v8, v9];
+  [(MTIDCache *)self removeNamespaces:v6, namespaceCopy, v9];
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeNamespaces:(id)a3
+- (void)removeNamespaces:(id)namespaces
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [MEMORY[0x277CBEB58] setWithArray:v4];
+  namespacesCopy = namespaces;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [MEMORY[0x277CBEB58] setWithArray:namespacesCopy];
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
@@ -340,8 +340,8 @@ LABEL_5:
   do
   {
     *v7 = 1;
-    v8 = [(MTIDCache *)v5 cache];
-    v9 = [v8 copy];
+    cache = [(MTIDCache *)selfCopy cache];
+    v9 = [cache copy];
 
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
@@ -349,7 +349,7 @@ LABEL_5:
     v11[3] = &unk_2798CDE18;
     v10 = v6;
     v12 = v10;
-    v13 = v5;
+    v13 = selfCopy;
     v14 = &v15;
     [v9 enumerateKeysAndObjectsUsingBlock:v11];
 
@@ -359,7 +359,7 @@ LABEL_5:
   while ((v16[3] & 1) == 0);
   _Block_object_dispose(&v15, 8);
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 void __30__MTIDCache_removeNamespaces___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -438,8 +438,8 @@ LABEL_14:
 {
   obj = self;
   objc_sync_enter(obj);
-  v2 = [(MTIDCache *)obj cache];
-  [v2 removeAllObjects];
+  cache = [(MTIDCache *)obj cache];
+  [cache removeAllObjects];
 
   objc_sync_exit(obj);
 }
@@ -447,16 +447,16 @@ LABEL_14:
 - (void)removeUnsyncedNamespaces
 {
   v19 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(MTIDCache *)v2 cache];
-  v4 = [v3 allKeys];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  cache = [(MTIDCache *)selfCopy cache];
+  allKeys = [cache allKeys];
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = v4;
+  v5 = allKeys;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -472,13 +472,13 @@ LABEL_14:
         }
 
         v9 = *(*(&v14 + 1) + 8 * v8);
-        v10 = [(MTIDCache *)v2 cache];
-        v11 = [v10 objectForKeyedSubscript:v9];
+        cache2 = [(MTIDCache *)selfCopy cache];
+        v11 = [cache2 objectForKeyedSubscript:v9];
 
         if (([v11 isSynchronized] & 1) == 0)
         {
-          v12 = [(MTIDCache *)v2 cache];
-          [v12 setObject:0 forKeyedSubscript:v9];
+          cache3 = [(MTIDCache *)selfCopy cache];
+          [cache3 setObject:0 forKeyedSubscript:v9];
         }
 
         ++v8;
@@ -491,7 +491,7 @@ LABEL_14:
     while (v6);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   v13 = *MEMORY[0x277D85DE8];
 }
 

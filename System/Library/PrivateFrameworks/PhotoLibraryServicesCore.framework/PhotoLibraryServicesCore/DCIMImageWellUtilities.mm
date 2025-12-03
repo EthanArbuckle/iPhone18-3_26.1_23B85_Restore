@@ -7,9 +7,9 @@
 
 + (id)cameraPreviewWellImage
 {
-  v2 = [a1 cameraPreviewWellImageFileURL];
-  v3 = [v2 path];
-  v4 = DCIM_newPLImageWithContentsOfFile(v3);
+  cameraPreviewWellImageFileURL = [self cameraPreviewWellImageFileURL];
+  path = [cameraPreviewWellImageFileURL path];
+  v4 = DCIM_newPLImageWithContentsOfFile(path);
 
   return v4;
 }

@@ -1,22 +1,22 @@
 @interface WKQuadObject
 - (CGRect)boundingBox;
-- (WKQuadObject)initWithQuad:(_WKQuad *)a3;
+- (WKQuadObject)initWithQuad:(_WKQuad *)quad;
 - (_WKQuad)quad;
 @end
 
 @implementation WKQuadObject
 
-- (WKQuadObject)initWithQuad:(_WKQuad *)a3
+- (WKQuadObject)initWithQuad:(_WKQuad *)quad
 {
   v8.receiver = self;
   v8.super_class = WKQuadObject;
   result = [(WKQuadObject *)&v8 init];
   if (result)
   {
-    p1 = a3->p1;
-    p2 = a3->p2;
-    p3 = a3->p3;
-    result->_quad.p4 = a3->p4;
+    p1 = quad->p1;
+    p2 = quad->p2;
+    p3 = quad->p3;
+    result->_quad.p4 = quad->p4;
     result->_quad.p3 = p3;
     result->_quad.p2 = p2;
     result->_quad.p1 = p1;

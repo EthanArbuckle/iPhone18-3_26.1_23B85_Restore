@@ -1,8 +1,8 @@
 @interface MTROvenModeClusterChangeToModeParams
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3;
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader;
 - (MTROvenModeClusterChangeToModeParams)init;
-- (id)_encodeAsDataValue:(id *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_encodeAsDataValue:(id *)value;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -29,17 +29,17 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTROvenModeClusterChangeToModeParams);
-  v5 = [(MTROvenModeClusterChangeToModeParams *)self getNewMode];
-  [(MTROvenModeClusterChangeToModeParams *)v4 setNewMode:v5];
+  getNewMode = [(MTROvenModeClusterChangeToModeParams *)self getNewMode];
+  [(MTROvenModeClusterChangeToModeParams *)v4 setNewMode:getNewMode];
 
-  v6 = [(MTROvenModeClusterChangeToModeParams *)self timedInvokeTimeoutMs];
-  [(MTROvenModeClusterChangeToModeParams *)v4 setTimedInvokeTimeoutMs:v6];
+  timedInvokeTimeoutMs = [(MTROvenModeClusterChangeToModeParams *)self timedInvokeTimeoutMs];
+  [(MTROvenModeClusterChangeToModeParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
-  v7 = [(MTROvenModeClusterChangeToModeParams *)self serverSideProcessingTimeout];
-  [(MTROvenModeClusterChangeToModeParams *)v4 setServerSideProcessingTimeout:v7];
+  serverSideProcessingTimeout = [(MTROvenModeClusterChangeToModeParams *)self serverSideProcessingTimeout];
+  [(MTROvenModeClusterChangeToModeParams *)v4 setServerSideProcessingTimeout:serverSideProcessingTimeout];
 
   return v4;
 }
@@ -54,14 +54,14 @@
   return v6;
 }
 
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader
 {
-  v21 = 0;
+  unsignedCharValue = 0;
   v20[0] = 0;
   v20[1] = 0;
   v19 = v20;
-  v4 = [(MTROvenModeClusterChangeToModeParams *)self getNewMode];
-  v21 = [v4 unsignedCharValue];
+  getNewMode = [(MTROvenModeClusterChangeToModeParams *)self getNewMode];
+  unsignedCharValue = [getNewMode unsignedCharValue];
 
   sub_2393D9C18(0x62FuLL, 0, &v18);
   if (v18)
@@ -73,7 +73,7 @@
     v17 = 0;
     sub_238EA16C4(&v14, &v18, 0);
     sub_2393C7BF0(v13, &v14, 0xFFFFFFFF);
-    v5 = sub_238F01288(&v21, v13, 0x100uLL);
+    v5 = sub_238F01288(&unsignedCharValue, v13, 0x100uLL);
     v7 = v5;
     if (v5 || (v5 = sub_238DD2EFC(v13, &v18), v7 = v5, v5))
     {
@@ -82,8 +82,8 @@
 
     else
     {
-      sub_238DD2F90(a3, &v18);
-      v5 = sub_2393C7114(a3, 21, 256);
+      sub_238DD2F90(reader, &v18);
+      v5 = sub_2393C7114(reader, 21, 256);
       v8 = v12;
       v7 = v5;
     }
@@ -111,19 +111,19 @@
   return result;
 }
 
-- (id)_encodeAsDataValue:(id *)a3
+- (id)_encodeAsDataValue:(id *)value
 {
   v5 = sub_2393C5AAC(v12);
   v13 = 0;
   v7 = [(MTROvenModeClusterChangeToModeParams *)self _encodeToTLVReader:v12, v5];
   if (v7)
   {
-    if (a3)
+    if (value)
     {
       v8 = sub_23921C1E4(MTRError, v7, v6);
       v9 = 0;
 LABEL_7:
-      *a3 = v8;
+      *value = v8;
       goto LABEL_9;
     }
 
@@ -134,7 +134,7 @@ LABEL_7:
   {
     v10 = sub_238EE60DC(v12, 0);
     v9 = v10;
-    if (a3 && !v10)
+    if (value && !v10)
     {
       v8 = sub_23921C1E4(MTRError, 0x2D5C00000003, "/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/zap-generated/MTRCommandPayloadsObjc.mm");
       goto LABEL_7;

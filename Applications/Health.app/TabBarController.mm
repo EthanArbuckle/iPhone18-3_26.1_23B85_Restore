@@ -1,15 +1,15 @@
 @interface TabBarController
 - (_TtC6Health16TabBarController)init;
-- (_TtC6Health16TabBarController)initWithCoder:(id)a3;
-- (_TtC6Health16TabBarController)initWithNibName:(id)a3 bundle:(id)a4;
-- (_TtC6Health16TabBarController)initWithTabs:(id)a3;
-- (id)tabBarController:(id)a3 displayedViewControllersForTab:(id)a4 proposedViewControllers:(id)a5;
-- (id)tabBarController:(id)a3 sidebar:(id)a4 itemForRequest:(id)a5;
+- (_TtC6Health16TabBarController)initWithCoder:(id)coder;
+- (_TtC6Health16TabBarController)initWithNibName:(id)name bundle:(id)bundle;
+- (_TtC6Health16TabBarController)initWithTabs:(id)tabs;
+- (id)tabBarController:(id)controller displayedViewControllersForTab:(id)tab proposedViewControllers:(id)controllers;
+- (id)tabBarController:(id)controller sidebar:(id)sidebar itemForRequest:(id)request;
 - (unint64_t)supportedInterfaceOrientations;
-- (void)find:(id)a3;
-- (void)restoreUserActivityState:(id)a3;
-- (void)tabBarController:(id)a3 didSelectTab:(id)a4 previousTab:(id)a5;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)find:(id)find;
+- (void)restoreUserActivityState:(id)state;
+- (void)tabBarController:(id)controller didSelectTab:(id)tab previousTab:(id)previousTab;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation TabBarController
@@ -39,17 +39,17 @@
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v2 = self;
-  v3 = [(TabBarController *)v2 selectedViewController];
-  if (v3)
+  selfCopy = self;
+  selectedViewController = [(TabBarController *)selfCopy selectedViewController];
+  if (selectedViewController)
   {
-    v4 = v3;
+    v4 = selectedViewController;
     v5 = swift_dynamicCastObjCProtocolConditional();
     if (v5)
     {
-      v6 = [v5 overrideMask];
+      overrideMask = [v5 overrideMask];
 
-      return v6;
+      return overrideMask;
     }
   }
 
@@ -60,22 +60,22 @@
   return 2;
 }
 
-- (_TtC6Health16TabBarController)initWithCoder:(id)a3
+- (_TtC6Health16TabBarController)initWithCoder:(id)coder
 {
   result = _assertionFailure(_:_:file:line:flags:)();
   __break(1u);
   return result;
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v8.receiver = self;
   v8.super_class = type metadata accessor for TabBarController();
   swift_unknownObjectRetain();
   v7 = v8.receiver;
-  [(TabBarController *)&v8 viewWillTransitionToSize:a4 withTransitionCoordinator:width, height];
+  [(TabBarController *)&v8 viewWillTransitionToSize:coordinator withTransitionCoordinator:width, height];
   if (qword_1000DA5A8 != -1)
   {
     swift_once();
@@ -87,66 +87,66 @@
   swift_unknownObjectRelease();
 }
 
-- (_TtC6Health16TabBarController)initWithTabs:(id)a3
+- (_TtC6Health16TabBarController)initWithTabs:(id)tabs
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC6Health16TabBarController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC6Health16TabBarController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (id)tabBarController:(id)a3 displayedViewControllersForTab:(id)a4 proposedViewControllers:(id)a5
+- (id)tabBarController:(id)controller displayedViewControllersForTab:(id)tab proposedViewControllers:(id)controllers
 {
   sub_100003DDC(0, &unk_1000DC3C0, UIViewController_ptr);
   v8 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v9 = a3;
-  v10 = a4;
-  v11 = self;
-  sub_1000521BC(v9, v10, v8);
+  controllerCopy = controller;
+  tabCopy = tab;
+  selfCopy = self;
+  sub_1000521BC(controllerCopy, tabCopy, v8);
 
   v12.super.isa = Array._bridgeToObjectiveC()().super.isa;
 
   return v12.super.isa;
 }
 
-- (void)tabBarController:(id)a3 didSelectTab:(id)a4 previousTab:(id)a5
+- (void)tabBarController:(id)controller didSelectTab:(id)tab previousTab:(id)previousTab
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  sub_1000548EC(v9, a5);
+  controllerCopy = controller;
+  tabCopy = tab;
+  previousTabCopy = previousTab;
+  selfCopy = self;
+  sub_1000548EC(tabCopy, previousTab);
 }
 
-- (void)restoreUserActivityState:(id)a3
+- (void)restoreUserActivityState:(id)state
 {
-  v4 = a3;
-  v5 = self;
-  sub_10005346C(v4);
+  stateCopy = state;
+  selfCopy = self;
+  sub_10005346C(stateCopy);
 }
 
-- (id)tabBarController:(id)a3 sidebar:(id)a4 itemForRequest:(id)a5
+- (id)tabBarController:(id)controller sidebar:(id)sidebar itemForRequest:(id)request
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  v12 = sub_100054DA4(v10);
+  controllerCopy = controller;
+  sidebarCopy = sidebar;
+  requestCopy = request;
+  selfCopy = self;
+  v12 = sub_100054DA4(requestCopy);
 
   return v12;
 }
 
-- (void)find:(id)a3
+- (void)find:(id)find
 {
-  if (a3)
+  if (find)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -155,12 +155,12 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = swift_allocObject();
   *(v6 + 16) = self;
-  v7 = self;
+  selfCopy3 = self;
   sub_100051684(sub_100054894, v6);
 
   sub_10000D544(v8, &qword_1000DB160, &type metadata for Any + 8, &type metadata accessor for Optional, sub_100003D8C);

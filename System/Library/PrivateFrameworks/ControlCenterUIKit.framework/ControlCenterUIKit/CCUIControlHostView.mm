@@ -1,7 +1,7 @@
 @interface CCUIControlHostView
-- (BOOL)performPrimaryActionForControlTemplateView:(id)a3;
-- (CCUIControlHostView)initWithCoder:(id)a3;
-- (CCUIControlHostView)initWithFrame:(CGRect)a3;
+- (BOOL)performPrimaryActionForControlTemplateView:(id)view;
+- (CCUIControlHostView)initWithCoder:(id)coder;
+- (CCUIControlHostView)initWithFrame:(CGRect)frame;
 - (CCUIControlHostViewDelegate)delegate;
 - (CCUIModuleContentMetrics)contentMetrics;
 - (NSString)cameraCapturePrewarmReason;
@@ -9,26 +9,26 @@
 - (UIMenu)contextMenu;
 - (double)continuousCornerRadius;
 - (id)contextMenuItems;
-- (id)contextMenuPreviewForControlTemplateView:(id)a3;
+- (id)contextMenuPreviewForControlTemplateView:(id)view;
 - (int64_t)gridSizeClass;
-- (void)controlInstanceDescriptorDidChange:(void *)a1;
+- (void)controlInstanceDescriptorDidChange:(void *)change;
 - (void)layoutSubviews;
-- (void)setApplicationContext:(id)a3;
-- (void)setCameraCapturePrewarmReason:(id)a3;
-- (void)setContentMetrics:(id)a3;
-- (void)setContinuousCornerRadius:(double)a3;
-- (void)setGridSizeClass:(int64_t)a3;
+- (void)setApplicationContext:(id)context;
+- (void)setCameraCapturePrewarmReason:(id)reason;
+- (void)setContentMetrics:(id)metrics;
+- (void)setContinuousCornerRadius:(double)radius;
+- (void)setGridSizeClass:(int64_t)class;
 @end
 
 @implementation CCUIControlHostView
 
-- (void)controlInstanceDescriptorDidChange:(void *)a1
+- (void)controlInstanceDescriptorDidChange:(void *)change
 {
-  v1 = a1;
+  changeCopy = change;
   _sSo19CCUIControlHostViewC18ControlCenterUIKitE015controlInstanceC14ModelDidChangeyySo012CHUISControlH0CF_0();
 }
 
-- (CCUIControlHostView)initWithCoder:(id)a3
+- (CCUIControlHostView)initWithCoder:(id)coder
 {
   swift_unknownObjectWeakInit();
   v4 = (self + OBJC_IVAR___CCUIControlHostView_cameraCapturePrewarmReason);
@@ -50,52 +50,52 @@
 
 - (int64_t)gridSizeClass
 {
-  v2 = self;
-  v3 = [(CCUIControlHostView *)v2 templateView];
-  v4 = [(CCUIControlTemplateView *)v3 gridSizeClass];
+  selfCopy = self;
+  templateView = [(CCUIControlHostView *)selfCopy templateView];
+  gridSizeClass = [(CCUIControlTemplateView *)templateView gridSizeClass];
 
-  return v4;
+  return gridSizeClass;
 }
 
-- (void)setGridSizeClass:(int64_t)a3
+- (void)setGridSizeClass:(int64_t)class
 {
-  v5 = self;
-  v4 = [(CCUIControlHostView *)v5 templateView];
-  [(CCUIControlTemplateView *)v4 setGridSizeClass:a3];
+  selfCopy = self;
+  templateView = [(CCUIControlHostView *)selfCopy templateView];
+  [(CCUIControlTemplateView *)templateView setGridSizeClass:class];
 }
 
 - (double)continuousCornerRadius
 {
-  v2 = self;
-  v3 = [(CCUIControlHostView *)v2 templateView];
-  [(CCUIControlTemplateView *)v3 continuousCornerRadius];
+  selfCopy = self;
+  templateView = [(CCUIControlHostView *)selfCopy templateView];
+  [(CCUIControlTemplateView *)templateView continuousCornerRadius];
   v5 = v4;
 
   return v5;
 }
 
-- (void)setContinuousCornerRadius:(double)a3
+- (void)setContinuousCornerRadius:(double)radius
 {
-  v5 = self;
-  v4 = [(CCUIControlHostView *)v5 templateView];
-  [(CCUIControlTemplateView *)v4 setContinuousCornerRadius:a3];
+  selfCopy = self;
+  templateView = [(CCUIControlHostView *)selfCopy templateView];
+  [(CCUIControlTemplateView *)templateView setContinuousCornerRadius:radius];
 }
 
 - (CCUIModuleContentMetrics)contentMetrics
 {
-  v2 = self;
-  v3 = [(CCUIControlHostView *)v2 templateView];
-  v4 = [(CCUIControlTemplateView *)v3 contentMetrics];
+  selfCopy = self;
+  templateView = [(CCUIControlHostView *)selfCopy templateView];
+  contentMetrics = [(CCUIControlTemplateView *)templateView contentMetrics];
 
-  return v4;
+  return contentMetrics;
 }
 
-- (void)setContentMetrics:(id)a3
+- (void)setContentMetrics:(id)metrics
 {
-  v4 = a3;
-  v6 = self;
-  v5 = [(CCUIControlHostView *)v6 templateView];
-  [(CCUIControlTemplateView *)v5 setContentMetrics:v4];
+  metricsCopy = metrics;
+  selfCopy = self;
+  templateView = [(CCUIControlHostView *)selfCopy templateView];
+  [(CCUIControlTemplateView *)templateView setContentMetrics:metricsCopy];
 }
 
 - (NSString)cameraCapturePrewarmReason
@@ -114,9 +114,9 @@
   return v2;
 }
 
-- (void)setCameraCapturePrewarmReason:(id)a3
+- (void)setCameraCapturePrewarmReason:(id)reason
 {
-  if (a3)
+  if (reason)
   {
     v4 = sub_1D16CC4A4();
   }
@@ -136,18 +136,18 @@
 {
   v4.receiver = self;
   v4.super_class = CCUIControlHostView;
-  v2 = self;
+  selfCopy = self;
   [(CCUIControlHostView *)&v4 layoutSubviews];
-  v3 = [(CCUIControlHostView *)v2 templateView:v4.receiver];
-  [(CCUIControlHostView *)v2 bounds];
+  v3 = [(CCUIControlHostView *)selfCopy templateView:v4.receiver];
+  [(CCUIControlHostView *)selfCopy bounds];
   [(CCUIControlTemplateView *)v3 setFrame:?];
 }
 
-- (BOOL)performPrimaryActionForControlTemplateView:(id)a3
+- (BOOL)performPrimaryActionForControlTemplateView:(id)view
 {
-  v3 = self;
-  v4 = [(CCUIControlHostView *)v3 delegate];
-  if (!v4 || (v5 = [(CCUIControlHostViewDelegate *)v4 controlHostViewShouldPerformPrimaryAction:v3], swift_unknownObjectRelease(), v5))
+  selfCopy = self;
+  delegate = [(CCUIControlHostView *)selfCopy delegate];
+  if (!delegate || (v5 = [(CCUIControlHostViewDelegate *)delegate controlHostViewShouldPerformPrimaryAction:selfCopy], swift_unknownObjectRelease(), v5))
   {
     sub_1D16C9E00();
   }
@@ -164,7 +164,7 @@
 
 - (id)contextMenuItems
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CCUIControlHostView.contextMenuItems()();
 
   if (v3)
@@ -183,22 +183,22 @@
 
 - (UIMenu)contextMenu
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CCUIControlHostView.contextMenu.getter();
 
   return v3;
 }
 
-- (id)contextMenuPreviewForControlTemplateView:(id)a3
+- (id)contextMenuPreviewForControlTemplateView:(id)view
 {
-  v3 = self;
-  v4 = [(CCUIControlHostView *)v3 delegate];
-  if (v4)
+  selfCopy = self;
+  delegate = [(CCUIControlHostView *)selfCopy delegate];
+  if (delegate)
   {
-    v5 = v4;
-    if (([(CCUIControlHostViewDelegate *)v4 respondsToSelector:sel_contextMenuPreviewForControlHostView_]& 1) != 0)
+    v5 = delegate;
+    if (([(CCUIControlHostViewDelegate *)delegate respondsToSelector:sel_contextMenuPreviewForControlHostView_]& 1) != 0)
     {
-      v6 = [(CCUIControlHostViewDelegate *)v5 contextMenuPreviewForControlHostView:v3];
+      v6 = [(CCUIControlHostViewDelegate *)v5 contextMenuPreviewForControlHostView:selfCopy];
     }
 
     else
@@ -217,14 +217,14 @@
   return v6;
 }
 
-- (void)setApplicationContext:(id)a3
+- (void)setApplicationContext:(id)context
 {
   v4 = *(self + OBJC_IVAR___CCUIControlHostView_applicationContext);
-  *(self + OBJC_IVAR___CCUIControlHostView_applicationContext) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___CCUIControlHostView_applicationContext) = context;
+  contextCopy = context;
 }
 
-- (CCUIControlHostView)initWithFrame:(CGRect)a3
+- (CCUIControlHostView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,5 +1,5 @@
 @interface NCClickInteractionPresentedControlAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityPerformEscape;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
@@ -7,14 +7,14 @@
 
 @implementation NCClickInteractionPresentedControlAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"NCClickInteractionPresentedControl" hasInstanceMethod:@"_presentedView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NCClickInteractionPresentedView" hasInstanceVariable:@"_titleLabel" withType:"UILabel"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"NCClickInteractionPresentedControl" hasInstanceMethod:@"_presentedView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NCClickInteractionPresentedView" hasInstanceVariable:@"_titleLabel" withType:"UILabel"];
   if (AXProcessIsSpringBoard())
   {
-    [v3 validateClass:@"CSCombinedListViewController" hasInstanceVariable:@"_structuredListViewController" withType:"NCNotificationStructuredListViewController"];
+    [validationsCopy validateClass:@"CSCombinedListViewController" hasInstanceVariable:@"_structuredListViewController" withType:"NCNotificationStructuredListViewController"];
   }
 }
 
@@ -32,20 +32,20 @@
   v4 = [v3 safeValueForKey:@"_titleLabel"];
   v5 = __UIAccessibilityCastAsClass();
 
-  v6 = [v5 text];
+  text = [v5 text];
 
-  return v6;
+  return text;
 }
 
 - (BOOL)accessibilityPerformEscape
 {
   v2 = [(NCClickInteractionPresentedControlAccessibility *)self _accessibilityFindAncestor:&__block_literal_global_3 startWithSelf:1];
-  v3 = [v2 _accessibilityViewController];
-  v4 = [v3 safeValueForKey:@"_structuredListViewController"];
-  v5 = [v4 accessibilityPerformEscape];
+  _accessibilityViewController = [v2 _accessibilityViewController];
+  v4 = [_accessibilityViewController safeValueForKey:@"_structuredListViewController"];
+  accessibilityPerformEscape = [v4 accessibilityPerformEscape];
 
   UIAccessibilityPostNotification(*MEMORY[0x29EDC7ED8], 0);
-  return v5;
+  return accessibilityPerformEscape;
 }
 
 uint64_t __77__NCClickInteractionPresentedControlAccessibility_accessibilityPerformEscape__block_invoke(uint64_t a1, void *a2)

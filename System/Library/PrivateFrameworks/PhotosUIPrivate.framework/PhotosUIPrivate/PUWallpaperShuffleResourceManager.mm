@@ -1,61 +1,61 @@
 @interface PUWallpaperShuffleResourceManager
-- (BOOL)_expectedShuffleSpatialPhotoEnableStateForPosterMedia:(id)a3;
-- (PUWallpaperShuffleResourceManager)initWithPosterMedia:(id)a3 style:(id)a4 assetDirectory:(id)a5 persistedStyle:(id)a6 photoLibrary:(id)a7 shuffleType:(int64_t)a8;
-- (id)_loadResourceForPosterMedia:(id)a3 isPreloading:(BOOL)a4 completion:(id)a5;
-- (id)segmentationItemLoadingOperationForPosterMedia:(id)a3;
-- (void)_handleSetStyle:(id)a3;
+- (BOOL)_expectedShuffleSpatialPhotoEnableStateForPosterMedia:(id)media;
+- (PUWallpaperShuffleResourceManager)initWithPosterMedia:(id)media style:(id)style assetDirectory:(id)directory persistedStyle:(id)persistedStyle photoLibrary:(id)library shuffleType:(int64_t)type;
+- (id)_loadResourceForPosterMedia:(id)media isPreloading:(BOOL)preloading completion:(id)completion;
+- (id)segmentationItemLoadingOperationForPosterMedia:(id)media;
+- (void)_handleSetStyle:(id)style;
 - (void)_preloadNextMedia;
 - (void)cancelPreloading;
-- (void)exportResourcesForFinalPosterMedia:(id)a3 options:(unint64_t)a4 assetDirectory:(id)a5 progressHandler:(id)a6 completion:(id)a7;
-- (void)preloadResourceForPosterMedia:(id)a3;
-- (void)requestResourceForPosterMedia:(id)a3 completion:(id)a4;
-- (void)setEnabledEffects:(unint64_t)a3;
-- (void)setStyle:(id)a3;
-- (void)startPreloadingResourcesForPosterMedia:(id)a3;
+- (void)exportResourcesForFinalPosterMedia:(id)media options:(unint64_t)options assetDirectory:(id)directory progressHandler:(id)handler completion:(id)completion;
+- (void)preloadResourceForPosterMedia:(id)media;
+- (void)requestResourceForPosterMedia:(id)media completion:(id)completion;
+- (void)setEnabledEffects:(unint64_t)effects;
+- (void)setStyle:(id)style;
+- (void)startPreloadingResourcesForPosterMedia:(id)media;
 - (void)stopPreloadingResources;
-- (void)stopPreloadingResourcesWithTimeout:(double)a3;
+- (void)stopPreloadingResourcesWithTimeout:(double)timeout;
 @end
 
 @implementation PUWallpaperShuffleResourceManager
 
-- (id)segmentationItemLoadingOperationForPosterMedia:(id)a3
+- (id)segmentationItemLoadingOperationForPosterMedia:(id)media
 {
-  v4 = a3;
-  v5 = [(PUWallpaperShuffleResourceManager *)self segmentationLoadingOperationsByAssetUUIDs];
-  v6 = [v4 assetUUID];
-  v7 = [v5 objectForKeyedSubscript:v6];
+  mediaCopy = media;
+  segmentationLoadingOperationsByAssetUUIDs = [(PUWallpaperShuffleResourceManager *)self segmentationLoadingOperationsByAssetUUIDs];
+  assetUUID = [mediaCopy assetUUID];
+  v7 = [segmentationLoadingOperationsByAssetUUIDs objectForKeyedSubscript:assetUUID];
 
   if (!v7)
   {
-    v8 = [(PUWallpaperShuffleResourceManager *)self _expectedShuffleSpatialPhotoEnableStateForPosterMedia:v4];
+    v8 = [(PUWallpaperShuffleResourceManager *)self _expectedShuffleSpatialPhotoEnableStateForPosterMedia:mediaCopy];
     v9 = [PUWallpaperShuffleSegmentationLoadingOperation alloc];
-    v10 = [(PUWallpaperShuffleResourceManager *)self assetDirectory];
-    v11 = [(PUWallpaperShuffleResourceManager *)self photoLibrary];
+    assetDirectory = [(PUWallpaperShuffleResourceManager *)self assetDirectory];
+    photoLibrary = [(PUWallpaperShuffleResourceManager *)self photoLibrary];
     LOBYTE(v14) = 0;
-    v7 = [(PUWallpaperShuffleSegmentationLoadingOperation *)v9 initWithPosterMedia:v4 assetDirectory:v10 photoLibrary:v11 shuffleType:[(PUWallpaperShuffleResourceManager *)self shuffleType] supportedEffects:[(PUWallpaperShuffleResourceManager *)self supportedEffects] enableSpatialPhoto:v8 isPreloading:v14];
+    v7 = [(PUWallpaperShuffleSegmentationLoadingOperation *)v9 initWithPosterMedia:mediaCopy assetDirectory:assetDirectory photoLibrary:photoLibrary shuffleType:[(PUWallpaperShuffleResourceManager *)self shuffleType] supportedEffects:[(PUWallpaperShuffleResourceManager *)self supportedEffects] enableSpatialPhoto:v8 isPreloading:v14];
 
-    v12 = [(PUWallpaperShuffleResourceManager *)self operationQueue];
-    [v12 addOperation:v7];
+    operationQueue = [(PUWallpaperShuffleResourceManager *)self operationQueue];
+    [operationQueue addOperation:v7];
   }
 
   return v7;
 }
 
-- (void)exportResourcesForFinalPosterMedia:(id)a3 options:(unint64_t)a4 assetDirectory:(id)a5 progressHandler:(id)a6 completion:(id)a7
+- (void)exportResourcesForFinalPosterMedia:(id)media options:(unint64_t)options assetDirectory:(id)directory progressHandler:(id)handler completion:(id)completion
 {
   v112 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a5;
-  v66 = a6;
-  v65 = a7;
+  mediaCopy = media;
+  directoryCopy = directory;
+  handlerCopy = handler;
+  completionCopy = completion;
   v77 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v72 = [(PUWallpaperShuffleResourceManager *)self style];
+  style = [(PUWallpaperShuffleResourceManager *)self style];
   v14 = [PUWallpaperExportProgress alloc];
   v15 = PXMap();
-  v73 = [(PUWallpaperExportProgress *)v14 initWithAssetUUIDs:v15 progressHandler:v66];
+  v73 = [(PUWallpaperExportProgress *)v14 initWithAssetUUIDs:v15 progressHandler:handlerCopy];
 
-  v16 = [(PUWallpaperShuffleResourceManager *)self enabledEffects];
-  v70 = [(PUWallpaperShuffleResourceManager *)self enabledEffects];
+  enabledEffects = [(PUWallpaperShuffleResourceManager *)self enabledEffects];
+  enabledEffects2 = [(PUWallpaperShuffleResourceManager *)self enabledEffects];
   v71 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v17 = PLWallpaperGetLog();
   v18 = os_signpost_id_generate(v17);
@@ -76,28 +76,28 @@
   v21 = PLWallpaperGetLog();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
   {
-    v22 = [(PUWallpaperShuffleResourceManager *)self operationQueue];
-    v23 = [(PUWallpaperShuffleResourceManager *)self operationQueue];
-    v24 = [v23 operations];
+    operationQueue = [(PUWallpaperShuffleResourceManager *)self operationQueue];
+    operationQueue2 = [(PUWallpaperShuffleResourceManager *)self operationQueue];
+    operations = [operationQueue2 operations];
     *buf = 134218242;
-    v109 = v22;
+    v109 = operationQueue;
     v110 = 2114;
-    v111 = v24;
+    v111 = operations;
     _os_log_impl(&dword_1B36F3000, v21, OS_LOG_TYPE_INFO, "Starting shuffle export with current operations in the queue %p:\n%{public}@", buf, 0x16u);
   }
 
-  v76 = [(PUWallpaperShuffleResourceManager *)self assetDirectory];
-  v74 = v13;
+  assetDirectory = [(PUWallpaperShuffleResourceManager *)self assetDirectory];
+  v74 = directoryCopy;
   v102 = 0u;
   v103 = 0u;
   v104 = 0u;
   v105 = 0u;
-  obj = v12;
+  obj = mediaCopy;
   v75 = [obj countByEnumeratingWithState:&v102 objects:v107 count:16];
   if (v75)
   {
     v69 = *v103;
-    v67 = (v16 >> 1) & 1;
+    v67 = (enabledEffects >> 1) & 1;
     do
     {
       for (i = 0; i != v75; ++i)
@@ -108,17 +108,17 @@
         }
 
         v26 = *(*(&v102 + 1) + 8 * i);
-        v27 = [v26 assetUUID];
-        v28 = [(PUWallpaperShuffleResourceManager *)self segmentationLoadingOperationsByAssetUUIDs];
-        v29 = [v28 objectForKeyedSubscript:v27];
+        assetUUID = [v26 assetUUID];
+        segmentationLoadingOperationsByAssetUUIDs = [(PUWallpaperShuffleResourceManager *)self segmentationLoadingOperationsByAssetUUIDs];
+        v29 = [segmentationLoadingOperationsByAssetUUIDs objectForKeyedSubscript:assetUUID];
 
         if (!v29)
         {
           v30 = [(PUWallpaperShuffleResourceManager *)self _expectedShuffleSpatialPhotoEnableStateForPosterMedia:v26];
           v31 = [PUWallpaperShuffleSegmentationLoadingOperation alloc];
-          v32 = [(PUWallpaperShuffleResourceManager *)self photoLibrary];
+          photoLibrary = [(PUWallpaperShuffleResourceManager *)self photoLibrary];
           LOBYTE(v61) = 0;
-          v29 = [(PUWallpaperShuffleSegmentationLoadingOperation *)v31 initWithPosterMedia:v26 assetDirectory:v76 photoLibrary:v32 shuffleType:[(PUWallpaperShuffleResourceManager *)self shuffleType] supportedEffects:[(PUWallpaperShuffleResourceManager *)self supportedEffects] enableSpatialPhoto:v30 isPreloading:v61];
+          v29 = [(PUWallpaperShuffleSegmentationLoadingOperation *)v31 initWithPosterMedia:v26 assetDirectory:assetDirectory photoLibrary:photoLibrary shuffleType:[(PUWallpaperShuffleResourceManager *)self shuffleType] supportedEffects:[(PUWallpaperShuffleResourceManager *)self supportedEffects] enableSpatialPhoto:v30 isPreloading:v61];
 
           [v77 addObject:v29];
         }
@@ -129,14 +129,14 @@
         v99[3] = &unk_1E7B76F80;
         v33 = v73;
         v100 = v33;
-        v34 = v27;
+        v34 = assetUUID;
         v101 = v34;
         [(PUWallpaperShuffleSegmentationLoadingOperation *)v29 setDownloadProgressHandler:v99];
         v35 = objc_alloc_init(PUWallpaperShuffleResourceExportOperation);
-        [(PUWallpaperShuffleResourceExportOperation *)v35 setSourceDirectory:v76];
+        [(PUWallpaperShuffleResourceExportOperation *)v35 setSourceDirectory:assetDirectory];
         [(PUWallpaperShuffleResourceExportOperation *)v35 setExportDirectory:v74];
-        v36 = [(PUWallpaperShuffleResourceManager *)self initialPosterMediaByAssetUUIDs];
-        v37 = [v36 objectForKeyedSubscript:v34];
+        initialPosterMediaByAssetUUIDs = [(PUWallpaperShuffleResourceManager *)self initialPosterMediaByAssetUUIDs];
+        v37 = [initialPosterMediaByAssetUUIDs objectForKeyedSubscript:v34];
         v38 = v37;
         if (v37)
         {
@@ -150,30 +150,30 @@
 
         [(PUWallpaperShuffleResourceExportOperation *)v35 setPosterMedia:v39];
 
-        v40 = [v26 editConfiguration];
-        [(PUWallpaperShuffleResourceExportOperation *)v35 setEditConfiguration:v40];
+        editConfiguration = [v26 editConfiguration];
+        [(PUWallpaperShuffleResourceExportOperation *)v35 setEditConfiguration:editConfiguration];
 
-        [(PUWallpaperShuffleResourceExportOperation *)v35 setStyle:v72];
-        v41 = [(PUWallpaperShuffleResourceManager *)self persistedStyle];
-        [(PUWallpaperShuffleResourceExportOperation *)v35 setPersistedStyle:v41];
+        [(PUWallpaperShuffleResourceExportOperation *)v35 setStyle:style];
+        persistedStyle = [(PUWallpaperShuffleResourceManager *)self persistedStyle];
+        [(PUWallpaperShuffleResourceExportOperation *)v35 setPersistedStyle:persistedStyle];
 
         [(PUWallpaperShuffleResourceManager *)self shuffleType];
         if (PFPosterShuffleTypeIsSmart())
         {
-          v42 = [(PUWallpaperShuffleResourceExportOperation *)v35 editConfiguration];
-          [v42 setIsSpatialPhotoEnabled:v67];
+          editConfiguration2 = [(PUWallpaperShuffleResourceExportOperation *)v35 editConfiguration];
+          [editConfiguration2 setIsSpatialPhotoEnabled:v67];
 
-          v43 = [(PUWallpaperShuffleResourceExportOperation *)v35 editConfiguration];
-          [v43 setIsDepthEnabled:v70 & 1];
+          editConfiguration3 = [(PUWallpaperShuffleResourceExportOperation *)v35 editConfiguration];
+          [editConfiguration3 setIsDepthEnabled:enabledEffects2 & 1];
 
-          v44 = [(PUWallpaperShuffleResourceExportOperation *)v35 editConfiguration];
-          [v44 setIsLandscapeDepthEnabled:v70 & 1];
+          editConfiguration4 = [(PUWallpaperShuffleResourceExportOperation *)v35 editConfiguration];
+          [editConfiguration4 setIsLandscapeDepthEnabled:enabledEffects2 & 1];
         }
 
-        v45 = [(PUWallpaperShuffleResourceExportOperation *)v35 editConfiguration];
-        v46 = [v45 isSpatialPhotoEnabled];
+        editConfiguration5 = [(PUWallpaperShuffleResourceExportOperation *)v35 editConfiguration];
+        isSpatialPhotoEnabled = [editConfiguration5 isSpatialPhotoEnabled];
 
-        if (v46)
+        if (isSpatialPhotoEnabled)
         {
           [(PUWallpaperShuffleResourceManager *)self shuffleType];
           IsSmart = PFPosterShuffleTypeIsSmart();
@@ -183,15 +183,15 @@
             v48 = 256;
           }
 
-          v49 = v48 | a4;
+          optionsCopy = v48 | options;
         }
 
         else
         {
-          v49 = a4;
+          optionsCopy = options;
         }
 
-        a4 = v49;
+        options = optionsCopy;
         [(PUWallpaperShuffleResourceExportOperation *)v35 setOptions:?];
         objc_initWeak(buf, v35);
         v94[0] = MEMORY[0x1E69E9820];
@@ -236,31 +236,31 @@
     while (v75);
   }
 
-  v55 = [(PUWallpaperShuffleResourceManager *)self exportOperationQueue];
+  exportOperationQueue = [(PUWallpaperShuffleResourceManager *)self exportOperationQueue];
   v86[0] = MEMORY[0x1E69E9820];
   v86[1] = 3221225472;
   v86[2] = __122__PUWallpaperShuffleResourceManager_exportResourcesForFinalPosterMedia_options_assetDirectory_progressHandler_completion___block_invoke_4;
   v86[3] = &unk_1E7B80DD0;
   v56 = v73;
   v87 = v56;
-  [v55 addBarrierBlock:v86];
-  [v55 addOperations:v77 waitUntilFinished:0];
+  [exportOperationQueue addBarrierBlock:v86];
+  [exportOperationQueue addOperations:v77 waitUntilFinished:0];
   v78[0] = MEMORY[0x1E69E9820];
   v78[1] = 3221225472;
   v78[2] = __122__PUWallpaperShuffleResourceManager_exportResourcesForFinalPosterMedia_options_assetDirectory_progressHandler_completion___block_invoke_5;
   v78[3] = &unk_1E7B76FD0;
   v79 = v56;
   v80 = v64;
-  v82 = v65;
+  v82 = completionCopy;
   v83 = v62;
   v84 = v63;
   v85 = info;
   v81 = v71;
   v57 = v71;
-  v58 = v65;
+  v58 = completionCopy;
   v59 = v64;
   v60 = v56;
-  [v55 addBarrierBlock:v78];
+  [exportOperationQueue addBarrierBlock:v78];
 }
 
 void __122__PUWallpaperShuffleResourceManager_exportResourcesForFinalPosterMedia_options_assetDirectory_progressHandler_completion___block_invoke_2(uint64_t a1)
@@ -333,17 +333,17 @@ void __122__PUWallpaperShuffleResourceManager_exportResourcesForFinalPosterMedia
   px_dispatch_on_main_queue();
 }
 
-- (void)preloadResourceForPosterMedia:(id)a3
+- (void)preloadResourceForPosterMedia:(id)media
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  mediaCopy = media;
   [(PUWallpaperShuffleResourceManager *)self cancelPreloading];
   v5 = PLWallpaperGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [v4 assetUUID];
+    assetUUID = [mediaCopy assetUUID];
     *buf = 138543362;
-    *&buf[4] = v6;
+    *&buf[4] = assetUUID;
     _os_log_impl(&dword_1B36F3000, v5, OS_LOG_TYPE_INFO, "Preloading shuffle asset %{public}@", buf, 0xCu);
   }
 
@@ -369,7 +369,7 @@ void __122__PUWallpaperShuffleResourceManager_exportResourcesForFinalPosterMedia
   v20 = v8;
   v21 = *buf;
   v12 = v10;
-  v13 = [(PUWallpaperShuffleResourceManager *)self _loadResourceForPosterMedia:v4 isPreloading:1 completion:&v14];
+  v13 = [(PUWallpaperShuffleResourceManager *)self _loadResourceForPosterMedia:mediaCopy isPreloading:1 completion:&v14];
   [(PUWallpaperShuffleResourceManager *)self setNextLayerStackOperation:v13, v14, v15, v16, v17];
 }
 
@@ -428,36 +428,36 @@ LABEL_8:
 - (void)cancelPreloading
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = [(PUWallpaperShuffleResourceManager *)self nextLayerStackOperation];
+  nextLayerStackOperation = [(PUWallpaperShuffleResourceManager *)self nextLayerStackOperation];
 
-  if (v3)
+  if (nextLayerStackOperation)
   {
     v4 = PLWallpaperGetLog();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
-      v5 = [(PUWallpaperShuffleResourceManager *)self nextLayerStackOperation];
-      v6 = [v5 posterMedia];
-      v7 = [v6 assetUUID];
+      nextLayerStackOperation2 = [(PUWallpaperShuffleResourceManager *)self nextLayerStackOperation];
+      posterMedia = [nextLayerStackOperation2 posterMedia];
+      assetUUID = [posterMedia assetUUID];
       v9 = 138543362;
-      v10 = v7;
+      v10 = assetUUID;
       _os_log_impl(&dword_1B36F3000, v4, OS_LOG_TYPE_INFO, "Canceling preloading for shuffle asset %{public}@", &v9, 0xCu);
     }
 
-    v8 = [(PUWallpaperShuffleResourceManager *)self nextLayerStackOperation];
-    [v8 cancel];
+    nextLayerStackOperation3 = [(PUWallpaperShuffleResourceManager *)self nextLayerStackOperation];
+    [nextLayerStackOperation3 cancel];
 
     [(PUWallpaperShuffleResourceManager *)self setNextLayerStackOperation:0];
   }
 }
 
-- (id)_loadResourceForPosterMedia:(id)a3 isPreloading:(BOOL)a4 completion:(id)a5
+- (id)_loadResourceForPosterMedia:(id)media isPreloading:(BOOL)preloading completion:(id)completion
 {
   v61 = *MEMORY[0x1E69E9840];
-  v50 = a3;
-  v48 = a5;
-  v8 = [(PUWallpaperShuffleResourceManager *)self initialPosterMediaByAssetUUIDs];
-  v9 = [v50 assetUUID];
-  v10 = [v8 objectForKeyedSubscript:v9];
+  mediaCopy = media;
+  completionCopy = completion;
+  initialPosterMediaByAssetUUIDs = [(PUWallpaperShuffleResourceManager *)self initialPosterMediaByAssetUUIDs];
+  assetUUID = [mediaCopy assetUUID];
+  v10 = [initialPosterMediaByAssetUUIDs objectForKeyedSubscript:assetUUID];
   v11 = v10;
   if (v10)
   {
@@ -466,15 +466,15 @@ LABEL_8:
 
   else
   {
-    v12 = v50;
+    v12 = mediaCopy;
   }
 
   v49 = v12;
 
-  v13 = [(PUWallpaperShuffleResourceManager *)self _expectedShuffleSpatialPhotoEnableStateForPosterMedia:v50];
-  v14 = [(PUWallpaperShuffleResourceManager *)self segmentationLoadingOperationsByAssetUUIDs];
-  v15 = [v50 assetUUID];
-  v16 = [v14 objectForKeyedSubscript:v15];
+  v13 = [(PUWallpaperShuffleResourceManager *)self _expectedShuffleSpatialPhotoEnableStateForPosterMedia:mediaCopy];
+  segmentationLoadingOperationsByAssetUUIDs = [(PUWallpaperShuffleResourceManager *)self segmentationLoadingOperationsByAssetUUIDs];
+  assetUUID2 = [mediaCopy assetUUID];
+  v16 = [segmentationLoadingOperationsByAssetUUIDs objectForKeyedSubscript:assetUUID2];
 
   if (v13 == [(PUWallpaperShuffleSegmentationLoadingOperation *)v16 enableSpatialPhoto])
   {
@@ -491,15 +491,15 @@ LABEL_8:
   }
 
   v18 = [PUWallpaperShuffleSegmentationLoadingOperation alloc];
-  v19 = [(PUWallpaperShuffleResourceManager *)self assetDirectory];
-  v20 = [(PUWallpaperShuffleResourceManager *)self photoLibrary];
-  LOBYTE(v45) = a4;
-  v16 = [(PUWallpaperShuffleSegmentationLoadingOperation *)v18 initWithPosterMedia:v49 assetDirectory:v19 photoLibrary:v20 shuffleType:[(PUWallpaperShuffleResourceManager *)self shuffleType] supportedEffects:[(PUWallpaperShuffleResourceManager *)self supportedEffects] enableSpatialPhoto:v13 isPreloading:v45];
+  assetDirectory = [(PUWallpaperShuffleResourceManager *)self assetDirectory];
+  photoLibrary = [(PUWallpaperShuffleResourceManager *)self photoLibrary];
+  LOBYTE(v45) = preloading;
+  v16 = [(PUWallpaperShuffleSegmentationLoadingOperation *)v18 initWithPosterMedia:v49 assetDirectory:assetDirectory photoLibrary:photoLibrary shuffleType:[(PUWallpaperShuffleResourceManager *)self shuffleType] supportedEffects:[(PUWallpaperShuffleResourceManager *)self supportedEffects] enableSpatialPhoto:v13 isPreloading:v45];
 
   v17 = 1;
 LABEL_9:
   HIDWORD(v46) = v17;
-  if (!a4)
+  if (!preloading)
   {
     [(PUWallpaperShuffleSegmentationLoadingOperation *)v16 setQueuePriority:8];
     [(PUWallpaperShuffleSegmentationLoadingOperation *)v16 setQualityOfService:25];
@@ -517,13 +517,13 @@ LABEL_9:
   }
 
   v22 = [PUWallpaperShuffleLayerStackLoadingOperation alloc];
-  v23 = [v50 editConfiguration];
-  v24 = [(PUWallpaperShuffleResourceManager *)self assetDirectory];
-  v25 = [(PUWallpaperShuffleResourceManager *)self style];
-  v26 = [(PUWallpaperShuffleResourceManager *)self persistedStyle];
-  LOBYTE(v46) = a4;
+  editConfiguration = [mediaCopy editConfiguration];
+  assetDirectory2 = [(PUWallpaperShuffleResourceManager *)self assetDirectory];
+  style = [(PUWallpaperShuffleResourceManager *)self style];
+  persistedStyle = [(PUWallpaperShuffleResourceManager *)self persistedStyle];
+  LOBYTE(v46) = preloading;
   LOBYTE(v45) = v13;
-  v27 = [(PUWallpaperShuffleLayerStackLoadingOperation *)v22 initWithPosterMedia:v49 editConfiguration:v23 assetDirectory:v24 style:v25 persistedStyle:v26 allowedLayoutStrategies:v21 enableSpatialPhoto:v45 shuffleType:[(PUWallpaperShuffleResourceManager *)self shuffleType] isPreloading:v46];
+  v27 = [(PUWallpaperShuffleLayerStackLoadingOperation *)v22 initWithPosterMedia:v49 editConfiguration:editConfiguration assetDirectory:assetDirectory2 style:style persistedStyle:persistedStyle allowedLayoutStrategies:v21 enableSpatialPhoto:v45 shuffleType:[(PUWallpaperShuffleResourceManager *)self shuffleType] isPreloading:v46];
 
   objc_initWeak(&location, v27);
   v55[0] = MEMORY[0x1E69E9820];
@@ -531,10 +531,10 @@ LABEL_9:
   v55[2] = __89__PUWallpaperShuffleResourceManager__loadResourceForPosterMedia_isPreloading_completion___block_invoke;
   v55[3] = &unk_1E7B7B3B0;
   objc_copyWeak(&v57, &location);
-  v28 = v48;
+  v28 = completionCopy;
   v56 = v28;
   [(PUWallpaperShuffleLayerStackLoadingOperation *)v27 setCompletionBlock:v55];
-  if (!a4)
+  if (!preloading)
   {
     [(PUWallpaperShuffleLayerStackLoadingOperation *)v27 setQueuePriority:8];
     [(PUWallpaperShuffleLayerStackLoadingOperation *)v27 setQualityOfService:25];
@@ -547,26 +547,26 @@ LABEL_9:
       v34 = PLWallpaperGetLog();
       if (os_log_type_enabled(v34, OS_LOG_TYPE_INFO))
       {
-        v35 = [v50 assetUUID];
+        assetUUID3 = [mediaCopy assetUUID];
         *buf = 138543362;
-        v60 = v35;
+        v60 = assetUUID3;
         _os_log_impl(&dword_1B36F3000, v34, OS_LOG_TYPE_INFO, "Shuffle poster media was loaded from directory: %{public}@", buf, 0xCu);
       }
 
-      v36 = [(PUWallpaperShuffleSegmentationLoadingOperation *)v16 segmentationItem];
-      [(PUWallpaperShuffleLayerStackLoadingOperation *)v27 setSegmentationItem:v36];
+      segmentationItem = [(PUWallpaperShuffleSegmentationLoadingOperation *)v16 segmentationItem];
+      [(PUWallpaperShuffleLayerStackLoadingOperation *)v27 setSegmentationItem:segmentationItem];
 
       goto LABEL_32;
     }
 
-    v37 = [(PUWallpaperShuffleResourceManager *)self requestOperationQueue];
+    requestOperationQueue = [(PUWallpaperShuffleResourceManager *)self requestOperationQueue];
     if (v47)
     {
-      v38 = [(PUWallpaperShuffleResourceManager *)self segmentationLoadingOperationsByAssetUUIDs];
-      v39 = [v50 assetUUID];
-      [v38 setObject:v16 forKeyedSubscript:v39];
+      segmentationLoadingOperationsByAssetUUIDs2 = [(PUWallpaperShuffleResourceManager *)self segmentationLoadingOperationsByAssetUUIDs];
+      assetUUID4 = [mediaCopy assetUUID];
+      [segmentationLoadingOperationsByAssetUUIDs2 setObject:v16 forKeyedSubscript:assetUUID4];
 
-      [v37 addOperation:v16];
+      [requestOperationQueue addOperation:v16];
     }
 
     objc_initWeak(buf, v16);
@@ -581,8 +581,8 @@ LABEL_9:
     v41 = [v40 blockOperationWithBlock:v51];
     [v41 addDependency:v16];
     [(PUWallpaperShuffleLayerStackLoadingOperation *)v27 addDependency:v41];
-    [v37 addOperation:v41];
-    [v37 addOperation:v27];
+    [requestOperationQueue addOperation:v41];
+    [requestOperationQueue addOperation:v27];
     v42 = v27;
 
     objc_destroyWeak(&v53);
@@ -596,28 +596,28 @@ LABEL_9:
     v29 = PLWallpaperGetLog();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
     {
-      v30 = [v50 assetUUID];
+      assetUUID5 = [mediaCopy assetUUID];
       *buf = 138543362;
-      v60 = v30;
+      v60 = assetUUID5;
       _os_log_impl(&dword_1B36F3000, v29, OS_LOG_TYPE_INFO, "Shuffle poster media already segmented: %{public}@", buf, 0xCu);
     }
 
-    v31 = [(PUWallpaperShuffleSegmentationLoadingOperation *)v16 segmentationItem];
-    [(PUWallpaperShuffleLayerStackLoadingOperation *)v27 setSegmentationItem:v31];
+    segmentationItem2 = [(PUWallpaperShuffleSegmentationLoadingOperation *)v16 segmentationItem];
+    [(PUWallpaperShuffleLayerStackLoadingOperation *)v27 setSegmentationItem:segmentationItem2];
 
-    v32 = [(PUWallpaperShuffleSegmentationLoadingOperation *)v16 segmentationItem];
-    LOBYTE(v31) = v32 == 0;
+    segmentationItem3 = [(PUWallpaperShuffleSegmentationLoadingOperation *)v16 segmentationItem];
+    LOBYTE(segmentationItem2) = segmentationItem3 == 0;
 
-    if (v31)
+    if (segmentationItem2)
     {
-      v33 = [(PUWallpaperShuffleSegmentationLoadingOperation *)v16 error];
-      [(PUWallpaperShuffleLayerStackLoadingOperation *)v27 setError:v33];
+      error = [(PUWallpaperShuffleSegmentationLoadingOperation *)v16 error];
+      [(PUWallpaperShuffleLayerStackLoadingOperation *)v27 setError:error];
     }
 
     else
     {
-      v33 = [(PUWallpaperShuffleSegmentationLoadingOperation *)v16 segmentationItem];
-      [(PUWallpaperShuffleLayerStackLoadingOperation *)v27 setSegmentationItem:v33];
+      error = [(PUWallpaperShuffleSegmentationLoadingOperation *)v16 segmentationItem];
+      [(PUWallpaperShuffleLayerStackLoadingOperation *)v27 setSegmentationItem:error];
     }
 
     if ([(PUWallpaperShuffleLayerStackLoadingOperation *)v27 tryLoadLayerStackFromDirectory])
@@ -628,8 +628,8 @@ LABEL_32:
       goto LABEL_34;
     }
 
-    v43 = [(PUWallpaperShuffleResourceManager *)self requestOperationQueue];
-    [v43 addOperation:v27];
+    requestOperationQueue2 = [(PUWallpaperShuffleResourceManager *)self requestOperationQueue];
+    [requestOperationQueue2 addOperation:v27];
 
     v42 = v27;
   }
@@ -671,9 +671,9 @@ void __89__PUWallpaperShuffleResourceManager__loadResourceForPosterMedia_isPrelo
   }
 }
 
-- (BOOL)_expectedShuffleSpatialPhotoEnableStateForPosterMedia:(id)a3
+- (BOOL)_expectedShuffleSpatialPhotoEnableStateForPosterMedia:(id)media
 {
-  v4 = a3;
+  mediaCopy = media;
   [(PUWallpaperShuffleResourceManager *)self shuffleType];
   if (PFPosterShuffleTypeIsSmart())
   {
@@ -682,18 +682,18 @@ void __89__PUWallpaperShuffleResourceManager__loadResourceForPosterMedia_isPrelo
 
   else
   {
-    v6 = [v4 editConfiguration];
-    LOBYTE(v5) = [v6 isSpatialPhotoEnabled];
+    editConfiguration = [mediaCopy editConfiguration];
+    LOBYTE(v5) = [editConfiguration isSpatialPhotoEnabled];
   }
 
   return v5;
 }
 
-- (void)requestResourceForPosterMedia:(id)a3 completion:(id)a4
+- (void)requestResourceForPosterMedia:(id)media completion:(id)completion
 {
   v70 = *MEMORY[0x1E69E9840];
-  v49 = a3;
-  v6 = a4;
+  mediaCopy = media;
+  completionCopy = completion;
   v7 = PLWallpaperGetLog();
   v8 = os_signpost_id_generate(v7);
   v9 = v7;
@@ -707,14 +707,14 @@ void __89__PUWallpaperShuffleResourceManager__loadResourceForPosterMedia_isPrelo
   info = 0;
   mach_timebase_info(&info);
   v11 = mach_absolute_time();
-  v12 = [(PUWallpaperShuffleResourceManager *)self style];
-  v13 = [v12 bakedStyle];
+  style = [(PUWallpaperShuffleResourceManager *)self style];
+  bakedStyle = [style bakedStyle];
 
-  v14 = [(PUWallpaperShuffleResourceManager *)self shuffleType];
+  shuffleType = [(PUWallpaperShuffleResourceManager *)self shuffleType];
   v15 = [(PUWallpaperShuffleResourceManager *)self enabledEffects]& 1;
-  v16 = [(PUWallpaperShuffleResourceManager *)self enabledEffects];
-  v17 = v16;
-  v18 = (v16 >> 1) & 1;
+  enabledEffects = [(PUWallpaperShuffleResourceManager *)self enabledEffects];
+  v17 = enabledEffects;
+  v18 = (enabledEffects >> 1) & 1;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __78__PUWallpaperShuffleResourceManager_requestResourceForPosterMedia_completion___block_invoke;
@@ -724,27 +724,27 @@ void __89__PUWallpaperShuffleResourceManager__loadResourceForPosterMedia_isPrelo
   v48 = v10;
   v54 = v48;
   v58 = v8;
-  v59 = v14;
+  v59 = shuffleType;
   v61 = v15;
   v62 = v18;
-  v46 = v13;
+  v46 = bakedStyle;
   v55 = v46;
-  v47 = v6;
+  v47 = completionCopy;
   v56 = v47;
   v45 = _Block_copy(aBlock);
-  v19 = [(PUWallpaperShuffleResourceManager *)self nextLayerStackOperation];
-  v20 = [v19 posterMedia];
-  v21 = [v20 assetUUID];
-  v22 = v49;
-  v23 = [v49 assetUUID];
-  if (v21 != v23 && ![v21 isEqual:v23])
+  nextLayerStackOperation = [(PUWallpaperShuffleResourceManager *)self nextLayerStackOperation];
+  posterMedia = [nextLayerStackOperation posterMedia];
+  assetUUID = [posterMedia assetUUID];
+  v22 = mediaCopy;
+  assetUUID2 = [mediaCopy assetUUID];
+  if (assetUUID != assetUUID2 && ![assetUUID isEqual:assetUUID2])
   {
     goto LABEL_15;
   }
 
-  v24 = [v19 style];
-  v25 = [(PUWallpaperShuffleResourceManager *)self style];
-  if (v24 != v25 && ![v24 isEqual:v25])
+  style2 = [nextLayerStackOperation style];
+  style3 = [(PUWallpaperShuffleResourceManager *)self style];
+  if (style2 != style3 && ![style2 isEqual:style3])
   {
 
 LABEL_15:
@@ -753,8 +753,8 @@ LABEL_16:
     v34 = PLWallpaperGetLog();
     if (os_log_type_enabled(v34, OS_LOG_TYPE_INFO))
     {
-      v35 = [v22 assetUUID];
-      if ([v19 enableSpatialPhoto])
+      assetUUID3 = [v22 assetUUID];
+      if ([nextLayerStackOperation enableSpatialPhoto])
       {
         v36 = @"YES";
       }
@@ -777,8 +777,8 @@ LABEL_16:
         v39 = @"NO";
       }
 
-      v22 = v49;
-      v65 = v35;
+      v22 = mediaCopy;
+      v65 = assetUUID3;
       v66 = 2112;
       v67 = v37;
       v68 = 2112;
@@ -794,53 +794,53 @@ LABEL_16:
     goto LABEL_25;
   }
 
-  v26 = [v19 enableSpatialPhoto];
-  v27 = [(PUWallpaperShuffleResourceManager *)self _expectedShuffleSpatialPhotoEnableStateForPosterMedia:v49];
+  enableSpatialPhoto = [nextLayerStackOperation enableSpatialPhoto];
+  v27 = [(PUWallpaperShuffleResourceManager *)self _expectedShuffleSpatialPhotoEnableStateForPosterMedia:mediaCopy];
 
-  v28 = v26 == v27;
-  v22 = v49;
+  v28 = enableSpatialPhoto == v27;
+  v22 = mediaCopy;
   if (!v28)
   {
     goto LABEL_16;
   }
 
-  v29 = [v19 isFinished];
+  isFinished = [nextLayerStackOperation isFinished];
   v30 = PLWallpaperGetLog();
   v31 = os_log_type_enabled(v30, OS_LOG_TYPE_INFO);
-  if (v29)
+  if (isFinished)
   {
     if (v31)
     {
-      v32 = [v49 assetUUID];
+      assetUUID4 = [mediaCopy assetUUID];
       *buf = 138543362;
-      v65 = v32;
+      v65 = assetUUID4;
       _os_log_impl(&dword_1B36F3000, v30, OS_LOG_TYPE_INFO, "Shuffle asset was preloaded %{public}@", buf, 0xCu);
     }
 
     v33 = v45;
-    (*(v45 + 2))(v45, v19);
+    (*(v45 + 2))(v45, nextLayerStackOperation);
   }
 
   else
   {
     if (v31)
     {
-      v42 = [v49 assetUUID];
+      assetUUID5 = [mediaCopy assetUUID];
       *buf = 138543362;
-      v65 = v42;
+      v65 = assetUUID5;
       _os_log_impl(&dword_1B36F3000, v30, OS_LOG_TYPE_INFO, "Shuffle asset is still preloading %{public}@", buf, 0xCu);
     }
 
-    v43 = [(PUWallpaperShuffleResourceManager *)self requestOperationQueue];
+    requestOperationQueue = [(PUWallpaperShuffleResourceManager *)self requestOperationQueue];
     v50[0] = MEMORY[0x1E69E9820];
     v50[1] = 3221225472;
     v50[2] = __78__PUWallpaperShuffleResourceManager_requestResourceForPosterMedia_completion___block_invoke_50;
     v50[3] = &unk_1E7B80B48;
     v33 = v45;
     v52 = v45;
-    v44 = v19;
+    v44 = nextLayerStackOperation;
     v51 = v44;
-    [v43 addBarrierBlock:v50];
+    [requestOperationQueue addBarrierBlock:v50];
 
     [(PUWallpaperShuffleResourceManager *)self setCurrentLayerStackOperation:v44];
     [(PUWallpaperShuffleResourceManager *)self setNextLayerStackOperation:0];
@@ -988,31 +988,31 @@ double __78__PUWallpaperShuffleResourceManager_requestResourceForPosterMedia_com
 
 - (void)_preloadNextMedia
 {
-  v3 = [(PUWallpaperShuffleResourceManager *)self nextLayerStackOperation];
+  nextLayerStackOperation = [(PUWallpaperShuffleResourceManager *)self nextLayerStackOperation];
 
-  if (v3)
+  if (nextLayerStackOperation)
   {
-    v4 = [(PUWallpaperShuffleResourceManager *)self nextLayerStackOperation];
-    v5 = [v4 posterMedia];
+    nextLayerStackOperation2 = [(PUWallpaperShuffleResourceManager *)self nextLayerStackOperation];
+    posterMedia = [nextLayerStackOperation2 posterMedia];
 
-    [(PUWallpaperShuffleResourceManager *)self preloadResourceForPosterMedia:v5];
+    [(PUWallpaperShuffleResourceManager *)self preloadResourceForPosterMedia:posterMedia];
   }
 }
 
-- (void)setEnabledEffects:(unint64_t)a3
+- (void)setEnabledEffects:(unint64_t)effects
 {
-  if (self->_enabledEffects != a3)
+  if (self->_enabledEffects != effects)
   {
-    self->_enabledEffects = a3;
+    self->_enabledEffects = effects;
     objc_initWeak(&location, self);
-    v5 = [(PUWallpaperShuffleResourceManager *)self operationQueue];
+    operationQueue = [(PUWallpaperShuffleResourceManager *)self operationQueue];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __55__PUWallpaperShuffleResourceManager_setEnabledEffects___block_invoke;
     v6[3] = &unk_1E7B804A8;
     objc_copyWeak(v7, &location);
-    v7[1] = a3;
-    [v5 addBarrierBlock:v6];
+    v7[1] = effects;
+    [operationQueue addBarrierBlock:v6];
 
     objc_destroyWeak(v7);
     objc_destroyWeak(&location);
@@ -1025,18 +1025,18 @@ void __55__PUWallpaperShuffleResourceManager_setEnabledEffects___block_invoke(ui
   [WeakRetained _handleEffectsEnabledForAllMedia:*(a1 + 40)];
 }
 
-- (void)_handleSetStyle:(id)a3
+- (void)_handleSetStyle:(id)style
 {
-  v7 = a3;
-  v4 = [(PUWallpaperShuffleResourceManager *)self style];
-  v5 = v4;
-  if (v4 == v7)
+  styleCopy = style;
+  style = [(PUWallpaperShuffleResourceManager *)self style];
+  v5 = style;
+  if (style == styleCopy)
   {
 
     goto LABEL_5;
   }
 
-  v6 = [v4 isEqual:?];
+  v6 = [style isEqual:?];
 
   if (v6)
   {
@@ -1045,31 +1045,31 @@ LABEL_5:
   }
 }
 
-- (void)setStyle:(id)a3
+- (void)setStyle:(id)style
 {
-  v5 = a3;
+  styleCopy = style;
   v6 = self->_style;
   v7 = v6;
-  if (v6 == v5)
+  if (v6 == styleCopy)
   {
   }
 
   else
   {
-    v8 = [(PIParallaxStyle *)v6 isEqual:v5];
+    v8 = [(PIParallaxStyle *)v6 isEqual:styleCopy];
 
     if ((v8 & 1) == 0)
     {
-      objc_storeStrong(&self->_style, a3);
+      objc_storeStrong(&self->_style, style);
       objc_initWeak(&location, self);
-      v9 = [(PUWallpaperShuffleResourceManager *)self operationQueue];
+      operationQueue = [(PUWallpaperShuffleResourceManager *)self operationQueue];
       v10[0] = MEMORY[0x1E69E9820];
       v10[1] = 3221225472;
       v10[2] = __46__PUWallpaperShuffleResourceManager_setStyle___block_invoke;
       v10[3] = &unk_1E7B80610;
       objc_copyWeak(&v12, &location);
-      v11 = v5;
-      [v9 addBarrierBlock:v10];
+      v11 = styleCopy;
+      [operationQueue addBarrierBlock:v10];
 
       objc_destroyWeak(&v12);
       objc_destroyWeak(&location);
@@ -1087,48 +1087,48 @@ void __46__PUWallpaperShuffleResourceManager_setStyle___block_invoke(uint64_t a1
 {
   v3 = dispatch_group_create();
   dispatch_group_enter(v3);
-  v4 = [(PUWallpaperShuffleResourceManager *)self requestOperationQueue];
-  [v4 cancelAllOperations];
+  requestOperationQueue = [(PUWallpaperShuffleResourceManager *)self requestOperationQueue];
+  [requestOperationQueue cancelAllOperations];
 
-  v5 = [(PUWallpaperShuffleResourceManager *)self requestOperationQueue];
+  requestOperationQueue2 = [(PUWallpaperShuffleResourceManager *)self requestOperationQueue];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __60__PUWallpaperShuffleResourceManager_stopPreloadingResources__block_invoke;
   v17[3] = &unk_1E7B80DD0;
   v6 = v3;
   v18 = v6;
-  [v5 addBarrierBlock:v17];
+  [requestOperationQueue2 addBarrierBlock:v17];
 
   dispatch_group_enter(v6);
-  v7 = [(PUWallpaperShuffleResourceManager *)self operationQueue];
-  [v7 cancelAllOperations];
+  operationQueue = [(PUWallpaperShuffleResourceManager *)self operationQueue];
+  [operationQueue cancelAllOperations];
 
-  v8 = [(PUWallpaperShuffleResourceManager *)self operationQueue];
+  operationQueue2 = [(PUWallpaperShuffleResourceManager *)self operationQueue];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __60__PUWallpaperShuffleResourceManager_stopPreloadingResources__block_invoke_2;
   v15[3] = &unk_1E7B80DD0;
   v9 = v6;
   v16 = v9;
-  [v8 addBarrierBlock:v15];
+  [operationQueue2 addBarrierBlock:v15];
 
   dispatch_group_enter(v9);
-  v10 = [(PUWallpaperShuffleResourceManager *)self exportOperationQueue];
-  [v10 cancelAllOperations];
+  exportOperationQueue = [(PUWallpaperShuffleResourceManager *)self exportOperationQueue];
+  [exportOperationQueue cancelAllOperations];
 
-  v11 = [(PUWallpaperShuffleResourceManager *)self exportOperationQueue];
+  exportOperationQueue2 = [(PUWallpaperShuffleResourceManager *)self exportOperationQueue];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __60__PUWallpaperShuffleResourceManager_stopPreloadingResources__block_invoke_3;
   v13[3] = &unk_1E7B80DD0;
   v14 = v9;
   v12 = v9;
-  [v11 addBarrierBlock:v13];
+  [exportOperationQueue2 addBarrierBlock:v13];
 
   dispatch_group_notify(v12, MEMORY[0x1E69E96A0], &__block_literal_global_24211);
 }
 
-- (void)stopPreloadingResourcesWithTimeout:(double)a3
+- (void)stopPreloadingResourcesWithTimeout:(double)timeout
 {
   v43 = *MEMORY[0x1E69E9840];
   v5 = PLWallpaperGetLog();
@@ -1148,55 +1148,55 @@ void __46__PUWallpaperShuffleResourceManager_setStyle___block_invoke(uint64_t a1
   v11 = PLWallpaperGetLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
-    v12 = [(PUWallpaperShuffleResourceManager *)self operationQueue];
-    v13 = [v12 operationCount];
-    v14 = [(PUWallpaperShuffleResourceManager *)self requestOperationQueue];
-    v15 = [v14 operationCount];
+    operationQueue = [(PUWallpaperShuffleResourceManager *)self operationQueue];
+    operationCount = [operationQueue operationCount];
+    requestOperationQueue = [(PUWallpaperShuffleResourceManager *)self requestOperationQueue];
+    operationCount2 = [requestOperationQueue operationCount];
     *buf = 134217984;
-    v40 = (v15 + v13);
+    v40 = (operationCount2 + operationCount);
     _os_log_impl(&dword_1B36F3000, v11, OS_LOG_TYPE_INFO, "Cancelling %lu shuffle operations...", buf, 0xCu);
   }
 
   dispatch_group_enter(v10);
-  v16 = [(PUWallpaperShuffleResourceManager *)self requestOperationQueue];
-  [v16 cancelAllOperations];
+  requestOperationQueue2 = [(PUWallpaperShuffleResourceManager *)self requestOperationQueue];
+  [requestOperationQueue2 cancelAllOperations];
 
-  v17 = [(PUWallpaperShuffleResourceManager *)self requestOperationQueue];
+  requestOperationQueue3 = [(PUWallpaperShuffleResourceManager *)self requestOperationQueue];
   v36[0] = MEMORY[0x1E69E9820];
   v36[1] = 3221225472;
   v36[2] = __72__PUWallpaperShuffleResourceManager_stopPreloadingResourcesWithTimeout___block_invoke;
   v36[3] = &unk_1E7B80DD0;
   v18 = v10;
   v37 = v18;
-  [v17 addBarrierBlock:v36];
+  [requestOperationQueue3 addBarrierBlock:v36];
 
   dispatch_group_enter(v18);
-  v19 = [(PUWallpaperShuffleResourceManager *)self operationQueue];
-  [v19 cancelAllOperations];
+  operationQueue2 = [(PUWallpaperShuffleResourceManager *)self operationQueue];
+  [operationQueue2 cancelAllOperations];
 
-  v20 = [(PUWallpaperShuffleResourceManager *)self operationQueue];
+  operationQueue3 = [(PUWallpaperShuffleResourceManager *)self operationQueue];
   v34[0] = MEMORY[0x1E69E9820];
   v34[1] = 3221225472;
   v34[2] = __72__PUWallpaperShuffleResourceManager_stopPreloadingResourcesWithTimeout___block_invoke_2;
   v34[3] = &unk_1E7B80DD0;
   v21 = v18;
   v35 = v21;
-  [v20 addBarrierBlock:v34];
+  [operationQueue3 addBarrierBlock:v34];
 
   dispatch_group_enter(v21);
-  v22 = [(PUWallpaperShuffleResourceManager *)self exportOperationQueue];
-  [v22 cancelAllOperations];
+  exportOperationQueue = [(PUWallpaperShuffleResourceManager *)self exportOperationQueue];
+  [exportOperationQueue cancelAllOperations];
 
-  v23 = [(PUWallpaperShuffleResourceManager *)self exportOperationQueue];
+  exportOperationQueue2 = [(PUWallpaperShuffleResourceManager *)self exportOperationQueue];
   v32[0] = MEMORY[0x1E69E9820];
   v32[1] = 3221225472;
   v32[2] = __72__PUWallpaperShuffleResourceManager_stopPreloadingResourcesWithTimeout___block_invoke_3;
   v32[3] = &unk_1E7B80DD0;
   v24 = v21;
   v33 = v24;
-  [v23 addBarrierBlock:v32];
+  [exportOperationQueue2 addBarrierBlock:v32];
 
-  v25 = dispatch_time(0, (a3 * 1000000000.0));
+  v25 = dispatch_time(0, (timeout * 1000000000.0));
   if (dispatch_group_wait(v24, v25))
   {
     v26 = PLWallpaperGetLog();
@@ -1228,10 +1228,10 @@ void __46__PUWallpaperShuffleResourceManager_setStyle___block_invoke(uint64_t a1
   }
 }
 
-- (void)startPreloadingResourcesForPosterMedia:(id)a3
+- (void)startPreloadingResourcesForPosterMedia:(id)media
 {
   v57 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  mediaCopy = media;
   v5 = PLWallpaperGetLog();
   v6 = os_signpost_id_generate(v5);
   v7 = v5;
@@ -1249,7 +1249,7 @@ void __46__PUWallpaperShuffleResourceManager_setStyle___block_invoke(uint64_t a1
   mach_timebase_info(&info);
   v32 = mach_absolute_time();
   [MEMORY[0x1E69BDF28] ensureResources];
-  v9 = [v4 count];
+  v9 = [mediaCopy count];
   v10 = PLWallpaperGetLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -1258,16 +1258,16 @@ void __46__PUWallpaperShuffleResourceManager_setStyle___block_invoke(uint64_t a1
     _os_log_impl(&dword_1B36F3000, v10, OS_LOG_TYPE_INFO, "Started preloading resources for %ld shuffle assets.", buf, 0xCu);
   }
 
-  v37 = [(PUWallpaperShuffleResourceManager *)self photoLibrary];
-  v36 = [(PUWallpaperShuffleResourceManager *)self assetDirectory];
-  v35 = [(PUWallpaperShuffleResourceManager *)self operationQueue];
-  v11 = [(PUWallpaperShuffleResourceManager *)self segmentationLoadingOperationsByAssetUUIDs];
-  v12 = [v11 mutableCopy];
+  photoLibrary = [(PUWallpaperShuffleResourceManager *)self photoLibrary];
+  assetDirectory = [(PUWallpaperShuffleResourceManager *)self assetDirectory];
+  operationQueue = [(PUWallpaperShuffleResourceManager *)self operationQueue];
+  segmentationLoadingOperationsByAssetUUIDs = [(PUWallpaperShuffleResourceManager *)self segmentationLoadingOperationsByAssetUUIDs];
+  v12 = [segmentationLoadingOperationsByAssetUUIDs mutableCopy];
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
-  obj = v4;
+  obj = mediaCopy;
   v13 = [obj countByEnumeratingWithState:&v48 objects:v54 count:16];
   if (v13)
   {
@@ -1283,23 +1283,23 @@ void __46__PUWallpaperShuffleResourceManager_setStyle___block_invoke(uint64_t a1
         }
 
         v17 = *(*(&v48 + 1) + 8 * i);
-        v18 = [v17 assetUUID];
-        v19 = [v11 objectForKeyedSubscript:v18];
+        assetUUID = [v17 assetUUID];
+        v19 = [segmentationLoadingOperationsByAssetUUIDs objectForKeyedSubscript:assetUUID];
 
         if (!v19)
         {
           LOBYTE(v31) = 1;
-          v19 = [[PUWallpaperShuffleSegmentationLoadingOperation alloc] initWithPosterMedia:v17 assetDirectory:v36 photoLibrary:v37 shuffleType:[(PUWallpaperShuffleResourceManager *)self shuffleType] supportedEffects:[(PUWallpaperShuffleResourceManager *)self supportedEffects] enableSpatialPhoto:[(PUWallpaperShuffleResourceManager *)self _expectedShuffleSpatialPhotoEnableStateForPosterMedia:v17] isPreloading:v31];
+          v19 = [[PUWallpaperShuffleSegmentationLoadingOperation alloc] initWithPosterMedia:v17 assetDirectory:assetDirectory photoLibrary:photoLibrary shuffleType:[(PUWallpaperShuffleResourceManager *)self shuffleType] supportedEffects:[(PUWallpaperShuffleResourceManager *)self supportedEffects] enableSpatialPhoto:[(PUWallpaperShuffleResourceManager *)self _expectedShuffleSpatialPhotoEnableStateForPosterMedia:v17] isPreloading:v31];
           [(PUWallpaperShuffleSegmentationLoadingOperation *)v19 setQueuePriority:-4];
           [(PUWallpaperShuffleSegmentationLoadingOperation *)v19 setQualityOfService:17];
-          v20 = [v17 assetUUID];
-          [v11 setObject:v19 forKeyedSubscript:v20];
+          assetUUID2 = [v17 assetUUID];
+          [segmentationLoadingOperationsByAssetUUIDs setObject:v19 forKeyedSubscript:assetUUID2];
 
-          [v35 addOperation:v19];
+          [operationQueue addOperation:v19];
         }
 
-        v21 = [v17 assetUUID];
-        [v12 removeObjectForKey:v21];
+        assetUUID3 = [v17 assetUUID];
+        [v12 removeObjectForKey:assetUUID3];
       }
 
       v14 = [obj countByEnumeratingWithState:&v48 objects:v54 count:16];
@@ -1331,7 +1331,7 @@ void __46__PUWallpaperShuffleResourceManager_setStyle___block_invoke(uint64_t a1
         v28 = [v22 objectForKeyedSubscript:v27];
         [v28 cancel];
 
-        [v11 setObject:0 forKeyedSubscript:v27];
+        [segmentationLoadingOperationsByAssetUUIDs setObject:0 forKeyedSubscript:v27];
       }
 
       v24 = [v22 countByEnumeratingWithState:&v44 objects:v53 count:16];
@@ -1340,7 +1340,7 @@ void __46__PUWallpaperShuffleResourceManager_setStyle___block_invoke(uint64_t a1
     while (v24);
   }
 
-  v29 = [(PUWallpaperShuffleResourceManager *)self operationQueue];
+  operationQueue2 = [(PUWallpaperShuffleResourceManager *)self operationQueue];
   v39[0] = MEMORY[0x1E69E9820];
   v39[1] = 3221225472;
   v39[2] = __76__PUWallpaperShuffleResourceManager_startPreloadingResourcesForPosterMedia___block_invoke;
@@ -1350,7 +1350,7 @@ void __46__PUWallpaperShuffleResourceManager_setStyle___block_invoke(uint64_t a1
   v42 = v34;
   v43 = info;
   v30 = v33;
-  [v29 addBarrierBlock:v39];
+  [operationQueue2 addBarrierBlock:v39];
 }
 
 void __76__PUWallpaperShuffleResourceManager_startPreloadingResourcesForPosterMedia___block_invoke(uint64_t a1)
@@ -1380,34 +1380,34 @@ void __76__PUWallpaperShuffleResourceManager_startPreloadingResourcesForPosterMe
   }
 }
 
-- (PUWallpaperShuffleResourceManager)initWithPosterMedia:(id)a3 style:(id)a4 assetDirectory:(id)a5 persistedStyle:(id)a6 photoLibrary:(id)a7 shuffleType:(int64_t)a8
+- (PUWallpaperShuffleResourceManager)initWithPosterMedia:(id)media style:(id)style assetDirectory:(id)directory persistedStyle:(id)persistedStyle photoLibrary:(id)library shuffleType:(int64_t)type
 {
   v52 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v45 = a7;
+  mediaCopy = media;
+  styleCopy = style;
+  directoryCopy = directory;
+  persistedStyleCopy = persistedStyle;
+  libraryCopy = library;
   v50.receiver = self;
   v50.super_class = PUWallpaperShuffleResourceManager;
   v18 = [(PUWallpaperShuffleResourceManager *)&v50 init];
   v19 = v18;
   if (v18)
   {
-    v42 = v17;
-    v43 = v16;
-    v44 = v15;
-    v18->_shuffleType = a8;
-    objc_storeStrong(&v18->_style, a4);
-    objc_storeStrong(&v19->_assetDirectory, a5);
-    objc_storeStrong(&v19->_persistedStyle, a6);
+    v42 = persistedStyleCopy;
+    v43 = directoryCopy;
+    v44 = styleCopy;
+    v18->_shuffleType = type;
+    objc_storeStrong(&v18->_style, style);
+    objc_storeStrong(&v19->_assetDirectory, directory);
+    objc_storeStrong(&v19->_persistedStyle, persistedStyle);
     v19->_supportedEffects = 3;
-    v20 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v14, "count")}];
+    v20 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(mediaCopy, "count")}];
     v46 = 0u;
     v47 = 0u;
     v48 = 0u;
     v49 = 0u;
-    v21 = v14;
+    v21 = mediaCopy;
     v22 = [v21 countByEnumeratingWithState:&v46 objects:v51 count:16];
     if (v22)
     {
@@ -1424,8 +1424,8 @@ void __76__PUWallpaperShuffleResourceManager_startPreloadingResourcesForPosterMe
 
           v26 = *(*(&v46 + 1) + 8 * i);
           v27 = [v26 copy];
-          v28 = [v26 assetUUID];
-          [v20 setObject:v27 forKeyedSubscript:v28];
+          assetUUID = [v26 assetUUID];
+          [v20 setObject:v27 forKeyedSubscript:assetUUID];
         }
 
         v23 = [v21 countByEnumeratingWithState:&v46 objects:v51 count:16];
@@ -1438,7 +1438,7 @@ void __76__PUWallpaperShuffleResourceManager_startPreloadingResourcesForPosterMe
     initialPosterMediaByAssetUUIDs = v19->_initialPosterMediaByAssetUUIDs;
     v19->_initialPosterMediaByAssetUUIDs = v29;
 
-    objc_storeStrong(&v19->_photoLibrary, a7);
+    objc_storeStrong(&v19->_photoLibrary, library);
     v31 = objc_alloc_init(MEMORY[0x1E695DF90]);
     segmentationLoadingOperationsByAssetUUIDs = v19->_segmentationLoadingOperationsByAssetUUIDs;
     v19->_segmentationLoadingOperationsByAssetUUIDs = v31;
@@ -1463,9 +1463,9 @@ void __76__PUWallpaperShuffleResourceManager_startPreloadingResourcesForPosterMe
     exportOperationQueue = v19->_exportOperationQueue;
     v19->_exportOperationQueue = v39;
 
-    v16 = v43;
-    v15 = v44;
-    v17 = v42;
+    directoryCopy = v43;
+    styleCopy = v44;
+    persistedStyleCopy = v42;
   }
 
   return v19;

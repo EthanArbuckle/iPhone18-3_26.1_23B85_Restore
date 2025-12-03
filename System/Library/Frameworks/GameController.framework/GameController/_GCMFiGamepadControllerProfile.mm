@@ -1,20 +1,20 @@
 @interface _GCMFiGamepadControllerProfile
-- (void)setPlayerIndex:(int64_t)a3;
+- (void)setPlayerIndex:(int64_t)index;
 @end
 
 @implementation _GCMFiGamepadControllerProfile
 
-- (void)setPlayerIndex:(int64_t)a3
+- (void)setPlayerIndex:(int64_t)index
 {
-  v4 = [(GCPhysicalInputProfile *)self controller];
-  v5 = [v4 hidServices];
-  v6 = [v5 objectAtIndexedSubscript:0];
-  v7 = [v6 service];
+  controller = [(GCPhysicalInputProfile *)self controller];
+  hidServices = [controller hidServices];
+  v6 = [hidServices objectAtIndexedSubscript:0];
+  service = [v6 service];
 
-  if (v7)
+  if (service)
   {
 
-    GC_IOHIDSetLEDs(v7, a3);
+    GC_IOHIDSetLEDs(service, index);
   }
 }
 

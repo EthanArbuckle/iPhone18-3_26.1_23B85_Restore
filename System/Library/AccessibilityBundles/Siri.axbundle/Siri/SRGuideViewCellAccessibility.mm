@@ -1,32 +1,32 @@
 @interface SRGuideViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
 @end
 
 @implementation SRGuideViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SRGuideViewCell" hasInstanceVariable:@"_nameLabel" withType:"SiriSharedUIContentLabel"];
-  [v3 validateClass:@"SRGuideViewCell" hasInstanceVariable:@"_tagPhraseLabel" withType:"SiriSharedUIContentLabel"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SRGuideViewCell" hasInstanceVariable:@"_nameLabel" withType:"SiriSharedUIContentLabel"];
+  [validationsCopy validateClass:@"SRGuideViewCell" hasInstanceVariable:@"_tagPhraseLabel" withType:"SiriSharedUIContentLabel"];
 }
 
 - (id)accessibilityLabel
 {
   v2 = [(SRGuideViewCellAccessibility *)self safeValueForKey:@"_nameLabel"];
-  v3 = [v2 accessibilityLabel];
+  accessibilityLabel = [v2 accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (id)accessibilityValue
 {
   v2 = [(SRGuideViewCellAccessibility *)self safeValueForKey:@"_tagPhraseLabel"];
-  v3 = [v2 accessibilityLabel];
+  accessibilityLabel = [v2 accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 @end

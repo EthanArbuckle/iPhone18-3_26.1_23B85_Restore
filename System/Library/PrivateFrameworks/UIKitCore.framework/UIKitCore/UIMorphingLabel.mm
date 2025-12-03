@@ -1,50 +1,50 @@
 @interface UIMorphingLabel
-+ (id)preferredFontWithSize:(double)a3;
-- (BOOL)canFitText:(id)a3;
++ (id)preferredFontWithSize:(double)size;
+- (BOOL)canFitText:(id)text;
 - (CGRect)visibleRect;
-- (UIMorphingLabel)initWithCoder:(id)a3;
-- (UIMorphingLabel)initWithFrame:(CGRect)a3;
-- (_NSRange)dstRangeOfAlignmentHunkAtIndex:(unint64_t)a3;
-- (_NSRange)srcRangeOfAlignmentHunkAtIndex:(unint64_t)a3;
-- (double)_rippleDurationForEndInsertion:(BOOL)a3;
-- (double)alphaForFrame:(CGRect)a3;
-- (double)changeInWidthDueToAlignmentHunkAtIndex:(unint64_t)a3;
+- (UIMorphingLabel)initWithCoder:(id)coder;
+- (UIMorphingLabel)initWithFrame:(CGRect)frame;
+- (_NSRange)dstRangeOfAlignmentHunkAtIndex:(unint64_t)index;
+- (_NSRange)srcRangeOfAlignmentHunkAtIndex:(unint64_t)index;
+- (double)_rippleDurationForEndInsertion:(BOOL)insertion;
+- (double)alphaForFrame:(CGRect)frame;
+- (double)changeInWidthDueToAlignmentHunkAtIndex:(unint64_t)index;
 - (double)currentMediaTime;
 - (double)flushAmount;
-- (double)requiredWidthForText:(id)a3;
-- (double)totalLeftOffsetForAlignmentHunkAtIndex:(unint64_t)a3;
-- (double)totalRightOffsetForAlignmentHunkAtIndex:(unint64_t)a3;
-- (id)attributedStringForText:(id)a3;
-- (id)glyphViewWithImage:(id)a3 isColorGlyph:(BOOL)a4;
+- (double)requiredWidthForText:(id)text;
+- (double)totalLeftOffsetForAlignmentHunkAtIndex:(unint64_t)index;
+- (double)totalRightOffsetForAlignmentHunkAtIndex:(unint64_t)index;
+- (id)attributedStringForText:(id)text;
+- (id)glyphViewWithImage:(id)image isColorGlyph:(BOOL)glyph;
 - (id)uniqueString;
-- (unint64_t)calculateHardAlignmentAtIndex:(unint64_t)a3 fromGlyphsInRange:(_NSRange)a4 toGlyphsInRange:(_NSRange)a5;
-- (void)animateAlignmentHunkAtIndex:(unint64_t)a3;
-- (void)animateChangeInWidthOutsideAlignmentHunkAtIndex:(unint64_t)a3;
-- (void)animateDeletionAlignmentHunkAtIndex:(unint64_t)a3;
-- (void)animateGlyph:(id)a3 toAlpha:(double)a4 duration:(double)a5 delay:(double)a6;
-- (void)animateGlyph:(id)a3 toPosition:(CGPoint)a4 delay:(double)a5;
-- (void)animateGlyph:(id)a3 toScale:(double)a4 delay:(double)a5;
+- (unint64_t)calculateHardAlignmentAtIndex:(unint64_t)index fromGlyphsInRange:(_NSRange)range toGlyphsInRange:(_NSRange)inRange;
+- (void)animateAlignmentHunkAtIndex:(unint64_t)index;
+- (void)animateChangeInWidthOutsideAlignmentHunkAtIndex:(unint64_t)index;
+- (void)animateDeletionAlignmentHunkAtIndex:(unint64_t)index;
+- (void)animateGlyph:(id)glyph toAlpha:(double)alpha duration:(double)duration delay:(double)delay;
+- (void)animateGlyph:(id)glyph toPosition:(CGPoint)position delay:(double)delay;
+- (void)animateGlyph:(id)glyph toScale:(double)scale delay:(double)delay;
 - (void)animateGlyphs;
-- (void)animateGlyphsInRange:(_NSRange)a3 ofGlyphSet:(id)a4 byOffset:(double)a5 delay:(double)a6;
-- (void)animateHideGlyph:(id)a3 alphaDuration:(double)a4 delay:(double)a5;
-- (void)animateInsertionAlignmentHunkAtIndex:(unint64_t)a3;
-- (void)animateMovementAlignmentHunkAtIndex:(unint64_t)a3;
-- (void)animateShowGlyph:(id)a3 alpha:(double)a4 alphaDuration:(double)a5 delay:(double)a6;
-- (void)animateSubstitutionAlignmentHunkAtIndex:(unint64_t)a3;
+- (void)animateGlyphsInRange:(_NSRange)range ofGlyphSet:(id)set byOffset:(double)offset delay:(double)delay;
+- (void)animateHideGlyph:(id)glyph alphaDuration:(double)duration delay:(double)delay;
+- (void)animateInsertionAlignmentHunkAtIndex:(unint64_t)index;
+- (void)animateMovementAlignmentHunkAtIndex:(unint64_t)index;
+- (void)animateShowGlyph:(id)glyph alpha:(double)alpha alphaDuration:(double)duration delay:(double)delay;
+- (void)animateSubstitutionAlignmentHunkAtIndex:(unint64_t)index;
 - (void)baseInit;
 - (void)calculateGlyphAlignment;
-- (void)contentSizeDidChange:(id)a3;
-- (void)copyStateFromGlyph:(id)a3 toGlyph:(id)a4;
-- (void)hideGlyph:(id)a3;
-- (void)initAlignmentHunkAtIndex:(unint64_t)a3;
-- (void)initInsertionAlignmentHunkAtIndex:(unint64_t)a3;
-- (void)initMovementAlignmentHunkAtIndex:(unint64_t)a3;
-- (void)initSubstitutionAlignmentHunkAtIndex:(unint64_t)a3;
+- (void)contentSizeDidChange:(id)change;
+- (void)copyStateFromGlyph:(id)glyph toGlyph:(id)toGlyph;
+- (void)hideGlyph:(id)glyph;
+- (void)initAlignmentHunkAtIndex:(unint64_t)index;
+- (void)initInsertionAlignmentHunkAtIndex:(unint64_t)index;
+- (void)initMovementAlignmentHunkAtIndex:(unint64_t)index;
+- (void)initSubstitutionAlignmentHunkAtIndex:(unint64_t)index;
 - (void)layoutSubviews;
-- (void)setFont:(id)a3;
-- (void)setText:(id)a3;
-- (void)setTextColor:(id)a3;
-- (void)setVisibleRect:(CGRect)a3;
+- (void)setFont:(id)font;
+- (void)setText:(id)text;
+- (void)setTextColor:(id)color;
+- (void)setVisibleRect:(CGRect)rect;
 @end
 
 @implementation UIMorphingLabel
@@ -116,11 +116,11 @@
 
     if (self->_textColorDidChange)
     {
-      v18 = [(UIView *)self->_colorView layer];
-      [v18 setValue:-[UIColor CGColor](self->_textColor forKeyPath:{"CGColor"), @"filters.color.inputColor"}];
+      layer = [(UIView *)self->_colorView layer];
+      [layer setValue:-[UIColor CGColor](self->_textColor forKeyPath:{"CGColor"), @"filters.color.inputColor"}];
 
-      v19 = [(UIView *)self->_colorView layer];
-      [v19 removeAnimationForKey:@"textColor"];
+      layer2 = [(UIView *)self->_colorView layer];
+      [layer2 removeAnimationForKey:@"textColor"];
 
       self->_textColorDidChange = 0;
     }
@@ -194,8 +194,8 @@ void __33__UIMorphingLabel_layoutSubviews__block_invoke(uint64_t a1)
     v13 = 0;
     do
     {
-      v14 = [(UIMorphingLabelGlyphSet *)self->_dstGlyphSet glyphViews];
-      v15 = [v14 objectAtIndexedSubscript:v13];
+      glyphViews = [(UIMorphingLabelGlyphSet *)self->_dstGlyphSet glyphViews];
+      v15 = [glyphViews objectAtIndexedSubscript:v13];
 
       [(UIMorphingLabelGlyphSet *)self->_dstGlyphSet glyphPositions];
       ++v13;
@@ -207,8 +207,8 @@ void __33__UIMorphingLabel_layoutSubviews__block_invoke(uint64_t a1)
 
 - (double)currentMediaTime
 {
-  v2 = [(UIView *)self layer];
-  [v2 convertTime:0 fromLayer:CACurrentMediaTime()];
+  layer = [(UIView *)self layer];
+  [layer convertTime:0 fromLayer:CACurrentMediaTime()];
   v4 = v3;
 
   return v4;
@@ -216,24 +216,24 @@ void __33__UIMorphingLabel_layoutSubviews__block_invoke(uint64_t a1)
 
 - (void)calculateGlyphAlignment
 {
-  v3 = [(UIMorphingLabelGlyphSet *)self->_srcGlyphSet glyphCount];
-  v4 = [(UIMorphingLabelGlyphSet *)self->_dstGlyphSet glyphCount];
-  v5 = [(UIMorphingLabelGlyphSet *)self->_srcGlyphSet glyphs];
-  v6 = [(UIMorphingLabelGlyphSet *)self->_dstGlyphSet glyphs];
-  if (v3 >= v4)
+  glyphCount = [(UIMorphingLabelGlyphSet *)self->_srcGlyphSet glyphCount];
+  glyphCount2 = [(UIMorphingLabelGlyphSet *)self->_dstGlyphSet glyphCount];
+  glyphs = [(UIMorphingLabelGlyphSet *)self->_srcGlyphSet glyphs];
+  glyphs2 = [(UIMorphingLabelGlyphSet *)self->_dstGlyphSet glyphs];
+  if (glyphCount >= glyphCount2)
   {
-    v7 = v4;
+    v7 = glyphCount2;
   }
 
   else
   {
-    v7 = v3;
+    v7 = glyphCount;
   }
 
   v8 = 0;
   if (v7)
   {
-    while (v5[v8] == v6[v8])
+    while (glyphs[v8] == glyphs2[v8])
     {
       if (v7 == ++v8)
       {
@@ -259,7 +259,7 @@ LABEL_14:
   else
   {
     v10 = 0;
-    while (v5[v3 - 1 + v10] == v6[v4 - 1 + v10])
+    while (glyphs[glyphCount - 1 + v10] == glyphs2[glyphCount2 - 1 + v10])
     {
       if (v8 - v7 == --v10)
       {
@@ -283,9 +283,9 @@ LABEL_15:
   v11 = 1;
   self->_alignmentIsEqual[0] = 1;
 LABEL_18:
-  if (v8 != v3 || v8 != v4)
+  if (v8 != glyphCount || v8 != glyphCount2)
   {
-    if (v3 == v7 || v4 == v7 || (v12 = [(UIMorphingLabel *)self calculateHardAlignmentAtIndex:v11 fromGlyphsInRange:v8 toGlyphsInRange:v3 - v7, v8, v4 - v7], v12 == 0x7FFFFFFFFFFFFFFFLL))
+    if (glyphCount == v7 || glyphCount2 == v7 || (v12 = [(UIMorphingLabel *)self calculateHardAlignmentAtIndex:v11 fromGlyphsInRange:v8 toGlyphsInRange:glyphCount - v7, v8, glyphCount2 - v7], v12 == 0x7FFFFFFFFFFFFFFFLL))
     {
       self->_alignmentSrc[v11] = v8;
       self->_alignmentDst[v11] = v8;
@@ -295,8 +295,8 @@ LABEL_18:
 
     if (v9)
     {
-      self->_alignmentSrc[v12] = v3 - v9;
-      self->_alignmentDst[v12] = v4 - v9;
+      self->_alignmentSrc[v12] = glyphCount - v9;
+      self->_alignmentDst[v12] = glyphCount2 - v9;
       self->_alignmentIsEqual[v12] = 1;
       v11 = v12 + 1;
     }
@@ -339,19 +339,19 @@ LABEL_18:
   [(UIView *)self addSubview:self->_colorView];
   v11 = [MEMORY[0x1E6979378] filterWithType:*MEMORY[0x1E6979CB0]];
   [v11 setName:@"color"];
-  v12 = [(UIMorphingLabel *)self textColor];
-  [v11 setValue:objc_msgSend(v12 forKey:{"CGColor"), @"inputColor"}];
+  textColor = [(UIMorphingLabel *)self textColor];
+  [v11 setValue:objc_msgSend(textColor forKey:{"CGColor"), @"inputColor"}];
 
   v16[0] = v11;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1];
-  v14 = [(UIView *)self->_colorView layer];
-  [v14 setFilters:v13];
+  layer = [(UIView *)self->_colorView layer];
+  [layer setFilters:v13];
 
   self->_rippleDuration = -1.0;
   self->_initialScale = 0.6;
   self->_glyphScaleAnimationSpeed = 1.4;
-  v15 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v15 addObserver:self selector:sel_contentSizeDidChange_ name:@"UIContentSizeCategoryDidChangeNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_contentSizeDidChange_ name:@"UIContentSizeCategoryDidChangeNotification" object:0];
 }
 
 uint64_t __33__UIMorphingLabel_layoutSubviews__block_invoke_2(uint64_t a1)
@@ -366,26 +366,26 @@ uint64_t __33__UIMorphingLabel_layoutSubviews__block_invoke_2(uint64_t a1)
   return [v4 placeGlyphs];
 }
 
-+ (id)preferredFontWithSize:(double)a3
++ (id)preferredFontWithSize:(double)size
 {
-  v4 = [UIApp preferredContentSizeCategory];
-  if (([v4 isEqualToString:@"UICTContentSizeCategoryL"] & 1) == 0)
+  preferredContentSizeCategory = [UIApp preferredContentSizeCategory];
+  if (([preferredContentSizeCategory isEqualToString:@"UICTContentSizeCategoryL"] & 1) == 0)
   {
-    if ([v4 isEqualToString:@"UICTContentSizeCategoryXL"])
+    if ([preferredContentSizeCategory isEqualToString:@"UICTContentSizeCategoryXL"])
     {
       v5 = 2.0;
 LABEL_9:
-      a3 = a3 + v5;
+      size = size + v5;
       goto LABEL_10;
     }
 
-    if ([v4 isEqualToString:@"UICTContentSizeCategoryXXL"])
+    if ([preferredContentSizeCategory isEqualToString:@"UICTContentSizeCategoryXXL"])
     {
       v5 = 4.0;
       goto LABEL_9;
     }
 
-    if (([v4 isEqualToString:@"UICTContentSizeCategoryXXXL"] & 1) != 0 || _UIContentSizeCategoryIsAccessibilityContentSizeCategory(v4, v6))
+    if (([preferredContentSizeCategory isEqualToString:@"UICTContentSizeCategoryXXXL"] & 1) != 0 || _UIContentSizeCategoryIsAccessibilityContentSizeCategory(preferredContentSizeCategory, v6))
     {
       v5 = 6.0;
       goto LABEL_9;
@@ -393,16 +393,16 @@ LABEL_9:
   }
 
 LABEL_10:
-  v7 = [off_1E70ECC18 systemFontOfSize:a3];
+  v7 = [off_1E70ECC18 systemFontOfSize:size];
 
   return v7;
 }
 
-- (UIMorphingLabel)initWithFrame:(CGRect)a3
+- (UIMorphingLabel)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = UIMorphingLabel;
-  v3 = [(UIView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -412,11 +412,11 @@ LABEL_10:
   return v4;
 }
 
-- (UIMorphingLabel)initWithCoder:(id)a3
+- (UIMorphingLabel)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = UIMorphingLabel;
-  v3 = [(UIView *)&v6 initWithCoder:a3];
+  v3 = [(UIView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -426,12 +426,12 @@ LABEL_10:
   return v4;
 }
 
-- (double)alphaForFrame:(CGRect)a3
+- (double)alphaForFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = 1.0;
   if (!CGRectIsNull(self->_visibleRect))
   {
@@ -464,24 +464,24 @@ LABEL_10:
   return v8;
 }
 
-- (void)setVisibleRect:(CGRect)a3
+- (void)setVisibleRect:(CGRect)rect
 {
-  self->_visibleRect = a3;
+  self->_visibleRect = rect;
   if ([(UIMorphingLabelGlyphSet *)self->_dstGlyphSet glyphCount])
   {
     v4 = 0;
     v5 = 0;
     do
     {
-      v6 = [(UIMorphingLabelGlyphSet *)self->_dstGlyphSet glyphViews];
-      v7 = [v6 objectAtIndexedSubscript:v5];
+      glyphViews = [(UIMorphingLabelGlyphSet *)self->_dstGlyphSet glyphViews];
+      v7 = [glyphViews objectAtIndexedSubscript:v5];
 
-      v8 = [(UIMorphingLabelGlyphSet *)self->_dstGlyphSet glyphFrames];
-      [(UIMorphingLabel *)self alphaForFrame:v8[v4].origin.x, v8[v4].origin.y, v8[v4].size.width, v8[v4].size.height];
+      glyphFrames = [(UIMorphingLabelGlyphSet *)self->_dstGlyphSet glyphFrames];
+      [(UIMorphingLabel *)self alphaForFrame:glyphFrames[v4].origin.x, glyphFrames[v4].origin.y, glyphFrames[v4].size.width, glyphFrames[v4].size.height];
       v10 = v9;
-      v11 = [v7 layer];
+      layer = [v7 layer];
       *&v12 = v10;
-      [v11 setOpacity:v12];
+      [layer setOpacity:v12];
 
       ++v5;
       ++v4;
@@ -491,13 +491,13 @@ LABEL_10:
   }
 }
 
-- (double)_rippleDurationForEndInsertion:(BOOL)a3
+- (double)_rippleDurationForEndInsertion:(BOOL)insertion
 {
   result = self->_rippleDuration;
   if (result <= 0.0)
   {
     v4 = 0.1;
-    if (a3)
+    if (insertion)
     {
       v4 = 0.125;
     }
@@ -508,26 +508,26 @@ LABEL_10:
   return result;
 }
 
-- (unint64_t)calculateHardAlignmentAtIndex:(unint64_t)a3 fromGlyphsInRange:(_NSRange)a4 toGlyphsInRange:(_NSRange)a5
+- (unint64_t)calculateHardAlignmentAtIndex:(unint64_t)index fromGlyphsInRange:(_NSRange)range toGlyphsInRange:(_NSRange)inRange
 {
-  length = a5.length;
-  location = a5.location;
-  v7 = a4.length;
-  v8 = a4.location;
+  length = inRange.length;
+  location = inRange.location;
+  v7 = range.length;
+  v8 = range.location;
   if (!calculateHardAlignmentAtIndex_fromGlyphsInRange_toGlyphsInRange__memoTable)
   {
     calculateHardAlignmentAtIndex_fromGlyphsInRange_toGlyphsInRange__memoTable = malloc_type_malloc(0x1452uLL, 0x1000040BDFB0063uLL);
     bzero(calculateHardAlignmentAtIndex_fromGlyphsInRange_toGlyphsInRange__memoTable, 0x1452uLL);
   }
 
-  v11 = [(UIMorphingLabelGlyphSet *)self->_srcGlyphSet glyphs];
-  v12 = [(UIMorphingLabelGlyphSet *)self->_dstGlyphSet glyphs];
+  glyphs = [(UIMorphingLabelGlyphSet *)self->_srcGlyphSet glyphs];
+  glyphs2 = [(UIMorphingLabelGlyphSet *)self->_dstGlyphSet glyphs];
   result = 0x7FFFFFFFFFFFFFFFLL;
   if (v7 <= 0x32 && length <= 0x32)
   {
     v14 = 0;
-    v15 = &v11[v8];
-    v16 = &v12[location];
+    v15 = &glyphs[v8];
+    v16 = &glyphs2[location];
     v17 = calculateHardAlignmentAtIndex_fromGlyphsInRange_toGlyphsInRange__memoTable;
     v18 = calculateHardAlignmentAtIndex_fromGlyphsInRange_toGlyphsInRange__memoTable + 1;
     while (1)
@@ -632,12 +632,12 @@ LABEL_32:
         {
           if (i >= v7)
           {
-            if (v30 >= length || a3 >= 0x64)
+            if (v30 >= length || index >= 0x64)
             {
 LABEL_64:
               if (v30 >= length && i >= v7)
               {
-                return a3;
+                return index;
               }
 
               else
@@ -647,7 +647,7 @@ LABEL_64:
             }
           }
 
-          else if (a3 > 0x63)
+          else if (index > 0x63)
           {
             goto LABEL_64;
           }
@@ -687,9 +687,9 @@ LABEL_46:
 
           v32 = 1;
 LABEL_63:
-          self->_alignmentSrc[a3] = i + v8;
-          self->_alignmentDst[a3] = v30 + location;
-          self->_alignmentIsEqual[a3++] = v32;
+          self->_alignmentSrc[index] = i + v8;
+          self->_alignmentDst[index] = v30 + location;
+          self->_alignmentIsEqual[index++] = v32;
           v30 = j;
         }
 
@@ -744,102 +744,102 @@ LABEL_56:
   return result;
 }
 
-- (_NSRange)srcRangeOfAlignmentHunkAtIndex:(unint64_t)a3
+- (_NSRange)srcRangeOfAlignmentHunkAtIndex:(unint64_t)index
 {
-  v3 = self->_alignmentSrc[a3];
-  if (self->_alignmentSize - 1 <= a3)
+  v3 = self->_alignmentSrc[index];
+  if (self->_alignmentSize - 1 <= index)
   {
-    v4 = [(UIMorphingLabelGlyphSet *)self->_srcGlyphSet glyphCount];
+    glyphCount = [(UIMorphingLabelGlyphSet *)self->_srcGlyphSet glyphCount];
   }
 
   else
   {
-    v4 = self->_alignmentSrc[a3 + 1];
+    glyphCount = self->_alignmentSrc[index + 1];
   }
 
-  v5 = v4 - v3;
+  v5 = glyphCount - v3;
   v6 = v3;
   result.length = v5;
   result.location = v6;
   return result;
 }
 
-- (_NSRange)dstRangeOfAlignmentHunkAtIndex:(unint64_t)a3
+- (_NSRange)dstRangeOfAlignmentHunkAtIndex:(unint64_t)index
 {
-  v3 = self->_alignmentDst[a3];
-  if (self->_alignmentSize - 1 <= a3)
+  v3 = self->_alignmentDst[index];
+  if (self->_alignmentSize - 1 <= index)
   {
-    v4 = [(UIMorphingLabelGlyphSet *)self->_dstGlyphSet glyphCount];
+    glyphCount = [(UIMorphingLabelGlyphSet *)self->_dstGlyphSet glyphCount];
   }
 
   else
   {
-    v4 = self->_alignmentDst[a3 + 1];
+    glyphCount = self->_alignmentDst[index + 1];
   }
 
-  v5 = v4 - v3;
+  v5 = glyphCount - v3;
   v6 = v3;
   result.length = v5;
   result.location = v6;
   return result;
 }
 
-- (id)glyphViewWithImage:(id)a3 isColorGlyph:(BOOL)a4
+- (id)glyphViewWithImage:(id)image isColorGlyph:(BOOL)glyph
 {
-  v5 = self;
+  selfCopy = self;
   hiddenGlyphViews = self->_hiddenGlyphViews;
-  v7 = a3;
-  if (![(NSMutableArray *)hiddenGlyphViews count]|| a4)
+  imageCopy = image;
+  if (![(NSMutableArray *)hiddenGlyphViews count]|| glyph)
   {
-    v8 = [[UIMorphingLabelImageView alloc] initWithImage:v7];
+    lastObject = [[UIMorphingLabelImageView alloc] initWithImage:imageCopy];
 
-    if (!a4)
+    if (!glyph)
     {
-      v5 = v5->_colorView;
+      selfCopy = selfCopy->_colorView;
     }
 
-    [(UIView *)v5 addSubview:v8];
+    [(UIView *)selfCopy addSubview:lastObject];
   }
 
   else
   {
-    v8 = [(NSMutableArray *)v5->_hiddenGlyphViews lastObject];
-    [(NSMutableArray *)v5->_hiddenGlyphViews removeLastObject];
-    [(UIMorphingLabelImageView *)v8 setImage:v7];
+    lastObject = [(NSMutableArray *)selfCopy->_hiddenGlyphViews lastObject];
+    [(NSMutableArray *)selfCopy->_hiddenGlyphViews removeLastObject];
+    [(UIMorphingLabelImageView *)lastObject setImage:imageCopy];
     v9 = *MEMORY[0x1E695EFF8];
     v10 = *(MEMORY[0x1E695EFF8] + 8);
-    [v7 size];
+    [imageCopy size];
     v12 = v11;
     v14 = v13;
 
-    [(UIView *)v8 setFrame:v9, v10, v12, v14];
-    [(UIView *)v8 setAlpha:1.0];
-    [(UIView *)v8 setHidden:0];
-    [(UIView *)v5->_colorView bringSubviewToFront:v8];
+    [(UIView *)lastObject setFrame:v9, v10, v12, v14];
+    [(UIView *)lastObject setAlpha:1.0];
+    [(UIView *)lastObject setHidden:0];
+    [(UIView *)selfCopy->_colorView bringSubviewToFront:lastObject];
   }
 
-  return v8;
+  return lastObject;
 }
 
-- (void)hideGlyph:(id)a3
+- (void)hideGlyph:(id)glyph
 {
-  v7 = a3;
-  v4 = [v7 superview];
+  glyphCopy = glyph;
+  superview = [glyphCopy superview];
   colorView = self->_colorView;
 
-  if (v4 == colorView)
+  if (superview == colorView)
   {
-    [v7 setHidden:1];
-    [v7 setImage:0];
-    v6 = [v7 layer];
-    [v6 removeAllAnimations];
+    [glyphCopy setHidden:1];
+    [glyphCopy setImage:0];
+    layer = [glyphCopy layer];
+    [layer removeAllAnimations];
 
-    [(NSMutableArray *)self->_hiddenGlyphViews addObject:v7];
+    [(NSMutableArray *)self->_hiddenGlyphViews addObject:glyphCopy];
   }
 
   else
   {
-    [v7 removeFromSuperview];
+    [glyphCopy removeFromSuperview];
   }
 }
 
@@ -853,13 +853,13 @@ LABEL_56:
   return v4;
 }
 
-- (void)animateGlyph:(id)a3 toPosition:(CGPoint)a4 delay:(double)a5
+- (void)animateGlyph:(id)glyph toPosition:(CGPoint)position delay:(double)delay
 {
-  y = a4.y;
-  x = a4.x;
-  v49 = a3;
-  v8 = [v49 layer];
-  [v8 position];
+  y = position.y;
+  x = position.x;
+  glyphCopy = glyph;
+  layer = [glyphCopy layer];
+  [layer position];
   v10 = v9;
   v12 = v11;
 
@@ -870,8 +870,8 @@ LABEL_56:
     v17 = v16;
     v19 = v18;
     v21 = v20;
-    [v49 bounds];
-    [(UIView *)self convertRect:v49 fromView:?];
+    [glyphCopy bounds];
+    [(UIView *)self convertRect:glyphCopy fromView:?];
     v53.origin.x = v22;
     v53.origin.y = v23;
     v53.size.width = v24;
@@ -881,12 +881,12 @@ LABEL_56:
     v51.size.width = v19;
     v51.size.height = v21;
     v26 = CGRectIntersectsRect(v51, v53);
-    v27 = [v49 layer];
-    [v27 setPosition:{x, y}];
+    layer2 = [glyphCopy layer];
+    [layer2 setPosition:{x, y}];
 
-    if (v26 || (-[UIMorphingLabel visibleRect](self, "visibleRect"), v29 = v28, v31 = v30, v33 = v32, v35 = v34, [v49 bounds], -[UIView convertRect:fromView:](self, "convertRect:fromView:", v49), v54.origin.x = v36, v54.origin.y = v37, v54.size.width = v38, v54.size.height = v39, v52.origin.x = v29, v52.origin.y = v31, v52.size.width = v33, v52.size.height = v35, CGRectIntersectsRect(v52, v54)))
+    if (v26 || (-[UIMorphingLabel visibleRect](self, "visibleRect"), v29 = v28, v31 = v30, v33 = v32, v35 = v34, [glyphCopy bounds], -[UIView convertRect:fromView:](self, "convertRect:fromView:", glyphCopy), v54.origin.x = v36, v54.origin.y = v37, v54.size.width = v38, v54.size.height = v39, v52.origin.x = v29, v52.origin.y = v31, v52.size.width = v33, v52.size.height = v35, CGRectIntersectsRect(v52, v54)))
     {
-      v40 = [MEMORY[0x1E69794A8] animationWithKeyPath:{@"position", *&a5}];
+      v40 = [MEMORY[0x1E69794A8] animationWithKeyPath:{@"position", *&delay}];
       [v40 setMass:2.0];
       [v40 setStiffness:300.0];
       [v40 setDamping:400.0];
@@ -906,30 +906,30 @@ LABEL_56:
       [v40 setFrameInterval:?];
       [v40 setFillMode:*MEMORY[0x1E69797D8]];
       [v40 setAdditive:1];
-      v45 = [v49 layer];
-      v46 = [(UIMorphingLabel *)self uniqueString];
-      [v45 addAnimation:v40 forKey:v46];
+      layer3 = [glyphCopy layer];
+      uniqueString = [(UIMorphingLabel *)self uniqueString];
+      [layer3 addAnimation:v40 forKey:uniqueString];
     }
   }
 }
 
-- (void)animateGlyph:(id)a3 toAlpha:(double)a4 duration:(double)a5 delay:(double)a6
+- (void)animateGlyph:(id)glyph toAlpha:(double)alpha duration:(double)duration delay:(double)delay
 {
-  v10 = a3;
-  v11 = [v10 layer];
-  [v11 opacity];
+  glyphCopy = glyph;
+  layer = [glyphCopy layer];
+  [layer opacity];
   v13 = v12;
 
-  v15 = [v10 layer];
-  v14 = a4;
-  *&v16 = v14;
-  [v15 setOpacity:v16];
+  layer2 = [glyphCopy layer];
+  alphaCopy = alpha;
+  *&v16 = alphaCopy;
+  [layer2 setOpacity:v16];
 
-  if (v13 == a4 || (-[UIMorphingLabel visibleRect](self, "visibleRect"), v18 = v17, v20 = v19, v22 = v21, v24 = v23, [v10 bounds], -[UIView convertRect:fromView:](self, "convertRect:fromView:", v10), v47.origin.x = v25, v47.origin.y = v26, v47.size.width = v27, v47.size.height = v28, v46.origin.x = v18, v46.origin.y = v20, v46.size.width = v22, v46.size.height = v24, !CGRectIntersectsRect(v46, v47)))
+  if (v13 == alpha || (-[UIMorphingLabel visibleRect](self, "visibleRect"), v18 = v17, v20 = v19, v22 = v21, v24 = v23, [glyphCopy bounds], -[UIView convertRect:fromView:](self, "convertRect:fromView:", glyphCopy), v47.origin.x = v25, v47.origin.y = v26, v47.size.width = v27, v47.size.height = v28, v46.origin.x = v18, v46.origin.y = v20, v46.size.width = v22, v46.size.height = v24, !CGRectIntersectsRect(v46, v47)))
   {
-    if (a4 == 0.0)
+    if (alpha == 0.0)
     {
-      [(UIMorphingLabel *)self hideGlyph:v10];
+      [(UIMorphingLabel *)self hideGlyph:glyphCopy];
     }
   }
 
@@ -939,21 +939,21 @@ LABEL_56:
     v30 = [MEMORY[0x1E69793D0] functionWithName:*MEMORY[0x1E6979EA0]];
     [v29 setTimingFunction:v30];
 
-    v31 = [MEMORY[0x1E696AD98] numberWithDouble:v13 - a4];
-    [v29 setFromValue:v31];
+    alpha = [MEMORY[0x1E696AD98] numberWithDouble:v13 - alpha];
+    [v29 setFromValue:alpha];
 
     [v29 setToValue:&unk_1EFE320F8];
     v32 = 1.0 / self->_slowdown;
     *&v32 = v32;
     [v29 setSpeed:v32];
-    [v29 setDuration:a5];
+    [v29 setDuration:duration];
     [(UIMorphingLabel *)self currentMediaTime];
-    [v29 setBeginTime:v33 + self->_slowdown * a6];
+    [v29 setBeginTime:v33 + self->_slowdown * delay];
     [(_UIViewAnimationAttributes *)self->_textAnimationAttributes _frameInterval];
     [v29 setFrameInterval:?];
     [v29 setFillMode:*MEMORY[0x1E69797D8]];
     [v29 setAdditive:1];
-    if (a4 == 0.0)
+    if (alpha == 0.0)
     {
       [MEMORY[0x1E6979518] begin];
       v34 = MEMORY[0x1E6979518];
@@ -961,48 +961,48 @@ LABEL_56:
       v41 = 3221225472;
       v42 = __55__UIMorphingLabel_animateGlyph_toAlpha_duration_delay___block_invoke;
       v43 = &unk_1E70F35B8;
-      v44 = self;
-      v35 = v10;
+      selfCopy = self;
+      v35 = glyphCopy;
       v45 = v35;
       [v34 setCompletionBlock:&v40];
 
-      v36 = [v35 layer];
-      v37 = [(UIMorphingLabel *)self uniqueString];
-      [v36 addAnimation:v29 forKey:v37];
+      layer3 = [v35 layer];
+      uniqueString = [(UIMorphingLabel *)self uniqueString];
+      [layer3 addAnimation:v29 forKey:uniqueString];
 
       [MEMORY[0x1E6979518] commit];
     }
 
     else
     {
-      v38 = [v10 layer];
-      v39 = [(UIMorphingLabel *)self uniqueString];
-      [v38 addAnimation:v29 forKey:v39];
+      layer4 = [glyphCopy layer];
+      uniqueString2 = [(UIMorphingLabel *)self uniqueString];
+      [layer4 addAnimation:v29 forKey:uniqueString2];
     }
   }
 }
 
-- (void)animateGlyph:(id)a3 toScale:(double)a4 delay:(double)a5
+- (void)animateGlyph:(id)glyph toScale:(double)scale delay:(double)delay
 {
-  v37 = a3;
-  v8 = [v37 layer];
-  v9 = [v8 valueForKeyPath:@"transform.scale.xy"];
+  glyphCopy = glyph;
+  layer = [glyphCopy layer];
+  v9 = [layer valueForKeyPath:@"transform.scale.xy"];
   [v9 floatValue];
   v11 = v10;
 
-  if (v11 != a4)
+  if (v11 != scale)
   {
-    v12 = [v37 layer];
-    v13 = [MEMORY[0x1E696AD98] numberWithDouble:a4];
-    [v12 setValue:v13 forKeyPath:@"transform.scale.xy"];
+    layer2 = [glyphCopy layer];
+    v13 = [MEMORY[0x1E696AD98] numberWithDouble:scale];
+    [layer2 setValue:v13 forKeyPath:@"transform.scale.xy"];
 
     [(UIMorphingLabel *)self visibleRect];
     v15 = v14;
     v17 = v16;
     v19 = v18;
     v21 = v20;
-    [v37 bounds];
-    [(UIView *)self convertRect:v37 fromView:?];
+    [glyphCopy bounds];
+    [(UIView *)self convertRect:glyphCopy fromView:?];
     v40.origin.x = v22;
     v40.origin.y = v23;
     v40.size.width = v24;
@@ -1017,8 +1017,8 @@ LABEL_56:
       v27 = [MEMORY[0x1E69794A8] animationWithKeyPath:@"transform.scale.xy"];
       v28 = v27;
       v29 = 1.0;
-      v30 = dbl_18A680840[a4 < 1.0];
-      if (a4 >= 1.0)
+      v30 = dbl_18A680840[scale < 1.0];
+      if (scale >= 1.0)
       {
         v31 = 45.0;
       }
@@ -1032,8 +1032,8 @@ LABEL_56:
       [v27 setMass:v29];
       [v28 setStiffness:v30];
       [v28 setDamping:v31];
-      v32 = [MEMORY[0x1E696AD98] numberWithDouble:v11 - a4];
-      [v28 setFromValue:v32];
+      scale = [MEMORY[0x1E696AD98] numberWithDouble:v11 - scale];
+      [v28 setFromValue:scale];
 
       [v28 setToValue:&unk_1EFE320F8];
       v33 = glyphScaleAnimationSpeed / self->_slowdown;
@@ -1041,47 +1041,47 @@ LABEL_56:
       [v28 setSpeed:v33];
       [v28 setDuration:1.0];
       [(UIMorphingLabel *)self currentMediaTime];
-      [v28 setBeginTime:v34 + self->_slowdown * a5];
+      [v28 setBeginTime:v34 + self->_slowdown * delay];
       [(_UIViewAnimationAttributes *)self->_textAnimationAttributes _frameInterval];
       [v28 setFrameInterval:?];
       [v28 setFillMode:*MEMORY[0x1E69797D8]];
       [v28 setAdditive:1];
-      v35 = [v37 layer];
-      v36 = [(UIMorphingLabel *)self uniqueString];
-      [v35 addAnimation:v28 forKey:v36];
+      layer3 = [glyphCopy layer];
+      uniqueString = [(UIMorphingLabel *)self uniqueString];
+      [layer3 addAnimation:v28 forKey:uniqueString];
     }
   }
 }
 
-- (void)animateShowGlyph:(id)a3 alpha:(double)a4 alphaDuration:(double)a5 delay:(double)a6
+- (void)animateShowGlyph:(id)glyph alpha:(double)alpha alphaDuration:(double)duration delay:(double)delay
 {
   scaleFactor = self->_scaleFactor;
-  v11 = a3;
+  glyphCopy = glyph;
   CATransform3DMakeScale(&v15, scaleFactor, scaleFactor, 1.0);
-  v12 = [v11 layer];
+  layer = [glyphCopy layer];
   v14 = v15;
-  [v12 setTransform:&v14];
+  [layer setTransform:&v14];
 
-  v13 = [v11 layer];
-  [v13 setOpacity:0.0];
+  layer2 = [glyphCopy layer];
+  [layer2 setOpacity:0.0];
 
-  [(UIMorphingLabel *)self animateGlyph:v11 toScale:1.0 delay:a6];
-  [(UIMorphingLabel *)self animateGlyph:v11 toAlpha:a4 duration:a5 delay:a6];
+  [(UIMorphingLabel *)self animateGlyph:glyphCopy toScale:1.0 delay:delay];
+  [(UIMorphingLabel *)self animateGlyph:glyphCopy toAlpha:alpha duration:duration delay:delay];
 }
 
-- (void)animateHideGlyph:(id)a3 alphaDuration:(double)a4 delay:(double)a5
+- (void)animateHideGlyph:(id)glyph alphaDuration:(double)duration delay:(double)delay
 {
   scaleFactor = self->_scaleFactor;
-  v9 = a3;
-  [(UIMorphingLabel *)self animateGlyph:v9 toScale:scaleFactor delay:a5];
-  [(UIMorphingLabel *)self animateGlyph:v9 toAlpha:0.0 duration:a4 delay:a5];
+  glyphCopy = glyph;
+  [(UIMorphingLabel *)self animateGlyph:glyphCopy toScale:scaleFactor delay:delay];
+  [(UIMorphingLabel *)self animateGlyph:glyphCopy toAlpha:0.0 duration:duration delay:delay];
 }
 
-- (double)totalLeftOffsetForAlignmentHunkAtIndex:(unint64_t)a3
+- (double)totalLeftOffsetForAlignmentHunkAtIndex:(unint64_t)index
 {
   v5 = [(UIMorphingLabel *)self srcRangeOfAlignmentHunkAtIndex:?];
-  v6 = [(UIMorphingLabel *)self dstRangeOfAlignmentHunkAtIndex:a3];
-  if (self->_alignmentIsEqual[a3])
+  v6 = [(UIMorphingLabel *)self dstRangeOfAlignmentHunkAtIndex:index];
+  if (self->_alignmentIsEqual[index])
   {
     v7 = [(UIMorphingLabelGlyphSet *)self->_srcGlyphSet glyphPositions][16 * v5];
     v8 = [(UIMorphingLabelGlyphSet *)self->_dstGlyphSet glyphPositions][16 * v6];
@@ -1107,13 +1107,13 @@ LABEL_56:
   return v8 - v7;
 }
 
-- (double)totalRightOffsetForAlignmentHunkAtIndex:(unint64_t)a3
+- (double)totalRightOffsetForAlignmentHunkAtIndex:(unint64_t)index
 {
   v5 = [(UIMorphingLabel *)self srcRangeOfAlignmentHunkAtIndex:?];
   v7 = v6;
-  v8 = [(UIMorphingLabel *)self dstRangeOfAlignmentHunkAtIndex:a3];
+  v8 = [(UIMorphingLabel *)self dstRangeOfAlignmentHunkAtIndex:index];
   v10 = v9;
-  if (self->_alignmentIsEqual[a3])
+  if (self->_alignmentIsEqual[index])
   {
     v11 = *([(UIMorphingLabelGlyphSet *)self->_srcGlyphSet glyphPositions]+ 16 * v5 + 16 * v7 - 16);
     v12 = *([(UIMorphingLabelGlyphSet *)self->_dstGlyphSet glyphPositions]+ 16 * v8 + 16 * v10 - 16);
@@ -1122,9 +1122,9 @@ LABEL_56:
   else
   {
     v13 = v5 + v7;
-    v14 = [(UIMorphingLabelGlyphSet *)self->_srcGlyphSet glyphCount];
+    glyphCount = [(UIMorphingLabelGlyphSet *)self->_srcGlyphSet glyphCount];
     srcGlyphSet = self->_srcGlyphSet;
-    if (v13 == v14)
+    if (v13 == glyphCount)
     {
       [(UIMorphingLabelGlyphSet *)srcGlyphSet lineOrigin];
       v17 = v16;
@@ -1146,34 +1146,34 @@ LABEL_56:
   return v12 - v11;
 }
 
-- (double)changeInWidthDueToAlignmentHunkAtIndex:(unint64_t)a3
+- (double)changeInWidthDueToAlignmentHunkAtIndex:(unint64_t)index
 {
   [(UIMorphingLabel *)self totalRightOffsetForAlignmentHunkAtIndex:?];
   v6 = v5;
-  [(UIMorphingLabel *)self totalLeftOffsetForAlignmentHunkAtIndex:a3];
+  [(UIMorphingLabel *)self totalLeftOffsetForAlignmentHunkAtIndex:index];
   return v6 - v7;
 }
 
-- (void)animateGlyphsInRange:(_NSRange)a3 ofGlyphSet:(id)a4 byOffset:(double)a5 delay:(double)a6
+- (void)animateGlyphsInRange:(_NSRange)range ofGlyphSet:(id)set byOffset:(double)offset delay:(double)delay
 {
-  length = a3.length;
-  location = a3.location;
-  v11 = a4;
-  if (a5 != 0.0 && location < location + length)
+  length = range.length;
+  location = range.location;
+  setCopy = set;
+  if (offset != 0.0 && location < location + length)
   {
-    v20 = v11;
+    v20 = setCopy;
     do
     {
-      v13 = [v20 glyphViews];
-      v14 = [v13 objectAtIndexedSubscript:location];
+      glyphViews = [v20 glyphViews];
+      v14 = [glyphViews objectAtIndexedSubscript:location];
 
-      v15 = [v14 layer];
-      [v15 position];
+      layer = [v14 layer];
+      [layer position];
       v17 = v16;
       v19 = v18;
 
-      [(UIMorphingLabel *)self animateGlyph:v14 toPosition:v17 + a5 delay:v19, a6];
-      v11 = v20;
+      [(UIMorphingLabel *)self animateGlyph:v14 toPosition:v17 + offset delay:v19, delay];
+      setCopy = v20;
       ++location;
       --length;
     }
@@ -1182,22 +1182,22 @@ LABEL_56:
   }
 }
 
-- (void)animateChangeInWidthOutsideAlignmentHunkAtIndex:(unint64_t)a3
+- (void)animateChangeInWidthOutsideAlignmentHunkAtIndex:(unint64_t)index
 {
-  if (!self->_alignmentIsEqual[a3])
+  if (!self->_alignmentIsEqual[index])
   {
     [(UIMorphingLabel *)self changeInWidthDueToAlignmentHunkAtIndex:?];
     if (v5 != 0.0)
     {
       v6 = v5;
-      v7 = self->_alignmentDelays[a3];
+      v7 = self->_alignmentDelays[index];
       [(UIMorphingLabel *)self flushAmount];
       v9 = -(v6 * v8);
       [(UIMorphingLabel *)self flushAmount];
       v11 = v6 * (1.0 - v10);
-      v12 = [(UIMorphingLabel *)self srcRangeOfAlignmentHunkAtIndex:a3];
+      v12 = [(UIMorphingLabel *)self srcRangeOfAlignmentHunkAtIndex:index];
       v14 = v13;
-      v15 = [(UIMorphingLabel *)self dstRangeOfAlignmentHunkAtIndex:a3];
+      v15 = [(UIMorphingLabel *)self dstRangeOfAlignmentHunkAtIndex:index];
       v17 = v16;
       v18 = v12 + v14;
       v19 = [(UIMorphingLabelGlyphSet *)self->_srcGlyphSet glyphCount]- v18;
@@ -1213,21 +1213,21 @@ LABEL_56:
   }
 }
 
-- (void)initInsertionAlignmentHunkAtIndex:(unint64_t)a3
+- (void)initInsertionAlignmentHunkAtIndex:(unint64_t)index
 {
   v5 = [(UIMorphingLabel *)self srcRangeOfAlignmentHunkAtIndex:?];
-  v6 = [(UIMorphingLabel *)self dstRangeOfAlignmentHunkAtIndex:a3];
+  v6 = [(UIMorphingLabel *)self dstRangeOfAlignmentHunkAtIndex:index];
   v8 = v7;
   if ([(UIMorphingLabelGlyphSet *)self->_srcGlyphSet glyphCount])
   {
     if (v5 | v6)
     {
-      [(UIMorphingLabel *)self totalLeftOffsetForAlignmentHunkAtIndex:a3];
+      [(UIMorphingLabel *)self totalLeftOffsetForAlignmentHunkAtIndex:index];
     }
 
     else
     {
-      [(UIMorphingLabel *)self totalRightOffsetForAlignmentHunkAtIndex:a3];
+      [(UIMorphingLabel *)self totalRightOffsetForAlignmentHunkAtIndex:index];
     }
 
     v10 = v9;
@@ -1243,14 +1243,14 @@ LABEL_56:
     v11 = v6;
     do
     {
-      v12 = [(UIMorphingLabelGlyphSet *)self->_dstGlyphSet glyphViews];
-      v13 = [v12 objectAtIndexedSubscript:v6];
+      glyphViews = [(UIMorphingLabelGlyphSet *)self->_dstGlyphSet glyphViews];
+      v13 = [glyphViews objectAtIndexedSubscript:v6];
 
-      v14 = [(UIMorphingLabelGlyphSet *)self->_dstGlyphSet glyphPositions];
-      y = v14[v11].y;
-      v16 = v14[v11].x - v10;
-      v17 = [v13 layer];
-      [v17 setPosition:{v16, y}];
+      glyphPositions = [(UIMorphingLabelGlyphSet *)self->_dstGlyphSet glyphPositions];
+      y = glyphPositions[v11].y;
+      v16 = glyphPositions[v11].x - v10;
+      layer = [v13 layer];
+      [layer setPosition:{v16, y}];
 
       ++v6;
       ++v11;
@@ -1261,13 +1261,13 @@ LABEL_56:
   }
 }
 
-- (void)animateInsertionAlignmentHunkAtIndex:(unint64_t)a3
+- (void)animateInsertionAlignmentHunkAtIndex:(unint64_t)index
 {
   v5 = [(UIMorphingLabel *)self srcRangeOfAlignmentHunkAtIndex:?];
-  v6 = [(UIMorphingLabel *)self dstRangeOfAlignmentHunkAtIndex:a3];
+  v6 = [(UIMorphingLabel *)self dstRangeOfAlignmentHunkAtIndex:index];
   v8 = v7;
-  v9 = [(UIMorphingLabelGlyphSet *)self->_srcGlyphSet glyphCount];
-  if (v9)
+  glyphCount = [(UIMorphingLabelGlyphSet *)self->_srcGlyphSet glyphCount];
+  if (glyphCount)
   {
     v10 = (v5 | v6) == 0;
   }
@@ -1279,15 +1279,15 @@ LABEL_56:
 
   if (v10)
   {
-    v11 = (v9 != 0) ^ [(UIMorphingLabel *)self _isRTL];
+    _isRTL = (glyphCount != 0) ^ [(UIMorphingLabel *)self _isRTL];
     goto LABEL_7;
   }
 
   if (v5 == [(UIMorphingLabelGlyphSet *)self->_srcGlyphSet glyphCount])
   {
-    v13 = [(UIMorphingLabelGlyphSet *)self->_dstGlyphSet glyphCount];
-    v11 = [(UIMorphingLabel *)self _isRTL];
-    if (v6 + v8 != v13)
+    glyphCount2 = [(UIMorphingLabelGlyphSet *)self->_dstGlyphSet glyphCount];
+    _isRTL = [(UIMorphingLabel *)self _isRTL];
+    if (v6 + v8 != glyphCount2)
     {
       goto LABEL_12;
     }
@@ -1297,7 +1297,7 @@ LABEL_7:
     goto LABEL_13;
   }
 
-  v11 = [(UIMorphingLabel *)self _isRTL];
+  _isRTL = [(UIMorphingLabel *)self _isRTL];
 LABEL_12:
   v12 = 0;
 LABEL_13:
@@ -1313,15 +1313,15 @@ LABEL_13:
     v23 = (16 * v6) | 8;
     do
     {
-      v24 = [(UIMorphingLabelGlyphSet *)self->_dstGlyphSet glyphViews];
-      v25 = [v24 objectAtIndexedSubscript:v6];
+      glyphViews = [(UIMorphingLabelGlyphSet *)self->_dstGlyphSet glyphViews];
+      v25 = [glyphViews objectAtIndexedSubscript:v6];
 
-      v26 = [(UIMorphingLabelGlyphSet *)self->_dstGlyphSet glyphFrames];
-      v27 = *(v26 + v22 - 24);
-      v28 = *(v26 + v22 - 16);
-      v29 = *(v26 + v22 - 8);
-      v30 = *(&v26->origin.x + v22);
-      if (v11)
+      glyphFrames = [(UIMorphingLabelGlyphSet *)self->_dstGlyphSet glyphFrames];
+      v27 = *(glyphFrames + v22 - 24);
+      v28 = *(glyphFrames + v22 - 16);
+      v29 = *(glyphFrames + v22 - 8);
+      v30 = *(&glyphFrames->origin.x + v22);
+      if (_isRTL)
       {
         CGRectGetMaxX(*&v27);
       }
@@ -1341,10 +1341,10 @@ LABEL_13:
       v34.size.width = v20;
       v34.size.height = v21;
       CGRectGetMaxX(v34);
-      v31 = [(UIMorphingLabelGlyphSet *)self->_dstGlyphSet glyphPositions];
-      [(UIMorphingLabel *)self animateGlyph:v25 toPosition:*(v31 + v23 - 8) delay:*(&v31->x + v23), 0.0];
-      v32 = [(UIMorphingLabelGlyphSet *)self->_dstGlyphSet glyphFrames];
-      [(UIMorphingLabel *)self alphaForFrame:*(v32 + v22 - 24), *(v32 + v22 - 16), *(v32 + v22 - 8), *(&v32->origin.x + v22)];
+      glyphPositions = [(UIMorphingLabelGlyphSet *)self->_dstGlyphSet glyphPositions];
+      [(UIMorphingLabel *)self animateGlyph:v25 toPosition:*(glyphPositions + v23 - 8) delay:*(&glyphPositions->x + v23), 0.0];
+      glyphFrames2 = [(UIMorphingLabelGlyphSet *)self->_dstGlyphSet glyphFrames];
+      [(UIMorphingLabel *)self alphaForFrame:*(glyphFrames2 + v22 - 24), *(glyphFrames2 + v22 - 16), *(glyphFrames2 + v22 - 8), *(&glyphFrames2->origin.x + v22)];
       [UIMorphingLabel animateShowGlyph:"animateShowGlyph:alpha:alphaDuration:delay:" alpha:v25 alphaDuration:? delay:?];
 
       ++v6;
@@ -1357,11 +1357,11 @@ LABEL_13:
   }
 }
 
-- (void)animateDeletionAlignmentHunkAtIndex:(unint64_t)a3
+- (void)animateDeletionAlignmentHunkAtIndex:(unint64_t)index
 {
   v5 = [(UIMorphingLabel *)self srcRangeOfAlignmentHunkAtIndex:?];
   v7 = v6;
-  v8 = [(UIMorphingLabel *)self dstRangeOfAlignmentHunkAtIndex:a3];
+  v8 = [(UIMorphingLabel *)self dstRangeOfAlignmentHunkAtIndex:index];
   if (![(UIMorphingLabelGlyphSet *)self->_dstGlyphSet glyphCount])
   {
     v11 = 0.0;
@@ -1373,7 +1373,7 @@ LABEL_5:
 
   if (!(v5 | v8))
   {
-    [(UIMorphingLabel *)self totalRightOffsetForAlignmentHunkAtIndex:a3];
+    [(UIMorphingLabel *)self totalRightOffsetForAlignmentHunkAtIndex:index];
     v46 = v9;
     v10 = 0;
 LABEL_6:
@@ -1387,11 +1387,11 @@ LABEL_6:
   v13 = v5 + v7;
   if (v5 + v7 == [(UIMorphingLabelGlyphSet *)self->_srcGlyphSet glyphCount]&& v8 == [(UIMorphingLabelGlyphSet *)self->_dstGlyphSet glyphCount])
   {
-    [(UIMorphingLabel *)self totalLeftOffsetForAlignmentHunkAtIndex:a3];
+    [(UIMorphingLabel *)self totalLeftOffsetForAlignmentHunkAtIndex:index];
     goto LABEL_5;
   }
 
-  [(UIMorphingLabel *)self totalLeftOffsetForAlignmentHunkAtIndex:a3];
+  [(UIMorphingLabel *)self totalLeftOffsetForAlignmentHunkAtIndex:index];
   v46 = v16;
   v12 = ![(UIMorphingLabel *)self _isRTL];
   v14 = 0.12;
@@ -1411,17 +1411,17 @@ LABEL_11:
     v23 = (16 * v5) | 8;
     do
     {
-      v24 = [(UIMorphingLabelGlyphSet *)self->_srcGlyphSet glyphViews];
-      v25 = [v24 objectAtIndexedSubscript:v5];
+      glyphViews = [(UIMorphingLabelGlyphSet *)self->_srcGlyphSet glyphViews];
+      v25 = [glyphViews objectAtIndexedSubscript:v5];
 
-      v26 = [(UIMorphingLabelGlyphSet *)self->_srcGlyphSet glyphPositions];
-      v27 = *(v26 + v23 - 8);
-      v28 = *(&v26->x + v23);
-      v29 = [(UIMorphingLabelGlyphSet *)self->_srcGlyphSet glyphFrames];
-      x = v29[v22].origin.x;
-      y = v29[v22].origin.y;
-      width = v29[v22].size.width;
-      height = v29[v22].size.height;
+      glyphPositions = [(UIMorphingLabelGlyphSet *)self->_srcGlyphSet glyphPositions];
+      v27 = *(glyphPositions + v23 - 8);
+      v28 = *(&glyphPositions->x + v23);
+      glyphFrames = [(UIMorphingLabelGlyphSet *)self->_srcGlyphSet glyphFrames];
+      x = glyphFrames[v22].origin.x;
+      y = glyphFrames[v22].origin.y;
+      width = glyphFrames[v22].size.width;
+      height = glyphFrames[v22].size.height;
       if (v12)
       {
         MaxX = CGRectGetMaxX(*&x);
@@ -1471,24 +1471,24 @@ LABEL_11:
   }
 }
 
-- (void)initSubstitutionAlignmentHunkAtIndex:(unint64_t)a3
+- (void)initSubstitutionAlignmentHunkAtIndex:(unint64_t)index
 {
   v5 = [(UIMorphingLabel *)self srcRangeOfAlignmentHunkAtIndex:?];
   v7 = v6;
-  v8 = [(UIMorphingLabel *)self dstRangeOfAlignmentHunkAtIndex:a3];
+  v8 = [(UIMorphingLabel *)self dstRangeOfAlignmentHunkAtIndex:index];
   v10 = v9;
   if ([(UIMorphingLabelGlyphSet *)self->_srcGlyphSet glyphCount]== v7 && [(UIMorphingLabelGlyphSet *)self->_dstGlyphSet glyphCount]== v10 || v5 | v8)
   {
-    [(UIMorphingLabel *)self totalLeftOffsetForAlignmentHunkAtIndex:a3];
+    [(UIMorphingLabel *)self totalLeftOffsetForAlignmentHunkAtIndex:index];
   }
 
   else
   {
-    [(UIMorphingLabel *)self totalRightOffsetForAlignmentHunkAtIndex:a3];
+    [(UIMorphingLabel *)self totalRightOffsetForAlignmentHunkAtIndex:index];
   }
 
   v12 = v11;
-  [(UIMorphingLabel *)self changeInWidthDueToAlignmentHunkAtIndex:a3];
+  [(UIMorphingLabel *)self changeInWidthDueToAlignmentHunkAtIndex:index];
   if (v13 > 0.0)
   {
     [(UIMorphingLabelGlyphSet *)self->_srcGlyphSet boundingRectForGlyphsInRange:v5, v7];
@@ -1497,9 +1497,9 @@ LABEL_11:
     if (v15 < v16)
     {
       v17 = v16;
-      v18 = [(UIMorphingLabel *)self _isRTL];
+      _isRTL = [(UIMorphingLabel *)self _isRTL];
       v19 = v15 / v17 * 0.2;
-      if (v18)
+      if (_isRTL)
       {
         v19 = 0.2 - v19;
       }
@@ -1509,7 +1509,7 @@ LABEL_11:
         v19 = 0.0;
       }
 
-      self->_alignmentDelays[a3] = v19;
+      self->_alignmentDelays[index] = v19;
     }
   }
 
@@ -1518,14 +1518,14 @@ LABEL_11:
     v20 = v8;
     do
     {
-      v21 = [(UIMorphingLabelGlyphSet *)self->_dstGlyphSet glyphViews];
-      v22 = [v21 objectAtIndexedSubscript:v8];
+      glyphViews = [(UIMorphingLabelGlyphSet *)self->_dstGlyphSet glyphViews];
+      v22 = [glyphViews objectAtIndexedSubscript:v8];
 
-      v23 = [(UIMorphingLabelGlyphSet *)self->_dstGlyphSet glyphPositions];
-      y = v23[v20].y;
-      v25 = v23[v20].x - v12;
-      v26 = [v22 layer];
-      [v26 setPosition:{v25, y}];
+      glyphPositions = [(UIMorphingLabelGlyphSet *)self->_dstGlyphSet glyphPositions];
+      y = glyphPositions[v20].y;
+      v25 = glyphPositions[v20].x - v12;
+      layer = [v22 layer];
+      [layer setPosition:{v25, y}];
 
       ++v8;
       ++v20;
@@ -1536,20 +1536,20 @@ LABEL_11:
   }
 }
 
-- (void)animateSubstitutionAlignmentHunkAtIndex:(unint64_t)a3
+- (void)animateSubstitutionAlignmentHunkAtIndex:(unint64_t)index
 {
   v5 = [(UIMorphingLabel *)self srcRangeOfAlignmentHunkAtIndex:?];
   v7 = v6;
-  v8 = [(UIMorphingLabel *)self dstRangeOfAlignmentHunkAtIndex:a3];
+  v8 = [(UIMorphingLabel *)self dstRangeOfAlignmentHunkAtIndex:index];
   v10 = v9;
   v11 = [(UIMorphingLabelGlyphSet *)self->_dstGlyphSet glyphPositions][16 * v8];
-  v12 = [(UIMorphingLabelGlyphSet *)self->_dstGlyphSet glyphViews];
-  v13 = [v12 objectAtIndexedSubscript:v8];
-  v14 = [v13 layer];
-  [v14 position];
+  glyphViews = [(UIMorphingLabelGlyphSet *)self->_dstGlyphSet glyphViews];
+  v13 = [glyphViews objectAtIndexedSubscript:v8];
+  layer = [v13 layer];
+  [layer position];
   v16 = v15;
 
-  [(UIMorphingLabel *)self changeInWidthDueToAlignmentHunkAtIndex:a3];
+  [(UIMorphingLabel *)self changeInWidthDueToAlignmentHunkAtIndex:index];
   v18 = v17 < 0.0;
   if (!(v5 | v8))
   {
@@ -1562,7 +1562,7 @@ LABEL_11:
   y = v22;
   width = v24;
   height = v26;
-  v73 = (&self->super.super.super.isa + a3);
+  v73 = (&self->super.super.super.isa + index);
   if (v5 < v5 + v7)
   {
     v72 = v19;
@@ -1576,8 +1576,8 @@ LABEL_11:
       v33 = v32 = v29;
       v34 = [v33 objectAtIndexedSubscript:v31];
 
-      v35 = [v34 layer];
-      [v35 position];
+      layer2 = [v34 layer];
+      [layer2 position];
       v37 = v36;
       v39 = v38;
 
@@ -1606,8 +1606,8 @@ LABEL_11:
     v19 = v72;
     do
     {
-      v44 = [*(&self->super.super.super.isa + v29) glyphViews];
-      v45 = [v44 objectAtIndexedSubscript:v5];
+      glyphViews2 = [*(&self->super.super.super.isa + v29) glyphViews];
+      v45 = [glyphViews2 objectAtIndexedSubscript:v5];
 
       [v45 frame];
       if (v72)
@@ -1657,11 +1657,11 @@ LABEL_11:
     v56 = (16 * v8) | 8;
     do
     {
-      v57 = [(UIMorphingLabelGlyphSet *)self->_dstGlyphSet glyphFrames];
-      v58 = *(v57 + v55 - 24);
-      v59 = *(v57 + v55 - 16);
-      v60 = *(v57 + v55 - 8);
-      v61 = *(&v57->origin.x + v55);
+      glyphFrames = [(UIMorphingLabelGlyphSet *)self->_dstGlyphSet glyphFrames];
+      v58 = *(glyphFrames + v55 - 24);
+      v59 = *(glyphFrames + v55 - 16);
+      v60 = *(glyphFrames + v55 - 8);
+      v61 = *(&glyphFrames->origin.x + v55);
       if (v19)
       {
         v62 = CGRectGetMaxX(*&v58);
@@ -1673,13 +1673,13 @@ LABEL_11:
       }
 
       v63 = v62;
-      v64 = [(UIMorphingLabelGlyphSet *)self->_dstGlyphSet glyphViews];
-      v65 = [v64 objectAtIndexedSubscript:v8];
+      glyphViews3 = [(UIMorphingLabelGlyphSet *)self->_dstGlyphSet glyphViews];
+      v65 = [glyphViews3 objectAtIndexedSubscript:v8];
 
-      v66 = [(UIMorphingLabelGlyphSet *)self->_dstGlyphSet glyphPositions];
-      [(UIMorphingLabel *)self animateGlyph:v65 toPosition:*(v66 + v56 - 8) delay:*(&v66->x + v56), v73[269]];
-      v67 = [(UIMorphingLabelGlyphSet *)self->_dstGlyphSet glyphFrames];
-      [(UIMorphingLabel *)self alphaForFrame:*(v67 + v55 - 24), *(v67 + v55 - 16), *(v67 + v55 - 8), *(&v67->origin.x + v55)];
+      glyphPositions = [(UIMorphingLabelGlyphSet *)self->_dstGlyphSet glyphPositions];
+      [(UIMorphingLabel *)self animateGlyph:v65 toPosition:*(glyphPositions + v56 - 8) delay:*(&glyphPositions->x + v56), v73[269]];
+      glyphFrames2 = [(UIMorphingLabelGlyphSet *)self->_dstGlyphSet glyphFrames];
+      [(UIMorphingLabel *)self alphaForFrame:*(glyphFrames2 + v55 - 24), *(glyphFrames2 + v55 - 16), *(glyphFrames2 + v55 - 8), *(&glyphFrames2->origin.x + v55)];
       v69 = v68;
       v78.origin.x = x;
       v78.origin.y = y;
@@ -1713,30 +1713,30 @@ LABEL_11:
   }
 }
 
-- (void)copyStateFromGlyph:(id)a3 toGlyph:(id)a4
+- (void)copyStateFromGlyph:(id)glyph toGlyph:(id)toGlyph
 {
   v45 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 layer];
-  [v7 position];
+  glyphCopy = glyph;
+  toGlyphCopy = toGlyph;
+  layer = [glyphCopy layer];
+  [layer position];
   v9 = v8;
   v11 = v10;
-  v12 = [v6 layer];
-  [v12 setPosition:{v9, v11}];
+  layer2 = [toGlyphCopy layer];
+  [layer2 setPosition:{v9, v11}];
 
-  v13 = [v5 layer];
-  [v13 opacity];
+  layer3 = [glyphCopy layer];
+  [layer3 opacity];
   LODWORD(v9) = v14;
-  v15 = [v6 layer];
+  layer4 = [toGlyphCopy layer];
   LODWORD(v16) = LODWORD(v9);
-  [v15 setOpacity:v16];
+  [layer4 setOpacity:v16];
 
-  v17 = [v5 layer];
-  v18 = v17;
-  if (v17)
+  layer5 = [glyphCopy layer];
+  v18 = layer5;
+  if (layer5)
   {
-    [v17 transform];
+    [layer5 transform];
   }
 
   else
@@ -1751,7 +1751,7 @@ LABEL_11:
     v37 = 0u;
   }
 
-  v19 = [v6 layer];
+  layer6 = [toGlyphCopy layer];
   v35[4] = v40;
   v35[5] = v41;
   v35[6] = v42;
@@ -1760,19 +1760,19 @@ LABEL_11:
   v35[1] = v37;
   v35[2] = v38;
   v35[3] = v39;
-  [v19 setTransform:v35];
+  [layer6 setTransform:v35];
 
-  v20 = [v6 layer];
-  [v20 removeAllAnimations];
+  layer7 = [toGlyphCopy layer];
+  [layer7 removeAllAnimations];
 
   v33 = 0u;
   v34 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v21 = [v5 layer];
-  v22 = [v21 animationKeys];
+  layer8 = [glyphCopy layer];
+  animationKeys = [layer8 animationKeys];
 
-  v23 = [v22 countByEnumeratingWithState:&v31 objects:v44 count:16];
+  v23 = [animationKeys countByEnumeratingWithState:&v31 objects:v44 count:16];
   if (v23)
   {
     v24 = v23;
@@ -1783,38 +1783,38 @@ LABEL_11:
       {
         if (*v32 != v25)
         {
-          objc_enumerationMutation(v22);
+          objc_enumerationMutation(animationKeys);
         }
 
         v27 = *(*(&v31 + 1) + 8 * i);
-        v28 = [v6 layer];
-        v29 = [v5 layer];
-        v30 = [v29 animationForKey:v27];
-        [v28 addAnimation:v30 forKey:v27];
+        layer9 = [toGlyphCopy layer];
+        layer10 = [glyphCopy layer];
+        v30 = [layer10 animationForKey:v27];
+        [layer9 addAnimation:v30 forKey:v27];
       }
 
-      v24 = [v22 countByEnumeratingWithState:&v31 objects:v44 count:16];
+      v24 = [animationKeys countByEnumeratingWithState:&v31 objects:v44 count:16];
     }
 
     while (v24);
   }
 }
 
-- (void)initMovementAlignmentHunkAtIndex:(unint64_t)a3
+- (void)initMovementAlignmentHunkAtIndex:(unint64_t)index
 {
   v5 = [(UIMorphingLabel *)self srcRangeOfAlignmentHunkAtIndex:?];
   v7 = v6;
-  v8 = [(UIMorphingLabel *)self dstRangeOfAlignmentHunkAtIndex:a3];
+  v8 = [(UIMorphingLabel *)self dstRangeOfAlignmentHunkAtIndex:index];
   if (v5 < v5 + v7)
   {
     v9 = v8;
     do
     {
-      v10 = [(UIMorphingLabelGlyphSet *)self->_srcGlyphSet glyphViews];
-      v11 = [v10 objectAtIndexedSubscript:v5];
+      glyphViews = [(UIMorphingLabelGlyphSet *)self->_srcGlyphSet glyphViews];
+      v11 = [glyphViews objectAtIndexedSubscript:v5];
 
-      v12 = [(UIMorphingLabelGlyphSet *)self->_dstGlyphSet glyphViews];
-      v13 = [v12 objectAtIndexedSubscript:v9];
+      glyphViews2 = [(UIMorphingLabelGlyphSet *)self->_dstGlyphSet glyphViews];
+      v13 = [glyphViews2 objectAtIndexedSubscript:v9];
 
       [(UIMorphingLabel *)self copyStateFromGlyph:v11 toGlyph:v13];
       [(UIMorphingLabel *)self hideGlyph:v11];
@@ -1828,9 +1828,9 @@ LABEL_11:
   }
 }
 
-- (void)animateMovementAlignmentHunkAtIndex:(unint64_t)a3
+- (void)animateMovementAlignmentHunkAtIndex:(unint64_t)index
 {
-  v4 = [(UIMorphingLabel *)self dstRangeOfAlignmentHunkAtIndex:a3];
+  v4 = [(UIMorphingLabel *)self dstRangeOfAlignmentHunkAtIndex:index];
   if (v4 < v4 + v5)
   {
     v6 = v4;
@@ -1839,17 +1839,17 @@ LABEL_11:
     v9 = v4;
     do
     {
-      v10 = [(UIMorphingLabelGlyphSet *)self->_dstGlyphSet glyphViews];
-      v11 = [v10 objectAtIndexedSubscript:v6];
+      glyphViews = [(UIMorphingLabelGlyphSet *)self->_dstGlyphSet glyphViews];
+      v11 = [glyphViews objectAtIndexedSubscript:v6];
 
-      v12 = [(UIMorphingLabelGlyphSet *)self->_dstGlyphSet glyphPositions];
-      x = v12[v9].x;
-      y = v12[v9].y;
-      v15 = [v11 layer];
-      [v15 setPosition:{x, y}];
+      glyphPositions = [(UIMorphingLabelGlyphSet *)self->_dstGlyphSet glyphPositions];
+      x = glyphPositions[v9].x;
+      y = glyphPositions[v9].y;
+      layer = [v11 layer];
+      [layer setPosition:{x, y}];
 
-      v16 = [(UIMorphingLabelGlyphSet *)self->_dstGlyphSet glyphFrames];
-      [(UIMorphingLabel *)self alphaForFrame:v16[v8].origin.x, v16[v8].origin.y, v16[v8].size.width, v16[v8].size.height];
+      glyphFrames = [(UIMorphingLabelGlyphSet *)self->_dstGlyphSet glyphFrames];
+      [(UIMorphingLabel *)self alphaForFrame:glyphFrames[v8].origin.x, glyphFrames[v8].origin.y, glyphFrames[v8].size.width, glyphFrames[v8].size.height];
       [UIMorphingLabel animateGlyph:"animateGlyph:toAlpha:duration:delay:" toAlpha:v11 duration:? delay:?];
 
       ++v6;
@@ -1862,13 +1862,13 @@ LABEL_11:
   }
 }
 
-- (void)initAlignmentHunkAtIndex:(unint64_t)a3
+- (void)initAlignmentHunkAtIndex:(unint64_t)index
 {
   [(UIMorphingLabel *)self srcRangeOfAlignmentHunkAtIndex:?];
   v6 = v5;
-  [(UIMorphingLabel *)self dstRangeOfAlignmentHunkAtIndex:a3];
-  v8 = self->_alignmentIsEqual[a3];
-  self->_alignmentDelays[a3] = 0.0;
+  [(UIMorphingLabel *)self dstRangeOfAlignmentHunkAtIndex:index];
+  v8 = self->_alignmentIsEqual[index];
+  self->_alignmentDelays[index] = 0.0;
   if (v6)
   {
     if (v7)
@@ -1876,73 +1876,73 @@ LABEL_11:
       if (v8)
       {
 
-        [(UIMorphingLabel *)self initMovementAlignmentHunkAtIndex:a3];
+        [(UIMorphingLabel *)self initMovementAlignmentHunkAtIndex:index];
       }
 
       else
       {
 
-        [(UIMorphingLabel *)self initSubstitutionAlignmentHunkAtIndex:a3];
+        [(UIMorphingLabel *)self initSubstitutionAlignmentHunkAtIndex:index];
       }
     }
 
     else
     {
 
-      [(UIMorphingLabel *)self initDeletionAlignmentHunkAtIndex:a3];
+      [(UIMorphingLabel *)self initDeletionAlignmentHunkAtIndex:index];
     }
   }
 
   else
   {
 
-    [(UIMorphingLabel *)self initInsertionAlignmentHunkAtIndex:a3];
+    [(UIMorphingLabel *)self initInsertionAlignmentHunkAtIndex:index];
   }
 }
 
-- (void)animateAlignmentHunkAtIndex:(unint64_t)a3
+- (void)animateAlignmentHunkAtIndex:(unint64_t)index
 {
   [(UIMorphingLabel *)self srcRangeOfAlignmentHunkAtIndex:?];
   v6 = v5;
-  [(UIMorphingLabel *)self dstRangeOfAlignmentHunkAtIndex:a3];
+  [(UIMorphingLabel *)self dstRangeOfAlignmentHunkAtIndex:index];
   if (v6)
   {
     if (v7)
     {
-      if (self->_alignmentIsEqual[a3])
+      if (self->_alignmentIsEqual[index])
       {
 
-        [(UIMorphingLabel *)self animateMovementAlignmentHunkAtIndex:a3];
+        [(UIMorphingLabel *)self animateMovementAlignmentHunkAtIndex:index];
       }
 
       else
       {
 
-        [(UIMorphingLabel *)self animateSubstitutionAlignmentHunkAtIndex:a3];
+        [(UIMorphingLabel *)self animateSubstitutionAlignmentHunkAtIndex:index];
       }
     }
 
     else
     {
 
-      [(UIMorphingLabel *)self animateDeletionAlignmentHunkAtIndex:a3];
+      [(UIMorphingLabel *)self animateDeletionAlignmentHunkAtIndex:index];
     }
   }
 
   else
   {
 
-    [(UIMorphingLabel *)self animateInsertionAlignmentHunkAtIndex:a3];
+    [(UIMorphingLabel *)self animateInsertionAlignmentHunkAtIndex:index];
   }
 }
 
-- (id)attributedStringForText:(id)a3
+- (id)attributedStringForText:(id)text
 {
   v12[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  textCopy = text;
+  if (textCopy)
   {
-    v5 = v4;
+    v5 = textCopy;
   }
 
   else
@@ -1962,15 +1962,15 @@ LABEL_11:
   return v9;
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  v4 = a3;
-  if (self->_text != v4)
+  textCopy = text;
+  if (self->_text != textCopy)
   {
-    v8 = v4;
-    if ([(NSString *)v4 isEqualToString:?])
+    v8 = textCopy;
+    if ([(NSString *)textCopy isEqualToString:?])
     {
-      v4 = v8;
+      textCopy = v8;
     }
 
     else
@@ -1987,22 +1987,22 @@ LABEL_11:
       }
 
       [(UIView *)self setNeedsLayout];
-      v4 = v5;
+      textCopy = v5;
     }
   }
 }
 
-- (void)setTextColor:(id)a3
+- (void)setTextColor:(id)color
 {
-  v6 = a3;
-  if ([v6 isEqual:self->_textColor])
+  colorCopy = color;
+  if ([colorCopy isEqual:self->_textColor])
   {
-    v4 = v6;
+    v4 = colorCopy;
   }
 
   else
   {
-    v5 = [v6 copy];
+    v5 = [colorCopy copy];
 
     objc_storeStrong(&self->_textColor, v5);
     self->_textColorDidChange = 1;
@@ -2011,18 +2011,18 @@ LABEL_11:
   }
 }
 
-- (void)setFont:(id)a3
+- (void)setFont:(id)font
 {
-  v9 = a3;
-  if ([v9 isEqual:self->_font])
+  fontCopy = font;
+  if ([fontCopy isEqual:self->_font])
   {
-    v4 = v9;
+    v4 = fontCopy;
   }
 
   else
   {
-    v5 = v9;
-    if (!v9)
+    v5 = fontCopy;
+    if (!fontCopy)
     {
       v5 = [UIMorphingLabel preferredFontWithSize:17.0];
     }
@@ -2044,9 +2044,9 @@ LABEL_11:
   }
 }
 
-- (BOOL)canFitText:(id)a3
+- (BOOL)canFitText:(id)text
 {
-  [(UIMorphingLabel *)self requiredWidthForText:a3];
+  [(UIMorphingLabel *)self requiredWidthForText:text];
   v5 = v4;
   [(UIView *)self bounds];
   return v5 <= v6;
@@ -2069,18 +2069,18 @@ LABEL_11:
   return result;
 }
 
-- (double)requiredWidthForText:(id)a3
+- (double)requiredWidthForText:(id)text
 {
-  v3 = [(UIMorphingLabel *)self attributedStringForText:a3];
+  v3 = [(UIMorphingLabel *)self attributedStringForText:text];
   [v3 size];
   v5 = v4;
 
   return v5;
 }
 
-- (void)contentSizeDidChange:(id)a3
+- (void)contentSizeDidChange:(id)change
 {
-  v4 = [UIMorphingLabel preferredFontWithSize:a3, 17.0];
+  v4 = [UIMorphingLabel preferredFontWithSize:change, 17.0];
   [(UIMorphingLabel *)self setFont:v4];
 }
 

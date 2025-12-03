@@ -1,19 +1,19 @@
 @interface EKEventProposedTimeDetailItem
-- (BOOL)configureWithEvent:(id)a3 calendar:(id)a4 preview:(BOOL)a5;
-- (double)defaultCellHeightForSubitemAtIndex:(unint64_t)a3 forWidth:(double)a4;
-- (id)attendeeForIndex:(unint64_t)a3;
-- (id)cellForSubitemAtIndex:(unint64_t)a3;
-- (id)detailViewControllerWithFrame:(CGRect)a3 forSubitemAtIndex:(unint64_t)a4;
+- (BOOL)configureWithEvent:(id)event calendar:(id)calendar preview:(BOOL)preview;
+- (double)defaultCellHeightForSubitemAtIndex:(unint64_t)index forWidth:(double)width;
+- (id)attendeeForIndex:(unint64_t)index;
+- (id)cellForSubitemAtIndex:(unint64_t)index;
+- (id)detailViewControllerWithFrame:(CGRect)frame forSubitemAtIndex:(unint64_t)index;
 - (void)reset;
-- (void)setCellPosition:(int)a3;
+- (void)setCellPosition:(int)position;
 @end
 
 @implementation EKEventProposedTimeDetailItem
 
 - (void)reset
 {
-  v3 = [(NSMutableDictionary *)self->_cellForAttendee allKeys];
-  v4 = [v3 count];
+  allKeys = [(NSMutableDictionary *)self->_cellForAttendee allKeys];
+  v4 = [allKeys count];
 
   if (v4)
   {
@@ -25,13 +25,13 @@
   [(NSMutableDictionary *)cellForAttendee removeAllObjects];
 }
 
-- (BOOL)configureWithEvent:(id)a3 calendar:(id)a4 preview:(BOOL)a5
+- (BOOL)configureWithEvent:(id)event calendar:(id)calendar preview:(BOOL)preview
 {
   v27 = *MEMORY[0x1E69E9840];
   self->_visibilityChanged = 0;
   obj = objc_opt_new();
-  v6 = [(EKEvent *)self->super._event organizer];
-  if (!v6 || (v7 = v6, -[EKEvent organizer](self->super._event, "organizer"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 isCurrentUser], v8, v7, !v9))
+  organizer = [(EKEvent *)self->super._event organizer];
+  if (!organizer || (v7 = organizer, -[EKEvent organizer](self->super._event, "organizer"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 isCurrentUser], v8, v7, !v9))
   {
     v19 = 0;
     goto LABEL_17;
@@ -41,8 +41,8 @@
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v10 = [(EKEvent *)self->super._event attendees];
-  v11 = [v10 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  attendees = [(EKEvent *)self->super._event attendees];
+  v11 = [attendees countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (!v11)
   {
     goto LABEL_15;
@@ -56,32 +56,32 @@
     {
       if (*v23 != v13)
       {
-        objc_enumerationMutation(v10);
+        objc_enumerationMutation(attendees);
       }
 
       v15 = *(*(&v22 + 1) + 8 * i);
       v16 = [v15 proposedStartDateForEvent:self->super._event];
       if (v16)
       {
-        v17 = [(EKEvent *)self->super._event startDate];
-        if (([v16 isEqualToDate:v17] & 1) == 0)
+        startDate = [(EKEvent *)self->super._event startDate];
+        if (([v16 isEqualToDate:startDate] & 1) == 0)
         {
-          v18 = [v15 proposedStartDateStatus];
+          proposedStartDateStatus = [v15 proposedStartDateStatus];
 
-          if (v18 == 3)
+          if (proposedStartDateStatus == 3)
           {
             goto LABEL_13;
           }
 
-          v17 = [objc_alloc(MEMORY[0x1E6966998]) initWithParticipant:v15 forEvent:self->super._event];
-          [obj addObject:v17];
+          startDate = [objc_alloc(MEMORY[0x1E6966998]) initWithParticipant:v15 forEvent:self->super._event];
+          [obj addObject:startDate];
         }
       }
 
 LABEL_13:
     }
 
-    v12 = [v10 countByEnumeratingWithState:&v22 objects:v26 count:16];
+    v12 = [attendees countByEnumeratingWithState:&v22 objects:v26 count:16];
   }
 
   while (v12);
@@ -94,25 +94,25 @@ LABEL_17:
   return v19;
 }
 
-- (void)setCellPosition:(int)a3
+- (void)setCellPosition:(int)position
 {
   v3.receiver = self;
   v3.super_class = EKEventProposedTimeDetailItem;
-  [(EKEventDetailItem *)&v3 setCellPosition:*&a3];
+  [(EKEventDetailItem *)&v3 setCellPosition:*&position];
 }
 
-- (double)defaultCellHeightForSubitemAtIndex:(unint64_t)a3 forWidth:(double)a4
+- (double)defaultCellHeightForSubitemAtIndex:(unint64_t)index forWidth:(double)width
 {
-  v5 = [(EKEventProposedTimeDetailItem *)self cellForSubitemAtIndex:a3];
+  v5 = [(EKEventProposedTimeDetailItem *)self cellForSubitemAtIndex:index];
   LODWORD(v6) = 1148846080;
   LODWORD(v7) = 1112014848;
-  [v5 systemLayoutSizeFittingSize:a4 withHorizontalFittingPriority:0.0 verticalFittingPriority:{v6, v7}];
+  [v5 systemLayoutSizeFittingSize:width withHorizontalFittingPriority:0.0 verticalFittingPriority:{v6, v7}];
   v9 = v8;
 
   return v9;
 }
 
-- (id)cellForSubitemAtIndex:(unint64_t)a3
+- (id)cellForSubitemAtIndex:(unint64_t)index
 {
   if (!self->_cellForAttendee)
   {
@@ -121,7 +121,7 @@ LABEL_17:
     self->_cellForAttendee = v5;
   }
 
-  v7 = [(EKEventProposedTimeDetailItem *)self attendeeForIndex:a3];
+  v7 = [(EKEventProposedTimeDetailItem *)self attendeeForIndex:index];
   v8 = v7;
   if (v7)
   {
@@ -140,7 +140,7 @@ LABEL_17:
       self->_visibilityChanged = 1;
     }
 
-    if (a3)
+    if (index)
     {
       v14 = 0;
     }
@@ -150,8 +150,8 @@ LABEL_17:
       v14 = 3;
     }
 
-    [(EKEventDetailProposedTimeCell *)v11 setShowsTopSeparator:a3 != 0];
-    if ([(NSArray *)self->_attendeesWithProposedTimes count]- 1 == a3)
+    [(EKEventDetailProposedTimeCell *)v11 setShowsTopSeparator:index != 0];
+    if ([(NSArray *)self->_attendeesWithProposedTimes count]- 1 == index)
     {
       v15 = v14 | 0xC;
     }
@@ -179,24 +179,24 @@ LABEL_17:
   return v11;
 }
 
-- (id)attendeeForIndex:(unint64_t)a3
+- (id)attendeeForIndex:(unint64_t)index
 {
-  if ([(EKEventProposedTimeDetailItem *)self numberOfSubitems]<= a3)
+  if ([(EKEventProposedTimeDetailItem *)self numberOfSubitems]<= index)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [(NSArray *)self->_attendeesWithProposedTimes objectAtIndexedSubscript:a3];
+    v5 = [(NSArray *)self->_attendeesWithProposedTimes objectAtIndexedSubscript:index];
   }
 
   return v5;
 }
 
-- (id)detailViewControllerWithFrame:(CGRect)a3 forSubitemAtIndex:(unint64_t)a4
+- (id)detailViewControllerWithFrame:(CGRect)frame forSubitemAtIndex:(unint64_t)index
 {
-  v6 = [(EKEventProposedTimeDetailItem *)self attendeeForIndex:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v6 = [(EKEventProposedTimeDetailItem *)self attendeeForIndex:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v7 = [[EKUIProposedTimeEventViewController alloc] initWithProposedTimeAttendee:v6];
   [(EKUIProposedTimeEventViewController *)v7 setEvent:self->super._event];
   v9[0] = MEMORY[0x1E69E9820];
@@ -204,7 +204,7 @@ LABEL_17:
   v9[2] = __81__EKEventProposedTimeDetailItem_detailViewControllerWithFrame_forSubitemAtIndex___block_invoke;
   v9[3] = &unk_1E843F690;
   v9[4] = self;
-  v9[5] = a4;
+  v9[5] = index;
   [(EKUIProposedTimeEventViewController *)v7 setCompletionBlock:v9];
 
   return v7;

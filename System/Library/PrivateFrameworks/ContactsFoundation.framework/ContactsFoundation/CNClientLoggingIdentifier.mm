@@ -1,15 +1,15 @@
 @interface CNClientLoggingIdentifier
-+ (id)loggingIdentifierForAuditToken:(id)a3;
++ (id)loggingIdentifierForAuditToken:(id)token;
 + (id)loggingIdentifierForCurrentProcess;
 - (CNClientLoggingIdentifier)init;
 @end
 
 @implementation CNClientLoggingIdentifier
 
-+ (id)loggingIdentifierForAuditToken:(id)a3
++ (id)loggingIdentifierForAuditToken:(id)token
 {
-  v3 = a3;
-  sub_185A74DB4(v3);
+  tokenCopy = token;
+  sub_185A74DB4(tokenCopy);
 
   v4 = sub_185A7E904();
 

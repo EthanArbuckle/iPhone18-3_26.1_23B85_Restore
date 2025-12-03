@@ -1,8 +1,8 @@
 @interface RCLayerMixSlider
 - (_TtC10VoiceMemos16RCLayerMixSlider)init;
-- (_TtC10VoiceMemos16RCLayerMixSlider)initWithCoder:(id)a3;
-- (_TtC10VoiceMemos16RCLayerMixSlider)initWithFrame:(CGRect)a3;
-- (void)setValue:(float)a3 animated:(BOOL)a4;
+- (_TtC10VoiceMemos16RCLayerMixSlider)initWithCoder:(id)coder;
+- (_TtC10VoiceMemos16RCLayerMixSlider)initWithFrame:(CGRect)frame;
+- (void)setValue:(float)value animated:(BOOL)animated;
 @end
 
 @implementation RCLayerMixSlider
@@ -25,33 +25,33 @@
   return v2;
 }
 
-- (_TtC10VoiceMemos16RCLayerMixSlider)initWithCoder:(id)a3
+- (_TtC10VoiceMemos16RCLayerMixSlider)initWithCoder:(id)coder
 {
   result = _assertionFailure(_:_:file:line:flags:)();
   __break(1u);
   return result;
 }
 
-- (void)setValue:(float)a3 animated:(BOOL)a4
+- (void)setValue:(float)value animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v13.receiver = self;
   v13.super_class = type metadata accessor for RCLayerMixSlider();
   v6 = v13.receiver;
-  *&v7 = a3;
-  [(RCLayerMixSlider *)&v13 setValue:v4 animated:v7];
+  *&v7 = value;
+  [(RCLayerMixSlider *)&v13 setValue:animatedCopy animated:v7];
   [v6 value];
-  LOBYTE(v4) = v8 == 1.0;
+  LOBYTE(animatedCopy) = v8 == 1.0;
   [v6 value];
   v10 = v9 == -1.0;
-  v11 = sub_1001374BC(1, v4);
+  v11 = sub_1001374BC(1, animatedCopy);
   [v6 setMinimumValueImage:v11];
 
   v12 = sub_1001374BC(2, v10);
   [v6 setMaximumValueImage:v12];
 }
 
-- (_TtC10VoiceMemos16RCLayerMixSlider)initWithFrame:(CGRect)a3
+- (_TtC10VoiceMemos16RCLayerMixSlider)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

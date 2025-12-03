@@ -1,5 +1,5 @@
 @interface STStorageTipCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (CGPoint)accessibilityActivationPoint;
 - (id)accessibilityHint;
 - (id)accessibilityValue;
@@ -10,15 +10,15 @@
 
 @implementation STStorageTipCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"STStorageTipCell" hasInstanceVariable:@"_titleLabel" withType:"UILabel"];
-  [v3 validateClass:@"STStorageTipCell" hasInstanceVariable:@"_progressLabel" withType:"UILabel"];
-  [v3 validateClass:@"STStorageTipCell" hasInstanceVariable:@"_enableButton" withType:"UIButton"];
-  [v3 validateClass:@"STStorageTipCell" hasInstanceVariable:@"_spinner" withType:"UIActivityIndicatorView"];
-  [v3 validateClass:@"STStorageTipCell" hasInstanceVariable:@"_checkIconView" withType:"UIImageView"];
-  [v3 validateClass:@"STStorageTipCell" hasInstanceVariable:@"_percent" withType:"f"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"STStorageTipCell" hasInstanceVariable:@"_titleLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"STStorageTipCell" hasInstanceVariable:@"_progressLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"STStorageTipCell" hasInstanceVariable:@"_enableButton" withType:"UIButton"];
+  [validationsCopy validateClass:@"STStorageTipCell" hasInstanceVariable:@"_spinner" withType:"UIActivityIndicatorView"];
+  [validationsCopy validateClass:@"STStorageTipCell" hasInstanceVariable:@"_checkIconView" withType:"UIImageView"];
+  [validationsCopy validateClass:@"STStorageTipCell" hasInstanceVariable:@"_percent" withType:"f"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -37,20 +37,20 @@
 - (id)accessibilityValue
 {
   v3 = [(STStorageTipCellAccessibility *)self safeValueForKey:@"_enableButton"];
-  v4 = [v3 _accessibilityViewIsVisible];
+  _accessibilityViewIsVisible = [v3 _accessibilityViewIsVisible];
 
-  if (v4)
+  if (_accessibilityViewIsVisible)
   {
     v5 = @"tip.cell.not.enabled";
 LABEL_5:
-    v8 = accessibilityPreferencesFrameworkBundleLocalizedString(v5);
+    accessibilityValue = accessibilityPreferencesFrameworkBundleLocalizedString(v5);
     goto LABEL_7;
   }
 
   v6 = [(STStorageTipCellAccessibility *)self safeValueForKey:@"_checkIconView"];
-  v7 = [v6 _accessibilityViewIsVisible];
+  _accessibilityViewIsVisible2 = [v6 _accessibilityViewIsVisible];
 
-  if (v7)
+  if (_accessibilityViewIsVisible2)
   {
     v5 = @"tip.cell.enabled";
     goto LABEL_5;
@@ -58,29 +58,29 @@ LABEL_5:
 
   v10.receiver = self;
   v10.super_class = STStorageTipCellAccessibility;
-  v8 = [(STStorageTipCellAccessibility *)&v10 accessibilityValue];
+  accessibilityValue = [(STStorageTipCellAccessibility *)&v10 accessibilityValue];
 LABEL_7:
 
-  return v8;
+  return accessibilityValue;
 }
 
 - (id)accessibilityHint
 {
   v3 = [(STStorageTipCellAccessibility *)self safeValueForKey:@"_enableButton"];
-  v4 = [v3 _accessibilityViewIsVisible];
+  _accessibilityViewIsVisible = [v3 _accessibilityViewIsVisible];
 
-  if (v4)
+  if (_accessibilityViewIsVisible)
   {
     v5 = @"tip.cell.not.enabled.hint";
 LABEL_5:
-    v8 = accessibilityPreferencesFrameworkBundleLocalizedString(v5);
+    accessibilityValue = accessibilityPreferencesFrameworkBundleLocalizedString(v5);
     goto LABEL_7;
   }
 
   v6 = [(STStorageTipCellAccessibility *)self safeValueForKey:@"_checkIconView"];
-  v7 = [v6 _accessibilityViewIsVisible];
+  _accessibilityViewIsVisible2 = [v6 _accessibilityViewIsVisible];
 
-  if (v7)
+  if (_accessibilityViewIsVisible2)
   {
     v5 = @"tip.cell.enabled.hint";
     goto LABEL_5;
@@ -88,17 +88,17 @@ LABEL_5:
 
   v10.receiver = self;
   v10.super_class = STStorageTipCellAccessibility;
-  v8 = [(STStorageTipCellAccessibility *)&v10 accessibilityValue];
+  accessibilityValue = [(STStorageTipCellAccessibility *)&v10 accessibilityValue];
 LABEL_7:
 
-  return v8;
+  return accessibilityValue;
 }
 
 - (unint64_t)accessibilityTraits
 {
   v7.receiver = self;
   v7.super_class = STStorageTipCellAccessibility;
-  v3 = [(STStorageTipCellAccessibility *)&v7 accessibilityTraits];
+  accessibilityTraits = [(STStorageTipCellAccessibility *)&v7 accessibilityTraits];
   v4 = [(STStorageTipCellAccessibility *)self safeValueForKey:@"_enableButton"];
   if ([v4 _accessibilityViewIsVisible])
   {
@@ -110,7 +110,7 @@ LABEL_7:
     v5 = 0;
   }
 
-  return v5 | v3;
+  return v5 | accessibilityTraits;
 }
 
 - (id)automationElements

@@ -1,37 +1,37 @@
 @interface CinematicFramingSessionFramingParameters
-- (CinematicFramingSessionFramingParameters)initWithPlist:(id)a3;
-- (CinematicFramingSessionFramingParameters)initWithPlistPath:(id)a3;
+- (CinematicFramingSessionFramingParameters)initWithPlist:(id)plist;
+- (CinematicFramingSessionFramingParameters)initWithPlistPath:(id)path;
 - (id)asDictionary;
-- (void)_initializeWithPlist:(id)a3;
+- (void)_initializeWithPlist:(id)plist;
 @end
 
 @implementation CinematicFramingSessionFramingParameters
 
-- (CinematicFramingSessionFramingParameters)initWithPlist:(id)a3
+- (CinematicFramingSessionFramingParameters)initWithPlist:(id)plist
 {
-  v4 = a3;
+  plistCopy = plist;
   v9.receiver = self;
   v9.super_class = CinematicFramingSessionFramingParameters;
   v5 = [(CinematicFramingSessionFramingParameters *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    [(CinematicFramingSessionFramingParameters *)v5 _initializeWithPlist:v4];
+    [(CinematicFramingSessionFramingParameters *)v5 _initializeWithPlist:plistCopy];
     v7 = v6;
   }
 
   return v6;
 }
 
-- (CinematicFramingSessionFramingParameters)initWithPlistPath:(id)a3
+- (CinematicFramingSessionFramingParameters)initWithPlistPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v8.receiver = self;
   v8.super_class = CinematicFramingSessionFramingParameters;
   v5 = [(CinematicFramingSessionFramingParameters *)&v8 init];
   if (v5)
   {
-    v6 = [MEMORY[0x277CBEAC0] dictionaryWithContentsOfFile:v4];
+    v6 = [MEMORY[0x277CBEAC0] dictionaryWithContentsOfFile:pathCopy];
     v5 = [(CinematicFramingSessionFramingParameters *)v5 initWithPlist:v6];
   }
 
@@ -79,22 +79,22 @@
   return v17;
 }
 
-- (void)_initializeWithPlist:(id)a3
+- (void)_initializeWithPlist:(id)plist
 {
-  v4 = a3;
-  *&v5 = PlistReadFloat(v4, @"deadbandWidthMinFraction", 0.8);
+  plistCopy = plist;
+  *&v5 = PlistReadFloat(plistCopy, @"deadbandWidthMinFraction", 0.8);
   [(CinematicFramingSessionFramingParameters *)self setDeadbandWidthMinFraction:v5];
-  *&v6 = PlistReadFloat(v4, @"deadbandWidthMaxFraction", 1.2);
+  *&v6 = PlistReadFloat(plistCopy, @"deadbandWidthMaxFraction", 1.2);
   [(CinematicFramingSessionFramingParameters *)self setDeadbandWidthMaxFraction:v6];
-  *&v7 = PlistReadFloat(v4, @"deadbandWidthFractionOfScreenWidth", 0.7);
+  *&v7 = PlistReadFloat(plistCopy, @"deadbandWidthFractionOfScreenWidth", 0.7);
   [(CinematicFramingSessionFramingParameters *)self setDeadbandWidthFractionOfScreenWidth:v7];
-  *&v8 = PlistReadFloat(v4, @"deadbandHeightFractionOfScreenHeight", 0.5);
+  *&v8 = PlistReadFloat(plistCopy, @"deadbandHeightFractionOfScreenHeight", 0.5);
   [(CinematicFramingSessionFramingParameters *)self setDeadbandHeightFractionOfScreenHeight:v8];
-  *&v9 = PlistReadFloat(v4, @"deadbandTopOffsetFractionOfScreenHeight", 0.1);
+  *&v9 = PlistReadFloat(plistCopy, @"deadbandTopOffsetFractionOfScreenHeight", 0.1);
   [(CinematicFramingSessionFramingParameters *)self setDeadbandTopOffsetFractionOfScreenHeight:v9];
-  *&v10 = PlistReadFloat(v4, @"subjectWidthPaddingMultiplier", 1.0);
+  *&v10 = PlistReadFloat(plistCopy, @"subjectWidthPaddingMultiplier", 1.0);
   [(CinematicFramingSessionFramingParameters *)self setSubjectWidthPaddingMultiplier:v10];
-  Float = PlistReadFloat(v4, @"subjectHeightPaddingMultiplier", 1.0);
+  Float = PlistReadFloat(plistCopy, @"subjectHeightPaddingMultiplier", 1.0);
 
   *&v12 = Float;
 

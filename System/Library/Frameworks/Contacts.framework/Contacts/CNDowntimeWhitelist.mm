@@ -1,18 +1,18 @@
 @interface CNDowntimeWhitelist
-+ (BOOL)isWhitelistedContact:(id)a3;
++ (BOOL)isWhitelistedContact:(id)contact;
 + (id)keyDescriptor;
 + (id)os_log;
-- (BOOL)isHandleStringWhitelisted:(id)a3 error:(id *)a4;
+- (BOOL)isHandleStringWhitelisted:(id)whitelisted error:(id *)error;
 - (CNDowntimeWhitelist)init;
-- (CNDowntimeWhitelist)initWithContactStore:(id)a3;
-- (CNDowntimeWhitelist)initWithContactStore:(id)a3 accountStore:(id)a4 notificationCenter:(id)a5;
-- (CNDowntimeWhitelist)initWithContactStore:(id)a3 notificationCenter:(id)a4;
-- (id)allWhitelistedContacts:(id *)a3;
-- (id)allWhitelistedHandleStrings:(id *)a3;
+- (CNDowntimeWhitelist)initWithContactStore:(id)store;
+- (CNDowntimeWhitelist)initWithContactStore:(id)store accountStore:(id)accountStore notificationCenter:(id)center;
+- (CNDowntimeWhitelist)initWithContactStore:(id)store notificationCenter:(id)center;
+- (id)allWhitelistedContacts:(id *)contacts;
+- (id)allWhitelistedHandleStrings:(id *)strings;
 - (id)requestForContactsInPermittedContainers;
-- (id)requestForContactsInPermittedContainersWithHandles:(id)a3;
+- (id)requestForContactsInPermittedContainersWithHandles:(id)handles;
 - (id)requestForNonUnifiedContacts;
-- (id)whitelistedHandleStringsFromHandleStrings:(id)a3 error:(id *)a4;
+- (id)whitelistedHandleStringsFromHandleStrings:(id)strings error:(id *)error;
 - (void)beginObservingChangeNotifications;
 - (void)dealloc;
 @end
@@ -63,41 +63,41 @@ uint64_t __29__CNDowntimeWhitelist_os_log__block_invoke()
   return v4;
 }
 
-- (CNDowntimeWhitelist)initWithContactStore:(id)a3
+- (CNDowntimeWhitelist)initWithContactStore:(id)store
 {
   v4 = MEMORY[0x1E696AD88];
-  v5 = a3;
-  v6 = [v4 defaultCenter];
-  v7 = [(CNDowntimeWhitelist *)self initWithContactStore:v5 notificationCenter:v6];
+  storeCopy = store;
+  defaultCenter = [v4 defaultCenter];
+  v7 = [(CNDowntimeWhitelist *)self initWithContactStore:storeCopy notificationCenter:defaultCenter];
 
   return v7;
 }
 
-- (CNDowntimeWhitelist)initWithContactStore:(id)a3 notificationCenter:(id)a4
+- (CNDowntimeWhitelist)initWithContactStore:(id)store notificationCenter:(id)center
 {
   v6 = MEMORY[0x1E6959A48];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 defaultStore];
-  v10 = [(CNDowntimeWhitelist *)self initWithContactStore:v8 accountStore:v9 notificationCenter:v7];
+  centerCopy = center;
+  storeCopy = store;
+  defaultStore = [v6 defaultStore];
+  v10 = [(CNDowntimeWhitelist *)self initWithContactStore:storeCopy accountStore:defaultStore notificationCenter:centerCopy];
 
   return v10;
 }
 
-- (CNDowntimeWhitelist)initWithContactStore:(id)a3 accountStore:(id)a4 notificationCenter:(id)a5
+- (CNDowntimeWhitelist)initWithContactStore:(id)store accountStore:(id)accountStore notificationCenter:(id)center
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  storeCopy = store;
+  accountStoreCopy = accountStore;
+  centerCopy = center;
   v18.receiver = self;
   v18.super_class = CNDowntimeWhitelist;
   v12 = [(CNDowntimeWhitelist *)&v18 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_contactStore, a3);
-    objc_storeStrong(&v13->_notificationCenter, a5);
-    v14 = [[CNDowntimeWhitelistContainerFetcher alloc] initWithContactStore:v9 accountStore:v10 notificationCenter:v11];
+    objc_storeStrong(&v12->_contactStore, store);
+    objc_storeStrong(&v13->_notificationCenter, center);
+    v14 = [[CNDowntimeWhitelistContainerFetcher alloc] initWithContactStore:storeCopy accountStore:accountStoreCopy notificationCenter:centerCopy];
     containerFetcher = v13->_containerFetcher;
     v13->_containerFetcher = v14;
 
@@ -127,14 +127,14 @@ void __56__CNDowntimeWhitelist_beginObservingChangeNotifications__block_invoke(u
   [(CNDowntimeWhitelist *)&v3 dealloc];
 }
 
-- (id)whitelistedHandleStringsFromHandleStrings:(id)a3 error:(id *)a4
+- (id)whitelistedHandleStringsFromHandleStrings:(id)strings error:(id *)error
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(CNDowntimeWhitelist *)self contactStore];
-  v8 = [(CNDowntimeWhitelist *)self requestForContactsInPermittedContainersWithHandles:v6];
+  stringsCopy = strings;
+  contactStore = [(CNDowntimeWhitelist *)self contactStore];
+  v8 = [(CNDowntimeWhitelist *)self requestForContactsInPermittedContainersWithHandles:stringsCopy];
   v22 = 0;
-  v9 = [v7 executeFetchRequest:v8 error:&v22];
+  v9 = [contactStore executeFetchRequest:v8 error:&v22];
   v10 = v22;
 
   if (v9)
@@ -144,22 +144,22 @@ void __56__CNDowntimeWhitelist_beginObservingChangeNotifications__block_invoke(u
     v19[2] = __71__CNDowntimeWhitelist_whitelistedHandleStringsFromHandleStrings_error___block_invoke;
     v19[3] = &unk_1E7417A98;
     v20 = v9;
-    v21 = self;
-    v11 = [v6 _cn_filter:v19];
-    v12 = [objc_opt_class() os_log];
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
+    selfCopy = self;
+    v11 = [stringsCopy _cn_filter:v19];
+    os_log = [objc_opt_class() os_log];
+    if (os_log_type_enabled(os_log, OS_LOG_TYPE_INFO))
     {
       v13 = [v11 count];
-      v14 = [v6 count];
+      v14 = [stringsCopy count];
       *buf = 134218240;
       v24 = v13;
       v25 = 2048;
       v26 = v14;
-      _os_log_impl(&dword_1954A0000, v12, OS_LOG_TYPE_INFO, "%lu of %lu handles were whitelisted", buf, 0x16u);
+      _os_log_impl(&dword_1954A0000, os_log, OS_LOG_TYPE_INFO, "%lu of %lu handles were whitelisted", buf, 0x16u);
     }
 
-    v15 = [objc_opt_class() os_log];
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
+    os_log2 = [objc_opt_class() os_log];
+    if (os_log_type_enabled(os_log2, OS_LOG_TYPE_DEBUG))
     {
       [CNDowntimeWhitelist whitelistedHandleStringsFromHandleStrings:error:];
     }
@@ -167,17 +167,17 @@ void __56__CNDowntimeWhitelist_beginObservingChangeNotifications__block_invoke(u
 
   else
   {
-    v16 = [objc_opt_class() os_log];
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+    os_log3 = [objc_opt_class() os_log];
+    if (os_log_type_enabled(os_log3, OS_LOG_TYPE_ERROR))
     {
       [CNDowntimeWhitelist whitelistedHandleStringsFromHandleStrings:error:];
     }
 
-    if (a4)
+    if (error)
     {
       v17 = v10;
       v11 = 0;
-      *a4 = v10;
+      *error = v10;
     }
 
     else
@@ -200,10 +200,10 @@ uint64_t __71__CNDowntimeWhitelist_whitelistedHandleStringsFromHandleStrings_err
   return v6;
 }
 
-- (BOOL)isHandleStringWhitelisted:(id)a3 error:(id *)a4
+- (BOOL)isHandleStringWhitelisted:(id)whitelisted error:(id *)error
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  whitelistedCopy = whitelisted;
   if ((*(*MEMORY[0x1E6996568] + 16))())
   {
     v7 = 0;
@@ -215,11 +215,11 @@ uint64_t __71__CNDowntimeWhitelist_whitelistedHandleStringsFromHandleStrings_err
     v19 = &v18;
     v20 = 0x2020000000;
     v21 = 0;
-    v22[0] = v6;
+    v22[0] = whitelistedCopy;
     v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:1];
     v9 = [(CNDowntimeWhitelist *)self requestForContactsInPermittedContainersWithHandles:v8];
 
-    v10 = [(CNDowntimeWhitelist *)self contactStore];
+    contactStore = [(CNDowntimeWhitelist *)self contactStore];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __55__CNDowntimeWhitelist_isHandleStringWhitelisted_error___block_invoke;
@@ -227,19 +227,19 @@ uint64_t __71__CNDowntimeWhitelist_whitelistedHandleStringsFromHandleStrings_err
     v16[4] = self;
     v16[5] = &v18;
     v17 = 0;
-    v11 = [v10 enumerateContactsWithFetchRequest:v9 error:&v17 usingBlock:v16];
+    v11 = [contactStore enumerateContactsWithFetchRequest:v9 error:&v17 usingBlock:v16];
     v12 = v17;
 
     if ((v11 & 1) == 0)
     {
-      if (a4)
+      if (error)
       {
         v13 = v12;
-        *a4 = v12;
+        *error = v12;
       }
 
-      v14 = [objc_opt_class() os_log];
-      if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+      os_log = [objc_opt_class() os_log];
+      if (os_log_type_enabled(os_log, OS_LOG_TYPE_ERROR))
       {
         [CNDowntimeWhitelist whitelistedHandleStringsFromHandleStrings:error:];
       }
@@ -272,46 +272,46 @@ void __55__CNDowntimeWhitelist_isHandleStringWhitelisted_error___block_invoke(ui
   }
 }
 
-- (id)allWhitelistedHandleStrings:(id *)a3
+- (id)allWhitelistedHandleStrings:(id *)strings
 {
-  v3 = [(CNDowntimeWhitelist *)self allWhitelistedContacts:a3];
+  v3 = [(CNDowntimeWhitelist *)self allWhitelistedContacts:strings];
   v4 = [v3 _cn_flatMap:&__block_literal_global_32_3];
 
   return v4;
 }
 
-- (id)allWhitelistedContacts:(id *)a3
+- (id)allWhitelistedContacts:(id *)contacts
 {
-  v5 = [(CNDowntimeWhitelist *)self contactStore];
-  v6 = [(CNDowntimeWhitelist *)self requestForContactsInPermittedContainers];
+  contactStore = [(CNDowntimeWhitelist *)self contactStore];
+  requestForContactsInPermittedContainers = [(CNDowntimeWhitelist *)self requestForContactsInPermittedContainers];
   v15 = 0;
-  v7 = [v5 executeFetchRequest:v6 error:&v15];
+  v7 = [contactStore executeFetchRequest:requestForContactsInPermittedContainers error:&v15];
   v8 = v15;
 
   if (v7)
   {
-    v9 = [v7 value];
+    value = [v7 value];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __46__CNDowntimeWhitelist_allWhitelistedContacts___block_invoke;
     v14[3] = &unk_1E74124D8;
     v14[4] = self;
-    v10 = [v9 _cn_filter:v14];
+    v10 = [value _cn_filter:v14];
   }
 
   else
   {
-    v11 = [objc_opt_class() os_log];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    os_log = [objc_opt_class() os_log];
+    if (os_log_type_enabled(os_log, OS_LOG_TYPE_ERROR))
     {
       [CNDowntimeWhitelist allWhitelistedContacts:];
     }
 
-    if (a3)
+    if (contacts)
     {
       v12 = v8;
       v10 = 0;
-      *a3 = v8;
+      *contacts = v8;
     }
 
     else
@@ -331,59 +331,59 @@ uint64_t __46__CNDowntimeWhitelist_allWhitelistedContacts___block_invoke(uint64_
   return v3;
 }
 
-- (id)requestForContactsInPermittedContainersWithHandles:(id)a3
+- (id)requestForContactsInPermittedContainersWithHandles:(id)handles
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CNDowntimeWhitelist *)self containerFetcher];
-  v6 = [v5 downtimeWhitelistContainer];
-  v7 = [v6 identifier];
-  v8 = v7;
+  handlesCopy = handles;
+  containerFetcher = [(CNDowntimeWhitelist *)self containerFetcher];
+  downtimeWhitelistContainer = [containerFetcher downtimeWhitelistContainer];
+  identifier = [downtimeWhitelistContainer identifier];
+  v8 = identifier;
   v9 = &stru_1F094DAB0;
-  if (v7)
+  if (identifier)
   {
-    v9 = v7;
+    v9 = identifier;
   }
 
   v10 = v9;
 
-  v11 = [(CNDowntimeWhitelist *)self requestForNonUnifiedContacts];
+  requestForNonUnifiedContacts = [(CNDowntimeWhitelist *)self requestForNonUnifiedContacts];
   v15[0] = v10;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
-  v13 = [CNContact predicateForContactsMatchingHandleStrings:v4 inContainersWithIdentifiers:v12];
+  v13 = [CNContact predicateForContactsMatchingHandleStrings:handlesCopy inContainersWithIdentifiers:v12];
 
-  [v11 setPredicate:v13];
+  [requestForNonUnifiedContacts setPredicate:v13];
 
-  return v11;
+  return requestForNonUnifiedContacts;
 }
 
 - (id)requestForContactsInPermittedContainers
 {
-  v3 = [(CNDowntimeWhitelist *)self containerFetcher];
-  v4 = [v3 downtimeWhitelistContainer];
-  v5 = [v4 identifier];
-  v6 = v5;
+  containerFetcher = [(CNDowntimeWhitelist *)self containerFetcher];
+  downtimeWhitelistContainer = [containerFetcher downtimeWhitelistContainer];
+  identifier = [downtimeWhitelistContainer identifier];
+  v6 = identifier;
   v7 = &stru_1F094DAB0;
-  if (v5)
+  if (identifier)
   {
-    v7 = v5;
+    v7 = identifier;
   }
 
   v8 = v7;
 
-  v9 = [(CNDowntimeWhitelist *)self requestForNonUnifiedContacts];
+  requestForNonUnifiedContacts = [(CNDowntimeWhitelist *)self requestForNonUnifiedContacts];
   v10 = [CNContact predicateForContactsInContainerWithIdentifier:v8];
 
-  [v9 setPredicate:v10];
+  [requestForNonUnifiedContacts setPredicate:v10];
 
-  return v9;
+  return requestForNonUnifiedContacts;
 }
 
 - (id)requestForNonUnifiedContacts
 {
   v2 = [CNContactFetchRequest alloc];
-  v3 = [objc_opt_class() keyDescriptor];
-  v4 = [(CNContactFetchRequest *)v2 initWithKeysToFetch:v3];
+  keyDescriptor = [objc_opt_class() keyDescriptor];
+  v4 = [(CNContactFetchRequest *)v2 initWithKeysToFetch:keyDescriptor];
 
   [(CNContactFetchRequest *)v4 setUnifyResults:0];
 
@@ -405,10 +405,10 @@ uint64_t __46__CNDowntimeWhitelist_allWhitelistedContacts___block_invoke(uint64_
   return v4;
 }
 
-+ (BOOL)isWhitelistedContact:(id)a3
++ (BOOL)isWhitelistedContact:(id)contact
 {
-  v3 = [a3 downtimeWhitelist];
-  v4 = [v3 isEqualToString:*MEMORY[0x1E6996480]];
+  downtimeWhitelist = [contact downtimeWhitelist];
+  v4 = [downtimeWhitelist isEqualToString:*MEMORY[0x1E6996480]];
 
   return v4;
 }

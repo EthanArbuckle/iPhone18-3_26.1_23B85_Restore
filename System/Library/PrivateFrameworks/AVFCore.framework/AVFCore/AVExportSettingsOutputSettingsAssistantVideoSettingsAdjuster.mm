@@ -1,19 +1,19 @@
 @interface AVExportSettingsOutputSettingsAssistantVideoSettingsAdjuster
-- (AVExportSettingsOutputSettingsAssistantVideoSettingsAdjuster)initWithOutputSettingsPreset:(id)a3;
+- (AVExportSettingsOutputSettingsAssistantVideoSettingsAdjuster)initWithOutputSettingsPreset:(id)preset;
 - (void)dealloc;
 @end
 
 @implementation AVExportSettingsOutputSettingsAssistantVideoSettingsAdjuster
 
-- (AVExportSettingsOutputSettingsAssistantVideoSettingsAdjuster)initWithOutputSettingsPreset:(id)a3
+- (AVExportSettingsOutputSettingsAssistantVideoSettingsAdjuster)initWithOutputSettingsPreset:(id)preset
 {
   v7.receiver = self;
   v7.super_class = AVExportSettingsOutputSettingsAssistantVideoSettingsAdjuster;
   v4 = [(AVExportSettingsOutputSettingsAssistantVideoSettingsAdjuster *)&v7 init];
   if (v4)
   {
-    v4->_outputSettingsPresetIdentifier = [a3 copy];
-    v5 = [AVExportSettingsForOutputSettingsPreset(a3) copy];
+    v4->_outputSettingsPresetIdentifier = [preset copy];
+    v5 = [AVExportSettingsForOutputSettingsPreset(preset) copy];
     v4->_exportSettings = v5;
     if (!v5)
     {

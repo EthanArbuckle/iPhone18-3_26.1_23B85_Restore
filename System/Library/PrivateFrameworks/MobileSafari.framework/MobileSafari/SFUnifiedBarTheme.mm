@@ -1,6 +1,6 @@
 @interface SFUnifiedBarTheme
 + (SFUnifiedBarTheme)defaultTheme;
-- (SFUnifiedBarTheme)initWithBarTintStyle:(int64_t)a3 preferredBarTintColor:(id)a4 controlsTintColor:(id)a5;
+- (SFUnifiedBarTheme)initWithBarTintStyle:(int64_t)style preferredBarTintColor:(id)color controlsTintColor:(id)tintColor;
 @end
 
 @implementation SFUnifiedBarTheme
@@ -24,31 +24,31 @@ void __33__SFUnifiedBarTheme_defaultTheme__block_invoke()
   defaultTheme_defaultTheme = v0;
 }
 
-- (SFUnifiedBarTheme)initWithBarTintStyle:(int64_t)a3 preferredBarTintColor:(id)a4 controlsTintColor:(id)a5
+- (SFUnifiedBarTheme)initWithBarTintStyle:(int64_t)style preferredBarTintColor:(id)color controlsTintColor:(id)tintColor
 {
   v43.receiver = self;
   v43.super_class = SFUnifiedBarTheme;
-  v6 = [(SFThemeColorBarTheme *)&v43 initWithBarTintStyle:a3 preferredBarTintColor:a4 controlsTintColor:a5];
+  v6 = [(SFThemeColorBarTheme *)&v43 initWithBarTintStyle:style preferredBarTintColor:color controlsTintColor:tintColor];
   if (!v6)
   {
     goto LABEL_19;
   }
 
-  v6->_isPrivate = _SFIsPrivateTintStyle(a3);
-  v7 = [(_SFBarTheme *)v6 controlsTintColor];
-  objc_storeStrong(&v6->_progressBarTintColor, v7);
-  objc_storeStrong(&v6->_selectedMenuButtonTintColor, v7);
-  v8 = [(SFThemeColorBarTheme *)v6 themeColor];
-  v9 = [MEMORY[0x1E69C9890] overrideTabColorForThemeColor:v8];
+  v6->_isPrivate = _SFIsPrivateTintStyle(style);
+  controlsTintColor = [(_SFBarTheme *)v6 controlsTintColor];
+  objc_storeStrong(&v6->_progressBarTintColor, controlsTintColor);
+  objc_storeStrong(&v6->_selectedMenuButtonTintColor, controlsTintColor);
+  themeColor = [(SFThemeColorBarTheme *)v6 themeColor];
+  v9 = [MEMORY[0x1E69C9890] overrideTabColorForThemeColor:themeColor];
   overridePlatterColor = v6->_overridePlatterColor;
   v6->_overridePlatterColor = v9;
 
-  v41 = [(SFThemeColorBarTheme *)v6 userInterfaceStyle];
-  v11 = [MEMORY[0x1E69DC888] sf_transparentBarHairlineColor];
+  userInterfaceStyle = [(SFThemeColorBarTheme *)v6 userInterfaceStyle];
+  sf_transparentBarHairlineColor = [MEMORY[0x1E69DC888] sf_transparentBarHairlineColor];
   separatorColor = v6->_separatorColor;
-  v6->_separatorColor = v11;
+  v6->_separatorColor = sf_transparentBarHairlineColor;
 
-  if (_SFIsDarkTintStyle(a3))
+  if (_SFIsDarkTintStyle(style))
   {
     v42 = [MEMORY[0x1E69DC888] colorWithWhite:0.3 alpha:1.0];
   }
@@ -58,12 +58,12 @@ void __33__SFUnifiedBarTheme_defaultTheme__block_invoke()
     v42 = 0;
   }
 
-  v13 = [(SFThemeColorBarTheme *)v6 overrideTintColor];
-  v14 = v13;
+  overrideTintColor = [(SFThemeColorBarTheme *)v6 overrideTintColor];
+  v14 = overrideTintColor;
   v15 = v42;
-  if (v8)
+  if (themeColor)
   {
-    v15 = v8;
+    v15 = themeColor;
   }
 
   if (v6->_overridePlatterColor)
@@ -76,7 +76,7 @@ void __33__SFUnifiedBarTheme_defaultTheme__block_invoke()
     v16 = v15;
   }
 
-  v17 = makeTitleTheme(v13, v16);
+  v17 = makeTitleTheme(overrideTintColor, v16);
   titleTheme = v6->_titleTheme;
   v6->_titleTheme = v17;
 
@@ -84,23 +84,23 @@ void __33__SFUnifiedBarTheme_defaultTheme__block_invoke()
   objc_storeStrong(&v6->_tabTitleTheme, v6->_titleTheme);
   if (isPrivate)
   {
-    v20 = [MEMORY[0x1E69DC888] blackColor];
-    v21 = makeTitleTheme(0, v20);
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    v21 = makeTitleTheme(0, blackColor);
     activeTabTitleTheme = v6->_activeTabTitleTheme;
     v6->_activeTabTitleTheme = v21;
 
-    v23 = [(SFUnifiedTabBarItemTitleContainerViewTheme *)v6->_activeTabTitleTheme secondaryTextColor];
-    objc_storeStrong(&v6->_tabProgressBarTintColor, v23);
-    objc_storeStrong(&v6->_tabControlsTintColor, v23);
-    objc_storeStrong(&v6->_activeTabProgressBarTintColor, v23);
-    objc_storeStrong(&v6->_activeTabControlsTintColor, v23);
+    secondaryTextColor = [(SFUnifiedTabBarItemTitleContainerViewTheme *)v6->_activeTabTitleTheme secondaryTextColor];
+    objc_storeStrong(&v6->_tabProgressBarTintColor, secondaryTextColor);
+    objc_storeStrong(&v6->_tabControlsTintColor, secondaryTextColor);
+    objc_storeStrong(&v6->_activeTabProgressBarTintColor, secondaryTextColor);
+    objc_storeStrong(&v6->_activeTabControlsTintColor, secondaryTextColor);
     inputFieldSecondaryAccessoryButtonTintColor = v6->_inputFieldSecondaryAccessoryButtonTintColor;
-    v6->_inputFieldSecondaryAccessoryButtonTintColor = v23;
-    v25 = v23;
+    v6->_inputFieldSecondaryAccessoryButtonTintColor = secondaryTextColor;
+    sf_safariAccentColor = secondaryTextColor;
 
-    v26 = [MEMORY[0x1E69DC888] whiteColor];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
     selectedMenuButtonTintColor = v6->_selectedMenuButtonTintColor;
-    v6->_selectedMenuButtonTintColor = v26;
+    v6->_selectedMenuButtonTintColor = whiteColor;
 LABEL_14:
 
     goto LABEL_15;
@@ -111,30 +111,30 @@ LABEL_14:
   v6->_activeTabTitleTheme = v28;
 
   objc_storeStrong(&v6->_tabProgressBarTintColor, v6->_progressBarTintColor);
-  objc_storeStrong(&v6->_tabControlsTintColor, v7);
-  v25 = [MEMORY[0x1E69DC888] sf_safariAccentColor];
-  objc_storeStrong(&v6->_activeTabProgressBarTintColor, v25);
-  objc_storeStrong(&v6->_activeTabControlsTintColor, v25);
-  v30 = [(SFUnifiedTabBarItemTitleContainerViewTheme *)v6->_tabTitleTheme secondaryTextColor];
+  objc_storeStrong(&v6->_tabControlsTintColor, controlsTintColor);
+  sf_safariAccentColor = [MEMORY[0x1E69DC888] sf_safariAccentColor];
+  objc_storeStrong(&v6->_activeTabProgressBarTintColor, sf_safariAccentColor);
+  objc_storeStrong(&v6->_activeTabControlsTintColor, sf_safariAccentColor);
+  secondaryTextColor2 = [(SFUnifiedTabBarItemTitleContainerViewTheme *)v6->_tabTitleTheme secondaryTextColor];
   v31 = v6->_inputFieldSecondaryAccessoryButtonTintColor;
-  v6->_inputFieldSecondaryAccessoryButtonTintColor = v30;
+  v6->_inputFieldSecondaryAccessoryButtonTintColor = secondaryTextColor2;
 
-  if (v41 == 2)
+  if (userInterfaceStyle == 2)
   {
-    v32 = [(SFUnifiedTabBarItemTitleContainerViewTheme *)v6->_tabTitleTheme primaryTextColor];
+    primaryTextColor = [(SFUnifiedTabBarItemTitleContainerViewTheme *)v6->_tabTitleTheme primaryTextColor];
     selectedMenuButtonTintColor = v6->_activeTabFieldTintColor;
-    v6->_activeTabFieldTintColor = v32;
+    v6->_activeTabFieldTintColor = primaryTextColor;
     goto LABEL_14;
   }
 
 LABEL_15:
 
-  v33 = [(SFUnifiedTabBarItemTitleContainerViewTheme *)v6->_tabTitleTheme secondaryTextColor];
+  secondaryTextColor3 = [(SFUnifiedTabBarItemTitleContainerViewTheme *)v6->_tabTitleTheme secondaryTextColor];
   tabAccessoryButtonTintColor = v6->_tabAccessoryButtonTintColor;
-  v6->_tabAccessoryButtonTintColor = v33;
+  v6->_tabAccessoryButtonTintColor = secondaryTextColor3;
 
   v35 = v6->_activeTabTitleTheme;
-  if (a3 == 2)
+  if (style == 2)
   {
     [(SFUnifiedTabBarItemTitleContainerViewTheme *)v35 primaryTextColor];
   }
@@ -146,9 +146,9 @@ LABEL_15:
   v36 = ;
   objc_storeStrong(&v6->_activeTabAccessoryButtonTintColor, v36);
 
-  v37 = [(SFUnifiedTabBarItemTitleContainerViewTheme *)v6->_activeTabTitleTheme primaryTextColor];
+  primaryTextColor2 = [(SFUnifiedTabBarItemTitleContainerViewTheme *)v6->_activeTabTitleTheme primaryTextColor];
   inputFieldAccessoryButtonTintColor = v6->_inputFieldAccessoryButtonTintColor;
-  v6->_inputFieldAccessoryButtonTintColor = v37;
+  v6->_inputFieldAccessoryButtonTintColor = primaryTextColor2;
 
   v39 = v6;
 LABEL_19:

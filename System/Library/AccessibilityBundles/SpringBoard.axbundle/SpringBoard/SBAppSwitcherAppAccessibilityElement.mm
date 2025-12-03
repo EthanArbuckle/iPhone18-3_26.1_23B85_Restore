@@ -1,6 +1,6 @@
 @interface SBAppSwitcherAppAccessibilityElement
-- (BOOL)_accessibilityCanPerformAction:(int)a3;
-- (BOOL)_accessibilityIsDescendantOfElement:(id)a3;
+- (BOOL)_accessibilityCanPerformAction:(int)action;
+- (BOOL)_accessibilityIsDescendantOfElement:(id)element;
 - (BOOL)_accessibilityIsInAppSwitcher;
 - (BOOL)_accessibilityIsVisibleByCompleteHitTest;
 - (BOOL)_accessibilityRetainsCustomRotorActionSetting;
@@ -8,7 +8,7 @@
 - (BOOL)_accessibilitySetNativeFocus;
 - (BOOL)_axIsAppActive;
 - (BOOL)accessibilityActivate;
-- (BOOL)accessibilityScroll:(int64_t)a3;
+- (BOOL)accessibilityScroll:(int64_t)scroll;
 - (BOOL)isAccessibilityElement;
 - (CGRect)accessibilityFrame;
 - (SBAppSwticherAppAccessibilityElementDelegate)delegate;
@@ -34,7 +34,7 @@
 - (BOOL)accessibilityActivate
 {
   objc_opt_class();
-  v3 = [(SBAppSwitcherAppAccessibilityElement *)self itemContainer];
+  itemContainer = [(SBAppSwitcherAppAccessibilityElement *)self itemContainer];
   v4 = __UIAccessibilityCastAsSafeCategory();
 
   if (v4)
@@ -47,7 +47,7 @@
 
 - (BOOL)isAccessibilityElement
 {
-  v3 = [(SBAppSwitcherAppAccessibilityElement *)self delegate];
+  delegate = [(SBAppSwitcherAppAccessibilityElement *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if ((v4 & 1) == 0)
@@ -55,41 +55,41 @@
     return 0;
   }
 
-  v5 = [(SBAppSwitcherAppAccessibilityElement *)self delegate];
-  v6 = [v5 appElementIsAccessibilityElement:self];
+  delegate2 = [(SBAppSwitcherAppAccessibilityElement *)self delegate];
+  v6 = [delegate2 appElementIsAccessibilityElement:self];
 
   return v6;
 }
 
 - (BOOL)_accessibilityRetainsCustomRotorActionSetting
 {
-  v2 = [(SBAppSwitcherAppAccessibilityElement *)self itemContainer];
-  v3 = [v2 _accessibilityRetainsCustomRotorActionSetting];
+  itemContainer = [(SBAppSwitcherAppAccessibilityElement *)self itemContainer];
+  _accessibilityRetainsCustomRotorActionSetting = [itemContainer _accessibilityRetainsCustomRotorActionSetting];
 
-  return v3;
+  return _accessibilityRetainsCustomRotorActionSetting;
 }
 
 - (id)_accessibilityBundleIdentifier
 {
-  v2 = [(SBAppSwitcherAppAccessibilityElement *)self itemContainer];
-  v3 = [v2 _accessibilityBundleIdentifier];
+  itemContainer = [(SBAppSwitcherAppAccessibilityElement *)self itemContainer];
+  _accessibilityBundleIdentifier = [itemContainer _accessibilityBundleIdentifier];
 
-  return v3;
+  return _accessibilityBundleIdentifier;
 }
 
 - (BOOL)_accessibilityIsInAppSwitcher
 {
   objc_opt_class();
-  v3 = [(SBAppSwitcherAppAccessibilityElement *)self itemContainer];
+  itemContainer = [(SBAppSwitcherAppAccessibilityElement *)self itemContainer];
   v4 = __UIAccessibilityCastAsSafeCategory();
 
-  v5 = [v4 _accessibilityIsInAppSwitcher];
-  return v5;
+  _accessibilityIsInAppSwitcher = [v4 _accessibilityIsInAppSwitcher];
+  return _accessibilityIsInAppSwitcher;
 }
 
 - (id)_accessibilityCustomActionGroupIdentifier
 {
-  v2 = [(SBAppSwitcherAppAccessibilityElement *)self itemContainer];
+  itemContainer = [(SBAppSwitcherAppAccessibilityElement *)self itemContainer];
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
 
@@ -98,12 +98,12 @@
 
 - (CGRect)accessibilityFrame
 {
-  v3 = [(SBAppSwitcherAppAccessibilityElement *)self itemContainer];
+  itemContainer = [(SBAppSwitcherAppAccessibilityElement *)self itemContainer];
 
-  if (v3)
+  if (itemContainer)
   {
-    v4 = [(SBAppSwitcherAppAccessibilityElement *)self itemContainer];
-    [v4 accessibilityFrame];
+    itemContainer2 = [(SBAppSwitcherAppAccessibilityElement *)self itemContainer];
+    [itemContainer2 accessibilityFrame];
     v6 = v5;
     v8 = v7;
     v10 = v9;
@@ -131,53 +131,53 @@
 
 - (id)accessibilityLabel
 {
-  v3 = [(SBAppSwitcherAppAccessibilityElement *)self itemContainer];
+  itemContainer = [(SBAppSwitcherAppAccessibilityElement *)self itemContainer];
 
-  if (v3)
+  if (itemContainer)
   {
-    v4 = [(SBAppSwitcherAppAccessibilityElement *)self itemContainer];
-    v5 = [v4 accessibilityLabel];
+    itemContainer2 = [(SBAppSwitcherAppAccessibilityElement *)self itemContainer];
+    accessibilityLabel = [itemContainer2 accessibilityLabel];
   }
 
   else
   {
-    v5 = 0;
+    accessibilityLabel = 0;
   }
 
-  return v5;
+  return accessibilityLabel;
 }
 
 - (id)accessibilityIdentifier
 {
-  v3 = [(SBAppSwitcherAppAccessibilityElement *)self itemContainer];
-  v4 = [v3 accessibilityIdentifier];
+  itemContainer = [(SBAppSwitcherAppAccessibilityElement *)self itemContainer];
+  accessibilityIdentifier = [itemContainer accessibilityIdentifier];
 
-  v5 = [(SBAppSwitcherAppAccessibilityElement *)self itemContainer];
-  LODWORD(v3) = [v5 _accessibilityHasMultipleWindows];
+  itemContainer2 = [(SBAppSwitcherAppAccessibilityElement *)self itemContainer];
+  LODWORD(itemContainer) = [itemContainer2 _accessibilityHasMultipleWindows];
 
-  if (v3)
+  if (itemContainer)
   {
-    v6 = [v4 stringByAppendingString:@":has-multiple-windows"];
+    v6 = [accessibilityIdentifier stringByAppendingString:@":has-multiple-windows"];
 
-    v4 = v6;
+    accessibilityIdentifier = v6;
   }
 
-  return v4;
+  return accessibilityIdentifier;
 }
 
 - (id)accessibilityHint
 {
-  v2 = [(SBAppSwitcherAppAccessibilityElement *)self itemContainer];
-  v3 = [v2 accessibilityHint];
+  itemContainer = [(SBAppSwitcherAppAccessibilityElement *)self itemContainer];
+  accessibilityHint = [itemContainer accessibilityHint];
 
-  return v3;
+  return accessibilityHint;
 }
 
 - (BOOL)_accessibilityIsVisibleByCompleteHitTest
 {
-  v3 = [(SBAppSwitcherAppAccessibilityElement *)self itemContainer];
+  itemContainer = [(SBAppSwitcherAppAccessibilityElement *)self itemContainer];
 
-  if (!v3)
+  if (!itemContainer)
   {
     return 0;
   }
@@ -189,37 +189,37 @@
 
 - (id)accessibilityPath
 {
-  v2 = [(SBAppSwitcherAppAccessibilityElement *)self itemContainer];
-  v3 = [v2 accessibilityPath];
+  itemContainer = [(SBAppSwitcherAppAccessibilityElement *)self itemContainer];
+  accessibilityPath = [itemContainer accessibilityPath];
 
-  return v3;
+  return accessibilityPath;
 }
 
 - (id)accessibilityValue
 {
-  v3 = [(SBAppSwitcherAppAccessibilityElement *)self itemContainer];
-  v4 = [v3 accessibilityValue];
+  itemContainer = [(SBAppSwitcherAppAccessibilityElement *)self itemContainer];
+  accessibilityValue = [itemContainer accessibilityValue];
 
-  v5 = [(SBAppSwitcherAppAccessibilityElement *)self _axMainSwitcher];
-  v6 = [v5 _axIsAppSwitcherPeeking];
+  _axMainSwitcher = [(SBAppSwitcherAppAccessibilityElement *)self _axMainSwitcher];
+  _axIsAppSwitcherPeeking = [_axMainSwitcher _axIsAppSwitcherPeeking];
 
-  if (v6)
+  if (_axIsAppSwitcherPeeking)
   {
     v7 = @"app.window.stashed";
 LABEL_3:
     v12 = accessibilityLocalizedString(v7);
     v8 = __UIAXStringForVariables();
 
-    v4 = v8;
+    accessibilityValue = v8;
     goto LABEL_6;
   }
 
   if ([(SBAppSwitcherAppAccessibilityElement *)self _axIsAppActive])
   {
-    v9 = [(SBAppSwitcherAppAccessibilityElement *)self itemContainer];
-    v10 = [v9 _accessibilityIsShelfItemContainer];
+    itemContainer2 = [(SBAppSwitcherAppAccessibilityElement *)self itemContainer];
+    _accessibilityIsShelfItemContainer = [itemContainer2 _accessibilityIsShelfItemContainer];
 
-    if ((v10 & 1) == 0)
+    if ((_accessibilityIsShelfItemContainer & 1) == 0)
     {
       v7 = @"app.running.status";
       goto LABEL_3;
@@ -228,21 +228,21 @@ LABEL_3:
 
 LABEL_6:
 
-  return v4;
+  return accessibilityValue;
 }
 
 - (id)accessibilityCustomActions
 {
-  v3 = [(SBAppSwitcherAppAccessibilityElement *)self itemContainer];
-  v4 = [v3 accessibilityCustomActions];
-  v5 = [v4 mutableCopy];
+  itemContainer = [(SBAppSwitcherAppAccessibilityElement *)self itemContainer];
+  accessibilityCustomActions = [itemContainer accessibilityCustomActions];
+  v5 = [accessibilityCustomActions mutableCopy];
 
-  v6 = [(SBAppSwitcherAppAccessibilityElement *)self itemContainer];
-  v7 = [v6 _accessibilityAddToCenterStateAction];
+  itemContainer2 = [(SBAppSwitcherAppAccessibilityElement *)self itemContainer];
+  _accessibilityAddToCenterStateAction = [itemContainer2 _accessibilityAddToCenterStateAction];
 
-  if (v7)
+  if (_accessibilityAddToCenterStateAction)
   {
-    [v5 axSafelyAddObject:v7];
+    [v5 axSafelyAddObject:_accessibilityAddToCenterStateAction];
   }
 
   return v5;
@@ -250,20 +250,20 @@ LABEL_6:
 
 - (unint64_t)accessibilityTraits
 {
-  v2 = [(SBAppSwitcherAppAccessibilityElement *)self itemContainer];
-  v3 = [v2 accessibilityTraits];
+  itemContainer = [(SBAppSwitcherAppAccessibilityElement *)self itemContainer];
+  accessibilityTraits = [itemContainer accessibilityTraits];
 
-  return v3;
+  return accessibilityTraits;
 }
 
-- (BOOL)accessibilityScroll:(int64_t)a3
+- (BOOL)accessibilityScroll:(int64_t)scroll
 {
-  v5 = [(SBAppSwitcherAppAccessibilityElement *)self itemContainer];
+  itemContainer = [(SBAppSwitcherAppAccessibilityElement *)self itemContainer];
 
-  if (v5)
+  if (itemContainer)
   {
-    v6 = [(SBAppSwitcherAppAccessibilityElement *)self itemContainer];
-    v7 = [v6 accessibilityScroll:a3];
+    itemContainer2 = [(SBAppSwitcherAppAccessibilityElement *)self itemContainer];
+    v7 = [itemContainer2 accessibilityScroll:scroll];
 
     if (v7)
     {
@@ -272,8 +272,8 @@ LABEL_6:
 
     else
     {
-      v9 = [(SBAppSwitcherAppAccessibilityElement *)self accessibilityContainer];
-      v10 = [v9 accessibilityScroll:a3];
+      accessibilityContainer = [(SBAppSwitcherAppAccessibilityElement *)self accessibilityContainer];
+      v10 = [accessibilityContainer accessibilityScroll:scroll];
 
       return v10;
     }
@@ -283,90 +283,90 @@ LABEL_6:
   {
     v11.receiver = self;
     v11.super_class = SBAppSwitcherAppAccessibilityElement;
-    return [(SBAppSwitcherAppAccessibilityElement *)&v11 accessibilityScroll:a3];
+    return [(SBAppSwitcherAppAccessibilityElement *)&v11 accessibilityScroll:scroll];
   }
 }
 
 - (id)_accessibilityScrollStatus
 {
-  v3 = [(SBAppSwitcherAppAccessibilityElement *)self itemContainer];
+  itemContainer = [(SBAppSwitcherAppAccessibilityElement *)self itemContainer];
 
-  if (v3)
+  if (itemContainer)
   {
-    v4 = [(SBAppSwitcherAppAccessibilityElement *)self itemContainer];
-    v5 = [v4 _accessibilityScrollStatus];
+    itemContainer2 = [(SBAppSwitcherAppAccessibilityElement *)self itemContainer];
+    _accessibilityScrollStatus = [itemContainer2 _accessibilityScrollStatus];
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = SBAppSwitcherAppAccessibilityElement;
-    v5 = [(SBAppSwitcherAppAccessibilityElement *)&v7 _accessibilityScrollStatus];
+    _accessibilityScrollStatus = [(SBAppSwitcherAppAccessibilityElement *)&v7 _accessibilityScrollStatus];
   }
 
-  return v5;
+  return _accessibilityScrollStatus;
 }
 
 - (BOOL)_accessibilityScrollToVisible
 {
-  v3 = [(SBAppSwitcherAppAccessibilityElement *)self itemContainer];
+  itemContainer = [(SBAppSwitcherAppAccessibilityElement *)self itemContainer];
 
-  if (v3)
+  if (itemContainer)
   {
-    v4 = [(SBAppSwitcherAppAccessibilityElement *)self itemContainer];
-    v5 = [v4 _accessibilityScrollToVisible];
+    itemContainer2 = [(SBAppSwitcherAppAccessibilityElement *)self itemContainer];
+    _accessibilityScrollToVisible = [itemContainer2 _accessibilityScrollToVisible];
   }
 
   else
   {
-    v4 = [(SBAppSwitcherAppAccessibilityElement *)self contentView];
-    v5 = [v4 _axScrollToAppElement:self];
+    itemContainer2 = [(SBAppSwitcherAppAccessibilityElement *)self contentView];
+    _accessibilityScrollToVisible = [itemContainer2 _axScrollToAppElement:self];
   }
 
-  v6 = v5;
+  v6 = _accessibilityScrollToVisible;
 
   return v6;
 }
 
-- (BOOL)_accessibilityCanPerformAction:(int)a3
+- (BOOL)_accessibilityCanPerformAction:(int)action
 {
-  v3 = *&a3;
-  v4 = [(SBAppSwitcherAppAccessibilityElement *)self itemContainer];
-  LOBYTE(v3) = [v4 _accessibilityCanPerformAction:v3];
+  v3 = *&action;
+  itemContainer = [(SBAppSwitcherAppAccessibilityElement *)self itemContainer];
+  LOBYTE(v3) = [itemContainer _accessibilityCanPerformAction:v3];
 
   return v3;
 }
 
 - (id)_accessibilityPreferredScrollActions
 {
-  v2 = [(SBAppSwitcherAppAccessibilityElement *)self itemContainer];
-  v3 = [v2 _accessibilityPreferredScrollActions];
+  itemContainer = [(SBAppSwitcherAppAccessibilityElement *)self itemContainer];
+  _accessibilityPreferredScrollActions = [itemContainer _accessibilityPreferredScrollActions];
 
-  return v3;
+  return _accessibilityPreferredScrollActions;
 }
 
 - (id)_accessibilityScrollAncestor
 {
-  v2 = [(SBAppSwitcherAppAccessibilityElement *)self itemContainer];
-  v3 = [v2 _accessibilityScrollAncestor];
+  itemContainer = [(SBAppSwitcherAppAccessibilityElement *)self itemContainer];
+  _accessibilityScrollAncestor = [itemContainer _accessibilityScrollAncestor];
 
-  return v3;
+  return _accessibilityScrollAncestor;
 }
 
 - (BOOL)_axIsAppActive
 {
   v20 = *MEMORY[0x29EDCA608];
-  v2 = [(SBAppSwitcherAppAccessibilityElement *)self appLayout];
-  v3 = [v2 _axBundleIdentifier];
+  appLayout = [(SBAppSwitcherAppAccessibilityElement *)self appLayout];
+  _axBundleIdentifier = [appLayout _axBundleIdentifier];
 
-  v4 = [MEMORY[0x29EDC1168] sharedInstanceIfExists];
-  v5 = [v4 allProcesses];
+  mEMORY[0x29EDC1168] = [MEMORY[0x29EDC1168] sharedInstanceIfExists];
+  allProcesses = [mEMORY[0x29EDC1168] allProcesses];
 
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = v5;
+  v6 = allProcesses;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -381,8 +381,8 @@ LABEL_6:
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [v10 bundleIdentifier];
-        v12 = [v11 isEqualToString:v3];
+        bundleIdentifier = [v10 bundleIdentifier];
+        v12 = [bundleIdentifier isEqualToString:_axBundleIdentifier];
 
         if (v12)
         {
@@ -403,8 +403,8 @@ LABEL_6:
 
 LABEL_11:
 
-  v13 = [v7 isRunning];
-  return v13;
+  isRunning = [v7 isRunning];
+  return isRunning;
 }
 
 - (id)_axMainSwitcher
@@ -416,11 +416,11 @@ LABEL_11:
   return v3;
 }
 
-- (BOOL)_accessibilityIsDescendantOfElement:(id)a3
+- (BOOL)_accessibilityIsDescendantOfElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   NSClassFromString(&cfstr_Sbappswitcherp_0.isa);
-  if (objc_opt_isKindOfClass() & 1) != 0 && (-[SBAppSwitcherAppAccessibilityElement itemContainer](self, "itemContainer"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v4 _accessibilityIsDescendantOfElement:v5], v5, (v6))
+  if (objc_opt_isKindOfClass() & 1) != 0 && (-[SBAppSwitcherAppAccessibilityElement itemContainer](self, "itemContainer"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [elementCopy _accessibilityIsDescendantOfElement:v5], v5, (v6))
   {
     v7 = 1;
   }
@@ -429,7 +429,7 @@ LABEL_11:
   {
     v9.receiver = self;
     v9.super_class = SBAppSwitcherAppAccessibilityElement;
-    v7 = [(SBAppSwitcherAppAccessibilityElement *)&v9 _accessibilityIsDescendantOfElement:v4];
+    v7 = [(SBAppSwitcherAppAccessibilityElement *)&v9 _accessibilityIsDescendantOfElement:elementCopy];
   }
 
   return v7;
@@ -437,11 +437,11 @@ LABEL_11:
 
 - (BOOL)_accessibilitySetNativeFocus
 {
-  v2 = [(SBAppSwitcherAppAccessibilityElement *)self itemContainer];
-  v3 = [v2 safeValueForKey:@"_pageView"];
-  v4 = [v3 _accessibilitySetNativeFocus];
+  itemContainer = [(SBAppSwitcherAppAccessibilityElement *)self itemContainer];
+  v3 = [itemContainer safeValueForKey:@"_pageView"];
+  _accessibilitySetNativeFocus = [v3 _accessibilitySetNativeFocus];
 
-  return v4;
+  return _accessibilitySetNativeFocus;
 }
 
 - (SBFluidSwitcherItemContainerAccessibility)itemContainer

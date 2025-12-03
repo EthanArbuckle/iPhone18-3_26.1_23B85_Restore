@@ -1,12 +1,12 @@
 @interface DDActionsResponder
-- (BOOL)canHandleClientActionFromUrl:(id)a3;
+- (BOOL)canHandleClientActionFromUrl:(id)url;
 - (_TtC10CallsAppUI18DDActionsResponder)init;
-- (void)handleClientActionFromUrl:(id)a3 context:(id)a4;
+- (void)handleClientActionFromUrl:(id)url context:(id)context;
 @end
 
 @implementation DDActionsResponder
 
-- (BOOL)canHandleClientActionFromUrl:(id)a3
+- (BOOL)canHandleClientActionFromUrl:(id)url
 {
   v3 = sub_1CFC9BF28();
   v4 = *(v3 - 8);
@@ -19,7 +19,7 @@
   return v8 & 1;
 }
 
-- (void)handleClientActionFromUrl:(id)a3 context:(id)a4
+- (void)handleClientActionFromUrl:(id)url context:(id)context
 {
   v4 = sub_1CFC9BF28();
   v5 = *(v4 - 8);

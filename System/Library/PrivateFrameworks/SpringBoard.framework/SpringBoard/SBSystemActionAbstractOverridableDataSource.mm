@@ -1,41 +1,41 @@
 @interface SBSystemActionAbstractOverridableDataSource
-- (void)addOverrider:(id)a3;
-- (void)removeOverrider:(id)a3;
-- (void)setSelectedSystemAction:(id)a3;
+- (void)addOverrider:(id)overrider;
+- (void)removeOverrider:(id)overrider;
+- (void)setSelectedSystemAction:(id)action;
 @end
 
 @implementation SBSystemActionAbstractOverridableDataSource
 
-- (void)addOverrider:(id)a3
+- (void)addOverrider:(id)overrider
 {
-  v4 = a3;
+  overriderCopy = overrider;
   overriders = self->_overriders;
-  v8 = v4;
+  v8 = overriderCopy;
   if (!overriders)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB58]);
     v7 = self->_overriders;
     self->_overriders = v6;
 
-    v4 = v8;
+    overriderCopy = v8;
     overriders = self->_overriders;
   }
 
-  [(NSMutableSet *)overriders addObject:v4];
+  [(NSMutableSet *)overriders addObject:overriderCopy];
   [(SBSystemActionAbstractDataSource *)self updateSelectedAction];
 }
 
-- (void)removeOverrider:(id)a3
+- (void)removeOverrider:(id)overrider
 {
-  [(NSMutableSet *)self->_overriders removeObject:a3];
+  [(NSMutableSet *)self->_overriders removeObject:overrider];
 
   [(SBSystemActionAbstractDataSource *)self updateSelectedAction];
 }
 
-- (void)setSelectedSystemAction:(id)a3
+- (void)setSelectedSystemAction:(id)action
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  actionCopy = action;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -56,7 +56,7 @@
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v14 + 1) + 8 * v9) systemActionDataSource:self overrideActionForAction:v4];
+        v10 = [*(*(&v14 + 1) + 8 * v9) systemActionDataSource:self overrideActionForAction:actionCopy];
         if (v10)
         {
           v11 = v10;
@@ -64,11 +64,11 @@
           if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138543874;
-            v19 = self;
+            selfCopy = self;
             v20 = 2114;
             v21 = v11;
             v22 = 2114;
-            v23 = v4;
+            v23 = actionCopy;
             _os_log_impl(&dword_21ED4E000, v12, OS_LOG_TYPE_DEFAULT, "(%{public}@) Found override action: %{public}@ for action: %{public}@", buf, 0x20u);
           }
 
@@ -89,7 +89,7 @@
     }
   }
 
-  v11 = v4;
+  v11 = actionCopy;
 LABEL_13:
 
   v13.receiver = self;

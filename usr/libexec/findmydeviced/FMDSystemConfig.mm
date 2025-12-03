@@ -2,9 +2,9 @@
 + (id)sharedInstance;
 - (NSString)bootSessionUUID;
 - (NSString)idsDeviceID;
-- (id)fetchBaUUIDWithTimeout:(double)a3;
+- (id)fetchBaUUIDWithTimeout:(double)timeout;
 - (id)initSingleton;
-- (id)stringForConnectionStatus:(int64_t)a3;
+- (id)stringForConnectionStatus:(int64_t)status;
 - (int)processIdentifier;
 - (unint64_t)baRegistrationStatus;
 - (void)baUUIDMayHaveChanged;
@@ -18,14 +18,14 @@
   v7[1] = v7;
   v7[2] = 0x2020000000;
   v7[3] = 1;
-  v3 = [(FMDSystemConfig *)self systemInfoQueue];
+  systemInfoQueue = [(FMDSystemConfig *)self systemInfoQueue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1000095A4;
   v6[3] = &unk_1002CE5F0;
   v6[4] = self;
   v6[5] = v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(systemInfoQueue, v6);
 
   internalBAStatus = self->_internalBAStatus;
   _Block_object_dispose(v7, 8);
@@ -35,9 +35,9 @@
 - (int)processIdentifier
 {
   v2 = +[NSProcessInfo processInfo];
-  v3 = [v2 processIdentifier];
+  processIdentifier = [v2 processIdentifier];
 
-  return v3;
+  return processIdentifier;
 }
 
 + (id)sharedInstance
@@ -73,13 +73,13 @@
 
 - (void)baUUIDMayHaveChanged
 {
-  v3 = [(FMDSystemConfig *)self systemInfoQueue];
+  systemInfoQueue = [(FMDSystemConfig *)self systemInfoQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100151FC8;
   block[3] = &unk_1002CD4C8;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(systemInfoQueue, block);
 }
 
 - (NSString)idsDeviceID
@@ -133,7 +133,7 @@ LABEL_6:
   return v3;
 }
 
-- (id)fetchBaUUIDWithTimeout:(double)a3
+- (id)fetchBaUUIDWithTimeout:(double)timeout
 {
   v9 = 0;
   v10 = &v9;
@@ -141,15 +141,15 @@ LABEL_6:
   v12 = sub_10000AA04;
   v13 = sub_100002ACC;
   v14 = &stru_1002DCE08;
-  v5 = [(FMDSystemConfig *)self systemInfoQueue];
+  systemInfoQueue = [(FMDSystemConfig *)self systemInfoQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10015236C;
   block[3] = &unk_1002CE5A0;
   block[4] = self;
   block[5] = &v9;
-  *&block[6] = a3;
-  dispatch_sync(v5, block);
+  *&block[6] = timeout;
+  dispatch_sync(systemInfoQueue, block);
 
   v6 = v10[5];
   _Block_object_dispose(&v9, 8);
@@ -157,16 +157,16 @@ LABEL_6:
   return v6;
 }
 
-- (id)stringForConnectionStatus:(int64_t)a3
+- (id)stringForConnectionStatus:(int64_t)status
 {
-  if ((a3 - 1) > 5)
+  if ((status - 1) > 5)
   {
     return @"Unknown";
   }
 
   else
   {
-    return *(&off_1002CE610 + a3 - 1);
+    return *(&off_1002CE610 + status - 1);
   }
 }
 

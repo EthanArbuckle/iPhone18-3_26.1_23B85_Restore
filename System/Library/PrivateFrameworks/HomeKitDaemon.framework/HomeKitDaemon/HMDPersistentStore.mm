@@ -1,40 +1,40 @@
 @interface HMDPersistentStore
-+ (BOOL)archiveMetadata:(id)a3;
-+ (BOOL)hasControllerKeyWithUsername:(id)a3 error:(id *)a4;
-+ (BOOL)removeLegacyHomeArchive:(id *)a3;
-+ (BOOL)writeDictionary:(id)a3 toStorePath:(id)a4;
-+ (id)_writeData:(id)a3 toStorePath:(id)a4 dataLabel:(id)a5 createDirectoriesIfNeeded:(BOOL)a6;
-+ (id)archiveCloudServerTokenData:(id)a3;
-+ (id)archiveHomeData:(id)a3 toLocation:(id)a4;
-+ (id)archiveHomeDataForTransaction:(id)a3;
-+ (id)archiveHomeDataLegacy:(id)a3;
-+ (id)archiveHomeDataLegacy:(id)a3 toLocation:(id)a4;
-+ (id)archiveIDSDataSyncJournal:(id)a3;
-+ (id)controllerUsernameForPairingIdentity:(id)a3 error:(id *)a4;
-+ (id)decryptData:(id)a3 withKey:(id)a4 error:(id *)a5;
-+ (id)decryptDataWithControllerKey:(id)a3 totalKeysFound:(unint64_t *)a4 deleteExtraKeys:(BOOL)a5 allowControllerIdentifierToChange:(BOOL)a6 controllerIdentifierChanged:(BOOL *)a7 successfulKeyUserName:(id *)a8 error:(id *)a9;
-+ (id)encryptData:(id)a3 withKey:(id)a4 error:(id *)a5;
-+ (id)encryptDataWithControllerKey:(id)a3 error:(id *)a4;
++ (BOOL)archiveMetadata:(id)metadata;
++ (BOOL)hasControllerKeyWithUsername:(id)username error:(id *)error;
++ (BOOL)removeLegacyHomeArchive:(id *)archive;
++ (BOOL)writeDictionary:(id)dictionary toStorePath:(id)path;
++ (id)_writeData:(id)data toStorePath:(id)path dataLabel:(id)label createDirectoriesIfNeeded:(BOOL)needed;
++ (id)archiveCloudServerTokenData:(id)data;
++ (id)archiveHomeData:(id)data toLocation:(id)location;
++ (id)archiveHomeDataForTransaction:(id)transaction;
++ (id)archiveHomeDataLegacy:(id)legacy;
++ (id)archiveHomeDataLegacy:(id)legacy toLocation:(id)location;
++ (id)archiveIDSDataSyncJournal:(id)journal;
++ (id)controllerUsernameForPairingIdentity:(id)identity error:(id *)error;
++ (id)decryptData:(id)data withKey:(id)key error:(id *)error;
++ (id)decryptDataWithControllerKey:(id)key totalKeysFound:(unint64_t *)found deleteExtraKeys:(BOOL)keys allowControllerIdentifierToChange:(BOOL)change controllerIdentifierChanged:(BOOL *)changed successfulKeyUserName:(id *)name error:(id *)error;
++ (id)encryptData:(id)data withKey:(id)key error:(id *)error;
++ (id)encryptDataWithControllerKey:(id)key error:(id *)error;
 + (id)loadBuiltinPlainMetadataDictionary;
 + (id)loadPlainMetadataDictionary;
 + (id)logCategory;
-+ (id)readDataFromPath:(id)a3;
-+ (id)serializeHomeData:(id)a3 localStorage:(BOOL)a4 remoteDeviceOnSameAccount:(BOOL)a5;
++ (id)readDataFromPath:(id)path;
++ (id)serializeHomeData:(id)data localStorage:(BOOL)storage remoteDeviceOnSameAccount:(BOOL)account;
 + (id)unarchiveBulletinBoard;
-+ (id)unarchiveHomeData:(id *)a3 decryptionFailed:(BOOL *)a4 successfulKeyUserName:(id *)a5;
++ (id)unarchiveHomeData:(id *)data decryptionFailed:(BOOL *)failed successfulKeyUserName:(id *)name;
 + (id)unarchiveIDSDataSyncJournal;
 + (id)unarchiveVendorStore;
-+ (id)writeData:(id)a3 toStorePath:(id)a4 dataLabel:(id)a5;
-+ (void)archiveBulletinBoard:(id)a3;
-+ (void)archiveVendorStore:(id)a3;
++ (id)writeData:(id)data toStorePath:(id)path dataLabel:(id)label;
++ (void)archiveBulletinBoard:(id)board;
++ (void)archiveVendorStore:(id)store;
 + (void)cleanupKeysInStore;
 + (void)removeServerTokenDataFile;
 + (void)removeTransactionJournal;
-+ (void)resetConfiguration:(unint64_t)a3;
-- (id)archiveDictionary:(id)a3 withPath:(id)a4 forKey:(id)a5;
-- (id)unarchiveDictionaryFromData:(id)a3 allowedClasses:(id)a4 forKey:(id)a5;
-- (id)unarchiveDictionaryWithPath:(id)a3 allowedClasses:(id)a4 forKey:(id)a5;
-- (id)writeData:(id)a3 toStorePath:(id)a4 dataLabel:(id)a5;
++ (void)resetConfiguration:(unint64_t)configuration;
+- (id)archiveDictionary:(id)dictionary withPath:(id)path forKey:(id)key;
+- (id)unarchiveDictionaryFromData:(id)data allowedClasses:(id)classes forKey:(id)key;
+- (id)unarchiveDictionaryWithPath:(id)path allowedClasses:(id)classes forKey:(id)key;
+- (id)writeData:(id)data toStorePath:(id)path dataLabel:(id)label;
 @end
 
 @implementation HMDPersistentStore
@@ -59,14 +59,14 @@ void __33__HMDPersistentStore_logCategory__block_invoke()
   logCategory__hmf_once_v51 = v1;
 }
 
-+ (id)controllerUsernameForPairingIdentity:(id)a3 error:(id *)a4
++ (id)controllerUsernameForPairingIdentity:(id)identity error:(id *)error
 {
   v33 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [MEMORY[0x277CFEC78] systemStore];
+  identityCopy = identity;
+  systemStore = [MEMORY[0x277CFEC78] systemStore];
   v29 = 0;
   v30 = 0;
-  v8 = [v7 getAllAvailableControllerPublicKeys:&v30 secretKeys:0 userNames:&v29 error:a4];
+  v8 = [systemStore getAllAvailableControllerPublicKeys:&v30 secretKeys:0 userNames:&v29 error:error];
   v9 = v30;
   v10 = v29;
 
@@ -84,7 +84,7 @@ void __33__HMDPersistentStore_logCategory__block_invoke()
   if (v12 || (v13 = [v10 count], v13 != objc_msgSend(v9, "count")))
   {
     v20 = objc_autoreleasePoolPush();
-    v21 = a1;
+    selfCopy2 = self;
     v22 = HMFGetOSLogHandle();
     if (!os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
     {
@@ -110,7 +110,7 @@ LABEL_15:
   if ([v10 count] != 1)
   {
     v20 = objc_autoreleasePoolPush();
-    v21 = a1;
+    selfCopy2 = self;
     v22 = HMFGetOSLogHandle();
     if (!os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
     {
@@ -130,8 +130,8 @@ LABEL_15:
   v15 = [v9 objectAtIndexedSubscript:0];
   v16 = [v14 initWithPairingKeyData:v15];
 
-  v17 = [v6 publicKey];
-  v18 = [v16 isEqual:v17];
+  publicKey = [identityCopy publicKey];
+  v18 = [v16 isEqual:publicKey];
 
   v19 = 0;
   if (v18)
@@ -145,14 +145,14 @@ LABEL_17:
   return v19;
 }
 
-+ (BOOL)hasControllerKeyWithUsername:(id)a3 error:(id *)a4
++ (BOOL)hasControllerKeyWithUsername:(id)username error:(id *)error
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [MEMORY[0x277CFEC78] systemStore];
+  usernameCopy = username;
+  systemStore = [MEMORY[0x277CFEC78] systemStore];
   v25 = 0;
   v26 = 0;
-  v8 = [v7 getAllAvailableControllerPublicKeys:0 secretKeys:0 userNames:&v26 error:&v25];
+  v8 = [systemStore getAllAvailableControllerPublicKeys:0 secretKeys:0 userNames:&v26 error:&v25];
   v9 = v26;
   v10 = v25;
 
@@ -170,11 +170,11 @@ LABEL_17:
   {
     if (v10)
     {
-      if (a4)
+      if (error)
       {
         v13 = v10;
         v14 = 0;
-        *a4 = v10;
+        *error = v10;
         goto LABEL_21;
       }
 
@@ -185,7 +185,7 @@ LABEL_20:
 
 LABEL_16:
     v19 = objc_autoreleasePoolPush();
-    v20 = a1;
+    selfCopy = self;
     v21 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
@@ -196,23 +196,23 @@ LABEL_16:
     }
 
     objc_autoreleasePoolPop(v19);
-    if (a4)
+    if (error)
     {
       [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
-      *a4 = v14 = 0;
+      *error = v14 = 0;
       goto LABEL_21;
     }
 
     goto LABEL_20;
   }
 
-  if (![v9 containsObject:v6])
+  if (![v9 containsObject:usernameCopy])
   {
     goto LABEL_16;
   }
 
   v15 = objc_autoreleasePoolPush();
-  v16 = a1;
+  selfCopy2 = self;
   v17 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
   {
@@ -230,21 +230,21 @@ LABEL_21:
   return v14;
 }
 
-+ (id)decryptDataWithControllerKey:(id)a3 totalKeysFound:(unint64_t *)a4 deleteExtraKeys:(BOOL)a5 allowControllerIdentifierToChange:(BOOL)a6 controllerIdentifierChanged:(BOOL *)a7 successfulKeyUserName:(id *)a8 error:(id *)a9
++ (id)decryptDataWithControllerKey:(id)key totalKeysFound:(unint64_t *)found deleteExtraKeys:(BOOL)keys allowControllerIdentifierToChange:(BOOL)change controllerIdentifierChanged:(BOOL *)changed successfulKeyUserName:(id *)name error:(id *)error
 {
-  obj = a6;
-  v9 = a5;
+  obj = change;
+  keysCopy = keys;
   v145 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = [MEMORY[0x277CBEB18] array];
-  v13 = [MEMORY[0x277CFEC78] systemStore];
+  keyCopy = key;
+  array = [MEMORY[0x277CBEB18] array];
+  systemStore = [MEMORY[0x277CFEC78] systemStore];
   v134 = 0;
   v135 = 0;
   v133 = 0;
-  v14 = [v13 getAllAvailableControllerPublicKeys:0 secretKeys:&v135 userNames:&v134 error:&v133];
+  v14 = [systemStore getAllAvailableControllerPublicKeys:0 secretKeys:&v135 userNames:&v134 error:&v133];
   v15 = v135;
   v16 = v134;
-  v17 = v133;
+  nameCopy2 = v133;
 
   if (v14)
   {
@@ -260,7 +260,7 @@ LABEL_21:
   if (v19 || (v20 = [v16 count], v20 != objc_msgSend(v15, "count")))
   {
     v35 = objc_autoreleasePoolPush();
-    v36 = a1;
+    selfCopy = self;
     v37 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v37, OS_LOG_TYPE_INFO))
     {
@@ -271,13 +271,13 @@ LABEL_21:
     }
 
     objc_autoreleasePoolPop(v35);
-    v34 = a9;
-    if (a9)
+    errorCopy = error;
+    if (error)
     {
-      v39 = v17;
+      v39 = nameCopy2;
       v33 = 0;
-      v34 = 0;
-      *a9 = v17;
+      errorCopy = 0;
+      *error = nameCopy2;
     }
 
     else
@@ -288,26 +288,26 @@ LABEL_21:
     goto LABEL_82;
   }
 
-  if (a7)
+  if (changed)
   {
-    *a7 = 0;
+    *changed = 0;
   }
 
-  if (a4)
+  if (found)
   {
-    *a4 = [v15 count];
+    *found = [v15 count];
   }
 
   if (!obj)
   {
-    v21 = [MEMORY[0x277CFEC78] systemStore];
-    v22 = [v21 activeControllerPairingIdentifier];
-    v23 = [v22 copy];
+    systemStore2 = [MEMORY[0x277CFEC78] systemStore];
+    activeControllerPairingIdentifier = [systemStore2 activeControllerPairingIdentifier];
+    v23 = [activeControllerPairingIdentifier copy];
 
     if (!v23)
     {
       v40 = objc_autoreleasePoolPush();
-      v41 = a1;
+      selfCopy2 = self;
       v42 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v42, OS_LOG_TYPE_INFO))
       {
@@ -319,18 +319,18 @@ LABEL_21:
 
       objc_autoreleasePoolPop(v40);
       v44 = [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
-      if (a9)
+      if (error)
       {
         v44 = v44;
-        *a9 = v44;
+        *error = v44;
       }
 
       v33 = 0;
-      v34 = 0;
+      errorCopy = 0;
       goto LABEL_82;
     }
 
-    v109 = v9;
+    v109 = keysCopy;
     v24 = [MEMORY[0x277CBEB18] arrayWithCapacity:1];
     v25 = [MEMORY[0x277CBEB18] arrayWithCapacity:1];
     v26 = [v16 indexOfObject:v23];
@@ -338,9 +338,9 @@ LABEL_21:
     {
       v112 = v15;
       v116 = v16;
-      v27 = v11;
+      v27 = keyCopy;
       v28 = objc_autoreleasePoolPush();
-      v29 = a1;
+      selfCopy3 = self;
       v30 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v30, OS_LOG_TYPE_INFO))
       {
@@ -354,15 +354,15 @@ LABEL_21:
 
       objc_autoreleasePoolPop(v28);
       v32 = [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
-      if (a9)
+      if (error)
       {
         v32 = v32;
-        *a9 = v32;
+        *error = v32;
       }
 
       v33 = 0;
-      v34 = 0;
-      v11 = v27;
+      errorCopy = 0;
+      keyCopy = v27;
       v16 = v116;
       v15 = v112;
       goto LABEL_82;
@@ -380,21 +380,21 @@ LABEL_21:
 
     v16 = v49;
     v15 = v48;
-    v9 = v109;
+    keysCopy = v109;
   }
 
   if (![v15 count])
   {
     v33 = 0;
     v50 = 0;
-    if (![v12 count])
+    if (![array count])
     {
       goto LABEL_75;
     }
 
 LABEL_72:
     v98 = objc_autoreleasePoolPush();
-    v99 = a1;
+    selfCopy4 = self;
     v100 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v100, OS_LOG_TYPE_INFO))
     {
@@ -407,28 +407,28 @@ LABEL_72:
     objc_autoreleasePoolPop(v98);
     v50 = 0;
 LABEL_75:
-    if (a9 && !v50)
+    if (error && !v50)
     {
-      v102 = v17;
-      *a9 = v17;
+      v102 = nameCopy2;
+      *error = nameCopy2;
     }
 
     goto LABEL_81;
   }
 
-  v110 = v9;
+  v110 = keysCopy;
   v50 = 0;
   v33 = 0;
   v51 = 0;
-  v114 = v12;
-  v118 = v11;
+  v114 = array;
+  v118 = keyCopy;
   do
   {
     if (v50)
     {
       v120 = v50;
       v52 = objc_autoreleasePoolPush();
-      v53 = a1;
+      selfCopy5 = self;
       v54 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v54, OS_LOG_TYPE_INFO))
       {
@@ -441,27 +441,27 @@ LABEL_75:
         v140 = v57;
         _os_log_impl(&dword_229538000, v54, OS_LOG_TYPE_INFO, "%{public}@Data has already been decrypted, adding controller key: %@", buf, 0x16u);
 
-        v11 = v118;
+        keyCopy = v118;
         v33 = v55;
-        v12 = v114;
+        array = v114;
       }
 
       objc_autoreleasePoolPop(v52);
       v58 = [v16 objectAtIndexedSubscript:v51];
-      [v12 addObject:v58];
+      [array addObject:v58];
       v50 = v120;
       goto LABEL_50;
     }
 
     v59 = [v15 objectAtIndexedSubscript:v51];
     v132 = 0;
-    v60 = [a1 decryptData:v11 withKey:v59 error:&v132];
-    v17 = v132;
+    v60 = [self decryptData:keyCopy withKey:v59 error:&v132];
+    nameCopy2 = v132;
 
-    if (v17 || !v60)
+    if (nameCopy2 || !v60)
     {
       v74 = objc_autoreleasePoolPush();
-      v75 = a1;
+      selfCopy6 = self;
       v76 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v76, OS_LOG_TYPE_INFO))
       {
@@ -478,31 +478,31 @@ LABEL_75:
         v141 = 2114;
         v142 = v81;
         v143 = 2114;
-        v144 = v17;
+        v144 = nameCopy2;
         _os_log_impl(&dword_229538000, v76, OS_LOG_TYPE_INFO, "%{public}@Decryption failed with controller key: %{public}@, key:%{public}@ with error: %{public}@", buf, 0x2Au);
 
         v16 = v80;
         v15 = v79;
         v74 = v121;
 
-        v12 = v114;
+        array = v114;
       }
 
       objc_autoreleasePoolPop(v74);
       v58 = [v16 objectAtIndexedSubscript:v51];
-      [v12 addObject:v58];
+      [array addObject:v58];
       v50 = 0;
       v33 = v60;
-      v11 = v118;
+      keyCopy = v118;
       goto LABEL_50;
     }
 
     v33 = v60;
-    v17 = a8;
+    nameCopy2 = name;
     if (obj)
     {
       v61 = objc_autoreleasePoolPush();
-      v62 = a1;
+      selfCopy7 = self;
       v63 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v63, OS_LOG_TYPE_INFO))
       {
@@ -510,7 +510,7 @@ LABEL_75:
         [v16 objectAtIndexedSubscript:v51];
         v65 = v15;
         v66 = v16;
-        v67 = v12;
+        v67 = array;
         v69 = v68 = v33;
         *buf = 138543618;
         v138 = v64;
@@ -519,30 +519,30 @@ LABEL_75:
         _os_log_impl(&dword_229538000, v63, OS_LOG_TYPE_INFO, "%{public}@Updating active controller identifier to %@", buf, 0x16u);
 
         v33 = v68;
-        v12 = v67;
+        array = v67;
         v16 = v66;
         v15 = v65;
-        v11 = v118;
+        keyCopy = v118;
 
-        v17 = a8;
+        nameCopy2 = name;
       }
 
       objc_autoreleasePoolPop(v61);
-      v70 = [MEMORY[0x277CFEC78] systemStore];
+      systemStore3 = [MEMORY[0x277CFEC78] systemStore];
       v71 = [v16 objectAtIndexedSubscript:v51];
-      v72 = [v70 updateActiveControllerPairingIdentifier:v71];
+      v72 = [systemStore3 updateActiveControllerPairingIdentifier:v71];
 
-      if (a7)
+      if (changed)
       {
-        *a7 = v72;
+        *changed = v72;
       }
     }
 
-    if (v17)
+    if (nameCopy2)
     {
-      v73 = v17;
+      v73 = nameCopy2;
       v58 = [v16 objectAtIndexedSubscript:v51];
-      v17 = 0;
+      nameCopy2 = 0;
       *v73 = [v58 copy];
       v50 = v33;
 LABEL_50:
@@ -556,7 +556,7 @@ LABEL_51:
   }
 
   while (v51 < [v15 count]);
-  if (![v12 count])
+  if (![array count])
   {
     goto LABEL_75;
   }
@@ -576,7 +576,7 @@ LABEL_51:
     v131 = 0u;
     v128 = 0u;
     v129 = 0u;
-    obja = v12;
+    obja = array;
     v82 = [obja countByEnumeratingWithState:&v128 objects:v136 count:16];
     if (v82)
     {
@@ -585,7 +585,7 @@ LABEL_51:
       do
       {
         v85 = 0;
-        v86 = v17;
+        v86 = nameCopy2;
         do
         {
           if (*v129 != v84)
@@ -595,7 +595,7 @@ LABEL_51:
 
           v87 = *(*(&v128 + 1) + 8 * v85);
           v88 = objc_autoreleasePoolPush();
-          v89 = a1;
+          selfCopy8 = self;
           v90 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v90, OS_LOG_TYPE_INFO))
           {
@@ -608,15 +608,15 @@ LABEL_51:
           }
 
           objc_autoreleasePoolPop(v88);
-          v92 = [MEMORY[0x277CFEC78] systemStore];
+          systemStore4 = [MEMORY[0x277CFEC78] systemStore];
           v127 = v86;
-          v93 = [v92 removeControllerKeyPairForIdentifier:v87 leaveTombstone:1 error:&v127];
-          v17 = v127;
+          v93 = [systemStore4 removeControllerKeyPairForIdentifier:v87 leaveTombstone:1 error:&v127];
+          nameCopy2 = v127;
 
           if ((v93 & 1) == 0)
           {
             v94 = objc_autoreleasePoolPush();
-            v95 = v89;
+            v95 = selfCopy8;
             v96 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v96, OS_LOG_TYPE_INFO))
             {
@@ -626,7 +626,7 @@ LABEL_51:
               v139 = 2112;
               v140 = v87;
               v141 = 2112;
-              v142 = v17;
+              v142 = nameCopy2;
               _os_log_impl(&dword_229538000, v96, OS_LOG_TYPE_INFO, "%{public}@Failed to delete extra key for username: %@ due to error: %@", buf, 0x20u);
             }
 
@@ -634,7 +634,7 @@ LABEL_51:
           }
 
           ++v85;
-          v86 = v17;
+          v86 = nameCopy2;
         }
 
         while (v83 != v85);
@@ -645,8 +645,8 @@ LABEL_51:
     }
 
     v16 = v117;
-    v11 = v118;
-    v12 = v114;
+    keyCopy = v118;
+    array = v114;
     v33 = v111;
     v15 = v113;
     v50 = v122;
@@ -654,7 +654,7 @@ LABEL_51:
   }
 
   v103 = objc_autoreleasePoolPush();
-  v104 = a1;
+  selfCopy9 = self;
   v105 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v105, OS_LOG_TYPE_INFO))
   {
@@ -669,29 +669,29 @@ LABEL_51:
 
   objc_autoreleasePoolPop(v103);
 LABEL_81:
-  v34 = v50;
+  errorCopy = v50;
 LABEL_82:
 
   v107 = *MEMORY[0x277D85DE8];
 
-  return v34;
+  return errorCopy;
 }
 
-+ (id)encryptDataWithControllerKey:(id)a3 error:(id *)a4
++ (id)encryptDataWithControllerKey:(id)key error:(id *)error
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [MEMORY[0x277CFEC78] systemStore];
+  keyCopy = key;
+  systemStore = [MEMORY[0x277CFEC78] systemStore];
   v18 = 0;
   v19 = 0;
-  v8 = [v7 getControllerPublicKey:0 secretKey:&v19 username:&v18 allowCreation:0 error:a4];
+  v8 = [systemStore getControllerPublicKey:0 secretKey:&v19 username:&v18 allowCreation:0 error:error];
   v9 = v19;
   v10 = v18;
 
   if (v8)
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = a1;
+    selfCopy = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
@@ -706,7 +706,7 @@ LABEL_82:
     }
 
     objc_autoreleasePoolPop(v11);
-    v15 = [v12 encryptData:v6 withKey:v9 error:a4];
+    v15 = [selfCopy encryptData:keyCopy withKey:v9 error:error];
   }
 
   else
@@ -719,26 +719,26 @@ LABEL_82:
   return v15;
 }
 
-+ (id)decryptData:(id)a3 withKey:(id)a4 error:(id *)a5
++ (id)decryptData:(id)data withKey:(id)key error:(id *)error
 {
   v35 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 length];
+  dataCopy = data;
+  keyCopy = key;
+  v9 = [dataCopy length];
   v10 = v9 - 28;
   if (v9 > 0x1C)
   {
     ccsha512_di();
-    [v8 length];
-    [v8 bytes];
+    [keyCopy length];
+    [keyCopy bytes];
     cchkdf();
-    [v7 bytes];
-    v18 = [MEMORY[0x277CBEB28] dataWithLength:v10];
-    [v18 mutableBytes];
+    [dataCopy bytes];
+    errorCopy = [MEMORY[0x277CBEB28] dataWithLength:v10];
+    [errorCopy mutableBytes];
     v19 = chacha20_poly1305_decrypt_all_96x32();
     if (v19)
     {
-      if (a5)
+      if (error)
       {
         v20 = MEMORY[0x277CCA9B8];
         v21 = *MEMORY[0x277CCA590];
@@ -755,22 +755,22 @@ LABEL_82:
         v31 = v25;
         v26 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v31 forKeys:&v30 count:1];
         v27 = [v20 errorWithDomain:v21 code:v22 userInfo:v26];
-        *a5 = v27;
+        *error = v27;
 
-        a5 = 0;
+        error = 0;
       }
     }
 
     else
     {
-      a5 = v18;
-      v18 = a5;
+      error = errorCopy;
+      errorCopy = error;
     }
   }
 
   else
   {
-    if (a5)
+    if (error)
     {
       v11 = MEMORY[0x277CCA9B8];
       v12 = *MEMORY[0x277CCA590];
@@ -786,39 +786,39 @@ LABEL_82:
       v33 = v15;
       v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v33 forKeys:&v32 count:1];
       v17 = [v11 errorWithDomain:v12 code:-6743 userInfo:v16];
-      *a5 = v17;
+      *error = v17;
 
-      a5 = 0;
+      error = 0;
     }
 
-    v18 = 0;
+    errorCopy = 0;
   }
 
   v28 = *MEMORY[0x277D85DE8];
 
-  return a5;
+  return error;
 }
 
-+ (id)encryptData:(id)a3 withKey:(id)a4 error:(id *)a5
++ (id)encryptData:(id)data withKey:(id)key error:(id *)error
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
+  keyCopy = key;
+  dataCopy = data;
   ccsha512_di();
-  [v6 length];
-  [v6 bytes];
+  [keyCopy length];
+  [keyCopy bytes];
 
   cchkdf();
   RandomBytes();
   ccsha512_di();
   cchkdf();
-  v8 = [v7 length];
+  v8 = [dataCopy length];
   v9 = [MEMORY[0x277CBEB28] dataWithLength:v8 + 28];
-  v10 = [v9 mutableBytes];
+  mutableBytes = [v9 mutableBytes];
   v11 = v15;
-  *v10 = v14;
-  *(v10 + 8) = v11;
-  [v7 bytes];
+  *mutableBytes = v14;
+  *(mutableBytes + 8) = v11;
+  [dataCopy bytes];
 
   chacha20_poly1305_encrypt_all_96x32();
   v12 = *MEMORY[0x277D85DE8];
@@ -834,7 +834,7 @@ LABEL_82:
   if (v4)
   {
     v5 = v4;
-    v6 = [a1 readDataFromPath:v4];
+    v6 = [self readDataFromPath:v4];
     if (v6)
     {
       v7 = v6;
@@ -850,7 +850,7 @@ LABEL_82:
       }
 
       v11 = objc_autoreleasePoolPush();
-      v12 = a1;
+      selfCopy = self;
       v13 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
@@ -874,13 +874,13 @@ LABEL_10:
   return v8;
 }
 
-+ (void)archiveBulletinBoard:(id)a3
++ (void)archiveBulletinBoard:(id)board
 {
-  v8 = a3;
+  boardCopy = board;
   v4 = objc_autoreleasePoolPush();
-  v5 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v8 requiringSecureCoding:1 error:0];
+  v5 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:boardCopy requiringSecureCoding:1 error:0];
   v6 = bulletinBoardDataStorePath;
-  v7 = [a1 _writeData:v5 toStorePath:v6 dataLabel:@"bulletin board"];
+  v7 = [self _writeData:v5 toStorePath:v6 dataLabel:@"bulletin board"];
 
   objc_autoreleasePoolPop(v4);
 }
@@ -888,10 +888,10 @@ LABEL_10:
 + (id)unarchiveIDSDataSyncJournal
 {
   v57[4] = *MEMORY[0x277D85DE8];
-  v44 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v3 = objc_autoreleasePoolPush();
   v4 = idsDataSyncJournalDataStorePath;
-  v5 = [a1 readDataFromPath:v4];
+  v5 = [self readDataFromPath:v4];
 
   if (!v5)
   {
@@ -917,7 +917,7 @@ LABEL_24:
   if (!v9)
   {
     v25 = objc_autoreleasePoolPush();
-    v26 = a1;
+    selfCopy = self;
     v27 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
     {
@@ -985,7 +985,7 @@ LABEL_24:
               if (objc_opt_isKindOfClass())
               {
                 v21 = [MEMORY[0x277CBEB58] setWithSet:v20];
-                [v44 setObject:v21 forKeyedSubscript:v19];
+                [dictionary setObject:v21 forKeyedSubscript:v19];
               }
             }
           }
@@ -1013,7 +1013,7 @@ LABEL_24:
   else
   {
     v29 = objc_autoreleasePoolPush();
-    v30 = a1;
+    selfCopy2 = self;
     v31 = HMFGetOSLogHandle();
     v23 = v41;
     if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
@@ -1041,7 +1041,7 @@ LABEL_24:
   objc_autoreleasePoolPop(v3);
   if (isKindOfClass)
   {
-    v36 = v44;
+    v36 = dictionary;
     goto LABEL_32;
   }
 
@@ -1054,26 +1054,26 @@ LABEL_32:
   return v36;
 }
 
-+ (id)archiveIDSDataSyncJournal:(id)a3
++ (id)archiveIDSDataSyncJournal:(id)journal
 {
-  v4 = a3;
+  journalCopy = journal;
   v5 = objc_autoreleasePoolPush();
-  v6 = [MEMORY[0x277CBEB38] dictionary];
-  v7 = v6;
-  if (v4)
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v7 = dictionary;
+  if (journalCopy)
   {
-    [v6 setObject:v4 forKeyedSubscript:@"kTransactionJournalKey"];
+    [dictionary setObject:journalCopy forKeyedSubscript:@"kTransactionJournalKey"];
   }
 
   else
   {
-    v8 = [MEMORY[0x277CBEB68] null];
-    [v7 setObject:v8 forKeyedSubscript:@"kTransactionJournalKey"];
+    null = [MEMORY[0x277CBEB68] null];
+    [v7 setObject:null forKeyedSubscript:@"kTransactionJournalKey"];
   }
 
   v9 = idsDataSyncJournalDataStorePath;
   v10 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v7 requiringSecureCoding:1 error:0];
-  v11 = [a1 _writeData:v10 toStorePath:v9 dataLabel:@"transactions journal"];
+  v11 = [self _writeData:v10 toStorePath:v9 dataLabel:@"transactions journal"];
 
   objc_autoreleasePoolPop(v5);
 
@@ -1084,20 +1084,20 @@ LABEL_32:
 {
   v21 = *MEMORY[0x277D85DE8];
   v3 = transactionJournalDataStorePath;
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
-  v5 = [v4 fileExistsAtPath:v3];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v5 = [defaultManager fileExistsAtPath:v3];
 
   if (v5)
   {
-    v6 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
     v14 = 0;
-    v7 = [v6 removeItemAtPath:v3 error:&v14];
+    v7 = [defaultManager2 removeItemAtPath:v3 error:&v14];
     v8 = v14;
 
     if ((v7 & 1) == 0)
     {
       v9 = objc_autoreleasePoolPush();
-      v10 = a1;
+      selfCopy = self;
       v11 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
@@ -1118,25 +1118,25 @@ LABEL_32:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)archiveCloudServerTokenData:(id)a3
++ (id)archiveCloudServerTokenData:(id)data
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB38] dictionary];
-  v6 = v5;
-  if (v4)
+  dataCopy = data;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v6 = dictionary;
+  if (dataCopy)
   {
-    [v5 setObject:v4 forKeyedSubscript:@"kServerTokenDataBlobKey"];
+    [dictionary setObject:dataCopy forKeyedSubscript:@"kServerTokenDataBlobKey"];
   }
 
   else
   {
-    v7 = [MEMORY[0x277CBEB68] null];
-    [v6 setObject:v7 forKeyedSubscript:@"kServerTokenDataBlobKey"];
+    null = [MEMORY[0x277CBEB68] null];
+    [v6 setObject:null forKeyedSubscript:@"kServerTokenDataBlobKey"];
   }
 
   v8 = serverTokenDataStorePath;
   v9 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v6 requiringSecureCoding:1 error:0];
-  v10 = [a1 _writeData:v9 toStorePath:v8 dataLabel:@"server token"];
+  v10 = [self _writeData:v9 toStorePath:v8 dataLabel:@"server token"];
 
   return v10;
 }
@@ -1145,20 +1145,20 @@ LABEL_32:
 {
   v21 = *MEMORY[0x277D85DE8];
   v3 = serverTokenDataStorePath;
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
-  v5 = [v4 fileExistsAtPath:v3];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v5 = [defaultManager fileExistsAtPath:v3];
 
   if (v5)
   {
-    v6 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
     v14 = 0;
-    v7 = [v6 removeItemAtPath:v3 error:&v14];
+    v7 = [defaultManager2 removeItemAtPath:v3 error:&v14];
     v8 = v14;
 
     if ((v7 & 1) == 0)
     {
       v9 = objc_autoreleasePoolPush();
-      v10 = a1;
+      selfCopy = self;
       v11 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
@@ -1179,21 +1179,21 @@ LABEL_32:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-+ (BOOL)archiveMetadata:(id)a3
++ (BOOL)archiveMetadata:(id)metadata
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4 && ([v4 objectForKeyedSubscript:*MEMORY[0x277CFEDF0]], (v6 = objc_claimAutoreleasedReturnValue()) != 0) && (v7 = v6, objc_msgSend(v5, "objectForKeyedSubscript:", *MEMORY[0x277CFEDC0]), v8 = objc_claimAutoreleasedReturnValue(), v8, v7, v8))
+  metadataCopy = metadata;
+  v5 = metadataCopy;
+  if (metadataCopy && ([metadataCopy objectForKeyedSubscript:*MEMORY[0x277CFEDF0]], (v6 = objc_claimAutoreleasedReturnValue()) != 0) && (v7 = v6, objc_msgSend(v5, "objectForKeyedSubscript:", *MEMORY[0x277CFEDC0]), v8 = objc_claimAutoreleasedReturnValue(), v8, v7, v8))
   {
     v9 = configPlainMetadataPath;
-    v10 = [a1 writeDictionary:v5 toStorePath:v9];
+    v10 = [self writeDictionary:v5 toStorePath:v9];
   }
 
   else
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = a1;
+    selfCopy = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
@@ -1251,7 +1251,7 @@ LABEL_32:
   v3 = configVendorIDStorePath;
   if (v3)
   {
-    v4 = [a1 readDataFromPath:v3];
+    v4 = [self readDataFromPath:v3];
     if (v4)
     {
       v5 = MEMORY[0x277CBEB98];
@@ -1301,7 +1301,7 @@ LABEL_32:
         else
         {
           v25 = objc_autoreleasePoolPush();
-          v26 = a1;
+          selfCopy = self;
           v27 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
           {
@@ -1328,7 +1328,7 @@ LABEL_32:
       else
       {
         v21 = objc_autoreleasePoolPush();
-        v22 = a1;
+        selfCopy2 = self;
         v23 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
         {
@@ -1354,7 +1354,7 @@ LABEL_32:
   else
   {
     v17 = objc_autoreleasePoolPush();
-    v18 = a1;
+    selfCopy3 = self;
     v19 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
     {
@@ -1373,20 +1373,20 @@ LABEL_32:
   return v16;
 }
 
-+ (void)archiveVendorStore:(id)a3
++ (void)archiveVendorStore:(id)store
 {
   v23[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  storeCopy = store;
   v5 = configVendorIDStorePath;
   v6 = objc_autoreleasePoolPush();
   if (v5)
   {
     v22 = @"kApplicationVendorIDStoreDataKey";
-    v23[0] = v4;
-    v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v23 forKeys:&v22 count:1];
+    v23[0] = storeCopy;
+    selfCopy2 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v23 forKeys:&v22 count:1];
     v8 = encodeRootObject();
     v9 = objc_autoreleasePoolPush();
-    v10 = a1;
+    selfCopy = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
@@ -1401,12 +1401,12 @@ LABEL_32:
     }
 
     objc_autoreleasePoolPop(v9);
-    v13 = [v10 _writeData:v8 toStorePath:v5 dataLabel:@"vendor id store"];
+    v13 = [selfCopy _writeData:v8 toStorePath:v5 dataLabel:@"vendor id store"];
   }
 
   else
   {
-    v7 = a1;
+    selfCopy2 = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
@@ -1421,20 +1421,20 @@ LABEL_32:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)archiveHomeData:(id)a3 toLocation:(id)a4
++ (id)archiveHomeData:(id)data toLocation:(id)location
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  dataCopy = data;
+  locationCopy = location;
+  v8 = locationCopy;
   v9 = 0;
-  if (v6 && v7)
+  if (dataCopy && locationCopy)
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = [a1 serializeHomeData:v6 localStorage:1 remoteDeviceOnSameAccount:0];
-    if (v11 && (v15 = 0, [a1 encryptDataWithControllerKey:v11 error:&v15], (v12 = objc_claimAutoreleasedReturnValue()) != 0))
+    v11 = [self serializeHomeData:dataCopy localStorage:1 remoteDeviceOnSameAccount:0];
+    if (v11 && (v15 = 0, [self encryptDataWithControllerKey:v11 error:&v15], (v12 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v13 = v12;
-      v9 = [a1 _writeData:v12 toStorePath:v8 dataLabel:@"home data"];
+      v9 = [self _writeData:v12 toStorePath:v8 dataLabel:@"home data"];
     }
 
     else
@@ -1448,32 +1448,32 @@ LABEL_32:
   return v9;
 }
 
-+ (id)archiveHomeDataLegacy:(id)a3 toLocation:(id)a4
++ (id)archiveHomeDataLegacy:(id)legacy toLocation:(id)location
 {
-  v4 = a3;
+  legacyCopy = legacy;
   v5 = objc_opt_class();
   v6 = configProtectedDataStorePath;
-  v7 = [v5 archiveHomeData:v4 toLocation:v6];
+  v7 = [v5 archiveHomeData:legacyCopy toLocation:v6];
 
   return v7;
 }
 
-+ (id)archiveHomeDataLegacy:(id)a3
++ (id)archiveHomeDataLegacy:(id)legacy
 {
-  v4 = a3;
+  legacyCopy = legacy;
   v5 = configProtectedDataStorePath;
-  v6 = [a1 archiveHomeDataLegacy:v4 toLocation:v5];
+  v6 = [self archiveHomeDataLegacy:legacyCopy toLocation:v5];
 
   return v6;
 }
 
-+ (id)archiveHomeDataForTransaction:(id)a3
++ (id)archiveHomeDataForTransaction:(id)transaction
 {
-  v4 = a3;
-  if (v4)
+  transactionCopy = transaction;
+  if (transactionCopy)
   {
     v5 = objc_autoreleasePoolPush();
-    v6 = [a1 serializeHomeData:v4 localStorage:1 remoteDeviceOnSameAccount:0];
+    v6 = [self serializeHomeData:transactionCopy localStorage:1 remoteDeviceOnSameAccount:0];
     objc_autoreleasePoolPop(v5);
   }
 
@@ -1485,54 +1485,54 @@ LABEL_32:
   return v6;
 }
 
-+ (id)serializeHomeData:(id)a3 localStorage:(BOOL)a4 remoteDeviceOnSameAccount:(BOOL)a5
++ (id)serializeHomeData:(id)data localStorage:(BOOL)storage remoteDeviceOnSameAccount:(BOOL)account
 {
-  v5 = a5;
-  v6 = a4;
+  accountCopy = account;
+  storageCopy = storage;
   v73 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = [MEMORY[0x277CBEB38] dictionary];
-  v9 = [v7 homes];
+  dataCopy = data;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  homes = [dataCopy homes];
 
-  if (v9)
+  if (homes)
   {
-    v10 = [v7 homes];
-    [v8 setObject:v10 forKeyedSubscript:@"kHomesDataBlobKey"];
+    homes2 = [dataCopy homes];
+    [dictionary setObject:homes2 forKeyedSubscript:@"kHomesDataBlobKey"];
   }
 
-  v11 = [v7 primaryHomeUUID];
+  primaryHomeUUID = [dataCopy primaryHomeUUID];
 
-  if (v11)
+  if (primaryHomeUUID)
   {
-    v12 = [v7 primaryHomeUUID];
-    v13 = [v12 UUIDString];
-    [v8 setObject:v13 forKeyedSubscript:@"kPrimaryHomeUUIDKey"];
+    primaryHomeUUID2 = [dataCopy primaryHomeUUID];
+    uUIDString = [primaryHomeUUID2 UUIDString];
+    [dictionary setObject:uUIDString forKeyedSubscript:@"kPrimaryHomeUUIDKey"];
   }
 
-  v14 = [v7 lastCurrentHomeUUID];
+  lastCurrentHomeUUID = [dataCopy lastCurrentHomeUUID];
 
-  if (v14)
+  if (lastCurrentHomeUUID)
   {
-    v15 = [v7 lastCurrentHomeUUID];
-    v16 = [v15 UUIDString];
-    [v8 setObject:v16 forKeyedSubscript:@"kLastCurrentHomeUUIDKey"];
+    lastCurrentHomeUUID2 = [dataCopy lastCurrentHomeUUID];
+    uUIDString2 = [lastCurrentHomeUUID2 UUIDString];
+    [dictionary setObject:uUIDString2 forKeyedSubscript:@"kLastCurrentHomeUUIDKey"];
   }
 
-  v17 = [v7 accessories];
+  accessories = [dataCopy accessories];
 
-  if (v17)
+  if (accessories)
   {
-    v67 = v6;
+    v67 = storageCopy;
     v18 = MEMORY[0x277CBEB18];
-    v19 = [v7 accessories];
-    v20 = [v18 arrayWithCapacity:{objc_msgSend(v19, "count")}];
+    accessories2 = [dataCopy accessories];
+    v20 = [v18 arrayWithCapacity:{objc_msgSend(accessories2, "count")}];
 
     v70 = 0u;
     v71 = 0u;
     v68 = 0u;
     v69 = 0u;
-    v21 = [v7 accessories];
-    v22 = [v21 countByEnumeratingWithState:&v68 objects:v72 count:16];
+    accessories3 = [dataCopy accessories];
+    v22 = [accessories3 countByEnumeratingWithState:&v68 objects:v72 count:16];
     if (v22)
     {
       v23 = v22;
@@ -1543,7 +1543,7 @@ LABEL_32:
         {
           if (*v69 != v24)
           {
-            objc_enumerationMutation(v21);
+            objc_enumerationMutation(accessories3);
           }
 
           v26 = *(*(&v68 + 1) + 8 * i);
@@ -1566,145 +1566,145 @@ LABEL_32:
           }
         }
 
-        v23 = [v21 countByEnumeratingWithState:&v68 objects:v72 count:16];
+        v23 = [accessories3 countByEnumeratingWithState:&v68 objects:v72 count:16];
       }
 
       while (v23);
     }
 
     v29 = [v20 copy];
-    [v8 setObject:v29 forKeyedSubscript:@"kAccessoriesDataBlobKey"];
+    [dictionary setObject:v29 forKeyedSubscript:@"kAccessoriesDataBlobKey"];
 
-    v6 = v67;
+    storageCopy = v67;
   }
 
-  v30 = [v7 currentDevice];
+  currentDevice = [dataCopy currentDevice];
 
-  if (v30)
+  if (currentDevice)
   {
-    v31 = [v7 currentDevice];
-    [v8 setObject:v31 forKeyedSubscript:@"HM.currentDevice"];
+    currentDevice2 = [dataCopy currentDevice];
+    [dictionary setObject:currentDevice2 forKeyedSubscript:@"HM.currentDevice"];
   }
 
-  v32 = [v7 pendingReasonSaved];
+  pendingReasonSaved = [dataCopy pendingReasonSaved];
 
-  if (v32)
+  if (pendingReasonSaved)
   {
-    v33 = [v7 pendingReasonSaved];
-    [v8 setObject:v33 forKeyedSubscript:@"HM.savedReasonsKey"];
+    pendingReasonSaved2 = [dataCopy pendingReasonSaved];
+    [dictionary setObject:pendingReasonSaved2 forKeyedSubscript:@"HM.savedReasonsKey"];
   }
 
-  v34 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v7, "dataVersion")}];
-  [v8 setObject:v34 forKeyedSubscript:@"kHomeDataVersionKey"];
+  v34 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(dataCopy, "dataVersion")}];
+  [dictionary setObject:v34 forKeyedSubscript:@"kHomeDataVersionKey"];
 
-  v35 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v7, "schemaVersion")}];
-  [v8 setObject:v35 forKeyedSubscript:@"kHomeSchemaVersionKey"];
+  v35 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(dataCopy, "schemaVersion")}];
+  [dictionary setObject:v35 forKeyedSubscript:@"kHomeSchemaVersionKey"];
 
-  v36 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v7, "recoveryVersion")}];
-  [v8 setObject:v36 forKeyedSubscript:@"kHomeRecoveryVersionKey"];
+  v36 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(dataCopy, "recoveryVersion")}];
+  [dictionary setObject:v36 forKeyedSubscript:@"kHomeRecoveryVersionKey"];
 
-  v37 = [v7 dataTag];
-  v38 = [v37 UUIDString];
-  [v8 setObject:v38 forKeyedSubscript:@"kHomeDataTagKey"];
+  dataTag = [dataCopy dataTag];
+  uUIDString3 = [dataTag UUIDString];
+  [dictionary setObject:uUIDString3 forKeyedSubscript:@"kHomeDataTagKey"];
 
-  if (v6 || v5)
+  if (storageCopy || accountCopy)
   {
-    v41 = [v7 applicationData];
+    applicationData = [dataCopy applicationData];
 
-    if (v41)
+    if (applicationData)
     {
-      v42 = [v7 applicationData];
-      v43 = [v42 dictionary];
-      [v8 setObject:v43 forKeyedSubscript:@"kApplicationDataKey"];
+      applicationData2 = [dataCopy applicationData];
+      dictionary2 = [applicationData2 dictionary];
+      [dictionary setObject:dictionary2 forKeyedSubscript:@"kApplicationDataKey"];
     }
 
-    if (v6)
+    if (storageCopy)
     {
-      v44 = [v7 cloudZones];
+      cloudZones = [dataCopy cloudZones];
 
-      if (v44)
+      if (cloudZones)
       {
-        v45 = [v7 cloudZones];
-        [v8 setObject:v45 forKeyedSubscript:@"kCloudZonesInformationKey"];
+        cloudZones2 = [dataCopy cloudZones];
+        [dictionary setObject:cloudZones2 forKeyedSubscript:@"kCloudZonesInformationKey"];
       }
 
-      v46 = [v7 UUIDsOfRemovedHomes];
-      v47 = [v46 count];
+      uUIDsOfRemovedHomes = [dataCopy UUIDsOfRemovedHomes];
+      v47 = [uUIDsOfRemovedHomes count];
 
       if (v47)
       {
-        v48 = [v7 UUIDsOfRemovedHomes];
-        [v8 setObject:v48 forKeyedSubscript:@"kUuidsOfRemovedHomesKey"];
+        uUIDsOfRemovedHomes2 = [dataCopy UUIDsOfRemovedHomes];
+        [dictionary setObject:uUIDsOfRemovedHomes2 forKeyedSubscript:@"kUuidsOfRemovedHomesKey"];
       }
 
-      v49 = [v7 incomingInvitations];
-      v50 = [v49 count];
+      incomingInvitations = [dataCopy incomingInvitations];
+      v50 = [incomingInvitations count];
 
       if (v50)
       {
-        v51 = [v7 incomingInvitations];
-        [v8 setObject:v51 forKeyedSubscript:@"kIncomingHomeInvitationsKey"];
+        incomingInvitations2 = [dataCopy incomingInvitations];
+        [dictionary setObject:incomingInvitations2 forKeyedSubscript:@"kIncomingHomeInvitationsKey"];
       }
 
-      v52 = [v7 pendingUserManagementOperations];
+      pendingUserManagementOperations = [dataCopy pendingUserManagementOperations];
 
-      if (v52)
+      if (pendingUserManagementOperations)
       {
-        v53 = [v7 pendingUserManagementOperations];
-        [v8 setObject:v53 forKeyedSubscript:@"HM.userManagementPendingOperationsKey"];
+        pendingUserManagementOperations2 = [dataCopy pendingUserManagementOperations];
+        [dictionary setObject:pendingUserManagementOperations2 forKeyedSubscript:@"HM.userManagementPendingOperationsKey"];
       }
 
-      v54 = [v7 unprocessedOperationIdentifiers];
+      unprocessedOperationIdentifiers = [dataCopy unprocessedOperationIdentifiers];
 
-      if (v54)
+      if (unprocessedOperationIdentifiers)
       {
-        v55 = [v7 unprocessedOperationIdentifiers];
-        [v8 setObject:v55 forKeyedSubscript:@"kUserManagementUnprocessedOperationModelsKey"];
+        unprocessedOperationIdentifiers2 = [dataCopy unprocessedOperationIdentifiers];
+        [dictionary setObject:unprocessedOperationIdentifiers2 forKeyedSubscript:@"kUserManagementUnprocessedOperationModelsKey"];
       }
 
-      v56 = [v7 account];
+      account = [dataCopy account];
 
-      if (v56)
+      if (account)
       {
-        v57 = [v7 account];
-        [v8 setObject:v57 forKeyedSubscript:@"HM.appleAccount"];
+        account2 = [dataCopy account];
+        [dictionary setObject:account2 forKeyedSubscript:@"HM.appleAccount"];
 
-        v58 = [v7 primaryAccountHandle];
-        [v8 setObject:v58 forKeyedSubscript:@"HM.primaryAccountHandle"];
+        primaryAccountHandle = [dataCopy primaryAccountHandle];
+        [dictionary setObject:primaryAccountHandle forKeyedSubscript:@"HM.primaryAccountHandle"];
       }
 
-      v59 = [v7 remoteAccounts];
+      remoteAccounts = [dataCopy remoteAccounts];
 
-      if (v59)
+      if (remoteAccounts)
       {
-        v60 = [v7 remoteAccounts];
-        [v8 setObject:v60 forKeyedSubscript:@"HM.remoteAccounts"];
+        remoteAccounts2 = [dataCopy remoteAccounts];
+        [dictionary setObject:remoteAccounts2 forKeyedSubscript:@"HM.remoteAccounts"];
       }
 
-      if ([v7 residentEnabledState])
+      if ([dataCopy residentEnabledState])
       {
-        v61 = [v7 residentEnabledState] == 2;
+        v61 = [dataCopy residentEnabledState] == 2;
         v62 = [MEMORY[0x277CCABB0] numberWithBool:v61];
-        [v8 setObject:v62 forKeyedSubscript:@"kResidentEnabledKey"];
+        [dictionary setObject:v62 forKeyedSubscript:@"kResidentEnabledKey"];
       }
 
-      v63 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v7, "accessAllowedWhenLocked")}];
-      [v8 setObject:v63 forKeyedSubscript:@"HM.accessAllowedWhenLocked"];
+      v63 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(dataCopy, "accessAllowedWhenLocked")}];
+      [dictionary setObject:v63 forKeyedSubscript:@"HM.accessAllowedWhenLocked"];
 
-      v39 = [v8 copy];
+      v39 = [dictionary copy];
       v40 = encodeRootObject();
     }
 
     else
     {
-      v39 = [v8 copy];
+      v39 = [dictionary copy];
       v40 = encodeRootObjectForRemoteDeviceOnSameAccountMigrateToHH2(v39, 0, 0);
     }
   }
 
   else
   {
-    v39 = [v8 copy];
+    v39 = [dictionary copy];
     v40 = encodeRootObjectForRemote(v39, 0, 0);
   }
 
@@ -1715,9 +1715,9 @@ LABEL_32:
   return v64;
 }
 
-+ (void)resetConfiguration:(unint64_t)a3
++ (void)resetConfiguration:(unint64_t)configuration
 {
-  [HMDResetConfigPostCleanup writePostCleanupRecordWithReason:a3 steps:-1];
+  [HMDResetConfigPostCleanup writePostCleanupRecordWithReason:configuration steps:-1];
 
   +[HMDHH2FrameworkSwitch removeHH2EnablementPreferenceKey];
 }
@@ -1726,7 +1726,7 @@ LABEL_32:
 {
   v18 = *MEMORY[0x277D85DE8];
   v4 = objc_autoreleasePoolPush();
-  v5 = a1;
+  selfCopy = self;
   v6 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -1747,40 +1747,40 @@ LABEL_32:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)unarchiveHomeData:(id *)a3 decryptionFailed:(BOOL *)a4 successfulKeyUserName:(id *)a5
++ (id)unarchiveHomeData:(id *)data decryptionFailed:(BOOL *)failed successfulKeyUserName:(id *)name
 {
   v8 = objc_opt_class();
 
-  return [v8 unarchiveHomeData:a3 decryptionFailed:a4 fromLocation:0 successfulKeyUserName:a5 forHH2Migration:0];
+  return [v8 unarchiveHomeData:data decryptionFailed:failed fromLocation:0 successfulKeyUserName:name forHH2Migration:0];
 }
 
-+ (BOOL)removeLegacyHomeArchive:(id *)a3
++ (BOOL)removeLegacyHomeArchive:(id *)archive
 {
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v5 = configProtectedDataStorePath;
-  v6 = [v4 fileExistsAtPath:v5];
+  v6 = [defaultManager fileExistsAtPath:v5];
 
   if (!v6)
   {
     return 1;
   }
 
-  v7 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
   v8 = configProtectedDataStorePath;
-  v9 = [v7 removeItemAtPath:v8 error:a3];
+  v9 = [defaultManager2 removeItemAtPath:v8 error:archive];
 
   return v9;
 }
 
-+ (BOOL)writeDictionary:(id)a3 toStorePath:(id)a4
++ (BOOL)writeDictionary:(id)dictionary toStorePath:(id)path
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  pathCopy = path;
   v8 = objc_autoreleasePoolPush();
-  if (!v6 || !v7)
+  if (!dictionaryCopy || !pathCopy)
   {
-    v10 = a1;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
@@ -1788,9 +1788,9 @@ LABEL_32:
       *buf = 138543874;
       v21 = v12;
       v22 = 2112;
-      v23 = v6;
+      v23 = dictionaryCopy;
       v24 = 2112;
-      v25 = v7;
+      v25 = pathCopy;
       _os_log_impl(&dword_229538000, v9, OS_LOG_TYPE_ERROR, "%{public}@### Failed to save dictionary %@ to path %@", buf, 0x20u);
     }
 
@@ -1798,12 +1798,12 @@ LABEL_32:
   }
 
   v19 = 0;
-  v9 = [MEMORY[0x277CCAC58] dataWithPropertyList:v6 format:200 options:0 error:&v19];
-  v10 = v19;
+  v9 = [MEMORY[0x277CCAC58] dataWithPropertyList:dictionaryCopy format:200 options:0 error:&v19];
+  selfCopy = v19;
   if (!v9)
   {
     v13 = objc_autoreleasePoolPush();
-    v14 = a1;
+    selfCopy2 = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
@@ -1811,11 +1811,11 @@ LABEL_32:
       *buf = 138544130;
       v21 = v16;
       v22 = 2112;
-      v23 = v6;
+      v23 = dictionaryCopy;
       v24 = 2112;
-      v25 = v7;
+      v25 = pathCopy;
       v26 = 2112;
-      v27 = v10;
+      v27 = selfCopy;
       _os_log_impl(&dword_229538000, v15, OS_LOG_TYPE_ERROR, "%{public}@### Failed to save dictionary %@ to path %@ error %@", buf, 0x2Au);
     }
 
@@ -1826,7 +1826,7 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v11 = [v9 writeToFile:v7 atomically:1];
+  v11 = [v9 writeToFile:pathCopy atomically:1];
 LABEL_11:
 
   objc_autoreleasePoolPop(v8);
@@ -1834,24 +1834,24 @@ LABEL_11:
   return v11;
 }
 
-+ (id)_writeData:(id)a3 toStorePath:(id)a4 dataLabel:(id)a5 createDirectoriesIfNeeded:(BOOL)a6
++ (id)_writeData:(id)data toStorePath:(id)path dataLabel:(id)label createDirectoriesIfNeeded:(BOOL)needed
 {
-  v6 = a6;
+  neededCopy = needed;
   v55[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  dataCopy = data;
+  pathCopy = path;
+  labelCopy = label;
   v54 = *MEMORY[0x277CCA180];
   v55[0] = &unk_283E72938;
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v55 forKeys:&v54 count:1];
-  v14 = [MEMORY[0x277CCAA00] defaultManager];
-  if (([v14 createFileAtPath:v11 contents:0 attributes:v13] & 1) == 0)
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  if (([defaultManager createFileAtPath:pathCopy contents:0 attributes:v13] & 1) == 0)
   {
-    [v14 setAttributes:v13 ofItemAtPath:v11 error:0];
+    [defaultManager setAttributes:v13 ofItemAtPath:pathCopy error:0];
   }
 
   v45 = 0;
-  v15 = [v10 writeToFile:v11 options:1073741825 error:&v45];
+  v15 = [dataCopy writeToFile:pathCopy options:1073741825 error:&v45];
   v16 = v45;
   v17 = v16;
   if (v15)
@@ -1859,42 +1859,42 @@ LABEL_11:
     goto LABEL_14;
   }
 
-  if (!v6)
+  if (!neededCopy)
   {
 LABEL_11:
     v29 = objc_autoreleasePoolPush();
-    v30 = a1;
+    selfCopy = self;
     v31 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
     {
       v32 = HMFGetLogIdentifier();
       v41 = v29;
-      v33 = [v17 code];
+      code = [v17 code];
       [v17 localizedDescription];
-      v34 = v43 = v10;
+      v34 = v43 = dataCopy;
       *buf = 138544130;
       v47 = v32;
       v48 = 2112;
-      v49 = v12;
+      v49 = labelCopy;
       v50 = 2048;
-      v51 = v33;
+      v51 = code;
       v29 = v41;
       v52 = 2112;
       v53 = v34;
       _os_log_impl(&dword_229538000, v31, OS_LOG_TYPE_DEFAULT, "%{public}@Failed to write %@: (%ld) %@", buf, 0x2Au);
 
-      v10 = v43;
+      dataCopy = v43;
     }
 
     objc_autoreleasePoolPop(v29);
 LABEL_14:
     v44 = 0;
-    v35 = [v14 attributesOfItemAtPath:v11 error:&v44];
+    v35 = [defaultManager attributesOfItemAtPath:pathCopy error:&v44];
     v36 = v35;
     if (v35)
     {
-      v37 = [v35 fileSize];
-      v35 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v37];
+      fileSize = [v35 fileSize];
+      v35 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:fileSize];
     }
 
     v28 = v35;
@@ -1902,48 +1902,48 @@ LABEL_14:
     goto LABEL_17;
   }
 
-  v18 = [v16 domain];
-  v19 = v18;
-  if (v18 != *MEMORY[0x277CCA050])
+  domain = [v16 domain];
+  v19 = domain;
+  if (domain != *MEMORY[0x277CCA050])
   {
 
     goto LABEL_11;
   }
 
-  v20 = [v17 code];
+  code2 = [v17 code];
 
-  if (v20 != 4)
+  if (code2 != 4)
   {
     goto LABEL_11;
   }
 
   v21 = objc_autoreleasePoolPush();
-  v22 = a1;
+  selfCopy2 = self;
   v23 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
   {
     v40 = HMFGetLogIdentifier();
     v42 = v21;
-    v24 = [v17 code];
-    v25 = [v17 localizedDescription];
+    code3 = [v17 code];
+    localizedDescription = [v17 localizedDescription];
     *buf = 138544130;
     v47 = v40;
     v48 = 2112;
-    v49 = v12;
+    v49 = labelCopy;
     v50 = 2048;
-    v51 = v24;
+    v51 = code3;
     v21 = v42;
     v52 = 2112;
-    v53 = v25;
-    v26 = v25;
+    v53 = localizedDescription;
+    v26 = localizedDescription;
     _os_log_impl(&dword_229538000, v23, OS_LOG_TYPE_DEFAULT, "%{public}@Creating parent directory and trying again due to error writing %@: (%ld) %@", buf, 0x2Au);
   }
 
   objc_autoreleasePoolPop(v21);
-  v27 = [v11 stringByDeletingLastPathComponent];
-  createDirectory(v27);
+  stringByDeletingLastPathComponent = [pathCopy stringByDeletingLastPathComponent];
+  createDirectory(stringByDeletingLastPathComponent);
 
-  v28 = [v22 _writeData:v10 toStorePath:v11 dataLabel:v12 createDirectoriesIfNeeded:0];
+  v28 = [selfCopy2 _writeData:dataCopy toStorePath:pathCopy dataLabel:labelCopy createDirectoriesIfNeeded:0];
 LABEL_17:
 
   v38 = *MEMORY[0x277D85DE8];
@@ -1951,27 +1951,27 @@ LABEL_17:
   return v28;
 }
 
-+ (id)writeData:(id)a3 toStorePath:(id)a4 dataLabel:(id)a5
++ (id)writeData:(id)data toStorePath:(id)path dataLabel:(id)label
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dataCopy = data;
+  pathCopy = path;
+  labelCopy = label;
   v12 = objc_alloc(MEMORY[0x277D0F770]);
-  v13 = MEMORY[0x22AAD2510](a1, a2);
+  v13 = MEMORY[0x22AAD2510](self, a2);
   v16 = [v12 initWithName:v13];
 
-  v14 = [a1 _writeData:v9 toStorePath:v10 dataLabel:v11];
+  v14 = [self _writeData:dataCopy toStorePath:pathCopy dataLabel:labelCopy];
   __HMFActivityScopeLeave();
 
   return v14;
 }
 
-+ (id)readDataFromPath:(id)a3
++ (id)readDataFromPath:(id)path
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  pathCopy = path;
   v14 = 0;
-  v5 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:v4 options:2 error:&v14];
+  v5 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:pathCopy options:2 error:&v14];
   v6 = v14;
   if (v5)
   {
@@ -1981,7 +1981,7 @@ LABEL_17:
   else
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = a1;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
@@ -1989,7 +1989,7 @@ LABEL_17:
       *buf = 138543874;
       v16 = v11;
       v17 = 2112;
-      v18 = v4;
+      v18 = pathCopy;
       v19 = 2112;
       v20 = v6;
       _os_log_impl(&dword_229538000, v10, OS_LOG_TYPE_ERROR, "%{public}@Failed to load data store from file path %@: %@", buf, 0x20u);
@@ -2003,31 +2003,31 @@ LABEL_17:
   return v5;
 }
 
-- (id)unarchiveDictionaryFromData:(id)a3 allowedClasses:(id)a4 forKey:(id)a5
+- (id)unarchiveDictionaryFromData:(id)data allowedClasses:(id)classes forKey:(id)key
 {
   v29[3] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
+  dataCopy = data;
+  keyCopy = key;
+  classesCopy = classes;
   v29[0] = objc_opt_class();
   v29[1] = objc_opt_class();
   v29[2] = objc_opt_class();
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v29 count:3];
-  v12 = [v10 setByAddingObjectsFromArray:v11];
+  v12 = [classesCopy setByAddingObjectsFromArray:v11];
 
   v24 = 0;
-  v13 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClasses:v12 fromData:v8 error:&v24];
+  v13 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClasses:v12 fromData:dataCopy error:&v24];
   v14 = v24;
   if (v13)
   {
-    v15 = [v13 objectForKey:v9];
+    v15 = [v13 objectForKey:keyCopy];
     if (v15)
     {
       goto LABEL_9;
     }
 
     v16 = objc_autoreleasePoolPush();
-    v17 = self;
+    selfCopy = self;
     v18 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
@@ -2035,7 +2035,7 @@ LABEL_17:
       *buf = 138543618;
       v26 = v19;
       v27 = 2112;
-      v28 = v9;
+      v28 = keyCopy;
       v20 = "%{public}@Key %@ not found in unarchived data";
 LABEL_7:
       _os_log_impl(&dword_229538000, v18, OS_LOG_TYPE_ERROR, v20, buf, 0x16u);
@@ -2045,7 +2045,7 @@ LABEL_7:
   else
   {
     v16 = objc_autoreleasePoolPush();
-    v21 = self;
+    selfCopy2 = self;
     v18 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
@@ -2068,16 +2068,16 @@ LABEL_9:
   return v15;
 }
 
-- (id)unarchiveDictionaryWithPath:(id)a3 allowedClasses:(id)a4 forKey:(id)a5
+- (id)unarchiveDictionaryWithPath:(id)path allowedClasses:(id)classes forKey:(id)key
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  pathCopy = path;
+  classesCopy = classes;
+  keyCopy = key;
   v11 = objc_autoreleasePoolPush();
-  v12 = [objc_opt_class() readDataFromPath:v8];
+  v12 = [objc_opt_class() readDataFromPath:pathCopy];
   if (v12 || [0 length])
   {
-    v13 = [(HMDPersistentStore *)self unarchiveDictionaryFromData:v12 allowedClasses:v9 forKey:v10];
+    v13 = [(HMDPersistentStore *)self unarchiveDictionaryFromData:v12 allowedClasses:classesCopy forKey:keyCopy];
   }
 
   else
@@ -2090,47 +2090,47 @@ LABEL_9:
   return v13;
 }
 
-- (id)archiveDictionary:(id)a3 withPath:(id)a4 forKey:(id)a5
+- (id)archiveDictionary:(id)dictionary withPath:(id)path forKey:(id)key
 {
   v32 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dictionaryCopy = dictionary;
+  pathCopy = path;
+  keyCopy = key;
   context = objc_autoreleasePoolPush();
-  v11 = [MEMORY[0x277CBEB38] dictionary];
-  v12 = v11;
-  if (v8)
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v12 = dictionary;
+  if (dictionaryCopy)
   {
-    [v11 setObject:v8 forKeyedSubscript:v10];
+    [dictionary setObject:dictionaryCopy forKeyedSubscript:keyCopy];
   }
 
   else
   {
-    v13 = [MEMORY[0x277CBEB68] null];
-    [v12 setObject:v13 forKeyedSubscript:v10];
+    null = [MEMORY[0x277CBEB68] null];
+    [v12 setObject:null forKeyedSubscript:keyCopy];
   }
 
   v14 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v12 requiringSecureCoding:1 error:0];
-  v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"archive data with path: %@", v9];
-  v16 = [objc_opt_class() _writeData:v14 toStorePath:v9 dataLabel:v15];
+  pathCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"archive data with path: %@", pathCopy];
+  v16 = [objc_opt_class() _writeData:v14 toStorePath:pathCopy dataLabel:pathCopy];
   v17 = objc_autoreleasePoolPush();
-  v18 = self;
+  selfCopy = self;
   v19 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
   {
     HMFGetLogIdentifier();
-    v24 = v8;
-    v21 = v20 = v10;
+    v24 = dictionaryCopy;
+    v21 = v20 = keyCopy;
     *buf = 138543874;
     v27 = v21;
     v28 = 2112;
-    v29 = v15;
+    v29 = pathCopy;
     v30 = 2112;
     v31 = v16;
     _os_log_impl(&dword_229538000, v19, OS_LOG_TYPE_INFO, "%{public}@HMDPersistentStore %@ with size: %@", buf, 0x20u);
 
-    v10 = v20;
-    v8 = v24;
+    keyCopy = v20;
+    dictionaryCopy = v24;
   }
 
   objc_autoreleasePoolPop(v17);
@@ -2141,12 +2141,12 @@ LABEL_9:
   return v16;
 }
 
-- (id)writeData:(id)a3 toStorePath:(id)a4 dataLabel:(id)a5
+- (id)writeData:(id)data toStorePath:(id)path dataLabel:(id)label
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [objc_opt_class() writeData:v9 toStorePath:v8 dataLabel:v7];
+  labelCopy = label;
+  pathCopy = path;
+  dataCopy = data;
+  v10 = [objc_opt_class() writeData:dataCopy toStorePath:pathCopy dataLabel:labelCopy];
 
   return v10;
 }

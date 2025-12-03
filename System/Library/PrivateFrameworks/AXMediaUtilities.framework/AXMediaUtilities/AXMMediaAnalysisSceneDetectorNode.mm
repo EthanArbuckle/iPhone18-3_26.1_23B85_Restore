@@ -1,42 +1,42 @@
 @interface AXMMediaAnalysisSceneDetectorNode
-+ (BOOL)addNSFWResultToContext:(id)a3 forIdentifier:(id)a4 confidence:(double)a5 markAsSensitiveCaptionContent:(BOOL)a6;
-+ (BOOL)addSignificantEventResultToContext:(id)a3 forIdentifier:(id)a4 confidence:(double)a5 markAsSensitiveCaptionContent:(BOOL)a6;
++ (BOOL)addNSFWResultToContext:(id)context forIdentifier:(id)identifier confidence:(double)confidence markAsSensitiveCaptionContent:(BOOL)content;
++ (BOOL)addSignificantEventResultToContext:(id)context forIdentifier:(id)identifier confidence:(double)confidence markAsSensitiveCaptionContent:(BOOL)content;
 + (BOOL)isSupported;
-- (AXMMediaAnalysisSceneDetectorNode)initWithCoder:(id)a3;
-- (BOOL)_shouldIncludeSceneLabelForOCRDocumenTypeDetection:(id)a3;
-- (void)_addNSFWClassificationObservations:(id)a3 toContext:(id)a4;
-- (void)_addRecognizedObjectObservations:(id)a3 toContext:(id)a4;
-- (void)_addSaliencyImageObservations:(id)a3 toContext:(id)a4;
-- (void)_addSceneClassificationObservations:(id)a3 toContext:(id)a4;
-- (void)_addSceneDetectorFeaturesToContext:(id)a3 fromResults:(id)a4;
-- (void)_addSignificantEventClassificationObservations:(id)a3 toContext:(id)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)evaluate:(id)a3 metrics:(id)a4;
+- (AXMMediaAnalysisSceneDetectorNode)initWithCoder:(id)coder;
+- (BOOL)_shouldIncludeSceneLabelForOCRDocumenTypeDetection:(id)detection;
+- (void)_addNSFWClassificationObservations:(id)observations toContext:(id)context;
+- (void)_addRecognizedObjectObservations:(id)observations toContext:(id)context;
+- (void)_addSaliencyImageObservations:(id)observations toContext:(id)context;
+- (void)_addSceneClassificationObservations:(id)observations toContext:(id)context;
+- (void)_addSceneDetectorFeaturesToContext:(id)context fromResults:(id)results;
+- (void)_addSignificantEventClassificationObservations:(id)observations toContext:(id)context;
+- (void)encodeWithCoder:(id)coder;
+- (void)evaluate:(id)evaluate metrics:(id)metrics;
 @end
 
 @implementation AXMMediaAnalysisSceneDetectorNode
 
-- (AXMMediaAnalysisSceneDetectorNode)initWithCoder:(id)a3
+- (AXMMediaAnalysisSceneDetectorNode)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = AXMMediaAnalysisSceneDetectorNode;
-  v5 = [(AXMEvaluationNode *)&v7 initWithCoder:v4];
+  v5 = [(AXMEvaluationNode *)&v7 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_taxonomyOptions = [v4 decodeInt32ForKey:@"taxonomyOptions"];
+    v5->_taxonomyOptions = [coderCopy decodeInt32ForKey:@"taxonomyOptions"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = AXMMediaAnalysisSceneDetectorNode;
-  v4 = a3;
-  [(AXMEvaluationNode *)&v5 encodeWithCoder:v4];
-  [v4 encodeInt32:self->_taxonomyOptions forKey:{@"taxonomyOptions", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(AXMEvaluationNode *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInt32:self->_taxonomyOptions forKey:{@"taxonomyOptions", v5.receiver, v5.super_class}];
 }
 
 + (BOOL)isSupported
@@ -46,36 +46,36 @@
     return 0;
   }
 
-  v2 = [MEMORY[0x1E696AE30] processInfo];
-  v3 = [v2 physicalMemory] > 0x773593FF;
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  v3 = [processInfo physicalMemory] > 0x773593FF;
 
   return v3;
 }
 
-- (void)evaluate:(id)a3 metrics:(id)a4
+- (void)evaluate:(id)evaluate metrics:(id)metrics
 {
   v48[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  evaluateCopy = evaluate;
   v40.receiver = self;
   v40.super_class = AXMMediaAnalysisSceneDetectorNode;
-  v30 = a4;
-  [(AXMEvaluationNode *)&v40 evaluate:v6 metrics:?];
-  v7 = [v6 sourceInput];
-  v33 = [v7 phAssetLocalIdentifier];
+  metricsCopy = metrics;
+  [(AXMEvaluationNode *)&v40 evaluate:evaluateCopy metrics:?];
+  sourceInput = [evaluateCopy sourceInput];
+  phAssetLocalIdentifier = [sourceInput phAssetLocalIdentifier];
 
-  v8 = [v6 sourceInput];
-  v34 = [v8 photoLibraryURL];
+  sourceInput2 = [evaluateCopy sourceInput];
+  photoLibraryURL = [sourceInput2 photoLibraryURL];
 
-  v9 = [v6 sourceInput];
-  v32 = [v9 ciImage];
+  sourceInput3 = [evaluateCopy sourceInput];
+  ciImage = [sourceInput3 ciImage];
 
-  v10 = [v6 sourceInput];
-  v31 = [v10 pixelBuffer];
+  sourceInput4 = [evaluateCopy sourceInput];
+  pixelBuffer = [sourceInput4 pixelBuffer];
 
-  v11 = [(AXMMediaAnalysisSceneDetectorNode *)self _sceneClassificationRequest];
-  LODWORD(v10) = v11 == 0;
+  _sceneClassificationRequest = [(AXMMediaAnalysisSceneDetectorNode *)self _sceneClassificationRequest];
+  LODWORD(sourceInput4) = _sceneClassificationRequest == 0;
 
-  if (v10)
+  if (sourceInput4)
   {
     *buf = 0;
     v43 = buf;
@@ -99,7 +99,7 @@
     [(AXMMediaAnalysisSceneDetectorNode *)self _setSceneClassificationRequest:v14];
   }
 
-  v15 = [(AXMMediaAnalysisSceneDetectorNode *)self _sceneClassificationRequest];
+  _sceneClassificationRequest2 = [(AXMMediaAnalysisSceneDetectorNode *)self _sceneClassificationRequest];
   v16 = dispatch_semaphore_create(0);
   objc_initWeak(location, self);
   v35[0] = MEMORY[0x1E69E9820];
@@ -107,40 +107,40 @@
   v35[2] = __54__AXMMediaAnalysisSceneDetectorNode_evaluate_metrics___block_invoke;
   v35[3] = &unk_1E7A1E1B8;
   objc_copyWeak(&v39, location);
-  v17 = v15;
+  v17 = _sceneClassificationRequest2;
   v36 = v17;
-  v29 = v6;
+  v29 = evaluateCopy;
   v37 = v29;
   v18 = v16;
   v38 = v18;
   v19 = MEMORY[0x1B2700900](v35);
   v20 = +[AXMMADSService sharedInstance];
-  v21 = [v20 service];
+  service = [v20 service];
 
-  if (v34 && v33)
+  if (photoLibraryURL && phAssetLocalIdentifier)
   {
     v48[0] = v17;
     v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:v48 count:1];
-    v23 = [v21 performRequests:v22 onAssetWithLocalIdentifier:v33 fromPhotoLibraryWithURL:v34 completionHandler:v19];
+    v23 = [service performRequests:v22 onAssetWithLocalIdentifier:phAssetLocalIdentifier fromPhotoLibraryWithURL:photoLibraryURL completionHandler:v19];
 LABEL_12:
     v24 = v23;
 
     goto LABEL_13;
   }
 
-  if (v32)
+  if (ciImage)
   {
     v47 = v17;
     v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v47 count:1];
-    v23 = [v21 performRequests:v22 onCIImage:v32 withOrientation:1 andIdentifier:&stru_1F23EA908 completionHandler:v19];
+    v23 = [service performRequests:v22 onCIImage:ciImage withOrientation:1 andIdentifier:&stru_1F23EA908 completionHandler:v19];
     goto LABEL_12;
   }
 
-  if (v31)
+  if (pixelBuffer)
   {
     v46 = v17;
     v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v46 count:1];
-    v23 = [v21 performRequests:v22 onPixelBuffer:objc_msgSend(v31 withOrientation:"pixelBuffer") andIdentifier:objc_msgSend(v31 completionHandler:{"orientation"), &stru_1F23EA908, v19}];
+    v23 = [service performRequests:v22 onPixelBuffer:objc_msgSend(pixelBuffer withOrientation:"pixelBuffer") andIdentifier:objc_msgSend(pixelBuffer completionHandler:{"orientation"), &stru_1F23EA908, v19}];
     goto LABEL_12;
   }
 
@@ -160,7 +160,7 @@ LABEL_13:
           [(AXMMediaAnalysisSceneDetectorNode *)buf evaluate:v27 metrics:?];
         }
 
-        [v21 cancelRequestID:v24];
+        [service cancelRequestID:v24];
       }
 
       v28 = dispatch_time(0, 100000000);
@@ -220,13 +220,13 @@ void __54__AXMMediaAnalysisSceneDetectorNode_evaluate_metrics___block_invoke(uin
   dispatch_semaphore_signal(*(a1 + 48));
 }
 
-- (void)_addSceneDetectorFeaturesToContext:(id)a3 fromResults:(id)a4
+- (void)_addSceneDetectorFeaturesToContext:(id)context fromResults:(id)results
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 count])
+  contextCopy = context;
+  resultsCopy = results;
+  if ([resultsCopy count])
   {
-    v8 = [v7 firstObject];
+    firstObject = [resultsCopy firstObject];
     v23 = 0;
     v24 = &v23;
     v25 = 0x2050000000;
@@ -250,45 +250,45 @@ void __54__AXMMediaAnalysisSceneDetectorNode_evaluate_metrics___block_invoke(uin
 
     if (isKindOfClass)
     {
-      v12 = [v7 firstObject];
-      v13 = [v12 classificationObservations];
-      [(AXMMediaAnalysisSceneDetectorNode *)self _addSceneClassificationObservations:v13 toContext:v6];
+      firstObject2 = [resultsCopy firstObject];
+      classificationObservations = [firstObject2 classificationObservations];
+      [(AXMMediaAnalysisSceneDetectorNode *)self _addSceneClassificationObservations:classificationObservations toContext:contextCopy];
 
-      v14 = [v6 analysisOptions];
-      v15 = [v14 detectMADScenesNSFW];
+      analysisOptions = [contextCopy analysisOptions];
+      detectMADScenesNSFW = [analysisOptions detectMADScenesNSFW];
 
-      if (v15)
+      if (detectMADScenesNSFW)
       {
-        v16 = [v12 nsfwObservations];
-        [(AXMMediaAnalysisSceneDetectorNode *)self _addNSFWClassificationObservations:v16 toContext:v6];
+        nsfwObservations = [firstObject2 nsfwObservations];
+        [(AXMMediaAnalysisSceneDetectorNode *)self _addNSFWClassificationObservations:nsfwObservations toContext:contextCopy];
       }
 
-      v17 = [v6 analysisOptions];
-      v18 = [v17 detectMADScenesSignificantEvents];
+      analysisOptions2 = [contextCopy analysisOptions];
+      detectMADScenesSignificantEvents = [analysisOptions2 detectMADScenesSignificantEvents];
 
-      if (v18)
+      if (detectMADScenesSignificantEvents)
       {
-        v19 = [v12 significantEventObservations];
-        [(AXMMediaAnalysisSceneDetectorNode *)self _addSignificantEventClassificationObservations:v19 toContext:v6];
+        significantEventObservations = [firstObject2 significantEventObservations];
+        [(AXMMediaAnalysisSceneDetectorNode *)self _addSignificantEventClassificationObservations:significantEventObservations toContext:contextCopy];
       }
 
-      v20 = [v12 recognizedObjectObservations];
-      [(AXMMediaAnalysisSceneDetectorNode *)self _addRecognizedObjectObservations:v20 toContext:v6];
+      recognizedObjectObservations = [firstObject2 recognizedObjectObservations];
+      [(AXMMediaAnalysisSceneDetectorNode *)self _addRecognizedObjectObservations:recognizedObjectObservations toContext:contextCopy];
 
-      v21 = [v12 saliencyObservations];
-      [(AXMMediaAnalysisSceneDetectorNode *)self _addSaliencyImageObservations:v21 toContext:v6];
+      saliencyObservations = [firstObject2 saliencyObservations];
+      [(AXMMediaAnalysisSceneDetectorNode *)self _addSaliencyImageObservations:saliencyObservations toContext:contextCopy];
     }
   }
 }
 
-- (void)_addSceneClassificationObservations:(id)a3 toContext:(id)a4
+- (void)_addSceneClassificationObservations:(id)observations toContext:(id)context
 {
   v51 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  observationsCopy = observations;
+  contextCopy = context;
   if ([(AXMMediaAnalysisSceneDetectorNode *)self taxonomyOptions])
   {
-    v8 = [AXMPhotoVisionSupport processSceneClassifications:v6 withOptions:[(AXMMediaAnalysisSceneDetectorNode *)self taxonomyOptions]];
+    v8 = [AXMPhotoVisionSupport processSceneClassifications:observationsCopy withOptions:[(AXMMediaAnalysisSceneDetectorNode *)self taxonomyOptions]];
     v44 = 0u;
     v45 = 0u;
     v46 = 0u;
@@ -308,9 +308,9 @@ void __54__AXMMediaAnalysisSceneDetectorNode_evaluate_metrics___block_invoke(uin
           }
 
           v13 = *(*(&v44 + 1) + 8 * i);
-          [v7 size];
+          [contextCopy size];
           v14 = [AXMVisionFeature featureWithMediaAnalysisTaxonomyNode:v13 canvasSize:?];
-          [v7 appendFeature:v14];
+          [contextCopy appendFeature:v14];
         }
 
         v10 = [v8 countByEnumeratingWithState:&v44 objects:v50 count:16];
@@ -326,12 +326,12 @@ void __54__AXMMediaAnalysisSceneDetectorNode_evaluate_metrics___block_invoke(uin
     v43 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v8 = v6;
+    v8 = observationsCopy;
     v15 = [v8 countByEnumeratingWithState:&v40 objects:v49 count:16];
     if (v15)
     {
       v16 = v15;
-      v35 = v6;
+      v35 = observationsCopy;
       v17 = *v41;
       do
       {
@@ -344,21 +344,21 @@ void __54__AXMMediaAnalysisSceneDetectorNode_evaluate_metrics___block_invoke(uin
 
           v19 = *(*(&v40 + 1) + 8 * j);
           v20 = [AXMPhotoVisionSupport localizedLabelForClassificationObservation:v19];
-          v21 = [v19 identifier];
+          identifier = [v19 identifier];
           [v19 confidence];
           v23 = v22;
-          [v7 size];
+          [contextCopy size];
           v25 = v24;
           LODWORD(v24) = v23;
-          v27 = [AXMVisionFeature mediaAnalysisSceneClassificationWithLabel:v21 localizedValue:v20 confidence:v24 canvasSize:v25, v26];
-          [v7 appendFeature:v27];
+          v27 = [AXMVisionFeature mediaAnalysisSceneClassificationWithLabel:identifier localizedValue:v20 confidence:v24 canvasSize:v25, v26];
+          [contextCopy appendFeature:v27];
         }
 
         v16 = [v8 countByEnumeratingWithState:&v40 objects:v49 count:16];
       }
 
       while (v16);
-      v6 = v35;
+      observationsCopy = v35;
     }
   }
 
@@ -366,7 +366,7 @@ void __54__AXMMediaAnalysisSceneDetectorNode_evaluate_metrics___block_invoke(uin
   v39 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v28 = v6;
+  v28 = observationsCopy;
   v29 = [v28 countByEnumeratingWithState:&v36 objects:v48 count:16];
   if (v29)
   {
@@ -384,8 +384,8 @@ void __54__AXMMediaAnalysisSceneDetectorNode_evaluate_metrics___block_invoke(uin
         v33 = *(*(&v36 + 1) + 8 * k);
         if ([(AXMMediaAnalysisSceneDetectorNode *)self _shouldIncludeSceneLabelForOCRDocumenTypeDetection:v33])
         {
-          v34 = [v33 identifier];
-          [v7 addMediaAnalysisSceneLabelForOCRDocumentTypeDetection:v34];
+          identifier2 = [v33 identifier];
+          [contextCopy addMediaAnalysisSceneLabelForOCRDocumentTypeDetection:identifier2];
         }
       }
 
@@ -395,14 +395,14 @@ void __54__AXMMediaAnalysisSceneDetectorNode_evaluate_metrics___block_invoke(uin
     while (v30);
   }
 
-  [v7 addEvaluatedFeatureType:26];
+  [contextCopy addEvaluatedFeatureType:26];
 }
 
-+ (BOOL)addNSFWResultToContext:(id)a3 forIdentifier:(id)a4 confidence:(double)a5 markAsSensitiveCaptionContent:(BOOL)a6
++ (BOOL)addNSFWResultToContext:(id)context forIdentifier:(id)identifier confidence:(double)confidence markAsSensitiveCaptionContent:(BOOL)content
 {
-  v6 = a6;
-  v9 = a3;
-  v10 = a4;
+  contentCopy = content;
+  contextCopy = context;
+  identifierCopy = identifier;
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
@@ -424,26 +424,26 @@ void __54__AXMMediaAnalysisSceneDetectorNode_evaluate_metrics___block_invoke(uin
     _Unwind_Resume(v20);
   }
 
-  v13 = [v10 isEqualToString:*v11];
+  v13 = [identifierCopy isEqualToString:*v11];
   if (v13)
   {
-    [v9 size];
+    [contextCopy size];
     v16 = v15;
-    v14 = a5;
-    *&v15 = v14;
+    confidenceCopy = confidence;
+    *&v15 = confidenceCopy;
     v18 = [AXMVisionFeature mediaAnalysisNSFWClassificationWithCategory:@"NSFW Explicit" confidence:v15 canvasSize:v16, v17];
-    [v18 setCaptionMayContainSensitiveContent:v6];
-    [v9 appendFeature:v18];
+    [v18 setCaptionMayContainSensitiveContent:contentCopy];
+    [contextCopy appendFeature:v18];
   }
 
   return v13;
 }
 
-+ (BOOL)addSignificantEventResultToContext:(id)a3 forIdentifier:(id)a4 confidence:(double)a5 markAsSensitiveCaptionContent:(BOOL)a6
++ (BOOL)addSignificantEventResultToContext:(id)context forIdentifier:(id)identifier confidence:(double)confidence markAsSensitiveCaptionContent:(BOOL)content
 {
-  v6 = a6;
-  v9 = a3;
-  v10 = a4;
+  contentCopy = content;
+  contextCopy = context;
+  identifierCopy = identifier;
   v42 = 0;
   v43 = &v42;
   v44 = 0x2020000000;
@@ -472,7 +472,7 @@ LABEL_47:
     goto LABEL_48;
   }
 
-  if ([v10 isEqualToString:*v11])
+  if ([identifierCopy isEqualToString:*v11])
   {
     v13 = AXMSignificantEventCategoryBlood;
     goto LABEL_39;
@@ -497,7 +497,7 @@ LABEL_47:
     goto LABEL_44;
   }
 
-  if ([v10 isEqualToString:*v14])
+  if ([identifierCopy isEqualToString:*v14])
   {
     v13 = AXMSignificantEventCategoryDemonstration;
     goto LABEL_39;
@@ -522,7 +522,7 @@ LABEL_47:
     goto LABEL_45;
   }
 
-  if ([v10 isEqualToString:*v16])
+  if ([identifierCopy isEqualToString:*v16])
   {
     v13 = AXMSignificantEventCategoryDestruction;
     goto LABEL_39;
@@ -547,7 +547,7 @@ LABEL_47:
     goto LABEL_46;
   }
 
-  if ([v10 isEqualToString:*v18])
+  if ([identifierCopy isEqualToString:*v18])
   {
     v13 = AXMSignificantEventCategoryFireDevastation;
     goto LABEL_39;
@@ -572,7 +572,7 @@ LABEL_47:
     goto LABEL_47;
   }
 
-  if ([v10 isEqualToString:*v20])
+  if ([identifierCopy isEqualToString:*v20])
   {
     v13 = AXMSignificantEventCategoryFloodDevastation;
     goto LABEL_39;
@@ -600,7 +600,7 @@ LABEL_48:
     _Unwind_Resume(v41);
   }
 
-  if ([v10 isEqualToString:*v22])
+  if ([identifierCopy isEqualToString:*v22])
   {
     v13 = AXMSignificantEventCategoryFuneral;
   }
@@ -608,7 +608,7 @@ LABEL_48:
   else
   {
     v24 = getVN2vIWnsZbk4Su55oeWfKDq1();
-    v25 = [v10 isEqualToString:v24];
+    v25 = [identifierCopy isEqualToString:v24];
 
     if (v25)
     {
@@ -618,7 +618,7 @@ LABEL_48:
     else
     {
       v26 = getVNmNJnu0xlW8CZXt6hJ7Rpb0();
-      v27 = [v10 isEqualToString:v26];
+      v27 = [identifierCopy isEqualToString:v26];
 
       if (v27)
       {
@@ -628,7 +628,7 @@ LABEL_48:
       else
       {
         v28 = getVN35FOB1QhtSfYGRIJvTgtTq();
-        v29 = [v10 isEqualToString:v28];
+        v29 = [identifierCopy isEqualToString:v28];
 
         if (v29)
         {
@@ -638,7 +638,7 @@ LABEL_48:
         else
         {
           v30 = getVN6ZsEIQ9ri2eF1vhsxw5COm();
-          v31 = [v10 isEqualToString:v30];
+          v31 = [identifierCopy isEqualToString:v30];
 
           if (!v31)
           {
@@ -661,13 +661,13 @@ LABEL_39:
   }
 
   v33 = v32;
-  [v9 size];
+  [contextCopy size];
   v36 = v35;
-  v34 = a5;
-  *&v35 = v34;
+  confidenceCopy = confidence;
+  *&v35 = confidenceCopy;
   v38 = [AXMVisionFeature mediaAnalysisSignificantEventClassificationWithCategory:v33 confidence:v35 canvasSize:v36, v37];
-  [v38 setCaptionMayContainSensitiveContent:v6];
-  [v9 appendFeature:v38];
+  [v38 setCaptionMayContainSensitiveContent:contentCopy];
+  [contextCopy appendFeature:v38];
 
   v39 = 1;
 LABEL_42:
@@ -675,16 +675,16 @@ LABEL_42:
   return v39;
 }
 
-- (void)_addNSFWClassificationObservations:(id)a3 toContext:(id)a4
+- (void)_addNSFWClassificationObservations:(id)observations toContext:(id)context
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  observationsCopy = observations;
+  contextCopy = context;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v7 = [observationsCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -695,34 +695,34 @@ LABEL_42:
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(observationsCopy);
         }
 
         v11 = *(*(&v14 + 1) + 8 * i);
-        v12 = [v11 identifier];
+        identifier = [v11 identifier];
         [v11 confidence];
-        [AXMMediaAnalysisSceneDetectorNode addNSFWResultToContext:v6 forIdentifier:v12 confidence:0 markAsSensitiveCaptionContent:v13];
+        [AXMMediaAnalysisSceneDetectorNode addNSFWResultToContext:contextCopy forIdentifier:identifier confidence:0 markAsSensitiveCaptionContent:v13];
       }
 
-      v8 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [observationsCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v8);
   }
 
-  [v6 addEvaluatedFeatureType:29];
+  [contextCopy addEvaluatedFeatureType:29];
 }
 
-- (void)_addSignificantEventClassificationObservations:(id)a3 toContext:(id)a4
+- (void)_addSignificantEventClassificationObservations:(id)observations toContext:(id)context
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  observationsCopy = observations;
+  contextCopy = context;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v7 = [observationsCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -733,35 +733,35 @@ LABEL_42:
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(observationsCopy);
         }
 
         v11 = *(*(&v14 + 1) + 8 * i);
-        v12 = [v11 identifier];
+        identifier = [v11 identifier];
         [v11 confidence];
-        [AXMMediaAnalysisSceneDetectorNode addSignificantEventResultToContext:v6 forIdentifier:v12 confidence:0 markAsSensitiveCaptionContent:v13];
+        [AXMMediaAnalysisSceneDetectorNode addSignificantEventResultToContext:contextCopy forIdentifier:identifier confidence:0 markAsSensitiveCaptionContent:v13];
       }
 
-      v8 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [observationsCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v8);
   }
 
-  [v6 addEvaluatedFeatureType:30];
+  [contextCopy addEvaluatedFeatureType:30];
 }
 
-- (void)_addRecognizedObjectObservations:(id)a3 toContext:(id)a4
+- (void)_addRecognizedObjectObservations:(id)observations toContext:(id)context
 {
   v53 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v43 = a4;
+  observationsCopy = observations;
+  contextCopy = context;
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
-  obj = v5;
-  v6 = [v5 countByEnumeratingWithState:&v46 objects:v52 count:16];
+  obj = observationsCopy;
+  v6 = [observationsCopy countByEnumeratingWithState:&v46 objects:v52 count:16];
   if (v6)
   {
     v8 = v6;
@@ -784,50 +784,50 @@ LABEL_42:
         v13 = v12;
         if (v12)
         {
-          v14 = [v12 label];
-          if (v14)
+          label = [v12 label];
+          if (label)
           {
-            v15 = v14;
+            v15 = label;
             v16 = +[AXMPhotoVisionSupport _deniedVoiceOverObjectClassificationLabels];
-            v17 = [v13 label];
-            v18 = [v16 containsObject:v17];
+            label2 = [v13 label];
+            v18 = [v16 containsObject:label2];
 
             if (v18)
             {
-              v19 = AXMediaLogCommon();
-              if (!os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
+              localizedName = AXMediaLogCommon();
+              if (!os_log_type_enabled(localizedName, OS_LOG_TYPE_INFO))
               {
                 goto LABEL_20;
               }
 
-              v20 = [v13 label];
+              label3 = [v13 label];
               *buf = v42;
-              v51 = v20;
-              _os_log_impl(&dword_1AE37B000, v19, OS_LOG_TYPE_INFO, "Object classifier detected but denied for VoiceOver: %@", buf, 0xCu);
+              v51 = label3;
+              _os_log_impl(&dword_1AE37B000, localizedName, OS_LOG_TYPE_INFO, "Object classifier detected but denied for VoiceOver: %@", buf, 0xCu);
               goto LABEL_17;
             }
           }
 
-          v19 = [v13 localizedName];
-          if (![v19 length])
+          localizedName = [v13 localizedName];
+          if (![localizedName length])
           {
             v21 = AXMediaLogCommon();
             if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
             {
               *buf = v42;
-              v51 = v19;
+              v51 = localizedName;
               _os_log_impl(&dword_1AE37B000, v21, OS_LOG_TYPE_DEFAULT, "Could not get localized value for label: %@. Falling back to raw value", buf, 0xCu);
             }
 
-            v22 = [v13 label];
+            label4 = [v13 label];
 
-            v19 = v22;
+            localizedName = label4;
           }
 
           [v11 confidence];
           if (v23 > 0.4)
           {
-            v24 = [v13 label];
+            label5 = [v13 label];
             [v11 boundingBox];
             v26 = v25;
             v28 = v27;
@@ -835,27 +835,27 @@ LABEL_42:
             v32 = v31;
             [v11 confidence];
             v34 = v33;
-            [v43 size];
+            [contextCopy size];
             v36 = v35;
             v38 = v37;
             v39 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(v13, "sceneClassId")}];
-            v40 = [v39 stringValue];
+            stringValue = [v39 stringValue];
             LODWORD(v41) = v34;
-            v20 = [AXMVisionFeature mediaAnalysisObjectClassificationWithLabel:v24 localizedValue:v19 boundingBox:v40 confidence:v26 canvasSize:v28 sceneClassId:v30, v32, v41, v36, v38];
+            label3 = [AXMVisionFeature mediaAnalysisObjectClassificationWithLabel:label5 localizedValue:localizedName boundingBox:stringValue confidence:v26 canvasSize:v28 sceneClassId:v30, v32, v41, v36, v38];
 
             v8 = v44;
-            [v43 appendFeature:v20];
+            [contextCopy appendFeature:label3];
 LABEL_17:
           }
         }
 
         else
         {
-          v19 = AXMediaLogCommon();
-          if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
+          localizedName = AXMediaLogCommon();
+          if (os_log_type_enabled(localizedName, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 0;
-            _os_log_impl(&dword_1AE37B000, v19, OS_LOG_TYPE_DEFAULT, "Recognized object result produced no labels", buf, 2u);
+            _os_log_impl(&dword_1AE37B000, localizedName, OS_LOG_TYPE_DEFAULT, "Recognized object result produced no labels", buf, 2u);
           }
         }
 
@@ -871,23 +871,23 @@ LABEL_20:
     while (v8);
   }
 
-  [v43 addEvaluatedFeatureType:27];
+  [contextCopy addEvaluatedFeatureType:27];
 }
 
-- (void)_addSaliencyImageObservations:(id)a3 toContext:(id)a4
+- (void)_addSaliencyImageObservations:(id)observations toContext:(id)context
 {
-  v5 = a4;
-  v6 = [a3 firstObject];
-  v7 = [v6 salientObjects];
+  contextCopy = context;
+  firstObject = [observations firstObject];
+  salientObjects = [firstObject salientObjects];
   v10 = MEMORY[0x1E69E9820];
   v11 = 3221225472;
   v12 = __77__AXMMediaAnalysisSceneDetectorNode__addSaliencyImageObservations_toContext___block_invoke;
   v13 = &unk_1E7A1E1E0;
-  v14 = v6;
-  v15 = v5;
-  v8 = v5;
-  v9 = v6;
-  [v7 enumerateObjectsUsingBlock:&v10];
+  v14 = firstObject;
+  v15 = contextCopy;
+  v8 = contextCopy;
+  v9 = firstObject;
+  [salientObjects enumerateObjectsUsingBlock:&v10];
   [v8 addEvaluatedFeatureType:{28, v10, v11, v12, v13}];
 }
 
@@ -925,14 +925,14 @@ void __77__AXMMediaAnalysisSceneDetectorNode__addSaliencyImageObservations_toCon
   }
 }
 
-- (BOOL)_shouldIncludeSceneLabelForOCRDocumenTypeDetection:(id)a3
+- (BOOL)_shouldIncludeSceneLabelForOCRDocumenTypeDetection:(id)detection
 {
-  v3 = a3;
-  v4 = [v3 identifier];
+  detectionCopy = detection;
+  identifier = [detectionCopy identifier];
   v5 = 0.35;
-  if (([v4 isEqualToString:@"diagram"] & 1) == 0 && (objc_msgSend(v4, "isEqualToString:", @"envelope") & 1) == 0)
+  if (([identifier isEqualToString:@"diagram"] & 1) == 0 && (objc_msgSend(identifier, "isEqualToString:", @"envelope") & 1) == 0)
   {
-    if (![v4 isEqualToString:@"receipt"])
+    if (![identifier isEqualToString:@"receipt"])
     {
       v7 = 0;
       goto LABEL_6;
@@ -941,7 +941,7 @@ void __77__AXMMediaAnalysisSceneDetectorNode__addSaliencyImageObservations_toCon
     v5 = 0.65;
   }
 
-  [v3 confidence];
+  [detectionCopy confidence];
   v7 = v5 < v6;
 LABEL_6:
 

@@ -7,16 +7,16 @@
 - (BOOL)_isInclusive;
 - (BOOL)excludesCategory:(MKPointOfInterestCategory)category;
 - (BOOL)includesCategory:(MKPointOfInterestCategory)category;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToPointOfInterestFilter:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToPointOfInterestFilter:(id)filter;
 - (MKPointOfInterestFilter)initExcludingCategories:(NSArray *)categories;
 - (MKPointOfInterestFilter)initIncludingCategories:(NSArray *)categories;
-- (MKPointOfInterestFilter)initWithCoder:(id)a3;
+- (MKPointOfInterestFilter)initWithCoder:(id)coder;
 - (id)_geoPOICategoryFilter;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)initIncludingCategories:(id)a3 excludingCategories:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (id)initIncludingCategories:(id)categories excludingCategories:(id)excludingCategories;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MKPointOfInterestFilter
@@ -179,13 +179,13 @@
   return v6;
 }
 
-- (BOOL)isEqualToPointOfInterestFilter:(id)a3
+- (BOOL)isEqualToPointOfInterestFilter:(id)filter
 {
-  v4 = a3;
-  if (v4 && ((includedCategories = self->_includedCategories, !(includedCategories | v4[1])) || [(NSSet *)includedCategories isEqualToSet:?]))
+  filterCopy = filter;
+  if (filterCopy && ((includedCategories = self->_includedCategories, !(includedCategories | filterCopy[1])) || [(NSSet *)includedCategories isEqualToSet:?]))
   {
     excludedCategories = self->_excludedCategories;
-    if (excludedCategories | v4[2])
+    if (excludedCategories | filterCopy[2])
     {
       v7 = [(NSSet *)excludedCategories isEqualToSet:?];
     }
@@ -204,15 +204,15 @@
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(MKPointOfInterestFilter *)self isEqualToPointOfInterestFilter:v4];
+  equalCopy = equal;
+  v5 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(MKPointOfInterestFilter *)self isEqualToPointOfInterestFilter:equalCopy];
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   v5 = v4;
@@ -225,28 +225,28 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   includedCategories = self->_includedCategories;
-  v7 = v4;
+  v7 = coderCopy;
   if (includedCategories)
   {
-    [v4 encodeObject:includedCategories forKey:@"MKPointOfInterestFilterInclusions"];
-    v4 = v7;
+    [coderCopy encodeObject:includedCategories forKey:@"MKPointOfInterestFilterInclusions"];
+    coderCopy = v7;
   }
 
   excludedCategories = self->_excludedCategories;
   if (excludedCategories)
   {
     [v7 encodeObject:excludedCategories forKey:@"MKPointOfInterestFilterExclusions"];
-    v4 = v7;
+    coderCopy = v7;
   }
 }
 
-- (MKPointOfInterestFilter)initWithCoder:(id)a3
+- (MKPointOfInterestFilter)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = MKPointOfInterestFilter;
   v5 = [(MKPointOfInterestFilter *)&v14 init];
@@ -255,11 +255,11 @@
     v6 = objc_alloc(MEMORY[0x1E695DFD8]);
     v7 = objc_opt_class();
     v8 = [v6 initWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"MKPointOfInterestFilterInclusions"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"MKPointOfInterestFilterInclusions"];
     includedCategories = v5->_includedCategories;
     v5->_includedCategories = v9;
 
-    v11 = [v4 decodeObjectOfClasses:v8 forKey:@"MKPointOfInterestFilterExclusions"];
+    v11 = [coderCopy decodeObjectOfClasses:v8 forKey:@"MKPointOfInterestFilterExclusions"];
     excludedCategories = v5->_excludedCategories;
     v5->_excludedCategories = v11;
   }
@@ -267,20 +267,20 @@
   return v5;
 }
 
-- (id)initIncludingCategories:(id)a3 excludingCategories:(id)a4
+- (id)initIncludingCategories:(id)categories excludingCategories:(id)excludingCategories
 {
-  v6 = a3;
-  v7 = a4;
+  categoriesCopy = categories;
+  excludingCategoriesCopy = excludingCategories;
   v14.receiver = self;
   v14.super_class = MKPointOfInterestFilter;
   v8 = [(MKPointOfInterestFilter *)&v14 init];
   if (v8)
   {
-    v9 = [MEMORY[0x1E695DFD8] setWithArray:v6];
+    v9 = [MEMORY[0x1E695DFD8] setWithArray:categoriesCopy];
     includedCategories = v8->_includedCategories;
     v8->_includedCategories = v9;
 
-    v11 = [MEMORY[0x1E695DFD8] setWithArray:v7];
+    v11 = [MEMORY[0x1E695DFD8] setWithArray:excludingCategoriesCopy];
     excludedCategories = v8->_excludedCategories;
     v8->_excludedCategories = v11;
   }

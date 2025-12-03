@@ -1,17 +1,17 @@
 @interface AWDOSAnalyticsSubmissions
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasResponse:(BOOL)a3;
-- (void)setHasSeconds:(BOOL)a3;
-- (void)setHasSizeBytes:(BOOL)a3;
-- (void)setHasTimestamp:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasResponse:(BOOL)response;
+- (void)setHasSeconds:(BOOL)seconds;
+- (void)setHasSizeBytes:(BOOL)bytes;
+- (void)setHasTimestamp:(BOOL)timestamp;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDOSAnalyticsSubmissions
@@ -25,9 +25,9 @@
   [(AWDOSAnalyticsSubmissions *)&v3 dealloc];
 }
 
-- (void)setHasTimestamp:(BOOL)a3
+- (void)setHasTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 8;
   }
@@ -40,9 +40,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasResponse:(BOOL)a3
+- (void)setHasResponse:(BOOL)response
 {
-  if (a3)
+  if (response)
   {
     v3 = 16;
   }
@@ -55,9 +55,9 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasSizeBytes:(BOOL)a3
+- (void)setHasSizeBytes:(BOOL)bytes
 {
-  if (a3)
+  if (bytes)
   {
     v3 = 4;
   }
@@ -70,9 +70,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasSeconds:(BOOL)a3
+- (void)setHasSeconds:(BOOL)seconds
 {
-  if (a3)
+  if (seconds)
   {
     v3 = 2;
   }
@@ -94,29 +94,29 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if ((has & 8) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
     has = self->_has;
   }
 
   if ((has & 0x10) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_response), @"response"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_response), @"response"}];
   }
 
   connection = self->_connection;
   if (connection)
   {
-    [v3 setObject:connection forKey:@"connection"];
+    [dictionary setObject:connection forKey:@"connection"];
   }
 
   routing = self->_routing;
   if (routing)
   {
-    [v3 setObject:routing forKey:@"routing"];
+    [dictionary setObject:routing forKey:@"routing"];
   }
 
   v7 = self->_has;
@@ -128,16 +128,16 @@
     }
 
 LABEL_15:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_logs), @"logs"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_logs), @"logs"}];
     if ((*&self->_has & 2) == 0)
     {
-      return v3;
+      return dictionary;
     }
 
     goto LABEL_12;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_sizeBytes), @"sizeBytes"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_sizeBytes), @"sizeBytes"}];
   v7 = self->_has;
   if (v7)
   {
@@ -148,13 +148,13 @@ LABEL_11:
   if ((v7 & 2) != 0)
   {
 LABEL_12:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_seconds), @"seconds"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_seconds), @"seconds"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if ((has & 8) != 0)
@@ -219,37 +219,37 @@ LABEL_15:
   PBDataWriterWriteUint64Field();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if ((has & 8) != 0)
   {
-    *(a3 + 4) = self->_timestamp;
-    *(a3 + 64) |= 8u;
+    *(to + 4) = self->_timestamp;
+    *(to + 64) |= 8u;
     has = self->_has;
   }
 
   if ((has & 0x10) != 0)
   {
-    *(a3 + 12) = self->_response;
-    *(a3 + 64) |= 0x10u;
+    *(to + 12) = self->_response;
+    *(to + 64) |= 0x10u;
   }
 
   if (self->_connection)
   {
-    [a3 setConnection:?];
+    [to setConnection:?];
   }
 
   if (self->_routing)
   {
-    [a3 setRouting:?];
+    [to setRouting:?];
   }
 
   v6 = self->_has;
   if ((v6 & 4) != 0)
   {
-    *(a3 + 3) = self->_sizeBytes;
-    *(a3 + 64) |= 4u;
+    *(to + 3) = self->_sizeBytes;
+    *(to + 64) |= 4u;
     v6 = self->_has;
     if ((v6 & 1) == 0)
     {
@@ -268,21 +268,21 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  *(a3 + 1) = self->_logs;
-  *(a3 + 64) |= 1u;
+  *(to + 1) = self->_logs;
+  *(to + 64) |= 1u;
   if ((*&self->_has & 2) == 0)
   {
     return;
   }
 
 LABEL_12:
-  *(a3 + 2) = self->_seconds;
-  *(a3 + 64) |= 2u;
+  *(to + 2) = self->_seconds;
+  *(to + 64) |= 2u;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 8) != 0)
@@ -298,8 +298,8 @@ LABEL_12:
     *(v5 + 64) |= 0x10u;
   }
 
-  *(v6 + 40) = [(NSString *)self->_connection copyWithZone:a3];
-  *(v6 + 56) = [(NSString *)self->_routing copyWithZone:a3];
+  *(v6 + 40) = [(NSString *)self->_connection copyWithZone:zone];
+  *(v6 + 56) = [(NSString *)self->_routing copyWithZone:zone];
   v8 = self->_has;
   if ((v8 & 4) == 0)
   {
@@ -338,21 +338,21 @@ LABEL_8:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
-    v6 = *(a3 + 64);
+    v6 = *(equal + 64);
     if ((*&self->_has & 8) != 0)
     {
-      if ((*(a3 + 64) & 8) == 0 || self->_timestamp != *(a3 + 4))
+      if ((*(equal + 64) & 8) == 0 || self->_timestamp != *(equal + 4))
       {
         goto LABEL_30;
       }
     }
 
-    else if ((*(a3 + 64) & 8) != 0)
+    else if ((*(equal + 64) & 8) != 0)
     {
 LABEL_30:
       LOBYTE(v5) = 0;
@@ -361,53 +361,53 @@ LABEL_30:
 
     if ((*&self->_has & 0x10) != 0)
     {
-      if ((*(a3 + 64) & 0x10) == 0 || self->_response != *(a3 + 12))
+      if ((*(equal + 64) & 0x10) == 0 || self->_response != *(equal + 12))
       {
         goto LABEL_30;
       }
     }
 
-    else if ((*(a3 + 64) & 0x10) != 0)
+    else if ((*(equal + 64) & 0x10) != 0)
     {
       goto LABEL_30;
     }
 
     connection = self->_connection;
-    if (!(connection | *(a3 + 5)) || (v5 = [(NSString *)connection isEqual:?]) != 0)
+    if (!(connection | *(equal + 5)) || (v5 = [(NSString *)connection isEqual:?]) != 0)
     {
       routing = self->_routing;
-      if (!(routing | *(a3 + 7)) || (v5 = [(NSString *)routing isEqual:?]) != 0)
+      if (!(routing | *(equal + 7)) || (v5 = [(NSString *)routing isEqual:?]) != 0)
       {
         if ((*&self->_has & 4) != 0)
         {
-          if ((*(a3 + 64) & 4) == 0 || self->_sizeBytes != *(a3 + 3))
+          if ((*(equal + 64) & 4) == 0 || self->_sizeBytes != *(equal + 3))
           {
             goto LABEL_30;
           }
         }
 
-        else if ((*(a3 + 64) & 4) != 0)
+        else if ((*(equal + 64) & 4) != 0)
         {
           goto LABEL_30;
         }
 
         if (*&self->_has)
         {
-          if ((*(a3 + 64) & 1) == 0 || self->_logs != *(a3 + 1))
+          if ((*(equal + 64) & 1) == 0 || self->_logs != *(equal + 1))
           {
             goto LABEL_30;
           }
         }
 
-        else if (*(a3 + 64))
+        else if (*(equal + 64))
         {
           goto LABEL_30;
         }
 
-        LOBYTE(v5) = (*(a3 + 64) & 2) == 0;
+        LOBYTE(v5) = (*(equal + 64) & 2) == 0;
         if ((*&self->_has & 2) != 0)
         {
-          if ((*(a3 + 64) & 2) == 0 || self->_seconds != *(a3 + 2))
+          if ((*(equal + 64) & 2) == 0 || self->_seconds != *(equal + 2))
           {
             goto LABEL_30;
           }
@@ -485,38 +485,38 @@ LABEL_9:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v5 = *(a3 + 64);
+  v5 = *(from + 64);
   if ((v5 & 8) != 0)
   {
-    self->_timestamp = *(a3 + 4);
+    self->_timestamp = *(from + 4);
     *&self->_has |= 8u;
-    v5 = *(a3 + 64);
+    v5 = *(from + 64);
   }
 
   if ((v5 & 0x10) != 0)
   {
-    self->_response = *(a3 + 12);
+    self->_response = *(from + 12);
     *&self->_has |= 0x10u;
   }
 
-  if (*(a3 + 5))
+  if (*(from + 5))
   {
     [(AWDOSAnalyticsSubmissions *)self setConnection:?];
   }
 
-  if (*(a3 + 7))
+  if (*(from + 7))
   {
     [(AWDOSAnalyticsSubmissions *)self setRouting:?];
   }
 
-  v6 = *(a3 + 64);
+  v6 = *(from + 64);
   if ((v6 & 4) != 0)
   {
-    self->_sizeBytes = *(a3 + 3);
+    self->_sizeBytes = *(from + 3);
     *&self->_has |= 4u;
-    v6 = *(a3 + 64);
+    v6 = *(from + 64);
     if ((v6 & 1) == 0)
     {
 LABEL_11:
@@ -529,20 +529,20 @@ LABEL_11:
     }
   }
 
-  else if ((*(a3 + 64) & 1) == 0)
+  else if ((*(from + 64) & 1) == 0)
   {
     goto LABEL_11;
   }
 
-  self->_logs = *(a3 + 1);
+  self->_logs = *(from + 1);
   *&self->_has |= 1u;
-  if ((*(a3 + 64) & 2) == 0)
+  if ((*(from + 64) & 2) == 0)
   {
     return;
   }
 
 LABEL_12:
-  self->_seconds = *(a3 + 2);
+  self->_seconds = *(from + 2);
   *&self->_has |= 2u;
 }
 

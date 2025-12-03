@@ -7,7 +7,7 @@
 - (id)tri_contextValueWithName:()TRIFunctions
 {
   v4 = a3;
-  v5 = [a1 objectForKeyedSubscript:v4];
+  v5 = [self objectForKeyedSubscript:v4];
   if (!v5)
   {
     v8 = MEMORY[0x277CBEAD8];

@@ -1,12 +1,12 @@
 @interface PDCKPushLocalChanges
-- (id)recordForSyncItem:(id)a3;
-- (void)deleteProcessedSyncAssociatedWithRecordID:(id)a3;
-- (void)deleteSyncStateForRecordIDs:(id)a3;
+- (id)recordForSyncItem:(id)item;
+- (void)deleteProcessedSyncAssociatedWithRecordID:(id)d;
+- (void)deleteSyncStateForRecordIDs:(id)ds;
 - (void)execute;
-- (void)populateRecordsToSave:(id)a3 idsToDelete:(id)a4 withSyncItem:(id)a5;
-- (void)recordUpdated:(id)a3;
-- (void)resolvePartialErrors:(id)a3;
-- (void)scheduleRecordsToSave:(id)a3 recordIDsToDelete:(id)a4 savePolicy:(int64_t)a5;
+- (void)populateRecordsToSave:(id)save idsToDelete:(id)delete withSyncItem:(id)item;
+- (void)recordUpdated:(id)updated;
+- (void)resolvePartialErrors:(id)errors;
+- (void)scheduleRecordsToSave:(id)save recordIDsToDelete:(id)delete savePolicy:(int64_t)policy;
 @end
 
 @implementation PDCKPushLocalChanges
@@ -20,9 +20,9 @@
       v3 = +[NSMapTable strongToStrongObjectsMapTable];
       v4 = +[NSMapTable strongToStrongObjectsMapTable];
       [*(&self->super._operations + 4) removeAllObjects];
-      v5 = [(PDOperation *)self database];
-      v6 = v5;
-      if (v5 && (sub_1000717E8(v5) & 2) != 0 && (sub_100169FD0(v6, @"syncTeacherContexts") & 1) == 0)
+      database = [(PDOperation *)self database];
+      v6 = database;
+      if (database && (sub_1000717E8(database) & 2) != 0 && (sub_100169FD0(v6, @"syncTeacherContexts") & 1) == 0)
       {
         v9 = +[CLSContext entityName];
         v31 = v9;
@@ -52,7 +52,7 @@
       v24 = v6;
       v25 = v8;
       v26 = v7;
-      v27 = self;
+      selfCopy = self;
       v11 = v4;
       v28 = v11;
       v12 = v3;
@@ -67,11 +67,11 @@
 
       if ([v12 count] || objc_msgSend(v11, "count"))
       {
-        v16 = [v11 objectEnumerator];
-        v17 = [v16 allObjects];
-        v18 = [v12 objectEnumerator];
-        v19 = [v18 allObjects];
-        [(PDCKPushLocalChanges *)self scheduleRecordsToSave:v17 recordIDsToDelete:v19 savePolicy:0];
+        objectEnumerator = [v11 objectEnumerator];
+        allObjects = [objectEnumerator allObjects];
+        objectEnumerator2 = [v12 objectEnumerator];
+        allObjects2 = [objectEnumerator2 allObjects];
+        [(PDCKPushLocalChanges *)self scheduleRecordsToSave:allObjects recordIDsToDelete:allObjects2 savePolicy:0];
       }
 
       else
@@ -88,10 +88,10 @@
   }
 }
 
-- (id)recordForSyncItem:(id)a3
+- (id)recordForSyncItem:(id)item
 {
-  v4 = a3;
-  v5 = [(PDCKOperation *)self recordIDForSyncItem:v4];
+  itemCopy = item;
+  v5 = [(PDCKOperation *)self recordIDForSyncItem:itemCopy];
   v6 = [(PDCKOperation *)self syncMetadataForRecordID:v5];
   v7 = v6;
   if (v6)
@@ -102,16 +102,16 @@
 
   else
   {
-    v8 = [objc_msgSend(v4 "entity")];
+    v8 = [objc_msgSend(itemCopy "entity")];
     v9 = [[CKRecord alloc] initWithRecordType:v8 recordID:v5];
   }
 
   v10 = v9;
 
-  v11 = [(PDOperation *)self database];
-  v12 = [v4 entity];
-  v13 = [v4 entityIdentity];
-  v14 = [v11 select:v12 identity:v13];
+  database = [(PDOperation *)self database];
+  entity = [itemCopy entity];
+  entityIdentity = [itemCopy entityIdentity];
+  v14 = [database select:entity identity:entityIdentity];
 
   if (v14)
   {
@@ -127,50 +127,50 @@
   return v15;
 }
 
-- (void)recordUpdated:(id)a3
+- (void)recordUpdated:(id)updated
 {
-  v4 = a3;
-  v5 = [(PDOperation *)self database];
+  updatedCopy = updated;
+  database = [(PDOperation *)self database];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000D7270;
   v8[3] = &unk_100202140;
   v8[4] = self;
-  v9 = v4;
-  v6 = v4;
+  v9 = updatedCopy;
+  v6 = updatedCopy;
   v7 = v6;
-  if (v5)
+  if (database)
   {
-    [v5 performTransaction:v8 forWriting:1];
+    [database performTransaction:v8 forWriting:1];
     v7 = v9;
   }
 }
 
-- (void)deleteSyncStateForRecordIDs:(id)a3
+- (void)deleteSyncStateForRecordIDs:(id)ds
 {
-  v4 = a3;
-  v5 = [(PDOperation *)self database];
+  dsCopy = ds;
+  database = [(PDOperation *)self database];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000D737C;
   v7[3] = &unk_100202140;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  if (v5)
+  v8 = dsCopy;
+  selfCopy = self;
+  v6 = dsCopy;
+  if (database)
   {
-    [v5 performTransaction:v7 forWriting:1];
+    [database performTransaction:v7 forWriting:1];
   }
 }
 
-- (void)deleteProcessedSyncAssociatedWithRecordID:(id)a3
+- (void)deleteProcessedSyncAssociatedWithRecordID:(id)d
 {
-  v4 = a3;
-  v5 = [*(&self->super._operations + 4) objectForKeyedSubscript:v4];
+  dCopy = d;
+  v5 = [*(&self->super._operations + 4) objectForKeyedSubscript:dCopy];
   if ([v5 length])
   {
-    v6 = [(PDOperation *)self database];
-    v7 = [v6 select:objc_opt_class() identity:v5];
+    database = [(PDOperation *)self database];
+    v7 = [database select:objc_opt_class() identity:v5];
     v8 = v7;
     if (v7)
     {
@@ -178,16 +178,16 @@
       {
         v9 = objc_alloc_init(PDPendingIngestItem);
         sub_10008121C(v9, [v8 entity]);
-        v10 = [v8 entityIdentity];
-        sub_10008122C(v9, v10);
+        entityIdentity = [v8 entityIdentity];
+        sub_10008122C(v9, entityIdentity);
 
-        v11 = [v8 state];
+        state = [v8 state];
         if (v9)
         {
-          v9->_wasDeleted = v11 == 3;
+          v9->_wasDeleted = state == 3;
         }
 
-        if (([v6 insertOrUpdateObject:v9] & 1) == 0)
+        if (([database insertOrUpdateObject:v9] & 1) == 0)
         {
           CLSInitLog();
           v12 = CLSLogSync;
@@ -200,14 +200,14 @@
         }
       }
 
-      if (([v6 deleteObject:v8] & 1) == 0)
+      if (([database deleteObject:v8] & 1) == 0)
       {
         CLSInitLog();
         v13 = CLSLogSync;
         if (os_log_type_enabled(CLSLogSync, OS_LOG_TYPE_INFO))
         {
           v14 = 138543362;
-          v15 = v4;
+          v15 = dCopy;
           _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "Failed to delete sync item for record with recordID: %{public}@", &v14, 0xCu);
         }
       }
@@ -215,10 +215,10 @@
   }
 }
 
-- (void)scheduleRecordsToSave:(id)a3 recordIDsToDelete:(id)a4 savePolicy:(int64_t)a5
+- (void)scheduleRecordsToSave:(id)save recordIDsToDelete:(id)delete savePolicy:(int64_t)policy
 {
-  v8 = a3;
-  v9 = a4;
+  saveCopy = save;
+  deleteCopy = delete;
   if (![(PDOperation *)self isAborted])
   {
     CLSInitLog();
@@ -227,16 +227,16 @@
     {
       v11 = v10;
       *buf = 134218496;
-      v21 = [v8 count];
+      v21 = [saveCopy count];
       v22 = 2048;
-      v23 = [v9 count];
+      v23 = [deleteCopy count];
       v24 = 2048;
-      v25 = a5;
+      policyCopy = policy;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "scheduling records to save count: %ld, records to delete count: %ld; save policy: %ld", buf, 0x20u);
     }
 
-    v12 = [[CKModifyRecordsOperation alloc] initWithRecordsToSave:v8 recordIDsToDelete:v9];
-    [v12 setSavePolicy:a5];
+    v12 = [[CKModifyRecordsOperation alloc] initWithRecordsToSave:saveCopy recordIDsToDelete:deleteCopy];
+    [v12 setSavePolicy:policy];
     objc_initWeak(buf, self);
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;
@@ -257,16 +257,16 @@
   }
 }
 
-- (void)resolvePartialErrors:(id)a3
+- (void)resolvePartialErrors:(id)errors
 {
-  v3 = a3;
+  errorsCopy = errors;
   v50 = objc_alloc_init(NSMutableArray);
   v48 = objc_alloc_init(NSMutableDictionary);
   v64 = 0u;
   v65 = 0u;
   v66 = 0u;
   v67 = 0u;
-  v4 = v3;
+  v4 = errorsCopy;
   v5 = [v4 countByEnumeratingWithState:&v64 objects:v70 count:16];
   v49 = v4;
   if (v5)
@@ -289,21 +289,21 @@
         v9 = *(*(&v64 + 1) + 8 * v8);
         v10 = objc_autoreleasePoolPush();
         v11 = [v4 objectForKeyedSubscript:v9];
-        v12 = [v11 code];
-        if (v12 == 14)
+        code = [v11 code];
+        if (code == 14)
         {
-          v13 = [v11 userInfo];
-          v14 = [v13 objectForKeyedSubscript:CKRecordChangedErrorAncestorRecordKey];
+          userInfo = [v11 userInfo];
+          v14 = [userInfo objectForKeyedSubscript:CKRecordChangedErrorAncestorRecordKey];
 
-          v15 = [v11 userInfo];
-          v16 = [v15 objectForKeyedSubscript:CKRecordChangedErrorClientRecordKey];
+          userInfo2 = [v11 userInfo];
+          v16 = [userInfo2 objectForKeyedSubscript:CKRecordChangedErrorClientRecordKey];
 
-          v17 = [v11 userInfo];
-          v18 = [v17 objectForKeyedSubscript:CKRecordChangedErrorServerRecordKey];
+          userInfo3 = [v11 userInfo];
+          v18 = [userInfo3 objectForKeyedSubscript:CKRecordChangedErrorServerRecordKey];
 
-          v19 = [v16 recordType];
+          recordType = [v16 recordType];
           v20 = +[PDCKOperation recordTypeToEntityMap];
-          v21 = [v20 objectForKeyedSubscript:v19];
+          v21 = [v20 objectForKeyedSubscript:recordType];
           if (v21)
           {
             if (objc_opt_respondsToSelector())
@@ -319,12 +319,12 @@
           v6 = v53;
         }
 
-        else if (v12 == 22)
+        else if (code == 22)
         {
           [v50 addObject:v9];
         }
 
-        else if (v12 == 31)
+        else if (code == 31)
         {
           [(PDCKOperation *)self abort];
 
@@ -370,9 +370,9 @@
 
           v28 = *(*(&v60 + 1) + 8 * i);
           v29 = objc_autoreleasePoolPush();
-          v30 = [v28 recordName];
+          recordName = [v28 recordName];
           v31 = [v23 objectForKeyedSubscript:v28];
-          [v22 setObject:v31 forKey:v30];
+          [v22 setObject:v31 forKey:recordName];
 
           objc_autoreleasePoolPop(v29);
         }
@@ -383,7 +383,7 @@
       while (v25);
     }
 
-    v54 = [(PDOperation *)self database];
+    database = [(PDOperation *)self database];
     v56 = 0u;
     v57 = 0u;
     v58 = 0u;
@@ -410,7 +410,7 @@
           if (!v39)
           {
             v40 = [*(&self->super._operations + 4) objectForKeyedSubscript:v37];
-            v41 = [v54 select:objc_opt_class() identity:v40];
+            v41 = [database select:objc_opt_class() identity:v40];
             if (v41)
             {
               [(PDCKPushLocalChanges *)self populateRecordsToSave:v22 idsToDelete:v52 withSyncItem:v41];
@@ -426,11 +426,11 @@
       while (v34);
     }
 
-    v42 = [v22 objectEnumerator];
-    v43 = [v42 allObjects];
-    v44 = [v52 objectEnumerator];
-    v45 = [v44 allObjects];
-    [(PDCKPushLocalChanges *)self scheduleRecordsToSave:v43 recordIDsToDelete:v45 savePolicy:1];
+    objectEnumerator = [v22 objectEnumerator];
+    allObjects = [objectEnumerator allObjects];
+    objectEnumerator2 = [v52 objectEnumerator];
+    allObjects2 = [objectEnumerator2 allObjects];
+    [(PDCKPushLocalChanges *)self scheduleRecordsToSave:allObjects recordIDsToDelete:allObjects2 savePolicy:1];
 
     v46 = v48;
     v4 = v49;
@@ -444,11 +444,11 @@
 LABEL_39:
 }
 
-- (void)populateRecordsToSave:(id)a3 idsToDelete:(id)a4 withSyncItem:(id)a5
+- (void)populateRecordsToSave:(id)save idsToDelete:(id)delete withSyncItem:(id)item
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  saveCopy = save;
+  deleteCopy = delete;
+  itemCopy = item;
   if (!*(&self->super._operations + 4))
   {
     v11 = +[NSMapTable strongToStrongObjectsMapTable];
@@ -456,32 +456,32 @@ LABEL_39:
     *(&self->super._operations + 4) = v11;
   }
 
-  if ([v10 state] == 3)
+  if ([itemCopy state] == 3)
   {
-    v13 = [(PDCKOperation *)self recordIDForSyncItem:v10];
-    v14 = [v13 recordName];
-    [v9 setObject:v13 forKey:v14];
-    v15 = [v10 identityValue];
-    [*(&self->super._operations + 4) setObject:v15 forKeyedSubscript:v13];
+    v13 = [(PDCKOperation *)self recordIDForSyncItem:itemCopy];
+    recordName = [v13 recordName];
+    [deleteCopy setObject:v13 forKey:recordName];
+    identityValue = [itemCopy identityValue];
+    [*(&self->super._operations + 4) setObject:identityValue forKeyedSubscript:v13];
 
-    v16 = [v13 recordName];
-    [v8 removeObjectForKey:v16];
+    recordName2 = [v13 recordName];
+    [saveCopy removeObjectForKey:recordName2];
   }
 
   else
   {
-    v17 = [(PDCKPushLocalChanges *)self recordForSyncItem:v10];
+    v17 = [(PDCKPushLocalChanges *)self recordForSyncItem:itemCopy];
     v13 = v17;
     if (v17)
     {
-      v18 = [v17 recordID];
-      v19 = [v18 recordName];
+      recordID = [v17 recordID];
+      recordName3 = [recordID recordName];
 
-      [v8 setObject:v13 forKey:v19];
-      v20 = [v10 identityValue];
+      [saveCopy setObject:v13 forKey:recordName3];
+      identityValue2 = [itemCopy identityValue];
       v21 = *(&self->super._operations + 4);
-      v22 = [v13 recordID];
-      [v21 setObject:v20 forKeyedSubscript:v22];
+      recordID2 = [v13 recordID];
+      [v21 setObject:identityValue2 forKeyedSubscript:recordID2];
     }
 
     else
@@ -491,7 +491,7 @@ LABEL_39:
       v26[1] = 3221225472;
       v26[2] = sub_1000D84F0;
       v27 = v26[3] = &unk_100202140;
-      v23 = v10;
+      v23 = itemCopy;
       v28 = v23;
       v24 = v27;
       v25 = v24;

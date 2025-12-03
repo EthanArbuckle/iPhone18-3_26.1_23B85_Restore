@@ -1,16 +1,16 @@
 @interface PTTapToTrackPrediction
 - (CGRect)rect;
-- (PTTapToTrackPrediction)initWithRect:(CGRect)a3 confidence:(float)a4;
+- (PTTapToTrackPrediction)initWithRect:(CGRect)rect confidence:(float)confidence;
 @end
 
 @implementation PTTapToTrackPrediction
 
-- (PTTapToTrackPrediction)initWithRect:(CGRect)a3 confidence:(float)a4
+- (PTTapToTrackPrediction)initWithRect:(CGRect)rect confidence:(float)confidence
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v13.receiver = self;
   v13.super_class = PTTapToTrackPrediction;
   v9 = [(PTTapToTrackPrediction *)&v13 init];
@@ -18,7 +18,7 @@
   if (v9)
   {
     [(PTTapToTrackPrediction *)v9 setRect:x, y, width, height];
-    *&v11 = a4;
+    *&v11 = confidence;
     [(PTTapToTrackPrediction *)v10 setConfidence:v11];
   }
 

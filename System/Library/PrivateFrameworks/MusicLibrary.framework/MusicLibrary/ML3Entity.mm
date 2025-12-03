@@ -1,80 +1,80 @@
 @interface ML3Entity
-+ (BOOL)_deleteRowForPersistentIDs:(const int64_t *)a3 count:(unint64_t)a4 library:(id)a5 table:(id)a6 usingColumn:(id)a7 usingConnection:(id)a8;
-+ (BOOL)_deleteRowsFromLibraryPinsTableForPersistentIDs:(const int64_t *)a3 count:(unint64_t)a4 library:(id)a5 usingConnection:(id)a6;
-+ (BOOL)_shouldIncrementRevisionForType:(int)a3 persistentID:(int64_t)a4 usingConnection:(id)a5;
-+ (BOOL)deleteFromLibrary:(id)a3 deletionType:(int)a4 canonicalizeCollections:(BOOL)a5 persistentIDs:(const int64_t *)a6 count:(unint64_t)a7 usingConnection:(id)a8;
-+ (BOOL)deleteFromLibrary:(id)a3 deletionType:(int)a4 persistentIDs:(const int64_t *)a5 count:(unint64_t)a6;
-+ (BOOL)incrementRevisionForRevisionTypeContentWithConnection:(id)a3 deletionType:(int)a4 persistentIDs:(const int64_t *)a5 count:(unint64_t)a6;
-+ (BOOL)incrementRevisionForRevisionTypeContentWithConnection:(id)a3 deletionType:(int)a4 persistentIDs:(id)a5;
-+ (BOOL)incrementRevisionForRevisionTypeContentWithLibrary:(id)a3 deletionType:(int)a4 persistentIDs:(id)a5;
-+ (BOOL)incrementRevisionWithLibrary:(id)a3 persistentID:(int64_t)a4 deletionType:(int)a5 revisionType:(int)a6;
-+ (BOOL)incrementRevisionWithLibrary:(id)a3 persistentID:(int64_t)a4 deletionType:(int)a5 revisionType:(int)a6 usingConnection:(id)a7;
-+ (BOOL)insertValues:(id)a3 intoTable:(id)a4 persistentID:(int64_t)a5 connection:(id)a6;
-+ (BOOL)insertValues:(id)a3 intoTable:(id)a4 persistentID:(int64_t)a5 library:(id)a6;
-+ (BOOL)setDifferentValues:(id)a3 forProperties:(id)a4 forEntityPersistentIDs:(id)a5 inLibrary:(id)a6 usingConnection:(id)a7;
-+ (BOOL)setValues:(id)a3 forProperties:(id)a4 forEntityPersistentIDs:(id)a5 inLibrary:(id)a6 usingConnection:(id)a7;
-+ (id)URLForEntityWithPersistentID:(int64_t)a3 libraryUID:(id)a4;
-+ (id)_createDisambiguatedSQLForProperty:(id)a3;
-+ (id)_entityForURLComponents:(id)a3 inLibrary:(id)a4 verifyExistence:(BOOL)a5 reason:(id *)a6;
-+ (id)aggregateQueryWithUnitQuery:(id)a3 foreignPersistentIDProperty:(id)a4;
-+ (id)allItemsQueryWithLibrary:(id)a3 predicate:(id)a4 orderingTerms:(id)a5 usingSections:(BOOL)a6;
-+ (id)anyInLibrary:(id)a3 predicate:(id)a4;
-+ (id)anyInLibrary:(id)a3 predicate:(id)a4 options:(int64_t)a5;
-+ (id)countingQueryForBaseQuery:(id)a3 countProperty:(id)a4 forIdentifier:(int64_t)a5;
-+ (id)disambiguatedSQLForProperty:(id)a3;
-+ (id)disambiguatedSelectSQLForProperty:(id)a3;
-+ (id)entityFromURL:(id)a3 inLibrary:(id)a4 verifyExistence:(BOOL)a5;
-+ (id)entityFromURL:(id)a3 reason:(id *)a4;
-+ (id)indexableSQLForProperties:(id)a3;
-+ (id)joinClausesForProperty:(id)a3;
-+ (id)newSelectAllEntitiesSQLForProperties:(const void *)a3 count:(unint64_t)a4 predicate:(id)a5;
-+ (id)newSelectSQLForProperties:(const void *)a3 count:(unint64_t)a4 predicate:(id)a5;
-+ (id)newWithDictionary:(id)a3 inLibrary:(id)a4;
-+ (id)newWithDictionary:(id)a3 inLibrary:(id)a4 cachedNameOrders:(id)a5;
-+ (id)newWithDictionary:(id)a3 inLibrary:(id)a4 cachedNameOrders:(id)a5 usingConnection:(id)a6;
-+ (id)newWithPersistentID:(int64_t)a3 inLibrary:(id)a4;
-+ (id)orderingSQLForProperties:(id)a3 directionality:(id)a4;
-+ (id)predicateByOptimizingPredicate:(id)a3;
-+ (id)predicateIncludingSystemwidePredicatesWithPredicate:(id)a3 library:(id)a4 options:(int64_t)a5;
++ (BOOL)_deleteRowForPersistentIDs:(const int64_t *)ds count:(unint64_t)count library:(id)library table:(id)table usingColumn:(id)column usingConnection:(id)connection;
++ (BOOL)_deleteRowsFromLibraryPinsTableForPersistentIDs:(const int64_t *)ds count:(unint64_t)count library:(id)library usingConnection:(id)connection;
++ (BOOL)_shouldIncrementRevisionForType:(int)type persistentID:(int64_t)d usingConnection:(id)connection;
++ (BOOL)deleteFromLibrary:(id)library deletionType:(int)type canonicalizeCollections:(BOOL)collections persistentIDs:(const int64_t *)ds count:(unint64_t)count usingConnection:(id)connection;
++ (BOOL)deleteFromLibrary:(id)library deletionType:(int)type persistentIDs:(const int64_t *)ds count:(unint64_t)count;
++ (BOOL)incrementRevisionForRevisionTypeContentWithConnection:(id)connection deletionType:(int)type persistentIDs:(const int64_t *)ds count:(unint64_t)count;
++ (BOOL)incrementRevisionForRevisionTypeContentWithConnection:(id)connection deletionType:(int)type persistentIDs:(id)ds;
++ (BOOL)incrementRevisionForRevisionTypeContentWithLibrary:(id)library deletionType:(int)type persistentIDs:(id)ds;
++ (BOOL)incrementRevisionWithLibrary:(id)library persistentID:(int64_t)d deletionType:(int)type revisionType:(int)revisionType;
++ (BOOL)incrementRevisionWithLibrary:(id)library persistentID:(int64_t)d deletionType:(int)type revisionType:(int)revisionType usingConnection:(id)connection;
++ (BOOL)insertValues:(id)values intoTable:(id)table persistentID:(int64_t)d connection:(id)connection;
++ (BOOL)insertValues:(id)values intoTable:(id)table persistentID:(int64_t)d library:(id)library;
++ (BOOL)setDifferentValues:(id)values forProperties:(id)properties forEntityPersistentIDs:(id)ds inLibrary:(id)library usingConnection:(id)connection;
++ (BOOL)setValues:(id)values forProperties:(id)properties forEntityPersistentIDs:(id)ds inLibrary:(id)library usingConnection:(id)connection;
++ (id)URLForEntityWithPersistentID:(int64_t)d libraryUID:(id)iD;
++ (id)_createDisambiguatedSQLForProperty:(id)property;
++ (id)_entityForURLComponents:(id)components inLibrary:(id)library verifyExistence:(BOOL)existence reason:(id *)reason;
++ (id)aggregateQueryWithUnitQuery:(id)query foreignPersistentIDProperty:(id)property;
++ (id)allItemsQueryWithLibrary:(id)library predicate:(id)predicate orderingTerms:(id)terms usingSections:(BOOL)sections;
++ (id)anyInLibrary:(id)library predicate:(id)predicate;
++ (id)anyInLibrary:(id)library predicate:(id)predicate options:(int64_t)options;
++ (id)countingQueryForBaseQuery:(id)query countProperty:(id)property forIdentifier:(int64_t)identifier;
++ (id)disambiguatedSQLForProperty:(id)property;
++ (id)disambiguatedSelectSQLForProperty:(id)property;
++ (id)entityFromURL:(id)l inLibrary:(id)library verifyExistence:(BOOL)existence;
++ (id)entityFromURL:(id)l reason:(id *)reason;
++ (id)indexableSQLForProperties:(id)properties;
++ (id)joinClausesForProperty:(id)property;
++ (id)newSelectAllEntitiesSQLForProperties:(const void *)properties count:(unint64_t)count predicate:(id)predicate;
++ (id)newSelectSQLForProperties:(const void *)properties count:(unint64_t)count predicate:(id)predicate;
++ (id)newWithDictionary:(id)dictionary inLibrary:(id)library;
++ (id)newWithDictionary:(id)dictionary inLibrary:(id)library cachedNameOrders:(id)orders;
++ (id)newWithDictionary:(id)dictionary inLibrary:(id)library cachedNameOrders:(id)orders usingConnection:(id)connection;
++ (id)newWithPersistentID:(int64_t)d inLibrary:(id)library;
++ (id)orderingSQLForProperties:(id)properties directionality:(id)directionality;
++ (id)predicateByOptimizingPredicate:(id)predicate;
++ (id)predicateIncludingSystemwidePredicatesWithPredicate:(id)predicate library:(id)library options:(int64_t)options;
 + (id)predisambiguatedProperties;
-+ (id)queryWithLibrary:(id)a3 predicate:(id)a4;
-+ (id)queryWithLibrary:(id)a3 predicate:(id)a4 options:(int64_t)a5;
-+ (id)queryWithLibrary:(id)a3 predicate:(id)a4 orderingProperties:(id)a5;
-+ (id)queryWithLibrary:(id)a3 predicate:(id)a4 orderingProperties:(id)a5 orderingDirectionMappings:(id)a6 usingSections:(BOOL)a7;
-+ (id)queryWithLibrary:(id)a3 predicate:(id)a4 orderingProperties:(id)a5 usingSections:(BOOL)a6;
-+ (id)queryWithLibrary:(id)a3 predicate:(id)a4 orderingTerms:(id)a5;
-+ (id)queryWithLibrary:(id)a3 predicate:(id)a4 orderingTerms:(id)a5 propertyToCount:(id)a6;
-+ (id)queryWithLibrary:(id)a3 predicate:(id)a4 orderingTerms:(id)a5 propertyToCount:(id)a6 options:(int64_t)a7;
-+ (id)queryWithLibrary:(id)a3 predicate:(id)a4 orderingTerms:(id)a5 usingSections:(BOOL)a6;
-+ (id)queryWithLibrary:(id)a3 predicate:(id)a4 orderingTerms:(id)a5 usingSections:(BOOL)a6 options:(int64_t)a7;
-+ (id)queryWithLibrary:(id)a3 predicate:(id)a4 usingSections:(BOOL)a5;
-+ (id)unrestrictedAllItemsQueryWithlibrary:(id)a3 predicate:(id)a4 orderingTerms:(id)a5;
-+ (id)unrestrictedQueryWithLibrary:(id)a3 predicate:(id)a4 orderingTerms:(id)a5;
-+ (void)_didChangeValueForProperties:(id)a3 inLibrary:(id)a4;
-+ (void)enumeratePersistentIDsInLibrary:(id)a3 afterRevision:(int64_t)a4 usingBlock:(id)a5;
-+ (void)enumeratePersistentIDsInLibrary:(id)a3 matchingPredicate:(id)a4 orderingTerms:(id)a5 persistentIDs:(const int64_t *)a6 count:(unint64_t)a7 options:(int64_t)a8 usingBlock:(id)a9;
-+ (void)predisambiguateProperties:(id)a3 toDictionary:(id)a4;
++ (id)queryWithLibrary:(id)library predicate:(id)predicate;
++ (id)queryWithLibrary:(id)library predicate:(id)predicate options:(int64_t)options;
++ (id)queryWithLibrary:(id)library predicate:(id)predicate orderingProperties:(id)properties;
++ (id)queryWithLibrary:(id)library predicate:(id)predicate orderingProperties:(id)properties orderingDirectionMappings:(id)mappings usingSections:(BOOL)sections;
++ (id)queryWithLibrary:(id)library predicate:(id)predicate orderingProperties:(id)properties usingSections:(BOOL)sections;
++ (id)queryWithLibrary:(id)library predicate:(id)predicate orderingTerms:(id)terms;
++ (id)queryWithLibrary:(id)library predicate:(id)predicate orderingTerms:(id)terms propertyToCount:(id)count;
++ (id)queryWithLibrary:(id)library predicate:(id)predicate orderingTerms:(id)terms propertyToCount:(id)count options:(int64_t)options;
++ (id)queryWithLibrary:(id)library predicate:(id)predicate orderingTerms:(id)terms usingSections:(BOOL)sections;
++ (id)queryWithLibrary:(id)library predicate:(id)predicate orderingTerms:(id)terms usingSections:(BOOL)sections options:(int64_t)options;
++ (id)queryWithLibrary:(id)library predicate:(id)predicate usingSections:(BOOL)sections;
++ (id)unrestrictedAllItemsQueryWithlibrary:(id)withlibrary predicate:(id)predicate orderingTerms:(id)terms;
++ (id)unrestrictedQueryWithLibrary:(id)library predicate:(id)predicate orderingTerms:(id)terms;
++ (void)_didChangeValueForProperties:(id)properties inLibrary:(id)library;
++ (void)enumeratePersistentIDsInLibrary:(id)library afterRevision:(int64_t)revision usingBlock:(id)block;
++ (void)enumeratePersistentIDsInLibrary:(id)library matchingPredicate:(id)predicate orderingTerms:(id)terms persistentIDs:(const int64_t *)ds count:(unint64_t)count options:(int64_t)options usingBlock:(id)block;
++ (void)predisambiguateProperties:(id)properties toDictionary:(id)dictionary;
 - (BOOL)deleteFromLibrary;
 - (BOOL)existsInLibrary;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)matchesPredicate:(id)a3;
-- (BOOL)setValue:(id)a3 forProperty:(id)a4;
-- (BOOL)setValues:(const void *)a3 forProperties:(const void *)a4 count:(unint64_t)a5;
-- (BOOL)setValues:(id)a3 forProperties:(id)a4;
-- (BOOL)setValues:(id)a3 forProperties:(id)a4 usingConnection:(id)a5;
-- (BOOL)setValuesForPropertiesWithDictionary:(id)a3;
-- (ML3Entity)initWithDictionary:(id)a3 inLibrary:(id)a4 cachedNameOrders:(id)a5 usingConnection:(id)a6;
-- (ML3Entity)initWithPersistentID:(int64_t)a3 inLibrary:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)matchesPredicate:(id)predicate;
+- (BOOL)setValue:(id)value forProperty:(id)property;
+- (BOOL)setValues:(const void *)values forProperties:(const void *)properties count:(unint64_t)count;
+- (BOOL)setValues:(id)values forProperties:(id)properties;
+- (BOOL)setValues:(id)values forProperties:(id)properties usingConnection:(id)connection;
+- (BOOL)setValuesForPropertiesWithDictionary:(id)dictionary;
+- (ML3Entity)initWithDictionary:(id)dictionary inLibrary:(id)library cachedNameOrders:(id)orders usingConnection:(id)connection;
+- (ML3Entity)initWithPersistentID:(int64_t)d inLibrary:(id)library;
 - (ML3MusicLibrary)library;
 - (id)URL;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)getValuesForProperties:(id)a3;
-- (id)valueForProperty:(id)a3;
-- (void)didChangeValueForProperties:(id)a3;
-- (void)getValues:(id *)a3 forProperties:(const void *)a4 count:(unint64_t)a5;
+- (id)getValuesForProperties:(id)properties;
+- (id)valueForProperty:(id)property;
+- (void)didChangeValueForProperties:(id)properties;
+- (void)getValues:(id *)values forProperties:(const void *)properties count:(unint64_t)count;
 - (void)incrementRevision;
-- (void)setValues:(id)a3 forProperties:(id)a4 async:(BOOL)a5 withCompletionBlock:(id)a6;
+- (void)setValues:(id)values forProperties:(id)properties async:(BOOL)async withCompletionBlock:(id)block;
 @end
 
 @implementation ML3Entity
@@ -114,66 +114,66 @@
   return self;
 }
 
-- (void)didChangeValueForProperties:(id)a3
+- (void)didChangeValueForProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   v5 = objc_opt_class();
   WeakRetained = objc_loadWeakRetained(&self->_library);
-  [v5 _didChangeValueForProperties:v4 inLibrary:WeakRetained];
+  [v5 _didChangeValueForProperties:propertiesCopy inLibrary:WeakRetained];
 }
 
-- (BOOL)setValue:(id)a3 forProperty:(id)a4
+- (BOOL)setValue:(id)value forProperty:(id)property
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v13[0] = a3;
+  v13[0] = value;
   v6 = MEMORY[0x277CBEA60];
-  v7 = a4;
-  v8 = a3;
+  propertyCopy = property;
+  valueCopy = value;
   v9 = [v6 arrayWithObjects:v13 count:1];
-  v12 = v7;
+  v12 = propertyCopy;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:&v12 count:1];
 
-  LOBYTE(v8) = [(ML3Entity *)self setValues:v9 forProperties:v10];
-  return v8;
+  LOBYTE(valueCopy) = [(ML3Entity *)self setValues:v9 forProperties:v10];
+  return valueCopy;
 }
 
-- (BOOL)setValuesForPropertiesWithDictionary:(id)a3
+- (BOOL)setValuesForPropertiesWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 allKeys];
-  v6 = [v4 allValues];
+  dictionaryCopy = dictionary;
+  allKeys = [dictionaryCopy allKeys];
+  allValues = [dictionaryCopy allValues];
 
-  LOBYTE(self) = [(ML3Entity *)self setValues:v6 forProperties:v5];
+  LOBYTE(self) = [(ML3Entity *)self setValues:allValues forProperties:allKeys];
   return self;
 }
 
-- (BOOL)setValues:(id)a3 forProperties:(id)a4 usingConnection:(id)a5
+- (BOOL)setValues:(id)values forProperties:(id)properties usingConnection:(id)connection
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  connectionCopy = connection;
+  propertiesCopy = properties;
+  valuesCopy = values;
   v11 = objc_opt_class();
   v12 = [MEMORY[0x277CCABB0] numberWithLongLong:{-[ML3Entity persistentID](self, "persistentID")}];
   v16[0] = v12;
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:1];
-  v14 = [(ML3Entity *)self library];
-  LOBYTE(self) = [v11 setValues:v10 forProperties:v9 forEntityPersistentIDs:v13 inLibrary:v14 usingConnection:v8];
+  library = [(ML3Entity *)self library];
+  LOBYTE(self) = [v11 setValues:valuesCopy forProperties:propertiesCopy forEntityPersistentIDs:v13 inLibrary:library usingConnection:connectionCopy];
 
   return self;
 }
 
-- (void)setValues:(id)a3 forProperties:(id)a4 async:(BOOL)a5 withCompletionBlock:(id)a6
+- (void)setValues:(id)values forProperties:(id)properties async:(BOOL)async withCompletionBlock:(id)block
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  if (v12)
+  valuesCopy = values;
+  propertiesCopy = properties;
+  blockCopy = block;
+  if (blockCopy)
   {
     WeakRetained = objc_loadWeakRetained(&self->_library);
-    v14 = [WeakRetained isCurrentThreadInTransaction];
+    isCurrentThreadInTransaction = [WeakRetained isCurrentThreadInTransaction];
 
-    if (v14)
+    if (isCurrentThreadInTransaction)
     {
       v15 = os_log_create("com.apple.amp.medialibrary", "Default");
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -185,87 +185,87 @@
       goto LABEL_10;
     }
 
-    if (!a5)
+    if (!async)
     {
 LABEL_10:
-      v12[2](v12, [(ML3Entity *)self setValues:v10 forProperties:v11], 0);
+      blockCopy[2](blockCopy, [(ML3Entity *)self setValues:valuesCopy forProperties:propertiesCopy], 0);
       goto LABEL_11;
     }
 
     goto LABEL_9;
   }
 
-  if (a5)
+  if (async)
   {
 LABEL_9:
-    v16 = [(ML3Entity *)self library];
+    library = [(ML3Entity *)self library];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __63__ML3Entity_setValues_forProperties_async_withCompletionBlock___block_invoke;
     v17[3] = &unk_27875CFE0;
     v17[4] = self;
-    v18 = v10;
-    v19 = v11;
-    [v16 performAsyncDatabaseWriteTransactionWithBlock:v17 completionBlock:v12];
+    v18 = valuesCopy;
+    v19 = propertiesCopy;
+    [library performAsyncDatabaseWriteTransactionWithBlock:v17 completionBlock:blockCopy];
 
     goto LABEL_11;
   }
 
-  [(ML3Entity *)self setValues:v10 forProperties:v11];
+  [(ML3Entity *)self setValues:valuesCopy forProperties:propertiesCopy];
 LABEL_11:
 }
 
-- (BOOL)setValues:(id)a3 forProperties:(id)a4
+- (BOOL)setValues:(id)values forProperties:(id)properties
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ML3Entity *)self library];
-  v9 = [v8 checkoutWriterConnection];
-  [v9 pushTransaction];
-  LOBYTE(self) = [(ML3Entity *)self setValues:v7 forProperties:v6 usingConnection:v9];
+  propertiesCopy = properties;
+  valuesCopy = values;
+  library = [(ML3Entity *)self library];
+  checkoutWriterConnection = [library checkoutWriterConnection];
+  [checkoutWriterConnection pushTransaction];
+  LOBYTE(self) = [(ML3Entity *)self setValues:valuesCopy forProperties:propertiesCopy usingConnection:checkoutWriterConnection];
 
-  [v9 popTransactionAndCommit:1];
-  [v8 checkInDatabaseConnection:v9];
+  [checkoutWriterConnection popTransactionAndCommit:1];
+  [library checkInDatabaseConnection:checkoutWriterConnection];
 
   return self;
 }
 
-- (BOOL)setValues:(const void *)a3 forProperties:(const void *)a4 count:(unint64_t)a5
+- (BOOL)setValues:(const void *)values forProperties:(const void *)properties count:(unint64_t)count
 {
-  v9 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:a5];
-  v10 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:a5];
-  if (a5)
+  v9 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:count];
+  v10 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:count];
+  if (count)
   {
     v11 = 0;
     v12 = 1;
     do
     {
-      if (a3[v11])
+      if (values[v11])
       {
         [v9 addObject:?];
       }
 
       else
       {
-        v13 = [MEMORY[0x277CBEB68] null];
-        [v9 addObject:v13];
+        null = [MEMORY[0x277CBEB68] null];
+        [v9 addObject:null];
       }
 
-      if (a4[v11])
+      if (properties[v11])
       {
         [v10 addObject:?];
       }
 
       else
       {
-        v14 = [MEMORY[0x277CBEB68] null];
-        [v10 addObject:v14];
+        null2 = [MEMORY[0x277CBEB68] null];
+        [v10 addObject:null2];
       }
 
       v11 = v12++;
     }
 
-    while (v11 < a5);
+    while (v11 < count);
   }
 
   v15 = [(ML3Entity *)self setValues:v9 forProperties:v10];
@@ -273,31 +273,31 @@ LABEL_11:
   return v15;
 }
 
-- (id)valueForProperty:(id)a3
+- (id)valueForProperty:(id)property
 {
   v6 = 0;
-  v7 = a3;
-  [(ML3Entity *)self getValues:&v6 forProperties:&v7 count:1];
+  propertyCopy = property;
+  [(ML3Entity *)self getValues:&v6 forProperties:&propertyCopy count:1];
   v4 = v6;
 
   return v4;
 }
 
-- (id)getValuesForProperties:(id)a3
+- (id)getValuesForProperties:(id)properties
 {
   v50 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v4, "count")}];
-  if ([v4 count])
+  propertiesCopy = properties;
+  v5 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(propertiesCopy, "count")}];
+  if ([propertiesCopy count])
   {
-    v6 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v4, "count")}];
-    v7 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v4, "count")}];
+    v6 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(propertiesCopy, "count")}];
+    v7 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(propertiesCopy, "count")}];
     v44 = 0u;
     v45 = 0u;
     v46 = 0u;
     v47 = 0u;
-    v36 = v4;
-    v8 = v4;
+    v36 = propertiesCopy;
+    v8 = propertiesCopy;
     v9 = [v8 countByEnumeratingWithState:&v44 objects:v49 count:16];
     if (v9)
     {
@@ -383,15 +383,15 @@ LABEL_11:
 
           if (v29)
           {
-            v30 = [v29 countOfEntities];
+            countOfEntities = [v29 countOfEntities];
           }
 
           else
           {
-            v30 = 0;
+            countOfEntities = 0;
           }
 
-          v31 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v30];
+          v31 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:countOfEntities];
           [v20 setObject:v31 forKey:v26];
         }
 
@@ -402,7 +402,7 @@ LABEL_11:
     }
 
     v5 = v35;
-    v4 = v36;
+    propertiesCopy = v36;
   }
 
   return v5;
@@ -430,46 +430,46 @@ unint64_t __36__ML3Entity_getValuesForProperties___block_invoke(uint64_t a1, uin
   return result;
 }
 
-- (void)getValues:(id *)a3 forProperties:(const void *)a4 count:(unint64_t)a5
+- (void)getValues:(id *)values forProperties:(const void *)properties count:(unint64_t)count
 {
   v34 = *MEMORY[0x277D85DE8];
-  if (a5)
+  if (count)
   {
-    v5 = a5;
-    v6 = a4;
-    if (a5 == 1 && [*a4 isEqualToString:@"ROWID"])
+    countCopy = count;
+    propertiesCopy = properties;
+    if (count == 1 && [*properties isEqualToString:@"ROWID"])
     {
-      *a3 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_persistentID];
+      *values = [MEMORY[0x277CCABB0] numberWithLongLong:self->_persistentID];
     }
 
     else
     {
       v27[1] = v27;
-      v9 = v27 - ((v5 + 15) & 0xFFFFFFFFFFFFFFF0);
-      bzero(v9, v5);
-      v10 = 8 * v5;
-      v29 = v27 - ((8 * v5 + 15) & 0xFFFFFFFFFFFFFFF0);
-      bzero(v29, 8 * v5);
+      v9 = v27 - ((countCopy + 15) & 0xFFFFFFFFFFFFFFF0);
+      bzero(v9, countCopy);
+      v10 = 8 * countCopy;
+      v29 = v27 - ((8 * countCopy + 15) & 0xFFFFFFFFFFFFFFF0);
+      bzero(v29, 8 * countCopy);
       v11 = 0;
       v12 = 0;
       do
       {
-        a3[v11] = 0;
-        if ([objc_opt_class() propertyIsCountProperty:v6[v11]])
+        values[v11] = 0;
+        if ([objc_opt_class() propertyIsCountProperty:propertiesCopy[v11]])
         {
           v9[v11] = 1;
         }
 
         else
         {
-          objc_storeStrong(&v29[8 * v12++], v6[v11]);
+          objc_storeStrong(&v29[8 * v12++], propertiesCopy[v11]);
         }
 
         ++v11;
       }
 
-      while (v5 != v11);
-      bzero(a3, 8 * v5);
+      while (countCopy != v11);
+      bzero(values, 8 * countCopy);
       WeakRetained = objc_loadWeakRetained(&self->_library);
       if (v12)
       {
@@ -480,7 +480,7 @@ unint64_t __36__ML3Entity_getValuesForProperties___block_invoke(uint64_t a1, uin
         v30[2] = __43__ML3Entity_getValues_forProperties_count___block_invoke;
         v30[3] = &unk_27875D5F0;
         v31 = v15;
-        v32 = self;
+        selfCopy = self;
         v28 = v14;
         v33 = v14;
         v16 = v15;
@@ -501,7 +501,7 @@ unint64_t __36__ML3Entity_getValuesForProperties___block_invoke(uint64_t a1, uin
           v19 = objc_opt_class();
           v20 = WeakRetained;
           v21 = [objc_opt_class() queryWithLibrary:WeakRetained predicate:0];
-          v22 = [v19 countingQueryForBaseQuery:v21 countProperty:*v6 forIdentifier:self->_persistentID];
+          v22 = [v19 countingQueryForBaseQuery:v21 countProperty:*propertiesCopy forIdentifier:self->_persistentID];
 
           if (v22)
           {
@@ -513,7 +513,7 @@ unint64_t __36__ML3Entity_getValuesForProperties___block_invoke(uint64_t a1, uin
             v23 = &unk_2840C8888;
           }
 
-          *a3 = v23;
+          *values = v23;
 
           WeakRetained = v20;
         }
@@ -521,19 +521,19 @@ unint64_t __36__ML3Entity_getValuesForProperties___block_invoke(uint64_t a1, uin
         else
         {
           v24 = v28;
-          *a3 = v28[v17];
+          *values = v28[v17];
           v25 = v24[v17];
           v24[v17] = 0;
 
           ++v17;
         }
 
-        ++a3;
-        ++v6;
-        --v5;
+        ++values;
+        ++propertiesCopy;
+        --countCopy;
       }
 
-      while (v5);
+      while (countCopy);
       free(v28);
 
       v26 = v29 - 8;
@@ -596,30 +596,30 @@ void __43__ML3Entity_getValues_forProperties_count___block_invoke_2(uint64_t a1,
 - (id)URL
 {
   v3 = objc_opt_class();
-  v4 = [(ML3Entity *)self persistentID];
-  v5 = [(ML3Entity *)self library];
-  v6 = [v5 libraryUID];
-  v7 = [v3 URLForEntityWithPersistentID:v4 libraryUID:v6];
+  persistentID = [(ML3Entity *)self persistentID];
+  library = [(ML3Entity *)self library];
+  libraryUID = [library libraryUID];
+  v7 = [v3 URLForEntityWithPersistentID:persistentID libraryUID:libraryUID];
 
   return v7;
 }
 
-- (BOOL)matchesPredicate:(id)a3
+- (BOOL)matchesPredicate:(id)predicate
 {
-  v4 = a3;
+  predicateCopy = predicate;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
   v18 = 0;
   v14 = @"ROWID";
-  v5 = [objc_opt_class() newSelectSQLForProperties:&v14 count:1 predicate:v4];
+  v5 = [objc_opt_class() newSelectSQLForProperties:&v14 count:1 predicate:predicateCopy];
   WeakRetained = objc_loadWeakRetained(&self->_library);
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __30__ML3Entity_matchesPredicate___block_invoke;
   v10[3] = &unk_2787628F8;
   v10[4] = self;
-  v7 = v4;
+  v7 = predicateCopy;
   v11 = v7;
   v8 = v5;
   v12 = v8;
@@ -655,8 +655,8 @@ void __30__ML3Entity_matchesPredicate___block_invoke(uint64_t a1, void *a2)
 {
   v3 = objc_opt_class();
   v4 = [@"SELECT 1 FROM " mutableCopy];
-  v5 = [v3 databaseTable];
-  [v4 appendString:v5];
+  databaseTable = [v3 databaseTable];
+  [v4 appendString:databaseTable];
 
   [v4 appendString:@" WHERE ROWID = ? LIMIT 1;"];
   v13 = 0;
@@ -670,7 +670,7 @@ void __30__ML3Entity_matchesPredicate___block_invoke(uint64_t a1, void *a2)
   v9[3] = &unk_278763398;
   v7 = v4;
   v10 = v7;
-  v11 = self;
+  selfCopy = self;
   v12 = &v13;
   [WeakRetained databaseConnectionAllowingWrites:0 withBlock:v9];
 
@@ -705,15 +705,15 @@ void __28__ML3Entity_existsInLibrary__block_invoke(void *a1, void *a2)
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (v5 == objc_opt_class() && v4[2] == self->_persistentID)
+  if (v5 == objc_opt_class() && equalCopy[2] == self->_persistentID)
   {
-    v6 = [v4 library];
-    v7 = [(ML3Entity *)self library];
-    v8 = v6 == v7;
+    library = [equalCopy library];
+    library2 = [(ML3Entity *)self library];
+    v8 = library == library2;
   }
 
   else
@@ -724,7 +724,7 @@ void __28__ML3Entity_existsInLibrary__block_invoke(void *a1, void *a2)
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   persistentID = self->_persistentID;
@@ -734,13 +734,13 @@ void __28__ML3Entity_existsInLibrary__block_invoke(void *a1, void *a2)
   return v7;
 }
 
-- (ML3Entity)initWithDictionary:(id)a3 inLibrary:(id)a4 cachedNameOrders:(id)a5 usingConnection:(id)a6
+- (ML3Entity)initWithDictionary:(id)dictionary inLibrary:(id)library cachedNameOrders:(id)orders usingConnection:(id)connection
 {
-  v11 = a3;
-  v12 = a4;
-  v31 = a5;
-  v13 = a6;
-  v14 = [v11 objectForKey:@"ROWID"];
+  dictionaryCopy = dictionary;
+  libraryCopy = library;
+  ordersCopy = orders;
+  connectionCopy = connection;
+  v14 = [dictionaryCopy objectForKey:@"ROWID"];
   v15 = v14;
   if (v14)
   {
@@ -754,45 +754,45 @@ void __28__ML3Entity_existsInLibrary__block_invoke(void *a1, void *a2)
 
   v17 = IntegerUUID;
   v18 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v19 = [objc_opt_class() unsettableProperties];
+  unsettableProperties = [objc_opt_class() unsettableProperties];
   v43[0] = MEMORY[0x277D85DD0];
   v43[1] = 3221225472;
   v43[2] = __75__ML3Entity_initWithDictionary_inLibrary_cachedNameOrders_usingConnection___block_invoke;
   v43[3] = &unk_27875CF18;
-  v20 = v19;
+  v20 = unsettableProperties;
   v44 = v20;
-  v21 = self;
-  v45 = v21;
+  selfCopy = self;
+  v45 = selfCopy;
   v47 = a2;
   v22 = v18;
   v46 = v22;
-  [v11 enumerateKeysAndObjectsUsingBlock:v43];
+  [dictionaryCopy enumerateKeysAndObjectsUsingBlock:v43];
   v39 = 0;
   v40 = &v39;
   v41 = 0x2020000000;
   v42 = 1;
-  v23 = v13;
-  if (!v13)
+  checkoutWriterConnection = connectionCopy;
+  if (!connectionCopy)
   {
-    v23 = [v12 checkoutWriterConnection];
+    checkoutWriterConnection = [libraryCopy checkoutWriterConnection];
   }
 
   v32[0] = MEMORY[0x277D85DD0];
   v32[1] = 3221225472;
   v32[2] = __75__ML3Entity_initWithDictionary_inLibrary_cachedNameOrders_usingConnection___block_invoke_2;
   v32[3] = &unk_27875CF68;
-  v24 = v21;
+  v24 = selfCopy;
   v33 = v24;
   v25 = v22;
   v34 = v25;
   v38 = v17;
-  v26 = v12;
+  v26 = libraryCopy;
   v35 = v26;
   v37 = &v39;
-  v27 = v23;
+  v27 = checkoutWriterConnection;
   v36 = v27;
   [v27 performTransactionWithBlock:v32];
-  if (!v13)
+  if (!connectionCopy)
   {
     [v26 checkInDatabaseConnection:v27];
 
@@ -977,55 +977,55 @@ uint64_t __75__ML3Entity_initWithDictionary_inLibrary_cachedNameOrders_usingConn
   return result;
 }
 
-- (ML3Entity)initWithPersistentID:(int64_t)a3 inLibrary:(id)a4
+- (ML3Entity)initWithPersistentID:(int64_t)d inLibrary:(id)library
 {
-  v7 = a4;
+  libraryCopy = library;
   v12.receiver = self;
   v12.super_class = ML3Entity;
   v8 = [(ML3Entity *)&v12 init];
   v9 = v8;
   if (v8)
   {
-    v8->_persistentID = a3;
-    if (!v7)
+    v8->_persistentID = d;
+    if (!libraryCopy)
     {
-      v11 = [MEMORY[0x277CCA890] currentHandler];
-      [v11 handleFailureInMethod:a2 object:v9 file:@"ML3Entity.m" lineNumber:64 description:&stru_28408B690];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v9 file:@"ML3Entity.m" lineNumber:64 description:&stru_28408B690];
     }
 
-    objc_storeWeak(&v9->_library, v7);
+    objc_storeWeak(&v9->_library, libraryCopy);
   }
 
   return v9;
 }
 
-+ (void)enumeratePersistentIDsInLibrary:(id)a3 afterRevision:(int64_t)a4 usingBlock:(id)a5
++ (void)enumeratePersistentIDsInLibrary:(id)library afterRevision:(int64_t)revision usingBlock:(id)block
 {
-  v7 = a5;
-  if (v7)
+  blockCopy = block;
+  if (blockCopy)
   {
-    v8 = a3;
-    v9 = [objc_opt_class() revisionTrackingCode];
+    libraryCopy = library;
+    revisionTrackingCode = [objc_opt_class() revisionTrackingCode];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __70__ML3Entity_enumeratePersistentIDsInLibrary_afterRevision_usingBlock___block_invoke;
     v10[3] = &unk_27875D0D0;
-    v11 = v7;
-    [v8 enumeratePersistentIDsAfterRevision:a4 revisionTrackingCode:v9 maximumRevisionType:3 usingBlock:v10];
+    v11 = blockCopy;
+    [libraryCopy enumeratePersistentIDsAfterRevision:revision revisionTrackingCode:revisionTrackingCode maximumRevisionType:3 usingBlock:v10];
   }
 }
 
-+ (id)orderingSQLForProperties:(id)a3 directionality:(id)a4
++ (id)orderingSQLForProperties:(id)properties directionality:(id)directionality
 {
   v27 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v21 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v5, "count")}];
+  propertiesCopy = properties;
+  directionalityCopy = directionality;
+  v21 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(propertiesCopy, "count")}];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  obj = v5;
+  obj = propertiesCopy;
   v7 = [obj countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v7)
   {
@@ -1041,15 +1041,15 @@ uint64_t __75__ML3Entity_initWithDictionary_inLibrary_cachedNameOrders_usingConn
           objc_enumerationMutation(obj);
         }
 
-        v12 = [a1 disambiguatedSQLForProperty:*(*(&v22 + 1) + 8 * i)];
+        v12 = [self disambiguatedSQLForProperty:*(*(&v22 + 1) + 8 * i)];
         v13 = @"ASC";
-        if ([v6 count] > v9)
+        if ([directionalityCopy count] > v9)
         {
-          v13 = [v6 objectAtIndex:v9];
+          v13 = [directionalityCopy objectAtIndex:v9];
         }
 
-        v14 = [(__CFString *)v13 uppercaseString];
-        v15 = [v14 isEqual:@"DESC"];
+        uppercaseString = [(__CFString *)v13 uppercaseString];
+        v15 = [uppercaseString isEqual:@"DESC"];
 
         if (v15)
         {
@@ -1073,15 +1073,15 @@ uint64_t __75__ML3Entity_initWithDictionary_inLibrary_cachedNameOrders_usingConn
   return v17;
 }
 
-+ (id)indexableSQLForProperties:(id)a3
++ (id)indexableSQLForProperties:(id)properties
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  propertiesCopy = properties;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v6 = [propertiesCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1093,91 +1093,91 @@ uint64_t __75__ML3Entity_initWithDictionary_inLibrary_cachedNameOrders_usingConn
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(propertiesCopy);
         }
 
-        v10 = [a1 joinClausesForProperty:*(*(&v14 + 1) + 8 * v9)];
+        v10 = [self joinClausesForProperty:*(*(&v14 + 1) + 8 * v9)];
 
         if (v10)
         {
-          v11 = [MEMORY[0x277CCA890] currentHandler];
-          [v11 handleFailureInMethod:a2 object:a1 file:@"ML3Entity.m" lineNumber:1390 description:@"Properties requiring a join cannot be indexed"];
+          currentHandler = [MEMORY[0x277CCA890] currentHandler];
+          [currentHandler handleFailureInMethod:a2 object:self file:@"ML3Entity.m" lineNumber:1390 description:@"Properties requiring a join cannot be indexed"];
         }
 
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [propertiesCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v7);
   }
 
-  v12 = [v5 componentsJoinedByString:{@", "}];
+  v12 = [propertiesCopy componentsJoinedByString:{@", "}];
 
   return v12;
 }
 
-+ (id)disambiguatedSelectSQLForProperty:(id)a3
++ (id)disambiguatedSelectSQLForProperty:(id)property
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"entity_revision.revision"])
+  propertyCopy = property;
+  if ([propertyCopy isEqualToString:@"entity_revision.revision"])
   {
     v5 = @"MAX(entity_revision.revision)";
   }
 
   else
   {
-    v5 = [a1 disambiguatedSQLForProperty:v4];
+    v5 = [self disambiguatedSQLForProperty:propertyCopy];
   }
 
   return v5;
 }
 
-+ (id)_createDisambiguatedSQLForProperty:(id)a3
++ (id)_createDisambiguatedSQLForProperty:(id)property
 {
-  v4 = a3;
-  v5 = [a1 joinClausesForProperty:v4];
+  propertyCopy = property;
+  v5 = [self joinClausesForProperty:propertyCopy];
   if ([v5 count])
   {
-    v6 = v4;
+    propertyCopy = propertyCopy;
   }
 
   else
   {
     v7 = MEMORY[0x277CCACA8];
-    v8 = [a1 databaseTable];
-    v6 = [v7 stringWithFormat:@"%@.%@", v8, v4];
+    databaseTable = [self databaseTable];
+    propertyCopy = [v7 stringWithFormat:@"%@.%@", databaseTable, propertyCopy];
   }
 
-  return v6;
+  return propertyCopy;
 }
 
-+ (id)disambiguatedSQLForProperty:(id)a3
++ (id)disambiguatedSQLForProperty:(id)property
 {
-  v4 = a3;
-  v5 = [a1 predisambiguatedProperties];
-  v6 = [v5 objectForKey:v4];
+  propertyCopy = property;
+  predisambiguatedProperties = [self predisambiguatedProperties];
+  v6 = [predisambiguatedProperties objectForKey:propertyCopy];
 
   if (!v6)
   {
-    v6 = [objc_opt_class() _createDisambiguatedSQLForProperty:v4];
+    v6 = [objc_opt_class() _createDisambiguatedSQLForProperty:propertyCopy];
   }
 
   return v6;
 }
 
-+ (void)predisambiguateProperties:(id)a3 toDictionary:(id)a4
++ (void)predisambiguateProperties:(id)properties toDictionary:(id)dictionary
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  propertiesCopy = properties;
+  dictionaryCopy = dictionary;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v7 = [propertiesCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1189,29 +1189,29 @@ uint64_t __75__ML3Entity_initWithDictionary_inLibrary_cachedNameOrders_usingConn
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(propertiesCopy);
         }
 
         v11 = *(*(&v13 + 1) + 8 * v10);
         v12 = [objc_opt_class() _createDisambiguatedSQLForProperty:v11];
-        [v6 setObject:v12 forKey:v11];
+        [dictionaryCopy setObject:v12 forKey:v11];
 
         ++v10;
       }
 
       while (v8 != v10);
-      v8 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v8 = [propertiesCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v8);
   }
 }
 
-+ (BOOL)deleteFromLibrary:(id)a3 deletionType:(int)a4 canonicalizeCollections:(BOOL)a5 persistentIDs:(const int64_t *)a6 count:(unint64_t)a7 usingConnection:(id)a8
++ (BOOL)deleteFromLibrary:(id)library deletionType:(int)type canonicalizeCollections:(BOOL)collections persistentIDs:(const int64_t *)ds count:(unint64_t)count usingConnection:(id)connection
 {
-  v15 = a3;
-  v16 = a8;
-  if (a7)
+  libraryCopy = library;
+  connectionCopy = connection;
+  if (count)
   {
     v29 = 0;
     v30 = &v29;
@@ -1221,15 +1221,15 @@ uint64_t __75__ML3Entity_initWithDictionary_inLibrary_cachedNameOrders_usingConn
     v19[1] = 3221225472;
     v19[2] = __104__ML3Entity_deleteFromLibrary_deletionType_canonicalizeCollections_persistentIDs_count_usingConnection___block_invoke;
     v19[3] = &unk_27875D0A8;
-    v23 = a7;
-    v24 = a1;
-    v25 = a6;
-    v20 = v15;
+    countCopy = count;
+    selfCopy = self;
+    dsCopy = ds;
+    v20 = libraryCopy;
     v26 = a2;
-    v28 = a5;
-    v21 = v16;
+    collectionsCopy = collections;
+    v21 = connectionCopy;
     v22 = &v29;
-    v27 = a4;
+    typeCopy = type;
     [v21 performTransactionWithBlock:v19];
     v17 = *(v30 + 24);
 
@@ -1538,9 +1538,9 @@ uint64_t __104__ML3Entity_deleteFromLibrary_deletionType_canonicalizeCollections
   return [v2 notifyContentsDidChange];
 }
 
-+ (BOOL)deleteFromLibrary:(id)a3 deletionType:(int)a4 persistentIDs:(const int64_t *)a5 count:(unint64_t)a6
++ (BOOL)deleteFromLibrary:(id)library deletionType:(int)type persistentIDs:(const int64_t *)ds count:(unint64_t)count
 {
-  v10 = a3;
+  libraryCopy = library;
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
@@ -1550,17 +1550,17 @@ uint64_t __104__ML3Entity_deleteFromLibrary_deletionType_canonicalizeCollections
   v13[2] = __64__ML3Entity_deleteFromLibrary_deletionType_persistentIDs_count___block_invoke;
   v13[3] = &unk_27875D080;
   v15 = &v20;
-  v16 = a1;
-  v11 = v10;
-  v19 = a4;
+  selfCopy = self;
+  v11 = libraryCopy;
+  typeCopy = type;
   v14 = v11;
-  v17 = a5;
-  v18 = a6;
+  dsCopy = ds;
+  countCopy = count;
   [v11 databaseConnectionAllowingWrites:1 withBlock:v13];
-  LOBYTE(a6) = *(v21 + 24);
+  LOBYTE(count) = *(v21 + 24);
 
   _Block_object_dispose(&v20, 8);
-  return a6;
+  return count;
 }
 
 uint64_t __64__ML3Entity_deleteFromLibrary_deletionType_persistentIDs_count___block_invoke(uint64_t a1, uint64_t a2)
@@ -1570,47 +1570,47 @@ uint64_t __64__ML3Entity_deleteFromLibrary_deletionType_persistentIDs_count___bl
   return result;
 }
 
-+ (BOOL)_deleteRowsFromLibraryPinsTableForPersistentIDs:(const int64_t *)a3 count:(unint64_t)a4 library:(id)a5 usingConnection:(id)a6
++ (BOOL)_deleteRowsFromLibraryPinsTableForPersistentIDs:(const int64_t *)ds count:(unint64_t)count library:(id)library usingConnection:(id)connection
 {
-  v8 = a5;
-  v27 = a6;
-  if (a4)
+  libraryCopy = library;
+  connectionCopy = connection;
+  if (count)
   {
-    v25 = v8;
+    v25 = libraryCopy;
     v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"DELETE FROM library_pins WHERE (entity_type=0 AND entity_pid)"];
     v10 = 0;
     do
     {
       v11 = objc_autoreleasePoolPush();
-      if (a4 - v10 >= 0x1F4)
+      if (count - v10 >= 0x1F4)
       {
         v12 = 500;
       }
 
       else
       {
-        v12 = a4 - v10;
+        v12 = count - v10;
       }
 
       v13 = +[ML3DatabaseStatementRenderer defaultRenderer];
       v14 = [v13 statementWithPrefix:v9 inParameterCount:v12];
 
-      v15 = [MEMORY[0x277CBEB18] arrayWithCapacity:a4];
+      v15 = [MEMORY[0x277CBEB18] arrayWithCapacity:count];
       v16 = v12 + v10;
-      if (v12 + v10 >= a4)
+      if (v12 + v10 >= count)
       {
-        v17 = a4;
+        countCopy = count;
       }
 
       else
       {
-        v17 = v12 + v10;
+        countCopy = v12 + v10;
       }
 
-      v18 = v10 - v17;
-      if (v10 < v17)
+      v18 = v10 - countCopy;
+      if (v10 < countCopy)
       {
-        v19 = &a3[v10];
+        v19 = &ds[v10];
         do
         {
           v20 = *v19++;
@@ -1623,12 +1623,12 @@ uint64_t __64__ML3Entity_deleteFromLibrary_deletionType_persistentIDs_count___bl
         while (!v23);
       }
 
-      v22 = [v27 executeUpdate:v14 withParameters:v15 error:0];
+      v22 = [connectionCopy executeUpdate:v14 withParameters:v15 error:0];
 
       objc_autoreleasePoolPop(v11);
       if (v22)
       {
-        v23 = v16 >= a4;
+        v23 = v16 >= count;
       }
 
       else
@@ -1641,7 +1641,7 @@ uint64_t __64__ML3Entity_deleteFromLibrary_deletionType_persistentIDs_count___bl
 
     while (!v23);
 
-    v8 = v25;
+    libraryCopy = v25;
   }
 
   else
@@ -1652,50 +1652,50 @@ uint64_t __64__ML3Entity_deleteFromLibrary_deletionType_persistentIDs_count___bl
   return v22;
 }
 
-+ (BOOL)_deleteRowForPersistentIDs:(const int64_t *)a3 count:(unint64_t)a4 library:(id)a5 table:(id)a6 usingColumn:(id)a7 usingConnection:(id)a8
++ (BOOL)_deleteRowForPersistentIDs:(const int64_t *)ds count:(unint64_t)count library:(id)library table:(id)table usingColumn:(id)column usingConnection:(id)connection
 {
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
-  v34 = a8;
-  if (a4)
+  libraryCopy = library;
+  tableCopy = table;
+  columnCopy = column;
+  connectionCopy = connection;
+  if (count)
   {
-    v32 = v12;
-    v31 = v14;
-    v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"DELETE FROM %@ WHERE %@", v13, v14];
+    v32 = libraryCopy;
+    v31 = columnCopy;
+    columnCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"DELETE FROM %@ WHERE %@", tableCopy, columnCopy];
     v16 = 0;
     do
     {
       v17 = objc_autoreleasePoolPush();
-      if (a4 - v16 >= 0x1F4)
+      if (count - v16 >= 0x1F4)
       {
         v18 = 500;
       }
 
       else
       {
-        v18 = a4 - v16;
+        v18 = count - v16;
       }
 
       v19 = +[ML3DatabaseStatementRenderer defaultRenderer];
-      v20 = [v19 statementWithPrefix:v15 inParameterCount:v18];
+      v20 = [v19 statementWithPrefix:columnCopy inParameterCount:v18];
 
-      v21 = [MEMORY[0x277CBEB18] arrayWithCapacity:a4];
+      v21 = [MEMORY[0x277CBEB18] arrayWithCapacity:count];
       v22 = v18 + v16;
-      if (v18 + v16 >= a4)
+      if (v18 + v16 >= count)
       {
-        v23 = a4;
+        countCopy = count;
       }
 
       else
       {
-        v23 = v18 + v16;
+        countCopy = v18 + v16;
       }
 
-      v24 = v16 - v23;
-      if (v16 < v23)
+      v24 = v16 - countCopy;
+      if (v16 < countCopy)
       {
-        v25 = &a3[v16];
+        v25 = &ds[v16];
         do
         {
           v26 = *v25++;
@@ -1708,12 +1708,12 @@ uint64_t __64__ML3Entity_deleteFromLibrary_deletionType_persistentIDs_count___bl
         while (!v29);
       }
 
-      v28 = [v34 executeUpdate:v20 withParameters:v21 error:0];
+      v28 = [connectionCopy executeUpdate:v20 withParameters:v21 error:0];
 
       objc_autoreleasePoolPop(v17);
       if (v28)
       {
-        v29 = v22 >= a4;
+        v29 = v22 >= count;
       }
 
       else
@@ -1726,8 +1726,8 @@ uint64_t __64__ML3Entity_deleteFromLibrary_deletionType_persistentIDs_count___bl
 
     while (!v29);
 
-    v12 = v32;
-    v14 = v31;
+    libraryCopy = v32;
+    columnCopy = v31;
   }
 
   else
@@ -1738,21 +1738,21 @@ uint64_t __64__ML3Entity_deleteFromLibrary_deletionType_persistentIDs_count___bl
   return v28;
 }
 
-+ (void)_didChangeValueForProperties:(id)a3 inLibrary:(id)a4
++ (void)_didChangeValueForProperties:(id)properties inLibrary:(id)library
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  propertiesCopy = properties;
+  libraryCopy = library;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v7 = v5;
+  v7 = propertiesCopy;
   v8 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v8)
   {
     v9 = v8;
-    v18 = v6;
+    v18 = libraryCopy;
     v10 = *v20;
     v11 = 3;
     while (2)
@@ -1767,14 +1767,14 @@ uint64_t __64__ML3Entity_deleteFromLibrary_deletionType_persistentIDs_count___bl
         v13 = *(*(&v19 + 1) + 8 * i);
         if (([v13 isEqualToString:@"ROWID"] & 1) == 0)
         {
-          v14 = [objc_opt_class() unsettableProperties];
-          v15 = [v14 containsObject:v13];
+          unsettableProperties = [objc_opt_class() unsettableProperties];
+          v15 = [unsettableProperties containsObject:v13];
 
           if ((v15 & 1) == 0)
           {
             if ([objc_opt_class() libraryContentsChangeForProperty:v13])
             {
-              v6 = v18;
+              libraryCopy = v18;
               [v18 notifyContentsDidChange];
               if ([objc_opt_class() assistantLibraryContentsChangeForProperty:v13])
               {
@@ -1819,13 +1819,13 @@ uint64_t __64__ML3Entity_deleteFromLibrary_deletionType_persistentIDs_count___bl
 
     if (v11 == 2)
     {
-      v6 = v18;
+      libraryCopy = v18;
       [v18 notifyInvisiblePropertyDidChange];
     }
 
     else
     {
-      v6 = v18;
+      libraryCopy = v18;
       if (v11 == 1)
       {
         [v18 notifyNonContentsPropertyDidChange];
@@ -1839,23 +1839,23 @@ LABEL_22:
   }
 }
 
-+ (BOOL)setDifferentValues:(id)a3 forProperties:(id)a4 forEntityPersistentIDs:(id)a5 inLibrary:(id)a6 usingConnection:(id)a7
++ (BOOL)setDifferentValues:(id)values forProperties:(id)properties forEntityPersistentIDs:(id)ds inLibrary:(id)library usingConnection:(id)connection
 {
   v56 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  valuesCopy = values;
+  propertiesCopy = properties;
+  dsCopy = ds;
+  libraryCopy = library;
+  connectionCopy = connection;
   v17 = 1;
-  if (v12 && v13 && v15 && [v14 count])
+  if (valuesCopy && propertiesCopy && libraryCopy && [dsCopy count])
   {
-    if ([v15 isHomeSharingLibrary])
+    if ([libraryCopy isHomeSharingLibrary])
     {
       v18 = os_log_create("com.apple.amp.medialibrary", "Default");
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
-        v19 = [v13 componentsJoinedByString:{@", "}];
+        v19 = [propertiesCopy componentsJoinedByString:{@", "}];
         *buf = 138543362;
         *&buf[4] = v19;
         _os_log_impl(&dword_22D2FA000, v18, OS_LOG_TYPE_ERROR, "Ignoring write to read-only Home Sharing database. Properties: %{public}@", buf, 0xCu);
@@ -1866,52 +1866,52 @@ LABEL_22:
 
     else
     {
-      v20 = [v12 count];
-      if (v20 == [v14 count])
+      v20 = [valuesCopy count];
+      if (v20 == [dsCopy count])
       {
         *buf = 0;
         *&buf[8] = buf;
         *&buf[16] = 0x2020000000;
         LOBYTE(v55) = 1;
-        v21 = [v13 count];
+        v21 = [propertiesCopy count];
         v49[0] = MEMORY[0x277D85DD0];
         v49[1] = 3221225472;
         v49[2] = __95__ML3Entity_setDifferentValues_forProperties_forEntityPersistentIDs_inLibrary_usingConnection___block_invoke;
         v49[3] = &unk_27875D058;
         v49[4] = buf;
         v49[5] = v21;
-        [v12 enumerateObjectsUsingBlock:v49];
+        [valuesCopy enumerateObjectsUsingBlock:v49];
         if (*(*&buf[8] + 24))
         {
           v45 = 0;
           v46 = &v45;
           v47 = 0x2020000000;
           v48 = 0;
-          v53[0] = v14;
+          v53[0] = dsCopy;
           v52[0] = @"MLDatabaseOperationAttributePersistentIDsArrayKey";
           v52[1] = @"MLDatabaseOperationAttributeEntityClassKey";
           v22 = objc_opt_class();
           v23 = NSStringFromClass(v22);
           v53[1] = v23;
-          v53[2] = v12;
+          v53[2] = valuesCopy;
           v52[2] = @"MLDatabaseOperationAttributeValuesKey";
           v52[3] = @"MLDatabaseOperationAttributePropertiesKey";
           v52[4] = @"MLDatabaseOperationAttributeApplyDifferentValuesToPIDs";
-          v53[3] = v13;
+          v53[3] = propertiesCopy;
           v53[4] = MEMORY[0x277CBEC38];
           v37 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v53 forKeys:v52 count:5];
 
-          v24 = [v16 currentTransactionID];
+          currentTransactionID = [connectionCopy currentTransactionID];
           v25 = MEMORY[0x277CBEB38];
           v50 = @"MLDatabaseOperationOptionDatabasePathKey";
-          v26 = [v15 databasePath];
-          v51 = v26;
+          databasePath = [libraryCopy databasePath];
+          v51 = databasePath;
           v27 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v51 forKeys:&v50 count:1];
           v28 = [v25 dictionaryWithDictionary:v27];
 
-          if (v24)
+          if (currentTransactionID)
           {
-            [v28 setObject:v24 forKey:@"MLDatabaseOperationOptionTransactionIdentifierKey"];
+            [v28 setObject:currentTransactionID forKey:@"MLDatabaseOperationOptionTransactionIdentifierKey"];
           }
 
           v29 = dispatch_semaphore_create(0);
@@ -1921,10 +1921,10 @@ LABEL_22:
           v38[2] = __95__ML3Entity_setDifferentValues_forProperties_forEntityPersistentIDs_inLibrary_usingConnection___block_invoke_2;
           v38[3] = &unk_27875D030;
           v43 = &v45;
-          v39 = v16;
-          v44 = a1;
-          v40 = v13;
-          v41 = v15;
+          v39 = connectionCopy;
+          selfCopy = self;
+          v40 = propertiesCopy;
+          v41 = libraryCopy;
           v31 = v29;
           v42 = v31;
           [v30 performDatabaseOperation:1 withAttributes:v37 options:v28 completionHandler:v38];
@@ -1948,20 +1948,20 @@ LABEL_22:
         if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
         {
           *buf = 138543874;
-          *&buf[4] = v13;
+          *&buf[4] = propertiesCopy;
           *&buf[12] = 2048;
-          *&buf[14] = [v12 count];
+          *&buf[14] = [valuesCopy count];
           *&buf[22] = 2048;
-          v55 = [v14 count];
+          v55 = [dsCopy count];
           _os_log_impl(&dword_22D2FA000, v32, OS_LOG_TYPE_ERROR, "Ignoring not setting properties=%{public}@ as the input is not valid (values.count=%lu, persistentIDs.count=%lu)", buf, 0x20u);
         }
 
-        v33 = [v12 count];
-        if (v33 == [v14 count])
+        v33 = [valuesCopy count];
+        if (v33 == [dsCopy count])
         {
-          v35 = [MEMORY[0x277CCA890] currentHandler];
+          currentHandler = [MEMORY[0x277CCA890] currentHandler];
           v36 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[ML3Entity setDifferentValues:forProperties:forEntityPersistentIDs:inLibrary:usingConnection:]"];
-          [v35 handleFailureInFunction:v36 file:@"ML3Entity.m" lineNumber:1049 description:{@"Invalid parameter not satisfying: %@", @"values.count != persistentIDs.count"}];
+          [currentHandler handleFailureInFunction:v36 file:@"ML3Entity.m" lineNumber:1049 description:{@"Invalid parameter not satisfying: %@", @"values.count != persistentIDs.count"}];
         }
 
         v17 = 0;
@@ -2041,23 +2041,23 @@ LABEL_7:
   dispatch_semaphore_signal(*(a1 + 56));
 }
 
-+ (BOOL)setValues:(id)a3 forProperties:(id)a4 forEntityPersistentIDs:(id)a5 inLibrary:(id)a6 usingConnection:(id)a7
++ (BOOL)setValues:(id)values forProperties:(id)properties forEntityPersistentIDs:(id)ds inLibrary:(id)library usingConnection:(id)connection
 {
   v46 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  valuesCopy = values;
+  propertiesCopy = properties;
+  dsCopy = ds;
+  libraryCopy = library;
+  connectionCopy = connection;
   v17 = 1;
-  if (v12 && v13 && v15 && [v14 count])
+  if (valuesCopy && propertiesCopy && libraryCopy && [dsCopy count])
   {
-    if ([v15 isHomeSharingLibrary])
+    if ([libraryCopy isHomeSharingLibrary])
     {
       v18 = os_log_create("com.apple.amp.medialibrary", "Default");
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
-        v19 = [v13 componentsJoinedByString:{@", "}];
+        v19 = [propertiesCopy componentsJoinedByString:{@", "}];
         LODWORD(buf) = 138543362;
         *(&buf + 4) = v19;
         _os_log_impl(&dword_22D2FA000, v18, OS_LOG_TYPE_ERROR, "Ignoring write to read-only Home Sharing database. Properties: %{public}@", &buf, 0xCu);
@@ -2072,29 +2072,29 @@ LABEL_7:
       *(&buf + 1) = &buf;
       v44 = 0x2020000000;
       v45 = 0;
-      v42[0] = v14;
+      v42[0] = dsCopy;
       v41[0] = @"MLDatabaseOperationAttributePersistentIDsArrayKey";
       v41[1] = @"MLDatabaseOperationAttributeEntityClassKey";
       v20 = objc_opt_class();
       v21 = NSStringFromClass(v20);
       v42[1] = v21;
-      v42[2] = v12;
+      v42[2] = valuesCopy;
       v41[2] = @"MLDatabaseOperationAttributeValuesKey";
       v41[3] = @"MLDatabaseOperationAttributePropertiesKey";
-      v42[3] = v13;
+      v42[3] = propertiesCopy;
       v31 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v42 forKeys:v41 count:4];
 
-      v22 = [v16 currentTransactionID];
+      currentTransactionID = [connectionCopy currentTransactionID];
       v23 = MEMORY[0x277CBEB38];
       v39 = @"MLDatabaseOperationOptionDatabasePathKey";
-      v24 = [v15 databasePath];
-      v40 = v24;
+      databasePath = [libraryCopy databasePath];
+      v40 = databasePath;
       v25 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v40 forKeys:&v39 count:1];
       v26 = [v23 dictionaryWithDictionary:v25];
 
-      if (v22)
+      if (currentTransactionID)
       {
-        [v26 setObject:v22 forKey:@"MLDatabaseOperationOptionTransactionIdentifierKey"];
+        [v26 setObject:currentTransactionID forKey:@"MLDatabaseOperationOptionTransactionIdentifierKey"];
       }
 
       v27 = dispatch_semaphore_create(0);
@@ -2104,10 +2104,10 @@ LABEL_7:
       v32[2] = __86__ML3Entity_setValues_forProperties_forEntityPersistentIDs_inLibrary_usingConnection___block_invoke;
       v32[3] = &unk_27875D030;
       p_buf = &buf;
-      v33 = v16;
-      v38 = a1;
-      v34 = v13;
-      v35 = v15;
+      v33 = connectionCopy;
+      selfCopy = self;
+      v34 = propertiesCopy;
+      v35 = libraryCopy;
       v29 = v27;
       v36 = v29;
       [v28 performDatabaseOperation:1 withAttributes:v31 options:v26 completionHandler:v32];
@@ -2162,72 +2162,72 @@ LABEL_7:
   dispatch_semaphore_signal(*(a1 + 56));
 }
 
-+ (id)countingQueryForBaseQuery:(id)a3 countProperty:(id)a4 forIdentifier:(int64_t)a5
++ (id)countingQueryForBaseQuery:(id)query countProperty:(id)property forIdentifier:(int64_t)identifier
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  queryCopy = query;
+  propertyCopy = property;
   v8 = os_log_create("com.apple.amp.medialibrary", "Default");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
   {
     v11 = 138543618;
-    v12 = [v6 entityClass];
+    entityClass = [queryCopy entityClass];
     v13 = 2114;
-    v14 = v7;
-    v9 = v12;
+    v14 = propertyCopy;
+    v9 = entityClass;
     _os_log_impl(&dword_22D2FA000, v8, OS_LOG_TYPE_ERROR, "Invalid count query for entity class %{public}@, count property %{public}@", &v11, 0x16u);
   }
 
   return 0;
 }
 
-+ (id)newWithDictionary:(id)a3 inLibrary:(id)a4 cachedNameOrders:(id)a5 usingConnection:(id)a6
++ (id)newWithDictionary:(id)dictionary inLibrary:(id)library cachedNameOrders:(id)orders usingConnection:(id)connection
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [[a1 alloc] initWithDictionary:v13 inLibrary:v12 cachedNameOrders:v11 usingConnection:v10];
+  connectionCopy = connection;
+  ordersCopy = orders;
+  libraryCopy = library;
+  dictionaryCopy = dictionary;
+  v14 = [[self alloc] initWithDictionary:dictionaryCopy inLibrary:libraryCopy cachedNameOrders:ordersCopy usingConnection:connectionCopy];
 
   return v14;
 }
 
-+ (id)newWithDictionary:(id)a3 inLibrary:(id)a4 cachedNameOrders:(id)a5
++ (id)newWithDictionary:(id)dictionary inLibrary:(id)library cachedNameOrders:(id)orders
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[a1 alloc] initWithDictionary:v10 inLibrary:v9 cachedNameOrders:v8 usingConnection:0];
+  ordersCopy = orders;
+  libraryCopy = library;
+  dictionaryCopy = dictionary;
+  v11 = [[self alloc] initWithDictionary:dictionaryCopy inLibrary:libraryCopy cachedNameOrders:ordersCopy usingConnection:0];
 
   return v11;
 }
 
-+ (id)newWithDictionary:(id)a3 inLibrary:(id)a4
++ (id)newWithDictionary:(id)dictionary inLibrary:(id)library
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithDictionary:v7 inLibrary:v6 cachedNameOrders:0 usingConnection:0];
+  libraryCopy = library;
+  dictionaryCopy = dictionary;
+  v8 = [[self alloc] initWithDictionary:dictionaryCopy inLibrary:libraryCopy cachedNameOrders:0 usingConnection:0];
 
   return v8;
 }
 
-+ (id)newWithPersistentID:(int64_t)a3 inLibrary:(id)a4
++ (id)newWithPersistentID:(int64_t)d inLibrary:(id)library
 {
-  v6 = a4;
-  v7 = [[a1 alloc] initWithPersistentID:a3 inLibrary:v6];
+  libraryCopy = library;
+  v7 = [[self alloc] initWithPersistentID:d inLibrary:libraryCopy];
 
   return v7;
 }
 
-+ (id)joinClausesForProperty:(id)a3
++ (id)joinClausesForProperty:(id)property
 {
   v8[1] = *MEMORY[0x277D85DE8];
-  if ([a3 isEqualToString:@"entity_revision.revision"])
+  if ([property isEqualToString:@"entity_revision.revision"])
   {
     v4 = [MEMORY[0x277CCAB68] stringWithCapacity:80];
     objc_msgSend(v4, "appendString:", @"JOIN entity_revision ON (");
-    v5 = [a1 databaseTable];
-    [v4 appendString:v5];
+    databaseTable = [self databaseTable];
+    [v4 appendString:databaseTable];
 
     [v4 appendString:@".ROWID = entity_revision.entity_pid"]);
     v8[0] = v4;
@@ -2242,35 +2242,35 @@ LABEL_7:
   return v6;
 }
 
-+ (id)predicateByOptimizingPredicate:(id)a3
++ (id)predicateByOptimizingPredicate:(id)predicate
 {
-  v4 = a3;
+  predicateCopy = predicate;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [a1 predicateByOptimizingComparisonPredicate:v4];
+    v5 = [self predicateByOptimizingComparisonPredicate:predicateCopy];
 
-    v4 = v5;
+    predicateCopy = v5;
   }
 
-  return v4;
+  return predicateCopy;
 }
 
-+ (id)URLForEntityWithPersistentID:(int64_t)a3 libraryUID:(id)a4
++ (id)URLForEntityWithPersistentID:(int64_t)d libraryUID:(id)iD
 {
   v17[3] = *MEMORY[0x277D85DE8];
   v6 = MEMORY[0x277CCACE0];
-  v7 = a4;
+  iDCopy = iD;
   v8 = objc_alloc_init(v6);
-  v9 = [a1 entityURLScheme];
-  [v8 setScheme:v9];
+  entityURLScheme = [self entityURLScheme];
+  [v8 setScheme:entityURLScheme];
 
-  [v8 setHost:v7];
+  [v8 setHost:iDCopy];
   v10 = MEMORY[0x277CCACA8];
   v17[0] = @"/";
-  v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", objc_msgSend(a1, "revisionTrackingCode")];
+  v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", objc_msgSend(self, "revisionTrackingCode")];
   v17[1] = v11;
-  v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lld", a3];
+  v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lld", d];
   v17[2] = v12;
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:3];
   v14 = [v10 pathWithComponents:v13];
@@ -2281,43 +2281,43 @@ LABEL_7:
   return v15;
 }
 
-+ (id)_entityForURLComponents:(id)a3 inLibrary:(id)a4 verifyExistence:(BOOL)a5 reason:(id *)a6
++ (id)_entityForURLComponents:(id)components inLibrary:(id)library verifyExistence:(BOOL)existence reason:(id *)reason
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
-  v12 = [v10 scheme];
-  v13 = [a1 entityURLScheme];
-  v14 = [v12 isEqualToString:v13];
+  existenceCopy = existence;
+  componentsCopy = components;
+  libraryCopy = library;
+  scheme = [componentsCopy scheme];
+  entityURLScheme = [self entityURLScheme];
+  v14 = [scheme isEqualToString:entityURLScheme];
 
   if (v14)
   {
-    v15 = [v10 host];
-    v16 = [v11 libraryUID];
-    v17 = [v15 isEqualToString:v16];
+    host = [componentsCopy host];
+    libraryUID = [libraryCopy libraryUID];
+    v17 = [host isEqualToString:libraryUID];
 
     if (v17)
     {
-      v18 = [v10 path];
-      v19 = [v18 pathComponents];
+      path = [componentsCopy path];
+      pathComponents = [path pathComponents];
 
-      if ([v19 count] > 2)
+      if ([pathComponents count] > 2)
       {
-        v26 = [v19 objectAtIndexedSubscript:1];
-        v27 = [v26 integerValue];
+        v26 = [pathComponents objectAtIndexedSubscript:1];
+        integerValue = [v26 integerValue];
 
-        v28 = [v19 objectAtIndexedSubscript:2];
-        v29 = [v28 longLongValue];
+        v28 = [pathComponents objectAtIndexedSubscript:2];
+        longLongValue = [v28 longLongValue];
 
-        v30 = MLEntityClassForType(v27);
+        v30 = MLEntityClassForType(integerValue);
         if (v30)
         {
-          if (v29)
+          if (longLongValue)
           {
             v31 = v30;
-            v32 = [[v30 alloc] initWithPersistentID:v29 inLibrary:v11];
+            v32 = [[v30 alloc] initWithPersistentID:longLongValue inLibrary:libraryCopy];
             v33 = v32;
-            if (!v7 || ([v32 existsInLibrary] & 1) != 0)
+            if (!existenceCopy || ([v32 existsInLibrary] & 1) != 0)
             {
               v33 = v33;
               v25 = v33;
@@ -2326,11 +2326,11 @@ LABEL_23:
               goto LABEL_24;
             }
 
-            v36 = [MEMORY[0x277CCACA8] stringWithFormat:@"No %@ entity exists with persistentID: %lld", v31, v29];
-            if (a6)
+            v36 = [MEMORY[0x277CCACA8] stringWithFormat:@"No %@ entity exists with persistentID: %lld", v31, longLongValue];
+            if (reason)
             {
               v36 = v36;
-              *a6 = v36;
+              *reason = v36;
             }
 
 LABEL_22:
@@ -2343,21 +2343,21 @@ LABEL_22:
 
         else
         {
-          [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid entity type: %ld", v27];
+          [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid entity type: %ld", integerValue];
         }
       }
 
       else
       {
-        [MEMORY[0x277CCACA8] stringWithFormat:@"Insufficient path components [requires three]: %@", v19];
+        [MEMORY[0x277CCACA8] stringWithFormat:@"Insufficient path components [requires three]: %@", pathComponents];
       }
       v34 = ;
       v33 = v34;
-      if (a6)
+      if (reason)
       {
         v35 = v34;
         v25 = 0;
-        *a6 = v33;
+        *reason = v33;
         goto LABEL_23;
       }
 
@@ -2365,23 +2365,23 @@ LABEL_22:
     }
 
     v22 = MEMORY[0x277CCACA8];
-    v21 = [v10 host];
-    v23 = [v11 libraryUID];
-    v19 = [v22 stringWithFormat:@"Library UID mismatch: %@ != %@", v21, v23];
+    host2 = [componentsCopy host];
+    libraryUID2 = [libraryCopy libraryUID];
+    pathComponents = [v22 stringWithFormat:@"Library UID mismatch: %@ != %@", host2, libraryUID2];
   }
 
   else
   {
     v20 = MEMORY[0x277CCACA8];
-    v21 = [v10 scheme];
-    v19 = [v20 stringWithFormat:@"Invalid URL scheme: %@", v21];
+    host2 = [componentsCopy scheme];
+    pathComponents = [v20 stringWithFormat:@"Invalid URL scheme: %@", host2];
   }
 
-  if (a6)
+  if (reason)
   {
-    v24 = v19;
+    v24 = pathComponents;
     v25 = 0;
-    *a6 = v19;
+    *reason = pathComponents;
   }
 
   else
@@ -2394,33 +2394,33 @@ LABEL_24:
   return v25;
 }
 
-+ (id)entityFromURL:(id)a3 inLibrary:(id)a4 verifyExistence:(BOOL)a5
++ (id)entityFromURL:(id)l inLibrary:(id)library verifyExistence:(BOOL)existence
 {
-  v5 = a5;
+  existenceCopy = existence;
   v8 = MEMORY[0x277CCACE0];
-  v9 = a4;
-  v10 = a3;
-  v11 = [[v8 alloc] initWithURL:v10 resolvingAgainstBaseURL:0];
+  libraryCopy = library;
+  lCopy = l;
+  v11 = [[v8 alloc] initWithURL:lCopy resolvingAgainstBaseURL:0];
 
-  v12 = [a1 _entityForURLComponents:v11 inLibrary:v9 verifyExistence:v5 reason:0];
+  v12 = [self _entityForURLComponents:v11 inLibrary:libraryCopy verifyExistence:existenceCopy reason:0];
 
   return v12;
 }
 
-+ (id)entityFromURL:(id)a3 reason:(id *)a4
++ (id)entityFromURL:(id)l reason:(id *)reason
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [objc_alloc(MEMORY[0x277CCACE0]) initWithURL:v6 resolvingAgainstBaseURL:0];
-  v8 = [v7 scheme];
-  v9 = [a1 entityURLScheme];
-  v10 = [v8 isEqualToString:v9];
+  lCopy = l;
+  v7 = [objc_alloc(MEMORY[0x277CCACE0]) initWithURL:lCopy resolvingAgainstBaseURL:0];
+  scheme = [v7 scheme];
+  entityURLScheme = [self entityURLScheme];
+  v10 = [scheme isEqualToString:entityURLScheme];
 
   if (v10)
   {
-    v27 = a4;
-    v28 = v6;
-    v11 = [v7 host];
+    reasonCopy = reason;
+    v28 = lCopy;
+    host = [v7 host];
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
@@ -2441,12 +2441,12 @@ LABEL_24:
           }
 
           v17 = *(*(&v29 + 1) + 8 * i);
-          v18 = [v17 libraryUID];
-          v19 = [v11 isEqualToString:v18];
+          libraryUID = [v17 libraryUID];
+          v19 = [host isEqualToString:libraryUID];
 
           if (v19)
           {
-            v21 = [a1 _entityForURLComponents:v7 inLibrary:v17 verifyExistence:1 reason:v27];
+            v21 = [self _entityForURLComponents:v7 inLibrary:v17 verifyExistence:1 reason:reasonCopy];
 
             goto LABEL_17;
           }
@@ -2462,28 +2462,28 @@ LABEL_24:
       }
     }
 
-    v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"No library with UID: %@", v11];
-    if (v27)
+    v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"No library with UID: %@", host];
+    if (reasonCopy)
     {
       v20 = v20;
-      *v27 = v20;
+      *reasonCopy = v20;
     }
 
     v21 = 0;
 LABEL_17:
-    v6 = v28;
+    lCopy = v28;
   }
 
   else
   {
     v22 = MEMORY[0x277CCACA8];
-    v23 = [v7 scheme];
-    v24 = [v22 stringWithFormat:@"Invalid URL scheme: %@", v23];
+    scheme2 = [v7 scheme];
+    v24 = [v22 stringWithFormat:@"Invalid URL scheme: %@", scheme2];
 
-    if (a4)
+    if (reason)
     {
       v25 = v24;
-      *a4 = v24;
+      *reason = v24;
     }
 
     v21 = 0;
@@ -2492,19 +2492,19 @@ LABEL_17:
   return v21;
 }
 
-+ (id)newSelectSQLForProperties:(const void *)a3 count:(unint64_t)a4 predicate:(id)a5
++ (id)newSelectSQLForProperties:(const void *)properties count:(unint64_t)count predicate:(id)predicate
 {
   v56 = *MEMORY[0x277D85DE8];
-  v7 = a5;
-  if (v7)
+  predicateCopy = predicate;
+  if (predicateCopy)
   {
     v8 = 0;
     v9 = 0;
 LABEL_3:
     v48 = v9;
     v49 = v8;
-    v47 = [a1 databaseTable];
-    v10 = [v7 SQLForEntityClass:a1];
+    databaseTable = [self databaseTable];
+    v10 = [predicateCopy SQLForEntityClass:self];
     v11 = v10;
     if (v10)
     {
@@ -2527,21 +2527,21 @@ LABEL_3:
     }
 
     v45 = v15;
-    v16 = [v7 SQLJoinClausesForClass:a1];
+    v16 = [predicateCopy SQLJoinClausesForClass:self];
     v17 = [v16 mutableCopy];
 
-    v18 = a4;
-    if (a4)
+    countCopy = count;
+    if (count)
     {
       v19 = 0;
-      v20 = a3;
+      propertiesCopy3 = properties;
       do
       {
         v53 = 0u;
         v54 = 0u;
         v51 = 0u;
         v52 = 0u;
-        v21 = [a1 joinClausesForProperty:v20[v19]];
+        v21 = [self joinClausesForProperty:propertiesCopy3[v19]];
         v22 = [v21 countByEnumeratingWithState:&v51 objects:v55 count:16];
         if (v22)
         {
@@ -2572,22 +2572,22 @@ LABEL_3:
         }
 
         ++v19;
-        v20 = a3;
+        propertiesCopy3 = properties;
       }
 
-      while (v19 != v18);
+      while (v19 != countCopy);
     }
 
     else
     {
-      v20 = a3;
+      propertiesCopy3 = properties;
     }
 
     if ([v17 count])
     {
-      v33 = [v17 objectEnumerator];
-      v34 = [v33 allObjects];
-      v35 = [v34 componentsJoinedByString:@" "];
+      objectEnumerator = [v17 objectEnumerator];
+      allObjects = [objectEnumerator allObjects];
+      v35 = [allObjects componentsJoinedByString:@" "];
     }
 
     else
@@ -2595,9 +2595,9 @@ LABEL_3:
       v35 = &stru_28408B690;
     }
 
-    v36 = [a1 disambiguatedSelectSQLForProperty:*v20];
+    v36 = [self disambiguatedSelectSQLForProperty:*propertiesCopy3];
     v37 = v36;
-    if (v18 < 2)
+    if (countCopy < 2)
     {
       v38 = v36;
     }
@@ -2605,13 +2605,13 @@ LABEL_3:
     else
     {
       v38 = [MEMORY[0x277CCAB68] stringWithString:v36];
-      v39 = v18 - 1;
-      v40 = (v20 + 1);
+      v39 = countCopy - 1;
+      v40 = (propertiesCopy3 + 1);
       do
       {
         [v38 appendString:{@", "}];
         v41 = *v40++;
-        v42 = [a1 disambiguatedSelectSQLForProperty:v41];
+        v42 = [self disambiguatedSelectSQLForProperty:v41];
         [v38 appendString:v42];
 
         --v39;
@@ -2620,9 +2620,9 @@ LABEL_3:
       while (v39);
     }
 
-    v43 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"SELECT %@ FROM %@ %@ WHERE %@.ROWID = ?%@%@", v38, v47, v35, v47, v45, v46];
+    v43 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"SELECT %@ FROM %@ %@ WHERE %@.ROWID = ?%@%@", v38, databaseTable, v35, databaseTable, v45, v46];
     v9 = v48;
-    if (!v7 && v48)
+    if (!predicateCopy && v48)
     {
       [v49 setObject:v43 forKey:v48];
     }
@@ -2631,40 +2631,40 @@ LABEL_3:
     goto LABEL_42;
   }
 
-  v27 = [MEMORY[0x277CCACC8] currentThread];
-  v28 = [v27 threadDictionary];
+  currentThread = [MEMORY[0x277CCACC8] currentThread];
+  threadDictionary = [currentThread threadDictionary];
 
-  v29 = [v28 objectForKey:@"ML3EntityPropertySelectSQLCache"];
+  v29 = [threadDictionary objectForKey:@"ML3EntityPropertySelectSQLCache"];
   if (!v29)
   {
     v29 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    [v28 setObject:v29 forKey:@"ML3EntityPropertySelectSQLCache"];
+    [threadDictionary setObject:v29 forKey:@"ML3EntityPropertySelectSQLCache"];
   }
 
-  v30 = NSStringFromClass(a1);
+  v30 = NSStringFromClass(self);
   v8 = [v29 objectForKey:v30];
 
   if (!v8)
   {
     v8 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    v31 = NSStringFromClass(a1);
+    v31 = NSStringFromClass(self);
     [v29 setObject:v8 forKey:v31];
   }
 
-  if (a4 == 1)
+  if (count == 1)
   {
-    v32 = *a3;
+    v32 = *properties;
   }
 
   else
   {
-    v32 = [MEMORY[0x277CBEA60] arrayWithObjects:a3 count:a4];
+    v32 = [MEMORY[0x277CBEA60] arrayWithObjects:properties count:count];
   }
 
   v9 = v32;
   v43 = [v8 objectForKey:v32];
 
-  v7 = 0;
+  predicateCopy = 0;
   if (!v43)
   {
     goto LABEL_3;
@@ -2675,12 +2675,12 @@ LABEL_42:
   return v43;
 }
 
-+ (id)newSelectAllEntitiesSQLForProperties:(const void *)a3 count:(unint64_t)a4 predicate:(id)a5
++ (id)newSelectAllEntitiesSQLForProperties:(const void *)properties count:(unint64_t)count predicate:(id)predicate
 {
   v47 = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  v39 = [a1 databaseTable];
-  v9 = [v8 SQLForEntityClass:a1];
+  predicateCopy = predicate;
+  databaseTable = [self databaseTable];
+  v9 = [predicateCopy SQLForEntityClass:self];
   v10 = v9;
   if (v9)
   {
@@ -2703,12 +2703,12 @@ LABEL_42:
   }
 
   v37 = v14;
-  v40 = v8;
-  v41 = a1;
-  v15 = [v8 SQLJoinClausesForClass:a1];
+  v40 = predicateCopy;
+  selfCopy = self;
+  v15 = [predicateCopy SQLJoinClausesForClass:self];
   v16 = [v15 mutableCopy];
 
-  if (a4)
+  if (count)
   {
     v17 = 0;
     do
@@ -2717,8 +2717,8 @@ LABEL_42:
       v45 = 0u;
       v42 = 0u;
       v43 = 0u;
-      v18 = a3;
-      v19 = [v41 joinClausesForProperty:a3[v17]];
+      propertiesCopy = properties;
+      v19 = [selfCopy joinClausesForProperty:properties[v17]];
       v20 = [v19 countByEnumeratingWithState:&v42 objects:v46 count:16];
       if (v20)
       {
@@ -2749,17 +2749,17 @@ LABEL_42:
       }
 
       ++v17;
-      a3 = v18;
+      properties = propertiesCopy;
     }
 
-    while (v17 != a4);
+    while (v17 != count);
   }
 
   if ([v16 count])
   {
-    v25 = [v16 objectEnumerator];
-    v26 = [v25 allObjects];
-    v27 = [v26 componentsJoinedByString:@" "];
+    objectEnumerator = [v16 objectEnumerator];
+    allObjects = [objectEnumerator allObjects];
+    v27 = [allObjects componentsJoinedByString:@" "];
   }
 
   else
@@ -2767,9 +2767,9 @@ LABEL_42:
     v27 = &stru_28408B690;
   }
 
-  v28 = [v41 disambiguatedSelectSQLForProperty:*a3];
+  v28 = [selfCopy disambiguatedSelectSQLForProperty:*properties];
   v29 = v28;
-  if (a4 < 2)
+  if (count < 2)
   {
     v30 = v28;
   }
@@ -2777,13 +2777,13 @@ LABEL_42:
   else
   {
     v30 = [MEMORY[0x277CCAB68] stringWithString:v28];
-    v31 = a4 - 1;
-    v32 = a3 + 1;
+    v31 = count - 1;
+    v32 = properties + 1;
     do
     {
       [v30 appendString:{@", "}];
       v33 = *v32++;
-      v34 = [v41 disambiguatedSelectSQLForProperty:v33];
+      v34 = [selfCopy disambiguatedSelectSQLForProperty:v33];
       [v30 appendString:v34];
 
       --v31;
@@ -2792,44 +2792,44 @@ LABEL_42:
     while (v31);
   }
 
-  v35 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"SELECT %@ FROM %@ %@%@%@", v30, v39, v27, v37, v38];
+  v35 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"SELECT %@ FROM %@ %@%@%@", v30, databaseTable, v27, v37, v38];
 
   return v35;
 }
 
-+ (void)enumeratePersistentIDsInLibrary:(id)a3 matchingPredicate:(id)a4 orderingTerms:(id)a5 persistentIDs:(const int64_t *)a6 count:(unint64_t)a7 options:(int64_t)a8 usingBlock:(id)a9
++ (void)enumeratePersistentIDsInLibrary:(id)library matchingPredicate:(id)predicate orderingTerms:(id)terms persistentIDs:(const int64_t *)ds count:(unint64_t)count options:(int64_t)options usingBlock:(id)block
 {
   v79 = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a9;
-  v19 = v18;
-  if (a7)
+  libraryCopy = library;
+  predicateCopy = predicate;
+  termsCopy = terms;
+  blockCopy = block;
+  v19 = blockCopy;
+  if (count)
   {
-    v47 = a7;
-    v48 = a6;
-    v50 = v18;
-    v20 = [a1 databaseTable];
+    countCopy = count;
+    dsCopy = ds;
+    v50 = blockCopy;
+    databaseTable = [self databaseTable];
     v21 = objc_alloc_init(MEMORY[0x277CCAB68]);
     [v21 appendString:@"SELECT "];
-    [v21 appendString:v20];
+    [v21 appendString:databaseTable];
     [v21 appendString:@".ROWID FROM "];
-    v49 = v20;
-    [v21 appendString:v20];
-    v52 = v15;
-    v46 = [a1 predicateIncludingSystemwidePredicatesWithPredicate:v16 library:v15 options:a8];
+    v49 = databaseTable;
+    [v21 appendString:databaseTable];
+    v52 = libraryCopy;
+    v46 = [self predicateIncludingSystemwidePredicatesWithPredicate:predicateCopy library:libraryCopy options:options];
 
-    v22 = [MEMORY[0x277CBEB40] orderedSet];
+    orderedSet = [MEMORY[0x277CBEB40] orderedSet];
     v72 = 0u;
     v73 = 0u;
     v74 = 0u;
     v75 = 0u;
-    v51 = v17;
-    v23 = v17;
+    v51 = termsCopy;
+    v23 = termsCopy;
     v24 = [v23 countByEnumeratingWithState:&v72 objects:v78 count:16];
     obj = v23;
-    v54 = a1;
+    selfCopy = self;
     if (v24)
     {
       v25 = v24;
@@ -2848,8 +2848,8 @@ LABEL_42:
           v69 = 0u;
           v70 = 0u;
           v71 = 0u;
-          v29 = [v28 property];
-          v30 = [a1 joinClausesForProperty:v29];
+          property = [v28 property];
+          v30 = [self joinClausesForProperty:property];
 
           v31 = [v30 countByEnumeratingWithState:&v68 objects:v77 count:16];
           if (v31)
@@ -2865,7 +2865,7 @@ LABEL_42:
                   objc_enumerationMutation(v30);
                 }
 
-                [v22 addObject:*(*(&v68 + 1) + 8 * j)];
+                [orderedSet addObject:*(*(&v68 + 1) + 8 * j)];
               }
 
               v32 = [v30 countByEnumeratingWithState:&v68 objects:v77 count:16];
@@ -2874,7 +2874,7 @@ LABEL_42:
             while (v32);
           }
 
-          a1 = v54;
+          self = selfCopy;
         }
 
         v23 = obj;
@@ -2885,17 +2885,17 @@ LABEL_42:
     }
 
     v35 = v46;
-    v36 = [v46 SQLJoinClausesForClass:a1];
+    v36 = [v46 SQLJoinClausesForClass:self];
     if ([v36 count])
     {
-      [v22 unionOrderedSet:v36];
+      [orderedSet unionOrderedSet:v36];
     }
 
     v66 = 0u;
     v67 = 0u;
     v65 = 0u;
     v64 = 0u;
-    v37 = v22;
+    v37 = orderedSet;
     v38 = [v37 countByEnumeratingWithState:&v64 objects:v76 count:16];
     if (v38)
     {
@@ -2924,19 +2924,19 @@ LABEL_42:
     [v21 appendString:@" WHERE "];
     if (v35)
     {
-      [v35 appendSQLToMutableString:v21 entityClass:v54];
+      [v35 appendSQLToMutableString:v21 entityClass:selfCopy];
       [v21 appendString:@" AND "];
     }
 
     [v21 appendString:{v49, v46}];
     objc_msgSend(v21, "appendString:", @".ROWID IN (?");
-    v15 = v52;
-    if (v47 != 1)
+    libraryCopy = v52;
+    if (countCopy != 1)
     {
       v43 = 2;
-      if (v47 > 2)
+      if (countCopy > 2)
       {
-        v43 = v47;
+        v43 = countCopy;
       }
 
       v44 = v43 - 1;
@@ -2958,7 +2958,7 @@ LABEL_42:
       v61[2] = __116__ML3Entity_enumeratePersistentIDsInLibrary_matchingPredicate_orderingTerms_persistentIDs_count_options_usingBlock___block_invoke;
       v61[3] = &unk_27875CF90;
       v62 = v21;
-      v63 = v54;
+      v63 = selfCopy;
       [obj enumerateObjectsUsingBlock:v61];
     }
 
@@ -2966,17 +2966,17 @@ LABEL_42:
     v55[1] = 3221225472;
     v55[2] = __116__ML3Entity_enumeratePersistentIDsInLibrary_matchingPredicate_orderingTerms_persistentIDs_count_options_usingBlock___block_invoke_2;
     v55[3] = &unk_27875CFB8;
-    v16 = v35;
-    v59 = v47;
-    v60 = v48;
-    v56 = v16;
+    predicateCopy = v35;
+    v59 = countCopy;
+    v60 = dsCopy;
+    v56 = predicateCopy;
     v57 = v21;
     v19 = v50;
     v58 = v50;
     v45 = v21;
     [v52 databaseConnectionAllowingWrites:0 withBlock:v55];
 
-    v17 = v51;
+    termsCopy = v51;
   }
 }
 
@@ -3029,16 +3029,16 @@ uint64_t __116__ML3Entity_enumeratePersistentIDsInLibrary_matchingPredicate_orde
   return result;
 }
 
-+ (BOOL)incrementRevisionWithLibrary:(id)a3 persistentID:(int64_t)a4 deletionType:(int)a5 revisionType:(int)a6 usingConnection:(id)a7
++ (BOOL)incrementRevisionWithLibrary:(id)library persistentID:(int64_t)d deletionType:(int)type revisionType:(int)revisionType usingConnection:(id)connection
 {
-  v8 = *&a6;
-  v9 = *&a5;
+  v8 = *&revisionType;
+  v9 = *&type;
   v33[4] = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a7;
+  libraryCopy = library;
+  connectionCopy = connection;
   if (!v9 || !v8)
   {
-    if (a4)
+    if (d)
     {
       goto LABEL_4;
     }
@@ -3046,38 +3046,38 @@ uint64_t __116__ML3Entity_enumeratePersistentIDsInLibrary_matchingPredicate_orde
 LABEL_12:
     if (MSVDeviceOSIsInternalInstall())
     {
-      v29 = [MEMORY[0x277CCA890] currentHandler];
-      [v29 handleFailureInMethod:a2 object:a1 file:@"ML3Entity.m" lineNumber:285 description:@"incrementRevisionWithLibrary called with invalid pid"];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"ML3Entity.m" lineNumber:285 description:@"incrementRevisionWithLibrary called with invalid pid"];
     }
 
     goto LABEL_14;
   }
 
-  v28 = [MEMORY[0x277CCA890] currentHandler];
-  [v28 handleFailureInMethod:a2 object:a1 file:@"ML3Entity.m" lineNumber:282 description:{@"Wrong revision type for deletion type: %d, %d", v8, v9}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"ML3Entity.m" lineNumber:282 description:{@"Wrong revision type for deletion type: %d, %d", v8, v9}];
 
-  if (!a4)
+  if (!d)
   {
     goto LABEL_12;
   }
 
 LABEL_4:
-  v15 = [a1 revisionTrackingCode];
-  if (v15 == 0x7FFFFFFFFFFFFFFFLL)
+  revisionTrackingCode = [self revisionTrackingCode];
+  if (revisionTrackingCode == 0x7FFFFFFFFFFFFFFFLL)
   {
     LOBYTE(v16) = 1;
     goto LABEL_15;
   }
 
-  v17 = v15;
-  if (![a1 _shouldIncrementRevisionForType:v8 persistentID:a4 usingConnection:v14])
+  v17 = revisionTrackingCode;
+  if (![self _shouldIncrementRevisionForType:v8 persistentID:d usingConnection:connectionCopy])
   {
 LABEL_14:
     LOBYTE(v16) = 0;
     goto LABEL_15;
   }
 
-  v18 = [MEMORY[0x277CCABB0] numberWithLongLong:a4];
+  v18 = [MEMORY[0x277CCABB0] numberWithLongLong:d];
   v33[0] = v18;
   v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v9];
   v33[1] = v19;
@@ -3086,27 +3086,27 @@ LABEL_14:
   v21 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v8];
   v33[3] = v21;
   v22 = [MEMORY[0x277CBEA60] arrayWithObjects:v33 count:4];
-  v16 = [v14 executeUpdate:@"REPLACE INTO entity_revision (entity_pid withParameters:deleted error:{class, revision_type) VALUES (?, ?, ?, ?)", v22, 0}];
+  v16 = [connectionCopy executeUpdate:@"REPLACE INTO entity_revision (entity_pid withParameters:deleted error:{class, revision_type) VALUES (?, ?, ?, ?)", v22, 0}];
 
   if (!v8 && v16)
   {
-    v23 = [MEMORY[0x277CCABB0] numberWithLongLong:a4];
+    v23 = [MEMORY[0x277CCABB0] numberWithLongLong:d];
     v32[0] = v23;
     v24 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:0];
     v32[1] = v24;
     v25 = [MEMORY[0x277CBEA60] arrayWithObjects:v32 count:2];
-    [v14 executeUpdate:@"DELETE FROM entity_revision WHERE entity_pid=? AND revision_type > ?" withParameters:v25 error:0];
+    [connectionCopy executeUpdate:@"DELETE FROM entity_revision WHERE entity_pid=? AND revision_type > ?" withParameters:v25 error:0];
   }
 
-  v26 = [v14 databasePath];
-  v27 = [v26 hash];
+  databasePath = [connectionCopy databasePath];
+  v27 = [databasePath hash];
 
   v31[0] = MEMORY[0x277D85DD0];
   v31[1] = 3221225472;
   v31[2] = __97__ML3Entity_incrementRevisionWithLibrary_persistentID_deletionType_revisionType_usingConnection___block_invoke;
   v31[3] = &__block_descriptor_40_e8_v12__0B8l;
   v31[4] = v27;
-  [v14 enqueueBlockForTransactionCommit:v31];
+  [connectionCopy enqueueBlockForTransactionCommit:v31];
 LABEL_15:
 
   return v16;
@@ -3122,9 +3122,9 @@ void __97__ML3Entity_incrementRevisionWithLibrary_persistentID_deletionType_revi
   }
 }
 
-+ (BOOL)incrementRevisionWithLibrary:(id)a3 persistentID:(int64_t)a4 deletionType:(int)a5 revisionType:(int)a6
++ (BOOL)incrementRevisionWithLibrary:(id)library persistentID:(int64_t)d deletionType:(int)type revisionType:(int)revisionType
 {
-  v10 = a3;
+  libraryCopy = library;
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
@@ -3134,17 +3134,17 @@ void __97__ML3Entity_incrementRevisionWithLibrary_persistentID_deletionType_revi
   v13[2] = __81__ML3Entity_incrementRevisionWithLibrary_persistentID_deletionType_revisionType___block_invoke;
   v13[3] = &unk_2787632C8;
   v15 = &v20;
-  v16 = a1;
-  v11 = v10;
+  selfCopy = self;
+  v11 = libraryCopy;
   v14 = v11;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
+  dCopy = d;
+  typeCopy = type;
+  revisionTypeCopy = revisionType;
   [v11 databaseConnectionAllowingWrites:1 withBlock:v13];
-  LOBYTE(a6) = *(v21 + 24);
+  LOBYTE(revisionType) = *(v21 + 24);
 
   _Block_object_dispose(&v20, 8);
-  return a6;
+  return revisionType;
 }
 
 void __81__ML3Entity_incrementRevisionWithLibrary_persistentID_deletionType_revisionType___block_invoke(uint64_t a1, void *a2)
@@ -3155,43 +3155,43 @@ void __81__ML3Entity_incrementRevisionWithLibrary_persistentID_deletionType_revi
   *(*(*(a1 + 40) + 8) + 24) = v4;
 }
 
-+ (BOOL)incrementRevisionForRevisionTypeContentWithConnection:(id)a3 deletionType:(int)a4 persistentIDs:(const int64_t *)a5 count:(unint64_t)a6
++ (BOOL)incrementRevisionForRevisionTypeContentWithConnection:(id)connection deletionType:(int)type persistentIDs:(const int64_t *)ds count:(unint64_t)count
 {
-  v22 = a5;
-  v7 = *&a4;
-  v23 = a3;
-  if (a6)
+  dsCopy = ds;
+  v7 = *&type;
+  connectionCopy = connection;
+  if (count)
   {
     v9 = 0;
     do
     {
       v10 = objc_autoreleasePoolPush();
-      if (a6 - v9 >= 0x1F4)
+      if (count - v9 >= 0x1F4)
       {
         v11 = 500;
       }
 
       else
       {
-        v11 = a6 - v9;
+        v11 = count - v9;
       }
 
-      v12 = [MEMORY[0x277CBEB18] arrayWithCapacity:{v11, v22}];
+      v12 = [MEMORY[0x277CBEB18] arrayWithCapacity:{v11, dsCopy}];
       v13 = v11 + v9;
-      if (v11 + v9 >= a6)
+      if (v11 + v9 >= count)
       {
-        v14 = a6;
+        countCopy = count;
       }
 
       else
       {
-        v14 = v11 + v9;
+        countCopy = v11 + v9;
       }
 
-      v15 = v9 - v14;
-      if (v9 < v14)
+      v15 = v9 - countCopy;
+      if (v9 < countCopy)
       {
-        v16 = &v22[v9];
+        v16 = &dsCopy[v9];
         do
         {
           v17 = *v16++;
@@ -3204,12 +3204,12 @@ void __81__ML3Entity_incrementRevisionWithLibrary_persistentID_deletionType_revi
         while (!v20);
       }
 
-      v19 = [a1 incrementRevisionForRevisionTypeContentWithConnection:v23 deletionType:v7 persistentIDs:v12];
+      v19 = [self incrementRevisionForRevisionTypeContentWithConnection:connectionCopy deletionType:v7 persistentIDs:v12];
 
       objc_autoreleasePoolPop(v10);
       if (v19)
       {
-        v20 = v13 >= a6;
+        v20 = v13 >= count;
       }
 
       else
@@ -3231,24 +3231,24 @@ void __81__ML3Entity_incrementRevisionWithLibrary_persistentID_deletionType_revi
   return v19;
 }
 
-+ (BOOL)incrementRevisionForRevisionTypeContentWithConnection:(id)a3 deletionType:(int)a4 persistentIDs:(id)a5
++ (BOOL)incrementRevisionForRevisionTypeContentWithConnection:(id)connection deletionType:(int)type persistentIDs:(id)ds
 {
-  v6 = *&a4;
+  v6 = *&type;
   v89 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = [v9 count];
-  v11 = [a1 revisionTrackingCode];
+  connectionCopy = connection;
+  dsCopy = ds;
+  v10 = [dsCopy count];
+  revisionTrackingCode = [self revisionTrackingCode];
   v12 = [MEMORY[0x277CBEB18] arrayWithCapacity:v10];
-  if (v11 != 0x7FFFFFFFFFFFFFFFLL)
+  if (revisionTrackingCode != 0x7FFFFFFFFFFFFFFFLL)
   {
     obj = v6;
     v82 = 0u;
     v83 = 0u;
     v80 = 0u;
     v81 = 0u;
-    v13 = v9;
-    v14 = v9;
+    v13 = dsCopy;
+    v14 = dsCopy;
     v15 = [v14 countByEnumeratingWithState:&v80 objects:v88 count:16];
     if (v15)
     {
@@ -3264,7 +3264,7 @@ void __81__ML3Entity_incrementRevisionWithLibrary_persistentID_deletionType_revi
           }
 
           v19 = *(*(&v80 + 1) + 8 * i);
-          if ([a1 _shouldIncrementRevisionForType:0 persistentID:objc_msgSend(v19 usingConnection:{"longLongValue"), v8}])
+          if ([self _shouldIncrementRevisionForType:0 persistentID:objc_msgSend(v19 usingConnection:{"longLongValue"), connectionCopy}])
           {
             [v12 addObject:v19];
           }
@@ -3276,7 +3276,7 @@ void __81__ML3Entity_incrementRevisionWithLibrary_persistentID_deletionType_revi
       while (v16);
     }
 
-    v9 = v13;
+    dsCopy = v13;
     v6 = obj;
   }
 
@@ -3284,14 +3284,14 @@ void __81__ML3Entity_incrementRevisionWithLibrary_persistentID_deletionType_revi
   if (v20)
   {
     v64 = v20;
-    v62 = v9;
+    v62 = dsCopy;
     v21 = -1;
     v22 = 1;
     v61 = [&stru_28408B690 stringByPaddingToLength:500 * objc_msgSend(@" withString:(? startingAtIndex:{?, ?, ?)", "length") - 1, @", (?, ?, ?, ?)", 1}];
-    v66 = [CFSTR(""REPLACE INTO entity_revision (entity_pid deleted];
+    deleted = [CFSTR(""REPLACE INTO entity_revision (entity_pid deleted];
     v23 = [MEMORY[0x277CBEB18] arrayWithCapacity:2000];
     v69 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v6];
-    v24 = [MEMORY[0x277CCABB0] numberWithInteger:v11];
+    v24 = [MEMORY[0x277CCABB0] numberWithInteger:revisionTrackingCode];
     v76 = 0u;
     v77 = 0u;
     v78 = 0u;
@@ -3326,7 +3326,7 @@ void __81__ML3Entity_incrementRevisionWithLibrary_persistentID_deletionType_revi
             if ([v23 count] == 2000)
             {
               v75 = v27;
-              v32 = [v8 executeUpdate:v66 withParameters:v23 error:&v75];
+              v32 = [connectionCopy executeUpdate:deleted withParameters:v23 error:&v75];
               v33 = v75;
 
               if ((v32 & 1) == 0)
@@ -3358,8 +3358,8 @@ void __81__ML3Entity_incrementRevisionWithLibrary_persistentID_deletionType_revi
 
           else if (MSVDeviceOSIsInternalInstall())
           {
-            v34 = [MEMORY[0x277CCA890] currentHandler];
-            [v34 handleFailureInMethod:a2 object:a1 file:@"ML3Entity.m" lineNumber:184 description:@"incrementRevisionForRevisionTypeContentWithConnection called with invalid pid"];
+            currentHandler = [MEMORY[0x277CCA890] currentHandler];
+            [currentHandler handleFailureInMethod:a2 object:self file:@"ML3Entity.m" lineNumber:184 description:@"incrementRevisionForRevisionTypeContentWithConnection called with invalid pid"];
           }
         }
 
@@ -3389,9 +3389,9 @@ LABEL_35:
     if ([v23 count])
     {
       v39 = [&stru_28408B690 stringByPaddingToLength:v21 + (objc_msgSend(v23 withString:"count") >> 2) * objc_msgSend(@" startingAtIndex:{(?, ?, ?, ?)", "length"), @", (?, ?, ?, ?)", 1}];
-      v40 = [CFSTR(""REPLACE INTO entity_revision (entity_pid deleted];
+      deleted2 = [CFSTR(""REPLACE INTO entity_revision (entity_pid deleted];
       v74 = v33;
-      v41 = [v8 executeUpdate:v40 withParameters:v23 error:&v74];
+      v41 = [connectionCopy executeUpdate:deleted2 withParameters:v23 error:&v74];
       v42 = v74;
 
       if (!v41)
@@ -3405,7 +3405,7 @@ LABEL_35:
         }
 
         v55 = 0;
-        v9 = v62;
+        dsCopy = v62;
         v56 = v65;
         goto LABEL_56;
       }
@@ -3446,7 +3446,7 @@ LABEL_35:
       v51 = [v50 arrayByAddingObjectsFromArray:v49];
 
       v73 = v45;
-      v52 = [v8 executeUpdate:v48 withParameters:v51 error:&v73];
+      v52 = [connectionCopy executeUpdate:v48 withParameters:v51 error:&v73];
       v42 = v73;
 
       v44 = v64;
@@ -3462,17 +3462,17 @@ LABEL_35:
     while (v43 < v64);
     if (v52)
     {
-      v53 = [v8 databasePath];
-      v54 = [v53 hash];
+      databasePath = [connectionCopy databasePath];
+      v54 = [databasePath hash];
 
       v72[0] = MEMORY[0x277D85DD0];
       v72[1] = 3221225472;
       v72[2] = __94__ML3Entity_incrementRevisionForRevisionTypeContentWithConnection_deletionType_persistentIDs___block_invoke;
       v72[3] = &__block_descriptor_40_e8_v12__0B8l;
       v72[4] = v54;
-      [v8 enqueueBlockForTransactionCommit:v72];
+      [connectionCopy enqueueBlockForTransactionCommit:v72];
       v55 = 1;
-      v9 = v62;
+      dsCopy = v62;
       v12 = v63;
       v56 = v65;
       LOBYTE(v35) = v60;
@@ -3487,7 +3487,7 @@ LABEL_56:
     LOBYTE(v35) = v60;
 LABEL_53:
     v58 = os_log_create("com.apple.amp.medialibrary", "Default");
-    v9 = v62;
+    dsCopy = v62;
     v56 = v65;
     if (os_log_type_enabled(v58, OS_LOG_TYPE_DEFAULT))
     {
@@ -3524,10 +3524,10 @@ void __94__ML3Entity_incrementRevisionForRevisionTypeContentWithConnection_delet
   }
 }
 
-+ (BOOL)incrementRevisionForRevisionTypeContentWithLibrary:(id)a3 deletionType:(int)a4 persistentIDs:(id)a5
++ (BOOL)incrementRevisionForRevisionTypeContentWithLibrary:(id)library deletionType:(int)type persistentIDs:(id)ds
 {
-  v8 = a3;
-  v9 = a5;
+  libraryCopy = library;
+  dsCopy = ds;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
@@ -3537,29 +3537,29 @@ void __94__ML3Entity_incrementRevisionForRevisionTypeContentWithConnection_delet
   v12[2] = __91__ML3Entity_incrementRevisionForRevisionTypeContentWithLibrary_deletionType_persistentIDs___block_invoke;
   v12[3] = &unk_27875CEF0;
   v14 = &v17;
-  v15 = a1;
-  v16 = a4;
-  v10 = v9;
+  selfCopy = self;
+  typeCopy = type;
+  v10 = dsCopy;
   v13 = v10;
-  [v8 performDatabaseTransactionWithBlock:v12];
-  LOBYTE(a4) = *(v18 + 24);
+  [libraryCopy performDatabaseTransactionWithBlock:v12];
+  LOBYTE(type) = *(v18 + 24);
 
   _Block_object_dispose(&v17, 8);
-  return a4;
+  return type;
 }
 
-+ (BOOL)_shouldIncrementRevisionForType:(int)a3 persistentID:(int64_t)a4 usingConnection:(id)a5
++ (BOOL)_shouldIncrementRevisionForType:(int)type persistentID:(int64_t)d usingConnection:(id)connection
 {
-  v8 = a5;
-  v9 = [a1 revisionTrackingCode];
-  if (v9 == 0x7FFFFFFFFFFFFFFFLL)
+  connectionCopy = connection;
+  revisionTrackingCode = [self revisionTrackingCode];
+  if (revisionTrackingCode == 0x7FFFFFFFFFFFFFFFLL)
   {
     v10 = 0;
   }
 
-  else if (a3 && v9 == +[ML3Track revisionTrackingCode])
+  else if (type && revisionTrackingCode == +[ML3Track revisionTrackingCode])
   {
-    v10 = [ML3Track trackWithPersistentID:a4 existsInLibraryWithConnection:v8];
+    v10 = [ML3Track trackWithPersistentID:d existsInLibraryWithConnection:connectionCopy];
   }
 
   else
@@ -3570,18 +3570,18 @@ void __94__ML3Entity_incrementRevisionForRevisionTypeContentWithConnection_delet
   return v10;
 }
 
-+ (BOOL)insertValues:(id)a3 intoTable:(id)a4 persistentID:(int64_t)a5 connection:(id)a6
++ (BOOL)insertValues:(id)values intoTable:(id)table persistentID:(int64_t)d connection:(id)connection
 {
   v50 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v38 = a6;
+  valuesCopy = values;
+  tableCopy = table;
+  connectionCopy = connection;
   v12 = objc_alloc_init(MEMORY[0x277CCAB68]);
   [v12 appendString:@"INSERT OR REPLACE INTO "];
-  [v12 appendString:v11];
+  [v12 appendString:tableCopy];
   objc_msgSend(v12, "appendString:", @" (");
-  v39 = v11;
-  v13 = [a1 persistentIDColumnForTable:v11];
+  v39 = tableCopy;
+  v13 = [self persistentIDColumnForTable:tableCopy];
   v14 = v13;
   v15 = @"ROWID";
   if (v13)
@@ -3593,12 +3593,12 @@ void __94__ML3Entity_incrementRevisionForRevisionTypeContentWithConnection_delet
 
   v37 = v16;
   [v12 appendString:v16];
-  v17 = [v10 allKeys];
+  allKeys = [valuesCopy allKeys];
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v18 = [v17 countByEnumeratingWithState:&v44 objects:v49 count:16];
+  v18 = [allKeys countByEnumeratingWithState:&v44 objects:v49 count:16];
   if (v18)
   {
     v19 = v18;
@@ -3609,7 +3609,7 @@ void __94__ML3Entity_incrementRevisionForRevisionTypeContentWithConnection_delet
       {
         if (*v45 != v20)
         {
-          objc_enumerationMutation(v17);
+          objc_enumerationMutation(allKeys);
         }
 
         v22 = *(*(&v44 + 1) + 8 * i);
@@ -3617,14 +3617,14 @@ void __94__ML3Entity_incrementRevisionForRevisionTypeContentWithConnection_delet
         [v12 appendString:v22];
       }
 
-      v19 = [v17 countByEnumeratingWithState:&v44 objects:v49 count:16];
+      v19 = [allKeys countByEnumeratingWithState:&v44 objects:v49 count:16];
     }
 
     while (v19);
   }
 
   [v12 appendString:@") VALUES (?"];
-  if ([v17 count])
+  if ([allKeys count])
   {
     v23 = 0;
     do
@@ -3633,19 +3633,19 @@ void __94__ML3Entity_incrementRevisionForRevisionTypeContentWithConnection_delet
       ++v23;
     }
 
-    while (v23 < [v17 count]);
+    while (v23 < [allKeys count]);
   }
 
   [v12 appendString:@";"]);
-  v24 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v17, "count") + 1}];
-  v25 = [MEMORY[0x277CCABB0] numberWithLongLong:a5];
+  v24 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(allKeys, "count") + 1}];
+  v25 = [MEMORY[0x277CCABB0] numberWithLongLong:d];
   [v24 addObject:v25];
 
   v42 = 0u;
   v43 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v26 = v17;
+  v26 = allKeys;
   v27 = [v26 countByEnumeratingWithState:&v40 objects:v48 count:16];
   if (v27)
   {
@@ -3660,19 +3660,19 @@ void __94__ML3Entity_incrementRevisionForRevisionTypeContentWithConnection_delet
           objc_enumerationMutation(v26);
         }
 
-        v31 = [v10 objectForKey:*(*(&v40 + 1) + 8 * j)];
+        v31 = [valuesCopy objectForKey:*(*(&v40 + 1) + 8 * j)];
         v32 = v31;
         if (v31)
         {
-          v33 = v31;
+          null = v31;
         }
 
         else
         {
-          v33 = [MEMORY[0x277CBEB68] null];
+          null = [MEMORY[0x277CBEB68] null];
         }
 
-        v34 = v33;
+        v34 = null;
 
         [v24 addObject:v34];
       }
@@ -3683,15 +3683,15 @@ void __94__ML3Entity_incrementRevisionForRevisionTypeContentWithConnection_delet
     while (v28);
   }
 
-  v35 = [v38 executeUpdate:v12 withParameters:v24 error:0];
+  v35 = [connectionCopy executeUpdate:v12 withParameters:v24 error:0];
   return v35;
 }
 
-+ (BOOL)insertValues:(id)a3 intoTable:(id)a4 persistentID:(int64_t)a5 library:(id)a6
++ (BOOL)insertValues:(id)values intoTable:(id)table persistentID:(int64_t)d library:(id)library
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  valuesCopy = values;
+  tableCopy = table;
+  libraryCopy = library;
   v22 = 0;
   v23 = &v22;
   v24 = 0x2020000000;
@@ -3701,17 +3701,17 @@ void __94__ML3Entity_incrementRevisionForRevisionTypeContentWithConnection_delet
   v16[2] = __57__ML3Entity_insertValues_intoTable_persistentID_library___block_invoke;
   v16[3] = &unk_27875CEC8;
   v19 = &v22;
-  v20 = a1;
-  v13 = v10;
+  selfCopy = self;
+  v13 = valuesCopy;
   v17 = v13;
-  v14 = v11;
+  v14 = tableCopy;
   v18 = v14;
-  v21 = a5;
-  [v12 databaseConnectionAllowingWrites:1 withBlock:v16];
-  LOBYTE(a5) = *(v23 + 24);
+  dCopy = d;
+  [libraryCopy databaseConnectionAllowingWrites:1 withBlock:v16];
+  LOBYTE(d) = *(v23 + 24);
 
   _Block_object_dispose(&v22, 8);
-  return a5;
+  return d;
 }
 
 void __57__ML3Entity_insertValues_intoTable_persistentID_library___block_invoke(void *a1, void *a2)
@@ -3722,152 +3722,152 @@ void __57__ML3Entity_insertValues_intoTable_persistentID_library___block_invoke(
   *(*(a1[6] + 8) + 24) = v4;
 }
 
-+ (id)unrestrictedAllItemsQueryWithlibrary:(id)a3 predicate:(id)a4 orderingTerms:(id)a5
++ (id)unrestrictedAllItemsQueryWithlibrary:(id)withlibrary predicate:(id)predicate orderingTerms:(id)terms
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [[ML3Query alloc] initWithLibrary:v8 entityClass:a1 predicate:v9 orderingTerms:v10 usingSections:0 nonDirectAggregateQuery:0 propertyToCount:0 options:7];
+  withlibraryCopy = withlibrary;
+  predicateCopy = predicate;
+  termsCopy = terms;
+  v11 = [[ML3Query alloc] initWithLibrary:withlibraryCopy entityClass:self predicate:predicateCopy orderingTerms:termsCopy usingSections:0 nonDirectAggregateQuery:0 propertyToCount:0 options:7];
 
   return v11;
 }
 
-+ (id)allItemsQueryWithLibrary:(id)a3 predicate:(id)a4 orderingTerms:(id)a5 usingSections:(BOOL)a6
++ (id)allItemsQueryWithLibrary:(id)library predicate:(id)predicate orderingTerms:(id)terms usingSections:(BOOL)sections
 {
-  v6 = a6;
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [[ML3Query alloc] initWithLibrary:v10 entityClass:a1 predicate:v11 orderingTerms:v12 usingSections:v6 nonDirectAggregateQuery:0 propertyToCount:0 options:4];
+  sectionsCopy = sections;
+  libraryCopy = library;
+  predicateCopy = predicate;
+  termsCopy = terms;
+  v13 = [[ML3Query alloc] initWithLibrary:libraryCopy entityClass:self predicate:predicateCopy orderingTerms:termsCopy usingSections:sectionsCopy nonDirectAggregateQuery:0 propertyToCount:0 options:4];
 
   return v13;
 }
 
-+ (id)unrestrictedQueryWithLibrary:(id)a3 predicate:(id)a4 orderingTerms:(id)a5
++ (id)unrestrictedQueryWithLibrary:(id)library predicate:(id)predicate orderingTerms:(id)terms
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [[ML3Query alloc] initWithLibrary:v8 entityClass:a1 predicate:v9 orderingTerms:v10 usingSections:0 nonDirectAggregateQuery:0 propertyToCount:0 options:3];
+  libraryCopy = library;
+  predicateCopy = predicate;
+  termsCopy = terms;
+  v11 = [[ML3Query alloc] initWithLibrary:libraryCopy entityClass:self predicate:predicateCopy orderingTerms:termsCopy usingSections:0 nonDirectAggregateQuery:0 propertyToCount:0 options:3];
 
   return v11;
 }
 
-+ (id)queryWithLibrary:(id)a3 predicate:(id)a4 orderingTerms:(id)a5 usingSections:(BOOL)a6 options:(int64_t)a7
++ (id)queryWithLibrary:(id)library predicate:(id)predicate orderingTerms:(id)terms usingSections:(BOOL)sections options:(int64_t)options
 {
-  v8 = a6;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = [[ML3Query alloc] initWithLibrary:v12 entityClass:a1 predicate:v13 orderingTerms:v14 usingSections:v8 nonDirectAggregateQuery:0 propertyToCount:0 options:a7];
+  sectionsCopy = sections;
+  libraryCopy = library;
+  predicateCopy = predicate;
+  termsCopy = terms;
+  v15 = [[ML3Query alloc] initWithLibrary:libraryCopy entityClass:self predicate:predicateCopy orderingTerms:termsCopy usingSections:sectionsCopy nonDirectAggregateQuery:0 propertyToCount:0 options:options];
 
   return v15;
 }
 
-+ (id)queryWithLibrary:(id)a3 predicate:(id)a4 orderingTerms:(id)a5 usingSections:(BOOL)a6
++ (id)queryWithLibrary:(id)library predicate:(id)predicate orderingTerms:(id)terms usingSections:(BOOL)sections
 {
-  v6 = a6;
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [[ML3Query alloc] initWithLibrary:v10 entityClass:a1 predicate:v11 orderingTerms:v12 usingSections:v6 nonDirectAggregateQuery:0 propertyToCount:0 options:0];
+  sectionsCopy = sections;
+  libraryCopy = library;
+  predicateCopy = predicate;
+  termsCopy = terms;
+  v13 = [[ML3Query alloc] initWithLibrary:libraryCopy entityClass:self predicate:predicateCopy orderingTerms:termsCopy usingSections:sectionsCopy nonDirectAggregateQuery:0 propertyToCount:0 options:0];
 
   return v13;
 }
 
-+ (id)queryWithLibrary:(id)a3 predicate:(id)a4 orderingTerms:(id)a5 propertyToCount:(id)a6 options:(int64_t)a7
++ (id)queryWithLibrary:(id)library predicate:(id)predicate orderingTerms:(id)terms propertyToCount:(id)count options:(int64_t)options
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = [[ML3Query alloc] initWithLibrary:v12 entityClass:a1 predicate:v13 orderingTerms:v14 usingSections:0 nonDirectAggregateQuery:0 propertyToCount:v15 options:a7];
+  libraryCopy = library;
+  predicateCopy = predicate;
+  termsCopy = terms;
+  countCopy = count;
+  v16 = [[ML3Query alloc] initWithLibrary:libraryCopy entityClass:self predicate:predicateCopy orderingTerms:termsCopy usingSections:0 nonDirectAggregateQuery:0 propertyToCount:countCopy options:options];
 
   return v16;
 }
 
-+ (id)queryWithLibrary:(id)a3 predicate:(id)a4 orderingTerms:(id)a5 propertyToCount:(id)a6
++ (id)queryWithLibrary:(id)library predicate:(id)predicate orderingTerms:(id)terms propertyToCount:(id)count
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [[ML3Query alloc] initWithLibrary:v10 entityClass:a1 predicate:v11 orderingTerms:v12 usingSections:0 nonDirectAggregateQuery:0 propertyToCount:v13 options:0];
+  libraryCopy = library;
+  predicateCopy = predicate;
+  termsCopy = terms;
+  countCopy = count;
+  v14 = [[ML3Query alloc] initWithLibrary:libraryCopy entityClass:self predicate:predicateCopy orderingTerms:termsCopy usingSections:0 nonDirectAggregateQuery:0 propertyToCount:countCopy options:0];
 
   return v14;
 }
 
-+ (id)queryWithLibrary:(id)a3 predicate:(id)a4 orderingTerms:(id)a5
++ (id)queryWithLibrary:(id)library predicate:(id)predicate orderingTerms:(id)terms
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [[ML3Query alloc] initWithLibrary:v8 entityClass:a1 predicate:v9 orderingTerms:v10 usingSections:0 nonDirectAggregateQuery:0 propertyToCount:0 options:0];
+  libraryCopy = library;
+  predicateCopy = predicate;
+  termsCopy = terms;
+  v11 = [[ML3Query alloc] initWithLibrary:libraryCopy entityClass:self predicate:predicateCopy orderingTerms:termsCopy usingSections:0 nonDirectAggregateQuery:0 propertyToCount:0 options:0];
 
   return v11;
 }
 
-+ (id)queryWithLibrary:(id)a3 predicate:(id)a4 usingSections:(BOOL)a5
++ (id)queryWithLibrary:(id)library predicate:(id)predicate usingSections:(BOOL)sections
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = [a1 defaultOrderingTerms];
-  v11 = [[ML3Query alloc] initWithLibrary:v8 entityClass:a1 predicate:v9 orderingTerms:v10 usingSections:v5 nonDirectAggregateQuery:0 propertyToCount:0 options:0];
+  sectionsCopy = sections;
+  libraryCopy = library;
+  predicateCopy = predicate;
+  defaultOrderingTerms = [self defaultOrderingTerms];
+  v11 = [[ML3Query alloc] initWithLibrary:libraryCopy entityClass:self predicate:predicateCopy orderingTerms:defaultOrderingTerms usingSections:sectionsCopy nonDirectAggregateQuery:0 propertyToCount:0 options:0];
 
   return v11;
 }
 
-+ (id)queryWithLibrary:(id)a3 predicate:(id)a4 options:(int64_t)a5
++ (id)queryWithLibrary:(id)library predicate:(id)predicate options:(int64_t)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [a1 defaultOrderingTerms];
-  v11 = [a1 queryWithLibrary:v8 predicate:v9 orderingTerms:v10 usingSections:0 options:a5];
+  libraryCopy = library;
+  predicateCopy = predicate;
+  defaultOrderingTerms = [self defaultOrderingTerms];
+  v11 = [self queryWithLibrary:libraryCopy predicate:predicateCopy orderingTerms:defaultOrderingTerms usingSections:0 options:options];
 
   return v11;
 }
 
-+ (id)queryWithLibrary:(id)a3 predicate:(id)a4
++ (id)queryWithLibrary:(id)library predicate:(id)predicate
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 defaultOrderingTerms];
-  v9 = [a1 queryWithLibrary:v6 predicate:v7 orderingTerms:v8 usingSections:0];
+  libraryCopy = library;
+  predicateCopy = predicate;
+  defaultOrderingTerms = [self defaultOrderingTerms];
+  v9 = [self queryWithLibrary:libraryCopy predicate:predicateCopy orderingTerms:defaultOrderingTerms usingSections:0];
 
   return v9;
 }
 
-+ (id)queryWithLibrary:(id)a3 predicate:(id)a4 orderingProperties:(id)a5 orderingDirectionMappings:(id)a6 usingSections:(BOOL)a7
++ (id)queryWithLibrary:(id)library predicate:(id)predicate orderingProperties:(id)properties orderingDirectionMappings:(id)mappings usingSections:(BOOL)sections
 {
-  v7 = [a1 queryWithLibrary:a3 predicate:a4 usingSections:{a7, a6}];
+  v7 = [self queryWithLibrary:library predicate:predicate usingSections:{sections, mappings}];
 
   return v7;
 }
 
-+ (id)queryWithLibrary:(id)a3 predicate:(id)a4 orderingProperties:(id)a5 usingSections:(BOOL)a6
++ (id)queryWithLibrary:(id)library predicate:(id)predicate orderingProperties:(id)properties usingSections:(BOOL)sections
 {
-  v6 = [a1 queryWithLibrary:a3 predicate:a4 usingSections:a6];
+  v6 = [self queryWithLibrary:library predicate:predicate usingSections:sections];
 
   return v6;
 }
 
-+ (id)queryWithLibrary:(id)a3 predicate:(id)a4 orderingProperties:(id)a5
++ (id)queryWithLibrary:(id)library predicate:(id)predicate orderingProperties:(id)properties
 {
-  v5 = [a1 queryWithLibrary:a3 predicate:{a4, a5}];
+  v5 = [self queryWithLibrary:library predicate:{predicate, properties}];
 
   return v5;
 }
 
-+ (id)anyInLibrary:(id)a3 predicate:(id)a4 options:(int64_t)a5
++ (id)anyInLibrary:(id)library predicate:(id)predicate options:(int64_t)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [[ML3Query alloc] initWithLibrary:v8 entityClass:a1 predicate:v9 orderingTerms:0 usingSections:0 nonDirectAggregateQuery:0 propertyToCount:0 options:a5];
-  v11 = [(ML3Query *)v10 anyEntityPersistentID];
-  if (v11)
+  libraryCopy = library;
+  predicateCopy = predicate;
+  v10 = [[ML3Query alloc] initWithLibrary:libraryCopy entityClass:self predicate:predicateCopy orderingTerms:0 usingSections:0 nonDirectAggregateQuery:0 propertyToCount:0 options:options];
+  anyEntityPersistentID = [(ML3Query *)v10 anyEntityPersistentID];
+  if (anyEntityPersistentID)
   {
-    v12 = [objc_alloc(objc_opt_class()) initWithPersistentID:v11 inLibrary:v8];
+    v12 = [objc_alloc(objc_opt_class()) initWithPersistentID:anyEntityPersistentID inLibrary:libraryCopy];
   }
 
   else
@@ -3878,42 +3878,42 @@ void __57__ML3Entity_insertValues_intoTable_persistentID_library___block_invoke(
   return v12;
 }
 
-+ (id)anyInLibrary:(id)a3 predicate:(id)a4
++ (id)anyInLibrary:(id)library predicate:(id)predicate
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [objc_opt_class() anyInLibrary:v5 predicate:v6 options:0];
+  libraryCopy = library;
+  predicateCopy = predicate;
+  v7 = [objc_opt_class() anyInLibrary:libraryCopy predicate:predicateCopy options:0];
 
   return v7;
 }
 
-+ (id)predicateIncludingSystemwidePredicatesWithPredicate:(id)a3 library:(id)a4 options:(int64_t)a5
++ (id)predicateIncludingSystemwidePredicatesWithPredicate:(id)predicate library:(id)library options:(int64_t)options
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = [MEMORY[0x277CBEB18] array];
-  v11 = [a1 defaultFilterPredicates];
-  [v10 addObjectsFromArray:v11];
+  optionsCopy = options;
+  predicateCopy = predicate;
+  libraryCopy = library;
+  array = [MEMORY[0x277CBEB18] array];
+  defaultFilterPredicates = [self defaultFilterPredicates];
+  [array addObjectsFromArray:defaultFilterPredicates];
 
-  if (v5)
+  if (optionsCopy)
   {
     goto LABEL_7;
   }
 
-  if (objc_opt_class() != a1)
+  if (objc_opt_class() != self)
   {
-    v12 = [v9 libraryEntityFilterPredicatesForEntityClass:a1];
+    v12 = [libraryCopy libraryEntityFilterPredicatesForEntityClass:self];
     if (v12)
     {
-      [v10 addObjectsFromArray:v12];
+      [array addObjectsFromArray:v12];
     }
   }
 
-  if (objc_opt_class() != a1)
+  if (objc_opt_class() != self)
   {
 LABEL_7:
-    if ((v5 & 2) != 0)
+    if ((optionsCopy & 2) != 0)
     {
       goto LABEL_14;
     }
@@ -3921,62 +3921,62 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v14 = [v9 libraryEntityFilterPredicatesForContainerClass:a1];
+  v14 = [libraryCopy libraryEntityFilterPredicatesForContainerClass:self];
   if (v14)
   {
-    [v10 addObjectsFromArray:v14];
+    [array addObjectsFromArray:v14];
   }
 
-  if ((v5 & 2) == 0)
+  if ((optionsCopy & 2) == 0)
   {
 LABEL_8:
-    if (objc_opt_class() == a1 && [v9 mediaRestrictionEnabled])
+    if (objc_opt_class() == self && [libraryCopy mediaRestrictionEnabled])
     {
       v13 = [ML3ComparisonPredicate predicateWithProperty:@"ML3IsCurrentlyRestrictedMedia(item.media_type equalToInteger:item_extra.content_rating, item_extra.content_rating_level, (SELECT value FROM _MLDatabaseProperties WHERE key='MPExplicitContentAllowedBoolean'))", 0];
-      [v10 addObject:v13];
+      [array addObject:v13];
     }
   }
 
 LABEL_14:
-  if ((v5 & 8) != 0 && objc_opt_class() == a1)
+  if ((optionsCopy & 8) != 0 && objc_opt_class() == self)
   {
     v16 = [ML3PropertyPredicate predicateWithProperty:@"(item.base_location_id OR item.remote_location_id)"];
-    [v10 addObject:v16];
+    [array addObject:v16];
 
-    if ((v5 & 4) != 0)
+    if ((optionsCopy & 4) != 0)
     {
       goto LABEL_20;
     }
   }
 
-  else if ((v5 & 4) != 0)
+  else if ((optionsCopy & 4) != 0)
   {
     goto LABEL_20;
   }
 
-  if (objc_opt_class() != a1)
+  if (objc_opt_class() != self)
   {
     v15 = [ML3PropertyPredicate predicateWithProperty:@"in_my_library"];
-    [v10 addObject:v15];
+    [array addObject:v15];
   }
 
 LABEL_20:
-  if (v8)
+  if (predicateCopy)
   {
-    [v10 addObject:v8];
+    [array addObject:predicateCopy];
   }
 
-  if ([v10 count] >= 2)
+  if ([array count] >= 2)
   {
-    v17 = [(ML3CompoundPredicate *)ML3AllCompoundPredicate predicateMatchingPredicates:v10];
+    lastObject = [(ML3CompoundPredicate *)ML3AllCompoundPredicate predicateMatchingPredicates:array];
 LABEL_26:
-    v18 = v17;
+    v18 = lastObject;
     goto LABEL_28;
   }
 
-  if ([v10 count] == 1)
+  if ([array count] == 1)
   {
-    v17 = [v10 lastObject];
+    lastObject = [array lastObject];
     goto LABEL_26;
   }
 
@@ -3986,11 +3986,11 @@ LABEL_28:
   return v18;
 }
 
-+ (id)aggregateQueryWithUnitQuery:(id)a3 foreignPersistentIDProperty:(id)a4
++ (id)aggregateQueryWithUnitQuery:(id)query foreignPersistentIDProperty:(id)property
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[ML3AggregateQuery alloc] initWithUnitQuery:v7 aggregateEntityClass:a1 foreignPersistentIDProperty:v6];
+  propertyCopy = property;
+  queryCopy = query;
+  v8 = [[ML3AggregateQuery alloc] initWithUnitQuery:queryCopy aggregateEntityClass:self foreignPersistentIDProperty:propertyCopy];
 
   return v8;
 }

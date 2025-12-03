@@ -1,37 +1,37 @@
 @interface HDDatabaseValidationTaskServer
-- (void)remote_validateDatabase:(int64_t)a3 clientCompletionHandler:(id)a4 errorHandlerIdentifier:(id)a5;
-- (void)remote_validateEntitiesWithClientCompletionHandler:(id)a3 errorHandlerIdentifier:(id)a4;
+- (void)remote_validateDatabase:(int64_t)database clientCompletionHandler:(id)handler errorHandlerIdentifier:(id)identifier;
+- (void)remote_validateEntitiesWithClientCompletionHandler:(id)handler errorHandlerIdentifier:(id)identifier;
 @end
 
 @implementation HDDatabaseValidationTaskServer
 
-- (void)remote_validateDatabase:(int64_t)a3 clientCompletionHandler:(id)a4 errorHandlerIdentifier:(id)a5
+- (void)remote_validateDatabase:(int64_t)database clientCompletionHandler:(id)handler errorHandlerIdentifier:(id)identifier
 {
-  v8 = a5;
+  identifierCopy = identifier;
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __105__HDDatabaseValidationTaskServer_remote_validateDatabase_clientCompletionHandler_errorHandlerIdentifier___block_invoke;
   v23[3] = &unk_2786138D0;
   v23[4] = self;
-  v9 = a4;
+  handlerCopy = handler;
   v10 = [(HDStandardTaskServer *)self remoteObjectProxyWithErrorHandler:v23];
-  v11 = [(HDStandardTaskServer *)self profile];
-  v12 = [v11 database];
+  profile = [(HDStandardTaskServer *)self profile];
+  database = [profile database];
   v13 = +[HDDatabaseTransactionContext contextForReadingProtectedData];
-  v21 = a3;
+  databaseCopy = database;
   v22 = 0;
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __105__HDDatabaseValidationTaskServer_remote_validateDatabase_clientCompletionHandler_errorHandlerIdentifier___block_invoke_293;
   v18[3] = &unk_278614698;
   v19 = v10;
-  v20 = v8;
-  v14 = v8;
+  v20 = identifierCopy;
+  v14 = identifierCopy;
   v15 = v10;
-  v16 = [v12 performTransactionWithContext:v13 error:&v22 block:v18 inaccessibilityHandler:0];
+  v16 = [database performTransactionWithContext:v13 error:&v22 block:v18 inaccessibilityHandler:0];
   v17 = v22;
 
-  [v15 clientRemote_synchronizeWithCompletion:v9 success:v16 error:v17];
+  [v15 clientRemote_synchronizeWithCompletion:handlerCopy success:v16 error:v17];
 }
 
 void __105__HDDatabaseValidationTaskServer_remote_validateDatabase_clientCompletionHandler_errorHandlerIdentifier___block_invoke(uint64_t a1, void *a2)
@@ -120,20 +120,20 @@ void __105__HDDatabaseValidationTaskServer_remote_validateDatabase_clientComplet
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)remote_validateEntitiesWithClientCompletionHandler:(id)a3 errorHandlerIdentifier:(id)a4
+- (void)remote_validateEntitiesWithClientCompletionHandler:(id)handler errorHandlerIdentifier:(id)identifier
 {
-  v6 = a4;
+  identifierCopy = identifier;
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __108__HDDatabaseValidationTaskServer_remote_validateEntitiesWithClientCompletionHandler_errorHandlerIdentifier___block_invoke;
   v20[3] = &unk_2786138D0;
   v20[4] = self;
-  v7 = a3;
+  handlerCopy = handler;
   v8 = [(HDStandardTaskServer *)self remoteObjectProxyWithErrorHandler:v20];
-  v9 = [(HDStandardTaskServer *)self profile];
-  v10 = [v9 database];
+  profile = [(HDStandardTaskServer *)self profile];
+  database = [profile database];
   v11 = +[HDDatabaseTransactionContext contextForReadingProtectedData];
-  v18 = v6;
+  v18 = identifierCopy;
   v19 = 0;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
@@ -141,12 +141,12 @@ void __105__HDDatabaseValidationTaskServer_remote_validateDatabase_clientComplet
   v16[3] = &unk_278615D40;
   v16[4] = self;
   v17 = v8;
-  v12 = v6;
+  v12 = identifierCopy;
   v13 = v8;
-  v14 = [v10 performTransactionWithContext:v11 error:&v19 block:v16 inaccessibilityHandler:0];
+  v14 = [database performTransactionWithContext:v11 error:&v19 block:v16 inaccessibilityHandler:0];
   v15 = v19;
 
-  [v13 clientRemote_synchronizeWithCompletion:v7 success:v14 error:v15];
+  [v13 clientRemote_synchronizeWithCompletion:handlerCopy success:v14 error:v15];
 }
 
 void __108__HDDatabaseValidationTaskServer_remote_validateEntitiesWithClientCompletionHandler_errorHandlerIdentifier___block_invoke(uint64_t a1, void *a2)

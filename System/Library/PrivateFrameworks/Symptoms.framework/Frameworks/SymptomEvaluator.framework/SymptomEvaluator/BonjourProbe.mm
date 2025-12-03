@@ -1,22 +1,22 @@
 @interface BonjourProbe
 - (BOOL)loadBonjourSymbols;
-- (BonjourProbe)initWithQueue:(id)a3;
-- (void)cancelTest:(id)a3;
-- (void)dnsResolver:(id)a3 encounteredDNSError:(int)a4;
-- (void)startBonjourScanForService:(id)a3 onInterfaceNamed:(id)a4;
+- (BonjourProbe)initWithQueue:(id)queue;
+- (void)cancelTest:(id)test;
+- (void)dnsResolver:(id)resolver encounteredDNSError:(int)error;
+- (void)startBonjourScanForService:(id)service onInterfaceNamed:(id)named;
 - (void)stopAllResolvers;
 - (void)stopTest;
 @end
 
 @implementation BonjourProbe
 
-- (BonjourProbe)initWithQueue:(id)a3
+- (BonjourProbe)initWithQueue:(id)queue
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  queueCopy = queue;
   v26.receiver = self;
   v26.super_class = BonjourProbe;
-  v5 = [(TestProbe *)&v26 initWithQueue:v4];
+  v5 = [(TestProbe *)&v26 initWithQueue:queueCopy];
   v6 = v5;
   if (v5)
   {
@@ -37,17 +37,17 @@
         v15 = objc_loadWeakRetained(&buf);
         v13(bonjourManagerRef, browserCallBack, v15);
 
-        v16 = [MEMORY[0x277CBEB38] dictionary];
+        dictionary = [MEMORY[0x277CBEB38] dictionary];
         allDiscoveredServices = v6->_allDiscoveredServices;
-        v6->_allDiscoveredServices = v16;
+        v6->_allDiscoveredServices = dictionary;
 
-        v18 = [MEMORY[0x277CBEB38] dictionary];
+        dictionary2 = [MEMORY[0x277CBEB38] dictionary];
         currentlyDiscoveredServices = v6->_currentlyDiscoveredServices;
-        v6->_currentlyDiscoveredServices = v18;
+        v6->_currentlyDiscoveredServices = dictionary2;
 
-        v20 = [MEMORY[0x277CBEB38] dictionary];
+        dictionary3 = [MEMORY[0x277CBEB38] dictionary];
         resolvers = v6->_resolvers;
-        v6->_resolvers = v20;
+        v6->_resolvers = dictionary3;
 
         if (!DNSServiceCreateConnection(&v6->_dnsRef))
         {
@@ -230,10 +230,10 @@ void __34__BonjourProbe_loadBonjourSymbols__block_invoke()
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startBonjourScanForService:(id)a3 onInterfaceNamed:(id)a4
+- (void)startBonjourScanForService:(id)service onInterfaceNamed:(id)named
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  namedCopy = named;
   if (self->_includeAWDL)
   {
     v7 = 0x400000000000000;
@@ -244,12 +244,12 @@ void __34__BonjourProbe_loadBonjourSymbols__block_invoke()
     v7 = 0;
   }
 
-  v8 = [a3 UTF8String];
-  v16 = v6;
-  v9 = [v6 UTF8String];
+  uTF8String = [service UTF8String];
+  v16 = namedCopy;
+  uTF8String2 = [namedCopy UTF8String];
   for (i = 1; i != 31; ++i)
   {
-    if (!gBonjourBrowserStartFunc(self->bonjourManagerRef, v8, "local.", v9, v7))
+    if (!gBonjourBrowserStartFunc(self->bonjourManagerRef, uTF8String, "local.", uTF8String2, v7))
     {
       break;
     }
@@ -266,8 +266,8 @@ void __34__BonjourProbe_loadBonjourSymbols__block_invoke()
   }
 
   [(TestProbe *)self setStatus:1];
-  v12 = [(BonjourProbe *)self scanQueue];
-  v13 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, v12);
+  scanQueue = [(BonjourProbe *)self scanQueue];
+  v13 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, scanQueue);
 
   v14 = dispatch_time(0, (self->_bonjourBrowserTimerDuration * 1000000000.0));
   dispatch_source_set_timer(v13, v14, 0xFFFFFFFFFFFFFFFFLL, 0);
@@ -333,15 +333,15 @@ void __60__BonjourProbe_startBonjourScanForService_onInterfaceNamed___block_invo
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)cancelTest:(id)a3
+- (void)cancelTest:(id)test
 {
-  v4 = [(BonjourProbe *)self scanQueue];
+  scanQueue = [(BonjourProbe *)self scanQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __27__BonjourProbe_cancelTest___block_invoke;
   block[3] = &unk_27898A0C8;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(scanQueue, block);
 }
 
 uint64_t __27__BonjourProbe_cancelTest___block_invoke(uint64_t a1)
@@ -362,12 +362,12 @@ uint64_t __27__BonjourProbe_cancelTest___block_invoke(uint64_t a1)
   if ([(TestProbe *)self isRunning])
   {
     [(TestProbe *)self setRunning:0];
-    v3 = [(BonjourProbe *)self bonjourBrowserTimer];
+    bonjourBrowserTimer = [(BonjourProbe *)self bonjourBrowserTimer];
 
-    if (v3)
+    if (bonjourBrowserTimer)
     {
-      v4 = [(BonjourProbe *)self bonjourBrowserTimer];
-      dispatch_source_cancel(v4);
+      bonjourBrowserTimer2 = [(BonjourProbe *)self bonjourBrowserTimer];
+      dispatch_source_cancel(bonjourBrowserTimer2);
 
       [(BonjourProbe *)self setBonjourBrowserTimer:0];
     }
@@ -398,21 +398,21 @@ uint64_t __27__BonjourProbe_cancelTest___block_invoke(uint64_t a1)
 
 - (void)stopAllResolvers
 {
-  v3 = [(BonjourProbe *)self resolvers];
-  v4 = [v3 allValues];
-  [v4 makeObjectsPerformSelector:sel_stopTest];
+  resolvers = [(BonjourProbe *)self resolvers];
+  allValues = [resolvers allValues];
+  [allValues makeObjectsPerformSelector:sel_stopTest];
 
-  v5 = [(BonjourProbe *)self resolvers];
-  [v5 removeAllObjects];
+  resolvers2 = [(BonjourProbe *)self resolvers];
+  [resolvers2 removeAllObjects];
 
-  v6 = [(BonjourProbe *)self currentlyDiscoveredServices];
-  [v6 removeAllObjects];
+  currentlyDiscoveredServices = [(BonjourProbe *)self currentlyDiscoveredServices];
+  [currentlyDiscoveredServices removeAllObjects];
 }
 
-- (void)dnsResolver:(id)a3 encounteredDNSError:(int)a4
+- (void)dnsResolver:(id)resolver encounteredDNSError:(int)error
 {
-  v6 = a3;
-  if (a4 == -65537 || a4 == -65563)
+  resolverCopy = resolver;
+  if (error == -65537 || error == -65563)
   {
     v7 = debuggabilityLogHandle;
     if (os_log_type_enabled(debuggabilityLogHandle, OS_LOG_TYPE_ERROR))
@@ -421,13 +421,13 @@ uint64_t __27__BonjourProbe_cancelTest___block_invoke(uint64_t a1)
       _os_log_impl(&dword_23255B000, v7, OS_LOG_TYPE_ERROR, "mDNSResponder must've crashed", buf, 2u);
     }
 
-    v8 = [(BonjourProbe *)self scanQueue];
+    scanQueue = [(BonjourProbe *)self scanQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __48__BonjourProbe_dnsResolver_encounteredDNSError___block_invoke;
     block[3] = &unk_27898A0C8;
     block[4] = self;
-    dispatch_async(v8, block);
+    dispatch_async(scanQueue, block);
 
     delegate = self->_delegate;
     if (objc_opt_respondsToSelector())

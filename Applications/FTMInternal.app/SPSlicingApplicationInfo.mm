@@ -1,26 +1,26 @@
 @interface SPSlicingApplicationInfo
-+ (id)_coreTelephonyAppInfoList:(id)a3;
-+ (id)_coreTelephonyApplicationInfo:(id)a3;
++ (id)_coreTelephonyAppInfoList:(id)list;
++ (id)_coreTelephonyApplicationInfo:(id)info;
 - (id)description;
 @end
 
 @implementation SPSlicingApplicationInfo
 
-+ (id)_coreTelephonyApplicationInfo:(id)a3
++ (id)_coreTelephonyApplicationInfo:(id)info
 {
-  if (a3)
+  if (info)
   {
-    v3 = a3;
+    infoCopy = info;
     v4 = objc_opt_new();
-    v5 = [v3 bundleId];
-    [v4 setBundleId:v5];
+    bundleId = [infoCopy bundleId];
+    [v4 setBundleId:bundleId];
 
-    v6 = [v3 foreground];
-    [v4 setForeground:v6];
+    foreground = [infoCopy foreground];
+    [v4 setForeground:foreground];
 
-    v7 = [v3 interfaces];
+    interfaces = [infoCopy interfaces];
 
-    v8 = [SPSlicingInterfaceInfo _coreTelephonyInterfaceList:v7];
+    v8 = [SPSlicingInterfaceInfo _coreTelephonyInterfaceList:interfaces];
     [v4 setInterfaces:v8];
   }
 
@@ -32,17 +32,17 @@
   return v4;
 }
 
-+ (id)_coreTelephonyAppInfoList:(id)a3
++ (id)_coreTelephonyAppInfoList:(id)list
 {
-  v3 = a3;
+  listCopy = list;
   v4 = objc_opt_new();
-  if (v3)
+  if (listCopy)
   {
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v5 = v3;
+    v5 = listCopy;
     v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v6)
     {
@@ -76,10 +76,10 @@
 - (id)description
 {
   v3 = [objc_opt_class() description];
-  v4 = [(SPSlicingApplicationInfo *)self bundleId];
-  v5 = [(SPSlicingApplicationInfo *)self foreground];
-  v6 = [(SPSlicingApplicationInfo *)self interfaces];
-  v7 = [NSString stringWithFormat:@"<%@: bundleId=%@ foreground=%@ interfaces=%@>", v3, v4, v5, v6];
+  bundleId = [(SPSlicingApplicationInfo *)self bundleId];
+  foreground = [(SPSlicingApplicationInfo *)self foreground];
+  interfaces = [(SPSlicingApplicationInfo *)self interfaces];
+  v7 = [NSString stringWithFormat:@"<%@: bundleId=%@ foreground=%@ interfaces=%@>", v3, bundleId, foreground, interfaces];
 
   return v7;
 }

@@ -2,18 +2,18 @@
 - (UNSSettingsGateway)init;
 - (id)_queue_allEffectiveSectionInfos;
 - (id)_queue_allSectionInfos;
-- (id)_queue_effectiveSectionInfoForSectionID:(id)a3;
-- (id)_queue_effectiveSectionInfosForSectionIDs:(id)a3;
+- (id)_queue_effectiveSectionInfoForSectionID:(id)d;
+- (id)_queue_effectiveSectionInfosForSectionIDs:(id)ds;
 - (id)_queue_globalScheduledDeliveryTimes;
-- (id)_queue_sectionInfoForSectionID:(id)a3;
-- (id)_queue_sectionInfosForSectionIDs:(id)a3;
+- (id)_queue_sectionInfoForSectionID:(id)d;
+- (id)_queue_sectionInfosForSectionIDs:(id)ds;
 - (id)allEffectiveSectionInfo;
 - (id)allSectionInfo;
-- (id)effectiveSectionInfoForSectionID:(id)a3;
-- (id)effectiveSectionInfoForSectionIDs:(id)a3;
+- (id)effectiveSectionInfoForSectionID:(id)d;
+- (id)effectiveSectionInfoForSectionIDs:(id)ds;
 - (id)globalScheduledDeliveryTimes;
-- (id)sectionInfoForSectionID:(id)a3;
-- (id)sectionInfoForSectionIDs:(id)a3;
+- (id)sectionInfoForSectionID:(id)d;
+- (id)sectionInfoForSectionIDs:(id)ds;
 - (int64_t)_queue_globalAnnounceCarPlaySetting;
 - (int64_t)_queue_globalAnnounceHeadphonesSetting;
 - (int64_t)_queue_globalAnnounceSetting;
@@ -32,34 +32,34 @@
 - (int64_t)globalScheduledDeliverySetting;
 - (int64_t)globalScheduledDeliveryShowNextSummarySetting;
 - (int64_t)globalSummarizationSetting;
-- (void)_queue_getSectionInfoForSectionIDs:(id)a3 withCompletion:(id)a4;
-- (void)_queue_setGlobalAnnounceCarPlaySetting:(int64_t)a3;
-- (void)_queue_setGlobalAnnounceHeadphonesSetting:(int64_t)a3;
-- (void)_queue_setGlobalAnnounceSetting:(int64_t)a3;
-- (void)_queue_setGlobalContentPreviewSetting:(int64_t)a3;
-- (void)_queue_setGlobalNotificationListDisplayStyleSetting:(int64_t)a3;
-- (void)_queue_setGlobalPrioritizationSetting:(int64_t)a3;
-- (void)_queue_setGlobalScheduledDeliverySetting:(int64_t)a3;
-- (void)_queue_setGlobalScheduledDeliveryShowNextSummarySetting:(int64_t)a3;
-- (void)_queue_setGlobalScheduledDeliveryTimes:(id)a3;
-- (void)_queue_setGlobalSummarizationSetting:(int64_t)a3;
-- (void)addObserver:(id)a3;
+- (void)_queue_getSectionInfoForSectionIDs:(id)ds withCompletion:(id)completion;
+- (void)_queue_setGlobalAnnounceCarPlaySetting:(int64_t)setting;
+- (void)_queue_setGlobalAnnounceHeadphonesSetting:(int64_t)setting;
+- (void)_queue_setGlobalAnnounceSetting:(int64_t)setting;
+- (void)_queue_setGlobalContentPreviewSetting:(int64_t)setting;
+- (void)_queue_setGlobalNotificationListDisplayStyleSetting:(int64_t)setting;
+- (void)_queue_setGlobalPrioritizationSetting:(int64_t)setting;
+- (void)_queue_setGlobalScheduledDeliverySetting:(int64_t)setting;
+- (void)_queue_setGlobalScheduledDeliveryShowNextSummarySetting:(int64_t)setting;
+- (void)_queue_setGlobalScheduledDeliveryTimes:(id)times;
+- (void)_queue_setGlobalSummarizationSetting:(int64_t)setting;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
-- (void)getSectionInfoForSectionIDs:(id)a3 withCompletion:(id)a4;
-- (void)observer:(id)a3 updateGlobalSettings:(id)a4;
-- (void)observer:(id)a3 updateSectionInfo:(id)a4;
-- (void)removeObserver:(id)a3;
-- (void)setGlobalAnnounceCarPlaySetting:(int64_t)a3;
-- (void)setGlobalAnnounceHeadphonesSetting:(int64_t)a3;
-- (void)setGlobalAnnounceSetting:(int64_t)a3;
-- (void)setGlobalContentPreviewSetting:(int64_t)a3;
-- (void)setGlobalNotificationListDisplayStyleSetting:(int64_t)a3;
-- (void)setGlobalPrioritizationSetting:(int64_t)a3;
-- (void)setGlobalScheduledDeliverySetting:(int64_t)a3;
-- (void)setGlobalScheduledDeliveryShowNextSummarySetting:(int64_t)a3;
-- (void)setGlobalScheduledDeliveryTimes:(id)a3;
-- (void)setGlobalSummarizationSetting:(int64_t)a3;
-- (void)setSectionInfo:(id)a3 forSectionID:(id)a4;
+- (void)getSectionInfoForSectionIDs:(id)ds withCompletion:(id)completion;
+- (void)observer:(id)observer updateGlobalSettings:(id)settings;
+- (void)observer:(id)observer updateSectionInfo:(id)info;
+- (void)removeObserver:(id)observer;
+- (void)setGlobalAnnounceCarPlaySetting:(int64_t)setting;
+- (void)setGlobalAnnounceHeadphonesSetting:(int64_t)setting;
+- (void)setGlobalAnnounceSetting:(int64_t)setting;
+- (void)setGlobalContentPreviewSetting:(int64_t)setting;
+- (void)setGlobalNotificationListDisplayStyleSetting:(int64_t)setting;
+- (void)setGlobalPrioritizationSetting:(int64_t)setting;
+- (void)setGlobalScheduledDeliverySetting:(int64_t)setting;
+- (void)setGlobalScheduledDeliveryShowNextSummarySetting:(int64_t)setting;
+- (void)setGlobalScheduledDeliveryTimes:(id)times;
+- (void)setGlobalSummarizationSetting:(int64_t)setting;
+- (void)setSectionInfo:(id)info forSectionID:(id)d;
 @end
 
 @implementation UNSSettingsGateway
@@ -363,10 +363,10 @@ void __50__UNSSettingsGateway_globalScheduledDeliveryTimes__block_invoke(uint64_
     _os_log_impl(&dword_270AA8000, v3, OS_LOG_TYPE_DEFAULT, "Getting globalScheduledDeliveryTimes from settingsGateway: [%{public}@]", &v8, 0xCu);
   }
 
-  v5 = [(BBSettingsGateway *)self->_settingsGateway effectiveGlobalScheduledDeliveryTimes];
+  effectiveGlobalScheduledDeliveryTimes = [(BBSettingsGateway *)self->_settingsGateway effectiveGlobalScheduledDeliveryTimes];
   v6 = *MEMORY[0x277D85DE8];
 
-  return v5;
+  return effectiveGlobalScheduledDeliveryTimes;
 }
 
 - (int64_t)_queue_globalScheduledDeliveryShowNextSummarySetting
@@ -608,55 +608,55 @@ uint64_t __49__UNSSettingsGateway_globalPrioritizationSetting__block_invoke(uint
   [(UNSSettingsGateway *)&v3 dealloc];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __34__UNSSettingsGateway_addObserver___block_invoke;
   v7[3] = &unk_279E104B8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_sync(queue, v7);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __37__UNSSettingsGateway_removeObserver___block_invoke;
   v7[3] = &unk_279E104B8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_sync(queue, v7);
 }
 
-- (void)setSectionInfo:(id)a3 forSectionID:(id)a4
+- (void)setSectionInfo:(id)info forSectionID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  infoCopy = info;
+  dCopy = d;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __50__UNSSettingsGateway_setSectionInfo_forSectionID___block_invoke;
   block[3] = &unk_279E10700;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = infoCopy;
+  v13 = dCopy;
+  v9 = dCopy;
+  v10 = infoCopy;
   dispatch_async(queue, block);
 }
 
-- (id)effectiveSectionInfoForSectionID:(id)a3
+- (id)effectiveSectionInfoForSectionID:(id)d
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -667,7 +667,7 @@ uint64_t __49__UNSSettingsGateway_globalPrioritizationSetting__block_invoke(uint
   if (os_log_type_enabled(*MEMORY[0x277CE20B0], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v21 = v4;
+    v21 = dCopy;
     _os_log_impl(&dword_270AA8000, v5, OS_LOG_TYPE_DEFAULT, "Getting effectiveSectionInfo for section identifier: %{public}@", buf, 0xCu);
   }
 
@@ -676,10 +676,10 @@ uint64_t __49__UNSSettingsGateway_globalPrioritizationSetting__block_invoke(uint
   block[1] = 3221225472;
   block[2] = __55__UNSSettingsGateway_effectiveSectionInfoForSectionID___block_invoke;
   block[3] = &unk_279E109D8;
-  v12 = v4;
+  v12 = dCopy;
   v13 = &v14;
   block[4] = self;
-  v7 = v4;
+  v7 = dCopy;
   dispatch_sync(queue, block);
   v8 = v15[5];
 
@@ -697,10 +697,10 @@ void __55__UNSSettingsGateway_effectiveSectionInfoForSectionID___block_invoke(ui
   *(v3 + 40) = v2;
 }
 
-- (id)sectionInfoForSectionID:(id)a3
+- (id)sectionInfoForSectionID:(id)d
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -711,7 +711,7 @@ void __55__UNSSettingsGateway_effectiveSectionInfoForSectionID___block_invoke(ui
   if (os_log_type_enabled(*MEMORY[0x277CE20B0], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v21 = v4;
+    v21 = dCopy;
     _os_log_impl(&dword_270AA8000, v5, OS_LOG_TYPE_DEFAULT, "Getting sectionInfo for section identifier: %{public}@", buf, 0xCu);
   }
 
@@ -720,10 +720,10 @@ void __55__UNSSettingsGateway_effectiveSectionInfoForSectionID___block_invoke(ui
   block[1] = 3221225472;
   block[2] = __46__UNSSettingsGateway_sectionInfoForSectionID___block_invoke;
   block[3] = &unk_279E109D8;
-  v12 = v4;
+  v12 = dCopy;
   v13 = &v14;
   block[4] = self;
-  v7 = v4;
+  v7 = dCopy;
   dispatch_sync(queue, block);
   v8 = v15[5];
 
@@ -741,10 +741,10 @@ void __46__UNSSettingsGateway_sectionInfoForSectionID___block_invoke(uint64_t a1
   *(v3 + 40) = v2;
 }
 
-- (id)effectiveSectionInfoForSectionIDs:(id)a3
+- (id)effectiveSectionInfoForSectionIDs:(id)ds
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dsCopy = ds;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -755,7 +755,7 @@ void __46__UNSSettingsGateway_sectionInfoForSectionID___block_invoke(uint64_t a1
   if (os_log_type_enabled(*MEMORY[0x277CE20B0], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v21 = v4;
+    v21 = dsCopy;
     _os_log_impl(&dword_270AA8000, v5, OS_LOG_TYPE_DEFAULT, "Getting effectiveSectionInfos for section identifiers: %{public}@", buf, 0xCu);
   }
 
@@ -764,10 +764,10 @@ void __46__UNSSettingsGateway_sectionInfoForSectionID___block_invoke(uint64_t a1
   block[1] = 3221225472;
   block[2] = __56__UNSSettingsGateway_effectiveSectionInfoForSectionIDs___block_invoke;
   block[3] = &unk_279E109D8;
-  v12 = v4;
+  v12 = dsCopy;
   v13 = &v14;
   block[4] = self;
-  v7 = v4;
+  v7 = dsCopy;
   dispatch_sync(queue, block);
   v8 = v15[5];
 
@@ -785,10 +785,10 @@ void __56__UNSSettingsGateway_effectiveSectionInfoForSectionIDs___block_invoke(u
   *(v3 + 40) = v2;
 }
 
-- (id)sectionInfoForSectionIDs:(id)a3
+- (id)sectionInfoForSectionIDs:(id)ds
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dsCopy = ds;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -799,7 +799,7 @@ void __56__UNSSettingsGateway_effectiveSectionInfoForSectionIDs___block_invoke(u
   if (os_log_type_enabled(*MEMORY[0x277CE20B0], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v21 = v4;
+    v21 = dsCopy;
     _os_log_impl(&dword_270AA8000, v5, OS_LOG_TYPE_DEFAULT, "Getting sectionInfos for section identifiers: %{public}@", buf, 0xCu);
   }
 
@@ -808,10 +808,10 @@ void __56__UNSSettingsGateway_effectiveSectionInfoForSectionIDs___block_invoke(u
   block[1] = 3221225472;
   block[2] = __47__UNSSettingsGateway_sectionInfoForSectionIDs___block_invoke;
   block[3] = &unk_279E109D8;
-  v12 = v4;
+  v12 = dsCopy;
   v13 = &v14;
   block[4] = self;
-  v7 = v4;
+  v7 = dsCopy;
   dispatch_sync(queue, block);
   v8 = v15[5];
 
@@ -829,16 +829,16 @@ void __47__UNSSettingsGateway_sectionInfoForSectionIDs___block_invoke(uint64_t a
   *(v3 + 40) = v2;
 }
 
-- (void)getSectionInfoForSectionIDs:(id)a3 withCompletion:(id)a4
+- (void)getSectionInfoForSectionIDs:(id)ds withCompletion:(id)completion
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  completionCopy = completion;
   v8 = *MEMORY[0x277CE20B0];
   if (os_log_type_enabled(*MEMORY[0x277CE20B0], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v17 = v6;
+    v17 = dsCopy;
     _os_log_impl(&dword_270AA8000, v8, OS_LOG_TYPE_DEFAULT, "Getting sectionInfos for section identifiers: %{public}@", buf, 0xCu);
   }
 
@@ -848,10 +848,10 @@ void __47__UNSSettingsGateway_sectionInfoForSectionIDs___block_invoke(uint64_t a
   block[2] = __65__UNSSettingsGateway_getSectionInfoForSectionIDs_withCompletion___block_invoke;
   block[3] = &unk_279E10290;
   block[4] = self;
-  v14 = v6;
-  v15 = v7;
-  v10 = v7;
-  v11 = v6;
+  v14 = dsCopy;
+  v15 = completionCopy;
+  v10 = completionCopy;
+  v11 = dsCopy;
   dispatch_async(queue, block);
 
   v12 = *MEMORY[0x277D85DE8];
@@ -931,7 +931,7 @@ void __36__UNSSettingsGateway_allSectionInfo__block_invoke(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-- (void)setGlobalContentPreviewSetting:(int64_t)a3
+- (void)setGlobalContentPreviewSetting:(int64_t)setting
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -939,11 +939,11 @@ void __36__UNSSettingsGateway_allSectionInfo__block_invoke(uint64_t a1)
   v4[2] = __53__UNSSettingsGateway_setGlobalContentPreviewSetting___block_invoke;
   v4[3] = &unk_279E111C0;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = setting;
   dispatch_sync(queue, v4);
 }
 
-- (void)setGlobalAnnounceSetting:(int64_t)a3
+- (void)setGlobalAnnounceSetting:(int64_t)setting
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -951,11 +951,11 @@ void __36__UNSSettingsGateway_allSectionInfo__block_invoke(uint64_t a1)
   v4[2] = __47__UNSSettingsGateway_setGlobalAnnounceSetting___block_invoke;
   v4[3] = &unk_279E111C0;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = setting;
   dispatch_sync(queue, v4);
 }
 
-- (void)setGlobalAnnounceHeadphonesSetting:(int64_t)a3
+- (void)setGlobalAnnounceHeadphonesSetting:(int64_t)setting
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -963,11 +963,11 @@ void __36__UNSSettingsGateway_allSectionInfo__block_invoke(uint64_t a1)
   v4[2] = __57__UNSSettingsGateway_setGlobalAnnounceHeadphonesSetting___block_invoke;
   v4[3] = &unk_279E111C0;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = setting;
   dispatch_sync(queue, v4);
 }
 
-- (void)setGlobalAnnounceCarPlaySetting:(int64_t)a3
+- (void)setGlobalAnnounceCarPlaySetting:(int64_t)setting
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -975,11 +975,11 @@ void __36__UNSSettingsGateway_allSectionInfo__block_invoke(uint64_t a1)
   v4[2] = __54__UNSSettingsGateway_setGlobalAnnounceCarPlaySetting___block_invoke;
   v4[3] = &unk_279E111C0;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = setting;
   dispatch_sync(queue, v4);
 }
 
-- (void)setGlobalScheduledDeliverySetting:(int64_t)a3
+- (void)setGlobalScheduledDeliverySetting:(int64_t)setting
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -987,25 +987,25 @@ void __36__UNSSettingsGateway_allSectionInfo__block_invoke(uint64_t a1)
   v4[2] = __56__UNSSettingsGateway_setGlobalScheduledDeliverySetting___block_invoke;
   v4[3] = &unk_279E111C0;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = setting;
   dispatch_sync(queue, v4);
 }
 
-- (void)setGlobalScheduledDeliveryTimes:(id)a3
+- (void)setGlobalScheduledDeliveryTimes:(id)times
 {
-  v4 = a3;
+  timesCopy = times;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __54__UNSSettingsGateway_setGlobalScheduledDeliveryTimes___block_invoke;
   v7[3] = &unk_279E104B8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = timesCopy;
+  v6 = timesCopy;
   dispatch_sync(queue, v7);
 }
 
-- (void)setGlobalScheduledDeliveryShowNextSummarySetting:(int64_t)a3
+- (void)setGlobalScheduledDeliveryShowNextSummarySetting:(int64_t)setting
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -1013,11 +1013,11 @@ void __36__UNSSettingsGateway_allSectionInfo__block_invoke(uint64_t a1)
   v4[2] = __71__UNSSettingsGateway_setGlobalScheduledDeliveryShowNextSummarySetting___block_invoke;
   v4[3] = &unk_279E111C0;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = setting;
   dispatch_sync(queue, v4);
 }
 
-- (void)setGlobalNotificationListDisplayStyleSetting:(int64_t)a3
+- (void)setGlobalNotificationListDisplayStyleSetting:(int64_t)setting
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -1025,11 +1025,11 @@ void __36__UNSSettingsGateway_allSectionInfo__block_invoke(uint64_t a1)
   v4[2] = __67__UNSSettingsGateway_setGlobalNotificationListDisplayStyleSetting___block_invoke;
   v4[3] = &unk_279E111C0;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = setting;
   dispatch_sync(queue, v4);
 }
 
-- (void)setGlobalSummarizationSetting:(int64_t)a3
+- (void)setGlobalSummarizationSetting:(int64_t)setting
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -1037,11 +1037,11 @@ void __36__UNSSettingsGateway_allSectionInfo__block_invoke(uint64_t a1)
   v4[2] = __52__UNSSettingsGateway_setGlobalSummarizationSetting___block_invoke;
   v4[3] = &unk_279E111C0;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = setting;
   dispatch_sync(queue, v4);
 }
 
-- (void)setGlobalPrioritizationSetting:(int64_t)a3
+- (void)setGlobalPrioritizationSetting:(int64_t)setting
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -1049,29 +1049,29 @@ void __36__UNSSettingsGateway_allSectionInfo__block_invoke(uint64_t a1)
   v4[2] = __53__UNSSettingsGateway_setGlobalPrioritizationSetting___block_invoke;
   v4[3] = &unk_279E111C0;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = setting;
   dispatch_sync(queue, v4);
 }
 
-- (id)_queue_effectiveSectionInfoForSectionID:(id)a3
+- (id)_queue_effectiveSectionInfoForSectionID:(id)d
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v5 = MEMORY[0x277CE20B0];
   v6 = *MEMORY[0x277CE20B0];
   if (os_log_type_enabled(*MEMORY[0x277CE20B0], OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138543362;
-    v12 = v4;
+    v12 = dCopy;
     _os_log_impl(&dword_270AA8000, v6, OS_LOG_TYPE_DEFAULT, "[%{public}@] Getting effective section info", &v11, 0xCu);
   }
 
-  v7 = [(BBSettingsGateway *)self->_settingsGateway effectiveSectionInfoForSectionID:v4];
+  v7 = [(BBSettingsGateway *)self->_settingsGateway effectiveSectionInfoForSectionID:dCopy];
   v8 = *v5;
   if (os_log_type_enabled(*v5, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138543618;
-    v12 = v4;
+    v12 = dCopy;
     v13 = 1024;
     v14 = v7 != 0;
     _os_log_impl(&dword_270AA8000, v8, OS_LOG_TYPE_DEFAULT, "[%{public}@] Got effective section info [ hasResult: %d ]", &v11, 0x12u);
@@ -1082,25 +1082,25 @@ void __36__UNSSettingsGateway_allSectionInfo__block_invoke(uint64_t a1)
   return v7;
 }
 
-- (id)_queue_sectionInfoForSectionID:(id)a3
+- (id)_queue_sectionInfoForSectionID:(id)d
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v5 = MEMORY[0x277CE20B0];
   v6 = *MEMORY[0x277CE20B0];
   if (os_log_type_enabled(*MEMORY[0x277CE20B0], OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138543362;
-    v12 = v4;
+    v12 = dCopy;
     _os_log_impl(&dword_270AA8000, v6, OS_LOG_TYPE_DEFAULT, "[%{public}@] Getting section info", &v11, 0xCu);
   }
 
-  v7 = [(BBSettingsGateway *)self->_settingsGateway sectionInfoForSectionID:v4];
+  v7 = [(BBSettingsGateway *)self->_settingsGateway sectionInfoForSectionID:dCopy];
   v8 = *v5;
   if (os_log_type_enabled(*v5, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138543618;
-    v12 = v4;
+    v12 = dCopy;
     v13 = 1024;
     v14 = v7 != 0;
     _os_log_impl(&dword_270AA8000, v8, OS_LOG_TYPE_DEFAULT, "[%{public}@] Got section info [ hasResult: %d ]", &v11, 0x12u);
@@ -1111,10 +1111,10 @@ void __36__UNSSettingsGateway_allSectionInfo__block_invoke(uint64_t a1)
   return v7;
 }
 
-- (id)_queue_effectiveSectionInfosForSectionIDs:(id)a3
+- (id)_queue_effectiveSectionInfosForSectionIDs:(id)ds
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dsCopy = ds;
   v5 = *MEMORY[0x277CE20B0];
   if (os_log_type_enabled(*MEMORY[0x277CE20B0], OS_LOG_TYPE_DEFAULT))
   {
@@ -1124,17 +1124,17 @@ void __36__UNSSettingsGateway_allSectionInfo__block_invoke(uint64_t a1)
     _os_log_impl(&dword_270AA8000, v5, OS_LOG_TYPE_DEFAULT, "Getting effective section infos from settingsGateway: [%{public}@]", &v10, 0xCu);
   }
 
-  v7 = [(BBSettingsGateway *)self->_settingsGateway effectiveSectionInfoForSectionIDs:v4];
+  v7 = [(BBSettingsGateway *)self->_settingsGateway effectiveSectionInfoForSectionIDs:dsCopy];
 
   v8 = *MEMORY[0x277D85DE8];
 
   return v7;
 }
 
-- (id)_queue_sectionInfosForSectionIDs:(id)a3
+- (id)_queue_sectionInfosForSectionIDs:(id)ds
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dsCopy = ds;
   v5 = *MEMORY[0x277CE20B0];
   if (os_log_type_enabled(*MEMORY[0x277CE20B0], OS_LOG_TYPE_DEFAULT))
   {
@@ -1144,26 +1144,26 @@ void __36__UNSSettingsGateway_allSectionInfo__block_invoke(uint64_t a1)
     _os_log_impl(&dword_270AA8000, v5, OS_LOG_TYPE_DEFAULT, "Getting section infos from settingsGateway: [%{public}@]", &v10, 0xCu);
   }
 
-  v7 = [(BBSettingsGateway *)self->_settingsGateway sectionInfoForSectionIDs:v4];
+  v7 = [(BBSettingsGateway *)self->_settingsGateway sectionInfoForSectionIDs:dsCopy];
 
   v8 = *MEMORY[0x277D85DE8];
 
   return v7;
 }
 
-- (void)_queue_getSectionInfoForSectionIDs:(id)a3 withCompletion:(id)a4
+- (void)_queue_getSectionInfoForSectionIDs:(id)ds withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  completionCopy = completion;
   settingsGateway = self->_settingsGateway;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __72__UNSSettingsGateway__queue_getSectionInfoForSectionIDs_withCompletion___block_invoke;
   v11[3] = &unk_279E111E8;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = dsCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = dsCopy;
   [(BBSettingsGateway *)settingsGateway getSectionInfoForSectionIDs:v10 withCompletion:v11];
 }
 
@@ -1199,10 +1199,10 @@ void __72__UNSSettingsGateway__queue_getSectionInfoForSectionIDs_withCompletion_
     _os_log_impl(&dword_270AA8000, v3, OS_LOG_TYPE_DEFAULT, "Getting all effective section infos from settingsGateway: [%{public}@]", &v8, 0xCu);
   }
 
-  v5 = [(BBSettingsGateway *)self->_settingsGateway allEffectiveSectionInfo];
+  allEffectiveSectionInfo = [(BBSettingsGateway *)self->_settingsGateway allEffectiveSectionInfo];
   v6 = *MEMORY[0x277D85DE8];
 
-  return v5;
+  return allEffectiveSectionInfo;
 }
 
 - (id)_queue_allSectionInfos
@@ -1217,13 +1217,13 @@ void __72__UNSSettingsGateway__queue_getSectionInfoForSectionIDs_withCompletion_
     _os_log_impl(&dword_270AA8000, v3, OS_LOG_TYPE_DEFAULT, "Getting all section infos from settingsGateway: [%{public}@]", &v8, 0xCu);
   }
 
-  v5 = [(BBSettingsGateway *)self->_settingsGateway allSectionInfo];
+  allSectionInfo = [(BBSettingsGateway *)self->_settingsGateway allSectionInfo];
   v6 = *MEMORY[0x277D85DE8];
 
-  return v5;
+  return allSectionInfo;
 }
 
-- (void)_queue_setGlobalContentPreviewSetting:(int64_t)a3
+- (void)_queue_setGlobalContentPreviewSetting:(int64_t)setting
 {
   v10 = *MEMORY[0x277D85DE8];
   v5 = *MEMORY[0x277CE20B0];
@@ -1235,11 +1235,11 @@ void __72__UNSSettingsGateway__queue_getSectionInfoForSectionIDs_withCompletion_
     _os_log_impl(&dword_270AA8000, v5, OS_LOG_TYPE_DEFAULT, "Setting globalContentPreviewSetting from settingsGateway: [%{public}@]", &v8, 0xCu);
   }
 
-  [(BBSettingsGateway *)self->_settingsGateway setEffectiveGlobalContentPreviewsSetting:a3];
+  [(BBSettingsGateway *)self->_settingsGateway setEffectiveGlobalContentPreviewsSetting:setting];
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_queue_setGlobalAnnounceSetting:(int64_t)a3
+- (void)_queue_setGlobalAnnounceSetting:(int64_t)setting
 {
   v10 = *MEMORY[0x277D85DE8];
   v5 = *MEMORY[0x277CE20B0];
@@ -1251,11 +1251,11 @@ void __72__UNSSettingsGateway__queue_getSectionInfoForSectionIDs_withCompletion_
     _os_log_impl(&dword_270AA8000, v5, OS_LOG_TYPE_DEFAULT, "Setting globalAnnounceSetting from settingsGateway: [%{public}@]", &v8, 0xCu);
   }
 
-  [(BBSettingsGateway *)self->_settingsGateway setEffectiveGlobalAnnounceSetting:a3];
+  [(BBSettingsGateway *)self->_settingsGateway setEffectiveGlobalAnnounceSetting:setting];
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_queue_setGlobalAnnounceHeadphonesSetting:(int64_t)a3
+- (void)_queue_setGlobalAnnounceHeadphonesSetting:(int64_t)setting
 {
   v10 = *MEMORY[0x277D85DE8];
   v5 = *MEMORY[0x277CE20B0];
@@ -1267,11 +1267,11 @@ void __72__UNSSettingsGateway__queue_getSectionInfoForSectionIDs_withCompletion_
     _os_log_impl(&dword_270AA8000, v5, OS_LOG_TYPE_DEFAULT, "Setting globalAnnounceHeadphonesSetting from settingsGateway: [%{public}@]", &v8, 0xCu);
   }
 
-  [(BBSettingsGateway *)self->_settingsGateway setEffectiveGlobalAnnounceHeadphonesSetting:a3];
+  [(BBSettingsGateway *)self->_settingsGateway setEffectiveGlobalAnnounceHeadphonesSetting:setting];
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_queue_setGlobalAnnounceCarPlaySetting:(int64_t)a3
+- (void)_queue_setGlobalAnnounceCarPlaySetting:(int64_t)setting
 {
   v10 = *MEMORY[0x277D85DE8];
   v5 = *MEMORY[0x277CE20B0];
@@ -1283,11 +1283,11 @@ void __72__UNSSettingsGateway__queue_getSectionInfoForSectionIDs_withCompletion_
     _os_log_impl(&dword_270AA8000, v5, OS_LOG_TYPE_DEFAULT, "Setting globalAnnounceCarPlaySetting from settingsGateway: [%{public}@]", &v8, 0xCu);
   }
 
-  [(BBSettingsGateway *)self->_settingsGateway setEffectiveGlobalAnnounceCarPlaySetting:a3];
+  [(BBSettingsGateway *)self->_settingsGateway setEffectiveGlobalAnnounceCarPlaySetting:setting];
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_queue_setGlobalScheduledDeliverySetting:(int64_t)a3
+- (void)_queue_setGlobalScheduledDeliverySetting:(int64_t)setting
 {
   v10 = *MEMORY[0x277D85DE8];
   v5 = *MEMORY[0x277CE20B0];
@@ -1299,14 +1299,14 @@ void __72__UNSSettingsGateway__queue_getSectionInfoForSectionIDs_withCompletion_
     _os_log_impl(&dword_270AA8000, v5, OS_LOG_TYPE_DEFAULT, "Setting globalScheduledDeliverySetting from settingsGateway: [%{public}@]", &v8, 0xCu);
   }
 
-  [(BBSettingsGateway *)self->_settingsGateway setEffectiveGlobalScheduledDeliverySetting:a3];
+  [(BBSettingsGateway *)self->_settingsGateway setEffectiveGlobalScheduledDeliverySetting:setting];
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_queue_setGlobalScheduledDeliveryTimes:(id)a3
+- (void)_queue_setGlobalScheduledDeliveryTimes:(id)times
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  timesCopy = times;
   v5 = *MEMORY[0x277CE20B0];
   if (os_log_type_enabled(*MEMORY[0x277CE20B0], OS_LOG_TYPE_DEFAULT))
   {
@@ -1316,12 +1316,12 @@ void __72__UNSSettingsGateway__queue_getSectionInfoForSectionIDs_withCompletion_
     _os_log_impl(&dword_270AA8000, v5, OS_LOG_TYPE_DEFAULT, "Setting globalScheduledDeliveryTimes from settingsGateway: [%{public}@]", &v8, 0xCu);
   }
 
-  [(BBSettingsGateway *)self->_settingsGateway setEffectiveGlobalScheduledDeliveryTimes:v4];
+  [(BBSettingsGateway *)self->_settingsGateway setEffectiveGlobalScheduledDeliveryTimes:timesCopy];
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_queue_setGlobalScheduledDeliveryShowNextSummarySetting:(int64_t)a3
+- (void)_queue_setGlobalScheduledDeliveryShowNextSummarySetting:(int64_t)setting
 {
   v10 = *MEMORY[0x277D85DE8];
   v5 = *MEMORY[0x277CE20B0];
@@ -1333,11 +1333,11 @@ void __72__UNSSettingsGateway__queue_getSectionInfoForSectionIDs_withCompletion_
     _os_log_impl(&dword_270AA8000, v5, OS_LOG_TYPE_DEFAULT, "Setting globalScheduledDeliveryShowNextSummarySetting from settingsGateway: [%{public}@]", &v8, 0xCu);
   }
 
-  [(BBSettingsGateway *)self->_settingsGateway setEffectiveGlobalScheduledDeliveryShowNextSummarySetting:a3];
+  [(BBSettingsGateway *)self->_settingsGateway setEffectiveGlobalScheduledDeliveryShowNextSummarySetting:setting];
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_queue_setGlobalNotificationListDisplayStyleSetting:(int64_t)a3
+- (void)_queue_setGlobalNotificationListDisplayStyleSetting:(int64_t)setting
 {
   v10 = *MEMORY[0x277D85DE8];
   v5 = *MEMORY[0x277CE20B0];
@@ -1349,11 +1349,11 @@ void __72__UNSSettingsGateway__queue_getSectionInfoForSectionIDs_withCompletion_
     _os_log_impl(&dword_270AA8000, v5, OS_LOG_TYPE_DEFAULT, "Setting globalNotificationListDisplayStyleSetting from settingsGateway: [%{public}@]", &v8, 0xCu);
   }
 
-  [(BBSettingsGateway *)self->_settingsGateway setEffectiveGlobalNotificationListDisplayStyleSetting:a3];
+  [(BBSettingsGateway *)self->_settingsGateway setEffectiveGlobalNotificationListDisplayStyleSetting:setting];
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_queue_setGlobalSummarizationSetting:(int64_t)a3
+- (void)_queue_setGlobalSummarizationSetting:(int64_t)setting
 {
   v10 = *MEMORY[0x277D85DE8];
   v5 = *MEMORY[0x277CE20B0];
@@ -1365,11 +1365,11 @@ void __72__UNSSettingsGateway__queue_getSectionInfoForSectionIDs_withCompletion_
     _os_log_impl(&dword_270AA8000, v5, OS_LOG_TYPE_DEFAULT, "Setting globalSummarizationSetting from settingsGateway: [%{public}@]", &v8, 0xCu);
   }
 
-  [(BBSettingsGateway *)self->_settingsGateway setEffectiveGlobalSummarizationSetting:a3];
+  [(BBSettingsGateway *)self->_settingsGateway setEffectiveGlobalSummarizationSetting:setting];
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_queue_setGlobalPrioritizationSetting:(int64_t)a3
+- (void)_queue_setGlobalPrioritizationSetting:(int64_t)setting
 {
   v10 = *MEMORY[0x277D85DE8];
   v5 = *MEMORY[0x277CE20B0];
@@ -1381,21 +1381,21 @@ void __72__UNSSettingsGateway__queue_getSectionInfoForSectionIDs_withCompletion_
     _os_log_impl(&dword_270AA8000, v5, OS_LOG_TYPE_DEFAULT, "Setting globalPrioritizationSetting from settingsGateway: [%{public}@]", &v8, 0xCu);
   }
 
-  [(BBSettingsGateway *)self->_settingsGateway setEffectiveGlobalHighlightsSetting:a3];
+  [(BBSettingsGateway *)self->_settingsGateway setEffectiveGlobalHighlightsSetting:setting];
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)observer:(id)a3 updateSectionInfo:(id)a4
+- (void)observer:(id)observer updateSectionInfo:(id)info
 {
-  v5 = a4;
+  infoCopy = info;
   queue = self->_queue;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __49__UNSSettingsGateway_observer_updateSectionInfo___block_invoke;
   v8[3] = &unk_279E104B8;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
+  v9 = infoCopy;
+  selfCopy = self;
+  v7 = infoCopy;
   dispatch_async(queue, v8);
 }
 
@@ -1439,17 +1439,17 @@ void __49__UNSSettingsGateway_observer_updateSectionInfo___block_invoke(uint64_t
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)observer:(id)a3 updateGlobalSettings:(id)a4
+- (void)observer:(id)observer updateGlobalSettings:(id)settings
 {
-  v5 = a4;
+  settingsCopy = settings;
   queue = self->_queue;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __52__UNSSettingsGateway_observer_updateGlobalSettings___block_invoke;
   v8[3] = &unk_279E104B8;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = settingsCopy;
+  v7 = settingsCopy;
   dispatch_async(queue, v8);
 }
 

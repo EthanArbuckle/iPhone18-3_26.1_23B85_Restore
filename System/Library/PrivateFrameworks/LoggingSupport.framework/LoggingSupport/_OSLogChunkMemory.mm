@@ -1,5 +1,5 @@
 @interface _OSLogChunkMemory
-- (_OSLogChunkMemory)initWithBytes:(const void *)a3 size:(unint64_t)a4 deallocator:(id)a5;
+- (_OSLogChunkMemory)initWithBytes:(const void *)bytes size:(unint64_t)size deallocator:(id)deallocator;
 - (void)dealloc;
 @end
 
@@ -15,15 +15,15 @@
   [(_OSLogChunkMemory *)&v5 dealloc];
 }
 
-- (_OSLogChunkMemory)initWithBytes:(const void *)a3 size:(unint64_t)a4 deallocator:(id)a5
+- (_OSLogChunkMemory)initWithBytes:(const void *)bytes size:(unint64_t)size deallocator:(id)deallocator
 {
-  v8 = a5;
+  deallocatorCopy = deallocator;
   v13.receiver = self;
   v13.super_class = _OSLogChunkMemory;
-  v9 = [(_OSLogChunkStore *)&v13 initWithBytes:a3 size:a4];
+  v9 = [(_OSLogChunkStore *)&v13 initWithBytes:bytes size:size];
   if (v9)
   {
-    v10 = [v8 copy];
+    v10 = [deallocatorCopy copy];
     deallocator = v9->_deallocator;
     v9->_deallocator = v10;
   }

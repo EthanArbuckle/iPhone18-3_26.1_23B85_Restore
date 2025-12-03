@@ -1,12 +1,12 @@
 @interface UIColor
-+ (id)_maps_colorFromHexRepresentation:(id)a3;
++ (id)_maps_colorFromHexRepresentation:(id)representation;
 + (id)_maps_darkKeyColor;
 + (id)_maps_keyColor;
 + (id)carPlayDashboardJunctionColor;
 + (id)rating3;
 + (id)rating4;
 + (id)rating5;
-- (double)_maps_euclideanDistanceFromColor:(id)a3;
+- (double)_maps_euclideanDistanceFromColor:(id)color;
 - (id)_maps_legibleTextColor;
 @end
 
@@ -45,26 +45,26 @@
   return v2;
 }
 
-- (double)_maps_euclideanDistanceFromColor:(id)a3
+- (double)_maps_euclideanDistanceFromColor:(id)color
 {
   memset(v9, 0, sizeof(v9));
-  v4 = a3;
+  colorCopy = color;
   [(UIColor *)self getRed:v9 green:&v9[0].f64[1] blue:&v9[1] alpha:&v9[1].f64[1]];
   memset(v8, 0, sizeof(v8));
-  [v4 getRed:v8 green:&v8[0].f64[1] blue:&v8[1] alpha:&v8[1].f64[1]];
+  [colorCopy getRed:v8 green:&v8[0].f64[1] blue:&v8[1] alpha:&v8[1].f64[1]];
 
   v5 = vsubq_f64(*(v9 + 8), *(v8 + 8));
   v6 = vmulq_f64(v5, v5);
   return sqrt(v6.f64[0] + (v9[0].f64[0] - v8[0].f64[0]) * (v9[0].f64[0] - v8[0].f64[0]) + v6.f64[1]);
 }
 
-+ (id)_maps_colorFromHexRepresentation:(id)a3
++ (id)_maps_colorFromHexRepresentation:(id)representation
 {
-  v3 = a3;
-  if ([v3 length] == 8)
+  representationCopy = representation;
+  if ([representationCopy length] == 8)
   {
     v7 = 0;
-    v4 = [NSScanner scannerWithString:v3];
+    v4 = [NSScanner scannerWithString:representationCopy];
     [v4 scanHexInt:&v7];
     v5 = [UIColor colorWithRed:HIBYTE(v7) * 0.00392156863 green:BYTE2(v7) * 0.00392156863 blue:BYTE1(v7) * 0.00392156863 alpha:v7 * 0.00392156863];
   }

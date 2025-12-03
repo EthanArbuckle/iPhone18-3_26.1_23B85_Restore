@@ -1,24 +1,24 @@
 @interface CAMBurstImageFaceAnalysisContext
-- (CAMBurstImageFaceAnalysisContext)initWithVersion:(id)a3;
-- (CGRect)calculateFaceCoreROI:(id)a3 imageStat:(id)a4 needFaceCore:(BOOL *)a5;
-- (CGRect)padRoiRect:(CGRect)a3 paddingX:(float)a4 paddingY:(float)a5;
-- (id)findOverlappingFaceStat:(CGRect)a3 imageStat:(id)a4;
-- (int)findFacesInImage:(id)a3 imageStat:(id)a4;
+- (CAMBurstImageFaceAnalysisContext)initWithVersion:(id)version;
+- (CGRect)calculateFaceCoreROI:(id)i imageStat:(id)stat needFaceCore:(BOOL *)core;
+- (CGRect)padRoiRect:(CGRect)rect paddingX:(float)x paddingY:(float)y;
+- (id)findOverlappingFaceStat:(CGRect)stat imageStat:(id)imageStat;
+- (int)findFacesInImage:(id)image imageStat:(id)stat;
 - (uint64_t)setupFaceDetector;
-- (void)addFaceToArray:(id)a3;
-- (void)addFacesToImageStat:(id)a3 imageSize:(CGSize)a4;
-- (void)adjustFaceIdsForImageStat:(id)a3;
-- (void)calcFaceScores:(id)a3;
-- (void)calculateFaceFocusInImage:(id)a3 imageStat:(id)a4;
+- (void)addFaceToArray:(id)array;
+- (void)addFacesToImageStat:(id)stat imageSize:(CGSize)size;
+- (void)adjustFaceIdsForImageStat:(id)stat;
+- (void)calcFaceScores:(id)scores;
+- (void)calculateFaceFocusInImage:(id)image imageStat:(id)stat;
 - (void)dealloc;
 - (void)dumpFaceInfoArray;
-- (void)extractFacesFromMetadata:(id)a3;
+- (void)extractFacesFromMetadata:(id)metadata;
 - (void)setupFaceDetector;
 @end
 
 @implementation CAMBurstImageFaceAnalysisContext
 
-- (CAMBurstImageFaceAnalysisContext)initWithVersion:(id)a3
+- (CAMBurstImageFaceAnalysisContext)initWithVersion:(id)version
 {
   v8.receiver = self;
   v8.super_class = CAMBurstImageFaceAnalysisContext;
@@ -38,7 +38,7 @@
     v4->faceTimestampArray = v5;
     v4->latestImageTimestamp = 0.0;
     v4->lastFaceIndex = 0;
-    if ([a3 isEqualToString:kCAMBurstImageSet_VersionString_2[0]])
+    if ([version isEqualToString:kCAMBurstImageSet_VersionString_2[0]])
     {
       v6 = 2;
     }
@@ -110,7 +110,7 @@
     return;
   }
 
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
@@ -137,7 +137,7 @@
     goto LABEL_14;
   }
 
-  [v3 addEntriesFromDictionary:v4()];
+  [dictionary addEntriesFromDictionary:v4()];
   v7 = [MEMORY[0x1E696AD98] numberWithInt:1];
   v13 = 0;
   v14 = &v13;
@@ -162,13 +162,13 @@
   if (!v8)
   {
 LABEL_14:
-    v12 = [CAMBurstImageFaceAnalysisContext setupFaceDetector];
+    setupFaceDetector = [CAMBurstImageFaceAnalysisContext setupFaceDetector];
     _Block_object_dispose(&v18, 8);
-    _Unwind_Resume(v12);
+    _Unwind_Resume(setupFaceDetector);
   }
 
-  [v3 setObject:v7 forKey:*v8];
-  [v3 setObject:@"true" forKey:@"FCRSetupParamLoadModelFiles"];
+  [dictionary setObject:v7 forKey:*v8];
+  [dictionary setObject:@"true" forKey:@"FCRSetupParamLoadModelFiles"];
   v18 = 0;
   v19 = &v18;
   v20 = 0x3052000000;
@@ -188,29 +188,29 @@ LABEL_14:
   }
 
   _Block_object_dispose(&v18, 8);
-  self->faceDetector = [v11 faceDetectorWithOptions:v3];
+  self->faceDetector = [v11 faceDetectorWithOptions:dictionary];
 }
 
-- (CGRect)padRoiRect:(CGRect)a3 paddingX:(float)a4 paddingY:(float)a5
+- (CGRect)padRoiRect:(CGRect)rect paddingX:(float)x paddingY:(float)y
 {
-  v5 = 100.0 / a3.size.width + -0.5;
-  if (v5 >= a4)
+  v5 = 100.0 / rect.size.width + -0.5;
+  if (v5 >= x)
   {
-    a4 = 100.0 / a3.size.width + -0.5;
+    x = 100.0 / rect.size.width + -0.5;
   }
 
-  v6 = 100.0 / a3.size.height + -0.5;
-  if (v6 >= a5)
+  v6 = 100.0 / rect.size.height + -0.5;
+  if (v6 >= y)
   {
-    a5 = 100.0 / a3.size.height + -0.5;
+    y = 100.0 / rect.size.height + -0.5;
   }
 
-  v7 = a4;
-  v8 = a3.origin.x - a3.size.width * v7;
-  v9 = a5;
-  v10 = a3.origin.y - a3.size.height * v9;
-  v11 = a3.size.width + a3.size.width * v7 * 2.0;
-  v12 = a3.size.height + a3.size.height * v9 * 2.0;
+  xCopy = x;
+  v8 = rect.origin.x - rect.size.width * xCopy;
+  yCopy = y;
+  v10 = rect.origin.y - rect.size.height * yCopy;
+  v11 = rect.size.width + rect.size.width * xCopy * 2.0;
+  v12 = rect.size.height + rect.size.height * yCopy * 2.0;
   result.size.height = v12;
   result.size.width = v11;
   result.origin.y = v10;
@@ -218,21 +218,21 @@ LABEL_14:
   return result;
 }
 
-- (CGRect)calculateFaceCoreROI:(id)a3 imageStat:(id)a4 needFaceCore:(BOOL *)a5
+- (CGRect)calculateFaceCoreROI:(id)i imageStat:(id)stat needFaceCore:(BOOL *)core
 {
-  v7 = a3;
+  iCopy = i;
   v153 = *MEMORY[0x1E69E9840];
-  v8 = [a3 width];
-  v9 = [v7 height];
-  [a4 orientation];
-  BurstLoggingMessage("    orientation = %d\n", [a4 orientation]);
-  if (a5)
+  width = [i width];
+  height = [iCopy height];
+  [stat orientation];
+  BurstLoggingMessage("    orientation = %d\n", [stat orientation]);
+  if (core)
   {
-    *a5 = 0;
+    *core = 0;
   }
 
-  [v7 width];
-  [v7 height];
+  [iCopy width];
+  [iCopy height];
   v10 = *MEMORY[0x1E695F058];
   v11 = *(MEMORY[0x1E695F058] + 8);
   v12 = *(MEMORY[0x1E695F058] + 16);
@@ -242,16 +242,16 @@ LABEL_14:
   r1_24 = v13;
   if ([(CAMBurstImageFaceAnalysisContext *)self version]<= 1)
   {
-    v104 = [v7 width];
-    v105 = [v7 height];
-    v106 = [objc_msgSend(a4 "faceStatArray")];
+    width2 = [iCopy width];
+    height2 = [iCopy height];
+    v106 = [objc_msgSend(stat "faceStatArray")];
     v107 = v106;
     if (v106 < 1)
     {
-      v118 = (v8 * 0.2);
-      v119 = (v9 * 0.2);
-      v120 = v8 * 0.599999994;
-      v121 = v9 * 0.599999994;
+      v118 = (width * 0.2);
+      v119 = (height * 0.2);
+      v120 = width * 0.599999994;
+      v121 = height * 0.599999994;
     }
 
     else
@@ -262,7 +262,7 @@ LABEL_14:
         v108 = 0;
         do
         {
-          [objc_msgSend(objc_msgSend(a4 "faceStatArray")];
+          [objc_msgSend(objc_msgSend(stat "faceStatArray")];
           x = v109 - v110 * 0.25;
           y = v112 - v113 * 0.25;
           width = v110 + v110 * 0.25 * 2.0;
@@ -309,8 +309,8 @@ LABEL_14:
       v167.origin.y = y;
       v167.size.width = width;
       v167.size.height = height;
-      v178.size.width = v104;
-      v178.size.height = v105;
+      v178.size.width = width2;
+      v178.size.height = height2;
       v168 = CGRectIntersection(v167, v178);
       v118 = v168.origin.x;
       v119 = v168.origin.y;
@@ -318,19 +318,19 @@ LABEL_14:
       v121 = v168.size.height;
     }
 
-    [a4 setFacesRoiRect:{v118, v119, v120, v121}];
-    [a4 setNumHWFaces:v107];
-    if (a5)
+    [stat setFacesRoiRect:{v118, v119, v120, v121}];
+    [stat setNumHWFaces:v107];
+    if (core)
     {
-      *a5 = 1;
+      *core = 1;
     }
   }
 
   else
   {
-    v129 = v7;
-    BurstLoggingMessage("Number of HW faces = %d - calculating rect\n", [objc_msgSend(a4 "faceStatArray")]);
-    v14 = [objc_msgSend(a4 "faceStatArray")];
+    v129 = iCopy;
+    BurstLoggingMessage("Number of HW faces = %d - calculating rect\n", [objc_msgSend(stat "faceStatArray")]);
+    v14 = [objc_msgSend(stat "faceStatArray")];
     v15 = v13;
     v16 = v12;
     v17 = v11;
@@ -355,7 +355,7 @@ LABEL_14:
         v131 = v23;
         v132 = v22;
         v134 = v21;
-        v27 = [objc_msgSend(a4 "faceStatArray")];
+        v27 = [objc_msgSend(stat "faceStatArray")];
         [v27 faceRect];
         v29 = v28;
         v31 = v30;
@@ -367,12 +367,12 @@ LABEL_14:
         BurstLoggingMessage("   hwFaceRect: (%.3f,%.3f,%.3f,%.3f), hasLeftEye = %d, hasRightEye = %d\n", v29, v31, v33, v35, [v27 hasLeftEye], objc_msgSend(v27, "hasRightEye"));
         if ([v27 hasLeftEye])
         {
-          v38 = [v27 hasRightEye];
+          hasRightEye = [v27 hasRightEye];
         }
 
         else
         {
-          v38 = 0;
+          hasRightEye = 0;
         }
 
         LODWORD(v36) = 0.25;
@@ -382,7 +382,7 @@ LABEL_14:
         v18 = v40;
         v42 = v41;
         v44 = v43;
-        if ([v27 isSyncedWithImage] && (v38 & 1) != 0)
+        if ([v27 isSyncedWithImage] && (hasRightEye & 1) != 0)
         {
           v15 = v135;
           v17 = v136;
@@ -392,9 +392,9 @@ LABEL_14:
         else
         {
           v45 = v26;
-          if (a5)
+          if (core)
           {
-            *a5 = 1;
+            *core = 1;
           }
 
           v15 = v44;
@@ -445,7 +445,7 @@ LABEL_14:
         }
 
         ++v20;
-        v49 = [objc_msgSend(a4 "faceStatArray")];
+        v49 = [objc_msgSend(stat "faceStatArray")];
         v21 = v19;
         v22 = v18;
         v23 = v12;
@@ -467,7 +467,7 @@ LABEL_14:
     v133.origin.x = v19;
     v133.origin.y = v18;
     v133.size.width = v12;
-    v50 = [a4 temporalOrder];
+    temporalOrder = [stat temporalOrder];
     v148 = 0u;
     v149 = 0u;
     v150 = 0u;
@@ -492,8 +492,8 @@ LABEL_14:
           }
 
           v59 = *(*(&v148 + 1) + 8 * i);
-          v60 = [v59 hwFaceId] != -1 && (v50 - objc_msgSend(v59, "hwLastFrameSeen")) < 4;
-          v61 = [v59 swFaceId] != -1 && (v50 - objc_msgSend(v59, "swLastFrameSeen")) < 4;
+          v60 = [v59 hwFaceId] != -1 && (temporalOrder - objc_msgSend(v59, "hwLastFrameSeen")) < 4;
+          v61 = [v59 swFaceId] != -1 && (temporalOrder - objc_msgSend(v59, "swLastFrameSeen")) < 4;
           if (v60 || v61)
           {
             v62 = r1_16;
@@ -558,14 +558,14 @@ LABEL_14:
               v11 = v138;
             }
 
-            if ([objc_msgSend(a4 "faceStatArray")])
+            if ([objc_msgSend(stat "faceStatArray")])
             {
               v90 = 0;
               v91 = v55 * v62;
               v92 = v91 * 0.25;
               while (1)
               {
-                [objc_msgSend(objc_msgSend(a4 "faceStatArray")];
+                [objc_msgSend(objc_msgSend(stat "faceStatArray")];
                 v172.origin.x = v64;
                 v172.origin.y = v63;
                 v172.size.width = v62;
@@ -577,7 +577,7 @@ LABEL_14:
                   break;
                 }
 
-                if (++v90 >= [objc_msgSend(a4 "faceStatArray")])
+                if (++v90 >= [objc_msgSend(stat "faceStatArray")])
                 {
                   goto LABEL_43;
                 }
@@ -598,9 +598,9 @@ LABEL_43:
               v56 = v97;
               v99 = v98;
               BurstLoggingMessage("   inserting prev face (hw%d,sw=%d) = (%.3f,%.3f,%.3f,%.3f) padding=(%.3f,%.3f)\n", [v59 hwFaceId], objc_msgSend(v59, "swFaceId"), v93, v95, v97, v98, v128, *&v129);
-              if (a5)
+              if (core)
               {
-                *a5 = 1;
+                *core = 1;
               }
 
               v100 = r2b;
@@ -640,8 +640,8 @@ LABEL_43:
       v56 = r2a;
     }
 
-    v7 = v129;
-    v117 = [v129 width];
+    iCopy = v129;
+    width3 = [v129 width];
     v175.size.height = [v129 height];
     v175.origin.x = 0.0;
     v175.origin.y = 0.0;
@@ -649,17 +649,17 @@ LABEL_43:
     v164.size.height = r1_8;
     v164.origin.y = v17;
     v164.size.width = v56;
-    v175.size.width = v117;
+    v175.size.width = width3;
     v165 = CGRectIntersection(v164, v175);
     v118 = v165.origin.x;
     v119 = v165.origin.y;
     v120 = v165.size.width;
     v121 = v165.size.height;
-    v122 = [v129 width];
+    width4 = [v129 width];
     v176.size.height = [v129 height];
     v176.origin.x = 0.0;
     v176.origin.y = 0.0;
-    v176.size.width = v122;
+    v176.size.width = width4;
     v166 = CGRectIntersection(v133, v176);
     if (v120 > 0.0 && v121 > 0.0)
     {
@@ -670,35 +670,35 @@ LABEL_43:
       v166 = CGRectUnion(v166, v177);
     }
 
-    [a4 setFacesRoiRect:{v166.origin.x, v166.origin.y, v166.size.width, v166.size.height}];
-    [a4 setNumHWFaces:{objc_msgSend(objc_msgSend(a4, "faceStatArray"), "count")}];
+    [stat setFacesRoiRect:{v166.origin.x, v166.origin.y, v166.size.width, v166.size.height}];
+    [stat setNumHWFaces:{objc_msgSend(objc_msgSend(stat, "faceStatArray"), "count")}];
   }
 
-  v123 = [a4 orientation];
-  if (v123 > 8)
+  orientation = [stat orientation];
+  if (orientation > 8)
   {
     goto LABEL_76;
   }
 
-  if (((1 << v123) & 0x18) != 0)
+  if (((1 << orientation) & 0x18) != 0)
   {
-    v118 = [v7 width] - v118 - v120;
-    v125 = [v7 height] - v119 - v121;
+    v118 = [iCopy width] - v118 - v120;
+    v125 = [iCopy height] - v119 - v121;
     v124 = v121;
 LABEL_77:
     v119 = v118;
     goto LABEL_78;
   }
 
-  if (((1 << v123) & 0xC0) != 0)
+  if (((1 << orientation) & 0xC0) != 0)
   {
-    v125 = [v7 width] - v118 - v120;
+    v125 = [iCopy width] - v118 - v120;
     v124 = v120;
     v120 = v121;
     goto LABEL_78;
   }
 
-  if (((1 << v123) & 0x120) == 0)
+  if (((1 << orientation) & 0x120) == 0)
   {
 LABEL_76:
     v124 = v121;
@@ -706,7 +706,7 @@ LABEL_76:
     goto LABEL_77;
   }
 
-  v119 = [v7 height] - v119 - v121;
+  v119 = [iCopy height] - v119 - v121;
   v124 = v120;
   v120 = v121;
   v125 = v118;
@@ -720,19 +720,19 @@ LABEL_78:
   return result;
 }
 
-- (id)findOverlappingFaceStat:(CGRect)a3 imageStat:(id)a4
+- (id)findOverlappingFaceStat:(CGRect)stat imageStat:(id)imageStat
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = stat.size.height;
+  width = stat.size.width;
+  y = stat.origin.y;
+  x = stat.origin.x;
   v28 = *MEMORY[0x1E69E9840];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v8 = [a4 faceStatArray];
-  v9 = [v8 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  faceStatArray = [imageStat faceStatArray];
+  v9 = [faceStatArray countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (!v9)
   {
     return 0;
@@ -746,7 +746,7 @@ LABEL_3:
   {
     if (*v24 != v12)
     {
-      objc_enumerationMutation(v8);
+      objc_enumerationMutation(faceStatArray);
     }
 
     v14 = *(*(&v23 + 1) + 8 * v13);
@@ -780,7 +780,7 @@ LABEL_3:
 
     if (v10 == ++v13)
     {
-      v10 = [v8 countByEnumeratingWithState:&v23 objects:v27 count:{16, v19}];
+      v10 = [faceStatArray countByEnumeratingWithState:&v23 objects:v27 count:{16, v19}];
       v14 = 0;
       if (v10)
       {
@@ -792,19 +792,19 @@ LABEL_3:
   }
 }
 
-- (int)findFacesInImage:(id)a3 imageStat:(id)a4
+- (int)findFacesInImage:(id)image imageStat:(id)stat
 {
   v219 = *MEMORY[0x1E69E9840];
-  v177 = [a3 width];
-  v7 = [a3 height];
-  v183 = self;
+  width = [image width];
+  height = [image height];
+  selfCopy = self;
   [(CAMBurstImageFaceAnalysisContext *)self setupFaceDetector];
-  v181 = [a3 width];
-  v180 = [a3 height];
-  v179 = [MEMORY[0x1E695DF90] dictionary];
+  width2 = [image width];
+  height2 = [image height];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v209 = 0;
-  v187 = a4;
-  v8 = [a4 orientation] - 3;
+  statCopy = stat;
+  v8 = [stat orientation] - 3;
   if (v8 > 5)
   {
     v182 = 0;
@@ -816,7 +816,7 @@ LABEL_3:
   }
 
   v208 = 0;
-  [(CAMBurstImageFaceAnalysisContext *)self calculateFaceCoreROI:a3 imageStat:a4 needFaceCore:&v208];
+  [(CAMBurstImageFaceAnalysisContext *)self calculateFaceCoreROI:image imageStat:stat needFaceCore:&v208];
   rect2.origin.x = v9;
   rect2.origin.y = v10;
   rect2.size.width = v11;
@@ -840,22 +840,22 @@ LABEL_3:
   }
 
   _Block_object_dispose(&v213, 8);
-  v176 = [[v13 alloc] initWithWidth:objc_msgSend(a3 height:"width") bytesPerRow:objc_msgSend(a3 buffer:"height") freeWhenDone:{objc_msgSend(a3, "bytesPerRow"), objc_msgSend(a3, "Ybuffer"), 0}];
+  v176 = [[v13 alloc] initWithWidth:objc_msgSend(image height:"width") bytesPerRow:objc_msgSend(image buffer:"height") freeWhenDone:{objc_msgSend(image, "bytesPerRow"), objc_msgSend(image, "Ybuffer"), 0}];
   BurstLoggingMessage("  needFaceCore = %d\n", v208);
-  v185 = [MEMORY[0x1E695DF70] array];
-  v178 = v7;
+  array = [MEMORY[0x1E695DF70] array];
+  v178 = height;
   if ([(CAMBurstImageFaceAnalysisContext *)self version]>= 2)
   {
     v205 = 0u;
     v206 = 0u;
     v203 = 0u;
     v204 = 0u;
-    v14 = [a4 faceStatArray];
-    v15 = [v14 countByEnumeratingWithState:&v203 objects:v218 count:16];
+    faceStatArray = [stat faceStatArray];
+    v15 = [faceStatArray countByEnumeratingWithState:&v203 objects:v218 count:16];
     if (v15)
     {
       v16 = *v204;
-      v184 = v7;
+      v184 = height;
       v17 = 0.5;
       v18 = MEMORY[0x1E695F058];
       do
@@ -864,7 +864,7 @@ LABEL_3:
         {
           if (*v204 != v16)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(faceStatArray);
           }
 
           v20 = *(*(&v203 + 1) + 8 * i);
@@ -956,7 +956,7 @@ LABEL_29:
                   v211 = 0u;
                   v201 = 0u;
                   v202 = 0u;
-                  v46 = [MEMORY[0x1E695DF90] dictionary];
+                  dictionary2 = [MEMORY[0x1E695DF90] dictionary];
                   v47 = 0.0;
                   v48 = 0.0;
                   if ([v20 hasLeftEye])
@@ -972,7 +972,7 @@ LABEL_29:
                     v47 = v184 - v49;
                     if (v51 >= 30.0)
                     {
-                      [v46 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithBool:", 1), getFCRFaceExpressionLeftEyeClosed()}];
+                      [dictionary2 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithBool:", 1), getFCRFaceExpressionLeftEyeClosed()}];
                     }
                   }
 
@@ -991,17 +991,17 @@ LABEL_29:
                     v52 = v184 - v54;
                     if (v56 >= 30.0)
                     {
-                      [v46 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithBool:", 1), getFCRFaceExpressionRightEyeClosed()}];
+                      [dictionary2 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithBool:", 1), getFCRFaceExpressionRightEyeClosed()}];
                     }
                   }
 
                   [v20 smileScore];
                   if (v57 > 30.0)
                   {
-                    [v46 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithBool:", 1), getFCRFaceExpressionSmile()}];
+                    [dictionary2 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithBool:", 1), getFCRFaceExpressionSmile()}];
                   }
 
-                  [v22 setExpressionFeatures:v46];
+                  [v22 setExpressionFeatures:dictionary2];
                   v58 = __sincos_stret(v188 / 180.0 * 3.14159265);
                   v215 = v210;
                   v216 = v211;
@@ -1020,7 +1020,7 @@ LABEL_29:
                   v215 = *v18;
                   v216 = v59;
                   [v22 setMouth:&v213];
-                  [v185 addObject:v22];
+                  [array addObject:v22];
 
                   continue;
                 }
@@ -1043,7 +1043,7 @@ LABEL_29:
           }
         }
 
-        v15 = [v14 countByEnumeratingWithState:&v203 objects:v218 count:16];
+        v15 = [faceStatArray countByEnumeratingWithState:&v203 objects:v218 count:16];
       }
 
       while (v15);
@@ -1055,8 +1055,8 @@ LABEL_29:
   {
     v226.origin.x = 0.0;
     v226.origin.y = 0.0;
-    v226.size.width = v181;
-    v226.size.height = v180;
+    v226.size.width = width2;
+    v226.size.height = height2;
     if (!CGRectEqualToRect(v226, rect2))
     {
       BurstLoggingMessage("setting faces ROI to (%.3f,%.3f,%.3f,%.3f)\n", rect2.origin.x, rect2.origin.y, rect2.size.width, rect2.size.height);
@@ -1086,7 +1086,7 @@ LABEL_29:
         goto LABEL_156;
       }
 
-      [v179 setObject:v61 forKey:*v62];
+      [dictionary setObject:v61 forKey:*v62];
     }
 
     v65 = [MEMORY[0x1E696AD98] numberWithInt:v182];
@@ -1112,19 +1112,19 @@ LABEL_29:
     _Block_object_dispose(&v210, 8);
     if (v66)
     {
-      [v179 setObject:v65 forKey:*v66];
+      [dictionary setObject:v65 forKey:*v66];
       v69 = rect2.size.width * rect2.size.height;
       if (rect2.size.width * rect2.size.height <= 0.100000001)
       {
-        v70 = [MEMORY[0x1E695DEC8] array];
+        array2 = [MEMORY[0x1E695DEC8] array];
       }
 
       else
       {
-        v70 = [(FCRFaceDetector *)v183->faceDetector detectFacesInImage:v176 options:v179 error:&v209, v69];
+        array2 = [(FCRFaceDetector *)selfCopy->faceDetector detectFacesInImage:v176 options:dictionary error:&v209, v69];
       }
 
-      v71 = v70;
+      v71 = array2;
       goto LABEL_57;
     }
 
@@ -1135,9 +1135,9 @@ LABEL_156:
 
   v71 = 0;
 LABEL_57:
-  if (-[CAMBurstImageFaceAnalysisContext version](v183, "version") >= 2 && [v185 count])
+  if (-[CAMBurstImageFaceAnalysisContext version](selfCopy, "version") >= 2 && [array count])
   {
-    v72 = [v185 arrayByAddingObjectsFromArray:v71];
+    v72 = [array arrayByAddingObjectsFromArray:v71];
   }
 
   else
@@ -1154,10 +1154,10 @@ LABEL_57:
     v200[3] = &unk_1E76F80A0;
     v200[7] = 0;
     v200[6] = 0;
-    *&v200[8] = v181;
-    *&v200[9] = v180;
-    v200[4] = v183;
-    v200[5] = v187;
+    *&v200[8] = width2;
+    *&v200[9] = height2;
+    v200[4] = selfCopy;
+    v200[5] = statCopy;
     v186 = [objc_msgSend(v186 sortedArrayUsingComparator:{v200), "subarrayWithRange:", 0, 6}];
   }
 
@@ -1166,10 +1166,10 @@ LABEL_57:
     BurstLoggingMessage("Face detection error\n");
   }
 
-  v183->timeFaceDetectionDone = timeElapsedSinceInit();
-  if (v183->faceDetector && v186 && [v186 count])
+  selfCopy->timeFaceDetectionDone = timeElapsedSinceInit();
+  if (selfCopy->faceDetector && v186 && [v186 count])
   {
-    v73 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary3 = [MEMORY[0x1E695DF90] dictionary];
     v74 = [MEMORY[0x1E696AD98] numberWithBool:1];
     *&v210 = 0;
     *(&v210 + 1) = &v210;
@@ -1193,7 +1193,7 @@ LABEL_57:
     _Block_object_dispose(&v210, 8);
     if (v75)
     {
-      [v73 setObject:v74 forKey:*v75];
+      [dictionary3 setObject:v74 forKey:*v75];
       v78 = [MEMORY[0x1E696AD98] numberWithBool:1];
       *&v210 = 0;
       *(&v210 + 1) = &v210;
@@ -1217,7 +1217,7 @@ LABEL_57:
       _Block_object_dispose(&v210, 8);
       if (v79)
       {
-        [v73 setObject:v78 forKey:*v79];
+        [dictionary3 setObject:v78 forKey:*v79];
         v82 = [MEMORY[0x1E696AD98] numberWithBool:0];
         *&v210 = 0;
         *(&v210 + 1) = &v210;
@@ -1241,7 +1241,7 @@ LABEL_57:
         _Block_object_dispose(&v210, 8);
         if (v83)
         {
-          [v73 setObject:v82 forKey:*v83];
+          [dictionary3 setObject:v82 forKey:*v83];
           v86 = [MEMORY[0x1E696AD98] numberWithBool:0];
           *&v210 = 0;
           *(&v210 + 1) = &v210;
@@ -1265,7 +1265,7 @@ LABEL_57:
           _Block_object_dispose(&v210, 8);
           if (v87)
           {
-            [v73 setObject:v86 forKey:*v87];
+            [dictionary3 setObject:v86 forKey:*v87];
             v90 = [MEMORY[0x1E696AD98] numberWithBool:1];
             *&v210 = 0;
             *(&v210 + 1) = &v210;
@@ -1289,7 +1289,7 @@ LABEL_57:
             _Block_object_dispose(&v210, 8);
             if (v91)
             {
-              [v73 setObject:v90 forKey:*v91];
+              [dictionary3 setObject:v90 forKey:*v91];
               v94 = [MEMORY[0x1E696AD98] numberWithInt:v182];
               *&v210 = 0;
               *(&v210 + 1) = &v210;
@@ -1313,10 +1313,10 @@ LABEL_57:
               _Block_object_dispose(&v210, 8);
               if (v95)
               {
-                [v73 setObject:v94 forKey:*v95];
-                if ((v60 & 1) != 0 || [(CAMBurstImageFaceAnalysisContext *)v183 version]<= 1)
+                [dictionary3 setObject:v94 forKey:*v95];
+                if ((v60 & 1) != 0 || [(CAMBurstImageFaceAnalysisContext *)selfCopy version]<= 1)
                 {
-                  v186 = [(FCRFaceDetector *)v183->faceDetector extractDetailsForFaces:v186 inImage:v176 options:v73 error:&v209];
+                  v186 = [(FCRFaceDetector *)selfCopy->faceDetector extractDetailsForFaces:v186 inImage:v176 options:dictionary3 error:&v209];
                 }
 
                 if (v209)
@@ -1338,17 +1338,17 @@ LABEL_157:
   }
 
 LABEL_91:
-  v183->timeBlinkDetectionDone = timeElapsedSinceInit();
-  if ([(CAMBurstImageFaceAnalysisContext *)v183 version]>= 2)
+  selfCopy->timeBlinkDetectionDone = timeElapsedSinceInit();
+  if ([(CAMBurstImageFaceAnalysisContext *)selfCopy version]>= 2)
   {
-    if ([v186 count] || objc_msgSend(objc_msgSend(v187, "faceStatArray"), "count"))
+    if ([v186 count] || objc_msgSend(objc_msgSend(statCopy, "faceStatArray"), "count"))
     {
-      v183->numFramesNoFaces = 0;
+      selfCopy->numFramesNoFaces = 0;
     }
 
     else
     {
-      ++v183->numFramesNoFaces;
+      ++selfCopy->numFramesNoFaces;
     }
   }
 
@@ -1359,7 +1359,7 @@ LABEL_91:
       v99 = [v186 objectAtIndex:j];
       v100 = [objc_msgSend(v99 "expressionFeatures")];
       v101 = [objc_msgSend(v99 "expressionFeatures")];
-      v102 = [objc_msgSend(v99 "expressionFeatures")];
+      bOOLValue = [objc_msgSend(v99 "expressionFeatures")];
       if (v100)
       {
         v103 = [v100 BOOLValue] ^ 1;
@@ -1376,7 +1376,7 @@ LABEL_91:
         {
 LABEL_99:
           v104 = [v101 BOOLValue] ^ 1;
-          if (!v102)
+          if (!bOOLValue)
           {
             goto LABEL_100;
           }
@@ -1386,7 +1386,7 @@ LABEL_99:
       }
 
       v104 = 1;
-      if (!v102)
+      if (!bOOLValue)
       {
 LABEL_100:
         if (v99)
@@ -1398,7 +1398,7 @@ LABEL_100:
       }
 
 LABEL_104:
-      v102 = [v102 BOOLValue];
+      bOOLValue = [bOOLValue BOOLValue];
       if (v99)
       {
 LABEL_101:
@@ -1425,8 +1425,8 @@ LABEL_106:
       v196 = v109;
       v193 = v109;
       v194 = v109;
-      v110 = [v187 faceStatArray];
-      v111 = [v110 countByEnumeratingWithState:&v193 objects:v217 count:16];
+      faceStatArray2 = [statCopy faceStatArray];
+      v111 = [faceStatArray2 countByEnumeratingWithState:&v193 objects:v217 count:16];
       if (v111)
       {
         v113 = *v194;
@@ -1436,7 +1436,7 @@ LABEL_106:
           {
             if (*v194 != v113)
             {
-              objc_enumerationMutation(v110);
+              objc_enumerationMutation(faceStatArray2);
             }
 
             v115 = *(*(&v193 + 1) + 8 * k);
@@ -1472,18 +1472,18 @@ LABEL_106:
             }
           }
 
-          v111 = [v110 countByEnumeratingWithState:&v193 objects:v217 count:16];
+          v111 = [faceStatArray2 countByEnumeratingWithState:&v193 objects:v217 count:16];
         }
 
         while (v111);
       }
 
       v115 = objc_alloc_init(CAMBurstFaceStat);
-      [objc_msgSend(v187 "faceStatArray")];
+      [objc_msgSend(statCopy "faceStatArray")];
 
 LABEL_119:
       [(CAMBurstFaceStat *)v115 setFaceRect:v107, v108, v105, v106];
-      v125 = [(CAMBurstImageFaceAnalysisContext *)v183 version]> 1;
+      v125 = [(CAMBurstImageFaceAnalysisContext *)selfCopy version]> 1;
       [(CAMBurstFaceStat *)v115 faceRect];
       x = v126;
       y = v127;
@@ -1493,16 +1493,16 @@ LABEL_119:
       {
         LODWORD(v130) = 0.25;
         LODWORD(v131) = 0.25;
-        [(CAMBurstImageFaceAnalysisContext *)v183 padRoiRect:v126 paddingX:v127 paddingY:v128, v129, v130, v131];
+        [(CAMBurstImageFaceAnalysisContext *)selfCopy padRoiRect:v126 paddingX:v127 paddingY:v128, v129, v130, v131];
         x = v136;
         y = v137;
         v134 = v138;
         v135 = v139;
       }
 
-      if ([v187 numHWFaces] || j)
+      if ([statCopy numHWFaces] || j)
       {
-        [v187 facesRoiRect];
+        [statCopy facesRoiRect];
         v232.origin.x = x;
         v232.origin.y = y;
         v232.size.width = v134;
@@ -1514,10 +1514,10 @@ LABEL_119:
         v135 = v230.size.height;
       }
 
-      [v187 setFacesRoiRect:{x, y, v134, v135}];
-      [(CAMBurstFaceStat *)v115 setNormalizedFaceRect:v107 * (1.0 / v177), v108 * (1.0 / v178), v105 * (1.0 / v177), v106 * (1.0 / v178)];
+      [statCopy setFacesRoiRect:{x, y, v134, v135}];
+      [(CAMBurstFaceStat *)v115 setNormalizedFaceRect:v107 * (1.0 / width), v108 * (1.0 / v178), v105 * (1.0 / width), v106 * (1.0 / v178)];
       [(CAMBurstFaceStat *)v115 setFoundByFaceCore:1];
-      if ([(CAMBurstImageFaceAnalysisContext *)v183 version]<= 1)
+      if ([(CAMBurstImageFaceAnalysisContext *)selfCopy version]<= 1)
       {
         [(CAMBurstFaceStat *)v115 setHasLeftEye:1];
         [(CAMBurstFaceStat *)v115 setHasRightEye:1];
@@ -1525,8 +1525,8 @@ LABEL_119:
 
       [(CAMBurstFaceStat *)v115 setLeftEyeOpen:v103];
       [(CAMBurstFaceStat *)v115 setRightEyeOpen:v104];
-      [(CAMBurstFaceStat *)v115 setSmiling:v102];
-      v140 = [v99 expressionFeatures];
+      [(CAMBurstFaceStat *)v115 setSmiling:bOOLValue];
+      expressionFeatures = [v99 expressionFeatures];
       *&v210 = 0;
       *(&v210 + 1) = &v210;
       *&v211 = 0x2020000000;
@@ -1552,9 +1552,9 @@ LABEL_119:
         goto LABEL_150;
       }
 
-      [objc_msgSend(v140 valueForKey:{*v141), "floatValue"}];
+      [objc_msgSend(expressionFeatures valueForKey:{*v141), "floatValue"}];
       [(CAMBurstFaceStat *)v115 setLeftEyeBlinkScore:?];
-      v144 = [v99 expressionFeatures];
+      expressionFeatures2 = [v99 expressionFeatures];
       *&v210 = 0;
       *(&v210 + 1) = &v210;
       *&v211 = 0x2020000000;
@@ -1580,9 +1580,9 @@ LABEL_119:
         goto LABEL_150;
       }
 
-      [objc_msgSend(v144 valueForKey:{*v145), "floatValue"}];
+      [objc_msgSend(expressionFeatures2 valueForKey:{*v145), "floatValue"}];
       [(CAMBurstFaceStat *)v115 setRightEyeBlinkScore:?];
-      v148 = [v99 expressionFeatures];
+      expressionFeatures3 = [v99 expressionFeatures];
       *&v210 = 0;
       *(&v210 + 1) = &v210;
       *&v211 = 0x2020000000;
@@ -1610,9 +1610,9 @@ LABEL_150:
         goto LABEL_157;
       }
 
-      [objc_msgSend(v148 valueForKey:{*v149), "floatValue"}];
+      [objc_msgSend(expressionFeatures3 valueForKey:{*v149), "floatValue"}];
       [(CAMBurstFaceStat *)v115 setSmileScore:?];
-      [(CAMBurstImageFaceAnalysisContext *)v183 version];
+      [(CAMBurstImageFaceAnalysisContext *)selfCopy version];
       [(CAMBurstFaceStat *)v115 faceRect];
       v153 = v152;
       [(CAMBurstFaceStat *)v115 faceRect];
@@ -1659,7 +1659,7 @@ LABEL_150:
       }
 
       [(CAMBurstFaceStat *)v115 setRightEyeRect:v162, v164 + -v161 * v163, v156, v161];
-      v165 = [(CAMBurstFaceStat *)v115 faceId];
+      faceId = [(CAMBurstFaceStat *)v115 faceId];
       [(CAMBurstFaceStat *)v115 faceRect];
       v167 = v166;
       [(CAMBurstFaceStat *)v115 faceRect];
@@ -1667,27 +1667,27 @@ LABEL_150:
       [(CAMBurstFaceStat *)v115 faceRect];
       v171 = v170;
       [(CAMBurstFaceStat *)v115 faceRect];
-      BurstLoggingMessage("face %d: rect = %.3f,%.3f,%.3f,%.3f, leftOpen=%d,rightOpen=%d\n", v165, v167, v169, v171, v172, [(CAMBurstFaceStat *)v115 leftEyeOpen], [(CAMBurstFaceStat *)v115 rightEyeOpen]);
+      BurstLoggingMessage("face %d: rect = %.3f,%.3f,%.3f,%.3f, leftOpen=%d,rightOpen=%d\n", faceId, v167, v169, v171, v172, [(CAMBurstFaceStat *)v115 leftEyeOpen], [(CAMBurstFaceStat *)v115 rightEyeOpen]);
     }
   }
 
   BurstLoggingMessage("  #faces = %d\n", [v186 count]);
-  if (-[CAMBurstImageFaceAnalysisContext version](v183, "version") <= 1 && [objc_msgSend(v187 "faceStatArray")])
+  if (-[CAMBurstImageFaceAnalysisContext version](selfCopy, "version") <= 1 && [objc_msgSend(statCopy "faceStatArray")])
   {
     v173 = 0;
     v174 = 0;
     do
     {
-      if (([objc_msgSend(objc_msgSend(v187 "faceStatArray")] & 1) == 0)
+      if (([objc_msgSend(objc_msgSend(statCopy "faceStatArray")] & 1) == 0)
       {
-        [objc_msgSend(v187 "faceStatArray")];
+        [objc_msgSend(statCopy "faceStatArray")];
         --v174;
       }
 
       v173 = ++v174;
     }
 
-    while ([objc_msgSend(v187 "faceStatArray")] > v174);
+    while ([objc_msgSend(statCopy "faceStatArray")] > v174);
   }
 
   return [v186 count];
@@ -1830,18 +1830,18 @@ LABEL_27:
   return -1;
 }
 
-- (void)calculateFaceFocusInImage:(id)a3 imageStat:(id)a4
+- (void)calculateFaceFocusInImage:(id)image imageStat:(id)stat
 {
-  if ([objc_msgSend(a4 "faceStatArray")])
+  if ([objc_msgSend(stat "faceStatArray")])
   {
     BurstLoggingMessage("calculateFaceFocus:\n");
-    v6 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(objc_msgSend(a4, "faceStatArray"), "count")}];
-    if ([objc_msgSend(a4 "faceStatArray")])
+    v6 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(objc_msgSend(stat, "faceStatArray"), "count")}];
+    if ([objc_msgSend(stat "faceStatArray")])
     {
       v7 = 0;
       do
       {
-        v8 = [objc_msgSend(a4 "faceStatArray")];
+        v8 = [objc_msgSend(stat "faceStatArray")];
         memset(&v60, 0, sizeof(v60));
         if ([v8 hasLeftEye] && objc_msgSend(v8, "hasRightEye"))
         {
@@ -1881,8 +1881,8 @@ LABEL_27:
         v60.origin.y = v62.origin.y;
         v60.size.width = v62.size.width;
         v60.size.height = v62.size.height;
-        v21 = ([a3 width] - 2);
-        v65.size.height = ([a3 height] - 2);
+        v21 = ([image width] - 2);
+        v65.size.height = ([image height] - 2);
         v65.origin.x = 1.0;
         v65.origin.y = 1.0;
         v65.size.width = v21;
@@ -1893,13 +1893,13 @@ LABEL_27:
         ++v7;
       }
 
-      while ([objc_msgSend(a4 "faceStatArray")] > v7);
+      while ([objc_msgSend(stat "faceStatArray")] > v7);
     }
 
-    v22 = [a3 height];
-    v23 = [a3 bytesPerRow];
-    v59 = v22;
-    v24 = malloc_type_malloc(v23 * v22, 0x100004077774924uLL);
+    height = [image height];
+    bytesPerRow = [image bytesPerRow];
+    v59 = height;
+    v24 = malloc_type_malloc(bytesPerRow * height, 0x100004077774924uLL);
     if ([v6 count])
     {
       v25 = 0;
@@ -1908,21 +1908,21 @@ LABEL_27:
         memset(&v60, 0, sizeof(v60));
         [objc_msgSend(v6 objectAtIndex:{v25), "getValue:", &v60}];
         v60.origin.y = v59 - v60.origin.y - v60.size.height;
-        v26 = [a3 Ybuffer];
+        ybuffer = [image Ybuffer];
         height = v60.size.height;
         if (v60.size.height >= 1)
         {
           v28 = 0;
-          v29 = v23 * v60.origin.y;
+          v29 = bytesPerRow * v60.origin.y;
           v30 = &v24[v29 + v60.origin.x];
-          v31 = v26 + v29 + v60.origin.x;
+          v31 = ybuffer + v29 + v60.origin.x;
           v32 = v60.origin.x + v29;
-          v33 = v26 + ~v23 + v32;
-          v34 = v26 + 1 - v23 + v32;
-          v35 = v26 + v23 - 1 + v32;
-          v36 = v26 + v23 + 1 + v32;
-          v37 = v26 + -v23 + v32;
-          v38 = v26 + v23 + v32;
+          v33 = ybuffer + ~bytesPerRow + v32;
+          v34 = ybuffer + 1 - bytesPerRow + v32;
+          v35 = ybuffer + bytesPerRow - 1 + v32;
+          v36 = ybuffer + bytesPerRow + 1 + v32;
+          v37 = ybuffer + -bytesPerRow + v32;
+          v38 = ybuffer + bytesPerRow + v32;
           width = v60.size.width;
           do
           {
@@ -1950,14 +1950,14 @@ LABEL_27:
             }
 
             ++v28;
-            v31 += v23;
-            v30 += v23;
-            v33 += v23;
-            v34 += v23;
-            v35 += v23;
-            v36 += v23;
-            v37 += v23;
-            v38 += v23;
+            v31 += bytesPerRow;
+            v30 += bytesPerRow;
+            v33 += bytesPerRow;
+            v34 += bytesPerRow;
+            v35 += bytesPerRow;
+            v36 += bytesPerRow;
+            v37 += bytesPerRow;
+            v38 += bytesPerRow;
           }
 
           while (v28 < height);
@@ -1969,13 +1969,13 @@ LABEL_27:
       while ([v6 count] > v25);
     }
 
-    if ([objc_msgSend(a4 "faceStatArray")])
+    if ([objc_msgSend(stat "faceStatArray")])
     {
       v48 = 0;
-      v49 = v23;
+      v49 = bytesPerRow;
       do
       {
-        v50 = [objc_msgSend(a4 "faceStatArray")];
+        v50 = [objc_msgSend(stat "faceStatArray")];
         v51 = [v6 objectAtIndex:v48];
         memset(&v60, 0, sizeof(v60));
         [v51 getValue:&v60];
@@ -2019,22 +2019,22 @@ LABEL_27:
         ++v48;
       }
 
-      while ([objc_msgSend(a4 "faceStatArray")] > v48);
+      while ([objc_msgSend(stat "faceStatArray")] > v48);
     }
 
     free(v24);
   }
 }
 
-- (void)calcFaceScores:(id)a3
+- (void)calcFaceScores:(id)scores
 {
   v4 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:0];
-  if ([a3 count])
+  if ([scores count])
   {
     v5 = 0;
     do
     {
-      v6 = [objc_msgSend(objc_msgSend(a3 objectAtIndex:{v5), "burstImages"), "objectAtIndex:", 0}];
+      v6 = [objc_msgSend(objc_msgSend(scores objectAtIndex:{v5), "burstImages"), "objectAtIndex:", 0}];
       if ([objc_msgSend(v6 "faceStatArray")])
       {
         v7 = 0;
@@ -2067,15 +2067,15 @@ LABEL_27:
       ++v5;
     }
 
-    while ([a3 count] > v5);
+    while ([scores count] > v5);
   }
 
-  if ([a3 count])
+  if ([scores count])
   {
     v14 = 0;
     do
     {
-      v15 = [objc_msgSend(objc_msgSend(a3 objectAtIndex:{v14), "burstImages"), "objectAtIndex:", 0}];
+      v15 = [objc_msgSend(objc_msgSend(scores objectAtIndex:{v14), "burstImages"), "objectAtIndex:", 0}];
       if ([objc_msgSend(v15 "faceStatArray")])
       {
         v16 = 0;
@@ -2102,28 +2102,28 @@ LABEL_27:
       ++v14;
     }
 
-    while ([a3 count] > v14);
+    while ([scores count] > v14);
   }
 }
 
-- (void)adjustFaceIdsForImageStat:(id)a3
+- (void)adjustFaceIdsForImageStat:(id)stat
 {
-  v3 = a3;
+  statCopy = stat;
   v215 = *MEMORY[0x1E69E9840];
-  BurstLoggingMessage("AdjustFaceIds: Examining '%s'\n", [objc_msgSend(a3 "imageId")]);
-  if (![objc_msgSend(v3 "faceStatArray")])
+  BurstLoggingMessage("AdjustFaceIds: Examining '%s'\n", [objc_msgSend(stat "imageId")]);
+  if (![objc_msgSend(statCopy "faceStatArray")])
   {
     return;
   }
 
-  v175 = v3;
+  v175 = statCopy;
   if ([(CAMBurstImageFaceAnalysisContext *)self version]>= 2)
   {
     v206 = 0u;
     v207 = 0u;
     v204 = 0u;
     v205 = 0u;
-    obj = [v3 faceStatArray];
+    obj = [statCopy faceStatArray];
     v178 = [obj countByEnumeratingWithState:&v204 objects:v214 count:16];
     if (!v178)
     {
@@ -2164,8 +2164,8 @@ LABEL_10:
           }
 
           v12 = *(*(&v200 + 1) + 8 * v11);
-          v13 = [v6 hwFaceId];
-          if (v13 == [(CAMBurstFaceInfo *)v12 hwFaceId])
+          hwFaceId = [v6 hwFaceId];
+          if (hwFaceId == [(CAMBurstFaceInfo *)v12 hwFaceId])
           {
             break;
           }
@@ -2224,17 +2224,17 @@ LABEL_20:
             [(CAMBurstFaceInfo *)v20 overlapWithHwRect:?];
             if (v21 >= 0.25)
             {
-              v22 = [(CAMBurstFaceInfo *)v20 hwLastFrameSeen];
+              hwLastFrameSeen = [(CAMBurstFaceInfo *)v20 hwLastFrameSeen];
               if (!v12)
               {
                 goto LABEL_31;
               }
 
-              if (v22 > v17 && ([(CAMBurstFaceInfo *)v20 hwLastFrameSeen]- v17 > 3 || [(CAMBurstFaceInfo *)v20 swFaceId]!= -1 || [(CAMBurstFaceInfo *)v12 swFaceId]== -1))
+              if (hwLastFrameSeen > v17 && ([(CAMBurstFaceInfo *)v20 hwLastFrameSeen]- v17 > 3 || [(CAMBurstFaceInfo *)v20 swFaceId]!= -1 || [(CAMBurstFaceInfo *)v12 swFaceId]== -1))
               {
-                v22 = [(CAMBurstFaceInfo *)v20 hwLastFrameSeen];
+                hwLastFrameSeen = [(CAMBurstFaceInfo *)v20 hwLastFrameSeen];
 LABEL_31:
-                v17 = v22;
+                v17 = hwLastFrameSeen;
                 v12 = v20;
               }
             }
@@ -2246,18 +2246,18 @@ LABEL_31:
               goto LABEL_37;
             }
 
-            v24 = [(CAMBurstFaceInfo *)v20 swLastFrameSeen];
+            swLastFrameSeen = [(CAMBurstFaceInfo *)v20 swLastFrameSeen];
             if (v12)
             {
-              if (v24 <= v17)
+              if (swLastFrameSeen <= v17)
               {
                 goto LABEL_37;
               }
 
-              v24 = [(CAMBurstFaceInfo *)v20 swLastFrameSeen];
+              swLastFrameSeen = [(CAMBurstFaceInfo *)v20 swLastFrameSeen];
             }
 
-            v17 = v24;
+            v17 = swLastFrameSeen;
             v12 = v20;
 LABEL_37:
             ++v19;
@@ -2269,7 +2269,7 @@ LABEL_37:
         }
 
         while (v25);
-        v3 = v175;
+        statCopy = v175;
         if (!v12)
         {
 LABEL_43:
@@ -2284,7 +2284,7 @@ LABEL_44:
           [(CAMBurstFaceInfo *)v12 setSwFaceId:?];
         }
 
-        -[CAMBurstFaceInfo setSwLastFrameSeen:](v12, "setSwLastFrameSeen:", [v3 temporalOrder]);
+        -[CAMBurstFaceInfo setSwLastFrameSeen:](v12, "setSwLastFrameSeen:", [statCopy temporalOrder]);
         [v6 faceRect];
         MidX = CGRectGetMidX(v216);
         [v6 faceRect];
@@ -2302,14 +2302,14 @@ LABEL_44:
     }
   }
 
-  v179 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(objc_msgSend(v3, "faceStatArray"), "count")}];
-  v177 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(objc_msgSend(v3, "faceStatArray"), "count")}];
+  v179 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(objc_msgSend(statCopy, "faceStatArray"), "count")}];
+  v177 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(objc_msgSend(statCopy, "faceStatArray"), "count")}];
   v192 = 0u;
   v193 = 0u;
   v194 = 0u;
   v195 = 0u;
-  v29 = [v3 faceStatArray];
-  v30 = [v29 countByEnumeratingWithState:&v192 objects:v211 count:16];
+  faceStatArray = [statCopy faceStatArray];
+  v30 = [faceStatArray countByEnumeratingWithState:&v192 objects:v211 count:16];
   v31 = 0x1E696A000uLL;
   if (!v30)
   {
@@ -2329,7 +2329,7 @@ LABEL_44:
     {
       if (*v193 != v33)
       {
-        objc_enumerationMutation(v29);
+        objc_enumerationMutation(faceStatArray);
       }
 
       v39 = *(*(&v192 + 1) + 8 * v38);
@@ -2351,8 +2351,8 @@ LABEL_44:
       }
 
       v41 = v40;
-      v42 = [v3 temporalOrder];
-      if ((v42 - [v41 framesSinceLast]) >= 41)
+      temporalOrder = [statCopy temporalOrder];
+      if ((temporalOrder - [v41 framesSinceLast]) >= 41)
       {
         -[NSMutableDictionary removeObjectForKey:](self->renameMapping, "removeObjectForKey:", [*(v31 + 3480) numberWithInt:{objc_msgSend(v39, "faceId")}]);
 LABEL_58:
@@ -2360,15 +2360,15 @@ LABEL_58:
         self->faceIdCounter = v43 + 1;
         BurstLoggingMessage("    new id: %d mapped to %d\n", [v39 faceId], v43);
         v44 = [[CAMBurstFaceConfigEntry alloc] initWithRect:v43 withFaceId:v34, v35, v36, v37];
-        -[CAMBurstFaceConfigEntry setFramesSinceLast:](v44, "setFramesSinceLast:", [v3 temporalOrder]);
+        -[CAMBurstFaceConfigEntry setFramesSinceLast:](v44, "setFramesSinceLast:", [statCopy temporalOrder]);
         renameMapping = self->renameMapping;
         v46 = MEMORY[0x1E696AD98];
-        v47 = [v39 faceId];
+        faceId = [v39 faceId];
         v48 = v46;
         v31 = 0x1E696A000;
-        v49 = [v48 numberWithInt:v47];
+        v49 = [v48 numberWithInt:faceId];
         v50 = renameMapping;
-        v3 = v175;
+        statCopy = v175;
         [(NSMutableDictionary *)v50 setObject:v44 forKey:v49];
 
         v51 = v39;
@@ -2380,7 +2380,7 @@ LABEL_60:
 
       BurstLoggingMessage("    rename found: %d mapped to %d\n", [v39 faceId], objc_msgSend(v41, "faceId"));
       [v39 setFaceId:{objc_msgSend(v41, "faceId")}];
-      [v41 setFramesSinceLast:{objc_msgSend(v3, "temporalOrder")}];
+      [v41 setFramesSinceLast:{objc_msgSend(statCopy, "temporalOrder")}];
 LABEL_61:
       v54 = -[NSMutableDictionary objectForKey:](self->faceIdMapping, "objectForKey:", [*(v31 + 3480) numberWithInt:{objc_msgSend(v39, "faceId")}]);
       if (v54)
@@ -2400,7 +2400,7 @@ LABEL_61:
     }
 
     while (v32 != v38);
-    v62 = [v29 countByEnumeratingWithState:&v192 objects:v211 count:16];
+    v62 = [faceStatArray countByEnumeratingWithState:&v192 objects:v211 count:16];
     v32 = v62;
   }
 
@@ -2434,7 +2434,7 @@ LABEL_67:
         v76 = [v171 objectForKey:{v72, 1.0}];
         if (!v76)
         {
-          v3 = v175;
+          statCopy = v175;
           v63 = v179;
           goto LABEL_74;
         }
@@ -2460,7 +2460,7 @@ LABEL_67:
         v86 = v85;
         [v77 faceRect];
         v74 = v86 / v87;
-        v3 = v175;
+        statCopy = v175;
       }
 
       v69 = v69 + v75;
@@ -2511,10 +2511,10 @@ LABEL_78:
         while (1)
         {
           v167 = v118;
-          v120 = [v90 allKeys];
-          BurstLoggingMessage("  prevConfig has %d entries\n", [v120 count]);
-          v168 = v120;
-          if ([v120 count])
+          allKeys = [v90 allKeys];
+          BurstLoggingMessage("  prevConfig has %d entries\n", [allKeys count]);
+          v168 = allKeys;
+          if ([allKeys count])
           {
             v121 = 0;
             v169 = v119;
@@ -2536,13 +2536,13 @@ LABEL_78:
                   v130 = v129;
                   v132 = v131;
                   v134 = v133;
-                  v135 = [v124 allKeys];
-                  if ([v135 count])
+                  allKeys2 = [v124 allKeys];
+                  if ([allKeys2 count])
                   {
                     v136 = 0;
                     while (1)
                     {
-                      v137 = [v124 objectForKey:{objc_msgSend(v135, "objectAtIndex:", v136)}];
+                      v137 = [v124 objectForKey:{objc_msgSend(allKeys2, "objectAtIndex:", v136)}];
                       [v137 faceRect];
                       v227.origin.x = v128;
                       v227.origin.y = v130;
@@ -2555,7 +2555,7 @@ LABEL_78:
                         break;
                       }
 
-                      if ([v135 count] <= ++v136)
+                      if ([allKeys2 count] <= ++v136)
                       {
                         goto LABEL_105;
                       }
@@ -2563,7 +2563,7 @@ LABEL_78:
 
                     v139 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v137, "faceId", v138, v225.origin.y)}];
                     [obja setObject:v139 forKey:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInt:", objc_msgSend(v126, "faceId"))}];
-                    [v124 removeObjectForKey:{objc_msgSend(v135, "objectAtIndex:", v136)}];
+                    [v124 removeObjectForKey:{objc_msgSend(allKeys2, "objectAtIndex:", v136)}];
                   }
 
 LABEL_105:
@@ -2598,7 +2598,7 @@ LABEL_105:
             v122 = v179;
           }
 
-          v3 = v175;
+          statCopy = v175;
           if ([objc_msgSend(v175 "faceStatArray")] == v170)
           {
             break;
@@ -2684,13 +2684,13 @@ LABEL_115:
         do
         {
           v98 = [v91 objectAtIndex:v92];
-          v99 = [v90 allKeys];
-          if ([v99 count])
+          allKeys3 = [v90 allKeys];
+          if ([allKeys3 count])
           {
             v100 = 0;
             while (1)
             {
-              v101 = [v90 objectForKey:{objc_msgSend(v99, "objectAtIndex:", v100)}];
+              v101 = [v90 objectForKey:{objc_msgSend(allKeys3, "objectAtIndex:", v100)}];
               [v98 faceRect];
               v103 = v94 + v102;
               v105 = v95 + v104;
@@ -2716,7 +2716,7 @@ LABEL_115:
               }
 
               BurstLoggingMessage("    not matched\n", v114, v115);
-              if ([v99 count] <= ++v100)
+              if ([allKeys3 count] <= ++v100)
               {
                 goto LABEL_89;
               }
@@ -2726,7 +2726,7 @@ LABEL_115:
             v117 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v101, "faceId")}];
             v90 = v171;
             [v177 setObject:v117 forKey:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInt:", objc_msgSend(v98, "faceId"))}];
-            [v171 removeObjectForKey:{objc_msgSend(v99, "objectAtIndex:", v100)}];
+            [v171 removeObjectForKey:{objc_msgSend(allKeys3, "objectAtIndex:", v100)}];
           }
 
           else
@@ -2739,7 +2739,7 @@ LABEL_89:
 
           ++v92;
           v91 = v179;
-          v3 = v175;
+          statCopy = v175;
         }
 
         while ([v179 count] > v92);
@@ -2752,8 +2752,8 @@ LABEL_89:
   v187 = 0u;
   v184 = 0u;
   v185 = 0u;
-  v148 = [v3 faceStatArray];
-  v149 = [v148 countByEnumeratingWithState:&v184 objects:v209 count:16];
+  faceStatArray2 = [statCopy faceStatArray];
+  v149 = [faceStatArray2 countByEnumeratingWithState:&v184 objects:v209 count:16];
   if (v149)
   {
     v150 = v149;
@@ -2764,7 +2764,7 @@ LABEL_89:
       {
         if (*v185 != v151)
         {
-          objc_enumerationMutation(v148);
+          objc_enumerationMutation(faceStatArray2);
         }
 
         v153 = *(*(&v184 + 1) + 8 * k);
@@ -2775,18 +2775,18 @@ LABEL_89:
         -[NSMutableDictionary setObject:forKey:](self->curConfig, "setObject:forKey:", v159, [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v153, "faceId")}]);
       }
 
-      v150 = [v148 countByEnumeratingWithState:&v184 objects:v209 count:16];
+      v150 = [faceStatArray2 countByEnumeratingWithState:&v184 objects:v209 count:16];
     }
 
     while (v150);
   }
 
-  v160 = [(NSMutableDictionary *)self->curConfig allKeys];
+  allKeys4 = [(NSMutableDictionary *)self->curConfig allKeys];
   v180 = 0u;
   v181 = 0u;
   v182 = 0u;
   v183 = 0u;
-  v161 = [v160 countByEnumeratingWithState:&v180 objects:v208 count:16];
+  v161 = [allKeys4 countByEnumeratingWithState:&v180 objects:v208 count:16];
   if (v161)
   {
     v162 = v161;
@@ -2797,7 +2797,7 @@ LABEL_89:
       {
         if (*v181 != v163)
         {
-          objc_enumerationMutation(v160);
+          objc_enumerationMutation(allKeys4);
         }
 
         v165 = *(*(&v180 + 1) + 8 * m);
@@ -2810,16 +2810,16 @@ LABEL_89:
         }
       }
 
-      v162 = [v160 countByEnumeratingWithState:&v180 objects:v208 count:16];
+      v162 = [allKeys4 countByEnumeratingWithState:&v180 objects:v208 count:16];
     }
 
     while (v162);
   }
 }
 
-- (void)addFaceToArray:(id)a3
+- (void)addFaceToArray:(id)array
 {
-  v5 = [a3 objectForKey:@"Timestamp"];
+  v5 = [array objectForKey:@"Timestamp"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -2837,13 +2837,13 @@ LABEL_5:
   v7 = -1.0;
   if (objc_opt_isKindOfClass())
   {
-    v8 = [(__CFDictionary *)v5 unsignedLongLongValue];
-    Seconds = timestampToSeconds(v8, v9, v10, v11);
+    unsignedLongLongValue = [(__CFDictionary *)v5 unsignedLongLongValue];
+    Seconds = timestampToSeconds(unsignedLongLongValue, v9, v10, v11);
     goto LABEL_5;
   }
 
 LABEL_6:
-  BurstLoggingMessage("  face ID = %d, timestamp = %.6f\n", [objc_msgSend(a3 objectForKey:{@"FaceID", "intValue"}], v7);
+  BurstLoggingMessage("  face ID = %d, timestamp = %.6f\n", [objc_msgSend(array objectForKey:{@"FaceID", "intValue"}], v7);
   v12 = [(NSMutableArray *)self->faceTimestampArray count];
   v13 = v12 & (v12 >> 31);
   v14 = v12 - 1;
@@ -2863,7 +2863,7 @@ LABEL_6:
     }
   }
 
-  v17 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:a3];
+  v17 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:array];
   [v17 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithDouble:", v7), @"Timestamp"}];
   v18 = [v17 objectForKey:@"Rect"];
   if (v18)
@@ -2905,16 +2905,16 @@ LABEL_6:
   self->latestFaceTimestamp = latestFaceTimestamp;
 }
 
-- (void)extractFacesFromMetadata:(id)a3
+- (void)extractFacesFromMetadata:(id)metadata
 {
   v32 = *MEMORY[0x1E69E9840];
   BurstLoggingMessage("  extractFacesFromMetadata\n", a2);
-  if (a3)
+  if (metadata)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [a3 objectForKey:@"AccumulatedFaceMetadata"];
+      v5 = [metadata objectForKey:@"AccumulatedFaceMetadata"];
       BurstLoggingMessage("  accumulatedFaceMetadata = %x\n", v5);
       if (v5)
       {
@@ -2949,7 +2949,7 @@ LABEL_6:
         goto LABEL_29;
       }
 
-      v10 = [a3 objectForKey:*MEMORY[0x1E696D9B0]];
+      v10 = [metadata objectForKey:*MEMORY[0x1E696D9B0]];
       if (v10)
       {
         v11 = v10;
@@ -2971,11 +2971,11 @@ LABEL_6:
         v13 = *MEMORY[0x1E696D8B0];
       }
 
-      v14 = [a3 objectForKey:v13];
+      v14 = [metadata objectForKey:v13];
       if (!v14)
       {
 LABEL_29:
-        v21 = [a3 objectForKey:*MEMORY[0x1E696DE30]];
+        v21 = [metadata objectForKey:*MEMORY[0x1E696DE30]];
         if (v21)
         {
           v22 = v21;
@@ -3046,12 +3046,12 @@ LABEL_21:
   BurstLoggingMessage("extractFaceMetadata: invalid properties\n");
 }
 
-- (void)addFacesToImageStat:(id)a3 imageSize:(CGSize)a4
+- (void)addFacesToImageStat:(id)stat imageSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v138 = *MEMORY[0x1E69E9840];
-  [a3 timestamp];
+  [stat timestamp];
   v9 = v8;
   BurstLoggingMessage("addFacesToImageStat: timestamp = %.6f, lastFaceIndex=%d\n", v8, self->lastFaceIndex);
   if (v9 <= self->latestFaceTimestamp)
@@ -3452,9 +3452,9 @@ LABEL_21:
           [(CAMBurstFaceStat *)v19 setSmileScore:?];
         }
 
-        v104 = [(CAMBurstFaceStat *)v19 faceId];
+        faceId = [(CAMBurstFaceStat *)v19 faceId];
         [(CAMBurstFaceStat *)v19 timestamp];
-        BurstLoggingMessage("      found face id %d, timestamp=%.6f, x=%.3f,y=%.3f,w=%.3f,h=%.3f\n", v104, v105, v132, v131, v130, v129);
+        BurstLoggingMessage("      found face id %d, timestamp=%.6f, x=%.3f,y=%.3f,w=%.3f,h=%.3f\n", faceId, v105, v132, v131, v130, v129);
         v106 = self->lastFaceIndex;
         self->lastFaceIndex = v106 + 1;
       }
@@ -3466,8 +3466,8 @@ LABEL_21:
     v136 = 0u;
     v133 = 0u;
     v134 = 0u;
-    v107 = [v10 allKeys];
-    v108 = [v107 countByEnumeratingWithState:&v133 objects:v137 count:16];
+    allKeys = [v10 allKeys];
+    v108 = [allKeys countByEnumeratingWithState:&v133 objects:v137 count:16];
     if (v108)
     {
       v109 = v108;
@@ -3478,7 +3478,7 @@ LABEL_21:
         {
           if (*v134 != v110)
           {
-            objc_enumerationMutation(v107);
+            objc_enumerationMutation(allKeys);
           }
 
           v112 = [v10 objectForKey:*(*(&v133 + 1) + 8 * i)];
@@ -3487,24 +3487,24 @@ LABEL_21:
           v114 = fabsf(*&v113);
           if (v114 <= 0.016)
           {
-            v117 = [v112 faceId];
+            faceId2 = [v112 faceId];
             [v112 timestamp];
-            BurstLoggingMessage("    adding face id %d, timestamp %.6f\n", v117, v118);
+            BurstLoggingMessage("    adding face id %d, timestamp %.6f\n", faceId2, v118);
             [v112 setIsSyncedWithImage:1];
-            [objc_msgSend(a3 "faceStatArray")];
+            [objc_msgSend(stat "faceStatArray")];
           }
 
           else if (v114 <= 0.04)
           {
             [v112 setIsSyncedWithImage:0];
-            [objc_msgSend(a3 "faceStatArray")];
-            v115 = [v112 faceId];
+            [objc_msgSend(stat "faceStatArray")];
+            faceId3 = [v112 faceId];
             [v112 timestamp];
-            BurstLoggingMessage("    face id %d, timestamp %.6f - delta = %.6f, perhaps should use FaceCore\n", v115, v116, v114);
+            BurstLoggingMessage("    face id %d, timestamp %.6f - delta = %.6f, perhaps should use FaceCore\n", faceId3, v116, v114);
           }
         }
 
-        v109 = [v107 countByEnumeratingWithState:&v133 objects:v137 count:16];
+        v109 = [allKeys countByEnumeratingWithState:&v133 objects:v137 count:16];
       }
 
       while (v109);
@@ -3542,8 +3542,8 @@ LABEL_21:
         }
 
         v8 = *(*(&v28 + 1) + 8 * i);
-        v9 = [v8 hwFaceId];
-        v10 = [v8 hwLastFrameSeen];
+        hwFaceId = [v8 hwFaceId];
+        hwLastFrameSeen = [v8 hwLastFrameSeen];
         [v8 hwCenter];
         v12 = v11;
         [v8 hwCenter];
@@ -3552,8 +3552,8 @@ LABEL_21:
         v16 = v15;
         [v8 hwSize];
         v18 = v17;
-        v19 = [v8 swFaceId];
-        v20 = [v8 swLastFrameSeen];
+        swFaceId = [v8 swFaceId];
+        swLastFrameSeen = [v8 swLastFrameSeen];
         [v8 swCenter];
         v22 = v21;
         [v8 swCenter];
@@ -3561,7 +3561,7 @@ LABEL_21:
         [v8 swSize];
         v26 = v25;
         [v8 swSize];
-        BurstLoggingMessage("hwId = %d (lastSeen=%d, ctr=%.3f,%.3f size=%.3f,%.3f), swId = %d (lastSeen=%d, ctr=%.3f,%.3f size=%.3f,%.3f)\n", v9, v10, v12, v14, v16, v18, v19, v20, v22, v24, v26, v27);
+        BurstLoggingMessage("hwId = %d (lastSeen=%d, ctr=%.3f,%.3f size=%.3f,%.3f), swId = %d (lastSeen=%d, ctr=%.3f,%.3f size=%.3f,%.3f)\n", hwFaceId, hwLastFrameSeen, v12, v14, v16, v18, swFaceId, swLastFrameSeen, v22, v24, v26, v27);
       }
 
       v5 = [(NSMutableArray *)faceInfoArray countByEnumeratingWithState:&v28 objects:v32 count:16];

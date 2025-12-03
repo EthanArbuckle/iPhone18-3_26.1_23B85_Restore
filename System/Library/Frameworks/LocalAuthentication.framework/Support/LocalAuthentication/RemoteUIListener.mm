@@ -1,17 +1,17 @@
 @interface RemoteUIListener
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (RemoteUIListener)initWithMachServiceName:(id)a3;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (RemoteUIListener)initWithMachServiceName:(id)name;
 - (id)_workQueue;
-- (id)anonymousListenerWithIdentifier:(id)a3;
+- (id)anonymousListenerWithIdentifier:(id)identifier;
 @end
 
 @implementation RemoteUIListener
 
-- (RemoteUIListener)initWithMachServiceName:(id)a3
+- (RemoteUIListener)initWithMachServiceName:(id)name
 {
   v13.receiver = self;
   v13.super_class = RemoteUIListener;
-  v3 = [(ListenerWithDelegate *)&v13 initWithMachServiceName:a3];
+  v3 = [(ListenerWithDelegate *)&v13 initWithMachServiceName:name];
   v4 = v3;
   if (v3)
   {
@@ -33,53 +33,53 @@
   return v4;
 }
 
-- (id)anonymousListenerWithIdentifier:(id)a3
+- (id)anonymousListenerWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = +[NSXPCListener anonymousListener];
   [v5 setDelegate:self];
-  v6 = [(RemoteUIListener *)self _workQueue];
-  [v5 _setQueue:v6];
+  _workQueue = [(RemoteUIListener *)self _workQueue];
+  [v5 _setQueue:_workQueue];
 
   [v5 resume];
-  [(NSMapTable *)self->_vendedListeners setObject:v4 forKey:v5];
+  [(NSMapTable *)self->_vendedListeners setObject:identifierCopy forKey:v5];
   v7 = LALogForCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138543618;
     v10 = v5;
     v11 = 2114;
-    v12 = v4;
+    v12 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "RemoteUIListener vended listener:%{public}@ for identifier: %{public}@", &v9, 0x16u);
   }
 
   return v5;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   v8 = LALogForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     *buf = 138543618;
-    v19 = v7;
+    v19 = connectionCopy;
     v20 = 1024;
-    v21 = [v7 hash];
+    v21 = [connectionCopy hash];
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "RemoteUIListener has accepted a new connection %{public}@ hash:%x", buf, 0x12u);
   }
 
   v9 = [LAInternalProtocols interfaceWithInternalProtocol:&OBJC_PROTOCOL___LACRemoteUIHost];
-  [v7 setExportedInterface:v9];
+  [connectionCopy setExportedInterface:v9];
 
-  [v7 setExportedObject:self->_remoteUIHost];
-  v10 = [(RemoteUIListener *)self _workQueue];
-  [v7 _setQueue:v10];
+  [connectionCopy setExportedObject:self->_remoteUIHost];
+  _workQueue = [(RemoteUIListener *)self _workQueue];
+  [connectionCopy _setQueue:_workQueue];
 
-  [v7 resume];
-  objc_initWeak(buf, v7);
-  objc_initWeak(&location, v6);
+  [connectionCopy resume];
+  objc_initWeak(buf, connectionCopy);
+  objc_initWeak(&location, listenerCopy);
   objc_initWeak(&from, self);
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
@@ -88,7 +88,7 @@
   objc_copyWeak(&v13, &location);
   objc_copyWeak(&v14, &from);
   objc_copyWeak(&v15, buf);
-  [v7 setInvalidationHandler:v12];
+  [connectionCopy setInvalidationHandler:v12];
   objc_destroyWeak(&v15);
   objc_destroyWeak(&v14);
   objc_destroyWeak(&v13);
@@ -102,9 +102,9 @@
 - (id)_workQueue
 {
   v2 = +[DaemonUtils sharedInstance];
-  v3 = [v2 serverQueue];
+  serverQueue = [v2 serverQueue];
 
-  return v3;
+  return serverQueue;
 }
 
 @end

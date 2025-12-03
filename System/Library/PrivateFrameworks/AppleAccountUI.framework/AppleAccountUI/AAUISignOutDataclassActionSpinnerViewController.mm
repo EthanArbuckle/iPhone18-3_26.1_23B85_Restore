@@ -1,38 +1,38 @@
 @interface AAUISignOutDataclassActionSpinnerViewController
 - (AAUISignOutControllerDelegate)delegate;
-- (AAUISignOutDataclassActionSpinnerViewController)initWithAccount:(id)a3;
-- (AAUISignOutDataclassActionSpinnerViewController)initWithAccount:(id)a3 dataclassActionsStore:(id)a4;
-- (AAUISignOutDataclassActionSpinnerViewController)initWithCoder:(id)a3;
+- (AAUISignOutDataclassActionSpinnerViewController)initWithAccount:(id)account;
+- (AAUISignOutDataclassActionSpinnerViewController)initWithAccount:(id)account dataclassActionsStore:(id)store;
+- (AAUISignOutDataclassActionSpinnerViewController)initWithCoder:(id)coder;
 - (id)_spinnerViewController;
-- (void)_delegate_signOutControllerDidCompleteWithSuccess:(BOOL)a3 error:(id)a4;
-- (void)_mainQueue_continueSignOutWithDataclassActions:(id)a3;
-- (void)_mainQueue_presentSpinnerAndSignOutWithDefaultDataclassActions:(id)a3;
-- (void)_mainQueue_presentSpinnerPageWithCompletion:(id)a3;
+- (void)_delegate_signOutControllerDidCompleteWithSuccess:(BOOL)success error:(id)error;
+- (void)_mainQueue_continueSignOutWithDataclassActions:(id)actions;
+- (void)_mainQueue_presentSpinnerAndSignOutWithDefaultDataclassActions:(id)actions;
+- (void)_mainQueue_presentSpinnerPageWithCompletion:(id)completion;
 - (void)_spinnerViewController;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation AAUISignOutDataclassActionSpinnerViewController
 
-- (AAUISignOutDataclassActionSpinnerViewController)initWithAccount:(id)a3
+- (AAUISignOutDataclassActionSpinnerViewController)initWithAccount:(id)account
 {
-  v5 = a3;
+  accountCopy = account;
   v11.receiver = self;
   v11.super_class = AAUISignOutDataclassActionSpinnerViewController;
   v6 = [(AAUISignOutDataclassActionSpinnerViewController *)&v11 initWithNibName:0 bundle:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_account, a3);
-    v8 = [(ACAccount *)v7->_account accountStore];
-    v9 = v8;
-    if (!v8)
+    objc_storeStrong(&v6->_account, account);
+    accountStore = [(ACAccount *)v7->_account accountStore];
+    defaultStore = accountStore;
+    if (!accountStore)
     {
-      v9 = [MEMORY[0x1E6959A48] defaultStore];
+      defaultStore = [MEMORY[0x1E6959A48] defaultStore];
     }
 
-    objc_storeStrong(&v7->_accountStore, v9);
-    if (!v8)
+    objc_storeStrong(&v7->_accountStore, defaultStore);
+    if (!accountStore)
     {
     }
   }
@@ -40,37 +40,37 @@
   return v7;
 }
 
-- (AAUISignOutDataclassActionSpinnerViewController)initWithAccount:(id)a3 dataclassActionsStore:(id)a4
+- (AAUISignOutDataclassActionSpinnerViewController)initWithAccount:(id)account dataclassActionsStore:(id)store
 {
-  v7 = a3;
-  v8 = a4;
+  accountCopy = account;
+  storeCopy = store;
   v15.receiver = self;
   v15.super_class = AAUISignOutDataclassActionSpinnerViewController;
   v9 = [(AAUISignOutDataclassActionSpinnerViewController *)&v15 initWithNibName:0 bundle:0];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_account, a3);
-    v11 = [(ACAccount *)v10->_account accountStore];
-    v12 = v11;
-    if (!v11)
+    objc_storeStrong(&v9->_account, account);
+    accountStore = [(ACAccount *)v10->_account accountStore];
+    defaultStore = accountStore;
+    if (!accountStore)
     {
-      v12 = [MEMORY[0x1E6959A48] defaultStore];
+      defaultStore = [MEMORY[0x1E6959A48] defaultStore];
     }
 
-    objc_storeStrong(&v10->_accountStore, v12);
-    if (!v11)
+    objc_storeStrong(&v10->_accountStore, defaultStore);
+    if (!accountStore)
     {
     }
 
-    v13 = v8;
-    if (!v8)
+    v13 = storeCopy;
+    if (!storeCopy)
     {
-      v13 = [objc_alloc(MEMORY[0x1E698B880]) initWithAccount:v7];
+      v13 = [objc_alloc(MEMORY[0x1E698B880]) initWithAccount:accountCopy];
     }
 
     objc_storeStrong(&v10->_dataclassActionsStore, v13);
-    if (!v8)
+    if (!storeCopy)
     {
     }
   }
@@ -78,27 +78,27 @@
   return v10;
 }
 
-- (AAUISignOutDataclassActionSpinnerViewController)initWithCoder:(id)a3
+- (AAUISignOutDataclassActionSpinnerViewController)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = AAUISignOutDataclassActionSpinnerViewController;
-  v5 = [(AAUISignOutDataclassActionSpinnerViewController *)&v11 initWithCoder:v4];
+  v5 = [(AAUISignOutDataclassActionSpinnerViewController *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"account"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"account"];
     account = v5->_account;
     v5->_account = v6;
 
-    v8 = [(ACAccount *)v5->_account accountStore];
-    v9 = v8;
-    if (!v8)
+    accountStore = [(ACAccount *)v5->_account accountStore];
+    defaultStore = accountStore;
+    if (!accountStore)
     {
-      v9 = [MEMORY[0x1E6959A48] defaultStore];
+      defaultStore = [MEMORY[0x1E6959A48] defaultStore];
     }
 
-    objc_storeStrong(&v5->_accountStore, v9);
-    if (!v8)
+    objc_storeStrong(&v5->_accountStore, defaultStore);
+    if (!accountStore)
     {
     }
   }
@@ -106,61 +106,61 @@
   return v5;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = AAUISignOutDataclassActionSpinnerViewController;
-  [(AAUISignOutDataclassActionSpinnerViewController *)&v6 viewWillAppear:a3];
-  v4 = [(AAUISignOutDataclassActionSpinnerViewController *)self navigationController];
-  [v4 setNavigationBarHidden:1];
+  [(AAUISignOutDataclassActionSpinnerViewController *)&v6 viewWillAppear:appear];
+  navigationController = [(AAUISignOutDataclassActionSpinnerViewController *)self navigationController];
+  [navigationController setNavigationBarHidden:1];
 
-  v5 = [(AAUISignOutDataclassActionSpinnerViewController *)self _defaultDataclassActions];
-  [(AAUISignOutDataclassActionSpinnerViewController *)self _mainQueue_presentSpinnerAndSignOutWithDefaultDataclassActions:v5];
+  _defaultDataclassActions = [(AAUISignOutDataclassActionSpinnerViewController *)self _defaultDataclassActions];
+  [(AAUISignOutDataclassActionSpinnerViewController *)self _mainQueue_presentSpinnerAndSignOutWithDefaultDataclassActions:_defaultDataclassActions];
 }
 
-- (void)_mainQueue_presentSpinnerAndSignOutWithDefaultDataclassActions:(id)a3
+- (void)_mainQueue_presentSpinnerAndSignOutWithDefaultDataclassActions:(id)actions
 {
-  v4 = a3;
+  actionsCopy = actions;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __114__AAUISignOutDataclassActionSpinnerViewController__mainQueue_presentSpinnerAndSignOutWithDefaultDataclassActions___block_invoke;
   v6[3] = &unk_1E820BEB8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = actionsCopy;
+  v5 = actionsCopy;
   [(AAUISignOutDataclassActionSpinnerViewController *)self _mainQueue_presentSpinnerPageWithCompletion:v6];
 }
 
-- (void)_mainQueue_presentSpinnerPageWithCompletion:(id)a3
+- (void)_mainQueue_presentSpinnerPageWithCompletion:(id)completion
 {
-  v17 = a3;
+  completionCopy = completion;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v4 = [(AAUISignOutDataclassActionSpinnerViewController *)self _spinnerViewController];
-  [(AAUISignOutDataclassActionSpinnerViewController *)self addChildViewController:v4];
-  v5 = [(AAUISignOutDataclassActionSpinnerViewController *)self view];
-  [v5 bounds];
+  _spinnerViewController = [(AAUISignOutDataclassActionSpinnerViewController *)self _spinnerViewController];
+  [(AAUISignOutDataclassActionSpinnerViewController *)self addChildViewController:_spinnerViewController];
+  view = [(AAUISignOutDataclassActionSpinnerViewController *)self view];
+  [view bounds];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  v14 = [v4 view];
-  [v14 setFrame:{v7, v9, v11, v13}];
+  view2 = [_spinnerViewController view];
+  [view2 setFrame:{v7, v9, v11, v13}];
 
-  v15 = [(AAUISignOutDataclassActionSpinnerViewController *)self view];
-  v16 = [v4 view];
-  [v15 addSubview:v16];
+  view3 = [(AAUISignOutDataclassActionSpinnerViewController *)self view];
+  view4 = [_spinnerViewController view];
+  [view3 addSubview:view4];
 
-  [v4 didMoveToParentViewController:self];
-  if (v17)
+  [_spinnerViewController didMoveToParentViewController:self];
+  if (completionCopy)
   {
-    v17[2]();
+    completionCopy[2]();
   }
 }
 
-- (void)_mainQueue_continueSignOutWithDataclassActions:(id)a3
+- (void)_mainQueue_continueSignOutWithDataclassActions:(id)actions
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  actionsCopy = actions;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
   v5 = _AAUISignOutLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -169,7 +169,7 @@
     *buf = 138412546;
     v12 = account;
     v13 = 2112;
-    v14 = v4;
+    v14 = actionsCopy;
     _os_log_impl(&dword_1C5355000, v5, OS_LOG_TYPE_DEFAULT, "Attempting to sign out account %@ with dataclass actions %@.", buf, 0x16u);
   }
 
@@ -181,7 +181,7 @@
   v9[2] = __98__AAUISignOutDataclassActionSpinnerViewController__mainQueue_continueSignOutWithDataclassActions___block_invoke;
   v9[3] = &unk_1E820D308;
   objc_copyWeak(&v10, buf);
-  [(ACAccountStore *)accountStore removeAccount:v8 withDataclassActions:v4 completion:v9];
+  [(ACAccountStore *)accountStore removeAccount:v8 withDataclassActions:actionsCopy completion:v9];
   objc_destroyWeak(&v10);
   objc_destroyWeak(buf);
 }
@@ -247,12 +247,12 @@ void __98__AAUISignOutDataclassActionSpinnerViewController__mainQueue_continueSi
   }
 }
 
-- (void)_delegate_signOutControllerDidCompleteWithSuccess:(BOOL)a3 error:(id)a4
+- (void)_delegate_signOutControllerDidCompleteWithSuccess:(BOOL)success error:(id)error
 {
-  v4 = a3;
-  v6 = a4;
+  successCopy = success;
+  errorCopy = error;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v7 = [(AAUISignOutDataclassActionSpinnerViewController *)self delegate];
+  delegate = [(AAUISignOutDataclassActionSpinnerViewController *)self delegate];
   v8 = objc_opt_respondsToSelector();
   v9 = _AAUISignOutLogSystem();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG);
@@ -263,7 +263,7 @@ void __98__AAUISignOutDataclassActionSpinnerViewController__mainQueue_continueSi
       [AAUISignOutDataclassActionSpinnerViewController _delegate_signOutControllerDidCompleteWithSuccess:v9 error:?];
     }
 
-    [v7 signOutViewController:self didCompleteWithSuccess:v4 error:v6];
+    [delegate signOutViewController:self didCompleteWithSuccess:successCopy error:errorCopy];
   }
 
   else
@@ -279,8 +279,8 @@ void __98__AAUISignOutDataclassActionSpinnerViewController__mainQueue_continueSi
 
 - (id)_spinnerViewController
 {
-  v3 = [(ACAccount *)self->_account aa_fullName];
-  if (!v3)
+  aa_fullName = [(ACAccount *)self->_account aa_fullName];
+  if (!aa_fullName)
   {
     v4 = _AAUISignOutLogSystem();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -288,10 +288,10 @@ void __98__AAUISignOutDataclassActionSpinnerViewController__mainQueue_continueSi
       [(AAUISignOutDataclassActionSpinnerViewController *)self _spinnerViewController];
     }
 
-    v3 = &stru_1F447F790;
+    aa_fullName = &stru_1F447F790;
   }
 
-  v5 = [AAUISpinnerViewController newSpinnerProgressViewForType:1 fullName:v3 forAccount:self->_account];
+  v5 = [AAUISpinnerViewController newSpinnerProgressViewForType:1 fullName:aa_fullName forAccount:self->_account];
 
   return v5;
 }
@@ -316,7 +316,7 @@ void __98__AAUISignOutDataclassActionSpinnerViewController__mainQueue_continueSi
   v8 = *MEMORY[0x1E69E9840];
   v3 = *a2;
   v4 = 138412546;
-  v5 = a1;
+  selfCopy = self;
   v6 = 2112;
   v7 = v3;
   _os_log_error_impl(&dword_1C5355000, log, OS_LOG_TYPE_ERROR, "%@: Unable to retrieve full name from account (%@) for progress view", &v4, 0x16u);

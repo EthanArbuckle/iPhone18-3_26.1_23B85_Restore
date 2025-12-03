@@ -1,14 +1,14 @@
 @interface ContextualEngineSuggestionStore
 - (_TtC21AppPredictionInternal31ContextualEngineSuggestionStore)init;
-- (void)configurationDidChangeForFilter:(id)a3;
+- (void)configurationDidChangeForFilter:(id)filter;
 @end
 
 @implementation ContextualEngineSuggestionStore
 
-- (void)configurationDidChangeForFilter:(id)a3
+- (void)configurationDidChangeForFilter:(id)filter
 {
   v3 = *((*MEMORY[0x277D85000] & self->super.isa) + 0x88);
-  v7 = self;
+  selfCopy = self;
   if (v3())
   {
     v5 = v4;

@@ -1,61 +1,61 @@
 @interface _UISceneLayoutPreferencesController
-- ($821BAD5B88DA18872EDDEA81553BCF52)systemLayoutSizeFittingSize3D:(id)a3;
+- ($821BAD5B88DA18872EDDEA81553BCF52)systemLayoutSizeFittingSize3D:(id)d;
 - (BOOL)hostObservesLayoutPreferenceChanges;
 - (BOOL)hostSupportsSceneDoubleTap;
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size;
 - (id)clientSettings;
 - (id)settings;
 - (void)didRecognizeDoubleTapInDraggableArea;
-- (void)registerObserver:(id)a3;
-- (void)scene:(id)a3 didUpdateClientSettings:(id)a4;
-- (void)updateClientSettings:(id)a3;
-- (void)updateLayoutPreferences:(id)a3;
+- (void)registerObserver:(id)observer;
+- (void)scene:(id)scene didUpdateClientSettings:(id)settings;
+- (void)updateClientSettings:(id)settings;
+- (void)updateLayoutPreferences:(id)preferences;
 @end
 
 @implementation _UISceneLayoutPreferencesController
 
 - (BOOL)hostObservesLayoutPreferenceChanges
 {
-  v2 = [(_UISceneLayoutPreferencesController *)self settings];
-  v3 = [v2 _hostObservesLayoutPreferenceChanges];
+  settings = [(_UISceneLayoutPreferencesController *)self settings];
+  _hostObservesLayoutPreferenceChanges = [settings _hostObservesLayoutPreferenceChanges];
 
-  return v3;
+  return _hostObservesLayoutPreferenceChanges;
 }
 
 - (id)settings
 {
-  v2 = [(FBSSceneComponent *)self scene];
-  v3 = [v2 settings];
+  scene = [(FBSSceneComponent *)self scene];
+  settings = [scene settings];
 
-  return v3;
+  return settings;
 }
 
 - (id)clientSettings
 {
-  v2 = [(FBSSceneComponent *)self scene];
-  v3 = [v2 clientSettings];
+  scene = [(FBSSceneComponent *)self scene];
+  clientSettings = [scene clientSettings];
 
-  return v3;
+  return clientSettings;
 }
 
-- (void)updateClientSettings:(id)a3
+- (void)updateClientSettings:(id)settings
 {
-  v4 = a3;
-  v5 = [(FBSSceneComponent *)self clientScene];
-  [v5 updateClientSettings:v4];
+  settingsCopy = settings;
+  clientScene = [(FBSSceneComponent *)self clientScene];
+  [clientScene updateClientSettings:settingsCopy];
 }
 
 - (BOOL)hostSupportsSceneDoubleTap
 {
-  v2 = [(_UISceneLayoutPreferencesController *)self settings];
-  v3 = [v2 _hostSupportsSceneDoubleTap];
+  settings = [(_UISceneLayoutPreferencesController *)self settings];
+  _hostSupportsSceneDoubleTap = [settings _hostSupportsSceneDoubleTap];
 
-  return v3;
+  return _hostSupportsSceneDoubleTap;
 }
 
-- (void)updateLayoutPreferences:(id)a3
+- (void)updateLayoutPreferences:(id)preferences
 {
-  v4 = a3;
+  preferencesCopy = preferences;
   if (!self->_builder)
   {
     v5 = objc_alloc_init(_UISceneLayoutPreferenceBuilder);
@@ -68,8 +68,8 @@
   v8[2] = __63___UISceneLayoutPreferencesController_updateLayoutPreferences___block_invoke;
   v8[3] = &unk_1E7108078;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = preferencesCopy;
+  v7 = preferencesCopy;
   [(_UISceneLayoutPreferencesController *)self updateClientSettings:v8];
 }
 
@@ -97,35 +97,35 @@
   }
 
   v5 = [[_UISceneLayoutGestureAction alloc] initWithInfo:0 responder:v4];
-  v6 = [(FBSSceneComponent *)self scene];
+  scene = [(FBSSceneComponent *)self scene];
   v7 = [MEMORY[0x1E695DFD8] setWithObject:v5];
-  [v6 sendPrivateActions:v7];
+  [scene sendPrivateActions:v7];
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   observers = self->_observers;
-  v8 = v4;
+  v8 = observerCopy;
   if (!observers)
   {
-    v6 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     v7 = self->_observers;
-    self->_observers = v6;
+    self->_observers = weakObjectsHashTable;
 
-    v4 = v8;
+    observerCopy = v8;
     observers = self->_observers;
   }
 
-  [(NSHashTable *)observers addObject:v4];
+  [(NSHashTable *)observers addObject:observerCopy];
 }
 
-- (void)scene:(id)a3 didUpdateClientSettings:(id)a4
+- (void)scene:(id)scene didUpdateClientSettings:(id)settings
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [v5 settingsDiff];
-  v7 = [v6 containsPropertyFromExtension:objc_opt_class()];
+  settingsCopy = settings;
+  settingsDiff = [settingsCopy settingsDiff];
+  v7 = [settingsDiff containsPropertyFromExtension:objc_opt_class()];
 
   if (v7)
   {
@@ -150,8 +150,8 @@
           }
 
           v13 = *(*(&v15 + 1) + 8 * v12);
-          v14 = [v5 transitionContext];
-          [v13 layoutPreferencesControllerDidUpdate:self transitionContext:v14];
+          transitionContext = [settingsCopy transitionContext];
+          [v13 layoutPreferencesControllerDidUpdate:self transitionContext:transitionContext];
 
           ++v12;
         }
@@ -165,11 +165,11 @@
   }
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size
 {
-  width = a3.width;
-  v4 = [(_UISceneLayoutPreferencesController *)self clientSettings];
-  v5 = _UISceneLayoutPreferencesEvaluateSize(v4, width);
+  width = size.width;
+  clientSettings = [(_UISceneLayoutPreferencesController *)self clientSettings];
+  v5 = _UISceneLayoutPreferencesEvaluateSize(clientSettings, width);
   v7 = v6;
 
   v8 = v5;
@@ -179,11 +179,11 @@
   return result;
 }
 
-- ($821BAD5B88DA18872EDDEA81553BCF52)systemLayoutSizeFittingSize3D:(id)a3
+- ($821BAD5B88DA18872EDDEA81553BCF52)systemLayoutSizeFittingSize3D:(id)d
 {
   v5 = v3;
   v6 = v4;
-  v12 = [(_UISceneLayoutPreferencesController *)self clientSettings:a3.var0.var0];
+  v12 = [(_UISceneLayoutPreferencesController *)self clientSettings:d.var0.var0];
   v7 = v5[1];
   v13[0] = *v5;
   v13[1] = v7;

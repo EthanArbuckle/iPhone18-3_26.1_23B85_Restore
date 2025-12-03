@@ -10,11 +10,11 @@
   v4 = OBJC_IVAR____TtC9JetEngine24ScenePhaseChangeObserver_multicastDelegate;
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EB438BC8);
   v5 = swift_allocObject();
-  v6 = [objc_opt_self() weakObjectsHashTable];
+  weakObjectsHashTable = [objc_opt_self() weakObjectsHashTable];
   __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EB436D10);
   v7 = swift_allocObject();
   *(v7 + 24) = 0;
-  *(v7 + 16) = v6;
+  *(v7 + 16) = weakObjectsHashTable;
   *(v5 + 2) = v7;
   *(&self->super.isa + v4) = v5;
   v10.receiver = self;

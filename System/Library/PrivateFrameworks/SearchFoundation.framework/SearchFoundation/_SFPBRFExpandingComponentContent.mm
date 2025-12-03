@@ -1,47 +1,47 @@
 @interface _SFPBRFExpandingComponentContent
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBRFExpandingComponentContent)initWithDictionary:(id)a3;
-- (_SFPBRFExpandingComponentContent)initWithFacade:(id)a3;
-- (_SFPBRFExpandingComponentContent)initWithJSON:(id)a3;
+- (_SFPBRFExpandingComponentContent)initWithDictionary:(id)dictionary;
+- (_SFPBRFExpandingComponentContent)initWithFacade:(id)facade;
+- (_SFPBRFExpandingComponentContent)initWithJSON:(id)n;
 - (_SFPBRFLongItemStandardCardSection)long_item_standard_card_section;
 - (_SFPBRFReferenceFootnoteCardSection)reference_footnote_card_section;
 - (id)dictionaryRepresentation;
-- (void)setLong_item_standard_card_section:(id)a3;
-- (void)setReference_footnote_card_section:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setLong_item_standard_card_section:(id)long_item_standard_card_section;
+- (void)setReference_footnote_card_section:(id)reference_footnote_card_section;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBRFExpandingComponentContent
 
-- (_SFPBRFExpandingComponentContent)initWithFacade:(id)a3
+- (_SFPBRFExpandingComponentContent)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBRFExpandingComponentContent *)self init];
   if (v5)
   {
-    if ([v4 hasLong_item_standard_card_section])
+    if ([facadeCopy hasLong_item_standard_card_section])
     {
-      v6 = [v4 long_item_standard_card_section];
+      long_item_standard_card_section = [facadeCopy long_item_standard_card_section];
 
-      if (v6)
+      if (long_item_standard_card_section)
       {
         v7 = [_SFPBRFLongItemStandardCardSection alloc];
-        v8 = [v4 long_item_standard_card_section];
-        v9 = [(_SFPBRFLongItemStandardCardSection *)v7 initWithFacade:v8];
+        long_item_standard_card_section2 = [facadeCopy long_item_standard_card_section];
+        v9 = [(_SFPBRFLongItemStandardCardSection *)v7 initWithFacade:long_item_standard_card_section2];
         [(_SFPBRFExpandingComponentContent *)v5 setLong_item_standard_card_section:v9];
       }
     }
 
-    if ([v4 hasReference_footnote_card_section])
+    if ([facadeCopy hasReference_footnote_card_section])
     {
-      v10 = [v4 reference_footnote_card_section];
+      reference_footnote_card_section = [facadeCopy reference_footnote_card_section];
 
-      if (v10)
+      if (reference_footnote_card_section)
       {
         v11 = [_SFPBRFReferenceFootnoteCardSection alloc];
-        v12 = [v4 reference_footnote_card_section];
-        v13 = [(_SFPBRFReferenceFootnoteCardSection *)v11 initWithFacade:v12];
+        reference_footnote_card_section2 = [facadeCopy reference_footnote_card_section];
+        v13 = [(_SFPBRFReferenceFootnoteCardSection *)v11 initWithFacade:reference_footnote_card_section2];
         [(_SFPBRFExpandingComponentContent *)v5 setReference_footnote_card_section:v13];
       }
     }
@@ -52,15 +52,15 @@
   return v5;
 }
 
-- (_SFPBRFExpandingComponentContent)initWithDictionary:(id)a3
+- (_SFPBRFExpandingComponentContent)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = _SFPBRFExpandingComponentContent;
   v5 = [(_SFPBRFExpandingComponentContent *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"longItemStandardCardSection"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"longItemStandardCardSection"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -68,7 +68,7 @@
       [(_SFPBRFExpandingComponentContent *)v5 setLong_item_standard_card_section:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"referenceFootnoteCardSection"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"referenceFootnoteCardSection"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -82,30 +82,30 @@
   return v5;
 }
 
-- (_SFPBRFExpandingComponentContent)initWithJSON:(id)a3
+- (_SFPBRFExpandingComponentContent)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBRFExpandingComponentContent *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBRFExpandingComponentContent *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBRFExpandingComponentContent *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -118,64 +118,64 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_long_item_standard_card_section)
   {
-    v4 = [(_SFPBRFExpandingComponentContent *)self long_item_standard_card_section];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    long_item_standard_card_section = [(_SFPBRFExpandingComponentContent *)self long_item_standard_card_section];
+    dictionaryRepresentation = [long_item_standard_card_section dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"longItemStandardCardSection"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"longItemStandardCardSection"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"longItemStandardCardSection"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"longItemStandardCardSection"];
     }
   }
 
   if (self->_reference_footnote_card_section)
   {
-    v7 = [(_SFPBRFExpandingComponentContent *)self reference_footnote_card_section];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    reference_footnote_card_section = [(_SFPBRFExpandingComponentContent *)self reference_footnote_card_section];
+    dictionaryRepresentation2 = [reference_footnote_card_section dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"referenceFootnoteCardSection"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"referenceFootnoteCardSection"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"referenceFootnoteCardSection"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"referenceFootnoteCardSection"];
     }
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(_SFPBRFExpandingComponentContent *)self long_item_standard_card_section];
-  v6 = [v4 long_item_standard_card_section];
-  if ((v5 != 0) == (v6 == 0))
+  long_item_standard_card_section = [(_SFPBRFExpandingComponentContent *)self long_item_standard_card_section];
+  long_item_standard_card_section2 = [equalCopy long_item_standard_card_section];
+  if ((long_item_standard_card_section != 0) == (long_item_standard_card_section2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(_SFPBRFExpandingComponentContent *)self long_item_standard_card_section];
-  if (v7)
+  long_item_standard_card_section3 = [(_SFPBRFExpandingComponentContent *)self long_item_standard_card_section];
+  if (long_item_standard_card_section3)
   {
-    v8 = v7;
-    v9 = [(_SFPBRFExpandingComponentContent *)self long_item_standard_card_section];
-    v10 = [v4 long_item_standard_card_section];
-    v11 = [v9 isEqual:v10];
+    v8 = long_item_standard_card_section3;
+    long_item_standard_card_section4 = [(_SFPBRFExpandingComponentContent *)self long_item_standard_card_section];
+    long_item_standard_card_section5 = [equalCopy long_item_standard_card_section];
+    v11 = [long_item_standard_card_section4 isEqual:long_item_standard_card_section5];
 
     if (!v11)
     {
@@ -187,12 +187,12 @@
   {
   }
 
-  v5 = [(_SFPBRFExpandingComponentContent *)self reference_footnote_card_section];
-  v6 = [v4 reference_footnote_card_section];
-  if ((v5 != 0) != (v6 == 0))
+  long_item_standard_card_section = [(_SFPBRFExpandingComponentContent *)self reference_footnote_card_section];
+  long_item_standard_card_section2 = [equalCopy reference_footnote_card_section];
+  if ((long_item_standard_card_section != 0) != (long_item_standard_card_section2 == 0))
   {
-    v12 = [(_SFPBRFExpandingComponentContent *)self reference_footnote_card_section];
-    if (!v12)
+    reference_footnote_card_section = [(_SFPBRFExpandingComponentContent *)self reference_footnote_card_section];
+    if (!reference_footnote_card_section)
     {
 
 LABEL_15:
@@ -200,10 +200,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(_SFPBRFExpandingComponentContent *)self reference_footnote_card_section];
-    v15 = [v4 reference_footnote_card_section];
-    v16 = [v14 isEqual:v15];
+    v13 = reference_footnote_card_section;
+    reference_footnote_card_section2 = [(_SFPBRFExpandingComponentContent *)self reference_footnote_card_section];
+    reference_footnote_card_section3 = [equalCopy reference_footnote_card_section];
+    v16 = [reference_footnote_card_section2 isEqual:reference_footnote_card_section3];
 
     if (v16)
     {
@@ -223,17 +223,17 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
-  v4 = [(_SFPBRFExpandingComponentContent *)self long_item_standard_card_section];
-  if (v4)
+  toCopy = to;
+  long_item_standard_card_section = [(_SFPBRFExpandingComponentContent *)self long_item_standard_card_section];
+  if (long_item_standard_card_section)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v5 = [(_SFPBRFExpandingComponentContent *)self reference_footnote_card_section];
-  if (v5)
+  reference_footnote_card_section = [(_SFPBRFExpandingComponentContent *)self reference_footnote_card_section];
+  if (reference_footnote_card_section)
   {
     PBDataWriterWriteSubmessage();
   }
@@ -254,15 +254,15 @@ LABEL_13:
   return v3;
 }
 
-- (void)setReference_footnote_card_section:(id)a3
+- (void)setReference_footnote_card_section:(id)reference_footnote_card_section
 {
-  v4 = a3;
+  reference_footnote_card_sectionCopy = reference_footnote_card_section;
   long_item_standard_card_section = self->_long_item_standard_card_section;
   self->_long_item_standard_card_section = 0;
 
-  self->_whichValue = 2 * (v4 != 0);
+  self->_whichValue = 2 * (reference_footnote_card_sectionCopy != 0);
   reference_footnote_card_section = self->_reference_footnote_card_section;
-  self->_reference_footnote_card_section = v4;
+  self->_reference_footnote_card_section = reference_footnote_card_sectionCopy;
 }
 
 - (_SFPBRFLongItemStandardCardSection)long_item_standard_card_section
@@ -280,15 +280,15 @@ LABEL_13:
   return v3;
 }
 
-- (void)setLong_item_standard_card_section:(id)a3
+- (void)setLong_item_standard_card_section:(id)long_item_standard_card_section
 {
-  v4 = a3;
+  long_item_standard_card_sectionCopy = long_item_standard_card_section;
   reference_footnote_card_section = self->_reference_footnote_card_section;
   self->_reference_footnote_card_section = 0;
 
-  self->_whichValue = v4 != 0;
+  self->_whichValue = long_item_standard_card_sectionCopy != 0;
   long_item_standard_card_section = self->_long_item_standard_card_section;
-  self->_long_item_standard_card_section = v4;
+  self->_long_item_standard_card_section = long_item_standard_card_sectionCopy;
 }
 
 @end

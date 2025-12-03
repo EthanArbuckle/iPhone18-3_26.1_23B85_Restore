@@ -1,32 +1,32 @@
 @interface _BackgroundViewRenderOperation
-- (_BackgroundViewRenderOperation)initWithView:(id)a3 views:(id)a4 bounds:(CGRect)a5 traitCollection:(id)a6;
+- (_BackgroundViewRenderOperation)initWithView:(id)view views:(id)views bounds:(CGRect)bounds traitCollection:(id)collection;
 - (void)main;
 @end
 
 @implementation _BackgroundViewRenderOperation
 
-- (_BackgroundViewRenderOperation)initWithView:(id)a3 views:(id)a4 bounds:(CGRect)a5 traitCollection:(id)a6
+- (_BackgroundViewRenderOperation)initWithView:(id)view views:(id)views bounds:(CGRect)bounds traitCollection:(id)collection
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  viewCopy = view;
+  viewsCopy = views;
+  collectionCopy = collection;
   v20.receiver = self;
   v20.super_class = _BackgroundViewRenderOperation;
   v17 = [(_BackgroundViewRenderOperation *)&v20 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_view, a3);
-    objc_storeStrong(&v18->_views, a4);
+    objc_storeStrong(&v17->_view, view);
+    objc_storeStrong(&v18->_views, views);
     v18->_bounds.origin.x = x;
     v18->_bounds.origin.y = y;
     v18->_bounds.size.width = width;
     v18->_bounds.size.height = height;
-    objc_storeStrong(&v18->_traits, a6);
+    objc_storeStrong(&v18->_traits, collection);
   }
 
   return v18;
@@ -41,17 +41,17 @@
 
   if (([(_BackgroundViewRenderOperation *)self isCancelled]& 1) == 0)
   {
-    v4 = [(_BackgroundViewRenderOperation *)self view];
-    if ([v4 hasOccurrences])
+    view = [(_BackgroundViewRenderOperation *)self view];
+    if ([view hasOccurrences])
     {
     }
 
     else
     {
-      v5 = [(_BackgroundViewRenderOperation *)self view];
-      v6 = [v5 hasDrawnBefore];
+      view2 = [(_BackgroundViewRenderOperation *)self view];
+      hasDrawnBefore = [view2 hasDrawnBefore];
 
-      if (!v6)
+      if (!hasDrawnBefore)
       {
         return;
       }

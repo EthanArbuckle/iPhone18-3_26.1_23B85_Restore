@@ -1,22 +1,22 @@
 @interface MUActionRowItemViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_axNavigationDirectionsLabelHelper;
 - (id)accessibilityLabel;
 @end
 
 @implementation MUActionRowItemViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MUActionRowItemView" hasInstanceMethod:@"titleText" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MUActionRowItemView" hasInstanceMethod:@"glyphName" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MUActionRowItemView" hasInstanceMethod:@"titleText" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MUActionRowItemView" hasInstanceMethod:@"glyphName" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
 {
-  v3 = [(MUActionRowItemViewAccessibility *)self accessibilityIdentifier];
-  if ([v3 isEqualToString:@"ActionRowItemTypeDirections"])
+  accessibilityIdentifier = [(MUActionRowItemViewAccessibility *)self accessibilityIdentifier];
+  if ([accessibilityIdentifier isEqualToString:@"ActionRowItemTypeDirections"])
   {
     [(MUActionRowItemViewAccessibility *)self _axNavigationDirectionsLabelHelper];
   }

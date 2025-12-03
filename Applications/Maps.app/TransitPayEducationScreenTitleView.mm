@@ -1,5 +1,5 @@
 @interface TransitPayEducationScreenTitleView
-- (TransitPayEducationScreenTitleView)initWithTitle:(id)a3;
+- (TransitPayEducationScreenTitleView)initWithTitle:(id)title;
 - (id)_createIconImageView;
 - (id)_createTitleLabel;
 - (void)_setUpConstraints;
@@ -48,35 +48,35 @@
   v12 = v11;
   GEOConfigGetDouble();
   v14 = v13 * v12;
-  v37 = [(UIImageView *)self->_iconImageView heightAnchor];
-  v36 = [v37 constraintEqualToConstant:v10];
+  heightAnchor = [(UIImageView *)self->_iconImageView heightAnchor];
+  v36 = [heightAnchor constraintEqualToConstant:v10];
   v38[0] = v36;
-  v35 = [(UIImageView *)self->_iconImageView widthAnchor];
-  v34 = [v35 constraintEqualToConstant:v10];
+  widthAnchor = [(UIImageView *)self->_iconImageView widthAnchor];
+  v34 = [widthAnchor constraintEqualToConstant:v10];
   v38[1] = v34;
-  v33 = [(UIImageView *)self->_iconImageView leadingAnchor];
-  v32 = [(TransitPayEducationScreenTitleView *)self leadingAnchor];
-  v31 = [v33 constraintEqualToAnchor:v32 constant:v6];
+  leadingAnchor = [(UIImageView *)self->_iconImageView leadingAnchor];
+  leadingAnchor2 = [(TransitPayEducationScreenTitleView *)self leadingAnchor];
+  v31 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:v6];
   v38[2] = v31;
-  v30 = [(UIImageView *)self->_iconImageView centerYAnchor];
-  v29 = [(TransitPayEducationScreenTitleView *)self centerYAnchor];
-  v28 = [v30 constraintEqualToAnchor:v29];
+  centerYAnchor = [(UIImageView *)self->_iconImageView centerYAnchor];
+  centerYAnchor2 = [(TransitPayEducationScreenTitleView *)self centerYAnchor];
+  v28 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v38[3] = v28;
-  v27 = [(UILabel *)self->_titleLabel leadingAnchor];
-  v26 = [(UIImageView *)self->_iconImageView trailingAnchor];
-  v25 = [v27 constraintEqualToAnchor:v26 constant:v14];
+  leadingAnchor3 = [(UILabel *)self->_titleLabel leadingAnchor];
+  trailingAnchor = [(UIImageView *)self->_iconImageView trailingAnchor];
+  v25 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor constant:v14];
   v38[4] = v25;
-  v15 = [(UILabel *)self->_titleLabel topAnchor];
-  v16 = [(TransitPayEducationScreenTitleView *)self topAnchor];
-  v17 = [v15 constraintEqualToAnchor:v16];
+  topAnchor = [(UILabel *)self->_titleLabel topAnchor];
+  topAnchor2 = [(TransitPayEducationScreenTitleView *)self topAnchor];
+  v17 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v38[5] = v17;
-  v18 = [(UILabel *)self->_titleLabel trailingAnchor];
-  v19 = [(TransitPayEducationScreenTitleView *)self trailingAnchor];
-  v20 = [v18 constraintEqualToAnchor:v19];
+  trailingAnchor2 = [(UILabel *)self->_titleLabel trailingAnchor];
+  trailingAnchor3 = [(TransitPayEducationScreenTitleView *)self trailingAnchor];
+  v20 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3];
   v38[6] = v20;
-  v21 = [(UILabel *)self->_titleLabel bottomAnchor];
-  v22 = [(TransitPayEducationScreenTitleView *)self bottomAnchor];
-  v23 = [v21 constraintEqualToAnchor:v22];
+  bottomAnchor = [(UILabel *)self->_titleLabel bottomAnchor];
+  bottomAnchor2 = [(TransitPayEducationScreenTitleView *)self bottomAnchor];
+  v23 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v38[7] = v23;
   v24 = [NSArray arrayWithObjects:v38 count:8];
   [NSLayoutConstraint activateConstraints:v24];
@@ -84,29 +84,29 @@
 
 - (void)_setupViews
 {
-  v3 = [(TransitPayEducationScreenTitleView *)self _createTitleLabel];
+  _createTitleLabel = [(TransitPayEducationScreenTitleView *)self _createTitleLabel];
   titleLabel = self->_titleLabel;
-  self->_titleLabel = v3;
+  self->_titleLabel = _createTitleLabel;
 
   [(TransitPayEducationScreenTitleView *)self addSubview:self->_titleLabel];
-  v5 = [(TransitPayEducationScreenTitleView *)self _createIconImageView];
+  _createIconImageView = [(TransitPayEducationScreenTitleView *)self _createIconImageView];
   iconImageView = self->_iconImageView;
-  self->_iconImageView = v5;
+  self->_iconImageView = _createIconImageView;
 
   v7 = self->_iconImageView;
 
   [(TransitPayEducationScreenTitleView *)self addSubview:v7];
 }
 
-- (TransitPayEducationScreenTitleView)initWithTitle:(id)a3
+- (TransitPayEducationScreenTitleView)initWithTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   v9.receiver = self;
   v9.super_class = TransitPayEducationScreenTitleView;
   v5 = [(TransitPayEducationScreenTitleView *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [titleCopy copy];
     title = v5->_title;
     v5->_title = v6;
 

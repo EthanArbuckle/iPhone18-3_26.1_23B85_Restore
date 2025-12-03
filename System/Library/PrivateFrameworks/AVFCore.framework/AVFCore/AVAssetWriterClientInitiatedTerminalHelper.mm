@@ -1,15 +1,15 @@
 @interface AVAssetWriterClientInitiatedTerminalHelper
-- (AVAssetWriterClientInitiatedTerminalHelper)initWithConfigurationState:(id)a3 terminalStatus:(int64_t)a4;
+- (AVAssetWriterClientInitiatedTerminalHelper)initWithConfigurationState:(id)state terminalStatus:(int64_t)status;
 @end
 
 @implementation AVAssetWriterClientInitiatedTerminalHelper
 
-- (AVAssetWriterClientInitiatedTerminalHelper)initWithConfigurationState:(id)a3 terminalStatus:(int64_t)a4
+- (AVAssetWriterClientInitiatedTerminalHelper)initWithConfigurationState:(id)state terminalStatus:(int64_t)status
 {
   v15.receiver = self;
   v15.super_class = AVAssetWriterClientInitiatedTerminalHelper;
-  result = [(AVAssetWriterTerminalHelper *)&v15 initWithConfigurationState:a3];
-  if (a4 != 2 && a4 != 4)
+  result = [(AVAssetWriterTerminalHelper *)&v15 initWithConfigurationState:state];
+  if (status != 2 && status != 4)
   {
     v7 = result;
     v8 = result;
@@ -19,7 +19,7 @@
 
   if (result)
   {
-    result->_terminalStatus = a4;
+    result->_terminalStatus = status;
   }
 
   return result;

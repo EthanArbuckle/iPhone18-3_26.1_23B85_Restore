@@ -1,11 +1,11 @@
 @interface CLSContextProviderService
 - (CLSContextProviderService)init;
-- (CLSContextProviderService)initWithExtension:(id)a3;
+- (CLSContextProviderService)initWithExtension:(id)extension;
 - (id)description;
-- (void)connectWithCompletionHandler:(id)a3;
+- (void)connectWithCompletionHandler:(id)handler;
 - (void)disconnect;
-- (void)getMainAppContextPathWithCompletion:(id)a3;
-- (void)updateDescendantsOfContextPath:(id)a3 completion:(id)a4;
+- (void)getMainAppContextPathWithCompletion:(id)completion;
+- (void)updateDescendantsOfContextPath:(id)path completion:(id)completion;
 @end
 
 @implementation CLSContextProviderService
@@ -24,9 +24,9 @@
   objc_exception_throw(v11);
 }
 
-- (CLSContextProviderService)initWithExtension:(id)a3
+- (CLSContextProviderService)initWithExtension:(id)extension
 {
-  v5 = a3;
+  extensionCopy = extension;
   v41.receiver = self;
   v41.super_class = CLSContextProviderService;
   v6 = [(CLSContextProviderService *)&v41 init];
@@ -39,8 +39,8 @@
     v10 = *(v6 + 1);
     *(v6 + 1) = v9;
 
-    objc_storeStrong(v6 + 2, a3);
-    v13 = objc_msgSend_identifier(v5, v11, v12);
+    objc_storeStrong(v6 + 2, extension);
+    v13 = objc_msgSend_identifier(extensionCopy, v11, v12);
     v14 = *(v6 + 8);
     *(v6 + 8) = v13;
 
@@ -75,9 +75,9 @@
   return v6;
 }
 
-- (void)connectWithCompletionHandler:(id)a3
+- (void)connectWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   serviceConnectionQueue = self->_serviceConnectionQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -85,8 +85,8 @@
   block[2] = sub_236FC3C64;
   block[3] = &unk_278A18E98;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(serviceConnectionQueue, block);
 
   objc_destroyWeak(&v9);
@@ -107,9 +107,9 @@
   objc_destroyWeak(&location);
 }
 
-- (void)getMainAppContextPathWithCompletion:(id)a3
+- (void)getMainAppContextPathWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   serviceConnectionQueue = self->_serviceConnectionQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -117,18 +117,18 @@
   block[2] = sub_236FC44A8;
   block[3] = &unk_278A18E98;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(serviceConnectionQueue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
 }
 
-- (void)updateDescendantsOfContextPath:(id)a3 completion:(id)a4
+- (void)updateDescendantsOfContextPath:(id)path completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  pathCopy = path;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   serviceConnectionQueue = self->_serviceConnectionQueue;
   v11[0] = MEMORY[0x277D85DD0];
@@ -136,10 +136,10 @@
   v11[2] = sub_236FC4884;
   v11[3] = &unk_278A18EC0;
   objc_copyWeak(&v14, &location);
-  v12 = v6;
-  v13 = v7;
-  v9 = v6;
-  v10 = v7;
+  v12 = pathCopy;
+  v13 = completionCopy;
+  v9 = pathCopy;
+  v10 = completionCopy;
   dispatch_async(serviceConnectionQueue, v11);
 
   objc_destroyWeak(&v14);

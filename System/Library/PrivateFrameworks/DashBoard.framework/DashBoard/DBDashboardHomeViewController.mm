@@ -3,30 +3,30 @@
 - (BOOL)_onTodaysPage;
 - (BOOL)_onWidgetsPage;
 - (BOOL)_shouldHideTodayView;
-- (BOOL)iconCanDisplayBadge:(id)a3;
-- (BOOL)iconManager:(id)a3 allowsBadgingForIcon:(id)a4;
-- (BOOL)isIconVisible:(id)a3;
-- (BOOL)isIconVisibleForIdentifier:(id)a3;
+- (BOOL)iconCanDisplayBadge:(id)badge;
+- (BOOL)iconManager:(id)manager allowsBadgingForIcon:(id)icon;
+- (BOOL)isIconVisible:(id)visible;
+- (BOOL)isIconVisibleForIdentifier:(id)identifier;
 - (CRSWidgetLayoutVehicleDataProviding)widgetLayoutDataProvider;
-- (DBDashboardHomeViewController)initWithEnvironment:(id)a3 windowScene:(id)a4 layoutEngine:(id)a5;
+- (DBDashboardHomeViewController)initWithEnvironment:(id)environment windowScene:(id)scene layoutEngine:(id)engine;
 - (DBEnvironment)environment;
 - (NSArray)allApplicationIcons;
 - (UIWindowScene)windowScene;
 - (double)_maxWidgetDimmingViewAlpha;
-- (double)pageControlPlatterAlphaForPageIndex:(unint64_t)a3;
-- (double)widgetDimmingViewAlphaForPageIndex:(unint64_t)a3;
-- (id)_iconViewForIndexpath:(id)a3;
-- (id)_indexPathForFallbackIcon:(BOOL)a3;
+- (double)pageControlPlatterAlphaForPageIndex:(unint64_t)index;
+- (double)widgetDimmingViewAlphaForPageIndex:(unint64_t)index;
+- (id)_iconViewForIndexpath:(id)indexpath;
+- (id)_indexPathForFallbackIcon:(BOOL)icon;
 - (id)_linearFocusMovementSequences;
 - (id)_preferredFocusedIcon;
-- (id)defaultIconStateForIconManager:(id)a3;
+- (id)defaultIconStateForIconManager:(id)manager;
 - (id)folderController;
-- (id)folderController:(id)a3 iconListView:(id)a4 iconDropSessionDidUpdate:(id)a5;
+- (id)folderController:(id)controller iconListView:(id)view iconDropSessionDidUpdate:(id)update;
 - (id)folderView;
-- (id)iconForIdentifier:(id)a3;
+- (id)iconForIdentifier:(id)identifier;
 - (id)preferredFocusEnvironments;
-- (id)visibleIconViewForIdentifier:(id)a3;
-- (int64_t)_pageIndexForPageType:(unint64_t)a3;
+- (id)visibleIconViewForIdentifier:(id)identifier;
+- (int64_t)_pageIndexForPageType:(unint64_t)type;
 - (int64_t)_todayLeadingPageIndex;
 - (int64_t)_todayPageIndex;
 - (int64_t)_widgetsLeadingPageIndex;
@@ -35,52 +35,52 @@
 - (unint64_t)_pageType;
 - (void)_cacheIconImagesForCurrentTraitCollection;
 - (void)_handleAppLibraryRefresh;
-- (void)_handleBackActionSupportACBack:(BOOL)a3;
-- (void)_invalidateBadgeForIdentifier:(id)a3;
-- (void)_launchAppLink:(id)a3;
+- (void)_handleBackActionSupportACBack:(BOOL)back;
+- (void)_invalidateBadgeForIdentifier:(id)identifier;
+- (void)_launchAppLink:(id)link;
 - (void)_launchNowPlaying;
 - (void)_persistCachedIconImages;
 - (void)_resetIconStateIfNecessary;
-- (void)_setACBackDisabled:(BOOL)a3 forRequester:(id)a4;
-- (void)_setStatusBarOverrideActive:(BOOL)a3;
-- (void)_setupIconModelWithRelayout:(BOOL)a3;
-- (void)_wheelChangedWithEvent:(id)a3;
-- (void)_widgetHomeVCLayoutStateDidChange:(id)a3;
-- (void)addPageChangeObserver:(id)a3;
+- (void)_setACBackDisabled:(BOOL)disabled forRequester:(id)requester;
+- (void)_setStatusBarOverrideActive:(BOOL)active;
+- (void)_setupIconModelWithRelayout:(BOOL)relayout;
+- (void)_wheelChangedWithEvent:(id)event;
+- (void)_widgetHomeVCLayoutStateDidChange:(id)change;
+- (void)addPageChangeObserver:(id)observer;
 - (void)allApplicationIcons;
-- (void)appLinkManager:(id)a3 didAddAppLinks:(id)a4 didRemoveAppLinks:(id)a5;
-- (void)applicationController:(id)a3 addedApplications:(id)a4 updatedApplications:(id)a5 removedApplications:(id)a6;
+- (void)appLinkManager:(id)manager didAddAppLinks:(id)links didRemoveAppLinks:(id)appLinks;
+- (void)applicationController:(id)controller addedApplications:(id)applications updatedApplications:(id)updatedApplications removedApplications:(id)removedApplications;
 - (void)currentPageIndexDidChange;
-- (void)dataStoreMonitor:(id)a3 didUpdateApplication:(id)a4 forKey:(id)a5;
+- (void)dataStoreMonitor:(id)monitor didUpdateApplication:(id)application forKey:(id)key;
 - (void)dealloc;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
-- (void)folderControllerDidEndScrolling:(id)a3;
-- (void)folderControllerWillBeginScrolling:(id)a3;
-- (void)getApplicationIconInformationForBundleID:(id)a3 drawBorder:(BOOL)a4 completion:(id)a5;
-- (void)getIconStateWithCompletion:(id)a3;
-- (void)handleEvent:(id)a3;
-- (void)iconBadgeController:(id)a3 didUpdateForIdentifiers:(id)a4;
-- (void)iconManager:(id)a3 launchIconForIconView:(id)a4;
-- (void)iconManager:(id)a3 willUseRootFolderControllerConfiguration:(id)a4;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
+- (void)folderControllerDidEndScrolling:(id)scrolling;
+- (void)folderControllerWillBeginScrolling:(id)scrolling;
+- (void)getApplicationIconInformationForBundleID:(id)d drawBorder:(BOOL)border completion:(id)completion;
+- (void)getIconStateWithCompletion:(id)completion;
+- (void)handleEvent:(id)event;
+- (void)iconBadgeController:(id)controller didUpdateForIdentifiers:(id)identifiers;
+- (void)iconManager:(id)manager launchIconForIconView:(id)view;
+- (void)iconManager:(id)manager willUseRootFolderControllerConfiguration:(id)configuration;
 - (void)invalidate;
 - (void)loadView;
-- (void)removePageChangeObserver:(id)a3;
+- (void)removePageChangeObserver:(id)observer;
 - (void)resetIconState;
 - (void)restartPageControlTimerIfNecessary;
-- (void)rootFolderPageStateProvider:(id)a3 didContinueTransitionToState:(int64_t)a4 progress:(double)a5;
-- (void)rootFolderPageStateProvider:(id)a3 didEndTransitionFromState:(int64_t)a4 toState:(int64_t)a5 successfully:(BOOL)a6;
-- (void)rootFolderPageStateProvider:(id)a3 willBeginTransitionToState:(int64_t)a4 animated:(BOOL)a5 interactive:(BOOL)a6;
-- (void)setAccessibilityElementsActive:(BOOL)a3;
-- (void)setActive:(BOOL)a3;
-- (void)setCurrentPageIndex:(unint64_t)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)setCurrentPageType:(unint64_t)a3 animated:(BOOL)a4;
-- (void)setForeground:(BOOL)a3;
-- (void)setIconState:(id)a3;
-- (void)setLeadingCustomViewPageHidden:(BOOL)a3 atIndex:(int64_t)a4;
+- (void)rootFolderPageStateProvider:(id)provider didContinueTransitionToState:(int64_t)state progress:(double)progress;
+- (void)rootFolderPageStateProvider:(id)provider didEndTransitionFromState:(int64_t)state toState:(int64_t)toState successfully:(BOOL)successfully;
+- (void)rootFolderPageStateProvider:(id)provider willBeginTransitionToState:(int64_t)state animated:(BOOL)animated interactive:(BOOL)interactive;
+- (void)setAccessibilityElementsActive:(BOOL)active;
+- (void)setActive:(BOOL)active;
+- (void)setCurrentPageIndex:(unint64_t)index animated:(BOOL)animated completion:(id)completion;
+- (void)setCurrentPageType:(unint64_t)type animated:(BOOL)animated;
+- (void)setForeground:(BOOL)foreground;
+- (void)setIconState:(id)state;
+- (void)setLeadingCustomViewPageHidden:(BOOL)hidden atIndex:(int64_t)index;
 - (void)updateDefaultPageIndex;
 - (void)userInterfaceStyleChanged;
 - (void)viewDidLoad;
-- (void)workspace:(id)a3 stateDidChangeFromState:(id)a4 toState:(id)a5;
+- (void)workspace:(id)workspace stateDidChangeFromState:(id)state toState:(id)toState;
 @end
 
 @implementation DBDashboardHomeViewController
@@ -94,22 +94,22 @@
 
 - (BOOL)_onWidgetsPage
 {
-  v2 = self;
-  v3 = [(DBDashboardHomeViewController *)self folderController];
-  v4 = [v3 currentPageIndex];
-  LOBYTE(v2) = v4 == [(DBDashboardHomeViewController *)v2 _widgetsPageIndex];
+  selfCopy = self;
+  folderController = [(DBDashboardHomeViewController *)self folderController];
+  currentPageIndex = [folderController currentPageIndex];
+  LOBYTE(selfCopy) = currentPageIndex == [(DBDashboardHomeViewController *)selfCopy _widgetsPageIndex];
 
-  return v2;
+  return selfCopy;
 }
 
 - (id)folderController
 {
   objc_opt_class();
-  v3 = [(DBDashboardHomeViewController *)self iconManager];
-  v4 = [v3 rootFolderController];
-  if (v4 && (objc_opt_isKindOfClass() & 1) != 0)
+  iconManager = [(DBDashboardHomeViewController *)self iconManager];
+  rootFolderController = [iconManager rootFolderController];
+  if (rootFolderController && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v5 = v4;
+    v5 = rootFolderController;
   }
 
   else
@@ -127,21 +127,21 @@
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v4 = [(DBDashboardHomeViewController *)self folderController];
-  v5 = [v4 pageIndexForLeadingCustomPageIndex:{-[DBDashboardHomeViewController _widgetsLeadingPageIndex](self, "_widgetsLeadingPageIndex")}];
+  folderController = [(DBDashboardHomeViewController *)self folderController];
+  v5 = [folderController pageIndexForLeadingCustomPageIndex:{-[DBDashboardHomeViewController _widgetsLeadingPageIndex](self, "_widgetsLeadingPageIndex")}];
 
   return v5;
 }
 
 - (int64_t)_widgetsLeadingPageIndex
 {
-  v3 = [(DBDashboardHomeViewController *)self widgetHomeViewController];
-  if (v3)
+  widgetHomeViewController = [(DBDashboardHomeViewController *)self widgetHomeViewController];
+  if (widgetHomeViewController)
   {
-    v4 = [(DBDashboardHomeViewController *)self folderController];
-    v5 = [v4 leadingCustomViewControllers];
-    v6 = [(DBDashboardHomeViewController *)self widgetHomeViewController];
-    v7 = [v5 indexOfObject:v6];
+    folderController = [(DBDashboardHomeViewController *)self folderController];
+    leadingCustomViewControllers = [folderController leadingCustomViewControllers];
+    widgetHomeViewController2 = [(DBDashboardHomeViewController *)self widgetHomeViewController];
+    v7 = [leadingCustomViewControllers indexOfObject:widgetHomeViewController2];
   }
 
   else
@@ -154,12 +154,12 @@
 
 - (BOOL)_onTodaysPage
 {
-  v2 = self;
-  v3 = [(DBDashboardHomeViewController *)self folderController];
-  v4 = [v3 currentPageIndex];
-  LOBYTE(v2) = v4 == [(DBDashboardHomeViewController *)v2 _todayPageIndex];
+  selfCopy = self;
+  folderController = [(DBDashboardHomeViewController *)self folderController];
+  currentPageIndex = [folderController currentPageIndex];
+  LOBYTE(selfCopy) = currentPageIndex == [(DBDashboardHomeViewController *)selfCopy _todayPageIndex];
 
-  return v2;
+  return selfCopy;
 }
 
 - (int64_t)_todayPageIndex
@@ -169,28 +169,28 @@
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v4 = [(DBDashboardHomeViewController *)self folderController];
-  v5 = [v4 pageIndexForLeadingCustomPageIndex:{-[DBDashboardHomeViewController _todayLeadingPageIndex](self, "_todayLeadingPageIndex")}];
+  folderController = [(DBDashboardHomeViewController *)self folderController];
+  v5 = [folderController pageIndexForLeadingCustomPageIndex:{-[DBDashboardHomeViewController _todayLeadingPageIndex](self, "_todayLeadingPageIndex")}];
 
   return v5;
 }
 
 - (int64_t)_todayLeadingPageIndex
 {
-  v3 = [(DBDashboardHomeViewController *)self folderController];
-  v4 = [v3 leadingCustomViewControllers];
-  v5 = [(DBDashboardHomeViewController *)self todayViewController];
-  v6 = [v4 indexOfObject:v5];
+  folderController = [(DBDashboardHomeViewController *)self folderController];
+  leadingCustomViewControllers = [folderController leadingCustomViewControllers];
+  todayViewController = [(DBDashboardHomeViewController *)self todayViewController];
+  v6 = [leadingCustomViewControllers indexOfObject:todayViewController];
 
   return v6;
 }
 
-- (DBDashboardHomeViewController)initWithEnvironment:(id)a3 windowScene:(id)a4 layoutEngine:(id)a5
+- (DBDashboardHomeViewController)initWithEnvironment:(id)environment windowScene:(id)scene layoutEngine:(id)engine
 {
   v63[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  environmentCopy = environment;
+  sceneCopy = scene;
+  engineCopy = engine;
   v61.receiver = self;
   v61.super_class = DBDashboardHomeViewController;
   v11 = [(DBDashboardHomeViewController *)&v61 init];
@@ -201,62 +201,62 @@
     v11->_pageObservers = v12;
 
     v11->_isApplicationPresented = 0;
-    v14 = [v8 environmentConfiguration];
-    v15 = [v14 iconBadgeController];
+    environmentConfiguration = [environmentCopy environmentConfiguration];
+    iconBadgeController = [environmentConfiguration iconBadgeController];
     iconBadgeController = v11->_iconBadgeController;
-    v11->_iconBadgeController = v15;
+    v11->_iconBadgeController = iconBadgeController;
 
     [(DBIconBadgeController *)v11->_iconBadgeController addObserver:v11];
-    objc_storeWeak(&v11->_environment, v8);
-    objc_storeWeak(&v11->_windowScene, v9);
-    objc_storeStrong(&v11->_layoutEngine, a5);
-    v17 = [v8 environmentConfiguration];
-    v18 = [v17 iconImageCache];
+    objc_storeWeak(&v11->_environment, environmentCopy);
+    objc_storeWeak(&v11->_windowScene, sceneCopy);
+    objc_storeStrong(&v11->_layoutEngine, engine);
+    environmentConfiguration2 = [environmentCopy environmentConfiguration];
+    iconImageCache = [environmentConfiguration2 iconImageCache];
     iconImageCache = v11->_iconImageCache;
-    v11->_iconImageCache = v18;
+    v11->_iconImageCache = iconImageCache;
 
-    v20 = [v8 environmentConfiguration];
-    [v20 addObserver:v11];
+    environmentConfiguration3 = [environmentCopy environmentConfiguration];
+    [environmentConfiguration3 addObserver:v11];
 
-    v21 = [objc_alloc(MEMORY[0x277CF9348]) initForStandByScreen];
+    initForStandByScreen = [objc_alloc(MEMORY[0x277CF9348]) initForStandByScreen];
     statusBarStyleAssertion = v11->_statusBarStyleAssertion;
-    v11->_statusBarStyleAssertion = v21;
+    v11->_statusBarStyleAssertion = initForStandByScreen;
 
     v23 = [DBTodayViewController alloc];
     WeakRetained = objc_loadWeakRetained(&v11->_environment);
-    v25 = [(DBTodayViewController *)v23 initWithEnvironment:WeakRetained layoutEngine:v10];
+    v25 = [(DBTodayViewController *)v23 initWithEnvironment:WeakRetained layoutEngine:engineCopy];
     todayViewController = v11->_todayViewController;
     v11->_todayViewController = v25;
 
     v27 = objc_loadWeakRetained(&v11->_environment);
-    v28 = [v27 environmentConfiguration];
-    v29 = [v28 session];
-    v30 = [v29 configuration];
-    v31 = [v30 lodWidgetsMode];
+    environmentConfiguration4 = [v27 environmentConfiguration];
+    session = [environmentConfiguration4 session];
+    configuration = [session configuration];
+    lodWidgetsMode = [configuration lodWidgetsMode];
 
-    if (v31 != 1)
+    if (lodWidgetsMode != 1)
     {
       v32 = [_TtC9DashBoard26DBWidgetHomeViewController alloc];
       v33 = objc_loadWeakRetained(&v11->_environment);
-      v34 = [(DBWidgetHomeViewController *)v32 initWithEnvironment:v33 layoutEngine:v10];
+      v34 = [(DBWidgetHomeViewController *)v32 initWithEnvironment:v33 layoutEngine:engineCopy];
       widgetHomeViewController = v11->_widgetHomeViewController;
       v11->_widgetHomeViewController = v34;
 
-      v36 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v36 addObserver:v11 selector:sel__widgetHomeVCLayoutStateDidChange_ name:@"DBWidgetHomeVCLayoutStateChangedNotification" object:0];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter addObserver:v11 selector:sel__widgetHomeVCLayoutStateDidChange_ name:@"DBWidgetHomeVCLayoutStateChangedNotification" object:0];
     }
 
-    v37 = [(DBDashboardHomeViewController *)v11 environment];
-    v38 = [v37 environmentConfiguration];
-    v39 = [v38 isVehicleDataSession];
+    environment = [(DBDashboardHomeViewController *)v11 environment];
+    environmentConfiguration5 = [environment environmentConfiguration];
+    isVehicleDataSession = [environmentConfiguration5 isVehicleDataSession];
 
-    if (v39)
+    if (isVehicleDataSession)
     {
       v40 = [DBAppLinkManager alloc];
-      v41 = [(DBDashboardHomeViewController *)v11 environment];
-      v42 = [v41 environmentConfiguration];
-      v43 = [v42 session];
-      v44 = [(DBAppLinkManager *)v40 initWithSession:v43];
+      environment2 = [(DBDashboardHomeViewController *)v11 environment];
+      environmentConfiguration6 = [environment2 environmentConfiguration];
+      session2 = [environmentConfiguration6 session];
+      v44 = [(DBAppLinkManager *)v40 initWithSession:session2];
       appLinkManager = v11->_appLinkManager;
       v11->_appLinkManager = v44;
     }
@@ -270,9 +270,9 @@
 
     [(FBSApplicationDataStoreMonitor *)v11->_dataStoreMonitor addObserver:v11];
     v49 = [DBNowPlayingObserver alloc];
-    v50 = [(DBDashboardHomeViewController *)v11 environment];
-    v51 = [v50 environmentConfiguration];
-    v52 = [(DBNowPlayingObserver *)v49 initWithEnvironmentConfiguration:v51];
+    environment3 = [(DBDashboardHomeViewController *)v11 environment];
+    environmentConfiguration7 = [environment3 environmentConfiguration];
+    v52 = [(DBNowPlayingObserver *)v49 initWithEnvironmentConfiguration:environmentConfiguration7];
     nowPlayingObserver = v11->_nowPlayingObserver;
     v11->_nowPlayingObserver = v52;
 
@@ -303,16 +303,16 @@
   [(DBDashboardHomeViewController *)&v4 dealloc];
 }
 
-- (void)iconBadgeController:(id)a3 didUpdateForIdentifiers:(id)a4
+- (void)iconBadgeController:(id)controller didUpdateForIdentifiers:(id)identifiers
 {
-  v5 = a4;
+  identifiersCopy = identifiers;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __77__DBDashboardHomeViewController_iconBadgeController_didUpdateForIdentifiers___block_invoke;
   v7[3] = &unk_278F014B8;
-  v8 = v5;
-  v9 = self;
-  v6 = v5;
+  v8 = identifiersCopy;
+  selfCopy = self;
+  v6 = identifiersCopy;
   dispatch_async(MEMORY[0x277D85CD0], v7);
 }
 
@@ -352,42 +352,42 @@ void __77__DBDashboardHomeViewController_iconBadgeController_didUpdateForIdentif
   }
 }
 
-- (void)_setupIconModelWithRelayout:(BOOL)a3
+- (void)_setupIconModelWithRelayout:(BOOL)relayout
 {
-  v79 = a3;
+  relayoutCopy = relayout;
   v82[4] = *MEMORY[0x277D85DE8];
-  v4 = [(DBDashboardHomeViewController *)self iconManager];
-  v5 = [v4 rootViewController];
+  iconManager = [(DBDashboardHomeViewController *)self iconManager];
+  rootViewController = [iconManager rootViewController];
 
   WeakRetained = objc_loadWeakRetained(&self->_environment);
-  v7 = [WeakRetained environmentConfiguration];
+  environmentConfiguration = [WeakRetained environmentConfiguration];
 
-  if (v5)
+  if (rootViewController)
   {
-    [v5 removeFromParentViewController];
-    v8 = [v5 view];
-    [v8 removeFromSuperview];
+    [rootViewController removeFromParentViewController];
+    view = [rootViewController view];
+    [view removeFromSuperview];
   }
 
-  v9 = [(DBDashboardHomeViewController *)self environment];
-  v10 = [v9 environmentConfiguration];
-  [DBIconView setEnvironmentConfiguration:v10];
+  environment = [(DBDashboardHomeViewController *)self environment];
+  environmentConfiguration2 = [environment environmentConfiguration];
+  [DBIconView setEnvironmentConfiguration:environmentConfiguration2];
 
-  v11 = [(DBDashboardHomeViewController *)self environment];
-  v12 = [v11 environmentConfiguration];
-  LODWORD(v10) = [v12 isVehicleDataSession];
+  environment2 = [(DBDashboardHomeViewController *)self environment];
+  environmentConfiguration3 = [environment2 environmentConfiguration];
+  LODWORD(environmentConfiguration2) = [environmentConfiguration3 isVehicleDataSession];
 
-  if (v10)
+  if (environmentConfiguration2)
   {
-    v13 = [(DBDashboardHomeViewController *)self appLinkManager];
-    [v13 addObserver:self];
+    appLinkManager = [(DBDashboardHomeViewController *)self appLinkManager];
+    [appLinkManager addObserver:self];
   }
 
   v14 = [DBIconModelStore alloc];
-  v15 = [v7 vehicleID];
-  v16 = [(DBIconModelStore *)v14 initWithVehicleId:v15];
+  vehicleID = [environmentConfiguration vehicleID];
+  v16 = [(DBIconModelStore *)v14 initWithVehicleId:vehicleID];
 
-  [v7 pointScale];
+  [environmentConfiguration pointScale];
   [_TtC9DashBoard11DBIconImage iconImageInfoForScale:?];
   v18 = v17;
   v20 = v19;
@@ -410,90 +410,90 @@ void __77__DBDashboardHomeViewController_iconBadgeController_didUpdateForIdentif
 
   [(SBHIconModel *)self->_iconModel reloadIcons];
   [(SBHIconManager *)self->_iconManager setIconModel:self->_iconModel];
-  v80 = v7;
-  v29 = [v7 navigationStateProvider];
-  [v29 setIconProvider:self];
+  v80 = environmentConfiguration;
+  navigationStateProvider = [environmentConfiguration navigationStateProvider];
+  [navigationStateProvider setIconProvider:self];
 
   [(DBDashboardHomeViewController *)self _persistCachedIconImages];
-  v30 = [(DBDashboardHomeViewController *)self iconManager];
-  v31 = [v30 rootViewController];
+  iconManager2 = [(DBDashboardHomeViewController *)self iconManager];
+  rootViewController2 = [iconManager2 rootViewController];
 
-  [(DBDashboardHomeViewController *)self addChildViewController:v31];
-  v32 = [(DBDashboardHomeViewController *)self view];
-  v33 = [v31 view];
-  [v32 addSubview:v33];
+  [(DBDashboardHomeViewController *)self addChildViewController:rootViewController2];
+  view2 = [(DBDashboardHomeViewController *)self view];
+  view3 = [rootViewController2 view];
+  [view2 addSubview:view3];
 
-  [v31 didMoveToParentViewController:self];
-  v34 = [v31 view];
-  [v34 setTranslatesAutoresizingMaskIntoConstraints:0];
+  [rootViewController2 didMoveToParentViewController:self];
+  view4 = [rootViewController2 view];
+  [view4 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v76 = [(DBDashboardHomeViewController *)self view];
-  v74 = [v76 leadingAnchor];
-  v75 = [v31 view];
-  v73 = [v75 leadingAnchor];
-  v72 = [v74 constraintEqualToAnchor:v73];
+  view5 = [(DBDashboardHomeViewController *)self view];
+  leadingAnchor = [view5 leadingAnchor];
+  view6 = [rootViewController2 view];
+  leadingAnchor2 = [view6 leadingAnchor];
+  v72 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v82[0] = v72;
-  v71 = [(DBDashboardHomeViewController *)self view];
-  v69 = [v71 trailingAnchor];
-  v70 = [v31 view];
-  v68 = [v70 trailingAnchor];
-  v67 = [v69 constraintEqualToAnchor:v68];
+  view7 = [(DBDashboardHomeViewController *)self view];
+  trailingAnchor = [view7 trailingAnchor];
+  view8 = [rootViewController2 view];
+  trailingAnchor2 = [view8 trailingAnchor];
+  v67 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v82[1] = v67;
-  v66 = [(DBDashboardHomeViewController *)self view];
-  v65 = [v66 topAnchor];
-  v35 = [v31 view];
-  v36 = [v35 topAnchor];
-  v37 = [v65 constraintEqualToAnchor:v36];
+  view9 = [(DBDashboardHomeViewController *)self view];
+  topAnchor = [view9 topAnchor];
+  view10 = [rootViewController2 view];
+  topAnchor2 = [view10 topAnchor];
+  v37 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v82[2] = v37;
-  v38 = [(DBDashboardHomeViewController *)self view];
-  v39 = [v38 bottomAnchor];
-  v77 = v31;
-  v40 = [v31 view];
-  v41 = [v40 bottomAnchor];
-  v42 = [v39 constraintEqualToAnchor:v41];
+  view11 = [(DBDashboardHomeViewController *)self view];
+  bottomAnchor = [view11 bottomAnchor];
+  v77 = rootViewController2;
+  view12 = [rootViewController2 view];
+  bottomAnchor2 = [view12 bottomAnchor];
+  v42 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v82[3] = v42;
   v43 = [MEMORY[0x277CBEA60] arrayWithObjects:v82 count:4];
 
   [MEMORY[0x277CCAAD0] activateConstraints:v43];
-  v44 = [(DBDashboardHomeViewController *)self folderController];
+  folderController = [(DBDashboardHomeViewController *)self folderController];
   v45 = objc_loadWeakRetained(&self->_environment);
-  [v44 setEnvironment:v45];
+  [folderController setEnvironment:v45];
 
-  v46 = [(DBDashboardHomeViewController *)self iconModel];
-  v47 = [v46 rootFolder];
-  [v44 setFolder:v47];
+  iconModel = [(DBDashboardHomeViewController *)self iconModel];
+  rootFolder = [iconModel rootFolder];
+  [folderController setFolder:rootFolder];
 
-  v48 = [(DBDashboardHomeViewController *)self layoutEngine];
-  [v44 setLayoutEngine:v48];
+  layoutEngine = [(DBDashboardHomeViewController *)self layoutEngine];
+  [folderController setLayoutEngine:layoutEngine];
 
-  [v44 setFolderDelegate:self];
-  [v44 addPageStateObserver:self];
-  v49 = [(DBDashboardHomeViewController *)self folderView];
-  v50 = [v49 pageControl];
-  v51 = [(DBDashboardHomeViewController *)self traitCollection];
-  [v50 setOverrideUserInterfaceStyle:{objc_msgSend(v51, "userInterfaceStyle")}];
+  [folderController setFolderDelegate:self];
+  [folderController addPageStateObserver:self];
+  folderView = [(DBDashboardHomeViewController *)self folderView];
+  pageControl = [folderView pageControl];
+  traitCollection = [(DBDashboardHomeViewController *)self traitCollection];
+  [pageControl setOverrideUserInterfaceStyle:{objc_msgSend(traitCollection, "userInterfaceStyle")}];
 
   [(DBDashboardHomeViewController *)self setLeadingCustomViewPageHidden:[(DBDashboardHomeViewController *)self _shouldHideTodayView] atIndex:[(DBDashboardHomeViewController *)self _todayLeadingPageIndex]];
-  v52 = [(DBDashboardHomeViewController *)self widgetHomeViewController];
+  widgetHomeViewController = [(DBDashboardHomeViewController *)self widgetHomeViewController];
 
-  if (v52)
+  if (widgetHomeViewController)
   {
-    v53 = [(DBDashboardHomeViewController *)self widgetHomeViewController];
-    -[DBDashboardHomeViewController setLeadingCustomViewPageHidden:atIndex:](self, "setLeadingCustomViewPageHidden:atIndex:", [v53 enabled] ^ 1, -[DBDashboardHomeViewController _widgetsLeadingPageIndex](self, "_widgetsLeadingPageIndex"));
+    widgetHomeViewController2 = [(DBDashboardHomeViewController *)self widgetHomeViewController];
+    -[DBDashboardHomeViewController setLeadingCustomViewPageHidden:atIndex:](self, "setLeadingCustomViewPageHidden:atIndex:", [widgetHomeViewController2 enabled] ^ 1, -[DBDashboardHomeViewController _widgetsLeadingPageIndex](self, "_widgetsLeadingPageIndex"));
 
-    v54 = [(DBDashboardHomeViewController *)self widgetHomeViewController];
-    [v54 relayout];
+    widgetHomeViewController3 = [(DBDashboardHomeViewController *)self widgetHomeViewController];
+    [widgetHomeViewController3 relayout];
   }
 
-  v55 = [(DBDashboardHomeViewController *)self environment];
-  v56 = [v55 environmentConfiguration];
-  v57 = [v56 vehicle];
+  environment3 = [(DBDashboardHomeViewController *)self environment];
+  environmentConfiguration4 = [environment3 environmentConfiguration];
+  vehicle = [environmentConfiguration4 vehicle];
 
-  v58 = [v57 finishedWelcome];
-  if (v58)
+  finishedWelcome = [vehicle finishedWelcome];
+  if (finishedWelcome)
   {
-    v59 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v60 = [v59 integerForKey:@"CARStartPageType"];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v60 = [standardUserDefaults integerForKey:@"CARStartPageType"];
   }
 
   else
@@ -501,17 +501,17 @@ void __77__DBDashboardHomeViewController_iconBadgeController_didUpdateForIdentif
     v60 = 2;
   }
 
-  v61 = [(DBDashboardHomeViewController *)self _pageIndexForPageType:v60];
-  if (v61 == 0x7FFFFFFFFFFFFFFFLL)
+  defaultStartPageIndex = [(DBDashboardHomeViewController *)self _pageIndexForPageType:v60];
+  if (defaultStartPageIndex == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v61 = [(DBDashboardHomeViewController *)self defaultStartPageIndex];
+    defaultStartPageIndex = [(DBDashboardHomeViewController *)self defaultStartPageIndex];
   }
 
-  [(DBDashboardHomeViewController *)self setCurrentPageIndex:v61 animated:0];
-  if (v79)
+  [(DBDashboardHomeViewController *)self setCurrentPageIndex:defaultStartPageIndex animated:0];
+  if (relayoutCopy)
   {
-    v62 = [(DBDashboardHomeViewController *)self iconManager];
-    [v62 relayout];
+    iconManager3 = [(DBDashboardHomeViewController *)self iconManager];
+    [iconManager3 relayout];
 
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
     CFNotificationCenterPostNotification(DarwinNotifyCenter, @"com.apple.CarPlay.internal.refreshApps", 0, 0, 1u);
@@ -543,7 +543,7 @@ void __61__DBDashboardHomeViewController__setupIconModelWithRelayout___block_inv
 - (void)_resetIconStateIfNecessary
 {
   v6 = *MEMORY[0x277D85DE8];
-  v3 = [a1 description];
+  v3 = [self description];
   v4 = 138477827;
   v5 = v3;
   _os_log_error_impl(&dword_248146000, a2, OS_LOG_TYPE_ERROR, "Invalid list models in folder %{private}@ adding back icons.", &v4, 0xCu);
@@ -551,19 +551,19 @@ void __61__DBDashboardHomeViewController__setupIconModelWithRelayout___block_inv
 
 - (void)restartPageControlTimerIfNecessary
 {
-  v3 = [(DBDashboardHomeViewController *)self folderView];
-  [v3 restartPageControlTimerIfNecessary];
+  folderView = [(DBDashboardHomeViewController *)self folderView];
+  [folderView restartPageControlTimerIfNecessary];
 
   if ([(DBDashboardHomeViewController *)self _onWidgetsPage])
   {
-    v4 = [(DBDashboardHomeViewController *)self widgetHomeViewController];
-    [v4 updatePageControlsOffsetAndFlash:1];
+    widgetHomeViewController = [(DBDashboardHomeViewController *)self widgetHomeViewController];
+    [widgetHomeViewController updatePageControlsOffsetAndFlash:1];
   }
 }
 
-- (void)_widgetHomeVCLayoutStateDidChange:(id)a3
+- (void)_widgetHomeVCLayoutStateDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   objc_initWeak(&location, self);
   v16 = MEMORY[0x277D85DD0];
   v17 = 3221225472;
@@ -578,33 +578,33 @@ void __61__DBDashboardHomeViewController__setupIconModelWithRelayout___block_inv
 
   else
   {
-    v7 = [(DBDashboardHomeViewController *)self _onWidgetsPage];
+    _onWidgetsPage = [(DBDashboardHomeViewController *)self _onWidgetsPage];
 
-    if (v7)
+    if (_onWidgetsPage)
     {
-      v8 = [(DBDashboardHomeViewController *)self folderController];
-      -[DBDashboardHomeViewController setCurrentPageIndex:animated:completion:](self, "setCurrentPageIndex:animated:completion:", [v8 defaultPageIndex], 1, v5);
+      folderController = [(DBDashboardHomeViewController *)self folderController];
+      -[DBDashboardHomeViewController setCurrentPageIndex:animated:completion:](self, "setCurrentPageIndex:animated:completion:", [folderController defaultPageIndex], 1, v5);
       goto LABEL_11;
     }
   }
 
-  v9 = [(DBDashboardHomeViewController *)self _widgetsPageIndex];
-  v10 = [(DBDashboardHomeViewController *)self widgetHomeViewController];
-  v11 = [v10 enabled];
+  _widgetsPageIndex = [(DBDashboardHomeViewController *)self _widgetsPageIndex];
+  widgetHomeViewController = [(DBDashboardHomeViewController *)self widgetHomeViewController];
+  enabled = [widgetHomeViewController enabled];
 
-  if ((v9 != 0x7FFFFFFFFFFFFFFFLL) != v11)
+  if ((_widgetsPageIndex != 0x7FFFFFFFFFFFFFFFLL) != enabled)
   {
     v5[2](v5);
   }
 
-  if (v9 == 0x7FFFFFFFFFFFFFFFLL)
+  if (_widgetsPageIndex == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v8 = [(DBDashboardHomeViewController *)self widgetHomeViewController];
-    if ([v8 enabled])
+    folderController = [(DBDashboardHomeViewController *)self widgetHomeViewController];
+    if ([folderController enabled])
     {
-      v12 = [(DBDashboardHomeViewController *)self isApplicationPresented];
+      isApplicationPresented = [(DBDashboardHomeViewController *)self isApplicationPresented];
 
-      if (!v12)
+      if (!isApplicationPresented)
       {
         [(DBDashboardHomeViewController *)self setCurrentPageIndex:[(DBDashboardHomeViewController *)self _widgetsPageIndex] animated:1 completion:&__block_literal_global_25];
       }
@@ -620,8 +620,8 @@ LABEL_12:
   {
     [(DBDashboardHomeViewController *)self _maxWidgetDimmingViewAlpha];
     v14 = v13;
-    v15 = [(DBDashboardHomeViewController *)self widgetDimmingView];
-    [v15 setAlpha:v14];
+    widgetDimmingView = [(DBDashboardHomeViewController *)self widgetDimmingView];
+    [widgetDimmingView setAlpha:v14];
   }
 
   objc_destroyWeak(&v20);
@@ -647,29 +647,29 @@ void __67__DBDashboardHomeViewController__widgetHomeVCLayoutStateDidChange___blo
   v11.receiver = self;
   v11.super_class = DBDashboardHomeViewController;
   [(DBDashboardHomeViewController *)&v11 viewDidLoad];
-  v3 = [(DBDashboardHomeViewController *)self widgetHomeViewController];
+  widgetHomeViewController = [(DBDashboardHomeViewController *)self widgetHomeViewController];
 
-  if (v3)
+  if (widgetHomeViewController)
   {
-    v4 = [(DBDashboardHomeViewController *)self widgetDimmingView];
-    [v4 setHidden:0];
+    widgetDimmingView = [(DBDashboardHomeViewController *)self widgetDimmingView];
+    [widgetDimmingView setHidden:0];
 
-    v5 = [(DBDashboardHomeViewController *)self widgetDimmingView];
-    [v5 setAlpha:0.0];
+    widgetDimmingView2 = [(DBDashboardHomeViewController *)self widgetDimmingView];
+    [widgetDimmingView2 setAlpha:0.0];
   }
 
-  v6 = [(DBDashboardHomeViewController *)self view];
-  [v6 setClipsToBounds:1];
+  view = [(DBDashboardHomeViewController *)self view];
+  [view setClipsToBounds:1];
 
-  v7 = [(DBDashboardHomeViewController *)self view];
-  v8 = [v7 layer];
-  [v8 setHitTestsAsOpaque:1];
+  view2 = [(DBDashboardHomeViewController *)self view];
+  layer = [view2 layer];
+  [layer setHitTestsAsOpaque:1];
 
   [(DBDashboardHomeViewController *)self _setupIconModelWithRelayout:0];
   v9 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:self action:sel__backButtonTapped_];
   [v9 setAllowedPressTypes:&unk_285AA4A00];
-  v10 = [(DBDashboardHomeViewController *)self view];
-  [v10 addGestureRecognizer:v9];
+  view3 = [(DBDashboardHomeViewController *)self view];
+  [view3 addGestureRecognizer:v9];
 }
 
 - (void)userInterfaceStyleChanged
@@ -679,54 +679,54 @@ void __67__DBDashboardHomeViewController__widgetHomeVCLayoutStateDidChange___blo
   {
     [(DBDashboardHomeViewController *)self _maxWidgetDimmingViewAlpha];
     v4 = v3;
-    v5 = [(DBDashboardHomeViewController *)self widgetDimmingView];
-    [v5 setAlpha:v4];
+    widgetDimmingView = [(DBDashboardHomeViewController *)self widgetDimmingView];
+    [widgetDimmingView setAlpha:v4];
   }
 
-  v6 = [(DBDashboardHomeViewController *)self todayViewController];
+  todayViewController = [(DBDashboardHomeViewController *)self todayViewController];
 
-  if (v6)
+  if (todayViewController)
   {
     v7 = DBLogForCategory(0);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(DBDashboardHomeViewController *)self traitCollection];
-      v9 = [v8 dbUserInterfaceStyleDescription];
+      traitCollection = [(DBDashboardHomeViewController *)self traitCollection];
+      dbUserInterfaceStyleDescription = [traitCollection dbUserInterfaceStyleDescription];
       v12 = 138412290;
-      v13 = v9;
+      v13 = dbUserInterfaceStyleDescription;
       _os_log_impl(&dword_248146000, v7, OS_LOG_TYPE_DEFAULT, "Setting todayViewController userInterfaceStyle to %@", &v12, 0xCu);
     }
 
-    v10 = [(DBDashboardHomeViewController *)self todayViewController];
-    v11 = [(DBDashboardHomeViewController *)self traitCollection];
-    [v10 setOverrideUserInterfaceStyle:{objc_msgSend(v11, "userInterfaceStyle")}];
+    todayViewController2 = [(DBDashboardHomeViewController *)self todayViewController];
+    traitCollection2 = [(DBDashboardHomeViewController *)self traitCollection];
+    [todayViewController2 setOverrideUserInterfaceStyle:{objc_msgSend(traitCollection2, "userInterfaceStyle")}];
   }
 }
 
-- (void)handleEvent:(id)a3
+- (void)handleEvent:(id)event
 {
-  if ([a3 type] == 1)
+  if ([event type] == 1)
   {
 
     [(DBDashboardHomeViewController *)self _handleBackActionSupportACBack:0];
   }
 }
 
-- (void)applicationController:(id)a3 addedApplications:(id)a4 updatedApplications:(id)a5 removedApplications:(id)a6
+- (void)applicationController:(id)controller addedApplications:(id)applications updatedApplications:(id)updatedApplications removedApplications:(id)removedApplications
 {
   v32 = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
+  applicationsCopy = applications;
+  updatedApplicationsCopy = updatedApplications;
+  removedApplicationsCopy = removedApplications;
   v12 = DBLogForCategory(0);
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v27 = v9;
+    v27 = applicationsCopy;
     v28 = 2112;
-    v29 = v10;
+    v29 = updatedApplicationsCopy;
     v30 = 2112;
-    v31 = v11;
+    v31 = removedApplicationsCopy;
     _os_log_impl(&dword_248146000, v12, OS_LOG_TYPE_DEFAULT, "Application Icons, added: %@, updated: %@, removed: %@", buf, 0x20u);
   }
 
@@ -734,7 +734,7 @@ void __67__DBDashboardHomeViewController__widgetHomeVCLayoutStateDidChange___blo
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v13 = v11;
+  v13 = removedApplicationsCopy;
   v14 = [v13 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v14)
   {
@@ -751,9 +751,9 @@ void __67__DBDashboardHomeViewController__widgetHomeVCLayoutStateDidChange___blo
         }
 
         v18 = *(*(&v21 + 1) + 8 * v17);
-        v19 = [(DBDashboardHomeViewController *)self iconModel];
-        v20 = [v18 bundleIdentifier];
-        [v19 removeIconForIdentifier:v20];
+        iconModel = [(DBDashboardHomeViewController *)self iconModel];
+        bundleIdentifier = [v18 bundleIdentifier];
+        [iconModel removeIconForIdentifier:bundleIdentifier];
 
         ++v17;
       }
@@ -772,7 +772,7 @@ void __67__DBDashboardHomeViewController__widgetHomeVCLayoutStateDidChange___blo
 {
   v3 = objc_opt_new();
   v4 = +[DBApplicationController sharedInstance];
-  v5 = [v4 allApplications];
+  allApplications = [v4 allApplications];
   v23 = MEMORY[0x277D85DD0];
   v24 = 3221225472;
   v25 = __52__DBDashboardHomeViewController_allApplicationIcons__block_invoke;
@@ -781,36 +781,36 @@ void __67__DBDashboardHomeViewController__widgetHomeVCLayoutStateDidChange___blo
   v27 = v6;
   v7 = v3;
   v28 = v7;
-  [v5 enumerateObjectsUsingBlock:&v23];
+  [allApplications enumerateObjectsUsingBlock:&v23];
 
   v8 = objc_alloc_init(_TtC9DashBoard16DBNowPlayingIcon);
   [v7 addObject:{v8, v23, v24, v25, v26}];
-  v9 = [(DBDashboardHomeViewController *)self appLinkManager];
-  v10 = [v9 appLinkIcons];
+  appLinkManager = [(DBDashboardHomeViewController *)self appLinkManager];
+  appLinkIcons = [appLinkManager appLinkIcons];
 
   v11 = DBLogForCategory(0x1CuLL);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
-    [(DBDashboardHomeViewController *)v10 allApplicationIcons];
+    [(DBDashboardHomeViewController *)appLinkIcons allApplicationIcons];
   }
 
-  if (v10)
+  if (appLinkIcons)
   {
-    [v7 addObjectsFromArray:v10];
+    [v7 addObjectsFromArray:appLinkIcons];
   }
 
-  v12 = [(DBDashboardHomeViewController *)self environment];
-  v13 = [v12 environmentConfiguration];
-  v14 = [v13 isOEMIconVisible];
+  environment = [(DBDashboardHomeViewController *)self environment];
+  environmentConfiguration = [environment environmentConfiguration];
+  isOEMIconVisible = [environmentConfiguration isOEMIconVisible];
 
-  if (v14)
+  if (isOEMIconVisible)
   {
     v15 = [_TtC9DashBoard9DBOEMIcon alloc];
-    v16 = [(DBDashboardHomeViewController *)self environment];
-    v17 = [v16 environmentConfiguration];
-    v18 = [v17 session];
-    v19 = [v18 configuration];
-    v20 = [(DBOEMIcon *)v15 initWithSessionConfiguration:v19];
+    environment2 = [(DBDashboardHomeViewController *)self environment];
+    environmentConfiguration2 = [environment2 environmentConfiguration];
+    session = [environmentConfiguration2 session];
+    configuration = [session configuration];
+    v20 = [(DBOEMIcon *)v15 initWithSessionConfiguration:configuration];
 
     [v7 addObject:v20];
   }
@@ -851,13 +851,13 @@ void __52__DBDashboardHomeViewController_allApplicationIcons__block_invoke(uint6
   }
 }
 
-- (void)workspace:(id)a3 stateDidChangeFromState:(id)a4 toState:(id)a5
+- (void)workspace:(id)workspace stateDidChangeFromState:(id)state toState:(id)toState
 {
-  v6 = [a3 state];
-  v7 = [v6 activeBundleIdentifier];
+  state = [workspace state];
+  activeBundleIdentifier = [state activeBundleIdentifier];
 
   v8 = +[DBApplicationController sharedInstance];
-  v9 = [v8 applicationWithBundleIdentifier:v7];
+  v9 = [v8 applicationWithBundleIdentifier:activeBundleIdentifier];
 
   [(DBDashboardHomeViewController *)self setIsApplicationPresented:v9 != 0];
   if ([(DBDashboardHomeViewController *)self isApplicationPresented])
@@ -927,30 +927,30 @@ void __75__DBDashboardHomeViewController_workspace_stateDidChangeFromState_toSta
   [v4 setAlpha:v3];
 }
 
-- (void)getIconStateWithCompletion:(id)a3
+- (void)getIconStateWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(DBDashboardHomeViewController *)self iconModel];
-  v6 = [v5 exportIconLayoutState];
+  completionCopy = completion;
+  iconModel = [(DBDashboardHomeViewController *)self iconModel];
+  exportIconLayoutState = [iconModel exportIconLayoutState];
 
-  v4[2](v4, v6, 0);
+  completionCopy[2](completionCopy, exportIconLayoutState, 0);
 }
 
-- (void)setIconState:(id)a3
+- (void)setIconState:(id)state
 {
   v15[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 hiddenIcons];
-  v6 = [v5 bs_map:&__block_literal_global_306];
+  stateCopy = state;
+  hiddenIcons = [stateCopy hiddenIcons];
+  v6 = [hiddenIcons bs_map:&__block_literal_global_306];
 
-  v7 = [(DBDashboardHomeViewController *)self iconModel];
+  iconModel = [(DBDashboardHomeViewController *)self iconModel];
   v14[0] = *MEMORY[0x277CF9068];
-  v8 = [v4 iconOrder];
+  iconOrder = [stateCopy iconOrder];
 
   v9 = MEMORY[0x277CBEBF8];
-  if (v8)
+  if (iconOrder)
   {
-    v10 = v8;
+    v10 = iconOrder;
   }
 
   else
@@ -967,10 +967,10 @@ void __75__DBDashboardHomeViewController_workspace_stateDidChangeFromState_toSta
 
   v15[1] = v9;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:v14 count:2];
-  [v7 importState:v11];
+  [iconModel importState:v11];
 
-  v12 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v12 postNotificationName:@"CARRefreshAppDockNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"CARRefreshAppDockNotification" object:0];
 
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterPostNotification(DarwinNotifyCenter, @"com.apple.CarPlay.internal.didChangeIconLayout", 0, 0, 1u);
@@ -978,33 +978,33 @@ void __75__DBDashboardHomeViewController_workspace_stateDidChangeFromState_toSta
 
 - (void)resetIconState
 {
-  v2 = [(DBDashboardHomeViewController *)self iconModel];
-  [v2 resetCurrentIconState];
+  iconModel = [(DBDashboardHomeViewController *)self iconModel];
+  [iconModel resetCurrentIconState];
 
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
 
   CFNotificationCenterPostNotification(DarwinNotifyCenter, @"com.apple.CarPlay.internal.didChangeIconLayout", 0, 0, 1u);
 }
 
-- (void)getApplicationIconInformationForBundleID:(id)a3 drawBorder:(BOOL)a4 completion:(id)a5
+- (void)getApplicationIconInformationForBundleID:(id)d drawBorder:(BOOL)border completion:(id)completion
 {
   v41 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
-  v9 = [objc_alloc(MEMORY[0x277CF8FF8]) initWithBundleIdentifier:v7];
+  dCopy = d;
+  completionCopy = completion;
+  v9 = [objc_alloc(MEMORY[0x277CF8FF8]) initWithBundleIdentifier:dCopy];
   v10 = DBLogForCategory(0);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v40 = v7;
+    v40 = dCopy;
     _os_log_impl(&dword_248146000, v10, OS_LOG_TYPE_INFO, "DHVC: Application icon info requested for %@", buf, 0xCu);
   }
 
-  v11 = [(DBDashboardHomeViewController *)self view];
-  v12 = [v11 window];
-  v13 = [v12 windowScene];
-  v14 = [v13 screen];
-  [v14 scale];
+  view = [(DBDashboardHomeViewController *)self view];
+  window = [view window];
+  windowScene = [window windowScene];
+  screen = [windowScene screen];
+  [screen scale];
   [_TtC9DashBoard11DBIconImage iconImageInfoForScale:?];
   v16 = v15;
   v18 = v17;
@@ -1012,57 +1012,57 @@ void __75__DBDashboardHomeViewController_workspace_stateDidChangeFromState_toSta
   v22 = v21;
 
   v23 = *MEMORY[0x277CF8FD8];
-  if ([v7 isEqualToString:*MEMORY[0x277CF8FD8]])
+  if ([dCopy isEqualToString:*MEMORY[0x277CF8FD8]])
   {
-    v24 = [(DBDashboardHomeViewController *)self environment];
-    v25 = [v24 environmentConfiguration];
-    v26 = [v25 session];
-    v27 = [v26 configuration];
+    environment = [(DBDashboardHomeViewController *)self environment];
+    environmentConfiguration = [environment environmentConfiguration];
+    session = [environmentConfiguration session];
+    configuration = [session configuration];
 
-    v28 = [(UIImage *)v27 resolvedOEMIconWithIconImageInfo:v16, v18, v20, v22];
+    v28 = [(UIImage *)configuration resolvedOEMIconWithIconImageInfo:v16, v18, v20, v22];
     v29 = v28;
   }
 
   else
   {
-    v30 = [(DBDashboardHomeViewController *)self iconImageCache];
-    v31 = [(DBDashboardHomeViewController *)self environment];
-    v32 = [v31 environmentConfiguration];
-    v33 = [v32 vehicleID];
-    v27 = [v30 iconImageForBundleIdentifier:v7 inVehicle:v33];
+    iconImageCache = [(DBDashboardHomeViewController *)self iconImageCache];
+    environment2 = [(DBDashboardHomeViewController *)self environment];
+    environmentConfiguration2 = [environment2 environmentConfiguration];
+    vehicleID = [environmentConfiguration2 vehicleID];
+    configuration = [iconImageCache iconImageForBundleIdentifier:dCopy inVehicle:vehicleID];
 
-    if ([v7 isEqualToString:*MEMORY[0x277CF8FE0]] || (objc_msgSend(v7, "isEqualToString:", *MEMORY[0x277CF8FC8]) & 1) != 0 || objc_msgSend(v7, "isEqualToString:", v23))
+    if ([dCopy isEqualToString:*MEMORY[0x277CF8FE0]] || (objc_msgSend(dCopy, "isEqualToString:", *MEMORY[0x277CF8FC8]) & 1) != 0 || objc_msgSend(dCopy, "isEqualToString:", v23))
     {
-      v34 = [MEMORY[0x277CCACA8] stringWithFormat:@"LAUNCHER_NAME-%@", v7];
+      dCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"LAUNCHER_NAME-%@", dCopy];
       v35 = [MEMORY[0x277CCA8D8] bundleForClass:NSClassFromString(&cfstr_Dashboard_4.isa)];
-      v36 = [v35 localizedStringForKey:v34 value:&stru_285A57218 table:@"CarPlayApp"];
+      localizedName = [v35 localizedStringForKey:dCopy value:&stru_285A57218 table:@"CarPlayApp"];
     }
 
     else
     {
-      v34 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:v7 allowPlaceholder:0 error:0];
-      v38 = [v34 db_localizedCarName];
-      v35 = v38;
-      if (v38)
+      dCopy = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:dCopy allowPlaceholder:0 error:0];
+      db_localizedCarName = [dCopy db_localizedCarName];
+      v35 = db_localizedCarName;
+      if (db_localizedCarName)
       {
-        v36 = v38;
-        v35 = v36;
+        localizedName = db_localizedCarName;
+        v35 = localizedName;
       }
 
       else
       {
-        v36 = [v34 localizedName];
+        localizedName = [dCopy localizedName];
       }
     }
 
-    v29 = v36;
+    v29 = localizedName;
 
-    if (v27)
+    if (configuration)
     {
-      v37 = UIImagePNGRepresentation(v27);
+      v37 = UIImagePNGRepresentation(configuration);
       [v9 setIconImageData:v37];
 
-      [(UIImage *)v27 scale];
+      [(UIImage *)configuration scale];
       [v9 setIconImageScale:?];
     }
 
@@ -1070,45 +1070,45 @@ void __75__DBDashboardHomeViewController_workspace_stateDidChangeFromState_toSta
     v28 = v9;
   }
 
-  v8[2](v8, v28, 0);
+  completionCopy[2](completionCopy, v28, 0);
 }
 
-- (void)iconManager:(id)a3 willUseRootFolderControllerConfiguration:(id)a4
+- (void)iconManager:(id)manager willUseRootFolderControllerConfiguration:(id)configuration
 {
-  v14 = a4;
+  configurationCopy = configuration;
   v5 = objc_alloc(MEMORY[0x277D760A8]);
-  v6 = [MEMORY[0x277D75348] whiteColor];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
   v7 = [MEMORY[0x277D75348] colorWithWhite:1.0 alpha:0.3];
-  v8 = [v5 initWithStyle:0 primaryColor:v6 secondaryColor:v7 shadowColor:0];
+  v8 = [v5 initWithStyle:0 primaryColor:whiteColor secondaryColor:v7 shadowColor:0];
 
-  [v14 setLegibilitySettings:v8];
-  v9 = [MEMORY[0x277CBEB18] array];
-  v10 = [(DBDashboardHomeViewController *)self widgetHomeViewController];
+  [configurationCopy setLegibilitySettings:v8];
+  array = [MEMORY[0x277CBEB18] array];
+  widgetHomeViewController = [(DBDashboardHomeViewController *)self widgetHomeViewController];
 
-  if (v10)
+  if (widgetHomeViewController)
   {
-    v11 = [(DBDashboardHomeViewController *)self widgetHomeViewController];
-    [v9 addObject:v11];
+    widgetHomeViewController2 = [(DBDashboardHomeViewController *)self widgetHomeViewController];
+    [array addObject:widgetHomeViewController2];
   }
 
-  v12 = [(DBDashboardHomeViewController *)self todayViewController];
-  [v9 addObject:v12];
+  todayViewController = [(DBDashboardHomeViewController *)self todayViewController];
+  [array addObject:todayViewController];
 
-  v13 = [v9 copy];
-  [v14 setLeadingCustomViewControllers:v13];
+  v13 = [array copy];
+  [configurationCopy setLeadingCustomViewControllers:v13];
 }
 
-- (void)iconManager:(id)a3 launchIconForIconView:(id)a4
+- (void)iconManager:(id)manager launchIconForIconView:(id)view
 {
-  v20 = a4;
-  v5 = [v20 icon];
+  viewCopy = view;
+  icon = [viewCopy icon];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [(DBDashboardHomeViewController *)self environment];
-    v7 = [v6 environmentConfiguration];
-    v8 = [v7 session];
-    [v8 requestCarUI];
+    environment = [(DBDashboardHomeViewController *)self environment];
+    environmentConfiguration = [environment environmentConfiguration];
+    session = [environmentConfiguration session];
+    [session requestCarUI];
   }
 
   else
@@ -1125,7 +1125,7 @@ void __75__DBDashboardHomeViewController_workspace_stateDidChangeFromState_toSta
       if (objc_opt_isKindOfClass())
       {
         objc_opt_class();
-        v9 = v5;
+        v9 = icon;
         if (v9 && (objc_opt_isKindOfClass() & 1) != 0)
         {
           v10 = v9;
@@ -1145,10 +1145,10 @@ void __75__DBDashboardHomeViewController_workspace_stateDidChangeFromState_toSta
         if (objc_opt_isKindOfClass())
         {
           objc_opt_class();
-          v11 = [v20 icon];
-          if (v11 && (objc_opt_isKindOfClass() & 1) != 0)
+          icon2 = [viewCopy icon];
+          if (icon2 && (objc_opt_isKindOfClass() & 1) != 0)
           {
-            v12 = v11;
+            v12 = icon2;
           }
 
           else
@@ -1157,37 +1157,37 @@ void __75__DBDashboardHomeViewController_workspace_stateDidChangeFromState_toSta
           }
 
           v13 = +[DBApplicationController sharedInstance];
-          v14 = [v12 applicationBundleID];
-          v15 = [v13 applicationWithBundleIdentifier:v14];
+          applicationBundleID = [v12 applicationBundleID];
+          v15 = [v13 applicationWithBundleIdentifier:applicationBundleID];
 
           v16 = objc_alloc_init(DBActivationSettings);
           [(DBActivationSettings *)v16 setLaunchSource:3];
           v17 = [DBApplicationLaunchInfo launchInfoForApplication:v15 withActivationSettings:v16];
-          v18 = [(DBDashboardHomeViewController *)self environment];
+          environment2 = [(DBDashboardHomeViewController *)self environment];
           v19 = [DBEvent eventWithType:4 context:v17];
-          [v18 handleEvent:v19];
+          [environment2 handleEvent:v19];
         }
       }
     }
   }
 }
 
-- (BOOL)iconManager:(id)a3 allowsBadgingForIcon:(id)a4
+- (BOOL)iconManager:(id)manager allowsBadgingForIcon:(id)icon
 {
-  v5 = a4;
-  if ([v5 isLeafIcon])
+  iconCopy = icon;
+  if ([iconCopy isLeafIcon])
   {
-    v6 = v5;
+    v6 = iconCopy;
     v7 = +[DBApplicationController sharedInstance];
-    v8 = [v6 leafIdentifier];
-    v9 = [v7 applicationWithBundleIdentifier:v8];
+    leafIdentifier = [v6 leafIdentifier];
+    v9 = [v7 applicationWithBundleIdentifier:leafIdentifier];
 
-    v10 = [v9 appPolicy];
-    if ([v10 badgesAppIcon])
+    appPolicy = [v9 appPolicy];
+    if ([appPolicy badgesAppIcon])
     {
-      v11 = [(DBDashboardHomeViewController *)self iconBadgeController];
-      v12 = [v6 leafIdentifier];
-      v13 = [v11 notificationsEnabledForIdentifier:v12];
+      iconBadgeController = [(DBDashboardHomeViewController *)self iconBadgeController];
+      leafIdentifier2 = [v6 leafIdentifier];
+      v13 = [iconBadgeController notificationsEnabledForIdentifier:leafIdentifier2];
     }
 
     else
@@ -1204,7 +1204,7 @@ void __75__DBDashboardHomeViewController_workspace_stateDidChangeFromState_toSta
   return v13;
 }
 
-- (id)defaultIconStateForIconManager:(id)a3
+- (id)defaultIconStateForIconManager:(id)manager
 {
   v3 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v4 = [v3 URLForResource:@"DefaultIconState_CarDisplay" withExtension:@"plist"];
@@ -1215,67 +1215,67 @@ void __75__DBDashboardHomeViewController_workspace_stateDidChangeFromState_toSta
 
 - (id)folderView
 {
-  v2 = [(DBDashboardHomeViewController *)self folderController];
-  v3 = [v2 contentView];
+  folderController = [(DBDashboardHomeViewController *)self folderController];
+  contentView = [folderController contentView];
 
-  return v3;
+  return contentView;
 }
 
-- (void)rootFolderPageStateProvider:(id)a3 willBeginTransitionToState:(int64_t)a4 animated:(BOOL)a5 interactive:(BOOL)a6
+- (void)rootFolderPageStateProvider:(id)provider willBeginTransitionToState:(int64_t)state animated:(BOOL)animated interactive:(BOOL)interactive
 {
-  v7 = a3;
-  v8 = [(DBDashboardHomeViewController *)self folderView];
+  providerCopy = provider;
+  folderView = [(DBDashboardHomeViewController *)self folderView];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v10 = [(DBDashboardHomeViewController *)self folderView];
-    [v10 setPageControlHidden:0 animated:1];
+    folderView2 = [(DBDashboardHomeViewController *)self folderView];
+    [folderView2 setPageControlHidden:0 animated:1];
   }
 
-  v11 = [(DBDashboardHomeViewController *)self folderController];
-  v12 = [v11 minimumPageIndex];
-  v13 = [v7 destinationPageOffset];
+  folderController = [(DBDashboardHomeViewController *)self folderController];
+  minimumPageIndex = [folderController minimumPageIndex];
+  destinationPageOffset = [providerCopy destinationPageOffset];
 
-  v14 = v13 + v12;
-  v15 = [(DBDashboardHomeViewController *)self _widgetsPageIndex];
-  v16 = [(DBDashboardHomeViewController *)self _todayPageIndex];
-  if (v15 != 0x7FFFFFFFFFFFFFFFLL && v14 == v15)
+  v14 = destinationPageOffset + minimumPageIndex;
+  _widgetsPageIndex = [(DBDashboardHomeViewController *)self _widgetsPageIndex];
+  _todayPageIndex = [(DBDashboardHomeViewController *)self _todayPageIndex];
+  if (_widgetsPageIndex != 0x7FFFFFFFFFFFFFFFLL && v14 == _widgetsPageIndex)
   {
-    v17 = [(DBDashboardHomeViewController *)self widgetHomeViewController];
-    [v17 setForeground:1];
+    widgetHomeViewController = [(DBDashboardHomeViewController *)self widgetHomeViewController];
+    [widgetHomeViewController setForeground:1];
   }
 
-  if (v16 != 0x7FFFFFFFFFFFFFFFLL && v14 == v16)
+  if (_todayPageIndex != 0x7FFFFFFFFFFFFFFFLL && v14 == _todayPageIndex)
   {
-    v18 = [(DBDashboardHomeViewController *)self todayViewController];
-    [v18 setForeground:1];
+    todayViewController = [(DBDashboardHomeViewController *)self todayViewController];
+    [todayViewController setForeground:1];
   }
 }
 
-- (void)rootFolderPageStateProvider:(id)a3 didContinueTransitionToState:(int64_t)a4 progress:(double)a5
+- (void)rootFolderPageStateProvider:(id)provider didContinueTransitionToState:(int64_t)state progress:(double)progress
 {
-  v30 = a3;
-  v8 = [(DBDashboardHomeViewController *)self folderController];
-  v9 = [v8 minimumPageIndex];
-  v10 = [v30 destinationPageOffset];
+  providerCopy = provider;
+  folderController = [(DBDashboardHomeViewController *)self folderController];
+  minimumPageIndex = [folderController minimumPageIndex];
+  destinationPageOffset = [providerCopy destinationPageOffset];
 
-  v11 = [(DBDashboardHomeViewController *)self _widgetsPageIndex];
-  if (v11 != 0x7FFFFFFFFFFFFFFFLL)
+  _widgetsPageIndex = [(DBDashboardHomeViewController *)self _widgetsPageIndex];
+  if (_widgetsPageIndex != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v12 = v11;
-    if (v10 + v9 == v11)
+    v12 = _widgetsPageIndex;
+    if (destinationPageOffset + minimumPageIndex == _widgetsPageIndex)
     {
-      v13 = 0.0;
-      if (a5 >= 0.0)
+      progressCopy = 0.0;
+      if (progress >= 0.0)
       {
-        v13 = a5;
+        progressCopy = progress;
       }
 
-      if (v13 <= 1.0)
+      if (progressCopy <= 1.0)
       {
-        v14 = v13;
+        v14 = progressCopy;
       }
 
       else
@@ -1286,14 +1286,14 @@ void __75__DBDashboardHomeViewController_workspace_stateDidChangeFromState_toSta
 
     else
     {
-      v15 = [(DBDashboardHomeViewController *)self folderController];
-      v16 = [v15 currentPageIndex];
+      folderController2 = [(DBDashboardHomeViewController *)self folderController];
+      currentPageIndex = [folderController2 currentPageIndex];
 
-      if (v16 != v12)
+      if (currentPageIndex != v12)
       {
 LABEL_15:
-        v21 = [(DBDashboardHomeViewController *)self widgetDimmingView];
-        [v21 alpha];
+        widgetDimmingView = [(DBDashboardHomeViewController *)self widgetDimmingView];
+        [widgetDimmingView alpha];
         v23 = v22;
         [(DBDashboardHomeViewController *)self _maxWidgetDimmingViewAlpha];
         [(DBDashboardHomeViewController *)self _setStatusBarOverrideActive:v23 > v24 * 0.5];
@@ -1301,36 +1301,36 @@ LABEL_15:
         goto LABEL_16;
       }
 
-      v17 = 0.0;
-      if (a5 >= 0.0)
+      progressCopy2 = 0.0;
+      if (progress >= 0.0)
       {
-        v17 = a5;
+        progressCopy2 = progress;
       }
 
-      if (v17 > 1.0)
+      if (progressCopy2 > 1.0)
       {
-        v17 = 1.0;
+        progressCopy2 = 1.0;
       }
 
-      v14 = 1.0 - v17;
+      v14 = 1.0 - progressCopy2;
     }
 
     [(DBDashboardHomeViewController *)self _maxWidgetDimmingViewAlpha];
     v19 = v14 * v18;
-    v20 = [(DBDashboardHomeViewController *)self widgetDimmingView];
-    [v20 setAlpha:v19];
+    widgetDimmingView2 = [(DBDashboardHomeViewController *)self widgetDimmingView];
+    [widgetDimmingView2 setAlpha:v19];
 
     goto LABEL_15;
   }
 
 LABEL_16:
-  if (a4 == 2)
+  if (state == 2)
   {
-    v25 = [v30 pageState];
+    pageState = [providerCopy pageState];
     v26 = 3.0;
-    if (v25 != 2)
+    if (pageState != 2)
     {
-      v26 = a5 * 3.0;
+      v26 = progress * 3.0;
     }
 
     if (v26 < 0.0)
@@ -1351,8 +1351,8 @@ LABEL_16:
 
   else
   {
-    v28 = a5 * 3.0;
-    if (a5 * 3.0 < 0.0)
+    v28 = progress * 3.0;
+    if (progress * 3.0 < 0.0)
     {
       v28 = 0.0;
     }
@@ -1365,34 +1365,34 @@ LABEL_16:
     v27 = 1.0 - v28;
   }
 
-  v29 = [(DBDashboardHomeViewController *)self folderView];
-  [v29 setPageControlPlatterAlpha:v27];
+  folderView = [(DBDashboardHomeViewController *)self folderView];
+  [folderView setPageControlPlatterAlpha:v27];
 }
 
-- (void)rootFolderPageStateProvider:(id)a3 didEndTransitionFromState:(int64_t)a4 toState:(int64_t)a5 successfully:(BOOL)a6
+- (void)rootFolderPageStateProvider:(id)provider didEndTransitionFromState:(int64_t)state toState:(int64_t)toState successfully:(BOOL)successfully
 {
-  v6 = [(DBDashboardHomeViewController *)self folderView:a3];
+  v6 = [(DBDashboardHomeViewController *)self folderView:provider];
   [v6 restartPageControlTimerIfNecessary];
 }
 
 - (CRSWidgetLayoutVehicleDataProviding)widgetLayoutDataProvider
 {
-  v2 = [(DBDashboardHomeViewController *)self widgetHomeViewController];
-  v3 = [v2 widgetLayoutDataProvider];
+  widgetHomeViewController = [(DBDashboardHomeViewController *)self widgetHomeViewController];
+  widgetLayoutDataProvider = [widgetHomeViewController widgetLayoutDataProvider];
 
-  return v3;
+  return widgetLayoutDataProvider;
 }
 
-- (id)visibleIconViewForIdentifier:(id)a3
+- (id)visibleIconViewForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(DBDashboardHomeViewController *)self iconModel];
-  v6 = [v5 leafIconForIdentifier:v4];
+  identifierCopy = identifier;
+  iconModel = [(DBDashboardHomeViewController *)self iconModel];
+  v6 = [iconModel leafIconForIdentifier:identifierCopy];
 
-  v7 = [(DBDashboardHomeViewController *)self folderController];
-  if ([v7 isDisplayingIcon:v6])
+  folderController = [(DBDashboardHomeViewController *)self folderController];
+  if ([folderController isDisplayingIcon:v6])
   {
-    v8 = [v7 iconViewForIcon:v6 location:*MEMORY[0x277D666D0]];
+    v8 = [folderController iconViewForIcon:v6 location:*MEMORY[0x277D666D0]];
   }
 
   else
@@ -1403,52 +1403,52 @@ LABEL_16:
   return v8;
 }
 
-- (void)addPageChangeObserver:(id)a3
+- (void)addPageChangeObserver:(id)observer
 {
-  v5 = a3;
-  v4 = [(DBDashboardHomeViewController *)self pageObservers];
-  [v4 addObserver:v5];
+  observerCopy = observer;
+  pageObservers = [(DBDashboardHomeViewController *)self pageObservers];
+  [pageObservers addObserver:observerCopy];
 
-  [v5 homeViewController:self didChangeToPageType:{-[DBDashboardHomeViewController _pageType](self, "_pageType")}];
+  [observerCopy homeViewController:self didChangeToPageType:{-[DBDashboardHomeViewController _pageType](self, "_pageType")}];
 }
 
-- (void)removePageChangeObserver:(id)a3
+- (void)removePageChangeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(DBDashboardHomeViewController *)self pageObservers];
-  [v5 unregisterObserver:v4];
+  observerCopy = observer;
+  pageObservers = [(DBDashboardHomeViewController *)self pageObservers];
+  [pageObservers unregisterObserver:observerCopy];
 }
 
-- (void)setForeground:(BOOL)a3
+- (void)setForeground:(BOOL)foreground
 {
-  v3 = a3;
+  foregroundCopy = foreground;
   if ([(DBDashboardHomeViewController *)self _onTodaysPage])
   {
-    v5 = [(DBDashboardHomeViewController *)self todayViewController];
-    [v5 setForeground:v3];
+    todayViewController = [(DBDashboardHomeViewController *)self todayViewController];
+    [todayViewController setForeground:foregroundCopy];
   }
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  v3 = a3;
-  v4 = [(DBDashboardHomeViewController *)self todayViewController];
-  [v4 setActive:v3];
+  activeCopy = active;
+  todayViewController = [(DBDashboardHomeViewController *)self todayViewController];
+  [todayViewController setActive:activeCopy];
 }
 
-- (void)setAccessibilityElementsActive:(BOOL)a3
+- (void)setAccessibilityElementsActive:(BOOL)active
 {
-  v3 = a3;
-  v4 = [(DBDashboardHomeViewController *)self view];
-  [v4 setAccessibilityElementsHidden:!v3];
+  activeCopy = active;
+  view = [(DBDashboardHomeViewController *)self view];
+  [view setAccessibilityElementsHidden:!activeCopy];
 }
 
-- (BOOL)isIconVisibleForIdentifier:(id)a3
+- (BOOL)isIconVisibleForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   objc_opt_class();
-  v5 = [(DBDashboardHomeViewController *)self iconModel];
-  v6 = [v5 leafIconForIdentifier:v4];
+  iconModel = [(DBDashboardHomeViewController *)self iconModel];
+  v6 = [iconModel leafIconForIdentifier:identifierCopy];
 
   v7 = v6;
   if (v7 && (objc_opt_isKindOfClass() & 1) != 0)
@@ -1474,13 +1474,13 @@ LABEL_16:
   return v9;
 }
 
-- (id)iconForIdentifier:(id)a3
+- (id)iconForIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
-    v4 = a3;
-    v5 = [(DBDashboardHomeViewController *)self iconModel];
-    v6 = [v5 leafIconForIdentifier:v4];
+    identifierCopy = identifier;
+    iconModel = [(DBDashboardHomeViewController *)self iconModel];
+    v6 = [iconModel leafIconForIdentifier:identifierCopy];
   }
 
   else
@@ -1491,48 +1491,48 @@ LABEL_16:
   return v6;
 }
 
-- (BOOL)iconCanDisplayBadge:(id)a3
+- (BOOL)iconCanDisplayBadge:(id)badge
 {
-  v4 = a3;
-  v5 = [(DBDashboardHomeViewController *)self iconManager];
-  LOBYTE(self) = [(DBDashboardHomeViewController *)self iconManager:v5 allowsBadgingForIcon:v4];
+  badgeCopy = badge;
+  iconManager = [(DBDashboardHomeViewController *)self iconManager];
+  LOBYTE(self) = [(DBDashboardHomeViewController *)self iconManager:iconManager allowsBadgingForIcon:badgeCopy];
 
   return self;
 }
 
-- (BOOL)isIconVisible:(id)a3
+- (BOOL)isIconVisible:(id)visible
 {
-  v4 = a3;
-  v5 = [(DBDashboardHomeViewController *)self iconModel];
-  v6 = [v5 isIconVisible:v4];
+  visibleCopy = visible;
+  iconModel = [(DBDashboardHomeViewController *)self iconModel];
+  v6 = [iconModel isIconVisible:visibleCopy];
 
   return v6;
 }
 
 - (void)_cacheIconImagesForCurrentTraitCollection
 {
-  v3 = [(DBDashboardHomeViewController *)self iconManager];
+  iconManager = [(DBDashboardHomeViewController *)self iconManager];
 
-  if (v3)
+  if (iconManager)
   {
-    v5 = [(DBDashboardHomeViewController *)self iconManager];
-    v4 = [(DBDashboardHomeViewController *)self traitCollection];
-    [v5 precacheImagesForRootIconsWithTraitCollection:v4];
+    iconManager2 = [(DBDashboardHomeViewController *)self iconManager];
+    traitCollection = [(DBDashboardHomeViewController *)self traitCollection];
+    [iconManager2 precacheImagesForRootIconsWithTraitCollection:traitCollection];
   }
 }
 
-- (void)_setStatusBarOverrideActive:(BOOL)a3
+- (void)_setStatusBarOverrideActive:(BOOL)active
 {
-  v3 = a3;
+  activeCopy = active;
   v20 = *MEMORY[0x277D85DE8];
-  v5 = [(DBDashboardHomeViewController *)self statusBarStyleAssertion];
-  v6 = [v5 isValid];
+  statusBarStyleAssertion = [(DBDashboardHomeViewController *)self statusBarStyleAssertion];
+  isValid = [statusBarStyleAssertion isValid];
 
   v7 = DBLogForCategory(0);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = MEMORY[0x277CBEC28];
-    if (v3)
+    if (activeCopy)
     {
       v9 = MEMORY[0x277CBEC38];
     }
@@ -1542,7 +1542,7 @@ LABEL_16:
       v9 = MEMORY[0x277CBEC28];
     }
 
-    if (v6)
+    if (isValid)
     {
       v8 = MEMORY[0x277CBEC38];
     }
@@ -1554,33 +1554,33 @@ LABEL_16:
     _os_log_impl(&dword_248146000, v7, OS_LOG_TYPE_DEFAULT, "Setting status bar override: %{public}@ (previously: %{public}@)", &v16, 0x16u);
   }
 
-  if (v6 != v3)
+  if (isValid != activeCopy)
   {
     v10 = [MEMORY[0x277CD9EF8] functionWithName:*MEMORY[0x277CDA7B8]];
     v11 = [MEMORY[0x277CF0B70] settingsWithDuration:v10 timingFunction:0.2];
-    v12 = [(DBDashboardHomeViewController *)self statusBarStyleAssertion];
-    v13 = v12;
-    if (v3)
+    statusBarStyleAssertion2 = [(DBDashboardHomeViewController *)self statusBarStyleAssertion];
+    v13 = statusBarStyleAssertion2;
+    if (activeCopy)
     {
-      [v12 acquireWithAnimationSettings:v11];
+      [statusBarStyleAssertion2 acquireWithAnimationSettings:v11];
       v14 = 2;
     }
 
     else
     {
-      [v12 relinquishWithAnimationSettings:v11];
+      [statusBarStyleAssertion2 relinquishWithAnimationSettings:v11];
       v14 = 0;
     }
 
-    v15 = [(DBDashboardHomeViewController *)self folderController];
-    [v15 setOverrideUserInterfaceStyle:v14];
+    folderController = [(DBDashboardHomeViewController *)self folderController];
+    [folderController setOverrideUserInterfaceStyle:v14];
   }
 }
 
 - (void)updateDefaultPageIndex
 {
-  v3 = [(DBDashboardHomeViewController *)self folderController];
-  [v3 setDefaultPageIndex:{-[DBDashboardHomeViewController defaultStartPageIndex](self, "defaultStartPageIndex")}];
+  folderController = [(DBDashboardHomeViewController *)self folderController];
+  [folderController setDefaultPageIndex:{-[DBDashboardHomeViewController defaultStartPageIndex](self, "defaultStartPageIndex")}];
 }
 
 - (int64_t)defaultStartPageIndex
@@ -1588,10 +1588,10 @@ LABEL_16:
   result = [(DBDashboardHomeViewController *)self _todayPageIndex];
   if (result == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v4 = [(DBDashboardHomeViewController *)self folderController];
-    v5 = [v4 minimumPageIndex];
+    folderController = [(DBDashboardHomeViewController *)self folderController];
+    minimumPageIndex = [folderController minimumPageIndex];
 
-    return v5;
+    return minimumPageIndex;
   }
 
   return result;
@@ -1602,11 +1602,11 @@ LABEL_16:
   v3 = 0.0;
   if (![(DBDashboardHomeViewController *)self isApplicationPresented])
   {
-    v4 = [(DBDashboardHomeViewController *)self traitCollection];
-    v3 = dbl_24839BE90[[v4 userInterfaceStyle] == 2];
+    traitCollection = [(DBDashboardHomeViewController *)self traitCollection];
+    v3 = dbl_24839BE90[[traitCollection userInterfaceStyle] == 2];
 
-    v5 = [(DBDashboardHomeViewController *)self widgetHomeViewController];
-    if (![v5 showWallpaper])
+    widgetHomeViewController = [(DBDashboardHomeViewController *)self widgetHomeViewController];
+    if (![widgetHomeViewController showWallpaper])
     {
       v3 = 1.0;
     }
@@ -1622,41 +1622,41 @@ LABEL_16:
     return 1;
   }
 
-  v3 = [(DBDashboardHomeViewController *)self layoutEngine];
-  v4 = [v3 hasEmbeddedSecondaryContentArea];
+  layoutEngine = [(DBDashboardHomeViewController *)self layoutEngine];
+  hasEmbeddedSecondaryContentArea = [layoutEngine hasEmbeddedSecondaryContentArea];
 
-  return v4;
+  return hasEmbeddedSecondaryContentArea;
 }
 
-- (void)setLeadingCustomViewPageHidden:(BOOL)a3 atIndex:(int64_t)a4
+- (void)setLeadingCustomViewPageHidden:(BOOL)hidden atIndex:(int64_t)index
 {
-  v5 = a3;
-  v7 = [(DBDashboardHomeViewController *)self folderController];
-  [v7 setLeadingCustomViewPageHidden:v5 atIndex:a4];
+  hiddenCopy = hidden;
+  folderController = [(DBDashboardHomeViewController *)self folderController];
+  [folderController setLeadingCustomViewPageHidden:hiddenCopy atIndex:index];
 
   [(DBDashboardHomeViewController *)self updateDefaultPageIndex];
 }
 
 - (void)currentPageIndexDidChange
 {
-  v3 = [(DBDashboardHomeViewController *)self folderController];
-  v4 = [v3 currentPageIndex];
+  folderController = [(DBDashboardHomeViewController *)self folderController];
+  currentPageIndex = [folderController currentPageIndex];
 
-  v5 = [(DBDashboardHomeViewController *)self folderController];
-  v6 = [v5 iconListViewIndexForPageIndex:v4];
+  folderController2 = [(DBDashboardHomeViewController *)self folderController];
+  v6 = [folderController2 iconListViewIndexForPageIndex:currentPageIndex];
 
   v7 = [MEMORY[0x277D75518] focusSystemForEnvironment:self];
-  v29 = [v7 focusedItem];
+  focusedItem = [v7 focusedItem];
 
-  [(DBDashboardHomeViewController *)self widgetDimmingViewAlphaForPageIndex:v4];
+  [(DBDashboardHomeViewController *)self widgetDimmingViewAlphaForPageIndex:currentPageIndex];
   v9 = v8;
-  v10 = [(DBDashboardHomeViewController *)self widgetDimmingView];
-  [v10 setAlpha:v9];
+  widgetDimmingView = [(DBDashboardHomeViewController *)self widgetDimmingView];
+  [widgetDimmingView setAlpha:v9];
 
-  [(DBDashboardHomeViewController *)self pageControlPlatterAlphaForPageIndex:v4];
+  [(DBDashboardHomeViewController *)self pageControlPlatterAlphaForPageIndex:currentPageIndex];
   v12 = v11;
-  v13 = [(DBDashboardHomeViewController *)self folderView];
-  [v13 setPageControlPlatterAlpha:v12];
+  folderView = [(DBDashboardHomeViewController *)self folderView];
+  [folderView setPageControlPlatterAlpha:v12];
 
   if ([(DBDashboardHomeViewController *)self _onWidgetsPage])
   {
@@ -1671,8 +1671,8 @@ LABEL_16:
   [(DBDashboardHomeViewController *)self _setStatusBarOverrideActive:v14];
   if (v6 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v19 = [(DBDashboardHomeViewController *)self folderController];
-    v15 = [v19 iconListViewAtIndex:v6];
+    folderController3 = [(DBDashboardHomeViewController *)self folderController];
+    v15 = [folderController3 iconListViewAtIndex:v6];
 
     if (!self->_lastFocusedIndex)
     {
@@ -1682,7 +1682,7 @@ LABEL_16:
     }
 
     objc_opt_class();
-    v22 = v29;
+    v22 = focusedItem;
     if (v22 && (objc_opt_isKindOfClass() & 1) != 0)
     {
       if ([v15 containsView:v22])
@@ -1708,7 +1708,7 @@ LABEL_20:
   }
 
   objc_opt_class();
-  v15 = v29;
+  v15 = focusedItem;
   if (!v15 || (objc_opt_isKindOfClass() & 1) == 0)
   {
 
@@ -1720,9 +1720,9 @@ LABEL_17:
 
   if ([(DBDashboardHomeViewController *)self _onTodaysPage])
   {
-    v16 = [(DBDashboardHomeViewController *)self todayViewController];
-    v17 = [v16 view];
-    v18 = [v17 containsView:v15];
+    todayViewController = [(DBDashboardHomeViewController *)self todayViewController];
+    view = [todayViewController view];
+    v18 = [view containsView:v15];
 
     if ((v18 & 1) == 0)
     {
@@ -1732,47 +1732,47 @@ LABEL_17:
 
 LABEL_21:
 
-  v25 = [(DBDashboardHomeViewController *)self pageObservers];
-  [v25 homeViewController:self didChangeToPageType:{-[DBDashboardHomeViewController _pageType](self, "_pageType")}];
+  pageObservers = [(DBDashboardHomeViewController *)self pageObservers];
+  [pageObservers homeViewController:self didChangeToPageType:{-[DBDashboardHomeViewController _pageType](self, "_pageType")}];
 
-  v26 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v26 setInteger:-[DBDashboardHomeViewController _pageType](self forKey:{"_pageType"), @"CARStartPageType"}];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults setInteger:-[DBDashboardHomeViewController _pageType](self forKey:{"_pageType"), @"CARStartPageType"}];
 
-  v27 = [(DBDashboardHomeViewController *)self todayViewController];
-  [v27 setForeground:{-[DBDashboardHomeViewController _onTodaysPage](self, "_onTodaysPage")}];
+  todayViewController2 = [(DBDashboardHomeViewController *)self todayViewController];
+  [todayViewController2 setForeground:{-[DBDashboardHomeViewController _onTodaysPage](self, "_onTodaysPage")}];
 
-  v28 = [(DBDashboardHomeViewController *)self widgetHomeViewController];
-  [v28 setForeground:{-[DBDashboardHomeViewController _onWidgetsPage](self, "_onWidgetsPage")}];
+  widgetHomeViewController = [(DBDashboardHomeViewController *)self widgetHomeViewController];
+  [widgetHomeViewController setForeground:{-[DBDashboardHomeViewController _onWidgetsPage](self, "_onWidgetsPage")}];
 }
 
-- (void)setCurrentPageType:(unint64_t)a3 animated:(BOOL)a4
+- (void)setCurrentPageType:(unint64_t)type animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = [(DBDashboardHomeViewController *)self _pageIndexForPageType:a3];
-  if (v6 == 0x7FFFFFFFFFFFFFFFLL)
+  animatedCopy = animated;
+  defaultStartPageIndex = [(DBDashboardHomeViewController *)self _pageIndexForPageType:type];
+  if (defaultStartPageIndex == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v6 = [(DBDashboardHomeViewController *)self defaultStartPageIndex];
+    defaultStartPageIndex = [(DBDashboardHomeViewController *)self defaultStartPageIndex];
   }
 
-  [(DBDashboardHomeViewController *)self setCurrentPageIndex:v6 animated:v4];
+  [(DBDashboardHomeViewController *)self setCurrentPageIndex:defaultStartPageIndex animated:animatedCopy];
 }
 
-- (void)setCurrentPageIndex:(unint64_t)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)setCurrentPageIndex:(unint64_t)index animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
-  v8 = a5;
+  animatedCopy = animated;
+  completionCopy = completion;
   IsReduceMotionEnabled = UIAccessibilityIsReduceMotionEnabled();
-  v10 = [(DBDashboardHomeViewController *)self folderController];
-  v11 = v10;
-  if (IsReduceMotionEnabled || !v5)
+  folderController = [(DBDashboardHomeViewController *)self folderController];
+  v11 = folderController;
+  if (IsReduceMotionEnabled || !animatedCopy)
   {
-    [v10 setCurrentPageIndex:a3];
+    [folderController setCurrentPageIndex:index];
 
     [(DBDashboardHomeViewController *)self setNeedsFocusUpdate];
     [(DBDashboardHomeViewController *)self currentPageIndexDidChange];
-    if (v8)
+    if (completionCopy)
     {
-      v8[2](v8);
+      completionCopy[2](completionCopy);
     }
   }
 
@@ -1783,8 +1783,8 @@ LABEL_21:
     v12[2] = __73__DBDashboardHomeViewController_setCurrentPageIndex_animated_completion___block_invoke;
     v12[3] = &unk_278F02D40;
     v12[4] = self;
-    v13 = v8;
-    [v11 setCurrentPageIndex:a3 animated:1 completion:v12];
+    v13 = completionCopy;
+    [v11 setCurrentPageIndex:index animated:1 completion:v12];
   }
 }
 
@@ -1802,9 +1802,9 @@ uint64_t __73__DBDashboardHomeViewController_setCurrentPageIndex_animated_comple
   return result;
 }
 
-- (double)widgetDimmingViewAlphaForPageIndex:(unint64_t)a3
+- (double)widgetDimmingViewAlphaForPageIndex:(unint64_t)index
 {
-  if ([(DBDashboardHomeViewController *)self _widgetsPageIndex]!= a3)
+  if ([(DBDashboardHomeViewController *)self _widgetsPageIndex]!= index)
   {
     return 0.0;
   }
@@ -1813,15 +1813,15 @@ uint64_t __73__DBDashboardHomeViewController_setCurrentPageIndex_animated_comple
   return result;
 }
 
-- (double)pageControlPlatterAlphaForPageIndex:(unint64_t)a3
+- (double)pageControlPlatterAlphaForPageIndex:(unint64_t)index
 {
-  v5 = [(DBDashboardHomeViewController *)self _todayPageIndex];
+  _todayPageIndex = [(DBDashboardHomeViewController *)self _todayPageIndex];
   result = 1.0;
-  if (v5 != a3)
+  if (_todayPageIndex != index)
   {
-    v7 = [(DBDashboardHomeViewController *)self _widgetsPageIndex];
+    _widgetsPageIndex = [(DBDashboardHomeViewController *)self _widgetsPageIndex];
     result = 0.0;
-    if (v7 == a3)
+    if (_widgetsPageIndex == index)
     {
       return 1.0;
     }
@@ -1832,66 +1832,66 @@ uint64_t __73__DBDashboardHomeViewController_setCurrentPageIndex_animated_comple
 
 - (void)_persistCachedIconImages
 {
-  v3 = [(DBDashboardHomeViewController *)self environment];
-  v4 = [v3 environmentConfiguration];
-  v22 = [v4 vehicleID];
+  environment = [(DBDashboardHomeViewController *)self environment];
+  environmentConfiguration = [environment environmentConfiguration];
+  vehicleID = [environmentConfiguration vehicleID];
 
-  v5 = [(DBDashboardHomeViewController *)self environment];
-  v6 = [v5 environmentConfiguration];
-  [v6 pointScale];
+  environment2 = [(DBDashboardHomeViewController *)self environment];
+  environmentConfiguration2 = [environment2 environmentConfiguration];
+  [environmentConfiguration2 pointScale];
   [_TtC9DashBoard11DBIconImage iconImageInfoForScale:?];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
 
-  v15 = [(DBDashboardHomeViewController *)self environment];
-  v16 = [v15 environmentConfiguration];
-  v17 = [v16 session];
-  v18 = [v17 configuration];
+  environment3 = [(DBDashboardHomeViewController *)self environment];
+  environmentConfiguration3 = [environment3 environmentConfiguration];
+  session = [environmentConfiguration3 session];
+  configuration = [session configuration];
 
-  v19 = [v18 resolvedOEMIconWithIconImageInfo:{v8, v10, v12, v14}];
-  v20 = [v19 iconImage];
-  v21 = [(DBDashboardHomeViewController *)self iconImageCache];
-  [v21 setIconImage:v20 forBundleIdentifier:*MEMORY[0x277CF8FD8] inVehicle:v22];
+  v19 = [configuration resolvedOEMIconWithIconImageInfo:{v8, v10, v12, v14}];
+  iconImage = [v19 iconImage];
+  iconImageCache = [(DBDashboardHomeViewController *)self iconImageCache];
+  [iconImageCache setIconImage:iconImage forBundleIdentifier:*MEMORY[0x277CF8FD8] inVehicle:vehicleID];
 }
 
 - (void)_launchNowPlaying
 {
-  v3 = [(DBDashboardHomeViewController *)self nowPlayingObserver];
-  v4 = [v3 nowPlayingLaunchInfo];
+  nowPlayingObserver = [(DBDashboardHomeViewController *)self nowPlayingObserver];
+  nowPlayingLaunchInfo = [nowPlayingObserver nowPlayingLaunchInfo];
 
-  if (v4)
+  if (nowPlayingLaunchInfo)
   {
-    v5 = [(DBDashboardHomeViewController *)self environment];
-    v6 = [DBEvent eventWithType:4 context:v4];
-    [v5 handleEvent:v6];
+    environment = [(DBDashboardHomeViewController *)self environment];
+    v6 = [DBEvent eventWithType:4 context:nowPlayingLaunchInfo];
+    [environment handleEvent:v6];
   }
 
   else
   {
-    v5 = DBLogForCategory(0);
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+    environment = DBLogForCategory(0);
+    if (os_log_type_enabled(environment, OS_LOG_TYPE_DEFAULT))
     {
       *v7 = 0;
-      _os_log_impl(&dword_248146000, v5, OS_LOG_TYPE_DEFAULT, "No available now playing app to launch from Now Playing.", v7, 2u);
+      _os_log_impl(&dword_248146000, environment, OS_LOG_TYPE_DEFAULT, "No available now playing app to launch from Now Playing.", v7, 2u);
     }
   }
 }
 
-- (void)_launchAppLink:(id)a3
+- (void)_launchAppLink:(id)link
 {
-  v4 = a3;
-  v5 = [(DBDashboardHomeViewController *)self iconModel];
-  v6 = [v4 leafIdentifier];
+  linkCopy = link;
+  iconModel = [(DBDashboardHomeViewController *)self iconModel];
+  leafIdentifier = [linkCopy leafIdentifier];
 
-  v7 = [v5 leafIconForIdentifier:v6];
+  v7 = [iconModel leafIconForIdentifier:leafIdentifier];
 
   objc_opt_class();
-  v8 = [v7 activeDataSource];
-  if (v8 && (objc_opt_isKindOfClass() & 1) != 0)
+  activeDataSource = [v7 activeDataSource];
+  if (activeDataSource && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v9 = v8;
+    v9 = activeDataSource;
   }
 
   else
@@ -1899,33 +1899,33 @@ uint64_t __73__DBDashboardHomeViewController_setCurrentPageIndex_animated_comple
     v9 = 0;
   }
 
-  v10 = [v9 appLink];
-  v11 = [(DBDashboardHomeViewController *)self appLinkManager];
-  v12 = [v11 launchInfoForAppLink:v10];
+  appLink = [v9 appLink];
+  appLinkManager = [(DBDashboardHomeViewController *)self appLinkManager];
+  v12 = [appLinkManager launchInfoForAppLink:appLink];
 
   if (v12)
   {
-    v13 = [(DBDashboardHomeViewController *)self environment];
+    environment = [(DBDashboardHomeViewController *)self environment];
     v14 = [DBEvent eventWithType:4 context:v12];
-    [v13 handleEvent:v14];
+    [environment handleEvent:v14];
   }
 
   else
   {
-    v15 = [v10 contentURLAction];
+    contentURLAction = [appLink contentURLAction];
 
-    if (v15)
+    if (contentURLAction)
     {
-      v13 = [(DBDashboardHomeViewController *)self appLinkManager];
-      [v13 presentAppLink:v10];
+      environment = [(DBDashboardHomeViewController *)self appLinkManager];
+      [environment presentAppLink:appLink];
     }
 
     else
     {
-      v13 = DBLogForCategory(0x1CuLL);
-      if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+      environment = DBLogForCategory(0x1CuLL);
+      if (os_log_type_enabled(environment, OS_LOG_TYPE_ERROR))
       {
-        [(DBDashboardHomeViewController *)v10 _launchAppLink:v13];
+        [(DBDashboardHomeViewController *)appLink _launchAppLink:environment];
       }
     }
   }
@@ -1933,11 +1933,11 @@ uint64_t __73__DBDashboardHomeViewController_setCurrentPageIndex_animated_comple
 
 - (void)_handleAppLibraryRefresh
 {
-  v3 = [(DBDashboardHomeViewController *)self iconModel];
-  [v3 reloadIcons];
+  iconModel = [(DBDashboardHomeViewController *)self iconModel];
+  [iconModel reloadIcons];
 
-  v4 = [(DBDashboardHomeViewController *)self iconManager];
-  [v4 relayout];
+  iconManager = [(DBDashboardHomeViewController *)self iconManager];
+  [iconManager relayout];
 
   [(DBDashboardHomeViewController *)self setLeadingCustomViewPageHidden:[(DBDashboardHomeViewController *)self _shouldHideTodayView] atIndex:[(DBDashboardHomeViewController *)self _todayLeadingPageIndex]];
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
@@ -1945,27 +1945,27 @@ uint64_t __73__DBDashboardHomeViewController_setCurrentPageIndex_animated_comple
   CFNotificationCenterPostNotification(DarwinNotifyCenter, @"com.apple.CarPlay.internal.refreshApps", 0, 0, 1u);
 }
 
-- (id)_indexPathForFallbackIcon:(BOOL)a3
+- (id)_indexPathForFallbackIcon:(BOOL)icon
 {
-  v3 = a3;
-  v4 = [(DBDashboardHomeViewController *)self folderController];
-  v5 = [v4 currentIconListView];
-  v6 = v5;
-  if (v5)
+  iconCopy = icon;
+  folderController = [(DBDashboardHomeViewController *)self folderController];
+  currentIconListView = [folderController currentIconListView];
+  v6 = currentIconListView;
+  if (currentIconListView)
   {
-    v7 = [v5 visibleIcons];
-    v8 = [v4 folder];
-    if (v3)
+    visibleIcons = [currentIconListView visibleIcons];
+    folder = [folderController folder];
+    if (iconCopy)
     {
-      [v7 lastObject];
+      [visibleIcons lastObject];
     }
 
     else
     {
-      [v7 firstObject];
+      [visibleIcons firstObject];
     }
     v10 = ;
-    v9 = [v8 indexPathForIcon:v10];
+    v9 = [folder indexPathForIcon:v10];
   }
 
   else
@@ -1976,18 +1976,18 @@ uint64_t __73__DBDashboardHomeViewController_setCurrentPageIndex_animated_comple
   return v9;
 }
 
-- (void)_invalidateBadgeForIdentifier:(id)a3
+- (void)_invalidateBadgeForIdentifier:(id)identifier
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(DBDashboardHomeViewController *)self iconModel];
-  v6 = [v5 leafIconForIdentifier:v4];
+  identifierCopy = identifier;
+  iconModel = [(DBDashboardHomeViewController *)self iconModel];
+  v6 = [iconModel leafIconForIdentifier:identifierCopy];
 
   objc_opt_class();
-  v7 = [v6 activeDataSource];
-  if (v7 && (objc_opt_isKindOfClass() & 1) != 0)
+  activeDataSource = [v6 activeDataSource];
+  if (activeDataSource && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v8 = v7;
+    v8 = activeDataSource;
   }
 
   else
@@ -2007,7 +2007,7 @@ uint64_t __73__DBDashboardHomeViewController_setCurrentPageIndex_animated_comple
     }
 
     v11 = 138543618;
-    v12 = v4;
+    v12 = identifierCopy;
     v13 = 2114;
     v14 = v10;
     _os_log_impl(&dword_248146000, v9, OS_LOG_TYPE_DEFAULT, "Invalidated badge for %{public}@. The icon is %{public}@", &v11, 0x16u);
@@ -2029,11 +2029,11 @@ uint64_t __73__DBDashboardHomeViewController_setCurrentPageIndex_animated_comple
   return 2;
 }
 
-- (int64_t)_pageIndexForPageType:(unint64_t)a3
+- (int64_t)_pageIndexForPageType:(unint64_t)type
 {
-  if (a3 >= 2)
+  if (type >= 2)
   {
-    if (a3 == 3)
+    if (type == 3)
     {
 
       return [(DBDashboardHomeViewController *)self _widgetsPageIndex];
@@ -2041,10 +2041,10 @@ uint64_t __73__DBDashboardHomeViewController_setCurrentPageIndex_animated_comple
 
     else
     {
-      v5 = [(DBDashboardHomeViewController *)self folderController];
-      v6 = [v5 firstIconPageIndex];
+      folderController = [(DBDashboardHomeViewController *)self folderController];
+      firstIconPageIndex = [folderController firstIconPageIndex];
 
-      return v6;
+      return firstIconPageIndex;
     }
   }
 
@@ -2077,13 +2077,13 @@ uint64_t __73__DBDashboardHomeViewController_setCurrentPageIndex_animated_comple
   v3 = objc_alloc_init(MEMORY[0x277CBEB18]);
   if ([(DBDashboardHomeViewController *)self _onWidgetsPage])
   {
-    v4 = [(DBDashboardHomeViewController *)self widgetHomeViewController];
-    if (!v4)
+    widgetHomeViewController = [(DBDashboardHomeViewController *)self widgetHomeViewController];
+    if (!widgetHomeViewController)
     {
       [DBDashboardHomeViewController preferredFocusEnvironments];
     }
 
-    v5 = [(DBDashboardHomeViewController *)self widgetHomeViewController];
+    widgetHomeViewController2 = [(DBDashboardHomeViewController *)self widgetHomeViewController];
   }
 
   else
@@ -2093,50 +2093,50 @@ uint64_t __73__DBDashboardHomeViewController_setCurrentPageIndex_animated_comple
       goto LABEL_7;
     }
 
-    v5 = [(DBDashboardHomeViewController *)self todayViewController];
+    widgetHomeViewController2 = [(DBDashboardHomeViewController *)self todayViewController];
   }
 
-  v6 = v5;
-  [v3 addObject:v5];
+  v6 = widgetHomeViewController2;
+  [v3 addObject:widgetHomeViewController2];
 
 LABEL_7:
-  v7 = [(DBDashboardHomeViewController *)self _preferredFocusedIcon];
-  if (v7)
+  _preferredFocusedIcon = [(DBDashboardHomeViewController *)self _preferredFocusedIcon];
+  if (_preferredFocusedIcon)
   {
-    [v3 addObject:v7];
+    [v3 addObject:_preferredFocusedIcon];
   }
 
   if ([v3 count])
   {
-    v8 = v3;
+    preferredFocusEnvironments = v3;
   }
 
   else
   {
     v11.receiver = self;
     v11.super_class = DBDashboardHomeViewController;
-    v8 = [(DBDashboardHomeViewController *)&v11 preferredFocusEnvironments];
+    preferredFocusEnvironments = [(DBDashboardHomeViewController *)&v11 preferredFocusEnvironments];
   }
 
-  v9 = v8;
+  v9 = preferredFocusEnvironments;
 
   return v9;
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v13 = a3;
-  v5 = [v13 nextFocusedView];
+  contextCopy = context;
+  nextFocusedView = [contextCopy nextFocusedView];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v7 = [v13 nextFocusedView];
-    v8 = [v7 icon];
-    v9 = [(DBDashboardHomeViewController *)self folderController];
-    v10 = [v9 folder];
-    v11 = [v10 indexPathForIcon:v8];
+    nextFocusedView2 = [contextCopy nextFocusedView];
+    icon = [nextFocusedView2 icon];
+    folderController = [(DBDashboardHomeViewController *)self folderController];
+    folder = [folderController folder];
+    v11 = [folder indexPathForIcon:icon];
     lastFocusedIndex = self->_lastFocusedIndex;
     self->_lastFocusedIndex = v11;
   }
@@ -2146,38 +2146,38 @@ LABEL_7:
 {
   v31 = *MEMORY[0x277D85DE8];
   v3 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v4 = [(DBDashboardHomeViewController *)self widgetHomeViewController];
+  widgetHomeViewController = [(DBDashboardHomeViewController *)self widgetHomeViewController];
 
-  if (v4)
+  if (widgetHomeViewController)
   {
-    v5 = [(DBDashboardHomeViewController *)self widgetHomeViewController];
-    [v5 loadViewIfNeeded];
+    widgetHomeViewController2 = [(DBDashboardHomeViewController *)self widgetHomeViewController];
+    [widgetHomeViewController2 loadViewIfNeeded];
 
-    v6 = [(DBDashboardHomeViewController *)self widgetHomeViewController];
-    v7 = [v6 linearFocusItems];
-    [v3 addObjectsFromArray:v7];
+    widgetHomeViewController3 = [(DBDashboardHomeViewController *)self widgetHomeViewController];
+    linearFocusItems = [widgetHomeViewController3 linearFocusItems];
+    [v3 addObjectsFromArray:linearFocusItems];
   }
 
-  v8 = [(DBDashboardHomeViewController *)self todayViewController];
+  todayViewController = [(DBDashboardHomeViewController *)self todayViewController];
 
-  if (v8)
+  if (todayViewController)
   {
-    v9 = [(DBDashboardHomeViewController *)self todayViewController];
-    [v9 loadViewIfNeeded];
+    todayViewController2 = [(DBDashboardHomeViewController *)self todayViewController];
+    [todayViewController2 loadViewIfNeeded];
 
-    v10 = [(DBDashboardHomeViewController *)self todayViewController];
-    v11 = [v10 linearFocusItems];
-    [v3 addObjectsFromArray:v11];
+    todayViewController3 = [(DBDashboardHomeViewController *)self todayViewController];
+    linearFocusItems2 = [todayViewController3 linearFocusItems];
+    [v3 addObjectsFromArray:linearFocusItems2];
   }
 
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v12 = [(DBDashboardHomeViewController *)self folderController];
-  v13 = [v12 iconListViews];
+  folderController = [(DBDashboardHomeViewController *)self folderController];
+  iconListViews = [folderController iconListViews];
 
-  v14 = [v13 countByEnumeratingWithState:&v25 objects:v30 count:16];
+  v14 = [iconListViews countByEnumeratingWithState:&v25 objects:v30 count:16];
   if (v14)
   {
     v15 = v14;
@@ -2188,21 +2188,21 @@ LABEL_7:
       {
         if (*v26 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(iconListViews);
         }
 
         v18 = *(*(&v25 + 1) + 8 * i);
-        v19 = [v18 icons];
+        icons = [v18 icons];
         v23[0] = MEMORY[0x277D85DD0];
         v23[1] = 3221225472;
         v23[2] = __62__DBDashboardHomeViewController__linearFocusMovementSequences__block_invoke;
         v23[3] = &unk_278F03978;
         v23[4] = v18;
         v24 = v3;
-        [v19 enumerateObjectsUsingBlock:v23];
+        [icons enumerateObjectsUsingBlock:v23];
       }
 
-      v15 = [v13 countByEnumeratingWithState:&v25 objects:v30 count:16];
+      v15 = [iconListViews countByEnumeratingWithState:&v25 objects:v30 count:16];
     }
 
     while (v15);
@@ -2229,22 +2229,22 @@ uint64_t __62__DBDashboardHomeViewController__linearFocusMovementSequences__bloc
   return MEMORY[0x2821F96F8](v3, v4);
 }
 
-- (id)_iconViewForIndexpath:(id)a3
+- (id)_iconViewForIndexpath:(id)indexpath
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(DBDashboardHomeViewController *)self folderController];
-  v6 = [v5 folder];
+  indexpathCopy = indexpath;
+  folderController = [(DBDashboardHomeViewController *)self folderController];
+  folder = [folderController folder];
 
   v7 = DBLogForCategory(0);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    v12 = [v4 description];
-    v13 = [v6 description];
+    v12 = [indexpathCopy description];
+    v13 = [folder description];
     v14 = 136315907;
     v15 = "[DBDashboardHomeViewController _iconViewForIndexpath:]";
     v16 = 2112;
-    v17 = self;
+    selfCopy = self;
     v18 = 2112;
     v19 = v12;
     v20 = 2113;
@@ -2252,34 +2252,34 @@ uint64_t __62__DBDashboardHomeViewController__linearFocusMovementSequences__bloc
     _os_log_debug_impl(&dword_248146000, v7, OS_LOG_TYPE_DEBUG, "%s %@: Searching for iconView with indexPath %@ in folder %{private}@", &v14, 0x2Au);
   }
 
-  v8 = [v6 iconAtIndexPath:v4];
-  v9 = [(DBDashboardHomeViewController *)self folderController];
-  v10 = [v9 iconViewForIcon:v8 location:*MEMORY[0x277D666D0]];
+  v8 = [folder iconAtIndexPath:indexpathCopy];
+  folderController2 = [(DBDashboardHomeViewController *)self folderController];
+  v10 = [folderController2 iconViewForIcon:v8 location:*MEMORY[0x277D666D0]];
 
   return v10;
 }
 
-- (void)_wheelChangedWithEvent:(id)a3
+- (void)_wheelChangedWithEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(DBDashboardHomeViewController *)self folderController];
-  v6 = [v5 isScrolling];
+  eventCopy = event;
+  folderController = [(DBDashboardHomeViewController *)self folderController];
+  isScrolling = [folderController isScrolling];
 
-  if ((v6 & 1) == 0)
+  if ((isScrolling & 1) == 0)
   {
     v7.receiver = self;
     v7.super_class = DBDashboardHomeViewController;
-    [(DBDashboardHomeViewController *)&v7 _wheelChangedWithEvent:v4];
+    [(DBDashboardHomeViewController *)&v7 _wheelChangedWithEvent:eventCopy];
   }
 }
 
-- (void)dataStoreMonitor:(id)a3 didUpdateApplication:(id)a4 forKey:(id)a5
+- (void)dataStoreMonitor:(id)monitor didUpdateApplication:(id)application forKey:(id)key
 {
   v16 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
+  applicationCopy = application;
+  keyCopy = key;
   v9 = +[_TtC9DashBoard20DBLeafIconDataSource kDBSBApplicationBadgeKey];
-  v10 = [v8 isEqualToString:v9];
+  v10 = [keyCopy isEqualToString:v9];
 
   if (v10)
   {
@@ -2287,7 +2287,7 @@ uint64_t __62__DBDashboardHomeViewController__linearFocusMovementSequences__bloc
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v15 = v7;
+      v15 = applicationCopy;
       _os_log_impl(&dword_248146000, v11, OS_LOG_TYPE_DEFAULT, "Data store updated badge value for %{public}@", buf, 0xCu);
     }
 
@@ -2296,101 +2296,101 @@ uint64_t __62__DBDashboardHomeViewController__linearFocusMovementSequences__bloc
     v12[2] = __78__DBDashboardHomeViewController_dataStoreMonitor_didUpdateApplication_forKey___block_invoke;
     v12[3] = &unk_278F014B8;
     v12[4] = self;
-    v13 = v7;
+    v13 = applicationCopy;
     dispatch_async(MEMORY[0x277D85CD0], v12);
   }
 }
 
-- (void)_handleBackActionSupportACBack:(BOOL)a3
+- (void)_handleBackActionSupportACBack:(BOOL)back
 {
-  v3 = a3;
-  v18 = [(DBDashboardHomeViewController *)self folderController];
-  v5 = [v18 isScrolling];
-  v6 = v18;
-  if ((v5 & 1) == 0)
+  backCopy = back;
+  folderController = [(DBDashboardHomeViewController *)self folderController];
+  isScrolling = [folderController isScrolling];
+  v6 = folderController;
+  if ((isScrolling & 1) == 0)
   {
-    v7 = [v18 currentPageIndex];
-    v8 = [v18 defaultPageIndex];
-    if (v7 == v8)
+    currentPageIndex = [folderController currentPageIndex];
+    defaultPageIndex = [folderController defaultPageIndex];
+    if (currentPageIndex == defaultPageIndex)
     {
-      v8 = v7;
-      if (v3 && (-[DBDashboardHomeViewController environment](self, "environment"), v9 = objc_claimAutoreleasedReturnValue(), [v9 environmentConfiguration], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "isACBackSupported"), v10, v9, v11))
+      defaultPageIndex = currentPageIndex;
+      if (backCopy && (-[DBDashboardHomeViewController environment](self, "environment"), v9 = objc_claimAutoreleasedReturnValue(), [v9 environmentConfiguration], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "isACBackSupported"), v10, v9, v11))
       {
         if ([(DBDashboardHomeViewController *)self _isACBackEnabled])
         {
-          v12 = [(DBDashboardHomeViewController *)self environment];
-          v13 = [v12 environmentConfiguration];
-          v14 = [v13 session];
+          environment = [(DBDashboardHomeViewController *)self environment];
+          environmentConfiguration = [environment environmentConfiguration];
+          session = [environmentConfiguration session];
           v15 = [MEMORY[0x277CBEBC0] URLWithString:@"oem:back"];
-          [v14 requestCarUIForURL:v15];
+          [session requestCarUIForURL:v15];
         }
       }
 
-      else if (v7 != [v18 firstIconPageIndex])
+      else if (currentPageIndex != [folderController firstIconPageIndex])
       {
-        v8 = [v18 firstIconPageIndex];
+        defaultPageIndex = [folderController firstIconPageIndex];
       }
     }
 
-    v16 = [(DBDashboardHomeViewController *)self folderController];
-    v17 = [v16 currentPageIndex];
+    folderController2 = [(DBDashboardHomeViewController *)self folderController];
+    currentPageIndex2 = [folderController2 currentPageIndex];
 
-    v6 = v18;
-    if (v8 != v17)
+    v6 = folderController;
+    if (defaultPageIndex != currentPageIndex2)
     {
-      v5 = [(DBDashboardHomeViewController *)self setCurrentPageIndex:v8 animated:1];
-      v6 = v18;
+      isScrolling = [(DBDashboardHomeViewController *)self setCurrentPageIndex:defaultPageIndex animated:1];
+      v6 = folderController;
     }
   }
 
-  MEMORY[0x2821F96F8](v5, v6);
+  MEMORY[0x2821F96F8](isScrolling, v6);
 }
 
 - (BOOL)_isACBackEnabled
 {
-  v2 = [(DBDashboardHomeViewController *)self acBackDisabledReasons];
-  v3 = [v2 count] == 0;
+  acBackDisabledReasons = [(DBDashboardHomeViewController *)self acBackDisabledReasons];
+  v3 = [acBackDisabledReasons count] == 0;
 
   return v3;
 }
 
-- (void)_setACBackDisabled:(BOOL)a3 forRequester:(id)a4
+- (void)_setACBackDisabled:(BOOL)disabled forRequester:(id)requester
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(DBDashboardHomeViewController *)self acBackDisabledReasons];
-  v9 = v7;
-  if (v4)
+  disabledCopy = disabled;
+  requesterCopy = requester;
+  acBackDisabledReasons = [(DBDashboardHomeViewController *)self acBackDisabledReasons];
+  acBackDisabledReasons2 = acBackDisabledReasons;
+  if (disabledCopy)
   {
 
-    if (!v9)
+    if (!acBackDisabledReasons2)
     {
       v8 = objc_alloc_init(MEMORY[0x277CBEB58]);
       [(DBDashboardHomeViewController *)self setAcBackDisabledReasons:v8];
     }
 
-    v9 = [(DBDashboardHomeViewController *)self acBackDisabledReasons];
-    [v9 addObject:v6];
+    acBackDisabledReasons2 = [(DBDashboardHomeViewController *)self acBackDisabledReasons];
+    [acBackDisabledReasons2 addObject:requesterCopy];
   }
 
   else
   {
-    [v7 removeObject:v6];
+    [acBackDisabledReasons removeObject:requesterCopy];
   }
 }
 
-- (void)folderControllerWillBeginScrolling:(id)a3
+- (void)folderControllerWillBeginScrolling:(id)scrolling
 {
-  v4 = [(DBDashboardHomeViewController *)self widgetHomeViewController];
-  [v4 beginCancelingTouches];
+  widgetHomeViewController = [(DBDashboardHomeViewController *)self widgetHomeViewController];
+  [widgetHomeViewController beginCancelingTouches];
 
   [(DBDashboardHomeViewController *)self _setACBackDisabled:1 forRequester:@"Scrolling"];
 }
 
-- (void)folderControllerDidEndScrolling:(id)a3
+- (void)folderControllerDidEndScrolling:(id)scrolling
 {
-  v4 = [(DBDashboardHomeViewController *)self widgetHomeViewController];
-  [v4 endCancelingTouches];
+  widgetHomeViewController = [(DBDashboardHomeViewController *)self widgetHomeViewController];
+  [widgetHomeViewController endCancelingTouches];
 
   [(DBDashboardHomeViewController *)self currentPageIndexDidChange];
   v5 = dispatch_time(0, 500000000);
@@ -2402,7 +2402,7 @@ uint64_t __62__DBDashboardHomeViewController__linearFocusMovementSequences__bloc
   dispatch_after(v5, MEMORY[0x277D85CD0], block);
 }
 
-- (id)folderController:(id)a3 iconListView:(id)a4 iconDropSessionDidUpdate:(id)a5
+- (id)folderController:(id)controller iconListView:(id)view iconDropSessionDidUpdate:(id)update
 {
   v5 = [objc_alloc(MEMORY[0x277D754A8]) initWithDropOperation:0];
 
@@ -2411,38 +2411,38 @@ uint64_t __62__DBDashboardHomeViewController__linearFocusMovementSequences__bloc
 
 - (void)invalidate
 {
-  v3 = [(DBDashboardHomeViewController *)self dataStoreMonitor];
-  [v3 removeObserver:self];
+  dataStoreMonitor = [(DBDashboardHomeViewController *)self dataStoreMonitor];
+  [dataStoreMonitor removeObserver:self];
 
-  v4 = [(DBDashboardHomeViewController *)self widgetHomeViewController];
-  [v4 invalidate];
+  widgetHomeViewController = [(DBDashboardHomeViewController *)self widgetHomeViewController];
+  [widgetHomeViewController invalidate];
 
-  v5 = [(DBDashboardHomeViewController *)self todayViewController];
-  [v5 invalidate];
+  todayViewController = [(DBDashboardHomeViewController *)self todayViewController];
+  [todayViewController invalidate];
 
   v6 = +[DBApplicationController sharedInstance];
   [v6 removeObserver:self];
 
   +[DBIconDropShadowProvider invalidate];
   [DBIconView setEnvironmentConfiguration:0];
-  v7 = [(DBDashboardHomeViewController *)self environment];
-  v8 = [v7 environmentConfiguration];
+  environment = [(DBDashboardHomeViewController *)self environment];
+  environmentConfiguration = [environment environmentConfiguration];
 
-  [v8 removeObserver:self];
+  [environmentConfiguration removeObserver:self];
 }
 
-- (void)appLinkManager:(id)a3 didAddAppLinks:(id)a4 didRemoveAppLinks:(id)a5
+- (void)appLinkManager:(id)manager didAddAppLinks:(id)links didRemoveAppLinks:(id)appLinks
 {
   v43 = *MEMORY[0x277D85DE8];
-  v27 = a4;
-  v7 = a5;
-  v28 = self;
-  v8 = [(DBDashboardHomeViewController *)self iconModel];
+  linksCopy = links;
+  appLinksCopy = appLinks;
+  selfCopy = self;
+  iconModel = [(DBDashboardHomeViewController *)self iconModel];
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v9 = v7;
+  v9 = appLinksCopy;
   v10 = [v9 countByEnumeratingWithState:&v33 objects:v42 count:16];
   if (v10)
   {
@@ -2462,17 +2462,17 @@ uint64_t __62__DBDashboardHomeViewController__linearFocusMovementSequences__bloc
         v15 = DBLogForCategory(0x1CuLL);
         if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
         {
-          v18 = [v14 appLink];
+          appLink = [v14 appLink];
           *buf = 136315394;
           v39 = "[DBDashboardHomeViewController appLinkManager:didAddAppLinks:didRemoveAppLinks:]";
           v40 = 2112;
-          v41 = v18;
+          v41 = appLink;
           _os_log_debug_impl(&dword_248146000, v15, OS_LOG_TYPE_DEBUG, "%s: Received removing %@", buf, 0x16u);
         }
 
-        v16 = [v14 appLink];
-        v17 = [v16 identifier];
-        [v8 removeIconForIdentifier:v17];
+        appLink2 = [v14 appLink];
+        identifier = [appLink2 identifier];
+        [iconModel removeIconForIdentifier:identifier];
 
         ++v13;
       }
@@ -2488,7 +2488,7 @@ uint64_t __62__DBDashboardHomeViewController__linearFocusMovementSequences__bloc
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v19 = v27;
+  v19 = linksCopy;
   v20 = [v19 countByEnumeratingWithState:&v29 objects:v37 count:16];
   if (v20)
   {
@@ -2508,15 +2508,15 @@ uint64_t __62__DBDashboardHomeViewController__linearFocusMovementSequences__bloc
         v25 = DBLogForCategory(0x1CuLL);
         if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
         {
-          v26 = [v24 appLink];
+          appLink3 = [v24 appLink];
           *buf = 136315394;
           v39 = "[DBDashboardHomeViewController appLinkManager:didAddAppLinks:didRemoveAppLinks:]";
           v40 = 2112;
-          v41 = v26;
+          v41 = appLink3;
           _os_log_debug_impl(&dword_248146000, v25, OS_LOG_TYPE_DEBUG, "%s: Received adding %@", buf, 0x16u);
         }
 
-        [v8 addIcon:v24];
+        [iconModel addIcon:v24];
         ++v23;
       }
 
@@ -2527,7 +2527,7 @@ uint64_t __62__DBDashboardHomeViewController__linearFocusMovementSequences__bloc
     while (v21);
   }
 
-  [(DBDashboardHomeViewController *)v28 _handleAppLibraryRefresh];
+  [(DBDashboardHomeViewController *)selfCopy _handleAppLibraryRefresh];
 }
 
 - (UIWindowScene)windowScene
@@ -2540,7 +2540,7 @@ uint64_t __62__DBDashboardHomeViewController__linearFocusMovementSequences__bloc
 - (void)allApplicationIcons
 {
   v14 = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(a1, "count")}];
+  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(self, "count")}];
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
   v8 = 138412802;
@@ -2548,7 +2548,7 @@ uint64_t __62__DBDashboardHomeViewController__linearFocusMovementSequences__bloc
   v10 = 2112;
   v11 = v7;
   v12 = 2112;
-  v13 = a1;
+  selfCopy = self;
   _os_log_debug_impl(&dword_248146000, a3, OS_LOG_TYPE_DEBUG, "Adding %@ AppLink icons to %@\n%@", &v8, 0x20u);
 }
 

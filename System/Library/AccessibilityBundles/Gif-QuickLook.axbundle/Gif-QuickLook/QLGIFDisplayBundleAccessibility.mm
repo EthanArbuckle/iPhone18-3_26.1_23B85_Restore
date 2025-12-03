@@ -1,15 +1,15 @@
 @interface QLGIFDisplayBundleAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 @end
 
 @implementation QLGIFDisplayBundleAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"QLGIFDisplayBundle" hasInstanceVariable:@"_imageView" withType:"UIImageView"];
-  [v3 validateProtocol:@"QLSwippableItemProtocol" hasRequiredInstanceMethod:@"previewItem"];
-  [v3 validateProtocol:@"QLPreviewItem" hasRequiredInstanceMethod:@"previewItemURL"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"QLGIFDisplayBundle" hasInstanceVariable:@"_imageView" withType:"UIImageView"];
+  [validationsCopy validateProtocol:@"QLSwippableItemProtocol" hasRequiredInstanceMethod:@"previewItem"];
+  [validationsCopy validateProtocol:@"QLPreviewItem" hasRequiredInstanceMethod:@"previewItemURL"];
 }
 
 @end

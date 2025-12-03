@@ -1,5 +1,5 @@
 @interface HWHandwritingItemColectionViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityCustomActions;
 - (id)accessibilityHint;
 - (id)accessibilityLabel;
@@ -8,11 +8,11 @@
 
 @implementation HWHandwritingItemColectionViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"HWHandwritingItemColectionViewCell" hasInstanceMethod:@"editing" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"HWHandwritingItemColectionViewCell" hasInstanceMethod:@"deleteButton" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"HWHandwritingItemColectionViewCell" hasInstanceMethod:@"editing" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"HWHandwritingItemColectionViewCell" hasInstanceMethod:@"deleteButton" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
@@ -48,7 +48,7 @@
 
 - (id)accessibilityCustomActions
 {
-  v3 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   if ([(HWHandwritingItemColectionViewCellAccessibility *)self safeBoolForKey:@"editing"])
   {
     v4 = objc_alloc(MEMORY[0x29EDC78E0]);
@@ -56,10 +56,10 @@
     v6 = [v4 initWithName:v5 target:self selector:sel__axDelete];
 
     [v6 setSortPriority:*MEMORY[0x29EDC72F8]];
-    [v3 addObject:v6];
+    [array addObject:v6];
   }
 
-  return v3;
+  return array;
 }
 
 - (void)_axDelete

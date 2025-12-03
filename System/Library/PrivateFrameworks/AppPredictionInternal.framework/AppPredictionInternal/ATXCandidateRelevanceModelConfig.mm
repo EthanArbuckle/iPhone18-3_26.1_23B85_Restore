@@ -1,16 +1,16 @@
 @interface ATXCandidateRelevanceModelConfig
 - (ATXCandidateRelevanceModelConfig)init;
-- (ATXCandidateRelevanceModelConfig)initWithAppIconState:(id)a3;
-- (BOOL)candidateIsStillValidToSuggest:(id)a3;
+- (ATXCandidateRelevanceModelConfig)initWithAppIconState:(id)state;
+- (BOOL)candidateIsStillValidToSuggest:(id)suggest;
 - (BOOL)isEnabled;
-- (BOOL)shouldTrainModelWithCandidateDatasetMetadata:(id)a3;
-- (BOOL)shouldTrainModelWithOverallDatasetMetadata:(id)a3;
-- (BOOL)shouldTrainModelWithPositiveCandidateDatasetMetadata:(id)a3;
+- (BOOL)shouldTrainModelWithCandidateDatasetMetadata:(id)metadata;
+- (BOOL)shouldTrainModelWithOverallDatasetMetadata:(id)metadata;
+- (BOOL)shouldTrainModelWithPositiveCandidateDatasetMetadata:(id)metadata;
 - (float)dataHarvestingSamplingRate;
 - (id)featurizersFromConfigPlist;
-- (id)heuristicSuggestionsForContext:(id)a3 currentSuggestionExecutableIds:(id)a4;
+- (id)heuristicSuggestionsForContext:(id)context currentSuggestionExecutableIds:(id)ids;
 - (id)modelTrainingPlanParameters;
-- (id)proactiveSuggestionForCandidate:(id)a3 prediction:(float)a4;
+- (id)proactiveSuggestionForCandidate:(id)candidate prediction:(float)prediction;
 - (int)maximumNumberOfTrainedCandidates;
 - (int)minimumNumberOfDaysWithPositiveSamplesForCandidate;
 - (int)minimumNumberOfDaysWithPositiveSamplesOverall;
@@ -30,9 +30,9 @@
   return v4;
 }
 
-- (ATXCandidateRelevanceModelConfig)initWithAppIconState:(id)a3
+- (ATXCandidateRelevanceModelConfig)initWithAppIconState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v22.receiver = self;
   v22.super_class = ATXCandidateRelevanceModelConfig;
   v5 = [(ATXCandidateRelevanceModelConfig *)&v22 init];
@@ -41,39 +41,39 @@
     v6 = objc_alloc(MEMORY[0x277CEB3C8]);
     v7 = objc_opt_class();
     v8 = NSStringFromClass(v7);
-    v9 = [MEMORY[0x277CEB2B8] abGroupOverride];
-    v10 = [v6 initWithAssetsForResource:v8 ofType:@"plist" specifiedABGroup:v9];
+    abGroupOverride = [MEMORY[0x277CEB2B8] abGroupOverride];
+    v10 = [v6 initWithAssetsForResource:v8 ofType:@"plist" specifiedABGroup:abGroupOverride];
 
-    v11 = [v10 abGroupContents];
+    abGroupContents = [v10 abGroupContents];
     parameters = v5->_parameters;
-    v5->_parameters = v11;
+    v5->_parameters = abGroupContents;
 
-    v13 = [v10 groupIdentifier];
+    groupIdentifier = [v10 groupIdentifier];
     abGroupIdentifier = v5->_abGroupIdentifier;
-    v5->_abGroupIdentifier = v13;
+    v5->_abGroupIdentifier = groupIdentifier;
 
     v15 = MEMORY[0x277CBEB98];
-    v16 = [v4 allInstalledAppsKnownToSpringBoard];
-    v17 = [v15 setWithArray:v16];
+    allInstalledAppsKnownToSpringBoard = [stateCopy allInstalledAppsKnownToSpringBoard];
+    v17 = [v15 setWithArray:allInstalledAppsKnownToSpringBoard];
     installedAppsKnownToSpringBoard = v5->_installedAppsKnownToSpringBoard;
     v5->_installedAppsKnownToSpringBoard = v17;
 
-    v19 = [(ATXCandidateRelevanceModelConfig *)v5 featurizersFromConfigPlist];
+    featurizersFromConfigPlist = [(ATXCandidateRelevanceModelConfig *)v5 featurizersFromConfigPlist];
     featurizers = v5->_featurizers;
-    v5->_featurizers = v19;
+    v5->_featurizers = featurizersFromConfigPlist;
   }
 
   return v5;
 }
 
-- (BOOL)shouldTrainModelWithPositiveCandidateDatasetMetadata:(id)a3
+- (BOOL)shouldTrainModelWithPositiveCandidateDatasetMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = [v4 numberOfPositiveSamples];
-  if (v5 >= [(ATXCandidateRelevanceModelConfig *)self minimumNumberOfPositiveSamplesForCandidate])
+  metadataCopy = metadata;
+  numberOfPositiveSamples = [metadataCopy numberOfPositiveSamples];
+  if (numberOfPositiveSamples >= [(ATXCandidateRelevanceModelConfig *)self minimumNumberOfPositiveSamplesForCandidate])
   {
-    v7 = [v4 numberOfDaysWithPositiveSamples];
-    v6 = v7 >= [(ATXCandidateRelevanceModelConfig *)self minimumNumberOfDaysWithPositiveSamplesForCandidate];
+    numberOfDaysWithPositiveSamples = [metadataCopy numberOfDaysWithPositiveSamples];
+    v6 = numberOfDaysWithPositiveSamples >= [(ATXCandidateRelevanceModelConfig *)self minimumNumberOfDaysWithPositiveSamplesForCandidate];
   }
 
   else
@@ -84,14 +84,14 @@
   return v6;
 }
 
-- (BOOL)shouldTrainModelWithCandidateDatasetMetadata:(id)a3
+- (BOOL)shouldTrainModelWithCandidateDatasetMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = [v4 numberOfPositiveSamples];
-  if (v5 >= -[ATXCandidateRelevanceModelConfig minimumNumberOfPositiveSamplesForCandidate](self, "minimumNumberOfPositiveSamplesForCandidate") && (v6 = [v4 numberOfSamples], v6 >= -[ATXCandidateRelevanceModelConfig minimumNumberOfSamplesForCandidate](self, "minimumNumberOfSamplesForCandidate")) && (v7 = objc_msgSend(v4, "numberOfDaysWithPositiveSamples"), v7 >= -[ATXCandidateRelevanceModelConfig minimumNumberOfDaysWithPositiveSamplesForCandidate](self, "minimumNumberOfDaysWithPositiveSamplesForCandidate")))
+  metadataCopy = metadata;
+  numberOfPositiveSamples = [metadataCopy numberOfPositiveSamples];
+  if (numberOfPositiveSamples >= -[ATXCandidateRelevanceModelConfig minimumNumberOfPositiveSamplesForCandidate](self, "minimumNumberOfPositiveSamplesForCandidate") && (v6 = [metadataCopy numberOfSamples], v6 >= -[ATXCandidateRelevanceModelConfig minimumNumberOfSamplesForCandidate](self, "minimumNumberOfSamplesForCandidate")) && (v7 = objc_msgSend(metadataCopy, "numberOfDaysWithPositiveSamples"), v7 >= -[ATXCandidateRelevanceModelConfig minimumNumberOfDaysWithPositiveSamplesForCandidate](self, "minimumNumberOfDaysWithPositiveSamplesForCandidate")))
   {
-    v10 = [v4 numberOfDaysWithSamples];
-    v8 = v10 >= [(ATXCandidateRelevanceModelConfig *)self minimumNumberOfDaysWithSamplesForCandidate];
+    numberOfDaysWithSamples = [metadataCopy numberOfDaysWithSamples];
+    v8 = numberOfDaysWithSamples >= [(ATXCandidateRelevanceModelConfig *)self minimumNumberOfDaysWithSamplesForCandidate];
   }
 
   else
@@ -102,14 +102,14 @@
   return v8;
 }
 
-- (BOOL)shouldTrainModelWithOverallDatasetMetadata:(id)a3
+- (BOOL)shouldTrainModelWithOverallDatasetMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = [v4 numberOfPositiveSamples];
-  if (v5 >= [(ATXCandidateRelevanceModelConfig *)self minimumNumberOfPositiveSamplesOverall])
+  metadataCopy = metadata;
+  numberOfPositiveSamples = [metadataCopy numberOfPositiveSamples];
+  if (numberOfPositiveSamples >= [(ATXCandidateRelevanceModelConfig *)self minimumNumberOfPositiveSamplesOverall])
   {
-    v7 = [v4 numberOfDaysWithPositiveSamples];
-    v6 = v7 >= [(ATXCandidateRelevanceModelConfig *)self minimumNumberOfDaysWithPositiveSamplesOverall];
+    numberOfDaysWithPositiveSamples = [metadataCopy numberOfDaysWithPositiveSamples];
+    v6 = numberOfDaysWithPositiveSamples >= [(ATXCandidateRelevanceModelConfig *)self minimumNumberOfDaysWithPositiveSamplesOverall];
   }
 
   else
@@ -120,24 +120,24 @@
   return v6;
 }
 
-- (id)proactiveSuggestionForCandidate:(id)a3 prediction:(float)a4
+- (id)proactiveSuggestionForCandidate:(id)candidate prediction:(float)prediction
 {
-  result = a3;
+  result = candidate;
   __break(1u);
   return result;
 }
 
-- (BOOL)candidateIsStillValidToSuggest:(id)a3
+- (BOOL)candidateIsStillValidToSuggest:(id)suggest
 {
-  v3 = a3;
+  suggestCopy = suggest;
   __break(1u);
-  return v3;
+  return suggestCopy;
 }
 
-- (id)heuristicSuggestionsForContext:(id)a3 currentSuggestionExecutableIds:(id)a4
+- (id)heuristicSuggestionsForContext:(id)context currentSuggestionExecutableIds:(id)ids
 {
-  v5 = a3;
-  result = a4;
+  contextCopy = context;
+  result = ids;
   __break(1u);
   return result;
 }
@@ -148,15 +148,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (float)dataHarvestingSamplingRate
@@ -183,15 +183,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 intValue];
+    intValue = [v2 intValue];
   }
 
   else
   {
-    v4 = 0;
+    intValue = 0;
   }
 
-  return v4;
+  return intValue;
 }
 
 - (int)minimumNumberOfPositiveSamplesForCandidate
@@ -200,15 +200,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 intValue];
+    intValue = [v2 intValue];
   }
 
   else
   {
-    v4 = 0x7FFFFFFF;
+    intValue = 0x7FFFFFFF;
   }
 
-  return v4;
+  return intValue;
 }
 
 - (int)minimumNumberOfSamplesForCandidate
@@ -217,15 +217,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 intValue];
+    intValue = [v2 intValue];
   }
 
   else
   {
-    v4 = 0x7FFFFFFF;
+    intValue = 0x7FFFFFFF;
   }
 
-  return v4;
+  return intValue;
 }
 
 - (int)minimumNumberOfDaysWithPositiveSamplesForCandidate
@@ -234,15 +234,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 intValue];
+    intValue = [v2 intValue];
   }
 
   else
   {
-    v4 = 0x7FFFFFFF;
+    intValue = 0x7FFFFFFF;
   }
 
-  return v4;
+  return intValue;
 }
 
 - (int)minimumNumberOfDaysWithSamplesForCandidate
@@ -251,15 +251,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 intValue];
+    intValue = [v2 intValue];
   }
 
   else
   {
-    v4 = 0x7FFFFFFF;
+    intValue = 0x7FFFFFFF;
   }
 
-  return v4;
+  return intValue;
 }
 
 - (int)minimumNumberOfPositiveSamplesOverall
@@ -268,15 +268,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 intValue];
+    intValue = [v2 intValue];
   }
 
   else
   {
-    v4 = 0x7FFFFFFF;
+    intValue = 0x7FFFFFFF;
   }
 
-  return v4;
+  return intValue;
 }
 
 - (int)minimumNumberOfDaysWithPositiveSamplesOverall
@@ -285,15 +285,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 intValue];
+    intValue = [v2 intValue];
   }
 
   else
   {
-    v4 = 0x7FFFFFFF;
+    intValue = 0x7FFFFFFF;
   }
 
-  return v4;
+  return intValue;
 }
 
 - (id)modelTrainingPlanParameters

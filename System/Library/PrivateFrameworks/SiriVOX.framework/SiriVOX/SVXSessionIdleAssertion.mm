@@ -1,5 +1,5 @@
 @interface SVXSessionIdleAssertion
-- (SVXSessionIdleAssertion)initWithTimestamp:(unint64_t)a3 session:(id)a4;
+- (SVXSessionIdleAssertion)initWithTimestamp:(unint64_t)timestamp session:(id)session;
 - (id)description;
 @end
 
@@ -16,17 +16,17 @@
   return v5;
 }
 
-- (SVXSessionIdleAssertion)initWithTimestamp:(unint64_t)a3 session:(id)a4
+- (SVXSessionIdleAssertion)initWithTimestamp:(unint64_t)timestamp session:(id)session
 {
-  v7 = a4;
+  sessionCopy = session;
   v11.receiver = self;
   v11.super_class = SVXSessionIdleAssertion;
   v8 = [(SVXSessionIdleAssertion *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_timestamp = a3;
-    objc_storeStrong(&v8->_session, a4);
+    v8->_timestamp = timestamp;
+    objc_storeStrong(&v8->_session, session);
   }
 
   return v9;

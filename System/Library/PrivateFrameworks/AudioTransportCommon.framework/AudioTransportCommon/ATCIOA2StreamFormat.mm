@@ -1,42 +1,42 @@
 @interface ATCIOA2StreamFormat
-+ (id)aeaStreamFormatWithDictionary:(id)a3;
-+ (id)aeaStreamFormatsWithRangedDictionary:(id)a3;
-- (ATCIOA2StreamFormat)initWithAudioStreamBasicDescription:(AudioStreamBasicDescription *)a3;
-- (ATCIOA2StreamFormat)initWithIOAudio2Dictionary:(id)a3;
-- (ATCIOA2StreamFormat)initWithSampleRate:(double)a3 numChannels:(unsigned int)a4 commonPCMFormat:(unsigned int)a5 isInterleaved:(BOOL)a6;
++ (id)aeaStreamFormatWithDictionary:(id)dictionary;
++ (id)aeaStreamFormatsWithRangedDictionary:(id)dictionary;
+- (ATCIOA2StreamFormat)initWithAudioStreamBasicDescription:(AudioStreamBasicDescription *)description;
+- (ATCIOA2StreamFormat)initWithIOAudio2Dictionary:(id)dictionary;
+- (ATCIOA2StreamFormat)initWithSampleRate:(double)rate numChannels:(unsigned int)channels commonPCMFormat:(unsigned int)format isInterleaved:(BOOL)interleaved;
 - (AudioStreamBasicDescription)audioStreamBasicDescription;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation ATCIOA2StreamFormat
 
-+ (id)aeaStreamFormatWithDictionary:(id)a3
++ (id)aeaStreamFormatWithDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithIOAudio2Dictionary:v3];
+  dictionaryCopy = dictionary;
+  v4 = [objc_alloc(objc_opt_class()) initWithIOAudio2Dictionary:dictionaryCopy];
 
   return v4;
 }
 
-+ (id)aeaStreamFormatsWithRangedDictionary:(id)a3
++ (id)aeaStreamFormatsWithRangedDictionary:(id)dictionary
 {
   v30 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v24 = [MEMORY[0x277CBEB18] array];
-  v4 = [v3 objectForKeyedSubscript:@"min sample rate"];
-  v5 = [v3 objectForKeyedSubscript:@"max sample rate"];
+  dictionaryCopy = dictionary;
+  array = [MEMORY[0x277CBEB18] array];
+  v4 = [dictionaryCopy objectForKeyedSubscript:@"min sample rate"];
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"max sample rate"];
   [v4 doubleValue];
   v7 = v6;
   [v5 doubleValue];
   if (v7 == v8)
   {
-    v21 = [objc_alloc(objc_opt_class()) initWithIOAudio2Dictionary:v3];
+    v21 = [objc_alloc(objc_opt_class()) initWithIOAudio2Dictionary:dictionaryCopy];
     if (v21)
     {
-      [v24 addObject:v21];
+      [array addObject:v21];
     }
   }
 
@@ -71,12 +71,12 @@
             [v5 doubleValue];
             if (v18 <= v19)
             {
-              v20 = [objc_alloc(objc_opt_class()) initWithIOAudio2Dictionary:v3];
+              v20 = [objc_alloc(objc_opt_class()) initWithIOAudio2Dictionary:dictionaryCopy];
               if (v20)
               {
                 [v13 doubleValue];
                 [v20 setSampleRate:?];
-                [v24 addObject:v20];
+                [array addObject:v20];
               }
             }
           }
@@ -91,23 +91,23 @@
 
   v22 = *MEMORY[0x277D85DE8];
 
-  return v24;
+  return array;
 }
 
-- (ATCIOA2StreamFormat)initWithSampleRate:(double)a3 numChannels:(unsigned int)a4 commonPCMFormat:(unsigned int)a5 isInterleaved:(BOOL)a6
+- (ATCIOA2StreamFormat)initWithSampleRate:(double)rate numChannels:(unsigned int)channels commonPCMFormat:(unsigned int)format isInterleaved:(BOOL)interleaved
 {
-  v6 = a6;
+  interleavedCopy = interleaved;
   v15.receiver = self;
   v15.super_class = ATCIOA2StreamFormat;
   result = [(ATCIOA2StreamFormat *)&v15 init];
   if (result)
   {
-    result->_sampleRate = a3;
+    result->_sampleRate = rate;
     *&result->_formatID = 0x86C70636DLL;
     result->_framesPerPacket = 1;
-    result->_channelsPerFrame = a4;
-    v11 = a5 - 1;
-    if (a5 - 1 > 3)
+    result->_channelsPerFrame = channels;
+    v11 = format - 1;
+    if (format - 1 > 3)
     {
       v14 = 0;
       v13 = 40;
@@ -122,9 +122,9 @@
     }
 
     result->_bitsPerChannel = 8 * v14;
-    if (v6)
+    if (interleavedCopy)
     {
-      v14 *= a4;
+      v14 *= channels;
     }
 
     else
@@ -139,38 +139,38 @@
   return result;
 }
 
-- (ATCIOA2StreamFormat)initWithAudioStreamBasicDescription:(AudioStreamBasicDescription *)a3
+- (ATCIOA2StreamFormat)initWithAudioStreamBasicDescription:(AudioStreamBasicDescription *)description
 {
   v7.receiver = self;
   v7.super_class = ATCIOA2StreamFormat;
   result = [(ATCIOA2StreamFormat *)&v7 init];
   if (result)
   {
-    result->_sampleRate = a3->mSampleRate;
-    result->_formatID = a3->mFormatID;
-    result->_formatFlags = a3->mFormatFlags;
-    result->_bytesPerPacket = a3->mBytesPerPacket;
-    mFramesPerPacket = a3->mFramesPerPacket;
+    result->_sampleRate = description->mSampleRate;
+    result->_formatID = description->mFormatID;
+    result->_formatFlags = description->mFormatFlags;
+    result->_bytesPerPacket = description->mBytesPerPacket;
+    mFramesPerPacket = description->mFramesPerPacket;
     result->_framesPerPacket = mFramesPerPacket;
-    result->_channelsPerFrame = a3->mChannelsPerFrame;
-    mBytesPerFrame = a3->mBytesPerFrame;
+    result->_channelsPerFrame = description->mChannelsPerFrame;
+    mBytesPerFrame = description->mBytesPerFrame;
     result->_bytesPerFrame = mBytesPerFrame;
-    result->_bitsPerChannel = a3->mBitsPerChannel;
+    result->_bitsPerChannel = description->mBitsPerChannel;
     result->_bytesPerPacket = mBytesPerFrame * mFramesPerPacket;
   }
 
   return result;
 }
 
-- (ATCIOA2StreamFormat)initWithIOAudio2Dictionary:(id)a3
+- (ATCIOA2StreamFormat)initWithIOAudio2Dictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v17.receiver = self;
   v17.super_class = ATCIOA2StreamFormat;
   v5 = [(ATCIOA2StreamFormat *)&v17 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"sample rate"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"sample rate"];
 
     if (v6)
     {
@@ -182,28 +182,28 @@
       v7 = @"min sample rate";
     }
 
-    v8 = [v4 objectForKeyedSubscript:v7];
+    v8 = [dictionaryCopy objectForKeyedSubscript:v7];
     v5->_sampleRate = IOAudio2Fixed64ToFloat64([v8 longLongValue]);
 
-    v9 = [v4 objectForKeyedSubscript:@"format ID"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"format ID"];
     v5->_formatID = [v9 unsignedIntValue];
 
-    v10 = [v4 objectForKeyedSubscript:@"format flags"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"format flags"];
     v5->_formatFlags = [v10 unsignedIntValue];
 
-    v11 = [v4 objectForKeyedSubscript:@"bytes per packet"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"bytes per packet"];
     v5->_bytesPerPacket = [v11 unsignedIntValue];
 
-    v12 = [v4 objectForKeyedSubscript:@"frames per packet"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"frames per packet"];
     v5->_framesPerPacket = [v12 unsignedIntValue];
 
-    v13 = [v4 objectForKeyedSubscript:@"channels per frame"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"channels per frame"];
     v5->_channelsPerFrame = [v13 unsignedIntValue];
 
-    v14 = [v4 objectForKeyedSubscript:@"bytes per frame"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"bytes per frame"];
     v5->_bytesPerFrame = [v14 unsignedIntValue];
 
-    v15 = [v4 objectForKeyedSubscript:@"bits per channel"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"bits per channel"];
     v5->_bitsPerChannel = [v15 unsignedIntValue];
   }
 
@@ -226,7 +226,7 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   [(ATCIOA2StreamFormat *)self sampleRate];
@@ -243,19 +243,19 @@
 
 - (unint64_t)hash
 {
-  v3 = [(ATCIOA2StreamFormat *)self formatID];
-  v4 = [(ATCIOA2StreamFormat *)self formatFlags]| v3;
-  v5 = [(ATCIOA2StreamFormat *)self bytesPerPacket];
-  v6 = v4 | v5 | [(ATCIOA2StreamFormat *)self framesPerPacket];
-  v7 = [(ATCIOA2StreamFormat *)self bytesPerFrame];
-  v8 = v7 | [(ATCIOA2StreamFormat *)self channelsPerFrame];
+  formatID = [(ATCIOA2StreamFormat *)self formatID];
+  v4 = [(ATCIOA2StreamFormat *)self formatFlags]| formatID;
+  bytesPerPacket = [(ATCIOA2StreamFormat *)self bytesPerPacket];
+  v6 = v4 | bytesPerPacket | [(ATCIOA2StreamFormat *)self framesPerPacket];
+  bytesPerFrame = [(ATCIOA2StreamFormat *)self bytesPerFrame];
+  v8 = bytesPerFrame | [(ATCIOA2StreamFormat *)self channelsPerFrame];
   return *&self->_sampleRate | v6 | v8 | [(ATCIOA2StreamFormat *)self bitsPerChannel];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v16 = 1;
   }
@@ -265,9 +265,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(ATCIOA2StreamFormat *)v5 formatID];
-      if (v6 == [(ATCIOA2StreamFormat *)self formatID]&& (v7 = [(ATCIOA2StreamFormat *)v5 formatFlags], v7 == [(ATCIOA2StreamFormat *)self formatFlags]) && (v8 = [(ATCIOA2StreamFormat *)v5 bytesPerPacket], v8 == [(ATCIOA2StreamFormat *)self bytesPerPacket]) && (v9 = [(ATCIOA2StreamFormat *)v5 framesPerPacket], v9 == [(ATCIOA2StreamFormat *)self framesPerPacket]) && (v10 = [(ATCIOA2StreamFormat *)v5 bytesPerFrame], v10 == [(ATCIOA2StreamFormat *)self bytesPerFrame]) && (v11 = [(ATCIOA2StreamFormat *)v5 channelsPerFrame], v11 == [(ATCIOA2StreamFormat *)self channelsPerFrame]) && (v12 = [(ATCIOA2StreamFormat *)v5 bitsPerChannel], v12 == [(ATCIOA2StreamFormat *)self bitsPerChannel]))
+      v5 = equalCopy;
+      formatID = [(ATCIOA2StreamFormat *)v5 formatID];
+      if (formatID == [(ATCIOA2StreamFormat *)self formatID]&& (v7 = [(ATCIOA2StreamFormat *)v5 formatFlags], v7 == [(ATCIOA2StreamFormat *)self formatFlags]) && (v8 = [(ATCIOA2StreamFormat *)v5 bytesPerPacket], v8 == [(ATCIOA2StreamFormat *)self bytesPerPacket]) && (v9 = [(ATCIOA2StreamFormat *)v5 framesPerPacket], v9 == [(ATCIOA2StreamFormat *)self framesPerPacket]) && (v10 = [(ATCIOA2StreamFormat *)v5 bytesPerFrame], v10 == [(ATCIOA2StreamFormat *)self bytesPerFrame]) && (v11 = [(ATCIOA2StreamFormat *)v5 channelsPerFrame], v11 == [(ATCIOA2StreamFormat *)self channelsPerFrame]) && (v12 = [(ATCIOA2StreamFormat *)v5 bitsPerChannel], v12 == [(ATCIOA2StreamFormat *)self bitsPerChannel]))
       {
         [(ATCIOA2StreamFormat *)v5 sampleRate];
         v14 = v13;

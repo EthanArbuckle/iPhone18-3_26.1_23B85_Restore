@@ -1,16 +1,16 @@
 @interface CKUploadRequestManagerStateMachine
-+ (id)nameFromFunction:(int64_t)a3;
-+ (id)nameFromResponseAction:(int64_t)a3;
-+ (id)nameFromState:(int64_t)a3;
-+ (id)nameFromStateEvent:(int64_t)a3;
-- (BOOL)canPerformFunction:(int64_t)a3;
-- (CKUploadRequestManagerStateMachine)initWithActionHandler:(id)a3;
++ (id)nameFromFunction:(int64_t)function;
++ (id)nameFromResponseAction:(int64_t)action;
++ (id)nameFromState:(int64_t)state;
++ (id)nameFromStateEvent:(int64_t)event;
+- (BOOL)canPerformFunction:(int64_t)function;
+- (CKUploadRequestManagerStateMachine)initWithActionHandler:(id)handler;
 - (id)createStateMachine;
-- (id)eventHandlerForState:(id)a3 withEnterBlock:(id)a4 exitBlock:(id)a5 eventBlock:(id)a6;
+- (id)eventHandlerForState:(id)state withEnterBlock:(id)block exitBlock:(id)exitBlock eventBlock:(id)eventBlock;
 - (void)dealloc;
-- (void)dispatchEvent:(int64_t)a3 userInfo:(id)a4;
+- (void)dispatchEvent:(int64_t)event userInfo:(id)info;
 - (void)start;
-- (void)transitionToState:(id)a3 withEvent:(id)a4;
+- (void)transitionToState:(id)state withEvent:(id)event;
 @end
 
 @implementation CKUploadRequestManagerStateMachine
@@ -258,55 +258,55 @@
   return v97;
 }
 
-+ (id)nameFromState:(int64_t)a3
++ (id)nameFromState:(int64_t)state
 {
-  if (a3 > 3)
+  if (state > 3)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_1E70BF928[a3];
+    return off_1E70BF928[state];
   }
 }
 
-+ (id)nameFromFunction:(int64_t)a3
++ (id)nameFromFunction:(int64_t)function
 {
-  if (a3 > 2)
+  if (function > 2)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_1E70BF948[a3];
+    return off_1E70BF948[function];
   }
 }
 
-+ (id)nameFromStateEvent:(int64_t)a3
++ (id)nameFromStateEvent:(int64_t)event
 {
-  if (a3 > 0x12)
+  if (event > 0x12)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_1E70BF960[a3];
+    return off_1E70BF960[event];
   }
 }
 
-+ (id)nameFromResponseAction:(int64_t)a3
++ (id)nameFromResponseAction:(int64_t)action
 {
-  if (a3 > 0x1C)
+  if (action > 0x1C)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_1E70BF9F8[a3];
+    return off_1E70BF9F8[action];
   }
 }
 
@@ -318,15 +318,15 @@
   [(CKUploadRequestManagerStateMachine *)&v4 dealloc];
 }
 
-- (CKUploadRequestManagerStateMachine)initWithActionHandler:(id)a3
+- (CKUploadRequestManagerStateMachine)initWithActionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v15.receiver = self;
   v15.super_class = CKUploadRequestManagerStateMachine;
   v7 = [(CKUploadRequestManagerStateMachine *)&v15 init];
   if (v7)
   {
-    v8 = objc_msgSend_copy(v4, v5, v6);
+    v8 = objc_msgSend_copy(handlerCopy, v5, v6);
     actionHandler = v7->_actionHandler;
     v7->_actionHandler = v8;
 
@@ -344,9 +344,9 @@
   objc_msgSend_start(v5, v3, v4);
 }
 
-- (void)dispatchEvent:(int64_t)a3 userInfo:(id)a4
+- (void)dispatchEvent:(int64_t)event userInfo:(id)info
 {
-  v6 = objc_msgSend_mutableCopy(a4, a2, a3);
+  v6 = objc_msgSend_mutableCopy(info, a2, event);
   v9 = v6;
   if (v6)
   {
@@ -365,16 +365,16 @@
   objc_msgSend_setObject_forKeyedSubscript_(v27, v17, v16, @"uuid");
 
   v18 = objc_alloc(MEMORY[0x1E6999530]);
-  v20 = objc_msgSend_nameFromStateEvent_(CKUploadRequestManagerStateMachine, v19, a3);
+  v20 = objc_msgSend_nameFromStateEvent_(CKUploadRequestManagerStateMachine, v19, event);
   v22 = objc_msgSend_initWithName_userInfo_(v18, v21, v20, v27);
 
   v25 = objc_msgSend_stateMachine(self, v23, v24);
   objc_msgSend_dispatchEvent_(v25, v26, v22);
 }
 
-- (BOOL)canPerformFunction:(int64_t)a3
+- (BOOL)canPerformFunction:(int64_t)function
 {
-  v4 = self;
+  selfCopy = self;
   v22[1] = *MEMORY[0x1E69E9840];
   objc_initWeak(&location, self);
   v16 = 0;
@@ -386,32 +386,32 @@
   v14[2] = sub_18863AE08;
   v14[3] = &unk_1E70BF8C0;
   objc_copyWeak(v15, &location);
-  v15[1] = a3;
+  v15[1] = function;
   v14[4] = &v16;
-  objc_msgSend_setInternalActionHandler_(v4, v5, v14);
+  objc_msgSend_setInternalActionHandler_(selfCopy, v5, v14);
   v21 = @"function";
-  v7 = objc_msgSend_numberWithInteger_(MEMORY[0x1E696AD98], v6, a3);
+  v7 = objc_msgSend_numberWithInteger_(MEMORY[0x1E696AD98], v6, function);
   v22[0] = v7;
   v9 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x1E695DF20], v8, v22, &v21, 1);
-  objc_msgSend_dispatchEvent_userInfo_(v4, v10, 18, v9);
+  objc_msgSend_dispatchEvent_userInfo_(selfCopy, v10, 18, v9);
 
-  objc_msgSend_setInternalActionHandler_(v4, v11, 0);
-  LOBYTE(v4) = *(v17 + 24);
+  objc_msgSend_setInternalActionHandler_(selfCopy, v11, 0);
+  LOBYTE(selfCopy) = *(v17 + 24);
   objc_destroyWeak(v15);
   _Block_object_dispose(&v16, 8);
   objc_destroyWeak(&location);
   v12 = *MEMORY[0x1E69E9840];
-  return v4 & 1;
+  return selfCopy & 1;
 }
 
-- (id)eventHandlerForState:(id)a3 withEnterBlock:(id)a4 exitBlock:(id)a5 eventBlock:(id)a6
+- (id)eventHandlerForState:(id)state withEnterBlock:(id)block exitBlock:(id)exitBlock eventBlock:(id)eventBlock
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = a3;
+  blockCopy = block;
+  exitBlockCopy = exitBlock;
+  eventBlockCopy = eventBlock;
+  stateCopy = state;
   objc_initWeak(&location, self);
-  objc_initWeak(&from, v13);
+  objc_initWeak(&from, stateCopy);
 
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -425,14 +425,14 @@
   v22[3] = &unk_1E70BF908;
   objc_copyWeak(&v27, &location);
   objc_copyWeak(&v28, &from);
-  v23 = v10;
+  v23 = blockCopy;
   v24 = v14;
-  v25 = v11;
-  v26 = v12;
-  v15 = v12;
-  v16 = v11;
+  v25 = exitBlockCopy;
+  v26 = eventBlockCopy;
+  v15 = eventBlockCopy;
+  v16 = exitBlockCopy;
   v17 = v14;
-  v18 = v10;
+  v18 = blockCopy;
   v19 = _Block_copy(v22);
   v20 = _Block_copy(v19);
 
@@ -445,12 +445,12 @@
   return v20;
 }
 
-- (void)transitionToState:(id)a3 withEvent:(id)a4
+- (void)transitionToState:(id)state withEvent:(id)event
 {
-  v7 = a3;
-  if (a4)
+  stateCopy = state;
+  if (event)
   {
-    objc_msgSend_setEventCausingTransition_(self, v6, a4);
+    objc_msgSend_setEventCausingTransition_(self, v6, event);
   }
 
   else
@@ -459,7 +459,7 @@
   }
 
   v11 = objc_msgSend_stateMachine(self, v8, v9);
-  objc_msgSend_transitionToState_(v11, v10, v7);
+  objc_msgSend_transitionToState_(v11, v10, stateCopy);
 }
 
 @end

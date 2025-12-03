@@ -1,21 +1,21 @@
 @interface BSUIImpression
-- (BSUIImpression)initWithImpression:(id)a3;
+- (BSUIImpression)initWithImpression:(id)impression;
 - (NSDictionary)size;
-- (id)timingAtIndex:(unint64_t)a3;
+- (id)timingAtIndex:(unint64_t)index;
 @end
 
 @implementation BSUIImpression
 
-- (BSUIImpression)initWithImpression:(id)a3
+- (BSUIImpression)initWithImpression:(id)impression
 {
-  v5 = a3;
+  impressionCopy = impression;
   v9.receiver = self;
   v9.super_class = BSUIImpression;
   v6 = [(BSUIImpression *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_impression, a3);
+    objc_storeStrong(&v6->_impression, impression);
   }
 
   return v7;
@@ -36,9 +36,9 @@
   return v6;
 }
 
-- (id)timingAtIndex:(unint64_t)a3
+- (id)timingAtIndex:(unint64_t)index
 {
-  [(TUIImpression *)self->_impression timingAtIndex:a3];
+  [(TUIImpression *)self->_impression timingAtIndex:index];
   v4 = v3;
   v10[0] = @"startTime";
   v6 = [NSNumber numberWithDouble:(v5 + 978307200.0) * 1000.0];

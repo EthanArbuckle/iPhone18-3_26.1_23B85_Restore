@@ -1,12 +1,12 @@
 @interface AssetView
-- (_TtC9MomentsUI9AssetView)initWithCoder:(id)a3;
-- (_TtC9MomentsUI9AssetView)initWithFrame:(CGRect)a3;
+- (_TtC9MomentsUI9AssetView)initWithCoder:(id)coder;
+- (_TtC9MomentsUI9AssetView)initWithFrame:(CGRect)frame;
 - (void)handleTraitChange;
 @end
 
 @implementation AssetView
 
-- (_TtC9MomentsUI9AssetView)initWithCoder:(id)a3
+- (_TtC9MomentsUI9AssetView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC9MomentsUI9AssetView_fallbackImageView;
   *(&self->super.super.super.isa + v4) = [objc_allocWithZone(MEMORY[0x277D755E8]) init];
@@ -19,7 +19,7 @@
   return result;
 }
 
-- (_TtC9MomentsUI9AssetView)initWithFrame:(CGRect)a3
+- (_TtC9MomentsUI9AssetView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
@@ -28,18 +28,18 @@
 
 - (void)handleTraitChange
 {
-  v4 = self;
-  v2 = [(AssetView *)v4 traitCollection];
-  v3 = [v2 userInterfaceStyle];
+  selfCopy = self;
+  traitCollection = [(AssetView *)selfCopy traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  if (v3 == 1)
+  if (userInterfaceStyle == 1)
   {
-    (*((*MEMORY[0x277D85000] & v4->super.super.super.isa) + 0xC0))();
+    (*((*MEMORY[0x277D85000] & selfCopy->super.super.super.isa) + 0xC0))();
   }
 
   else
   {
-    (*((*MEMORY[0x277D85000] & v4->super.super.super.isa) + 0xC8))();
+    (*((*MEMORY[0x277D85000] & selfCopy->super.super.super.isa) + 0xC8))();
   }
 }
 

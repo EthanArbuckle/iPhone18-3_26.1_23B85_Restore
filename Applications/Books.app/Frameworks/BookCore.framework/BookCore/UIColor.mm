@@ -1,5 +1,5 @@
 @interface UIColor
-+ (id)_colorForUserInterfaceStyle:(int64_t)a3 fromColor:(id)a4 forTraitCollection:(id)a5;
++ (id)_colorForUserInterfaceStyle:(int64_t)style fromColor:(id)color forTraitCollection:(id)collection;
 + (id)bc_booksAXSeparatorColor;
 + (id)bc_booksBlue;
 + (id)bc_booksCyan;
@@ -16,9 +16,9 @@
 + (id)bc_booksTransportControlsColor;
 + (id)bc_booksWidgetBackgroundOverlayBottom;
 + (id)bc_booksWidgetBackgroundOverlayTop;
-+ (id)bc_colorWithSRGBDescription:(id)a3;
-+ (id)bc_darkSystemBackgroundForTraitCollection:(id)a3;
-+ (id)bc_dynamicColorWithLightColor:(id)a3 darkColor:(id)a4;
++ (id)bc_colorWithSRGBDescription:(id)description;
++ (id)bc_darkSystemBackgroundForTraitCollection:(id)collection;
++ (id)bc_dynamicColorWithLightColor:(id)color darkColor:(id)darkColor;
 + (id)bc_nowPlayingVibrantPrimary;
 + (id)bc_nowPlayingVibrantQuaternary;
 + (id)bc_nowPlayingVibrantSecondary;
@@ -29,30 +29,30 @@
 - (NSString)bc_rgbaString;
 - (UIColor)bc_invertedDynamicColor;
 - (double)bc_brightness;
-- (id)bc_darkenedColorByFactor:(double)a3;
-- (id)bc_resaturatedColorByFactor:(double)a3;
+- (id)bc_darkenedColorByFactor:(double)factor;
+- (id)bc_resaturatedColorByFactor:(double)factor;
 - (id)bkaxAdjustedDarkerForIncreaseContrast;
 - (id)bkaxAdjustedForIncreaseContrast;
-- (id)bkaxAdjustedForIncreaseContrastAdjustingDarker:(BOOL)a3;
+- (id)bkaxAdjustedForIncreaseContrastAdjustingDarker:(BOOL)darker;
 - (id)bkaxAdjustedLighterForIncreaseContrast;
 - (unint64_t)bc_ARGBHexValue;
 @end
 
 @implementation UIColor
 
-- (id)bc_darkenedColorByFactor:(double)a3
+- (id)bc_darkenedColorByFactor:(double)factor
 {
-  v4 = self;
-  if (sub_1E483C(v4))
+  selfCopy = self;
+  if (sub_1E483C(selfCopy))
   {
     v10 = 0.0;
     v11 = 0.0;
-    if (![(UIColor *)v4 getWhite:&v11 alpha:&v10])
+    if (![(UIColor *)selfCopy getWhite:&v11 alpha:&v10])
     {
       goto LABEL_7;
     }
 
-    v11 = (1.0 - a3) * v11;
+    v11 = (1.0 - factor) * v11;
     v5 = [UIColor colorWithWhite:"colorWithWhite:alpha:" alpha:?];
   }
 
@@ -62,31 +62,31 @@
     v11 = 0.0;
     v8 = 0;
     v9 = 0.0;
-    if (![(UIColor *)v4 getHue:&v11 saturation:&v10 brightness:&v9 alpha:&v8])
+    if (![(UIColor *)selfCopy getHue:&v11 saturation:&v10 brightness:&v9 alpha:&v8])
     {
       goto LABEL_7;
     }
 
-    v9 = (1.0 - a3) * v9;
-    v10 = v10 + (1.0 - v10) * a3;
+    v9 = (1.0 - factor) * v9;
+    v10 = v10 + (1.0 - v10) * factor;
     v5 = [UIColor colorWithHue:"colorWithHue:saturation:brightness:alpha:" saturation:v11 brightness:? alpha:?];
   }
 
   v6 = v5;
 
-  v4 = v6;
+  selfCopy = v6;
 LABEL_7:
 
-  return v4;
+  return selfCopy;
 }
 
-+ (id)bc_colorWithSRGBDescription:(id)a3
++ (id)bc_colorWithSRGBDescription:(id)description
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  descriptionCopy = description;
+  v5 = descriptionCopy;
+  if (descriptionCopy)
   {
-    v6 = [v4 objectForKey:@"a"];
+    v6 = [descriptionCopy objectForKey:@"a"];
     v7 = v6;
     if (v6)
     {
@@ -103,7 +103,7 @@ LABEL_7:
     v12 = v11;
     if (v11)
     {
-      v10 = [a1 colorWithWhite:objc_msgSend(v11 alpha:{"intValue") / 255.0, v9}];
+      v10 = [self colorWithWhite:objc_msgSend(v11 alpha:{"intValue") / 255.0, v9}];
     }
 
     else
@@ -136,7 +136,7 @@ LABEL_7:
         v21 = 0.0;
       }
 
-      v10 = [a1 colorWithRed:v16 green:v15 blue:v21 alpha:v9];
+      v10 = [self colorWithRed:v16 green:v15 blue:v21 alpha:v9];
     }
   }
 
@@ -200,9 +200,9 @@ LABEL_8:
 
 - (NSString)bc_hexValue
 {
-  v2 = [(UIColor *)self CGColor];
-  Components = CGColorGetComponents(v2);
-  if (CGColorGetNumberOfComponents(v2) <= 2)
+  cGColor = [(UIColor *)self CGColor];
+  Components = CGColorGetComponents(cGColor);
+  if (CGColorGetNumberOfComponents(cGColor) <= 2)
   {
     v4 = *Components;
     v10[0] = vdupq_lane_s64(*Components, 0);
@@ -225,11 +225,11 @@ LABEL_8:
 
 - (NSString)bc_rgbaString
 {
-  v2 = [(UIColor *)self CGColor];
-  if (v2)
+  cGColor = [(UIColor *)self CGColor];
+  if (cGColor)
   {
-    v3 = v2;
-    NumberOfComponents = CGColorGetNumberOfComponents(v2);
+    v3 = cGColor;
+    NumberOfComponents = CGColorGetNumberOfComponents(cGColor);
     Components = CGColorGetComponents(v3);
     if (NumberOfComponents == 4)
     {
@@ -248,7 +248,7 @@ LABEL_8:
       if (NumberOfComponents != 2)
       {
 LABEL_7:
-        v2 = [NSString stringWithFormat:@"rgba(%.6g%%, %.6g%%, %.6g%%, %.6g)", *&v6, *&v7, *&v8, *&v9];
+        cGColor = [NSString stringWithFormat:@"rgba(%.6g%%, %.6g%%, %.6g%%, %.6g)", *&v6, *&v7, *&v8, *&v9];
         goto LABEL_8;
       }
 
@@ -267,7 +267,7 @@ LABEL_7:
 
 LABEL_8:
 
-  return v2;
+  return cGColor;
 }
 
 - (NSString)bc_rgbaHexValue
@@ -308,19 +308,19 @@ LABEL_8:
   return v5 / 255.0;
 }
 
-+ (id)bc_dynamicColorWithLightColor:(id)a3 darkColor:(id)a4
++ (id)bc_dynamicColorWithLightColor:(id)color darkColor:(id)darkColor
 {
-  v5 = a4;
-  v6 = a3;
+  darkColorCopy = darkColor;
+  colorCopy = color;
   v7 = [UITraitCollection traitCollectionWithUserInterfaceStyle:0];
   v13[0] = v7;
-  v14[0] = v6;
+  v14[0] = colorCopy;
   v8 = [UITraitCollection traitCollectionWithUserInterfaceStyle:1];
   v13[1] = v8;
-  v14[1] = v6;
+  v14[1] = colorCopy;
   v9 = [UITraitCollection traitCollectionWithUserInterfaceStyle:2];
   v13[2] = v9;
-  v14[2] = v5;
+  v14[2] = darkColorCopy;
   v10 = [NSDictionary dictionaryWithObjects:v14 forKeys:v13 count:3];
   v11 = [UIColor _dynamicColorWithColorsByTraitCollection:v10];
 
@@ -501,18 +501,18 @@ LABEL_8:
   return v3;
 }
 
-+ (id)_colorForUserInterfaceStyle:(int64_t)a3 fromColor:(id)a4 forTraitCollection:(id)a5
++ (id)_colorForUserInterfaceStyle:(int64_t)style fromColor:(id)color forTraitCollection:(id)collection
 {
-  v7 = a5;
-  if (v7)
+  collectionCopy = collection;
+  if (collectionCopy)
   {
-    v8 = v7;
-    v9 = a4;
+    v8 = collectionCopy;
+    colorCopy = color;
   }
 
   else
   {
-    v10 = a4;
+    colorCopy2 = color;
     v8 = objc_opt_new();
   }
 
@@ -521,23 +521,23 @@ LABEL_8:
   v16[1] = 3221225472;
   v16[2] = sub_14EA4C;
   v16[3] = &unk_2C9BB8;
-  v16[4] = a3;
+  v16[4] = style;
   v12 = [v8 traitCollectionByModifyingTraits:v16];
   [UITraitCollection _setCurrentTraitCollection:v12];
-  v13 = [a4 CGColor];
+  cGColor = [color CGColor];
 
-  v14 = [UIColor colorWithCGColor:v13];
+  v14 = [UIColor colorWithCGColor:cGColor];
   [UITraitCollection _setCurrentTraitCollection:v11];
 
   return v14;
 }
 
-+ (id)bc_darkSystemBackgroundForTraitCollection:(id)a3
++ (id)bc_darkSystemBackgroundForTraitCollection:(id)collection
 {
-  v3 = a3;
+  collectionCopy = collection;
   v4 = objc_opt_class();
   v5 = +[UIColor systemBackgroundColor];
-  v6 = [v4 _colorForUserInterfaceStyle:2 fromColor:v5 forTraitCollection:v3];
+  v6 = [v4 _colorForUserInterfaceStyle:2 fromColor:v5 forTraitCollection:collectionCopy];
 
   return v6;
 }
@@ -579,17 +579,17 @@ LABEL_8:
 - (id)bkaxAdjustedForIncreaseContrast
 {
   v3 = objc_opt_self();
-  v4 = self;
-  v5 = [v3 currentTraitCollection];
-  v6 = [v5 userInterfaceStyle];
+  selfCopy = self;
+  currentTraitCollection = [v3 currentTraitCollection];
+  userInterfaceStyle = [currentTraitCollection userInterfaceStyle];
 
   v7 = &selRef_bkaxAdjustedLighterForIncreaseContrast;
-  if (v6 != &dword_0 + 2)
+  if (userInterfaceStyle != &dword_0 + 2)
   {
     v7 = &selRef_bkaxAdjustedDarkerForIncreaseContrast;
   }
 
-  v8 = [v4 *v7];
+  v8 = [selfCopy *v7];
 
   return v8;
 }
@@ -608,33 +608,33 @@ LABEL_8:
   return v2;
 }
 
-- (id)bkaxAdjustedForIncreaseContrastAdjustingDarker:(BOOL)a3
+- (id)bkaxAdjustedForIncreaseContrastAdjustingDarker:(BOOL)darker
 {
-  v4 = self;
-  v5.super.isa = UIColor.bkaxAdjustedForIncreaseContrast(darker:)(a3).super.isa;
+  selfCopy = self;
+  v5.super.isa = UIColor.bkaxAdjustedForIncreaseContrast(darker:)(darker).super.isa;
 
   return v5.super.isa;
 }
 
-- (id)bc_resaturatedColorByFactor:(double)a3
+- (id)bc_resaturatedColorByFactor:(double)factor
 {
-  v4 = self;
-  if ((sub_1E483C(v4) & 1) == 0)
+  selfCopy = self;
+  if ((sub_1E483C(selfCopy) & 1) == 0)
   {
     v9 = 0.0;
     v10 = 0.0;
     v7 = 0;
     v8 = 0;
-    if ([(UIColor *)v4 getHue:&v10 saturation:&v9 brightness:&v8 alpha:&v7])
+    if ([(UIColor *)selfCopy getHue:&v10 saturation:&v9 brightness:&v8 alpha:&v7])
     {
-      v9 = v9 * a3;
+      v9 = v9 * factor;
       v5 = [UIColor colorWithHue:"colorWithHue:saturation:brightness:alpha:" saturation:v10 brightness:? alpha:?];
 
-      v4 = v5;
+      selfCopy = v5;
     }
   }
 
-  return v4;
+  return selfCopy;
 }
 
 @end

@@ -1,13 +1,13 @@
 @interface JSMediaAPI
-- (id)lookup:(id)a3;
+- (id)lookup:(id)lookup;
 @end
 
 @implementation JSMediaAPI
 
-- (id)lookup:(id)a3
+- (id)lookup:(id)lookup
 {
   v4 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
-  v5 = self;
+  selfCopy = self;
   v6 = sub_100121A2C(v4);
 
   return v6;

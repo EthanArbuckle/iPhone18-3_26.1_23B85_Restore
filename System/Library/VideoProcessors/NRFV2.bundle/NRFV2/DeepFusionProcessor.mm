@@ -1,24 +1,24 @@
 @interface DeepFusionProcessor
 - (BOOL)isIntermediateVersionCompatible;
 - (DeepFusionProcessor)init;
-- (DeepFusionProcessor)initWithContext:(id)a3;
+- (DeepFusionProcessor)initWithContext:(id)context;
 - (IBPDeepFusionProcessorDelegate)delegate;
-- (int)_commonInitWithContext:(id)a3;
-- (int)addBuffer:(__CVBuffer *)a3 metadata:(id)a4 type:(int)a5;
-- (int)getTuning:(id)a3;
-- (int)prepareToProcess:(unsigned int)a3 prepareDescriptor:(id)a4;
-- (int)prewarmWithTuningParameters:(id)a3;
+- (int)_commonInitWithContext:(id)context;
+- (int)addBuffer:(__CVBuffer *)buffer metadata:(id)metadata type:(int)type;
+- (int)getTuning:(id)tuning;
+- (int)prepareToProcess:(unsigned int)process prepareDescriptor:(id)descriptor;
+- (int)prewarmWithTuningParameters:(id)parameters;
 - (int)process;
 - (int)purgeResources;
 - (int)resetState;
-- (int)setupWithOptions:(id)a3;
+- (int)setupWithOptions:(id)options;
 @end
 
 @implementation DeepFusionProcessor
 
-- (DeepFusionProcessor)initWithContext:(id)a3
+- (DeepFusionProcessor)initWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v11.receiver = self;
   v11.super_class = DeepFusionProcessor;
   v5 = [(DeepFusionProcessor *)&v11 init];
@@ -31,7 +31,7 @@ LABEL_7:
     goto LABEL_4;
   }
 
-  if (objc_msgSend__commonInitWithContext_(v5, v6, v4, v7))
+  if (objc_msgSend__commonInitWithContext_(v5, v6, contextCopy, v7))
   {
     sub_295888F84();
     goto LABEL_7;
@@ -43,13 +43,13 @@ LABEL_4:
   return v9;
 }
 
-- (int)_commonInitWithContext:(id)a3
+- (int)_commonInitWithContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   FigNote_AllowInternalDefaultLogs();
   fig_note_initialize_category_with_default_work_cf();
   fig_note_initialize_category_with_default_work_cf();
-  objc_storeStrong(&self->_metal, a3);
+  objc_storeStrong(&self->_metal, context);
   if (!self->_metal)
   {
     sub_295889868(&v94 + 1);
@@ -133,7 +133,7 @@ LABEL_34:
   }
 
   v45 = [DeepFusionPreEspressoStage alloc];
-  v47 = objc_msgSend_initWithContext_networkVersion_(v45, v46, v5, self->_networkVersion);
+  v47 = objc_msgSend_initWithContext_networkVersion_(v45, v46, contextCopy, self->_networkVersion);
   preEspressoStage = self->_preEspressoStage;
   self->_preEspressoStage = v47;
 
@@ -144,7 +144,7 @@ LABEL_34:
   }
 
   v49 = [TiledFusionStage alloc];
-  v51 = objc_msgSend_initWithContext_preEspressoStage_networkVersion_(v49, v50, v5, self->_preEspressoStage, self->_networkVersion);
+  v51 = objc_msgSend_initWithContext_preEspressoStage_networkVersion_(v49, v50, contextCopy, self->_preEspressoStage, self->_networkVersion);
   tiledFusionStage = self->_tiledFusionStage;
   self->_tiledFusionStage = v51;
 
@@ -196,7 +196,7 @@ LABEL_34:
   }
 
   v78 = [ColorCubeCorrectionStage alloc];
-  v81 = objc_msgSend_init_(v78, v79, v5, v80);
+  v81 = objc_msgSend_init_(v78, v79, contextCopy, v80);
   ColorCubeCorrectionStage = self->_ColorCubeCorrectionStage;
   self->_ColorCubeCorrectionStage = v81;
 
@@ -207,7 +207,7 @@ LABEL_34:
   }
 
   *&self->_applyColorCubeFixOverride = 0x200000002;
-  v84 = objc_msgSend_computePipelineStateFor_constants_(v5, v83, @"copyTexture", 0);
+  v84 = objc_msgSend_computePipelineStateFor_constants_(contextCopy, v83, @"copyTexture", 0);
   copyTextureKernel = self->_copyTextureKernel;
   self->_copyTextureKernel = v84;
 
@@ -218,7 +218,7 @@ LABEL_34:
   }
 
   v86 = [ColorConvertStage alloc];
-  v89 = objc_msgSend_initWithMetalContext_(v86, v87, v5, v88);
+  v89 = objc_msgSend_initWithMetalContext_(v86, v87, contextCopy, v88);
   colorConvertStage = self->_colorConvertStage;
   self->_colorConvertStage = v89;
 
@@ -234,9 +234,9 @@ LABEL_18:
   return v91;
 }
 
-- (int)prewarmWithTuningParameters:(id)a3
+- (int)prewarmWithTuningParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   v7 = objc_msgSend_prewarmShaders_(ToneMappingStage, v5, self->_metal, v6);
   if (v7)
   {
@@ -281,7 +281,7 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  v24 = objc_msgSend_prewarmShaders_tuningParameters_plistEntryName_(DenoiseRemixStage, v23, self->_metal, v4, @"DeepFusionParameters");
+  v24 = objc_msgSend_prewarmShaders_tuningParameters_plistEntryName_(DenoiseRemixStage, v23, self->_metal, parametersCopy, @"DeepFusionParameters");
   if (v24)
   {
     sub_295889CAC(v24, &v27);
@@ -294,10 +294,10 @@ LABEL_9:
   return v25;
 }
 
-- (int)setupWithOptions:(id)a3
+- (int)setupWithOptions:(id)options
 {
-  v4 = a3;
-  v7 = objc_msgSend_objectForKeyedSubscript_(v4, v5, @"TuningParameters", v6);
+  optionsCopy = options;
+  v7 = objc_msgSend_objectForKeyedSubscript_(optionsCopy, v5, @"TuningParameters", v6);
   Tuning = objc_msgSend_getTuning_(self, v8, v7, v9);
 
   if (Tuning)
@@ -318,7 +318,7 @@ LABEL_24:
 
   p_lscGainsPlist = &self->_lscGainsPlist;
   v16 = [LSCGainsPlist alloc];
-  v19 = objc_msgSend_objectForKeyedSubscript_(v4, v17, *MEMORY[0x29EDC0288], v18);
+  v19 = objc_msgSend_objectForKeyedSubscript_(optionsCopy, v17, *MEMORY[0x29EDC0288], v18);
   v21 = objc_msgSend_initWithDictionary_metal_(v16, v20, v19, self->_metal);
   lscGainsPlist = self->_lscGainsPlist;
   self->_lscGainsPlist = v21;
@@ -340,7 +340,7 @@ LABEL_24:
   v68 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v29, &v72, v71, 16);
   if (v68)
   {
-    v65 = v4;
+    v65 = optionsCopy;
     v32 = 0;
     v33 = 0;
     v34 = 0;
@@ -385,7 +385,7 @@ LABEL_24:
     }
 
     while (v68);
-    v4 = v65;
+    optionsCopy = v65;
   }
 
   else
@@ -420,13 +420,13 @@ LABEL_20:
   return v63;
 }
 
-- (int)addBuffer:(__CVBuffer *)a3 metadata:(id)a4 type:(int)a5
+- (int)addBuffer:(__CVBuffer *)buffer metadata:(id)metadata type:(int)type
 {
   p_EVM_EV0_motionScore = &self->_EVM_EV0_motionScore;
-  v9 = a4;
-  if (CVPixelBufferIsPlanar(a3))
+  metadataCopy = metadata;
+  if (CVPixelBufferIsPlanar(buffer))
   {
-    v11 = objc_msgSend_fillPaddedAreaInFrame_useSeparateCommandQueue_(*(p_EVM_EV0_motionScore + 27), v10, a3, 0);
+    v11 = objc_msgSend_fillPaddedAreaInFrame_useSeparateCommandQueue_(*(p_EVM_EV0_motionScore + 27), v10, buffer, 0);
     if (v11)
     {
       v100 = v11;
@@ -435,7 +435,7 @@ LABEL_20:
     }
   }
 
-  PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
+  PixelFormatType = CVPixelBufferGetPixelFormatType(buffer);
   v14 = 0;
   v15 = 588;
   v16 = 589;
@@ -454,7 +454,7 @@ LABEL_18:
       v18 = 0;
       v14 = 1;
       v15 = 10;
-      if (!v9)
+      if (!metadataCopy)
       {
         goto LABEL_46;
       }
@@ -489,7 +489,7 @@ LABEL_73:
       v15 = 0;
       v14 = 1;
       v18 = 1;
-      if (!v9)
+      if (!metadataCopy)
       {
         goto LABEL_46;
       }
@@ -504,7 +504,7 @@ LABEL_73:
   if (PixelFormatType == 2088265264)
   {
 LABEL_21:
-    if (!v9)
+    if (!metadataCopy)
     {
       goto LABEL_46;
     }
@@ -521,7 +521,7 @@ LABEL_21:
   v18 = 0;
   v15 = 576;
   v16 = 578;
-  if (!v9)
+  if (!metadataCopy)
   {
     goto LABEL_46;
   }
@@ -530,12 +530,12 @@ LABEL_22:
   v104 = v15;
   v105 = v18;
   v106 = v14;
-  WidthOfPlane = CVPixelBufferGetWidthOfPlane(a3, 0);
-  HeightOfPlane = CVPixelBufferGetHeightOfPlane(a3, 0);
-  v25 = objc_msgSend_objectForKeyedSubscript_(v9, v21, @"ReferenceMetadata", v22);
+  WidthOfPlane = CVPixelBufferGetWidthOfPlane(buffer, 0);
+  HeightOfPlane = CVPixelBufferGetHeightOfPlane(buffer, 0);
+  v25 = objc_msgSend_objectForKeyedSubscript_(metadataCopy, v21, @"ReferenceMetadata", v22);
   if (v25)
   {
-    v26 = objc_msgSend_objectForKeyedSubscript_(v9, v23, @"MotionScores", v24);
+    v26 = objc_msgSend_objectForKeyedSubscript_(metadataCopy, v23, @"MotionScores", v24);
     objc_msgSend_floatValue(v26, v27, v28, v29);
     *p_EVM_EV0_motionScore = v30;
 
@@ -550,7 +550,7 @@ LABEL_22:
   }
 
   v107 = v25;
-  v34 = objc_msgSend_objectForKeyedSubscript_(v9, v23, @"SifrMetadata", v24);
+  v34 = objc_msgSend_objectForKeyedSubscript_(metadataCopy, v23, @"SifrMetadata", v24);
   if (v34)
   {
     objc_storeStrong(&self->_sifrMetadataDict, v34);
@@ -563,8 +563,8 @@ LABEL_22:
     }
   }
 
-  v103 = a5;
-  v38 = objc_msgSend_objectForKeyedSubscript_(v9, v32, @"LongMetadata", v33);
+  typeCopy = type;
+  v38 = objc_msgSend_objectForKeyedSubscript_(metadataCopy, v32, @"LongMetadata", v33);
   if (v38)
   {
     objc_storeStrong(&self->_longMetadataDict, v38);
@@ -577,7 +577,7 @@ LABEL_22:
     }
   }
 
-  v42 = objc_msgSend_objectForKeyedSubscript_(v9, v36, @"SyntheticLong", v37);
+  v42 = objc_msgSend_objectForKeyedSubscript_(metadataCopy, v36, @"SyntheticLong", v37);
   if (v42)
   {
     objc_storeStrong(p_EVM_EV0_motionScore + 1, v42);
@@ -593,7 +593,7 @@ LABEL_22:
   }
 
   v102 = v38;
-  v51 = objc_msgSend_objectForKeyedSubscript_(v9, v40, @"SyntheticReference", v41);
+  v51 = objc_msgSend_objectForKeyedSubscript_(metadataCopy, v40, @"SyntheticReference", v41);
   v54 = v51;
   if (v51)
   {
@@ -612,20 +612,20 @@ LABEL_22:
   }
 
   v67 = v34;
-  v70 = objc_msgSend_objectForKeyedSubscript_(v9, v52, *MEMORY[0x29EDC01A8], v53);
+  v70 = objc_msgSend_objectForKeyedSubscript_(metadataCopy, v52, *MEMORY[0x29EDC01A8], v53);
   if (v70)
   {
     objc_storeStrong(&self->_nrfStatus, v70);
   }
 
-  v71 = objc_msgSend_objectForKeyedSubscript_(v9, v68, *MEMORY[0x29EDC0190], v69);
+  v71 = objc_msgSend_objectForKeyedSubscript_(metadataCopy, v68, *MEMORY[0x29EDC0190], v69);
 
   if (v71)
   {
     objc_storeStrong(&self->_nrfInputBracketCount, v71);
   }
 
-  v74 = objc_msgSend_objectForKeyedSubscript_(v9, v72, *MEMORY[0x29EDC0198], v73);
+  v74 = objc_msgSend_objectForKeyedSubscript_(metadataCopy, v72, *MEMORY[0x29EDC0198], v73);
 
   if (v74)
   {
@@ -648,15 +648,15 @@ LABEL_22:
     }
   }
 
-  a5 = v103;
+  type = typeCopy;
   v18 = v105;
   v14 = v106;
 LABEL_46:
-  if (a5 <= 1)
+  if (type <= 1)
   {
-    if (a5)
+    if (type)
     {
-      if (a5 == 1)
+      if (type == 1)
       {
         if (v18)
         {
@@ -664,7 +664,7 @@ LABEL_46:
           goto LABEL_89;
         }
 
-        v86 = objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(self->_metal, v13, a3, v15, 7, 0);
+        v86 = objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(self->_metal, v13, buffer, v15, 7, 0);
         v87 = *(p_EVM_EV0_motionScore + 19);
         *(p_EVM_EV0_motionScore + 19) = v86;
 
@@ -692,12 +692,12 @@ LABEL_46:
       goto LABEL_89;
     }
 
-    *(p_EVM_EV0_motionScore + 13) = a3;
-    v95 = objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(self->_metal, v13, a3, v15, 7, 0);
+    *(p_EVM_EV0_motionScore + 13) = buffer;
+    v95 = objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(self->_metal, v13, buffer, v15, 7, 0);
     v96 = *(p_EVM_EV0_motionScore + 14);
     *(p_EVM_EV0_motionScore + 14) = v95;
 
-    v98 = objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(self->_metal, v97, a3, v16, 7, 1);
+    v98 = objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(self->_metal, v97, buffer, v16, 7, 1);
     v99 = *(p_EVM_EV0_motionScore + 15);
     *(p_EVM_EV0_motionScore + 15) = v98;
 
@@ -716,7 +716,7 @@ LABEL_46:
 
   else
   {
-    switch(a5)
+    switch(type)
     {
       case 2:
         if (v18)
@@ -731,12 +731,12 @@ LABEL_46:
           goto LABEL_89;
         }
 
-        *(p_EVM_EV0_motionScore + 16) = a3;
-        v88 = objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(self->_metal, v13, a3, v15, 7, 0);
+        *(p_EVM_EV0_motionScore + 16) = buffer;
+        v88 = objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(self->_metal, v13, buffer, v15, 7, 0);
         v89 = *(p_EVM_EV0_motionScore + 17);
         *(p_EVM_EV0_motionScore + 17) = v88;
 
-        v91 = objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(self->_metal, v90, a3, v16, 7, 1);
+        v91 = objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(self->_metal, v90, buffer, v16, 7, 1);
         v92 = *(p_EVM_EV0_motionScore + 18);
         *(p_EVM_EV0_motionScore + 18) = v91;
 
@@ -760,7 +760,7 @@ LABEL_46:
           goto LABEL_89;
         }
 
-        v93 = objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(self->_metal, v13, a3, v15, 7, 0);
+        v93 = objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(self->_metal, v13, buffer, v15, 7, 0);
         v94 = *(p_EVM_EV0_motionScore + 20);
         *(p_EVM_EV0_motionScore + 20) = v93;
 
@@ -778,7 +778,7 @@ LABEL_46:
           goto LABEL_89;
         }
 
-        v84 = objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(self->_metal, v13, a3, v15, 7, 0);
+        v84 = objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(self->_metal, v13, buffer, v15, 7, 0);
         v85 = *(p_EVM_EV0_motionScore + 21);
         *(p_EVM_EV0_motionScore + 21) = v84;
 
@@ -805,12 +805,12 @@ LABEL_71:
   return v100;
 }
 
-- (int)prepareToProcess:(unsigned int)a3 prepareDescriptor:(id)a4
+- (int)prepareToProcess:(unsigned int)process prepareDescriptor:(id)descriptor
 {
   p_applyColorCubeFixOverride = &self->_applyColorCubeFixOverride;
-  v6 = a4;
-  *(p_applyColorCubeFixOverride + 1) = objc_msgSend_width(v6, v7, v8, v9);
-  v13 = objc_msgSend_height(v6, v10, v11, v12);
+  descriptorCopy = descriptor;
+  *(p_applyColorCubeFixOverride + 1) = objc_msgSend_width(descriptorCopy, v7, v8, v9);
+  v13 = objc_msgSend_height(descriptorCopy, v10, v11, v12);
 
   v17 = (*(p_applyColorCubeFixOverride + 1) + 15) & 0xFFFFFFFFFFFFFFF0;
   *(p_applyColorCubeFixOverride + 2) = v13;
@@ -2339,15 +2339,15 @@ LABEL_165:
   return WeakRetained;
 }
 
-- (int)getTuning:(id)a3
+- (int)getTuning:(id)tuning
 {
-  v4 = a3;
+  tuningCopy = tuning;
   v5 = objc_opt_new();
   tuningParams = self->_tuningParams;
-  v116 = self;
+  selfCopy = self;
   self->_tuningParams = v5;
 
-  v9 = objc_msgSend_objectForKeyedSubscript_(v4, v7, @"DefaultSensorIDs", v8);
+  v9 = objc_msgSend_objectForKeyedSubscript_(tuningCopy, v7, @"DefaultSensorIDs", v8);
   v10 = v9;
   if (!v9)
   {
@@ -2382,14 +2382,14 @@ LABEL_38:
 
       v16 = *(*(&v126 + 1) + 8 * i);
       v17 = objc_msgSend_objectForKeyedSubscript_(v11, v13, v16, v14);
-      v20 = objc_msgSend_objectForKeyedSubscript_(v4, v18, v16, v19);
+      v20 = objc_msgSend_objectForKeyedSubscript_(tuningCopy, v18, v16, v19);
       v23 = objc_msgSend_objectForKeyedSubscript_(v20, v21, v17, v22);
       v26 = objc_msgSend_objectForKeyedSubscript_(v23, v24, @"DeepFusionParameters", v25);
 
       if (v26)
       {
         v124 = v17;
-        v27 = v4;
+        v27 = tuningCopy;
         v28 = objc_opt_new();
         v29 = objc_opt_new();
         v32 = objc_msgSend_objectForKeyedSubscript_(v26, v30, @"ToneMapping", v31);
@@ -2400,7 +2400,7 @@ LABEL_38:
         {
           sub_2958AC8F4(Plist, v29, v28);
           v10 = v115;
-          v4 = v27;
+          tuningCopy = v27;
 LABEL_33:
           v95 = v117;
           v17 = v124;
@@ -2419,7 +2419,7 @@ LABEL_33:
           v51 = objc_msgSend_objectForKeyedSubscript_(v48, v49, @"DefaultParameters", v50);
           v54 = objc_msgSend_readPlist_(v45, v52, v51, v53);
 
-          v4 = v27;
+          tuningCopy = v27;
           if (v54)
           {
             sub_2958AC98C(v54, v45, v123, v28);
@@ -2432,7 +2432,7 @@ LABEL_32:
         else
         {
           v45 = 0;
-          v4 = v27;
+          tuningCopy = v27;
         }
 
         v122 = v45;
@@ -2480,7 +2480,7 @@ LABEL_32:
             {
               v120 = v55;
               objc_storeStrong((v72 + 48), v77);
-              v86 = objc_msgSend_objectForKeyedSubscript_(v4, v84, v16, v85);
+              v86 = objc_msgSend_objectForKeyedSubscript_(tuningCopy, v84, v16, v85);
               v89 = objc_msgSend_objectForKeyedSubscript_(v86, v87, v124, v88);
               v92 = objc_msgSend_objectForKeyedSubscript_(v89, v90, @"ChromaticDefringing", v91);
 
@@ -2488,8 +2488,8 @@ LABEL_32:
               if (!v92)
               {
 LABEL_20:
-                v104 = v4;
-                v105 = v116->_tuningParams;
+                v104 = tuningCopy;
+                v105 = selfCopy->_tuningParams;
                 v130[0] = 0;
                 v106 = objc_msgSend_scannerWithString_(MEMORY[0x29EDBA0E0], v93, v124, v94);
                 v109 = objc_msgSend_scanHexInt_(v106, v107, v130, v108);
@@ -2506,7 +2506,7 @@ LABEL_20:
 
                 objc_msgSend_setObject_forKeyedSubscript_(v105, v110, v72, v112);
 
-                v4 = v104;
+                tuningCopy = v104;
                 v11 = v117;
                 goto LABEL_24;
               }

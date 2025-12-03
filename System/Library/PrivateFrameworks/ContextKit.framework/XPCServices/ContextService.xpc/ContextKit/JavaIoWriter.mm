@@ -1,28 +1,28 @@
 @interface JavaIoWriter
-- (id)appendWithJavaLangCharSequence:(id)a3;
+- (id)appendWithJavaLangCharSequence:(id)sequence;
 - (void)dealloc;
-- (void)writeWithCharArray:(id)a3;
-- (void)writeWithInt:(int)a3;
-- (void)writeWithNSString:(id)a3;
+- (void)writeWithCharArray:(id)array;
+- (void)writeWithInt:(int)int;
+- (void)writeWithNSString:(id)string;
 @end
 
 @implementation JavaIoWriter
 
-- (void)writeWithCharArray:(id)a3
+- (void)writeWithCharArray:(id)array
 {
-  if (!a3)
+  if (!array)
   {
     JreThrowNullPointerException();
   }
 
-  v4 = *(a3 + 2);
+  v4 = *(array + 2);
 
-  [(JavaIoWriter *)self writeWithCharArray:a3 withInt:0 withInt:v4];
+  [(JavaIoWriter *)self writeWithCharArray:array withInt:0 withInt:v4];
 }
 
-- (void)writeWithInt:(int)a3
+- (void)writeWithInt:(int)int
 {
-  v3 = a3;
+  intCopy = int;
   lock = self->lock_;
   objc_sync_enter(lock);
   v6 = [IOSCharArray arrayWithLength:1];
@@ -32,37 +32,37 @@
     IOSArray_throwOutOfBoundsWithMsg(size, 0);
   }
 
-  *(&v6->super.size_ + 2) = v3;
+  *(&v6->super.size_ + 2) = intCopy;
   [(JavaIoWriter *)self writeWithCharArray:v6];
 
   objc_sync_exit(lock);
 }
 
-- (void)writeWithNSString:(id)a3
+- (void)writeWithNSString:(id)string
 {
-  if (!a3)
+  if (!string)
   {
     JreThrowNullPointerException();
   }
 
-  v5 = [a3 length];
+  v5 = [string length];
 
-  [(JavaIoWriter *)self writeWithNSString:a3 withInt:0 withInt:v5];
+  [(JavaIoWriter *)self writeWithNSString:string withInt:0 withInt:v5];
 }
 
-- (id)appendWithJavaLangCharSequence:(id)a3
+- (id)appendWithJavaLangCharSequence:(id)sequence
 {
-  if (a3)
+  if (sequence)
   {
-    v4 = a3;
+    sequenceCopy = sequence;
   }
 
   else
   {
-    v4 = @"null";
+    sequenceCopy = @"null";
   }
 
-  [(JavaIoWriter *)self writeWithNSString:[(__CFString *)v4 description]];
+  [(JavaIoWriter *)self writeWithNSString:[(__CFString *)sequenceCopy description]];
   return self;
 }
 

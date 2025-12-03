@@ -1,16 +1,16 @@
 @interface MFIMAPMessage
-- (MFIMAPMessage)initWithFlags:(unint64_t)a3 size:(unint64_t)a4 uid:(unsigned int)a5;
+- (MFIMAPMessage)initWithFlags:(unint64_t)flags size:(unint64_t)size uid:(unsigned int)uid;
 - (id)_privacySafeDescription;
 - (id)messageID;
 - (id)remoteID;
 - (id)remoteMailboxURL;
-- (void)setIsPartial:(BOOL)a3;
-- (void)setPreferredEncoding:(unsigned int)a3;
+- (void)setIsPartial:(BOOL)partial;
+- (void)setPreferredEncoding:(unsigned int)encoding;
 @end
 
 @implementation MFIMAPMessage
 
-- (MFIMAPMessage)initWithFlags:(unint64_t)a3 size:(unint64_t)a4 uid:(unsigned int)a5
+- (MFIMAPMessage)initWithFlags:(unint64_t)flags size:(unint64_t)size uid:(unsigned int)uid
 {
   v11.receiver = self;
   v11.super_class = MFIMAPMessage;
@@ -18,9 +18,9 @@
   v9 = v8;
   if (v8)
   {
-    [(MFMailMessage *)v8 setMessageFlags:a3];
-    v9->_size = a4;
-    v9->_uid = a5;
+    [(MFMailMessage *)v8 setMessageFlags:flags];
+    v9->_size = size;
+    v9->_uid = uid;
   }
 
   return v9;
@@ -30,9 +30,9 @@
 {
   v7.receiver = self;
   v7.super_class = MFIMAPMessage;
-  v3 = [(MFIMAPMessage *)&v7 _privacySafeDescription];
-  v4 = [(MFIMAPMessage *)self remoteID];
-  v5 = [v3 stringByAppendingFormat:@" remoteID:%@", v4];
+  _privacySafeDescription = [(MFIMAPMessage *)&v7 _privacySafeDescription];
+  remoteID = [(MFIMAPMessage *)self remoteID];
+  v5 = [_privacySafeDescription stringByAppendingFormat:@" remoteID:%@", remoteID];
 
   return v5;
 }
@@ -61,10 +61,10 @@
   return v5;
 }
 
-- (void)setIsPartial:(BOOL)a3
+- (void)setIsPartial:(BOOL)partial
 {
   v3 = 0x400000000;
-  if (!a3)
+  if (!partial)
   {
     v3 = 0;
   }
@@ -72,9 +72,9 @@
   self->super._messageFlags = self->super._messageFlags & 0xFFFFFFFBFFFFFFFFLL | v3;
 }
 
-- (void)setPreferredEncoding:(unsigned int)a3
+- (void)setPreferredEncoding:(unsigned int)encoding
 {
-  self->super._messageFlags = self->super._messageFlags & 0xFFFFFFF7FFFFFFFFLL | ((a3 != -1) << 35);
+  self->super._messageFlags = self->super._messageFlags & 0xFFFFFFF7FFFFFFFFLL | ((encoding != -1) << 35);
   v3.receiver = self;
   v3.super_class = MFIMAPMessage;
   [(MFIMAPMessage *)&v3 setPreferredEncoding:?];
@@ -83,17 +83,17 @@
 - (id)remoteID
 {
   v2 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_uid];
-  v3 = [v2 stringValue];
+  stringValue = [v2 stringValue];
 
-  return v3;
+  return stringValue;
 }
 
 - (id)remoteMailboxURL
 {
-  v2 = [(MFMailMessage *)self mailbox];
-  v3 = [v2 URLString];
+  mailbox = [(MFMailMessage *)self mailbox];
+  uRLString = [mailbox URLString];
 
-  return v3;
+  return uRLString;
 }
 
 @end

@@ -1,6 +1,6 @@
 @interface _OSLockInterval
 - (BOOL)hasReasonableDuration;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -18,11 +18,11 @@
   return v5 <= 86400.0;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = _OSLockInterval;
-  v4 = [(_OSIInterval *)&v6 copyWithZone:a3];
+  v4 = [(_OSIInterval *)&v6 copyWithZone:zone];
   [v4 setIsLocked:{-[_OSLockInterval isLocked](self, "isLocked")}];
   return v4;
 }
@@ -32,9 +32,9 @@
   v8.receiver = self;
   v8.super_class = _OSLockInterval;
   v3 = [(_OSIInterval *)&v8 description];
-  v4 = [(_OSLockInterval *)self isLocked];
+  isLocked = [(_OSLockInterval *)self isLocked];
   v5 = @"N";
-  if (v4)
+  if (isLocked)
   {
     v5 = @"Y";
   }

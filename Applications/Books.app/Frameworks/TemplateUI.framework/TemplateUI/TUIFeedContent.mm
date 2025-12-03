@@ -1,46 +1,46 @@
 @interface TUIFeedContent
-+ (TUIFeedContent)feedContentWithEntries:(id)a3 stackName:(id)a4 initialContentReadyEntryIndex:(unint64_t)a5;
-+ (id)feedContentFromDictionaries:(id)a3 stackName:(id)a4 initialContentReadyEntryIndex:(unint64_t)a5;
++ (TUIFeedContent)feedContentWithEntries:(id)entries stackName:(id)name initialContentReadyEntryIndex:(unint64_t)index;
++ (id)feedContentFromDictionaries:(id)dictionaries stackName:(id)name initialContentReadyEntryIndex:(unint64_t)index;
 - (NSMutableArray)entries;
-- (TUIFeedContent)initWithDictionaries:(id)a3 stackName:(id)a4 initialContentReadyEntryIndex:(unint64_t)a5;
-- (TUIFeedContent)initWithStackName:(id)a3 initialContentReadyEntryIndex:(unint64_t)a4;
+- (TUIFeedContent)initWithDictionaries:(id)dictionaries stackName:(id)name initialContentReadyEntryIndex:(unint64_t)index;
+- (TUIFeedContent)initWithStackName:(id)name initialContentReadyEntryIndex:(unint64_t)index;
 - (id)description;
-- (void)setEntries:(id)a3;
+- (void)setEntries:(id)entries;
 @end
 
 @implementation TUIFeedContent
 
-+ (id)feedContentFromDictionaries:(id)a3 stackName:(id)a4 initialContentReadyEntryIndex:(unint64_t)a5
++ (id)feedContentFromDictionaries:(id)dictionaries stackName:(id)name initialContentReadyEntryIndex:(unint64_t)index
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [[TUIFeedContent alloc] initWithDictionaries:v8 stackName:v7 initialContentReadyEntryIndex:a5];
+  nameCopy = name;
+  dictionariesCopy = dictionaries;
+  v9 = [[TUIFeedContent alloc] initWithDictionaries:dictionariesCopy stackName:nameCopy initialContentReadyEntryIndex:index];
 
   return v9;
 }
 
-+ (TUIFeedContent)feedContentWithEntries:(id)a3 stackName:(id)a4 initialContentReadyEntryIndex:(unint64_t)a5
++ (TUIFeedContent)feedContentWithEntries:(id)entries stackName:(id)name initialContentReadyEntryIndex:(unint64_t)index
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [[TUIFeedContent alloc] initWithStackName:v7 initialContentReadyEntryIndex:a5];
+  nameCopy = name;
+  entriesCopy = entries;
+  v9 = [[TUIFeedContent alloc] initWithStackName:nameCopy initialContentReadyEntryIndex:index];
 
-  v10 = [v8 mutableCopy];
+  v10 = [entriesCopy mutableCopy];
   [(TUIFeedContent *)v9 setEntries:v10];
 
   return v9;
 }
 
-- (TUIFeedContent)initWithStackName:(id)a3 initialContentReadyEntryIndex:(unint64_t)a4
+- (TUIFeedContent)initWithStackName:(id)name initialContentReadyEntryIndex:(unint64_t)index
 {
-  v7 = a3;
+  nameCopy = name;
   v15.receiver = self;
   v15.super_class = TUIFeedContent;
   v8 = [(TUIFeedContent *)&v15 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_currentStackName, a3);
+    objc_storeStrong(&v8->_currentStackName, name);
     if (!v9->_currentStackName)
     {
       v10 = [(TUIDynamicValue *)[TUIMutableDynamicValue alloc] initWithValue:@"default"];
@@ -52,28 +52,28 @@
     stackNames = v9->_stackNames;
     v9->_stackNames = v12;
 
-    v9->_initialContentReadyEntryIndex = a4;
+    v9->_initialContentReadyEntryIndex = index;
   }
 
   return v9;
 }
 
-- (TUIFeedContent)initWithDictionaries:(id)a3 stackName:(id)a4 initialContentReadyEntryIndex:(unint64_t)a5
+- (TUIFeedContent)initWithDictionaries:(id)dictionaries stackName:(id)name initialContentReadyEntryIndex:(unint64_t)index
 {
-  v8 = a3;
-  v9 = [(TUIFeedContent *)self initWithStackName:a4 initialContentReadyEntryIndex:a5];
+  dictionariesCopy = dictionaries;
+  v9 = [(TUIFeedContent *)self initWithStackName:name initialContentReadyEntryIndex:index];
   if (v9)
   {
     v10 = objc_opt_new();
     entries = v9->_entries;
     v9->_entries = v10;
 
-    v12 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v8 count]);
+    v12 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [dictionariesCopy count]);
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v13 = v8;
+    v13 = dictionariesCopy;
     v14 = [v13 countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v14)
     {
@@ -118,16 +118,16 @@
   return v2;
 }
 
-- (void)setEntries:(id)a3
+- (void)setEntries:(id)entries
 {
-  v5 = a3;
-  objc_storeStrong(&self->_entries, a3);
+  entriesCopy = entries;
+  objc_storeStrong(&self->_entries, entries);
   [(NSMutableSet *)self->_stackNames removeAllObjects];
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = v5;
+  v6 = entriesCopy;
   v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
@@ -144,8 +144,8 @@
         }
 
         stackNames = self->_stackNames;
-        v12 = [*(*(&v13 + 1) + 8 * v10) stackNames];
-        [(NSMutableSet *)stackNames unionSet:v12];
+        stackNames = [*(*(&v13 + 1) + 8 * v10) stackNames];
+        [(NSMutableSet *)stackNames unionSet:stackNames];
 
         v10 = v10 + 1;
       }
@@ -162,8 +162,8 @@
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(TUIFeedContent *)self entries];
-  v6 = [v5 valueForKey:@"description"];
+  entries = [(TUIFeedContent *)self entries];
+  v6 = [entries valueForKey:@"description"];
   v7 = [v6 componentsJoinedByString:{@", \n\t"}];
   v8 = [NSString stringWithFormat:@"<%@: %p> (\n\t%@\n)", v4, self, v7];
 

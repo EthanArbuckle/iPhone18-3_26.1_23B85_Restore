@@ -1,5 +1,5 @@
 @interface UPResultRootNode
-- (UPResultRootNode)initWithLabel:(id)a3 intermediateNodes:(id)a4 directLeafNodes:(id)a5;
+- (UPResultRootNode)initWithLabel:(id)label intermediateNodes:(id)nodes directLeafNodes:(id)leafNodes;
 - (id)_dictionaryRepresentation;
 @end
 
@@ -8,51 +8,51 @@
 - (id)_dictionaryRepresentation
 {
   v16[2] = *MEMORY[0x277D85DE8];
-  v3 = [(UPResultRootNode *)self directLeafNodes];
+  directLeafNodes = [(UPResultRootNode *)self directLeafNodes];
 
-  if (v3)
+  if (directLeafNodes)
   {
     v4 = objc_alloc(MEMORY[0x277CBEB18]);
-    v5 = [(UPResultRootNode *)self directLeafNodes];
-    v3 = [v4 initWithArray:v5 copyItems:0];
+    directLeafNodes2 = [(UPResultRootNode *)self directLeafNodes];
+    directLeafNodes = [v4 initWithArray:directLeafNodes2 copyItems:0];
 
-    if ([v3 count])
+    if ([directLeafNodes count])
     {
       v6 = 0;
       do
       {
-        v7 = [v3 objectAtIndexedSubscript:v6];
-        v8 = [v7 _dictionaryRepresentation];
-        [v3 replaceObjectAtIndex:v6 withObject:v8];
+        v7 = [directLeafNodes objectAtIndexedSubscript:v6];
+        _dictionaryRepresentation = [v7 _dictionaryRepresentation];
+        [directLeafNodes replaceObjectAtIndex:v6 withObject:_dictionaryRepresentation];
 
         ++v6;
       }
 
-      while ([v3 count] > v6);
+      while ([directLeafNodes count] > v6);
     }
   }
 
   v15[0] = @"label";
-  v9 = [(UPResultNode *)self label];
-  v10 = v9;
-  if (!v9)
+  label = [(UPResultNode *)self label];
+  null = label;
+  if (!label)
   {
-    v10 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
   }
 
   v15[1] = @"directLeafNodes";
-  v16[0] = v10;
-  v11 = v3;
-  if (!v3)
+  v16[0] = null;
+  null2 = directLeafNodes;
+  if (!directLeafNodes)
   {
-    v11 = [MEMORY[0x277CBEB68] null];
+    null2 = [MEMORY[0x277CBEB68] null];
   }
 
-  v16[1] = v11;
+  v16[1] = null2;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:v15 count:2];
-  if (v3)
+  if (directLeafNodes)
   {
-    if (v9)
+    if (label)
     {
       goto LABEL_11;
     }
@@ -61,7 +61,7 @@
   else
   {
 
-    if (v9)
+    if (label)
     {
       goto LABEL_11;
     }
@@ -73,18 +73,18 @@ LABEL_11:
   return v12;
 }
 
-- (UPResultRootNode)initWithLabel:(id)a3 intermediateNodes:(id)a4 directLeafNodes:(id)a5
+- (UPResultRootNode)initWithLabel:(id)label intermediateNodes:(id)nodes directLeafNodes:(id)leafNodes
 {
-  v9 = a4;
-  v10 = a5;
+  nodesCopy = nodes;
+  leafNodesCopy = leafNodes;
   v14.receiver = self;
   v14.super_class = UPResultRootNode;
-  v11 = [(UPResultNode *)&v14 initWithLabel:a3];
+  v11 = [(UPResultNode *)&v14 initWithLabel:label];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_intermediateNodes, a4);
-    objc_storeStrong(&v12->_directLeafNodes, a5);
+    objc_storeStrong(&v11->_intermediateNodes, nodes);
+    objc_storeStrong(&v12->_directLeafNodes, leafNodes);
   }
 
   return v12;

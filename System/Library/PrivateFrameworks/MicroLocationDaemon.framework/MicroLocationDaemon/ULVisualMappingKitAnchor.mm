@@ -1,7 +1,7 @@
 @interface ULVisualMappingKitAnchor
 - (NSUUID)uniqueIdentifier;
 - (_TtC19MicroLocationDaemon24ULVisualMappingKitAnchor)init;
-- (_TtC19MicroLocationDaemon24ULVisualMappingKitAnchor)initWithUniqueIdentifier:(id)a3 location:(id)a4;
+- (_TtC19MicroLocationDaemon24ULVisualMappingKitAnchor)initWithUniqueIdentifier:(id)identifier location:(id)location;
 @end
 
 @implementation ULVisualMappingKitAnchor
@@ -20,7 +20,7 @@
   return v9;
 }
 
-- (_TtC19MicroLocationDaemon24ULVisualMappingKitAnchor)initWithUniqueIdentifier:(id)a3 location:(id)a4
+- (_TtC19MicroLocationDaemon24ULVisualMappingKitAnchor)initWithUniqueIdentifier:(id)identifier location:(id)location
 {
   ObjectType = swift_getObjectType();
   v7 = sub_2592121D0();
@@ -30,10 +30,10 @@
   v11 = &v15 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_259212190();
   (*(v8 + 16))(self + OBJC_IVAR____TtC19MicroLocationDaemon24ULVisualMappingKitAnchor_uniqueIdentifier, v11, v7);
-  *(self + OBJC_IVAR____TtC19MicroLocationDaemon24ULVisualMappingKitAnchor_location) = a4;
+  *(self + OBJC_IVAR____TtC19MicroLocationDaemon24ULVisualMappingKitAnchor_location) = location;
   v15.receiver = self;
   v15.super_class = ObjectType;
-  v12 = a4;
+  locationCopy = location;
   v13 = [(ULVisualMappingKitAnchor *)&v15 init];
   (*(v8 + 8))(v11, v7);
   return v13;

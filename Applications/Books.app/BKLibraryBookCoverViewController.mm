@@ -1,9 +1,9 @@
 @interface BKLibraryBookCoverViewController
 - (BKClassicScrubberTrack)progressTrack;
-- (BKLibraryBookCoverViewController)initWithCoverImage:(id)a3 shadowImage:(id)a4;
+- (BKLibraryBookCoverViewController)initWithCoverImage:(id)image shadowImage:(id)shadowImage;
 - (BKLibraryBookCoverViewControllerDelegate)delegate;
 - (BOOL)isNightMode;
-- (BOOL)navigationBar:(id)a3 shouldPopItem:(id)a4;
+- (BOOL)navigationBar:(id)bar shouldPopItem:(id)item;
 - (BOOL)prefersStatusBarHidden;
 - (CGRect)coverAnimationSourceFrame;
 - (NSLayoutConstraint)imageBottomConstraint;
@@ -20,38 +20,38 @@
 - (int64_t)preferredStatusBarStyle;
 - (void)_adjustShadowForCurrentCoverBounds;
 - (void)_setupShadowEffects;
-- (void)_updateBackButtonAnimated:(BOOL)a3;
-- (void)_updateImage:(id)a3;
+- (void)_updateBackButtonAnimated:(BOOL)animated;
+- (void)_updateImage:(id)image;
 - (void)_updateProgress;
 - (void)bookOpenRevealDidEnd;
 - (void)coverAnimationSourceFinalize;
 - (void)coverAnimationSourcePrepare;
 - (void)dealloc;
-- (void)navigationBar:(id)a3 didPopItem:(id)a4;
-- (void)setProgressValue:(id)a3;
-- (void)setShowBackButton:(BOOL)a3;
-- (void)setStatusBarOverrideViewController:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)navigationBar:(id)bar didPopItem:(id)item;
+- (void)setProgressValue:(id)value;
+- (void)setShowBackButton:(BOOL)button;
+- (void)setStatusBarOverrideViewController:(id)controller;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4;
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation BKLibraryBookCoverViewController
 
-- (BKLibraryBookCoverViewController)initWithCoverImage:(id)a3 shadowImage:(id)a4
+- (BKLibraryBookCoverViewController)initWithCoverImage:(id)image shadowImage:(id)shadowImage
 {
-  v7 = a3;
-  v8 = a4;
+  imageCopy = image;
+  shadowImageCopy = shadowImage;
   v14.receiver = self;
   v14.super_class = BKLibraryBookCoverViewController;
   v9 = [(BKLibraryBookCoverViewController *)&v14 initWithNibName:0 bundle:0];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_coverImage, a3);
-    objc_storeStrong(&v10->_shadowImage, a4);
+    objc_storeStrong(&v9->_coverImage, image);
+    objc_storeStrong(&v10->_shadowImage, shadowImage);
     v11 = +[UIColor systemBackgroundColor];
     backgroundColor = v10->_backgroundColor;
     v10->_backgroundColor = v11;
@@ -69,26 +69,26 @@
 
 - (BOOL)isNightMode
 {
-  v2 = [(BKLibraryBookCoverViewController *)self traitCollection];
-  v3 = [v2 bc_userInterfaceStyleDark];
+  traitCollection = [(BKLibraryBookCoverViewController *)self traitCollection];
+  bc_userInterfaceStyleDark = [traitCollection bc_userInterfaceStyleDark];
 
-  return v3;
+  return bc_userInterfaceStyleDark;
 }
 
-- (void)_updateImage:(id)a3
+- (void)_updateImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   WeakRetained = objc_loadWeakRetained(&self->_imageView);
-  [WeakRetained setImage:v4];
+  [WeakRetained setImage:imageCopy];
 
   v6 = objc_loadWeakRetained(&self->_imageView);
-  v7 = [v6 image];
-  [v7 size];
+  image = [v6 image];
+  [image size];
   v9 = v8;
   v11 = v10;
 
-  v12 = [(BKLibraryBookCoverViewController *)self view];
-  [v12 bounds];
+  view = [(BKLibraryBookCoverViewController *)self view];
+  [view bounds];
   v14 = v13;
   v16 = v15;
 
@@ -110,39 +110,39 @@
 
 - (void)_adjustShadowForCurrentCoverBounds
 {
-  v3 = [(BKLibraryBookCoverViewController *)self shadowImage];
+  shadowImage = [(BKLibraryBookCoverViewController *)self shadowImage];
 
-  if (v3)
+  if (shadowImage)
   {
     shadowImage = self->_shadowImage;
-    v14 = [(BKLibraryBookCoverViewController *)self imageView];
-    [v14 frame];
+    imageView = [(BKLibraryBookCoverViewController *)self imageView];
+    [imageView frame];
     [(UIImage *)shadowImage bk_frameForImageFittedInFrame:?];
     v6 = v5;
     v8 = v7;
     v10 = v9;
     v12 = v11;
-    v13 = [(BKLibraryBookCoverViewController *)self shadowImageView];
-    [v13 setFrame:{v6, v8, v10, v12}];
+    shadowImageView = [(BKLibraryBookCoverViewController *)self shadowImageView];
+    [shadowImageView setFrame:{v6, v8, v10, v12}];
   }
 }
 
 - (void)_setupShadowEffects
 {
-  v3 = [(BKLibraryBookCoverViewController *)self shadowImageView];
-  [BKBookBloomOpenAnimator setBlurRadius:v3 forView:60.0];
+  shadowImageView = [(BKLibraryBookCoverViewController *)self shadowImageView];
+  [BKBookBloomOpenAnimator setBlurRadius:shadowImageView forView:60.0];
 
-  v4 = [(BKLibraryBookCoverViewController *)self shadowImageView];
-  [BKBookBloomOpenAnimator setBrightnessFilter:v4 forView:-0.6];
+  shadowImageView2 = [(BKLibraryBookCoverViewController *)self shadowImageView];
+  [BKBookBloomOpenAnimator setBrightnessFilter:shadowImageView2 forView:-0.6];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5.receiver = self;
   v5.super_class = BKLibraryBookCoverViewController;
   [(BKLibraryBookCoverViewController *)&v5 viewDidAppear:?];
-  [(BKLibraryBookCoverViewController *)self _updateBackButtonAnimated:v3];
+  [(BKLibraryBookCoverViewController *)self _updateBackButtonAnimated:appearCopy];
 }
 
 - (void)viewDidLoad
@@ -161,26 +161,26 @@
 
   [(UIImageView *)self->_shadowImageView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(BKLibraryBookCoverViewController *)self _setupShadowEffects];
-  v8 = [(BKLibraryBookCoverViewController *)self view];
-  v9 = [(BKLibraryBookCoverViewController *)self shadowImageView];
-  v10 = [(BKLibraryBookCoverViewController *)self imageView];
-  [v8 insertSubview:v9 belowSubview:v10];
+  view = [(BKLibraryBookCoverViewController *)self view];
+  shadowImageView = [(BKLibraryBookCoverViewController *)self shadowImageView];
+  imageView = [(BKLibraryBookCoverViewController *)self imageView];
+  [view insertSubview:shadowImageView belowSubview:imageView];
 
-  v11 = [(BKLibraryBookCoverViewController *)self progressTrackBottomConstraint];
-  [v11 constant];
+  progressTrackBottomConstraint = [(BKLibraryBookCoverViewController *)self progressTrackBottomConstraint];
+  [progressTrackBottomConstraint constant];
   [(BKLibraryBookCoverViewController *)self setProgressTrackBottomSpecDistance:?];
 
-  v12 = [(BKLibraryBookCoverViewController *)self progressTrackLeadingConstraint];
-  [v12 constant];
+  progressTrackLeadingConstraint = [(BKLibraryBookCoverViewController *)self progressTrackLeadingConstraint];
+  [progressTrackLeadingConstraint constant];
   [(BKLibraryBookCoverViewController *)self setProgressTrackLeadingSpecDistance:?];
 
-  v13 = [(BKLibraryBookCoverViewController *)self progressTrackTrailingConstraint];
-  [v13 constant];
+  progressTrackTrailingConstraint = [(BKLibraryBookCoverViewController *)self progressTrackTrailingConstraint];
+  [progressTrackTrailingConstraint constant];
   [(BKLibraryBookCoverViewController *)self setProgressTrackTrailingSpecDistance:?];
 
   v14 = +[BKBookBloomOpenAnimator backgroundColorForZoomedBookCover];
-  v15 = [(BKLibraryBookCoverViewController *)self view];
-  [v15 setBackgroundColor:v14];
+  view2 = [(BKLibraryBookCoverViewController *)self view];
+  [view2 setBackgroundColor:v14];
 
   if (self->_coverImage || self->_fallbackImage)
   {
@@ -188,30 +188,30 @@
   }
 
   [(BKLibraryBookCoverViewController *)self _updateShadowImage:self->_shadowImage];
-  v16 = [(BKLibraryBookCoverViewController *)self progressTrack];
-  [v16 setLoadingProgress:1.0];
+  progressTrack = [(BKLibraryBookCoverViewController *)self progressTrack];
+  [progressTrack setLoadingProgress:1.0];
 
-  v17 = [(BKLibraryBookCoverViewController *)self progressTrack];
-  [v17 setReadingProgress:0.0];
+  progressTrack2 = [(BKLibraryBookCoverViewController *)self progressTrack];
+  [progressTrack2 setReadingProgress:0.0];
 
-  v18 = [(BKLibraryBookCoverViewController *)self progressTrack];
-  [v18 setAlpha:0.0];
+  progressTrack3 = [(BKLibraryBookCoverViewController *)self progressTrack];
+  [progressTrack3 setAlpha:0.0];
 
-  v19 = [(BKLibraryBookCoverViewController *)self progressTrack];
-  [v19 setThickness:3.0];
+  progressTrack4 = [(BKLibraryBookCoverViewController *)self progressTrack];
+  [progressTrack4 setThickness:3.0];
 
-  v20 = [(BKLibraryBookCoverViewController *)self progressTrack];
-  [v20 setRoundEndCaps:1];
+  progressTrack5 = [(BKLibraryBookCoverViewController *)self progressTrack];
+  [progressTrack5 setRoundEndCaps:1];
 
-  v21 = [(BKLibraryBookCoverViewController *)self progressTrack];
-  [v21 setTrackForegroundColor:v3];
+  progressTrack6 = [(BKLibraryBookCoverViewController *)self progressTrack];
+  [progressTrack6 setTrackForegroundColor:v3];
 
   v22 = [UIColor colorWithRed:0.0156862745 green:0.0156862745 blue:0.0588235294 alpha:0.2];
   v23 = [UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:0.2];
   v24 = [UIColor bc_dynamicColorWithLightColor:v22 darkColor:v23];
 
-  v25 = [(BKLibraryBookCoverViewController *)self progressTrack];
-  [v25 setTrackBackgroundColor:v24];
+  progressTrack7 = [(BKLibraryBookCoverViewController *)self progressTrack];
+  [progressTrack7 setTrackBackgroundColor:v24];
 
   [(BKLibraryBookCoverViewController *)self _updateProgress];
   v26 = objc_alloc_init(UINavigationBar);
@@ -223,35 +223,35 @@
   [v26 _setHidesShadow:1];
   [v26 setDelegate:self];
   [v26 setAlpha:0.0];
-  v28 = [(BKLibraryBookCoverViewController *)self view];
-  [v28 addSubview:v26];
+  view3 = [(BKLibraryBookCoverViewController *)self view];
+  [view3 addSubview:v26];
 
   [v26 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v29 = [v26 leftAnchor];
-  v30 = [(BKLibraryBookCoverViewController *)self view];
-  v31 = [v30 leftAnchor];
-  v32 = [v29 constraintLessThanOrEqualToAnchor:v31];
+  leftAnchor = [v26 leftAnchor];
+  view4 = [(BKLibraryBookCoverViewController *)self view];
+  leftAnchor2 = [view4 leftAnchor];
+  v32 = [leftAnchor constraintLessThanOrEqualToAnchor:leftAnchor2];
   [v32 setActive:1];
 
-  v33 = [v26 rightAnchor];
-  v34 = [(BKLibraryBookCoverViewController *)self view];
-  v35 = [v34 rightAnchor];
-  v36 = [v33 constraintLessThanOrEqualToAnchor:v35];
+  rightAnchor = [v26 rightAnchor];
+  view5 = [(BKLibraryBookCoverViewController *)self view];
+  rightAnchor2 = [view5 rightAnchor];
+  v36 = [rightAnchor constraintLessThanOrEqualToAnchor:rightAnchor2];
   [v36 setActive:1];
 
-  v37 = [v26 topAnchor];
-  v38 = [(BKLibraryBookCoverViewController *)self view];
-  v39 = [v38 safeAreaLayoutGuide];
-  v40 = [v39 topAnchor];
-  v41 = [v37 constraintLessThanOrEqualToAnchor:v40];
+  topAnchor = [v26 topAnchor];
+  view6 = [(BKLibraryBookCoverViewController *)self view];
+  safeAreaLayoutGuide = [view6 safeAreaLayoutGuide];
+  topAnchor2 = [safeAreaLayoutGuide topAnchor];
+  v41 = [topAnchor constraintLessThanOrEqualToAnchor:topAnchor2];
   [v41 setActive:1];
 
-  v42 = [(BKLibraryBookCoverViewController *)self navBarBackItem];
+  navBarBackItem = [(BKLibraryBookCoverViewController *)self navBarBackItem];
 
-  if (v42)
+  if (navBarBackItem)
   {
-    v43 = [(BKLibraryBookCoverViewController *)self navBarBackItem];
-    v49[0] = v43;
+    navBarBackItem2 = [(BKLibraryBookCoverViewController *)self navBarBackItem];
+    v49[0] = navBarBackItem2;
     v44 = objc_opt_new();
     v49[1] = v44;
     v45 = [NSArray arrayWithObjects:v49 count:2];
@@ -280,8 +280,8 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(BKLibraryBookCoverViewController *)self view];
-  [v11 frame];
+  view = [(BKLibraryBookCoverViewController *)self view];
+  [view frame];
   v13 = v12;
   v15 = v14;
 
@@ -295,33 +295,33 @@
   v53.size.width = v8;
   v53.size.height = v10;
   v17 = v13 - CGRectGetMaxX(v53);
-  v18 = [(BKLibraryBookCoverViewController *)self imageTopConstraint];
-  [v18 setConstant:v6];
+  imageTopConstraint = [(BKLibraryBookCoverViewController *)self imageTopConstraint];
+  [imageTopConstraint setConstant:v6];
 
-  v19 = [(BKLibraryBookCoverViewController *)self imageBottomConstraint];
-  [v19 setConstant:v16];
+  imageBottomConstraint = [(BKLibraryBookCoverViewController *)self imageBottomConstraint];
+  [imageBottomConstraint setConstant:v16];
 
-  v20 = [(BKLibraryBookCoverViewController *)self imageLeadingConstraint];
-  [v20 setConstant:v4];
+  imageLeadingConstraint = [(BKLibraryBookCoverViewController *)self imageLeadingConstraint];
+  [imageLeadingConstraint setConstant:v4];
 
-  v21 = [(BKLibraryBookCoverViewController *)self imageTrailingConstraint];
-  [v21 setConstant:v17];
+  imageTrailingConstraint = [(BKLibraryBookCoverViewController *)self imageTrailingConstraint];
+  [imageTrailingConstraint setConstant:v17];
 
-  v22 = [(BKLibraryBookCoverViewController *)self traitCollection];
-  v23 = [v22 horizontalSizeClass];
+  traitCollection = [(BKLibraryBookCoverViewController *)self traitCollection];
+  horizontalSizeClass = [traitCollection horizontalSizeClass];
 
-  if (v23 == 2)
+  if (horizontalSizeClass == 2)
   {
     v24 = (v13 + -320.0) * 0.5;
     [(BKLibraryBookCoverViewController *)self progressTrackBottomSpecDistance];
     v26 = v16 + v25 + -32.0;
-    v27 = [(BKLibraryBookCoverViewController *)self progressTrackBottomConstraint];
-    [v27 setConstant:v26];
+    progressTrackBottomConstraint = [(BKLibraryBookCoverViewController *)self progressTrackBottomConstraint];
+    [progressTrackBottomConstraint setConstant:v26];
 
     [(BKLibraryBookCoverViewController *)self progressTrackLeadingSpecDistance];
     v29 = v24 + v28;
-    v30 = [(BKLibraryBookCoverViewController *)self progressTrackLeadingConstraint];
-    [v30 setConstant:v29];
+    progressTrackLeadingConstraint = [(BKLibraryBookCoverViewController *)self progressTrackLeadingConstraint];
+    [progressTrackLeadingConstraint setConstant:v29];
 
     [(BKLibraryBookCoverViewController *)self progressTrackTrailingSpecDistance];
     v32 = v24 + v31;
@@ -331,47 +331,47 @@
   {
     [(BKLibraryBookCoverViewController *)self progressTrackBottomSpecDistance];
     v34 = v16 + v33 + -24.0;
-    v35 = [(BKLibraryBookCoverViewController *)self progressTrackBottomConstraint];
-    [v35 setConstant:v34];
+    progressTrackBottomConstraint2 = [(BKLibraryBookCoverViewController *)self progressTrackBottomConstraint];
+    [progressTrackBottomConstraint2 setConstant:v34];
 
     [(BKLibraryBookCoverViewController *)self progressTrackLeadingSpecDistance];
     v37 = v4 + v36 + 1.0;
-    v38 = [(BKLibraryBookCoverViewController *)self progressTrackLeadingConstraint];
-    [v38 setConstant:v37];
+    progressTrackLeadingConstraint2 = [(BKLibraryBookCoverViewController *)self progressTrackLeadingConstraint];
+    [progressTrackLeadingConstraint2 setConstant:v37];
 
     [(BKLibraryBookCoverViewController *)self progressTrackTrailingSpecDistance];
     v32 = v17 + v39 + 1.0;
   }
 
-  v40 = [(BKLibraryBookCoverViewController *)self progressTrackTrailingConstraint];
-  [v40 setConstant:v32];
+  progressTrackTrailingConstraint = [(BKLibraryBookCoverViewController *)self progressTrackTrailingConstraint];
+  [progressTrackTrailingConstraint setConstant:v32];
 
   [(BKLibraryBookCoverViewController *)self coverAnimationSourceFrame];
   v42 = v41;
   v44 = v43;
   v46 = v45;
   v48 = v47;
-  v49 = [(BKLibraryBookCoverViewController *)self coverImageViewController];
-  v50 = [v49 view];
-  [v50 setFrame:{v42, v44, v46, v48}];
+  coverImageViewController = [(BKLibraryBookCoverViewController *)self coverImageViewController];
+  view2 = [coverImageViewController view];
+  [view2 setFrame:{v42, v44, v46, v48}];
 }
 
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear
 {
-  v4 = a4;
-  v6 = a3;
+  disappearCopy = disappear;
+  windowCopy = window;
   v18.receiver = self;
   v18.super_class = BKLibraryBookCoverViewController;
-  [(BKLibraryBookCoverViewController *)&v18 viewDidMoveToWindow:v6 shouldAppearOrDisappear:v4];
-  if (v6)
+  [(BKLibraryBookCoverViewController *)&v18 viewDidMoveToWindow:windowCopy shouldAppearOrDisappear:disappearCopy];
+  if (windowCopy)
   {
     WeakRetained = objc_loadWeakRetained(&self->_imageView);
-    v8 = [WeakRetained image];
-    [v8 size];
+    image = [WeakRetained image];
+    [image size];
     v10 = v9;
     v12 = v11;
 
-    [v6 bounds];
+    [windowCopy bounds];
     v14 = v13;
     v16 = v15;
     v17 = v13 / v15;
@@ -392,17 +392,17 @@
   }
 }
 
-- (BOOL)navigationBar:(id)a3 shouldPopItem:(id)a4
+- (BOOL)navigationBar:(id)bar shouldPopItem:(id)item
 {
-  v4 = [(BKLibraryBookCoverViewController *)self navBarForBackButton:a3];
+  v4 = [(BKLibraryBookCoverViewController *)self navBarForBackButton:bar];
   [v4 setAlpha:0.0];
 
   return 1;
 }
 
-- (void)navigationBar:(id)a3 didPopItem:(id)a4
+- (void)navigationBar:(id)bar didPopItem:(id)item
 {
-  if ([(BKLibraryBookCoverViewController *)self showBackChevron:a3])
+  if ([(BKLibraryBookCoverViewController *)self showBackChevron:bar])
   {
 
     [(BKLibraryBookCoverViewController *)self im_dismissAnimated:1];
@@ -410,8 +410,8 @@
 
   else
   {
-    v5 = [(BKLibraryBookCoverViewController *)self delegate];
-    [v5 dismissLibraryBookCoverViewController:self animated:1];
+    delegate = [(BKLibraryBookCoverViewController *)self delegate];
+    [delegate dismissLibraryBookCoverViewController:self animated:1];
   }
 }
 
@@ -433,34 +433,34 @@
   [UIView animateWithDuration:v2 animations:0.1];
 }
 
-- (void)setProgressValue:(id)a3
+- (void)setProgressValue:(id)value
 {
-  v8 = a3;
-  [v8 floatValue];
+  valueCopy = value;
+  [valueCopy floatValue];
   v6 = v5;
   [(NSNumber *)self->_progressValue floatValue];
-  if (v6 != v7 || !v8 || !self->_progressValue)
+  if (v6 != v7 || !valueCopy || !self->_progressValue)
   {
-    objc_storeStrong(&self->_progressValue, a3);
+    objc_storeStrong(&self->_progressValue, value);
     [(BKLibraryBookCoverViewController *)self _updateProgress];
   }
 }
 
-- (void)setShowBackButton:(BOOL)a3
+- (void)setShowBackButton:(BOOL)button
 {
-  if (self->_showBackButton != a3)
+  if (self->_showBackButton != button)
   {
-    self->_showBackButton = a3;
+    self->_showBackButton = button;
     [(BKLibraryBookCoverViewController *)self _updateBackButtonAnimated:1];
     showBackButton = self->_showBackButton;
-    v5 = [(BKLibraryBookCoverViewController *)self navBarForBackButton];
-    [v5 setAccessibilityElementsHidden:!showBackButton];
+    navBarForBackButton = [(BKLibraryBookCoverViewController *)self navBarForBackButton];
+    [navBarForBackButton setAccessibilityElementsHidden:!showBackButton];
   }
 }
 
-- (void)_updateBackButtonAnimated:(BOOL)a3
+- (void)_updateBackButtonAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100156548;
@@ -468,7 +468,7 @@
   v6[4] = self;
   v4 = objc_retainBlock(v6);
   v5 = v4;
-  if (v3)
+  if (animatedCopy)
   {
     [UIView animateWithDuration:v4 animations:0.2];
   }
@@ -479,9 +479,9 @@
   }
 }
 
-- (void)setStatusBarOverrideViewController:(id)a3
+- (void)setStatusBarOverrideViewController:(id)controller
 {
-  obj = a3;
+  obj = controller;
   WeakRetained = objc_loadWeakRetained(&self->_statusBarOverrideViewController);
 
   v5 = obj;
@@ -500,15 +500,15 @@
   v3 = WeakRetained;
   if (WeakRetained)
   {
-    v4 = [WeakRetained prefersStatusBarHidden];
+    prefersStatusBarHidden = [WeakRetained prefersStatusBarHidden];
   }
 
   else
   {
-    v4 = 1;
+    prefersStatusBarHidden = 1;
   }
 
-  return v4;
+  return prefersStatusBarHidden;
 }
 
 - (int64_t)preferredStatusBarStyle
@@ -517,22 +517,22 @@
   v3 = WeakRetained;
   if (WeakRetained)
   {
-    v4 = [WeakRetained preferredStatusBarStyle];
+    preferredStatusBarStyle = [WeakRetained preferredStatusBarStyle];
   }
 
   else
   {
-    v4 = 0;
+    preferredStatusBarStyle = 0;
   }
 
-  return v4;
+  return preferredStatusBarStyle;
 }
 
 - (id)coverAnimationHostTopViewsToFadeOut
 {
   [(BKLibraryBookCoverViewController *)self loadViewIfNeeded];
-  v3 = [(BKLibraryBookCoverViewController *)self progressTrack];
-  v6 = v3;
+  progressTrack = [(BKLibraryBookCoverViewController *)self progressTrack];
+  v6 = progressTrack;
   v4 = [NSArray arrayWithObjects:&v6 count:1];
 
   return v4;
@@ -540,25 +540,25 @@
 
 - (CGRect)coverAnimationSourceFrame
 {
-  v3 = [(BKLibraryBookCoverViewController *)self imageView];
-  v4 = [v3 image];
-  [v4 size];
+  imageView = [(BKLibraryBookCoverViewController *)self imageView];
+  image = [imageView image];
+  [image size];
   v6 = v5;
   v8 = v7;
 
   if (([(BKLibraryBookCoverViewController *)self im_isCompactWidth]& 1) != 0)
   {
-    v9 = 1;
+    im_isCompactHeight = 1;
   }
 
   else
   {
-    v9 = [(BKLibraryBookCoverViewController *)self im_isCompactHeight];
+    im_isCompactHeight = [(BKLibraryBookCoverViewController *)self im_isCompactHeight];
   }
 
-  v10 = [(BKLibraryBookCoverViewController *)self view];
-  [v10 bounds];
-  [BKBookBloomOpenAnimator zoomedFrameForCoverWithSize:v9 isCompact:v6 containerViewBounds:v8, v11, v12, v13, v14];
+  view = [(BKLibraryBookCoverViewController *)self view];
+  [view bounds];
+  [BKBookBloomOpenAnimator zoomedFrameForCoverWithSize:im_isCompactHeight isCompact:v6 containerViewBounds:v8, v11, v12, v13, v14];
   v16 = v15;
   v18 = v17;
   v20 = v19;
@@ -577,35 +577,35 @@
 
 - (id)coverAnimationSourceImage
 {
-  v2 = [(BKLibraryBookCoverViewController *)self imageView];
-  v3 = [v2 image];
+  imageView = [(BKLibraryBookCoverViewController *)self imageView];
+  image = [imageView image];
 
-  return v3;
+  return image;
 }
 
 - (void)coverAnimationSourcePrepare
 {
-  v3 = [(BKLibraryBookCoverViewController *)self imageView];
-  [v3 setHidden:1];
+  imageView = [(BKLibraryBookCoverViewController *)self imageView];
+  [imageView setHidden:1];
 
-  v4 = [(BKLibraryBookCoverViewController *)self shadowImageView];
-  [v4 setHidden:1];
+  shadowImageView = [(BKLibraryBookCoverViewController *)self shadowImageView];
+  [shadowImageView setHidden:1];
 }
 
 - (void)coverAnimationSourceFinalize
 {
-  v3 = [(BKLibraryBookCoverViewController *)self imageView];
-  [v3 setHidden:0];
+  imageView = [(BKLibraryBookCoverViewController *)self imageView];
+  [imageView setHidden:0];
 
-  v4 = [(BKLibraryBookCoverViewController *)self shadowImageView];
-  [v4 setHidden:0];
+  shadowImageView = [(BKLibraryBookCoverViewController *)self shadowImageView];
+  [shadowImageView setHidden:0];
 }
 
 - (void)bookOpenRevealDidEnd
 {
   v4 = +[UIColor clearColor];
-  v3 = [(BKLibraryBookCoverViewController *)self view];
-  [v3 setBackgroundColor:v4];
+  view = [(BKLibraryBookCoverViewController *)self view];
+  [view setBackgroundColor:v4];
 }
 
 - (BKLibraryBookCoverViewControllerDelegate)delegate

@@ -1,16 +1,16 @@
 @interface VUISportsScoreboardViewModelAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityValue;
 @end
 
 @implementation VUISportsScoreboardViewModelAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"VUISportsScoreboardViewModel" hasProperty:@"leagueContext" withType:"@"];
-  [v3 validateClass:@"VUISportsScoreboardViewModel" hasProperty:@"scores" withType:"@"];
-  [v3 validateClass:@"VUISportsScoreboardViewModel" hasProperty:@"showScoreboard" withType:"B"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"VUISportsScoreboardViewModel" hasProperty:@"leagueContext" withType:"@"];
+  [validationsCopy validateClass:@"VUISportsScoreboardViewModel" hasProperty:@"scores" withType:"@"];
+  [validationsCopy validateClass:@"VUISportsScoreboardViewModel" hasProperty:@"showScoreboard" withType:"B"];
 }
 
 - (id)accessibilityValue

@@ -1,11 +1,11 @@
 @interface NSURL
-+ (BOOL)fr_canHandleNavigationAction:(id)a3;
-+ (id)_urlForTagID:(id)a3 internal:(BOOL)a4;
-+ (id)fr_NewsURLForNotificationsWithTagID:(id)a3;
-+ (id)fr_NewsURLForTagID:(id)a3 title:(id)a4;
-+ (id)fr_createArticleLinkWithArticleID:(id)a3 url:(id)a4;
-+ (id)fr_sanitizedURLForWebView:(id)a3 navigationAction:(id)a4;
-- (BOOL)_caseInsensitiveCompareWithFirstPathComponent:(id)a3;
++ (BOOL)fr_canHandleNavigationAction:(id)action;
++ (id)_urlForTagID:(id)d internal:(BOOL)internal;
++ (id)fr_NewsURLForNotificationsWithTagID:(id)d;
++ (id)fr_NewsURLForTagID:(id)d title:(id)title;
++ (id)fr_createArticleLinkWithArticleID:(id)d url:(id)url;
++ (id)fr_sanitizedURLForWebView:(id)view navigationAction:(id)action;
+- (BOOL)_caseInsensitiveCompareWithFirstPathComponent:(id)component;
 - (BOOL)fr_handleExternalURLWithPrompt;
 - (BOOL)fr_isBundleSubcriptionURL;
 - (BOOL)fr_isFeldsparFavoritesPickerURL;
@@ -17,7 +17,7 @@
 - (BOOL)fr_isFeldsparSavedURL;
 - (BOOL)fr_isFeldsparSpotlightURL;
 - (BOOL)fr_isFeldsparTabURL;
-- (BOOL)fr_isFromSafariSearchWithSourceApplication:(id)a3;
+- (BOOL)fr_isFromSafariSearchWithSourceApplication:(id)application;
 - (BOOL)fr_isHTTPScheme;
 - (BOOL)fr_isOpenedFromExploreTab;
 - (BOOL)fr_isPreviewURL;
@@ -27,7 +27,7 @@
 - (BOOL)fr_isUserSegmentationURL;
 - (BOOL)fr_isWebArchiveURL;
 - (BOOL)fr_isiAdOriginatedURL;
-- (id)_fr_representationWithScheme:(id)a3;
+- (id)_fr_representationWithScheme:(id)scheme;
 - (id)fr_accessTokenFromAuthenticationCallback;
 - (id)fr_campaignType;
 - (id)fr_creativeID;
@@ -37,49 +37,49 @@
 - (id)fr_storeURLRepresentation;
 - (id)fr_subscriptionURLTagID;
 - (id)fr_userActionDate;
-- (id)fr_valueForQueryItemWithName:(id)a3;
+- (id)fr_valueForQueryItemWithName:(id)name;
 - (id)fr_widgetEngagementFileURL;
 - (id)fr_widgetModeGroupID;
-- (id)fr_widgetReferralItemWithQueryItemName:(id)a3;
-- (int64_t)_articleOpenedFromQueryValue:(id)a3;
+- (id)fr_widgetReferralItemWithQueryItemName:(id)name;
+- (int64_t)_articleOpenedFromQueryValue:(id)value;
 - (int64_t)fr_articleOpenedFrom;
 - (int64_t)fr_iAdPreviewLimit;
-- (void)fr_feldsparArticleIDWithAssetManager:(id)a3 completion:(id)a4;
-- (void)fr_getOverrideSegmentSetIDs:(id *)a3 additionalSegmentSetIDs:(id *)a4 disableABTesting:(BOOL *)a5;
-- (void)fr_getPreviewChannelIdentifier:(id *)a3 articleIdentifier:(id *)a4;
-- (void)fr_openedFromEditorialArticleURLQueryParametersWithCompletion:(id)a3;
-- (void)fr_subscriptionURLQueryParametersWithCompletion:(id)a3;
+- (void)fr_feldsparArticleIDWithAssetManager:(id)manager completion:(id)completion;
+- (void)fr_getOverrideSegmentSetIDs:(id *)ds additionalSegmentSetIDs:(id *)iDs disableABTesting:(BOOL *)testing;
+- (void)fr_getPreviewChannelIdentifier:(id *)identifier articleIdentifier:(id *)articleIdentifier;
+- (void)fr_openedFromEditorialArticleURLQueryParametersWithCompletion:(id)completion;
+- (void)fr_subscriptionURLQueryParametersWithCompletion:(id)completion;
 @end
 
 @implementation NSURL
 
-- (id)_fr_representationWithScheme:(id)a3
+- (id)_fr_representationWithScheme:(id)scheme
 {
-  v4 = a3;
+  schemeCopy = scheme;
   v5 = [[NSURLComponents alloc] initWithURL:self resolvingAgainstBaseURL:1];
-  [v5 setScheme:v4];
+  [v5 setScheme:schemeCopy];
 
   v6 = [v5 URL];
 
   return v6;
 }
 
-- (void)fr_feldsparArticleIDWithAssetManager:(id)a3 completion:(id)a4
+- (void)fr_feldsparArticleIDWithAssetManager:(id)manager completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  completionCopy = completion;
   v61 = 0;
-  LOBYTE(a4) = [(NSURL *)self fc_isHardPaywallNewsArticleURL:&v61];
+  LOBYTE(completion) = [(NSURL *)self fc_isHardPaywallNewsArticleURL:&v61];
   v8 = v61;
-  if ((a4 & 1) == 0)
+  if ((completion & 1) == 0)
   {
-    v9 = [(NSURL *)self fc_NewsArticleID];
+    fc_NewsArticleID = [(NSURL *)self fc_NewsArticleID];
 
-    v8 = v9;
+    v8 = fc_NewsArticleID;
   }
 
-  v10 = [(NSURL *)self query];
-  v11 = [v10 componentsSeparatedByString:@"&"];
+  query = [(NSURL *)self query];
+  v11 = [query componentsSeparatedByString:@"&"];
 
   v47 = +[NSMutableDictionary dictionary];
   v57 = 0u;
@@ -98,7 +98,7 @@
     v34 = 0;
     v42 = 1;
     v29 = v47;
-    if (!v7)
+    if (!completionCopy)
     {
       goto LABEL_37;
     }
@@ -107,12 +107,12 @@
   }
 
   v14 = v13;
-  v43 = self;
+  selfCopy = self;
   v44 = v8;
   v50 = 0;
   obj = v12;
-  v45 = v7;
-  v46 = v6;
+  v45 = completionCopy;
+  v46 = managerCopy;
   v15 = 0;
   v52 = 0;
   v16 = *v58;
@@ -128,38 +128,38 @@
         objc_enumerationMutation(obj);
       }
 
-      v19 = [*(*(&v57 + 1) + 8 * i) componentsSeparatedByString:{@"=", v43}];
-      v20 = [v19 firstObject];
-      v21 = [v20 stringByRemovingPercentEncoding];
+      v19 = [*(*(&v57 + 1) + 8 * i) componentsSeparatedByString:{@"=", selfCopy}];
+      firstObject = [v19 firstObject];
+      stringByRemovingPercentEncoding = [firstObject stringByRemovingPercentEncoding];
 
-      v22 = [v19 lastObject];
-      v23 = [v22 stringByRemovingPercentEncoding];
+      lastObject = [v19 lastObject];
+      stringByRemovingPercentEncoding2 = [lastObject stringByRemovingPercentEncoding];
 
-      if ([v21 isEqualToString:v17])
+      if ([stringByRemovingPercentEncoding isEqualToString:v17])
       {
         v24 = v52;
         v25 = v15;
-        v52 = v23;
+        v52 = stringByRemovingPercentEncoding2;
       }
 
-      else if ([v21 isEqualToString:v49])
+      else if ([stringByRemovingPercentEncoding isEqualToString:v49])
       {
         v24 = v50;
         v25 = v15;
-        v50 = v23;
+        v50 = stringByRemovingPercentEncoding2;
       }
 
       else
       {
         v24 = v15;
-        v25 = v23;
-        if (![v21 isEqualToString:v48])
+        v25 = stringByRemovingPercentEncoding2;
+        if (![stringByRemovingPercentEncoding isEqualToString:v48])
         {
           goto LABEL_14;
         }
       }
 
-      v26 = v23;
+      v26 = stringByRemovingPercentEncoding2;
 
       v15 = v25;
 LABEL_14:
@@ -174,8 +174,8 @@ LABEL_14:
   v27 = v50;
   if (!v50)
   {
-    v7 = v45;
-    v6 = v46;
+    completionCopy = v45;
+    managerCopy = v46;
     v8 = v44;
     v29 = v47;
     v30 = v52;
@@ -190,26 +190,26 @@ LABEL_14:
       goto LABEL_35;
     }
 
-    v28 = [(NSURL *)v43 _articleOpenedFromQueryValue:v15];
+    fr_articleOpenedFrom = [(NSURL *)selfCopy _articleOpenedFromQueryValue:v15];
     goto LABEL_32;
   }
 
-  v28 = [(NSURL *)v43 fr_articleOpenedFrom];
-  v7 = v45;
-  v6 = v46;
+  fr_articleOpenedFrom = [(NSURL *)selfCopy fr_articleOpenedFrom];
+  completionCopy = v45;
+  managerCopy = v46;
   v8 = v44;
   v29 = v47;
   v30 = v52;
-  if (v28 != 2)
+  if (fr_articleOpenedFrom != 2)
   {
 LABEL_32:
-    v42 = v28;
+    v42 = fr_articleOpenedFrom;
     if (!v30)
     {
 LABEL_39:
       v32 = 0;
       v34 = 0;
-      if (!v7)
+      if (!completionCopy)
       {
         goto LABEL_37;
       }
@@ -221,13 +221,13 @@ LABEL_35:
     v34 = [v30 componentsSeparatedByString:{@", "}];
     v32 = 0;
     v42 = 1;
-    if (!v7)
+    if (!completionCopy)
     {
       goto LABEL_37;
     }
 
 LABEL_36:
-    v7[2](v7, v8, v34, v29, v42);
+    completionCopy[2](completionCopy, v8, v34, v29, v42);
     goto LABEL_37;
   }
 
@@ -267,9 +267,9 @@ LABEL_36:
         }
 
         v40 = *(*(&v53 + 1) + 8 * j);
-        v41 = [v40 articleID];
-        [v34 addObject:v41];
-        [v47 setObject:v40 forKeyedSubscript:v41];
+        articleID = [v40 articleID];
+        [v34 addObject:articleID];
+        [v47 setObject:v40 forKeyedSubscript:articleID];
       }
 
       v37 = [v35 countByEnumeratingWithState:&v53 objects:v62 count:16];
@@ -279,8 +279,8 @@ LABEL_36:
   }
 
   v42 = 2;
-  v7 = v45;
-  v6 = v46;
+  completionCopy = v45;
+  managerCopy = v46;
   v8 = v44;
   v27 = v50;
   v12 = obj;
@@ -295,8 +295,8 @@ LABEL_37:
 
 - (int64_t)fr_articleOpenedFrom
 {
-  v2 = [(NSURL *)self query];
-  v3 = [v2 componentsSeparatedByString:@"&"];
+  query = [(NSURL *)self query];
+  v3 = [query componentsSeparatedByString:@"&"];
 
   v29 = 0u;
   v30 = 0u;
@@ -322,22 +322,22 @@ LABEL_37:
         }
 
         v11 = [*(*(&v27 + 1) + 8 * i) componentsSeparatedByString:@"="];
-        v12 = [v11 firstObject];
-        v13 = [v12 stringByRemovingPercentEncoding];
+        firstObject = [v11 firstObject];
+        stringByRemovingPercentEncoding = [firstObject stringByRemovingPercentEncoding];
 
-        v14 = [v11 lastObject];
-        v15 = [v14 stringByRemovingPercentEncoding];
+        lastObject = [v11 lastObject];
+        stringByRemovingPercentEncoding2 = [lastObject stringByRemovingPercentEncoding];
 
-        if (![v13 caseInsensitiveCompare:v8])
+        if (![stringByRemovingPercentEncoding caseInsensitiveCompare:v8])
         {
-          v16 = v15;
+          v16 = stringByRemovingPercentEncoding2;
 
           v6 = v16;
         }
 
-        if (![v13 caseInsensitiveCompare:v9])
+        if (![stringByRemovingPercentEncoding caseInsensitiveCompare:v9])
         {
-          v17 = v15;
+          v17 = stringByRemovingPercentEncoding2;
 
           v26 = v17;
         }
@@ -355,8 +355,8 @@ LABEL_37:
     v6 = 0;
   }
 
-  v18 = [(NSURL *)self nss_campaignID];
-  if ([v18 isEqualToString:NSSNewsWidgetNewsModeCampaignID])
+  nss_campaignID = [(NSURL *)self nss_campaignID];
+  if ([nss_campaignID isEqualToString:NSSNewsWidgetNewsModeCampaignID])
   {
     v19 = 2;
     v20 = v26;
@@ -367,61 +367,61 @@ LABEL_37:
     v20 = v26;
     if (v26 && [(NSURL *)self _articleOpenedFromQueryValue:v6]== 8)
     {
-      v21 = self;
+      selfCopy2 = self;
       v22 = v26;
     }
 
     else
     {
-      v21 = self;
+      selfCopy2 = self;
       v22 = v6;
     }
 
-    v19 = [(NSURL *)v21 _articleOpenedFromQueryValue:v22];
+    v19 = [(NSURL *)selfCopy2 _articleOpenedFromQueryValue:v22];
   }
 
   return v19;
 }
 
-- (int64_t)_articleOpenedFromQueryValue:(id)a3
+- (int64_t)_articleOpenedFromQueryValue:(id)value
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"newsletter"])
+  valueCopy = value;
+  if ([valueCopy isEqualToString:@"newsletter"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"editorpicks"])
+  else if ([valueCopy isEqualToString:@"editorpicks"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"editorialarticle"])
+  else if ([valueCopy isEqualToString:@"editorialarticle"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"following"])
+  else if ([valueCopy isEqualToString:@"following"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"endofarticle"])
+  else if ([valueCopy isEqualToString:@"endofarticle"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"article"])
+  else if ([valueCopy isEqualToString:@"article"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"morefrompublisher"])
+  else if ([valueCopy isEqualToString:@"morefrompublisher"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"related"])
+  else if ([valueCopy isEqualToString:@"related"])
   {
     v4 = 11;
   }
@@ -450,16 +450,16 @@ LABEL_37:
   return v3;
 }
 
-- (id)fr_widgetReferralItemWithQueryItemName:(id)a3
+- (id)fr_widgetReferralItemWithQueryItemName:(id)name
 {
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+  nameCopy = name;
+  if (!nameCopy && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_10006D5B4();
   }
 
-  v5 = [(NSURL *)self query];
-  v6 = [v5 componentsSeparatedByString:@"&"];
+  query = [(NSURL *)self query];
+  v6 = [query componentsSeparatedByString:@"&"];
 
   v22 = 0u;
   v23 = 0u;
@@ -482,15 +482,15 @@ LABEL_37:
         }
 
         v12 = [*(*(&v20 + 1) + 8 * i) componentsSeparatedByString:@"="];
-        v13 = [v12 firstObject];
-        v14 = [v13 stringByRemovingPercentEncoding];
+        firstObject = [v12 firstObject];
+        stringByRemovingPercentEncoding = [firstObject stringByRemovingPercentEncoding];
 
-        v15 = [v12 lastObject];
-        v16 = [v15 stringByRemovingPercentEncoding];
+        lastObject = [v12 lastObject];
+        stringByRemovingPercentEncoding2 = [lastObject stringByRemovingPercentEncoding];
 
-        if ([v14 isEqualToString:v4])
+        if ([stringByRemovingPercentEncoding isEqualToString:nameCopy])
         {
-          v17 = v16;
+          v17 = stringByRemovingPercentEncoding2;
 
           v9 = v17;
         }
@@ -510,13 +510,13 @@ LABEL_37:
   return v9;
 }
 
-- (BOOL)fr_isFromSafariSearchWithSourceApplication:(id)a3
+- (BOOL)fr_isFromSafariSearchWithSourceApplication:(id)application
 {
-  v4 = a3;
-  v5 = [(NSURL *)self fr_campaignID];
-  if ([v5 isEqualToString:NSSSafariSearchCampaignID])
+  applicationCopy = application;
+  fr_campaignID = [(NSURL *)self fr_campaignID];
+  if ([fr_campaignID isEqualToString:NSSSafariSearchCampaignID])
   {
-    v6 = [v4 isEqualToString:@"com.apple.mobilesafari"];
+    v6 = [applicationCopy isEqualToString:@"com.apple.mobilesafari"];
   }
 
   else
@@ -527,10 +527,10 @@ LABEL_37:
   return v6;
 }
 
-- (id)fr_valueForQueryItemWithName:(id)a3
+- (id)fr_valueForQueryItemWithName:(id)name
 {
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+  nameCopy = name;
+  if (!nameCopy && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_10006D678();
   }
@@ -541,14 +541,14 @@ LABEL_37:
   v16 = sub_100009B78;
   v17 = sub_100009F10;
   v18 = 0;
-  v5 = [(NSURL *)self query];
-  v6 = [v5 componentsSeparatedByString:@"&"];
+  query = [(NSURL *)self query];
+  v6 = [query componentsSeparatedByString:@"&"];
 
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10002BF4C;
   v10[3] = &unk_1000C3808;
-  v7 = v4;
+  v7 = nameCopy;
   v11 = v7;
   v12 = &v13;
   [v6 enumerateObjectsUsingBlock:v10];
@@ -559,45 +559,45 @@ LABEL_37:
   return v8;
 }
 
-+ (id)fr_NewsURLForTagID:(id)a3 title:(id)a4
++ (id)fr_NewsURLForTagID:(id)d title:(id)title
 {
-  v6 = a4;
-  v7 = [a1 _urlForTagID:a3 internal:0];
-  [v7 _setTitle:v6];
+  titleCopy = title;
+  v7 = [self _urlForTagID:d internal:0];
+  [v7 _setTitle:titleCopy];
 
   return v7;
 }
 
-+ (id)_urlForTagID:(id)a3 internal:(BOOL)a4
++ (id)_urlForTagID:(id)d internal:(BOOL)internal
 {
-  v4 = a4;
-  v6 = a3;
-  if (!v6 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+  internalCopy = internal;
+  dCopy = d;
+  if (!dCopy && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_10006D740();
   }
 
-  if (![v6 length] && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+  if (![dCopy length] && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_10006D804();
   }
 
-  if ([v6 rangeOfString:@"/"] != 0x7FFFFFFFFFFFFFFFLL && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+  if ([dCopy rangeOfString:@"/"] != 0x7FFFFFFFFFFFFFFFLL && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_10006D8C8();
   }
 
-  v10 = v6;
+  v10 = dCopy;
   v7 = [NSArray arrayWithObjects:&v10 count:1];
-  v8 = [a1 nss_NewsURLWithPathComponents:v7 internal:v4];
+  v8 = [self nss_NewsURLWithPathComponents:v7 internal:internalCopy];
 
   return v8;
 }
 
 - (BOOL)fr_isFeldsparForYouURL
 {
-  v3 = [(NSURL *)self pathComponents];
-  if ([v3 count] < 2)
+  pathComponents = [(NSURL *)self pathComponents];
+  if ([pathComponents count] < 2)
   {
     v4 = 0;
   }
@@ -612,8 +612,8 @@ LABEL_37:
 
 - (BOOL)fr_isFeldsparFollowingURL
 {
-  v3 = [(NSURL *)self pathComponents];
-  if ([v3 count] < 2)
+  pathComponents = [(NSURL *)self pathComponents];
+  if ([pathComponents count] < 2)
   {
     v4 = 0;
   }
@@ -628,8 +628,8 @@ LABEL_37:
 
 - (BOOL)fr_isFeldsparSpotlightURL
 {
-  v3 = [(NSURL *)self pathComponents];
-  if ([v3 count] < 2)
+  pathComponents = [(NSURL *)self pathComponents];
+  if ([pathComponents count] < 2)
   {
     v4 = 0;
   }
@@ -644,8 +644,8 @@ LABEL_37:
 
 - (BOOL)fr_isFeldsparSavedURL
 {
-  v3 = [(NSURL *)self pathComponents];
-  if ([v3 count] < 2)
+  pathComponents = [(NSURL *)self pathComponents];
+  if ([pathComponents count] < 2)
   {
     v4 = 0;
   }
@@ -660,8 +660,8 @@ LABEL_37:
 
 - (BOOL)fr_isFeldsparHistoryURL
 {
-  v3 = [(NSURL *)self pathComponents];
-  if ([v3 count] < 2)
+  pathComponents = [(NSURL *)self pathComponents];
+  if ([pathComponents count] < 2)
   {
     v4 = 0;
   }
@@ -676,8 +676,8 @@ LABEL_37:
 
 - (BOOL)fr_isFeldsparFavoritesPickerURL
 {
-  v3 = [(NSURL *)self pathComponents];
-  if ([v3 count] < 2)
+  pathComponents = [(NSURL *)self pathComponents];
+  if ([pathComponents count] < 2)
   {
     v4 = 0;
   }
@@ -712,9 +712,9 @@ LABEL_37:
 
 - (BOOL)fr_isOpenedFromExploreTab
 {
-  v2 = [(NSURL *)self query];
-  v3 = [v2 stringByRemovingPercentEncoding];
-  v4 = [v3 componentsSeparatedByString:@"&"];
+  query = [(NSURL *)self query];
+  stringByRemovingPercentEncoding = [query stringByRemovingPercentEncoding];
+  v4 = [stringByRemovingPercentEncoding componentsSeparatedByString:@"&"];
 
   v18 = 0u;
   v19 = 0u;
@@ -737,9 +737,9 @@ LABEL_37:
         }
 
         v11 = [*(*(&v16 + 1) + 8 * i) componentsSeparatedByString:{@"=", v16}];
-        v12 = [v11 firstObject];
-        v13 = [v11 lastObject];
-        if ([v12 isEqualToString:v9] && objc_msgSend(v13, "isEqualToString:", @"editorialarticle"))
+        firstObject = [v11 firstObject];
+        lastObject = [v11 lastObject];
+        if ([firstObject isEqualToString:v9] && objc_msgSend(lastObject, "isEqualToString:", @"editorialarticle"))
         {
 
           v14 = 1;
@@ -765,8 +765,8 @@ LABEL_12:
 
 - (BOOL)fr_isUserSegmentationURL
 {
-  v3 = [(NSURL *)self pathComponents];
-  if ([v3 count] < 2)
+  pathComponents = [(NSURL *)self pathComponents];
+  if ([pathComponents count] < 2)
   {
     v4 = 0;
   }
@@ -779,22 +779,22 @@ LABEL_12:
   return v4;
 }
 
-- (BOOL)_caseInsensitiveCompareWithFirstPathComponent:(id)a3
+- (BOOL)_caseInsensitiveCompareWithFirstPathComponent:(id)component
 {
-  v4 = a3;
-  v5 = [(NSURL *)self pathComponents];
-  v6 = [v5 count];
+  componentCopy = component;
+  pathComponents = [(NSURL *)self pathComponents];
+  v6 = [pathComponents count];
 
   if (v6 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_10006D99C();
-    if (v4)
+    if (componentCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v4)
+  else if (componentCopy)
   {
     goto LABEL_6;
   }
@@ -805,12 +805,12 @@ LABEL_12:
   }
 
 LABEL_6:
-  v7 = [(NSURL *)self pathComponents];
-  v8 = [v7 objectAtIndex:1];
+  pathComponents2 = [(NSURL *)self pathComponents];
+  v8 = [pathComponents2 objectAtIndex:1];
 
   if ([v8 length])
   {
-    v9 = [v8 caseInsensitiveCompare:v4] == 0;
+    v9 = [v8 caseInsensitiveCompare:componentCopy] == 0;
   }
 
   else
@@ -826,13 +826,13 @@ LABEL_6:
   if ([(NSURL *)self fr_isStoreURL])
   {
     v3 = [NSURLComponents componentsWithURL:self resolvingAgainstBaseURL:0];
-    v4 = [v3 scheme];
-    v5 = [v4 hasPrefix:@"http"];
+    scheme = [v3 scheme];
+    v5 = [scheme hasPrefix:@"http"];
 
     if (v5)
     {
-      v6 = [v3 scheme];
-      v7 = [v6 stringByReplacingOccurrencesOfString:@"http" withString:@"itms"];
+      scheme2 = [v3 scheme];
+      v7 = [scheme2 stringByReplacingOccurrencesOfString:@"http" withString:@"itms"];
       [v3 setScheme:v7];
     }
 
@@ -849,32 +849,32 @@ LABEL_6:
 
 - (BOOL)fr_isStoreURL
 {
-  v3 = [(NSURL *)self scheme];
-  if ([v3 hasPrefix:@"itms"])
+  scheme = [(NSURL *)self scheme];
+  if ([scheme hasPrefix:@"itms"])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(NSURL *)self host];
-    if ([v5 isEqualToString:@"itunes.apple.com"])
+    host = [(NSURL *)self host];
+    if ([host isEqualToString:@"itunes.apple.com"])
     {
       v4 = 1;
     }
 
     else
     {
-      v6 = [(NSURL *)self host];
-      if ([v6 isEqualToString:@"buy.itunes.apple.com"])
+      host2 = [(NSURL *)self host];
+      if ([host2 isEqualToString:@"buy.itunes.apple.com"])
       {
         v4 = 1;
       }
 
       else
       {
-        v7 = [(NSURL *)self host];
-        v4 = [v7 isEqualToString:@"storepreview.apple.com"];
+        host3 = [(NSURL *)self host];
+        v4 = [host3 isEqualToString:@"storepreview.apple.com"];
       }
     }
   }
@@ -884,16 +884,16 @@ LABEL_6:
 
 - (BOOL)fr_isBundleSubcriptionURL
 {
-  v3 = [(NSURL *)self pathComponents];
-  if ([v3 count] < 2)
+  pathComponents = [(NSURL *)self pathComponents];
+  if ([pathComponents count] < 2)
   {
     v6 = 0;
   }
 
   else
   {
-    v4 = [(NSURL *)self pathComponents];
-    v5 = [v4 objectAtIndex:1];
+    pathComponents2 = [(NSURL *)self pathComponents];
+    v5 = [pathComponents2 objectAtIndex:1];
     v6 = [v5 isEqualToString:@"subscription"];
   }
 
@@ -902,35 +902,35 @@ LABEL_6:
 
 - (BOOL)fr_isSubcriptionURL
 {
-  v3 = [(NSURL *)self fr_isSubscriptionURLForWebOptIn];
-  v4 = [(NSURL *)self pathComponents];
-  if ([v4 count] == 3)
+  fr_isSubscriptionURLForWebOptIn = [(NSURL *)self fr_isSubscriptionURLForWebOptIn];
+  pathComponents = [(NSURL *)self pathComponents];
+  if ([pathComponents count] == 3)
   {
-    v5 = [(NSURL *)self path];
-    v6 = [v5 lastPathComponent];
-    v7 = [v6 isEqualToString:@"subscription"];
+    path = [(NSURL *)self path];
+    lastPathComponent = [path lastPathComponent];
+    v7 = [lastPathComponent isEqualToString:@"subscription"];
 
-    v3 |= v7;
+    fr_isSubscriptionURLForWebOptIn |= v7;
   }
 
-  if (![(NSURL *)self nss_isNewsURL]|| (v3 & 1) == 0)
+  if (![(NSURL *)self nss_isNewsURL]|| (fr_isSubscriptionURLForWebOptIn & 1) == 0)
   {
     return 0;
   }
 
-  v8 = [(NSURL *)self pathComponents];
-  v9 = [v8 objectAtIndex:1];
+  pathComponents2 = [(NSURL *)self pathComponents];
+  v9 = [pathComponents2 objectAtIndex:1];
 
-  LOBYTE(v8) = [v9 fc_isValidTagID];
-  return v8;
+  LOBYTE(pathComponents2) = [v9 fc_isValidTagID];
+  return pathComponents2;
 }
 
 - (id)fr_subscriptionURLTagID
 {
   if ([(NSURL *)self fr_isSubcriptionURL])
   {
-    v3 = [(NSURL *)self pathComponents];
-    v4 = [v3 objectAtIndex:1];
+    pathComponents = [(NSURL *)self pathComponents];
+    v4 = [pathComponents objectAtIndex:1];
 
     if ([v4 fc_isValidTagID])
     {
@@ -960,46 +960,46 @@ LABEL_6:
     return 0;
   }
 
-  v3 = [(NSURL *)self pathComponents];
-  if ([v3 count] != 4)
+  pathComponents = [(NSURL *)self pathComponents];
+  if ([pathComponents count] != 4)
   {
 LABEL_8:
-    v10 = 0;
+    fc_isValidTagID = 0;
     goto LABEL_9;
   }
 
-  v4 = [(NSURL *)self path];
-  v5 = [v4 lastPathComponent];
-  if (([v5 isEqualToString:@"weboptin"] & 1) == 0)
+  path = [(NSURL *)self path];
+  lastPathComponent = [path lastPathComponent];
+  if (([lastPathComponent isEqualToString:@"weboptin"] & 1) == 0)
   {
 
     goto LABEL_8;
   }
 
-  v6 = [(NSURL *)self pathComponents];
-  v7 = [v6 objectAtIndexedSubscript:2];
+  pathComponents2 = [(NSURL *)self pathComponents];
+  v7 = [pathComponents2 objectAtIndexedSubscript:2];
   v8 = [v7 isEqualToString:@"subscription"];
 
   if (v8)
   {
-    v9 = [(NSURL *)self pathComponents];
-    v3 = [v9 objectAtIndex:1];
+    pathComponents3 = [(NSURL *)self pathComponents];
+    pathComponents = [pathComponents3 objectAtIndex:1];
 
-    v10 = [v3 fc_isValidTagID];
+    fc_isValidTagID = [pathComponents fc_isValidTagID];
 LABEL_9:
 
-    return v10;
+    return fc_isValidTagID;
   }
 
   return 0;
 }
 
-- (void)fr_subscriptionURLQueryParametersWithCompletion:(id)a3
+- (void)fr_subscriptionURLQueryParametersWithCompletion:(id)completion
 {
-  v22 = a3;
-  v4 = [(NSURL *)self query];
-  v5 = [v4 stringByRemovingPercentEncoding];
-  v6 = [v5 componentsSeparatedByString:@"&"];
+  completionCopy = completion;
+  query = [(NSURL *)self query];
+  stringByRemovingPercentEncoding = [query stringByRemovingPercentEncoding];
+  v6 = [stringByRemovingPercentEncoding componentsSeparatedByString:@"&"];
 
   v29 = 0u;
   v30 = 0u;
@@ -1034,19 +1034,19 @@ LABEL_9:
       }
 
       v13 = [*(*(&v27 + 1) + 8 * i) componentsSeparatedByString:@"="];
-      v14 = [v13 firstObject];
-      v15 = [v13 lastObject];
-      if ([v14 caseInsensitiveCompare:@"qtoken"])
+      firstObject = [v13 firstObject];
+      lastObject = [v13 lastObject];
+      if ([firstObject caseInsensitiveCompare:@"qtoken"])
       {
-        if ([v14 caseInsensitiveCompare:@"campaignId"])
+        if ([firstObject caseInsensitiveCompare:@"campaignId"])
         {
-          if ([v14 caseInsensitiveCompare:@"presentedContext"])
+          if ([firstObject caseInsensitiveCompare:@"presentedContext"])
           {
-            if ([v14 caseInsensitiveCompare:@"feedId"])
+            if ([firstObject caseInsensitiveCompare:@"feedId"])
             {
               v16 = v9;
-              v17 = v15;
-              if ([v14 caseInsensitiveCompare:@"articleId"])
+              v17 = lastObject;
+              if ([firstObject caseInsensitiveCompare:@"articleId"])
               {
                 goto LABEL_17;
               }
@@ -1056,14 +1056,14 @@ LABEL_9:
             {
               v16 = v23;
               v17 = v9;
-              v23 = v15;
+              v23 = lastObject;
             }
           }
 
           else
           {
             v16 = v24;
-            v24 = v15;
+            v24 = lastObject;
             v17 = v9;
           }
         }
@@ -1072,7 +1072,7 @@ LABEL_9:
         {
           v16 = v25;
           v17 = v9;
-          v25 = v15;
+          v25 = lastObject;
         }
       }
 
@@ -1080,10 +1080,10 @@ LABEL_9:
       {
         v16 = v10;
         v17 = v9;
-        v10 = v15;
+        v10 = lastObject;
       }
 
-      v18 = v15;
+      v18 = lastObject;
 
       v9 = v17;
 LABEL_17:
@@ -1098,17 +1098,17 @@ LABEL_21:
   v19 = [v24 isEqualToString:@"feed"];
   v20 = [v24 isEqualToString:@"article"];
   v21 = [v24 isEqualToString:@"betweenArticle"];
-  if (v22)
+  if (completionCopy)
   {
-    v22[2](v22, v10, v25, v23, v9, v19, v20, v21);
+    completionCopy[2](completionCopy, v10, v25, v23, v9, v19, v20, v21);
   }
 }
 
 - (id)fr_creativeID
 {
-  v2 = [(NSURL *)self query];
-  v3 = [v2 stringByRemovingPercentEncoding];
-  v4 = [v3 componentsSeparatedByString:@"&"];
+  query = [(NSURL *)self query];
+  stringByRemovingPercentEncoding = [query stringByRemovingPercentEncoding];
+  v4 = [stringByRemovingPercentEncoding componentsSeparatedByString:@"&"];
 
   v18 = 0u;
   v19 = 0u;
@@ -1131,11 +1131,11 @@ LABEL_21:
         }
 
         v10 = [*(*(&v16 + 1) + 8 * i) componentsSeparatedByString:@"="];
-        v11 = [v10 firstObject];
-        v12 = [v10 lastObject];
-        if ([v11 isEqualToString:@"creative_id"])
+        firstObject = [v10 firstObject];
+        lastObject = [v10 lastObject];
+        if ([firstObject isEqualToString:@"creative_id"])
         {
-          v13 = v12;
+          v13 = lastObject;
 
           v7 = v13;
         }
@@ -1157,9 +1157,9 @@ LABEL_21:
 
 - (id)fr_campaignType
 {
-  v2 = [(NSURL *)self query];
-  v3 = [v2 stringByRemovingPercentEncoding];
-  v4 = [v3 componentsSeparatedByString:@"&"];
+  query = [(NSURL *)self query];
+  stringByRemovingPercentEncoding = [query stringByRemovingPercentEncoding];
+  v4 = [stringByRemovingPercentEncoding componentsSeparatedByString:@"&"];
 
   v18 = 0u;
   v19 = 0u;
@@ -1182,11 +1182,11 @@ LABEL_21:
         }
 
         v10 = [*(*(&v16 + 1) + 8 * i) componentsSeparatedByString:@"="];
-        v11 = [v10 firstObject];
-        v12 = [v10 lastObject];
-        if ([v11 isEqualToString:@"campaign_type"])
+        firstObject = [v10 firstObject];
+        lastObject = [v10 lastObject];
+        if ([firstObject isEqualToString:@"campaign_type"])
         {
-          v13 = v12;
+          v13 = lastObject;
 
           v7 = v13;
         }
@@ -1208,9 +1208,9 @@ LABEL_21:
 
 - (id)fr_widgetModeGroupID
 {
-  v2 = [(NSURL *)self query];
-  v3 = [v2 stringByRemovingPercentEncoding];
-  v4 = [v3 componentsSeparatedByString:@"&"];
+  query = [(NSURL *)self query];
+  stringByRemovingPercentEncoding = [query stringByRemovingPercentEncoding];
+  v4 = [stringByRemovingPercentEncoding componentsSeparatedByString:@"&"];
 
   v19 = 0u;
   v20 = 0u;
@@ -1234,11 +1234,11 @@ LABEL_21:
         }
 
         v11 = [*(*(&v17 + 1) + 8 * i) componentsSeparatedByString:@"="];
-        v12 = [v11 firstObject];
-        v13 = [v11 lastObject];
-        if ([v12 isEqualToString:v9])
+        firstObject = [v11 firstObject];
+        lastObject = [v11 lastObject];
+        if ([firstObject isEqualToString:v9])
         {
-          v14 = v13;
+          v14 = lastObject;
 
           v7 = v14;
         }
@@ -1265,8 +1265,8 @@ LABEL_21:
   v17 = 0u;
   v18 = 0u;
   v15 = v19 = 0u;
-  v2 = [v15 queryItems];
-  v3 = [v2 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  queryItems = [v15 queryItems];
+  v3 = [queryItems countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v3)
   {
     v4 = v3;
@@ -1279,23 +1279,23 @@ LABEL_21:
       {
         if (*v17 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(queryItems);
         }
 
         v9 = *(*(&v16 + 1) + 8 * i);
-        v10 = [v9 name];
-        v11 = [v10 isEqualToString:v7];
+        name = [v9 name];
+        v11 = [name isEqualToString:v7];
 
         if (v11)
         {
-          v12 = [v9 value];
-          v13 = [NSDate fc_dateFromStringWithISO8601Format:v12];
+          value = [v9 value];
+          v13 = [NSDate fc_dateFromStringWithISO8601Format:value];
 
           v5 = v13;
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v4 = [queryItems countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v4);
@@ -1311,9 +1311,9 @@ LABEL_21:
 
 - (id)fr_accessTokenFromAuthenticationCallback
 {
-  v2 = [(NSURL *)self query];
-  v3 = [v2 stringByRemovingPercentEncoding];
-  v4 = [v3 componentsSeparatedByString:@"&"];
+  query = [(NSURL *)self query];
+  stringByRemovingPercentEncoding = [query stringByRemovingPercentEncoding];
+  v4 = [stringByRemovingPercentEncoding componentsSeparatedByString:@"&"];
 
   v18 = 0u;
   v19 = 0u;
@@ -1336,11 +1336,11 @@ LABEL_21:
         }
 
         v10 = [*(*(&v16 + 1) + 8 * i) componentsSeparatedByString:@"="];
-        v11 = [v10 firstObject];
-        v12 = [v10 lastObject];
-        if ([v11 isEqualToString:@"access_token"])
+        firstObject = [v10 firstObject];
+        lastObject = [v10 lastObject];
+        if ([firstObject isEqualToString:@"access_token"])
         {
-          v13 = v12;
+          v13 = lastObject;
 
           v7 = v13;
         }
@@ -1360,36 +1360,36 @@ LABEL_21:
   return v7;
 }
 
-+ (id)fr_NewsURLForNotificationsWithTagID:(id)a3
++ (id)fr_NewsURLForNotificationsWithTagID:(id)d
 {
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+  dCopy = d;
+  if (!dCopy && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_10006DB34();
   }
 
-  if (![v4 length] && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+  if (![dCopy length] && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_10006DBF8();
   }
 
-  v8[0] = v4;
+  v8[0] = dCopy;
   v8[1] = NSSNewsNotificationsPathComponent;
   v5 = [NSArray arrayWithObjects:v8 count:2];
-  v6 = [a1 nss_NewsURLWithPathComponents:v5 internal:0];
+  v6 = [self nss_NewsURLWithPathComponents:v5 internal:0];
 
   return v6;
 }
 
 - (id)fr_notificationsURLTagID
 {
-  v3 = [(NSURL *)self pathComponents];
-  v4 = [v3 count];
+  pathComponents = [(NSURL *)self pathComponents];
+  v4 = [pathComponents count];
 
   if (v4 == 3)
   {
-    v5 = [(NSURL *)self pathComponents];
-    v6 = [v5 objectAtIndex:1];
+    pathComponents2 = [(NSURL *)self pathComponents];
+    v6 = [pathComponents2 objectAtIndex:1];
 
     if ([v6 fc_isValidTagID])
     {
@@ -1412,12 +1412,12 @@ LABEL_21:
   return v8;
 }
 
-- (void)fr_openedFromEditorialArticleURLQueryParametersWithCompletion:(id)a3
+- (void)fr_openedFromEditorialArticleURLQueryParametersWithCompletion:(id)completion
 {
-  v16 = a3;
-  v4 = [(NSURL *)self query];
-  v5 = [v4 stringByRemovingPercentEncoding];
-  v6 = [v5 componentsSeparatedByString:@"&"];
+  completionCopy = completion;
+  query = [(NSURL *)self query];
+  stringByRemovingPercentEncoding = [query stringByRemovingPercentEncoding];
+  v6 = [stringByRemovingPercentEncoding componentsSeparatedByString:@"&"];
 
   v25 = 0u;
   v26 = 0u;
@@ -1443,32 +1443,32 @@ LABEL_21:
         }
 
         v10 = [*(*(&v23 + 1) + 8 * i) componentsSeparatedByString:@"="];
-        v11 = [v10 firstObject];
-        v12 = [v10 lastObject];
-        if ([v11 isEqualToString:@"componentId"])
+        firstObject = [v10 firstObject];
+        lastObject = [v10 lastObject];
+        if ([firstObject isEqualToString:@"componentId"])
         {
-          v13 = v12;
+          v13 = lastObject;
 
           v22 = v13;
         }
 
-        if ([v11 isEqualToString:@"articleId"])
+        if ([firstObject isEqualToString:@"articleId"])
         {
-          v14 = v12;
+          v14 = lastObject;
 
           v21 = v14;
         }
 
-        if ([v11 isEqualToString:@"articleVersion"])
+        if ([firstObject isEqualToString:@"articleVersion"])
         {
-          v15 = v12;
+          v15 = lastObject;
 
           v20 = v15;
         }
 
-        if ([v11 isEqualToString:@"showingBadge"])
+        if ([firstObject isEqualToString:@"showingBadge"])
         {
-          v17 = [v12 intValue] == 1;
+          v17 = [lastObject intValue] == 1;
         }
       }
 
@@ -1486,19 +1486,19 @@ LABEL_21:
     v22 = 0;
   }
 
-  if (v16)
+  if (completionCopy)
   {
-    (v16)[2](v16, v22, v21, v20, v17);
+    (completionCopy)[2](completionCopy, v22, v21, v20, v17);
   }
 }
 
 - (BOOL)fr_isPreviewURL
 {
-  v3 = [(NSURL *)self host];
-  if ([v3 isEqualToString:@"preview"])
+  host = [(NSURL *)self host];
+  if ([host isEqualToString:@"preview"])
   {
-    v4 = [(NSURL *)self pathComponents];
-    v5 = [v4 count] == 3;
+    pathComponents = [(NSURL *)self pathComponents];
+    v5 = [pathComponents count] == 3;
   }
 
   else
@@ -1509,31 +1509,31 @@ LABEL_21:
   return v5;
 }
 
-- (void)fr_getPreviewChannelIdentifier:(id *)a3 articleIdentifier:(id *)a4
+- (void)fr_getPreviewChannelIdentifier:(id *)identifier articleIdentifier:(id *)articleIdentifier
 {
-  v11 = [(NSURL *)self lastPathComponent];
-  v7 = [(NSURL *)self URLByDeletingLastPathComponent];
-  v8 = [v7 lastPathComponent];
-  v9 = v8;
-  if (a3)
+  lastPathComponent = [(NSURL *)self lastPathComponent];
+  uRLByDeletingLastPathComponent = [(NSURL *)self URLByDeletingLastPathComponent];
+  lastPathComponent2 = [uRLByDeletingLastPathComponent lastPathComponent];
+  v9 = lastPathComponent2;
+  if (identifier)
   {
-    v10 = v8;
-    *a3 = v9;
+    v10 = lastPathComponent2;
+    *identifier = v9;
   }
 
-  if (a4)
+  if (articleIdentifier)
   {
-    *a4 = v11;
+    *articleIdentifier = lastPathComponent;
   }
 }
 
-- (void)fr_getOverrideSegmentSetIDs:(id *)a3 additionalSegmentSetIDs:(id *)a4 disableABTesting:(BOOL *)a5
+- (void)fr_getOverrideSegmentSetIDs:(id *)ds additionalSegmentSetIDs:(id *)iDs disableABTesting:(BOOL *)testing
 {
-  *a3 = 0;
-  *a4 = 0;
-  *a5 = 0;
-  v5 = [(NSURL *)self query];
-  v6 = [v5 componentsSeparatedByString:@"&"];
+  *ds = 0;
+  *iDs = 0;
+  *testing = 0;
+  query = [(NSURL *)self query];
+  v6 = [query componentsSeparatedByString:@"&"];
 
   v22 = 0u;
   v23 = 0u;
@@ -1556,25 +1556,25 @@ LABEL_21:
         }
 
         v11 = [*(*(&v20 + 1) + 8 * v10) componentsSeparatedByString:@"="];
-        v12 = [v11 firstObject];
-        v13 = [v12 stringByRemovingPercentEncoding];
+        firstObject = [v11 firstObject];
+        stringByRemovingPercentEncoding = [firstObject stringByRemovingPercentEncoding];
 
-        v14 = [v11 lastObject];
-        v15 = [v14 stringByRemovingPercentEncoding];
+        lastObject = [v11 lastObject];
+        stringByRemovingPercentEncoding2 = [lastObject stringByRemovingPercentEncoding];
 
-        if ([v13 isEqualToString:@"overrideSSIDs"])
+        if ([stringByRemovingPercentEncoding isEqualToString:@"overrideSSIDs"])
         {
-          *a3 = [v15 copy];
+          *ds = [stringByRemovingPercentEncoding2 copy];
         }
 
-        if ([v13 isEqualToString:@"additionalSSIDs"])
+        if ([stringByRemovingPercentEncoding isEqualToString:@"additionalSSIDs"])
         {
-          *a4 = [v15 copy];
+          *iDs = [stringByRemovingPercentEncoding2 copy];
         }
 
-        if ([v13 isEqualToString:@"disableABTesting"])
+        if ([stringByRemovingPercentEncoding isEqualToString:@"disableABTesting"])
         {
-          *a5 = [v15 isEqualToString:@"1"];
+          *testing = [stringByRemovingPercentEncoding2 isEqualToString:@"1"];
         }
 
         v10 = v10 + 1;
@@ -1590,9 +1590,9 @@ LABEL_21:
 
 - (BOOL)fr_isiAdOriginatedURL
 {
-  v2 = [(NSURL *)self query];
-  v3 = [v2 stringByRemovingPercentEncoding];
-  v4 = [v3 componentsSeparatedByString:@"&"];
+  query = [(NSURL *)self query];
+  stringByRemovingPercentEncoding = [query stringByRemovingPercentEncoding];
+  v4 = [stringByRemovingPercentEncoding componentsSeparatedByString:@"&"];
 
   v18 = 0u;
   v19 = 0u;
@@ -1616,9 +1616,9 @@ LABEL_21:
         }
 
         v11 = [*(*(&v16 + 1) + 8 * i) componentsSeparatedByString:@"="];
-        v12 = [v11 firstObject];
-        v8 |= [v12 isEqualToString:@"adpreviewid"];
-        v7 |= [v12 isEqualToString:@"adpreviewlimit"];
+        firstObject = [v11 firstObject];
+        v8 |= [firstObject isEqualToString:@"adpreviewid"];
+        v7 |= [firstObject isEqualToString:@"adpreviewlimit"];
       }
 
       v6 = [obj countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -1638,9 +1638,9 @@ LABEL_21:
 
 - (id)fr_iAdPreviewId
 {
-  v2 = [(NSURL *)self query];
-  v3 = [v2 stringByRemovingPercentEncoding];
-  v4 = [v3 componentsSeparatedByString:@"&"];
+  query = [(NSURL *)self query];
+  stringByRemovingPercentEncoding = [query stringByRemovingPercentEncoding];
+  v4 = [stringByRemovingPercentEncoding componentsSeparatedByString:@"&"];
 
   v18 = 0u;
   v19 = 0u;
@@ -1663,11 +1663,11 @@ LABEL_21:
         }
 
         v10 = [*(*(&v16 + 1) + 8 * i) componentsSeparatedByString:@"="];
-        v11 = [v10 firstObject];
-        v12 = [v10 lastObject];
-        if ([v11 isEqualToString:@"adpreviewid"])
+        firstObject = [v10 firstObject];
+        lastObject = [v10 lastObject];
+        if ([firstObject isEqualToString:@"adpreviewid"])
         {
-          v13 = v12;
+          v13 = lastObject;
 
           v7 = v13;
         }
@@ -1689,9 +1689,9 @@ LABEL_21:
 
 - (int64_t)fr_iAdPreviewLimit
 {
-  v2 = [(NSURL *)self query];
-  v3 = [v2 stringByRemovingPercentEncoding];
-  v4 = [v3 componentsSeparatedByString:@"&"];
+  query = [(NSURL *)self query];
+  stringByRemovingPercentEncoding = [query stringByRemovingPercentEncoding];
+  v4 = [stringByRemovingPercentEncoding componentsSeparatedByString:@"&"];
 
   v17 = 0u;
   v18 = 0u;
@@ -1702,7 +1702,7 @@ LABEL_21:
   if (v6)
   {
     v7 = v6;
-    v8 = 0;
+    integerValue = 0;
     v9 = *v16;
     do
     {
@@ -1714,11 +1714,11 @@ LABEL_21:
         }
 
         v11 = [*(*(&v15 + 1) + 8 * i) componentsSeparatedByString:{@"=", v15}];
-        v12 = [v11 firstObject];
-        v13 = [v11 lastObject];
-        if ([v12 isEqualToString:@"adpreviewlimit"])
+        firstObject = [v11 firstObject];
+        lastObject = [v11 lastObject];
+        if ([firstObject isEqualToString:@"adpreviewlimit"])
         {
-          v8 = [v13 integerValue];
+          integerValue = [lastObject integerValue];
         }
       }
 
@@ -1730,18 +1730,18 @@ LABEL_21:
 
   else
   {
-    v8 = 0;
+    integerValue = 0;
   }
 
-  return v8;
+  return integerValue;
 }
 
 - (BOOL)fr_isFeldsparOpenInNewsErrorURL
 {
-  v2 = [(NSURL *)self path];
-  if ([v2 length])
+  path = [(NSURL *)self path];
+  if ([path length])
   {
-    v3 = [v2 rangeOfString:@"openinnewserror" options:1] != 0x7FFFFFFFFFFFFFFFLL;
+    v3 = [path rangeOfString:@"openinnewserror" options:1] != 0x7FFFFFFFFFFFFFFFLL;
   }
 
   else
@@ -1752,18 +1752,18 @@ LABEL_21:
   return v3;
 }
 
-+ (id)fr_createArticleLinkWithArticleID:(id)a3 url:(id)a4
++ (id)fr_createArticleLinkWithArticleID:(id)d url:(id)url
 {
   v4 = 0;
-  if (a3 && a4)
+  if (d && url)
   {
-    v6 = a4;
-    v7 = [NSString stringWithFormat:@"https://apple.news/%@", a3];
+    urlCopy = url;
+    v7 = [NSString stringWithFormat:@"https://apple.news/%@", d];
     v8 = [NSURLComponents componentsWithString:v7];
-    v9 = [NSURLComponents componentsWithURL:v6 resolvingAgainstBaseURL:0];
+    v9 = [NSURLComponents componentsWithURL:urlCopy resolvingAgainstBaseURL:0];
 
-    v10 = [v9 queryItems];
-    [v8 setQueryItems:v10];
+    queryItems = [v9 queryItems];
+    [v8 setQueryItems:queryItems];
 
     v4 = [v8 URL];
   }
@@ -1771,16 +1771,16 @@ LABEL_21:
   return v4;
 }
 
-+ (BOOL)fr_canHandleNavigationAction:(id)a3
++ (BOOL)fr_canHandleNavigationAction:(id)action
 {
-  v3 = a3;
-  v4 = [v3 request];
-  v5 = [v3 targetFrame];
+  actionCopy = action;
+  request = [actionCopy request];
+  targetFrame = [actionCopy targetFrame];
 
-  v6 = [v5 isMainFrame];
-  LOBYTE(v6) = [WebView _canHandleRequest:v4 forMainFrame:v6];
+  isMainFrame = [targetFrame isMainFrame];
+  LOBYTE(isMainFrame) = [WebView _canHandleRequest:request forMainFrame:isMainFrame];
 
-  return v6;
+  return isMainFrame;
 }
 
 - (id)fr_deepLinkURL
@@ -1794,8 +1794,8 @@ LABEL_21:
   if ([v6 count])
   {
     v7 = [v6 objectAtIndex:0];
-    v8 = [v7 localizedName];
-    v9 = [v8 length];
+    localizedName = [v7 localizedName];
+    v9 = [localizedName length];
 
     if (v9)
     {
@@ -1803,54 +1803,54 @@ LABEL_21:
     }
   }
 
-  v10 = self;
+  selfCopy = self;
 
   return self;
 }
 
-+ (id)fr_sanitizedURLForWebView:(id)a3 navigationAction:(id)a4
++ (id)fr_sanitizedURLForWebView:(id)view navigationAction:(id)action
 {
-  v5 = a4;
-  v6 = [v5 request];
-  v7 = [v6 URL];
+  actionCopy = action;
+  request = [actionCopy request];
+  v7 = [request URL];
 
   v8 = v7;
-  v9 = [v5 targetFrame];
-  if ([v9 isMainFrame])
+  targetFrame = [actionCopy targetFrame];
+  if ([targetFrame isMainFrame])
   {
   }
 
   else
   {
-    v10 = [v5 navigationType];
+    navigationType = [actionCopy navigationType];
 
-    v11 = v8;
-    if (v10)
+    fr_deepLinkURL = v8;
+    if (navigationType)
     {
       goto LABEL_5;
     }
   }
 
-  v11 = [v8 fr_deepLinkURL];
+  fr_deepLinkURL = [v8 fr_deepLinkURL];
 
 LABEL_5:
-  if (![v11 isEqual:v8])
+  if (![fr_deepLinkURL isEqual:v8])
   {
-    v14 = v11;
+    v14 = fr_deepLinkURL;
     goto LABEL_15;
   }
 
-  if (([a1 fr_canHandleNavigationAction:v5] & 1) != 0 || !objc_msgSend(v8, "isSpringboardHandledURL"))
+  if (([self fr_canHandleNavigationAction:actionCopy] & 1) != 0 || !objc_msgSend(v8, "isSpringboardHandledURL"))
   {
     goto LABEL_14;
   }
 
-  v12 = [v8 scheme];
-  if ((+[NSURL isDefaultCallingAppScheme:](NSURL, "isDefaultCallingAppScheme:", v12) & 1) == 0 && ([v8 isFaceTimeURL] & 1) == 0)
+  scheme = [v8 scheme];
+  if ((+[NSURL isDefaultCallingAppScheme:](NSURL, "isDefaultCallingAppScheme:", scheme) & 1) == 0 && ([v8 isFaceTimeURL] & 1) == 0)
   {
-    v15 = [v8 isFaceTimeAudioURL];
+    isFaceTimeAudioURL = [v8 isFaceTimeAudioURL];
 
-    if (v15)
+    if (isFaceTimeAudioURL)
     {
       goto LABEL_11;
     }
@@ -1874,7 +1874,7 @@ LABEL_15:
 
 - (BOOL)fr_handleExternalURLWithPrompt
 {
-  v3 = [(NSURL *)self scheme];
+  scheme = [(NSURL *)self scheme];
   if ([(NSURL *)self fr_isStoreURL])
   {
     goto LABEL_2;
@@ -1886,27 +1886,27 @@ LABEL_15:
     goto LABEL_11;
   }
 
-  v6 = [(NSURL *)self absoluteString];
-  v7 = [v6 isEqualToString:@"about:blank"];
+  absoluteString = [(NSURL *)self absoluteString];
+  v7 = [absoluteString isEqualToString:@"about:blank"];
 
   v5 = 0;
-  if ((v7 & 1) == 0 && v3)
+  if ((v7 & 1) == 0 && scheme)
   {
     if ([(NSURL *)self nss_isNewsURL])
     {
       v8 = +[UIApplication sharedApplication];
-      v9 = [v8 delegate];
+      delegate = [v8 delegate];
       v20 = UIApplicationOpenURLOptionsSourceApplicationKey;
       v10 = +[NSBundle mainBundle];
-      v11 = [v10 bundleIdentifier];
-      v21 = v11;
+      bundleIdentifier = [v10 bundleIdentifier];
+      v21 = bundleIdentifier;
       v12 = [NSDictionary dictionaryWithObjects:&v21 forKeys:&v20 count:1];
-      v5 = [v9 application:v8 openURL:self options:v12];
+      v5 = [delegate application:v8 openURL:self options:v12];
     }
 
     else
     {
-      if (([NSURL isDefaultCallingAppScheme:v3]& 1) != 0 || ([(NSURL *)self isFaceTimeAudioURL]& 1) != 0 || [(NSURL *)self isFaceTimeURL])
+      if (([NSURL isDefaultCallingAppScheme:scheme]& 1) != 0 || ([(NSURL *)self isFaceTimeAudioURL]& 1) != 0 || [(NSURL *)self isFaceTimeURL])
       {
 LABEL_2:
         v4 = +[UIApplication sharedApplication];
@@ -1925,9 +1925,9 @@ LABEL_2:
         goto LABEL_10;
       }
 
-      v9 = [v8 objectAtIndex:0];
-      v15 = [v9 localizedName];
-      v16 = [v15 length];
+      delegate = [v8 objectAtIndex:0];
+      localizedName = [delegate localizedName];
+      v16 = [localizedName length];
       v5 = v16 != 0;
 
       if (v16)
@@ -1936,8 +1936,8 @@ LABEL_2:
         block[1] = 3221225472;
         block[2] = sub_10002EBA0;
         block[3] = &unk_1000C1920;
-        v18 = v9;
-        v19 = self;
+        v18 = delegate;
+        selfCopy = self;
         dispatch_async(&_dispatch_main_q, block);
       }
     }
@@ -1952,11 +1952,11 @@ LABEL_11:
 
 - (BOOL)fr_isWebArchiveURL
 {
-  v3 = [(NSURL *)self scheme];
-  v4 = [(NSURL *)self pathExtension];
-  if ([v3 isEqualToString:@"file"])
+  scheme = [(NSURL *)self scheme];
+  pathExtension = [(NSURL *)self pathExtension];
+  if ([scheme isEqualToString:@"file"])
   {
-    v5 = [v4 isEqualToString:@"webarchive"];
+    v5 = [pathExtension isEqualToString:@"webarchive"];
   }
 
   else
@@ -1969,18 +1969,18 @@ LABEL_11:
 
 - (BOOL)fr_isHTTPScheme
 {
-  v3 = [(NSURL *)self scheme];
-  if ([v3 isEqualToString:@"http"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"https"))
+  scheme = [(NSURL *)self scheme];
+  if ([scheme isEqualToString:@"http"] & 1) != 0 || (objc_msgSend(scheme, "isEqualToString:", @"https"))
   {
-    v4 = 1;
+    fr_isWebArchiveURL = 1;
   }
 
   else
   {
-    v4 = [(NSURL *)self fr_isWebArchiveURL];
+    fr_isWebArchiveURL = [(NSURL *)self fr_isWebArchiveURL];
   }
 
-  return v4;
+  return fr_isWebArchiveURL;
 }
 
 @end

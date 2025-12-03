@@ -9,24 +9,24 @@
 
 - (NSURL)URL
 {
-  v2 = [(TVViewElement *)self element];
-  v3 = [v2 url];
+  element = [(TVViewElement *)self element];
+  v3 = [element url];
 
   return v3;
 }
 
 - (NSDictionary)srcset
 {
-  v2 = [(TVViewElement *)self element];
-  v3 = [v2 srcset];
+  element = [(TVViewElement *)self element];
+  srcset = [element srcset];
 
-  return v3;
+  return srcset;
 }
 
 - (CGSize)imageScaleToSize
 {
-  v2 = [(TVViewElement *)self element];
-  [v2 tv_imageScaleToSize];
+  element = [(TVViewElement *)self element];
+  [element tv_imageScaleToSize];
   v4 = v3;
   v6 = v5;
 
@@ -39,10 +39,10 @@
 
 - (int64_t)imageType
 {
-  v2 = [(TVViewElement *)self element];
-  v3 = [v2 tv_imageType];
+  element = [(TVViewElement *)self element];
+  tv_imageType = [element tv_imageType];
 
-  return v3;
+  return tv_imageType;
 }
 
 @end

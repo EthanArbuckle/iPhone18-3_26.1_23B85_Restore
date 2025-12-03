@@ -40,9 +40,9 @@
   }
 
   [v4 addField:@"resultsLimit" format:{@"%llu", resultsLimit}];
-  v6 = [v4 descriptionString];
+  descriptionString = [v4 descriptionString];
 
-  return v6;
+  return descriptionString;
 }
 
 @end

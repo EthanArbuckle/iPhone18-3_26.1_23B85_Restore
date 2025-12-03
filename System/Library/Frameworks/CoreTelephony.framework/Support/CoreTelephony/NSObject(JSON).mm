@@ -36,11 +36,11 @@ LABEL_8:
 
 + (void)jsonStringWithObject:()JSON
 {
-  v3 = a1;
-  if ([MEMORY[0x277CCAAA0] isValidJSONObject:v3])
+  selfCopy = self;
+  if ([MEMORY[0x277CCAAA0] isValidJSONObject:selfCopy])
   {
     v8 = 0;
-    v4 = [MEMORY[0x277CCAAA0] dataWithJSONObject:v3 options:1 error:&v8];
+    v4 = [MEMORY[0x277CCAAA0] dataWithJSONObject:selfCopy options:1 error:&v8];
     v5 = v8;
     if (v4)
     {

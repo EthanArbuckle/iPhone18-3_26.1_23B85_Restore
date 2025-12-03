@@ -1,23 +1,23 @@
 @interface MISLaunchWarningQueryResult
-- (MISLaunchWarningQueryResult)initWithWarningState:(int64_t)a3 withUserOverridden:(BOOL)a4 withKBURL:(id)a5;
+- (MISLaunchWarningQueryResult)initWithWarningState:(int64_t)state withUserOverridden:(BOOL)overridden withKBURL:(id)l;
 @end
 
 @implementation MISLaunchWarningQueryResult
 
-- (MISLaunchWarningQueryResult)initWithWarningState:(int64_t)a3 withUserOverridden:(BOOL)a4 withKBURL:(id)a5
+- (MISLaunchWarningQueryResult)initWithWarningState:(int64_t)state withUserOverridden:(BOOL)overridden withKBURL:(id)l
 {
-  v9 = a5;
+  lCopy = l;
   v17.receiver = self;
   v17.super_class = MISLaunchWarningQueryResult;
   v10 = [(MISLaunchWarningQueryResult *)&v17 init];
   v11 = v10;
   if (v10)
   {
-    v10->warningState = a3;
-    v10->isUserOverridden = a4;
-    if (a3)
+    v10->warningState = state;
+    v10->isUserOverridden = overridden;
+    if (state)
     {
-      objc_storeStrong(&v10->kbURL, a5);
+      objc_storeStrong(&v10->kbURL, l);
       if (!v11->kbURL)
       {
         v12 = objc_alloc(MEMORY[0x1E695DFF8]);

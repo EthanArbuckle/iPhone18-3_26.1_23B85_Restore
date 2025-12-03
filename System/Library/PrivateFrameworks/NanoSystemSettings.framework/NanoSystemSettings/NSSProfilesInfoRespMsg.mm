@@ -1,33 +1,33 @@
 @interface NSSProfilesInfoRespMsg
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addConfigProfile:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addConfigProfile:(id)profile;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NSSProfilesInfoRespMsg
 
-- (void)addConfigProfile:(id)a3
+- (void)addConfigProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   configProfiles = self->_configProfiles;
-  v8 = v4;
+  v8 = profileCopy;
   if (!configProfiles)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_configProfiles;
     self->_configProfiles = v6;
 
-    v4 = v8;
+    profileCopy = v8;
     configProfiles = self->_configProfiles;
   }
 
-  [(NSMutableArray *)configProfiles addObject:v4];
+  [(NSMutableArray *)configProfiles addObject:profileCopy];
 }
 
 - (id)description
@@ -36,8 +36,8 @@
   v8.receiver = self;
   v8.super_class = NSSProfilesInfoRespMsg;
   v4 = [(NSSProfilesInfoRespMsg *)&v8 description];
-  v5 = [(NSSProfilesInfoRespMsg *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NSSProfilesInfoRespMsg *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -45,12 +45,12 @@
 - (id)dictionaryRepresentation
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   mdmProfile = self->_mdmProfile;
   if (mdmProfile)
   {
-    v5 = [(NSSProfilesInfoRespMsgProfileInfo *)mdmProfile dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"mdmProfile"];
+    dictionaryRepresentation = [(NSSProfilesInfoRespMsgProfileInfo *)mdmProfile dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"mdmProfile"];
   }
 
   if ([(NSMutableArray *)self->_configProfiles count])
@@ -75,8 +75,8 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v17 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation2 = [*(*(&v17 + 1) + 8 * i) dictionaryRepresentation];
+          [v6 addObject:dictionaryRepresentation2];
         }
 
         v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -85,30 +85,30 @@
       while (v9);
     }
 
-    [v3 setObject:v6 forKey:@"configProfile"];
+    [dictionary setObject:v6 forKey:@"configProfile"];
   }
 
   managedAppsData = self->_managedAppsData;
   if (managedAppsData)
   {
-    [v3 setObject:managedAppsData forKey:@"managedAppsData"];
+    [dictionary setObject:managedAppsData forKey:@"managedAppsData"];
   }
 
   rmAccountData = self->_rmAccountData;
   if (rmAccountData)
   {
-    [v3 setObject:rmAccountData forKey:@"rmAccountData"];
+    [dictionary setObject:rmAccountData forKey:@"rmAccountData"];
   }
 
   v15 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_mdmProfile)
   {
     PBDataWriterWriteSubmessage();
@@ -159,47 +159,47 @@
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v9 = a3;
+  toCopy = to;
   if (self->_mdmProfile)
   {
-    [v9 setMdmProfile:?];
+    [toCopy setMdmProfile:?];
   }
 
   if ([(NSSProfilesInfoRespMsg *)self configProfilesCount])
   {
-    [v9 clearConfigProfiles];
-    v4 = [(NSSProfilesInfoRespMsg *)self configProfilesCount];
-    if (v4)
+    [toCopy clearConfigProfiles];
+    configProfilesCount = [(NSSProfilesInfoRespMsg *)self configProfilesCount];
+    if (configProfilesCount)
     {
-      v5 = v4;
+      v5 = configProfilesCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(NSSProfilesInfoRespMsg *)self configProfileAtIndex:i];
-        [v9 addConfigProfile:v7];
+        [toCopy addConfigProfile:v7];
       }
     }
   }
 
   if (self->_managedAppsData)
   {
-    [v9 setManagedAppsData:?];
+    [toCopy setManagedAppsData:?];
   }
 
-  v8 = v9;
+  v8 = toCopy;
   if (self->_rmAccountData)
   {
-    [v9 setRmAccountData:?];
-    v8 = v9;
+    [toCopy setRmAccountData:?];
+    v8 = toCopy;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSSProfilesInfoRespMsgProfileInfo *)self->_mdmProfile copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSSProfilesInfoRespMsgProfileInfo *)self->_mdmProfile copyWithZone:zone];
   v7 = v5[3];
   v5[3] = v6;
 
@@ -223,7 +223,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v20 + 1) + 8 * v12) copyWithZone:{a3, v20}];
+        v13 = [*(*(&v20 + 1) + 8 * v12) copyWithZone:{zone, v20}];
         [v5 addConfigProfile:v13];
 
         ++v12;
@@ -236,11 +236,11 @@
     while (v10);
   }
 
-  v14 = [(NSData *)self->_managedAppsData copyWithZone:a3];
+  v14 = [(NSData *)self->_managedAppsData copyWithZone:zone];
   v15 = v5[2];
   v5[2] = v14;
 
-  v16 = [(NSData *)self->_rmAccountData copyWithZone:a3];
+  v16 = [(NSData *)self->_rmAccountData copyWithZone:zone];
   v17 = v5[4];
   v5[4] = v16;
 
@@ -248,13 +248,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((mdmProfile = self->_mdmProfile, !(mdmProfile | v4[3])) || -[NSSProfilesInfoRespMsgProfileInfo isEqual:](mdmProfile, "isEqual:")) && ((configProfiles = self->_configProfiles, !(configProfiles | v4[1])) || -[NSMutableArray isEqual:](configProfiles, "isEqual:")) && ((managedAppsData = self->_managedAppsData, !(managedAppsData | v4[2])) || -[NSData isEqual:](managedAppsData, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((mdmProfile = self->_mdmProfile, !(mdmProfile | equalCopy[3])) || -[NSSProfilesInfoRespMsgProfileInfo isEqual:](mdmProfile, "isEqual:")) && ((configProfiles = self->_configProfiles, !(configProfiles | equalCopy[1])) || -[NSMutableArray isEqual:](configProfiles, "isEqual:")) && ((managedAppsData = self->_managedAppsData, !(managedAppsData | equalCopy[2])) || -[NSData isEqual:](managedAppsData, "isEqual:")))
   {
     rmAccountData = self->_rmAccountData;
-    if (rmAccountData | v4[4])
+    if (rmAccountData | equalCopy[4])
     {
       v9 = [(NSData *)rmAccountData isEqual:?];
     }
@@ -281,12 +281,12 @@
   return v4 ^ v5 ^ [(NSData *)self->_rmAccountData hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fromCopy = from;
   mdmProfile = self->_mdmProfile;
-  v6 = *(v4 + 3);
+  v6 = *(fromCopy + 3);
   if (mdmProfile)
   {
     if (v6)
@@ -304,7 +304,7 @@
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v7 = *(v4 + 1);
+  v7 = *(fromCopy + 1);
   v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {
@@ -328,12 +328,12 @@
     while (v9);
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(NSSProfilesInfoRespMsg *)self setManagedAppsData:?];
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(NSSProfilesInfoRespMsg *)self setRmAccountData:?];
   }

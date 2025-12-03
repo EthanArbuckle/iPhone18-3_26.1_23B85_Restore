@@ -1,29 +1,29 @@
 @interface PKFreeTransformGestureRecognizer
-- (BOOL)touchesMovedPastScaleThreshold:(double)a3;
-- (BOOL)touchesMovedPastThreshold:(double)a3;
+- (BOOL)touchesMovedPastScaleThreshold:(double)threshold;
+- (BOOL)touchesMovedPastThreshold:(double)threshold;
 - (CGAffineTransform)accumulatedTransform;
-- (CGAffineTransform)clampTransform:(SEL)a3 minScale:(CGAffineTransform *)a4 maxScale:(double)a5;
+- (CGAffineTransform)clampTransform:(SEL)transform minScale:(CGAffineTransform *)scale maxScale:(double)maxScale;
 - (CGAffineTransform)freeTransform;
 - (CGAffineTransform)unscaledFreeTransform;
-- (CGPoint)locationInView:(id)a3;
-- (PKFreeTransformGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
+- (CGPoint)locationInView:(id)view;
+- (PKFreeTransformGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
 - (void)clearTouches;
 - (void)reset;
 - (void)resetAndAccumulateTransform;
 - (void)resetStartingTouches;
-- (void)setAccumulatedTransform:(CGAffineTransform *)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4 rejectExcessTouches:(BOOL)a5;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)setAccumulatedTransform:(CGAffineTransform *)transform;
+- (void)touchesBegan:(id)began withEvent:(id)event rejectExcessTouches:(BOOL)touches;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation PKFreeTransformGestureRecognizer
 
-- (PKFreeTransformGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (PKFreeTransformGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
   v9.receiver = self;
   v9.super_class = PKFreeTransformGestureRecognizer;
-  v4 = [(PKFreeTransformGestureRecognizer *)&v9 initWithTarget:a3 action:a4];
+  v4 = [(PKFreeTransformGestureRecognizer *)&v9 initWithTarget:target action:action];
   v5 = v4;
   if (v4)
   {
@@ -43,24 +43,24 @@
   return v5;
 }
 
-- (CGAffineTransform)clampTransform:(SEL)a3 minScale:(CGAffineTransform *)a4 maxScale:(double)a5
+- (CGAffineTransform)clampTransform:(SEL)transform minScale:(CGAffineTransform *)scale maxScale:(double)maxScale
 {
-  v10 = sqrt(a4->b * a4->b + a4->a * a4->a);
-  if (v10 < a5)
+  v10 = sqrt(scale->b * scale->b + scale->a * scale->a);
+  if (v10 < maxScale)
   {
     [(CGAffineTransform *)self scaleDamping];
-    v12 = (v10 - a5) * v11 * 0.5 + a5;
+    v12 = (v10 - maxScale) * v11 * 0.5 + maxScale;
 LABEL_5:
     CGAffineTransformMakeScale(&t1, v12 / v10, v12 / v10);
-    v14 = *&a4->c;
-    *&v17.a = *&a4->a;
+    v14 = *&scale->c;
+    *&v17.a = *&scale->a;
     *&v17.c = v14;
-    *&v17.tx = *&a4->tx;
+    *&v17.tx = *&scale->tx;
     self = CGAffineTransformConcat(&v19, &t1, &v17);
     v15 = *&v19.c;
-    *&a4->a = *&v19.a;
-    *&a4->c = v15;
-    *&a4->tx = *&v19.tx;
+    *&scale->a = *&v19.a;
+    *&scale->c = v15;
+    *&scale->tx = *&v19.tx;
     goto LABEL_6;
   }
 
@@ -72,21 +72,21 @@ LABEL_5:
   }
 
 LABEL_6:
-  v16 = *&a4->c;
-  *&retstr->a = *&a4->a;
+  v16 = *&scale->c;
+  *&retstr->a = *&scale->a;
   *&retstr->c = v16;
-  *&retstr->tx = *&a4->tx;
+  *&retstr->tx = *&scale->tx;
   return self;
 }
 
 - (CGAffineTransform)freeTransform
 {
-  v5 = [(PKFreeTransformGestureRecognizer *)self touches];
-  if ([v5 count] == 2)
+  touches = [(PKFreeTransformGestureRecognizer *)self touches];
+  if ([touches count] == 2)
   {
-    v6 = [(PKFreeTransformGestureRecognizer *)self isScaling];
+    isScaling = [(PKFreeTransformGestureRecognizer *)self isScaling];
 
-    if (!v6)
+    if (!isScaling)
     {
 
       return [(PKFreeTransformGestureRecognizer *)self unscaledFreeTransform];
@@ -104,19 +104,19 @@ LABEL_6:
   *&retstr->tx = *(v8 + 32);
   if (-[PKFreeTransformGestureRecognizer allowSingleTouchDrag](self, "allowSingleTouchDrag") && (-[PKFreeTransformGestureRecognizer touches](self, "touches"), v10 = objc_claimAutoreleasedReturnValue(), v11 = [v10 count], v10, v11 == 1))
   {
-    v12 = [(PKFreeTransformGestureRecognizer *)self touchStartLocations];
-    v13 = [(PKFreeTransformGestureRecognizer *)self touches];
-    v14 = [v13 firstObject];
-    v15 = [v12 objectForKey:v14];
+    touchStartLocations = [(PKFreeTransformGestureRecognizer *)self touchStartLocations];
+    touches2 = [(PKFreeTransformGestureRecognizer *)self touches];
+    firstObject = [touches2 firstObject];
+    v15 = [touchStartLocations objectForKey:firstObject];
     [v15 CGPointValue];
     v17 = v16;
     v19 = v18;
 
-    v20 = [(PKFreeTransformGestureRecognizer *)self touches];
-    v21 = [v20 objectAtIndexedSubscript:0];
-    v22 = [(PKFreeTransformGestureRecognizer *)self view];
-    v23 = [v22 superview];
-    [v21 locationInView:v23];
+    touches3 = [(PKFreeTransformGestureRecognizer *)self touches];
+    v21 = [touches3 objectAtIndexedSubscript:0];
+    view = [(PKFreeTransformGestureRecognizer *)self view];
+    superview = [view superview];
+    [v21 locationInView:superview];
     v25 = v24;
     v27 = v26;
 
@@ -142,40 +142,40 @@ LABEL_6:
 
   else
   {
-    v34 = [(PKFreeTransformGestureRecognizer *)self touches];
-    v35 = [v34 count];
+    touches4 = [(PKFreeTransformGestureRecognizer *)self touches];
+    v35 = [touches4 count];
 
     if (v35 == 2)
     {
-      v36 = [(PKFreeTransformGestureRecognizer *)self touchStartLocations];
-      v37 = [(PKFreeTransformGestureRecognizer *)self touches];
-      v38 = [v37 objectAtIndexedSubscript:0];
-      v39 = [v36 objectForKey:v38];
+      touchStartLocations2 = [(PKFreeTransformGestureRecognizer *)self touchStartLocations];
+      touches5 = [(PKFreeTransformGestureRecognizer *)self touches];
+      v38 = [touches5 objectAtIndexedSubscript:0];
+      v39 = [touchStartLocations2 objectForKey:v38];
       [v39 CGPointValue];
       v41 = v40;
       v43 = v42;
 
-      v44 = [(PKFreeTransformGestureRecognizer *)self touchStartLocations];
-      v45 = [(PKFreeTransformGestureRecognizer *)self touches];
-      v46 = [v45 objectAtIndexedSubscript:1];
-      v47 = [v44 objectForKey:v46];
+      touchStartLocations3 = [(PKFreeTransformGestureRecognizer *)self touchStartLocations];
+      touches6 = [(PKFreeTransformGestureRecognizer *)self touches];
+      v46 = [touches6 objectAtIndexedSubscript:1];
+      v47 = [touchStartLocations3 objectForKey:v46];
       [v47 CGPointValue];
       v49 = v48;
       v51 = v50;
 
-      v52 = [(PKFreeTransformGestureRecognizer *)self touches];
-      v53 = [v52 objectAtIndexedSubscript:0];
-      v54 = [(PKFreeTransformGestureRecognizer *)self view];
-      v55 = [v54 superview];
-      [v53 locationInView:v55];
+      touches7 = [(PKFreeTransformGestureRecognizer *)self touches];
+      v53 = [touches7 objectAtIndexedSubscript:0];
+      view2 = [(PKFreeTransformGestureRecognizer *)self view];
+      superview2 = [view2 superview];
+      [v53 locationInView:superview2];
       v57 = v56;
       v59 = v58;
 
-      v60 = [(PKFreeTransformGestureRecognizer *)self touches];
-      v61 = [v60 objectAtIndexedSubscript:1];
-      v62 = [(PKFreeTransformGestureRecognizer *)self view];
-      v63 = [v62 superview];
-      [v61 locationInView:v63];
+      touches8 = [(PKFreeTransformGestureRecognizer *)self touches];
+      v61 = [touches8 objectAtIndexedSubscript:1];
+      view3 = [(PKFreeTransformGestureRecognizer *)self view];
+      superview3 = [view3 superview];
+      [v61 locationInView:superview3];
       v65 = v64;
       v67 = v66;
 
@@ -232,40 +232,40 @@ LABEL_6:
   *&retstr->a = *MEMORY[0x1E695EFD0];
   *&retstr->c = v6;
   *&retstr->tx = *(v5 + 32);
-  v7 = [(PKFreeTransformGestureRecognizer *)self touches];
-  v8 = [v7 count];
+  touches = [(PKFreeTransformGestureRecognizer *)self touches];
+  v8 = [touches count];
 
   if (v8 == 2)
   {
-    v9 = [(PKFreeTransformGestureRecognizer *)self touchStartLocations];
-    v10 = [(PKFreeTransformGestureRecognizer *)self touches];
-    v11 = [v10 objectAtIndexedSubscript:0];
-    v12 = [v9 objectForKey:v11];
+    touchStartLocations = [(PKFreeTransformGestureRecognizer *)self touchStartLocations];
+    touches2 = [(PKFreeTransformGestureRecognizer *)self touches];
+    v11 = [touches2 objectAtIndexedSubscript:0];
+    v12 = [touchStartLocations objectForKey:v11];
     [v12 CGPointValue];
     v14 = v13;
     v53 = v15;
 
-    v16 = [(PKFreeTransformGestureRecognizer *)self touchStartLocations];
-    v17 = [(PKFreeTransformGestureRecognizer *)self touches];
-    v18 = [v17 objectAtIndexedSubscript:1];
-    v19 = [v16 objectForKey:v18];
+    touchStartLocations2 = [(PKFreeTransformGestureRecognizer *)self touchStartLocations];
+    touches3 = [(PKFreeTransformGestureRecognizer *)self touches];
+    v18 = [touches3 objectAtIndexedSubscript:1];
+    v19 = [touchStartLocations2 objectForKey:v18];
     [v19 CGPointValue];
     v21 = v20;
     v23 = v22;
 
-    v24 = [(PKFreeTransformGestureRecognizer *)self touches];
-    v25 = [v24 objectAtIndexedSubscript:0];
-    v26 = [(PKFreeTransformGestureRecognizer *)self view];
-    v27 = [v26 superview];
-    [v25 locationInView:v27];
+    touches4 = [(PKFreeTransformGestureRecognizer *)self touches];
+    v25 = [touches4 objectAtIndexedSubscript:0];
+    view = [(PKFreeTransformGestureRecognizer *)self view];
+    superview = [view superview];
+    [v25 locationInView:superview];
     v54 = v29;
     v55 = v28;
 
-    v30 = [(PKFreeTransformGestureRecognizer *)self touches];
-    v31 = [v30 objectAtIndexedSubscript:1];
-    v32 = [(PKFreeTransformGestureRecognizer *)self view];
-    v33 = [v32 superview];
-    [v31 locationInView:v33];
+    touches5 = [(PKFreeTransformGestureRecognizer *)self touches];
+    v31 = [touches5 objectAtIndexedSubscript:1];
+    view2 = [(PKFreeTransformGestureRecognizer *)self view];
+    superview2 = [view2 superview];
+    [v31 locationInView:superview2];
     v35 = v34;
     v37 = v36;
 
@@ -328,18 +328,18 @@ LABEL_6:
   return result;
 }
 
-- (CGPoint)locationInView:(id)a3
+- (CGPoint)locationInView:(id)view
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  viewCopy = view;
   v6 = *MEMORY[0x1E695EFF8];
   v5 = *(MEMORY[0x1E695EFF8] + 8);
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v7 = [(PKFreeTransformGestureRecognizer *)self touches];
-  v8 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  touches = [(PKFreeTransformGestureRecognizer *)self touches];
+  v8 = [touches countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v8)
   {
     v9 = v8;
@@ -351,29 +351,29 @@ LABEL_6:
       {
         if (*v21 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(touches);
         }
 
-        [*(*(&v20 + 1) + 8 * v11) locationInView:v4];
+        [*(*(&v20 + 1) + 8 * v11) locationInView:viewCopy];
         v6 = v6 + v12;
         v5 = v5 + v13;
         ++v11;
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v9 = [touches countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v9);
   }
 
-  v14 = [(PKFreeTransformGestureRecognizer *)self touches];
-  v15 = [v14 count];
+  touches2 = [(PKFreeTransformGestureRecognizer *)self touches];
+  v15 = [touches2 count];
 
   if (v15)
   {
-    v16 = [(PKFreeTransformGestureRecognizer *)self touches];
-    v17 = 1.0 / [v16 count];
+    touches3 = [(PKFreeTransformGestureRecognizer *)self touches];
+    v17 = 1.0 / [touches3 count];
     v6 = v6 * v17;
     v5 = v5 * v17;
   }
@@ -393,8 +393,8 @@ LABEL_6:
   v20[1] = v3;
   v20[2] = *(MEMORY[0x1E695EFD0] + 32);
   [(PKFreeTransformGestureRecognizer *)self setAccumulatedTransform:v20];
-  v4 = [(PKFreeTransformGestureRecognizer *)self touchStartLocations];
-  [v4 removeAllObjects];
+  touchStartLocations = [(PKFreeTransformGestureRecognizer *)self touchStartLocations];
+  [touchStartLocations removeAllObjects];
 
   v18 = 0u;
   v19 = 0u;
@@ -417,13 +417,13 @@ LABEL_6:
         }
 
         v9 = *(*(&v16 + 1) + 8 * v8);
-        v10 = [(PKFreeTransformGestureRecognizer *)self touchStartLocations];
+        touchStartLocations2 = [(PKFreeTransformGestureRecognizer *)self touchStartLocations];
         v11 = MEMORY[0x1E696B098];
-        v12 = [(PKFreeTransformGestureRecognizer *)self view];
-        v13 = [v12 superview];
-        [v9 locationInView:v13];
+        view = [(PKFreeTransformGestureRecognizer *)self view];
+        superview = [view superview];
+        [v9 locationInView:superview];
         v14 = [v11 valueWithCGPoint:?];
-        [v10 setObject:v14 forKey:v9];
+        [touchStartLocations2 setObject:v14 forKey:v9];
 
         ++v8;
       }
@@ -467,41 +467,41 @@ LABEL_6:
   [(PKFreeTransformGestureRecognizer *)self setAccumulatedTransform:v3];
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4 rejectExcessTouches:(BOOL)a5
+- (void)touchesBegan:(id)began withEvent:(id)event rejectExcessTouches:(BOOL)touches
 {
   v53 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = [(PKFreeTransformGestureRecognizer *)self touches];
-  v11 = [v10 count];
-  v12 = [v8 count] + v11;
+  beganCopy = began;
+  eventCopy = event;
+  touches = [(PKFreeTransformGestureRecognizer *)self touches];
+  v11 = [touches count];
+  v12 = [beganCopy count] + v11;
 
-  if (v12 >= 3 && !a5)
+  if (v12 >= 3 && !touches)
   {
-    v13 = self;
+    selfCopy3 = self;
     v14 = 5;
 LABEL_6:
-    [(PKFreeTransformGestureRecognizer *)v13 setState:v14];
+    [(PKFreeTransformGestureRecognizer *)selfCopy3 setState:v14];
     goto LABEL_7;
   }
 
-  v15 = [v8 objectsPassingTest:&__block_literal_global_8];
+  v15 = [beganCopy objectsPassingTest:&__block_literal_global_8];
   v16 = [v15 count];
 
   if (v16)
   {
-    v13 = self;
+    selfCopy3 = self;
     v14 = 3;
     goto LABEL_6;
   }
 
-  v17 = [(PKFreeTransformGestureRecognizer *)self touches];
-  v18 = [v17 count];
-  v19 = [v8 count] + v18;
+  touches2 = [(PKFreeTransformGestureRecognizer *)self touches];
+  v18 = [touches2 count];
+  v19 = [beganCopy count] + v18;
 
   if (v19 < 3)
   {
-    v41 = v9;
+    v41 = eventCopy;
     if ([(PKFreeTransformGestureRecognizer *)self state]== 1 || [(PKFreeTransformGestureRecognizer *)self state]== 2)
     {
       [(PKFreeTransformGestureRecognizer *)self resetAndAccumulateTransform];
@@ -511,8 +511,8 @@ LABEL_6:
     v46 = 0u;
     v43 = 0u;
     v44 = 0u;
-    v42 = v8;
-    v25 = v8;
+    v42 = beganCopy;
+    v25 = beganCopy;
     v26 = [v25 countByEnumeratingWithState:&v43 objects:v51 count:16];
     if (v26)
     {
@@ -528,20 +528,20 @@ LABEL_6:
           }
 
           v30 = *(*(&v43 + 1) + 8 * i);
-          v31 = [(PKFreeTransformGestureRecognizer *)self touches];
-          [v31 addObject:v30];
+          touches3 = [(PKFreeTransformGestureRecognizer *)self touches];
+          [touches3 addObject:v30];
 
           v32 = MEMORY[0x1E696B098];
-          v33 = [(PKFreeTransformGestureRecognizer *)self view];
-          v34 = [v33 superview];
-          [v30 locationInView:v34];
+          view = [(PKFreeTransformGestureRecognizer *)self view];
+          superview = [view superview];
+          [v30 locationInView:superview];
           v35 = [v32 valueWithCGPoint:?];
 
-          v36 = [(PKFreeTransformGestureRecognizer *)self touchStartLocations];
-          [v36 setObject:v35 forKey:v30];
+          touchStartLocations = [(PKFreeTransformGestureRecognizer *)self touchStartLocations];
+          [touchStartLocations setObject:v35 forKey:v30];
 
-          v37 = [(PKFreeTransformGestureRecognizer *)self actualTouchStartLocations];
-          [v37 setObject:v35 forKey:v30];
+          actualTouchStartLocations = [(PKFreeTransformGestureRecognizer *)self actualTouchStartLocations];
+          [actualTouchStartLocations setObject:v35 forKey:v30];
         }
 
         v27 = [v25 countByEnumeratingWithState:&v43 objects:v51 count:16];
@@ -550,27 +550,27 @@ LABEL_6:
       while (v27);
     }
 
-    v9 = v41;
-    v8 = v42;
+    eventCopy = v41;
+    beganCopy = v42;
     if (![(PKFreeTransformGestureRecognizer *)self state])
     {
-      v38 = [(PKFreeTransformGestureRecognizer *)self touches];
-      if ([v38 count] == 2)
+      touches4 = [(PKFreeTransformGestureRecognizer *)self touches];
+      if ([touches4 count] == 2)
       {
       }
 
       else
       {
-        v39 = [(PKFreeTransformGestureRecognizer *)self allowSingleTouchDrag];
+        allowSingleTouchDrag = [(PKFreeTransformGestureRecognizer *)self allowSingleTouchDrag];
 
-        if (!v39)
+        if (!allowSingleTouchDrag)
         {
           goto LABEL_7;
         }
       }
 
       [(PKFreeTransformGestureRecognizer *)self startThreshold];
-      v13 = self;
+      selfCopy3 = self;
       if (v40 > 0.0)
       {
         [(PKFreeTransformGestureRecognizer *)self setCanBegin:1];
@@ -588,7 +588,7 @@ LABEL_6:
     v50 = 0u;
     v47 = 0u;
     v48 = 0u;
-    v20 = v8;
+    v20 = beganCopy;
     v21 = [v20 countByEnumeratingWithState:&v47 objects:v52 count:16];
     if (v21)
     {
@@ -603,7 +603,7 @@ LABEL_6:
             objc_enumerationMutation(v20);
           }
 
-          [(PKFreeTransformGestureRecognizer *)self ignoreTouch:*(*(&v47 + 1) + 8 * j) forEvent:v9];
+          [(PKFreeTransformGestureRecognizer *)self ignoreTouch:*(*(&v47 + 1) + 8 * j) forEvent:eventCopy];
         }
 
         v22 = [v20 countByEnumeratingWithState:&v47 objects:v52 count:16];
@@ -616,15 +616,15 @@ LABEL_6:
 LABEL_7:
 }
 
-- (BOOL)touchesMovedPastThreshold:(double)a3
+- (BOOL)touchesMovedPastThreshold:(double)threshold
 {
   v28 = *MEMORY[0x1E69E9840];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v5 = [(PKFreeTransformGestureRecognizer *)self touches];
-  v6 = [v5 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  touches = [(PKFreeTransformGestureRecognizer *)self touches];
+  v6 = [touches countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v6)
   {
     v7 = v6;
@@ -636,25 +636,25 @@ LABEL_7:
       {
         if (*v24 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(touches);
         }
 
         v11 = *(*(&v23 + 1) + 8 * i);
-        v12 = [(PKFreeTransformGestureRecognizer *)self view];
-        v13 = [v12 superview];
-        [v11 locationInView:v13];
+        view = [(PKFreeTransformGestureRecognizer *)self view];
+        superview = [view superview];
+        [v11 locationInView:superview];
         v15 = v14;
         v17 = v16;
 
-        v18 = [(PKFreeTransformGestureRecognizer *)self touchStartLocations];
-        v19 = [v18 objectForKey:v11];
+        touchStartLocations = [(PKFreeTransformGestureRecognizer *)self touchStartLocations];
+        v19 = [touchStartLocations objectForKey:v11];
         [v19 CGPointValue];
-        LOBYTE(v13) = sqrt((v17 - v21) * (v17 - v21) + (v15 - v20) * (v15 - v20)) > a3;
+        LOBYTE(superview) = sqrt((v17 - v21) * (v17 - v21) + (v15 - v20) * (v15 - v20)) > threshold;
 
-        v8 |= v13;
+        v8 |= superview;
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v7 = [touches countByEnumeratingWithState:&v23 objects:v27 count:16];
     }
 
     while (v7);
@@ -668,46 +668,46 @@ LABEL_7:
   return v8 & 1;
 }
 
-- (BOOL)touchesMovedPastScaleThreshold:(double)a3
+- (BOOL)touchesMovedPastScaleThreshold:(double)threshold
 {
-  v5 = [(PKFreeTransformGestureRecognizer *)self touches];
-  v6 = [v5 count];
+  touches = [(PKFreeTransformGestureRecognizer *)self touches];
+  v6 = [touches count];
 
   if (v6 < 2)
   {
     return 0;
   }
 
-  v46 = a3;
-  v7 = [(PKFreeTransformGestureRecognizer *)self actualTouchStartLocations];
-  v8 = [(PKFreeTransformGestureRecognizer *)self touches];
-  v9 = [v8 objectAtIndexedSubscript:0];
-  v10 = [v7 objectForKey:v9];
+  thresholdCopy = threshold;
+  actualTouchStartLocations = [(PKFreeTransformGestureRecognizer *)self actualTouchStartLocations];
+  touches2 = [(PKFreeTransformGestureRecognizer *)self touches];
+  v9 = [touches2 objectAtIndexedSubscript:0];
+  v10 = [actualTouchStartLocations objectForKey:v9];
   [v10 CGPointValue];
   v12 = v11;
   v14 = v13;
 
-  v15 = [(PKFreeTransformGestureRecognizer *)self actualTouchStartLocations];
-  v16 = [(PKFreeTransformGestureRecognizer *)self touches];
-  v17 = [v16 objectAtIndexedSubscript:1];
-  v18 = [v15 objectForKey:v17];
+  actualTouchStartLocations2 = [(PKFreeTransformGestureRecognizer *)self actualTouchStartLocations];
+  touches3 = [(PKFreeTransformGestureRecognizer *)self touches];
+  v17 = [touches3 objectAtIndexedSubscript:1];
+  v18 = [actualTouchStartLocations2 objectForKey:v17];
   [v18 CGPointValue];
   v20 = v19;
   v22 = v21;
 
-  v23 = [(PKFreeTransformGestureRecognizer *)self touches];
-  v24 = [v23 objectAtIndexedSubscript:0];
-  v25 = [(PKFreeTransformGestureRecognizer *)self view];
-  v26 = [v25 superview];
-  [v24 locationInView:v26];
+  touches4 = [(PKFreeTransformGestureRecognizer *)self touches];
+  v24 = [touches4 objectAtIndexedSubscript:0];
+  view = [(PKFreeTransformGestureRecognizer *)self view];
+  superview = [view superview];
+  [v24 locationInView:superview];
   v28 = v27;
   v30 = v29;
 
-  v31 = [(PKFreeTransformGestureRecognizer *)self touches];
-  v32 = [v31 objectAtIndexedSubscript:1];
-  v33 = [(PKFreeTransformGestureRecognizer *)self view];
-  v34 = [v33 superview];
-  [v32 locationInView:v34];
+  touches5 = [(PKFreeTransformGestureRecognizer *)self touches];
+  v32 = [touches5 objectAtIndexedSubscript:1];
+  view2 = [(PKFreeTransformGestureRecognizer *)self view];
+  superview2 = [view2 superview];
+  [v32 locationInView:superview2];
   v36 = v35;
   v38 = v37;
 
@@ -726,14 +726,14 @@ LABEL_7:
     }
   }
 
-  return v39 > v43 * v46;
+  return v39 > v43 * thresholdCopy;
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
   v5.receiver = self;
   v5.super_class = PKFreeTransformGestureRecognizer;
-  [(PKFreeTransformGestureRecognizer *)&v5 touchesMoved:a3 withEvent:a4];
+  [(PKFreeTransformGestureRecognizer *)&v5 touchesMoved:moved withEvent:event];
   [(PKFreeTransformGestureRecognizer *)self freeTransform:0];
   if (![(PKFreeTransformGestureRecognizer *)self state])
   {
@@ -777,17 +777,17 @@ LABEL_7:
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [(PKFreeTransformGestureRecognizer *)self touches];
-  v7 = [v6 count];
-  if (v7 - [v5 count] == 1 && -[PKFreeTransformGestureRecognizer allowSingleTouchDrag](self, "allowSingleTouchDrag"))
+  endedCopy = ended;
+  touches = [(PKFreeTransformGestureRecognizer *)self touches];
+  v7 = [touches count];
+  if (v7 - [endedCopy count] == 1 && -[PKFreeTransformGestureRecognizer allowSingleTouchDrag](self, "allowSingleTouchDrag"))
   {
-    v8 = [(PKFreeTransformGestureRecognizer *)self axisAligned];
+    axisAligned = [(PKFreeTransformGestureRecognizer *)self axisAligned];
 
-    if (!v8)
+    if (!axisAligned)
     {
       [(PKFreeTransformGestureRecognizer *)self resetAndAccumulateTransform];
       v9 = 0;
@@ -808,14 +808,14 @@ LABEL_7:
     [(PKFreeTransformGestureRecognizer *)self setScaleDamping:0.5];
   }
 
-  v10 = [(PKFreeTransformGestureRecognizer *)self touches];
-  [v10 minusSet:v5];
+  touches2 = [(PKFreeTransformGestureRecognizer *)self touches];
+  [touches2 minusSet:endedCopy];
 
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v11 = v5;
+  v11 = endedCopy;
   v12 = [v11 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v12)
   {
@@ -831,11 +831,11 @@ LABEL_7:
         }
 
         v16 = *(*(&v20 + 1) + 8 * i);
-        v17 = [(PKFreeTransformGestureRecognizer *)self touchStartLocations];
-        [v17 removeObjectForKey:v16];
+        touchStartLocations = [(PKFreeTransformGestureRecognizer *)self touchStartLocations];
+        [touchStartLocations removeObjectForKey:v16];
 
-        v18 = [(PKFreeTransformGestureRecognizer *)self actualTouchStartLocations];
-        [v18 removeObjectForKey:v16];
+        actualTouchStartLocations = [(PKFreeTransformGestureRecognizer *)self actualTouchStartLocations];
+        [actualTouchStartLocations removeObjectForKey:v16];
       }
 
       v13 = [v11 countByEnumeratingWithState:&v20 objects:v24 count:16];
@@ -871,13 +871,13 @@ LABEL_7:
   touches = self->_touches;
   self->_touches = v3;
 
-  v5 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+  strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
   touchStartLocations = self->_touchStartLocations;
-  self->_touchStartLocations = v5;
+  self->_touchStartLocations = strongToStrongObjectsMapTable;
 
-  v7 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+  strongToStrongObjectsMapTable2 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
   actualTouchStartLocations = self->_actualTouchStartLocations;
-  self->_actualTouchStartLocations = v7;
+  self->_actualTouchStartLocations = strongToStrongObjectsMapTable2;
 }
 
 - (CGAffineTransform)accumulatedTransform
@@ -889,11 +889,11 @@ LABEL_7:
   return self;
 }
 
-- (void)setAccumulatedTransform:(CGAffineTransform *)a3
+- (void)setAccumulatedTransform:(CGAffineTransform *)transform
 {
-  v4 = *&a3->c;
-  v3 = *&a3->tx;
-  *&self->_accumulatedTransform.a = *&a3->a;
+  v4 = *&transform->c;
+  v3 = *&transform->tx;
+  *&self->_accumulatedTransform.a = *&transform->a;
   *&self->_accumulatedTransform.c = v4;
   *&self->_accumulatedTransform.tx = v3;
 }

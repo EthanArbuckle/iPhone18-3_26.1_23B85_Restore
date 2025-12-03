@@ -1,55 +1,55 @@
 @interface JavaTextMessageFormat
 + (void)initialize;
-- (BOOL)isEqual:(id)a3;
-- (JavaTextMessageFormat)formatWithId:(id)a3 withJavaLangStringBuffer:(id)a4 withJavaTextFieldPosition:(id)a5;
-- (JavaTextMessageFormat)initWithNSString:(id)a3;
-- (JavaTextMessageFormat)initWithNSString:(id)a3 withJavaUtilLocale:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (JavaTextMessageFormat)formatWithId:(id)id withJavaLangStringBuffer:(id)buffer withJavaTextFieldPosition:(id)position;
+- (JavaTextMessageFormat)initWithNSString:(id)string;
+- (JavaTextMessageFormat)initWithNSString:(id)string withJavaUtilLocale:(id)locale;
 - (id)clone;
-- (id)formatToCharacterIteratorWithId:(id)a3;
+- (id)formatToCharacterIteratorWithId:(id)id;
 - (id)getFormats;
 - (id)getFormatsByArgumentIndex;
-- (id)parseWithNSString:(id)a3;
-- (id)parseWithNSString:(id)a3 withJavaTextParsePosition:(id)a4;
+- (id)parseWithNSString:(id)string;
+- (id)parseWithNSString:(id)string withJavaTextParsePosition:(id)position;
 - (id)toPattern;
 - (unint64_t)hash;
-- (void)applyPatternWithNSString:(id)a3;
+- (void)applyPatternWithNSString:(id)string;
 - (void)dealloc;
-- (void)readObjectWithJavaIoObjectInputStream:(id)a3;
-- (void)setFormatByArgumentIndexWithInt:(int)a3 withJavaTextFormat:(id)a4;
-- (void)setFormatWithInt:(int)a3 withJavaTextFormat:(id)a4;
-- (void)setFormatsByArgumentIndexWithJavaTextFormatArray:(id)a3;
-- (void)setFormatsWithJavaTextFormatArray:(id)a3;
-- (void)setLocaleWithJavaUtilLocale:(id)a3;
-- (void)writeObjectWithJavaIoObjectOutputStream:(id)a3;
+- (void)readObjectWithJavaIoObjectInputStream:(id)stream;
+- (void)setFormatByArgumentIndexWithInt:(int)int withJavaTextFormat:(id)format;
+- (void)setFormatWithInt:(int)int withJavaTextFormat:(id)format;
+- (void)setFormatsByArgumentIndexWithJavaTextFormatArray:(id)array;
+- (void)setFormatsWithJavaTextFormatArray:(id)array;
+- (void)setLocaleWithJavaUtilLocale:(id)locale;
+- (void)writeObjectWithJavaIoObjectOutputStream:(id)stream;
 @end
 
 @implementation JavaTextMessageFormat
 
-- (JavaTextMessageFormat)initWithNSString:(id)a3 withJavaUtilLocale:(id)a4
+- (JavaTextMessageFormat)initWithNSString:(id)string withJavaUtilLocale:(id)locale
 {
   JavaTextFormat_init(self, a2);
-  JreStrongAssign(&self->locale_, a4);
-  [(JavaTextMessageFormat *)self applyPatternWithNSString:a3];
+  JreStrongAssign(&self->locale_, locale);
+  [(JavaTextMessageFormat *)self applyPatternWithNSString:string];
   return self;
 }
 
-- (JavaTextMessageFormat)initWithNSString:(id)a3
+- (JavaTextMessageFormat)initWithNSString:(id)string
 {
   Default = JavaUtilLocale_getDefault();
   JavaTextFormat_init(self, v6);
   JreStrongAssign(&self->locale_, Default);
-  [(JavaTextMessageFormat *)self applyPatternWithNSString:a3];
+  [(JavaTextMessageFormat *)self applyPatternWithNSString:string];
   return self;
 }
 
-- (void)applyPatternWithNSString:(id)a3
+- (void)applyPatternWithNSString:(id)string
 {
-  if (!a3)
+  if (!string)
   {
     JreThrowNullPointerException();
   }
 
-  v4 = [a3 length];
+  v4 = [string length];
   v5 = new_JavaLangStringBuffer_init();
   v6 = new_JavaTextParsePosition_initWithInt_(0);
   v7 = new_JavaUtilArrayList_init();
@@ -68,22 +68,22 @@
     v21 = v5;
     do
     {
-      if (JavaTextFormat_upToWithNSString_withJavaTextParsePosition_withJavaLangStringBuffer_withChar_(a3, v6, v5, 123))
+      if (JavaTextFormat_upToWithNSString_withJavaTextParsePosition_withJavaLangStringBuffer_withChar_(string, v6, v5, 123))
       {
         v9 = v7;
-        v10 = [(JavaTextParsePosition *)v6 getIndex];
-        if (v10 >= v4)
+        getIndex = [(JavaTextParsePosition *)v6 getIndex];
+        if (getIndex >= v4)
         {
 LABEL_25:
           v20 = new_JavaLangIllegalArgumentException_initWithNSString_(@"Invalid argument number");
           objc_exception_throw(v20);
         }
 
-        v11 = v10;
+        v11 = getIndex;
         v12 = 0;
         while (1)
         {
-          v13 = [a3 charAtWithInt:v11];
+          v13 = [string charAtWithInt:v11];
           if (v13 == 44 || v13 == 125)
           {
             break;
@@ -103,7 +103,7 @@ LABEL_25:
         }
 
         [(JavaTextParsePosition *)v6 setIndexWithInt:v11];
-        [(JavaUtilArrayList *)v22 addWithId:sub_1001E4CC4(self, a3, v6)];
+        [(JavaUtilArrayList *)v22 addWithId:sub_1001E4CC4(self, string, v6)];
         v15 = v24;
         v14 = v25;
         size = v24->super.size_;
@@ -153,9 +153,9 @@ LABEL_25:
 {
   v16.receiver = self;
   v16.super_class = JavaTextMessageFormat;
-  v3 = [(JavaTextFormat *)&v16 clone];
+  clone = [(JavaTextFormat *)&v16 clone];
   objc_opt_class();
-  if (v3 && (objc_opt_isKindOfClass() & 1) == 0)
+  if (clone && (objc_opt_isKindOfClass() & 1) == 0)
   {
 LABEL_20:
     JreThrowClassCastException();
@@ -196,33 +196,33 @@ LABEL_20:
           goto LABEL_19;
         }
 
-        v13 = [(IOSClass *)v12 clone];
+        clone2 = [(IOSClass *)v12 clone];
         objc_opt_class();
-        if (v13 && (objc_opt_isKindOfClass() & 1) == 0)
+        if (clone2 && (objc_opt_isKindOfClass() & 1) == 0)
         {
           goto LABEL_20;
         }
 
-        IOSObjectArray_Set(v5, v7, v13);
+        IOSObjectArray_Set(v5, v7, clone2);
       }
     }
 
     while (v7-- > 0);
   }
 
-  if (!v3)
+  if (!clone)
   {
 LABEL_19:
     JreThrowNullPointerException();
   }
 
-  JreStrongAssign(v3 + 4, v5);
-  return v3;
+  JreStrongAssign(clone + 4, v5);
+  return clone;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     LOBYTE(v12) = 1;
   }
@@ -236,7 +236,7 @@ LABEL_19:
     }
 
     objc_opt_class();
-    if (!a3)
+    if (!equal)
     {
       goto LABEL_27;
     }
@@ -247,7 +247,7 @@ LABEL_19:
     }
 
     maxOffset = self->maxOffset_;
-    if (maxOffset == *(a3 + 10))
+    if (maxOffset == *(equal + 10))
     {
       if ((maxOffset & 0x80000000) == 0)
       {
@@ -267,7 +267,7 @@ LABEL_19:
           }
 
           v9 = *(&argumentNumbers->super.size_ + v6 + 1);
-          v10 = *(a3 + 3);
+          v10 = *(equal + 3);
           v11 = *(v10 + 8);
           if ((v6 & 0x80000000) != 0 || v6 >= v11)
           {
@@ -297,14 +297,14 @@ LABEL_21:
         goto LABEL_27;
       }
 
-      v12 = [(JavaUtilLocale *)locale isEqual:*(a3 + 1)];
+      v12 = [(JavaUtilLocale *)locale isEqual:*(equal + 1)];
       if (v12)
       {
-        v12 = JavaUtilArrays_equalsWithNSObjectArray_withNSObjectArray_(self->strings_, *(a3 + 2));
+        v12 = JavaUtilArrays_equalsWithNSObjectArray_withNSObjectArray_(self->strings_, *(equal + 2));
         if (v12)
         {
           formats = self->formats_;
-          v15 = *(a3 + 4);
+          v15 = *(equal + 4);
 
           LOBYTE(v12) = JavaUtilArrays_equalsWithNSObjectArray_withNSObjectArray_(formats, v15);
         }
@@ -321,9 +321,9 @@ LABEL_18:
   return v12;
 }
 
-- (id)formatToCharacterIteratorWithId:(id)a3
+- (id)formatToCharacterIteratorWithId:(id)id
 {
-  if (!a3)
+  if (!id)
   {
     v15 = new_JavaLangNullPointerException_initWithNSString_(@"object == null");
     objc_exception_throw(v15);
@@ -338,7 +338,7 @@ LABEL_18:
   }
 
   v7 = new_JavaTextFieldPosition_initWithInt_(0);
-  sub_1001E5550(self, a3, v5, v7, v6);
+  sub_1001E5550(self, id, v5, v7, v6);
   v8 = new_JavaTextAttributedString_initWithNSString_([(JavaLangStringBuffer *)v5 description]);
   v16 = 0u;
   v17 = 0u;
@@ -379,15 +379,15 @@ LABEL_18:
   return [(JavaTextAttributedString *)v8 getIterator];
 }
 
-- (JavaTextMessageFormat)formatWithId:(id)a3 withJavaLangStringBuffer:(id)a4 withJavaTextFieldPosition:(id)a5
+- (JavaTextMessageFormat)formatWithId:(id)id withJavaLangStringBuffer:(id)buffer withJavaTextFieldPosition:(id)position
 {
   objc_opt_class();
-  if (a3 && (objc_opt_isKindOfClass() & 1) == 0)
+  if (id && (objc_opt_isKindOfClass() & 1) == 0)
   {
     JreThrowClassCastException();
   }
 
-  return sub_1001E5550(self, a3, a4, a5, 0);
+  return sub_1001E5550(self, id, buffer, position, 0);
 }
 
 - (id)getFormats
@@ -444,7 +444,7 @@ LABEL_12:
   return v3;
 }
 
-- (void)setFormatByArgumentIndexWithInt:(int)a3 withJavaTextFormat:(id)a4
+- (void)setFormatByArgumentIndexWithInt:(int)int withJavaTextFormat:(id)format
 {
   if (self->maxOffset_ <= 0x7FFFFFFEu)
   {
@@ -464,7 +464,7 @@ LABEL_12:
         IOSArray_throwOutOfBoundsWithMsg(size, v7);
       }
 
-      if (*(&argumentNumbers->super.size_ + v7 + 1) == a3)
+      if (*(&argumentNumbers->super.size_ + v7 + 1) == int)
       {
         formats = self->formats_;
         if (!formats)
@@ -472,7 +472,7 @@ LABEL_12:
           goto LABEL_12;
         }
 
-        IOSObjectArray_Set(formats, v7, a4);
+        IOSObjectArray_Set(formats, v7, format);
       }
 
       ++v7;
@@ -482,20 +482,20 @@ LABEL_12:
   }
 }
 
-- (void)setFormatsByArgumentIndexWithJavaTextFormatArray:(id)a3
+- (void)setFormatsByArgumentIndexWithJavaTextFormatArray:(id)array
 {
-  if (!a3)
+  if (!array)
   {
     goto LABEL_18;
   }
 
-  if (*(a3 + 2) >= 1)
+  if (*(array + 2) >= 1)
   {
     v5 = 0;
     while (self->maxOffset_ > 0x7FFFFFFEu)
     {
 LABEL_16:
-      if (++v5 >= *(a3 + 2))
+      if (++v5 >= *(array + 2))
       {
         return;
       }
@@ -523,13 +523,13 @@ LABEL_16:
           break;
         }
 
-        v9 = *(a3 + 2);
+        v9 = *(array + 2);
         if (v5 >= v9)
         {
           IOSArray_throwOutOfBoundsWithMsg(v9, v5);
         }
 
-        IOSObjectArray_Set(self->formats_, v6, *(a3 + v5 + 3));
+        IOSObjectArray_Set(self->formats_, v6, *(array + v5 + 3));
       }
 
       if (++v6 >= self->maxOffset_ + 1)
@@ -663,10 +663,10 @@ LABEL_25:
   return v5;
 }
 
-- (id)parseWithNSString:(id)a3
+- (id)parseWithNSString:(id)string
 {
   v5 = new_JavaTextParsePosition_initWithInt_(0);
-  v6 = [(JavaTextMessageFormat *)self parseWithNSString:a3 withJavaTextParsePosition:v5];
+  v6 = [(JavaTextMessageFormat *)self parseWithNSString:string withJavaTextParsePosition:v5];
   if (![(JavaTextParsePosition *)v5 getIndex])
   {
     v8 = new_JavaTextParseException_initWithNSString_withInt_(@"Parse failure", [(JavaTextParsePosition *)v5 getErrorIndex]);
@@ -676,9 +676,9 @@ LABEL_25:
   return v6;
 }
 
-- (id)parseWithNSString:(id)a3 withJavaTextParsePosition:(id)a4
+- (id)parseWithNSString:(id)string withJavaTextParsePosition:(id)position
 {
-  if (!a3)
+  if (!string)
   {
     if ((atomic_load_explicit(LibcoreUtilEmptyArray__initialized, memory_order_acquire) & 1) == 0)
     {
@@ -689,13 +689,13 @@ LABEL_25:
   }
 
   v7 = new_JavaTextParsePosition_initWithInt_(0);
-  if (!a4)
+  if (!position)
   {
     goto LABEL_47;
   }
 
   v8 = v7;
-  v9 = [a4 getIndex];
+  getIndex = [position getIndex];
   v10 = [IOSObjectArray arrayWithLength:self->maxArgumentIndex_ + 1 type:NSObject_class_()];
   maxOffset = self->maxOffset_;
   if (maxOffset < 0)
@@ -703,7 +703,7 @@ LABEL_25:
     goto LABEL_35;
   }
 
-  v37 = a4;
+  positionCopy = position;
   v12 = 0;
   do
   {
@@ -720,11 +720,11 @@ LABEL_25:
     }
 
     v15 = (&strings->elementType_)[v12];
-    if (([a3 hasPrefix:v15 offset:v9] & 1) == 0)
+    if (([string hasPrefix:v15 offset:getIndex] & 1) == 0)
     {
-      v30 = v37;
+      positionCopy2 = positionCopy;
 LABEL_44:
-      v35 = v9;
+      v35 = getIndex;
       goto LABEL_45;
     }
 
@@ -750,14 +750,14 @@ LABEL_44:
     v20 = (&formats->elementType_)[v12];
     if (v20)
     {
-      [(JavaTextParsePosition *)v8 setIndexWithInt:v9 + v18];
-      v21 = [(IOSClass *)v20 parseObjectWithNSString:a3 withJavaTextParsePosition:v8];
+      [(JavaTextParsePosition *)v8 setIndexWithInt:getIndex + v18];
+      v21 = [(IOSClass *)v20 parseObjectWithNSString:string withJavaTextParsePosition:v8];
       if ([(JavaTextParsePosition *)v8 getErrorIndex]!= -1)
       {
         goto LABEL_42;
       }
 
-      v9 = [(JavaTextParsePosition *)v8 getIndex];
+      getIndex = [(JavaTextParsePosition *)v8 getIndex];
     }
 
     else
@@ -768,8 +768,8 @@ LABEL_44:
       v25 = v24->super.size_;
       if (v12 + 1 >= v25)
       {
-        v21 = [a3 substring:v9 + v18];
-        v9 = [a3 length];
+        v21 = [string substring:getIndex + v18];
+        getIndex = [string length];
       }
 
       else
@@ -779,20 +779,20 @@ LABEL_44:
           IOSArray_throwOutOfBoundsWithMsg(v25, (v12 + 1));
         }
 
-        v26 = [a3 indexOfString:(&v24->elementType_)[v23] fromIndex:v9 + v18];
+        v26 = [string indexOfString:(&v24->elementType_)[v23] fromIndex:getIndex + v18];
         if (v26 == -1)
         {
 LABEL_42:
-          v35 = (v9 + v18);
-          v30 = v37;
+          v35 = (getIndex + v18);
+          positionCopy2 = positionCopy;
 LABEL_45:
-          [v30 setErrorIndexWithInt:v35];
+          [positionCopy2 setErrorIndexWithInt:v35];
           return 0;
         }
 
         v27 = v26;
-        v21 = [a3 substring:v9 + v18 endIndex:v26];
-        v9 = v27;
+        v21 = [string substring:getIndex + v18 endIndex:v26];
+        getIndex = v27;
       }
 
       v10 = v22;
@@ -816,7 +816,7 @@ LABEL_45:
   }
 
   while (v12 <= maxOffset);
-  a4 = v37;
+  position = positionCopy;
 LABEL_35:
   v31 = self->strings_;
   if (!v31)
@@ -838,9 +838,9 @@ LABEL_47:
   }
 
   v34 = (&v31->elementType_)[v32];
-  if (![a3 hasPrefix:v34 offset:v9])
+  if (![string hasPrefix:v34 offset:getIndex])
   {
-    v30 = a4;
+    positionCopy2 = position;
     goto LABEL_44;
   }
 
@@ -849,13 +849,13 @@ LABEL_47:
     goto LABEL_47;
   }
 
-  v9 = v9 + [(IOSClass *)v34 length];
+  getIndex = getIndex + [(IOSClass *)v34 length];
 LABEL_41:
-  [a4 setIndexWithInt:v9];
+  [position setIndexWithInt:getIndex];
   return v10;
 }
 
-- (void)setFormatWithInt:(int)a3 withJavaTextFormat:(id)a4
+- (void)setFormatWithInt:(int)int withJavaTextFormat:(id)format
 {
   formats = self->formats_;
   if (!formats)
@@ -863,19 +863,19 @@ LABEL_41:
     JreThrowNullPointerException();
   }
 
-  IOSObjectArray_Set(formats, a3, a4);
+  IOSObjectArray_Set(formats, int, format);
 }
 
-- (void)setFormatsWithJavaTextFormatArray:(id)a3
+- (void)setFormatsWithJavaTextFormatArray:(id)array
 {
   formats = self->formats_;
-  if (!formats || !a3)
+  if (!formats || !array)
   {
     JreThrowNullPointerException();
   }
 
   size = formats->super.size_;
-  v6 = *(a3 + 2);
+  v6 = *(array + 2);
   if (v6 >= size)
   {
     v7 = size;
@@ -890,20 +890,20 @@ LABEL_41:
   {
     for (i = 0; i != v7; ++i)
     {
-      v10 = *(a3 + 2);
+      v10 = *(array + 2);
       if (i >= v10)
       {
         IOSArray_throwOutOfBoundsWithMsg(v10, i);
       }
 
-      IOSObjectArray_Set(self->formats_, i, *(a3 + i + 3));
+      IOSObjectArray_Set(self->formats_, i, *(array + i + 3));
     }
   }
 }
 
-- (void)setLocaleWithJavaUtilLocale:(id)a3
+- (void)setLocaleWithJavaUtilLocale:(id)locale
 {
-  JreStrongAssign(&self->locale_, a3);
+  JreStrongAssign(&self->locale_, locale);
   if ((self->maxOffset_ & 0x80000000) == 0)
   {
     v5 = 0;
@@ -937,9 +937,9 @@ LABEL_41:
           JreThrowClassCastException();
         }
 
-        v10 = [(IOSClass *)v8 toPattern];
-        v11 = new_JavaTextDecimalFormatSymbols_initWithJavaUtilLocale_(a3);
-        v12 = new_JavaTextDecimalFormat_initWithNSString_withJavaTextDecimalFormatSymbols_(v10, v11);
+        toPattern = [(IOSClass *)v8 toPattern];
+        v11 = new_JavaTextDecimalFormatSymbols_initWithJavaUtilLocale_(locale);
+        v12 = new_JavaTextDecimalFormat_initWithNSString_withJavaTextDecimalFormatSymbols_(toPattern, v11);
         IOSObjectArray_SetAndConsume(v9, v5, v12);
       }
 
@@ -960,7 +960,7 @@ LABEL_41:
             JreThrowClassCastException();
           }
 
-          v14 = new_JavaTextSimpleDateFormat_initWithNSString_withJavaUtilLocale_([(IOSClass *)v8 toPattern], a3);
+          v14 = new_JavaTextSimpleDateFormat_initWithNSString_withJavaUtilLocale_([(IOSClass *)v8 toPattern], locale);
           IOSObjectArray_SetAndConsume(v13, v5, v14);
         }
       }
@@ -1037,7 +1037,7 @@ LABEL_41:
           JreThrowClassCastException();
         }
 
-        v13 = [(IOSClass *)v12 toPattern];
+        toPattern = [(IOSClass *)v12 toPattern];
       }
 
       else
@@ -1045,7 +1045,7 @@ LABEL_41:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v13 = sub_1001E6DBC(self, v3, v12);
+          toPattern = sub_1001E6DBC(self, v3, v12);
         }
 
         else
@@ -1062,14 +1062,14 @@ LABEL_41:
             goto LABEL_35;
           }
 
-          v13 = sub_1001E6F04(self, v3, v12, v14, v15, v16, v17, v18);
+          toPattern = sub_1001E6F04(self, v3, v12, v14, v15, v16, v17, v18);
         }
       }
 
-      v19 = v13;
-      if (v13)
+      v19 = toPattern;
+      if (toPattern)
       {
-        v20 = [v13 length];
+        v20 = [toPattern length];
         if (v20 >= 1)
         {
           v21 = 0;
@@ -1153,22 +1153,22 @@ LABEL_47:
   return [(JavaLangStringBuffer *)v3 description];
 }
 
-- (void)writeObjectWithJavaIoObjectOutputStream:(id)a3
+- (void)writeObjectWithJavaIoObjectOutputStream:(id)stream
 {
-  if (!a3)
+  if (!stream)
   {
     goto LABEL_25;
   }
 
-  v3 = a3;
-  v5 = [a3 putFields];
-  if (!v5)
+  streamCopy = stream;
+  putFields = [stream putFields];
+  if (!putFields)
   {
     goto LABEL_25;
   }
 
-  v6 = v5;
-  [v5 putWithNSString:@"argumentNumbers" withId:self->argumentNumbers_];
+  v6 = putFields;
+  [putFields putWithNSString:@"argumentNumbers" withId:self->argumentNumbers_];
   [v6 putWithNSString:@"formats" withId:self->formats_];
   [v6 putWithNSString:@"locale" withId:self->locale_];
   [v6 putWithNSString:@"maxOffset" withInt:self->maxOffset_];
@@ -1178,7 +1178,7 @@ LABEL_47:
   if ((maxOffset & 0x80000000) == 0)
   {
     v22 = v6;
-    v23 = v3;
+    v23 = streamCopy;
     v10 = 0;
     v11 = 0;
     do
@@ -1224,7 +1224,7 @@ LABEL_47:
 
     while (v10 <= maxOffset);
     v6 = v22;
-    v3 = v23;
+    streamCopy = v23;
   }
 
   v19 = self->strings_;
@@ -1249,24 +1249,24 @@ LABEL_25:
   [v6 putWithNSString:@"offsets" withId:{v7, v22, v23}];
   [v6 putWithNSString:@"pattern" withId:{-[JavaLangStringBuilder description](v8, "description")}];
 
-  [v3 writeFields];
+  [streamCopy writeFields];
 }
 
-- (void)readObjectWithJavaIoObjectInputStream:(id)a3
+- (void)readObjectWithJavaIoObjectInputStream:(id)stream
 {
-  if (!a3)
+  if (!stream)
   {
     goto LABEL_42;
   }
 
-  v4 = [a3 readFields];
-  if (!v4)
+  readFields = [stream readFields];
+  if (!readFields)
   {
     goto LABEL_42;
   }
 
-  v5 = v4;
-  v6 = [v4 getWithNSString:@"argumentNumbers" withId:0];
+  v5 = readFields;
+  v6 = [readFields getWithNSString:@"argumentNumbers" withId:0];
   objc_opt_class();
   if (v6 && (objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -1423,7 +1423,7 @@ LABEL_35:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = IOSClass_arrayType(+[IOSClass intClass], 1u);
     v9[0] = new_JavaIoObjectStreamField_initWithNSString_withIOSClass_(@"argumentNumbers", v2);

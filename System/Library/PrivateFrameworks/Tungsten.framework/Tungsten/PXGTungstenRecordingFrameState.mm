@@ -11,9 +11,9 @@
   v2 = [(PXGTungstenRecordingFrameState *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAB58] indexSet];
+    indexSet = [MEMORY[0x277CCAB58] indexSet];
     spriteIndexes = v2->_spriteIndexes;
-    v2->_spriteIndexes = v3;
+    v2->_spriteIndexes = indexSet;
   }
 
   return v2;

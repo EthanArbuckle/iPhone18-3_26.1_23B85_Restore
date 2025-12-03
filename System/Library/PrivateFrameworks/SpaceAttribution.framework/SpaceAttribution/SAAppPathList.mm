@@ -1,8 +1,8 @@
 @interface SAAppPathList
-- (BOOL)checkURLsAreOverlappingWithURLs:(id)a3;
-- (BOOL)handleOldAppPathListVersions:(id)a3;
+- (BOOL)checkURLsAreOverlappingWithURLs:(id)ls;
+- (BOOL)handleOldAppPathListVersions:(id)versions;
 - (BOOL)importDefaultApps;
-- (BOOL)isAppVisible:(id)a3;
+- (BOOL)isAppVisible:(id)visible;
 - (BOOL)loadFromDisk;
 - (BOOL)saveToDisk;
 - (BOOL)shouldValidateAppPathsOnDisk;
@@ -11,17 +11,17 @@
 - (NSMutableDictionary)writersMap;
 - (SAAppPathList)init;
 - (SATrie)pathsTrie;
-- (id)getGreaterAncestorOfBundle:(id)a3;
-- (id)getParentOfBundle:(id)a3;
+- (id)getGreaterAncestorOfBundle:(id)bundle;
+- (id)getParentOfBundle:(id)bundle;
 - (id)groupPathMapping;
-- (id)importFromPlists:(id)a3;
+- (id)importFromPlists:(id)plists;
 - (void)clearAppsWithZeroPath;
-- (void)findBundleIdForURL:(id)a3 reply:(id)a4;
-- (void)importDefaultListWithBGTask:(id)a3 volumesInfo:(id)a4 reply:(id)a5;
-- (void)importFromLaunchServicesWithBGTask:(id)a3 volumesInfo:(id)a4 reply:(id)a5;
-- (void)isPathInfoClaimedByAnotherApp:(id)a3 reply:(id)a4;
+- (void)findBundleIdForURL:(id)l reply:(id)reply;
+- (void)importDefaultListWithBGTask:(id)task volumesInfo:(id)info reply:(id)reply;
+- (void)importFromLaunchServicesWithBGTask:(id)task volumesInfo:(id)info reply:(id)reply;
+- (void)isPathInfoClaimedByAnotherApp:(id)app reply:(id)reply;
 - (void)mergeWritersAppPaths;
-- (void)updateWithAppPath:(id)a3;
+- (void)updateWithAppPath:(id)path;
 - (void)validateAppPathsOnDisk;
 @end
 
@@ -126,60 +126,60 @@ LABEL_10:
   return writersMap;
 }
 
-- (BOOL)isAppVisible:(id)a3
+- (BOOL)isAppVisible:(id)visible
 {
-  v4 = a3;
-  v5 = [(SAAppPathList *)self appPathList];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  visibleCopy = visible;
+  appPathList = [(SAAppPathList *)self appPathList];
+  v6 = [appPathList objectForKeyedSubscript:visibleCopy];
 
-  LOBYTE(v4) = [v6 isUserVisible];
-  return v4;
+  LOBYTE(visibleCopy) = [v6 isUserVisible];
+  return visibleCopy;
 }
 
 - (NSDictionary)recentlyUsedApps
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_recentlyUsedApps)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_recentlyUsedApps)
   {
     v3 = recentlyUsedAppsDictionary();
-    recentlyUsedApps = v2->_recentlyUsedApps;
-    v2->_recentlyUsedApps = v3;
+    recentlyUsedApps = selfCopy->_recentlyUsedApps;
+    selfCopy->_recentlyUsedApps = v3;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  v5 = v2->_recentlyUsedApps;
+  v5 = selfCopy->_recentlyUsedApps;
 
   return v5;
 }
 
-- (void)updateWithAppPath:(id)a3
+- (void)updateWithAppPath:(id)path
 {
-  v8 = a3;
-  v4 = [v8 identifier];
+  pathCopy = path;
+  identifier = [pathCopy identifier];
   v5 = self->_appPathList;
   objc_sync_enter(v5);
-  v6 = [(NSMutableDictionary *)self->_appPathList objectForKeyedSubscript:v4];
+  v6 = [(NSMutableDictionary *)self->_appPathList objectForKeyedSubscript:identifier];
   v7 = v6;
   if (v6)
   {
-    [v6 extendWithPropertiesFromAppPath:v8];
+    [v6 extendWithPropertiesFromAppPath:pathCopy];
   }
 
   else
   {
-    [(NSMutableDictionary *)self->_appPathList setValue:v8 forKey:v4];
+    [(NSMutableDictionary *)self->_appPathList setValue:pathCopy forKey:identifier];
   }
 
   objc_sync_exit(v5);
 }
 
-- (void)importDefaultListWithBGTask:(id)a3 volumesInfo:(id)a4 reply:(id)a5
+- (void)importDefaultListWithBGTask:(id)task volumesInfo:(id)info reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  taskCopy = task;
+  infoCopy = info;
+  replyCopy = reply;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
@@ -190,7 +190,7 @@ LABEL_10:
   v13[2] = sub_10000E80C;
   v13[3] = &unk_100064C00;
   v13[4] = &v14;
-  [(SAAppPathList *)self importFromLaunchServicesWithBGTask:v8 volumesInfo:v9 reply:v13];
+  [(SAAppPathList *)self importFromLaunchServicesWithBGTask:taskCopy volumesInfo:infoCopy reply:v13];
   if (v15[3])
   {
     v11 = 1;
@@ -204,7 +204,7 @@ LABEL_10:
     v11 = *(v15 + 24);
   }
 
-  v10[2](v10, v11 & 1);
+  replyCopy[2](replyCopy, v11 & 1);
   _Block_object_dispose(&v14, 8);
 }
 
@@ -255,9 +255,9 @@ LABEL_10:
 
 - (BOOL)loadFromDisk
 {
-  v3 = [(SAAppPathList *)self dataOnDisk];
-  v4 = v3;
-  if (!v3)
+  dataOnDisk = [(SAAppPathList *)self dataOnDisk];
+  v4 = dataOnDisk;
+  if (!dataOnDisk)
   {
     v9 = SALog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -268,7 +268,7 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v5 = [v3 objectForKey:@"appPathList"];
+  v5 = [dataOnDisk objectForKey:@"appPathList"];
 
   if (v5)
   {
@@ -301,9 +301,9 @@ LABEL_11:
   return v11;
 }
 
-- (BOOL)handleOldAppPathListVersions:(id)a3
+- (BOOL)handleOldAppPathListVersions:(id)versions
 {
-  v3 = a3;
+  versionsCopy = versions;
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
@@ -313,7 +313,7 @@ LABEL_11:
   v6[2] = sub_10000EB74;
   v6[3] = &unk_100064C68;
   v6[4] = &v7;
-  [v3 enumerateKeysAndObjectsUsingBlock:v6];
+  [versionsCopy enumerateKeysAndObjectsUsingBlock:v6];
   v4 = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
 
@@ -355,7 +355,7 @@ LABEL_11:
     v11 = sub_10000F56C;
     v12 = &unk_100064C90;
     v13 = v4;
-    v14 = self;
+    selfCopy = self;
     v6 = v4;
     [v5 enumerateKeysAndObjectsUsingBlock:&v9];
 
@@ -365,23 +365,23 @@ LABEL_11:
   }
 }
 
-- (id)getParentOfBundle:(id)a3
+- (id)getParentOfBundle:(id)bundle
 {
-  v4 = a3;
-  v5 = [(SAAppPathList *)self writersMap];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  bundleCopy = bundle;
+  writersMap = [(SAAppPathList *)self writersMap];
+  v6 = [writersMap objectForKeyedSubscript:bundleCopy];
 
   return v6;
 }
 
-- (id)getGreaterAncestorOfBundle:(id)a3
+- (id)getGreaterAncestorOfBundle:(id)bundle
 {
-  v4 = a3;
-  v5 = [(SAAppPathList *)self getParentOfBundle:v4];
+  bundleCopy = bundle;
+  v5 = [(SAAppPathList *)self getParentOfBundle:bundleCopy];
 
   if (v5)
   {
-    v6 = v4;
+    v6 = bundleCopy;
     v5 = 0;
     if (v6)
     {
@@ -406,8 +406,8 @@ LABEL_11:
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v3 = [(NSMutableDictionary *)self->_appPathList allKeys];
-  v4 = [v3 copy];
+  allKeys = [(NSMutableDictionary *)self->_appPathList allKeys];
+  v4 = [allKeys copy];
 
   obj = v4;
   v5 = [v4 countByEnumeratingWithState:&v19 objects:v27 count:16];
@@ -428,10 +428,10 @@ LABEL_11:
 
         v10 = *(*(&v19 + 1) + 8 * i);
         v11 = [(NSMutableDictionary *)self->_appPathList objectForKeyedSubscript:v10, v17];
-        v12 = [v11 uniquePaths];
-        v13 = [v12 count];
-        v14 = [v11 sharedPaths];
-        v15 = [v14 count];
+        uniquePaths = [v11 uniquePaths];
+        v13 = [uniquePaths count];
+        sharedPaths = [v11 sharedPaths];
+        v15 = [sharedPaths count];
 
         if (!&v15[v13])
         {
@@ -471,11 +471,11 @@ LABEL_11:
   return v5;
 }
 
-- (void)importFromLaunchServicesWithBGTask:(id)a3 volumesInfo:(id)a4 reply:(id)a5
+- (void)importFromLaunchServicesWithBGTask:(id)task volumesInfo:(id)info reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  taskCopy = task;
+  infoCopy = info;
+  replyCopy = reply;
   v11 = objc_opt_new();
   v36[0] = 0;
   v36[1] = v36;
@@ -499,12 +499,12 @@ LABEL_11:
   v25 = v12;
   v28 = v35;
   v29 = v36;
-  v13 = v8;
+  v13 = taskCopy;
   v30 = &v31;
   v26 = v13;
-  v27 = self;
+  selfCopy = self;
   [SAQuery installedAppsAtVolume:0 sortForUrgency:3 options:1 block:v24];
-  v14 = [(SAAppPathList *)self groupPathMapping];
+  groupPathMapping = [(SAAppPathList *)self groupPathMapping];
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_1000103A0;
@@ -514,25 +514,25 @@ LABEL_11:
   v15 = v13;
   v18 = v15;
   v23 = &v31;
-  v16 = v14;
+  v16 = groupPathMapping;
   v19 = v16;
-  v20 = self;
+  selfCopy2 = self;
   [SAQuery installedAppGroupsAtVolume:v17];
-  v10[2](v10, *(v32 + 24));
+  replyCopy[2](replyCopy, *(v32 + 24));
 
   _Block_object_dispose(&v31, 8);
   _Block_object_dispose(v35, 8);
   _Block_object_dispose(v36, 8);
 }
 
-- (void)isPathInfoClaimedByAnotherApp:(id)a3 reply:(id)a4
+- (void)isPathInfoClaimedByAnotherApp:(id)app reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 bundleID];
-  v9 = [v6 url];
-  v10 = [v9 path];
-  v11 = [NSURL fileURLWithPath:v10 isDirectory:1];
+  appCopy = app;
+  replyCopy = reply;
+  bundleID = [appCopy bundleID];
+  v9 = [appCopy url];
+  path = [v9 path];
+  v11 = [NSURL fileURLWithPath:path isDirectory:1];
 
   v20 = 0;
   v21 = &v20;
@@ -551,7 +551,7 @@ LABEL_11:
   v15[4] = &v20;
   v15[5] = &v16;
   [(SAAppPathList *)self findBundleIdForURL:v11 reply:v15];
-  if (v21[5] && [v8 isEqual:?] && (v12 = *(v17 + 24), v12 != objc_msgSend(v6, "exclusive")) || v21[5] && (objc_msgSend(v8, "isEqual:") & 1) == 0 && (v17[3] & 1) != 0 || v21[5] && (objc_msgSend(v8, "isEqual:") & 1) == 0 && (v17[3] & 1) == 0 && objc_msgSend(v6, "exclusive"))
+  if (v21[5] && [bundleID isEqual:?] && (v12 = *(v17 + 24), v12 != objc_msgSend(appCopy, "exclusive")) || v21[5] && (objc_msgSend(bundleID, "isEqual:") & 1) == 0 && (v17[3] & 1) != 0 || v21[5] && (objc_msgSend(bundleID, "isEqual:") & 1) == 0 && (v17[3] & 1) == 0 && objc_msgSend(appCopy, "exclusive"))
   {
     v13 = v21[5];
     v14 = *(v17 + 24);
@@ -563,26 +563,26 @@ LABEL_11:
     v14 = 0;
   }
 
-  v7[2](v7, v13, v14 & 1);
+  replyCopy[2](replyCopy, v13, v14 & 1);
   _Block_object_dispose(&v16, 8);
   _Block_object_dispose(&v20, 8);
 }
 
-- (void)findBundleIdForURL:(id)a3 reply:(id)a4
+- (void)findBundleIdForURL:(id)l reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  replyCopy = reply;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v24 = self;
+  selfCopy = self;
   v8 = self->_appPathList;
   v9 = [(NSMutableDictionary *)v8 countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v9)
   {
     v10 = v9;
-    v22 = v7;
+    v22 = replyCopy;
     obj = v8;
     v11 = 0;
     v12 = *v26;
@@ -599,14 +599,14 @@ LABEL_11:
 
         v11 = *(*(&v25 + 1) + 8 * v13);
 
-        v15 = [(NSMutableDictionary *)v24->_appPathList objectForKey:v11];
-        v16 = [v15 uniquePaths];
-        v17 = [v6 path];
-        v18 = [v16 containsObject:v17];
+        v15 = [(NSMutableDictionary *)selfCopy->_appPathList objectForKey:v11];
+        uniquePaths = [v15 uniquePaths];
+        path = [lCopy path];
+        v18 = [uniquePaths containsObject:path];
 
-        if (v18 & 1) != 0 || ([v15 sharedPaths], v19 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "path"), v20 = objc_claimAutoreleasedReturnValue(), v21 = objc_msgSend(v19, "containsObject:", v20), v20, v19, (v21))
+        if (v18 & 1) != 0 || ([v15 sharedPaths], v19 = objc_claimAutoreleasedReturnValue(), objc_msgSend(lCopy, "path"), v20 = objc_claimAutoreleasedReturnValue(), v21 = objc_msgSend(v19, "containsObject:", v20), v20, v19, (v21))
         {
-          v7 = v22;
+          replyCopy = v22;
           v22[2](v22, v11, v18);
 
           goto LABEL_13;
@@ -627,22 +627,22 @@ LABEL_11:
       break;
     }
 
-    v7 = v22;
+    replyCopy = v22;
   }
 
-  v7[2](v7, 0, 0);
+  replyCopy[2](replyCopy, 0, 0);
 LABEL_13:
 }
 
-- (BOOL)checkURLsAreOverlappingWithURLs:(id)a3
+- (BOOL)checkURLsAreOverlappingWithURLs:(id)ls
 {
-  v4 = a3;
-  v5 = [(SAAppPathList *)self pathsTrie];
+  lsCopy = ls;
+  pathsTrie = [(SAAppPathList *)self pathsTrie];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = v4;
+  v6 = lsCopy;
   v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
@@ -658,8 +658,8 @@ LABEL_13:
 
         v10 = *(*(&v16 + 1) + 8 * i);
         v11 = objc_autoreleasePoolPush();
-        v12 = [v10 path];
-        v13 = [v5 isOverlapping:v12 checkIfExists:0];
+        path = [v10 path];
+        v13 = [pathsTrie isOverlapping:path checkIfExists:0];
 
         if (v13)
         {
@@ -668,8 +668,8 @@ LABEL_13:
           goto LABEL_11;
         }
 
-        v14 = [v10 path];
-        [v5 insertPath:v14];
+        path2 = [v10 path];
+        [pathsTrie insertPath:path2];
 
         objc_autoreleasePoolPop(v11);
       }
@@ -689,14 +689,14 @@ LABEL_11:
   return v7;
 }
 
-- (id)importFromPlists:(id)a3
+- (id)importFromPlists:(id)plists
 {
-  v3 = a3;
+  plistsCopy = plists;
   v4 = objc_alloc_init(NSFileManager);
-  v5 = [v3 stringByStandardizingPath];
+  stringByStandardizingPath = [plistsCopy stringByStandardizingPath];
 
-  v23 = v5;
-  if (([v4 fileExistsAtPath:v5] & 1) == 0)
+  v23 = stringByStandardizingPath;
+  if (([v4 fileExistsAtPath:stringByStandardizingPath] & 1) == 0)
   {
     v10 = SALog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -710,7 +710,7 @@ LABEL_11:
 
   v6 = +[NSFileManager defaultManager];
   v30 = 0;
-  v7 = [v6 contentsOfDirectoryAtPath:v5 error:&v30];
+  v7 = [v6 contentsOfDirectoryAtPath:stringByStandardizingPath error:&v30];
   v8 = v30;
 
   if (v8)

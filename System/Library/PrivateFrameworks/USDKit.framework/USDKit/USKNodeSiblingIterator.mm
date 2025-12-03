@@ -1,14 +1,14 @@
 @interface USKNodeSiblingIterator
-- (USKNodeSiblingIterator)initWithPrim:(const void *)a3;
-- (USKNodeSiblingIterator)initWithPrim:(const void *)a3 withPredicate:(Usd_PrimFlagsPredicate *)a4;
-- (USKNodeSiblingIterator)initWithSiblingRange:(const void *)a3;
+- (USKNodeSiblingIterator)initWithPrim:(const void *)prim;
+- (USKNodeSiblingIterator)initWithPrim:(const void *)prim withPredicate:(Usd_PrimFlagsPredicate *)predicate;
+- (USKNodeSiblingIterator)initWithSiblingRange:(const void *)range;
 - (id).cxx_construct;
 - (id)nextObject;
 @end
 
 @implementation USKNodeSiblingIterator
 
-- (USKNodeSiblingIterator)initWithSiblingRange:(const void *)a3
+- (USKNodeSiblingIterator)initWithSiblingRange:(const void *)range
 {
   v15.receiver = self;
   v15.super_class = USKNodeSiblingIterator;
@@ -16,23 +16,23 @@
   v5 = v4;
   if (v4)
   {
-    v4->_range._begin._underlyingIterator = *a3;
-    sub_27032787C(&v4->_range._begin._proxyPrimPath, a3 + 2);
-    sub_2703278D4(&v5->_range._begin._proxyPrimPath._primPart._poolHandle + 4, a3 + 3);
-    v6 = *(a3 + 1);
-    LOBYTE(v5->_range._begin._predicate._values.__first_) = *(a3 + 32);
+    v4->_range._begin._underlyingIterator = *range;
+    sub_27032787C(&v4->_range._begin._proxyPrimPath, range + 2);
+    sub_2703278D4(&v5->_range._begin._proxyPrimPath._primPart._poolHandle + 4, range + 3);
+    v6 = *(range + 1);
+    LOBYTE(v5->_range._begin._predicate._values.__first_) = *(range + 32);
     *&v5->_range._begin._proxyPrimPath._propPart._poolHandle = v6;
-    *&v5->_range._begin._predicate._negate = *(a3 + 5);
-    sub_27032787C(&v5->_range._end, a3 + 12);
-    sub_2703278D4(&v5->_range._end._underlyingIterator + 4, a3 + 13);
-    v7 = *(a3 + 72);
-    v5->_range._end._proxyPrimPath = *(a3 + 56);
+    *&v5->_range._begin._predicate._negate = *(range + 5);
+    sub_27032787C(&v5->_range._end, range + 12);
+    sub_2703278D4(&v5->_range._end._underlyingIterator + 4, range + 13);
+    v7 = *(range + 72);
+    v5->_range._end._proxyPrimPath = *(range + 56);
     LOBYTE(v5->_range._end._predicate._mask.__first_) = v7;
-    v10 = *a3;
-    sub_2703256DC(&v11, a3 + 2);
-    sub_270325728(&v12, a3 + 3);
-    v13 = *(a3 + 1);
-    v14 = *(a3 + 4);
+    v10 = *range;
+    sub_2703256DC(&v11, range + 2);
+    sub_270325728(&v12, range + 3);
+    v13 = *(range + 1);
+    v14 = *(range + 4);
     v5->_range._end._predicate._values.__first_ = v10;
     sub_270325804(&v5->_range._end._predicate._negate, &v11);
     sub_27032585C((&v5->_range._end._predicate._negate + 4), &v12);
@@ -46,7 +46,7 @@
   return v5;
 }
 
-- (USKNodeSiblingIterator)initWithPrim:(const void *)a3
+- (USKNodeSiblingIterator)initWithPrim:(const void *)prim
 {
   UsdPrimDefaultPredicate = pxrInternal__aapl__pxrReserved__::GetUsdPrimDefaultPredicate(self);
   v6 = *UsdPrimDefaultPredicate;
@@ -56,7 +56,7 @@
   v16[0] = v6 & 0xFFFFFFFFFFFFDFFFLL;
   v16[1] = v7 | 0x2000;
   v16[2] = v8;
-  sub_270365998(a3, v16, v13);
+  sub_270365998(prim, v16, v13);
   v11 = objc_msgSend_initWithSiblingRange_(self, v9, v13, v10);
   pxrInternal__aapl__pxrReserved__::Sdf_Pool<pxrInternal__aapl__pxrReserved__::Sdf_PathPropTag,24u,8u,16384u>::Handle::operator BOOL();
   sub_2703143D8(&v15);
@@ -66,16 +66,16 @@
   return v11;
 }
 
-- (USKNodeSiblingIterator)initWithPrim:(const void *)a3 withPredicate:(Usd_PrimFlagsPredicate *)a4
+- (USKNodeSiblingIterator)initWithPrim:(const void *)prim withPredicate:(Usd_PrimFlagsPredicate *)predicate
 {
-  first = a4->_mask.__first_;
-  v7 = a4->_values.__first_;
-  v8 = *&a4->_negate;
+  first = predicate->_mask.__first_;
+  v7 = predicate->_values.__first_;
+  v8 = *&predicate->_negate;
   pxrInternal__aapl__pxrReserved__::Sdf_Pool<pxrInternal__aapl__pxrReserved__::Sdf_PathPrimTag,24u,8u,16384u>::Handle::operator BOOL();
   v16[0] = first & 0xFFFFFFFFFFFFDFFFLL;
   v16[1] = v7 | 0x2000;
   v16[2] = v8;
-  sub_270365998(a3, v16, v13);
+  sub_270365998(prim, v16, v13);
   v11 = objc_msgSend_initWithSiblingRange_(self, v9, v13, v10);
   pxrInternal__aapl__pxrReserved__::Sdf_Pool<pxrInternal__aapl__pxrReserved__::Sdf_PathPropTag,24u,8u,16384u>::Handle::operator BOOL();
   sub_2703143D8(&v15);

@@ -9,48 +9,48 @@
   v4 = a3;
   if ([v4 appearanceVariant] == 4)
   {
-    v5 = [v4 CUINamedImageDeviceClass];
+    cUINamedImageDeviceClass = [v4 CUINamedImageDeviceClass];
     v6 = objc_opt_new();
-    v7 = [a1 renderedLegacyCompatibleIconWithConfiguration:v6 forDeviceClass:v5 maskToIconShape:1];
+    v7 = [self renderedLegacyCompatibleIconWithConfiguration:v6 forDeviceClass:cUINamedImageDeviceClass maskToIconShape:1];
   }
 
   else if ([v4 background] == 1)
   {
     v6 = objc_opt_new();
-    v7 = [a1 renderedSystemGlassCompatibleIconWithConfiguration:v6];
+    v7 = [self renderedSystemGlassCompatibleIconWithConfiguration:v6];
   }
 
   else if ([v4 shouldApplyMask])
   {
     v6 = objc_opt_new();
-    v8 = [v4 encapsulationShape];
+    encapsulationShape = [v4 encapsulationShape];
 
-    if (v8)
+    if (encapsulationShape)
     {
-      v9 = [v4 encapsulationShape];
-      [v6 setEncapsulationShape:v9];
+      encapsulationShape2 = [v4 encapsulationShape];
+      [v6 setEncapsulationShape:encapsulationShape2];
     }
 
-    v7 = [a1 renderedIconWithConfiguration:v6];
+    v7 = [self renderedIconWithConfiguration:v6];
   }
 
   else
   {
     v10 = [v4 background] != 2;
     v6 = objc_opt_new();
-    v7 = [a1 renderedFullBleedIconWithConfiguration:v6 excludeChicletSpecularHighlights:v10];
+    v7 = [self renderedFullBleedIconWithConfiguration:v6 excludeChicletSpecularHighlights:v10];
   }
 
   v11 = v7;
 
   if (v11)
   {
-    v12 = [v4 cacheFinalizedIconOnGeneratedImage];
+    cacheFinalizedIconOnGeneratedImage = [v4 cacheFinalizedIconOnGeneratedImage];
     v13 = objc_alloc(MEMORY[0x1E69A8988]);
     [v4 scale];
-    if (v12)
+    if (cacheFinalizedIconOnGeneratedImage)
     {
-      v14 = [v13 initWithCGImage:v11 scale:a1 finalizedIcon:?];
+      v14 = [v13 initWithCGImage:v11 scale:self finalizedIcon:?];
     }
 
     else

@@ -1,53 +1,53 @@
 @interface ADDomainObjectCache
 - (ADDomainObjectCache)init;
-- (id)domainObjectForKey:(id)a3;
-- (id)oldIdForKey:(id)a3;
-- (void)setDomainObject:(id)a3 withOldId:(id)a4 forKey:(id)a5;
+- (id)domainObjectForKey:(id)key;
+- (id)oldIdForKey:(id)key;
+- (void)setDomainObject:(id)object withOldId:(id)id forKey:(id)key;
 @end
 
 @implementation ADDomainObjectCache
 
-- (id)oldIdForKey:(id)a3
+- (id)oldIdForKey:(id)key
 {
-  v3 = [(NSMutableDictionary *)self->_cacheEntriesByAceKey objectForKeyedSubscript:a3];
-  v4 = [v3 oldId];
+  v3 = [(NSMutableDictionary *)self->_cacheEntriesByAceKey objectForKeyedSubscript:key];
+  oldId = [v3 oldId];
 
-  return v4;
+  return oldId;
 }
 
-- (void)setDomainObject:(id)a3 withOldId:(id)a4 forKey:(id)a5
+- (void)setDomainObject:(id)object withOldId:(id)id forKey:(id)key
 {
-  v11 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(NSMutableDictionary *)self->_cacheEntriesByAceKey objectForKeyedSubscript:v9];
-  if (v11)
+  objectCopy = object;
+  idCopy = id;
+  keyCopy = key;
+  v10 = [(NSMutableDictionary *)self->_cacheEntriesByAceKey objectForKeyedSubscript:keyCopy];
+  if (objectCopy)
   {
     if (!v10)
     {
       v10 = objc_alloc_init(_ADDomainObjectCacheEntry);
-      [(NSMutableDictionary *)self->_cacheEntriesByAceKey setObject:v10 forKeyedSubscript:v9];
+      [(NSMutableDictionary *)self->_cacheEntriesByAceKey setObject:v10 forKeyedSubscript:keyCopy];
     }
 
-    [(_ADDomainObjectCacheEntry *)v10 setAceDictionary:v11];
-    if (v8)
+    [(_ADDomainObjectCacheEntry *)v10 setAceDictionary:objectCopy];
+    if (idCopy)
     {
-      [(_ADDomainObjectCacheEntry *)v10 setOldId:v8];
+      [(_ADDomainObjectCacheEntry *)v10 setOldId:idCopy];
     }
   }
 
   else if (v10)
   {
-    [(NSMutableDictionary *)self->_cacheEntriesByAceKey removeObjectForKey:v9];
+    [(NSMutableDictionary *)self->_cacheEntriesByAceKey removeObjectForKey:keyCopy];
   }
 }
 
-- (id)domainObjectForKey:(id)a3
+- (id)domainObjectForKey:(id)key
 {
-  v3 = [(NSMutableDictionary *)self->_cacheEntriesByAceKey objectForKeyedSubscript:a3];
-  v4 = [v3 aceDictionary];
+  v3 = [(NSMutableDictionary *)self->_cacheEntriesByAceKey objectForKeyedSubscript:key];
+  aceDictionary = [v3 aceDictionary];
 
-  return v4;
+  return aceDictionary;
 }
 
 - (ADDomainObjectCache)init

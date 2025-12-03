@@ -1,11 +1,11 @@
 @interface AENoteEditorViewController
 - (AENoteEditorViewControllerDelegate)delegate;
-- (BOOL)textView:(id)a3 shouldChangeTextInRange:(_NSRange)a4 replacementText:(id)a5;
+- (BOOL)textView:(id)view shouldChangeTextInRange:(_NSRange)range replacementText:(id)text;
 - (CGSize)preferredContentSize;
 - (UITextView)textView;
 - (void)beginEditing;
 - (void)endEditing;
-- (void)textViewDidEndEditing:(id)a3;
+- (void)textViewDidEndEditing:(id)editing;
 - (void)viewDidLoad;
 @end
 
@@ -13,14 +13,14 @@
 
 - (void)beginEditing
 {
-  v2 = [(AENoteEditorViewController *)self textView];
-  [v2 becomeFirstResponder];
+  textView = [(AENoteEditorViewController *)self textView];
+  [textView becomeFirstResponder];
 }
 
 - (void)endEditing
 {
-  v2 = [(AENoteEditorViewController *)self textView];
-  [v2 endEditing:1];
+  textView = [(AENoteEditorViewController *)self textView];
+  [textView endEditing:1];
 }
 
 - (CGSize)preferredContentSize
@@ -37,45 +37,45 @@
   v27.receiver = self;
   v27.super_class = AENoteEditorViewController;
   [(AENoteEditorViewController *)&v27 viewDidLoad];
-  v3 = [(AENoteEditorViewController *)self textView];
-  v23 = [(AENoteEditorViewController *)self view];
-  [v23 addSubview:v3];
-  v4 = [v23 safeAreaLayoutGuide];
-  v25 = [v3 leadingAnchor];
-  v24 = [v4 leadingAnchor];
-  v22 = [v25 constraintEqualToAnchor:v24 constant:14.0];
+  textView = [(AENoteEditorViewController *)self textView];
+  view = [(AENoteEditorViewController *)self view];
+  [view addSubview:textView];
+  safeAreaLayoutGuide = [view safeAreaLayoutGuide];
+  leadingAnchor = [textView leadingAnchor];
+  leadingAnchor2 = [safeAreaLayoutGuide leadingAnchor];
+  v22 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:14.0];
   v28[0] = v22;
-  v21 = [v3 trailingAnchor];
-  v20 = [v4 trailingAnchor];
-  v5 = [v21 constraintEqualToAnchor:v20 constant:-14.0];
+  trailingAnchor = [textView trailingAnchor];
+  trailingAnchor2 = [safeAreaLayoutGuide trailingAnchor];
+  v5 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-14.0];
   v28[1] = v5;
-  v6 = [v3 topAnchor];
-  v7 = [v4 topAnchor];
-  v8 = [v6 constraintEqualToAnchor:v7 constant:10.0];
+  topAnchor = [textView topAnchor];
+  topAnchor2 = [safeAreaLayoutGuide topAnchor];
+  v8 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:10.0];
   v28[2] = v8;
-  v9 = [v3 bottomAnchor];
-  v26 = v4;
-  v10 = [v4 bottomAnchor];
-  v11 = [v9 constraintEqualToAnchor:v10 constant:-10.0];
+  bottomAnchor = [textView bottomAnchor];
+  v26 = safeAreaLayoutGuide;
+  bottomAnchor2 = [safeAreaLayoutGuide bottomAnchor];
+  v11 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-10.0];
   v28[3] = v11;
   v12 = [NSArray arrayWithObjects:v28 count:4];
   [NSLayoutConstraint activateConstraints:v12];
 
-  v13 = [(AENoteEditorViewController *)self delegate];
-  v14 = [v13 noteEditorViewControllerAnnotationToEdit:self];
-  v15 = [v14 annotationNote];
-  [v3 setText:v15];
+  delegate = [(AENoteEditorViewController *)self delegate];
+  v14 = [delegate noteEditorViewControllerAnnotationToEdit:self];
+  annotationNote = [v14 annotationNote];
+  [textView setText:annotationNote];
 
-  [v3 setTextDragOptions:1];
-  v16 = [v13 themeForNoteEditorViewController:self];
+  [textView setTextDragOptions:1];
+  v16 = [delegate themeForNoteEditorViewController:self];
   v17 = v16;
   if (v16)
   {
-    v18 = [v16 noteTextColor];
-    [v3 setTextColor:v18];
+    noteTextColor = [v16 noteTextColor];
+    [textView setTextColor:noteTextColor];
 
-    v19 = [v17 noteBorderColor];
-    [v23 setBackgroundColor:v19];
+    noteBorderColor = [v17 noteBorderColor];
+    [view setBackgroundColor:noteBorderColor];
   }
 }
 
@@ -105,23 +105,23 @@
   return textView;
 }
 
-- (BOOL)textView:(id)a3 shouldChangeTextInRange:(_NSRange)a4 replacementText:(id)a5
+- (BOOL)textView:(id)view shouldChangeTextInRange:(_NSRange)range replacementText:(id)text
 {
-  length = a4.length;
-  v7 = a5;
-  v8 = [a3 text];
-  v9 = [v8 length] - length;
-  v10 = [v7 length];
+  length = range.length;
+  textCopy = text;
+  text = [view text];
+  v9 = [text length] - length;
+  v10 = [textCopy length];
 
   return &v10[v9] < &loc_186A0 + 1;
 }
 
-- (void)textViewDidEndEditing:(id)a3
+- (void)textViewDidEndEditing:(id)editing
 {
-  v4 = [(AENoteEditorViewController *)self delegate];
+  delegate = [(AENoteEditorViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 noteEditorViewControllerDidEndEditing:self];
+    [delegate noteEditorViewControllerDidEndEditing:self];
   }
 }
 

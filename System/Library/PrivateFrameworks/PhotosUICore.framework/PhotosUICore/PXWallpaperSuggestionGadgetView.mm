@@ -1,20 +1,20 @@
 @interface PXWallpaperSuggestionGadgetView
-- (PXWallpaperSuggestionGadgetView)initWithFrame:(CGRect)a3;
+- (PXWallpaperSuggestionGadgetView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setAsset:(id)a3;
+- (void)setAsset:(id)asset;
 @end
 
 @implementation PXWallpaperSuggestionGadgetView
 
-- (void)setAsset:(id)a3
+- (void)setAsset:(id)asset
 {
-  if (self->_asset != a3)
+  if (self->_asset != asset)
   {
-    self->_asset = a3;
-    v5 = a3;
-    v6 = [(PXWallpaperSuggestionGadgetView *)self wallpaperView];
-    [v6 setAsset:v5];
+    self->_asset = asset;
+    assetCopy = asset;
+    wallpaperView = [(PXWallpaperSuggestionGadgetView *)self wallpaperView];
+    [wallpaperView setAsset:assetCopy];
   }
 }
 
@@ -28,8 +28,8 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(PXWallpaperSuggestionGadgetView *)self wallpaperView];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  wallpaperView = [(PXWallpaperSuggestionGadgetView *)self wallpaperView];
+  [wallpaperView setFrame:{v4, v6, v8, v10}];
 }
 
 - (void)prepareForReuse
@@ -40,19 +40,19 @@
   [(PXWallpaperSuggestionGadgetView *)self setAsset:0];
 }
 
-- (PXWallpaperSuggestionGadgetView)initWithFrame:(CGRect)a3
+- (PXWallpaperSuggestionGadgetView)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = PXWallpaperSuggestionGadgetView;
-  v3 = [(PXWallpaperSuggestionGadgetView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PXWallpaperSuggestionGadgetView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(PXWallpaperSuggestionView);
     wallpaperView = v3->_wallpaperView;
     v3->_wallpaperView = v4;
 
-    v6 = [(PXWallpaperSuggestionGadgetView *)v3 contentView];
-    [v6 addSubview:v3->_wallpaperView];
+    contentView = [(PXWallpaperSuggestionGadgetView *)v3 contentView];
+    [contentView addSubview:v3->_wallpaperView];
   }
 
   return v3;

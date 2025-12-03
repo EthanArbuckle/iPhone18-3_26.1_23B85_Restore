@@ -1,18 +1,18 @@
 @interface MapsSuggestionsReInjectSource
-+ (id)_entriesFromMultilineString:(id)a3;
-- (double)updateSuggestionEntriesWithHandler:(id)a3;
-- (id)initFromResourceDepot:(id)a3 name:(id)a4;
-- (void)_processFileAtPath:(void *)a3 handler:;
++ (id)_entriesFromMultilineString:(id)string;
+- (double)updateSuggestionEntriesWithHandler:(id)handler;
+- (id)initFromResourceDepot:(id)depot name:(id)name;
+- (void)_processFileAtPath:(void *)path handler:;
 @end
 
 @implementation MapsSuggestionsReInjectSource
 
-- (id)initFromResourceDepot:(id)a3 name:(id)a4
+- (id)initFromResourceDepot:(id)depot name:(id)name
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  depotCopy = depot;
+  nameCopy = name;
+  if (!depotCopy)
   {
     v18 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -32,13 +32,13 @@ LABEL_12:
 
 LABEL_13:
 
-    v17 = 0;
+    selfCopy = 0;
     goto LABEL_14;
   }
 
-  v8 = [v6 oneSourceDelegate];
+  oneSourceDelegate = [depotCopy oneSourceDelegate];
 
-  if (!v8)
+  if (!oneSourceDelegate)
   {
     v18 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -58,16 +58,16 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  v9 = [v6 oneSourceDelegate];
+  oneSourceDelegate2 = [depotCopy oneSourceDelegate];
   v21.receiver = self;
   v21.super_class = MapsSuggestionsReInjectSource;
-  v10 = [(MapsSuggestionsBaseSource *)&v21 initWithDelegate:v9 name:v7];
+  v10 = [(MapsSuggestionsBaseSource *)&v21 initWithDelegate:oneSourceDelegate2 name:nameCopy];
 
   if (v10)
   {
     v11 = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, 1uLL, 1);
-    v12 = [v11 firstObject];
-    v13 = [v12 stringByAppendingPathComponent:@"MapsSuggestionsInjections.txt"];
+    firstObject = [v11 firstObject];
+    v13 = [firstObject stringByAppendingPathComponent:@"MapsSuggestionsInjections.txt"];
     path = v10->_path;
     v10->_path = v13;
 
@@ -82,24 +82,24 @@ LABEL_13:
   }
 
   self = v10;
-  v17 = self;
+  selfCopy = self;
 LABEL_14:
 
-  return v17;
+  return selfCopy;
 }
 
-- (double)updateSuggestionEntriesWithHandler:(id)a3
+- (double)updateSuggestionEntriesWithHandler:(id)handler
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E696AC08] defaultManager];
+  handlerCopy = handler;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v6 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    v7 = [(MapsSuggestionsBaseSource *)self uniqueName];
+    uniqueName = [(MapsSuggestionsBaseSource *)self uniqueName];
     v8 = NSStringFromMapsSuggestionsCurrentBestLocation();
     v11 = 138412802;
-    v12 = v7;
+    v12 = uniqueName;
     v13 = 2112;
     v14 = @"ALL";
     v15 = 2112;
@@ -107,28 +107,28 @@ LABEL_14:
     _os_log_impl(&dword_1C5126000, v6, OS_LOG_TYPE_DEBUG, "{MSgDebug} UPDATING SOURCE{%@} for TYPE{%@} at LATLONG{%@}", &v11, 0x20u);
   }
 
-  if ([v5 fileExistsAtPath:self->_path])
+  if ([defaultManager fileExistsAtPath:self->_path])
   {
-    [(MapsSuggestionsReInjectSource *)self _processFileAtPath:v4 handler:?];
+    [(MapsSuggestionsReInjectSource *)self _processFileAtPath:handlerCopy handler:?];
     v9 = 300.0;
   }
 
   else
   {
     v9 = 0.0;
-    if (v4)
+    if (handlerCopy)
     {
-      v4[2](v4);
+      handlerCopy[2](handlerCopy);
     }
   }
 
   return v9;
 }
 
-+ (id)_entriesFromMultilineString:(id)a3
++ (id)_entriesFromMultilineString:(id)string
 {
   v87 = *MEMORY[0x1E69E9840];
-  v58 = a3;
+  stringCopy = string;
   v3 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
@@ -137,8 +137,8 @@ LABEL_14:
   }
 
   v4 = 0x1E696A000uLL;
-  v57 = [MEMORY[0x1E696AB08] newlineCharacterSet];
-  v5 = [v58 componentsSeparatedByCharactersInSet:?];
+  newlineCharacterSet = [MEMORY[0x1E696AB08] newlineCharacterSet];
+  v5 = [stringCopy componentsSeparatedByCharactersInSet:?];
   v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v5, "count")}];
   v75 = 0u;
   v76 = 0u;
@@ -165,8 +165,8 @@ LABEL_5:
 
       v67 = v11;
       v12 = *(*(&v75 + 1) + 8 * v11);
-      v13 = [*(v4 + 2824) whitespaceCharacterSet];
-      v14 = [v12 stringByTrimmingCharactersInSet:v13];
+      whitespaceCharacterSet = [*(v4 + 2824) whitespaceCharacterSet];
+      v14 = [v12 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
       if ([v14 length])
       {
@@ -194,11 +194,11 @@ LABEL_81:
     if (![v14 hasPrefix:@"APPLY "])
     {
       v21 = [MapsSuggestionsEntry entryFromSerializedString:v14];
-      v15 = v21;
+      lastObject = v21;
       if (v21)
       {
         [v21 setExpires:0];
-        [v6 addObject:v15];
+        [v6 addObject:lastObject];
       }
 
       else
@@ -217,7 +217,7 @@ LABEL_81:
 
     if ([v6 count])
     {
-      v15 = [v6 lastObject];
+      lastObject = [v6 lastObject];
       v16 = [v14 substringFromIndex:{objc_msgSend(@"APPLY ", "length")}];
       v17 = [v16 dataUsingEncoding:4];
 
@@ -284,11 +284,11 @@ LABEL_22:
           _os_log_impl(&dword_1C5126000, v28, OS_LOG_TYPE_DEBUG, "Applying %@ => %@", v81, 0x16u);
         }
 
-        v29 = v15;
+        v29 = lastObject;
         v30 = v26;
         v31 = v27;
         v32 = v31;
-        if (!v15)
+        if (!lastObject)
         {
           v37 = GEOFindOrCreateLog();
           if (!os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
@@ -547,13 +547,13 @@ LABEL_83:
   return v54;
 }
 
-- (void)_processFileAtPath:(void *)a3 handler:
+- (void)_processFileAtPath:(void *)path handler:
 {
   v185 = *MEMORY[0x1E69E9840];
   v5 = a2;
-  v6 = a3;
-  v148 = a1;
-  if (a1)
+  pathCopy = path;
+  selfCopy = self;
+  if (self)
   {
     v7 = v5;
     v8 = GEOFindOrCreateLog();
@@ -577,7 +577,7 @@ LABEL_83:
       }
 
       v11 = 0x1E696A000uLL;
-      v145 = [MEMORY[0x1E696AB08] newlineCharacterSet];
+      newlineCharacterSet = [MEMORY[0x1E696AB08] newlineCharacterSet];
       v12 = [v146 componentsSeparatedByCharactersInSet:?];
       v13 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v12, "count")}];
       v172 = 0u;
@@ -591,7 +591,7 @@ LABEL_83:
         v162 = *v173;
         *&v15 = 138412290;
         v157 = v15;
-        v150 = v6;
+        v150 = pathCopy;
         v151 = v5;
         v149 = v7;
         v152 = v13;
@@ -607,8 +607,8 @@ LABEL_9:
 
           v164 = v16;
           v17 = *(*(&v172 + 1) + 8 * v16);
-          v18 = [*(v11 + 2824) whitespaceCharacterSet];
-          v19 = [v17 stringByTrimmingCharactersInSet:v18];
+          whitespaceCharacterSet = [*(v11 + 2824) whitespaceCharacterSet];
+          v19 = [v17 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
           if ([v19 length])
           {
@@ -637,11 +637,11 @@ LABEL_86:
         if (![v19 hasPrefix:@"APPLY "])
         {
           v25 = [MapsSuggestionsEntry entryFromSerializedString:v19];
-          v20 = v25;
+          lastObject = v25;
           if (v25)
           {
             [v25 setExpires:0];
-            [v13 addObject:v20];
+            [v13 addObject:lastObject];
           }
 
           else
@@ -661,7 +661,7 @@ LABEL_86:
 
         if ([v13 count])
         {
-          v20 = [v13 lastObject];
+          lastObject = [v13 lastObject];
           v21 = [v19 substringFromIndex:{objc_msgSend(@"APPLY ", "length")}];
           v22 = [v21 dataUsingEncoding:4];
 
@@ -727,11 +727,11 @@ LABEL_26:
               _os_log_impl(&dword_1C5126000, v36, OS_LOG_TYPE_DEBUG, "Applying %@ => %@", v179, 0x16u);
             }
 
-            v37 = v20;
+            v37 = lastObject;
             v38 = v34;
             v39 = v35;
             v40 = v39;
-            if (!v20)
+            if (!lastObject)
             {
               v45 = GEOFindOrCreateLog();
               v46 = OUTLINED_FUNCTION_12(v45);
@@ -740,7 +740,7 @@ LABEL_26:
                 goto LABEL_45;
               }
 
-              OUTLINED_FUNCTION_5_6(v46, v47, v48, v49, v50, v51, v52, v53, v145, v146, v147, v148, v149, v150, v151, v152, v153, v154, v155, v156, v157, *(&v157 + 1), v158, v159, v160, v161, v162, v163, v164, v165, v54);
+              OUTLINED_FUNCTION_5_6(v46, v47, v48, v49, v50, v51, v52, v53, newlineCharacterSet, v146, v147, selfCopy, v149, v150, v151, v152, v153, v154, v155, v156, v157, *(&v157 + 1), v158, v159, v160, v161, v162, v163, v164, v165, v54);
               OUTLINED_FUNCTION_3_4("/Library/Caches/com.apple.xbs/Sources/Maps/iOS/Suggestions/MapsSuggestionsReInjectSource.m");
               OUTLINED_FUNCTION_2_8(158);
               *&v182[6] = "void _applyValue(MapsSuggestionsEntry *__strong, NSString *__strong, NSObject *__strong)";
@@ -762,7 +762,7 @@ LABEL_43:
                 goto LABEL_45;
               }
 
-              OUTLINED_FUNCTION_5_6(v62, v63, v64, v65, v66, v67, v68, v69, v145, v146, v147, v148, v149, v150, v151, v152, v153, v154, v155, v156, v157, *(&v157 + 1), v158, v159, v160, v161, v162, v163, v164, v165, v70);
+              OUTLINED_FUNCTION_5_6(v62, v63, v64, v65, v66, v67, v68, v69, newlineCharacterSet, v146, v147, selfCopy, v149, v150, v151, v152, v153, v154, v155, v156, v157, *(&v157 + 1), v158, v159, v160, v161, v162, v163, v164, v165, v70);
               OUTLINED_FUNCTION_3_4("/Library/Caches/com.apple.xbs/Sources/Maps/iOS/Suggestions/MapsSuggestionsReInjectSource.m");
               OUTLINED_FUNCTION_2_8(159);
               *&v182[6] = "void _applyValue(MapsSuggestionsEntry *__strong, NSString *__strong, NSObject *__strong)";
@@ -782,7 +782,7 @@ LABEL_43:
                 goto LABEL_45;
               }
 
-              OUTLINED_FUNCTION_5_6(v73, v74, v75, v76, v77, v78, v79, v80, v145, v146, v147, v148, v149, v150, v151, v152, v153, v154, v155, v156, v157, *(&v157 + 1), v158, v159, v160, v161, v162, v163, v164, v165, v81);
+              OUTLINED_FUNCTION_5_6(v73, v74, v75, v76, v77, v78, v79, v80, newlineCharacterSet, v146, v147, selfCopy, v149, v150, v151, v152, v153, v154, v155, v156, v157, *(&v157 + 1), v158, v159, v160, v161, v162, v163, v164, v165, v81);
               OUTLINED_FUNCTION_3_4("/Library/Caches/com.apple.xbs/Sources/Maps/iOS/Suggestions/MapsSuggestionsReInjectSource.m");
               OUTLINED_FUNCTION_2_8(160);
               *&v182[6] = "void _applyValue(MapsSuggestionsEntry *__strong, NSString *__strong, NSObject *__strong)";
@@ -941,7 +941,7 @@ LABEL_59:
               v32 = v126;
               if (!v126)
               {
-                v6 = v150;
+                pathCopy = v150;
                 v5 = v151;
                 v7 = v149;
                 v13 = v152;
@@ -965,7 +965,7 @@ LABEL_36:
         v130 = OUTLINED_FUNCTION_12(v129);
         if (v130)
         {
-          OUTLINED_FUNCTION_5_6(v130, v131, v132, v133, v134, v135, v136, v137, v145, v146, v147, v148, v149, v150, v151, v152, v153, v154, v155, v156, v157, *(&v157 + 1), v158, v19, v160, v161, v162, v163, v164, v165, v138);
+          OUTLINED_FUNCTION_5_6(v130, v131, v132, v133, v134, v135, v136, v137, newlineCharacterSet, v146, v147, selfCopy, v149, v150, v151, v152, v153, v154, v155, v156, v157, *(&v157 + 1), v158, v19, v160, v161, v162, v163, v164, v165, v138);
           v180 = "/Library/Caches/com.apple.xbs/Sources/Maps/iOS/Suggestions/MapsSuggestionsReInjectSource.m";
           v181 = 1024;
           *v182 = 222;
@@ -978,7 +978,7 @@ LABEL_36:
         }
 
         v128 = 0;
-        v127 = v145;
+        v127 = newlineCharacterSet;
       }
 
       else
@@ -991,7 +991,7 @@ LABEL_88:
           v13 = 0;
         }
 
-        v127 = v145;
+        v127 = newlineCharacterSet;
         v128 = [v13 copy];
       }
     }
@@ -1011,10 +1011,10 @@ LABEL_88:
       v144 = MEMORY[0x1E695E0F0];
     }
 
-    [v148 addOrUpdateMySuggestionEntries:v144];
-    if (v6)
+    [selfCopy addOrUpdateMySuggestionEntries:v144];
+    if (pathCopy)
     {
-      v6[2](v6);
+      pathCopy[2](pathCopy);
     }
   }
 }

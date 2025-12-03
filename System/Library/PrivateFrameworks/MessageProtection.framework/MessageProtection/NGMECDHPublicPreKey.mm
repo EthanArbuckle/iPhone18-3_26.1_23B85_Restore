@@ -1,68 +1,68 @@
 @interface NGMECDHPublicPreKey
-- (BOOL)isValidlySignedBy:(id)a3 error:(id *)a4;
-- (NGMECDHPublicPreKey)initWithPublicKey:(id)a3 signature:(id)a4 timestamp:(double)a5;
+- (BOOL)isValidlySignedBy:(id)by error:(id *)error;
+- (NGMECDHPublicPreKey)initWithPublicKey:(id)key signature:(id)signature timestamp:(double)timestamp;
 - (id)description;
-- (id)initRemotePrekeyWithPublicPrekeyPB:(id)a3 signedBy:(id)a4 error:(id *)a5;
+- (id)initRemotePrekeyWithPublicPrekeyPB:(id)b signedBy:(id)by error:(id *)error;
 @end
 
 @implementation NGMECDHPublicPreKey
 
-- (id)initRemotePrekeyWithPublicPrekeyPB:(id)a3 signedBy:(id)a4 error:(id *)a5
+- (id)initRemotePrekeyWithPublicPrekeyPB:(id)b signedBy:(id)by error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  bCopy = b;
+  byCopy = by;
   v10 = [DHPublicKey alloc];
-  v11 = [v8 prekey];
-  v12 = [(PublicKey *)v10 initWithData:v11 error:a5];
+  prekey = [bCopy prekey];
+  v12 = [(PublicKey *)v10 initWithData:prekey error:error];
 
   if (!v12)
   {
-    MPLogAndAssignError(100, a5, @"Failed to initialize the DHPublicKey for the prekey.");
+    MPLogAndAssignError(100, error, @"Failed to initialize the DHPublicKey for the prekey.");
     goto LABEL_5;
   }
 
-  v13 = [v8 prekeySignature];
-  [v8 timestamp];
-  self = [(NGMECDHPublicPreKey *)self initWithPublicKey:v12 signature:v13 timestamp:?];
+  prekeySignature = [bCopy prekeySignature];
+  [bCopy timestamp];
+  self = [(NGMECDHPublicPreKey *)self initWithPublicKey:v12 signature:prekeySignature timestamp:?];
 
-  if (![(NGMECDHPublicPreKey *)self isValidlySignedBy:v9 error:a5])
+  if (![(NGMECDHPublicPreKey *)self isValidlySignedBy:byCopy error:error])
   {
 LABEL_5:
-    v14 = 0;
+    selfCopy = 0;
     goto LABEL_6;
   }
 
   self = self;
-  v14 = self;
+  selfCopy = self;
 LABEL_6:
 
-  return v14;
+  return selfCopy;
 }
 
-- (NGMECDHPublicPreKey)initWithPublicKey:(id)a3 signature:(id)a4 timestamp:(double)a5
+- (NGMECDHPublicPreKey)initWithPublicKey:(id)key signature:(id)signature timestamp:(double)timestamp
 {
-  v9 = a3;
-  v10 = a4;
+  keyCopy = key;
+  signatureCopy = signature;
   v14.receiver = self;
   v14.super_class = NGMECDHPublicPreKey;
   v11 = [(NGMECDHPublicPreKey *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_dhKey, a3);
-    objc_storeStrong(&v12->_signature, a4);
-    v12->_timestamp = a5;
+    objc_storeStrong(&v11->_dhKey, key);
+    objc_storeStrong(&v12->_signature, signature);
+    v12->_timestamp = timestamp;
   }
 
   return v12;
 }
 
-- (BOOL)isValidlySignedBy:(id)a3 error:(id *)a4
+- (BOOL)isValidlySignedBy:(id)by error:(id *)error
 {
-  v6 = a3;
-  v7 = [(NGMECDHPublicPreKey *)self signature];
+  byCopy = by;
+  signature = [(NGMECDHPublicPreKey *)self signature];
   v8 = [[NGMPrekeySignatureFormatter alloc] initWithPublicPrekey:self];
-  v9 = [v6 verifySignature:v7 formatter:v8];
+  v9 = [byCopy verifySignature:signature formatter:v8];
 
   if (v9)
   {
@@ -91,19 +91,19 @@ LABEL_6:
     v12 = 101;
   }
 
-  MPLogAndAssignError(v12, a4, v11);
+  MPLogAndAssignError(v12, error, v11);
   return 0;
 }
 
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(NGMECDHPublicPreKey *)self dhKey];
-  v5 = [v4 description];
+  dhKey = [(NGMECDHPublicPreKey *)self dhKey];
+  v5 = [dhKey description];
   [(NGMECDHPublicPreKey *)self timestamp];
   v7 = v6;
-  v8 = [(NGMECDHPublicPreKey *)self signature];
-  v9 = [v3 stringWithFormat:@"NGMPublicPreKey with DHKey: %@\n Timestamp:%f \n Signature: %@.", v5, v7, v8];
+  signature = [(NGMECDHPublicPreKey *)self signature];
+  v9 = [v3 stringWithFormat:@"NGMPublicPreKey with DHKey: %@\n Timestamp:%f \n Signature: %@.", v5, v7, signature];
 
   return v9;
 }

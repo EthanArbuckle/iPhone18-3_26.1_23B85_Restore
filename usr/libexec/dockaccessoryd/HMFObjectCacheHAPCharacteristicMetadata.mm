@@ -1,14 +1,14 @@
 @interface HMFObjectCacheHAPCharacteristicMetadata
-+ (id)hap_cacheInstanceForMetadata:(id)a3;
++ (id)hap_cacheInstanceForMetadata:(id)metadata;
 @end
 
 @implementation HMFObjectCacheHAPCharacteristicMetadata
 
-+ (id)hap_cacheInstanceForMetadata:(id)a3
++ (id)hap_cacheInstanceForMetadata:(id)metadata
 {
-  v3 = a3;
+  metadataCopy = metadata;
   v4 = objc_autoreleasePoolPush();
-  if (!v3)
+  if (!metadataCopy)
   {
     v8 = 0;
     goto LABEL_16;
@@ -27,7 +27,7 @@
       v18 = 138544130;
       v19 = v11;
       v20 = 2112;
-      v21 = v3;
+      v21 = metadataCopy;
       v22 = 2112;
       v23 = v12;
       v24 = 2112;
@@ -39,7 +39,7 @@
     goto LABEL_15;
   }
 
-  if (([v3 conformsToProtocol:&OBJC_PROTOCOL___NSCopying] & 1) == 0)
+  if (([metadataCopy conformsToProtocol:&OBJC_PROTOCOL___NSCopying] & 1) == 0)
   {
     v9 = objc_autoreleasePoolPush();
     v10 = HMFGetOSLogHandle();
@@ -49,7 +49,7 @@
       v18 = 138543874;
       v19 = v15;
       v20 = 2112;
-      v21 = v3;
+      v21 = metadataCopy;
       v22 = 2112;
       v23 = objc_opt_class();
       v16 = v23;
@@ -59,7 +59,7 @@
 LABEL_15:
 
     objc_autoreleasePoolPop(v9);
-    v8 = v3;
+    v8 = metadataCopy;
     goto LABEL_16;
   }
 
@@ -74,10 +74,10 @@ LABEL_15:
     v5 = qword_1002ACC10;
   }
 
-  v8 = [v5 member:v3];
+  v8 = [v5 member:metadataCopy];
   if (!v8)
   {
-    v8 = [v3 copy];
+    v8 = [metadataCopy copy];
     [qword_1002ACC10 addObject:v8];
   }
 

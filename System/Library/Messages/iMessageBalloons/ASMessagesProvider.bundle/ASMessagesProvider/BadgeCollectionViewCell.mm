@@ -1,12 +1,12 @@
 @interface BadgeCollectionViewCell
-- (_TtC18ASMessagesProvider23BadgeCollectionViewCell)initWithCoder:(id)a3;
+- (_TtC18ASMessagesProvider23BadgeCollectionViewCell)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 @end
 
 @implementation BadgeCollectionViewCell
 
-- (_TtC18ASMessagesProvider23BadgeCollectionViewCell)initWithCoder:(id)a3
+- (_TtC18ASMessagesProvider23BadgeCollectionViewCell)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC18ASMessagesProvider23BadgeCollectionViewCell_itemLayoutContext;
   v5 = sub_75C840();
@@ -18,7 +18,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_24BD88();
 }
 

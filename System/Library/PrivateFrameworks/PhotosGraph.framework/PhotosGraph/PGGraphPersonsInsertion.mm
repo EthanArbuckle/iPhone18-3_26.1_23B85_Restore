@@ -1,6 +1,6 @@
 @interface PGGraphPersonsInsertion
-- (PGGraphPersonsInsertion)initWithPersonLocalIdentifiers:(id)a3;
-- (PGGraphPersonsInsertion)initWithPersons:(id)a3;
+- (PGGraphPersonsInsertion)initWithPersonLocalIdentifiers:(id)identifiers;
+- (PGGraphPersonsInsertion)initWithPersons:(id)persons;
 - (id)description;
 @end
 
@@ -17,16 +17,16 @@
   return v5;
 }
 
-- (PGGraphPersonsInsertion)initWithPersons:(id)a3
+- (PGGraphPersonsInsertion)initWithPersons:(id)persons
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(v5, "count")}];
+  personsCopy = persons;
+  v6 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(personsCopy, "count")}];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v7 = v5;
+  v7 = personsCopy;
   v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v8)
   {
@@ -42,8 +42,8 @@
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v17 + 1) + 8 * v11) uuid];
-        [v6 addObject:v12];
+        uuid = [*(*(&v17 + 1) + 8 * v11) uuid];
+        [v6 addObject:uuid];
 
         ++v11;
       }
@@ -59,23 +59,23 @@
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_persons, a3);
+    objc_storeStrong(&v13->_persons, persons);
   }
 
   v15 = *MEMORY[0x277D85DE8];
   return v14;
 }
 
-- (PGGraphPersonsInsertion)initWithPersonLocalIdentifiers:(id)a3
+- (PGGraphPersonsInsertion)initWithPersonLocalIdentifiers:(id)identifiers
 {
-  v5 = a3;
+  identifiersCopy = identifiers;
   v9.receiver = self;
   v9.super_class = PGGraphPersonsInsertion;
   v6 = [(PGGraphPersonsInsertion *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_personLocalIdentifiers, a3);
+    objc_storeStrong(&v6->_personLocalIdentifiers, identifiers);
   }
 
   return v7;

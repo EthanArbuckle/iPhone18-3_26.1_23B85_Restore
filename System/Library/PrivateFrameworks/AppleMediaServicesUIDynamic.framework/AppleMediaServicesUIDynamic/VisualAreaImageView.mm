@@ -1,15 +1,15 @@
 @interface VisualAreaImageView
 - (BOOL)hasContent;
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4;
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in;
 - (void)layoutSubviews;
-- (void)systemLayoutSizeFittingSize:(void *)a1;
+- (void)systemLayoutSizeFittingSize:(void *)size;
 @end
 
 @implementation VisualAreaImageView
 
-- (void)systemLayoutSizeFittingSize:(void *)a1
+- (void)systemLayoutSizeFittingSize:(void *)size
 {
-  v3 = a1;
+  sizeCopy = size;
   VisualAreaImageView.sizeThatFits(_:)(__PAIR128__(v4, *&a2));
   OUTLINED_FUNCTION_5_20();
 
@@ -18,15 +18,15 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   VisualAreaImageView.layoutSubviews()();
 }
 
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in
 {
-  width = a3.width;
+  width = fitting.width;
   swift_unknownObjectRetain();
-  v6 = self;
+  selfCopy = self;
   VisualAreaImageView.measurements(fitting:in:)(width);
   v8 = v7;
   v10 = v9;
@@ -46,7 +46,7 @@
 
 - (BOOL)hasContent
 {
-  v2 = self;
+  selfCopy = self;
   v3 = VisualAreaImageView.hasContent.getter();
 
   return v3 & 1;

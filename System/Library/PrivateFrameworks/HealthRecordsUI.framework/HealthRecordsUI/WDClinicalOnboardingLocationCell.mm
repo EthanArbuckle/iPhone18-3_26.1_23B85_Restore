@@ -1,25 +1,25 @@
 @interface WDClinicalOnboardingLocationCell
-- (WDClinicalOnboardingLocationCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (WDClinicalOnboardingLocationCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)_setUpConstraints;
 - (void)_setupSubviews;
-- (void)_updateContentWithBrandable:(id)a3 dataProvider:(id)a4;
+- (void)_updateContentWithBrandable:(id)brandable dataProvider:(id)provider;
 - (void)prepareForReuse;
-- (void)setProvider:(id)a3 dataProvider:(id)a4;
+- (void)setProvider:(id)provider dataProvider:(id)dataProvider;
 @end
 
 @implementation WDClinicalOnboardingLocationCell
 
-- (WDClinicalOnboardingLocationCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (WDClinicalOnboardingLocationCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v9.receiver = self;
   v9.super_class = WDClinicalOnboardingLocationCell;
-  v4 = [(WDClinicalLocationCell *)&v9 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(WDClinicalLocationCell *)&v9 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     [MEMORY[0x1E69DCAE0] providerDetailLogoViewDimension];
     v6 = v5;
-    v7 = [(WDClinicalLocationCell *)v4 logoView];
-    [v7 setSize:v6];
+    logoView = [(WDClinicalLocationCell *)v4 logoView];
+    [logoView setSize:v6];
   }
 
   return v4;
@@ -30,26 +30,26 @@
   v12.receiver = self;
   v12.super_class = WDClinicalOnboardingLocationCell;
   [(WDClinicalLocationCell *)&v12 _setupSubviews];
-  v3 = [(WDClinicalLocationCell *)self stackView];
-  v4 = [(WDClinicalLocationCell *)self subtitleLabel];
-  [v3 addArrangedSubview:v4];
+  stackView = [(WDClinicalLocationCell *)self stackView];
+  subtitleLabel = [(WDClinicalLocationCell *)self subtitleLabel];
+  [stackView addArrangedSubview:subtitleLabel];
 
-  v5 = [(WDClinicalLocationCell *)self stackView];
-  v6 = [(WDClinicalLocationCell *)self detailLabel];
-  [v5 addArrangedSubview:v6];
+  stackView2 = [(WDClinicalLocationCell *)self stackView];
+  detailLabel = [(WDClinicalLocationCell *)self detailLabel];
+  [stackView2 addArrangedSubview:detailLabel];
 
   v7 = *MEMORY[0x1E69A4090];
-  v8 = [(WDClinicalLocationCell *)self stackView];
-  [v8 setDirectionalLayoutMargins:{8.0, v7, 4.0, v7}];
+  stackView3 = [(WDClinicalLocationCell *)self stackView];
+  [stackView3 setDirectionalLayoutMargins:{8.0, v7, 4.0, v7}];
 
-  v9 = [(WDClinicalLocationCell *)self stackView];
-  [v9 setBaselineRelativeArrangement:0];
+  stackView4 = [(WDClinicalLocationCell *)self stackView];
+  [stackView4 setBaselineRelativeArrangement:0];
 
-  v10 = [(WDClinicalLocationCell *)self stackView];
-  [v10 setPreservesSuperviewLayoutMargins:0];
+  stackView5 = [(WDClinicalLocationCell *)self stackView];
+  [stackView5 setPreservesSuperviewLayoutMargins:0];
 
-  v11 = [(WDClinicalLocationCell *)self stackView];
-  [v11 setSpacing:0.0];
+  stackView6 = [(WDClinicalLocationCell *)self stackView];
+  [stackView6 setSpacing:0.0];
 }
 
 - (void)_setUpConstraints
@@ -58,114 +58,114 @@
   v88.receiver = self;
   v88.super_class = WDClinicalOnboardingLocationCell;
   [(WDClinicalLocationCell *)&v88 _setUpConstraints];
-  v3 = [(WDClinicalLocationCell *)self stackView];
-  [v3 setAlignment:1];
+  stackView = [(WDClinicalLocationCell *)self stackView];
+  [stackView setAlignment:1];
 
   v4 = objc_alloc_init(MEMORY[0x1E69DD250]);
   [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v5 = [(WDClinicalLocationCell *)self stackView];
-  v6 = [(WDClinicalLocationCell *)self logoView];
-  [v5 removeArrangedSubview:v6];
+  stackView2 = [(WDClinicalLocationCell *)self stackView];
+  logoView = [(WDClinicalLocationCell *)self logoView];
+  [stackView2 removeArrangedSubview:logoView];
 
-  v7 = [(WDClinicalLocationCell *)self stackView];
+  stackView3 = [(WDClinicalLocationCell *)self stackView];
   v8 = v4;
-  [v7 insertArrangedSubview:v4 atIndex:0];
+  [stackView3 insertArrangedSubview:v4 atIndex:0];
 
-  v9 = [(WDClinicalLocationCell *)self logoView];
-  [v4 addSubview:v9];
+  logoView2 = [(WDClinicalLocationCell *)self logoView];
+  [v4 addSubview:logoView2];
 
   v67 = MEMORY[0x1E696ACD8];
-  v84 = [(WDClinicalLocationCell *)self logoView];
-  v81 = [v84 centerXAnchor];
-  v79 = [v4 centerXAnchor];
-  v77 = [v81 constraintEqualToAnchor:v79];
+  logoView3 = [(WDClinicalLocationCell *)self logoView];
+  centerXAnchor = [logoView3 centerXAnchor];
+  centerXAnchor2 = [v4 centerXAnchor];
+  v77 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v92[0] = v77;
-  v75 = [(WDClinicalLocationCell *)self logoView];
-  v73 = [v75 centerYAnchor];
-  v71 = [v4 centerYAnchor];
-  v70 = [v73 constraintEqualToAnchor:v71];
+  logoView4 = [(WDClinicalLocationCell *)self logoView];
+  centerYAnchor = [logoView4 centerYAnchor];
+  centerYAnchor2 = [v4 centerYAnchor];
+  v70 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v92[1] = v70;
-  v69 = [(WDClinicalLocationCell *)self logoView];
-  v68 = [v69 topAnchor];
-  v66 = [v4 topAnchor];
-  v65 = [v68 constraintGreaterThanOrEqualToAnchor:v66];
+  logoView5 = [(WDClinicalLocationCell *)self logoView];
+  topAnchor = [logoView5 topAnchor];
+  topAnchor2 = [v4 topAnchor];
+  v65 = [topAnchor constraintGreaterThanOrEqualToAnchor:topAnchor2];
   v92[2] = v65;
-  v64 = [(WDClinicalLocationCell *)self logoView];
-  v63 = [v64 leadingAnchor];
-  v62 = [v4 leadingAnchor];
-  v61 = [v63 constraintGreaterThanOrEqualToAnchor:v62];
+  logoView6 = [(WDClinicalLocationCell *)self logoView];
+  leadingAnchor = [logoView6 leadingAnchor];
+  leadingAnchor2 = [v4 leadingAnchor];
+  v61 = [leadingAnchor constraintGreaterThanOrEqualToAnchor:leadingAnchor2];
   v92[3] = v61;
-  v60 = [v4 bottomAnchor];
-  v10 = [(WDClinicalLocationCell *)self logoView];
-  v11 = [v10 bottomAnchor];
-  v12 = [v60 constraintGreaterThanOrEqualToAnchor:v11];
+  bottomAnchor = [v4 bottomAnchor];
+  logoView7 = [(WDClinicalLocationCell *)self logoView];
+  bottomAnchor2 = [logoView7 bottomAnchor];
+  v12 = [bottomAnchor constraintGreaterThanOrEqualToAnchor:bottomAnchor2];
   v92[4] = v12;
-  v13 = [v8 trailingAnchor];
-  v14 = [(WDClinicalLocationCell *)self logoView];
-  v15 = [v14 trailingAnchor];
-  v16 = [v13 constraintGreaterThanOrEqualToAnchor:v15];
+  trailingAnchor = [v8 trailingAnchor];
+  logoView8 = [(WDClinicalLocationCell *)self logoView];
+  trailingAnchor2 = [logoView8 trailingAnchor];
+  v16 = [trailingAnchor constraintGreaterThanOrEqualToAnchor:trailingAnchor2];
   v92[5] = v16;
   v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v92 count:6];
   [v67 activateConstraints:v17];
 
   v82 = MEMORY[0x1E696ACD8];
-  v85 = [v8 leadingAnchor];
-  v18 = [(WDClinicalOnboardingLocationCell *)self contentView];
-  v19 = [v18 leadingAnchor];
-  v20 = [v85 constraintEqualToAnchor:v19];
+  leadingAnchor3 = [v8 leadingAnchor];
+  contentView = [(WDClinicalOnboardingLocationCell *)self contentView];
+  leadingAnchor4 = [contentView leadingAnchor];
+  v20 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v91[0] = v20;
   v87 = v8;
-  v21 = [v8 trailingAnchor];
-  v22 = [(WDClinicalOnboardingLocationCell *)self contentView];
-  v23 = [v22 trailingAnchor];
-  v24 = [v21 constraintEqualToAnchor:v23];
+  trailingAnchor3 = [v8 trailingAnchor];
+  contentView2 = [(WDClinicalOnboardingLocationCell *)self contentView];
+  trailingAnchor4 = [contentView2 trailingAnchor];
+  v24 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v91[1] = v24;
   v25 = [MEMORY[0x1E695DEC8] arrayWithObjects:v91 count:2];
   [v82 activateConstraints:v25];
 
-  v26 = [(WDClinicalLocationCell *)self stackView];
-  [v26 setCustomSpacing:v8 afterView:20.0];
+  stackView4 = [(WDClinicalLocationCell *)self stackView];
+  [stackView4 setCustomSpacing:v8 afterView:20.0];
 
-  v27 = [(WDClinicalLocationCell *)self logoView];
+  logoView9 = [(WDClinicalLocationCell *)self logoView];
   LODWORD(v28) = 1148846080;
-  [v27 setContentHuggingPriority:0 forAxis:v28];
+  [logoView9 setContentHuggingPriority:0 forAxis:v28];
 
-  v29 = [(WDClinicalLocationCell *)self logoView];
+  logoView10 = [(WDClinicalLocationCell *)self logoView];
   LODWORD(v30) = 1148846080;
-  [v29 setContentCompressionResistancePriority:0 forAxis:v30];
+  [logoView10 setContentCompressionResistancePriority:0 forAxis:v30];
 
-  v31 = [(WDClinicalLocationCell *)self logoView];
+  logoView11 = [(WDClinicalLocationCell *)self logoView];
   LODWORD(v32) = 1148846080;
-  [v31 setContentHuggingPriority:1 forAxis:v32];
+  [logoView11 setContentHuggingPriority:1 forAxis:v32];
 
-  v33 = [(WDClinicalLocationCell *)self logoView];
+  logoView12 = [(WDClinicalLocationCell *)self logoView];
   LODWORD(v34) = 1148846080;
-  [v33 setContentCompressionResistancePriority:1 forAxis:v34];
+  [logoView12 setContentCompressionResistancePriority:1 forAxis:v34];
 
   v35 = objc_alloc_init(MEMORY[0x1E69DD250]);
   [v35 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v36 = [(WDClinicalLocationCell *)self stackView];
-  v37 = [(WDClinicalLocationCell *)self titleLabel];
-  [v36 removeArrangedSubview:v37];
+  stackView5 = [(WDClinicalLocationCell *)self stackView];
+  titleLabel = [(WDClinicalLocationCell *)self titleLabel];
+  [stackView5 removeArrangedSubview:titleLabel];
 
-  v38 = [(WDClinicalLocationCell *)self stackView];
-  v39 = [(WDClinicalLocationCell *)self subtitleLabel];
-  [v38 removeArrangedSubview:v39];
+  stackView6 = [(WDClinicalLocationCell *)self stackView];
+  subtitleLabel = [(WDClinicalLocationCell *)self subtitleLabel];
+  [stackView6 removeArrangedSubview:subtitleLabel];
 
-  v40 = [(WDClinicalLocationCell *)self stackView];
-  v41 = [(WDClinicalLocationCell *)self detailLabel];
-  [v40 removeArrangedSubview:v41];
+  stackView7 = [(WDClinicalLocationCell *)self stackView];
+  detailLabel = [(WDClinicalLocationCell *)self detailLabel];
+  [stackView7 removeArrangedSubview:detailLabel];
 
-  v42 = [(WDClinicalLocationCell *)self stackView];
-  [v42 addArrangedSubview:v35];
+  stackView8 = [(WDClinicalLocationCell *)self stackView];
+  [stackView8 addArrangedSubview:v35];
 
   v43 = objc_alloc(MEMORY[0x1E69DCF90]);
-  v44 = [(WDClinicalLocationCell *)self titleLabel];
-  v90[0] = v44;
-  v45 = [(WDClinicalLocationCell *)self subtitleLabel];
-  v90[1] = v45;
-  v46 = [(WDClinicalLocationCell *)self detailLabel];
-  v90[2] = v46;
+  titleLabel2 = [(WDClinicalLocationCell *)self titleLabel];
+  v90[0] = titleLabel2;
+  subtitleLabel2 = [(WDClinicalLocationCell *)self subtitleLabel];
+  v90[1] = subtitleLabel2;
+  detailLabel2 = [(WDClinicalLocationCell *)self detailLabel];
+  v90[2] = detailLabel2;
   v47 = [MEMORY[0x1E695DEC8] arrayWithObjects:v90 count:3];
   v48 = [v43 initWithArrangedSubviews:v47];
 
@@ -175,68 +175,68 @@
   [v48 setAlignment:1];
   [v35 addSubview:v48];
   v72 = MEMORY[0x1E696ACD8];
-  v83 = [v48 leadingAnchor];
-  v80 = [v35 leadingAnchor];
-  v78 = [v83 constraintEqualToAnchor:v80 constant:32.0];
+  leadingAnchor5 = [v48 leadingAnchor];
+  leadingAnchor6 = [v35 leadingAnchor];
+  v78 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6 constant:32.0];
   v89[0] = v78;
-  v76 = [v48 trailingAnchor];
-  v74 = [v35 trailingAnchor];
-  v49 = [v76 constraintEqualToAnchor:v74];
+  trailingAnchor5 = [v48 trailingAnchor];
+  trailingAnchor6 = [v35 trailingAnchor];
+  v49 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
   v89[1] = v49;
-  v50 = [v48 topAnchor];
+  topAnchor3 = [v48 topAnchor];
   v86 = v35;
-  v51 = [v35 topAnchor];
-  v52 = [v50 constraintEqualToAnchor:v51];
+  topAnchor4 = [v35 topAnchor];
+  v52 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   v89[2] = v52;
-  v53 = [v48 bottomAnchor];
-  v54 = [v35 bottomAnchor];
-  v55 = [v53 constraintEqualToAnchor:v54];
+  bottomAnchor3 = [v48 bottomAnchor];
+  bottomAnchor4 = [v35 bottomAnchor];
+  v55 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   v89[3] = v55;
   v56 = [MEMORY[0x1E695DEC8] arrayWithObjects:v89 count:4];
   [v72 activateConstraints:v56];
 
-  v57 = [(WDClinicalLocationCell *)self titleLabel];
-  [v57 setTextAlignment:4];
+  titleLabel3 = [(WDClinicalLocationCell *)self titleLabel];
+  [titleLabel3 setTextAlignment:4];
 
-  v58 = [(WDClinicalLocationCell *)self subtitleLabel];
-  [v58 setTextAlignment:4];
+  subtitleLabel3 = [(WDClinicalLocationCell *)self subtitleLabel];
+  [subtitleLabel3 setTextAlignment:4];
 
-  v59 = [(WDClinicalLocationCell *)self detailLabel];
-  [v59 setTextAlignment:4];
+  detailLabel3 = [(WDClinicalLocationCell *)self detailLabel];
+  [detailLabel3 setTextAlignment:4];
 }
 
-- (void)setProvider:(id)a3 dataProvider:(id)a4
+- (void)setProvider:(id)provider dataProvider:(id)dataProvider
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 copy];
+  dataProviderCopy = dataProvider;
+  providerCopy = provider;
+  v8 = [providerCopy copy];
   provider = self->_provider;
   self->_provider = v8;
 
   v10.receiver = self;
   v10.super_class = WDClinicalOnboardingLocationCell;
-  [(WDClinicalLocationCell *)&v10 setBrandable:v7 dataProvider:v6];
+  [(WDClinicalLocationCell *)&v10 setBrandable:providerCopy dataProvider:dataProviderCopy];
 }
 
-- (void)_updateContentWithBrandable:(id)a3 dataProvider:(id)a4
+- (void)_updateContentWithBrandable:(id)brandable dataProvider:(id)provider
 {
-  v6 = a3;
+  brandableCopy = brandable;
   v9.receiver = self;
   v9.super_class = WDClinicalOnboardingLocationCell;
-  [(WDClinicalLocationCell *)&v9 _updateContentWithBrandable:v6 dataProvider:a4];
+  [(WDClinicalLocationCell *)&v9 _updateContentWithBrandable:brandableCopy dataProvider:provider];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v6 location];
+    location = [brandableCopy location];
   }
 
   else
   {
-    v7 = 0;
+    location = 0;
   }
 
-  v8 = [(WDClinicalLocationCell *)self detailLabel];
-  [v8 setText:v7];
+  detailLabel = [(WDClinicalLocationCell *)self detailLabel];
+  [detailLabel setText:location];
 }
 
 - (void)prepareForReuse

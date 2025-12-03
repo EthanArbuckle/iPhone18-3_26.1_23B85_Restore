@@ -1,5 +1,5 @@
 @interface GaletteStore
-+ (BOOL)createOrMigrateStoreUsingSchema:(id)a3;
++ (BOOL)createOrMigrateStoreUsingSchema:(id)schema;
 + (id)shared;
 + (id)storeDescriptor;
 @end
@@ -28,11 +28,11 @@
   return v5;
 }
 
-+ (BOOL)createOrMigrateStoreUsingSchema:(id)a3
++ (BOOL)createOrMigrateStoreUsingSchema:(id)schema
 {
-  if (a3)
+  if (schema)
   {
-    return sub_100252C84(a3, 15500, &stru_1005203A0, 0);
+    return sub_100252C84(schema, 15500, &stru_1005203A0, 0);
   }
 
   else

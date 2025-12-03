@@ -1,19 +1,19 @@
 @interface CloudSyncStateObserver
 - (_TtC18HealthExperienceUI22CloudSyncStateObserver)init;
-- (void)cloudSyncObserver:(id)a3 syncDidStartWithProgress:(id)a4;
-- (void)cloudSyncObserver:(id)a3 syncFailedWithError:(id)a4;
-- (void)cloudSyncObserverStatusUpdated:(id)a3 status:(id)a4;
-- (void)cloudSyncObserverSyncCompleted:(id)a3;
+- (void)cloudSyncObserver:(id)observer syncDidStartWithProgress:(id)progress;
+- (void)cloudSyncObserver:(id)observer syncFailedWithError:(id)error;
+- (void)cloudSyncObserverStatusUpdated:(id)updated status:(id)status;
+- (void)cloudSyncObserverSyncCompleted:(id)completed;
 @end
 
 @implementation CloudSyncStateObserver
 
-- (void)cloudSyncObserver:(id)a3 syncFailedWithError:(id)a4
+- (void)cloudSyncObserver:(id)observer syncFailedWithError:(id)error
 {
-  v6 = a3;
-  v7 = self;
-  v8 = a4;
-  CloudSyncStateObserver.cloudSyncObserver(_:syncFailedWithError:)(v6, a4);
+  observerCopy = observer;
+  selfCopy = self;
+  errorCopy = error;
+  CloudSyncStateObserver.cloudSyncObserver(_:syncFailedWithError:)(observerCopy, error);
 }
 
 - (_TtC18HealthExperienceUI22CloudSyncStateObserver)init
@@ -23,27 +23,27 @@
   return result;
 }
 
-- (void)cloudSyncObserver:(id)a3 syncDidStartWithProgress:(id)a4
+- (void)cloudSyncObserver:(id)observer syncDidStartWithProgress:(id)progress
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  observerCopy = observer;
+  progressCopy = progress;
+  selfCopy = self;
   _s18HealthExperienceUI22CloudSyncStateObserverC05cloudeG0_16syncDidStartWithySo07HKCloudeG0C_So10NSProgressCtF_0();
 }
 
-- (void)cloudSyncObserverSyncCompleted:(id)a3
+- (void)cloudSyncObserverSyncCompleted:(id)completed
 {
-  v4 = a3;
-  v5 = self;
+  completedCopy = completed;
+  selfCopy = self;
   _s18HealthExperienceUI22CloudSyncStateObserverC05cloudegE9CompletedyySo07HKCloudeG0CF_0();
 }
 
-- (void)cloudSyncObserverStatusUpdated:(id)a3 status:(id)a4
+- (void)cloudSyncObserverStatusUpdated:(id)updated status:(id)status
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1BA3B4748(v7);
+  updatedCopy = updated;
+  statusCopy = status;
+  selfCopy = self;
+  sub_1BA3B4748(statusCopy);
 }
 
 @end

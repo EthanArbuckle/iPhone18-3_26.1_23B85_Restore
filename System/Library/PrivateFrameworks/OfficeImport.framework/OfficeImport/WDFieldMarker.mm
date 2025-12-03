@@ -1,27 +1,27 @@
 @interface WDFieldMarker
-- (WDFieldMarker)initWithParagraph:(id)a3;
+- (WDFieldMarker)initWithParagraph:(id)paragraph;
 - (id)description;
-- (void)setHasSeparator:(BOOL)a3;
-- (void)setLocked:(BOOL)a3;
-- (void)setNested:(BOOL)a3;
-- (void)setPrivateResult:(BOOL)a3;
-- (void)setResultDirty:(BOOL)a3;
-- (void)setResultEdited:(BOOL)a3;
+- (void)setHasSeparator:(BOOL)separator;
+- (void)setLocked:(BOOL)locked;
+- (void)setNested:(BOOL)nested;
+- (void)setPrivateResult:(BOOL)result;
+- (void)setResultDirty:(BOOL)dirty;
+- (void)setResultEdited:(BOOL)edited;
 @end
 
 @implementation WDFieldMarker
 
-- (WDFieldMarker)initWithParagraph:(id)a3
+- (WDFieldMarker)initWithParagraph:(id)paragraph
 {
-  v4 = a3;
+  paragraphCopy = paragraph;
   v10.receiver = self;
   v10.super_class = WDFieldMarker;
-  v5 = [(WDRunWithCharacterProperties *)&v10 initWithParagraph:v4];
+  v5 = [(WDRunWithCharacterProperties *)&v10 initWithParagraph:paragraphCopy];
   if (v5)
   {
     v6 = [WDCharacterProperties alloc];
-    v7 = [v4 document];
-    v8 = [(WDCharacterProperties *)v6 initWithDocument:v7];
+    document = [paragraphCopy document];
+    v8 = [(WDCharacterProperties *)v6 initWithDocument:document];
 
     [(WDCharacterProperties *)v8 setResolveMode:0];
     [(WDCharacterProperties *)v8 setSpecialCharacter:1];
@@ -32,9 +32,9 @@
   return v5;
 }
 
-- (void)setResultDirty:(BOOL)a3
+- (void)setResultDirty:(BOOL)dirty
 {
-  if (a3)
+  if (dirty)
   {
     v3 = 2;
   }
@@ -47,9 +47,9 @@
   *(self + 48) = *(self + 48) & 0xFD | v3;
 }
 
-- (void)setResultEdited:(BOOL)a3
+- (void)setResultEdited:(BOOL)edited
 {
-  if (a3)
+  if (edited)
   {
     v3 = 4;
   }
@@ -62,9 +62,9 @@
   *(self + 48) = *(self + 48) & 0xFB | v3;
 }
 
-- (void)setLocked:(BOOL)a3
+- (void)setLocked:(BOOL)locked
 {
-  if (a3)
+  if (locked)
   {
     v3 = 8;
   }
@@ -77,9 +77,9 @@
   *(self + 48) = *(self + 48) & 0xF7 | v3;
 }
 
-- (void)setPrivateResult:(BOOL)a3
+- (void)setPrivateResult:(BOOL)result
 {
-  if (a3)
+  if (result)
   {
     v3 = 16;
   }
@@ -92,9 +92,9 @@
   *(self + 48) = *(self + 48) & 0xEF | v3;
 }
 
-- (void)setNested:(BOOL)a3
+- (void)setNested:(BOOL)nested
 {
-  if (a3)
+  if (nested)
   {
     v3 = 32;
   }
@@ -107,9 +107,9 @@
   *(self + 48) = *(self + 48) & 0xDF | v3;
 }
 
-- (void)setHasSeparator:(BOOL)a3
+- (void)setHasSeparator:(BOOL)separator
 {
-  if (a3)
+  if (separator)
   {
     v3 = 64;
   }

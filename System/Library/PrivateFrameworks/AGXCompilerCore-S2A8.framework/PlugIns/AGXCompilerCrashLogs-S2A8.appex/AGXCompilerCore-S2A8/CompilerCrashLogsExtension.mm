@@ -1,10 +1,10 @@
 @interface CompilerCrashLogsExtension
-- (id)attachmentsForParameters:(id)a3;
+- (id)attachmentsForParameters:(id)parameters;
 @end
 
 @implementation CompilerCrashLogsExtension
 
-- (id)attachmentsForParameters:(id)a3
+- (id)attachmentsForParameters:(id)parameters
 {
   v4 = [NSRegularExpression regularExpressionWithPattern:@"*.log" options:1 error:0];
   v5 = [NSURL fileURLWithPath:@"/var/mobile/Library/Logs/CrashReporter/DiagnosticLogs/AGX/" isDirectory:1];

@@ -1,16 +1,16 @@
 @interface WAAnalyticsAccess
-+ (WAAnalyticsAccess)accessWithPersistentContainer:(id)a3;
++ (WAAnalyticsAccess)accessWithPersistentContainer:(id)container;
 + (void)initialize;
-- (WAAnalyticsAccess)initWithOptions:(unint64_t)a3 andContainer:(id)a4;
-- (id)_performFetch:(id)a3 error:(id *)a4 onMoc:(id)a5;
-- (id)_performFetchWithBlockAndWait:(id)a3 error:(id *)a4 onMoc:(id)a5;
-- (id)performFetchWithBlockAndWait:(id)a3 error:(id *)a4;
-- (id)performFetchWithBlockAndWaitOnBbMoc:(id)a3 error:(id *)a4;
+- (WAAnalyticsAccess)initWithOptions:(unint64_t)options andContainer:(id)container;
+- (id)_performFetch:(id)fetch error:(id *)error onMoc:(id)moc;
+- (id)_performFetchWithBlockAndWait:(id)wait error:(id *)error onMoc:(id)moc;
+- (id)performFetchWithBlockAndWait:(id)wait error:(id *)error;
+- (id)performFetchWithBlockAndWaitOnBbMoc:(id)moc error:(id *)error;
 - (id)persistentStoreCoordinator;
-- (unint64_t)_countForFetchRequest:(id)a3 error:(id *)a4 onMoc:(id)a5;
-- (unint64_t)_countForFetchRequestWithBlockAndWait:(id)a3 error:(id *)a4 onMoc:(id)a5;
-- (unint64_t)countForFetchRequestWithBlockAndWait:(id)a3 error:(id *)a4;
-- (unint64_t)countForFetchRequestWithBlockAndWaitOnBbMoc:(id)a3 error:(id *)a4;
+- (unint64_t)_countForFetchRequest:(id)request error:(id *)error onMoc:(id)moc;
+- (unint64_t)_countForFetchRequestWithBlockAndWait:(id)wait error:(id *)error onMoc:(id)moc;
+- (unint64_t)countForFetchRequestWithBlockAndWait:(id)wait error:(id *)error;
+- (unint64_t)countForFetchRequestWithBlockAndWaitOnBbMoc:(id)moc error:(id *)error;
 @end
 
 @implementation WAAnalyticsAccess
@@ -22,10 +22,10 @@
   MEMORY[0x1EEE66BB8]();
 }
 
-+ (WAAnalyticsAccess)accessWithPersistentContainer:(id)a3
++ (WAAnalyticsAccess)accessWithPersistentContainer:(id)container
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  containerCopy = container;
   v4 = WALogCategoryDeviceStoreHandle();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -43,7 +43,7 @@
   v6 = [registry objectForKey:@"WAAccessReadOnly"];
   if (!v6)
   {
-    v6 = [[WAAnalyticsAccess alloc] initWithOptions:1 andContainer:v3];
+    v6 = [[WAAnalyticsAccess alloc] initWithOptions:1 andContainer:containerCopy];
     [registry setObject:v6 forKey:@"WAAccessReadOnly"];
   }
 
@@ -54,36 +54,36 @@
   return v6;
 }
 
-- (WAAnalyticsAccess)initWithOptions:(unint64_t)a3 andContainer:(id)a4
+- (WAAnalyticsAccess)initWithOptions:(unint64_t)options andContainer:(id)container
 {
-  v7 = a4;
+  containerCopy = container;
   v11.receiver = self;
   v11.super_class = WAAnalyticsAccess;
   v8 = [(WAAnalyticsAccess *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_options = a3;
-    objc_storeStrong(&v8->_persistentContainer, a4);
+    v8->_options = options;
+    objc_storeStrong(&v8->_persistentContainer, container);
   }
 
   return v9;
 }
 
-- (unint64_t)countForFetchRequestWithBlockAndWaitOnBbMoc:(id)a3 error:(id *)a4
+- (unint64_t)countForFetchRequestWithBlockAndWaitOnBbMoc:(id)moc error:(id *)error
 {
-  v6 = a3;
-  v7 = [(WAAnalyticsAccess *)self backgroundMOC];
-  v8 = [(WAAnalyticsAccess *)self _countForFetchRequestWithBlockAndWait:v6 error:a4 onMoc:v7];
+  mocCopy = moc;
+  backgroundMOC = [(WAAnalyticsAccess *)self backgroundMOC];
+  v8 = [(WAAnalyticsAccess *)self _countForFetchRequestWithBlockAndWait:mocCopy error:error onMoc:backgroundMOC];
 
   return v8;
 }
 
-- (id)performFetchWithBlockAndWaitOnBbMoc:(id)a3 error:(id *)a4
+- (id)performFetchWithBlockAndWaitOnBbMoc:(id)moc error:(id *)error
 {
-  v6 = a3;
-  v7 = [(WAAnalyticsAccess *)self backgroundMOC];
-  v8 = [(WAAnalyticsAccess *)self _performFetchWithBlockAndWait:v6 error:a4 onMoc:v7];
+  mocCopy = moc;
+  backgroundMOC = [(WAAnalyticsAccess *)self backgroundMOC];
+  v8 = [(WAAnalyticsAccess *)self _performFetchWithBlockAndWait:mocCopy error:error onMoc:backgroundMOC];
 
   return v8;
 }
@@ -103,12 +103,12 @@
       _os_log_impl(&dword_1C8460000, v6, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:Return no persistentStoreCoordinator for WAAccessReadOnly", &v7, 0x12u);
     }
 
-    v2 = 0;
+    persistentStoreCoordinator = 0;
   }
 
   else
   {
-    v2 = [(NSPersistentContainer *)self->_persistentContainer persistentStoreCoordinator];
+    persistentStoreCoordinator = [(NSPersistentContainer *)self->_persistentContainer persistentStoreCoordinator];
   }
 
   v3 = WALogCategoryDeviceStoreHandle();
@@ -119,37 +119,37 @@
     v9 = 1024;
     v10 = 154;
     v11 = 2112;
-    v12 = v2;
+    v12 = persistentStoreCoordinator;
     _os_log_impl(&dword_1C8460000, v3, OS_LOG_TYPE_DEBUG, "%{public}s::%d:ret: %@", &v7, 0x1Cu);
   }
 
   v4 = *MEMORY[0x1E69E9840];
 
-  return v2;
+  return persistentStoreCoordinator;
 }
 
-- (id)performFetchWithBlockAndWait:(id)a3 error:(id *)a4
+- (id)performFetchWithBlockAndWait:(id)wait error:(id *)error
 {
-  v6 = a3;
-  v7 = [(WAAnalyticsAccess *)self mainObjectContext];
-  v8 = [(WAAnalyticsAccess *)self _performFetchWithBlockAndWait:v6 error:a4 onMoc:v7];
+  waitCopy = wait;
+  mainObjectContext = [(WAAnalyticsAccess *)self mainObjectContext];
+  v8 = [(WAAnalyticsAccess *)self _performFetchWithBlockAndWait:waitCopy error:error onMoc:mainObjectContext];
 
   return v8;
 }
 
-- (unint64_t)countForFetchRequestWithBlockAndWait:(id)a3 error:(id *)a4
+- (unint64_t)countForFetchRequestWithBlockAndWait:(id)wait error:(id *)error
 {
-  v6 = a3;
-  v7 = [(WAAnalyticsAccess *)self mainObjectContext];
-  v8 = [(WAAnalyticsAccess *)self _countForFetchRequestWithBlockAndWait:v6 error:a4 onMoc:v7];
+  waitCopy = wait;
+  mainObjectContext = [(WAAnalyticsAccess *)self mainObjectContext];
+  v8 = [(WAAnalyticsAccess *)self _countForFetchRequestWithBlockAndWait:waitCopy error:error onMoc:mainObjectContext];
 
   return v8;
 }
 
-- (id)_performFetchWithBlockAndWait:(id)a3 error:(id *)a4 onMoc:(id)a5
+- (id)_performFetchWithBlockAndWait:(id)wait error:(id *)error onMoc:(id)moc
 {
-  v8 = a3;
-  v9 = a5;
+  waitCopy = wait;
+  mocCopy = moc;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -162,10 +162,10 @@
   v14[3] = &unk_1E830F630;
   v17 = &v19;
   v14[4] = self;
-  v10 = v8;
+  v10 = waitCopy;
   v15 = v10;
-  v18 = a4;
-  v11 = v9;
+  errorCopy = error;
+  v11 = mocCopy;
   v16 = v11;
   [v11 performBlockAndWait:v14];
   v12 = v20[5];
@@ -185,10 +185,10 @@ uint64_t __63__WAAnalyticsAccess__performFetchWithBlockAndWait_error_onMoc___blo
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (unint64_t)_countForFetchRequestWithBlockAndWait:(id)a3 error:(id *)a4 onMoc:(id)a5
+- (unint64_t)_countForFetchRequestWithBlockAndWait:(id)wait error:(id *)error onMoc:(id)moc
 {
-  v8 = a3;
-  v9 = a5;
+  waitCopy = wait;
+  mocCopy = moc;
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
@@ -199,10 +199,10 @@ uint64_t __63__WAAnalyticsAccess__performFetchWithBlockAndWait_error_onMoc___blo
   v14[3] = &unk_1E830F630;
   v17 = &v19;
   v14[4] = self;
-  v10 = v8;
+  v10 = waitCopy;
   v15 = v10;
-  v18 = a4;
-  v11 = v9;
+  errorCopy = error;
+  v11 = mocCopy;
   v16 = v11;
   [v11 performBlockAndWait:v14];
   v12 = v20[3];
@@ -218,32 +218,32 @@ uint64_t __71__WAAnalyticsAccess__countForFetchRequestWithBlockAndWait_error_onM
   return result;
 }
 
-- (id)_performFetch:(id)a3 error:(id *)a4 onMoc:(id)a5
+- (id)_performFetch:(id)fetch error:(id *)error onMoc:(id)moc
 {
   v48 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  v10 = [MEMORY[0x1E695DEC8] array];
-  v11 = [v9 persistentStoreCoordinator];
-  v12 = [v11 managedObjectModel];
-  v13 = [v12 entitiesByName];
+  fetchCopy = fetch;
+  mocCopy = moc;
+  array = [MEMORY[0x1E695DEC8] array];
+  persistentStoreCoordinator = [mocCopy persistentStoreCoordinator];
+  managedObjectModel = [persistentStoreCoordinator managedObjectModel];
+  entitiesByName = [managedObjectModel entitiesByName];
 
-  v14 = [v13 allKeys];
-  v15 = [v8 entityName];
-  v16 = [v14 containsObject:v15];
+  allKeys = [entitiesByName allKeys];
+  entityName = [fetchCopy entityName];
+  v16 = [allKeys containsObject:entityName];
 
   if ((v16 & 1) == 0)
   {
     v23 = WALogCategoryDeviceStoreHandle();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
-      v24 = [v8 entityName];
+      entityName2 = [fetchCopy entityName];
       *buf = 136446722;
       v39 = "[WAAnalyticsAccess _performFetch:error:onMoc:]";
       v40 = 1024;
       v41 = 194;
       v42 = 2112;
-      v43 = v24;
+      v43 = entityName2;
       _os_log_impl(&dword_1C8460000, v23, OS_LOG_TYPE_ERROR, "%{public}s::%d:entityName %@ doesn't exist", buf, 0x1Cu);
     }
 
@@ -251,7 +251,7 @@ uint64_t __71__WAAnalyticsAccess__countForFetchRequestWithBlockAndWait_error_onM
   }
 
   v37 = 0;
-  v17 = [(WAAnalyticsAccess *)self _countForFetchRequest:v8 error:&v37 onMoc:v9];
+  v17 = [(WAAnalyticsAccess *)self _countForFetchRequest:fetchCopy error:&v37 onMoc:mocCopy];
   v18 = v37;
   v19 = WALogCategoryDeviceStoreHandle();
   v20 = v19;
@@ -259,7 +259,7 @@ uint64_t __71__WAAnalyticsAccess__countForFetchRequestWithBlockAndWait_error_onM
   {
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
-      v21 = [v8 entityName];
+      entityName3 = [fetchCopy entityName];
       *buf = 136446978;
       v39 = "[WAAnalyticsAccess _performFetch:error:onMoc:]";
       v40 = 1024;
@@ -267,14 +267,14 @@ uint64_t __71__WAAnalyticsAccess__countForFetchRequestWithBlockAndWait_error_onM
       v42 = 2048;
       v43 = v17;
       v44 = 2112;
-      v45 = v21;
+      v45 = entityName3;
       _os_log_impl(&dword_1C8460000, v20, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:retrieving %lu entries from request.entityName %@", buf, 0x26u);
     }
 
     if (v17)
     {
       v36 = 0;
-      v22 = [v9 executeFetchRequest:v8 error:&v36];
+      v22 = [mocCopy executeFetchRequest:fetchCopy error:&v36];
       v18 = v36;
 
       if (v18)
@@ -282,24 +282,24 @@ uint64_t __71__WAAnalyticsAccess__countForFetchRequestWithBlockAndWait_error_onM
         v32 = WALogCategoryDeviceStoreHandle();
         if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
         {
-          v33 = [v18 localizedDescription];
-          v34 = [v18 userInfo];
+          localizedDescription = [v18 localizedDescription];
+          userInfo = [v18 userInfo];
           *buf = 136447234;
           v39 = "[WAAnalyticsAccess _performFetch:error:onMoc:]";
           v40 = 1024;
           v41 = 210;
           v42 = 2112;
-          v43 = v8;
+          v43 = fetchCopy;
           v44 = 2112;
-          v45 = v33;
+          v45 = localizedDescription;
           v46 = 2112;
-          v47 = v34;
-          v35 = v34;
+          v47 = userInfo;
+          v35 = userInfo;
           _os_log_impl(&dword_1C8460000, v32, OS_LOG_TYPE_ERROR, "%{public}s::%d:Error with executeFetchRequest %@. %@ %@", buf, 0x30u);
         }
       }
 
-      v10 = v22;
+      array = v22;
       goto LABEL_12;
     }
 
@@ -310,71 +310,71 @@ LABEL_11:
 
   if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
   {
-    v29 = [v18 localizedDescription];
-    v30 = [v18 userInfo];
+    localizedDescription2 = [v18 localizedDescription];
+    userInfo2 = [v18 userInfo];
     *buf = 136447234;
     v39 = "[WAAnalyticsAccess _performFetch:error:onMoc:]";
     v40 = 1024;
     v41 = 198;
     v42 = 2112;
-    v43 = v8;
+    v43 = fetchCopy;
     v44 = 2112;
-    v45 = v29;
+    v45 = localizedDescription2;
     v46 = 2112;
-    v47 = v30;
-    v31 = v30;
+    v47 = userInfo2;
+    v31 = userInfo2;
     _os_log_impl(&dword_1C8460000, v20, OS_LOG_TYPE_ERROR, "%{public}s::%d:Error with countForFetchRequest %@. %@ %@", buf, 0x30u);
   }
 
 LABEL_12:
-  if (a4)
+  if (error)
   {
     v25 = v18;
-    *a4 = v18;
+    *error = v18;
   }
 
-  v26 = v10;
+  v26 = array;
 
   v27 = *MEMORY[0x1E69E9840];
-  return v10;
+  return array;
 }
 
-- (unint64_t)_countForFetchRequest:(id)a3 error:(id *)a4 onMoc:(id)a5
+- (unint64_t)_countForFetchRequest:(id)request error:(id *)error onMoc:(id)moc
 {
   v37 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
-  v9 = [v8 persistentStoreCoordinator];
-  v10 = [v9 managedObjectModel];
-  v11 = [v10 entitiesByName];
+  requestCopy = request;
+  mocCopy = moc;
+  persistentStoreCoordinator = [mocCopy persistentStoreCoordinator];
+  managedObjectModel = [persistentStoreCoordinator managedObjectModel];
+  entitiesByName = [managedObjectModel entitiesByName];
 
-  v12 = [v11 allKeys];
-  v13 = [v7 entityName];
-  v14 = [v12 containsObject:v13];
+  allKeys = [entitiesByName allKeys];
+  entityName = [requestCopy entityName];
+  v14 = [allKeys containsObject:entityName];
 
   if (v14)
   {
     v26 = 0;
-    v15 = [v8 countForFetchRequest:v7 error:&v26];
+    v15 = [mocCopy countForFetchRequest:requestCopy error:&v26];
     v16 = v26;
     if (v16)
     {
       v22 = WALogCategoryDeviceStoreHandle();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
       {
-        v23 = [v16 localizedDescription];
-        v24 = [v16 userInfo];
+        localizedDescription = [v16 localizedDescription];
+        userInfo = [v16 userInfo];
         *buf = 136447234;
         v28 = "[WAAnalyticsAccess _countForFetchRequest:error:onMoc:]";
         v29 = 1024;
         v30 = 240;
         v31 = 2112;
-        v32 = v7;
+        v32 = requestCopy;
         v33 = 2112;
-        v34 = v23;
+        v34 = localizedDescription;
         v35 = 2112;
-        v36 = v24;
-        v25 = v24;
+        v36 = userInfo;
+        v25 = userInfo;
         _os_log_impl(&dword_1C8460000, v22, OS_LOG_TYPE_ERROR, "%{public}s::%d:Error with countForFetchRequest %@. %@ %@", buf, 0x30u);
       }
     }
@@ -385,13 +385,13 @@ LABEL_12:
     v20 = WALogCategoryDeviceStoreHandle();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
-      v21 = [v7 entityName];
+      entityName2 = [requestCopy entityName];
       *buf = 136446722;
       v28 = "[WAAnalyticsAccess _countForFetchRequest:error:onMoc:]";
       v29 = 1024;
       v30 = 228;
       v31 = 2112;
-      v32 = v21;
+      v32 = entityName2;
       _os_log_impl(&dword_1C8460000, v20, OS_LOG_TYPE_ERROR, "%{public}s::%d:entityName %@ doesn't exist", buf, 0x1Cu);
     }
 
@@ -399,10 +399,10 @@ LABEL_12:
     v16 = 0;
   }
 
-  if (a4)
+  if (error)
   {
     v17 = v16;
-    *a4 = v16;
+    *error = v16;
   }
 
   v18 = *MEMORY[0x1E69E9840];

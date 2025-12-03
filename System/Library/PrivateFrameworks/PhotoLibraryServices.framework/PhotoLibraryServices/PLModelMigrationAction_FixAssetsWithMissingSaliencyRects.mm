@@ -1,13 +1,13 @@
 @interface PLModelMigrationAction_FixAssetsWithMissingSaliencyRects
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
 @end
 
 @implementation PLModelMigrationAction_FixAssetsWithMissingSaliencyRects
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
   v99 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  contextCopy = context;
   v60 = 0;
   v61 = &v60;
   v62 = 0x2020000000;
@@ -42,7 +42,7 @@
   v46[1] = 3221225472;
   v46[2] = __104__PLModelMigrationAction_FixAssetsWithMissingSaliencyRects_performActionWithManagedObjectContext_error___block_invoke;
   v46[3] = &unk_1E7575B30;
-  v14 = v6;
+  v14 = contextCopy;
   v47 = v14;
   v45[0] = MEMORY[0x1E69E9820];
   v45[1] = 3221225472;
@@ -74,8 +74,8 @@
       goto LABEL_17;
     }
 
-    v20 = [(PLModelMigrationActionCore *)self logger];
-    v21 = v20 == 0;
+    logger = [(PLModelMigrationActionCore *)self logger];
+    v21 = logger == 0;
 
     if (!v21)
     {
@@ -155,8 +155,8 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  v29 = [(PLModelMigrationActionCore *)self logger];
-  v30 = v29 == 0;
+  logger2 = [(PLModelMigrationActionCore *)self logger];
+  v30 = logger2 == 0;
 
   if (v30)
   {
@@ -227,10 +227,10 @@ LABEL_16:
 LABEL_17:
   v38 = v61[3];
   v39 = v55[5];
-  if (v38 != 1 && a4)
+  if (v38 != 1 && error)
   {
     v39 = v39;
-    *a4 = v39;
+    *error = v39;
   }
 
   [(PLModelMigrationActionCore *)self finalizeProgress];

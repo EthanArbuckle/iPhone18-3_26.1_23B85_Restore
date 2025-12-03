@@ -1,81 +1,81 @@
 @interface _ASAccountManagerTipManager
-+ (BOOL)_hasAcknowledgedTip:(int64_t)a3;
-+ (id)_defaultKeyForTipType:(int64_t)a3;
-+ (id)_refreshDateForTip:(int64_t)a3;
-+ (void)_acknowledgeTip:(int64_t)a3;
-+ (void)_checkEligibilityForFamilySharingTipWithCompletionHandler:(id)a3;
-+ (void)_checkEligibilityForGeneralSharingTipWithCompletionHandler:(id)a3;
-+ (void)_checkEligibilityForiCloudKeychainTipWithCompletionHandler:(id)a3;
-+ (void)fetchSharingGroupsThatIncludeFamilyMembers:(id)a3;
-+ (void)fetchTipToShow:(id)a3;
-+ (void)userDidAcknowledgeTip:(int64_t)a3;
++ (BOOL)_hasAcknowledgedTip:(int64_t)tip;
++ (id)_defaultKeyForTipType:(int64_t)type;
++ (id)_refreshDateForTip:(int64_t)tip;
++ (void)_acknowledgeTip:(int64_t)tip;
++ (void)_checkEligibilityForFamilySharingTipWithCompletionHandler:(id)handler;
++ (void)_checkEligibilityForGeneralSharingTipWithCompletionHandler:(id)handler;
++ (void)_checkEligibilityForiCloudKeychainTipWithCompletionHandler:(id)handler;
++ (void)fetchSharingGroupsThatIncludeFamilyMembers:(id)members;
++ (void)fetchTipToShow:(id)show;
++ (void)userDidAcknowledgeTip:(int64_t)tip;
 @end
 
 @implementation _ASAccountManagerTipManager
 
-+ (void)fetchTipToShow:(id)a3
++ (void)fetchTipToShow:(id)show
 {
-  v4 = a3;
+  showCopy = show;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __46___ASAccountManagerTipManager_fetchTipToShow___block_invoke;
   v6[3] = &unk_1E7AF7B50;
-  v7 = v4;
-  v8 = a1;
-  v5 = v4;
-  [a1 _checkEligibilityForImportPasswordsTipWithCompletionHandler:v6];
+  v7 = showCopy;
+  selfCopy = self;
+  v5 = showCopy;
+  [self _checkEligibilityForImportPasswordsTipWithCompletionHandler:v6];
 }
 
-+ (void)userDidAcknowledgeTip:(int64_t)a3
++ (void)userDidAcknowledgeTip:(int64_t)tip
 {
-  if (a3 != 1 && a3 != 3)
+  if (tip != 1 && tip != 3)
   {
-    if (a3 != 2)
+    if (tip != 2)
     {
       return;
     }
 
-    [a1 _acknowledgeTip:?];
-    a3 = 3;
+    [self _acknowledgeTip:?];
+    tip = 3;
   }
 
-  [a1 _acknowledgeTip:a3];
+  [self _acknowledgeTip:tip];
 }
 
-+ (void)fetchSharingGroupsThatIncludeFamilyMembers:(id)a3
++ (void)fetchSharingGroupsThatIncludeFamilyMembers:(id)members
 {
-  v3 = a3;
+  membersCopy = members;
   v4 = objc_alloc_init(MEMORY[0x1E699C070]);
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __74___ASAccountManagerTipManager_fetchSharingGroupsThatIncludeFamilyMembers___block_invoke;
   v6[3] = &unk_1E7AF7BE0;
-  v7 = v3;
-  v5 = v3;
+  v7 = membersCopy;
+  v5 = membersCopy;
   [v4 startRequestWithCompletionHandler:v6];
 }
 
-+ (BOOL)_hasAcknowledgedTip:(int64_t)a3
++ (BOOL)_hasAcknowledgedTip:(int64_t)tip
 {
-  v5 = [a1 _refreshDateForTip:?];
-  v6 = [a1 _defaultKeyForTipType:a3];
+  v5 = [self _refreshDateForTip:?];
+  v6 = [self _defaultKeyForTipType:tip];
   if (!v5)
   {
-    v10 = [MEMORY[0x1E695E000] safari_browserDefaults];
-    v11 = [v10 safari_dateForKey:v6];
+    safari_browserDefaults = [MEMORY[0x1E695E000] safari_browserDefaults];
+    v11 = [safari_browserDefaults safari_dateForKey:v6];
     v9 = v11 != 0;
 
 LABEL_6:
     goto LABEL_7;
   }
 
-  v7 = [MEMORY[0x1E695DF00] date];
-  v8 = [v5 compare:v7];
+  date = [MEMORY[0x1E695DF00] date];
+  v8 = [v5 compare:date];
 
   if (v8 == -1)
   {
-    v10 = [MEMORY[0x1E695E000] safari_browserDefaults];
-    [v10 removeObjectForKey:v6];
+    safari_browserDefaults = [MEMORY[0x1E695E000] safari_browserDefaults];
+    [safari_browserDefaults removeObjectForKey:v6];
     v9 = 0;
     goto LABEL_6;
   }
@@ -86,17 +86,17 @@ LABEL_7:
   return v9;
 }
 
-+ (id)_refreshDateForTip:(int64_t)a3
++ (id)_refreshDateForTip:(int64_t)tip
 {
-  if (a3 == 1)
+  if (tip == 1)
   {
-    v3 = [MEMORY[0x1E695E000] safari_browserDefaults];
-    v4 = [v3 safari_dateForKey:@"iCloudKeychainTipAcknowledgementDate"];
+    safari_browserDefaults = [MEMORY[0x1E695E000] safari_browserDefaults];
+    v4 = [safari_browserDefaults safari_dateForKey:@"iCloudKeychainTipAcknowledgementDate"];
 
     if (v4)
     {
-      v5 = [MEMORY[0x1E695DEE8] currentCalendar];
-      v6 = [v5 dateByAddingUnit:16 value:90 toDate:v4 options:0];
+      currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+      v6 = [currentCalendar dateByAddingUnit:16 value:90 toDate:v4 options:0];
     }
 
     else
@@ -113,37 +113,37 @@ LABEL_7:
   return v6;
 }
 
-+ (id)_defaultKeyForTipType:(int64_t)a3
++ (id)_defaultKeyForTipType:(int64_t)type
 {
-  if ((a3 - 1) > 2)
+  if ((type - 1) > 2)
   {
     return 0;
   }
 
   else
   {
-    return off_1E7AF7C98[a3 - 1];
+    return off_1E7AF7C98[type - 1];
   }
 }
 
-+ (void)_acknowledgeTip:(int64_t)a3
++ (void)_acknowledgeTip:(int64_t)tip
 {
-  if ((a3 - 1) <= 2)
+  if ((tip - 1) <= 2)
   {
-    v4 = off_1E7AF7C98[a3 - 1];
-    v6 = [MEMORY[0x1E695E000] safari_browserDefaults];
-    v5 = [MEMORY[0x1E695DF00] date];
-    [v6 safari_setDate:v5 forKey:v4];
+    v4 = off_1E7AF7C98[tip - 1];
+    safari_browserDefaults = [MEMORY[0x1E695E000] safari_browserDefaults];
+    date = [MEMORY[0x1E695DF00] date];
+    [safari_browserDefaults safari_setDate:date forKey:v4];
   }
 }
 
-+ (void)_checkEligibilityForiCloudKeychainTipWithCompletionHandler:(id)a3
++ (void)_checkEligibilityForiCloudKeychainTipWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E69C89D0] sharedObserver];
-  v6 = [v5 isUsingICloud];
+  handlerCopy = handler;
+  mEMORY[0x1E69C89D0] = [MEMORY[0x1E69C89D0] sharedObserver];
+  isUsingICloud = [mEMORY[0x1E69C89D0] isUsingICloud];
 
-  if ((v6 & 1) == 0)
+  if ((isUsingICloud & 1) == 0)
   {
     v11 = WBS_LOG_CHANNEL_PREFIXPasswordManager();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
@@ -155,42 +155,42 @@ LABEL_7:
     goto LABEL_9;
   }
 
-  v7 = [MEMORY[0x1E69C88B8] sharedMonitor];
-  v8 = [v7 canKeychainSyncBeEnabled];
+  mEMORY[0x1E69C88B8] = [MEMORY[0x1E69C88B8] sharedMonitor];
+  canKeychainSyncBeEnabled = [mEMORY[0x1E69C88B8] canKeychainSyncBeEnabled];
 
-  if ((v8 & 1) == 0)
+  if ((canKeychainSyncBeEnabled & 1) == 0)
   {
     goto LABEL_9;
   }
 
-  v9 = [MEMORY[0x1E69C88B8] sharedMonitor];
-  v10 = [v9 keychainSyncSettingValue];
+  mEMORY[0x1E69C88B8]2 = [MEMORY[0x1E69C88B8] sharedMonitor];
+  keychainSyncSettingValue = [mEMORY[0x1E69C88B8]2 keychainSyncSettingValue];
 
-  if (v10 == 2)
+  if (keychainSyncSettingValue == 2)
   {
-    v12 = [MEMORY[0x1E695E000] safari_browserDefaults];
-    [v12 removeObjectForKey:@"iCloudKeychainTipAcknowledgementDate"];
+    safari_browserDefaults = [MEMORY[0x1E695E000] safari_browserDefaults];
+    [safari_browserDefaults removeObjectForKey:@"iCloudKeychainTipAcknowledgementDate"];
 
     goto LABEL_9;
   }
 
-  if (!v10)
+  if (!keychainSyncSettingValue)
   {
 LABEL_9:
-    v4[2](v4, 0);
+    handlerCopy[2](handlerCopy, 0);
     goto LABEL_10;
   }
 
-  v4[2](v4, [a1 _hasAcknowledgedTip:1] ^ 1);
+  handlerCopy[2](handlerCopy, [self _hasAcknowledgedTip:1] ^ 1);
 LABEL_10:
 }
 
-+ (void)_checkEligibilityForFamilySharingTipWithCompletionHandler:(id)a3
++ (void)_checkEligibilityForFamilySharingTipWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  if ([a1 _hasAcknowledgedTip:2])
+  handlerCopy = handler;
+  if ([self _hasAcknowledgedTip:2])
   {
-    v4[2](v4, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 
   else
@@ -200,27 +200,27 @@ LABEL_10:
     v6[1] = 3221225472;
     v6[2] = __89___ASAccountManagerTipManager__checkEligibilityForFamilySharingTipWithCompletionHandler___block_invoke;
     v6[3] = &unk_1E7AF7C78;
-    v7 = v4;
-    v8 = a1;
+    v7 = handlerCopy;
+    selfCopy = self;
     [v5 startRequestWithCompletionHandler:v6];
   }
 }
 
-+ (void)_checkEligibilityForGeneralSharingTipWithCompletionHandler:(id)a3
++ (void)_checkEligibilityForGeneralSharingTipWithCompletionHandler:(id)handler
 {
-  v8 = a3;
-  if ([a1 _hasAcknowledgedTip:3])
+  handlerCopy = handler;
+  if ([self _hasAcknowledgedTip:3])
   {
     goto LABEL_4;
   }
 
-  v4 = [MEMORY[0x1E69C88E8] sharedProvider];
-  v5 = [v4 cachedGroups];
-  v6 = [v5 count];
+  mEMORY[0x1E69C88E8] = [MEMORY[0x1E69C88E8] sharedProvider];
+  cachedGroups = [mEMORY[0x1E69C88E8] cachedGroups];
+  v6 = [cachedGroups count];
 
   if (v6)
   {
-    [a1 _acknowledgeTip:3];
+    [self _acknowledgeTip:3];
 LABEL_4:
     v7 = 0;
     goto LABEL_5;
@@ -228,7 +228,7 @@ LABEL_4:
 
   v7 = 1;
 LABEL_5:
-  v8[2](v8, v7);
+  handlerCopy[2](handlerCopy, v7);
 }
 
 @end

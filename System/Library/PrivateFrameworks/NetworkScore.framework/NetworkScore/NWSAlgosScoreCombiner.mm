@@ -2,8 +2,8 @@
 + (id)combiner;
 - (NWSAlgosScoreCombiner)init;
 - (double)signedMeanSquaredDeviation;
-- (id)scoreScores:(id)a3;
-- (void)addScore:(double)a3 weight:(double)a4 type:(id)a5 label:(id)a6;
+- (id)scoreScores:(id)scores;
+- (void)addScore:(double)score weight:(double)weight type:(id)type label:(id)label;
 - (void)clearScores;
 - (void)dealloc;
 @end
@@ -56,13 +56,13 @@
   [(NWSAlgosScoreCombiner *)&v4 dealloc];
 }
 
-- (void)addScore:(double)a3 weight:(double)a4 type:(id)a5 label:(id)a6
+- (void)addScore:(double)score weight:(double)weight type:(id)type label:(id)label
 {
-  v10 = a5;
-  v11 = a6;
-  if (v11)
+  typeCopy = type;
+  labelCopy = label;
+  if (labelCopy)
   {
-    v12 = v11;
+    v12 = labelCopy;
   }
 
   else
@@ -71,9 +71,9 @@
   }
 
   combinerData = self->combinerData;
-  std::string::basic_string[abi:ne200100]<0>(v18, [v10 cStringUsingEncoding:4]);
+  std::string::basic_string[abi:ne200100]<0>(v18, [typeCopy cStringUsingEncoding:4]);
   std::string::basic_string[abi:ne200100]<0>(v16, -[__CFString cStringUsingEncoding:](v12, "cStringUsingEncoding:", 4));
-  AlgosScoreCombinerFrameRow::AlgosScoreCombinerFrameRow(v20, v18, v16, a3, a4);
+  AlgosScoreCombinerFrameRow::AlgosScoreCombinerFrameRow(v20, v18, v16, score, weight);
   v14 = combinerData[1];
   if (v14 >= combinerData[2])
   {
@@ -142,10 +142,10 @@
       AlgosScoreCombinerFrameRow::AlgosScoreCombinerFrameRow(&v23, v4);
       v8.i64[0] = v27;
       v18 = v8;
-      v9 = [(NWSAlgosScoreCombiner *)self debug];
+      debug = [(NWSAlgosScoreCombiner *)self debug];
       *v10.i64 = *v18.i64 * *v18.i64;
       *&v17 = vbslq_s8(v16, v10, v18).u64[0];
-      if (v9 >= 2)
+      if (debug >= 2)
       {
         v11 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"deviation: %f, score_incr: %f", v18.i64[0], *&v17];
         v21[0] = MEMORY[0x277D85DD0];
@@ -205,14 +205,14 @@ uint64_t __51__NWSAlgosScoreCombiner_signedMeanSquaredDeviation__block_invoke_2(
   return fputs(v2, v1);
 }
 
-- (id)scoreScores:(id)a3
+- (id)scoreScores:(id)scores
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB38] dictionary];
-  v6 = v5;
-  if (v4)
+  scoresCopy = scores;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v6 = dictionary;
+  if (scoresCopy)
   {
-    v7 = v4;
+    v7 = scoresCopy;
   }
 
   else
@@ -220,7 +220,7 @@ uint64_t __51__NWSAlgosScoreCombiner_signedMeanSquaredDeviation__block_invoke_2(
     v7 = @"no-label";
   }
 
-  [v5 setObject:v7 forKeyedSubscript:@"label"];
+  [dictionary setObject:v7 forKeyedSubscript:@"label"];
   if ([(NWSAlgosScoreCombiner *)self debug])
   {
     AlgosScoreCombinerFrame::DebugPrint(self->combinerData, 25);

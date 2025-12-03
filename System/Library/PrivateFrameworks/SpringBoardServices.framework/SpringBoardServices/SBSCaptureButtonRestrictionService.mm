@@ -1,6 +1,6 @@
 @interface SBSCaptureButtonRestrictionService
 - (SBSCaptureButtonRestrictionService)init;
-- (id)acquireCaptureButtonSuppressionAssertionWithOptions:(unint64_t)a3 reason:(id)a4;
+- (id)acquireCaptureButtonSuppressionAssertionWithOptions:(unint64_t)options reason:(id)reason;
 - (void)init;
 - (void)invalidate;
 @end
@@ -14,9 +14,9 @@
   v3 = [(SBSCaptureButtonRestrictionService *)&v28 init];
   if (v3)
   {
-    v4 = [MEMORY[0x1E696AAE8] mainBundle];
-    v5 = [v4 bundleIdentifier];
-    v6 = [v5 isEqualToString:@"com.apple.springboard"];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
+    v6 = [bundleIdentifier isEqualToString:@"com.apple.springboard"];
 
     if (v6)
     {
@@ -45,9 +45,9 @@
     v3->_connectionQueue = v13;
 
     v15 = MEMORY[0x1E698F498];
-    v16 = [MEMORY[0x1E698F498] defaultShellMachName];
+    defaultShellMachName = [MEMORY[0x1E698F498] defaultShellMachName];
     v17 = +[SBSCaptureButtonRestrictionServiceSpecification identifier];
-    v18 = [v15 endpointForMachName:v16 service:v17 instance:0];
+    v18 = [v15 endpointForMachName:defaultShellMachName service:v17 instance:0];
 
     v19 = [MEMORY[0x1E698F490] connectionWithEndpoint:v18];
     connection = v3->_connection;
@@ -145,13 +145,13 @@ void __42__SBSCaptureButtonRestrictionService_init__block_invoke_19(uint64_t a1,
   }
 }
 
-- (id)acquireCaptureButtonSuppressionAssertionWithOptions:(unint64_t)a3 reason:(id)a4
+- (id)acquireCaptureButtonSuppressionAssertionWithOptions:(unint64_t)options reason:(id)reason
 {
   inhibitActionAssertion = self->_inhibitActionAssertion;
   v6 = MEMORY[0x1E696AD98];
-  v7 = a4;
-  v8 = [v6 numberWithUnsignedInteger:a3];
-  v9 = [(BSCompoundAssertion *)inhibitActionAssertion acquireForReason:v7 withContext:v8];
+  reasonCopy = reason;
+  v8 = [v6 numberWithUnsignedInteger:options];
+  v9 = [(BSCompoundAssertion *)inhibitActionAssertion acquireForReason:reasonCopy withContext:v8];
 
   return v9;
 }
@@ -162,7 +162,7 @@ void __42__SBSCaptureButtonRestrictionService_init__block_invoke_19(uint64_t a1,
   v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Within SpringBoard, use SBCaptureButtonRestrictionCoordinator IPI directly."];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
-    v5 = NSStringFromSelector(a1);
+    v5 = NSStringFromSelector(self);
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
     v9 = 138544642;

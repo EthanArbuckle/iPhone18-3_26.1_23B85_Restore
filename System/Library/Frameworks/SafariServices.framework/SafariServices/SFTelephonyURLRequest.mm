@@ -1,30 +1,30 @@
 @interface SFTelephonyURLRequest
-- (SFTelephonyURLRequest)initWithCompletionHandler:(id)a3;
+- (SFTelephonyURLRequest)initWithCompletionHandler:(id)handler;
 @end
 
 @implementation SFTelephonyURLRequest
 
-- (SFTelephonyURLRequest)initWithCompletionHandler:(id)a3
+- (SFTelephonyURLRequest)initWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v15.receiver = self;
   v15.super_class = SFTelephonyURLRequest;
   v5 = [(SFTelephonyURLRequest *)&v15 init];
   if (v5)
   {
-    v6 = _Block_copy(v4);
+    v6 = _Block_copy(handlerCopy);
     completionHandler = v5->_completionHandler;
     v5->_completionHandler = v6;
 
-    v8 = [MEMORY[0x1E696AFB0] UUID];
-    v9 = [v8 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
     successNotificationName = v5->_successNotificationName;
-    v5->_successNotificationName = v9;
+    v5->_successNotificationName = uUIDString;
 
-    v11 = [MEMORY[0x1E696AFB0] UUID];
-    v12 = [v11 UUIDString];
+    uUID2 = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString2 = [uUID2 UUIDString];
     failureNotificationName = v5->_failureNotificationName;
-    v5->_failureNotificationName = v12;
+    v5->_failureNotificationName = uUIDString2;
   }
 
   return v5;

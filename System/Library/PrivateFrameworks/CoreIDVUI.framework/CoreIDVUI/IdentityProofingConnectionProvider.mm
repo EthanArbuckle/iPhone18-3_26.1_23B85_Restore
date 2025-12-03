@@ -1,6 +1,6 @@
 @interface IdentityProofingConnectionProvider
 - (void)didChangeProofingStatus;
-- (void)didGetProofingDisplayErrorMessage:(id)a3;
+- (void)didGetProofingDisplayErrorMessage:(id)message;
 - (void)didShowExtendedReviewNotification;
 @end
 
@@ -21,7 +21,7 @@
   sub_24586B0F4();
 }
 
-- (void)didGetProofingDisplayErrorMessage:(id)a3
+- (void)didGetProofingDisplayErrorMessage:(id)message
 {
   v3 = sub_245910A04();
   v5 = v4;

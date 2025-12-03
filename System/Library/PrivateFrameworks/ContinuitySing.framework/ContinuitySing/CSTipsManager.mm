@@ -1,8 +1,8 @@
 @interface CSTipsManager
 + (CSTipsManager)shared;
 - (CSTipsManager)init;
-- (void)dismissMicTipWithAnimated:(BOOL)a3;
-- (void)registerMicTipInViewController:(id)a3 sourceView:(id)a4;
+- (void)dismissMicTipWithAnimated:(BOOL)animated;
+- (void)registerMicTipInViewController:(id)controller sourceView:(id)view;
 @end
 
 @implementation CSTipsManager
@@ -27,7 +27,7 @@
   return v2;
 }
 
-- (void)registerMicTipInViewController:(id)a3 sourceView:(id)a4
+- (void)registerMicTipInViewController:(id)controller sourceView:(id)view
 {
   sub_244257BB8();
   sub_244257BA8();
@@ -37,13 +37,13 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
-  sub_244244624(v7, v8);
+  controllerCopy = controller;
+  viewCopy = view;
+  selfCopy = self;
+  sub_244244624(controllerCopy, viewCopy);
 }
 
-- (void)dismissMicTipWithAnimated:(BOOL)a3
+- (void)dismissMicTipWithAnimated:(BOOL)animated
 {
   sub_244257BB8();
   sub_244257BA8();
@@ -53,8 +53,8 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v5 = self;
-  sub_244245F30(a3);
+  selfCopy = self;
+  sub_244245F30(animated);
 }
 
 - (CSTipsManager)init

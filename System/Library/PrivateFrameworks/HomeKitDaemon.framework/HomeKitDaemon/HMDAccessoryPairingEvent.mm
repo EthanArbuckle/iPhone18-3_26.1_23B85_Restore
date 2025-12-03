@@ -1,30 +1,30 @@
 @interface HMDAccessoryPairingEvent
 + (id)logCategory;
-+ (id)pairingAccessoryWithDescription:(id)a3 home:(id)a4;
-+ (id)removingAccessory:(id)a3 hapAccessory:(id)a4;
-- (HMDAccessoryPairingEvent)initWithAccessoryDescription:(id)a3 home:(id)a4;
-- (HMDAccessoryPairingEvent)initWithUnpairedAccessory:(id)a3 pairedAccessory:(id)a4 hapAccessory:(id)a5 appIdentifier:(id)a6 retry:(BOOL)a7 home:(id)a8 isAddOperation:(BOOL)a9 logEventStateManager:(id)a10;
++ (id)pairingAccessoryWithDescription:(id)description home:(id)home;
++ (id)removingAccessory:(id)accessory hapAccessory:(id)hapAccessory;
+- (HMDAccessoryPairingEvent)initWithAccessoryDescription:(id)description home:(id)home;
+- (HMDAccessoryPairingEvent)initWithUnpairedAccessory:(id)accessory pairedAccessory:(id)pairedAccessory hapAccessory:(id)hapAccessory appIdentifier:(id)identifier retry:(BOOL)retry home:(id)home isAddOperation:(BOOL)operation logEventStateManager:(id)self0;
 - (NSDate)endDate;
 - (NSDictionary)coreAnalyticsEventDictionary;
-- (id)residentConfirmationToString:(int64_t)a3;
+- (id)residentConfirmationToString:(int64_t)string;
 - (int)currentWiFiBand;
 - (void)_setBtLoad;
-- (void)_updateThreadPropertiesWithPairedAccessory:(id)a3;
+- (void)_updateThreadPropertiesWithPairedAccessory:(id)accessory;
 - (void)handleUnauthenticatedMatterAccessoryPromptEnd;
 - (void)handleUnauthenticatedMatterAccessoryPromptStart;
 - (void)markEndTime;
 - (void)prepareForObservation;
-- (void)setHmdAccessoryPairingEventResidentConfirmation:(int64_t)a3;
-- (void)updateEventPropertiesWithHAPAccessory:(id)a3;
-- (void)updateEventPropertiesWithPairedAccessory:(id)a3;
-- (void)updateResidentConfirmationDurationWithConfirmation:(int64_t)a3;
+- (void)setHmdAccessoryPairingEventResidentConfirmation:(int64_t)confirmation;
+- (void)updateEventPropertiesWithHAPAccessory:(id)accessory;
+- (void)updateEventPropertiesWithPairedAccessory:(id)accessory;
+- (void)updateResidentConfirmationDurationWithConfirmation:(int64_t)confirmation;
 @end
 
 @implementation HMDAccessoryPairingEvent
 
-- (void)setHmdAccessoryPairingEventResidentConfirmation:(int64_t)a3
+- (void)setHmdAccessoryPairingEventResidentConfirmation:(int64_t)confirmation
 {
-  switch(a3)
+  switch(confirmation)
   {
     case 3:
       if (self->_hmdAccessoryPairingEventResidentConfirmation != 2)
@@ -39,34 +39,34 @@
       self->_hmdAccessoryPairingEventResidentConfirmation = 2;
       break;
     case 1:
-      v4 = [MEMORY[0x277CBEAA8] date];
+      date = [MEMORY[0x277CBEAA8] date];
       residentConfirmationTimeStarted = self->_residentConfirmationTimeStarted;
-      self->_residentConfirmationTimeStarted = v4;
+      self->_residentConfirmationTimeStarted = date;
 
       self->_hmdAccessoryPairingEventResidentConfirmation = 1;
       break;
   }
 }
 
-- (id)residentConfirmationToString:(int64_t)a3
+- (id)residentConfirmationToString:(int64_t)string
 {
-  if ((a3 - 1) > 2)
+  if ((string - 1) > 2)
   {
     return @"HMDAccessoryPairingEventResidentConfirmationNotSet";
   }
 
   else
   {
-    return off_278678488[a3 - 1];
+    return off_278678488[string - 1];
   }
 }
 
-- (void)updateResidentConfirmationDurationWithConfirmation:(int64_t)a3
+- (void)updateResidentConfirmationDurationWithConfirmation:(int64_t)confirmation
 {
   if (self->_residentConfirmationTimeStarted)
   {
-    v6 = [MEMORY[0x277CBEAA8] date];
-    [v6 timeIntervalSinceDate:self->_residentConfirmationTimeStarted];
+    date = [MEMORY[0x277CBEAA8] date];
+    [date timeIntervalSinceDate:self->_residentConfirmationTimeStarted];
     self->_residentConfirmationDurationInSeconds = v4;
     residentConfirmationTimeStarted = self->_residentConfirmationTimeStarted;
     self->_residentConfirmationTimeStarted = 0;
@@ -75,104 +75,104 @@
 
 - (NSDictionary)coreAnalyticsEventDictionary
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = [(HMDAccessoryPairingEvent *)self vendorDetailsForReporting];
-  v5 = [v4 manufacturer];
-  [v3 setObject:v5 forKeyedSubscript:@"accessoryManufacturer"];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  vendorDetailsForReporting = [(HMDAccessoryPairingEvent *)self vendorDetailsForReporting];
+  manufacturer = [vendorDetailsForReporting manufacturer];
+  [dictionary setObject:manufacturer forKeyedSubscript:@"accessoryManufacturer"];
 
-  v6 = [(HMDAccessoryPairingEvent *)self vendorDetailsForReporting];
-  v7 = [v6 model];
-  [v3 setObject:v7 forKeyedSubscript:@"accessoryModel"];
+  vendorDetailsForReporting2 = [(HMDAccessoryPairingEvent *)self vendorDetailsForReporting];
+  model = [vendorDetailsForReporting2 model];
+  [dictionary setObject:model forKeyedSubscript:@"accessoryModel"];
 
-  v8 = [(HMDAccessoryPairingEvent *)self vendorDetailsForReporting];
-  v9 = [v8 category];
-  [v3 setObject:v9 forKeyedSubscript:@"accessoryCategory"];
+  vendorDetailsForReporting3 = [(HMDAccessoryPairingEvent *)self vendorDetailsForReporting];
+  category = [vendorDetailsForReporting3 category];
+  [dictionary setObject:category forKeyedSubscript:@"accessoryCategory"];
 
-  v10 = [(HMDAccessoryPairingEvent *)self vendorDetailsForReporting];
-  v11 = [v10 firmwareVersion];
-  [v3 setObject:v11 forKeyedSubscript:@"accessoryFirmwareVersion"];
+  vendorDetailsForReporting4 = [(HMDAccessoryPairingEvent *)self vendorDetailsForReporting];
+  firmwareVersion = [vendorDetailsForReporting4 firmwareVersion];
+  [dictionary setObject:firmwareVersion forKeyedSubscript:@"accessoryFirmwareVersion"];
 
-  v12 = [(HMDAccessoryPairingEvent *)self vendorDetailsForReporting];
-  v13 = [v12 productData];
-  [v3 setObject:v13 forKeyedSubscript:@"accessoryProductData"];
+  vendorDetailsForReporting5 = [(HMDAccessoryPairingEvent *)self vendorDetailsForReporting];
+  productData = [vendorDetailsForReporting5 productData];
+  [dictionary setObject:productData forKeyedSubscript:@"accessoryProductData"];
 
   v14 = [MEMORY[0x277CCABB0] numberWithInteger:{-[HMDAccessoryPairingEvent certificationStatus](self, "certificationStatus")}];
-  [v3 setObject:v14 forKeyedSubscript:@"accessoryCertificationStatus"];
+  [dictionary setObject:v14 forKeyedSubscript:@"accessoryCertificationStatus"];
 
   v15 = [MEMORY[0x277CCABB0] numberWithInteger:{-[HMDAccessoryPairingEvent communicationProtocol](self, "communicationProtocol")}];
-  [v3 setObject:v15 forKeyedSubscript:@"accessoryCommunicationProtocol"];
+  [dictionary setObject:v15 forKeyedSubscript:@"accessoryCommunicationProtocol"];
 
   v16 = [MEMORY[0x277CCABB0] numberWithInteger:{-[HMDAccessoryPairingEvent linkType](self, "linkType")}];
-  [v3 setObject:v16 forKeyedSubscript:@"accessoryTransportType"];
+  [dictionary setObject:v16 forKeyedSubscript:@"accessoryTransportType"];
 
-  v17 = [(HMDAccessoryPairingEvent *)self supportedLinkLayerTypes];
-  [v3 setObject:v17 forKeyedSubscript:@"accessorySupportedLinkLayerTypes"];
+  supportedLinkLayerTypes = [(HMDAccessoryPairingEvent *)self supportedLinkLayerTypes];
+  [dictionary setObject:supportedLinkLayerTypes forKeyedSubscript:@"accessorySupportedLinkLayerTypes"];
 
   v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[HMDAccessoryPairingEvent authMethod](self, "authMethod")}];
-  [v3 setObject:v18 forKeyedSubscript:@"authenticationMethod"];
+  [dictionary setObject:v18 forKeyedSubscript:@"authenticationMethod"];
 
-  v19 = [(HMDAccessoryPairingEvent *)self appIdentifier];
-  if ([HMDMetricsUtilities shouldRedactBundleID:v19])
+  appIdentifier = [(HMDAccessoryPairingEvent *)self appIdentifier];
+  if ([HMDMetricsUtilities shouldRedactBundleID:appIdentifier])
   {
-    [v3 setObject:@"Third-party app" forKeyedSubscript:@"appIdentifier"];
+    [dictionary setObject:@"Third-party app" forKeyedSubscript:@"appIdentifier"];
   }
 
   else
   {
-    v20 = [(HMDAccessoryPairingEvent *)self appIdentifier];
-    [v3 setObject:v20 forKeyedSubscript:@"appIdentifier"];
+    appIdentifier2 = [(HMDAccessoryPairingEvent *)self appIdentifier];
+    [dictionary setObject:appIdentifier2 forKeyedSubscript:@"appIdentifier"];
   }
 
   v21 = [MEMORY[0x277CCABB0] numberWithInteger:{-[HMMLogEvent durationMilliseconds](self, "durationMilliseconds")}];
-  [v3 setObject:v21 forKeyedSubscript:@"pairingDuration"];
+  [dictionary setObject:v21 forKeyedSubscript:@"pairingDuration"];
 
   v22 = [MEMORY[0x277CCABB0] numberWithBool:{-[HMDAccessoryPairingEvent isAddOperation](self, "isAddOperation")}];
-  [v3 setObject:v22 forKeyedSubscript:@"isAdd"];
+  [dictionary setObject:v22 forKeyedSubscript:@"isAdd"];
 
   v23 = MEMORY[0x277CCABB0];
-  v24 = [(HMMLogEvent *)self error];
-  v25 = [v23 numberWithInteger:{objc_msgSend(v24, "code")}];
-  [v3 setObject:v25 forKeyedSubscript:@"errorCode"];
+  error = [(HMMLogEvent *)self error];
+  v25 = [v23 numberWithInteger:{objc_msgSend(error, "code")}];
+  [dictionary setObject:v25 forKeyedSubscript:@"errorCode"];
 
-  v26 = [(HMMLogEvent *)self error];
-  v27 = [v26 domain];
-  [v3 setObject:v27 forKeyedSubscript:@"errorDomain"];
+  error2 = [(HMMLogEvent *)self error];
+  domain = [error2 domain];
+  [dictionary setObject:domain forKeyedSubscript:@"errorDomain"];
 
   if ([(HMDAccessoryPairingEvent *)self _isMatterAccessory])
   {
-    v28 = [(HMDAccessoryPairingEvent *)self matterAccessorySourceErrorDomain];
-    v29 = [(HMDAccessoryPairingEvent *)self mtrMetrics];
+    matterAccessorySourceErrorDomain = [(HMDAccessoryPairingEvent *)self matterAccessorySourceErrorDomain];
+    mtrMetrics = [(HMDAccessoryPairingEvent *)self mtrMetrics];
     v96[0] = MEMORY[0x277D85DD0];
     v96[1] = 3221225472;
     v96[2] = __56__HMDAccessoryPairingEvent_coreAnalyticsEventDictionary__block_invoke;
     v96[3] = &unk_278678468;
-    v97 = v3;
-    [v29 enumerateKeysAndObjectsUsingBlock:v96];
+    v97 = dictionary;
+    [mtrMetrics enumerateKeysAndObjectsUsingBlock:v96];
 
     v30 = 0;
     goto LABEL_16;
   }
 
-  v28 = [(HMMLogEvent *)self error];
-  if (!v28)
+  matterAccessorySourceErrorDomain = [(HMMLogEvent *)self error];
+  if (!matterAccessorySourceErrorDomain)
   {
     v32 = 0;
     goto LABEL_12;
   }
 
-  v31 = [(HMMLogEvent *)self error];
+  error3 = [(HMMLogEvent *)self error];
   v32 = getLowestError();
 
   if (v32)
   {
-    v33 = [v32 code];
-    v34 = [(HMMLogEvent *)self error];
-    if (v33 == [v34 code])
+    code = [v32 code];
+    error4 = [(HMMLogEvent *)self error];
+    if (code == [error4 code])
     {
-      v35 = [v32 domain];
-      v36 = [(HMMLogEvent *)self error];
-      v37 = [v36 domain];
-      v38 = [v35 isEqualToString:v37];
+      domain2 = [v32 domain];
+      error5 = [(HMMLogEvent *)self error];
+      domain3 = [error5 domain];
+      v38 = [domain2 isEqualToString:domain3];
 
       if (v38)
       {
@@ -185,39 +185,39 @@
     }
 
     v30 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v32, "code")}];
-    v28 = [v32 domain];
+    matterAccessorySourceErrorDomain = [v32 domain];
     goto LABEL_15;
   }
 
 LABEL_10:
-  v28 = 0;
+  matterAccessorySourceErrorDomain = 0;
 LABEL_12:
   v30 = 0;
 LABEL_15:
   v39 = [MEMORY[0x277CCABB0] numberWithInteger:{-[HMDAccessoryPairingEvent retryCount](self, "retryCount")}];
-  [v3 setObject:v39 forKeyedSubscript:@"retryCount"];
+  [dictionary setObject:v39 forKeyedSubscript:@"retryCount"];
 
 LABEL_16:
-  [v3 setObject:v30 forKeyedSubscript:@"underlyingErrorCode"];
-  [v3 setObject:v28 forKeyedSubscript:@"underlyingErrorDomain"];
+  [dictionary setObject:v30 forKeyedSubscript:@"underlyingErrorCode"];
+  [dictionary setObject:matterAccessorySourceErrorDomain forKeyedSubscript:@"underlyingErrorDomain"];
   v40 = [MEMORY[0x277CCABB0] numberWithBool:{-[HMDAccessoryPairingEvent didUseWiFiPPSK](self, "didUseWiFiPPSK")}];
-  [v3 setObject:v40 forKeyedSubscript:@"usedWifiPPSK"];
+  [dictionary setObject:v40 forKeyedSubscript:@"usedWifiPPSK"];
 
   if ([(HMDAccessoryPairingEvent *)self isAddOperation])
   {
     v41 = MEMORY[0x277CCABB0];
     if ([(HMDAccessoryPairingEvent *)self isAddViaWAC])
     {
-      v42 = [(HMDAccessoryPairingEvent *)self isWacLegacy];
+      isWacLegacy = [(HMDAccessoryPairingEvent *)self isWacLegacy];
     }
 
     else
     {
-      v42 = 0;
+      isWacLegacy = 0;
     }
 
-    v43 = [v41 numberWithInt:v42];
-    [v3 setObject:v43 forKeyedSubscript:@"isAddedViaLegacyWAC"];
+    v43 = [v41 numberWithInt:isWacLegacy];
+    [dictionary setObject:v43 forKeyedSubscript:@"isAddedViaLegacyWAC"];
 
     v44 = MEMORY[0x277CCABB0];
     if ([(HMDAccessoryPairingEvent *)self isAddViaWAC])
@@ -231,73 +231,73 @@ LABEL_16:
     }
 
     v46 = [v44 numberWithInt:v45];
-    [v3 setObject:v46 forKeyedSubscript:@"isAddedViaSecureWAC"];
+    [dictionary setObject:v46 forKeyedSubscript:@"isAddedViaSecureWAC"];
 
     v47 = [MEMORY[0x277CCABB0] numberWithBool:{-[HMDAccessoryPairingEvent didUseOwnershipProof](self, "didUseOwnershipProof")}];
-    [v3 setObject:v47 forKeyedSubscript:@"isAddedWithWACOwnershipProof"];
+    [dictionary setObject:v47 forKeyedSubscript:@"isAddedWithWACOwnershipProof"];
 
     v48 = [MEMORY[0x277CCABB0] numberWithBool:{-[HMDAccessoryPairingEvent isFirstHAPAccessoryInAnyHome](self, "isFirstHAPAccessoryInAnyHome")}];
-    [v3 setObject:v48 forKeyedSubscript:@"firstHAPAccessoryForUser"];
+    [dictionary setObject:v48 forKeyedSubscript:@"firstHAPAccessoryForUser"];
 
     v49 = [MEMORY[0x277CCABB0] numberWithBool:{-[HMDAccessoryPairingEvent isFirstHAPAccessoryInHome](self, "isFirstHAPAccessoryInHome")}];
-    [v3 setObject:v49 forKeyedSubscript:@"firstHAPAccessoryInHome"];
+    [dictionary setObject:v49 forKeyedSubscript:@"firstHAPAccessoryInHome"];
   }
 
   if ([(HMDAccessoryPairingEvent *)self isNetworkRouterAdd])
   {
     v50 = [MEMORY[0x277CCABB0] numberWithBool:{-[HMDAccessoryPairingEvent isNetworkRouterReplace](self, "isNetworkRouterReplace")}];
-    [v3 setObject:v50 forKeyedSubscript:@"isNetworkRouterReplace"];
+    [dictionary setObject:v50 forKeyedSubscript:@"isNetworkRouterReplace"];
   }
 
   v51 = [MEMORY[0x277CCABB0] numberWithBool:{-[HMDAccessoryPairingEvent isThreadAccessory](self, "isThreadAccessory")}];
-  [v3 setObject:v51 forKeyedSubscript:@"isThreadAccessory"];
+  [dictionary setObject:v51 forKeyedSubscript:@"isThreadAccessory"];
 
   if ([(HMDAccessoryPairingEvent *)self isThreadAccessory])
   {
     v52 = [MEMORY[0x277CCABB0] numberWithBool:{-[HMDAccessoryPairingEvent isBTCommissioned](self, "isBTCommissioned")}];
-    [v3 setObject:v52 forKeyedSubscript:@"threadOnboardIsBTCommissioned"];
+    [dictionary setObject:v52 forKeyedSubscript:@"threadOnboardIsBTCommissioned"];
 
     v53 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{-[HMDAccessoryPairingEvent threadStatus](self, "threadStatus")}];
-    [v3 setObject:v53 forKeyedSubscript:@"threadStatus"];
+    [dictionary setObject:v53 forKeyedSubscript:@"threadStatus"];
 
     v54 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{-[HMDAccessoryPairingEvent threadCapabilities](self, "threadCapabilities")}];
-    [v3 setObject:v54 forKeyedSubscript:@"threadCapabilities"];
+    [dictionary setObject:v54 forKeyedSubscript:@"threadCapabilities"];
 
     v55 = MEMORY[0x277CCABB0];
     [(HMDAccessoryPairingEvent *)self threadCommissioningDuration];
     v56 = [v55 numberWithDouble:?];
-    [v3 setObject:v56 forKeyedSubscript:@"threadOnboardDuration"];
+    [dictionary setObject:v56 forKeyedSubscript:@"threadOnboardDuration"];
 
     v57 = MEMORY[0x277CCABB0];
-    v58 = [(HMDAccessoryPairingEvent *)self threadCommissioningError];
-    v59 = [v57 numberWithInteger:{objc_msgSend(v58, "code")}];
-    [v3 setObject:v59 forKeyedSubscript:@"threadCommissioningErrorCode"];
+    threadCommissioningError = [(HMDAccessoryPairingEvent *)self threadCommissioningError];
+    v59 = [v57 numberWithInteger:{objc_msgSend(threadCommissioningError, "code")}];
+    [dictionary setObject:v59 forKeyedSubscript:@"threadCommissioningErrorCode"];
 
-    v60 = [(HMDAccessoryPairingEvent *)self threadCommissioningError];
-    v61 = [v60 domain];
-    [v3 setObject:v61 forKeyedSubscript:@"threadCommissioningErrorDomain"];
+    threadCommissioningError2 = [(HMDAccessoryPairingEvent *)self threadCommissioningError];
+    domain4 = [threadCommissioningError2 domain];
+    [dictionary setObject:domain4 forKeyedSubscript:@"threadCommissioningErrorDomain"];
   }
 
   if ([(HMDAccessoryPairingEvent *)self isAddOperation])
   {
-    v62 = [(HMDAccessoryPairingEvent *)self lastAccessoryPairingState];
-    [v3 setObject:v62 forKeyedSubscript:@"lastPairingState"];
+    lastAccessoryPairingState = [(HMDAccessoryPairingEvent *)self lastAccessoryPairingState];
+    [dictionary setObject:lastAccessoryPairingState forKeyedSubscript:@"lastPairingState"];
 
-    v63 = [(HMDAccessoryPairingEvent *)self longestPairingState];
-    [v3 setObject:v63 forKeyedSubscript:@"longestState"];
+    longestPairingState = [(HMDAccessoryPairingEvent *)self longestPairingState];
+    [dictionary setObject:longestPairingState forKeyedSubscript:@"longestState"];
 
     v64 = MEMORY[0x277CCABB0];
     [(HMDAccessoryPairingEvent *)self longestPairingProgressStateDurationInMilliseconds];
     v65 = [v64 numberWithDouble:?];
-    [v3 setObject:v65 forKeyedSubscript:@"longestStateDuration"];
+    [dictionary setObject:v65 forKeyedSubscript:@"longestStateDuration"];
   }
 
-  v66 = [(HMDAccessoryPairingEvent *)self matterMetrics];
+  matterMetrics = [(HMDAccessoryPairingEvent *)self matterMetrics];
 
-  if (v66)
+  if (matterMetrics)
   {
-    v67 = [(HMDAccessoryPairingEvent *)self matterMetrics];
-    [v3 addEntriesFromDictionary:v67];
+    matterMetrics2 = [(HMDAccessoryPairingEvent *)self matterMetrics];
+    [dictionary addEntriesFromDictionary:matterMetrics2];
 
     [(HMDAccessoryPairingEvent *)self setMatterMetrics:0];
   }
@@ -305,104 +305,104 @@ LABEL_16:
   if ([(HMDAccessoryPairingEvent *)self hmdAccessoryPairingEventResidentConfirmation])
   {
     v68 = [(HMDAccessoryPairingEvent *)self residentConfirmationToString:[(HMDAccessoryPairingEvent *)self hmdAccessoryPairingEventResidentConfirmation]];
-    [v3 setObject:v68 forKeyedSubscript:@"HMDAccessoryPairingEventResidentConfirmationState"];
+    [dictionary setObject:v68 forKeyedSubscript:@"HMDAccessoryPairingEventResidentConfirmationState"];
 
     v69 = MEMORY[0x277CCABB0];
     [(HMDAccessoryPairingEvent *)self residentConfirmationDurationInSeconds];
     v70 = [v69 numberWithDouble:?];
-    [v3 setObject:v70 forKeyedSubscript:@"HMDAccessoryPairingEventResidentConfirmationDurationInSeconds"];
+    [dictionary setObject:v70 forKeyedSubscript:@"HMDAccessoryPairingEventResidentConfirmationDurationInSeconds"];
   }
 
   v71 = [MEMORY[0x277CCABB0] numberWithBool:{-[HMDAccessoryPairingEvent retry](self, "retry")}];
-  [v3 setObject:v71 forKeyedSubscript:@"HMDAccessoryPairingEventRetry"];
+  [dictionary setObject:v71 forKeyedSubscript:@"HMDAccessoryPairingEventRetry"];
 
   v72 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[HMDAccessoryPairingEvent recoveryType](self, "recoveryType")}];
-  [v3 setObject:v72 forKeyedSubscript:@"HMDAccessoryPairingEventRecoveryType"];
+  [dictionary setObject:v72 forKeyedSubscript:@"HMDAccessoryPairingEventRecoveryType"];
 
   v73 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[HMDAccessoryPairingEvent previousRecoveryType](self, "previousRecoveryType")}];
-  [v3 setObject:v73 forKeyedSubscript:@"HMDAccessoryPairingEventPreviousRecoveryType"];
+  [dictionary setObject:v73 forKeyedSubscript:@"HMDAccessoryPairingEventPreviousRecoveryType"];
 
   v74 = [MEMORY[0x277CCABB0] numberWithBool:{-[HMDAccessoryPairingEvent isPrimaryResidentOnline](self, "isPrimaryResidentOnline")}];
-  [v3 setObject:v74 forKeyedSubscript:@"isPrimaryResidentOnline"];
+  [dictionary setObject:v74 forKeyedSubscript:@"isPrimaryResidentOnline"];
 
   v75 = [MEMORY[0x277CCABB0] numberWithBool:{-[HMDAccessoryPairingEvent hasResidentInHome](self, "hasResidentInHome")}];
-  [v3 setObject:v75 forKeyedSubscript:@"hasResidentInHome"];
+  [dictionary setObject:v75 forKeyedSubscript:@"hasResidentInHome"];
 
   v76 = [MEMORY[0x277CCABB0] numberWithBool:{-[HMDAccessoryPairingEvent primaryResidentIsThreadCapable](self, "primaryResidentIsThreadCapable")}];
-  [v3 setObject:v76 forKeyedSubscript:@"primaryResidentIsThreadCapable"];
+  [dictionary setObject:v76 forKeyedSubscript:@"primaryResidentIsThreadCapable"];
 
   v77 = [MEMORY[0x277CCABB0] numberWithInt:{-[HMDAccessoryPairingEvent btLoad](self, "btLoad")}];
-  [v3 setObject:v77 forKeyedSubscript:@"btLoad"];
+  [dictionary setObject:v77 forKeyedSubscript:@"btLoad"];
 
   v78 = [MEMORY[0x277CCABB0] numberWithInt:{-[HMDAccessoryPairingEvent btAudioTask](self, "btAudioTask")}];
-  [v3 setObject:v78 forKeyedSubscript:@"btAudioTask"];
+  [dictionary setObject:v78 forKeyedSubscript:@"btAudioTask"];
 
   v79 = [MEMORY[0x277CCABB0] numberWithInt:{-[HMDAccessoryPairingEvent btNonAudioTask](self, "btNonAudioTask")}];
-  [v3 setObject:v79 forKeyedSubscript:@"btNonAudioTask"];
+  [dictionary setObject:v79 forKeyedSubscript:@"btNonAudioTask"];
 
   if ([(HMDAccessoryPairingEvent *)self _isMatterAccessory])
   {
     v80 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{-[HMDAccessoryPairingEvent currentWiFiBand](self, "currentWiFiBand")}];
-    [v3 setObject:v80 forKeyedSubscript:@"currentWiFiBand"];
+    [dictionary setObject:v80 forKeyedSubscript:@"currentWiFiBand"];
 
     v81 = HMDMatterAccessoryPairingStepAsString([(HMDAccessoryPairingEvent *)self matterAccessoryPairingStep]);
-    [v3 setObject:v81 forKeyedSubscript:@"currentPairingStep"];
+    [dictionary setObject:v81 forKeyedSubscript:@"currentPairingStep"];
 
     v82 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[HMDAccessoryPairingEvent userPrivilege](self, "userPrivilege")}];
-    [v3 setObject:v82 forKeyedSubscript:@"userPrivilege"];
+    [dictionary setObject:v82 forKeyedSubscript:@"userPrivilege"];
 
     v83 = [MEMORY[0x277CCABB0] numberWithBool:{-[HMDAccessoryPairingEvent requiresMatterCustomCommissioningFlow](self, "requiresMatterCustomCommissioningFlow")}];
-    [v3 setObject:v83 forKeyedSubscript:@"requiresMatterCustomCommissioningFlow"];
+    [dictionary setObject:v83 forKeyedSubscript:@"requiresMatterCustomCommissioningFlow"];
 
     v84 = [MEMORY[0x277CCABB0] numberWithBool:{-[HMDAccessoryPairingEvent matterAccessoryDiscovered](self, "matterAccessoryDiscovered")}];
-    [v3 setObject:v84 forKeyedSubscript:@"matterAccessoryDiscovered"];
+    [dictionary setObject:v84 forKeyedSubscript:@"matterAccessoryDiscovered"];
 
-    v85 = [(HMDAccessoryPairingEvent *)self matterVendorID];
-    if ([v85 isEqual:&unk_283E72AA0])
+    matterVendorID = [(HMDAccessoryPairingEvent *)self matterVendorID];
+    if ([matterVendorID isEqual:&unk_283E72AA0])
     {
-      [v3 setObject:0 forKeyedSubscript:@"matterVendorID"];
+      [dictionary setObject:0 forKeyedSubscript:@"matterVendorID"];
     }
 
     else
     {
-      v88 = [(HMDAccessoryPairingEvent *)self matterVendorID];
-      [v3 setObject:v88 forKeyedSubscript:@"matterVendorID"];
+      matterVendorID2 = [(HMDAccessoryPairingEvent *)self matterVendorID];
+      [dictionary setObject:matterVendorID2 forKeyedSubscript:@"matterVendorID"];
     }
 
-    v89 = [(HMDAccessoryPairingEvent *)self matterProductID];
-    if ([v89 isEqual:&unk_283E72AA0])
+    matterProductID = [(HMDAccessoryPairingEvent *)self matterProductID];
+    if ([matterProductID isEqual:&unk_283E72AA0])
     {
-      [v3 setObject:0 forKeyedSubscript:@"matterProductID"];
+      [dictionary setObject:0 forKeyedSubscript:@"matterProductID"];
     }
 
     else
     {
-      v90 = [(HMDAccessoryPairingEvent *)self matterProductID];
-      [v3 setObject:v90 forKeyedSubscript:@"matterProductID"];
+      matterProductID2 = [(HMDAccessoryPairingEvent *)self matterProductID];
+      [dictionary setObject:matterProductID2 forKeyedSubscript:@"matterProductID"];
     }
 
-    v91 = [(HMDAccessoryPairingEvent *)self matterDeviceType];
-    [v3 setObject:v91 forKeyedSubscript:@"matterDeviceType"];
+    matterDeviceType = [(HMDAccessoryPairingEvent *)self matterDeviceType];
+    [dictionary setObject:matterDeviceType forKeyedSubscript:@"matterDeviceType"];
 
-    v92 = [(HMDAccessoryPairingEvent *)self matterThreadCapabilities];
-    [v3 setObject:v92 forKeyedSubscript:@"matterThreadCapabilities"];
+    matterThreadCapabilities = [(HMDAccessoryPairingEvent *)self matterThreadCapabilities];
+    [dictionary setObject:matterThreadCapabilities forKeyedSubscript:@"matterThreadCapabilities"];
 
-    v93 = [(HMDAccessoryPairingEvent *)self wedAccessory];
-    [v3 setObject:v93 forKeyedSubscript:@"isWEDAccessory"];
+    wedAccessory = [(HMDAccessoryPairingEvent *)self wedAccessory];
+    [dictionary setObject:wedAccessory forKeyedSubscript:@"isWEDAccessory"];
 
-    v86 = [(HMDAccessoryPairingEvent *)self unauthenticatedMatterAccessoryPromptDuration];
+    unauthenticatedMatterAccessoryPromptDuration = [(HMDAccessoryPairingEvent *)self unauthenticatedMatterAccessoryPromptDuration];
     v87 = @"unauthenticatedMatterAccessoryPromptDuration";
   }
 
   else
   {
-    v86 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[HMDAccessoryPairingEvent pairingUIState](self, "pairingUIState")}];
+    unauthenticatedMatterAccessoryPromptDuration = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[HMDAccessoryPairingEvent pairingUIState](self, "pairingUIState")}];
     v87 = @"HMDAccessoryPairingEventUIState";
   }
 
-  [v3 setObject:v86 forKeyedSubscript:v87];
+  [dictionary setObject:unauthenticatedMatterAccessoryPromptDuration forKeyedSubscript:v87];
 
-  v94 = [v3 copy];
+  v94 = [dictionary copy];
 
   return v94;
 }
@@ -424,62 +424,62 @@ void __56__HMDAccessoryPairingEvent_coreAnalyticsEventDictionary__block_invoke(u
   if ([(HMDAccessoryPairingEvent *)self _isMatterAccessory])
   {
     v3 = [HMDAccessoryMetricVendorDetails alloc];
-    v4 = [(HMDAccessoryPairingEvent *)self accessoryManufacturer];
-    v5 = [(HMDAccessoryPairingEvent *)self accessoryModel];
-    v6 = [(HMDAccessoryPairingEvent *)self matterSoftwareVersionString];
-    v7 = [(HMDAccessoryPairingEvent *)self accessoryCategory];
-    v8 = [(HMDAccessoryMetricVendorDetails *)v3 initWithProductData:0 manufacturer:v4 model:v5 firmwareVersion:v6 category:v7 differentiationNumber:0];
-    [(HMDAccessoryPairingEvent *)self setVendorDetailsForReporting:v8];
+    accessoryManufacturer = [(HMDAccessoryPairingEvent *)self accessoryManufacturer];
+    accessoryModel = [(HMDAccessoryPairingEvent *)self accessoryModel];
+    matterSoftwareVersionString = [(HMDAccessoryPairingEvent *)self matterSoftwareVersionString];
+    accessoryCategory = [(HMDAccessoryPairingEvent *)self accessoryCategory];
+    model = [(HMDAccessoryMetricVendorDetails *)v3 initWithProductData:0 manufacturer:accessoryManufacturer model:accessoryModel firmwareVersion:matterSoftwareVersionString category:accessoryCategory differentiationNumber:0];
+    [(HMDAccessoryPairingEvent *)self setVendorDetailsForReporting:model];
     goto LABEL_11;
   }
 
-  v9 = [(HMDAccessoryPairingEvent *)self pairedAccessory];
-  v4 = [v9 vendorInfo];
+  pairedAccessory = [(HMDAccessoryPairingEvent *)self pairedAccessory];
+  accessoryManufacturer = [pairedAccessory vendorInfo];
 
-  v5 = [(HMDAccessoryPairingEvent *)self vendorDetailsForReporting];
-  v6 = [v5 productData];
-  v7 = [v5 manufacturer];
-  v8 = [v5 model];
-  v10 = [v5 firmwareVersion];
-  v11 = [v5 category];
-  if (!v7)
+  accessoryModel = [(HMDAccessoryPairingEvent *)self vendorDetailsForReporting];
+  matterSoftwareVersionString = [accessoryModel productData];
+  accessoryCategory = [accessoryModel manufacturer];
+  model = [accessoryModel model];
+  firmwareVersion = [accessoryModel firmwareVersion];
+  category = [accessoryModel category];
+  if (!accessoryCategory)
   {
-    if (v4)
+    if (accessoryManufacturer)
     {
-      v7 = [v4 manufacturer];
+      accessoryCategory = [accessoryManufacturer manufacturer];
     }
 
     else
     {
-      v12 = [(HMDAccessoryPairingEvent *)self pairedAccessory];
-      v13 = [v12 isKnownManufacturer];
+      pairedAccessory2 = [(HMDAccessoryPairingEvent *)self pairedAccessory];
+      isKnownManufacturer = [pairedAccessory2 isKnownManufacturer];
 
-      v14 = [(HMDAccessoryPairingEvent *)self accessoryManufacturer];
-      v7 = v14;
-      if ((v13 & 1) == 0)
+      accessoryManufacturer2 = [(HMDAccessoryPairingEvent *)self accessoryManufacturer];
+      accessoryCategory = accessoryManufacturer2;
+      if ((isKnownManufacturer & 1) == 0)
       {
-        v15 = anonymizeUnknownVendorString(v14);
+        v15 = anonymizeUnknownVendorString(accessoryManufacturer2);
 
-        v7 = v15;
+        accessoryCategory = v15;
       }
     }
   }
 
-  if (!v8)
+  if (!model)
   {
-    v45 = [v4 model];
-    if (v45)
+    model2 = [accessoryManufacturer model];
+    if (model2)
     {
-      v8 = [v4 model];
+      model = [accessoryManufacturer model];
     }
 
     else
     {
-      v51 = [(HMDAccessoryPairingEvent *)self accessoryModel];
-      v8 = anonymizeUnknownVendorString(v51);
+      accessoryModel2 = [(HMDAccessoryPairingEvent *)self accessoryModel];
+      model = anonymizeUnknownVendorString(accessoryModel2);
     }
 
-    if (v11)
+    if (category)
     {
       goto LABEL_10;
     }
@@ -487,86 +487,86 @@ void __56__HMDAccessoryPairingEvent_coreAnalyticsEventDictionary__block_invoke(u
     goto LABEL_30;
   }
 
-  if (!v11)
+  if (!category)
   {
 LABEL_30:
-    v11 = [(HMDAccessoryPairingEvent *)self accessoryCategory];
+    category = [(HMDAccessoryPairingEvent *)self accessoryCategory];
   }
 
 LABEL_10:
-  v16 = [[HMDAccessoryMetricVendorDetails alloc] initWithProductData:v6 manufacturer:v7 model:v8 firmwareVersion:v10 category:v11 differentiationNumber:0];
+  v16 = [[HMDAccessoryMetricVendorDetails alloc] initWithProductData:matterSoftwareVersionString manufacturer:accessoryCategory model:model firmwareVersion:firmwareVersion category:category differentiationNumber:0];
   [(HMDAccessoryPairingEvent *)self setVendorDetailsForReporting:v16];
 
 LABEL_11:
-  v17 = [(HMDAccessoryPairingEvent *)self logEventStateManager];
-  v18 = [(HMDAccessoryPairingEvent *)self accessoryServerIdentifier];
-  -[HMDAccessoryPairingEvent setRetryCount:](self, "setRetryCount:", [v17 retryCountForIdentifier:v18]);
+  logEventStateManager = [(HMDAccessoryPairingEvent *)self logEventStateManager];
+  accessoryServerIdentifier = [(HMDAccessoryPairingEvent *)self accessoryServerIdentifier];
+  -[HMDAccessoryPairingEvent setRetryCount:](self, "setRetryCount:", [logEventStateManager retryCountForIdentifier:accessoryServerIdentifier]);
 
-  v19 = [(HMMLogEvent *)self error];
+  error = [(HMMLogEvent *)self error];
 
-  if (!v19)
+  if (!error)
   {
-    v20 = [(HMDAccessoryPairingEvent *)self logEventStateManager];
-    [v20 clearRetryCountMap];
+    logEventStateManager2 = [(HMDAccessoryPairingEvent *)self logEventStateManager];
+    [logEventStateManager2 clearRetryCountMap];
   }
 
-  v21 = [(HMDAccessoryPairingEvent *)self logEventStateManager];
-  -[HMDAccessoryPairingEvent setPairingUIState:](self, "setPairingUIState:", [v21 pairingUIState]);
+  logEventStateManager3 = [(HMDAccessoryPairingEvent *)self logEventStateManager];
+  -[HMDAccessoryPairingEvent setPairingUIState:](self, "setPairingUIState:", [logEventStateManager3 pairingUIState]);
 
-  v22 = [(HMDAccessoryPairingEvent *)self logEventStateManager];
-  -[HMDAccessoryPairingEvent setRecoveryType:](self, "setRecoveryType:", [v22 recoveryType]);
+  logEventStateManager4 = [(HMDAccessoryPairingEvent *)self logEventStateManager];
+  -[HMDAccessoryPairingEvent setRecoveryType:](self, "setRecoveryType:", [logEventStateManager4 recoveryType]);
 
-  v23 = [(HMDAccessoryPairingEvent *)self logEventStateManager];
-  -[HMDAccessoryPairingEvent setPreviousRecoveryType:](self, "setPreviousRecoveryType:", [v23 previousRecoveryType]);
+  logEventStateManager5 = [(HMDAccessoryPairingEvent *)self logEventStateManager];
+  -[HMDAccessoryPairingEvent setPreviousRecoveryType:](self, "setPreviousRecoveryType:", [logEventStateManager5 previousRecoveryType]);
 
   if ([(HMDAccessoryPairingEvent *)self isAddOperation])
   {
-    v24 = [(HMDAccessoryPairingEvent *)self logEventStateManager];
-    v25 = [(HMMLogEvent *)self error];
-    [v24 updateStatesOnResult:{objc_msgSend(v25, "code") == 0}];
+    logEventStateManager6 = [(HMDAccessoryPairingEvent *)self logEventStateManager];
+    error2 = [(HMMLogEvent *)self error];
+    [logEventStateManager6 updateStatesOnResult:{objc_msgSend(error2, "code") == 0}];
   }
 
   if ([(HMDAccessoryPairingEvent *)self isAddOperation])
   {
-    v26 = [(HMDAccessoryPairingEvent *)self accessoryAddRequestIdentifier];
-    v27 = [v26 length];
+    accessoryAddRequestIdentifier = [(HMDAccessoryPairingEvent *)self accessoryAddRequestIdentifier];
+    v27 = [accessoryAddRequestIdentifier length];
 
     if (v27)
     {
-      v28 = [(HMDAccessoryPairingEvent *)self logEventStateManager];
-      v29 = [(HMDAccessoryPairingEvent *)self accessoryAddRequestIdentifier];
-      v30 = [(HMDAccessoryPairingEvent *)self endDate];
-      [v28 updateLastPairingProgressStateEventForIdentifier:v29 withDate:v30];
+      logEventStateManager7 = [(HMDAccessoryPairingEvent *)self logEventStateManager];
+      accessoryAddRequestIdentifier2 = [(HMDAccessoryPairingEvent *)self accessoryAddRequestIdentifier];
+      endDate = [(HMDAccessoryPairingEvent *)self endDate];
+      [logEventStateManager7 updateLastPairingProgressStateEventForIdentifier:accessoryAddRequestIdentifier2 withDate:endDate];
 
-      v31 = [(HMDAccessoryPairingEvent *)self logEventStateManager];
-      v32 = [(HMDAccessoryPairingEvent *)self accessoryAddRequestIdentifier];
-      v33 = [v31 getLastProgressStateForAccessory:v32];
+      logEventStateManager8 = [(HMDAccessoryPairingEvent *)self logEventStateManager];
+      accessoryAddRequestIdentifier3 = [(HMDAccessoryPairingEvent *)self accessoryAddRequestIdentifier];
+      v33 = [logEventStateManager8 getLastProgressStateForAccessory:accessoryAddRequestIdentifier3];
 
-      v34 = [(HMDAccessoryPairingEvent *)self logEventStateManager];
-      v35 = [(HMDAccessoryPairingEvent *)self accessoryAddRequestIdentifier];
-      [v34 getTimeDurationForProgressStateForIdentifier:v35 state:v33];
+      logEventStateManager9 = [(HMDAccessoryPairingEvent *)self logEventStateManager];
+      accessoryAddRequestIdentifier4 = [(HMDAccessoryPairingEvent *)self accessoryAddRequestIdentifier];
+      [logEventStateManager9 getTimeDurationForProgressStateForIdentifier:accessoryAddRequestIdentifier4 state:v33];
       v37 = v36;
 
       if (v37 <= 0.0)
       {
         v46 = objc_autoreleasePoolPush();
-        v47 = self;
+        selfCopy = self;
         v48 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v48, OS_LOG_TYPE_INFO))
         {
           v49 = HMFGetLogIdentifier();
-          v50 = [(HMDAccessoryPairingEvent *)v47 accessoryAddRequestIdentifier];
+          accessoryAddRequestIdentifier5 = [(HMDAccessoryPairingEvent *)selfCopy accessoryAddRequestIdentifier];
           *buf = 138543618;
           v76 = v49;
           v77 = 2112;
-          v78 = v50;
+          v78 = accessoryAddRequestIdentifier5;
           _os_log_impl(&dword_229538000, v48, OS_LOG_TYPE_INFO, "%{public}@Submitting placeholder metric values since same accessory request UUID %@ being paired multiple times before CA event submission", buf, 0x16u);
         }
 
         objc_autoreleasePoolPop(v46);
-        [(HMDAccessoryPairingEvent *)v47 setLastAccessoryPairingState:@"Undetermined due to successive pairing attempts"];
-        [(HMDAccessoryPairingEvent *)v47 setLongestPairingState:@"Undetermined due to successive pairing attempts"];
-        [(HMDAccessoryPairingEvent *)v47 setLongestPairingProgressStateDurationInMilliseconds:0.0];
+        [(HMDAccessoryPairingEvent *)selfCopy setLastAccessoryPairingState:@"Undetermined due to successive pairing attempts"];
+        [(HMDAccessoryPairingEvent *)selfCopy setLongestPairingState:@"Undetermined due to successive pairing attempts"];
+        [(HMDAccessoryPairingEvent *)selfCopy setLongestPairingProgressStateDurationInMilliseconds:0.0];
       }
 
       else
@@ -582,14 +582,14 @@ LABEL_11:
         }
 
         [(HMDAccessoryPairingEvent *)self setLastAccessoryPairingState:v38];
-        v39 = [(HMDAccessoryPairingEvent *)self logEventStateManager];
-        v40 = [(HMDAccessoryPairingEvent *)self accessoryAddRequestIdentifier];
-        v41 = [v39 getLongestProgressStateForAccessory:v40];
+        logEventStateManager10 = [(HMDAccessoryPairingEvent *)self logEventStateManager];
+        accessoryAddRequestIdentifier6 = [(HMDAccessoryPairingEvent *)self accessoryAddRequestIdentifier];
+        v41 = [logEventStateManager10 getLongestProgressStateForAccessory:accessoryAddRequestIdentifier6];
         if (v41)
         {
-          v42 = [(HMDAccessoryPairingEvent *)self logEventStateManager];
-          v43 = [(HMDAccessoryPairingEvent *)self accessoryAddRequestIdentifier];
-          v44 = [v42 getLongestProgressStateForAccessory:v43];
+          logEventStateManager11 = [(HMDAccessoryPairingEvent *)self logEventStateManager];
+          accessoryAddRequestIdentifier7 = [(HMDAccessoryPairingEvent *)self accessoryAddRequestIdentifier];
+          v44 = [logEventStateManager11 getLongestProgressStateForAccessory:accessoryAddRequestIdentifier7];
           [(HMDAccessoryPairingEvent *)self setLongestPairingState:v44];
         }
 
@@ -598,14 +598,14 @@ LABEL_11:
           [(HMDAccessoryPairingEvent *)self setLongestPairingState:@"Unknown"];
         }
 
-        v52 = [(HMDAccessoryPairingEvent *)self logEventStateManager];
-        v53 = [(HMDAccessoryPairingEvent *)self accessoryAddRequestIdentifier];
-        [v52 getTimeDurationForLongestProgressStateForAccessory:v53];
+        logEventStateManager12 = [(HMDAccessoryPairingEvent *)self logEventStateManager];
+        accessoryAddRequestIdentifier8 = [(HMDAccessoryPairingEvent *)self accessoryAddRequestIdentifier];
+        [logEventStateManager12 getTimeDurationForLongestProgressStateForAccessory:accessoryAddRequestIdentifier8];
         [(HMDAccessoryPairingEvent *)self setLongestPairingProgressStateDurationInMilliseconds:?];
 
-        v54 = [(HMDAccessoryPairingEvent *)self logEventStateManager];
-        v55 = [(HMDAccessoryPairingEvent *)self accessoryAddRequestIdentifier];
-        [v54 clearPairingProgressStateTrackerForIdentifier:v55];
+        logEventStateManager13 = [(HMDAccessoryPairingEvent *)self logEventStateManager];
+        accessoryAddRequestIdentifier9 = [(HMDAccessoryPairingEvent *)self accessoryAddRequestIdentifier];
+        [logEventStateManager13 clearPairingProgressStateTrackerForIdentifier:accessoryAddRequestIdentifier9];
       }
     }
   }
@@ -613,23 +613,23 @@ LABEL_11:
   if ([(HMDAccessoryPairingEvent *)self _isMatterAccessory]&& [(HMDAccessoryPairingEvent *)self isAddOperation])
   {
     v56 = [(HMDAccessoryPairingEvent *)self matterAccessoryPairingStep]== 27;
-    v57 = [(HMMLogEvent *)self error];
-    v58 = v57 == 0;
+    error3 = [(HMMLogEvent *)self error];
+    v58 = error3 == 0;
 
     if (v56 != v58)
     {
       v59 = objc_autoreleasePoolPush();
-      v60 = self;
+      selfCopy2 = self;
       v61 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v61, OS_LOG_TYPE_ERROR))
       {
         v62 = HMFGetLogIdentifier();
-        v63 = [(HMMLogEvent *)v60 error];
-        v64 = HMDMatterAccessoryPairingStepAsString([(HMDAccessoryPairingEvent *)v60 matterAccessoryPairingStep]);
+        error4 = [(HMMLogEvent *)selfCopy2 error];
+        v64 = HMDMatterAccessoryPairingStepAsString([(HMDAccessoryPairingEvent *)selfCopy2 matterAccessoryPairingStep]);
         *buf = 138543874;
         v76 = v62;
         v77 = 2112;
-        v78 = v63;
+        v78 = error4;
         v79 = 2112;
         v80 = v64;
         _os_log_impl(&dword_229538000, v61, OS_LOG_TYPE_ERROR, "%{public}@Unexpected step and error in submitting pairing log event %@ %@", buf, 0x20u);
@@ -638,23 +638,23 @@ LABEL_11:
       objc_autoreleasePoolPop(v59);
     }
 
-    v65 = [(HMMLogEvent *)self error];
-    v66 = [v65 underlyingErrors];
-    v67 = [v66 firstObject];
+    error5 = [(HMMLogEvent *)self error];
+    underlyingErrors = [error5 underlyingErrors];
+    firstObject = [underlyingErrors firstObject];
 
-    if (v67)
+    if (firstObject)
     {
       v68 = objc_autoreleasePoolPush();
-      v69 = self;
+      selfCopy3 = self;
       v70 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v70, OS_LOG_TYPE_ERROR))
       {
         v71 = HMFGetLogIdentifier();
-        v72 = [(HMMLogEvent *)v69 error];
+        error6 = [(HMMLogEvent *)selfCopy3 error];
         *buf = 138543618;
         v76 = v71;
         v77 = 2112;
-        v78 = v72;
+        v78 = error6;
         _os_log_impl(&dword_229538000, v70, OS_LOG_TYPE_ERROR, "%{public}@Unexpected error contains underlying error %@", buf, 0x16u);
       }
 
@@ -682,9 +682,9 @@ LABEL_11:
   os_unfair_lock_lock_with_options();
   if (!self->_endDate)
   {
-    v3 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     endDate = self->_endDate;
-    self->_endDate = v3;
+    self->_endDate = date;
   }
 
   os_unfair_lock_unlock(&self->_lock);
@@ -718,18 +718,18 @@ LABEL_11:
 {
   v21 = *MEMORY[0x277D85DE8];
   v3 = +[HMDWirelessLoadManager sharedInstance];
-  v4 = [v3 getBtLoadData];
-  v5 = [v4 objectForKeyedSubscript:@"kBtLoadKey"];
+  getBtLoadData = [v3 getBtLoadData];
+  v5 = [getBtLoadData objectForKeyedSubscript:@"kBtLoadKey"];
   self->_btLoad = [v5 intValue];
 
-  v6 = [v4 objectForKeyedSubscript:@"kBtAudioTask"];
+  v6 = [getBtLoadData objectForKeyedSubscript:@"kBtAudioTask"];
   self->_btAudioTask = [v6 intValue];
 
-  v7 = [v4 objectForKeyedSubscript:@"kBtNonAudioTask"];
+  v7 = [getBtLoadData objectForKeyedSubscript:@"kBtNonAudioTask"];
   self->_btNonAudioTask = [v7 intValue];
 
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -737,11 +737,11 @@ LABEL_11:
     v13 = 138544130;
     v14 = v11;
     v15 = 1024;
-    v16 = [(HMDAccessoryPairingEvent *)v9 btLoad];
+    btLoad = [(HMDAccessoryPairingEvent *)selfCopy btLoad];
     v17 = 1024;
-    v18 = [(HMDAccessoryPairingEvent *)v9 btAudioTask];
+    btAudioTask = [(HMDAccessoryPairingEvent *)selfCopy btAudioTask];
     v19 = 1024;
-    v20 = [(HMDAccessoryPairingEvent *)v9 btNonAudioTask];
+    btNonAudioTask = [(HMDAccessoryPairingEvent *)selfCopy btNonAudioTask];
     _os_log_impl(&dword_229538000, v10, OS_LOG_TYPE_INFO, "%{public}@Pairing BT Load: %d AudioTsk: %d NonAudioTsk: %d", &v13, 0x1Eu);
   }
 
@@ -749,13 +749,13 @@ LABEL_11:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateThreadPropertiesWithPairedAccessory:(id)a3
+- (void)_updateThreadPropertiesWithPairedAccessory:(id)accessory
 {
-  v7 = a3;
+  accessoryCopy = accessory;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v7;
+    v4 = accessoryCopy;
   }
 
   else
@@ -772,16 +772,16 @@ LABEL_11:
   }
 }
 
-- (void)updateEventPropertiesWithHAPAccessory:(id)a3
+- (void)updateEventPropertiesWithHAPAccessory:(id)accessory
 {
-  v32 = a3;
+  accessoryCopy = accessory;
   if ([(HMDAccessoryPairingEvent *)self _isMatterAccessory])
   {
-    v4 = [v32 server];
+    server = [accessoryCopy server];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = server;
     }
 
     else
@@ -793,74 +793,74 @@ LABEL_11:
 
     if (v6)
     {
-      v7 = [v6 vendorNameFromDcl];
-      [(HMDAccessoryPairingEvent *)self setAccessoryManufacturer:v7];
+      vendorNameFromDcl = [v6 vendorNameFromDcl];
+      [(HMDAccessoryPairingEvent *)self setAccessoryManufacturer:vendorNameFromDcl];
 
-      v8 = [v6 productNameFromDcl];
-      [(HMDAccessoryPairingEvent *)self setAccessoryModel:v8];
+      productNameFromDcl = [v6 productNameFromDcl];
+      [(HMDAccessoryPairingEvent *)self setAccessoryModel:productNameFromDcl];
 
-      v9 = [v6 softwareVersionString];
-      [(HMDAccessoryPairingEvent *)self setMatterSoftwareVersionString:v9];
+      softwareVersionString = [v6 softwareVersionString];
+      [(HMDAccessoryPairingEvent *)self setMatterSoftwareVersionString:softwareVersionString];
 
-      v10 = [v6 vendorID];
-      if (v10)
+      vendorID = [v6 vendorID];
+      if (vendorID)
       {
-        v11 = v10;
-        v12 = [v6 vendorNameFromDcl];
+        v11 = vendorID;
+        vendorNameFromDcl2 = [v6 vendorNameFromDcl];
 
-        if (!v12)
+        if (!vendorNameFromDcl2)
         {
-          v13 = [v6 vendorID];
-          v14 = [v13 stringValue];
-          [(HMDAccessoryPairingEvent *)self setAccessoryManufacturer:v14];
+          vendorID2 = [v6 vendorID];
+          stringValue = [vendorID2 stringValue];
+          [(HMDAccessoryPairingEvent *)self setAccessoryManufacturer:stringValue];
         }
       }
 
-      v15 = [v6 productID];
-      if (v15)
+      productID = [v6 productID];
+      if (productID)
       {
-        v16 = v15;
-        v17 = [v6 productNameFromDcl];
+        v16 = productID;
+        productNameFromDcl2 = [v6 productNameFromDcl];
 
-        if (!v17)
+        if (!productNameFromDcl2)
         {
-          v18 = [v6 productID];
-          v19 = [v18 stringValue];
-          [(HMDAccessoryPairingEvent *)self setAccessoryModel:v19];
+          productID2 = [v6 productID];
+          stringValue2 = [productID2 stringValue];
+          [(HMDAccessoryPairingEvent *)self setAccessoryModel:stringValue2];
         }
       }
 
       -[HMDAccessoryPairingEvent setThreadAccessory:](self, "setThreadAccessory:", [v6 linkLayerType] == 4);
-      v20 = [v6 supportedLinkLayerTypes];
-      [(HMDAccessoryPairingEvent *)self setSupportedLinkLayerTypes:v20];
+      supportedLinkLayerTypes = [v6 supportedLinkLayerTypes];
+      [(HMDAccessoryPairingEvent *)self setSupportedLinkLayerTypes:supportedLinkLayerTypes];
     }
   }
 
-  v21 = [(HMDAccessoryPairingEvent *)self accessoryManufacturer];
+  accessoryManufacturer = [(HMDAccessoryPairingEvent *)self accessoryManufacturer];
 
-  if (!v21)
+  if (!accessoryManufacturer)
   {
-    v22 = [v32 manufacturer];
-    [(HMDAccessoryPairingEvent *)self setAccessoryManufacturer:v22];
+    manufacturer = [accessoryCopy manufacturer];
+    [(HMDAccessoryPairingEvent *)self setAccessoryManufacturer:manufacturer];
   }
 
-  v23 = [(HMDAccessoryPairingEvent *)self accessoryModel];
+  accessoryModel = [(HMDAccessoryPairingEvent *)self accessoryModel];
 
-  if (!v23)
+  if (!accessoryModel)
   {
-    v24 = [v32 model];
-    [(HMDAccessoryPairingEvent *)self setAccessoryModel:v24];
+    model = [accessoryCopy model];
+    [(HMDAccessoryPairingEvent *)self setAccessoryModel:model];
   }
 
-  v25 = [(HMDAccessoryPairingEvent *)self accessoryCategory];
-  if (!v25 || (v26 = v25, v27 = [(HMDAccessoryPairingEvent *)self _isMatterAccessory], v26, v27))
+  accessoryCategory = [(HMDAccessoryPairingEvent *)self accessoryCategory];
+  if (!accessoryCategory || (v26 = accessoryCategory, v27 = [(HMDAccessoryPairingEvent *)self _isMatterAccessory], v26, v27))
   {
     v28 = MEMORY[0x277CD1680];
-    v29 = [v32 category];
-    v30 = [v28 categoryWithCategoryIdentifier:v29];
+    category = [accessoryCopy category];
+    v30 = [v28 categoryWithCategoryIdentifier:category];
 
-    v31 = [v30 categoryType];
-    [(HMDAccessoryPairingEvent *)self setAccessoryCategory:v31];
+    categoryType = [v30 categoryType];
+    [(HMDAccessoryPairingEvent *)self setAccessoryCategory:categoryType];
   }
 }
 
@@ -875,51 +875,51 @@ LABEL_11:
   return OperatingBand;
 }
 
-- (void)updateEventPropertiesWithPairedAccessory:(id)a3
+- (void)updateEventPropertiesWithPairedAccessory:(id)accessory
 {
-  v4 = a3;
-  if (v4)
+  accessoryCopy = accessory;
+  if (accessoryCopy)
   {
-    v12 = v4;
-    [(HMDAccessoryPairingEvent *)self setPairedAccessory:v4];
-    v5 = [(HMDAccessoryPairingEvent *)self accessoryManufacturer];
+    v12 = accessoryCopy;
+    [(HMDAccessoryPairingEvent *)self setPairedAccessory:accessoryCopy];
+    accessoryManufacturer = [(HMDAccessoryPairingEvent *)self accessoryManufacturer];
 
-    if (!v5)
+    if (!accessoryManufacturer)
     {
-      v6 = [v12 manufacturer];
-      [(HMDAccessoryPairingEvent *)self setAccessoryManufacturer:v6];
+      manufacturer = [v12 manufacturer];
+      [(HMDAccessoryPairingEvent *)self setAccessoryManufacturer:manufacturer];
     }
 
-    v7 = [(HMDAccessoryPairingEvent *)self accessoryModel];
+    accessoryModel = [(HMDAccessoryPairingEvent *)self accessoryModel];
 
-    if (!v7)
+    if (!accessoryModel)
     {
-      v8 = [v12 model];
-      [(HMDAccessoryPairingEvent *)self setAccessoryModel:v8];
+      model = [v12 model];
+      [(HMDAccessoryPairingEvent *)self setAccessoryModel:model];
     }
 
-    v9 = [(HMDAccessoryPairingEvent *)self accessoryCategory];
+    accessoryCategory = [(HMDAccessoryPairingEvent *)self accessoryCategory];
 
-    if (!v9)
+    if (!accessoryCategory)
     {
-      v10 = [v12 category];
-      v11 = [v10 categoryType];
-      [(HMDAccessoryPairingEvent *)self setAccessoryCategory:v11];
+      category = [v12 category];
+      categoryType = [category categoryType];
+      [(HMDAccessoryPairingEvent *)self setAccessoryCategory:categoryType];
     }
 
     [(HMDAccessoryPairingEvent *)self _updateThreadPropertiesWithPairedAccessory:v12];
-    v4 = v12;
+    accessoryCopy = v12;
   }
 }
 
-- (HMDAccessoryPairingEvent)initWithAccessoryDescription:(id)a3 home:(id)a4
+- (HMDAccessoryPairingEvent)initWithAccessoryDescription:(id)description home:(id)home
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 uuid];
+  descriptionCopy = description;
+  homeCopy = home;
+  uuid = [homeCopy uuid];
   v79.receiver = self;
   v79.super_class = HMDAccessoryPairingEvent;
-  v9 = [(HMMHomeLogEvent *)&v79 initWithHomeUUID:v8];
+  v9 = [(HMMHomeLogEvent *)&v79 initWithHomeUUID:uuid];
 
   if (v9)
   {
@@ -927,28 +927,28 @@ LABEL_11:
     logEventStateManager = v9->_logEventStateManager;
     v9->_logEventStateManager = v10;
 
-    v12 = [v6 addRequestIdentifier];
+    addRequestIdentifier = [descriptionCopy addRequestIdentifier];
 
-    if (v12)
+    if (addRequestIdentifier)
     {
       v13 = v9->_logEventStateManager;
-      v14 = [MEMORY[0x277CBEAA8] date];
-      v15 = [v6 addRequestIdentifier];
-      v16 = [v15 UUIDString];
-      [(HMDAccessoryPairingLogEventStateManager *)v13 startProgressStateTrackerWithDate:v14 identifier:v16];
+      date = [MEMORY[0x277CBEAA8] date];
+      addRequestIdentifier2 = [descriptionCopy addRequestIdentifier];
+      uUIDString = [addRequestIdentifier2 UUIDString];
+      [(HMDAccessoryPairingLogEventStateManager *)v13 startProgressStateTrackerWithDate:date identifier:uUIDString];
 
-      v17 = [v6 addRequestIdentifier];
-      v18 = [v17 UUIDString];
+      addRequestIdentifier3 = [descriptionCopy addRequestIdentifier];
+      uUIDString2 = [addRequestIdentifier3 UUIDString];
       accessoryAddRequestIdentifier = v9->_accessoryAddRequestIdentifier;
-      v9->_accessoryAddRequestIdentifier = v18;
+      v9->_accessoryAddRequestIdentifier = uUIDString2;
     }
 
-    if ([v6 supportsIP])
+    if ([descriptionCopy supportsIP])
     {
       v9->_linkType = 1;
     }
 
-    else if ([v6 supportsBTLE])
+    else if ([descriptionCopy supportsBTLE])
     {
       v9->_linkType = 2;
     }
@@ -958,41 +958,41 @@ LABEL_11:
       v9->_linkType = 0;
     }
 
-    v20 = [v6 setupAccessoryPayload];
-    v21 = [v20 communicationProtocol];
+    setupAccessoryPayload = [descriptionCopy setupAccessoryPayload];
+    communicationProtocol = [setupAccessoryPayload communicationProtocol];
 
-    if ((v21 - 1) <= 1)
+    if ((communicationProtocol - 1) <= 1)
     {
-      v9->_communicationProtocol = v21;
+      v9->_communicationProtocol = communicationProtocol;
     }
 
     v9->_addOperation = 1;
-    v22 = [v6 ownershipToken];
+    ownershipToken = [descriptionCopy ownershipToken];
 
-    if (v22)
+    if (ownershipToken)
     {
       v9->_usedOwnershipProof = 1;
     }
 
-    v23 = [v6 setupAccessoryPayload];
-    v24 = [v23 threadIdentifier];
+    setupAccessoryPayload2 = [descriptionCopy setupAccessoryPayload];
+    threadIdentifier = [setupAccessoryPayload2 threadIdentifier];
 
-    if (v24)
+    if (threadIdentifier)
     {
       v9->_threadAccessory = 1;
     }
 
-    if ([v7 doesHomeContainResident])
+    if ([homeCopy doesHomeContainResident])
     {
-      v25 = [v7 primaryResident];
-      v26 = v25;
+      primaryResident = [homeCopy primaryResident];
+      v26 = primaryResident;
       v9->_hasResidentInHome = 1;
-      if (v25)
+      if (primaryResident)
       {
-        LOBYTE(v25) = [v25 isReachable];
+        LOBYTE(primaryResident) = [primaryResident isReachable];
       }
 
-      v9->_isPrimaryResidentOnline = v25;
+      v9->_isPrimaryResidentOnline = primaryResident;
     }
 
     else
@@ -1001,17 +1001,17 @@ LABEL_11:
       v9->_isPrimaryResidentOnline = 0;
     }
 
-    v27 = [v6 category];
+    category = [descriptionCopy category];
     v28 = MEMORY[0x277CD1680];
-    v29 = [v6 setupAccessoryPayload];
-    v30 = [v29 categoryNumber];
-    v31 = [v28 categoryWithCategoryIdentifier:v30];
+    setupAccessoryPayload3 = [descriptionCopy setupAccessoryPayload];
+    categoryNumber = [setupAccessoryPayload3 categoryNumber];
+    v31 = [v28 categoryWithCategoryIdentifier:categoryNumber];
 
-    if (([v27 isWiFiRouterAccessoryCategory] & 1) != 0 || objc_msgSend(v31, "isWiFiRouterAccessoryCategory"))
+    if (([category isWiFiRouterAccessoryCategory] & 1) != 0 || objc_msgSend(v31, "isWiFiRouterAccessoryCategory"))
     {
       v9->_networkRouterAdd = 1;
-      v32 = [v7 wiFiRouterAccessories];
-      v33 = [v32 count];
+      wiFiRouterAccessories = [homeCopy wiFiRouterAccessories];
+      v33 = [wiFiRouterAccessories count];
 
       if (v33)
       {
@@ -1019,17 +1019,17 @@ LABEL_11:
       }
     }
 
-    v34 = [v6 accessoryUUID];
+    accessoryUUID = [descriptionCopy accessoryUUID];
     accessoryUUID = v9->_accessoryUUID;
-    v9->_accessoryUUID = v34;
+    v9->_accessoryUUID = accessoryUUID;
 
-    v36 = [v6 appIdentifier];
+    appIdentifier = [descriptionCopy appIdentifier];
     appIdentifier = v9->_appIdentifier;
-    v9->_appIdentifier = v36;
+    v9->_appIdentifier = appIdentifier;
 
-    if (v27)
+    if (category)
     {
-      v38 = v27;
+      v38 = category;
     }
 
     else
@@ -1037,67 +1037,67 @@ LABEL_11:
       v38 = v31;
     }
 
-    v39 = [v38 categoryType];
-    objc_storeStrong(&v9->_accessoryCategory, v39);
+    categoryType = [v38 categoryType];
+    objc_storeStrong(&v9->_accessoryCategory, categoryType);
 
-    v40 = [v6 setupAccessoryPayload];
-    v41 = [v40 category];
-    v42 = [v41 categoryType];
+    setupAccessoryPayload4 = [descriptionCopy setupAccessoryPayload];
+    category2 = [setupAccessoryPayload4 category];
+    categoryType2 = [category2 categoryType];
     categoryType = v9->_categoryType;
-    v9->_categoryType = v42;
+    v9->_categoryType = categoryType2;
 
-    v44 = [v40 productNumber];
+    productNumber = [setupAccessoryPayload4 productNumber];
     productNumber = v9->_productNumber;
-    v9->_productNumber = v44;
+    v9->_productNumber = productNumber;
 
-    v9->_requiresMatterCustomCommissioningFlow = [v40 requiresMatterCustomCommissioningFlow];
-    v46 = [v7 currentUser];
-    v9->_userPrivilege = [v46 privilege];
+    v9->_requiresMatterCustomCommissioningFlow = [setupAccessoryPayload4 requiresMatterCustomCommissioningFlow];
+    currentUser = [homeCopy currentUser];
+    v9->_userPrivilege = [currentUser privilege];
 
     if ([(HMDAccessoryPairingEvent *)v9 _isMatterAccessory])
     {
       v76 = v31;
-      v77 = v27;
-      v47 = [v6 setupAccessoryPayload];
-      v48 = [v47 chipAccessorySetupPayload];
-      v49 = [v48 vendorID];
+      v77 = category;
+      setupAccessoryPayload5 = [descriptionCopy setupAccessoryPayload];
+      chipAccessorySetupPayload = [setupAccessoryPayload5 chipAccessorySetupPayload];
+      vendorID = [chipAccessorySetupPayload vendorID];
 
-      v50 = [v6 setupAccessoryPayload];
-      v51 = [v50 chipAccessorySetupPayload];
-      v52 = [v51 productID];
+      setupAccessoryPayload6 = [descriptionCopy setupAccessoryPayload];
+      chipAccessorySetupPayload2 = [setupAccessoryPayload6 chipAccessorySetupPayload];
+      productID = [chipAccessorySetupPayload2 productID];
 
-      v53 = v49;
-      objc_storeStrong(&v9->_matterVendorID, v49);
-      objc_storeStrong(&v9->_matterProductID, v52);
-      if (v49)
+      v53 = vendorID;
+      objc_storeStrong(&v9->_matterVendorID, vendorID);
+      objc_storeStrong(&v9->_matterProductID, productID);
+      if (vendorID)
       {
-        v54 = [v7 homeManager];
-        v55 = [v54 chipDataSource];
-        [v55 vendorMetadataStore];
-        v57 = v56 = v52;
+        homeManager = [homeCopy homeManager];
+        chipDataSource = [homeManager chipDataSource];
+        [chipDataSource vendorMetadataStore];
+        v57 = v56 = productID;
         v58 = [v57 retrieveVendorMetadataForVendorID:v53 productID:v56];
 
-        v52 = v56;
+        productID = v56;
         v59 = [v58 productWithID:v56];
-        v60 = [v58 name];
+        name = [v58 name];
         accessoryManufacturer = v9->_accessoryManufacturer;
-        v9->_accessoryManufacturer = v60;
+        v9->_accessoryManufacturer = name;
 
-        v62 = [v59 name];
+        name2 = [v59 name];
         accessoryModel = v9->_accessoryModel;
-        v9->_accessoryModel = v62;
+        v9->_accessoryModel = name2;
 
-        v64 = [v59 deviceTypeID];
+        deviceTypeID = [v59 deviceTypeID];
         matterDeviceType = v9->_matterDeviceType;
-        v9->_matterDeviceType = v64;
+        v9->_matterDeviceType = deviceTypeID;
 
         v9->_currentWiFiBand = 0;
         v78 = v58;
         if (!v58)
         {
-          v66 = [v53 stringValue];
+          stringValue = [v53 stringValue];
           v67 = v9->_accessoryManufacturer;
-          v9->_accessoryManufacturer = v66;
+          v9->_accessoryManufacturer = stringValue;
 
           v78 = 0;
         }
@@ -1111,23 +1111,23 @@ LABEL_11:
       }
 
       v75 = v53;
-      if (v52 && !v59)
+      if (productID && !v59)
       {
-        v68 = [v52 stringValue];
+        stringValue2 = [productID stringValue];
         v69 = v9->_accessoryModel;
-        v9->_accessoryModel = v68;
+        v9->_accessoryModel = stringValue2;
       }
 
       v9->_linkType = 1;
       v70 = v9->_logEventStateManager;
-      [v7 workQueue];
-      v72 = v71 = v52;
-      v73 = [v7 logEventSubmitter];
-      [(HMDAccessoryPairingLogEventStateManager *)v70 configureWithPairingEvent:v9 workQueue:v72 logEventSubmitter:v73];
+      [homeCopy workQueue];
+      v72 = v71 = productID;
+      logEventSubmitter = [homeCopy logEventSubmitter];
+      [(HMDAccessoryPairingLogEventStateManager *)v70 configureWithPairingEvent:v9 workQueue:v72 logEventSubmitter:logEventSubmitter];
 
       v9->_matterAccessoryPairingStep = 1;
       v31 = v76;
-      v27 = v77;
+      category = v77;
     }
 
     [(HMDAccessoryPairingLogEventStateManager *)v9->_logEventStateManager resetStatesForNewAddOperation];
@@ -1136,66 +1136,66 @@ LABEL_11:
   return v9;
 }
 
-- (HMDAccessoryPairingEvent)initWithUnpairedAccessory:(id)a3 pairedAccessory:(id)a4 hapAccessory:(id)a5 appIdentifier:(id)a6 retry:(BOOL)a7 home:(id)a8 isAddOperation:(BOOL)a9 logEventStateManager:(id)a10
+- (HMDAccessoryPairingEvent)initWithUnpairedAccessory:(id)accessory pairedAccessory:(id)pairedAccessory hapAccessory:(id)hapAccessory appIdentifier:(id)identifier retry:(BOOL)retry home:(id)home isAddOperation:(BOOL)operation logEventStateManager:(id)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v158 = a6;
-  v19 = a8;
-  v157 = a10;
-  v20 = [v19 uuid];
+  accessoryCopy = accessory;
+  pairedAccessoryCopy = pairedAccessory;
+  hapAccessoryCopy = hapAccessory;
+  identifierCopy = identifier;
+  homeCopy = home;
+  managerCopy = manager;
+  uuid = [homeCopy uuid];
   v159.receiver = self;
   v159.super_class = HMDAccessoryPairingEvent;
-  v21 = [(HMMHomeLogEvent *)&v159 initWithHomeUUID:v20];
+  v21 = [(HMMHomeLogEvent *)&v159 initWithHomeUUID:uuid];
 
   if (!v21)
   {
     goto LABEL_77;
   }
 
-  v156 = [v19 homeManager];
-  objc_storeStrong(&v21->_logEventStateManager, a10);
-  v154 = v18;
-  v155 = v17;
-  if (v16)
+  homeManager = [homeCopy homeManager];
+  objc_storeStrong(&v21->_logEventStateManager, manager);
+  v154 = hapAccessoryCopy;
+  v155 = pairedAccessoryCopy;
+  if (accessoryCopy)
   {
-    v153 = a4;
+    pairedAccessoryCopy2 = pairedAccessory;
     logEventStateManager = v21->_logEventStateManager;
-    v23 = [MEMORY[0x277CBEAA8] date];
-    v24 = [v16 uuid];
-    v25 = [v24 UUIDString];
-    [(HMDAccessoryPairingLogEventStateManager *)logEventStateManager startProgressStateTrackerWithDate:v23 identifier:v25];
+    date = [MEMORY[0x277CBEAA8] date];
+    uuid2 = [accessoryCopy uuid];
+    uUIDString = [uuid2 UUIDString];
+    [(HMDAccessoryPairingLogEventStateManager *)logEventStateManager startProgressStateTrackerWithDate:date identifier:uUIDString];
 
-    v26 = [v16 uuid];
+    uuid3 = [accessoryCopy uuid];
     accessoryUUID = v21->_accessoryUUID;
-    v21->_accessoryUUID = v26;
+    v21->_accessoryUUID = uuid3;
 
-    v28 = [v16 category];
-    v29 = [v28 categoryType];
+    category = [accessoryCopy category];
+    categoryType = [category categoryType];
     accessoryCategory = v21->_accessoryCategory;
-    v21->_accessoryCategory = v29;
+    v21->_accessoryCategory = categoryType;
 
-    v31 = [v16 identifier];
-    v32 = [v31 copy];
+    identifier = [accessoryCopy identifier];
+    v32 = [identifier copy];
     accessoryServerIdentifier = v21->_accessoryServerIdentifier;
     v21->_accessoryServerIdentifier = v32;
 
-    v34 = [v16 uuid];
-    v35 = [v34 UUIDString];
+    uuid4 = [accessoryCopy uuid];
+    uUIDString2 = [uuid4 UUIDString];
     accessoryAddRequestIdentifier = v21->_accessoryAddRequestIdentifier;
-    v21->_accessoryAddRequestIdentifier = v35;
+    v21->_accessoryAddRequestIdentifier = uUIDString2;
 
-    objc_storeStrong(&v21->_appIdentifier, a6);
-    v21->_retry = a7;
-    v37 = [v16 preferredAccessoryServer];
-    v38 = v37;
-    if (!v37)
+    objc_storeStrong(&v21->_appIdentifier, identifier);
+    v21->_retry = retry;
+    preferredAccessoryServer = [accessoryCopy preferredAccessoryServer];
+    v38 = preferredAccessoryServer;
+    if (!preferredAccessoryServer)
     {
-      v37 = v16;
+      preferredAccessoryServer = accessoryCopy;
     }
 
-    v21->_linkType = [v37 linkType];
+    v21->_linkType = [preferredAccessoryServer linkType];
     v21->_communicationProtocol = [v38 communicationProtocol];
     v39 = v38;
     objc_opt_class();
@@ -1213,34 +1213,34 @@ LABEL_11:
 
     if (v41)
     {
-      v42 = [v41 model];
+      model = [v41 model];
       accessoryModel = v21->_accessoryModel;
-      v21->_accessoryModel = v42;
+      v21->_accessoryModel = model;
 
       if ([v41 isWacAccessory])
       {
-        v44 = [v41 hapWACAccessory];
-        v45 = [v44 model];
+        hapWACAccessory = [v41 hapWACAccessory];
+        model2 = [hapWACAccessory model];
         v46 = v21->_accessoryModel;
-        v21->_accessoryModel = v45;
+        v21->_accessoryModel = model2;
 
-        v47 = [v41 hapWACAccessory];
-        v48 = [v47 manufacturer];
+        hapWACAccessory2 = [v41 hapWACAccessory];
+        manufacturer = [hapWACAccessory2 manufacturer];
         accessoryManufacturer = v21->_accessoryManufacturer;
-        v21->_accessoryManufacturer = v48;
+        v21->_accessoryManufacturer = manufacturer;
       }
     }
 
-    if (a9)
+    if (operation)
     {
-      v50 = [v16 category];
-      v51 = [v50 isWiFiRouterAccessoryCategory];
+      category2 = [accessoryCopy category];
+      isWiFiRouterAccessoryCategory = [category2 isWiFiRouterAccessoryCategory];
 
-      if (v51)
+      if (isWiFiRouterAccessoryCategory)
       {
         v21->_networkRouterAdd = 1;
-        v52 = [v19 wiFiRouterAccessories];
-        v53 = [v52 count];
+        wiFiRouterAccessories = [homeCopy wiFiRouterAccessories];
+        v53 = [wiFiRouterAccessories count];
 
         if (v53)
         {
@@ -1263,55 +1263,55 @@ LABEL_11:
 
     v56 = v55;
 
-    v18 = v154;
+    hapAccessoryCopy = v154;
     if (v56 || [v54 linkLayerType] == 4)
     {
       v21->_threadAccessory = 1;
     }
 
-    v57 = [v19 currentUser];
-    v21->_userPrivilege = [v57 privilege];
+    currentUser = [homeCopy currentUser];
+    v21->_userPrivilege = [currentUser privilege];
 
-    v17 = v155;
+    pairedAccessoryCopy = v155;
     if ([(HMDAccessoryPairingEvent *)v21 _isMatterAccessory])
     {
       v152 = v56;
-      v58 = [v16 vendorID];
+      vendorID = [accessoryCopy vendorID];
       matterVendorID = v21->_matterVendorID;
-      v21->_matterVendorID = v58;
+      v21->_matterVendorID = vendorID;
 
-      v60 = [v16 productID];
+      productID = [accessoryCopy productID];
       matterProductID = v21->_matterProductID;
-      v21->_matterProductID = v60;
+      v21->_matterProductID = productID;
 
-      v62 = [v16 vendorID];
+      vendorID2 = [accessoryCopy vendorID];
 
-      if (v62)
+      if (vendorID2)
       {
-        v63 = [v156 chipDataSource];
-        v64 = [v63 vendorMetadataStore];
-        v65 = [v16 vendorID];
-        v66 = [v16 productID];
-        v67 = [v64 retrieveVendorMetadataForVendorID:v65 productID:v66];
+        chipDataSource = [homeManager chipDataSource];
+        vendorMetadataStore = [chipDataSource vendorMetadataStore];
+        vendorID3 = [accessoryCopy vendorID];
+        productID2 = [accessoryCopy productID];
+        v67 = [vendorMetadataStore retrieveVendorMetadataForVendorID:vendorID3 productID:productID2];
 
-        v18 = v154;
-        v68 = [v16 productID];
-        v69 = [v67 productWithID:v68];
+        hapAccessoryCopy = v154;
+        productID3 = [accessoryCopy productID];
+        v69 = [v67 productWithID:productID3];
 
-        v70 = [v67 name];
+        name = [v67 name];
         v71 = v21->_accessoryManufacturer;
-        v21->_accessoryManufacturer = v70;
+        v21->_accessoryManufacturer = name;
 
-        v72 = [v69 name];
+        name2 = [v69 name];
         v73 = v21->_accessoryModel;
-        v21->_accessoryModel = v72;
+        v21->_accessoryModel = name2;
 
-        v74 = [v69 deviceTypeID];
+        deviceTypeID = [v69 deviceTypeID];
         matterDeviceType = v21->_matterDeviceType;
-        v21->_matterDeviceType = v74;
+        v21->_matterDeviceType = deviceTypeID;
 
         v76 = v67 == 0;
-        v17 = v155;
+        pairedAccessoryCopy = v155;
         v77 = v76;
         v78 = v69 == 0;
       }
@@ -1323,25 +1323,25 @@ LABEL_11:
       }
 
       v21->_currentWiFiBand = 0;
-      v81 = [v16 vendorID];
+      vendorID4 = [accessoryCopy vendorID];
 
-      if (v81 && v77)
+      if (vendorID4 && v77)
       {
-        v82 = [v16 vendorID];
-        v83 = [v82 stringValue];
+        vendorID5 = [accessoryCopy vendorID];
+        stringValue = [vendorID5 stringValue];
         v84 = v21->_accessoryManufacturer;
-        v21->_accessoryManufacturer = v83;
+        v21->_accessoryManufacturer = stringValue;
       }
 
-      v85 = [v16 productID];
-      v86 = v85 != 0 && v78;
+      productID4 = [accessoryCopy productID];
+      v86 = productID4 != 0 && v78;
 
       if (v86 == 1)
       {
-        v87 = [v16 productID];
-        v88 = [v87 stringValue];
+        productID5 = [accessoryCopy productID];
+        stringValue2 = [productID5 stringValue];
         v89 = v21->_accessoryModel;
-        v21->_accessoryModel = v88;
+        v21->_accessoryModel = stringValue2;
       }
 
       v21->_linkType = 1;
@@ -1359,45 +1359,45 @@ LABEL_11:
 
       v92 = v91;
 
-      v93 = [v92 supportedLinkLayerTypes];
+      supportedLinkLayerTypes = [v92 supportedLinkLayerTypes];
 
       supportedLinkLayerTypes = v21->_supportedLinkLayerTypes;
-      v21->_supportedLinkLayerTypes = v93;
+      v21->_supportedLinkLayerTypes = supportedLinkLayerTypes;
       v56 = v152;
     }
 
     else
     {
       v79 = v21->_logEventStateManager;
-      supportedLinkLayerTypes = [v16 identifier];
+      supportedLinkLayerTypes = [accessoryCopy identifier];
       [(HMDAccessoryPairingLogEventStateManager *)v79 incrementRetryCount:supportedLinkLayerTypes];
     }
 
-    a4 = v153;
+    pairedAccessory = pairedAccessoryCopy2;
   }
 
-  if (v17)
+  if (pairedAccessoryCopy)
   {
-    objc_storeStrong(&v21->_pairedAccessory, a4);
-    v94 = [v17 category];
-    v95 = [v94 categoryType];
+    objc_storeStrong(&v21->_pairedAccessory, pairedAccessory);
+    category3 = [pairedAccessoryCopy category];
+    categoryType2 = [category3 categoryType];
     v96 = v21->_accessoryCategory;
-    v21->_accessoryCategory = v95;
+    v21->_accessoryCategory = categoryType2;
 
-    v97 = [v17 identifier];
-    v98 = [v97 copy];
+    identifier2 = [pairedAccessoryCopy identifier];
+    v98 = [identifier2 copy];
     v99 = v21->_accessoryServerIdentifier;
     v21->_accessoryServerIdentifier = v98;
 
-    v100 = [v17 uuid];
+    uuid5 = [pairedAccessoryCopy uuid];
     v101 = v21->_accessoryUUID;
-    v21->_accessoryUUID = v100;
+    v21->_accessoryUUID = uuid5;
 
-    v102 = [v17 metricLoggingVendorDetails];
+    metricLoggingVendorDetails = [pairedAccessoryCopy metricLoggingVendorDetails];
     vendorDetailsForReporting = v21->_vendorDetailsForReporting;
-    v21->_vendorDetailsForReporting = v102;
+    v21->_vendorDetailsForReporting = metricLoggingVendorDetails;
 
-    v104 = v17;
+    v104 = pairedAccessoryCopy;
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
     if (isKindOfClass)
@@ -1436,9 +1436,9 @@ LABEL_49:
     }
 
 LABEL_50:
-    v109 = [v104 supportedLinkLayerTypes];
+    supportedLinkLayerTypes2 = [v104 supportedLinkLayerTypes];
     v110 = v21->_supportedLinkLayerTypes;
-    v21->_supportedLinkLayerTypes = v109;
+    v21->_supportedLinkLayerTypes = supportedLinkLayerTypes2;
 
 LABEL_51:
     [(HMDAccessoryPairingEvent *)v21 _updateThreadPropertiesWithPairedAccessory:v107];
@@ -1447,38 +1447,38 @@ LABEL_51:
     v21->_threadAccessory = [v107 hasThreadServer];
     if ([(HMDAccessoryPairingEvent *)v21 _isMatterAccessory])
     {
-      v111 = [v107 matterVendorID];
+      matterVendorID = [v107 matterVendorID];
       v112 = v21->_matterVendorID;
-      v21->_matterVendorID = v111;
+      v21->_matterVendorID = matterVendorID;
 
-      v113 = [v107 matterProductID];
+      matterProductID = [v107 matterProductID];
       v114 = v21->_matterProductID;
-      v21->_matterProductID = v113;
+      v21->_matterProductID = matterProductID;
 
-      v115 = [v107 matterVendorID];
+      matterVendorID2 = [v107 matterVendorID];
 
-      if (v115)
+      if (matterVendorID2)
       {
-        v116 = [v156 chipDataSource];
-        v117 = [v116 vendorMetadataStore];
-        v118 = [v107 matterVendorID];
-        v119 = [v107 matterProductID];
-        v120 = [v117 retrieveVendorMetadataForVendorID:v118 productID:v119];
+        chipDataSource2 = [homeManager chipDataSource];
+        vendorMetadataStore2 = [chipDataSource2 vendorMetadataStore];
+        matterVendorID3 = [v107 matterVendorID];
+        matterProductID2 = [v107 matterProductID];
+        v120 = [vendorMetadataStore2 retrieveVendorMetadataForVendorID:matterVendorID3 productID:matterProductID2];
 
-        v121 = [v107 matterProductID];
-        v122 = [v120 productWithID:v121];
+        matterProductID3 = [v107 matterProductID];
+        v122 = [v120 productWithID:matterProductID3];
 
-        v123 = [v120 name];
+        name3 = [v120 name];
         v124 = v21->_accessoryManufacturer;
-        v21->_accessoryManufacturer = v123;
+        v21->_accessoryManufacturer = name3;
 
-        v125 = [v122 name];
+        name4 = [v122 name];
         v126 = v21->_accessoryModel;
-        v21->_accessoryModel = v125;
+        v21->_accessoryModel = name4;
 
-        v127 = [v122 deviceTypeID];
+        deviceTypeID2 = [v122 deviceTypeID];
         v128 = v21->_matterDeviceType;
-        v21->_matterDeviceType = v127;
+        v21->_matterDeviceType = deviceTypeID2;
 
         v129 = v120 == 0;
         v130 = v122 == 0;
@@ -1491,62 +1491,62 @@ LABEL_51:
       }
 
       v21->_currentWiFiBand = 0;
-      v131 = [v107 matterVendorID];
+      matterVendorID4 = [v107 matterVendorID];
 
-      if (v131 && v129)
+      if (matterVendorID4 && v129)
       {
-        v132 = [v107 matterVendorID];
-        v133 = [v132 stringValue];
+        matterVendorID5 = [v107 matterVendorID];
+        stringValue3 = [matterVendorID5 stringValue];
         v134 = v21->_accessoryManufacturer;
-        v21->_accessoryManufacturer = v133;
+        v21->_accessoryManufacturer = stringValue3;
       }
 
-      v135 = [v107 matterProductID];
-      v136 = v135 != 0 && v130;
+      matterProductID4 = [v107 matterProductID];
+      v136 = matterProductID4 != 0 && v130;
 
-      v18 = v154;
+      hapAccessoryCopy = v154;
       if (v136 == 1)
       {
-        v137 = [v107 matterProductID];
-        v138 = [v137 stringValue];
+        matterProductID5 = [v107 matterProductID];
+        stringValue4 = [matterProductID5 stringValue];
         v139 = v21->_accessoryModel;
-        v21->_accessoryModel = v138;
+        v21->_accessoryModel = stringValue4;
       }
 
-      v140 = [v104 firmwareVersion];
-      v141 = [v140 versionString];
+      firmwareVersion = [v104 firmwareVersion];
+      versionString = [firmwareVersion versionString];
       matterSoftwareVersionString = v21->_matterSoftwareVersionString;
-      v21->_matterSoftwareVersionString = v141;
+      v21->_matterSoftwareVersionString = versionString;
 
       v21->_linkType = 1;
-      v17 = v155;
+      pairedAccessoryCopy = v155;
     }
   }
 
-  if (v18 && !v21->_linkType)
+  if (hapAccessoryCopy && !v21->_linkType)
   {
-    v21->_linkType = [v18 linkType];
+    v21->_linkType = [hapAccessoryCopy linkType];
   }
 
-  if (v18 && !v21->_communicationProtocol)
+  if (hapAccessoryCopy && !v21->_communicationProtocol)
   {
-    v143 = [v18 server];
-    v21->_communicationProtocol = [v143 communicationProtocol];
+    server = [hapAccessoryCopy server];
+    v21->_communicationProtocol = [server communicationProtocol];
   }
 
-  if ([v19 doesHomeContainResident])
+  if ([homeCopy doesHomeContainResident])
   {
-    v144 = [v19 primaryResident];
-    v145 = v144;
+    primaryResident = [homeCopy primaryResident];
+    v145 = primaryResident;
     v21->_hasResidentInHome = 1;
-    if (v144)
+    if (primaryResident)
     {
-      LOBYTE(v144) = [v144 isReachable];
+      LOBYTE(primaryResident) = [primaryResident isReachable];
     }
 
-    v21->_isPrimaryResidentOnline = v144;
-    v146 = [v145 capabilities];
-    v21->_primaryResidentIsThreadCapable = [v146 supportsThreadBorderRouter];
+    v21->_isPrimaryResidentOnline = primaryResident;
+    capabilities = [v145 capabilities];
+    v21->_primaryResidentIsThreadCapable = [capabilities supportsThreadBorderRouter];
   }
 
   else
@@ -1561,16 +1561,16 @@ LABEL_51:
   v21->_residentConfirmationTimeStarted = 0;
 
   v21->_residentConfirmationDurationInSeconds = 0.0;
-  *&v21->_addOperation = a9;
-  if (a9)
+  *&v21->_addOperation = operation;
+  if (operation)
   {
     [(HMDAccessoryPairingLogEventStateManager *)v21->_logEventStateManager resetStatesForNewAddOperation];
     if ([(HMDAccessoryPairingEvent *)v21 _isMatterAccessory])
     {
       v148 = v21->_logEventStateManager;
-      v149 = [v19 workQueue];
-      v150 = [v19 logEventSubmitter];
-      [(HMDAccessoryPairingLogEventStateManager *)v148 configureWithPairingEvent:v21 workQueue:v149 logEventSubmitter:v150];
+      workQueue = [homeCopy workQueue];
+      logEventSubmitter = [homeCopy logEventSubmitter];
+      [(HMDAccessoryPairingLogEventStateManager *)v148 configureWithPairingEvent:v21 workQueue:workQueue logEventSubmitter:logEventSubmitter];
 
       v21->_matterAccessoryPairingStep = 1;
     }
@@ -1600,24 +1600,24 @@ void __39__HMDAccessoryPairingEvent_logCategory__block_invoke()
   logCategory__hmf_once_v16_110848 = v1;
 }
 
-+ (id)removingAccessory:(id)a3 hapAccessory:(id)a4
++ (id)removingAccessory:(id)accessory hapAccessory:(id)hapAccessory
 {
-  v5 = a4;
-  v6 = a3;
+  hapAccessoryCopy = hapAccessory;
+  accessoryCopy = accessory;
   v7 = [HMDAccessoryPairingEvent alloc];
-  v8 = [v6 home];
+  home = [accessoryCopy home];
   v9 = +[HMDAccessoryPairingLogEventStateManager sharedManager];
   LOBYTE(v12) = 0;
-  v10 = [(HMDAccessoryPairingEvent *)v7 initWithUnpairedAccessory:0 pairedAccessory:v6 hapAccessory:v5 appIdentifier:0 retry:0 home:v8 isAddOperation:v12 logEventStateManager:v9];
+  v10 = [(HMDAccessoryPairingEvent *)v7 initWithUnpairedAccessory:0 pairedAccessory:accessoryCopy hapAccessory:hapAccessoryCopy appIdentifier:0 retry:0 home:home isAddOperation:v12 logEventStateManager:v9];
 
   return v10;
 }
 
-+ (id)pairingAccessoryWithDescription:(id)a3 home:(id)a4
++ (id)pairingAccessoryWithDescription:(id)description home:(id)home
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[HMDAccessoryPairingEvent alloc] initWithAccessoryDescription:v6 home:v5];
+  homeCopy = home;
+  descriptionCopy = description;
+  v7 = [[HMDAccessoryPairingEvent alloc] initWithAccessoryDescription:descriptionCopy home:homeCopy];
 
   return v7;
 }

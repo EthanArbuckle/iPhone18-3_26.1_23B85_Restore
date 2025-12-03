@@ -1,6 +1,6 @@
 @interface PUMoveAssetsToSharedLibraryActivity
-- (BOOL)_presentActivityOnViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (BOOL)canPerformWithActivityItems:(id)a3;
+- (BOOL)_presentActivityOnViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
+- (BOOL)canPerformWithActivityItems:(id)items;
 - (id)activityTitle;
 - (void)performActivity;
 @end
@@ -9,14 +9,14 @@
 
 - (void)performActivity
 {
-  v4 = [(PXActivity *)self itemSourceController];
-  v5 = [v4 assets];
+  itemSourceController = [(PXActivity *)self itemSourceController];
+  assets = [itemSourceController assets];
 
-  if (!v5 || ![v5 count])
+  if (!assets || ![assets count])
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v20 = NSStringFromSelector(a2);
-    [v19 handleFailureInMethod:a2 object:self file:@"PUMoveAssetsToSharedLibraryActivity.m" lineNumber:71 description:{@"Expecting non-empty, non-zero assets in %@", v20}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUMoveAssetsToSharedLibraryActivity.m" lineNumber:71 description:{@"Expecting non-empty, non-zero assets in %@", v20}];
   }
 
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -30,7 +30,7 @@
   v26[2] = __54__PUMoveAssetsToSharedLibraryActivity_performActivity__block_invoke_3;
   v26[3] = &unk_1E7B7E060;
   v26[4] = self;
-  v7 = v5;
+  v7 = assets;
   v27 = v7;
   v29 = a2;
   v8 = v6;
@@ -38,20 +38,20 @@
   v9 = _Block_copy(v26);
   if (PXSharedLibraryShouldDisplayMoveToSharedLibraryConfirmation())
   {
-    v10 = [v7 array];
+    array = [v7 array];
     v25 = 0;
     PXSharedLibraryGetMoveToSharedLibraryConfirmationTitleAndMessage();
     v11 = 0;
 
     v12 = [MEMORY[0x1E69DC650] alertControllerWithTitle:0 message:v11 preferredStyle:0];
     v13 = MEMORY[0x1E69DC648];
-    v14 = [(PUMoveAssetsToSharedLibraryActivity *)self activityTitle];
+    activityTitle = [(PUMoveAssetsToSharedLibraryActivity *)self activityTitle];
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __54__PUMoveAssetsToSharedLibraryActivity_performActivity__block_invoke_217;
     v23[3] = &unk_1E7B80980;
     v24 = v9;
-    v15 = [v13 actionWithTitle:v14 style:0 handler:v23];
+    v15 = [v13 actionWithTitle:activityTitle style:0 handler:v23];
     [v12 addAction:v15];
 
     v16 = MEMORY[0x1E69DC648];
@@ -150,32 +150,32 @@ uint64_t __54__PUMoveAssetsToSharedLibraryActivity_performActivity__block_invoke
   return result;
 }
 
-- (BOOL)canPerformWithActivityItems:(id)a3
+- (BOOL)canPerformWithActivityItems:(id)items
 {
-  v4 = [(PXActivity *)self itemSourceController];
-  v5 = [v4 isPreparingIndividualItems];
+  itemSourceController = [(PXActivity *)self itemSourceController];
+  isPreparingIndividualItems = [itemSourceController isPreparingIndividualItems];
 
-  if (!v5)
+  if (!isPreparingIndividualItems)
   {
     return 0;
   }
 
-  v6 = [(PXActivity *)self itemSourceController];
-  v7 = [v6 assets];
+  itemSourceController2 = [(PXActivity *)self itemSourceController];
+  assets = [itemSourceController2 assets];
 
-  LOBYTE(v6) = PXSharedLibraryCanMoveAssetsToSharedLibrary();
-  return v6;
+  LOBYTE(itemSourceController2) = PXSharedLibraryCanMoveAssetsToSharedLibrary();
+  return itemSourceController2;
 }
 
 - (id)activityTitle
 {
-  v2 = [(PXActivity *)self itemSourceController];
-  v3 = [v2 assets];
-  v4 = [v3 firstObject];
+  itemSourceController = [(PXActivity *)self itemSourceController];
+  assets = [itemSourceController assets];
+  firstObject = [assets firstObject];
 
   v5 = MEMORY[0x1E69C3A08];
-  v6 = [v4 photoLibrary];
-  v7 = [v5 sharedLibraryStatusProviderWithPhotoLibrary:v6];
+  photoLibrary = [firstObject photoLibrary];
+  v7 = [v5 sharedLibraryStatusProviderWithPhotoLibrary:photoLibrary];
 
   [v7 hasPreview];
   v8 = PXLocalizedSharedLibraryString();
@@ -183,17 +183,17 @@ uint64_t __54__PUMoveAssetsToSharedLibraryActivity_performActivity__block_invoke
   return v8;
 }
 
-- (BOOL)_presentActivityOnViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (BOOL)_presentActivityOnViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
-  objc_storeStrong(&self->_presenterViewController, a3);
-  v9 = a3;
-  v10 = a5;
+  animatedCopy = animated;
+  objc_storeStrong(&self->_presenterViewController, controller);
+  controllerCopy = controller;
+  completionCopy = completion;
   v12.receiver = self;
   v12.super_class = PUMoveAssetsToSharedLibraryActivity;
-  LOBYTE(v6) = [(PXActivity *)&v12 _presentActivityOnViewController:v9 animated:v6 completion:v10];
+  LOBYTE(animatedCopy) = [(PXActivity *)&v12 _presentActivityOnViewController:controllerCopy animated:animatedCopy completion:completionCopy];
 
-  return v6;
+  return animatedCopy;
 }
 
 @end

@@ -6,29 +6,29 @@
 + (id)p_cacheDirectory;
 + (id)p_storageCacheForCurrentThread;
 + (id)p_storagesByBrushName;
-+ (id)storageForBrushStrokeNamed:(id)a3;
++ (id)storageForBrushStrokeNamed:(id)named;
 + (void)backgroundLoadAllBrushStrokes;
 + (void)p_clearOnDiskCache;
-+ (void)p_loadBrushIfNeeded:(id)a3;
-+ (void)p_loadImageForBrush:(id)a3 intoStorage:(id)a4;
-+ (void)p_loadLineEndTextureForBrush:(id)a3 lineEnd:(id)a4 path:(CGPath *)a5 andBounds:(CGRect)a6;
-+ (void)p_loadLineEndsForBrush:(id)a3 fromSVGDoc:(_xmlDoc *)a4 intoStorage:(id)a5;
-+ (void)p_loadSectionsForBrush:(id)a3 fromSVGDoc:(_xmlDoc *)a4 intoStorage:(id)a5;
++ (void)p_loadBrushIfNeeded:(id)needed;
++ (void)p_loadImageForBrush:(id)brush intoStorage:(id)storage;
++ (void)p_loadLineEndTextureForBrush:(id)brush lineEnd:(id)end path:(CGPath *)path andBounds:(CGRect)bounds;
++ (void)p_loadLineEndsForBrush:(id)brush fromSVGDoc:(_xmlDoc *)doc intoStorage:(id)storage;
++ (void)p_loadSectionsForBrush:(id)brush fromSVGDoc:(_xmlDoc *)doc intoStorage:(id)storage;
 @end
 
 @implementation TSDBrushStrokeLoader
 
-+ (id)storageForBrushStrokeNamed:(id)a3
++ (id)storageForBrushStrokeNamed:(id)named
 {
-  v4 = a3;
+  namedCopy = named;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
   v26 = sub_2766BC0C8;
   v27 = sub_2766BC0D8;
   v28 = 0;
-  v7 = objc_msgSend_p_storageCacheForCurrentThread(a1, v5, v6);
-  v9 = objc_msgSend_objectForKey_(v7, v8, v4);
+  v7 = objc_msgSend_p_storageCacheForCurrentThread(self, v5, v6);
+  v9 = objc_msgSend_objectForKey_(v7, v8, namedCopy);
   v10 = v24[5];
   v24[5] = v9;
 
@@ -40,8 +40,8 @@
     block[1] = 3221225472;
     block[2] = sub_2766BC0E0;
     block[3] = &unk_27A6CCC78;
-    v22 = a1;
-    v15 = v4;
+    selfCopy = self;
+    v15 = namedCopy;
     v20 = v15;
     v21 = &v23;
     dispatch_sync(v14, block);
@@ -64,7 +64,7 @@
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  obj = objc_msgSend_p_allLoadableBrushStrokeNames(a1, a2, v2);
+  obj = objc_msgSend_p_allLoadableBrushStrokeNames(self, a2, v2);
   v5 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v4, &v17, v21, 16);
   if (v5)
   {
@@ -86,7 +86,7 @@
         block[2] = sub_2766BC2F4;
         block[3] = &unk_27A6CCCA0;
         block[4] = v9;
-        block[5] = a1;
+        block[5] = self;
         v10 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, QOS_CLASS_BACKGROUND, 0, block);
         v13 = objc_msgSend_p_brushStrokeLoadQueue(TSDBrushStrokeLoader, v11, v12);
         dispatch_async(v13, v10);
@@ -135,7 +135,7 @@
     block[3] = &unk_27A6CCCC8;
     block[4] = v7;
     block[5] = &v16;
-    block[6] = a1;
+    block[6] = self;
     dispatch_sync(v12, block);
 
     v11 = v17[5];
@@ -207,10 +207,10 @@
   return fmax(v4 * sqrt(v11 * v13 / 786432.0), 1.0);
 }
 
-+ (void)p_loadBrushIfNeeded:(id)a3
++ (void)p_loadBrushIfNeeded:(id)needed
 {
-  v72 = a3;
-  v6 = objc_msgSend_p_storagesByBrushName(a1, v4, v5);
+  neededCopy = needed;
+  v6 = objc_msgSend_p_storagesByBrushName(self, v4, v5);
   if (!objc_msgSend_count(v6, v7, v8))
   {
     v11 = objc_msgSend_p_cacheDirectory(TSDBrushStrokeLoader, v9, v10);
@@ -219,17 +219,17 @@
     v19 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v16, @"%ld", 15);
     if (!v15 || (objc_msgSend_isEqualToString_(v15, v17, v19) & 1) == 0)
     {
-      objc_msgSend_p_clearOnDiskCache(a1, v17, v18);
+      objc_msgSend_p_clearOnDiskCache(self, v17, v18);
       objc_msgSend_writeToFile_atomically_encoding_error_(v19, v20, v13, 0, 4, 0);
     }
   }
 
-  v21 = objc_msgSend_objectForKeyedSubscript_(v6, v9, v72);
+  v21 = objc_msgSend_objectForKeyedSubscript_(v6, v9, neededCopy);
 
   if (!v21)
   {
     v22 = objc_alloc_init(TSDMutableBrushStrokeStorage);
-    v24 = objc_msgSend_stringByAppendingString_(@"TSDBrush_", v23, v72);
+    v24 = objc_msgSend_stringByAppendingString_(@"TSDBrush_", v23, neededCopy);
     v27 = sub_2767B590C(v24, v25, v26);
     v29 = objc_msgSend_pathForResource_ofType_(v27, v28, v24, @"svg");
 
@@ -240,7 +240,7 @@
       v33 = MEMORY[0x277D81150];
       v34 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v31, "+[TSDBrushStrokeLoader p_loadBrushIfNeeded:]");
       v36 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v35, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/drawables/TSDBrushStrokeLoader.m");
-      objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v33, v37, v34, v36, 219, 0, "Unable to load brush with nil url, brushName: %{public}@", v72);
+      objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v33, v37, v34, v36, 219, 0, "Unable to load brush with nil url, brushName: %{public}@", neededCopy);
 
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v38, v39);
     }
@@ -272,11 +272,11 @@
       v63 = objc_msgSend_numberWithBool_(MEMORY[0x277CCABB0], v62, v61);
       objc_msgSend_setOption_forKey_(v54, v64, v63, @"split-at-sharp-angles");
 
-      objc_msgSend_p_loadLineEndsForBrush_fromSVGDoc_intoStorage_(a1, v65, v72, Memory, v54);
-      objc_msgSend_p_loadSectionsForBrush_fromSVGDoc_intoStorage_(a1, v66, v72, Memory, v54);
+      objc_msgSend_p_loadLineEndsForBrush_fromSVGDoc_intoStorage_(self, v65, neededCopy, Memory, v54);
+      objc_msgSend_p_loadSectionsForBrush_fromSVGDoc_intoStorage_(self, v66, neededCopy, Memory, v54);
       xmlFreeDoc(Memory);
       v69 = objc_msgSend_deepCopy(v54, v67, v68);
-      objc_msgSend_setObject_forKeyedSubscript_(v6, v70, v69, v72);
+      objc_msgSend_setObject_forKeyedSubscript_(v6, v70, v69, neededCopy);
     }
   }
 }
@@ -352,16 +352,16 @@
   }
 }
 
-+ (void)p_loadLineEndTextureForBrush:(id)a3 lineEnd:(id)a4 path:(CGPath *)a5 andBounds:(CGRect)a6
++ (void)p_loadLineEndTextureForBrush:(id)brush lineEnd:(id)end path:(CGPath *)path andBounds:(CGRect)bounds
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v11 = a4;
-  v12 = a3;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  endCopy = end;
+  brushCopy = brush;
   v15 = objc_msgSend_p_cacheDirectory(TSDBrushStrokeLoader, v13, v14);
-  v17 = objc_msgSend_stringByAppendingFormat_(v15, v16, @"/TSDBrushEnd_%@_%@.png", v12, v11);
+  v17 = objc_msgSend_stringByAppendingFormat_(v15, v16, @"/TSDBrushEnd_%@_%@.png", brushCopy, endCopy);
 
   v19 = objc_msgSend_imageWithContentsOfFile_(MEMORY[0x277D811F8], v18, v17);
   v22 = v19;
@@ -405,12 +405,12 @@
   CGImageRelease(Image);
 }
 
-+ (void)p_loadLineEndsForBrush:(id)a3 fromSVGDoc:(_xmlDoc *)a4 intoStorage:(id)a5
++ (void)p_loadLineEndsForBrush:(id)brush fromSVGDoc:(_xmlDoc *)doc intoStorage:(id)storage
 {
   v127 = *MEMORY[0x277D85DE8];
-  v110 = a3;
-  v109 = a5;
-  sub_2766BCC78(a4, @"//svg:path['_wrap'=substring(@id,string-length(@id)-4)]");
+  brushCopy = brush;
+  storageCopy = storage;
+  sub_2766BCC78(doc, @"//svg:path['_wrap'=substring(@id,string-length(@id)-4)]");
   v122 = 0u;
   v123 = 0u;
   v124 = 0u;
@@ -425,7 +425,7 @@
     v105 = *(MEMORY[0x277CBF2C0] + 16);
     v102 = *(MEMORY[0x277CBF2C0] + 40);
     v103 = *(MEMORY[0x277CBF2C0] + 32);
-    v107 = a4;
+    docCopy = doc;
     do
     {
       v11 = 0;
@@ -444,7 +444,7 @@
         v20 = objc_msgSend_substringToIndex_(v15, v19, v18 - 5);
 
         v22 = objc_msgSend_stringWithFormat_(*(v10 + 3240), v21, @"//svg:path[@id='%@_end']", v20);
-        v23 = sub_2766BCC78(a4, v22);
+        v23 = sub_2766BCC78(doc, v22);
 
         v119 = v23;
         if (objc_msgSend_count(v23, v24, v25) != 1)
@@ -463,7 +463,7 @@
 
         v117 = objc_msgSend_objectForKey_(v37, v38, @"d");
         v40 = objc_msgSend_stringWithFormat_(*(v10 + 3240), v39, @"//svg:rect[@id='%@_end_bounds']", v20);
-        v41 = sub_2766BCC78(a4, v40);
+        v41 = sub_2766BCC78(doc, v40);
 
         if (objc_msgSend_count(v41, v42, v43) != 1)
         {
@@ -544,9 +544,9 @@
         v129.size.height = v114;
         MidY = CGRectGetMidY(v129);
         v97 = objc_msgSend_lineEndWithPath_wrapPath_endPoint_isFilled_identifier_(TSDLineEnd, v96, v93, v89, 1, v80, tx + c * MidY + a * MaxX, ty + d * MidY + v112 * MaxX);
-        objc_msgSend_setLineEnd_forKey_(v109, v98, v97, v80);
+        objc_msgSend_setLineEnd_forKey_(storageCopy, v98, v97, v80);
         BoundingBox = CGPathGetBoundingBox(v89);
-        objc_msgSend_p_loadLineEndTextureForBrush_lineEnd_path_andBounds_(a1, v99, v110, v80, v93, BoundingBox.origin.x, BoundingBox.origin.y, BoundingBox.size.width, BoundingBox.size.height);
+        objc_msgSend_p_loadLineEndTextureForBrush_lineEnd_path_andBounds_(self, v99, brushCopy, v80, v93, BoundingBox.origin.x, BoundingBox.origin.y, BoundingBox.size.width, BoundingBox.size.height);
         v100 = v92;
         v9 = v91;
         v10 = 0x277CCA000;
@@ -556,7 +556,7 @@
         CGPathRelease(v89);
 
         v11 = v116 + 1;
-        a4 = v107;
+        doc = docCopy;
       }
 
       while (v111 != v116 + 1);
@@ -567,15 +567,15 @@
   }
 }
 
-+ (void)p_loadImageForBrush:(id)a3 intoStorage:(id)a4
++ (void)p_loadImageForBrush:(id)brush intoStorage:(id)storage
 {
   v124 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  brushCopy = brush;
+  storageCopy = storage;
   v104 = objc_msgSend_p_cacheDirectory(TSDBrushStrokeLoader, v7, v8);
-  v105 = v5;
-  v10 = objc_msgSend_stringByAppendingFormat_(v104, v9, @"/TSDBrush_%@.png", v5);
-  v112 = objc_msgSend_paths(v6, v11, v12);
+  v105 = brushCopy;
+  v10 = objc_msgSend_stringByAppendingFormat_(v104, v9, @"/TSDBrush_%@.png", brushCopy);
+  v112 = objc_msgSend_paths(storageCopy, v11, v12);
   if (!v112)
   {
     v14 = MEMORY[0x277D81150];
@@ -595,7 +595,7 @@
 
   else
   {
-    v109 = objc_msgSend_bounds(v6, v22, v23);
+    v109 = objc_msgSend_bounds(storageCopy, v22, v23);
     if (!v109)
     {
       v27 = MEMORY[0x277D81150];
@@ -606,7 +606,7 @@
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v32, v33);
     }
 
-    v34 = objc_msgSend_totalSectionCount(v6, v25, v26);
+    v34 = objc_msgSend_totalSectionCount(storageCopy, v25, v26);
     if (v34 == 1)
     {
       v35 = 2048.0;
@@ -752,7 +752,7 @@
           v102 = v101 + v94;
           do
           {
-            objc_msgSend_addTextureIndex_forKey_(v6, v92, v94++, v97);
+            objc_msgSend_addTextureIndex_forKey_(storageCopy, v92, v94++, v97);
             --v101;
           }
 
@@ -767,16 +767,16 @@
     while (v93);
   }
 
-  objc_msgSend_setImage_(v6, v103, v24);
+  objc_msgSend_setImage_(storageCopy, v103, v24);
 }
 
-+ (void)p_loadSectionsForBrush:(id)a3 fromSVGDoc:(_xmlDoc *)a4 intoStorage:(id)a5
++ (void)p_loadSectionsForBrush:(id)brush fromSVGDoc:(_xmlDoc *)doc intoStorage:(id)storage
 {
   v100 = *MEMORY[0x277D85DE8];
-  v90 = a3;
-  v88 = a4;
-  v89 = a5;
-  v7 = sub_2766BCC78(a4, @"//svg:path['_section'=substring(@id,string-length(@id)-7)]");
+  brushCopy = brush;
+  docCopy = doc;
+  storageCopy = storage;
+  v7 = sub_2766BCC78(doc, @"//svg:path['_section'=substring(@id,string-length(@id)-7)]");
   if (!objc_msgSend_count(v7, v8, v9))
   {
     v11 = MEMORY[0x277D81150];
@@ -814,7 +814,7 @@
         v91 = objc_msgSend_objectForKey_(v24, v25, @"d");
         v27 = objc_msgSend_objectForKey_(v24, v26, @"id");
         v29 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v28, @"//svg:rect[@id='%@_bounds']", v27);
-        v30 = sub_2766BCC78(v88, v29);
+        v30 = sub_2766BCC78(docCopy, v29);
 
         if (objc_msgSend_count(v30, v31, v32) != 1)
         {
@@ -863,15 +863,15 @@
         objc_msgSend_transformUsingAffineTransform_(v72, v73, &v93);
         v75 = objc_msgSend_rangeOfString_(v27, v74, @"_");
         v77 = objc_msgSend_substringToIndex_(v27, v76, v75);
-        if (objc_msgSend_isEqualToString_(v90, v78, @"Chalk2"))
+        if (objc_msgSend_isEqualToString_(brushCopy, v78, @"Chalk2"))
         {
           v80 = objc_msgSend_isEqualToString_(v77, v79, @"small") ^ 1;
-          objc_msgSend_addPath_withBounds_shouldSmooth_forKey_(v89, v81, v72, v80, v77, v50, v56, v62, v68);
+          objc_msgSend_addPath_withBounds_shouldSmooth_forKey_(storageCopy, v81, v72, v80, v77, v50, v56, v62, v68);
         }
 
         else
         {
-          objc_msgSend_addPath_withBounds_shouldSmooth_forKey_(v89, v79, v72, 0, v77, v50, v56, v62, v68);
+          objc_msgSend_addPath_withBounds_shouldSmooth_forKey_(storageCopy, v79, v72, 0, v77, v50, v56, v62, v68);
         }
 
         CGPathRelease(v70);
@@ -886,7 +886,7 @@
     while (v21);
   }
 
-  objc_msgSend_p_loadImageForBrush_intoStorage_(a1, v82, v90, v89);
+  objc_msgSend_p_loadImageForBrush_intoStorage_(self, v82, brushCopy, storageCopy);
 }
 
 @end

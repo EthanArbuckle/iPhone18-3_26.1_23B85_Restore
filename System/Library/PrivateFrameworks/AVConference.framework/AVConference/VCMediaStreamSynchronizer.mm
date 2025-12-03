@@ -1,14 +1,14 @@
 @interface VCMediaStreamSynchronizer
-- (VCMediaStreamSynchronizer)initWithSourceSampleRate:(unsigned int)a3 destinationSampleRate:(unsigned int)a4;
+- (VCMediaStreamSynchronizer)initWithSourceSampleRate:(unsigned int)rate destinationSampleRate:(unsigned int)sampleRate;
 - (void)dealloc;
 @end
 
 @implementation VCMediaStreamSynchronizer
 
-- (VCMediaStreamSynchronizer)initWithSourceSampleRate:(unsigned int)a3 destinationSampleRate:(unsigned int)a4
+- (VCMediaStreamSynchronizer)initWithSourceSampleRate:(unsigned int)rate destinationSampleRate:(unsigned int)sampleRate
 {
   v20 = *MEMORY[0x1E69E9840];
-  if (a3 && a4)
+  if (rate && sampleRate)
   {
     v17.receiver = self;
     v17.super_class = VCMediaStreamSynchronizer;
@@ -16,8 +16,8 @@
     v8 = v7;
     if (v7)
     {
-      v7->_source.sampleRate = a3;
-      v7->_destination.sampleRate = a4;
+      v7->_source.sampleRate = rate;
+      v7->_destination.sampleRate = sampleRate;
       if (VRTraceGetErrorLogLevelForModule() >= 7)
       {
         v9 = VRTraceErrorLogLevelToCSTR();
@@ -69,9 +69,9 @@
         *&buf[28] = 2048;
         *&buf[30] = self;
         *&buf[38] = 1024;
-        *&buf[40] = a3;
+        *&buf[40] = rate;
         *&buf[44] = 1024;
-        *&buf[46] = a4;
+        *&buf[46] = sampleRate;
         _os_log_error_impl(&dword_1DB56E000, v15, OS_LOG_TYPE_ERROR, "VCMediaStreamSynchronizer [%s] %s:%d VCMediaStreamSynchronizer[%p] failed! sourceSampleRate:%u destinationSampleRate:%u", buf, 0x32u);
       }
     }

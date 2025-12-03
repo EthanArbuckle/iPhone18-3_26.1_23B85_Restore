@@ -1,17 +1,17 @@
 @interface DetailCell
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (void)music_inheritedLayoutInsetsDidChange;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation DetailCell
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  v4 = self;
-  v5 = [(DetailCell *)v4 contentView];
-  [v5 sizeThatFits:{width, 1.79769313e308}];
+  width = fits.width;
+  selfCopy = self;
+  contentView = [(DetailCell *)selfCopy contentView];
+  [contentView sizeThatFits:{width, 1.79769313e308}];
   v7 = v6;
 
   v8 = width;
@@ -21,7 +21,7 @@
   return result;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   ObjectType = swift_getObjectType();
   v6 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_E09210);
@@ -30,10 +30,10 @@
   v9 = &v12[-v8];
   v15.receiver = self;
   v15.super_class = ObjectType;
-  v10 = a3;
-  v11 = self;
-  [(DetailCell *)&v15 traitCollectionDidChange:v10];
-  v13 = v11;
+  changeCopy = change;
+  selfCopy = self;
+  [(DetailCell *)&v15 traitCollectionDidChange:changeCopy];
+  v13 = selfCopy;
   type metadata accessor for DetailCellTextStack(0);
   sub_AF6D0(&unk_DF8680, type metadata accessor for DetailCellTextStack);
   sub_AB6780();
@@ -55,9 +55,9 @@
   v7 = &v9[-v6];
   v12.receiver = self;
   v12.super_class = ObjectType;
-  v8 = self;
+  selfCopy = self;
   [(DetailCell *)&v12 music_inheritedLayoutInsetsDidChange];
-  v10 = v8;
+  v10 = selfCopy;
   type metadata accessor for DetailCellTextStack(0);
   sub_AF6D0(&unk_DF8680, type metadata accessor for DetailCellTextStack);
   sub_AB6780();

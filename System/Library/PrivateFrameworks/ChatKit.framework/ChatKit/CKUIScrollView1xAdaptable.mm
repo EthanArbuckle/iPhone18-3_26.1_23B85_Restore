@@ -1,17 +1,17 @@
 @interface CKUIScrollView1xAdaptable
-- (void)setFrame:(CGRect)a3;
+- (void)setFrame:(CGRect)frame;
 @end
 
 @implementation CKUIScrollView1xAdaptable
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(CKUIScrollView1xAdaptable *)self traitCollection];
-  [v8 displayScale];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  traitCollection = [(CKUIScrollView1xAdaptable *)self traitCollection];
+  [traitCollection displayScale];
   v10 = round(x * v9) / v9;
   v11 = round(y * v9) / v9;
   v12 = round(width * v9) / v9;

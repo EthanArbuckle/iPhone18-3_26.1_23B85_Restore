@@ -1,50 +1,50 @@
 @interface DDScannerResult
-+ (__CFArray)coreResultsFromResults:(id)a3;
-+ (id)filterResults:(id)a3 forTypes:(unint64_t)a4 referenceDate:(id)a5 referenceTimeZone:(id)a6;
-+ (id)resultFromCoreResult:(__DDResult *)a3;
-+ (id)resultFromText:(id)a3 personName:(id)a4 jobTitle:(id)a5 department:(id)a6 company:(id)a7;
-+ (id)resultsFromCoreResults:(__CFArray *)a3;
-+ (id)shouldUrlifyBlockForTypes:(unint64_t)a3;
++ (__CFArray)coreResultsFromResults:(id)results;
++ (id)filterResults:(id)results forTypes:(unint64_t)types referenceDate:(id)date referenceTimeZone:(id)zone;
++ (id)resultFromCoreResult:(__DDResult *)result;
++ (id)resultFromText:(id)text personName:(id)name jobTitle:(id)title department:(id)department company:(id)company;
++ (id)resultsFromCoreResults:(__CFArray *)results;
++ (id)shouldUrlifyBlockForTypes:(unint64_t)types;
 - ($0AC6E346AE4835514AAA8AC86D8F4844)cfRange;
-- (BOOL)extractStartDate:(id *)a3 startTimezone:(id *)a4 endDate:(id *)a5 endTimezone:(id *)a6 allDayRef:(BOOL *)a7 referenceDate:(id)a8 referenceTimezone:(id)a9;
-- (BOOL)getDomesticIdentifier:(id *)a3 type:(id *)a4 countryCode:(id *)a5;
-- (BOOL)getFlightNumber:(id *)a3 airline:(id *)a4;
-- (BOOL)getIMScreenNameValue:(id *)a3 type:(id *)a4;
-- (BOOL)getMailValue:(id *)a3 label:(id *)a4;
-- (BOOL)getMoneyAmount:(double *)a3 currency:(id *)a4;
-- (BOOL)getPhoneValue:(id *)a3 label:(id *)a4;
-- (BOOL)getPhysicalUnitValue:(double *)a3 unit:(id *)a4;
-- (BOOL)getStreet:(id *)a3 city:(id *)a4 state:(id *)a5 zip:(id *)a6 country:(id *)a7;
-- (BOOL)getTrackingNumber:(id *)a3 carrier:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)typeIs:(__CFString *)a3;
+- (BOOL)extractStartDate:(id *)date startTimezone:(id *)timezone endDate:(id *)endDate endTimezone:(id *)endTimezone allDayRef:(BOOL *)ref referenceDate:(id)referenceDate referenceTimezone:(id)referenceTimezone;
+- (BOOL)getDomesticIdentifier:(id *)identifier type:(id *)type countryCode:(id *)code;
+- (BOOL)getFlightNumber:(id *)number airline:(id *)airline;
+- (BOOL)getIMScreenNameValue:(id *)value type:(id *)type;
+- (BOOL)getMailValue:(id *)value label:(id *)label;
+- (BOOL)getMoneyAmount:(double *)amount currency:(id *)currency;
+- (BOOL)getPhoneValue:(id *)value label:(id *)label;
+- (BOOL)getPhysicalUnitValue:(double *)value unit:(id *)unit;
+- (BOOL)getStreet:(id *)street city:(id *)city state:(id *)state zip:(id *)zip country:(id *)country;
+- (BOOL)getTrackingNumber:(id *)number carrier:(id *)carrier;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)typeIs:(__CFString *)is;
 - (DDScannerResult)init;
-- (DDScannerResult)initWithCoder:(id)a3;
-- (DDScannerResult)initWithCoreResult:(__DDResult *)a3;
+- (DDScannerResult)initWithCoder:(id)coder;
+- (DDScannerResult)initWithCoreResult:(__DDResult *)result;
 - (NSString)matchedString;
 - (NSString)value;
 - (NSURL)url;
 - (_NSRange)range;
 - (_NSRange)urlificationRange;
 - (double)getDuration;
-- (id)_initWithPlist:(id)a3;
-- (id)_initWithWebKitPropertyListData:(id)a3;
+- (id)_initWithPlist:(id)plist;
+- (id)_initWithWebKitPropertyListData:(id)data;
 - (id)_webKitPropertyListData;
 - (id)contextualData;
-- (id)dateFromReferenceDate:(id)a3 referenceTimezone:(id)a4 timezoneRef:(id *)a5 allDayRef:(BOOL *)a6;
+- (id)dateFromReferenceDate:(id)date referenceTimezone:(id)timezone timezoneRef:(id *)ref allDayRef:(BOOL *)dayRef;
 - (id)description;
 - (id)rawValue;
 - (id)subResults;
-- (id)valueForUndefinedKey:(id)a3;
+- (id)valueForUndefinedKey:(id)key;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)offsetRangeBy:(int64_t)a3;
-- (void)setSubResults:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)offsetRangeBy:(int64_t)by;
+- (void)setSubResults:(id)results;
 @end
 
 @implementation DDScannerResult
 
-- (BOOL)getFlightNumber:(id *)a3 airline:(id *)a4
+- (BOOL)getFlightNumber:(id *)number airline:(id *)airline
 {
   coreResult = self->_coreResult;
   if (coreResult)
@@ -52,7 +52,7 @@
     v7 = _typesAreEqual(coreResult->var5, @"FlightInformation");
     if (v7)
     {
-      if (a4)
+      if (airline)
       {
         SubresultWithType = DDResultGetSubresultWithType(coreResult, @"AirlineCode");
         if (SubresultWithType)
@@ -65,10 +65,10 @@
           }
         }
 
-        *a4 = [SubresultWithType uppercaseString];
+        *airline = [SubresultWithType uppercaseString];
       }
 
-      if (a3)
+      if (number)
       {
         v10 = DDResultGetSubresultWithType(coreResult, @"FlightNumber");
         if (v10)
@@ -81,7 +81,7 @@
           }
         }
 
-        *a3 = [v10 uppercaseString];
+        *number = [v10 uppercaseString];
       }
 
       LOBYTE(v7) = 1;
@@ -96,7 +96,7 @@
   return v7;
 }
 
-- (BOOL)getTrackingNumber:(id *)a3 carrier:(id *)a4
+- (BOOL)getTrackingNumber:(id *)number carrier:(id *)carrier
 {
   coreResult = self->_coreResult;
   if (!coreResult)
@@ -120,12 +120,12 @@ LABEL_9:
 
   ValueAtIndex = CFArrayGetValueAtIndex(var4, 0);
   v10 = ValueAtIndex;
-  if (a4)
+  if (carrier)
   {
-    *a4 = ValueAtIndex[8];
+    *carrier = ValueAtIndex[8];
   }
 
-  if (a3)
+  if (number)
   {
     if (v10)
     {
@@ -137,50 +137,50 @@ LABEL_9:
       v11 = 0;
     }
 
-    v12 = [MEMORY[0x1E696AB08] URLQueryAllowedCharacterSet];
-    *a3 = [v11 stringByAddingPercentEncodingWithAllowedCharacters:v12];
+    uRLQueryAllowedCharacterSet = [MEMORY[0x1E696AB08] URLQueryAllowedCharacterSet];
+    *number = [v11 stringByAddingPercentEncodingWithAllowedCharacters:uRLQueryAllowedCharacterSet];
   }
 
   LOBYTE(v7) = 1;
   return v7;
 }
 
-- (BOOL)getPhysicalUnitValue:(double *)a3 unit:(id *)a4
+- (BOOL)getPhysicalUnitValue:(double *)value unit:(id *)unit
 {
   v8 = 0;
   v9 = 0;
   v6 = DDResultPhysicalUnitExtraction(self->_coreResult, &v8, &v9);
   if (v6)
   {
-    if (a4)
+    if (unit)
     {
-      *a4 = v9;
+      *unit = v9;
     }
 
-    if (a3)
+    if (value)
     {
-      *a3 = v8;
+      *value = v8;
     }
   }
 
   return v6 != 0;
 }
 
-- (BOOL)getMoneyAmount:(double *)a3 currency:(id *)a4
+- (BOOL)getMoneyAmount:(double *)amount currency:(id *)currency
 {
   v8 = 0;
   v9 = 0;
   v6 = DDResultCurrencyExtraction(self->_coreResult, &v8, &v9);
   if (v6)
   {
-    if (a4)
+    if (currency)
     {
-      *a4 = v9;
+      *currency = v9;
     }
 
-    if (a3)
+    if (amount)
     {
-      *a3 = v8;
+      *amount = v8;
     }
   }
 
@@ -189,12 +189,12 @@ LABEL_9:
 
 - (NSURL)url
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_hasCachedURL)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_hasCachedURL)
   {
-    v2->_hasCachedURL = 1;
-    v3 = DDResultCopyExtractedURLWithOptions(v2->_coreResult, 1);
+    selfCopy->_hasCachedURL = 1;
+    v3 = DDResultCopyExtractedURLWithOptions(selfCopy->_coreResult, 1);
     if (v3)
     {
       v4 = [MEMORY[0x1E695DFF8] URLWithString:v3];
@@ -221,8 +221,8 @@ LABEL_9:
 
         v11 = [(__CFString *)v3 substringToIndex:v10];
         v12 = [(__CFString *)v3 substringFromIndex:v10];
-        v13 = [MEMORY[0x1E696AB08] URLFragmentAllowedCharacterSet];
-        v14 = [v12 stringByAddingPercentEncodingWithAllowedCharacters:v13];
+        uRLFragmentAllowedCharacterSet = [MEMORY[0x1E696AB08] URLFragmentAllowedCharacterSet];
+        v14 = [v12 stringByAddingPercentEncodingWithAllowedCharacters:uRLFragmentAllowedCharacterSet];
 
         v15 = MEMORY[0x1E695DFF8];
         v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@", v11, v14];
@@ -232,43 +232,43 @@ LABEL_9:
         {
 LABEL_8:
           v17 = MEMORY[0x1E695DFF8];
-          v18 = [MEMORY[0x1E696AB08] URLFragmentAllowedCharacterSet];
-          v19 = [(__CFString *)v3 stringByAddingPercentEncodingWithAllowedCharacters:v18];
+          uRLFragmentAllowedCharacterSet2 = [MEMORY[0x1E696AB08] URLFragmentAllowedCharacterSet];
+          v19 = [(__CFString *)v3 stringByAddingPercentEncodingWithAllowedCharacters:uRLFragmentAllowedCharacterSet2];
           v4 = [v17 URLWithString:v19];
         }
       }
 
-      cachedURL = v2->_cachedURL;
-      v2->_cachedURL = v4;
+      cachedURL = selfCopy->_cachedURL;
+      selfCopy->_cachedURL = v4;
     }
   }
 
-  v21 = v2->_cachedURL;
-  objc_sync_exit(v2);
+  v21 = selfCopy->_cachedURL;
+  objc_sync_exit(selfCopy);
 
   return v21;
 }
 
-- (void)offsetRangeBy:(int64_t)a3
+- (void)offsetRangeBy:(int64_t)by
 {
   v20 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (by)
   {
-    v3 = a3;
-    v5 = [(DDScannerResult *)self range];
-    v6 = v5;
+    byCopy = by;
+    range = [(DDScannerResult *)self range];
+    v6 = range;
     v8 = v7;
     v15 = 0u;
     v16 = 0u;
-    if (v5 + v3 < 0 != __OFADD__(v5, v3))
+    if (range + byCopy < 0 != __OFADD__(range, byCopy))
     {
-      v3 = -v5;
+      byCopy = -range;
     }
 
     v17 = 0uLL;
     v18 = 0uLL;
-    v9 = [(DDScannerResult *)self subResults];
-    v10 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    subResults = [(DDScannerResult *)self subResults];
+    v10 = [subResults countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v10)
     {
       v11 = v10;
@@ -279,56 +279,56 @@ LABEL_8:
         {
           if (*v16 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(subResults);
           }
 
-          [*(*(&v15 + 1) + 8 * i) offsetRangeBy:v3];
+          [*(*(&v15 + 1) + 8 * i) offsetRangeBy:byCopy];
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v11 = [subResults countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v11);
     }
 
-    [(DDScannerResult *)self setRange:v3 + v6, v8];
+    [(DDScannerResult *)self setRange:byCopy + v6, v8];
   }
 
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_initWithPlist:(id)a3
+- (id)_initWithPlist:(id)plist
 {
-  v4 = a3;
+  plistCopy = plist;
   v25.receiver = self;
   v25.super_class = DDScannerResult;
   v5 = [(DDScannerResult *)&v25 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"VN"];
-    v7 = [v6 longValue];
+    v6 = [plistCopy objectForKeyedSubscript:@"VN"];
+    longValue = [v6 longValue];
 
-    v8 = [v4 objectForKeyedSubscript:@"AR"];
-    v9 = [v8 rangeValue];
+    v8 = [plistCopy objectForKeyedSubscript:@"AR"];
+    rangeValue = [v8 rangeValue];
     v11 = v10;
 
-    v12 = [v4 objectForKeyedSubscript:@"T"];
-    *(v5 + 1) = DDResultCreate(v12, v9 << 32, (v9 + v11) << 32);
+    v12 = [plistCopy objectForKeyedSubscript:@"T"];
+    *(v5 + 1) = DDResultCreate(v12, rangeValue << 32, (rangeValue + v11) << 32);
 
     v13 = *(v5 + 1);
-    v14 = [v4 objectForKeyedSubscript:@"MS"];
+    v14 = [plistCopy objectForKeyedSubscript:@"MS"];
     DDResultSetMatchedString(v13, v14);
 
     v15 = *(v5 + 1);
-    *(v15 + 32) = v9;
+    *(v15 + 32) = rangeValue;
     *(v15 + 40) = v11;
-    if (v7)
+    if (longValue)
     {
-      v16 = [v4 objectForKeyedSubscript:@"P"];
+      v16 = [plistCopy objectForKeyedSubscript:@"P"];
       *(*(v5 + 1) + 96) = [v16 integerValue] & 0xFFFFFFFFFFFBFFFFLL;
     }
 
-    v17 = [v4 objectForKeyedSubscript:@"CF"];
+    v17 = [plistCopy objectForKeyedSubscript:@"CF"];
     v18 = v17;
     if (v17)
     {
@@ -341,19 +341,19 @@ LABEL_8:
       }
     }
 
-    v21 = [v4 objectForKeyedSubscript:@"V"];
+    v21 = [plistCopy objectForKeyedSubscript:@"V"];
     if (v21)
     {
       DDResultSetValue(*(v5 + 1), v21);
     }
 
-    v22 = [v4 objectForKeyedSubscript:@"C"];
+    v22 = [plistCopy objectForKeyedSubscript:@"C"];
     if (v22)
     {
       DDResultSetContextualData(*(v5 + 1), v22);
     }
 
-    v23 = [v4 objectForKeyedSubscript:@"SR"];
+    v23 = [plistCopy objectForKeyedSubscript:@"SR"];
     if (v23)
     {
       [v5 setSubResults:v23];
@@ -363,44 +363,44 @@ LABEL_8:
   return v5;
 }
 
-- (DDScannerResult)initWithCoder:(id)a3
+- (DDScannerResult)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E695DF90];
-  v5 = a3;
+  coderCopy = coder;
   v6 = [v4 dictionaryWithCapacity:9];
-  v7 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"AR"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AR"];
   [v6 setObject:v7 forKeyedSubscript:@"AR"];
 
-  v8 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"MS"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MS"];
   [v6 setObject:v8 forKeyedSubscript:@"MS"];
 
-  v9 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"T"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"T"];
   [v6 setObject:v9 forKeyedSubscript:@"T"];
 
-  v10 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v5, "decodeIntegerForKey:", @"P"}];
+  v10 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(coderCopy, "decodeIntegerForKey:", @"P"}];
   [v6 setObject:v10 forKeyedSubscript:@"P"];
 
   v11 = MEMORY[0x1E695DFD8];
   v12 = objc_opt_class();
   v13 = [v11 setWithObjects:{v12, objc_opt_class(), 0}];
-  v14 = [v5 decodeObjectOfClasses:v13 forKey:@"SR"];
+  v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"SR"];
   [v6 setObject:v14 forKeyedSubscript:@"SR"];
 
-  v15 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"V"];
+  v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"V"];
   [v6 setObject:v15 forKeyedSubscript:@"V"];
 
   v16 = MEMORY[0x1E695DFD8];
   v17 = objc_opt_class();
   v18 = objc_opt_class();
   v19 = [v16 setWithObjects:{v17, v18, objc_opt_class(), 0}];
-  v20 = [v5 decodeObjectOfClasses:v19 forKey:@"C"];
+  v20 = [coderCopy decodeObjectOfClasses:v19 forKey:@"C"];
   [v6 setObject:v20 forKeyedSubscript:@"C"];
 
-  v21 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"CF"];
+  v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CF"];
   [v6 setObject:v21 forKeyedSubscript:@"CF"];
 
   v22 = MEMORY[0x1E696AD98];
-  v23 = [v5 decodeIntegerForKey:@"VN"];
+  v23 = [coderCopy decodeIntegerForKey:@"VN"];
 
   v24 = [v22 numberWithInteger:v23];
   [v6 setObject:v24 forKeyedSubscript:@"VN"];
@@ -409,84 +409,84 @@ LABEL_8:
   return v25;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v20 = a3;
+  coderCopy = coder;
   v4 = MEMORY[0x1E696B098];
-  v5 = [(DDScannerResult *)self range];
-  v7 = [v4 valueWithRange:{v5, v6}];
-  [v20 encodeObject:v7 forKey:@"AR"];
+  range = [(DDScannerResult *)self range];
+  v7 = [v4 valueWithRange:{range, v6}];
+  [coderCopy encodeObject:v7 forKey:@"AR"];
 
-  v8 = [(DDScannerResult *)self matchedString];
-  [v20 encodeObject:v8 forKey:@"MS"];
+  matchedString = [(DDScannerResult *)self matchedString];
+  [coderCopy encodeObject:matchedString forKey:@"MS"];
 
-  v9 = [(DDScannerResult *)self type];
-  [v20 encodeObject:v9 forKey:@"T"];
+  type = [(DDScannerResult *)self type];
+  [coderCopy encodeObject:type forKey:@"T"];
 
-  [v20 encodeInteger:self->_coreResult->var9 & 0xFFFFFFFFFFFBFFFFLL forKey:@"P"];
-  v10 = [(DDScannerResult *)self subResults];
+  [coderCopy encodeInteger:self->_coreResult->var9 & 0xFFFFFFFFFFFBFFFFLL forKey:@"P"];
+  subResults = [(DDScannerResult *)self subResults];
 
-  if (v10)
+  if (subResults)
   {
-    v11 = [(DDScannerResult *)self subResults];
-    v12 = [v11 copy];
-    [v20 encodeObject:v12 forKey:@"SR"];
+    subResults2 = [(DDScannerResult *)self subResults];
+    v12 = [subResults2 copy];
+    [coderCopy encodeObject:v12 forKey:@"SR"];
   }
 
-  v13 = [(DDScannerResult *)self rawValue];
+  rawValue = [(DDScannerResult *)self rawValue];
 
-  if (v13)
+  if (rawValue)
   {
-    v14 = [(DDScannerResult *)self rawValue];
-    [v20 encodeObject:v14 forKey:@"V"];
+    rawValue2 = [(DDScannerResult *)self rawValue];
+    [coderCopy encodeObject:rawValue2 forKey:@"V"];
   }
 
-  v15 = [(DDScannerResult *)self contextualData];
+  contextualData = [(DDScannerResult *)self contextualData];
 
-  if (v15)
+  if (contextualData)
   {
-    v16 = [(DDScannerResult *)self contextualData];
-    v17 = [v16 copy];
-    [v20 encodeObject:v17 forKey:@"C"];
+    contextualData2 = [(DDScannerResult *)self contextualData];
+    v17 = [contextualData2 copy];
+    [coderCopy encodeObject:v17 forKey:@"C"];
   }
 
   if (DDResultHasContextualFloat(self->_coreResult))
   {
     *&v18 = DDResultGetContextualFloat(self->_coreResult);
     v19 = [MEMORY[0x1E696AD98] numberWithFloat:v18];
-    [v20 encodeObject:v19 forKey:@"CF"];
+    [coderCopy encodeObject:v19 forKey:@"CF"];
   }
 
-  [v20 encodeInteger:1 forKey:@"VN"];
+  [coderCopy encodeInteger:1 forKey:@"VN"];
 }
 
-- (id)_initWithWebKitPropertyListData:(id)a3
+- (id)_initWithWebKitPropertyListData:(id)data
 {
   v44 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"AR"];
+  dataCopy = data;
+  v5 = [dataCopy objectForKeyedSubscript:@"AR"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && !strcmp([v5 objCType], "{_NSRange=QQ}"))
   {
-    v6 = [v4 objectForKeyedSubscript:@"MS"];
+    v6 = [dataCopy objectForKeyedSubscript:@"MS"];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v8 = [v4 objectForKeyedSubscript:@"T"];
+      v8 = [dataCopy objectForKeyedSubscript:@"T"];
       objc_opt_class();
       v9 = objc_opt_isKindOfClass();
 
       if (v9)
       {
-        v10 = [v4 objectForKeyedSubscript:@"P"];
+        v10 = [dataCopy objectForKeyedSubscript:@"P"];
         objc_opt_class();
         v11 = objc_opt_isKindOfClass();
 
         if (v11)
         {
-          v12 = [v4 objectForKeyedSubscript:@"VN"];
+          v12 = [dataCopy objectForKeyedSubscript:@"VN"];
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
@@ -498,11 +498,11 @@ LABEL_8:
             goto LABEL_27;
           }
 
-          v13 = [v4 objectForKeyedSubscript:@"SR"];
+          v13 = [dataCopy objectForKeyedSubscript:@"SR"];
           if (v13)
           {
             v14 = v13;
-            v15 = [v4 objectForKeyedSubscript:@"SR"];
+            v15 = [dataCopy objectForKeyedSubscript:@"SR"];
             objc_opt_class();
             v16 = objc_opt_isKindOfClass();
 
@@ -517,7 +517,7 @@ LABEL_8:
           v42 = 0u;
           v39 = 0u;
           v40 = 0u;
-          v17 = [v4 objectForKeyedSubscript:@"SR"];
+          v17 = [dataCopy objectForKeyedSubscript:@"SR"];
           v18 = [v17 countByEnumeratingWithState:&v39 objects:v43 count:16];
           if (v18)
           {
@@ -555,29 +555,29 @@ LABEL_8:
             }
           }
 
-          v23 = [v4 objectForKeyedSubscript:@"V"];
+          v23 = [dataCopy objectForKeyedSubscript:@"V"];
           if (v23)
           {
             v24 = v23;
-            v25 = [v4 objectForKeyedSubscript:@"V"];
+            v25 = [dataCopy objectForKeyedSubscript:@"V"];
             objc_opt_class();
             v26 = objc_opt_isKindOfClass();
 
             if ((v26 & 1) == 0)
             {
 LABEL_30:
-              v35 = 0;
+              selfCopy = 0;
               v12 = v38;
               goto LABEL_28;
             }
           }
 
-          v27 = [v4 objectForKeyedSubscript:@"C"];
+          v27 = [dataCopy objectForKeyedSubscript:@"C"];
           v12 = v38;
           if (v27)
           {
             v28 = v27;
-            v29 = [v4 objectForKeyedSubscript:@"C"];
+            v29 = [dataCopy objectForKeyedSubscript:@"C"];
             objc_opt_class();
             v30 = objc_opt_isKindOfClass();
 
@@ -587,17 +587,17 @@ LABEL_30:
             }
           }
 
-          v31 = [v4 objectForKeyedSubscript:@"CF"];
-          if (!v31 || (v32 = v31, [v4 objectForKeyedSubscript:@"CF"], v33 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), v34 = objc_opt_isKindOfClass(), v33, v32, (v34 & 1) != 0))
+          v31 = [dataCopy objectForKeyedSubscript:@"CF"];
+          if (!v31 || (v32 = v31, [dataCopy objectForKeyedSubscript:@"CF"], v33 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), v34 = objc_opt_isKindOfClass(), v33, v32, (v34 & 1) != 0))
           {
-            self = [(DDScannerResult *)self _initWithPlist:v4];
-            v35 = self;
+            self = [(DDScannerResult *)self _initWithPlist:dataCopy];
+            selfCopy = self;
           }
 
           else
           {
 LABEL_27:
-            v35 = 0;
+            selfCopy = 0;
           }
 
 LABEL_28:
@@ -608,52 +608,52 @@ LABEL_28:
     }
   }
 
-  v35 = 0;
+  selfCopy = 0;
 LABEL_26:
 
   v36 = *MEMORY[0x1E69E9840];
-  return v35;
+  return selfCopy;
 }
 
 - (id)_webKitPropertyListData
 {
   v3 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:9];
   v4 = MEMORY[0x1E696B098];
-  v5 = [(DDScannerResult *)self range];
-  v7 = [v4 valueWithRange:{v5, v6}];
+  range = [(DDScannerResult *)self range];
+  v7 = [v4 valueWithRange:{range, v6}];
   [v3 setObject:v7 forKeyedSubscript:@"AR"];
 
-  v8 = [(DDScannerResult *)self matchedString];
-  [v3 setObject:v8 forKeyedSubscript:@"MS"];
+  matchedString = [(DDScannerResult *)self matchedString];
+  [v3 setObject:matchedString forKeyedSubscript:@"MS"];
 
-  v9 = [(DDScannerResult *)self type];
-  [v3 setObject:v9 forKeyedSubscript:@"T"];
+  type = [(DDScannerResult *)self type];
+  [v3 setObject:type forKeyedSubscript:@"T"];
 
-  v10 = [MEMORY[0x1E696AD98] numberWithLong:self->_coreResult->var9 & 0xFFFFFFFFFFFBFFFFLL];
-  [v3 setObject:v10 forKeyedSubscript:@"P"];
+  0xFFFFFFFFFFFBFFFFLL = [MEMORY[0x1E696AD98] numberWithLong:self->_coreResult->var9 & 0xFFFFFFFFFFFBFFFFLL];
+  [v3 setObject:0xFFFFFFFFFFFBFFFFLL forKeyedSubscript:@"P"];
 
-  v11 = [(DDScannerResult *)self subResults];
+  subResults = [(DDScannerResult *)self subResults];
 
-  if (v11)
+  if (subResults)
   {
-    v12 = [(DDScannerResult *)self subResults];
-    [v3 setObject:v12 forKeyedSubscript:@"SR"];
+    subResults2 = [(DDScannerResult *)self subResults];
+    [v3 setObject:subResults2 forKeyedSubscript:@"SR"];
   }
 
-  v13 = [(DDScannerResult *)self rawValue];
+  rawValue = [(DDScannerResult *)self rawValue];
 
-  if (v13)
+  if (rawValue)
   {
-    v14 = [(DDScannerResult *)self rawValue];
-    [v3 setObject:v14 forKeyedSubscript:@"V"];
+    rawValue2 = [(DDScannerResult *)self rawValue];
+    [v3 setObject:rawValue2 forKeyedSubscript:@"V"];
   }
 
-  v15 = [(DDScannerResult *)self contextualData];
+  contextualData = [(DDScannerResult *)self contextualData];
 
-  if (v15)
+  if (contextualData)
   {
-    v16 = [(DDScannerResult *)self contextualData];
-    [v3 setObject:v16 forKeyedSubscript:@"C"];
+    contextualData2 = [(DDScannerResult *)self contextualData];
+    [v3 setObject:contextualData2 forKeyedSubscript:@"C"];
   }
 
   if (DDResultHasContextualFloat(self->_coreResult))
@@ -669,7 +669,7 @@ LABEL_26:
   return v3;
 }
 
-- (BOOL)getDomesticIdentifier:(id *)a3 type:(id *)a4 countryCode:(id *)a5
+- (BOOL)getDomesticIdentifier:(id *)identifier type:(id *)type countryCode:(id *)code
 {
   v11 = 0;
   v12 = 0;
@@ -677,84 +677,84 @@ LABEL_26:
   v8 = DDResultCopyDomesticIdentifierValue(self->_coreResult, &v12, &v11, &v10);
   if (v8)
   {
-    if (a3)
+    if (identifier)
     {
-      *a3 = v12;
+      *identifier = v12;
     }
 
-    if (a4)
+    if (type)
     {
-      *a4 = v11;
+      *type = v11;
     }
 
-    if (a5)
+    if (code)
     {
-      *a5 = v10;
+      *code = v10;
     }
   }
 
   return v8 != 0;
 }
 
-- (BOOL)getStreet:(id *)a3 city:(id *)a4 state:(id *)a5 zip:(id *)a6 country:(id *)a7
+- (BOOL)getStreet:(id *)street city:(id *)city state:(id *)state zip:(id *)zip country:(id *)country
 {
-  if (a3)
+  if (street)
   {
     v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.value", @"Street"];
-    *a3 = [(DDScannerResult *)self valueForKeyPath:v13];
+    *street = [(DDScannerResult *)self valueForKeyPath:v13];
   }
 
-  if (a4)
+  if (city)
   {
     v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.value", @"City"];
-    *a4 = [(DDScannerResult *)self valueForKeyPath:v14];
+    *city = [(DDScannerResult *)self valueForKeyPath:v14];
   }
 
-  if (a6)
+  if (zip)
   {
     v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.value", @"ZipCode"];
-    *a6 = [(DDScannerResult *)self valueForKeyPath:v15];
+    *zip = [(DDScannerResult *)self valueForKeyPath:v15];
   }
 
-  if (a5)
+  if (state)
   {
     v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.value", @"State"];
-    *a5 = [(DDScannerResult *)self valueForKeyPath:v16];
+    *state = [(DDScannerResult *)self valueForKeyPath:v16];
   }
 
-  if (a7)
+  if (country)
   {
     v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.value", @"Country"];
-    *a7 = [(DDScannerResult *)self valueForKeyPath:v17];
+    *country = [(DDScannerResult *)self valueForKeyPath:v17];
   }
 
   return 1;
 }
 
-- (BOOL)getIMScreenNameValue:(id *)a3 type:(id *)a4
+- (BOOL)getIMScreenNameValue:(id *)value type:(id *)type
 {
   v7 = [(DDScannerResult *)self valueForKeyPath:@"Value"];
-  v8 = [v7 matchedString];
+  matchedString = [v7 matchedString];
 
-  if (a3)
+  if (value)
   {
-    v9 = v8;
-    *a3 = v8;
+    v9 = matchedString;
+    *value = matchedString;
   }
 
   v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.value", @"Label"];
   v11 = [(DDScannerResult *)self valueForKeyPath:v10];
 
-  if (a4)
+  if (type)
   {
     v12 = v11;
-    *a4 = v11;
+    *type = v11;
   }
 
-  if (v8)
+  if (matchedString)
   {
     v13 = 0;
-    if ([v8 length] && v11)
+    if ([matchedString length] && v11)
     {
       v13 = [v11 length] != 0;
     }
@@ -768,26 +768,26 @@ LABEL_26:
   return v13;
 }
 
-- (BOOL)getMailValue:(id *)a3 label:(id *)a4
+- (BOOL)getMailValue:(id *)value label:(id *)label
 {
   v7 = [(DDScannerResult *)self valueForKeyPath:@"Value"];
-  v8 = [v7 matchedString];
+  matchedString = [v7 matchedString];
 
-  if (a3)
+  if (value)
   {
-    v9 = v8;
-    *a3 = v8;
+    v9 = matchedString;
+    *value = matchedString;
   }
 
-  if (a4)
+  if (label)
   {
     v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.value", @"Label"];
-    *a4 = [(DDScannerResult *)self valueForKeyPath:v10];
+    *label = [(DDScannerResult *)self valueForKeyPath:v10];
   }
 
-  if (v8)
+  if (matchedString)
   {
-    v11 = [v8 length] != 0;
+    v11 = [matchedString length] != 0;
   }
 
   else
@@ -798,12 +798,12 @@ LABEL_26:
   return v11;
 }
 
-- (BOOL)getPhoneValue:(id *)a3 label:(id *)a4
+- (BOOL)getPhoneValue:(id *)value label:(id *)label
 {
   v11 = 0;
   v12 = 0;
   coreResult = self->_coreResult;
-  if (a3)
+  if (value)
   {
     v7 = &v12;
   }
@@ -813,7 +813,7 @@ LABEL_26:
     v7 = 0;
   }
 
-  if (a4)
+  if (label)
   {
     v8 = &v11;
   }
@@ -826,53 +826,53 @@ LABEL_26:
   v9 = DDResultCopyValueLabelValue(coreResult, v7, v8, 0);
   if (v12)
   {
-    *a3 = v12;
+    *value = v12;
   }
 
   if (v11)
   {
-    *a4 = v11;
+    *label = v11;
   }
 
   return v9 != 0;
 }
 
-- (BOOL)extractStartDate:(id *)a3 startTimezone:(id *)a4 endDate:(id *)a5 endTimezone:(id *)a6 allDayRef:(BOOL *)a7 referenceDate:(id)a8 referenceTimezone:(id)a9
+- (BOOL)extractStartDate:(id *)date startTimezone:(id *)timezone endDate:(id *)endDate endTimezone:(id *)endTimezone allDayRef:(BOOL *)ref referenceDate:(id)referenceDate referenceTimezone:(id)referenceTimezone
 {
   v23 = 0;
   v24 = 0;
   v21 = 0;
   v22 = 0;
   v20 = 0;
-  v16 = a9;
-  v17 = a8;
-  started = DDResultCopyExtractedStartDateEndDate([(DDScannerResult *)self coreResult], &v24, &v23, &v22, &v21, &v20, v17, v16);
+  referenceTimezoneCopy = referenceTimezone;
+  referenceDateCopy = referenceDate;
+  started = DDResultCopyExtractedStartDateEndDate([(DDScannerResult *)self coreResult], &v24, &v23, &v22, &v21, &v20, referenceDateCopy, referenceTimezoneCopy);
 
   if (started)
   {
-    if (a3)
+    if (date)
     {
-      *a3 = v24;
+      *date = v24;
     }
 
-    if (a4)
+    if (timezone)
     {
-      *a4 = v23;
+      *timezone = v23;
     }
 
-    if (a5)
+    if (endDate)
     {
-      *a5 = v22;
+      *endDate = v22;
     }
 
-    if (a6)
+    if (endTimezone)
     {
-      *a6 = v21;
+      *endTimezone = v21;
     }
 
-    if (a7)
+    if (ref)
     {
-      *a7 = v20;
+      *ref = v20;
     }
   }
 
@@ -899,28 +899,28 @@ LABEL_26:
   return started != 0;
 }
 
-- (id)dateFromReferenceDate:(id)a3 referenceTimezone:(id)a4 timezoneRef:(id *)a5 allDayRef:(BOOL *)a6
+- (id)dateFromReferenceDate:(id)date referenceTimezone:(id)timezone timezoneRef:(id *)ref allDayRef:(BOOL *)dayRef
 {
   v16 = 0;
   v14 = 0;
   v15 = 0;
-  v10 = a4;
-  v11 = a3;
-  LODWORD(self) = DDResultCopyExtractedDateFromReferenceDate([(DDScannerResult *)self coreResult], v11, v10, &v16, &v15, &v14);
+  timezoneCopy = timezone;
+  dateCopy = date;
+  LODWORD(self) = DDResultCopyExtractedDateFromReferenceDate([(DDScannerResult *)self coreResult], dateCopy, timezoneCopy, &v16, &v15, &v14);
 
   if (!self)
   {
     goto LABEL_6;
   }
 
-  if (a6)
+  if (dayRef)
   {
-    *a6 = v16;
+    *dayRef = v16;
   }
 
-  if (a5)
+  if (ref)
   {
-    *a5 = v14;
+    *ref = v14;
   }
 
   else
@@ -954,16 +954,16 @@ LABEL_6:
   return 0.0;
 }
 
-- (id)valueForUndefinedKey:(id)a3
+- (id)valueForUndefinedKey:(id)key
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  keyCopy = key;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(DDScannerResult *)self subResults];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  subResults = [(DDScannerResult *)self subResults];
+  v6 = [subResults countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = *v15;
@@ -973,12 +973,12 @@ LABEL_6:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(subResults);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 type];
-        v11 = [v10 isEqualToString:v4];
+        type = [v9 type];
+        v11 = [type isEqualToString:keyCopy];
 
         if (v11)
         {
@@ -987,7 +987,7 @@ LABEL_6:
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [subResults countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v6)
       {
         continue;
@@ -1004,13 +1004,13 @@ LABEL_11:
   return v6;
 }
 
-- (void)setSubResults:(id)a3
+- (void)setSubResults:(id)results
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (self->_subResultsCache != v5)
+  resultsCopy = results;
+  if (self->_subResultsCache != resultsCopy)
   {
-    objc_storeStrong(&self->_subResultsCache, a3);
+    objc_storeStrong(&self->_subResultsCache, results);
   }
 
   Mutable = CFArrayCreateMutable(0, 0, MEMORY[0x1E695E9C0]);
@@ -1018,7 +1018,7 @@ LABEL_11:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = v5;
+  v7 = resultsCopy;
   v8 = [(NSArray *)v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {
@@ -1050,12 +1050,12 @@ LABEL_11:
 
 - (id)subResults
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  subResultsCache = v2->_subResultsCache;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  subResultsCache = selfCopy->_subResultsCache;
   if (!subResultsCache)
   {
-    var4 = v2->_coreResult->var4;
+    var4 = selfCopy->_coreResult->var4;
     v5 = objc_alloc(MEMORY[0x1E695DF70]);
     if (var4)
     {
@@ -1084,32 +1084,32 @@ LABEL_11:
       }
     }
 
-    v11 = v2->_subResultsCache;
-    v2->_subResultsCache = v7;
+    v11 = selfCopy->_subResultsCache;
+    selfCopy->_subResultsCache = v7;
 
-    subResultsCache = v2->_subResultsCache;
+    subResultsCache = selfCopy->_subResultsCache;
   }
 
   v12 = subResultsCache;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (-[DDScannerResult type](self, "type"), v5 = objc_claimAutoreleasedReturnValue(), [v4 type], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v5, "isEqual:", v6), v6, v5, v7))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (-[DDScannerResult type](self, "type"), v5 = objc_claimAutoreleasedReturnValue(), [equalCopy type], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v5, "isEqual:", v6), v6, v5, v7))
   {
-    v8 = [(DDScannerResult *)self range];
+    range = [(DDScannerResult *)self range];
     v10 = v9;
     v12 = 0;
-    if (v8 == [v4 range] && v10 == v11)
+    if (range == [equalCopy range] && v10 == v11)
     {
-      v13 = [(DDScannerResult *)self subResults];
-      v14 = [v4 subResults];
-      v12 = [v13 isEqual:v14];
+      subResults = [(DDScannerResult *)self subResults];
+      subResults2 = [equalCopy subResults];
+      v12 = [subResults isEqual:subResults2];
     }
   }
 
@@ -1123,22 +1123,22 @@ LABEL_11:
 
 - (id)description
 {
-  v3 = [(DDScannerResult *)self type];
+  type = [(DDScannerResult *)self type];
 
   v4 = MEMORY[0x1E696AEC0];
-  if (v3)
+  if (type)
   {
-    v5 = [(DDScannerResult *)self type];
+    type2 = [(DDScannerResult *)self type];
     v10.location = [(DDScannerResult *)self range];
     v6 = NSStringFromRange(v10);
-    v7 = [v4 stringWithFormat:@"<Result:%@:%@>", v5, v6];
+    v7 = [v4 stringWithFormat:@"<Result:%@:%@>", type2, v6];
   }
 
   else
   {
     v11.location = [(DDScannerResult *)self range];
-    v5 = NSStringFromRange(v11);
-    v7 = [v4 stringWithFormat:@"<Result:%@>", v5];
+    type2 = NSStringFromRange(v11);
+    v7 = [v4 stringWithFormat:@"<Result:%@>", type2];
   }
 
   return v7;
@@ -1203,12 +1203,12 @@ LABEL_11:
   return result;
 }
 
-- (BOOL)typeIs:(__CFString *)a3
+- (BOOL)typeIs:(__CFString *)is
 {
   coreResult = self->_coreResult;
   if (coreResult)
   {
-    v4 = a3 == 0;
+    v4 = is == 0;
   }
 
   else
@@ -1216,7 +1216,7 @@ LABEL_11:
     v4 = 1;
   }
 
-  return !v4 && _typesAreEqual(coreResult->var5, a3);
+  return !v4 && _typesAreEqual(coreResult->var5, is);
 }
 
 - ($0AC6E346AE4835514AAA8AC86D8F4844)cfRange
@@ -1260,7 +1260,7 @@ LABEL_11:
   [(DDScannerResult *)&v4 dealloc];
 }
 
-- (DDScannerResult)initWithCoreResult:(__DDResult *)a3
+- (DDScannerResult)initWithCoreResult:(__DDResult *)result
 {
   v6.receiver = self;
   v6.super_class = DDScannerResult;
@@ -1270,14 +1270,14 @@ LABEL_11:
     goto LABEL_4;
   }
 
-  if (a3)
+  if (result)
   {
-    v4->_coreResult = CFRetain(a3);
+    v4->_coreResult = CFRetain(result);
 LABEL_4:
-    a3 = v4;
+    result = v4;
   }
 
-  return a3;
+  return result;
 }
 
 - (DDScannerResult)init
@@ -1294,20 +1294,20 @@ LABEL_4:
   return v2;
 }
 
-+ (id)resultFromText:(id)a3 personName:(id)a4 jobTitle:(id)a5 department:(id)a6 company:(id)a7
++ (id)resultFromText:(id)text personName:(id)name jobTitle:(id)title department:(id)department company:(id)company
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  if ([v11 length] && (v28 = xmmword_1BD018B90, ContactNameComponentInText = createContactNameComponentInText(v11, v12, @"NLPContactName", &v28), v17 = createContactNameComponentInText(v11, v13, @"JobTitle", &v28), v18 = createContactNameComponentInText(v11, v14, @"DepartmentName", &v28), v19 = createContactNameComponentInText(v11, v15, @"CompanyName", &v28), v20 = v28, v28 != 0x7FFFFFFFFFFFFFFFLL))
+  textCopy = text;
+  nameCopy = name;
+  titleCopy = title;
+  departmentCopy = department;
+  companyCopy = company;
+  if ([textCopy length] && (v28 = xmmword_1BD018B90, ContactNameComponentInText = createContactNameComponentInText(textCopy, nameCopy, @"NLPContactName", &v28), v17 = createContactNameComponentInText(textCopy, titleCopy, @"JobTitle", &v28), v18 = createContactNameComponentInText(textCopy, departmentCopy, @"DepartmentName", &v28), v19 = createContactNameComponentInText(textCopy, companyCopy, @"CompanyName", &v28), v20 = v28, v28 != 0x7FFFFFFFFFFFFFFFLL))
   {
     value = v18;
     v27 = v19;
     v22 = *(&v28 + 1);
     v23 = DDResultCreate(@"Contact", (v28 << 32) | 0x10000, ((DWORD2(v28) + v28) << 32) | 0x10000);
-    DDResultSetMatchedString(v23, [v11 substringWithRange:{v20, v22}]);
+    DDResultSetMatchedString(v23, [textCopy substringWithRange:{v20, v22}]);
     v23[4] = v20;
     v23[5] = v22;
     if (ContactNameComponentInText)
@@ -1339,35 +1339,35 @@ LABEL_4:
       CFRelease(v27);
     }
 
-    v21 = [DDScannerResult resultFromCoreResult:v23, value];
+    value = [DDScannerResult resultFromCoreResult:v23, value];
     CFRelease(v23);
   }
 
   else
   {
-    v21 = 0;
+    value = 0;
   }
 
-  return v21;
+  return value;
 }
 
-+ (id)filterResults:(id)a3 forTypes:(unint64_t)a4 referenceDate:(id)a5 referenceTimeZone:(id)a6
++ (id)filterResults:(id)results forTypes:(unint64_t)types referenceDate:(id)date referenceTimeZone:(id)zone
 {
   v30 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = [v10 count];
+  resultsCopy = results;
+  dateCopy = date;
+  zoneCopy = zone;
+  v13 = [resultsCopy count];
   if (v13)
   {
     v14 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v13];
-    v15 = [a1 shouldUrlifyBlockForTypes:a4];
+    v15 = [self shouldUrlifyBlockForTypes:types];
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v24 = v10;
-    v16 = v10;
+    v24 = resultsCopy;
+    v16 = resultsCopy;
     v17 = [v16 countByEnumeratingWithState:&v25 objects:v29 count:16];
     if (v17)
     {
@@ -1383,7 +1383,7 @@ LABEL_4:
           }
 
           v21 = *(*(&v25 + 1) + 8 * i);
-          if ((v15)[2](v15, [v21 coreResult], v11, v12))
+          if ((v15)[2](v15, [v21 coreResult], dateCopy, zoneCopy))
           {
             [v14 addObject:v21];
           }
@@ -1395,7 +1395,7 @@ LABEL_4:
       while (v18);
     }
 
-    v10 = v24;
+    resultsCopy = v24;
   }
 
   else
@@ -1408,13 +1408,13 @@ LABEL_4:
   return v14;
 }
 
-+ (id)shouldUrlifyBlockForTypes:(unint64_t)a3
++ (id)shouldUrlifyBlockForTypes:(unint64_t)types
 {
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __45__DDScannerResult_shouldUrlifyBlockForTypes___block_invoke;
   aBlock[3] = &__block_descriptor_40_e206_B32__0____DDResult____CFRuntimeBase_QAQ____DDQueryRange____DDQueryOffset_b16b16b32____DDQueryOffset_b16b16b32_____qq_q____CFArray_____CFString_____CFString__v____CFDictionary_qCf_8__NSDate_16__NSTimeZone_24l;
-  aBlock[4] = a3;
+  aBlock[4] = types;
   v3 = _Block_copy(aBlock);
   v4 = [v3 copy];
 
@@ -1592,13 +1592,13 @@ LABEL_7:
   return v11;
 }
 
-+ (__CFArray)coreResultsFromResults:(id)a3
++ (__CFArray)coreResultsFromResults:(id)results
 {
-  v3 = a3;
+  resultsCopy = results;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
-  v13 = [v3 count];
+  v13 = [resultsCopy count];
   v4 = v11[3];
   if (v4 <= 0)
   {
@@ -1615,7 +1615,7 @@ LABEL_7:
     v9[3] = &unk_1E8002A98;
     v9[4] = &v10;
     v9[5] = v5;
-    [v3 enumerateObjectsUsingBlock:v9];
+    [resultsCopy enumerateObjectsUsingBlock:v9];
     v6 = CFArrayCreate(0, v5, v11[3], MEMORY[0x1E695E9C0]);
     free(v5);
   }
@@ -1637,18 +1637,18 @@ uint64_t __42__DDScannerResult_coreResultsFromResults___block_invoke(uint64_t a1
   return result;
 }
 
-+ (id)resultsFromCoreResults:(__CFArray *)a3
++ (id)resultsFromCoreResults:(__CFArray *)results
 {
-  if (a3)
+  if (results)
   {
-    v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:CFArrayGetCount(a3)];
+    v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:CFArrayGetCount(results)];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __42__DDScannerResult_resultsFromCoreResults___block_invoke;
     v7[3] = &unk_1E8002A70;
     v5 = v4;
     v8 = v5;
-    [(__CFArray *)a3 enumerateObjectsUsingBlock:v7];
+    [(__CFArray *)results enumerateObjectsUsingBlock:v7];
   }
 
   else
@@ -1672,9 +1672,9 @@ void __42__DDScannerResult_resultsFromCoreResults___block_invoke(uint64_t a1, vo
   }
 }
 
-+ (id)resultFromCoreResult:(__DDResult *)a3
++ (id)resultFromCoreResult:(__DDResult *)result
 {
-  v3 = [[a1 alloc] initWithCoreResult:a3];
+  v3 = [[self alloc] initWithCoreResult:result];
 
   return v3;
 }

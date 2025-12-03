@@ -4,10 +4,10 @@
 - (CGSize)preferredContentSize;
 - (UIBarButtonItem)cancelButton;
 - (UIBarButtonItem)saveButton;
-- (void)cancel:(id)a3;
-- (void)save:(id)a3;
-- (void)setShowsCancelButton:(BOOL)a3;
-- (void)setShowsSaveButton:(BOOL)a3;
+- (void)cancel:(id)cancel;
+- (void)save:(id)save;
+- (void)setShowsCancelButton:(BOOL)button;
+- (void)setShowsSaveButton:(BOOL)button;
 @end
 
 @implementation AccessibilityPresentedListController
@@ -27,60 +27,60 @@
   return v3;
 }
 
-- (void)setShowsCancelButton:(BOOL)a3
+- (void)setShowsCancelButton:(BOOL)button
 {
-  if (self->_showsCancelButton != a3)
+  if (self->_showsCancelButton != button)
   {
-    self->_showsCancelButton = a3;
-    if (a3)
+    self->_showsCancelButton = button;
+    if (button)
     {
       v5 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:1 target:self action:"cancel:"];
-      v4 = [(AccessibilityPresentedListController *)self navigationItem];
-      [v4 setLeftBarButtonItem:v5];
+      navigationItem = [(AccessibilityPresentedListController *)self navigationItem];
+      [navigationItem setLeftBarButtonItem:v5];
     }
   }
 }
 
-- (void)setShowsSaveButton:(BOOL)a3
+- (void)setShowsSaveButton:(BOOL)button
 {
-  if (self->_showsSaveButton != a3)
+  if (self->_showsSaveButton != button)
   {
-    self->_showsSaveButton = a3;
-    if (a3)
+    self->_showsSaveButton = button;
+    if (button)
     {
       v5 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:3 target:self action:"save:"];
-      v4 = [(AccessibilityPresentedListController *)self navigationItem];
-      [v4 setRightBarButtonItem:v5];
+      navigationItem = [(AccessibilityPresentedListController *)self navigationItem];
+      [navigationItem setRightBarButtonItem:v5];
     }
   }
 }
 
 - (UIBarButtonItem)cancelButton
 {
-  v2 = [(AccessibilityPresentedListController *)self navigationItem];
-  v3 = [v2 leftBarButtonItem];
+  navigationItem = [(AccessibilityPresentedListController *)self navigationItem];
+  leftBarButtonItem = [navigationItem leftBarButtonItem];
 
-  return v3;
+  return leftBarButtonItem;
 }
 
 - (UIBarButtonItem)saveButton
 {
-  v2 = [(AccessibilityPresentedListController *)self navigationItem];
-  v3 = [v2 rightBarButtonItem];
+  navigationItem = [(AccessibilityPresentedListController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
 
-  return v3;
+  return rightBarButtonItem;
 }
 
-- (void)save:(id)a3
+- (void)save:(id)save
 {
-  v4 = [(AccessibilityPresentedListController *)self delegate];
-  [v4 presentedListControllerDidSave:self];
+  delegate = [(AccessibilityPresentedListController *)self delegate];
+  [delegate presentedListControllerDidSave:self];
 }
 
-- (void)cancel:(id)a3
+- (void)cancel:(id)cancel
 {
-  v4 = [(AccessibilityPresentedListController *)self delegate];
-  [v4 presentedListControllerDidCancel:self];
+  delegate = [(AccessibilityPresentedListController *)self delegate];
+  [delegate presentedListControllerDidCancel:self];
 }
 
 - (CGSize)preferredContentSize

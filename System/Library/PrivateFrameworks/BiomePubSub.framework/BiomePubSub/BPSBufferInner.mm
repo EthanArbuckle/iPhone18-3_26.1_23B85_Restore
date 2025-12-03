@@ -1,33 +1,33 @@
 @interface BPSBufferInner
-- (BPSBufferInner)initWithDownstream:(id)a3 size:(unint64_t)a4 prefetch:(unint64_t)a5 whenFull:(unint64_t)a6;
-- (id)_lockedPopWithDemand:(int64_t)a3;
+- (BPSBufferInner)initWithDownstream:(id)downstream size:(unint64_t)size prefetch:(unint64_t)prefetch whenFull:(unint64_t)full;
+- (id)_lockedPopWithDemand:(int64_t)demand;
 - (id)newBookmark;
 - (id)upstreamSubscriptions;
 - (int64_t)_drain;
-- (int64_t)receiveInput:(id)a3;
+- (int64_t)receiveInput:(id)input;
 - (void)cancel;
-- (void)receiveCompletion:(id)a3;
-- (void)receiveSubscription:(id)a3;
-- (void)requestDemand:(int64_t)a3;
+- (void)receiveCompletion:(id)completion;
+- (void)receiveSubscription:(id)subscription;
+- (void)requestDemand:(int64_t)demand;
 @end
 
 @implementation BPSBufferInner
 
-- (BPSBufferInner)initWithDownstream:(id)a3 size:(unint64_t)a4 prefetch:(unint64_t)a5 whenFull:(unint64_t)a6
+- (BPSBufferInner)initWithDownstream:(id)downstream size:(unint64_t)size prefetch:(unint64_t)prefetch whenFull:(unint64_t)full
 {
-  v11 = a3;
+  downstreamCopy = downstream;
   v19.receiver = self;
   v19.super_class = BPSBufferInner;
   v12 = [(BPSBufferInner *)&v19 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_downstream, a3);
-    v13->_size = a4;
-    v13->_prefetch = a5;
-    v13->_whenFull = a6;
+    objc_storeStrong(&v12->_downstream, downstream);
+    v13->_size = size;
+    v13->_prefetch = prefetch;
+    v13->_whenFull = full;
     v13->_lock._os_unfair_lock_opaque = 0;
-    v14 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:a4];
+    v14 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:size];
     values = v13->_values;
     v13->_values = v14;
 
@@ -39,70 +39,70 @@
   return v13;
 }
 
-- (void)requestDemand:(int64_t)a3
+- (void)requestDemand:(int64_t)demand
 {
-  v7 = self;
-  os_unfair_lock_lock(&v7->_lock);
-  if ([(BPSSubscriptionStatus *)v7->_status state]== 1)
+  selfCopy = self;
+  os_unfair_lock_lock(&selfCopy->_lock);
+  if ([(BPSSubscriptionStatus *)selfCopy->_status state]== 1)
   {
-    v4 = [(BPSSubscriptionStatus *)v7->_status subscription];
-    v7->_downstreamDemand += a3;
-    recursion = v7->_recursion;
-    os_unfair_lock_unlock(&v7->_lock);
+    subscription = [(BPSSubscriptionStatus *)selfCopy->_status subscription];
+    selfCopy->_downstreamDemand += demand;
+    recursion = selfCopy->_recursion;
+    os_unfair_lock_unlock(&selfCopy->_lock);
     if (!recursion)
     {
-      v6 = [(BPSBufferInner *)v7 _drain];
-      if (v6 >= 1)
+      _drain = [(BPSBufferInner *)selfCopy _drain];
+      if (_drain >= 1)
       {
-        [v4 requestDemand:v6];
+        [subscription requestDemand:_drain];
       }
     }
   }
 
   else
   {
-    os_unfair_lock_unlock(&v7->_lock);
+    os_unfair_lock_unlock(&selfCopy->_lock);
   }
 }
 
 - (void)cancel
 {
-  v7 = self;
-  os_unfair_lock_lock(&v7->_lock);
-  if ([(BPSSubscriptionStatus *)v7->_status state]== 1)
+  selfCopy = self;
+  os_unfair_lock_lock(&selfCopy->_lock);
+  if ([(BPSSubscriptionStatus *)selfCopy->_status state]== 1)
   {
-    v2 = [(BPSSubscriptionStatus *)v7->_status subscription];
+    subscription = [(BPSSubscriptionStatus *)selfCopy->_status subscription];
     v3 = +[BPSSubscriptionStatus terminal];
-    status = v7->_status;
-    v7->_status = v3;
+    status = selfCopy->_status;
+    selfCopy->_status = v3;
 
     v5 = objc_opt_new();
-    values = v7->_values;
-    v7->_values = v5;
+    values = selfCopy->_values;
+    selfCopy->_values = v5;
 
-    os_unfair_lock_unlock(&v7->_lock);
-    [v2 cancel];
+    os_unfair_lock_unlock(&selfCopy->_lock);
+    [subscription cancel];
   }
 
   else
   {
-    os_unfair_lock_unlock(&v7->_lock);
+    os_unfair_lock_unlock(&selfCopy->_lock);
   }
 }
 
-- (void)receiveSubscription:(id)a3
+- (void)receiveSubscription:(id)subscription
 {
-  v8 = a3;
+  subscriptionCopy = subscription;
   os_unfair_lock_lock(&self->_lock);
   if ([(BPSSubscriptionStatus *)self->_status state])
   {
     os_unfair_lock_unlock(&self->_lock);
-    [v8 cancel];
+    [subscriptionCopy cancel];
   }
 
   else
   {
-    v4 = [[BPSSubscriptionStatus alloc] initWithState:1 subscription:v8];
+    v4 = [[BPSSubscriptionStatus alloc] initWithState:1 subscription:subscriptionCopy];
     status = self->_status;
     self->_status = v4;
 
@@ -123,74 +123,74 @@
     }
 
     os_unfair_lock_unlock(&self->_lock);
-    [v8 requestDemand:size];
+    [subscriptionCopy requestDemand:size];
     [(BPSSubscriber *)self->_downstream receiveSubscription:self];
   }
 }
 
-- (int64_t)receiveInput:(id)a3
+- (int64_t)receiveInput:(id)input
 {
-  v4 = a3;
-  v5 = self;
-  os_unfair_lock_lock(&v5->_lock);
-  if ([(BPSSubscriptionStatus *)v5->_status state]== 1 && [(BPSCompletion *)v5->_terminal state]!= 1)
+  inputCopy = input;
+  selfCopy = self;
+  os_unfair_lock_lock(&selfCopy->_lock);
+  if ([(BPSSubscriptionStatus *)selfCopy->_status state]== 1 && [(BPSCompletion *)selfCopy->_terminal state]!= 1)
   {
-    if ([(NSMutableArray *)v5->_values count]>= v5->_size)
+    if ([(NSMutableArray *)selfCopy->_values count]>= selfCopy->_size)
     {
-      whenFull = v5->_whenFull;
+      whenFull = selfCopy->_whenFull;
       if (!whenFull)
       {
 LABEL_11:
-        os_unfair_lock_unlock(&v5->_lock);
-        v6 = [(BPSBufferInner *)v5 _drain];
+        os_unfair_lock_unlock(&selfCopy->_lock);
+        _drain = [(BPSBufferInner *)selfCopy _drain];
         goto LABEL_12;
       }
 
-      if (whenFull == 1 && [(NSMutableArray *)v5->_values count])
+      if (whenFull == 1 && [(NSMutableArray *)selfCopy->_values count])
       {
-        [(NSMutableArray *)v5->_values removeObjectAtIndex:0];
+        [(NSMutableArray *)selfCopy->_values removeObjectAtIndex:0];
       }
     }
 
-    if ([(NSMutableArray *)v5->_values count]< v5->_size)
+    if ([(NSMutableArray *)selfCopy->_values count]< selfCopy->_size)
     {
-      [(NSMutableArray *)v5->_values addObject:v4];
+      [(NSMutableArray *)selfCopy->_values addObject:inputCopy];
     }
 
     goto LABEL_11;
   }
 
-  os_unfair_lock_unlock(&v5->_lock);
-  v6 = 0;
+  os_unfair_lock_unlock(&selfCopy->_lock);
+  _drain = 0;
 LABEL_12:
 
-  return v6;
+  return _drain;
 }
 
-- (void)receiveCompletion:(id)a3
+- (void)receiveCompletion:(id)completion
 {
-  v8 = a3;
-  v5 = self;
-  os_unfair_lock_lock(&v5->_lock);
-  if ([(BPSSubscriptionStatus *)v5->_status state]!= 1)
+  completionCopy = completion;
+  selfCopy = self;
+  os_unfair_lock_lock(&selfCopy->_lock);
+  if ([(BPSSubscriptionStatus *)selfCopy->_status state]!= 1)
   {
     goto LABEL_4;
   }
 
-  if (v5->_terminal)
+  if (selfCopy->_terminal)
   {
     v6 = +[BPSSubscriptionStatus terminal];
-    status = v5->_status;
-    v5->_status = v6;
+    status = selfCopy->_status;
+    selfCopy->_status = v6;
 
 LABEL_4:
-    os_unfair_lock_unlock(&v5->_lock);
+    os_unfair_lock_unlock(&selfCopy->_lock);
     goto LABEL_5;
   }
 
-  objc_storeStrong(&v5->_terminal, a3);
-  os_unfair_lock_unlock(&v5->_lock);
-  [(BPSBufferInner *)v5 _drain];
+  objc_storeStrong(&selfCopy->_terminal, completion);
+  os_unfair_lock_unlock(&selfCopy->_lock);
+  [(BPSBufferInner *)selfCopy _drain];
 LABEL_5:
 }
 
@@ -299,8 +299,8 @@ LABEL_5:
 
       os_unfair_lock_unlock((self + v4));
       downstream = self->_downstream;
-      v21 = [(BPSCompletion *)self->_terminal error];
-      v22 = [BPSCompletion failureWithError:v21];
+      error = [(BPSCompletion *)self->_terminal error];
+      v22 = [BPSCompletion failureWithError:error];
       [(BPSSubscriber *)downstream receiveCompletion:v22];
 
       goto LABEL_25;
@@ -322,9 +322,9 @@ LABEL_25:
   return v5;
 }
 
-- (id)_lockedPopWithDemand:(int64_t)a3
+- (id)_lockedPopWithDemand:(int64_t)demand
 {
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL || [(NSMutableArray *)self->_values count]<= a3)
+  if (demand == 0x7FFFFFFFFFFFFFFFLL || [(NSMutableArray *)self->_values count]<= demand)
   {
     v7 = self->_values;
     v8 = objc_opt_new();
@@ -334,15 +334,15 @@ LABEL_25:
 
   else
   {
-    v5 = a3 - 1;
-    if (a3 < 1)
+    v5 = demand - 1;
+    if (demand < 1)
     {
       v7 = 0;
     }
 
     else
     {
-      v6 = [(NSMutableArray *)self->_values subarrayWithRange:0, a3 - 1];
+      v6 = [(NSMutableArray *)self->_values subarrayWithRange:0, demand - 1];
       v7 = [v6 mutableCopy];
 
       [(NSMutableArray *)self->_values removeObjectsInRange:0, v5];
@@ -355,13 +355,13 @@ LABEL_25:
 - (id)newBookmark
 {
   v28 = *MEMORY[0x1E69E9840];
-  v2 = [(BPSBufferInner *)self upstreamSubscriptions];
+  upstreamSubscriptions = [(BPSBufferInner *)self upstreamSubscriptions];
   v3 = [MEMORY[0x1E695E0F0] mutableCopy];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v4 = v2;
+  v4 = upstreamSubscriptions;
   v5 = [v4 countByEnumeratingWithState:&v21 objects:v27 count:16];
   if (v5)
   {
@@ -379,8 +379,8 @@ LABEL_25:
         v9 = *(*(&v21 + 1) + 8 * i);
         if ([v9 conformsToProtocol:&unk_1F4871E60])
         {
-          v10 = [v9 newBookmark];
-          if (v10)
+          newBookmark = [v9 newBookmark];
+          if (newBookmark)
           {
             goto LABEL_13;
           }
@@ -397,10 +397,10 @@ LABEL_25:
           }
         }
 
-        v10 = [MEMORY[0x1E695DFB0] null];
+        newBookmark = [MEMORY[0x1E695DFB0] null];
 LABEL_13:
-        v12 = v10;
-        [v3 addObject:v10];
+        v12 = newBookmark;
+        [v3 addObject:newBookmark];
       }
 
       v6 = [v4 countByEnumeratingWithState:&v21 objects:v27 count:16];
@@ -425,9 +425,9 @@ LABEL_13:
   os_unfair_lock_lock(&self->_lock);
   if ([(BPSSubscriptionStatus *)self->_status state]== 1)
   {
-    v3 = [(BPSSubscriptionStatus *)self->_status subscription];
+    subscription = [(BPSSubscriptionStatus *)self->_status subscription];
     os_unfair_lock_unlock(&self->_lock);
-    v7[0] = v3;
+    v7[0] = subscription;
     v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v7 count:1];
   }
 

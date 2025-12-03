@@ -1,42 +1,42 @@
 @interface DetailHeaderAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (BOOL)_axIsCollaborativeForModelPlaylist:(id)a3;
-- (id)_axCuratorNameForPlaylist:(id)a3;
-- (id)_axLabelForActionButtonForContainerProperties:(id)a3;
-- (id)_axNameForAuthor:(id)a3;
-- (id)_axOwnerNameForPlaylist:(id)a3;
-- (id)_axStringForActiveCallaborators:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (BOOL)_axIsCollaborativeForModelPlaylist:(id)playlist;
+- (id)_axCuratorNameForPlaylist:(id)playlist;
+- (id)_axLabelForActionButtonForContainerProperties:(id)properties;
+- (id)_axNameForAuthor:(id)author;
+- (id)_axOwnerNameForPlaylist:(id)playlist;
+- (id)_axStringForActiveCallaborators:(id)callaborators;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)layoutSubviews;
 @end
 
 @implementation DetailHeaderAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MusicApplication.DetailHeader" hasInstanceMethod:@"layoutSubviews" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"MusicApplication.DetailHeader" hasInstanceMethod:@"accessibilityPlaylistVisibilitySwitchContainerView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MusicApplication.DetailHeader" hasInstanceMethod:@"accessibilityIsVisiblePlaylistTitle" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MusicApplication.DetailHeader" hasInstanceMethod:@"accessibilityArtworkEditingOverlayView" withFullSignature:{"@", 0}];
-  [v3 validateSwiftStruct:@"MusicApplication.ContainerDetailPlaylistProperties"];
-  [v3 validateClass:@"MusicApplication.PlaylistDetailViewController" hasSwiftField:@"containerProperties" withSwiftType:"Optional<ContainerDetailPlaylistProperties>"];
-  [v3 validateSwiftStruct:@"MusicApplication.ContainerDetailPlaylistProperties" hasSwiftField:@"activeCollaborators" withSwiftType:"Optional<Array<MPModelPlaylistAuthor>>"];
-  [v3 validateSwiftStruct:@"MusicApplication.ContainerDetailPlaylistProperties" hasSwiftField:@"modelObject" withSwiftType:"Optional<MPModelPlaylist>"];
-  [v3 validateClass:@"MusicApplication.DetailHeader" hasSwiftField:@"detailsView" withSwiftType:"DetailsView"];
-  [v3 validateClass:@"MusicApplication.DetailHeader[class].DetailsView" hasSwiftField:@"actionButton" withSwiftType:"TextButton"];
-  [v3 validateClass:@"MPModelObject"];
-  [v3 validateClass:@"MPModelObject" hasInstanceMethod:@"hasLoadedValueForKey:" withFullSignature:{"B", "@", 0}];
-  [v3 validateClass:@"MPModelPlaylist"];
-  [v3 validateClass:@"MPModelPlaylist" isKindOfClass:@"MPModelObject"];
-  [v3 validateClass:@"MPModelPlaylist" hasInstanceMethod:@"collaboratorStatus" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"MPModelPlaylist" hasInstanceMethod:@"curator" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MPModelPlaylist" hasInstanceMethod:@"ownerName" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MPModelCurator" hasInstanceMethod:@"name" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MPModelPlaylistAuthor"];
-  [v3 validateClass:@"MPModelPlaylistAuthor" isKindOfClass:@"MPModelObject"];
-  [v3 validateClass:@"MPModelPlaylistAuthor" hasInstanceMethod:@"socialProfile" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MPModelSocialPerson" hasInstanceMethod:@"name" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MusicApplication.DetailHeader" hasInstanceMethod:@"layoutSubviews" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"MusicApplication.DetailHeader" hasInstanceMethod:@"accessibilityPlaylistVisibilitySwitchContainerView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MusicApplication.DetailHeader" hasInstanceMethod:@"accessibilityIsVisiblePlaylistTitle" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MusicApplication.DetailHeader" hasInstanceMethod:@"accessibilityArtworkEditingOverlayView" withFullSignature:{"@", 0}];
+  [validationsCopy validateSwiftStruct:@"MusicApplication.ContainerDetailPlaylistProperties"];
+  [validationsCopy validateClass:@"MusicApplication.PlaylistDetailViewController" hasSwiftField:@"containerProperties" withSwiftType:"Optional<ContainerDetailPlaylistProperties>"];
+  [validationsCopy validateSwiftStruct:@"MusicApplication.ContainerDetailPlaylistProperties" hasSwiftField:@"activeCollaborators" withSwiftType:"Optional<Array<MPModelPlaylistAuthor>>"];
+  [validationsCopy validateSwiftStruct:@"MusicApplication.ContainerDetailPlaylistProperties" hasSwiftField:@"modelObject" withSwiftType:"Optional<MPModelPlaylist>"];
+  [validationsCopy validateClass:@"MusicApplication.DetailHeader" hasSwiftField:@"detailsView" withSwiftType:"DetailsView"];
+  [validationsCopy validateClass:@"MusicApplication.DetailHeader[class].DetailsView" hasSwiftField:@"actionButton" withSwiftType:"TextButton"];
+  [validationsCopy validateClass:@"MPModelObject"];
+  [validationsCopy validateClass:@"MPModelObject" hasInstanceMethod:@"hasLoadedValueForKey:" withFullSignature:{"B", "@", 0}];
+  [validationsCopy validateClass:@"MPModelPlaylist"];
+  [validationsCopy validateClass:@"MPModelPlaylist" isKindOfClass:@"MPModelObject"];
+  [validationsCopy validateClass:@"MPModelPlaylist" hasInstanceMethod:@"collaboratorStatus" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"MPModelPlaylist" hasInstanceMethod:@"curator" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MPModelPlaylist" hasInstanceMethod:@"ownerName" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MPModelCurator" hasInstanceMethod:@"name" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MPModelPlaylistAuthor"];
+  [validationsCopy validateClass:@"MPModelPlaylistAuthor" isKindOfClass:@"MPModelObject"];
+  [validationsCopy validateClass:@"MPModelPlaylistAuthor" hasInstanceMethod:@"socialProfile" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MPModelSocialPerson" hasInstanceMethod:@"name" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -62,8 +62,8 @@
   v9 = v8;
   if (v8)
   {
-    v10 = [v8 _accessibilityViewController];
-    v11 = [v10 safeSwiftValueForKey:@"containerProperties"];
+    _accessibilityViewController = [v8 _accessibilityViewController];
+    v11 = [_accessibilityViewController safeSwiftValueForKey:@"containerProperties"];
     v12 = __UIAccessibilityCastAsSwiftStruct();
 
     if (v12)
@@ -93,15 +93,15 @@ uint64_t __71__DetailHeaderAccessibility__accessibilityLoadAccessibilityInformat
   [(DetailHeaderAccessibility *)self _accessibilityLoadAccessibilityInformation];
 }
 
-- (id)_axLabelForActionButtonForContainerProperties:(id)a3
+- (id)_axLabelForActionButtonForContainerProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   objc_opt_class();
-  v5 = [v4 safeSwiftArrayForKey:@"activeCollaborators"];
+  v5 = [propertiesCopy safeSwiftArrayForKey:@"activeCollaborators"];
   v6 = __UIAccessibilityCastAsClass();
 
   objc_opt_class();
-  v7 = [v4 safeSwiftValueForKey:@"modelObject"];
+  v7 = [propertiesCopy safeSwiftValueForKey:@"modelObject"];
   v8 = __UIAccessibilityCastAsClass();
 
   if (-[DetailHeaderAccessibility _axIsCollaborativeForModelPlaylist:](self, "_axIsCollaborativeForModelPlaylist:", v8) && [v6 count])
@@ -129,12 +129,12 @@ uint64_t __71__DetailHeaderAccessibility__accessibilityLoadAccessibilityInformat
   return v9;
 }
 
-- (id)_axStringForActiveCallaborators:(id)a3
+- (id)_axStringForActiveCallaborators:(id)callaborators
 {
-  v4 = a3;
-  v5 = [v4 objectAtIndex:0];
+  callaboratorsCopy = callaborators;
+  v5 = [callaboratorsCopy objectAtIndex:0];
   v6 = [(DetailHeaderAccessibility *)self _axNameForAuthor:v5];
-  if ([v4 count] < 2)
+  if ([callaboratorsCopy count] < 2)
   {
     v9 = v6;
   }
@@ -143,18 +143,18 @@ uint64_t __71__DetailHeaderAccessibility__accessibilityLoadAccessibilityInformat
   {
     v7 = MEMORY[0x29EDBA0F8];
     v8 = accessibilityMusicLocalizedString(@"PLAYLIST_CURATORS_COUNT");
-    v9 = [v7 localizedStringWithFormat:v8, v6, objc_msgSend(v4, "count") - 1];
+    v9 = [v7 localizedStringWithFormat:v8, v6, objc_msgSend(callaboratorsCopy, "count") - 1];
   }
 
   return v9;
 }
 
-- (BOOL)_axIsCollaborativeForModelPlaylist:(id)a3
+- (BOOL)_axIsCollaborativeForModelPlaylist:(id)playlist
 {
-  v3 = a3;
-  if ([v3 hasLoadedValueForKey:*MEMORY[0x29EDBB2C8]])
+  playlistCopy = playlist;
+  if ([playlistCopy hasLoadedValueForKey:*MEMORY[0x29EDBB2C8]])
   {
-    v4 = ([v3 collaboratorStatus] - 2) < 3;
+    v4 = ([playlistCopy collaboratorStatus] - 2) < 3;
   }
 
   else
@@ -165,29 +165,29 @@ uint64_t __71__DetailHeaderAccessibility__accessibilityLoadAccessibilityInformat
   return v4;
 }
 
-- (id)_axCuratorNameForPlaylist:(id)a3
+- (id)_axCuratorNameForPlaylist:(id)playlist
 {
-  v3 = a3;
-  if ([v3 hasLoadedValueForKey:*MEMORY[0x29EDBB2E0]] && (objc_msgSend(v3, "curator"), v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "hasLoadedValueForKey:", *MEMORY[0x29EDBB2B8]), v4, v5))
+  playlistCopy = playlist;
+  if ([playlistCopy hasLoadedValueForKey:*MEMORY[0x29EDBB2E0]] && (objc_msgSend(playlistCopy, "curator"), v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "hasLoadedValueForKey:", *MEMORY[0x29EDBB2B8]), v4, v5))
   {
-    v6 = [v3 curator];
-    v7 = [v6 name];
+    curator = [playlistCopy curator];
+    name = [curator name];
   }
 
   else
   {
-    v7 = 0;
+    name = 0;
   }
 
-  return v7;
+  return name;
 }
 
-- (id)_axOwnerNameForPlaylist:(id)a3
+- (id)_axOwnerNameForPlaylist:(id)playlist
 {
-  v3 = a3;
-  if ([v3 hasLoadedValueForKey:*MEMORY[0x29EDBB2D0]])
+  playlistCopy = playlist;
+  if ([playlistCopy hasLoadedValueForKey:*MEMORY[0x29EDBB2D0]])
   {
-    v4 = [v3 safeStringForKey:@"ownerName"];
+    v4 = [playlistCopy safeStringForKey:@"ownerName"];
   }
 
   else
@@ -198,21 +198,21 @@ uint64_t __71__DetailHeaderAccessibility__accessibilityLoadAccessibilityInformat
   return v4;
 }
 
-- (id)_axNameForAuthor:(id)a3
+- (id)_axNameForAuthor:(id)author
 {
-  v3 = a3;
-  if ([v3 hasLoadedValueForKey:*MEMORY[0x29EDBB2D8]] && (objc_msgSend(v3, "socialProfile"), v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "hasLoadedValueForKey:", *MEMORY[0x29EDBB2C0]), v4, v5))
+  authorCopy = author;
+  if ([authorCopy hasLoadedValueForKey:*MEMORY[0x29EDBB2D8]] && (objc_msgSend(authorCopy, "socialProfile"), v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "hasLoadedValueForKey:", *MEMORY[0x29EDBB2C0]), v4, v5))
   {
-    v6 = [v3 socialProfile];
-    v7 = [v6 name];
+    socialProfile = [authorCopy socialProfile];
+    name = [socialProfile name];
   }
 
   else
   {
-    v7 = 0;
+    name = 0;
   }
 
-  return v7;
+  return name;
 }
 
 @end

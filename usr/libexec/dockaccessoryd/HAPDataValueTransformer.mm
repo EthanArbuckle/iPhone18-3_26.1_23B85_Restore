@@ -1,15 +1,15 @@
 @interface HAPDataValueTransformer
-+ (Class)expectedTransformedClassForFormat:(unint64_t)a3;
++ (Class)expectedTransformedClassForFormat:(unint64_t)format;
 + (void)initialize;
-- (id)reverseTransformedValue:(id)a3 format:(unint64_t)a4 error:(id *)a5;
-- (id)transformedValue:(id)a3 format:(unint64_t)a4 error:(id *)a5;
+- (id)reverseTransformedValue:(id)value format:(unint64_t)format error:(id *)error;
+- (id)transformedValue:(id)value format:(unint64_t)format error:(id *)error;
 @end
 
 @implementation HAPDataValueTransformer
 
-+ (Class)expectedTransformedClassForFormat:(unint64_t)a3
++ (Class)expectedTransformedClassForFormat:(unint64_t)format
 {
-  if (a3 - 1 > 0xC)
+  if (format - 1 > 0xC)
   {
     v4 = 0;
   }
@@ -32,12 +32,12 @@
   }
 }
 
-- (id)transformedValue:(id)a3 format:(unint64_t)a4 error:(id *)a5
+- (id)transformedValue:(id)value format:(unint64_t)format error:(id *)error
 {
-  v8 = a3;
-  if (!v8)
+  valueCopy = value;
+  if (!valueCopy)
   {
-    if ([HAPDataValueTransformer isValidFormat:a4])
+    if ([HAPDataValueTransformer isValidFormat:format])
     {
       v11 = +[NSData data];
 LABEL_11:
@@ -50,26 +50,26 @@ LABEL_11:
 
   v31.receiver = self;
   v31.super_class = HAPDataValueTransformer;
-  v9 = [(HAPValueTransformer *)&v31 transformedValue:v8 format:a4 error:a5];
-  v10 = [v8 isEqual:v9];
+  v9 = [(HAPValueTransformer *)&v31 transformedValue:valueCopy format:format error:error];
+  v10 = [valueCopy isEqual:v9];
 
   if ((v10 & 1) == 0)
   {
     goto LABEL_17;
   }
 
-  if (![HAPDataValueTransformer isValidFormat:a4])
+  if (![HAPDataValueTransformer isValidFormat:format])
   {
 LABEL_9:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
 LABEL_10:
-      v11 = v8;
+      v11 = valueCopy;
       goto LABEL_11;
     }
 
-    v13 = sub_10007685C(a4);
+    v13 = sub_10007685C(format);
     v14 = [NSString stringWithFormat:@"Invalid format type '%@' for value of class '%@'", v13, objc_opt_class()];
 
     v15 = sub_10007FAA0();
@@ -83,12 +83,12 @@ LABEL_10:
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "%{public}@[HAPDataValueTransformer] %@", buf, 0x16u);
     }
 
-    if (a5)
+    if (error)
     {
       v37 = NSLocalizedDescriptionKey;
       v38 = v14;
       v17 = [NSDictionary dictionaryWithObjects:&v38 forKeys:&v37 count:1];
-      *a5 = [NSError errorWithDomain:@"HAPErrorDomain" code:-6717 userInfo:v17];
+      *error = [NSError errorWithDomain:@"HAPErrorDomain" code:-6717 userInfo:v17];
     }
 
 LABEL_17:
@@ -96,7 +96,7 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  switch(a4)
+  switch(format)
   {
     case 1uLL:
       objc_opt_class();
@@ -105,13 +105,13 @@ LABEL_17:
         goto LABEL_67;
       }
 
-      v19 = v8;
+      v19 = valueCopy;
       if ([v19 compare:&off_100282308] == 1 || objc_msgSend(v19, "compare:", &off_100282320) == -1)
       {
         goto LABEL_63;
       }
 
-      v20 = [v19 unsignedCharValue];
+      unsignedCharValue = [v19 unsignedCharValue];
       goto LABEL_46;
     case 2uLL:
       objc_opt_class();
@@ -120,13 +120,13 @@ LABEL_17:
         goto LABEL_67;
       }
 
-      v19 = v8;
+      v19 = valueCopy;
       if ([v19 compare:&off_100282338] == 1 || objc_msgSend(v19, "compare:", &off_100282320) == -1)
       {
         goto LABEL_63;
       }
 
-      v25 = [v19 unsignedShortValue];
+      unsignedShortValue = [v19 unsignedShortValue];
       goto LABEL_55;
     case 3uLL:
       objc_opt_class();
@@ -135,13 +135,13 @@ LABEL_17:
         goto LABEL_67;
       }
 
-      v19 = v8;
+      v19 = valueCopy;
       if ([v19 compare:&off_100282350] == 1 || objc_msgSend(v19, "compare:", &off_100282320) == -1)
       {
         goto LABEL_63;
       }
 
-      v22 = [v19 unsignedIntValue];
+      unsignedIntValue = [v19 unsignedIntValue];
       goto LABEL_60;
     case 4uLL:
       objc_opt_class();
@@ -150,13 +150,13 @@ LABEL_17:
         goto LABEL_67;
       }
 
-      v19 = v8;
+      v19 = valueCopy;
       if ([v19 compare:&off_100282368] == 1 || objc_msgSend(v19, "compare:", &off_100282320) == -1)
       {
         goto LABEL_63;
       }
 
-      v23 = [v19 unsignedLongLongValue];
+      unsignedLongLongValue = [v19 unsignedLongLongValue];
       goto LABEL_41;
     case 5uLL:
       objc_opt_class();
@@ -165,15 +165,15 @@ LABEL_17:
         goto LABEL_67;
       }
 
-      v19 = v8;
+      v19 = valueCopy;
       if ([v19 compare:&off_100282248] == 1 || objc_msgSend(v19, "compare:", &off_100282260) == -1)
       {
         goto LABEL_63;
       }
 
-      v20 = [v19 charValue];
+      unsignedCharValue = [v19 charValue];
 LABEL_46:
-      buf[0] = v20;
+      buf[0] = unsignedCharValue;
       v24 = 1;
       goto LABEL_62;
     case 6uLL:
@@ -183,15 +183,15 @@ LABEL_46:
         goto LABEL_67;
       }
 
-      v19 = v8;
+      v19 = valueCopy;
       if ([v19 compare:&off_100282278] == 1 || objc_msgSend(v19, "compare:", &off_100282290) == -1)
       {
         goto LABEL_63;
       }
 
-      v25 = [v19 shortValue];
+      unsignedShortValue = [v19 shortValue];
 LABEL_55:
-      *buf = v25;
+      *buf = unsignedShortValue;
       v24 = 2;
       goto LABEL_62;
     case 7uLL:
@@ -201,15 +201,15 @@ LABEL_55:
         goto LABEL_67;
       }
 
-      v19 = v8;
+      v19 = valueCopy;
       if ([v19 compare:&off_1002822A8] == 1 || objc_msgSend(v19, "compare:", &off_1002822C0) == -1)
       {
         goto LABEL_63;
       }
 
-      v22 = [v19 intValue];
+      unsignedIntValue = [v19 intValue];
 LABEL_60:
-      *buf = v22;
+      *buf = unsignedIntValue;
       goto LABEL_61;
     case 8uLL:
       objc_opt_class();
@@ -218,25 +218,25 @@ LABEL_60:
         goto LABEL_67;
       }
 
-      v19 = v8;
+      v19 = valueCopy;
       if ([v19 compare:&off_1002822D8] == 1 || objc_msgSend(v19, "compare:", &off_1002822F0) == -1)
       {
         goto LABEL_63;
       }
 
-      v23 = [v19 longLongValue];
+      unsignedLongLongValue = [v19 longLongValue];
 LABEL_41:
-      *buf = v23;
+      *buf = unsignedLongLongValue;
       v24 = 8;
       goto LABEL_62;
     case 9uLL:
       buf[0] = 0;
-      if ([v8 isEqual:&__kCFBooleanFalse])
+      if ([valueCopy isEqual:&__kCFBooleanFalse])
       {
         goto LABEL_74;
       }
 
-      if (![v8 isEqual:&__kCFBooleanTrue])
+      if (![valueCopy isEqual:&__kCFBooleanTrue])
       {
         goto LABEL_17;
       }
@@ -252,7 +252,7 @@ LABEL_74:
         goto LABEL_67;
       }
 
-      v19 = v8;
+      v19 = valueCopy;
       if ([v19 compare:&off_100282448] == 1 || objc_msgSend(v19, "compare:", &off_100282458) == -1)
       {
 LABEL_63:
@@ -277,7 +277,7 @@ LABEL_62:
         goto LABEL_67;
       }
 
-      v11 = [v8 dataUsingEncoding:4];
+      v11 = [valueCopy dataUsingEncoding:4];
       goto LABEL_11;
     case 0xCuLL:
     case 0xDuLL:
@@ -294,7 +294,7 @@ LABEL_67:
       if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
       {
         v27 = sub_10007FAFC(0);
-        v28 = sub_10007685C(a4);
+        v28 = sub_10007685C(format);
         v29 = objc_opt_class();
         *buf = 138543874;
         *&buf[4] = v27;
@@ -306,13 +306,13 @@ LABEL_67:
         _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_ERROR, "%{public}@[HAPDataValueTransformer] Invalid format/class (%@/%@) combination.", buf, 0x20u);
       }
 
-      if (!a5)
+      if (!error)
       {
         goto LABEL_17;
       }
 
       [NSError errorWithDomain:@"HAPErrorDomain" code:-6737 userInfo:0];
-      *a5 = v12 = 0;
+      *error = v12 = 0;
       break;
   }
 
@@ -321,15 +321,15 @@ LABEL_18:
   return v12;
 }
 
-- (id)reverseTransformedValue:(id)a3 format:(unint64_t)a4 error:(id *)a5
+- (id)reverseTransformedValue:(id)value format:(unint64_t)format error:(id *)error
 {
-  v8 = a3;
-  if (v8)
+  valueCopy = value;
+  if (valueCopy)
   {
     v24.receiver = self;
     v24.super_class = HAPDataValueTransformer;
-    v9 = [(HAPValueTransformer *)&v24 reverseTransformedValue:v8 format:a4 error:a5];
-    v10 = [v8 isEqual:v9];
+    v9 = [(HAPValueTransformer *)&v24 reverseTransformedValue:valueCopy format:format error:error];
+    v10 = [valueCopy isEqual:v9];
 
     if (!v10)
     {
@@ -338,15 +338,15 @@ LABEL_18:
     }
   }
 
-  if ([HAPDataValueTransformer isValidFormat:a4])
+  if ([HAPDataValueTransformer isValidFormat:format])
   {
-    v11 = v8;
+    v11 = valueCopy;
     v12 = v11;
-    if (a4 <= 5)
+    if (format <= 5)
     {
-      if (a4 > 2)
+      if (format > 2)
       {
-        if (a4 == 3)
+        if (format == 3)
         {
           if ([v11 length] == 4)
           {
@@ -355,7 +355,7 @@ LABEL_18:
           }
         }
 
-        else if (a4 == 4)
+        else if (format == 4)
         {
           if ([v11 length] == 8)
           {
@@ -380,21 +380,21 @@ LABEL_47:
         if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
         {
           v20 = sub_10007FAFC(0);
-          v21 = sub_10007685C(a4);
+          v21 = sub_10007685C(format);
           v22 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v12 length]);
           *buf = 138543874;
           v26 = v20;
           v27 = 2112;
-          v28 = v21;
+          formatCopy = v21;
           v29 = 2112;
           v30 = v22;
           _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_ERROR, "%{public}@[HAPDataValueTransformer] Invalid format/data length (%@/%@) combination.", buf, 0x20u);
         }
 
-        if (a5)
+        if (error)
         {
           [NSError errorWithDomain:@"HAPErrorDomain" code:-6737 userInfo:0];
-          *a5 = v16 = 0;
+          *error = v16 = 0;
         }
 
         else
@@ -406,7 +406,7 @@ LABEL_52:
         goto LABEL_53;
       }
 
-      if (a4 == 1)
+      if (format == 1)
       {
         if ([v11 length] == 1)
         {
@@ -417,7 +417,7 @@ LABEL_52:
         goto LABEL_47;
       }
 
-      if (a4 == 2)
+      if (format == 2)
       {
         if ([v11 length] == 2)
         {
@@ -431,9 +431,9 @@ LABEL_52:
 
     else
     {
-      if (a4 <= 8)
+      if (format <= 8)
       {
-        if (a4 == 6)
+        if (format == 6)
         {
           if ([v11 length] == 2)
           {
@@ -442,7 +442,7 @@ LABEL_52:
           }
         }
 
-        else if (a4 == 7)
+        else if (format == 7)
         {
           if ([v11 length] == 4)
           {
@@ -464,7 +464,7 @@ LABEL_53:
         goto LABEL_47;
       }
 
-      switch(a4)
+      switch(format)
       {
         case 0xBuLL:
           v13 = [[NSString alloc] initWithData:v11 encoding:4];
@@ -499,7 +499,7 @@ LABEL_53:
       }
     }
 
-    if ((a4 & 0xFFFFFFFFFFFFFFFELL) == 0xC)
+    if ((format & 0xFFFFFFFFFFFFFFFELL) == 0xC)
     {
       v13 = v11;
       goto LABEL_46;
@@ -515,11 +515,11 @@ LABEL_53:
     *buf = 138543618;
     v26 = v15;
     v27 = 2048;
-    v28 = a4;
+    formatCopy = format;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%{public}@[HAPDataValueTransformer] Invalid format '%tu', returning value unchanged", buf, 0x16u);
   }
 
-  v16 = v8;
+  v16 = valueCopy;
 LABEL_54:
 
   return v16;

@@ -1,18 +1,18 @@
 @interface UITransformEvent
 - (CGAffineTransform)transform;
-- (CGPoint)locationInView:(id)a3;
+- (CGPoint)locationInView:(id)view;
 - (CGPoint)translation;
 - (double)scale;
 - (id)_allWindows;
-- (id)_gestureRecognizersForWindow:(id)a3;
+- (id)_gestureRecognizersForWindow:(id)window;
 - (id)_init;
-- (id)_initWithEvent:(__GSEvent *)a3 touches:(id)a4;
+- (id)_initWithEvent:(__GSEvent *)event touches:(id)touches;
 - (id)_windowServerHitTestWindow;
-- (int64_t)weightedDominantComponentForScaleWeight:(double)a3 rotationWeight:(double)a4 translationWeight:(double)a5;
-- (void)_removeGestureRecognizer:(id)a3 fromComponents:(id)a4;
+- (int64_t)weightedDominantComponentForScaleWeight:(double)weight rotationWeight:(double)rotationWeight translationWeight:(double)translationWeight;
+- (void)_removeGestureRecognizer:(id)recognizer fromComponents:(id)components;
 - (void)_removeGestureRecognizersFromWindows;
 - (void)_reset;
-- (void)_setHIDEvent:(__IOHIDEvent *)a3;
+- (void)_setHIDEvent:(__IOHIDEvent *)event;
 @end
 
 @implementation UITransformEvent
@@ -21,21 +21,21 @@
 {
   v5.receiver = self;
   v5.super_class = UITransformEvent;
-  v2 = [(UIEvent *)&v5 _init];
-  v3 = v2;
-  if (v2)
+  _init = [(UIEvent *)&v5 _init];
+  v3 = _init;
+  if (_init)
   {
-    _UITransformEventCommonInit(v2);
+    _UITransformEventCommonInit(_init);
   }
 
   return v3;
 }
 
-- (id)_initWithEvent:(__GSEvent *)a3 touches:(id)a4
+- (id)_initWithEvent:(__GSEvent *)event touches:(id)touches
 {
   v7.receiver = self;
   v7.super_class = UITransformEvent;
-  v4 = [(UIEvent *)&v7 _init:a3];
+  v4 = [(UIEvent *)&v7 _init:event];
   v5 = v4;
   if (v4)
   {
@@ -58,16 +58,16 @@
   self->_translationPhase = 0;
 }
 
-- (void)_setHIDEvent:(__IOHIDEvent *)a3
+- (void)_setHIDEvent:(__IOHIDEvent *)event
 {
-  if (a3 && ([(UITransformEvent *)self phase]== 3 || [(UITransformEvent *)self phase]== 4 || ![(UITransformEvent *)self phase]))
+  if (event && ([(UITransformEvent *)self phase]== 3 || [(UITransformEvent *)self phase]== 4 || ![(UITransformEvent *)self phase]))
   {
     [(UITransformEvent *)self _reset];
   }
 
   v30.receiver = self;
   v30.super_class = UITransformEvent;
-  [(UIEvent *)&v30 _setHIDEvent:a3];
+  [(UIEvent *)&v30 _setHIDEvent:event];
   if ([(UIEvent *)self _hidEvent])
   {
     v5 = BKSHIDEventGetPointerAttributes();
@@ -77,7 +77,7 @@
     v7 = _UIEventHIDUIWindowForHIDEvent();
     if (v7)
     {
-      [v7 _convertPointToSceneReferenceSpace:{_UIEventHIDConvertPointerLocation3DToWindow(a3, v7)}];
+      [v7 _convertPointToSceneReferenceSpace:{_UIEventHIDConvertPointerLocation3DToWindow(event, v7)}];
       self->_sceneReferenceLocation.x = v8;
       self->_sceneReferenceLocation.y = v9;
     }
@@ -90,7 +90,7 @@
     v28 = 0;
     v29 = 0;
     v27 = 0;
-    _UIEventHIDGetTransformEventComponents(a3, &v29, &v28, &v27);
+    _UIEventHIDGetTransformEventComponents(event, &v29, &v28, &v27);
     if (v29)
     {
       IOHIDEventGetDoubleValue();
@@ -207,10 +207,10 @@
   }
 }
 
-- (id)_gestureRecognizersForWindow:(id)a3
+- (id)_gestureRecognizersForWindow:(id)window
 {
-  v4 = a3;
-  v5 = [(NSMapTable *)self->_gestureRecognizersByWindow objectForKey:v4];
+  windowCopy = window;
+  v5 = [(NSMapTable *)self->_gestureRecognizersByWindow objectForKey:windowCopy];
   v6 = v5;
   if (v5)
   {
@@ -219,11 +219,11 @@
 
   else if ([(UITransformEvent *)self phase]== 1)
   {
-    v8 = [(UITransformEvent *)self _windowServerHitTestWindow];
-    v7 = _UINonComponentEventHitTestGestureRecognizers(self, v8, v8, self->_sceneReferenceLocation.x, self->_sceneReferenceLocation.y);
+    _windowServerHitTestWindow = [(UITransformEvent *)self _windowServerHitTestWindow];
+    v7 = _UINonComponentEventHitTestGestureRecognizers(self, _windowServerHitTestWindow, _windowServerHitTestWindow, self->_sceneReferenceLocation.x, self->_sceneReferenceLocation.y);
     gestureRecognizersByWindow = self->_gestureRecognizersByWindow;
     v10 = [v7 mutableCopy];
-    [(NSMapTable *)gestureRecognizersByWindow setObject:v10 forKey:v4];
+    [(NSMapTable *)gestureRecognizersByWindow setObject:v10 forKey:windowCopy];
   }
 
   else
@@ -241,8 +241,8 @@
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(UITransformEvent *)self _allWindows];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  _allWindows = [(UITransformEvent *)self _allWindows];
+  v4 = [_allWindows countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -254,30 +254,30 @@
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(_allWindows);
         }
 
         [(NSMapTable *)self->_gestureRecognizersByWindow removeObjectForKey:*(*(&v8 + 1) + 8 * v7++)];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [_allWindows countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
   }
 }
 
-- (void)_removeGestureRecognizer:(id)a3 fromComponents:(id)a4
+- (void)_removeGestureRecognizer:(id)recognizer fromComponents:(id)components
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  recognizerCopy = recognizer;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [(UITransformEvent *)self _allWindows];
-  v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  _allWindows = [(UITransformEvent *)self _allWindows];
+  v7 = [_allWindows countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
     v8 = v7;
@@ -289,17 +289,17 @@
       {
         if (*v13 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(_allWindows);
         }
 
         v11 = [(NSMapTable *)self->_gestureRecognizersByWindow objectForKey:*(*(&v12 + 1) + 8 * v10)];
-        [v11 removeObject:v5];
+        [v11 removeObject:recognizerCopy];
 
         ++v10;
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v8 = [_allWindows countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v8);
@@ -308,10 +308,10 @@
 
 - (id)_allWindows
 {
-  v2 = [(UITransformEvent *)self _windowServerHitTestWindow];
-  if (v2)
+  _windowServerHitTestWindow = [(UITransformEvent *)self _windowServerHitTestWindow];
+  if (_windowServerHitTestWindow)
   {
-    v3 = [MEMORY[0x1E695DFD8] setWithObject:v2];
+    v3 = [MEMORY[0x1E695DFD8] setWithObject:_windowServerHitTestWindow];
   }
 
   else
@@ -329,7 +329,7 @@
   return _UIEventHIDUIWindowForHIDEvent();
 }
 
-- (int64_t)weightedDominantComponentForScaleWeight:(double)a3 rotationWeight:(double)a4 translationWeight:(double)a5
+- (int64_t)weightedDominantComponentForScaleWeight:(double)weight rotationWeight:(double)rotationWeight translationWeight:(double)translationWeight
 {
   scaleDelta = self->_scaleDelta;
   rotationDelta = self->_rotationDelta;
@@ -339,20 +339,20 @@
     translationMagDelta = -translationMagDelta;
   }
 
-  v8 = translationMagDelta * a5;
+  v8 = translationMagDelta * translationWeight;
   if (scaleDelta < 0.0)
   {
     scaleDelta = -scaleDelta;
   }
 
-  v9 = scaleDelta * a3;
+  v9 = scaleDelta * weight;
   v10 = -rotationDelta;
   if (rotationDelta >= 0.0)
   {
     v10 = self->_rotationDelta;
   }
 
-  v11 = v10 * a4;
+  v11 = v10 * rotationWeight;
   v12 = v8 / v9;
   if (v9 <= 0.0)
   {
@@ -434,29 +434,29 @@ LABEL_23:
   return result;
 }
 
-- (CGPoint)locationInView:(id)a3
+- (CGPoint)locationInView:(id)view
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  viewCopy = view;
+  v5 = viewCopy;
+  if (viewCopy)
   {
-    v6 = v4;
+    anyObject = viewCopy;
   }
 
   else
   {
-    v7 = [(UITransformEvent *)self _allWindows];
-    v6 = [v7 anyObject];
+    _allWindows = [(UITransformEvent *)self _allWindows];
+    anyObject = [_allWindows anyObject];
   }
 
-  v8 = [v6 _window];
-  v9 = v8;
-  if (v8)
+  _window = [anyObject _window];
+  v9 = _window;
+  if (_window)
   {
-    [v8 _convertPointFromSceneReferenceSpace:{self->_sceneReferenceLocation.x, self->_sceneReferenceLocation.y}];
+    [_window _convertPointFromSceneReferenceSpace:{self->_sceneReferenceLocation.x, self->_sceneReferenceLocation.y}];
   }
 
-  [v6 convertPoint:0 fromView:?];
+  [anyObject convertPoint:0 fromView:?];
   v11 = v10;
   v13 = v12;
 

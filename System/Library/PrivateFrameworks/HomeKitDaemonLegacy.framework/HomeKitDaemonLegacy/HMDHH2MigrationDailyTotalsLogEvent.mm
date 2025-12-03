@@ -1,8 +1,8 @@
 @interface HMDHH2MigrationDailyTotalsLogEvent
-- (HMDHH2MigrationDailyTotalsLogEvent)initWithMigrationEventType:(unint64_t)a3 attemptCount:(id)a4 error:(id)a5;
+- (HMDHH2MigrationDailyTotalsLogEvent)initWithMigrationEventType:(unint64_t)type attemptCount:(id)count error:(id)error;
 - (NSDictionary)coreAnalyticsEventDictionary;
-- (id)initEndWithAutoMigration:(BOOL)a3 dryRun:(BOOL)a4 attemptCount:(id)a5 error:(id)a6;
-- (id)initStartWithAutoMigration:(BOOL)a3 dryRun:(BOOL)a4 attemptCount:(id)a5;
+- (id)initEndWithAutoMigration:(BOOL)migration dryRun:(BOOL)run attemptCount:(id)count error:(id)error;
+- (id)initStartWithAutoMigration:(BOOL)migration dryRun:(BOOL)run attemptCount:(id)count;
 @end
 
 @implementation HMDHH2MigrationDailyTotalsLogEvent
@@ -98,11 +98,11 @@
   }
 
   [v3 setObject:v11 forKeyedSubscript:@"dryRunEndCount"];
-  v12 = [(HMDHH2MigrationDailyTotalsLogEvent *)self attemptCount];
-  if (v12)
+  attemptCount = [(HMDHH2MigrationDailyTotalsLogEvent *)self attemptCount];
+  if (attemptCount)
   {
-    v13 = [(HMDHH2MigrationDailyTotalsLogEvent *)self attemptCount];
-    [v3 setObject:v13 forKeyedSubscript:@"attemptCount"];
+    attemptCount2 = [(HMDHH2MigrationDailyTotalsLogEvent *)self attemptCount];
+    [v3 setObject:attemptCount2 forKeyedSubscript:@"attemptCount"];
   }
 
   else
@@ -110,8 +110,8 @@
     [v3 setObject:&unk_286628B88 forKeyedSubscript:@"attemptCount"];
   }
 
-  v14 = [(HMMLogEvent *)self error];
-  if (v14)
+  error = [(HMMLogEvent *)self error];
+  if (error)
   {
     v15 = &unk_286628B70;
   }
@@ -129,33 +129,33 @@
   return v16;
 }
 
-- (HMDHH2MigrationDailyTotalsLogEvent)initWithMigrationEventType:(unint64_t)a3 attemptCount:(id)a4 error:(id)a5
+- (HMDHH2MigrationDailyTotalsLogEvent)initWithMigrationEventType:(unint64_t)type attemptCount:(id)count error:(id)error
 {
-  v9 = a4;
-  v10 = a5;
+  countCopy = count;
+  errorCopy = error;
   v14.receiver = self;
   v14.super_class = HMDHH2MigrationDailyTotalsLogEvent;
   v11 = [(HMMLogEvent *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    v11->_migrationEventType = a3;
-    objc_storeStrong(&v11->_attemptCount, a4);
-    [(HMMLogEvent *)v12 setError:v10];
+    v11->_migrationEventType = type;
+    objc_storeStrong(&v11->_attemptCount, count);
+    [(HMMLogEvent *)v12 setError:errorCopy];
   }
 
   return v12;
 }
 
-- (id)initEndWithAutoMigration:(BOOL)a3 dryRun:(BOOL)a4 attemptCount:(id)a5 error:(id)a6
+- (id)initEndWithAutoMigration:(BOOL)migration dryRun:(BOOL)run attemptCount:(id)count error:(id)error
 {
   v6 = 5;
-  if (a4)
+  if (run)
   {
     v6 = 6;
   }
 
-  if (a3)
+  if (migration)
   {
     v7 = 4;
   }
@@ -165,18 +165,18 @@
     v7 = v6;
   }
 
-  return [(HMDHH2MigrationDailyTotalsLogEvent *)self initWithMigrationEventType:v7 attemptCount:a5 error:a6];
+  return [(HMDHH2MigrationDailyTotalsLogEvent *)self initWithMigrationEventType:v7 attemptCount:count error:error];
 }
 
-- (id)initStartWithAutoMigration:(BOOL)a3 dryRun:(BOOL)a4 attemptCount:(id)a5
+- (id)initStartWithAutoMigration:(BOOL)migration dryRun:(BOOL)run attemptCount:(id)count
 {
   v5 = 2;
-  if (a4)
+  if (run)
   {
     v5 = 3;
   }
 
-  if (a3)
+  if (migration)
   {
     v6 = 1;
   }
@@ -186,7 +186,7 @@
     v6 = v5;
   }
 
-  return [(HMDHH2MigrationDailyTotalsLogEvent *)self initWithMigrationEventType:v6 attemptCount:a5 error:0];
+  return [(HMDHH2MigrationDailyTotalsLogEvent *)self initWithMigrationEventType:v6 attemptCount:count error:0];
 }
 
 @end

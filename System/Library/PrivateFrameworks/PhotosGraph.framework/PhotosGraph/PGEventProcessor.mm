@@ -1,16 +1,16 @@
 @interface PGEventProcessor
-+ (BOOL)processPGGraphForMomentNodes:(id)a3 graphBuilder:(id)a4 progressReporter:(id)a5 error:(id *)a6;
++ (BOOL)processPGGraphForMomentNodes:(id)nodes graphBuilder:(id)builder progressReporter:(id)reporter error:(id *)error;
 - (PGEventProcessor)init;
 @end
 
 @implementation PGEventProcessor
 
-+ (BOOL)processPGGraphForMomentNodes:(id)a3 graphBuilder:(id)a4 progressReporter:(id)a5 error:(id *)a6
++ (BOOL)processPGGraphForMomentNodes:(id)nodes graphBuilder:(id)builder progressReporter:(id)reporter error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  sub_22F26BE88(v8, v9);
+  nodesCopy = nodes;
+  builderCopy = builder;
+  reporterCopy = reporter;
+  sub_22F26BE88(nodesCopy, builderCopy);
 
   return 1;
 }

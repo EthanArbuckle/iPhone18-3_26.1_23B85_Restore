@@ -1,25 +1,25 @@
 @interface FTBatchTranslationResponse_TranslationPhrase
 - (BOOL)contains_masked_profanity;
 - (BOOL)low_confidence;
-- (FTBatchTranslationResponse_TranslationPhrase)initWithFlatbuffData:(id)a3 root:(const TranslationPhrase *)a4 verify:(BOOL)a5;
+- (FTBatchTranslationResponse_TranslationPhrase)initWithFlatbuffData:(id)data root:(const TranslationPhrase *)root verify:(BOOL)verify;
 - (FTTranslationPhraseMetaInfo)meta_info_data;
 - (NSArray)repeated_spans;
 - (NSString)meta_info;
 - (NSString)translation_phrase;
-- (Offset<siri::speech::schema_fb::BatchTranslationResponse_::TranslationPhrase>)addObjectToBuffer:(void *)a3;
+- (Offset<siri::speech::schema_fb::BatchTranslationResponse_::TranslationPhrase>)addObjectToBuffer:(void *)buffer;
 - (float)confidence;
 - (id)flatbuffData;
-- (id)repeated_spans_objectAtIndex:(unint64_t)a3;
+- (id)repeated_spans_objectAtIndex:(unint64_t)index;
 - (unint64_t)repeated_spans_count;
-- (void)repeated_spans_enumerateObjectsUsingBlock:(id)a3;
+- (void)repeated_spans_enumerateObjectsUsingBlock:(id)block;
 @end
 
 @implementation FTBatchTranslationResponse_TranslationPhrase
 
-- (FTBatchTranslationResponse_TranslationPhrase)initWithFlatbuffData:(id)a3 root:(const TranslationPhrase *)a4 verify:(BOOL)a5
+- (FTBatchTranslationResponse_TranslationPhrase)initWithFlatbuffData:(id)data root:(const TranslationPhrase *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v25.receiver = self;
   v25.super_class = FTBatchTranslationResponse_TranslationPhrase;
   v10 = [(FTBatchTranslationResponse_TranslationPhrase *)&v25 init];
@@ -28,35 +28,35 @@
     goto LABEL_13;
   }
 
-  if (!v9 || ![v9 length])
+  if (!dataCopy || ![dataCopy length])
   {
     goto LABEL_14;
   }
 
-  objc_storeStrong(&v10->_data, a3);
-  if (!a4)
+  objc_storeStrong(&v10->_data, data);
+  if (!root)
   {
-    v11 = [(NSData *)v10->_data bytes];
-    a4 = v11 + *v11;
+    bytes = [(NSData *)v10->_data bytes];
+    root = bytes + *bytes;
   }
 
-  v10->_root = a4;
-  if (!v5)
+  v10->_root = root;
+  if (!verifyCopy)
   {
     goto LABEL_13;
   }
 
-  v12 = [(NSData *)v10->_data bytes];
+  bytes2 = [(NSData *)v10->_data bytes];
   v13 = [(NSData *)v10->_data length];
   root = v10->_root;
-  if (root < v12 || root > v12 + v13)
+  if (root < bytes2 || root > bytes2 + v13)
   {
     goto LABEL_14;
   }
 
-  v16 = [(NSData *)v10->_data bytes];
+  bytes3 = [(NSData *)v10->_data bytes];
   v17 = [(NSData *)v10->_data length];
-  v21[0] = v16;
+  v21[0] = bytes3;
   v21[1] = v17;
   v22 = xmmword_233005E20;
   v23 = 0;
@@ -157,12 +157,12 @@ LABEL_13:
   v3 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"repeated_spans"];
   if (!v3)
   {
-    v4 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __62__FTBatchTranslationResponse_TranslationPhrase_repeated_spans__block_invoke;
     v6[3] = &unk_2789B8AD8;
-    v3 = v4;
+    v3 = array;
     v7 = v3;
     [(FTBatchTranslationResponse_TranslationPhrase *)self repeated_spans_enumerateObjectsUsingBlock:v6];
     [(NSMutableDictionary *)self->_storage setObject:v3 forKeyedSubscript:@"repeated_spans"];
@@ -171,13 +171,13 @@ LABEL_13:
   return v3;
 }
 
-- (id)repeated_spans_objectAtIndex:(unint64_t)a3
+- (id)repeated_spans_objectAtIndex:(unint64_t)index
 {
   v5 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"repeated_spans"];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 objectAtIndexedSubscript:a3];
+    v7 = [v5 objectAtIndexedSubscript:index];
 LABEL_3:
     v8 = v7;
     goto LABEL_8;
@@ -190,7 +190,7 @@ LABEL_3:
     v11 = *v10[12].var0;
     if (v11)
     {
-      v12 = &root[4 * a3 + v11 + *root[v11].var0];
+      v12 = &root[4 * index + v11 + *root[v11].var0];
       v7 = [[FTRepeatedSpan alloc] initWithFlatbuffData:self->_data root:v12 + 4 + *(v12 + 4) verify:0];
       goto LABEL_3;
     }
@@ -229,14 +229,14 @@ LABEL_8:
   return v5;
 }
 
-- (void)repeated_spans_enumerateObjectsUsingBlock:(id)a3
+- (void)repeated_spans_enumerateObjectsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"repeated_spans"];
   v6 = v5;
   if (v5)
   {
-    [v5 enumerateObjectsUsingBlock:v4];
+    [v5 enumerateObjectsUsingBlock:blockCopy];
   }
 
   else
@@ -259,7 +259,7 @@ LABEL_8:
           do
           {
             v15 = [[FTRepeatedSpan alloc] initWithFlatbuffData:self->_data root:&v13[*v13->var0] verify:0];
-            v4[2](v4, v15, v12, &v18);
+            blockCopy[2](blockCopy, v15, v12, &v18);
             v16 = v18;
 
             if (v16)
@@ -312,44 +312,44 @@ LABEL_8:
   return *v3->var0 >= 0x11u && (v4 = *v3[16].var0) != 0 && root[v4].var0[0] != 0;
 }
 
-- (Offset<siri::speech::schema_fb::BatchTranslationResponse_::TranslationPhrase>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::schema_fb::BatchTranslationResponse_::TranslationPhrase>)addObjectToBuffer:(void *)buffer
 {
   v40 = *MEMORY[0x277D85DE8];
   [(FTBatchTranslationResponse_TranslationPhrase *)self confidence];
   v6 = v5;
-  v7 = [(FTBatchTranslationResponse_TranslationPhrase *)self translation_phrase];
-  v8 = v7;
-  if (!v7)
+  translation_phrase = [(FTBatchTranslationResponse_TranslationPhrase *)self translation_phrase];
+  v8 = translation_phrase;
+  if (!translation_phrase)
   {
-    v7 = &stru_284834138;
+    translation_phrase = &stru_284834138;
   }
 
-  v9 = [(__CFString *)v7 UTF8String];
-  v10 = strlen(v9);
-  String = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(a3, v9, v10);
+  uTF8String = [(__CFString *)translation_phrase UTF8String];
+  v10 = strlen(uTF8String);
+  String = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(buffer, uTF8String, v10);
 
-  v12 = [(FTBatchTranslationResponse_TranslationPhrase *)self meta_info];
-  v13 = v12;
-  if (!v12)
+  meta_info = [(FTBatchTranslationResponse_TranslationPhrase *)self meta_info];
+  v13 = meta_info;
+  if (!meta_info)
   {
-    v12 = &stru_284834138;
+    meta_info = &stru_284834138;
   }
 
-  v14 = [(__CFString *)v12 UTF8String];
-  v15 = strlen(v14);
-  v16 = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(a3, v14, v15);
+  uTF8String2 = [(__CFString *)meta_info UTF8String];
+  v15 = strlen(uTF8String2);
+  v16 = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(buffer, uTF8String2, v15);
 
-  v17 = [(FTBatchTranslationResponse_TranslationPhrase *)self low_confidence];
+  low_confidence = [(FTBatchTranslationResponse_TranslationPhrase *)self low_confidence];
   memset(&v38, 0, sizeof(v38));
-  v18 = [(FTBatchTranslationResponse_TranslationPhrase *)self repeated_spans];
-  std::vector<apple::aiml::flatbuffers2::Offset<siri::speech::schema_fb::RecognitionToken>>::reserve(&v38, [v18 count]);
+  repeated_spans = [(FTBatchTranslationResponse_TranslationPhrase *)self repeated_spans];
+  std::vector<apple::aiml::flatbuffers2::Offset<siri::speech::schema_fb::RecognitionToken>>::reserve(&v38, [repeated_spans count]);
 
   v36 = 0u;
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v19 = [(FTBatchTranslationResponse_TranslationPhrase *)self repeated_spans];
-  v20 = [v19 countByEnumeratingWithState:&v34 objects:v39 count:16];
+  repeated_spans2 = [(FTBatchTranslationResponse_TranslationPhrase *)self repeated_spans];
+  v20 = [repeated_spans2 countByEnumeratingWithState:&v34 objects:v39 count:16];
   if (v20)
   {
     v21 = *v35;
@@ -359,14 +359,14 @@ LABEL_8:
       {
         if (*v35 != v21)
         {
-          objc_enumerationMutation(v19);
+          objc_enumerationMutation(repeated_spans2);
         }
 
-        v33 = [*(*(&v34 + 1) + 8 * i) addObjectToBuffer:a3];
+        v33 = [*(*(&v34 + 1) + 8 * i) addObjectToBuffer:buffer];
         std::vector<apple::aiml::flatbuffers2::Offset<siri::speech::schema_fb::RecognitionToken>>::push_back[abi:ne200100](&v38.__begin_, &v33);
       }
 
-      v20 = [v19 countByEnumeratingWithState:&v34 objects:v39 count:16];
+      v20 = [repeated_spans2 countByEnumeratingWithState:&v34 objects:v39 count:16];
     }
 
     while (v20);
@@ -382,23 +382,23 @@ LABEL_8:
     begin = v38.__begin_;
   }
 
-  v24 = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateVector<apple::aiml::flatbuffers2::String>(a3, begin, v38.__end_ - v38.__begin_);
-  v25 = [(FTBatchTranslationResponse_TranslationPhrase *)self meta_info_data];
-  v26 = [v25 addObjectToBuffer:a3];
+  v24 = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateVector<apple::aiml::flatbuffers2::String>(buffer, begin, v38.__end_ - v38.__begin_);
+  meta_info_data = [(FTBatchTranslationResponse_TranslationPhrase *)self meta_info_data];
+  v26 = [meta_info_data addObjectToBuffer:buffer];
 
-  v27 = [(FTBatchTranslationResponse_TranslationPhrase *)self contains_masked_profanity];
-  *(a3 + 70) = 1;
-  v28 = *(a3 + 8);
-  v29 = *(a3 + 12);
-  LODWORD(v25) = *(a3 + 10);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<float>(a3, 4, v6, 0.0);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 6, String);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 8, v16);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned char>(a3, 10, v17, 0);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 12, v24);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 14, v26);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned char>(a3, 16, v27, 0);
-  v30.var0 = apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(a3, v28 - v29 + v25);
+  contains_masked_profanity = [(FTBatchTranslationResponse_TranslationPhrase *)self contains_masked_profanity];
+  *(buffer + 70) = 1;
+  v28 = *(buffer + 8);
+  v29 = *(buffer + 12);
+  LODWORD(meta_info_data) = *(buffer + 10);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<float>(buffer, 4, v6, 0.0);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 6, String);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 8, v16);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned char>(buffer, 10, low_confidence, 0);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 12, v24);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 14, v26);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned char>(buffer, 16, contains_masked_profanity, 0);
+  v30.var0 = apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(buffer, v28 - v29 + meta_info_data);
   if (v38.__begin_)
   {
     v38.__end_ = v38.__begin_;

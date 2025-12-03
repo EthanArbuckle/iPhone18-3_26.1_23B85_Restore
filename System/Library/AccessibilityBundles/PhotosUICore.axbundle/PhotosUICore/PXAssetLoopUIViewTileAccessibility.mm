@@ -1,18 +1,18 @@
 @interface PXAssetLoopUIViewTileAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_updateLoopingVideoView;
 @end
 
 @implementation PXAssetLoopUIViewTileAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PXAssetLoopUIViewTile" conformsToProtocol:@"PXAssetTile"];
-  [v3 validateClass:@"PXAssetLoopUIViewTile" hasInstanceVariable:@"_videoView" withType:"PXVideoSessionUIView"];
-  [v3 validateClass:@"PXImageRequester" hasInstanceMethod:@"asset" withFullSignature:{"@", 0}];
-  [v3 validateProtocol:@"PXAssetTile" hasRequiredInstanceMethod:@"imageRequester"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PXAssetLoopUIViewTile" conformsToProtocol:@"PXAssetTile"];
+  [validationsCopy validateClass:@"PXAssetLoopUIViewTile" hasInstanceVariable:@"_videoView" withType:"PXVideoSessionUIView"];
+  [validationsCopy validateClass:@"PXImageRequester" hasInstanceMethod:@"asset" withFullSignature:{"@", 0}];
+  [validationsCopy validateProtocol:@"PXAssetTile" hasRequiredInstanceMethod:@"imageRequester"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

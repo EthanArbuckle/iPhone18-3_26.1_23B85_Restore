@@ -1,18 +1,18 @@
 @interface BWDetectedObjectsInfoRingBuffer
-- (BWDetectedObjectsInfoRingBuffer)initWithRingBufferDepth:(int)a3;
+- (BWDetectedObjectsInfoRingBuffer)initWithRingBufferDepth:(int)depth;
 - (float)secondsSinceLastObjectDetected;
-- (id)objectsForPTS:(id *)a3;
-- (void)addObjectsFromSampleBuffer:(opaqueCMSampleBuffer *)a3;
+- (id)objectsForPTS:(id *)s;
+- (void)addObjectsFromSampleBuffer:(opaqueCMSampleBuffer *)buffer;
 - (void)dealloc;
 - (void)flush;
-- (void)transferObjectsToSampleBuffer:(opaqueCMSampleBuffer *)a3 transformToBufferSpace:(BOOL)a4 sourceCropRect:(CGRect)a5;
+- (void)transferObjectsToSampleBuffer:(opaqueCMSampleBuffer *)buffer transformToBufferSpace:(BOOL)space sourceCropRect:(CGRect)rect;
 @end
 
 @implementation BWDetectedObjectsInfoRingBuffer
 
-- (BWDetectedObjectsInfoRingBuffer)initWithRingBufferDepth:(int)a3
+- (BWDetectedObjectsInfoRingBuffer)initWithRingBufferDepth:(int)depth
 {
-  if (a3 <= 0)
+  if (depth <= 0)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"depth must be at least 1" userInfo:0]);
   }
@@ -23,8 +23,8 @@
   if (v4)
   {
     v4->_mutex = FigSimpleMutexCreate();
-    v4->_ringBuffer = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:a3];
-    v4->_depth = a3;
+    v4->_ringBuffer = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:depth];
+    v4->_depth = depth;
   }
 
   return v4;
@@ -38,7 +38,7 @@
   [(BWDetectedObjectsInfoRingBuffer *)&v3 dealloc];
 }
 
-- (void)addObjectsFromSampleBuffer:(opaqueCMSampleBuffer *)a3
+- (void)addObjectsFromSampleBuffer:(opaqueCMSampleBuffer *)buffer
 {
   FigSimpleMutexLock();
   ringBuffer = self->_ringBuffer;
@@ -47,7 +47,7 @@
   flags = *(MEMORY[0x1E6960C70] + 12);
   timescale = *(MEMORY[0x1E6960C70] + 8);
   epoch = *(MEMORY[0x1E6960C70] + 16);
-  v9 = CMGetAttachment(a3, *off_1E798A3C8, 0);
+  v9 = CMGetAttachment(buffer, *off_1E798A3C8, 0);
   if (v9)
   {
     v10 = [v9 objectForKeyedSubscript:*off_1E798B220];
@@ -147,7 +147,7 @@
     }
   }
 
-  CMSampleBufferGetPresentationTimeStamp(&v26, a3);
+  CMSampleBufferGetPresentationTimeStamp(&v26, buffer);
   self->_lastUpdatePTS = v26;
   FigSimpleMutexUnlock();
 }
@@ -160,11 +160,11 @@
   FigSimpleMutexUnlock();
 }
 
-- (id)objectsForPTS:(id *)a3
+- (id)objectsForPTS:(id *)s
 {
   FigSimpleMutexLock();
   ringBuffer = self->_ringBuffer;
-  v8 = *a3;
+  v8 = *s;
   DetectedObjectsInfoClosestToPTS = doirb_findDetectedObjectsInfoClosestToPTS(ringBuffer, &v8);
   FigSimpleMutexUnlock();
   return DetectedObjectsInfoClosestToPTS;
@@ -203,7 +203,7 @@
   return Seconds;
 }
 
-- (void)transferObjectsToSampleBuffer:(opaqueCMSampleBuffer *)a3 transformToBufferSpace:(BOOL)a4 sourceCropRect:(CGRect)a5
+- (void)transferObjectsToSampleBuffer:(opaqueCMSampleBuffer *)buffer transformToBufferSpace:(BOOL)space sourceCropRect:(CGRect)rect
 {
   OUTLINED_FUNCTION_12_30();
   v50 = v5;

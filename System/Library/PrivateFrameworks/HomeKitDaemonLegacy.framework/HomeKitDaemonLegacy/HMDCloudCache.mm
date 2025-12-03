@@ -1,27 +1,27 @@
 @interface HMDCloudCache
-- (BOOL)homeZoneExists:(id)a3;
+- (BOOL)homeZoneExists:(id)exists;
 - (CKServerChangeToken)databaseServerChangeToken;
 - (HMDBackingStore)backingStore;
 - (HMDCloudCache)init;
-- (HMDCloudCache)initWithBackingStore:(id)a3 workQueue:(id)a4;
+- (HMDCloudCache)initWithBackingStore:(id)store workQueue:(id)queue;
 - (HMDCloudHomeManagerZone)homeManagerZone;
 - (HMDCloudLegacyZone)legacyZone;
 - (HMDCloudMetadataZone)metadataZone;
 - (HMDCloudZone)homeDataInformation;
-- (id)_findStoreCacheZone:(id)a3 byName:(id)a4;
+- (id)_findStoreCacheZone:(id)zone byName:(id)name;
 - (id)allHomeZones;
-- (id)homeZoneWithName:(id)a3;
-- (void)_createZones:(id)a3 completion:(id)a4;
-- (void)createAndFetchZonesFromBackingStore:(id)a3;
+- (id)homeZoneWithName:(id)name;
+- (void)_createZones:(id)zones completion:(id)completion;
+- (void)createAndFetchZonesFromBackingStore:(id)store;
 - (void)deleteAllZones;
-- (void)deleteHomeZoneWithName:(id)a3;
-- (void)homeZoneWithName:(id)a3 owner:(id)a4 completion:(id)a5;
+- (void)deleteHomeZoneWithName:(id)name;
+- (void)homeZoneWithName:(id)name owner:(id)owner completion:(id)completion;
 - (void)persistDatabaseServerChangeToken;
-- (void)setDatabaseServerChangeToken:(id)a3;
-- (void)setHomeDataInformation:(id)a3;
-- (void)setHomeManagerZone:(id)a3;
-- (void)setLegacyZone:(id)a3;
-- (void)setMetadataZone:(id)a3;
+- (void)setDatabaseServerChangeToken:(id)token;
+- (void)setHomeDataInformation:(id)information;
+- (void)setHomeManagerZone:(id)zone;
+- (void)setLegacyZone:(id)zone;
+- (void)setMetadataZone:(id)zone;
 @end
 
 @implementation HMDCloudCache
@@ -35,37 +35,37 @@
 
 - (void)persistDatabaseServerChangeToken
 {
-  v2 = [(HMDCloudCache *)self homeDataInformation];
-  [v2 updateCurrentServerChangeToken];
+  homeDataInformation = [(HMDCloudCache *)self homeDataInformation];
+  [homeDataInformation updateCurrentServerChangeToken];
 }
 
-- (void)setDatabaseServerChangeToken:(id)a3
+- (void)setDatabaseServerChangeToken:(id)token
 {
-  v4 = a3;
-  v5 = [(HMDCloudCache *)self homeDataInformation];
-  [v5 setServerChangeToken:v4];
+  tokenCopy = token;
+  homeDataInformation = [(HMDCloudCache *)self homeDataInformation];
+  [homeDataInformation setServerChangeToken:tokenCopy];
 }
 
 - (CKServerChangeToken)databaseServerChangeToken
 {
-  v2 = [(HMDCloudCache *)self homeDataInformation];
-  v3 = [v2 serverChangeToken];
+  homeDataInformation = [(HMDCloudCache *)self homeDataInformation];
+  serverChangeToken = [homeDataInformation serverChangeToken];
 
-  return v3;
+  return serverChangeToken;
 }
 
-- (void)deleteHomeZoneWithName:(id)a3
+- (void)deleteHomeZoneWithName:(id)name
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  nameCopy = name;
+  if (nameCopy)
   {
     os_unfair_lock_lock_with_options();
-    v5 = [(HMDCloudCache *)self homeZones];
-    v6 = [v5 objectForKeyedSubscript:v4];
+    homeZones = [(HMDCloudCache *)self homeZones];
+    v6 = [homeZones objectForKeyedSubscript:nameCopy];
 
-    v7 = [(HMDCloudCache *)self homeZones];
-    [v7 setObject:0 forKeyedSubscript:v4];
+    homeZones2 = [(HMDCloudCache *)self homeZones];
+    [homeZones2 setObject:0 forKeyedSubscript:nameCopy];
 
     [v6 deleteZone];
     os_unfair_lock_unlock(&self->_lock);
@@ -74,7 +74,7 @@
   else
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
@@ -93,42 +93,42 @@
 - (void)deleteAllZones
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDCloudCache *)self homeDataInformation];
+  homeDataInformation = [(HMDCloudCache *)self homeDataInformation];
 
-  if (v3)
+  if (homeDataInformation)
   {
-    v4 = [(HMDCloudCache *)self homeDataInformation];
-    [v4 deleteZone];
+    homeDataInformation2 = [(HMDCloudCache *)self homeDataInformation];
+    [homeDataInformation2 deleteZone];
 
     [(HMDCloudCache *)self setHomeDataInformation:0];
   }
 
-  v5 = [(HMDCloudCache *)self legacyZone];
+  legacyZone = [(HMDCloudCache *)self legacyZone];
 
-  if (v5)
+  if (legacyZone)
   {
-    v6 = [(HMDCloudCache *)self legacyZone];
-    [v6 deleteZone];
+    legacyZone2 = [(HMDCloudCache *)self legacyZone];
+    [legacyZone2 deleteZone];
 
     [(HMDCloudCache *)self setLegacyZone:0];
   }
 
-  v7 = [(HMDCloudCache *)self metadataZone];
+  metadataZone = [(HMDCloudCache *)self metadataZone];
 
-  if (v7)
+  if (metadataZone)
   {
-    v8 = [(HMDCloudCache *)self metadataZone];
-    [v8 deleteZone];
+    metadataZone2 = [(HMDCloudCache *)self metadataZone];
+    [metadataZone2 deleteZone];
 
     [(HMDCloudCache *)self setMetadataZone:0];
   }
 
-  v9 = [(HMDCloudCache *)self homeManagerZone];
+  homeManagerZone = [(HMDCloudCache *)self homeManagerZone];
 
-  if (v9)
+  if (homeManagerZone)
   {
-    v10 = [(HMDCloudCache *)self homeManagerZone];
-    [v10 deleteZone];
+    homeManagerZone2 = [(HMDCloudCache *)self homeManagerZone];
+    [homeManagerZone2 deleteZone];
 
     [(HMDCloudCache *)self setHomeManagerZone:0];
   }
@@ -138,10 +138,10 @@
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v11 = [(HMDCloudCache *)self homeZones];
-  v12 = [v11 allValues];
+  homeZones = [(HMDCloudCache *)self homeZones];
+  allValues = [homeZones allValues];
 
-  v13 = [v12 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v13 = [allValues countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v13)
   {
     v14 = *v19;
@@ -152,41 +152,41 @@
       {
         if (*v19 != v14)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v18 + 1) + 8 * v15++) deleteZone];
       }
 
       while (v13 != v15);
-      v13 = [v12 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v13 = [allValues countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v13);
   }
 
-  v16 = [MEMORY[0x277CBEB38] dictionary];
-  [(HMDCloudCache *)self setHomeZones:v16];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  [(HMDCloudCache *)self setHomeZones:dictionary];
 
   os_unfair_lock_unlock(&self->_lock);
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)homeZoneWithName:(id)a3 owner:(id)a4 completion:(id)a5
+- (void)homeZoneWithName:(id)name owner:(id)owner completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  nameCopy = name;
+  ownerCopy = owner;
+  completionCopy = completion;
   os_unfair_lock_lock_with_options();
-  v11 = [(HMDCloudCache *)self homeZones];
-  v12 = [v11 objectForKeyedSubscript:v8];
+  homeZones = [(HMDCloudCache *)self homeZones];
+  v12 = [homeZones objectForKeyedSubscript:nameCopy];
 
   os_unfair_lock_unlock(&self->_lock);
   if (v12)
   {
-    if (v10)
+    if (completionCopy)
     {
-      v10[2](v10, v12, 0);
+      completionCopy[2](completionCopy, v12, 0);
     }
   }
 
@@ -197,9 +197,9 @@
     v13[2] = __51__HMDCloudCache_homeZoneWithName_owner_completion___block_invoke;
     v13[3] = &unk_2797312B0;
     v13[4] = self;
-    v14 = v8;
-    v15 = v10;
-    [HMDCloudHomeZone createHomeZoneWithName:v14 owner:v9 cacheZone:0 cloudCache:self completion:v13];
+    v14 = nameCopy;
+    v15 = completionCopy;
+    [HMDCloudHomeZone createHomeZoneWithName:v14 owner:ownerCopy cacheZone:0 cloudCache:self completion:v13];
   }
 }
 
@@ -251,24 +251,24 @@ void __51__HMDCloudCache_homeZoneWithName_owner_completion___block_invoke(uint64
   }
 }
 
-- (id)homeZoneWithName:(id)a3
+- (id)homeZoneWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   os_unfair_lock_lock_with_options();
-  v5 = [(HMDCloudCache *)self homeZones];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  homeZones = [(HMDCloudCache *)self homeZones];
+  v6 = [homeZones objectForKeyedSubscript:nameCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 
   return v6;
 }
 
-- (BOOL)homeZoneExists:(id)a3
+- (BOOL)homeZoneExists:(id)exists
 {
-  v4 = a3;
+  existsCopy = exists;
   os_unfair_lock_lock_with_options();
-  v5 = [(HMDCloudCache *)self homeZones];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  homeZones = [(HMDCloudCache *)self homeZones];
+  v6 = [homeZones objectForKeyedSubscript:existsCopy];
 
   os_unfair_lock_unlock(&self->_lock);
   return v6 != 0;
@@ -277,18 +277,18 @@ void __51__HMDCloudCache_homeZoneWithName_owner_completion___block_invoke(uint64
 - (id)allHomeZones
 {
   os_unfair_lock_lock_with_options();
-  v3 = [(HMDCloudCache *)self homeZones];
-  v4 = [v3 allValues];
+  homeZones = [(HMDCloudCache *)self homeZones];
+  allValues = [homeZones allValues];
 
   os_unfair_lock_unlock(&self->_lock);
 
-  return v4;
+  return allValues;
 }
 
-- (void)createAndFetchZonesFromBackingStore:(id)a3
+- (void)createAndFetchZonesFromBackingStore:(id)store
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  storeCopy = store;
   objc_initWeak(&location, self);
   v5 = [HMDBackingStoreCacheFetchZonesOperation alloc];
   v14[0] = MEMORY[0x277D85DD0];
@@ -296,11 +296,11 @@ void __51__HMDCloudCache_homeZoneWithName_owner_completion___block_invoke(uint64
   v14[2] = __53__HMDCloudCache_createAndFetchZonesFromBackingStore___block_invoke;
   v14[3] = &unk_279731300;
   objc_copyWeak(&v16, &location);
-  v6 = v4;
+  v6 = storeCopy;
   v15 = v6;
   v7 = [(HMDBackingStoreCacheFetchZonesOperation *)v5 initWithFetchResult:v14];
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -311,8 +311,8 @@ void __51__HMDCloudCache_homeZoneWithName_owner_completion___block_invoke(uint64
   }
 
   objc_autoreleasePoolPop(v8);
-  v12 = [(HMDCloudCache *)v9 backingStore];
-  [v12 submit:v7];
+  backingStore = [(HMDCloudCache *)selfCopy backingStore];
+  [backingStore submit:v7];
 
   objc_destroyWeak(&v16);
   objc_destroyWeak(&location);
@@ -375,14 +375,14 @@ void __53__HMDCloudCache_createAndFetchZonesFromBackingStore___block_invoke(uint
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_createZones:(id)a3 completion:(id)a4
+- (void)_createZones:(id)zones completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  zonesCopy = zones;
+  completionCopy = completion;
   if (!self->_homeDataInformation)
   {
-    v12 = [(HMDCloudCache *)self _findStoreCacheZone:v6 byName:@"HomeDataInfo"];
-    v14 = [MEMORY[0x277CBEB18] arrayWithArray:v6];
+    v12 = [(HMDCloudCache *)self _findStoreCacheZone:zonesCopy byName:@"HomeDataInfo"];
+    v14 = [MEMORY[0x277CBEB18] arrayWithArray:zonesCopy];
     [v14 removeObject:v12];
     v31[0] = MEMORY[0x277D85DD0];
     v31[1] = 3221225472;
@@ -390,7 +390,7 @@ void __53__HMDCloudCache_createAndFetchZonesFromBackingStore___block_invoke(uint
     v31[3] = &unk_2797312B0;
     v31[4] = self;
     v32 = v14;
-    v33 = v7;
+    v33 = completionCopy;
     v11 = v14;
     [HMDCloudZone createZoneWithName:@"HomeDataInfo" rootRecordName:@"DONOTUPLOAD" subscriptionName:@"HomeDataInfo" owner:@"__HomeKit_Default_Owner__" cacheZone:v12 cloudCache:self completion:v31];
 
@@ -400,8 +400,8 @@ void __53__HMDCloudCache_createAndFetchZonesFromBackingStore___block_invoke(uint
 
   if (!self->_legacyZone)
   {
-    v12 = [(HMDCloudCache *)self _findStoreCacheZone:v6 byName:@"HomeDataBlobZone"];
-    v15 = [MEMORY[0x277CBEB18] arrayWithArray:v6];
+    v12 = [(HMDCloudCache *)self _findStoreCacheZone:zonesCopy byName:@"HomeDataBlobZone"];
+    v15 = [MEMORY[0x277CBEB18] arrayWithArray:zonesCopy];
     [v15 removeObject:v12];
     v28[0] = MEMORY[0x277D85DD0];
     v28[1] = 3221225472;
@@ -409,7 +409,7 @@ void __53__HMDCloudCache_createAndFetchZonesFromBackingStore___block_invoke(uint
     v28[3] = &unk_2797312B0;
     v28[4] = self;
     v29 = v15;
-    v30 = v7;
+    v30 = completionCopy;
     v11 = v15;
     [HMDCloudLegacyZone createLegacyZoneWithName:@"HomeDataBlobZone" owner:@"__HomeKit_Default_Owner__" cacheZone:v12 cloudCache:self completion:v28];
 
@@ -419,8 +419,8 @@ void __53__HMDCloudCache_createAndFetchZonesFromBackingStore___block_invoke(uint
 
   if (!self->_metadataZone)
   {
-    v12 = [(HMDCloudCache *)self _findStoreCacheZone:v6 byName:@"CCF7D3D1-0C20-4207-97D0-9E565EB5E323"];
-    v16 = [MEMORY[0x277CBEB18] arrayWithArray:v6];
+    v12 = [(HMDCloudCache *)self _findStoreCacheZone:zonesCopy byName:@"CCF7D3D1-0C20-4207-97D0-9E565EB5E323"];
+    v16 = [MEMORY[0x277CBEB18] arrayWithArray:zonesCopy];
     [v16 removeObject:v12];
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
@@ -428,7 +428,7 @@ void __53__HMDCloudCache_createAndFetchZonesFromBackingStore___block_invoke(uint
     v25[3] = &unk_2797312B0;
     v25[4] = self;
     v26 = v16;
-    v27 = v7;
+    v27 = completionCopy;
     v11 = v16;
     [HMDCloudMetadataZone createMetadataZoneWithName:@"CCF7D3D1-0C20-4207-97D0-9E565EB5E323" owner:@"__HomeKit_Default_Owner__" cacheZone:v12 cloudCache:self completion:v25];
 
@@ -438,8 +438,8 @@ void __53__HMDCloudCache_createAndFetchZonesFromBackingStore___block_invoke(uint
 
   if (!self->_homeManagerZone)
   {
-    v12 = [(HMDCloudCache *)self _findStoreCacheZone:v6 byName:@"1411CE6C-B4DE-4622-A49D-F66FE296D6B5"];
-    v17 = [MEMORY[0x277CBEB18] arrayWithArray:v6];
+    v12 = [(HMDCloudCache *)self _findStoreCacheZone:zonesCopy byName:@"1411CE6C-B4DE-4622-A49D-F66FE296D6B5"];
+    v17 = [MEMORY[0x277CBEB18] arrayWithArray:zonesCopy];
     [v17 removeObject:v12];
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
@@ -447,7 +447,7 @@ void __53__HMDCloudCache_createAndFetchZonesFromBackingStore___block_invoke(uint
     v22[3] = &unk_2797312B0;
     v22[4] = self;
     v23 = v17;
-    v24 = v7;
+    v24 = completionCopy;
     v11 = v17;
     [HMDCloudHomeManagerZone createHomeManagerZoneWithName:@"1411CE6C-B4DE-4622-A49D-F66FE296D6B5" owner:@"__HomeKit_Default_Owner__" cacheZone:v12 cloudCache:self completion:v22];
 
@@ -455,23 +455,23 @@ void __53__HMDCloudCache_createAndFetchZonesFromBackingStore___block_invoke(uint
     goto LABEL_11;
   }
 
-  if ([v6 count])
+  if ([zonesCopy count])
   {
-    v8 = [v6 firstObject];
-    v9 = [MEMORY[0x277CBEB18] arrayWithArray:v6];
-    [v9 removeObject:v8];
-    v10 = [v8 zoneName];
+    firstObject = [zonesCopy firstObject];
+    v9 = [MEMORY[0x277CBEB18] arrayWithArray:zonesCopy];
+    [v9 removeObject:firstObject];
+    zoneName = [firstObject zoneName];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __41__HMDCloudCache__createZones_completion___block_invoke_5;
     v18[3] = &unk_2797312D8;
     v18[4] = self;
-    v19 = v8;
+    v19 = firstObject;
     v20 = v9;
-    v21 = v7;
+    v21 = completionCopy;
     v11 = v9;
-    v12 = v8;
-    [HMDCloudHomeZone createHomeZoneWithName:v10 owner:@"__HomeKit_Default_Owner__" cacheZone:v12 cloudCache:self completion:v18];
+    v12 = firstObject;
+    [HMDCloudHomeZone createHomeZoneWithName:zoneName owner:@"__HomeKit_Default_Owner__" cacheZone:v12 cloudCache:self completion:v18];
 
     v13 = v19;
 LABEL_11:
@@ -479,9 +479,9 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if (v7)
+  if (completionCopy)
   {
-    (*(v7 + 2))(v7, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 
 LABEL_12:
@@ -593,18 +593,18 @@ void __41__HMDCloudCache__createZones_completion___block_invoke_5(uint64_t a1, v
   }
 }
 
-- (id)_findStoreCacheZone:(id)a3 byName:(id)a4
+- (id)_findStoreCacheZone:(id)zone byName:(id)name
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  zoneCopy = zone;
+  nameCopy = name;
+  if (nameCopy)
   {
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v7 = v5;
+    v7 = zoneCopy;
     v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v8)
     {
@@ -619,8 +619,8 @@ void __41__HMDCloudCache__createZones_completion___block_invoke_5(uint64_t a1, v
           }
 
           v11 = *(*(&v16 + 1) + 8 * i);
-          v12 = [v11 zoneName];
-          v13 = [v6 isEqualToString:v12];
+          zoneName = [v11 zoneName];
+          v13 = [nameCopy isEqualToString:zoneName];
 
           if (v13)
           {
@@ -661,12 +661,12 @@ LABEL_12:
   return v3;
 }
 
-- (void)setHomeManagerZone:(id)a3
+- (void)setHomeManagerZone:(id)zone
 {
-  v4 = a3;
+  zoneCopy = zone;
   os_unfair_lock_lock_with_options();
   homeManagerZone = self->_homeManagerZone;
-  self->_homeManagerZone = v4;
+  self->_homeManagerZone = zoneCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -680,12 +680,12 @@ LABEL_12:
   return v3;
 }
 
-- (void)setMetadataZone:(id)a3
+- (void)setMetadataZone:(id)zone
 {
-  v4 = a3;
+  zoneCopy = zone;
   os_unfair_lock_lock_with_options();
   metadataZone = self->_metadataZone;
-  self->_metadataZone = v4;
+  self->_metadataZone = zoneCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -699,12 +699,12 @@ LABEL_12:
   return v3;
 }
 
-- (void)setLegacyZone:(id)a3
+- (void)setLegacyZone:(id)zone
 {
-  v4 = a3;
+  zoneCopy = zone;
   os_unfair_lock_lock_with_options();
   legacyZone = self->_legacyZone;
-  self->_legacyZone = v4;
+  self->_legacyZone = zoneCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -718,31 +718,31 @@ LABEL_12:
   return v3;
 }
 
-- (void)setHomeDataInformation:(id)a3
+- (void)setHomeDataInformation:(id)information
 {
-  v4 = a3;
+  informationCopy = information;
   os_unfair_lock_lock_with_options();
   homeDataInformation = self->_homeDataInformation;
-  self->_homeDataInformation = v4;
+  self->_homeDataInformation = informationCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (HMDCloudCache)initWithBackingStore:(id)a3 workQueue:(id)a4
+- (HMDCloudCache)initWithBackingStore:(id)store workQueue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  storeCopy = store;
+  queueCopy = queue;
   v13.receiver = self;
   v13.super_class = HMDCloudCache;
   v8 = [(HMDCloudCache *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_workQueue, a4);
-    objc_storeWeak(&v9->_backingStore, v6);
-    v10 = [MEMORY[0x277CBEB38] dictionary];
+    objc_storeStrong(&v8->_workQueue, queue);
+    objc_storeWeak(&v9->_backingStore, storeCopy);
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     homeZones = v9->_homeZones;
-    v9->_homeZones = v10;
+    v9->_homeZones = dictionary;
   }
 
   return v9;

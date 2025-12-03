@@ -1,42 +1,42 @@
 @interface AXSSKeyChord
-+ (id)keyChordWithKeys:(id)a3;
-+ (id)keyChordWithString:(id)a3;
-+ (id)keyFromKeyCode:(unint64_t)a3 unicodeCharacter:(id)a4;
++ (id)keyChordWithKeys:(id)keys;
++ (id)keyChordWithString:(id)string;
++ (id)keyFromKeyCode:(unint64_t)code unicodeCharacter:(id)character;
 + (id)nullKeyChord;
-- (AXSSKeyChord)initWithCoder:(id)a3;
+- (AXSSKeyChord)initWithCoder:(id)coder;
 - (BOOL)containsModifier;
 - (BOOL)isArrowKeyChord;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToKeyChord:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToKeyChord:(id)chord;
 - (BOOL)isFunctionKeyChord;
 - (BOOL)isNull;
 - (BOOL)isTextInputChord;
 - (BOOL)isTextInputTabChord;
 - (NSArray)orderedKeys;
-- (id)_displayValueWithSortedModifiers:(id)a3 isUSKeyboard:(BOOL)a4;
-- (id)_initWithKeys:(id)a3;
-- (id)_normalizeKeys:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_displayValueWithSortedModifiers:(id)modifiers isUSKeyboard:(BOOL)keyboard;
+- (id)_initWithKeys:(id)keys;
+- (id)_normalizeKeys:(id)keys;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AXSSKeyChord
 
-+ (id)keyChordWithKeys:(id)a3
++ (id)keyChordWithKeys:(id)keys
 {
-  v4 = a3;
-  v5 = [[a1 alloc] _initWithKeys:v4];
+  keysCopy = keys;
+  v5 = [[self alloc] _initWithKeys:keysCopy];
 
   return v5;
 }
 
-+ (id)keyChordWithString:(id)a3
++ (id)keyChordWithString:(id)string
 {
-  v4 = a3;
-  v5 = [v4 isEqualToString:@"_"];
-  v6 = [a1 alloc];
+  stringCopy = string;
+  v5 = [stringCopy isEqualToString:@"_"];
+  v6 = [self alloc];
   v7 = v6;
   if (v5)
   {
@@ -45,7 +45,7 @@
 
   else
   {
-    v9 = [v4 componentsSeparatedByString:@"_"];
+    v9 = [stringCopy componentsSeparatedByString:@"_"];
     v8 = [v7 _initWithKeys:v9];
   }
 
@@ -54,26 +54,26 @@
 
 + (id)nullKeyChord
 {
-  v2 = [a1 alloc];
+  v2 = [self alloc];
   v3 = [v2 _initWithKeys:MEMORY[0x1E695E0F0]];
 
   return v3;
 }
 
-+ (id)keyFromKeyCode:(unint64_t)a3 unicodeCharacter:(id)a4
++ (id)keyFromKeyCode:(unint64_t)code unicodeCharacter:(id)character
 {
-  v5 = a4;
-  if (a3 - 40 > 0x30)
+  characterCopy = character;
+  if (code - 40 > 0x30)
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = off_1E8134B58[a3 - 40];
+    v6 = off_1E8134B58[code - 40];
   }
 
-  if ([(__CFString *)v6 length]|| (v6 = v5, [(__CFString *)v6 length]== 1))
+  if ([(__CFString *)v6 length]|| (v6 = characterCopy, [(__CFString *)v6 length]== 1))
   {
     v7 = v6;
     v6 = v7;
@@ -87,33 +87,33 @@
   return v7;
 }
 
-- (id)_initWithKeys:(id)a3
+- (id)_initWithKeys:(id)keys
 {
-  v4 = a3;
+  keysCopy = keys;
   v9.receiver = self;
   v9.super_class = AXSSKeyChord;
   v5 = [(AXSSKeyChord *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    v7 = [(AXSSKeyChord *)v5 _normalizeKeys:v4];
+    v7 = [(AXSSKeyChord *)v5 _normalizeKeys:keysCopy];
     [(AXSSKeyChord *)v6 setKeys:v7];
   }
 
   return v6;
 }
 
-- (id)_normalizeKeys:(id)a3
+- (id)_normalizeKeys:(id)keys
 {
   v25 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E696AB08] uppercaseLetterCharacterSet];
-  v5 = [MEMORY[0x1E695DF70] array];
+  keysCopy = keys;
+  uppercaseLetterCharacterSet = [MEMORY[0x1E696AB08] uppercaseLetterCharacterSet];
+  array = [MEMORY[0x1E695DF70] array];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v6 = v3;
+  v6 = keysCopy;
   v7 = [v6 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v7)
   {
@@ -129,23 +129,23 @@
         }
 
         v11 = *(*(&v20 + 1) + 8 * i);
-        if (-[__CFString length](v11, "length", v20) == 1 && [v4 characterIsMember:{-[__CFString characterAtIndex:](v11, "characterAtIndex:", 0)}])
+        if (-[__CFString length](v11, "length", v20) == 1 && [uppercaseLetterCharacterSet characterIsMember:{-[__CFString characterAtIndex:](v11, "characterAtIndex:", 0)}])
         {
-          v12 = [(__CFString *)v11 lowercaseString];
-          [v5 addObject:v12];
+          lowercaseString = [(__CFString *)v11 lowercaseString];
+          [array addObject:lowercaseString];
 
-          if ([v5 containsObject:@"⇧"])
+          if ([array containsObject:@"⇧"])
           {
             continue;
           }
 
-          v13 = v5;
+          v13 = array;
           v14 = @"⇧";
         }
 
         else
         {
-          v13 = v5;
+          v13 = array;
           v14 = v11;
         }
 
@@ -158,23 +158,23 @@
     while (v8);
   }
 
-  v15 = [v5 sortedArrayUsingSelector:sel_compare_];
-  v16 = [v15 reverseObjectEnumerator];
-  v17 = [v16 allObjects];
+  v15 = [array sortedArrayUsingSelector:sel_compare_];
+  reverseObjectEnumerator = [v15 reverseObjectEnumerator];
+  allObjects = [reverseObjectEnumerator allObjects];
 
   v18 = *MEMORY[0x1E69E9840];
 
-  return v17;
+  return allObjects;
 }
 
-- (AXSSKeyChord)initWithCoder:(id)a3
+- (AXSSKeyChord)initWithCoder:(id)coder
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v5 = MEMORY[0x1E695DFD8];
   v6 = objc_opt_class();
   v7 = [v5 setWithObjects:{v6, objc_opt_class(), 0}];
-  v8 = [v4 decodeObjectOfClasses:v7 forKey:@"keys"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"keys"];
 
   v20 = 0u;
   v21 = 0u;
@@ -201,7 +201,7 @@
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
 
-          v15 = 0;
+          selfCopy = 0;
           goto LABEL_11;
         }
 
@@ -220,18 +220,18 @@
   }
 
   self = [(AXSSKeyChord *)self _initWithKeys:v9];
-  v15 = self;
+  selfCopy = self;
 LABEL_11:
 
   v16 = *MEMORY[0x1E69E9840];
-  return v15;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(AXSSKeyChord *)self keys];
-  [v4 encodeObject:v5 forKey:@"keys"];
+  coderCopy = coder;
+  keys = [(AXSSKeyChord *)self keys];
+  [coderCopy encodeObject:keys forKey:@"keys"];
 }
 
 - (id)description
@@ -239,44 +239,44 @@ LABEL_11:
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(AXSSKeyChord *)self keys];
-  v7 = [v6 componentsJoinedByString:{@", "}];
+  keys = [(AXSSKeyChord *)self keys];
+  v7 = [keys componentsJoinedByString:{@", "}];
   v8 = [v3 stringWithFormat:@"%@<%p>: keys:[%@]", v5, self, v7];
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(AXSSKeyChord *)self isEqualToKeyChord:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(AXSSKeyChord *)self isEqualToKeyChord:equalCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToKeyChord:(id)a3
+- (BOOL)isEqualToKeyChord:(id)chord
 {
-  v4 = a3;
-  v5 = [(AXSSKeyChord *)self keys];
-  v6 = [v4 keys];
+  chordCopy = chord;
+  keys = [(AXSSKeyChord *)self keys];
+  keys2 = [chordCopy keys];
 
-  LOBYTE(v4) = [v5 isEqualToArray:v6];
-  return v4;
+  LOBYTE(chordCopy) = [keys isEqualToArray:keys2];
+  return chordCopy;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(AXSSKeyChord *)self keys];
-  v3 = [v2 hash];
+  keys = [(AXSSKeyChord *)self keys];
+  v3 = [keys hash];
 
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v3 = [(AXSSKeyChord *)self keys];
-  v4 = [AXSSKeyChord keyChordWithKeys:v3];
+  keys = [(AXSSKeyChord *)self keys];
+  v4 = [AXSSKeyChord keyChordWithKeys:keys];
 
   return v4;
 }
@@ -289,8 +289,8 @@ LABEL_11:
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v4 = [(AXSSKeyChord *)self keys];
-  v5 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  keys = [(AXSSKeyChord *)self keys];
+  v5 = [keys countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v5)
   {
     v6 = v5;
@@ -303,7 +303,7 @@ LABEL_11:
       {
         if (*v18 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(keys);
         }
 
         v10 = *(*(&v17 + 1) + 8 * i);
@@ -326,7 +326,7 @@ LABEL_11:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v6 = [keys countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v6);
@@ -370,8 +370,8 @@ LABEL_11:
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v6 = [(AXSSKeyChord *)self keys];
-    v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    keys = [(AXSSKeyChord *)self keys];
+    v7 = [keys countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v7)
     {
       v8 = v7;
@@ -382,7 +382,7 @@ LABEL_11:
         {
           if (*v16 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(keys);
           }
 
           v11 = *(*(&v15 + 1) + 8 * i);
@@ -396,7 +396,7 @@ LABEL_11:
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v8 = [keys countByEnumeratingWithState:&v15 objects:v19 count:16];
         if (v8)
         {
           continue;
@@ -434,8 +434,8 @@ LABEL_16:
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v6 = [(AXSSKeyChord *)self keys];
-    v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    keys = [(AXSSKeyChord *)self keys];
+    v7 = [keys countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v7)
     {
       v8 = v7;
@@ -447,7 +447,7 @@ LABEL_16:
         {
           if (*v15 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(keys);
           }
 
           if ([&unk_1F4066540 containsObject:*(*(&v14 + 1) + 8 * v10)])
@@ -463,7 +463,7 @@ LABEL_16:
         }
 
         while (v8 != v10);
-        v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v8 = [keys countByEnumeratingWithState:&v14 objects:v18 count:16];
         if (v8)
         {
           continue;
@@ -514,8 +514,8 @@ uint64_t __32__AXSSKeyChord_isTextInputChord__block_invoke()
 
 - (BOOL)isArrowKeyChord
 {
-  v2 = [(AXSSKeyChord *)self keys];
-  v3 = [v2 ax_filteredArrayUsingBlock:&__block_literal_global_178];
+  keys = [(AXSSKeyChord *)self keys];
+  v3 = [keys ax_filteredArrayUsingBlock:&__block_literal_global_178];
   v4 = [v3 count] != 0;
 
   return v4;
@@ -567,37 +567,37 @@ uint64_t __35__AXSSKeyChord_isTextInputTabChord__block_invoke()
 
 - (BOOL)isNull
 {
-  v2 = [(AXSSKeyChord *)self keys];
-  v3 = [v2 count] == 0;
+  keys = [(AXSSKeyChord *)self keys];
+  v3 = [keys count] == 0;
 
   return v3;
 }
 
-- (id)_displayValueWithSortedModifiers:(id)a3 isUSKeyboard:(BOOL)a4
+- (id)_displayValueWithSortedModifiers:(id)modifiers isUSKeyboard:(BOOL)keyboard
 {
-  v6 = a3;
-  v7 = [(AXSSKeyChord *)self keys];
-  if (v6)
+  modifiersCopy = modifiers;
+  keys = [(AXSSKeyChord *)self keys];
+  if (modifiersCopy)
   {
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __62__AXSSKeyChord__displayValueWithSortedModifiers_isUSKeyboard___block_invoke;
     v17[3] = &unk_1E8134B10;
-    v18 = v6;
-    v8 = [v7 sortedArrayWithOptions:16 usingComparator:v17];
+    v18 = modifiersCopy;
+    v8 = [keys sortedArrayWithOptions:16 usingComparator:v17];
 
-    v7 = v8;
+    keys = v8;
   }
 
-  v9 = [MEMORY[0x1E696AB08] letterCharacterSet];
+  letterCharacterSet = [MEMORY[0x1E696AB08] letterCharacterSet];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __62__AXSSKeyChord__displayValueWithSortedModifiers_isUSKeyboard___block_invoke_2;
   v14[3] = &unk_1E8134B38;
-  v16 = a4;
-  v15 = v9;
-  v10 = v9;
-  v11 = [v7 ax_mappedArrayUsingBlock:v14];
+  keyboardCopy = keyboard;
+  v15 = letterCharacterSet;
+  v10 = letterCharacterSet;
+  v11 = [keys ax_mappedArrayUsingBlock:v14];
   v12 = [v11 componentsJoinedByString:@" "];
 
   return v12;

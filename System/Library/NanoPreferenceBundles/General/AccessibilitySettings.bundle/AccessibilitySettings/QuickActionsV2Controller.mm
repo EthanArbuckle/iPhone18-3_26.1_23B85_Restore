@@ -1,15 +1,15 @@
 @interface QuickActionsV2Controller
 - (id)quickActionSwitchState;
 - (id)specifiers;
-- (void)setQuickActionSwitchState:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)setQuickActionSwitchState:(id)state;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation QuickActionsV2Controller
 
 - (id)specifiers
 {
-  v2 = self;
+  selfCopy = self;
   v80 = *MEMORY[0x277D85DE8];
   v3 = *(&self->super.super.super.super.super.super.isa + *MEMORY[0x277D3FC48]);
   if (v3)
@@ -18,25 +18,25 @@
   }
 
   v62 = *MEMORY[0x277D3FC48];
-  v4 = [MEMORY[0x277CBEB18] array];
-  v5 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
+  array = [MEMORY[0x277CBEB18] array];
+  emptyGroupSpecifier = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
   v6 = settingsLocString(@"QUICK_ACTIONS_INSTRUCTIONS_FOOTER", @"AccessibilitySettings-elton");
   v7 = *MEMORY[0x277D3FF88];
-  [v5 setProperty:v6 forKey:*MEMORY[0x277D3FF88]];
+  [emptyGroupSpecifier setProperty:v6 forKey:*MEMORY[0x277D3FF88]];
 
-  v69 = v4;
-  v61 = v5;
-  [v4 addObject:v5];
+  v69 = array;
+  v61 = emptyGroupSpecifier;
+  [array addObject:emptyGroupSpecifier];
   v67 = AXActivePairedDeviceIsNapiliBOrLater() && AXActivePairedDeviceHasDoubleTapActivationGesture();
   v8 = AXActivePairedDeviceSupportsQuickActionsAlwaysOnState();
-  v9 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
-  v10 = v9;
+  emptyGroupSpecifier2 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
+  v10 = emptyGroupSpecifier2;
   v11 = MEMORY[0x277D3FFE8];
   v12 = MEMORY[0x277D3FFB8];
-  v63 = v2;
+  v63 = selfCopy;
   if (v8)
   {
-    [v9 setProperty:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277D3FFE8]];
+    [emptyGroupSpecifier2 setProperty:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277D3FFE8]];
     [v10 setProperty:@"QuickActionsStateGroupID" forKey:*v12];
     if (v67)
     {
@@ -44,10 +44,10 @@
       [v10 setProperty:v13 forKey:v7];
     }
 
-    [v4 addObject:v10];
-    v14 = [(AccessibilityBridgeBaseController *)v2 accessibilityDomainAccessor];
-    v15 = [v14 objectForKey:*MEMORY[0x277D81EB8]];
-    v16 = [v15 intValue];
+    [array addObject:v10];
+    accessibilityDomainAccessor = [(AccessibilityBridgeBaseController *)selfCopy accessibilityDomainAccessor];
+    v15 = [accessibilityDomainAccessor objectForKey:*MEMORY[0x277D81EB8]];
+    intValue = [v15 intValue];
 
     v76 = 0u;
     v77 = 0u;
@@ -66,7 +66,7 @@
     v19 = *MEMORY[0x277D401A8];
     v20 = *MEMORY[0x277D3FD80];
     v21 = *MEMORY[0x277D3FF38];
-    v22 = v67 ? 2 : v16;
+    v22 = v67 ? 2 : intValue;
     do
     {
       for (i = 0; i != v18; ++i)
@@ -77,10 +77,10 @@
         }
 
         v24 = *(*(&v74 + 1) + 8 * i);
-        v25 = [v24 intValue];
-        v26 = v25;
+        intValue2 = [v24 intValue];
+        v26 = intValue2;
         v27 = MEMORY[0x277D3FAD8];
-        v28 = AXLocalizedStringForQuickActionsState(v25);
+        v28 = AXLocalizedStringForQuickActionsState(intValue2);
         v29 = [v27 preferenceSpecifierNamed:v28 target:0 set:0 get:0 detail:0 cell:3 edit:0];
 
         [v29 setProperty:v24 forKey:v19];
@@ -101,7 +101,7 @@
     }
 
     while (v18);
-    v2 = v63;
+    selfCopy = v63;
     v12 = MEMORY[0x277D3FFB8];
     v11 = MEMORY[0x277D3FFE8];
     v10 = v60;
@@ -122,31 +122,31 @@
       [v10 setProperty:v33 forKey:v7];
     }
 
-    [v4 addObject:v10];
+    [array addObject:v10];
     v34 = MEMORY[0x277D3FAD8];
     v35 = settingsLocString(@"QUICK_ACTIONS_ROW_TITLE", @"AccessibilitySettings-quickactions");
-    v32 = [v34 preferenceSpecifierNamed:v35 target:v2 set:sel_setQuickActionSwitchState_ get:sel_quickActionSwitchState detail:0 cell:6 edit:0];
+    v32 = [v34 preferenceSpecifierNamed:v35 target:selfCopy set:sel_setQuickActionSwitchState_ get:sel_quickActionSwitchState detail:0 cell:6 edit:0];
 
     v36 = [MEMORY[0x277CCABB0] numberWithInt:!v67];
     [v32 setProperty:v36 forKey:*MEMORY[0x277D3FF38]];
 
-    [v4 addObject:v32];
+    [array addObject:v32];
   }
 
 LABEL_25:
-  if ((AXActivePairedDeviceSupportsQuickActionsAlwaysOnState() & 1) != 0 || (-[QuickActionsV2Controller quickActionSwitchState](v2, "quickActionSwitchState"), v37 = objc_claimAutoreleasedReturnValue(), v38 = [v37 BOOLValue], v37, v38))
+  if ((AXActivePairedDeviceSupportsQuickActionsAlwaysOnState() & 1) != 0 || (-[QuickActionsV2Controller quickActionSwitchState](selfCopy, "quickActionSwitchState"), v37 = objc_claimAutoreleasedReturnValue(), v38 = [v37 BOOLValue], v37, v38))
   {
     v39 = MEMORY[0x277D3FAD8];
     v40 = settingsLocString(@"QUICK_ACTIONS_BANNER_HEADER", @"AccessibilitySettings-quickactions");
-    v41 = [v39 preferenceSpecifierNamed:v40 target:v2 set:0 get:0 detail:0 cell:0 edit:0];
+    v41 = [v39 preferenceSpecifierNamed:v40 target:selfCopy set:0 get:0 detail:0 cell:0 edit:0];
 
     [v41 setProperty:MEMORY[0x277CBEC38] forKey:*v11];
     [v41 setProperty:@"QuickActionsBannerAppearanceGroupID" forKey:*v12];
     v66 = v41;
     [v69 addObject:v41];
-    v42 = [(AccessibilityBridgeBaseController *)v2 accessibilityDomainAccessor];
-    v43 = [v42 objectForKey:*MEMORY[0x277D81EB0]];
-    v68 = [v43 intValue];
+    accessibilityDomainAccessor2 = [(AccessibilityBridgeBaseController *)selfCopy accessibilityDomainAccessor];
+    v43 = [accessibilityDomainAccessor2 objectForKey:*MEMORY[0x277D81EB0]];
+    intValue3 = [v43 intValue];
 
     v72 = 0u;
     v73 = 0u;
@@ -170,15 +170,15 @@ LABEL_25:
           }
 
           v51 = *(*(&v70 + 1) + 8 * j);
-          v52 = [v51 intValue];
+          intValue4 = [v51 intValue];
           v53 = MEMORY[0x277D3FAD8];
-          v54 = AXLocalizedStringForQuickActionBannerAppearance(v52);
+          v54 = AXLocalizedStringForQuickActionBannerAppearance(intValue4);
           v55 = [v53 preferenceSpecifierNamed:v54 target:0 set:0 get:0 detail:0 cell:3 edit:0];
 
           [v55 setProperty:v51 forKey:v48];
           [v55 setProperty:MEMORY[0x277CBEC38] forKey:v49];
           [v69 addObject:v55];
-          if (v52 == v68)
+          if (intValue4 == intValue3)
           {
             v56 = v55;
 
@@ -199,38 +199,38 @@ LABEL_25:
 
     [v66 setProperty:v46 forKey:*MEMORY[0x277D40090]];
 
-    v2 = v63;
+    selfCopy = v63;
   }
 
-  v57 = *(&v2->super.super.super.super.super.super.isa + v62);
-  *(&v2->super.super.super.super.super.super.isa + v62) = v69;
+  v57 = *(&selfCopy->super.super.super.super.super.super.isa + v62);
+  *(&selfCopy->super.super.super.super.super.super.isa + v62) = v69;
 
-  v3 = *(&v2->super.super.super.super.super.super.isa + v62);
+  v3 = *(&selfCopy->super.super.super.super.super.super.isa + v62);
 LABEL_40:
   v58 = *MEMORY[0x277D85DE8];
 
   return v3;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v20.receiver = self;
   v20.super_class = QuickActionsV2Controller;
-  v6 = a4;
-  [(QuickActionsV2Controller *)&v20 tableView:a3 didSelectRowAtIndexPath:v6];
-  v7 = [(QuickActionsV2Controller *)self indexForIndexPath:v6, v20.receiver, v20.super_class];
-  v8 = [(QuickActionsV2Controller *)self specifiers];
-  v9 = [v8 objectAtIndex:v7];
+  pathCopy = path;
+  [(QuickActionsV2Controller *)&v20 tableView:view didSelectRowAtIndexPath:pathCopy];
+  v7 = [(QuickActionsV2Controller *)self indexForIndexPath:pathCopy, v20.receiver, v20.super_class];
+  specifiers = [(QuickActionsV2Controller *)self specifiers];
+  v9 = [specifiers objectAtIndex:v7];
 
-  v10 = [v6 section];
-  v11 = [(QuickActionsV2Controller *)self specifierAtIndex:[(QuickActionsV2Controller *)self indexOfGroup:v10]];
+  section = [pathCopy section];
+  v11 = [(QuickActionsV2Controller *)self specifierAtIndex:[(QuickActionsV2Controller *)self indexOfGroup:section]];
   v12 = [v11 propertyForKey:*MEMORY[0x277D3FFE8]];
-  v13 = [v12 BOOLValue];
+  bOOLValue = [v12 BOOLValue];
 
-  if (v13)
+  if (bOOLValue)
   {
-    v14 = [v11 identifier];
-    v15 = [v14 isEqualToString:@"QuickActionsStateGroupID"];
+    identifier = [v11 identifier];
+    v15 = [identifier isEqualToString:@"QuickActionsStateGroupID"];
 
     if (v15)
     {
@@ -246,8 +246,8 @@ LABEL_8:
       goto LABEL_9;
     }
 
-    v18 = [v11 identifier];
-    v19 = [v18 isEqualToString:@"QuickActionsBannerAppearanceGroupID"];
+    identifier2 = [v11 identifier];
+    v19 = [identifier2 isEqualToString:@"QuickActionsBannerAppearanceGroupID"];
 
     if (v19)
     {
@@ -272,19 +272,19 @@ LABEL_9:
 
   else
   {
-    v4 = [(AccessibilityBridgeBaseController *)self accessibilityDomainAccessor];
-    v5 = [v4 objectForKey:*MEMORY[0x277D81EB8]];
-    v6 = [v5 intValue];
+    accessibilityDomainAccessor = [(AccessibilityBridgeBaseController *)self accessibilityDomainAccessor];
+    v5 = [accessibilityDomainAccessor objectForKey:*MEMORY[0x277D81EB8]];
+    intValue = [v5 intValue];
 
-    v3 = [MEMORY[0x277CCABB0] numberWithInt:v6 != 2];
+    v3 = [MEMORY[0x277CCABB0] numberWithInt:intValue != 2];
   }
 
   return v3;
 }
 
-- (void)setQuickActionSwitchState:(id)a3
+- (void)setQuickActionSwitchState:(id)state
 {
-  if ([a3 BOOLValue])
+  if ([state BOOLValue])
   {
     v4 = 0;
   }

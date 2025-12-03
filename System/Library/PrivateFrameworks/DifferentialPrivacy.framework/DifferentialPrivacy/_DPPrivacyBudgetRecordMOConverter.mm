@@ -1,41 +1,41 @@
 @interface _DPPrivacyBudgetRecordMOConverter
-- (id)insertRecord:(id)a3 inManagedObjectContext:(id)a4;
-- (id)insertRecords:(id)a3 inManagedObjectContext:(id)a4;
-- (id)updateRecords:(id)a3 inManagedObjectContext:(id)a4;
+- (id)insertRecord:(id)record inManagedObjectContext:(id)context;
+- (id)insertRecords:(id)records inManagedObjectContext:(id)context;
+- (id)updateRecords:(id)records inManagedObjectContext:(id)context;
 @end
 
 @implementation _DPPrivacyBudgetRecordMOConverter
 
-- (id)insertRecord:(id)a3 inManagedObjectContext:(id)a4
+- (id)insertRecord:(id)record inManagedObjectContext:(id)context
 {
   v14[1] = *MEMORY[0x277D85DE8];
   v6 = MEMORY[0x277CBE408];
-  v7 = a4;
-  v8 = a3;
-  v9 = [objc_opt_class() entityName];
-  v10 = [v6 insertNewObjectForEntityForName:v9 inManagedObjectContext:v7];
+  contextCopy = context;
+  recordCopy = record;
+  entityName = [objc_opt_class() entityName];
+  v10 = [v6 insertNewObjectForEntityForName:entityName inManagedObjectContext:contextCopy];
 
   v14[0] = v10;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:1];
-  [v7 obtainPermanentIDsForObjects:v11 error:0];
+  [contextCopy obtainPermanentIDsForObjects:v11 error:0];
 
-  [(_DPPrivacyBudgetRecordMOConverter *)self copyRecord:v8 intoManagedObject:v10];
+  [(_DPPrivacyBudgetRecordMOConverter *)self copyRecord:recordCopy intoManagedObject:v10];
   v12 = *MEMORY[0x277D85DE8];
 
   return v10;
 }
 
-- (id)insertRecords:(id)a3 inManagedObjectContext:(id)a4
+- (id)insertRecords:(id)records inManagedObjectContext:(id)context
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  recordsCopy = records;
+  contextCopy = context;
   v8 = [MEMORY[0x277CBEBF8] mutableCopy];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v9 = v6;
+  v9 = recordsCopy;
   v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v10)
   {
@@ -54,7 +54,7 @@
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v15 = [(_DPPrivacyBudgetRecordMOConverter *)self insertRecord:v14 inManagedObjectContext:v7, v18];
+          v15 = [(_DPPrivacyBudgetRecordMOConverter *)self insertRecord:v14 inManagedObjectContext:contextCopy, v18];
           [v8 addObject:v15];
         }
       }
@@ -70,17 +70,17 @@
   return v8;
 }
 
-- (id)updateRecords:(id)a3 inManagedObjectContext:(id)a4
+- (id)updateRecords:(id)records inManagedObjectContext:(id)context
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  recordsCopy = records;
+  contextCopy = context;
   v7 = [MEMORY[0x277CBEBF8] mutableCopy];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v8 = v5;
+  v8 = recordsCopy;
   v9 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v9)
   {
@@ -99,8 +99,8 @@
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v14 = [v13 objectId];
-          v15 = [v6 objectWithID:v14];
+          objectId = [v13 objectId];
+          v15 = [contextCopy objectWithID:objectId];
 
           if (v15)
           {

@@ -2,7 +2,7 @@
 + (id)EmailMessageIds;
 + (id)configurationForEmailMessageIds;
 + (id)storeConfigurationForEmailMessageIds;
-+ (id)streamWithName:(id)a3;
++ (id)streamWithName:(id)name;
 + (id)validKeyPaths;
 @end
 
@@ -11,7 +11,7 @@
 + (id)EmailMessageIds
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForEmailMessageIds];
+  configurationForEmailMessageIds = [self configurationForEmailMessageIds];
   v3 = +[BMIntelligencePlatformEmailMessageIds columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -23,7 +23,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"IntelligencePlatform.ECR.EmailMessageIds" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"IntelligencePlatform.ECR.EmailMessageIds" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"IntelligencePlatform.ECR.EmailMessageIds" schema:v9 configuration:configurationForEmailMessageIds];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -32,13 +32,13 @@
 
 + (id)configurationForEmailMessageIds
 {
-  v3 = [a1 storeConfigurationForEmailMessageIds];
-  v4 = [a1 syncPolicyForEmailMessageIds];
+  storeConfigurationForEmailMessageIds = [self storeConfigurationForEmailMessageIds];
+  syncPolicyForEmailMessageIds = [self syncPolicyForEmailMessageIds];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"B29F63C0-69C7-4B52-B29E-092DB9DA3514"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"IntelligencePlatform.ECR.EmailMessageIds" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"IntelligencePlatform.ECR.EmailMessageIds" eventClass:objc_opt_class() storeConfig:storeConfigurationForEmailMessageIds syncPolicy:syncPolicyForEmailMessageIds legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -51,19 +51,19 @@
   return v3;
 }
 
-+ (id)streamWithName:(id)a3
++ (id)streamWithName:(id)name
 {
-  if ([a3 isEqualToString:@"EmailMessageIds"])
+  if ([name isEqualToString:@"EmailMessageIds"])
   {
-    v4 = [a1 EmailMessageIds];
+    emailMessageIds = [self EmailMessageIds];
   }
 
   else
   {
-    v4 = 0;
+    emailMessageIds = 0;
   }
 
-  return v4;
+  return emailMessageIds;
 }
 
 + (id)validKeyPaths

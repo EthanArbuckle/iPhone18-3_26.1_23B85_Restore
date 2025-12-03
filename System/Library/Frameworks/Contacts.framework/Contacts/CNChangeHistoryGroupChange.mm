@@ -1,37 +1,37 @@
 @interface CNChangeHistoryGroupChange
-- (CNChangeHistoryGroupChange)initWithCoder:(id)a3;
-- (CNChangeHistoryGroupChange)initWithIdentifier:(id)a3 changeType:(int64_t)a4 changeAnchor:(id)a5 changeID:(id)a6 externalID:(id)a7;
+- (CNChangeHistoryGroupChange)initWithCoder:(id)coder;
+- (CNChangeHistoryGroupChange)initWithIdentifier:(id)identifier changeType:(int64_t)type changeAnchor:(id)anchor changeID:(id)d externalID:(id)iD;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CNChangeHistoryGroupChange
 
-- (CNChangeHistoryGroupChange)initWithIdentifier:(id)a3 changeType:(int64_t)a4 changeAnchor:(id)a5 changeID:(id)a6 externalID:(id)a7
+- (CNChangeHistoryGroupChange)initWithIdentifier:(id)identifier changeType:(int64_t)type changeAnchor:(id)anchor changeID:(id)d externalID:(id)iD
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  identifierCopy = identifier;
+  anchorCopy = anchor;
+  dCopy = d;
+  iDCopy = iD;
   v27.receiver = self;
   v27.super_class = CNChangeHistoryGroupChange;
   v16 = [(CNChangeHistoryGroupChange *)&v27 init];
   if (v16)
   {
-    v17 = [v12 copy];
+    v17 = [identifierCopy copy];
     groupIdentifier = v16->_groupIdentifier;
     v16->_groupIdentifier = v17;
 
-    v16->_changeType = a4;
-    v19 = [v13 copy];
+    v16->_changeType = type;
+    v19 = [anchorCopy copy];
     changeAnchor = v16->_changeAnchor;
     v16->_changeAnchor = v19;
 
-    v21 = [v14 copy];
+    v21 = [dCopy copy];
     changeID = v16->_changeID;
     v16->_changeID = v21;
 
-    v23 = [v15 copy];
+    v23 = [iDCopy copy];
     externalID = v16->_externalID;
     v16->_externalID = v23;
 
@@ -41,31 +41,31 @@
   return v16;
 }
 
-- (CNChangeHistoryGroupChange)initWithCoder:(id)a3
+- (CNChangeHistoryGroupChange)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v20.receiver = self;
   v20.super_class = CNChangeHistoryGroupChange;
   v5 = [(CNChangeHistoryGroupChange *)&v20 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_groupIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_groupIdentifier"];
     v7 = [v6 copy];
     groupIdentifier = v5->_groupIdentifier;
     v5->_groupIdentifier = v7;
 
-    v5->_changeType = [v4 decodeIntegerForKey:@"_changeType"];
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_changeAnchor"];
+    v5->_changeType = [coderCopy decodeIntegerForKey:@"_changeType"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_changeAnchor"];
     v10 = [v9 copy];
     changeAnchor = v5->_changeAnchor;
     v5->_changeAnchor = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_changeID"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_changeID"];
     v13 = [v12 copy];
     changeID = v5->_changeID;
     v5->_changeID = v13;
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_externalID"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_externalID"];
     v16 = [v15 copy];
     externalID = v5->_externalID;
     v5->_externalID = v16;
@@ -76,27 +76,27 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   groupIdentifier = self->_groupIdentifier;
-  v5 = a3;
-  [v5 encodeObject:groupIdentifier forKey:@"_groupIdentifier"];
-  [v5 encodeInteger:self->_changeType forKey:@"_changeType"];
-  [v5 encodeObject:self->_changeAnchor forKey:@"_changeAnchor"];
-  [v5 encodeObject:self->_changeID forKey:@"_changeID"];
-  [v5 encodeObject:self->_externalID forKey:@"_externalID"];
+  coderCopy = coder;
+  [coderCopy encodeObject:groupIdentifier forKey:@"_groupIdentifier"];
+  [coderCopy encodeInteger:self->_changeType forKey:@"_changeType"];
+  [coderCopy encodeObject:self->_changeAnchor forKey:@"_changeAnchor"];
+  [coderCopy encodeObject:self->_changeID forKey:@"_changeID"];
+  [coderCopy encodeObject:self->_externalID forKey:@"_externalID"];
 }
 
 - (id)description
 {
   v3 = MEMORY[0x1E69966B0];
-  v4 = [(CNChangeHistoryGroupChange *)self groupIdentifier];
+  groupIdentifier = [(CNChangeHistoryGroupChange *)self groupIdentifier];
   v5 = [MEMORY[0x1E696AD98] numberWithInteger:{-[CNChangeHistoryGroupChange changeType](self, "changeType")}];
-  v6 = [(CNChangeHistoryGroupChange *)self changeAnchor];
-  v7 = [(CNChangeHistoryGroupChange *)self changeID];
-  v8 = [(CNChangeHistoryGroupChange *)self externalID];
-  v9 = [(CNChangeHistoryGroupChange *)self group];
-  v10 = [v3 descriptionForObject:self withNamesAndObjects:{@"groupIdentifier", v4, @"changeType", v5, @"changeAnchor", v6, @"changeID", v7, @"externalID", v8, @"group", v9, 0}];
+  changeAnchor = [(CNChangeHistoryGroupChange *)self changeAnchor];
+  changeID = [(CNChangeHistoryGroupChange *)self changeID];
+  externalID = [(CNChangeHistoryGroupChange *)self externalID];
+  group = [(CNChangeHistoryGroupChange *)self group];
+  v10 = [v3 descriptionForObject:self withNamesAndObjects:{@"groupIdentifier", groupIdentifier, @"changeType", v5, @"changeAnchor", changeAnchor, @"changeID", changeID, @"externalID", externalID, @"group", group, 0}];
 
   return v10;
 }

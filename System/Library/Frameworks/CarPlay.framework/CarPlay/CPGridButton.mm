@@ -1,49 +1,49 @@
 @interface CPGridButton
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToGridButton:(id)a3;
-- (CPGridButton)initWithCoder:(id)a3;
-- (CPGridButton)initWithTitleVariants:(id)a3 image:(id)a4 messageConfiguration:(id)a5 handler:(id)a6;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToGridButton:(id)button;
+- (CPGridButton)initWithCoder:(id)coder;
+- (CPGridButton)initWithTitleVariants:(id)variants image:(id)image messageConfiguration:(id)configuration handler:(id)handler;
 - (CPGridButtonDelegate)delegate;
 - (NSString)description;
 - (UIImage)image;
 - (id)_init;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)handlePrimaryAction;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 - (void)setEnabled:(BOOL)enabled;
-- (void)updateImage:(id)a3;
-- (void)updateTitleVariants:(id)a3;
+- (void)updateImage:(id)image;
+- (void)updateTitleVariants:(id)variants;
 @end
 
 @implementation CPGridButton
 
-- (CPGridButton)initWithTitleVariants:(id)a3 image:(id)a4 messageConfiguration:(id)a5 handler:(id)a6
+- (CPGridButton)initWithTitleVariants:(id)variants image:(id)image messageConfiguration:(id)configuration handler:(id)handler
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  variantsCopy = variants;
+  imageCopy = image;
+  configurationCopy = configuration;
+  handlerCopy = handler;
   v26.receiver = self;
   v26.super_class = CPGridButton;
   v15 = [(CPGridButton *)&v26 init];
   if (v15)
   {
-    v16 = [MEMORY[0x277CCAD78] UUID];
+    uUID = [MEMORY[0x277CCAD78] UUID];
     identifier = v15->_identifier;
-    v15->_identifier = v16;
+    v15->_identifier = uUID;
 
     v15->_enabled = 1;
-    objc_storeStrong(&v15->_titleVariants, a3);
-    v18 = [[CPImageSet alloc] initWithImage:v12];
+    objc_storeStrong(&v15->_titleVariants, variants);
+    v18 = [[CPImageSet alloc] initWithImage:imageCopy];
     imageSet = v15->_imageSet;
     v15->_imageSet = v18;
 
-    v20 = MEMORY[0x2383C2A40](v14);
+    v20 = MEMORY[0x2383C2A40](handlerCopy);
     handler = v15->_handler;
     v15->_handler = v20;
 
-    objc_storeStrong(&v15->_messageConfiguration, a5);
+    objc_storeStrong(&v15->_messageConfiguration, configuration);
     objc_initWeak(&location, v15);
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
@@ -74,51 +74,51 @@ void __73__CPGridButton_initWithTitleVariants_image_messageConfiguration_handler
   return [(CPGridButton *)&v3 init];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CPGridButton *)self isEqualToGridButton:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CPGridButton *)self isEqualToGridButton:equalCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToGridButton:(id)a3
+- (BOOL)isEqualToGridButton:(id)button
 {
-  v4 = a3;
-  v5 = [(CPGridButton *)self identifier];
-  v6 = [v4 identifier];
-  v7 = [v5 isEqual:v6];
+  buttonCopy = button;
+  identifier = [(CPGridButton *)self identifier];
+  identifier2 = [buttonCopy identifier];
+  v7 = [identifier isEqual:identifier2];
 
   if (!v7)
   {
     goto LABEL_6;
   }
 
-  v8 = [(CPGridButton *)self isEnabled];
-  if (v8 != [v4 isEnabled])
+  isEnabled = [(CPGridButton *)self isEnabled];
+  if (isEnabled != [buttonCopy isEnabled])
   {
     goto LABEL_6;
   }
 
-  v9 = [(CPGridButton *)self titleVariants];
-  v10 = [v4 titleVariants];
-  v11 = [v9 isEqualToArray:v10];
+  titleVariants = [(CPGridButton *)self titleVariants];
+  titleVariants2 = [buttonCopy titleVariants];
+  v11 = [titleVariants isEqualToArray:titleVariants2];
 
   if (!v11)
   {
     goto LABEL_6;
   }
 
-  v12 = [(CPGridButton *)self imageSet];
-  v13 = [v4 imageSet];
-  v14 = [v12 isEqual:v13];
+  imageSet = [(CPGridButton *)self imageSet];
+  imageSet2 = [buttonCopy imageSet];
+  v14 = [imageSet isEqual:imageSet2];
 
   if (v14)
   {
-    v15 = [(CPGridButton *)self messageConfiguration];
-    v16 = [v4 messageConfiguration];
-    v17 = [v15 isEqual:v16];
+    messageConfiguration = [(CPGridButton *)self messageConfiguration];
+    messageConfiguration2 = [buttonCopy messageConfiguration];
+    v17 = [messageConfiguration isEqual:messageConfiguration2];
   }
 
   else
@@ -132,64 +132,64 @@ LABEL_6:
 
 - (unint64_t)hash
 {
-  v3 = [(CPGridButton *)self identifier];
-  v4 = [v3 hash];
-  v5 = [(CPGridButton *)self titleVariants];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(CPGridButton *)self imageSet];
-  v8 = v6 ^ [v7 hash];
-  v9 = [(CPGridButton *)self isEnabled];
-  v10 = [(CPGridButton *)self messageConfiguration];
-  v11 = v9 ^ [v10 hash];
+  identifier = [(CPGridButton *)self identifier];
+  v4 = [identifier hash];
+  titleVariants = [(CPGridButton *)self titleVariants];
+  v6 = [titleVariants hash] ^ v4;
+  imageSet = [(CPGridButton *)self imageSet];
+  v8 = v6 ^ [imageSet hash];
+  isEnabled = [(CPGridButton *)self isEnabled];
+  messageConfiguration = [(CPGridButton *)self messageConfiguration];
+  v11 = isEnabled ^ [messageConfiguration hash];
 
   return v8 ^ v11;
 }
 
-- (CPGridButton)initWithCoder:(id)a3
+- (CPGridButton)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(CPGridButton *)self _init];
-  if (v5)
+  coderCopy = coder;
+  _init = [(CPGridButton *)self _init];
+  if (_init)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CPGridButtonIdentifier"];
-    identifier = v5->_identifier;
-    v5->_identifier = v6;
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CPGridButtonIdentifier"];
+    identifier = _init->_identifier;
+    _init->_identifier = v6;
 
-    v5->_enabled = [v4 decodeBoolForKey:@"CPGridButtonEnabled"];
+    _init->_enabled = [coderCopy decodeBoolForKey:@"CPGridButtonEnabled"];
     v8 = MEMORY[0x277CBEB98];
     v9 = objc_opt_class();
     v10 = [v8 setWithObjects:{v9, objc_opt_class(), 0}];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"CPGridButtonTitleVariants"];
-    titleVariants = v5->_titleVariants;
-    v5->_titleVariants = v11;
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"CPGridButtonTitleVariants"];
+    titleVariants = _init->_titleVariants;
+    _init->_titleVariants = v11;
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CPGridButtonImageSet"];
-    imageSet = v5->_imageSet;
-    v5->_imageSet = v13;
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CPGridButtonImageSet"];
+    imageSet = _init->_imageSet;
+    _init->_imageSet = v13;
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CPMessageGridItemConfiguration"];
-    messageConfiguration = v5->_messageConfiguration;
-    v5->_messageConfiguration = v15;
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CPMessageGridItemConfiguration"];
+    messageConfiguration = _init->_messageConfiguration;
+    _init->_messageConfiguration = v15;
   }
 
-  return v5;
+  return _init;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(CPGridButton *)self identifier];
-  [v4 encodeObject:v5 forKey:@"CPGridButtonIdentifier"];
+  coderCopy = coder;
+  identifier = [(CPGridButton *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"CPGridButtonIdentifier"];
 
-  [v4 encodeBool:-[CPGridButton isEnabled](self forKey:{"isEnabled"), @"CPGridButtonEnabled"}];
-  v6 = [(CPGridButton *)self titleVariants];
-  [v4 encodeObject:v6 forKey:@"CPGridButtonTitleVariants"];
+  [coderCopy encodeBool:-[CPGridButton isEnabled](self forKey:{"isEnabled"), @"CPGridButtonEnabled"}];
+  titleVariants = [(CPGridButton *)self titleVariants];
+  [coderCopy encodeObject:titleVariants forKey:@"CPGridButtonTitleVariants"];
 
-  v7 = [(CPGridButton *)self imageSet];
-  [v4 encodeObject:v7 forKey:@"CPGridButtonImageSet"];
+  imageSet = [(CPGridButton *)self imageSet];
+  [coderCopy encodeObject:imageSet forKey:@"CPGridButtonImageSet"];
 
-  v8 = [(CPGridButton *)self messageConfiguration];
-  [v4 encodeObject:v8 forKey:@"CPMessageGridItemConfiguration"];
+  messageConfiguration = [(CPGridButton *)self messageConfiguration];
+  [coderCopy encodeObject:messageConfiguration forKey:@"CPMessageGridItemConfiguration"];
 }
 
 - (NSString)description
@@ -198,34 +198,34 @@ LABEL_6:
   v9.receiver = self;
   v9.super_class = CPGridButton;
   v4 = [(CPGridButton *)&v9 description];
-  v5 = [(CPGridButton *)self identifier];
+  identifier = [(CPGridButton *)self identifier];
   v6 = CPSStringFromBOOL([(CPGridButton *)self isEnabled]);
-  v7 = [v3 stringWithFormat:@"%@ {UUID: %@, enabled: %@}", v4, v5, v6];
+  v7 = [v3 stringWithFormat:@"%@ {UUID: %@, enabled: %@}", v4, identifier, v6];
 
   return v7;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
-  if (WeakRetained != v4)
+  if (WeakRetained != delegateCopy)
   {
-    v6 = objc_storeWeak(&self->_delegate, v4);
+    v6 = objc_storeWeak(&self->_delegate, delegateCopy);
     [objc_opt_class() maximumGridButtonImageSize];
     v8 = v7;
     v10 = v9;
 
     v11 = [CPImageSet alloc];
-    v12 = [(CPImageSet *)self->_imageSet image];
+    image = [(CPImageSet *)self->_imageSet image];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __28__CPGridButton_setDelegate___block_invoke;
     v15[3] = &__block_descriptor_48_e26___UIImage_16__0__UIImage_8l;
     v15[4] = v8;
     v15[5] = v10;
-    v13 = [(CPImageSet *)v11 initWithImage:v12 treatmentBlock:v15];
+    v13 = [(CPImageSet *)v11 initWithImage:image treatmentBlock:v15];
     imageSet = self->_imageSet;
     self->_imageSet = v13;
   }
@@ -236,20 +236,20 @@ LABEL_6:
   if (self->_enabled != enabled)
   {
     self->_enabled = enabled;
-    v5 = [(CPGridButton *)self delegate];
-    [v5 control:self setEnabled:self->_enabled];
+    delegate = [(CPGridButton *)self delegate];
+    [delegate control:self setEnabled:self->_enabled];
   }
 }
 
-- (void)updateImage:(id)a3
+- (void)updateImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [objc_opt_class() maximumGridButtonImageSize];
   v7 = v6;
   v9 = v8;
 
-  if (v4)
+  if (imageCopy)
   {
     v10 = [CPImageSet alloc];
     v17[0] = MEMORY[0x277D85DD0];
@@ -258,7 +258,7 @@ LABEL_6:
     v17[3] = &__block_descriptor_48_e26___UIImage_16__0__UIImage_8l;
     v17[4] = v7;
     v17[5] = v9;
-    v11 = [(CPImageSet *)v10 initWithImage:v4 treatmentBlock:v17];
+    v11 = [(CPImageSet *)v10 initWithImage:imageCopy treatmentBlock:v17];
     imageSet = self->_imageSet;
     self->_imageSet = v11;
   }
@@ -269,50 +269,50 @@ LABEL_6:
     self->_imageSet = 0;
   }
 
-  v13 = [(CPGridButton *)self delegate];
+  delegate = [(CPGridButton *)self delegate];
   v14 = objc_opt_respondsToSelector();
 
   if (v14)
   {
-    v15 = [(CPGridButton *)self delegate];
-    v16 = [(CPGridButton *)self identifier];
-    [v15 gridButton:v16 setImageSet:self->_imageSet];
+    delegate2 = [(CPGridButton *)self delegate];
+    identifier = [(CPGridButton *)self identifier];
+    [delegate2 gridButton:identifier setImageSet:self->_imageSet];
   }
 }
 
-- (void)updateTitleVariants:(id)a3
+- (void)updateTitleVariants:(id)variants
 {
-  if (self->_titleVariants != a3)
+  if (self->_titleVariants != variants)
   {
-    v5 = [a3 copy];
+    v5 = [variants copy];
     titleVariants = self->_titleVariants;
     self->_titleVariants = v5;
 
-    v9 = [(CPGridButton *)self delegate];
-    v7 = [(CPGridButton *)self identifier];
-    v8 = [(CPGridButton *)self titleVariants];
-    [v9 gridButton:v7 setTitleVariants:v8];
+    delegate = [(CPGridButton *)self delegate];
+    identifier = [(CPGridButton *)self identifier];
+    titleVariants = [(CPGridButton *)self titleVariants];
+    [delegate gridButton:identifier setTitleVariants:titleVariants];
   }
 }
 
 - (void)handlePrimaryAction
 {
   v9 = *MEMORY[0x277D85DE8];
-  v3 = [(CPGridButton *)self handler];
+  handler = [(CPGridButton *)self handler];
 
   v4 = CarPlayFrameworkGeneralLogging();
-  v5 = v4;
-  if (v3)
+  handler2 = v4;
+  if (handler)
   {
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
       v7 = 138412290;
-      v8 = self;
-      _os_log_impl(&dword_236ED4000, v5, OS_LOG_TYPE_INFO, "%@ will call action handler", &v7, 0xCu);
+      selfCopy = self;
+      _os_log_impl(&dword_236ED4000, handler2, OS_LOG_TYPE_INFO, "%@ will call action handler", &v7, 0xCu);
     }
 
-    v5 = [(CPGridButton *)self handler];
-    (*(v5 + 16))(v5, self);
+    handler2 = [(CPGridButton *)self handler];
+    (*(handler2 + 16))(handler2, self);
   }
 
   else if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -325,10 +325,10 @@ LABEL_6:
 
 - (UIImage)image
 {
-  v2 = [(CPGridButton *)self imageSet];
-  v3 = [v2 image];
+  imageSet = [(CPGridButton *)self imageSet];
+  image = [imageSet image];
 
-  return v3;
+  return image;
 }
 
 - (CPGridButtonDelegate)delegate

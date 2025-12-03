@@ -1,18 +1,18 @@
 @interface TSTStrokeSidecarIterator
-+ (id)p_filterRegion:(id)a3 strokeSidecar:(id)a4;
-- (TSTStrokeSidecarIterator)initWithStrokeSidecar:(id)a3 region:(id)a4;
-- (TSUCellCoord)advanceToCellID:(TSUCellCoord)a3;
++ (id)p_filterRegion:(id)region strokeSidecar:(id)sidecar;
+- (TSTStrokeSidecarIterator)initWithStrokeSidecar:(id)sidecar region:(id)region;
+- (TSUCellCoord)advanceToCellID:(TSUCellCoord)d;
 - (TSUCellCoord)getNext;
-- (void)updateCellData:(id)a3;
+- (void)updateCellData:(id)data;
 @end
 
 @implementation TSTStrokeSidecarIterator
 
-- (TSTStrokeSidecarIterator)initWithStrokeSidecar:(id)a3 region:(id)a4
+- (TSTStrokeSidecarIterator)initWithStrokeSidecar:(id)sidecar region:(id)region
 {
-  v7 = a3;
-  v11 = a4;
-  if (!v11)
+  sidecarCopy = sidecar;
+  regionCopy = region;
+  if (!regionCopy)
   {
     v12 = MEMORY[0x277D81150];
     v13 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v8, "[TSTStrokeSidecarIterator initWithStrokeSidecar:region:]", v9, v10);
@@ -22,7 +22,7 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v19, v20, v21, v22);
   }
 
-  v23 = objc_msgSend_p_filterRegion_strokeSidecar_(TSTStrokeSidecarIterator, v8, v11, v7, v10);
+  v23 = objc_msgSend_p_filterRegion_strokeSidecar_(TSTStrokeSidecarIterator, v8, regionCopy, sidecarCopy, v10);
 
   v37.receiver = self;
   v37.super_class = TSTStrokeSidecarIterator;
@@ -30,7 +30,7 @@
   v25 = v24;
   if (v24)
   {
-    objc_storeStrong(&v24->_strokeSidecar, a3);
+    objc_storeStrong(&v24->_strokeSidecar, sidecar);
     objc_storeStrong(&v25->_region, v23);
     v30 = objc_msgSend_newIterator(v25->_region, v26, v27, v28, v29);
     regionIterator = v25->_regionIterator;
@@ -42,13 +42,13 @@
   return v25;
 }
 
-+ (id)p_filterRegion:(id)a3 strokeSidecar:(id)a4
++ (id)p_filterRegion:(id)region strokeSidecar:(id)sidecar
 {
-  v5 = a3;
-  v69 = a4;
-  v10 = objc_msgSend_boundingCellRange(v5, v6, v7, v8, v9) >> 32;
+  regionCopy = region;
+  sidecarCopy = sidecar;
+  v10 = objc_msgSend_boundingCellRange(regionCopy, v6, v7, v8, v9) >> 32;
   v12 = v11;
-  v16 = objc_msgSend_boundingCellRange(v5, v11, v13, v14, v15);
+  v16 = objc_msgSend_boundingCellRange(regionCopy, v11, v13, v14, v15);
   v18 = v17;
   v70 = objc_alloc_init(MEMORY[0x277CCAB58]);
   v19 = objc_alloc_init(MEMORY[0x277CCAB58]);
@@ -65,7 +65,7 @@
   v100[1] = v100;
   v100[2] = 0x2020000000;
   v101 = 0x7FFF;
-  v83.origin = objc_msgSend_boundingCellRange(v5, v20, v21, v22, v23);
+  v83.origin = objc_msgSend_boundingCellRange(regionCopy, v20, v21, v22, v23);
   v83.size = v24;
   v25 = TSUCellRect::lastColumn(&v83);
   v26 = HIDWORD(v18);
@@ -76,7 +76,7 @@
   v91[3] = &unk_278462EE0;
   v28 = v19;
   v92 = v28;
-  v29 = v69;
+  v29 = sidecarCopy;
   v93 = v29;
   v97 = v27;
   v98 = v26;
@@ -85,7 +85,7 @@
   v95 = v100;
   v96 = &v102;
   v99 = v25;
-  objc_msgSend_enumerateColumnsUsingBlock_(v5, v31, v91, v32, v33);
+  objc_msgSend_enumerateColumnsUsingBlock_(regionCopy, v31, v91, v32, v33);
   objc_msgSend_removeAllIndexes(v30, v34, v35, v36, v37);
   v83.origin = 0;
   v83.size = &v83;
@@ -100,7 +100,7 @@
   v81[1] = v81;
   v81[2] = 0x2020000000;
   v82 = 0x7FFFFFFF;
-  v80.origin = objc_msgSend_boundingCellRange(v5, v38, v39, v40, v41);
+  v80.origin = objc_msgSend_boundingCellRange(regionCopy, v38, v39, v40, v41);
   v80.size = v42;
   v43 = TSUCellRect::lastRow(&v80);
   v44 = v10;
@@ -120,11 +120,11 @@
   v75 = v81;
   v76 = &v83;
   v79 = v43;
-  objc_msgSend_enumerateRowsUsingBlock_(v5, v49, v71, v50, v51);
+  objc_msgSend_enumerateRowsUsingBlock_(regionCopy, v49, v71, v50, v51);
   v55 = objc_msgSend_regionFromCellRangeVector_(TSTCellRegion, v52, (v103 + 6), v53, v54);
   v59 = objc_msgSend_regionFromCellRangeVector_(TSTCellRegion, v56, *&v83.size + 48, v57, v58);
   v63 = objc_msgSend_regionByAddingRegion_(v55, v60, v59, v61, v62);
-  v67 = objc_msgSend_regionByIntersectingRegion_(v63, v64, v5, v65, v66);
+  v67 = objc_msgSend_regionByIntersectingRegion_(v63, v64, regionCopy, v65, v66);
 
   _Block_object_dispose(v81, 8);
   _Block_object_dispose(&v83, 8);
@@ -145,10 +145,10 @@
   return v67;
 }
 
-- (void)updateCellData:(id)a3
+- (void)updateCellData:(id)data
 {
-  v70 = a3;
-  v8 = objc_msgSend_cellID(v70, v4, v5, v6, v7);
+  dataCopy = data;
+  v8 = objc_msgSend_cellID(dataCopy, v4, v5, v6, v7);
   if (v8 == 0x7FFFFFFF || (v8 & 0xFFFF00000000) == 0x7FFF00000000)
   {
     v13 = MEMORY[0x277D81150];
@@ -159,27 +159,27 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v20, v21, v22, v23);
   }
 
-  v24 = objc_msgSend_cellID(v70, v9, v10, v11, v12);
+  v24 = objc_msgSend_cellID(dataCopy, v9, v10, v11, v12);
   curCellID = self->_curCellID;
   if (v24 == curCellID.row && ((*&curCellID ^ v24) & 0x101FFFF00000000) == 0)
   {
     strokeSidecar = self->_strokeSidecar;
-    v58 = objc_msgSend_cellID(v70, v25, v26, v27, v28);
+    v58 = objc_msgSend_cellID(dataCopy, v25, v26, v27, v28);
     v53 = objc_msgSend_cellBorderAtCellID_(strokeSidecar, v59, v58, v60, v61);
-    v66 = objc_msgSend_cell(v70, v62, v63, v64, v65);
+    v66 = objc_msgSend_cell(dataCopy, v62, v63, v64, v65);
     objc_msgSend_setCellBorder_(v66, v67, v53, v68, v69);
   }
 
   else
   {
-    v30 = objc_msgSend_cellID(v70, v25, v26, v27, v28);
+    v30 = objc_msgSend_cellID(dataCopy, v25, v26, v27, v28);
     row = self->_curCellID.row;
     if (row <= v30 && (row != v30 || self->_curCellID.column <= WORD2(v30)))
     {
       v36 = MEMORY[0x277D81150];
       v37 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v31, "[TSTStrokeSidecarIterator updateCellData:]", v33, v34);
       v41 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v38, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/tables/TSTStrokeSidecarIterator.mm", v39, v40);
-      objc_msgSend_cellID(v70, v42, v43, v44, v45);
+      objc_msgSend_cellID(dataCopy, v42, v43, v44, v45);
       v46 = NSStringFromTSUCellCoord();
       v47 = NSStringFromTSUCellCoord();
       objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v36, v48, v37, v41, 235, 0, "cellID %@ should be before cursor cellID %@", v46, v47);
@@ -187,7 +187,7 @@
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v49, v50, v51, v52);
     }
 
-    v53 = objc_msgSend_cell(v70, v31, v32, v33, v34);
+    v53 = objc_msgSend_cell(dataCopy, v31, v32, v33, v34);
     objc_msgSend_setCellBorder_(v53, v54, 0, v55, v56);
   }
 }
@@ -199,13 +199,13 @@
   return Next;
 }
 
-- (TSUCellCoord)advanceToCellID:(TSUCellCoord)a3
+- (TSUCellCoord)advanceToCellID:(TSUCellCoord)d
 {
   curCellID = self->_curCellID;
-  v8 = curCellID.row != 0x7FFFFFFF && (*&curCellID & 0xFFFF00000000) != 0x7FFF00000000 && curCellID.row >= a3.row;
-  if (!v8 || curCellID.row == a3.row && curCellID.column < a3.column)
+  v8 = curCellID.row != 0x7FFFFFFF && (*&curCellID & 0xFFFF00000000) != 0x7FFF00000000 && curCellID.row >= d.row;
+  if (!v8 || curCellID.row == d.row && curCellID.column < d.column)
   {
-    objc_msgSend_advanceToCellID_(self->_regionIterator, a2, *&a3, v3, v4);
+    objc_msgSend_advanceToCellID_(self->_regionIterator, a2, *&d, v3, v4);
     return self->_curCellID;
   }
 

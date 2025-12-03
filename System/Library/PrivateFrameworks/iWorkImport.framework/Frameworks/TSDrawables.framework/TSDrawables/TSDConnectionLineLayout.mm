@@ -1,21 +1,21 @@
 @interface TSDConnectionLineLayout
-- (CGPoint)controlPointForPointA:(CGPoint)a3 pointB:(CGPoint)a4 andOriginalA:(CGPoint)a5 originalB:(CGPoint)a6;
-- (CGPoint)getControlKnobPosition:(unint64_t)a3;
-- (id)createConnectedPathFrom:(id)a3 to:(id)a4 withControlPoints:(CGPoint)a5[3];
-- (id)quadraticCurve:(CGPoint)a3[3];
+- (CGPoint)controlPointForPointA:(CGPoint)a pointB:(CGPoint)b andOriginalA:(CGPoint)originalA originalB:(CGPoint)originalB;
+- (CGPoint)getControlKnobPosition:(unint64_t)position;
+- (id)createConnectedPathFrom:(id)from to:(id)to withControlPoints:(CGPoint)points[3];
+- (id)quadraticCurve:(CGPoint)curve[3];
 @end
 
 @implementation TSDConnectionLineLayout
 
-- (id)quadraticCurve:(CGPoint)a3[3]
+- (id)quadraticCurve:(CGPoint)curve[3]
 {
-  x = a3->x;
-  y = a3->y;
-  v5 = a3[1].x;
-  v6 = a3[1].y;
-  v8 = a3[2].x;
-  v7 = a3[2].y;
-  v9 = objc_msgSend_bezierPath(MEMORY[0x277D81160], a2, a3);
+  x = curve->x;
+  y = curve->y;
+  v5 = curve[1].x;
+  v6 = curve[1].y;
+  v8 = curve[2].x;
+  v7 = curve[2].y;
+  v9 = objc_msgSend_bezierPath(MEMORY[0x277D81160], a2, curve);
   if (TSUNearlyCollinearPoints() && (TSURectWithPoints(), v30.x = v5, v30.y = v6, CGRectContainsPoint(v31, v30)))
   {
     objc_msgSend_moveToPoint_(v9, v10, v11, x, y);
@@ -47,18 +47,18 @@
   return v9;
 }
 
-- (id)createConnectedPathFrom:(id)a3 to:(id)a4 withControlPoints:(CGPoint)a5[3]
+- (id)createConnectedPathFrom:(id)from to:(id)to withControlPoints:(CGPoint)points[3]
 {
-  v8 = a3;
-  v9 = a4;
-  v13 = objc_msgSend_quadraticCurve_(self, v10, a5);
+  fromCopy = from;
+  toCopy = to;
+  v13 = objc_msgSend_quadraticCurve_(self, v10, points);
   self->_startClipT = 0.0;
   v39 = 1;
   self->_endClipT = 1.0;
-  if (v8)
+  if (fromCopy)
   {
     objc_msgSend_outsetFrom(self, v11, v12);
-    v15 = objc_msgSend_clipPath_onLayout_outset_reversed_isValid_(self, v14, v13, v8, 0, &v39);
+    v15 = objc_msgSend_clipPath_onLayout_outset_reversed_isValid_(self, v14, v13, fromCopy, 0, &v39);
     v18 = v15;
     if (v15)
     {
@@ -72,7 +72,7 @@
       v19 = -1;
     }
 
-    if (v9)
+    if (toCopy)
     {
       goto LABEL_8;
     }
@@ -83,14 +83,14 @@ LABEL_5:
   }
 
   v19 = -1;
-  if (!v9)
+  if (!toCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_8:
   objc_msgSend_outsetTo(self, v11, v12);
-  v25 = objc_msgSend_clipPath_onLayout_outset_reversed_isValid_(self, v24, v13, v9, 1, &v39);
+  v25 = objc_msgSend_clipPath_onLayout_outset_reversed_isValid_(self, v24, v13, toCopy, 1, &v39);
   v28 = v25;
   if (v25)
   {
@@ -116,7 +116,7 @@ LABEL_12:
   if (v19 < 0 || v23 < 0 || v19 < v23)
   {
 LABEL_20:
-    if (!v8)
+    if (!fromCopy)
     {
       goto LABEL_25;
     }
@@ -131,13 +131,13 @@ LABEL_20:
   }
 
   v35 = 1;
-  if (!v8)
+  if (!fromCopy)
   {
     goto LABEL_25;
   }
 
 LABEL_21:
-  if (v9)
+  if (toCopy)
   {
     if (v35 || (v39 & 1) == 0)
     {
@@ -158,7 +158,7 @@ LABEL_27:
   }
 
 LABEL_25:
-  if (!(v8 | v9) || (v39 & 1) != 0)
+  if (!(fromCopy | toCopy) || (v39 & 1) != 0)
   {
     goto LABEL_27;
   }
@@ -172,7 +172,7 @@ LABEL_30:
   return v34;
 }
 
-- (CGPoint)controlPointForPointA:(CGPoint)a3 pointB:(CGPoint)a4 andOriginalA:(CGPoint)a5 originalB:(CGPoint)a6
+- (CGPoint)controlPointForPointA:(CGPoint)a pointB:(CGPoint)b andOriginalA:(CGPoint)originalA originalB:(CGPoint)originalB
 {
   objc_opt_class();
   if (self->super.super.mResizePathSource)
@@ -224,10 +224,10 @@ LABEL_9:
   return result;
 }
 
-- (CGPoint)getControlKnobPosition:(unint64_t)a3
+- (CGPoint)getControlKnobPosition:(unint64_t)position
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = objc_msgSend_connectedPathSource(self, a2, a3);
+  v4 = objc_msgSend_connectedPathSource(self, a2, position);
   objc_msgSend_getControlKnobPosition_(v4, v5, 10);
   v25.f64[0] = v6;
   v25.f64[1] = v7;

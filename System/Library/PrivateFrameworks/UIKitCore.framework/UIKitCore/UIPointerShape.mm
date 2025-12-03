@@ -2,12 +2,12 @@
 + (UIPointerShape)beamWithPreferredLength:(CGFloat)length axis:(UIAxis)axis;
 + (UIPointerShape)shapeWithPath:(UIBezierPath *)path;
 + (UIPointerShape)shapeWithRoundedRect:(CGRect)rect cornerRadius:(CGFloat)cornerRadius;
-+ (id)_elasticRectShapePinnedAtPoint:(CGPoint)a3;
++ (id)_elasticRectShapePinnedAtPoint:(CGPoint)point;
 + (id)_linkPointerShape;
-+ (id)_shapeWithSymbol:(id)a3 pointSize:(double)a4;
++ (id)_shapeWithSymbol:(id)symbol pointSize:(double)size;
 - (BOOL)isCircle;
 - (BOOL)isEmpty;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGPoint)inherentConstrainedSlip;
 - (CGPoint)pinnedPoint;
 - (CGRect)rect;
@@ -15,7 +15,7 @@
 - (NSString)cornerCurve;
 - (UIPointerShape)init;
 - (double)effectiveCornerRadius;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 @end
@@ -32,13 +32,13 @@
   {
     [(UIPointerShape *)v2 setMaterialUsage:1];
     v4 = +[_UIPointerSettingsDomain rootSettings];
-    v5 = [v4 freeformPointerSettings];
+    freeformPointerSettings = [v4 freeformPointerSettings];
 
-    [v5 slipFactorX];
+    [freeformPointerSettings slipFactorX];
     v7 = v6;
-    [v5 slipFactorY];
+    [freeformPointerSettings slipFactorY];
     [(UIPointerShape *)v3 setInherentConstrainedSlip:v7, v8];
-    [v5 defaultPointerCornerRadius];
+    [freeformPointerSettings defaultPointerCornerRadius];
     [(UIPointerShape *)v3 setDefaultCornerRadius:?];
     [(UIPointerShape *)v3 setPinnedPoint:1.79769313e308, 1.79769313e308];
   }
@@ -73,18 +73,18 @@
 + (UIPointerShape)beamWithPreferredLength:(CGFloat)length axis:(UIAxis)axis
 {
   v7 = +[_UIPointerSettingsDomain rootSettings];
-  v8 = [v7 beamSettings];
+  beamSettings = [v7 beamSettings];
 
   if (axis - 3 < 0xFFFFFFFFFFFFFFFELL)
   {
     axis = 2;
   }
 
-  [v8 minLength];
+  [beamSettings minLength];
   v10 = v9;
-  [v8 maxLength];
+  [beamSettings maxLength];
   v12 = fmax(v10, fmin(length, v11));
-  [v8 width];
+  [beamSettings width];
   v14 = *MEMORY[0x1E695EFF8];
   v15 = *(MEMORY[0x1E695EFF8] + 8);
   if (axis == 2)
@@ -117,11 +117,11 @@
     Height = Width;
   }
 
-  v19 = [a1 shapeWithRoundedRect:v14 cornerRadius:{v15, v16, v12, Height * 0.5}];
+  v19 = [self shapeWithRoundedRect:v14 cornerRadius:{v15, v16, v12, Height * 0.5}];
   [v19 setMaterialUsage:2];
-  [v8 slipFactorX];
+  [beamSettings slipFactorX];
   v21 = v20;
-  [v8 slipFactorY];
+  [beamSettings slipFactorY];
   [v19 setInherentConstrainedSlip:{v21, v22}];
   if (axis == 1)
   {
@@ -146,27 +146,27 @@
   return v2;
 }
 
-+ (id)_elasticRectShapePinnedAtPoint:(CGPoint)a3
++ (id)_elasticRectShapePinnedAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v5 = objc_opt_new();
   [v5 setPinnedPoint:{x, y}];
 
   return v5;
 }
 
-+ (id)_shapeWithSymbol:(id)a3 pointSize:(double)a4
++ (id)_shapeWithSymbol:(id)symbol pointSize:(double)size
 {
-  v5 = a3;
-  v6 = [UIImageSymbolConfiguration configurationWithPointSize:4 weight:a4];
-  v7 = [UIImage systemImageNamed:v5 withConfiguration:v6];
+  symbolCopy = symbol;
+  v6 = [UIImageSymbolConfiguration configurationWithPointSize:4 weight:size];
+  v7 = [UIImage systemImageNamed:symbolCopy withConfiguration:v6];
 
-  v8 = [v7 _outlinePath];
-  v9 = v8;
-  if (v8)
+  _outlinePath = [v7 _outlinePath];
+  v9 = _outlinePath;
+  if (_outlinePath)
   {
-    [v8 bounds];
+    [_outlinePath bounds];
     v10 = -CGRectGetMinX(v16);
     [v9 bounds];
     MinY = CGRectGetMinY(v17);
@@ -185,12 +185,12 @@
 
 - (CGSize)size
 {
-  v3 = [(UIPointerShape *)self path];
+  path = [(UIPointerShape *)self path];
 
-  if (v3)
+  if (path)
   {
-    v4 = [(UIPointerShape *)self path];
-    [v4 bounds];
+    path2 = [(UIPointerShape *)self path];
+    [path2 bounds];
     v6 = v5;
     v8 = v7;
   }
@@ -216,12 +216,12 @@
     return 0;
   }
 
-  v4 = [(UIPointerShape *)self path];
+  path = [(UIPointerShape *)self path];
 
-  if (v4)
+  if (path)
   {
-    v5 = [(UIPointerShape *)self path];
-    [v5 bounds];
+    path2 = [(UIPointerShape *)self path];
+    [path2 bounds];
     IsEmpty = CGRectIsEmpty(v12);
 
     return IsEmpty;
@@ -242,9 +242,9 @@
     return 0;
   }
 
-  v3 = [(UIPointerShape *)self path];
+  path = [(UIPointerShape *)self path];
 
-  if (v3)
+  if (path)
   {
     return 0;
   }
@@ -312,12 +312,12 @@
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 _setType:{-[UIPointerShape _type](self, "_type")}];
-  v5 = [(UIPointerShape *)self path];
-  [v4 setPath:v5];
+  path = [(UIPointerShape *)self path];
+  [v4 setPath:path];
 
   [(UIPointerShape *)self rect];
   [v4 setRect:?];
@@ -335,10 +335,10 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v13 = 1;
   }
@@ -348,9 +348,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(UIPointerShape *)v5 _type];
-      if (v6 != [(UIPointerShape *)self _type])
+      v5 = equalCopy;
+      _type = [(UIPointerShape *)v5 _type];
+      if (_type != [(UIPointerShape *)self _type])
       {
 LABEL_23:
         v13 = 0;
@@ -359,10 +359,10 @@ LABEL_24:
         goto LABEL_25;
       }
 
-      v7 = [(UIPointerShape *)v5 path];
-      v8 = [(UIPointerShape *)self path];
-      v9 = v7;
-      v10 = v8;
+      path = [(UIPointerShape *)v5 path];
+      path2 = [(UIPointerShape *)self path];
+      v9 = path;
+      v10 = path2;
       v11 = v10;
       if (v9 == v10)
       {
@@ -432,8 +432,8 @@ LABEL_22:
                 v13 = 0;
                 if (v42 == v46 && v44 == v48)
                 {
-                  v49 = [(UIPointerShape *)v5 materialUsage];
-                  v13 = v49 == [(UIPointerShape *)self materialUsage];
+                  materialUsage = [(UIPointerShape *)v5 materialUsage];
+                  v13 = materialUsage == [(UIPointerShape *)self materialUsage];
                 }
 
                 goto LABEL_24;
@@ -456,7 +456,7 @@ LABEL_25:
 
 - (unint64_t)hash
 {
-  v3 = [(UIPointerShape *)self _type];
+  _type = [(UIPointerShape *)self _type];
   if ([(UIPointerShape *)self isElastic])
   {
     [(UIPointerShape *)self pinnedPoint];
@@ -467,27 +467,27 @@ LABEL_25:
 
   else
   {
-    v8 = [(UIPointerShape *)self path];
-    [v8 bounds];
+    path = [(UIPointerShape *)self path];
+    [path bounds];
     v32 = v9;
-    v10 = [(UIPointerShape *)self path];
-    [v10 bounds];
+    path2 = [(UIPointerShape *)self path];
+    [path2 bounds];
     v31 = v11;
-    v12 = [(UIPointerShape *)self path];
-    [v12 bounds];
+    path3 = [(UIPointerShape *)self path];
+    [path3 bounds];
     HIDWORD(v30) = v13;
-    v14 = [(UIPointerShape *)self path];
-    [v14 bounds];
+    path4 = [(UIPointerShape *)self path];
+    [path4 bounds];
     LODWORD(v30) = v15;
 
     [(UIPointerShape *)self rect];
-    LODWORD(v8) = v16;
+    LODWORD(path) = v16;
     [(UIPointerShape *)self rect];
-    LODWORD(v10) = v17;
+    LODWORD(path2) = v17;
     [(UIPointerShape *)self rect];
-    LODWORD(v12) = v18;
+    LODWORD(path3) = v18;
     [(UIPointerShape *)self rect];
-    LODWORD(v14) = v19;
+    LODWORD(path4) = v19;
     [(UIPointerShape *)self cornerRadius];
     v21 = v20;
     [(UIPointerShape *)self defaultCornerRadius];
@@ -497,37 +497,37 @@ LABEL_25:
     [(UIPointerShape *)self inherentConstrainedSlip];
     v27 = v26;
     [(UIPointerShape *)self inherentConstrainedSlip];
-    v7 = v31 ^ v32 ^ HIDWORD(v30) ^ v30 ^ v8 ^ v10 ^ v12 ^ v21 ^ v14 ^ v23 ^ v25 ^ v27 ^ v28;
+    v7 = v31 ^ v32 ^ HIDWORD(v30) ^ v30 ^ path ^ path2 ^ path3 ^ v21 ^ path4 ^ v23 ^ v25 ^ v27 ^ v28;
   }
 
-  return v3 ^ [(UIPointerShape *)self materialUsage]^ v7;
+  return _type ^ [(UIPointerShape *)self materialUsage]^ v7;
 }
 
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@: %p", objc_opt_class(), self];
-  v4 = [(UIPointerShape *)self _type];
-  if (v4 > 1)
+  _type = [(UIPointerShape *)self _type];
+  if (_type > 1)
   {
-    if (v4 == 2)
+    if (_type == 2)
     {
       [(UIPointerShape *)self beamLength];
       [v3 appendFormat:@"; beamLength = %g (vertical)", v15];
     }
 
-    else if (v4 == 3)
+    else if (_type == 3)
     {
       [(UIPointerShape *)self beamLength];
       [v3 appendFormat:@"; beamLength = %g (horizontal)", v6];
     }
   }
 
-  else if (v4)
+  else if (_type)
   {
-    if (v4 == 1)
+    if (_type == 1)
     {
-      v5 = [(UIPointerShape *)self path];
-      [v3 appendFormat:@"; path = <UIBezierPath: %p>", v5];
+      path = [(UIPointerShape *)self path];
+      [v3 appendFormat:@"; path = <UIBezierPath: %p>", path];
     }
   }
 

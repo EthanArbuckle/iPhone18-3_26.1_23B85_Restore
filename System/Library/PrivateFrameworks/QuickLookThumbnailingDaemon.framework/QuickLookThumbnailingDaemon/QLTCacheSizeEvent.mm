@@ -1,19 +1,19 @@
 @interface QLTCacheSizeEvent
-- (QLTCacheSizeEvent)initWithCacheSize:(unint64_t)a3;
+- (QLTCacheSizeEvent)initWithCacheSize:(unint64_t)size;
 - (id)build;
 - (id)propertiesBuilder;
 @end
 
 @implementation QLTCacheSizeEvent
 
-- (QLTCacheSizeEvent)initWithCacheSize:(unint64_t)a3
+- (QLTCacheSizeEvent)initWithCacheSize:(unint64_t)size
 {
   v5.receiver = self;
   v5.super_class = QLTCacheSizeEvent;
   result = [(QLTCacheSizeEvent *)&v5 init];
   if (result)
   {
-    result->_cacheSize = a3;
+    result->_cacheSize = size;
   }
 
   return result;

@@ -1,7 +1,7 @@
 @interface SBIconListViewPauseLayoutAssertion
-- (SBIconListViewPauseLayoutAssertion)initWithListView:(id)a3 iconView:(id)a4 reason:(id)a5;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (SBIconListViewPauseLayoutAssertion)initWithListView:(id)view iconView:(id)iconView reason:(id)reason;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (void)dealloc;
 - (void)invalidate;
@@ -9,20 +9,20 @@
 
 @implementation SBIconListViewPauseLayoutAssertion
 
-- (SBIconListViewPauseLayoutAssertion)initWithListView:(id)a3 iconView:(id)a4 reason:(id)a5
+- (SBIconListViewPauseLayoutAssertion)initWithListView:(id)view iconView:(id)iconView reason:(id)reason
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  viewCopy = view;
+  iconViewCopy = iconView;
+  reasonCopy = reason;
   v17.receiver = self;
   v17.super_class = SBIconListViewPauseLayoutAssertion;
   v12 = [(SBIconListViewPauseLayoutAssertion *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_listView, a3);
-    objc_storeStrong(&v13->_iconView, a4);
-    v14 = [v11 copy];
+    objc_storeStrong(&v12->_listView, view);
+    objc_storeStrong(&v13->_iconView, iconView);
+    v14 = [reasonCopy copy];
     reason = v13->_reason;
     v13->_reason = v14;
   }
@@ -33,7 +33,7 @@
 - (void)dealloc
 {
   v5 = *MEMORY[0x1E69E9840];
-  v2 = *(a1 + 16);
+  v2 = *(self + 16);
   v3 = 138543362;
   v4 = v2;
   _os_log_fault_impl(&dword_1BEB18000, a2, OS_LOG_TYPE_FAULT, "SBIconListViewPauseLayoutAssertion deallocated but not invalidated! Reason: %{public}@", &v3, 0xCu);
@@ -43,8 +43,8 @@
 {
   if (![(SBIconListViewPauseLayoutAssertion *)self isInvalidated])
   {
-    v3 = [(SBIconListViewPauseLayoutAssertion *)self listView];
-    [v3 removePauseLayoutAssertion:self];
+    listView = [(SBIconListViewPauseLayoutAssertion *)self listView];
+    [listView removePauseLayoutAssertion:self];
 
     [(SBIconListViewPauseLayoutAssertion *)self setInvalidated:1];
   }
@@ -52,33 +52,33 @@
 
 - (id)succinctDescription
 {
-  v2 = [(SBIconListViewPauseLayoutAssertion *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBIconListViewPauseLayoutAssertion *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBIconListViewPauseLayoutAssertion *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBIconListViewPauseLayoutAssertion *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(SBIconListViewPauseLayoutAssertion *)self succinctDescriptionBuilder];
-  v5 = [(SBIconListViewPauseLayoutAssertion *)self reason];
-  v6 = [v4 appendObject:v5 withName:@"reason"];
+  succinctDescriptionBuilder = [(SBIconListViewPauseLayoutAssertion *)self succinctDescriptionBuilder];
+  reason = [(SBIconListViewPauseLayoutAssertion *)self reason];
+  v6 = [succinctDescriptionBuilder appendObject:reason withName:@"reason"];
 
-  v7 = [(SBIconListViewPauseLayoutAssertion *)self iconView];
-  v8 = [v4 appendObject:v7 withName:@"iconView"];
+  iconView = [(SBIconListViewPauseLayoutAssertion *)self iconView];
+  v8 = [succinctDescriptionBuilder appendObject:iconView withName:@"iconView"];
 
-  v9 = [(SBIconListViewPauseLayoutAssertion *)self listView];
-  v10 = [v4 appendPointer:v9 withName:@"listView"];
+  listView = [(SBIconListViewPauseLayoutAssertion *)self listView];
+  v10 = [succinctDescriptionBuilder appendPointer:listView withName:@"listView"];
 
-  return v4;
+  return succinctDescriptionBuilder;
 }
 
 @end

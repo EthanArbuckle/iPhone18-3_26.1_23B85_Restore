@@ -28,15 +28,15 @@
 
   if ([v5 count] == 1)
   {
-    v6 = [v5 firstObject];
+    firstObject = [v5 firstObject];
 LABEL_7:
-    v7 = v6;
+    v7 = firstObject;
     goto LABEL_9;
   }
 
   if ([v5 count] >= 2)
   {
-    v6 = [objc_alloc(MEMORY[0x277CCA920]) initWithType:a4 subpredicates:v5];
+    firstObject = [objc_alloc(MEMORY[0x277CCA920]) initWithType:a4 subpredicates:v5];
     goto LABEL_7;
   }
 
@@ -50,7 +50,7 @@ LABEL_9:
 {
   v2 = objc_opt_class();
 
-  return [v2 _vui_keyPathsInPredicate:a1];
+  return [v2 _vui_keyPathsInPredicate:self];
 }
 
 + (id)_vui_keyPathsInPredicate:()VideosUICore
@@ -59,7 +59,7 @@ LABEL_9:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [a1 _vui_keyPathsInCompoundPredicate:v4];
+    v5 = [self _vui_keyPathsInCompoundPredicate:v4];
   }
 
   else
@@ -67,7 +67,7 @@ LABEL_9:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [a1 _vui_keyPathsInComparisonPredicate:v4];
+      v6 = [self _vui_keyPathsInComparisonPredicate:v4];
       if (v6)
       {
         v5 = [MEMORY[0x277CBEB98] setWithObject:v6];
@@ -105,8 +105,8 @@ LABEL_9:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [v4 subpredicates];
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  subpredicates = [v4 subpredicates];
+  v7 = [subpredicates countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = v7;
@@ -117,17 +117,17 @@ LABEL_9:
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(subpredicates);
         }
 
-        v11 = [a1 _vui_keyPathsInPredicate:*(*(&v13 + 1) + 8 * i)];
+        v11 = [self _vui_keyPathsInPredicate:*(*(&v13 + 1) + 8 * i)];
         if (v11)
         {
           [v5 unionSet:v11];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v8 = [subpredicates countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v8);
@@ -138,10 +138,10 @@ LABEL_9:
 
 + (id)_vui_keyPathsInComparisonPredicate:()VideosUICore
 {
-  v3 = [a3 leftExpression];
-  if ([v3 expressionType] == 3)
+  leftExpression = [a3 leftExpression];
+  if ([leftExpression expressionType] == 3)
   {
-    v4 = v3;
+    v4 = leftExpression;
   }
 
   else
@@ -149,9 +149,9 @@ LABEL_9:
     v4 = 0;
   }
 
-  v5 = [v4 keyPath];
+  keyPath = [v4 keyPath];
 
-  return v5;
+  return keyPath;
 }
 
 @end

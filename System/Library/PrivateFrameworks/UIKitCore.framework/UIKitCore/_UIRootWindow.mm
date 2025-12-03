@@ -2,22 +2,22 @@
 - ($706CF31DF3EBD1610FB422704D6694BE)_bindingDescription;
 - (CGAffineTransform)_additionalRootLayerAffineTransform;
 - (NSString)visibilityEnvironment;
-- (_UIRootWindow)initWithDisplay:(id)a3;
-- (_UIRootWindow)initWithScreen:(id)a3;
+- (_UIRootWindow)initWithDisplay:(id)display;
+- (_UIRootWindow)initWithScreen:(id)screen;
 - (id)_context;
 - (id)_visibilityLock_environment;
-- (void)_configureRootLayer:(id)a3 sceneTransformLayer:(id)a4 transformLayer:(id)a5;
-- (void)_didMoveFromScene:(id)a3 toScene:(id)a4;
-- (void)_didMoveFromScreen:(id)a3 toScreen:(id)a4;
-- (void)_noteScreenDidChangeMode:(id)a3;
+- (void)_configureRootLayer:(id)layer sceneTransformLayer:(id)transformLayer transformLayer:(id)a5;
+- (void)_didMoveFromScene:(id)scene toScene:(id)toScene;
+- (void)_didMoveFromScreen:(id)screen toScreen:(id)toScreen;
+- (void)_noteScreenDidChangeMode:(id)mode;
 - (void)_prepareHierarchyForWindowHostingSceneRemoval;
-- (void)_setAdditionalRootLayerAffineTransform:(CGAffineTransform *)a3;
+- (void)_setAdditionalRootLayerAffineTransform:(CGAffineTransform *)transform;
 - (void)_updateVisibility;
 - (void)_visibilityLock_enqueueUpdateIfNecessary;
 - (void)_visibilityLock_enqueueUpdateIfNecessary_body;
 - (void)dealloc;
-- (void)setHidden:(BOOL)a3;
-- (void)setVisibilityIdentifier:(id)a3;
+- (void)setHidden:(BOOL)hidden;
+- (void)setVisibilityIdentifier:(id)identifier;
 @end
 
 @implementation _UIRootWindow
@@ -31,20 +31,20 @@
   return self;
 }
 
-- (_UIRootWindow)initWithDisplay:(id)a3
+- (_UIRootWindow)initWithDisplay:(id)display
 {
-  v5 = a3;
-  if (!v5)
+  displayCopy = display;
+  if (!displayCopy)
   {
-    v24 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v24 handleFailureInMethod:a2 object:self file:@"_UIRootWindow.m" lineNumber:50 description:{@"Invalid parameter not satisfying: %@", @"display"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIRootWindow.m" lineNumber:50 description:{@"Invalid parameter not satisfying: %@", @"display"}];
   }
 
-  v6 = [v5 identity];
+  identity = [displayCopy identity];
   currentDisplayIdentity = self->_currentDisplayIdentity;
-  self->_currentDisplayIdentity = v6;
+  self->_currentDisplayIdentity = identity;
 
-  +[UIScreen _FBSDisplayConfigurationConnected:andNotify:](UIScreen, "_FBSDisplayConfigurationConnected:andNotify:", v5, [UIApp _hasCalledRunWithMainScene]);
+  +[UIScreen _FBSDisplayConfigurationConnected:andNotify:](UIScreen, "_FBSDisplayConfigurationConnected:andNotify:", displayCopy, [UIApp _hasCalledRunWithMainScene]);
   v8 = [UIScreen _screenWithFBSDisplayIdentity:self->_currentDisplayIdentity];
   [v8 _scale];
   self->_scale = v9;
@@ -54,18 +54,18 @@
   v11 = v10[1];
   *&self->_additionalRootLayerAffineTransform.a = *v10;
   *&self->_additionalRootLayerAffineTransform.c = v11;
-  [v5 bounds];
+  [displayCopy bounds];
   v13 = v12;
   v15 = v14;
   v17 = v16;
   v19 = v18;
-  v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ - display %@", objc_opt_class(), v5];
+  displayCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ - display %@", objc_opt_class(), displayCopy];
   v21 = [UIWindowScene _unassociatedWindowSceneForScreen:v8 create:1];
-  v22 = [(UIWindow *)self _initWithFrame:v20 debugName:v21 windowScene:v13, v15, v17, v19];
+  v22 = [(UIWindow *)self _initWithFrame:displayCopy debugName:v21 windowScene:v13, v15, v17, v19];
 
   if (v22)
   {
-    if ([v5 isExternal])
+    if ([displayCopy isExternal])
     {
       [(UIWindow *)v22 setFrame:v13, v15, v17, v19];
     }
@@ -76,18 +76,18 @@
   return v22;
 }
 
-- (_UIRootWindow)initWithScreen:(id)a3
+- (_UIRootWindow)initWithScreen:(id)screen
 {
-  v4 = [a3 displayConfiguration];
-  v5 = [(_UIRootWindow *)self initWithDisplay:v4];
+  displayConfiguration = [screen displayConfiguration];
+  v5 = [(_UIRootWindow *)self initWithDisplay:displayConfiguration];
 
   return v5;
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:@"_UIScreenDisplayConfigurationUpdatedNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:@"_UIScreenDisplayConfigurationUpdatedNotification" object:0];
 
   [(RBSAssertion *)self->_visibilityProcessingLock_assertion invalidate];
   v4.receiver = self;
@@ -98,19 +98,19 @@
 - (NSString)visibilityEnvironment
 {
   os_unfair_lock_lock(&self->_visibilityLock);
-  v3 = [(_UIRootWindow *)self _visibilityLock_environment];
+  _visibilityLock_environment = [(_UIRootWindow *)self _visibilityLock_environment];
   os_unfair_lock_unlock(&self->_visibilityLock);
 
-  return v3;
+  return _visibilityLock_environment;
 }
 
-- (void)setVisibilityIdentifier:(id)a3
+- (void)setVisibilityIdentifier:(id)identifier
 {
-  v6 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&self->_visibilityLock);
   if ((BSEqualStrings() & 1) == 0)
   {
-    v4 = [v6 copy];
+    v4 = [identifierCopy copy];
     visibilityLock_identifier = self->_visibilityLock_identifier;
     self->_visibilityLock_identifier = v4;
 
@@ -127,22 +127,22 @@
   return WeakRetained;
 }
 
-- (void)_setAdditionalRootLayerAffineTransform:(CGAffineTransform *)a3
+- (void)_setAdditionalRootLayerAffineTransform:(CGAffineTransform *)transform
 {
   p_additionalRootLayerAffineTransform = &self->_additionalRootLayerAffineTransform;
   v6 = *&self->_additionalRootLayerAffineTransform.c;
   *&t1.a = *&self->_additionalRootLayerAffineTransform.a;
   *&t1.c = v6;
   *&t1.tx = *&self->_additionalRootLayerAffineTransform.tx;
-  v7 = *&a3->c;
-  *&v10.a = *&a3->a;
+  v7 = *&transform->c;
+  *&v10.a = *&transform->a;
   *&v10.c = v7;
-  *&v10.tx = *&a3->tx;
+  *&v10.tx = *&transform->tx;
   if (!CGAffineTransformEqualToTransform(&t1, &v10))
   {
-    v8 = *&a3->a;
-    v9 = *&a3->tx;
-    *&p_additionalRootLayerAffineTransform->c = *&a3->c;
+    v8 = *&transform->a;
+    v9 = *&transform->tx;
+    *&p_additionalRootLayerAffineTransform->c = *&transform->c;
     *&p_additionalRootLayerAffineTransform->tx = v9;
     *&p_additionalRootLayerAffineTransform->a = v8;
     [(UIWindow *)self _updateTransformLayer];
@@ -161,22 +161,22 @@
   return result;
 }
 
-- (void)_configureRootLayer:(id)a3 sceneTransformLayer:(id)a4 transformLayer:(id)a5
+- (void)_configureRootLayer:(id)layer sceneTransformLayer:(id)transformLayer transformLayer:(id)a5
 {
   v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(UIWindow *)self screen];
-  [v11 _unjailedReferenceBounds];
+  transformLayerCopy = transformLayer;
+  layerCopy = layer;
+  screen = [(UIWindow *)self screen];
+  [screen _unjailedReferenceBounds];
   v13 = v12;
   v15 = v14;
   v17 = v16;
   v19 = v18;
   v20 = v12 + v16 * 0.5;
   v21 = v14 + v18 * 0.5;
-  [v11 scale];
+  [screen scale];
   v23 = v22;
-  [v11 _rotation];
+  [screen _rotation];
   CGAffineTransformMakeRotation(&v41, -v24);
   *&v41.a = vrndaq_f64(*&v41.a);
   *&v41.c = vrndaq_f64(*&v41.c);
@@ -200,13 +200,13 @@
     v42 = v41;
   }
 
-  v27 = [v11 displayConfiguration];
-  [v27 renderingCenter];
-  [v10 setPosition:?];
+  displayConfiguration = [screen displayConfiguration];
+  [displayConfiguration renderingCenter];
+  [layerCopy setPosition:?];
 
   v41 = v42;
-  [v10 setAffineTransform:&v41];
-  [v10 setBounds:{v13, v15, v17, v19}];
+  [layerCopy setAffineTransform:&v41];
+  [layerCopy setBounds:{v13, v15, v17, v19}];
 
   v37 = *(MEMORY[0x1E695EFD0] + 16);
   v38 = *MEMORY[0x1E695EFD0];
@@ -214,9 +214,9 @@
   *&v41.c = v37;
   v36 = *(MEMORY[0x1E695EFD0] + 32);
   *&v41.tx = v36;
-  [v9 setAffineTransform:&v41];
-  [v9 setPosition:{v20, v21}];
-  [v9 setBounds:{v13, v15, v17, v19}];
+  [transformLayerCopy setAffineTransform:&v41];
+  [transformLayerCopy setPosition:{v20, v21}];
+  [transformLayerCopy setBounds:{v13, v15, v17, v19}];
 
   [v8 setPosition:{v20, v21}];
   if ([objc_opt_class() _transformLayerRotationsAreEnabled])
@@ -273,37 +273,37 @@
   if (self->_scale != v23)
   {
     self->_scale = v23;
-    v35 = [(UIWindow *)self windowScene];
-    [v35 _recycleAttachmentForWindow:self];
+    windowScene = [(UIWindow *)self windowScene];
+    [windowScene _recycleAttachmentForWindow:self];
   }
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
   v4.receiver = self;
   v4.super_class = _UIRootWindow;
-  [(UIWindow *)&v4 setHidden:a3];
+  [(UIWindow *)&v4 setHidden:hidden];
   [(_UIRootWindow *)self _updateVisibility];
 }
 
-- (void)_didMoveFromScene:(id)a3 toScene:(id)a4
+- (void)_didMoveFromScene:(id)scene toScene:(id)toScene
 {
   v24.receiver = self;
   v24.super_class = _UIRootWindow;
-  v6 = a4;
-  v7 = a3;
-  [(UIWindow *)&v24 _didMoveFromScene:v7 toScene:v6];
-  v8 = [v7 _screen];
+  toSceneCopy = toScene;
+  sceneCopy = scene;
+  [(UIWindow *)&v24 _didMoveFromScene:sceneCopy toScene:toSceneCopy];
+  _screen = [sceneCopy _screen];
 
-  v9 = [v8 displayIdentity];
+  displayIdentity = [_screen displayIdentity];
 
-  v10 = [v6 _screen];
+  _screen2 = [toSceneCopy _screen];
 
-  v11 = [v10 displayConfiguration];
+  displayConfiguration = [_screen2 displayConfiguration];
 
-  v12 = [v11 identity];
-  v13 = v9;
-  v14 = v12;
+  identity = [displayConfiguration identity];
+  v13 = displayIdentity;
+  v14 = identity;
   v15 = v14;
   if (v13 == v14)
   {
@@ -317,13 +317,13 @@ LABEL_25:
   if (!v13 || !v14)
   {
 
-    if (v7)
+    if (sceneCopy)
     {
       goto LABEL_15;
     }
 
 LABEL_9:
-    if (v6)
+    if (toSceneCopy)
     {
       currentDisplayIdentity = self->_currentDisplayIdentity;
       v19 = v15;
@@ -354,12 +354,12 @@ LABEL_24:
       }
 
 LABEL_23:
-      +[UIScreen _FBSDisplayConfigurationConnected:andNotify:](UIScreen, "_FBSDisplayConfigurationConnected:andNotify:", v11, [UIApp _hasCalledRunWithMainScene]);
+      +[UIScreen _FBSDisplayConfigurationConnected:andNotify:](UIScreen, "_FBSDisplayConfigurationConnected:andNotify:", displayConfiguration, [UIApp _hasCalledRunWithMainScene]);
       goto LABEL_24;
     }
 
 LABEL_15:
-    if (!v7 || !v6)
+    if (!sceneCopy || !toSceneCopy)
     {
       goto LABEL_24;
     }
@@ -381,7 +381,7 @@ LABEL_15:
 
   if ((v16 & 1) == 0)
   {
-    if (v7)
+    if (sceneCopy)
     {
       goto LABEL_15;
     }
@@ -403,32 +403,32 @@ LABEL_26:
   [(UIWindow *)&v4 _prepareHierarchyForWindowHostingSceneRemoval];
 }
 
-- (void)_didMoveFromScreen:(id)a3 toScreen:(id)a4
+- (void)_didMoveFromScreen:(id)screen toScreen:(id)toScreen
 {
   v6 = MEMORY[0x1E696AD88];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 defaultCenter];
-  [v9 removeObserver:self];
+  toScreenCopy = toScreen;
+  screenCopy = screen;
+  defaultCenter = [v6 defaultCenter];
+  [defaultCenter removeObserver:self];
   v10.receiver = self;
   v10.super_class = _UIRootWindow;
-  [(UIWindow *)&v10 _didMoveFromScreen:v8 toScreen:v7];
+  [(UIWindow *)&v10 _didMoveFromScreen:screenCopy toScreen:toScreenCopy];
 
-  [v9 addObserver:self selector:sel__noteScreenDidChangeMode_ name:@"_UIScreenDisplayConfigurationUpdatedNotification" object:v7];
+  [defaultCenter addObserver:self selector:sel__noteScreenDidChangeMode_ name:@"_UIScreenDisplayConfigurationUpdatedNotification" object:toScreenCopy];
 }
 
-- (void)_noteScreenDidChangeMode:(id)a3
+- (void)_noteScreenDidChangeMode:(id)mode
 {
-  v17 = a3;
-  v5 = [v17 object];
-  if (!v5)
+  modeCopy = mode;
+  object = [modeCopy object];
+  if (!object)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"_UIRootWindow.m" lineNumber:273 description:{@"got a screen mode change notification without a screen -> %@", v17}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIRootWindow.m" lineNumber:273 description:{@"got a screen mode change notification without a screen -> %@", modeCopy}];
   }
 
-  v6 = [v5 displayConfiguration];
-  [v6 bounds];
+  displayConfiguration = [object displayConfiguration];
+  [displayConfiguration bounds];
   v8 = v7;
   v10 = v9;
   v12 = v11;
@@ -436,17 +436,17 @@ LABEL_26:
 
   [(UIWindow *)self setFrame:v8, v10, v12, v14];
   [(UIWindow *)self _updateTransformLayer];
-  v15 = [(UIWindow *)self windowScene];
-  [v15 _recycleAttachmentForWindow:self];
+  windowScene = [(UIWindow *)self windowScene];
+  [windowScene _recycleAttachmentForWindow:self];
 }
 
 - (void)_updateVisibility
 {
   os_unfair_lock_lock(&self->_visibilityLock);
-  v3 = [(UIView *)self isHidden];
-  if (self->_visibilityLock_enabled != !v3)
+  isHidden = [(UIView *)self isHidden];
+  if (self->_visibilityLock_enabled != !isHidden)
   {
-    self->_visibilityLock_enabled = !v3;
+    self->_visibilityLock_enabled = !isHidden;
     [(_UIRootWindow *)self _visibilityLock_enqueueUpdateIfNecessary];
   }
 
@@ -481,7 +481,7 @@ LABEL_26:
     v5[2] = 0x3032000000;
     v5[3] = __Block_byref_object_copy__169;
     v5[4] = __Block_byref_object_dispose__169;
-    v6 = self;
+    selfCopy = self;
     v3 = dispatch_get_global_queue(25, 0);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
@@ -500,7 +500,7 @@ LABEL_26:
   os_unfair_lock_lock(&self->_visibilityProcessingLock);
   os_unfair_lock_lock(&self->_visibilityLock);
   visibilityLock_enabled = self->_visibilityLock_enabled;
-  v4 = [(_UIRootWindow *)self _visibilityLock_environment];
+  _visibilityLock_environment = [(_UIRootWindow *)self _visibilityLock_environment];
   visibilityLock_identifier = self->_visibilityLock_identifier;
   v6 = visibilityLock_identifier;
   self->_visibilityLock_updateEnqueued = 0;
@@ -514,7 +514,7 @@ LABEL_26:
 
     if (visibilityLock_enabled)
     {
-      v9 = [MEMORY[0x1E69C7640] targetWithPid:getpid() environmentIdentifier:v4];
+      v9 = [MEMORY[0x1E69C7640] targetWithPid:getpid() environmentIdentifier:_visibilityLock_environment];
       v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"creating %@ visibility", v9];
       if (v6)
       {
@@ -527,7 +527,7 @@ LABEL_26:
       }
 
       [MEMORY[0x1E69C7578] grantWithNamespace:*MEMORY[0x1E69DED50] endowment:v11];
-      v12 = v17 = v4;
+      v12 = v17 = _visibilityLock_environment;
       v13 = objc_alloc(MEMORY[0x1E69C7548]);
       v18[0] = v12;
       v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:1];
@@ -536,7 +536,7 @@ LABEL_26:
       self->_visibilityProcessingLock_assertion = v15;
 
       [(RBSAssertion *)self->_visibilityProcessingLock_assertion acquireWithError:0];
-      v4 = v17;
+      _visibilityLock_environment = v17;
     }
 
     [(RBSAssertion *)v7 invalidate];

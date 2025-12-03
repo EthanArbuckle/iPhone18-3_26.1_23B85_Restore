@@ -1,25 +1,25 @@
 @interface WFDiagnosticsResultItemBT
-- (WFDiagnosticsResultItemBT)initWithResults:(id)a3;
+- (WFDiagnosticsResultItemBT)initWithResults:(id)results;
 @end
 
 @implementation WFDiagnosticsResultItemBT
 
-- (WFDiagnosticsResultItemBT)initWithResults:(id)a3
+- (WFDiagnosticsResultItemBT)initWithResults:(id)results
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  resultsCopy = results;
   v33.receiver = self;
   v33.super_class = WFDiagnosticsResultItemBT;
   v5 = [(WFDiagnosticsResultItemBT *)&v33 init];
-  v6 = [v4 btDiagnosticsResults];
-  [(WFDiagnosticsResultItemBT *)v5 setResults:v6];
+  btDiagnosticsResults = [resultsCopy btDiagnosticsResults];
+  [(WFDiagnosticsResultItemBT *)v5 setResults:btDiagnosticsResults];
 
   v31 = 0u;
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v7 = [(WFDiagnosticsResultItemBT *)v5 results];
-  v8 = [v7 countByEnumeratingWithState:&v29 objects:v34 count:16];
+  results = [(WFDiagnosticsResultItemBT *)v5 results];
+  v8 = [results countByEnumeratingWithState:&v29 objects:v34 count:16];
   if (v8)
   {
     v9 = 0;
@@ -30,7 +30,7 @@
       {
         if (*v30 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(results);
         }
 
         v12 = *(*(&v29 + 1) + 8 * i);
@@ -53,7 +53,7 @@
         }
       }
 
-      v8 = [v7 countByEnumeratingWithState:&v29 objects:v34 count:16];
+      v8 = [results countByEnumeratingWithState:&v29 objects:v34 count:16];
       if (v8)
       {
         continue;
@@ -69,8 +69,8 @@
     }
 
 LABEL_18:
-    v15 = [v9 info];
-    v16 = [v15 objectForKey:@"BTConnectedCount"];
+    info = [v9 info];
+    v16 = [info objectForKey:@"BTConnectedCount"];
     -[WFDiagnosticsResultItemBT setDidPassTest:](v5, "setDidPassTest:", [v16 intValue] < 5);
 
     failedTests = v5->_failedTests;
@@ -108,7 +108,7 @@ LABEL_18:
 
   else
   {
-    v9 = v7;
+    v9 = results;
   }
 
 LABEL_26:

@@ -1,28 +1,28 @@
 @interface CKImageAttachmentItemAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation CKImageAttachmentItemAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CKAttachmentItem"];
-  [v3 validateClass:@"CKAttachmentItem" hasInstanceMethod:@"isIrisAsset" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"CKImageAttachmentItem" isKindOfClass:@"CKAttachmentItem"];
-  [v3 validateClass:@"CKImageAttachmentItem" hasInstanceMethod:@"imageData" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKImageData" hasInstanceMethod:@"image" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKMovieAttachmentItem" isKindOfClass:@"CKAttachmentItem"];
-  [v3 validateClass:@"CKAttachmentItem" hasInstanceMethod:@"fileURL" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CKAttachmentItem"];
+  [validationsCopy validateClass:@"CKAttachmentItem" hasInstanceMethod:@"isIrisAsset" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"CKImageAttachmentItem" isKindOfClass:@"CKAttachmentItem"];
+  [validationsCopy validateClass:@"CKImageAttachmentItem" hasInstanceMethod:@"imageData" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKImageData" hasInstanceMethod:@"image" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKMovieAttachmentItem" isKindOfClass:@"CKAttachmentItem"];
+  [validationsCopy validateClass:@"CKAttachmentItem" hasInstanceMethod:@"fileURL" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
 {
   v3 = [(CKImageAttachmentItemAccessibility *)self safeValueForKey:@"isIrisAsset"];
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
-  if (v4)
+  if (bOOLValue)
   {
     v5 = accessibilityLocalizedString(@"live.photo");
     v6 = AXAttributedStringForBetterPronuciation();

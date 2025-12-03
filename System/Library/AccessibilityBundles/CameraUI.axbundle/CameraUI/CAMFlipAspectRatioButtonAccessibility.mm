@@ -1,19 +1,19 @@
 @interface CAMFlipAspectRatioButtonAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
-- (void)setActive:(BOOL)a3 animated:(BOOL)a4;
+- (void)setActive:(BOOL)active animated:(BOOL)animated;
 @end
 
 @implementation CAMFlipAspectRatioButtonAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CAMFlipAspectRatioButton" hasInstanceMethod:@"active" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"CAMFlipAspectRatioButton" hasInstanceMethod:@"setActive:animated:" withFullSignature:{"v", "B", "B", 0}];
-  [v3 validateClass:@"CAMFlipAspectRatioButton" isKindOfClass:@"CAMCircleButton"];
-  [v3 validateClass:@"CAMCircleButton" hasInstanceMethod:@"orientation" withFullSignature:{"q", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CAMFlipAspectRatioButton" hasInstanceMethod:@"active" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"CAMFlipAspectRatioButton" hasInstanceMethod:@"setActive:animated:" withFullSignature:{"v", "B", "B", 0}];
+  [validationsCopy validateClass:@"CAMFlipAspectRatioButton" isKindOfClass:@"CAMCircleButton"];
+  [validationsCopy validateClass:@"CAMCircleButton" hasInstanceMethod:@"orientation" withFullSignature:{"q", 0}];
 }
 
 - (id)accessibilityLabel
@@ -45,17 +45,17 @@
   return *MEMORY[0x29EDC7F70] | [(CAMFlipAspectRatioButtonAccessibility *)&v3 accessibilityTraits];
 }
 
-- (void)setActive:(BOOL)a3 animated:(BOOL)a4
+- (void)setActive:(BOOL)active animated:(BOOL)animated
 {
-  v4 = a3;
+  activeCopy = active;
   v14.receiver = self;
   v14.super_class = CAMFlipAspectRatioButtonAccessibility;
-  [(CAMFlipAspectRatioButtonAccessibility *)&v14 setActive:a3 animated:a4];
+  [(CAMFlipAspectRatioButtonAccessibility *)&v14 setActive:active animated:animated];
   v6 = ([(CAMFlipAspectRatioButtonAccessibility *)self safeIntegerForKey:@"orientation"]- 3) < 2;
   v7 = accessibilityCameraUIFRSVLocalizedString(@"flipped.aspect.ratio.landscape");
   v8 = accessibilityCameraUIFRSVLocalizedString(@"flipped.aspect.ratio.portrait");
   v9 = v8;
-  if (v6 != v4)
+  if (v6 != activeCopy)
   {
     v10 = v7;
   }

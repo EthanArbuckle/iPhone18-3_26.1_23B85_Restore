@@ -1,32 +1,32 @@
 @interface CCDaemon
 + (void)resetRootDirectoryIfNecessary;
-- (CCDaemon)initWithQueue:(id)a3 setBookkeeping:(id)a4;
+- (CCDaemon)initWithQueue:(id)queue setBookkeeping:(id)bookkeeping;
 - (void)start;
 @end
 
 @implementation CCDaemon
 
-- (CCDaemon)initWithQueue:(id)a3 setBookkeeping:(id)a4
+- (CCDaemon)initWithQueue:(id)queue setBookkeeping:(id)bookkeeping
 {
-  v7 = a3;
-  v8 = a4;
+  queueCopy = queue;
+  bookkeepingCopy = bookkeeping;
   v20.receiver = self;
   v20.super_class = CCDaemon;
   v9 = [(CCDaemon *)&v20 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_queue, a3);
-    v11 = [[CCSetChangeRelayServer alloc] initWithQueue:v7];
+    objc_storeStrong(&v9->_queue, queue);
+    v11 = [[CCSetChangeRelayServer alloc] initWithQueue:queueCopy];
     relayServer = v10->_relayServer;
     v10->_relayServer = v11;
 
-    objc_storeStrong(&v10->_setBookkeeping, a4);
-    v13 = [[CCScheduledTasks alloc] initWithSetBookkeeping:v8];
+    objc_storeStrong(&v10->_setBookkeeping, bookkeeping);
+    v13 = [[CCScheduledTasks alloc] initWithSetBookkeeping:bookkeepingCopy];
     scheduledTasks = v10->_scheduledTasks;
     v10->_scheduledTasks = v13;
 
-    v15 = [[CCMaintenanceServer alloc] initWithQueue:v7 setBookkeeping:v8];
+    v15 = [[CCMaintenanceServer alloc] initWithQueue:queueCopy setBookkeeping:bookkeepingCopy];
     maintenanceServer = v10->_maintenanceServer;
     v10->_maintenanceServer = v15;
   }

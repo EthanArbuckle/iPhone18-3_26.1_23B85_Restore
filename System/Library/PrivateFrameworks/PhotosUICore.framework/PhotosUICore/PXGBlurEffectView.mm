@@ -1,10 +1,10 @@
 @interface PXGBlurEffectView
-- (CGPoint)convertHostedChildCenter:(CGPoint)a3 fromGlobalLayer:(id)a4;
+- (CGPoint)convertHostedChildCenter:(CGPoint)center fromGlobalLayer:(id)layer;
 - (CGRect)clippingRect;
-- (void)addHostedLayer:(id)a3;
-- (void)addHostedView:(id)a3;
+- (void)addHostedLayer:(id)layer;
+- (void)addHostedView:(id)view;
 - (void)layoutSubviews;
-- (void)setUserData:(id)a3;
+- (void)setUserData:(id)data;
 @end
 
 @implementation PXGBlurEffectView
@@ -22,14 +22,14 @@
   return result;
 }
 
-- (CGPoint)convertHostedChildCenter:(CGPoint)a3 fromGlobalLayer:(id)a4
+- (CGPoint)convertHostedChildCenter:(CGPoint)center fromGlobalLayer:(id)layer
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(PXGBlurEffectView *)self contentView];
-  v9 = [v8 layer];
-  [v9 convertPoint:v7 fromLayer:{x, y}];
+  y = center.y;
+  x = center.x;
+  layerCopy = layer;
+  contentView = [(PXGBlurEffectView *)self contentView];
+  layer = [contentView layer];
+  [layer convertPoint:layerCopy fromLayer:{x, y}];
   v11 = v10;
   v13 = v12;
 
@@ -40,27 +40,27 @@
   return result;
 }
 
-- (void)addHostedLayer:(id)a3
+- (void)addHostedLayer:(id)layer
 {
-  v4 = a3;
-  v6 = [(PXGBlurEffectView *)self contentView];
-  v5 = [v6 layer];
-  [v5 addSublayer:v4];
+  layerCopy = layer;
+  contentView = [(PXGBlurEffectView *)self contentView];
+  layer = [contentView layer];
+  [layer addSublayer:layerCopy];
 }
 
-- (void)addHostedView:(id)a3
+- (void)addHostedView:(id)view
 {
-  v4 = a3;
-  v5 = [(PXGBlurEffectView *)self contentView];
-  [v5 addSubview:v4];
+  viewCopy = view;
+  contentView = [(PXGBlurEffectView *)self contentView];
+  [contentView addSubview:viewCopy];
 }
 
-- (void)setUserData:(id)a3
+- (void)setUserData:(id)data
 {
-  v8 = a3;
+  dataCopy = data;
   v5 = self->_userData;
   v6 = v5;
-  if (v5 == v8)
+  if (v5 == dataCopy)
   {
   }
 
@@ -70,7 +70,7 @@
 
     if (!v7)
     {
-      objc_storeStrong(&self->_userData, a3);
+      objc_storeStrong(&self->_userData, data);
       [(PXGBlurEffectView *)self setNeedsLayout];
     }
   }
@@ -94,8 +94,8 @@
   }
 
   v6 = MEMORY[0x1E69DC730];
-  v7 = [(PXGBlurEffectView *)self userData];
-  if (MEMORY[0x1A590D320]([v7 style]))
+  userData = [(PXGBlurEffectView *)self userData];
+  if (MEMORY[0x1A590D320]([userData style]))
   {
     v8 = 16;
   }
@@ -108,8 +108,8 @@
   v9 = [v6 effectWithStyle:v8];
   [(UIVisualEffectView *)self->_effectView setEffect:v9];
 
-  v10 = [(PXGBlurEffectView *)self superview];
-  [v10 sendSubviewToBack:self];
+  superview = [(PXGBlurEffectView *)self superview];
+  [superview sendSubviewToBack:self];
 }
 
 @end

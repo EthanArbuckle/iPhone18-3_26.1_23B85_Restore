@@ -1,34 +1,34 @@
 @interface PDFFormField
 - (BOOL)_isRedacted;
-- (PDFFormField)initWithAnnotation:(id)a3;
-- (PDFFormField)initWithFormDictionary:(CGPDFDictionary *)a3;
+- (PDFFormField)initWithAnnotation:(id)annotation;
+- (PDFFormField)initWithFormDictionary:(CGPDFDictionary *)dictionary;
 - (__CFDictionary)createDictionaryRef;
 - (__CFDictionary)dictionaryRef;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)document;
-- (void)addDictionaryValueToDictionaryRef:(__CFDictionary *)a3;
-- (void)addFieldNameToDictionaryRef:(__CFDictionary *)a3;
-- (void)addFieldTypeToDictionaryRef:(__CFDictionary *)a3;
-- (void)addNameDefaultValueToDictionaryRef:(__CFDictionary *)a3;
-- (void)addNameValueToDictionaryRef:(__CFDictionary *)a3;
-- (void)addStringDefaultValueToDictionaryRef:(__CFDictionary *)a3;
-- (void)addStringValueToDictionaryRef:(__CFDictionary *)a3;
+- (void)addDictionaryValueToDictionaryRef:(__CFDictionary *)ref;
+- (void)addFieldNameToDictionaryRef:(__CFDictionary *)ref;
+- (void)addFieldTypeToDictionaryRef:(__CFDictionary *)ref;
+- (void)addNameDefaultValueToDictionaryRef:(__CFDictionary *)ref;
+- (void)addNameValueToDictionaryRef:(__CFDictionary *)ref;
+- (void)addStringDefaultValueToDictionaryRef:(__CFDictionary *)ref;
+- (void)addStringValueToDictionaryRef:(__CFDictionary *)ref;
 - (void)clearDictionaryRef;
-- (void)commonCreateDictionaryRef:(__CFDictionary *)a3;
+- (void)commonCreateDictionaryRef:(__CFDictionary *)ref;
 - (void)commonInit;
 - (void)dealloc;
-- (void)setDefaultStringValue:(id)a3;
-- (void)setDocument:(id)a3;
-- (void)setFieldName:(id)a3;
-- (void)setStringValue:(id)a3;
+- (void)setDefaultStringValue:(id)value;
+- (void)setDocument:(id)document;
+- (void)setFieldName:(id)name;
+- (void)setStringValue:(id)value;
 @end
 
 @implementation PDFFormField
 
-- (PDFFormField)initWithAnnotation:(id)a3
+- (PDFFormField)initWithAnnotation:(id)annotation
 {
-  v4 = a3;
+  annotationCopy = annotation;
   v30.receiver = self;
   v30.super_class = PDFFormField;
   v5 = [(PDFFormField *)&v30 init];
@@ -36,18 +36,18 @@
   if (v5)
   {
     [(PDFFormField *)v5 commonInit];
-    v7 = [v4 page];
-    v8 = v7;
-    if (v7)
+    page = [annotationCopy page];
+    v8 = page;
+    if (page)
     {
-      v9 = [v7 document];
-      if (v9)
+      document = [page document];
+      if (document)
       {
-        [(PDFFormField *)v6 setDocument:v9];
+        [(PDFFormField *)v6 setDocument:document];
       }
     }
 
-    v10 = [v4 valueForAnnotationKey:@"/Subtype"];
+    v10 = [annotationCopy valueForAnnotationKey:@"/Subtype"];
     if (![v10 isEqualToString:@"/Widget"])
     {
       v11 = v6;
@@ -58,7 +58,7 @@ LABEL_26:
       goto LABEL_27;
     }
 
-    v11 = [v4 valueForAnnotationKey:@"/FT"];
+    v11 = [annotationCopy valueForAnnotationKey:@"/FT"];
     if ([v11 isEqualToString:@"/Btn"])
     {
       v12 = 0;
@@ -76,19 +76,19 @@ LABEL_26:
 LABEL_15:
         if ([v11 isEqualToString:@"/Btn"])
         {
-          v6->_private->buttonType = [v4 widgetControlType];
+          v6->_private->buttonType = [annotationCopy widgetControlType];
         }
 
-        v13 = [v4 fieldName];
-        v14 = [v13 copy];
+        fieldName = [annotationCopy fieldName];
+        v14 = [fieldName copy];
         v15 = v6->_private;
         fieldName = v15->fieldName;
         v15->fieldName = v14;
 
-        if ([v11 isEqualToString:@"/Btn"] && objc_msgSend(v4, "buttonWidgetState") == 1)
+        if ([v11 isEqualToString:@"/Btn"] && objc_msgSend(annotationCopy, "buttonWidgetState") == 1)
         {
-          v17 = [v4 widgetOnStateString];
-          v18 = [v17 copy];
+          widgetOnStateString = [annotationCopy widgetOnStateString];
+          v18 = [widgetOnStateString copy];
           v19 = v6->_private;
           stringValue = v19->stringValue;
           v19->stringValue = v18;
@@ -96,8 +96,8 @@ LABEL_15:
 
         else if (([v11 isEqualToString:@"/Tx"] & 1) != 0 || objc_msgSend(v11, "isEqualToString:", @"/Ch"))
         {
-          v21 = [v4 widgetStringValue];
-          v22 = [v21 copy];
+          widgetStringValue = [annotationCopy widgetStringValue];
+          v22 = [widgetStringValue copy];
           v23 = v6->_private;
           v24 = v23->stringValue;
           v23->stringValue = v22;
@@ -105,8 +105,8 @@ LABEL_15:
 
         if (([v11 isEqualToString:@"/Tx"] & 1) != 0 || objc_msgSend(v11, "isEqualToString:", @"/Ch"))
         {
-          v25 = [v4 widgetDefaultStringValue];
-          v26 = [v25 copy];
+          widgetDefaultStringValue = [annotationCopy widgetDefaultStringValue];
+          v26 = [widgetDefaultStringValue copy];
           v27 = v6->_private;
           defaultStringValue = v27->defaultStringValue;
           v27->defaultStringValue = v26;
@@ -127,7 +127,7 @@ LABEL_27:
   return v6;
 }
 
-- (PDFFormField)initWithFormDictionary:(CGPDFDictionary *)a3
+- (PDFFormField)initWithFormDictionary:(CGPDFDictionary *)dictionary
 {
   v41 = 0u;
   v42 = 0u;
@@ -141,7 +141,7 @@ LABEL_27:
   if (v4)
   {
     [(PDFFormField *)v4 commonInit];
-    if (CGPDFDictionaryGetInteger(a3, "Ff", &value))
+    if (CGPDFDictionaryGetInteger(dictionary, "Ff", &value))
     {
       v6 = value;
     }
@@ -160,10 +160,10 @@ LABEL_27:
       v7->bounds.size.height = v10;
     }
 
-    if (!CGPDFDictionaryGetName(a3, "FT", &v38))
+    if (!CGPDFDictionaryGetName(dictionary, "FT", &v38))
     {
 LABEL_24:
-      if (!CGPDFDictionaryGetString(a3, "T", &string))
+      if (!CGPDFDictionaryGetString(dictionary, "T", &string))
       {
         NSLog(&cfstr_PdfformfieldHa.isa);
         goto LABEL_37;
@@ -174,15 +174,15 @@ LABEL_24:
       fieldName = v22->fieldName;
       v22->fieldName = &v21->isa;
 
-      if (!CGPDFDictionaryGetName(a3, "V", &v38))
+      if (!CGPDFDictionaryGetName(dictionary, "V", &v38))
       {
-        if (CGPDFDictionaryGetString(a3, "V", &string))
+        if (CGPDFDictionaryGetString(dictionary, "V", &string))
         {
           v25 = CGPDFStringCopyTextString(string);
           goto LABEL_30;
         }
 
-        if (!CGPDFDictionaryGetName(a3, "AS", &v38))
+        if (!CGPDFDictionaryGetName(dictionary, "AS", &v38))
         {
           goto LABEL_31;
         }
@@ -196,7 +196,7 @@ LABEL_30:
       v26->stringValue = &v25->isa;
 
 LABEL_31:
-      if (CGPDFDictionaryGetString(a3, "DV", &string))
+      if (CGPDFDictionaryGetString(dictionary, "DV", &string))
       {
         v28 = CGPDFStringCopyTextString(string);
         v29 = 1;
@@ -269,7 +269,7 @@ LABEL_37:
           {
             v5->_private->fieldType = 3;
             v36 = 0;
-            if (CGPDFDictionaryGetDictionary(a3, "V", &v36))
+            if (CGPDFDictionaryGetDictionary(dictionary, "V", &v36))
             {
               v18 = CGPDFDictionaryCreateNSDictionary(v36);
               v19 = v5->_private;
@@ -327,26 +327,26 @@ LABEL_38:
   self->_private->dictionary = 0;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = v4;
   if (v4)
   {
     [v4 commonInit];
-    v6 = [(PDFFormField *)self document];
-    [v5 setDocument:v6];
+    document = [(PDFFormField *)self document];
+    [v5 setDocument:document];
 
     [v5 setFieldType:{-[PDFFormField fieldType](self, "fieldType")}];
     [v5 setButtonType:{-[PDFFormField buttonType](self, "buttonType")}];
-    v7 = [(PDFFormField *)self fieldName];
-    [v5 setFieldName:v7];
+    fieldName = [(PDFFormField *)self fieldName];
+    [v5 setFieldName:fieldName];
 
-    v8 = [(PDFFormField *)self stringValue];
-    [v5 setStringValue:v8];
+    stringValue = [(PDFFormField *)self stringValue];
+    [v5 setStringValue:stringValue];
 
-    v9 = [(PDFFormField *)self defaultStringValue];
-    [v5 setDefaultStringValue:v9];
+    defaultStringValue = [(PDFFormField *)self defaultStringValue];
+    [v5 setDefaultStringValue:defaultStringValue];
 
     [v5 setWriteDefaultValue:{-[PDFFormField writeDefaultValue](self, "writeDefaultValue")}];
     v10 = v5;
@@ -412,23 +412,23 @@ LABEL_38:
   return result;
 }
 
-- (void)commonCreateDictionaryRef:(__CFDictionary *)a3
+- (void)commonCreateDictionaryRef:(__CFDictionary *)ref
 {
   v5 = self->_private;
   fieldType = v5->fieldType;
   if ((fieldType - 1) < 2)
   {
-    [(PDFFormField *)self addStringValueToDictionaryRef:a3];
+    [(PDFFormField *)self addStringValueToDictionaryRef:ref];
   }
 
   else if (fieldType == 3)
   {
-    [(PDFFormField *)self addDictionaryValueToDictionaryRef:a3];
+    [(PDFFormField *)self addDictionaryValueToDictionaryRef:ref];
   }
 
   else if (!fieldType && v5->buttonType)
   {
-    [(PDFFormField *)self addNameValueToDictionaryRef:a3];
+    [(PDFFormField *)self addNameValueToDictionaryRef:ref];
   }
 
   v7 = self->_private;
@@ -440,14 +440,14 @@ LABEL_38:
       if (v8 <= 2)
       {
 
-        [(PDFFormField *)self addStringDefaultValueToDictionaryRef:a3];
+        [(PDFFormField *)self addStringDefaultValueToDictionaryRef:ref];
       }
     }
 
     else if (v7->buttonType)
     {
 
-      [(PDFFormField *)self addNameDefaultValueToDictionaryRef:a3];
+      [(PDFFormField *)self addNameDefaultValueToDictionaryRef:ref];
     }
   }
 }
@@ -455,21 +455,21 @@ LABEL_38:
 - (__CFDictionary)createDictionaryRef
 {
   v50 = *MEMORY[0x1E69E9840];
-  v2 = [(PDFFormField *)self document];
-  if (v2)
+  document = [(PDFFormField *)self document];
+  if (document)
   {
     v3 = *MEMORY[0x1E695E480];
     cf = CFDictionaryCreateMutable(*MEMORY[0x1E695E480], 0, MEMORY[0x1E695E9D8], MEMORY[0x1E695E9E8]);
     theArray = CFArrayCreateMutable(v3, 0, MEMORY[0x1E695E9C0]);
-    v37 = [v2 pageCount];
-    if (v37)
+    pageCount = [document pageCount];
+    if (pageCount)
     {
       v4 = 0;
-      v39 = v2;
+      v39 = document;
       do
       {
         v38 = v4;
-        v5 = [v2 pageAtIndex:v37];
+        v5 = [document pageAtIndex:pageCount];
         v45 = 0u;
         v46 = 0u;
         v47 = 0u;
@@ -497,17 +497,17 @@ LABEL_38:
               {
                 if ([v12 isEqualToString:@"/Btn"] && (objc_msgSend(v10, "fieldName"), v13 = objc_claimAutoreleasedReturnValue(), -[PDFFormField fieldName](self, "fieldName"), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v13, "isEqualToString:", v14), v14, v13, v15) || objc_msgSend(v12, "isEqualToString:", @"/Ch") && (objc_msgSend(v10, "fieldName"), v16 = objc_claimAutoreleasedReturnValue(), -[PDFFormField fieldName](self, "fieldName"), v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v16, "isEqualToString:", v17), v17, v16, v18) || objc_msgSend(v12, "isEqualToString:", @"/Tx") && (objc_msgSend(v10, "fieldName"), v19 = objc_claimAutoreleasedReturnValue(), -[PDFFormField fieldName](self, "fieldName"), v20 = objc_claimAutoreleasedReturnValue(), v21 = objc_msgSend(v19, "isEqualToString:", v20), v20, v19, v21) || objc_msgSend(v12, "isEqualToString:", @"/Sig") && (objc_msgSend(v10, "fieldName"), v22 = objc_claimAutoreleasedReturnValue(), -[PDFFormField fieldName](self, "fieldName"), v23 = objc_claimAutoreleasedReturnValue(), v24 = objc_msgSend(v22, "isEqualToString:", v23), v23, v22, v24))
                 {
-                  v25 = [v10 dictionaryRef];
-                  if (!v25)
+                  dictionaryRef = [v10 dictionaryRef];
+                  if (!dictionaryRef)
                   {
 
-                    v2 = v39;
+                    document = v39;
                     ValueAtIndex = cf;
                     v26 = theArray;
                     goto LABEL_27;
                   }
 
-                  CFArrayAppendValue(theArray, v25);
+                  CFArrayAppendValue(theArray, dictionaryRef);
                 }
               }
             }
@@ -523,10 +523,10 @@ LABEL_38:
         }
 
         v4 = v38 + 1;
-        v2 = v39;
+        document = v39;
       }
 
-      while (v38 + 1 != v37);
+      while (v38 + 1 != pageCount);
     }
 
     v26 = theArray;
@@ -591,16 +591,16 @@ LABEL_27:
   return ValueAtIndex;
 }
 
-- (void)setDocument:(id)a3
+- (void)setDocument:(id)document
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  objc_storeWeak(&self->_private->document, v4);
+  documentCopy = document;
+  objc_storeWeak(&self->_private->document, documentCopy);
   v5 = self->_private;
   if (!v5->stringValue)
   {
-    v27 = v4;
-    [v4 annotationsForFieldName:v5->fieldName];
+    v27 = documentCopy;
+    [documentCopy annotationsForFieldName:v5->fieldName];
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
@@ -638,8 +638,8 @@ LABEL_27:
               v20 = [v11 valueForAnnotationKey:@"/V"];
               if ([v19 isEqualToString:@"/Btn"])
               {
-                v21 = [v11 widgetOnStateString];
-                if (v20 && [v20 isEqualToString:v21])
+                widgetOnStateString = [v11 widgetOnStateString];
+                if (v20 && [v20 isEqualToString:widgetOnStateString])
                 {
                   v28 = [v20 copy];
 
@@ -651,7 +651,7 @@ LABEL_17:
 
               else if ((([v19 isEqualToString:@"/Tx"] & 1) != 0 || objc_msgSend(v19, "isEqualToString:", @"/Ch")) && v20)
               {
-                v21 = v29;
+                widgetOnStateString = v29;
                 v29 = [v20 copy];
                 goto LABEL_17;
               }
@@ -686,7 +686,7 @@ LABEL_24:
       self->_private->writeDefaultValue = 0;
     }
 
-    v4 = v27;
+    documentCopy = v27;
   }
 }
 
@@ -697,154 +697,154 @@ LABEL_24:
   return WeakRetained;
 }
 
-- (void)setFieldName:(id)a3
+- (void)setFieldName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   v6 = self->_private;
   fieldName = v6->fieldName;
   p_fieldName = &v6->fieldName;
-  if (fieldName != v5)
+  if (fieldName != nameCopy)
   {
-    v9 = v5;
-    objc_storeStrong(p_fieldName, a3);
-    v5 = v9;
+    v9 = nameCopy;
+    objc_storeStrong(p_fieldName, name);
+    nameCopy = v9;
   }
 
-  MEMORY[0x1EEE66BB8](p_fieldName, v5);
+  MEMORY[0x1EEE66BB8](p_fieldName, nameCopy);
 }
 
-- (void)setStringValue:(id)a3
+- (void)setStringValue:(id)value
 {
-  v5 = a3;
+  valueCopy = value;
   v6 = self->_private;
   stringValue = v6->stringValue;
   p_stringValue = &v6->stringValue;
-  if (stringValue != v5)
+  if (stringValue != valueCopy)
   {
-    v9 = v5;
-    objc_storeStrong(p_stringValue, a3);
-    v5 = v9;
+    v9 = valueCopy;
+    objc_storeStrong(p_stringValue, value);
+    valueCopy = v9;
   }
 
-  MEMORY[0x1EEE66BB8](p_stringValue, v5);
+  MEMORY[0x1EEE66BB8](p_stringValue, valueCopy);
 }
 
-- (void)setDefaultStringValue:(id)a3
+- (void)setDefaultStringValue:(id)value
 {
-  v5 = a3;
+  valueCopy = value;
   v6 = self->_private;
   defaultStringValue = v6->defaultStringValue;
   p_defaultStringValue = &v6->defaultStringValue;
-  if (defaultStringValue != v5)
+  if (defaultStringValue != valueCopy)
   {
-    v9 = v5;
-    objc_storeStrong(p_defaultStringValue, a3);
-    v5 = v9;
+    v9 = valueCopy;
+    objc_storeStrong(p_defaultStringValue, value);
+    valueCopy = v9;
   }
 
-  MEMORY[0x1EEE66BB8](p_defaultStringValue, v5);
+  MEMORY[0x1EEE66BB8](p_defaultStringValue, valueCopy);
 }
 
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(PDFFormField *)self fieldName];
-  v5 = [(PDFFormField *)self stringValue];
-  v6 = [(PDFFormField *)self defaultStringValue];
-  v7 = [v3 stringWithFormat:@"Field \"%@\" = \"%@\" (\"%@\"", v4, v5, v6];
+  fieldName = [(PDFFormField *)self fieldName];
+  stringValue = [(PDFFormField *)self stringValue];
+  defaultStringValue = [(PDFFormField *)self defaultStringValue];
+  v7 = [v3 stringWithFormat:@"Field \"%@\" = \"%@\" (\"%@\"", fieldName, stringValue, defaultStringValue];
 
   return v7;
 }
 
-- (void)addFieldTypeToDictionaryRef:(__CFDictionary *)a3
+- (void)addFieldTypeToDictionaryRef:(__CFDictionary *)ref
 {
   fieldType = self->_private->fieldType;
   if (fieldType <= 3)
   {
-    CFDictionarySetValue(a3, @"/FT", off_1E8151338[fieldType]);
+    CFDictionarySetValue(ref, @"/FT", off_1E8151338[fieldType]);
   }
 }
 
-- (void)addFieldNameToDictionaryRef:(__CFDictionary *)a3
+- (void)addFieldNameToDictionaryRef:(__CFDictionary *)ref
 {
-  v4 = [(PDFFormField *)self fieldName];
-  if (v4)
+  fieldName = [(PDFFormField *)self fieldName];
+  if (fieldName)
   {
-    CFDictionarySetValue(a3, @"/T", v4);
+    CFDictionarySetValue(ref, @"/T", fieldName);
   }
 
   MEMORY[0x1EEE66BE0]();
 }
 
-- (void)addNameValueToDictionaryRef:(__CFDictionary *)a3
+- (void)addNameValueToDictionaryRef:(__CFDictionary *)ref
 {
-  v4 = [(PDFFormField *)self stringValue];
-  v5 = v4;
-  if (v4)
+  stringValue = [(PDFFormField *)self stringValue];
+  v5 = stringValue;
+  if (stringValue)
   {
-    v6 = v4;
-    CFDictionarySetValue(a3, @"/V", [MEMORY[0x1E696AEC0] stringWithFormat:@"/%@", v4]);
+    v6 = stringValue;
+    CFDictionarySetValue(ref, @"/V", [MEMORY[0x1E696AEC0] stringWithFormat:@"/%@", stringValue]);
     v5 = v6;
   }
 
-  MEMORY[0x1EEE66BB8](v4, v5);
+  MEMORY[0x1EEE66BB8](stringValue, v5);
 }
 
-- (void)addStringValueToDictionaryRef:(__CFDictionary *)a3
+- (void)addStringValueToDictionaryRef:(__CFDictionary *)ref
 {
-  v4 = [(PDFFormField *)self stringValue];
-  if (v4)
+  stringValue = [(PDFFormField *)self stringValue];
+  if (stringValue)
   {
-    CFDictionarySetValue(a3, @"/V", v4);
+    CFDictionarySetValue(ref, @"/V", stringValue);
   }
 
   MEMORY[0x1EEE66BE0]();
 }
 
-- (void)addNameDefaultValueToDictionaryRef:(__CFDictionary *)a3
+- (void)addNameDefaultValueToDictionaryRef:(__CFDictionary *)ref
 {
-  v4 = [(PDFFormField *)self defaultStringValue];
-  v5 = v4;
-  if (v4)
+  defaultStringValue = [(PDFFormField *)self defaultStringValue];
+  v5 = defaultStringValue;
+  if (defaultStringValue)
   {
-    v6 = v4;
-    CFDictionarySetValue(a3, @"/DV", [MEMORY[0x1E696AEC0] stringWithFormat:@"/%@", v4]);
+    v6 = defaultStringValue;
+    CFDictionarySetValue(ref, @"/DV", [MEMORY[0x1E696AEC0] stringWithFormat:@"/%@", defaultStringValue]);
     v5 = v6;
   }
 
-  MEMORY[0x1EEE66BB8](v4, v5);
+  MEMORY[0x1EEE66BB8](defaultStringValue, v5);
 }
 
-- (void)addStringDefaultValueToDictionaryRef:(__CFDictionary *)a3
+- (void)addStringDefaultValueToDictionaryRef:(__CFDictionary *)ref
 {
-  v4 = [(PDFFormField *)self defaultStringValue];
-  if (v4)
+  defaultStringValue = [(PDFFormField *)self defaultStringValue];
+  if (defaultStringValue)
   {
-    CFDictionarySetValue(a3, @"/DV", v4);
+    CFDictionarySetValue(ref, @"/DV", defaultStringValue);
   }
 
   MEMORY[0x1EEE66BE0]();
 }
 
-- (void)addDictionaryValueToDictionaryRef:(__CFDictionary *)a3
+- (void)addDictionaryValueToDictionaryRef:(__CFDictionary *)ref
 {
   digitalSignature = self->_private->digitalSignature;
   if (digitalSignature)
   {
-    CFDictionarySetValue(a3, @"/V", digitalSignature);
+    CFDictionarySetValue(ref, @"/V", digitalSignature);
   }
 }
 
 - (BOOL)_isRedacted
 {
-  v2 = self;
+  selfCopy = self;
   WeakRetained = objc_loadWeakRetained(&self->_private->document);
-  v4 = [WeakRetained annotationsForFieldName:v2->_private->fieldName];
-  v5 = [v4 firstObject];
-  v6 = [v5 page];
+  v4 = [WeakRetained annotationsForFieldName:selfCopy->_private->fieldName];
+  firstObject = [v4 firstObject];
+  page = [firstObject page];
 
-  LOBYTE(v2) = [v6 rectIntersectsWithRedactionPath:{v2->_private->bounds.origin.x, v2->_private->bounds.origin.y, v2->_private->bounds.size.width, v2->_private->bounds.size.height}];
-  return v2;
+  LOBYTE(selfCopy) = [page rectIntersectsWithRedactionPath:{selfCopy->_private->bounds.origin.x, selfCopy->_private->bounds.origin.y, selfCopy->_private->bounds.size.width, selfCopy->_private->bounds.size.height}];
+  return selfCopy;
 }
 
 @end

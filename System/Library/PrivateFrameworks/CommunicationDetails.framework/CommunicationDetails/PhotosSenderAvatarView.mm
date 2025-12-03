@@ -1,23 +1,23 @@
 @interface PhotosSenderAvatarView
 - (CGRect)clippingRect;
 - (NSCopying)userData;
-- (_TtC20CommunicationDetails22PhotosSenderAvatarView)initWithCoder:(id)a3;
-- (_TtC20CommunicationDetails22PhotosSenderAvatarView)initWithFrame:(CGRect)a3;
+- (_TtC20CommunicationDetails22PhotosSenderAvatarView)initWithCoder:(id)coder;
+- (_TtC20CommunicationDetails22PhotosSenderAvatarView)initWithFrame:(CGRect)frame;
 - (unint64_t)decorationOptions;
 - (void)layoutSubviews;
-- (void)setClippingRect:(CGRect)a3;
-- (void)setDecorationOptions:(unint64_t)a3;
-- (void)setUserData:(id)a3;
+- (void)setClippingRect:(CGRect)rect;
+- (void)setDecorationOptions:(unint64_t)options;
+- (void)setUserData:(id)data;
 @end
 
 @implementation PhotosSenderAvatarView
 
-- (_TtC20CommunicationDetails22PhotosSenderAvatarView)initWithFrame:(CGRect)a3
+- (_TtC20CommunicationDetails22PhotosSenderAvatarView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
   dispatch thunk of Actor.unownedExecutor.getter();
@@ -31,7 +31,7 @@
   return v7;
 }
 
-- (_TtC20CommunicationDetails22PhotosSenderAvatarView)initWithCoder:(id)a3
+- (_TtC20CommunicationDetails22PhotosSenderAvatarView)initWithCoder:(id)coder
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -70,7 +70,7 @@
   return v4;
 }
 
-- (void)setUserData:(id)a3
+- (void)setUserData:(id)data
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -82,9 +82,9 @@
 
   v5 = OBJC_IVAR____TtC20CommunicationDetails22PhotosSenderAvatarView_userData;
   swift_beginAccess();
-  *(&self->super.super.super.isa + v5) = a3;
+  *(&self->super.super.super.isa + v5) = data;
   swift_unknownObjectRetain_n();
-  v6 = self;
+  selfCopy = self;
   swift_unknownObjectRelease();
   PhotosSenderAvatarView.userData.didset();
 
@@ -108,7 +108,7 @@
   return v4;
 }
 
-- (void)setDecorationOptions:(unint64_t)a3
+- (void)setDecorationOptions:(unint64_t)options
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -120,7 +120,7 @@
 
   v5 = OBJC_IVAR____TtC20CommunicationDetails22PhotosSenderAvatarView_decorationOptions;
   swift_beginAccess();
-  *(&self->super.super.super.isa + v5) = a3;
+  *(&self->super.super.super.isa + v5) = options;
 }
 
 - (CGRect)clippingRect
@@ -151,12 +151,12 @@
   return result;
 }
 
-- (void)setClippingRect:(CGRect)a3
+- (void)setClippingRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
   dispatch thunk of Actor.unownedExecutor.getter();
@@ -183,7 +183,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
+  selfCopy = self;
   PhotosSenderAvatarView.layoutSubviews()();
 }
 

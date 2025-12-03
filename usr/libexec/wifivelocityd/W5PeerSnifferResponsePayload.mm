@@ -1,30 +1,30 @@
 @interface W5PeerSnifferResponsePayload
-+ (id)payloadFromDictionary:(id)a3;
-- (W5PeerSnifferResponsePayload)initWithRequest:(id)a3;
++ (id)payloadFromDictionary:(id)dictionary;
+- (W5PeerSnifferResponsePayload)initWithRequest:(id)request;
 - (id)encode;
 @end
 
 @implementation W5PeerSnifferResponsePayload
 
-+ (id)payloadFromDictionary:(id)a3
++ (id)payloadFromDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithRequest:v3];
+  dictionaryCopy = dictionary;
+  v4 = [objc_alloc(objc_opt_class()) initWithRequest:dictionaryCopy];
 
   return v4;
 }
 
-- (W5PeerSnifferResponsePayload)initWithRequest:(id)a3
+- (W5PeerSnifferResponsePayload)initWithRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v21.receiver = self;
   v21.super_class = W5PeerSnifferResponsePayload;
   v5 = [(W5PeerSnifferResponsePayload *)&v21 init];
-  if (v5 && (v6 = [v4 objectForKey:@"version"], (v5->_version = v6) != 0) && (objc_msgSend(v4, "objectForKey:", @"status"), (v7 = objc_claimAutoreleasedReturnValue()) != 0))
+  if (v5 && (v6 = [requestCopy objectForKey:@"version"], (v5->_version = v6) != 0) && (objc_msgSend(requestCopy, "objectForKey:", @"status"), (v7 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v8 = v7;
     v5->_status = [v7 integerValue];
-    v9 = [v4 objectForKey:@"paths"];
+    v9 = [requestCopy objectForKey:@"paths"];
     if (v9)
     {
       v10 = objc_opt_class();
@@ -42,7 +42,7 @@
       v14 = 0;
     }
 
-    v16 = [v4 objectForKey:@"uuid"];
+    v16 = [requestCopy objectForKey:@"uuid"];
     p_super = &v5->_uuid->super;
     v5->_uuid = v16;
   }
@@ -77,19 +77,19 @@
 - (id)encode
 {
   v3 = objc_alloc_init(NSMutableDictionary);
-  v4 = [(W5PeerSnifferResponsePayload *)self version];
+  version = [(W5PeerSnifferResponsePayload *)self version];
 
-  if (!v4)
+  if (!version)
   {
     goto LABEL_18;
   }
 
-  v5 = [(W5PeerSnifferResponsePayload *)self version];
-  [v3 setObject:v5 forKey:@"version"];
+  version2 = [(W5PeerSnifferResponsePayload *)self version];
+  [v3 setObject:version2 forKey:@"version"];
 
   if (![(W5PeerSnifferResponsePayload *)self status])
   {
-    v4 = 0;
+    version = 0;
 LABEL_18:
     v8 = 0;
     goto LABEL_13;
@@ -98,16 +98,16 @@ LABEL_18:
   v6 = [NSNumber numberWithInteger:[(W5PeerSnifferResponsePayload *)self status]];
   [v3 setObject:v6 forKey:@"status"];
 
-  v4 = [(W5PeerSnifferResponsePayload *)self filePaths];
+  version = [(W5PeerSnifferResponsePayload *)self filePaths];
 
-  if (v4)
+  if (version)
   {
-    v7 = [(W5PeerSnifferResponsePayload *)self filePaths];
+    filePaths = [(W5PeerSnifferResponsePayload *)self filePaths];
     v18 = 0;
-    v4 = [NSKeyedArchiver archivedDataWithRootObject:v7 requiringSecureCoding:1 error:&v18];
+    version = [NSKeyedArchiver archivedDataWithRootObject:filePaths requiringSecureCoding:1 error:&v18];
     v8 = v18;
 
-    if (!v4 || v8)
+    if (!version || v8)
     {
       v9 = sub_100098A04();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -128,7 +128,7 @@ LABEL_18:
 
     else
     {
-      [v3 setObject:v4 forKey:@"paths"];
+      [v3 setObject:version forKey:@"paths"];
     }
   }
 
@@ -141,8 +141,8 @@ LABEL_18:
 
   if (v10)
   {
-    v11 = [(W5PeerSnifferResponsePayload *)self uuid];
-    [v3 setObject:v11 forKey:@"uuid"];
+    uuid = [(W5PeerSnifferResponsePayload *)self uuid];
+    [v3 setObject:uuid forKey:@"uuid"];
   }
 
 LABEL_13:

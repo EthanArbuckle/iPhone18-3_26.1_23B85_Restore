@@ -1,9 +1,9 @@
 @interface MUTextPairVerticalCardView
-- (MUTextPairVerticalCardView)initWithFrame:(CGRect)a3;
+- (MUTextPairVerticalCardView)initWithFrame:(CGRect)frame;
 - (void)_recalculateStackingIfNeeded;
 - (void)_updateAppearance;
 - (void)layoutSubviews;
-- (void)setViewModels:(id)a3;
+- (void)setViewModels:(id)models;
 @end
 
 @implementation MUTextPairVerticalCardView
@@ -15,8 +15,8 @@
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v3 = [(MUStackView *)self arrangedSubviews];
-  v4 = [v3 countByEnumeratingWithState:&v18 objects:v23 count:16];
+  arrangedSubviews = [(MUStackView *)self arrangedSubviews];
+  v4 = [arrangedSubviews countByEnumeratingWithState:&v18 objects:v23 count:16];
   if (v4)
   {
     v5 = *v19;
@@ -26,7 +26,7 @@
       {
         if (*v19 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(arrangedSubviews);
         }
 
         v7 = *(*(&v18 + 1) + 8 * i);
@@ -38,7 +38,7 @@
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v18 objects:v23 count:16];
+      v4 = [arrangedSubviews countByEnumeratingWithState:&v18 objects:v23 count:16];
       if (v4)
       {
         continue;
@@ -54,8 +54,8 @@ LABEL_11:
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v8 = [(MUStackView *)self arrangedSubviews];
-  v9 = [v8 countByEnumeratingWithState:&v14 objects:v22 count:16];
+  arrangedSubviews2 = [(MUStackView *)self arrangedSubviews];
+  v9 = [arrangedSubviews2 countByEnumeratingWithState:&v14 objects:v22 count:16];
   if (v9)
   {
     v10 = v9;
@@ -66,13 +66,13 @@ LABEL_11:
       {
         if (*v15 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(arrangedSubviews2);
         }
 
         [*(*(&v14 + 1) + 8 * j) setStacked:v4];
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v14 objects:v22 count:16];
+      v10 = [arrangedSubviews2 countByEnumeratingWithState:&v14 objects:v22 count:16];
     }
 
     while (v10);
@@ -99,8 +99,8 @@ LABEL_11:
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v3 = [(MUStackView *)self arrangedSubviews];
-  v4 = [v3 countByEnumeratingWithState:&v25 objects:v30 count:16];
+  arrangedSubviews = [(MUStackView *)self arrangedSubviews];
+  v4 = [arrangedSubviews countByEnumeratingWithState:&v25 objects:v30 count:16];
   if (v4)
   {
     v5 = v4;
@@ -112,14 +112,14 @@ LABEL_11:
       {
         if (*v26 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(arrangedSubviews);
         }
 
         [(MUPlaceVerticalCardContainerView *)self removeArrangedSubview:*(*(&v25 + 1) + 8 * v7++)];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v25 objects:v30 count:16];
+      v5 = [arrangedSubviews countByEnumeratingWithState:&v25 objects:v30 count:16];
     }
 
     while (v5);
@@ -168,12 +168,12 @@ LABEL_11:
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setViewModels:(id)a3
+- (void)setViewModels:(id)models
 {
-  v6 = a3;
+  modelsCopy = models;
   if (![(NSArray *)self->_viewModels isEqualToArray:?])
   {
-    v4 = [v6 copy];
+    v4 = [modelsCopy copy];
     viewModels = self->_viewModels;
     self->_viewModels = v4;
 
@@ -181,11 +181,11 @@ LABEL_11:
   }
 }
 
-- (MUTextPairVerticalCardView)initWithFrame:(CGRect)a3
+- (MUTextPairVerticalCardView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = MUTextPairVerticalCardView;
-  v3 = [(MUPlaceVerticalCardContainerView *)&v6 initWithShowsSeparators:0, a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MUPlaceVerticalCardContainerView *)&v6 initWithShowsSeparators:0, frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

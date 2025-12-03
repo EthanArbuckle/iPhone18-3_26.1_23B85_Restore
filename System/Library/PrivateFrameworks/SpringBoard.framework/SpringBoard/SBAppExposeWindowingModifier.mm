@@ -1,6 +1,6 @@
 @interface SBAppExposeWindowingModifier
-- (SBAppExposeWindowingModifier)initWithBundleIdentifier:(id)a3;
-- (double)opacityForItem:(id)a3;
+- (SBAppExposeWindowingModifier)initWithBundleIdentifier:(id)identifier;
+- (double)opacityForItem:(id)item;
 - (double)reopenClosedWindowsButtonAlpha;
 - (double)reopenClosedWindowsButtonScale;
 - (id)_updateReopenClosedWindowsButtonPresence;
@@ -8,27 +8,27 @@
 - (id)appLayoutToScrollToBeforeReopeningClosedWindows;
 - (id)desktopSpaceDisplayItems;
 - (id)recentAppLayouts;
-- (void)appLayoutTapped:(id)a3;
-- (void)itemInserted:(id)a3;
-- (void)itemRemoved:(id)a3;
-- (void)tappedOutsideToDismiss:(id)a3;
-- (void)timerFired:(id)a3;
-- (void)transitionDidUpdate:(id)a3;
-- (void)transitionWillBegin:(id)a3;
+- (void)appLayoutTapped:(id)tapped;
+- (void)itemInserted:(id)inserted;
+- (void)itemRemoved:(id)removed;
+- (void)tappedOutsideToDismiss:(id)dismiss;
+- (void)timerFired:(id)fired;
+- (void)transitionDidUpdate:(id)update;
+- (void)transitionWillBegin:(id)begin;
 @end
 
 @implementation SBAppExposeWindowingModifier
 
-- (SBAppExposeWindowingModifier)initWithBundleIdentifier:(id)a3
+- (SBAppExposeWindowingModifier)initWithBundleIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v10.receiver = self;
   v10.super_class = SBAppExposeWindowingModifier;
   v6 = [(SBWindowingModifier *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_appExposeBundleIdentifier, a3);
+    objc_storeStrong(&v6->_appExposeBundleIdentifier, identifier);
     v8 = objc_alloc_init(SBExposeWindowingModifier);
     [(SBChainableModifier *)v7 addChildModifier:v8];
   }
@@ -36,30 +36,30 @@
   return v7;
 }
 
-- (void)transitionWillBegin:(id)a3
+- (void)transitionWillBegin:(id)begin
 {
-  v4 = a3;
+  beginCopy = begin;
   v5 = objc_alloc_init(SBInvalidateAdjustedAppLayoutsSwitcherEventResponse);
   [(SBWindowingModifier *)self appendResponse:v5];
 
-  v6 = [v4 toAppExposeBundleID];
+  toAppExposeBundleID = [beginCopy toAppExposeBundleID];
 
-  if (!v6)
+  if (!toAppExposeBundleID)
   {
 
     [(SBWindowingModifier *)self complete];
   }
 }
 
-- (void)transitionDidUpdate:(id)a3
+- (void)transitionDidUpdate:(id)update
 {
-  v4 = a3;
-  v5 = [v4 fromAppExposeBundleID];
+  updateCopy = update;
+  fromAppExposeBundleID = [updateCopy fromAppExposeBundleID];
 
-  if (!v5)
+  if (!fromAppExposeBundleID)
   {
-    v6 = [(SBAppExposeWindowingModifier *)self _updateReopenClosedWindowsButtonPresence];
-    [(SBWindowingModifier *)self appendResponse:v6];
+    _updateReopenClosedWindowsButtonPresence = [(SBAppExposeWindowingModifier *)self _updateReopenClosedWindowsButtonPresence];
+    [(SBWindowingModifier *)self appendResponse:_updateReopenClosedWindowsButtonPresence];
 
     v7 = objc_alloc_init(SBInvalidateReopenButtonTextSwitcherEventResponse);
     [(SBWindowingModifier *)self appendResponse:v7];
@@ -68,46 +68,46 @@
   v8 = objc_alloc_init(SBInvalidateAdjustedAppLayoutsSwitcherEventResponse);
   [(SBWindowingModifier *)self appendResponse:v8];
 
-  v9 = [v4 toAppExposeBundleID];
+  toAppExposeBundleID = [updateCopy toAppExposeBundleID];
 
-  if (!v9)
+  if (!toAppExposeBundleID)
   {
 
     [(SBWindowingModifier *)self complete];
   }
 }
 
-- (void)appLayoutTapped:(id)a3
+- (void)appLayoutTapped:(id)tapped
 {
-  v4 = a3;
-  if (([v4 isHandled] & 1) == 0)
+  tappedCopy = tapped;
+  if (([tappedCopy isHandled] & 1) == 0)
   {
     v20.receiver = self;
     v20.super_class = SBAppExposeWindowingModifier;
-    v5 = [(SBAppExposeWindowingModifier *)&v20 appLayout];
-    if (v5)
+    appLayout = [(SBAppExposeWindowingModifier *)&v20 appLayout];
+    if (appLayout)
     {
-      v6 = v5;
-      v7 = [(SBAppExposeWindowingModifier *)self windowManagementContext];
-      v8 = [v7 isAutomaticStageCreationEnabled];
+      v6 = appLayout;
+      windowManagementContext = [(SBAppExposeWindowingModifier *)self windowManagementContext];
+      isAutomaticStageCreationEnabled = [windowManagementContext isAutomaticStageCreationEnabled];
 
-      if ((v8 & 1) == 0)
+      if ((isAutomaticStageCreationEnabled & 1) == 0)
       {
-        v9 = [v4 appLayout];
-        v10 = [v9 itemForLayoutRole:{objc_msgSend(v4, "layoutRole")}];
+        appLayout2 = [tappedCopy appLayout];
+        v10 = [appLayout2 itemForLayoutRole:{objc_msgSend(tappedCopy, "layoutRole")}];
         if (v10)
         {
           v19.receiver = self;
           v19.super_class = SBAppExposeWindowingModifier;
-          v11 = [(SBAppExposeWindowingModifier *)&v19 appLayout];
-          v12 = v11;
-          if (v11)
+          appLayout3 = [(SBAppExposeWindowingModifier *)&v19 appLayout];
+          v12 = appLayout3;
+          if (appLayout3)
           {
-            if ([v11 containsItem:v10])
+            if ([appLayout3 containsItem:v10])
             {
               v18.receiver = self;
               v18.super_class = SBAppExposeWindowingModifier;
-              v13 = [(SBAppExposeWindowingModifier *)&v18 appLayoutContainingAppLayout:v9];
+              v13 = [(SBAppExposeWindowingModifier *)&v18 appLayoutContainingAppLayout:appLayout2];
             }
 
             else
@@ -118,7 +118,7 @@
 
           else
           {
-            v13 = v9;
+            v13 = appLayout2;
           }
 
           v15 = v13;
@@ -129,31 +129,31 @@
 
         else
         {
-          v14 = [SBSwitcherTransitionRequest requestForActivatingAppLayout:v9];
+          v14 = [SBSwitcherTransitionRequest requestForActivatingAppLayout:appLayout2];
         }
 
         v17 = [[SBPerformTransitionSwitcherEventResponse alloc] initWithTransitionRequest:v14 gestureInitiated:0];
         [(SBWindowingModifier *)self appendResponse:v17];
-        [v4 handleWithReason:@"App Expose"];
+        [tappedCopy handleWithReason:@"App Expose"];
       }
     }
   }
 }
 
-- (void)tappedOutsideToDismiss:(id)a3
+- (void)tappedOutsideToDismiss:(id)dismiss
 {
-  v4 = a3;
-  if (([v4 isHandled] & 1) == 0)
+  dismissCopy = dismiss;
+  if (([dismissCopy isHandled] & 1) == 0)
   {
     v5 = objc_opt_new();
-    v6 = [(SBAppExposeWindowingModifier *)self appLayout];
-    if (v6)
+    appLayout = [(SBAppExposeWindowingModifier *)self appLayout];
+    if (appLayout)
     {
       v11.receiver = self;
       v11.super_class = SBAppExposeWindowingModifier;
-      v7 = [(SBAppExposeWindowingModifier *)&v11 recentAppLayouts];
-      v8 = [v7 firstObject];
-      [v5 setAppLayout:v8];
+      recentAppLayouts = [(SBAppExposeWindowingModifier *)&v11 recentAppLayouts];
+      firstObject = [recentAppLayouts firstObject];
+      [v5 setAppLayout:firstObject];
 
       [v5 setPeekConfiguration:2];
       [v5 setUnlockedEnvironmentMode:1];
@@ -170,35 +170,35 @@
     v10 = [[SBPerformTransitionSwitcherEventResponse alloc] initWithTransitionRequest:v5 gestureInitiated:0];
     [(SBWindowingModifier *)self appendResponse:v10];
 
-    [v4 handleWithReason:@"App Expose"];
+    [dismissCopy handleWithReason:@"App Expose"];
   }
 }
 
-- (void)itemRemoved:(id)a3
+- (void)itemRemoved:(id)removed
 {
-  if ([a3 phase] == 2)
+  if ([removed phase] == 2)
   {
-    v4 = [(SBAppExposeWindowingModifier *)self _updateReopenClosedWindowsButtonPresence];
-    [(SBWindowingModifier *)self appendResponse:v4];
+    _updateReopenClosedWindowsButtonPresence = [(SBAppExposeWindowingModifier *)self _updateReopenClosedWindowsButtonPresence];
+    [(SBWindowingModifier *)self appendResponse:_updateReopenClosedWindowsButtonPresence];
 
     v5 = objc_alloc_init(SBInvalidateReopenButtonTextSwitcherEventResponse);
     [(SBWindowingModifier *)self appendResponse:v5];
   }
 }
 
-- (void)itemInserted:(id)a3
+- (void)itemInserted:(id)inserted
 {
-  if ([a3 phase] == 2)
+  if ([inserted phase] == 2)
   {
-    v4 = [(SBAppExposeWindowingModifier *)self _updateReopenClosedWindowsButtonPresence];
-    [(SBWindowingModifier *)self appendResponse:v4];
+    _updateReopenClosedWindowsButtonPresence = [(SBAppExposeWindowingModifier *)self _updateReopenClosedWindowsButtonPresence];
+    [(SBWindowingModifier *)self appendResponse:_updateReopenClosedWindowsButtonPresence];
   }
 }
 
-- (void)timerFired:(id)a3
+- (void)timerFired:(id)fired
 {
-  v4 = [a3 reason];
-  v5 = [v4 isEqualToString:@"kSBAppExposeReopenReason"];
+  reason = [fired reason];
+  v5 = [reason isEqualToString:@"kSBAppExposeReopenReason"];
 
   if (v5)
   {
@@ -222,22 +222,22 @@
 
 - (id)appLayoutToScrollToBeforeReopeningClosedWindows
 {
-  v3 = [(SBAppExposeWindowingModifier *)self appLayouts];
-  v4 = [v3 firstObject];
+  appLayouts = [(SBAppExposeWindowingModifier *)self appLayouts];
+  firstObject = [appLayouts firstObject];
 
-  if (v4)
+  if (firstObject)
   {
-    v5 = [(SBWindowingModifier *)self visibleItems];
-    v6 = [v5 containsObject:v4];
+    visibleItems = [(SBWindowingModifier *)self visibleItems];
+    v6 = [visibleItems containsObject:firstObject];
 
     if ((v6 & 1) == 0)
     {
 
-      v4 = 0;
+      firstObject = 0;
     }
   }
 
-  return v4;
+  return firstObject;
 }
 
 - (double)reopenClosedWindowsButtonScale
@@ -247,29 +247,29 @@
     return 1.0;
   }
 
-  v3 = [(SBAppExposeWindowingModifier *)self switcherSettings];
-  v4 = [v3 animationSettings];
-  [v4 reopenButtonInitialScale];
+  switcherSettings = [(SBAppExposeWindowingModifier *)self switcherSettings];
+  animationSettings = [switcherSettings animationSettings];
+  [animationSettings reopenButtonInitialScale];
   v6 = v5;
 
   return v6;
 }
 
-- (double)opacityForItem:(id)a3
+- (double)opacityForItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v5 = 1.0;
-  if ([v4 isAppLayout])
+  if ([itemCopy isAppLayout])
   {
     v12.receiver = self;
     v12.super_class = SBAppExposeWindowingModifier;
-    v6 = [(SBAppExposeWindowingModifier *)&v12 appLayouts];
-    v7 = [(SBAppExposeWindowingModifier *)self adjustedAppLayoutsForAppLayouts:v6];
+    appLayouts = [(SBAppExposeWindowingModifier *)&v12 appLayouts];
+    v7 = [(SBAppExposeWindowingModifier *)self adjustedAppLayoutsForAppLayouts:appLayouts];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __47__SBAppExposeWindowingModifier_opacityForItem___block_invoke;
     v10[3] = &unk_2783A8CB8;
-    v11 = v4;
+    v11 = itemCopy;
     v8 = [v7 bs_containsObjectPassingTest:v10];
 
     if (v8)
@@ -300,13 +300,13 @@ uint64_t __47__SBAppExposeWindowingModifier_opacityForItem___block_invoke(uint64
 {
   v7.receiver = self;
   v7.super_class = SBAppExposeWindowingModifier;
-  v3 = [(SBAppExposeWindowingModifier *)&v7 appLayout];
+  appLayout = [(SBAppExposeWindowingModifier *)&v7 appLayout];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __41__SBAppExposeWindowingModifier_appLayout__block_invoke;
   v6[3] = &unk_2783A8C90;
   v6[4] = self;
-  v4 = [v3 appLayoutWithItemsPassingTest:v6];
+  v4 = [appLayout appLayoutWithItemsPassingTest:v6];
 
   return v4;
 }
@@ -323,16 +323,16 @@ uint64_t __41__SBAppExposeWindowingModifier_appLayout__block_invoke(uint64_t a1,
 {
   v11.receiver = self;
   v11.super_class = SBAppExposeWindowingModifier;
-  v3 = [(SBAppExposeWindowingModifier *)&v11 recentAppLayouts];
-  v4 = [(SBAppExposeWindowingModifier *)self windowManagementContext];
-  v5 = [v4 isAutomaticStageCreationEnabled];
+  recentAppLayouts = [(SBAppExposeWindowingModifier *)&v11 recentAppLayouts];
+  windowManagementContext = [(SBAppExposeWindowingModifier *)self windowManagementContext];
+  isAutomaticStageCreationEnabled = [windowManagementContext isAutomaticStageCreationEnabled];
 
-  if ((v5 & 1) == 0)
+  if ((isAutomaticStageCreationEnabled & 1) == 0)
   {
-    v6 = [v3 bs_compactMap:&__block_literal_global_283];
-    v7 = [v6 bs_flatten];
+    v6 = [recentAppLayouts bs_compactMap:&__block_literal_global_283];
+    bs_flatten = [v6 bs_flatten];
 
-    v3 = v7;
+    recentAppLayouts = bs_flatten;
   }
 
   v10[0] = MEMORY[0x277D85DD0];
@@ -340,7 +340,7 @@ uint64_t __41__SBAppExposeWindowingModifier_appLayout__block_invoke(uint64_t a1,
   v10[2] = __48__SBAppExposeWindowingModifier_recentAppLayouts__block_invoke_2;
   v10[3] = &unk_2783AE218;
   v10[4] = self;
-  v8 = [v3 bs_compactMap:v10];
+  v8 = [recentAppLayouts bs_compactMap:v10];
 
   return v8;
 }
@@ -383,13 +383,13 @@ id __48__SBAppExposeWindowingModifier_recentAppLayouts__block_invoke_2(uint64_t 
 {
   v7.receiver = self;
   v7.super_class = SBAppExposeWindowingModifier;
-  v3 = [(SBAppExposeWindowingModifier *)&v7 desktopSpaceDisplayItems];
+  desktopSpaceDisplayItems = [(SBAppExposeWindowingModifier *)&v7 desktopSpaceDisplayItems];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __56__SBAppExposeWindowingModifier_desktopSpaceDisplayItems__block_invoke;
   v6[3] = &unk_2783A8C90;
   v6[4] = self;
-  v4 = [v3 bs_filter:v6];
+  v4 = [desktopSpaceDisplayItems bs_filter:v6];
 
   return v4;
 }
@@ -404,15 +404,15 @@ uint64_t __56__SBAppExposeWindowingModifier_desktopSpaceDisplayItems__block_invo
 
 - (id)_updateReopenClosedWindowsButtonPresence
 {
-  v3 = [(SBAppExposeWindowingModifier *)self _canShowReopenClosedWindowsButton];
+  _canShowReopenClosedWindowsButton = [(SBAppExposeWindowingModifier *)self _canShowReopenClosedWindowsButton];
   self->_numberOfHiddenAppLayouts = [(SBAppExposeWindowingModifier *)self numberOfHiddenAppLayoutsForBundleIdentifier:self->_appExposeBundleIdentifier];
   v4 = 0;
-  if ([(SBAppExposeWindowingModifier *)self _canShowReopenClosedWindowsButton]&& !v3)
+  if ([(SBAppExposeWindowingModifier *)self _canShowReopenClosedWindowsButton]&& !_canShowReopenClosedWindowsButton)
   {
     self->_isShowingReopenClosedWindowsButton = 0;
-    v5 = [(SBAppExposeWindowingModifier *)self switcherSettings];
-    v6 = [v5 animationSettings];
-    [v6 reopenButtonFadeInDelay];
+    switcherSettings = [(SBAppExposeWindowingModifier *)self switcherSettings];
+    animationSettings = [switcherSettings animationSettings];
+    [animationSettings reopenButtonFadeInDelay];
     v8 = v7;
 
     objc_initWeak(&location, self);

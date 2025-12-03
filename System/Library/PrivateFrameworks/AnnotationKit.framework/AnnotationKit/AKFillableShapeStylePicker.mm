@@ -1,23 +1,23 @@
 @interface AKFillableShapeStylePicker
-- (AKFillableShapeStylePicker)initWithFrame:(CGRect)a3 controller:(id)a4;
-- (void)_styleButtonPressed:(id)a3;
-- (void)_updateImagesForAnnotationType:(id)a3;
-- (void)revalidateItems:(id)a3;
-- (void)setShowFill:(BOOL)a3;
+- (AKFillableShapeStylePicker)initWithFrame:(CGRect)frame controller:(id)controller;
+- (void)_styleButtonPressed:(id)pressed;
+- (void)_updateImagesForAnnotationType:(id)type;
+- (void)revalidateItems:(id)items;
+- (void)setShowFill:(BOOL)fill;
 @end
 
 @implementation AKFillableShapeStylePicker
 
-- (AKFillableShapeStylePicker)initWithFrame:(CGRect)a3 controller:(id)a4
+- (AKFillableShapeStylePicker)initWithFrame:(CGRect)frame controller:(id)controller
 {
   v24.receiver = self;
   v24.super_class = AKFillableShapeStylePicker;
-  v4 = [(AKModernToolbarPicker *)&v24 initWithFrame:a4 controller:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v4 = [(AKModernToolbarPicker *)&v24 initWithFrame:controller controller:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v5 = v4;
   if (v4)
   {
     v4->_showFill = 1;
-    v6 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     if ([&unk_2851BAA10 count])
     {
       v7 = 0;
@@ -28,29 +28,29 @@
       do
       {
         v12 = [&unk_2851BAA10 objectAtIndexedSubscript:v7];
-        v13 = [v12 integerValue];
+        integerValue = [v12 integerValue];
 
         v14 = [[AKToggleButton alloc] initWithFrame:0 templateImage:1 autoUpdatesColor:v8, v9, v10, v11];
-        [(NSArray *)v6 addObject:v14];
-        v15 = [(AKToggleButton *)v14 layer];
-        [v15 setCornerRadius:10.0];
+        [(NSArray *)array addObject:v14];
+        layer = [(AKToggleButton *)v14 layer];
+        [layer setCornerRadius:10.0];
 
-        v16 = [MEMORY[0x277D75348] systemFillColor];
-        [(AKToggleButton *)v14 setTintColor:v16];
+        systemFillColor = [MEMORY[0x277D75348] systemFillColor];
+        [(AKToggleButton *)v14 setTintColor:systemFillColor];
 
         [(AKToggleButton *)v14 setTranslatesAutoresizingMaskIntoConstraints:0];
-        v17 = [(AKToggleButton *)v14 widthAnchor];
-        v18 = [v17 constraintEqualToConstant:36.0];
+        widthAnchor = [(AKToggleButton *)v14 widthAnchor];
+        v18 = [widthAnchor constraintEqualToConstant:36.0];
         [v18 setActive:1];
 
-        v19 = [(AKToggleButton *)v14 heightAnchor];
-        v20 = [v19 constraintEqualToConstant:36.0];
+        heightAnchor = [(AKToggleButton *)v14 heightAnchor];
+        v20 = [heightAnchor constraintEqualToConstant:36.0];
         [v20 setActive:1];
 
         [(AKToggleButton *)v14 addTarget:v5 action:sel__styleButtonPressed_ forControlEvents:64];
-        [(AKToggleButton *)v14 setTag:v13];
-        v21 = [(AKModernToolbarPicker *)v5 stackview];
-        [v21 addArrangedSubview:v14];
+        [(AKToggleButton *)v14 setTag:integerValue];
+        stackview = [(AKModernToolbarPicker *)v5 stackview];
+        [stackview addArrangedSubview:v14];
 
         ++v7;
       }
@@ -59,45 +59,45 @@
     }
 
     buttons = v5->_buttons;
-    v5->_buttons = v6;
+    v5->_buttons = array;
   }
 
   return v5;
 }
 
-- (void)setShowFill:(BOOL)a3
+- (void)setShowFill:(BOOL)fill
 {
-  self->_showFill = a3;
-  v6 = [(AKModernToolbarPicker *)self stackview];
-  v4 = [v6 arrangedSubviews];
-  v5 = [v4 firstObject];
-  [v5 setHidden:!self->_showFill];
+  self->_showFill = fill;
+  stackview = [(AKModernToolbarPicker *)self stackview];
+  arrangedSubviews = [stackview arrangedSubviews];
+  firstObject = [arrangedSubviews firstObject];
+  [firstObject setHidden:!self->_showFill];
 }
 
-- (void)_styleButtonPressed:(id)a3
+- (void)_styleButtonPressed:(id)pressed
 {
-  [a3 tag];
+  [pressed tag];
 
   MEMORY[0x2821F9670](self, sel_setCurrentTag_);
 }
 
-- (void)revalidateItems:(id)a3
+- (void)revalidateItems:(id)items
 {
   v45 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(AKModernToolbarPicker *)self controller];
-  v6 = [v4 allObjects];
-  v7 = [v6 firstObject];
-  [(AKFillableShapeStylePicker *)self _updateImagesForAnnotationType:v7];
+  itemsCopy = items;
+  controller = [(AKModernToolbarPicker *)self controller];
+  allObjects = [itemsCopy allObjects];
+  firstObject = [allObjects firstObject];
+  [(AKFillableShapeStylePicker *)self _updateImagesForAnnotationType:firstObject];
 
   v41 = 0u;
   v42 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v8 = [(AKModernToolbarPicker *)self stackview];
-  v9 = [v8 subviews];
+  stackview = [(AKModernToolbarPicker *)self stackview];
+  subviews = [stackview subviews];
 
-  v10 = [v9 countByEnumeratingWithState:&v39 objects:v44 count:16];
+  v10 = [subviews countByEnumeratingWithState:&v39 objects:v44 count:16];
   if (v10)
   {
     v11 = v10;
@@ -108,13 +108,13 @@
       {
         if (*v40 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(subviews);
         }
 
         [*(*(&v39 + 1) + 8 * i) setSelected:0];
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v39 objects:v44 count:16];
+      v11 = [subviews countByEnumeratingWithState:&v39 objects:v44 count:16];
     }
 
     while (v11);
@@ -124,33 +124,33 @@
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v14 = v4;
+  v14 = itemsCopy;
   v15 = [v14 countByEnumeratingWithState:&v35 objects:v43 count:16];
   if (!v15)
   {
 
 LABEL_23:
-    v26 = [(AKModernToolbarPicker *)self stackview];
-    v27 = [v26 arrangedSubviews];
-    v25 = [v27 objectAtIndex:1];
+    stackview2 = [(AKModernToolbarPicker *)self stackview];
+    arrangedSubviews = [stackview2 arrangedSubviews];
+    v25 = [arrangedSubviews objectAtIndex:1];
 
-    v28 = [(AKModernToolbarPicker *)self stackview];
-    v29 = [v28 arrangedSubviews];
-    v30 = [v29 objectAtIndex:2];
+    stackview3 = [(AKModernToolbarPicker *)self stackview];
+    arrangedSubviews2 = [stackview3 arrangedSubviews];
+    v30 = [arrangedSubviews2 objectAtIndex:2];
 
-    v31 = [(AKModernToolbarPicker *)self stackview];
-    v32 = [v31 arrangedSubviews];
-    v33 = [v32 objectAtIndex:3];
+    stackview4 = [(AKModernToolbarPicker *)self stackview];
+    arrangedSubviews3 = [stackview4 arrangedSubviews];
+    v33 = [arrangedSubviews3 objectAtIndex:3];
 
-    [v5 validateSender:v25];
-    [v5 validateSender:v30];
-    [v5 validateSender:v33];
+    [controller validateSender:v25];
+    [controller validateSender:v30];
+    [controller validateSender:v33];
 
     goto LABEL_24;
   }
 
   v16 = v15;
-  v34 = v5;
+  v34 = controller;
   v17 = 0;
   v18 = *v36;
   do
@@ -165,9 +165,9 @@ LABEL_23:
       v20 = *(*(&v35 + 1) + 8 * j);
       if (objc_opt_respondsToSelector())
       {
-        v21 = [v20 fillColor];
-        v22 = v21;
-        if (v21 && CGColorGetAlpha([v21 CGColor]) != 0.0)
+        fillColor = [v20 fillColor];
+        v22 = fillColor;
+        if (fillColor && CGColorGetAlpha([fillColor CGColor]) != 0.0)
         {
           v17 = 1;
         }
@@ -179,30 +179,30 @@ LABEL_23:
 
   while (v16);
 
-  v5 = v34;
+  controller = v34;
   if ((v17 & 1) == 0)
   {
     goto LABEL_23;
   }
 
-  v23 = [(AKModernToolbarPicker *)self stackview];
-  v24 = [v23 arrangedSubviews];
-  v25 = [v24 objectAtIndex:0];
+  stackview5 = [(AKModernToolbarPicker *)self stackview];
+  arrangedSubviews4 = [stackview5 arrangedSubviews];
+  v25 = [arrangedSubviews4 objectAtIndex:0];
 
   [v25 setSelected:1];
 LABEL_24:
 }
 
-- (void)_updateImagesForAnnotationType:(id)a3
+- (void)_updateImagesForAnnotationType:(id)type
 {
   v39[4] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  typeCopy = type;
   v5 = MEMORY[0x277D75C80];
-  v6 = [(AKFillableShapeStylePicker *)self traitCollection];
-  v7 = [v5 traitCollectionWithUserInterfaceStyle:{objc_msgSend(v6, "userInterfaceStyle")}];
+  traitCollection = [(AKFillableShapeStylePicker *)self traitCollection];
+  v7 = [v5 traitCollectionWithUserInterfaceStyle:{objc_msgSend(traitCollection, "userInterfaceStyle")}];
 
   objc_opt_class();
-  v34 = v4;
+  v34 = typeCopy;
   if (objc_opt_isKindOfClass())
   {
     v8 = MEMORY[0x277D755B8];

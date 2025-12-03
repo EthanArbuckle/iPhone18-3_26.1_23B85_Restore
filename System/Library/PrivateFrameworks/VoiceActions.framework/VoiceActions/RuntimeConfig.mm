@@ -7,12 +7,12 @@
 - (BOOL)secondPass;
 - (NSString)description;
 - (RuntimeConfig)init;
-- (void)setAudioDebug:(BOOL)a3;
-- (void)setBatchDecode:(BOOL)a3;
-- (void)setDuringKeywordSilence:(BOOL)a3;
-- (void)setPostKeywordSilence:(BOOL)a3;
-- (void)setPreKeywordSilence:(BOOL)a3;
-- (void)setSecondPass:(BOOL)a3;
+- (void)setAudioDebug:(BOOL)debug;
+- (void)setBatchDecode:(BOOL)decode;
+- (void)setDuringKeywordSilence:(BOOL)silence;
+- (void)setPostKeywordSilence:(BOOL)silence;
+- (void)setPreKeywordSilence:(BOOL)silence;
+- (void)setSecondPass:(BOOL)pass;
 @end
 
 @implementation RuntimeConfig
@@ -24,11 +24,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setAudioDebug:(BOOL)a3
+- (void)setAudioDebug:(BOOL)debug
 {
   v5 = OBJC_IVAR___RuntimeConfig_audioDebug;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = debug;
 }
 
 - (BOOL)batchDecode
@@ -38,11 +38,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setBatchDecode:(BOOL)a3
+- (void)setBatchDecode:(BOOL)decode
 {
   v5 = OBJC_IVAR___RuntimeConfig_batchDecode;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = decode;
 }
 
 - (BOOL)preKeywordSilence
@@ -52,11 +52,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setPreKeywordSilence:(BOOL)a3
+- (void)setPreKeywordSilence:(BOOL)silence
 {
   v5 = OBJC_IVAR___RuntimeConfig_preKeywordSilence;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = silence;
 }
 
 - (BOOL)duringKeywordSilence
@@ -66,11 +66,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setDuringKeywordSilence:(BOOL)a3
+- (void)setDuringKeywordSilence:(BOOL)silence
 {
   v5 = OBJC_IVAR___RuntimeConfig_duringKeywordSilence;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = silence;
 }
 
 - (BOOL)postKeywordSilence
@@ -80,11 +80,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setPostKeywordSilence:(BOOL)a3
+- (void)setPostKeywordSilence:(BOOL)silence
 {
   v5 = OBJC_IVAR___RuntimeConfig_postKeywordSilence;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = silence;
 }
 
 - (BOOL)secondPass
@@ -94,11 +94,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setSecondPass:(BOOL)a3
+- (void)setSecondPass:(BOOL)pass
 {
   v5 = OBJC_IVAR___RuntimeConfig_secondPass;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = pass;
 }
 
 - (RuntimeConfig)init
@@ -123,7 +123,7 @@
   v6 = *(v5 + 48);
   v7 = *(v5 + 52);
   swift_allocObject();
-  v8 = self;
+  selfCopy = self;
   sub_272376B2C();
   type metadata accessor for RuntimeConfig();
   sub_27227DA80(&qword_280882440, v9, type metadata accessor for RuntimeConfig);

@@ -1,31 +1,31 @@
 @interface DefaultCollectionActions
-- (BOOL)shouldRatelimit:(id)a3 rule:(id)a4;
-- (void)tapToRadar:(id)a3 description:(id)a4 radar:(id)a5 componentName:(id)a6 componentVersion:(id)a7 componentID:(id)a8 attributes:(id)a9;
+- (BOOL)shouldRatelimit:(id)ratelimit rule:(id)rule;
+- (void)tapToRadar:(id)radar description:(id)description radar:(id)a5 componentName:(id)name componentVersion:(id)version componentID:(id)d attributes:(id)attributes;
 @end
 
 @implementation DefaultCollectionActions
 
-- (void)tapToRadar:(id)a3 description:(id)a4 radar:(id)a5 componentName:(id)a6 componentVersion:(id)a7 componentID:(id)a8 attributes:(id)a9
+- (void)tapToRadar:(id)radar description:(id)description radar:(id)a5 componentName:(id)name componentVersion:(id)version componentID:(id)d attributes:(id)attributes
 {
-  v23 = a6;
-  v14 = a7;
-  v15 = a8;
-  v16 = a9;
+  nameCopy = name;
+  versionCopy = version;
+  dCopy = d;
+  attributesCopy = attributes;
   v17 = a5;
-  v18 = a4;
-  v19 = a3;
-  v20 = [[SecTapToRadar alloc] initTapToRadar:v19 description:v18 radar:v17];
+  descriptionCopy = description;
+  radarCopy = radar;
+  v20 = [[SecTapToRadar alloc] initTapToRadar:radarCopy description:descriptionCopy radar:v17];
 
-  if (v23 && v14 && v15)
+  if (nameCopy && versionCopy && dCopy)
   {
-    [v20 setComponentName:v23];
-    [v20 setComponentVersion:v14];
-    [v20 setComponentID:v15];
+    [v20 setComponentName:nameCopy];
+    [v20 setComponentVersion:versionCopy];
+    [v20 setComponentID:dCopy];
   }
 
-  if (v16 && [MEMORY[0x1E696ACB0] isValidJSONObject:v16])
+  if (attributesCopy && [MEMORY[0x1E696ACB0] isValidJSONObject:attributesCopy])
   {
-    v21 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v16 options:3 error:0];
+    v21 = [MEMORY[0x1E696ACB0] dataWithJSONObject:attributesCopy options:3 error:0];
     if (v21)
     {
       v22 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:v21 encoding:4];
@@ -36,29 +36,29 @@
   [v20 trigger];
 }
 
-- (BOOL)shouldRatelimit:(id)a3 rule:(id)a4
+- (BOOL)shouldRatelimit:(id)ratelimit rule:(id)rule
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 lastMatch];
+  ratelimitCopy = ratelimit;
+  ruleCopy = rule;
+  lastMatch = [ruleCopy lastMatch];
 
-  if (!v7)
+  if (!lastMatch)
   {
     goto LABEL_5;
   }
 
-  v8 = [v6 rule];
-  v9 = [v8 repeatAfterSeconds];
+  rule = [ruleCopy rule];
+  repeatAfterSeconds = [rule repeatAfterSeconds];
 
   v10 = 86400;
-  if (v9)
+  if (repeatAfterSeconds)
   {
-    v10 = v9;
+    v10 = repeatAfterSeconds;
   }
 
   v11 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:-v10];
-  v12 = [v6 lastMatch];
-  v13 = [v11 compare:v12];
+  lastMatch2 = [ruleCopy lastMatch];
+  v13 = [v11 compare:lastMatch2];
 
   if (v13 != 1)
   {
@@ -68,12 +68,12 @@
   else
   {
 LABEL_5:
-    v14 = [MEMORY[0x1E695DF00] date];
-    [v6 setLastMatch:v14];
+    date = [MEMORY[0x1E695DF00] date];
+    [ruleCopy setLastMatch:date];
 
-    v15 = [v6 lastMatch];
-    v16 = [v6 lastMatchTimeKey];
-    [v5 setDateProperty:v15 forKey:v16];
+    lastMatch3 = [ruleCopy lastMatch];
+    lastMatchTimeKey = [ruleCopy lastMatchTimeKey];
+    [ratelimitCopy setDateProperty:lastMatch3 forKey:lastMatchTimeKey];
 
     v17 = 0;
   }

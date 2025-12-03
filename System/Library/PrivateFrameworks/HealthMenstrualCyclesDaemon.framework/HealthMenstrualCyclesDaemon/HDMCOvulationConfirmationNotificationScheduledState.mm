@@ -1,9 +1,9 @@
 @interface HDMCOvulationConfirmationNotificationScheduledState
-+ (id)notificationStateFromDictionaryRepresentation:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (HDMCOvulationConfirmationNotificationScheduledState)initWithFertileWindowEndDayIndex:(int64_t)a3 fireDayIndex:(int64_t)a4 correlatingPeriodStartDayIndex:(int64_t)a5 daysWithWristTemp45DaysBeforeOvulationConfirmed:(int64_t)a6 daysShiftedForFertileWindow:(int64_t)a7;
-- (id)computeFiredStateWithCurrentDayIndex:(int64_t)a3;
-- (id)computeNewStateFromCorrelatingPeriodStartDayIndex:(int64_t)a3 fertileWindowEndDayIndex:(int64_t)a4 fireDayIndex:(int64_t)a5 daysShiftedForFertileWindow:(int64_t)a6 daysWithWristTemp45DaysBeforeOvulationConfirmed:(int64_t)a7;
++ (id)notificationStateFromDictionaryRepresentation:(id)representation;
+- (BOOL)isEqual:(id)equal;
+- (HDMCOvulationConfirmationNotificationScheduledState)initWithFertileWindowEndDayIndex:(int64_t)index fireDayIndex:(int64_t)dayIndex correlatingPeriodStartDayIndex:(int64_t)startDayIndex daysWithWristTemp45DaysBeforeOvulationConfirmed:(int64_t)confirmed daysShiftedForFertileWindow:(int64_t)window;
+- (id)computeFiredStateWithCurrentDayIndex:(int64_t)index;
+- (id)computeNewStateFromCorrelatingPeriodStartDayIndex:(int64_t)index fertileWindowEndDayIndex:(int64_t)dayIndex fireDayIndex:(int64_t)fireDayIndex daysShiftedForFertileWindow:(int64_t)window daysWithWristTemp45DaysBeforeOvulationConfirmed:(int64_t)confirmed;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (id)scheduledNotificationDaysShiftedForFertileWindow;
@@ -17,70 +17,70 @@
 - (id)scheduledNotificationFireDayIndex
 {
   v2 = MEMORY[0x277CCABB0];
-  v3 = [(HDMCOvulationConfirmationNotificationScheduledState *)self fireDayIndex];
+  fireDayIndex = [(HDMCOvulationConfirmationNotificationScheduledState *)self fireDayIndex];
 
-  return [v2 numberWithInteger:v3];
+  return [v2 numberWithInteger:fireDayIndex];
 }
 
 - (id)scheduledNotificationFertileWindowEndDayIndex
 {
   v2 = MEMORY[0x277CCABB0];
-  v3 = [(HDMCOvulationConfirmationNotificationScheduledState *)self fertileWindowEndDayIndex];
+  fertileWindowEndDayIndex = [(HDMCOvulationConfirmationNotificationScheduledState *)self fertileWindowEndDayIndex];
 
-  return [v2 numberWithInteger:v3];
+  return [v2 numberWithInteger:fertileWindowEndDayIndex];
 }
 
 - (id)scheduledNotificationDaysWithWristTemp45DaysBeforeOvulationConfirmed
 {
   v2 = MEMORY[0x277CCABB0];
-  v3 = [(HDMCOvulationConfirmationNotificationScheduledState *)self daysWithWristTemp45DaysBeforeOvulationConfirmed];
+  daysWithWristTemp45DaysBeforeOvulationConfirmed = [(HDMCOvulationConfirmationNotificationScheduledState *)self daysWithWristTemp45DaysBeforeOvulationConfirmed];
 
-  return [v2 numberWithInteger:v3];
+  return [v2 numberWithInteger:daysWithWristTemp45DaysBeforeOvulationConfirmed];
 }
 
 - (id)scheduledNotificationDaysShiftedForFertileWindow
 {
   v2 = MEMORY[0x277CCABB0];
-  v3 = [(HDMCOvulationConfirmationNotificationScheduledState *)self daysShiftedForFertileWindow];
+  daysShiftedForFertileWindow = [(HDMCOvulationConfirmationNotificationScheduledState *)self daysShiftedForFertileWindow];
 
-  return [v2 numberWithInteger:v3];
+  return [v2 numberWithInteger:daysShiftedForFertileWindow];
 }
 
-- (HDMCOvulationConfirmationNotificationScheduledState)initWithFertileWindowEndDayIndex:(int64_t)a3 fireDayIndex:(int64_t)a4 correlatingPeriodStartDayIndex:(int64_t)a5 daysWithWristTemp45DaysBeforeOvulationConfirmed:(int64_t)a6 daysShiftedForFertileWindow:(int64_t)a7
+- (HDMCOvulationConfirmationNotificationScheduledState)initWithFertileWindowEndDayIndex:(int64_t)index fireDayIndex:(int64_t)dayIndex correlatingPeriodStartDayIndex:(int64_t)startDayIndex daysWithWristTemp45DaysBeforeOvulationConfirmed:(int64_t)confirmed daysShiftedForFertileWindow:(int64_t)window
 {
   v13.receiver = self;
   v13.super_class = HDMCOvulationConfirmationNotificationScheduledState;
   result = [(HDMCOvulationConfirmationNotificationScheduledState *)&v13 init];
   if (result)
   {
-    result->_fertileWindowEndDayIndex = a3;
-    result->_fireDayIndex = a4;
-    result->_correlatingPeriodStartDayIndex = a5;
-    result->_daysWithWristTemp45DaysBeforeOvulationConfirmed = a6;
-    result->_daysShiftedForFertileWindow = a7;
+    result->_fertileWindowEndDayIndex = index;
+    result->_fireDayIndex = dayIndex;
+    result->_correlatingPeriodStartDayIndex = startDayIndex;
+    result->_daysWithWristTemp45DaysBeforeOvulationConfirmed = confirmed;
+    result->_daysShiftedForFertileWindow = window;
   }
 
   return result;
 }
 
-+ (id)notificationStateFromDictionaryRepresentation:(id)a3
++ (id)notificationStateFromDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"FertileWindowEndDayIndex"];
+  representationCopy = representation;
+  v5 = [representationCopy objectForKeyedSubscript:@"FertileWindowEndDayIndex"];
   if (!v5)
   {
     goto LABEL_10;
   }
 
   v6 = v5;
-  v7 = [v4 objectForKeyedSubscript:@"FireDayIndex"];
+  v7 = [representationCopy objectForKeyedSubscript:@"FireDayIndex"];
   if (!v7)
   {
     goto LABEL_9;
   }
 
   v8 = v7;
-  v9 = [v4 objectForKeyedSubscript:@"CorrelatingPeriodStartDayIndex"];
+  v9 = [representationCopy objectForKeyedSubscript:@"CorrelatingPeriodStartDayIndex"];
   if (!v9)
   {
 LABEL_8:
@@ -90,7 +90,7 @@ LABEL_9:
   }
 
   v10 = v9;
-  v11 = [v4 objectForKeyedSubscript:@"DaysWithWristTemp45DaysBeforeOvulationConfirmedKey"];
+  v11 = [representationCopy objectForKeyedSubscript:@"DaysWithWristTemp45DaysBeforeOvulationConfirmedKey"];
   if (!v11)
   {
 
@@ -98,21 +98,21 @@ LABEL_9:
   }
 
   v12 = v11;
-  v13 = [v4 objectForKeyedSubscript:@"DaysShiftedForFertileWindow"];
+  v13 = [representationCopy objectForKeyedSubscript:@"DaysShiftedForFertileWindow"];
 
   if (v13)
   {
-    v26 = [a1 alloc];
-    v14 = [v4 objectForKeyedSubscript:@"FertileWindowEndDayIndex"];
-    v15 = [v14 integerValue];
-    v16 = [v4 objectForKeyedSubscript:@"FireDayIndex"];
-    v17 = [v16 integerValue];
-    v18 = [v4 objectForKeyedSubscript:@"CorrelatingPeriodStartDayIndex"];
-    v19 = [v18 integerValue];
-    v20 = [v4 objectForKeyedSubscript:@"DaysWithWristTemp45DaysBeforeOvulationConfirmedKey"];
-    v21 = [v20 integerValue];
-    v22 = [v4 objectForKeyedSubscript:@"DaysShiftedForFertileWindow"];
-    v23 = [v26 initWithFertileWindowEndDayIndex:v15 fireDayIndex:v17 correlatingPeriodStartDayIndex:v19 daysWithWristTemp45DaysBeforeOvulationConfirmed:v21 daysShiftedForFertileWindow:{objc_msgSend(v22, "integerValue")}];
+    v26 = [self alloc];
+    v14 = [representationCopy objectForKeyedSubscript:@"FertileWindowEndDayIndex"];
+    integerValue = [v14 integerValue];
+    v16 = [representationCopy objectForKeyedSubscript:@"FireDayIndex"];
+    integerValue2 = [v16 integerValue];
+    v18 = [representationCopy objectForKeyedSubscript:@"CorrelatingPeriodStartDayIndex"];
+    integerValue3 = [v18 integerValue];
+    v20 = [representationCopy objectForKeyedSubscript:@"DaysWithWristTemp45DaysBeforeOvulationConfirmedKey"];
+    integerValue4 = [v20 integerValue];
+    v22 = [representationCopy objectForKeyedSubscript:@"DaysShiftedForFertileWindow"];
+    v23 = [v26 initWithFertileWindowEndDayIndex:integerValue fireDayIndex:integerValue2 correlatingPeriodStartDayIndex:integerValue3 daysWithWristTemp45DaysBeforeOvulationConfirmed:integerValue4 daysShiftedForFertileWindow:{objc_msgSend(v22, "integerValue")}];
 
     goto LABEL_13;
   }
@@ -131,25 +131,25 @@ LABEL_13:
   return v23;
 }
 
-- (id)computeFiredStateWithCurrentDayIndex:(int64_t)a3
+- (id)computeFiredStateWithCurrentDayIndex:(int64_t)index
 {
-  v3 = [[HDMCOvulationConfirmationNotificationFiredState alloc] initWithFireDayIndex:a3];
+  v3 = [[HDMCOvulationConfirmationNotificationFiredState alloc] initWithFireDayIndex:index];
 
   return v3;
 }
 
-- (id)computeNewStateFromCorrelatingPeriodStartDayIndex:(int64_t)a3 fertileWindowEndDayIndex:(int64_t)a4 fireDayIndex:(int64_t)a5 daysShiftedForFertileWindow:(int64_t)a6 daysWithWristTemp45DaysBeforeOvulationConfirmed:(int64_t)a7
+- (id)computeNewStateFromCorrelatingPeriodStartDayIndex:(int64_t)index fertileWindowEndDayIndex:(int64_t)dayIndex fireDayIndex:(int64_t)fireDayIndex daysShiftedForFertileWindow:(int64_t)window daysWithWristTemp45DaysBeforeOvulationConfirmed:(int64_t)confirmed
 {
-  if ([(HDMCOvulationConfirmationNotificationScheduledState *)self fireDayIndex]<= a3 || [(HDMCOvulationConfirmationNotificationScheduledState *)self fertileWindowEndDayIndex]== a4)
+  if ([(HDMCOvulationConfirmationNotificationScheduledState *)self fireDayIndex]<= index || [(HDMCOvulationConfirmationNotificationScheduledState *)self fertileWindowEndDayIndex]== dayIndex)
   {
     v15.receiver = self;
     v15.super_class = HDMCOvulationConfirmationNotificationScheduledState;
-    v13 = [(HDMCOvulationConfirmationNotificationStateMachineState *)&v15 computeNewStateFromCorrelatingPeriodStartDayIndex:a3 fertileWindowEndDayIndex:a4 fireDayIndex:a5 daysShiftedForFertileWindow:a6 daysWithWristTemp45DaysBeforeOvulationConfirmed:a7];
+    v13 = [(HDMCOvulationConfirmationNotificationStateMachineState *)&v15 computeNewStateFromCorrelatingPeriodStartDayIndex:index fertileWindowEndDayIndex:dayIndex fireDayIndex:fireDayIndex daysShiftedForFertileWindow:window daysWithWristTemp45DaysBeforeOvulationConfirmed:confirmed];
   }
 
   else
   {
-    v13 = [(HDMCOvulationConfirmationNotificationScheduledState *)self initWithFertileWindowEndDayIndex:a4 fireDayIndex:a5 correlatingPeriodStartDayIndex:a3 daysWithWristTemp45DaysBeforeOvulationConfirmed:a7 daysShiftedForFertileWindow:a6];
+    v13 = [(HDMCOvulationConfirmationNotificationScheduledState *)self initWithFertileWindowEndDayIndex:dayIndex fireDayIndex:fireDayIndex correlatingPeriodStartDayIndex:index daysWithWristTemp45DaysBeforeOvulationConfirmed:confirmed daysShiftedForFertileWindow:window];
   }
 
   return v13;
@@ -159,8 +159,8 @@ LABEL_13:
 {
   v11.receiver = self;
   v11.super_class = HDMCOvulationConfirmationNotificationScheduledState;
-  v3 = [(HDMCOvulationConfirmationNotificationStateMachineState *)&v11 dictionaryRepresentation];
-  v4 = [v3 mutableCopy];
+  dictionaryRepresentation = [(HDMCOvulationConfirmationNotificationStateMachineState *)&v11 dictionaryRepresentation];
+  v4 = [dictionaryRepresentation mutableCopy];
 
   v5 = [MEMORY[0x277CCABB0] numberWithInteger:{-[HDMCOvulationConfirmationNotificationScheduledState fertileWindowEndDayIndex](self, "fertileWindowEndDayIndex")}];
   [v4 setObject:v5 forKeyedSubscript:@"FertileWindowEndDayIndex"];
@@ -180,14 +180,14 @@ LABEL_13:
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v8.receiver = self;
   v8.super_class = HDMCOvulationConfirmationNotificationScheduledState;
-  if ([(HDMCOvulationConfirmationNotificationStateMachineState *)&v8 isEqual:v4])
+  if ([(HDMCOvulationConfirmationNotificationStateMachineState *)&v8 isEqual:equalCopy])
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = self->_fertileWindowEndDayIndex == v5[1] && self->_fireDayIndex == v5[2] && self->_correlatingPeriodStartDayIndex == v5[3] && self->_daysWithWristTemp45DaysBeforeOvulationConfirmed == v5[4] && self->_daysShiftedForFertileWindow == v5[5];
   }
 

@@ -1,23 +1,23 @@
 @interface EKMapSearchCompletionResolverRequest
-- (EKMapSearchCompletionResolverRequest)initWithMapSearchCompletion:(id)a3 completionHandler:(id)a4;
+- (EKMapSearchCompletionResolverRequest)initWithMapSearchCompletion:(id)completion completionHandler:(id)handler;
 - (void)beginResolution;
 - (void)cancel;
 @end
 
 @implementation EKMapSearchCompletionResolverRequest
 
-- (EKMapSearchCompletionResolverRequest)initWithMapSearchCompletion:(id)a3 completionHandler:(id)a4
+- (EKMapSearchCompletionResolverRequest)initWithMapSearchCompletion:(id)completion completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  completionCopy = completion;
+  handlerCopy = handler;
   v14.receiver = self;
   v14.super_class = EKMapSearchCompletionResolverRequest;
   v9 = [(EKMapSearchCompletionResolverRequest *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_mapSearchCompletion, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_mapSearchCompletion, completion);
+    v11 = [handlerCopy copy];
     completionHandler = v10->_completionHandler;
     v10->_completionHandler = v11;
   }
@@ -36,10 +36,10 @@
 {
   v3 = EKWeakLinkClass();
   v4 = EKWeakLinkClass();
-  v5 = [(EKMapSearchCompletionResolverRequest *)self mapSearchCompletion];
-  v6 = [v5 mapSearchCompletion];
+  mapSearchCompletion = [(EKMapSearchCompletionResolverRequest *)self mapSearchCompletion];
+  v5MapSearchCompletion = [mapSearchCompletion mapSearchCompletion];
 
-  v7 = [v3 searchRequestWithCompletion:v6];
+  v7 = [v3 searchRequestWithCompletion:v5MapSearchCompletion];
   v8 = [[v4 alloc] initWithRequest:v7];
   localSearch = self->_localSearch;
   self->_localSearch = v8;
@@ -50,8 +50,8 @@
   v12[2] = __55__EKMapSearchCompletionResolverRequest_beginResolution__block_invoke;
   v12[3] = &unk_1E77FF798;
   v12[4] = self;
-  v13 = v6;
-  v11 = v6;
+  v13 = v5MapSearchCompletion;
+  v11 = v5MapSearchCompletion;
   [(MKLocalSearch *)v10 startWithCompletionHandler:v12];
 }
 

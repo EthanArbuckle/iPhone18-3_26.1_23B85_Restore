@@ -1,12 +1,12 @@
 @interface CHSAppIntentsXPCListenerEndpointProvider
-- (CHSAppIntentsXPCListenerEndpointProvider)initWithBundleIdentifier:(id)a3;
+- (CHSAppIntentsXPCListenerEndpointProvider)initWithBundleIdentifier:(id)identifier;
 @end
 
 @implementation CHSAppIntentsXPCListenerEndpointProvider
 
-- (CHSAppIntentsXPCListenerEndpointProvider)initWithBundleIdentifier:(id)a3
+- (CHSAppIntentsXPCListenerEndpointProvider)initWithBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = CHSAppIntentsXPCListenerEndpointProvider;
   v5 = [(CHSAppIntentsXPCListenerEndpointProvider *)&v11 init];
@@ -16,7 +16,7 @@
     connection = v5->_connection;
     v5->_connection = v6;
 
-    v8 = [v4 copy];
+    v8 = [identifierCopy copy];
     bundleIdentifier = v5->_bundleIdentifier;
     v5->_bundleIdentifier = v8;
   }

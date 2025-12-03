@@ -1,14 +1,14 @@
 @interface PPConfigClient
 + (id)sharedInstance;
 - (PPConfigClient)init;
-- (id)readableTrialTreatmentsMappingWithError:(id *)a3;
-- (id)variantNameWithError:(id *)a3;
-- (unint64_t)assetVersionWithError:(id *)a3;
+- (id)readableTrialTreatmentsMappingWithError:(id *)error;
+- (id)variantNameWithError:(id *)error;
+- (unint64_t)assetVersionWithError:(id *)error;
 @end
 
 @implementation PPConfigClient
 
-- (id)readableTrialTreatmentsMappingWithError:(id *)a3
+- (id)readableTrialTreatmentsMappingWithError:(id *)error
 {
   v18 = 0;
   v19 = &v18;
@@ -39,9 +39,9 @@
   v7 = [(PPConfigClient *)self _synchronousRemoteObjectProxyWithErrorHandler:v5];
   [v7 readableTrialTreatmentsMappingWithCompletion:v6];
 
-  if (a3)
+  if (error)
   {
-    *a3 = v13[5];
+    *error = v13[5];
   }
 
   v8 = v19[5];
@@ -78,7 +78,7 @@ void __58__PPConfigClient_readableTrialTreatmentsMappingWithError___block_invoke
   *(v9 + 40) = v6;
 }
 
-- (id)variantNameWithError:(id *)a3
+- (id)variantNameWithError:(id *)error
 {
   v18 = 0;
   v19 = &v18;
@@ -109,9 +109,9 @@ void __58__PPConfigClient_readableTrialTreatmentsMappingWithError___block_invoke
   v7 = [(PPConfigClient *)self _synchronousRemoteObjectProxyWithErrorHandler:v5];
   [v7 variantNameWithCompletion:v6];
 
-  if (a3)
+  if (error)
   {
-    *a3 = v13[5];
+    *error = v13[5];
   }
 
   v8 = v19[5];
@@ -148,7 +148,7 @@ void __39__PPConfigClient_variantNameWithError___block_invoke_2(uint64_t a1, voi
   *(v9 + 40) = v6;
 }
 
-- (unint64_t)assetVersionWithError:(id *)a3
+- (unint64_t)assetVersionWithError:(id *)error
 {
   v18 = 0;
   v19 = &v18;
@@ -177,9 +177,9 @@ void __39__PPConfigClient_variantNameWithError___block_invoke_2(uint64_t a1, voi
   v7 = [(PPConfigClient *)self _synchronousRemoteObjectProxyWithErrorHandler:v5];
   [v7 assetVersionWithCompletion:v6];
 
-  if (a3)
+  if (error)
   {
-    *a3 = v13[5];
+    *error = v13[5];
   }
 
   v8 = v19[3];
@@ -212,7 +212,7 @@ void __39__PPConfigClient_variantNameWithError___block_invoke_2(uint64_t a1, voi
   block[1] = 3221225472;
   block[2] = __32__PPConfigClient_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance__pasOnceToken2_3480 != -1)
   {
     dispatch_once(&sharedInstance__pasOnceToken2_3480, block);

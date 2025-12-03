@@ -1,37 +1,37 @@
 @interface WFContextualActionRunQueue
 + (id)sharedQueue;
 - (WFContextualActionRunQueue)init;
-- (void)enqueueRun:(id)a3;
-- (void)runFinished:(id)a3;
+- (void)enqueueRun:(id)run;
+- (void)runFinished:(id)finished;
 @end
 
 @implementation WFContextualActionRunQueue
 
-- (void)runFinished:(id)a3
+- (void)runFinished:(id)finished
 {
-  v4 = a3;
+  finishedCopy = finished;
   os_unfair_lock_lock(&self->_lock);
-  [(NSMutableArray *)self->_runnerClients removeObject:v4];
+  [(NSMutableArray *)self->_runnerClients removeObject:finishedCopy];
 
   if ([(NSMutableArray *)self->_runnerClients count])
   {
-    v5 = [(NSMutableArray *)self->_runnerClients firstObject];
-    [v5 startFromQueue];
+    firstObject = [(NSMutableArray *)self->_runnerClients firstObject];
+    [firstObject startFromQueue];
   }
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)enqueueRun:(id)a3
+- (void)enqueueRun:(id)run
 {
-  v4 = a3;
+  runCopy = run;
   os_unfair_lock_lock(&self->_lock);
   if (![(NSMutableArray *)self->_runnerClients count])
   {
-    [v4 startFromQueue];
+    [runCopy startFromQueue];
   }
 
-  [(NSMutableArray *)self->_runnerClients addObject:v4];
+  [(NSMutableArray *)self->_runnerClients addObject:runCopy];
   os_unfair_lock_unlock(&self->_lock);
 }
 

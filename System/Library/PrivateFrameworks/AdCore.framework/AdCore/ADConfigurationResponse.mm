@@ -1,35 +1,35 @@
 @interface ADConfigurationResponse
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsBannerProxyType:(id)a3;
+- (int)StringAsBannerProxyType:(id)type;
 - (int)bannerProxyType;
 - (unint64_t)hash;
-- (void)addTheConfiguration:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addTheConfiguration:(id)configuration;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ADConfigurationResponse
 
-- (void)addTheConfiguration:(id)a3
+- (void)addTheConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   theConfigurations = self->_theConfigurations;
-  v8 = v4;
+  v8 = configurationCopy;
   if (!theConfigurations)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_theConfigurations;
     self->_theConfigurations = v6;
 
-    v4 = v8;
+    configurationCopy = v8;
     theConfigurations = self->_theConfigurations;
   }
 
-  [(NSMutableArray *)theConfigurations addObject:v4];
+  [(NSMutableArray *)theConfigurations addObject:configurationCopy];
 }
 
 - (int)bannerProxyType
@@ -45,17 +45,17 @@
   }
 }
 
-- (int)StringAsBannerProxyType:(id)a3
+- (int)StringAsBannerProxyType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Legacy"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"Legacy"])
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"Connect"];
+    v4 = [typeCopy isEqualToString:@"Connect"];
   }
 
   return v4;
@@ -67,8 +67,8 @@
   v8.receiver = self;
   v8.super_class = ADConfigurationResponse;
   v4 = [(ADConfigurationResponse *)&v8 description];
-  v5 = [(ADConfigurationResponse *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ADConfigurationResponse *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -76,7 +76,7 @@
 - (id)dictionaryRepresentation
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if ([(NSMutableArray *)self->_theConfigurations count])
   {
     v4 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{-[NSMutableArray count](self->_theConfigurations, "count")}];
@@ -99,8 +99,8 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v18 + 1) + 8 * i) dictionaryRepresentation];
-          [v4 addObject:v10];
+          dictionaryRepresentation = [*(*(&v18 + 1) + 8 * i) dictionaryRepresentation];
+          [v4 addObject:dictionaryRepresentation];
         }
 
         v7 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -109,19 +109,19 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKey:@"theConfiguration"];
+    [dictionary setObject:v4 forKey:@"theConfiguration"];
   }
 
   resourceProxyURL = self->_resourceProxyURL;
   if (resourceProxyURL)
   {
-    [v3 setObject:resourceProxyURL forKey:@"resourceProxyURL"];
+    [dictionary setObject:resourceProxyURL forKey:@"resourceProxyURL"];
   }
 
   resourceConnectProxyURL = self->_resourceConnectProxyURL;
   if (resourceConnectProxyURL)
   {
-    [v3 setObject:resourceConnectProxyURL forKey:@"resourceConnectProxyURL"];
+    [dictionary setObject:resourceConnectProxyURL forKey:@"resourceConnectProxyURL"];
   }
 
   if (*&self->_has)
@@ -145,24 +145,24 @@
       v14 = @"Legacy";
     }
 
-    [v3 setObject:v14 forKey:@"bannerProxyType"];
+    [dictionary setObject:v14 forKey:@"bannerProxyType"];
   }
 
   configVersion = self->_configVersion;
   if (configVersion)
   {
-    [v3 setObject:configVersion forKey:@"configVersion"];
+    [dictionary setObject:configVersion forKey:@"configVersion"];
   }
 
   v16 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -219,34 +219,34 @@
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v9 = a3;
+  toCopy = to;
   if ([(ADConfigurationResponse *)self theConfigurationsCount])
   {
-    [v9 clearTheConfigurations];
-    v4 = [(ADConfigurationResponse *)self theConfigurationsCount];
-    if (v4)
+    [toCopy clearTheConfigurations];
+    theConfigurationsCount = [(ADConfigurationResponse *)self theConfigurationsCount];
+    if (theConfigurationsCount)
     {
-      v5 = v4;
+      v5 = theConfigurationsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(ADConfigurationResponse *)self theConfigurationAtIndex:i];
-        [v9 addTheConfiguration:v7];
+        [toCopy addTheConfiguration:v7];
       }
     }
   }
 
   if (self->_resourceProxyURL)
   {
-    [v9 setResourceProxyURL:?];
+    [toCopy setResourceProxyURL:?];
   }
 
-  v8 = v9;
+  v8 = toCopy;
   if (self->_resourceConnectProxyURL)
   {
-    [v9 setResourceConnectProxyURL:?];
-    v8 = v9;
+    [toCopy setResourceConnectProxyURL:?];
+    v8 = toCopy;
   }
 
   if (*&self->_has)
@@ -257,15 +257,15 @@
 
   if (self->_configVersion)
   {
-    [v9 setConfigVersion:?];
-    v8 = v9;
+    [toCopy setConfigVersion:?];
+    v8 = toCopy;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
@@ -286,7 +286,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v20 + 1) + 8 * v10) copyWithZone:{a3, v20}];
+        v11 = [*(*(&v20 + 1) + 8 * v10) copyWithZone:{zone, v20}];
         [v5 addTheConfiguration:v11];
 
         ++v10;
@@ -299,11 +299,11 @@
     while (v8);
   }
 
-  v12 = [(NSString *)self->_resourceProxyURL copyWithZone:a3];
+  v12 = [(NSString *)self->_resourceProxyURL copyWithZone:zone];
   v13 = *(v5 + 40);
   *(v5 + 40) = v12;
 
-  v14 = [(NSString *)self->_resourceConnectProxyURL copyWithZone:a3];
+  v14 = [(NSString *)self->_resourceConnectProxyURL copyWithZone:zone];
   v15 = *(v5 + 32);
   *(v5 + 32) = v14;
 
@@ -313,7 +313,7 @@
     *(v5 + 48) |= 1u;
   }
 
-  v16 = [(NSString *)self->_configVersion copyWithZone:a3, v20];
+  v16 = [(NSString *)self->_configVersion copyWithZone:zone, v20];
   v17 = *(v5 + 16);
   *(v5 + 16) = v16;
 
@@ -321,16 +321,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_15;
   }
 
   theConfigurations = self->_theConfigurations;
-  if (theConfigurations | *(v4 + 3))
+  if (theConfigurations | *(equalCopy + 3))
   {
     if (![(NSMutableArray *)theConfigurations isEqual:?])
     {
@@ -339,7 +339,7 @@
   }
 
   resourceProxyURL = self->_resourceProxyURL;
-  if (resourceProxyURL | *(v4 + 5))
+  if (resourceProxyURL | *(equalCopy + 5))
   {
     if (![(NSString *)resourceProxyURL isEqual:?])
     {
@@ -348,7 +348,7 @@
   }
 
   resourceConnectProxyURL = self->_resourceConnectProxyURL;
-  if (resourceConnectProxyURL | *(v4 + 4))
+  if (resourceConnectProxyURL | *(equalCopy + 4))
   {
     if (![(NSString *)resourceConnectProxyURL isEqual:?])
     {
@@ -356,16 +356,16 @@
     }
   }
 
-  v8 = *(v4 + 48);
+  v8 = *(equalCopy + 48);
   if (*&self->_has)
   {
-    if ((*(v4 + 48) & 1) == 0 || self->_bannerProxyType != *(v4 + 2))
+    if ((*(equalCopy + 48) & 1) == 0 || self->_bannerProxyType != *(equalCopy + 2))
     {
       goto LABEL_15;
     }
   }
 
-  else if (*(v4 + 48))
+  else if (*(equalCopy + 48))
   {
 LABEL_15:
     v10 = 0;
@@ -373,7 +373,7 @@ LABEL_15:
   }
 
   configVersion = self->_configVersion;
-  if (configVersion | *(v4 + 2))
+  if (configVersion | *(equalCopy + 2))
   {
     v10 = [(NSString *)configVersion isEqual:?];
   }
@@ -406,15 +406,15 @@ LABEL_16:
   return v4 ^ v3 ^ v5 ^ v6 ^ [(NSString *)self->_configVersion hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fromCopy = from;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = *(v4 + 3);
+  v5 = *(fromCopy + 3);
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
@@ -438,23 +438,23 @@ LABEL_16:
     while (v7);
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(ADConfigurationResponse *)self setResourceProxyURL:?];
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(ADConfigurationResponse *)self setResourceConnectProxyURL:?];
   }
 
-  if (*(v4 + 48))
+  if (*(fromCopy + 48))
   {
-    self->_bannerProxyType = *(v4 + 2);
+    self->_bannerProxyType = *(fromCopy + 2);
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(ADConfigurationResponse *)self setConfigVersion:?];
   }

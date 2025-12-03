@@ -1,27 +1,27 @@
 @interface SYDocumentSenderAvatar
-- (SYDocumentSenderAvatar)initWithDocumentSender:(id)a3;
+- (SYDocumentSenderAvatar)initWithDocumentSender:(id)sender;
 - (id)_createAvatarImageRenderer;
-- (id)_createContactFromPersonNameComponents:(id)a3;
+- (id)_createContactFromPersonNameComponents:(id)components;
 - (id)_documentSenderHandle;
-- (id)_renderAvatarImageForContact:(id)a3 renderer:(id)a4 renderingScope:(id)a5;
-- (id)_renderAvatarImageWithRenderer:(id)a3 renderingScope:(id)a4;
+- (id)_renderAvatarImageForContact:(id)contact renderer:(id)renderer renderingScope:(id)scope;
+- (id)_renderAvatarImageWithRenderer:(id)renderer renderingScope:(id)scope;
 - (id)fetchThumbnailImages;
-- (id)fetchThumbnailImagesWithScale:(double)a3 isRTL:(BOOL)a4;
-- (void)fetchThumbnailImagesWithScale:(double)a3 isRTL:(BOOL)a4 completion:(id)a5;
+- (id)fetchThumbnailImagesWithScale:(double)scale isRTL:(BOOL)l;
+- (void)fetchThumbnailImagesWithScale:(double)scale isRTL:(BOOL)l completion:(id)completion;
 @end
 
 @implementation SYDocumentSenderAvatar
 
-- (SYDocumentSenderAvatar)initWithDocumentSender:(id)a3
+- (SYDocumentSenderAvatar)initWithDocumentSender:(id)sender
 {
-  v5 = a3;
+  senderCopy = sender;
   v12.receiver = self;
   v12.super_class = SYDocumentSenderAvatar;
   v6 = [(SYDocumentSenderAvatar *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_documentSender, a3);
+    objc_storeStrong(&v6->_documentSender, sender);
     v8 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_USER_INITIATED, 0);
     v9 = dispatch_queue_create("com.apple.synapse.SYDocumentSenderAvatar", v8);
     processingQueue = v7->_processingQueue;
@@ -31,23 +31,23 @@
   return v7;
 }
 
-- (void)fetchThumbnailImagesWithScale:(double)a3 isRTL:(BOOL)a4 completion:(id)a5
+- (void)fetchThumbnailImagesWithScale:(double)scale isRTL:(BOOL)l completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __73__SYDocumentSenderAvatar_fetchThumbnailImagesWithScale_isRTL_completion___block_invoke;
   v17[3] = &unk_27856B760;
-  v18 = v8;
-  v9 = v8;
+  v18 = completionCopy;
+  v9 = completionCopy;
   v10 = MEMORY[0x22AA6A360](v17);
   processingQueue = self->_processingQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __73__SYDocumentSenderAvatar_fetchThumbnailImagesWithScale_isRTL_completion___block_invoke_2;
   block[3] = &unk_27856B7B0;
-  v15 = a3;
-  v16 = a4;
+  scaleCopy = scale;
+  lCopy = l;
   block[4] = self;
   v14 = v10;
   v12 = v10;
@@ -209,10 +209,10 @@ void __73__SYDocumentSenderAvatar_fetchThumbnailImagesWithScale_isRTL_completion
 - (id)_documentSenderHandle
 {
   v21 = *MEMORY[0x277D85DE8];
-  v2 = [(SYDocumentSenderAvatar *)self documentSender];
-  v3 = [v2 handle];
+  documentSender = [(SYDocumentSenderAvatar *)self documentSender];
+  handle = [documentSender handle];
   v4 = [MEMORY[0x277CCA900] characterSetWithCharactersInString:@"<>"];
-  v5 = [v3 componentsSeparatedByCharactersInSet:v4];
+  v5 = [handle componentsSeparatedByCharactersInSet:v4];
 
   v6 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v5, "count")}];
   v16 = 0u;
@@ -247,11 +247,11 @@ void __73__SYDocumentSenderAvatar_fetchThumbnailImagesWithScale_isRTL_completion
     while (v9);
   }
 
-  v13 = [v6 lastObject];
+  lastObject = [v6 lastObject];
 
   v14 = *MEMORY[0x277D85DE8];
 
-  return v13;
+  return lastObject;
 }
 
 - (id)fetchThumbnailImages
@@ -285,14 +285,14 @@ void __73__SYDocumentSenderAvatar_fetchThumbnailImagesWithScale_isRTL_completion
   return [(SYDocumentSenderAvatar *)self fetchThumbnailImagesWithScale:v4 & 1 isRTL:v3];
 }
 
-- (id)fetchThumbnailImagesWithScale:(double)a3 isRTL:(BOOL)a4
+- (id)fetchThumbnailImagesWithScale:(double)scale isRTL:(BOOL)l
 {
-  v30 = a4;
+  lCopy = l;
   v43[1] = *MEMORY[0x277D85DE8];
   v6 = objc_alloc_init(MEMORY[0x277CBDAB8]);
   v7 = MEMORY[0x277CBDA58];
-  v8 = [(SYDocumentSenderAvatar *)self _documentSenderHandle];
-  v9 = [v7 predicateForContactsMatchingEmailAddress:v8];
+  _documentSenderHandle = [(SYDocumentSenderAvatar *)self _documentSenderHandle];
+  v9 = [v7 predicateForContactsMatchingEmailAddress:_documentSenderHandle];
 
   v43[0] = *MEMORY[0x277CBD158];
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v43 count:1];
@@ -314,11 +314,11 @@ void __73__SYDocumentSenderAvatar_fetchThumbnailImagesWithScale_isRTL_completion
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     v15 = [v11 count];
-    v16 = [(SYDocumentSenderAvatar *)self documentSender];
+    documentSender = [(SYDocumentSenderAvatar *)self documentSender];
     *buf = 134218243;
     v40 = v15;
     v41 = 2113;
-    v42 = v16;
+    v42 = documentSender;
     _os_log_impl(&dword_225901000, v14, OS_LOG_TYPE_DEFAULT, "Found %ld matching contacts for sender: %{private}@", buf, 0x16u);
   }
 
@@ -343,12 +343,12 @@ void __73__SYDocumentSenderAvatar_fetchThumbnailImagesWithScale_isRTL_completion
         }
 
         v23 = *(*(&v33 + 1) + 8 * i);
-        v24 = [v23 thumbnailImageData];
+        thumbnailImageData = [v23 thumbnailImageData];
 
-        if (v24)
+        if (thumbnailImageData)
         {
-          v25 = [v23 thumbnailImageData];
-          [v17 addObject:v25];
+          thumbnailImageData2 = [v23 thumbnailImageData];
+          [v17 addObject:thumbnailImageData2];
         }
       }
 
@@ -360,10 +360,10 @@ void __73__SYDocumentSenderAvatar_fetchThumbnailImagesWithScale_isRTL_completion
 
   if (![v17 count])
   {
-    v26 = [(SYDocumentSenderAvatar *)self _defaultThumbnailImageWithSize:v30 scale:100.0 isRTL:100.0, a3];
-    if (v26)
+    scale = [(SYDocumentSenderAvatar *)self _defaultThumbnailImageWithSize:lCopy scale:100.0 isRTL:100.0, scale];
+    if (scale)
     {
-      [v17 addObject:v26];
+      [v17 addObject:scale];
     }
   }
 
@@ -394,7 +394,7 @@ void __73__SYDocumentSenderAvatar_fetchThumbnailImagesWithScale_isRTL_completion
 
   v3 = v2;
   _Block_object_dispose(&v14, 8);
-  v4 = [v2 defaultSettings];
+  defaultSettings = [v2 defaultSettings];
   v14 = 0;
   v15 = &v14;
   v16 = 0x2050000000;
@@ -413,39 +413,39 @@ void __73__SYDocumentSenderAvatar_fetchThumbnailImagesWithScale_isRTL_completion
 
   v6 = v5;
   _Block_object_dispose(&v14, 8);
-  v7 = [[v5 alloc] initWithSettings:v4];
+  v7 = [[v5 alloc] initWithSettings:defaultSettings];
 
   return v7;
 }
 
-- (id)_renderAvatarImageWithRenderer:(id)a3 renderingScope:(id)a4
+- (id)_renderAvatarImageWithRenderer:(id)renderer renderingScope:(id)scope
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  rendererCopy = renderer;
+  scopeCopy = scope;
   v8 = os_log_create("com.apple.synapse", "DocumentWorkflows");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(SYDocumentSenderAvatar *)self documentSender];
+    documentSender = [(SYDocumentSenderAvatar *)self documentSender];
     v20 = 138477827;
-    v21 = v9;
+    v21 = documentSender;
     _os_log_impl(&dword_225901000, v8, OS_LOG_TYPE_DEFAULT, "Rendering avatar image for sender: %{private}@", &v20, 0xCu);
   }
 
-  v10 = [(SYDocumentSenderAvatar *)self documentSender];
-  v11 = [v10 personNameComponentsFormattedWithStyle:4];
+  documentSender2 = [(SYDocumentSenderAvatar *)self documentSender];
+  v11 = [documentSender2 personNameComponentsFormattedWithStyle:4];
 
   if (v11)
   {
     v12 = [(SYDocumentSenderAvatar *)self _createContactFromPersonNameComponents:v11];
-    v13 = [(SYDocumentSenderAvatar *)self _renderAvatarImageForContact:v12 renderer:v6 renderingScope:v7];
+    v13 = [(SYDocumentSenderAvatar *)self _renderAvatarImageForContact:v12 renderer:rendererCopy renderingScope:scopeCopy];
     v14 = os_log_create("com.apple.synapse", "DocumentWorkflows");
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [(SYDocumentSenderAvatar *)self documentSender];
+      documentSender3 = [(SYDocumentSenderAvatar *)self documentSender];
       v16 = [v13 length];
       v20 = 138478595;
-      v21 = v15;
+      v21 = documentSender3;
       v22 = 2113;
       v23 = v12;
       v24 = 2113;
@@ -461,9 +461,9 @@ void __73__SYDocumentSenderAvatar_fetchThumbnailImagesWithScale_isRTL_completion
     v14 = os_log_create("com.apple.synapse", "DocumentWorkflows");
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [(SYDocumentSenderAvatar *)self documentSender];
+      documentSender4 = [(SYDocumentSenderAvatar *)self documentSender];
       v20 = 138477827;
-      v21 = v17;
+      v21 = documentSender4;
       _os_log_impl(&dword_225901000, v14, OS_LOG_TYPE_DEFAULT, "Unable to get person name components for sender: %{private}@", &v20, 0xCu);
     }
 
@@ -476,15 +476,15 @@ void __73__SYDocumentSenderAvatar_fetchThumbnailImagesWithScale_isRTL_completion
   return v13;
 }
 
-- (id)_renderAvatarImageForContact:(id)a3 renderer:(id)a4 renderingScope:(id)a5
+- (id)_renderAvatarImageForContact:(id)contact renderer:(id)renderer renderingScope:(id)scope
 {
   v22[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v22[0] = v7;
+  contactCopy = contact;
+  rendererCopy = renderer;
+  scopeCopy = scope;
+  v22[0] = contactCopy;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:1];
-  v11 = [v8 avatarImageForContacts:v10 scope:v9];
+  v11 = [rendererCopy avatarImageForContacts:v10 scope:scopeCopy];
 
   v12 = v11;
   v18 = 0;
@@ -513,31 +513,31 @@ void __73__SYDocumentSenderAvatar_fetchThumbnailImagesWithScale_isRTL_completion
   return v15;
 }
 
-- (id)_createContactFromPersonNameComponents:(id)a3
+- (id)_createContactFromPersonNameComponents:(id)components
 {
-  if (a3)
+  if (components)
   {
     v3 = MEMORY[0x277CBDB38];
-    v4 = a3;
+    componentsCopy = components;
     v5 = objc_alloc_init(v3);
-    v6 = [v4 namePrefix];
-    [v5 setNamePrefix:v6];
+    namePrefix = [componentsCopy namePrefix];
+    [v5 setNamePrefix:namePrefix];
 
-    v7 = [v4 givenName];
-    [v5 setGivenName:v7];
+    givenName = [componentsCopy givenName];
+    [v5 setGivenName:givenName];
 
-    v8 = [v4 middleName];
-    [v5 setMiddleName:v8];
+    middleName = [componentsCopy middleName];
+    [v5 setMiddleName:middleName];
 
-    v9 = [v4 familyName];
-    [v5 setFamilyName:v9];
+    familyName = [componentsCopy familyName];
+    [v5 setFamilyName:familyName];
 
-    v10 = [v4 nameSuffix];
-    [v5 setNameSuffix:v10];
+    nameSuffix = [componentsCopy nameSuffix];
+    [v5 setNameSuffix:nameSuffix];
 
-    v11 = [v4 nickname];
+    nickname = [componentsCopy nickname];
 
-    [v5 setNickname:v11];
+    [v5 setNickname:nickname];
     v12 = [v5 copy];
   }
 

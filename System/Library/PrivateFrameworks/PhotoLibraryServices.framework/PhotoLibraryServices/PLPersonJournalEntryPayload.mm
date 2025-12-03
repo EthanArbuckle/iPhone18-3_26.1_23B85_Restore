@@ -1,42 +1,42 @@
 @interface PLPersonJournalEntryPayload
-+ (BOOL)isValidForPersistenceWithObjectDictionary:(id)a3 additionalEntityName:(id)a4;
++ (BOOL)isValidForPersistenceWithObjectDictionary:(id)dictionary additionalEntityName:(id)name;
 + (id)modelProperties;
 + (id)modelPropertiesDescription;
 + (id)nonPersistedModelPropertiesDescription;
 + (id)persistedPropertyNamesForEntityNames;
-+ (void)updateMergeTargetPersonWithPersonUUIDMapping:(id)a3 fromDataInManagedObjectContext:(id)a4;
-- (BOOL)comparePayloadValue:(id)a3 toObjectDictionaryValue:(id)a4 forPayloadProperty:(id)a5;
-- (BOOL)updatePayloadAttributes:(id)a3 andNilAttributes:(id)a4 withManagedObject:(id)a5 forPayloadProperty:(id)a6;
++ (void)updateMergeTargetPersonWithPersonUUIDMapping:(id)mapping fromDataInManagedObjectContext:(id)context;
+- (BOOL)comparePayloadValue:(id)value toObjectDictionaryValue:(id)dictionaryValue forPayloadProperty:(id)property;
+- (BOOL)updatePayloadAttributes:(id)attributes andNilAttributes:(id)nilAttributes withManagedObject:(id)object forPayloadProperty:(id)property;
 - (NSString)mergeTargetPersonUUID;
-- (PLPersonJournalEntryPayload)initWithUserFeedback:(id)a3 changedKeys:(id)a4;
-- (id)insertPersonFromDataInManagedObjectContext:(id)a3;
-- (id)payloadValueFromAttributes:(id)a3 forPayloadProperty:(id)a4;
+- (PLPersonJournalEntryPayload)initWithUserFeedback:(id)feedback changedKeys:(id)keys;
+- (id)insertPersonFromDataInManagedObjectContext:(id)context;
+- (id)payloadValueFromAttributes:(id)attributes forPayloadProperty:(id)property;
 - (int)cloudVerifiedType;
 - (int)type;
 - (int)verifiedType;
 - (signed)keyFacePickSource;
 - (unsigned)manualOrder;
-- (void)appendAttributeKey:(id)a3 value:(id)a4 toDescriptionBuilder:(id)a5;
-- (void)applyPayloadProperty:(id)a3 toManagedObject:(id)a4 key:(id)a5 payloadAttributesToUpdate:(id)a6;
+- (void)appendAttributeKey:(id)key value:(id)value toDescriptionBuilder:(id)builder;
+- (void)applyPayloadProperty:(id)property toManagedObject:(id)object key:(id)key payloadAttributesToUpdate:(id)update;
 @end
 
 @implementation PLPersonJournalEntryPayload
 
-- (BOOL)comparePayloadValue:(id)a3 toObjectDictionaryValue:(id)a4 forPayloadProperty:(id)a5
+- (BOOL)comparePayloadValue:(id)value toObjectDictionaryValue:(id)dictionaryValue forPayloadProperty:(id)property
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  if ([v8 isEqualToKey:@"contactDict"])
+  propertyCopy = property;
+  dictionaryValueCopy = dictionaryValue;
+  valueCopy = value;
+  if ([propertyCopy isEqualToKey:@"contactDict"])
   {
-    v11 = [v9 isEqual:v10];
+    v11 = [dictionaryValueCopy isEqual:valueCopy];
   }
 
   else
   {
     v14.receiver = self;
     v14.super_class = PLPersonJournalEntryPayload;
-    v11 = [(PLManagedObjectJournalEntryPayload *)&v14 comparePayloadValue:v10 toObjectDictionaryValue:v9 forPayloadProperty:v8];
+    v11 = [(PLManagedObjectJournalEntryPayload *)&v14 comparePayloadValue:valueCopy toObjectDictionaryValue:dictionaryValueCopy forPayloadProperty:propertyCopy];
   }
 
   v12 = v11;
@@ -44,40 +44,40 @@
   return v12;
 }
 
-- (void)applyPayloadProperty:(id)a3 toManagedObject:(id)a4 key:(id)a5 payloadAttributesToUpdate:(id)a6
+- (void)applyPayloadProperty:(id)property toManagedObject:(id)object key:(id)key payloadAttributesToUpdate:(id)update
 {
   v56 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v45 = a6;
-  v13 = [v10 requiresConversion];
-  v14 = v11;
-  v15 = [v10 key];
+  propertyCopy = property;
+  objectCopy = object;
+  keyCopy = key;
+  updateCopy = update;
+  requiresConversion = [propertyCopy requiresConversion];
+  v14 = objectCopy;
+  v15 = [propertyCopy key];
   v16 = v15;
-  if (v13)
+  if (requiresConversion)
   {
     v17 = [v15 isEqualToString:@"contactDict"];
 
     if (v17)
     {
       v18 = [(NSMutableDictionary *)self->super._payloadAttributes objectForKeyedSubscript:@"verifiedType"];
-      v19 = [v18 intValue];
+      intValue = [v18 intValue];
 
-      if (v19 != -2)
+      if (intValue != -2)
       {
         payloadAttributes = self->super._payloadAttributes;
-        v21 = [v10 key];
+        v21 = [propertyCopy key];
         v22 = [(NSMutableDictionary *)payloadAttributes objectForKeyedSubscript:v21];
         [v14 setContactMatchingDictionary:v22];
       }
     }
 
-    else if ([v10 isEqualToKey:@"userFeedbacks"])
+    else if ([propertyCopy isEqualToKey:@"userFeedbacks"])
     {
       v43 = v14;
-      v44 = v10;
-      v41 = v12;
+      v44 = propertyCopy;
+      v41 = keyCopy;
       v29 = [(NSMutableDictionary *)self->super._payloadAttributes objectForKeyedSubscript:@"userFeedbacks"];
       v30 = objc_alloc_init(MEMORY[0x1E695DFA8]);
       v51 = 0u;
@@ -103,20 +103,20 @@
             v36 = [v35 objectForKeyedSubscript:@"userFeedbackUUID"];
             if (v36)
             {
-              v37 = [v43 managedObjectContext];
-              v38 = [PLUserFeedback insertIntoManagedObjectContext:v37 withUUID:v36];
+              managedObjectContext = [v43 managedObjectContext];
+              v38 = [PLUserFeedback insertIntoManagedObjectContext:managedObjectContext withUUID:v36];
 
-              v39 = [v44 subRelationshipProperties];
+              subRelationshipProperties = [v44 subRelationshipProperties];
               v47[0] = MEMORY[0x1E69E9820];
               v47[1] = 3221225472;
               v47[2] = __98__PLPersonJournalEntryPayload_applyPayloadProperty_toManagedObject_key_payloadAttributesToUpdate___block_invoke;
               v47[3] = &unk_1E7572828;
               v47[4] = self;
               v48 = v38;
-              v49 = v45;
+              v49 = updateCopy;
               v50 = v35;
               v40 = v38;
-              [v39 enumerateKeysAndObjectsUsingBlock:v47];
+              [subRelationshipProperties enumerateKeysAndObjectsUsingBlock:v47];
 
               [v30 addObject:v40];
             }
@@ -131,8 +131,8 @@
       v14 = v43;
       [v43 setUserFeedbacks:v30];
 
-      v10 = v44;
-      v12 = v41;
+      propertyCopy = v44;
+      keyCopy = v41;
     }
   }
 
@@ -143,12 +143,12 @@
     if (v23)
     {
       v24 = [(NSMutableDictionary *)self->super._payloadAttributes objectForKeyedSubscript:@"verifiedType"];
-      v25 = [v24 intValue];
+      intValue2 = [v24 intValue];
 
-      if (v25 != -2)
+      if (intValue2 != -2)
       {
         v26 = self->super._payloadAttributes;
-        v27 = [v10 key];
+        v27 = [propertyCopy key];
         v28 = [(NSMutableDictionary *)v26 objectForKeyedSubscript:v27];
         [v14 setPersonUri:v28];
       }
@@ -158,20 +158,20 @@
     {
       v46.receiver = self;
       v46.super_class = PLPersonJournalEntryPayload;
-      [(PLManagedObjectJournalEntryPayload *)&v46 applyPayloadProperty:v10 toManagedObject:v14 key:v12 payloadAttributesToUpdate:v45];
+      [(PLManagedObjectJournalEntryPayload *)&v46 applyPayloadProperty:propertyCopy toManagedObject:v14 key:keyCopy payloadAttributesToUpdate:updateCopy];
     }
   }
 }
 
-- (id)payloadValueFromAttributes:(id)a3 forPayloadProperty:(id)a4
+- (id)payloadValueFromAttributes:(id)attributes forPayloadProperty:(id)property
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 isEqualToKey:@"mergeTarget"])
+  attributesCopy = attributes;
+  propertyCopy = property;
+  if ([propertyCopy isEqualToKey:@"mergeTarget"])
   {
-    v8 = [v7 key];
+    v8 = [propertyCopy key];
 
-    v9 = [v6 objectForKeyedSubscript:v8];
+    v9 = [attributesCopy objectForKeyedSubscript:v8];
     v10 = [(PLManagedObjectJournalEntryPayload *)self UUIDStringForData:v9];
   }
 
@@ -179,61 +179,61 @@
   {
     v12.receiver = self;
     v12.super_class = PLPersonJournalEntryPayload;
-    v10 = [(PLManagedObjectJournalEntryPayload *)&v12 payloadValueFromAttributes:v6 forPayloadProperty:v7];
+    v10 = [(PLManagedObjectJournalEntryPayload *)&v12 payloadValueFromAttributes:attributesCopy forPayloadProperty:propertyCopy];
   }
 
   return v10;
 }
 
-- (void)appendAttributeKey:(id)a3 value:(id)a4 toDescriptionBuilder:(id)a5
+- (void)appendAttributeKey:(id)key value:(id)value toDescriptionBuilder:(id)builder
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  if ([v8 isEqualToString:@"mergeTarget"])
+  keyCopy = key;
+  builderCopy = builder;
+  valueCopy = value;
+  if ([keyCopy isEqualToString:@"mergeTarget"])
   {
-    v11 = [(PLManagedObjectJournalEntryPayload *)self UUIDStringForData:v10];
+    v11 = [(PLManagedObjectJournalEntryPayload *)self UUIDStringForData:valueCopy];
 
     v13.receiver = self;
     v13.super_class = PLPersonJournalEntryPayload;
-    [(PLManagedObjectJournalEntryPayload *)&v13 appendAttributeKey:v8 value:v11 toDescriptionBuilder:v9];
-    v10 = v11;
+    [(PLManagedObjectJournalEntryPayload *)&v13 appendAttributeKey:keyCopy value:v11 toDescriptionBuilder:builderCopy];
+    valueCopy = v11;
   }
 
   else
   {
     v12.receiver = self;
     v12.super_class = PLPersonJournalEntryPayload;
-    [(PLManagedObjectJournalEntryPayload *)&v12 appendAttributeKey:v8 value:v10 toDescriptionBuilder:v9];
+    [(PLManagedObjectJournalEntryPayload *)&v12 appendAttributeKey:keyCopy value:valueCopy toDescriptionBuilder:builderCopy];
   }
 }
 
-- (BOOL)updatePayloadAttributes:(id)a3 andNilAttributes:(id)a4 withManagedObject:(id)a5 forPayloadProperty:(id)a6
+- (BOOL)updatePayloadAttributes:(id)attributes andNilAttributes:(id)nilAttributes withManagedObject:(id)object forPayloadProperty:(id)property
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
-  v12 = v10;
-  if ([v11 isEqualToKey:@"mergeTarget"])
+  attributesCopy = attributes;
+  objectCopy = object;
+  propertyCopy = property;
+  v12 = objectCopy;
+  if ([propertyCopy isEqualToKey:@"mergeTarget"])
   {
-    v13 = [v12 mergeTargetPerson];
-    v14 = [v13 personUUID];
-    v15 = [(PLManagedObjectJournalEntryPayload *)self UUIDDataForString:v14];
-    v16 = [v11 key];
-    [v9 setObject:v15 forKeyedSubscript:v16];
+    mergeTargetPerson = [v12 mergeTargetPerson];
+    personUUID = [mergeTargetPerson personUUID];
+    v15 = [(PLManagedObjectJournalEntryPayload *)self UUIDDataForString:personUUID];
+    v16 = [propertyCopy key];
+    [attributesCopy setObject:v15 forKeyedSubscript:v16];
   }
 
   else
   {
-    if (![v11 isEqualToKey:@"contactDict"])
+    if (![propertyCopy isEqualToKey:@"contactDict"])
     {
       v17 = 0;
       goto LABEL_7;
     }
 
-    v13 = [v12 contactMatchingDictionary];
-    v14 = [v11 key];
-    [v9 setObject:v13 forKeyedSubscript:v14];
+    mergeTargetPerson = [v12 contactMatchingDictionary];
+    personUUID = [propertyCopy key];
+    [attributesCopy setObject:mergeTargetPerson forKeyedSubscript:personUUID];
   }
 
   v17 = 1;
@@ -253,66 +253,66 @@ LABEL_7:
 - (signed)keyFacePickSource
 {
   v2 = [(NSMutableDictionary *)self->super._payloadAttributes objectForKeyedSubscript:@"keyFacePickSource"];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (int)cloudVerifiedType
 {
   v2 = [(NSMutableDictionary *)self->super._payloadAttributes objectForKeyedSubscript:@"cloudVerifiedType"];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (int)verifiedType
 {
   v2 = [(NSMutableDictionary *)self->super._payloadAttributes objectForKeyedSubscript:@"verifiedType"];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (int)type
 {
   v2 = [(NSMutableDictionary *)self->super._payloadAttributes objectForKeyedSubscript:@"type"];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (unsigned)manualOrder
 {
   v2 = [(NSMutableDictionary *)self->super._payloadAttributes objectForKeyedSubscript:@"order"];
-  v3 = [v2 unsignedIntegerValue];
+  unsignedIntegerValue = [v2 unsignedIntegerValue];
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
-- (PLPersonJournalEntryPayload)initWithUserFeedback:(id)a3 changedKeys:(id)a4
+- (PLPersonJournalEntryPayload)initWithUserFeedback:(id)feedback changedKeys:(id)keys
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  feedbackCopy = feedback;
+  keysCopy = keys;
+  if (keysCopy)
   {
     v8 = MEMORY[0x1E695DFD8];
-    v9 = [objc_opt_class() modelProperties];
-    v10 = [v9 objectForKeyedSubscript:@"userFeedbacks"];
-    v11 = [v10 subRelationshipProperties];
-    v12 = [v11 allKeys];
-    v13 = [v8 setWithArray:v12];
+    modelProperties = [objc_opt_class() modelProperties];
+    v10 = [modelProperties objectForKeyedSubscript:@"userFeedbacks"];
+    subRelationshipProperties = [v10 subRelationshipProperties];
+    allKeys = [subRelationshipProperties allKeys];
+    v13 = [v8 setWithArray:allKeys];
 
-    if ([v7 intersectsSet:v13])
+    if ([keysCopy intersectsSet:v13])
     {
-      v14 = [v6 person];
-      v15 = [v6 payloadID];
-      v16 = [objc_opt_class() payloadVersion];
+      person = [feedbackCopy person];
+      payloadID = [feedbackCopy payloadID];
+      payloadVersion = [objc_opt_class() payloadVersion];
       v17 = [MEMORY[0x1E695DFD8] setWithObject:@"userFeedbacks"];
-      v18 = [objc_opt_class() modelProperties];
+      modelProperties2 = [objc_opt_class() modelProperties];
       v21.receiver = self;
       v21.super_class = PLPersonJournalEntryPayload;
-      v19 = [(PLManagedObjectJournalEntryPayload *)&v21 initWithPayloadID:v15 payloadVersion:v16 managedObject:v14 changedKeys:v17 modelProperties:v18];
+      v19 = [(PLManagedObjectJournalEntryPayload *)&v21 initWithPayloadID:payloadID payloadVersion:payloadVersion managedObject:person changedKeys:v17 modelProperties:modelProperties2];
     }
 
     else
@@ -331,26 +331,26 @@ LABEL_7:
   return v19;
 }
 
-- (id)insertPersonFromDataInManagedObjectContext:(id)a3
+- (id)insertPersonFromDataInManagedObjectContext:(id)context
 {
-  v4 = a3;
-  v5 = [(PLManagedObjectJournalEntryPayload *)self payloadID];
-  v6 = [v5 payloadIDString];
-  v7 = [(PLPersonJournalEntryPayload *)self fullName];
-  v8 = [PLPerson insertIntoManagedObjectContext:v4 withPersonUUID:v6 fullName:v7 verifiedType:[(PLPersonJournalEntryPayload *)self verifiedType]];
+  contextCopy = context;
+  payloadID = [(PLManagedObjectJournalEntryPayload *)self payloadID];
+  payloadIDString = [payloadID payloadIDString];
+  fullName = [(PLPersonJournalEntryPayload *)self fullName];
+  v8 = [PLPerson insertIntoManagedObjectContext:contextCopy withPersonUUID:payloadIDString fullName:fullName verifiedType:[(PLPersonJournalEntryPayload *)self verifiedType]];
 
   [(PLManagedObjectJournalEntryPayload *)self applyPayloadToManagedObject:v8 payloadAttributesToUpdate:0];
 
   return v8;
 }
 
-+ (BOOL)isValidForPersistenceWithObjectDictionary:(id)a3 additionalEntityName:(id)a4
++ (BOOL)isValidForPersistenceWithObjectDictionary:(id)dictionary additionalEntityName:(id)name
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"verifiedType"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"verifiedType"];
   if ([v5 integerValue])
   {
-    v6 = [v4 objectForKeyedSubscript:@"personUUID"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"personUUID"];
     v7 = v6 != 0;
   }
 
@@ -368,7 +368,7 @@ LABEL_7:
   block[1] = 3221225472;
   block[2] = __67__PLPersonJournalEntryPayload_persistedPropertyNamesForEntityNames__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (persistedPropertyNamesForEntityNames_onceToken_81040 != -1)
   {
     dispatch_once(&persistedPropertyNamesForEntityNames_onceToken_81040, block);
@@ -392,7 +392,7 @@ void __67__PLPersonJournalEntryPayload_persistedPropertyNamesForEntityNames__blo
   block[1] = 3221225472;
   block[2] = __46__PLPersonJournalEntryPayload_modelProperties__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (modelProperties_onceToken_81042 != -1)
   {
     dispatch_once(&modelProperties_onceToken_81042, block);
@@ -597,16 +597,16 @@ uint64_t __46__PLPersonJournalEntryPayload_modelProperties__block_invoke(uint64_
   return v12;
 }
 
-+ (void)updateMergeTargetPersonWithPersonUUIDMapping:(id)a3 fromDataInManagedObjectContext:(id)a4
++ (void)updateMergeTargetPersonWithPersonUUIDMapping:(id)mapping fromDataInManagedObjectContext:(id)context
 {
   v31 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  mappingCopy = mapping;
+  contextCopy = context;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v7 = [v5 countByEnumeratingWithState:&v22 objects:v30 count:16];
+  v7 = [mappingCopy countByEnumeratingWithState:&v22 objects:v30 count:16];
   if (v7)
   {
     v9 = v7;
@@ -619,20 +619,20 @@ uint64_t __46__PLPersonJournalEntryPayload_modelProperties__block_invoke(uint64_
       {
         if (*v23 != v21)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(mappingCopy);
         }
 
         v11 = *(*(&v22 + 1) + 8 * i);
-        v12 = [v5 objectForKey:{v11, v20}];
-        v13 = [PLPerson personWithUUID:v11 inManagedObjectContext:v6];
-        v14 = [PLPerson personWithUUID:v12 inManagedObjectContext:v6];
-        v15 = [v14 finalMergeTargetPerson];
+        v12 = [mappingCopy objectForKey:{v11, v20}];
+        v13 = [PLPerson personWithUUID:v11 inManagedObjectContext:contextCopy];
+        v14 = [PLPerson personWithUUID:v12 inManagedObjectContext:contextCopy];
+        finalMergeTargetPerson = [v14 finalMergeTargetPerson];
 
         v16 = PLMigrationGetLog();
         v17 = v16;
         if (v13)
         {
-          v18 = v15 == 0;
+          v18 = finalMergeTargetPerson == 0;
         }
 
         else
@@ -657,17 +657,17 @@ uint64_t __46__PLPersonJournalEntryPayload_modelProperties__block_invoke(uint64_
           if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
           {
             *buf = v20;
-            v27 = v15;
+            v27 = finalMergeTargetPerson;
             v28 = 2112;
             v29 = v13;
             _os_log_impl(&dword_19BF1F000, v17, OS_LOG_TYPE_DEFAULT, "Setting merge target person %@ for %@", buf, 0x16u);
           }
 
-          [v13 setMergeTargetPerson:v15];
+          [v13 setMergeTargetPerson:finalMergeTargetPerson];
         }
       }
 
-      v9 = [v5 countByEnumeratingWithState:&v22 objects:v30 count:16];
+      v9 = [mappingCopy countByEnumeratingWithState:&v22 objects:v30 count:16];
     }
 
     while (v9);

@@ -44,12 +44,12 @@
 + (id)spotlightInternalWatchdogConfiguration;
 + (id)sqlQueryPerformanceConfiguration;
 + (id)watchdogdDefaultConfiguration;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToDampeningConfiguration:(id)a3;
-- (DRSDampeningConfiguration)initWithHysteresis:(double)a3 cap:(unint64_t)a4 acceptanceRate:(double)a5;
-- (DRSDampeningConfiguration)initWithPlistDict:(id)a3;
-- (id)_ON_MOC_QUEUE_moRepresentationInContext:(id)a3 identifier:(id)a4;
-- (id)_initWithMO_ON_MOC_QUEUE:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToDampeningConfiguration:(id)configuration;
+- (DRSDampeningConfiguration)initWithHysteresis:(double)hysteresis cap:(unint64_t)cap acceptanceRate:(double)rate;
+- (DRSDampeningConfiguration)initWithPlistDict:(id)dict;
+- (id)_ON_MOC_QUEUE_moRepresentationInContext:(id)context identifier:(id)identifier;
+- (id)_initWithMO_ON_MOC_QUEUE:(id)e;
 - (id)debugDescription;
 - (id)jsonCompatibleDictRepresentation;
 @end
@@ -61,16 +61,16 @@
   v3 = objc_alloc(MEMORY[0x277CCACA8]);
   [(DRSDampeningConfiguration *)self hysteresis];
   v5 = v4;
-  v6 = [(DRSDampeningConfiguration *)self countCap];
+  countCap = [(DRSDampeningConfiguration *)self countCap];
   [(DRSDampeningConfiguration *)self acceptanceRate];
-  v8 = [v3 initWithFormat:@"Hysteresis: %.1fs, cap: %lu, acceptance rate: %.3f", v5, v6, v7];
+  v8 = [v3 initWithFormat:@"Hysteresis: %.1fs, cap: %lu, acceptance rate: %.3f", v5, countCap, v7];
 
   return v8;
 }
 
-- (DRSDampeningConfiguration)initWithPlistDict:(id)a3
+- (DRSDampeningConfiguration)initWithPlistDict:(id)dict
 {
-  v4 = a3;
+  dictCopy = dict;
   v25 = 0;
   v26 = &v25;
   v27 = 0x2020000000;
@@ -80,7 +80,7 @@
   v24[2] = __47__DRSDampeningConfiguration_initWithPlistDict___block_invoke;
   v24[3] = &unk_27899FDA8;
   v24[4] = &v25;
-  [v4 enumerateKeysAndObjectsUsingBlock:v24];
+  [dictCopy enumerateKeysAndObjectsUsingBlock:v24];
   if (*(v26 + 24) == 1)
   {
     v5 = DPLogHandle_DampeningManagerError();
@@ -90,12 +90,12 @@
       _os_signpost_emit_with_name_impl(&dword_232906000, v5, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "InvalidDampeningConfigurationPlist", "Found unexpected object types in plist dictionary", v23, 2u);
     }
 
-    v6 = 0;
+    selfCopy = 0;
   }
 
   else
   {
-    v7 = [v4 objectForKeyedSubscript:kDRSDMHysteresisKey];
+    v7 = [dictCopy objectForKeyedSubscript:kDRSDMHysteresisKey];
     v8 = v7;
     v9 = &unk_2847FF858;
     if (v7)
@@ -105,7 +105,7 @@
 
     v5 = v9;
 
-    v10 = [v4 objectForKeyedSubscript:kDRSDMCountCapKey];
+    v10 = [dictCopy objectForKeyedSubscript:kDRSDMCountCapKey];
     v11 = v10;
     v12 = &unk_2847FF828;
     if (v10)
@@ -115,7 +115,7 @@
 
     v13 = v12;
 
-    v14 = [v4 objectForKeyedSubscript:kDRSDMAcceptanceRateKey];
+    v14 = [dictCopy objectForKeyedSubscript:kDRSDMAcceptanceRateKey];
     v15 = v14;
     v16 = &unk_2847FF868;
     if (v14)
@@ -127,15 +127,15 @@
 
     [v5 floatValue];
     v19 = v18;
-    v20 = [v13 unsignedIntegerValue];
+    unsignedIntegerValue = [v13 unsignedIntegerValue];
     [v17 doubleValue];
-    self = [(DRSDampeningConfiguration *)self initWithHysteresis:v20 cap:v19 acceptanceRate:v21];
+    self = [(DRSDampeningConfiguration *)self initWithHysteresis:unsignedIntegerValue cap:v19 acceptanceRate:v21];
 
-    v6 = self;
+    selfCopy = self;
   }
 
   _Block_object_dispose(&v25, 8);
-  return v6;
+  return selfCopy;
 }
 
 void __47__DRSDampeningConfiguration_initWithPlistDict___block_invoke(uint64_t a1, void *a2, void *a3, _BYTE *a4)
@@ -152,17 +152,17 @@ void __47__DRSDampeningConfiguration_initWithPlistDict___block_invoke(uint64_t a
   }
 }
 
-- (DRSDampeningConfiguration)initWithHysteresis:(double)a3 cap:(unint64_t)a4 acceptanceRate:(double)a5
+- (DRSDampeningConfiguration)initWithHysteresis:(double)hysteresis cap:(unint64_t)cap acceptanceRate:(double)rate
 {
-  v6 = self;
+  selfCopy = self;
   v19 = *MEMORY[0x277D85DE8];
-  if (a3 < 0.0)
+  if (hysteresis < 0.0)
   {
     v7 = DPLogHandle_DampeningManagerError();
     if (os_signpost_enabled(v7))
     {
       *buf = 134217984;
-      v18 = a3;
+      rateCopy = hysteresis;
       v8 = "Invalid hysteresis window of %f";
 LABEL_10:
       _os_signpost_emit_with_name_impl(&dword_232906000, v7, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "DampeningConfigurationFailure", v8, buf, 0xCu);
@@ -172,13 +172,13 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if (a5 < 0.0 || a5 > 1.0)
+  if (rate < 0.0 || rate > 1.0)
   {
     v7 = DPLogHandle_DampeningManagerError();
     if (os_signpost_enabled(v7))
     {
       *buf = 134217984;
-      v18 = a5;
+      rateCopy = rate;
       v8 = "Invalid acceptance rate of %f";
       goto LABEL_10;
     }
@@ -194,68 +194,68 @@ LABEL_11:
   v13 = [(DRSDampeningConfiguration *)&v16 init];
   if (v13)
   {
-    v13->_countCap = a4;
-    v13->_hysteresis = a3;
-    v13->_acceptanceRate = a5;
+    v13->_countCap = cap;
+    v13->_hysteresis = hysteresis;
+    v13->_acceptanceRate = rate;
   }
 
-  v6 = v13;
-  v11 = v6;
+  selfCopy = v13;
+  v11 = selfCopy;
 LABEL_15:
 
   v14 = *MEMORY[0x277D85DE8];
   return v11;
 }
 
-- (id)_initWithMO_ON_MOC_QUEUE:(id)a3
+- (id)_initWithMO_ON_MOC_QUEUE:(id)e
 {
-  if (a3)
+  if (e)
   {
-    v4 = a3;
-    [v4 hysteresis];
+    eCopy = e;
+    [eCopy hysteresis];
     v6 = v5;
-    v7 = [v4 countCap];
-    [v4 acceptanceRate];
+    countCap = [eCopy countCap];
+    [eCopy acceptanceRate];
     v9 = v8;
 
-    self = [(DRSDampeningConfiguration *)self initWithHysteresis:v7 cap:v6 acceptanceRate:v9];
-    v10 = self;
+    self = [(DRSDampeningConfiguration *)self initWithHysteresis:countCap cap:v6 acceptanceRate:v9];
+    selfCopy = self;
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (id)_ON_MOC_QUEUE_moRepresentationInContext:(id)a3 identifier:(id)a4
+- (id)_ON_MOC_QUEUE_moRepresentationInContext:(id)context identifier:(id)identifier
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[DRSDampeningConfigurationMO alloc] initWithContext:v7];
+  identifierCopy = identifier;
+  contextCopy = context;
+  v8 = [[DRSDampeningConfigurationMO alloc] initWithContext:contextCopy];
 
   [(DRSDampeningConfiguration *)self hysteresis];
   [(DRSDampeningConfigurationMO *)v8 setHysteresis:?];
   [(DRSDampeningConfigurationMO *)v8 setCountCap:[(DRSDampeningConfiguration *)self countCap]];
   [(DRSDampeningConfiguration *)self acceptanceRate];
   [(DRSDampeningConfigurationMO *)v8 setAcceptanceRate:?];
-  [(DRSDampeningConfigurationMO *)v8 setIdentifier:v6];
+  [(DRSDampeningConfigurationMO *)v8 setIdentifier:identifierCopy];
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (!equalCopy)
   {
     goto LABEL_5;
   }
 
-  if (self == v4)
+  if (self == equalCopy)
   {
     v6 = 1;
     goto LABEL_7;
@@ -278,14 +278,14 @@ LABEL_7:
   return v6;
 }
 
-- (BOOL)isEqualToDampeningConfiguration:(id)a3
+- (BOOL)isEqualToDampeningConfiguration:(id)configuration
 {
-  v4 = a3;
-  if (v4 && (-[DRSDampeningConfiguration hysteresis](self, "hysteresis"), v6 = v5, [v4 hysteresis], v6 == v7) && (v8 = -[DRSDampeningConfiguration countCap](self, "countCap"), v8 == objc_msgSend(v4, "countCap")))
+  configurationCopy = configuration;
+  if (configurationCopy && (-[DRSDampeningConfiguration hysteresis](self, "hysteresis"), v6 = v5, [configurationCopy hysteresis], v6 == v7) && (v8 = -[DRSDampeningConfiguration countCap](self, "countCap"), v8 == objc_msgSend(configurationCopy, "countCap")))
   {
     [(DRSDampeningConfiguration *)self acceptanceRate];
     v10 = v9;
-    [v4 acceptanceRate];
+    [configurationCopy acceptanceRate];
     v12 = v10 == v11;
   }
 
@@ -313,8 +313,8 @@ LABEL_7:
   v4 = [v3 numberWithDouble:?];
   v13[0] = v4;
   v12[1] = kDRSDMCountCapKey;
-  v5 = [(DRSDampeningConfiguration *)self countCap];
-  if (v5 == 0x7FFFFFFF)
+  countCap = [(DRSDampeningConfiguration *)self countCap];
+  if (countCap == 0x7FFFFFFF)
   {
     v6 = @"<No cap>";
   }
@@ -332,7 +332,7 @@ LABEL_7:
   v13[2] = v8;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:v12 count:3];
 
-  if (v5 != 0x7FFFFFFF)
+  if (countCap != 0x7FFFFFFF)
   {
   }
 

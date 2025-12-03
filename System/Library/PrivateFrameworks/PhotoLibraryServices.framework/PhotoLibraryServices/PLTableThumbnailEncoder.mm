@@ -1,23 +1,23 @@
 @interface PLTableThumbnailEncoder
-+ (CGImage)_createDownscaledImageFromSource:(CGImageSource *)a3 toSize:(CGSize)a4 cropped:(BOOL)a5;
-+ (CGImage)_createDownscaledImageFromSourceImage:(CGImage *)a3 toSize:(CGSize)a4 cropped:(BOOL)a5;
-+ (CGImage)createCascadeSeedImageFromSourceImage:(CGImage *)a3 toFormats:(id)a4;
-+ (CGSize)smallestSizeThatFitsSourceSize:(CGSize)a3 withinFitFormat:(id)a4 andLargerSquareFormat:(id)a5;
-+ (id)_encodeDownscaledImage:(CGImage *)a3 toFormat:(id)a4 withUUID:(id)a5 error:(id *)a6;
-+ (id)encodeThumbnailImage:(CGImage *)a3 toFormat:(id)a4 withUUID:(id)a5 error:(id *)a6;
-+ (id)encodeThumbnailImage:(CGImage *)a3 toFormats:(id)a4 withUUID:(id)a5 error:(id *)a6;
-+ (id)encodeThumbnailSource:(CGImageSource *)a3 toFormat:(id)a4 withUUID:(id)a5 error:(id *)a6;
-+ (id)encodeThumbnailSource:(CGImageSource *)a3 toFormats:(id)a4 withUUID:(id)a5 error:(id *)a6;
++ (CGImage)_createDownscaledImageFromSource:(CGImageSource *)source toSize:(CGSize)size cropped:(BOOL)cropped;
++ (CGImage)_createDownscaledImageFromSourceImage:(CGImage *)image toSize:(CGSize)size cropped:(BOOL)cropped;
++ (CGImage)createCascadeSeedImageFromSourceImage:(CGImage *)image toFormats:(id)formats;
++ (CGSize)smallestSizeThatFitsSourceSize:(CGSize)size withinFitFormat:(id)format andLargerSquareFormat:(id)squareFormat;
++ (id)_encodeDownscaledImage:(CGImage *)image toFormat:(id)format withUUID:(id)d error:(id *)error;
++ (id)encodeThumbnailImage:(CGImage *)image toFormat:(id)format withUUID:(id)d error:(id *)error;
++ (id)encodeThumbnailImage:(CGImage *)image toFormats:(id)formats withUUID:(id)d error:(id *)error;
++ (id)encodeThumbnailSource:(CGImageSource *)source toFormat:(id)format withUUID:(id)d error:(id *)error;
++ (id)encodeThumbnailSource:(CGImageSource *)source toFormats:(id)formats withUUID:(id)d error:(id *)error;
 @end
 
 @implementation PLTableThumbnailEncoder
 
-+ (CGImage)createCascadeSeedImageFromSourceImage:(CGImage *)a3 toFormats:(id)a4
++ (CGImage)createCascadeSeedImageFromSourceImage:(CGImage *)image toFormats:(id)formats
 {
   v50 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = v6;
-  if (a3 && [v6 count] >= 2)
+  formatsCopy = formats;
+  v7 = formatsCopy;
+  if (image && [formatsCopy count] >= 2)
   {
     v8 = [MEMORY[0x1E696AB50] setWithCapacity:5];
     v45 = 0u;
@@ -57,7 +57,7 @@
     {
       v15 = [v9 objectAtIndexedSubscript:0];
       [v15 size];
-      v18 = [a1 _createDownscaledImageFromSourceImage:a3 toSize:objc_msgSend(v15 cropped:{"isCropped"), v16, v17}];
+      v18 = [self _createDownscaledImageFromSourceImage:image toSize:objc_msgSend(v15 cropped:{"isCropped"), v16, v17}];
 
       if (v18)
       {
@@ -69,19 +69,19 @@
     if ([v19 isSquare])
     {
       v20 = [v9 objectAtIndexedSubscript:1];
-      v21 = [v20 isSquare];
+      isSquare = [v20 isSquare];
 
-      if ((v21 & 1) == 0)
+      if ((isSquare & 1) == 0)
       {
-        Width = CGImageGetWidth(a3);
-        Height = CGImageGetHeight(a3);
+        Width = CGImageGetWidth(image);
+        Height = CGImageGetHeight(image);
         v24 = [v9 objectAtIndexedSubscript:1];
         v25 = [v9 objectAtIndexedSubscript:0];
-        [a1 smallestSizeThatFitsSourceSize:v24 withinFitFormat:v25 andLargerSquareFormat:Width, Height];
+        [self smallestSizeThatFitsSourceSize:v24 withinFitFormat:v25 andLargerSquareFormat:Width, Height];
         v27 = v26;
         v29 = v28;
 
-        v30 = [a1 _createDownscaledImageFromSourceImage:a3 toSize:0 cropped:{v27, v29}];
+        v30 = [self _createDownscaledImageFromSourceImage:image toSize:0 cropped:{v27, v29}];
         if (v30)
         {
           v18 = v30;
@@ -97,10 +97,10 @@ LABEL_26:
     }
 
     v31 = [v9 objectAtIndexedSubscript:0];
-    v32 = [v31 isSquare];
+    isSquare2 = [v31 isSquare];
 
     v18 = 0;
-    if (v32)
+    if (isSquare2)
     {
       goto LABEL_26;
     }
@@ -133,8 +133,8 @@ LABEL_23:
       {
         [v33 size];
         PLSizeFromCGSize();
-        CGImageGetWidth(a3);
-        CGImageGetHeight(a3);
+        CGImageGetWidth(image);
+        CGImageGetHeight(image);
         PLSizeMake();
         PLCGSizeScaledToFitSize();
         v38 = v37;
@@ -146,7 +146,7 @@ LABEL_23:
           if (v40 >= v42)
           {
             [v33 size];
-            v18 = [a1 _createDownscaledImageFromSourceImage:a3 toSize:objc_msgSend(v33 cropped:{"isCropped"), v43, v44}];
+            v18 = [self _createDownscaledImageFromSourceImage:image toSize:objc_msgSend(v33 cropped:{"isCropped"), v43, v44}];
             goto LABEL_25;
           }
         }
@@ -165,43 +165,43 @@ LABEL_27:
   return v18;
 }
 
-+ (CGSize)smallestSizeThatFitsSourceSize:(CGSize)a3 withinFitFormat:(id)a4 andLargerSquareFormat:(id)a5
++ (CGSize)smallestSizeThatFitsSourceSize:(CGSize)size withinFitFormat:(id)format andLargerSquareFormat:(id)squareFormat
 {
-  height = a3.height;
-  width = a3.width;
-  v10 = a4;
-  v11 = a5;
-  if (!v10 || [v10 isSquare])
+  height = size.height;
+  width = size.width;
+  formatCopy = format;
+  squareFormatCopy = squareFormat;
+  if (!formatCopy || [formatCopy isSquare])
   {
-    v28 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v28 handleFailureInMethod:a2 object:a1 file:@"PLTableThumbnailEncoder.m" lineNumber:424 description:{@"Invalid parameter not satisfying: %@", @"fitFormat && !fitFormat.isSquare"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLTableThumbnailEncoder.m" lineNumber:424 description:{@"Invalid parameter not satisfying: %@", @"fitFormat && !fitFormat.isSquare"}];
 
-    if (v11)
+    if (squareFormatCopy)
     {
 LABEL_4:
-      if ([v11 isSquare])
+      if ([squareFormatCopy isSquare])
       {
         goto LABEL_5;
       }
     }
   }
 
-  else if (v11)
+  else if (squareFormatCopy)
   {
     goto LABEL_4;
   }
 
-  v29 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v29 handleFailureInMethod:a2 object:a1 file:@"PLTableThumbnailEncoder.m" lineNumber:425 description:{@"Invalid parameter not satisfying: %@", @"squareFormat && squareFormat.isSquare"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLTableThumbnailEncoder.m" lineNumber:425 description:{@"Invalid parameter not satisfying: %@", @"squareFormat && squareFormat.isSquare"}];
 
 LABEL_5:
-  [v11 dimension];
+  [squareFormatCopy dimension];
   v13 = v12;
-  [v10 dimension];
+  [formatCopy dimension];
   if (v13 < v14)
   {
-    v30 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v30 handleFailureInMethod:a2 object:a1 file:@"PLTableThumbnailEncoder.m" lineNumber:426 description:{@"Invalid parameter not satisfying: %@", @"squareFormat.dimension >= fitFormat.dimension"}];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"PLTableThumbnailEncoder.m" lineNumber:426 description:{@"Invalid parameter not satisfying: %@", @"squareFormat.dimension >= fitFormat.dimension"}];
   }
 
   if (width <= 0.0 || height <= 0.0)
@@ -212,14 +212,14 @@ LABEL_5:
 
   else
   {
-    [v10 size];
-    [v10 size];
+    [formatCopy size];
+    [formatCopy size];
     PLSizeMake();
     PLSizeFromCGSize();
     PLCGSizeScaledToFitSize();
     v16 = v15;
     v18 = v17;
-    [v11 dimension];
+    [squareFormatCopy dimension];
     if (height > width)
     {
       v20 = v18 * (v19 / v16);
@@ -254,11 +254,11 @@ LABEL_5:
   return result;
 }
 
-+ (id)encodeThumbnailImage:(CGImage *)a3 toFormat:(id)a4 withUUID:(id)a5 error:(id *)a6
++ (id)encodeThumbnailImage:(CGImage *)image toFormat:(id)format withUUID:(id)d error:(id *)error
 {
-  v10 = a4;
-  v11 = a5;
-  if (!a3 || !v10)
+  formatCopy = format;
+  dCopy = d;
+  if (!image || !formatCopy)
   {
     v12 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E69BFF48] code:61002 userInfo:0];
     if (v12)
@@ -268,8 +268,8 @@ LABEL_5:
   }
 
   v13 = objc_opt_class();
-  [v10 size];
-  v16 = [v13 _createDownscaledImageFromSourceImage:a3 toSize:objc_msgSend(v10 cropped:{"isCropped"), v14, v15}];
+  [formatCopy size];
+  v16 = [v13 _createDownscaledImageFromSourceImage:image toSize:objc_msgSend(formatCopy cropped:{"isCropped"), v14, v15}];
   if (!v16)
   {
     v12 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E69BFF48] code:61001 userInfo:0];
@@ -280,7 +280,7 @@ LABEL_5:
 
 LABEL_10:
     v12 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E69BFF48] code:61004 userInfo:0];
-    if (a6)
+    if (error)
     {
       goto LABEL_8;
     }
@@ -290,7 +290,7 @@ LABEL_10:
 
   v17 = v16;
   v21 = 0;
-  v18 = [a1 _encodeDownscaledImage:v16 toFormat:v10 withUUID:v11 error:&v21];
+  v18 = [self _encodeDownscaledImage:v16 toFormat:formatCopy withUUID:dCopy error:&v21];
   v12 = v21;
   CGImageRelease(v17);
   if (v18)
@@ -304,12 +304,12 @@ LABEL_10:
   }
 
 LABEL_7:
-  if (a6)
+  if (error)
   {
 LABEL_8:
     v19 = v12;
     v18 = 0;
-    *a6 = v12;
+    *error = v12;
     goto LABEL_12;
   }
 
@@ -320,29 +320,29 @@ LABEL_12:
   return v18;
 }
 
-+ (id)encodeThumbnailImage:(CGImage *)a3 toFormats:(id)a4 withUUID:(id)a5 error:(id *)a6
++ (id)encodeThumbnailImage:(CGImage *)image toFormats:(id)formats withUUID:(id)d error:(id *)error
 {
   v33 = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v11 = a5;
-  v12 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v10, "count")}];
-  v13 = [a1 createCascadeSeedImageFromSourceImage:a3 toFormats:v10];
+  formatsCopy = formats;
+  dCopy = d;
+  v12 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(formatsCopy, "count")}];
+  v13 = [self createCascadeSeedImageFromSourceImage:image toFormats:formatsCopy];
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  obj = v10;
+  obj = formatsCopy;
   v14 = [obj countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v14)
   {
     v15 = v14;
-    v24 = a6;
+    errorCopy = error;
     v25 = v13;
     v16 = 0;
     v17 = *v29;
     if (v13)
     {
-      a3 = v13;
+      image = v13;
     }
 
     while (2)
@@ -358,17 +358,17 @@ LABEL_12:
 
         v20 = *(*(&v28 + 1) + 8 * v18);
         v27 = v19;
-        v21 = [a1 encodeThumbnailImage:a3 toFormat:v20 withUUID:v11 error:&v27, v24];
+        errorCopy = [self encodeThumbnailImage:image toFormat:v20 withUUID:dCopy error:&v27, errorCopy];
         v16 = v27;
 
-        if (!v21)
+        if (!errorCopy)
         {
 
-          if (v24)
+          if (errorCopy)
           {
             v22 = v16;
             v12 = 0;
-            *v24 = v16;
+            *errorCopy = v16;
           }
 
           else
@@ -379,7 +379,7 @@ LABEL_12:
           goto LABEL_14;
         }
 
-        [v12 addObject:v21];
+        [v12 addObject:errorCopy];
 
         ++v18;
         v19 = v16;
@@ -404,11 +404,11 @@ LABEL_14:
   return v12;
 }
 
-+ (id)encodeThumbnailSource:(CGImageSource *)a3 toFormat:(id)a4 withUUID:(id)a5 error:(id *)a6
++ (id)encodeThumbnailSource:(CGImageSource *)source toFormat:(id)format withUUID:(id)d error:(id *)error
 {
-  v10 = a4;
-  v11 = a5;
-  if (a3 && v10)
+  formatCopy = format;
+  dCopy = d;
+  if (source && formatCopy)
   {
     v12 = 0;
   }
@@ -419,8 +419,8 @@ LABEL_14:
   }
 
   v13 = objc_opt_class();
-  [v10 size];
-  v16 = [v13 _createDownscaledImageFromSource:a3 toSize:objc_msgSend(v10 cropped:{"isCropped"), v14, v15}];
+  [formatCopy size];
+  v16 = [v13 _createDownscaledImageFromSource:source toSize:objc_msgSend(formatCopy cropped:{"isCropped"), v14, v15}];
   if (!v16)
   {
     v19 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E69BFF48] code:61001 userInfo:0];
@@ -432,7 +432,7 @@ LABEL_14:
 
 LABEL_11:
     v19 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E69BFF48] code:61004 userInfo:0];
-    if (a6)
+    if (error)
     {
       goto LABEL_9;
     }
@@ -442,7 +442,7 @@ LABEL_11:
 
   v17 = v16;
   v22 = v12;
-  v18 = [a1 _encodeDownscaledImage:v16 toFormat:v10 withUUID:v11 error:&v22];
+  v18 = [self _encodeDownscaledImage:v16 toFormat:formatCopy withUUID:dCopy error:&v22];
   v19 = v22;
 
   CGImageRelease(v17);
@@ -457,12 +457,12 @@ LABEL_11:
   }
 
 LABEL_8:
-  if (a6)
+  if (error)
   {
 LABEL_9:
     v20 = v19;
     v18 = 0;
-    *a6 = v19;
+    *error = v19;
     goto LABEL_13;
   }
 
@@ -473,24 +473,24 @@ LABEL_13:
   return v18;
 }
 
-+ (id)encodeThumbnailSource:(CGImageSource *)a3 toFormats:(id)a4 withUUID:(id)a5 error:(id *)a6
++ (id)encodeThumbnailSource:(CGImageSource *)source toFormats:(id)formats withUUID:(id)d error:(id *)error
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v11 = a5;
-  if (a3)
+  formatsCopy = formats;
+  dCopy = d;
+  if (source)
   {
-    if ([v10 count])
+    if ([formatsCopy count])
     {
-      PrimaryImageIndex = CGImageSourceGetPrimaryImageIndex(a3);
+      PrimaryImageIndex = CGImageSourceGetPrimaryImageIndex(source);
       v20 = *MEMORY[0x1E696E138];
       v21[0] = MEMORY[0x1E695E118];
       v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v21 forKeys:&v20 count:1];
-      ImageAtIndex = CGImageSourceCreateImageAtIndex(a3, PrimaryImageIndex, v13);
+      ImageAtIndex = CGImageSourceCreateImageAtIndex(source, PrimaryImageIndex, v13);
       if (ImageAtIndex)
       {
         v15 = ImageAtIndex;
-        a3 = [a1 encodeThumbnailImage:ImageAtIndex toFormats:v10 withUUID:v11 error:a6];
+        source = [self encodeThumbnailImage:ImageAtIndex toFormats:formatsCopy withUUID:dCopy error:error];
         CGImageRelease(v15);
       }
 
@@ -500,30 +500,30 @@ LABEL_13:
         if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
         {
           v18 = 138543362;
-          v19 = a3;
+          sourceCopy = source;
           _os_log_impl(&dword_19BF1F000, v16, OS_LOG_TYPE_ERROR, "Unable to decode full sized image from source: %{public}@", &v18, 0xCu);
         }
 
-        a3 = 0;
+        source = 0;
       }
     }
 
     else
     {
-      a3 = 0;
+      source = 0;
     }
   }
 
-  return a3;
+  return source;
 }
 
-+ (id)_encodeDownscaledImage:(CGImage *)a3 toFormat:(id)a4 withUUID:(id)a5 error:(id *)a6
++ (id)_encodeDownscaledImage:(CGImage *)image toFormat:(id)format withUUID:(id)d error:(id *)error
 {
   v54[2] = *MEMORY[0x1E69E9840];
-  v9 = a4;
-  v10 = a5;
+  formatCopy = format;
+  dCopy = d;
   v11 = 0x1E696A000uLL;
-  if (!a3 || !v9)
+  if (!image || !formatCopy)
   {
     v12 = *MEMORY[0x1E69BFF48];
     v13 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E69BFF48] code:61002 userInfo:0];
@@ -533,8 +533,8 @@ LABEL_13:
     }
   }
 
-  v14 = [v9 thumbnailKind];
-  if (v14 < 3)
+  thumbnailKind = [formatCopy thumbnailKind];
+  if (thumbnailKind < 3)
   {
     v12 = *MEMORY[0x1E69BFF48];
     v13 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E69BFF48] code:61002 userInfo:0];
@@ -551,7 +551,7 @@ LABEL_6:
     goto LABEL_10;
   }
 
-  if (v14 == 3)
+  if (thumbnailKind == 3)
   {
     v23 = *MEMORY[0x1E696D3E8];
     v24 = *MEMORY[0x1E696D3E0];
@@ -566,7 +566,7 @@ LABEL_6:
 
   else
   {
-    if (v14 != 4)
+    if (thumbnailKind != 4)
     {
 LABEL_10:
       v17 = 0;
@@ -586,8 +586,8 @@ LABEL_10:
 
   v17 = [v20 dictionaryWithObjects:v21 forKeys:v22 count:2];
 LABEL_13:
-  Width = CGImageGetWidth(a3);
-  v26 = [PLTableThumbnailEncoderResult _minKtxDataLengthFromImageSize:Width, CGImageGetHeight(a3)];
+  Width = CGImageGetWidth(image);
+  v26 = [PLTableThumbnailEncoderResult _minKtxDataLengthFromImageSize:Width, CGImageGetHeight(image)];
   Mutable = CFDataCreateMutable(0, v26 + 1024);
   v28 = CGImageDestinationCreateWithData(Mutable, @"org.khronos.ktx", 1uLL, 0);
   if (!v28)
@@ -604,10 +604,10 @@ LABEL_13:
   }
 
   v29 = v28;
-  if ([v9 thumbnailKind] == 4)
+  if ([formatCopy thumbnailKind] == 4)
   {
     DeviceRGB = CGColorSpaceCreateDeviceRGB();
-    CopyWithColorSpace = CGImageCreateCopyWithColorSpace(a3, DeviceRGB);
+    CopyWithColorSpace = CGImageCreateCopyWithColorSpace(image, DeviceRGB);
     v32 = DeviceRGB;
     v11 = 0x1E696A000;
     CGColorSpaceRelease(v32);
@@ -617,7 +617,7 @@ LABEL_13:
 
   else
   {
-    CGImageDestinationAddImage(v29, a3, v17);
+    CGImageDestinationAddImage(v29, image, v17);
   }
 
   if (!CGImageDestinationFinalize(v29))
@@ -650,7 +650,7 @@ LABEL_22:
     goto LABEL_24;
   }
 
-  v42 = [[PLTableThumbnailEncoderResult alloc] initWithKtxData:Mutable uuid:v10 format:v9];
+  v42 = [[PLTableThumbnailEncoderResult alloc] initWithKtxData:Mutable uuid:dCopy format:formatCopy];
   v16 = 0;
 LABEL_24:
   CFRelease(v29);
@@ -663,12 +663,12 @@ LABEL_24:
 LABEL_25:
   if (v16)
   {
-    if (a6)
+    if (error)
     {
 LABEL_27:
       v43 = v16;
       v42 = 0;
-      *a6 = v16;
+      *error = v16;
       goto LABEL_30;
     }
   }
@@ -676,7 +676,7 @@ LABEL_27:
   else
   {
     v16 = [*(v11 + 3008) errorWithDomain:*MEMORY[0x1E69BFF48] code:61004 userInfo:0];
-    if (a6)
+    if (error)
     {
       goto LABEL_27;
     }
@@ -688,31 +688,31 @@ LABEL_30:
   return v42;
 }
 
-+ (CGImage)_createDownscaledImageFromSource:(CGImageSource *)a3 toSize:(CGSize)a4 cropped:(BOOL)a5
++ (CGImage)_createDownscaledImageFromSource:(CGImageSource *)source toSize:(CGSize)size cropped:(BOOL)cropped
 {
-  v5 = a3;
+  sourceCopy = source;
   v20[1] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (source)
   {
-    height = a4.height;
-    width = a4.width;
-    if (a4.width == *MEMORY[0x1E695F060] && a4.height == *(MEMORY[0x1E695F060] + 8))
+    height = size.height;
+    width = size.width;
+    if (size.width == *MEMORY[0x1E695F060] && size.height == *(MEMORY[0x1E695F060] + 8))
     {
       return 0;
     }
 
     else
     {
-      v9 = a5;
-      PrimaryImageIndex = CGImageSourceGetPrimaryImageIndex(a3);
+      croppedCopy = cropped;
+      PrimaryImageIndex = CGImageSourceGetPrimaryImageIndex(source);
       v19 = *MEMORY[0x1E696E138];
       v20[0] = MEMORY[0x1E695E118];
       v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:&v19 count:1];
-      ImageAtIndex = CGImageSourceCreateImageAtIndex(v5, PrimaryImageIndex, v12);
+      ImageAtIndex = CGImageSourceCreateImageAtIndex(sourceCopy, PrimaryImageIndex, v12);
       if (ImageAtIndex)
       {
         v14 = ImageAtIndex;
-        v5 = [a1 _createDownscaledImageFromSourceImage:ImageAtIndex toSize:v9 cropped:{width, height}];
+        sourceCopy = [self _createDownscaledImageFromSourceImage:ImageAtIndex toSize:croppedCopy cropped:{width, height}];
         CGImageRelease(v14);
       }
 
@@ -722,50 +722,50 @@ LABEL_30:
         if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
         {
           v17 = 138543362;
-          v18 = v5;
+          v18 = sourceCopy;
           _os_log_impl(&dword_19BF1F000, v15, OS_LOG_TYPE_ERROR, "Unable to decode full sized image from source: %{public}@", &v17, 0xCu);
         }
 
-        v5 = 0;
+        sourceCopy = 0;
       }
     }
   }
 
-  return v5;
+  return sourceCopy;
 }
 
-+ (CGImage)_createDownscaledImageFromSourceImage:(CGImage *)a3 toSize:(CGSize)a4 cropped:(BOOL)a5
++ (CGImage)_createDownscaledImageFromSourceImage:(CGImage *)image toSize:(CGSize)size cropped:(BOOL)cropped
 {
-  v5 = a5;
-  height = a4.height;
-  width = a4.width;
+  croppedCopy = cropped;
+  height = size.height;
+  width = size.width;
   v30 = *MEMORY[0x1E69E9840];
   if (_createDownscaledImageFromSourceImage_toSize_cropped__s_onceToken != -1)
   {
     dispatch_once(&_createDownscaledImageFromSourceImage_toSize_cropped__s_onceToken, &__block_literal_global_22782);
   }
 
-  CGImageGetColorSpace(a3);
+  CGImageGetColorSpace(image);
   v9 = CGColorSpaceEqualToColorSpace();
-  v10 = CGImageGetWidth(a3);
-  v11 = CGImageGetHeight(a3);
+  v10 = CGImageGetWidth(image);
+  v11 = CGImageGetHeight(image);
   v12 = width == v10 && height == v11;
   if (v12 && (v9 & 1) != 0)
   {
 
-    return CGImageRetain(a3);
+    return CGImageRetain(image);
   }
 
   else
   {
-    if (v5)
+    if (croppedCopy)
     {
-      SquareCroppedImage = PLThumbnailCreateSquareCroppedImage(a3);
+      SquareCroppedImage = PLThumbnailCreateSquareCroppedImage(image);
     }
 
     else
     {
-      SquareCroppedImage = CGImageRetain(a3);
+      SquareCroppedImage = CGImageRetain(image);
     }
 
     v15 = SquareCroppedImage;
@@ -804,7 +804,7 @@ LABEL_30:
         if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
         {
           v28 = 138543362;
-          v29 = v15;
+          imageCopy = v15;
           _os_log_impl(&dword_19BF1F000, v27, OS_LOG_TYPE_ERROR, "Unable to create CGContext to downscale image: %{public}@", &v28, 0xCu);
         }
 
@@ -820,7 +820,7 @@ LABEL_30:
       if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
       {
         v28 = 138543362;
-        v29 = a3;
+        imageCopy = image;
         _os_log_impl(&dword_19BF1F000, v26, OS_LOG_TYPE_ERROR, "Unable to create square-cropped image from full size image: %{public}@", &v28, 0xCu);
       }
 

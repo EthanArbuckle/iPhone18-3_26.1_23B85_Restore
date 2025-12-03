@@ -1,7 +1,7 @@
 @interface AVFigEndpointUIAgentOutputContextManagerImpl
 + (OpaqueFigEndpointUIAgent)copySharedEndpointUIAgent;
-- (AVFigEndpointUIAgentOutputContextManagerImpl)initWithEndpointUIAgent:(OpaqueFigEndpointUIAgent *)a3;
-- (void)_showErrorPromptForRouteDescriptor:(__CFDictionary *)a3 reason:(__CFString *)a4 didFailToConnectToOutputDeviceDictionary:(__CFDictionary *)a5;
+- (AVFigEndpointUIAgentOutputContextManagerImpl)initWithEndpointUIAgent:(OpaqueFigEndpointUIAgent *)agent;
+- (void)_showErrorPromptForRouteDescriptor:(__CFDictionary *)descriptor reason:(__CFString *)reason didFailToConnectToOutputDeviceDictionary:(__CFDictionary *)dictionary;
 - (void)dealloc;
 @end
 
@@ -56,9 +56,9 @@ CFTypeRef __73__AVFigEndpointUIAgentOutputContextManagerImpl_copySharedEndpointU
   [(AVFigEndpointUIAgentOutputContextManagerImpl *)&v4 dealloc];
 }
 
-- (void)_showErrorPromptForRouteDescriptor:(__CFDictionary *)a3 reason:(__CFString *)a4 didFailToConnectToOutputDeviceDictionary:(__CFDictionary *)a5
+- (void)_showErrorPromptForRouteDescriptor:(__CFDictionary *)descriptor reason:(__CFString *)reason didFailToConnectToOutputDeviceDictionary:(__CFDictionary *)dictionary
 {
-  v7 = [AVOutputDevice outputDeviceWithRouteDescriptor:a3 withRoutingContext:0];
+  v7 = [AVOutputDevice outputDeviceWithRouteDescriptor:descriptor withRoutingContext:0];
   v8 = *MEMORY[0x1E69AF270];
   if (FigCFEqual())
   {
@@ -115,12 +115,12 @@ LABEL_13:
   }
 
 LABEL_14:
-  v16 = [(AVFigEndpointUIAgentOutputContextManagerImpl *)self parentOutputContextManager];
+  parentOutputContextManager = [(AVFigEndpointUIAgentOutputContextManagerImpl *)self parentOutputContextManager];
 
-  [(AVOutputContextManager *)v16 outputContextManagerImpl:self observedFailureToConnectToOutputDevice:v7 reason:v15 didFailToConnectToOutputDeviceDictionary:a5];
+  [(AVOutputContextManager *)parentOutputContextManager outputContextManagerImpl:self observedFailureToConnectToOutputDevice:v7 reason:v15 didFailToConnectToOutputDeviceDictionary:dictionary];
 }
 
-- (AVFigEndpointUIAgentOutputContextManagerImpl)initWithEndpointUIAgent:(OpaqueFigEndpointUIAgent *)a3
+- (AVFigEndpointUIAgentOutputContextManagerImpl)initWithEndpointUIAgent:(OpaqueFigEndpointUIAgent *)agent
 {
   OUTLINED_FUNCTION_5();
   [AVRoutingCMNotificationDispatcher notificationDispatcherForCMNotificationCenter:CMNotificationCenterGetDefaultLocalCenter()];

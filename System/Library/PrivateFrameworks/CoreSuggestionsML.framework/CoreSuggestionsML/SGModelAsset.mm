@@ -1,11 +1,11 @@
 @interface SGModelAsset
-+ (id)_assetWithName:(id)a3 andLoadBlock:(id)a4;
++ (id)_assetWithName:(id)name andLoadBlock:(id)block;
 + (id)asset;
-+ (id)dictionaryWithPlistFilename:(id)a3;
-+ (id)vocabWithTrieFilename:(id)a3;
++ (id)dictionaryWithPlistFilename:(id)filename;
++ (id)vocabWithTrieFilename:(id)filename;
 + (void)_invokeOnUpdateBlock;
 + (void)_reset;
-+ (void)registerOnUpdateBlock:(id)a3;
++ (void)registerOnUpdateBlock:(id)block;
 @end
 
 @implementation SGModelAsset
@@ -22,9 +22,9 @@
   return v3;
 }
 
-+ (id)vocabWithTrieFilename:(id)a3
++ (id)vocabWithTrieFilename:(id)filename
 {
-  v3 = a3;
+  filenameCopy = filename;
   if (setup_onceToken != -1)
   {
     dispatch_once(&setup_onceToken, &__block_literal_global_9);
@@ -34,8 +34,8 @@
   v7[1] = 3221225472;
   v7[2] = __38__SGModelAsset_vocabWithTrieFilename___block_invoke;
   v7[3] = &unk_278EB74D8;
-  v8 = v3;
-  v4 = v3;
+  v8 = filenameCopy;
+  v4 = filenameCopy;
   v5 = [SGModelAsset _assetWithName:v4 andLoadBlock:v7];
 
   return v5;
@@ -70,9 +70,9 @@ id __38__SGModelAsset_vocabWithTrieFilename___block_invoke(uint64_t a1)
   return v4;
 }
 
-+ (id)dictionaryWithPlistFilename:(id)a3
++ (id)dictionaryWithPlistFilename:(id)filename
 {
-  v3 = a3;
+  filenameCopy = filename;
   if (setup_onceToken != -1)
   {
     dispatch_once(&setup_onceToken, &__block_literal_global_9);
@@ -82,8 +82,8 @@ id __38__SGModelAsset_vocabWithTrieFilename___block_invoke(uint64_t a1)
   v7[1] = 3221225472;
   v7[2] = __44__SGModelAsset_dictionaryWithPlistFilename___block_invoke;
   v7[3] = &unk_278EB74D8;
-  v8 = v3;
-  v4 = v3;
+  v8 = filenameCopy;
+  v4 = filenameCopy;
   v5 = [SGModelAsset _assetWithName:v4 andLoadBlock:v7];
 
   return v5;
@@ -118,39 +118,39 @@ id __44__SGModelAsset_dictionaryWithPlistFilename___block_invoke(uint64_t a1)
   return v4;
 }
 
-+ (id)_assetWithName:(id)a3 andLoadBlock:(id)a4
++ (id)_assetWithName:(id)name andLoadBlock:(id)block
 {
-  v5 = a3;
-  v6 = a4;
+  nameCopy = name;
+  blockCopy = block;
   if (setup_onceToken != -1)
   {
     dispatch_once(&setup_onceToken, &__block_literal_global_9);
   }
 
   [_lock lock];
-  v7 = [_cache objectForKey:v5];
+  v7 = [_cache objectForKey:nameCopy];
   if (!v7)
   {
-    v8 = v6[2](v6);
+    v8 = blockCopy[2](blockCopy);
     v9 = _cache;
     if (v8)
     {
       v7 = v8;
-      [_cache setObject:v8 forKey:v5];
+      [_cache setObject:v8 forKey:nameCopy];
     }
 
     else
     {
-      v10 = [MEMORY[0x277CBEB68] null];
-      [v9 setObject:v10 forKey:v5];
+      null = [MEMORY[0x277CBEB68] null];
+      [v9 setObject:null forKey:nameCopy];
 
       v7 = 0;
     }
   }
 
   [_lock unlock];
-  v11 = [MEMORY[0x277CBEB68] null];
-  if (v7 == v11)
+  null2 = [MEMORY[0x277CBEB68] null];
+  if (v7 == null2)
   {
     v12 = 0;
   }
@@ -221,10 +221,10 @@ id __44__SGModelAsset_dictionaryWithPlistFilename___block_invoke(uint64_t a1)
   v8 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)registerOnUpdateBlock:(id)a3
++ (void)registerOnUpdateBlock:(id)block
 {
   v3 = setup_onceToken;
-  v4 = a3;
+  blockCopy = block;
   if (v3 != -1)
   {
     dispatch_once(&setup_onceToken, &__block_literal_global_9);
@@ -232,7 +232,7 @@ id __44__SGModelAsset_dictionaryWithPlistFilename___block_invoke(uint64_t a1)
 
   [_lock lock];
   v5 = _updateBlocks;
-  v6 = MEMORY[0x24C1B0A20](v4);
+  v6 = MEMORY[0x24C1B0A20](blockCopy);
 
   [v5 addObject:v6];
   v7 = _lock;

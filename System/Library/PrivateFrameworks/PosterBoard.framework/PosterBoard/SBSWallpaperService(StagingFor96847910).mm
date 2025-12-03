@@ -9,7 +9,7 @@
   v4 = a3;
   if (objc_opt_respondsToSelector())
   {
-    [a1 fetchPosterSignificantEventsCounterWithCompletionHandler:v4];
+    [self fetchPosterSignificantEventsCounterWithCompletionHandler:v4];
   }
 
   else

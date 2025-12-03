@@ -1,9 +1,9 @@
 @interface MUButtonCellRowView
-- (MUButtonCellRowView)initWithFrame:(CGRect)a3;
+- (MUButtonCellRowView)initWithFrame:(CGRect)frame;
 - (void)_setupAccessibilityIdentifier;
 - (void)_setupSubviews;
 - (void)layoutSubviews;
-- (void)setViewModel:(id)a3;
+- (void)setViewModel:(id)model;
 @end
 
 @implementation MUButtonCellRowView
@@ -15,8 +15,8 @@
   contentView = self->_contentView;
   if (v4)
   {
-    v8 = [(MUDynamicButtonCellModel *)self->_viewModel accessibilityIdentifierForAction];
-    v6 = [@"ButtonCellType" stringByAppendingString:v8];
+    accessibilityIdentifierForAction = [(MUDynamicButtonCellModel *)self->_viewModel accessibilityIdentifierForAction];
+    v6 = [@"ButtonCellType" stringByAppendingString:accessibilityIdentifierForAction];
     [(MUGridButtonCell *)contentView setAccessibilityIdentifier:v6];
   }
 
@@ -28,16 +28,16 @@
   }
 }
 
-- (void)setViewModel:(id)a3
+- (void)setViewModel:(id)model
 {
-  v5 = a3;
-  if (self->_viewModel != v5)
+  modelCopy = model;
+  if (self->_viewModel != modelCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_viewModel, a3);
+    v6 = modelCopy;
+    objc_storeStrong(&self->_viewModel, model);
     [(MUButtonCellRowView *)self _setupAccessibilityIdentifier];
     [(MUGridButtonCell *)self->_contentView setViewModel:v6];
-    v5 = v6;
+    modelCopy = v6;
   }
 }
 
@@ -62,11 +62,11 @@
   [(MUButtonCellRowView *)self _setContinuousCornerRadius:CGRectGetHeight(v4) * 0.5];
 }
 
-- (MUButtonCellRowView)initWithFrame:(CGRect)a3
+- (MUButtonCellRowView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = MUButtonCellRowView;
-  v3 = [(MUPlaceSectionRowView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MUPlaceSectionRowView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

@@ -1,39 +1,39 @@
 @interface AVTZIndexEngagementListCollectionViewLayout
-- (AVTZIndexEngagementListCollectionViewLayout)initWithEngagementLayout:(id)a3 minAlphaFactor:(double)a4 environment:(id)a5;
-- (UIEdgeInsets)engagementInsetsForCollectionViewBounds:(CGSize)a3;
-- (double)alphaForElementWithAttributes:(id)a3;
-- (id)finalLayoutAttributesForDisappearingItemAtIndexPath:(id)a3;
-- (id)initialLayoutAttributesForAppearingItemAtIndexPath:(id)a3;
-- (id)layoutAttributesForElementsInRect:(CGRect)a3;
-- (id)layoutAttributesForItemAtIndexPath:(id)a3;
-- (int64_t)zIndexForElementWithAttributes:(id)a3;
+- (AVTZIndexEngagementListCollectionViewLayout)initWithEngagementLayout:(id)layout minAlphaFactor:(double)factor environment:(id)environment;
+- (UIEdgeInsets)engagementInsetsForCollectionViewBounds:(CGSize)bounds;
+- (double)alphaForElementWithAttributes:(id)attributes;
+- (id)finalLayoutAttributesForDisappearingItemAtIndexPath:(id)path;
+- (id)initialLayoutAttributesForAppearingItemAtIndexPath:(id)path;
+- (id)layoutAttributesForElementsInRect:(CGRect)rect;
+- (id)layoutAttributesForItemAtIndexPath:(id)path;
+- (int64_t)zIndexForElementWithAttributes:(id)attributes;
 - (void)finalizeCollectionViewUpdates;
-- (void)prepareForCollectionViewUpdates:(id)a3;
-- (void)setBackIndexPath:(id)a3;
-- (void)setPlusButtonIndexPath:(id)a3;
+- (void)prepareForCollectionViewUpdates:(id)updates;
+- (void)setBackIndexPath:(id)path;
+- (void)setPlusButtonIndexPath:(id)path;
 @end
 
 @implementation AVTZIndexEngagementListCollectionViewLayout
 
-- (AVTZIndexEngagementListCollectionViewLayout)initWithEngagementLayout:(id)a3 minAlphaFactor:(double)a4 environment:(id)a5
+- (AVTZIndexEngagementListCollectionViewLayout)initWithEngagementLayout:(id)layout minAlphaFactor:(double)factor environment:(id)environment
 {
-  v9 = a5;
+  environmentCopy = environment;
   v13.receiver = self;
   v13.super_class = AVTZIndexEngagementListCollectionViewLayout;
-  v10 = [(AVTEngagementListCollectionViewLayout *)&v13 initWithEngagementLayout:a3];
+  v10 = [(AVTEngagementListCollectionViewLayout *)&v13 initWithEngagementLayout:layout];
   v11 = v10;
   if (v10)
   {
-    v10->_minAlphaFactor = a4;
-    objc_storeStrong(&v10->_environment, a5);
+    v10->_minAlphaFactor = factor;
+    objc_storeStrong(&v10->_environment, environment);
   }
 
   return v11;
 }
 
-- (UIEdgeInsets)engagementInsetsForCollectionViewBounds:(CGSize)a3
+- (UIEdgeInsets)engagementInsetsForCollectionViewBounds:(CGSize)bounds
 {
-  v3 = [(AVTEngagementListCollectionViewLayout *)self engagementLayout:a3.width];
+  v3 = [(AVTEngagementListCollectionViewLayout *)self engagementLayout:bounds.width];
   [v3 defaultCellSize];
   v5 = v4 * -0.5;
 
@@ -48,55 +48,55 @@
   return result;
 }
 
-- (void)setBackIndexPath:(id)a3
+- (void)setBackIndexPath:(id)path
 {
-  v5 = a3;
-  if (self->_backIndexPath != v5)
+  pathCopy = path;
+  if (self->_backIndexPath != pathCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_backIndexPath, a3);
-    v5 = v6;
+    v6 = pathCopy;
+    objc_storeStrong(&self->_backIndexPath, path);
+    pathCopy = v6;
   }
 }
 
-- (void)setPlusButtonIndexPath:(id)a3
+- (void)setPlusButtonIndexPath:(id)path
 {
-  v5 = a3;
-  if (self->_plusButtonIndexPath != v5)
+  pathCopy = path;
+  if (self->_plusButtonIndexPath != pathCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_plusButtonIndexPath, a3);
-    v5 = v6;
+    v6 = pathCopy;
+    objc_storeStrong(&self->_plusButtonIndexPath, path);
+    pathCopy = v6;
   }
 }
 
-- (int64_t)zIndexForElementWithAttributes:(id)a3
+- (int64_t)zIndexForElementWithAttributes:(id)attributes
 {
-  v4 = [a3 indexPath];
-  v5 = [(AVTZIndexEngagementListCollectionViewLayout *)self backIndexPath];
-  v6 = [v4 isEqual:v5];
+  indexPath = [attributes indexPath];
+  backIndexPath = [(AVTZIndexEngagementListCollectionViewLayout *)self backIndexPath];
+  v6 = [indexPath isEqual:backIndexPath];
 
   return v6 ^ 1u;
 }
 
-- (double)alphaForElementWithAttributes:(id)a3
+- (double)alphaForElementWithAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = [(AVTZIndexEngagementListCollectionViewLayout *)self environment];
-  if ([v5 deviceIsPad])
+  attributesCopy = attributes;
+  environment = [(AVTZIndexEngagementListCollectionViewLayout *)self environment];
+  if ([environment deviceIsPad])
   {
   }
 
   else
   {
-    v6 = [(AVTZIndexEngagementListCollectionViewLayout *)self environment];
-    v7 = [v6 deviceIsMac];
+    environment2 = [(AVTZIndexEngagementListCollectionViewLayout *)self environment];
+    deviceIsMac = [environment2 deviceIsMac];
 
-    if ((v7 & 1) == 0)
+    if ((deviceIsMac & 1) == 0)
     {
-      v8 = [v4 indexPath];
-      v9 = [(AVTZIndexEngagementListCollectionViewLayout *)self plusButtonIndexPath];
-      v10 = [v8 isEqual:v9];
+      indexPath = [attributesCopy indexPath];
+      plusButtonIndexPath = [(AVTZIndexEngagementListCollectionViewLayout *)self plusButtonIndexPath];
+      v10 = [indexPath isEqual:plusButtonIndexPath];
 
       v11 = 1.0;
       if (v10)
@@ -106,33 +106,33 @@
     }
   }
 
-  [v4 frame];
+  [attributesCopy frame];
   Width = CGRectGetWidth(v30);
-  v13 = [(AVTEngagementListCollectionViewLayout *)self engagementLayout];
-  [v13 engagedCellSize];
+  engagementLayout = [(AVTEngagementListCollectionViewLayout *)self engagementLayout];
+  [engagementLayout engagedCellSize];
   v15 = Width / v14;
 
-  v16 = [(AVTEngagementListCollectionViewLayout *)self engagementLayout];
-  [v16 defaultCellSize];
+  engagementLayout2 = [(AVTEngagementListCollectionViewLayout *)self engagementLayout];
+  [engagementLayout2 defaultCellSize];
   v18 = v17;
-  v19 = [(AVTEngagementListCollectionViewLayout *)self engagementLayout];
-  [v19 engagedCellSize];
+  engagementLayout3 = [(AVTEngagementListCollectionViewLayout *)self engagementLayout];
+  [engagementLayout3 engagedCellSize];
   v21 = v18 / v20;
 
   v22 = (1.0 - v15) / (1.0 - v21);
   [(AVTZIndexEngagementListCollectionViewLayout *)self minAlphaFactor];
   v24 = v23;
-  v25 = [(AVTZIndexEngagementListCollectionViewLayout *)self environment];
-  if ([v25 deviceIsPad])
+  environment3 = [(AVTZIndexEngagementListCollectionViewLayout *)self environment];
+  if ([environment3 deviceIsPad])
   {
   }
 
   else
   {
-    v26 = [(AVTZIndexEngagementListCollectionViewLayout *)self environment];
-    v27 = [v26 deviceIsMac];
+    environment4 = [(AVTZIndexEngagementListCollectionViewLayout *)self environment];
+    deviceIsMac2 = [environment4 deviceIsMac];
 
-    if (!v27)
+    if (!deviceIsMac2)
     {
       v11 = 1.0 - v22 * (1.0 - v24);
       goto LABEL_10;
@@ -146,12 +146,12 @@ LABEL_10:
   return v11;
 }
 
-- (id)layoutAttributesForElementsInRect:(CGRect)a3
+- (id)layoutAttributesForElementsInRect:(CGRect)rect
 {
   v17 = *MEMORY[0x1E69E9840];
   v15.receiver = self;
   v15.super_class = AVTZIndexEngagementListCollectionViewLayout;
-  v4 = [(AVTEngagementListCollectionViewLayout *)&v15 layoutAttributesForElementsInRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v4 = [(AVTEngagementListCollectionViewLayout *)&v15 layoutAttributesForElementsInRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -185,11 +185,11 @@ LABEL_10:
   return v4;
 }
 
-- (id)layoutAttributesForItemAtIndexPath:(id)a3
+- (id)layoutAttributesForItemAtIndexPath:(id)path
 {
   v6.receiver = self;
   v6.super_class = AVTZIndexEngagementListCollectionViewLayout;
-  v4 = [(AVTEngagementListCollectionViewLayout *)&v6 layoutAttributesForItemAtIndexPath:a3];
+  v4 = [(AVTEngagementListCollectionViewLayout *)&v6 layoutAttributesForItemAtIndexPath:path];
   [v4 setZIndex:{-[AVTZIndexEngagementListCollectionViewLayout zIndexForElementWithAttributes:](self, "zIndexForElementWithAttributes:", v4)}];
   [(AVTZIndexEngagementListCollectionViewLayout *)self alphaForElementWithAttributes:v4];
   [v4 setAlpha:?];
@@ -197,60 +197,60 @@ LABEL_10:
   return v4;
 }
 
-- (void)prepareForCollectionViewUpdates:(id)a3
+- (void)prepareForCollectionViewUpdates:(id)updates
 {
-  v4 = a3;
+  updatesCopy = updates;
   v7.receiver = self;
   v7.super_class = AVTZIndexEngagementListCollectionViewLayout;
-  [(AVTZIndexEngagementListCollectionViewLayout *)&v7 prepareForCollectionViewUpdates:v4];
-  if ([v4 count] != 1)
+  [(AVTZIndexEngagementListCollectionViewLayout *)&v7 prepareForCollectionViewUpdates:updatesCopy];
+  if ([updatesCopy count] != 1)
   {
     v5 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:@"Expected only one collection view update!" userInfo:0];
     [v5 raise];
   }
 
-  v6 = [v4 firstObject];
-  [(AVTZIndexEngagementListCollectionViewLayout *)self setCurrentUpdateItem:v6];
+  firstObject = [updatesCopy firstObject];
+  [(AVTZIndexEngagementListCollectionViewLayout *)self setCurrentUpdateItem:firstObject];
 }
 
-- (id)initialLayoutAttributesForAppearingItemAtIndexPath:(id)a3
+- (id)initialLayoutAttributesForAppearingItemAtIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v33.receiver = self;
   v33.super_class = AVTZIndexEngagementListCollectionViewLayout;
-  v5 = [(AVTZIndexEngagementListCollectionViewLayout *)&v33 initialLayoutAttributesForAppearingItemAtIndexPath:v4];
-  v6 = [(AVTZIndexEngagementListCollectionViewLayout *)self currentUpdateItem];
-  if ([v6 updateAction])
+  v5 = [(AVTZIndexEngagementListCollectionViewLayout *)&v33 initialLayoutAttributesForAppearingItemAtIndexPath:pathCopy];
+  currentUpdateItem = [(AVTZIndexEngagementListCollectionViewLayout *)self currentUpdateItem];
+  if ([currentUpdateItem updateAction])
   {
   }
 
   else
   {
-    v7 = [(AVTZIndexEngagementListCollectionViewLayout *)self currentUpdateItem];
-    v8 = [v7 indexPathAfterUpdate];
-    v9 = [v8 isEqual:v4];
+    currentUpdateItem2 = [(AVTZIndexEngagementListCollectionViewLayout *)self currentUpdateItem];
+    indexPathAfterUpdate = [currentUpdateItem2 indexPathAfterUpdate];
+    v9 = [indexPathAfterUpdate isEqual:pathCopy];
 
     if (v9)
     {
-      v10 = [(AVTZIndexEngagementListCollectionViewLayout *)self collectionView];
-      [v10 bounds];
+      collectionView = [(AVTZIndexEngagementListCollectionViewLayout *)self collectionView];
+      [collectionView bounds];
       v12 = v11;
       v14 = v13;
       v16 = v15;
       v18 = v17;
 
-      v19 = [(AVTEngagementListCollectionViewLayout *)self ignoredProposedContentOffset];
+      ignoredProposedContentOffset = [(AVTEngagementListCollectionViewLayout *)self ignoredProposedContentOffset];
 
-      if (v19)
+      if (ignoredProposedContentOffset)
       {
-        v20 = [(AVTEngagementListCollectionViewLayout *)self ignoredProposedContentOffset];
-        [v20 CGPointValue];
+        ignoredProposedContentOffset2 = [(AVTEngagementListCollectionViewLayout *)self ignoredProposedContentOffset];
+        [ignoredProposedContentOffset2 CGPointValue];
         v12 = v21;
         v14 = v22;
       }
 
-      v23 = [(AVTEngagementListCollectionViewLayout *)self engagementLayout];
-      [v23 initialFrameForAppearingElementAtOriginForVisibleBounds:{v12, v14, v16, v18}];
+      engagementLayout = [(AVTEngagementListCollectionViewLayout *)self engagementLayout];
+      [engagementLayout initialFrameForAppearingElementAtOriginForVisibleBounds:{v12, v14, v16, v18}];
       v25 = v24;
       v27 = v26;
       v29 = v28;
@@ -264,25 +264,25 @@ LABEL_10:
   return v5;
 }
 
-- (id)finalLayoutAttributesForDisappearingItemAtIndexPath:(id)a3
+- (id)finalLayoutAttributesForDisappearingItemAtIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v21.receiver = self;
   v21.super_class = AVTZIndexEngagementListCollectionViewLayout;
-  v5 = [(AVTZIndexEngagementListCollectionViewLayout *)&v21 finalLayoutAttributesForDisappearingItemAtIndexPath:v4];
-  v6 = [(AVTZIndexEngagementListCollectionViewLayout *)self currentUpdateItem];
-  if ([v6 updateAction] == 1)
+  v5 = [(AVTZIndexEngagementListCollectionViewLayout *)&v21 finalLayoutAttributesForDisappearingItemAtIndexPath:pathCopy];
+  currentUpdateItem = [(AVTZIndexEngagementListCollectionViewLayout *)self currentUpdateItem];
+  if ([currentUpdateItem updateAction] == 1)
   {
-    v7 = [(AVTZIndexEngagementListCollectionViewLayout *)self currentUpdateItem];
-    v8 = [v7 indexPathBeforeUpdate];
-    v9 = [v8 isEqual:v4];
+    currentUpdateItem2 = [(AVTZIndexEngagementListCollectionViewLayout *)self currentUpdateItem];
+    indexPathBeforeUpdate = [currentUpdateItem2 indexPathBeforeUpdate];
+    v9 = [indexPathBeforeUpdate isEqual:pathCopy];
 
     if (v9)
     {
-      v10 = [(AVTEngagementListCollectionViewLayout *)self engagementLayout];
-      v11 = [(AVTZIndexEngagementListCollectionViewLayout *)self collectionView];
-      [v11 bounds];
-      [v10 finalFrameForDisappearingElementAtOriginForVisibleBounds:?];
+      engagementLayout = [(AVTEngagementListCollectionViewLayout *)self engagementLayout];
+      collectionView = [(AVTZIndexEngagementListCollectionViewLayout *)self collectionView];
+      [collectionView bounds];
+      [engagementLayout finalFrameForDisappearingElementAtOriginForVisibleBounds:?];
       v13 = v12;
       v15 = v14;
       v17 = v16;

@@ -1,22 +1,22 @@
 @interface REMStoreContainerToken
-- (REMStoreContainerToken)initWithCoder:(id)a3;
-- (REMStoreContainerToken)initWithIdentifier:(id)a3;
+- (REMStoreContainerToken)initWithCoder:(id)coder;
+- (REMStoreContainerToken)initWithIdentifier:(id)identifier;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation REMStoreContainerToken
 
-- (REMStoreContainerToken)initWithIdentifier:(id)a3
+- (REMStoreContainerToken)initWithIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = REMStoreContainerToken;
   v6 = [(REMStoreContainerToken *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_identifier, a3);
+    objc_storeStrong(&v6->_identifier, identifier);
   }
 
   return v7;
@@ -26,23 +26,23 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(REMStoreContainerToken *)self identifier];
-  v6 = [v3 stringWithFormat:@"<%@: %p identifier: %@>", v4, self, v5];
+  identifier = [(REMStoreContainerToken *)self identifier];
+  v6 = [v3 stringWithFormat:@"<%@: %p identifier: %@>", v4, self, identifier];
 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(REMStoreContainerToken *)self identifier];
-  [v4 encodeObject:v5 forKey:@"identifier"];
+  coderCopy = coder;
+  identifier = [(REMStoreContainerToken *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 }
 
-- (REMStoreContainerToken)initWithCoder:(id)a3
+- (REMStoreContainerToken)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
 
   v6 = [(REMStoreContainerToken *)self initWithIdentifier:v5];
   return v6;

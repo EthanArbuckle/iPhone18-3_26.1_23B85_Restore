@@ -15,18 +15,18 @@
 
 - (void)updateBackgroundColor
 {
-  v3 = [(AMPTintedBackgroundButton *)self isHighlighted];
-  v4 = [(AMPTintedBackgroundButton *)self tintColor];
-  v6 = v4;
-  if (v3)
+  isHighlighted = [(AMPTintedBackgroundButton *)self isHighlighted];
+  tintColor = [(AMPTintedBackgroundButton *)self tintColor];
+  v6 = tintColor;
+  if (isHighlighted)
   {
-    v5 = [v4 colorWithAlphaComponent:0.6];
+    v5 = [tintColor colorWithAlphaComponent:0.6];
     [(AMPTintedBackgroundButton *)self setBackgroundColor:v5];
   }
 
   else
   {
-    [(AMPTintedBackgroundButton *)self setBackgroundColor:v4];
+    [(AMPTintedBackgroundButton *)self setBackgroundColor:tintColor];
   }
 }
 

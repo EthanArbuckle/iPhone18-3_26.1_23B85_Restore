@@ -1,5 +1,5 @@
 @interface CAMetalDisplayLinkUpdate
-+ (CAMetalDisplayLinkUpdate)updateWithDrawable:(id)a3 targetTimestamp:(double)a4 targetPresentationTimestamp:(double)a5;
++ (CAMetalDisplayLinkUpdate)updateWithDrawable:(id)drawable targetTimestamp:(double)timestamp targetPresentationTimestamp:(double)presentationTimestamp;
 - (void)dealloc;
 @end
 
@@ -14,14 +14,14 @@
   [(CAMetalDisplayLinkUpdate *)&v3 dealloc];
 }
 
-+ (CAMetalDisplayLinkUpdate)updateWithDrawable:(id)a3 targetTimestamp:(double)a4 targetPresentationTimestamp:(double)a5
++ (CAMetalDisplayLinkUpdate)updateWithDrawable:(id)drawable targetTimestamp:(double)timestamp targetPresentationTimestamp:(double)presentationTimestamp
 {
   v8 = objc_alloc_init(CAMetalDisplayLinkUpdate);
   if (v8)
   {
-    v8->_drawable = a3;
-    v8->_targetTimestamp = a4;
-    v8->_targetPresentationTimestamp = a5;
+    v8->_drawable = drawable;
+    v8->_targetTimestamp = timestamp;
+    v8->_targetPresentationTimestamp = presentationTimestamp;
   }
 
   return v8;

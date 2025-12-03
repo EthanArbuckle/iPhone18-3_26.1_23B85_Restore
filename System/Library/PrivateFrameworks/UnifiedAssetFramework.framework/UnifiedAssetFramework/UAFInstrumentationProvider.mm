@@ -1,15 +1,15 @@
 @interface UAFInstrumentationProvider
-+ (BOOL)_assetSetsComplete:(id)a3 assetSetCompleteness:(id)a4;
++ (BOOL)_assetSetsComplete:(id)complete assetSetCompleteness:(id)completeness;
 + (BOOL)isSiriAnalyticsAvailable;
-+ (id)_getAssetSpecifiersForSubscription:(id)a3 assetSetUsages:(id)a4;
-+ (id)_getMADownloadErrors:(id)a3 assetSetName:(id)a4 assetSetID:(id)a5;
++ (id)_getAssetSpecifiersForSubscription:(id)subscription assetSetUsages:(id)usages;
++ (id)_getMADownloadErrors:(id)errors assetSetName:(id)name assetSetID:(id)d;
 + (id)getSerialQueue;
-+ (void)_emitAssetDailyStatusEvent:(id)a3 entries:(id)a4 assetSetDailyStatusEventType:(unint64_t)a5;
-+ (void)_emitSubscriptionComplete:(id)a3 subscriber:(id)a4 user:(id)a5 assetSets:(id)a6;
-+ (void)_emitSubscriptionCompleteForAssetSet:(id)a3;
++ (void)_emitAssetDailyStatusEvent:(id)event entries:(id)entries assetSetDailyStatusEventType:(unint64_t)type;
++ (void)_emitSubscriptionComplete:(id)complete subscriber:(id)subscriber user:(id)user assetSets:(id)sets;
++ (void)_emitSubscriptionCompleteForAssetSet:(id)set;
 + (void)logAvailableAssetDailyStatus;
-+ (void)logSubscriptionCompleteForSubscriptions:(id)a3 subscriber:(id)a4 user:(id)a5;
-+ (void)logUAFAssetSetDailyStatus:(id)a3 entries:(id)a4 assetSetDailyStatusEventType:(unint64_t)a5;
++ (void)logSubscriptionCompleteForSubscriptions:(id)subscriptions subscriber:(id)subscriber user:(id)user;
++ (void)logUAFAssetSetDailyStatus:(id)status entries:(id)entries assetSetDailyStatusEventType:(unint64_t)type;
 @end
 
 @implementation UAFInstrumentationProvider
@@ -34,16 +34,16 @@ void __44__UAFInstrumentationProvider_getSerialQueue__block_invoke()
   qword_1ED7D1220 = v0;
 }
 
-+ (id)_getAssetSpecifiersForSubscription:(id)a3 assetSetUsages:(id)a4
++ (id)_getAssetSpecifiersForSubscription:(id)subscription assetSetUsages:(id)usages
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = a4;
+  usagesCopy = usages;
   v5 = objc_opt_new();
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  obj = [v4 allKeys];
+  obj = [usagesCopy allKeys];
   v6 = [obj countByEnumeratingWithState:&v28 objects:v35 count:16];
   if (v6)
   {
@@ -63,7 +63,7 @@ void __44__UAFInstrumentationProvider_getSerialQueue__block_invoke()
         v12 = [v11 getAssetSet:v10];
 
         v33 = v10;
-        v13 = [v4 objectForKeyedSubscript:v10];
+        v13 = [usagesCopy objectForKeyedSubscript:v10];
         v34 = v13;
         v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v34 forKeys:&v33 count:1];
         v15 = [UAFAutoAssetManager getSpecifiers:v12 assetSetUsages:v14 experiment:0];
@@ -108,76 +108,76 @@ void __44__UAFInstrumentationProvider_getSerialQueue__block_invoke()
   return v5;
 }
 
-+ (void)logUAFAssetSetDailyStatus:(id)a3 entries:(id)a4 assetSetDailyStatusEventType:(unint64_t)a5
++ (void)logUAFAssetSetDailyStatus:(id)status entries:(id)entries assetSetDailyStatusEventType:(unint64_t)type
 {
   v16 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  [a1 _emitAssetDailyStatusEvent:v8 entries:a4 assetSetDailyStatusEventType:a5];
+  statusCopy = status;
+  [self _emitAssetDailyStatusEvent:statusCopy entries:entries assetSetDailyStatusEventType:type];
   v9 = UAFGetLogCategory(&UAFLogContextInstrumentation);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
-    v10 = [v8 assetSetIdentifier];
+    assetSetIdentifier = [statusCopy assetSetIdentifier];
     v12 = 136315394;
     v13 = "+[UAFInstrumentationProvider logUAFAssetSetDailyStatus:entries:assetSetDailyStatusEventType:]";
     v14 = 2114;
-    v15 = v10;
+    v15 = assetSetIdentifier;
     _os_log_impl(&dword_1BCF2C000, v9, OS_LOG_TYPE_INFO, "%s Emitted DailyStatusEvent message for asset set: %{public}@", &v12, 0x16u);
   }
 
   v11 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)_getMADownloadErrors:(id)a3 assetSetName:(id)a4 assetSetID:(id)a5
++ (id)_getMADownloadErrors:(id)errors assetSetName:(id)name assetSetID:(id)d
 {
   v55 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  errorsCopy = errors;
+  nameCopy = name;
+  dCopy = d;
   v10 = objc_opt_new();
-  v11 = [v7 availableForUseError];
+  availableForUseError = [errorsCopy availableForUseError];
 
-  if (!v11)
+  if (!availableForUseError)
   {
     goto LABEL_11;
   }
 
-  v12 = [v7 availableForUseError];
-  v13 = [v12 domain];
-  if (![v13 isEqualToString:@"com.apple.MobileAssetError.AutoAsset"])
+  availableForUseError2 = [errorsCopy availableForUseError];
+  domain = [availableForUseError2 domain];
+  if (![domain isEqualToString:@"com.apple.MobileAssetError.AutoAsset"])
   {
     goto LABEL_9;
   }
 
-  v14 = [v7 availableForUseError];
-  if ([v14 code] != 6107)
+  availableForUseError3 = [errorsCopy availableForUseError];
+  if ([availableForUseError3 code] != 6107)
   {
 
 LABEL_9:
     goto LABEL_10;
   }
 
-  [v7 availableForUseError];
-  v15 = v9;
-  v17 = v16 = v8;
-  v18 = [v17 userInfo];
+  [errorsCopy availableForUseError];
+  v15 = dCopy;
+  v17 = v16 = nameCopy;
+  userInfo = [v17 userInfo];
 
-  v8 = v16;
-  v9 = v15;
+  nameCopy = v16;
+  dCopy = v15;
 
-  if (!v18)
+  if (!userInfo)
   {
 LABEL_10:
     v24 = MEMORY[0x1E696AD98];
-    v25 = [v7 availableForUseError];
-    v26 = [v24 numberWithLong:{objc_msgSend(v25, "code")}];
+    availableForUseError4 = [errorsCopy availableForUseError];
+    v26 = [v24 numberWithLong:{objc_msgSend(availableForUseError4, "code")}];
     [v10 addObject:v26];
 
     goto LABEL_11;
   }
 
-  v19 = [v7 availableForUseError];
-  v20 = [v19 userInfo];
-  v21 = [v20 objectForKeyedSubscript:*MEMORY[0x1E696AA08]];
+  availableForUseError5 = [errorsCopy availableForUseError];
+  userInfo2 = [availableForUseError5 userInfo];
+  v21 = [userInfo2 objectForKeyedSubscript:*MEMORY[0x1E696AA08]];
 
   v22 = [MEMORY[0x1E696AD98] numberWithLong:{objc_msgSend(v21, "code")}];
   [v10 addObject:v22];
@@ -188,62 +188,62 @@ LABEL_10:
     *buf = 136315906;
     v48 = "+[UAFInstrumentationProvider _getMADownloadErrors:assetSetName:assetSetID:]";
     v49 = 1024;
-    v50 = [v21 code];
+    code = [v21 code];
     v51 = 2114;
-    v52 = v8;
+    v52 = nameCopy;
     v53 = 2114;
     v54 = v15;
     _os_log_impl(&dword_1BCF2C000, v23, OS_LOG_TYPE_DEFAULT, "%s Underlying error: %u found while logging MA download error for asset set %{public}@ with ID: %{public}@:", buf, 0x26u);
   }
 
 LABEL_11:
-  v27 = [v7 newerVersionError];
+  newerVersionError = [errorsCopy newerVersionError];
 
-  if (!v27)
+  if (!newerVersionError)
   {
     goto LABEL_20;
   }
 
-  if (!v11)
+  if (!availableForUseError)
   {
 LABEL_18:
-    [v7 newerVersionError];
-    v38 = v37 = v9;
-    v39 = [v38 userInfo];
-    v28 = [v39 objectForKeyedSubscript:*MEMORY[0x1E696AA08]];
+    [errorsCopy newerVersionError];
+    v38 = v37 = dCopy;
+    userInfo3 = [v38 userInfo];
+    newerVersionError2 = [userInfo3 objectForKeyedSubscript:*MEMORY[0x1E696AA08]];
 
     v40 = MEMORY[0x1E696AD98];
-    v41 = [v28 code];
+    code2 = [newerVersionError2 code];
     v42 = v40;
-    v9 = v37;
-    v29 = [v42 numberWithLong:v41];
-    [v10 addObject:v29];
+    dCopy = v37;
+    domain2 = [v42 numberWithLong:code2];
+    [v10 addObject:domain2];
     goto LABEL_19;
   }
 
-  v28 = [v7 newerVersionError];
-  v29 = [v28 domain];
-  v30 = [v7 availableForUseError];
-  v31 = [v30 domain];
-  if (![v29 isEqualToString:v31])
+  newerVersionError2 = [errorsCopy newerVersionError];
+  domain2 = [newerVersionError2 domain];
+  availableForUseError6 = [errorsCopy availableForUseError];
+  domain3 = [availableForUseError6 domain];
+  if (![domain2 isEqualToString:domain3])
   {
 
     goto LABEL_19;
   }
 
-  v45 = v9;
-  v46 = v8;
-  v32 = [v7 newerVersionError];
-  v33 = [v32 code];
-  v34 = [v7 availableForUseError];
-  if (v33 != [v34 code])
+  v45 = dCopy;
+  v46 = nameCopy;
+  newerVersionError3 = [errorsCopy newerVersionError];
+  code3 = [newerVersionError3 code];
+  availableForUseError7 = [errorsCopy availableForUseError];
+  if (code3 != [availableForUseError7 code])
   {
-    v35 = [v7 newerVersionError];
-    v36 = [v35 userInfo];
+    newerVersionError4 = [errorsCopy newerVersionError];
+    userInfo4 = [newerVersionError4 userInfo];
 
-    v9 = v45;
-    v8 = v46;
-    if (!v36)
+    dCopy = v45;
+    nameCopy = v46;
+    if (!userInfo4)
     {
       goto LABEL_20;
     }
@@ -251,8 +251,8 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  v9 = v45;
-  v8 = v46;
+  dCopy = v45;
+  nameCopy = v46;
 LABEL_19:
 
 LABEL_20:
@@ -272,7 +272,7 @@ LABEL_20:
     _os_log_impl(&dword_1BCF2C000, v3, OS_LOG_TYPE_DEFAULT, "%s Logging asset daily status.", &v6, 0xCu);
   }
 
-  [a1 _emitAssetDailyStatusEvent:0 entries:0 assetSetDailyStatusEventType:1];
+  [self _emitAssetDailyStatusEvent:0 entries:0 assetSetDailyStatusEventType:1];
   v4 = UAFGetLogCategory(&UAFLogContextInstrumentation);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -284,11 +284,11 @@ LABEL_20:
   v5 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)_emitAssetDailyStatusEvent:(id)a3 entries:(id)a4 assetSetDailyStatusEventType:(unint64_t)a5
++ (void)_emitAssetDailyStatusEvent:(id)event entries:(id)entries assetSetDailyStatusEventType:(unint64_t)type
 {
   v49 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  eventCopy = event;
+  entriesCopy = entries;
   v10 = UAFGetLogCategory(&UAFLogContextInstrumentation);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
@@ -297,9 +297,9 @@ LABEL_20:
     _os_log_impl(&dword_1BCF2C000, v10, OS_LOG_TYPE_DEFAULT, "%s Using Biome for logging asset status", buf, 0xCu);
   }
 
-  if (a5 != 3)
+  if (type != 3)
   {
-    if (a5 == 1)
+    if (type == 1)
     {
       +[UAFBiomeInstrumenter logScheduledDailyAssetStatus];
       goto LABEL_21;
@@ -308,26 +308,26 @@ LABEL_20:
     goto LABEL_15;
   }
 
-  v11 = [v8 assetSetIdentifier];
-  v12 = [v11 isEqualToString:@"CAReportingAssetSet"];
+  assetSetIdentifier = [eventCopy assetSetIdentifier];
+  v12 = [assetSetIdentifier isEqualToString:@"CAReportingAssetSet"];
 
   if (!v12)
   {
 LABEL_15:
     v25 = objc_autoreleasePoolPush();
     v37 = 0;
-    v26 = [v8 currentSetStatusSync:&v37];
+    v26 = [eventCopy currentSetStatusSync:&v37];
     v27 = v37;
     if (v27)
     {
       v28 = UAFGetLogCategory(&UAFLogContextInstrumentation);
       if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
       {
-        v35 = [v8 assetSetIdentifier];
+        assetSetIdentifier2 = [eventCopy assetSetIdentifier];
         *buf = 136315650;
         v43 = "+[UAFInstrumentationProvider _emitAssetDailyStatusEvent:entries:assetSetDailyStatusEventType:]";
         v44 = 2114;
-        v45 = v35;
+        v45 = assetSetIdentifier2;
         v46 = 2114;
         v47 = v27;
         _os_log_debug_impl(&dword_1BCF2C000, v28, OS_LOG_TYPE_DEBUG, "%s Could not get status of auto asset set %{public}@ : %{public}@", buf, 0x20u);
@@ -335,17 +335,17 @@ LABEL_15:
     }
 
     objc_autoreleasePoolPop(v25);
-    v29 = [v8 assetSetIdentifier];
-    v30 = [v26 downloadedCatalogCachedAssetSetID];
-    v31 = [a1 _getMADownloadErrors:v26 assetSetName:v29 assetSetID:v30];
+    assetSetIdentifier3 = [eventCopy assetSetIdentifier];
+    downloadedCatalogCachedAssetSetID = [v26 downloadedCatalogCachedAssetSetID];
+    v31 = [self _getMADownloadErrors:v26 assetSetName:assetSetIdentifier3 assetSetID:downloadedCatalogCachedAssetSetID];
 
-    v32 = [v26 downloadedCatalogCachedAssetSetID];
-    +[UAFBiomeInstrumenter logAssetSetDownloadEvent:assetSetId:entries:errorCodes:fromPSUS:assetSetDailyStatusEventType:](UAFBiomeInstrumenter, "logAssetSetDownloadEvent:assetSetId:entries:errorCodes:fromPSUS:assetSetDailyStatusEventType:", v8, v32, v9, v31, [v26 latestDownloadedAtomicInstanceFromPreSUStaging], a5);
+    downloadedCatalogCachedAssetSetID2 = [v26 downloadedCatalogCachedAssetSetID];
+    +[UAFBiomeInstrumenter logAssetSetDownloadEvent:assetSetId:entries:errorCodes:fromPSUS:assetSetDailyStatusEventType:](UAFBiomeInstrumenter, "logAssetSetDownloadEvent:assetSetId:entries:errorCodes:fromPSUS:assetSetDailyStatusEventType:", eventCopy, downloadedCatalogCachedAssetSetID2, entriesCopy, v31, [v26 latestDownloadedAtomicInstanceFromPreSUStaging], type);
 
-    if (a5 == 3)
+    if (type == 3)
     {
-      v33 = [v8 assetSetIdentifier];
-      [a1 _emitSubscriptionCompleteForAssetSet:v33];
+      assetSetIdentifier4 = [eventCopy assetSetIdentifier];
+      [self _emitSubscriptionCompleteForAssetSet:assetSetIdentifier4];
     }
 
     goto LABEL_21;
@@ -356,8 +356,8 @@ LABEL_15:
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v36 = v9;
-  v14 = v9;
+  v36 = entriesCopy;
+  v14 = entriesCopy;
   v15 = [v14 countByEnumeratingWithState:&v38 objects:v48 count:16];
   if (v15)
   {
@@ -373,11 +373,11 @@ LABEL_15:
         }
 
         v19 = *(*(&v38 + 1) + 8 * i);
-        v20 = [v19 fullAssetSelector];
-        v21 = [v20 assetVersion];
-        v22 = [v19 fullAssetSelector];
-        v23 = [v22 assetSpecifier];
-        [v13 setObject:v21 forKeyedSubscript:v23];
+        fullAssetSelector = [v19 fullAssetSelector];
+        assetVersion = [fullAssetSelector assetVersion];
+        fullAssetSelector2 = [v19 fullAssetSelector];
+        assetSpecifier = [fullAssetSelector2 assetSpecifier];
+        [v13 setObject:assetVersion forKeyedSubscript:assetSpecifier];
       }
 
       v16 = [v14 countByEnumeratingWithState:&v38 objects:v48 count:16];
@@ -386,10 +386,10 @@ LABEL_15:
     while (v16);
   }
 
-  v24 = [v8 assetSetIdentifier];
-  [UAFCoreAnalyticsInstrumenter logUAFAssetSetState:v24 assetSpecifiersAndVersions:v13];
+  assetSetIdentifier5 = [eventCopy assetSetIdentifier];
+  [UAFCoreAnalyticsInstrumenter logUAFAssetSetState:assetSetIdentifier5 assetSpecifiersAndVersions:v13];
 
-  v9 = v36;
+  entriesCopy = v36;
 LABEL_21:
 
   v34 = *MEMORY[0x1E69E9840];
@@ -410,16 +410,16 @@ LABEL_21:
   return v2;
 }
 
-+ (BOOL)_assetSetsComplete:(id)a3 assetSetCompleteness:(id)a4
++ (BOOL)_assetSetsComplete:(id)complete assetSetCompleteness:(id)completeness
 {
   v26 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  completeCopy = complete;
+  completenessCopy = completeness;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v7 = v5;
+  v7 = completeCopy;
   v8 = [v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v8)
   {
@@ -435,19 +435,19 @@ LABEL_21:
         }
 
         v12 = *(*(&v21 + 1) + 8 * i);
-        v13 = [v6 objectForKeyedSubscript:{v12, v21}];
+        v13 = [completenessCopy objectForKeyedSubscript:{v12, v21}];
 
         if (!v13)
         {
           v14 = [UAFAutoAssetManager assetSetComplete:v12];
           v15 = [MEMORY[0x1E696AD98] numberWithBool:v14];
-          [v6 setObject:v15 forKeyedSubscript:v12];
+          [completenessCopy setObject:v15 forKeyedSubscript:v12];
         }
 
-        v16 = [v6 objectForKeyedSubscript:v12];
-        v17 = [v16 BOOLValue];
+        v16 = [completenessCopy objectForKeyedSubscript:v12];
+        bOOLValue = [v16 BOOLValue];
 
-        if (!v17)
+        if (!bOOLValue)
         {
           v18 = 0;
           goto LABEL_13;
@@ -471,35 +471,35 @@ LABEL_13:
   return v18;
 }
 
-+ (void)_emitSubscriptionComplete:(id)a3 subscriber:(id)a4 user:(id)a5 assetSets:(id)a6
++ (void)_emitSubscriptionComplete:(id)complete subscriber:(id)subscriber user:(id)user assetSets:(id)sets
 {
   v28 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  completeCopy = complete;
+  subscriberCopy = subscriber;
+  userCopy = user;
+  setsCopy = sets;
   v13 = UAFGetLogCategory(&UAFLogContextInstrumentation);
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315906;
     v21 = "+[UAFInstrumentationProvider _emitSubscriptionComplete:subscriber:user:assetSets:]";
     v22 = 2114;
-    v23 = v9;
+    v23 = completeCopy;
     v24 = 2114;
-    v25 = v10;
+    v25 = subscriberCopy;
     v26 = 2114;
-    v27 = v11;
+    v27 = userCopy;
     _os_log_impl(&dword_1BCF2C000, v13, OS_LOG_TYPE_DEFAULT, "%s Subscription %{public}@ for subscriber %{public}@ for user %{public}@ complete", buf, 0x2Au);
   }
 
   v14 = objc_opt_new();
-  [v14 setObject:v9 forKeyedSubscript:@"subscriptionName"];
-  [v14 setObject:v10 forKeyedSubscript:@"subscriberName"];
+  [v14 setObject:completeCopy forKeyedSubscript:@"subscriptionName"];
+  [v14 setObject:subscriberCopy forKeyedSubscript:@"subscriberName"];
   [v14 setObject:&unk_1F3B73230 forKeyedSubscript:@"downloadStatus"];
-  [v14 setObject:v12 forKeyedSubscript:@"assetSetIdentifiers"];
+  [v14 setObject:setsCopy forKeyedSubscript:@"assetSetIdentifiers"];
 
   v19 = 0;
-  v15 = [UAFUser uidForUser:v11 error:&v19];
+  v15 = [UAFUser uidForUser:userCopy error:&v19];
   v16 = v19;
   if (v16)
   {
@@ -524,10 +524,10 @@ LABEL_13:
   v18 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)_emitSubscriptionCompleteForAssetSet:(id)a3
++ (void)_emitSubscriptionCompleteForAssetSet:(id)set
 {
   v67 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  setCopy = set;
   v5 = objc_autoreleasePoolPush();
   v6 = +[UAFSubscriptionStoreManager defaultManager];
   v53 = 0;
@@ -536,7 +536,7 @@ LABEL_13:
 
   if (!v8)
   {
-    v37 = a1;
+    selfCopy = self;
     log = objc_opt_new();
     v49 = 0u;
     v50 = 0u;
@@ -614,32 +614,32 @@ LABEL_13:
                     v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v63 count:1];
                     v22 = [v20 applySubscriptions:v21];
 
-                    v23 = [v22 objectForKeyedSubscript:v4];
+                    v23 = [v22 objectForKeyedSubscript:setCopy];
 
                     if (v23)
                     {
                       if ([UAFInstrumentationProvider _assetSetsComplete:v22 assetSetCompleteness:log])
                       {
-                        v24 = [v19 name];
-                        v54 = v4;
-                        v25 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v54 count:1];
-                        [v37 _emitSubscriptionComplete:v24 subscriber:v38 user:v39 assetSets:v25];
+                        name = [v19 name];
+                        v54 = setCopy;
+                        name2 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v54 count:1];
+                        [selfCopy _emitSubscriptionComplete:name subscriber:v38 user:v39 assetSets:name2];
                         goto LABEL_22;
                       }
 
-                      v24 = UAFGetLogCategory(&UAFLogContextInstrumentation);
-                      if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
+                      name = UAFGetLogCategory(&UAFLogContextInstrumentation);
+                      if (os_log_type_enabled(name, OS_LOG_TYPE_DEBUG))
                       {
-                        v25 = [v19 name];
+                        name2 = [v19 name];
                         *buf = 136315906;
                         v56 = "+[UAFInstrumentationProvider _emitSubscriptionCompleteForAssetSet:]";
                         v57 = 2114;
-                        v58 = v25;
+                        v58 = name2;
                         v59 = 2114;
                         v60 = v38;
                         v61 = 2114;
                         v62 = v39;
-                        _os_log_debug_impl(&dword_1BCF2C000, v24, OS_LOG_TYPE_DEBUG, "%s Subscription %{public}@ for subscriber %{public}@ for user %{public}@ not yet complete", buf, 0x2Au);
+                        _os_log_debug_impl(&dword_1BCF2C000, name, OS_LOG_TYPE_DEBUG, "%s Subscription %{public}@ for subscriber %{public}@ for user %{public}@ not yet complete", buf, 0x2Au);
 LABEL_22:
                       }
                     }
@@ -697,18 +697,18 @@ LABEL_34:
   v27 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)logSubscriptionCompleteForSubscriptions:(id)a3 subscriber:(id)a4 user:(id)a5
++ (void)logSubscriptionCompleteForSubscriptions:(id)subscriptions subscriber:(id)subscriber user:(id)user
 {
   v41 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v26 = a4;
-  v25 = a5;
+  subscriptionsCopy = subscriptions;
+  subscriberCopy = subscriber;
+  userCopy = user;
   v8 = objc_opt_new();
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v9 = v7;
+  v9 = subscriptionsCopy;
   v10 = [v9 countByEnumeratingWithState:&v27 objects:v40 count:16];
   if (v10)
   {
@@ -734,27 +734,27 @@ LABEL_34:
 
         if ([UAFInstrumentationProvider _assetSetsComplete:v18 assetSetCompleteness:v8])
         {
-          v19 = [v15 name];
-          v20 = [v18 allKeys];
-          [a1 _emitSubscriptionComplete:v19 subscriber:v26 user:v25 assetSets:v20];
+          name = [v15 name];
+          allKeys = [v18 allKeys];
+          [self _emitSubscriptionComplete:name subscriber:subscriberCopy user:userCopy assetSets:allKeys];
 LABEL_8:
 
           goto LABEL_10;
         }
 
-        v19 = UAFGetLogCategory(&UAFLogContextInstrumentation);
-        if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
+        name = UAFGetLogCategory(&UAFLogContextInstrumentation);
+        if (os_log_type_enabled(name, OS_LOG_TYPE_DEBUG))
         {
-          v20 = [v15 name];
+          allKeys = [v15 name];
           *buf = v23;
           v32 = "+[UAFInstrumentationProvider logSubscriptionCompleteForSubscriptions:subscriber:user:]";
           v33 = 2114;
-          v34 = v20;
+          v34 = allKeys;
           v35 = 2114;
-          v36 = v26;
+          v36 = subscriberCopy;
           v37 = 2114;
-          v38 = v25;
-          _os_log_debug_impl(&dword_1BCF2C000, v19, OS_LOG_TYPE_DEBUG, "%s Subscription %{public}@ for subscriber %{public}@ for user %{public}@ not yet complete", buf, 0x2Au);
+          v38 = userCopy;
+          _os_log_debug_impl(&dword_1BCF2C000, name, OS_LOG_TYPE_DEBUG, "%s Subscription %{public}@ for subscriber %{public}@ for user %{public}@ not yet complete", buf, 0x2Au);
           goto LABEL_8;
         }
 

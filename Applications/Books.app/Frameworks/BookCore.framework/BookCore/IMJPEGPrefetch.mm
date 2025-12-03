@@ -1,20 +1,20 @@
 @interface IMJPEGPrefetch
 - (CGImage)cachedImage;
-- (IMJPEGPrefetch)initWithData:(id)a3 optimalSize:(CGSize)a4 options:(unint64_t)a5;
-- (id)_decodeSessionOptionsWithOptimalSize:(CGSize)a3 highPriority:(BOOL)a4;
-- (void)_startDecodeWithData:(id)a3;
-- (void)addImageHandler:(id)a3 queue:(id)a4;
+- (IMJPEGPrefetch)initWithData:(id)data optimalSize:(CGSize)size options:(unint64_t)options;
+- (id)_decodeSessionOptionsWithOptimalSize:(CGSize)size highPriority:(BOOL)priority;
+- (void)_startDecodeWithData:(id)data;
+- (void)addImageHandler:(id)handler queue:(id)queue;
 - (void)cancelPrefetchRequest;
 - (void)dealloc;
 @end
 
 @implementation IMJPEGPrefetch
 
-- (IMJPEGPrefetch)initWithData:(id)a3 optimalSize:(CGSize)a4 options:(unint64_t)a5
+- (IMJPEGPrefetch)initWithData:(id)data optimalSize:(CGSize)size options:(unint64_t)options
 {
-  height = a4.height;
-  width = a4.width;
-  v9 = a3;
+  height = size.height;
+  width = size.width;
+  dataCopy = data;
   v16.receiver = self;
   v16.super_class = IMJPEGPrefetch;
   v10 = [(IMJPEGPrefetch *)&v16 init];
@@ -31,11 +31,11 @@
     *(v10 + 12) = 0;
     *(v10 + 2) = width;
     *(v10 + 3) = height;
-    *(v10 + 9) = a5;
+    *(v10 + 9) = options;
     dispatch_group_enter(*(v10 + 5));
-    if (v9)
+    if (dataCopy)
     {
-      [v10 _startDecodeWithData:v9];
+      [v10 _startDecodeWithData:dataCopy];
     }
   }
 
@@ -50,9 +50,9 @@
   [(IMJPEGPrefetch *)&v3 dealloc];
 }
 
-- (void)_startDecodeWithData:(id)a3
+- (void)_startDecodeWithData:(id)data
 {
-  if (!a3)
+  if (!data)
   {
     JUMPOUT(0x10024);
   }
@@ -84,10 +84,10 @@
   sub_10000(v5, v6, v7, v8, v9, v10, v11, v12, v14, v15, v16, v17, v18, v19, v20, v21, v22, v23, v24, v25, v26, v27, v28, v29, v30, v31, v32, v33, v34, v35, v36, v37, v38, v39, v40, v41, v42, v43, v44, v45, v46, v47, v48, v49);
 }
 
-- (id)_decodeSessionOptionsWithOptimalSize:(CGSize)a3 highPriority:(BOOL)a4
+- (id)_decodeSessionOptionsWithOptimalSize:(CGSize)size highPriority:(BOOL)priority
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v15[0] = kCMPhotoJPEGDecodeSessionImageOptionKey_ApplyTransform;
   v15[1] = kCMPhotoJPEGDecodeSessionImageOptionKey_HighPriority;
   v16[0] = &__kCFBooleanFalse;
@@ -182,13 +182,13 @@
   dispatch_sync(sync, block);
 }
 
-- (void)addImageHandler:(id)a3 queue:(id)a4
+- (void)addImageHandler:(id)handler queue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  handlerCopy = handler;
+  queueCopy = queue;
+  if (!queueCopy)
   {
-    v7 = &_dispatch_main_q;
+    queueCopy = &_dispatch_main_q;
     v8 = &_dispatch_main_q;
   }
 
@@ -198,10 +198,10 @@
   block[2] = sub_109C8;
   block[3] = &unk_2C7F68;
   block[4] = self;
-  v13 = v7;
-  v14 = v6;
-  v10 = v6;
-  v11 = v7;
+  v13 = queueCopy;
+  v14 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = queueCopy;
   dispatch_sync(sync, block);
 }
 

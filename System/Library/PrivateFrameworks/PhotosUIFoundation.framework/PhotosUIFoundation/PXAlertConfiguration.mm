@@ -1,10 +1,10 @@
 @interface PXAlertConfiguration
 - (PXAlertConfiguration)init;
-- (PXAlertConfiguration)initWithError:(id)a3;
+- (PXAlertConfiguration)initWithError:(id)error;
 - (UIPopoverPresentationControllerSourceItem)sourceItem;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)addActionWithTitle:(id)a3 style:(int64_t)a4 action:(id)a5;
-- (void)configureForError:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)addActionWithTitle:(id)title style:(int64_t)style action:(id)action;
+- (void)configureForError:(id)error;
 @end
 
 @implementation PXAlertConfiguration
@@ -16,77 +16,77 @@
   return WeakRetained;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
-  v5 = [(PXAlertConfiguration *)self title];
-  [v4 setTitle:v5];
+  title = [(PXAlertConfiguration *)self title];
+  [v4 setTitle:title];
 
-  v6 = [(PXAlertConfiguration *)self message];
-  [v4 setMessage:v6];
+  message = [(PXAlertConfiguration *)self message];
+  [v4 setMessage:message];
 
-  v7 = [v4 actions];
-  v8 = [(PXAlertConfiguration *)self actions];
-  [v7 setArray:v8];
+  actions = [v4 actions];
+  actions2 = [(PXAlertConfiguration *)self actions];
+  [actions setArray:actions2];
 
   [v4 setStyle:{-[PXAlertConfiguration style](self, "style")}];
-  v9 = [(PXAlertConfiguration *)self sourceItem];
-  [v4 setSourceItem:v9];
+  sourceItem = [(PXAlertConfiguration *)self sourceItem];
+  [v4 setSourceItem:sourceItem];
 
-  v10 = [(PXAlertConfiguration *)self contentViewController];
-  [v4 setContentViewController:v10];
+  contentViewController = [(PXAlertConfiguration *)self contentViewController];
+  [v4 setContentViewController:contentViewController];
 
-  v11 = [(PXAlertConfiguration *)self headerContentViewController];
-  [v4 setHeaderContentViewController:v11];
+  headerContentViewController = [(PXAlertConfiguration *)self headerContentViewController];
+  [v4 setHeaderContentViewController:headerContentViewController];
 
-  v12 = [(PXAlertConfiguration *)self preferredAction];
-  [v4 setPreferredAction:v12];
+  preferredAction = [(PXAlertConfiguration *)self preferredAction];
+  [v4 setPreferredAction:preferredAction];
 
-  v13 = [(PXAlertConfiguration *)self completionHandler];
-  [v4 setCompletionHandler:v13];
+  completionHandler = [(PXAlertConfiguration *)self completionHandler];
+  [v4 setCompletionHandler:completionHandler];
 
   return v4;
 }
 
-- (PXAlertConfiguration)initWithError:(id)a3
+- (PXAlertConfiguration)initWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = [(PXAlertConfiguration *)self init];
-  [(PXAlertConfiguration *)v5 configureForError:v4];
+  [(PXAlertConfiguration *)v5 configureForError:errorCopy];
 
   return v5;
 }
 
-- (void)configureForError:(id)a3
+- (void)configureForError:(id)error
 {
-  v4 = a3;
-  v5 = [v4 localizedFailureReason];
-  if (v5)
+  errorCopy = error;
+  localizedFailureReason = [errorCopy localizedFailureReason];
+  if (localizedFailureReason)
   {
-    [(PXAlertConfiguration *)self setTitle:v5];
+    [(PXAlertConfiguration *)self setTitle:localizedFailureReason];
   }
 
   else
   {
-    v6 = [v4 localizedDescription];
-    [(PXAlertConfiguration *)self setTitle:v6];
+    localizedDescription = [errorCopy localizedDescription];
+    [(PXAlertConfiguration *)self setTitle:localizedDescription];
   }
 
-  v7 = [v4 localizedRecoverySuggestion];
-  [(PXAlertConfiguration *)self setMessage:v7];
+  localizedRecoverySuggestion = [errorCopy localizedRecoverySuggestion];
+  [(PXAlertConfiguration *)self setMessage:localizedRecoverySuggestion];
 
-  v8 = [v4 localizedRecoveryOptions];
-  v9 = [v4 recoveryAttempter];
+  localizedRecoveryOptions = [errorCopy localizedRecoveryOptions];
+  recoveryAttempter = [errorCopy recoveryAttempter];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __42__PXAlertConfiguration_configureForError___block_invoke;
   v14[3] = &unk_1E7BB7F48;
   v14[4] = self;
-  v15 = v9;
-  v16 = v4;
-  v10 = v4;
-  v11 = v9;
-  [v8 enumerateObjectsUsingBlock:v14];
+  v15 = recoveryAttempter;
+  v16 = errorCopy;
+  v10 = errorCopy;
+  v11 = recoveryAttempter;
+  [localizedRecoveryOptions enumerateObjectsUsingBlock:v14];
   v12 = PXPhotosUIFoundationBundle();
   v13 = [v12 localizedStringForKey:@"PXOK" value:&stru_1F2B87EE0 table:0];
   [(PXAlertConfiguration *)self addActionWithTitle:v13 style:1 action:0];
@@ -124,12 +124,12 @@ uint64_t __42__PXAlertConfiguration_configureForError___block_invoke_2(void *a1)
   }
 }
 
-- (void)addActionWithTitle:(id)a3 style:(int64_t)a4 action:(id)a5
+- (void)addActionWithTitle:(id)title style:(int64_t)style action:(id)action
 {
   actions = self->_actions;
-  v8 = a5;
-  v9 = a3;
-  v10 = [[PXAlertAction alloc] initWithTitle:v9 style:a4 action:v8];
+  actionCopy = action;
+  titleCopy = title;
+  v10 = [[PXAlertAction alloc] initWithTitle:titleCopy style:style action:actionCopy];
 
   [(NSMutableArray *)actions addObject:v10];
 }

@@ -1,30 +1,30 @@
 @interface SBSAShakeBehaviorProvider
-- (BOOL)canProceedWithContext:(id)a3 shouldRetry:(BOOL *)a4;
-- (CGPoint)_defaultContainerParentViewCenterFromContext:(id)a3;
-- (SBSAShakeBehaviorProvider)initWithParticipantIdentifier:(id)a3 triggeredBlock:(id)a4;
-- (double)milestoneForPhase:(int64_t)a3;
-- (id)_updatedIdlePreferencesFromPreferences:(id)a3 context:(id)a4;
-- (id)_updatedIndicatorPreferencesFromPreferences:(id)a3 context:(id)a4;
-- (id)_updatedKickingPreferencesFromPreferences:(id)a3 context:(id)a4 relevantPropertyIdentity:(id *)a5;
-- (id)_updatedPreparingToSettlePreferencesFromPreferences:(id)a3 context:(id)a4 relevantPropertyIdentity:(id *)a5;
-- (id)_updatedSettlingPreferencesFromPreferences:(id)a3 context:(id)a4 relevantPropertyIdentity:(id *)a5;
-- (id)nameForPhase:(int64_t)a3;
-- (id)updatedContextFromContext:(id)a3;
-- (id)updatedPreferencesFromPreferences:(id)a3 context:(id)a4 relevantPropertyIdentity:(id *)a5;
+- (BOOL)canProceedWithContext:(id)context shouldRetry:(BOOL *)retry;
+- (CGPoint)_defaultContainerParentViewCenterFromContext:(id)context;
+- (SBSAShakeBehaviorProvider)initWithParticipantIdentifier:(id)identifier triggeredBlock:(id)block;
+- (double)milestoneForPhase:(int64_t)phase;
+- (id)_updatedIdlePreferencesFromPreferences:(id)preferences context:(id)context;
+- (id)_updatedIndicatorPreferencesFromPreferences:(id)preferences context:(id)context;
+- (id)_updatedKickingPreferencesFromPreferences:(id)preferences context:(id)context relevantPropertyIdentity:(id *)identity;
+- (id)_updatedPreparingToSettlePreferencesFromPreferences:(id)preferences context:(id)context relevantPropertyIdentity:(id *)identity;
+- (id)_updatedSettlingPreferencesFromPreferences:(id)preferences context:(id)context relevantPropertyIdentity:(id *)identity;
+- (id)nameForPhase:(int64_t)phase;
+- (id)updatedContextFromContext:(id)context;
+- (id)updatedPreferencesFromPreferences:(id)preferences context:(id)context relevantPropertyIdentity:(id *)identity;
 - (void)removeFromParentProvider;
 @end
 
 @implementation SBSAShakeBehaviorProvider
 
-- (SBSAShakeBehaviorProvider)initWithParticipantIdentifier:(id)a3 triggeredBlock:(id)a4
+- (SBSAShakeBehaviorProvider)initWithParticipantIdentifier:(id)identifier triggeredBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v11.receiver = self;
   v11.super_class = SBSAShakeBehaviorProvider;
-  v7 = [(SBSASequencedBehaviorProvider *)&v11 initWithParticipantIdentifier:a3];
+  v7 = [(SBSASequencedBehaviorProvider *)&v11 initWithParticipantIdentifier:identifier];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [blockCopy copy];
     triggeredBlock = v7->_triggeredBlock;
     v7->_triggeredBlock = v8;
   }
@@ -52,14 +52,14 @@
   [(SBSABasePreferencesProvider *)&v5 removeFromParentProvider];
 }
 
-- (id)nameForPhase:(int64_t)a3
+- (id)nameForPhase:(int64_t)phase
 {
   v7.receiver = self;
   v7.super_class = SBSAShakeBehaviorProvider;
   v4 = [(SBSASequencedBehaviorProvider *)&v7 nameForPhase:?];
-  if (a3 <= 4)
+  if (phase <= 4)
   {
-    v5 = off_2783BAA40[a3];
+    v5 = off_2783BAA40[phase];
 
     v4 = v5;
   }
@@ -67,31 +67,31 @@
   return v4;
 }
 
-- (BOOL)canProceedWithContext:(id)a3 shouldRetry:(BOOL *)a4
+- (BOOL)canProceedWithContext:(id)context shouldRetry:(BOOL *)retry
 {
-  v6 = a3;
-  v7 = [(SBSASequencedBehaviorProvider *)self participatingElementIdentification];
-  if (v7)
+  contextCopy = context;
+  participatingElementIdentification = [(SBSASequencedBehaviorProvider *)self participatingElementIdentification];
+  if (participatingElementIdentification)
   {
-    v8 = [v6 elementContexts];
-    v9 = [v8 firstObject];
+    elementContexts = [contextCopy elementContexts];
+    firstObject = [elementContexts firstObject];
     v10 = SAElementIdentityEqualToIdentity();
 
     if (v10)
     {
-      v11 = [v6 preferences];
-      v12 = [v11 elementLayoutTransition];
-      v13 = [v12 initialElementContexts];
+      preferences = [contextCopy preferences];
+      elementLayoutTransition = [preferences elementLayoutTransition];
+      initialElementContexts = [elementLayoutTransition initialElementContexts];
       v18[0] = MEMORY[0x277D85DD0];
       v18[1] = 3221225472;
       v18[2] = __63__SBSAShakeBehaviorProvider_canProceedWithContext_shouldRetry___block_invoke;
       v18[3] = &unk_2783AD700;
-      v19 = v7;
-      v14 = [v13 bs_firstObjectPassingTest:v18];
+      v19 = participatingElementIdentification;
+      v14 = [initialElementContexts bs_firstObjectPassingTest:v18];
       v15 = v14 != 0;
 
       v16 = 1;
-      if (!a4)
+      if (!retry)
       {
         goto LABEL_7;
       }
@@ -102,10 +102,10 @@
 
   v16 = 0;
   v15 = 0;
-  if (a4)
+  if (retry)
   {
 LABEL_6:
-    *a4 = v16;
+    *retry = v16;
   }
 
 LABEL_7:
@@ -113,20 +113,20 @@ LABEL_7:
   return v15;
 }
 
-- (id)updatedContextFromContext:(id)a3
+- (id)updatedContextFromContext:(id)context
 {
   v16.receiver = self;
   v16.super_class = SBSAShakeBehaviorProvider;
-  v5 = [(SBSASequencedBehaviorProvider *)&v16 updatedContextFromContext:a3];
+  v5 = [(SBSASequencedBehaviorProvider *)&v16 updatedContextFromContext:context];
   if ([(SBSASequencedBehaviorProvider *)self activePhase]== 1 || [(SBSASequencedBehaviorProvider *)self activePhase]== 2)
   {
     [v5 inertContainerFrame];
-    v6 = [objc_opt_class() settings];
-    [v6 shakeSensorExpansion];
+    settings = [objc_opt_class() settings];
+    [settings shakeSensorExpansion];
     [v5 displayScale];
     v14 = v7;
     UIRectCenteredXInRectScale();
-    [v6 shakeSensorOffset];
+    [settings shakeSensorOffset];
     [v5 layoutDirection];
     UIRectIntegralWithScale();
     v15[0] = MEMORY[0x277D85DD0];
@@ -188,66 +188,66 @@ void __55__SBSAShakeBehaviorProvider_updatedContextFromContext___block_invoke(do
   [v6 setInertContainerFrame:{a1[6], a1[7], a1[8], a1[9]}];
 }
 
-- (id)updatedPreferencesFromPreferences:(id)a3 context:(id)a4 relevantPropertyIdentity:(id *)a5
+- (id)updatedPreferencesFromPreferences:(id)preferences context:(id)context relevantPropertyIdentity:(id *)identity
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(SBSASequencedBehaviorProvider *)self activePhase];
-  if (v10 > 2)
+  preferencesCopy = preferences;
+  contextCopy = context;
+  activePhase = [(SBSASequencedBehaviorProvider *)self activePhase];
+  if (activePhase > 2)
   {
-    if (v10 == 3 || v10 == 4)
+    if (activePhase == 3 || activePhase == 4)
     {
-      v11 = [(SBSAShakeBehaviorProvider *)self _updatedSettlingPreferencesFromPreferences:v8 context:v9 relevantPropertyIdentity:a5];
+      v11 = [(SBSAShakeBehaviorProvider *)self _updatedSettlingPreferencesFromPreferences:preferencesCopy context:contextCopy relevantPropertyIdentity:identity];
       goto LABEL_10;
     }
 
     goto LABEL_8;
   }
 
-  if (v10 != 1)
+  if (activePhase != 1)
   {
-    if (v10 == 2)
+    if (activePhase == 2)
     {
-      v11 = [(SBSAShakeBehaviorProvider *)self _updatedPreparingToSettlePreferencesFromPreferences:v8 context:v9 relevantPropertyIdentity:a5];
+      v11 = [(SBSAShakeBehaviorProvider *)self _updatedPreparingToSettlePreferencesFromPreferences:preferencesCopy context:contextCopy relevantPropertyIdentity:identity];
       goto LABEL_10;
     }
 
 LABEL_8:
-    v11 = [(SBSAShakeBehaviorProvider *)self _updatedIdlePreferencesFromPreferences:v8 context:v9];
+    v11 = [(SBSAShakeBehaviorProvider *)self _updatedIdlePreferencesFromPreferences:preferencesCopy context:contextCopy];
     goto LABEL_10;
   }
 
-  v11 = [(SBSAShakeBehaviorProvider *)self _updatedKickingPreferencesFromPreferences:v8 context:v9 relevantPropertyIdentity:a5];
+  v11 = [(SBSAShakeBehaviorProvider *)self _updatedKickingPreferencesFromPreferences:preferencesCopy context:contextCopy relevantPropertyIdentity:identity];
 LABEL_10:
   v12 = v11;
-  v13 = [(SBSAShakeBehaviorProvider *)self _updatedIndicatorPreferencesFromPreferences:v11 context:v9];
+  v13 = [(SBSAShakeBehaviorProvider *)self _updatedIndicatorPreferencesFromPreferences:v11 context:contextCopy];
 
   return v13;
 }
 
-- (double)milestoneForPhase:(int64_t)a3
+- (double)milestoneForPhase:(int64_t)phase
 {
   v10.receiver = self;
   v10.super_class = SBSAShakeBehaviorProvider;
   [(SBSASequencedBehaviorProvider *)&v10 milestoneForPhase:?];
-  if (a3 == 4)
+  if (phase == 4)
   {
     [&unk_28336F620 bs_CGFloatValue];
     return v8;
   }
 
-  if (a3 == 3)
+  if (phase == 3)
   {
-    v6 = [objc_opt_class() settings];
-    [v6 secondShakeMilestone];
+    settings = [objc_opt_class() settings];
+    [settings secondShakeMilestone];
     goto LABEL_6;
   }
 
   v5 = v4;
-  if (a3 == 2)
+  if (phase == 2)
   {
-    v6 = [objc_opt_class() settings];
-    [v6 firstShakeMilestone];
+    settings = [objc_opt_class() settings];
+    [settings firstShakeMilestone];
 LABEL_6:
     v5 = v7;
   }
@@ -255,13 +255,13 @@ LABEL_6:
   return v5;
 }
 
-- (id)_updatedIndicatorPreferencesFromPreferences:(id)a3 context:(id)a4
+- (id)_updatedIndicatorPreferencesFromPreferences:(id)preferences context:(id)context
 {
-  v6 = a3;
-  v7 = [v6 indicatorElementDescription];
-  v8 = v6;
+  preferencesCopy = preferences;
+  indicatorElementDescription = [preferencesCopy indicatorElementDescription];
+  v8 = preferencesCopy;
   v9 = v8;
-  if (v7)
+  if (indicatorElementDescription)
   {
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
@@ -269,7 +269,7 @@ LABEL_6:
     v16[3] = &unk_2783A93E8;
     v16[4] = self;
     v16[5] = a2;
-    v10 = [v7 copyWithBlock:v16];
+    v10 = [indicatorElementDescription copyWithBlock:v16];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __81__SBSAShakeBehaviorProvider__updatedIndicatorPreferencesFromPreferences_context___block_invoke_2;
@@ -366,10 +366,10 @@ void __81__SBSAShakeBehaviorProvider__updatedIndicatorPreferencesFromPreferences
   [v6 setIndicatorElementDescription:*(a1 + 40)];
 }
 
-- (id)_updatedKickingPreferencesFromPreferences:(id)a3 context:(id)a4 relevantPropertyIdentity:(id *)a5
+- (id)_updatedKickingPreferencesFromPreferences:(id)preferences context:(id)context relevantPropertyIdentity:(id *)identity
 {
-  v9 = a3;
-  v10 = a4;
+  preferencesCopy = preferences;
+  contextCopy = context;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
@@ -382,13 +382,13 @@ void __81__SBSAShakeBehaviorProvider__updatedIndicatorPreferencesFromPreferences
   v14[3] = &unk_2783BA100;
   v17 = a2;
   v14[4] = self;
-  v11 = v10;
+  v11 = contextCopy;
   v15 = v11;
   v16 = &v18;
-  v12 = [v9 copyWithBlock:v14];
-  if (a5)
+  v12 = [preferencesCopy copyWithBlock:v14];
+  if (identity)
   {
-    *a5 = v19[5];
+    *identity = v19[5];
   }
 
   _Block_object_dispose(&v18, 8);
@@ -591,9 +591,9 @@ void __104__SBSAShakeBehaviorProvider__updatedKickingPreferencesFromPreferences_
   [v6 setCenter:{*(a1 + 48), *(a1 + 56)}];
 }
 
-- (CGPoint)_defaultContainerParentViewCenterFromContext:(id)a3
+- (CGPoint)_defaultContainerParentViewCenterFromContext:(id)context
 {
-  [a3 systemContainerBounds];
+  [context systemContainerBounds];
 
   UIRectGetCenter();
   result.y = v4;
@@ -601,10 +601,10 @@ void __104__SBSAShakeBehaviorProvider__updatedKickingPreferencesFromPreferences_
   return result;
 }
 
-- (id)_updatedPreparingToSettlePreferencesFromPreferences:(id)a3 context:(id)a4 relevantPropertyIdentity:(id *)a5
+- (id)_updatedPreparingToSettlePreferencesFromPreferences:(id)preferences context:(id)context relevantPropertyIdentity:(id *)identity
 {
-  v9 = a3;
-  v10 = a4;
+  preferencesCopy = preferences;
+  contextCopy = context;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
@@ -617,13 +617,13 @@ void __104__SBSAShakeBehaviorProvider__updatedKickingPreferencesFromPreferences_
   v14[3] = &unk_2783BA100;
   v17 = a2;
   v14[4] = self;
-  v11 = v10;
+  v11 = contextCopy;
   v15 = v11;
   v16 = &v18;
-  v12 = [v9 copyWithBlock:v14];
-  if (a5)
+  v12 = [preferencesCopy copyWithBlock:v14];
+  if (identity)
   {
-    *a5 = v19[5];
+    *identity = v19[5];
   }
 
   _Block_object_dispose(&v18, 8);
@@ -751,11 +751,11 @@ void __114__SBSAShakeBehaviorProvider__updatedPreparingToSettlePreferencesFromPr
   [v6 setCenter:?];
 }
 
-- (id)_updatedSettlingPreferencesFromPreferences:(id)a3 context:(id)a4 relevantPropertyIdentity:(id *)a5
+- (id)_updatedSettlingPreferencesFromPreferences:(id)preferences context:(id)context relevantPropertyIdentity:(id *)identity
 {
   v28[1] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
+  preferencesCopy = preferences;
+  contextCopy = context;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -769,7 +769,7 @@ void __114__SBSAShakeBehaviorProvider__updatedPreparingToSettlePreferencesFromPr
   v20[5] = &v21;
   v20[6] = a2;
   v20[4] = self;
-  v11 = [v9 copyWithBlock:v20];
+  v11 = [preferencesCopy copyWithBlock:v20];
   if ([(SBSASequencedBehaviorProvider *)self activePhase]== 4 && self->_triggeredBlock)
   {
     v12 = [SBSACalloutBlockAction alloc];
@@ -788,9 +788,9 @@ void __114__SBSAShakeBehaviorProvider__updatedPreparingToSettlePreferencesFromPr
     v11 = v18;
   }
 
-  if (a5)
+  if (identity)
   {
-    *a5 = v22[5];
+    *identity = v22[5];
   }
 
   _Block_object_dispose(&v21, 8);
@@ -890,18 +890,18 @@ void __105__SBSAShakeBehaviorProvider__updatedSettlingPreferencesFromPreferences
   }
 }
 
-- (id)_updatedIdlePreferencesFromPreferences:(id)a3 context:(id)a4
+- (id)_updatedIdlePreferencesFromPreferences:(id)preferences context:(id)context
 {
-  v7 = a4;
+  contextCopy = context;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __76__SBSAShakeBehaviorProvider__updatedIdlePreferencesFromPreferences_context___block_invoke;
   v11[3] = &unk_2783AD750;
-  v12 = v7;
+  v12 = contextCopy;
   v13 = a2;
   v11[4] = self;
-  v8 = v7;
-  v9 = [a3 copyWithBlock:v11];
+  v8 = contextCopy;
+  v9 = [preferences copyWithBlock:v11];
 
   return v9;
 }

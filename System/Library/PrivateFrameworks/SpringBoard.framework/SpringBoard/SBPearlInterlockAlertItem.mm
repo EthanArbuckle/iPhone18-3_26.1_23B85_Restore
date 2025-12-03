@@ -1,23 +1,23 @@
 @interface SBPearlInterlockAlertItem
 - (id)_message;
 - (id)_title;
-- (void)configure:(BOOL)a3 requirePasscodeForActions:(BOOL)a4;
+- (void)configure:(BOOL)configure requirePasscodeForActions:(BOOL)actions;
 @end
 
 @implementation SBPearlInterlockAlertItem
 
-- (void)configure:(BOOL)a3 requirePasscodeForActions:(BOOL)a4
+- (void)configure:(BOOL)configure requirePasscodeForActions:(BOOL)actions
 {
-  v5 = [(SBAlertItem *)self alertController:a3];
-  v6 = [(SBPearlInterlockAlertItem *)self _title];
-  [v5 setTitle:v6];
+  v5 = [(SBAlertItem *)self alertController:configure];
+  _title = [(SBPearlInterlockAlertItem *)self _title];
+  [v5 setTitle:_title];
 
-  v7 = [(SBPearlInterlockAlertItem *)self _message];
-  [v5 setMessage:v7];
+  _message = [(SBPearlInterlockAlertItem *)self _message];
+  [v5 setMessage:_message];
 
   v8 = MEMORY[0x277D750F8];
-  v9 = [MEMORY[0x277CCA8D8] mainBundle];
-  v10 = [v9 localizedStringForKey:@"FACE_ID_DISABLED_GO_TO_SETTINGS" value:&stru_283094718 table:@"SpringBoard"];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v10 = [mainBundle localizedStringForKey:@"FACE_ID_DISABLED_GO_TO_SETTINGS" value:&stru_283094718 table:@"SpringBoard"];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __65__SBPearlInterlockAlertItem_configure_requirePasscodeForActions___block_invoke;
@@ -27,8 +27,8 @@
 
   [v5 addAction:v11];
   v12 = MEMORY[0x277D750F8];
-  v13 = [MEMORY[0x277CCA8D8] mainBundle];
-  v14 = [v13 localizedStringForKey:@"FACE_ID_DISABLED_CLOSE" value:&stru_283094718 table:@"SpringBoard"];
+  mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+  v14 = [mainBundle2 localizedStringForKey:@"FACE_ID_DISABLED_CLOSE" value:&stru_283094718 table:@"SpringBoard"];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __65__SBPearlInterlockAlertItem_configure_requirePasscodeForActions___block_invoke_2;
@@ -52,16 +52,16 @@ uint64_t __65__SBPearlInterlockAlertItem_configure_requirePasscodeForActions___b
 
 - (id)_title
 {
-  v2 = [MEMORY[0x277CCA8D8] mainBundle];
-  v3 = [v2 localizedStringForKey:@"FACE_ID_DISABLED_TITLE" value:&stru_283094718 table:@"SpringBoard"];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v3 = [mainBundle localizedStringForKey:@"FACE_ID_DISABLED_TITLE" value:&stru_283094718 table:@"SpringBoard"];
 
   return v3;
 }
 
 - (id)_message
 {
-  v2 = [MEMORY[0x277CCA8D8] mainBundle];
-  v3 = [v2 localizedStringForKey:@"FACE_ID_DISABLED_BODY" value:&stru_283094718 table:@"SpringBoard"];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v3 = [mainBundle localizedStringForKey:@"FACE_ID_DISABLED_BODY" value:&stru_283094718 table:@"SpringBoard"];
 
   return v3;
 }

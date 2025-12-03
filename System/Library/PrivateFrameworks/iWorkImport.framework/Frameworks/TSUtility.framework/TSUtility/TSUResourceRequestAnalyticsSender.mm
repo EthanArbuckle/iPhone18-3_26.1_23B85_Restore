@@ -1,45 +1,45 @@
 @interface TSUResourceRequestAnalyticsSender
 + (id)sharedInstanceQueue;
-+ (void)sendAnalyticsForResourceRequest:(id)a3 error:(id)a4;
-+ (void)setSharedAnalyticsSender:(id)a3;
-- (void)sendAnalyticsForResourceRequest:(id)a3 error:(id)a4;
++ (void)sendAnalyticsForResourceRequest:(id)request error:(id)error;
++ (void)setSharedAnalyticsSender:(id)sender;
+- (void)sendAnalyticsForResourceRequest:(id)request error:(id)error;
 @end
 
 @implementation TSUResourceRequestAnalyticsSender
 
-+ (void)sendAnalyticsForResourceRequest:(id)a3 error:(id)a4
++ (void)sendAnalyticsForResourceRequest:(id)request error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 sharedInstanceQueue];
+  requestCopy = request;
+  errorCopy = error;
+  sharedInstanceQueue = [self sharedInstanceQueue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = sub_27709B5F8;
   v11[3] = &unk_27A702450;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, v11);
+  v12 = requestCopy;
+  v13 = errorCopy;
+  v9 = errorCopy;
+  v10 = requestCopy;
+  dispatch_async(sharedInstanceQueue, v11);
 }
 
-+ (void)setSharedAnalyticsSender:(id)a3
++ (void)setSharedAnalyticsSender:(id)sender
 {
-  v4 = a3;
-  v5 = [a1 sharedInstanceQueue];
+  senderCopy = sender;
+  sharedInstanceQueue = [self sharedInstanceQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_27709B6B8;
   block[3] = &unk_27A7023D8;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = senderCopy;
+  v6 = senderCopy;
+  dispatch_async(sharedInstanceQueue, block);
 }
 
-- (void)sendAnalyticsForResourceRequest:(id)a3 error:(id)a4
+- (void)sendAnalyticsForResourceRequest:(id)request error:(id)error
 {
-  v5 = a3;
-  v6 = a4;
+  requestCopy = request;
+  errorCopy = error;
   v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSUResourceRequestAnalyticsSender sendAnalyticsForResourceRequest:error:]"];
   v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/utility/TSUResourceRequestAnalyticsSender.m"];
   v9 = objc_opt_class();

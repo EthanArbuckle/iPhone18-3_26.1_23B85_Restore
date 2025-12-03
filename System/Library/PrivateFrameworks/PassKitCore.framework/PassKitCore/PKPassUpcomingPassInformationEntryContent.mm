@@ -1,28 +1,28 @@
 @interface PKPassUpcomingPassInformationEntryContent
-+ (id)_createContentForType:(unint64_t)a3;
-+ (id)createFromDictionary:(id)a3 bundle:(id)a4 withEntryType:(unint64_t)a5;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToContent:(id)a3;
-- (BOOL)populateFromDictionary:(id)a3 bundle:(id)a4;
-- (PKPassUpcomingPassInformationEntryContent)initWithCoder:(id)a3;
++ (id)_createContentForType:(unint64_t)type;
++ (id)createFromDictionary:(id)dictionary bundle:(id)bundle withEntryType:(unint64_t)type;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToContent:(id)content;
+- (BOOL)populateFromDictionary:(id)dictionary bundle:(id)bundle;
+- (PKPassUpcomingPassInformationEntryContent)initWithCoder:(id)coder;
 - (PKPassUpcomingPassInformationEntryContentEvent)eventContent;
-- (id)_initWithType:(unint64_t)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)_initWithType:(unint64_t)type;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPassUpcomingPassInformationEntryContent
 
-+ (id)createFromDictionary:(id)a3 bundle:(id)a4 withEntryType:(unint64_t)a5
++ (id)createFromDictionary:(id)dictionary bundle:(id)bundle withEntryType:(unint64_t)type
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
+  dictionaryCopy = dictionary;
+  bundleCopy = bundle;
+  v9 = bundleCopy;
   v10 = 0;
-  if (v7 && v8)
+  if (dictionaryCopy && bundleCopy)
   {
-    v11 = [PKPassUpcomingPassInformationEntryContent _createContentForType:[PKPassUpcomingPassInformationEntryContent _entryContentTypeForEntryType:a5 fromDictionary:v7 bundle:v8]];
+    v11 = [PKPassUpcomingPassInformationEntryContent _createContentForType:[PKPassUpcomingPassInformationEntryContent _entryContentTypeForEntryType:type fromDictionary:dictionaryCopy bundle:bundleCopy]];
     v12 = v11;
-    if (v11 && [v11 populateFromDictionary:v7 bundle:v9])
+    if (v11 && [v11 populateFromDictionary:dictionaryCopy bundle:v9])
     {
       v10 = v12;
     }
@@ -36,9 +36,9 @@
   return v10;
 }
 
-+ (id)_createContentForType:(unint64_t)a3
++ (id)_createContentForType:(unint64_t)type
 {
-  if (a3 > 1)
+  if (type > 1)
   {
     v4 = 0;
   }
@@ -48,29 +48,29 @@
     v4 = objc_opt_class();
   }
 
-  v5 = [[v4 alloc] _initWithType:a3];
+  v5 = [[v4 alloc] _initWithType:type];
 
   return v5;
 }
 
-- (id)_initWithType:(unint64_t)a3
+- (id)_initWithType:(unint64_t)type
 {
   v5.receiver = self;
   v5.super_class = PKPassUpcomingPassInformationEntryContent;
   result = [(PKPassUpcomingPassInformationEntryContent *)&v5 init];
   if (result)
   {
-    *(result + 1) = a3;
+    *(result + 1) = type;
   }
 
   return result;
 }
 
-- (BOOL)populateFromDictionary:(id)a3 bundle:(id)a4
+- (BOOL)populateFromDictionary:(id)dictionary bundle:(id)bundle
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 PKArrayForKey:@"additionalInfoFields"];
+  bundleCopy = bundle;
+  dictionaryCopy = dictionary;
+  v8 = [dictionaryCopy PKArrayForKey:@"additionalInfoFields"];
   v9 = v8;
   v10 = MEMORY[0x1E695E0F0];
   if (v8)
@@ -89,13 +89,13 @@
   v36[1] = 3221225472;
   v36[2] = __75__PKPassUpcomingPassInformationEntryContent_populateFromDictionary_bundle___block_invoke;
   v36[3] = &unk_1E79CA638;
-  v13 = v6;
+  v13 = bundleCopy;
   v37 = v13;
   v14 = [v12 pk_createArrayBySafelyApplyingBlock:v36];
   additionalInfoFields = self->_additionalInfoFields;
   self->_additionalInfoFields = v14;
 
-  v16 = [v7 PKArrayForKey:@"backFields"];
+  v16 = [dictionaryCopy PKArrayForKey:@"backFields"];
   v17 = v16;
   if (v16)
   {
@@ -120,11 +120,11 @@
   backFields = self->_backFields;
   self->_backFields = v21;
 
-  v23 = [v7 PKArrayForKey:{@"auxiliaryStoreIdentifiers", v31, v32, v33, v34}];
+  v23 = [dictionaryCopy PKArrayForKey:{@"auxiliaryStoreIdentifiers", v31, v32, v33, v34}];
   auxiliaryStoreIdentifiers = self->_auxiliaryStoreIdentifiers;
   self->_auxiliaryStoreIdentifiers = v23;
 
-  v25 = [v7 PKDictionaryForKey:@"images"];
+  v25 = [dictionaryCopy PKDictionaryForKey:@"images"];
 
   if (v25)
   {
@@ -160,10 +160,10 @@
   return v29 & 1;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -171,22 +171,22 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PKPassUpcomingPassInformationEntryContent *)self isEqualToContent:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PKPassUpcomingPassInformationEntryContent *)self isEqualToContent:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToContent:(id)a3
+- (BOOL)isEqualToContent:(id)content
 {
-  v4 = a3;
-  if (self->_type != v4[1])
+  contentCopy = content;
+  if (self->_type != contentCopy[1])
   {
     goto LABEL_17;
   }
 
   additionalInfoFields = self->_additionalInfoFields;
-  v6 = v4[2];
+  v6 = contentCopy[2];
   if (additionalInfoFields)
   {
     v7 = v6 == 0;
@@ -211,7 +211,7 @@
   }
 
   backFields = self->_backFields;
-  v9 = v4[3];
+  v9 = contentCopy[3];
   if (!backFields || !v9)
   {
     if (backFields == v9)
@@ -231,7 +231,7 @@ LABEL_17:
 
 LABEL_13:
   auxiliaryStoreIdentifiers = self->_auxiliaryStoreIdentifiers;
-  v11 = v4[4];
+  v11 = contentCopy[4];
   if (auxiliaryStoreIdentifiers && v11)
   {
     v12 = [(NSArray *)auxiliaryStoreIdentifiers isEqual:?];
@@ -247,19 +247,19 @@ LABEL_18:
   return v12;
 }
 
-- (PKPassUpcomingPassInformationEntryContent)initWithCoder:(id)a3
+- (PKPassUpcomingPassInformationEntryContent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v19 = 0;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"type"];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"type"];
   if (!v5)
   {
     v19 = 0;
 LABEL_7:
     v7 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"PKPassUpcomingPassInformationEntryContent" code:0 userInfo:0];
-    [v4 failWithError:v7];
+    [coderCopy failWithError:v7];
 
-    v8 = 0;
+    selfCopy = 0;
     goto LABEL_8;
   }
 
@@ -282,31 +282,31 @@ LABEL_7:
   v10 = [(PKPassUpcomingPassInformationEntryContent *)self _initWithType:v19];
   if (v10)
   {
-    v11 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"additionalInfoFields"];
+    v11 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"additionalInfoFields"];
     v12 = v10[2];
     v10[2] = v11;
 
-    v13 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"backFields"];
+    v13 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"backFields"];
     v14 = v10[3];
     v10[3] = v13;
 
-    v15 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"auxiliaryStoreIdentifiers"];
+    v15 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"auxiliaryStoreIdentifiers"];
     v16 = v10[4];
     v10[4] = v15;
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"headerManifest"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"headerManifest"];
     v18 = v10[5];
     v10[5] = v17;
   }
 
   self = v10;
-  v8 = self;
+  selfCopy = self;
 LABEL_8:
 
-  return v8;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   type = self->_type;
   v5 = @"event";
@@ -325,12 +325,12 @@ LABEL_8:
     v6 = @"default";
   }
 
-  v7 = a3;
-  [v7 encodeObject:v6 forKey:@"type"];
-  [v7 encodeObject:self->_additionalInfoFields forKey:@"additionalInfoFields"];
-  [v7 encodeObject:self->_backFields forKey:@"backFields"];
-  [v7 encodeObject:self->_auxiliaryStoreIdentifiers forKey:@"auxiliaryStoreIdentifiers"];
-  [v7 encodeObject:self->_headerManifest forKey:@"headerManifest"];
+  coderCopy = coder;
+  [coderCopy encodeObject:v6 forKey:@"type"];
+  [coderCopy encodeObject:self->_additionalInfoFields forKey:@"additionalInfoFields"];
+  [coderCopy encodeObject:self->_backFields forKey:@"backFields"];
+  [coderCopy encodeObject:self->_auxiliaryStoreIdentifiers forKey:@"auxiliaryStoreIdentifiers"];
+  [coderCopy encodeObject:self->_headerManifest forKey:@"headerManifest"];
 }
 
 - (PKPassUpcomingPassInformationEntryContentEvent)eventContent

@@ -1,32 +1,32 @@
 @interface CUIPSDLayerRef
 - (CGImage)createCGImage;
-- (CUIPSDLayerRef)initWithImageRef:(id)a3 layerIndex:(unsigned int)a4;
+- (CUIPSDLayerRef)initWithImageRef:(id)ref layerIndex:(unsigned int)index;
 - (id)colorFill;
 - (id)fillSample;
 - (id)gradient;
 - (id)image;
-- (id)imageFromSlice:(unsigned int)a3;
-- (id)imageFromSlice:(unsigned int)a3 isEmptyImage:(BOOL *)a4;
-- (id)imageIsZeroSizeImage:(BOOL *)a3;
+- (id)imageFromSlice:(unsigned int)slice;
+- (id)imageFromSlice:(unsigned int)slice isEmptyImage:(BOOL *)image;
+- (id)imageIsZeroSizeImage:(BOOL *)image;
 - (id)layerEffects;
-- (id)maskFromSlice:(unsigned int)a3;
-- (id)patternFromSlice:(unsigned int)a3;
-- (id)patternFromSlice:(unsigned int)a3 isZeroSizeImage:(BOOL *)a4;
+- (id)maskFromSlice:(unsigned int)slice;
+- (id)patternFromSlice:(unsigned int)slice;
+- (id)patternFromSlice:(unsigned int)slice isZeroSizeImage:(BOOL *)image;
 - (void)dealloc;
 @end
 
 @implementation CUIPSDLayerRef
 
-- (CUIPSDLayerRef)initWithImageRef:(id)a3 layerIndex:(unsigned int)a4
+- (CUIPSDLayerRef)initWithImageRef:(id)ref layerIndex:(unsigned int)index
 {
-  v4 = *&a4;
+  v4 = *&index;
   v9.receiver = self;
   v9.super_class = CUIPSDLayerRef;
   v6 = [(CUIPSDLayerRef *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    [(CUIPSDLayerBaseRef *)v6 setImageRef:a3];
+    [(CUIPSDLayerBaseRef *)v6 setImageRef:ref];
     [(CUIPSDLayerBaseRef *)v7 setLayerIndex:v4];
   }
 
@@ -43,95 +43,95 @@
 
 - (CGImage)createCGImage
 {
-  v3 = [(CUIPSDLayerBaseRef *)self imageRef];
-  v4 = [(CUIPSDLayerBaseRef *)self layerIndex];
+  imageRef = [(CUIPSDLayerBaseRef *)self imageRef];
+  layerIndex = [(CUIPSDLayerBaseRef *)self layerIndex];
 
-  return [(CUIPSDImageRef *)v3 _copyCGImageAtAbsoluteIndex:v4];
+  return [(CUIPSDImageRef *)imageRef _copyCGImageAtAbsoluteIndex:layerIndex];
 }
 
 - (id)image
 {
-  v3 = [(CUIPSDLayerBaseRef *)self imageRef];
-  v4 = [(CUIPSDLayerBaseRef *)self layerIndex];
+  imageRef = [(CUIPSDLayerBaseRef *)self imageRef];
+  layerIndex = [(CUIPSDLayerBaseRef *)self layerIndex];
 
-  return [(CUIPSDImageRef *)v3 _imageAtAbsoluteIndex:v4 isZeroSizeImage:0];
+  return [(CUIPSDImageRef *)imageRef _imageAtAbsoluteIndex:layerIndex isZeroSizeImage:0];
 }
 
-- (id)imageIsZeroSizeImage:(BOOL *)a3
+- (id)imageIsZeroSizeImage:(BOOL *)image
 {
-  v5 = [(CUIPSDLayerBaseRef *)self imageRef];
-  v6 = [(CUIPSDLayerBaseRef *)self layerIndex];
+  imageRef = [(CUIPSDLayerBaseRef *)self imageRef];
+  layerIndex = [(CUIPSDLayerBaseRef *)self layerIndex];
 
-  return [(CUIPSDImageRef *)v5 _imageAtAbsoluteIndex:v6 isZeroSizeImage:a3];
+  return [(CUIPSDImageRef *)imageRef _imageAtAbsoluteIndex:layerIndex isZeroSizeImage:image];
 }
 
-- (id)imageFromSlice:(unsigned int)a3
+- (id)imageFromSlice:(unsigned int)slice
 {
-  v3 = *&a3;
-  v5 = [(CUIPSDLayerBaseRef *)self imageRef];
-  v6 = [(CUIPSDLayerBaseRef *)self layerIndex];
+  v3 = *&slice;
+  imageRef = [(CUIPSDLayerBaseRef *)self imageRef];
+  layerIndex = [(CUIPSDLayerBaseRef *)self layerIndex];
 
-  return [(CUIPSDImageRef *)v5 _imageFromSlice:v3 atAbsoluteIndex:v6 isEmptyImage:0];
+  return [(CUIPSDImageRef *)imageRef _imageFromSlice:v3 atAbsoluteIndex:layerIndex isEmptyImage:0];
 }
 
-- (id)imageFromSlice:(unsigned int)a3 isEmptyImage:(BOOL *)a4
+- (id)imageFromSlice:(unsigned int)slice isEmptyImage:(BOOL *)image
 {
-  v5 = *&a3;
-  v7 = [(CUIPSDLayerBaseRef *)self imageRef];
-  v8 = [(CUIPSDLayerBaseRef *)self layerIndex];
+  v5 = *&slice;
+  imageRef = [(CUIPSDLayerBaseRef *)self imageRef];
+  layerIndex = [(CUIPSDLayerBaseRef *)self layerIndex];
 
-  return [(CUIPSDImageRef *)v7 _imageFromSlice:v5 atAbsoluteIndex:v8 isEmptyImage:a4];
+  return [(CUIPSDImageRef *)imageRef _imageFromSlice:v5 atAbsoluteIndex:layerIndex isEmptyImage:image];
 }
 
-- (id)patternFromSlice:(unsigned int)a3
+- (id)patternFromSlice:(unsigned int)slice
 {
-  v3 = *&a3;
-  v5 = [(CUIPSDLayerBaseRef *)self imageRef];
-  v6 = [(CUIPSDLayerBaseRef *)self layerIndex];
+  v3 = *&slice;
+  imageRef = [(CUIPSDLayerBaseRef *)self imageRef];
+  layerIndex = [(CUIPSDLayerBaseRef *)self layerIndex];
 
-  return [(CUIPSDImageRef *)v5 _patternFromSlice:v3 atAbsoluteIndex:v6 isZeroSizeImage:0];
+  return [(CUIPSDImageRef *)imageRef _patternFromSlice:v3 atAbsoluteIndex:layerIndex isZeroSizeImage:0];
 }
 
-- (id)patternFromSlice:(unsigned int)a3 isZeroSizeImage:(BOOL *)a4
+- (id)patternFromSlice:(unsigned int)slice isZeroSizeImage:(BOOL *)image
 {
-  v5 = *&a3;
-  v7 = [(CUIPSDLayerBaseRef *)self imageRef];
-  v8 = [(CUIPSDLayerBaseRef *)self layerIndex];
+  v5 = *&slice;
+  imageRef = [(CUIPSDLayerBaseRef *)self imageRef];
+  layerIndex = [(CUIPSDLayerBaseRef *)self layerIndex];
 
-  return [(CUIPSDImageRef *)v7 _patternFromSlice:v5 atAbsoluteIndex:v8 isZeroSizeImage:a4];
+  return [(CUIPSDImageRef *)imageRef _patternFromSlice:v5 atAbsoluteIndex:layerIndex isZeroSizeImage:image];
 }
 
-- (id)maskFromSlice:(unsigned int)a3
+- (id)maskFromSlice:(unsigned int)slice
 {
-  v3 = *&a3;
-  v5 = [(CUIPSDLayerBaseRef *)self imageRef];
-  v6 = [(CUIPSDLayerBaseRef *)self layerIndex];
+  v3 = *&slice;
+  imageRef = [(CUIPSDLayerBaseRef *)self imageRef];
+  layerIndex = [(CUIPSDLayerBaseRef *)self layerIndex];
 
-  return [(CUIPSDImageRef *)v5 _createMaskFromSlice:v3 atAbsoluteIndex:v6];
+  return [(CUIPSDImageRef *)imageRef _createMaskFromSlice:v3 atAbsoluteIndex:layerIndex];
 }
 
 - (id)fillSample
 {
-  v3 = [(CUIPSDLayerBaseRef *)self imageRef];
-  v4 = [(CUIPSDLayerBaseRef *)self layerIndex];
+  imageRef = [(CUIPSDLayerBaseRef *)self imageRef];
+  layerIndex = [(CUIPSDLayerBaseRef *)self layerIndex];
 
-  return [(CUIPSDImageRef *)v3 _fillSampleAtAbsoluteIndex:v4];
+  return [(CUIPSDImageRef *)imageRef _fillSampleAtAbsoluteIndex:layerIndex];
 }
 
 - (id)gradient
 {
-  v3 = [(CUIPSDLayerBaseRef *)self imageRef];
-  v4 = [(CUIPSDLayerBaseRef *)self layerIndex];
+  imageRef = [(CUIPSDLayerBaseRef *)self imageRef];
+  layerIndex = [(CUIPSDLayerBaseRef *)self layerIndex];
 
-  return [(CUIPSDImageRef *)v3 _gradientAtAbsoluteIndex:v4];
+  return [(CUIPSDImageRef *)imageRef _gradientAtAbsoluteIndex:layerIndex];
 }
 
 - (id)layerEffects
 {
-  v3 = [(CUIPSDLayerBaseRef *)self imageRef];
-  v4 = [(CUIPSDLayerBaseRef *)self layerIndex];
+  imageRef = [(CUIPSDLayerBaseRef *)self imageRef];
+  layerIndex = [(CUIPSDLayerBaseRef *)self layerIndex];
 
-  return [(CUIPSDImageRef *)v3 _layerEffectsAtAbsoluteIndex:v4];
+  return [(CUIPSDImageRef *)imageRef _layerEffectsAtAbsoluteIndex:layerIndex];
 }
 
 - (id)colorFill

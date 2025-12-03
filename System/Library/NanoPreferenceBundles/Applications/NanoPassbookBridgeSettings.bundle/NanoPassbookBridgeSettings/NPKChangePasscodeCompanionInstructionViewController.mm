@@ -1,26 +1,26 @@
 @interface NPKChangePasscodeCompanionInstructionViewController
-- (NPKChangePasscodeCompanionInstructionViewController)initWithHidesCancelButton:(BOOL)a3;
+- (NPKChangePasscodeCompanionInstructionViewController)initWithHidesCancelButton:(BOOL)button;
 - (NPKChangePasscodeCompanionInstructionViewControllerDelegate)delegate;
 - (id)_errorAcknowledgeButtonTitle;
 - (id)_instructionMessage;
 - (id)_instructionTitle;
 - (id)_unlockRequiredMessage;
 - (id)_unlockRequiredTitle;
-- (void)didMoveToParentViewController:(id)a3;
+- (void)didMoveToParentViewController:(id)controller;
 - (void)handleChangePasscodeUnlockRequired;
 - (void)viewDidLoad;
 @end
 
 @implementation NPKChangePasscodeCompanionInstructionViewController
 
-- (NPKChangePasscodeCompanionInstructionViewController)initWithHidesCancelButton:(BOOL)a3
+- (NPKChangePasscodeCompanionInstructionViewController)initWithHidesCancelButton:(BOOL)button
 {
   v5.receiver = self;
   v5.super_class = NPKChangePasscodeCompanionInstructionViewController;
   result = [(NPKChangePasscodeCompanionInstructionViewController *)&v5 init];
   if (result)
   {
-    result->_hidesCancelButton = a3;
+    result->_hidesCancelButton = button;
   }
 
   return result;
@@ -33,23 +33,23 @@
   [(NPKBridgeInstructionViewController *)&v4 viewDidLoad];
   if ([(NPKChangePasscodeCompanionInstructionViewController *)self hidesCancelButton])
   {
-    v3 = [(NPKChangePasscodeCompanionInstructionViewController *)self navigationItem];
-    [v3 setLeftBarButtonItem:0];
+    navigationItem = [(NPKChangePasscodeCompanionInstructionViewController *)self navigationItem];
+    [navigationItem setLeftBarButtonItem:0];
   }
 }
 
-- (void)didMoveToParentViewController:(id)a3
+- (void)didMoveToParentViewController:(id)controller
 {
   v6.receiver = self;
   v6.super_class = NPKChangePasscodeCompanionInstructionViewController;
   [(NPKChangePasscodeCompanionInstructionViewController *)&v6 didMoveToParentViewController:?];
-  if (!a3)
+  if (!controller)
   {
-    v5 = [(NPKBridgeInstructionViewController *)self cancellationHandler];
+    cancellationHandler = [(NPKBridgeInstructionViewController *)self cancellationHandler];
     [(NPKBridgeInstructionViewController *)self setCancellationHandler:0];
-    if (v5)
+    if (cancellationHandler)
     {
-      v5[2](v5);
+      cancellationHandler[2](cancellationHandler);
     }
   }
 }
@@ -82,7 +82,7 @@
 
   v3 = v2;
   _Block_object_dispose(&v19, 8);
-  v4 = [v2 sharedConnection];
+  sharedConnection = [v2 sharedConnection];
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
@@ -108,7 +108,7 @@
     sub_166B0();
   }
 
-  v8 = [v4 valueRestrictionForFeature:*v5];
+  v8 = [sharedConnection valueRestrictionForFeature:*v5];
 
   if (!v8)
   {
@@ -125,10 +125,10 @@
 
 - (void)handleChangePasscodeUnlockRequired
 {
-  v5 = [(NPKChangePasscodeCompanionInstructionViewController *)self _unlockRequiredTitle];
-  v3 = [(NPKChangePasscodeCompanionInstructionViewController *)self _unlockRequiredMessage];
-  v4 = [(NPKChangePasscodeCompanionInstructionViewController *)self _errorAcknowledgeButtonTitle];
-  [(NPKBridgeInstructionViewController *)self handleErrorWithTitle:v5 message:v3 acknowledgeButtonTitle:v4];
+  _unlockRequiredTitle = [(NPKChangePasscodeCompanionInstructionViewController *)self _unlockRequiredTitle];
+  _unlockRequiredMessage = [(NPKChangePasscodeCompanionInstructionViewController *)self _unlockRequiredMessage];
+  _errorAcknowledgeButtonTitle = [(NPKChangePasscodeCompanionInstructionViewController *)self _errorAcknowledgeButtonTitle];
+  [(NPKBridgeInstructionViewController *)self handleErrorWithTitle:_unlockRequiredTitle message:_unlockRequiredMessage acknowledgeButtonTitle:_errorAcknowledgeButtonTitle];
 }
 
 - (id)_unlockRequiredTitle

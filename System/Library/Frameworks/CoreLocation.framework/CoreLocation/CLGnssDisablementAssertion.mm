@@ -1,14 +1,14 @@
 @interface CLGnssDisablementAssertion
-+ (id)newAssertionForBundle:(id)a3 withReason:(id)a4 callbackQueue:(id)a5 completionHandler:(id)a6;
-+ (id)newAssertionForBundleIdentifier:(id)a3 withReason:(id)a4 callbackQueue:(id)a5 completionHandler:(id)a6;
-- (CLGnssDisablementAssertion)initWithRegistrationMessageName:(const char *)a3 messagePayload:(id)a4 callbackQueue:(id)a5 completionHandler:(id)a6;
++ (id)newAssertionForBundle:(id)bundle withReason:(id)reason callbackQueue:(id)queue completionHandler:(id)handler;
++ (id)newAssertionForBundleIdentifier:(id)identifier withReason:(id)reason callbackQueue:(id)queue completionHandler:(id)handler;
+- (CLGnssDisablementAssertion)initWithRegistrationMessageName:(const char *)name messagePayload:(id)payload callbackQueue:(id)queue completionHandler:(id)handler;
 - (void)dealloc;
 - (void)invalidate;
 @end
 
 @implementation CLGnssDisablementAssertion
 
-- (CLGnssDisablementAssertion)initWithRegistrationMessageName:(const char *)a3 messagePayload:(id)a4 callbackQueue:(id)a5 completionHandler:(id)a6
+- (CLGnssDisablementAssertion)initWithRegistrationMessageName:(const char *)name messagePayload:(id)payload callbackQueue:(id)queue completionHandler:(id)handler
 {
   v9 = *MEMORY[0x1E69E9840];
   v8.receiver = self;
@@ -40,7 +40,7 @@
   [(CLGnssDisablementAssertion *)&v3 dealloc];
 }
 
-+ (id)newAssertionForBundleIdentifier:(id)a3 withReason:(id)a4 callbackQueue:(id)a5 completionHandler:(id)a6
++ (id)newAssertionForBundleIdentifier:(id)identifier withReason:(id)reason callbackQueue:(id)queue completionHandler:(id)handler
 {
   v16 = *MEMORY[0x1E69E9840];
   if (qword_1ED519088 != -1)
@@ -72,12 +72,12 @@
     }
   }
 
-  result = sub_19B8DC650([a3 copy], &stru_1F0E6F140, objc_msgSend(a4, "copy"), a5, a6);
+  result = sub_19B8DC650([identifier copy], &stru_1F0E6F140, objc_msgSend(reason, "copy"), queue, handler);
   v14 = *MEMORY[0x1E69E9840];
   return result;
 }
 
-+ (id)newAssertionForBundle:(id)a3 withReason:(id)a4 callbackQueue:(id)a5 completionHandler:(id)a6
++ (id)newAssertionForBundle:(id)bundle withReason:(id)reason callbackQueue:(id)queue completionHandler:(id)handler
 {
   v16 = *MEMORY[0x1E69E9840];
   if (qword_1ED519088 != -1)
@@ -109,7 +109,7 @@
     }
   }
 
-  result = sub_19B8DC650(&stru_1F0E6F140, [objc_msgSend(a3 "bundlePath")], objc_msgSend(a4, "copy"), a5, a6);
+  result = sub_19B8DC650(&stru_1F0E6F140, [objc_msgSend(bundle "bundlePath")], objc_msgSend(reason, "copy"), queue, handler);
   v14 = *MEMORY[0x1E69E9840];
   return result;
 }

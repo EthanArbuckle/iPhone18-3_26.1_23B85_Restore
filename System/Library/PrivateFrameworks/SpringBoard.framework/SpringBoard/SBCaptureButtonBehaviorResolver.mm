@@ -1,21 +1,21 @@
 @interface SBCaptureButtonBehaviorResolver
-+ (id)resolveInteractionForBehaviors:(id)a3 inContext:(id)a4;
++ (id)resolveInteractionForBehaviors:(id)behaviors inContext:(id)context;
 @end
 
 @implementation SBCaptureButtonBehaviorResolver
 
-+ (id)resolveInteractionForBehaviors:(id)a3 inContext:(id)a4
++ (id)resolveInteractionForBehaviors:(id)behaviors inContext:(id)context
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  behaviorsCopy = behaviors;
+  contextCopy = context;
   v7 = +[SBCaptureButtonBehaviorsResponse emptyResponse];
-  v8 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  obj = v5;
+  obj = behaviorsCopy;
   v9 = [obj countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v9)
   {
@@ -33,11 +33,11 @@
         }
 
         v14 = *(*(&v20 + 1) + 8 * v12);
-        v15 = [[SBCaptureButtonBehaviorsResponse alloc] initWithBehavior:v14 context:v6];
+        v15 = [[SBCaptureButtonBehaviorsResponse alloc] initWithBehavior:v14 context:contextCopy];
         v7 = [v13 responseByMergingResponse:v15];
 
         v16 = [[SBCaptureButtonBehaviorsResponseLog alloc] initWithBehavior:v14 response:v15];
-        [v8 addObject:v16];
+        [array addObject:v16];
 
         ++v12;
         v13 = v7;
@@ -50,7 +50,7 @@
     while (v10);
   }
 
-  v17 = [[SBCaptureButtonInteraction alloc] initWithContext:v6 response:v7 responseLogs:v8];
+  v17 = [[SBCaptureButtonInteraction alloc] initWithContext:contextCopy response:v7 responseLogs:array];
 
   return v17;
 }

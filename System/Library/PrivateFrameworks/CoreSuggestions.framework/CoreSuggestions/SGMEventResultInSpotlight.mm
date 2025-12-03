@@ -1,25 +1,25 @@
 @interface SGMEventResultInSpotlight
 - (SGMEventResultInSpotlight)init;
-- (void)trackEventWithScalar:(unint64_t)a3 visible:(SGMTypeSafeBool_)a4;
+- (void)trackEventWithScalar:(unint64_t)scalar visible:(SGMTypeSafeBool_)visible;
 @end
 
 @implementation SGMEventResultInSpotlight
 
-- (void)trackEventWithScalar:(unint64_t)a3 visible:(SGMTypeSafeBool_)a4
+- (void)trackEventWithScalar:(unint64_t)scalar visible:(SGMTypeSafeBool_)visible
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  if (a4.var0)
+  if (visible.var0)
   {
-    if (a4.var0 == 1)
+    if (visible.var0 == 1)
     {
       v7 = @"1";
     }
 
     else
     {
-      v8 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v9 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString * _Nonnull SGMTypeSafeBool_toString(SGMTypeSafeBool)"];
-      [v8 handleFailureInFunction:v9 file:@"SGMetricsDefines.h" lineNumber:12 description:{@"unrecognized tag %lu on SGMTypeSafeBool", a4.var0}];
+      [currentHandler handleFailureInFunction:v9 file:@"SGMetricsDefines.h" lineNumber:12 description:{@"unrecognized tag %lu on SGMTypeSafeBool", visible.var0}];
 
       v7 = @"ERR_UNMATCHED_TAG";
     }
@@ -33,7 +33,7 @@
   tracker = self->_tracker;
   v13[0] = v7;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1];
-  [(PETScalarEventTracker *)tracker trackEventWithPropertyValues:v11 value:a3];
+  [(PETScalarEventTracker *)tracker trackEventWithPropertyValues:v11 value:scalar];
 
   v12 = *MEMORY[0x1E69E9840];
 }

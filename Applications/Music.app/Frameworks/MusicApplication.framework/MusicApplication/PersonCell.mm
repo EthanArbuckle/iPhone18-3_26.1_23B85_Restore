@@ -1,13 +1,13 @@
 @interface PersonCell
 - (NSString)personName;
-- (_TtC16MusicApplication10PersonCell)initWithCoder:(id)a3;
-- (void)setPersonName:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (_TtC16MusicApplication10PersonCell)initWithCoder:(id)coder;
+- (void)setPersonName:(id)name;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation PersonCell
 
-- (_TtC16MusicApplication10PersonCell)initWithCoder:(id)a3
+- (_TtC16MusicApplication10PersonCell)initWithCoder:(id)coder
 {
   v3 = (self + OBJC_IVAR____TtC16MusicApplication10PersonCell_personName);
   *v3 = 0;
@@ -38,16 +38,16 @@
   return v2;
 }
 
-- (void)setPersonName:(id)a3
+- (void)setPersonName:(id)name
 {
   v5 = sub_AB92A0();
   v6 = (self + OBJC_IVAR____TtC16MusicApplication10PersonCell_personName);
   *v6 = v5;
   v6[1] = v7;
-  v8 = a3;
-  v9 = self;
+  nameCopy = name;
+  selfCopy = self;
 
-  v10 = *(v9 + OBJC_IVAR____TtC16MusicApplication10PersonCell_textComponents);
+  v10 = *(selfCopy + OBJC_IVAR____TtC16MusicApplication10PersonCell_textComponents);
 
   v11 = String.trim()();
 
@@ -55,14 +55,14 @@
   v10[7] = v11;
 
   sub_2EB704();
-  [(PersonCell *)v9 setNeedsLayout];
+  [(PersonCell *)selfCopy setNeedsLayout];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v3 = self;
-  v4 = [(PersonCell *)v3 traitCollection];
-  sub_42A7A8(v4, *(v3 + OBJC_IVAR____TtC16MusicApplication10PersonCell_textComponents));
+  selfCopy = self;
+  traitCollection = [(PersonCell *)selfCopy traitCollection];
+  sub_42A7A8(traitCollection, *(selfCopy + OBJC_IVAR____TtC16MusicApplication10PersonCell_textComponents));
   sub_42A2EC();
 }
 

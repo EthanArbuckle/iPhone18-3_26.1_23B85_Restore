@@ -1,8 +1,8 @@
 @interface PPSDataIngesterRegistry
-+ (id)_stringForFilepath:(id)a3 requestType:(int64_t)a4;
-+ (id)dataIngesterForFilepath:(id)a3 requestType:(int64_t)a4;
++ (id)_stringForFilepath:(id)filepath requestType:(int64_t)type;
++ (id)dataIngesterForFilepath:(id)filepath requestType:(int64_t)type;
 + (id)sharedInstance;
-+ (void)releaseDataIngesterForFilepath:(id)a3 requestType:(int64_t)a4;
++ (void)releaseDataIngesterForFilepath:(id)filepath requestType:(int64_t)type;
 - (PPSDataIngesterRegistry)init;
 @end
 
@@ -14,7 +14,7 @@
   block[1] = 3221225472;
   block[2] = __41__PPSDataIngesterRegistry_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_3 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_3, block);
@@ -49,22 +49,22 @@ uint64_t __41__PPSDataIngesterRegistry_sharedInstance__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-+ (id)dataIngesterForFilepath:(id)a3 requestType:(int64_t)a4
++ (id)dataIngesterForFilepath:(id)filepath requestType:(int64_t)type
 {
-  v5 = a3;
-  v6 = [objc_opt_class() _stringForFilepath:v5 requestType:a4];
-  v7 = [objc_opt_class() sharedInstance];
-  v8 = [v7 dataIngesters];
-  v9 = [v8 objectForKey:v6];
+  filepathCopy = filepath;
+  v6 = [objc_opt_class() _stringForFilepath:filepathCopy requestType:type];
+  sharedInstance = [objc_opt_class() sharedInstance];
+  dataIngesters = [sharedInstance dataIngesters];
+  v9 = [dataIngesters objectForKey:v6];
 
   if (!v9)
   {
-    if (a4 > 2)
+    if (type > 2)
     {
       v11 = PPSReaderLog();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
       {
-        [PPSDataIngesterRegistry dataIngesterForFilepath:a4 requestType:v11];
+        [PPSDataIngesterRegistry dataIngesterForFilepath:type requestType:v11];
       }
 
       v10 = 0;
@@ -75,35 +75,35 @@ uint64_t __41__PPSDataIngesterRegistry_sharedInstance__block_invoke(uint64_t a1)
       v10 = objc_opt_class();
     }
 
-    v9 = [[v10 alloc] initWithFilepath:v5];
+    v9 = [[v10 alloc] initWithFilepath:filepathCopy];
     if (v6)
     {
-      v12 = [v7 dataIngesters];
-      [v12 setObject:v9 forKeyedSubscript:v6];
+      dataIngesters2 = [sharedInstance dataIngesters];
+      [dataIngesters2 setObject:v9 forKeyedSubscript:v6];
     }
   }
 
   return v9;
 }
 
-+ (void)releaseDataIngesterForFilepath:(id)a3 requestType:(int64_t)a4
++ (void)releaseDataIngesterForFilepath:(id)filepath requestType:(int64_t)type
 {
-  if (a3)
+  if (filepath)
   {
-    v5 = a3;
-    v8 = [objc_opt_class() _stringForFilepath:v5 requestType:a4];
+    filepathCopy = filepath;
+    v8 = [objc_opt_class() _stringForFilepath:filepathCopy requestType:type];
 
-    v6 = [objc_opt_class() sharedInstance];
-    v7 = [v6 dataIngesters];
-    [v7 removeObjectForKey:v8];
+    sharedInstance = [objc_opt_class() sharedInstance];
+    dataIngesters = [sharedInstance dataIngesters];
+    [dataIngesters removeObjectForKey:v8];
   }
 }
 
-+ (id)_stringForFilepath:(id)a3 requestType:(int64_t)a4
++ (id)_stringForFilepath:(id)filepath requestType:(int64_t)type
 {
   v5 = MEMORY[0x277CCACA8];
-  v6 = [a3 path];
-  v7 = [v5 stringWithFormat:@"%ld::%@", a4, v6];
+  path = [filepath path];
+  v7 = [v5 stringWithFormat:@"%ld::%@", type, path];
 
   return v7;
 }

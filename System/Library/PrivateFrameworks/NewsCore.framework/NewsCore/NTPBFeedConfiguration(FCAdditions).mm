@@ -9,7 +9,7 @@
 + (id)feedConfigurationFromJSON:()FCAdditions
 {
   v2 = [MEMORY[0x1E695DF20] fc_dictionaryFromJSON:?];
-  v3 = [a1 feedConfigurationFromDict:v2];
+  v3 = [self feedConfigurationFromDict:v2];
 
   return v3;
 }
@@ -56,8 +56,8 @@
     {
       if (a4)
       {
-        v7 = [a1 paidBFeedID];
-        if (v7)
+        paidBFeedID = [self paidBFeedID];
+        if (paidBFeedID)
         {
           goto LABEL_22;
         }
@@ -65,8 +65,8 @@
 
       else
       {
-        v7 = [a1 freeBFeedID];
-        if (v7)
+        paidBFeedID = [self freeBFeedID];
+        if (paidBFeedID)
         {
           goto LABEL_22;
         }
@@ -77,14 +77,14 @@
     {
       if (a4)
       {
-        [a1 paidCFeedID];
+        [self paidCFeedID];
       }
 
       else
       {
-        [a1 freeCFeedID];
+        [self freeCFeedID];
       }
-      v7 = ;
+      paidBFeedID = ;
       goto LABEL_22;
     }
   }
@@ -95,8 +95,8 @@
     {
       if (a4)
       {
-        v7 = [a1 paidAFeedID];
-        if (v7)
+        paidBFeedID = [self paidAFeedID];
+        if (paidBFeedID)
         {
           goto LABEL_22;
         }
@@ -104,8 +104,8 @@
 
       else
       {
-        v7 = [a1 freeAFeedID];
-        if (v7)
+        paidBFeedID = [self freeAFeedID];
+        if (paidBFeedID)
         {
           goto LABEL_22;
         }
@@ -127,11 +127,11 @@
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", &v11, 0x26u);
   }
 
-  v7 = [a1 feedIDForBin:FCNextHigherVolumeFeedBin(a3) paid:a4];
+  paidBFeedID = [self feedIDForBin:FCNextHigherVolumeFeedBin(a3) paid:a4];
 LABEL_22:
   v9 = *MEMORY[0x1E69E9840];
 
-  return v7;
+  return paidBFeedID;
 }
 
 @end

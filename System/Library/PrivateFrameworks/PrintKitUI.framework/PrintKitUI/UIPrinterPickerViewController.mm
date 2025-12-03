@@ -1,42 +1,42 @@
 @interface UIPrinterPickerViewController
-- (BOOL)shouldAutorotateToInterfaceOrientation:(int64_t)a3;
-- (BOOL)shouldShowPrinter:(id)a3;
-- (UIPrinterPickerViewController)initWithPrinterPickerController:(id)a3 inParentController:(id)a4;
+- (BOOL)shouldAutorotateToInterfaceOrientation:(int64_t)orientation;
+- (BOOL)shouldShowPrinter:(id)printer;
+- (UIPrinterPickerViewController)initWithPrinterPickerController:(id)controller inParentController:(id)parentController;
 - (unint64_t)supportedInterfaceOrientations;
-- (void)_keyWindowWillRotate:(id)a3;
-- (void)_presentInParentAnimated:(BOOL)a3;
+- (void)_keyWindowWillRotate:(id)rotate;
+- (void)_presentInParentAnimated:(BOOL)animated;
 - (void)_presentWindow;
 - (void)dealloc;
-- (void)dismissPrinterPickerAnimated:(BOOL)a3;
-- (void)navigationController:(id)a3 didShowViewController:(id)a4 animated:(BOOL)a5;
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5;
-- (void)presentPrinterPickerPanelAnimated:(BOOL)a3 hostingScene:(id)a4;
-- (void)presentPrinterPickerPanelFromBarButtonItem:(id)a3 animated:(BOOL)a4;
-- (void)presentPrinterPickerPanelFromRect:(CGRect)a3 inView:(id)a4 animated:(BOOL)a5;
+- (void)dismissPrinterPickerAnimated:(BOOL)animated;
+- (void)navigationController:(id)controller didShowViewController:(id)viewController animated:(BOOL)animated;
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated;
+- (void)presentPrinterPickerPanelAnimated:(BOOL)animated hostingScene:(id)scene;
+- (void)presentPrinterPickerPanelFromBarButtonItem:(id)item animated:(BOOL)animated;
+- (void)presentPrinterPickerPanelFromRect:(CGRect)rect inView:(id)view animated:(BOOL)animated;
 - (void)printerBrowserViewDidDisappear;
 @end
 
 @implementation UIPrinterPickerViewController
 
-- (UIPrinterPickerViewController)initWithPrinterPickerController:(id)a3 inParentController:(id)a4
+- (UIPrinterPickerViewController)initWithPrinterPickerController:(id)controller inParentController:(id)parentController
 {
-  v7 = a3;
-  v8 = a4;
+  controllerCopy = controller;
+  parentControllerCopy = parentController;
   v22.receiver = self;
   v22.super_class = UIPrinterPickerViewController;
   v9 = [(UIPrinterPickerViewController *)&v22 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_printerPickerController, a3);
-    v11 = objc_storeWeak(&v10->_parentController, v8);
+    objc_storeStrong(&v9->_printerPickerController, controller);
+    v11 = objc_storeWeak(&v10->_parentController, parentControllerCopy);
     v10->_userSelectedPrinter = 0;
     v12 = v11;
     v13 = [[UIPrinterBrowserViewController alloc] initWithOwnerViewController:v10 printInfo:0 printPanelViewController:0];
     printerBrowserViewController = v10->_printerBrowserViewController;
     v10->_printerBrowserViewController = v13;
 
-    if (v8)
+    if (parentControllerCopy)
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -49,8 +49,8 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v17 = [v8 viewControllers];
-        v18 = [v17 count];
+        viewControllers = [parentControllerCopy viewControllers];
+        v18 = [viewControllers count];
 
         if (v18)
         {
@@ -75,42 +75,42 @@ LABEL_10:
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = UIPrinterPickerViewController;
   [(UIPrinterPickerViewController *)&v4 dealloc];
 }
 
-- (void)_presentInParentAnimated:(BOOL)a3
+- (void)_presentInParentAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   WeakRetained = objc_loadWeakRetained(&self->_parentController);
-  v5 = [WeakRetained _popoverController];
-  self->_parentHasNoPopover = v5 == 0;
+  _popoverController = [WeakRetained _popoverController];
+  self->_parentHasNoPopover = _popoverController == 0;
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [WeakRetained topViewController];
+    topViewController = [WeakRetained topViewController];
     originalViewControllerInNav = self->_originalViewControllerInNav;
-    self->_originalViewControllerInNav = v6;
+    self->_originalViewControllerInNav = topViewController;
 
-    v8 = [WeakRetained delegate];
-    objc_storeWeak(&self->_originalNavControllerDelegate, v8);
+    delegate = [WeakRetained delegate];
+    objc_storeWeak(&self->_originalNavControllerDelegate, delegate);
 
     [WeakRetained setDelegate:self];
-    [WeakRetained pushViewController:self->_printerBrowserViewController animated:v3];
+    [WeakRetained pushViewController:self->_printerBrowserViewController animated:animatedCopy];
   }
 
   else
   {
-    [WeakRetained presentViewController:self->_navigationController animated:v3 completion:0];
+    [WeakRetained presentViewController:self->_navigationController animated:animatedCopy completion:0];
   }
 
   printerPickerController = self->_printerPickerController;
-  if (v3)
+  if (animatedCopy)
   {
     [(UIPrinterPickerController *)printerPickerController performSelector:sel__printerPickerDidPresent withObject:0 afterDelay:0.35];
   }
@@ -181,12 +181,12 @@ uint64_t __47__UIPrinterPickerViewController__presentWindow__block_invoke_2(uint
   return result;
 }
 
-- (void)_keyWindowWillRotate:(id)a3
+- (void)_keyWindowWillRotate:(id)rotate
 {
   if (self->_observingRotation)
   {
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v4 removeObserver:self name:*MEMORY[0x277D772D8] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:self name:*MEMORY[0x277D772D8] object:0];
 
     self->_observingRotation = 0;
   }
@@ -196,63 +196,63 @@ uint64_t __47__UIPrinterPickerViewController__presentWindow__block_invoke_2(uint
   [(UIPrinterPickerViewController *)self _presentWindow];
 }
 
-- (void)presentPrinterPickerPanelAnimated:(BOOL)a3 hostingScene:(id)a4
+- (void)presentPrinterPickerPanelAnimated:(BOOL)animated hostingScene:(id)scene
 {
-  v4 = a3;
-  v14 = a4;
+  animatedCopy = animated;
+  sceneCopy = scene;
   WeakRetained = objc_loadWeakRetained(&self->_parentController);
 
   if (WeakRetained)
   {
-    [(UIPrinterPickerViewController *)self _presentInParentAnimated:v4];
+    [(UIPrinterPickerViewController *)self _presentInParentAnimated:animatedCopy];
   }
 
   else
   {
-    v7 = [MEMORY[0x277D75DA0] _applicationKeyWindow];
-    if (v7)
+    _applicationKeyWindow = [MEMORY[0x277D75DA0] _applicationKeyWindow];
+    if (_applicationKeyWindow)
     {
-      v8 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v8 addObserver:self selector:sel__keyWindowWillRotate_ name:*MEMORY[0x277D772D8] object:v7];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter addObserver:self selector:sel__keyWindowWillRotate_ name:*MEMORY[0x277D772D8] object:_applicationKeyWindow];
 
       self->_observingRotation = 1;
     }
 
-    if (!v14)
+    if (!sceneCopy)
     {
-      v9 = [MEMORY[0x277D75128] sharedApplication];
-      v14 = [v9 _findUISceneForLegacyInterfaceOrientation];
+      mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+      sceneCopy = [mEMORY[0x277D75128] _findUISceneForLegacyInterfaceOrientation];
     }
 
-    v10 = [[UIPrinterPickerWindow alloc] initWithWindowScene:v14];
+    v10 = [[UIPrinterPickerWindow alloc] initWithWindowScene:sceneCopy];
     window = self->_window;
     self->_window = &v10->super;
 
     [(UIWindow *)self->_window setWindowLevel:*MEMORY[0x277D768D0]];
     [(UIWindow *)self->_window setRootViewController:self->_navigationController];
     v12 = self->_window;
-    v13 = [(UINavigationController *)self->_navigationController view];
-    [(UIWindow *)v12 addSubview:v13];
+    view = [(UINavigationController *)self->_navigationController view];
+    [(UIWindow *)v12 addSubview:view];
 
     [(UIWindow *)self->_window makeKeyAndVisible];
-    self->_animated = v4;
+    self->_animated = animatedCopy;
     [(UIPrinterPickerViewController *)self _presentWindow];
   }
 }
 
-- (void)presentPrinterPickerPanelFromRect:(CGRect)a3 inView:(id)a4 animated:(BOOL)a5
+- (void)presentPrinterPickerPanelFromRect:(CGRect)rect inView:(id)view animated:(BOOL)animated
 {
-  v5 = a5;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v15 = a4;
+  animatedCopy = animated;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  viewCopy = view;
   WeakRetained = objc_loadWeakRetained(&self->_parentController);
 
   if (WeakRetained)
   {
-    [(UIPrinterPickerViewController *)self _presentInParentAnimated:v5];
+    [(UIPrinterPickerViewController *)self _presentInParentAnimated:animatedCopy];
   }
 
   else
@@ -262,9 +262,9 @@ uint64_t __47__UIPrinterPickerViewController__presentWindow__block_invoke_2(uint
     self->_poverController = v12;
 
     [(UIPopoverController *)self->_poverController setDelegate:self];
-    [(UIPopoverController *)self->_poverController presentPopoverFromRect:v15 inView:15 permittedArrowDirections:v5 animated:x, y, width, height];
+    [(UIPopoverController *)self->_poverController presentPopoverFromRect:viewCopy inView:15 permittedArrowDirections:animatedCopy animated:x, y, width, height];
     printerPickerController = self->_printerPickerController;
-    if (v5)
+    if (animatedCopy)
     {
       [(UIPrinterPickerController *)printerPickerController performSelector:sel__printerPickerDidPresent withObject:0 afterDelay:0.35];
     }
@@ -276,15 +276,15 @@ uint64_t __47__UIPrinterPickerViewController__presentWindow__block_invoke_2(uint
   }
 }
 
-- (void)presentPrinterPickerPanelFromBarButtonItem:(id)a3 animated:(BOOL)a4
+- (void)presentPrinterPickerPanelFromBarButtonItem:(id)item animated:(BOOL)animated
 {
-  v4 = a4;
-  v10 = a3;
+  animatedCopy = animated;
+  itemCopy = item;
   WeakRetained = objc_loadWeakRetained(&self->_parentController);
 
   if (WeakRetained)
   {
-    [(UIPrinterPickerViewController *)self _presentInParentAnimated:v4];
+    [(UIPrinterPickerViewController *)self _presentInParentAnimated:animatedCopy];
   }
 
   else
@@ -294,9 +294,9 @@ uint64_t __47__UIPrinterPickerViewController__presentWindow__block_invoke_2(uint
     self->_poverController = v7;
 
     [(UIPopoverController *)self->_poverController setDelegate:self];
-    [(UIPopoverController *)self->_poverController presentPopoverFromBarButtonItem:v10 permittedArrowDirections:15 animated:v4];
+    [(UIPopoverController *)self->_poverController presentPopoverFromBarButtonItem:itemCopy permittedArrowDirections:15 animated:animatedCopy];
     printerPickerController = self->_printerPickerController;
-    if (v4)
+    if (animatedCopy)
     {
       [(UIPrinterPickerController *)printerPickerController performSelector:sel__printerPickerDidPresent withObject:0 afterDelay:0.35];
     }
@@ -308,22 +308,22 @@ uint64_t __47__UIPrinterPickerViewController__presentWindow__block_invoke_2(uint
   }
 }
 
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated
 {
-  if (self->_originalViewControllerInNav == a4)
+  if (self->_originalViewControllerInNav == viewController)
   {
     [(UIPrinterPickerController *)self->_printerPickerController _printerPickerWillDismiss];
   }
 }
 
-- (void)navigationController:(id)a3 didShowViewController:(id)a4 animated:(BOOL)a5
+- (void)navigationController:(id)controller didShowViewController:(id)viewController animated:(BOOL)animated
 {
-  if (self->_originalViewControllerInNav == a4)
+  if (self->_originalViewControllerInNav == viewController)
   {
     self->_dismissed = 1;
-    v7 = a3;
+    controllerCopy = controller;
     WeakRetained = objc_loadWeakRetained(&self->_originalNavControllerDelegate);
-    [v7 setDelegate:WeakRetained];
+    [controllerCopy setDelegate:WeakRetained];
 
     printerPickerController = self->_printerPickerController;
 
@@ -331,15 +331,15 @@ uint64_t __47__UIPrinterPickerViewController__presentWindow__block_invoke_2(uint
   }
 }
 
-- (void)dismissPrinterPickerAnimated:(BOOL)a3
+- (void)dismissPrinterPickerAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   [(UIPrinterPickerController *)self->_printerPickerController _printerPickerWillDismiss];
   self->_dismissed = 1;
   window = self->_window;
   if (window)
   {
-    if (v3)
+    if (animatedCopy)
     {
       [(UIWindow *)window frame];
       x = v20.origin.x;
@@ -375,9 +375,9 @@ uint64_t __47__UIPrinterPickerViewController__presentWindow__block_invoke_2(uint
   poverController = self->_poverController;
   if (poverController)
   {
-    [(UIPopoverController *)poverController dismissPopoverAnimated:v3];
+    [(UIPopoverController *)poverController dismissPopoverAnimated:animatedCopy];
     printerPickerController = self->_printerPickerController;
-    if (!v3)
+    if (!animatedCopy)
     {
 LABEL_10:
 
@@ -407,7 +407,7 @@ LABEL_10:
 
       else
       {
-        [WeakRetained dismissViewControllerAnimated:v3 completion:0];
+        [WeakRetained dismissViewControllerAnimated:animatedCopy completion:0];
       }
     }
 
@@ -453,10 +453,10 @@ uint64_t __62__UIPrinterPickerViewController_dismissPrinterPickerAnimated___bloc
 
       v8 = v5;
 
-      v6 = [(UINavigationController *)v8 topViewController];
+      topViewController = [(UINavigationController *)v8 topViewController];
       printerBrowserViewController = self->_printerBrowserViewController;
 
-      if (v6 == printerBrowserViewController)
+      if (topViewController == printerBrowserViewController)
       {
         [(UIPrinterPickerViewController *)self dismissPrinterPickerAnimated:0];
       }
@@ -464,18 +464,18 @@ uint64_t __62__UIPrinterPickerViewController_dismissPrinterPickerAnimated___bloc
   }
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(int64_t)a3
+- (BOOL)shouldAutorotateToInterfaceOrientation:(int64_t)orientation
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277D75418] currentDevice];
-  v6 = [v5 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v6)
+  if (userInterfaceIdiom)
   {
     return 1;
   }
 
-  if (a3 == 2)
+  if (orientation == 2)
   {
     return 0;
   }
@@ -508,7 +508,7 @@ uint64_t __62__UIPrinterPickerViewController_dismissPrinterPickerAnimated___bloc
         }
 
         v14 = *(*(&v16 + 1) + 8 * i);
-        if (([v14 _isTextEffectsWindow] & 1) == 0 && !objc_msgSend(v14, "_shouldAutorotateToInterfaceOrientation:", a3))
+        if (([v14 _isTextEffectsWindow] & 1) == 0 && !objc_msgSend(v14, "_shouldAutorotateToInterfaceOrientation:", orientation))
         {
           v7 = 0;
           goto LABEL_17;
@@ -535,10 +535,10 @@ LABEL_17:
 - (unint64_t)supportedInterfaceOrientations
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v4)
+  if (userInterfaceIdiom)
   {
     return 30;
   }
@@ -591,10 +591,10 @@ LABEL_17:
   return v5;
 }
 
-- (BOOL)shouldShowPrinter:(id)a3
+- (BOOL)shouldShowPrinter:(id)printer
 {
-  v4 = a3;
-  if (v4 && (v5 = [[UIPrinter alloc] _initWithPrinter:v4]) != 0)
+  printerCopy = printer;
+  if (printerCopy && (v5 = [[UIPrinter alloc] _initWithPrinter:printerCopy]) != 0)
   {
     v6 = v5;
     v7 = [(UIPrinterPickerController *)self->_printerPickerController _shouldShowPrinter:v5];

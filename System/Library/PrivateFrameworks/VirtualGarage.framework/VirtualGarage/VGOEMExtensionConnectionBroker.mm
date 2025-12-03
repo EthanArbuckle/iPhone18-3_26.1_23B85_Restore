@@ -1,24 +1,24 @@
 @interface VGOEMExtensionConnectionBroker
 + (VGOEMExtensionConnectionBroker)sharedInstance;
 - (VGOEMExtensionConnectionBroker)init;
-- (id)_connectionWithIntent:(id)a3;
-- (void)resumeConnectionWithIntent:(id)a3 connectionTimeoutHandler:(id)a4 connectionErrorHandler:(id)a5 intentCompletionHandler:(id)a6;
+- (id)_connectionWithIntent:(id)intent;
+- (void)resumeConnectionWithIntent:(id)intent connectionTimeoutHandler:(id)handler connectionErrorHandler:(id)errorHandler intentCompletionHandler:(id)completionHandler;
 @end
 
 @implementation VGOEMExtensionConnectionBroker
 
-- (id)_connectionWithIntent:(id)a3
+- (id)_connectionWithIntent:(id)intent
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  intentCopy = intent;
   GEOConfigGetDouble();
   v6 = v5;
   v7 = *MEMORY[0x277D0EA90];
   v8 = *(MEMORY[0x277D0EA90] + 8);
   if (GEOConfigGetBOOL())
   {
-    v9 = [MEMORY[0x277D0EC70] sharedPlatform];
-    v10 = [v9 isInternalInstall] ^ 1;
+    mEMORY[0x277D0EC70] = [MEMORY[0x277D0EC70] sharedPlatform];
+    v10 = [mEMORY[0x277D0EC70] isInternalInstall] ^ 1;
   }
 
   else
@@ -30,9 +30,9 @@
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     v15 = 134349826;
-    v16 = self;
+    selfCopy = self;
     v17 = 2112;
-    v18 = v4;
+    v18 = intentCopy;
     v19 = 2048;
     v20 = v6;
     v21 = 2048;
@@ -40,7 +40,7 @@
     _os_log_impl(&dword_270EC1000, v11, OS_LOG_TYPE_INFO, "[%{public}p] Creating intent connection for intent (%@) with timeout (%.2f) trust check: (%ld)", &v15, 0x2Au);
   }
 
-  v12 = [objc_alloc(MEMORY[0x277D21520]) initWithIntent:v4];
+  v12 = [objc_alloc(MEMORY[0x277D21520]) initWithIntent:intentCopy];
   [v12 setRequiresTCC:0];
   [v12 setRequiresTrustCheck:v10];
   [v12 setRequestTimeoutInterval:v6];
@@ -50,14 +50,14 @@
   return v12;
 }
 
-- (void)resumeConnectionWithIntent:(id)a3 connectionTimeoutHandler:(id)a4 connectionErrorHandler:(id)a5 intentCompletionHandler:(id)a6
+- (void)resumeConnectionWithIntent:(id)intent connectionTimeoutHandler:(id)handler connectionErrorHandler:(id)errorHandler intentCompletionHandler:(id)completionHandler
 {
   v30 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [[_VGOEMExtensionConnectionKey alloc] initWithIntent:v10];
+  intentCopy = intent;
+  handlerCopy = handler;
+  errorHandlerCopy = errorHandler;
+  completionHandlerCopy = completionHandler;
+  v14 = [[_VGOEMExtensionConnectionKey alloc] initWithIntent:intentCopy];
   os_unfair_lock_lock(&self->_lock);
   v15 = [(NSMapTable *)self->_extensionMap objectForKey:v14];
   v16 = VGGetVGOEMExtensionConnectionBrokerLog();
@@ -67,7 +67,7 @@
     if (v17)
     {
       *buf = 134349314;
-      v27 = self;
+      selfCopy3 = self;
       v28 = 2112;
       v29 = v14;
       _os_log_impl(&dword_270EC1000, v16, OS_LOG_TYPE_INFO, "[%{public}p] Coalescing duplicate connection request: %@", buf, 0x16u);
@@ -81,28 +81,28 @@
     if (v17)
     {
       *buf = 134349314;
-      v27 = self;
+      selfCopy3 = self;
       v28 = 2112;
       v29 = v14;
       _os_log_impl(&dword_270EC1000, v16, OS_LOG_TYPE_INFO, "[%{public}p] Received new connection request: %@", buf, 0x16u);
     }
 
     v19 = [_VGOEMExtensionConnection alloc];
-    v16 = [(VGOEMExtensionConnectionBroker *)self _connectionWithIntent:v10];
+    v16 = [(VGOEMExtensionConnectionBroker *)self _connectionWithIntent:intentCopy];
     v18 = [(_VGOEMExtensionConnection *)v19 initWithConnection:v16];
   }
 
-  if (v11)
+  if (handlerCopy)
   {
-    [(_VGOEMExtensionConnection *)v18 addConnectionTimeoutHandler:v11];
+    [(_VGOEMExtensionConnection *)v18 addConnectionTimeoutHandler:handlerCopy];
   }
 
-  if (v12)
+  if (errorHandlerCopy)
   {
-    [(_VGOEMExtensionConnection *)v18 addConnectionErrorHandler:v12];
+    [(_VGOEMExtensionConnection *)v18 addConnectionErrorHandler:errorHandlerCopy];
   }
 
-  [(_VGOEMExtensionConnection *)v18 addIntentCompletionHandler:v13];
+  [(_VGOEMExtensionConnection *)v18 addIntentCompletionHandler:completionHandlerCopy];
   if (!v15)
   {
     [(NSMapTable *)self->_extensionMap setObject:v18 forKey:v14];
@@ -111,7 +111,7 @@
     {
       extensionMap = self->_extensionMap;
       *buf = 134349314;
-      v27 = self;
+      selfCopy3 = self;
       v28 = 2112;
       v29 = extensionMap;
       _os_log_impl(&dword_270EC1000, v20, OS_LOG_TYPE_INFO, "[%{public}p] Added new request to extension map: %@", buf, 0x16u);
@@ -207,7 +207,7 @@ void __133__VGOEMExtensionConnectionBroker_resumeConnectionWithIntent_connection
   block[1] = 3221225472;
   block[2] = __48__VGOEMExtensionConnectionBroker_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken != -1)
   {
     dispatch_once(&sharedInstance_onceToken, block);

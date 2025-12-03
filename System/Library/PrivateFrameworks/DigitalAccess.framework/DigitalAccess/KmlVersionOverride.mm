@@ -35,8 +35,8 @@ uint64_t __45__KmlVersionOverride_sharedVersionsOverrides__block_invoke()
   {
     v2->_kmlOverrideVersion = 768;
     v4 = objc_opt_new();
-    v5 = [v4 kmlVersionOverride];
-    if ([v5 isEqualToString:@"SharingInChainTest"])
+    kmlVersionOverride = [v4 kmlVersionOverride];
+    if ([kmlVersionOverride isEqualToString:@"SharingInChainTest"])
     {
       v6 = KmlLogger();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -46,7 +46,7 @@ uint64_t __45__KmlVersionOverride_sharedVersionsOverrides__block_invoke()
         v14 = 1024;
         v15 = 51;
         v16 = 2112;
-        v17 = v5;
+        v17 = kmlVersionOverride;
         _os_log_impl(&dword_248BF3000, v6, OS_LOG_TYPE_DEBUG, "%s : %i : KmlVersionOverride = %@", buf, 0x1Cu);
       }
 
@@ -54,8 +54,8 @@ uint64_t __45__KmlVersionOverride_sharedVersionsOverrides__block_invoke()
     }
 
     v3->_keyRoleToShare = -1;
-    v7 = [v4 keyRoleToShareOverride];
-    if (v7)
+    keyRoleToShareOverride = [v4 keyRoleToShareOverride];
+    if (keyRoleToShareOverride)
     {
       v8 = KmlLogger();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
@@ -65,11 +65,11 @@ uint64_t __45__KmlVersionOverride_sharedVersionsOverrides__block_invoke()
         v14 = 1024;
         v15 = 58;
         v16 = 2112;
-        v17 = v7;
+        v17 = keyRoleToShareOverride;
         _os_log_impl(&dword_248BF3000, v8, OS_LOG_TYPE_DEBUG, "%s : %i : keyRoleToShareOverride: %@", buf, 0x1Cu);
       }
 
-      v3->_keyRoleToShare = [v7 unsignedShortValue];
+      v3->_keyRoleToShare = [keyRoleToShareOverride unsignedShortValue];
     }
   }
 

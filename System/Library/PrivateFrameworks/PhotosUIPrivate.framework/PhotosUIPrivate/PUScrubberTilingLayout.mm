@@ -1,44 +1,44 @@
 @interface PUScrubberTilingLayout
-- (BOOL)_shouldShowTimeIndicatorForExpandedItemAtIndexPath:(id)a3;
+- (BOOL)_shouldShowTimeIndicatorForExpandedItemAtIndexPath:(id)path;
 - (CGPoint)focusPoint;
-- (CGRect)_rectForItemAtIndexPath:(id)a3 withLoupeTransform:(BOOL)a4 withExpanded:(BOOL)a5;
+- (CGRect)_rectForItemAtIndexPath:(id)path withLoupeTransform:(BOOL)transform withExpanded:(BOOL)expanded;
 - (CGRect)contentBounds;
-- (CGRect)visibleRectForScrollingToItemAtIndexPath:(id)a3 scrollPosition:(int64_t)a4;
-- (CGRect)visibleRectForScrollingToItemAtIndexPath:(id)a3 transitionProgress:(double)a4;
+- (CGRect)visibleRectForScrollingToItemAtIndexPath:(id)path scrollPosition:(int64_t)position;
+- (CGRect)visibleRectForScrollingToItemAtIndexPath:(id)path transitionProgress:(double)progress;
 - (CGSize)_slitSize;
-- (CGSize)_transformedSizeForIndexPath:(id)a3;
+- (CGSize)_transformedSizeForIndexPath:(id)path;
 - (CGSize)estimatedSectionSize;
 - (CGSize)interItemSpacing;
-- (CGSize)sizeForSection:(int64_t)a3 numberOfItems:(int64_t)a4;
+- (CGSize)sizeForSection:(int64_t)section numberOfItems:(int64_t)items;
 - (PUScrubberTilingLayout)init;
 - (PUScrubberTilingLayoutDelegate)delegate;
 - (UIEdgeInsets)contentPadding;
 - (double)_focusAbscissa;
-- (double)_loupeAmountFor:(id)a3;
-- (double)_normalizedTransitionProgressFrom:(id)a3 withAbscissa:(double)a4 outNeighborIndexPath:(id *)a5;
-- (double)_transformedHorizontalOffsetForIndexPath:(id)a3;
-- (float)_aspectRatioForIndexPath:(id)a3;
-- (id)_createLayoutInfoForTileWithIndexPath:(id)a3 kind:(id)a4;
-- (id)_indexPathOfItemClosestToAbscissa:(double)a3;
-- (id)indexPathOfItemClosestToPoint:(CGPoint)a3;
-- (id)layoutInfoForTileWithIndexPath:(id)a3 kind:(id)a4;
-- (int64_t)_indexOfItemClosestToAbscissa:(double)a3 inSection:(int64_t)a4;
-- (void)addLayoutInfosForTilesInRect:(CGRect)a3 section:(int64_t)a4 toSet:(id)a5;
-- (void)invalidateLayoutWithContext:(id)a3;
+- (double)_loupeAmountFor:(id)for;
+- (double)_normalizedTransitionProgressFrom:(id)from withAbscissa:(double)abscissa outNeighborIndexPath:(id *)path;
+- (double)_transformedHorizontalOffsetForIndexPath:(id)path;
+- (float)_aspectRatioForIndexPath:(id)path;
+- (id)_createLayoutInfoForTileWithIndexPath:(id)path kind:(id)kind;
+- (id)_indexPathOfItemClosestToAbscissa:(double)abscissa;
+- (id)indexPathOfItemClosestToPoint:(CGPoint)point;
+- (id)layoutInfoForTileWithIndexPath:(id)path kind:(id)kind;
+- (int64_t)_indexOfItemClosestToAbscissa:(double)abscissa inSection:(int64_t)section;
+- (void)addLayoutInfosForTilesInRect:(CGRect)rect section:(int64_t)section toSet:(id)set;
+- (void)invalidateLayoutWithContext:(id)context;
 - (void)invalidateSelectedItems;
 - (void)prepareLayout;
-- (void)setDelegate:(id)a3;
-- (void)setExpandedItemIndexPath:(id)a3;
-- (void)setExpandedItemPlayheadProgress:(double)a3;
-- (void)setExpandedItemWidth:(double)a3;
-- (void)setLoupeAmount:(double)a3;
-- (void)setOnlyShowExpandedItem:(BOOL)a3;
-- (void)setOverrideLoupeIndexPath:(id)a3;
-- (void)setShouldHighlightSelectedItems:(BOOL)a3;
-- (void)setShowPlayheadForExpandedItem:(BOOL)a3;
-- (void)setSnapToExpandedItem:(BOOL)a3;
-- (void)setTimeIndicatorVerticalOffset:(double)a3;
-- (void)setVisibleRect:(CGRect)a3;
+- (void)setDelegate:(id)delegate;
+- (void)setExpandedItemIndexPath:(id)path;
+- (void)setExpandedItemPlayheadProgress:(double)progress;
+- (void)setExpandedItemWidth:(double)width;
+- (void)setLoupeAmount:(double)amount;
+- (void)setOnlyShowExpandedItem:(BOOL)item;
+- (void)setOverrideLoupeIndexPath:(id)path;
+- (void)setShouldHighlightSelectedItems:(BOOL)items;
+- (void)setShowPlayheadForExpandedItem:(BOOL)item;
+- (void)setSnapToExpandedItem:(BOOL)item;
+- (void)setTimeIndicatorVerticalOffset:(double)offset;
+- (void)setVisibleRect:(CGRect)rect;
 @end
 
 @implementation PUScrubberTilingLayout
@@ -72,48 +72,48 @@
   return WeakRetained;
 }
 
-- (double)_normalizedTransitionProgressFrom:(id)a3 withAbscissa:(double)a4 outNeighborIndexPath:(id *)a5
+- (double)_normalizedTransitionProgressFrom:(id)from withAbscissa:(double)abscissa outNeighborIndexPath:(id *)path
 {
-  v9 = a3;
-  if (!v9)
+  fromCopy = from;
+  if (!fromCopy)
   {
-    v38 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v38 handleFailureInMethod:a2 object:self file:@"PUScrubberTilingLayout.m" lineNumber:790 description:{@"Invalid parameter not satisfying: %@", @"indexPath != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUScrubberTilingLayout.m" lineNumber:790 description:{@"Invalid parameter not satisfying: %@", @"indexPath != nil"}];
   }
 
-  [(PUScrubberTilingLayout *)self _rectForItemAtIndexPath:v9 withLoupeTransform:0 withExpanded:1];
+  [(PUScrubberTilingLayout *)self _rectForItemAtIndexPath:fromCopy withLoupeTransform:0 withExpanded:1];
   MidX = CGRectGetMidX(v48);
-  v11 = [(PUSectionedTilingLayout *)self leftToRight];
+  leftToRight = [(PUSectionedTilingLayout *)self leftToRight];
   v42 = 0;
   v43 = &v42;
   v44 = 0x3032000000;
   v45 = __Block_byref_object_copy__77542;
   v46 = __Block_byref_object_dispose__77543;
   v47 = 0;
-  v12 = [(PUTilingLayout *)self dataSource];
-  if (v11)
+  dataSource = [(PUTilingLayout *)self dataSource];
+  if (leftToRight)
   {
-    v13 = MidX > a4;
+    v13 = MidX > abscissa;
   }
 
   else
   {
-    v13 = MidX < a4;
+    v13 = MidX < abscissa;
   }
 
   v39[0] = MEMORY[0x1E69E9820];
   v39[1] = 3221225472;
   v39[2] = __94__PUScrubberTilingLayout__normalizedTransitionProgressFrom_withAbscissa_outNeighborIndexPath___block_invoke;
   v39[3] = &unk_1E7B7DD28;
-  v14 = v9;
+  v14 = fromCopy;
   v40 = v14;
   v41 = &v42;
-  [v12 enumerateIndexPathsStartingAtIndexPath:v14 reverseDirection:v13 usingBlock:v39];
+  [dataSource enumerateIndexPathsStartingAtIndexPath:v14 reverseDirection:v13 usingBlock:v39];
 
   if (!v43[5])
   {
     v19 = 0.0;
-    if (!a5)
+    if (!path)
     {
       goto LABEL_17;
     }
@@ -121,8 +121,8 @@
     goto LABEL_16;
   }
 
-  v15 = [(PUScrubberTilingLayout *)self expandedItemIndexPath];
-  v16 = [v14 isEqual:v15];
+  expandedItemIndexPath = [(PUScrubberTilingLayout *)self expandedItemIndexPath];
+  v16 = [v14 isEqual:expandedItemIndexPath];
 
   if (v16)
   {
@@ -171,18 +171,18 @@
   v36 = vabdd_f64(v30, v35);
   if (v16)
   {
-    v19 = -((v30 - (v25 - a4) - v30) / v36);
+    v19 = -((v30 - (v25 - abscissa) - v30) / v36);
   }
 
   else
   {
-    v19 = (v30 - (v25 - a4) - v30) / v36;
+    v19 = (v30 - (v25 - abscissa) - v30) / v36;
   }
 
-  if (a5)
+  if (path)
   {
 LABEL_16:
-    *a5 = v43[5];
+    *path = v43[5];
   }
 
 LABEL_17:
@@ -201,19 +201,19 @@ void __94__PUScrubberTilingLayout__normalizedTransitionProgressFrom_withAbscissa
   }
 }
 
-- (id)_indexPathOfItemClosestToAbscissa:(double)a3
+- (id)_indexPathOfItemClosestToAbscissa:(double)abscissa
 {
-  v6 = [(PUSectionedTilingLayout *)self leftToRight];
-  v7 = [(PUSectionedTilingLayout *)self computedSections];
-  v9 = v7 + v8;
-  if (v7 >= v7 + v8)
+  leftToRight = [(PUSectionedTilingLayout *)self leftToRight];
+  computedSections = [(PUSectionedTilingLayout *)self computedSections];
+  v9 = computedSections + v8;
+  if (computedSections >= computedSections + v8)
   {
 LABEL_40:
     v36 = 0;
     goto LABEL_41;
   }
 
-  v10 = v7;
+  v10 = computedSections;
   v11 = v9 - 1;
   while (1)
   {
@@ -227,29 +227,29 @@ LABEL_40:
     v17 = v13;
     v18 = v14;
     v19 = v15;
-    if (v6)
+    if (leftToRight)
     {
-      v20 = CGRectGetMinX(*&v12) > a3;
+      v20 = CGRectGetMinX(*&v12) > abscissa;
     }
 
     else
     {
-      v20 = CGRectGetMaxX(*&v12) < a3;
+      v20 = CGRectGetMaxX(*&v12) < abscissa;
     }
 
     v45.origin.x = v16;
     v45.origin.y = v17;
     v45.size.width = v18;
     v45.size.height = v19;
-    if (CGRectGetMinX(v45) <= a3)
+    if (CGRectGetMinX(v45) <= abscissa)
     {
       v46.origin.x = v16;
       v46.origin.y = v17;
       v46.size.width = v18;
       v46.size.height = v19;
-      if (CGRectGetMaxX(v46) > a3)
+      if (CGRectGetMaxX(v46) > abscissa)
       {
-        v21 = [(PUScrubberTilingLayout *)self _indexOfItemClosestToAbscissa:v10 inSection:a3];
+        v21 = [(PUScrubberTilingLayout *)self _indexOfItemClosestToAbscissa:v10 inSection:abscissa];
         if (v21 != 0x7FFFFFFFFFFFFFFFLL)
         {
           v22 = v21;
@@ -303,7 +303,7 @@ LABEL_29:
     v31 = v28;
     v32 = v29;
     rect = v26;
-    if (v6)
+    if (leftToRight)
     {
       MaxX = CGRectGetMaxX(*&v26);
       v47.origin.x = v16;
@@ -329,22 +329,22 @@ LABEL_29:
       }
     }
 
-    v37 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v37 handleFailureInMethod:a2 object:self file:@"PUScrubberTilingLayout.m" lineNumber:751 description:{@"Invalid parameter not satisfying: %@", @"leftToRight ? CGRectGetMaxX(previousSectionBounds) <= CGRectGetMinX(sectionBounds) : CGRectGetMinX(previousSectionBounds) >= CGRectGetMaxX(sectionBounds)"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUScrubberTilingLayout.m" lineNumber:751 description:{@"Invalid parameter not satisfying: %@", @"leftToRight ? CGRectGetMaxX(previousSectionBounds) <= CGRectGetMinX(sectionBounds) : CGRectGetMinX(previousSectionBounds) >= CGRectGetMaxX(sectionBounds)"}];
 
-    if (v6)
+    if (leftToRight)
     {
 LABEL_24:
       v48.origin.x = rect;
       v48.origin.y = v30;
       v48.size.width = v31;
       v48.size.height = v32;
-      v33 = a3 - CGRectGetMaxX(v48);
+      v33 = abscissa - CGRectGetMaxX(v48);
       v49.origin.x = v16;
       v49.origin.y = v17;
       v49.size.width = v18;
       v49.size.height = v19;
-      v34 = CGRectGetMinX(v49) - a3;
+      v34 = CGRectGetMinX(v49) - abscissa;
       goto LABEL_27;
     }
 
@@ -353,12 +353,12 @@ LABEL_26:
     v51.origin.y = v30;
     v51.size.width = v31;
     v51.size.height = v32;
-    v33 = CGRectGetMinX(v51) - a3;
+    v33 = CGRectGetMinX(v51) - abscissa;
     v52.origin.x = v16;
     v52.origin.y = v17;
     v52.size.width = v18;
     v52.size.height = v19;
-    v34 = a3 - CGRectGetMaxX(v52);
+    v34 = abscissa - CGRectGetMaxX(v52);
 LABEL_27:
     if (v33 > v34)
     {
@@ -402,8 +402,8 @@ LABEL_35:
 
   if ([v35 item] < 0 || (v39 = objc_msgSend(v36, "item"), v39 >= -[PUSectionedTilingLayout numberOfItemsInSection:](self, "numberOfItemsInSection:", objc_msgSend(v36, "section"))))
   {
-    v40 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v40 handleFailureInMethod:a2 object:self file:@"PUScrubberTilingLayout.m" lineNumber:780 description:{@"Computed invalid indexPath:%@", v36}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PUScrubberTilingLayout.m" lineNumber:780 description:{@"Computed invalid indexPath:%@", v36}];
   }
 
 LABEL_41:
@@ -411,7 +411,7 @@ LABEL_41:
   return v36;
 }
 
-- (int64_t)_indexOfItemClosestToAbscissa:(double)a3 inSection:(int64_t)a4
+- (int64_t)_indexOfItemClosestToAbscissa:(double)abscissa inSection:(int64_t)section
 {
   v7 = [(PUSectionedTilingLayout *)self numberOfItemsInSection:?];
   if (!v7)
@@ -420,27 +420,27 @@ LABEL_41:
   }
 
   v8 = v7;
-  v9 = [(PUSectionedTilingLayout *)self leftToRight];
-  [(PUSectionedTilingLayout *)self boundsForSection:a4];
-  if (v9)
+  leftToRight = [(PUSectionedTilingLayout *)self leftToRight];
+  [(PUSectionedTilingLayout *)self boundsForSection:section];
+  if (leftToRight)
   {
-    v14 = a3 - CGRectGetMinX(*&v10);
+    v14 = abscissa - CGRectGetMinX(*&v10);
   }
 
   else
   {
-    v14 = CGRectGetMaxX(*&v10) - a3;
+    v14 = CGRectGetMaxX(*&v10) - abscissa;
   }
 
   [(PUScrubberTilingLayout *)self _slitSize];
   v17 = v16;
-  v18 = [(PUScrubberTilingLayout *)self expandedItemIndexPath];
-  v19 = v18;
-  if (v18 && [v18 section] == a4 && (-[PUScrubberTilingLayout _rectForItemAtIndexPath:withLoupeTransform:withExpanded:](self, "_rectForItemAtIndexPath:withLoupeTransform:withExpanded:", v19, 0, 1), v21 = v20, v23 = v22, v25 = v24, v27 = v26, -[PUScrubberTilingLayout expandedItemPadding](self, "expandedItemPadding"), v29 = v28, -[PUScrubberTilingLayout expandedItemPadding](self, "expandedItemPadding"), v31 = -v30, v40.origin.x = v21 - v29, v40.origin.y = v23 + 0.0, v40.size.width = v25 - (v31 - v29), width = v40.size.width, v40.size.height = v27, v33 = (a3 - CGRectGetMinX(v40)) / v40.size.width, v33 >= 0.0))
+  expandedItemIndexPath = [(PUScrubberTilingLayout *)self expandedItemIndexPath];
+  v19 = expandedItemIndexPath;
+  if (expandedItemIndexPath && [expandedItemIndexPath section] == section && (-[PUScrubberTilingLayout _rectForItemAtIndexPath:withLoupeTransform:withExpanded:](self, "_rectForItemAtIndexPath:withLoupeTransform:withExpanded:", v19, 0, 1), v21 = v20, v23 = v22, v25 = v24, v27 = v26, -[PUScrubberTilingLayout expandedItemPadding](self, "expandedItemPadding"), v29 = v28, -[PUScrubberTilingLayout expandedItemPadding](self, "expandedItemPadding"), v31 = -v30, v40.origin.x = v21 - v29, v40.origin.y = v23 + 0.0, v40.size.width = v25 - (v31 - v29), width = v40.size.width, v40.size.height = v27, v33 = (abscissa - CGRectGetMinX(v40)) / v40.size.width, v33 >= 0.0))
   {
     if (v33 <= 1.0)
     {
-      v36 = [v19 item];
+      item = [v19 item];
       goto LABEL_11;
     }
 
@@ -454,15 +454,15 @@ LABEL_41:
     v35 = v14 / (v17 + v34);
   }
 
-  v36 = v35;
+  item = v35;
 LABEL_11:
   v37 = v8 - 1;
-  if (v36 < v8)
+  if (item < v8)
   {
-    v37 = v36;
+    v37 = item;
   }
 
-  if (v36 >= 0)
+  if (item >= 0)
   {
     v15 = v37;
   }
@@ -475,10 +475,10 @@ LABEL_11:
   return v15;
 }
 
-- (CGSize)_transformedSizeForIndexPath:(id)a3
+- (CGSize)_transformedSizeForIndexPath:(id)path
 {
-  v4 = a3;
-  [(PUScrubberTilingLayout *)self _loupeAmountFor:v4];
+  pathCopy = path;
+  [(PUScrubberTilingLayout *)self _loupeAmountFor:pathCopy];
   v6 = v5;
   [(PUScrubberTilingLayout *)self loupeAmount];
   v8 = v6 * v7;
@@ -486,7 +486,7 @@ LABEL_11:
   height = self->_slitSize.height;
   if (v8 != 0.0)
   {
-    [(PUScrubberTilingLayout *)self _aspectRatioForIndexPath:v4];
+    [(PUScrubberTilingLayout *)self _aspectRatioForIndexPath:pathCopy];
     v12 = v11;
     [(PUScrubberTilingLayout *)self maxAspectRatio];
     if (slitAspectRatio > v12)
@@ -510,22 +510,22 @@ LABEL_11:
   return result;
 }
 
-- (double)_transformedHorizontalOffsetForIndexPath:(id)a3
+- (double)_transformedHorizontalOffsetForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(PUScrubberTilingLayout *)self loupeIndexPath];
+  pathCopy = path;
+  loupeIndexPath = [(PUScrubberTilingLayout *)self loupeIndexPath];
   v6 = 0.0;
-  if (v5)
+  if (loupeIndexPath)
   {
     [(PUScrubberTilingLayout *)self loupeAmount];
     if (v7 > 0.0)
     {
-      v8 = [(PUScrubberTilingLayout *)self overrideLoupeIndexPath];
+      overrideLoupeIndexPath = [(PUScrubberTilingLayout *)self overrideLoupeIndexPath];
 
-      if (v8)
+      if (overrideLoupeIndexPath)
       {
-        v9 = [(PUScrubberTilingLayout *)self overrideLoupeIndexPath];
-        [(PUScrubberTilingLayout *)self _rectForItemAtIndexPath:v9 withLoupeTransform:0 withExpanded:1];
+        overrideLoupeIndexPath2 = [(PUScrubberTilingLayout *)self overrideLoupeIndexPath];
+        [(PUScrubberTilingLayout *)self _rectForItemAtIndexPath:overrideLoupeIndexPath2 withLoupeTransform:0 withExpanded:1];
         v11 = v10;
         v13 = v12;
         v15 = v14;
@@ -544,9 +544,9 @@ LABEL_11:
       }
 
       v19 = MidX;
-      [(PUScrubberTilingLayout *)self _rectForItemAtIndexPath:v4 withLoupeTransform:0 withExpanded:1];
+      [(PUScrubberTilingLayout *)self _rectForItemAtIndexPath:pathCopy withLoupeTransform:0 withExpanded:1];
       v20 = CGRectGetMidX(v28);
-      [(PUScrubberTilingLayout *)self _loupeAmountFor:v4];
+      [(PUScrubberTilingLayout *)self _loupeAmountFor:pathCopy];
       v22 = v21;
       [(PUScrubberTilingLayout *)self loupeAmount];
       v24 = (1.0 - v22) * v23;
@@ -563,11 +563,11 @@ LABEL_11:
   return v6;
 }
 
-- (double)_loupeAmountFor:(id)a3
+- (double)_loupeAmountFor:(id)for
 {
-  v4 = a3;
-  v5 = [(PUScrubberTilingLayout *)self loupeIndexPath];
-  v6 = [v4 isEqual:v5];
+  forCopy = for;
+  loupeIndexPath = [(PUScrubberTilingLayout *)self loupeIndexPath];
+  v6 = [forCopy isEqual:loupeIndexPath];
 
   if (v6)
   {
@@ -578,7 +578,7 @@ LABEL_11:
   else
   {
     v8 = 0.0;
-    if ([v4 isEqual:self->_loupeNeighborIndexPath])
+    if ([forCopy isEqual:self->_loupeNeighborIndexPath])
     {
       v8 = fabs(self->_loupeTransitionProgress);
     }
@@ -587,9 +587,9 @@ LABEL_11:
   return v8;
 }
 
-- (CGRect)visibleRectForScrollingToItemAtIndexPath:(id)a3 scrollPosition:(int64_t)a4
+- (CGRect)visibleRectForScrollingToItemAtIndexPath:(id)path scrollPosition:(int64_t)position
 {
-  [(PUScrubberTilingLayout *)self visibleRectForScrollingToItemAtIndexPath:a3 transitionProgress:a4, 0.0];
+  [(PUScrubberTilingLayout *)self visibleRectForScrollingToItemAtIndexPath:path transitionProgress:position, 0.0];
   result.size.height = v7;
   result.size.width = v6;
   result.origin.y = v5;
@@ -597,10 +597,10 @@ LABEL_11:
   return result;
 }
 
-- (CGRect)visibleRectForScrollingToItemAtIndexPath:(id)a3 transitionProgress:(double)a4
+- (CGRect)visibleRectForScrollingToItemAtIndexPath:(id)path transitionProgress:(double)progress
 {
-  v6 = a3;
-  [(PUScrubberTilingLayout *)self _rectForItemAtIndexPath:v6 withLoupeTransform:0 withExpanded:1];
+  pathCopy = path;
+  [(PUScrubberTilingLayout *)self _rectForItemAtIndexPath:pathCopy withLoupeTransform:0 withExpanded:1];
   x = v30.origin.x;
   y = v30.origin.y;
   width = v30.size.width;
@@ -610,8 +610,8 @@ LABEL_11:
   v31.origin.y = y;
   v31.size.width = width;
   v31.size.height = height;
-  v12 = [(PUScrubberTilingLayout *)self expandedItemIndexPath];
-  v13 = [v6 isEqual:v12];
+  expandedItemIndexPath = [(PUScrubberTilingLayout *)self expandedItemIndexPath];
+  v13 = [pathCopy isEqual:expandedItemIndexPath];
 
   if (v13)
   {
@@ -634,10 +634,10 @@ LABEL_11:
     [(PUScrubberTilingLayout *)self _slitSize];
     v19 = v18;
     [(PUScrubberTilingLayout *)self interItemSpacing];
-    v21 = (v19 + v20) * a4;
-    v22 = [(PUSectionedTilingLayout *)self leftToRight];
+    v21 = (v19 + v20) * progress;
+    leftToRight = [(PUSectionedTilingLayout *)self leftToRight];
     v23 = -1.0;
-    if (v22)
+    if (leftToRight)
     {
       v23 = 1.0;
     }
@@ -659,42 +659,42 @@ LABEL_11:
   return result;
 }
 
-- (float)_aspectRatioForIndexPath:(id)a3
+- (float)_aspectRatioForIndexPath:(id)path
 {
   if (!self->_delegateFlags.respondsToAspectRatioForItemAtIndexPath)
   {
     return 1.0;
   }
 
-  v4 = a3;
-  v5 = [(PUScrubberTilingLayout *)self delegate];
-  [v5 layout:self aspectRatioForItemAtIndexPath:v4];
+  pathCopy = path;
+  delegate = [(PUScrubberTilingLayout *)self delegate];
+  [delegate layout:self aspectRatioForItemAtIndexPath:pathCopy];
   v7 = v6;
 
   return v7;
 }
 
-- (BOOL)_shouldShowTimeIndicatorForExpandedItemAtIndexPath:(id)a3
+- (BOOL)_shouldShowTimeIndicatorForExpandedItemAtIndexPath:(id)path
 {
   if (!self->_delegateFlags.respondsToShouldShowTimeIndicatorForExpandedItemAtIndexPath)
   {
     return 1;
   }
 
-  v3 = self;
-  v4 = a3;
-  WeakRetained = objc_loadWeakRetained(&v3->_delegate);
-  LOBYTE(v3) = [WeakRetained layout:v3 shouldShowTimeIndicatorForExpandedItemAtIndexPath:v4];
+  selfCopy = self;
+  pathCopy = path;
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_delegate);
+  LOBYTE(selfCopy) = [WeakRetained layout:selfCopy shouldShowTimeIndicatorForExpandedItemAtIndexPath:pathCopy];
 
-  return v3;
+  return selfCopy;
 }
 
-- (CGRect)_rectForItemAtIndexPath:(id)a3 withLoupeTransform:(BOOL)a4 withExpanded:(BOOL)a5
+- (CGRect)_rectForItemAtIndexPath:(id)path withLoupeTransform:(BOOL)transform withExpanded:(BOOL)expanded
 {
-  v5 = a5;
-  v6 = a4;
-  v8 = a3;
-  -[PUSectionedTilingLayout boundsForSection:](self, "boundsForSection:", [v8 section]);
+  expandedCopy = expanded;
+  transformCopy = transform;
+  pathCopy = path;
+  -[PUSectionedTilingLayout boundsForSection:](self, "boundsForSection:", [pathCopy section]);
   v10 = v9;
   v12 = v11;
   [(PUScrubberTilingLayout *)self _slitSize];
@@ -702,36 +702,36 @@ LABEL_11:
   v16 = v15;
   [(PUScrubberTilingLayout *)self interItemSpacing];
   v18 = v17;
-  v19 = -[PUSectionedTilingLayout numberOfItemsInSection:](self, "numberOfItemsInSection:", [v8 section]);
-  v20 = [(PUSectionedTilingLayout *)self leftToRight];
+  v19 = -[PUSectionedTilingLayout numberOfItemsInSection:](self, "numberOfItemsInSection:", [pathCopy section]);
+  leftToRight = [(PUSectionedTilingLayout *)self leftToRight];
   [(PUScrubberTilingLayout *)self contentPadding];
   v22 = v12 + v21;
-  v23 = [v8 item];
-  v24 = v19 + ~v23;
-  if (v20)
+  item = [pathCopy item];
+  v24 = v19 + ~item;
+  if (leftToRight)
   {
-    v24 = v23;
+    v24 = item;
   }
 
   v25 = v10 + v24 * (v14 + v18);
-  if (v5 && ([(PUScrubberTilingLayout *)self expandedItemIndexPath], (v26 = objc_claimAutoreleasedReturnValue()) != 0))
+  if (expandedCopy && ([(PUScrubberTilingLayout *)self expandedItemIndexPath], (v26 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v27 = v26;
-    v28 = [v8 section];
-    if (v28 == [v27 section])
+    section = [pathCopy section];
+    if (section == [v27 section])
     {
-      v29 = [v27 compare:v8];
+      v29 = [v27 compare:pathCopy];
       if (v29)
       {
         v30 = -1;
-        if (!v20)
+        if (!leftToRight)
         {
           v30 = 1;
         }
 
         if (v29 == v30)
         {
-          if (v20)
+          if (leftToRight)
           {
             v31 = v25 - v14;
           }
@@ -758,12 +758,12 @@ LABEL_11:
     }
   }
 
-  else if (v6)
+  else if (transformCopy)
   {
-    [(PUScrubberTilingLayout *)self _transformedSizeForIndexPath:v8];
+    [(PUScrubberTilingLayout *)self _transformedSizeForIndexPath:pathCopy];
     v36 = v35;
     v38 = v37;
-    [(PUScrubberTilingLayout *)self _transformedHorizontalOffsetForIndexPath:v8];
+    [(PUScrubberTilingLayout *)self _transformedHorizontalOffsetForIndexPath:pathCopy];
     v40 = v39;
     v48.origin.x = v25;
     v48.origin.y = v22;
@@ -803,8 +803,8 @@ LABEL_11:
   width = self->_slitSize.width;
   if (width < 0.0)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"PUScrubberTilingLayout.m" lineNumber:525 description:{@"Invalid parameter not satisfying: %@", @"_slitSize.width >= 0.0f"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUScrubberTilingLayout.m" lineNumber:525 description:{@"Invalid parameter not satisfying: %@", @"_slitSize.width >= 0.0f"}];
 
     width = p_slitSize->width;
   }
@@ -831,10 +831,10 @@ LABEL_11:
   return result;
 }
 
-- (id)indexPathOfItemClosestToPoint:(CGPoint)a3
+- (id)indexPathOfItemClosestToPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   [(PUTilingLayout *)self visibleRect];
   [(PUSectionedTilingLayout *)self computeSectionsInRect:x - v6 * 0.5, y - v7 * 0.5];
 
@@ -850,10 +850,10 @@ LABEL_11:
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(PUScrubberTilingLayout *)self expandedItemIndexPath];
-  if (v11 && [(PUScrubberTilingLayout *)self snapToExpandedItem])
+  expandedItemIndexPath = [(PUScrubberTilingLayout *)self expandedItemIndexPath];
+  if (expandedItemIndexPath && [(PUScrubberTilingLayout *)self snapToExpandedItem])
   {
-    [(PUScrubberTilingLayout *)self _rectForItemAtIndexPath:v11 withLoupeTransform:0 withExpanded:1];
+    [(PUScrubberTilingLayout *)self _rectForItemAtIndexPath:expandedItemIndexPath withLoupeTransform:0 withExpanded:1];
     x = v38.origin.x;
     y = v38.origin.y;
     width = v38.size.width;
@@ -936,30 +936,30 @@ LABEL_11:
   return result;
 }
 
-- (void)setTimeIndicatorVerticalOffset:(double)a3
+- (void)setTimeIndicatorVerticalOffset:(double)offset
 {
-  if (self->_timeIndicatorVerticalOffset != a3)
+  if (self->_timeIndicatorVerticalOffset != offset)
   {
-    self->_timeIndicatorVerticalOffset = a3;
+    self->_timeIndicatorVerticalOffset = offset;
     v5 = objc_alloc_init(PUScrubberTilingLayoutInvalidationContext);
     [(PUTilingLayoutInvalidationContext *)v5 invalidateAllTilesWithKind:@"PUTileKindPlaybackTimeIndicator"];
     [(PUScrubberTilingLayout *)self invalidateLayoutWithContext:v5];
   }
 }
 
-- (id)_createLayoutInfoForTileWithIndexPath:(id)a3 kind:(id)a4
+- (id)_createLayoutInfoForTileWithIndexPath:(id)path kind:(id)kind
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PUScrubberTilingLayout *)self expandedItemIndexPath];
-  v9 = [v6 isEqual:v8];
+  pathCopy = path;
+  kindCopy = kind;
+  expandedItemIndexPath = [(PUScrubberTilingLayout *)self expandedItemIndexPath];
+  v9 = [pathCopy isEqual:expandedItemIndexPath];
 
-  [(PUScrubberTilingLayout *)self _rectForItemAtIndexPath:v6 withLoupeTransform:1 withExpanded:1];
+  [(PUScrubberTilingLayout *)self _rectForItemAtIndexPath:pathCopy withLoupeTransform:1 withExpanded:1];
   v11 = v10;
   v13 = v12;
   v15 = v14;
   v17 = v16;
-  if ([v7 isEqualToString:@"PUTileKindItemContent"])
+  if ([kindCopy isEqualToString:@"PUTileKindItemContent"])
   {
     if (v9)
     {
@@ -978,8 +978,8 @@ LABEL_11:
     v36 = 1.0;
     if ([(PUScrubberTilingLayout *)self shouldHighlightSelectedItems]&& self->_delegateFlags.respondsToIsItemAtAtIndexPathSelected)
     {
-      v37 = [(PUScrubberTilingLayout *)self delegate];
-      v38 = [v37 layout:self isItemAtAtIndexPathSelected:v6];
+      delegate = [(PUScrubberTilingLayout *)self delegate];
+      v38 = [delegate layout:self isItemAtAtIndexPathSelected:pathCopy];
 
       if (v38)
       {
@@ -1004,22 +1004,22 @@ LABEL_11:
 
     [(PUScrubberTilingLayout *)self itemCornerRadius];
     v42 = v41;
-    v30 = [(PUTilingLayout *)self tileIdentifierForTileWithIndexPath:v6 kind:v7];
+    v30 = [(PUTilingLayout *)self tileIdentifierForTileWithIndexPath:pathCopy kind:kindCopy];
     v43 = [PUExpandableTileLayoutInfo alloc];
     UIRectGetCenter();
     v45 = v44;
     v47 = v46;
-    v32 = [(PUTilingLayout *)self coordinateSystem];
+    coordinateSystem = [(PUTilingLayout *)self coordinateSystem];
     [(PUScrubberTilingLayout *)self _slitSize];
     v48 = *(MEMORY[0x1E695EFD0] + 16);
     v76 = *MEMORY[0x1E695EFD0];
     v77 = v48;
     v78 = *(MEMORY[0x1E695EFD0] + 32);
-    v51 = [(PUExpandableTileLayoutInfo *)v43 initWithTileIdentifier:v30 center:&v76 size:v32 cornerRadius:v9 alpha:v45 transform:v47 zPosition:v15 coordinateSystem:v17 isExpanded:v42 expandedSize:v36 unexpandedSize:50.0, v19, v35, v49, v50];
+    v51 = [(PUExpandableTileLayoutInfo *)v43 initWithTileIdentifier:v30 center:&v76 size:coordinateSystem cornerRadius:v9 alpha:v45 transform:v47 zPosition:v15 coordinateSystem:v17 isExpanded:v42 expandedSize:v36 unexpandedSize:50.0, v19, v35, v49, v50];
     goto LABEL_25;
   }
 
-  if ([v7 isEqualToString:@"PUTileKindPlayhead"])
+  if ([kindCopy isEqualToString:@"PUTileKindPlayhead"])
   {
     if (v9 && [(PUScrubberTilingLayout *)self showPlayheadForExpandedItem])
     {
@@ -1035,9 +1035,9 @@ LABEL_11:
       v80.size.width = v15;
       v80.size.height = v17;
       MidY = CGRectGetMidY(v80);
-      v30 = [(PUTilingLayout *)self tileIdentifierForTileWithIndexPath:v6 kind:v7];
+      v30 = [(PUTilingLayout *)self tileIdentifierForTileWithIndexPath:pathCopy kind:kindCopy];
       v31 = [PUTileLayoutInfo alloc];
-      v32 = [(PUTilingLayout *)self coordinateSystem];
+      coordinateSystem = [(PUTilingLayout *)self coordinateSystem];
       v33 = *(MEMORY[0x1E695EFD0] + 16);
       v76 = *MEMORY[0x1E695EFD0];
       v77 = v33;
@@ -1053,7 +1053,7 @@ LABEL_21:
       v64 = v22;
       v65 = v26;
 LABEL_24:
-      v51 = [(PUTileLayoutInfo *)v60 initWithTileIdentifier:v61 center:&v76 size:v32 alpha:v62 transform:v63 zPosition:v64 coordinateSystem:v65, v59, v58];
+      v51 = [(PUTileLayoutInfo *)v60 initWithTileIdentifier:v61 center:&v76 size:coordinateSystem alpha:v62 transform:v63 zPosition:v64 coordinateSystem:v65, v59, v58];
 LABEL_25:
       v74 = v51;
 
@@ -1061,7 +1061,7 @@ LABEL_25:
     }
   }
 
-  else if ([v7 isEqualToString:@"PUTileKindPlaybackTimeIndicator"])
+  else if ([kindCopy isEqualToString:@"PUTileKindPlaybackTimeIndicator"])
   {
     if (v9)
     {
@@ -1077,9 +1077,9 @@ LABEL_25:
       v55 = CGRectGetMinY(v81) + -8.0 + v26 * -0.5;
       [(PUScrubberTilingLayout *)self timeIndicatorVerticalOffset];
       MidY = v56 + v55;
-      v30 = [(PUTilingLayout *)self tileIdentifierForTileWithIndexPath:v6 kind:v7];
+      v30 = [(PUTilingLayout *)self tileIdentifierForTileWithIndexPath:pathCopy kind:kindCopy];
       v31 = [PUTileLayoutInfo alloc];
-      v32 = [(PUTilingLayout *)self coordinateSystem];
+      coordinateSystem = [(PUTilingLayout *)self coordinateSystem];
       v57 = *(MEMORY[0x1E695EFD0] + 16);
       v76 = *MEMORY[0x1E695EFD0];
       v77 = v57;
@@ -1089,7 +1089,7 @@ LABEL_25:
     }
   }
 
-  else if (([v7 isEqualToString:@"PUTileKindVideoHighlightStrip"] & v9) == 1)
+  else if (([kindCopy isEqualToString:@"PUTileKindVideoHighlightStrip"] & v9) == 1)
   {
     +[PUVideoHighlightStripTileViewController preferredTileHeight];
     v67 = v66;
@@ -1098,12 +1098,12 @@ LABEL_25:
     v82.size.width = v15;
     v82.size.height = v17;
     CGRectGetMinY(v82);
-    v30 = [(PUTilingLayout *)self tileIdentifierForTileWithIndexPath:v6 kind:v7];
+    v30 = [(PUTilingLayout *)self tileIdentifierForTileWithIndexPath:pathCopy kind:kindCopy];
     v68 = [PUTileLayoutInfo alloc];
     UIRectGetCenter();
     v70 = v69;
     v72 = v71;
-    v32 = [(PUTilingLayout *)self coordinateSystem];
+    coordinateSystem = [(PUTilingLayout *)self coordinateSystem];
     v73 = *(MEMORY[0x1E695EFD0] + 16);
     v76 = *MEMORY[0x1E695EFD0];
     v77 = v73;
@@ -1125,26 +1125,26 @@ LABEL_27:
   return v74;
 }
 
-- (id)layoutInfoForTileWithIndexPath:(id)a3 kind:(id)a4
+- (id)layoutInfoForTileWithIndexPath:(id)path kind:(id)kind
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NSMutableDictionary *)self->_layoutInfosByIndexPathByTileKind objectForKeyedSubscript:v7];
-  v9 = [v8 objectForKeyedSubscript:v6];
+  pathCopy = path;
+  kindCopy = kind;
+  v8 = [(NSMutableDictionary *)self->_layoutInfosByIndexPathByTileKind objectForKeyedSubscript:kindCopy];
+  v9 = [v8 objectForKeyedSubscript:pathCopy];
 
   if (!v9)
   {
-    v9 = [(PUScrubberTilingLayout *)self _createLayoutInfoForTileWithIndexPath:v6 kind:v7];
-    v10 = [(NSMutableDictionary *)self->_layoutInfosByIndexPathByTileKind objectForKeyedSubscript:v7];
+    v9 = [(PUScrubberTilingLayout *)self _createLayoutInfoForTileWithIndexPath:pathCopy kind:kindCopy];
+    v10 = [(NSMutableDictionary *)self->_layoutInfosByIndexPathByTileKind objectForKeyedSubscript:kindCopy];
     if (v10)
     {
       if (v9)
       {
 LABEL_4:
-        v11 = v9;
+        null = v9;
 LABEL_7:
-        v12 = v11;
-        [v10 setObject:v11 forKeyedSubscript:v6];
+        v12 = null;
+        [v10 setObject:null forKeyedSubscript:pathCopy];
 
         goto LABEL_8;
       }
@@ -1153,20 +1153,20 @@ LABEL_7:
     else
     {
       v10 = objc_alloc_init(MEMORY[0x1E695DF90]);
-      [(NSMutableDictionary *)self->_layoutInfosByIndexPathByTileKind setObject:v10 forKeyedSubscript:v7];
+      [(NSMutableDictionary *)self->_layoutInfosByIndexPathByTileKind setObject:v10 forKeyedSubscript:kindCopy];
       if (v9)
       {
         goto LABEL_4;
       }
     }
 
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
     goto LABEL_7;
   }
 
 LABEL_8:
-  v13 = [MEMORY[0x1E695DFB0] null];
-  v14 = [v13 isEqual:v9];
+  null2 = [MEMORY[0x1E695DFB0] null];
+  v14 = [null2 isEqual:v9];
 
   if (v14)
   {
@@ -1177,11 +1177,11 @@ LABEL_8:
   return v9;
 }
 
-- (CGSize)sizeForSection:(int64_t)a3 numberOfItems:(int64_t)a4
+- (CGSize)sizeForSection:(int64_t)section numberOfItems:(int64_t)items
 {
   [(PUScrubberTilingLayout *)self _slitSize];
   v8 = v7;
-  if (a4 < 1)
+  if (items < 1)
   {
     v10 = *MEMORY[0x1E695F060];
   }
@@ -1189,14 +1189,14 @@ LABEL_8:
   else
   {
     [(PUScrubberTilingLayout *)self interItemSpacing];
-    v10 = -(v9 - a4 * (v8 + v9));
+    v10 = -(v9 - items * (v8 + v9));
   }
 
   [(PUTilingLayout *)self visibleRect];
   Height = CGRectGetHeight(v21);
-  v12 = [(PUScrubberTilingLayout *)self expandedItemIndexPath];
-  v13 = v12;
-  if (v12 && [v12 section] == a3)
+  expandedItemIndexPath = [(PUScrubberTilingLayout *)self expandedItemIndexPath];
+  v13 = expandedItemIndexPath;
+  if (expandedItemIndexPath && [expandedItemIndexPath section] == section)
   {
     v14 = v10 - v8;
     [(PUScrubberTilingLayout *)self expandedItemWidth];
@@ -1212,20 +1212,20 @@ LABEL_8:
   return result;
 }
 
-- (void)addLayoutInfosForTilesInRect:(CGRect)a3 section:(int64_t)a4 toSet:(id)a5
+- (void)addLayoutInfosForTilesInRect:(CGRect)rect section:(int64_t)section toSet:(id)set
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v34 = a5;
-  v11 = [(PUSectionedTilingLayout *)self numberOfItemsInSection:a4];
-  v12 = [(PUSectionedTilingLayout *)self leftToRight];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  setCopy = set;
+  v11 = [(PUSectionedTilingLayout *)self numberOfItemsInSection:section];
+  leftToRight = [(PUSectionedTilingLayout *)self leftToRight];
   v13 = x;
   v14 = y;
   v15 = width;
   v16 = height;
-  if (v12)
+  if (leftToRight)
   {
     MinX = CGRectGetMinX(*&v13);
     v36.origin.x = x;
@@ -1246,9 +1246,9 @@ LABEL_8:
   }
 
   v19 = MaxX;
-  v20 = [(PUScrubberTilingLayout *)self _indexOfItemClosestToAbscissa:a4 inSection:MinX];
+  v20 = [(PUScrubberTilingLayout *)self _indexOfItemClosestToAbscissa:section inSection:MinX];
   v21 = v20 & ~(v20 >> 63);
-  v22 = [(PUScrubberTilingLayout *)self _indexOfItemClosestToAbscissa:a4 inSection:v19];
+  v22 = [(PUScrubberTilingLayout *)self _indexOfItemClosestToAbscissa:section inSection:v19];
   v23 = v11 - 1;
   if (v22 < v11 - 1)
   {
@@ -1260,7 +1260,7 @@ LABEL_8:
     v24 = v23 + 1;
     do
     {
-      v25 = [MEMORY[0x1E696AC88] indexPathForItem:v21 inSection:a4];
+      v25 = [MEMORY[0x1E696AC88] indexPathForItem:v21 inSection:section];
       if (!-[PUScrubberTilingLayout onlyShowExpandedItem](self, "onlyShowExpandedItem") || (-[PUScrubberTilingLayout expandedItemIndexPath](self, "expandedItemIndexPath"), v26 = objc_claimAutoreleasedReturnValue(), v27 = [v25 isEqual:v26], v26, v27))
       {
         v28 = [(PUScrubberTilingLayout *)self layoutInfoForTileWithIndexPath:v25 kind:@"PUTileKindItemContent"];
@@ -1271,7 +1271,7 @@ LABEL_8:
         v40.size.height = height;
         if (CGRectIntersectsRect(v38, v40))
         {
-          [v34 addObject:v28];
+          [setCopy addObject:v28];
         }
       }
 
@@ -1281,10 +1281,10 @@ LABEL_8:
     while (v24 != v21);
   }
 
-  v29 = [(PUScrubberTilingLayout *)self expandedItemIndexPath];
-  if (v29)
+  expandedItemIndexPath = [(PUScrubberTilingLayout *)self expandedItemIndexPath];
+  if (expandedItemIndexPath)
   {
-    [(PUScrubberTilingLayout *)self _rectForItemAtIndexPath:v29 withLoupeTransform:0 withExpanded:1];
+    [(PUScrubberTilingLayout *)self _rectForItemAtIndexPath:expandedItemIndexPath withLoupeTransform:0 withExpanded:1];
     v41.origin.x = x;
     v41.origin.y = y;
     v41.size.width = width;
@@ -1293,26 +1293,26 @@ LABEL_8:
     {
       if ([(PUScrubberTilingLayout *)self showPlayheadForExpandedItem])
       {
-        v30 = [(PUScrubberTilingLayout *)self layoutInfoForTileWithIndexPath:v29 kind:@"PUTileKindPlayhead"];
-        [v34 addObject:v30];
+        v30 = [(PUScrubberTilingLayout *)self layoutInfoForTileWithIndexPath:expandedItemIndexPath kind:@"PUTileKindPlayhead"];
+        [setCopy addObject:v30];
       }
 
-      if ([(PUScrubberTilingLayout *)self _shouldShowTimeIndicatorForExpandedItemAtIndexPath:v29])
+      if ([(PUScrubberTilingLayout *)self _shouldShowTimeIndicatorForExpandedItemAtIndexPath:expandedItemIndexPath])
       {
-        v31 = [(PUScrubberTilingLayout *)self layoutInfoForTileWithIndexPath:v29 kind:@"PUTileKindPlaybackTimeIndicator"];
-        [v34 addObject:v31];
+        v31 = [(PUScrubberTilingLayout *)self layoutInfoForTileWithIndexPath:expandedItemIndexPath kind:@"PUTileKindPlaybackTimeIndicator"];
+        [setCopy addObject:v31];
       }
 
-      v32 = [(PUScrubberTilingLayout *)self layoutInfoForTileWithIndexPath:v29 kind:@"PUTileKindVideoHighlightStrip"];
+      v32 = [(PUScrubberTilingLayout *)self layoutInfoForTileWithIndexPath:expandedItemIndexPath kind:@"PUTileKindVideoHighlightStrip"];
       if (v32)
       {
-        [v34 addObject:v32];
+        [setCopy addObject:v32];
       }
 
-      v33 = [(PUScrubberTilingLayout *)self layoutInfoForTileWithIndexPath:v29 kind:@"PUTileKindEmbeddedVideoScrubber"];
+      v33 = [(PUScrubberTilingLayout *)self layoutInfoForTileWithIndexPath:expandedItemIndexPath kind:@"PUTileKindEmbeddedVideoScrubber"];
       if (v33)
       {
-        [v34 addObject:v33];
+        [setCopy addObject:v33];
       }
     }
   }
@@ -1326,11 +1326,11 @@ LABEL_8:
   return result;
 }
 
-- (void)invalidateLayoutWithContext:(id)a3
+- (void)invalidateLayoutWithContext:(id)context
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 invalidatedAllTiles])
+  contextCopy = context;
+  if ([contextCopy invalidatedAllTiles])
   {
     [(NSMutableDictionary *)self->_layoutInfosByIndexPathByTileKind removeAllObjects];
   }
@@ -1341,8 +1341,8 @@ LABEL_8:
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v5 = [v4 invalidatedTileKinds];
-    v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    invalidatedTileKinds = [contextCopy invalidatedTileKinds];
+    v6 = [invalidatedTileKinds countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v6)
     {
       v7 = v6;
@@ -1354,7 +1354,7 @@ LABEL_8:
         {
           if (*v14 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(invalidatedTileKinds);
           }
 
           v10 = [(NSMutableDictionary *)self->_layoutInfosByIndexPathByTileKind objectForKeyedSubscript:*(*(&v13 + 1) + 8 * v9)];
@@ -1364,7 +1364,7 @@ LABEL_8:
         }
 
         while (v7 != v9);
-        v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v7 = [invalidatedTileKinds countByEnumeratingWithState:&v13 objects:v17 count:16];
       }
 
       while (v7);
@@ -1375,12 +1375,12 @@ LABEL_8:
     v12[2] = __54__PUScrubberTilingLayout_invalidateLayoutWithContext___block_invoke;
     v12[3] = &unk_1E7B7DD00;
     v12[4] = self;
-    [v4 enumerateInvalidatedTilesUsingBlock:v12];
+    [contextCopy enumerateInvalidatedTilesUsingBlock:v12];
   }
 
   v11.receiver = self;
   v11.super_class = PUScrubberTilingLayout;
-  [(PUTilingLayout *)&v11 invalidateLayoutWithContext:v4];
+  [(PUTilingLayout *)&v11 invalidateLayoutWithContext:contextCopy];
 }
 
 void __54__PUScrubberTilingLayout_invalidateLayoutWithContext___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -1413,10 +1413,10 @@ void __54__PUScrubberTilingLayout_invalidateLayoutWithContext___block_invoke(uin
   self->_slitSize.width = Height * self->_slitAspectRatio;
   [(PUScrubberTilingLayout *)self _focusAbscissa];
   v19 = v18;
-  v20 = [(PUScrubberTilingLayout *)self expandedItemIndexPath];
-  if (v20 && [(PUScrubberTilingLayout *)self snapToExpandedItem])
+  expandedItemIndexPath = [(PUScrubberTilingLayout *)self expandedItemIndexPath];
+  if (expandedItemIndexPath && [(PUScrubberTilingLayout *)self snapToExpandedItem])
   {
-    v21 = v20;
+    v21 = expandedItemIndexPath;
   }
 
   else
@@ -1444,9 +1444,9 @@ void __54__PUScrubberTilingLayout_invalidateLayoutWithContext___block_invoke(uin
 
   self->_currentItemTransitionProgress = v25;
   v27 = 0.5;
-  if (v20)
+  if (expandedItemIndexPath)
   {
-    [(PUScrubberTilingLayout *)self _rectForItemAtIndexPath:v20 withLoupeTransform:0 withExpanded:1];
+    [(PUScrubberTilingLayout *)self _rectForItemAtIndexPath:expandedItemIndexPath withLoupeTransform:0 withExpanded:1];
     if (v29 > 0.0)
     {
       v30 = (v19 - v28) / v29;
@@ -1460,28 +1460,28 @@ void __54__PUScrubberTilingLayout_invalidateLayoutWithContext___block_invoke(uin
   }
 
   self->_currentItemFocusProgress = v27;
-  v31 = [(PUScrubberTilingLayout *)self overrideLoupeIndexPath];
+  overrideLoupeIndexPath = [(PUScrubberTilingLayout *)self overrideLoupeIndexPath];
 
-  if (v31)
+  if (overrideLoupeIndexPath)
   {
-    v32 = [(PUScrubberTilingLayout *)self overrideLoupeIndexPath];
+    overrideLoupeIndexPath2 = [(PUScrubberTilingLayout *)self overrideLoupeIndexPath];
     v33 = 0;
     currentItemTransitionProgress = 0.0;
   }
 
   else
   {
-    v32 = self->_currentItemIndexPath;
+    overrideLoupeIndexPath2 = self->_currentItemIndexPath;
     v33 = v26;
     currentItemTransitionProgress = self->_currentItemTransitionProgress;
   }
 
-  objc_storeStrong(&self->_loupeIndexPath, v32);
+  objc_storeStrong(&self->_loupeIndexPath, overrideLoupeIndexPath2);
   objc_storeStrong(&self->_loupeNeighborIndexPath, v33);
   self->_loupeTransitionProgress = currentItemTransitionProgress;
-  if (v32)
+  if (overrideLoupeIndexPath2)
   {
-    [(PUScrubberTilingLayout *)self _transformedSizeForIndexPath:v32];
+    [(PUScrubberTilingLayout *)self _transformedSizeForIndexPath:overrideLoupeIndexPath2];
     v36 = v35;
     if (self->_loupeNeighborIndexPath)
     {
@@ -1507,39 +1507,39 @@ void __54__PUScrubberTilingLayout_invalidateLayoutWithContext___block_invoke(uin
   [(PUScrubberTilingLayout *)self invalidateLayoutWithContext:v3];
 }
 
-- (void)setShouldHighlightSelectedItems:(BOOL)a3
+- (void)setShouldHighlightSelectedItems:(BOOL)items
 {
-  if (self->_shouldHighlightSelectedItems != a3)
+  if (self->_shouldHighlightSelectedItems != items)
   {
-    self->_shouldHighlightSelectedItems = a3;
+    self->_shouldHighlightSelectedItems = items;
     [(PUScrubberTilingLayout *)self invalidateSelectedItems];
   }
 }
 
-- (void)setShowPlayheadForExpandedItem:(BOOL)a3
+- (void)setShowPlayheadForExpandedItem:(BOOL)item
 {
-  self->_showPlayheadForExpandedItem = a3;
+  self->_showPlayheadForExpandedItem = item;
   v4 = objc_alloc_init(PUTilingLayoutInvalidationContext);
   [(PUTilingLayoutInvalidationContext *)v4 invalidateAllTilesWithKind:@"PUTileKindPlayhead"];
   [(PUScrubberTilingLayout *)self invalidateLayoutWithContext:v4];
 }
 
-- (void)setExpandedItemPlayheadProgress:(double)a3
+- (void)setExpandedItemPlayheadProgress:(double)progress
 {
-  if (self->_expandedItemPlayheadProgress != a3)
+  if (self->_expandedItemPlayheadProgress != progress)
   {
-    self->_expandedItemPlayheadProgress = a3;
+    self->_expandedItemPlayheadProgress = progress;
   }
 }
 
-- (void)setExpandedItemWidth:(double)a3
+- (void)setExpandedItemWidth:(double)width
 {
-  if (self->_expandedItemWidth != a3)
+  if (self->_expandedItemWidth != width)
   {
-    self->_expandedItemWidth = a3;
-    v4 = [(PUScrubberTilingLayout *)self expandedItemIndexPath];
+    self->_expandedItemWidth = width;
+    expandedItemIndexPath = [(PUScrubberTilingLayout *)self expandedItemIndexPath];
 
-    if (v4)
+    if (expandedItemIndexPath)
     {
       [(PUSectionedTilingLayout *)self invalidateSectionInfos];
       v5 = objc_alloc_init(PUScrubberTilingLayoutInvalidationContext);
@@ -1549,14 +1549,14 @@ void __54__PUScrubberTilingLayout_invalidateLayoutWithContext___block_invoke(uin
   }
 }
 
-- (void)setSnapToExpandedItem:(BOOL)a3
+- (void)setSnapToExpandedItem:(BOOL)item
 {
-  if (self->_snapToExpandedItem != a3)
+  if (self->_snapToExpandedItem != item)
   {
-    self->_snapToExpandedItem = a3;
-    v4 = [(PUScrubberTilingLayout *)self expandedItemIndexPath];
+    self->_snapToExpandedItem = item;
+    expandedItemIndexPath = [(PUScrubberTilingLayout *)self expandedItemIndexPath];
 
-    if (v4)
+    if (expandedItemIndexPath)
     {
       v5 = objc_alloc_init(PUTilingLayoutInvalidationContext);
       [(PUTilingLayoutInvalidationContext *)v5 invalidateContentBounds];
@@ -1565,49 +1565,49 @@ void __54__PUScrubberTilingLayout_invalidateLayoutWithContext___block_invoke(uin
   }
 }
 
-- (void)setOnlyShowExpandedItem:(BOOL)a3
+- (void)setOnlyShowExpandedItem:(BOOL)item
 {
-  if (self->_onlyShowExpandedItem != a3)
+  if (self->_onlyShowExpandedItem != item)
   {
-    self->_onlyShowExpandedItem = a3;
+    self->_onlyShowExpandedItem = item;
     v5 = objc_alloc_init(PUScrubberTilingLayoutInvalidationContext);
     [(PUTilingLayoutInvalidationContext *)v5 invalidateAllTiles];
     [(PUScrubberTilingLayout *)self invalidateLayoutWithContext:v5];
   }
 }
 
-- (void)setExpandedItemIndexPath:(id)a3
+- (void)setExpandedItemIndexPath:(id)path
 {
-  v5 = a3;
+  pathCopy = path;
   expandedItemIndexPath = self->_expandedItemIndexPath;
-  if (expandedItemIndexPath != v5)
+  if (expandedItemIndexPath != pathCopy)
   {
-    v8 = v5;
-    expandedItemIndexPath = [(NSIndexPath *)expandedItemIndexPath isEqual:v5];
-    v5 = v8;
+    v8 = pathCopy;
+    expandedItemIndexPath = [(NSIndexPath *)expandedItemIndexPath isEqual:pathCopy];
+    pathCopy = v8;
     if ((expandedItemIndexPath & 1) == 0)
     {
-      objc_storeStrong(&self->_expandedItemIndexPath, a3);
+      objc_storeStrong(&self->_expandedItemIndexPath, path);
       [(PUSectionedTilingLayout *)self invalidateSectionInfos];
       v7 = objc_alloc_init(PUScrubberTilingLayoutInvalidationContext);
       [(PUScrubberTilingLayoutInvalidationContext *)v7 invalidateExpandedItem];
       [(PUScrubberTilingLayout *)self invalidateLayoutWithContext:v7];
 
-      v5 = v8;
+      pathCopy = v8;
     }
   }
 
-  MEMORY[0x1EEE66BB8](expandedItemIndexPath, v5);
+  MEMORY[0x1EEE66BB8](expandedItemIndexPath, pathCopy);
 }
 
-- (void)setLoupeAmount:(double)a3
+- (void)setLoupeAmount:(double)amount
 {
-  if (self->_loupeAmount != a3)
+  if (self->_loupeAmount != amount)
   {
-    self->_loupeAmount = a3;
-    v4 = [(PUScrubberTilingLayout *)self expandedItemIndexPath];
+    self->_loupeAmount = amount;
+    expandedItemIndexPath = [(PUScrubberTilingLayout *)self expandedItemIndexPath];
 
-    if (!v4)
+    if (!expandedItemIndexPath)
     {
       v5 = objc_alloc_init(PUScrubberTilingLayoutInvalidationContext);
       [(PUTilingLayoutInvalidationContext *)v5 invalidateAllTilesWithKind:@"PUTileKindItemContent"];
@@ -1616,40 +1616,40 @@ void __54__PUScrubberTilingLayout_invalidateLayoutWithContext___block_invoke(uin
   }
 }
 
-- (void)setOverrideLoupeIndexPath:(id)a3
+- (void)setOverrideLoupeIndexPath:(id)path
 {
-  v5 = a3;
+  pathCopy = path;
   overrideLoupeIndexPath = self->_overrideLoupeIndexPath;
-  if (overrideLoupeIndexPath != v5)
+  if (overrideLoupeIndexPath != pathCopy)
   {
-    v9 = v5;
-    overrideLoupeIndexPath = [overrideLoupeIndexPath isEqual:v5];
-    v5 = v9;
+    v9 = pathCopy;
+    overrideLoupeIndexPath = [overrideLoupeIndexPath isEqual:pathCopy];
+    pathCopy = v9;
     if ((overrideLoupeIndexPath & 1) == 0)
     {
-      objc_storeStrong(&self->_overrideLoupeIndexPath, a3);
+      objc_storeStrong(&self->_overrideLoupeIndexPath, path);
       overrideLoupeIndexPath = [(PUScrubberTilingLayout *)self loupeAmount];
-      v5 = v9;
+      pathCopy = v9;
       if (v7 > 0.0)
       {
         v8 = objc_alloc_init(PUScrubberTilingLayoutInvalidationContext);
         [(PUTilingLayoutInvalidationContext *)v8 invalidateAllTilesWithKind:@"PUTileKindItemContent"];
         [(PUScrubberTilingLayout *)self invalidateLayoutWithContext:v8];
 
-        v5 = v9;
+        pathCopy = v9;
       }
     }
   }
 
-  MEMORY[0x1EEE66BB8](overrideLoupeIndexPath, v5);
+  MEMORY[0x1EEE66BB8](overrideLoupeIndexPath, pathCopy);
 }
 
-- (void)setVisibleRect:(CGRect)a3
+- (void)setVisibleRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   [(PUTilingLayout *)self visibleRect];
   v9 = v8;
   v11 = v10;
@@ -1691,9 +1691,9 @@ LABEL_9:
       return;
     }
 
-    v23 = [(PUScrubberTilingLayout *)self expandedItemIndexPath];
+    expandedItemIndexPath = [(PUScrubberTilingLayout *)self expandedItemIndexPath];
 
-    if (v23)
+    if (expandedItemIndexPath)
     {
       [(PUTilingLayoutInvalidationContext *)v16 invalidateAllTilesWithKind:@"PUTileKindPlayhead"];
       [(PUTilingLayoutInvalidationContext *)v16 invalidateAllTilesWithKind:@"PUTileKindPlaybackTimeIndicator"];
@@ -1716,9 +1716,9 @@ LABEL_9:
   }
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained != obj)
@@ -1751,9 +1751,9 @@ LABEL_9:
     v10 = *(MEMORY[0x1E69DDCE0] + 16);
     *&v2->_contentPadding.top = *MEMORY[0x1E69DDCE0];
     *&v2->_contentPadding.bottom = v10;
-    v11 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     layoutInfosByIndexPathByTileKind = v3->_layoutInfosByIndexPathByTileKind;
-    v3->_layoutInfosByIndexPathByTileKind = v11;
+    v3->_layoutInfosByIndexPathByTileKind = dictionary;
 
     v3->_showPlayheadForExpandedItem = 1;
   }

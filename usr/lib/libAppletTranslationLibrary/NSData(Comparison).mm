@@ -9,20 +9,20 @@
 - (uint64_t)compare:()Comparison
 {
   v4 = a3;
-  v5 = [a1 bytes];
-  v6 = [v4 bytes];
-  v7 = [a1 length];
+  bytes = [self bytes];
+  bytes2 = [v4 bytes];
+  v7 = [self length];
   if (v7 >= [v4 length])
   {
-    v8 = v4;
+    selfCopy = v4;
   }
 
   else
   {
-    v8 = a1;
+    selfCopy = self;
   }
 
-  v9 = memcmp(v5, v6, [v8 length]);
+  v9 = memcmp(bytes, bytes2, [selfCopy length]);
   if (v9)
   {
     if (v9 > 0)
@@ -38,7 +38,7 @@
 
   else
   {
-    v11 = [a1 length];
+    v11 = [self length];
     if (v11 == [v4 length])
     {
       v10 = 0;
@@ -46,7 +46,7 @@
 
     else
     {
-      v12 = [a1 length];
+      v12 = [self length];
       if (v12 < [v4 length])
       {
         v10 = -1;
@@ -64,14 +64,14 @@
 
 - (BOOL)isAlLFF
 {
-  v2 = [a1 bytes];
-  v3 = [a1 length];
+  bytes = [self bytes];
+  v3 = [self length];
   if (!v3)
   {
     return 1;
   }
 
-  if (*v2 != 255)
+  if (*bytes != 255)
   {
     return 0;
   }
@@ -85,8 +85,8 @@
       break;
     }
 
-    v7 = v2[v5++];
-    v8 = v2[v6] == 255;
+    v7 = bytes[v5++];
+    v8 = bytes[v6] == 255;
   }
 
   while (v7 == 255);
@@ -95,14 +95,14 @@
 
 - (BOOL)isAll00
 {
-  v2 = [a1 bytes];
-  v3 = [a1 length];
+  bytes = [self bytes];
+  v3 = [self length];
   if (!v3)
   {
     return 1;
   }
 
-  if (*v2)
+  if (*bytes)
   {
     return 0;
   }
@@ -116,10 +116,10 @@
       break;
     }
 
-    v7 = v2[v5++];
+    v7 = bytes[v5++];
   }
 
-  while (!v2[v6]);
+  while (!bytes[v6]);
   return v6 >= v3;
 }
 

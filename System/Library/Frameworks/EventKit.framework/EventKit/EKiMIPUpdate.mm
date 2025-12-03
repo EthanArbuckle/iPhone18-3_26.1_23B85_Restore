@@ -1,5 +1,5 @@
 @interface EKiMIPUpdate
-+ (BOOL)shouldSendEmailForEvent:(id)a3 withDiff:(id)a4;
++ (BOOL)shouldSendEmailForEvent:(id)event withDiff:(id)diff;
 - (id)attendees;
 - (id)emailBody;
 - (id)emailSubject;
@@ -7,13 +7,13 @@
 
 @implementation EKiMIPUpdate
 
-+ (BOOL)shouldSendEmailForEvent:(id)a3 withDiff:(id)a4
++ (BOOL)shouldSendEmailForEvent:(id)event withDiff:(id)diff
 {
   v30[10] = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  if ([a3 isSelfOrganized])
+  diffCopy = diff;
+  if ([event isSelfOrganized])
   {
-    v6 = [v5 differentKeys];
+    differentKeys = [diffCopy differentKeys];
     v7 = *MEMORY[0x1E6992600];
     v30[0] = *MEMORY[0x1E6992708];
     v30[1] = v7;
@@ -48,10 +48,10 @@
             objc_enumerationMutation(v12);
           }
 
-          if ([v6 containsObject:{*(*(&v25 + 1) + 8 * i), v25}])
+          if ([differentKeys containsObject:{*(*(&v25 + 1) + 8 * i), v25}])
           {
             v20 = 1;
-            v17 = v12;
+            relationshipMultiValueAdds = v12;
             goto LABEL_16;
           }
         }
@@ -66,9 +66,9 @@
       }
     }
 
-    v17 = [v5 relationshipMultiValueAdds];
+    relationshipMultiValueAdds = [diffCopy relationshipMultiValueAdds];
     v18 = *MEMORY[0x1E6992568];
-    v19 = [v17 objectForKeyedSubscript:*MEMORY[0x1E6992568]];
+    v19 = [relationshipMultiValueAdds objectForKeyedSubscript:*MEMORY[0x1E6992568]];
     if (v19)
     {
       v20 = 1;
@@ -76,8 +76,8 @@
 
     else
     {
-      v21 = [v5 relationshipMultiValueRemoves];
-      v22 = [v21 objectForKeyedSubscript:v18];
+      relationshipMultiValueRemoves = [diffCopy relationshipMultiValueRemoves];
+      v22 = [relationshipMultiValueRemoves objectForKeyedSubscript:v18];
       v20 = v22 != 0;
     }
 
@@ -95,10 +95,10 @@ LABEL_16:
 
 - (id)attendees
 {
-  v2 = [(EKiMIPHandler *)self event];
-  v3 = [v2 attendees];
+  event = [(EKiMIPHandler *)self event];
+  attendees = [event attendees];
 
-  return v3;
+  return attendees;
 }
 
 - (id)emailSubject
@@ -106,72 +106,72 @@ LABEL_16:
   v3 = MEMORY[0x1E696AEC0];
   v4 = EKBundle();
   v5 = [v4 localizedStringForKey:@"Event update: %@" value:&stru_1F1B49D68 table:@"iTIP"];
-  v6 = [(EKiMIPHandler *)self event];
-  v7 = [v6 title];
-  v8 = [v3 localizedStringWithFormat:v5, v7];
+  event = [(EKiMIPHandler *)self event];
+  title = [event title];
+  v8 = [v3 localizedStringWithFormat:v5, title];
 
   return v8;
 }
 
 - (id)emailBody
 {
-  v3 = [(EKiMIPHandler *)self event];
-  v4 = [v3 startDate];
-  v43 = [v4 localizedLongDate];
+  event = [(EKiMIPHandler *)self event];
+  startDate = [event startDate];
+  localizedLongDate = [startDate localizedLongDate];
 
-  v5 = [(EKiMIPHandler *)self event];
-  if ([v5 isAllDay])
+  event2 = [(EKiMIPHandler *)self event];
+  if ([event2 isAllDay])
   {
-    v44 = 0;
+    localizedShortTime = 0;
   }
 
   else
   {
-    v6 = [(EKiMIPHandler *)self event];
-    v7 = [v6 startDate];
-    v44 = [v7 localizedShortTime];
+    event3 = [(EKiMIPHandler *)self event];
+    startDate2 = [event3 startDate];
+    localizedShortTime = [startDate2 localizedShortTime];
   }
 
-  v8 = [MEMORY[0x1E6992F50] defaultProvider];
+  defaultProvider = [MEMORY[0x1E6992F50] defaultProvider];
   v9 = MEMORY[0x1E695DFF8];
-  v10 = [v8 myEmailAddress];
-  v11 = [v9 URLForMail:v10];
+  myEmailAddress = [defaultProvider myEmailAddress];
+  v11 = [v9 URLForMail:myEmailAddress];
 
   v42 = v11;
   v12 = [objc_alloc(MEMORY[0x1E69E3D10]) initWithURL:v11];
-  v13 = [v8 myShortDisplayName];
-  [v12 setCn:v13];
+  myShortDisplayName = [defaultProvider myShortDisplayName];
+  [v12 setCn:myShortDisplayName];
 
   v14 = MEMORY[0x1E6992F68];
-  v15 = [(EKiMIPHandler *)self event];
-  v16 = [v15 startDate];
-  v17 = [v14 requiresSingularLocalizationForDate:v16];
+  event4 = [(EKiMIPHandler *)self event];
+  startDate3 = [event4 startDate];
+  v17 = [v14 requiresSingularLocalizationForDate:startDate3];
 
-  v18 = [(EKiMIPHandler *)self event];
-  LODWORD(v16) = [v18 isAllDay];
+  event5 = [(EKiMIPHandler *)self event];
+  LODWORD(startDate3) = [event5 isAllDay];
 
-  if (v16)
+  if (startDate3)
   {
     v19 = MEMORY[0x1E696AEC0];
     v20 = EKBundle();
-    v21 = [v20 localizedStringForKey:@"%@ has updated the event: %@ value:scheduled for %@. To acknowledge this invitation table:{click the link below.\n", &stru_1F1B49D68, @"iTIP"}];
-    v22 = [v12 displayName];
-    v23 = [(EKiMIPHandler *)self event];
-    v24 = [v23 title];
+    displayName2 = [v20 localizedStringForKey:@"%@ has updated the event: %@ value:scheduled for %@. To acknowledge this invitation table:{click the link below.\n", &stru_1F1B49D68, @"iTIP"}];
+    displayName = [v12 displayName];
+    event6 = [(EKiMIPHandler *)self event];
+    title = [event6 title];
     v25 = v19;
-    v26 = v43;
-    v27 = [v25 localizedStringWithFormat:v21, v22, v24, v43];
+    v26 = localizedLongDate;
+    v27 = [v25 localizedStringWithFormat:displayName2, displayName, title, localizedLongDate];
   }
 
   else
   {
-    v29 = [(EKiMIPHandler *)self event];
-    v30 = [v29 isFloating];
+    event7 = [(EKiMIPHandler *)self event];
+    isFloating = [event7 isFloating];
 
     v31 = EKBundle();
     v32 = v31;
-    v28 = v44;
-    if (v30)
+    v28 = localizedShortTime;
+    if (isFloating)
     {
       if (v17)
       {
@@ -186,11 +186,11 @@ LABEL_16:
       v20 = [v31 localizedStringForKey:v33 value:@"%@ has updated the event: %@ table:{scheduled for %@ at %@. To acknowledge this invitation, click the link below.\n", @"iTIP"}];
 
       v36 = MEMORY[0x1E696AEC0];
-      v21 = [v12 displayName];
-      v22 = [(EKiMIPHandler *)self event];
-      v23 = [v22 title];
-      v26 = v43;
-      v27 = [v36 localizedStringWithFormat:v20, v21, v23, v43, v44];
+      displayName2 = [v12 displayName];
+      displayName = [(EKiMIPHandler *)self event];
+      event6 = [displayName title];
+      v26 = localizedLongDate;
+      v27 = [v36 localizedStringWithFormat:v20, displayName2, event6, localizedLongDate, localizedShortTime];
       goto LABEL_14;
     }
 
@@ -199,13 +199,13 @@ LABEL_16:
       v20 = [v31 localizedStringForKey:@"iTIP update timed event singular hour" value:@"%@ has updated the event: %@ table:{scheduled for %@ at %@ (%@). To acknowledge this invitation, click the link below.\n", @"iTIP"}];
 
       v40 = MEMORY[0x1E696AEC0];
-      v21 = [v12 displayName];
-      v22 = [(EKiMIPHandler *)self event];
-      v23 = [v22 title];
-      v34 = [(EKiMIPHandler *)self event];
-      v35 = [v34 timeZone];
-      v26 = v43;
-      v27 = [v40 localizedStringWithFormat:v20, v21, v23, v43, v44, v35];
+      displayName2 = [v12 displayName];
+      displayName = [(EKiMIPHandler *)self event];
+      event6 = [displayName title];
+      event8 = [(EKiMIPHandler *)self event];
+      timeZone = [event8 timeZone];
+      v26 = localizedLongDate;
+      v27 = [v40 localizedStringWithFormat:v20, displayName2, event6, localizedLongDate, localizedShortTime, timeZone];
     }
 
     else
@@ -213,18 +213,18 @@ LABEL_16:
       v20 = [v31 localizedStringForKey:@"iTIP update timed event plural hour" value:@"%@ has updated the event: %@ table:{scheduled for %@ at %@ (%@). To acknowledge this invitation, click the link below.\n", @"iTIP"}];
 
       v41 = MEMORY[0x1E696AEC0];
-      v21 = [v12 displayName];
-      v22 = [(EKiMIPHandler *)self event];
-      v23 = [v22 title];
-      v38 = [(EKiMIPHandler *)self event];
-      v39 = [v38 timeZone];
-      v27 = [v41 localizedStringWithFormat:v20, v21, v23, v43, v44, v39];
+      displayName2 = [v12 displayName];
+      displayName = [(EKiMIPHandler *)self event];
+      event6 = [displayName title];
+      event9 = [(EKiMIPHandler *)self event];
+      timeZone2 = [event9 timeZone];
+      v27 = [v41 localizedStringWithFormat:v20, displayName2, event6, localizedLongDate, localizedShortTime, timeZone2];
 
-      v26 = v43;
+      v26 = localizedLongDate;
     }
   }
 
-  v28 = v44;
+  v28 = localizedShortTime;
 LABEL_14:
 
   return v27;

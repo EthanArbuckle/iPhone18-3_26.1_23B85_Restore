@@ -2,25 +2,25 @@
 + (id)AppUsage;
 + (id)configurationForAppUsage;
 + (id)storeConfigurationForAppUsage;
-+ (id)streamWithName:(id)a3;
++ (id)streamWithName:(id)name;
 + (id)validKeyPaths;
 @end
 
 @implementation _BMScreenTimeLibraryNode
 
-+ (id)streamWithName:(id)a3
++ (id)streamWithName:(id)name
 {
-  if ([a3 isEqualToString:@"AppUsage"])
+  if ([name isEqualToString:@"AppUsage"])
   {
-    v4 = [a1 AppUsage];
+    appUsage = [self AppUsage];
   }
 
   else
   {
-    v4 = 0;
+    appUsage = 0;
   }
 
-  return v4;
+  return appUsage;
 }
 
 + (id)validKeyPaths
@@ -37,8 +37,8 @@
 + (id)configurationForAppUsage
 {
   v18[2] = *MEMORY[0x1E69E9840];
-  v3 = [a1 storeConfigurationForAppUsage];
-  v4 = [a1 syncPolicyForAppUsage];
+  storeConfigurationForAppUsage = [self storeConfigurationForAppUsage];
+  syncPolicyForAppUsage = [self syncPolicyForAppUsage];
   v5 = objc_alloc(MEMORY[0x1E698F330]);
   v6 = [MEMORY[0x1E696AE18] predicateWithFormat:@"$uninstalled == bundleID" argumentArray:0];
   v7 = [v5 initWithIdentifier:@"app-uninstall" predicate:v6];
@@ -53,7 +53,7 @@
   v13 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"1024B613-9E9C-4711-9C96-52E92CC76B00"];
   BYTE2(v17) = 1;
   LOWORD(v17) = 1;
-  v14 = [v12 _libraryStreamConfigurationWithUUID:v13 streamIdentifier:@"ScreenTime.AppUsage" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v17 enableSubscriptionSubstream:0 enableTombstoneSubstream:v11 allowedClients:0 pruningTriggers:v18[0] spaceAttributionOwner:?];
+  v14 = [v12 _libraryStreamConfigurationWithUUID:v13 streamIdentifier:@"ScreenTime.AppUsage" eventClass:objc_opt_class() storeConfig:storeConfigurationForAppUsage syncPolicy:syncPolicyForAppUsage legacyNames:0 internalMetadata:0 enableSubscriptions:v17 enableSubscriptionSubstream:0 enableTombstoneSubstream:v11 allowedClients:0 pruningTriggers:v18[0] spaceAttributionOwner:?];
 
   v15 = *MEMORY[0x1E69E9840];
 
@@ -72,7 +72,7 @@
 + (id)AppUsage
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForAppUsage];
+  configurationForAppUsage = [self configurationForAppUsage];
   v3 = +[BMScreenTimeAppUsage columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -84,7 +84,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"ScreenTime.AppUsage" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"ScreenTime.AppUsage" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"ScreenTime.AppUsage" schema:v9 configuration:configurationForAppUsage];
 
   v11 = *MEMORY[0x1E69E9840];
 

@@ -1,66 +1,66 @@
 @interface SRVisit
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (NSString)label;
-- (SRVisit)initWithBinarySampleRepresentation:(id)a3 metadata:(id)a4 timestamp:(double)a5;
-- (SRVisit)initWithCoder:(id)a3;
-- (SRVisit)initWithDistanceFromHome:(double)a3 arrive:(id)a4 depart:(id)a5 category:(int64_t)a6 uuid:(id)a7;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SRVisit)initWithBinarySampleRepresentation:(id)representation metadata:(id)metadata timestamp:(double)timestamp;
+- (SRVisit)initWithCoder:(id)coder;
+- (SRVisit)initWithDistanceFromHome:(double)home arrive:(id)arrive depart:(id)depart category:(int64_t)category uuid:(id)uuid;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)sr_dictionaryRepresentation;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SRVisit
 
-- (SRVisit)initWithCoder:(id)a3
+- (SRVisit)initWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
-  [a3 decodeDoubleForKey:@"distanceFromHome"];
+  [coder decodeDoubleForKey:@"distanceFromHome"];
   v7 = v6;
-  v8 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"arrivalDateInterval"];
-  v9 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"departureDateInterval"];
-  v10 = [a3 decodeIntegerForKey:@"locationCategory"];
-  v11 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"UUID"];
+  v8 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"arrivalDateInterval"];
+  v9 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"departureDateInterval"];
+  v10 = [coder decodeIntegerForKey:@"locationCategory"];
+  v11 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"UUID"];
 
   return [(SRVisit *)self initWithDistanceFromHome:v8 arrive:v9 depart:v10 category:v11 uuid:v7];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
   [(SRVisit *)self distanceFromHome];
-  [a3 encodeDouble:@"distanceFromHome" forKey:?];
-  [a3 encodeObject:-[SRVisit arrivalDateInterval](self forKey:{"arrivalDateInterval"), @"arrivalDateInterval"}];
-  [a3 encodeObject:-[SRVisit departureDateInterval](self forKey:{"departureDateInterval"), @"departureDateInterval"}];
-  [a3 encodeInteger:-[SRVisit locationCategory](self forKey:{"locationCategory"), @"locationCategory"}];
-  v6 = [(SRVisit *)self identifier];
+  [coder encodeDouble:@"distanceFromHome" forKey:?];
+  [coder encodeObject:-[SRVisit arrivalDateInterval](self forKey:{"arrivalDateInterval"), @"arrivalDateInterval"}];
+  [coder encodeObject:-[SRVisit departureDateInterval](self forKey:{"departureDateInterval"), @"departureDateInterval"}];
+  [coder encodeInteger:-[SRVisit locationCategory](self forKey:{"locationCategory"), @"locationCategory"}];
+  identifier = [(SRVisit *)self identifier];
 
-  [a3 encodeObject:v6 forKey:@"UUID"];
+  [coder encodeObject:identifier forKey:@"UUID"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [SRVisit allocWithZone:a3];
+  v4 = [SRVisit allocWithZone:zone];
   [(SRVisit *)self distanceFromHome];
   v6 = v5;
-  v7 = [(SRVisit *)self arrivalDateInterval];
-  v8 = [(SRVisit *)self departureDateInterval];
-  v9 = [(SRVisit *)self locationCategory];
-  v10 = [(SRVisit *)self identifier];
+  arrivalDateInterval = [(SRVisit *)self arrivalDateInterval];
+  departureDateInterval = [(SRVisit *)self departureDateInterval];
+  locationCategory = [(SRVisit *)self locationCategory];
+  identifier = [(SRVisit *)self identifier];
 
-  return [(SRVisit *)v4 initWithDistanceFromHome:v7 arrive:v8 depart:v9 category:v10 uuid:v6];
+  return [(SRVisit *)v4 initWithDistanceFromHome:arrivalDateInterval arrive:departureDateInterval depart:locationCategory category:identifier uuid:v6];
 }
 
-- (SRVisit)initWithDistanceFromHome:(double)a3 arrive:(id)a4 depart:(id)a5 category:(int64_t)a6 uuid:(id)a7
+- (SRVisit)initWithDistanceFromHome:(double)home arrive:(id)arrive depart:(id)depart category:(int64_t)category uuid:(id)uuid
 {
   v15.receiver = self;
   v15.super_class = SRVisit;
@@ -68,11 +68,11 @@
   v13 = v12;
   if (v12)
   {
-    v12->_distanceFromHome = a3;
-    v12->_arrivalDateInterval = a4;
-    v13->_departureDateInterval = a5;
-    v13->_locationCategory = a6;
-    v13->_identifier = a7;
+    v12->_distanceFromHome = home;
+    v12->_arrivalDateInterval = arrive;
+    v13->_departureDateInterval = depart;
+    v13->_locationCategory = category;
+    v13->_identifier = uuid;
   }
 
   return v13;
@@ -91,36 +91,36 @@
   [v3 setDateStyle:1];
   [v3 setTimeStyle:1];
   v4 = MEMORY[0x1E696AEC0];
-  v5 = [(SRVisit *)self identifier];
-  v6 = [(SRVisit *)self label];
+  identifier = [(SRVisit *)self identifier];
+  label = [(SRVisit *)self label];
   [(SRVisit *)self distanceFromHome];
-  return [v4 stringWithFormat:@"loi %@(%@) distance from home %+.8f arrived %@ departed %@ ", v5, v6, v7, objc_msgSend(v3, "stringFromDateInterval:", -[SRVisit arrivalDateInterval](self, "arrivalDateInterval")), objc_msgSend(v3, "stringFromDateInterval:", -[SRVisit departureDateInterval](self, "departureDateInterval"))];
+  return [v4 stringWithFormat:@"loi %@(%@) distance from home %+.8f arrived %@ departed %@ ", identifier, label, v7, objc_msgSend(v3, "stringFromDateInterval:", -[SRVisit arrivalDateInterval](self, "arrivalDateInterval")), objc_msgSend(v3, "stringFromDateInterval:", -[SRVisit departureDateInterval](self, "departureDateInterval"))];
 }
 
 - (NSString)label
 {
-  v2 = [(SRVisit *)self locationCategory];
-  if ((v2 - 1) > 3)
+  locationCategory = [(SRVisit *)self locationCategory];
+  if ((locationCategory - 1) > 3)
   {
     return @"Unknown";
   }
 
   else
   {
-    return &off_1E83304C8[v2 - 1]->isa;
+    return &off_1E83304C8[locationCategory - 1]->isa;
   }
 }
 
-- (SRVisit)initWithBinarySampleRepresentation:(id)a3 metadata:(id)a4 timestamp:(double)a5
+- (SRVisit)initWithBinarySampleRepresentation:(id)representation metadata:(id)metadata timestamp:(double)timestamp
 {
-  if ([a3 length])
+  if ([representation length])
   {
     v11.receiver = self;
     v11.super_class = SRVisit;
     v7 = [(SRVisit *)&v11 init];
     if (v7)
     {
-      v8 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:a3 error:0];
+      v8 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:representation error:0];
       if (v8)
       {
         v9 = v8;
@@ -166,23 +166,23 @@
   identifier = self->_identifier;
   if (identifier)
   {
-    v8 = [(NSUUID *)identifier UUIDString];
+    uUIDString = [(NSUUID *)identifier UUIDString];
   }
 
   else
   {
-    v8 = &stru_1F48BB5C0;
+    uUIDString = &stru_1F48BB5C0;
   }
 
-  v12[6] = v8;
+  v12[6] = uUIDString;
   result = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:v11 count:7];
   v10 = *MEMORY[0x1E69E9840];
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     LOBYTE(v7) = 1;
     return v7;
@@ -195,26 +195,26 @@
   }
 
   distanceFromHome = self->_distanceFromHome;
-  [a3 distanceFromHome];
+  [equal distanceFromHome];
   if (distanceFromHome != v6)
   {
     goto LABEL_10;
   }
 
-  v7 = -[NSDateInterval isEqualToDateInterval:](self->_arrivalDateInterval, "isEqualToDateInterval:", [a3 arrivalDateInterval]);
+  v7 = -[NSDateInterval isEqualToDateInterval:](self->_arrivalDateInterval, "isEqualToDateInterval:", [equal arrivalDateInterval]);
   if (!v7)
   {
     return v7;
   }
 
-  v7 = -[NSDateInterval isEqualToDateInterval:](self->_departureDateInterval, "isEqualToDateInterval:", [a3 departureDateInterval]);
+  v7 = -[NSDateInterval isEqualToDateInterval:](self->_departureDateInterval, "isEqualToDateInterval:", [equal departureDateInterval]);
   if (!v7)
   {
     return v7;
   }
 
   locationCategory = self->_locationCategory;
-  if (locationCategory != [a3 locationCategory])
+  if (locationCategory != [equal locationCategory])
   {
 LABEL_10:
     LOBYTE(v7) = 0;
@@ -222,9 +222,9 @@ LABEL_10:
   }
 
   identifier = self->_identifier;
-  v10 = [a3 identifier];
+  identifier = [equal identifier];
 
-  LOBYTE(v7) = [(NSUUID *)identifier isEqual:v10];
+  LOBYTE(v7) = [(NSUUID *)identifier isEqual:identifier];
   return v7;
 }
 

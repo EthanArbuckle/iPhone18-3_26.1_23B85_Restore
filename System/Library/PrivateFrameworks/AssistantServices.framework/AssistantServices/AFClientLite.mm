@@ -1,30 +1,30 @@
 @interface AFClientLite
 - (AFClientLite)init;
 - (void)dealloc;
-- (void)handleOneWayCommand:(id)a3 commandHandler:(id)a4 completion:(id)a5;
+- (void)handleOneWayCommand:(id)command commandHandler:(id)handler completion:(id)completion;
 @end
 
 @implementation AFClientLite
 
-- (void)handleOneWayCommand:(id)a3 commandHandler:(id)a4 completion:(id)a5
+- (void)handleOneWayCommand:(id)command commandHandler:(id)handler completion:(id)completion
 {
   v19 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  commandCopy = command;
+  handlerCopy = handler;
+  completionCopy = completion;
   v11 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEBUG))
   {
     v13 = 136315650;
     v14 = "[AFClientLite handleOneWayCommand:commandHandler:completion:]";
     v15 = 2048;
-    v16 = self;
+    selfCopy = self;
     v17 = 2112;
-    v18 = v8;
+    v18 = commandCopy;
     _os_log_debug_impl(&dword_1912FE000, v11, OS_LOG_TYPE_DEBUG, "%s %p %@", &v13, 0x20u);
   }
 
-  [(AFClientLite *)self _handleCommand:v8 afterCurrentRequest:1 isOneWay:1 commandHandler:v9 completion:v10];
+  [(AFClientLite *)self _handleCommand:commandCopy afterCurrentRequest:1 isOneWay:1 commandHandler:handlerCopy completion:completionCopy];
 
   v12 = *MEMORY[0x1E69E9840];
 }
@@ -38,7 +38,7 @@
     *buf = 136315394;
     v7 = "[AFClientLite dealloc]";
     v8 = 2048;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1912FE000, v3, OS_LOG_TYPE_INFO, "%s %p", buf, 0x16u);
   }
 

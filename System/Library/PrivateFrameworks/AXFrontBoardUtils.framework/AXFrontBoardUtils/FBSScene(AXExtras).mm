@@ -8,8 +8,8 @@
 - (BOOL)accessibilitySceneIsCallServiceBanner
 {
   objc_opt_class();
-  v2 = [a1 settings];
-  v3 = [v2 safeValueForKey:@"_legacyOtherSettings"];
+  settings = [self settings];
+  v3 = [settings safeValueForKey:@"_legacyOtherSettings"];
   v4 = __UIAccessibilityCastAsClass();
 
   v5 = [v4 objectForSetting:3001];
@@ -29,9 +29,9 @@
 
 - (BOOL)accessibilityIsSceneOnContinuityDisplay
 {
-  v1 = [a1 settings];
-  v2 = [v1 displayIdentity];
-  v3 = [v2 type] == 8;
+  settings = [self settings];
+  displayIdentity = [settings displayIdentity];
+  v3 = [displayIdentity type] == 8;
 
   return v3;
 }

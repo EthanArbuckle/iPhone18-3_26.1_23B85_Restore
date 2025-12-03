@@ -7,17 +7,17 @@
 - (BOOL)_nsurlsessionproxy_isSafeRequest
 {
   v2 = [(NSURLRequest *)self URL];
-  v3 = [v2 scheme];
-  v4 = [v3 lowercaseString];
+  scheme = [v2 scheme];
+  lowercaseString = [scheme lowercaseString];
 
-  if ([v4 isEqualToString:@"http"])
+  if ([lowercaseString isEqualToString:@"http"])
   {
     v5 = 1;
   }
 
   else
   {
-    v5 = [v4 isEqualToString:@"https"];
+    v5 = [lowercaseString isEqualToString:@"https"];
   }
 
   return v5;

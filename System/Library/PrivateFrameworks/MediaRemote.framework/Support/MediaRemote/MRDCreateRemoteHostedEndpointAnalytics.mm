@@ -4,72 +4,72 @@
 - (MRDTimingEvent)createHostedEndpoint;
 - (MRDTimingEvent)createTransientExternalDevice;
 - (MRDTimingEvent)searchForGroupUID;
-- (void)setConnectToTransientExternalDevice:(id)a3;
-- (void)setCreateHostedEndpoint:(id)a3;
-- (void)setCreateTransientExternalDevice:(id)a3;
-- (void)setSearchForGroupUID:(id)a3;
+- (void)setConnectToTransientExternalDevice:(id)device;
+- (void)setCreateHostedEndpoint:(id)endpoint;
+- (void)setCreateTransientExternalDevice:(id)device;
+- (void)setSearchForGroupUID:(id)d;
 @end
 
 @implementation MRDCreateRemoteHostedEndpointAnalytics
 
 - (MRDTimingEvent)createTransientExternalDevice
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10034ED14();
 
   return v3;
 }
 
-- (void)setCreateTransientExternalDevice:(id)a3
+- (void)setCreateTransientExternalDevice:(id)device
 {
   v4 = *(self + OBJC_IVAR___MRDCreateRemoteHostedEndpointAnalytics____lazy_storage___createTransientExternalDevice);
-  *(self + OBJC_IVAR___MRDCreateRemoteHostedEndpointAnalytics____lazy_storage___createTransientExternalDevice) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___MRDCreateRemoteHostedEndpointAnalytics____lazy_storage___createTransientExternalDevice) = device;
+  deviceCopy = device;
 }
 
 - (MRDTimingEvent)connectToTransientExternalDevice
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10034ED9C();
 
   return v3;
 }
 
-- (void)setConnectToTransientExternalDevice:(id)a3
+- (void)setConnectToTransientExternalDevice:(id)device
 {
   v4 = *(self + OBJC_IVAR___MRDCreateRemoteHostedEndpointAnalytics____lazy_storage___connectToTransientExternalDevice);
-  *(self + OBJC_IVAR___MRDCreateRemoteHostedEndpointAnalytics____lazy_storage___connectToTransientExternalDevice) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___MRDCreateRemoteHostedEndpointAnalytics____lazy_storage___connectToTransientExternalDevice) = device;
+  deviceCopy = device;
 }
 
 - (MRDTimingEvent)createHostedEndpoint
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10034EE24();
 
   return v3;
 }
 
-- (void)setCreateHostedEndpoint:(id)a3
+- (void)setCreateHostedEndpoint:(id)endpoint
 {
   v4 = *(self + OBJC_IVAR___MRDCreateRemoteHostedEndpointAnalytics____lazy_storage___createHostedEndpoint);
-  *(self + OBJC_IVAR___MRDCreateRemoteHostedEndpointAnalytics____lazy_storage___createHostedEndpoint) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___MRDCreateRemoteHostedEndpointAnalytics____lazy_storage___createHostedEndpoint) = endpoint;
+  endpointCopy = endpoint;
 }
 
 - (MRDTimingEvent)searchForGroupUID
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10034EEAC();
 
   return v3;
 }
 
-- (void)setSearchForGroupUID:(id)a3
+- (void)setSearchForGroupUID:(id)d
 {
   v4 = *(self + OBJC_IVAR___MRDCreateRemoteHostedEndpointAnalytics____lazy_storage___searchForGroupUID);
-  *(self + OBJC_IVAR___MRDCreateRemoteHostedEndpointAnalytics____lazy_storage___searchForGroupUID) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___MRDCreateRemoteHostedEndpointAnalytics____lazy_storage___searchForGroupUID) = d;
+  dCopy = d;
 }
 
 - (MRDCreateRemoteHostedEndpointAnalytics)init

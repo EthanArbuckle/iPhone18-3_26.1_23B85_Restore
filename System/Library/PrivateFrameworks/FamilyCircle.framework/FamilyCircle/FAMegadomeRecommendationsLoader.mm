@@ -1,10 +1,10 @@
 @interface FAMegadomeRecommendationsLoader
-+ (id)normalizedPhoneNumbersForPhoneNumbers:(id)a3;
++ (id)normalizedPhoneNumbersForPhoneNumbers:(id)numbers;
 + (id)taggingOptions;
 - (id)familyHandles;
-- (id)megadomePeopleFromScoredEntities:(id)a3 inVisualIdentifierView:(id)a4;
-- (id)megadomeResultsForFamilyTagWithError:(id *)a3;
-- (id)peopleViewWithError:(id *)a3;
+- (id)megadomePeopleFromScoredEntities:(id)entities inVisualIdentifierView:(id)view;
+- (id)megadomeResultsForFamilyTagWithError:(id *)error;
+- (id)peopleViewWithError:(id *)error;
 - (void)familyHandles;
 @end
 
@@ -78,13 +78,13 @@
   return v8;
 }
 
-- (id)peopleViewWithError:(id *)a3
+- (id)peopleViewWithError:(id *)error
 {
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __55__FAMegadomeRecommendationsLoader_peopleViewWithError___block_invoke;
   aBlock[3] = &__block_descriptor_40_e17_v16__0__NSError_8l;
-  aBlock[4] = a3;
+  aBlock[4] = error;
   v3 = _Block_copy(aBlock);
   v15 = 0;
   v16 = &v15;
@@ -104,9 +104,9 @@
 
   v5 = v4;
   _Block_object_dispose(&v15, 8);
-  v6 = [v4 clientService];
+  clientService = [v4 clientService];
   v12 = 0;
-  v7 = [v6 visualIdentifierViewWithError:&v12];
+  v7 = [clientService visualIdentifierViewWithError:&v12];
   v8 = v12;
 
   if (v7)
@@ -140,13 +140,13 @@ void **__55__FAMegadomeRecommendationsLoader_peopleViewWithError___block_invoke(
   return result;
 }
 
-- (id)megadomeResultsForFamilyTagWithError:(id *)a3
+- (id)megadomeResultsForFamilyTagWithError:(id *)error
 {
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __72__FAMegadomeRecommendationsLoader_megadomeResultsForFamilyTagWithError___block_invoke;
   aBlock[3] = &__block_descriptor_40_e17_v16__0__NSError_8l;
-  aBlock[4] = a3;
+  aBlock[4] = error;
   v3 = _Block_copy(aBlock);
   v26 = 0;
   v27 = &v26;
@@ -239,17 +239,17 @@ void **__72__FAMegadomeRecommendationsLoader_megadomeResultsForFamilyTagWithErro
   return result;
 }
 
-- (id)megadomePeopleFromScoredEntities:(id)a3 inVisualIdentifierView:(id)a4
+- (id)megadomePeopleFromScoredEntities:(id)entities inVisualIdentifierView:(id)view
 {
   v26 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  entitiesCopy = entities;
+  viewCopy = view;
   v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  obj = v5;
+  obj = entitiesCopy;
   v8 = [obj countByEnumeratingWithState:&v19 objects:v25 count:16];
   if (v8)
   {
@@ -265,7 +265,7 @@ void **__72__FAMegadomeRecommendationsLoader_megadomeResultsForFamilyTagWithErro
         }
 
         v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%lld", objc_msgSend(*(*(&v19 + 1) + 8 * i), "idValue")];
-        v13 = [v6 personForIdentifier:v12];
+        v13 = [viewCopy personForIdentifier:v12];
         if (v13)
         {
           v14 = [[FAMegadomePerson alloc] initWithVisualIdentifierViewPerson:v13];
@@ -317,8 +317,8 @@ void **__72__FAMegadomeRecommendationsLoader_megadomeResultsForFamilyTagWithErro
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v6 = [v2 members];
-  v7 = [v6 countByEnumeratingWithState:&v22 objects:v27 count:16];
+  members = [v2 members];
+  v7 = [members countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v7)
   {
     v8 = v7;
@@ -329,31 +329,31 @@ void **__72__FAMegadomeRecommendationsLoader_megadomeResultsForFamilyTagWithErro
       {
         if (*v23 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(members);
         }
 
         v11 = *(*(&v22 + 1) + 8 * i);
-        v12 = [v11 appleID];
+        appleID = [v11 appleID];
 
-        if (v12)
+        if (appleID)
         {
-          v13 = [v11 appleID];
-          [v5 addObject:v13];
+          appleID2 = [v11 appleID];
+          [v5 addObject:appleID2];
         }
 
-        v14 = [v11 memberPhoneNumbers];
+        memberPhoneNumbers = [v11 memberPhoneNumbers];
 
-        if (v14)
+        if (memberPhoneNumbers)
         {
-          v15 = [v11 memberPhoneNumbers];
-          v16 = [v15 componentsSeparatedByString:{@", "}];
+          memberPhoneNumbers2 = [v11 memberPhoneNumbers];
+          v16 = [memberPhoneNumbers2 componentsSeparatedByString:{@", "}];
 
           v17 = [FAMegadomeRecommendationsLoader normalizedPhoneNumbersForPhoneNumbers:v16];
           [v5 addObjectsFromArray:v17];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v22 objects:v27 count:16];
+      v8 = [members countByEnumeratingWithState:&v22 objects:v27 count:16];
     }
 
     while (v8);
@@ -365,16 +365,16 @@ void **__72__FAMegadomeRecommendationsLoader_megadomeResultsForFamilyTagWithErro
   return v18;
 }
 
-+ (id)normalizedPhoneNumbersForPhoneNumbers:(id)a3
++ (id)normalizedPhoneNumbersForPhoneNumbers:(id)numbers
 {
   v26 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  numbersCopy = numbers;
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v5 = v3;
+  v5 = numbersCopy;
   v6 = [v5 countByEnumeratingWithState:&v19 objects:v25 count:16];
   if (v6)
   {
@@ -393,10 +393,10 @@ void **__72__FAMegadomeRecommendationsLoader_megadomeResultsForFamilyTagWithErro
 
         v11 = *(*(&v19 + 1) + 8 * i);
         v12 = [MEMORY[0x1E695CF50] phoneNumberWithStringValue:{v11, v18, v19}];
-        v13 = [v12 formattedStringValue];
-        if (v13)
+        formattedStringValue = [v12 formattedStringValue];
+        if (formattedStringValue)
         {
-          [v4 addObject:v13];
+          [v4 addObject:formattedStringValue];
         }
 
         else

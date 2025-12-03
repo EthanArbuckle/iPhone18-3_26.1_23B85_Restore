@@ -2,23 +2,23 @@
 - (NCSpokenNotificationsDetailListController)init;
 - (NCSpokenNotificationsDetailListControllerDelegate)delegate;
 - (id)_specifiersForAnnounceDestinations;
-- (id)_updatesForSpecifiers:(id)a3 withGlobalAnnouncesState:(int64_t)a4 animated:(BOOL)a5;
-- (id)globalAnnounceHeadphonesSetting:(id)a3;
-- (id)globalAnnounceHearingAidsSetting:(id)a3;
-- (id)globalAnnounceSetting:(id)a3;
+- (id)_updatesForSpecifiers:(id)specifiers withGlobalAnnouncesState:(int64_t)state animated:(BOOL)animated;
+- (id)globalAnnounceHeadphonesSetting:(id)setting;
+- (id)globalAnnounceHearingAidsSetting:(id)setting;
+- (id)globalAnnounceSetting:(id)setting;
 - (id)specifiers;
-- (id)spokenRepliesWithoutConfirmation:(id)a3;
+- (id)spokenRepliesWithoutConfirmation:(id)confirmation;
 - (void)_presentEnableSiriWhenLockedPrompt;
 - (void)_presentPasscodeView;
-- (void)_setGlobalAnnounceSetting:(int64_t)a3;
+- (void)_setGlobalAnnounceSetting:(int64_t)setting;
 - (void)didAcceptEnteredPIN;
 - (void)didCancelEnteringPIN;
-- (void)setGlobalAnnounceHeadphonesSetting:(id)a3 specifier:(id)a4;
-- (void)setGlobalAnnounceHearingAidsSetting:(id)a3 specifier:(id)a4;
-- (void)setGlobalAnnounceSetting:(id)a3 specifier:(id)a4;
-- (void)setSpokenRepliesWithoutConfirmation:(id)a3 specifier:(id)a4;
-- (void)settingsGatewayDidUpdateGlobalSettings:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)setGlobalAnnounceHeadphonesSetting:(id)setting specifier:(id)specifier;
+- (void)setGlobalAnnounceHearingAidsSetting:(id)setting specifier:(id)specifier;
+- (void)setGlobalAnnounceSetting:(id)setting specifier:(id)specifier;
+- (void)setSpokenRepliesWithoutConfirmation:(id)confirmation specifier:(id)specifier;
+- (void)settingsGatewayDidUpdateGlobalSettings:(id)settings;
+- (void)viewDidAppear:(BOOL)appear;
 @end
 
 @implementation NCSpokenNotificationsDetailListController
@@ -43,19 +43,19 @@
 
 - (NCSpokenNotificationsDetailListControllerDelegate)delegate
 {
-  v2 = [(NCSpokenNotificationsDetailListController *)self specifier];
-  v3 = [v2 propertyForKey:kNotificationsSettingsDetailControllerDelegate];
+  specifier = [(NCSpokenNotificationsDetailListController *)self specifier];
+  v3 = [specifier propertyForKey:kNotificationsSettingsDetailControllerDelegate];
 
   return v3;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = NCSpokenNotificationsDetailListController;
-  [(NCSpokenNotificationsDetailListController *)&v5 viewDidAppear:a3];
-  v4 = [(NCSpokenNotificationsDetailListController *)self specifier];
-  [BulletinBoardController emitNavigationEventForSpecifier:v4 viewController:self];
+  [(NCSpokenNotificationsDetailListController *)&v5 viewDidAppear:appear];
+  specifier = [(NCSpokenNotificationsDetailListController *)self specifier];
+  [BulletinBoardController emitNavigationEventForSpecifier:specifier viewController:self];
 }
 
 - (id)specifiers
@@ -84,11 +84,11 @@
     [(PSSpecifier *)self->_spokenNotificationsSwitchSpecifier setIdentifier:@"SPOKEN_NOTIFICATIONS_ID"];
     [v7 addObject:self->_spokenNotificationsSwitchSpecifier];
     v15 = +[NCSettingsGatewayController sharedInstance];
-    v16 = [v15 effectiveGlobalAnnounceSetting];
+    effectiveGlobalAnnounceSetting = [v15 effectiveGlobalAnnounceSetting];
 
-    v17 = [(NCSpokenNotificationsDetailListController *)self _updatesForSpecifiers:v7 withGlobalAnnouncesState:v16 animated:0];
-    v18 = [v17 currentSpecifiers];
-    [v7 setArray:v18];
+    v17 = [(NCSpokenNotificationsDetailListController *)self _updatesForSpecifiers:v7 withGlobalAnnouncesState:effectiveGlobalAnnounceSetting animated:0];
+    currentSpecifiers = [v17 currentSpecifiers];
+    [v7 setArray:currentSpecifiers];
 
     v19 = *&self->PSListController_opaque[v3];
     *&self->PSListController_opaque[v3] = v7;
@@ -99,9 +99,9 @@
   return v4;
 }
 
-- (void)setGlobalAnnounceSetting:(id)a3 specifier:(id)a4
+- (void)setGlobalAnnounceSetting:(id)setting specifier:(id)specifier
 {
-  if ([a3 BOOLValue])
+  if ([setting BOOLValue])
   {
     v5 = 2;
   }
@@ -114,22 +114,22 @@
   [(NCSpokenNotificationsDetailListController *)self _setGlobalAnnounceSetting:v5];
 }
 
-- (void)_setGlobalAnnounceSetting:(int64_t)a3
+- (void)_setGlobalAnnounceSetting:(int64_t)setting
 {
   v5 = +[AssistantUtilities assistantEnabled];
-  if (a3 == 2 && (v5 & 1) == 0)
+  if (setting == 2 && (v5 & 1) == 0)
   {
 
     [(NCSpokenNotificationsDetailListController *)self _presentEnableSiriPromptForState:0];
     return;
   }
 
-  if (a3 != 2)
+  if (setting != 2)
   {
     v6 = +[NCSettingsGatewayController sharedInstance];
-    [v6 setEffectiveGlobalAnnounceSetting:a3];
+    [v6 setEffectiveGlobalAnnounceSetting:setting];
 
-    if (a3 != 1 || !_os_feature_enabled_impl())
+    if (setting != 1 || !_os_feature_enabled_impl())
     {
       goto LABEL_16;
     }
@@ -139,18 +139,18 @@
 LABEL_15:
 
 LABEL_16:
-    v14 = [(NCSpokenNotificationsDetailListController *)self _updatesForSpecifiers:*&self->PSListController_opaque[OBJC_IVAR___PSListController__specifiers] withGlobalAnnouncesState:a3 animated:1];
+    v14 = [(NCSpokenNotificationsDetailListController *)self _updatesForSpecifiers:*&self->PSListController_opaque[OBJC_IVAR___PSListController__specifiers] withGlobalAnnouncesState:setting animated:1];
     [(NCSpokenNotificationsDetailListController *)self performSpecifierUpdates:v14];
-    v13 = [(NCSpokenNotificationsDetailListController *)self delegate];
-    [v13 spokenNotificationsDetailListController:self didChangeGlobalSpokenNotificationSetting:a3];
+    delegate = [(NCSpokenNotificationsDetailListController *)self delegate];
+    [delegate spokenNotificationsDetailListController:self didChangeGlobalSpokenNotificationSetting:setting];
 
     return;
   }
 
   v8 = +[AFPreferences sharedPreferences];
-  v9 = [v8 disableAssistantWhilePasscodeLocked];
+  disableAssistantWhilePasscodeLocked = [v8 disableAssistantWhilePasscodeLocked];
 
-  if (!v9)
+  if (!disableAssistantWhilePasscodeLocked)
   {
     v11 = +[NCSettingsGatewayController sharedInstance];
     [v11 setEffectiveGlobalAnnounceSetting:2];
@@ -166,12 +166,12 @@ LABEL_16:
   [(NCSpokenNotificationsDetailListController *)self _presentEnableSiriWhenLockedPrompt];
 }
 
-- (id)globalAnnounceSetting:(id)a3
+- (id)globalAnnounceSetting:(id)setting
 {
   v3 = +[NCSettingsGatewayController sharedInstance];
-  v4 = [v3 effectiveGlobalAnnounceSetting];
+  effectiveGlobalAnnounceSetting = [v3 effectiveGlobalAnnounceSetting];
 
-  if (v4 == &dword_0 + 2)
+  if (effectiveGlobalAnnounceSetting == &dword_0 + 2)
   {
     v5 = &__kCFBooleanTrue;
   }
@@ -218,8 +218,8 @@ LABEL_16:
 - (void)_presentPasscodeView
 {
   v3 = objc_alloc_init(LAPasscodeVerificationServiceOptions);
-  v4 = [(PSSpecifier *)self->_spokenNotificationsSwitchSpecifier name];
-  [v3 setTitle:v4];
+  name = [(PSSpecifier *)self->_spokenNotificationsSwitchSpecifier name];
+  [v3 setTitle:name];
 
   objc_initWeak(&location, self);
   passcodeService = self->_passcodeService;
@@ -233,12 +233,12 @@ LABEL_16:
   objc_destroyWeak(&location);
 }
 
-- (id)globalAnnounceHeadphonesSetting:(id)a3
+- (id)globalAnnounceHeadphonesSetting:(id)setting
 {
   v3 = +[NCSettingsGatewayController sharedInstance];
-  v4 = [v3 effectiveGlobalAnnounceHeadphonesSetting];
+  effectiveGlobalAnnounceHeadphonesSetting = [v3 effectiveGlobalAnnounceHeadphonesSetting];
 
-  if (v4 == &dword_0 + 2)
+  if (effectiveGlobalAnnounceHeadphonesSetting == &dword_0 + 2)
   {
     v5 = &__kCFBooleanTrue;
   }
@@ -251,9 +251,9 @@ LABEL_16:
   return v5;
 }
 
-- (void)setGlobalAnnounceHeadphonesSetting:(id)a3 specifier:(id)a4
+- (void)setGlobalAnnounceHeadphonesSetting:(id)setting specifier:(id)specifier
 {
-  if ([a3 BOOLValue])
+  if ([setting BOOLValue])
   {
     v4 = 2;
   }
@@ -267,15 +267,15 @@ LABEL_16:
   [v5 setEffectiveGlobalAnnounceHeadphonesSetting:v4];
 }
 
-- (id)globalAnnounceHearingAidsSetting:(id)a3
+- (id)globalAnnounceHearingAidsSetting:(id)setting
 {
   v3 = +[AFPreferences sharedPreferences];
-  v4 = [v3 announceNotificationsOnHearingAidsEnabled];
+  announceNotificationsOnHearingAidsEnabled = [v3 announceNotificationsOnHearingAidsEnabled];
 
   v5 = +[AFPreferences sharedPreferences];
-  v6 = [v5 announceNotificationsOnHearingAidsSupported];
+  announceNotificationsOnHearingAidsSupported = [v5 announceNotificationsOnHearingAidsSupported];
 
-  if ((v4 & v6) != 0)
+  if ((announceNotificationsOnHearingAidsEnabled & announceNotificationsOnHearingAidsSupported) != 0)
   {
     v7 = &__kCFBooleanTrue;
   }
@@ -288,13 +288,13 @@ LABEL_16:
   return v7;
 }
 
-- (void)setGlobalAnnounceHearingAidsSetting:(id)a3 specifier:(id)a4
+- (void)setGlobalAnnounceHearingAidsSetting:(id)setting specifier:(id)specifier
 {
-  v4 = a3;
+  settingCopy = setting;
   v6 = +[AFPreferences sharedPreferences];
-  v5 = [v4 BOOLValue];
+  bOOLValue = [settingCopy BOOLValue];
 
-  [v6 setAnnounceNotificationsOnHearingAidsEnabled:v5];
+  [v6 setAnnounceNotificationsOnHearingAidsEnabled:bOOLValue];
 }
 
 - (void)didAcceptEnteredPIN
@@ -314,16 +314,16 @@ LABEL_16:
   [v2 setOn:0 animated:1];
 }
 
-- (void)setSpokenRepliesWithoutConfirmation:(id)a3 specifier:(id)a4
+- (void)setSpokenRepliesWithoutConfirmation:(id)confirmation specifier:(id)specifier
 {
-  v4 = a3;
+  confirmationCopy = confirmation;
   v6 = +[AFPreferences sharedPreferences];
-  v5 = [v4 BOOLValue];
+  bOOLValue = [confirmationCopy BOOLValue];
 
-  [v6 setSpokenNotificationSkipTriggerlessReplyConfirmation:v5];
+  [v6 setSpokenNotificationSkipTriggerlessReplyConfirmation:bOOLValue];
 }
 
-- (id)spokenRepliesWithoutConfirmation:(id)a3
+- (id)spokenRepliesWithoutConfirmation:(id)confirmation
 {
   v3 = +[AFPreferences sharedPreferences];
   if ([v3 spokenNotificationSkipTriggerlessReplyConfirmation])
@@ -341,22 +341,22 @@ LABEL_16:
   return v4;
 }
 
-- (id)_updatesForSpecifiers:(id)a3 withGlobalAnnouncesState:(int64_t)a4 animated:(BOOL)a5
+- (id)_updatesForSpecifiers:(id)specifiers withGlobalAnnouncesState:(int64_t)state animated:(BOOL)animated
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = [PSSpecifierUpdates updatesWithSpecifiers:v8];
+  animatedCopy = animated;
+  specifiersCopy = specifiers;
+  v9 = [PSSpecifierUpdates updatesWithSpecifiers:specifiersCopy];
   v10 = v9;
-  if (a4 == 2)
+  if (state == 2)
   {
-    v48 = v5;
+    v48 = animatedCopy;
     v47 = v9;
     v11 = objc_alloc_init(NSMutableArray);
-    v49 = self;
-    v12 = [(NCSpokenNotificationsDetailListController *)self _specifiersForAnnounceDestinations];
-    if ([v12 count])
+    selfCopy = self;
+    _specifiersForAnnounceDestinations = [(NCSpokenNotificationsDetailListController *)self _specifiersForAnnounceDestinations];
+    if ([_specifiersForAnnounceDestinations count])
     {
-      [v11 addObjectsFromArray:v12];
+      [v11 addObjectsFromArray:_specifiersForAnnounceDestinations];
     }
 
     v13 = [PSSpecifier groupSpecifierWithID:@"SPOKEN_REPLIES_WITHOUT_CONFIRMATION_GROUP_ID"];
@@ -369,17 +369,17 @@ LABEL_16:
     [v11 bs_safeAddObject:v13];
     v17 = [NSBundle bundleWithIdentifier:@"com.apple.NotificationsSettings"];
     v18 = [v17 localizedStringForKey:@"SPOKEN_REPLIES_WITHOUT_CONFIRMATION" value:&stru_4E3F0 table:@"NotificationsSettings"];
-    v19 = [PSSpecifier preferenceSpecifierNamed:v18 target:v49 set:"setSpokenRepliesWithoutConfirmation:specifier:" get:"spokenRepliesWithoutConfirmation:" detail:0 cell:6 edit:0];
+    v19 = [PSSpecifier preferenceSpecifierNamed:v18 target:selfCopy set:"setSpokenRepliesWithoutConfirmation:specifier:" get:"spokenRepliesWithoutConfirmation:" detail:0 cell:6 edit:0];
 
     [v19 setIdentifier:@"SPOKEN_REPLIES_WITHOUT_CONFIRMATION_ID"];
     [v11 addObject:v19];
-    v20 = [v8 specifierForID:@"SPOKEN_NOTIFICATIONS_APP_LIST_GROUP_ID"];
-    v5 = v5;
+    v20 = [specifiersCopy specifierForID:@"SPOKEN_NOTIFICATIONS_APP_LIST_GROUP_ID"];
+    animatedCopy = animatedCopy;
     if (!v20)
     {
       v42 = v19;
       v43 = v16;
-      v44 = v8;
+      v44 = specifiersCopy;
       v21 = [NSBundle bundleWithIdentifier:@"com.apple.NotificationsSettings"];
       v22 = [v21 localizedStringForKey:@"SPOKEN_NOTIFICATIONS_APP_LIST_GROUP" value:&stru_4E3F0 table:@"NotificationsSettings"];
       v23 = [PSSpecifier groupSpecifierWithID:@"SPOKEN_NOTIFICATIONS_APP_LIST_GROUP_ID" name:v22];
@@ -392,10 +392,10 @@ LABEL_16:
       v46 = v23;
       [v11 addObject:v23];
       v27 = +[NCSettingsGatewayController sharedInstance];
-      v28 = [v27 activeSectionInfo];
+      activeSectionInfo = [v27 activeSectionInfo];
 
-      v41 = v28;
-      v40 = [v28 bs_filter:&stru_4D908];
+      v41 = activeSectionInfo;
+      v40 = [activeSectionInfo bs_filter:&stru_4D908];
       v29 = [v40 sortedArrayUsingComparator:&stru_4D928];
       v50 = 0u;
       v51 = 0u;
@@ -419,7 +419,7 @@ LABEL_16:
             v35 = BBSettingsDisplayNameForBBSection(v34);
             v36 = [NCSpokenNotificationsAppDetailController spokenNotificationsSpecifierNamed:v35 sectionInfo:v34 showIcon:1 class:objc_opt_class()];
 
-            [v36 setProperty:v49 forKey:kNotificationsSettingsDetailControllerDelegate];
+            [v36 setProperty:selfCopy forKey:kNotificationsSettingsDetailControllerDelegate];
             [v26 bs_safeAddObject:v36];
           }
 
@@ -429,8 +429,8 @@ LABEL_16:
         while (v31);
       }
 
-      v5 = v48;
-      v8 = v44;
+      animatedCopy = v48;
+      specifiersCopy = v44;
       v11 = v26;
       v19 = v42;
       v16 = v43;
@@ -438,20 +438,20 @@ LABEL_16:
     }
 
     v10 = v47;
-    [v47 insertContiguousSpecifiers:v11 atIndex:{objc_msgSend(v8, "count")}];
+    [v47 insertContiguousSpecifiers:v11 atIndex:{objc_msgSend(specifiersCopy, "count")}];
   }
 
   else
   {
-    v37 = [v8 indexOfSpecifierWithID:@"SPOKEN_NOTIFICATIONS_ANNOUNCE_DESTINATIONS_GROUP_ID"];
-    if (v37 != 0x7FFFFFFFFFFFFFFFLL || (v37 = [v8 indexOfSpecifierWithID:@"SPOKEN_REPLIES_WITHOUT_CONFIRMATION_GROUP_ID"], v37 != 0x7FFFFFFFFFFFFFFFLL))
+    v37 = [specifiersCopy indexOfSpecifierWithID:@"SPOKEN_NOTIFICATIONS_ANNOUNCE_DESTINATIONS_GROUP_ID"];
+    if (v37 != 0x7FFFFFFFFFFFFFFFLL || (v37 = [specifiersCopy indexOfSpecifierWithID:@"SPOKEN_REPLIES_WITHOUT_CONFIRMATION_GROUP_ID"], v37 != 0x7FFFFFFFFFFFFFFFLL))
     {
-      [v10 removeSpecifiersInRange:{v37, objc_msgSend(v8, "count") - v37}];
+      [v10 removeSpecifiersInRange:{v37, objc_msgSend(specifiersCopy, "count") - v37}];
     }
   }
 
-  v38 = [v10 context];
-  [v38 setAnimated:v5];
+  context = [v10 context];
+  [context setAnimated:animatedCopy];
 
   return v10;
 }
@@ -460,10 +460,10 @@ LABEL_16:
 {
   v3 = objc_alloc_init(NSMutableArray);
   v4 = +[NCSettingsGatewayController sharedInstance];
-  v5 = [v4 effectiveGlobalAnnounceHeadphonesSetting];
+  effectiveGlobalAnnounceHeadphonesSetting = [v4 effectiveGlobalAnnounceHeadphonesSetting];
 
   v6 = +[NCSettingsGatewayController sharedInstance];
-  v7 = [v6 effectiveGlobalAnnounceCarPlaySetting];
+  effectiveGlobalAnnounceCarPlaySetting = [v6 effectiveGlobalAnnounceCarPlaySetting];
 
   v8 = +[AFPreferences sharedPreferences];
   if ([v8 announceNotificationsOnHearingAidsSupported])
@@ -476,14 +476,14 @@ LABEL_16:
     v9 = 0;
   }
 
-  if (v5 != -1 || v7 + 1 != 0 || v9 != 0)
+  if (effectiveGlobalAnnounceHeadphonesSetting != -1 || effectiveGlobalAnnounceCarPlaySetting + 1 != 0 || v9 != 0)
   {
     v12 = [NSBundle bundleWithIdentifier:@"com.apple.NotificationsSettings"];
     v13 = [v12 localizedStringForKey:@"SPOKEN_NOTIFICATIONS_ANNOUNCE_DESTINATIONS_GROUP" value:&stru_4E3F0 table:@"NotificationsSettings"];
     v14 = [PSSpecifier groupSpecifierWithID:@"SPOKEN_NOTIFICATIONS_ANNOUNCE_DESTINATIONS_GROUP_ID" name:v13];
 
     [v3 addObject:v14];
-    if (v5 != -1)
+    if (effectiveGlobalAnnounceHeadphonesSetting != -1)
     {
       v15 = [NSBundle bundleWithIdentifier:@"com.apple.NotificationsSettings"];
       v16 = [v15 localizedStringForKey:@"SPOKEN_NOTIFICATIONS_ANNOUNCE_DESTINATION_HEADPHONES" value:&stru_4E3F0 table:@"NotificationsSettings"];
@@ -496,7 +496,7 @@ LABEL_16:
       [v14 setProperty:v19 forKey:PSFooterTextGroupKey];
     }
 
-    if (v7 != -1)
+    if (effectiveGlobalAnnounceCarPlaySetting != -1)
     {
       v20 = [NSBundle bundleWithIdentifier:@"com.apple.NotificationsSettings"];
       v21 = [v20 localizedStringForKey:@"SPOKEN_NOTIFICATIONS_ANNOUNCE_DESTINATION_CARPLAY" value:&stru_4E3F0 table:@"NotificationsSettings"];
@@ -521,7 +521,7 @@ LABEL_16:
   return v3;
 }
 
-- (void)settingsGatewayDidUpdateGlobalSettings:(id)a3
+- (void)settingsGatewayDidUpdateGlobalSettings:(id)settings
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;

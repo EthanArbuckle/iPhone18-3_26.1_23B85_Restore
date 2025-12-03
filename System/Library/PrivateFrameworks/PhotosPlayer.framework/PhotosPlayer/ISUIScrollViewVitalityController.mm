@@ -3,11 +3,11 @@
 - (ISUIScrollViewVitalityController)init;
 - (UIScrollView)_scrollView;
 - (id)visibilityOffsetHelper;
-- (void)_reduceMotionDidChange:(id)a3;
-- (void)scrollViewDidEndDecelerating:(id)a3;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
+- (void)_reduceMotionDidChange:(id)change;
+- (void)scrollViewDidEndDecelerating:(id)decelerating;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
 @end
 
 @implementation ISUIScrollViewVitalityController
@@ -19,7 +19,7 @@
   return WeakRetained;
 }
 
-- (void)scrollViewDidEndDecelerating:(id)a3
+- (void)scrollViewDidEndDecelerating:(id)decelerating
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
@@ -37,15 +37,15 @@ uint64_t __65__ISUIScrollViewVitalityController_scrollViewDidEndDecelerating___b
   return [v2 setDecelerating:0];
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = v6;
+  decelerateCopy = decelerate;
+  draggingCopy = dragging;
+  v7 = draggingCopy;
   v8 = 0.0;
-  if (v4)
+  if (decelerateCopy)
   {
-    if ([v6 isPagingEnabled])
+    if ([draggingCopy isPagingEnabled])
     {
       v9 = [v7 valueForKey:@"_pagingFriction"];
       [v9 doubleValue];
@@ -66,7 +66,7 @@ uint64_t __65__ISUIScrollViewVitalityController_scrollViewDidEndDecelerating___b
   v12[3] = &unk_279A2A090;
   v12[4] = self;
   *&v12[5] = v8;
-  v13 = v4;
+  v13 = decelerateCopy;
   [(ISScrollViewVitalityController *)self performChanges:v12];
 }
 
@@ -90,14 +90,14 @@ uint64_t __76__ISUIScrollViewVitalityController_scrollViewDidEndDragging_willDec
   }
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __95__ISUIScrollViewVitalityController_scrollViewWillEndDragging_withVelocity_targetContentOffset___block_invoke;
   v5[3] = &unk_279A2A410;
   v5[4] = self;
-  v5[5] = a5;
+  v5[5] = offset;
   [(ISScrollViewVitalityController *)self performChanges:v5];
 }
 
@@ -112,7 +112,7 @@ uint64_t __95__ISUIScrollViewVitalityController_scrollViewWillEndDragging_withVe
   return [v2 setTargetContentOffset:{v4, v5}];
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
@@ -132,7 +132,7 @@ uint64_t __64__ISUIScrollViewVitalityController_scrollViewWillBeginDragging___bl
   return [v2 setHasTargetContentOffset:0];
 }
 
-- (void)_reduceMotionDidChange:(id)a3
+- (void)_reduceMotionDidChange:(id)change
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
@@ -146,13 +146,13 @@ uint64_t __64__ISUIScrollViewVitalityController_scrollViewWillBeginDragging___bl
 {
   v4.receiver = self;
   v4.super_class = ISUIScrollViewVitalityController;
-  v2 = [(ISScrollViewVitalityController *)&v4 canPerformVitality];
-  if (v2)
+  canPerformVitality = [(ISScrollViewVitalityController *)&v4 canPerformVitality];
+  if (canPerformVitality)
   {
-    LOBYTE(v2) = !UIAccessibilityIsReduceMotionEnabled();
+    LOBYTE(canPerformVitality) = !UIAccessibilityIsReduceMotionEnabled();
   }
 
-  return v2;
+  return canPerformVitality;
 }
 
 - (id)visibilityOffsetHelper
@@ -177,8 +177,8 @@ uint64_t __64__ISUIScrollViewVitalityController_scrollViewWillBeginDragging___bl
   v2 = [(ISScrollViewVitalityController *)&v5 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 addObserver:v2 selector:sel__reduceMotionDidChange_ name:*MEMORY[0x277D764C0] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__reduceMotionDidChange_ name:*MEMORY[0x277D764C0] object:0];
   }
 
   return v2;

@@ -1,21 +1,21 @@
 @interface MSBatteryPowerMonitor
 + (id)defaultMonitor;
-- (BOOL)_updateBatteryConnectedStateWithBatteryEntry:(unsigned int)a3;
+- (BOOL)_updateBatteryConnectedStateWithBatteryEntry:(unsigned int)entry;
 - (MSBatteryPowerMonitor)init;
 - (void)dealloc;
-- (void)updateBatteryLevelWithBatteryEntry:(unsigned int)a3;
+- (void)updateBatteryLevelWithBatteryEntry:(unsigned int)entry;
 @end
 
 @implementation MSBatteryPowerMonitor
 
-- (BOOL)_updateBatteryConnectedStateWithBatteryEntry:(unsigned int)a3
+- (BOOL)_updateBatteryConnectedStateWithBatteryEntry:(unsigned int)entry
 {
-  CFProperty = IORegistryEntryCreateCFProperty(a3, @"ExternalConnected", *MEMORY[0x277CBECE8], 0);
+  CFProperty = IORegistryEntryCreateCFProperty(entry, @"ExternalConnected", *MEMORY[0x277CBECE8], 0);
   if (CFProperty)
   {
     v5 = CFProperty;
-    v6 = [CFProperty BOOLValue];
-    v7 = v6 ^ [(MSBatteryPowerMonitor *)self isExternalPowerConnected];
+    bOOLValue = [CFProperty BOOLValue];
+    v7 = bOOLValue ^ [(MSBatteryPowerMonitor *)self isExternalPowerConnected];
     if (v7 != 1)
     {
 LABEL_11:
@@ -24,7 +24,7 @@ LABEL_11:
     }
 
     v8 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO);
-    if (v6)
+    if (bOOLValue)
     {
       if (v8)
       {
@@ -46,7 +46,7 @@ LABEL_9:
       goto LABEL_9;
     }
 
-    [(MSBatteryPowerMonitor *)self setExternalPowerConnected:v6, v13];
+    [(MSBatteryPowerMonitor *)self setExternalPowerConnected:bOOLValue, v13];
     goto LABEL_11;
   }
 
@@ -54,12 +54,12 @@ LABEL_9:
   return v7;
 }
 
-- (void)updateBatteryLevelWithBatteryEntry:(unsigned int)a3
+- (void)updateBatteryLevelWithBatteryEntry:(unsigned int)entry
 {
   v18 = *MEMORY[0x277D85DE8];
   v5 = *MEMORY[0x277CBECE8];
-  CFProperty = IORegistryEntryCreateCFProperty(a3, @"MaxCapacity", *MEMORY[0x277CBECE8], 0);
-  v7 = IORegistryEntryCreateCFProperty(a3, @"CurrentCapacity", v5, 0);
+  CFProperty = IORegistryEntryCreateCFProperty(entry, @"MaxCapacity", *MEMORY[0x277CBECE8], 0);
+  v7 = IORegistryEntryCreateCFProperty(entry, @"CurrentCapacity", v5, 0);
   v8 = v7;
   v9 = -1.0;
   if (CFProperty)

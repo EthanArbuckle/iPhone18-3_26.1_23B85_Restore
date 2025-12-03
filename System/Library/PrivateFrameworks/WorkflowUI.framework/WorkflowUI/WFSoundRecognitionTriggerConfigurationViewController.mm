@@ -1,71 +1,71 @@
 @interface WFSoundRecognitionTriggerConfigurationViewController
 - (BOOL)shouldEnableNextButton;
-- (WFSoundRecognitionTriggerConfigurationViewController)initWithTrigger:(id)a3 mode:(unint64_t)a4;
+- (WFSoundRecognitionTriggerConfigurationViewController)initWithTrigger:(id)trigger mode:(unint64_t)mode;
 - (id)customSections;
-- (id)footerLinkViewForTableView:(id)a3;
-- (id)infoForSection:(int64_t)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4;
+- (id)footerLinkViewForTableView:(id)view;
+- (id)infoForSection:(int64_t)section;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section;
 - (id)tableViewCellClasses;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)footerLinkView:(id)a3 didTapURL:(id)a4;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)footerLinkView:(id)view didTapURL:(id)l;
 - (void)handleDidBecomeActive;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)triggerTableViewController:(id)a3 didFinishWithAnySelected:(BOOL)a4 orSelectedOptions:(id)a5;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)triggerTableViewController:(id)controller didFinishWithAnySelected:(BOOL)selected orSelectedOptions:(id)options;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation WFSoundRecognitionTriggerConfigurationViewController
 
-- (void)footerLinkView:(id)a3 didTapURL:(id)a4
+- (void)footerLinkView:(id)view didTapURL:(id)l
 {
   v4 = MEMORY[0x277CFC248];
-  v5 = a4;
-  v6 = [v4 sharedContext];
-  [v6 openURL:v5];
+  lCopy = l;
+  sharedContext = [v4 sharedContext];
+  [sharedContext openURL:lCopy];
 }
 
-- (void)triggerTableViewController:(id)a3 didFinishWithAnySelected:(BOOL)a4 orSelectedOptions:(id)a5
+- (void)triggerTableViewController:(id)controller didFinishWithAnySelected:(BOOL)selected orSelectedOptions:(id)options
 {
   v7 = MEMORY[0x277CBEB98];
-  v8 = a3;
-  v9 = [a5 if_map:&__block_literal_global_2680];
+  controllerCopy = controller;
+  v9 = [options if_map:&__block_literal_global_2680];
   v10 = [v7 setWithArray:v9];
-  v11 = [(WFTriggerConfigurationViewController *)self trigger];
-  [v11 setSoundDetectionTypes:v10];
+  trigger = [(WFTriggerConfigurationViewController *)self trigger];
+  [trigger setSoundDetectionTypes:v10];
 
-  [v8 dismissViewControllerAnimated:1 completion:0];
-  v12 = [(WFTriggerConfigurationViewController *)self tableView];
-  [v12 reloadData];
+  [controllerCopy dismissViewControllerAnimated:1 completion:0];
+  tableView = [(WFTriggerConfigurationViewController *)self tableView];
+  [tableView reloadData];
 
   [(WFTriggerConfigurationViewController *)self updateNextButtonEnabledState];
 }
 
 - (BOOL)shouldEnableNextButton
 {
-  v2 = [(WFTriggerConfigurationViewController *)self trigger];
-  if ([v2 hasValidConfiguration])
+  trigger = [(WFTriggerConfigurationViewController *)self trigger];
+  if ([trigger hasValidConfiguration])
   {
-    v3 = [MEMORY[0x277D7C088] soundDetectionEnabled];
+    soundDetectionEnabled = [MEMORY[0x277D7C088] soundDetectionEnabled];
   }
 
   else
   {
-    v3 = 0;
+    soundDetectionEnabled = 0;
   }
 
-  return v3;
+  return soundDetectionEnabled;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  [a3 deselectRowAtIndexPath:v6 animated:1];
-  v7 = -[WFSoundRecognitionTriggerConfigurationViewController infoForSection:](self, "infoForSection:", [v6 section]);
+  pathCopy = path;
+  [view deselectRowAtIndexPath:pathCopy animated:1];
+  v7 = -[WFSoundRecognitionTriggerConfigurationViewController infoForSection:](self, "infoForSection:", [pathCopy section]);
   v8 = [v7 objectForKeyedSubscript:@"identifier"];
   v9 = [v8 isEqual:@"chooseSound"];
 
@@ -96,9 +96,9 @@
     [(WFSoundRecognitionTriggerConfigurationViewController *)self presentViewController:v14 animated:1 completion:0];
   }
 
-  [(WFTriggerConfigurationViewController *)self didSelectRowAtIndexPath:v6 withSectionInfo:v7];
-  v15 = [(WFTriggerConfigurationViewController *)self tableView];
-  [v15 reloadData];
+  [(WFTriggerConfigurationViewController *)self didSelectRowAtIndexPath:pathCopy withSectionInfo:v7];
+  tableView = [(WFTriggerConfigurationViewController *)self tableView];
+  [tableView reloadData];
 }
 
 WFSelectableListOption *__90__WFSoundRecognitionTriggerConfigurationViewController_tableView_didSelectRowAtIndexPath___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -116,10 +116,10 @@ WFSelectableListOption *__90__WFSoundRecognitionTriggerConfigurationViewControll
   return v7;
 }
 
-- (id)footerLinkViewForTableView:(id)a3
+- (id)footerLinkViewForTableView:(id)view
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  viewCopy = view;
   if ([MEMORY[0x277D7C088] soundDetectionEnabled])
   {
     v5 = 0;
@@ -129,7 +129,7 @@ WFSelectableListOption *__90__WFSoundRecognitionTriggerConfigurationViewControll
   {
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
-    v8 = [v4 dequeueReusableHeaderFooterViewWithIdentifier:v7];
+    v8 = [viewCopy dequeueReusableHeaderFooterViewWithIdentifier:v7];
 
     v9 = [MEMORY[0x277CBEBC0] URLWithString:@"prefs:root=ACCESSIBILITY&path=SOUND_RECOGNITION_TITLE"];
     if (v9)
@@ -160,16 +160,16 @@ WFSelectableListOption *__90__WFSoundRecognitionTriggerConfigurationViewControll
   return v5;
 }
 
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = [(WFSoundRecognitionTriggerConfigurationViewController *)self infoForSection:a4];
+  viewCopy = view;
+  v7 = [(WFSoundRecognitionTriggerConfigurationViewController *)self infoForSection:section];
   v8 = [v7 objectForKeyedSubscript:@"identifier"];
   v9 = [v8 isEqual:@"chooseSound"];
 
   if (v9)
   {
-    v10 = [(WFSoundRecognitionTriggerConfigurationViewController *)self footerLinkViewForTableView:v6];
+    v10 = [(WFSoundRecognitionTriggerConfigurationViewController *)self footerLinkViewForTableView:viewCopy];
   }
 
   else
@@ -180,21 +180,21 @@ WFSelectableListOption *__90__WFSoundRecognitionTriggerConfigurationViewControll
   return v10;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v4 = [(WFSoundRecognitionTriggerConfigurationViewController *)self infoForSection:a4];
+  v4 = [(WFSoundRecognitionTriggerConfigurationViewController *)self infoForSection:section];
   v5 = [v4 objectForKeyedSubscript:@"sectionTitle"];
 
   return v5;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = -[WFSoundRecognitionTriggerConfigurationViewController infoForSection:](self, "infoForSection:", [v7 section]);
+  viewCopy = view;
+  pathCopy = path;
+  v8 = -[WFSoundRecognitionTriggerConfigurationViewController infoForSection:](self, "infoForSection:", [pathCopy section]);
   v9 = [v8 objectForKeyedSubscript:@"cellIdentifier"];
-  v10 = [v6 dequeueReusableCellWithIdentifier:v9 forIndexPath:v7];
+  v10 = [viewCopy dequeueReusableCellWithIdentifier:v9 forIndexPath:pathCopy];
   [v10 setAccessoryType:0];
   v11 = [v8 objectForKeyedSubscript:@"identifier"];
   v12 = [v11 isEqual:@"triggerDescription"];
@@ -215,37 +215,37 @@ WFSelectableListOption *__90__WFSoundRecognitionTriggerConfigurationViewControll
     {
       v16 = v10;
       v17 = WFLocalizedString(@"Sound");
-      v18 = [v16 textLabel];
-      [v18 setText:v17];
+      textLabel = [v16 textLabel];
+      [textLabel setText:v17];
 
-      v19 = [(WFTriggerConfigurationViewController *)self trigger];
-      v20 = [v19 soundDetectionTypes];
-      v21 = [v20 count];
+      trigger = [(WFTriggerConfigurationViewController *)self trigger];
+      soundDetectionTypes = [trigger soundDetectionTypes];
+      v21 = [soundDetectionTypes count];
 
       if (v21)
       {
-        v22 = [(WFTriggerConfigurationViewController *)self trigger];
-        v23 = [v22 soundDetectionTypes];
-        v24 = [v23 count];
+        trigger2 = [(WFTriggerConfigurationViewController *)self trigger];
+        soundDetectionTypes2 = [trigger2 soundDetectionTypes];
+        v24 = [soundDetectionTypes2 count];
 
         if (v24 == 1)
         {
           v25 = MEMORY[0x277D7C088];
-          v41 = [(WFTriggerConfigurationViewController *)self trigger];
-          v26 = [v41 soundDetectionTypes];
-          v27 = [v26 anyObject];
-          v28 = [v25 localizedNameForSoundDetectionType:v27];
+          trigger3 = [(WFTriggerConfigurationViewController *)self trigger];
+          soundDetectionTypes3 = [trigger3 soundDetectionTypes];
+          anyObject = [soundDetectionTypes3 anyObject];
+          v28 = [v25 localizedNameForSoundDetectionType:anyObject];
 
-          v29 = v41;
+          v29 = trigger3;
         }
 
         else
         {
           v42 = MEMORY[0x277CCACA8];
           v40 = WFLocalizedPluralString(@"Any of %d Sounds");
-          v30 = [(WFTriggerConfigurationViewController *)self trigger];
-          v31 = [v30 soundDetectionTypes];
-          v28 = [v42 localizedStringWithFormat:v40, objc_msgSend(v31, "count")];
+          trigger4 = [(WFTriggerConfigurationViewController *)self trigger];
+          soundDetectionTypes4 = [trigger4 soundDetectionTypes];
+          v28 = [v42 localizedStringWithFormat:v40, objc_msgSend(soundDetectionTypes4, "count")];
 
           v29 = v40;
         }
@@ -256,20 +256,20 @@ WFSelectableListOption *__90__WFSoundRecognitionTriggerConfigurationViewControll
         v28 = WFLocalizedString(@"Choose");
       }
 
-      v32 = [v16 detailTextLabel];
-      [v32 setText:v28];
+      detailTextLabel = [v16 detailTextLabel];
+      [detailTextLabel setText:v28];
 
       v13 = 0x277D7C000uLL;
     }
   }
 
-  v33 = [*(v13 + 136) soundDetectionEnabled];
-  [v10 setUserInteractionEnabled:v33];
-  v34 = [v10 textLabel];
-  [v34 setEnabled:v33];
+  soundDetectionEnabled = [*(v13 + 136) soundDetectionEnabled];
+  [v10 setUserInteractionEnabled:soundDetectionEnabled];
+  textLabel2 = [v10 textLabel];
+  [textLabel2 setEnabled:soundDetectionEnabled];
 
-  v35 = [v10 detailTextLabel];
-  [v35 setEnabled:v33];
+  detailTextLabel2 = [v10 detailTextLabel];
+  [detailTextLabel2 setEnabled:soundDetectionEnabled];
 
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
@@ -278,7 +278,7 @@ WFSelectableListOption *__90__WFSoundRecognitionTriggerConfigurationViewControll
   v36 = v10;
   v44 = v36;
   v37 = _Block_copy(aBlock);
-  v38 = [(WFTriggerConfigurationViewController *)self configureAdditionalCellsIfNeeded:v36 indexPath:v7 sectionInfo:v8];
+  v38 = [(WFTriggerConfigurationViewController *)self configureAdditionalCellsIfNeeded:v36 indexPath:pathCopy sectionInfo:v8];
   v37[2](v37);
 
   return v38;
@@ -297,52 +297,52 @@ uint64_t __88__WFSoundRecognitionTriggerConfigurationViewController_tableView_ce
   return result;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v5 = [(WFSoundRecognitionTriggerConfigurationViewController *)self infoForSection:a4];
+  v5 = [(WFSoundRecognitionTriggerConfigurationViewController *)self infoForSection:section];
   v6 = [(WFTriggerConfigurationViewController *)self numberOfRowsInSectionWithInfo:v5];
 
   return v6;
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
-  v3 = [(WFTriggerConfigurationViewController *)self sections];
-  v4 = [v3 count];
+  sections = [(WFTriggerConfigurationViewController *)self sections];
+  v4 = [sections count];
 
   return v4;
 }
 
-- (id)infoForSection:(int64_t)a3
+- (id)infoForSection:(int64_t)section
 {
-  v4 = [(WFTriggerConfigurationViewController *)self sections];
-  v5 = [v4 objectAtIndexedSubscript:a3];
+  sections = [(WFTriggerConfigurationViewController *)self sections];
+  v5 = [sections objectAtIndexedSubscript:section];
 
   return v5;
 }
 
 - (void)handleDidBecomeActive
 {
-  v2 = [(WFTriggerConfigurationViewController *)self tableView];
-  [v2 reloadData];
+  tableView = [(WFTriggerConfigurationViewController *)self tableView];
+  [tableView reloadData];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = [(WFTriggerConfigurationViewController *)self tableView];
-  [v3 reloadData];
+  tableView = [(WFTriggerConfigurationViewController *)self tableView];
+  [tableView reloadData];
 }
 
 - (void)viewDidLoad
 {
-  v3 = [(WFTriggerConfigurationViewController *)self tableView];
+  tableView = [(WFTriggerConfigurationViewController *)self tableView];
   v4 = objc_opt_class();
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  [v3 registerClass:v4 forHeaderFooterViewReuseIdentifier:v6];
+  [tableView registerClass:v4 forHeaderFooterViewReuseIdentifier:v6];
 
-  v7 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v7 addObserver:self selector:sel_handleDidBecomeActive name:*MEMORY[0x277D76648] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_handleDidBecomeActive name:*MEMORY[0x277D76648] object:0];
 }
 
 - (id)customSections
@@ -373,19 +373,19 @@ uint64_t __88__WFSoundRecognitionTriggerConfigurationViewController_tableView_ce
   return v4;
 }
 
-- (WFSoundRecognitionTriggerConfigurationViewController)initWithTrigger:(id)a3 mode:(unint64_t)a4
+- (WFSoundRecognitionTriggerConfigurationViewController)initWithTrigger:(id)trigger mode:(unint64_t)mode
 {
-  v7 = a3;
+  triggerCopy = trigger;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"WFSoundRecognitionTriggerConfigurationViewController.m" lineNumber:29 description:{@"Invalid parameter not satisfying: %@", @"[trigger isKindOfClass:[WFSoundRecognitionTrigger class]]"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFSoundRecognitionTriggerConfigurationViewController.m" lineNumber:29 description:{@"Invalid parameter not satisfying: %@", @"[trigger isKindOfClass:[WFSoundRecognitionTrigger class]]"}];
   }
 
   v13.receiver = self;
   v13.super_class = WFSoundRecognitionTriggerConfigurationViewController;
-  v8 = [(WFTriggerConfigurationViewController *)&v13 initWithTrigger:v7 mode:a4];
+  v8 = [(WFTriggerConfigurationViewController *)&v13 initWithTrigger:triggerCopy mode:mode];
   v9 = v8;
   if (v8)
   {

@@ -1,30 +1,30 @@
 @interface MRULogHelper
-- (MRULogHelper)initWithOptions:(id)a3 logFunction:(void *)a4 logContext:(void *)a5;
-- (void)logInternal:(id)a3 arguments:(char *)a4;
-- (void)verboseLog:(id)a3;
+- (MRULogHelper)initWithOptions:(id)options logFunction:(void *)function logContext:(void *)context;
+- (void)logInternal:(id)internal arguments:(char *)arguments;
+- (void)verboseLog:(id)log;
 @end
 
 @implementation MRULogHelper
 
-- (MRULogHelper)initWithOptions:(id)a3 logFunction:(void *)a4 logContext:(void *)a5
+- (MRULogHelper)initWithOptions:(id)options logFunction:(void *)function logContext:(void *)context
 {
   v8.receiver = self;
   v8.super_class = MRULogHelper;
   result = [(MRULogHelper *)&v8 init];
   if (result)
   {
-    result->_logFunction = a4;
-    result->_logContext = a5;
+    result->_logFunction = function;
+    result->_logContext = context;
     result->_verbose = 1;
   }
 
   return result;
 }
 
-- (void)logInternal:(id)a3 arguments:(char *)a4
+- (void)logInternal:(id)internal arguments:(char *)arguments
 {
-  v6 = a3;
-  v10 = [[NSMutableString alloc] initWithFormat:v6 arguments:a4];
+  internalCopy = internal;
+  v10 = [[NSMutableString alloc] initWithFormat:internalCopy arguments:arguments];
 
   [v10 appendString:@"\n"];
   logFunction = self->_logFunction;
@@ -33,11 +33,11 @@
   logFunction(logContext, [v10 UTF8String]);
 }
 
-- (void)verboseLog:(id)a3
+- (void)verboseLog:(id)log
 {
   if (self->_verbose)
   {
-    [(MRULogHelper *)self logInternal:a3 arguments:&v3];
+    [(MRULogHelper *)self logInternal:log arguments:&v3];
   }
 }
 

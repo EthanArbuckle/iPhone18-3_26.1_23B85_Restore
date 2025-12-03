@@ -1,22 +1,22 @@
 @interface CNVCardActivityAlertLineGenerator
-- (id)lineWithValue:(id)a3 label:(id)a4;
-- (id)typeParameterForToneType:(id)a3;
+- (id)lineWithValue:(id)value label:(id)label;
+- (id)typeParameterForToneType:(id)type;
 @end
 
 @implementation CNVCardActivityAlertLineGenerator
 
-- (id)lineWithValue:(id)a3 label:(id)a4
+- (id)lineWithValue:(id)value label:(id)label
 {
-  v6 = a3;
-  v7 = a4;
+  valueCopy = value;
+  labelCopy = label;
   objc_opt_class();
-  v8 = [v6 allValues];
-  v9 = [v8 firstObject];
-  if (v9)
+  allValues = [valueCopy allValues];
+  firstObject = [allValues firstObject];
+  if (firstObject)
   {
     if (objc_opt_isKindOfClass())
     {
-      v10 = v9;
+      v10 = firstObject;
     }
 
     else
@@ -34,14 +34,14 @@
 
   if ([v11 count])
   {
-    v12 = [v6 allKeys];
-    v13 = [v12 firstObject];
-    v14 = [(CNVCardActivityAlertLineGenerator *)self typeParameterForToneType:v13];
+    allKeys = [valueCopy allKeys];
+    firstObject2 = [allKeys firstObject];
+    v14 = [(CNVCardActivityAlertLineGenerator *)self typeParameterForToneType:firstObject2];
 
     v15 = [(CNVCardActivityAlertLineGenerator *)self serializeType:v14 elements:v11];
     v18.receiver = self;
     v18.super_class = CNVCardActivityAlertLineGenerator;
-    v16 = [(CNVCardLineGenerator *)&v18 lineWithValue:v15 label:v7];
+    v16 = [(CNVCardLineGenerator *)&v18 lineWithValue:v15 label:labelCopy];
   }
 
   else
@@ -52,22 +52,22 @@
   return v16;
 }
 
-- (id)typeParameterForToneType:(id)a3
+- (id)typeParameterForToneType:(id)type
 {
-  v3 = a3;
-  if ([v3 _cn_caseInsensitiveIsEqual:@"com.apple.activityalert.call"])
+  typeCopy = type;
+  if ([typeCopy _cn_caseInsensitiveIsEqual:@"com.apple.activityalert.call"])
   {
     v4 = @"call";
   }
 
-  else if ([v3 _cn_caseInsensitiveIsEqual:@"com.apple.activityalert.text"])
+  else if ([typeCopy _cn_caseInsensitiveIsEqual:@"com.apple.activityalert.text"])
   {
     v4 = @"text";
   }
 
   else
   {
-    v4 = v3;
+    v4 = typeCopy;
   }
 
   return v4;

@@ -1,19 +1,19 @@
 @interface AXReorderableCheckmarkListController
 - (AXReorderableCheckmarkListController)init;
-- (BOOL)isItemEnabled:(id)a3;
+- (BOOL)isItemEnabled:(id)enabled;
 - (id)allItems;
-- (id)itemAfterTogglingEnabledState:(id)a3;
+- (id)itemAfterTogglingEnabledState:(id)state;
 - (id)itemSpecifiers;
 - (id)itemsFromPreferences;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 targetIndexPathForMoveFromRowAtIndexPath:(id)a4 toProposedIndexPath:(id)a5;
-- (id)titleForItem:(id)a3;
-- (void)_updateCell:(id)a3 forIndexPath:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 moveRowAtIndexPath:(id)a4 toIndexPath:(id)a5;
-- (void)updateCellForItemAtIndex:(unint64_t)a3;
-- (void)updateItemsInPreferences:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view targetIndexPathForMoveFromRowAtIndexPath:(id)path toProposedIndexPath:(id)indexPath;
+- (id)titleForItem:(id)item;
+- (void)_updateCell:(id)cell forIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view moveRowAtIndexPath:(id)path toIndexPath:(id)indexPath;
+- (void)updateCellForItemAtIndex:(unint64_t)index;
+- (void)updateItemsInPreferences:(id)preferences;
 - (void)viewDidLoad;
 @end
 
@@ -27,8 +27,8 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [(AXReorderableCheckmarkListController *)v2 itemsFromPreferences];
-    v5 = [v4 mutableCopy];
+    itemsFromPreferences = [(AXReorderableCheckmarkListController *)v2 itemsFromPreferences];
+    v5 = [itemsFromPreferences mutableCopy];
     allItems = v3->_allItems;
     v3->_allItems = v5;
   }
@@ -41,11 +41,11 @@
   v5.receiver = self;
   v5.super_class = AXReorderableCheckmarkListController;
   [(AXReorderableCheckmarkListController *)&v5 viewDidLoad];
-  v3 = [(AXReorderableCheckmarkListController *)self table];
-  [v3 setAllowsSelectionDuringEditing:1];
+  table = [(AXReorderableCheckmarkListController *)self table];
+  [table setAllowsSelectionDuringEditing:1];
 
-  v4 = [(AXReorderableCheckmarkListController *)self table];
-  [v4 setEditing:1 animated:0];
+  table2 = [(AXReorderableCheckmarkListController *)self table];
+  [table2 setEditing:1 animated:0];
 }
 
 - (id)specifiers
@@ -54,9 +54,9 @@
   v4 = *&self->AXUISettingsSetupCapableListController_opaque[OBJC_IVAR___PSListController__specifiers];
   if (!v4)
   {
-    v5 = [(AXReorderableCheckmarkListController *)self itemSpecifiers];
+    itemSpecifiers = [(AXReorderableCheckmarkListController *)self itemSpecifiers];
     v6 = *&self->AXUISettingsSetupCapableListController_opaque[v3];
-    *&self->AXUISettingsSetupCapableListController_opaque[v3] = v5;
+    *&self->AXUISettingsSetupCapableListController_opaque[v3] = itemSpecifiers;
 
     v4 = *&self->AXUISettingsSetupCapableListController_opaque[v3];
   }
@@ -69,8 +69,8 @@
   allItems = self->_allItems;
   if (!allItems)
   {
-    v4 = [(AXReorderableCheckmarkListController *)self itemsFromPreferences];
-    v5 = [v4 mutableCopy];
+    itemsFromPreferences = [(AXReorderableCheckmarkListController *)self itemsFromPreferences];
+    v5 = [itemsFromPreferences mutableCopy];
     v6 = self->_allItems;
     self->_allItems = v5;
 
@@ -157,76 +157,76 @@ LABEL_11:
   return v19;
 }
 
-- (void)updateCellForItemAtIndex:(unint64_t)a3
+- (void)updateCellForItemAtIndex:(unint64_t)index
 {
-  v6 = [NSIndexPath indexPathForRow:a3 inSection:[(AXReorderableCheckmarkListController *)self indexOfSectionForItems]];
-  v4 = [(AXReorderableCheckmarkListController *)self table];
-  v5 = [v4 cellForRowAtIndexPath:v6];
+  v6 = [NSIndexPath indexPathForRow:index inSection:[(AXReorderableCheckmarkListController *)self indexOfSectionForItems]];
+  table = [(AXReorderableCheckmarkListController *)self table];
+  v5 = [table cellForRowAtIndexPath:v6];
 
   [(AXReorderableCheckmarkListController *)self _updateCell:v5 forIndexPath:v6];
 }
 
-- (void)_updateCell:(id)a3 forIndexPath:(id)a4
+- (void)_updateCell:(id)cell forIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 section];
-  if (v8 == [(AXReorderableCheckmarkListController *)self indexOfSectionForItems])
+  cellCopy = cell;
+  pathCopy = path;
+  section = [pathCopy section];
+  if (section == [(AXReorderableCheckmarkListController *)self indexOfSectionForItems])
   {
-    v9 = [v6 defaultContentConfiguration];
+    defaultContentConfiguration = [cellCopy defaultContentConfiguration];
     v10 = [UIImage systemImageNamed:@"checkmark"];
     [v10 size];
     v12 = v11;
     v14 = v13;
-    v15 = [v9 imageProperties];
-    [v15 setReservedLayoutSize:{v12, v14}];
+    imageProperties = [defaultContentConfiguration imageProperties];
+    [imageProperties setReservedLayoutSize:{v12, v14}];
 
-    v16 = [(AXReorderableCheckmarkListController *)self specifierAtIndexPath:v7];
+    v16 = [(AXReorderableCheckmarkListController *)self specifierAtIndexPath:pathCopy];
     v17 = [v16 propertyForKey:@"AXReorderableItemIndex"];
-    v18 = [v17 unsignedIntegerValue];
+    unsignedIntegerValue = [v17 unsignedIntegerValue];
 
-    v19 = [(AXReorderableCheckmarkListController *)self allItems];
-    v20 = [v19 count];
+    allItems = [(AXReorderableCheckmarkListController *)self allItems];
+    v20 = [allItems count];
 
-    if (v18 >= v20)
+    if (unsignedIntegerValue >= v20)
     {
       _AXAssert();
     }
 
-    v21 = [(AXReorderableCheckmarkListController *)self allItems];
-    v22 = [v21 axSafeObjectAtIndex:v18];
+    allItems2 = [(AXReorderableCheckmarkListController *)self allItems];
+    v22 = [allItems2 axSafeObjectAtIndex:unsignedIntegerValue];
 
     if ([(AXReorderableCheckmarkListController *)self isItemEnabled:v22])
     {
-      [v9 setImage:v10];
+      [defaultContentConfiguration setImage:v10];
       v23 = &UIAccessibilityTraitSelected;
     }
 
     else
     {
       v24 = objc_opt_new();
-      [v9 setImage:v24];
+      [defaultContentConfiguration setImage:v24];
 
       v23 = &UIAccessibilityTraitNone;
     }
 
-    [v6 setAccessibilityTraits:*v23];
+    [cellCopy setAccessibilityTraits:*v23];
     v25 = [(AXReorderableCheckmarkListController *)self languageForItem:v22];
     if (v25)
     {
-      [v6 setAccessibilityLanguage:v25];
+      [cellCopy setAccessibilityLanguage:v25];
     }
 
     v26 = [(AXReorderableCheckmarkListController *)self canItemBeToggled:v22];
     if ((v26 & 1) == 0)
     {
-      v27 = [v6 accessibilityTraits];
-      [v6 setAccessibilityTraits:UIAccessibilityTraitNotEnabled | v27];
+      accessibilityTraits = [cellCopy accessibilityTraits];
+      [cellCopy setAccessibilityTraits:UIAccessibilityTraitNotEnabled | accessibilityTraits];
       v28 = +[UIColor tertiaryLabelColor];
-      v29 = [v9 textProperties];
-      [v29 setColor:v28];
+      textProperties = [defaultContentConfiguration textProperties];
+      [textProperties setColor:v28];
 
-      [v6 setSelectionStyle:0];
+      [cellCopy setSelectionStyle:0];
     }
 
     v32[0] = _NSConcreteStackBlock;
@@ -234,13 +234,13 @@ LABEL_11:
     v32[2] = __65__AXReorderableCheckmarkListController__updateCell_forIndexPath___block_invoke;
     v32[3] = &__block_descriptor_33_e26___UIColor_16__0__UIColor_8l;
     v33 = v26;
-    v30 = [v9 imageProperties];
-    [v30 setTintColorTransformer:v32];
+    imageProperties2 = [defaultContentConfiguration imageProperties];
+    [imageProperties2 setTintColorTransformer:v32];
 
-    v31 = [v16 name];
-    [v9 setText:v31];
+    name = [v16 name];
+    [defaultContentConfiguration setText:name];
 
-    [v6 setContentConfiguration:v9];
+    [cellCopy setContentConfiguration:defaultContentConfiguration];
   }
 }
 
@@ -263,25 +263,25 @@ id __65__AXReorderableCheckmarkListController__updateCell_forIndexPath___block_i
   return v6;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v9.receiver = self;
   v9.super_class = AXReorderableCheckmarkListController;
-  v6 = a4;
-  v7 = [(AXReorderableCheckmarkListController *)&v9 tableView:a3 cellForRowAtIndexPath:v6];
-  [(AXReorderableCheckmarkListController *)self _updateCell:v7 forIndexPath:v6, v9.receiver, v9.super_class];
+  pathCopy = path;
+  v7 = [(AXReorderableCheckmarkListController *)&v9 tableView:view cellForRowAtIndexPath:pathCopy];
+  [(AXReorderableCheckmarkListController *)self _updateCell:v7 forIndexPath:pathCopy, v9.receiver, v9.super_class];
 
   return v7;
 }
 
-- (id)tableView:(id)a3 targetIndexPathForMoveFromRowAtIndexPath:(id)a4 toProposedIndexPath:(id)a5
+- (id)tableView:(id)view targetIndexPathForMoveFromRowAtIndexPath:(id)path toProposedIndexPath:(id)indexPath
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [(AXReorderableCheckmarkListController *)self indexOfSectionForItems];
-  if ([v7 section] != v9 || (v10 = v8, objc_msgSend(v8, "section") != v9))
+  pathCopy = path;
+  indexPathCopy = indexPath;
+  indexOfSectionForItems = [(AXReorderableCheckmarkListController *)self indexOfSectionForItems];
+  if ([pathCopy section] != indexOfSectionForItems || (v10 = indexPathCopy, objc_msgSend(indexPathCopy, "section") != indexOfSectionForItems))
   {
-    v10 = v7;
+    v10 = pathCopy;
   }
 
   v11 = v10;
@@ -289,87 +289,87 @@ id __65__AXReorderableCheckmarkListController__updateCell_forIndexPath___block_i
   return v10;
 }
 
-- (void)tableView:(id)a3 moveRowAtIndexPath:(id)a4 toIndexPath:(id)a5
+- (void)tableView:(id)view moveRowAtIndexPath:(id)path toIndexPath:(id)indexPath
 {
-  v22 = a4;
-  v7 = a5;
-  v8 = [(AXReorderableCheckmarkListController *)self indexOfSectionForItems];
-  if ([v22 section] != v8 || objc_msgSend(v7, "section") != v8)
+  pathCopy = path;
+  indexPathCopy = indexPath;
+  indexOfSectionForItems = [(AXReorderableCheckmarkListController *)self indexOfSectionForItems];
+  if ([pathCopy section] != indexOfSectionForItems || objc_msgSend(indexPathCopy, "section") != indexOfSectionForItems)
   {
     _AXAssert();
   }
 
-  if ([v22 section] == v8 && objc_msgSend(v7, "section") == v8)
+  if ([pathCopy section] == indexOfSectionForItems && objc_msgSend(indexPathCopy, "section") == indexOfSectionForItems)
   {
-    v9 = [(AXReorderableCheckmarkListController *)self specifierAtIndexPath:v7];
+    v9 = [(AXReorderableCheckmarkListController *)self specifierAtIndexPath:indexPathCopy];
     v10 = [v9 propertyForKey:@"AXReorderableItemIndex"];
-    v11 = [v10 unsignedIntegerValue];
+    unsignedIntegerValue = [v10 unsignedIntegerValue];
 
-    v12 = [(AXReorderableCheckmarkListController *)self specifierAtIndexPath:v22];
+    v12 = [(AXReorderableCheckmarkListController *)self specifierAtIndexPath:pathCopy];
     v13 = [v12 propertyForKey:@"AXReorderableItemIndex"];
-    v14 = [v13 unsignedIntegerValue];
+    unsignedIntegerValue2 = [v13 unsignedIntegerValue];
 
-    if (v11 != v14)
+    if (unsignedIntegerValue != unsignedIntegerValue2)
     {
-      v15 = [(AXReorderableCheckmarkListController *)self allItems];
-      v16 = [v15 count];
+      allItems = [(AXReorderableCheckmarkListController *)self allItems];
+      v16 = [allItems count];
 
-      if (v14 >= v16)
+      if (unsignedIntegerValue2 >= v16)
       {
         _AXAssert();
       }
 
-      v17 = [(AXReorderableCheckmarkListController *)self allItems];
-      v18 = [v17 axSafeObjectAtIndex:v14];
+      allItems2 = [(AXReorderableCheckmarkListController *)self allItems];
+      v18 = [allItems2 axSafeObjectAtIndex:unsignedIntegerValue2];
 
-      v19 = [(AXReorderableCheckmarkListController *)self allItems];
-      [v19 removeObjectAtIndex:v14];
+      allItems3 = [(AXReorderableCheckmarkListController *)self allItems];
+      [allItems3 removeObjectAtIndex:unsignedIntegerValue2];
 
-      v20 = [(AXReorderableCheckmarkListController *)self allItems];
-      [v20 insertObject:v18 atIndex:v11];
+      allItems4 = [(AXReorderableCheckmarkListController *)self allItems];
+      [allItems4 insertObject:v18 atIndex:unsignedIntegerValue];
 
-      v21 = [(AXReorderableCheckmarkListController *)self allItems];
-      [(AXReorderableCheckmarkListController *)self updateItemsInPreferences:v21];
+      allItems5 = [(AXReorderableCheckmarkListController *)self allItems];
+      [(AXReorderableCheckmarkListController *)self updateItemsInPreferences:allItems5];
 
       [(AXReorderableCheckmarkListController *)self reloadSpecifiers];
     }
   }
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 section];
-  if (v8 == [(AXReorderableCheckmarkListController *)self indexOfSectionForItems])
+  viewCopy = view;
+  pathCopy = path;
+  section = [pathCopy section];
+  if (section == [(AXReorderableCheckmarkListController *)self indexOfSectionForItems])
   {
-    v9 = [(AXReorderableCheckmarkListController *)self specifierAtIndexPath:v7];
+    v9 = [(AXReorderableCheckmarkListController *)self specifierAtIndexPath:pathCopy];
     v10 = [v9 propertyForKey:@"AXReorderableItemIndex"];
-    v11 = [v10 unsignedIntegerValue];
+    unsignedIntegerValue = [v10 unsignedIntegerValue];
 
-    v12 = [(AXReorderableCheckmarkListController *)self allItems];
-    v13 = [v12 objectAtIndex:v11];
+    allItems = [(AXReorderableCheckmarkListController *)self allItems];
+    v13 = [allItems objectAtIndex:unsignedIntegerValue];
 
     if ([(AXReorderableCheckmarkListController *)self allowItemToBeToggled:v13])
     {
       v14 = [(AXReorderableCheckmarkListController *)self itemAfterTogglingEnabledState:v13];
-      v15 = [(AXReorderableCheckmarkListController *)self allItems];
-      [v15 replaceObjectAtIndex:v11 withObject:v14];
+      allItems2 = [(AXReorderableCheckmarkListController *)self allItems];
+      [allItems2 replaceObjectAtIndex:unsignedIntegerValue withObject:v14];
 
-      v16 = [(AXReorderableCheckmarkListController *)self allItems];
-      [(AXReorderableCheckmarkListController *)self updateItemsInPreferences:v16];
+      allItems3 = [(AXReorderableCheckmarkListController *)self allItems];
+      [(AXReorderableCheckmarkListController *)self updateItemsInPreferences:allItems3];
 
-      v17 = [v6 cellForRowAtIndexPath:v7];
-      [(AXReorderableCheckmarkListController *)self _updateCell:v17 forIndexPath:v7];
+      v17 = [viewCopy cellForRowAtIndexPath:pathCopy];
+      [(AXReorderableCheckmarkListController *)self _updateCell:v17 forIndexPath:pathCopy];
 
-      [v6 selectRowAtIndexPath:0 animated:1 scrollPosition:0];
+      [viewCopy selectRowAtIndexPath:0 animated:1 scrollPosition:0];
     }
 
     else
     {
       v19.receiver = self;
       v19.super_class = AXReorderableCheckmarkListController;
-      [(AXReorderableCheckmarkListController *)&v19 tableView:v6 didSelectRowAtIndexPath:v7];
+      [(AXReorderableCheckmarkListController *)&v19 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
     }
   }
 
@@ -377,7 +377,7 @@ id __65__AXReorderableCheckmarkListController__updateCell_forIndexPath___block_i
   {
     v18.receiver = self;
     v18.super_class = AXReorderableCheckmarkListController;
-    [(AXReorderableCheckmarkListController *)&v18 tableView:v6 didSelectRowAtIndexPath:v7];
+    [(AXReorderableCheckmarkListController *)&v18 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
   }
 }
 
@@ -390,7 +390,7 @@ id __65__AXReorderableCheckmarkListController__updateCell_forIndexPath___block_i
   return 0;
 }
 
-- (void)updateItemsInPreferences:(id)a3
+- (void)updateItemsInPreferences:(id)preferences
 {
   OUTLINED_FUNCTION_1_2();
   objc_opt_class();
@@ -399,7 +399,7 @@ id __65__AXReorderableCheckmarkListController__updateCell_forIndexPath___block_i
   NSRequestConcreteImplementation();
 }
 
-- (id)titleForItem:(id)a3
+- (id)titleForItem:(id)item
 {
   OUTLINED_FUNCTION_1_2();
   objc_opt_class();
@@ -408,7 +408,7 @@ id __65__AXReorderableCheckmarkListController__updateCell_forIndexPath___block_i
   return 0;
 }
 
-- (BOOL)isItemEnabled:(id)a3
+- (BOOL)isItemEnabled:(id)enabled
 {
   OUTLINED_FUNCTION_1_2();
   objc_opt_class();
@@ -417,7 +417,7 @@ id __65__AXReorderableCheckmarkListController__updateCell_forIndexPath___block_i
   return 1;
 }
 
-- (id)itemAfterTogglingEnabledState:(id)a3
+- (id)itemAfterTogglingEnabledState:(id)state
 {
   OUTLINED_FUNCTION_1_2();
   v4 = v3;

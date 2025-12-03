@@ -1,49 +1,49 @@
 @interface STPrivateServiceClient
-- (BOOL)clearRestrictionsPasscodeWithError:(id *)a3;
+- (BOOL)clearRestrictionsPasscodeWithError:(id *)error;
 - (BOOL)contactsEditable;
-- (BOOL)isContentPrivacyEnabledForDSID:(id)a3 error:(id *)a4;
-- (BOOL)isRestrictionsPasscodeSetWithError:(id *)a3;
-- (BOOL)isScreenTimeEnabledForRemoteUserWithDSID:(id)a3 error:(id *)a4;
-- (BOOL)isScreenTimeSyncEnabledWithError:(id *)a3;
-- (BOOL)needsToSetRestrictionsPasscodeWithError:(id *)a3;
-- (BOOL)permitWebFilterURL:(id)a3 pageTitle:(id)a4 error:(id *)a5;
-- (BOOL)shouldRequestMoreTimeWithError:(id *)a3;
+- (BOOL)isContentPrivacyEnabledForDSID:(id)d error:(id *)error;
+- (BOOL)isRestrictionsPasscodeSetWithError:(id *)error;
+- (BOOL)isScreenTimeEnabledForRemoteUserWithDSID:(id)d error:(id *)error;
+- (BOOL)isScreenTimeSyncEnabledWithError:(id *)error;
+- (BOOL)needsToSetRestrictionsPasscodeWithError:(id *)error;
+- (BOOL)permitWebFilterURL:(id)l pageTitle:(id)title error:(id *)error;
+- (BOOL)shouldRequestMoreTimeWithError:(id *)error;
 - (STPrivateServiceClient)init;
-- (id)communicationPoliciesWithError:(id *)a3;
-- (id)isScreenTimeEnabledForLocalUserWithError:(id *)a3;
-- (id)primaryiCloudCardDAVAccountIdentifierWithError:(id *)a3;
-- (id)shouldAllowOneMoreMinuteForBundleIdentifier:(id)a3 error:(id *)a4;
-- (id)shouldAllowOneMoreMinuteForCategoryIdentifier:(id)a3 error:(id *)a4;
-- (id)shouldAllowOneMoreMinuteForWebDomain:(id)a3 error:(id *)a4;
-- (void)applyDefaultUserPoliciesWithError:(id *)a3;
-- (void)applyIntroductionModel:(id)a3 forDSID:(id)a4 completionHandler:(id)a5;
-- (void)authenticateRestrictionsPasscode:(id)a3 completionHandler:(id)a4;
-- (void)communicationPoliciesWithCompletionHandler:(id)a3;
+- (id)communicationPoliciesWithError:(id *)error;
+- (id)isScreenTimeEnabledForLocalUserWithError:(id *)error;
+- (id)primaryiCloudCardDAVAccountIdentifierWithError:(id *)error;
+- (id)shouldAllowOneMoreMinuteForBundleIdentifier:(id)identifier error:(id *)error;
+- (id)shouldAllowOneMoreMinuteForCategoryIdentifier:(id)identifier error:(id *)error;
+- (id)shouldAllowOneMoreMinuteForWebDomain:(id)domain error:(id *)error;
+- (void)applyDefaultUserPoliciesWithError:(id *)error;
+- (void)applyIntroductionModel:(id)model forDSID:(id)d completionHandler:(id)handler;
+- (void)authenticateRestrictionsPasscode:(id)passcode completionHandler:(id)handler;
+- (void)communicationPoliciesWithCompletionHandler:(id)handler;
 - (void)contactsEditable;
 - (void)dealloc;
-- (void)deleteAllWebHistoryForApplication:(id)a3 completionHandler:(id)a4;
-- (void)deleteAllWebHistoryForApplication:(id)a3 profileIdentifier:(id)a4 completionHandler:(id)a5;
-- (void)deleteWebHistoryDuringInterval:(id)a3 application:(id)a4 completionHandler:(id)a5;
-- (void)deleteWebHistoryDuringInterval:(id)a3 application:(id)a4 profileIdentifier:(id)a5 completionHandler:(id)a6;
-- (void)deleteWebHistoryForDomain:(id)a3 application:(id)a4 completionHandler:(id)a5;
-- (void)deleteWebHistoryForDomain:(id)a3 application:(id)a4 profileIdentifier:(id)a5 completionHandler:(id)a6;
-- (void)deleteWebHistoryForURL:(id)a3 application:(id)a4 completionHandler:(id)a5;
-- (void)deleteWebHistoryForURL:(id)a3 application:(id)a4 profileIdentifier:(id)a5 completionHandler:(id)a6;
-- (void)deleteWebHistoryForURLs:(id)a3 application:(id)a4 completionHandler:(id)a5;
-- (void)deleteWebHistoryForURLs:(id)a3 application:(id)a4 profileIdentifier:(id)a5 completionHandler:(id)a6;
-- (void)enableRemoteManagementForDSID:(id)a3 error:(id *)a4;
-- (void)fetchContactManagementStateForDSID:(id)a3 completionHandler:(id)a4;
-- (void)fetchLastModificationDateForDSID:(id)a3 completionHandler:(id)a4;
-- (void)forceFamilyFetchWithCompletionHandler:(id)a3;
-- (void)isAllowFindMyFriendsModificationSetForDSID:(id)a3 completionHandler:(id)a4;
-- (void)isExplicitContentRestricted:(id)a3;
-- (void)isRestrictionsPasscodeSetWithCompletionHandler:(id)a3;
-- (void)isScreenTimeSyncEnabledWithCompletionHandler:(id)a3;
-- (void)lastCommunicationLimitsModificationDateForDSID:(id)a3 completionHandler:(id)a4;
-- (void)requestToManageContactsForDSID:(id)a3 completionHandler:(id)a4;
-- (void)restrictionsPasscodeEntryAttemptCountAndTimeoutDateWithCompletionHandler:(id)a3;
-- (void)setRestrictionsPasscode:(id)a3 completionHandler:(id)a4;
-- (void)shouldRequestMoreTimeWithCompletionHandler:(id)a3;
+- (void)deleteAllWebHistoryForApplication:(id)application completionHandler:(id)handler;
+- (void)deleteAllWebHistoryForApplication:(id)application profileIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)deleteWebHistoryDuringInterval:(id)interval application:(id)application completionHandler:(id)handler;
+- (void)deleteWebHistoryDuringInterval:(id)interval application:(id)application profileIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)deleteWebHistoryForDomain:(id)domain application:(id)application completionHandler:(id)handler;
+- (void)deleteWebHistoryForDomain:(id)domain application:(id)application profileIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)deleteWebHistoryForURL:(id)l application:(id)application completionHandler:(id)handler;
+- (void)deleteWebHistoryForURL:(id)l application:(id)application profileIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)deleteWebHistoryForURLs:(id)ls application:(id)application completionHandler:(id)handler;
+- (void)deleteWebHistoryForURLs:(id)ls application:(id)application profileIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)enableRemoteManagementForDSID:(id)d error:(id *)error;
+- (void)fetchContactManagementStateForDSID:(id)d completionHandler:(id)handler;
+- (void)fetchLastModificationDateForDSID:(id)d completionHandler:(id)handler;
+- (void)forceFamilyFetchWithCompletionHandler:(id)handler;
+- (void)isAllowFindMyFriendsModificationSetForDSID:(id)d completionHandler:(id)handler;
+- (void)isExplicitContentRestricted:(id)restricted;
+- (void)isRestrictionsPasscodeSetWithCompletionHandler:(id)handler;
+- (void)isScreenTimeSyncEnabledWithCompletionHandler:(id)handler;
+- (void)lastCommunicationLimitsModificationDateForDSID:(id)d completionHandler:(id)handler;
+- (void)requestToManageContactsForDSID:(id)d completionHandler:(id)handler;
+- (void)restrictionsPasscodeEntryAttemptCountAndTimeoutDateWithCompletionHandler:(id)handler;
+- (void)setRestrictionsPasscode:(id)passcode completionHandler:(id)handler;
+- (void)shouldRequestMoreTimeWithCompletionHandler:(id)handler;
 @end
 
 @implementation STPrivateServiceClient
@@ -96,7 +96,7 @@ void __30__STPrivateServiceClient_init__block_invoke_92()
   [(STPrivateServiceClient *)&v4 dealloc];
 }
 
-- (id)isScreenTimeEnabledForLocalUserWithError:(id *)a3
+- (id)isScreenTimeEnabledForLocalUserWithError:(id *)error
 {
   v14 = 0;
   v15 = &v14;
@@ -110,13 +110,13 @@ void __30__STPrivateServiceClient_init__block_invoke_92()
   v12[2] = __Block_byref_object_copy__19;
   v12[3] = __Block_byref_object_dispose__19;
   v13 = 0;
-  v4 = [(STPrivateServiceClient *)self connection];
+  connection = [(STPrivateServiceClient *)self connection];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __67__STPrivateServiceClient_isScreenTimeEnabledForLocalUserWithError___block_invoke;
   v10[3] = &unk_1E7CE6BA8;
   v10[4] = &v11;
-  v5 = [v4 synchronousRemoteObjectProxyWithErrorHandler:v10];
+  v5 = [connection synchronousRemoteObjectProxyWithErrorHandler:v10];
 
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -133,9 +133,9 @@ void __30__STPrivateServiceClient_init__block_invoke_92()
       [STPrivateServiceClient isScreenTimeEnabledForLocalUserWithError:v12];
     }
 
-    if (a3)
+    if (error)
     {
-      *a3 = *(v12[0] + 40);
+      *error = *(v12[0] + 40);
     }
   }
 
@@ -166,9 +166,9 @@ void __67__STPrivateServiceClient_isScreenTimeEnabledForLocalUserWithError___blo
   *(v7 + 40) = v6;
 }
 
-- (BOOL)isScreenTimeEnabledForRemoteUserWithDSID:(id)a3 error:(id *)a4
+- (BOOL)isScreenTimeEnabledForRemoteUserWithDSID:(id)d error:(id *)error
 {
-  v6 = a3;
+  dCopy = d;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
@@ -179,14 +179,14 @@ void __67__STPrivateServiceClient_isScreenTimeEnabledForLocalUserWithError___blo
   v15[2] = __Block_byref_object_copy__19;
   v15[3] = __Block_byref_object_dispose__19;
   v16 = 0;
-  v7 = [(STPrivateServiceClient *)self connection];
+  connection = [(STPrivateServiceClient *)self connection];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __73__STPrivateServiceClient_isScreenTimeEnabledForRemoteUserWithDSID_error___block_invoke;
   v13[3] = &unk_1E7CE71C8;
   v13[4] = &v14;
   v13[5] = &v17;
-  v8 = [v7 synchronousRemoteObjectProxyWithErrorHandler:v13];
+  v8 = [connection synchronousRemoteObjectProxyWithErrorHandler:v13];
 
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
@@ -194,7 +194,7 @@ void __67__STPrivateServiceClient_isScreenTimeEnabledForLocalUserWithError___blo
   v12[3] = &unk_1E7CE6BD0;
   v12[4] = &v17;
   v12[5] = &v14;
-  [v8 isScreenTimeEnabledForRemoteUserWithDSID:v6 completionHandler:v12];
+  [v8 isScreenTimeEnabledForRemoteUserWithDSID:dCopy completionHandler:v12];
   if (*(v15[0] + 40))
   {
     v9 = +[STLog privateService];
@@ -203,9 +203,9 @@ void __67__STPrivateServiceClient_isScreenTimeEnabledForLocalUserWithError___blo
       [STPrivateServiceClient isScreenTimeEnabledForLocalUserWithError:v15];
     }
 
-    if (a4)
+    if (error)
     {
-      *a4 = *(v15[0] + 40);
+      *error = *(v15[0] + 40);
     }
   }
 
@@ -259,40 +259,40 @@ void __82__STPrivateServiceClient_setScreenTimeEnabledForRemoteUserWithDSID_enab
   }
 }
 
-- (void)enableRemoteManagementForDSID:(id)a3 error:(id *)a4
+- (void)enableRemoteManagementForDSID:(id)d error:(id *)error
 {
-  v6 = a3;
+  dCopy = d;
   v12 = 0;
   v13[0] = &v12;
   v13[1] = 0x3032000000;
   v13[2] = __Block_byref_object_copy__19;
   v13[3] = __Block_byref_object_dispose__19;
   v14 = 0;
-  v7 = [(STPrivateServiceClient *)self connection];
+  connection = [(STPrivateServiceClient *)self connection];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __62__STPrivateServiceClient_enableRemoteManagementForDSID_error___block_invoke;
   v11[3] = &unk_1E7CE6BA8;
   v11[4] = &v12;
-  v8 = [v7 synchronousRemoteObjectProxyWithErrorHandler:v11];
+  v8 = [connection synchronousRemoteObjectProxyWithErrorHandler:v11];
 
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __62__STPrivateServiceClient_enableRemoteManagementForDSID_error___block_invoke_2;
   v10[3] = &unk_1E7CE6BA8;
   v10[4] = &v12;
-  [v8 enableRemoteManagementForDSID:v6 completionHandler:v10];
+  [v8 enableRemoteManagementForDSID:dCopy completionHandler:v10];
   if (*(v13[0] + 40))
   {
     v9 = +[STLog privateService];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      [STPrivateServiceClient enableRemoteManagementForDSID:v6 error:v13];
+      [STPrivateServiceClient enableRemoteManagementForDSID:dCopy error:v13];
     }
 
-    if (a4)
+    if (error)
     {
-      *a4 = *(v13[0] + 40);
+      *error = *(v13[0] + 40);
     }
   }
 
@@ -310,7 +310,7 @@ void __62__STPrivateServiceClient_enableRemoteManagementForDSID_error___block_in
   }
 }
 
-- (BOOL)isScreenTimeSyncEnabledWithError:(id *)a3
+- (BOOL)isScreenTimeSyncEnabledWithError:(id *)error
 {
   v14 = 0;
   v15 = &v14;
@@ -322,14 +322,14 @@ void __62__STPrivateServiceClient_enableRemoteManagementForDSID_error___block_in
   v12[2] = __Block_byref_object_copy__19;
   v12[3] = __Block_byref_object_dispose__19;
   v13 = 0;
-  v4 = [(STPrivateServiceClient *)self connection];
+  connection = [(STPrivateServiceClient *)self connection];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __59__STPrivateServiceClient_isScreenTimeSyncEnabledWithError___block_invoke;
   v10[3] = &unk_1E7CE71C8;
   v10[4] = &v11;
   v10[5] = &v14;
-  v5 = [v4 synchronousRemoteObjectProxyWithErrorHandler:v10];
+  v5 = [connection synchronousRemoteObjectProxyWithErrorHandler:v10];
 
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -346,9 +346,9 @@ void __62__STPrivateServiceClient_enableRemoteManagementForDSID_error___block_in
       [STPrivateServiceClient isScreenTimeSyncEnabledWithError:v12];
     }
 
-    if (a3)
+    if (error)
     {
-      *a3 = *(v12[0] + 40);
+      *error = *(v12[0] + 40);
     }
   }
 
@@ -379,17 +379,17 @@ void __59__STPrivateServiceClient_isScreenTimeSyncEnabledWithError___block_invok
   }
 }
 
-- (void)isScreenTimeSyncEnabledWithCompletionHandler:(id)a3
+- (void)isScreenTimeSyncEnabledWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(STPrivateServiceClient *)self connection];
+  handlerCopy = handler;
+  connection = [(STPrivateServiceClient *)self connection];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __71__STPrivateServiceClient_isScreenTimeSyncEnabledWithCompletionHandler___block_invoke;
   v8[3] = &unk_1E7CE6CE8;
-  v9 = v4;
-  v6 = v4;
-  v7 = [v5 remoteObjectProxyWithErrorHandler:v8];
+  v9 = handlerCopy;
+  v6 = handlerCopy;
+  v7 = [connection remoteObjectProxyWithErrorHandler:v8];
 
   [v7 isScreenTimeSyncEnabledWithCompletionHandler:v6];
 }
@@ -416,7 +416,7 @@ void __57__STPrivateServiceClient_setScreenTimeSyncEnabled_error___block_invoke_
   }
 }
 
-- (BOOL)shouldRequestMoreTimeWithError:(id *)a3
+- (BOOL)shouldRequestMoreTimeWithError:(id *)error
 {
   v14 = 0;
   v15 = &v14;
@@ -428,14 +428,14 @@ void __57__STPrivateServiceClient_setScreenTimeSyncEnabled_error___block_invoke_
   v12[2] = __Block_byref_object_copy__19;
   v12[3] = __Block_byref_object_dispose__19;
   v13 = 0;
-  v4 = [(STPrivateServiceClient *)self connection];
+  connection = [(STPrivateServiceClient *)self connection];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __57__STPrivateServiceClient_shouldRequestMoreTimeWithError___block_invoke;
   v10[3] = &unk_1E7CE71C8;
   v10[4] = &v11;
   v10[5] = &v14;
-  v5 = [v4 synchronousRemoteObjectProxyWithErrorHandler:v10];
+  v5 = [connection synchronousRemoteObjectProxyWithErrorHandler:v10];
 
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -452,9 +452,9 @@ void __57__STPrivateServiceClient_setScreenTimeSyncEnabled_error___block_invoke_
       [STPrivateServiceClient shouldRequestMoreTimeWithError:v12];
     }
 
-    if (a3)
+    if (error)
     {
-      *a3 = *(v12[0] + 40);
+      *error = *(v12[0] + 40);
     }
   }
 
@@ -485,17 +485,17 @@ void __57__STPrivateServiceClient_shouldRequestMoreTimeWithError___block_invoke_
   }
 }
 
-- (void)shouldRequestMoreTimeWithCompletionHandler:(id)a3
+- (void)shouldRequestMoreTimeWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(STPrivateServiceClient *)self connection];
+  handlerCopy = handler;
+  connection = [(STPrivateServiceClient *)self connection];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __69__STPrivateServiceClient_shouldRequestMoreTimeWithCompletionHandler___block_invoke;
   v11[3] = &unk_1E7CE6CE8;
-  v6 = v4;
+  v6 = handlerCopy;
   v12 = v6;
-  v7 = [v5 remoteObjectProxyWithErrorHandler:v11];
+  v7 = [connection remoteObjectProxyWithErrorHandler:v11];
 
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -541,9 +541,9 @@ void __69__STPrivateServiceClient_shouldRequestMoreTimeWithCompletionHandler___b
   }
 }
 
-- (BOOL)isContentPrivacyEnabledForDSID:(id)a3 error:(id *)a4
+- (BOOL)isContentPrivacyEnabledForDSID:(id)d error:(id *)error
 {
-  v6 = a3;
+  dCopy = d;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
@@ -554,14 +554,14 @@ void __69__STPrivateServiceClient_shouldRequestMoreTimeWithCompletionHandler___b
   v15[2] = __Block_byref_object_copy__19;
   v15[3] = __Block_byref_object_dispose__19;
   v16 = 0;
-  v7 = [(STPrivateServiceClient *)self connection];
+  connection = [(STPrivateServiceClient *)self connection];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __63__STPrivateServiceClient_isContentPrivacyEnabledForDSID_error___block_invoke;
   v13[3] = &unk_1E7CE71C8;
   v13[4] = &v14;
   v13[5] = &v17;
-  v8 = [v7 synchronousRemoteObjectProxyWithErrorHandler:v13];
+  v8 = [connection synchronousRemoteObjectProxyWithErrorHandler:v13];
 
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
@@ -569,18 +569,18 @@ void __69__STPrivateServiceClient_shouldRequestMoreTimeWithCompletionHandler___b
   v12[3] = &unk_1E7CE6BD0;
   v12[4] = &v17;
   v12[5] = &v14;
-  [v8 isContentPrivacyEnabledForDSID:v6 completionHandler:v12];
+  [v8 isContentPrivacyEnabledForDSID:dCopy completionHandler:v12];
   if (*(v15[0] + 40))
   {
     v9 = +[STLog privateService];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      [STPrivateServiceClient isContentPrivacyEnabledForDSID:v6 error:v15];
+      [STPrivateServiceClient isContentPrivacyEnabledForDSID:dCopy error:v15];
     }
 
-    if (a4)
+    if (error)
     {
-      *a4 = *(v15[0] + 40);
+      *error = *(v15[0] + 40);
     }
   }
 
@@ -612,7 +612,7 @@ void __63__STPrivateServiceClient_isContentPrivacyEnabledForDSID_error___block_i
   }
 }
 
-- (BOOL)clearRestrictionsPasscodeWithError:(id *)a3
+- (BOOL)clearRestrictionsPasscodeWithError:(id *)error
 {
   v14 = 0;
   v15 = &v14;
@@ -624,14 +624,14 @@ void __63__STPrivateServiceClient_isContentPrivacyEnabledForDSID_error___block_i
   v12[2] = __Block_byref_object_copy__19;
   v12[3] = __Block_byref_object_dispose__19;
   v13 = 0;
-  v4 = [(STPrivateServiceClient *)self connection];
+  connection = [(STPrivateServiceClient *)self connection];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __61__STPrivateServiceClient_clearRestrictionsPasscodeWithError___block_invoke;
   v10[3] = &unk_1E7CE71C8;
   v10[4] = &v11;
   v10[5] = &v14;
-  v5 = [v4 synchronousRemoteObjectProxyWithErrorHandler:v10];
+  v5 = [connection synchronousRemoteObjectProxyWithErrorHandler:v10];
 
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -648,9 +648,9 @@ void __63__STPrivateServiceClient_isContentPrivacyEnabledForDSID_error___block_i
       [STPrivateServiceClient clearRestrictionsPasscodeWithError:v12];
     }
 
-    if (a3)
+    if (error)
     {
-      *a3 = *(v12[0] + 40);
+      *error = *(v12[0] + 40);
     }
   }
 
@@ -680,7 +680,7 @@ void __61__STPrivateServiceClient_clearRestrictionsPasscodeWithError___block_inv
   }
 }
 
-- (BOOL)isRestrictionsPasscodeSetWithError:(id *)a3
+- (BOOL)isRestrictionsPasscodeSetWithError:(id *)error
 {
   v14 = 0;
   v15 = &v14;
@@ -692,14 +692,14 @@ void __61__STPrivateServiceClient_clearRestrictionsPasscodeWithError___block_inv
   v12[2] = __Block_byref_object_copy__19;
   v12[3] = __Block_byref_object_dispose__19;
   v13 = 0;
-  v4 = [(STPrivateServiceClient *)self connection];
+  connection = [(STPrivateServiceClient *)self connection];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __61__STPrivateServiceClient_isRestrictionsPasscodeSetWithError___block_invoke;
   v10[3] = &unk_1E7CE71C8;
   v10[4] = &v11;
   v10[5] = &v14;
-  v5 = [v4 synchronousRemoteObjectProxyWithErrorHandler:v10];
+  v5 = [connection synchronousRemoteObjectProxyWithErrorHandler:v10];
 
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -716,9 +716,9 @@ void __61__STPrivateServiceClient_clearRestrictionsPasscodeWithError___block_inv
       [STPrivateServiceClient clearRestrictionsPasscodeWithError:v12];
     }
 
-    if (a3)
+    if (error)
     {
-      *a3 = *(v12[0] + 40);
+      *error = *(v12[0] + 40);
     }
   }
 
@@ -750,17 +750,17 @@ void __61__STPrivateServiceClient_isRestrictionsPasscodeSetWithError___block_inv
   *(*(*(a1 + 40) + 8) + 24) = a2;
 }
 
-- (void)isRestrictionsPasscodeSetWithCompletionHandler:(id)a3
+- (void)isRestrictionsPasscodeSetWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(STPrivateServiceClient *)self connection];
+  handlerCopy = handler;
+  connection = [(STPrivateServiceClient *)self connection];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __73__STPrivateServiceClient_isRestrictionsPasscodeSetWithCompletionHandler___block_invoke;
   v11[3] = &unk_1E7CE6CE8;
-  v6 = v4;
+  v6 = handlerCopy;
   v12 = v6;
-  v7 = [v5 remoteObjectProxyWithErrorHandler:v11];
+  v7 = [connection remoteObjectProxyWithErrorHandler:v11];
 
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -806,7 +806,7 @@ void __73__STPrivateServiceClient_isRestrictionsPasscodeSetWithCompletionHandler
   }
 }
 
-- (BOOL)needsToSetRestrictionsPasscodeWithError:(id *)a3
+- (BOOL)needsToSetRestrictionsPasscodeWithError:(id *)error
 {
   v14 = 0;
   v15 = &v14;
@@ -818,14 +818,14 @@ void __73__STPrivateServiceClient_isRestrictionsPasscodeSetWithCompletionHandler
   v12[2] = __Block_byref_object_copy__19;
   v12[3] = __Block_byref_object_dispose__19;
   v13 = 0;
-  v4 = [(STPrivateServiceClient *)self connection];
+  connection = [(STPrivateServiceClient *)self connection];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __66__STPrivateServiceClient_needsToSetRestrictionsPasscodeWithError___block_invoke;
   v10[3] = &unk_1E7CE71C8;
   v10[4] = &v11;
   v10[5] = &v14;
-  v5 = [v4 synchronousRemoteObjectProxyWithErrorHandler:v10];
+  v5 = [connection synchronousRemoteObjectProxyWithErrorHandler:v10];
 
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -842,9 +842,9 @@ void __73__STPrivateServiceClient_isRestrictionsPasscodeSetWithCompletionHandler
       [STPrivateServiceClient needsToSetRestrictionsPasscodeWithError:v12];
     }
 
-    if (a3)
+    if (error)
     {
-      *a3 = *(v12[0] + 40);
+      *error = *(v12[0] + 40);
     }
   }
 
@@ -874,20 +874,20 @@ void __66__STPrivateServiceClient_needsToSetRestrictionsPasscodeWithError___bloc
   }
 }
 
-- (void)setRestrictionsPasscode:(id)a3 completionHandler:(id)a4
+- (void)setRestrictionsPasscode:(id)passcode completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(STPrivateServiceClient *)self connection];
+  handlerCopy = handler;
+  passcodeCopy = passcode;
+  connection = [(STPrivateServiceClient *)self connection];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __68__STPrivateServiceClient_setRestrictionsPasscode_completionHandler___block_invoke;
   v11[3] = &unk_1E7CE6CE8;
-  v12 = v6;
-  v9 = v6;
-  v10 = [v8 remoteObjectProxyWithErrorHandler:v11];
+  v12 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = [connection remoteObjectProxyWithErrorHandler:v11];
 
-  [v10 setRestrictionsPasscode:v7 completionHandler:v9];
+  [v10 setRestrictionsPasscode:passcodeCopy completionHandler:v9];
 }
 
 void __68__STPrivateServiceClient_setRestrictionsPasscode_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -906,20 +906,20 @@ void __68__STPrivateServiceClient_setRestrictionsPasscode_completionHandler___bl
   }
 }
 
-- (void)authenticateRestrictionsPasscode:(id)a3 completionHandler:(id)a4
+- (void)authenticateRestrictionsPasscode:(id)passcode completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(STPrivateServiceClient *)self connection];
+  handlerCopy = handler;
+  passcodeCopy = passcode;
+  connection = [(STPrivateServiceClient *)self connection];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __77__STPrivateServiceClient_authenticateRestrictionsPasscode_completionHandler___block_invoke;
   v11[3] = &unk_1E7CE6CE8;
-  v12 = v6;
-  v9 = v6;
-  v10 = [v8 remoteObjectProxyWithErrorHandler:v11];
+  v12 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = [connection remoteObjectProxyWithErrorHandler:v11];
 
-  [v10 authenticateRestrictionsPasscode:v7 completionHandler:v9];
+  [v10 authenticateRestrictionsPasscode:passcodeCopy completionHandler:v9];
 }
 
 void __77__STPrivateServiceClient_authenticateRestrictionsPasscode_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -938,17 +938,17 @@ void __77__STPrivateServiceClient_authenticateRestrictionsPasscode_completionHan
   }
 }
 
-- (void)restrictionsPasscodeEntryAttemptCountAndTimeoutDateWithCompletionHandler:(id)a3
+- (void)restrictionsPasscodeEntryAttemptCountAndTimeoutDateWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(STPrivateServiceClient *)self connection];
+  handlerCopy = handler;
+  connection = [(STPrivateServiceClient *)self connection];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __99__STPrivateServiceClient_restrictionsPasscodeEntryAttemptCountAndTimeoutDateWithCompletionHandler___block_invoke;
   v8[3] = &unk_1E7CE6CE8;
-  v9 = v4;
-  v6 = v4;
-  v7 = [v5 remoteObjectProxyWithErrorHandler:v8];
+  v9 = handlerCopy;
+  v6 = handlerCopy;
+  v7 = [connection remoteObjectProxyWithErrorHandler:v8];
 
   [v7 fetchRestrictionsPasscodeEntryAttemptCountAndTimeoutDateWithCompletionHandler:v6];
 }
@@ -969,17 +969,17 @@ void __99__STPrivateServiceClient_restrictionsPasscodeEntryAttemptCountAndTimeou
   }
 }
 
-- (void)communicationPoliciesWithCompletionHandler:(id)a3
+- (void)communicationPoliciesWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(STPrivateServiceClient *)self connection];
+  handlerCopy = handler;
+  connection = [(STPrivateServiceClient *)self connection];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __69__STPrivateServiceClient_communicationPoliciesWithCompletionHandler___block_invoke;
   v8[3] = &unk_1E7CE6CE8;
-  v9 = v4;
-  v6 = v4;
-  v7 = [v5 remoteObjectProxyWithErrorHandler:v8];
+  v9 = handlerCopy;
+  v6 = handlerCopy;
+  v7 = [connection remoteObjectProxyWithErrorHandler:v8];
 
   [v7 fetchCommunicationPoliciesWithCompletionHandler:v6];
 }
@@ -1000,7 +1000,7 @@ void __69__STPrivateServiceClient_communicationPoliciesWithCompletionHandler___b
   }
 }
 
-- (id)communicationPoliciesWithError:(id *)a3
+- (id)communicationPoliciesWithError:(id *)error
 {
   v17 = 0;
   v18[0] = &v17;
@@ -1014,13 +1014,13 @@ void __69__STPrivateServiceClient_communicationPoliciesWithCompletionHandler___b
   v14 = __Block_byref_object_copy__19;
   v15 = __Block_byref_object_dispose__19;
   v16 = 0;
-  v4 = [(STPrivateServiceClient *)self connection];
+  connection = [(STPrivateServiceClient *)self connection];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __57__STPrivateServiceClient_communicationPoliciesWithError___block_invoke;
   v10[3] = &unk_1E7CE6BA8;
   v10[4] = &v17;
-  v5 = [v4 synchronousRemoteObjectProxyWithErrorHandler:v10];
+  v5 = [connection synchronousRemoteObjectProxyWithErrorHandler:v10];
 
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -1037,9 +1037,9 @@ void __69__STPrivateServiceClient_communicationPoliciesWithCompletionHandler___b
       [STPrivateServiceClient communicationPoliciesWithError:v18];
     }
 
-    if (a3)
+    if (error)
     {
-      *a3 = *(v18[0] + 40);
+      *error = *(v18[0] + 40);
     }
   }
 
@@ -1093,20 +1093,20 @@ void __77__STPrivateServiceClient_setManageContactsEnabled_forDSID_completionHan
   }
 }
 
-- (void)requestToManageContactsForDSID:(id)a3 completionHandler:(id)a4
+- (void)requestToManageContactsForDSID:(id)d completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(STPrivateServiceClient *)self connection];
+  dCopy = d;
+  handlerCopy = handler;
+  connection = [(STPrivateServiceClient *)self connection];
   v12 = MEMORY[0x1E69E9820];
   v13 = 3221225472;
   v14 = __75__STPrivateServiceClient_requestToManageContactsForDSID_completionHandler___block_invoke;
   v15 = &unk_1E7CE6BF8;
-  v16 = v6;
-  v17 = v7;
-  v9 = v7;
-  v10 = v6;
-  v11 = [v8 remoteObjectProxyWithErrorHandler:&v12];
+  v16 = dCopy;
+  v17 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = dCopy;
+  v11 = [connection remoteObjectProxyWithErrorHandler:&v12];
 
   [v11 requestToManageContactsForDSID:v10 completionHandler:{v9, v12, v13, v14, v15}];
 }
@@ -1127,20 +1127,20 @@ void __75__STPrivateServiceClient_requestToManageContactsForDSID_completionHandl
   }
 }
 
-- (void)fetchContactManagementStateForDSID:(id)a3 completionHandler:(id)a4
+- (void)fetchContactManagementStateForDSID:(id)d completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(STPrivateServiceClient *)self connection];
+  dCopy = d;
+  handlerCopy = handler;
+  connection = [(STPrivateServiceClient *)self connection];
   v12 = MEMORY[0x1E69E9820];
   v13 = 3221225472;
   v14 = __79__STPrivateServiceClient_fetchContactManagementStateForDSID_completionHandler___block_invoke;
   v15 = &unk_1E7CE6BF8;
-  v16 = v6;
-  v17 = v7;
-  v9 = v7;
-  v10 = v6;
-  v11 = [v8 remoteObjectProxyWithErrorHandler:&v12];
+  v16 = dCopy;
+  v17 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = dCopy;
+  v11 = [connection remoteObjectProxyWithErrorHandler:&v12];
 
   [v11 fetchContactManagementStateForDSID:v10 completionHandler:{v9, v12, v13, v14, v15}];
 }
@@ -1161,7 +1161,7 @@ void __79__STPrivateServiceClient_fetchContactManagementStateForDSID_completionH
   }
 }
 
-- (id)primaryiCloudCardDAVAccountIdentifierWithError:(id *)a3
+- (id)primaryiCloudCardDAVAccountIdentifierWithError:(id *)error
 {
   v18 = 0;
   v19[0] = &v18;
@@ -1169,13 +1169,13 @@ void __79__STPrivateServiceClient_fetchContactManagementStateForDSID_completionH
   v19[2] = __Block_byref_object_copy__19;
   v19[3] = __Block_byref_object_dispose__19;
   v20 = 0;
-  v4 = [(STPrivateServiceClient *)self connection];
+  connection = [(STPrivateServiceClient *)self connection];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __73__STPrivateServiceClient_primaryiCloudCardDAVAccountIdentifierWithError___block_invoke;
   v17[3] = &unk_1E7CE6BA8;
   v17[4] = &v18;
-  v5 = [v4 synchronousRemoteObjectProxyWithErrorHandler:v17];
+  v5 = [connection synchronousRemoteObjectProxyWithErrorHandler:v17];
 
   if (*(v19[0] + 40))
   {
@@ -1186,9 +1186,9 @@ void __79__STPrivateServiceClient_fetchContactManagementStateForDSID_completionH
     }
 
     v7 = 0;
-    if (a3)
+    if (error)
     {
-      *a3 = *(v19[0] + 40);
+      *error = *(v19[0] + 40);
     }
   }
 
@@ -1215,9 +1215,9 @@ void __79__STPrivateServiceClient_fetchContactManagementStateForDSID_completionH
         [STPrivateServiceClient primaryiCloudCardDAVAccountIdentifierWithError:v19];
       }
 
-      if (a3)
+      if (error)
       {
-        *a3 = *(v19[0] + 40);
+        *error = *(v19[0] + 40);
       }
     }
 
@@ -1252,13 +1252,13 @@ void __73__STPrivateServiceClient_primaryiCloudCardDAVAccountIdentifierWithError
   v10 = &v9;
   v11 = 0x2020000000;
   v12 = 0;
-  v2 = [(STPrivateServiceClient *)self connection];
+  connection = [(STPrivateServiceClient *)self connection];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __42__STPrivateServiceClient_contactsEditable__block_invoke;
   v8[3] = &unk_1E7CE6BA8;
   v8[4] = &v13;
-  v3 = [v2 synchronousRemoteObjectProxyWithErrorHandler:v8];
+  v3 = [connection synchronousRemoteObjectProxyWithErrorHandler:v8];
 
   if (*(v14[0] + 40))
   {
@@ -1301,20 +1301,20 @@ void __42__STPrivateServiceClient_contactsEditable__block_invoke_108(uint64_t a1
   }
 }
 
-- (void)lastCommunicationLimitsModificationDateForDSID:(id)a3 completionHandler:(id)a4
+- (void)lastCommunicationLimitsModificationDateForDSID:(id)d completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(STPrivateServiceClient *)self connection];
+  handlerCopy = handler;
+  dCopy = d;
+  connection = [(STPrivateServiceClient *)self connection];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __91__STPrivateServiceClient_lastCommunicationLimitsModificationDateForDSID_completionHandler___block_invoke;
   v11[3] = &unk_1E7CE6CE8;
-  v12 = v6;
-  v9 = v6;
-  v10 = [v8 remoteObjectProxyWithErrorHandler:v11];
+  v12 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = [connection remoteObjectProxyWithErrorHandler:v11];
 
-  [v10 fetchLastCommunicationLimitsModificationDateForDSID:v7 completionHandler:v9];
+  [v10 fetchLastCommunicationLimitsModificationDateForDSID:dCopy completionHandler:v9];
 }
 
 void __91__STPrivateServiceClient_lastCommunicationLimitsModificationDateForDSID_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -1329,7 +1329,7 @@ void __91__STPrivateServiceClient_lastCommunicationLimitsModificationDateForDSID
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)applyDefaultUserPoliciesWithError:(id *)a3
+- (void)applyDefaultUserPoliciesWithError:(id *)error
 {
   v9 = 0;
   v10[0] = &v9;
@@ -1337,13 +1337,13 @@ void __91__STPrivateServiceClient_lastCommunicationLimitsModificationDateForDSID
   v10[2] = __Block_byref_object_copy__19;
   v10[3] = __Block_byref_object_dispose__19;
   v11 = 0;
-  v4 = [(STPrivateServiceClient *)self connection];
+  connection = [(STPrivateServiceClient *)self connection];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __60__STPrivateServiceClient_applyDefaultUserPoliciesWithError___block_invoke;
   v8[3] = &unk_1E7CE6BA8;
   v8[4] = &v9;
-  v5 = [v4 synchronousRemoteObjectProxyWithErrorHandler:v8];
+  v5 = [connection synchronousRemoteObjectProxyWithErrorHandler:v8];
 
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
@@ -1359,39 +1359,39 @@ void __91__STPrivateServiceClient_lastCommunicationLimitsModificationDateForDSID
       [STPrivateServiceClient applyDefaultUserPoliciesWithError:v10];
     }
 
-    if (a3)
+    if (error)
     {
-      *a3 = *(v10[0] + 40);
+      *error = *(v10[0] + 40);
     }
   }
 
   _Block_object_dispose(&v9, 8);
 }
 
-- (BOOL)permitWebFilterURL:(id)a3 pageTitle:(id)a4 error:(id *)a5
+- (BOOL)permitWebFilterURL:(id)l pageTitle:(id)title error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  lCopy = l;
+  titleCopy = title;
   v17 = 0;
   v18[0] = &v17;
   v18[1] = 0x3032000000;
   v18[2] = __Block_byref_object_copy__19;
   v18[3] = __Block_byref_object_dispose__19;
   v19 = 0;
-  v10 = [(STPrivateServiceClient *)self connection];
+  connection = [(STPrivateServiceClient *)self connection];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __61__STPrivateServiceClient_permitWebFilterURL_pageTitle_error___block_invoke;
   v16[3] = &unk_1E7CE6BA8;
   v16[4] = &v17;
-  v11 = [v10 synchronousRemoteObjectProxyWithErrorHandler:v16];
+  v11 = [connection synchronousRemoteObjectProxyWithErrorHandler:v16];
 
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __61__STPrivateServiceClient_permitWebFilterURL_pageTitle_error___block_invoke_2;
   v15[3] = &unk_1E7CE6BA8;
   v15[4] = &v17;
-  [v11 permitWebFilterURL:v8 pageTitle:v9 completionHandler:v15];
+  [v11 permitWebFilterURL:lCopy pageTitle:titleCopy completionHandler:v15];
   v12 = *(v18[0] + 40);
   if (v12)
   {
@@ -1401,9 +1401,9 @@ void __91__STPrivateServiceClient_lastCommunicationLimitsModificationDateForDSID
       [STPrivateServiceClient permitWebFilterURL:v18 pageTitle:? error:?];
     }
 
-    if (a5)
+    if (error)
     {
-      *a5 = *(v18[0] + 40);
+      *error = *(v18[0] + 40);
     }
   }
 
@@ -1411,17 +1411,17 @@ void __91__STPrivateServiceClient_lastCommunicationLimitsModificationDateForDSID
   return v12 == 0;
 }
 
-- (void)isExplicitContentRestricted:(id)a3
+- (void)isExplicitContentRestricted:(id)restricted
 {
-  v4 = a3;
-  v5 = [(STPrivateServiceClient *)self connection];
+  restrictedCopy = restricted;
+  connection = [(STPrivateServiceClient *)self connection];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __54__STPrivateServiceClient_isExplicitContentRestricted___block_invoke;
   v11[3] = &unk_1E7CE6CE8;
-  v6 = v4;
+  v6 = restrictedCopy;
   v12 = v6;
-  v7 = [v5 remoteObjectProxyWithErrorHandler:v11];
+  v7 = [connection remoteObjectProxyWithErrorHandler:v11];
 
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -1449,20 +1449,20 @@ void __54__STPrivateServiceClient_isExplicitContentRestricted___block_invoke(uin
   }
 }
 
-- (void)fetchLastModificationDateForDSID:(id)a3 completionHandler:(id)a4
+- (void)fetchLastModificationDateForDSID:(id)d completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(STPrivateServiceClient *)self connection];
+  handlerCopy = handler;
+  dCopy = d;
+  connection = [(STPrivateServiceClient *)self connection];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __77__STPrivateServiceClient_fetchLastModificationDateForDSID_completionHandler___block_invoke;
   v11[3] = &unk_1E7CE6CE8;
-  v12 = v6;
-  v9 = v6;
-  v10 = [v8 remoteObjectProxyWithErrorHandler:v11];
+  v12 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = [connection remoteObjectProxyWithErrorHandler:v11];
 
-  [v10 fetchLastModificationDateForDSID:v7 completionHandler:v9];
+  [v10 fetchLastModificationDateForDSID:dCopy completionHandler:v9];
 }
 
 void __77__STPrivateServiceClient_fetchLastModificationDateForDSID_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -1477,21 +1477,21 @@ void __77__STPrivateServiceClient_fetchLastModificationDateForDSID_completionHan
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)applyIntroductionModel:(id)a3 forDSID:(id)a4 completionHandler:(id)a5
+- (void)applyIntroductionModel:(id)model forDSID:(id)d completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(STPrivateServiceClient *)self connection];
+  handlerCopy = handler;
+  dCopy = d;
+  modelCopy = model;
+  connection = [(STPrivateServiceClient *)self connection];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __75__STPrivateServiceClient_applyIntroductionModel_forDSID_completionHandler___block_invoke;
   v14[3] = &unk_1E7CE6CE8;
-  v15 = v8;
-  v12 = v8;
-  v13 = [v11 remoteObjectProxyWithErrorHandler:v14];
+  v15 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = [connection remoteObjectProxyWithErrorHandler:v14];
 
-  [v13 applyIntroductionModel:v10 forDSID:v9 completionHandler:v12];
+  [v13 applyIntroductionModel:modelCopy forDSID:dCopy completionHandler:v12];
 }
 
 void __75__STPrivateServiceClient_applyIntroductionModel_forDSID_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -1510,20 +1510,20 @@ void __75__STPrivateServiceClient_applyIntroductionModel_forDSID_completionHandl
   }
 }
 
-- (void)isAllowFindMyFriendsModificationSetForDSID:(id)a3 completionHandler:(id)a4
+- (void)isAllowFindMyFriendsModificationSetForDSID:(id)d completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(STPrivateServiceClient *)self connection];
+  handlerCopy = handler;
+  dCopy = d;
+  connection = [(STPrivateServiceClient *)self connection];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __87__STPrivateServiceClient_isAllowFindMyFriendsModificationSetForDSID_completionHandler___block_invoke;
   v11[3] = &unk_1E7CE6CE8;
-  v12 = v6;
-  v9 = v6;
-  v10 = [v8 remoteObjectProxyWithErrorHandler:v11];
+  v12 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = [connection remoteObjectProxyWithErrorHandler:v11];
 
-  [v10 isAllowFindMyFriendsModificationSetForDSID:v7 completionHandler:v9];
+  [v10 isAllowFindMyFriendsModificationSetForDSID:dCopy completionHandler:v9];
 }
 
 void __87__STPrivateServiceClient_isAllowFindMyFriendsModificationSetForDSID_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -1558,9 +1558,9 @@ void __89__STPrivateServiceClient_updateAllowFindMyFriendsModification_forDSID_c
   }
 }
 
-- (id)shouldAllowOneMoreMinuteForBundleIdentifier:(id)a3 error:(id *)a4
+- (id)shouldAllowOneMoreMinuteForBundleIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v20 = 0;
   v21[0] = &v20;
   v21[1] = 0x3032000000;
@@ -1573,13 +1573,13 @@ void __89__STPrivateServiceClient_updateAllowFindMyFriendsModification_forDSID_c
   v17 = __Block_byref_object_copy__19;
   v18 = __Block_byref_object_dispose__19;
   v19 = 0;
-  v7 = [(STPrivateServiceClient *)self connection];
+  connection = [(STPrivateServiceClient *)self connection];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __76__STPrivateServiceClient_shouldAllowOneMoreMinuteForBundleIdentifier_error___block_invoke;
   v13[3] = &unk_1E7CE6BA8;
   v13[4] = &v20;
-  v8 = [v7 synchronousRemoteObjectProxyWithErrorHandler:v13];
+  v8 = [connection synchronousRemoteObjectProxyWithErrorHandler:v13];
 
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
@@ -1587,7 +1587,7 @@ void __89__STPrivateServiceClient_updateAllowFindMyFriendsModification_forDSID_c
   v12[3] = &unk_1E7CE71A0;
   v12[4] = &v20;
   v12[5] = &v14;
-  [v8 shouldAllowOneMoreMinuteForBundleIdentifier:v6 completionHandler:v12];
+  [v8 shouldAllowOneMoreMinuteForBundleIdentifier:identifierCopy completionHandler:v12];
   if (*(v21[0] + 40))
   {
     v9 = +[STLog privateService];
@@ -1596,9 +1596,9 @@ void __89__STPrivateServiceClient_updateAllowFindMyFriendsModification_forDSID_c
       [STPrivateServiceClient shouldAllowOneMoreMinuteForBundleIdentifier:v21 error:?];
     }
 
-    if (a4)
+    if (error)
     {
-      *a4 = *(v21[0] + 40);
+      *error = *(v21[0] + 40);
     }
   }
 
@@ -1620,9 +1620,9 @@ void __76__STPrivateServiceClient_shouldAllowOneMoreMinuteForBundleIdentifier_er
   *(v6 + 40) = v5;
 }
 
-- (id)shouldAllowOneMoreMinuteForWebDomain:(id)a3 error:(id *)a4
+- (id)shouldAllowOneMoreMinuteForWebDomain:(id)domain error:(id *)error
 {
-  v6 = a3;
+  domainCopy = domain;
   v20 = 0;
   v21[0] = &v20;
   v21[1] = 0x3032000000;
@@ -1635,13 +1635,13 @@ void __76__STPrivateServiceClient_shouldAllowOneMoreMinuteForBundleIdentifier_er
   v17 = __Block_byref_object_copy__19;
   v18 = __Block_byref_object_dispose__19;
   v19 = 0;
-  v7 = [(STPrivateServiceClient *)self connection];
+  connection = [(STPrivateServiceClient *)self connection];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __69__STPrivateServiceClient_shouldAllowOneMoreMinuteForWebDomain_error___block_invoke;
   v13[3] = &unk_1E7CE6BA8;
   v13[4] = &v20;
-  v8 = [v7 synchronousRemoteObjectProxyWithErrorHandler:v13];
+  v8 = [connection synchronousRemoteObjectProxyWithErrorHandler:v13];
 
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
@@ -1649,7 +1649,7 @@ void __76__STPrivateServiceClient_shouldAllowOneMoreMinuteForBundleIdentifier_er
   v12[3] = &unk_1E7CE71A0;
   v12[4] = &v20;
   v12[5] = &v14;
-  [v8 shouldAllowOneMoreMinuteForBundleIdentifier:v6 completionHandler:v12];
+  [v8 shouldAllowOneMoreMinuteForBundleIdentifier:domainCopy completionHandler:v12];
   if (*(v21[0] + 40))
   {
     v9 = +[STLog privateService];
@@ -1658,9 +1658,9 @@ void __76__STPrivateServiceClient_shouldAllowOneMoreMinuteForBundleIdentifier_er
       [STPrivateServiceClient shouldAllowOneMoreMinuteForWebDomain:v21 error:?];
     }
 
-    if (a4)
+    if (error)
     {
-      *a4 = *(v21[0] + 40);
+      *error = *(v21[0] + 40);
     }
   }
 
@@ -1682,9 +1682,9 @@ void __69__STPrivateServiceClient_shouldAllowOneMoreMinuteForWebDomain_error___b
   *(v6 + 40) = v5;
 }
 
-- (id)shouldAllowOneMoreMinuteForCategoryIdentifier:(id)a3 error:(id *)a4
+- (id)shouldAllowOneMoreMinuteForCategoryIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v20 = 0;
   v21[0] = &v20;
   v21[1] = 0x3032000000;
@@ -1697,13 +1697,13 @@ void __69__STPrivateServiceClient_shouldAllowOneMoreMinuteForWebDomain_error___b
   v17 = __Block_byref_object_copy__19;
   v18 = __Block_byref_object_dispose__19;
   v19 = 0;
-  v7 = [(STPrivateServiceClient *)self connection];
+  connection = [(STPrivateServiceClient *)self connection];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __78__STPrivateServiceClient_shouldAllowOneMoreMinuteForCategoryIdentifier_error___block_invoke;
   v13[3] = &unk_1E7CE6BA8;
   v13[4] = &v20;
-  v8 = [v7 synchronousRemoteObjectProxyWithErrorHandler:v13];
+  v8 = [connection synchronousRemoteObjectProxyWithErrorHandler:v13];
 
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
@@ -1711,7 +1711,7 @@ void __69__STPrivateServiceClient_shouldAllowOneMoreMinuteForWebDomain_error___b
   v12[3] = &unk_1E7CE71A0;
   v12[4] = &v20;
   v12[5] = &v14;
-  [v8 shouldAllowOneMoreMinuteForBundleIdentifier:v6 completionHandler:v12];
+  [v8 shouldAllowOneMoreMinuteForBundleIdentifier:identifierCopy completionHandler:v12];
   if (*(v21[0] + 40))
   {
     v9 = +[STLog privateService];
@@ -1720,9 +1720,9 @@ void __69__STPrivateServiceClient_shouldAllowOneMoreMinuteForWebDomain_error___b
       [STPrivateServiceClient shouldAllowOneMoreMinuteForCategoryIdentifier:v21 error:?];
     }
 
-    if (a4)
+    if (error)
     {
-      *a4 = *(v21[0] + 40);
+      *error = *(v21[0] + 40);
     }
   }
 
@@ -1744,17 +1744,17 @@ void __78__STPrivateServiceClient_shouldAllowOneMoreMinuteForCategoryIdentifier_
   *(v6 + 40) = v5;
 }
 
-- (void)forceFamilyFetchWithCompletionHandler:(id)a3
+- (void)forceFamilyFetchWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(STPrivateServiceClient *)self connection];
+  handlerCopy = handler;
+  connection = [(STPrivateServiceClient *)self connection];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __64__STPrivateServiceClient_forceFamilyFetchWithCompletionHandler___block_invoke;
   v8[3] = &unk_1E7CE6CE8;
-  v9 = v4;
-  v6 = v4;
-  v7 = [v5 remoteObjectProxyWithErrorHandler:v8];
+  v9 = handlerCopy;
+  v6 = handlerCopy;
+  v7 = [connection remoteObjectProxyWithErrorHandler:v8];
 
   [v7 forceFamilyFetchWithCompletionHandler:v6];
 }
@@ -1775,21 +1775,21 @@ void __64__STPrivateServiceClient_forceFamilyFetchWithCompletionHandler___block_
   }
 }
 
-- (void)deleteWebHistoryForURL:(id)a3 application:(id)a4 completionHandler:(id)a5
+- (void)deleteWebHistoryForURL:(id)l application:(id)application completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(STPrivateServiceClient *)self connection];
+  handlerCopy = handler;
+  applicationCopy = application;
+  lCopy = l;
+  connection = [(STPrivateServiceClient *)self connection];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __79__STPrivateServiceClient_deleteWebHistoryForURL_application_completionHandler___block_invoke;
   v14[3] = &unk_1E7CE6CE8;
-  v15 = v8;
-  v12 = v8;
-  v13 = [v11 remoteObjectProxyWithErrorHandler:v14];
+  v15 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = [connection remoteObjectProxyWithErrorHandler:v14];
 
-  [v13 deleteWebHistoryForURL:v10 webApplication:v9 completionHandler:v12];
+  [v13 deleteWebHistoryForURL:lCopy webApplication:applicationCopy completionHandler:v12];
 }
 
 void __79__STPrivateServiceClient_deleteWebHistoryForURL_application_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -1808,21 +1808,21 @@ void __79__STPrivateServiceClient_deleteWebHistoryForURL_application_completionH
   }
 }
 
-- (void)deleteWebHistoryForURLs:(id)a3 application:(id)a4 completionHandler:(id)a5
+- (void)deleteWebHistoryForURLs:(id)ls application:(id)application completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(STPrivateServiceClient *)self connection];
+  handlerCopy = handler;
+  applicationCopy = application;
+  lsCopy = ls;
+  connection = [(STPrivateServiceClient *)self connection];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __80__STPrivateServiceClient_deleteWebHistoryForURLs_application_completionHandler___block_invoke;
   v14[3] = &unk_1E7CE6CE8;
-  v15 = v8;
-  v12 = v8;
-  v13 = [v11 remoteObjectProxyWithErrorHandler:v14];
+  v15 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = [connection remoteObjectProxyWithErrorHandler:v14];
 
-  [v13 deleteWebHistoryForURLs:v10 webApplication:v9 completionHandler:v12];
+  [v13 deleteWebHistoryForURLs:lsCopy webApplication:applicationCopy completionHandler:v12];
 }
 
 void __80__STPrivateServiceClient_deleteWebHistoryForURLs_application_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -1841,21 +1841,21 @@ void __80__STPrivateServiceClient_deleteWebHistoryForURLs_application_completion
   }
 }
 
-- (void)deleteWebHistoryForDomain:(id)a3 application:(id)a4 completionHandler:(id)a5
+- (void)deleteWebHistoryForDomain:(id)domain application:(id)application completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(STPrivateServiceClient *)self connection];
+  handlerCopy = handler;
+  applicationCopy = application;
+  domainCopy = domain;
+  connection = [(STPrivateServiceClient *)self connection];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __82__STPrivateServiceClient_deleteWebHistoryForDomain_application_completionHandler___block_invoke;
   v14[3] = &unk_1E7CE6CE8;
-  v15 = v8;
-  v12 = v8;
-  v13 = [v11 remoteObjectProxyWithErrorHandler:v14];
+  v15 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = [connection remoteObjectProxyWithErrorHandler:v14];
 
-  [v13 deleteWebHistoryForDomain:v10 webApplication:v9 completionHandler:v12];
+  [v13 deleteWebHistoryForDomain:domainCopy webApplication:applicationCopy completionHandler:v12];
 }
 
 void __82__STPrivateServiceClient_deleteWebHistoryForDomain_application_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -1874,21 +1874,21 @@ void __82__STPrivateServiceClient_deleteWebHistoryForDomain_application_completi
   }
 }
 
-- (void)deleteWebHistoryDuringInterval:(id)a3 application:(id)a4 completionHandler:(id)a5
+- (void)deleteWebHistoryDuringInterval:(id)interval application:(id)application completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(STPrivateServiceClient *)self connection];
+  handlerCopy = handler;
+  applicationCopy = application;
+  intervalCopy = interval;
+  connection = [(STPrivateServiceClient *)self connection];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __87__STPrivateServiceClient_deleteWebHistoryDuringInterval_application_completionHandler___block_invoke;
   v14[3] = &unk_1E7CE6CE8;
-  v15 = v8;
-  v12 = v8;
-  v13 = [v11 remoteObjectProxyWithErrorHandler:v14];
+  v15 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = [connection remoteObjectProxyWithErrorHandler:v14];
 
-  [v13 deleteWebHistoryDuringInterval:v10 webApplication:v9 completionHandler:v12];
+  [v13 deleteWebHistoryDuringInterval:intervalCopy webApplication:applicationCopy completionHandler:v12];
 }
 
 void __87__STPrivateServiceClient_deleteWebHistoryDuringInterval_application_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -1907,20 +1907,20 @@ void __87__STPrivateServiceClient_deleteWebHistoryDuringInterval_application_com
   }
 }
 
-- (void)deleteAllWebHistoryForApplication:(id)a3 completionHandler:(id)a4
+- (void)deleteAllWebHistoryForApplication:(id)application completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(STPrivateServiceClient *)self connection];
+  handlerCopy = handler;
+  applicationCopy = application;
+  connection = [(STPrivateServiceClient *)self connection];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __78__STPrivateServiceClient_deleteAllWebHistoryForApplication_completionHandler___block_invoke;
   v11[3] = &unk_1E7CE6CE8;
-  v12 = v6;
-  v9 = v6;
-  v10 = [v8 remoteObjectProxyWithErrorHandler:v11];
+  v12 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = [connection remoteObjectProxyWithErrorHandler:v11];
 
-  [v10 deleteAllWebApplicationHistory:v7 completionHandler:v9];
+  [v10 deleteAllWebApplicationHistory:applicationCopy completionHandler:v9];
 }
 
 void __78__STPrivateServiceClient_deleteAllWebHistoryForApplication_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -1939,22 +1939,22 @@ void __78__STPrivateServiceClient_deleteAllWebHistoryForApplication_completionHa
   }
 }
 
-- (void)deleteWebHistoryForURL:(id)a3 application:(id)a4 profileIdentifier:(id)a5 completionHandler:(id)a6
+- (void)deleteWebHistoryForURL:(id)l application:(id)application profileIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [(STPrivateServiceClient *)self connection];
+  handlerCopy = handler;
+  identifierCopy = identifier;
+  applicationCopy = application;
+  lCopy = l;
+  connection = [(STPrivateServiceClient *)self connection];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __97__STPrivateServiceClient_deleteWebHistoryForURL_application_profileIdentifier_completionHandler___block_invoke;
   v17[3] = &unk_1E7CE6CE8;
-  v18 = v10;
-  v15 = v10;
-  v16 = [v14 remoteObjectProxyWithErrorHandler:v17];
+  v18 = handlerCopy;
+  v15 = handlerCopy;
+  v16 = [connection remoteObjectProxyWithErrorHandler:v17];
 
-  [v16 deleteWebHistoryForURL:v13 webApplication:v12 profileIdentifier:v11 completionHandler:v15];
+  [v16 deleteWebHistoryForURL:lCopy webApplication:applicationCopy profileIdentifier:identifierCopy completionHandler:v15];
 }
 
 void __97__STPrivateServiceClient_deleteWebHistoryForURL_application_profileIdentifier_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -1973,22 +1973,22 @@ void __97__STPrivateServiceClient_deleteWebHistoryForURL_application_profileIden
   }
 }
 
-- (void)deleteWebHistoryForURLs:(id)a3 application:(id)a4 profileIdentifier:(id)a5 completionHandler:(id)a6
+- (void)deleteWebHistoryForURLs:(id)ls application:(id)application profileIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [(STPrivateServiceClient *)self connection];
+  handlerCopy = handler;
+  identifierCopy = identifier;
+  applicationCopy = application;
+  lsCopy = ls;
+  connection = [(STPrivateServiceClient *)self connection];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __98__STPrivateServiceClient_deleteWebHistoryForURLs_application_profileIdentifier_completionHandler___block_invoke;
   v17[3] = &unk_1E7CE6CE8;
-  v18 = v10;
-  v15 = v10;
-  v16 = [v14 remoteObjectProxyWithErrorHandler:v17];
+  v18 = handlerCopy;
+  v15 = handlerCopy;
+  v16 = [connection remoteObjectProxyWithErrorHandler:v17];
 
-  [v16 deleteWebHistoryForURLs:v13 webApplication:v12 profileIdentifier:v11 completionHandler:v15];
+  [v16 deleteWebHistoryForURLs:lsCopy webApplication:applicationCopy profileIdentifier:identifierCopy completionHandler:v15];
 }
 
 void __98__STPrivateServiceClient_deleteWebHistoryForURLs_application_profileIdentifier_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -2007,22 +2007,22 @@ void __98__STPrivateServiceClient_deleteWebHistoryForURLs_application_profileIde
   }
 }
 
-- (void)deleteWebHistoryForDomain:(id)a3 application:(id)a4 profileIdentifier:(id)a5 completionHandler:(id)a6
+- (void)deleteWebHistoryForDomain:(id)domain application:(id)application profileIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [(STPrivateServiceClient *)self connection];
+  handlerCopy = handler;
+  identifierCopy = identifier;
+  applicationCopy = application;
+  domainCopy = domain;
+  connection = [(STPrivateServiceClient *)self connection];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __100__STPrivateServiceClient_deleteWebHistoryForDomain_application_profileIdentifier_completionHandler___block_invoke;
   v17[3] = &unk_1E7CE6CE8;
-  v18 = v10;
-  v15 = v10;
-  v16 = [v14 remoteObjectProxyWithErrorHandler:v17];
+  v18 = handlerCopy;
+  v15 = handlerCopy;
+  v16 = [connection remoteObjectProxyWithErrorHandler:v17];
 
-  [v16 deleteWebHistoryForDomain:v13 webApplication:v12 profileIdentifier:v11 completionHandler:v15];
+  [v16 deleteWebHistoryForDomain:domainCopy webApplication:applicationCopy profileIdentifier:identifierCopy completionHandler:v15];
 }
 
 void __100__STPrivateServiceClient_deleteWebHistoryForDomain_application_profileIdentifier_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -2041,22 +2041,22 @@ void __100__STPrivateServiceClient_deleteWebHistoryForDomain_application_profile
   }
 }
 
-- (void)deleteWebHistoryDuringInterval:(id)a3 application:(id)a4 profileIdentifier:(id)a5 completionHandler:(id)a6
+- (void)deleteWebHistoryDuringInterval:(id)interval application:(id)application profileIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [(STPrivateServiceClient *)self connection];
+  handlerCopy = handler;
+  identifierCopy = identifier;
+  applicationCopy = application;
+  intervalCopy = interval;
+  connection = [(STPrivateServiceClient *)self connection];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __105__STPrivateServiceClient_deleteWebHistoryDuringInterval_application_profileIdentifier_completionHandler___block_invoke;
   v17[3] = &unk_1E7CE6CE8;
-  v18 = v10;
-  v15 = v10;
-  v16 = [v14 remoteObjectProxyWithErrorHandler:v17];
+  v18 = handlerCopy;
+  v15 = handlerCopy;
+  v16 = [connection remoteObjectProxyWithErrorHandler:v17];
 
-  [v16 deleteWebHistoryDuringInterval:v13 webApplication:v12 profileIdentifier:v11 completionHandler:v15];
+  [v16 deleteWebHistoryDuringInterval:intervalCopy webApplication:applicationCopy profileIdentifier:identifierCopy completionHandler:v15];
 }
 
 void __105__STPrivateServiceClient_deleteWebHistoryDuringInterval_application_profileIdentifier_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -2075,21 +2075,21 @@ void __105__STPrivateServiceClient_deleteWebHistoryDuringInterval_application_pr
   }
 }
 
-- (void)deleteAllWebHistoryForApplication:(id)a3 profileIdentifier:(id)a4 completionHandler:(id)a5
+- (void)deleteAllWebHistoryForApplication:(id)application profileIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(STPrivateServiceClient *)self connection];
+  handlerCopy = handler;
+  identifierCopy = identifier;
+  applicationCopy = application;
+  connection = [(STPrivateServiceClient *)self connection];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __96__STPrivateServiceClient_deleteAllWebHistoryForApplication_profileIdentifier_completionHandler___block_invoke;
   v14[3] = &unk_1E7CE6CE8;
-  v15 = v8;
-  v12 = v8;
-  v13 = [v11 remoteObjectProxyWithErrorHandler:v14];
+  v15 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = [connection remoteObjectProxyWithErrorHandler:v14];
 
-  [v13 deleteAllWebApplicationHistory:v10 profileIdentifier:v9 completionHandler:v12];
+  [v13 deleteAllWebApplicationHistory:applicationCopy profileIdentifier:identifierCopy completionHandler:v12];
 }
 
 void __96__STPrivateServiceClient_deleteAllWebHistoryForApplication_profileIdentifier_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -2276,7 +2276,7 @@ void __79__STPrivateServiceClient_fetchContactManagementStateForDSID_completionH
 
 - (void)contactsEditable
 {
-  OUTLINED_FUNCTION_0_4(a1, *MEMORY[0x1E69E9840]);
+  OUTLINED_FUNCTION_0_4(self, *MEMORY[0x1E69E9840]);
   OUTLINED_FUNCTION_4_1();
   OUTLINED_FUNCTION_0_1(&dword_1B831F000, v1, v2, "Failed to get private service proxy with error: %{public}@", v3, v4, v5, v6, v8);
   v7 = *MEMORY[0x1E69E9840];

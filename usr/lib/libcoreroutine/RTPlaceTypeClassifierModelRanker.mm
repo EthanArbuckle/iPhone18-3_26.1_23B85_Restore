@@ -1,18 +1,18 @@
 @interface RTPlaceTypeClassifierModelRanker
 + (id)URLOfModelInThisBundle;
-+ (void)loadContentsOfURL:(id)a3 configuration:(id)a4 completionHandler:(id)a5;
-+ (void)loadWithConfiguration:(id)a3 completionHandler:(id)a4;
++ (void)loadContentsOfURL:(id)l configuration:(id)configuration completionHandler:(id)handler;
++ (void)loadWithConfiguration:(id)configuration completionHandler:(id)handler;
 - (RTPlaceTypeClassifierModelRanker)init;
-- (RTPlaceTypeClassifierModelRanker)initWithConfiguration:(id)a3 error:(id *)a4;
-- (RTPlaceTypeClassifierModelRanker)initWithContentsOfURL:(id)a3 configuration:(id)a4 error:(id *)a5;
-- (RTPlaceTypeClassifierModelRanker)initWithContentsOfURL:(id)a3 error:(id *)a4;
-- (RTPlaceTypeClassifierModelRanker)initWithMLModel:(id)a3;
-- (id)predictionFromFeatures:(id)a3 error:(id *)a4;
-- (id)predictionFromFeatures:(id)a3 options:(id)a4 error:(id *)a5;
-- (id)predictionFromMean_daily_longest_charging_duration_bucketed:(double)a3 mean_daily_longest_screen_lock_duration_bucketed:(double)a4 mean_daily_longest_uninterrupted_WiFi_connection_duration_bucketed:(double)a5 mean_daily_total_charging_duration_bucketed:(double)a6 mean_daily_total_screen_lock_duration_bucketed:(double)a7 mean_daily_total_uninterrupted_WiFi_connection_duration_bucketed:(double)a8 mean_daily_uninterrupted_WiFi_connection_stability_ratio_bucketed:(double)a9 median_daily_longest_charging_duration_bucketed:(double)a10 median_daily_longest_screen_lock_duration_bucketed:(double)a11 median_daily_longest_uninterrupted_WiFi_connection_duration_bucketed:(double)a12 median_daily_total_charging_duration_bucketed:(double)a13 median_daily_total_screen_lock_duration_bucketed:(double)a14 median_daily_total_uninterrupted_WiFi_connection_duration_bucketed:(double)a15 percentage_of_days_with_charging_bucketed:(double)a16 percentage_of_days_with_screen_lock_bucketed:(double)a17 percentage_of_days_with_uninterrupted_WiFi_connection_bucketed:(double)a18 is_iPhone:(double)a19 is_iPad:(double)a20 is_Watch:(double)a21 error:(id *)a22;
-- (id)predictionsFromInputs:(id)a3 options:(id)a4 error:(id *)a5;
-- (void)predictionFromFeatures:(id)a3 completionHandler:(id)a4;
-- (void)predictionFromFeatures:(id)a3 options:(id)a4 completionHandler:(id)a5;
+- (RTPlaceTypeClassifierModelRanker)initWithConfiguration:(id)configuration error:(id *)error;
+- (RTPlaceTypeClassifierModelRanker)initWithContentsOfURL:(id)l configuration:(id)configuration error:(id *)error;
+- (RTPlaceTypeClassifierModelRanker)initWithContentsOfURL:(id)l error:(id *)error;
+- (RTPlaceTypeClassifierModelRanker)initWithMLModel:(id)model;
+- (id)predictionFromFeatures:(id)features error:(id *)error;
+- (id)predictionFromFeatures:(id)features options:(id)options error:(id *)error;
+- (id)predictionFromMean_daily_longest_charging_duration_bucketed:(double)mean_daily_longest_charging_duration_bucketed mean_daily_longest_screen_lock_duration_bucketed:(double)mean_daily_longest_screen_lock_duration_bucketed mean_daily_longest_uninterrupted_WiFi_connection_duration_bucketed:(double)fi_connection_duration_bucketed mean_daily_total_charging_duration_bucketed:(double)mean_daily_total_charging_duration_bucketed mean_daily_total_screen_lock_duration_bucketed:(double)mean_daily_total_screen_lock_duration_bucketed mean_daily_total_uninterrupted_WiFi_connection_duration_bucketed:(double)wiFi_connection_duration_bucketed mean_daily_uninterrupted_WiFi_connection_stability_ratio_bucketed:(double)fi_connection_stability_ratio_bucketed median_daily_longest_charging_duration_bucketed:(double)self0 median_daily_longest_screen_lock_duration_bucketed:(double)self1 median_daily_longest_uninterrupted_WiFi_connection_duration_bucketed:(double)self2 median_daily_total_charging_duration_bucketed:(double)self3 median_daily_total_screen_lock_duration_bucketed:(double)self4 median_daily_total_uninterrupted_WiFi_connection_duration_bucketed:(double)self5 percentage_of_days_with_charging_bucketed:(double)self6 percentage_of_days_with_screen_lock_bucketed:(double)self7 percentage_of_days_with_uninterrupted_WiFi_connection_bucketed:(double)self8 is_iPhone:(double)self9 is_iPad:(double)pad is_Watch:(double)watch error:(id *)error;
+- (id)predictionsFromInputs:(id)inputs options:(id)options error:(id *)error;
+- (void)predictionFromFeatures:(id)features completionHandler:(id)handler;
+- (void)predictionFromFeatures:(id)features options:(id)options completionHandler:(id)handler;
 @end
 
 @implementation RTPlaceTypeClassifierModelRanker
@@ -41,10 +41,10 @@
   return v4;
 }
 
-- (RTPlaceTypeClassifierModelRanker)initWithMLModel:(id)a3
+- (RTPlaceTypeClassifierModelRanker)initWithMLModel:(id)model
 {
-  v5 = a3;
-  if (v5)
+  modelCopy = model;
+  if (modelCopy)
   {
     v10.receiver = self;
     v10.super_class = RTPlaceTypeClassifierModelRanker;
@@ -52,91 +52,91 @@
     v7 = v6;
     if (v6)
     {
-      objc_storeStrong(&v6->_model, a3);
+      objc_storeStrong(&v6->_model, model);
     }
 
     self = v7;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 - (RTPlaceTypeClassifierModelRanker)init
 {
-  v3 = [objc_opt_class() URLOfModelInThisBundle];
-  v4 = [(RTPlaceTypeClassifierModelRanker *)self initWithContentsOfURL:v3 error:0];
+  uRLOfModelInThisBundle = [objc_opt_class() URLOfModelInThisBundle];
+  v4 = [(RTPlaceTypeClassifierModelRanker *)self initWithContentsOfURL:uRLOfModelInThisBundle error:0];
 
   return v4;
 }
 
-- (RTPlaceTypeClassifierModelRanker)initWithConfiguration:(id)a3 error:(id *)a4
+- (RTPlaceTypeClassifierModelRanker)initWithConfiguration:(id)configuration error:(id *)error
 {
-  v6 = a3;
-  v7 = [objc_opt_class() URLOfModelInThisBundle];
-  v8 = [(RTPlaceTypeClassifierModelRanker *)self initWithContentsOfURL:v7 configuration:v6 error:a4];
+  configurationCopy = configuration;
+  uRLOfModelInThisBundle = [objc_opt_class() URLOfModelInThisBundle];
+  v8 = [(RTPlaceTypeClassifierModelRanker *)self initWithContentsOfURL:uRLOfModelInThisBundle configuration:configurationCopy error:error];
 
   return v8;
 }
 
-- (RTPlaceTypeClassifierModelRanker)initWithContentsOfURL:(id)a3 error:(id *)a4
+- (RTPlaceTypeClassifierModelRanker)initWithContentsOfURL:(id)l error:(id *)error
 {
-  v5 = [MEMORY[0x277CBFF20] modelWithContentsOfURL:a3 error:a4];
+  v5 = [MEMORY[0x277CBFF20] modelWithContentsOfURL:l error:error];
   if (v5)
   {
     self = [(RTPlaceTypeClassifierModelRanker *)self initWithMLModel:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (RTPlaceTypeClassifierModelRanker)initWithContentsOfURL:(id)a3 configuration:(id)a4 error:(id *)a5
+- (RTPlaceTypeClassifierModelRanker)initWithContentsOfURL:(id)l configuration:(id)configuration error:(id *)error
 {
-  v6 = [MEMORY[0x277CBFF20] modelWithContentsOfURL:a3 configuration:a4 error:a5];
+  v6 = [MEMORY[0x277CBFF20] modelWithContentsOfURL:l configuration:configuration error:error];
   if (v6)
   {
     self = [(RTPlaceTypeClassifierModelRanker *)self initWithMLModel:v6];
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-+ (void)loadWithConfiguration:(id)a3 completionHandler:(id)a4
++ (void)loadWithConfiguration:(id)configuration completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 URLOfModelInThisBundle];
-  [a1 loadContentsOfURL:v8 configuration:v7 completionHandler:v6];
+  handlerCopy = handler;
+  configurationCopy = configuration;
+  uRLOfModelInThisBundle = [self URLOfModelInThisBundle];
+  [self loadContentsOfURL:uRLOfModelInThisBundle configuration:configurationCopy completionHandler:handlerCopy];
 }
 
-+ (void)loadContentsOfURL:(id)a3 configuration:(id)a4 completionHandler:(id)a5
++ (void)loadContentsOfURL:(id)l configuration:(id)configuration completionHandler:(id)handler
 {
-  v7 = a5;
+  handlerCopy = handler;
   v8 = MEMORY[0x277CBFF20];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __86__RTPlaceTypeClassifierModelRanker_loadContentsOfURL_configuration_completionHandler___block_invoke;
   v10[3] = &unk_2788C8E38;
-  v11 = v7;
-  v9 = v7;
-  [v8 loadContentsOfURL:a3 configuration:a4 completionHandler:v10];
+  v11 = handlerCopy;
+  v9 = handlerCopy;
+  [v8 loadContentsOfURL:l configuration:configuration completionHandler:v10];
 }
 
 void __86__RTPlaceTypeClassifierModelRanker_loadContentsOfURL_configuration_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -154,22 +154,22 @@ void __86__RTPlaceTypeClassifierModelRanker_loadContentsOfURL_configuration_comp
   }
 }
 
-- (id)predictionFromFeatures:(id)a3 error:(id *)a4
+- (id)predictionFromFeatures:(id)features error:(id *)error
 {
   v6 = MEMORY[0x277CBFF68];
-  v7 = a3;
+  featuresCopy = features;
   v8 = objc_alloc_init(v6);
-  v9 = [(RTPlaceTypeClassifierModelRanker *)self predictionFromFeatures:v7 options:v8 error:a4];
+  v9 = [(RTPlaceTypeClassifierModelRanker *)self predictionFromFeatures:featuresCopy options:v8 error:error];
 
   return v9;
 }
 
-- (id)predictionFromFeatures:(id)a3 options:(id)a4 error:(id *)a5
+- (id)predictionFromFeatures:(id)features options:(id)options error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(RTPlaceTypeClassifierModelRanker *)self model];
-  v11 = [v10 predictionFromFeatures:v9 options:v8 error:a5];
+  optionsCopy = options;
+  featuresCopy = features;
+  model = [(RTPlaceTypeClassifierModelRanker *)self model];
+  v11 = [model predictionFromFeatures:featuresCopy options:optionsCopy error:error];
 
   if (v11)
   {
@@ -187,18 +187,18 @@ void __86__RTPlaceTypeClassifierModelRanker_loadContentsOfURL_configuration_comp
   return v14;
 }
 
-- (void)predictionFromFeatures:(id)a3 completionHandler:(id)a4
+- (void)predictionFromFeatures:(id)features completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(RTPlaceTypeClassifierModelRanker *)self model];
+  handlerCopy = handler;
+  featuresCopy = features;
+  model = [(RTPlaceTypeClassifierModelRanker *)self model];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __77__RTPlaceTypeClassifierModelRanker_predictionFromFeatures_completionHandler___block_invoke;
   v10[3] = &unk_2788C8E60;
-  v11 = v6;
-  v9 = v6;
-  [v8 predictionFromFeatures:v7 completionHandler:v10];
+  v11 = handlerCopy;
+  v9 = handlerCopy;
+  [model predictionFromFeatures:featuresCopy completionHandler:v10];
 }
 
 void __77__RTPlaceTypeClassifierModelRanker_predictionFromFeatures_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -224,19 +224,19 @@ void __77__RTPlaceTypeClassifierModelRanker_predictionFromFeatures_completionHan
   }
 }
 
-- (void)predictionFromFeatures:(id)a3 options:(id)a4 completionHandler:(id)a5
+- (void)predictionFromFeatures:(id)features options:(id)options completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(RTPlaceTypeClassifierModelRanker *)self model];
+  handlerCopy = handler;
+  optionsCopy = options;
+  featuresCopy = features;
+  model = [(RTPlaceTypeClassifierModelRanker *)self model];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __85__RTPlaceTypeClassifierModelRanker_predictionFromFeatures_options_completionHandler___block_invoke;
   v13[3] = &unk_2788C8E60;
-  v14 = v8;
-  v12 = v8;
-  [v11 predictionFromFeatures:v10 options:v9 completionHandler:v13];
+  v14 = handlerCopy;
+  v12 = handlerCopy;
+  [model predictionFromFeatures:featuresCopy options:optionsCopy completionHandler:v13];
 }
 
 void __85__RTPlaceTypeClassifierModelRanker_predictionFromFeatures_options_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -262,21 +262,21 @@ void __85__RTPlaceTypeClassifierModelRanker_predictionFromFeatures_options_compl
   }
 }
 
-- (id)predictionFromMean_daily_longest_charging_duration_bucketed:(double)a3 mean_daily_longest_screen_lock_duration_bucketed:(double)a4 mean_daily_longest_uninterrupted_WiFi_connection_duration_bucketed:(double)a5 mean_daily_total_charging_duration_bucketed:(double)a6 mean_daily_total_screen_lock_duration_bucketed:(double)a7 mean_daily_total_uninterrupted_WiFi_connection_duration_bucketed:(double)a8 mean_daily_uninterrupted_WiFi_connection_stability_ratio_bucketed:(double)a9 median_daily_longest_charging_duration_bucketed:(double)a10 median_daily_longest_screen_lock_duration_bucketed:(double)a11 median_daily_longest_uninterrupted_WiFi_connection_duration_bucketed:(double)a12 median_daily_total_charging_duration_bucketed:(double)a13 median_daily_total_screen_lock_duration_bucketed:(double)a14 median_daily_total_uninterrupted_WiFi_connection_duration_bucketed:(double)a15 percentage_of_days_with_charging_bucketed:(double)a16 percentage_of_days_with_screen_lock_bucketed:(double)a17 percentage_of_days_with_uninterrupted_WiFi_connection_bucketed:(double)a18 is_iPhone:(double)a19 is_iPad:(double)a20 is_Watch:(double)a21 error:(id *)a22
+- (id)predictionFromMean_daily_longest_charging_duration_bucketed:(double)mean_daily_longest_charging_duration_bucketed mean_daily_longest_screen_lock_duration_bucketed:(double)mean_daily_longest_screen_lock_duration_bucketed mean_daily_longest_uninterrupted_WiFi_connection_duration_bucketed:(double)fi_connection_duration_bucketed mean_daily_total_charging_duration_bucketed:(double)mean_daily_total_charging_duration_bucketed mean_daily_total_screen_lock_duration_bucketed:(double)mean_daily_total_screen_lock_duration_bucketed mean_daily_total_uninterrupted_WiFi_connection_duration_bucketed:(double)wiFi_connection_duration_bucketed mean_daily_uninterrupted_WiFi_connection_stability_ratio_bucketed:(double)fi_connection_stability_ratio_bucketed median_daily_longest_charging_duration_bucketed:(double)self0 median_daily_longest_screen_lock_duration_bucketed:(double)self1 median_daily_longest_uninterrupted_WiFi_connection_duration_bucketed:(double)self2 median_daily_total_charging_duration_bucketed:(double)self3 median_daily_total_screen_lock_duration_bucketed:(double)self4 median_daily_total_uninterrupted_WiFi_connection_duration_bucketed:(double)self5 percentage_of_days_with_charging_bucketed:(double)self6 percentage_of_days_with_screen_lock_bucketed:(double)self7 percentage_of_days_with_uninterrupted_WiFi_connection_bucketed:(double)self8 is_iPhone:(double)self9 is_iPad:(double)pad is_Watch:(double)watch error:(id *)error
 {
-  v24 = [[RTPlaceTypeClassifierModelRankerInput alloc] initWithMean_daily_longest_charging_duration_bucketed:a3 mean_daily_longest_screen_lock_duration_bucketed:a4 mean_daily_longest_uninterrupted_WiFi_connection_duration_bucketed:a5 mean_daily_total_charging_duration_bucketed:a6 mean_daily_total_screen_lock_duration_bucketed:a7 mean_daily_total_uninterrupted_WiFi_connection_duration_bucketed:a8 mean_daily_uninterrupted_WiFi_connection_stability_ratio_bucketed:a9 median_daily_longest_charging_duration_bucketed:a10 median_daily_longest_screen_lock_duration_bucketed:*&a11 median_daily_longest_uninterrupted_WiFi_connection_duration_bucketed:*&a12 median_daily_total_charging_duration_bucketed:*&a13 median_daily_total_screen_lock_duration_bucketed:*&a14 median_daily_total_uninterrupted_WiFi_connection_duration_bucketed:*&a15 percentage_of_days_with_charging_bucketed:*&a16 percentage_of_days_with_screen_lock_bucketed:*&a17 percentage_of_days_with_uninterrupted_WiFi_connection_bucketed:*&a18 is_iPhone:*&a19 is_iPad:*&a20 is_Watch:*&a21];
-  v25 = [(RTPlaceTypeClassifierModelRanker *)self predictionFromFeatures:v24 error:a22];
+  v24 = [[RTPlaceTypeClassifierModelRankerInput alloc] initWithMean_daily_longest_charging_duration_bucketed:mean_daily_longest_charging_duration_bucketed mean_daily_longest_screen_lock_duration_bucketed:mean_daily_longest_screen_lock_duration_bucketed mean_daily_longest_uninterrupted_WiFi_connection_duration_bucketed:fi_connection_duration_bucketed mean_daily_total_charging_duration_bucketed:mean_daily_total_charging_duration_bucketed mean_daily_total_screen_lock_duration_bucketed:mean_daily_total_screen_lock_duration_bucketed mean_daily_total_uninterrupted_WiFi_connection_duration_bucketed:wiFi_connection_duration_bucketed mean_daily_uninterrupted_WiFi_connection_stability_ratio_bucketed:fi_connection_stability_ratio_bucketed median_daily_longest_charging_duration_bucketed:median_daily_longest_charging_duration_bucketed median_daily_longest_screen_lock_duration_bucketed:*&median_daily_longest_screen_lock_duration_bucketed median_daily_longest_uninterrupted_WiFi_connection_duration_bucketed:*&median_daily_longest_uninterrupted_WiFi_connection_duration_bucketed median_daily_total_charging_duration_bucketed:*&median_daily_total_charging_duration_bucketed median_daily_total_screen_lock_duration_bucketed:*&median_daily_total_screen_lock_duration_bucketed median_daily_total_uninterrupted_WiFi_connection_duration_bucketed:*&median_daily_total_uninterrupted_WiFi_connection_duration_bucketed percentage_of_days_with_charging_bucketed:*&percentage_of_days_with_charging_bucketed percentage_of_days_with_screen_lock_bucketed:*&percentage_of_days_with_screen_lock_bucketed percentage_of_days_with_uninterrupted_WiFi_connection_bucketed:*&fi_connection_bucketed is_iPhone:*&phone is_iPad:*&pad is_Watch:*&watch];
+  v25 = [(RTPlaceTypeClassifierModelRanker *)self predictionFromFeatures:v24 error:error];
 
   return v25;
 }
 
-- (id)predictionsFromInputs:(id)a3 options:(id)a4 error:(id *)a5
+- (id)predictionsFromInputs:(id)inputs options:(id)options error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [objc_alloc(MEMORY[0x277CBFEB0]) initWithFeatureProviderArray:v8];
-  v11 = [(RTPlaceTypeClassifierModelRanker *)self model];
-  v12 = [v11 predictionsFromBatch:v10 options:v9 error:a5];
+  inputsCopy = inputs;
+  optionsCopy = options;
+  v10 = [objc_alloc(MEMORY[0x277CBFEB0]) initWithFeatureProviderArray:inputsCopy];
+  model = [(RTPlaceTypeClassifierModelRanker *)self model];
+  v12 = [model predictionsFromBatch:v10 options:optionsCopy error:error];
 
   if (v12)
   {

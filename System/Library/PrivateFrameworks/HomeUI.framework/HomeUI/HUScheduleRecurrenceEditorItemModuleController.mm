@@ -1,32 +1,32 @@
 @interface HUScheduleRecurrenceEditorItemModuleController
-- (Class)cellClassForItem:(id)a3;
+- (Class)cellClassForItem:(id)item;
 - (id)_editorItemModule;
-- (unint64_t)didSelectItem:(id)a3;
-- (void)dayOfWeekPickerCell:(id)a3 didChangeSelectedRecurrences:(id)a4;
-- (void)setupCell:(id)a3 forItem:(id)a4;
-- (void)updateCell:(id)a3 forItem:(id)a4 animated:(BOOL)a5;
+- (unint64_t)didSelectItem:(id)item;
+- (void)dayOfWeekPickerCell:(id)cell didChangeSelectedRecurrences:(id)recurrences;
+- (void)setupCell:(id)cell forItem:(id)item;
+- (void)updateCell:(id)cell forItem:(id)item animated:(BOOL)animated;
 @end
 
 @implementation HUScheduleRecurrenceEditorItemModuleController
 
-- (Class)cellClassForItem:(id)a3
+- (Class)cellClassForItem:(id)item
 {
-  v4 = a3;
-  v5 = [(HUScheduleRecurrenceEditorItemModuleController *)self _editorItemModule];
-  v6 = [v5 dailyOptionItem];
-  if ([v4 isEqual:v6])
+  itemCopy = item;
+  _editorItemModule = [(HUScheduleRecurrenceEditorItemModuleController *)self _editorItemModule];
+  dailyOptionItem = [_editorItemModule dailyOptionItem];
+  if ([itemCopy isEqual:dailyOptionItem])
   {
   }
 
   else
   {
-    v7 = [v5 weeklyOptionItem];
-    v8 = [v4 isEqual:v7];
+    weeklyOptionItem = [_editorItemModule weeklyOptionItem];
+    v8 = [itemCopy isEqual:weeklyOptionItem];
 
     if ((v8 & 1) == 0)
     {
-      v9 = [v5 daysOfWeekPickerItem];
-      [v4 isEqual:v9];
+      daysOfWeekPickerItem = [_editorItemModule daysOfWeekPickerItem];
+      [itemCopy isEqual:daysOfWeekPickerItem];
     }
   }
 
@@ -35,15 +35,15 @@
   return v10;
 }
 
-- (void)setupCell:(id)a3 forItem:(id)a4
+- (void)setupCell:(id)cell forItem:(id)item
 {
-  v6 = a3;
+  cellCopy = cell;
   v14.receiver = self;
   v14.super_class = HUScheduleRecurrenceEditorItemModuleController;
-  [(HUItemModuleController *)&v14 setupCell:v6 forItem:a4];
-  v7 = [(HUScheduleRecurrenceEditorItemModuleController *)self _editorItemModule];
+  [(HUItemModuleController *)&v14 setupCell:cellCopy forItem:item];
+  _editorItemModule = [(HUScheduleRecurrenceEditorItemModuleController *)self _editorItemModule];
   objc_opt_class();
-  v8 = v6;
+  v8 = cellCopy;
   if (objc_opt_isKindOfClass())
   {
     v9 = v8;
@@ -59,25 +59,25 @@
   if (v10)
   {
     v11 = MEMORY[0x277CBEB98];
-    v12 = [v7 initialRecurrences];
-    v13 = [v11 setWithArray:v12];
+    initialRecurrences = [_editorItemModule initialRecurrences];
+    v13 = [v11 setWithArray:initialRecurrences];
     [v10 setSelectedRecurrences:v13];
 
     [v10 setDelegate:self];
   }
 }
 
-- (void)updateCell:(id)a3 forItem:(id)a4 animated:(BOOL)a5
+- (void)updateCell:(id)cell forItem:(id)item animated:(BOOL)animated
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  animatedCopy = animated;
+  cellCopy = cell;
+  itemCopy = item;
   v22.receiver = self;
   v22.super_class = HUScheduleRecurrenceEditorItemModuleController;
-  [(HUItemModuleController *)&v22 updateCell:v8 forItem:v9 animated:v5];
-  v10 = [(HUScheduleRecurrenceEditorItemModuleController *)self _editorItemModule];
+  [(HUItemModuleController *)&v22 updateCell:cellCopy forItem:itemCopy animated:animatedCopy];
+  _editorItemModule = [(HUScheduleRecurrenceEditorItemModuleController *)self _editorItemModule];
   objc_opt_class();
-  v11 = v8;
+  v11 = cellCopy;
   if (objc_opt_isKindOfClass())
   {
     v12 = v11;
@@ -92,15 +92,15 @@
 
   if (v13)
   {
-    v14 = [v10 dailyOptionItem];
-    if ([v9 isEqual:v14])
+    dailyOptionItem = [_editorItemModule dailyOptionItem];
+    if ([itemCopy isEqual:dailyOptionItem])
     {
     }
 
     else
     {
-      v15 = [v10 weeklyOptionItem];
-      v16 = [v9 isEqual:v15];
+      weeklyOptionItem = [_editorItemModule weeklyOptionItem];
+      v16 = [itemCopy isEqual:weeklyOptionItem];
 
       if (!v16)
       {
@@ -108,8 +108,8 @@
       }
     }
 
-    v17 = [v9 latestResults];
-    v18 = [v17 objectForKeyedSubscript:*MEMORY[0x277D13FE8]];
+    latestResults = [itemCopy latestResults];
+    v18 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13FE8]];
     if ([v18 BOOLValue])
     {
       v19 = 3;
@@ -123,86 +123,86 @@
     [v13 setAccessoryType:v19];
 
     [v13 setDisabled:0];
-    v20 = [v9 latestResults];
-    v21 = [v20 objectForKeyedSubscript:*MEMORY[0x277D13DC8]];
+    latestResults2 = [itemCopy latestResults];
+    v21 = [latestResults2 objectForKeyedSubscript:*MEMORY[0x277D13DC8]];
     [v13 setAccessibilityIdentifier:v21];
   }
 
 LABEL_12:
 }
 
-- (unint64_t)didSelectItem:(id)a3
+- (unint64_t)didSelectItem:(id)item
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  itemCopy = item;
   v6 = HFLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = NSStringFromSelector(a2);
     v14 = 138412802;
-    v15 = self;
+    selfCopy = self;
     v16 = 2112;
     v17 = v7;
     v18 = 2112;
-    v19 = v5;
+    v19 = itemCopy;
     _os_log_impl(&dword_20CEB6000, v6, OS_LOG_TYPE_DEFAULT, "%@:%@ User selected item [%@]", &v14, 0x20u);
   }
 
-  v8 = [(HUScheduleRecurrenceEditorItemModuleController *)self _editorItemModule];
-  v9 = [v8 dailyOptionItem];
-  v10 = [v5 isEqual:v9];
+  _editorItemModule = [(HUScheduleRecurrenceEditorItemModuleController *)self _editorItemModule];
+  dailyOptionItem = [_editorItemModule dailyOptionItem];
+  v10 = [itemCopy isEqual:dailyOptionItem];
 
   if (v10)
   {
-    [v8 updateToDailyRecurrenceOption];
+    [_editorItemModule updateToDailyRecurrenceOption];
   }
 
   else
   {
-    v11 = [v8 weeklyOptionItem];
-    v12 = [v5 isEqual:v11];
+    weeklyOptionItem = [_editorItemModule weeklyOptionItem];
+    v12 = [itemCopy isEqual:weeklyOptionItem];
 
     if (v12)
     {
-      [v8 updateToWeeklyRecurrenceOption];
+      [_editorItemModule updateToWeeklyRecurrenceOption];
     }
   }
 
   return 0;
 }
 
-- (void)dayOfWeekPickerCell:(id)a3 didChangeSelectedRecurrences:(id)a4
+- (void)dayOfWeekPickerCell:(id)cell didChangeSelectedRecurrences:(id)recurrences
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [(HUScheduleRecurrenceEditorItemModuleController *)self _editorItemModule];
+  recurrencesCopy = recurrences;
+  _editorItemModule = [(HUScheduleRecurrenceEditorItemModuleController *)self _editorItemModule];
   v8 = HFLogForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = NSStringFromSelector(a2);
-    v10 = [v7 editedRecurrences];
+    editedRecurrences = [_editorItemModule editedRecurrences];
     v12 = 138413058;
-    v13 = self;
+    selfCopy = self;
     v14 = 2112;
     v15 = v9;
     v16 = 2112;
-    v17 = v10;
+    v17 = editedRecurrences;
     v18 = 2112;
-    v19 = v6;
+    v19 = recurrencesCopy;
     _os_log_impl(&dword_20CEB6000, v8, OS_LOG_TYPE_DEFAULT, "%@:%@ User changed selected recurrences from [%@] to [%@]", &v12, 0x2Au);
   }
 
-  v11 = [v6 allObjects];
-  [v7 setEditedRecurrences:v11];
+  allObjects = [recurrencesCopy allObjects];
+  [_editorItemModule setEditedRecurrences:allObjects];
 }
 
 - (id)_editorItemModule
 {
   objc_opt_class();
-  v3 = [(HUItemModuleController *)self module];
+  module = [(HUItemModuleController *)self module];
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = module;
   }
 
   else

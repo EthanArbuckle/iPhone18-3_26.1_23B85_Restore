@@ -1,45 +1,45 @@
 @interface PHWallpaperAsset
-- (BOOL)clearSegmentationResourceCacheWithError:(id *)a3;
+- (BOOL)clearSegmentationResourceCacheWithError:(id *)error;
 - (CGRect)acceptableCropRect;
 - (CGRect)gazeAreaRect;
 - (CGRect)preferredCropRect;
 - (NSArray)faceRegions;
 - (NSString)localIdentifier;
 - (NSURL)segmentationResourceURL;
-- (PHWallpaperAsset)initWithPhotoAsset:(id)a3;
-- (int)loadCropRectsWithResultHandler:(id)a3;
-- (int)loadFocalLengthIn35mm:(id)a3;
-- (int)loadMotionScore:(id)a3;
-- (int)loadParallaxResource:(int64_t)a3 options:(id)a4 resultHandler:(id)a5;
-- (int)loadPetsRegionsWithOptions:(id)a3 resultHandler:(id)a4;
-- (void)cancelParallaxResourceRequest:(int)a3;
-- (void)updateSegmentationResource:(id)a3;
+- (PHWallpaperAsset)initWithPhotoAsset:(id)asset;
+- (int)loadCropRectsWithResultHandler:(id)handler;
+- (int)loadFocalLengthIn35mm:(id)in35mm;
+- (int)loadMotionScore:(id)score;
+- (int)loadParallaxResource:(int64_t)resource options:(id)options resultHandler:(id)handler;
+- (int)loadPetsRegionsWithOptions:(id)options resultHandler:(id)handler;
+- (void)cancelParallaxResourceRequest:(int)request;
+- (void)updateSegmentationResource:(id)resource;
 @end
 
 @implementation PHWallpaperAsset
 
-- (int)loadFocalLengthIn35mm:(id)a3
+- (int)loadFocalLengthIn35mm:(id)in35mm
 {
   photoAsset = self->_photoAsset;
-  v5 = a3;
+  in35mmCopy = in35mm;
   [(PHObject *)photoAsset fetchPropertySetsIfNeeded];
-  v6 = [(PHAsset *)self->_photoAsset photosInfoPanelExtendedProperties];
-  v7 = [v6 focalLengthIn35mm];
+  photosInfoPanelExtendedProperties = [(PHAsset *)self->_photoAsset photosInfoPanelExtendedProperties];
+  focalLengthIn35mm = [photosInfoPanelExtendedProperties focalLengthIn35mm];
 
-  v5[2](v5, v7, 0);
+  in35mmCopy[2](in35mmCopy, focalLengthIn35mm, 0);
   return 0;
 }
 
-- (int)loadMotionScore:(id)a3
+- (int)loadMotionScore:(id)score
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PHWallpaperAsset *)self photoAsset];
-  [v5 fetchPropertySetsIfNeeded];
+  scoreCopy = score;
+  photoAsset = [(PHWallpaperAsset *)self photoAsset];
+  [photoAsset fetchPropertySetsIfNeeded];
 
-  v6 = [(PHWallpaperAsset *)self photoAsset];
-  v7 = [v6 mediaAnalysisProperties];
-  [v7 settlingEffectScore];
+  photoAsset2 = [(PHWallpaperAsset *)self photoAsset];
+  mediaAnalysisProperties = [photoAsset2 mediaAnalysisProperties];
+  [mediaAnalysisProperties settlingEffectScore];
   v9 = v8;
 
   if (v9 >= 0.0)
@@ -47,36 +47,36 @@
     v19 = PLBackendGetLog();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
     {
-      v20 = [(PHWallpaperAsset *)self localIdentifier];
+      localIdentifier = [(PHWallpaperAsset *)self localIdentifier];
       *buf = 138543618;
-      v29 = v20;
+      v29 = localIdentifier;
       v30 = 2048;
       v31 = v9;
       _os_log_impl(&dword_19C86F000, v19, OS_LOG_TYPE_INFO, "Motion score already computed for asset: %{public}@, score: %.2f", buf, 0x16u);
     }
 
     v21.n128_f32[0] = v9;
-    v4[2](v4, 0, v21);
+    scoreCopy[2](scoreCopy, 0, v21);
     goto LABEL_12;
   }
 
-  v10 = [(PHWallpaperAsset *)self photoAsset];
-  v11 = [v10 isPhotoIris];
+  photoAsset3 = [(PHWallpaperAsset *)self photoAsset];
+  isPhotoIris = [photoAsset3 isPhotoIris];
 
   v12 = PLBackendGetLog();
   v13 = os_log_type_enabled(v12, OS_LOG_TYPE_INFO);
-  if ((v11 & 1) == 0)
+  if ((isPhotoIris & 1) == 0)
   {
     if (v13)
     {
-      v22 = [(PHWallpaperAsset *)self localIdentifier];
+      localIdentifier2 = [(PHWallpaperAsset *)self localIdentifier];
       *buf = 138543362;
-      v29 = v22;
+      v29 = localIdentifier2;
       _os_log_impl(&dword_19C86F000, v12, OS_LOG_TYPE_INFO, "No motion score for non-Live Photo asset: %{public}@", buf, 0xCu);
     }
 
     v23.n128_u32[0] = -1.0;
-    v4[2](v4, 0, v23);
+    scoreCopy[2](scoreCopy, 0, v23);
 LABEL_12:
     v18 = 0;
     goto LABEL_13;
@@ -84,22 +84,22 @@ LABEL_12:
 
   if (v13)
   {
-    v14 = [(PHWallpaperAsset *)self localIdentifier];
+    localIdentifier3 = [(PHWallpaperAsset *)self localIdentifier];
     *buf = 138543362;
-    v29 = v14;
+    v29 = localIdentifier3;
     _os_log_impl(&dword_19C86F000, v12, OS_LOG_TYPE_INFO, "Requesting on-demand analysis of motion score for asset: %{public}@", buf, 0xCu);
   }
 
   v15 = MEMORY[0x1E69BE5A0];
-  v16 = [(PHWallpaperAsset *)self photoAsset];
-  v27 = v16;
+  photoAsset4 = [(PHWallpaperAsset *)self photoAsset];
+  v27 = photoAsset4;
   v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v27 count:1];
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __36__PHWallpaperAsset_loadMotionScore___block_invoke;
   v25[3] = &unk_1E75A7B78;
   v25[4] = self;
-  v26 = v4;
+  v26 = scoreCopy;
   v18 = [v15 requestMovieCurationForAssets:v17 withOptions:0 progressHandler:0 completionHandler:v25];
 
 LABEL_13:
@@ -204,32 +204,32 @@ void __36__PHWallpaperAsset_loadMotionScore___block_invoke(uint64_t a1, void *a2
   }
 }
 
-- (void)cancelParallaxResourceRequest:(int)a3
+- (void)cancelParallaxResourceRequest:(int)request
 {
-  v3 = *&a3;
+  v3 = *&request;
   v4 = +[PHImageManager defaultManager];
   [v4 cancelImageRequest:v3];
 }
 
-- (void)updateSegmentationResource:(id)a3
+- (void)updateSegmentationResource:(id)resource
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E696AC08] defaultManager];
-  v6 = [v5 temporaryDirectory];
-  v7 = [(PHWallpaperAsset *)self photoAsset];
-  v8 = [v7 uuid];
-  v9 = [v6 URLByAppendingPathComponent:v8];
+  resourceCopy = resource;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  temporaryDirectory = [defaultManager temporaryDirectory];
+  photoAsset = [(PHWallpaperAsset *)self photoAsset];
+  uuid = [photoAsset uuid];
+  v9 = [temporaryDirectory URLByAppendingPathComponent:uuid];
   v10 = [v9 URLByAppendingPathExtension:@"segmentation"];
 
-  v11 = [(PHWallpaperAsset *)self photoAsset];
-  v12 = [v11 photoLibrary];
+  photoAsset2 = [(PHWallpaperAsset *)self photoAsset];
+  photoLibrary = [photoAsset2 photoLibrary];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __47__PHWallpaperAsset_updateSegmentationResource___block_invoke;
   v17[3] = &unk_1E75AA870;
-  v20 = v4;
+  v20 = resourceCopy;
   v18 = v10;
-  v19 = self;
+  selfCopy = self;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __47__PHWallpaperAsset_updateSegmentationResource___block_invoke_86;
@@ -237,8 +237,8 @@ void __36__PHWallpaperAsset_loadMotionScore___block_invoke(uint64_t a1, void *a2
   v15[4] = self;
   v16 = v18;
   v13 = v18;
-  v14 = v4;
-  [v12 performChanges:v17 completionHandler:v15];
+  v14 = resourceCopy;
+  [photoLibrary performChanges:v17 completionHandler:v15];
 }
 
 void __47__PHWallpaperAsset_updateSegmentationResource___block_invoke(uint64_t a1)
@@ -297,29 +297,29 @@ void __47__PHWallpaperAsset_updateSegmentationResource___block_invoke_86(uint64_
   [v8 removeItemAtURL:*(a1 + 40) error:0];
 }
 
-- (int)loadCropRectsWithResultHandler:(id)a3
+- (int)loadCropRectsWithResultHandler:(id)handler
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PHWallpaperAsset *)self photoAsset];
-  v6 = [v5 photoLibrary];
+  handlerCopy = handler;
+  photoAsset = [(PHWallpaperAsset *)self photoAsset];
+  photoLibrary = [photoAsset photoLibrary];
   v7 = MEMORY[0x1E69BE5A0];
-  v8 = [v5 localIdentifier];
-  v20[0] = v8;
+  localIdentifier = [photoAsset localIdentifier];
+  v20[0] = localIdentifier;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:1];
-  v10 = [v6 photoLibraryURL];
+  photoLibraryURL = [photoLibrary photoLibraryURL];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __51__PHWallpaperAsset_loadCropRectsWithResultHandler___block_invoke;
   v15[3] = &unk_1E75A7798;
-  v16 = v6;
-  v17 = v5;
-  v18 = self;
-  v19 = v4;
-  v11 = v4;
-  v12 = v5;
-  v13 = v6;
-  LODWORD(v7) = [v7 requestProcessingTypes:1 forAssetsWithLocalIdentifiers:v9 fromPhotoLibraryWithURL:v10 progressHandler:0 completionHandler:v15];
+  v16 = photoLibrary;
+  v17 = photoAsset;
+  selfCopy = self;
+  v19 = handlerCopy;
+  v11 = handlerCopy;
+  v12 = photoAsset;
+  v13 = photoLibrary;
+  LODWORD(v7) = [v7 requestProcessingTypes:1 forAssetsWithLocalIdentifiers:v9 fromPhotoLibraryWithURL:photoLibraryURL progressHandler:0 completionHandler:v15];
 
   return v7;
 }
@@ -358,11 +358,11 @@ void __51__PHWallpaperAsset_loadCropRectsWithResultHandler___block_invoke(uint64
   }
 }
 
-- (int)loadPetsRegionsWithOptions:(id)a3 resultHandler:(id)a4
+- (int)loadPetsRegionsWithOptions:(id)options resultHandler:(id)handler
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if ([a3 needsInProcessHandling])
+  handlerCopy = handler;
+  if ([options needsInProcessHandling])
   {
     v7 = &unk_1F102E690;
   }
@@ -373,8 +373,8 @@ void __51__PHWallpaperAsset_loadCropRectsWithResultHandler___block_invoke(uint64
   }
 
   v8 = MEMORY[0x1E69BE5A0];
-  v9 = [(PHWallpaperAsset *)self photoAsset];
-  v17[0] = v9;
+  photoAsset = [(PHWallpaperAsset *)self photoAsset];
+  v17[0] = photoAsset;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:1];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
@@ -382,8 +382,8 @@ void __51__PHWallpaperAsset_loadCropRectsWithResultHandler___block_invoke(uint64
   v14[3] = &unk_1E75A7770;
   v14[4] = self;
   v15 = &__block_literal_global_47;
-  v16 = v6;
-  v11 = v6;
+  v16 = handlerCopy;
+  v11 = handlerCopy;
   v12 = [v8 requestPetsAnalysisForAssets:v10 withOptions:v7 progressHandler:0 completionHandler:v14];
 
   return v12;
@@ -498,13 +498,13 @@ id __61__PHWallpaperAsset_loadPetsRegionsWithOptions_resultHandler___block_invok
   return v4;
 }
 
-- (BOOL)clearSegmentationResourceCacheWithError:(id *)a3
+- (BOOL)clearSegmentationResourceCacheWithError:(id *)error
 {
-  v4 = [(PHWallpaperAsset *)self segmentationResourceURL];
-  if (v4)
+  segmentationResourceURL = [(PHWallpaperAsset *)self segmentationResourceURL];
+  if (segmentationResourceURL)
   {
-    v5 = [MEMORY[0x1E696AC08] defaultManager];
-    v6 = [v5 removeItemAtURL:v4 error:a3];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v6 = [defaultManager removeItemAtURL:segmentationResourceURL error:error];
   }
 
   else
@@ -517,8 +517,8 @@ id __61__PHWallpaperAsset_loadPetsRegionsWithOptions_resultHandler___block_invok
 
 - (NSURL)segmentationResourceURL
 {
-  v2 = [(PHWallpaperAsset *)self photoAsset];
-  v3 = [PHAssetResource assetResourcesForAsset:v2 includeDerivatives:1];
+  photoAsset = [(PHWallpaperAsset *)self photoAsset];
+  v3 = [PHAssetResource assetResourcesForAsset:photoAsset includeDerivatives:1];
 
   v4 = [v3 indexOfObjectPassingTest:&__block_literal_global_26237];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
@@ -529,15 +529,15 @@ id __61__PHWallpaperAsset_loadPetsRegionsWithOptions_resultHandler___block_invok
   else
   {
     v6 = [v3 objectAtIndexedSubscript:v4];
-    v7 = [v6 privateFileURL];
+    privateFileURL = [v6 privateFileURL];
 
-    v8 = [MEMORY[0x1E696AC08] defaultManager];
-    v9 = [v7 path];
-    v10 = [v8 fileExistsAtPath:v9];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    path = [privateFileURL path];
+    v10 = [defaultManager fileExistsAtPath:path];
 
     if (v10)
     {
-      v11 = v7;
+      v11 = privateFileURL;
     }
 
     else
@@ -551,20 +551,20 @@ id __61__PHWallpaperAsset_loadPetsRegionsWithOptions_resultHandler___block_invok
   return v5;
 }
 
-- (int)loadParallaxResource:(int64_t)a3 options:(id)a4 resultHandler:(id)a5
+- (int)loadParallaxResource:(int64_t)resource options:(id)options resultHandler:(id)handler
 {
-  v9 = a4;
-  v10 = a5;
-  if (a3 != 6)
+  optionsCopy = options;
+  handlerCopy = handler;
+  if (resource != 6)
   {
     v14 = 0.0;
     v15 = 1;
     v16 = 0x10000;
-    if (a3 > 2)
+    if (resource > 2)
     {
-      if (a3 == 3)
+      if (resource == 3)
       {
-        [v9 imageSize];
+        [optionsCopy imageSize];
         v17 = v30;
         v14 = v31;
         v16 = 0;
@@ -573,36 +573,36 @@ id __61__PHWallpaperAsset_loadPetsRegionsWithOptions_resultHandler___block_invok
 
       else
       {
-        if (a3 == 4)
+        if (resource == 4)
         {
 LABEL_18:
           v19 = objc_alloc_init(PHContentEditingInputRequestOptions);
-          -[PHContentEditingInputRequestOptions setNetworkAccessAllowed:](v19, "setNetworkAccessAllowed:", [v9 networkAccessAllowed]);
-          v20 = [v9 canHandleAdjustmentData];
+          -[PHContentEditingInputRequestOptions setNetworkAccessAllowed:](v19, "setNetworkAccessAllowed:", [optionsCopy networkAccessAllowed]);
+          canHandleAdjustmentData = [optionsCopy canHandleAdjustmentData];
           v50[0] = MEMORY[0x1E69E9820];
           v50[1] = 3221225472;
           v50[2] = __63__PHWallpaperAsset_loadParallaxResource_options_resultHandler___block_invoke_3;
           v50[3] = &unk_1E75A7698;
-          v21 = v20;
+          v21 = canHandleAdjustmentData;
           v51 = v21;
           [(PHContentEditingInputRequestOptions *)v19 setCanHandleAdjustmentData:v50];
-          v22 = [v9 resultHandlerQueue];
-          [(PHContentEditingInputRequestOptions *)v19 setResultHandlerQueue:v22];
+          resultHandlerQueue = [optionsCopy resultHandlerQueue];
+          [(PHContentEditingInputRequestOptions *)v19 setResultHandlerQueue:resultHandlerQueue];
 
-          if (a3 == 6 && [v9 priority])
+          if (resource == 6 && [optionsCopy priority])
           {
             [(PHContentEditingInputRequestOptions *)v19 setDownloadIntent:10];
           }
 
-          v23 = [v9 downloadProgressHandler];
-          v24 = v23;
-          if (v23)
+          downloadProgressHandler = [optionsCopy downloadProgressHandler];
+          v24 = downloadProgressHandler;
+          if (downloadProgressHandler)
           {
             v48[0] = MEMORY[0x1E69E9820];
             v48[1] = 3221225472;
             v48[2] = __63__PHWallpaperAsset_loadParallaxResource_options_resultHandler___block_invoke_4;
             v48[3] = &unk_1E75A76C0;
-            v49 = v23;
+            v49 = downloadProgressHandler;
             [(PHContentEditingInputRequestOptions *)v19 setProgressHandler:v48];
           }
 
@@ -611,16 +611,16 @@ LABEL_18:
           v46[2] = 0x2020000000;
           v47 = 0;
           v25 = +[PHImageManager defaultManager];
-          v26 = [(PHWallpaperAsset *)self photoAsset];
+          photoAsset = [(PHWallpaperAsset *)self photoAsset];
           v42[0] = MEMORY[0x1E69E9820];
           v42[1] = 3221225472;
           v42[2] = __63__PHWallpaperAsset_loadParallaxResource_options_resultHandler___block_invoke_5;
           v42[3] = &unk_1E75A76E8;
           v44 = v46;
-          v45 = a3;
+          resourceCopy = resource;
           v42[4] = self;
-          v43 = v10;
-          v13 = [v25 requestContentEditingInputForAsset:v26 withOptions:v19 completionHandler:v42];
+          v43 = handlerCopy;
+          v13 = [v25 requestContentEditingInputForAsset:photoAsset withOptions:v19 completionHandler:v42];
 
           _Block_object_dispose(v46, 8);
           v27 = v51;
@@ -629,10 +629,10 @@ LABEL_35:
           goto LABEL_36;
         }
 
-        if (a3 == 5)
+        if (resource == 5)
         {
-          v18 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v18 handleFailureInMethod:a2 object:self file:@"PHWallpaperAsset.m" lineNumber:121 description:@"Unsupported format"];
+          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler handleFailureInMethod:a2 object:self file:@"PHWallpaperAsset.m" lineNumber:121 description:@"Unsupported format"];
 
           v15 = 1;
           v16 = 0x10000;
@@ -642,11 +642,11 @@ LABEL_35:
       }
     }
 
-    else if (a3)
+    else if (resource)
     {
-      if (a3 == 1)
+      if (resource == 1)
       {
-        [v9 imageSize];
+        [optionsCopy imageSize];
         v17 = v32;
         v14 = v33;
         v16 = 0;
@@ -655,7 +655,7 @@ LABEL_35:
 
       else
       {
-        if (a3 == 2)
+        if (resource == 2)
         {
           v17 = -1.0;
         }
@@ -665,7 +665,7 @@ LABEL_35:
           v17 = 0.0;
         }
 
-        if (a3 == 2)
+        if (resource == 2)
         {
           v14 = -1.0;
           v16 = 0x10000;
@@ -676,7 +676,7 @@ LABEL_35:
 
     else
     {
-      [v9 imageSize];
+      [optionsCopy imageSize];
       v17 = v28;
       v14 = v29;
       v15 = 0;
@@ -687,45 +687,45 @@ LABEL_35:
     [(PHContentEditingInputRequestOptions *)v19 setVersion:v15];
     [(PHContentEditingInputRequestOptions *)v19 setDeliveryMode:1];
     [(PHContentEditingInputRequestOptions *)v19 setResizeMode:1];
-    -[PHContentEditingInputRequestOptions setNetworkAccessAllowed:](v19, "setNetworkAccessAllowed:", [v9 networkAccessAllowed]);
+    -[PHContentEditingInputRequestOptions setNetworkAccessAllowed:](v19, "setNetworkAccessAllowed:", [optionsCopy networkAccessAllowed]);
     [(PHContentEditingInputRequestOptions *)v19 setSynchronous:0];
-    v34 = [v9 resultHandlerQueue];
-    [(PHContentEditingInputRequestOptions *)v19 setResultHandlerQueue:v34];
+    resultHandlerQueue2 = [optionsCopy resultHandlerQueue];
+    [(PHContentEditingInputRequestOptions *)v19 setResultHandlerQueue:resultHandlerQueue2];
 
     [(PHContentEditingInputRequestOptions *)v19 setLoadingMode:v16];
-    v35 = [v9 priority];
-    if (v35 == 1)
+    priority = [optionsCopy priority];
+    if (priority == 1)
     {
       v36 = 9;
     }
 
     else
     {
-      if (v35 != 2)
+      if (priority != 2)
       {
 LABEL_32:
-        v37 = [v9 downloadProgressHandler];
-        v21 = v37;
-        if (v37)
+        downloadProgressHandler2 = [optionsCopy downloadProgressHandler];
+        v21 = downloadProgressHandler2;
+        if (downloadProgressHandler2)
         {
           v55[0] = MEMORY[0x1E69E9820];
           v55[1] = 3221225472;
           v55[2] = __63__PHWallpaperAsset_loadParallaxResource_options_resultHandler___block_invoke;
           v55[3] = &unk_1E75A9368;
-          v56 = v37;
+          v56 = downloadProgressHandler2;
           [(PHContentEditingInputRequestOptions *)v19 setProgressHandler:v55];
         }
 
-        v38 = [v9 aspectFit] ^ 1;
+        v38 = [optionsCopy aspectFit] ^ 1;
         v39 = +[PHImageManager defaultManager];
-        v40 = [(PHWallpaperAsset *)self photoAsset];
+        photoAsset2 = [(PHWallpaperAsset *)self photoAsset];
         v52[0] = MEMORY[0x1E69E9820];
         v52[1] = 3221225472;
         v52[2] = __63__PHWallpaperAsset_loadParallaxResource_options_resultHandler___block_invoke_2;
         v52[3] = &unk_1E75A7670;
-        v54 = a3;
-        v53 = v10;
-        v13 = [v39 requestNewCGImageForAsset:v40 targetSize:v38 contentMode:v19 options:v52 resultHandler:{v17, v14}];
+        resourceCopy2 = resource;
+        v53 = handlerCopy;
+        v13 = [v39 requestNewCGImageForAsset:photoAsset2 targetSize:v38 contentMode:v19 options:v52 resultHandler:{v17, v14}];
 
         v27 = v53;
         goto LABEL_35;
@@ -738,15 +738,15 @@ LABEL_32:
     goto LABEL_32;
   }
 
-  v11 = [(PHWallpaperAsset *)self photoAsset];
-  v12 = [v11 mediaSubtypes];
+  photoAsset3 = [(PHWallpaperAsset *)self photoAsset];
+  mediaSubtypes = [photoAsset3 mediaSubtypes];
 
-  if ((v12 & 8) != 0)
+  if ((mediaSubtypes & 8) != 0)
   {
     goto LABEL_18;
   }
 
-  (*(v10 + 2))(v10, 0, 0);
+  (*(handlerCopy + 2))(handlerCopy, 0, 0);
   v13 = 0;
 LABEL_36:
 
@@ -897,29 +897,29 @@ void __63__PHWallpaperAsset_loadParallaxResource_options_resultHandler___block_i
 
 - (NSString)localIdentifier
 {
-  v2 = [(PHWallpaperAsset *)self photoAsset];
-  v3 = [v2 localIdentifier];
+  photoAsset = [(PHWallpaperAsset *)self photoAsset];
+  localIdentifier = [photoAsset localIdentifier];
 
-  return v3;
+  return localIdentifier;
 }
 
 - (NSArray)faceRegions
 {
-  v2 = [(PHWallpaperAsset *)self photoAsset];
-  v3 = [v2 faceRegions];
+  photoAsset = [(PHWallpaperAsset *)self photoAsset];
+  faceRegions = [photoAsset faceRegions];
 
-  return v3;
+  return faceRegions;
 }
 
 - (CGRect)gazeAreaRect
 {
   v31 = *MEMORY[0x1E69E9840];
-  v3 = [(PHWallpaperAsset *)self photoAsset];
-  v4 = [PHFetchOptions fetchOptionsWithPhotoLibrary:0 orObject:v3];
+  photoAsset = [(PHWallpaperAsset *)self photoAsset];
+  v4 = [PHFetchOptions fetchOptionsWithPhotoLibrary:0 orObject:photoAsset];
 
   [v4 setMinimumVerifiedFaceCount:1];
-  v5 = [(PHWallpaperAsset *)self photoAsset];
-  v6 = [PHFace fetchFacesInAsset:v5 options:v4];
+  photoAsset2 = [(PHWallpaperAsset *)self photoAsset];
+  v6 = [PHFace fetchFacesInAsset:photoAsset2 options:v4];
 
   x = *MEMORY[0x1E695F050];
   y = *(MEMORY[0x1E695F050] + 8);
@@ -984,8 +984,8 @@ void __63__PHWallpaperAsset_loadParallaxResource_options_resultHandler___block_i
 
 - (CGRect)preferredCropRect
 {
-  v2 = [(PHWallpaperAsset *)self photoAsset];
-  [v2 preferredCropRect];
+  photoAsset = [(PHWallpaperAsset *)self photoAsset];
+  [photoAsset preferredCropRect];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -1004,8 +1004,8 @@ void __63__PHWallpaperAsset_loadParallaxResource_options_resultHandler___block_i
 
 - (CGRect)acceptableCropRect
 {
-  v2 = [(PHWallpaperAsset *)self photoAsset];
-  [v2 acceptableCropRect];
+  photoAsset = [(PHWallpaperAsset *)self photoAsset];
+  [photoAsset acceptableCropRect];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -1022,14 +1022,14 @@ void __63__PHWallpaperAsset_loadParallaxResource_options_resultHandler___block_i
   return result;
 }
 
-- (PHWallpaperAsset)initWithPhotoAsset:(id)a3
+- (PHWallpaperAsset)initWithPhotoAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   v8.receiver = self;
   v8.super_class = PHWallpaperAsset;
   v5 = [(PHWallpaperAsset *)&v8 init];
   photoAsset = v5->_photoAsset;
-  v5->_photoAsset = v4;
+  v5->_photoAsset = assetCopy;
 
   return v5;
 }

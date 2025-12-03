@@ -1,14 +1,14 @@
 @interface CaptionsViewDragController
-- (void)handlePanGestureRecognizer:(id)a3;
+- (void)handlePanGestureRecognizer:(id)recognizer;
 @end
 
 @implementation CaptionsViewDragController
 
-- (void)handlePanGestureRecognizer:(id)a3
+- (void)handlePanGestureRecognizer:(id)recognizer
 {
-  v3 = a3;
+  recognizerCopy = recognizer;
 
-  CaptionsViewDragController.handlePanGestureRecognizer(_:)(v3);
+  CaptionsViewDragController.handlePanGestureRecognizer(_:)(recognizerCopy);
 }
 
 @end

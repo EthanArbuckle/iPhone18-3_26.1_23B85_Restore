@@ -1,5 +1,5 @@
 @interface ICAuthorHighlightAnimation
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 @end
 
@@ -10,28 +10,28 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(ICAuthorHighlightAnimation *)self duration];
-  v7 = [(ICAuthorHighlightAnimation *)self fromValue];
-  v8 = [(ICAuthorHighlightAnimation *)self toValue];
-  v9 = [(ICAuthorHighlightAnimation *)self color];
+  duration = [(ICAuthorHighlightAnimation *)self duration];
+  fromValue = [(ICAuthorHighlightAnimation *)self fromValue];
+  toValue = [(ICAuthorHighlightAnimation *)self toValue];
+  color = [(ICAuthorHighlightAnimation *)self color];
   v10 = [MEMORY[0x1E696AD98] numberWithBool:{-[ICAuthorHighlightAnimation isAboveExistingHighlights](self, "isAboveExistingHighlights")}];
   v11 = [MEMORY[0x1E696AD98] numberWithBool:{-[ICAuthorHighlightAnimation isRemovedOnCompletion](self, "isRemovedOnCompletion")}];
-  v12 = [v3 stringWithFormat:@"<%@: %p, duration: %@, fromValue: %@, toValue: %@, color: %@, aboveExistingHighlights: %@, removedOnCompletion: %@>", v5, self, v6, v7, v8, v9, v10, v11];
+  v12 = [v3 stringWithFormat:@"<%@: %p, duration: %@, fromValue: %@, toValue: %@, color: %@, aboveExistingHighlights: %@, removedOnCompletion: %@>", v5, self, duration, fromValue, toValue, color, v10, v11];
 
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 != self)
+  if (equal != self)
   {
-    v4 = a3;
+    equalCopy = equal;
     objc_opt_class();
     v5 = ICDynamicCast();
 
-    v6 = [v5 duration];
-    v7 = [(ICAuthorHighlightAnimation *)self duration];
-    if (![v6 isEqual:v7])
+    duration = [v5 duration];
+    duration2 = [(ICAuthorHighlightAnimation *)self duration];
+    if (![duration isEqual:duration2])
     {
       LOBYTE(v23) = 0;
 LABEL_26:
@@ -39,9 +39,9 @@ LABEL_26:
       return v23;
     }
 
-    v8 = [v5 fromValue];
-    v9 = [(ICAuthorHighlightAnimation *)self fromValue];
-    if (![v8 isEqual:v9])
+    fromValue = [v5 fromValue];
+    fromValue2 = [(ICAuthorHighlightAnimation *)self fromValue];
+    if (![fromValue isEqual:fromValue2])
     {
       LOBYTE(v23) = 0;
 LABEL_25:
@@ -49,9 +49,9 @@ LABEL_25:
       goto LABEL_26;
     }
 
-    v10 = [v5 toValue];
-    v11 = [(ICAuthorHighlightAnimation *)self toValue];
-    if (![v10 isEqual:v11])
+    toValue = [v5 toValue];
+    toValue2 = [(ICAuthorHighlightAnimation *)self toValue];
+    if (![toValue isEqual:toValue2])
     {
       LOBYTE(v23) = 0;
 LABEL_24:
@@ -59,31 +59,31 @@ LABEL_24:
       goto LABEL_25;
     }
 
-    v25 = v10;
-    v12 = [(ICAuthorHighlightAnimation *)self color];
-    v13 = [v5 color];
+    v25 = toValue;
+    color = [(ICAuthorHighlightAnimation *)self color];
+    color2 = [v5 color];
     v14 = *MEMORY[0x1E695E738];
-    v27 = v12;
-    if (*MEMORY[0x1E695E738] == v12)
+    v27 = color;
+    if (*MEMORY[0x1E695E738] == color)
     {
       v15 = 0;
     }
 
     else
     {
-      v15 = v12;
+      v15 = color;
     }
 
     v16 = v15;
-    v26 = v13;
-    if (v14 == v13)
+    v26 = color2;
+    if (v14 == color2)
     {
       v17 = 0;
     }
 
     else
     {
-      v17 = v13;
+      v17 = color2;
     }
 
     v18 = v17;
@@ -104,13 +104,13 @@ LABEL_24:
     if (v20)
     {
 LABEL_15:
-      v21 = [v5 isAboveExistingHighlights];
-      if (v21 == [(ICAuthorHighlightAnimation *)self isAboveExistingHighlights])
+      isAboveExistingHighlights = [v5 isAboveExistingHighlights];
+      if (isAboveExistingHighlights == [(ICAuthorHighlightAnimation *)self isAboveExistingHighlights])
       {
-        v22 = [v5 isRemovedOnCompletion];
-        v23 = v22 ^ [(ICAuthorHighlightAnimation *)self isRemovedOnCompletion]^ 1;
+        isRemovedOnCompletion = [v5 isRemovedOnCompletion];
+        v23 = isRemovedOnCompletion ^ [(ICAuthorHighlightAnimation *)self isRemovedOnCompletion]^ 1;
 LABEL_23:
-        v10 = v25;
+        toValue = v25;
 
         goto LABEL_24;
       }

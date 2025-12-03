@@ -1,31 +1,31 @@
 @interface PregateAnalyzer
-+ (id)pregateFailureReasonsToString:(int)a3;
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)timeForFrameFromArray:(SEL)a3 frameIndex:(id)a4;
-- (BOOL)exposuresViolateThresholdFraction:(float)a3 exposure1:(float)a4 exposure2:(float)a5;
-- (BOOL)findFrameIndicesInFrameArray:(id)a3 forTimeRange:(id *)a4 startIndex:(int *)a5 endIndex:(int *)a6;
-- (BOOL)findNextNonInterpFrameFromIndex:(int64_t)a3 backwards:(BOOL)a4 inFrameInfoArray:(id)a5 toValue:(int64_t *)a6;
-- (BOOL)findSurroundingNonInterpForIndex:(int64_t)a3 inFrameInfoArray:(id)a4 prevIndex:(int64_t *)a5 nextIndex:(int64_t *)a6;
-- (BOOL)frameIndexIsFocusing:(int64_t)a3 inFrameData:(id)a4 failureReason:(int *)a5;
-- (BOOL)getParamForKey:(id)a3 toCMTime:(id *)a4;
-- (BOOL)getParamForKey:(id)a3 toFloat:(float *)a4;
-- (BOOL)getParamForKey:(id)a3 toInt:(int64_t *)a4;
-- (BOOL)subsegmentMeetsTrimCriteriaForFrames:(id)a3 firstFrame:(int64_t)a4 lastFrame:(int64_t)a5 firstFrameTimeOut:(id *)a6 lastFrameTimeOut:(id *)a7 preciseTrimTimeOut:(id *)a8;
++ (id)pregateFailureReasonsToString:(int)string;
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)timeForFrameFromArray:(SEL)array frameIndex:(id)index;
+- (BOOL)exposuresViolateThresholdFraction:(float)fraction exposure1:(float)exposure1 exposure2:(float)exposure2;
+- (BOOL)findFrameIndicesInFrameArray:(id)array forTimeRange:(id *)range startIndex:(int *)index endIndex:(int *)endIndex;
+- (BOOL)findNextNonInterpFrameFromIndex:(int64_t)index backwards:(BOOL)backwards inFrameInfoArray:(id)array toValue:(int64_t *)value;
+- (BOOL)findSurroundingNonInterpForIndex:(int64_t)index inFrameInfoArray:(id)array prevIndex:(int64_t *)prevIndex nextIndex:(int64_t *)nextIndex;
+- (BOOL)frameIndexIsFocusing:(int64_t)focusing inFrameData:(id)data failureReason:(int *)reason;
+- (BOOL)getParamForKey:(id)key toCMTime:(id *)time;
+- (BOOL)getParamForKey:(id)key toFloat:(float *)float;
+- (BOOL)getParamForKey:(id)key toInt:(int64_t *)int;
+- (BOOL)subsegmentMeetsTrimCriteriaForFrames:(id)frames firstFrame:(int64_t)frame lastFrame:(int64_t)lastFrame firstFrameTimeOut:(id *)out lastFrameTimeOut:(id *)timeOut preciseTrimTimeOut:(id *)trimTimeOut;
 - (CGSize)inputVideoSize;
-- (MetadataFloatVector)cumulativePanForStartIndex:(int64_t)a3 lastIndex:(int64_t)a4;
+- (MetadataFloatVector)cumulativePanForStartIndex:(int64_t)index lastIndex:(int64_t)lastIndex;
 - (PregateAnalyzer)init;
-- (id)paramValueForKey:(id)a3;
+- (id)paramValueForKey:(id)key;
 - (int)fetchVideoDimensionsFromMetadata;
-- (int)findGatingPassViaTrimming:(id)a3;
-- (int)getFocusDataFromFrameData:(id)a3 toFocusingFlags:(id)a4;
-- (int)getFrameMetadataArray:(id *)a3;
-- (int)getPerFrameGatingData:(id)a3 firstIndex:(int64_t)a4 lastIndex:(int64_t)a5;
-- (int)getZoomFlagsFromFrameData:(id)a3 toArray:(id)a4;
-- (int)isCumulativePanAcceptableForFrames:(id)a3 firstIndex:(int64_t)a4 lastIndex:(int64_t)a5;
-- (int)processGainAndExposureData:(id)a3 intoFlagsArray:(id)a4 firstIndex:(int64_t)a5 lastIndex:(int64_t)a6;
-- (int)processMotionVectorsFromFrameData:(id)a3 toVectorArray:(MetadataFloatVector *)a4;
-- (int)processPregateSuccess:(int *)a3;
-- (int)processPresentationTimesFromData:(id)a3 toBadFrameFlags:(id)a4 withMaxDuration:(id *)a5 maxInterpGapTime:(id *)a6 maxInterpFrameCount:(int64_t)a7 firstIndex:(int64_t)a8 lastIndex:(int64_t)a9;
-- (int64_t)findLongestPassingSegmentInFrameFlags:(id)a3 startIndex:(int64_t)a4 endIndex:(int64_t)a5 startOfRun:(int64_t *)a6 gatingFailures:(int *)a7;
+- (int)findGatingPassViaTrimming:(id)trimming;
+- (int)getFocusDataFromFrameData:(id)data toFocusingFlags:(id)flags;
+- (int)getFrameMetadataArray:(id *)array;
+- (int)getPerFrameGatingData:(id)data firstIndex:(int64_t)index lastIndex:(int64_t)lastIndex;
+- (int)getZoomFlagsFromFrameData:(id)data toArray:(id)array;
+- (int)isCumulativePanAcceptableForFrames:(id)frames firstIndex:(int64_t)index lastIndex:(int64_t)lastIndex;
+- (int)processGainAndExposureData:(id)data intoFlagsArray:(id)array firstIndex:(int64_t)index lastIndex:(int64_t)lastIndex;
+- (int)processMotionVectorsFromFrameData:(id)data toVectorArray:(MetadataFloatVector *)array;
+- (int)processPregateSuccess:(int *)success;
+- (int)processPresentationTimesFromData:(id)data toBadFrameFlags:(id)flags withMaxDuration:(id *)duration maxInterpGapTime:(id *)time maxInterpFrameCount:(int64_t)count firstIndex:(int64_t)index lastIndex:(int64_t)lastIndex;
+- (int64_t)findLongestPassingSegmentInFrameFlags:(id)flags startIndex:(int64_t)index endIndex:(int64_t)endIndex startOfRun:(int64_t *)run gatingFailures:(int *)failures;
 @end
 
 @implementation PregateAnalyzer
@@ -122,10 +122,10 @@
 {
   if (!self->_haveInputVideoSize)
   {
-    v4 = [(PregateFeatureBuilder *)self->featureBuilder irisVideoExtractor];
-    v5 = [v4 videoTrackMetadataDict];
-    v6 = [v5 objectForKeyedSubscript:@"vidTrackCleanH"];
-    v7 = [v5 objectForKeyedSubscript:@"vidTrackCleanW"];
+    irisVideoExtractor = [(PregateFeatureBuilder *)self->featureBuilder irisVideoExtractor];
+    videoTrackMetadataDict = [irisVideoExtractor videoTrackMetadataDict];
+    v6 = [videoTrackMetadataDict objectForKeyedSubscript:@"vidTrackCleanH"];
+    v7 = [videoTrackMetadataDict objectForKeyedSubscript:@"vidTrackCleanW"];
     v8 = v7;
     if (v6)
     {
@@ -139,8 +139,8 @@
 
     if (v9)
     {
-      v10 = [v5 objectForKeyedSubscript:@"vidTrackNaturalH"];
-      v11 = [v5 objectForKeyedSubscript:@"vidTrackNaturalW"];
+      v10 = [videoTrackMetadataDict objectForKeyedSubscript:@"vidTrackNaturalH"];
+      v11 = [videoTrackMetadataDict objectForKeyedSubscript:@"vidTrackNaturalW"];
       v12 = v11;
       if (v10)
       {
@@ -183,38 +183,38 @@ LABEL_15:
   return 0;
 }
 
-- (int)getFrameMetadataArray:(id *)a3
+- (int)getFrameMetadataArray:(id *)array
 {
   featureBuilder = self->featureBuilder;
   if (!featureBuilder)
   {
-    v9 = 0;
+    framesMetadataArray = 0;
     v8 = 0;
     goto LABEL_11;
   }
 
-  v5 = [(PregateFeatureBuilder *)featureBuilder irisVideoExtractor];
-  v6 = v5;
-  if (!v5)
+  irisVideoExtractor = [(PregateFeatureBuilder *)featureBuilder irisVideoExtractor];
+  v6 = irisVideoExtractor;
+  if (!irisVideoExtractor)
   {
-    v9 = 0;
+    framesMetadataArray = 0;
     goto LABEL_9;
   }
 
-  if (([v5 processedFile] & 1) != 0 || (v7 = objc_msgSend(v6, "processFile")) == 0)
+  if (([irisVideoExtractor processedFile] & 1) != 0 || (v7 = objc_msgSend(v6, "processFile")) == 0)
   {
-    v9 = [v6 framesMetadataArray];
+    framesMetadataArray = [v6 framesMetadataArray];
 LABEL_9:
     v8 = 0;
     goto LABEL_10;
   }
 
   v8 = v7;
-  v9 = 0;
+  framesMetadataArray = 0;
 LABEL_10:
 
 LABEL_11:
-  if (v9)
+  if (framesMetadataArray)
   {
     v10 = v8;
   }
@@ -224,63 +224,63 @@ LABEL_11:
     v10 = -1;
   }
 
-  v11 = v9;
-  *a3 = v9;
+  v11 = framesMetadataArray;
+  *array = framesMetadataArray;
 
   return v10;
 }
 
-- (id)paramValueForKey:(id)a3
+- (id)paramValueForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   pregateParameters = self->pregateParameters;
-  if (!pregateParameters || ([(NSDictionary *)pregateParameters valueForKey:v4], (v6 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (!pregateParameters || ([(NSDictionary *)pregateParameters valueForKey:keyCopy], (v6 = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v6 = [(NSDictionary *)self->_defaultParameters valueForKey:v4];
+    v6 = [(NSDictionary *)self->_defaultParameters valueForKey:keyCopy];
   }
 
   return v6;
 }
 
-- (BOOL)getParamForKey:(id)a3 toFloat:(float *)a4
+- (BOOL)getParamForKey:(id)key toFloat:(float *)float
 {
-  v5 = [(PregateAnalyzer *)self paramValueForKey:a3];
+  v5 = [(PregateAnalyzer *)self paramValueForKey:key];
   v6 = v5;
   if (v5)
   {
     [v5 floatValue];
-    *a4 = v7;
+    *float = v7;
   }
 
   return v6 != 0;
 }
 
-- (BOOL)getParamForKey:(id)a3 toInt:(int64_t *)a4
+- (BOOL)getParamForKey:(id)key toInt:(int64_t *)int
 {
-  v5 = [(PregateAnalyzer *)self paramValueForKey:a3];
+  v5 = [(PregateAnalyzer *)self paramValueForKey:key];
   v6 = v5;
   if (v5)
   {
-    *a4 = [v5 integerValue];
+    *int = [v5 integerValue];
   }
 
   return v6 != 0;
 }
 
-- (BOOL)getParamForKey:(id)a3 toCMTime:(id *)a4
+- (BOOL)getParamForKey:(id)key toCMTime:(id *)time
 {
-  v5 = [(PregateAnalyzer *)self paramValueForKey:a3];
+  v5 = [(PregateAnalyzer *)self paramValueForKey:key];
   v6 = v5;
   if (v5)
   {
     CMTimeMakeFromDictionary(&v8, v5);
-    *a4 = v8;
+    *time = v8;
   }
 
   return v6 != 0;
 }
 
-+ (id)pregateFailureReasonsToString:(int)a3
++ (id)pregateFailureReasonsToString:(int)string
 {
   v12[15] = *MEMORY[0x277D85DE8];
   v11[0] = &unk_285384D28;
@@ -315,12 +315,12 @@ LABEL_11:
   v12[14] = @"[pregate_vid interpolated frames]";
   v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:v11 count:15];
   v5 = 0;
-  if (a3)
+  if (string)
   {
     v6 = 1;
     do
     {
-      if ((a3 & v6) != 0)
+      if ((string & v6) != 0)
       {
         v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v6];
         v8 = [v4 objectForKeyedSubscript:v7];
@@ -341,22 +341,22 @@ LABEL_11:
         }
       }
 
-      a3 &= ~v6;
+      string &= ~v6;
       v6 = (2 * v6);
     }
 
-    while (a3);
+    while (string);
   }
 
   return v5;
 }
 
-- (MetadataFloatVector)cumulativePanForStartIndex:(int64_t)a3 lastIndex:(int64_t)a4
+- (MetadataFloatVector)cumulativePanForStartIndex:(int64_t)index lastIndex:(int64_t)lastIndex
 {
   v7 = [(NSData *)self->_perFrameTranslationVecs length];
-  v8 = [(NSData *)self->_perFrameTranslationVecs bytes];
+  bytes = [(NSData *)self->_perFrameTranslationVecs bytes];
   v9 = 0;
-  if (v7 >= 8 && a3 <= a4)
+  if (v7 >= 8 && index <= lastIndex)
   {
     v11 = 0;
     v12 = 0;
@@ -365,21 +365,21 @@ LABEL_11:
     {
       if (v11)
       {
-        v14 = *&v8[8 * a3 + 8 * v11];
+        v14 = *&bytes[8 * index + 8 * v11];
         v13 = vbsl_s8(vcgt_f32(v14, v13), v13, v14);
         v12 = vbsl_s8(vcgt_f32(v12, v14), v12, v14);
       }
 
       else
       {
-        v12 = *&v8[8 * a3];
+        v12 = *&bytes[8 * index];
         v13 = v12;
       }
 
       ++v11;
     }
 
-    while (a4 - a3 + 1 != v11);
+    while (lastIndex - index + 1 != v11);
     v9 = vsub_f32(v12, v13);
   }
 
@@ -389,10 +389,10 @@ LABEL_11:
   return result;
 }
 
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)timeForFrameFromArray:(SEL)a3 frameIndex:(id)a4
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)timeForFrameFromArray:(SEL)array frameIndex:(id)index
 {
   *retstr = **&MEMORY[0x277CC0898];
-  v6 = [a4 objectAtIndexedSubscript:a5];
+  v6 = [index objectAtIndexedSubscript:a5];
   dictionaryRepresentation = [v6 objectForKeyedSubscript:@"PresentationTime"];
 
   v7 = dictionaryRepresentation;
@@ -405,11 +405,11 @@ LABEL_11:
   return result;
 }
 
-- (BOOL)findNextNonInterpFrameFromIndex:(int64_t)a3 backwards:(BOOL)a4 inFrameInfoArray:(id)a5 toValue:(int64_t *)a6
+- (BOOL)findNextNonInterpFrameFromIndex:(int64_t)index backwards:(BOOL)backwards inFrameInfoArray:(id)array toValue:(int64_t *)value
 {
-  v7 = a4;
-  v9 = a5;
-  if (v7)
+  backwardsCopy = backwards;
+  arrayCopy = array;
+  if (backwardsCopy)
   {
     v10 = -1;
   }
@@ -419,17 +419,17 @@ LABEL_11:
     v10 = 1;
   }
 
-  v11 = v10 + a3;
-  if (v10 + a3 >= 0)
+  v11 = v10 + index;
+  if (v10 + index >= 0)
   {
-    while (v11 < [v9 count])
+    while (v11 < [arrayCopy count])
     {
-      v12 = [v9 objectAtIndexedSubscript:v11];
+      v12 = [arrayCopy objectAtIndexedSubscript:v11];
       v13 = [v12 objectForKeyedSubscript:@"InterpolatedFrame"];
       v14 = v13;
       if (!v13 || ([v13 BOOLValue] & 1) == 0)
       {
-        *a6 = v11;
+        *value = v11;
 
         v15 = 1;
         goto LABEL_11;
@@ -449,59 +449,59 @@ LABEL_11:
   return v15;
 }
 
-- (BOOL)findSurroundingNonInterpForIndex:(int64_t)a3 inFrameInfoArray:(id)a4 prevIndex:(int64_t *)a5 nextIndex:(int64_t *)a6
+- (BOOL)findSurroundingNonInterpForIndex:(int64_t)index inFrameInfoArray:(id)array prevIndex:(int64_t *)prevIndex nextIndex:(int64_t *)nextIndex
 {
-  v10 = a4;
-  LOBYTE(a5) = [(PregateAnalyzer *)self findNextNonInterpFrameFromIndex:a3 backwards:1 inFrameInfoArray:v10 toValue:a5];
-  LOBYTE(a6) = [(PregateAnalyzer *)self findNextNonInterpFrameFromIndex:a3 backwards:0 inFrameInfoArray:v10 toValue:a6];
+  arrayCopy = array;
+  LOBYTE(prevIndex) = [(PregateAnalyzer *)self findNextNonInterpFrameFromIndex:index backwards:1 inFrameInfoArray:arrayCopy toValue:prevIndex];
+  LOBYTE(nextIndex) = [(PregateAnalyzer *)self findNextNonInterpFrameFromIndex:index backwards:0 inFrameInfoArray:arrayCopy toValue:nextIndex];
 
-  return a5 & a6;
+  return prevIndex & nextIndex;
 }
 
-- (BOOL)frameIndexIsFocusing:(int64_t)a3 inFrameData:(id)a4 failureReason:(int *)a5
+- (BOOL)frameIndexIsFocusing:(int64_t)focusing inFrameData:(id)data failureReason:(int *)reason
 {
-  v7 = a4;
-  *a5 = 0;
-  v8 = [v7 objectAtIndexedSubscript:a3];
+  dataCopy = data;
+  *reason = 0;
+  v8 = [dataCopy objectAtIndexedSubscript:focusing];
   v9 = [v8 objectForKeyedSubscript:@"InterpolatedFrame"];
 
   if (v9 && [v9 BOOLValue])
   {
     v10 = 0;
-    *a5 = 0x2000;
+    *reason = 0x2000;
   }
 
   else
   {
-    v11 = [v7 objectAtIndexedSubscript:a3];
+    v11 = [dataCopy objectAtIndexedSubscript:focusing];
     v12 = [v11 objectForKeyedSubscript:@"privAFSt"];
 
-    v13 = [v7 objectAtIndexedSubscript:a3];
+    v13 = [dataCopy objectAtIndexedSubscript:focusing];
     v14 = [v13 objectForKeyedSubscript:@"privFM"];
 
     if (v12 && v14)
     {
-      v15 = [v12 intValue];
+      intValue = [v12 intValue];
       v16 = [v14 intValue] - 1;
-      v10 = v15 == 2 && v16 < 2;
+      v10 = intValue == 2 && v16 < 2;
     }
 
     else
     {
       v10 = 0;
-      *a5 = 2048;
+      *reason = 2048;
     }
   }
 
   return v10;
 }
 
-- (int)getFocusDataFromFrameData:(id)a3 toFocusingFlags:(id)a4
+- (int)getFocusDataFromFrameData:(id)data toFocusingFlags:(id)flags
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  flagsCopy = flags;
   v21 = 0;
-  if (![v6 count])
+  if (![dataCopy count])
   {
 LABEL_11:
     v13 = v21;
@@ -511,12 +511,12 @@ LABEL_11:
   v8 = 0;
   while (1)
   {
-    v9 = [v6 objectAtIndexedSubscript:v8];
+    v9 = [dataCopy objectAtIndexedSubscript:v8];
     v10 = [v9 objectForKeyedSubscript:@"InterpolatedFrame"];
     v11 = v10;
     if (!v10 || ![v10 BOOLValue])
     {
-      v16 = [(PregateAnalyzer *)self frameIndexIsFocusing:v8 inFrameData:v6 failureReason:&v21];
+      v16 = [(PregateAnalyzer *)self frameIndexIsFocusing:v8 inFrameData:dataCopy failureReason:&v21];
       v13 = v21;
       if (v21)
       {
@@ -528,12 +528,12 @@ LABEL_11:
 
     v19 = 0;
     v20 = 0;
-    if (![(PregateAnalyzer *)self findSurroundingNonInterpForIndex:v8 inFrameInfoArray:v6 prevIndex:&v20 nextIndex:&v19])
+    if (![(PregateAnalyzer *)self findSurroundingNonInterpForIndex:v8 inFrameInfoArray:dataCopy prevIndex:&v20 nextIndex:&v19])
     {
       break;
     }
 
-    v12 = [(PregateAnalyzer *)self frameIndexIsFocusing:v20 inFrameData:v6 failureReason:&v21];
+    v12 = [(PregateAnalyzer *)self frameIndexIsFocusing:v20 inFrameData:dataCopy failureReason:&v21];
     v13 = v21;
     if (v21)
     {
@@ -541,7 +541,7 @@ LABEL_11:
     }
 
     v14 = v12;
-    v15 = [(PregateAnalyzer *)self frameIndexIsFocusing:v19 inFrameData:v6 failureReason:&v21];
+    v15 = [(PregateAnalyzer *)self frameIndexIsFocusing:v19 inFrameData:dataCopy failureReason:&v21];
     v13 = v21;
     if (v21)
     {
@@ -551,9 +551,9 @@ LABEL_11:
     v16 = v15 || v14;
 LABEL_10:
     v17 = [MEMORY[0x277CCABB0] numberWithBool:v16];
-    [v7 addObject:v17];
+    [flagsCopy addObject:v17];
 
-    if ([v6 count] <= ++v8)
+    if ([dataCopy count] <= ++v8)
     {
       goto LABEL_11;
     }
@@ -567,39 +567,39 @@ LABEL_14:
   return v13;
 }
 
-- (int)getZoomFlagsFromFrameData:(id)a3 toArray:(id)a4
+- (int)getZoomFlagsFromFrameData:(id)data toArray:(id)array
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  arrayCopy = array;
   v25 = 0;
   if ([(PregateAnalyzer *)self getParamForKey:@"maxZoomFactor" toFloat:&v25])
   {
-    if ([v6 count])
+    if ([dataCopy count])
     {
       v8 = 0;
       v9 = 0x277CCA000uLL;
       do
       {
-        v10 = [v6 objectAtIndexedSubscript:v8];
+        v10 = [dataCopy objectAtIndexedSubscript:v8];
         v11 = [v10 objectForKeyedSubscript:@"InterpolatedFrame"];
-        v12 = [v11 BOOLValue];
+        bOOLValue = [v11 BOOLValue];
 
-        if (v12)
+        if (bOOLValue)
         {
           v23 = 0;
           v24 = 0;
-          if (![(PregateAnalyzer *)self findSurroundingNonInterpForIndex:v8 inFrameInfoArray:v6 prevIndex:&v24 nextIndex:&v23])
+          if (![(PregateAnalyzer *)self findSurroundingNonInterpForIndex:v8 inFrameInfoArray:dataCopy prevIndex:&v24 nextIndex:&v23])
           {
 
             v21 = 0x2000;
             goto LABEL_11;
           }
 
-          v13 = [v6 objectAtIndexedSubscript:v24];
+          v13 = [dataCopy objectAtIndexedSubscript:v24];
           v14 = [v13 objectForKeyedSubscript:@"privTZF"];
 
           [v14 floatValue];
-          v15 = [v6 objectAtIndexedSubscript:v23];
+          v15 = [dataCopy objectAtIndexedSubscript:v23];
           [v15 objectForKeyedSubscript:@"privTZF"];
           v17 = v16 = v9;
 
@@ -609,19 +609,19 @@ LABEL_14:
 
         else
         {
-          v18 = [v6 objectAtIndexedSubscript:v8];
+          v18 = [dataCopy objectAtIndexedSubscript:v8];
           v19 = [v18 objectForKeyedSubscript:@"privTZF"];
 
           [v19 floatValue];
         }
 
         v20 = [*(v9 + 2992) numberWithUnsignedInteger:0];
-        [v7 addObject:v20];
+        [arrayCopy addObject:v20];
 
         ++v8;
       }
 
-      while ([v6 count] > v8);
+      while ([dataCopy count] > v8);
     }
 
     v21 = 0;
@@ -637,26 +637,26 @@ LABEL_11:
   return v21;
 }
 
-- (int)processMotionVectorsFromFrameData:(id)a3 toVectorArray:(MetadataFloatVector *)a4
+- (int)processMotionVectorsFromFrameData:(id)data toVectorArray:(MetadataFloatVector *)array
 {
-  v5 = a3;
-  if ([v5 count])
+  dataCopy = data;
+  if ([dataCopy count])
   {
     v6 = 0;
     v7 = 0;
     do
     {
-      v8 = [v5 objectAtIndexedSubscript:v6];
+      v8 = [dataCopy objectAtIndexedSubscript:v6];
       v9 = [v8 objectForKeyedSubscript:@"InterpolatedFrame"];
       v10 = v9;
       if (v9)
       {
-        v11 = [v9 BOOLValue];
+        bOOLValue = [v9 BOOLValue];
       }
 
       else
       {
-        v11 = 0;
+        bOOLValue = 0;
       }
 
       v12 = [v8 objectForKeyedSubscript:@"privECMVct"];
@@ -668,19 +668,19 @@ LABEL_11:
         v7 = v16;
       }
 
-      else if ((v11 & 1) == 0)
+      else if ((bOOLValue & 1) == 0)
       {
 
         v14 = 2048;
         goto LABEL_11;
       }
 
-      a4[v6] = v7;
+      array[v6] = v7;
 
       ++v6;
     }
 
-    while ([v5 count] > v6);
+    while ([dataCopy count] > v6);
   }
 
   v14 = 0;
@@ -689,11 +689,11 @@ LABEL_11:
   return v14;
 }
 
-- (int)processPresentationTimesFromData:(id)a3 toBadFrameFlags:(id)a4 withMaxDuration:(id *)a5 maxInterpGapTime:(id *)a6 maxInterpFrameCount:(int64_t)a7 firstIndex:(int64_t)a8 lastIndex:(int64_t)a9
+- (int)processPresentationTimesFromData:(id)data toBadFrameFlags:(id)flags withMaxDuration:(id *)duration maxInterpGapTime:(id *)time maxInterpFrameCount:(int64_t)count firstIndex:(int64_t)index lastIndex:(int64_t)lastIndex
 {
-  v13 = a3;
-  v14 = a4;
-  if (a8 > a9)
+  dataCopy = data;
+  flagsCopy = flags;
+  if (index > lastIndex)
   {
 LABEL_22:
     v35 = 0;
@@ -702,24 +702,24 @@ LABEL_22:
 
   v40 = 0;
   v15 = 0x277CCA000uLL;
-  v37 = self;
+  selfCopy = self;
   while (1)
   {
-    v41 = [v13 objectAtIndexedSubscript:{a8, v37}];
+    v41 = [dataCopy objectAtIndexedSubscript:{index, selfCopy}];
     v16 = [v41 objectForKeyedSubscript:@"InterpolatedFrame"];
-    v17 = [v16 BOOLValue];
+    bOOLValue = [v16 BOOLValue];
 
-    if (v17)
+    if (bOOLValue)
     {
       v47 = 0;
       v48 = 0;
-      if (![(PregateAnalyzer *)self findSurroundingNonInterpForIndex:a8 inFrameInfoArray:v13 prevIndex:&v48 nextIndex:&v47]|| (memset(&v46, 0, sizeof(v46)), [(PregateAnalyzer *)self timeForFrameFromArray:v13 frameIndex:v48], memset(&v45, 0, sizeof(v45)), [(PregateAnalyzer *)self timeForFrameFromArray:v13 frameIndex:v47], memset(&v44, 0, sizeof(v44)), lhs = v45, rhs = v46, CMTimeSubtract(&v44, &lhs, &rhs), lhs = v44, rhs = *a6, CMTimeCompare(&lhs, &rhs) >= 1))
+      if (![(PregateAnalyzer *)self findSurroundingNonInterpForIndex:index inFrameInfoArray:dataCopy prevIndex:&v48 nextIndex:&v47]|| (memset(&v46, 0, sizeof(v46)), [(PregateAnalyzer *)self timeForFrameFromArray:dataCopy frameIndex:v48], memset(&v45, 0, sizeof(v45)), [(PregateAnalyzer *)self timeForFrameFromArray:dataCopy frameIndex:v47], memset(&v44, 0, sizeof(v44)), lhs = v45, rhs = v46, CMTimeSubtract(&v44, &lhs, &rhs), lhs = v44, rhs = *time, CMTimeCompare(&lhs, &rhs) >= 1))
       {
-        v18 = [v14 objectAtIndexedSubscript:a8];
-        v19 = [v18 unsignedIntegerValue];
+        v18 = [flagsCopy objectAtIndexedSubscript:index];
+        unsignedIntegerValue = [v18 unsignedIntegerValue];
 
-        v20 = [*(v15 + 2992) numberWithUnsignedInteger:v19 | 0x4000];
-        [v14 setObject:v20 atIndexedSubscript:a8];
+        0x4000 = [*(v15 + 2992) numberWithUnsignedInteger:unsignedIntegerValue | 0x4000];
+        [flagsCopy setObject:0x4000 atIndexedSubscript:index];
       }
 
       v21 = v40 + 1;
@@ -728,7 +728,7 @@ LABEL_22:
     else
     {
       v22 = v40;
-      if (v40 <= a7)
+      if (v40 <= count)
       {
         v21 = 0;
       }
@@ -738,15 +738,15 @@ LABEL_22:
         v21 = 0;
         if (v40 >= 1)
         {
-          v23 = a8 - 1;
+          v23 = index - 1;
           v24 = v15;
           do
           {
-            v25 = [v14 objectAtIndexedSubscript:v23];
-            v26 = [v25 unsignedIntegerValue];
+            v25 = [flagsCopy objectAtIndexedSubscript:v23];
+            unsignedIntegerValue2 = [v25 unsignedIntegerValue];
 
-            v27 = [*(v24 + 2992) numberWithUnsignedInteger:v26 | 0x4000];
-            [v14 setObject:v27 atIndexedSubscript:v23];
+            0x40002 = [*(v24 + 2992) numberWithUnsignedInteger:unsignedIntegerValue2 | 0x4000];
+            [flagsCopy setObject:0x40002 atIndexedSubscript:v23];
 
             --v23;
             --v22;
@@ -760,15 +760,15 @@ LABEL_22:
     }
 
     v40 = v21;
-    if (a8 < ([v13 count] - 1))
+    if (index < ([dataCopy count] - 1))
     {
       break;
     }
 
-    ++a8;
+    ++index;
 LABEL_21:
 
-    if (a8 == a9 + 1)
+    if (index == lastIndex + 1)
     {
       goto LABEL_22;
     }
@@ -783,7 +783,7 @@ LABEL_21:
   v29 = v28;
   memset(&v46, 0, sizeof(v46));
   CMTimeMakeFromDictionary(&v46, v28);
-  v30 = [v13 objectAtIndexedSubscript:a8 + 1];
+  v30 = [dataCopy objectAtIndexedSubscript:index + 1];
   v31 = [v30 objectForKeyedSubscript:@"PresentationTime"];
 
   if (v31)
@@ -795,18 +795,18 @@ LABEL_21:
     rhs = v46;
     CMTimeSubtract(&v44, &lhs, &rhs);
     lhs = v44;
-    rhs = *a5;
+    rhs = *duration;
     if (CMTimeCompare(&lhs, &rhs) >= 1)
     {
-      v32 = [v14 objectAtIndexedSubscript:a8];
-      v33 = [v32 unsignedIntegerValue];
+      v32 = [flagsCopy objectAtIndexedSubscript:index];
+      unsignedIntegerValue3 = [v32 unsignedIntegerValue];
 
-      self = v37;
-      v34 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v33 | 0x20];
-      [v14 setObject:v34 atIndexedSubscript:a8];
+      self = selfCopy;
+      0x20 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:unsignedIntegerValue3 | 0x20];
+      [flagsCopy setObject:0x20 atIndexedSubscript:index];
     }
 
-    ++a8;
+    ++index;
     v15 = 0x277CCA000;
     goto LABEL_21;
   }
@@ -818,40 +818,40 @@ LABEL_25:
   return v35;
 }
 
-- (BOOL)exposuresViolateThresholdFraction:(float)a3 exposure1:(float)a4 exposure2:(float)a5
+- (BOOL)exposuresViolateThresholdFraction:(float)fraction exposure1:(float)exposure1 exposure2:(float)exposure2
 {
-  if (a4 >= a5)
+  if (exposure1 >= exposure2)
   {
-    v5 = a5;
+    exposure1Copy = exposure2;
   }
 
   else
   {
-    v5 = a4;
+    exposure1Copy = exposure1;
   }
 
-  return vabds_f32(a4, a5) > (v5 * a3);
+  return vabds_f32(exposure1, exposure2) > (exposure1Copy * fraction);
 }
 
-- (int)processGainAndExposureData:(id)a3 intoFlagsArray:(id)a4 firstIndex:(int64_t)a5 lastIndex:(int64_t)a6
+- (int)processGainAndExposureData:(id)data intoFlagsArray:(id)array firstIndex:(int64_t)index lastIndex:(int64_t)lastIndex
 {
-  v9 = a3;
-  v10 = a4;
+  dataCopy = data;
+  arrayCopy = array;
   v112 = 0;
   v111 = 0.0;
   v11 = [(PregateAnalyzer *)self getParamForKey:@"maxExposureChangeFrac" toFloat:&v112 + 4];
   v12 = [(PregateAnalyzer *)self getParamForKey:@"maxFrameGain" toFloat:&v111];
-  v108 = self;
+  selfCopy = self;
   v13 = 1024;
   if ([(PregateAnalyzer *)self getParamForKey:@"maxFrameExposureTime" toFloat:&v112])
   {
     if (v12)
     {
-      v104 = a5;
+      indexCopy = index;
       if (v11)
       {
-        v14 = a5;
-        if (a5 > a6)
+        indexCopy2 = index;
+        if (index > lastIndex)
         {
           v13 = 0;
           goto LABEL_74;
@@ -859,22 +859,22 @@ LABEL_25:
 
         v15 = 0;
         v13 = 0;
-        v105 = v10;
-        v106 = v9;
+        v105 = arrayCopy;
+        v106 = dataCopy;
         do
         {
-          v16 = [v9 objectAtIndexedSubscript:v14];
+          v16 = [dataCopy objectAtIndexedSubscript:indexCopy2];
           v17 = [v16 objectForKeyedSubscript:@"InterpolatedFrame"];
-          v18 = [v17 BOOLValue];
+          bOOLValue = [v17 BOOLValue];
 
-          if (v18)
+          if (bOOLValue)
           {
-            v109 = 0;
+            lastIndexCopy = 0;
             v110 = 0;
-            if ([(PregateAnalyzer *)v108 findSurroundingNonInterpForIndex:v14 inFrameInfoArray:v9 prevIndex:&v110 nextIndex:&v109])
+            if ([(PregateAnalyzer *)selfCopy findSurroundingNonInterpForIndex:indexCopy2 inFrameInfoArray:dataCopy prevIndex:&v110 nextIndex:&lastIndexCopy])
             {
-              v19 = [v9 objectAtIndexedSubscript:v110];
-              v20 = [v9 objectAtIndexedSubscript:v109];
+              v19 = [dataCopy objectAtIndexedSubscript:v110];
+              v20 = [dataCopy objectAtIndexedSubscript:lastIndexCopy];
               v21 = [v19 objectForKeyedSubscript:@"privImgG"];
 
               v22 = [v20 objectForKeyedSubscript:@"privImgG"];
@@ -893,7 +893,7 @@ LABEL_25:
                 v25 = 1;
               }
 
-              v9 = v106;
+              dataCopy = v106;
               if (v25 || v23 == 0 || v24 == 0)
               {
                 v28 = 2048;
@@ -916,7 +916,7 @@ LABEL_25:
               [v35 floatValue];
               v37 = v36;
 
-              v10 = v105;
+              arrayCopy = v105;
               v38 = [v20 objectForKeyedSubscript:@"privET"];
               [v38 floatValue];
               v40 = v39;
@@ -924,7 +924,7 @@ LABEL_25:
               *&v41 = v31 * v37;
               *&v42 = v34 * v40;
               LODWORD(v43) = HIDWORD(v112);
-              v44 = [(PregateAnalyzer *)v108 exposuresViolateThresholdFraction:v43 exposure1:v41 exposure2:v42];
+              v44 = [(PregateAnalyzer *)selfCopy exposuresViolateThresholdFraction:v43 exposure1:v41 exposure2:v42];
               v45 = v28 | 0x80;
               if (!v44)
               {
@@ -949,11 +949,11 @@ LABEL_25:
 
           else
           {
-            v109 = 0;
+            lastIndexCopy = 0;
             v110 = 0;
             if (v15)
             {
-              if ([(PregateAnalyzer *)v108 findNextNonInterpFrameFromIndex:v14 backwards:1 inFrameInfoArray:v9 toValue:&v110])
+              if ([(PregateAnalyzer *)selfCopy findNextNonInterpFrameFromIndex:indexCopy2 backwards:1 inFrameInfoArray:dataCopy toValue:&v110])
               {
                 v49 = 0;
               }
@@ -967,18 +967,18 @@ LABEL_25:
             else
             {
               v49 = 0;
-              v110 = v104;
+              v110 = indexCopy;
             }
 
-            if (a6 == v14)
+            if (lastIndex == indexCopy2)
             {
-              v109 = a6;
+              lastIndexCopy = lastIndex;
 LABEL_41:
               if (!v49)
               {
-                v50 = [v9 objectAtIndexedSubscript:v110];
-                v51 = [v9 objectAtIndexedSubscript:v14];
-                v52 = [v9 objectAtIndexedSubscript:v109];
+                v50 = [dataCopy objectAtIndexedSubscript:v110];
+                v51 = [dataCopy objectAtIndexedSubscript:indexCopy2];
+                v52 = [dataCopy objectAtIndexedSubscript:lastIndexCopy];
                 v102 = [v50 objectForKeyedSubscript:@"privImgG"];
 
                 v101 = [v51 objectForKeyedSubscript:@"privImgG"];
@@ -1036,7 +1036,7 @@ LABEL_41:
                 LODWORD(v81) = HIDWORD(v112);
                 *&v82 = v68;
                 *&v83 = v74;
-                if ([(PregateAnalyzer *)v108 exposuresViolateThresholdFraction:v81 exposure1:v82 exposure2:v83])
+                if ([(PregateAnalyzer *)selfCopy exposuresViolateThresholdFraction:v81 exposure1:v82 exposure2:v83])
                 {
                   v87 = v62 | 0x80;
                 }
@@ -1046,7 +1046,7 @@ LABEL_41:
                   *&v86 = v77 * v80;
                   LODWORD(v84) = HIDWORD(v112);
                   *&v85 = v74;
-                  if ([(PregateAnalyzer *)v108 exposuresViolateThresholdFraction:v84 exposure1:v85 exposure2:v86])
+                  if ([(PregateAnalyzer *)selfCopy exposuresViolateThresholdFraction:v84 exposure1:v85 exposure2:v86])
                   {
                     v87 = v62 | 0x80;
                   }
@@ -1077,14 +1077,14 @@ LABEL_41:
                   v49 = v87 | 0x40;
                 }
 
-                v10 = v105;
-                v9 = v106;
+                arrayCopy = v105;
+                dataCopy = v106;
               }
 
               goto LABEL_73;
             }
 
-            if ([(PregateAnalyzer *)v108 findNextNonInterpFrameFromIndex:v14 backwards:0 inFrameInfoArray:v9 toValue:&v109])
+            if ([(PregateAnalyzer *)selfCopy findNextNonInterpFrameFromIndex:indexCopy2 backwards:0 inFrameInfoArray:dataCopy toValue:&lastIndexCopy])
             {
               goto LABEL_41;
             }
@@ -1092,18 +1092,18 @@ LABEL_41:
 
           v49 = 0x2000;
 LABEL_73:
-          v97 = [v10 objectAtIndexedSubscript:v14];
-          v98 = [v97 unsignedIntegerValue];
+          v97 = [arrayCopy objectAtIndexedSubscript:indexCopy2];
+          unsignedIntegerValue = [v97 unsignedIntegerValue];
 
-          v99 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v98 | v49];
-          [v10 setObject:v99 atIndexedSubscript:v14];
+          v99 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:unsignedIntegerValue | v49];
+          [arrayCopy setObject:v99 atIndexedSubscript:indexCopy2];
 
           v13 |= v49;
-          ++v14;
+          ++indexCopy2;
           --v15;
         }
 
-        while (a6 + 1 != v14);
+        while (lastIndex + 1 != indexCopy2);
       }
     }
   }
@@ -1113,12 +1113,12 @@ LABEL_74:
   return v13;
 }
 
-- (int)getPerFrameGatingData:(id)a3 firstIndex:(int64_t)a4 lastIndex:(int64_t)a5
+- (int)getPerFrameGatingData:(id)data firstIndex:(int64_t)index lastIndex:(int64_t)lastIndex
 {
   v102 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = v8;
-  if (a5 < a4 || [v8 count] <= a5)
+  dataCopy = data;
+  v9 = dataCopy;
+  if (lastIndex < index || [dataCopy count] <= lastIndex)
   {
     v17 = 0x2000;
   }
@@ -1131,7 +1131,7 @@ LABEL_74:
       v11 = 0;
       do
       {
-        if (v11 > a5 || v11 < a4)
+        if (v11 > lastIndex || v11 < index)
         {
           v13 = 4096;
         }
@@ -1151,23 +1151,23 @@ LABEL_74:
     }
 
     v15 = [MEMORY[0x277CBEB28] dataWithLength:{8 * objc_msgSend(v9, "count")}];
-    v16 = [v15 mutableBytes];
-    v17 = [(PregateAnalyzer *)self processMotionVectorsFromFrameData:v9 toVectorArray:v16];
+    mutableBytes = [v15 mutableBytes];
+    v17 = [(PregateAnalyzer *)self processMotionVectorsFromFrameData:v9 toVectorArray:mutableBytes];
     if (!v17)
     {
       v18 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v9, "count")}];
       v17 = [(PregateAnalyzer *)self getFocusDataFromFrameData:v9 toFocusingFlags:v18];
       if (!v17)
       {
-        v74 = v16;
+        v74 = mutableBytes;
         v19 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v9, "count")}];
         v17 = [(PregateAnalyzer *)self getZoomFlagsFromFrameData:v9 toArray:v19];
         if (!v17)
         {
           v82 = v19;
           obj = v15;
-          v78 = a4;
-          v79 = a5;
+          indexCopy = index;
+          lastIndexCopy = lastIndex;
           v77 = v10;
           v20 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v9, "count")}];
           if ([v9 count])
@@ -1201,11 +1201,11 @@ LABEL_74:
           v73 = 0;
           if ([(PregateAnalyzer *)self getParamForKey:@"maxInterpTime" toCMTime:&v94]&& v27 && v26 && v25)
           {
-            v29 = v78;
+            v29 = indexCopy;
             if (v24)
             {
               v9 = v75;
-              v30 = v79;
+              v30 = lastIndexCopy;
               if (v23)
               {
                 v81 = v18;
@@ -1213,7 +1213,7 @@ LABEL_74:
                 v93 = v98;
                 v90 = v94;
                 v91 = v95;
-                v31 = [(PregateAnalyzer *)self processPresentationTimesFromData:v75 toBadFrameFlags:v20 withMaxDuration:&v92 maxInterpGapTime:&v90 maxInterpFrameCount:v96 firstIndex:v78 lastIndex:v79];
+                v31 = [(PregateAnalyzer *)self processPresentationTimesFromData:v75 toBadFrameFlags:v20 withMaxDuration:&v92 maxInterpGapTime:&v90 maxInterpFrameCount:v96 firstIndex:indexCopy lastIndex:lastIndexCopy];
                 width = self->_inputVideoSize.width;
                 if (width <= self->_inputVideoSize.height)
                 {
@@ -1231,7 +1231,7 @@ LABEL_74:
                   v35 = [v9 objectAtIndexedSubscript:v29];
                   v36 = v35;
                   v84 = v29;
-                  if (v29 <= v78)
+                  if (v29 <= indexCopy)
                   {
                     v38 = 0;
                   }
@@ -1312,34 +1312,34 @@ LABEL_74:
                   }
 
                   v58 = [v39 objectAtIndexedSubscript:v84];
-                  v59 = [v58 unsignedIntValue];
+                  unsignedIntValue = [v58 unsignedIntValue];
 
-                  v60 = v59 | v44;
+                  v60 = unsignedIntValue | v44;
                   v61 = [v40 objectAtIndexedSubscript:v84];
-                  v62 = [v61 BOOLValue];
+                  bOOLValue = [v61 BOOLValue];
 
-                  if (v62)
+                  if (bOOLValue)
                   {
                     v60 |= 0x10u;
                   }
 
                   v63 = [v76 objectAtIndexedSubscript:v84];
-                  v64 = [v63 unsignedIntValue];
+                  unsignedIntValue2 = [v63 unsignedIntValue];
 
-                  v65 = v64 | v60;
+                  v65 = unsignedIntValue2 | v60;
                   v66 = [v77 objectAtIndexedSubscript:v84];
-                  v67 = [v66 unsignedIntValue];
+                  unsignedIntValue3 = [v66 unsignedIntValue];
 
-                  v68 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v67 | v65];
+                  v68 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:unsignedIntValue3 | v65];
                   [v77 replaceObjectAtIndex:v84 withObject:v68];
 
                   v28 = v65 | v85;
                   v29 = v84 + 1;
                 }
 
-                while (v84 != v79);
-                v29 = v78;
-                v30 = v79;
+                while (v84 != lastIndexCopy);
+                v29 = indexCopy;
+                v30 = lastIndexCopy;
                 v18 = v81;
                 v20 = v76;
               }
@@ -1348,15 +1348,15 @@ LABEL_74:
             else
             {
               v9 = v75;
-              v30 = v79;
+              v30 = lastIndexCopy;
             }
           }
 
           else
           {
             v9 = v75;
-            v29 = v78;
-            v30 = v79;
+            v29 = indexCopy;
+            v30 = lastIndexCopy;
           }
 
           v69 = [(PregateAnalyzer *)self processGainAndExposureData:v9 intoFlagsArray:v77 firstIndex:v29 lastIndex:v30]| v28;
@@ -1376,17 +1376,17 @@ LABEL_74:
   return v17;
 }
 
-- (int)isCumulativePanAcceptableForFrames:(id)a3 firstIndex:(int64_t)a4 lastIndex:(int64_t)a5
+- (int)isCumulativePanAcceptableForFrames:(id)frames firstIndex:(int64_t)index lastIndex:(int64_t)lastIndex
 {
-  v8 = a3;
-  v9 = v8;
+  framesCopy = frames;
+  v9 = framesCopy;
   v10 = 0x2000;
-  if ((a4 & 0x8000000000000000) == 0 && a4 <= a5 && [v8 count] > a5)
+  if ((index & 0x8000000000000000) == 0 && index <= lastIndex && [framesCopy count] > lastIndex)
   {
     v11 = [(NSArray *)self->_badFrameFlags count];
     if (v11 == [v9 count] && (v12 = -[NSData length](self->_perFrameTranslationVecs, "length"), objc_msgSend(v9, "count") == v12 >> 3))
     {
-      [(PregateAnalyzer *)self cumulativePanForStartIndex:a4 lastIndex:a5];
+      [(PregateAnalyzer *)self cumulativePanForStartIndex:index lastIndex:lastIndex];
       v14 = v13;
       v16 = v15;
       v22 = 0;
@@ -1427,22 +1427,22 @@ LABEL_74:
   return v10;
 }
 
-- (BOOL)subsegmentMeetsTrimCriteriaForFrames:(id)a3 firstFrame:(int64_t)a4 lastFrame:(int64_t)a5 firstFrameTimeOut:(id *)a6 lastFrameTimeOut:(id *)a7 preciseTrimTimeOut:(id *)a8
+- (BOOL)subsegmentMeetsTrimCriteriaForFrames:(id)frames firstFrame:(int64_t)frame lastFrame:(int64_t)lastFrame firstFrameTimeOut:(id *)out lastFrameTimeOut:(id *)timeOut preciseTrimTimeOut:(id *)trimTimeOut
 {
-  v14 = a3;
-  v15 = v14;
-  if (a5 < a4)
+  framesCopy = frames;
+  v15 = framesCopy;
+  if (lastFrame < frame)
   {
     v16 = 0;
     goto LABEL_43;
   }
 
-  v17 = [v14 count];
+  v17 = [framesCopy count];
   v16 = 0;
-  if ((a4 & 0x8000000000000000) == 0 && v17 > a5)
+  if ((frame & 0x8000000000000000) == 0 && v17 > lastFrame)
   {
-    v18 = [v15 objectAtIndex:a4];
-    v19 = [v15 objectAtIndex:a5];
+    v18 = [v15 objectAtIndex:frame];
+    v19 = [v15 objectAtIndex:lastFrame];
     memset(&v47, 0, sizeof(v47));
     v20 = [v18 objectForKeyedSubscript:@"PresentationTime"];
     CMTimeMakeFromDictionary(&v47, v20);
@@ -1451,14 +1451,14 @@ LABEL_74:
     v21 = [v19 objectForKeyedSubscript:@"PresentationTime"];
     CMTimeMakeFromDictionary(&v46, v21);
 
-    if (a6)
+    if (out)
     {
-      *a6 = v47;
+      *out = v47;
     }
 
-    if (a7)
+    if (timeOut)
     {
-      *a7 = v46;
+      *timeOut = v46;
     }
 
     [(PregateAnalyzer *)self minimumRequiredTrimLength];
@@ -1471,10 +1471,10 @@ LABEL_74:
     lhs = v46;
     rhs = v47;
     CMTimeSubtract(&v33.start, &lhs, &rhs);
-    if (a8)
+    if (trimTimeOut)
     {
-      *&a8->var0 = *&v33.start.value;
-      a8->var3 = v33.start.epoch;
+      *&trimTimeOut->var0 = *&v33.start.value;
+      trimTimeOut->var3 = v33.start.epoch;
     }
 
     [(PregateAnalyzer *)self minimumRequiredTrimLength];
@@ -1485,9 +1485,9 @@ LABEL_74:
     }
 
     lhs = **&MEMORY[0x277CC08F0];
-    if ([v15 count] - 1 <= a5)
+    if ([v15 count] - 1 <= lastFrame)
     {
-      if (a5 < 1)
+      if (lastFrame < 1)
       {
 LABEL_18:
         time2 = v33.start;
@@ -1495,7 +1495,7 @@ LABEL_18:
         CMTimeAdd(&rhs, &time2, &v41);
         [(PregateAnalyzer *)self minimumRequiredTrimLength];
         v26 = CMTimeCompare(&rhs, &time2);
-        if (!a8 || v26 < 0)
+        if (!trimTimeOut || v26 < 0)
         {
           if (v26 < 0)
           {
@@ -1509,7 +1509,7 @@ LABEL_42:
         else
         {
           [(PregateAnalyzer *)self minimumRequiredTrimLength];
-          *a8 = rhs;
+          *trimTimeOut = rhs;
         }
 
 LABEL_22:
@@ -1559,7 +1559,7 @@ LABEL_22:
         goto LABEL_42;
       }
 
-      v22 = [v15 objectAtIndexedSubscript:a5 - 1];
+      v22 = [v15 objectAtIndexedSubscript:lastFrame - 1];
       memset(&rhs, 0, sizeof(rhs));
       v25 = [v22 objectForKeyedSubscript:@"PresentationTime"];
       CMTimeMakeFromDictionary(&rhs, v25);
@@ -1571,7 +1571,7 @@ LABEL_22:
 
     else
     {
-      v22 = [v15 objectAtIndexedSubscript:a5 + 1];
+      v22 = [v15 objectAtIndexedSubscript:lastFrame + 1];
       memset(&rhs, 0, sizeof(rhs));
       v23 = [v22 objectForKeyedSubscript:@"PresentationTime"];
       CMTimeMakeFromDictionary(&rhs, v23);
@@ -1592,24 +1592,24 @@ LABEL_43:
   return v16;
 }
 
-- (int64_t)findLongestPassingSegmentInFrameFlags:(id)a3 startIndex:(int64_t)a4 endIndex:(int64_t)a5 startOfRun:(int64_t *)a6 gatingFailures:(int *)a7
+- (int64_t)findLongestPassingSegmentInFrameFlags:(id)flags startIndex:(int64_t)index endIndex:(int64_t)endIndex startOfRun:(int64_t *)run gatingFailures:(int *)failures
 {
-  v24 = a6;
-  v9 = a3;
-  if (a4 <= a5)
+  runCopy = run;
+  flagsCopy = flags;
+  if (index <= endIndex)
   {
     v14 = 0;
     v13 = 0;
     v12 = 0;
     v11 = 0;
     v10 = 0;
-    v15 = a5 + 1;
+    v15 = endIndex + 1;
     do
     {
-      v16 = [v9 objectAtIndex:{a4, v24}];
-      v17 = [v16 unsignedIntegerValue];
+      v16 = [flagsCopy objectAtIndex:{index, runCopy}];
+      unsignedIntegerValue = [v16 unsignedIntegerValue];
 
-      v13 |= v17;
+      v13 |= unsignedIntegerValue;
       if (v10 <= v12)
       {
         v18 = v11;
@@ -1632,17 +1632,17 @@ LABEL_43:
 
       if (v10)
       {
-        v20 = v14;
+        indexCopy = v14;
       }
 
       else
       {
         v18 = v11;
         v19 = v12;
-        v20 = a4;
+        indexCopy = index;
       }
 
-      if (v17)
+      if (unsignedIntegerValue)
       {
         v10 = 0;
       }
@@ -1652,7 +1652,7 @@ LABEL_43:
         ++v10;
       }
 
-      if (v17)
+      if (unsignedIntegerValue)
       {
         v11 = v18;
         v12 = v19;
@@ -1660,13 +1660,13 @@ LABEL_43:
 
       else
       {
-        v14 = v20;
+        v14 = indexCopy;
       }
 
-      ++a4;
+      ++index;
     }
 
-    while (v15 != a4);
+    while (v15 != index);
   }
 
   else
@@ -1688,10 +1688,10 @@ LABEL_43:
     v21 = v14;
   }
 
-  *v24 = v21;
-  if (a7)
+  *runCopy = v21;
+  if (failures)
   {
-    *a7 = v13;
+    *failures = v13;
   }
 
   if (v10 <= v12)
@@ -1707,23 +1707,23 @@ LABEL_43:
   return v22;
 }
 
-- (BOOL)findFrameIndicesInFrameArray:(id)a3 forTimeRange:(id *)a4 startIndex:(int *)a5 endIndex:(int *)a6
+- (BOOL)findFrameIndicesInFrameArray:(id)array forTimeRange:(id *)range startIndex:(int *)index endIndex:(int *)endIndex
 {
-  v10 = a3;
-  if (![v10 count])
+  arrayCopy = array;
+  if (![arrayCopy count])
   {
     goto LABEL_24;
   }
 
-  if ((a4->var0.var2 & 0x1D) == 1 || (a4->var1.var2 & 0x1D) == 1)
+  if ((range->var0.var2 & 0x1D) == 1 || (range->var1.var2 & 0x1D) == 1)
   {
     v27 = **&MEMORY[0x277CC0898];
-    if ([v10 count])
+    if ([arrayCopy count])
     {
       v11 = 0;
       while (1)
       {
-        v12 = [v10 objectAtIndexedSubscript:v11];
+        v12 = [arrayCopy objectAtIndexedSubscript:v11];
         v13 = [v12 objectForKeyedSubscript:@"PresentationTime"];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
@@ -1738,7 +1738,7 @@ LABEL_43:
           }
         }
 
-        if ([v10 count] <= ++v11)
+        if ([arrayCopy count] <= ++v11)
         {
           goto LABEL_13;
         }
@@ -1756,13 +1756,13 @@ LABEL_13:
       v11 = 0;
     }
 
-    if ([v10 count] <= v11)
+    if ([arrayCopy count] <= v11)
     {
       goto LABEL_24;
     }
 
-    v22 = a5;
-    v16 = [v10 count];
+    indexCopy2 = index;
+    v16 = [arrayCopy count];
     v17 = v16;
     if (v16 <= v14)
     {
@@ -1772,7 +1772,7 @@ LABEL_13:
     v15 = v16 - 1;
     while (1)
     {
-      v18 = [v10 objectAtIndexedSubscript:--v17];
+      v18 = [arrayCopy objectAtIndexedSubscript:--v17];
       v19 = [v18 objectForKeyedSubscript:@"PresentationTime"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -1801,38 +1801,38 @@ LABEL_13:
 
   else
   {
-    v22 = a5;
+    indexCopy2 = index;
     v14 = 0;
-    v15 = [v10 count] - 1;
+    v15 = [arrayCopy count] - 1;
   }
 
-  if (![(PregateAnalyzer *)self subsegmentMeetsTrimCriteriaForFrames:v10 firstFrame:v14 lastFrame:v15 firstFrameTimeOut:0 lastFrameTimeOut:0 preciseTrimTimeOut:0])
+  if (![(PregateAnalyzer *)self subsegmentMeetsTrimCriteriaForFrames:arrayCopy firstFrame:v14 lastFrame:v15 firstFrameTimeOut:0 lastFrameTimeOut:0 preciseTrimTimeOut:0])
   {
 LABEL_24:
     v20 = 0;
     goto LABEL_25;
   }
 
-  *v22 = v14;
-  *a6 = v15;
+  *indexCopy2 = v14;
+  *endIndex = v15;
   v20 = 1;
 LABEL_25:
 
   return v20;
 }
 
-- (int)findGatingPassViaTrimming:(id)a3
+- (int)findGatingPassViaTrimming:(id)trimming
 {
-  v4 = a3;
+  trimmingCopy = trimming;
   v10 = 0;
   v9 = 0;
   v5 = [(PregateAnalyzer *)self findLongestPassingSegmentInFrameFlags:self->_badFrameFlags startIndex:self->_trimInput_firstIndex endIndex:self->_trimInput_lastIndex startOfRun:&v10 gatingFailures:&v9];
   if (v5)
   {
     v6 = v5 + v10 - 1;
-    if ([PregateAnalyzer subsegmentMeetsTrimCriteriaForFrames:"subsegmentMeetsTrimCriteriaForFrames:firstFrame:lastFrame:firstFrameTimeOut:lastFrameTimeOut:preciseTrimTimeOut:" firstFrame:v4 lastFrame:? firstFrameTimeOut:? lastFrameTimeOut:? preciseTrimTimeOut:?])
+    if ([PregateAnalyzer subsegmentMeetsTrimCriteriaForFrames:"subsegmentMeetsTrimCriteriaForFrames:firstFrame:lastFrame:firstFrameTimeOut:lastFrameTimeOut:preciseTrimTimeOut:" firstFrame:trimmingCopy lastFrame:? firstFrameTimeOut:? lastFrameTimeOut:? preciseTrimTimeOut:?])
     {
-      v7 = [(PregateAnalyzer *)self isCumulativePanAcceptableForFrames:v4 firstIndex:v10 lastIndex:v6];
+      v7 = [(PregateAnalyzer *)self isCumulativePanAcceptableForFrames:trimmingCopy firstIndex:v10 lastIndex:v6];
       if (!v7)
       {
         *&self->outputTrimTime.start.value = 0uLL;
@@ -1866,7 +1866,7 @@ LABEL_25:
   return v7;
 }
 
-- (int)processPregateSuccess:(int *)a3
+- (int)processPregateSuccess:(int *)success
 {
   v5 = MEMORY[0x277CC0898];
   v6 = *MEMORY[0x277CC0898];
@@ -1876,15 +1876,15 @@ LABEL_25:
   p_duration = &self->outputTrimTime.duration;
   *&self->outputTrimTime.duration.value = v6;
   self->outputTrimTime.duration.epoch = v7;
-  v9 = [(PregateAnalyzer *)self fetchVideoDimensionsFromMetadata];
-  if (!v9)
+  fetchVideoDimensionsFromMetadata = [(PregateAnalyzer *)self fetchVideoDimensionsFromMetadata];
+  if (!fetchVideoDimensionsFromMetadata)
   {
     v20 = 0;
-    v9 = [(PregateAnalyzer *)self getFrameMetadataArray:&v20];
+    fetchVideoDimensionsFromMetadata = [(PregateAnalyzer *)self getFrameMetadataArray:&v20];
     v10 = v20;
     if ([v10 count])
     {
-      if (v9 || !v10)
+      if (fetchVideoDimensionsFromMetadata || !v10)
       {
         goto LABEL_11;
       }
@@ -1913,11 +1913,11 @@ LABEL_25:
       v12 = 2048;
     }
 
-    *a3 = v12;
+    *success = v12;
 LABEL_11:
   }
 
-  if (!*a3)
+  if (!*success)
   {
     if (self->outputTrimTime.start.flags & 1) != 0 && (self->outputTrimTime.duration.flags)
     {
@@ -1942,7 +1942,7 @@ LABEL_11:
     }
   }
 
-  return v9;
+  return fetchVideoDimensionsFromMetadata;
 }
 
 - (CGSize)inputVideoSize

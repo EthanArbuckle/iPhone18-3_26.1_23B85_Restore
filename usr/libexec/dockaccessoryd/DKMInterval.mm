@@ -1,10 +1,10 @@
 @interface DKMInterval
-+ (id)closedClosedIntervalFromStart:(id)a3 toEnd:(id)a4;
-+ (id)closedOpenIntervalFromStart:(id)a3 toEnd:(id)a4;
-+ (id)openClosedIntervalFromStart:(id)a3 toEnd:(id)a4;
-+ (id)openOpenIntervalFromStart:(id)a3 toEnd:(id)a4;
++ (id)closedClosedIntervalFromStart:(id)start toEnd:(id)end;
++ (id)closedOpenIntervalFromStart:(id)start toEnd:(id)end;
++ (id)openClosedIntervalFromStart:(id)start toEnd:(id)end;
++ (id)openOpenIntervalFromStart:(id)start toEnd:(id)end;
 + (void)initialize;
-- (id)initFromStart:(id)a3 toEnd:(id)a4;
+- (id)initFromStart:(id)start toEnd:(id)end;
 - (id)labelString;
 @end
 
@@ -14,7 +14,7 @@
 {
   v3 = objc_opt_self();
 
-  if (v3 == a1)
+  if (v3 == self)
   {
     v4 = qword_1002ACC50;
     qword_1002ACC50 = &off_100282468;
@@ -24,54 +24,54 @@
   }
 }
 
-+ (id)openOpenIntervalFromStart:(id)a3 toEnd:(id)a4
++ (id)openOpenIntervalFromStart:(id)start toEnd:(id)end
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [(DKMInterval *)[DKMOpenOpenInterval alloc] initFromStart:v6 toEnd:v5];
+  endCopy = end;
+  startCopy = start;
+  v7 = [(DKMInterval *)[DKMOpenOpenInterval alloc] initFromStart:startCopy toEnd:endCopy];
 
   return v7;
 }
 
-+ (id)openClosedIntervalFromStart:(id)a3 toEnd:(id)a4
++ (id)openClosedIntervalFromStart:(id)start toEnd:(id)end
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [(DKMInterval *)[DKMOpenClosedInterval alloc] initFromStart:v6 toEnd:v5];
+  endCopy = end;
+  startCopy = start;
+  v7 = [(DKMInterval *)[DKMOpenClosedInterval alloc] initFromStart:startCopy toEnd:endCopy];
 
   return v7;
 }
 
-+ (id)closedOpenIntervalFromStart:(id)a3 toEnd:(id)a4
++ (id)closedOpenIntervalFromStart:(id)start toEnd:(id)end
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [(DKMInterval *)[DKMClosedOpenInterval alloc] initFromStart:v6 toEnd:v5];
+  endCopy = end;
+  startCopy = start;
+  v7 = [(DKMInterval *)[DKMClosedOpenInterval alloc] initFromStart:startCopy toEnd:endCopy];
 
   return v7;
 }
 
-+ (id)closedClosedIntervalFromStart:(id)a3 toEnd:(id)a4
++ (id)closedClosedIntervalFromStart:(id)start toEnd:(id)end
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [(DKMInterval *)[DKMClosedClosedInterval alloc] initFromStart:v6 toEnd:v5];
+  endCopy = end;
+  startCopy = start;
+  v7 = [(DKMInterval *)[DKMClosedClosedInterval alloc] initFromStart:startCopy toEnd:endCopy];
 
   return v7;
 }
 
-- (id)initFromStart:(id)a3 toEnd:(id)a4
+- (id)initFromStart:(id)start toEnd:(id)end
 {
-  v7 = a3;
-  v8 = a4;
+  startCopy = start;
+  endCopy = end;
   v12.receiver = self;
   v12.super_class = DKMInterval;
   v9 = [(DKMInterval *)&v12 init];
   p_isa = &v9->super.isa;
   if (v9)
   {
-    objc_storeStrong(&v9->_start, a3);
-    objc_storeStrong(p_isa + 2, a4);
+    objc_storeStrong(&v9->_start, start);
+    objc_storeStrong(p_isa + 2, end);
   }
 
   return p_isa;
@@ -79,20 +79,20 @@
 
 - (id)labelString
 {
-  v3 = [(DKMInterval *)self start];
+  start = [(DKMInterval *)self start];
   v4 = [(DKMInterval *)self end];
-  v5 = [v3 isEqualToNumber:v4];
+  v5 = [start isEqualToNumber:v4];
 
-  v6 = [(DKMInterval *)self start];
-  v7 = v6;
+  start2 = [(DKMInterval *)self start];
+  v7 = start2;
   if (v5)
   {
-    v8 = [v6 description];
+    allNumbersIntervalString = [start2 description];
 
     goto LABEL_12;
   }
 
-  v9 = [v6 isEqualToNumber:qword_1002ACC58];
+  v9 = [start2 isEqualToNumber:qword_1002ACC58];
 
   v10 = [(DKMInterval *)self end];
   v11 = [v10 isEqualToNumber:qword_1002ACC50];
@@ -101,37 +101,37 @@
   {
     if (v11)
     {
-      v8 = [(DKMInterval *)self allNumbersIntervalString];
+      allNumbersIntervalString = [(DKMInterval *)self allNumbersIntervalString];
       goto LABEL_12;
     }
 
-    v12 = [(DKMInterval *)self negativeInfinityIntervalString];
-    v13 = [(DKMInterval *)self end];
+    negativeInfinityIntervalString = [(DKMInterval *)self negativeInfinityIntervalString];
+    start4 = [(DKMInterval *)self end];
   }
 
   else
   {
     if (!v11)
     {
-      v12 = [(DKMInterval *)self standardIntervalString];
-      v14 = [(DKMInterval *)self start];
+      negativeInfinityIntervalString = [(DKMInterval *)self standardIntervalString];
+      start3 = [(DKMInterval *)self start];
       v15 = [(DKMInterval *)self end];
-      v8 = [NSString stringWithValidatedFormat:v12 validFormatSpecifiers:@"%@ %@" error:0, v14, v15];
+      allNumbersIntervalString = [NSString stringWithValidatedFormat:negativeInfinityIntervalString validFormatSpecifiers:@"%@ %@" error:0, start3, v15];
 
       goto LABEL_11;
     }
 
-    v12 = [(DKMInterval *)self positiveInfinityIntervalString];
-    v13 = [(DKMInterval *)self start];
+    negativeInfinityIntervalString = [(DKMInterval *)self positiveInfinityIntervalString];
+    start4 = [(DKMInterval *)self start];
   }
 
-  v14 = v13;
-  v8 = [NSString stringWithValidatedFormat:v12 validFormatSpecifiers:@"%@" error:0, v13];
+  start3 = start4;
+  allNumbersIntervalString = [NSString stringWithValidatedFormat:negativeInfinityIntervalString validFormatSpecifiers:@"%@" error:0, start4];
 LABEL_11:
 
 LABEL_12:
 
-  return v8;
+  return allNumbersIntervalString;
 }
 
 @end

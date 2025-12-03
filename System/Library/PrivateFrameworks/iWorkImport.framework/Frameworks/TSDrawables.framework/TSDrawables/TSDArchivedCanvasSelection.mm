@@ -1,19 +1,19 @@
 @interface TSDArchivedCanvasSelection
 - (NSString)description;
-- (TSDArchivedCanvasSelection)initWithContext:(id)a3;
-- (void)loadFromUnarchiver:(id)a3;
-- (void)saveToArchiver:(id)a3;
-- (void)setSelection:(id)a3;
+- (TSDArchivedCanvasSelection)initWithContext:(id)context;
+- (void)loadFromUnarchiver:(id)unarchiver;
+- (void)saveToArchiver:(id)archiver;
+- (void)setSelection:(id)selection;
 @end
 
 @implementation TSDArchivedCanvasSelection
 
-- (TSDArchivedCanvasSelection)initWithContext:(id)a3
+- (TSDArchivedCanvasSelection)initWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v11.receiver = self;
   v11.super_class = TSDArchivedCanvasSelection;
-  v7 = [(TSDArchivedCanvasSelection *)&v11 initWithContext:v4];
+  v7 = [(TSDArchivedCanvasSelection *)&v11 initWithContext:contextCopy];
   if (v7)
   {
     v8 = objc_msgSend_emptySelection(TSDCanvasSelection, v5, v6);
@@ -24,31 +24,31 @@
   return v7;
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v10 = a3;
+  unarchiverCopy = unarchiver;
   google::protobuf::internal::AssignDescriptors();
-  v5 = objc_msgSend_messageWithDescriptor_(v10, v4, off_2812F5188[108]);
+  v5 = objc_msgSend_messageWithDescriptor_(unarchiverCopy, v4, off_2812F5188[108]);
 
   v6 = [TSDCanvasSelection alloc];
-  v8 = objc_msgSend_initWithArchive_unarchiver_(v6, v7, v5, v10);
+  v8 = objc_msgSend_initWithArchive_unarchiver_(v6, v7, v5, unarchiverCopy);
   objc_msgSend_setSelection_(self, v9, v8);
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v10 = a3;
+  archiverCopy = archiver;
   google::protobuf::internal::AssignDescriptors();
-  v5 = objc_msgSend_messageWithNewFunction_descriptor_(v10, v4, sub_2766B9690, off_2812F5188[108]);
+  v5 = objc_msgSend_messageWithNewFunction_descriptor_(archiverCopy, v4, sub_2766B9690, off_2812F5188[108]);
 
   v8 = objc_msgSend_selection(self, v6, v7);
-  objc_msgSend_saveToArchive_archiver_(v8, v9, v5, v10);
+  objc_msgSend_saveToArchive_archiver_(v8, v9, v5, archiverCopy);
 }
 
-- (void)setSelection:(id)a3
+- (void)setSelection:(id)selection
 {
-  v6 = a3;
-  if (v6)
+  selectionCopy = selection;
+  if (selectionCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -64,7 +64,7 @@
 
   objc_msgSend_willModify(self, v4, v5);
   selection = self->_selection;
-  self->_selection = v6;
+  self->_selection = selectionCopy;
 }
 
 - (NSString)description

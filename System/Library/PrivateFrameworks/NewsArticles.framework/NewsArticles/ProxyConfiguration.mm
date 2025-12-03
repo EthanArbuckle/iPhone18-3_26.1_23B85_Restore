@@ -9,7 +9,7 @@
 
 - (BOOL)usePrivateRelay
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ProxyConfiguration.usePrivateRelay.getter();
 
   return v3 & 1;
@@ -17,7 +17,7 @@
 
 - (NSString)proxyAutoConfigScript
 {
-  v2 = self;
+  selfCopy = self;
   ProxyConfiguration.proxyAutoConfigScript.getter();
 
   v3 = sub_1D7D3031C();
@@ -27,7 +27,7 @@
 
 - (NSString)proxyHost
 {
-  v2 = self;
+  selfCopy = self;
   ProxyConfiguration.proxyHost.getter();
   v4 = v3;
 

@@ -1,52 +1,52 @@
 @interface GTShaderProfilerTimingInfo
-- (GTShaderProfilerTimingInfo)initWithCoder:(id)a3;
-- (GTShaderProfilerTimingInfo)initWithTime:(unint64_t)a3 vertexTime:(unint64_t)a4 fragmentTime:(unint64_t)a5 computeTime:(unint64_t)a6;
-- (void)encodeWithCoder:(id)a3;
+- (GTShaderProfilerTimingInfo)initWithCoder:(id)coder;
+- (GTShaderProfilerTimingInfo)initWithTime:(unint64_t)time vertexTime:(unint64_t)vertexTime fragmentTime:(unint64_t)fragmentTime computeTime:(unint64_t)computeTime;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation GTShaderProfilerTimingInfo
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeDouble:@"time" forKey:self->_time];
-  [v4 encodeDouble:@"vertexTime" forKey:self->_vertexTime];
-  [v4 encodeDouble:@"fragmentTime" forKey:self->_fragmentTime];
-  [v4 encodeDouble:@"computeTime" forKey:self->_computeTime];
+  coderCopy = coder;
+  [coderCopy encodeDouble:@"time" forKey:self->_time];
+  [coderCopy encodeDouble:@"vertexTime" forKey:self->_vertexTime];
+  [coderCopy encodeDouble:@"fragmentTime" forKey:self->_fragmentTime];
+  [coderCopy encodeDouble:@"computeTime" forKey:self->_computeTime];
 }
 
-- (GTShaderProfilerTimingInfo)initWithCoder:(id)a3
+- (GTShaderProfilerTimingInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = GTShaderProfilerTimingInfo;
   v5 = [(GTShaderProfilerTimingInfo *)&v11 init];
   if (v5)
   {
-    [v4 decodeDoubleForKey:@"time"];
+    [coderCopy decodeDoubleForKey:@"time"];
     v5->_time = v6;
-    [v4 decodeDoubleForKey:@"vertexTime"];
+    [coderCopy decodeDoubleForKey:@"vertexTime"];
     v5->_vertexTime = v7;
-    [v4 decodeDoubleForKey:@"fragmentTime"];
+    [coderCopy decodeDoubleForKey:@"fragmentTime"];
     v5->_fragmentTime = v8;
-    [v4 decodeDoubleForKey:@"computeTime"];
+    [coderCopy decodeDoubleForKey:@"computeTime"];
     v5->_computeTime = v9;
   }
 
   return v5;
 }
 
-- (GTShaderProfilerTimingInfo)initWithTime:(unint64_t)a3 vertexTime:(unint64_t)a4 fragmentTime:(unint64_t)a5 computeTime:(unint64_t)a6
+- (GTShaderProfilerTimingInfo)initWithTime:(unint64_t)time vertexTime:(unint64_t)vertexTime fragmentTime:(unint64_t)fragmentTime computeTime:(unint64_t)computeTime
 {
   v11.receiver = self;
   v11.super_class = GTShaderProfilerTimingInfo;
   result = [(GTShaderProfilerTimingInfo *)&v11 init];
   if (result)
   {
-    result->_time = a3;
-    result->_vertexTime = a4;
-    result->_fragmentTime = a5;
-    result->_computeTime = a6;
+    result->_time = time;
+    result->_vertexTime = vertexTime;
+    result->_fragmentTime = fragmentTime;
+    result->_computeTime = computeTime;
   }
 
   return result;

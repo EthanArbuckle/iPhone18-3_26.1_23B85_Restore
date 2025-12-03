@@ -1,12 +1,12 @@
 @interface BKAudiobookNowPlayingAdaptor
 + (id)sharedInstance;
 - (BKAudiobookGenericCoverProvider)genericCoverProvider;
-- (BKAudiobookNowPlayingAdaptor)initWithPlayer:(id)a3;
+- (BKAudiobookNowPlayingAdaptor)initWithPlayer:(id)player;
 - (void)invalidatePlaybackQueue;
-- (void)player:(id)a3 audiobookDidChange:(id)a4;
-- (void)player:(id)a3 chapterDidChange:(id)a4;
-- (void)player:(id)a3 stateDidChangeFrom:(int64_t)a4 to:(int64_t)a5;
-- (void)setAudiobookPlayerActiveOutput:(BOOL)a3;
+- (void)player:(id)player audiobookDidChange:(id)change;
+- (void)player:(id)player chapterDidChange:(id)change;
+- (void)player:(id)player stateDidChangeFrom:(int64_t)from to:(int64_t)to;
+- (void)setAudiobookPlayerActiveOutput:(BOOL)output;
 @end
 
 @implementation BKAudiobookNowPlayingAdaptor
@@ -23,34 +23,34 @@
   return v3;
 }
 
-- (BKAudiobookNowPlayingAdaptor)initWithPlayer:(id)a3
+- (BKAudiobookNowPlayingAdaptor)initWithPlayer:(id)player
 {
-  v5 = a3;
+  playerCopy = player;
   v10.receiver = self;
   v10.super_class = BKAudiobookNowPlayingAdaptor;
   v6 = [(BKAudiobookNowPlayingAdaptor *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_player, a3);
-    v8 = [(BKAudiobookNowPlayingAdaptor *)v7 player];
-    [v8 addObserver:v7];
+    objc_storeStrong(&v6->_player, player);
+    player = [(BKAudiobookNowPlayingAdaptor *)v7 player];
+    [player addObserver:v7];
   }
 
   return v7;
 }
 
-- (void)setAudiobookPlayerActiveOutput:(BOOL)a3
+- (void)setAudiobookPlayerActiveOutput:(BOOL)output
 {
-  if (self->_audiobookPlayerActiveOutput != a3)
+  if (self->_audiobookPlayerActiveOutput != output)
   {
     v11 = v3;
     v12 = v4;
-    v5 = a3;
-    self->_audiobookPlayerActiveOutput = a3;
+    outputCopy = output;
+    self->_audiobookPlayerActiveOutput = output;
     v7 = BKAudiobooksNowPlayingAdaptorLog();
     v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
-    if (v5)
+    if (outputCopy)
     {
       if (v8)
       {
@@ -88,25 +88,25 @@
   [v3 invalidatePlaybackQueue];
 }
 
-- (void)player:(id)a3 audiobookDidChange:(id)a4
+- (void)player:(id)player audiobookDidChange:(id)change
 {
-  [(BKAudiobookNowPlayingAdaptor *)self invalidatePlaybackQueue:a3];
+  [(BKAudiobookNowPlayingAdaptor *)self invalidatePlaybackQueue:player];
 
   [(BKAudiobookNowPlayingAdaptor *)self nowPlayingInfoChanged:0];
 }
 
-- (void)player:(id)a3 chapterDidChange:(id)a4
+- (void)player:(id)player chapterDidChange:(id)change
 {
-  [(BKAudiobookNowPlayingAdaptor *)self invalidatePlaybackQueue:a3];
+  [(BKAudiobookNowPlayingAdaptor *)self invalidatePlaybackQueue:player];
 
   [(BKAudiobookNowPlayingAdaptor *)self nowPlayingInfoChanged:0];
 }
 
-- (void)player:(id)a3 stateDidChangeFrom:(int64_t)a4 to:(int64_t)a5
+- (void)player:(id)player stateDidChangeFrom:(int64_t)from to:(int64_t)to
 {
-  if ((a5 - 1) <= 1)
+  if ((to - 1) <= 1)
   {
-    [(BKAudiobookNowPlayingAdaptor *)self setAudiobookPlayerActiveOutput:1, a4];
+    [(BKAudiobookNowPlayingAdaptor *)self setAudiobookPlayerActiveOutput:1, from];
   }
 
   [(BKAudiobookNowPlayingAdaptor *)self nowPlayingInfoChanged:1];

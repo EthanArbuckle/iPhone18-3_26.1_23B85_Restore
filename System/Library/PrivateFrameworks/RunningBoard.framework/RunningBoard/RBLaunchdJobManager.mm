@@ -1,37 +1,37 @@
 @interface RBLaunchdJobManager
-+ (id)lastExitStatusForLabel:(id)a3 error:(id *)a4;
-- (BOOL)_addAppPropertiesToData:(id)a3 forIdentity:(id)a4 context:(id)a5 actualIdentity:(id *)a6 error:(id *)a7;
-- (BOOL)_addContainerPropertiesFromExtensionContext:(id)a3 toServiceDict:(id)a4;
-- (BOOL)_addPersonaFromExtensionContext:(id)a3 toServiceDict:(id)a4;
-- (BOOL)_isRunningBoardLaunched:(id)a3;
-- (BOOL)_removeJobWithInstance:(id)a3 orJob:(id)a4 error:(id *)a5;
-- (RBLaunchdJobManager)initWithLaunchdInterface:(id)a3 personaManager:(id)a4 containerManager:(id)a5 bundlePropertiesManager:(id)a6;
-- (id)_containerURLForExtensionContext:(id)a3;
-- (id)_createAndSubmitExtensionJob:(id)a3 UUID:(id)a4 error:(id *)a5;
-- (id)_createLaunchdJobWithIdentity:(id)a3 context:(id)a4 actualIdentity:(id *)a5 error:(id *)a6;
-- (id)_generateDataWithIdentity:(id)a3 context:(id)a4 actualIdentity:(id *)a5 error:(id *)a6;
-- (id)createAndLaunchWithIdentity:(id)a3 context:(id)a4 error:(id *)a5;
++ (id)lastExitStatusForLabel:(id)label error:(id *)error;
+- (BOOL)_addAppPropertiesToData:(id)data forIdentity:(id)identity context:(id)context actualIdentity:(id *)actualIdentity error:(id *)error;
+- (BOOL)_addContainerPropertiesFromExtensionContext:(id)context toServiceDict:(id)dict;
+- (BOOL)_addPersonaFromExtensionContext:(id)context toServiceDict:(id)dict;
+- (BOOL)_isRunningBoardLaunched:(id)launched;
+- (BOOL)_removeJobWithInstance:(id)instance orJob:(id)job error:(id *)error;
+- (RBLaunchdJobManager)initWithLaunchdInterface:(id)interface personaManager:(id)manager containerManager:(id)containerManager bundlePropertiesManager:(id)propertiesManager;
+- (id)_containerURLForExtensionContext:(id)context;
+- (id)_createAndSubmitExtensionJob:(id)job UUID:(id)d error:(id *)error;
+- (id)_createLaunchdJobWithIdentity:(id)identity context:(id)context actualIdentity:(id *)actualIdentity error:(id *)error;
+- (id)_generateDataWithIdentity:(id)identity context:(id)context actualIdentity:(id *)actualIdentity error:(id *)error;
+- (id)createAndLaunchWithIdentity:(id)identity context:(id)context error:(id *)error;
 - (id)synchronizeJobs;
 - (unint64_t)test_trackedJobCount;
-- (void)_addDextPropertiesToData:(id)a3 forIdentity:(id)a4 context:(id)a5;
-- (void)_addExtensionContainerURL:(id)a3 toServiceDict:(id)a4;
-- (void)_addExtensionEnvironmentFromContainerURL:(id)a3 toServiceDict:(id)a4;
-- (void)_addReslideIdentityIfNeeded:(id)a3 exitStatus:(id)a4;
-- (void)_addSharedPropertiesToData:(id)a3 forIdentity:(id)a4 context:(id)a5;
-- (void)_addStandardAppPropertiesToData:(id)a3;
-- (void)_adjustLaunchdJobProperties:(id)a3 context:(id)a4;
-- (void)invokeOnProcessDeath:(id)a3 handler:(id)a4 onQueue:(id)a5;
+- (void)_addDextPropertiesToData:(id)data forIdentity:(id)identity context:(id)context;
+- (void)_addExtensionContainerURL:(id)l toServiceDict:(id)dict;
+- (void)_addExtensionEnvironmentFromContainerURL:(id)l toServiceDict:(id)dict;
+- (void)_addReslideIdentityIfNeeded:(id)needed exitStatus:(id)status;
+- (void)_addSharedPropertiesToData:(id)data forIdentity:(id)identity context:(id)context;
+- (void)_addStandardAppPropertiesToData:(id)data;
+- (void)_adjustLaunchdJobProperties:(id)properties context:(id)context;
+- (void)invokeOnProcessDeath:(id)death handler:(id)handler onQueue:(id)queue;
 - (void)synchronizeJobs;
 @end
 
 @implementation RBLaunchdJobManager
 
-+ (id)lastExitStatusForLabel:(id)a3 error:(id *)a4
++ (id)lastExitStatusForLabel:(id)label error:(id *)error
 {
   v30 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = v5;
-  if (!v5)
+  labelCopy = label;
+  v6 = labelCopy;
+  if (!labelCopy)
   {
 LABEL_10:
     v9 = 0;
@@ -39,7 +39,7 @@ LABEL_10:
   }
 
   v21 = 0;
-  [v5 UTF8String];
+  [labelCopy UTF8String];
   last_exit_reason_4SB = _launch_get_last_exit_reason_4SB();
   if (!last_exit_reason_4SB)
   {
@@ -69,7 +69,7 @@ LABEL_10:
     _os_log_error_impl(&dword_262485000, v11, OS_LOG_TYPE_ERROR, "failed to get process exit details for %{public}@ : %s (%d)", buf, 0x1Cu);
   }
 
-  if (a4)
+  if (error)
   {
     v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unable to get process exit details for label %@", v6];
     v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:v10];
@@ -81,7 +81,7 @@ LABEL_10:
     v23[0] = v12;
     v23[1] = v13;
     v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v23 forKeys:v22 count:2];
-    *a4 = [v14 errorWithDomain:v15 code:v8 userInfo:v17];
+    *error = [v14 errorWithDomain:v15 code:v8 userInfo:v17];
   }
 
 LABEL_11:
@@ -91,30 +91,30 @@ LABEL_11:
   return v9;
 }
 
-- (RBLaunchdJobManager)initWithLaunchdInterface:(id)a3 personaManager:(id)a4 containerManager:(id)a5 bundlePropertiesManager:(id)a6
+- (RBLaunchdJobManager)initWithLaunchdInterface:(id)interface personaManager:(id)manager containerManager:(id)containerManager bundlePropertiesManager:(id)propertiesManager
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  interfaceCopy = interface;
+  managerCopy = manager;
+  containerManagerCopy = containerManager;
+  propertiesManagerCopy = propertiesManager;
   v27.receiver = self;
   v27.super_class = RBLaunchdJobManager;
   v15 = [(RBLaunchdJobManager *)&v27 init];
   if (v15)
   {
-    v16 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     lock_jobsByIdentifier = v15->_lock_jobsByIdentifier;
-    v15->_lock_jobsByIdentifier = v16;
+    v15->_lock_jobsByIdentifier = dictionary;
 
-    v18 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     lock_monitoredJobsByIdentifier = v15->_lock_monitoredJobsByIdentifier;
-    v15->_lock_monitoredJobsByIdentifier = v18;
+    v15->_lock_monitoredJobsByIdentifier = dictionary2;
 
     v15->_lock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v15->_launchdInterface, a3);
-    objc_storeStrong(&v15->_personaManager, a4);
-    objc_storeStrong(&v15->_containerManager, a5);
-    objc_storeStrong(&v15->_bundlePropertiesManager, a6);
+    objc_storeStrong(&v15->_launchdInterface, interface);
+    objc_storeStrong(&v15->_personaManager, manager);
+    objc_storeStrong(&v15->_containerManager, containerManager);
+    objc_storeStrong(&v15->_bundlePropertiesManager, propertiesManager);
     v20 = objc_alloc_init(MEMORY[0x277CBEB40]);
     lock_reslideIdentities = v15->_lock_reslideIdentities;
     v15->_lock_reslideIdentities = v20;
@@ -130,15 +130,15 @@ LABEL_11:
   return v15;
 }
 
-- (void)_addReslideIdentityIfNeeded:(id)a3 exitStatus:(id)a4
+- (void)_addReslideIdentityIfNeeded:(id)needed exitStatus:(id)status
 {
-  v7 = a3;
-  v6 = a4;
-  if ([v7 isApplication] && (objc_msgSend(v6, "os_reason_flags") & 0x400) != 0)
+  neededCopy = needed;
+  statusCopy = status;
+  if ([neededCopy isApplication] && (objc_msgSend(statusCopy, "os_reason_flags") & 0x400) != 0)
   {
     os_unfair_lock_lock(&self->_lock);
-    [(NSMutableOrderedSet *)self->_lock_reslideIdentities removeObject:v7];
-    [(NSMutableOrderedSet *)self->_lock_reslideIdentities addObject:v7];
+    [(NSMutableOrderedSet *)self->_lock_reslideIdentities removeObject:neededCopy];
+    [(NSMutableOrderedSet *)self->_lock_reslideIdentities addObject:neededCopy];
     if ([(NSMutableOrderedSet *)self->_lock_reslideIdentities count]>= 0x1A)
     {
       [(NSMutableOrderedSet *)self->_lock_reslideIdentities removeObjectAtIndex:0];
@@ -148,71 +148,71 @@ LABEL_11:
   }
 }
 
-- (void)_addSharedPropertiesToData:(id)a3 forIdentity:(id)a4 context:(id)a5
+- (void)_addSharedPropertiesToData:(id)data forIdentity:(id)identity context:(id)context
 {
   v56 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v43 = a5;
-  v9 = [v43 executionOptions];
-  xpc_dictionary_set_string(v7, "_ManagedBy", "com.apple.runningboard");
-  v10 = [v8 applicationJobLabel];
+  dataCopy = data;
+  identityCopy = identity;
+  contextCopy = context;
+  executionOptions = [contextCopy executionOptions];
+  xpc_dictionary_set_string(dataCopy, "_ManagedBy", "com.apple.runningboard");
+  applicationJobLabel = [identityCopy applicationJobLabel];
 
-  if (v10)
+  if (applicationJobLabel)
   {
-    v11 = [v8 applicationJobLabel];
+    applicationJobLabel2 = [identityCopy applicationJobLabel];
     goto LABEL_13;
   }
 
-  v12 = v8;
+  v12 = identityCopy;
   if ([v12 isEmbeddedApplication])
   {
     v13 = MEMORY[0x277CCACA8];
-    v14 = [v12 embeddedApplicationIdentifier];
-    v11 = [v13 stringWithFormat:@"UIKitApplication:%@[%04x][rb-legacy]", v14, arc4random() % 0xFFFF];
+    embeddedApplicationIdentifier = [v12 embeddedApplicationIdentifier];
+    applicationJobLabel2 = [v13 stringWithFormat:@"UIKitApplication:%@[%04x][rb-legacy]", embeddedApplicationIdentifier, arc4random() % 0xFFFF];
   }
 
   else
   {
     if ([v12 hasConsistentLaunchdJob])
     {
-      v15 = [v12 consistentLaunchdJobLabel];
+      consistentLaunchdJobLabel = [v12 consistentLaunchdJobLabel];
     }
 
     else if ([v12 isApplication])
     {
-      v15 = [v12 applicationJobLabel];
+      consistentLaunchdJobLabel = [v12 applicationJobLabel];
     }
 
     else
     {
       if (![v12 isDext])
       {
-        v11 = &stru_287507640;
+        applicationJobLabel2 = &stru_287507640;
         goto LABEL_12;
       }
 
-      v15 = [v12 dextLabel];
+      consistentLaunchdJobLabel = [v12 dextLabel];
     }
 
-    v11 = v15;
+    applicationJobLabel2 = consistentLaunchdJobLabel;
   }
 
 LABEL_12:
 
 LABEL_13:
-  xpc_dictionary_set_string(v7, "Label", [(__CFString *)v11 UTF8String]);
+  xpc_dictionary_set_string(dataCopy, "Label", [(__CFString *)applicationJobLabel2 UTF8String]);
 
   v16 = xpc_array_create(0, 0);
-  v17 = [v43 _overrideExecutablePath];
-  v18 = [v17 fileSystemRepresentation];
+  _overrideExecutablePath = [contextCopy _overrideExecutablePath];
+  fileSystemRepresentation = [_overrideExecutablePath fileSystemRepresentation];
 
-  v40 = v9;
-  v41 = v8;
-  if (v18)
+  v40 = executionOptions;
+  v41 = identityCopy;
+  if (fileSystemRepresentation)
   {
-    xpc_array_set_string(v16, 0xFFFFFFFFFFFFFFFFLL, v18);
-    xpc_dictionary_set_string(v7, "Program", v18);
+    xpc_array_set_string(v16, 0xFFFFFFFFFFFFFFFFLL, fileSystemRepresentation);
+    xpc_dictionary_set_string(dataCopy, "Program", fileSystemRepresentation);
   }
 
   else
@@ -220,7 +220,7 @@ LABEL_13:
     v19 = rbs_process_log();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_FAULT))
     {
-      [RBLaunchdJobManager _addSharedPropertiesToData:v43 forIdentity:? context:?];
+      [RBLaunchdJobManager _addSharedPropertiesToData:contextCopy forIdentity:? context:?];
     }
   }
 
@@ -228,8 +228,8 @@ LABEL_13:
   v51 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v20 = [v43 arguments];
-  v21 = [v20 countByEnumeratingWithState:&v48 objects:v55 count:16];
+  arguments = [contextCopy arguments];
+  v21 = [arguments countByEnumeratingWithState:&v48 objects:v55 count:16];
   if (v21)
   {
     v22 = v21;
@@ -240,28 +240,28 @@ LABEL_13:
       {
         if (*v49 != v23)
         {
-          objc_enumerationMutation(v20);
+          objc_enumerationMutation(arguments);
         }
 
         v25 = [*(*(&v48 + 1) + 8 * i) description];
         xpc_array_set_string(v16, 0xFFFFFFFFFFFFFFFFLL, [v25 UTF8String]);
       }
 
-      v22 = [v20 countByEnumeratingWithState:&v48 objects:v55 count:16];
+      v22 = [arguments countByEnumeratingWithState:&v48 objects:v55 count:16];
     }
 
     while (v22);
   }
 
-  v42 = v7;
-  xpc_dictionary_set_value(v7, "ProgramArguments", v16);
+  v42 = dataCopy;
+  xpc_dictionary_set_value(dataCopy, "ProgramArguments", v16);
   v26 = xpc_dictionary_create(0, 0, 0);
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v27 = [v43 _additionalEnvironment];
-  v28 = [v27 countByEnumeratingWithState:&v44 objects:v54 count:16];
+  _additionalEnvironment = [contextCopy _additionalEnvironment];
+  v28 = [_additionalEnvironment countByEnumeratingWithState:&v44 objects:v54 count:16];
   if (v28)
   {
     v29 = v28;
@@ -272,20 +272,20 @@ LABEL_13:
       {
         if (*v45 != v30)
         {
-          objc_enumerationMutation(v27);
+          objc_enumerationMutation(_additionalEnvironment);
         }
 
         v32 = *(*(&v44 + 1) + 8 * j);
-        v33 = [v43 _additionalEnvironment];
-        v34 = [v33 objectForKey:v32];
+        _additionalEnvironment2 = [contextCopy _additionalEnvironment];
+        v34 = [_additionalEnvironment2 objectForKey:v32];
 
         v35 = [v32 description];
-        v36 = [v35 UTF8String];
+        uTF8String = [v35 UTF8String];
         v37 = [v34 description];
-        xpc_dictionary_set_string(v26, v36, [v37 UTF8String]);
+        xpc_dictionary_set_string(v26, uTF8String, [v37 UTF8String]);
       }
 
-      v29 = [v27 countByEnumeratingWithState:&v44 objects:v54 count:16];
+      v29 = [_additionalEnvironment countByEnumeratingWithState:&v44 objects:v54 count:16];
     }
 
     while (v29);
@@ -313,19 +313,19 @@ LABEL_13:
   v39 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_addDextPropertiesToData:(id)a3 forIdentity:(id)a4 context:(id)a5
+- (void)_addDextPropertiesToData:(id)data forIdentity:(id)identity context:(id)context
 {
-  xdict = a3;
-  v7 = a4;
-  v8 = a5;
-  v9 = [v8 executionOptions];
+  xdict = data;
+  identityCopy = identity;
+  contextCopy = context;
+  executionOptions = [contextCopy executionOptions];
   xpc_dictionary_set_string(xdict, "ProcessType", "Driver");
   xpc_dictionary_set_BOOL(xdict, "RunAtLoad", 1);
   xpc_dictionary_set_BOOL(xdict, "LaunchOnlyOnce", 1);
   xpc_dictionary_set_string(xdict, "UserName", "_driverkit");
   xpc_dictionary_set_string(xdict, "SandboxProfile", "com.apple.dext");
   xpc_dictionary_set_BOOL(xdict, "_NullBootstrapPort", 1);
-  if ((v9 & 0x40) != 0)
+  if ((executionOptions & 0x40) != 0)
   {
     v10 = xpc_dictionary_create(0, 0, 0);
     xpc_dictionary_set_uint64(v10, "Core", 0x7FFFFFFFFFFFFFFFuLL);
@@ -333,26 +333,26 @@ LABEL_13:
     xpc_dictionary_set_value(xdict, "SoftResourceLimits", v10);
   }
 
-  v11 = [v7 dextServerName];
+  dextServerName = [identityCopy dextServerName];
 
-  if (v11)
+  if (dextServerName)
   {
-    v12 = [v7 dextServerName];
-    xpc_dictionary_set_string(xdict, "_JetsamPropertiesIdentifier", [v12 UTF8String]);
+    dextServerName2 = [identityCopy dextServerName];
+    xpc_dictionary_set_string(xdict, "_JetsamPropertiesIdentifier", [dextServerName2 UTF8String]);
   }
 
-  if ((v9 & 0x20) != 0)
+  if ((executionOptions & 0x20) != 0)
   {
     xpc_dictionary_set_BOOL(xdict, "ReslideSharedCache", 1);
   }
 
-  [v8 dextCheckInPort];
+  [contextCopy dextCheckInPort];
   xpc_dictionary_set_mach_send();
 }
 
-- (void)_addStandardAppPropertiesToData:(id)a3
+- (void)_addStandardAppPropertiesToData:(id)data
 {
-  xdict = a3;
+  xdict = data;
   xpc_dictionary_set_string(xdict, "UserName", "mobile");
   xpc_dictionary_set_BOOL(xdict, "MaterializeDatalessFiles", 1);
   xpc_dictionary_set_BOOL(xdict, "EnablePressuredExit", 0);
@@ -361,23 +361,23 @@ LABEL_13:
   xpc_dictionary_set_int64(xdict, "ExitTimeOut", 1);
 }
 
-- (BOOL)_addAppPropertiesToData:(id)a3 forIdentity:(id)a4 context:(id)a5 actualIdentity:(id *)a6 error:(id *)a7
+- (BOOL)_addAppPropertiesToData:(id)data forIdentity:(id)identity context:(id)context actualIdentity:(id *)actualIdentity error:(id *)error
 {
   v118 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = [v13 executionOptions];
-  *a6 = 0;
-  [(RBLaunchdJobManager *)self _addStandardAppPropertiesToData:v11];
-  v93 = v13;
-  if (([v13 lsSpawnFlags] & 4) == 0)
+  dataCopy = data;
+  identityCopy = identity;
+  contextCopy = context;
+  executionOptions = [contextCopy executionOptions];
+  *actualIdentity = 0;
+  [(RBLaunchdJobManager *)self _addStandardAppPropertiesToData:dataCopy];
+  v93 = contextCopy;
+  if (([contextCopy lsSpawnFlags] & 4) == 0)
   {
-    v15 = [v13 spawnType];
-    if (v15)
+    spawnType = [contextCopy spawnType];
+    if (spawnType)
     {
-      v16 = v15;
-      if (v15 == 1)
+      v16 = spawnType;
+      if (spawnType == 1)
       {
         v17 = "SystemApp";
       }
@@ -399,41 +399,41 @@ LABEL_13:
       v17 = "App";
     }
 
-    xpc_dictionary_set_string(v11, "ProcessType", v17);
-    xpc_dictionary_set_int64(v11, "_LaunchType", 3);
+    xpc_dictionary_set_string(dataCopy, "ProcessType", v17);
+    xpc_dictionary_set_int64(dataCopy, "_LaunchType", 3);
   }
 
-  v19 = [v12 description];
-  xpc_dictionary_set_string(v11, "_ResourceCoalition", [v19 UTF8String]);
+  v19 = [identityCopy description];
+  xpc_dictionary_set_string(dataCopy, "_ResourceCoalition", [v19 UTF8String]);
 
-  v20 = [v13 bundleIdentifier];
+  bundleIdentifier = [contextCopy bundleIdentifier];
 
-  if (v20)
+  if (bundleIdentifier)
   {
-    v21 = [v13 bundleIdentifier];
-    xpc_dictionary_set_string(v11, "CFBundleIdentifier", [v21 UTF8String]);
+    bundleIdentifier2 = [contextCopy bundleIdentifier];
+    xpc_dictionary_set_string(dataCopy, "CFBundleIdentifier", [bundleIdentifier2 UTF8String]);
   }
 
-  if ((v14 & 0x10) != 0)
+  if ((executionOptions & 0x10) != 0)
   {
-    xpc_dictionary_set_BOOL(v11, "NSBuiltWithThreadSanitizer", 1);
+    xpc_dictionary_set_BOOL(dataCopy, "NSBuiltWithThreadSanitizer", 1);
   }
 
-  v22 = [v13 _additionalMachServices];
-  v23 = [v13 launchRequestIdentifierToMachNameMap];
-  v24 = v23;
-  v90 = v11;
-  v91 = self;
-  if ((v14 & 4) != 0)
+  _additionalMachServices = [contextCopy _additionalMachServices];
+  launchRequestIdentifierToMachNameMap = [contextCopy launchRequestIdentifierToMachNameMap];
+  v24 = launchRequestIdentifierToMachNameMap;
+  v90 = dataCopy;
+  selfCopy = self;
+  if ((executionOptions & 4) != 0)
   {
 
     v92 = 0;
-    v22 = 0;
+    _additionalMachServices = 0;
   }
 
   else
   {
-    v92 = v23;
+    v92 = launchRequestIdentifierToMachNameMap;
   }
 
   xdict = xpc_dictionary_create(0, 0, 0);
@@ -441,7 +441,7 @@ LABEL_13:
   v109 = 0u;
   v110 = 0u;
   v111 = 0u;
-  v25 = v22;
+  v25 = _additionalMachServices;
   v26 = [v25 countByEnumeratingWithState:&v108 objects:v117 count:16];
   obj = v25;
   if (v26)
@@ -464,7 +464,7 @@ LABEL_13:
           *buf = 138543618;
           v114 = v30;
           v115 = 2114;
-          v116 = v12;
+          v116 = identityCopy;
           _os_log_impl(&dword_262485000, v31, OS_LOG_TYPE_DEFAULT, "Inserting mach service %{public}@ into job for %{public}@", buf, 0x16u);
         }
 
@@ -489,7 +489,7 @@ LABEL_13:
     v104[1] = 3221225472;
     v104[2] = __88__RBLaunchdJobManager__addAppPropertiesToData_forIdentity_context_actualIdentity_error___block_invoke;
     v104[3] = &unk_279B33140;
-    v105 = v12;
+    v105 = identityCopy;
     v106 = v25;
     v107 = v34;
     v35 = v34;
@@ -506,48 +506,48 @@ LABEL_13:
   }
 
   v38 = v93;
-  v39 = [v93 standardOutputPath];
+  standardOutputPath = [v93 standardOutputPath];
 
-  if (v39)
+  if (standardOutputPath)
   {
-    v40 = [v93 standardOutputPath];
-    xpc_dictionary_set_string(v90, "StandardOutPath", [v40 UTF8String]);
+    standardOutputPath2 = [v93 standardOutputPath];
+    xpc_dictionary_set_string(v90, "StandardOutPath", [standardOutputPath2 UTF8String]);
   }
 
-  v41 = [v93 standardErrorPath];
+  standardErrorPath = [v93 standardErrorPath];
 
-  if (v41)
+  if (standardErrorPath)
   {
-    v42 = [v93 standardErrorPath];
-    xpc_dictionary_set_string(v90, "StandardErrorPath", [v42 UTF8String]);
+    standardErrorPath2 = [v93 standardErrorPath];
+    xpc_dictionary_set_string(v90, "StandardErrorPath", [standardErrorPath2 UTF8String]);
   }
 
-  v43 = [v93 standardInPath];
+  standardInPath = [v93 standardInPath];
 
-  v44 = v91;
-  if (v43)
+  v44 = selfCopy;
+  if (standardInPath)
   {
-    v45 = [v93 standardInPath];
-    xpc_dictionary_set_string(v90, "StandardInPath", [v45 UTF8String]);
+    standardInPath2 = [v93 standardInPath];
+    xpc_dictionary_set_string(v90, "StandardInPath", [standardInPath2 UTF8String]);
   }
 
-  if ((v14 & 5) == 1)
+  if ((executionOptions & 5) == 1)
   {
     xpc_dictionary_set_BOOL(v90, "WaitForDebugger", 1);
   }
 
-  if ((v14 & 6) == 2)
+  if ((executionOptions & 6) == 2)
   {
     xpc_dictionary_set_BOOL(v90, "DisableASLR", 1);
   }
 
-  if (v14 < 0)
+  if (executionOptions < 0)
   {
     v46 = rbs_job_log();
     if (os_log_type_enabled(v46, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v114 = v12;
+      v114 = identityCopy;
       _os_log_impl(&dword_262485000, v46, OS_LOG_TYPE_DEFAULT, "Launching %{public}@ with MTE enabled.", buf, 0xCu);
     }
 
@@ -566,59 +566,59 @@ LABEL_13:
     xpc_dictionary_set_int64(v90, "InitialTaskRole", v47);
   }
 
-  v48 = [v93 lsBinpref];
-  if (v48 && (v49 = v48, [v93 lsBinprefSubtype], v50 = objc_claimAutoreleasedReturnValue(), v50, v49, v50))
+  lsBinpref = [v93 lsBinpref];
+  if (lsBinpref && (v49 = lsBinpref, [v93 lsBinprefSubtype], v50 = objc_claimAutoreleasedReturnValue(), v50, v49, v50))
   {
     v51 = xpc_array_create(0, 0);
-    v52 = [v93 lsBinpref];
-    v53 = [v52 count];
+    lsBinpref2 = [v93 lsBinpref];
+    v53 = [lsBinpref2 count];
 
     if (v53)
     {
-      v54 = v12;
+      v54 = identityCopy;
       v55 = 0;
       do
       {
-        v56 = [v93 lsBinpref];
-        v57 = [v56 objectAtIndex:v55];
+        lsBinpref3 = [v93 lsBinpref];
+        v57 = [lsBinpref3 objectAtIndex:v55];
 
         v58 = xpc_dictionary_create(0, 0, 0);
         xpc_dictionary_set_int64(v58, "CPUType", [v57 integerValue]);
-        v59 = [v93 lsBinprefSubtype];
-        v60 = [v59 count];
+        lsBinprefSubtype = [v93 lsBinprefSubtype];
+        v60 = [lsBinprefSubtype count];
 
         if (v60 <= v55)
         {
-          v63 = -1;
+          integerValue = -1;
         }
 
         else
         {
-          v61 = [v93 lsBinprefSubtype];
-          v62 = [v61 objectAtIndex:v55];
-          v63 = [v62 integerValue];
+          lsBinprefSubtype2 = [v93 lsBinprefSubtype];
+          v62 = [lsBinprefSubtype2 objectAtIndex:v55];
+          integerValue = [v62 integerValue];
         }
 
-        xpc_dictionary_set_int64(v58, "CPUSubtype", v63);
+        xpc_dictionary_set_int64(v58, "CPUSubtype", integerValue);
         xpc_array_set_value(v51, 0xFFFFFFFFFFFFFFFFLL, v58);
 
         ++v55;
-        v64 = [v93 lsBinpref];
-        v65 = [v64 count];
+        lsBinpref4 = [v93 lsBinpref];
+        v65 = [lsBinpref4 count];
       }
 
       while (v65 > v55);
-      v12 = v54;
-      v44 = v91;
+      identityCopy = v54;
+      v44 = selfCopy;
       v33 = v92;
     }
   }
 
   else
   {
-    v66 = [v93 lsBinpref];
+    lsBinpref5 = [v93 lsBinpref];
 
-    if (!v66)
+    if (!lsBinpref5)
     {
       goto LABEL_65;
     }
@@ -628,8 +628,8 @@ LABEL_13:
     v99 = 0u;
     v100 = 0u;
     v101 = 0u;
-    v67 = [v93 lsBinpref];
-    v68 = [v67 countByEnumeratingWithState:&value[1] objects:v112 count:16];
+    lsBinpref6 = [v93 lsBinpref];
+    v68 = [lsBinpref6 countByEnumeratingWithState:&value[1] objects:v112 count:16];
     if (v68)
     {
       v69 = v68;
@@ -640,13 +640,13 @@ LABEL_13:
         {
           if (*v99 != v70)
           {
-            objc_enumerationMutation(v67);
+            objc_enumerationMutation(lsBinpref6);
           }
 
           xpc_array_set_int64(v51, 0xFFFFFFFFFFFFFFFFLL, [*(*&value[3] + 8 * j) unsignedIntegerValue]);
         }
 
-        v69 = [v67 countByEnumeratingWithState:&value[1] objects:v112 count:16];
+        v69 = [lsBinpref6 countByEnumeratingWithState:&value[1] objects:v112 count:16];
       }
 
       while (v69);
@@ -663,13 +663,13 @@ LABEL_65:
     xpc_dictionary_set_int64(v90, "Umask", [v38 lsUMask]);
   }
 
-  if ([v12 platform])
+  if ([identityCopy platform])
   {
-    xpc_dictionary_set_int64(v90, "Platform", [v12 platform]);
+    xpc_dictionary_set_int64(v90, "Platform", [identityCopy platform]);
   }
 
   os_unfair_lock_lock(&v44->_lock);
-  if ([(NSMutableOrderedSet *)v44->_lock_reslideIdentities containsObject:v12])
+  if ([(NSMutableOrderedSet *)v44->_lock_reslideIdentities containsObject:identityCopy])
   {
     xpc_dictionary_set_BOOL(v90, "ReslideSharedCache", 1);
   }
@@ -678,12 +678,12 @@ LABEL_65:
   value[0] = 0;
   personaManager = v44->_personaManager;
   v97 = 0;
-  v73 = [(RBPersonaManager *)personaManager personaForIdentity:v12 context:v38 personaUID:value personaUniqueString:&v97];
+  v73 = [(RBPersonaManager *)personaManager personaForIdentity:identityCopy context:v38 personaUID:value personaUniqueString:&v97];
   v74 = v97;
   if (v73)
   {
     xpc_dictionary_set_int64(v90, "PersonaEnterprise", value[0]);
-    v75 = [v12 copyWithPersonaString:v74];
+    v75 = [identityCopy copyWithPersonaString:v74];
 
     v76 = v75;
     *v89 = v75;
@@ -691,23 +691,23 @@ LABEL_65:
     xpc_dictionary_set_string(v90, "_ResourceCoalition", [v77 UTF8String]);
 
     _addRBProperties(v90, v75, v38);
-    v12 = v75;
+    identityCopy = v75;
   }
 
-  v78 = [v38 preventContainerization];
-  v79 = [v78 BOOLValue];
+  preventContainerization = [v38 preventContainerization];
+  bOOLValue = [preventContainerization BOOLValue];
 
-  if ((v79 & 1) == 0)
+  if ((bOOLValue & 1) == 0)
   {
     containerManager = v44->_containerManager;
     v96 = 0;
-    v82 = [(RBContainerManager *)containerManager containerPathForIdentity:v12 context:v38 persona:v74 error:&v96];
+    v82 = [(RBContainerManager *)containerManager containerPathForIdentity:identityCopy context:v38 persona:v74 error:&v96];
     v83 = v96;
     v80 = v83;
     if (v82)
     {
-      v84 = [v82 fileSystemRepresentation];
-      xpc_dictionary_set_string(v90, "SandboxContainer", v84);
+      fileSystemRepresentation = [v82 fileSystemRepresentation];
+      xpc_dictionary_set_string(v90, "SandboxContainer", fileSystemRepresentation);
       v85 = xpc_dictionary_get_value(v90, "EnvironmentVariables");
       v86 = v85;
       if (v85)
@@ -716,7 +716,7 @@ LABEL_65:
         xpc_dictionary_set_value(v86, "CFFIXED_USER_HOME", 0);
         xpc_dictionary_set_value(v86, "TMPDIR", 0);
         xpc_dictionary_set_value(v86, "_DYLD_CLOSURE_HOME", 0);
-        xpc_dictionary_set_string(v86, "HOME", v84);
+        xpc_dictionary_set_string(v86, "HOME", fileSystemRepresentation);
       }
 
       v33 = v92;
@@ -745,7 +745,7 @@ LABEL_84:
   if (os_log_type_enabled(v80, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v114 = v12;
+    v114 = identityCopy;
     v115 = 2114;
     v116 = v38;
     _os_log_impl(&dword_262485000, v80, OS_LOG_TYPE_DEFAULT, "'%{public}@' Skipping container path lookup because containerization was prevented (%{public}@)", buf, 0x16u);
@@ -804,17 +804,17 @@ void __88__RBLaunchdJobManager__addAppPropertiesToData_forIdentity_context_actua
   xpc_array_set_string(v3, 0xFFFFFFFFFFFFFFFFLL, v5);
 }
 
-- (id)_generateDataWithIdentity:(id)a3 context:(id)a4 actualIdentity:(id *)a5 error:(id *)a6
+- (id)_generateDataWithIdentity:(id)identity context:(id)context actualIdentity:(id *)actualIdentity error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
+  identityCopy = identity;
+  contextCopy = context;
   v12 = xpc_dictionary_create(0, 0, 0);
   v13 = objc_autoreleasePoolPush();
-  _addRBProperties(v12, v10, v11);
-  [(RBLaunchdJobManager *)self _addSharedPropertiesToData:v12 forIdentity:v10 context:v11];
-  if ([v10 isDext])
+  _addRBProperties(v12, identityCopy, contextCopy);
+  [(RBLaunchdJobManager *)self _addSharedPropertiesToData:v12 forIdentity:identityCopy context:contextCopy];
+  if ([identityCopy isDext])
   {
-    [(RBLaunchdJobManager *)self _addDextPropertiesToData:v12 forIdentity:v10 context:v11];
+    [(RBLaunchdJobManager *)self _addDextPropertiesToData:v12 forIdentity:identityCopy context:contextCopy];
     objc_autoreleasePoolPop(v13);
     v14 = 0;
 LABEL_3:
@@ -826,14 +826,14 @@ LABEL_6:
 
   v21 = 0;
   v22 = 0;
-  v16 = [(RBLaunchdJobManager *)self _addAppPropertiesToData:v12 forIdentity:v10 context:v11 actualIdentity:&v22 error:&v21];
+  v16 = [(RBLaunchdJobManager *)self _addAppPropertiesToData:v12 forIdentity:identityCopy context:contextCopy actualIdentity:&v22 error:&v21];
   v15 = v22;
   v14 = v21;
   objc_autoreleasePoolPop(v13);
   if (v15)
   {
     v17 = v15;
-    *a5 = v15;
+    *actualIdentity = v15;
     if (v16)
     {
       goto LABEL_6;
@@ -845,11 +845,11 @@ LABEL_6:
     goto LABEL_3;
   }
 
-  if (a6)
+  if (error)
   {
     v20 = v14;
     v18 = 0;
-    *a6 = v14;
+    *error = v14;
   }
 
   else
@@ -862,40 +862,40 @@ LABEL_7:
   return v18;
 }
 
-- (id)_createLaunchdJobWithIdentity:(id)a3 context:(id)a4 actualIdentity:(id *)a5 error:(id *)a6
+- (id)_createLaunchdJobWithIdentity:(id)identity context:(id)context actualIdentity:(id *)actualIdentity error:(id *)error
 {
   v146 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = [v10 isApplication];
-  if (!v11 && v12)
+  identityCopy = identity;
+  contextCopy = context;
+  isApplication = [identityCopy isApplication];
+  if (!contextCopy && isApplication)
   {
-    v11 = [MEMORY[0x277D46EB0] contextWithIdentity:v10];
+    contextCopy = [MEMORY[0x277D46EB0] contextWithIdentity:identityCopy];
   }
 
-  if (![v10 isApplication])
+  if (![identityCopy isApplication])
   {
     v20 = 0;
     goto LABEL_52;
   }
 
-  if (!v11)
+  if (!contextCopy)
   {
     [RBLaunchdJobManager _createLaunchdJobWithIdentity:context:actualIdentity:error:];
   }
 
-  v13 = v11;
-  v14 = [v13 bundleIdentifier];
-  v15 = rbs_general_log();
-  v16 = os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT);
-  if (!v14)
+  v13 = contextCopy;
+  bundleIdentifier = [v13 bundleIdentifier];
+  dictionary = rbs_general_log();
+  v16 = os_log_type_enabled(dictionary, OS_LOG_TYPE_DEFAULT);
+  if (!bundleIdentifier)
   {
     if (v16)
     {
-      v21 = [v13 identity];
+      identity = [v13 identity];
       *buf = 138543362;
-      *&buf[4] = v21;
-      _os_log_impl(&dword_262485000, v15, OS_LOG_TYPE_DEFAULT, "Bailing out of _mutateContextIfNeeded for %{public}@", buf, 0xCu);
+      *&buf[4] = identity;
+      _os_log_impl(&dword_262485000, dictionary, OS_LOG_TYPE_DEFAULT, "Bailing out of _mutateContextIfNeeded for %{public}@", buf, 0xCu);
     }
 
     v22 = 0;
@@ -906,28 +906,28 @@ LABEL_7:
   if (v16)
   {
     *buf = 138543362;
-    *&buf[4] = v14;
-    _os_log_impl(&dword_262485000, v15, OS_LOG_TYPE_DEFAULT, "_mutateContextIfNeeded called for %{public}@", buf, 0xCu);
+    *&buf[4] = bundleIdentifier;
+    _os_log_impl(&dword_262485000, dictionary, OS_LOG_TYPE_DEFAULT, "_mutateContextIfNeeded called for %{public}@", buf, 0xCu);
   }
 
-  v127 = self;
+  selfCopy = self;
 
-  v17 = [v13 _additionalEnvironment];
+  _additionalEnvironment = [v13 _additionalEnvironment];
 
   v18 = MEMORY[0x277CBEB38];
-  v126 = a5;
-  if (v17)
+  actualIdentityCopy = actualIdentity;
+  if (_additionalEnvironment)
   {
-    v19 = [v13 _additionalEnvironment];
-    v15 = [v18 dictionaryWithDictionary:v19];
+    _additionalEnvironment2 = [v13 _additionalEnvironment];
+    dictionary = [v18 dictionaryWithDictionary:_additionalEnvironment2];
   }
 
   else
   {
-    v15 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
   }
 
-  v24 = [v13 _overrideExecutablePath];
+  _overrideExecutablePath = [v13 _overrideExecutablePath];
   if (os_variant_has_internal_content())
   {
     v25 = [v13 isTesting] ^ 1;
@@ -938,24 +938,24 @@ LABEL_7:
     v25 = 1;
   }
 
-  v26 = [v13 _additionalMachServices];
+  _additionalMachServices = [v13 _additionalMachServices];
 
   v27 = MEMORY[0x277CBEB18];
-  if (v26)
+  if (_additionalMachServices)
   {
-    v28 = [v13 _additionalMachServices];
-    v29 = [v27 arrayWithArray:v28];
+    _additionalMachServices2 = [v13 _additionalMachServices];
+    v29 = [v27 arrayWithArray:_additionalMachServices2];
 
-    v30 = v29;
+    array = v29;
   }
 
   else
   {
-    v30 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
   }
 
-  v128 = v30;
-  [v13 _setAdditionalMachServices:v30];
+  v128 = array;
+  [v13 _setAdditionalMachServices:array];
   if (_os_feature_enabled_impl())
   {
     if (((_os_feature_enabled_impl() ^ 1) & v25 & 1) == 0)
@@ -973,26 +973,26 @@ LABEL_26:
   }
 
 LABEL_27:
-  if (v24)
+  if (_overrideExecutablePath)
   {
-    v31 = [v13 preventContainerization];
-    v32 = a6;
-    v33 = v14;
-    v34 = [v31 BOOLValue] ^ 1;
+    preventContainerization = [v13 preventContainerization];
+    errorCopy = error;
+    v33 = bundleIdentifier;
+    v34 = [preventContainerization BOOLValue] ^ 1;
 
     v35 = v34 & v25;
-    v14 = v33;
-    a6 = v32;
+    bundleIdentifier = v33;
+    error = errorCopy;
     if (v35 == 1)
     {
       v36 = rbs_job_log();
       if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
       {
-        v37 = [v13 bundleIdentifier];
+        bundleIdentifier2 = [v13 bundleIdentifier];
         *buf = 138543618;
-        *&buf[4] = v37;
+        *&buf[4] = bundleIdentifier2;
         *&buf[12] = 2114;
-        *&buf[14] = v24;
+        *&buf[14] = _overrideExecutablePath;
         _os_log_impl(&dword_262485000, v36, OS_LOG_TYPE_DEFAULT, "Not pre-containerizing %{public}@ because executable file specified (%{public}@)", buf, 0x16u);
       }
 
@@ -1000,12 +1000,12 @@ LABEL_27:
     }
   }
 
-  v131 = [v13 requiredCacheUUID];
-  v38 = [v13 requiredSequenceNumber];
+  requiredCacheUUID = [v13 requiredCacheUUID];
+  requiredSequenceNumber = [v13 requiredSequenceNumber];
   v39 = rbs_general_log();
   v40 = os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT);
-  v129 = v38;
-  if (v24 && !v131 && !v38)
+  v129 = requiredSequenceNumber;
+  if (_overrideExecutablePath && !requiredCacheUUID && !requiredSequenceNumber)
   {
     v130 = v39;
     if (v40)
@@ -1025,13 +1025,13 @@ LABEL_27:
     _os_log_impl(&dword_262485000, v39, OS_LOG_TYPE_DEFAULT, "_mutateContextIfNeeded using proxy", buf, 2u);
   }
 
-  v41 = [MEMORY[0x277CC1E60] applicationProxyForIdentifier:v14];
-  v125 = [v41 appState];
+  v41 = [MEMORY[0x277CC1E60] applicationProxyForIdentifier:bundleIdentifier];
+  appState = [v41 appState];
   v130 = v41;
-  if (([v125 isInstalled] & 1) == 0)
+  if (([appState isInstalled] & 1) == 0)
   {
-    v123 = a6;
-    v51 = v14;
+    errorCopy2 = error;
+    v51 = bundleIdentifier;
     v52 = MEMORY[0x277CCA9B8];
     v53 = *MEMORY[0x277CCA5B8];
     v138[0] = *MEMORY[0x277CCA450];
@@ -1040,25 +1040,25 @@ LABEL_27:
     v22 = [v52 errorWithDomain:v53 code:22 userInfo:v54];
 
     v55 = v22;
-    v48 = rbs_general_log();
-    if (os_log_type_enabled(v48, OS_LOG_TYPE_DEFAULT))
+    cacheGUID = rbs_general_log();
+    if (os_log_type_enabled(cacheGUID, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_262485000, v48, OS_LOG_TYPE_DEFAULT, "_mutateContextIfNeeded unable to load a valid LSApplicationProxy.", buf, 2u);
+      _os_log_impl(&dword_262485000, cacheGUID, OS_LOG_TYPE_DEFAULT, "_mutateContextIfNeeded unable to load a valid LSApplicationProxy.", buf, 2u);
     }
 
     v23 = 0;
-    v14 = v51;
-    a6 = v123;
+    bundleIdentifier = v51;
+    error = errorCopy2;
     goto LABEL_48;
   }
 
-  v42 = [v41 correspondingApplicationRecord];
-  v43 = [v42 jobLabel];
+  correspondingApplicationRecord = [v41 correspondingApplicationRecord];
+  jobLabel = [correspondingApplicationRecord jobLabel];
 
-  if (v43)
+  if (jobLabel)
   {
-    v122 = v14;
+    v122 = bundleIdentifier;
     v44 = MEMORY[0x277CCA9B8];
     v45 = *MEMORY[0x277CCA5B8];
     v138[0] = *MEMORY[0x277CCA450];
@@ -1067,64 +1067,64 @@ LABEL_27:
     v22 = [v44 errorWithDomain:v45 code:22 userInfo:v46];
 
     v47 = v22;
-    v48 = rbs_general_log();
-    if (os_log_type_enabled(v48, OS_LOG_TYPE_DEFAULT))
+    cacheGUID = rbs_general_log();
+    if (os_log_type_enabled(cacheGUID, OS_LOG_TYPE_DEFAULT))
     {
-      v49 = [v130 correspondingApplicationRecord];
-      v50 = [v49 jobLabel];
+      correspondingApplicationRecord2 = [v130 correspondingApplicationRecord];
+      jobLabel2 = [correspondingApplicationRecord2 jobLabel];
       *buf = 138543362;
-      *&buf[4] = v50;
-      _os_log_impl(&dword_262485000, v48, OS_LOG_TYPE_DEFAULT, "_mutateContextIfNeeded Trying to launch %{public}@ as an app", buf, 0xCu);
+      *&buf[4] = jobLabel2;
+      _os_log_impl(&dword_262485000, cacheGUID, OS_LOG_TYPE_DEFAULT, "_mutateContextIfNeeded Trying to launch %{public}@ as an app", buf, 0xCu);
     }
 
     v23 = 0;
-    v14 = v122;
+    bundleIdentifier = v122;
     goto LABEL_48;
   }
 
-  v75 = [v41 environmentVariables];
-  [v15 addEntriesFromDictionary:v75];
+  environmentVariables = [v41 environmentVariables];
+  [dictionary addEntriesFromDictionary:environmentVariables];
 
-  [v13 _setAdditionalEnvironment:v15];
-  v76 = [v41 canonicalExecutablePath];
+  [v13 _setAdditionalEnvironment:dictionary];
+  canonicalExecutablePath = [v41 canonicalExecutablePath];
 
-  if (!v76)
+  if (!canonicalExecutablePath)
   {
     v22 = _posixErrorWithCodeAndDescription(22, @"Unable to find executable path");
     v79 = v22;
-    v48 = rbs_general_log();
-    if (os_log_type_enabled(v48, OS_LOG_TYPE_DEFAULT))
+    cacheGUID = rbs_general_log();
+    if (os_log_type_enabled(cacheGUID, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_262485000, v48, OS_LOG_TYPE_DEFAULT, "_mutateContextIfNeeded unable to find xecutable path.", buf, 2u);
+      _os_log_impl(&dword_262485000, cacheGUID, OS_LOG_TYPE_DEFAULT, "_mutateContextIfNeeded unable to find xecutable path.", buf, 2u);
     }
 
-    v24 = 0;
+    _overrideExecutablePath = 0;
     v23 = 0;
     goto LABEL_48;
   }
 
-  v24 = v76;
+  _overrideExecutablePath = canonicalExecutablePath;
   v77 = v41;
-  [v13 _setOverrideExecutablePath:v76];
+  [v13 _setOverrideExecutablePath:canonicalExecutablePath];
   v78 = v129;
-  if (v131)
+  if (requiredCacheUUID)
   {
-    v48 = [v41 cacheGUID];
+    cacheGUID = [v41 cacheGUID];
   }
 
   else
   {
-    v48 = 0;
+    cacheGUID = 0;
   }
 
   if (v129)
   {
     v80 = MEMORY[0x277CCABB0];
-    v81 = [v77 sequenceNumber];
+    sequenceNumber = [v77 sequenceNumber];
     v82 = v80;
     v78 = v129;
-    v121 = [v82 numberWithUnsignedInteger:v81];
+    v121 = [v82 numberWithUnsignedInteger:sequenceNumber];
   }
 
   else
@@ -1132,19 +1132,19 @@ LABEL_27:
     v121 = 0;
   }
 
-  if (v131 != v48 && (!v131 || !v48 || !-[NSObject isEqual:](v131, "isEqual:", v48)) || v78 != v121 && (!v78 || !v121 || ([v78 isEqual:v121] & 1) == 0))
+  if (requiredCacheUUID != cacheGUID && (!requiredCacheUUID || !cacheGUID || !-[NSObject isEqual:](requiredCacheUUID, "isEqual:", cacheGUID)) || v78 != v121 && (!v78 || !v121 || ([v78 isEqual:v121] & 1) == 0))
   {
     v88 = rbs_job_log();
     if (os_log_type_enabled(v88, OS_LOG_TYPE_ERROR))
     {
-      v108 = [v13 bundleIdentifier];
-      [v131 UUIDString];
-      v118 = v24;
-      v109 = v48;
-      v110 = a6;
-      v112 = v111 = v14;
+      bundleIdentifier3 = [v13 bundleIdentifier];
+      [requiredCacheUUID UUIDString];
+      v118 = _overrideExecutablePath;
+      v109 = cacheGUID;
+      errorCopy3 = error;
+      v112 = v111 = bundleIdentifier;
       *buf = 138544386;
-      *&buf[4] = v108;
+      *&buf[4] = bundleIdentifier3;
       *&buf[12] = 2114;
       *&buf[14] = v112;
       v140 = 2114;
@@ -1155,10 +1155,10 @@ LABEL_27:
       v145 = v121;
       _os_log_error_impl(&dword_262485000, v88, OS_LOG_TYPE_ERROR, "LaunchServices database mismatch: Failed to lookup executable path for app %{public}@ with {UUID: %{public}@, Sequence: %{public}@} vs {UUID: %{public}@, Sequence: %{public}@", buf, 0x34u);
 
-      v14 = v111;
-      a6 = v110;
-      v48 = v109;
-      v24 = v118;
+      bundleIdentifier = v111;
+      error = errorCopy3;
+      cacheGUID = v109;
+      _overrideExecutablePath = v118;
     }
 
     v22 = _posixErrorWithCodeAndDescription(22, @"Failed to lookup executable path.");
@@ -1167,12 +1167,12 @@ LABEL_27:
     goto LABEL_126;
   }
 
-  v124 = v14;
-  v83 = [v77 applicationType];
+  v124 = bundleIdentifier;
+  applicationType = [v77 applicationType];
   v84 = objc_opt_class();
   v120 = [v77 objectForInfoDictionaryKey:@"SBMachServices" ofClass:v84 valuesOfClass:objc_opt_class()];
-  v119 = v83;
-  if (([v83 isEqualToString:*MEMORY[0x277CC1E30]] & 1) != 0 || (objc_msgSend(v83, "isEqualToString:", *MEMORY[0x277CC1E00]) & 1) != 0 || objc_msgSend(v83, "isEqualToString:", *MEMORY[0x277CC1E08]))
+  v119 = applicationType;
+  if (([applicationType isEqualToString:*MEMORY[0x277CC1E30]] & 1) != 0 || (objc_msgSend(applicationType, "isEqualToString:", *MEMORY[0x277CC1E00]) & 1) != 0 || objc_msgSend(applicationType, "isEqualToString:", *MEMORY[0x277CC1E08]))
   {
     [v13 setSpawnType:1];
     if (![v120 count])
@@ -1197,7 +1197,7 @@ LABEL_27:
         v22 = _posixErrorWithCodeAndDescription(22, @"Unknown ViewService App: ViewService Apps are deprecated and you should not be adding new ones - if you need an exception please file a radar to RunningBoard|All to be added to the allowlist.");
         v114 = v22;
         v23 = 0;
-        v14 = v124;
+        bundleIdentifier = v124;
         v107 = v116;
         goto LABEL_125;
       }
@@ -1214,7 +1214,7 @@ LABEL_27:
     if (os_log_type_enabled(v90, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      *&buf[4] = v83;
+      *&buf[4] = applicationType;
       *&buf[12] = 2114;
       *&buf[14] = v120;
       _os_log_impl(&dword_262485000, v90, OS_LOG_TYPE_DEFAULT, "_mutateContextIfNeeded bundleType %{public}@ SBMachServices %{public}@", buf, 0x16u);
@@ -1249,7 +1249,7 @@ LABEL_27:
     if (os_log_type_enabled(v92, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      *&buf[4] = v83;
+      *&buf[4] = applicationType;
       *&buf[12] = 2114;
       *&buf[14] = v120;
       _os_log_impl(&dword_262485000, v92, OS_LOG_TYPE_DEFAULT, "_mutateContextIfNeeded bundleType %{public}@ refusing SBMachServices %{public}@", buf, 0x16u);
@@ -1259,53 +1259,53 @@ LABEL_106:
   }
 
 LABEL_107:
-  v93 = [v77 correspondingApplicationRecord];
-  v94 = [v93 wasBuiltWithThreadSanitizer];
+  correspondingApplicationRecord3 = [v77 correspondingApplicationRecord];
+  wasBuiltWithThreadSanitizer = [correspondingApplicationRecord3 wasBuiltWithThreadSanitizer];
 
-  if (v94)
+  if (wasBuiltWithThreadSanitizer)
   {
     [v13 setExecutionOptions:{objc_msgSend(v13, "executionOptions") | 0x10}];
   }
 
   [v13 _setAdditionalMachServices:v128];
-  v95 = [v13 preventContainerization];
+  preventContainerization2 = [v13 preventContainerization];
 
-  if (!v95)
+  if (!preventContainerization2)
   {
-    v96 = [v130 isContainerized];
-    v97 = [MEMORY[0x277CCABB0] numberWithBool:v96 ^ 1u];
+    isContainerized = [v130 isContainerized];
+    v97 = [MEMORY[0x277CCABB0] numberWithBool:isContainerized ^ 1u];
     [v13 setPreventContainerization:v97];
   }
 
-  v98 = [v13 preventContainerization];
-  if ([v98 BOOLValue])
+  preventContainerization3 = [v13 preventContainerization];
+  if ([preventContainerization3 BOOLValue])
   {
     goto LABEL_114;
   }
 
-  v99 = [v13 containerIdentifier];
+  containerIdentifier = [v13 containerIdentifier];
 
-  if (!v99)
+  if (!containerIdentifier)
   {
     v100 = objc_opt_self();
-    v98 = [v130 entitlementValueForKey:@"com.apple.private.security.container-required" ofClass:v100];
+    preventContainerization3 = [v130 entitlementValueForKey:@"com.apple.private.security.container-required" ofClass:v100];
 
-    [v13 setContainerIdentifier:v98];
+    [v13 setContainerIdentifier:preventContainerization3];
     [v13 setCalculatedContainerIdentifier:1];
 LABEL_114:
   }
 
-  v117 = v24;
-  v101 = [v130 managedPersonas];
-  v102 = [v101 count];
-  v115 = v101;
+  v117 = _overrideExecutablePath;
+  managedPersonas = [v130 managedPersonas];
+  v102 = [managedPersonas count];
+  v115 = managedPersonas;
   if (v102)
   {
     v103 = v102;
-    v104 = [v101 objectAtIndexedSubscript:{0, v101}];
+    v104 = [managedPersonas objectAtIndexedSubscript:{0, managedPersonas}];
     v105 = rbs_job_log();
     v106 = v105;
-    v14 = v124;
+    bundleIdentifier = v124;
     if (v103 == 1)
     {
       if (os_log_type_enabled(v105, OS_LOG_TYPE_INFO))
@@ -1325,7 +1325,7 @@ LABEL_114:
   else
   {
     v106 = rbs_job_log();
-    v14 = v124;
+    bundleIdentifier = v124;
     if (os_log_type_enabled(v106, OS_LOG_TYPE_INFO))
     {
       *v136 = 138543362;
@@ -1340,26 +1340,26 @@ LABEL_114:
   v22 = 0;
   v107 = v104;
   v23 = 1;
-  v24 = v117;
+  _overrideExecutablePath = v117;
 LABEL_125:
 
 LABEL_126:
 LABEL_48:
 
 LABEL_49:
-  a5 = v126;
-  self = v127;
+  actualIdentity = actualIdentityCopy;
+  self = selfCopy;
 LABEL_50:
 
   v56 = v22;
   v57 = v56;
   if ((v23 & 1) == 0)
   {
-    if (a6)
+    if (error)
     {
       v71 = v56;
       v65 = 0;
-      *a6 = v57;
+      *error = v57;
     }
 
     else
@@ -1372,20 +1372,20 @@ LABEL_50:
 
   v20 = v56;
 LABEL_52:
-  v58 = [v11 _overrideExecutablePath];
+  _overrideExecutablePath2 = [contextCopy _overrideExecutablePath];
 
-  if (v58)
+  if (_overrideExecutablePath2)
   {
     v135 = v20;
-    v59 = [(RBLaunchdJobManager *)self _generateDataWithIdentity:v10 context:v11 actualIdentity:a5 error:&v135];
+    v59 = [(RBLaunchdJobManager *)self _generateDataWithIdentity:identityCopy context:contextCopy actualIdentity:actualIdentity error:&v135];
     v57 = v135;
 
     if (v59)
     {
-      v60 = *a5;
-      if (!*a5)
+      v60 = *actualIdentity;
+      if (!*actualIdentity)
       {
-        v60 = v10;
+        v60 = identityCopy;
       }
 
       v61 = v60;
@@ -1402,11 +1402,11 @@ LABEL_52:
       v65 = [(RBLaunchdInterfacing *)self->_launchdInterface jobWithPlist:v63];
     }
 
-    else if (a6)
+    else if (error)
     {
       v72 = v57;
       v65 = 0;
-      *a6 = v57;
+      *error = v57;
     }
 
     else
@@ -1417,7 +1417,7 @@ LABEL_52:
 
   else
   {
-    if (a6)
+    if (error)
     {
       v66 = MEMORY[0x277CCA9B8];
       v67 = *MEMORY[0x277CCA5B8];
@@ -1428,7 +1428,7 @@ LABEL_52:
 
       v70 = v69;
       v65 = 0;
-      *a6 = v69;
+      *error = v69;
     }
 
     else
@@ -1465,23 +1465,23 @@ void __82__RBLaunchdJobManager__createLaunchdJobWithIdentity_context_actualIdent
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_addPersonaFromExtensionContext:(id)a3 toServiceDict:(id)a4
+- (BOOL)_addPersonaFromExtensionContext:(id)context toServiceDict:(id)dict
 {
-  v6 = a3;
-  v7 = a4;
-  if (![(RBPersonaManager *)self->_personaManager personaRequiredForExtensionContext:v6 serviceDict:v7])
+  contextCopy = context;
+  dictCopy = dict;
+  if (![(RBPersonaManager *)self->_personaManager personaRequiredForExtensionContext:contextCopy serviceDict:dictCopy])
   {
     goto LABEL_4;
   }
 
   LODWORD(value) = -1;
   personaManager = self->_personaManager;
-  v9 = [v6 identity];
-  v10 = [(RBPersonaManager *)personaManager personaForIdentity:v9 context:v6 personaUID:&value personaUniqueString:0];
+  identity = [contextCopy identity];
+  v10 = [(RBPersonaManager *)personaManager personaForIdentity:identity context:contextCopy personaUID:&value personaUniqueString:0];
 
   if (v10)
   {
-    xpc_dictionary_set_int64(v7, "PersonaEnterprise", value);
+    xpc_dictionary_set_int64(dictCopy, "PersonaEnterprise", value);
 LABEL_4:
     LOBYTE(v10) = 1;
   }
@@ -1489,50 +1489,50 @@ LABEL_4:
   return v10;
 }
 
-- (void)_addExtensionEnvironmentFromContainerURL:(id)a3 toServiceDict:(id)a4
+- (void)_addExtensionEnvironmentFromContainerURL:(id)l toServiceDict:(id)dict
 {
-  v10 = a3;
-  v5 = a4;
-  v6 = v10;
-  v7 = [v10 fileSystemRepresentation];
-  v8 = xpc_dictionary_get_dictionary(v5, "EnvironmentVariables");
+  lCopy = l;
+  dictCopy = dict;
+  v6 = lCopy;
+  fileSystemRepresentation = [lCopy fileSystemRepresentation];
+  v8 = xpc_dictionary_get_dictionary(dictCopy, "EnvironmentVariables");
   if (!v8)
   {
     v8 = xpc_dictionary_create(0, 0, 0);
-    xpc_dictionary_set_value(v5, "EnvironmentVariables", v8);
+    xpc_dictionary_set_value(dictCopy, "EnvironmentVariables", v8);
   }
 
   if (!xpc_dictionary_get_string(v8, "HOME"))
   {
-    xpc_dictionary_set_string(v8, "HOME", v7);
-    xpc_dictionary_set_string(v8, "CFFIXED_USER_HOME", v7);
-    v9 = [v10 URLByAppendingPathComponent:@"tmp"];
+    xpc_dictionary_set_string(v8, "HOME", fileSystemRepresentation);
+    xpc_dictionary_set_string(v8, "CFFIXED_USER_HOME", fileSystemRepresentation);
+    v9 = [lCopy URLByAppendingPathComponent:@"tmp"];
     xpc_dictionary_set_string(v8, "TMPDIR", [v9 fileSystemRepresentation]);
   }
 }
 
-- (void)_addExtensionContainerURL:(id)a3 toServiceDict:(id)a4
+- (void)_addExtensionContainerURL:(id)l toServiceDict:(id)dict
 {
-  v6 = a3;
-  xdict = a4;
-  xpc_dictionary_set_string(xdict, "_SandboxContainer", [a3 fileSystemRepresentation]);
+  lCopy = l;
+  xdict = dict;
+  xpc_dictionary_set_string(xdict, "_SandboxContainer", [l fileSystemRepresentation]);
 }
 
-- (id)_containerURLForExtensionContext:(id)a3
+- (id)_containerURLForExtensionContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   bundlePropertiesManager = self->_bundlePropertiesManager;
-  v6 = [v4 identity];
-  v7 = [(RBBundlePropertiesManaging *)bundlePropertiesManager propertiesForIdentity:v6 identifier:0];
+  identity = [contextCopy identity];
+  v7 = [(RBBundlePropertiesManaging *)bundlePropertiesManager propertiesForIdentity:identity identifier:0];
 
-  v8 = [v7 containerOverrideIdentifier];
-  v9 = [v4 identity];
-  v10 = [v9 personaString];
-  v11 = v10 | v8;
+  containerOverrideIdentifier = [v7 containerOverrideIdentifier];
+  identity2 = [contextCopy identity];
+  personaString = [identity2 personaString];
+  v11 = personaString | containerOverrideIdentifier;
 
   if (v11)
   {
-    [(RBContainerManager *)self->_containerManager sandboxContainerURLForExtensionContext:v4 containerOverrideIdentifier:v8];
+    [(RBContainerManager *)self->_containerManager sandboxContainerURLForExtensionContext:contextCopy containerOverrideIdentifier:containerOverrideIdentifier];
   }
 
   else
@@ -1544,13 +1544,13 @@ LABEL_4:
   return v12;
 }
 
-- (BOOL)_addContainerPropertiesFromExtensionContext:(id)a3 toServiceDict:(id)a4
+- (BOOL)_addContainerPropertiesFromExtensionContext:(id)context toServiceDict:(id)dict
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(RBContainerManager *)self->_containerManager containerRequiredForServiceDict:v7])
+  contextCopy = context;
+  dictCopy = dict;
+  if ([(RBContainerManager *)self->_containerManager containerRequiredForServiceDict:dictCopy])
   {
-    v8 = [(RBContainerManager *)self->_containerManager sandboxContainerURLForExtensionContext:v6 containerOverrideIdentifier:0];
+    v8 = [(RBContainerManager *)self->_containerManager sandboxContainerURLForExtensionContext:contextCopy containerOverrideIdentifier:0];
     if (!v8)
     {
       v10 = 0;
@@ -1558,8 +1558,8 @@ LABEL_4:
     }
 
     v9 = v8;
-    [(RBLaunchdJobManager *)self _addExtensionContainerURL:v8 toServiceDict:v7];
-    [(RBLaunchdJobManager *)self _addExtensionEnvironmentFromContainerURL:v9 toServiceDict:v7];
+    [(RBLaunchdJobManager *)self _addExtensionContainerURL:v8 toServiceDict:dictCopy];
+    [(RBLaunchdJobManager *)self _addExtensionEnvironmentFromContainerURL:v9 toServiceDict:dictCopy];
   }
 
   v10 = 1;
@@ -1568,18 +1568,18 @@ LABEL_5:
   return v10;
 }
 
-- (void)_adjustLaunchdJobProperties:(id)a3 context:(id)a4
+- (void)_adjustLaunchdJobProperties:(id)properties context:(id)context
 {
-  v5 = a3;
-  v6 = a4;
+  propertiesCopy = properties;
+  contextCopy = context;
   if ((_os_feature_enabled_impl() & 1) == 0)
   {
     [RBLaunchdJobManager _adjustLaunchdJobProperties:context:];
   }
 
-  v7 = [v6 identity];
-  v8 = [v5 additionalProperties];
-  v9 = [v8 mutableCopy];
+  identity = [contextCopy identity];
+  additionalProperties = [propertiesCopy additionalProperties];
+  v9 = [additionalProperties mutableCopy];
   v10 = v9;
   if (v9)
   {
@@ -1605,10 +1605,10 @@ LABEL_5:
 
   v15 = [v13 mutableCopy];
   v16 = [objc_alloc(MEMORY[0x277CCAAB0]) initRequiringSecureCoding:1];
-  [v16 encodeRootObject:v7];
+  [v16 encodeRootObject:identity];
   [v16 finishEncoding];
-  v17 = [v16 encodedData];
-  [v15 setObject:v17 forKeyedSubscript:@"RunningBoardLaunchedIdentity"];
+  encodedData = [v16 encodedData];
+  [v15 setObject:encodedData forKeyedSubscript:@"RunningBoardLaunchedIdentity"];
 
   [v15 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"RunningBoardLaunched"];
   v18 = [v15 objectForKeyedSubscript:@"Managed"];
@@ -1616,37 +1616,37 @@ LABEL_5:
   {
   }
 
-  else if ([v7 defaultManageFlags] == 255)
+  else if ([identity defaultManageFlags] == 255)
   {
     [v15 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"Managed"];
   }
 
-  v19 = [v6 beforeTranslocationBundlePath];
+  beforeTranslocationBundlePath = [contextCopy beforeTranslocationBundlePath];
 
-  if (v19)
+  if (beforeTranslocationBundlePath)
   {
-    v20 = [v6 beforeTranslocationBundlePath];
-    [v15 setObject:v20 forKeyedSubscript:@"BeforeTranslocationBundlePath"];
+    beforeTranslocationBundlePath2 = [contextCopy beforeTranslocationBundlePath];
+    [v15 setObject:beforeTranslocationBundlePath2 forKeyedSubscript:@"BeforeTranslocationBundlePath"];
   }
 
-  v21 = [v6 homeDirectory];
+  homeDirectory = [contextCopy homeDirectory];
 
-  if (v21)
+  if (homeDirectory)
   {
-    v22 = [v6 homeDirectory];
-    [v15 setObject:v22 forKeyedSubscript:@"HOME"];
+    homeDirectory2 = [contextCopy homeDirectory];
+    [v15 setObject:homeDirectory2 forKeyedSubscript:@"HOME"];
   }
 
-  v23 = [v6 tmpDirectory];
+  tmpDirectory = [contextCopy tmpDirectory];
 
-  if (v23)
+  if (tmpDirectory)
   {
-    v24 = [v6 tmpDirectory];
-    [v15 setObject:v24 forKeyedSubscript:@"TMPDIR"];
+    tmpDirectory2 = [contextCopy tmpDirectory];
+    [v15 setObject:tmpDirectory2 forKeyedSubscript:@"TMPDIR"];
   }
 
-  v25 = [v6 launchRequestIdentifierToMachNameMap];
-  if ([v25 count])
+  launchRequestIdentifierToMachNameMap = [contextCopy launchRequestIdentifierToMachNameMap];
+  if ([launchRequestIdentifierToMachNameMap count])
   {
     v26 = objc_opt_new();
     v61[0] = MEMORY[0x277D85DD0];
@@ -1654,18 +1654,18 @@ LABEL_5:
     v61[2] = __59__RBLaunchdJobManager__adjustLaunchdJobProperties_context___block_invoke;
     v61[3] = &unk_279B33190;
     v62 = v26;
-    v63 = v7;
+    v63 = identity;
     v27 = v26;
-    [v25 enumerateKeysAndObjectsUsingBlock:v61];
+    [launchRequestIdentifierToMachNameMap enumerateKeysAndObjectsUsingBlock:v61];
     [v15 setObject:v27 forKeyedSubscript:@"LaunchRequestEndpointIdentifiers"];
   }
 
-  v28 = [v6 clientRestriction];
-  v29 = [v28 dictionaryRepresentation];
+  clientRestriction = [contextCopy clientRestriction];
+  dictionaryRepresentation = [clientRestriction dictionaryRepresentation];
 
-  if ([v29 count])
+  if ([dictionaryRepresentation count])
   {
-    v30 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v29 requiringSecureCoding:1 error:0];
+    v30 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:dictionaryRepresentation requiringSecureCoding:1 error:0];
     [v15 setObject:v30 forKeyedSubscript:@"ClientRestriction"];
   }
 
@@ -1673,57 +1673,57 @@ LABEL_5:
   [v12 setObject:v31 forKeyedSubscript:@"RunningBoard"];
 
   v32 = [v12 copy];
-  [v5 setAdditionalProperties:v32];
+  [propertiesCopy setAdditionalProperties:v32];
 
-  v33 = [v6 spawnConstraint];
-  [v5 setSpawnConstraint:v33];
+  spawnConstraint = [contextCopy spawnConstraint];
+  [propertiesCopy setSpawnConstraint:spawnConstraint];
 
-  v58 = v7;
-  v34 = [v7 personaString];
-  if (v34)
+  v58 = identity;
+  personaString = [identity personaString];
+  if (personaString)
   {
-    v35 = v34;
-    v36 = [v5 personaString];
+    v35 = personaString;
+    personaString2 = [propertiesCopy personaString];
 
-    if (!v36)
+    if (!personaString2)
     {
       v60 = -1;
       personaManager = self->_personaManager;
       v59 = 0;
-      if ([(RBPersonaManager *)personaManager personaForIdentity:v58 context:v6 personaUID:&v60 personaUniqueString:&v59])
+      if ([(RBPersonaManager *)personaManager personaForIdentity:v58 context:contextCopy personaUID:&v60 personaUniqueString:&v59])
       {
         v38 = v60;
         v39 = v59;
-        [v5 setEnterprisePersona:v38];
-        [v5 setPersonaString:v39];
+        [propertiesCopy setEnterprisePersona:v38];
+        [propertiesCopy setPersonaString:v39];
       }
     }
   }
 
-  v40 = [v5 sandboxContainer];
-  if (!v40)
+  sandboxContainer = [propertiesCopy sandboxContainer];
+  if (!sandboxContainer)
   {
-    v41 = [v5 oneShotUUID];
+    oneShotUUID = [propertiesCopy oneShotUUID];
 
-    if (v41)
+    if (oneShotUUID)
     {
       goto LABEL_29;
     }
 
     containerManager = self->_containerManager;
-    v43 = [v6 bundleIdentifier];
-    v40 = [(RBContainerManager *)containerManager sandboxContainerURLForExtensionContext:v6 containerOverrideIdentifier:v43];
+    bundleIdentifier = [contextCopy bundleIdentifier];
+    sandboxContainer = [(RBContainerManager *)containerManager sandboxContainerURLForExtensionContext:contextCopy containerOverrideIdentifier:bundleIdentifier];
 
-    if (v40)
+    if (sandboxContainer)
     {
-      [v5 setSandboxContainer:v40];
-      v44 = [v5 environmentVariables];
-      v45 = [v44 objectForKeyedSubscript:@"HOME"];
+      [propertiesCopy setSandboxContainer:sandboxContainer];
+      environmentVariables = [propertiesCopy environmentVariables];
+      v45 = [environmentVariables objectForKeyedSubscript:@"HOME"];
 
       if (v45)
       {
-        v46 = [v5 environmentVariables];
-        v47 = [v46 mutableCopy];
+        environmentVariables2 = [propertiesCopy environmentVariables];
+        v47 = [environmentVariables2 mutableCopy];
         v48 = v47;
         if (v47)
         {
@@ -1737,18 +1737,18 @@ LABEL_5:
 
         v56 = v49;
 
-        v50 = [v40 path];
-        [v56 setObject:v50 forKeyedSubscript:@"HOME"];
+        path = [sandboxContainer path];
+        [v56 setObject:path forKeyedSubscript:@"HOME"];
 
-        v51 = [v40 path];
-        [v56 setObject:v51 forKeyedSubscript:@"CFFIXED_USER_HOME"];
+        path2 = [sandboxContainer path];
+        [v56 setObject:path2 forKeyedSubscript:@"CFFIXED_USER_HOME"];
 
-        v52 = [v40 URLByAppendingPathComponent:@"tmp"];
-        v53 = [v52 path];
-        [v56 setObject:v53 forKeyedSubscript:@"TMPDIR"];
+        v52 = [sandboxContainer URLByAppendingPathComponent:@"tmp"];
+        path3 = [v52 path];
+        [v56 setObject:path3 forKeyedSubscript:@"TMPDIR"];
 
         v54 = [v56 copy];
-        [v5 setEnvironmentVariables:v54];
+        [propertiesCopy setEnvironmentVariables:v54];
       }
     }
 
@@ -1756,7 +1756,7 @@ LABEL_5:
   }
 
 LABEL_29:
-  [v5 setOverlay:&unk_28751B018];
+  [propertiesCopy setOverlay:&unk_28751B018];
 }
 
 void __59__RBLaunchdJobManager__adjustLaunchdJobProperties_context___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1789,29 +1789,29 @@ void __59__RBLaunchdJobManager__adjustLaunchdJobProperties_context___block_invok
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_createAndSubmitExtensionJob:(id)a3 UUID:(id)a4 error:(id *)a5
+- (id)_createAndSubmitExtensionJob:(id)job UUID:(id)d error:(id *)error
 {
   v80[2] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = -[RBLaunchdInterfacing domainForPid:](self->_launchdInterface, "domainForPid:", [v8 hostPid]);
-  v11 = [v8 launchdJobProperties];
-  if (v11 && _os_feature_enabled_impl())
+  jobCopy = job;
+  dCopy = d;
+  v10 = -[RBLaunchdInterfacing domainForPid:](self->_launchdInterface, "domainForPid:", [jobCopy hostPid]);
+  launchdJobProperties = [jobCopy launchdJobProperties];
+  if (launchdJobProperties && _os_feature_enabled_impl())
   {
-    [(RBLaunchdJobManager *)self _adjustLaunchdJobProperties:v11 context:v8];
+    [(RBLaunchdJobManager *)self _adjustLaunchdJobProperties:launchdJobProperties context:jobCopy];
     v12 = MEMORY[0x277CBEBC0];
-    v13 = [v8 _overrideExecutablePath];
-    v14 = [v12 fileURLWithPath:v13];
+    _overrideExecutablePath = [jobCopy _overrideExecutablePath];
+    v14 = [v12 fileURLWithPath:_overrideExecutablePath];
 
     logQueue = self->_logQueue;
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __63__RBLaunchdJobManager__createAndSubmitExtensionJob_UUID_error___block_invoke;
     block[3] = &unk_279B331B8;
-    v75 = v9;
-    v76 = v8;
+    v75 = dCopy;
+    v76 = jobCopy;
     v77 = v14;
-    v16 = v11;
+    v16 = launchdJobProperties;
     v78 = v16;
     v17 = v14;
     dispatch_async(logQueue, block);
@@ -1823,10 +1823,10 @@ void __59__RBLaunchdJobManager__adjustLaunchdJobProperties_context___block_invok
     goto LABEL_4;
   }
 
-  v24 = [v8 extensionOverlay];
-  if (!v24)
+  extensionOverlay = [jobCopy extensionOverlay];
+  if (!extensionOverlay)
   {
-    if (!a5)
+    if (!error)
     {
       v26 = 0;
       goto LABEL_28;
@@ -1847,7 +1847,7 @@ void __59__RBLaunchdJobManager__adjustLaunchdJobProperties_context___block_invok
   v26 = v25;
   if (!v25 || (v27 = MEMORY[0x26672A380](v25), v28 = MEMORY[0x277D86468], v27 != MEMORY[0x277D86468]))
   {
-    if (!a5)
+    if (!error)
     {
 LABEL_28:
 
@@ -1867,7 +1867,7 @@ LABEL_29:
 
 LABEL_18:
     v36 = v32;
-    *a5 = v32;
+    *error = v32;
     goto LABEL_28;
   }
 
@@ -1875,7 +1875,7 @@ LABEL_18:
   v40 = v39;
   if (!v39 || MEMORY[0x26672A380](v39) != v28)
   {
-    if (!a5)
+    if (!error)
     {
 LABEL_26:
 
@@ -1893,29 +1893,29 @@ LABEL_26:
     v40 = v42;
 LABEL_25:
     v45 = v44;
-    *a5 = v44;
+    *error = v44;
     goto LABEL_26;
   }
 
   xpc_dictionary_set_string(v40, "_ManagedBy", "com.apple.runningboard");
-  v53 = [v8 identity];
-  _addRBProperties(v40, v53, v8);
+  identity = [jobCopy identity];
+  _addRBProperties(v40, identity, jobCopy);
 
-  v54 = [v8 identity];
-  [v54 personaString];
+  identity2 = [jobCopy identity];
+  [identity2 personaString];
   v55 = v63 = v40;
 
   if (v55)
   {
     v40 = v63;
-    if ([(RBLaunchdJobManager *)self _addPersonaFromExtensionContext:v8 toServiceDict:v63])
+    if ([(RBLaunchdJobManager *)self _addPersonaFromExtensionContext:jobCopy toServiceDict:v63])
     {
-      if ([(RBLaunchdJobManager *)self _addContainerPropertiesFromExtensionContext:v8 toServiceDict:v63])
+      if ([(RBLaunchdJobManager *)self _addContainerPropertiesFromExtensionContext:jobCopy toServiceDict:v63])
       {
         goto LABEL_44;
       }
 
-      if (!a5)
+      if (!error)
       {
         goto LABEL_26;
       }
@@ -1925,7 +1925,7 @@ LABEL_25:
 
     else
     {
-      if (!a5)
+      if (!error)
       {
         goto LABEL_26;
       }
@@ -1938,18 +1938,18 @@ LABEL_25:
   }
 
 LABEL_44:
-  v56 = [v8 _overrideExecutablePath];
-  v65 = v56;
-  if (v56)
+  _overrideExecutablePath2 = [jobCopy _overrideExecutablePath];
+  v65 = _overrideExecutablePath2;
+  if (_overrideExecutablePath2)
   {
-    v57 = v56;
+    v57 = _overrideExecutablePath2;
     queue = self->_logQueue;
     v68[0] = MEMORY[0x277D85DD0];
     v68[1] = 3221225472;
     v68[2] = __63__RBLaunchdJobManager__createAndSubmitExtensionJob_UUID_error___block_invoke_151;
     v68[3] = &unk_279B331B8;
-    v69 = v9;
-    v70 = v8;
+    v69 = dCopy;
+    v70 = jobCopy;
     v58 = v57;
     v71 = v58;
     v59 = v26;
@@ -1961,11 +1961,11 @@ LABEL_44:
     v20 = v67;
   }
 
-  else if (a5)
+  else if (error)
   {
     _posixErrorWithCodeAndDescription(22, @"Unable to launch extension without path");
     v19 = 0;
-    *a5 = v20 = 0;
+    *error = v20 = 0;
   }
 
   else
@@ -1982,12 +1982,12 @@ LABEL_44:
 LABEL_4:
   if (!v19)
   {
-    if (a5)
+    if (error)
     {
       v37 = v20;
       v19 = 0;
       v38 = 0;
-      *a5 = v20;
+      *error = v20;
       goto LABEL_36;
     }
 
@@ -1995,29 +1995,29 @@ LABEL_4:
     goto LABEL_29;
   }
 
-  if (v9 || ([v8 oneShotUUID], (v9 = objc_claimAutoreleasedReturnValue()) != 0))
+  if (dCopy || ([jobCopy oneShotUUID], (dCopy = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v80[0] = 0;
     v80[1] = 0;
-    [v9 getUUIDBytes:{v80, queue}];
+    [dCopy getUUIDBytes:{v80, queue}];
     v21 = rbs_job_log();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
     {
       *buf = 138543362;
-      *&buf[4] = v9;
+      *&buf[4] = dCopy;
       _os_log_impl(&dword_262485000, v21, OS_LOG_TYPE_INFO, "Setting one-shot instance on launch: %{public}@", buf, 0xCu);
     }
 
     v22 = self->_launchdInterface;
-    if (v11)
+    if (launchdJobProperties)
     {
-      v23 = [(RBLaunchdInterfacing *)self->_launchdInterface instancePropertiesFromJobProperties:v11];
+      v23 = [(RBLaunchdInterfacing *)self->_launchdInterface instancePropertiesFromJobProperties:launchdJobProperties];
     }
 
     else
     {
-      v46 = [v8 extensionOverlay];
-      v23 = [(RBLaunchdInterfacing *)v22 instancePropertiesFromOverlay:v46];
+      extensionOverlay2 = [jobCopy extensionOverlay];
+      v23 = [(RBLaunchdInterfacing *)v22 instancePropertiesFromOverlay:extensionOverlay2];
     }
 
     v47 = self->_launchdInterface;
@@ -2025,10 +2025,10 @@ LABEL_4:
     v48 = [(RBLaunchdInterfacing *)v47 forJob:v19 createInstance:v80 properties:v23 error:&v66];
     v49 = v66;
 
-    if (a5 && !v48)
+    if (error && !v48)
     {
       v50 = v49;
-      *a5 = v49;
+      *error = v49;
     }
 
     v20 = v49;
@@ -2097,36 +2097,36 @@ void __63__RBLaunchdJobManager__createAndSubmitExtensionJob_UUID_error___block_i
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (id)createAndLaunchWithIdentity:(id)a3 context:(id)a4 error:(id *)a5
+- (id)createAndLaunchWithIdentity:(id)identity context:(id)context error:(id *)error
 {
   v118[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  identityCopy = identity;
+  contextCopy = context;
   v10 = rbs_job_log();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    *&buf[4] = v8;
+    *&buf[4] = identityCopy;
     _os_log_impl(&dword_262485000, v10, OS_LOG_TYPE_DEFAULT, "Creating and launching job for: %{public}@", buf, 0xCu);
   }
 
-  v11 = [v8 hasConsistentLaunchdJob];
-  if (v11)
+  hasConsistentLaunchdJob = [identityCopy hasConsistentLaunchdJob];
+  if (hasConsistentLaunchdJob)
   {
-    v12 = [v8 consistentLaunchdJobLabel];
-    if (v12)
+    consistentLaunchdJobLabel = [identityCopy consistentLaunchdJobLabel];
+    if (consistentLaunchdJobLabel)
     {
       launchdInterface = self->_launchdInterface;
-      v14 = [MEMORY[0x277CEBF20] currentDomain];
-      v15 = [(RBLaunchdInterfacing *)launchdInterface copyJobWithLabel:v12 domain:v14];
+      currentDomain = [MEMORY[0x277CEBF20] currentDomain];
+      v15 = [(RBLaunchdInterfacing *)launchdInterface copyJobWithLabel:consistentLaunchdJobLabel domain:currentDomain];
 
       if (v15)
       {
         v16 = self->_launchdInterface;
         v96 = 0;
-        v17 = [(RBLaunchdInterfacing *)v16 propertiesForJob:v15 error:&v96];
+        handle = [(RBLaunchdInterfacing *)v16 propertiesForJob:v15 error:&v96];
         v18 = v96;
-        if (!v17)
+        if (!handle)
         {
           v32 = rbs_process_log();
           if (os_log_type_enabled(v32, OS_LOG_TYPE_FAULT))
@@ -2137,7 +2137,7 @@ void __63__RBLaunchdJobManager__createAndSubmitExtensionJob_UUID_error___block_i
           goto LABEL_30;
         }
 
-        if ([v8 osServiceType] == 3 && objc_msgSend(v17, "serviceType") != 3)
+        if ([identityCopy osServiceType] == 3 && objc_msgSend(handle, "serviceType") != 3)
         {
           v79 = rbs_process_log();
           if (os_log_type_enabled(v79, OS_LOG_TYPE_FAULT))
@@ -2157,7 +2157,7 @@ void __63__RBLaunchdJobManager__createAndSubmitExtensionJob_UUID_error___block_i
 
         else
         {
-          if ([v8 osServiceType] != 2 || objc_msgSend(v17, "serviceType") != 3)
+          if ([identityCopy osServiceType] != 2 || objc_msgSend(handle, "serviceType") != 3)
           {
             goto LABEL_31;
           }
@@ -2193,8 +2193,8 @@ LABEL_30:
       v36 = MEMORY[0x277CCA9B8];
       v37 = *MEMORY[0x277D47098];
       v116 = *MEMORY[0x277CCA450];
-      v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"Launchd could not find job"];
-      v117 = v17;
+      handle = [MEMORY[0x277CCACA8] stringWithFormat:@"Launchd could not find job"];
+      v117 = handle;
       v32 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v117 forKeys:&v116 count:1];
       v33 = v36;
       v34 = v37;
@@ -2206,8 +2206,8 @@ LABEL_30:
       v30 = MEMORY[0x277CCA9B8];
       v31 = *MEMORY[0x277D47098];
       v110 = *MEMORY[0x277CCA450];
-      v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"Identity doesn't have required label"];
-      v111 = v17;
+      handle = [MEMORY[0x277CCACA8] stringWithFormat:@"Identity doesn't have required label"];
+      v111 = handle;
       v32 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v111 forKeys:&v110 count:1];
       v33 = v30;
       v34 = v31;
@@ -2218,30 +2218,30 @@ LABEL_30:
     goto LABEL_29;
   }
 
-  if ([v8 isExtension])
+  if ([identityCopy isExtension])
   {
-    v23 = [v8 uuid];
+    uuid = [identityCopy uuid];
     v95 = 0;
-    v15 = [(RBLaunchdJobManager *)self _createAndSubmitExtensionJob:v9 UUID:v23 error:&v95];
+    v15 = [(RBLaunchdJobManager *)self _createAndSubmitExtensionJob:contextCopy UUID:uuid error:&v95];
     v18 = v95;
 
-    v12 = rbs_general_log();
-    if (!os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
+    consistentLaunchdJobLabel = rbs_general_log();
+    if (!os_log_type_enabled(consistentLaunchdJobLabel, OS_LOG_TYPE_INFO))
     {
       goto LABEL_32;
     }
 
-    v17 = [v15 handle];
+    handle = [v15 handle];
     *buf = 138543362;
-    *&buf[4] = v17;
-    _os_log_impl(&dword_262485000, v12, OS_LOG_TYPE_INFO, "submitted extension job %{public}@", buf, 0xCu);
+    *&buf[4] = handle;
+    _os_log_impl(&dword_262485000, consistentLaunchdJobLabel, OS_LOG_TYPE_INFO, "submitted extension job %{public}@", buf, 0xCu);
 LABEL_31:
 
 LABEL_32:
     if (v15)
     {
-      v89 = v9;
-      v29 = v11 ^ 1;
+      v89 = contextCopy;
+      v29 = hasConsistentLaunchdJob ^ 1;
       v91 = v18;
       v27 = &v91;
       v28 = [v15 start:&v91];
@@ -2255,7 +2255,7 @@ LABEL_34:
           goto LABEL_67;
         }
 
-        v87 = a5;
+        errorCopy3 = error;
         v39 = v29;
         v50 = rbs_general_log();
         if (os_log_type_enabled(v50, OS_LOG_TYPE_ERROR))
@@ -2281,7 +2281,7 @@ LABEL_34:
           goto LABEL_66;
         }
 
-        v87 = a5;
+        errorCopy3 = error;
         v39 = v29;
         v40 = rbs_general_log();
         if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
@@ -2300,11 +2300,11 @@ LABEL_34:
         goto LABEL_61;
       }
 
-      v55 = [v28 state];
-      v87 = a5;
-      if (v55 <= 2)
+      state = [v28 state];
+      errorCopy3 = error;
+      if (state <= 2)
       {
-        if (v55 == 1)
+        if (state == 1)
         {
 LABEL_60:
           v39 = v29;
@@ -2324,7 +2324,7 @@ LABEL_61:
           goto LABEL_65;
         }
 
-        if (v55 == 2)
+        if (state == 2)
         {
           abort();
         }
@@ -2332,40 +2332,40 @@ LABEL_61:
 
       else
       {
-        if (v55 == 4)
+        if (state == 4)
         {
           v39 = v29;
           v83 = MEMORY[0x277CCA9B8];
           v81 = *MEMORY[0x277D47098];
           v101 = *MEMORY[0x277CCA450];
           v66 = MEMORY[0x277CCACA8];
-          v85 = [v28 lastExitStatus];
-          v67 = [v85 os_reason_namespace];
-          v68 = [v28 lastExitStatus];
-          v69 = [v66 stringWithFormat:@"Launchd job spawn immediately exited with namespace %d code %lld", v67, objc_msgSend(v68, "os_reason_code")];
+          lastExitStatus = [v28 lastExitStatus];
+          os_reason_namespace = [lastExitStatus os_reason_namespace];
+          lastExitStatus2 = [v28 lastExitStatus];
+          v69 = [v66 stringWithFormat:@"Launchd job spawn immediately exited with namespace %d code %lld", os_reason_namespace, objc_msgSend(lastExitStatus2, "os_reason_code")];
           v102 = v69;
           v70 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v102 forKeys:&v101 count:1];
           v54 = [v83 errorWithDomain:v81 code:0 userInfo:v70];
 
-          v38 = v85;
+          v38 = lastExitStatus;
           goto LABEL_65;
         }
 
-        if (v55 == 3)
+        if (state == 3)
         {
           v39 = v29;
-          v56 = [v28 lastSpawnError];
+          lastSpawnError = [v28 lastSpawnError];
           v57 = MEMORY[0x277CCA9B8];
           v58 = *MEMORY[0x277CCA5B8];
           v118[0] = *MEMORY[0x277CCA450];
           *buf = @"Launchd job spawn failed";
           v59 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:buf forKeys:v118 count:1];
-          v54 = [v57 errorWithDomain:v58 code:v56 userInfo:v59];
+          v54 = [v57 errorWithDomain:v58 code:lastSpawnError userInfo:v59];
 
 LABEL_65:
           v38 = v54;
           v29 = v39;
-          a5 = v87;
+          error = errorCopy3;
 LABEL_66:
           if (!v38)
           {
@@ -2377,9 +2377,9 @@ LABEL_66:
               os_unfair_lock_unlock(&self->_lock);
             }
 
-            v49 = [MEMORY[0x277D46F70] instanceWithIdentifier:v76 identity:v8];
+            v49 = [MEMORY[0x277D46F70] instanceWithIdentifier:v76 identity:identityCopy];
             v75 = 0;
-            v9 = v89;
+            contextCopy = v89;
             goto LABEL_83;
           }
 
@@ -2390,11 +2390,11 @@ LABEL_67:
             [RBLaunchdJobManager createAndLaunchWithIdentity:context:error:];
           }
 
-          v9 = v89;
-          if (a5)
+          contextCopy = v89;
+          if (error)
           {
             v72 = v38;
-            *a5 = v38;
+            *error = v38;
           }
 
           if (!v29)
@@ -2418,7 +2418,7 @@ LABEL_67:
           {
             v49 = 0;
             v38 = v75;
-            v9 = v89;
+            contextCopy = v89;
 LABEL_84:
 
             v18 = v38;
@@ -2432,7 +2432,7 @@ LABEL_84:
           }
 
           v49 = 0;
-          v9 = v89;
+          contextCopy = v89;
 LABEL_83:
 
           v38 = v75;
@@ -2454,28 +2454,28 @@ LABEL_83:
 
   v93 = 0;
   v94 = 0;
-  v15 = [(RBLaunchdJobManager *)self _createLaunchdJobWithIdentity:v8 context:v9 actualIdentity:&v94 error:&v93];
+  v15 = [(RBLaunchdJobManager *)self _createLaunchdJobWithIdentity:identityCopy context:contextCopy actualIdentity:&v94 error:&v93];
   v24 = v94;
   v18 = v93;
-  if (_os_feature_enabled_impl() && v24 && v24 != v8 && ([v24 isEqual:v8] & 1) == 0)
+  if (_os_feature_enabled_impl() && v24 && v24 != identityCopy && ([v24 isEqual:identityCopy] & 1) == 0)
   {
     v25 = rbs_job_log();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      *&buf[4] = v8;
+      *&buf[4] = identityCopy;
       v108 = 2114;
       v109 = v24;
       _os_log_impl(&dword_262485000, v25, OS_LOG_TYPE_DEFAULT, "Adjusting identity of job from %{public}@ to %{public}@", buf, 0x16u);
     }
 
     v26 = v24;
-    v8 = v26;
+    identityCopy = v26;
   }
 
   if (v15)
   {
-    v89 = v9;
+    v89 = contextCopy;
     v92 = v18;
     v27 = &v92;
     v28 = [v15 submitAndStart:&v92];
@@ -2490,13 +2490,13 @@ LABEL_40:
     [RBLaunchdJobManager createAndLaunchWithIdentity:context:error:];
   }
 
-  if (a5)
+  if (error)
   {
     if (v18)
     {
       v48 = v18;
       v49 = 0;
-      *a5 = v18;
+      *error = v18;
       goto LABEL_85;
     }
 
@@ -2506,7 +2506,7 @@ LABEL_40:
     v62 = [MEMORY[0x277CCACA8] stringWithFormat:@"Launchd job spawn failed to create job"];
     v106 = v62;
     v63 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v106 forKeys:&v105 count:1];
-    *a5 = [v60 errorWithDomain:v61 code:0 userInfo:v63];
+    *error = [v60 errorWithDomain:v61 code:0 userInfo:v63];
 
     v18 = 0;
   }
@@ -2519,18 +2519,18 @@ LABEL_85:
   return v49;
 }
 
-- (BOOL)_isRunningBoardLaunched:(id)a3
+- (BOOL)_isRunningBoardLaunched:(id)launched
 {
   v19 = *MEMORY[0x277D85DE8];
   launchdInterface = self->_launchdInterface;
   v16 = 0;
-  v4 = [(RBLaunchdInterfacing *)launchdInterface propertiesForJob:a3 error:&v16];
+  v4 = [(RBLaunchdInterfacing *)launchdInterface propertiesForJob:launched error:&v16];
   v5 = v16;
   if (v4)
   {
-    v6 = [v4 additionalProperties];
-    v7 = v6;
-    if (v6 && (v8 = MEMORY[0x26672A380](v6), v9 = MEMORY[0x277D86468], v8 == MEMORY[0x277D86468]))
+    additionalProperties = [v4 additionalProperties];
+    v7 = additionalProperties;
+    if (additionalProperties && (v8 = MEMORY[0x26672A380](additionalProperties), v9 = MEMORY[0x277D86468], v8 == MEMORY[0x277D86468]))
     {
       v12 = xpc_dictionary_get_value(v7, "RunningBoard");
       v10 = v12;
@@ -2579,12 +2579,12 @@ LABEL_16:
   return v11;
 }
 
-- (BOOL)_removeJobWithInstance:(id)a3 orJob:(id)a4 error:(id *)a5
+- (BOOL)_removeJobWithInstance:(id)instance orJob:(id)job error:(id *)error
 {
   v45[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  instanceCopy = instance;
+  jobCopy = job;
+  if (!instanceCopy)
   {
     [RBLaunchdJobManager _removeJobWithInstance:orJob:error:];
   }
@@ -2593,17 +2593,17 @@ LABEL_16:
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     *buf = 138543362;
-    *&buf[4] = v8;
+    *&buf[4] = instanceCopy;
     _os_log_impl(&dword_262485000, v10, OS_LOG_TYPE_INFO, "Cleaning out %{public}@ from job manager", buf, 0xCu);
   }
 
   os_unfair_lock_lock(&self->_lock);
-  if (v9)
+  if (jobCopy)
   {
 LABEL_9:
     os_unfair_lock_unlock(&self->_lock);
-    v19 = [v8 identity];
-    if (([v19 isApplication] & 1) == 0 && !objc_msgSend(v19, "isDext"))
+    identity = [instanceCopy identity];
+    if (([identity isApplication] & 1) == 0 && !objc_msgSend(identity, "isDext"))
     {
       v25 = 1;
 LABEL_31:
@@ -2611,18 +2611,18 @@ LABEL_31:
       goto LABEL_32;
     }
 
-    if (([v19 isXPCService] & 1) != 0 || -[RBLaunchdJobManager _isRunningBoardLaunched:](self, "_isRunningBoardLaunched:", v9))
+    if (([identity isXPCService] & 1) != 0 || -[RBLaunchdJobManager _isRunningBoardLaunched:](self, "_isRunningBoardLaunched:", jobCopy))
     {
       v20 = rbs_job_log();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        *&buf[4] = v8;
+        *&buf[4] = instanceCopy;
         _os_log_impl(&dword_262485000, v20, OS_LOG_TYPE_DEFAULT, "Removing launch job for: %{public}@", buf, 0xCu);
       }
 
       v43 = 0;
-      v21 = [v9 remove:&v43];
+      v21 = [jobCopy remove:&v43];
       v22 = v43;
       v23 = v22;
       if ((v21 & 1) != 0 || [v22 code] == 36)
@@ -2631,7 +2631,7 @@ LABEL_31:
         if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543362;
-          *&buf[4] = v8;
+          *&buf[4] = instanceCopy;
           _os_log_impl(&dword_262485000, v24, OS_LOG_TYPE_DEFAULT, "Removed job for %{public}@", buf, 0xCu);
         }
 
@@ -2645,22 +2645,22 @@ LABEL_31:
         [RBLaunchdJobManager _removeJobWithInstance:orJob:error:];
       }
 
-      if (a5)
+      if (error)
       {
-        v33 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unable to delete job with label %@", v8];
-        v34 = [v23 code];
+        instanceCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Unable to delete job with label %@", instanceCopy];
+        code = [v23 code];
         v35 = MEMORY[0x277CCA9B8];
         v36 = *MEMORY[0x277CCA5B8];
         v45[0] = *MEMORY[0x277CCA450];
-        *buf = v33;
+        *buf = instanceCopy;
         v37 = MEMORY[0x277CBEAC0];
-        v24 = v33;
+        v24 = instanceCopy;
         v38 = [v37 dictionaryWithObjects:buf forKeys:v45 count:1];
-        v39 = [v35 errorWithDomain:v36 code:v34 userInfo:v38];
+        v39 = [v35 errorWithDomain:v36 code:code userInfo:v38];
 
         v40 = v39;
         v25 = 0;
-        *a5 = v39;
+        *error = v39;
         goto LABEL_29;
       }
     }
@@ -2673,7 +2673,7 @@ LABEL_31:
         [RBLaunchdJobManager _removeJobWithInstance:orJob:error:];
       }
 
-      if (a5)
+      if (error)
       {
         v24 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unable to delete job not submitted by RunningBoard"];
         v27 = MEMORY[0x277CCA9B8];
@@ -2686,7 +2686,7 @@ LABEL_31:
         v31 = v30;
         v23 = 0;
         v25 = 0;
-        *a5 = v30;
+        *error = v30;
 LABEL_29:
 
 LABEL_30:
@@ -2701,29 +2701,29 @@ LABEL_30:
   }
 
   lock_monitoredJobsByIdentifier = self->_lock_monitoredJobsByIdentifier;
-  v12 = [v8 identifier];
-  v9 = [(NSMutableDictionary *)lock_monitoredJobsByIdentifier objectForKey:v12];
+  identifier = [instanceCopy identifier];
+  jobCopy = [(NSMutableDictionary *)lock_monitoredJobsByIdentifier objectForKey:identifier];
 
-  if (v9 || (v13 = self->_lock_jobsByIdentifier, [v8 identifier], v14 = objc_claimAutoreleasedReturnValue(), -[NSMutableDictionary objectForKey:](v13, "objectForKey:", v14), v9 = objc_claimAutoreleasedReturnValue(), v14, v9))
+  if (jobCopy || (v13 = self->_lock_jobsByIdentifier, [instanceCopy identifier], v14 = objc_claimAutoreleasedReturnValue(), -[NSMutableDictionary objectForKey:](v13, "objectForKey:", v14), jobCopy = objc_claimAutoreleasedReturnValue(), v14, jobCopy))
   {
     lock_jobsByIdentifier = self->_lock_jobsByIdentifier;
-    v16 = [v8 identifier];
-    [(NSMutableDictionary *)lock_jobsByIdentifier removeObjectForKey:v16];
+    identifier2 = [instanceCopy identifier];
+    [(NSMutableDictionary *)lock_jobsByIdentifier removeObjectForKey:identifier2];
 
     v17 = self->_lock_monitoredJobsByIdentifier;
-    v18 = [v8 identifier];
-    [(NSMutableDictionary *)v17 removeObjectForKey:v18];
+    identifier3 = [instanceCopy identifier];
+    [(NSMutableDictionary *)v17 removeObjectForKey:identifier3];
 
     goto LABEL_9;
   }
 
   os_unfair_lock_unlock(&self->_lock);
-  v9 = rbs_general_log();
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+  jobCopy = rbs_general_log();
+  if (os_log_type_enabled(jobCopy, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    *&buf[4] = v8;
-    _os_log_impl(&dword_262485000, v9, OS_LOG_TYPE_DEFAULT, "removeJobWithInstance called for identity without existing job %{public}@", buf, 0xCu);
+    *&buf[4] = instanceCopy;
+    _os_log_impl(&dword_262485000, jobCopy, OS_LOG_TYPE_DEFAULT, "removeJobWithInstance called for identity without existing job %{public}@", buf, 0xCu);
   }
 
   v25 = 1;
@@ -2736,7 +2736,7 @@ LABEL_32:
 - (id)synchronizeJobs
 {
   v70 = *MEMORY[0x277D85DE8];
-  v35 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   launchdInterface = self->_launchdInterface;
   v62 = 0;
   v34 = [(RBLaunchdInterfacing *)launchdInterface copyJobsManagedBy:@"com.apple.runningboard" error:&v62];
@@ -2793,9 +2793,9 @@ LABEL_32:
 
         if (v10)
         {
-          v11 = [v10 additionalProperties];
-          v12 = v11;
-          if (!v11 || MEMORY[0x26672A380](v11) != MEMORY[0x277D86468])
+          additionalProperties = [v10 additionalProperties];
+          v12 = additionalProperties;
+          if (!additionalProperties || MEMORY[0x26672A380](additionalProperties) != MEMORY[0x277D86468])
           {
             v13 = rbs_general_log();
             if (os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
@@ -2835,10 +2835,10 @@ LABEL_32:
               if (MEMORY[0x26672A380](v15) == MEMORY[0x277D86468])
               {
                 v18 = MEMORY[0x277D46F60];
-                v19 = [v10 instance];
+                instance = [v10 instance];
                 v20 = v18;
-                v21 = v19;
-                v22 = [v20 decodeFromJob:v15 uuid:v19];
+                v21 = instance;
+                v22 = [v20 decodeFromJob:v15 uuid:instance];
                 v23 = v21;
                 v24 = v22;
                 goto LABEL_29;
@@ -2861,7 +2861,7 @@ LABEL_34:
               v36 = [MEMORY[0x277D46F70] instanceWithIdentifier:v42 identity:v24];
               if (*(v55 + 6))
               {
-                [v35 addObject:v36];
+                [array addObject:v36];
                 os_unfair_lock_lock(&self->_lock);
                 [(NSMutableDictionary *)self->_lock_jobsByIdentifier setObject:v7 forKey:v42];
                 os_unfair_lock_unlock(&self->_lock);
@@ -2872,8 +2872,8 @@ LABEL_34:
                 v28 = rbs_general_log();
                 if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
                 {
-                  v29 = [v7 handle];
-                  [(RBLaunchdJobManager *)v29 synchronizeJobs:v63];
+                  handle = [v7 handle];
+                  [(RBLaunchdJobManager *)handle synchronizeJobs:v63];
                 }
 
                 [(RBLaunchdJobManager *)self _removeJobWithInstance:v36 orJob:v7 error:0];
@@ -2899,8 +2899,8 @@ LABEL_30:
               log = rbs_general_log();
               if (os_log_type_enabled(log, OS_LOG_TYPE_ERROR))
               {
-                v26 = [v7 handle];
-                [(RBLaunchdJobManager *)v26 synchronizeJobs:v65];
+                handle2 = [v7 handle];
+                [(RBLaunchdJobManager *)handle2 synchronizeJobs:v65];
               }
             }
           }
@@ -2958,7 +2958,7 @@ LABEL_49:
 
   v32 = *MEMORY[0x277D85DE8];
 
-  return v35;
+  return array;
 }
 
 void __38__RBLaunchdJobManager_synchronizeJobs__block_invoke(uint64_t a1, void *a2)
@@ -2978,35 +2978,35 @@ void __38__RBLaunchdJobManager_synchronizeJobs__block_invoke(uint64_t a1, void *
   }
 }
 
-- (void)invokeOnProcessDeath:(id)a3 handler:(id)a4 onQueue:(id)a5
+- (void)invokeOnProcessDeath:(id)death handler:(id)handler onQueue:(id)queue
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  deathCopy = death;
+  handlerCopy = handler;
+  queueCopy = queue;
   os_unfair_lock_lock(&self->_lock);
-  v11 = [v8 identifier];
-  v12 = [(NSMutableDictionary *)self->_lock_monitoredJobsByIdentifier objectForKey:v11];
+  identifier = [deathCopy identifier];
+  v12 = [(NSMutableDictionary *)self->_lock_monitoredJobsByIdentifier objectForKey:identifier];
 
   if (v12)
   {
     v13 = rbs_process_log();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
     {
-      [RBLaunchdJobManager invokeOnProcessDeath:v8 handler:? onQueue:?];
+      [RBLaunchdJobManager invokeOnProcessDeath:deathCopy handler:? onQueue:?];
     }
   }
 
-  v14 = [(NSMutableDictionary *)self->_lock_jobsByIdentifier objectForKey:v11];
+  v14 = [(NSMutableDictionary *)self->_lock_jobsByIdentifier objectForKey:identifier];
   if (!v14)
   {
-    if ([v11 pid] <= 0)
+    if ([identifier pid] <= 0)
     {
       os_unfair_lock_unlock(&self->_lock);
     }
 
     else
     {
-      v15 = -[RBLaunchdInterfacing copyJobWithPid:](self->_launchdInterface, "copyJobWithPid:", [v11 pid]);
+      v15 = -[RBLaunchdInterfacing copyJobWithPid:](self->_launchdInterface, "copyJobWithPid:", [identifier pid]);
       os_unfair_lock_unlock(&self->_lock);
       if (v15)
       {
@@ -3014,31 +3014,31 @@ void __38__RBLaunchdJobManager_synchronizeJobs__block_invoke(uint64_t a1, void *
       }
     }
 
-    [v8 invokeHandlerOnProcessDeath:v9 onQueue:v10];
+    [deathCopy invokeHandlerOnProcessDeath:handlerCopy onQueue:queueCopy];
     goto LABEL_13;
   }
 
   v15 = v14;
-  [(NSMutableDictionary *)self->_lock_monitoredJobsByIdentifier setObject:v14 forKey:v11];
-  [(NSMutableDictionary *)self->_lock_jobsByIdentifier removeObjectForKey:v11];
+  [(NSMutableDictionary *)self->_lock_monitoredJobsByIdentifier setObject:v14 forKey:identifier];
+  [(NSMutableDictionary *)self->_lock_jobsByIdentifier removeObjectForKey:identifier];
   os_unfair_lock_unlock(&self->_lock);
 LABEL_7:
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __60__RBLaunchdJobManager_invokeOnProcessDeath_handler_onQueue___block_invoke;
   v24[3] = &unk_279B33208;
-  v25 = v8;
-  v28 = v9;
+  v25 = deathCopy;
+  v28 = handlerCopy;
   v16 = v15;
   v26 = v16;
-  v27 = self;
+  selfCopy = self;
   v17 = MEMORY[0x266729AD0](v24);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __60__RBLaunchdJobManager_invokeOnProcessDeath_handler_onQueue___block_invoke_199;
   block[3] = &unk_279B32F78;
   v21 = v16;
-  v22 = v10;
+  v22 = queueCopy;
   v23 = v17;
   v18 = v17;
   v19 = v16;

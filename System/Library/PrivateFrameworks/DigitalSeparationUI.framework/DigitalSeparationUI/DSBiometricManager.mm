@@ -5,16 +5,16 @@
 + (void)deleteAllTouchIDs;
 + (void)pearlIdentities;
 - (CIDVUIBiometricBindingFlowManager)_biometricBindingFlowManager;
-- (DSBiometricManager)initWithContext:(id)a3;
+- (DSBiometricManager)initWithContext:(id)context;
 - (void)deleteAllPearlIdentities;
 - (void)deleteGlobalAuthACL;
 @end
 
 @implementation DSBiometricManager
 
-- (DSBiometricManager)initWithContext:(id)a3
+- (DSBiometricManager)initWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v9.receiver = self;
   v9.super_class = DSBiometricManager;
   v5 = [(DSBiometricManager *)&v9 init];
@@ -24,7 +24,7 @@
     v7 = DSLogBiometrics_0;
     DSLogBiometrics_0 = v6;
 
-    [(DSBiometricManager *)v5 setAuthContext:v4];
+    [(DSBiometricManager *)v5 setAuthContext:contextCopy];
   }
 
   return v5;
@@ -32,7 +32,7 @@
 
 + (id)pearlIdentities
 {
-  if ([a1 supportsPearl])
+  if ([self supportsPearl])
   {
     v2 = MEMORY[0x277CF1BA0];
     v3 = [MEMORY[0x277CF1BB0] deviceDescriptorForType:2];
@@ -79,8 +79,8 @@
 
 + (unint64_t)pearlIdentityCount
 {
-  v2 = [a1 pearlIdentities];
-  v3 = [v2 count];
+  pearlIdentities = [self pearlIdentities];
+  v3 = [pearlIdentities count];
 
   return v3;
 }
@@ -89,8 +89,8 @@
 {
   v18 = *MEMORY[0x277D85DE8];
   [(DSBiometricManager *)self deleteGlobalAuthACL];
-  v3 = [MEMORY[0x277D3F928] sharedInstance];
-  v4 = [v3 identitiesForIdentityType:2];
+  mEMORY[0x277D3F928] = [MEMORY[0x277D3F928] sharedInstance];
+  v4 = [mEMORY[0x277D3F928] identitiesForIdentityType:2];
 
   v15 = 0u;
   v16 = 0u;
@@ -113,8 +113,8 @@
         }
 
         v10 = *(*(&v13 + 1) + 8 * v9);
-        v11 = [MEMORY[0x277D3F928] sharedInstance];
-        [v11 removeIdentity:v10];
+        mEMORY[0x277D3F928]2 = [MEMORY[0x277D3F928] sharedInstance];
+        [mEMORY[0x277D3F928]2 removeIdentity:v10];
 
         ++v9;
       }
@@ -204,8 +204,8 @@ void __41__DSBiometricManager_deleteGlobalAuthACL__block_invoke_2(uint64_t a1, v
 
 + (unint64_t)touchIDCount
 {
-  v2 = [MEMORY[0x277D3F970] identities];
-  v3 = [v2 count];
+  identities = [MEMORY[0x277D3F970] identities];
+  v3 = [identities count];
 
   return v3;
 }
@@ -213,12 +213,12 @@ void __41__DSBiometricManager_deleteGlobalAuthACL__block_invoke_2(uint64_t a1, v
 + (void)deleteAllTouchIDs
 {
   v13 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277D3F970] identities];
+  identities = [MEMORY[0x277D3F970] identities];
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  v3 = [identities countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = v3;
@@ -230,14 +230,14 @@ void __41__DSBiometricManager_deleteGlobalAuthACL__block_invoke_2(uint64_t a1, v
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(identities);
         }
 
         [MEMORY[0x277D3F970] removeIdentity:*(*(&v8 + 1) + 8 * v6++)];
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v4 = [identities countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v4);
@@ -250,7 +250,7 @@ void __41__DSBiometricManager_deleteGlobalAuthACL__block_invoke_2(uint64_t a1, v
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_248C7E000, a2, OS_LOG_TYPE_ERROR, "DS Face ID: Failed to fetch BKDevice: %@", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }

@@ -1,6 +1,6 @@
 @interface RBSurfaceContents
 - (id).cxx_construct;
-- (void)initWithIOSurface:(void *)a1;
+- (void)initWithIOSurface:(void *)surface;
 @end
 
 @implementation RBSurfaceContents
@@ -12,14 +12,14 @@
   return self;
 }
 
-- (void)initWithIOSurface:(void *)a1
+- (void)initWithIOSurface:(void *)surface
 {
-  if (!a1)
+  if (!surface)
   {
     return 0;
   }
 
-  v10.receiver = a1;
+  v10.receiver = surface;
   v10.super_class = RBSurfaceContents;
   v3 = objc_msgSendSuper2(&v10, sel_init);
   v4 = v3;
@@ -46,9 +46,9 @@
       v4[1] = v6;
     }
 
-    v7 = [a2 CA_copyRenderValue];
+    cA_copyRenderValue = [a2 CA_copyRenderValue];
     v8 = v4[2];
-    v4[2] = v7;
+    v4[2] = cA_copyRenderValue;
     if (v8)
     {
       CARenderRelease();

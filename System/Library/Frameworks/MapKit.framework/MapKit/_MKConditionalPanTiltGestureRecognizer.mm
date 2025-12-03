@@ -1,14 +1,14 @@
 @interface _MKConditionalPanTiltGestureRecognizer
-- (_MKConditionalPanTiltGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
+- (_MKConditionalPanTiltGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
 @end
 
 @implementation _MKConditionalPanTiltGestureRecognizer
 
-- (_MKConditionalPanTiltGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (_MKConditionalPanTiltGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
   v7.receiver = self;
   v7.super_class = _MKConditionalPanTiltGestureRecognizer;
-  v4 = [(_MKConditionalPanGestureRecognizer *)&v7 initWithTarget:a3 action:a4];
+  v4 = [(_MKConditionalPanGestureRecognizer *)&v7 initWithTarget:target action:action];
   v5 = v4;
   if (v4)
   {

@@ -4,8 +4,8 @@
 - (void)p_startCancelTimer;
 - (void)p_teardownTimer;
 - (void)reset;
-- (void)setState:(int64_t)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
+- (void)setState:(int64_t)state;
+- (void)touchesBegan:(id)began withEvent:(id)event;
 @end
 
 @implementation THTimeoutLongPressGestureRecognizer
@@ -22,23 +22,23 @@
   [(THTimeoutLongPressGestureRecognizer *)&v3 dealloc];
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   v5.receiver = self;
   v5.super_class = THTimeoutLongPressGestureRecognizer;
-  [(THTimeoutLongPressGestureRecognizer *)&v5 touchesBegan:a3 withEvent:a4];
+  [(THTimeoutLongPressGestureRecognizer *)&v5 touchesBegan:began withEvent:event];
   if (![(THTimeoutLongPressGestureRecognizer *)self state])
   {
     [(THTimeoutLongPressGestureRecognizer *)self p_startCancelTimer];
   }
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
   v5.receiver = self;
   v5.super_class = THTimeoutLongPressGestureRecognizer;
   [(THTimeoutLongPressGestureRecognizer *)&v5 setState:?];
-  if ((a3 - 3) <= 2)
+  if ((state - 3) <= 2)
   {
     [(THTimeoutLongPressGestureRecognizer *)self p_teardownTimer];
   }

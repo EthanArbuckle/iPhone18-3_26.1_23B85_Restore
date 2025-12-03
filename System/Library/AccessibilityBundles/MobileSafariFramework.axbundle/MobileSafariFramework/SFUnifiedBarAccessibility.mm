@@ -1,6 +1,6 @@
 @interface SFUnifiedBarAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (SFUnifiedBarAccessibility)initWithFrame:(CGRect)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (SFUnifiedBarAccessibility)initWithFrame:(CGRect)frame;
 - (id)accessibilityElements;
 - (id)preferredFocusEnvironments;
 - (void)_accessibilityLoadAccessibilityInformation;
@@ -8,17 +8,17 @@
 
 @implementation SFUnifiedBarAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SFUnifiedBar" isKindOfClass:@"UIView"];
-  [v3 validateClass:@"SFUnifiedTabBar"];
-  [v3 validateClass:@"SFUnifiedBar" hasInstanceVariable:@"_squishedBarButton" withType:"UIButton"];
-  [v3 validateClass:@"SFUnifiedBar" hasInstanceVariable:@"_squishedContentView" withType:"UIView"];
-  [v3 validateClass:@"SFUnifiedTabBar" hasInstanceVariable:@"_squishedTitleContainer" withType:"SFUnifiedTabBarItemTitleContainerView"];
-  [v3 validateClass:@"SFUnifiedBar" hasInstanceMethod:@"_showsSquishedContent" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"SFUnifiedBar" hasInstanceMethod:@"initWithFrame:" withFullSignature:{"@", "{CGRect={CGPoint=dd}{CGSize=dd}}", 0}];
-  [v3 validateClass:@"SFUnifiedTabBar" hasInstanceMethod:@"searchField" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SFUnifiedBar" isKindOfClass:@"UIView"];
+  [validationsCopy validateClass:@"SFUnifiedTabBar"];
+  [validationsCopy validateClass:@"SFUnifiedBar" hasInstanceVariable:@"_squishedBarButton" withType:"UIButton"];
+  [validationsCopy validateClass:@"SFUnifiedBar" hasInstanceVariable:@"_squishedContentView" withType:"UIView"];
+  [validationsCopy validateClass:@"SFUnifiedTabBar" hasInstanceVariable:@"_squishedTitleContainer" withType:"SFUnifiedTabBarItemTitleContainerView"];
+  [validationsCopy validateClass:@"SFUnifiedBar" hasInstanceMethod:@"_showsSquishedContent" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"SFUnifiedBar" hasInstanceMethod:@"initWithFrame:" withFullSignature:{"@", "{CGRect={CGPoint=dd}{CGSize=dd}}", 0}];
+  [validationsCopy validateClass:@"SFUnifiedTabBar" hasInstanceMethod:@"searchField" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -107,11 +107,11 @@ LABEL_11:
   return v8;
 }
 
-- (SFUnifiedBarAccessibility)initWithFrame:(CGRect)a3
+- (SFUnifiedBarAccessibility)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = SFUnifiedBarAccessibility;
-  v3 = [(SFUnifiedBarAccessibility *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SFUnifiedBarAccessibility *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -140,7 +140,7 @@ LABEL_11:
 
 - (id)preferredFocusEnvironments
 {
-  v2 = self;
+  selfCopy = self;
   v24 = *MEMORY[0x29EDCA608];
   if ([(SFUnifiedBarAccessibility *)self _accessibilityIsFKARunningForFocusItem])
   {
@@ -150,11 +150,11 @@ LABEL_11:
     v19 = 0u;
     v17 = 0;
     objc_opt_class();
-    v15 = v2;
+    v15 = selfCopy;
     v3 = __UIAccessibilityCastAsClass();
-    v4 = [v3 subviews];
+    subviews = [v3 subviews];
 
-    v5 = [v4 countByEnumeratingWithState:&v18 objects:v23 count:16];
+    v5 = [subviews countByEnumeratingWithState:&v18 objects:v23 count:16];
     if (v5)
     {
       v6 = v5;
@@ -165,7 +165,7 @@ LABEL_11:
         {
           if (*v19 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(subviews);
           }
 
           v9 = *(*(&v18 + 1) + 8 * i);
@@ -180,14 +180,14 @@ LABEL_11:
             if ([v11 isFirstResponder])
             {
               v22 = v11;
-              v12 = [MEMORY[0x29EDB8D80] arrayWithObjects:&v22 count:1];
+              preferredFocusEnvironments = [MEMORY[0x29EDB8D80] arrayWithObjects:&v22 count:1];
 
               goto LABEL_15;
             }
           }
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v18 objects:v23 count:16];
+        v6 = [subviews countByEnumeratingWithState:&v18 objects:v23 count:16];
         if (v6)
         {
           continue;
@@ -197,16 +197,16 @@ LABEL_11:
       }
     }
 
-    v2 = v15;
+    selfCopy = v15;
   }
 
-  v16.receiver = v2;
+  v16.receiver = selfCopy;
   v16.super_class = SFUnifiedBarAccessibility;
-  v12 = [(SFUnifiedBarAccessibility *)&v16 preferredFocusEnvironments];
+  preferredFocusEnvironments = [(SFUnifiedBarAccessibility *)&v16 preferredFocusEnvironments];
 LABEL_15:
   v13 = *MEMORY[0x29EDCA608];
 
-  return v12;
+  return preferredFocusEnvironments;
 }
 
 @end

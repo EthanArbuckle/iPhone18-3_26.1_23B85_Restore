@@ -1,49 +1,49 @@
 @interface PFMediaCapabilitiesQuery
-- (PFMediaCapabilitiesQuery)initWithOptions:(id)a3;
-- (void)addAssetBundleInformationToDictionary:(id)a3;
+- (PFMediaCapabilitiesQuery)initWithOptions:(id)options;
+- (void)addAssetBundleInformationToDictionary:(id)dictionary;
 - (void)addCodecInformation;
-- (void)addCodecSupportInformationToDictionary:(id)a3;
-- (void)addHEIFContainerInformationToDictionary:(id)a3;
-- (void)addLivePhotoInformationToDictionary:(id)a3;
+- (void)addCodecSupportInformationToDictionary:(id)dictionary;
+- (void)addHEIFContainerInformationToDictionary:(id)dictionary;
+- (void)addLivePhotoInformationToDictionary:(id)dictionary;
 - (void)addPlatformInformation;
-- (void)addSortSourceEnumerationAscendingWithOptions:(id)a3;
-- (void)addTranscodeChoiceWithOptions:(id)a3;
-- (void)addVendorSpecificInformationWithOptions:(id)a3;
-- (void)addVersion1And2HEVCCodecInformationToDictionary:(id)a3;
-- (void)gatherCapabilitiesWithOptions:(id)a3;
+- (void)addSortSourceEnumerationAscendingWithOptions:(id)options;
+- (void)addTranscodeChoiceWithOptions:(id)options;
+- (void)addVendorSpecificInformationWithOptions:(id)options;
+- (void)addVersion1And2HEVCCodecInformationToDictionary:(id)dictionary;
+- (void)gatherCapabilitiesWithOptions:(id)options;
 @end
 
 @implementation PFMediaCapabilitiesQuery
 
-- (void)addAssetBundleInformationToDictionary:(id)a3
+- (void)addAssetBundleInformationToDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v3 = +[PFAssetBundle currentFormatVersion];
   if (v3)
   {
-    [v4 setObject:v3 forKeyedSubscript:@"AssetBundleFormatVersion"];
+    [dictionaryCopy setObject:v3 forKeyedSubscript:@"AssetBundleFormatVersion"];
   }
 }
 
-- (void)addLivePhotoInformationToDictionary:(id)a3
+- (void)addLivePhotoInformationToDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v3 = +[PFVideoComplement currentFormatVersion];
   if (v3)
   {
-    [v4 setObject:v3 forKeyedSubscript:@"LivePhotoFormatVersion"];
+    [dictionaryCopy setObject:v3 forKeyedSubscript:@"LivePhotoFormatVersion"];
   }
 }
 
-- (void)addSortSourceEnumerationAscendingWithOptions:(id)a3
+- (void)addSortSourceEnumerationAscendingWithOptions:(id)options
 {
-  v4 = [a3 objectForKeyedSubscript:@"SortSourceEnumerationAscending"];
+  v4 = [options objectForKeyedSubscript:@"SortSourceEnumerationAscending"];
   [(NSMutableDictionary *)self->_capabilitiesInformation setObject:v4 forKeyedSubscript:@"SortSourceEnumerationAscending"];
 }
 
-- (void)addTranscodeChoiceWithOptions:(id)a3
+- (void)addTranscodeChoiceWithOptions:(id)options
 {
-  v4 = [a3 objectForKeyedSubscript:@"SupportsTranscodeChoice"];
+  v4 = [options objectForKeyedSubscript:@"SupportsTranscodeChoice"];
   [(NSMutableDictionary *)self->_capabilitiesInformation setObject:v4 forKeyedSubscript:@"TranscodeChoice"];
 }
 
@@ -69,21 +69,21 @@
   [(NSMutableDictionary *)self->_capabilitiesInformation setObject:v7 forKeyedSubscript:@"PFMediaCapabilitiesPlatformInfoKey"];
 }
 
-- (void)addVendorSpecificInformationWithOptions:(id)a3
+- (void)addVendorSpecificInformationWithOptions:(id)options
 {
   v10[1] = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E695DF90];
-  v5 = a3;
-  v6 = [v4 dictionary];
-  [(PFMediaCapabilitiesQuery *)self addLivePhotoInformationToDictionary:v6];
-  [(PFMediaCapabilitiesQuery *)self addAssetBundleInformationToDictionary:v6];
+  optionsCopy = options;
+  dictionary = [v4 dictionary];
+  [(PFMediaCapabilitiesQuery *)self addLivePhotoInformationToDictionary:dictionary];
+  [(PFMediaCapabilitiesQuery *)self addAssetBundleInformationToDictionary:dictionary];
   [(NSMutableDictionary *)self->_capabilitiesInformation setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"SupportsAdjustmentBaseResources"];
   v9 = @"com.apple";
-  v10[0] = v6;
+  v10[0] = dictionary;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:&v9 count:1];
   [(NSMutableDictionary *)self->_capabilitiesInformation setObject:v7 forKeyedSubscript:@"Vendor"];
 
-  v8 = [v5 objectForKeyedSubscript:@"WantsPlatformInfo"];
+  v8 = [optionsCopy objectForKeyedSubscript:@"WantsPlatformInfo"];
 
   if (v8)
   {
@@ -91,12 +91,12 @@
   }
 }
 
-- (void)addHEIFContainerInformationToDictionary:(id)a3
+- (void)addHEIFContainerInformationToDictionary:(id)dictionary
 {
   v27 = *MEMORY[0x1E69E9840];
-  v17 = a3;
+  dictionaryCopy = dictionary;
   v3 = CGImageSourceCopyTypeIdentifiers();
-  v4 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -123,7 +123,7 @@
 
         if (v13)
         {
-          [v4 addObject:v11];
+          [array addObject:v11];
         }
       }
 
@@ -133,19 +133,19 @@
     while (v7);
   }
 
-  if ([v4 count])
+  if ([array count])
   {
     v22 = @"HeifSubtypes";
-    v23 = v4;
+    v23 = array;
     v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v23 forKeys:&v22 count:1];
-    v15 = [*MEMORY[0x1E6983138] identifier];
-    v16 = v17;
-    [v17 setObject:v14 forKeyedSubscript:v15];
+    identifier = [*MEMORY[0x1E6983138] identifier];
+    v16 = dictionaryCopy;
+    [dictionaryCopy setObject:v14 forKeyedSubscript:identifier];
   }
 
   else
   {
-    v16 = v17;
+    v16 = dictionaryCopy;
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
@@ -155,15 +155,15 @@
   }
 }
 
-- (void)addCodecSupportInformationToDictionary:(id)a3
+- (void)addCodecSupportInformationToDictionary:(id)dictionary
 {
   v8 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v4 = +[PFMediaCapabilities videoCodecTypesEligibleForBackwardsCompatibilityTranscoding];
   v5 = VTCopyDecoderCapabilitiesDictionaryForCodecTypes();
   if (v5)
   {
-    [v3 setObject:v5 forKeyedSubscript:@"CodecSupport"];
+    [dictionaryCopy setObject:v5 forKeyedSubscript:@"CodecSupport"];
   }
 
   else if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -174,10 +174,10 @@
   }
 }
 
-- (void)addVersion1And2HEVCCodecInformationToDictionary:(id)a3
+- (void)addVersion1And2HEVCCodecInformationToDictionary:(id)dictionary
 {
   v12 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  dictionaryCopy = dictionary;
   VideoDecoderInstance = VTSelectAndCreateVideoDecoderInstance();
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
   {
@@ -194,7 +194,7 @@
     v6 = VTCopyHEVCDecoderCapabilitiesDictionary();
     [v5 setObject:v6 forKeyedSubscript:@"Profiles"];
     v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%c%c%c%c", 104, 118, 99, 49];
-    [v3 setObject:v5 forKeyedSubscript:v7];
+    [dictionaryCopy setObject:v5 forKeyedSubscript:v7];
   }
 }
 
@@ -209,19 +209,19 @@
   [(PFMediaCapabilitiesQuery *)self addHEIFContainerInformationToDictionary:v3];
 }
 
-- (void)gatherCapabilitiesWithOptions:(id)a3
+- (void)gatherCapabilitiesWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   [(PFMediaCapabilitiesQuery *)self addVersion];
   [(PFMediaCapabilitiesQuery *)self addCodecInformation];
-  [(PFMediaCapabilitiesQuery *)self addVendorSpecificInformationWithOptions:v4];
-  [(PFMediaCapabilitiesQuery *)self addTranscodeChoiceWithOptions:v4];
-  [(PFMediaCapabilitiesQuery *)self addSortSourceEnumerationAscendingWithOptions:v4];
+  [(PFMediaCapabilitiesQuery *)self addVendorSpecificInformationWithOptions:optionsCopy];
+  [(PFMediaCapabilitiesQuery *)self addTranscodeChoiceWithOptions:optionsCopy];
+  [(PFMediaCapabilitiesQuery *)self addSortSourceEnumerationAscendingWithOptions:optionsCopy];
 }
 
-- (PFMediaCapabilitiesQuery)initWithOptions:(id)a3
+- (PFMediaCapabilitiesQuery)initWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v9.receiver = self;
   v9.super_class = PFMediaCapabilitiesQuery;
   v5 = [(PFMediaCapabilitiesQuery *)&v9 init];
@@ -231,7 +231,7 @@
     capabilitiesInformation = v5->_capabilitiesInformation;
     v5->_capabilitiesInformation = v6;
 
-    [(PFMediaCapabilitiesQuery *)v5 gatherCapabilitiesWithOptions:v4];
+    [(PFMediaCapabilitiesQuery *)v5 gatherCapabilitiesWithOptions:optionsCopy];
   }
 
   return v5;

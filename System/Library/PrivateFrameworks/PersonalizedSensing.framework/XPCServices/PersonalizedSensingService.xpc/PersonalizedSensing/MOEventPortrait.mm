@@ -1,11 +1,11 @@
 @interface MOEventPortrait
-+ (id)displayNameOfScoredTopics:(id)a3;
++ (id)displayNameOfScoredTopics:(id)topics;
 + (void)defineClassCollections;
 - (MOEventPortrait)init;
-- (MOEventPortrait)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (MOEventPortrait)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MOEventPortrait
@@ -37,16 +37,16 @@ void __41__MOEventPortrait_defineClassCollections__block_invoke(id a1)
   return v2;
 }
 
-+ (id)displayNameOfScoredTopics:(id)a3
++ (id)displayNameOfScoredTopics:(id)topics
 {
-  v3 = a3;
+  topicsCopy = topics;
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = __45__MOEventPortrait_displayNameOfScoredTopics___block_invoke;
   v6[3] = &unk_1000B4CD0;
   v4 = objc_opt_new();
   v7 = v4;
-  [v3 enumerateKeysAndObjectsUsingBlock:v6];
+  [topicsCopy enumerateKeysAndObjectsUsingBlock:v6];
 
   return v4;
 }
@@ -69,23 +69,23 @@ void __45__MOEventPortrait_displayNameOfScoredTopics___block_invoke(uint64_t a1,
   [v8 setObject:v10 forKeyedSubscript:v6];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   scoredTopics = self->_scoredTopics;
-  v4 = a3;
+  coderCopy = coder;
   v5 = [MODictionaryEncoder encodeDictionary:scoredTopics];
-  [v4 encodeObject:v5 forKey:@"scoredTopics"];
+  [coderCopy encodeObject:v5 forKey:@"scoredTopics"];
 }
 
-- (MOEventPortrait)initWithCoder:(id)a3
+- (MOEventPortrait)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = MOEventPortrait;
   v5 = [(MOEventPortrait *)&v10 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"scoredTopics"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"scoredTopics"];
     v7 = [MODictionaryEncoder decodeToDictionary:v6];
     scoredTopics = v5->_scoredTopics;
     v5->_scoredTopics = v7;
@@ -94,7 +94,7 @@ void __45__MOEventPortrait_displayNameOfScoredTopics___block_invoke(uint64_t a1,
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MOEventPortrait);
   objc_storeStrong(&v4->_scoredTopics, self->_scoredTopics);

@@ -1,17 +1,17 @@
 @interface CKShareSystemFieldsTransformer
-- (id)reverseTransformedValue:(id)a3;
+- (id)reverseTransformedValue:(id)value;
 @end
 
 @implementation CKShareSystemFieldsTransformer
 
-- (id)reverseTransformedValue:(id)a3
+- (id)reverseTransformedValue:(id)value
 {
-  if (a3)
+  if (value)
   {
     v3 = MEMORY[0x277CCAAC8];
-    v4 = a3;
+    valueCopy = value;
     v10 = 0;
-    v5 = [[v3 alloc] initForReadingFromData:v4 error:&v10];
+    v5 = [[v3 alloc] initForReadingFromData:valueCopy error:&v10];
 
     v6 = v10;
     if (v6)

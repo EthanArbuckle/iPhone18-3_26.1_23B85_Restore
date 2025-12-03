@@ -1,40 +1,40 @@
 @interface SXTextComponentAssembly
-- (void)loadInRegistry:(id)a3;
+- (void)loadInRegistry:(id)registry;
 @end
 
 @implementation SXTextComponentAssembly
 
-- (void)loadInRegistry:(id)a3
+- (void)loadInRegistry:(id)registry
 {
-  v3 = a3;
-  v4 = [v3 callback];
+  registryCopy = registry;
+  callback = [registryCopy callback];
   v5 = TFCallbackScopeAny();
-  [v4 whenResolvingProtocol:&unk_1F53E41E0 scope:v5 callbackBlock:&__block_literal_global_57];
+  [callback whenResolvingProtocol:&unk_1F53E41E0 scope:v5 callbackBlock:&__block_literal_global_57];
 
-  v6 = [v3 callback];
+  callback2 = [registryCopy callback];
   v7 = TFCallbackScopeAny();
-  [v6 whenResolvingProtocol:&unk_1F5415A30 scope:v7 callbackBlock:&__block_literal_global_55_10];
+  [callback2 whenResolvingProtocol:&unk_1F5415A30 scope:v7 callbackBlock:&__block_literal_global_55_10];
 
-  v8 = [v3 publicContainer];
-  v9 = [v8 registerClass:objc_opt_class() factory:&__block_literal_global_59_8];
+  publicContainer = [registryCopy publicContainer];
+  v9 = [publicContainer registerClass:objc_opt_class() factory:&__block_literal_global_59_8];
 
-  v10 = [v3 publicContainer];
-  v11 = [v10 registerClass:objc_opt_class() factory:&__block_literal_global_105_0];
+  publicContainer2 = [registryCopy publicContainer];
+  v11 = [publicContainer2 registerClass:objc_opt_class() factory:&__block_literal_global_105_0];
 
-  v12 = [v3 publicContainer];
-  v13 = [v12 registerClass:objc_opt_class() factory:&__block_literal_global_113];
+  publicContainer3 = [registryCopy publicContainer];
+  v13 = [publicContainer3 registerClass:objc_opt_class() factory:&__block_literal_global_113];
 
-  v14 = [v3 privateContainer];
-  v15 = [v14 registerClass:objc_opt_class() factory:&__block_literal_global_119];
+  privateContainer = [registryCopy privateContainer];
+  v15 = [privateContainer registerClass:objc_opt_class() factory:&__block_literal_global_119];
   v16 = [v15 inScope:2];
 
-  v17 = [v3 privateContainer];
-  v18 = [v17 registerClass:objc_opt_class() factory:&__block_literal_global_122_0];
+  privateContainer2 = [registryCopy privateContainer];
+  v18 = [privateContainer2 registerClass:objc_opt_class() factory:&__block_literal_global_122_0];
   v19 = [v18 inScope:2];
 
-  v21 = [v3 publicContainer];
+  publicContainer4 = [registryCopy publicContainer];
 
-  v20 = [v21 registerProtocol:&unk_1F53FA528 factory:&__block_literal_global_133];
+  v20 = [publicContainer4 registerProtocol:&unk_1F53FA528 factory:&__block_literal_global_133];
 }
 
 void __42__SXTextComponentAssembly_loadInRegistry___block_invoke(uint64_t a1, void *a2, void *a3)

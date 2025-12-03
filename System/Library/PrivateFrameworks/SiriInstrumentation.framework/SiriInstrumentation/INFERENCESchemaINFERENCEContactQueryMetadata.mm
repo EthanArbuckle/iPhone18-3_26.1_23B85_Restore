@@ -1,73 +1,73 @@
 @interface INFERENCESchemaINFERENCEContactQueryMetadata
-- (BOOL)isEqual:(id)a3;
-- (INFERENCESchemaINFERENCEContactQueryMetadata)initWithDictionary:(id)a3;
-- (INFERENCESchemaINFERENCEContactQueryMetadata)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (INFERENCESchemaINFERENCEContactQueryMetadata)initWithDictionary:(id)dictionary;
+- (INFERENCESchemaINFERENCEContactQueryMetadata)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasHasContactId:(BOOL)a3;
-- (void)setHasHasHandleLabel:(BOOL)a3;
-- (void)setHasHasHandleValue:(BOOL)a3;
-- (void)setHasHasMeReference:(BOOL)a3;
-- (void)setHasHasRelationship:(BOOL)a3;
-- (void)setHasIsEmergencyQuery:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasHasContactId:(BOOL)id;
+- (void)setHasHasHandleLabel:(BOOL)label;
+- (void)setHasHasHandleValue:(BOOL)value;
+- (void)setHasHasMeReference:(BOOL)reference;
+- (void)setHasHasRelationship:(BOOL)relationship;
+- (void)setHasIsEmergencyQuery:(BOOL)query;
+- (void)writeTo:(id)to;
 @end
 
 @implementation INFERENCESchemaINFERENCEContactQueryMetadata
 
-- (INFERENCESchemaINFERENCEContactQueryMetadata)initWithDictionary:(id)a3
+- (INFERENCESchemaINFERENCEContactQueryMetadata)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v15.receiver = self;
   v15.super_class = INFERENCESchemaINFERENCEContactQueryMetadata;
   v5 = [(INFERENCESchemaINFERENCEContactQueryMetadata *)&v15 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"hasName"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"hasName"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCEContactQueryMetadata setHasName:](v5, "setHasName:", [v6 BOOLValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"hasRelationship"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"hasRelationship"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCEContactQueryMetadata setHasRelationship:](v5, "setHasRelationship:", [v7 BOOLValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"hasHandleLabel"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"hasHandleLabel"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCEContactQueryMetadata setHasHandleLabel:](v5, "setHasHandleLabel:", [v8 BOOLValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"hasHandleValue"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"hasHandleValue"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCEContactQueryMetadata setHasHandleValue:](v5, "setHasHandleValue:", [v9 BOOLValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"hasMeReference"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"hasMeReference"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCEContactQueryMetadata setHasMeReference:](v5, "setHasMeReference:", [v10 BOOLValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"hasContactId"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"hasContactId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCEContactQueryMetadata setHasContactId:](v5, "setHasContactId:", [v11 BOOLValue]);
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"isEmergencyQuery"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"isEmergencyQuery"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -80,30 +80,30 @@
   return v5;
 }
 
-- (INFERENCESchemaINFERENCEContactQueryMetadata)initWithJSON:(id)a3
+- (INFERENCESchemaINFERENCEContactQueryMetadata)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(INFERENCESchemaINFERENCEContactQueryMetadata *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(INFERENCESchemaINFERENCEContactQueryMetadata *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(INFERENCESchemaINFERENCEContactQueryMetadata *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -116,12 +116,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = *(&self->_isEmergencyQuery + 1);
   if ((v4 & 0x20) != 0)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCEContactQueryMetadata hasContactId](self, "hasContactId")}];
-    [v3 setObject:v7 forKeyedSubscript:@"hasContactId"];
+    [dictionary setObject:v7 forKeyedSubscript:@"hasContactId"];
 
     v4 = *(&self->_isEmergencyQuery + 1);
     if ((v4 & 4) == 0)
@@ -142,7 +142,7 @@ LABEL_3:
   }
 
   v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCEContactQueryMetadata hasHandleLabel](self, "hasHandleLabel")}];
-  [v3 setObject:v8 forKeyedSubscript:@"hasHandleLabel"];
+  [dictionary setObject:v8 forKeyedSubscript:@"hasHandleLabel"];
 
   v4 = *(&self->_isEmergencyQuery + 1);
   if ((v4 & 8) == 0)
@@ -158,7 +158,7 @@ LABEL_4:
 
 LABEL_14:
   v9 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCEContactQueryMetadata hasHandleValue](self, "hasHandleValue")}];
-  [v3 setObject:v9 forKeyedSubscript:@"hasHandleValue"];
+  [dictionary setObject:v9 forKeyedSubscript:@"hasHandleValue"];
 
   v4 = *(&self->_isEmergencyQuery + 1);
   if ((v4 & 0x10) == 0)
@@ -174,7 +174,7 @@ LABEL_5:
 
 LABEL_15:
   v10 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCEContactQueryMetadata hasMeReference](self, "hasMeReference")}];
-  [v3 setObject:v10 forKeyedSubscript:@"hasMeReference"];
+  [dictionary setObject:v10 forKeyedSubscript:@"hasMeReference"];
 
   v4 = *(&self->_isEmergencyQuery + 1);
   if ((v4 & 1) == 0)
@@ -190,7 +190,7 @@ LABEL_6:
 
 LABEL_16:
   v11 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCEContactQueryMetadata hasName](self, "hasName")}];
-  [v3 setObject:v11 forKeyedSubscript:@"hasName"];
+  [dictionary setObject:v11 forKeyedSubscript:@"hasName"];
 
   v4 = *(&self->_isEmergencyQuery + 1);
   if ((v4 & 2) == 0)
@@ -206,19 +206,19 @@ LABEL_7:
 
 LABEL_17:
   v12 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCEContactQueryMetadata hasRelationship](self, "hasRelationship")}];
-  [v3 setObject:v12 forKeyedSubscript:@"hasRelationship"];
+  [dictionary setObject:v12 forKeyedSubscript:@"hasRelationship"];
 
   if ((*(&self->_isEmergencyQuery + 1) & 0x40) != 0)
   {
 LABEL_8:
     v5 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCEContactQueryMetadata isEmergencyQuery](self, "isEmergencyQuery")}];
-    [v3 setObject:v5 forKeyedSubscript:@"isEmergencyQuery"];
+    [dictionary setObject:v5 forKeyedSubscript:@"isEmergencyQuery"];
   }
 
 LABEL_9:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -317,16 +317,16 @@ LABEL_8:
   return v3 ^ v2 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_30;
   }
 
   v5 = *(&self->_isEmergencyQuery + 1);
-  v6 = v4[15];
+  v6 = equalCopy[15];
   if ((v5 & 1) != (v6 & 1))
   {
     goto LABEL_30;
@@ -335,13 +335,13 @@ LABEL_8:
   if (v5)
   {
     hasName = self->_hasName;
-    if (hasName != [v4 hasName])
+    if (hasName != [equalCopy hasName])
     {
       goto LABEL_30;
     }
 
     v5 = *(&self->_isEmergencyQuery + 1);
-    v6 = v4[15];
+    v6 = equalCopy[15];
   }
 
   v8 = (v5 >> 1) & 1;
@@ -353,13 +353,13 @@ LABEL_8:
   if (v8)
   {
     hasRelationship = self->_hasRelationship;
-    if (hasRelationship != [v4 hasRelationship])
+    if (hasRelationship != [equalCopy hasRelationship])
     {
       goto LABEL_30;
     }
 
     v5 = *(&self->_isEmergencyQuery + 1);
-    v6 = v4[15];
+    v6 = equalCopy[15];
   }
 
   v10 = (v5 >> 2) & 1;
@@ -371,13 +371,13 @@ LABEL_8:
   if (v10)
   {
     hasHandleLabel = self->_hasHandleLabel;
-    if (hasHandleLabel != [v4 hasHandleLabel])
+    if (hasHandleLabel != [equalCopy hasHandleLabel])
     {
       goto LABEL_30;
     }
 
     v5 = *(&self->_isEmergencyQuery + 1);
-    v6 = v4[15];
+    v6 = equalCopy[15];
   }
 
   v12 = (v5 >> 3) & 1;
@@ -389,13 +389,13 @@ LABEL_8:
   if (v12)
   {
     hasHandleValue = self->_hasHandleValue;
-    if (hasHandleValue != [v4 hasHandleValue])
+    if (hasHandleValue != [equalCopy hasHandleValue])
     {
       goto LABEL_30;
     }
 
     v5 = *(&self->_isEmergencyQuery + 1);
-    v6 = v4[15];
+    v6 = equalCopy[15];
   }
 
   v14 = (v5 >> 4) & 1;
@@ -407,13 +407,13 @@ LABEL_8:
   if (v14)
   {
     hasMeReference = self->_hasMeReference;
-    if (hasMeReference != [v4 hasMeReference])
+    if (hasMeReference != [equalCopy hasMeReference])
     {
       goto LABEL_30;
     }
 
     v5 = *(&self->_isEmergencyQuery + 1);
-    v6 = v4[15];
+    v6 = equalCopy[15];
   }
 
   v16 = (v5 >> 5) & 1;
@@ -425,10 +425,10 @@ LABEL_8:
   if (v16)
   {
     hasContactId = self->_hasContactId;
-    if (hasContactId == [v4 hasContactId])
+    if (hasContactId == [equalCopy hasContactId])
     {
       v5 = *(&self->_isEmergencyQuery + 1);
-      v6 = v4[15];
+      v6 = equalCopy[15];
       goto LABEL_26;
     }
 
@@ -447,7 +447,7 @@ LABEL_26:
   if (v18)
   {
     isEmergencyQuery = self->_isEmergencyQuery;
-    if (isEmergencyQuery != [v4 isEmergencyQuery])
+    if (isEmergencyQuery != [equalCopy isEmergencyQuery])
     {
       goto LABEL_30;
     }
@@ -459,9 +459,9 @@ LABEL_31:
   return v20;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   v4 = *(&self->_isEmergencyQuery + 1);
   if (v4)
   {
@@ -550,9 +550,9 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)setHasIsEmergencyQuery:(BOOL)a3
+- (void)setHasIsEmergencyQuery:(BOOL)query
 {
-  if (a3)
+  if (query)
   {
     v3 = 64;
   }
@@ -565,9 +565,9 @@ LABEL_9:
   *(&self->_isEmergencyQuery + 1) = *(&self->_isEmergencyQuery + 1) & 0xBF | v3;
 }
 
-- (void)setHasHasContactId:(BOOL)a3
+- (void)setHasHasContactId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 32;
   }
@@ -580,9 +580,9 @@ LABEL_9:
   *(&self->_isEmergencyQuery + 1) = *(&self->_isEmergencyQuery + 1) & 0xDF | v3;
 }
 
-- (void)setHasHasMeReference:(BOOL)a3
+- (void)setHasHasMeReference:(BOOL)reference
 {
-  if (a3)
+  if (reference)
   {
     v3 = 16;
   }
@@ -595,9 +595,9 @@ LABEL_9:
   *(&self->_isEmergencyQuery + 1) = *(&self->_isEmergencyQuery + 1) & 0xEF | v3;
 }
 
-- (void)setHasHasHandleValue:(BOOL)a3
+- (void)setHasHasHandleValue:(BOOL)value
 {
-  if (a3)
+  if (value)
   {
     v3 = 8;
   }
@@ -610,9 +610,9 @@ LABEL_9:
   *(&self->_isEmergencyQuery + 1) = *(&self->_isEmergencyQuery + 1) & 0xF7 | v3;
 }
 
-- (void)setHasHasHandleLabel:(BOOL)a3
+- (void)setHasHasHandleLabel:(BOOL)label
 {
-  if (a3)
+  if (label)
   {
     v3 = 4;
   }
@@ -625,9 +625,9 @@ LABEL_9:
   *(&self->_isEmergencyQuery + 1) = *(&self->_isEmergencyQuery + 1) & 0xFB | v3;
 }
 
-- (void)setHasHasRelationship:(BOOL)a3
+- (void)setHasHasRelationship:(BOOL)relationship
 {
-  if (a3)
+  if (relationship)
   {
     v3 = 2;
   }

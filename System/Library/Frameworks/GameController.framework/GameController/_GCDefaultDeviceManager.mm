@@ -1,41 +1,41 @@
 @interface _GCDefaultDeviceManager
-- (BOOL)acceptDriverConnection:(id)a3 forHIDService:(id)a4;
-- (BOOL)acceptFilterConnection:(id)a3 forHIDService:(id)a4;
-- (_GCDefaultDeviceManager)initWithIdentifier:(id)a3 matchingFilter:(id)a4 probeScore:(id)a5;
+- (BOOL)acceptDriverConnection:(id)connection forHIDService:(id)service;
+- (BOOL)acceptFilterConnection:(id)connection forHIDService:(id)service;
+- (_GCDefaultDeviceManager)initWithIdentifier:(id)identifier matchingFilter:(id)filter probeScore:(id)score;
 - (_GCDefaultDeviceManagerDelegate)delegate;
 - (_GCPhysicalDeviceRegistry)deviceRegistry;
-- (id)configurationIdentifierForDevice:(id)a3;
-- (id)makeDeviceWithConfiguration:(id)a3 dependencies:(id)a4;
-- (id)matchHIDService:(id)a3;
-- (void)_onqueue_checkAndHideDuplicateDevice:(id)a3;
-- (void)_onqueue_registerPhysicalDevice:(id)a3 serviceInfo:(id)a4 checkForDuplicateDevice:(BOOL)a5;
-- (void)_onqueue_relinquishHIDDevice:(id)a3;
-- (void)claimHIDService:(id)a3;
-- (void)refreshPhysicalDeviceConfiguration:(id)a3;
-- (void)relinquishHIDService:(id)a3;
+- (id)configurationIdentifierForDevice:(id)device;
+- (id)makeDeviceWithConfiguration:(id)configuration dependencies:(id)dependencies;
+- (id)matchHIDService:(id)service;
+- (void)_onqueue_checkAndHideDuplicateDevice:(id)device;
+- (void)_onqueue_registerPhysicalDevice:(id)device serviceInfo:(id)info checkForDuplicateDevice:(BOOL)duplicateDevice;
+- (void)_onqueue_relinquishHIDDevice:(id)device;
+- (void)claimHIDService:(id)service;
+- (void)refreshPhysicalDeviceConfiguration:(id)configuration;
+- (void)relinquishHIDService:(id)service;
 @end
 
 @implementation _GCDefaultDeviceManager
 
-- (_GCDefaultDeviceManager)initWithIdentifier:(id)a3 matchingFilter:(id)a4 probeScore:(id)a5
+- (_GCDefaultDeviceManager)initWithIdentifier:(id)identifier matchingFilter:(id)filter probeScore:(id)score
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  filterCopy = filter;
+  scoreCopy = score;
   v28.receiver = self;
   v28.super_class = _GCDefaultDeviceManager;
   v11 = [(_GCDefaultDeviceManager *)&v28 init];
   if (v11)
   {
-    v12 = [v8 copyWithZone:0];
+    v12 = [identifierCopy copyWithZone:0];
     identifier = v11->_identifier;
     v11->_identifier = v12;
 
-    objc_storeStrong(&v11->_probeScore, a5);
-    objc_storeStrong(&v11->_matchingFilter, a4);
+    objc_storeStrong(&v11->_probeScore, score);
+    objc_storeStrong(&v11->_matchingFilter, filter);
     v14 = MEMORY[0x1E696AEC0];
-    v15 = [(_GCDeviceMatchingFilter *)v11->_matchingFilter identifier];
-    v16 = [v14 stringWithFormat:@"_GCDefaultDeviceManager.%@", v15];
+    identifier = [(_GCDeviceMatchingFilter *)v11->_matchingFilter identifier];
+    v16 = [v14 stringWithFormat:@"_GCDefaultDeviceManager.%@", identifier];
 
     v17 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_USER_INITIATED, -1);
     v18 = dispatch_queue_create([v16 cStringUsingEncoding:4], v17);
@@ -54,37 +54,37 @@
     hiddenPhysicalDevices = v11->_hiddenPhysicalDevices;
     v11->_hiddenPhysicalDevices = v24;
 
-    v26 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v26 addObserver:v11 selector:sel_refreshPhysicalDeviceConfiguration_ name:@"GCRefreshPhysicalDeviceConfigurationNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v11 selector:sel_refreshPhysicalDeviceConfiguration_ name:@"GCRefreshPhysicalDeviceConfigurationNotification" object:0];
   }
 
   return v11;
 }
 
-- (id)makeDeviceWithConfiguration:(id)a3 dependencies:(id)a4
+- (id)makeDeviceWithConfiguration:(id)configuration dependencies:(id)dependencies
 {
   v42 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if ([v8 count] == 1)
+  configurationCopy = configuration;
+  dependenciesCopy = dependencies;
+  if ([dependenciesCopy count] == 1)
   {
     v9 = [_GCDefaultLogicalDevice alloc];
-    v10 = [v8 anyObject];
-    v11 = [(_GCDefaultLogicalDevice *)v9 initWithPhysicalDevice:v10 configuration:v7 manager:self];
+    anyObject = [dependenciesCopy anyObject];
+    v11 = [(_GCDefaultLogicalDevice *)v9 initWithPhysicalDevice:anyObject configuration:configurationCopy manager:self];
 
-    v12 = [(_GCDefaultDeviceManager *)self delegate];
+    delegate = [(_GCDefaultDeviceManager *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v12 deviceManager:self prepareLogicalDevice:v11];
+      [delegate deviceManager:self prepareLogicalDevice:v11];
     }
 
     goto LABEL_25;
   }
 
-  if ([v8 count] != 2)
+  if ([dependenciesCopy count] != 2)
   {
-    v28 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v28 handleFailureInMethod:a2 object:self file:@"GCDefaultDeviceManager.m" lineNumber:124 description:{@"Bad configuration: %@", v7}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"GCDefaultDeviceManager.m" lineNumber:124 description:{@"Bad configuration: %@", configurationCopy}];
 
     v11 = 0;
     goto LABEL_25;
@@ -94,7 +94,7 @@
   v40 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v13 = v8;
+  v13 = dependenciesCopy;
   v14 = [v13 countByEnumeratingWithState:&v37 objects:v41 count:16];
   if (!v14)
   {
@@ -104,10 +104,10 @@
   }
 
   v15 = v14;
-  v34 = v8;
+  v34 = dependenciesCopy;
   obj = v13;
   v32 = a2;
-  v33 = self;
+  selfCopy = self;
   v16 = 0;
   v17 = 0;
   v36 = *v38;
@@ -121,13 +121,13 @@
       }
 
       v19 = *(*(&v37 + 1) + 8 * i);
-      v20 = [v19 identifier];
-      v21 = [v7 deviceDependencies];
-      [v21 firstObject];
-      v23 = v22 = v7;
-      v24 = [v20 isEqual:v23];
+      identifier = [v19 identifier];
+      deviceDependencies = [configurationCopy deviceDependencies];
+      [deviceDependencies firstObject];
+      v23 = v22 = configurationCopy;
+      v24 = [identifier isEqual:v23];
 
-      v7 = v22;
+      configurationCopy = v22;
       v25 = v19;
       if (v24)
       {
@@ -156,14 +156,14 @@
   while (v15);
   v13 = obj;
 
-  self = v33;
-  v8 = v34;
+  self = selfCopy;
+  dependenciesCopy = v34;
   a2 = v32;
   if (!v17)
   {
 LABEL_29:
-    v31 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v31 handleFailureInMethod:a2 object:self file:@"GCDefaultDeviceManager.m" lineNumber:111 description:{@"Dependencies did not contain primary device. %@", v13}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"GCDefaultDeviceManager.m" lineNumber:111 description:{@"Dependencies did not contain primary device. %@", v13}];
 
     v17 = 0;
     if (v16)
@@ -182,11 +182,11 @@ LABEL_30:
   }
 
 LABEL_21:
-  v11 = [[_GCFusedLogicalDevice alloc] initWithPrimaryPhysicalDevice:v17 secondaryPhysicalDevice:v16 configuration:v7 manager:self];
-  v27 = [(_GCDefaultDeviceManager *)self delegate];
+  v11 = [[_GCFusedLogicalDevice alloc] initWithPrimaryPhysicalDevice:v17 secondaryPhysicalDevice:v16 configuration:configurationCopy manager:self];
+  delegate2 = [(_GCDefaultDeviceManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v27 deviceManager:self prepareLogicalDevice:v11];
+    [delegate2 deviceManager:self prepareLogicalDevice:v11];
   }
 
 LABEL_25:
@@ -195,23 +195,23 @@ LABEL_25:
   return v11;
 }
 
-- (id)configurationIdentifierForDevice:(id)a3
+- (id)configurationIdentifierForDevice:(id)device
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = a3;
+  deviceCopy = device;
   v5 = [v3 alloc];
-  v6 = [v4 identifier];
+  identifier = [deviceCopy identifier];
 
-  v7 = [v5 initWithFormat:@"LOGICAL_DEVICE(%@)", v6];
+  v7 = [v5 initWithFormat:@"LOGICAL_DEVICE(%@)", identifier];
 
   return v7;
 }
 
-- (void)refreshPhysicalDeviceConfiguration:(id)a3
+- (void)refreshPhysicalDeviceConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [v4 object];
-  v6 = [v5 conformsToProtocol:&unk_1F4E9B800];
+  configurationCopy = configuration;
+  object = [configurationCopy object];
+  v6 = [object conformsToProtocol:&unk_1F4E9B800];
 
   if (v6)
   {
@@ -222,8 +222,8 @@ LABEL_25:
     v8[2] = __62___GCDefaultDeviceManager_refreshPhysicalDeviceConfiguration___block_invoke;
     v8[3] = &unk_1E8419C38;
     objc_copyWeak(&v11, &location);
-    v9 = v4;
-    v10 = self;
+    v9 = configurationCopy;
+    selfCopy = self;
     dispatch_async(queue, v8);
 
     objc_destroyWeak(&v11);
@@ -231,9 +231,9 @@ LABEL_25:
   }
 }
 
-- (id)matchHIDService:(id)a3
+- (id)matchHIDService:(id)service
 {
-  v4 = [(_GCDeviceMatchingFilter *)self->_matchingFilter match:a3];
+  v4 = [(_GCDeviceMatchingFilter *)self->_matchingFilter match:service];
   p_probeScore = &self->_probeScore;
   if (!v4)
   {
@@ -245,17 +245,17 @@ LABEL_25:
   return v6;
 }
 
-- (void)_onqueue_checkAndHideDuplicateDevice:(id)a3
+- (void)_onqueue_checkAndHideDuplicateDevice:(id)device
 {
   v23 = *MEMORY[0x1E69E9840];
-  v17 = a3;
-  v4 = [v17 identifier];
+  deviceCopy = device;
+  identifier = [deviceCopy identifier];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = [(NSMutableDictionary *)self->_physicalDevices allKeys];
-  v6 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  allKeys = [(NSMutableDictionary *)self->_physicalDevices allKeys];
+  v6 = [allKeys countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v6)
   {
     v7 = v6;
@@ -266,13 +266,13 @@ LABEL_3:
     {
       if (*v19 != v8)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(allKeys);
       }
 
       v10 = *(*(&v18 + 1) + 8 * v9);
       v11 = [(NSMutableDictionary *)self->_physicalDevices objectForKeyedSubscript:v10];
-      v12 = [v11 identifier];
-      v13 = [v12 isEqual:v4];
+      identifier2 = [v11 identifier];
+      v13 = [identifier2 isEqual:identifier];
 
       if (v13)
       {
@@ -281,7 +281,7 @@ LABEL_3:
 
       if (v7 == ++v9)
       {
-        v7 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v7 = [allKeys countByEnumeratingWithState:&v18 objects:v22 count:16];
         if (v7)
         {
           goto LABEL_3;
@@ -298,8 +298,8 @@ LABEL_3:
       goto LABEL_15;
     }
 
-    v15 = v17;
-    if (v11 != v17)
+    v15 = deviceCopy;
+    if (v11 != deviceCopy)
     {
       if (gc_isInternalBuild())
       {
@@ -323,15 +323,15 @@ LABEL_15:
     }
 
     v11 = 0;
-    v15 = v17;
+    v15 = deviceCopy;
   }
 
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)claimHIDService:(id)a3
+- (void)claimHIDService:(id)service
 {
-  v5 = a3;
+  serviceCopy = service;
   v6 = _os_activity_create(&dword_1D2CD5000, "[Default Device Manager] Claim HID Service", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -342,72 +342,72 @@ LABEL_15:
     [_GCDefaultDeviceManager claimHIDService:v11];
   }
 
-  v7 = [(_GCDefaultDeviceManager *)self matchHIDService:v5];
+  v7 = [(_GCDefaultDeviceManager *)self matchHIDService:serviceCopy];
   v8 = *MEMORY[0x1E69A0688];
 
   if (v7 <= v8)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"GCDefaultDeviceManager.m" lineNumber:214 description:{@"%@ does not match against %@ but is trying to claim it", self, v5}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"GCDefaultDeviceManager.m" lineNumber:214 description:{@"%@ does not match against %@ but is trying to claim it", self, serviceCopy}];
   }
 
-  if ([(NSMutableSet *)self->_claimedServices containsObject:v5])
+  if ([(NSMutableSet *)self->_claimedServices containsObject:serviceCopy])
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"GCDefaultDeviceManager.m" lineNumber:215 description:{@"%@ has already claimed %@", self, v5}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"GCDefaultDeviceManager.m" lineNumber:215 description:{@"%@ has already claimed %@", self, serviceCopy}];
   }
 
-  [(NSMutableSet *)self->_claimedServices addObject:v5];
+  [(NSMutableSet *)self->_claimedServices addObject:serviceCopy];
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __43___GCDefaultDeviceManager_claimHIDService___block_invoke;
   block[3] = &unk_1E8419B98;
   block[4] = self;
-  v15 = v5;
+  v15 = serviceCopy;
   v16 = a2;
-  v10 = v5;
+  v10 = serviceCopy;
   dispatch_async(queue, block);
 
   os_activity_scope_leave(&state);
 }
 
-- (void)_onqueue_registerPhysicalDevice:(id)a3 serviceInfo:(id)a4 checkForDuplicateDevice:(BOOL)a5
+- (void)_onqueue_registerPhysicalDevice:(id)device serviceInfo:(id)info checkForDuplicateDevice:(BOOL)duplicateDevice
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  if (v5)
+  duplicateDeviceCopy = duplicateDevice;
+  deviceCopy = device;
+  infoCopy = info;
+  if (duplicateDeviceCopy)
   {
-    [(_GCDefaultDeviceManager *)self _onqueue_checkAndHideDuplicateDevice:v8];
+    [(_GCDefaultDeviceManager *)self _onqueue_checkAndHideDuplicateDevice:deviceCopy];
   }
 
-  if (v8)
+  if (deviceCopy)
   {
     if (gc_isInternalBuild())
     {
       [_GCDefaultDeviceManager _onqueue_registerPhysicalDevice:serviceInfo:checkForDuplicateDevice:];
     }
 
-    [(NSMutableDictionary *)self->_physicalDevices setObject:v8 forKey:v9];
-    [(_GCDefaultDeviceManager *)self _onqueue_registerDefaultConfigurationForDevice:v8 replaceExisting:1];
-    v10 = [(_GCDefaultDeviceManager *)self delegate];
+    [(NSMutableDictionary *)self->_physicalDevices setObject:deviceCopy forKey:infoCopy];
+    [(_GCDefaultDeviceManager *)self _onqueue_registerDefaultConfigurationForDevice:deviceCopy replaceExisting:1];
+    delegate = [(_GCDefaultDeviceManager *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v10 deviceManager:self willPublishPhysicalDevice:v8];
+      [delegate deviceManager:self willPublishPhysicalDevice:deviceCopy];
     }
 
-    v11 = [(_GCDefaultDeviceManager *)self deviceRegistry];
-    [v11 deviceManager:self deviceDidConnect:v8];
+    deviceRegistry = [(_GCDefaultDeviceManager *)self deviceRegistry];
+    [deviceRegistry deviceManager:self deviceDidConnect:deviceCopy];
   }
 }
 
-- (void)_onqueue_relinquishHIDDevice:(id)a3
+- (void)_onqueue_relinquishHIDDevice:(id)device
 {
   v39 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  deviceCopy = device;
   dispatch_assert_queue_V2(self->_queue);
-  v5 = [(NSMutableDictionary *)self->_physicalDevices objectForKey:v4];
+  v5 = [(NSMutableDictionary *)self->_physicalDevices objectForKey:deviceCopy];
   if (v5)
   {
     if (gc_isInternalBuild())
@@ -415,13 +415,13 @@ LABEL_15:
       [_GCDefaultDeviceManager _onqueue_relinquishHIDDevice:];
     }
 
-    v6 = [(_GCDefaultDeviceManager *)self deviceRegistry];
-    [v6 deviceManager:self deviceDidDisconnect:v5];
+    deviceRegistry = [(_GCDefaultDeviceManager *)self deviceRegistry];
+    [deviceRegistry deviceManager:self deviceDidDisconnect:v5];
 
-    [(NSMutableDictionary *)self->_physicalDevices removeObjectForKey:v4];
+    [(NSMutableDictionary *)self->_physicalDevices removeObjectForKey:deviceCopy];
   }
 
-  v7 = [(NSMutableDictionary *)self->_hiddenPhysicalDevices objectForKey:v4];
+  v7 = [(NSMutableDictionary *)self->_hiddenPhysicalDevices objectForKey:deviceCopy];
   if (v7)
   {
     if (gc_isInternalBuild())
@@ -429,7 +429,7 @@ LABEL_15:
       [_GCDefaultDeviceManager _onqueue_relinquishHIDDevice:];
     }
 
-    [(NSMutableDictionary *)self->_hiddenPhysicalDevices removeObjectForKey:v4];
+    [(NSMutableDictionary *)self->_hiddenPhysicalDevices removeObjectForKey:deviceCopy];
   }
 
   v27 = 0;
@@ -456,7 +456,7 @@ LABEL_15:
   [(NSMutableDictionary *)hiddenPhysicalDevices enumerateKeysAndObjectsWithOptions:0 usingBlock:v17];
   if (v28[5])
   {
-    v10 = [v4 stringPropertyForKey:@"Transport"];
+    v10 = [deviceCopy stringPropertyForKey:@"Transport"];
     v11 = [v28[5] stringPropertyForKey:@"Transport"];
     if (gc_isInternalBuild())
     {
@@ -465,9 +465,9 @@ LABEL_15:
       {
         v15 = v28[5];
         *buf = 138412802;
-        v34 = self;
+        selfCopy = self;
         v35 = 2112;
-        v36 = v4;
+        v36 = deviceCopy;
         v37 = 2112;
         v38 = v15;
         _os_log_impl(&dword_1D2CD5000, v14, OS_LOG_TYPE_INFO, "%@ Service %@ was relinquished, but we found cached hidden service %@ with the same identifier...", buf, 0x20u);
@@ -501,9 +501,9 @@ LABEL_15:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)relinquishHIDService:(id)a3
+- (void)relinquishHIDService:(id)service
 {
-  v5 = a3;
+  serviceCopy = service;
   v6 = _os_activity_create(&dword_1D2CD5000, "[Default Device Manager] Relinquish HID Service", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -514,59 +514,59 @@ LABEL_15:
     [_GCDefaultDeviceManager relinquishHIDService:v9];
   }
 
-  if (([(NSMutableSet *)self->_claimedServices containsObject:v5]& 1) == 0)
+  if (([(NSMutableSet *)self->_claimedServices containsObject:serviceCopy]& 1) == 0)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"GCDefaultDeviceManager.m" lineNumber:311 description:{@"%@ has not claimed %@", self, v5}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"GCDefaultDeviceManager.m" lineNumber:311 description:{@"%@ has not claimed %@", self, serviceCopy}];
   }
 
-  [(NSMutableSet *)self->_claimedServices removeObject:v5];
+  [(NSMutableSet *)self->_claimedServices removeObject:serviceCopy];
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __48___GCDefaultDeviceManager_relinquishHIDService___block_invoke;
   block[3] = &unk_1E8418C50;
   block[4] = self;
-  v12 = v5;
-  v8 = v5;
+  v12 = serviceCopy;
+  v8 = serviceCopy;
   dispatch_async(queue, block);
 
   os_activity_scope_leave(&state);
 }
 
-- (BOOL)acceptDriverConnection:(id)a3 forHIDService:(id)a4
+- (BOOL)acceptDriverConnection:(id)connection forHIDService:(id)service
 {
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  serviceCopy = service;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __64___GCDefaultDeviceManager_acceptDriverConnection_forHIDService___block_invoke;
   block[3] = &unk_1E8419BC0;
   block[4] = self;
-  v13 = v7;
-  v14 = v6;
-  v9 = v6;
-  v10 = v7;
+  v13 = serviceCopy;
+  v14 = connectionCopy;
+  v9 = connectionCopy;
+  v10 = serviceCopy;
   dispatch_async(queue, block);
 
   return 1;
 }
 
-- (BOOL)acceptFilterConnection:(id)a3 forHIDService:(id)a4
+- (BOOL)acceptFilterConnection:(id)connection forHIDService:(id)service
 {
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  serviceCopy = service;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __64___GCDefaultDeviceManager_acceptFilterConnection_forHIDService___block_invoke;
   block[3] = &unk_1E8419BC0;
   block[4] = self;
-  v13 = v7;
-  v14 = v6;
-  v9 = v6;
-  v10 = v7;
+  v13 = serviceCopy;
+  v14 = connectionCopy;
+  v9 = connectionCopy;
+  v10 = serviceCopy;
   dispatch_async(queue, block);
 
   return 1;

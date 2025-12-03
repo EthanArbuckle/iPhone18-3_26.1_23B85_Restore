@@ -28,7 +28,7 @@
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_2263AA000, a2, OS_LOG_TYPE_ERROR, "ATXWidgetsAndFoldersConfigurations: could not fetch home page configurations with error: %@", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }
@@ -58,18 +58,18 @@ uint64_t __85__ATXWidgetsAndFoldersConfigurationProvider_cacheHomeScreenConfigur
 - (unint64_t)homePageWidgetCountBucket
 {
   [(ATXWidgetsAndFoldersConfigurationProvider *)self cacheHomeScreenConfigurationsIfNecessary];
-  v3 = [(NSArray *)self->_pages firstObject];
-  v4 = [v3 stacks];
-  if ([v4 count] > 0xA)
+  firstObject = [(NSArray *)self->_pages firstObject];
+  stacks = [firstObject stacks];
+  if ([stacks count] > 0xA)
   {
     v7 = 10;
   }
 
   else
   {
-    v5 = [(NSArray *)self->_pages firstObject];
-    v6 = [v5 stacks];
-    v7 = [v6 count];
+    firstObject2 = [(NSArray *)self->_pages firstObject];
+    stacks2 = [firstObject2 stacks];
+    v7 = [stacks2 count];
   }
 
   return v7;
@@ -99,8 +99,8 @@ uint64_t __85__ATXWidgetsAndFoldersConfigurationProvider_cacheHomeScreenConfigur
           objc_enumerationMutation(v3);
         }
 
-        v9 = [*(*(&v13 + 1) + 8 * i) leafIcons];
-        v10 = [v9 _pas_filteredArrayWithTest:&__block_literal_global_19_2];
+        leafIcons = [*(*(&v13 + 1) + 8 * i) leafIcons];
+        v10 = [leafIcons _pas_filteredArrayWithTest:&__block_literal_global_19_2];
         v6 += [v10 count];
       }
 
@@ -152,8 +152,8 @@ uint64_t __70__ATXWidgetsAndFoldersConfigurationProvider_globalAllPagesFolderCou
           objc_enumerationMutation(v3);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) stacks];
-        v6 += [v9 count];
+        stacks = [*(*(&v12 + 1) + 8 * i) stacks];
+        v6 += [stacks count];
       }
 
       v5 = [(NSArray *)v3 countByEnumeratingWithState:&v12 objects:v16 count:16];

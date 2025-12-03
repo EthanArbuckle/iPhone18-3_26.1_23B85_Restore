@@ -1,15 +1,15 @@
 @interface MapsSuggestionsUnknownFilter
-- (BOOL)shouldKeepEntry:(id)a3;
+- (BOOL)shouldKeepEntry:(id)entry;
 @end
 
 @implementation MapsSuggestionsUnknownFilter
 
-- (BOOL)shouldKeepEntry:(id)a3
+- (BOOL)shouldKeepEntry:(id)entry
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  entryCopy = entry;
+  v4 = entryCopy;
+  if (!entryCopy)
   {
     v6 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -28,7 +28,7 @@
     goto LABEL_9;
   }
 
-  if (![v3 type])
+  if (![entryCopy type])
   {
     v7 = objc_alloc(MEMORY[0x1E696AEC0]);
     v8 = [v4 description];

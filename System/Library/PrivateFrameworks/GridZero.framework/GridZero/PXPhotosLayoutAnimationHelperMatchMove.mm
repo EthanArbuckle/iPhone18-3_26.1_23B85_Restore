@@ -1,45 +1,45 @@
 @interface PXPhotosLayoutAnimationHelperMatchMove
 - (double)animationDuration;
-- (void)_adjustAnimation:(id)a3 geometries:(id *)a4 styles:(id *)a5 infos:(id *)a6 forSpriteIndexRange:(_PXGSpriteIndexRange)a7 appearing:(BOOL)a8;
-- (void)animation:(id)a3 adjustGeometries:(id *)a4 styles:(id *)a5 infos:(id *)a6 forSpriteAppearingIntoRootIndexRange:(_PXGSpriteIndexRange)a7;
-- (void)animation:(id)a3 adjustGeometries:(id *)a4 styles:(id *)a5 infos:(id *)a6 forSpriteDisappearingFromRootIndexRange:(_PXGSpriteIndexRange)a7;
-- (void)animation:(id)a3 adjustPresentedGeometries:(id *)a4 styles:(id *)a5 infos:(id *)a6 count:(unsigned int)a7;
-- (void)animation:(id)a3 updateSpriteTransferMap:(unsigned int *)a4 forSpritesRemovedFromIndexes:(id)a5 presentedGeometries:(id *)a6 styles:(id *)a7 infos:(id *)a8 spritesInsertedToIndexes:(id)a9 targetGeometries:(id *)a10 styles:(id *)a11 infos:(id *)a12 rootLayout:(id)a13;
+- (void)_adjustAnimation:(id)animation geometries:(id *)geometries styles:(id *)styles infos:(id *)infos forSpriteIndexRange:(_PXGSpriteIndexRange)range appearing:(BOOL)appearing;
+- (void)animation:(id)animation adjustGeometries:(id *)geometries styles:(id *)styles infos:(id *)infos forSpriteAppearingIntoRootIndexRange:(_PXGSpriteIndexRange)range;
+- (void)animation:(id)animation adjustGeometries:(id *)geometries styles:(id *)styles infos:(id *)infos forSpriteDisappearingFromRootIndexRange:(_PXGSpriteIndexRange)range;
+- (void)animation:(id)animation adjustPresentedGeometries:(id *)geometries styles:(id *)styles infos:(id *)infos count:(unsigned int)count;
+- (void)animation:(id)animation updateSpriteTransferMap:(unsigned int *)map forSpritesRemovedFromIndexes:(id)indexes presentedGeometries:(id *)geometries styles:(id *)styles infos:(id *)infos spritesInsertedToIndexes:(id)toIndexes targetGeometries:(id *)self0 styles:(id *)self1 infos:(id *)self2 rootLayout:(id)self3;
 @end
 
 @implementation PXPhotosLayoutAnimationHelperMatchMove
 
-- (void)animation:(id)a3 adjustPresentedGeometries:(id *)a4 styles:(id *)a5 infos:(id *)a6 count:(unsigned int)a7
+- (void)animation:(id)animation adjustPresentedGeometries:(id *)geometries styles:(id *)styles infos:(id *)infos count:(unsigned int)count
 {
-  if (a7)
+  if (count)
   {
     v7 = *MEMORY[0x277D73D10];
-    v8 = a7;
-    p_var2 = &a5->var2;
+    countCopy = count;
+    p_var2 = &styles->var2;
     do
     {
       *p_var2 = v7;
       p_var2 += 40;
-      --v8;
+      --countCopy;
     }
 
-    while (v8);
+    while (countCopy);
   }
 }
 
-- (void)_adjustAnimation:(id)a3 geometries:(id *)a4 styles:(id *)a5 infos:(id *)a6 forSpriteIndexRange:(_PXGSpriteIndexRange)a7 appearing:(BOOL)a8
+- (void)_adjustAnimation:(id)animation geometries:(id *)geometries styles:(id *)styles infos:(id *)infos forSpriteIndexRange:(_PXGSpriteIndexRange)range appearing:(BOOL)appearing
 {
-  v13 = a3;
-  v14 = v13;
-  if (a8)
+  animationCopy = animation;
+  v14 = animationCopy;
+  if (appearing)
   {
-    v15 = [v13 fromSnapshot];
+    fromSnapshot = [animationCopy fromSnapshot];
     [v14 toSnapshot];
   }
 
   else
   {
-    v15 = [v13 toSnapshot];
+    fromSnapshot = [animationCopy toSnapshot];
     [v14 fromSnapshot];
   }
   v16 = ;
@@ -48,14 +48,14 @@
   v19[1] = 3221225472;
   v19[2] = __113__PXPhotosLayoutAnimationHelperMatchMove__adjustAnimation_geometries_styles_infos_forSpriteIndexRange_appearing___block_invoke;
   v19[3] = &unk_278298280;
-  v22 = a4;
-  v23 = a5;
-  v24 = a6;
+  geometriesCopy = geometries;
+  stylesCopy = styles;
+  infosCopy = infos;
   v20 = v16;
-  v21 = v15;
-  v17 = v15;
+  v21 = fromSnapshot;
+  v17 = fromSnapshot;
   v18 = v16;
-  [v18 enumerateObjectIdentifiersForInfos:a6 count:HIDWORD(*&a7) usingBlock:v19];
+  [v18 enumerateObjectIdentifiersForInfos:infos count:HIDWORD(*&range) usingBlock:v19];
 }
 
 void __113__PXPhotosLayoutAnimationHelperMatchMove__adjustAnimation_geometries_styles_infos_forSpriteIndexRange_appearing___block_invoke(uint64_t a1, void *a2, char a3, unsigned int a4)
@@ -117,17 +117,17 @@ __n128 __113__PXPhotosLayoutAnimationHelperMatchMove__adjustAnimation_geometries
   return result;
 }
 
-- (void)animation:(id)a3 adjustGeometries:(id *)a4 styles:(id *)a5 infos:(id *)a6 forSpriteDisappearingFromRootIndexRange:(_PXGSpriteIndexRange)a7
+- (void)animation:(id)animation adjustGeometries:(id *)geometries styles:(id *)styles infos:(id *)infos forSpriteDisappearingFromRootIndexRange:(_PXGSpriteIndexRange)range
 {
-  length = a7.length;
-  if (a7.length)
+  length = range.length;
+  if (range.length)
   {
-    p_var2 = &a4->var0.var2;
-    v9 = a5;
+    p_var2 = &geometries->var0.var2;
+    stylesCopy = styles;
     do
     {
-      v9->var0 = 0.0;
-      v9 = (v9 + 160);
+      stylesCopy->var0 = 0.0;
+      stylesCopy = (stylesCopy + 160);
       *p_var2 = *p_var2 + 50.0;
       p_var2 += 4;
       --length;
@@ -136,73 +136,73 @@ __n128 __113__PXPhotosLayoutAnimationHelperMatchMove__adjustAnimation_geometries
     while (length);
   }
 
-  [PXPhotosLayoutAnimationHelperMatchMove _adjustAnimation:"_adjustAnimation:geometries:styles:infos:forSpriteIndexRange:appearing:" geometries:a3 styles:a4 infos:a5 forSpriteIndexRange:a6 appearing:?];
+  [PXPhotosLayoutAnimationHelperMatchMove _adjustAnimation:"_adjustAnimation:geometries:styles:infos:forSpriteIndexRange:appearing:" geometries:animation styles:geometries infos:styles forSpriteIndexRange:infos appearing:?];
 }
 
-- (void)animation:(id)a3 adjustGeometries:(id *)a4 styles:(id *)a5 infos:(id *)a6 forSpriteAppearingIntoRootIndexRange:(_PXGSpriteIndexRange)a7
+- (void)animation:(id)animation adjustGeometries:(id *)geometries styles:(id *)styles infos:(id *)infos forSpriteAppearingIntoRootIndexRange:(_PXGSpriteIndexRange)range
 {
-  if (a7.length)
+  if (range.length)
   {
-    v7 = (a7.length + 3) & 0x1FFFFFFFCLL;
+    v7 = (range.length + 3) & 0x1FFFFFFFCLL;
     v8 = xmmword_21AC7D600;
     v9 = xmmword_21AC7D610;
-    v10 = vdupq_n_s64(a7.length - 1);
+    v10 = vdupq_n_s64(range.length - 1);
     v11 = vdupq_n_s64(4uLL);
-    v12 = a5;
+    stylesCopy = styles;
     do
     {
       v13 = vmovn_s64(vcgeq_u64(v10, v9));
       if (vuzp1_s16(v13, *v8.i8).u8[0])
       {
-        v12->var0 = 0.0;
+        stylesCopy->var0 = 0.0;
       }
 
       if (vuzp1_s16(v13, *&v8).i8[2])
       {
-        v12[3].var4 = 0.0;
+        stylesCopy[3].var4 = 0.0;
       }
 
       if (vuzp1_s16(*&v8, vmovn_s64(vcgeq_u64(v10, *&v8))).i32[1])
       {
-        v12[7].var1.var0.var0.var2 = 0.0;
-        v12[10].var8 = 0.0;
+        stylesCopy[7].var1.var0.var0.var2 = 0.0;
+        stylesCopy[10].var8 = 0.0;
       }
 
       v8 = vaddq_s64(v8, v11);
       v9 = vaddq_s64(v9, v11);
-      v12 = (v12 + 640);
+      stylesCopy = (stylesCopy + 640);
       v7 -= 4;
     }
 
     while (v7);
   }
 
-  [PXPhotosLayoutAnimationHelperMatchMove _adjustAnimation:"_adjustAnimation:geometries:styles:infos:forSpriteIndexRange:appearing:" geometries:a3 styles:a4 infos:a5 forSpriteIndexRange:a6 appearing:?];
+  [PXPhotosLayoutAnimationHelperMatchMove _adjustAnimation:"_adjustAnimation:geometries:styles:infos:forSpriteIndexRange:appearing:" geometries:animation styles:geometries infos:styles forSpriteIndexRange:infos appearing:?];
 }
 
-- (void)animation:(id)a3 updateSpriteTransferMap:(unsigned int *)a4 forSpritesRemovedFromIndexes:(id)a5 presentedGeometries:(id *)a6 styles:(id *)a7 infos:(id *)a8 spritesInsertedToIndexes:(id)a9 targetGeometries:(id *)a10 styles:(id *)a11 infos:(id *)a12 rootLayout:(id)a13
+- (void)animation:(id)animation updateSpriteTransferMap:(unsigned int *)map forSpritesRemovedFromIndexes:(id)indexes presentedGeometries:(id *)geometries styles:(id *)styles infos:(id *)infos spritesInsertedToIndexes:(id)toIndexes targetGeometries:(id *)self0 styles:(id *)self1 infos:(id *)self2 rootLayout:(id)self3
 {
-  v18 = a9;
-  v19 = a5;
-  v20 = a3;
-  v21 = [v20 fromSnapshot];
-  v22 = [v20 toSnapshot];
+  toIndexesCopy = toIndexes;
+  indexesCopy = indexes;
+  animationCopy = animation;
+  fromSnapshot = [animationCopy fromSnapshot];
+  toSnapshot = [animationCopy toSnapshot];
 
-  v23 = [v18 mutableCopy];
+  v23 = [toIndexesCopy mutableCopy];
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
   v27[2] = __204__PXPhotosLayoutAnimationHelperMatchMove_animation_updateSpriteTransferMap_forSpritesRemovedFromIndexes_presentedGeometries_styles_infos_spritesInsertedToIndexes_targetGeometries_styles_infos_rootLayout___block_invoke;
   v27[3] = &unk_278298230;
-  v28 = v21;
-  v29 = v22;
+  v28 = fromSnapshot;
+  v29 = toSnapshot;
   v30 = v23;
-  v31 = a6;
-  v32 = a8;
-  v33 = a4;
+  geometriesCopy = geometries;
+  infosCopy = infos;
+  mapCopy = map;
   v24 = v23;
-  v25 = v22;
-  v26 = v21;
-  [v26 enumerateObjectIdentifiersForSpriteIndexes:v19 infos:a8 usingBlock:v27];
+  v25 = toSnapshot;
+  v26 = fromSnapshot;
+  [v26 enumerateObjectIdentifiersForSpriteIndexes:indexesCopy infos:infos usingBlock:v27];
 }
 
 void __204__PXPhotosLayoutAnimationHelperMatchMove_animation_updateSpriteTransferMap_forSpritesRemovedFromIndexes_presentedGeometries_styles_infos_spritesInsertedToIndexes_targetGeometries_styles_infos_rootLayout___block_invoke(uint64_t a1, uint64_t a2, void *a3, char a4, unsigned int a5)

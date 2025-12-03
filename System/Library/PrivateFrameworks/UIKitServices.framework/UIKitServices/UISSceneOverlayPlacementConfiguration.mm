@@ -1,40 +1,40 @@
 @interface UISSceneOverlayPlacementConfiguration
-- (BOOL)isEqual:(id)a3;
-- (UISSceneOverlayPlacementConfiguration)initWithBSXPCCoder:(id)a3;
-- (UISSceneOverlayPlacementConfiguration)initWithCoder:(id)a3;
-- (UISSceneOverlayPlacementConfiguration)initWithTargetSceneIdentity:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (void)encodeWithBSXPCCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (UISSceneOverlayPlacementConfiguration)initWithBSXPCCoder:(id)coder;
+- (UISSceneOverlayPlacementConfiguration)initWithCoder:(id)coder;
+- (UISSceneOverlayPlacementConfiguration)initWithTargetSceneIdentity:(id)identity;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (void)encodeWithBSXPCCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UISSceneOverlayPlacementConfiguration
 
-- (UISSceneOverlayPlacementConfiguration)initWithTargetSceneIdentity:(id)a3
+- (UISSceneOverlayPlacementConfiguration)initWithTargetSceneIdentity:(id)identity
 {
-  v5 = a3;
+  identityCopy = identity;
   v9.receiver = self;
   v9.super_class = UISSceneOverlayPlacementConfiguration;
   v6 = [(UISScenePlacementConfiguration *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_targetSceneIdentity, a3);
+    objc_storeStrong(&v6->_targetSceneIdentity, identity);
   }
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v9.receiver = self;
   v9.super_class = UISSceneOverlayPlacementConfiguration;
-  if ([(UISScenePlacementConfiguration *)&v9 isEqual:v4])
+  if ([(UISScenePlacementConfiguration *)&v9 isEqual:equalCopy])
   {
-    v5 = [v4 targetSceneIdentity];
-    v6 = [(UISSceneOverlayPlacementConfiguration *)self targetSceneIdentity];
-    v7 = [v6 isEqual:v5];
+    targetSceneIdentity = [equalCopy targetSceneIdentity];
+    targetSceneIdentity2 = [(UISSceneOverlayPlacementConfiguration *)self targetSceneIdentity];
+    v7 = [targetSceneIdentity2 isEqual:targetSceneIdentity];
   }
 
   else
@@ -45,15 +45,15 @@
   return v7;
 }
 
-- (UISSceneOverlayPlacementConfiguration)initWithCoder:(id)a3
+- (UISSceneOverlayPlacementConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = UISSceneOverlayPlacementConfiguration;
-  v5 = [(UISScenePlacementConfiguration *)&v9 initWithCoder:v4];
+  v5 = [(UISScenePlacementConfiguration *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kTargetSceneIdentityKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kTargetSceneIdentityKey"];
     targetSceneIdentity = v5->_targetSceneIdentity;
     v5->_targetSceneIdentity = v6;
 
@@ -67,25 +67,25 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = UISSceneOverlayPlacementConfiguration;
-  v4 = a3;
-  [(UISScenePlacementConfiguration *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(UISScenePlacementConfiguration *)&v6 encodeWithCoder:coderCopy];
   v5 = [(UISSceneOverlayPlacementConfiguration *)self targetSceneIdentity:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"kTargetSceneIdentityKey"];
+  [coderCopy encodeObject:v5 forKey:@"kTargetSceneIdentityKey"];
 }
 
-- (UISSceneOverlayPlacementConfiguration)initWithBSXPCCoder:(id)a3
+- (UISSceneOverlayPlacementConfiguration)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = UISSceneOverlayPlacementConfiguration;
-  v5 = [(UISScenePlacementConfiguration *)&v9 initWithBSXPCCoder:v4];
+  v5 = [(UISScenePlacementConfiguration *)&v9 initWithBSXPCCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kTargetSceneIdentityKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kTargetSceneIdentityKey"];
     targetSceneIdentity = v5->_targetSceneIdentity;
     v5->_targetSceneIdentity = v6;
 
@@ -99,30 +99,30 @@
   return v5;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = UISSceneOverlayPlacementConfiguration;
-  v4 = a3;
-  [(UISScenePlacementConfiguration *)&v6 encodeWithBSXPCCoder:v4];
+  coderCopy = coder;
+  [(UISScenePlacementConfiguration *)&v6 encodeWithBSXPCCoder:coderCopy];
   v5 = [(UISSceneOverlayPlacementConfiguration *)self targetSceneIdentity:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"kTargetSceneIdentityKey"];
+  [coderCopy encodeObject:v5 forKey:@"kTargetSceneIdentityKey"];
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v12.receiver = self;
   v12.super_class = UISSceneOverlayPlacementConfiguration;
-  v4 = a3;
-  v5 = [(UISScenePlacementConfiguration *)&v12 descriptionBuilderWithMultilinePrefix:v4];
+  prefixCopy = prefix;
+  v5 = [(UISScenePlacementConfiguration *)&v12 descriptionBuilderWithMultilinePrefix:prefixCopy];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __79__UISSceneOverlayPlacementConfiguration_descriptionBuilderWithMultilinePrefix___block_invoke;
   v9[3] = &unk_1E7458FE0;
   v6 = v5;
   v10 = v6;
-  v11 = self;
-  [v6 appendBodySectionWithName:&stru_1F0A7B1D8 multilinePrefix:v4 block:v9];
+  selfCopy = self;
+  [v6 appendBodySectionWithName:&stru_1F0A7B1D8 multilinePrefix:prefixCopy block:v9];
 
   v7 = v6;
   return v6;

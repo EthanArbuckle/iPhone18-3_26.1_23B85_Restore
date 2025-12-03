@@ -16,7 +16,7 @@
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:4];
   v7 = [v4 setWithArray:v6];
 
-  v8 = [a1 decodeDictionaryWithKeysOfClasses:v7 objectsOfClasses:v7 forKey:v5];
+  v8 = [self decodeDictionaryWithKeysOfClasses:v7 objectsOfClasses:v7 forKey:v5];
 
   v9 = *MEMORY[0x1E69E9840];
 

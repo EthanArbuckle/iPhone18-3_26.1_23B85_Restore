@@ -1,15 +1,15 @@
 @interface _REAggregateRuleCondition
-- (BOOL)_acceptsFeatureMap:(id)a3 predictionSet:(id)a4 explanation:(id *)a5;
-- (BOOL)_acceptsLeftFeatureMap:(id)a3 rightFeatureMap:(id)a4;
+- (BOOL)_acceptsFeatureMap:(id)map predictionSet:(id)set explanation:(id *)explanation;
+- (BOOL)_acceptsLeftFeatureMap:(id)map rightFeatureMap:(id)featureMap;
 - (BOOL)_needsProbability;
 - (BOOL)_requiresTwoFeatures;
 - (BOOL)_validForRanking;
-- (BOOL)isEqual:(id)a3;
-- (_REAggregateRuleCondition)initWithConditions:(id)a3 type:(unint64_t)a4;
+- (BOOL)isEqual:(id)equal;
+- (_REAggregateRuleCondition)initWithConditions:(id)conditions type:(unint64_t)type;
 - (id)_dependentFeatures;
 - (id)_inflectionFeatureValuePairs;
 - (id)_notCondition;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation _REAggregateRuleCondition
@@ -91,8 +91,8 @@ LABEL_12:
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v15 + 1) + 8 * i) _notCondition];
-        [v3 addObject:v9];
+        _notCondition = [*(*(&v15 + 1) + 8 * i) _notCondition];
+        [v3 addObject:_notCondition];
       }
 
       v6 = [(NSSet *)v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -112,21 +112,21 @@ LABEL_12:
   return v10;
 }
 
-- (_REAggregateRuleCondition)initWithConditions:(id)a3 type:(unint64_t)a4
+- (_REAggregateRuleCondition)initWithConditions:(id)conditions type:(unint64_t)type
 {
   v36 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(v5, "count")}];
+  conditionsCopy = conditions;
+  v6 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(conditionsCopy, "count")}];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v7 = v5;
+  v7 = conditionsCopy;
   v8 = [v7 countByEnumeratingWithState:&v31 objects:v35 count:16];
   if (v8)
   {
     v9 = v8;
-    v28 = self;
+    selfCopy = self;
     v10 = 0;
     v11 = 0;
     v12 = *v32;
@@ -142,19 +142,19 @@ LABEL_12:
         v14 = *(*(&v31 + 1) + 8 * i);
         if (([v14 isMemberOfClass:objc_opt_class()] & 1) == 0)
         {
-          v15 = [v14 _validForRanking];
-          v10 += v15;
-          v11 += v15 ^ 1;
+          _validForRanking = [v14 _validForRanking];
+          v10 += _validForRanking;
+          v11 += _validForRanking ^ 1;
           objc_opt_class();
-          if ((objc_opt_isKindOfClass() & 1) != 0 && [v14 type] == a4)
+          if ((objc_opt_isKindOfClass() & 1) != 0 && [v14 type] == type)
           {
-            v16 = [v14 conditions];
-            [v6 unionSet:v16];
+            conditions = [v14 conditions];
+            [v6 unionSet:conditions];
           }
 
           else
           {
-            [v6 addObject:{v14, v28}];
+            [v6 addObject:{v14, selfCopy}];
           }
         }
       }
@@ -164,10 +164,10 @@ LABEL_12:
 
     while (v9);
 
-    self = v28;
+    self = selfCopy;
     if (v10 && v11)
     {
-      RERaiseInternalException(*MEMORY[0x277CBE660], @"Cannot mix REComparisonCondition and RECondition in the same condition", v17, v18, v19, v20, v21, v22, v28);
+      RERaiseInternalException(*MEMORY[0x277CBE660], @"Cannot mix REComparisonCondition and RECondition in the same condition", v17, v18, v19, v20, v21, v22, selfCopy);
     }
   }
 
@@ -184,7 +184,7 @@ LABEL_12:
     conditions = v23->_conditions;
     v23->_conditions = v24;
 
-    v23->_type = a4;
+    v23->_type = type;
   }
 
   v26 = *MEMORY[0x277D85DE8];
@@ -214,8 +214,8 @@ LABEL_12:
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v13 + 1) + 8 * i) _dependentFeatures];
-        [v3 unionFeatureSet:v9];
+        _dependentFeatures = [*(*(&v13 + 1) + 8 * i) _dependentFeatures];
+        [v3 unionFeatureSet:_dependentFeatures];
       }
 
       v6 = [(NSSet *)v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -343,8 +343,8 @@ LABEL_11:
             objc_enumerationMutation(v4);
           }
 
-          v9 = [*(*(&v13 + 1) + 8 * i) _inflectionFeatureValuePairs];
-          [v3 unionSet:v9];
+          _inflectionFeatureValuePairs = [*(*(&v13 + 1) + 8 * i) _inflectionFeatureValuePairs];
+          [v3 unionSet:_inflectionFeatureValuePairs];
         }
 
         v6 = [(NSSet *)v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -366,15 +366,15 @@ LABEL_11:
   return v10;
 }
 
-- (BOOL)_acceptsFeatureMap:(id)a3 predictionSet:(id)a4 explanation:(id *)a5
+- (BOOL)_acceptsFeatureMap:(id)map predictionSet:(id)set explanation:(id *)explanation
 {
   v32 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  mapCopy = map;
+  setCopy = set;
   v30[0] = 0;
   v30[1] = v30;
   v30[2] = 0x2020000000;
-  v30[3] = a5;
+  v30[3] = explanation;
   if ([(NSSet *)self->_conditions count])
   {
     v10 = self->_type != 1;
@@ -401,8 +401,8 @@ LABEL_11:
           v20[1] = 3221225472;
           v21 = __74___REAggregateRuleCondition__acceptsFeatureMap_predictionSet_explanation___block_invoke;
           v22 = &unk_2785FD438;
-          v23 = v8;
-          v24 = v9;
+          v23 = mapCopy;
+          v24 = setCopy;
           v25 = v30;
           v15 = v21(v20, v14);
           type = self->_type;
@@ -462,11 +462,11 @@ LABEL_20:
   return v10;
 }
 
-- (BOOL)_acceptsLeftFeatureMap:(id)a3 rightFeatureMap:(id)a4
+- (BOOL)_acceptsLeftFeatureMap:(id)map rightFeatureMap:(id)featureMap
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  mapCopy = map;
+  featureMapCopy = featureMap;
   if (![(NSSet *)self->_conditions count])
   {
     LOBYTE(v8) = 1;
@@ -496,7 +496,7 @@ LABEL_20:
         objc_enumerationMutation(v9);
       }
 
-      v14 = [*(*(&v18 + 1) + 8 * i) _acceptsLeftFeatureMap:v6 rightFeatureMap:{v7, v18}];
+      v14 = [*(*(&v18 + 1) + 8 * i) _acceptsLeftFeatureMap:mapCopy rightFeatureMap:{featureMapCopy, v18}];
       type = self->_type;
       if (type == 1)
       {
@@ -541,10 +541,10 @@ LABEL_20:
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
@@ -554,7 +554,7 @@ LABEL_20:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = v5;
       if (self->_type == v5->_type)
       {
@@ -588,7 +588,7 @@ LABEL_20:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   objc_storeStrong(v4 + 2, self->_conditions);

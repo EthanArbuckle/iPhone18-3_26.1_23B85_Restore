@@ -1,13 +1,13 @@
 @interface CIWarpKernel
 + (CIWarpKernel)kernelWithString:(NSString *)string;
-- (CGRect)autogenerateROI:(void *)a3 args:(SerialObjectPtrArray *)a4 arguments:(id)a5 extent:(CGRect)a6;
-- (CIWarpKernel)initWithString:(id)a3;
-- (id)applyWithExtent:(CGRect)a3 roiCallback:(id)a4 arguments:(id)a5;
-- (id)applyWithExtent:(CGRect)a3 roiCallback:(id)a4 arguments:(id)a5 options:(id)a6;
-- (id)applyWithExtent:(CGRect)a3 roiCallback:(id)a4 inputImage:(id)a5 arguments:(id)a6 options:(id)a7;
-- (id)generateGeneralKernelFromWarpKernel:(void *)a3 args:(SerialObjectPtrArray *)a4;
-- (id)generateMainFromWarpKernel:(void *)a3 args:(SerialObjectPtrArray *)a4;
-- (id)makeGridImage:(CGRect)a3 nx:(int)a4 ny:(int)a5;
+- (CGRect)autogenerateROI:(void *)i args:(SerialObjectPtrArray *)args arguments:(id)arguments extent:(CGRect)extent;
+- (CIWarpKernel)initWithString:(id)string;
+- (id)applyWithExtent:(CGRect)extent roiCallback:(id)callback arguments:(id)arguments;
+- (id)applyWithExtent:(CGRect)extent roiCallback:(id)callback arguments:(id)arguments options:(id)options;
+- (id)applyWithExtent:(CGRect)extent roiCallback:(id)callback inputImage:(id)image arguments:(id)arguments options:(id)options;
+- (id)generateGeneralKernelFromWarpKernel:(void *)kernel args:(SerialObjectPtrArray *)args;
+- (id)generateMainFromWarpKernel:(void *)kernel args:(SerialObjectPtrArray *)args;
+- (id)makeGridImage:(CGRect)image nx:(int)nx ny:(int)ny;
 @end
 
 @implementation CIWarpKernel
@@ -19,7 +19,7 @@
   if (os_signpost_enabled(v5))
   {
     *buf = 138543362;
-    v14 = [a1 description];
+    v14 = [self description];
     _os_signpost_emit_with_name_impl(&dword_19CC36000, v5, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "kernelWithString", "%{public}@", buf, 0xCu);
   }
 
@@ -27,10 +27,10 @@
   v9[1] = 3221225472;
   v10 = __33__CIWarpKernel_kernelWithString___block_invoke;
   v11 = &unk_1E75C2AA0;
-  v12 = a1;
+  selfCopy = self;
   if (check_cikl_string(string, "+[CIWarpKernel kernelWithString:]"))
   {
-    v6 = [[a1 alloc] initWithString:string];
+    v6 = [[self alloc] initWithString:string];
     if (v6)
     {
       v7 = [objc_opt_class() description];
@@ -60,12 +60,12 @@ void __33__CIWarpKernel_kernelWithString___block_invoke(uint64_t a1)
   }
 }
 
-- (CIWarpKernel)initWithString:(id)a3
+- (CIWarpKernel)initWithString:(id)string
 {
-  if (check_cikl_string(a3, "[CIWarpKernel initWithString:]"))
+  if (check_cikl_string(string, "[CIWarpKernel initWithString:]"))
   {
 
-    return [(CIKernel *)self _initWithString:a3 andCIKernelLibrary:0 usingCruftCompatibility:0 isInternal:0];
+    return [(CIKernel *)self _initWithString:string andCIKernelLibrary:0 usingCruftCompatibility:0 isInternal:0];
   }
 
   else
@@ -75,7 +75,7 @@ void __33__CIWarpKernel_kernelWithString___block_invoke(uint64_t a1)
   }
 }
 
-- (id)applyWithExtent:(CGRect)a3 roiCallback:(id)a4 arguments:(id)a5 options:(id)a6
+- (id)applyWithExtent:(CGRect)extent roiCallback:(id)callback arguments:(id)arguments options:(id)options
 {
   v6 = ci_logger_api();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -86,7 +86,7 @@ void __33__CIWarpKernel_kernelWithString___block_invoke(uint64_t a1)
   return 0;
 }
 
-- (id)applyWithExtent:(CGRect)a3 roiCallback:(id)a4 arguments:(id)a5
+- (id)applyWithExtent:(CGRect)extent roiCallback:(id)callback arguments:(id)arguments
 {
   v5 = ci_logger_api();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -97,10 +97,10 @@ void __33__CIWarpKernel_kernelWithString___block_invoke(uint64_t a1)
   return 0;
 }
 
-- (id)applyWithExtent:(CGRect)a3 roiCallback:(id)a4 inputImage:(id)a5 arguments:(id)a6 options:(id)a7
+- (id)applyWithExtent:(CGRect)extent roiCallback:(id)callback inputImage:(id)image arguments:(id)arguments options:(id)options
 {
   v30 = *MEMORY[0x1E69E9840];
-  if (CGRectIsEmpty(a3) || !a5 || ([a5 extent], CGRectIsEmpty(v32)))
+  if (CGRectIsEmpty(extent) || !image || ([image extent], CGRectIsEmpty(v32)))
   {
 
     return +[CIImage emptyImage];
@@ -111,7 +111,7 @@ void __33__CIWarpKernel_kernelWithString___block_invoke(uint64_t a1)
     priv = self->super._priv;
     if ((*(*priv + 16))(priv) == 71)
     {
-      v12 = [a6 count];
+      v12 = [arguments count];
       if (CI::Kernel::num_apply_arguments(priv) == v12)
       {
         if (v12 < 1)
@@ -133,7 +133,7 @@ LABEL_18:
             type = v13 >= *(priv + 5) ? 0 : *(priv[8] + 4 * v13);
           }
 
-          if ((verify_argument_type([a6 objectAtIndexedSubscript:v13], type, 0) & 1) == 0)
+          if ((verify_argument_type([arguments objectAtIndexedSubscript:v13], type, 0) & 1) == 0)
           {
             break;
           }
@@ -149,7 +149,7 @@ LABEL_18:
         {
           v18 = priv[3];
           v19 = expected_argument_type(type);
-          [a6 objectAtIndexedSubscript:v13];
+          [arguments objectAtIndexedSubscript:v13];
           *buf = 136447234;
           v21 = "[CIWarpKernel applyWithExtent:roiCallback:inputImage:arguments:options:]";
           v22 = 2082;
@@ -187,39 +187,39 @@ LABEL_18:
   }
 }
 
-- (id)generateMainFromWarpKernel:(void *)a3 args:(SerialObjectPtrArray *)a4
+- (id)generateMainFromWarpKernel:(void *)kernel args:(SerialObjectPtrArray *)args
 {
-  v6 = [MEMORY[0x1E696AD60] stringWithUTF8String:*(a3 + 4)];
+  v6 = [MEMORY[0x1E696AD60] stringWithUTF8String:*(kernel + 4)];
   [v6 insertString:@" atIndex:{vec2 samplePoint", objc_msgSend(v6, "rangeOfString:", @")"}]);
   [v6 replaceOccurrencesOfString:@"destCoord()" withString:@"samplePoint" options:2 range:{0, objc_msgSend(v6, "length")}];
-  objc_msgSend(v6, "appendString:", objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"\nkernel vec4 autoROI_%s(__sample s,vec4 e,"), *(a3 + 3));
-  if (a4->var0 < 2)
+  objc_msgSend(v6, "appendString:", objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"\nkernel vec4 autoROI_%s(__sample s,vec4 e,"), *(kernel + 3));
+  if (args->var0 < 2)
   {
     objc_msgSend(v6, "appendString:", @"  vec2 pt =(");
-    [v6 appendString:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithUTF8String:", *(a3 + 3))}];
+    [v6 appendString:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithUTF8String:", *(kernel + 3))}];
     objc_msgSend(v6, "appendString:", @"(");
   }
 
   else
   {
     v7 = 0;
-    var0 = a4->var0;
-    v8 = (a4->var0 - 1);
+    var0 = args->var0;
+    v8 = (args->var0 - 1);
     do
     {
-      if (*(a3 + 12) == 1)
+      if (*(kernel + 12) == 1)
       {
-        type = CI::KernelArguments::get_type((a3 + 136), v7);
+        type = CI::KernelArguments::get_type((kernel + 136), v7);
       }
 
-      else if (v7 >= *(a3 + 5))
+      else if (v7 >= *(kernel + 5))
       {
         type = 0;
       }
 
       else
       {
-        type = *(*(a3 + 8) + 4 * v7);
+        type = *(*(kernel + 8) + 4 * v7);
       }
 
       v10 = v7 + 1;
@@ -238,7 +238,7 @@ LABEL_18:
 
     while (v8 != v10);
     objc_msgSend(v6, "appendString:", @"  vec2 pt =(");
-    [v6 appendString:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithUTF8String:", *(a3 + 3))}];
+    [v6 appendString:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithUTF8String:", *(kernel + 3))}];
     objc_msgSend(v6, "appendString:", @"(");
     v12 = 0;
     do
@@ -264,37 +264,37 @@ LABEL_18:
   return v6;
 }
 
-- (id)generateGeneralKernelFromWarpKernel:(void *)a3 args:(SerialObjectPtrArray *)a4
+- (id)generateGeneralKernelFromWarpKernel:(void *)kernel args:(SerialObjectPtrArray *)args
 {
-  v6 = [MEMORY[0x1E696AD60] stringWithUTF8String:*(a3 + 4)];
-  objc_msgSend(v6, "appendString:", objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"\nkernel vec4 autoROI_%s(sampler s,vec4 e,"), *(a3 + 3));
-  if (a4->var0 < 2)
+  v6 = [MEMORY[0x1E696AD60] stringWithUTF8String:*(kernel + 4)];
+  objc_msgSend(v6, "appendString:", objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"\nkernel vec4 autoROI_%s(sampler s,vec4 e,"), *(kernel + 3));
+  if (args->var0 < 2)
   {
     [v6 appendString:@"  vec2 pt = "];
-    [v6 appendString:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithUTF8String:", *(a3 + 3))}];
+    [v6 appendString:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithUTF8String:", *(kernel + 3))}];
     objc_msgSend(v6, "appendString:", @"(");
   }
 
   else
   {
     v7 = 0;
-    var0 = a4->var0;
-    v8 = (a4->var0 - 1);
+    var0 = args->var0;
+    v8 = (args->var0 - 1);
     do
     {
-      if (*(a3 + 12) == 1)
+      if (*(kernel + 12) == 1)
       {
-        type = CI::KernelArguments::get_type((a3 + 136), v7);
+        type = CI::KernelArguments::get_type((kernel + 136), v7);
       }
 
-      else if (v7 >= *(a3 + 5))
+      else if (v7 >= *(kernel + 5))
       {
         type = 0;
       }
 
       else
       {
-        type = *(*(a3 + 8) + 4 * v7);
+        type = *(*(kernel + 8) + 4 * v7);
       }
 
       v10 = v7 + 1;
@@ -313,7 +313,7 @@ LABEL_18:
 
     while (v8 != v10);
     [v6 appendString:@"  vec2 pt = "];
-    [v6 appendString:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithUTF8String:", *(a3 + 3))}];
+    [v6 appendString:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithUTF8String:", *(kernel + 3))}];
     objc_msgSend(v6, "appendString:", @"(");
     v12 = 0;
     do
@@ -340,28 +340,28 @@ LABEL_18:
   return v6;
 }
 
-- (id)makeGridImage:(CGRect)a3 nx:(int)a4 ny:(int)a5
+- (id)makeGridImage:(CGRect)image nx:(int)nx ny:(int)ny
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v11 = 16 * a4;
-  v12 = v11 * a5;
+  height = image.size.height;
+  width = image.size.width;
+  y = image.origin.y;
+  x = image.origin.x;
+  v11 = 16 * nx;
+  v12 = v11 * ny;
   v13 = malloc_type_malloc(v12, 0x100004052888210uLL);
   v14 = v13;
-  if (a5 >= 1)
+  if (ny >= 1)
   {
     v15 = 0;
     v18 = v13 + 4;
-    v19 = a5;
+    nyCopy = ny;
     do
     {
-      if (a4 >= 1)
+      if (nx >= 1)
       {
-        v16 = height / (a5 - 1);
+        v16 = height / (ny - 1);
         v20 = (v16 * v15);
-        if (v19 == 1)
+        if (nyCopy == 1)
         {
           v20 = height;
         }
@@ -375,27 +375,27 @@ LABEL_18:
 
       v18 += 16;
       ++v15;
-      --v19;
+      --nyCopy;
     }
 
-    while (v19);
+    while (nyCopy);
   }
 
   v22 = [MEMORY[0x1E695DEF0] dataWithBytes:v13 length:v12];
   free(v14);
-  v23 = [MEMORY[0x1E695DFB0] null];
+  null = [MEMORY[0x1E695DFB0] null];
 
-  return [CIImage imageWithBitmapData:v22 bytesPerRow:v11 size:2312 format:v23 colorSpace:a4, a5];
+  return [CIImage imageWithBitmapData:v22 bytesPerRow:v11 size:2312 format:null colorSpace:nx, ny];
 }
 
-- (CGRect)autogenerateROI:(void *)a3 args:(SerialObjectPtrArray *)a4 arguments:(id)a5 extent:(CGRect)a6
+- (CGRect)autogenerateROI:(void *)i args:(SerialObjectPtrArray *)args arguments:(id)arguments extent:(CGRect)extent
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
+  height = extent.size.height;
+  width = extent.size.width;
+  y = extent.origin.y;
+  x = extent.origin.x;
   v48[3] = *MEMORY[0x1E69E9840];
-  if (CGRectIsInfinite(a6) || (v49.origin.x = x, v49.origin.y = y, v49.size.width = width, v49.size.height = height, CGRectIsEmpty(v49)))
+  if (CGRectIsInfinite(extent) || (v49.origin.x = x, v49.origin.y = y, v49.size.width = width, v49.size.height = height, CGRectIsEmpty(v49)))
   {
     v14 = *MEMORY[0x1E695F050];
     v15 = *(MEMORY[0x1E695F050] + 8);
@@ -409,7 +409,7 @@ LABEL_18:
     *&v46.a = *MEMORY[0x1E695EFD0];
     *&v46.c = v18;
     *&v46.tx = *(MEMORY[0x1E695EFD0] + 32);
-    v19 = [CIKernel kernelWithString:[(CIWarpKernel *)self generateGeneralKernelFromWarpKernel:a3 args:a4]];
+    v19 = [CIKernel kernelWithString:[(CIWarpKernel *)self generateGeneralKernelFromWarpKernel:i args:args]];
     v20 = [CIFilter filterWithName:@"CIConstantColorGenerator"];
     [(CIFilter *)v20 setDefaults];
     v21 = [-[CIFilter valueForKey:](v20 valueForKey:{@"outputImage", "imageByCroppingToRect:", x, y, width, height}];
@@ -424,7 +424,7 @@ LABEL_18:
     v44 = v45;
     CGAffineTransformScale(&v45, &v44, 16.0 / width, 16.0 / height);
     v46 = v45;
-    v24 = [MEMORY[0x1E695DF70] arrayWithArray:a5];
+    v24 = [MEMORY[0x1E695DF70] arrayWithArray:arguments];
     [v24 insertObject:v23 atIndex:0];
     [v24 insertObject:+[CIVector vectorWithCGRect:](CIVector atIndex:{"vectorWithCGRect:", 0.0, 0.0, 16.0, 16.0), 1}];
     [v23 extent];

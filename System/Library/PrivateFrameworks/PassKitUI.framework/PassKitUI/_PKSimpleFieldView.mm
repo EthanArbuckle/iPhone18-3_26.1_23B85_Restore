@@ -1,27 +1,27 @@
 @interface _PKSimpleFieldView
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (NSString)labelBlendMode;
 - (NSString)valueBlendMode;
-- (_PKSimpleFieldView)initWithField:(id)a3;
+- (_PKSimpleFieldView)initWithField:(id)field;
 - (id)description;
 - (void)_evaluateVibrancyEnablement;
 - (void)layoutSubviews;
-- (void)setLabelBlendMode:(id)a3;
-- (void)setValueBlendMode:(id)a3;
+- (void)setLabelBlendMode:(id)mode;
+- (void)setValueBlendMode:(id)mode;
 @end
 
 @implementation _PKSimpleFieldView
 
-- (_PKSimpleFieldView)initWithField:(id)a3
+- (_PKSimpleFieldView)initWithField:(id)field
 {
-  v5 = a3;
+  fieldCopy = field;
   v17.receiver = self;
   v17.super_class = _PKSimpleFieldView;
   v6 = [(_PKSimpleFieldView *)&v17 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_field, a3);
+    objc_storeStrong(&v6->_field, field);
     v8 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     labelLabel = v7->_labelLabel;
     v7->_labelLabel = v8;
@@ -31,8 +31,8 @@
     [(UILabel *)v7->_labelLabel setAccessibilityIdentifier:*MEMORY[0x1E69B98D0]];
     [(UILabel *)v7->_labelLabel setTextAlignment:[(PKPassField *)v7->_field textAlignment]];
     v10 = v7->_labelLabel;
-    v11 = [(PKPassField *)v7->_field label];
-    [(UILabel *)v10 setText:v11];
+    label = [(PKPassField *)v7->_field label];
+    [(UILabel *)v10 setText:label];
 
     [(_PKSimpleFieldView *)v7 addSubview:v7->_labelLabel];
     v12 = objc_alloc_init(MEMORY[0x1E69DCC10]);
@@ -44,8 +44,8 @@
     [(UILabel *)v7->_valueLabel setAccessibilityIdentifier:*MEMORY[0x1E69B9DC0]];
     [(UILabel *)v7->_valueLabel setTextAlignment:[(PKPassField *)v7->_field textAlignment]];
     v14 = v7->_valueLabel;
-    v15 = [(PKPassField *)v7->_field value];
-    [(UILabel *)v14 setText:v15];
+    value = [(PKPassField *)v7->_field value];
+    [(UILabel *)v14 setText:value];
 
     [(_PKSimpleFieldView *)v7 addSubview:v7->_valueLabel];
     [(_PKSimpleFieldView *)v7 setAccessibilityIdentifier:*MEMORY[0x1E69B97E8]];
@@ -59,42 +59,42 @@
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@: %p ", objc_opt_class(), self];;
   [(_PKSimpleFieldView *)self frame];
   [v3 appendFormat:@"frame = (%g %g; %g %g); ", v4, v5, v6, v7];
-  v8 = [(UILabel *)self->_labelLabel text];
-  if ([v8 length])
+  text = [(UILabel *)self->_labelLabel text];
+  if ([text length])
   {
-    v9 = [(_PKSimpleFieldView *)self labelFont];
-    [v9 pointSize];
+    labelFont = [(_PKSimpleFieldView *)self labelFont];
+    [labelFont pointSize];
     v11 = v10;
 
-    if ([v8 length] >= 0x1A)
+    if ([text length] >= 0x1A)
     {
-      v12 = [v8 rangeOfComposedCharacterSequencesForRange:{0, 25}];
-      v14 = [v8 substringWithRange:{v12, v13}];
+      v12 = [text rangeOfComposedCharacterSequencesForRange:{0, 25}];
+      v14 = [text substringWithRange:{v12, v13}];
       v15 = [v14 stringByAppendingString:@"..."];
 
-      v8 = v15;
+      text = v15;
     }
 
-    [v3 appendFormat:@"<label = '%@'; font-size: %g>; ", v8, v11];
+    [v3 appendFormat:@"<label = '%@'; font-size: %g>; ", text, v11];
   }
 
-  v16 = [(UILabel *)self->_valueLabel text];
-  if ([v16 length])
+  text2 = [(UILabel *)self->_valueLabel text];
+  if ([text2 length])
   {
-    v17 = [(_PKSimpleFieldView *)self valueFont];
-    [v17 pointSize];
+    valueFont = [(_PKSimpleFieldView *)self valueFont];
+    [valueFont pointSize];
     v19 = v18;
 
-    if ([v16 length] >= 0x1A)
+    if ([text2 length] >= 0x1A)
     {
-      v20 = [v16 rangeOfComposedCharacterSequencesForRange:{0, 25}];
-      v22 = [v16 substringWithRange:{v20, v21}];
+      v20 = [text2 rangeOfComposedCharacterSequencesForRange:{0, 25}];
+      v22 = [text2 substringWithRange:{v20, v21}];
       v23 = [v22 stringByAppendingString:@"..."];
 
-      v16 = v23;
+      text2 = v23;
     }
 
-    [v3 appendFormat:@"<value = '%@'; font-size: %g>", v16, v19];
+    [v3 appendFormat:@"<value = '%@'; font-size: %g>", text2, v19];
   }
 
   [v3 appendString:@">"];
@@ -105,56 +105,56 @@
 
 - (NSString)labelBlendMode
 {
-  v2 = [(UILabel *)self->_labelLabel layer];
-  v3 = [v2 compositingFilter];
+  layer = [(UILabel *)self->_labelLabel layer];
+  compositingFilter = [layer compositingFilter];
 
-  return v3;
+  return compositingFilter;
 }
 
-- (void)setLabelBlendMode:(id)a3
+- (void)setLabelBlendMode:(id)mode
 {
   labelLabel = self->_labelLabel;
-  v5 = a3;
-  v6 = [(UILabel *)labelLabel layer];
-  [v6 setCompositingFilter:v5];
+  modeCopy = mode;
+  layer = [(UILabel *)labelLabel layer];
+  [layer setCompositingFilter:modeCopy];
 
   [(_PKSimpleFieldView *)self _evaluateVibrancyEnablement];
 }
 
 - (NSString)valueBlendMode
 {
-  v2 = [(UILabel *)self->_valueLabel layer];
-  v3 = [v2 compositingFilter];
+  layer = [(UILabel *)self->_valueLabel layer];
+  compositingFilter = [layer compositingFilter];
 
-  return v3;
+  return compositingFilter;
 }
 
-- (void)setValueBlendMode:(id)a3
+- (void)setValueBlendMode:(id)mode
 {
   valueLabel = self->_valueLabel;
-  v5 = a3;
-  v6 = [(UILabel *)valueLabel layer];
-  [v6 setCompositingFilter:v5];
+  modeCopy = mode;
+  layer = [(UILabel *)valueLabel layer];
+  [layer setCompositingFilter:modeCopy];
 
   [(_PKSimpleFieldView *)self _evaluateVibrancyEnablement];
 }
 
 - (void)_evaluateVibrancyEnablement
 {
-  v3 = [(_PKSimpleFieldView *)self labelBlendMode];
-  if (v3)
+  labelBlendMode = [(_PKSimpleFieldView *)self labelBlendMode];
+  if (labelBlendMode)
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = [(_PKSimpleFieldView *)self valueBlendMode];
-    v4 = v5 == 0;
+    valueBlendMode = [(_PKSimpleFieldView *)self valueBlendMode];
+    v4 = valueBlendMode == 0;
   }
 
-  v6 = [(_PKSimpleFieldView *)self layer];
-  [v6 setAllowsGroupBlending:v4];
+  layer = [(_PKSimpleFieldView *)self layer];
+  [layer setAllowsGroupBlending:v4];
 }
 
 - (void)layoutSubviews
@@ -190,10 +190,10 @@
   [(UILabel *)self->_valueLabel setFrame:?];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   [(UILabel *)self->_labelLabel sizeThatFits:?];
   v7 = v6;
   v9 = v8;

@@ -1,9 +1,9 @@
 @interface UIIndexBarEntry
-+ (UIIndexBarEntry)entryWithTitle:(id)a3;
-+ (UIIndexBarEntry)entryWithType:(int64_t)a3;
-+ (id)_dotImageInView:(id)a3;
-+ (id)_externalDotImageInView:(id)a3;
-+ (id)entryForDotInView:(id)a3;
++ (UIIndexBarEntry)entryWithTitle:(id)title;
++ (UIIndexBarEntry)entryWithType:(int64_t)type;
++ (id)_dotImageInView:(id)view;
++ (id)_externalDotImageInView:(id)view;
++ (id)entryForDotInView:(id)view;
 + (id)entryForNumbers;
 + (id)entryForSearch;
 - (BOOL)hasPoundTitle;
@@ -13,26 +13,26 @@
 
 @implementation UIIndexBarEntry
 
-+ (UIIndexBarEntry)entryWithType:(int64_t)a3
++ (UIIndexBarEntry)entryWithType:(int64_t)type
 {
-  v4 = objc_alloc_init(a1);
-  [v4 setType:a3];
+  v4 = objc_alloc_init(self);
+  [v4 setType:type];
 
   return v4;
 }
 
-+ (UIIndexBarEntry)entryWithTitle:(id)a3
++ (UIIndexBarEntry)entryWithTitle:(id)title
 {
-  v4 = a3;
-  v5 = [a1 entryWithType:0];
-  [v5 setTitle:v4];
+  titleCopy = title;
+  v5 = [self entryWithType:0];
+  [v5 setTitle:titleCopy];
 
   return v5;
 }
 
 + (id)entryForNumbers
 {
-  v2 = [a1 entryWithType:2];
+  v2 = [self entryWithType:2];
   v3 = _UIImageWithName(@"UISectionListPoundSign");
   [v2 setImage:v3];
 
@@ -41,33 +41,33 @@
 
 + (id)entryForSearch
 {
-  v2 = [a1 entryWithType:3];
+  v2 = [self entryWithType:3];
   v3 = _UIImageWithName(@"UITableViewIndexSearchGlyph");
   [v2 setImage:v3];
 
   return v2;
 }
 
-+ (id)entryForDotInView:(id)a3
++ (id)entryForDotInView:(id)view
 {
-  v4 = a3;
-  v5 = [a1 entryWithType:1];
-  v6 = [a1 _dotImageInView:v4];
+  viewCopy = view;
+  v5 = [self entryWithType:1];
+  v6 = [self _dotImageInView:viewCopy];
 
   [v5 setImage:v6];
 
   return v5;
 }
 
-+ (id)_dotImageInView:(id)a3
++ (id)_dotImageInView:(id)view
 {
-  v4 = a3;
-  v5 = [v4 traitCollection];
-  v6 = [v5 userInterfaceIdiom];
+  viewCopy = view;
+  traitCollection = [viewCopy traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v6 == 3)
+  if (userInterfaceIdiom == 3)
   {
-    [a1 _externalDotImageInView:v4];
+    [self _externalDotImageInView:viewCopy];
   }
 
   else
@@ -79,16 +79,16 @@
   return v7;
 }
 
-+ (id)_externalDotImageInView:(id)a3
++ (id)_externalDotImageInView:(id)view
 {
-  v3 = a3;
+  viewCopy = view;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __43__UIIndexBarEntry__externalDotImageInView___block_invoke;
   block[3] = &unk_1E70F3590;
-  v10 = v3;
+  v10 = viewCopy;
   v4 = _MergedGlobals_1387;
-  v5 = v3;
+  v5 = viewCopy;
   if (v4 != -1)
   {
     dispatch_once(&_MergedGlobals_1387, block);
@@ -140,9 +140,9 @@ void __43__UIIndexBarEntry__externalDotImageInView___block_invoke(uint64_t a1)
 
 - (NSString)effectiveShortTitle
 {
-  v3 = [(UIIndexBarEntry *)self shortTitle];
+  shortTitle = [(UIIndexBarEntry *)self shortTitle];
 
-  if (v3)
+  if (shortTitle)
   {
     [(UIIndexBarEntry *)self shortTitle];
   }
@@ -158,11 +158,11 @@ void __43__UIIndexBarEntry__externalDotImageInView___block_invoke(uint64_t a1)
 
 - (BOOL)hasPoundTitle
 {
-  v2 = [(UIIndexBarEntry *)self title];
-  v3 = v2;
-  if (v2)
+  title = [(UIIndexBarEntry *)self title];
+  v3 = title;
+  if (title)
   {
-    v4 = [v2 isEqualToString:@"#"];
+    v4 = [title isEqualToString:@"#"];
   }
 
   else

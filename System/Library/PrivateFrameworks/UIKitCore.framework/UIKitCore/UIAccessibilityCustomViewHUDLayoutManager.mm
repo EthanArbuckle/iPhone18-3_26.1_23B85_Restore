@@ -1,37 +1,37 @@
 @interface UIAccessibilityCustomViewHUDLayoutManager
-- (CGSize)minimumUnscaledSizeForHUD:(id)a3 preferredLabelSize:(CGSize)a4;
-- (CGSize)preferredSizeForLabelInHUD:(id)a3 maximumWidth:(double)a4;
-- (void)layoutSubviewsOfHUD:(id)a3;
+- (CGSize)minimumUnscaledSizeForHUD:(id)d preferredLabelSize:(CGSize)size;
+- (CGSize)preferredSizeForLabelInHUD:(id)d maximumWidth:(double)width;
+- (void)layoutSubviewsOfHUD:(id)d;
 @end
 
 @implementation UIAccessibilityCustomViewHUDLayoutManager
 
-- (void)layoutSubviewsOfHUD:(id)a3
+- (void)layoutSubviewsOfHUD:(id)d
 {
-  v13 = a3;
-  v4 = [v13 imageView];
-  [v4 removeFromSuperview];
+  dCopy = d;
+  imageView = [dCopy imageView];
+  [imageView removeFromSuperview];
 
-  v5 = [v13 titleLabel];
-  [v5 removeFromSuperview];
+  titleLabel = [dCopy titleLabel];
+  [titleLabel removeFromSuperview];
 
-  v6 = [v13 containerViewForLayout];
-  v7 = [v13 customView];
-  v8 = [v7 superview];
+  containerViewForLayout = [dCopy containerViewForLayout];
+  customView = [dCopy customView];
+  superview = [customView superview];
 
-  if (v8 != v6)
+  if (superview != containerViewForLayout)
   {
-    [v6 addSubview:v7];
+    [containerViewForLayout addSubview:customView];
   }
 
-  [(UIAccessibilityHUDLayoutManager *)self layoutBoundsForHUD:v13];
-  [v7 setBounds:?];
-  [v7 sizeToFit];
-  [v6 bounds];
-  [v7 setCenter:{v10 + v9 * 0.5, v12 + v11 * 0.5}];
+  [(UIAccessibilityHUDLayoutManager *)self layoutBoundsForHUD:dCopy];
+  [customView setBounds:?];
+  [customView sizeToFit];
+  [containerViewForLayout bounds];
+  [customView setCenter:{v10 + v9 * 0.5, v12 + v11 * 0.5}];
 }
 
-- (CGSize)minimumUnscaledSizeForHUD:(id)a3 preferredLabelSize:(CGSize)a4
+- (CGSize)minimumUnscaledSizeForHUD:(id)d preferredLabelSize:(CGSize)size
 {
   v4 = 220.0;
   v5 = 220.0;
@@ -40,7 +40,7 @@
   return result;
 }
 
-- (CGSize)preferredSizeForLabelInHUD:(id)a3 maximumWidth:(double)a4
+- (CGSize)preferredSizeForLabelInHUD:(id)d maximumWidth:(double)width
 {
   v4 = *MEMORY[0x1E695F060];
   v5 = *(MEMORY[0x1E695F060] + 8);

@@ -1,12 +1,12 @@
 @interface LemonadeInlineStoryPlayerUIView
-- (_TtC12PhotosUICore31LemonadeInlineStoryPlayerUIView)initWithCoder:(id)a3;
-- (_TtC12PhotosUICore31LemonadeInlineStoryPlayerUIView)initWithFrame:(CGRect)a3;
+- (_TtC12PhotosUICore31LemonadeInlineStoryPlayerUIView)initWithCoder:(id)coder;
+- (_TtC12PhotosUICore31LemonadeInlineStoryPlayerUIView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation LemonadeInlineStoryPlayerUIView
 
-- (_TtC12PhotosUICore31LemonadeInlineStoryPlayerUIView)initWithCoder:(id)a3
+- (_TtC12PhotosUICore31LemonadeInlineStoryPlayerUIView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC12PhotosUICore31LemonadeInlineStoryPlayerUIView____lazy_storage___player) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC12PhotosUICore31LemonadeInlineStoryPlayerUIView____lazy_storage___contentPlayerView) = 0;
@@ -23,11 +23,11 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1A435D024();
 }
 
-- (_TtC12PhotosUICore31LemonadeInlineStoryPlayerUIView)initWithFrame:(CGRect)a3
+- (_TtC12PhotosUICore31LemonadeInlineStoryPlayerUIView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

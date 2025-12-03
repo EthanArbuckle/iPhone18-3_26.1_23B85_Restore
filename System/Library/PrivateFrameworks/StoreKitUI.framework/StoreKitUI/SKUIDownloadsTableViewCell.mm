@@ -1,13 +1,13 @@
 @interface SKUIDownloadsTableViewCell
-- (SKUIDownloadsTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (SKUIDownloadsTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)layoutSubviews;
 @end
 
 @implementation SKUIDownloadsTableViewCell
 
-- (SKUIDownloadsTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (SKUIDownloadsTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  v6 = a4;
+  identifierCopy = identifier;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIDownloadsTableViewCell initWithStyle:reuseIdentifier:];
@@ -15,15 +15,15 @@
 
   v12.receiver = self;
   v12.super_class = SKUIDownloadsTableViewCell;
-  v7 = [(SKUIDownloadsTableViewCell *)&v12 initWithStyle:a3 reuseIdentifier:v6];
+  v7 = [(SKUIDownloadsTableViewCell *)&v12 initWithStyle:style reuseIdentifier:identifierCopy];
   if (v7)
   {
     v8 = objc_alloc_init(SKUIDownloadsCellView);
     cellView = v7->_cellView;
     v7->_cellView = v8;
 
-    v10 = [(SKUIDownloadsTableViewCell *)v7 contentView];
-    [v10 addSubview:v7->_cellView];
+    contentView = [(SKUIDownloadsTableViewCell *)v7 contentView];
+    [contentView addSubview:v7->_cellView];
   }
 
   return v7;
@@ -35,8 +35,8 @@
   v5.super_class = SKUIDownloadsTableViewCell;
   [(SKUIDownloadsTableViewCell *)&v5 layoutSubviews];
   cellView = self->_cellView;
-  v4 = [(SKUIDownloadsTableViewCell *)self contentView];
-  [v4 bounds];
+  contentView = [(SKUIDownloadsTableViewCell *)self contentView];
+  [contentView bounds];
   [(SKUIDownloadsCellView *)cellView setFrame:?];
 }
 

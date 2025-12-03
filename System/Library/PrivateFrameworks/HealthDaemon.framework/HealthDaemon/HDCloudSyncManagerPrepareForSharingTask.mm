@@ -1,39 +1,39 @@
 @interface HDCloudSyncManagerPrepareForSharingTask
-- (id)pipelineForRepository:(id)a3;
+- (id)pipelineForRepository:(id)repository;
 @end
 
 @implementation HDCloudSyncManagerPrepareForSharingTask
 
-- (id)pipelineForRepository:(id)a3
+- (id)pipelineForRepository:(id)repository
 {
-  v4 = a3;
+  repositoryCopy = repository;
   v5 = [HDCloudSyncPipeline alloc];
-  v6 = [(HDCloudSyncManagerRepositoryTask *)self context];
-  v7 = [(HDCloudSyncManagerPipelineTask *)self accessibilityAssertion];
-  v8 = [(HDCloudSyncManagerRepositoryTask *)self manager];
-  v9 = [v8 queue];
-  v10 = [(HDCloudSyncPipeline *)v5 initForContext:v6 repository:v4 accessibilityAssertion:v7 queue:v9];
+  context = [(HDCloudSyncManagerRepositoryTask *)self context];
+  accessibilityAssertion = [(HDCloudSyncManagerPipelineTask *)self accessibilityAssertion];
+  manager = [(HDCloudSyncManagerRepositoryTask *)self manager];
+  queue = [manager queue];
+  v10 = [(HDCloudSyncPipeline *)v5 initForContext:context repository:repositoryCopy accessibilityAssertion:accessibilityAssertion queue:queue];
 
   v11 = [HDCloudSyncPipelineStageFetchAndUpdateCache alloc];
-  v12 = [v10 operationConfiguration];
-  v13 = [(HDCloudSyncPipelineStage *)v11 initWithConfiguration:v12 cloudState:0];
+  operationConfiguration = [v10 operationConfiguration];
+  v13 = [(HDCloudSyncPipelineStage *)v11 initWithConfiguration:operationConfiguration cloudState:0];
   [v10 addStage:v13];
 
   v14 = [HDCloudSyncPipelineStageSynchronize alloc];
-  v15 = [v10 operationConfiguration];
-  v16 = [(HDCloudSyncPipelineStage *)v14 initWithConfiguration:v15 cloudState:0];
+  operationConfiguration2 = [v10 operationConfiguration];
+  v16 = [(HDCloudSyncPipelineStage *)v14 initWithConfiguration:operationConfiguration2 cloudState:0];
   [v10 addStage:v16];
 
   v17 = [HDCloudSyncPipelineStagePrepareForSync alloc];
-  v18 = [v10 operationConfiguration];
-  v19 = [(HDCloudSyncPipelineStage *)v17 initWithConfiguration:v18 cloudState:0];
+  operationConfiguration3 = [v10 operationConfiguration];
+  v19 = [(HDCloudSyncPipelineStage *)v17 initWithConfiguration:operationConfiguration3 cloudState:0];
   [v10 addStage:v19];
 
   v20 = [HDCloudSyncPrepareForSharingOperation alloc];
-  v21 = [v10 operationConfiguration];
-  v22 = [(HDCloudSyncOperation *)v20 initWithConfiguration:v21 cloudState:0];
-  v23 = [(HDCloudSyncOperation *)v22 asPipelineStage];
-  [v10 addStage:v23];
+  operationConfiguration4 = [v10 operationConfiguration];
+  v22 = [(HDCloudSyncOperation *)v20 initWithConfiguration:operationConfiguration4 cloudState:0];
+  asPipelineStage = [(HDCloudSyncOperation *)v22 asPipelineStage];
+  [v10 addStage:asPipelineStage];
 
   return v10;
 }

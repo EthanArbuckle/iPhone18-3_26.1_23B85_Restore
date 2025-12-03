@@ -2,7 +2,7 @@
 + (id)sharedAccountsManager;
 - (id)getMeCard;
 - (id)nameToEmailAddresses;
-- (void)update:(id)a3;
+- (void)update:(id)update;
 @end
 
 @implementation QPAccountsManager
@@ -72,17 +72,17 @@ uint64_t __42__QPAccountsManager_sharedAccountsManager__block_invoke()
 - (id)nameToEmailAddresses
 {
   v137 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v115 = [MEMORY[0x1E695DF90] dictionary];
-  v114 = [MEMORY[0x1E695DF90] dictionary];
-  v116 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary3 = [MEMORY[0x1E695DF90] dictionary];
+  v116 = dictionary;
   if (sPrivateAccountsEntitlement == 1)
   {
-    v4 = [MEMORY[0x1E6959A48] defaultStore];
-    v94 = self;
+    defaultStore = [MEMORY[0x1E6959A48] defaultStore];
+    selfCopy = self;
     accountTypes = self->_accountTypes;
     v130 = 0;
-    v6 = [v4 accountsWithAccountTypeIdentifiers:accountTypes error:&v130];
+    v6 = [defaultStore accountsWithAccountTypeIdentifiers:accountTypes error:&v130];
     v7 = v130;
 
     v97 = v7;
@@ -121,39 +121,39 @@ uint64_t __42__QPAccountsManager_sharedAccountsManager__block_invoke()
             v13 = *(*(&v126 + 1) + 8 * v12);
             if ([v13 isActive])
             {
-              v14 = [v13 accountProperties];
-              v15 = [MEMORY[0x1E695DF70] array];
-              v16 = [v14 objectForKey:@"EmailAddresses"];
+              accountProperties = [v13 accountProperties];
+              array = [MEMORY[0x1E695DF70] array];
+              v16 = [accountProperties objectForKey:@"EmailAddresses"];
               if ([v16 count])
               {
-                [v15 addObjectsFromArray:v16];
+                [array addObjectsFromArray:v16];
               }
 
               v109 = v16;
-              if (![v15 count])
+              if (![array count])
               {
-                v17 = v14;
-                v18 = [v14 objectForKey:@"IdentityEmailAddress"];
+                v17 = accountProperties;
+                v18 = [accountProperties objectForKey:@"IdentityEmailAddress"];
                 if ([v18 length])
                 {
-                  v19 = [v18 lowercaseString];
-                  [v15 addObject:v19];
+                  lowercaseString = [v18 lowercaseString];
+                  [array addObject:lowercaseString];
                 }
 
-                v20 = [v13 accountType];
-                v21 = v20;
-                if (v20)
+                accountType = [v13 accountType];
+                v21 = accountType;
+                if (accountType)
                 {
                   v106 = v12;
-                  v22 = [v20 identifier];
-                  if ([v22 length] && ((objc_msgSend(v22, "isEqualToString:", v99) & 1) != 0 || (objc_msgSend(v22, "isEqualToString:", v98) & 1) != 0 || (objc_msgSend(v22, "isEqualToString:", v96) & 1) != 0 || (objc_msgSend(v22, "isEqualToString:", v95) & 1) != 0 || (objc_msgSend(v22, "isEqualToString:", v93) & 1) != 0 || objc_msgSend(v22, "isEqualToString:", v92)))
+                  identifier = [accountType identifier];
+                  if ([identifier length] && ((objc_msgSend(identifier, "isEqualToString:", v99) & 1) != 0 || (objc_msgSend(identifier, "isEqualToString:", v98) & 1) != 0 || (objc_msgSend(identifier, "isEqualToString:", v96) & 1) != 0 || (objc_msgSend(identifier, "isEqualToString:", v95) & 1) != 0 || (objc_msgSend(identifier, "isEqualToString:", v93) & 1) != 0 || objc_msgSend(identifier, "isEqualToString:", v92)))
                   {
-                    v23 = [v13 username];
-                    if ([v23 length])
+                    username = [v13 username];
+                    if ([username length])
                     {
-                      [v23 lowercaseString];
+                      [username lowercaseString];
                       v25 = v24 = v6;
-                      [v15 addObject:v25];
+                      [array addObject:v25];
 
                       v6 = v24;
                     }
@@ -163,17 +163,17 @@ uint64_t __42__QPAccountsManager_sharedAccountsManager__block_invoke()
                   v12 = v106;
                 }
 
-                v14 = v17;
+                accountProperties = v17;
                 v16 = v109;
               }
 
-              if ([v15 count])
+              if ([array count])
               {
-                v26 = [v14 objectForKey:@"FullUserName"];
-                v105 = v14;
+                v26 = [accountProperties objectForKey:@"FullUserName"];
+                v105 = accountProperties;
                 if (![v26 length])
                 {
-                  v27 = [v14 objectForKey:@"ACPropertyFullName"];
+                  v27 = [accountProperties objectForKey:@"ACPropertyFullName"];
 
                   v26 = v27;
                 }
@@ -182,17 +182,17 @@ uint64_t __42__QPAccountsManager_sharedAccountsManager__block_invoke()
                 v28 = [v26 length];
                 if (!v28)
                 {
-                  v29 = [v15 firstObject];
+                  firstObject = [array firstObject];
 
-                  v26 = v29;
+                  v26 = firstObject;
                 }
 
                 v124 = 0u;
                 v125 = 0u;
                 v122 = 0u;
                 v123 = 0u;
-                v104 = v15;
-                v112 = v15;
+                v104 = array;
+                v112 = array;
                 v30 = [v112 countByEnumeratingWithState:&v122 objects:v135 count:16];
                 if (v30)
                 {
@@ -210,14 +210,14 @@ uint64_t __42__QPAccountsManager_sharedAccountsManager__block_invoke()
                       v34 = *(*(&v122 + 1) + 8 * i);
                       if ([v34 length])
                       {
-                        v35 = [v114 objectForKey:v34];
-                        v36 = [v115 objectForKey:v34];
+                        v35 = [dictionary3 objectForKey:v34];
+                        v36 = [dictionary2 objectForKey:v34];
                         v37 = v36;
                         if (v36 && [v36 length])
                         {
                           if (v35)
                           {
-                            v3 = v116;
+                            dictionary = v116;
                             if ([v35 BOOLValue] & 1 | (v28 == 0))
                             {
                               goto LABEL_49;
@@ -226,7 +226,7 @@ uint64_t __42__QPAccountsManager_sharedAccountsManager__block_invoke()
 
                           else
                           {
-                            v3 = v116;
+                            dictionary = v116;
                             if (!v28)
                             {
 LABEL_49:
@@ -235,10 +235,10 @@ LABEL_49:
                             }
                           }
 
-                          v38 = [v3 objectForKeyedSubscript:v37];
+                          v38 = [dictionary objectForKeyedSubscript:v37];
                           [v38 removeObject:v34];
 
-                          v39 = [v3 objectForKeyedSubscript:v37];
+                          v39 = [dictionary objectForKeyedSubscript:v37];
                           v40 = [v39 count];
 
                           if (!v40)
@@ -258,10 +258,10 @@ LABEL_49:
                         v43 = [v116 objectForKeyedSubscript:v26];
                         [v43 addObject:v34];
 
-                        v3 = v116;
-                        [v115 setObject:v26 forKey:v34];
+                        dictionary = v116;
+                        [dictionary2 setObject:v26 forKey:v34];
                         v44 = [MEMORY[0x1E696AD98] numberWithBool:v28 != 0];
-                        [v114 setObject:v44 forKey:v34];
+                        [dictionary3 setObject:v44 forKey:v34];
 
                         goto LABEL_49;
                       }
@@ -276,9 +276,9 @@ LABEL_49:
                 v10 = v100;
                 v6 = v101;
                 v9 = v102;
-                v14 = v105;
+                accountProperties = v105;
                 v12 = v107;
-                v15 = v104;
+                array = v104;
                 v16 = v109;
               }
             }
@@ -302,14 +302,14 @@ LABEL_49:
       if (os_log_type_enabled(accountsLogger_log, OS_LOG_TYPE_INFO))
       {
         v46 = v45;
-        v47 = [v3 count];
+        v47 = [dictionary count];
         *buf = 134217984;
         v134 = v47;
         _os_log_impl(&dword_1C6584000, v46, OS_LOG_TYPE_INFO, "QueryParserAccountsManager: found %lu distinct Accounts names", buf, 0xCu);
       }
     }
 
-    self = v94;
+    self = selfCopy;
   }
 
   else
@@ -350,39 +350,39 @@ LABEL_49:
       goto LABEL_108;
     }
 
-    v56 = [MEMORY[0x1E695DF70] array];
-    v57 = [v53 givenName];
-    v58 = [v57 length];
+    array2 = [MEMORY[0x1E695DF70] array];
+    givenName = [v53 givenName];
+    v58 = [givenName length];
 
     if (v58)
     {
-      v59 = [v53 givenName];
-      [v56 addObject:v59];
+      givenName2 = [v53 givenName];
+      [array2 addObject:givenName2];
     }
 
-    v60 = [v53 middleName];
-    v61 = [v60 length];
+    middleName = [v53 middleName];
+    v61 = [middleName length];
 
     if (v61)
     {
-      v62 = [v53 middleName];
-      [v56 addObject:v62];
+      middleName2 = [v53 middleName];
+      [array2 addObject:middleName2];
     }
 
-    v63 = [v53 familyName];
-    v64 = [v63 length];
+    familyName = [v53 familyName];
+    v64 = [familyName length];
 
     if (v64)
     {
-      v65 = [v53 familyName];
-      [v56 addObject:v65];
+      familyName2 = [v53 familyName];
+      [array2 addObject:familyName2];
     }
 
     v111 = v49;
-    v108 = v56;
-    if ([v56 count])
+    v108 = array2;
+    if ([array2 count])
     {
-      v66 = [v56 componentsJoinedByString:@" "];
+      v66 = [array2 componentsJoinedByString:@" "];
     }
 
     else
@@ -390,14 +390,14 @@ LABEL_49:
       v66 = 0;
     }
 
-    v3 = v116;
+    dictionary = v116;
     v119 = 0u;
     v120 = 0u;
     v117 = 0u;
     v118 = 0u;
     v110 = v53;
-    v67 = [v53 emailAddresses];
-    v68 = [v67 countByEnumeratingWithState:&v117 objects:v131 count:16];
+    emailAddresses = [v53 emailAddresses];
+    v68 = [emailAddresses countByEnumeratingWithState:&v117 objects:v131 count:16];
     if (v68)
     {
       v69 = v68;
@@ -410,13 +410,13 @@ LABEL_49:
         {
           if (*v118 != v70)
           {
-            objc_enumerationMutation(v67);
+            objc_enumerationMutation(emailAddresses);
           }
 
-          v72 = [*(*(&v117 + 1) + 8 * v71) value];
-          if ([v72 length])
+          value = [*(*(&v117 + 1) + 8 * v71) value];
+          if ([value length])
           {
-            v73 = [v115 objectForKey:v72];
+            v73 = [dictionary2 objectForKey:value];
             v74 = v66;
             if ([v74 length])
             {
@@ -424,12 +424,12 @@ LABEL_49:
               {
                 v75 = v66;
                 v76 = v70;
-                v77 = v67;
-                v78 = [v3 objectForKeyedSubscript:v73];
-                [v78 removeObject:v72];
+                v77 = emailAddresses;
+                v78 = [dictionary objectForKeyedSubscript:v73];
+                [v78 removeObject:value];
 
-                v79 = [v3 objectForKeyedSubscript:v73];
-                v80 = v3;
+                v79 = [dictionary objectForKeyedSubscript:v73];
+                v80 = dictionary;
                 v81 = [v79 count];
 
                 if (!v81)
@@ -437,34 +437,34 @@ LABEL_49:
                   [v80 removeObjectForKey:v73];
                 }
 
-                v3 = v80;
-                v67 = v77;
+                dictionary = v80;
+                emailAddresses = v77;
                 v70 = v76;
                 v66 = v75;
                 v69 = v113;
               }
 
 LABEL_97:
-              v83 = [v3 objectForKey:v74];
+              v83 = [dictionary objectForKey:v74];
 
               if (!v83)
               {
                 v84 = [MEMORY[0x1E695DFA8] set];
-                [v3 setObject:v84 forKey:v74];
+                [dictionary setObject:v84 forKey:v74];
               }
 
-              v85 = [v3 objectForKeyedSubscript:v74];
-              [v85 addObject:v72];
+              v85 = [dictionary objectForKeyedSubscript:v74];
+              [v85 addObject:value];
 
-              v3 = v116;
-              [v115 setObject:v74 forKey:v72];
+              dictionary = v116;
+              [dictionary2 setObject:v74 forKey:value];
               v86 = [MEMORY[0x1E696AD98] numberWithBool:v66 != 0];
-              [v114 setObject:v86 forKey:v72];
+              [dictionary3 setObject:v86 forKey:value];
             }
 
             else if (!v73 || ![v73 length])
             {
-              v82 = v72;
+              v82 = value;
 
               v74 = v82;
               goto LABEL_97;
@@ -475,7 +475,7 @@ LABEL_97:
         }
 
         while (v69 != v71);
-        v69 = [v67 countByEnumeratingWithState:&v117 objects:v131 count:16];
+        v69 = [emailAddresses countByEnumeratingWithState:&v117 objects:v131 count:16];
       }
 
       while (v69);
@@ -508,7 +508,7 @@ LABEL_97:
   if (os_log_type_enabled(accountsLogger_log, OS_LOG_TYPE_INFO))
   {
     v88 = v87;
-    v89 = [v3 count];
+    v89 = [dictionary count];
     *buf = 134217984;
     v134 = v89;
     _os_log_impl(&dword_1C6584000, v88, OS_LOG_TYPE_INFO, "QueryParserAccountsManager: found %lu distinct names in total", buf, 0xCu);
@@ -518,13 +518,13 @@ LABEL_108:
 
   v90 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)update:(id)a3
+- (void)update:(id)update
 {
   v41 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  updateCopy = update;
   if (accountsLogger_token != -1)
   {
     [QPAccountsManager nameToEmailAddresses];
@@ -534,41 +534,41 @@ LABEL_108:
   if (os_log_type_enabled(accountsLogger_log, OS_LOG_TYPE_INFO))
   {
     v6 = v5;
-    v7 = [v4 name];
+    name = [updateCopy name];
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v7;
+    *(&buf + 4) = name;
     _os_log_impl(&dword_1C6584000, v6, OS_LOG_TYPE_INFO, "QueryParserAccountsManager: start update AccountsManager based on %@ notification", &buf, 0xCu);
   }
 
-  v8 = [(QPAccountsManager *)self getMeCard];
+  getMeCard = [(QPAccountsManager *)self getMeCard];
   meCard = self->_meCard;
-  self->_meCard = v8;
+  self->_meCard = getMeCard;
 
-  v10 = [(QPAccountsManager *)self nameToEmailAddresses];
+  nameToEmailAddresses = [(QPAccountsManager *)self nameToEmailAddresses];
   contentsArray = self->_contentsArray;
   p_contentsArray = &self->_contentsArray;
   *p_contentsArray = 0;
 
-  if ([v10 count])
+  if ([nameToEmailAddresses count])
   {
     *&buf = 0;
     *(&buf + 1) = &buf;
     v37 = 0x3032000000;
     v38 = __Block_byref_object_copy_;
     v39 = __Block_byref_object_dispose_;
-    v40 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v10, "count") + 1}];
+    v40 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(nameToEmailAddresses, "count") + 1}];
     v27 = 0;
     v28 = &v27;
     v29 = 0x3032000000;
     v30 = __Block_byref_object_copy_;
     v31 = __Block_byref_object_dispose_;
-    v32 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v10, "count")}];
+    v32 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(nameToEmailAddresses, "count")}];
     v21 = 0;
     v22 = &v21;
     v23 = 0x3032000000;
     v24 = __Block_byref_object_copy_;
     v25 = __Block_byref_object_dispose_;
-    v26 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v10, "count")}];
+    v26 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(nameToEmailAddresses, "count")}];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __28__QPAccountsManager_update___block_invoke;
@@ -576,7 +576,7 @@ LABEL_108:
     v20[4] = &v27;
     v20[5] = &v21;
     v20[6] = &buf;
-    [v10 enumerateKeysAndObjectsUsingBlock:v20];
+    [nameToEmailAddresses enumerateKeysAndObjectsUsingBlock:v20];
     v13 = *(*(&buf + 1) + 40);
     v14 = [v28[5] componentsJoinedByString:{@", "}];
     v35[0] = v14;
@@ -594,9 +594,9 @@ LABEL_108:
     v17 = accountsLogger_log;
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
-      v18 = [v4 name];
+      name2 = [updateCopy name];
       *v33 = 138412290;
-      v34 = v18;
+      v34 = name2;
       _os_log_impl(&dword_1C6584000, v17, OS_LOG_TYPE_INFO, "QueryParserAccountsManager: end update AccountsManager based on %@ notification", v33, 0xCu);
     }
 
@@ -669,39 +669,39 @@ void __28__QPAccountsManager_update___block_invoke(void *a1, void *a2, void *a3)
   else
   {
     v60 = v4;
-    v12 = [MEMORY[0x1E695DF70] array];
-    v13 = [v9 givenName];
-    v14 = [v13 length];
+    array = [MEMORY[0x1E695DF70] array];
+    givenName = [v9 givenName];
+    v14 = [givenName length];
 
     if (v14)
     {
-      v15 = [v9 givenName];
-      [v12 addObject:v15];
+      givenName2 = [v9 givenName];
+      [array addObject:givenName2];
     }
 
-    v16 = [v9 middleName];
-    v17 = [v16 length];
+    middleName = [v9 middleName];
+    v17 = [middleName length];
 
     if (v17)
     {
-      v18 = [v9 middleName];
-      [v12 addObject:v18];
+      middleName2 = [v9 middleName];
+      [array addObject:middleName2];
     }
 
-    v19 = [v9 familyName];
-    v20 = [v19 length];
+    familyName = [v9 familyName];
+    v20 = [familyName length];
 
     if (v20)
     {
-      v21 = [v9 familyName];
-      [v12 addObject:v21];
+      familyName2 = [v9 familyName];
+      [array addObject:familyName2];
     }
 
     v61 = v3;
-    v58 = v12;
-    if ([v12 count])
+    v58 = array;
+    if ([array count])
     {
-      v57 = [v12 componentsJoinedByString:@" "];
+      v57 = [array componentsJoinedByString:@" "];
     }
 
     else
@@ -709,13 +709,13 @@ void __28__QPAccountsManager_update___block_invoke(void *a1, void *a2, void *a3)
       v57 = 0;
     }
 
-    v22 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v71 = 0u;
     v72 = 0u;
     v73 = 0u;
     v74 = 0u;
-    v23 = [v9 emailAddresses];
-    v24 = [v23 countByEnumeratingWithState:&v71 objects:v81 count:16];
+    emailAddresses = [v9 emailAddresses];
+    v24 = [emailAddresses countByEnumeratingWithState:&v71 objects:v81 count:16];
     if (v24)
     {
       v25 = v24;
@@ -726,26 +726,26 @@ void __28__QPAccountsManager_update___block_invoke(void *a1, void *a2, void *a3)
         {
           if (*v72 != v26)
           {
-            objc_enumerationMutation(v23);
+            objc_enumerationMutation(emailAddresses);
           }
 
-          v28 = [*(*(&v71 + 1) + 8 * i) value];
-          [v22 addObject:v28];
+          value = [*(*(&v71 + 1) + 8 * i) value];
+          [array2 addObject:value];
         }
 
-        v25 = [v23 countByEnumeratingWithState:&v71 objects:v81 count:16];
+        v25 = [emailAddresses countByEnumeratingWithState:&v71 objects:v81 count:16];
       }
 
       while (v25);
     }
 
-    v29 = [MEMORY[0x1E695DF70] array];
+    array3 = [MEMORY[0x1E695DF70] array];
     v67 = 0u;
     v68 = 0u;
     v69 = 0u;
     v70 = 0u;
-    v30 = [v9 phoneNumbers];
-    v31 = [v30 countByEnumeratingWithState:&v67 objects:v80 count:16];
+    phoneNumbers = [v9 phoneNumbers];
+    v31 = [phoneNumbers countByEnumeratingWithState:&v67 objects:v80 count:16];
     if (v31)
     {
       v32 = v31;
@@ -756,34 +756,34 @@ void __28__QPAccountsManager_update___block_invoke(void *a1, void *a2, void *a3)
         {
           if (*v68 != v33)
           {
-            objc_enumerationMutation(v30);
+            objc_enumerationMutation(phoneNumbers);
           }
 
-          v35 = [*(*(&v67 + 1) + 8 * j) value];
-          v36 = v35;
-          if (v35)
+          value2 = [*(*(&v67 + 1) + 8 * j) value];
+          v36 = value2;
+          if (value2)
           {
-            v37 = [v35 stringValue];
-            [v29 addObject:v37];
+            stringValue = [value2 stringValue];
+            [array3 addObject:stringValue];
           }
         }
 
-        v32 = [v30 countByEnumeratingWithState:&v67 objects:v80 count:16];
+        v32 = [phoneNumbers countByEnumeratingWithState:&v67 objects:v80 count:16];
       }
 
       while (v32);
     }
 
-    v56 = v29;
+    v56 = array3;
 
-    v62 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v63 = 0u;
     v64 = 0u;
     v65 = 0u;
     v66 = 0u;
     v59 = v9;
-    v38 = [v9 contactRelations];
-    v39 = [v38 countByEnumeratingWithState:&v63 objects:v79 count:16];
+    contactRelations = [v9 contactRelations];
+    v39 = [contactRelations countByEnumeratingWithState:&v63 objects:v79 count:16];
     if (v39)
     {
       v40 = v39;
@@ -795,21 +795,21 @@ void __28__QPAccountsManager_update___block_invoke(void *a1, void *a2, void *a3)
         {
           if (*v64 != v41)
           {
-            objc_enumerationMutation(v38);
+            objc_enumerationMutation(contactRelations);
           }
 
           v43 = *(*(&v63 + 1) + 8 * v42);
           if (v43)
           {
-            v44 = [*(*(&v63 + 1) + 8 * v42) label];
-            v45 = [v43 value];
-            v46 = v45;
-            if (v45)
+            label = [*(*(&v63 + 1) + 8 * v42) label];
+            value3 = [v43 value];
+            v46 = value3;
+            if (value3)
             {
-              v47 = [v45 name];
-              if (v47)
+              name = [value3 name];
+              if (name)
               {
-                v48 = v44;
+                v48 = label;
                 if ([v48 length])
                 {
                   if (normalizeRelationLabelString_onceToken != -1)
@@ -837,7 +837,7 @@ void __28__QPAccountsManager_update___block_invoke(void *a1, void *a2, void *a3)
                   v51 = &stru_1F45E9EA0;
                 }
 
-                [v62 setObject:v51 forKeyedSubscript:v47];
+                [dictionary setObject:v51 forKeyedSubscript:name];
               }
             }
           }
@@ -846,7 +846,7 @@ void __28__QPAccountsManager_update___block_invoke(void *a1, void *a2, void *a3)
         }
 
         while (v40 != v42);
-        v40 = [v38 countByEnumeratingWithState:&v63 objects:v79 count:16];
+        v40 = [contactRelations countByEnumeratingWithState:&v63 objects:v79 count:16];
       }
 
       while (v40);
@@ -874,9 +874,9 @@ void __28__QPAccountsManager_update___block_invoke(void *a1, void *a2, void *a3)
     v4 = v60;
     v9 = v59;
     [v3 setObject:v58 forKeyedSubscript:@"personSubNames"];
-    [v3 setObject:v22 forKeyedSubscript:@"personEmails"];
+    [v3 setObject:array2 forKeyedSubscript:@"personEmails"];
     [v3 setObject:v56 forKeyedSubscript:@"personPhoneNumbers"];
-    [v3 setObject:v62 forKeyedSubscript:@"meCardRelationMap"];
+    [v3 setObject:dictionary forKeyedSubscript:@"meCardRelationMap"];
     [v3 setObject:v52 forKeyedSubscript:@"personRelationMap"];
   }
 

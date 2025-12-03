@@ -1,27 +1,27 @@
 @interface ChartUpdater
-+ (id)_rangeStringForInterval:(int64_t)a3;
-- (BOOL)updateChartForStock:(id)a3 interval:(int64_t)a4 withCompletion:(id)a5;
++ (id)_rangeStringForInterval:(int64_t)interval;
+- (BOOL)updateChartForStock:(id)stock interval:(int64_t)interval withCompletion:(id)completion;
 - (ChartUpdaterDelegate)delegate;
 - (id)dataSeries;
 - (void)cancel;
 - (void)didParseData;
-- (void)failWithError:(id)a3;
-- (void)parseData:(id)a3;
-- (void)parseDataSeriesDictionary:(id)a3;
+- (void)failWithError:(id)error;
+- (void)parseData:(id)data;
+- (void)parseDataSeriesDictionary:(id)dictionary;
 @end
 
 @implementation ChartUpdater
 
-+ (id)_rangeStringForInterval:(int64_t)a3
++ (id)_rangeStringForInterval:(int64_t)interval
 {
-  if ((a3 - 1) > 7)
+  if ((interval - 1) > 7)
   {
     return @"1d";
   }
 
   else
   {
-    return off_279D15E50[a3 - 1];
+    return off_279D15E50[interval - 1];
   }
 }
 
@@ -35,33 +35,33 @@
   [(YQLRequest *)&v4 cancel];
 }
 
-- (BOOL)updateChartForStock:(id)a3 interval:(int64_t)a4 withCompletion:(id)a5
+- (BOOL)updateChartForStock:(id)stock interval:(int64_t)interval withCompletion:(id)completion
 {
   v39[6] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a5;
+  stockCopy = stock;
+  completionCopy = completion;
   v11 = StocksLogForCategory(0);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
-    [ChartUpdater updateChartForStock:v9 interval:a4 withCompletion:v11];
+    [ChartUpdater updateChartForStock:stockCopy interval:interval withCompletion:v11];
   }
 
   v12 = +[NetPreferences sharedPreferences];
-  v13 = [v12 isNetworkReachable];
+  isNetworkReachable = [v12 isNetworkReachable];
 
-  if (v13)
+  if (isNetworkReachable)
   {
-    v14 = [v9 symbol];
-    if ([v14 length])
+    symbol = [stockCopy symbol];
+    if ([symbol length])
     {
       [(ChartUpdater *)self cancel];
-      v15 = [v10 copy];
+      v15 = [completionCopy copy];
       updateCompletionHandler = self->_updateCompletionHandler;
       self->_updateCompletionHandler = v15;
 
-      objc_storeStrong(&self->_stock, a3);
-      self->_interval = a4;
-      v17 = [v9 chartDataForInterval:a4];
+      objc_storeStrong(&self->_stock, stock);
+      self->_interval = interval;
+      v17 = [stockCopy chartDataForInterval:interval];
       if (v17)
       {
         v18 = StocksLogForCategory(0);
@@ -83,36 +83,36 @@
       else
       {
         v21 = +[NetPreferences sharedPreferences];
-        v22 = [(YQLRequest *)self YQLLanguageCode];
-        v23 = [(YQLRequest *)self YQLCountryCode];
+        yQLLanguageCode = [(YQLRequest *)self YQLLanguageCode];
+        yQLCountryCode = [(YQLRequest *)self YQLCountryCode];
         v39[0] = @"json";
         v38[0] = @"format";
         v38[1] = @"ticker";
-        v24 = [v9 symbol];
-        v39[1] = v24;
+        symbol2 = [stockCopy symbol];
+        v39[1] = symbol2;
         v38[2] = @"range";
-        v25 = [ChartUpdater _rangeStringForInterval:a4];
+        v25 = [ChartUpdater _rangeStringForInterval:interval];
         v39[2] = v25;
-        v39[3] = v22;
-        v35 = v23;
-        v36 = v22;
+        v39[3] = yQLLanguageCode;
+        v35 = yQLCountryCode;
+        v36 = yQLLanguageCode;
         v38[3] = @"lang";
         v38[4] = @"region";
         v38[5] = @"type";
-        v39[4] = v23;
+        v39[4] = yQLCountryCode;
         v39[5] = @"quote";
         v26 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v39 forKeys:v38 count:6];
 
-        v27 = [v21 stocksYQLBaseURL];
-        v28 = [v27 URLByAppendingPathComponent:@"/applewf/chart"];
+        stocksYQLBaseURL = [v21 stocksYQLBaseURL];
+        v28 = [stocksYQLBaseURL URLByAppendingPathComponent:@"/applewf/chart"];
 
         v29 = [v21 signedRequestForURL:v28 parameters:v26];
         v30 = v21;
         if ([v21 serviceDebugging])
         {
           v31 = [v29 URL];
-          v32 = [v31 absoluteString];
-          [YQLRequest appendDebugString:v32];
+          absoluteString = [v31 absoluteString];
+          [YQLRequest appendDebugString:absoluteString];
 
           v33 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@", v26];
           v30 = v21;
@@ -143,8 +143,8 @@ LABEL_16:
 
   else
   {
-    v14 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.stocks" code:3 userInfo:0];
-    [(ChartUpdater *)self failWithError:v14];
+    symbol = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.stocks" code:3 userInfo:0];
+    [(ChartUpdater *)self failWithError:symbol];
   }
 
   v19 = 1;
@@ -153,11 +153,11 @@ LABEL_17:
   return v19;
 }
 
-- (void)parseData:(id)a3
+- (void)parseData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v9 = 0;
-  v5 = [MEMORY[0x277CCAAA0] JSONObjectWithData:v4 options:0 error:&v9];
+  v5 = [MEMORY[0x277CCAAA0] JSONObjectWithData:dataCopy options:0 error:&v9];
   v6 = v9;
   if (v6)
   {
@@ -171,7 +171,7 @@ LABEL_17:
 
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    [(YQLRequest *)self failToParseWithData:v4];
+    [(YQLRequest *)self failToParseWithData:dataCopy];
   }
 
   else
@@ -184,16 +184,16 @@ LABEL_17:
 
     else
     {
-      [(YQLRequest *)self failToParseWithData:v4];
+      [(YQLRequest *)self failToParseWithData:dataCopy];
     }
   }
 }
 
-- (void)parseDataSeriesDictionary:(id)a3
+- (void)parseDataSeriesDictionary:(id)dictionary
 {
   v101 = *MEMORY[0x277D85DE8];
-  v66 = a3;
-  v3 = [YahooResponseParser objectOfClass:objc_opt_class() withDictionaryKeyPath:&unk_287C817C8 inJSONObject:v66];
+  dictionaryCopy = dictionary;
+  v3 = [YahooResponseParser objectOfClass:objc_opt_class() withDictionaryKeyPath:&unk_287C817C8 inJSONObject:dictionaryCopy];
   v67 = v3;
   if (v3)
   {
@@ -208,7 +208,7 @@ LABEL_17:
     v5 = [v72 count];
     if (v5 != [v67 count])
     {
-      [(YQLRequest *)self failToParseWithDataSeriesDictionary:v66];
+      [(YQLRequest *)self failToParseWithDataSeriesDictionary:dictionaryCopy];
 LABEL_80:
 
       goto LABEL_81;
@@ -218,17 +218,17 @@ LABEL_80:
     v96[0] = @"reference-meta";
     v96[1] = @"type";
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v96 count:2];
-    v64 = [YahooResponseParser objectOfClass:v6 withDictionaryKeyPath:v7 inJSONObject:v66];
+    v64 = [YahooResponseParser objectOfClass:v6 withDictionaryKeyPath:v7 inJSONObject:dictionaryCopy];
 
     if (!v64 || (v68 = [v64 caseInsensitiveCompare:@"timestamp"]) != 0 && objc_msgSend(v64, "caseInsensitiveCompare:", @"date"))
     {
-      [(YQLRequest *)self failToParseWithDataSeriesDictionary:v66];
+      [(YQLRequest *)self failToParseWithDataSeriesDictionary:dictionaryCopy];
 LABEL_79:
 
       goto LABEL_80;
     }
 
-    v8 = [YahooResponseParser objectOfClass:objc_opt_class() withDictionaryKeyPath:&unk_287C817E0 inJSONObject:v66];
+    v8 = [YahooResponseParser objectOfClass:objc_opt_class() withDictionaryKeyPath:&unk_287C817E0 inJSONObject:dictionaryCopy];
     v63 = v8;
     if (v8 && (v9 = [v8 count]) != 0)
     {
@@ -239,19 +239,19 @@ LABEL_79:
         self->_currentChartData = v10;
       }
 
-      v12 = [objc_alloc(MEMORY[0x277CBEAC0]) initWithDictionary:v66];
+      v12 = [objc_alloc(MEMORY[0x277CBEAC0]) initWithDictionary:dictionaryCopy];
       [(StockChartData *)self->_currentChartData setDataSeriesDict:v12];
 
       [(StockChartData *)self->_currentChartData allocateStockValuesWithCount:v9];
       v13 = self->_currentChartData;
-      v14 = [MEMORY[0x277CBEB18] array];
-      [(StockChartData *)v13 setInterestingIndexes:v14];
+      array = [MEMORY[0x277CBEB18] array];
+      [(StockChartData *)v13 setInterestingIndexes:array];
 
       v15 = objc_opt_class();
       v95[0] = @"reference-meta";
       v95[1] = @"open";
       v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v95 count:2];
-      v62 = [YahooResponseParser objectOfClass:v15 withDictionaryKeyPath:v16 inJSONObject:v66];
+      v62 = [YahooResponseParser objectOfClass:v15 withDictionaryKeyPath:v16 inJSONObject:dictionaryCopy];
 
       if (v62)
       {
@@ -270,7 +270,7 @@ LABEL_79:
       v94[0] = @"reference-meta";
       v94[1] = @"close";
       v21 = [MEMORY[0x277CBEA60] arrayWithObjects:v94 count:2];
-      v61 = [YahooResponseParser objectOfClass:v20 withDictionaryKeyPath:v21 inJSONObject:v66];
+      v61 = [YahooResponseParser objectOfClass:v20 withDictionaryKeyPath:v21 inJSONObject:dictionaryCopy];
 
       if (v61)
       {
@@ -285,7 +285,7 @@ LABEL_79:
         }
       }
 
-      [YahooResponseParser objectOfClass:objc_opt_class() withDictionaryKeyPath:&unk_287C817F8 inJSONObject:v66];
+      [YahooResponseParser objectOfClass:objc_opt_class() withDictionaryKeyPath:&unk_287C817F8 inJSONObject:dictionaryCopy];
       v80 = 0u;
       v81 = 0u;
       v78 = 0u;
@@ -340,7 +340,7 @@ LABEL_79:
         while (v25);
       }
 
-      v35 = [(StockChartData *)self->_currentChartData stockValues];
+      stockValues = [(StockChartData *)self->_currentChartData stockValues];
       v76 = 0u;
       v77 = 0u;
       v74 = 0u;
@@ -395,12 +395,12 @@ LABEL_79:
 
                   v50 = [v45 dateFromString:v44];
                   [v50 timeIntervalSince1970];
-                  v35->var0 = v51;
+                  stockValues->var0 = v51;
                 }
 
                 else
                 {
-                  v35->var0 = [v43 longLongValue];
+                  stockValues->var0 = [v43 longLongValue];
                 }
               }
 
@@ -419,7 +419,7 @@ LABEL_79:
                 v54 = v52;
                 v85 = v54;
                 v86 = &v88;
-                v87 = v35;
+                v87 = stockValues;
                 [v42 enumerateObjectsUsingBlock:v84];
 
                 if (v89[3])
@@ -427,18 +427,18 @@ LABEL_79:
 
                   _Block_object_dispose(&v88, 8);
 LABEL_59:
-                  var1 = v35->var1;
+                  var1 = stockValues->var1;
                   if (![(StockChartData *)self->_currentChartData minValue]|| var1 < [(StockChartData *)self->_currentChartData minValue][8])
                   {
-                    [(StockChartData *)self->_currentChartData setMinValue:v35];
+                    [(StockChartData *)self->_currentChartData setMinValue:stockValues];
                   }
 
                   if (![(StockChartData *)self->_currentChartData maxValue]|| var1 > [(StockChartData *)self->_currentChartData maxValue][8])
                   {
-                    [(StockChartData *)self->_currentChartData setMaxValue:v35];
+                    [(StockChartData *)self->_currentChartData setMaxValue:stockValues];
                   }
 
-                  if (v35->var2)
+                  if (stockValues->var2)
                   {
                     [(StockChartData *)self->_currentChartData setHasVolume:1];
                   }
@@ -450,18 +450,18 @@ LABEL_59:
 
                   else
                   {
-                    var0 = v35->var0;
+                    var0 = stockValues->var0;
                     if (v38 != 0.0 && var0 - v38 > 3600.0)
                     {
-                      v59 = [(StockChartData *)self->_currentChartData interestingIndexes];
+                      interestingIndexes = [(StockChartData *)self->_currentChartData interestingIndexes];
                       v60 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v71];
-                      [v59 addObject:v60];
+                      [interestingIndexes addObject:v60];
 
-                      var0 = v35->var0;
+                      var0 = stockValues->var0;
                     }
                   }
 
-                  ++v35;
+                  ++stockValues;
                   ++v71;
                   v38 = var0;
                   continue;
@@ -504,13 +504,13 @@ LABEL_59:
 
     else
     {
-      [(YQLRequest *)self failToParseWithDataSeriesDictionary:v66];
+      [(YQLRequest *)self failToParseWithDataSeriesDictionary:dictionaryCopy];
     }
 
     goto LABEL_79;
   }
 
-  [(YQLRequest *)self failToParseWithDataSeriesDictionary:v66];
+  [(YQLRequest *)self failToParseWithDataSeriesDictionary:dictionaryCopy];
 LABEL_81:
 }
 
@@ -538,27 +538,27 @@ uint64_t __42__ChartUpdater_parseDataSeriesDictionary___block_invoke(uint64_t a1
     return;
   }
 
-  v4 = [(StockChartData *)currentChartData stockValues];
-  v5 = [(StockChartData *)self->_currentChartData stockValueCount];
+  stockValues = [(StockChartData *)currentChartData stockValues];
+  stockValueCount = [(StockChartData *)self->_currentChartData stockValueCount];
   if (![(StockChartData *)self->_currentChartData isUnavailable])
   {
-    if (v5 < 2 || (v8 = [(StockChartData *)self->_currentChartData maxValue], v8 == [(StockChartData *)self->_currentChartData minValue]))
+    if (stockValueCount < 2 || (v8 = [(StockChartData *)self->_currentChartData maxValue], v8 == [(StockChartData *)self->_currentChartData minValue]))
     {
       v6 = MEMORY[0x277CCA9B8];
       v7 = 1;
       goto LABEL_18;
     }
 
-    v9 = [(StockChartData *)self->_currentChartData marketOpenDate];
-    if (!v9)
+    marketOpenDate = [(StockChartData *)self->_currentChartData marketOpenDate];
+    if (!marketOpenDate)
     {
       goto LABEL_24;
     }
 
-    v10 = v9;
-    v11 = [(StockChartData *)self->_currentChartData marketCloseDate];
+    v10 = marketOpenDate;
+    marketCloseDate = [(StockChartData *)self->_currentChartData marketCloseDate];
 
-    if (!v11)
+    if (!marketCloseDate)
     {
       goto LABEL_24;
     }
@@ -568,15 +568,15 @@ uint64_t __42__ChartUpdater_parseDataSeriesDictionary___block_invoke(uint64_t a1
       goto LABEL_27;
     }
 
-    v12 = *v4;
-    v13 = [(StockChartData *)self->_currentChartData marketCloseDate];
-    [v13 timeIntervalSince1970];
+    v12 = *stockValues;
+    marketCloseDate2 = [(StockChartData *)self->_currentChartData marketCloseDate];
+    [marketCloseDate2 timeIntervalSince1970];
     if (v12 <= v14)
     {
-      v15 = &v4[3 * v5];
+      v15 = &stockValues[3 * stockValueCount];
       v16 = *(v15 - 3);
-      v17 = [(StockChartData *)self->_currentChartData marketOpenDate];
-      [v17 timeIntervalSince1970];
+      marketOpenDate2 = [(StockChartData *)self->_currentChartData marketOpenDate];
+      [marketOpenDate2 timeIntervalSince1970];
       v19 = v18;
 
       if (v16 < v19)
@@ -586,23 +586,23 @@ uint64_t __42__ChartUpdater_parseDataSeriesDictionary___block_invoke(uint64_t a1
 
       v20 = objc_alloc(MEMORY[0x277CBEA80]);
       v21 = [v20 initWithCalendarIdentifier:*MEMORY[0x277CBE5C0]];
-      v22 = [(StockChartData *)self->_currentChartData marketOpenDate];
-      v23 = [(StockChartData *)self->_currentChartData marketCloseDate];
-      v13 = [v21 components:96 fromDate:v22 toDate:v23 options:0];
+      marketOpenDate3 = [(StockChartData *)self->_currentChartData marketOpenDate];
+      marketCloseDate3 = [(StockChartData *)self->_currentChartData marketCloseDate];
+      marketCloseDate2 = [v21 components:96 fromDate:marketOpenDate3 toDate:marketCloseDate3 options:0];
 
-      if ([v13 hour] != 24 || objc_msgSend(v13, "minute"))
+      if ([marketCloseDate2 hour] != 24 || objc_msgSend(marketCloseDate2, "minute"))
       {
         goto LABEL_26;
       }
 
-      v24 = *v4;
-      v25 = [(StockChartData *)self->_currentChartData marketOpenDate];
-      [v25 timeIntervalSince1970];
+      v24 = *stockValues;
+      marketOpenDate4 = [(StockChartData *)self->_currentChartData marketOpenDate];
+      [marketOpenDate4 timeIntervalSince1970];
       if (v24 >= v26)
       {
         v27 = *(v15 - 3);
-        v28 = [(StockChartData *)self->_currentChartData marketCloseDate];
-        [v28 timeIntervalSince1970];
+        marketCloseDate4 = [(StockChartData *)self->_currentChartData marketCloseDate];
+        [marketCloseDate4 timeIntervalSince1970];
         v30 = v29;
 
         if (v27 <= v30)
@@ -611,72 +611,72 @@ uint64_t __42__ChartUpdater_parseDataSeriesDictionary___block_invoke(uint64_t a1
         }
 
 LABEL_24:
-        v33 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:*v4];
+        v33 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:*stockValues];
         [(StockChartData *)self->_currentChartData setMarketOpenDate:v33];
 
-        v34 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:v4[3 * v5 - 3]];
+        v34 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:stockValues[3 * stockValueCount - 3]];
         [(StockChartData *)self->_currentChartData setMarketCloseDate:v34];
 
         if (![(StockChartData *)self->_currentChartData chartInterval])
         {
-          v35 = [MEMORY[0x277CBEA80] currentCalendar];
-          v36 = [(StockChartData *)self->_currentChartData marketOpenDate];
-          v37 = [v35 components:32 fromDate:v36];
+          currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+          marketOpenDate5 = [(StockChartData *)self->_currentChartData marketOpenDate];
+          v37 = [currentCalendar components:32 fromDate:marketOpenDate5];
           v38 = [v37 hour] - 9;
 
           v39 = MEMORY[0x277CBEBB0];
-          v40 = [MEMORY[0x277CBEBB0] localTimeZone];
-          v13 = [v39 timeZoneForSecondsFromGMT:{(objc_msgSend(v40, "secondsFromGMT") + v38 * -3600.0)}];
+          localTimeZone = [MEMORY[0x277CBEBB0] localTimeZone];
+          marketCloseDate2 = [v39 timeZoneForSecondsFromGMT:{(objc_msgSend(localTimeZone, "secondsFromGMT") + v38 * -3600.0)}];
 
-          [(StockChartData *)self->_currentChartData setMarketTimeZone:v13];
+          [(StockChartData *)self->_currentChartData setMarketTimeZone:marketCloseDate2];
 LABEL_26:
         }
 
 LABEL_27:
         if (![(StockChartData *)self->_currentChartData chartInterval])
         {
-          v41 = [MEMORY[0x277CBEA80] currentCalendar];
-          v42 = [v41 copy];
+          currentCalendar2 = [MEMORY[0x277CBEA80] currentCalendar];
+          v42 = [currentCalendar2 copy];
 
-          v43 = [(StockChartData *)self->_currentChartData marketTimeZone];
-          [v42 setTimeZone:v43];
+          marketTimeZone = [(StockChartData *)self->_currentChartData marketTimeZone];
+          [v42 setTimeZone:marketTimeZone];
 
-          v44 = [(StockChartData *)self->_currentChartData marketOpenDate];
-          v45 = [v42 components:192 fromDate:v44];
+          marketOpenDate6 = [(StockChartData *)self->_currentChartData marketOpenDate];
+          v45 = [v42 components:192 fromDate:marketOpenDate6];
 
-          v46 = [v45 minute];
-          v47 = [v45 second] + 60 * v46;
+          minute = [v45 minute];
+          v47 = [v45 second] + 60 * minute;
           if ((v47 - 1) <= 0x382)
           {
             v48 = v47;
-            v49 = [(StockChartData *)self->_currentChartData marketOpenDate];
-            v50 = [v49 dateByAddingTimeInterval:-v48];
+            marketOpenDate7 = [(StockChartData *)self->_currentChartData marketOpenDate];
+            v50 = [marketOpenDate7 dateByAddingTimeInterval:-v48];
             [(StockChartData *)self->_currentChartData setMarketOpenDate:v50];
           }
 
-          v51 = [(StockChartData *)self->_currentChartData marketCloseDate];
-          v52 = [v42 components:192 fromDate:v51];
+          marketCloseDate5 = [(StockChartData *)self->_currentChartData marketCloseDate];
+          v52 = [v42 components:192 fromDate:marketCloseDate5];
 
           v53 = 60 - [v52 minute];
           v54 = 60 * v53 - [v52 second];
           if ((v54 - 1) <= 0x382)
           {
             v55 = v54;
-            v56 = [(StockChartData *)self->_currentChartData marketCloseDate];
-            v57 = [v56 dateByAddingTimeInterval:v55];
+            marketCloseDate6 = [(StockChartData *)self->_currentChartData marketCloseDate];
+            v57 = [marketCloseDate6 dateByAddingTimeInterval:v55];
             [(StockChartData *)self->_currentChartData setMarketCloseDate:v57];
           }
         }
 
         v58 = 0.0;
-        if (v5 != 2)
+        if (stockValueCount != 2)
         {
-          v58 = v4[3 * v5 - 3] - v4[3 * v5 - 9];
+          v58 = stockValues[3 * stockValueCount - 3] - stockValues[3 * stockValueCount - 9];
         }
 
         [(StockChartData *)self->_currentChartData setExpirationTime:v58 + CFAbsoluteTimeGetCurrent()];
-        v59 = [(StockChartData *)self->_currentChartData stock];
-        [v59 setChartData:self->_currentChartData forInterval:{-[StockChartData chartInterval](self->_currentChartData, "chartInterval")}];
+        stock = [(StockChartData *)self->_currentChartData stock];
+        [stock setChartData:self->_currentChartData forInterval:{-[StockChartData chartInterval](self->_currentChartData, "chartInterval")}];
 
         updateCompletionHandler = self->_updateCompletionHandler;
         if (updateCompletionHandler)
@@ -706,19 +706,19 @@ LABEL_19:
   self->_currentChartData = 0;
 }
 
-- (void)failWithError:(id)a3
+- (void)failWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v8.receiver = self;
   v8.super_class = ChartUpdater;
-  [(YQLRequest *)&v8 failWithError:v4];
+  [(YQLRequest *)&v8 failWithError:errorCopy];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained chartUpdater:self didFailWithError:v4];
+  [WeakRetained chartUpdater:self didFailWithError:errorCopy];
 
   updateCompletionHandler = self->_updateCompletionHandler;
   if (updateCompletionHandler)
   {
-    updateCompletionHandler[2](updateCompletionHandler, 0, v4);
+    updateCompletionHandler[2](updateCompletionHandler, 0, errorCopy);
     v7 = self->_updateCompletionHandler;
     self->_updateCompletionHandler = 0;
   }
@@ -730,15 +730,15 @@ LABEL_19:
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 dataSeriesDict];
+    dataSeriesDict = [v2 dataSeriesDict];
   }
 
   else
   {
-    v4 = 0;
+    dataSeriesDict = 0;
   }
 
-  return v4;
+  return dataSeriesDict;
 }
 
 - (ChartUpdaterDelegate)delegate

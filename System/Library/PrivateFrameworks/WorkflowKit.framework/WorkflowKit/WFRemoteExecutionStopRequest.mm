@@ -1,30 +1,30 @@
 @interface WFRemoteExecutionStopRequest
-- (BOOL)readMessageFromData:(id)a3 error:(id *)a4;
-- (WFRemoteExecutionStopRequest)initWithRequestIdentifier:(id)a3;
-- (id)writeMessageToWriter:(id)a3 error:(id *)a4;
+- (BOOL)readMessageFromData:(id)data error:(id *)error;
+- (WFRemoteExecutionStopRequest)initWithRequestIdentifier:(id)identifier;
+- (id)writeMessageToWriter:(id)writer error:(id *)error;
 @end
 
 @implementation WFRemoteExecutionStopRequest
 
-- (id)writeMessageToWriter:(id)a3 error:(id *)a4
+- (id)writeMessageToWriter:(id)writer error:(id *)error
 {
-  v5 = a3;
+  writerCopy = writer;
   v6 = objc_alloc_init(WFREPBStopRequest);
-  v7 = [(WFRemoteExecutionStopRequest *)self requestIdentifier];
-  [(WFREPBStopRequest *)v6 setRequestIdentifier:v7];
+  requestIdentifier = [(WFRemoteExecutionStopRequest *)self requestIdentifier];
+  [(WFREPBStopRequest *)v6 setRequestIdentifier:requestIdentifier];
 
-  [(WFREPBStopRequest *)v6 writeTo:v5];
-  v8 = [v5 immutableData];
+  [(WFREPBStopRequest *)v6 writeTo:writerCopy];
+  immutableData = [writerCopy immutableData];
 
-  return v8;
+  return immutableData;
 }
 
-- (BOOL)readMessageFromData:(id)a3 error:(id *)a4
+- (BOOL)readMessageFromData:(id)data error:(id *)error
 {
   v23 = *MEMORY[0x1E69E9840];
   v6 = MEMORY[0x1E69C65B8];
-  v7 = a3;
-  v8 = [[v6 alloc] initWithData:v7];
+  dataCopy = data;
+  v8 = [[v6 alloc] initWithData:dataCopy];
 
   v9 = objc_alloc_init(WFREPBStopRequest);
   v18 = 0;
@@ -32,9 +32,9 @@
   v11 = v18;
   if (v10)
   {
-    v12 = [(WFREPBStopRequest *)v9 requestIdentifier];
+    requestIdentifier = [(WFREPBStopRequest *)v9 requestIdentifier];
     requestIdentifier = self->_requestIdentifier;
-    self->_requestIdentifier = v12;
+    self->_requestIdentifier = requestIdentifier;
   }
 
   else
@@ -49,10 +49,10 @@
       _os_log_impl(&dword_1CA256000, v14, OS_LOG_TYPE_FAULT, "%s Failed to read stop request protobuf, %{public}@", buf, 0x16u);
     }
 
-    if (a4)
+    if (error)
     {
       v15 = v11;
-      *a4 = v11;
+      *error = v11;
     }
   }
 
@@ -60,20 +60,20 @@
   return v10;
 }
 
-- (WFRemoteExecutionStopRequest)initWithRequestIdentifier:(id)a3
+- (WFRemoteExecutionStopRequest)initWithRequestIdentifier:(id)identifier
 {
-  v6 = a3;
-  if (!v6)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"WFRemoteExecutionStopRequest.m" lineNumber:19 description:{@"Invalid parameter not satisfying: %@", @"requestIdentifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFRemoteExecutionStopRequest.m" lineNumber:19 description:{@"Invalid parameter not satisfying: %@", @"requestIdentifier"}];
   }
 
   v7 = [(WFRemoteExecutionRequest *)self init];
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_requestIdentifier, a3);
+    objc_storeStrong(&v7->_requestIdentifier, identifier);
     v9 = v8;
   }
 

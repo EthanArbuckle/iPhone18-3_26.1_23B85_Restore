@@ -1,66 +1,66 @@
 @interface RAPTransitLineTableViewCell
 + (id)measuringCell;
-- (RAPTransitLineTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (double)preferredHeightInTableView:(id)a3;
-- (void)alignWithShieldWidth:(double)a3;
+- (RAPTransitLineTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (double)preferredHeightInTableView:(id)view;
+- (void)alignWithShieldWidth:(double)width;
 - (void)layoutMarginsDidChange;
-- (void)setContentsFromTransitLine:(id)a3;
-- (void)setImage:(id)a3;
+- (void)setContentsFromTransitLine:(id)line;
+- (void)setImage:(id)image;
 - (void)updateConstraints;
 - (void)updateImageConstraints;
 @end
 
 @implementation RAPTransitLineTableViewCell
 
-- (double)preferredHeightInTableView:(id)a3
+- (double)preferredHeightInTableView:(id)view
 {
-  [a3 bounds];
+  [view bounds];
   v5 = v4;
-  v6 = [(RAPTransitLineTableViewCell *)self contentView];
-  [v6 systemLayoutSizeFittingSize:{v5, 0.0}];
+  contentView = [(RAPTransitLineTableViewCell *)self contentView];
+  [contentView systemLayoutSizeFittingSize:{v5, 0.0}];
   v8 = v7;
 
   return v8;
 }
 
-- (void)alignWithShieldWidth:(double)a3
+- (void)alignWithShieldWidth:(double)width
 {
-  self->_shieldWidth = a3;
-  v6 = [(UIImageView *)self->_imageView image];
-  [v6 size];
-  [(NSLayoutConstraint *)self->_leadingConstraint setConstant:a3 - v5];
+  self->_shieldWidth = width;
+  image = [(UIImageView *)self->_imageView image];
+  [image size];
+  [(NSLayoutConstraint *)self->_leadingConstraint setConstant:width - v5];
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  [(UIImageView *)self->_imageView setImage:a3];
+  [(UIImageView *)self->_imageView setImage:image];
 
   [(RAPTransitLineTableViewCell *)self setNeedsUpdateConstraints];
 }
 
-- (void)setContentsFromTransitLine:(id)a3
+- (void)setContentsFromTransitLine:(id)line
 {
-  v19 = a3;
-  v4 = [v19 primaryDescriptionText];
-  v5 = [(RAPTransitLineTableViewCell *)self textLabel];
-  [v5 setText:v4];
+  lineCopy = line;
+  primaryDescriptionText = [lineCopy primaryDescriptionText];
+  textLabel = [(RAPTransitLineTableViewCell *)self textLabel];
+  [textLabel setText:primaryDescriptionText];
 
-  v6 = [(RAPTransitLineTableViewCell *)self textLabel];
-  [v6 setNumberOfLines:4];
+  textLabel2 = [(RAPTransitLineTableViewCell *)self textLabel];
+  [textLabel2 setNumberOfLines:4];
 
-  v7 = [v19 secondaryDescriptionText];
-  v8 = [(RAPTransitLineTableViewCell *)self detailTextLabel];
-  [v8 setText:v7];
+  secondaryDescriptionText = [lineCopy secondaryDescriptionText];
+  detailTextLabel = [(RAPTransitLineTableViewCell *)self detailTextLabel];
+  [detailTextLabel setText:secondaryDescriptionText];
 
-  v9 = [(RAPTransitLineTableViewCell *)self detailTextLabel];
-  [v9 setNumberOfLines:4];
+  detailTextLabel2 = [(RAPTransitLineTableViewCell *)self detailTextLabel];
+  [detailTextLabel2 setNumberOfLines:4];
 
-  v10 = [(RAPTransitLineTableViewCell *)self window];
-  v11 = [v10 screen];
-  v12 = v11;
-  if (v11)
+  window = [(RAPTransitLineTableViewCell *)self window];
+  screen = [window screen];
+  v12 = screen;
+  if (screen)
   {
-    [v11 scale];
+    [screen scale];
     v14 = v13;
   }
 
@@ -71,8 +71,8 @@
     v14 = v16;
   }
 
-  v17 = [v19 artwork];
-  v18 = [UIImage _mapkit_transitArtworkImageWithDataSource:v17 size:6 scale:v14];
+  artwork = [lineCopy artwork];
+  v18 = [UIImage _mapkit_transitArtworkImageWithDataSource:artwork size:6 scale:v14];
 
   [(RAPTransitLineTableViewCell *)self setImage:v18];
   [v18 size];
@@ -83,14 +83,14 @@
 {
   [(NSLayoutConstraint *)self->_imageViewWidthConstraint constant];
   v4 = v3;
-  v5 = [(UIImageView *)self->_imageView image];
-  [v5 size];
+  image = [(UIImageView *)self->_imageView image];
+  [image size];
   v7 = v6;
 
   if (v4 != v7)
   {
-    v8 = [(UIImageView *)self->_imageView image];
-    [v8 size];
+    image2 = [(UIImageView *)self->_imageView image];
+    [image2 size];
     [(NSLayoutConstraint *)self->_imageViewWidthConstraint setConstant:?];
   }
 }
@@ -116,11 +116,11 @@
 
   else
   {
-    v3 = [(UIImageView *)self->_imageView leadingAnchor];
-    v4 = [(RAPTransitLineTableViewCell *)self contentView];
-    v5 = [v4 layoutMarginsGuide];
-    v6 = [v5 leadingAnchor];
-    v7 = [v3 constraintEqualToAnchor:v6];
+    leadingAnchor = [(UIImageView *)self->_imageView leadingAnchor];
+    contentView = [(RAPTransitLineTableViewCell *)self contentView];
+    layoutMarginsGuide = [contentView layoutMarginsGuide];
+    leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+    v7 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     leadingConstraint = self->_leadingConstraint;
     self->_leadingConstraint = v7;
 
@@ -129,10 +129,10 @@
       [(RAPTransitLineTableViewCell *)self alignWithShieldWidth:?];
     }
 
-    v9 = [(UIImageView *)self->_imageView widthAnchor];
-    v10 = [(UIImageView *)self->_imageView image];
-    [v10 size];
-    v11 = [v9 constraintEqualToConstant:?];
+    widthAnchor = [(UIImageView *)self->_imageView widthAnchor];
+    image = [(UIImageView *)self->_imageView image];
+    [image size];
+    v11 = [widthAnchor constraintEqualToConstant:?];
     imageViewWidthConstraint = self->_imageViewWidthConstraint;
     self->_imageViewWidthConstraint = v11;
 
@@ -148,11 +148,11 @@
   }
 }
 
-- (RAPTransitLineTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (RAPTransitLineTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v10.receiver = self;
   v10.super_class = RAPTransitLineTableViewCell;
-  v4 = [(RAPTransitLineTableViewCell *)&v10 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(RAPTransitLineTableViewCell *)&v10 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = objc_alloc_init(UIImageView);
@@ -160,8 +160,8 @@
     v4->_imageView = v5;
 
     [(UIImageView *)v4->_imageView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v7 = [(RAPTransitLineTableViewCell *)v4 contentView];
-    [v7 addSubview:v4->_imageView];
+    contentView = [(RAPTransitLineTableViewCell *)v4 contentView];
+    [contentView addSubview:v4->_imageView];
 
     LODWORD(v8) = 1148829696;
     [(UIImageView *)v4->_imageView setContentCompressionResistancePriority:1 forAxis:v8];
@@ -177,11 +177,11 @@
     dispatch_once(&qword_10195CB38, &stru_101622D20);
   }
 
-  v3 = NSStringFromClass(a1);
+  v3 = NSStringFromClass(self);
   v4 = [qword_10195CB30 objectForKeyedSubscript:v3];
   if (!v4)
   {
-    v4 = [[a1 alloc] initWithStyle:0 reuseIdentifier:0];
+    v4 = [[self alloc] initWithStyle:0 reuseIdentifier:0];
     [qword_10195CB30 setObject:v4 forKeyedSubscript:v3];
   }
 

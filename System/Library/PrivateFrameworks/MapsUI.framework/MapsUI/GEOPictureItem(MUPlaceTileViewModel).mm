@@ -11,22 +11,22 @@
 {
   v17[2] = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [a1 tileSubtitle];
+  tileSubtitle = [self tileSubtitle];
   v6 = v4;
-  if ([v5 length])
+  if ([tileSubtitle length])
   {
     v7 = objc_alloc(MEMORY[0x1E696AAB0]);
-    v8 = [MEMORY[0x1E69DC888] systemGrayColor];
+    systemGrayColor = [MEMORY[0x1E69DC888] systemGrayColor];
     v9 = *MEMORY[0x1E69DB650];
     v16[0] = *MEMORY[0x1E69DB648];
     v16[1] = v9;
     v17[0] = v6;
-    v17[1] = v8;
+    v17[1] = systemGrayColor;
     v10 = MEMORY[0x1E695DF20];
     v11 = v6;
     v12 = [v10 dictionaryWithObjects:v17 forKeys:v16 count:2];
 
-    v13 = [v7 initWithString:v5 attributes:v12];
+    v13 = [v7 initWithString:tileSubtitle attributes:v12];
   }
 
   else
@@ -62,19 +62,19 @@
 - (void)fetchImageTilewWithSize:()MUPlaceTileViewModel completion:
 {
   v8 = a5;
-  v9 = [MEMORY[0x1E696F3B8] sharedInstance];
-  [v9 screenScale];
+  mEMORY[0x1E696F3B8] = [MEMORY[0x1E696F3B8] sharedInstance];
+  [mEMORY[0x1E696F3B8] screenScale];
   v11 = v10;
 
   v12 = [MEMORY[0x1E69A21D8] defaultPhotoOptionsWithAllowSmaller:1];
-  v13 = [a1 photo];
-  v14 = [v13 bestPhotoForFrameSize:v12 displayScale:a2 options:{a3, v11}];
+  photo = [self photo];
+  v14 = [photo bestPhotoForFrameSize:v12 displayScale:a2 options:{a3, v11}];
 
   v15 = [v14 url];
 
   if (v15)
   {
-    v16 = [MEMORY[0x1E696F190] sharedImageManager];
+    mEMORY[0x1E696F190] = [MEMORY[0x1E696F190] sharedImageManager];
     v17 = [v14 url];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
@@ -84,7 +84,7 @@
     v20 = a2;
     v21 = a3;
     v22 = v11;
-    [v16 loadAppImageAtURL:v17 completionHandler:v18];
+    [mEMORY[0x1E696F190] loadAppImageAtURL:v17 completionHandler:v18];
   }
 
   else

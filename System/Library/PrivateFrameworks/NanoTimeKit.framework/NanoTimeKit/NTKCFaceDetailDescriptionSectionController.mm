@@ -1,36 +1,36 @@
 @interface NTKCFaceDetailDescriptionSectionController
-+ (BOOL)hasDescriptionSectionForFace:(id)a3 inGallery:(BOOL)a4 orExternal:(BOOL)a5;
-+ (id)_descriptionForFace:(id)a3 inGallery:(BOOL)a4 orExternal:(BOOL)a5;
++ (BOOL)hasDescriptionSectionForFace:(id)face inGallery:(BOOL)gallery orExternal:(BOOL)external;
++ (id)_descriptionForFace:(id)face inGallery:(BOOL)gallery orExternal:(BOOL)external;
 - (BOOL)expanded;
-- (NTKCFaceDetailDescriptionSectionController)initWithTableViewController:(id)a3 face:(id)a4 inGallery:(BOOL)a5 external:(BOOL)a6;
+- (NTKCFaceDetailDescriptionSectionController)initWithTableViewController:(id)controller face:(id)face inGallery:(BOOL)gallery external:(BOOL)external;
 - (NTKCFaceDetailDescriptionSectionDelegate)delegate;
 - (id)_faceDescription;
 - (void)_commonInit;
-- (void)descriptionCellDidExpand:(id)a3;
+- (void)descriptionCellDidExpand:(id)expand;
 - (void)faceDidChange;
-- (void)setExpanded:(BOOL)a3;
+- (void)setExpanded:(BOOL)expanded;
 @end
 
 @implementation NTKCFaceDetailDescriptionSectionController
 
-+ (BOOL)hasDescriptionSectionForFace:(id)a3 inGallery:(BOOL)a4 orExternal:(BOOL)a5
++ (BOOL)hasDescriptionSectionForFace:(id)face inGallery:(BOOL)gallery orExternal:(BOOL)external
 {
-  v5 = [a1 _descriptionForFace:a3 inGallery:a4 orExternal:a5];
+  v5 = [self _descriptionForFace:face inGallery:gallery orExternal:external];
   v6 = [v5 length] != 0;
 
   return v6;
 }
 
-- (NTKCFaceDetailDescriptionSectionController)initWithTableViewController:(id)a3 face:(id)a4 inGallery:(BOOL)a5 external:(BOOL)a6
+- (NTKCFaceDetailDescriptionSectionController)initWithTableViewController:(id)controller face:(id)face inGallery:(BOOL)gallery external:(BOOL)external
 {
-  v6 = a6;
+  externalCopy = external;
   v10.receiver = self;
   v10.super_class = NTKCFaceDetailDescriptionSectionController;
-  v7 = [(NTKCFaceDetailSectionController *)&v10 initWithTableViewController:a3 face:a4 inGallery:a5];
+  v7 = [(NTKCFaceDetailSectionController *)&v10 initWithTableViewController:controller face:face inGallery:gallery];
   v8 = v7;
   if (v7)
   {
-    [(NTKCFaceDetailDescriptionSectionController *)v7 setExternal:v6];
+    [(NTKCFaceDetailDescriptionSectionController *)v7 setExternal:externalCopy];
   }
 
   return v8;
@@ -41,43 +41,43 @@
   v3 = objc_opt_new();
   [(NTKCFaceDetailSectionController *)self setCell:v3];
 
-  v4 = [(NTKCFaceDetailSectionController *)self cell];
-  [v4 setDelegate:self];
+  cell = [(NTKCFaceDetailSectionController *)self cell];
+  [cell setDelegate:self];
 }
 
 - (void)faceDidChange
 {
-  v3 = [(NTKCFaceDetailDescriptionSectionController *)self _faceDescription];
-  v4 = [v3 length];
-  v5 = [(NTKCFaceDetailSectionController *)self cell];
-  v6 = v5;
+  _faceDescription = [(NTKCFaceDetailDescriptionSectionController *)self _faceDescription];
+  v4 = [_faceDescription length];
+  cell = [(NTKCFaceDetailSectionController *)self cell];
+  v6 = cell;
   if (!v4)
   {
-    [v5 setText:0];
+    [cell setText:0];
 LABEL_6:
 
     goto LABEL_7;
   }
 
-  v7 = [v5 text];
-  v8 = [v3 isEqualToString:v7];
+  text = [cell text];
+  v8 = [_faceDescription isEqualToString:text];
 
   if ((v8 & 1) == 0)
   {
-    v9 = [(NTKCFaceDetailSectionController *)self cell];
-    [v9 rowHeight];
+    cell2 = [(NTKCFaceDetailSectionController *)self cell];
+    [cell2 rowHeight];
     v11 = v10;
 
-    v12 = [(NTKCFaceDetailSectionController *)self cell];
-    [v12 setText:v3];
+    cell3 = [(NTKCFaceDetailSectionController *)self cell];
+    [cell3 setText:_faceDescription];
 
-    v13 = [(NTKCFaceDetailSectionController *)self cell];
-    [v13 rowHeight];
+    cell4 = [(NTKCFaceDetailSectionController *)self cell];
+    [cell4 rowHeight];
     v15 = v14;
 
-    v16 = [(NTKCFaceDetailSectionController *)self tableView];
-    v17 = [(NTKCFaceDetailSectionController *)self cell];
-    v6 = [v16 indexPathForCell:v17];
+    tableView = [(NTKCFaceDetailSectionController *)self tableView];
+    cell5 = [(NTKCFaceDetailSectionController *)self cell];
+    v6 = [tableView indexPathForCell:cell5];
 
     if (v6)
     {
@@ -146,62 +146,62 @@ void __59__NTKCFaceDetailDescriptionSectionController_faceDidChange__block_invok
 
 - (BOOL)expanded
 {
-  v2 = [(NTKCFaceDetailSectionController *)self cell];
-  v3 = [v2 expanded];
+  cell = [(NTKCFaceDetailSectionController *)self cell];
+  expanded = [cell expanded];
 
-  return v3;
+  return expanded;
 }
 
-- (void)setExpanded:(BOOL)a3
+- (void)setExpanded:(BOOL)expanded
 {
-  v3 = a3;
-  v4 = [(NTKCFaceDetailSectionController *)self cell];
-  [v4 setExpanded:v3];
+  expandedCopy = expanded;
+  cell = [(NTKCFaceDetailSectionController *)self cell];
+  [cell setExpanded:expandedCopy];
 }
 
 - (id)_faceDescription
 {
   v3 = objc_opt_class();
-  v4 = [(NTKCFaceDetailSectionController *)self face];
-  v5 = [v3 _descriptionForFace:v4 inGallery:-[NTKCFaceDetailSectionController inGallery](self orExternal:{"inGallery"), -[NTKCFaceDetailDescriptionSectionController external](self, "external")}];
+  face = [(NTKCFaceDetailSectionController *)self face];
+  v5 = [v3 _descriptionForFace:face inGallery:-[NTKCFaceDetailSectionController inGallery](self orExternal:{"inGallery"), -[NTKCFaceDetailDescriptionSectionController external](self, "external")}];
 
   return v5;
 }
 
-+ (id)_descriptionForFace:(id)a3 inGallery:(BOOL)a4 orExternal:(BOOL)a5
++ (id)_descriptionForFace:(id)face inGallery:(BOOL)gallery orExternal:(BOOL)external
 {
-  v5 = a5;
-  v6 = a4;
-  v7 = a3;
-  v8 = v7;
-  if (v5)
+  externalCopy = external;
+  galleryCopy = gallery;
+  faceCopy = face;
+  v8 = faceCopy;
+  if (externalCopy)
   {
-    v9 = [v7 faceDescriptionForExternal];
+    faceDescriptionForExternal = [faceCopy faceDescriptionForExternal];
   }
 
   else
   {
-    if (v6)
+    if (galleryCopy)
     {
-      [v7 faceDescription];
+      [faceCopy faceDescription];
     }
 
     else
     {
-      [v7 faceDescriptionForLibrary];
+      [faceCopy faceDescriptionForLibrary];
     }
-    v9 = ;
+    faceDescriptionForExternal = ;
   }
 
-  v10 = v9;
+  v10 = faceDescriptionForExternal;
 
   return v10;
 }
 
-- (void)descriptionCellDidExpand:(id)a3
+- (void)descriptionCellDidExpand:(id)expand
 {
-  v4 = [(NTKCFaceDetailDescriptionSectionController *)self delegate];
-  [v4 descriptionSection:self didExpand:1];
+  delegate = [(NTKCFaceDetailDescriptionSectionController *)self delegate];
+  [delegate descriptionSection:self didExpand:1];
 }
 
 - (NTKCFaceDetailDescriptionSectionDelegate)delegate

@@ -1,10 +1,10 @@
 @interface VUIStoreDownloadMonitor
 + (void)initialize;
-- (VUIStoreDownloadMonitor)initWithDownload:(id)a3 downloadManager:(id)a4;
+- (VUIStoreDownloadMonitor)initWithDownload:(id)download downloadManager:(id)manager;
 - (void)_registerStateMachineHandlers;
 - (void)dealloc;
-- (void)downloadManager:(id)a3 downloadStatesDidChange:(id)a4;
-- (void)waitForDownloadToBecomePlayableWithCompletion:(id)a3;
+- (void)downloadManager:(id)manager downloadStatesDidChange:(id)change;
+- (void)waitForDownloadToBecomePlayableWithCompletion:(id)completion;
 @end
 
 @implementation VUIStoreDownloadMonitor
@@ -24,18 +24,18 @@ void __37__VUIStoreDownloadMonitor_initialize__block_invoke()
   sLogObject_4 = v0;
 }
 
-- (VUIStoreDownloadMonitor)initWithDownload:(id)a3 downloadManager:(id)a4
+- (VUIStoreDownloadMonitor)initWithDownload:(id)download downloadManager:(id)manager
 {
-  v7 = a3;
-  v8 = a4;
+  downloadCopy = download;
+  managerCopy = manager;
   v20.receiver = self;
   v20.super_class = VUIStoreDownloadMonitor;
   v9 = [(VUIStoreDownloadMonitor *)&v20 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_download, a3);
-    objc_storeStrong(&v10->_downloadManager, a4);
+    objc_storeStrong(&v9->_download, download);
+    objc_storeStrong(&v10->_downloadManager, manager);
     v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
     completionHandlers = v10->_completionHandlers;
     v10->_completionHandlers = v11;
@@ -64,13 +64,13 @@ void __37__VUIStoreDownloadMonitor_initialize__block_invoke()
   [(VUIStoreDownloadMonitor *)&v3 dealloc];
 }
 
-- (void)waitForDownloadToBecomePlayableWithCompletion:(id)a3
+- (void)waitForDownloadToBecomePlayableWithCompletion:(id)completion
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (completion)
   {
     v7 = @"CompletionHandlerKey";
-    v4 = [a3 copy];
+    v4 = [completion copy];
     v8[0] = v4;
     v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v8 forKeys:&v7 count:1];
   }
@@ -80,14 +80,14 @@ void __37__VUIStoreDownloadMonitor_initialize__block_invoke()
     v5 = 0;
   }
 
-  v6 = [(VUIStoreDownloadMonitor *)self stateMachine];
-  [v6 postEvent:@"Wait for download to become playable" withContext:0 userInfo:v5];
+  stateMachine = [(VUIStoreDownloadMonitor *)self stateMachine];
+  [stateMachine postEvent:@"Wait for download to become playable" withContext:0 userInfo:v5];
 }
 
-- (void)downloadManager:(id)a3 downloadStatesDidChange:(id)a4
+- (void)downloadManager:(id)manager downloadStatesDidChange:(id)change
 {
-  v5 = a4;
-  v4 = v5;
+  changeCopy = change;
+  v4 = changeCopy;
   TVPPerformBlockOnMainThreadIfNeeded();
 }
 
@@ -271,7 +271,7 @@ LABEL_20:
   objc_copyWeak(&v27, &location);
   v2 = _Block_copy(aBlock);
   v3 = objc_loadWeakRetained(&location);
-  v4 = [v3 stateMachine];
+  stateMachine = [v3 stateMachine];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __56__VUIStoreDownloadMonitor__registerStateMachineHandlers__block_invoke_3;
@@ -279,19 +279,19 @@ LABEL_20:
   objc_copyWeak(&v25, &location);
   v5 = v2;
   v24 = v5;
-  [v4 registerHandlerForEvent:@"Wait for download to become playable" onState:@"Idle" withBlock:v23];
+  [stateMachine registerHandlerForEvent:@"Wait for download to become playable" onState:@"Idle" withBlock:v23];
 
   v6 = objc_loadWeakRetained(&location);
-  v7 = [v6 stateMachine];
+  stateMachine2 = [v6 stateMachine];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __56__VUIStoreDownloadMonitor__registerStateMachineHandlers__block_invoke_38;
   v21[3] = &unk_1E872FAD8;
   objc_copyWeak(&v22, &location);
-  [v7 registerHandlerForEvent:@"Wait for download to become playable" onState:@"Waiting for download to become playable" withBlock:v21];
+  [stateMachine2 registerHandlerForEvent:@"Wait for download to become playable" onState:@"Waiting for download to become playable" withBlock:v21];
 
   v8 = objc_loadWeakRetained(&location);
-  v9 = [v8 stateMachine];
+  stateMachine3 = [v8 stateMachine];
   v29[0] = @"Waiting for download to become playable";
   v29[1] = @"Waiting for download token";
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v29 count:2];
@@ -302,10 +302,10 @@ LABEL_20:
   objc_copyWeak(&v20, &location);
   v11 = v5;
   v19 = v11;
-  [v9 registerHandlerForEvent:@"Download phase did change" onStates:v10 withBlock:v18];
+  [stateMachine3 registerHandlerForEvent:@"Download phase did change" onStates:v10 withBlock:v18];
 
   v12 = objc_loadWeakRetained(&location);
-  v13 = [v12 stateMachine];
+  stateMachine4 = [v12 stateMachine];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __56__VUIStoreDownloadMonitor__registerStateMachineHandlers__block_invoke_42;
@@ -313,7 +313,7 @@ LABEL_20:
   objc_copyWeak(&v17, &location);
   v14 = v11;
   v16 = v14;
-  [v13 registerHandlerForEvent:@"Asset download token timer did fire" onState:@"Waiting for download token" withBlock:v15];
+  [stateMachine4 registerHandlerForEvent:@"Asset download token timer did fire" onState:@"Waiting for download token" withBlock:v15];
 
   objc_destroyWeak(&v17);
   objc_destroyWeak(&v20);

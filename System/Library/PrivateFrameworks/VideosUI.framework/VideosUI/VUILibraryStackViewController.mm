@@ -1,16 +1,16 @@
 @interface VUILibraryStackViewController
 - (VUILibraryStackViewController)init;
-- (id)indexPathForPreferredFocusedViewInCollectionView:(id)a3;
+- (id)indexPathForPreferredFocusedViewInCollectionView:(id)view;
 - (void)_invalidateLayouts;
 - (void)_updateNavigationBarPadding;
-- (void)collectionView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5;
+- (void)collectionView:(id)view didEndDisplayingCell:(id)cell forItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path;
 - (void)scrollToTop;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation VUILibraryStackViewController
@@ -80,8 +80,8 @@ void __37__VUILibraryStackViewController_init__block_invoke(uint64_t a1, void *a
 
 - (void)scrollToTop
 {
-  v2 = [(VUILibraryStackViewController *)self stackCollectionView];
-  [v2 _scrollToTopIfPossible:1];
+  stackCollectionView = [(VUILibraryStackViewController *)self stackCollectionView];
+  [stackCollectionView _scrollToTopIfPossible:1];
 }
 
 - (void)viewDidLoad
@@ -111,8 +111,8 @@ void __37__VUILibraryStackViewController_init__block_invoke(uint64_t a1, void *a
   }
 
   v11 = self->_stackCollectionView;
-  v12 = [MEMORY[0x1E69DC888] clearColor];
-  [(UICollectionView *)v11 setBackgroundColor:v12];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [(UICollectionView *)v11 setBackgroundColor:clearColor];
 
   [(UICollectionView *)self->_stackCollectionView setAutoresizingMask:18];
   [(UICollectionView *)self->_stackCollectionView setShowsVerticalScrollIndicator:0];
@@ -131,13 +131,13 @@ void __37__VUILibraryStackViewController_init__block_invoke(uint64_t a1, void *a
   self->_requiresRelayout = 1;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v9.receiver = self;
   v9.super_class = VUILibraryStackViewController;
-  [(VUILibraryStackViewController *)&v9 viewDidAppear:a3];
-  v4 = [(VUILibraryStackViewController *)self view];
-  [v4 bounds];
+  [(VUILibraryStackViewController *)&v9 viewDidAppear:appear];
+  view = [(VUILibraryStackViewController *)self view];
+  [view bounds];
   v6 = v5;
 
   if (self->_lastAppearWidth != v6)
@@ -147,9 +147,9 @@ void __37__VUILibraryStackViewController_init__block_invoke(uint64_t a1, void *a
 
   self->_lastAppearWidth = v6;
   [(VUILibraryStackViewController *)self _updateNavigationBarPadding];
-  v7 = [(VUILibraryStackViewController *)self navigationController];
-  v8 = [v7 navigationBar];
-  [v8 sizeToFit];
+  navigationController = [(VUILibraryStackViewController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
+  [navigationBar sizeToFit];
 }
 
 - (void)viewDidLayoutSubviews
@@ -160,28 +160,28 @@ void __37__VUILibraryStackViewController_init__block_invoke(uint64_t a1, void *a
   [(VUILibraryStackViewController *)self _updateNavigationBarPadding];
   if (self->_requiresRelayout)
   {
-    v3 = [(UICollectionView *)self->_stackCollectionView collectionViewLayout];
-    [v3 invalidateLayout];
+    collectionViewLayout = [(UICollectionView *)self->_stackCollectionView collectionViewLayout];
+    [collectionViewLayout invalidateLayout];
 
     [(VUILibraryStackView *)self->_stackView setNeedsLayout];
     self->_requiresRelayout = 0;
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v16 = *MEMORY[0x1E69E9840];
   v14.receiver = self;
   v14.super_class = VUILibraryStackViewController;
-  [(VUILibraryStackViewController *)&v14 viewDidDisappear:a3];
+  [(VUILibraryStackViewController *)&v14 viewDidDisappear:disappear];
   if ([(VUILibraryStackViewController *)self isMovingFromParentViewController])
   {
-    v4 = [(VUILibraryStackViewController *)self childViewControllers];
+    childViewControllers = [(VUILibraryStackViewController *)self childViewControllers];
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v5 = [v4 countByEnumeratingWithState:&v10 objects:v15 count:16];
+    v5 = [childViewControllers countByEnumeratingWithState:&v10 objects:v15 count:16];
     if (v5)
     {
       v6 = v5;
@@ -192,7 +192,7 @@ void __37__VUILibraryStackViewController_init__block_invoke(uint64_t a1, void *a
         {
           if (*v11 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(childViewControllers);
           }
 
           v9 = *(*(&v10 + 1) + 8 * i);
@@ -200,7 +200,7 @@ void __37__VUILibraryStackViewController_init__block_invoke(uint64_t a1, void *a
           [v9 removeFromParentViewController];
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v10 objects:v15 count:16];
+        v6 = [childViewControllers countByEnumeratingWithState:&v10 objects:v15 count:16];
       }
 
       while (v6);
@@ -208,11 +208,11 @@ void __37__VUILibraryStackViewController_init__block_invoke(uint64_t a1, void *a
   }
 }
 
-- (id)indexPathForPreferredFocusedViewInCollectionView:(id)a3
+- (id)indexPathForPreferredFocusedViewInCollectionView:(id)view
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_focusedIndexPath && [v4 vui_isIndexPathValid:?])
+  viewCopy = view;
+  v5 = viewCopy;
+  if (self->_focusedIndexPath && [viewCopy vui_isIndexPathValid:?])
   {
     v6 = self->_focusedIndexPath;
   }
@@ -225,52 +225,52 @@ void __37__VUILibraryStackViewController_init__block_invoke(uint64_t a1, void *a
   return v6;
 }
 
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path
 {
-  v11 = a4;
+  cellCopy = cell;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v7 = v11;
+  v7 = cellCopy;
   if (isKindOfClass)
   {
-    v8 = [v11 viewController];
-    if (v8)
+    viewController = [cellCopy viewController];
+    if (viewController)
     {
-      v9 = [(VUILibraryStackViewController *)self childViewControllers];
-      v10 = [v9 containsObject:v8];
+      childViewControllers = [(VUILibraryStackViewController *)self childViewControllers];
+      v10 = [childViewControllers containsObject:viewController];
 
       if ((v10 & 1) == 0)
       {
-        [(VUILibraryStackViewController *)self addChildViewController:v8];
-        [v8 didMoveToParentViewController:self];
+        [(VUILibraryStackViewController *)self addChildViewController:viewController];
+        [viewController didMoveToParentViewController:self];
       }
     }
 
-    v7 = v11;
+    v7 = cellCopy;
   }
 }
 
-- (void)collectionView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view didEndDisplayingCell:(id)cell forItemAtIndexPath:(id)path
 {
-  v12 = a4;
+  cellCopy = cell;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v7 = v12;
+  v7 = cellCopy;
   if (isKindOfClass)
   {
-    v8 = [v12 viewController];
-    if (v8)
+    viewController = [cellCopy viewController];
+    if (viewController)
     {
-      v9 = [(VUILibraryStackViewController *)self childViewControllers];
-      if ([v9 containsObject:v8])
+      childViewControllers = [(VUILibraryStackViewController *)self childViewControllers];
+      if ([childViewControllers containsObject:viewController])
       {
-        v10 = [v8 view];
-        v11 = [v10 isDescendantOfView:v12];
+        view = [viewController view];
+        v11 = [view isDescendantOfView:cellCopy];
 
         if (v11)
         {
-          [v8 willMoveToParentViewController:0];
-          [v8 removeFromParentViewController];
+          [viewController willMoveToParentViewController:0];
+          [viewController removeFromParentViewController];
         }
       }
 
@@ -279,24 +279,24 @@ void __37__VUILibraryStackViewController_init__block_invoke(uint64_t a1, void *a
       }
     }
 
-    v7 = v12;
+    v7 = cellCopy;
   }
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v9.receiver = self;
   v9.super_class = VUILibraryStackViewController;
-  v7 = a4;
-  [(VUILibraryStackViewController *)&v9 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  coordinatorCopy = coordinator;
+  [(VUILibraryStackViewController *)&v9 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __84__VUILibraryStackViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
   v8[3] = &unk_1E872E788;
   v8[4] = self;
-  [v7 animateAlongsideTransition:v8 completion:0];
+  [coordinatorCopy animateAlongsideTransition:v8 completion:0];
 }
 
 void __84__VUILibraryStackViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke(uint64_t a1)
@@ -319,8 +319,8 @@ void __84__VUILibraryStackViewController_viewWillTransitionToSize_withTransition
 
 - (void)_invalidateLayouts
 {
-  v3 = [(UICollectionView *)self->_stackCollectionView collectionViewLayout];
-  [v3 invalidateLayout];
+  collectionViewLayout = [(UICollectionView *)self->_stackCollectionView collectionViewLayout];
+  [collectionViewLayout invalidateLayout];
 
   stackView = self->_stackView;
 
@@ -329,8 +329,8 @@ void __84__VUILibraryStackViewController_viewWillTransitionToSize_withTransition
 
 - (void)_updateNavigationBarPadding
 {
-  v3 = [(VUILibraryStackViewController *)self view];
-  [v3 bounds];
+  view = [(VUILibraryStackViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -338,13 +338,13 @@ void __84__VUILibraryStackViewController_viewWillTransitionToSize_withTransition
 
   if ([MEMORY[0x1E69DF6F0] isPad])
   {
-    v12 = [(VUILibraryStackViewController *)self vuiIsRTL];
-    v13 = [(VUILibraryStackViewController *)self view];
-    [v13 safeAreaInsets];
+    vuiIsRTL = [(VUILibraryStackViewController *)self vuiIsRTL];
+    view2 = [(VUILibraryStackViewController *)self view];
+    [view2 safeAreaInsets];
     v15 = v14;
     v17 = v16;
 
-    if (v12)
+    if (vuiIsRTL)
     {
       v9 = v9 - v17;
     }
@@ -364,9 +364,9 @@ void __84__VUILibraryStackViewController_viewWillTransitionToSize_withTransition
   v21 = v20;
   v23 = v22;
   v25 = v24;
-  v26 = [(VUILibraryStackViewController *)self navigationController];
-  v27 = [v26 navigationBar];
-  [v27 layoutMargins];
+  navigationController = [(VUILibraryStackViewController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
+  [navigationBar layoutMargins];
   if (v21 == v31 && v19 == v28 && v25 == v30)
   {
     v34 = v29;
@@ -381,13 +381,13 @@ void __84__VUILibraryStackViewController_viewWillTransitionToSize_withTransition
   {
   }
 
-  v35 = [(VUILibraryStackViewController *)self navigationController];
-  v36 = [v35 navigationBar];
-  [v36 setLayoutMargins:{v19, v21, v23, v25}];
+  navigationController2 = [(VUILibraryStackViewController *)self navigationController];
+  navigationBar2 = [navigationController2 navigationBar];
+  [navigationBar2 setLayoutMargins:{v19, v21, v23, v25}];
 
-  v38 = [(VUILibraryStackViewController *)self navigationController];
-  v37 = [v38 navigationBar];
-  [v37 setNeedsLayout];
+  navigationController3 = [(VUILibraryStackViewController *)self navigationController];
+  navigationBar3 = [navigationController3 navigationBar];
+  [navigationBar3 setNeedsLayout];
 }
 
 @end

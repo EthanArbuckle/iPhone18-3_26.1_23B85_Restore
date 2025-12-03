@@ -1,46 +1,46 @@
 @interface MTL4ToolsCompilerTask
 - (BOOL)tryCancel;
-- (MTL4ToolsCompilerTask)initWithBaseObject:(id)a3 parent:(id)a4;
-- (MTL4ToolsCompilerTask)initWithCompiler:(id)a3;
+- (MTL4ToolsCompilerTask)initWithBaseObject:(id)object parent:(id)parent;
+- (MTL4ToolsCompilerTask)initWithCompiler:(id)compiler;
 - (int64_t)status;
 - (void)waitUntilCompleted;
 @end
 
 @implementation MTL4ToolsCompilerTask
 
-- (MTL4ToolsCompilerTask)initWithBaseObject:(id)a3 parent:(id)a4
+- (MTL4ToolsCompilerTask)initWithBaseObject:(id)object parent:(id)parent
 {
   v5.receiver = self;
   v5.super_class = MTL4ToolsCompilerTask;
-  return [(MTLToolsObject *)&v5 initWithBaseObject:a3 parent:a4];
+  return [(MTLToolsObject *)&v5 initWithBaseObject:object parent:parent];
 }
 
-- (MTL4ToolsCompilerTask)initWithCompiler:(id)a3
+- (MTL4ToolsCompilerTask)initWithCompiler:(id)compiler
 {
-  v4 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v4 initWithCompiler:a3];
+  return [baseObject initWithCompiler:compiler];
 }
 
 - (void)waitUntilCompleted
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v2 waitUntilCompleted];
+  [baseObject waitUntilCompleted];
 }
 
 - (BOOL)tryCancel
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 tryCancel];
+  return [baseObject tryCancel];
 }
 
 - (int64_t)status
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 status];
+  return [baseObject status];
 }
 
 @end

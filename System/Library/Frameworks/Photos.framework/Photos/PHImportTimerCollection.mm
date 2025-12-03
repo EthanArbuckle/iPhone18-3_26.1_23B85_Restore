@@ -1,15 +1,15 @@
 @interface PHImportTimerCollection
-- (double)duration:(unsigned __int8)a3;
+- (double)duration:(unsigned __int8)duration;
 - (id)description;
-- (id)initForMediaType:(unsigned __int8)a3 fileSize:(unint64_t)a4;
-- (id)startTiming:(unsigned __int8)a3 subtype:(unsigned __int8)a4;
-- (void)processTimesOfType:(unsigned __int8)a3 withBlock:(id)a4;
-- (void)stopTiming:(id)a3;
+- (id)initForMediaType:(unsigned __int8)type fileSize:(unint64_t)size;
+- (id)startTiming:(unsigned __int8)timing subtype:(unsigned __int8)subtype;
+- (void)processTimesOfType:(unsigned __int8)type withBlock:(id)block;
+- (void)stopTiming:(id)timing;
 @end
 
 @implementation PHImportTimerCollection
 
-- (double)duration:(unsigned __int8)a3
+- (double)duration:(unsigned __int8)duration
 {
   v6 = 0;
   v7 = &v6;
@@ -20,7 +20,7 @@
   v5[2] = __36__PHImportTimerCollection_duration___block_invoke;
   v5[3] = &unk_1E75A93E0;
   v5[4] = &v6;
-  [(PHImportTimerCollection *)self processTimesOfType:a3 withBlock:v5];
+  [(PHImportTimerCollection *)self processTimesOfType:duration withBlock:v5];
   v3 = v7[3];
   _Block_object_dispose(&v6, 8);
   return v3;
@@ -35,12 +35,12 @@ double __36__PHImportTimerCollection_duration___block_invoke(uint64_t a1, uint64
   return result;
 }
 
-- (void)processTimesOfType:(unsigned __int8)a3 withBlock:(id)a4
+- (void)processTimesOfType:(unsigned __int8)type withBlock:(id)block
 {
-  v4 = a3;
+  typeCopy = type;
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if (v6)
+  blockCopy = block;
+  if (blockCopy)
   {
     v17 = 0u;
     v18 = 0u;
@@ -62,11 +62,11 @@ double __36__PHImportTimerCollection_duration___block_invoke(uint64_t a1, uint64
           }
 
           v12 = *(*(&v15 + 1) + 8 * i);
-          if ([v12 type] == v4)
+          if ([v12 type] == typeCopy)
           {
-            v13 = [v12 startTime];
-            v14 = [v12 endTime];
-            v6[2](v6, v13, v14);
+            startTime = [v12 startTime];
+            endTime = [v12 endTime];
+            blockCopy[2](blockCopy, startTime, endTime);
           }
         }
 
@@ -78,20 +78,20 @@ double __36__PHImportTimerCollection_duration___block_invoke(uint64_t a1, uint64
   }
 }
 
-- (void)stopTiming:(id)a3
+- (void)stopTiming:(id)timing
 {
   runningTimers = self->_runningTimers;
-  v4 = a3;
-  -[NSMutableIndexSet removeIndex:](runningTimers, "removeIndex:", [v4 type]);
-  [v4 stop];
+  timingCopy = timing;
+  -[NSMutableIndexSet removeIndex:](runningTimers, "removeIndex:", [timingCopy type]);
+  [timingCopy stop];
 }
 
-- (id)startTiming:(unsigned __int8)a3 subtype:(unsigned __int8)a4
+- (id)startTiming:(unsigned __int8)timing subtype:(unsigned __int8)subtype
 {
-  v4 = a4;
-  v5 = a3;
-  [(NSMutableIndexSet *)self->_runningTimers addIndex:a3];
-  v7 = [[PHImportTimer alloc] initWithType:v5 subtype:v4];
+  subtypeCopy = subtype;
+  timingCopy = timing;
+  [(NSMutableIndexSet *)self->_runningTimers addIndex:timing];
+  v7 = [[PHImportTimer alloc] initWithType:timingCopy subtype:subtypeCopy];
   [(NSMutableArray *)self->_timers addObject:v7];
   [(PHImportTimer *)v7 start];
 
@@ -108,7 +108,7 @@ double __36__PHImportTimerCollection_duration___block_invoke(uint64_t a1, uint64
   return v6;
 }
 
-- (id)initForMediaType:(unsigned __int8)a3 fileSize:(unint64_t)a4
+- (id)initForMediaType:(unsigned __int8)type fileSize:(unint64_t)size
 {
   v7 = PLImportGetLog();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG);
@@ -121,27 +121,27 @@ double __36__PHImportTimerCollection_duration___block_invoke(uint64_t a1, uint64
     v10 = v9;
     if (v9)
     {
-      v9->_mediaType = a3;
-      v9->_fileSize = a4;
+      v9->_mediaType = type;
+      v9->_fileSize = size;
       v11 = objc_opt_new();
       timers = v10->_timers;
       v10->_timers = v11;
 
-      v13 = [MEMORY[0x1E696AD50] indexSet];
+      indexSet = [MEMORY[0x1E696AD50] indexSet];
       runningTimers = v10->_runningTimers;
-      v10->_runningTimers = v13;
+      v10->_runningTimers = indexSet;
     }
 
     self = v10;
-    v15 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v15 = 0;
+    selfCopy = 0;
   }
 
-  return v15;
+  return selfCopy;
 }
 
 @end

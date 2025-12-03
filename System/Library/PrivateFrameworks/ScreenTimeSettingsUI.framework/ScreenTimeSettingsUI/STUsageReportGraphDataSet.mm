@@ -1,38 +1,38 @@
 @interface STUsageReportGraphDataSet
-- (STUsageReportGraphDataSet)initWithTimePeriod:(unint64_t)a3 itemType:(unint64_t)a4 total:(id)a5 max:(id)a6 average:(id)a7 averageAsPercentageOfMax:(double)a8 dataPoints:(id)a9;
-- (id)initEmptyDataSetWithTimePeriod:(unint64_t)a3 referenceDate:(id)a4;
+- (STUsageReportGraphDataSet)initWithTimePeriod:(unint64_t)period itemType:(unint64_t)type total:(id)total max:(id)max average:(id)average averageAsPercentageOfMax:(double)ofMax dataPoints:(id)points;
+- (id)initEmptyDataSetWithTimePeriod:(unint64_t)period referenceDate:(id)date;
 @end
 
 @implementation STUsageReportGraphDataSet
 
-- (STUsageReportGraphDataSet)initWithTimePeriod:(unint64_t)a3 itemType:(unint64_t)a4 total:(id)a5 max:(id)a6 average:(id)a7 averageAsPercentageOfMax:(double)a8 dataPoints:(id)a9
+- (STUsageReportGraphDataSet)initWithTimePeriod:(unint64_t)period itemType:(unint64_t)type total:(id)total max:(id)max average:(id)average averageAsPercentageOfMax:(double)ofMax dataPoints:(id)points
 {
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a9;
+  totalCopy = total;
+  maxCopy = max;
+  averageCopy = average;
+  pointsCopy = points;
   v31.receiver = self;
   v31.super_class = STUsageReportGraphDataSet;
   v20 = [(STUsageReportGraphDataSet *)&v31 init];
   v21 = v20;
   if (v20)
   {
-    v20->_timePeriod = a3;
-    v20->_itemType = a4;
-    v22 = [v16 copy];
+    v20->_timePeriod = period;
+    v20->_itemType = type;
+    v22 = [totalCopy copy];
     total = v21->_total;
     v21->_total = v22;
 
-    v24 = [v17 copy];
+    v24 = [maxCopy copy];
     max = v21->_max;
     v21->_max = v24;
 
-    v26 = [v18 copy];
+    v26 = [averageCopy copy];
     average = v21->_average;
     v21->_average = v26;
 
-    v21->_averageAsPercentageOfMax = a8;
-    v28 = [v19 copy];
+    v21->_averageAsPercentageOfMax = ofMax;
+    v28 = [pointsCopy copy];
     dataPoints = v21->_dataPoints;
     v21->_dataPoints = v28;
   }
@@ -40,20 +40,20 @@
   return v21;
 }
 
-- (id)initEmptyDataSetWithTimePeriod:(unint64_t)a3 referenceDate:(id)a4
+- (id)initEmptyDataSetWithTimePeriod:(unint64_t)period referenceDate:(id)date
 {
-  v7 = a4;
-  v8 = [MEMORY[0x277CBEA80] currentCalendar];
+  dateCopy = date;
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
   v31 = 0;
   v32 = &v31;
   v33 = 0x3032000000;
   v34 = __Block_byref_object_copy__9;
   v35 = __Block_byref_object_dispose__9;
-  v36 = [v8 startOfDayForDate:v7];
-  if (!a3)
+  v36 = [currentCalendar startOfDayForDate:dateCopy];
+  if (!period)
   {
-    v18 = [MEMORY[0x277CCA890] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"STUsageReportGraphDataSet.m" lineNumber:66 description:{@"Invalid parameter not satisfying: %@", @"NO"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"STUsageReportGraphDataSet.m" lineNumber:66 description:{@"Invalid parameter not satisfying: %@", @"NO"}];
 
     v14 = 0;
     v12 = 0x7FFFFFFFFFFFFFFFLL;
@@ -63,19 +63,19 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if (a3 != 1)
+  if (period != 1)
   {
-    if (a3 == 2)
+    if (period == 2)
     {
-      v9 = [v8 firstWeekday];
-      if ([v8 component:512 fromDate:v32[5]] != v9)
+      firstWeekday = [currentCalendar firstWeekday];
+      if ([currentCalendar component:512 fromDate:v32[5]] != firstWeekday)
       {
-        v10 = [v8 nextDateAfterDate:v32[5] matchingUnit:512 value:v9 options:516];
+        v10 = [currentCalendar nextDateAfterDate:v32[5] matchingUnit:512 value:firstWeekday options:516];
         v11 = v32[5];
         v32[5] = v10;
       }
 
-      v12 = [v8 rangeOfUnit:512 inUnit:0x2000 forDate:v7];
+      v12 = [currentCalendar rangeOfUnit:512 inUnit:0x2000 forDate:dateCopy];
       v14 = v13;
     }
 
@@ -88,7 +88,7 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v12 = [v8 rangeOfUnit:32 inUnit:16 forDate:v7];
+  v12 = [currentCalendar rangeOfUnit:32 inUnit:16 forDate:dateCopy];
   v14 = v15;
   v16 = 0;
   v17 = 32;
@@ -99,7 +99,7 @@ LABEL_11:
   v25[1] = 3221225472;
   v25[2] = __74__STUsageReportGraphDataSet_initEmptyDataSetWithTimePeriod_referenceDate___block_invoke;
   v25[3] = &unk_279B7EB08;
-  v21 = v8;
+  v21 = currentCalendar;
   v26 = v21;
   v28 = &v31;
   v29 = v17;
@@ -107,7 +107,7 @@ LABEL_11:
   v22 = v19;
   v27 = v22;
   [v20 enumerateIndexesUsingBlock:v25];
-  v23 = [(STUsageReportGraphDataSet *)self initWithTimePeriod:a3 itemType:1 total:&unk_28769D718 max:&unk_28769D718 average:&unk_28769D718 averageAsPercentageOfMax:v22 dataPoints:0.0];
+  v23 = [(STUsageReportGraphDataSet *)self initWithTimePeriod:period itemType:1 total:&unk_28769D718 max:&unk_28769D718 average:&unk_28769D718 averageAsPercentageOfMax:v22 dataPoints:0.0];
 
   _Block_object_dispose(&v31, 8);
   return v23;

@@ -1,18 +1,18 @@
 @interface HKSharedSummaryCloudSyncManager
 + (id)taskIdentifier;
-- (HKSharedSummaryCloudSyncManager)initWithHealthStore:(id)a3;
+- (HKSharedSummaryCloudSyncManager)initWithHealthStore:(id)store;
 - (id)exportedInterface;
 - (id)remoteInterface;
-- (void)fetchAccountInfoWithCompletion:(id)a3;
-- (void)pullWithCompletion:(id)a3;
-- (void)pushWithCompletion:(id)a3;
+- (void)fetchAccountInfoWithCompletion:(id)completion;
+- (void)pullWithCompletion:(id)completion;
+- (void)pushWithCompletion:(id)completion;
 @end
 
 @implementation HKSharedSummaryCloudSyncManager
 
-- (HKSharedSummaryCloudSyncManager)initWithHealthStore:(id)a3
+- (HKSharedSummaryCloudSyncManager)initWithHealthStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v13.receiver = self;
   v13.super_class = HKSharedSummaryCloudSyncManager;
   v5 = [(HKSharedSummaryCloudSyncManager *)&v13 init];
@@ -21,8 +21,8 @@
     v6 = [HKTaskServerProxyProvider alloc];
     v7 = objc_opt_class();
     v8 = NSStringFromClass(v7);
-    v9 = [MEMORY[0x1E696AFB0] UUID];
-    v10 = [(HKTaskServerProxyProvider *)v6 initWithHealthStore:v4 taskIdentifier:v8 exportedObject:v5 taskUUID:v9];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    v10 = [(HKTaskServerProxyProvider *)v6 initWithHealthStore:storeCopy taskIdentifier:v8 exportedObject:v5 taskUUID:uUID];
     proxyProvider = v5->_proxyProvider;
     v5->_proxyProvider = v10;
   }
@@ -37,9 +37,9 @@
   return NSStringFromClass(v2);
 }
 
-- (void)fetchAccountInfoWithCompletion:(id)a3
+- (void)fetchAccountInfoWithCompletion:(id)completion
 {
-  v4 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:a3];
+  v4 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -68,9 +68,9 @@ void __66__HKSharedSummaryCloudSyncManager_fetchAccountInfoWithCompletion___bloc
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)pushWithCompletion:(id)a3
+- (void)pushWithCompletion:(id)completion
 {
-  v4 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:a3];
+  v4 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -99,9 +99,9 @@ void __54__HKSharedSummaryCloudSyncManager_pushWithCompletion___block_invoke_2(u
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)pullWithCompletion:(id)a3
+- (void)pullWithCompletion:(id)completion
 {
-  v4 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:a3];
+  v4 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;

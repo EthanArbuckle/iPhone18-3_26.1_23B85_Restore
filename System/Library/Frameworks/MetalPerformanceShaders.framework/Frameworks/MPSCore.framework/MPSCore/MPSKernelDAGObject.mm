@@ -1,12 +1,12 @@
 @interface MPSKernelDAGObject
 - (BOOL)hasPostfixFunction;
-- (MPSKernelDAGObject)initWithKernelDAG:(void *)a3 finalOp:(void *)a4;
+- (MPSKernelDAGObject)initWithKernelDAG:(void *)g finalOp:(void *)op;
 - (__n128)hash;
-- (const)inputTensorAtIndex:(unint64_t)a3;
-- (const)outputTensorAtIndex:(unint64_t)a3;
+- (const)inputTensorAtIndex:(unint64_t)index;
+- (const)outputTensorAtIndex:(unint64_t)index;
 - (id).cxx_construct;
 - (id)debugDescription;
-- (id)getStitchedFunctions:(id)a3;
+- (id)getStitchedFunctions:(id)functions;
 - (vector<unsigned)dynamicFCs;
 - (void)dealloc;
 - (void)setDynamicFCs:(vector<unsigned)int;
@@ -44,12 +44,12 @@
   return result;
 }
 
-- (const)inputTensorAtIndex:(unint64_t)a3
+- (const)inputTensorAtIndex:(unint64_t)index
 {
   v3 = *(***(self->_kernelDAG + 7) + 8);
-  if (v3 && (v4 = *v3, a3 < ((*(*(***(self->_kernelDAG + 7) + 8) + 8) - v4) >> 3)))
+  if (v3 && (v4 = *v3, index < ((*(*(***(self->_kernelDAG + 7) + 8) + 8) - v4) >> 3)))
   {
-    return *(v4 + 8 * a3);
+    return *(v4 + 8 * index);
   }
 
   else
@@ -58,12 +58,12 @@
   }
 }
 
-- (const)outputTensorAtIndex:(unint64_t)a3
+- (const)outputTensorAtIndex:(unint64_t)index
 {
   v3 = *(***(self->_kernelDAG + 7) + 24);
-  if (v3 && (v4 = *v3, a3 < ((*(*(***(self->_kernelDAG + 7) + 24) + 8) - v4) >> 3)))
+  if (v3 && (v4 = *v3, index < ((*(*(***(self->_kernelDAG + 7) + 24) + 8) - v4) >> 3)))
   {
-    return *(v4 + 8 * a3);
+    return *(v4 + 8 * index);
   }
 
   else
@@ -72,16 +72,16 @@
   }
 }
 
-- (MPSKernelDAGObject)initWithKernelDAG:(void *)a3 finalOp:(void *)a4
+- (MPSKernelDAGObject)initWithKernelDAG:(void *)g finalOp:(void *)op
 {
   v16.receiver = self;
   v16.super_class = MPSKernelDAGObject;
   v6 = [(MPSKernelDAGObject *)&v16 init];
   v7 = v6;
-  v6->_finalOp = a4;
-  v6->_kernelDAG = *(a4 + 4);
-  v9 = *a3;
-  v8 = *(a3 + 1);
+  v6->_finalOp = op;
+  v6->_kernelDAG = *(op + 4);
+  v9 = *g;
+  v8 = *(g + 1);
   if (v8)
   {
     atomic_fetch_add_explicit((v8 + 8), 1uLL, memory_order_relaxed);
@@ -105,7 +105,7 @@
   return v7;
 }
 
-- (id)getStitchedFunctions:(id)a3
+- (id)getStitchedFunctions:(id)functions
 {
   v87 = *MEMORY[0x277D85DE8];
   v10 = objc_msgSend_arrayWithCapacity_(MEMORY[0x277CBEB18], a2, self->_dynamicFCs.__end_ - self->_dynamicFCs.__begin_, v3, v4);
@@ -124,8 +124,8 @@
     context = objc_autoreleasePoolPush();
     v23 = objc_msgSend_dictionary(MEMORY[0x277CBEB38], v19, v20, v21, v22);
     v28 = objc_msgSend_array(MEMORY[0x277CBEB18], v24, v25, v26, v27);
-    DAGAndHash = MPSKernelDAG::getDAGAndHash(self->_kernelDAG, a3, self->_finalOp, v23, v28, self->_sha256, self->_keepSubDAGArray);
-    v34 = objc_msgSend_device(a3, v30, v31, v32, v33);
+    DAGAndHash = MPSKernelDAG::getDAGAndHash(self->_kernelDAG, functions, self->_finalOp, v23, v28, self->_sha256, self->_keepSubDAGArray);
+    v34 = objc_msgSend_device(functions, v30, v31, v32, v33);
     v39 = objc_msgSend_allValues(v23, v35, v36, v37, v38);
     v43 = objc_msgSend_arrayWithArray_(MEMORY[0x277CBEB18], v40, MEMORY[0x277CBEBF8], v41, v42);
     v85 = 0;
@@ -174,7 +174,7 @@
       while (v51);
     }
 
-    MPSKernelDAG::appendConversionFunctions(self->_kernelDAG, a3, v43, self->_keepSubDAGArray);
+    MPSKernelDAG::appendConversionFunctions(self->_kernelDAG, functions, v43, self->_keepSubDAGArray);
     objc_msgSend_setObject_forKeyedSubscript_(self->_stitchedFunctions, v66, v43, v10, v67);
     objc_autoreleasePoolPop(context);
     return objc_msgSend_objectForKeyedSubscript_(self->_stitchedFunctions, v68, v10, v69, v70);
@@ -212,8 +212,8 @@
 
 - (__n128)hash
 {
-  result = *(a1 + 112);
-  v3 = *(a1 + 128);
+  result = *(self + 112);
+  v3 = *(self + 128);
   *a2 = result;
   *(a2 + 16) = v3;
   return result;

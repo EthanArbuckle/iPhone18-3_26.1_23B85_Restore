@@ -1,13 +1,13 @@
 @interface TSUFastReadInvalidatingCache
-- (id)initForReentrant:(BOOL)a3 withGenerator:(id)a4;
+- (id)initForReentrant:(BOOL)reentrant withGenerator:(id)generator;
 - (id)value;
 - (void)dealloc;
-- (void)p_setValue:(id)a3;
+- (void)p_setValue:(id)value;
 @end
 
 @implementation TSUFastReadInvalidatingCache
 
-- (id)initForReentrant:(BOOL)a3 withGenerator:(id)a4
+- (id)initForReentrant:(BOOL)reentrant withGenerator:(id)generator
 {
   v10.receiver = self;
   v10.super_class = TSUFastReadInvalidatingCache;
@@ -15,11 +15,11 @@
   v7 = v6;
   if (v6)
   {
-    if (a4)
+    if (generator)
     {
-      v6->mGenerator = _Block_copy(a4);
-      v7->mReentrant = a3;
-      if (!a3)
+      v6->mGenerator = _Block_copy(generator);
+      v7->mReentrant = reentrant;
+      if (!reentrant)
       {
         v7->mCondition = objc_alloc_init(MEMORY[0x277CCA928]);
       }
@@ -51,14 +51,14 @@
   [(TSUFastReadInvalidatingCache *)&v6 dealloc];
 }
 
-- (void)p_setValue:(id)a3
+- (void)p_setValue:(id)value
 {
-  v5 = a3;
+  valueCopy = value;
   do
   {
     v6 = atomic_load(&self->mValue);
     v7 = v6;
-    atomic_compare_exchange_strong(&self->mValue, &v7, a3);
+    atomic_compare_exchange_strong(&self->mValue, &v7, value);
   }
 
   while (v7 != v6);

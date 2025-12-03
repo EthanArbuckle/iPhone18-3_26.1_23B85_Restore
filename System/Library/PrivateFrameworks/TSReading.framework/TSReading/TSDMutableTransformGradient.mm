@@ -1,38 +1,38 @@
 @interface TSDMutableTransformGradient
-- (void)setEndPoint:(CGPoint)a3 inShapeWithNaturalSize:(CGSize)a4;
-- (void)setGradientAngleInDegrees:(double)a3;
-- (void)setLastColor:(id)a3;
-- (void)setStartPoint:(CGPoint)a3 inShapeWithNaturalSize:(CGSize)a4;
-- (void)upgradeIfNecessaryWithBaseNaturalSize:(CGSize)a3;
+- (void)setEndPoint:(CGPoint)point inShapeWithNaturalSize:(CGSize)size;
+- (void)setGradientAngleInDegrees:(double)degrees;
+- (void)setLastColor:(id)color;
+- (void)setStartPoint:(CGPoint)point inShapeWithNaturalSize:(CGSize)size;
+- (void)upgradeIfNecessaryWithBaseNaturalSize:(CGSize)size;
 @end
 
 @implementation TSDMutableTransformGradient
 
-- (void)setLastColor:(id)a3
+- (void)setLastColor:(id)color
 {
   v5 = [(NSArray *)[(TSDGradient *)self gradientStops] count]- 1;
 
-  [(TSDMutableTransformGradient *)self setColorOfStopAtIndex:v5 toColor:a3];
+  [(TSDMutableTransformGradient *)self setColorOfStopAtIndex:v5 toColor:color];
 }
 
-- (void)setStartPoint:(CGPoint)a3 inShapeWithNaturalSize:(CGSize)a4
+- (void)setStartPoint:(CGPoint)point inShapeWithNaturalSize:(CGSize)size
 {
-  [(TSDTransformGradient *)self p_scalePoint:a3.x fromShapeWithNaturalSize:a3.y, a4.width, a4.height];
+  [(TSDTransformGradient *)self p_scalePoint:point.x fromShapeWithNaturalSize:point.y, size.width, size.height];
 
   [(TSDTransformGradient *)self setStartPoint:?];
 }
 
-- (void)setEndPoint:(CGPoint)a3 inShapeWithNaturalSize:(CGSize)a4
+- (void)setEndPoint:(CGPoint)point inShapeWithNaturalSize:(CGSize)size
 {
-  [(TSDTransformGradient *)self p_scalePoint:a3.x fromShapeWithNaturalSize:a3.y, a4.width, a4.height];
+  [(TSDTransformGradient *)self p_scalePoint:point.x fromShapeWithNaturalSize:point.y, size.width, size.height];
 
   [(TSDTransformGradient *)self setEndPoint:?];
 }
 
-- (void)upgradeIfNecessaryWithBaseNaturalSize:(CGSize)a3
+- (void)upgradeIfNecessaryWithBaseNaturalSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   p_mTransformBeforeUpgrade = &self->super.mTransformBeforeUpgrade;
   v5 = *&self->super.mTransformBeforeUpgrade.c;
   *&v11.a = *&self->super.mTransformBeforeUpgrade.a;
@@ -51,7 +51,7 @@
   *&p_mTransformBeforeUpgrade->tx = *(v7 + 32);
 }
 
-- (void)setGradientAngleInDegrees:(double)a3
+- (void)setGradientAngleInDegrees:(double)degrees
 {
   p_mStart = &self->super.mStart;
   p_mEnd = &self->super.mEnd;
@@ -62,7 +62,7 @@
   v11 = v10;
   v12 = TSDSubtractPoints(x, y, v8);
   v14 = TSDPointLength(v12, v13);
-  v15 = TSDDeltaFromAngle(a3 * 0.0174532925);
+  v15 = TSDDeltaFromAngle(degrees * 0.0174532925);
   v17 = TSDMultiplyPointScalar(-v15, v16, v14 * 0.5);
   p_mStart->x = TSDAddPoints(v9, v11, v17);
   p_mStart->y = v18;

@@ -1,7 +1,7 @@
 @interface MSPDFAttachmentController
 + (id)log;
 - (MSPDFAttachmentControllerDelegate)delegate;
-- (void)updateToInlinePDFAttachmentIfNeeded:(id)a3;
+- (void)updateToInlinePDFAttachmentIfNeeded:(id)needed;
 @end
 
 @implementation MSPDFAttachmentController
@@ -12,7 +12,7 @@
   block[1] = 3221225472;
   block[2] = __32__MSPDFAttachmentController_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken != -1)
   {
     dispatch_once(&log_onceToken, block);
@@ -31,71 +31,71 @@ void __32__MSPDFAttachmentController_log__block_invoke(uint64_t a1)
   log_log = v1;
 }
 
-- (void)updateToInlinePDFAttachmentIfNeeded:(id)a3
+- (void)updateToInlinePDFAttachmentIfNeeded:(id)needed
 {
   v31 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [v5 uttype];
-  v7 = [v6 conformsToType:*MEMORY[0x277CE1E08]];
+  neededCopy = needed;
+  uttype = [neededCopy uttype];
+  v7 = [uttype conformsToType:*MEMORY[0x277CE1E08]];
 
   if (v7)
   {
-    v8 = [v5 data];
-    if (v8)
+    data = [neededCopy data];
+    if (data)
     {
       if ([MEMORY[0x277CBEBD0] em_lockdownModeEnabled])
       {
         v9 = +[MSPDFAttachmentController log];
         if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
         {
-          v10 = [v5 contentID];
+          contentID = [neededCopy contentID];
           v24 = 138543362;
-          v25 = v10;
+          v25 = contentID;
           _os_log_impl(&dword_257FBF000, v9, OS_LOG_TYPE_DEFAULT, "(%{public}@) Lockdown Mode detected, disabling PDF parsing", &v24, 0xCu);
         }
       }
 
       else
       {
-        v9 = [objc_alloc(MEMORY[0x277CD93D8]) initWithData:v8];
+        v9 = [objc_alloc(MEMORY[0x277CD93D8]) initWithData:data];
         if (!v9)
         {
           v13 = +[MSPDFAttachmentController log];
           if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
           {
-            v14 = [v5 contentID];
-            [(MSPDFAttachmentController *)v14 updateToInlinePDFAttachmentIfNeeded:v30, v13];
+            contentID2 = [neededCopy contentID];
+            [(MSPDFAttachmentController *)contentID2 updateToInlinePDFAttachmentIfNeeded:v30, v13];
           }
         }
 
-        v15 = [v9 pageCount];
-        v16 = [v9 isLocked];
+        pageCount = [v9 pageCount];
+        isLocked = [v9 isLocked];
         v17 = +[MSPDFAttachmentController log];
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
         {
-          v18 = [v5 contentID];
+          contentID3 = [neededCopy contentID];
           v24 = 138543874;
-          v25 = v18;
+          v25 = contentID3;
           v26 = 2048;
-          v27 = v15;
+          v27 = pageCount;
           v28 = 1024;
-          v29 = v16;
+          v29 = isLocked;
           _os_log_impl(&dword_257FBF000, v17, OS_LOG_TYPE_DEFAULT, "(%{public}@) Attached PDF has %lu pages, isLocked=%{BOOL}d", &v24, 0x1Cu);
         }
 
-        if (!((v15 != 1) | v16 & 1))
+        if (!((pageCount != 1) | isLocked & 1))
         {
-          v19 = [(MSPDFAttachmentController *)self delegate];
-          v20 = v19 == 0;
+          delegate = [(MSPDFAttachmentController *)self delegate];
+          v20 = delegate == 0;
 
           if (v20)
           {
-            v23 = [MEMORY[0x277CCA890] currentHandler];
-            [v23 handleFailureInMethod:a2 object:self file:@"MSPDFAttachmentController.m" lineNumber:44 description:@"Delegate is missing to update attachment"];
+            currentHandler = [MEMORY[0x277CCA890] currentHandler];
+            [currentHandler handleFailureInMethod:a2 object:self file:@"MSPDFAttachmentController.m" lineNumber:44 description:@"Delegate is missing to update attachment"];
           }
 
-          v21 = [(MSPDFAttachmentController *)self delegate];
-          [v21 attachmentController:self updateToInlineAttachment:v5];
+          delegate2 = [(MSPDFAttachmentController *)self delegate];
+          [delegate2 attachmentController:self updateToInlineAttachment:neededCopy];
         }
       }
     }
@@ -105,19 +105,19 @@ void __32__MSPDFAttachmentController_log__block_invoke(uint64_t a1)
       v9 = +[MSPDFAttachmentController log];
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
-        v12 = [v5 contentID];
-        [(MSPDFAttachmentController *)v12 updateToInlinePDFAttachmentIfNeeded:v9];
+        contentID4 = [neededCopy contentID];
+        [(MSPDFAttachmentController *)contentID4 updateToInlinePDFAttachmentIfNeeded:v9];
       }
     }
   }
 
   else
   {
-    v8 = +[MSPDFAttachmentController log];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    data = +[MSPDFAttachmentController log];
+    if (os_log_type_enabled(data, OS_LOG_TYPE_ERROR))
     {
-      v11 = [v5 contentID];
-      [(MSPDFAttachmentController *)v11 updateToInlinePDFAttachmentIfNeeded:v8];
+      contentID5 = [neededCopy contentID];
+      [(MSPDFAttachmentController *)contentID5 updateToInlinePDFAttachmentIfNeeded:data];
     }
   }
 

@@ -1,19 +1,19 @@
 @interface EKUIHorizontalScrollingVirtualConferenceCell
-- (EKUIHorizontalScrollingVirtualConferenceCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (EKUIHorizontalScrollingVirtualConferenceCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (VirtualConferenceRoomTypeSelectionDelegate)delegate;
 - (double)_heightOfCells;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
 @end
 
 @implementation EKUIHorizontalScrollingVirtualConferenceCell
 
-- (EKUIHorizontalScrollingVirtualConferenceCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (EKUIHorizontalScrollingVirtualConferenceCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v53[1] = *MEMORY[0x1E69E9840];
   v51.receiver = self;
   v51.super_class = EKUIHorizontalScrollingVirtualConferenceCell;
-  v4 = [(EKUIHorizontalScrollingVirtualConferenceCell *)&v51 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(EKUIHorizontalScrollingVirtualConferenceCell *)&v51 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = MEMORY[0x1E6995588];
@@ -46,8 +46,8 @@
     [(UICollectionView *)v4->_items setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UICollectionView *)v4->_items setDataSource:v4];
     [(UICollectionView *)v4->_items setDelegate:v4];
-    v17 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-    [(UICollectionView *)v4->_items setBackgroundColor:v17];
+    systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+    [(UICollectionView *)v4->_items setBackgroundColor:systemBackgroundColor];
 
     v18 = v4->_items;
     v19 = objc_opt_class();
@@ -55,33 +55,33 @@
     v21 = NSStringFromClass(v20);
     [(UICollectionView *)v18 registerClass:v19 forCellWithReuseIdentifier:v21];
 
-    v22 = [(EKUIHorizontalScrollingVirtualConferenceCell *)v4 contentView];
-    [v22 addSubview:v4->_items];
+    contentView = [(EKUIHorizontalScrollingVirtualConferenceCell *)v4 contentView];
+    [contentView addSubview:v4->_items];
 
     v35 = MEMORY[0x1E696ACD8];
-    v42 = [(UICollectionView *)v4->_items leadingAnchor];
-    v43 = [(EKUIHorizontalScrollingVirtualConferenceCell *)v4 contentView];
-    v41 = [v43 leadingAnchor];
-    v40 = [v42 constraintEqualToAnchor:v41];
+    leadingAnchor = [(UICollectionView *)v4->_items leadingAnchor];
+    contentView2 = [(EKUIHorizontalScrollingVirtualConferenceCell *)v4 contentView];
+    leadingAnchor2 = [contentView2 leadingAnchor];
+    v40 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v52[0] = v40;
-    v38 = [(UICollectionView *)v4->_items topAnchor];
-    v39 = [(EKUIHorizontalScrollingVirtualConferenceCell *)v4 contentView];
-    v37 = [v39 topAnchor];
-    v36 = [v38 constraintEqualToAnchor:v37];
+    topAnchor = [(UICollectionView *)v4->_items topAnchor];
+    contentView3 = [(EKUIHorizontalScrollingVirtualConferenceCell *)v4 contentView];
+    topAnchor2 = [contentView3 topAnchor];
+    v36 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v52[1] = v36;
-    v33 = [(UICollectionView *)v4->_items bottomAnchor];
-    v34 = [(EKUIHorizontalScrollingVirtualConferenceCell *)v4 contentView];
-    v23 = [v34 bottomAnchor];
-    v24 = [v33 constraintEqualToAnchor:v23];
+    bottomAnchor = [(UICollectionView *)v4->_items bottomAnchor];
+    contentView4 = [(EKUIHorizontalScrollingVirtualConferenceCell *)v4 contentView];
+    bottomAnchor2 = [contentView4 bottomAnchor];
+    v24 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v52[2] = v24;
-    v25 = [(UICollectionView *)v4->_items trailingAnchor];
-    v26 = [(EKUIHorizontalScrollingVirtualConferenceCell *)v4 contentView];
-    v27 = [v26 trailingAnchor];
-    v28 = [v25 constraintEqualToAnchor:v27];
+    trailingAnchor = [(UICollectionView *)v4->_items trailingAnchor];
+    contentView5 = [(EKUIHorizontalScrollingVirtualConferenceCell *)v4 contentView];
+    trailingAnchor2 = [contentView5 trailingAnchor];
+    v28 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v52[3] = v28;
-    v29 = [(UICollectionView *)v4->_items heightAnchor];
+    heightAnchor = [(UICollectionView *)v4->_items heightAnchor];
     [(EKUIHorizontalScrollingVirtualConferenceCell *)v4 _heightOfCells];
-    v30 = [v29 constraintEqualToConstant:?];
+    v30 = [heightAnchor constraintEqualToConstant:?];
     v52[4] = v30;
     v31 = [MEMORY[0x1E695DEC8] arrayWithObjects:v52 count:5];
     [v35 activateConstraints:v31];
@@ -101,36 +101,36 @@
   return v6;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
+  pathCopy = path;
+  viewCopy = view;
   v8 = objc_opt_class();
   v9 = NSStringFromClass(v8);
-  v10 = [v7 dequeueReusableCellWithReuseIdentifier:v9 forIndexPath:v6];
+  v10 = [viewCopy dequeueReusableCellWithReuseIdentifier:v9 forIndexPath:pathCopy];
 
   roomTypes = self->_roomTypes;
-  v12 = [v6 row];
+  v12 = [pathCopy row];
 
   v13 = [(NSArray *)roomTypes objectAtIndex:v12];
   [v10 setCurrentRoomType:v13];
-  v14 = [v10 defaultContentConfiguration];
-  v15 = [v13 title];
-  [v14 setText:v15];
+  defaultContentConfiguration = [v10 defaultContentConfiguration];
+  title = [v13 title];
+  [defaultContentConfiguration setText:title];
 
-  v16 = [v14 textProperties];
-  [v16 setNumberOfLines:2];
+  textProperties = [defaultContentConfiguration textProperties];
+  [textProperties setNumberOfLines:2];
 
-  [v14 setImageToTextPadding:10.0];
+  [defaultContentConfiguration setImageToTextPadding:10.0];
   [MEMORY[0x1E69669E0] conferenceImageSize];
   v18 = v17;
-  v19 = [v14 imageProperties];
-  [v19 setReservedLayoutSize:{v18, v18}];
+  imageProperties = [defaultContentConfiguration imageProperties];
+  [imageProperties setReservedLayoutSize:{v18, v18}];
 
-  v20 = [v14 imageProperties];
-  [v20 setMaximumSize:{v18, v18}];
+  imageProperties2 = [defaultContentConfiguration imageProperties];
+  [imageProperties2 setMaximumSize:{v18, v18}];
 
-  [v10 setContentConfiguration:v14];
+  [v10 setContentConfiguration:defaultContentConfiguration];
   v21 = MEMORY[0x1E69933C0];
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3221225472;
@@ -138,8 +138,8 @@
   v27[3] = &unk_1E8441728;
   v22 = v10;
   v28 = v22;
-  v29 = v14;
-  v23 = v14;
+  v29 = defaultContentConfiguration;
+  v23 = defaultContentConfiguration;
   [v21 imageForRoomType:v13 completionHandler:v27];
   v24 = v29;
   v25 = v22;
@@ -179,15 +179,15 @@ void __86__EKUIHorizontalScrollingVirtualConferenceCell_collectionView_cellForIt
   }
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  v9 = [(EKUIHorizontalScrollingVirtualConferenceCell *)self delegate];
+  pathCopy = path;
+  delegate = [(EKUIHorizontalScrollingVirtualConferenceCell *)self delegate];
   roomTypes = self->_roomTypes;
-  v7 = [v5 row];
+  v7 = [pathCopy row];
 
   v8 = [(NSArray *)roomTypes objectAtIndex:v7];
-  [v9 selectedRoomType:v8];
+  [delegate selectedRoomType:v8];
 }
 
 - (VirtualConferenceRoomTypeSelectionDelegate)delegate

@@ -11,18 +11,18 @@
   v3 = a3;
   if ([v3 length] == 8)
   {
-    v4 = [v3 bytes];
+    bytes = [v3 bytes];
 
-    v5 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:bswap64(*v4)];
-    [v5 description];
+    hmbDescription = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:bswap64(*bytes)];
+    [hmbDescription description];
   }
 
   else
   {
     v6 = MEMORY[0x277CCACA8];
-    v5 = [v3 hmbDescription];
+    hmbDescription = [v3 hmbDescription];
 
-    [v6 stringWithFormat:@"<MALFORMED INTERVAL: %@>", v5];
+    [v6 stringWithFormat:@"<MALFORMED INTERVAL: %@>", hmbDescription];
   }
   v7 = ;
 

@@ -1,17 +1,17 @@
 @interface PXUIFlattenedAssetBadgeView
-- (void)drawRect:(CGRect)a3;
-- (void)setFrame:(CGRect)a3;
+- (void)drawRect:(CGRect)rect;
+- (void)setFrame:(CGRect)frame;
 - (void)setNeedsLayout;
 @end
 
 @implementation PXUIFlattenedAssetBadgeView
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   [(PXUIFlattenedAssetBadgeView *)self bounds];
   v9 = v8;
   v11 = v10;
@@ -112,12 +112,12 @@ void __40__PXUIFlattenedAssetBadgeView_drawRect___block_invoke_2(CGRect *a1, voi
   [(PXUIFlattenedAssetBadgeView *)self setNeedsDisplay];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(PXUIFlattenedAssetBadgeView *)self frame];
   v14.origin.x = v8;
   v14.origin.y = v9;

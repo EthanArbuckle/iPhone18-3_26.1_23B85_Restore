@@ -1,16 +1,16 @@
 @interface TSKRulerUnits
-+ (id)formatterForRulerUnits:(int)a3 decimalPlaces:(int)a4 trailingZeros:(BOOL)a5 lenient:(BOOL)a6;
++ (id)formatterForRulerUnits:(int)units decimalPlaces:(int)places trailingZeros:(BOOL)zeros lenient:(BOOL)lenient;
 + (id)instance;
 - (TSKRulerUnits)init;
-- (double)convertPointsToRulerUnits:(double)a3;
-- (double)convertRulerUnitsToPoints:(double)a3;
+- (double)convertPointsToRulerUnits:(double)units;
+- (double)convertRulerUnitsToPoints:(double)points;
 - (id)compatibleRulerUnits;
-- (id)formatter:(BOOL)a3 lenient:(BOOL)a4;
+- (id)formatter:(BOOL)formatter lenient:(BOOL)lenient;
 - (id)localizedCompatibleRulerUnits;
 - (void)dealloc;
-- (void)setCenterRulerOrigin:(BOOL)a3;
-- (void)setRulerUnits:(int)a3;
-- (void)setShowRulerAsPercentage:(BOOL)a3;
+- (void)setCenterRulerOrigin:(BOOL)origin;
+- (void)setRulerUnits:(int)units;
+- (void)setShowRulerAsPercentage:(BOOL)percentage;
 @end
 
 @implementation TSKRulerUnits
@@ -19,9 +19,9 @@
 {
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
-    v2 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v3 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[TSKRulerUnits instance]"];
-    [v2 handleFailureInFunction:v3 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKRulerUnits.m"), 68, @"Trying to acquire TSKRulerUnits singleton from a secondary thread - this class is not thread safe."}];
+    [currentHandler handleFailureInFunction:v3 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKRulerUnits.m"), 68, @"Trying to acquire TSKRulerUnits singleton from a secondary thread - this class is not thread safe."}];
   }
 
   result = instance_instance;
@@ -41,10 +41,10 @@
   v2 = [(TSKRulerUnits *)&v5 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v2->_rulerUnits = [v3 integerForKey:TSKDefaultsRulerUnits];
-    v2->_showRulerAsPercentage = [v3 BOOLForKey:TSKDefaultsShowRulerAsPercentage];
-    v2->_centerRulerOrigin = [v3 BOOLForKey:TSKDefaultsCenterRulerOrigin];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v2->_rulerUnits = [standardUserDefaults integerForKey:TSKDefaultsRulerUnits];
+    v2->_showRulerAsPercentage = [standardUserDefaults BOOLForKey:TSKDefaultsShowRulerAsPercentage];
+    v2->_centerRulerOrigin = [standardUserDefaults BOOLForKey:TSKDefaultsCenterRulerOrigin];
     v2->_preferredPixelUnit = 2;
   }
 
@@ -58,55 +58,55 @@
   [(TSKRulerUnits *)&v3 dealloc];
 }
 
-- (void)setRulerUnits:(int)a3
+- (void)setRulerUnits:(int)units
 {
-  if (self->_rulerUnits != a3)
+  if (self->_rulerUnits != units)
   {
-    self->_rulerUnits = a3;
+    self->_rulerUnits = units;
 
     self->_formatter = 0;
     self->_lenientFormatter = 0;
 
     self->_highPrecisionFormatter = 0;
     self->_lenientHighPrecisionFormatter = 0;
-    v5 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    [v5 setInteger:self->_rulerUnits forKey:TSKDefaultsRulerUnits];
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    [standardUserDefaults setInteger:self->_rulerUnits forKey:TSKDefaultsRulerUnits];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v7 = TSKRulerUnitsDidChangeNotification;
 
-    [v6 postNotificationName:v7 object:self];
+    [defaultCenter postNotificationName:v7 object:self];
   }
 }
 
-- (void)setShowRulerAsPercentage:(BOOL)a3
+- (void)setShowRulerAsPercentage:(BOOL)percentage
 {
-  if (self->_showRulerAsPercentage != a3)
+  if (self->_showRulerAsPercentage != percentage)
   {
-    self->_showRulerAsPercentage = a3;
-    v5 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    [v5 setBool:self->_showRulerAsPercentage forKey:TSKDefaultsShowRulerAsPercentage];
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
+    self->_showRulerAsPercentage = percentage;
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    [standardUserDefaults setBool:self->_showRulerAsPercentage forKey:TSKDefaultsShowRulerAsPercentage];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v7 = TSKShowRulerAsPercentageDidChangeNotification;
 
-    [v6 postNotificationName:v7 object:self];
+    [defaultCenter postNotificationName:v7 object:self];
   }
 }
 
-- (void)setCenterRulerOrigin:(BOOL)a3
+- (void)setCenterRulerOrigin:(BOOL)origin
 {
-  if (self->_centerRulerOrigin != a3)
+  if (self->_centerRulerOrigin != origin)
   {
-    self->_centerRulerOrigin = a3;
-    v5 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    [v5 setBool:self->_centerRulerOrigin forKey:TSKDefaultsCenterRulerOrigin];
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
+    self->_centerRulerOrigin = origin;
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    [standardUserDefaults setBool:self->_centerRulerOrigin forKey:TSKDefaultsCenterRulerOrigin];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v7 = TSKCenterRulerOriginDidChangeNotification;
 
-    [v6 postNotificationName:v7 object:self];
+    [defaultCenter postNotificationName:v7 object:self];
   }
 }
 
-- (double)convertRulerUnitsToPoints:(double)a3
+- (double)convertRulerUnitsToPoints:(double)points
 {
   rulerUnits = self->_rulerUnits;
   v4 = 1.0;
@@ -115,10 +115,10 @@
     v4 = dbl_26CA63D10[rulerUnits];
   }
 
-  return v4 * a3;
+  return v4 * points;
 }
 
-- (double)convertPointsToRulerUnits:(double)a3
+- (double)convertPointsToRulerUnits:(double)units
 {
   rulerUnits = self->_rulerUnits;
   v4 = 1.0;
@@ -127,15 +127,15 @@
     v4 = dbl_26CA63D10[rulerUnits];
   }
 
-  return a3 / v4;
+  return units / v4;
 }
 
-- (id)formatter:(BOOL)a3 lenient:(BOOL)a4
+- (id)formatter:(BOOL)formatter lenient:(BOOL)lenient
 {
-  v4 = a4;
-  if (!a3)
+  lenientCopy = lenient;
+  if (!formatter)
   {
-    if (a4)
+    if (lenient)
     {
 LABEL_6:
       v7 = 0;
@@ -147,7 +147,7 @@ LABEL_6:
   }
 
   rulerUnits = self->_rulerUnits;
-  if (a4)
+  if (lenient)
   {
     if (!rulerUnits)
     {
@@ -199,7 +199,7 @@ LABEL_9:
       v12 = v11;
     }
 
-    result = [objc_opt_class() formatterForRulerUnits:self->_rulerUnits decimalPlaces:v12 trailingZeros:0 lenient:a4];
+    result = [objc_opt_class() formatterForRulerUnits:self->_rulerUnits decimalPlaces:v12 trailingZeros:0 lenient:lenient];
     v13 = 32;
     if (v7)
     {
@@ -212,7 +212,7 @@ LABEL_9:
       v14 = 40;
     }
 
-    if (!v4)
+    if (!lenientCopy)
     {
       v13 = v14;
     }
@@ -251,30 +251,30 @@ LABEL_9:
   return [v5 localizedStringForKey:v4 value:&stru_287D36338 table:@"TSKit"];
 }
 
-+ (id)formatterForRulerUnits:(int)a3 decimalPlaces:(int)a4 trailingZeros:(BOOL)a5 lenient:(BOOL)a6
++ (id)formatterForRulerUnits:(int)units decimalPlaces:(int)places trailingZeros:(BOOL)zeros lenient:(BOOL)lenient
 {
-  if (a3 == 3)
+  if (units == 3)
   {
     v6 = -[TSKPicaFormatter initWithPicaSeparator:]([TSKPicaFormatter alloc], "initWithPicaSeparator:", [TSKBundle() localizedStringForKey:@"p" value:&stru_287D36338 table:@"TSKit"]);
     goto LABEL_22;
   }
 
-  v7 = a6;
-  if (a4 < 1)
+  lenientCopy = lenient;
+  if (places < 1)
   {
     v11 = [objc_alloc(MEMORY[0x277CCACA8]) initWithString:@"0"];
   }
 
-  else if (a5)
+  else if (zeros)
   {
-    v10 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%%.%df", *&a4];
+    v10 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%%.%df", *&places];
     v11 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:v10, 0];
   }
 
   else
   {
     v11 = [objc_alloc(MEMORY[0x277CCAB68]) initWithString:@"0."];
-    v12 = a4 + 1;
+    v12 = places + 1;
     do
     {
       [v11 appendString:@"#"];
@@ -284,11 +284,11 @@ LABEL_9:
     while (v12 > 1);
   }
 
-  if (a3 <= 1)
+  if (units <= 1)
   {
-    if (a3)
+    if (units)
     {
-      if (a3 != 1)
+      if (units != 1)
       {
         goto LABEL_25;
       }
@@ -310,7 +310,7 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  if (a3 == 2)
+  if (units == 2)
   {
     v14 = [TSKBundle() localizedStringForKey:@"0 pt" value:&stru_287D36338 table:@"TSKit"];
     v15 = TSKBundle();
@@ -318,7 +318,7 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  if (a3 == 4)
+  if (units == 4)
   {
     v14 = [TSKBundle() localizedStringForKey:@"0 px" value:&stru_287D36338 table:@"TSKit"];
     v15 = TSKBundle();
@@ -326,7 +326,7 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  if (a3 != 5)
+  if (units != 5)
   {
 LABEL_25:
     v14 = &stru_287D36338;
@@ -342,9 +342,9 @@ LABEL_21:
   [(TSKPicaFormatter *)v6 setPositiveFormat:v17];
   -[TSKPicaFormatter setNegativeFormat:](v6, "setNegativeFormat:", [@"-" stringByAppendingString:v17]);
   [(TSKPicaFormatter *)v6 setZeroSymbol:v14];
-  v18 = [MEMORY[0x277CBEAF8] currentLocale];
-  -[TSKPicaFormatter setDecimalSeparator:](v6, "setDecimalSeparator:", [v18 objectForKey:*MEMORY[0x277CBE6A8]]);
-  [(TSKPicaFormatter *)v6 setLenient:v7];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  -[TSKPicaFormatter setDecimalSeparator:](v6, "setDecimalSeparator:", [currentLocale objectForKey:*MEMORY[0x277CBE6A8]]);
+  [(TSKPicaFormatter *)v6 setLenient:lenientCopy];
 
 LABEL_22:
 

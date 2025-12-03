@@ -1,14 +1,14 @@
 @interface APRKContentKeyHelper
 - (APRKContentKeyHelper)init;
 - (APRKContentKeyHelperDelegate)delegate;
-- (BOOL)isHandlingContentKeyRequestWithURLString:(id)a3;
-- (void)_performContentKeyRequest:(id)a3 isRenewalRequest:(BOOL)a4;
-- (void)contentKeySessionDidGenerateExpiredSessionReport:(id)a3;
+- (BOOL)isHandlingContentKeyRequestWithURLString:(id)string;
+- (void)_performContentKeyRequest:(id)request isRenewalRequest:(BOOL)renewalRequest;
+- (void)contentKeySessionDidGenerateExpiredSessionReport:(id)report;
 - (void)forgetAllActiveContentKeyRequests;
-- (void)processStreamingKeyRequestWithDictionary:(id)a3 withCompletionBlock:(id)a4;
-- (void)processUnhandledURLResponseWithDictionary:(id)a3 error:(id *)a4;
-- (void)registerAVURLAsset:(id)a3;
-- (void)unregisterAVURLAsset:(id)a3;
+- (void)processStreamingKeyRequestWithDictionary:(id)dictionary withCompletionBlock:(id)block;
+- (void)processUnhandledURLResponseWithDictionary:(id)dictionary error:(id *)error;
+- (void)registerAVURLAsset:(id)asset;
+- (void)unregisterAVURLAsset:(id)asset;
 @end
 
 @implementation APRKContentKeyHelper
@@ -49,57 +49,57 @@
   return v2;
 }
 
-- (BOOL)isHandlingContentKeyRequestWithURLString:(id)a3
+- (BOOL)isHandlingContentKeyRequestWithURLString:(id)string
 {
   activeContentKeyRequests = self->_activeContentKeyRequests;
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)activeContentKeyRequests allKeys];
-  v6 = [v5 containsObject:v4];
+  stringCopy = string;
+  allKeys = [(NSMutableDictionary *)activeContentKeyRequests allKeys];
+  v6 = [allKeys containsObject:stringCopy];
 
   return v6;
 }
 
-- (void)registerAVURLAsset:(id)a3
+- (void)registerAVURLAsset:(id)asset
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  assetCopy = asset;
+  v5 = assetCopy;
+  if (assetCopy)
   {
-    v9 = v4;
+    v9 = assetCopy;
     if (gLogCategory_AirPlayReceiverKit <= 30)
     {
       if (gLogCategory_AirPlayReceiverKit != -1 || (v6 = _LogCategory_Initialize(), v5 = v9, v6))
       {
         v7 = v5;
-        v8 = self;
+        selfCopy = self;
         LogPrintF();
       }
     }
 
-    [(AVContentKeySession *)self->_contentKeySession addContentKeyRecipient:v9, v7, v8];
+    [(AVContentKeySession *)self->_contentKeySession addContentKeyRecipient:v9, v7, selfCopy];
   }
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)unregisterAVURLAsset:(id)a3
+- (void)unregisterAVURLAsset:(id)asset
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  assetCopy = asset;
+  v5 = assetCopy;
+  if (assetCopy)
   {
-    v9 = v4;
+    v9 = assetCopy;
     if (gLogCategory_AirPlayReceiverKit <= 30)
     {
       if (gLogCategory_AirPlayReceiverKit != -1 || (v6 = _LogCategory_Initialize(), v5 = v9, v6))
       {
         v7 = v5;
-        v8 = self;
+        selfCopy = self;
         LogPrintF();
       }
     }
 
-    [(AVContentKeySession *)self->_contentKeySession removeContentKeyRecipient:v9, v7, v8];
+    [(AVContentKeySession *)self->_contentKeySession removeContentKeyRecipient:v9, v7, selfCopy];
   }
 
   MEMORY[0x2821F96F8]();
@@ -117,20 +117,20 @@
   [(NSMutableDictionary *)activeContentKeyRequests removeAllObjects];
 }
 
-- (void)processUnhandledURLResponseWithDictionary:(id)a3 error:(id *)a4
+- (void)processUnhandledURLResponseWithDictionary:(id)dictionary error:(id *)error
 {
-  v12 = a3;
-  if (v12 || !a4)
+  dictionaryCopy = dictionary;
+  if (dictionaryCopy || !error)
   {
-    v7 = [v12 objectForKey:*MEMORY[0x277CC0960]];
-    v8 = [v12 objectForKey:*MEMORY[0x277CC0928]];
+    v7 = [dictionaryCopy objectForKey:*MEMORY[0x277CC0960]];
+    v8 = [dictionaryCopy objectForKey:*MEMORY[0x277CC0928]];
     v9 = [(NSMutableDictionary *)self->_activeContentKeyRequests objectForKey:v7];
     if (gLogCategory_AirPlayReceiverKit <= 30 && (gLogCategory_AirPlayReceiverKit != -1 || _LogCategory_Initialize()))
     {
       [APRKContentKeyHelper processUnhandledURLResponseWithDictionary:v9 error:?];
     }
 
-    v10 = [v12 objectForKey:*MEMORY[0x277CC0930]];
+    v10 = [dictionaryCopy objectForKey:*MEMORY[0x277CC0930]];
     if (v10)
     {
       v11 = [MEMORY[0x277CE64D0] contentKeyResponseWithFairPlayStreamingKeyResponseData:v10 renewalDate:v8];
@@ -149,17 +149,17 @@
 
     v6 = objc_alloc(MEMORY[0x277CCA9B8]);
     v7 = [v6 initWithDomain:*MEMORY[0x277CCA590] code:-6705 userInfo:0];
-    *a4 = v7;
+    *error = v7;
   }
 }
 
-- (void)processStreamingKeyRequestWithDictionary:(id)a3 withCompletionBlock:(id)a4
+- (void)processStreamingKeyRequestWithDictionary:(id)dictionary withCompletionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  dictionaryCopy = dictionary;
+  blockCopy = block;
+  if (dictionaryCopy)
   {
-    v8 = [v6 objectForKey:*MEMORY[0x277CC0DD0]];
+    v8 = [dictionaryCopy objectForKey:*MEMORY[0x277CC0DD0]];
     v9 = [v8 objectForKey:*MEMORY[0x277CC0EE8]];
     appIDData = self->_appIDData;
     self->_appIDData = v9;
@@ -175,8 +175,8 @@
       if (v15)
       {
         v25 = v15;
-        v17 = [v13 allKeys];
-        v18 = [v17 containsObject:@"CSKRO_RemoteContext"];
+        allKeys = [v13 allKeys];
+        v18 = [allKeys containsObject:@"CSKRO_RemoteContext"];
 
         if (v18)
         {
@@ -210,7 +210,7 @@
         v26[1] = 3221225472;
         v26[2] = __85__APRKContentKeyHelper_processStreamingKeyRequestWithDictionary_withCompletionBlock___block_invoke;
         v26[3] = &unk_278C62698;
-        v27 = v7;
+        v27 = blockCopy;
         v24 = v23;
         v16 = v25;
         [v25 makeStreamingContentKeyRequestDataForApp:v22 contentIdentifier:v11 options:v24 completionHandler:v26];
@@ -228,7 +228,7 @@
   if (gLogCategory_AirPlayReceiverKit <= 90 && (gLogCategory_AirPlayReceiverKit != -1 || _LogCategory_Initialize()))
   {
     [APRKContentKeyHelper processStreamingKeyRequestWithDictionary:withCompletionBlock:];
-    if (!v7)
+    if (!blockCopy)
     {
       goto LABEL_27;
     }
@@ -236,12 +236,12 @@
     goto LABEL_11;
   }
 
-  if (v7)
+  if (blockCopy)
   {
 LABEL_11:
     v21 = objc_alloc(MEMORY[0x277CCA9B8]);
     v8 = [v21 initWithDomain:*MEMORY[0x277CCA590] code:-6705 userInfo:0];
-    (*(v7 + 2))(v7, 0, v8);
+    (*(blockCopy + 2))(blockCopy, 0, v8);
 LABEL_26:
   }
 
@@ -264,36 +264,36 @@ void __85__APRKContentKeyHelper_processStreamingKeyRequestWithDictionary_withCom
   }
 }
 
-- (void)_performContentKeyRequest:(id)a3 isRenewalRequest:(BOOL)a4
+- (void)_performContentKeyRequest:(id)request isRenewalRequest:(BOOL)renewalRequest
 {
-  v4 = a4;
+  renewalRequestCopy = renewalRequest;
   activeContentKeyRequests = self->_activeContentKeyRequests;
-  v7 = a3;
-  v8 = [v7 identifier];
-  [(NSMutableDictionary *)activeContentKeyRequests setObject:v7 forKey:v8];
+  requestCopy = request;
+  identifier = [requestCopy identifier];
+  [(NSMutableDictionary *)activeContentKeyRequests setObject:requestCopy forKey:identifier];
 
-  v12 = [MEMORY[0x277CBEB38] dictionary];
-  v9 = [v7 identifier];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  identifier2 = [requestCopy identifier];
 
-  [v12 setObject:v9 forKey:*MEMORY[0x277CC0960]];
-  [v12 setObject:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277CC0940]];
+  [dictionary setObject:identifier2 forKey:*MEMORY[0x277CC0960]];
+  [dictionary setObject:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277CC0940]];
   v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:sMessageID];
-  [v12 setObject:v10 forKey:*MEMORY[0x277CC0950]];
+  [dictionary setObject:v10 forKey:*MEMORY[0x277CC0950]];
 
-  if (v4)
+  if (renewalRequestCopy)
   {
-    [v12 setObject:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277CC0948]];
+    [dictionary setObject:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277CC0948]];
   }
 
   ++sMessageID;
-  v11 = [(APRKContentKeyHelper *)self delegate];
-  [v11 contentKeyHelper:self wantsToPerformContentKeyRequestWithDictionary:v12];
+  delegate = [(APRKContentKeyHelper *)self delegate];
+  [delegate contentKeyHelper:self wantsToPerformContentKeyRequestWithDictionary:dictionary];
 }
 
-- (void)contentKeySessionDidGenerateExpiredSessionReport:(id)a3
+- (void)contentKeySessionDidGenerateExpiredSessionReport:(id)report
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  reportCopy = report;
   if (self->_appIDData)
   {
     v5 = +[APRKUtilities secureStopURL];
@@ -302,7 +302,7 @@ void __85__APRKContentKeyHelper_processStreamingKeyRequestWithDictionary_withCom
     if (self->_forwardsFPSSecureStopData && v6 != 0)
     {
       v17 = v5;
-      v18 = v4;
+      v18 = reportCopy;
       if (gLogCategory_AirPlayReceiverKit <= 10 && (gLogCategory_AirPlayReceiverKit != -1 || _LogCategory_Initialize()))
       {
         [APRKContentKeyHelper contentKeySessionDidGenerateExpiredSessionReport:v7];
@@ -331,8 +331,8 @@ void __85__APRKContentKeyHelper_processStreamingKeyRequestWithDictionary_withCom
             v23 = @"record";
             v24 = v14;
             v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v24 forKeys:&v23 count:{1, v17, v18, v19}];
-            v16 = [(APRKContentKeyHelper *)self delegate];
-            [v16 contentKeyHelper:self didGenerateSecureStopRecordPayload:v15];
+            delegate = [(APRKContentKeyHelper *)self delegate];
+            [delegate contentKeyHelper:self didGenerateSecureStopRecordPayload:v15];
           }
 
           v11 = [v9 countByEnumeratingWithState:&v19 objects:v25 count:16];
@@ -342,7 +342,7 @@ void __85__APRKContentKeyHelper_processStreamingKeyRequestWithDictionary_withCom
       }
 
       v5 = v17;
-      v4 = v18;
+      reportCopy = v18;
     }
 
     if (v7)

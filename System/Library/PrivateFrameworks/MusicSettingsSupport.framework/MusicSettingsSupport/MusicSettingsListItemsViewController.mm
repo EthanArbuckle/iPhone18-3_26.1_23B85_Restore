@@ -1,8 +1,8 @@
 @interface MusicSettingsListItemsViewController
 - (id)itemsFromParent;
-- (id)loadSpecifiersFromPlistName:(id)a3 target:(id)a4 bundle:(id)a5;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)listItemSelected:(id)a3;
+- (id)loadSpecifiersFromPlistName:(id)name target:(id)target bundle:(id)bundle;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)listItemSelected:(id)selected;
 @end
 
 @implementation MusicSettingsListItemsViewController
@@ -11,16 +11,16 @@
 {
   v17.receiver = self;
   v17.super_class = MusicSettingsListItemsViewController;
-  v3 = [(PSListItemsController *)&v17 itemsFromParent];
+  itemsFromParent = [(PSListItemsController *)&v17 itemsFromParent];
   v4 = *MEMORY[0x277D3FD20];
-  v5 = [*(&self->super.super.super.super.super.super.isa + v4) properties];
-  v6 = [v5 objectForKeyedSubscript:@"musicValidDetails"];
+  properties = [*(&self->super.super.super.super.super.super.isa + v4) properties];
+  v6 = [properties objectForKeyedSubscript:@"musicValidDetails"];
 
-  v7 = [*(&self->super.super.super.super.super.super.isa + v4) properties];
-  v8 = [v7 objectForKeyedSubscript:@"musicShouldSelectAction"];
+  properties2 = [*(&self->super.super.super.super.super.super.isa + v4) properties];
+  v8 = [properties2 objectForKeyedSubscript:@"musicShouldSelectAction"];
 
-  v16 = v3;
-  v9 = [v3 subarrayWithRange:{1, objc_msgSend(v3, "count") - 1}];
+  v16 = itemsFromParent;
+  v9 = [itemsFromParent subarrayWithRange:{1, objc_msgSend(itemsFromParent, "count") - 1}];
   if ([v9 count])
   {
     v10 = 0;
@@ -53,10 +53,10 @@
   return v16;
 }
 
-- (void)listItemSelected:(id)a3
+- (void)listItemSelected:(id)selected
 {
-  v4 = a3;
-  v5 = [(MusicSettingsListItemsViewController *)self specifierAtIndexPath:v4];
+  selectedCopy = selected;
+  v5 = [(MusicSettingsListItemsViewController *)self specifierAtIndexPath:selectedCopy];
   v6 = [v5 propertyForKey:@"cellObject"];
   if (([v6 isChecked] & 1) == 0)
   {
@@ -64,8 +64,8 @@
     v15[1] = 3221225472;
     v15[2] = __57__MusicSettingsListItemsViewController_listItemSelected___block_invoke;
     v15[3] = &unk_2799261E8;
-    v16 = v4;
-    v17 = self;
+    v16 = selectedCopy;
+    selfCopy = self;
     v7 = v5;
     v18 = v7;
     v8 = MEMORY[0x25F856670](v15);
@@ -115,35 +115,35 @@ uint64_t __57__MusicSettingsListItemsViewController_listItemSelected___block_inv
   return result;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(MusicSettingsListItemsViewController *)self specifierAtIndexPath:v6];
+  pathCopy = path;
+  viewCopy = view;
+  v8 = [(MusicSettingsListItemsViewController *)self specifierAtIndexPath:pathCopy];
   v16.receiver = self;
   v16.super_class = MusicSettingsListItemsViewController;
-  v9 = [(PSListItemsController *)&v16 tableView:v7 cellForRowAtIndexPath:v6];
+  v9 = [(PSListItemsController *)&v16 tableView:viewCopy cellForRowAtIndexPath:pathCopy];
 
   v10 = [v8 propertyForKey:@"musicDetail"];
   v11 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-  v12 = [(MusicSettingsListItemsViewController *)self stringsTable];
-  v13 = [v11 localizedStringForKey:v10 value:&stru_286C31160 table:v12];
+  stringsTable = [(MusicSettingsListItemsViewController *)self stringsTable];
+  v13 = [v11 localizedStringForKey:v10 value:&stru_286C31160 table:stringsTable];
 
-  v14 = [v9 detailTextLabel];
-  [v14 setText:v13];
+  detailTextLabel = [v9 detailTextLabel];
+  [detailTextLabel setText:v13];
 
   return v9;
 }
 
-- (id)loadSpecifiersFromPlistName:(id)a3 target:(id)a4 bundle:(id)a5
+- (id)loadSpecifiersFromPlistName:(id)name target:(id)target bundle:(id)bundle
 {
-  objc_storeStrong(&self->_stringsTable, a3);
-  v9 = a3;
-  v10 = a5;
-  v11 = a4;
+  objc_storeStrong(&self->_stringsTable, name);
+  nameCopy = name;
+  bundleCopy = bundle;
+  targetCopy = target;
   v14.receiver = self;
   v14.super_class = MusicSettingsListItemsViewController;
-  v12 = [(MusicSettingsListItemsViewController *)&v14 loadSpecifiersFromPlistName:v9 target:v11 bundle:v10];
+  v12 = [(MusicSettingsListItemsViewController *)&v14 loadSpecifiersFromPlistName:nameCopy target:targetCopy bundle:bundleCopy];
 
   return v12;
 }

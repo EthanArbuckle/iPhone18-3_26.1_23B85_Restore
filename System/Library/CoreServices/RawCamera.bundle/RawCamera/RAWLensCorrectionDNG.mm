@@ -1,6 +1,6 @@
 @interface RAWLensCorrectionDNG
 + (id)customAttributes;
-- (CGPoint)mapPoint:(CGPoint)a3 info:(id)a4;
+- (CGPoint)mapPoint:(CGPoint)point info:(id)info;
 - (id)customAttributes;
 - (id)outputImage;
 @end
@@ -48,14 +48,14 @@
   return MEMORY[0x2821F9670](v2, sel_customAttributes, v3, v4, v5);
 }
 
-- (CGPoint)mapPoint:(CGPoint)a3 info:(id)a4
+- (CGPoint)mapPoint:(CGPoint)point info:(id)info
 {
-  x = a3.x;
-  y = a3.y;
-  v4 = a4;
-  v8 = objc_msgSend_objectForKeyedSubscript_(v4, v5, @"Kr", v6, v7);
-  v12 = objc_msgSend_objectForKeyedSubscript_(v4, v9, @"Kt", v10, v11);
-  v16 = objc_msgSend_objectForKeyedSubscript_(v4, v13, @"c", v14, v15);
+  x = point.x;
+  y = point.y;
+  infoCopy = info;
+  v8 = objc_msgSend_objectForKeyedSubscript_(infoCopy, v5, @"Kr", v6, v7);
+  v12 = objc_msgSend_objectForKeyedSubscript_(infoCopy, v9, @"Kt", v10, v11);
+  v16 = objc_msgSend_objectForKeyedSubscript_(infoCopy, v13, @"c", v14, v15);
   objc_msgSend_X(v8, v17, v18, v19, v20);
   v22 = v21;
   objc_msgSend_Y(v8, v23, v24, v25, v26);
@@ -72,7 +72,7 @@
   v89 = v55;
   objc_msgSend_Y(v16, v56, v57, v58, v59);
   v88 = v60;
-  v64 = objc_msgSend_objectForKeyedSubscript_(v4, v61, @"m", v62, v63);
+  v64 = objc_msgSend_objectForKeyedSubscript_(infoCopy, v61, @"m", v62, v63);
   objc_msgSend_floatValue(v64, v65, v66, v67, v68);
   v87 = v69;
   v70.f64[0] = v88;

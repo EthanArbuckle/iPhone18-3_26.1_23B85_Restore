@@ -1,25 +1,25 @@
 @interface MPAssistantStopPlayback
-- (void)performWithCompletion:(id)a3;
+- (void)performWithCompletion:(id)completion;
 @end
 
 @implementation MPAssistantStopPlayback
 
-- (void)performWithCompletion:(id)a3
+- (void)performWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_alloc_init(MPAssistantPausePlayback);
-  v6 = [(MPAssistantStopPlayback *)self hashedRouteUIDs];
-  [(MPAssistantPausePlayback *)v5 setHashedRouteUIDs:v6];
+  hashedRouteUIDs = [(MPAssistantStopPlayback *)self hashedRouteUIDs];
+  [(MPAssistantPausePlayback *)v5 setHashedRouteUIDs:hashedRouteUIDs];
 
-  v7 = [(MPAssistantStopPlayback *)self refId];
-  [(MPAssistantPausePlayback *)v5 setRefId:v7];
+  refId = [(MPAssistantStopPlayback *)self refId];
+  [(MPAssistantPausePlayback *)v5 setRefId:refId];
 
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = sub_233502514;
   v9[3] = &unk_2789DBC10;
-  v10 = v4;
-  v8 = v4;
+  v10 = completionCopy;
+  v8 = completionCopy;
   [(MPAssistantPausePlayback *)v5 performWithCompletion:v9];
 }
 

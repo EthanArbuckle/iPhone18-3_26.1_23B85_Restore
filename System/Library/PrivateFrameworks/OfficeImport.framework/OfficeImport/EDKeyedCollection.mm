@@ -1,22 +1,22 @@
 @interface EDKeyedCollection
-- (BOOL)isObjectInMap:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (unint64_t)addObject:(id)a3;
-- (void)insertIntoMap:(id)a3;
-- (void)insertObject:(id)a3 atIndex:(unint64_t)a4;
+- (BOOL)isObjectInMap:(id)map;
+- (id)copyWithZone:(_NSZone *)zone;
+- (unint64_t)addObject:(id)object;
+- (void)insertIntoMap:(id)map;
+- (void)insertObject:(id)object atIndex:(unint64_t)index;
 - (void)removeAllObjects;
-- (void)removeFromMap:(id)a3;
-- (void)removeObjectAtIndex:(unint64_t)a3;
-- (void)replaceObjectAtIndex:(unint64_t)a3 withObject:(id)a4;
+- (void)removeFromMap:(id)map;
+- (void)removeObjectAtIndex:(unint64_t)index;
+- (void)replaceObjectAtIndex:(unint64_t)index withObject:(id)object;
 @end
 
 @implementation EDKeyedCollection
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v9.receiver = self;
   v9.super_class = EDKeyedCollection;
-  v4 = [(EDCollection *)&v9 copyWithZone:a3];
+  v4 = [(EDCollection *)&v9 copyWithZone:zone];
   if (v4)
   {
     v5 = [(OITSUIntegerKeyDictionary *)self->mMap mutableCopy];
@@ -29,54 +29,54 @@
   return v4;
 }
 
-- (unint64_t)addObject:(id)a3
+- (unint64_t)addObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v7.receiver = self;
   v7.super_class = EDKeyedCollection;
-  v5 = [(EDCollection *)&v7 addObject:v4];
+  v5 = [(EDCollection *)&v7 addObject:objectCopy];
   if (v5 != -1)
   {
-    [(EDKeyedCollection *)self insertIntoMap:v4];
+    [(EDKeyedCollection *)self insertIntoMap:objectCopy];
   }
 
   return v5;
 }
 
-- (void)insertObject:(id)a3 atIndex:(unint64_t)a4
+- (void)insertObject:(id)object atIndex:(unint64_t)index
 {
-  v6 = a3;
-  if ([(EDCollection *)self count]>= a4)
+  objectCopy = object;
+  if ([(EDCollection *)self count]>= index)
   {
     v7.receiver = self;
     v7.super_class = EDKeyedCollection;
-    [(EDCollection *)&v7 insertObject:v6 atIndex:a4];
-    [(EDKeyedCollection *)self insertIntoMap:v6];
+    [(EDCollection *)&v7 insertObject:objectCopy atIndex:index];
+    [(EDKeyedCollection *)self insertIntoMap:objectCopy];
   }
 }
 
-- (void)replaceObjectAtIndex:(unint64_t)a3 withObject:(id)a4
+- (void)replaceObjectAtIndex:(unint64_t)index withObject:(id)object
 {
-  v6 = a4;
-  if ([(EDCollection *)self count]>= a3)
+  objectCopy = object;
+  if ([(EDCollection *)self count]>= index)
   {
     v7.receiver = self;
     v7.super_class = EDKeyedCollection;
-    [(EDCollection *)&v7 replaceObjectAtIndex:a3 withObject:v6];
-    [(EDKeyedCollection *)self insertIntoMap:v6];
+    [(EDCollection *)&v7 replaceObjectAtIndex:index withObject:objectCopy];
+    [(EDKeyedCollection *)self insertIntoMap:objectCopy];
   }
 }
 
-- (void)removeObjectAtIndex:(unint64_t)a3
+- (void)removeObjectAtIndex:(unint64_t)index
 {
-  if ([(EDCollection *)self count]> a3)
+  if ([(EDCollection *)self count]> index)
   {
-    v5 = [(EDCollection *)self objectAtIndex:a3];
+    v5 = [(EDCollection *)self objectAtIndex:index];
     [(EDKeyedCollection *)self removeFromMap:v5];
 
     v6.receiver = self;
     v6.super_class = EDKeyedCollection;
-    [(EDCollection *)&v6 removeObjectAtIndex:a3];
+    [(EDCollection *)&v6 removeObjectAtIndex:index];
   }
 }
 
@@ -90,35 +90,35 @@
   [(EDCollection *)&v4 removeAllObjects];
 }
 
-- (BOOL)isObjectInMap:(id)a3
+- (BOOL)isObjectInMap:(id)map
 {
-  v4 = a3;
-  v5 = -[EDKeyedCollection objectWithKey:](self, "objectWithKey:", [v4 key]);
+  mapCopy = map;
+  v5 = -[EDKeyedCollection objectWithKey:](self, "objectWithKey:", [mapCopy key]);
   LOBYTE(self) = v5 != 0;
 
   return self;
 }
 
-- (void)insertIntoMap:(id)a3
+- (void)insertIntoMap:(id)map
 {
-  v4 = a3;
-  v7 = v4;
+  mapCopy = map;
+  v7 = mapCopy;
   if (!self->mMap)
   {
     v5 = objc_alloc_init(OITSUIntegerKeyDictionary);
     mMap = self->mMap;
     self->mMap = v5;
 
-    v4 = v7;
+    mapCopy = v7;
   }
 
-  -[OITSUIntegerKeyDictionary setObject:forKey:](self->mMap, "setObject:forKey:", v7, [v4 key]);
+  -[OITSUIntegerKeyDictionary setObject:forKey:](self->mMap, "setObject:forKey:", v7, [mapCopy key]);
 }
 
-- (void)removeFromMap:(id)a3
+- (void)removeFromMap:(id)map
 {
-  v4 = a3;
-  -[OITSUIntegerKeyDictionary removeObjectForKey:](self->mMap, "removeObjectForKey:", [v4 key]);
+  mapCopy = map;
+  -[OITSUIntegerKeyDictionary removeObjectForKey:](self->mMap, "removeObjectForKey:", [mapCopy key]);
 }
 
 @end

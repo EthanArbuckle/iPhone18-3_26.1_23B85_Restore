@@ -1,25 +1,25 @@
 @interface CWFKnownNetworkPreparer
-- (BOOL)profilesContainsHomeProfile:(id)a3;
-- (CWFKnownNetworkPreparer)initWithNetworkProfiles:(id)a3;
-- (id)_filterForPrimaryHomeNetworkProfile:(id)a3;
-- (id)_filterProfilesForHomeNetworksExceedingMaximumDistance:(id)a3;
+- (BOOL)profilesContainsHomeProfile:(id)profile;
+- (CWFKnownNetworkPreparer)initWithNetworkProfiles:(id)profiles;
+- (id)_filterForPrimaryHomeNetworkProfile:(id)profile;
+- (id)_filterProfilesForHomeNetworksExceedingMaximumDistance:(id)distance;
 - (id)_homeNetworkComparator;
 - (id)_localNetworkFilter;
-- (id)_removeProfilesAtSimilarLocations:(id)a3;
+- (id)_removeProfilesAtSimilarLocations:(id)locations;
 - (id)_similarLocationComparator;
 - (id)localNetworkPromptProfiles;
-- (id)prepareLocalNetworkProfilesForPresentation:(id)a3;
+- (id)prepareLocalNetworkProfilesForPresentation:(id)presentation;
 @end
 
 @implementation CWFKnownNetworkPreparer
 
-- (CWFKnownNetworkPreparer)initWithNetworkProfiles:(id)a3
+- (CWFKnownNetworkPreparer)initWithNetworkProfiles:(id)profiles
 {
-  v4 = a3;
-  if (v4)
+  profilesCopy = profiles;
+  if (profilesCopy)
   {
     v5 = objc_alloc_init(CWFKnownNetworkPreparer);
-    [(CWFKnownNetworkPreparer *)v5 setProfiles:v4];
+    [(CWFKnownNetworkPreparer *)v5 setProfiles:profilesCopy];
     [(CWFKnownNetworkPreparer *)v5 setMaxResults:4];
   }
 
@@ -51,9 +51,9 @@
 - (id)localNetworkPromptProfiles
 {
   v60 = *MEMORY[0x1E69E9840];
-  v3 = [(CWFKnownNetworkPreparer *)self profiles];
-  v4 = [(CWFKnownNetworkPreparer *)self _localNetworkFilter];
-  v5 = [v3 filteredArrayUsingPredicate:v4];
+  profiles = [(CWFKnownNetworkPreparer *)self profiles];
+  _localNetworkFilter = [(CWFKnownNetworkPreparer *)self _localNetworkFilter];
+  v5 = [profiles filteredArrayUsingPredicate:_localNetworkFilter];
 
   v6 = CWFGetOSLog();
   if (v6)
@@ -76,8 +76,8 @@
     _os_log_send_and_compose_impl();
   }
 
-  v9 = [(CWFKnownNetworkPreparer *)self _lastJoinedComparator];
-  v10 = [v5 sortedArrayUsingComparator:v9];
+  _lastJoinedComparator = [(CWFKnownNetworkPreparer *)self _lastJoinedComparator];
+  v10 = [v5 sortedArrayUsingComparator:_lastJoinedComparator];
 
   v11 = CWFGetOSLog();
   if (v11)
@@ -100,8 +100,8 @@
     _os_log_send_and_compose_impl();
   }
 
-  v14 = [(CWFKnownNetworkPreparer *)self profiles];
-  v15 = [(CWFKnownNetworkPreparer *)self _filterForPrimaryHomeNetworkProfile:v14];
+  profiles2 = [(CWFKnownNetworkPreparer *)self profiles];
+  v15 = [(CWFKnownNetworkPreparer *)self _filterForPrimaryHomeNetworkProfile:profiles2];
 
   v52 = v5;
   v50 = v15;
@@ -137,7 +137,7 @@
     }
   }
 
-  v51 = self;
+  selfCopy = self;
   [(CWFKnownNetworkPreparer *)self _removeProfilesAtSimilarLocations:v10, v44, v46];
   v53 = 0u;
   v54 = 0u;
@@ -175,9 +175,9 @@
 
         if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
         {
-          v30 = [v26 object];
+          object = [v26 object];
           v58 = 138412290;
-          v59 = v30;
+          v59 = object;
           LODWORD(v47) = 12;
           v45 = &v58;
           _os_log_send_and_compose_impl();
@@ -193,15 +193,15 @@
   v31 = v48;
   v32 = [v31 mutableCopy];
   v33 = [MEMORY[0x1E695DFA8] set];
-  for (j = [v33 count]; j < -[CWFKnownNetworkPreparer maxResults](v51, "maxResults", v45, v47) && objc_msgSend(v32, "count"); j = objc_msgSend(v33, "count"))
+  for (j = [v33 count]; j < -[CWFKnownNetworkPreparer maxResults](selfCopy, "maxResults", v45, v47) && objc_msgSend(v32, "count"); j = objc_msgSend(v33, "count"))
   {
-    v35 = [v32 firstObject];
-    [v33 addObject:v35];
+    firstObject = [v32 firstObject];
+    [v33 addObject:firstObject];
 
     [v32 removeObjectAtIndex:0];
   }
 
-  v36 = [v33 allObjects];
+  allObjects = [v33 allObjects];
   v37 = CWFGetOSLog();
   if (v37)
   {
@@ -217,13 +217,13 @@
   if (os_log_type_enabled(v38, OS_LOG_TYPE_INFO))
   {
     v58 = 138412290;
-    v59 = v36;
+    v59 = allObjects;
     _os_log_send_and_compose_impl();
   }
 
-  if ([v36 count])
+  if ([allObjects count])
   {
-    v40 = v36;
+    v40 = allObjects;
   }
 
   else
@@ -237,18 +237,18 @@
   return v40;
 }
 
-- (id)prepareLocalNetworkProfilesForPresentation:(id)a3
+- (id)prepareLocalNetworkProfilesForPresentation:(id)presentation
 {
   v95 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 count])
+  presentationCopy = presentation;
+  v5 = presentationCopy;
+  if (presentationCopy && [presentationCopy count])
   {
-    v79 = [MEMORY[0x1E695DF90] dictionary];
-    v81 = [MEMORY[0x1E695DF70] array];
-    v6 = [(CWFKnownNetworkPreparer *)self _presentationSortComparator];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    array = [MEMORY[0x1E695DF70] array];
+    _presentationSortComparator = [(CWFKnownNetworkPreparer *)self _presentationSortComparator];
     v80 = v5;
-    v7 = [v5 sortedArrayUsingComparator:v6];
+    v7 = [v5 sortedArrayUsingComparator:_presentationSortComparator];
 
     v8 = [(CWFKnownNetworkPreparer *)self _filterProfilesForHomeNetworksExceedingMaximumDistance:v7];
     v78 = v8;
@@ -337,8 +337,8 @@
       v12 = v7;
     }
 
-    v23 = [v12 firstObject];
-    v82 = [v23 _location];
+    firstObject = [v12 firstObject];
+    _location = [firstObject _location];
 
     v86 = 0u;
     v87 = 0u;
@@ -360,24 +360,24 @@
           }
 
           v28 = *(*(&v84 + 1) + 8 * i);
-          v29 = [MEMORY[0x1E695DF90] dictionary];
-          v30 = [v28 networkName];
+          dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+          networkName = [v28 networkName];
 
-          if (v30)
+          if (networkName)
           {
-            v31 = [v28 networkName];
-            [v29 setObject:v31 forKey:@"mapLabelCalloutTitleKey"];
+            networkName2 = [v28 networkName];
+            [dictionary2 setObject:networkName2 forKey:@"mapLabelCalloutTitleKey"];
 
-            v32 = [v28 discoveredDevices];
+            discoveredDevices = [v28 discoveredDevices];
 
-            if (v32)
+            if (discoveredDevices)
             {
-              v33 = [v28 discoveredDevices];
-              v34 = [v33 objectForKeyedSubscript:@"DevicesCount"];
+              discoveredDevices2 = [v28 discoveredDevices];
+              v34 = [discoveredDevices2 objectForKeyedSubscript:@"DevicesCount"];
 
               if (v34)
               {
-                [v29 setObject:v34 forKey:@"mapLabelCalloutDeviceCountKey"];
+                [dictionary2 setObject:v34 forKey:@"mapLabelCalloutDeviceCountKey"];
               }
 
               else
@@ -404,15 +404,15 @@
                 }
               }
 
-              v43 = [v28 discoveredDevices];
-              v44 = [v43 objectForKeyedSubscript:@"DevicesNames"];
+              discoveredDevices3 = [v28 discoveredDevices];
+              v44 = [discoveredDevices3 objectForKeyedSubscript:@"DevicesNames"];
 
               if (v44 && [v28 _shouldDisplayDeviceNames])
               {
-                v45 = [v44 _shuffled];
-                v46 = [v44 _removeBackslashAndSpaceCharacter];
+                _shuffled = [v44 _shuffled];
+                _removeBackslashAndSpaceCharacter = [v44 _removeBackslashAndSpaceCharacter];
 
-                [v29 setObject:v46 forKey:@"mapLabelCalloutDeviceNamesKey"];
+                [dictionary2 setObject:_removeBackslashAndSpaceCharacter forKey:@"mapLabelCalloutDeviceNamesKey"];
               }
 
               else
@@ -420,16 +420,16 @@
                 v47 = CWFGetOSLog();
                 if (v47)
                 {
-                  v46 = CWFGetOSLog();
+                  _removeBackslashAndSpaceCharacter = CWFGetOSLog();
                 }
 
                 else
                 {
-                  v46 = MEMORY[0x1E69E9C10];
+                  _removeBackslashAndSpaceCharacter = MEMORY[0x1E69E9C10];
                   v48 = MEMORY[0x1E69E9C10];
                 }
 
-                if (os_log_type_enabled(v46, OS_LOG_TYPE_INFO))
+                if (os_log_type_enabled(_removeBackslashAndSpaceCharacter, OS_LOG_TYPE_INFO))
                 {
                   v90 = 138412290;
                   v91 = v28;
@@ -464,11 +464,11 @@
               }
             }
 
-            v49 = [v28 _location];
-            if (v49)
+            _location2 = [v28 _location];
+            if (_location2)
             {
-              v36 = v49;
-              [v82 distanceFromLocation:v49];
+              v36 = _location2;
+              [_location distanceFromLocation:_location2];
               if (v50 >= 4000000.0)
               {
                 v59 = v50;
@@ -510,8 +510,8 @@
                 v89[1] = v55;
                 v56 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v89 forKeys:v88 count:2];
 
-                [v29 setObject:v56 forKey:@"mapLabelCalloutLocationKey"];
-                [v81 addObject:v29];
+                [dictionary2 setObject:v56 forKey:@"mapLabelCalloutLocationKey"];
+                [array addObject:dictionary2];
               }
             }
 
@@ -575,9 +575,9 @@
 
     v64 = obj;
 
-    v65 = v79;
-    v66 = v81;
-    [v79 setObject:v81 forKey:@"mapLabelArrayForCalloutsKey"];
+    v65 = dictionary;
+    v66 = array;
+    [dictionary setObject:array forKey:@"mapLabelArrayForCalloutsKey"];
     v5 = v80;
     v67 = v78;
   }
@@ -602,7 +602,7 @@
       _os_log_send_and_compose_impl();
     }
 
-    v82 = 0;
+    _location = 0;
     v67 = 0;
     v66 = 0;
     v65 = 0;
@@ -615,24 +615,24 @@
   return v65;
 }
 
-- (id)_filterProfilesForHomeNetworksExceedingMaximumDistance:(id)a3
+- (id)_filterProfilesForHomeNetworksExceedingMaximumDistance:(id)distance
 {
   v52 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF70] array];
+  distanceCopy = distance;
+  array = [MEMORY[0x1E695DF70] array];
   v42[0] = MEMORY[0x1E69E9820];
   v42[1] = 3221225472;
   v42[2] = sub_1E0C5CB14;
   v42[3] = &unk_1E86E7250;
-  v5 = v4;
+  v5 = array;
   v43 = v5;
-  [v3 enumerateObjectsUsingBlock:v42];
+  [distanceCopy enumerateObjectsUsingBlock:v42];
   if ([v5 count])
   {
-    v29 = v3;
-    v33 = [v3 mutableCopy];
+    v29 = distanceCopy;
+    v33 = [distanceCopy mutableCopy];
     [v33 removeObjectsInArray:v5];
-    v31 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v38 = 0u;
     v39 = 0u;
     v40 = 0u;
@@ -674,9 +674,9 @@
                 }
 
                 v15 = *(*(&v34 + 1) + 8 * j);
-                v16 = [v9 _location];
-                v17 = [v15 _location];
-                [v16 distanceFromLocation:v17];
+                _location = [v9 _location];
+                _location2 = [v15 _location];
+                [_location distanceFromLocation:_location2];
                 v19 = v18;
 
                 if (v19 >= 4000000.0)
@@ -706,7 +706,7 @@
                     _os_log_send_and_compose_impl();
                   }
 
-                  [v31 addObject:v9];
+                  [array2 addObject:v9];
                   goto LABEL_22;
                 }
               }
@@ -730,9 +730,9 @@ LABEL_22:
       while (v7);
     }
 
-    if ([v31 count])
+    if ([array2 count])
     {
-      v23 = v31;
+      v23 = array2;
     }
 
     else
@@ -741,7 +741,7 @@ LABEL_22:
     }
 
     v5 = v28;
-    v3 = v29;
+    distanceCopy = v29;
   }
 
   else
@@ -754,15 +754,15 @@ LABEL_22:
   return v23;
 }
 
-- (BOOL)profilesContainsHomeProfile:(id)a3
+- (BOOL)profilesContainsHomeProfile:(id)profile
 {
   v14 = *MEMORY[0x1E69E9840];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  profileCopy = profile;
+  v4 = [profileCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = *v10;
@@ -772,7 +772,7 @@ LABEL_22:
       {
         if (*v10 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(profileCopy);
         }
 
         if ([*(*(&v9 + 1) + 8 * i) _isHomeNetwork])
@@ -782,7 +782,7 @@ LABEL_22:
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [profileCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
       if (v4)
       {
         continue;
@@ -798,35 +798,35 @@ LABEL_11:
   return v4;
 }
 
-- (id)_filterForPrimaryHomeNetworkProfile:(id)a3
+- (id)_filterForPrimaryHomeNetworkProfile:(id)profile
 {
-  v4 = [(CWFKnownNetworkPreparer *)self profiles];
-  v5 = [(CWFKnownNetworkPreparer *)self _homeNetworkFilter];
-  v6 = [v4 filteredArrayUsingPredicate:v5];
+  profiles = [(CWFKnownNetworkPreparer *)self profiles];
+  _homeNetworkFilter = [(CWFKnownNetworkPreparer *)self _homeNetworkFilter];
+  v6 = [profiles filteredArrayUsingPredicate:_homeNetworkFilter];
 
   if ([v6 count])
   {
-    v7 = [(CWFKnownNetworkPreparer *)self _networkProfileUsageComparator];
-    v8 = [v6 sortedArrayUsingComparator:v7];
+    _networkProfileUsageComparator = [(CWFKnownNetworkPreparer *)self _networkProfileUsageComparator];
+    v8 = [v6 sortedArrayUsingComparator:_networkProfileUsageComparator];
 
-    v9 = [v8 firstObject];
+    firstObject = [v8 firstObject];
   }
 
   else
   {
     v8 = 0;
-    v9 = 0;
+    firstObject = 0;
   }
 
-  v10 = v9;
+  v10 = firstObject;
 
-  return v9;
+  return firstObject;
 }
 
-- (id)_removeProfilesAtSimilarLocations:(id)a3
+- (id)_removeProfilesAtSimilarLocations:(id)locations
 {
   v64 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  locationsCopy = locations;
   if (!qword_1ED7E3880)
   {
     v54 = MEMORY[0x1E69E9820];
@@ -841,21 +841,21 @@ LABEL_11:
 
   if (qword_1ED7E3880)
   {
-    v5 = [MEMORY[0x1E695DF70] array];
-    v41 = [MEMORY[0x1E695DF90] dictionary];
+    array = [MEMORY[0x1E695DF70] array];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v50 = 0u;
     v51 = 0u;
     v52 = 0u;
     v53 = 0u;
-    v36 = v4;
-    v6 = v4;
+    v36 = locationsCopy;
+    v6 = locationsCopy;
     v7 = [v6 countByEnumeratingWithState:&v50 objects:v61 count:16];
     if (v7)
     {
       v8 = v7;
       v9 = *v51;
       v38 = v6;
-      v39 = self;
+      selfCopy = self;
       v37 = *v51;
       do
       {
@@ -869,11 +869,11 @@ LABEL_11:
           }
 
           v11 = *(*(&v50 + 1) + 8 * v10);
-          if (([v5 containsObject:v11] & 1) == 0)
+          if (([array containsObject:v11] & 1) == 0)
           {
-            v12 = [MEMORY[0x1E695DF70] array];
-            v13 = [v11 _location];
-            if (v13)
+            array2 = [MEMORY[0x1E695DF70] array];
+            _location = [v11 _location];
+            if (_location)
             {
               v48 = 0u;
               v49 = 0u;
@@ -895,7 +895,7 @@ LABEL_11:
                     }
 
                     v19 = *(*(&v46 + 1) + 8 * i);
-                    if (([v19 isEqual:v11] & 1) == 0 && (objc_msgSend(v5, "containsObject:", v19) & 1) == 0)
+                    if (([v19 isEqual:v11] & 1) == 0 && (objc_msgSend(array, "containsObject:", v19) & 1) == 0)
                     {
                       [v19 _location];
                     }
@@ -907,9 +907,9 @@ LABEL_11:
                 while (v16);
               }
 
-              [v41 setObject:v12 forKey:v11];
+              [dictionary setObject:array2 forKey:v11];
               v6 = v38;
-              self = v39;
+              self = selfCopy;
               v9 = v37;
               v8 = v40;
             }
@@ -925,13 +925,13 @@ LABEL_11:
       while (v8);
     }
 
-    v20 = [MEMORY[0x1E695DF70] array];
+    array3 = [MEMORY[0x1E695DF70] array];
     v42 = 0u;
     v43 = 0u;
     v44 = 0u;
     v45 = 0u;
-    v21 = [v41 allKeys];
-    v22 = [v21 countByEnumeratingWithState:&v42 objects:v59 count:16];
+    allKeys = [dictionary allKeys];
+    v22 = [allKeys countByEnumeratingWithState:&v42 objects:v59 count:16];
     if (v22)
     {
       v23 = v22;
@@ -942,28 +942,28 @@ LABEL_11:
         {
           if (*v43 != v24)
           {
-            objc_enumerationMutation(v21);
+            objc_enumerationMutation(allKeys);
           }
 
           v26 = *(*(&v42 + 1) + 8 * j);
           v27 = [MEMORY[0x1E695DF70] arrayWithObject:v26];
-          v28 = [v41 objectForKeyedSubscript:v26];
+          v28 = [dictionary objectForKeyedSubscript:v26];
           [v27 addObjectsFromArray:v28];
 
-          v29 = [(CWFKnownNetworkPreparer *)self _similarLocationComparator];
-          [v27 sortUsingComparator:v29];
+          _similarLocationComparator = [(CWFKnownNetworkPreparer *)self _similarLocationComparator];
+          [v27 sortUsingComparator:_similarLocationComparator];
 
-          v30 = [v27 firstObject];
-          [v20 addObject:v30];
+          firstObject = [v27 firstObject];
+          [array3 addObject:firstObject];
         }
 
-        v23 = [v21 countByEnumeratingWithState:&v42 objects:v59 count:16];
+        v23 = [allKeys countByEnumeratingWithState:&v42 objects:v59 count:16];
       }
 
       while (v23);
     }
 
-    v4 = v36;
+    locationsCopy = v36;
   }
 
   else
@@ -986,12 +986,12 @@ LABEL_11:
       _os_log_send_and_compose_impl();
     }
 
-    v20 = v4;
+    array3 = locationsCopy;
   }
 
   v34 = *MEMORY[0x1E69E9840];
 
-  return v20;
+  return array3;
 }
 
 - (id)_localNetworkFilter

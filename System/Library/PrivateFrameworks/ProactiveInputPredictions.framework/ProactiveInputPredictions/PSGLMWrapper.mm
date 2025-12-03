@@ -1,5 +1,5 @@
 @interface PSGLMWrapper
-- (PSGLMWrapper)initWithLangModel:(void *)a3 lexicon:(void *)a4;
+- (PSGLMWrapper)initWithLangModel:(void *)model lexicon:(void *)lexicon;
 - (void)dealloc;
 @end
 
@@ -22,15 +22,15 @@
   [(PSGLMWrapper *)&v3 dealloc];
 }
 
-- (PSGLMWrapper)initWithLangModel:(void *)a3 lexicon:(void *)a4
+- (PSGLMWrapper)initWithLangModel:(void *)model lexicon:(void *)lexicon
 {
   v7.receiver = self;
   v7.super_class = PSGLMWrapper;
   result = [(PSGLMWrapper *)&v7 init];
   if (result)
   {
-    result->_langModel = a3;
-    result->_lexicon = a4;
+    result->_langModel = model;
+    result->_lexicon = lexicon;
   }
 
   return result;

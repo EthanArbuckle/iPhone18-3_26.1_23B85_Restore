@@ -1,33 +1,33 @@
 @interface _ATXHomeScreenState
-- (BOOL)containsSuggestedWidgetForApp:(id)a3;
-- (BOOL)containsWidgetForIntent:(id)a3;
-- (_ATXHomeScreenState)initWithSortedHomeScreenPagesByUserLastVisit:(id)a3 appsOnDock:(id)a4 stackStateTracker:(id)a5 suggestionDeduplicator:(id)a6 hyperParameters:(id)a7;
+- (BOOL)containsSuggestedWidgetForApp:(id)app;
+- (BOOL)containsWidgetForIntent:(id)intent;
+- (_ATXHomeScreenState)initWithSortedHomeScreenPagesByUserLastVisit:(id)visit appsOnDock:(id)dock stackStateTracker:(id)tracker suggestionDeduplicator:(id)deduplicator hyperParameters:(id)parameters;
 @end
 
 @implementation _ATXHomeScreenState
 
-- (_ATXHomeScreenState)initWithSortedHomeScreenPagesByUserLastVisit:(id)a3 appsOnDock:(id)a4 stackStateTracker:(id)a5 suggestionDeduplicator:(id)a6 hyperParameters:(id)a7
+- (_ATXHomeScreenState)initWithSortedHomeScreenPagesByUserLastVisit:(id)visit appsOnDock:(id)dock stackStateTracker:(id)tracker suggestionDeduplicator:(id)deduplicator hyperParameters:(id)parameters
 {
   v38 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  visitCopy = visit;
+  dockCopy = dock;
+  trackerCopy = tracker;
+  deduplicatorCopy = deduplicator;
+  parametersCopy = parameters;
   v36.receiver = self;
   v36.super_class = _ATXHomeScreenState;
   v17 = [(_ATXHomeScreenState *)&v36 init];
   if (v17)
   {
-    v28 = a4;
-    v29 = v13;
+    dockCopy2 = dock;
+    v29 = dockCopy;
     v18 = objc_opt_new();
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v30 = v12;
-    obj = v12;
+    v30 = visitCopy;
+    obj = visitCopy;
     v19 = [obj countByEnumeratingWithState:&v32 objects:v37 count:16];
     if (v19)
     {
@@ -43,8 +43,8 @@
             objc_enumerationMutation(obj);
           }
 
-          v23 = [[_ATXHomeScreenPageState alloc] initWithHomeScreenState:v17 pageConfig:*(*(&v32 + 1) + 8 * v22) stackStateTracker:v14 suggestionDeduplicator:v15 hyperParameters:v16, v28];
-          [(NSArray *)v18 addObject:v23];
+          dockCopy2 = [[_ATXHomeScreenPageState alloc] initWithHomeScreenState:v17 pageConfig:*(*(&v32 + 1) + 8 * v22) stackStateTracker:trackerCopy suggestionDeduplicator:deduplicatorCopy hyperParameters:parametersCopy, dockCopy2];
+          [(NSArray *)v18 addObject:dockCopy2];
 
           ++v22;
         }
@@ -60,19 +60,19 @@
     v17->_sortedPagesByUserLastVisit = v18;
     v25 = v18;
 
-    objc_storeStrong(&v17->_appsOnDock, v28);
-    v13 = v29;
-    v12 = v30;
+    objc_storeStrong(&v17->_appsOnDock, dockCopy2);
+    dockCopy = v29;
+    visitCopy = v30;
   }
 
   v26 = *MEMORY[0x277D85DE8];
   return v17;
 }
 
-- (BOOL)containsWidgetForIntent:(id)a3
+- (BOOL)containsWidgetForIntent:(id)intent
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  intentCopy = intent;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -91,7 +91,7 @@
           objc_enumerationMutation(v5);
         }
 
-        if ([*(*(&v11 + 1) + 8 * i) containsWidgetForIntent:{v4, v11}])
+        if ([*(*(&v11 + 1) + 8 * i) containsWidgetForIntent:{intentCopy, v11}])
         {
           LOBYTE(v6) = 1;
           goto LABEL_11;
@@ -114,10 +114,10 @@ LABEL_11:
   return v6;
 }
 
-- (BOOL)containsSuggestedWidgetForApp:(id)a3
+- (BOOL)containsSuggestedWidgetForApp:(id)app
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  appCopy = app;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -136,7 +136,7 @@ LABEL_11:
           objc_enumerationMutation(v5);
         }
 
-        if ([*(*(&v11 + 1) + 8 * i) containsSuggestedWidgetForApp:{v4, v11}])
+        if ([*(*(&v11 + 1) + 8 * i) containsSuggestedWidgetForApp:{appCopy, v11}])
         {
           LOBYTE(v6) = 1;
           goto LABEL_11;

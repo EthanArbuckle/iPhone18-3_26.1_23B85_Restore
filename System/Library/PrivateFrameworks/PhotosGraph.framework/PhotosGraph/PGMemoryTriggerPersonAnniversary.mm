@@ -1,17 +1,17 @@
 @interface PGMemoryTriggerPersonAnniversary
-- (id)relevantFeatureNodesInFeatureNodes:(id)a3;
-- (id)resultsTriggeredWithContext:(id)a3 inGraph:(id)a4 progressReporter:(id)a5;
+- (id)relevantFeatureNodesInFeatureNodes:(id)nodes;
+- (id)resultsTriggeredWithContext:(id)context inGraph:(id)graph progressReporter:(id)reporter;
 @end
 
 @implementation PGMemoryTriggerPersonAnniversary
 
-- (id)resultsTriggeredWithContext:(id)a3 inGraph:(id)a4 progressReporter:(id)a5
+- (id)resultsTriggeredWithContext:(id)context inGraph:(id)graph progressReporter:(id)reporter
 {
   v29 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v9 isCancelledWithProgress:0.0])
+  contextCopy = context;
+  graphCopy = graph;
+  reporterCopy = reporter;
+  if ([reporterCopy isCancelledWithProgress:0.0])
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -27,24 +27,24 @@
 
   else
   {
-    v11 = [v7 localDate];
-    v12 = [PGGraphMonthDayNodeCollection monthDayNodesForLocalDate:v11 inGraph:v8];
+    localDate = [contextCopy localDate];
+    v12 = [PGGraphMonthDayNodeCollection monthDayNodesForLocalDate:localDate inGraph:graphCopy];
 
-    v13 = [v12 anniversaryPersonNodes];
-    v14 = [v13 featureNodeCollection];
-    v15 = [v14 memoryNodes];
+    anniversaryPersonNodes = [v12 anniversaryPersonNodes];
+    featureNodeCollection = [anniversaryPersonNodes featureNodeCollection];
+    memoryNodes = [featureNodeCollection memoryNodes];
 
-    v16 = [v15 filteredCollectionUsingBlock:&__block_literal_global_54958];
+    v16 = [memoryNodes filteredCollectionUsingBlock:&__block_literal_global_54958];
     if ([v16 count])
     {
       v24 = v12;
-      v17 = [(PGGraphNodeCollection *)PGGraphMeNodeCollection nodesInGraph:v8];
-      v18 = [v17 featureNodeCollection];
-      v19 = [v18 memoryNodes];
-      v20 = [v16 collectionBySubtracting:v19];
+      v17 = [(PGGraphNodeCollection *)PGGraphMeNodeCollection nodesInGraph:graphCopy];
+      featureNodeCollection2 = [v17 featureNodeCollection];
+      memoryNodes2 = [featureNodeCollection2 memoryNodes];
+      v20 = [v16 collectionBySubtracting:memoryNodes2];
 
-      v21 = [objc_opt_class() singleDayValidityIntervalWithContext:v7];
-      if ([v9 isCancelledWithProgress:1.0])
+      v21 = [objc_opt_class() singleDayValidityIntervalWithContext:contextCopy];
+      if ([reporterCopy isCancelledWithProgress:1.0])
       {
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
         {
@@ -68,7 +68,7 @@
 
     else
     {
-      if ([v9 isCancelledWithProgress:1.0] && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
+      if ([reporterCopy isCancelledWithProgress:1.0] && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
         *buf = 67109378;
         v26 = 37;
@@ -96,12 +96,12 @@ BOOL __89__PGMemoryTriggerPersonAnniversary_resultsTriggeredWithContext_inGraph_
   return v4;
 }
 
-- (id)relevantFeatureNodesInFeatureNodes:(id)a3
+- (id)relevantFeatureNodesInFeatureNodes:(id)nodes
 {
-  v3 = [(PGGraphNodeCollection *)PGGraphPersonNodeCollection subsetInCollection:a3];
-  v4 = [v3 featureNodeCollection];
+  v3 = [(PGGraphNodeCollection *)PGGraphPersonNodeCollection subsetInCollection:nodes];
+  featureNodeCollection = [v3 featureNodeCollection];
 
-  return v4;
+  return featureNodeCollection;
 }
 
 @end

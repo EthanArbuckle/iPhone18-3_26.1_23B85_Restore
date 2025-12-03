@@ -11,7 +11,7 @@
   v7[1] = 3221225472;
   v7[2] = __52__UISplitViewController_IC__ic_showColumn_animated___block_invoke;
   v7[3] = &unk_1E84698E0;
-  v7[4] = a1;
+  v7[4] = self;
   v7[5] = a3;
   v5 = _Block_copy(v7);
   v6 = v5;
@@ -28,16 +28,16 @@
 
 - (uint64_t)ic_toggleSidebar
 {
-  if ([a1 displayMode] == 1 || objc_msgSend(a1, "isCollapsed"))
+  if ([self displayMode] == 1 || objc_msgSend(self, "isCollapsed"))
   {
 
-    return [a1 showColumn:0];
+    return [self showColumn:0];
   }
 
   else
   {
 
-    return [a1 hideColumn:0];
+    return [self hideColumn:0];
   }
 }
 

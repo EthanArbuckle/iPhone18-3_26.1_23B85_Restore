@@ -1,22 +1,22 @@
 @interface SiriUIHostingView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC4SiriP33_7351ACF3FB3EECEB6B17B4CD84C9F4C317SiriUIHostingView)initWithCoder:(id)a3;
-- (_TtC4SiriP33_7351ACF3FB3EECEB6B17B4CD84C9F4C317SiriUIHostingView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC4SiriP33_7351ACF3FB3EECEB6B17B4CD84C9F4C317SiriUIHostingView)initWithCoder:(id)coder;
+- (_TtC4SiriP33_7351ACF3FB3EECEB6B17B4CD84C9F4C317SiriUIHostingView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation SiriUIHostingView
 
-- (_TtC4SiriP33_7351ACF3FB3EECEB6B17B4CD84C9F4C317SiriUIHostingView)initWithCoder:(id)a3
+- (_TtC4SiriP33_7351ACF3FB3EECEB6B17B4CD84C9F4C317SiriUIHostingView)initWithCoder:(id)coder
 {
   result = _assertionFailure(_:_:file:line:flags:)();
   __break(1u);
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [*&self->SiriUICardSnippetView_opaque[OBJC_IVAR____TtC4SiriP33_7351ACF3FB3EECEB6B17B4CD84C9F4C317SiriUIHostingView_rootView] sizeThatFits:{a3.width, a3.height}];
+  [*&self->SiriUICardSnippetView_opaque[OBJC_IVAR____TtC4SiriP33_7351ACF3FB3EECEB6B17B4CD84C9F4C317SiriUIHostingView_rootView] sizeThatFits:{fits.width, fits.height}];
   result.height = v4;
   result.width = v3;
   return result;
@@ -36,7 +36,7 @@
   [*&v2[v3] layoutIfNeeded];
 }
 
-- (_TtC4SiriP33_7351ACF3FB3EECEB6B17B4CD84C9F4C317SiriUIHostingView)initWithFrame:(CGRect)a3
+- (_TtC4SiriP33_7351ACF3FB3EECEB6B17B4CD84C9F4C317SiriUIHostingView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

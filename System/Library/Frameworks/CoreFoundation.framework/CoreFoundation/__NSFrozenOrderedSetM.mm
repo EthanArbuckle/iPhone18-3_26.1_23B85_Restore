@@ -1,13 +1,13 @@
 @interface __NSFrozenOrderedSetM
-- (BOOL)containsObject:(id)a3;
+- (BOOL)containsObject:(id)object;
 - (id)mutableCopy;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (id)objectAtIndex:(unint64_t)a3;
-- (unint64_t)countForObject:(id)a3;
-- (unint64_t)indexOfObject:(id)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (id)objectAtIndex:(unint64_t)index;
+- (unint64_t)countForObject:(id)object;
+- (unint64_t)indexOfObject:(id)object;
 - (void)dealloc;
-- (void)enumerateObjectsWithOptions:(unint64_t)a3 usingBlock:(id)a4;
-- (void)getObjects:(id *)a3 range:(_NSRange)a4;
+- (void)enumerateObjectsWithOptions:(unint64_t)options usingBlock:(id)block;
+- (void)getObjects:(id *)objects range:(_NSRange)range;
 @end
 
 @implementation __NSFrozenOrderedSetM
@@ -72,11 +72,11 @@
   return v8;
 }
 
-- (unint64_t)indexOfObject:(id)a3
+- (unint64_t)indexOfObject:(id)object
 {
   v10 = *MEMORY[0x1E69E9840];
   result = 0x7FFFFFFFFFFFFFFFLL;
-  if (a3)
+  if (object)
   {
     p_storage = &self->storage;
     set = self->storage.set;
@@ -84,7 +84,7 @@
     {
       v8 = 0u;
       v9 = 0u;
-      CFBasicHashFindBucket(set, a3, &v8);
+      CFBasicHashFindBucket(set, object, &v8);
       if (*(&v9 + 1))
       {
         result = [(NSArray *)p_storage->array indexOfObjectIdenticalTo:v9];
@@ -101,12 +101,12 @@
   return result;
 }
 
-- (id)objectAtIndex:(unint64_t)a3
+- (id)objectAtIndex:(unint64_t)index
 {
   v19[1] = *MEMORY[0x1E69E9840];
   p_storage = &self->storage;
   Count = CFBasicHashGetCount(self->storage.set);
-  if (Count <= a3)
+  if (Count <= index)
   {
     if (Count)
     {
@@ -114,8 +114,8 @@
       v9 = _os_log_pack_size();
       v11 = v19 - ((MEMORY[0x1EEE9AC00](v9, v15) + 15) & 0xFFFFFFFFFFFFFFF0);
       v16 = _os_log_pack_fill();
-      v17 = __os_log_helper_1_2_3_8_32_8_0_8_0(v16, "_oset_objectAtIndex", a3, --v14);
-      v13 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: index %lu beyond bounds [0 .. %lu]", v17, "_oset_objectAtIndex", a3, v14);
+      v17 = __os_log_helper_1_2_3_8_32_8_0_8_0(v16, "_oset_objectAtIndex", index, --v14);
+      v13 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: index %lu beyond bounds [0 .. %lu]", v17, "_oset_objectAtIndex", index, v14);
     }
 
     else
@@ -126,8 +126,8 @@
       *v12 = 136315394;
       *(v12 + 4) = "_oset_objectAtIndex";
       *(v12 + 12) = 2048;
-      *(v12 + 14) = a3;
-      v13 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: index %lu beyond bounds for empty ordered set", "_oset_objectAtIndex", a3);
+      *(v12 + 14) = index;
+      v13 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: index %lu beyond bounds for empty ordered set", "_oset_objectAtIndex", index);
     }
 
     v18 = [NSException exceptionWithName:@"NSRangeException" reason:_CFAutoreleasePoolAddObject(0 userInfo:v13) osLogPack:0 size:v11, v9];
@@ -137,21 +137,21 @@
   array = p_storage->array;
   v7 = *MEMORY[0x1E69E9840];
 
-  return [(NSArray *)array objectAtIndex:a3];
+  return [(NSArray *)array objectAtIndex:index];
 }
 
-- (BOOL)containsObject:(id)a3
+- (BOOL)containsObject:(id)object
 {
   result = 0;
   v9 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (object)
   {
     set = self->storage.set;
     if (set)
     {
       v7 = 0u;
       v8 = 0u;
-      CFBasicHashFindBucket(set, a3, &v7);
+      CFBasicHashFindBucket(set, object, &v7);
       result = *(&v8 + 1) != 0;
     }
   }
@@ -160,18 +160,18 @@
   return result;
 }
 
-- (unint64_t)countForObject:(id)a3
+- (unint64_t)countForObject:(id)object
 {
   result = 0;
   v9 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (object)
   {
     set = self->storage.set;
     if (set)
     {
       v7 = 0u;
       v8 = 0u;
-      CFBasicHashFindBucket(set, a3, &v7);
+      CFBasicHashFindBucket(set, object, &v7);
       result = *(&v8 + 1) != 0;
     }
   }
@@ -180,10 +180,10 @@
   return result;
 }
 
-- (void)enumerateObjectsWithOptions:(unint64_t)a3 usingBlock:(id)a4
+- (void)enumerateObjectsWithOptions:(unint64_t)options usingBlock:(id)block
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  if (!a4)
+  if (!block)
   {
     v6 = _os_log_pack_size();
     v8 = v12 - ((MEMORY[0x1EEE9AC00](v6, v7) + 15) & 0xFFFFFFFFFFFFFFF0);
@@ -198,13 +198,13 @@
   array = self->storage.array;
   v5 = *MEMORY[0x1E69E9840];
 
-  [(NSArray *)array enumerateObjectsWithOptions:a3 usingBlock:?];
+  [(NSArray *)array enumerateObjectsWithOptions:options usingBlock:?];
 }
 
-- (void)getObjects:(id *)a3 range:(_NSRange)a4
+- (void)getObjects:(id *)objects range:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v30[1] = *MEMORY[0x1E69E9840];
   p_storage = &self->storage;
   Count = CFBasicHashGetCount(self->storage.set);
@@ -233,7 +233,7 @@
     objc_exception_throw(v29);
   }
 
-  if (!a3 && length)
+  if (!objects && length)
   {
     v11 = _os_log_pack_size();
     v13 = v30 - ((MEMORY[0x1EEE9AC00](v11, v12) + 15) & 0xFFFFFFFFFFFFFFF0);
@@ -264,10 +264,10 @@ LABEL_14:
   array = p_storage->array;
   v10 = *MEMORY[0x1E69E9840];
 
-  [(NSArray *)array getObjects:a3 range:location, length];
+  [(NSArray *)array getObjects:objects range:location, length];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   if (__cf_tsanReadFunction)
   {

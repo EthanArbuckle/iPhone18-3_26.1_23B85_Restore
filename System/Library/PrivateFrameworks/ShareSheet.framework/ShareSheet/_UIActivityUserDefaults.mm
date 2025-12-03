@@ -1,25 +1,25 @@
 @interface _UIActivityUserDefaults
 + (id)builtinActivityOrder;
-+ (id)updatedActivityIdentifiersUserOrderWithPreviousOrder:(id)a3 someSortedActivityIdentifiers:(id)a4;
-+ (void)_migrateUserActivityOrderforKey:(id)a3 userDefaults:(id)a4 defaultOrder:(id)a5;
++ (id)updatedActivityIdentifiersUserOrderWithPreviousOrder:(id)order someSortedActivityIdentifiers:(id)identifiers;
++ (void)_migrateUserActivityOrderforKey:(id)key userDefaults:(id)defaults defaultOrder:(id)order;
 + (void)migrateUserActivityOrderIfNecessary;
-- (BOOL)activityIsHidden:(id)a3;
-- (BOOL)canHideActivity:(id)a3;
+- (BOOL)activityIsHidden:(id)hidden;
+- (BOOL)canHideActivity:(id)activity;
 - (BOOL)hasUserEditedActivityOrder;
-- (_UIActivityUserDefaults)initWithUnderlyingUserDefaults:(id)a3 activityDefaultsKey:(id)a4;
-- (id)activitiesBySortingActivities:(id)a3 byIdentifierWithDefaultActivityIdentifierOrdering:(id)a4;
-- (id)activitiesOrderedByUserActivityOrderForActivities:(id)a3;
+- (_UIActivityUserDefaults)initWithUnderlyingUserDefaults:(id)defaults activityDefaultsKey:(id)key;
+- (id)activitiesBySortingActivities:(id)activities byIdentifierWithDefaultActivityIdentifierOrdering:(id)ordering;
+- (id)activitiesOrderedByUserActivityOrderForActivities:(id)activities;
 - (id)activityIdentifiersInUserOrder;
-- (id)applicationExtensionForActivity:(id)a3;
-- (id)migrateSortOrderIfNeededForBuiltInActivityType:(id)a3 activityIdentifierOrdering:(id)a4;
-- (id)mutableActivityIdentifiersArrayForActivitiesArray:(id)a3;
+- (id)applicationExtensionForActivity:(id)activity;
+- (id)migrateSortOrderIfNeededForBuiltInActivityType:(id)type activityIdentifierOrdering:(id)ordering;
+- (id)mutableActivityIdentifiersArrayForActivitiesArray:(id)array;
 - (void)_userEditedActivityDefaults;
 - (void)activityIdentifiersInUserOrder;
 - (void)postActivityUserDefaultsDidChangeNotification;
-- (void)removeActivityTypeFromDefaults:(id)a3;
-- (void)setActivity:(id)a3 asHidden:(BOOL)a4;
-- (void)setActivityIdentifiersInUserOrder:(id)a3;
-- (void)updateUserActivityOrderWithOrderedPartialActivities:(id)a3;
+- (void)removeActivityTypeFromDefaults:(id)defaults;
+- (void)setActivity:(id)activity asHidden:(BOOL)hidden;
+- (void)setActivityIdentifiersInUserOrder:(id)order;
+- (void)updateUserActivityOrderWithOrderedPartialActivities:(id)activities;
 @end
 
 @implementation _UIActivityUserDefaults
@@ -36,20 +36,20 @@
   return v3;
 }
 
-- (_UIActivityUserDefaults)initWithUnderlyingUserDefaults:(id)a3 activityDefaultsKey:(id)a4
+- (_UIActivityUserDefaults)initWithUnderlyingUserDefaults:(id)defaults activityDefaultsKey:(id)key
 {
   v20[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  defaultsCopy = defaults;
+  keyCopy = key;
   v16.receiver = self;
   v16.super_class = _UIActivityUserDefaults;
   v8 = [(_UIActivityUserDefaults *)&v16 init];
   v9 = v8;
   if (v8)
   {
-    [(_UIActivityUserDefaults *)v8 setActivityDefaultsKey:v7];
-    [(_UIActivityUserDefaults *)v9 setUnderlyingUserDefaults:v6];
-    v10 = [MEMORY[0x1E695E000] standardUserDefaults];
+    [(_UIActivityUserDefaults *)v8 setActivityDefaultsKey:keyCopy];
+    [(_UIActivityUserDefaults *)v9 setUnderlyingUserDefaults:defaultsCopy];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
     v19[0] = @"UIActivityCategoryShare";
     v18[0] = @"com.apple.UIKit.activity.AirDrop";
     v18[1] = @"com.apple.UIKit.activity.Message";
@@ -62,7 +62,7 @@
     v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:2];
     v20[1] = v12;
     v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:v19 count:2];
-    [v10 registerDefaults:v13];
+    [standardUserDefaults registerDefaults:v13];
 
     v14 = v9;
   }
@@ -70,15 +70,15 @@
   return v9;
 }
 
-- (BOOL)canHideActivity:(id)a3
+- (BOOL)canHideActivity:(id)activity
 {
-  v4 = a3;
-  v5 = [(_UIActivityUserDefaults *)self applicationExtensionForActivity:v4];
+  activityCopy = activity;
+  v5 = [(_UIActivityUserDefaults *)self applicationExtensionForActivity:activityCopy];
 
   if (v5)
   {
-    v6 = [v4 activityType];
-    if ([v6 isEqualToString:@"com.apple.AssetViewer.Picasso"])
+    activityType = [activityCopy activityType];
+    if ([activityType isEqualToString:@"com.apple.AssetViewer.Picasso"])
     {
       v7 = 0;
     }
@@ -98,19 +98,19 @@
   return v7 & 1;
 }
 
-- (BOOL)activityIsHidden:(id)a3
+- (BOOL)activityIsHidden:(id)hidden
 {
-  v4 = a3;
-  v5 = [(_UIActivityUserDefaults *)self applicationExtensionForActivity:v4];
+  hiddenCopy = hidden;
+  v5 = [(_UIActivityUserDefaults *)self applicationExtensionForActivity:hiddenCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 optedIn];
+    optedIn = [v5 optedIn];
     objc_opt_class();
     v8 = 0;
-    if ((objc_opt_isKindOfClass() & 1) == 0 && (v7 & 1) == 0)
+    if ((objc_opt_isKindOfClass() & 1) == 0 && (optedIn & 1) == 0)
     {
-      v8 = (objc_opt_isKindOfClass() & 1) == 0 || ([v4 activityType], v9 = objc_opt_class();
+      v8 = (objc_opt_isKindOfClass() & 1) == 0 || ([hiddenCopy activityType], v9 = objc_opt_class();
     }
   }
 
@@ -122,22 +122,22 @@
   return v8;
 }
 
-- (void)setActivity:(id)a3 asHidden:(BOOL)a4
+- (void)setActivity:(id)activity asHidden:(BOOL)hidden
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(_UIActivityUserDefaults *)self applicationExtensionForActivity:v6];
+  hiddenCopy = hidden;
+  activityCopy = activity;
+  v7 = [(_UIActivityUserDefaults *)self applicationExtensionForActivity:activityCopy];
   if (![v7 optedIn])
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && ([v6 activityType], v11 = objc_claimAutoreleasedReturnValue(), v12 = _UIShouldExcludeExtensionWithActivityType(v11), v11, !v12))
+    if ((objc_opt_isKindOfClass() & 1) != 0 && ([activityCopy activityType], v11 = objc_claimAutoreleasedReturnValue(), v12 = _UIShouldExcludeExtensionWithActivityType(v11), v11, !v12))
     {
-      if (_UIExtensionElectionStateIsIgnore(v6) == v4)
+      if (_UIExtensionElectionStateIsIgnore(activityCopy) == hiddenCopy)
       {
         goto LABEL_14;
       }
 
-      if (v4)
+      if (hiddenCopy)
       {
 LABEL_3:
         v14 = 0;
@@ -160,7 +160,7 @@ LABEL_12:
       }
     }
 
-    else if (v4)
+    else if (hiddenCopy)
     {
       goto LABEL_14;
     }
@@ -184,7 +184,7 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if (v4)
+  if (hiddenCopy)
   {
     goto LABEL_3;
   }
@@ -193,18 +193,18 @@ LABEL_14:
   [(_UIActivityUserDefaults *)self postActivityUserDefaultsDidChangeNotification];
 }
 
-- (id)activitiesBySortingActivities:(id)a3 byIdentifierWithDefaultActivityIdentifierOrdering:(id)a4
+- (id)activitiesBySortingActivities:(id)activities byIdentifierWithDefaultActivityIdentifierOrdering:(id)ordering
 {
   v40 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v6, "count")}];
-  v9 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v6, "count")}];
+  activitiesCopy = activities;
+  orderingCopy = ordering;
+  v8 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(activitiesCopy, "count")}];
+  v9 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(activitiesCopy, "count")}];
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  obj = v6;
+  obj = activitiesCopy;
   v10 = [obj countByEnumeratingWithState:&v34 objects:v39 count:16];
   if (v10)
   {
@@ -221,7 +221,7 @@ LABEL_14:
 
         v14 = *(*(&v34 + 1) + 8 * i);
         v15 = [(_UIActivityUserDefaults *)self identifierForActivity:v14];
-        v16 = [v7 indexOfObject:v15];
+        v16 = [orderingCopy indexOfObject:v15];
         if (v16 == 0x7FFFFFFFFFFFFFFFLL)
         {
           [v9 addObject:v14];
@@ -230,10 +230,10 @@ LABEL_14:
         else
         {
           [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v16];
-          v18 = v17 = v7;
+          v18 = v17 = orderingCopy;
           [v8 setObject:v14 forKeyedSubscript:v18];
 
-          v7 = v17;
+          orderingCopy = v17;
         }
       }
 
@@ -243,8 +243,8 @@ LABEL_14:
     while (v11);
   }
 
-  v19 = [v8 allKeys];
-  v20 = [v19 sortedArrayUsingComparator:&__block_literal_global_50];
+  allKeys = [v8 allKeys];
+  v20 = [allKeys sortedArrayUsingComparator:&__block_literal_global_50];
 
   v32 = 0u;
   v33 = 0u;
@@ -280,18 +280,18 @@ LABEL_14:
   return v27;
 }
 
-- (id)migrateSortOrderIfNeededForBuiltInActivityType:(id)a3 activityIdentifierOrdering:(id)a4
+- (id)migrateSortOrderIfNeededForBuiltInActivityType:(id)type activityIdentifierOrdering:(id)ordering
 {
-  v5 = a3;
-  v6 = a4;
-  if (![v6 count] || objc_msgSend(v6, "containsObject:", v5) || (objc_msgSend(objc_opt_class(), "builtinActivityOrder"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "indexOfObject:", v5), v7, v8 == 0x7FFFFFFFFFFFFFFFLL))
+  typeCopy = type;
+  orderingCopy = ordering;
+  if (![orderingCopy count] || objc_msgSend(orderingCopy, "containsObject:", typeCopy) || (objc_msgSend(objc_opt_class(), "builtinActivityOrder"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "indexOfObject:", typeCopy), v7, v8 == 0x7FFFFFFFFFFFFFFFLL))
   {
-    v9 = v6;
+    v9 = orderingCopy;
   }
 
   else
   {
-    v9 = [v6 mutableCopy];
+    v9 = [orderingCopy mutableCopy];
     v11 = [v9 count];
     if (v8 >= v11)
     {
@@ -303,47 +303,47 @@ LABEL_14:
       v12 = v8;
     }
 
-    [v9 insertObject:v5 atIndex:v12];
+    [v9 insertObject:typeCopy atIndex:v12];
   }
 
   return v9;
 }
 
-- (id)activitiesOrderedByUserActivityOrderForActivities:(id)a3
+- (id)activitiesOrderedByUserActivityOrderForActivities:(id)activities
 {
-  v4 = a3;
-  v5 = [(_UIActivityUserDefaults *)self activityIdentifiersInUserOrder];
-  v6 = [(_UIActivityUserDefaults *)self activitiesBySortingActivities:v4 byIdentifierWithDefaultActivityIdentifierOrdering:v5];
+  activitiesCopy = activities;
+  activityIdentifiersInUserOrder = [(_UIActivityUserDefaults *)self activityIdentifiersInUserOrder];
+  v6 = [(_UIActivityUserDefaults *)self activitiesBySortingActivities:activitiesCopy byIdentifierWithDefaultActivityIdentifierOrdering:activityIdentifiersInUserOrder];
 
   return v6;
 }
 
-- (void)updateUserActivityOrderWithOrderedPartialActivities:(id)a3
+- (void)updateUserActivityOrderWithOrderedPartialActivities:(id)activities
 {
-  v6 = [(_UIActivityUserDefaults *)self mutableActivityIdentifiersArrayForActivitiesArray:a3];
+  v6 = [(_UIActivityUserDefaults *)self mutableActivityIdentifiersArrayForActivitiesArray:activities];
   [v6 removeObject:@"com.apple.UIKit.activity.UserDefaults"];
-  v4 = [(_UIActivityUserDefaults *)self activityIdentifiersInUserOrder];
-  v5 = [_UIActivityUserDefaults updatedActivityIdentifiersUserOrderWithPreviousOrder:v4 someSortedActivityIdentifiers:v6];
+  activityIdentifiersInUserOrder = [(_UIActivityUserDefaults *)self activityIdentifiersInUserOrder];
+  v5 = [_UIActivityUserDefaults updatedActivityIdentifiersUserOrderWithPreviousOrder:activityIdentifiersInUserOrder someSortedActivityIdentifiers:v6];
 
   [(_UIActivityUserDefaults *)self setActivityIdentifiersInUserOrder:v5];
 }
 
-- (void)removeActivityTypeFromDefaults:(id)a3
+- (void)removeActivityTypeFromDefaults:(id)defaults
 {
-  v4 = a3;
-  v5 = [(_UIActivityUserDefaults *)self activityIdentifiersInUserOrder];
-  v6 = [v5 mutableCopy];
+  defaultsCopy = defaults;
+  activityIdentifiersInUserOrder = [(_UIActivityUserDefaults *)self activityIdentifiersInUserOrder];
+  v6 = [activityIdentifiersInUserOrder mutableCopy];
 
-  [v6 removeObject:v4];
+  [v6 removeObject:defaultsCopy];
   [(_UIActivityUserDefaults *)self setActivityIdentifiersInUserOrder:v6];
 }
 
 - (id)activityIdentifiersInUserOrder
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = [(_UIActivityUserDefaults *)self underlyingUserDefaults];
-  v4 = [(_UIActivityUserDefaults *)self activityDefaultsKey];
-  v5 = [v3 arrayForKey:v4];
+  underlyingUserDefaults = [(_UIActivityUserDefaults *)self underlyingUserDefaults];
+  activityDefaultsKey = [(_UIActivityUserDefaults *)self activityDefaultsKey];
+  v5 = [underlyingUserDefaults arrayForKey:activityDefaultsKey];
 
   v6 = MEMORY[0x1E695E0F0];
   if (v5)
@@ -381,9 +381,9 @@ LABEL_14:
             [(_UIActivityUserDefaults *)v8 activityIdentifiersInUserOrder];
           }
 
-          v15 = [(_UIActivityUserDefaults *)self underlyingUserDefaults];
-          v16 = [(_UIActivityUserDefaults *)self activityDefaultsKey];
-          [v15 setObject:0 forKey:v16];
+          underlyingUserDefaults2 = [(_UIActivityUserDefaults *)self underlyingUserDefaults];
+          activityDefaultsKey2 = [(_UIActivityUserDefaults *)self activityDefaultsKey];
+          [underlyingUserDefaults2 setObject:0 forKey:activityDefaultsKey2];
 
           v13 = MEMORY[0x1E695E0F0];
           goto LABEL_15;
@@ -406,12 +406,12 @@ LABEL_15:
   return v13;
 }
 
-- (void)setActivityIdentifiersInUserOrder:(id)a3
+- (void)setActivityIdentifiersInUserOrder:(id)order
 {
-  v4 = a3;
-  v5 = [(_UIActivityUserDefaults *)self underlyingUserDefaults];
-  v6 = [(_UIActivityUserDefaults *)self activityDefaultsKey];
-  [v5 setObject:v4 forKey:v6];
+  orderCopy = order;
+  underlyingUserDefaults = [(_UIActivityUserDefaults *)self underlyingUserDefaults];
+  activityDefaultsKey = [(_UIActivityUserDefaults *)self activityDefaultsKey];
+  [underlyingUserDefaults setObject:orderCopy forKey:activityDefaultsKey];
 
   [(_UIActivityUserDefaults *)self _userEditedActivityDefaults];
 
@@ -420,36 +420,36 @@ LABEL_15:
 
 - (BOOL)hasUserEditedActivityOrder
 {
-  v3 = [(_UIActivityUserDefaults *)self activityDefaultsKey];
-  v4 = [v3 stringByAppendingString:@"EditedKey"];
+  activityDefaultsKey = [(_UIActivityUserDefaults *)self activityDefaultsKey];
+  v4 = [activityDefaultsKey stringByAppendingString:@"EditedKey"];
 
-  v5 = [(_UIActivityUserDefaults *)self underlyingUserDefaults];
-  LOBYTE(v3) = [v5 BOOLForKey:v4];
+  underlyingUserDefaults = [(_UIActivityUserDefaults *)self underlyingUserDefaults];
+  LOBYTE(activityDefaultsKey) = [underlyingUserDefaults BOOLForKey:v4];
 
-  return v3;
+  return activityDefaultsKey;
 }
 
 - (void)_userEditedActivityDefaults
 {
-  v3 = [(_UIActivityUserDefaults *)self activityDefaultsKey];
-  v5 = [v3 stringByAppendingString:@"EditedKey"];
+  activityDefaultsKey = [(_UIActivityUserDefaults *)self activityDefaultsKey];
+  v5 = [activityDefaultsKey stringByAppendingString:@"EditedKey"];
 
-  v4 = [(_UIActivityUserDefaults *)self underlyingUserDefaults];
-  [v4 setBool:1 forKey:v5];
+  underlyingUserDefaults = [(_UIActivityUserDefaults *)self underlyingUserDefaults];
+  [underlyingUserDefaults setBool:1 forKey:v5];
 }
 
-+ (id)updatedActivityIdentifiersUserOrderWithPreviousOrder:(id)a3 someSortedActivityIdentifiers:(id)a4
++ (id)updatedActivityIdentifiersUserOrderWithPreviousOrder:(id)order someSortedActivityIdentifiers:(id)identifiers
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v5;
-  v8 = [v6 count];
+  orderCopy = order;
+  identifiersCopy = identifiers;
+  v7 = orderCopy;
+  v8 = [identifiersCopy count];
   v9 = v7;
   if (v8)
   {
     v10 = v8;
     v11 = objc_alloc_init(MEMORY[0x1E696AD50]);
-    v12 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithArray:v6];
+    v12 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithArray:identifiersCopy];
     v13 = [v7 mutableCopy];
     v37[0] = MEMORY[0x1E69E9820];
     v37[1] = 3221225472;
@@ -474,7 +474,7 @@ LABEL_15:
     v24 = &unk_1E71FB6D0;
     v16 = v13;
     v25 = v16;
-    v17 = v6;
+    v17 = identifiersCopy;
     v26 = v17;
     v27 = &v29;
     v28 = &v33;
@@ -502,16 +502,16 @@ LABEL_15:
   return v9;
 }
 
-- (id)mutableActivityIdentifiersArrayForActivitiesArray:(id)a3
+- (id)mutableActivityIdentifiersArrayForActivitiesArray:(id)array
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v4, "count")}];
+  arrayCopy = array;
+  v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(arrayCopy, "count")}];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = v4;
+  v6 = arrayCopy;
   v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
@@ -544,60 +544,60 @@ LABEL_15:
 
 - (void)postActivityUserDefaultsDidChangeNotification
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 postNotificationName:@"_UIActivityUserDefaultsDidChangeNotification" object:self userInfo:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"_UIActivityUserDefaultsDidChangeNotification" object:self userInfo:0];
 }
 
-- (id)applicationExtensionForActivity:(id)a3
+- (id)applicationExtensionForActivity:(id)activity
 {
-  v3 = a3;
+  activityCopy = activity;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 applicationExtension];
+    applicationExtension = [activityCopy applicationExtension];
   }
 
   else if (NSClassFromString(&cfstr_Pueditpluginac.isa) && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v5 = [v3 valueForKey:@"plugin"];
-    v4 = [v5 valueForKey:@"extension"];
+    v5 = [activityCopy valueForKey:@"plugin"];
+    applicationExtension = [v5 valueForKey:@"extension"];
   }
 
   else
   {
-    v4 = 0;
+    applicationExtension = 0;
   }
 
-  return v4;
+  return applicationExtension;
 }
 
 + (void)migrateUserActivityOrderIfNecessary
 {
   v7[3] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-  if ([v3 integerForKey:@"_UIActivityUserDefaultsMigrationVersionKey"] <= 0)
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  if ([standardUserDefaults integerForKey:@"_UIActivityUserDefaultsMigrationVersionKey"] <= 0)
   {
     v7[0] = @"com.apple.UIKit.activity.AirDrop";
     v7[1] = @"com.apple.UIKit.activity.Message";
     v7[2] = @"com.apple.UIKit.activity.Mail";
     v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v7 count:3];
-    [a1 _migrateUserActivityOrderforKey:@"UIActivityCategoryShare" userDefaults:v3 defaultOrder:v4];
+    [self _migrateUserActivityOrderforKey:@"UIActivityCategoryShare" userDefaults:standardUserDefaults defaultOrder:v4];
 
     v6[0] = @"com.apple.UIKit.activity.CopyToPasteboard";
     v6[1] = @"com.apple.UIKit.activity.Share";
     v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:2];
-    [a1 _migrateUserActivityOrderforKey:@"UIActivityCategoryAction" userDefaults:v3 defaultOrder:v5];
+    [self _migrateUserActivityOrderforKey:@"UIActivityCategoryAction" userDefaults:standardUserDefaults defaultOrder:v5];
 
-    [v3 setInteger:1 forKey:@"_UIActivityUserDefaultsMigrationVersionKey"];
+    [standardUserDefaults setInteger:1 forKey:@"_UIActivityUserDefaultsMigrationVersionKey"];
   }
 }
 
-+ (void)_migrateUserActivityOrderforKey:(id)a3 userDefaults:(id)a4 defaultOrder:(id)a5
++ (void)_migrateUserActivityOrderforKey:(id)key userDefaults:(id)defaults defaultOrder:(id)order
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 dictionaryForKey:v7];
+  keyCopy = key;
+  defaultsCopy = defaults;
+  orderCopy = order;
+  v10 = [defaultsCopy dictionaryForKey:keyCopy];
   v11 = [v10 objectForKey:@"order"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -611,16 +611,16 @@ LABEL_15:
     goto LABEL_7;
   }
 
-  if ([v11 isEqualToArray:v9])
+  if ([v11 isEqualToArray:orderCopy])
   {
 LABEL_7:
-    [v8 setObject:0 forKey:v7];
+    [defaultsCopy setObject:0 forKey:keyCopy];
     goto LABEL_8;
   }
 
-  v12 = [v7 stringByAppendingString:@"EditedKey"];
-  [v8 setBool:1 forKey:v12];
-  [v8 setObject:v11 forKey:v7];
+  v12 = [keyCopy stringByAppendingString:@"EditedKey"];
+  [defaultsCopy setBool:1 forKey:v12];
+  [defaultsCopy setObject:v11 forKey:keyCopy];
 
 LABEL_8:
 }
@@ -643,7 +643,7 @@ LABEL_8:
 {
   v4 = *MEMORY[0x1E69E9840];
   v2 = 138412290;
-  v3 = a1;
+  selfCopy = self;
   _os_log_fault_impl(&dword_18B359000, a2, OS_LOG_TYPE_FAULT, "Found a non string value in our user defaults array! %@", &v2, 0xCu);
 }
 

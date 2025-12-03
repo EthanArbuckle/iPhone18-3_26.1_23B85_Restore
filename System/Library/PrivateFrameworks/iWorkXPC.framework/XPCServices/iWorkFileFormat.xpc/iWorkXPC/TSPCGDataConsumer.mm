@@ -1,18 +1,18 @@
 @interface TSPCGDataConsumer
-+ (CGDataConsumer)newCGDataConsumerForWriteChannel:(id)a3;
++ (CGDataConsumer)newCGDataConsumerForWriteChannel:(id)channel;
 - (TSPCGDataConsumer)init;
-- (TSPCGDataConsumer)initWithWriteChannel:(id)a3;
-- (unint64_t)putBytes:(const void *)a3 count:(unint64_t)a4;
+- (TSPCGDataConsumer)initWithWriteChannel:(id)channel;
+- (unint64_t)putBytes:(const void *)bytes count:(unint64_t)count;
 - (void)_close;
 - (void)close;
 @end
 
 @implementation TSPCGDataConsumer
 
-+ (CGDataConsumer)newCGDataConsumerForWriteChannel:(id)a3
++ (CGDataConsumer)newCGDataConsumerForWriteChannel:(id)channel
 {
-  v3 = a3;
-  v4 = [[TSPCGDataConsumer alloc] initWithWriteChannel:v3];
+  channelCopy = channel;
+  v4 = [[TSPCGDataConsumer alloc] initWithWriteChannel:channelCopy];
   v5 = v4;
   if (v4)
   {
@@ -61,9 +61,9 @@
   objc_exception_throw(v7);
 }
 
-- (TSPCGDataConsumer)initWithWriteChannel:(id)a3
+- (TSPCGDataConsumer)initWithWriteChannel:(id)channel
 {
-  v5 = a3;
+  channelCopy = channel;
   v11.receiver = self;
   v11.super_class = TSPCGDataConsumer;
   v6 = [(TSPCGDataConsumer *)&v11 init];
@@ -75,13 +75,13 @@
     *(v6 + 1) = v8;
 
     dispatch_queue_set_specific(*(v6 + 1), off_1001E8D30, off_1001E8D30, 0);
-    objc_storeStrong(v6 + 2, a3);
+    objc_storeStrong(v6 + 2, channel);
   }
 
   return v6;
 }
 
-- (unint64_t)putBytes:(const void *)a3 count:(unint64_t)a4
+- (unint64_t)putBytes:(const void *)bytes count:(unint64_t)count
 {
   v12 = 0;
   v13 = &v12;
@@ -98,8 +98,8 @@
   block[3] = &unk_1001C6DE8;
   block[4] = self;
   block[5] = &v12;
-  block[7] = a3;
-  block[8] = a4;
+  block[7] = bytes;
+  block[8] = count;
   block[6] = &v8;
   dispatch_sync(writeQueue, block);
   v5 = 0;
@@ -150,15 +150,15 @@
       error = self->_error;
       v5 = objc_opt_class();
       v6 = NSStringFromClass(v5);
-      v7 = [(NSError *)self->_error domain];
-      v8 = [(NSError *)self->_error code];
+      domain = [(NSError *)self->_error domain];
+      code = [(NSError *)self->_error code];
       v9 = self->_error;
       v10 = 138544130;
       v11 = v6;
       v12 = 2114;
-      v13 = v7;
+      v13 = domain;
       v14 = 2048;
-      v15 = v8;
+      v15 = code;
       v16 = 2112;
       v17 = v9;
       _os_log_error_impl(&_mh_execute_header, v3, OS_LOG_TYPE_ERROR, "Failed to write bytes. errorClass=%{public}@, domain=%{public}@, code=%zd (%@) ", &v10, 0x2Au);

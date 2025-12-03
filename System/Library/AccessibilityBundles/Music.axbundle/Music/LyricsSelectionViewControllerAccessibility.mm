@@ -1,15 +1,15 @@
 @interface LyricsSelectionViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)accessibilityDidSelectItem;
 @end
 
 @implementation LyricsSelectionViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"Music.LyricsSelectionViewController" hasInstanceMethod:@"accessibilityCharacterCount" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"Music.LyricsSelectionViewController" hasInstanceMethod:@"accessibilityDidSelectItem" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"Music.LyricsSelectionViewController" hasInstanceMethod:@"accessibilityCharacterCount" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"Music.LyricsSelectionViewController" hasInstanceMethod:@"accessibilityDidSelectItem" withFullSignature:{"v", 0}];
 }
 
 - (void)accessibilityDidSelectItem

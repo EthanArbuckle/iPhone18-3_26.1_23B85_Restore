@@ -9,9 +9,9 @@
   v3 = [-[TDPhotoshopLayer parentLayer](self "parentLayer")];
   if ([v3 count] && objc_msgSend(-[TDPhotoshopLayer name](self, "name"), "length"))
   {
-    v4 = [(TDPhotoshopLayer *)self name];
+    name = [(TDPhotoshopLayer *)self name];
 
-    return [v3 arrayByAddingObject:v4];
+    return [v3 arrayByAddingObject:name];
   }
 
   else
@@ -20,9 +20,9 @@
     if (result)
     {
       v6 = MEMORY[0x277CBEA60];
-      v7 = [(TDPhotoshopLayer *)self name];
+      name2 = [(TDPhotoshopLayer *)self name];
 
-      return [v6 arrayWithObject:v7];
+      return [v6 arrayWithObject:name2];
     }
   }
 

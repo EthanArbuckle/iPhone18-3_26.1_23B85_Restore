@@ -1,19 +1,19 @@
 @interface _NSUndoBlockInvocation
-- (_NSUndoBlockInvocation)initWithTarget:(id)a3 handler:(id)a4;
+- (_NSUndoBlockInvocation)initWithTarget:(id)target handler:(id)handler;
 - (void)dealloc;
 @end
 
 @implementation _NSUndoBlockInvocation
 
-- (_NSUndoBlockInvocation)initWithTarget:(id)a3 handler:(id)a4
+- (_NSUndoBlockInvocation)initWithTarget:(id)target handler:(id)handler
 {
   v9 = *MEMORY[0x1E69E9840];
   v8.receiver = self;
   v8.super_class = _NSUndoBlockInvocation;
-  v5 = [(_NSUndoObject *)&v8 initWithTarget:a3];
+  v5 = [(_NSUndoObject *)&v8 initWithTarget:target];
   if (v5)
   {
-    v6 = _Block_copy(a4);
+    v6 = _Block_copy(handler);
     v5->_handler = v6;
     if (!v6)
     {

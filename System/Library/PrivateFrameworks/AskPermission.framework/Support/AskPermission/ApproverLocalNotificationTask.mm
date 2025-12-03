@@ -1,20 +1,20 @@
 @interface ApproverLocalNotificationTask
-- (ApproverLocalNotificationTask)initWithRequest:(id)a3;
+- (ApproverLocalNotificationTask)initWithRequest:(id)request;
 - (id)perform;
 @end
 
 @implementation ApproverLocalNotificationTask
 
-- (ApproverLocalNotificationTask)initWithRequest:(id)a3
+- (ApproverLocalNotificationTask)initWithRequest:(id)request
 {
-  v5 = a3;
+  requestCopy = request;
   v9.receiver = self;
   v9.super_class = ApproverLocalNotificationTask;
   v6 = [(ApproverLocalNotificationTask *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_request, a3);
+    objc_storeStrong(&v6->_request, request);
   }
 
   return v7;

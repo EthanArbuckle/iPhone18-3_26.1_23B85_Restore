@@ -4,8 +4,8 @@
 - (WKUserScript)initWithSource:(NSString *)source injectionTime:(WKUserScriptInjectionTime)injectionTime forMainFrameOnly:(BOOL)forMainFrameOnly;
 - (WKUserScript)initWithSource:(NSString *)source injectionTime:(WKUserScriptInjectionTime)injectionTime forMainFrameOnly:(BOOL)forMainFrameOnly inContentWorld:(WKContentWorld *)contentWorld;
 - (_WKUserContentWorld)_userContentWorld;
-- (id)_initWithSource:(id)a3 injectionTime:(int64_t)a4 forMainFrameOnly:(BOOL)a5 includeMatchPatternStrings:(id)a6 excludeMatchPatternStrings:(id)a7 associatedURL:(id)a8 contentWorld:(id)a9;
-- (id)_initWithSource:(id)a3 injectionTime:(int64_t)a4 forMainFrameOnly:(BOOL)a5 includeMatchPatternStrings:(id)a6 excludeMatchPatternStrings:(id)a7 associatedURL:(id)a8 contentWorld:(id)a9 deferRunningUntilNotification:(BOOL)a10;
+- (id)_initWithSource:(id)source injectionTime:(int64_t)time forMainFrameOnly:(BOOL)only includeMatchPatternStrings:(id)strings excludeMatchPatternStrings:(id)patternStrings associatedURL:(id)l contentWorld:(id)world;
+- (id)_initWithSource:(id)source injectionTime:(int64_t)time forMainFrameOnly:(BOOL)only includeMatchPatternStrings:(id)strings excludeMatchPatternStrings:(id)patternStrings associatedURL:(id)l contentWorld:(id)world deferRunningUntilNotification:(BOOL)self0;
 - (void)dealloc;
 @end
 
@@ -136,39 +136,39 @@ LABEL_7:
   return result;
 }
 
-- (id)_initWithSource:(id)a3 injectionTime:(int64_t)a4 forMainFrameOnly:(BOOL)a5 includeMatchPatternStrings:(id)a6 excludeMatchPatternStrings:(id)a7 associatedURL:(id)a8 contentWorld:(id)a9 deferRunningUntilNotification:(BOOL)a10
+- (id)_initWithSource:(id)source injectionTime:(int64_t)time forMainFrameOnly:(BOOL)only includeMatchPatternStrings:(id)strings excludeMatchPatternStrings:(id)patternStrings associatedURL:(id)l contentWorld:(id)world deferRunningUntilNotification:(BOOL)self0
 {
-  v13 = a5;
-  if (a10)
+  onlyCopy = only;
+  if (notification)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
-  return [(WKUserScript *)self _initWithSource:a3 injectionTime:a4 forMainFrameOnly:v13 includeMatchPatternStrings:a6 excludeMatchPatternStrings:a7 associatedURL:a8 contentWorld:?];
+  return [(WKUserScript *)self _initWithSource:source injectionTime:time forMainFrameOnly:onlyCopy includeMatchPatternStrings:strings excludeMatchPatternStrings:patternStrings associatedURL:l contentWorld:?];
 }
 
-- (id)_initWithSource:(id)a3 injectionTime:(int64_t)a4 forMainFrameOnly:(BOOL)a5 includeMatchPatternStrings:(id)a6 excludeMatchPatternStrings:(id)a7 associatedURL:(id)a8 contentWorld:(id)a9
+- (id)_initWithSource:(id)source injectionTime:(int64_t)time forMainFrameOnly:(BOOL)only includeMatchPatternStrings:(id)strings excludeMatchPatternStrings:(id)patternStrings associatedURL:(id)l contentWorld:(id)world
 {
-  v12 = a5;
+  onlyCopy = only;
   v32.receiver = self;
   v32.super_class = WKUserScript;
   v15 = [(WKUserScript *)&v32 init];
   if (v15)
   {
-    MEMORY[0x19EB02040](&v30, a3);
-    MEMORY[0x19EB01DE0](v29, a8);
-    *v27 = a6;
-    v16 = [a6 count];
-    v34 = v27;
-    WTF::Vector<WTF::String,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::Vector<WTF::Vector<WTF::String,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc> WTF::makeVector<WTF::String>(NSArray *)::{lambda(unsigned long)#1}>(v28, v16, &v34, 0);
-    v34 = a7;
-    v17 = [a7 count];
-    v33 = &v34;
+    MEMORY[0x19EB02040](&v30, source);
+    MEMORY[0x19EB01DE0](v29, l);
+    *v27 = strings;
+    v16 = [strings count];
+    patternStringsCopy = v27;
+    WTF::Vector<WTF::String,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::Vector<WTF::Vector<WTF::String,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc> WTF::makeVector<WTF::String>(NSArray *)::{lambda(unsigned long)#1}>(v28, v16, &patternStringsCopy, 0);
+    patternStringsCopy = patternStrings;
+    v17 = [patternStrings count];
+    v33 = &patternStringsCopy;
     WTF::Vector<WTF::String,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::Vector<WTF::Vector<WTF::String,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc> WTF::makeVector<WTF::String>(NSArray *)::{lambda(unsigned long)#1}>(v27, v17, &v33, 0);
-    v18 = MEMORY[0x19EB02F10](v31, &v30, v29, v28, v27, a4 != 0, v12, 0);
-    if (a9)
+    v18 = MEMORY[0x19EB02F10](v31, &v30, v29, v28, v27, time != 0, onlyCopy, 0);
+    if (world)
     {
-      v19 = (a9 + 8);
+      v19 = (world + 8);
     }
 
     else

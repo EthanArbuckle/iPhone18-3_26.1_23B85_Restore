@@ -1,10 +1,10 @@
 @interface PPNearbyWatchNotifier
 + (BOOL)isWatchAppRemoved;
 + (id)sharedNotifier;
-- (id)discoverForNearbyWatchesWithCompletion:(id)a3;
-- (id)discoverForTimeInterval:(double)a3 signalLimit:(int64_t)a4 completion:(id)a5;
+- (id)discoverForNearbyWatchesWithCompletion:(id)completion;
+- (id)discoverForTimeInterval:(double)interval signalLimit:(int64_t)limit completion:(id)completion;
 - (void)cancelDiscovery;
-- (void)didDiscoverDeviceWithAdvertisingID:(id)a3 signalStrength:(int64_t)a4;
+- (void)didDiscoverDeviceWithAdvertisingID:(id)d signalStrength:(int64_t)strength;
 - (void)prepareServiceConnectionIfNeeded;
 @end
 
@@ -25,16 +25,16 @@
     _os_log_impl(&dword_25DF4A000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "Error while retrieving application record %@ with error %@", buf, 0x16u);
   }
 
-  v4 = [v2 applicationState];
-  if ([v4 isInstalled])
+  applicationState = [v2 applicationState];
+  if ([applicationState isInstalled])
   {
     LOBYTE(v5) = 0;
   }
 
   else
   {
-    v6 = [v2 applicationState];
-    v5 = [v6 isPlaceholder] ^ 1;
+    applicationState2 = [v2 applicationState];
+    v5 = [applicationState2 isPlaceholder] ^ 1;
   }
 
   v7 = *MEMORY[0x277D85DE8];
@@ -60,16 +60,16 @@ uint64_t __39__PPNearbyWatchNotifier_sharedNotifier__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)discoverForNearbyWatchesWithCompletion:(id)a3
+- (id)discoverForNearbyWatchesWithCompletion:(id)completion
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __64__PPNearbyWatchNotifier_discoverForNearbyWatchesWithCompletion___block_invoke;
   v10[3] = &unk_2799FD438;
-  v11 = v4;
-  v5 = v4;
+  v11 = completionCopy;
+  v5 = completionCopy;
   v6 = [(PPNearbyWatchNotifier *)self discoverForTimeInterval:-55 signalLimit:v10 completion:30.0];
   if (v6)
   {
@@ -114,9 +114,9 @@ void __64__PPNearbyWatchNotifier_discoverForNearbyWatchesWithCompletion___block_
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (id)discoverForTimeInterval:(double)a3 signalLimit:(int64_t)a4 completion:(id)a5
+- (id)discoverForTimeInterval:(double)interval signalLimit:(int64_t)limit completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   if (+[PPNearbyWatchNotifier shouldScanForNearbyDevices])
   {
     if (self->_timerSource)
@@ -132,7 +132,7 @@ void __64__PPNearbyWatchNotifier_discoverForNearbyWatchesWithCompletion___block_
     else
     {
       v10 = +[PPDiscoveryManager sharedDiscoveryManager];
-      [v10 setSignalLimitOverride:a4];
+      [v10 setSignalLimitOverride:limit];
 
       v11 = +[PPDiscoveryManager sharedDiscoveryManager];
       [v11 setDiscoveryDelegate:self];
@@ -140,9 +140,9 @@ void __64__PPNearbyWatchNotifier_discoverForNearbyWatchesWithCompletion___block_
       v12 = +[PPDiscoveryManager sharedDiscoveryManager];
       [v12 begin];
 
-      if (v8)
+      if (completionCopy)
       {
-        v13 = [v8 copy];
+        v13 = [completionCopy copy];
         discoveryCompletion = self->_discoveryCompletion;
         self->_discoveryCompletion = v13;
       }
@@ -153,8 +153,8 @@ void __64__PPNearbyWatchNotifier_discoverForNearbyWatchesWithCompletion___block_
 
       objc_initWeak(buf, self);
       v17 = self->_timerSource;
-      v18 = dispatch_time(0, 1000000000 * a3);
-      dispatch_source_set_timer(v17, v18, 0xFFFFFFFFFFFFFFFFLL, 100000000 * a3);
+      v18 = dispatch_time(0, 1000000000 * interval);
+      dispatch_source_set_timer(v17, v18, 0xFFFFFFFFFFFFFFFFLL, 100000000 * interval);
       v19 = self->_timerSource;
       handler[0] = MEMORY[0x277D85DD0];
       handler[1] = 3221225472;
@@ -194,9 +194,9 @@ void __72__PPNearbyWatchNotifier_discoverForTimeInterval_signalLimit_completion_
   self->_discoveryCompletion = 0;
 }
 
-- (void)didDiscoverDeviceWithAdvertisingID:(id)a3 signalStrength:(int64_t)a4
+- (void)didDiscoverDeviceWithAdvertisingID:(id)d signalStrength:(int64_t)strength
 {
-  v5 = a3;
+  dCopy = d;
   [(PPNearbyWatchNotifier *)self _cleanupDiscoveryDidFindDevice:1 error:0];
   if (+[PPNearbyWatchNotifier shouldScanForNearbyDevices])
   {
@@ -208,9 +208,9 @@ void __72__PPNearbyWatchNotifier_discoverForTimeInterval_signalLimit_completion_
     }
 
     [(PPNearbyWatchNotifier *)self prepareServiceConnectionIfNeeded];
-    v7 = [(PPNearbyWatchNotifier *)self notificationService];
-    v8 = [v7 remoteObjectProxyWithErrorHandler:&__block_literal_global_13_0];
-    [v8 notifyOfNearbyDevice:v5 withReply:&__block_literal_global_17];
+    notificationService = [(PPNearbyWatchNotifier *)self notificationService];
+    v8 = [notificationService remoteObjectProxyWithErrorHandler:&__block_literal_global_13_0];
+    [v8 notifyOfNearbyDevice:dCopy withReply:&__block_literal_global_17];
   }
 }
 
@@ -256,14 +256,14 @@ void __75__PPNearbyWatchNotifier_didDiscoverDeviceWithAdvertisingID_signalStreng
     _os_log_impl(&dword_25DF4A000, v3, OS_LOG_TYPE_DEFAULT, " ", v6, 2u);
   }
 
-  v4 = [(PPNearbyWatchNotifier *)self notificationService];
-  if (!v4)
+  notificationService = [(PPNearbyWatchNotifier *)self notificationService];
+  if (!notificationService)
   {
-    v4 = [objc_alloc(MEMORY[0x277CCAE80]) initWithServiceName:@"com.apple.Bridge.ppNotifierService"];
+    notificationService = [objc_alloc(MEMORY[0x277CCAE80]) initWithServiceName:@"com.apple.Bridge.ppNotifierService"];
     v5 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_286FC6298];
-    [v4 setRemoteObjectInterface:v5];
-    [(PPNearbyWatchNotifier *)self setNotificationService:v4];
-    [v4 resume];
+    [notificationService setRemoteObjectInterface:v5];
+    [(PPNearbyWatchNotifier *)self setNotificationService:notificationService];
+    [notificationService resume];
   }
 }
 

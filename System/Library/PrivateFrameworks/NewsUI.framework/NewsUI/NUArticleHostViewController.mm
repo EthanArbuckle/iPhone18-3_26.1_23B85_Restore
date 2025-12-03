@@ -5,27 +5,27 @@
 - (NSString)contentSizeCategory;
 - (NSString)selectedText;
 - (NUArticleExperimentationDelegate)experimentationDelegate;
-- (NUArticleHostViewController)initWithArticle:(id)a3 issue:(id)a4 articleViewControllerFactory:(id)a5 settings:(id)a6 errorMessageFactory:(id)a7 analyticsReporting:(id)a8 contentSizeManager:(id)a9 relativePriority:(int64_t)a10;
+- (NUArticleHostViewController)initWithArticle:(id)article issue:(id)issue articleViewControllerFactory:(id)factory settings:(id)settings errorMessageFactory:(id)messageFactory analyticsReporting:(id)reporting contentSizeManager:(id)manager relativePriority:(int64_t)self0;
 - (NUArticleHostViewControllerDelegate)delegate;
 - (NULoadingDelegate)loadingDelegate;
 - (UIResponder)responder;
 - (UIScrollView)scrollView;
-- (id)loadingTextForArticle:(id)a3;
-- (id)searchWithContext:(id)a3;
+- (id)loadingTextForArticle:(id)article;
+- (id)searchWithContext:(id)context;
 - (int64_t)contentScale;
-- (void)articleViewController:(id)a3 didScrollToPosition:(id)a4;
-- (void)articleViewControllerDidScrollToBottomOfPrimaryContent:(id)a3;
-- (void)didStartExperimentForArticleID:(id)a3 experimentIdentifier:(id)a4 treatmentGroup:(id)a5;
+- (void)articleViewController:(id)controller didScrollToPosition:(id)position;
+- (void)articleViewControllerDidScrollToBottomOfPrimaryContent:(id)content;
+- (void)didStartExperimentForArticleID:(id)d experimentIdentifier:(id)identifier treatmentGroup:(id)group;
 - (void)loadArticleAndEmbedArticleViewController;
-- (void)loadingDidFinishWithError:(id)a3;
+- (void)loadingDidFinishWithError:(id)error;
 - (void)loadingDidStart;
-- (void)loadingDidUpdateProgress:(double)a3;
+- (void)loadingDidUpdateProgress:(double)progress;
 - (void)loadingWillStart;
-- (void)reportEvent:(id)a3;
-- (void)setArticleContext:(id)a3;
-- (void)setContentScale:(int64_t)a3;
-- (void)setContentSizeCategory:(id)a3;
-- (void)setLoadingDelegate:(id)a3;
+- (void)reportEvent:(id)event;
+- (void)setArticleContext:(id)context;
+- (void)setContentScale:(int64_t)scale;
+- (void)setContentSizeCategory:(id)category;
+- (void)setLoadingDelegate:(id)delegate;
 - (void)updateContentScaleAndSize;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
@@ -34,32 +34,32 @@
 
 @implementation NUArticleHostViewController
 
-- (NUArticleHostViewController)initWithArticle:(id)a3 issue:(id)a4 articleViewControllerFactory:(id)a5 settings:(id)a6 errorMessageFactory:(id)a7 analyticsReporting:(id)a8 contentSizeManager:(id)a9 relativePriority:(int64_t)a10
+- (NUArticleHostViewController)initWithArticle:(id)article issue:(id)issue articleViewControllerFactory:(id)factory settings:(id)settings errorMessageFactory:(id)messageFactory analyticsReporting:(id)reporting contentSizeManager:(id)manager relativePriority:(int64_t)self0
 {
-  v17 = a3;
-  v33 = a4;
-  v32 = a5;
-  v31 = a6;
-  v30 = a7;
-  v29 = a8;
-  v18 = a9;
+  articleCopy = article;
+  issueCopy = issue;
+  factoryCopy = factory;
+  settingsCopy = settings;
+  messageFactoryCopy = messageFactory;
+  reportingCopy = reporting;
+  managerCopy = manager;
   v34.receiver = self;
   v34.super_class = NUArticleHostViewController;
   v19 = [(NUArticleHostViewController *)&v34 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_article, a3);
-    objc_storeStrong(&v20->_issue, a4);
+    objc_storeStrong(&v19->_article, article);
+    objc_storeStrong(&v20->_issue, issue);
     v21 = [objc_alloc(MEMORY[0x277D31180]) initWithValue:0];
     articleViewStyler = v20->_articleViewStyler;
     v20->_articleViewStyler = v21;
 
-    objc_storeStrong(&v20->_articleViewControllerFactory, a5);
-    objc_storeStrong(&v20->_settings, a6);
-    objc_storeStrong(&v20->_errorMessageFactory, a7);
-    v23 = [v17 articleID];
-    v24 = [v23 copy];
+    objc_storeStrong(&v20->_articleViewControllerFactory, factory);
+    objc_storeStrong(&v20->_settings, settings);
+    objc_storeStrong(&v20->_errorMessageFactory, messageFactory);
+    articleID = [articleCopy articleID];
+    v24 = [articleID copy];
     pageIdentifier = v20->_pageIdentifier;
     v20->_pageIdentifier = v24;
 
@@ -67,9 +67,9 @@
     multiLoadingDelegate = v20->_multiLoadingDelegate;
     v20->_multiLoadingDelegate = v26;
 
-    objc_storeStrong(&v20->_analyticsReporting, a8);
-    objc_storeStrong(&v20->_contentSizeManager, a9);
-    v20->_relativePriority = a10;
+    objc_storeStrong(&v20->_analyticsReporting, reporting);
+    objc_storeStrong(&v20->_contentSizeManager, manager);
+    v20->_relativePriority = priority;
     v20->_shouldApplyBackgroundColor = 0;
     v20->_shouldShowLoadingCover = 0;
   }
@@ -83,8 +83,8 @@
   v22.receiver = self;
   v22.super_class = NUArticleHostViewController;
   [(NUArticleHostViewController *)&v22 viewDidLoad];
-  v3 = [(NUArticleHostViewController *)self view];
-  [v3 setPreservesSuperviewLayoutMargins:1];
+  view = [(NUArticleHostViewController *)self view];
+  [view setPreservesSuperviewLayoutMargins:1];
 
   if ([(NUArticleHostViewController *)self shouldApplyBackgroundColor])
   {
@@ -96,19 +96,19 @@
     [MEMORY[0x277D75348] clearColor];
   }
   v4 = ;
-  v5 = [(NUArticleHostViewController *)self view];
-  [v5 setBackgroundColor:v4];
+  view2 = [(NUArticleHostViewController *)self view];
+  [view2 setBackgroundColor:v4];
 
   if ([(NUArticleHostViewController *)self shouldApplyBackgroundColor])
   {
     objc_initWeak(&location, self);
-    v6 = [(NUArticleHostViewController *)self articleViewStyler];
+    articleViewStyler = [(NUArticleHostViewController *)self articleViewStyler];
     v16 = MEMORY[0x277D85DD0];
     v17 = 3221225472;
     v18 = __42__NUArticleHostViewController_viewDidLoad__block_invoke;
     v19 = &unk_2799A3E98;
     objc_copyWeak(&v20, &location);
-    v7 = [v6 observe:&v16];
+    v7 = [articleViewStyler observe:&v16];
 
     objc_destroyWeak(&v20);
     objc_destroyWeak(&location);
@@ -116,15 +116,15 @@
 
   if ([(NUArticleHostViewController *)self shouldShowLoadingCover:v16])
   {
-    v8 = [(NUArticleHostViewController *)self article];
-    v9 = [(NUArticleHostViewController *)self loadingTextForArticle:v8];
+    article = [(NUArticleHostViewController *)self article];
+    v9 = [(NUArticleHostViewController *)self loadingTextForArticle:article];
 
     v10 = [[NUActivityIndicatorLoadingView alloc] initWithText:v9 activityIndicatorStyle:100];
     [(NUArticleHostViewController *)self setLoadingView:v10];
 
-    v11 = [(NUArticleHostViewController *)self view];
-    v12 = [(NUArticleHostViewController *)self loadingView];
-    [v11 addSubview:v12];
+    view3 = [(NUArticleHostViewController *)self view];
+    loadingView = [(NUArticleHostViewController *)self loadingView];
+    [view3 addSubview:loadingView];
   }
 
   [(NUArticleHostViewController *)self loadArticleAndEmbedArticleViewController];
@@ -160,14 +160,14 @@ void __42__NUArticleHostViewController_viewDidLoad__block_invoke(uint64_t a1, vo
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(NUArticleHostViewController *)self contentTypeViewController];
-  [v11 setAdditionalSafeAreaInsets:{v4, v6, v8, v10}];
+  contentTypeViewController = [(NUArticleHostViewController *)self contentTypeViewController];
+  [contentTypeViewController setAdditionalSafeAreaInsets:{v4, v6, v8, v10}];
 }
 
 - (BOOL)becomeFirstResponder
 {
-  v3 = [(NUArticleHostViewController *)self contentTypeViewController];
-  [v3 becomeFirstResponder];
+  contentTypeViewController = [(NUArticleHostViewController *)self contentTypeViewController];
+  [contentTypeViewController becomeFirstResponder];
 
   v5.receiver = self;
   v5.super_class = NUArticleHostViewController;
@@ -176,8 +176,8 @@ void __42__NUArticleHostViewController_viewDidLoad__block_invoke(uint64_t a1, vo
 
 - (BOOL)resignFirstResponder
 {
-  v3 = [(NUArticleHostViewController *)self contentTypeViewController];
-  [v3 becomeFirstResponder];
+  contentTypeViewController = [(NUArticleHostViewController *)self contentTypeViewController];
+  [contentTypeViewController becomeFirstResponder];
 
   v5.receiver = self;
   v5.super_class = NUArticleHostViewController;
@@ -186,17 +186,17 @@ void __42__NUArticleHostViewController_viewDidLoad__block_invoke(uint64_t a1, vo
 
 - (UIResponder)responder
 {
-  v3 = [(NUArticleHostViewController *)self contentTypeViewController];
+  contentTypeViewController = [(NUArticleHostViewController *)self contentTypeViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  v5 = [(NUArticleHostViewController *)self contentTypeViewController];
-  v6 = v5;
+  contentTypeViewController2 = [(NUArticleHostViewController *)self contentTypeViewController];
+  v6 = contentTypeViewController2;
   if (isKindOfClass)
   {
-    v7 = [v5 responder];
+    responder = [contentTypeViewController2 responder];
 
-    v6 = v7;
+    v6 = responder;
   }
 
   return v6;
@@ -204,77 +204,77 @@ void __42__NUArticleHostViewController_viewDidLoad__block_invoke(uint64_t a1, vo
 
 - (NSString)contentSizeCategory
 {
-  v3 = [(NUArticleHostViewController *)self article];
-  v4 = [v3 headline];
+  article = [(NUArticleHostViewController *)self article];
+  headline = [article headline];
 
-  if (!v4)
+  if (!headline)
   {
-    v8 = [MEMORY[0x277D75128] sharedApplication];
-    v9 = [v8 preferredContentSizeCategory];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    preferredContentSizeCategory = [mEMORY[0x277D75128] preferredContentSizeCategory];
     goto LABEL_5;
   }
 
-  v5 = [(NUArticleHostViewController *)self contentSizeManager];
-  v6 = [(NUArticleHostViewController *)self article];
-  v7 = [v6 headline];
-  v8 = [v5 contentSizeCategoryForArticle:v7];
+  contentSizeManager = [(NUArticleHostViewController *)self contentSizeManager];
+  article2 = [(NUArticleHostViewController *)self article];
+  headline2 = [article2 headline];
+  mEMORY[0x277D75128] = [contentSizeManager contentSizeCategoryForArticle:headline2];
 
-  if (v8)
+  if (mEMORY[0x277D75128])
   {
-    v9 = v8;
-    v8 = v9;
+    preferredContentSizeCategory = mEMORY[0x277D75128];
+    mEMORY[0x277D75128] = preferredContentSizeCategory;
 LABEL_5:
-    v10 = v9;
+    preferredContentSizeCategory2 = preferredContentSizeCategory;
     goto LABEL_7;
   }
 
-  v11 = [MEMORY[0x277D75128] sharedApplication];
-  v10 = [v11 preferredContentSizeCategory];
+  mEMORY[0x277D75128]2 = [MEMORY[0x277D75128] sharedApplication];
+  preferredContentSizeCategory2 = [mEMORY[0x277D75128]2 preferredContentSizeCategory];
 
 LABEL_7:
 
-  return v10;
+  return preferredContentSizeCategory2;
 }
 
-- (void)setContentSizeCategory:(id)a3
+- (void)setContentSizeCategory:(id)category
 {
-  v12 = a3;
-  v4 = [(NUArticleHostViewController *)self article];
-  v5 = [v4 headline];
+  categoryCopy = category;
+  article = [(NUArticleHostViewController *)self article];
+  headline = [article headline];
 
-  if (v5)
+  if (headline)
   {
-    v6 = [(NUArticleHostViewController *)self contentSizeManager];
-    v7 = [(NUArticleHostViewController *)self article];
-    v8 = [v7 headline];
-    [v6 updateContentSizeCategory:v12 forArticle:v8];
+    contentSizeManager = [(NUArticleHostViewController *)self contentSizeManager];
+    article2 = [(NUArticleHostViewController *)self article];
+    headline2 = [article2 headline];
+    [contentSizeManager updateContentSizeCategory:categoryCopy forArticle:headline2];
   }
 
-  v9 = [(NUArticleHostViewController *)self contentTypeViewController];
+  contentTypeViewController = [(NUArticleHostViewController *)self contentTypeViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v11 = [(NUArticleHostViewController *)self contentTypeViewController];
-    [v11 setContentSizeCategory:v12];
+    contentTypeViewController2 = [(NUArticleHostViewController *)self contentTypeViewController];
+    [contentTypeViewController2 setContentSizeCategory:categoryCopy];
   }
 }
 
 - (int64_t)contentScale
 {
-  v3 = [(NUArticleHostViewController *)self article];
-  v4 = [v3 headline];
+  article = [(NUArticleHostViewController *)self article];
+  headline = [article headline];
 
-  if (!v4)
+  if (!headline)
   {
     return 4;
   }
 
-  v5 = [(NUArticleHostViewController *)self contentSizeManager];
-  v6 = [(NUArticleHostViewController *)self article];
-  v7 = [v6 headline];
-  v8 = [v5 contentScaleForArticle:v7];
+  contentSizeManager = [(NUArticleHostViewController *)self contentSizeManager];
+  article2 = [(NUArticleHostViewController *)self article];
+  headline2 = [article2 headline];
+  v8 = [contentSizeManager contentScaleForArticle:headline2];
 
   if (v8)
   {
@@ -287,42 +287,42 @@ LABEL_7:
   }
 }
 
-- (void)setContentScale:(int64_t)a3
+- (void)setContentScale:(int64_t)scale
 {
-  v5 = [(NUArticleHostViewController *)self article];
-  v6 = [v5 headline];
+  article = [(NUArticleHostViewController *)self article];
+  headline = [article headline];
 
-  if (v6)
+  if (headline)
   {
-    v7 = [(NUArticleHostViewController *)self contentSizeManager];
-    v8 = [(NUArticleHostViewController *)self article];
-    v9 = [v8 headline];
-    [v7 updateContentScale:a3 forArticle:v9];
+    contentSizeManager = [(NUArticleHostViewController *)self contentSizeManager];
+    article2 = [(NUArticleHostViewController *)self article];
+    headline2 = [article2 headline];
+    [contentSizeManager updateContentScale:scale forArticle:headline2];
   }
 
-  v10 = [(NUArticleHostViewController *)self contentTypeViewController];
+  contentTypeViewController = [(NUArticleHostViewController *)self contentTypeViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v12 = [(NUArticleHostViewController *)self contentTypeViewController];
-    [v12 setContentScale:a3];
+    contentTypeViewController2 = [(NUArticleHostViewController *)self contentTypeViewController];
+    [contentTypeViewController2 setContentScale:scale];
   }
 }
 
 - (void)updateContentScaleAndSize
 {
-  v3 = [(NUArticleHostViewController *)self contentTypeViewController];
+  contentTypeViewController = [(NUArticleHostViewController *)self contentTypeViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v6 = [(NUArticleHostViewController *)self contentTypeViewController];
-    [v6 setContentScale:{-[NUArticleHostViewController contentScale](self, "contentScale")}];
-    v5 = [(NUArticleHostViewController *)self contentSizeCategory];
-    [v6 setContentSizeCategory:v5];
+    contentTypeViewController2 = [(NUArticleHostViewController *)self contentTypeViewController];
+    [contentTypeViewController2 setContentScale:{-[NUArticleHostViewController contentScale](self, "contentScale")}];
+    contentSizeCategory = [(NUArticleHostViewController *)self contentSizeCategory];
+    [contentTypeViewController2 setContentSizeCategory:contentSizeCategory];
   }
 }
 
@@ -331,43 +331,43 @@ LABEL_7:
   v24.receiver = self;
   v24.super_class = NUArticleHostViewController;
   [(NUArticleHostViewController *)&v24 viewDidLayoutSubviews];
-  v3 = [(NUArticleHostViewController *)self view];
-  [v3 bounds];
+  view = [(NUArticleHostViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(NUArticleHostViewController *)self contentTypeViewController];
-  v13 = [v12 view];
-  [v13 setFrame:{v5, v7, v9, v11}];
+  contentTypeViewController = [(NUArticleHostViewController *)self contentTypeViewController];
+  view2 = [contentTypeViewController view];
+  [view2 setFrame:{v5, v7, v9, v11}];
 
-  v14 = [(NUArticleHostViewController *)self view];
-  [v14 bounds];
+  view3 = [(NUArticleHostViewController *)self view];
+  [view3 bounds];
   v16 = v15;
   v18 = v17;
   v20 = v19;
   v22 = v21;
-  v23 = [(NUArticleHostViewController *)self loadingView];
-  [v23 setFrame:{v16, v18, v20, v22}];
+  loadingView = [(NUArticleHostViewController *)self loadingView];
+  [loadingView setFrame:{v16, v18, v20, v22}];
 }
 
 - (NSString)selectedText
 {
   objc_opt_class();
-  v3 = [(NUArticleHostViewController *)self contentTypeViewController];
+  contentTypeViewController = [(NUArticleHostViewController *)self contentTypeViewController];
   v4 = FCDynamicCast();
 
-  v5 = [v4 selectedText];
+  selectedText = [v4 selectedText];
 
-  return v5;
+  return selectedText;
 }
 
-- (void)setLoadingDelegate:(id)a3
+- (void)setLoadingDelegate:(id)delegate
 {
-  obj = a3;
-  v4 = [(NUArticleHostViewController *)self multiLoadingDelegate];
+  obj = delegate;
+  multiLoadingDelegate = [(NUArticleHostViewController *)self multiLoadingDelegate];
   WeakRetained = objc_loadWeakRetained(&self->_loadingDelegate);
-  [v4 replaceDelegate:WeakRetained withDelegate:obj];
+  [multiLoadingDelegate replaceDelegate:WeakRetained withDelegate:obj];
 
   objc_storeWeak(&self->_loadingDelegate, obj);
 }
@@ -376,9 +376,9 @@ LABEL_7:
 {
   if ([(NUArticleHostViewController *)self shouldShowLoadingCover])
   {
-    v4 = [(NUArticleHostViewController *)self contentTypeViewController];
-    v3 = [v4 view];
-    [v3 setAlpha:0.0];
+    contentTypeViewController = [(NUArticleHostViewController *)self contentTypeViewController];
+    view = [contentTypeViewController view];
+    [view setAlpha:0.0];
   }
 }
 
@@ -386,47 +386,47 @@ LABEL_7:
 {
   if ([(NUArticleHostViewController *)self shouldShowLoadingCover])
   {
-    v3 = [(NUArticleHostViewController *)self loadingView];
-    [v3 loadingViewStartAnimating];
+    loadingView = [(NUArticleHostViewController *)self loadingView];
+    [loadingView loadingViewStartAnimating];
   }
 }
 
-- (void)loadingDidFinishWithError:(id)a3
+- (void)loadingDidFinishWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   if ([(NUArticleHostViewController *)self shouldShowLoadingCover])
   {
-    if (v4)
+    if (errorCopy)
     {
-      v5 = [(NUArticleHostViewController *)self loadingView];
-      [v5 loadingViewStopAnimating];
+      loadingView = [(NUArticleHostViewController *)self loadingView];
+      [loadingView loadingViewStopAnimating];
 
-      v6 = [(NUArticleHostViewController *)self loadingView];
-      [v6 removeFromSuperview];
+      loadingView2 = [(NUArticleHostViewController *)self loadingView];
+      [loadingView2 removeFromSuperview];
 
       [(NUArticleHostViewController *)self setLoadingView:0];
-      v7 = [(NUArticleHostViewController *)self errorMessageFactory];
-      v8 = [v7 errorMessageForArticleView];
+      errorMessageFactory = [(NUArticleHostViewController *)self errorMessageFactory];
+      errorMessageForArticleView = [errorMessageFactory errorMessageForArticleView];
 
-      if (v8)
+      if (errorMessageForArticleView)
       {
-        v9 = [[NUErrorView alloc] initWithErrorMessage:v8];
+        v9 = [[NUErrorView alloc] initWithErrorMessage:errorMessageForArticleView];
         [(NUErrorView *)v9 setAutoresizingMask:18];
-        v10 = [(NUArticleHostViewController *)self navigationController];
-        v11 = [v10 navigationBar];
-        [v11 frame];
+        navigationController = [(NUArticleHostViewController *)self navigationController];
+        navigationBar = [navigationController navigationBar];
+        [navigationBar frame];
         MaxY = CGRectGetMaxY(v25);
-        v13 = [(NUArticleHostViewController *)self navigationController];
-        v14 = [v13 toolbar];
-        [v14 frame];
+        navigationController2 = [(NUArticleHostViewController *)self navigationController];
+        toolbar = [navigationController2 toolbar];
+        [toolbar frame];
         CGRectGetHeight(v26);
 
-        v15 = [(NUArticleHostViewController *)self view];
-        [v15 bounds];
+        view = [(NUArticleHostViewController *)self view];
+        [view bounds];
         [(NUErrorView *)v9 setFrame:v16 + 0.0, MaxY + v17];
 
-        v18 = [(NUArticleHostViewController *)self view];
-        [v18 addSubview:v9];
+        view2 = [(NUArticleHostViewController *)self view];
+        [view2 addSubview:v9];
       }
     }
 
@@ -492,83 +492,83 @@ void __57__NUArticleHostViewController_loadingDidFinishWithError___block_invoke_
   }
 }
 
-- (void)loadingDidUpdateProgress:(double)a3
+- (void)loadingDidUpdateProgress:(double)progress
 {
   if ([(NUArticleHostViewController *)self shouldShowLoadingCover])
   {
-    v5 = [(NUArticleHostViewController *)self loadingView];
+    loadingView = [(NUArticleHostViewController *)self loadingView];
     v6 = objc_opt_respondsToSelector();
 
     if (v6)
     {
-      v7 = [(NUArticleHostViewController *)self loadingView];
-      [v7 loadingViewUpdateProgress:a3];
+      loadingView2 = [(NUArticleHostViewController *)self loadingView];
+      [loadingView2 loadingViewUpdateProgress:progress];
     }
   }
 }
 
 - (UIScrollView)scrollView
 {
-  v3 = [(NUArticleHostViewController *)self contentTypeViewController];
-  v4 = [v3 conformsToProtocol:&unk_286E31038];
+  contentTypeViewController = [(NUArticleHostViewController *)self contentTypeViewController];
+  v4 = [contentTypeViewController conformsToProtocol:&unk_286E31038];
 
   if (v4)
   {
-    v5 = [(NUArticleHostViewController *)self contentTypeViewController];
-    v6 = [v5 scrollView];
+    contentTypeViewController2 = [(NUArticleHostViewController *)self contentTypeViewController];
+    scrollView = [contentTypeViewController2 scrollView];
   }
 
   else
   {
-    v6 = 0;
+    scrollView = 0;
   }
 
-  return v6;
+  return scrollView;
 }
 
-- (void)articleViewController:(id)a3 didScrollToPosition:(id)a4
+- (void)articleViewController:(id)controller didScrollToPosition:(id)position
 {
-  v8 = a4;
-  v5 = [(NUArticleHostViewController *)self delegate];
+  positionCopy = position;
+  delegate = [(NUArticleHostViewController *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(NUArticleHostViewController *)self delegate];
-    [v7 articleHostViewController:self didScrollToPosition:v8];
+    delegate2 = [(NUArticleHostViewController *)self delegate];
+    [delegate2 articleHostViewController:self didScrollToPosition:positionCopy];
   }
 }
 
-- (void)articleViewControllerDidScrollToBottomOfPrimaryContent:(id)a3
+- (void)articleViewControllerDidScrollToBottomOfPrimaryContent:(id)content
 {
-  v4 = [(NUArticleHostViewController *)self delegate];
+  delegate = [(NUArticleHostViewController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(NUArticleHostViewController *)self delegate];
-    [v6 articleHostViewControllerDidScrollToBottomOfPrimaryContent:self];
+    delegate2 = [(NUArticleHostViewController *)self delegate];
+    [delegate2 articleHostViewControllerDidScrollToBottomOfPrimaryContent:self];
   }
 }
 
-- (void)didStartExperimentForArticleID:(id)a3 experimentIdentifier:(id)a4 treatmentGroup:(id)a5
+- (void)didStartExperimentForArticleID:(id)d experimentIdentifier:(id)identifier treatmentGroup:(id)group
 {
-  v13 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(NUArticleHostViewController *)self experimentationDelegate];
+  dCopy = d;
+  identifierCopy = identifier;
+  groupCopy = group;
+  experimentationDelegate = [(NUArticleHostViewController *)self experimentationDelegate];
   v11 = objc_opt_respondsToSelector();
 
   if (v11)
   {
-    v12 = [(NUArticleHostViewController *)self experimentationDelegate];
-    [v12 didStartExperimentForArticleID:v13 experimentIdentifier:v8 treatmentGroup:v9];
+    experimentationDelegate2 = [(NUArticleHostViewController *)self experimentationDelegate];
+    [experimentationDelegate2 didStartExperimentForArticleID:dCopy experimentIdentifier:identifierCopy treatmentGroup:groupCopy];
   }
 }
 
 - (BOOL)isExperimentationEnabled
 {
-  v3 = [(NUArticleHostViewController *)self experimentationDelegate];
+  experimentationDelegate = [(NUArticleHostViewController *)self experimentationDelegate];
   v4 = objc_opt_respondsToSelector();
 
   if ((v4 & 1) == 0)
@@ -576,66 +576,66 @@ void __57__NUArticleHostViewController_loadingDidFinishWithError___block_invoke_
     return 0;
   }
 
-  v5 = [(NUArticleHostViewController *)self experimentationDelegate];
-  v6 = [v5 isExperimentationEnabled];
+  experimentationDelegate2 = [(NUArticleHostViewController *)self experimentationDelegate];
+  isExperimentationEnabled = [experimentationDelegate2 isExperimentationEnabled];
 
-  return v6;
+  return isExperimentationEnabled;
 }
 
-- (void)reportEvent:(id)a3
+- (void)reportEvent:(id)event
 {
-  v4 = a3;
-  v6 = [(NUArticleHostViewController *)self analyticsReporting];
-  v5 = [[NUContentAnalyticsEvent alloc] initWithEvent:v4];
+  eventCopy = event;
+  analyticsReporting = [(NUArticleHostViewController *)self analyticsReporting];
+  v5 = [[NUContentAnalyticsEvent alloc] initWithEvent:eventCopy];
 
-  [v6 reportEvent:v5];
+  [analyticsReporting reportEvent:v5];
 }
 
-- (void)setArticleContext:(id)a3
+- (void)setArticleContext:(id)context
 {
-  v8 = a3;
-  v4 = [v8 copy];
+  contextCopy = context;
+  v4 = [contextCopy copy];
   articleContext = self->_articleContext;
   self->_articleContext = v4;
 
   objc_opt_class();
-  v6 = [(NUArticleHostViewController *)self contentTypeViewController];
+  contentTypeViewController = [(NUArticleHostViewController *)self contentTypeViewController];
   v7 = FCDynamicCast();
 
   if (v7)
   {
-    [v7 setArticleContext:v8];
+    [v7 setArticleContext:contextCopy];
   }
 }
 
 - (void)loadArticleAndEmbedArticleViewController
 {
-  v3 = [(NUArticleHostViewController *)self contentTypeViewController];
+  contentTypeViewController = [(NUArticleHostViewController *)self contentTypeViewController];
 
-  if (v3)
+  if (contentTypeViewController)
   {
-    v4 = [(NUArticleHostViewController *)self contentTypeViewController];
-    [v4 willMoveToParentViewController:0];
+    contentTypeViewController2 = [(NUArticleHostViewController *)self contentTypeViewController];
+    [contentTypeViewController2 willMoveToParentViewController:0];
 
-    v5 = [(NUArticleHostViewController *)self contentTypeViewController];
-    v6 = [v5 view];
-    [v6 removeFromSuperview];
+    contentTypeViewController3 = [(NUArticleHostViewController *)self contentTypeViewController];
+    view = [contentTypeViewController3 view];
+    [view removeFromSuperview];
 
-    v7 = [(NUArticleHostViewController *)self contentTypeViewController];
-    [v7 removeFromParentViewController];
+    contentTypeViewController4 = [(NUArticleHostViewController *)self contentTypeViewController];
+    [contentTypeViewController4 removeFromParentViewController];
   }
 
-  v8 = [(NUArticleHostViewController *)self loadingView];
-  [v8 loadingViewStartAnimating];
+  loadingView = [(NUArticleHostViewController *)self loadingView];
+  [loadingView loadingViewStartAnimating];
 
   objc_initWeak(&location, self);
-  v9 = [(NUArticleHostViewController *)self article];
+  article = [(NUArticleHostViewController *)self article];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __71__NUArticleHostViewController_loadArticleAndEmbedArticleViewController__block_invoke;
   v10[3] = &unk_2799A3F08;
   objc_copyWeak(&v11, &location);
-  [v9 performBlockWhenFullyLoaded:v10];
+  [article performBlockWhenFullyLoaded:v10];
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
@@ -815,31 +815,31 @@ void __71__NUArticleHostViewController_loadArticleAndEmbedArticleViewController_
   [WeakRetained next:v3];
 }
 
-- (id)loadingTextForArticle:(id)a3
+- (id)loadingTextForArticle:(id)article
 {
-  v3 = a3;
+  articleCopy = article;
   v4 = NUBundle();
   v5 = [v4 localizedStringForKey:@"LOADING" value:&stru_286E03B58 table:0];
 
-  v6 = [v3 headline];
+  headline = [articleCopy headline];
 
-  if (v6)
+  if (headline)
   {
-    v7 = [v3 headline];
-    v8 = [v7 role];
+    headline2 = [articleCopy headline];
+    role = [headline2 role];
 
-    if (v8 <= 8)
+    if (role <= 8)
     {
-      if (((1 << v8) & 0x1AD) != 0)
+      if (((1 << role) & 0x1AD) != 0)
       {
-        v8 = v5;
+        role = v5;
       }
 
       else
       {
         v9 = NUBundle();
         v10 = v9;
-        if (((1 << v8) & 0x42) != 0)
+        if (((1 << role) & 0x42) != 0)
         {
           v11 = @"LOADING STORY";
         }
@@ -849,30 +849,30 @@ void __71__NUArticleHostViewController_loadArticleAndEmbedArticleViewController_
           v11 = @"LOADING ADVERTISEMENT";
         }
 
-        v8 = [v9 localizedStringForKey:v11 value:&stru_286E03B58 table:0];
+        role = [v9 localizedStringForKey:v11 value:&stru_286E03B58 table:0];
       }
     }
   }
 
   else
   {
-    v8 = v5;
+    role = v5;
   }
 
-  return v8;
+  return role;
 }
 
-- (id)searchWithContext:(id)a3
+- (id)searchWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [(NUArticleHostViewController *)self contentTypeViewController];
+  contextCopy = context;
+  contentTypeViewController = [(NUArticleHostViewController *)self contentTypeViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v7 = [(NUArticleHostViewController *)self contentTypeViewController];
-    v8 = [v7 searchWithContext:v4];
+    contentTypeViewController2 = [(NUArticleHostViewController *)self contentTypeViewController];
+    v8 = [contentTypeViewController2 searchWithContext:contextCopy];
   }
 
   else

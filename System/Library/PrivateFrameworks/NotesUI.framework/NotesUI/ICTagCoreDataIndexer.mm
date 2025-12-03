@@ -1,12 +1,12 @@
 @interface ICTagCoreDataIndexer
-+ (BOOL)isTagItemIdentifier:(id)a3;
-- (ICTagCoreDataIndexer)initWithModernManagedObjectContext:(id)a3 sectionIdentifier:(id)a4;
++ (BOOL)isTagItemIdentifier:(id)identifier;
+- (ICTagCoreDataIndexer)initWithModernManagedObjectContext:(id)context sectionIdentifier:(id)identifier;
 - (NSArray)leadingVisibleObjectIDs;
 - (id)activeFetchedResultsControllers;
-- (id)indexObjectsInSection:(id)a3 sectionIndex:(unint64_t)a4 fetchedResultsController:(id)a5;
-- (id)newSnapshotFromIndexWithLegacyManagedObjectContext:(id)a3 modernManagedObjectContext:(id)a4;
-- (id)sectionIdentifiersForSectionType:(unint64_t)a3;
-- (id)sectionSnapshotsForSectionType:(unint64_t)a3 legacyManagedObjectContext:(id)a4 modernManagedObjectContext:(id)a5;
+- (id)indexObjectsInSection:(id)section sectionIndex:(unint64_t)index fetchedResultsController:(id)controller;
+- (id)newSnapshotFromIndexWithLegacyManagedObjectContext:(id)context modernManagedObjectContext:(id)objectContext;
+- (id)sectionIdentifiersForSectionType:(unint64_t)type;
+- (id)sectionSnapshotsForSectionType:(unint64_t)type legacyManagedObjectContext:(id)context modernManagedObjectContext:(id)objectContext;
 - (unint64_t)hiddenTagCount;
 - (void)willIndex;
 @end
@@ -17,8 +17,8 @@
 {
   v2 = MEMORY[0x1E695DFD8];
   v3 = MEMORY[0x1E695DEC8];
-  v4 = [(ICTagCoreDataIndexer *)self fetchedResultsController];
-  v5 = [v3 ic_arrayFromNonNilObject:v4];
+  fetchedResultsController = [(ICTagCoreDataIndexer *)self fetchedResultsController];
+  v5 = [v3 ic_arrayFromNonNilObject:fetchedResultsController];
   v6 = [v2 setWithArray:v5];
 
   return v6;
@@ -26,27 +26,27 @@
 
 - (void)willIndex
 {
-  v3 = [(ICTagCoreDataIndexer *)self accessQueue];
+  accessQueue = [(ICTagCoreDataIndexer *)self accessQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __33__ICTagCoreDataIndexer_willIndex__block_invoke;
   block[3] = &unk_1E8468BA0;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(accessQueue, block);
 }
 
-- (ICTagCoreDataIndexer)initWithModernManagedObjectContext:(id)a3 sectionIdentifier:(id)a4
+- (ICTagCoreDataIndexer)initWithModernManagedObjectContext:(id)context sectionIdentifier:(id)identifier
 {
   v29[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  identifierCopy = identifier;
   v28.receiver = self;
   v28.super_class = ICTagCoreDataIndexer;
-  v8 = [(ICCoreDataIndexer *)&v28 initWithLegacyManagedObjectContext:0 modernManagedObjectContext:v6];
+  v8 = [(ICCoreDataIndexer *)&v28 initWithLegacyManagedObjectContext:0 modernManagedObjectContext:contextCopy];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_sectionIdentifier, a4);
+    objc_storeStrong(&v8->_sectionIdentifier, identifier);
     v10 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v11 = dispatch_queue_create("com.apple.notes.tag-index-access-queue", v10);
     accessQueue = v9->_accessQueue;
@@ -59,8 +59,8 @@
     v15 = NSStringFromClass(v14);
     v16 = [v13 fetchRequestWithEntityName:v15];
 
-    v17 = [MEMORY[0x1E69B7768] predicateForVisibleObjects];
-    [v16 setPredicate:v17];
+    predicateForVisibleObjects = [MEMORY[0x1E69B7768] predicateForVisibleObjects];
+    [v16 setPredicate:predicateForVisibleObjects];
 
     [v16 setReturnsObjectsAsFaults:0];
     v18 = MEMORY[0x1E696AEB0];
@@ -70,9 +70,9 @@
     v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v29 count:1];
     [v16 setSortDescriptors:v21];
 
-    if (v6)
+    if (contextCopy)
     {
-      v22 = [objc_alloc(MEMORY[0x1E695D600]) initWithFetchRequest:v16 managedObjectContext:v6 sectionNameKeyPath:0 cacheName:0];
+      v22 = [objc_alloc(MEMORY[0x1E695D600]) initWithFetchRequest:v16 managedObjectContext:contextCopy sectionNameKeyPath:0 cacheName:0];
       fetchedResultsController = v9->_fetchedResultsController;
       v9->_fetchedResultsController = v22;
     }
@@ -88,9 +88,9 @@
   return v9;
 }
 
-+ (BOOL)isTagItemIdentifier:(id)a3
++ (BOOL)isTagItemIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   objc_opt_class();
   v4 = ICDynamicCast();
   if ([v4 ic_isHashtagType] & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
@@ -109,18 +109,18 @@
 
 - (unint64_t)hiddenTagCount
 {
-  v3 = [(ICTagCoreDataIndexer *)self objectIDs];
-  v4 = [v3 count];
-  v5 = [(ICTagCoreDataIndexer *)self leadingVisibleObjectIDs];
-  v6 = v4 - [v5 count];
+  objectIDs = [(ICTagCoreDataIndexer *)self objectIDs];
+  v4 = [objectIDs count];
+  leadingVisibleObjectIDs = [(ICTagCoreDataIndexer *)self leadingVisibleObjectIDs];
+  v6 = v4 - [leadingVisibleObjectIDs count];
 
   return v6;
 }
 
-- (id)newSnapshotFromIndexWithLegacyManagedObjectContext:(id)a3 modernManagedObjectContext:(id)a4
+- (id)newSnapshotFromIndexWithLegacyManagedObjectContext:(id)context modernManagedObjectContext:(id)objectContext
 {
   v5 = objc_alloc_init(MEMORY[0x1E69955A0]);
-  v6 = [(ICTagCoreDataIndexer *)self accessQueue];
+  accessQueue = [(ICTagCoreDataIndexer *)self accessQueue];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __102__ICTagCoreDataIndexer_newSnapshotFromIndexWithLegacyManagedObjectContext_modernManagedObjectContext___block_invoke;
@@ -128,7 +128,7 @@
   v11[4] = self;
   v7 = v5;
   v12 = v7;
-  dispatch_sync(v6, v11);
+  dispatch_sync(accessQueue, v11);
 
   v8 = v12;
   v9 = v7;
@@ -176,9 +176,9 @@ void __102__ICTagCoreDataIndexer_newSnapshotFromIndexWithLegacyManagedObjectCont
   }
 }
 
-- (id)indexObjectsInSection:(id)a3 sectionIndex:(unint64_t)a4 fetchedResultsController:(id)a5
+- (id)indexObjectsInSection:(id)section sectionIndex:(unint64_t)index fetchedResultsController:(id)controller
 {
-  v6 = [(ICTagCoreDataIndexer *)self accessQueue:a3];
+  v6 = [(ICTagCoreDataIndexer *)self accessQueue:section];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __84__ICTagCoreDataIndexer_indexObjectsInSection_sectionIndex_fetchedResultsController___block_invoke;
@@ -186,9 +186,9 @@ void __102__ICTagCoreDataIndexer_newSnapshotFromIndexWithLegacyManagedObjectCont
   block[4] = self;
   dispatch_sync(v6, block);
 
-  v7 = [(ICTagCoreDataIndexer *)self objectIDs];
+  objectIDs = [(ICTagCoreDataIndexer *)self objectIDs];
 
-  return v7;
+  return objectIDs;
 }
 
 void __84__ICTagCoreDataIndexer_indexObjectsInSection_sectionIndex_fetchedResultsController___block_invoke(uint64_t a1)
@@ -201,7 +201,7 @@ void __84__ICTagCoreDataIndexer_indexObjectsInSection_sectionIndex_fetchedResult
   [*(a1 + 32) setObjectIDs:v4];
 }
 
-- (id)sectionIdentifiersForSectionType:(unint64_t)a3
+- (id)sectionIdentifiersForSectionType:(unint64_t)type
 {
   v9 = 0;
   v10 = &v9;
@@ -209,15 +209,15 @@ void __84__ICTagCoreDataIndexer_indexObjectsInSection_sectionIndex_fetchedResult
   v12 = __Block_byref_object_copy__34;
   v13 = __Block_byref_object_dispose__34;
   v14 = 0;
-  v5 = [(ICTagCoreDataIndexer *)self accessQueue];
+  accessQueue = [(ICTagCoreDataIndexer *)self accessQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __57__ICTagCoreDataIndexer_sectionIdentifiersForSectionType___block_invoke;
   block[3] = &unk_1E846B6B8;
   block[5] = &v9;
-  block[6] = a3;
+  block[6] = type;
   block[4] = self;
-  dispatch_sync(v5, block);
+  dispatch_sync(accessQueue, block);
 
   v6 = v10[5];
   _Block_object_dispose(&v9, 8);
@@ -249,16 +249,16 @@ void __57__ICTagCoreDataIndexer_sectionIdentifiersForSectionType___block_invoke(
 
 - (NSArray)leadingVisibleObjectIDs
 {
-  v3 = [(ICTagCoreDataIndexer *)self objectIDs];
-  v4 = [v3 copy];
+  objectIDs = [(ICTagCoreDataIndexer *)self objectIDs];
+  v4 = [objectIDs copy];
 
   if ([(ICTagCoreDataIndexer *)self visibleTagLimit])
   {
-    v5 = [(ICTagCoreDataIndexer *)self objectIDs];
-    v6 = [v5 count];
-    v7 = [(ICTagCoreDataIndexer *)self visibleTagLimit];
+    objectIDs2 = [(ICTagCoreDataIndexer *)self objectIDs];
+    v6 = [objectIDs2 count];
+    visibleTagLimit = [(ICTagCoreDataIndexer *)self visibleTagLimit];
 
-    if (v6 > v7)
+    if (v6 > visibleTagLimit)
     {
       v8 = [v4 subarrayWithRange:{0, -[ICTagCoreDataIndexer visibleTagLimit](self, "visibleTagLimit")}];
 
@@ -269,31 +269,31 @@ void __57__ICTagCoreDataIndexer_sectionIdentifiersForSectionType___block_invoke(
   return v4;
 }
 
-- (id)sectionSnapshotsForSectionType:(unint64_t)a3 legacyManagedObjectContext:(id)a4 modernManagedObjectContext:(id)a5
+- (id)sectionSnapshotsForSectionType:(unint64_t)type legacyManagedObjectContext:(id)context modernManagedObjectContext:(id)objectContext
 {
-  if (a3 == 4)
+  if (type == 4)
   {
-    v6 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v7 = objc_alloc_init(MEMORY[0x1E69DC5D0]);
-    v8 = [(ICTagCoreDataIndexer *)self accessQueue];
+    accessQueue = [(ICTagCoreDataIndexer *)self accessQueue];
     v14 = MEMORY[0x1E69E9820];
     v15 = 3221225472;
     v16 = __109__ICTagCoreDataIndexer_sectionSnapshotsForSectionType_legacyManagedObjectContext_modernManagedObjectContext___block_invoke;
     v17 = &unk_1E8468F80;
     v9 = v7;
     v18 = v9;
-    v19 = self;
-    dispatch_sync(v8, &v14);
+    selfCopy = self;
+    dispatch_sync(accessQueue, &v14);
 
     v10 = [(ICTagCoreDataIndexer *)self sectionIdentifier:v14];
 
     if (v10)
     {
-      v11 = [(ICTagCoreDataIndexer *)self sectionIdentifier];
-      [v6 setObject:v9 forKeyedSubscript:v11];
+      sectionIdentifier = [(ICTagCoreDataIndexer *)self sectionIdentifier];
+      [dictionary setObject:v9 forKeyedSubscript:sectionIdentifier];
     }
 
-    v12 = [v6 copy];
+    v12 = [dictionary copy];
   }
 
   else

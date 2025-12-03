@@ -1,10 +1,10 @@
 @interface _CNDonationManagedDuplicatesLogger
 - (_CNDonationManagedDuplicatesLogger)init;
-- (void)didFailRefreshingDuplicates:(id)a3;
+- (void)didFailRefreshingDuplicates:(id)duplicates;
 - (void)didRefreshDuplicates;
-- (void)didSkipRefreshDuplicates:(id)a3;
+- (void)didSkipRefreshDuplicates:(id)duplicates;
 - (void)managedDuplicateServiceCheckingIn;
-- (void)managedDuplicateServiceCriteria:(id)a3;
+- (void)managedDuplicateServiceCriteria:(id)criteria;
 - (void)willRefreshDuplicates;
 @end
 
@@ -29,24 +29,24 @@
 
 - (void)managedDuplicateServiceCheckingIn
 {
-  v2 = [(_CNDonationManagedDuplicatesLogger *)self log_t];
-  if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
+  log_t = [(_CNDonationManagedDuplicatesLogger *)self log_t];
+  if (os_log_type_enabled(log_t, OS_LOG_TYPE_DEFAULT))
   {
     *v3 = 0;
-    _os_log_impl(&dword_2258E5000, v2, OS_LOG_TYPE_DEFAULT, "managed duplicate service checking in", v3, 2u);
+    _os_log_impl(&dword_2258E5000, log_t, OS_LOG_TYPE_DEFAULT, "managed duplicate service checking in", v3, 2u);
   }
 }
 
-- (void)managedDuplicateServiceCriteria:(id)a3
+- (void)managedDuplicateServiceCriteria:(id)criteria
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(_CNDonationManagedDuplicatesLogger *)self log_t];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  criteriaCopy = criteria;
+  log_t = [(_CNDonationManagedDuplicatesLogger *)self log_t];
+  if (os_log_type_enabled(log_t, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
-    _os_log_impl(&dword_2258E5000, v5, OS_LOG_TYPE_DEFAULT, "managed duplicate service has criteria %@", &v7, 0xCu);
+    v8 = criteriaCopy;
+    _os_log_impl(&dword_2258E5000, log_t, OS_LOG_TYPE_DEFAULT, "managed duplicate service has criteria %@", &v7, 0xCu);
   }
 
   v6 = *MEMORY[0x277D85DE8];
@@ -54,49 +54,49 @@
 
 - (void)willRefreshDuplicates
 {
-  v2 = [(_CNDonationManagedDuplicatesLogger *)self log_t];
-  if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
+  log_t = [(_CNDonationManagedDuplicatesLogger *)self log_t];
+  if (os_log_type_enabled(log_t, OS_LOG_TYPE_DEFAULT))
   {
     *v3 = 0;
-    _os_log_impl(&dword_2258E5000, v2, OS_LOG_TYPE_DEFAULT, "Will refresh duplicates", v3, 2u);
+    _os_log_impl(&dword_2258E5000, log_t, OS_LOG_TYPE_DEFAULT, "Will refresh duplicates", v3, 2u);
   }
 }
 
 - (void)didRefreshDuplicates
 {
-  v2 = [(_CNDonationManagedDuplicatesLogger *)self log_t];
-  if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
+  log_t = [(_CNDonationManagedDuplicatesLogger *)self log_t];
+  if (os_log_type_enabled(log_t, OS_LOG_TYPE_DEFAULT))
   {
     *v3 = 0;
-    _os_log_impl(&dword_2258E5000, v2, OS_LOG_TYPE_DEFAULT, "Did refresh duplicates", v3, 2u);
+    _os_log_impl(&dword_2258E5000, log_t, OS_LOG_TYPE_DEFAULT, "Did refresh duplicates", v3, 2u);
   }
 }
 
-- (void)didSkipRefreshDuplicates:(id)a3
+- (void)didSkipRefreshDuplicates:(id)duplicates
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(_CNDonationManagedDuplicatesLogger *)self log_t];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  duplicatesCopy = duplicates;
+  log_t = [(_CNDonationManagedDuplicatesLogger *)self log_t];
+  if (os_log_type_enabled(log_t, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543362;
-    v8 = v4;
-    _os_log_impl(&dword_2258E5000, v5, OS_LOG_TYPE_DEFAULT, "Skipping refresh of duplicates due to recent failure. Previous refresh attempted at %{public}@", &v7, 0xCu);
+    v8 = duplicatesCopy;
+    _os_log_impl(&dword_2258E5000, log_t, OS_LOG_TYPE_DEFAULT, "Skipping refresh of duplicates due to recent failure. Previous refresh attempted at %{public}@", &v7, 0xCu);
   }
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didFailRefreshingDuplicates:(id)a3
+- (void)didFailRefreshingDuplicates:(id)duplicates
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(_CNDonationManagedDuplicatesLogger *)self log_t];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  duplicatesCopy = duplicates;
+  log_t = [(_CNDonationManagedDuplicatesLogger *)self log_t];
+  if (os_log_type_enabled(log_t, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543362;
-    v8 = v4;
-    _os_log_impl(&dword_2258E5000, v5, OS_LOG_TYPE_DEFAULT, "Failed to refresh duplicates. %{public}@", &v7, 0xCu);
+    v8 = duplicatesCopy;
+    _os_log_impl(&dword_2258E5000, log_t, OS_LOG_TYPE_DEFAULT, "Failed to refresh duplicates. %{public}@", &v7, 0xCu);
   }
 
   v6 = *MEMORY[0x277D85DE8];

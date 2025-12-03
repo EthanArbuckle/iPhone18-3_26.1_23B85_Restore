@@ -1,72 +1,72 @@
 @interface PKPaymentPassTableViewCell
-+ (double)heightForCellWithMinimum:(double)a3 hasSubTitle:(BOOL)a4;
-- (PKPaymentPassTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
++ (double)heightForCellWithMinimum:(double)minimum hasSubTitle:(BOOL)title;
+- (PKPaymentPassTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)_updateLabelText;
 - (void)_updateLabelTextColors;
 - (void)layoutSubviews;
-- (void)pk_applyAppearance:(id)a3;
-- (void)setDisabledMainLabelColor:(id)a3;
-- (void)setDisabledSubTextLabelColor:(id)a3;
-- (void)setMainLabelColor:(id)a3;
-- (void)setPass:(id)a3;
-- (void)setPeerPaymentAccount:(id)a3;
-- (void)setSubTextLabelColor:(id)a3;
-- (void)setUserInteractionEnabled:(BOOL)a3;
+- (void)pk_applyAppearance:(id)appearance;
+- (void)setDisabledMainLabelColor:(id)color;
+- (void)setDisabledSubTextLabelColor:(id)color;
+- (void)setMainLabelColor:(id)color;
+- (void)setPass:(id)pass;
+- (void)setPeerPaymentAccount:(id)account;
+- (void)setSubTextLabelColor:(id)color;
+- (void)setUserInteractionEnabled:(BOOL)enabled;
 @end
 
 @implementation PKPaymentPassTableViewCell
 
-- (PKPaymentPassTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (PKPaymentPassTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v27.receiver = self;
   v27.super_class = PKPaymentPassTableViewCell;
-  v4 = [(PKPaymentPassTableViewCell *)&v27 initWithStyle:0 reuseIdentifier:a4];
+  v4 = [(PKPaymentPassTableViewCell *)&v27 initWithStyle:0 reuseIdentifier:identifier];
   if (v4)
   {
-    v5 = [MEMORY[0x1E69DC888] labelColor];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
     mainLabelColor = v4->_mainLabelColor;
-    v4->_mainLabelColor = v5;
+    v4->_mainLabelColor = labelColor;
 
-    v7 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
     subTextLabelColor = v4->_subTextLabelColor;
-    v4->_subTextLabelColor = v7;
+    v4->_subTextLabelColor = secondaryLabelColor;
 
-    v9 = [MEMORY[0x1E69DC888] tertiaryLabelColor];
+    tertiaryLabelColor = [MEMORY[0x1E69DC888] tertiaryLabelColor];
     disabledMainLabelColor = v4->_disabledMainLabelColor;
-    v4->_disabledMainLabelColor = v9;
+    v4->_disabledMainLabelColor = tertiaryLabelColor;
 
-    v11 = [MEMORY[0x1E69DC888] quaternaryLabelColor];
+    quaternaryLabelColor = [MEMORY[0x1E69DC888] quaternaryLabelColor];
     disabledSubTextLabelColor = v4->_disabledSubTextLabelColor;
-    v4->_disabledSubTextLabelColor = v11;
+    v4->_disabledSubTextLabelColor = quaternaryLabelColor;
 
     v13 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     mainLabel = v4->_mainLabel;
     v4->_mainLabel = v13;
 
     v15 = v4->_mainLabel;
-    v16 = [objc_opt_class() titleFont];
-    [(UILabel *)v15 setFont:v16];
+    titleFont = [objc_opt_class() titleFont];
+    [(UILabel *)v15 setFont:titleFont];
 
     [(UILabel *)v4->_mainLabel setTextColor:v4->_mainLabelColor];
-    v17 = [(PKPaymentPassTableViewCell *)v4 contentView];
-    [v17 addSubview:v4->_mainLabel];
+    contentView = [(PKPaymentPassTableViewCell *)v4 contentView];
+    [contentView addSubview:v4->_mainLabel];
 
     v18 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     subTextLabel = v4->_subTextLabel;
     v4->_subTextLabel = v18;
 
     v20 = v4->_subTextLabel;
-    v21 = [objc_opt_class() subTitleFont];
-    [(UILabel *)v20 setFont:v21];
+    subTitleFont = [objc_opt_class() subTitleFont];
+    [(UILabel *)v20 setFont:subTitleFont];
 
     [(UILabel *)v4->_subTextLabel setTextColor:v4->_subTextLabelColor];
-    v22 = [(PKPaymentPassTableViewCell *)v4 contentView];
-    [v22 addSubview:v4->_subTextLabel];
+    contentView2 = [(PKPaymentPassTableViewCell *)v4 contentView];
+    [contentView2 addSubview:v4->_subTextLabel];
 
     [(PKPaymentPassTableViewCell *)v4 setAutoresizingMask:18];
     v23 = [objc_alloc(MEMORY[0x1E69DC638]) initWithActivityIndicatorStyle:100];
-    v24 = [(PKPaymentPassTableViewCell *)v4 contentView];
-    [v24 addSubview:v23];
+    contentView3 = [(PKPaymentPassTableViewCell *)v4 contentView];
+    [contentView3 addSubview:v23];
 
     [(UIView *)v23 startAnimating];
     cardSnapshotView = v4->_cardSnapshotView;
@@ -76,33 +76,33 @@
   return v4;
 }
 
-+ (double)heightForCellWithMinimum:(double)a3 hasSubTitle:(BOOL)a4
++ (double)heightForCellWithMinimum:(double)minimum hasSubTitle:(BOOL)title
 {
-  v4 = a4;
-  v7 = [a1 titleFont];
-  [v7 lineHeight];
+  titleCopy = title;
+  titleFont = [self titleFont];
+  [titleFont lineHeight];
   v9 = v8;
 
-  if (v4)
+  if (titleCopy)
   {
-    v10 = [a1 subTitleFont];
-    [v10 lineHeight];
+    subTitleFont = [self subTitleFont];
+    [subTitleFont lineHeight];
     v9 = v9 + v11;
   }
 
   result = v9 + 16.0;
-  if (v9 + 16.0 <= a3)
+  if (v9 + 16.0 <= minimum)
   {
-    return a3;
+    return minimum;
   }
 
   return result;
 }
 
-- (void)setPass:(id)a3
+- (void)setPass:(id)pass
 {
-  v5 = a3;
-  objc_storeStrong(&self->_pass, a3);
+  passCopy = pass;
+  objc_storeStrong(&self->_pass, pass);
   if ([(PKPaymentPass *)self->_pass isStoredValuePass])
   {
     v6 = [objc_alloc(MEMORY[0x1E69B9308]) initWithPass:self->_pass];
@@ -167,68 +167,68 @@ uint64_t __38__PKPaymentPassTableViewCell_setPass___block_invoke_2(uint64_t a1)
   return [v8 setNeedsLayout];
 }
 
-- (void)setUserInteractionEnabled:(BOOL)a3
+- (void)setUserInteractionEnabled:(BOOL)enabled
 {
   v4.receiver = self;
   v4.super_class = PKPaymentPassTableViewCell;
-  [(PKPaymentPassTableViewCell *)&v4 setUserInteractionEnabled:a3];
+  [(PKPaymentPassTableViewCell *)&v4 setUserInteractionEnabled:enabled];
   [(PKPaymentPassTableViewCell *)self _updateLabelTextColors];
 }
 
-- (void)setMainLabelColor:(id)a3
+- (void)setMainLabelColor:(id)color
 {
-  v5 = a3;
-  if (self->_mainLabelColor != v5)
+  colorCopy = color;
+  if (self->_mainLabelColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_mainLabelColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_mainLabelColor, color);
     [(PKPaymentPassTableViewCell *)self _updateLabelTextColors];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
-- (void)setSubTextLabelColor:(id)a3
+- (void)setSubTextLabelColor:(id)color
 {
-  v5 = a3;
-  if (self->_subTextLabelColor != v5)
+  colorCopy = color;
+  if (self->_subTextLabelColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_subTextLabelColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_subTextLabelColor, color);
     [(PKPaymentPassTableViewCell *)self _updateLabelTextColors];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
-- (void)setDisabledMainLabelColor:(id)a3
+- (void)setDisabledMainLabelColor:(id)color
 {
-  v5 = a3;
-  if (self->_disabledMainLabelColor != v5)
+  colorCopy = color;
+  if (self->_disabledMainLabelColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_disabledMainLabelColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_disabledMainLabelColor, color);
     [(PKPaymentPassTableViewCell *)self _updateLabelTextColors];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
-- (void)setDisabledSubTextLabelColor:(id)a3
+- (void)setDisabledSubTextLabelColor:(id)color
 {
-  v5 = a3;
-  if (self->_disabledSubTextLabelColor != v5)
+  colorCopy = color;
+  if (self->_disabledSubTextLabelColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_disabledSubTextLabelColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_disabledSubTextLabelColor, color);
     [(PKPaymentPassTableViewCell *)self _updateLabelTextColors];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
-- (void)setPeerPaymentAccount:(id)a3
+- (void)setPeerPaymentAccount:(id)account
 {
-  v5 = a3;
+  accountCopy = account;
   if ((PKEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_peerPaymentAccount, a3);
+    objc_storeStrong(&self->_peerPaymentAccount, account);
     [(PKPaymentPassTableViewCell *)self _updateLabelText];
   }
 }
@@ -238,8 +238,8 @@ uint64_t __38__PKPaymentPassTableViewCell_setPass___block_invoke_2(uint64_t a1)
   v36.receiver = self;
   v36.super_class = PKPaymentPassTableViewCell;
   [(PKPaymentPassTableViewCell *)&v36 layoutSubviews];
-  v3 = [(PKPaymentPassTableViewCell *)self contentView];
-  [v3 bounds];
+  contentView = [(PKPaymentPassTableViewCell *)self contentView];
+  [contentView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -335,19 +335,19 @@ uint64_t __38__PKPaymentPassTableViewCell_setPass___block_invoke_2(uint64_t a1)
 - (void)_updateLabelText
 {
   mainLabel = self->_mainLabel;
-  v4 = [(PKPaymentPass *)self->_pass localizedDescription];
-  [(UILabel *)mainLabel setText:v4];
+  localizedDescription = [(PKPaymentPass *)self->_pass localizedDescription];
+  [(UILabel *)mainLabel setText:localizedDescription];
 
   [(UILabel *)self->_mainLabel sizeToFit];
-  v5 = [(PKPaymentPass *)self->_pass isAccessPass];
+  isAccessPass = [(PKPaymentPass *)self->_pass isAccessPass];
   pass = self->_pass;
-  if (v5)
+  if (isAccessPass)
   {
-    v7 = [(PKPaymentPass *)pass fieldForKey:*MEMORY[0x1E69BC0D0]];
+    currentBalance = [(PKPaymentPass *)pass fieldForKey:*MEMORY[0x1E69BC0D0]];
     v8 = [(PKPaymentPass *)self->_pass fieldForKey:*MEMORY[0x1E69BC0D8]];
     if ([(PKPaymentPass *)self->_pass supportsSharing])
     {
-      v9 = v7 == 0;
+      v9 = currentBalance == 0;
     }
 
     else
@@ -355,15 +355,15 @@ uint64_t __38__PKPaymentPassTableViewCell_setPass___block_invoke_2(uint64_t a1)
       v9 = 1;
     }
 
-    v10 = v7;
+    v10 = currentBalance;
     if (v9 && (v10 = v8) == 0)
     {
-      v19 = 0;
+      value = 0;
     }
 
     else
     {
-      v19 = [v10 value];
+      value = [v10 value];
     }
 
     goto LABEL_10;
@@ -371,9 +371,9 @@ uint64_t __38__PKPaymentPassTableViewCell_setPass___block_invoke_2(uint64_t a1)
 
   if ([(PKPaymentPass *)pass isStoredValuePass])
   {
-    v11 = [(PKTransitBalanceModel *)self->_transitBalanceModel displayableListOfBalances];
+    displayableListOfBalances = [(PKTransitBalanceModel *)self->_transitBalanceModel displayableListOfBalances];
 LABEL_13:
-    if (v11)
+    if (displayableListOfBalances)
     {
       goto LABEL_28;
     }
@@ -383,20 +383,20 @@ LABEL_13:
 
   if ([(PKPaymentPass *)self->_pass hasAssociatedPeerPaymentAccount])
   {
-    v12 = [(PKPaymentPass *)self->_pass uniqueID];
-    v13 = [(PKPeerPaymentAccount *)self->_peerPaymentAccount associatedPassUniqueID];
-    v14 = v12;
-    v15 = v13;
+    uniqueID = [(PKPaymentPass *)self->_pass uniqueID];
+    associatedPassUniqueID = [(PKPeerPaymentAccount *)self->_peerPaymentAccount associatedPassUniqueID];
+    v14 = uniqueID;
+    v15 = associatedPassUniqueID;
     v16 = v15;
     if (v14 == v15)
     {
 
 LABEL_26:
-      v7 = [(PKPeerPaymentAccount *)self->_peerPaymentAccount currentBalance];
-      v19 = [v7 minimalFormattedStringValue];
+      currentBalance = [(PKPeerPaymentAccount *)self->_peerPaymentAccount currentBalance];
+      value = [currentBalance minimalFormattedStringValue];
 LABEL_10:
 
-      v11 = v19;
+      displayableListOfBalances = value;
       goto LABEL_13;
     }
 
@@ -426,19 +426,19 @@ LABEL_10:
   }
 
 LABEL_27:
-  v11 = PKSanitizedPrimaryAccountRepresentationForPass();
+  displayableListOfBalances = PKSanitizedPrimaryAccountRepresentationForPass();
 LABEL_28:
-  v20 = v11;
-  [(UILabel *)self->_subTextLabel setText:v11];
+  v20 = displayableListOfBalances;
+  [(UILabel *)self->_subTextLabel setText:displayableListOfBalances];
   [(UILabel *)self->_subTextLabel sizeToFit];
   [(PKPaymentPassTableViewCell *)self setNeedsLayout];
 }
 
 - (void)_updateLabelTextColors
 {
-  v3 = [(PKPaymentPassTableViewCell *)self isUserInteractionEnabled];
+  isUserInteractionEnabled = [(PKPaymentPassTableViewCell *)self isUserInteractionEnabled];
   v4 = 2;
-  if (v3)
+  if (isUserInteractionEnabled)
   {
     v4 = 0;
     v5 = 1;
@@ -456,27 +456,27 @@ LABEL_28:
   [(UILabel *)subTextLabel setTextColor:v7];
 }
 
-- (void)pk_applyAppearance:(id)a3
+- (void)pk_applyAppearance:(id)appearance
 {
   v10.receiver = self;
   v10.super_class = PKPaymentPassTableViewCell;
-  v4 = a3;
-  [(PKTableViewCell *)&v10 pk_applyAppearance:v4];
-  v5 = [v4 textColor];
-  [(PKPaymentPassTableViewCell *)self setMainLabelColor:v5];
+  appearanceCopy = appearance;
+  [(PKTableViewCell *)&v10 pk_applyAppearance:appearanceCopy];
+  textColor = [appearanceCopy textColor];
+  [(PKPaymentPassTableViewCell *)self setMainLabelColor:textColor];
 
-  v6 = [v4 altTextColor];
-  [(PKPaymentPassTableViewCell *)self setSubTextLabelColor:v6];
+  altTextColor = [appearanceCopy altTextColor];
+  [(PKPaymentPassTableViewCell *)self setSubTextLabelColor:altTextColor];
 
-  v7 = [v4 altTextColor];
-  [(PKPaymentPassTableViewCell *)self setDisabledMainLabelColor:v7];
+  altTextColor2 = [appearanceCopy altTextColor];
+  [(PKPaymentPassTableViewCell *)self setDisabledMainLabelColor:altTextColor2];
 
-  v8 = [v4 altTextColor];
-  [(PKPaymentPassTableViewCell *)self setDisabledSubTextLabelColor:v8];
+  altTextColor3 = [appearanceCopy altTextColor];
+  [(PKPaymentPassTableViewCell *)self setDisabledSubTextLabelColor:altTextColor3];
 
-  v9 = [v4 tintColor];
+  tintColor = [appearanceCopy tintColor];
 
-  [(PKPaymentPassTableViewCell *)self setTintColor:v9];
+  [(PKPaymentPassTableViewCell *)self setTintColor:tintColor];
 }
 
 @end

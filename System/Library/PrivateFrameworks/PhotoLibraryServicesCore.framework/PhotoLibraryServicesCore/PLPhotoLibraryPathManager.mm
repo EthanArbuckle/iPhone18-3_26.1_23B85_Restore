@@ -3,11 +3,11 @@
 + (void)assertSingleLibraryMode;
 + (void)enableMultiLibraryMode;
 + (void)throwMultiLibraryAPIMisuse;
-+ (void)throwMultiLibraryAPIMisuseForLibraryPath:(id)a3;
++ (void)throwMultiLibraryAPIMisuseForLibraryPath:(id)path;
 - (NSString)description;
 - (PLPhotoLibraryPathManager)init;
-- (PLPhotoLibraryPathManager)initWithBaseDirectory:(id)a3;
-- (PLPhotoLibraryPathManager)initWithLibraryURL:(id)a3 bundleScope:(unsigned __int16)a4 libraryFormat:(unsigned __int8)a5;
+- (PLPhotoLibraryPathManager)initWithBaseDirectory:(id)directory;
+- (PLPhotoLibraryPathManager)initWithLibraryURL:(id)l bundleScope:(unsigned __int16)scope libraryFormat:(unsigned __int8)format;
 - (id)_commonPathsToExcludeFromTimeMachineAndICloudBackups;
 - (id)_existingPrivateCacheDirectoriesToExclude;
 - (id)_pathsToExcludeFromAllBackups;
@@ -18,11 +18,11 @@
 - (id)rebuildHistoryFilePath;
 - (id)redactedDescription;
 - (id)sqliteErrorIndicatorFilePath;
-- (unsigned)_bundleFormatFromLibraryURL:(id)a3 libraryFormat:(unsigned __int8)a4;
-- (void)resetBackupExclusionPathsForBackupType:(int64_t)a3;
-- (void)setBackupExclusionAttributesForWellKnownLibrariesOrWithCreateOptions:(unint64_t)a3 andBackupType:(int64_t)a4;
-- (void)setOrCompareLibraryURL:(id)a3;
-- (void)updateBackupExclusionPathsForBackupType:(int64_t)a3;
+- (unsigned)_bundleFormatFromLibraryURL:(id)l libraryFormat:(unsigned __int8)format;
+- (void)resetBackupExclusionPathsForBackupType:(int64_t)type;
+- (void)setBackupExclusionAttributesForWellKnownLibrariesOrWithCreateOptions:(unint64_t)options andBackupType:(int64_t)type;
+- (void)setOrCompareLibraryURL:(id)l;
+- (void)updateBackupExclusionPathsForBackupType:(int64_t)type;
 @end
 
 @implementation PLPhotoLibraryPathManager
@@ -47,18 +47,18 @@
 
 + (void)assertSingleLibraryMode
 {
-  if ([a1 isMultiLibraryModeEnabled])
+  if ([self isMultiLibraryModeEnabled])
   {
 
-    [a1 throwMultiLibraryAPIMisuse];
+    [self throwMultiLibraryAPIMisuse];
   }
 }
 
 + (id)systemLibraryPathManager
 {
   v3 = [PLPhotoLibraryPathManager alloc];
-  v4 = [a1 systemLibraryURL];
-  v5 = [(PLPhotoLibraryPathManager *)v3 initWithLibraryURL:v4];
+  systemLibraryURL = [self systemLibraryURL];
+  v5 = [(PLPhotoLibraryPathManager *)v3 initWithLibraryURL:systemLibraryURL];
 
   return v5;
 }
@@ -71,9 +71,9 @@
   return v3;
 }
 
-- (void)setBackupExclusionAttributesForWellKnownLibrariesOrWithCreateOptions:(unint64_t)a3 andBackupType:(int64_t)a4
+- (void)setBackupExclusionAttributesForWellKnownLibrariesOrWithCreateOptions:(unint64_t)options andBackupType:(int64_t)type
 {
-  v5 = a3;
+  optionsCopy = options;
   v27 = *MEMORY[0x1E69E9840];
   if ([(PLPhotoLibraryPathManager *)self isUBF])
   {
@@ -88,8 +88,8 @@ LABEL_21:
     }
 
     v9 = objc_opt_class();
-    v10 = [(PLPhotoLibraryPathManager *)self libraryURL];
-    v11 = [v9 wellKnownPhotoLibraryIdentifierForURL:v10];
+    libraryURL = [(PLPhotoLibraryPathManager *)self libraryURL];
+    v11 = [v9 wellKnownPhotoLibraryIdentifierForURL:libraryURL];
 
     if (v11)
     {
@@ -102,16 +102,16 @@ LABEL_21:
     else
     {
       v12 = objc_opt_class();
-      v13 = [(PLPhotoLibraryPathManager *)self libraryURL];
-      v14 = [v12 isSystemPhotoLibraryURL:v13];
+      libraryURL2 = [(PLPhotoLibraryPathManager *)self libraryURL];
+      v14 = [v12 isSystemPhotoLibraryURL:libraryURL2];
 
-      if ((v5 & 0x20) != 0 || v14)
+      if ((optionsCopy & 0x20) != 0 || v14)
       {
 LABEL_15:
-        [(PLPhotoLibraryPathManager *)self resetBackupExclusionPathsForBackupType:a4];
-        v19 = [(PLPhotoLibraryPathManager *)self libraryURL];
+        [(PLPhotoLibraryPathManager *)self resetBackupExclusionPathsForBackupType:type];
+        libraryURL3 = [(PLPhotoLibraryPathManager *)self libraryURL];
         v23 = 0;
-        v20 = [PLPhotoLibraryPathManagerCore setTimeMachineExclusionAttribute:0 url:v19 error:&v23];
+        v20 = [PLPhotoLibraryPathManagerCore setTimeMachineExclusionAttribute:0 url:libraryURL3 error:&v23];
         v17 = v23;
 
         if (!v20)
@@ -131,9 +131,9 @@ LABEL_15:
       }
     }
 
-    v15 = [(PLPhotoLibraryPathManager *)self libraryURL];
+    libraryURL4 = [(PLPhotoLibraryPathManager *)self libraryURL];
     v22 = 0;
-    v16 = [PLPhotoLibraryPathManagerCore setTimeMachineExclusionAttribute:1 url:v15 error:&v22];
+    v16 = [PLPhotoLibraryPathManagerCore setTimeMachineExclusionAttribute:1 url:libraryURL4 error:&v22];
     v17 = v22;
 
     if (!v16)
@@ -155,10 +155,10 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  if (!a4)
+  if (!type)
   {
-    v21 = [(PLPhotoLibraryPathManager *)self _existingPrivateCacheDirectoriesToExclude];
-    [v21 enumerateObjectsUsingBlock:&__block_literal_global_7909];
+    _existingPrivateCacheDirectoriesToExclude = [(PLPhotoLibraryPathManager *)self _existingPrivateCacheDirectoriesToExclude];
+    [_existingPrivateCacheDirectoriesToExclude enumerateObjectsUsingBlock:&__block_literal_global_7909];
   }
 }
 
@@ -184,7 +184,7 @@ void __112__PLPhotoLibraryPathManager_setBackupExclusionAttributesForWellKnownLi
   }
 }
 
-- (void)updateBackupExclusionPathsForBackupType:(int64_t)a3
+- (void)updateBackupExclusionPathsForBackupType:(int64_t)type
 {
   v7[0] = 0;
   v7[1] = v7;
@@ -192,34 +192,34 @@ void __112__PLPhotoLibraryPathManager_setBackupExclusionAttributesForWellKnownLi
   v7[3] = __Block_byref_object_copy__7914;
   v7[4] = __Block_byref_object_dispose__7915;
   v8 = 0;
-  switch(a3)
+  switch(type)
   {
     case 3:
-      v3 = [(PLPhotoLibraryPathManager *)self _pathsToExcludeFromICloudBackupsWithICPLEnabled];
+      _pathsToExcludeFromICloudBackupsWithICPLEnabled = [(PLPhotoLibraryPathManager *)self _pathsToExcludeFromICloudBackupsWithICPLEnabled];
       v4[0] = MEMORY[0x1E69E9820];
       v4[1] = 3221225472;
       v4[2] = __69__PLPhotoLibraryPathManager_updateBackupExclusionPathsForBackupType___block_invoke_62;
       v4[3] = &unk_1E7931BC8;
       v4[4] = v7;
-      [v3 enumerateObjectsUsingBlock:v4];
+      [_pathsToExcludeFromICloudBackupsWithICPLEnabled enumerateObjectsUsingBlock:v4];
       goto LABEL_7;
     case 2:
-      v3 = [(PLPhotoLibraryPathManager *)self _pathsToExcludeFromICloudBackups];
+      _pathsToExcludeFromICloudBackupsWithICPLEnabled = [(PLPhotoLibraryPathManager *)self _pathsToExcludeFromICloudBackups];
       v5[0] = MEMORY[0x1E69E9820];
       v5[1] = 3221225472;
       v5[2] = __69__PLPhotoLibraryPathManager_updateBackupExclusionPathsForBackupType___block_invoke_61;
       v5[3] = &unk_1E7931BC8;
       v5[4] = v7;
-      [v3 enumerateObjectsUsingBlock:v5];
+      [_pathsToExcludeFromICloudBackupsWithICPLEnabled enumerateObjectsUsingBlock:v5];
       goto LABEL_7;
     case 1:
-      v3 = [(PLPhotoLibraryPathManager *)self _pathsToExcludeFromTimeMachineBackups];
+      _pathsToExcludeFromICloudBackupsWithICPLEnabled = [(PLPhotoLibraryPathManager *)self _pathsToExcludeFromTimeMachineBackups];
       v6[0] = MEMORY[0x1E69E9820];
       v6[1] = 3221225472;
       v6[2] = __69__PLPhotoLibraryPathManager_updateBackupExclusionPathsForBackupType___block_invoke;
       v6[3] = &unk_1E7931BC8;
       v6[4] = v7;
-      [v3 enumerateObjectsUsingBlock:v6];
+      [_pathsToExcludeFromICloudBackupsWithICPLEnabled enumerateObjectsUsingBlock:v6];
 LABEL_7:
 
       break;
@@ -300,7 +300,7 @@ void __69__PLPhotoLibraryPathManager_updateBackupExclusionPathsForBackupType___b
   }
 }
 
-- (void)resetBackupExclusionPathsForBackupType:(int64_t)a3
+- (void)resetBackupExclusionPathsForBackupType:(int64_t)type
 {
   v12[0] = 0;
   v12[1] = v12;
@@ -308,47 +308,47 @@ void __69__PLPhotoLibraryPathManager_updateBackupExclusionPathsForBackupType___b
   v12[3] = __Block_byref_object_copy__7914;
   v12[4] = __Block_byref_object_dispose__7915;
   v13 = 0;
-  v5 = [(PLPhotoLibraryPathManager *)self _pathsToExcludeFromAllBackups];
+  _pathsToExcludeFromAllBackups = [(PLPhotoLibraryPathManager *)self _pathsToExcludeFromAllBackups];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __68__PLPhotoLibraryPathManager_resetBackupExclusionPathsForBackupType___block_invoke;
   v11[3] = &unk_1E7931BC8;
   v11[4] = v12;
-  [v5 enumerateObjectsUsingBlock:v11];
+  [_pathsToExcludeFromAllBackups enumerateObjectsUsingBlock:v11];
 
-  v6 = [(PLPhotoLibraryPathManager *)self _pathsToExplicitlyIncludeInAllBackups];
+  _pathsToExplicitlyIncludeInAllBackups = [(PLPhotoLibraryPathManager *)self _pathsToExplicitlyIncludeInAllBackups];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __68__PLPhotoLibraryPathManager_resetBackupExclusionPathsForBackupType___block_invoke_58;
   v10[3] = &unk_1E7931BC8;
   v10[4] = v12;
-  [v6 enumerateObjectsUsingBlock:v10];
+  [_pathsToExplicitlyIncludeInAllBackups enumerateObjectsUsingBlock:v10];
 
-  if (a3 == 2)
+  if (type == 2)
   {
-    v7 = [(PLPhotoLibraryPathManager *)self _pathsToExcludeFromICloudBackupsWithICPLEnabled];
+    _pathsToExcludeFromICloudBackupsWithICPLEnabled = [(PLPhotoLibraryPathManager *)self _pathsToExcludeFromICloudBackupsWithICPLEnabled];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __68__PLPhotoLibraryPathManager_resetBackupExclusionPathsForBackupType___block_invoke_59;
     v9[3] = &unk_1E7931BC8;
     v9[4] = v12;
-    [v7 enumerateObjectsUsingBlock:v9];
+    [_pathsToExcludeFromICloudBackupsWithICPLEnabled enumerateObjectsUsingBlock:v9];
     goto LABEL_5;
   }
 
-  if (a3 == 3)
+  if (type == 3)
   {
-    v7 = [(PLPhotoLibraryPathManager *)self _pathsToExcludeFromICloudBackups];
+    _pathsToExcludeFromICloudBackupsWithICPLEnabled = [(PLPhotoLibraryPathManager *)self _pathsToExcludeFromICloudBackups];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __68__PLPhotoLibraryPathManager_resetBackupExclusionPathsForBackupType___block_invoke_60;
     v8[3] = &unk_1E7931BC8;
     v8[4] = v12;
-    [v7 enumerateObjectsUsingBlock:v8];
+    [_pathsToExcludeFromICloudBackupsWithICPLEnabled enumerateObjectsUsingBlock:v8];
 LABEL_5:
   }
 
-  [(PLPhotoLibraryPathManager *)self updateBackupExclusionPathsForBackupType:a3];
+  [(PLPhotoLibraryPathManager *)self updateBackupExclusionPathsForBackupType:type];
   _Block_object_dispose(v12, 8);
 }
 
@@ -493,7 +493,7 @@ void __68__PLPhotoLibraryPathManager_resetBackupExclusionPathsForBackupType___bl
   v10[3] = &unk_1E7931BA0;
   v7 = v3;
   v11 = v7;
-  v12 = self;
+  selfCopy = self;
   [(PLPhotoLibraryPathManager *)self enumerateBundleScopesWithBlock:v10];
   v8 = v7;
 
@@ -512,20 +512,20 @@ void __76__PLPhotoLibraryPathManager__pathsToExcludeFromICloudBackupsWithICPLEna
 
 - (id)_pathsToExcludeFromICloudBackups
 {
-  v3 = [(PLPhotoLibraryPathManager *)self _commonPathsToExcludeFromTimeMachineAndICloudBackups];
+  _commonPathsToExcludeFromTimeMachineAndICloudBackups = [(PLPhotoLibraryPathManager *)self _commonPathsToExcludeFromTimeMachineAndICloudBackups];
   v4 = [(PLPhotoLibraryPathManager *)self photoDirectoryWithType:10 createIfNeeded:1 error:0];
-  [v3 addObject:v4];
+  [_commonPathsToExcludeFromTimeMachineAndICloudBackups addObject:v4];
 
-  return v3;
+  return _commonPathsToExcludeFromTimeMachineAndICloudBackups;
 }
 
 - (id)_pathsToExcludeFromTimeMachineBackups
 {
-  v3 = [(PLPhotoLibraryPathManager *)self _commonPathsToExcludeFromTimeMachineAndICloudBackups];
+  _commonPathsToExcludeFromTimeMachineAndICloudBackups = [(PLPhotoLibraryPathManager *)self _commonPathsToExcludeFromTimeMachineAndICloudBackups];
   v4 = [(PLPhotoLibraryPathManager *)self photoDirectoryWithType:11 createIfNeeded:1 error:0];
-  [v3 addObject:v4];
+  [_commonPathsToExcludeFromTimeMachineAndICloudBackups addObject:v4];
 
-  return v3;
+  return _commonPathsToExcludeFromTimeMachineAndICloudBackups;
 }
 
 - (id)_commonPathsToExcludeFromTimeMachineAndICloudBackups
@@ -541,12 +541,12 @@ void __76__PLPhotoLibraryPathManager__pathsToExcludeFromICloudBackupsWithICPLEna
   v13 = 3221225472;
   v14 = __81__PLPhotoLibraryPathManager__commonPathsToExcludeFromTimeMachineAndICloudBackups__block_invoke;
   v15 = &unk_1E7931BA0;
-  v16 = self;
+  selfCopy = self;
   v6 = v3;
   v17 = v6;
   [(PLPhotoLibraryPathManager *)self enumerateBundleScopesWithBlock:&v12];
-  v7 = [(PLPhotoLibraryPathManager *)self photoDirectoryWithType:14 leafType:3 createIfNeeded:1 error:0, v12, v13, v14, v15, v16];
-  [v6 addObject:v7];
+  selfCopy = [(PLPhotoLibraryPathManager *)self photoDirectoryWithType:14 leafType:3 createIfNeeded:1 error:0, v12, v13, v14, v15, selfCopy];
+  [v6 addObject:selfCopy];
 
   v8 = [(PLPhotoLibraryPathManager *)self photoDirectoryWithType:14 leafType:2 createIfNeeded:1 error:0];
   [v6 addObject:v8];
@@ -574,11 +574,11 @@ void __81__PLPhotoLibraryPathManager__commonPathsToExcludeFromTimeMachineAndIClo
   [v3 addObject:v4];
 
   v5 = [(PLPhotoLibraryPathManager *)self photoDirectoryWithType:19 createIfNeeded:1 error:0];
-  v6 = [v5 stringByDeletingLastPathComponent];
-  [v3 addObject:v6];
+  stringByDeletingLastPathComponent = [v5 stringByDeletingLastPathComponent];
+  [v3 addObject:stringByDeletingLastPathComponent];
 
-  v7 = [(PLPhotoLibraryPathManager *)self _existingPrivateCacheDirectoriesToExclude];
-  [v3 addObjectsFromArray:v7];
+  _existingPrivateCacheDirectoriesToExclude = [(PLPhotoLibraryPathManager *)self _existingPrivateCacheDirectoriesToExclude];
+  [v3 addObjectsFromArray:_existingPrivateCacheDirectoriesToExclude];
 
   v8 = [(PLPhotoLibraryPathManager *)self externalDirectoryWithSubType:0 createIfNeeded:1 error:0];
   if (v8)
@@ -603,16 +603,16 @@ void __81__PLPhotoLibraryPathManager__commonPathsToExcludeFromTimeMachineAndIClo
   v30[2] = *MEMORY[0x1E69E9840];
   v22 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v3 = MEMORY[0x1E695DFF8];
-  v4 = [(PLPhotoLibraryPathManagerCore *)self->_internalPathManager basePrivateDirectoryPath];
-  v5 = [v3 fileURLWithPath:v4 isDirectory:1];
+  basePrivateDirectoryPath = [(PLPhotoLibraryPathManagerCore *)self->_internalPathManager basePrivateDirectoryPath];
+  v5 = [v3 fileURLWithPath:basePrivateDirectoryPath isDirectory:1];
 
-  v6 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v7 = *MEMORY[0x1E695DB78];
   v30[0] = *MEMORY[0x1E695DC30];
   v30[1] = v7;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v30 count:2];
   v23 = v5;
-  v9 = [v6 enumeratorAtURL:v5 includingPropertiesForKeys:v8 options:4 errorHandler:0];
+  v9 = [defaultManager enumeratorAtURL:v5 includingPropertiesForKeys:v8 options:4 errorHandler:0];
 
   v27 = 0u;
   v28 = 0u;
@@ -634,22 +634,22 @@ void __81__PLPhotoLibraryPathManager__commonPathsToExcludeFromTimeMachineAndIClo
         }
 
         v14 = *(*(&v25 + 1) + 8 * i);
-        v15 = [v14 lastPathComponent];
-        if ([v15 isEqualToString:@"caches"])
+        lastPathComponent = [v14 lastPathComponent];
+        if ([lastPathComponent isEqualToString:@"caches"])
         {
-          v16 = [v23 path];
-          v17 = [v14 URLByDeletingLastPathComponent];
-          v18 = [v17 URLByDeletingLastPathComponent];
-          v19 = [v18 path];
-          v20 = [v16 isEqualToString:v19];
+          path = [v23 path];
+          uRLByDeletingLastPathComponent = [v14 URLByDeletingLastPathComponent];
+          v17URLByDeletingLastPathComponent = [uRLByDeletingLastPathComponent URLByDeletingLastPathComponent];
+          path2 = [v17URLByDeletingLastPathComponent path];
+          v20 = [path isEqualToString:path2];
 
           if (!v20)
           {
             continue;
           }
 
-          v15 = [v14 path];
-          [v22 addObject:v15];
+          lastPathComponent = [v14 path];
+          [v22 addObject:lastPathComponent];
         }
       }
 
@@ -662,34 +662,34 @@ void __81__PLPhotoLibraryPathManager__commonPathsToExcludeFromTimeMachineAndIClo
   return v22;
 }
 
-- (void)setOrCompareLibraryURL:(id)a3
+- (void)setOrCompareLibraryURL:(id)l
 {
-  v4 = a3;
-  v5 = v4;
+  lCopy = l;
+  v5 = lCopy;
   v6 = atomic_load(sMultiLibraryMode);
   if ((v6 & 1) == 0)
   {
     v7 = MEMORY[0x1E695DFF8];
-    v8 = [v4 path];
-    v17 = [v7 fileURLWithPath:v8 isDirectory:1];
+    path = [lCopy path];
+    v17 = [v7 fileURLWithPath:path isDirectory:1];
 
     os_unfair_lock_lock(&sSingletonPhotoLibraryPathLock);
     WeakRetained = objc_loadWeakRetained(&sSingletonPhotoLibraryPath);
     if (WeakRetained)
     {
       v10 = PLIsUBFOnDCIMLibraryURLForSingletonLibraryPath(v17, WeakRetained);
-      v11 = [v17 path];
-      v12 = [v11 isEqualToString:WeakRetained];
+      path2 = [v17 path];
+      v12 = [path2 isEqualToString:WeakRetained];
 
       if ((v12 & 1) == 0 && !v10)
       {
         os_unfair_lock_unlock(&sSingletonPhotoLibraryPathLock);
         v13 = objc_opt_class();
-        v14 = [v17 path];
-        [v13 throwMultiLibraryAPIMisuseForLibraryPath:v14];
+        path3 = [v17 path];
+        [v13 throwMultiLibraryAPIMisuseForLibraryPath:path3];
 
 LABEL_9:
-        v4 = v17;
+        lCopy = v17;
         goto LABEL_10;
       }
 
@@ -698,9 +698,9 @@ LABEL_9:
 
     else
     {
-      v15 = [v17 path];
+      path4 = [v17 path];
       singletonPhotoLibraryPath = self->_singletonPhotoLibraryPath;
-      self->_singletonPhotoLibraryPath = v15;
+      self->_singletonPhotoLibraryPath = path4;
     }
 
     objc_storeWeak(&sSingletonPhotoLibraryPath, self->_singletonPhotoLibraryPath);
@@ -739,18 +739,18 @@ LABEL_10:
   return v7;
 }
 
-- (unsigned)_bundleFormatFromLibraryURL:(id)a3 libraryFormat:(unsigned __int8)a4
+- (unsigned)_bundleFormatFromLibraryURL:(id)l libraryFormat:(unsigned __int8)format
 {
-  v4 = a4;
-  v5 = a3;
-  if (v4 != 2 && v4 != 1)
+  formatCopy = format;
+  lCopy = l;
+  if (formatCopy != 2 && formatCopy != 1)
   {
-    if (v4)
+    if (formatCopy)
     {
-      LOBYTE(v4) = 0;
+      LOBYTE(formatCopy) = 0;
     }
 
-    else if ([objc_opt_class() isSystemPhotoLibraryURL:v5])
+    else if ([objc_opt_class() isSystemPhotoLibraryURL:lCopy])
     {
       if (PLMobileSlideShowPhotoLibraryTestingMode_onceToken != -1)
       {
@@ -759,33 +759,33 @@ LABEL_10:
 
       if (PLMobileSlideShowPhotoLibraryTestingMode_sMobileSlideShowPhotoLibraryTestingMode == 2)
       {
-        LOBYTE(v4) = 2;
+        LOBYTE(formatCopy) = 2;
       }
 
       else
       {
-        LOBYTE(v4) = 1;
+        LOBYTE(formatCopy) = 1;
       }
     }
 
     else
     {
-      LOBYTE(v4) = 2;
+      LOBYTE(formatCopy) = 2;
     }
   }
 
-  return v4;
+  return formatCopy;
 }
 
-- (PLPhotoLibraryPathManager)initWithLibraryURL:(id)a3 bundleScope:(unsigned __int16)a4 libraryFormat:(unsigned __int8)a5
+- (PLPhotoLibraryPathManager)initWithLibraryURL:(id)l bundleScope:(unsigned __int16)scope libraryFormat:(unsigned __int8)format
 {
-  v5 = a5;
-  v6 = a4;
-  v9 = a3;
-  if (!v9)
+  formatCopy = format;
+  scopeCopy = scope;
+  lCopy = l;
+  if (!lCopy)
   {
-    v23 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v23 handleFailureInMethod:a2 object:self file:@"PLPhotoLibraryPathManagerImpl.m" lineNumber:82 description:{@"Invalid parameter not satisfying: %@", @"libraryURL"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLPhotoLibraryPathManagerImpl.m" lineNumber:82 description:{@"Invalid parameter not satisfying: %@", @"libraryURL"}];
   }
 
   v25.receiver = self;
@@ -794,31 +794,31 @@ LABEL_10:
   v11 = v10;
   if (v10)
   {
-    [(PLPhotoLibraryPathManager *)v10 setOrCompareLibraryURL:v9];
-    v12 = [(PLPhotoLibraryPathManager *)v11 _bundleFormatFromLibraryURL:v9 libraryFormat:v5];
+    [(PLPhotoLibraryPathManager *)v10 setOrCompareLibraryURL:lCopy];
+    v12 = [(PLPhotoLibraryPathManager *)v11 _bundleFormatFromLibraryURL:lCopy libraryFormat:formatCopy];
     v11->_format = v12;
     if (v12 == 2)
     {
-      v13 = [[PLPhotoLibraryPathManagerUBF alloc] initWithLibraryURL:v9 bundleScope:0];
+      v13 = [[PLPhotoLibraryPathManagerUBF alloc] initWithLibraryURL:lCopy bundleScope:0];
       internalPathManager = v11->_internalPathManager;
       v11->_internalPathManager = &v13->super;
 
-      if (!v6)
+      if (!scopeCopy)
       {
         goto LABEL_9;
       }
 
-      v15 = [(PLPhotoLibraryPathManager *)v11 photoDirectoryWithType:[(PLPhotoLibraryPathManagerCore *)v11->_internalPathManager photoLibraryPathTypeForBundleScope:v6]];
+      v15 = [(PLPhotoLibraryPathManager *)v11 photoDirectoryWithType:[(PLPhotoLibraryPathManagerCore *)v11->_internalPathManager photoLibraryPathTypeForBundleScope:scopeCopy]];
       v16 = [PLPhotoLibraryPathManagerUBF alloc];
       v17 = [MEMORY[0x1E695DFF8] fileURLWithPath:v15 isDirectory:1];
-      v18 = [(PLPhotoLibraryPathManagerUBF *)v16 initWithLibraryURL:v17 bundleScope:v6];
+      v18 = [(PLPhotoLibraryPathManagerUBF *)v16 initWithLibraryURL:v17 bundleScope:scopeCopy];
       v19 = v11->_internalPathManager;
       v11->_internalPathManager = v18;
     }
 
     else
     {
-      v20 = [[PLPhotoLibraryPathManagerDCIM alloc] initWithLibraryURL:v9 bundleScope:0];
+      v20 = [[PLPhotoLibraryPathManagerDCIM alloc] initWithLibraryURL:lCopy bundleScope:0];
       v21 = v11->_internalPathManager;
       v11->_internalPathManager = &v20->super;
 
@@ -829,17 +829,17 @@ LABEL_10:
 LABEL_9:
     if (!v11->_internalPathManager)
     {
-      v24 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v24 handleFailureInMethod:a2 object:v11 file:@"PLPhotoLibraryPathManagerImpl.m" lineNumber:103 description:{@"Failed to create a valid path manager for url: %@", v9}];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:v11 file:@"PLPhotoLibraryPathManagerImpl.m" lineNumber:103 description:{@"Failed to create a valid path manager for url: %@", lCopy}];
     }
   }
 
   return v11;
 }
 
-- (PLPhotoLibraryPathManager)initWithBaseDirectory:(id)a3
+- (PLPhotoLibraryPathManager)initWithBaseDirectory:(id)directory
 {
-  v4 = [MEMORY[0x1E695DFF8] fileURLWithPath:a3 isDirectory:1];
+  v4 = [MEMORY[0x1E695DFF8] fileURLWithPath:directory isDirectory:1];
   v5 = [(PLPhotoLibraryPathManager *)self initWithLibraryURL:v4];
 
   return v5;
@@ -939,10 +939,10 @@ LABEL_9:
   objc_exception_throw(v18);
 }
 
-+ (void)throwMultiLibraryAPIMisuseForLibraryPath:(id)a3
++ (void)throwMultiLibraryAPIMisuseForLibraryPath:(id)path
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  pathCopy = path;
   v4 = PLBackendGetLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
   {
@@ -950,7 +950,7 @@ LABEL_9:
     v7 = 138412546;
     v8 = WeakRetained;
     v9 = 2112;
-    v10 = v3;
+    v10 = pathCopy;
     _os_log_impl(&dword_1AA9BD000, v4, OS_LOG_TYPE_ERROR, "Error: API misuse. Operating in single library mode for %@ but a different library was requested: %@", &v7, 0x16u);
   }
 

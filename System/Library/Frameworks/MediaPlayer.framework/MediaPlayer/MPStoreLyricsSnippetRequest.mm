@@ -1,17 +1,17 @@
 @interface MPStoreLyricsSnippetRequest
-- (id)newOperationWithResponseHandler:(id)a3;
+- (id)newOperationWithResponseHandler:(id)handler;
 @end
 
 @implementation MPStoreLyricsSnippetRequest
 
-- (id)newOperationWithResponseHandler:(id)a3
+- (id)newOperationWithResponseHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = objc_opt_new();
-  v6 = [(MPStoreLyricsSnippetRequest *)self snippetURL];
-  [v5 setSnippetURL:v6];
+  snippetURL = [(MPStoreLyricsSnippetRequest *)self snippetURL];
+  [v5 setSnippetURL:snippetURL];
 
-  [v5 setResponseHandler:v4];
+  [v5 setResponseHandler:handlerCopy];
   return v5;
 }
 

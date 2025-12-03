@@ -1,15 +1,15 @@
 @interface PLNetworkEnergyModel
-- (PLNetworkEnergyModel)initWithLinkType:(unsigned __int8)a3;
-- (double)computeLevel1TimeWithBytes:(double)a3;
+- (PLNetworkEnergyModel)initWithLinkType:(unsigned __int8)type;
+- (double)computeLevel1TimeWithBytes:(double)bytes;
 - (double)getEnergy;
 - (id)description;
-- (void)updateAllLevelTimesWithLevel1Time:(double)a3 withUpdateDuration:(double)a4;
-- (void)updateWithBytes:(double)a3 withDuration:(double)a4;
+- (void)updateAllLevelTimesWithLevel1Time:(double)time withUpdateDuration:(double)duration;
+- (void)updateWithBytes:(double)bytes withDuration:(double)duration;
 @end
 
 @implementation PLNetworkEnergyModel
 
-- (PLNetworkEnergyModel)initWithLinkType:(unsigned __int8)a3
+- (PLNetworkEnergyModel)initWithLinkType:(unsigned __int8)type
 {
   v23[4] = *MEMORY[0x1E69E9840];
   v19.receiver = self;
@@ -22,7 +22,7 @@
     *(v4 + 12) = 0;
     *(v4 + 9) = 0;
     *(v4 + 28) = 0;
-    v4[8] = a3;
+    v4[8] = type;
     *(v4 + 5) = 0;
     *(v4 + 6) = 0;
     v6 = *(v4 + 7);
@@ -68,27 +68,27 @@
   v7 = v6;
   [(PLNetworkEnergyModel *)self powerlevel3Duration];
   v9 = v8;
-  v10 = [(PLNetworkEnergyModel *)self linkType];
+  linkType = [(PLNetworkEnergyModel *)self linkType];
   [(PLNetworkEnergyModel *)self overallBytes];
   v12 = v11;
   [(PLNetworkEnergyModel *)self overallDuration];
   v14 = v13;
   [(PLNetworkEnergyModel *)self getEnergy];
   v16 = v15;
-  v17 = [(PLNetworkEnergyModel *)self taskUUID];
-  v18 = [v3 stringWithFormat:@"powerlevel1Duration=%f, powerlevel2Duration=%f, powerlevel3Duration=%f, linkType=%d, overallBytes=%f, overallDuration=%f TotalEnergy=%f, taskID=%@", v5, v7, v9, v10, v12, v14, v16, v17];
+  taskUUID = [(PLNetworkEnergyModel *)self taskUUID];
+  v18 = [v3 stringWithFormat:@"powerlevel1Duration=%f, powerlevel2Duration=%f, powerlevel3Duration=%f, linkType=%d, overallBytes=%f, overallDuration=%f TotalEnergy=%f, taskID=%@", v5, v7, v9, linkType, v12, v14, v16, taskUUID];
 
   return v18;
 }
 
-- (void)updateWithBytes:(double)a3 withDuration:(double)a4
+- (void)updateWithBytes:(double)bytes withDuration:(double)duration
 {
   [(PLNetworkEnergyModel *)self setUpdateCount:[(PLNetworkEnergyModel *)self updateCount]+ 1];
   [(PLNetworkEnergyModel *)self overallDuration];
-  [(PLNetworkEnergyModel *)self setOverallDuration:v7 + a4];
+  [(PLNetworkEnergyModel *)self setOverallDuration:v7 + duration];
   [(PLNetworkEnergyModel *)self overallBytes];
-  [(PLNetworkEnergyModel *)self setOverallBytes:v8 + a3];
-  [(PLNetworkEnergyModel *)self computeLevel1TimeWithBytes:a3];
+  [(PLNetworkEnergyModel *)self setOverallBytes:v8 + bytes];
+  [(PLNetworkEnergyModel *)self computeLevel1TimeWithBytes:bytes];
 
   [PLNetworkEnergyModel updateAllLevelTimesWithLevel1Time:"updateAllLevelTimesWithLevel1Time:withUpdateDuration:" withUpdateDuration:?];
 }
@@ -97,22 +97,22 @@
 {
   [(PLNetworkEnergyModel *)self powerlevel1Duration];
   v4 = v3;
-  v5 = [(PLNetworkEnergyModel *)self linkCost];
-  v6 = [v5 objectAtIndexedSubscript:{-[PLNetworkEnergyModel linkType](self, "linkType")}];
+  linkCost = [(PLNetworkEnergyModel *)self linkCost];
+  v6 = [linkCost objectAtIndexedSubscript:{-[PLNetworkEnergyModel linkType](self, "linkType")}];
   v7 = [v6 objectAtIndexedSubscript:0];
   [v7 doubleValue];
   v9 = v8;
   [(PLNetworkEnergyModel *)self powerlevel2Duration];
   v11 = v10;
-  v12 = [(PLNetworkEnergyModel *)self linkCost];
-  v13 = [v12 objectAtIndexedSubscript:{-[PLNetworkEnergyModel linkType](self, "linkType")}];
+  linkCost2 = [(PLNetworkEnergyModel *)self linkCost];
+  v13 = [linkCost2 objectAtIndexedSubscript:{-[PLNetworkEnergyModel linkType](self, "linkType")}];
   v14 = [v13 objectAtIndexedSubscript:1];
   [v14 doubleValue];
   v16 = v11 * v15 + v4 * v9;
   [(PLNetworkEnergyModel *)self powerlevel3Duration];
   v18 = v17;
-  v19 = [(PLNetworkEnergyModel *)self linkCost];
-  v20 = [v19 objectAtIndexedSubscript:{-[PLNetworkEnergyModel linkType](self, "linkType")}];
+  linkCost3 = [(PLNetworkEnergyModel *)self linkCost];
+  v20 = [linkCost3 objectAtIndexedSubscript:{-[PLNetworkEnergyModel linkType](self, "linkType")}];
   v21 = [v20 objectAtIndexedSubscript:2];
   [v21 doubleValue];
   v23 = (v16 + v18 * v22) / 3600.0;
@@ -120,49 +120,49 @@
   return v23;
 }
 
-- (double)computeLevel1TimeWithBytes:(double)a3
+- (double)computeLevel1TimeWithBytes:(double)bytes
 {
-  v5 = [(PLNetworkEnergyModel *)self linkLevel1Parameters];
-  v6 = [v5 objectAtIndexedSubscript:{-[PLNetworkEnergyModel linkType](self, "linkType")}];
+  linkLevel1Parameters = [(PLNetworkEnergyModel *)self linkLevel1Parameters];
+  v6 = [linkLevel1Parameters objectAtIndexedSubscript:{-[PLNetworkEnergyModel linkType](self, "linkType")}];
   v7 = [v6 objectAtIndexedSubscript:0];
   [v7 doubleValue];
   v9 = v8;
-  v10 = [(PLNetworkEnergyModel *)self linkLevel1Parameters];
-  v11 = [v10 objectAtIndexedSubscript:{-[PLNetworkEnergyModel linkType](self, "linkType")}];
+  linkLevel1Parameters2 = [(PLNetworkEnergyModel *)self linkLevel1Parameters];
+  v11 = [linkLevel1Parameters2 objectAtIndexedSubscript:{-[PLNetworkEnergyModel linkType](self, "linkType")}];
   v12 = [v11 objectAtIndexedSubscript:1];
   [v12 doubleValue];
-  v14 = v13 + a3 * v9;
+  v14 = v13 + bytes * v9;
 
   return v14;
 }
 
-- (void)updateAllLevelTimesWithLevel1Time:(double)a3 withUpdateDuration:(double)a4
+- (void)updateAllLevelTimesWithLevel1Time:(double)time withUpdateDuration:(double)duration
 {
-  v7 = [(PLNetworkEnergyModel *)self linkDuration];
-  v8 = [v7 objectAtIndexedSubscript:{-[PLNetworkEnergyModel linkType](self, "linkType")}];
+  linkDuration = [(PLNetworkEnergyModel *)self linkDuration];
+  v8 = [linkDuration objectAtIndexedSubscript:{-[PLNetworkEnergyModel linkType](self, "linkType")}];
   v9 = [v8 objectAtIndexedSubscript:1];
   [v9 doubleValue];
   v11 = v10;
 
-  v12 = [(PLNetworkEnergyModel *)self linkDuration];
-  v13 = [v12 objectAtIndexedSubscript:{-[PLNetworkEnergyModel linkType](self, "linkType")}];
+  linkDuration2 = [(PLNetworkEnergyModel *)self linkDuration];
+  v13 = [linkDuration2 objectAtIndexedSubscript:{-[PLNetworkEnergyModel linkType](self, "linkType")}];
   v14 = [v13 objectAtIndexedSubscript:2];
   [v14 doubleValue];
   v16 = v15;
 
-  if (a4 >= a3)
+  if (duration >= time)
   {
-    v17 = a3;
+    durationCopy = time;
   }
 
   else
   {
-    v17 = a4;
+    durationCopy = duration;
   }
 
   [(PLNetworkEnergyModel *)self powerlevel1Duration];
-  [(PLNetworkEnergyModel *)self setPowerlevel1Duration:v17 + v18];
-  v19 = a4 - a3;
+  [(PLNetworkEnergyModel *)self setPowerlevel1Duration:durationCopy + v18];
+  v19 = duration - time;
   v20 = fmax(v19, 0.0);
   if (v11 >= v20)
   {

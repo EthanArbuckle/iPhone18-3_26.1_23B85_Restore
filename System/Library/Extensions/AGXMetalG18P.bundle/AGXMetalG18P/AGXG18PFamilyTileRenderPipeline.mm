@@ -1,13 +1,13 @@
 @interface AGXG18PFamilyTileRenderPipeline
-- (AGXG18PFamilyTileRenderPipeline)initWithDeviceAndTileDesc:(id)a3 tilePipelineStateDescriptor:(id)a4;
-- (id)_newTileRenderPipelineStateWithAdditionalBinaryFunctions:(id)a3 tileFunctionResourceIndices:(const unint64_t *)a4 error:(id *)a5;
+- (AGXG18PFamilyTileRenderPipeline)initWithDeviceAndTileDesc:(id)desc tilePipelineStateDescriptor:(id)descriptor;
+- (id)_newTileRenderPipelineStateWithAdditionalBinaryFunctions:(id)functions tileFunctionResourceIndices:(const unint64_t *)indices error:(id *)error;
 - (id)newTileShaderDebugInfo;
 - (void)dealloc;
 @end
 
 @implementation AGXG18PFamilyTileRenderPipeline
 
-- (id)_newTileRenderPipelineStateWithAdditionalBinaryFunctions:(id)a3 tileFunctionResourceIndices:(const unint64_t *)a4 error:(id *)a5
+- (id)_newTileRenderPipelineStateWithAdditionalBinaryFunctions:(id)functions tileFunctionResourceIndices:(const unint64_t *)indices error:(id *)error
 {
   v51 = *MEMORY[0x29EDCA608];
   if (self->super._basePipeline)
@@ -21,7 +21,7 @@
   }
 
   v9 = [(AGXG18PFamilyRenderPipeline *)[AGXG18PFamilyTileRenderPipeline alloc] initWithParent:basePipeline];
-  v10 = [(_MTLRenderPipelineState *)self device];
+  device = [(_MTLRenderPipelineState *)self device];
   v11 = @"Failed to allocate a new pipeline";
   v42 = @"Failed to allocate a new pipeline";
   v38 = v9;
@@ -29,10 +29,10 @@
   {
     p_impl = &v9->super._impl;
     v13 = &self->super._impl;
-    v40 = v10;
-    AGX::RenderPipeline<AGX::HAL300::ObjClasses,AGX::HAL300::Classes,AGX::HAL300::Encoders>::copyStateAndFunctionsFromOriginal(p_impl, v10, &self->super._impl, [a3 count]);
+    v40 = device;
+    AGX::RenderPipeline<AGX::HAL300::ObjClasses,AGX::HAL300::Classes,AGX::HAL300::Encoders>::copyStateAndFunctionsFromOriginal(p_impl, device, &self->super._impl, [functions count]);
     v41 = p_impl;
-    prime = vcvtps_u32_f32(([a3 count] + *(p_impl + 2816)) / *(p_impl + 2824));
+    prime = vcvtps_u32_f32(([functions count] + *(p_impl + 2816)) / *(p_impl + 2824));
     if (prime == 1)
     {
       prime = 2;
@@ -82,7 +82,7 @@ LABEL_10:
       }
     }
 
-    if (AGX::mergeAndInsertAdditionalBinaryLinkedFunctions<AGX::HAL300::ObjClasses,AGX::HAL300::Classes>(v40, a3, a4, (v41 + 2792), v41 + 3456, &v13[11].object_variant, LODWORD(v13[5].resource_info[9].iosurface), &v42))
+    if (AGX::mergeAndInsertAdditionalBinaryLinkedFunctions<AGX::HAL300::ObjClasses,AGX::HAL300::Classes>(v40, functions, indices, (v41 + 2792), v41 + 3456, &v13[11].object_variant, LODWORD(v13[5].resource_info[9].iosurface), &v42))
     {
       v47 = 0;
       v48 = 0;
@@ -91,7 +91,7 @@ LABEL_10:
       v44 = 0u;
       v45 = 0u;
       v46 = 0u;
-      v21 = [a3 countByEnumeratingWithState:&v43 objects:v50 count:16];
+      v21 = [functions countByEnumeratingWithState:&v43 objects:v50 count:16];
       if (v21)
       {
         v22 = *v44;
@@ -101,7 +101,7 @@ LABEL_10:
           {
             if (*v44 != v22)
             {
-              objc_enumerationMutation(a3);
+              objc_enumerationMutation(functions);
             }
 
             v24 = *(*(&v43 + 1) + 8 * i);
@@ -142,7 +142,7 @@ LABEL_10:
             }
           }
 
-          v21 = [a3 countByEnumeratingWithState:&v43 objects:v50 count:16];
+          v21 = [functions countByEnumeratingWithState:&v43 objects:v50 count:16];
         }
 
         while (v21);
@@ -206,10 +206,10 @@ LABEL_52:
     v11 = v42;
   }
 
-  if (a5 && v11)
+  if (error && v11)
   {
     v36 = [MEMORY[0x29EDB8DC0] dictionaryWithObject:v11 forKey:*MEMORY[0x29EDB9ED8]];
-    *a5 = [objc_alloc(MEMORY[0x29EDB9FA0]) initWithDomain:@"AGXMetalG18P" code:1 userInfo:v36];
+    *error = [objc_alloc(MEMORY[0x29EDB9FA0]) initWithDomain:@"AGXMetalG18P" code:1 userInfo:v36];
   }
 
   return 0;
@@ -263,14 +263,14 @@ LABEL_4:
   [(AGXG18PFamilyRenderPipeline *)&v3 dealloc];
 }
 
-- (AGXG18PFamilyTileRenderPipeline)initWithDeviceAndTileDesc:(id)a3 tilePipelineStateDescriptor:(id)a4
+- (AGXG18PFamilyTileRenderPipeline)initWithDeviceAndTileDesc:(id)desc tilePipelineStateDescriptor:(id)descriptor
 {
   v9.receiver = self;
   v9.super_class = AGXG18PFamilyTileRenderPipeline;
-  v5 = [(_MTLRenderPipelineState *)&v9 initWithDeviceAndTileDesc:a3 tilePipelineStateDescriptor:?];
+  v5 = [(_MTLRenderPipelineState *)&v9 initWithDeviceAndTileDesc:desc tilePipelineStateDescriptor:?];
   if (v5)
   {
-    v6 = [objc_msgSend(a4 "tileFunction")];
+    v6 = [objc_msgSend(descriptor "tileFunction")];
     v5->_tp = v6;
     v7 = v6;
   }

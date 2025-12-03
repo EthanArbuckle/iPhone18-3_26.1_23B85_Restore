@@ -7,12 +7,12 @@
 
 - (uint64_t)wg_beginAppearanceTransitionIfNecessary:()Widgets animated:
 {
-  result = [a1 isViewLoaded];
+  result = [self isViewLoaded];
   if (result)
   {
     if (a3)
     {
-      if (([a1 wg_isDisappearingOrDisappeared] & 1) == 0)
+      if (([self wg_isDisappearingOrDisappeared] & 1) == 0)
       {
         return 0;
       }
@@ -20,14 +20,14 @@
 
     else
     {
-      result = [a1 wg_isAppearingOrAppeared];
+      result = [self wg_isAppearingOrAppeared];
       if (!result)
       {
         return result;
       }
     }
 
-    [a1 beginAppearanceTransition:a3 animated:a4];
+    [self beginAppearanceTransition:a3 animated:a4];
     return 1;
   }
 
@@ -36,12 +36,12 @@
 
 - (uint64_t)wg_endAppearanceTransitionIfNecessary
 {
-  result = [a1 isViewLoaded];
+  result = [self isViewLoaded];
   if (result)
   {
-    if (([a1 _appearState] & 0xFFFFFFFD) == 1)
+    if (([self _appearState] & 0xFFFFFFFD) == 1)
     {
-      [a1 endAppearanceTransition];
+      [self endAppearanceTransition];
       return 1;
     }
 

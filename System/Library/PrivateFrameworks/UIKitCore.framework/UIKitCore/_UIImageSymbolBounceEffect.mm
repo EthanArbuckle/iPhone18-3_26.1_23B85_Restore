@@ -1,18 +1,18 @@
 @interface _UIImageSymbolBounceEffect
 + (id)effect;
-- (BOOL)isEqual:(id)a3;
-- (_UIImageSymbolBounceEffect)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (_UIImageSymbolBounceEffect)initWithCoder:(id)coder;
 - (id)_nsSymbolEffectRepresentation;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _UIImageSymbolBounceEffect
 
 + (id)effect
 {
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS____UIImageSymbolBounceEffect;
   v2 = objc_msgSendSuper2(&v6, sel_effect);
   *(v2 + 24) = 0;
@@ -29,7 +29,7 @@
   bounceDirection = self->_bounceDirection;
   if (bounceDirection == 2)
   {
-    v4 = [MEMORY[0x1E6982248] bounceDownEffect];
+    bounceDownEffect = [MEMORY[0x1E6982248] bounceDownEffect];
   }
 
   else
@@ -43,10 +43,10 @@
     {
       [MEMORY[0x1E6982248] effect];
     }
-    v4 = ;
+    bounceDownEffect = ;
   }
 
-  v5 = v4;
+  v5 = bounceDownEffect;
   if ([(_UIImageSymbolBounceEffect *)self byLayer])
   {
     [v5 effectWithByLayer];
@@ -61,12 +61,12 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v7.receiver = self;
   v7.super_class = _UIImageSymbolBounceEffect;
-  v5 = [(_UIImageSymbolEffect *)&v7 isEqual:v4]&& self->_bounceDirection == v4[3] && self->_byLayer == *(v4 + 16) && [(_UIImageSymbolEffectRepeatBehavior *)self->_repeatBehavior isEqual:v4[4]];
+  v5 = [(_UIImageSymbolEffect *)&v7 isEqual:equalCopy]&& self->_bounceDirection == equalCopy[3] && self->_byLayer == *(equalCopy + 16) && [(_UIImageSymbolEffectRepeatBehavior *)self->_repeatBehavior isEqual:equalCopy[4]];
 
   return v5;
 }
@@ -79,42 +79,42 @@
   return v3 ^ [(_UIImageSymbolEffectRepeatBehavior *)self->_repeatBehavior hash];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = _UIImageSymbolBounceEffect;
-  v4 = [(_UIImageSymbolEffect *)&v6 copyWithZone:a3];
+  v4 = [(_UIImageSymbolEffect *)&v6 copyWithZone:zone];
   *(v4 + 3) = self->_bounceDirection;
   *(v4 + 16) = self->_byLayer;
   objc_storeStrong(v4 + 4, self->_repeatBehavior);
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   bounceDirection = self->_bounceDirection;
-  v5 = a3;
-  [v5 encodeInteger:bounceDirection forKey:@"bounceDirection"];
-  [v5 encodeBool:self->_byLayer forKey:@"byLayer"];
-  [v5 encodeObject:self->_repeatBehavior forKey:@"repeatBehavior"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:bounceDirection forKey:@"bounceDirection"];
+  [coderCopy encodeBool:self->_byLayer forKey:@"byLayer"];
+  [coderCopy encodeObject:self->_repeatBehavior forKey:@"repeatBehavior"];
 }
 
-- (_UIImageSymbolBounceEffect)initWithCoder:(id)a3
+- (_UIImageSymbolBounceEffect)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [objc_opt_class() effect];
+  coderCopy = coder;
+  effect = [objc_opt_class() effect];
 
-  if (v5)
+  if (effect)
   {
-    v5->_bounceDirection = [v4 decodeIntegerForKey:@"bounceDirection"];
-    v5->_byLayer = [v4 decodeBoolForKey:@"byLayer"];
+    effect->_bounceDirection = [coderCopy decodeIntegerForKey:@"bounceDirection"];
+    effect->_byLayer = [coderCopy decodeBoolForKey:@"byLayer"];
     v6 = objc_opt_self();
-    v7 = [v4 decodeObjectOfClass:v6 forKey:@"repeatBehavior"];
-    repeatBehavior = v5->_repeatBehavior;
-    v5->_repeatBehavior = v7;
+    v7 = [coderCopy decodeObjectOfClass:v6 forKey:@"repeatBehavior"];
+    repeatBehavior = effect->_repeatBehavior;
+    effect->_repeatBehavior = v7;
   }
 
-  return v5;
+  return effect;
 }
 
 @end

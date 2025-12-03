@@ -1,11 +1,11 @@
 @interface AMSMockURLResponse
-+ (AMSMockURLResponse)responseWithError:(id)a3;
-+ (AMSMockURLResponse)responseWithHARFile:(id)a3;
-+ (AMSMockURLResponse)responseWithStatus:(unint64_t)a3 headers:(id)a4 body:(id)a5;
++ (AMSMockURLResponse)responseWithError:(id)error;
++ (AMSMockURLResponse)responseWithHARFile:(id)file;
++ (AMSMockURLResponse)responseWithStatus:(unint64_t)status headers:(id)headers body:(id)body;
 + (id)responseFromActualResponse;
-- ($E6850AB11FD6883D5322B0A2111D5812)handleReceivedRequest:(SEL)a3;
+- ($E6850AB11FD6883D5322B0A2111D5812)handleReceivedRequest:(SEL)request;
 - (AMSMockURLResponse)init;
-- (void)addResponseHandler:(id)a3;
+- (void)addResponseHandler:(id)handler;
 - (void)stopRunningTasks;
 @end
 
@@ -34,32 +34,32 @@
   return v2;
 }
 
-+ (AMSMockURLResponse)responseWithError:(id)a3
++ (AMSMockURLResponse)responseWithError:(id)error
 {
-  v3 = a3;
+  errorCopy = error;
   v4 = objc_alloc_init(AMSMockURLResponse);
-  [(AMSMockURLResponse *)v4 setError:v3];
+  [(AMSMockURLResponse *)v4 setError:errorCopy];
 
   return v4;
 }
 
-+ (AMSMockURLResponse)responseWithStatus:(unint64_t)a3 headers:(id)a4 body:(id)a5
++ (AMSMockURLResponse)responseWithStatus:(unint64_t)status headers:(id)headers body:(id)body
 {
-  v7 = a5;
-  v8 = a4;
+  bodyCopy = body;
+  headersCopy = headers;
   v9 = objc_alloc_init(AMSMockURLResponse);
-  [(AMSMockURLResponse *)v9 setStatusCode:a3];
-  [(AMSMockURLResponse *)v9 setHeaders:v8];
+  [(AMSMockURLResponse *)v9 setStatusCode:status];
+  [(AMSMockURLResponse *)v9 setHeaders:headersCopy];
 
-  [(AMSMockURLResponse *)v9 setBody:v7];
+  [(AMSMockURLResponse *)v9 setBody:bodyCopy];
 
   return v9;
 }
 
-+ (AMSMockURLResponse)responseWithHARFile:(id)a3
++ (AMSMockURLResponse)responseWithHARFile:(id)file
 {
   v84 = *MEMORY[0x1E69E9840];
-  v3 = [a3 objectForKeyedSubscript:@"log"];
+  v3 = [file objectForKeyedSubscript:@"log"];
   v4 = [v3 objectForKeyedSubscript:@"entries"];
 
   objc_opt_class();
@@ -73,11 +73,11 @@
     v5 = 0;
   }
 
-  v6 = [v5 firstObject];
+  firstObject = [v5 firstObject];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
+    v7 = firstObject;
   }
 
   else
@@ -287,24 +287,24 @@ LABEL_41:
           v44 = 0;
         }
 
-        v45 = [v44 lowercaseString];
+        lowercaseString = [v44 lowercaseString];
 
         v46 = [v42 objectForKeyedSubscript:@"value"];
         v47 = v46;
-        if (v45 && v46)
+        if (lowercaseString && v46)
         {
-          v48 = [v37 objectForKeyedSubscript:v45];
+          v48 = [v37 objectForKeyedSubscript:lowercaseString];
 
           if (v48)
           {
-            v49 = [v37 objectForKeyedSubscript:v45];
+            v49 = [v37 objectForKeyedSubscript:lowercaseString];
             v50 = [v49 stringByAppendingFormat:@", %@", v47, v66];
-            [v37 setObject:v50 forKeyedSubscript:v45];
+            [v37 setObject:v50 forKeyedSubscript:lowercaseString];
           }
 
           else
           {
-            [v37 setObject:v47 forKeyedSubscript:v45];
+            [v37 setObject:v47 forKeyedSubscript:lowercaseString];
           }
         }
       }
@@ -362,10 +362,10 @@ LABEL_41:
 
   [(AMSMockURLResponse *)v71 setBody:v58];
   v59 = [v37 ams_objectForCaseInsensitiveKey:@"content-encoding"];
-  v60 = [(AMSMockURLResponse *)v71 body];
-  if (v60)
+  body = [(AMSMockURLResponse *)v71 body];
+  if (body)
   {
-    v61 = v60;
+    v61 = body;
     v62 = [v59 containsString:@"gzip"];
 
     if (v62)
@@ -382,13 +382,13 @@ LABEL_78:
   return v19;
 }
 
-- ($E6850AB11FD6883D5322B0A2111D5812)handleReceivedRequest:(SEL)a3
+- ($E6850AB11FD6883D5322B0A2111D5812)handleReceivedRequest:(SEL)request
 {
   v68 = *MEMORY[0x1E69E9840];
   v6 = a4;
-  v7 = [(AMSMockURLResponse *)self error];
+  error = [(AMSMockURLResponse *)self error];
 
-  if (v7)
+  if (error)
   {
     retstr->var0 = 0;
     retstr->var1 = 0;
@@ -417,8 +417,8 @@ LABEL_78:
     v54 = 0;
     if ([(AMSMockURLResponse *)self performActualRequest])
     {
-      v8 = [MEMORY[0x1E695AC80] defaultSessionConfiguration];
-      v9 = [MEMORY[0x1E695AC78] sessionWithConfiguration:v8];
+      defaultSessionConfiguration = [MEMORY[0x1E695AC80] defaultSessionConfiguration];
+      v9 = [MEMORY[0x1E695AC78] sessionWithConfiguration:defaultSessionConfiguration];
       v10 = dispatch_semaphore_create(0);
       v44[0] = MEMORY[0x1E69E9820];
       v44[1] = 3221225472;
@@ -432,36 +432,36 @@ LABEL_78:
       v12 = [v9 dataTaskWithRequest:v6 completionHandler:v44];
       [(AMSMockURLResponse *)self setRunningTask:v12];
 
-      v13 = [(AMSMockURLResponse *)self runningTask];
-      [v13 resume];
+      runningTask = [(AMSMockURLResponse *)self runningTask];
+      [runningTask resume];
 
       dispatch_semaphore_wait(v11, 0xFFFFFFFFFFFFFFFFLL);
       [v9 finishTasksAndInvalidate];
-      v14 = [(AMSMockURLResponse *)self statusCode];
-      v15 = self;
-      if (!v14)
+      statusCode = [(AMSMockURLResponse *)self statusCode];
+      selfCopy = self;
+      if (!statusCode)
       {
-        v15 = v62[5];
+        selfCopy = v62[5];
       }
 
-      v16 = [(AMSMockURLResponse *)v15 statusCode];
-      v17 = [(AMSMockURLResponse *)self headers];
-      v18 = v17;
-      if (v17)
+      statusCode2 = [(AMSMockURLResponse *)selfCopy statusCode];
+      headers = [(AMSMockURLResponse *)self headers];
+      v18 = headers;
+      if (headers)
       {
-        v19 = v17;
+        allHeaderFields = headers;
       }
 
       else
       {
-        v19 = [v62[5] allHeaderFields];
+        allHeaderFields = [v62[5] allHeaderFields];
       }
 
-      v27 = v19;
+      v27 = allHeaderFields;
 
-      v28 = [(AMSMockURLResponse *)self body];
-      v29 = v28;
-      if (!v28)
+      body = [(AMSMockURLResponse *)self body];
+      v29 = body;
+      if (!body)
       {
         v29 = v56[5];
       }
@@ -470,7 +470,7 @@ LABEL_78:
 
       v30 = objc_alloc(MEMORY[0x1E695AC08]);
       v31 = [v62[5] URL];
-      v32 = [v30 initWithURL:v31 statusCode:v16 HTTPVersion:@"1.1" headerFields:v27];
+      v32 = [v30 initWithURL:v31 statusCode:statusCode2 HTTPVersion:@"1.1" headerFields:v27];
       v33 = v62[5];
       v62[5] = v32;
     }
@@ -479,23 +479,23 @@ LABEL_78:
     {
       v20 = objc_alloc(MEMORY[0x1E695AC08]);
       v21 = [v6 URL];
-      v22 = [(AMSMockURLResponse *)self statusCode];
-      v23 = [(AMSMockURLResponse *)self headers];
-      v24 = [v20 initWithURL:v21 statusCode:v22 HTTPVersion:@"1.1" headerFields:v23];
+      statusCode3 = [(AMSMockURLResponse *)self statusCode];
+      headers2 = [(AMSMockURLResponse *)self headers];
+      v24 = [v20 initWithURL:v21 statusCode:statusCode3 HTTPVersion:@"1.1" headerFields:headers2];
       v25 = v62[5];
       v62[5] = v24;
 
-      v26 = [(AMSMockURLResponse *)self body];
-      v8 = v56[5];
-      v56[5] = v26;
+      body2 = [(AMSMockURLResponse *)self body];
+      defaultSessionConfiguration = v56[5];
+      v56[5] = body2;
     }
 
     v42 = 0u;
     v43 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v34 = [(AMSMockURLResponse *)self responseHandlerBlocks];
-    v35 = [v34 countByEnumeratingWithState:&v40 objects:v67 count:16];
+    responseHandlerBlocks = [(AMSMockURLResponse *)self responseHandlerBlocks];
+    v35 = [responseHandlerBlocks countByEnumeratingWithState:&v40 objects:v67 count:16];
     if (v35)
     {
       v36 = *v41;
@@ -505,7 +505,7 @@ LABEL_78:
         {
           if (*v41 != v36)
           {
-            objc_enumerationMutation(v34);
+            objc_enumerationMutation(responseHandlerBlocks);
           }
 
           v38 = (*(*(*(&v40 + 1) + 8 * i) + 16))();
@@ -515,7 +515,7 @@ LABEL_78:
           }
         }
 
-        v35 = [v34 countByEnumeratingWithState:&v40 objects:v67 count:16];
+        v35 = [responseHandlerBlocks countByEnumeratingWithState:&v40 objects:v67 count:16];
       }
 
       while (v35);
@@ -567,19 +567,19 @@ void __44__AMSMockURLResponse_handleReceivedRequest___block_invoke(uint64_t a1, 
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (void)addResponseHandler:(id)a3
+- (void)addResponseHandler:(id)handler
 {
-  v4 = a3;
-  v6 = [(AMSMockURLResponse *)self responseHandlerBlocks];
-  v5 = [v4 copy];
+  handlerCopy = handler;
+  responseHandlerBlocks = [(AMSMockURLResponse *)self responseHandlerBlocks];
+  v5 = [handlerCopy copy];
 
-  [v6 addObject:v5];
+  [responseHandlerBlocks addObject:v5];
 }
 
 - (void)stopRunningTasks
 {
-  v2 = [(AMSMockURLResponse *)self runningTask];
-  [v2 cancel];
+  runningTask = [(AMSMockURLResponse *)self runningTask];
+  [runningTask cancel];
 }
 
 @end

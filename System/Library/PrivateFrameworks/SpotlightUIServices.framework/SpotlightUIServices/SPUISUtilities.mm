@@ -1,32 +1,32 @@
 @interface SPUISUtilities
-+ (id)indexedBundleIdentifierForResult:(id)a3;
-+ (id)localizedStringForKey:(id)a3;
++ (id)indexedBundleIdentifierForResult:(id)result;
++ (id)localizedStringForKey:(id)key;
 @end
 
 @implementation SPUISUtilities
 
-+ (id)localizedStringForKey:(id)a3
++ (id)localizedStringForKey:(id)key
 {
   v4 = MEMORY[0x277CCA8D8];
-  v5 = a3;
-  v6 = [v4 bundleForClass:a1];
-  v7 = [v6 localizedStringForKey:v5 value:&stru_287C50EE8 table:0];
+  keyCopy = key;
+  v6 = [v4 bundleForClass:self];
+  v7 = [v6 localizedStringForKey:keyCopy value:&stru_287C50EE8 table:0];
 
   return v7;
 }
 
-+ (id)indexedBundleIdentifierForResult:(id)a3
++ (id)indexedBundleIdentifierForResult:(id)result
 {
-  v3 = a3;
+  resultCopy = result;
   if (indexedBundleIdentifierForResult__onceToken != -1)
   {
     +[SPUISUtilities indexedBundleIdentifierForResult:];
   }
 
-  v4 = [v3 resultBundleId];
-  if (v4)
+  resultBundleId = [resultCopy resultBundleId];
+  if (resultBundleId)
   {
-    v5 = [indexedBundleIdentifierForResult__indexedBundleIdentifierForResultBundleIds objectForKeyedSubscript:v4];
+    v5 = [indexedBundleIdentifierForResult__indexedBundleIdentifierForResultBundleIds objectForKeyedSubscript:resultBundleId];
     v6 = v5;
     if (v5)
     {
@@ -35,7 +35,7 @@
 
     else
     {
-      v7 = v4;
+      v7 = resultBundleId;
     }
 
     v8 = v7;

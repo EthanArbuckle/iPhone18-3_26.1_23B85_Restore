@@ -1,71 +1,71 @@
 @interface CALNEKTravelAdvisoryTimelinessAuthority
-- (CALNEKTravelAdvisoryTimelinessAuthority)initWithTravelAdvisoryTimelinessAuthority:(id)a3;
-- (id)startOfLeaveNowPeriodForHypothesis:(id)a3;
-- (id)startOfRunningLatePeriodForHypothesis:(id)a3;
-- (unint64_t)periodForHypothesis:(id)a3;
+- (CALNEKTravelAdvisoryTimelinessAuthority)initWithTravelAdvisoryTimelinessAuthority:(id)authority;
+- (id)startOfLeaveNowPeriodForHypothesis:(id)hypothesis;
+- (id)startOfRunningLatePeriodForHypothesis:(id)hypothesis;
+- (unint64_t)periodForHypothesis:(id)hypothesis;
 @end
 
 @implementation CALNEKTravelAdvisoryTimelinessAuthority
 
-- (CALNEKTravelAdvisoryTimelinessAuthority)initWithTravelAdvisoryTimelinessAuthority:(id)a3
+- (CALNEKTravelAdvisoryTimelinessAuthority)initWithTravelAdvisoryTimelinessAuthority:(id)authority
 {
-  v5 = a3;
+  authorityCopy = authority;
   v9.receiver = self;
   v9.super_class = CALNEKTravelAdvisoryTimelinessAuthority;
   v6 = [(CALNEKTravelAdvisoryTimelinessAuthority *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_travelAdvisoryTimelinessAuthority, a3);
+    objc_storeStrong(&v6->_travelAdvisoryTimelinessAuthority, authority);
   }
 
   return v7;
 }
 
-- (unint64_t)periodForHypothesis:(id)a3
+- (unint64_t)periodForHypothesis:(id)hypothesis
 {
-  v4 = a3;
-  v5 = [(CALNEKTravelAdvisoryTimelinessAuthority *)self travelAdvisoryTimelinessAuthority];
-  [v5 updateWithHypothesis:v4];
+  hypothesisCopy = hypothesis;
+  travelAdvisoryTimelinessAuthority = [(CALNEKTravelAdvisoryTimelinessAuthority *)self travelAdvisoryTimelinessAuthority];
+  [travelAdvisoryTimelinessAuthority updateWithHypothesis:hypothesisCopy];
 
-  v6 = [v5 period];
-  return v6;
+  period = [travelAdvisoryTimelinessAuthority period];
+  return period;
 }
 
-- (id)startOfLeaveNowPeriodForHypothesis:(id)a3
+- (id)startOfLeaveNowPeriodForHypothesis:(id)hypothesis
 {
-  v4 = a3;
-  v5 = [(CALNEKTravelAdvisoryTimelinessAuthority *)self travelAdvisoryTimelinessAuthority];
-  [v5 updateWithHypothesis:v4];
-  v6 = [v5 startOfLeaveNowPeriod];
-  if (!v6)
+  hypothesisCopy = hypothesis;
+  travelAdvisoryTimelinessAuthority = [(CALNEKTravelAdvisoryTimelinessAuthority *)self travelAdvisoryTimelinessAuthority];
+  [travelAdvisoryTimelinessAuthority updateWithHypothesis:hypothesisCopy];
+  startOfLeaveNowPeriod = [travelAdvisoryTimelinessAuthority startOfLeaveNowPeriod];
+  if (!startOfLeaveNowPeriod)
   {
     v7 = +[CALNLogSubsystem calendar];
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      [(CALNEKTravelAdvisoryTimelinessAuthority *)v4 startOfLeaveNowPeriodForHypothesis:v7];
+      [(CALNEKTravelAdvisoryTimelinessAuthority *)hypothesisCopy startOfLeaveNowPeriodForHypothesis:v7];
     }
   }
 
-  return v6;
+  return startOfLeaveNowPeriod;
 }
 
-- (id)startOfRunningLatePeriodForHypothesis:(id)a3
+- (id)startOfRunningLatePeriodForHypothesis:(id)hypothesis
 {
-  v4 = a3;
-  v5 = [(CALNEKTravelAdvisoryTimelinessAuthority *)self travelAdvisoryTimelinessAuthority];
-  [v5 updateWithHypothesis:v4];
-  v6 = [v5 startOfRunningLatePeriod];
-  if (!v6)
+  hypothesisCopy = hypothesis;
+  travelAdvisoryTimelinessAuthority = [(CALNEKTravelAdvisoryTimelinessAuthority *)self travelAdvisoryTimelinessAuthority];
+  [travelAdvisoryTimelinessAuthority updateWithHypothesis:hypothesisCopy];
+  startOfRunningLatePeriod = [travelAdvisoryTimelinessAuthority startOfRunningLatePeriod];
+  if (!startOfRunningLatePeriod)
   {
     v7 = +[CALNLogSubsystem calendar];
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      [(CALNEKTravelAdvisoryTimelinessAuthority *)v4 startOfRunningLatePeriodForHypothesis:v7];
+      [(CALNEKTravelAdvisoryTimelinessAuthority *)hypothesisCopy startOfRunningLatePeriodForHypothesis:v7];
     }
   }
 
-  return v6;
+  return startOfRunningLatePeriod;
 }
 
 - (void)startOfLeaveNowPeriodForHypothesis:(uint64_t)a1 .cold.1(uint64_t a1, NSObject *a2)

@@ -1,7 +1,7 @@
 @interface IconDetection
 - (NSString)labelString;
 - (_TtC15UIUnderstanding13IconDetection)init;
-- (_TtC15UIUnderstanding13IconDetection)initWithLabel:(int64_t)a3 confidence:(double)a4;
+- (_TtC15UIUnderstanding13IconDetection)initWithLabel:(int64_t)label confidence:(double)confidence;
 @end
 
 @implementation IconDetection
@@ -14,10 +14,10 @@
   return v2;
 }
 
-- (_TtC15UIUnderstanding13IconDetection)initWithLabel:(int64_t)a3 confidence:(double)a4
+- (_TtC15UIUnderstanding13IconDetection)initWithLabel:(int64_t)label confidence:(double)confidence
 {
-  *(&self->super.isa + OBJC_IVAR____TtC15UIUnderstanding13IconDetection_label) = a3;
-  *(&self->super.isa + OBJC_IVAR____TtC15UIUnderstanding13IconDetection_confidence) = a4;
+  *(&self->super.isa + OBJC_IVAR____TtC15UIUnderstanding13IconDetection_label) = label;
+  *(&self->super.isa + OBJC_IVAR____TtC15UIUnderstanding13IconDetection_confidence) = confidence;
   v5.receiver = self;
   v5.super_class = type metadata accessor for IconDetection();
   return [(IconDetection *)&v5 init];

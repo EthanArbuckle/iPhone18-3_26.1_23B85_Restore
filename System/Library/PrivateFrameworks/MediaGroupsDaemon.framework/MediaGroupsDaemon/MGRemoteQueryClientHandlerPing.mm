@@ -1,14 +1,14 @@
 @interface MGRemoteQueryClientHandlerPing
 + (id)handler;
 - (NSString)description;
-- (id)handleCompleteResponse:(id)a3 jsonPayload:(id)a4;
+- (id)handleCompleteResponse:(id)response jsonPayload:(id)payload;
 @end
 
 @implementation MGRemoteQueryClientHandlerPing
 
 + (id)handler
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
@@ -23,10 +23,10 @@
   return v6;
 }
 
-- (id)handleCompleteResponse:(id)a3 jsonPayload:(id)a4
+- (id)handleCompleteResponse:(id)response jsonPayload:(id)payload
 {
   v13 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  payloadCopy = payload;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -34,18 +34,18 @@
     goto LABEL_6;
   }
 
-  if (!v5)
+  if (!payloadCopy)
   {
 LABEL_6:
     v6 = 0;
     goto LABEL_7;
   }
 
-  v6 = v5;
-  if (![v5 count])
+  v6 = payloadCopy;
+  if (![payloadCopy count])
   {
     v7 = 0;
-    v6 = v5;
+    v6 = payloadCopy;
     goto LABEL_10;
   }
 
@@ -54,7 +54,7 @@ LABEL_7:
   if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
   {
     v11 = 134217984;
-    v12 = self;
+    selfCopy = self;
     _os_log_error_impl(&dword_25863A000, v8, OS_LOG_TYPE_ERROR, "%p client handler received malformed ping payload content", &v11, 0xCu);
   }
 

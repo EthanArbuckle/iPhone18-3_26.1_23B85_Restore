@@ -1,28 +1,28 @@
 @interface CNVirtualScheduler
-+ (id)providerWithScheduler:(id)a3;
-+ (unint64_t)timeWithDelay:(double)a3 fromClock:(unint64_t)a4;
++ (id)providerWithScheduler:(id)scheduler;
++ (unint64_t)timeWithDelay:(double)delay fromClock:(unint64_t)clock;
 - (BOOL)_performJobs;
 - (CNVirtualScheduler)init;
 - (NSString)description;
-- (id)_scheduleBlock:(id)a3 atTime:(unint64_t)a4;
-- (id)afterDelay:(double)a3 performBlock:(id)a4 qualityOfService:(unint64_t)a5;
-- (id)performCancelableBlock:(id)a3 qualityOfService:(unint64_t)a4;
+- (id)_scheduleBlock:(id)block atTime:(unint64_t)time;
+- (id)afterDelay:(double)delay performBlock:(id)block qualityOfService:(unint64_t)service;
+- (id)performCancelableBlock:(id)block qualityOfService:(unint64_t)service;
 - (unint64_t)_nextSchedulableTick;
-- (void)advanceTo:(unint64_t)a3;
-- (void)performBlock:(id)a3 qualityOfService:(unint64_t)a4;
+- (void)advanceTo:(unint64_t)to;
+- (void)performBlock:(id)block qualityOfService:(unint64_t)service;
 @end
 
 @implementation CNVirtualScheduler
 
-+ (id)providerWithScheduler:(id)a3
++ (id)providerWithScheduler:(id)scheduler
 {
-  v3 = a3;
+  schedulerCopy = scheduler;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __44__CNVirtualScheduler_providerWithScheduler___block_invoke;
   aBlock[3] = &unk_1E6ED5B68;
-  v9 = v3;
-  v4 = v3;
+  v9 = schedulerCopy;
+  v4 = schedulerCopy;
   v5 = _Block_copy(aBlock);
   v6 = [[CNSchedulerProvider alloc] initWithBackgroundScheduler:v4 mainThreadScheduler:v4 inlineScheduler:v4 immediateScheduler:v4 serialSchedulerProvider:v5 workloopSchedulerProvider:v5 synchronousSerialSchedulerProvider:&__block_literal_global_11 readerWriterSchedulerProvider:&__block_literal_global_3];
 
@@ -60,8 +60,8 @@ CNVirtualReaderWriterScheduler *__44__CNVirtualScheduler_providerWithScheduler__
 {
   if ([(CNQueue *)self->_queue count])
   {
-    v3 = [(CNQueue *)self->_queue allObjects];
-    v4 = [v3 _cn_map:&__block_literal_global_10_0];
+    allObjects = [(CNQueue *)self->_queue allObjects];
+    v4 = [allObjects _cn_map:&__block_literal_global_10_0];
     v5 = [v4 sortedArrayUsingSelector:sel_compare_];
     v6 = [v5 _cn_map:&__block_literal_global_16];
 
@@ -102,19 +102,19 @@ uint64_t __33__CNVirtualScheduler_description__block_invoke(uint64_t a1, void *a
   return [v2 numberWithUnsignedInteger:v3];
 }
 
-- (void)performBlock:(id)a3 qualityOfService:(unint64_t)a4
+- (void)performBlock:(id)block qualityOfService:(unint64_t)service
 {
-  v6 = a3;
-  v5 = [(CNVirtualScheduler *)self _scheduleBlock:v6 atTime:[(CNVirtualScheduler *)self _nextSchedulableTick]];
+  blockCopy = block;
+  v5 = [(CNVirtualScheduler *)self _scheduleBlock:blockCopy atTime:[(CNVirtualScheduler *)self _nextSchedulableTick]];
   if (self->_isStarted && !self->_isPerforming)
   {
     [(CNVirtualScheduler *)self _performJobs];
   }
 }
 
-- (id)performCancelableBlock:(id)a3 qualityOfService:(unint64_t)a4
+- (id)performCancelableBlock:(id)block qualityOfService:(unint64_t)service
 {
-  v5 = a3;
+  blockCopy = block;
   v6 = objc_alloc_init(CNCancelationToken);
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
@@ -122,7 +122,7 @@ uint64_t __33__CNVirtualScheduler_description__block_invoke(uint64_t a1, void *a
   v16[3] = &unk_1E6ED5858;
   v7 = v6;
   v17 = v7;
-  v8 = v5;
+  v8 = blockCopy;
   v18 = v8;
   v9 = [v16 copy];
   v10 = [(CNVirtualScheduler *)self _scheduleBlock:v9 atTime:[(CNVirtualScheduler *)self _nextSchedulableTick]];
@@ -167,10 +167,10 @@ void __62__CNVirtualScheduler_performCancelableBlock_qualityOfService___block_in
   [v2 dequeueObject:WeakRetained];
 }
 
-- (id)afterDelay:(double)a3 performBlock:(id)a4 qualityOfService:(unint64_t)a5
+- (id)afterDelay:(double)delay performBlock:(id)block qualityOfService:(unint64_t)service
 {
-  v7 = a4;
-  v8 = -[CNVirtualScheduler _scheduleBlock:atTime:](self, "_scheduleBlock:atTime:", v7, [objc_opt_class() timeWithDelay:self->_clock fromClock:a3]);
+  blockCopy = block;
+  v8 = -[CNVirtualScheduler _scheduleBlock:atTime:](self, "_scheduleBlock:atTime:", blockCopy, [objc_opt_class() timeWithDelay:self->_clock fromClock:delay]);
   objc_initWeak(&location, v8);
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -192,10 +192,10 @@ void __63__CNVirtualScheduler_afterDelay_performBlock_qualityOfService___block_i
   [v2 dequeueObject:WeakRetained];
 }
 
-+ (unint64_t)timeWithDelay:(double)a3 fromClock:(unint64_t)a4
++ (unint64_t)timeWithDelay:(double)delay fromClock:(unint64_t)clock
 {
-  v4 = vcvtad_u64_f64(a3 * 10000.0) + a4;
-  if ((~a4 / 0x2710) <= a3)
+  v4 = vcvtad_u64_f64(delay * 10000.0) + clock;
+  if ((~clock / 0x2710) <= delay)
   {
     return -1;
   }
@@ -206,9 +206,9 @@ void __63__CNVirtualScheduler_afterDelay_performBlock_qualityOfService___block_i
   }
 }
 
-- (id)_scheduleBlock:(id)a3 atTime:(unint64_t)a4
+- (id)_scheduleBlock:(id)block atTime:(unint64_t)time
 {
-  v5 = [CNVirtualSchedulerJob jobWithTime:a4 block:a3];
+  v5 = [CNVirtualSchedulerJob jobWithTime:time block:block];
   [(CNQueue *)self->_queue enqueue:v5];
 
   return v5;
@@ -221,22 +221,22 @@ void __63__CNVirtualScheduler_afterDelay_performBlock_qualityOfService___block_i
   return v2;
 }
 
-- (void)advanceTo:(unint64_t)a3
+- (void)advanceTo:(unint64_t)to
 {
-  self->_stopTime = a3;
+  self->_stopTime = to;
   if ([(CNVirtualScheduler *)self _performJobs])
   {
-    self->_clock = a3;
-    self->_nextSchedulableTick = a3;
+    self->_clock = to;
+    self->_nextSchedulableTick = to;
   }
 }
 
 - (BOOL)_performJobs
 {
-  v3 = [(CNQueue *)self->_queue peek];
-  if (v3)
+  peek = [(CNQueue *)self->_queue peek];
+  if (peek)
   {
-    v4 = v3;
+    v4 = peek;
     do
     {
       if (!self->_isStarted && [v4 time] > self->_stopTime)
@@ -244,30 +244,30 @@ void __63__CNVirtualScheduler_afterDelay_performBlock_qualityOfService___block_i
         break;
       }
 
-      v5 = [v4 time];
-      self->_clock = v5;
-      self->_nextSchedulableTick = v5;
+      time = [v4 time];
+      self->_clock = time;
+      self->_nextSchedulableTick = time;
       self->_isPerforming = 1;
-      v6 = [v4 block];
-      v6[2]();
+      block = [v4 block];
+      block[2]();
 
       self->_isPerforming = 0;
       [(CNQueue *)self->_queue dequeueObject:v4];
-      v7 = [(CNQueue *)self->_queue peek];
+      peek2 = [(CNQueue *)self->_queue peek];
 
-      v4 = v7;
+      v4 = peek2;
     }
 
-    while (v7);
+    while (peek2);
   }
 
-  v8 = [(CNQueue *)self->_queue allObjects];
+  allObjects = [(CNQueue *)self->_queue allObjects];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __34__CNVirtualScheduler__performJobs__block_invoke;
   v11[3] = &unk_1E6ED5C38;
   v11[4] = self;
-  v9 = [v8 _cn_any:v11];
+  v9 = [allObjects _cn_any:v11];
 
   return v9 ^ 1;
 }

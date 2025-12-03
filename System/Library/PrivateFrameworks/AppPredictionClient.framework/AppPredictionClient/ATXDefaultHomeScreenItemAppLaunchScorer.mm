@@ -1,5 +1,5 @@
 @interface ATXDefaultHomeScreenItemAppLaunchScorer
-- (ATXDefaultHomeScreenItemAppLaunchScorer)initWithWidget:(id)a3 appLaunchHistogram:(id)a4;
+- (ATXDefaultHomeScreenItemAppLaunchScorer)initWithWidget:(id)widget appLaunchHistogram:(id)histogram;
 - (BOOL)_isAppPredictionsWidget;
 - (BOOL)_isContactsWidget;
 - (BOOL)_isSleepWidget;
@@ -8,26 +8,26 @@
 - (id)_appLaunchScoreForContactsWidget;
 - (id)_appLaunchScoreForSleepWidget;
 - (id)_dateOfSleepOnboardingCompletion;
-- (id)_rawLaunchCountAndNumberOfUniqueDaysParentAppWasLaunchedWithCachedAppLaunchData:(id)a3;
-- (id)scoreWithCachedAppLaunchData:(id)a3;
+- (id)_rawLaunchCountAndNumberOfUniqueDaysParentAppWasLaunchedWithCachedAppLaunchData:(id)data;
+- (id)scoreWithCachedAppLaunchData:(id)data;
 - (void)_appLaunchScoreForContactsWidget;
 - (void)_appLaunchScoreForSleepWidget;
 @end
 
 @implementation ATXDefaultHomeScreenItemAppLaunchScorer
 
-- (ATXDefaultHomeScreenItemAppLaunchScorer)initWithWidget:(id)a3 appLaunchHistogram:(id)a4
+- (ATXDefaultHomeScreenItemAppLaunchScorer)initWithWidget:(id)widget appLaunchHistogram:(id)histogram
 {
-  v7 = a3;
-  v8 = a4;
+  widgetCopy = widget;
+  histogramCopy = histogram;
   v12.receiver = self;
   v12.super_class = ATXDefaultHomeScreenItemAppLaunchScorer;
   v9 = [(ATXDefaultHomeScreenItemAppLaunchScorer *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_widget, a3);
-    objc_storeStrong(&v10->_spotlightLaunchesHistogram, a4);
+    objc_storeStrong(&v9->_widget, widget);
+    objc_storeStrong(&v10->_spotlightLaunchesHistogram, histogram);
   }
 
   return v10;
@@ -36,15 +36,15 @@
 - (id)_dateOfSleepOnboardingCompletion
 {
   v2 = objc_autoreleasePoolPush();
-  v3 = [MEMORY[0x1E695E000] hksp_sleepdUserDefaults];
-  if ([v3 integerForKey:*MEMORY[0x1E69D3678]] < 1)
+  hksp_sleepdUserDefaults = [MEMORY[0x1E695E000] hksp_sleepdUserDefaults];
+  if ([hksp_sleepdUserDefaults integerForKey:*MEMORY[0x1E69D3678]] < 1)
   {
     v6 = 0;
   }
 
   else
   {
-    v4 = [v3 objectForKey:*MEMORY[0x1E69D3680]];
+    v4 = [hksp_sleepdUserDefaults objectForKey:*MEMORY[0x1E69D3680]];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -66,18 +66,18 @@
 
 - (id)_appLaunchScoreForSleepWidget
 {
-  v4 = [(ATXHomeScreenWidgetDescriptor *)self->_widget avocadoDescriptor];
-  v5 = [v4 extensionBundleIdentifier];
-  v6 = [v5 isEqualToString:@"com.apple.Health.Sleep.SleepWidgetExtension"];
+  avocadoDescriptor = [(ATXHomeScreenWidgetDescriptor *)self->_widget avocadoDescriptor];
+  extensionBundleIdentifier = [avocadoDescriptor extensionBundleIdentifier];
+  v6 = [extensionBundleIdentifier isEqualToString:@"com.apple.Health.Sleep.SleepWidgetExtension"];
 
   if ((v6 & 1) == 0)
   {
     [(ATXDefaultHomeScreenItemAppLaunchScorer *)a2 _appLaunchScoreForSleepWidget];
   }
 
-  v7 = [(ATXHomeScreenWidgetDescriptor *)self->_widget avocadoDescriptor];
-  v8 = [v7 kind];
-  v9 = [v8 isEqualToString:@"com.apple.health.SleepWidget"];
+  avocadoDescriptor2 = [(ATXHomeScreenWidgetDescriptor *)self->_widget avocadoDescriptor];
+  kind = [avocadoDescriptor2 kind];
+  v9 = [kind isEqualToString:@"com.apple.health.SleepWidget"];
 
   if ((v9 & 1) == 0)
   {
@@ -105,9 +105,9 @@
   if (v11)
   {
     v13 = [(ATXAggregatedAppLaunchData *)v12 initWithRawLaunchCount:5 uniqueDaysLaunched:5];
-    v14 = [MEMORY[0x1E695DEE8] currentCalendar];
+    currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
     v15 = [MEMORY[0x1E695DF00] now];
-    v16 = [v14 dateByAddingUnit:16 value:-7 toDate:v15 options:0];
+    v16 = [currentCalendar dateByAddingUnit:16 value:-7 toDate:v15 options:0];
 
     if ([v16 compare:_appLaunchScoreForSleepWidget_dateOfSleepOnboardingCompletion] == -1)
     {
@@ -141,34 +141,34 @@ uint64_t __72__ATXDefaultHomeScreenItemAppLaunchScorer__appLaunchScoreForSleepWi
 
 - (id)_appLaunchScoreForContactsWidget
 {
-  v4 = [(ATXHomeScreenWidgetDescriptor *)self->_widget avocadoDescriptor];
-  v5 = [v4 extensionBundleIdentifier];
-  v6 = [v5 isEqualToString:@"com.apple.PeopleViewService.PeopleWidget-iOS"];
+  avocadoDescriptor = [(ATXHomeScreenWidgetDescriptor *)self->_widget avocadoDescriptor];
+  extensionBundleIdentifier = [avocadoDescriptor extensionBundleIdentifier];
+  v6 = [extensionBundleIdentifier isEqualToString:@"com.apple.PeopleViewService.PeopleWidget-iOS"];
 
   if ((v6 & 1) == 0)
   {
     [(ATXDefaultHomeScreenItemAppLaunchScorer *)a2 _appLaunchScoreForContactsWidget];
   }
 
-  v7 = [(ATXHomeScreenWidgetDescriptor *)self->_widget avocadoDescriptor];
-  v8 = [v7 kind];
-  if ([v8 isEqualToString:@"SingleContactWidget_iOS"])
+  avocadoDescriptor2 = [(ATXHomeScreenWidgetDescriptor *)self->_widget avocadoDescriptor];
+  kind = [avocadoDescriptor2 kind];
+  if ([kind isEqualToString:@"SingleContactWidget_iOS"])
   {
   }
 
   else
   {
-    v9 = [(ATXHomeScreenWidgetDescriptor *)self->_widget avocadoDescriptor];
-    v10 = [v9 kind];
-    v11 = [v10 isEqualToString:@"MultipleContactWidget_iOS"];
+    avocadoDescriptor3 = [(ATXHomeScreenWidgetDescriptor *)self->_widget avocadoDescriptor];
+    kind2 = [avocadoDescriptor3 kind];
+    v11 = [kind2 isEqualToString:@"MultipleContactWidget_iOS"];
 
     if (v11)
     {
       goto LABEL_8;
     }
 
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"ATXDefaultHomeScreenItemAppLaunchScorer.m" lineNumber:102 description:{@"Widget kind must belong to that of the contacts widget: %@ or %@", @"SingleContactWidget_iOS", @"MultipleContactWidget_iOS"}];
+    avocadoDescriptor2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [avocadoDescriptor2 handleFailureInMethod:a2 object:self file:@"ATXDefaultHomeScreenItemAppLaunchScorer.m" lineNumber:102 description:{@"Widget kind must belong to that of the contacts widget: %@ or %@", @"SingleContactWidget_iOS", @"MultipleContactWidget_iOS"}];
   }
 
 LABEL_8:
@@ -200,12 +200,12 @@ uint64_t __75__ATXDefaultHomeScreenItemAppLaunchScorer__appLaunchScoreForContact
   v22 = *MEMORY[0x1E69E9840];
   v2 = objc_autoreleasePoolPush();
   v3 = objc_opt_new();
-  v4 = [v3 fetchFamilyCircle];
+  fetchFamilyCircle = [v3 fetchFamilyCircle];
   v5 = __atxlog_handle_home_screen();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v21 = *&v4;
+    v21 = *&fetchFamilyCircle;
     _os_log_impl(&dword_1BF549000, v5, OS_LOG_TYPE_DEFAULT, "Fetched family circle during scoring: %@", buf, 0xCu);
   }
 
@@ -213,8 +213,8 @@ uint64_t __75__ATXDefaultHomeScreenItemAppLaunchScorer__appLaunchScoreForContact
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [v4 members];
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  members = [fetchFamilyCircle members];
+  v7 = [members countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -226,7 +226,7 @@ uint64_t __75__ATXDefaultHomeScreenItemAppLaunchScorer__appLaunchScoreForContact
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(members);
         }
 
         v12 = *(*(&v15 + 1) + 8 * i);
@@ -240,7 +240,7 @@ uint64_t __75__ATXDefaultHomeScreenItemAppLaunchScorer__appLaunchScoreForContact
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [members countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v8);
@@ -263,22 +263,22 @@ uint64_t __75__ATXDefaultHomeScreenItemAppLaunchScorer__appLaunchScoreForContact
   return v10;
 }
 
-- (id)_rawLaunchCountAndNumberOfUniqueDaysParentAppWasLaunchedWithCachedAppLaunchData:(id)a3
+- (id)_rawLaunchCountAndNumberOfUniqueDaysParentAppWasLaunchedWithCachedAppLaunchData:(id)data
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(ATXHomeScreenWidgetDescriptor *)self->_widget appBundleId];
+  dataCopy = data;
+  appBundleId = [(ATXHomeScreenWidgetDescriptor *)self->_widget appBundleId];
 
-  if (v5)
+  if (appBundleId)
   {
     v6 = objc_opt_new();
-    v7 = [(ATXHomeScreenWidgetDescriptor *)self->_widget appBundleId];
-    [v6 addObject:v7];
+    appBundleId2 = [(ATXHomeScreenWidgetDescriptor *)self->_widget appBundleId];
+    [v6 addObject:appBundleId2];
 
-    v8 = [(ATXHomeScreenWidgetDescriptor *)self->_widget appBundleId];
-    LODWORD(v7) = [v8 isEqualToString:@"com.apple.mobileslideshow"];
+    appBundleId3 = [(ATXHomeScreenWidgetDescriptor *)self->_widget appBundleId];
+    LODWORD(appBundleId2) = [appBundleId3 isEqualToString:@"com.apple.mobileslideshow"];
 
-    if (v7)
+    if (appBundleId2)
     {
       [v6 addObject:@"com.apple.camera"];
     }
@@ -306,7 +306,7 @@ uint64_t __75__ATXDefaultHomeScreenItemAppLaunchScorer__appLaunchScoreForContact
           }
 
           v16 = *(*(&v24 + 1) + 8 * i);
-          v17 = [v4 objectForKeyedSubscript:{v16, v23, v24}];
+          v17 = [dataCopy objectForKeyedSubscript:{v16, v23, v24}];
           v18 = v17;
           if (v17)
           {
@@ -353,12 +353,12 @@ uint64_t __75__ATXDefaultHomeScreenItemAppLaunchScorer__appLaunchScoreForContact
 
 - (BOOL)_isAppPredictionsWidget
 {
-  v3 = [(ATXHomeScreenWidgetDescriptor *)self->_widget avocadoDescriptor];
-  if (v3)
+  avocadoDescriptor = [(ATXHomeScreenWidgetDescriptor *)self->_widget avocadoDescriptor];
+  if (avocadoDescriptor)
   {
-    v4 = [(ATXHomeScreenWidgetDescriptor *)self->_widget avocadoDescriptor];
+    avocadoDescriptor2 = [(ATXHomeScreenWidgetDescriptor *)self->_widget avocadoDescriptor];
     v5 = +[ATXDefaultHomeScreenItemProducer appPredictionsWidgetDescriptor];
-    v6 = [v4 isEqual:v5];
+    v6 = [avocadoDescriptor2 isEqual:v5];
   }
 
   else
@@ -371,13 +371,13 @@ uint64_t __75__ATXDefaultHomeScreenItemAppLaunchScorer__appLaunchScoreForContact
 
 - (BOOL)_isSleepWidget
 {
-  v3 = [(ATXHomeScreenWidgetDescriptor *)self->_widget avocadoDescriptor];
-  v4 = [v3 extensionBundleIdentifier];
-  if ([v4 isEqualToString:@"com.apple.Health.Sleep.SleepWidgetExtension"])
+  avocadoDescriptor = [(ATXHomeScreenWidgetDescriptor *)self->_widget avocadoDescriptor];
+  extensionBundleIdentifier = [avocadoDescriptor extensionBundleIdentifier];
+  if ([extensionBundleIdentifier isEqualToString:@"com.apple.Health.Sleep.SleepWidgetExtension"])
   {
-    v5 = [(ATXHomeScreenWidgetDescriptor *)self->_widget avocadoDescriptor];
-    v6 = [v5 kind];
-    v7 = [v6 isEqualToString:@"com.apple.health.SleepWidget"];
+    avocadoDescriptor2 = [(ATXHomeScreenWidgetDescriptor *)self->_widget avocadoDescriptor];
+    kind = [avocadoDescriptor2 kind];
+    v7 = [kind isEqualToString:@"com.apple.health.SleepWidget"];
   }
 
   else
@@ -390,24 +390,24 @@ uint64_t __75__ATXDefaultHomeScreenItemAppLaunchScorer__appLaunchScoreForContact
 
 - (BOOL)_isContactsWidget
 {
-  v3 = [(ATXHomeScreenWidgetDescriptor *)self->_widget avocadoDescriptor];
-  v4 = [v3 extensionBundleIdentifier];
-  v5 = [v4 isEqualToString:@"com.apple.PeopleViewService.PeopleWidget-iOS"];
+  avocadoDescriptor = [(ATXHomeScreenWidgetDescriptor *)self->_widget avocadoDescriptor];
+  extensionBundleIdentifier = [avocadoDescriptor extensionBundleIdentifier];
+  v5 = [extensionBundleIdentifier isEqualToString:@"com.apple.PeopleViewService.PeopleWidget-iOS"];
 
   if (v5)
   {
-    v6 = [(ATXHomeScreenWidgetDescriptor *)self->_widget avocadoDescriptor];
-    v7 = [v6 kind];
-    if ([v7 isEqualToString:@"SingleContactWidget_iOS"])
+    avocadoDescriptor2 = [(ATXHomeScreenWidgetDescriptor *)self->_widget avocadoDescriptor];
+    kind = [avocadoDescriptor2 kind];
+    if ([kind isEqualToString:@"SingleContactWidget_iOS"])
     {
       v8 = 1;
     }
 
     else
     {
-      v9 = [(ATXHomeScreenWidgetDescriptor *)self->_widget avocadoDescriptor];
-      v10 = [v9 kind];
-      v8 = [v10 isEqualToString:@"MultipleContactWidget_iOS"];
+      avocadoDescriptor3 = [(ATXHomeScreenWidgetDescriptor *)self->_widget avocadoDescriptor];
+      kind2 = [avocadoDescriptor3 kind];
+      v8 = [kind2 isEqualToString:@"MultipleContactWidget_iOS"];
     }
   }
 
@@ -419,9 +419,9 @@ uint64_t __75__ATXDefaultHomeScreenItemAppLaunchScorer__appLaunchScoreForContact
   return v8 & 1;
 }
 
-- (id)scoreWithCachedAppLaunchData:(id)a3
+- (id)scoreWithCachedAppLaunchData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   if ([(ATXDefaultHomeScreenItemAppLaunchScorer *)self _isAppPredictionsWidget])
   {
     spotlightLaunchesHistogram = self->_spotlightLaunchesHistogram;
@@ -436,9 +436,9 @@ uint64_t __75__ATXDefaultHomeScreenItemAppLaunchScorer__appLaunchScoreForContact
 
     else
     {
-      v12 = [MEMORY[0x1E696AE30] processInfo];
-      v13 = [v12 processName];
-      v14 = [v13 isEqualToString:@"duetexpertd"];
+      processInfo = [MEMORY[0x1E696AE30] processInfo];
+      processName = [processInfo processName];
+      v14 = [processName isEqualToString:@"duetexpertd"];
 
       if (v14)
       {
@@ -454,12 +454,12 @@ uint64_t __75__ATXDefaultHomeScreenItemAppLaunchScorer__appLaunchScoreForContact
       v10 = 0;
     }
 
-    v11 = [(ATXAggregatedAppLaunchData *)v8 initWithRawLaunchCount:v9 uniqueDaysLaunched:v10];
+    _appLaunchScoreForSleepWidget = [(ATXAggregatedAppLaunchData *)v8 initWithRawLaunchCount:v9 uniqueDaysLaunched:v10];
   }
 
   else if ([(ATXDefaultHomeScreenItemAppLaunchScorer *)self _isSleepWidget])
   {
-    v11 = [(ATXDefaultHomeScreenItemAppLaunchScorer *)self _appLaunchScoreForSleepWidget];
+    _appLaunchScoreForSleepWidget = [(ATXDefaultHomeScreenItemAppLaunchScorer *)self _appLaunchScoreForSleepWidget];
   }
 
   else
@@ -471,12 +471,12 @@ uint64_t __75__ATXDefaultHomeScreenItemAppLaunchScorer__appLaunchScoreForContact
 
     else
     {
-      [(ATXDefaultHomeScreenItemAppLaunchScorer *)self _rawLaunchCountAndNumberOfUniqueDaysParentAppWasLaunchedWithCachedAppLaunchData:v4];
+      [(ATXDefaultHomeScreenItemAppLaunchScorer *)self _rawLaunchCountAndNumberOfUniqueDaysParentAppWasLaunchedWithCachedAppLaunchData:dataCopy];
     }
-    v11 = ;
+    _appLaunchScoreForSleepWidget = ;
   }
 
-  v16 = v11;
+  v16 = _appLaunchScoreForSleepWidget;
 
   return v16;
 }
@@ -488,8 +488,8 @@ uint64_t __75__ATXDefaultHomeScreenItemAppLaunchScorer__appLaunchScoreForContact
     return 1;
   }
 
-  v4 = [(ATXHomeScreenWidgetDescriptor *)self->_widget appBundleId];
-  v5 = [v4 isEqualToString:@"com.apple.mobileslideshow"];
+  appBundleId = [(ATXHomeScreenWidgetDescriptor *)self->_widget appBundleId];
+  v5 = [appBundleId isEqualToString:@"com.apple.mobileslideshow"];
 
   return v5;
 }
@@ -504,8 +504,8 @@ uint64_t __75__ATXDefaultHomeScreenItemAppLaunchScorer__appLaunchScoreForContact
 
 - (void)_appLaunchScoreForContactsWidget
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"ATXDefaultHomeScreenItemAppLaunchScorer.m" lineNumber:101 description:{@"Widget extension bundle id must belong to that of the contacts widget: %@", @"com.apple.PeopleViewService.PeopleWidget-iOS"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"ATXDefaultHomeScreenItemAppLaunchScorer.m" lineNumber:101 description:{@"Widget extension bundle id must belong to that of the contacts widget: %@", @"com.apple.PeopleViewService.PeopleWidget-iOS"}];
 }
 
 @end

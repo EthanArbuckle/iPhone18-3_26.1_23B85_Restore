@@ -1,7 +1,7 @@
 @interface PMMContextHelper
 + (id)sharedInstance;
 - (PMMContextHelper)init;
-- (id)fetchDataDictionaryForKeyPath:(id)a3;
+- (id)fetchDataDictionaryForKeyPath:(id)path;
 @end
 
 @implementation PMMContextHelper
@@ -35,17 +35,17 @@ void __34__PMMContextHelper_sharedInstance__block_invoke()
   v2 = [(PMMContextHelper *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CFE318] userContext];
+    userContext = [MEMORY[0x277CFE318] userContext];
     context = v2->_context;
-    v2->_context = v3;
+    v2->_context = userContext;
   }
 
   return v2;
 }
 
-- (id)fetchDataDictionaryForKeyPath:(id)a3
+- (id)fetchDataDictionaryForKeyPath:(id)path
 {
-  v3 = [(PMMContextHelper *)self fetchContextValueForKeyPath:a3];
+  v3 = [(PMMContextHelper *)self fetchContextValueForKeyPath:path];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {

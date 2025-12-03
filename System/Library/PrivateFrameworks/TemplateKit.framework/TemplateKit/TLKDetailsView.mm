@@ -1,5 +1,5 @@
 @interface TLKDetailsView
-- (BOOL)configureMenuForFootnoteButton:(id)a3;
+- (BOOL)configureMenuForFootnoteButton:(id)button;
 - (BOOL)isAccessoryViewBottomAligned;
 - (BOOL)secondaryTitleIsDetached;
 - (BOOL)truncateTitleMiddle;
@@ -26,20 +26,20 @@
 - (id)viewForLastBaselineLayout;
 - (void)footnoteButtonPressed;
 - (void)layoutMarginsDidChange;
-- (void)performBatchUpdates:(id)a3;
-- (void)setAccessoryView:(id)a3;
-- (void)setBannerBadge:(id)a3;
-- (void)setDetails:(id)a3;
-- (void)setFootnote:(id)a3;
-- (void)setFootnoteButtonText:(id)a3;
-- (void)setIsAccessoryViewBottomAligned:(BOOL)a3;
-- (void)setSecondaryTitle:(id)a3;
-- (void)setSecondaryTitleImage:(id)a3;
-- (void)setSecondaryTitleIsDetached:(BOOL)a3;
-- (void)setTitle:(id)a3;
-- (void)setTopText:(id)a3;
-- (void)setTruncateTitleMiddle:(BOOL)a3;
-- (void)setUseCompactMode:(BOOL)a3;
+- (void)performBatchUpdates:(id)updates;
+- (void)setAccessoryView:(id)view;
+- (void)setBannerBadge:(id)badge;
+- (void)setDetails:(id)details;
+- (void)setFootnote:(id)footnote;
+- (void)setFootnoteButtonText:(id)text;
+- (void)setIsAccessoryViewBottomAligned:(BOOL)aligned;
+- (void)setSecondaryTitle:(id)title;
+- (void)setSecondaryTitleImage:(id)image;
+- (void)setSecondaryTitleIsDetached:(BOOL)detached;
+- (void)setTitle:(id)title;
+- (void)setTopText:(id)text;
+- (void)setTruncateTitleMiddle:(BOOL)middle;
+- (void)setUseCompactMode:(BOOL)mode;
 @end
 
 @implementation TLKDetailsView
@@ -60,90 +60,90 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(TLKView *)self contentView];
-  [v11 setLayoutMargins:{v4, v6, v8, v10}];
+  contentView = [(TLKView *)self contentView];
+  [contentView setLayoutMargins:{v4, v6, v8, v10}];
 }
 
 - (TLKRichText)title
 {
-  v2 = [(TLKView *)self contentView];
-  v3 = [v2 title];
+  contentView = [(TLKView *)self contentView];
+  title = [contentView title];
 
-  return v3;
+  return title;
 }
 
 - (TLKImage)secondaryTitleImage
 {
-  v2 = [(TLKView *)self contentView];
-  v3 = [v2 secondaryTitleImage];
+  contentView = [(TLKView *)self contentView];
+  secondaryTitleImage = [contentView secondaryTitleImage];
 
-  return v3;
+  return secondaryTitleImage;
 }
 
 - (id)viewForFirstBaselineLayout
 {
-  v2 = [(TLKView *)self contentView];
-  v3 = [v2 viewForFirstBaselineLayout];
+  contentView = [(TLKView *)self contentView];
+  viewForFirstBaselineLayout = [contentView viewForFirstBaselineLayout];
 
-  return v3;
+  return viewForFirstBaselineLayout;
 }
 
 - (UIView)accessoryView
 {
-  v2 = [(TLKView *)self contentView];
-  v3 = [v2 accessoryView];
+  contentView = [(TLKView *)self contentView];
+  accessoryView = [contentView accessoryView];
 
-  return v3;
+  return accessoryView;
 }
 
 - (TLKRichText)secondaryTitle
 {
-  v2 = [(TLKView *)self contentView];
-  v3 = [v2 secondaryTitle];
+  contentView = [(TLKView *)self contentView];
+  secondaryTitle = [contentView secondaryTitle];
 
-  return v3;
+  return secondaryTitle;
 }
 
 - (BOOL)secondaryTitleIsDetached
 {
-  v2 = [(TLKView *)self contentView];
-  v3 = [v2 secondaryTitleIsDetached];
+  contentView = [(TLKView *)self contentView];
+  secondaryTitleIsDetached = [contentView secondaryTitleIsDetached];
 
-  return v3;
+  return secondaryTitleIsDetached;
 }
 
 - (NSArray)details
 {
-  v2 = [(TLKView *)self contentView];
-  v3 = [v2 detailTexts];
+  contentView = [(TLKView *)self contentView];
+  detailTexts = [contentView detailTexts];
 
-  return v3;
+  return detailTexts;
 }
 
 - (TLKRichText)footnote
 {
-  v2 = [(TLKView *)self contentView];
-  v3 = [v2 footnote];
+  contentView = [(TLKView *)self contentView];
+  footnote = [contentView footnote];
 
-  return v3;
+  return footnote;
 }
 
 - (void)footnoteButtonPressed
 {
-  v2 = [(TLKDetailsView *)self delegate];
-  [v2 footnoteButtonPressed];
+  delegate = [(TLKDetailsView *)self delegate];
+  [delegate footnoteButtonPressed];
 }
 
-- (BOOL)configureMenuForFootnoteButton:(id)a3
+- (BOOL)configureMenuForFootnoteButton:(id)button
 {
-  v4 = a3;
-  v5 = [(TLKDetailsView *)self delegate];
+  buttonCopy = button;
+  delegate = [(TLKDetailsView *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(TLKDetailsView *)self delegate];
-    v8 = [v7 configureMenuForFootnoteButton:v4];
+    delegate2 = [(TLKDetailsView *)self delegate];
+    v8 = [delegate2 configureMenuForFootnoteButton:buttonCopy];
   }
 
   else
@@ -156,140 +156,140 @@
 
 - (BOOL)useCompactMode
 {
-  v2 = [(TLKView *)self contentView];
-  v3 = [v2 useCompactMode];
+  contentView = [(TLKView *)self contentView];
+  useCompactMode = [contentView useCompactMode];
 
-  return v3;
+  return useCompactMode;
 }
 
-- (void)setUseCompactMode:(BOOL)a3
+- (void)setUseCompactMode:(BOOL)mode
 {
-  v3 = a3;
-  v4 = [(TLKView *)self contentView];
-  [v4 setUseCompactMode:v3];
+  modeCopy = mode;
+  contentView = [(TLKView *)self contentView];
+  [contentView setUseCompactMode:modeCopy];
 }
 
 - (TLKRichText)bannerBadge
 {
-  v2 = [(TLKView *)self contentView];
-  v3 = [v2 bannerText];
+  contentView = [(TLKView *)self contentView];
+  bannerText = [contentView bannerText];
 
-  return v3;
+  return bannerText;
 }
 
-- (void)setBannerBadge:(id)a3
+- (void)setBannerBadge:(id)badge
 {
-  v4 = a3;
-  v5 = [(TLKView *)self contentView];
-  [v5 setBannerText:v4];
+  badgeCopy = badge;
+  contentView = [(TLKView *)self contentView];
+  [contentView setBannerText:badgeCopy];
 }
 
 - (TLKRichText)topText
 {
-  v2 = [(TLKView *)self contentView];
-  v3 = [v2 topText];
+  contentView = [(TLKView *)self contentView];
+  topText = [contentView topText];
 
-  return v3;
+  return topText;
 }
 
-- (void)setTopText:(id)a3
+- (void)setTopText:(id)text
 {
-  v4 = a3;
-  v5 = [(TLKView *)self contentView];
-  [v5 setTopText:v4];
+  textCopy = text;
+  contentView = [(TLKView *)self contentView];
+  [contentView setTopText:textCopy];
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = a3;
-  v5 = [(TLKView *)self contentView];
-  [v5 setTitle:v4];
+  titleCopy = title;
+  contentView = [(TLKView *)self contentView];
+  [contentView setTitle:titleCopy];
 }
 
 - (BOOL)truncateTitleMiddle
 {
-  v2 = [(TLKView *)self contentView];
-  v3 = [v2 truncateTitleMiddle];
+  contentView = [(TLKView *)self contentView];
+  truncateTitleMiddle = [contentView truncateTitleMiddle];
 
-  return v3;
+  return truncateTitleMiddle;
 }
 
-- (void)setTruncateTitleMiddle:(BOOL)a3
+- (void)setTruncateTitleMiddle:(BOOL)middle
 {
-  v3 = a3;
-  v4 = [(TLKView *)self contentView];
-  [v4 setTruncateTitleMiddle:v3];
+  middleCopy = middle;
+  contentView = [(TLKView *)self contentView];
+  [contentView setTruncateTitleMiddle:middleCopy];
 }
 
-- (void)setSecondaryTitle:(id)a3
+- (void)setSecondaryTitle:(id)title
 {
-  v4 = a3;
-  v5 = [(TLKView *)self contentView];
-  [v5 setSecondaryTitle:v4];
+  titleCopy = title;
+  contentView = [(TLKView *)self contentView];
+  [contentView setSecondaryTitle:titleCopy];
 }
 
-- (void)setSecondaryTitleImage:(id)a3
+- (void)setSecondaryTitleImage:(id)image
 {
-  v4 = a3;
-  v5 = [(TLKView *)self contentView];
-  [v5 setSecondaryTitleImage:v4];
+  imageCopy = image;
+  contentView = [(TLKView *)self contentView];
+  [contentView setSecondaryTitleImage:imageCopy];
 }
 
-- (void)setSecondaryTitleIsDetached:(BOOL)a3
+- (void)setSecondaryTitleIsDetached:(BOOL)detached
 {
-  v3 = a3;
-  v4 = [(TLKView *)self contentView];
-  [v4 setSecondaryTitleIsDetached:v3];
+  detachedCopy = detached;
+  contentView = [(TLKView *)self contentView];
+  [contentView setSecondaryTitleIsDetached:detachedCopy];
 }
 
-- (void)setDetails:(id)a3
+- (void)setDetails:(id)details
 {
-  v4 = a3;
-  v5 = [(TLKView *)self contentView];
-  [v5 setDetailTexts:v4];
+  detailsCopy = details;
+  contentView = [(TLKView *)self contentView];
+  [contentView setDetailTexts:detailsCopy];
 }
 
-- (void)setFootnote:(id)a3
+- (void)setFootnote:(id)footnote
 {
-  v4 = a3;
-  v5 = [(TLKView *)self contentView];
-  [v5 setFootnote:v4];
+  footnoteCopy = footnote;
+  contentView = [(TLKView *)self contentView];
+  [contentView setFootnote:footnoteCopy];
 }
 
 - (NSString)footnoteButtonText
 {
-  v2 = [(TLKView *)self contentView];
-  v3 = [v2 footnoteButtonText];
+  contentView = [(TLKView *)self contentView];
+  footnoteButtonText = [contentView footnoteButtonText];
 
-  return v3;
+  return footnoteButtonText;
 }
 
-- (void)setFootnoteButtonText:(id)a3
+- (void)setFootnoteButtonText:(id)text
 {
-  v4 = a3;
-  v5 = [(TLKView *)self contentView];
-  [v5 setFootnoteButtonText:v4];
+  textCopy = text;
+  contentView = [(TLKView *)self contentView];
+  [contentView setFootnoteButtonText:textCopy];
 }
 
-- (void)setAccessoryView:(id)a3
+- (void)setAccessoryView:(id)view
 {
-  v4 = a3;
-  v5 = [(TLKView *)self contentView];
-  [v5 setAccessoryView:v4];
+  viewCopy = view;
+  contentView = [(TLKView *)self contentView];
+  [contentView setAccessoryView:viewCopy];
 }
 
-- (void)performBatchUpdates:(id)a3
+- (void)performBatchUpdates:(id)updates
 {
-  v4 = a3;
+  updatesCopy = updates;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __38__TLKDetailsView_performBatchUpdates___block_invoke;
   v7[3] = &unk_1E7FD8DD0;
   v7[4] = self;
-  v8 = v4;
+  v8 = updatesCopy;
   v6.receiver = self;
   v6.super_class = TLKDetailsView;
-  v5 = v4;
+  v5 = updatesCopy;
   [(TLKView *)&v6 performBatchUpdates:v7];
 }
 
@@ -301,81 +301,81 @@ void __38__TLKDetailsView_performBatchUpdates___block_invoke(uint64_t a1)
 
 - (id)titleContainer
 {
-  v2 = [(TLKView *)self contentView];
-  v3 = [v2 titleContainer];
+  contentView = [(TLKView *)self contentView];
+  titleContainer = [contentView titleContainer];
 
-  return v3;
+  return titleContainer;
 }
 
 - (id)detailsFields
 {
-  v2 = [(TLKView *)self contentView];
-  v3 = [v2 detailsFields];
+  contentView = [(TLKView *)self contentView];
+  detailsFields = [contentView detailsFields];
 
-  return v3;
+  return detailsFields;
 }
 
 - (id)detailsStrings
 {
-  v2 = [(TLKView *)self contentView];
-  v3 = [v2 detailsStrings];
+  contentView = [(TLKView *)self contentView];
+  detailsStrings = [contentView detailsStrings];
 
-  return v3;
+  return detailsStrings;
 }
 
 - (id)footnoteLabel
 {
-  v2 = [(TLKView *)self contentView];
-  v3 = [v2 footnoteLabel];
+  contentView = [(TLKView *)self contentView];
+  footnoteLabel = [contentView footnoteLabel];
 
-  return v3;
+  return footnoteLabel;
 }
 
 - (id)footnoteLabelString
 {
-  v2 = [(TLKView *)self contentView];
-  v3 = [v2 footnoteLabelString];
+  contentView = [(TLKView *)self contentView];
+  footnoteLabelString = [contentView footnoteLabelString];
 
-  return v3;
+  return footnoteLabelString;
 }
 
 - (id)footnoteButton
 {
-  v2 = [(TLKView *)self contentView];
-  v3 = [v2 footnoteButton];
+  contentView = [(TLKView *)self contentView];
+  footnoteButton = [contentView footnoteButton];
 
-  return v3;
+  return footnoteButton;
 }
 
 - (id)footnoteContainer
 {
-  v2 = [(TLKView *)self contentView];
-  v3 = [v2 footnoteContainer];
+  contentView = [(TLKView *)self contentView];
+  footnoteContainer = [contentView footnoteContainer];
 
-  return v3;
+  return footnoteContainer;
 }
 
 - (id)viewForLastBaselineLayout
 {
-  v2 = [(TLKView *)self contentView];
-  v3 = [v2 viewForLastBaselineLayout];
+  contentView = [(TLKView *)self contentView];
+  viewForLastBaselineLayout = [contentView viewForLastBaselineLayout];
 
-  return v3;
+  return viewForLastBaselineLayout;
 }
 
 - (BOOL)isAccessoryViewBottomAligned
 {
-  v2 = [(TLKView *)self contentView];
-  v3 = [v2 isAccessoryViewBottomAligned];
+  contentView = [(TLKView *)self contentView];
+  isAccessoryViewBottomAligned = [contentView isAccessoryViewBottomAligned];
 
-  return v3;
+  return isAccessoryViewBottomAligned;
 }
 
-- (void)setIsAccessoryViewBottomAligned:(BOOL)a3
+- (void)setIsAccessoryViewBottomAligned:(BOOL)aligned
 {
-  v3 = a3;
-  v4 = [(TLKView *)self contentView];
-  [v4 setIsAccessoryViewBottomAligned:v3];
+  alignedCopy = aligned;
+  contentView = [(TLKView *)self contentView];
+  [contentView setIsAccessoryViewBottomAligned:alignedCopy];
 }
 
 - (TLKDetailsViewDelegate)delegate

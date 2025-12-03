@@ -1,74 +1,74 @@
 @interface HKWorkoutBuilderSampleQuery
-+ (void)configureClientInterface:(id)a3;
++ (void)configureClientInterface:(id)interface;
 - (HKWorkoutBuilder)workoutBuilder;
-- (HKWorkoutBuilderSampleQuery)initWithQuantityType:(id)a3 workoutBuilder:(id)a4 quantitiesAddedHandler:(id)a5;
-- (HKWorkoutBuilderSampleQuery)initWithSampleType:(id)a3 workoutBuilder:(id)a4 samplesAddedHandler:(id)a5;
-- (void)client_deliverQuantities:(id)a3 hasFinishedHistoricalFetch:(BOOL)a4 queryUUID:(id)a5;
-- (void)client_deliverSamples:(id)a3 hasFinishedHistoricalFetch:(BOOL)a4 queryUUID:(id)a5;
-- (void)queue_deliverError:(id)a3;
-- (void)queue_populateConfiguration:(id)a3;
-- (void)queue_queryDidDeactivate:(id)a3;
+- (HKWorkoutBuilderSampleQuery)initWithQuantityType:(id)type workoutBuilder:(id)builder quantitiesAddedHandler:(id)handler;
+- (HKWorkoutBuilderSampleQuery)initWithSampleType:(id)type workoutBuilder:(id)builder samplesAddedHandler:(id)handler;
+- (void)client_deliverQuantities:(id)quantities hasFinishedHistoricalFetch:(BOOL)fetch queryUUID:(id)d;
+- (void)client_deliverSamples:(id)samples hasFinishedHistoricalFetch:(BOOL)fetch queryUUID:(id)d;
+- (void)queue_deliverError:(id)error;
+- (void)queue_populateConfiguration:(id)configuration;
+- (void)queue_queryDidDeactivate:(id)deactivate;
 - (void)queue_validate;
 @end
 
 @implementation HKWorkoutBuilderSampleQuery
 
-- (HKWorkoutBuilderSampleQuery)initWithSampleType:(id)a3 workoutBuilder:(id)a4 samplesAddedHandler:(id)a5
+- (HKWorkoutBuilderSampleQuery)initWithSampleType:(id)type workoutBuilder:(id)builder samplesAddedHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
+  builderCopy = builder;
+  handlerCopy = handler;
   v14.receiver = self;
   v14.super_class = HKWorkoutBuilderSampleQuery;
-  v10 = [(HKQuery *)&v14 _initWithObjectType:a3 predicate:0];
+  v10 = [(HKQuery *)&v14 _initWithObjectType:type predicate:0];
   if (v10)
   {
-    v11 = [v9 copy];
+    v11 = [handlerCopy copy];
     samplesAddedHandler = v10->_samplesAddedHandler;
     v10->_samplesAddedHandler = v11;
 
     v10->_needsHistoricalFetch = 1;
-    objc_storeWeak(&v10->_workoutBuilder, v8);
+    objc_storeWeak(&v10->_workoutBuilder, builderCopy);
   }
 
   return v10;
 }
 
-- (HKWorkoutBuilderSampleQuery)initWithQuantityType:(id)a3 workoutBuilder:(id)a4 quantitiesAddedHandler:(id)a5
+- (HKWorkoutBuilderSampleQuery)initWithQuantityType:(id)type workoutBuilder:(id)builder quantitiesAddedHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
+  builderCopy = builder;
+  handlerCopy = handler;
   v14.receiver = self;
   v14.super_class = HKWorkoutBuilderSampleQuery;
-  v10 = [(HKQuery *)&v14 _initWithObjectType:a3 predicate:0];
+  v10 = [(HKQuery *)&v14 _initWithObjectType:type predicate:0];
   if (v10)
   {
-    v11 = [v9 copy];
+    v11 = [handlerCopy copy];
     quantitiesAddedHandler = v10->_quantitiesAddedHandler;
     v10->_quantitiesAddedHandler = v11;
 
     v10->_needsHistoricalFetch = 1;
-    objc_storeWeak(&v10->_workoutBuilder, v8);
+    objc_storeWeak(&v10->_workoutBuilder, builderCopy);
   }
 
   return v10;
 }
 
-- (void)client_deliverSamples:(id)a3 hasFinishedHistoricalFetch:(BOOL)a4 queryUUID:(id)a5
+- (void)client_deliverSamples:(id)samples hasFinishedHistoricalFetch:(BOOL)fetch queryUUID:(id)d
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(HKQuery *)self queue];
+  samplesCopy = samples;
+  dCopy = d;
+  queue = [(HKQuery *)self queue];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __90__HKWorkoutBuilderSampleQuery_client_deliverSamples_hasFinishedHistoricalFetch_queryUUID___block_invoke;
   v13[3] = &unk_1E7378428;
-  v16 = a4;
+  fetchCopy = fetch;
   v13[4] = self;
-  v14 = v9;
-  v15 = v8;
-  v11 = v8;
-  v12 = v9;
-  dispatch_sync(v10, v13);
+  v14 = dCopy;
+  v15 = samplesCopy;
+  v11 = samplesCopy;
+  v12 = dCopy;
+  dispatch_sync(queue, v13);
 }
 
 void __90__HKWorkoutBuilderSampleQuery_client_deliverSamples_hasFinishedHistoricalFetch_queryUUID___block_invoke(uint64_t a1)
@@ -97,22 +97,22 @@ void __90__HKWorkoutBuilderSampleQuery_client_deliverSamples_hasFinishedHistoric
   }
 }
 
-- (void)client_deliverQuantities:(id)a3 hasFinishedHistoricalFetch:(BOOL)a4 queryUUID:(id)a5
+- (void)client_deliverQuantities:(id)quantities hasFinishedHistoricalFetch:(BOOL)fetch queryUUID:(id)d
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(HKQuery *)self queue];
+  quantitiesCopy = quantities;
+  dCopy = d;
+  queue = [(HKQuery *)self queue];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __93__HKWorkoutBuilderSampleQuery_client_deliverQuantities_hasFinishedHistoricalFetch_queryUUID___block_invoke;
   v13[3] = &unk_1E7378428;
-  v16 = a4;
+  fetchCopy = fetch;
   v13[4] = self;
-  v14 = v9;
-  v15 = v8;
-  v11 = v8;
-  v12 = v9;
-  dispatch_sync(v10, v13);
+  v14 = dCopy;
+  v15 = quantitiesCopy;
+  v11 = quantitiesCopy;
+  v12 = dCopy;
+  dispatch_sync(queue, v13);
 }
 
 void __93__HKWorkoutBuilderSampleQuery_client_deliverQuantities_hasFinishedHistoricalFetch_queryUUID___block_invoke(uint64_t a1)
@@ -141,35 +141,35 @@ void __93__HKWorkoutBuilderSampleQuery_client_deliverQuantities_hasFinishedHisto
   }
 }
 
-+ (void)configureClientInterface:(id)a3
++ (void)configureClientInterface:(id)interface
 {
-  v4 = a3;
-  v7.receiver = a1;
+  interfaceCopy = interface;
+  v7.receiver = self;
   v7.super_class = &OBJC_METACLASS___HKWorkoutBuilderSampleQuery;
-  objc_msgSendSuper2(&v7, sel_configureClientInterface_, v4);
-  v5 = [v4 hk_setArrayOfClass:objc_opt_class() forSelector:sel_client_deliverSamples_hasFinishedHistoricalFetch_queryUUID_ argumentIndex:0 ofReply:0];
-  v6 = [v4 hk_setArrayOfClass:objc_opt_class() forSelector:sel_client_deliverQuantities_hasFinishedHistoricalFetch_queryUUID_ argumentIndex:0 ofReply:0];
+  objc_msgSendSuper2(&v7, sel_configureClientInterface_, interfaceCopy);
+  v5 = [interfaceCopy hk_setArrayOfClass:objc_opt_class() forSelector:sel_client_deliverSamples_hasFinishedHistoricalFetch_queryUUID_ argumentIndex:0 ofReply:0];
+  v6 = [interfaceCopy hk_setArrayOfClass:objc_opt_class() forSelector:sel_client_deliverQuantities_hasFinishedHistoricalFetch_queryUUID_ argumentIndex:0 ofReply:0];
 }
 
-- (void)queue_populateConfiguration:(id)a3
+- (void)queue_populateConfiguration:(id)configuration
 {
   v7.receiver = self;
   v7.super_class = HKWorkoutBuilderSampleQuery;
-  v4 = a3;
-  [(HKQuery *)&v7 queue_populateConfiguration:v4];
-  [v4 setNeedsHistoricalData:{self->_needsHistoricalFetch, v7.receiver, v7.super_class}];
+  configurationCopy = configuration;
+  [(HKQuery *)&v7 queue_populateConfiguration:configurationCopy];
+  [configurationCopy setNeedsHistoricalData:{self->_needsHistoricalFetch, v7.receiver, v7.super_class}];
   WeakRetained = objc_loadWeakRetained(&self->_workoutBuilder);
-  v6 = [WeakRetained identifier];
-  [v4 setWorkoutBuilderIdentifier:v6];
+  identifier = [WeakRetained identifier];
+  [configurationCopy setWorkoutBuilderIdentifier:identifier];
 
-  [v4 setDeliverQuantities:self->_quantitiesAddedHandler != 0];
+  [configurationCopy setDeliverQuantities:self->_quantitiesAddedHandler != 0];
 }
 
-- (void)queue_queryDidDeactivate:(id)a3
+- (void)queue_queryDidDeactivate:(id)deactivate
 {
   v5.receiver = self;
   v5.super_class = HKWorkoutBuilderSampleQuery;
-  [(HKQuery *)&v5 queue_queryDidDeactivate:a3];
+  [(HKQuery *)&v5 queue_queryDidDeactivate:deactivate];
   objc_storeWeak(&self->_workoutBuilder, 0);
   samplesAddedHandler = self->_samplesAddedHandler;
   self->_samplesAddedHandler = 0;
@@ -180,14 +180,14 @@ void __93__HKWorkoutBuilderSampleQuery_client_deliverQuantities_hasFinishedHisto
   v8.receiver = self;
   v8.super_class = HKWorkoutBuilderSampleQuery;
   [(HKQuery *)&v8 queue_validate];
-  v3 = [(HKQuery *)self objectType];
+  objectType = [(HKQuery *)self objectType];
 
-  if (!v3)
+  if (!objectType)
   {
     [MEMORY[0x1E695DF30] raise:@"HKQueryValidationFailureException" format:{@"%@ data type must be non-nil", objc_opt_class()}];
   }
 
-  v4 = [(HKQuery *)self objectType];
+  objectType2 = [(HKQuery *)self objectType];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -204,21 +204,21 @@ void __93__HKWorkoutBuilderSampleQuery_client_deliverQuantities_hasFinishedHisto
   }
 }
 
-- (void)queue_deliverError:(id)a3
+- (void)queue_deliverError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = _Block_copy(self->_samplesAddedHandler);
   if (v5)
   {
-    v6 = [(HKQuery *)self clientQueue];
+    clientQueue = [(HKQuery *)self clientQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __50__HKWorkoutBuilderSampleQuery_queue_deliverError___block_invoke;
     block[3] = &unk_1E7376618;
     v9 = v5;
     block[4] = self;
-    v8 = v4;
-    dispatch_async(v6, block);
+    v8 = errorCopy;
+    dispatch_async(clientQueue, block);
   }
 }
 

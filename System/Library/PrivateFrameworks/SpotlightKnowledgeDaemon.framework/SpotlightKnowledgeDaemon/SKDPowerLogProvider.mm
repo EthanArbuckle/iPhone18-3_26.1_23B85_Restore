@@ -1,6 +1,6 @@
 @interface SKDPowerLogProvider
 - (SKDPowerLogProvider)init;
-- (void)sendLog:(id)a3 domain:(id)a4;
+- (void)sendLog:(id)log domain:(id)domain;
 @end
 
 @implementation SKDPowerLogProvider
@@ -21,19 +21,19 @@
   return v2;
 }
 
-- (void)sendLog:(id)a3 domain:(id)a4
+- (void)sendLog:(id)log domain:(id)domain
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count] && PLShouldLogRegisteredEvent())
+  logCopy = log;
+  domainCopy = domain;
+  if ([logCopy count] && PLShouldLogRegisteredEvent())
   {
     queue = self->_queue;
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __38__SKDPowerLogProvider_sendLog_domain___block_invoke;
     v9[3] = &unk_27893D900;
-    v10 = v7;
-    v11 = v6;
+    v10 = domainCopy;
+    v11 = logCopy;
     dispatch_async(queue, v9);
   }
 }

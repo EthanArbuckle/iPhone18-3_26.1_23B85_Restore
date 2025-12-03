@@ -1,12 +1,12 @@
 @interface HMDHomePrimaryResidentInitialReachabilityManagerDataSource
-- (id)dataValueFromNoBackupStoreWithKey:(id)a3;
+- (id)dataValueFromNoBackupStoreWithKey:(id)key;
 @end
 
 @implementation HMDHomePrimaryResidentInitialReachabilityManagerDataSource
 
-- (id)dataValueFromNoBackupStoreWithKey:(id)a3
+- (id)dataValueFromNoBackupStoreWithKey:(id)key
 {
-  v3 = CFPreferencesCopyAppValue(a3, *MEMORY[0x277CD0028]);
+  v3 = CFPreferencesCopyAppValue(key, *MEMORY[0x277CD0028]);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {

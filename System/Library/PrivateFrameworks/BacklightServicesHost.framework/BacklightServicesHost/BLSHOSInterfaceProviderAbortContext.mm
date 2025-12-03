@@ -1,5 +1,5 @@
 @interface BLSHOSInterfaceProviderAbortContext
-- (BLSHOSInterfaceProviderAbortContext)initWithWatchdogType:(unint64_t)a3 cbDisplayMode:(int64_t)a4 cbFlipbookState:(int64_t)a5 caDisplayState:(int64_t)a6 completedCADisplayState:(int64_t)a7 suppressionServiceActive:(BOOL)a8 flipbookTransparent:(BOOL)a9 deviceSupportsAlwaysOn:(BOOL)a10 deviceSupportsAlwaysOnFlipbook:(BOOL)a11 displayStateClientSupported:(BOOL)a12 backlightDimmedFactor:(float)a13;
+- (BLSHOSInterfaceProviderAbortContext)initWithWatchdogType:(unint64_t)type cbDisplayMode:(int64_t)mode cbFlipbookState:(int64_t)state caDisplayState:(int64_t)displayState completedCADisplayState:(int64_t)aDisplayState suppressionServiceActive:(BOOL)active flipbookTransparent:(BOOL)transparent deviceSupportsAlwaysOn:(BOOL)self0 deviceSupportsAlwaysOnFlipbook:(BOOL)self1 displayStateClientSupported:(BOOL)self2 backlightDimmedFactor:(float)self3;
 - (BOOL)wantsPanic;
 - (NSString)abortReasonString;
 - (NSString)description;
@@ -9,27 +9,27 @@
 
 @implementation BLSHOSInterfaceProviderAbortContext
 
-- (BLSHOSInterfaceProviderAbortContext)initWithWatchdogType:(unint64_t)a3 cbDisplayMode:(int64_t)a4 cbFlipbookState:(int64_t)a5 caDisplayState:(int64_t)a6 completedCADisplayState:(int64_t)a7 suppressionServiceActive:(BOOL)a8 flipbookTransparent:(BOOL)a9 deviceSupportsAlwaysOn:(BOOL)a10 deviceSupportsAlwaysOnFlipbook:(BOOL)a11 displayStateClientSupported:(BOOL)a12 backlightDimmedFactor:(float)a13
+- (BLSHOSInterfaceProviderAbortContext)initWithWatchdogType:(unint64_t)type cbDisplayMode:(int64_t)mode cbFlipbookState:(int64_t)state caDisplayState:(int64_t)displayState completedCADisplayState:(int64_t)aDisplayState suppressionServiceActive:(BOOL)active flipbookTransparent:(BOOL)transparent deviceSupportsAlwaysOn:(BOOL)self0 deviceSupportsAlwaysOnFlipbook:(BOOL)self1 displayStateClientSupported:(BOOL)self2 backlightDimmedFactor:(float)self3
 {
   v21.receiver = self;
   v21.super_class = BLSHOSInterfaceProviderAbortContext;
   result = [(BLSHOSInterfaceProviderAbortContext *)&v21 init];
   if (result)
   {
-    result->_watchdogType = a3;
-    result->_cbDisplayMode = a4;
-    result->_cbFlipbookState = a5;
-    result->_caDisplayState = a6;
-    result->_completedCADisplayState = a7;
-    result->_suppressionServiceActive = a8;
-    result->_flipbookTransparent = a9;
-    result->_deviceSupportsAlwaysOn = a10;
-    result->_deviceSupportsAlwaysOnFlipbook = a11;
-    result->_displayStateClientSupported = a12;
-    result->_backlightDimmedFactor = a13;
-    if (a3 <= 2)
+    result->_watchdogType = type;
+    result->_cbDisplayMode = mode;
+    result->_cbFlipbookState = state;
+    result->_caDisplayState = displayState;
+    result->_completedCADisplayState = aDisplayState;
+    result->_suppressionServiceActive = active;
+    result->_flipbookTransparent = transparent;
+    result->_deviceSupportsAlwaysOn = on;
+    result->_deviceSupportsAlwaysOnFlipbook = flipbook;
+    result->_displayStateClientSupported = supported;
+    result->_backlightDimmedFactor = factor;
+    if (type <= 2)
     {
-      result->_abortReason = qword_21FDA51D0[a3];
+      result->_abortReason = qword_21FDA51D0[type];
     }
   }
 
@@ -76,11 +76,11 @@
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v10 = self->_abortReason;
-      v8 = [(BLSHOSInterfaceProviderAbortContext *)self abortReasonString];
+      abortReasonString = [(BLSHOSInterfaceProviderAbortContext *)self abortReasonString];
       *buf = 134218242;
       v23 = v10;
       v24 = 2114;
-      v25 = v8;
+      v25 = abortReasonString;
       v9 = "_abortReason=%llu (%{public}@) wantsPanic:YES";
       goto LABEL_9;
     }
@@ -108,11 +108,11 @@ LABEL_20:
         if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
         {
           v14 = self->_abortReason;
-          v15 = [(BLSHOSInterfaceProviderAbortContext *)self abortReasonString];
+          abortReasonString2 = [(BLSHOSInterfaceProviderAbortContext *)self abortReasonString];
           *buf = 134218242;
           v23 = v14;
           v24 = 2114;
-          v25 = v15;
+          v25 = abortReasonString2;
           _os_log_impl(&dword_21FD11000, v13, OS_LOG_TYPE_DEFAULT, "_abortReason=%llu (%{public}@) com.apple.BacklightServices panicOnCoreAnimationWatchdog:YES wantsPanic:YES", buf, 0x16u);
         }
 
@@ -129,11 +129,11 @@ LABEL_17:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v16 = self->_abortReason;
-      v17 = [(BLSHOSInterfaceProviderAbortContext *)self abortReasonString];
+      abortReasonString3 = [(BLSHOSInterfaceProviderAbortContext *)self abortReasonString];
       *buf = 134218242;
       v23 = v16;
       v24 = 2114;
-      v25 = v17;
+      v25 = abortReasonString3;
       _os_log_impl(&dword_21FD11000, v6, OS_LOG_TYPE_DEFAULT, "_abortReason=%llu (%{public}@) wantsPanic:NO", buf, 0x16u);
     }
 
@@ -149,11 +149,11 @@ LABEL_17:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v7 = self->_abortReason;
-      v8 = [(BLSHOSInterfaceProviderAbortContext *)self abortReasonString];
+      abortReasonString = [(BLSHOSInterfaceProviderAbortContext *)self abortReasonString];
       *buf = 134218242;
       v23 = v7;
       v24 = 2114;
-      v25 = v8;
+      v25 = abortReasonString;
       v9 = "_abortReason=%llu (%{public}@) com.apple.BacklightServices panicOnCoreBrightnessWatchdog:YES wantsPanic:YES";
 LABEL_9:
       _os_log_impl(&dword_21FD11000, v6, OS_LOG_TYPE_DEFAULT, v9, buf, 0x16u);
@@ -238,9 +238,9 @@ LABEL_21:
   v17 = [v4 appendBool:self->_deviceSupportsAlwaysOnFlipbook withName:@"supportsFlipbook"];
   v18 = [v4 appendBool:self->_displayStateClientSupported withName:@"displayStateClientSupported"];
   v19 = [v4 appendFloat:@"backlightDimmedFactor" withName:self->_backlightDimmedFactor];
-  v20 = [v4 build];
+  build = [v4 build];
 
-  return v20;
+  return build;
 }
 
 @end

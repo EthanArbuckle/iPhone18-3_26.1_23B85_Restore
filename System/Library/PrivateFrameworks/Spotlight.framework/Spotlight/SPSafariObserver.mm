@@ -1,6 +1,6 @@
 @interface SPSafariObserver
 - (SPSafariObserver)init;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation SPSafariObserver
@@ -14,8 +14,8 @@
   {
     if ([MEMORY[0x277CCACC8] isMainThread])
     {
-      v3 = [MEMORY[0x277CDB8A8] sharedInstance];
-      [v3 reloadSearchEngines];
+      mEMORY[0x277CDB8A8] = [MEMORY[0x277CDB8A8] sharedInstance];
+      [mEMORY[0x277CDB8A8] reloadSearchEngines];
     }
 
     else
@@ -33,12 +33,12 @@ void __24__SPSafariObserver_init__block_invoke()
   [v0 reloadSearchEngines];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   v6 = *MEMORY[0x277CCA300];
-  v7 = a5;
-  v9 = [v7 objectForKeyedSubscript:v6];
-  v8 = [v7 objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
+  changeCopy = change;
+  v9 = [changeCopy objectForKeyedSubscript:v6];
+  v8 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
 
   if (v9 | v8 && ([v9 isEqual:v8] & 1) == 0)
   {

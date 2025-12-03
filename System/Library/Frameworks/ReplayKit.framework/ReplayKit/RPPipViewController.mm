@@ -1,13 +1,13 @@
 @interface RPPipViewController
-- (RPPipViewController)initWithOrientation:(int64_t)a3 position:(int64_t)a4;
-- (id)cameraWithPosition:(int64_t)a3;
-- (int64_t)_captureVideoOrientationForUIDeviceOrientation:(int64_t)a3;
+- (RPPipViewController)initWithOrientation:(int64_t)orientation position:(int64_t)position;
+- (id)cameraWithPosition:(int64_t)position;
+- (int64_t)_captureVideoOrientationForUIDeviceOrientation:(int64_t)orientation;
 - (void)_deviceOrientationDidChange;
 - (void)_updateViewGeometry;
-- (void)configurePipSessionWithCameraPosition:(int64_t)a3;
+- (void)configurePipSessionWithCameraPosition:(int64_t)position;
 - (void)dealloc;
 - (void)loadView;
-- (void)setCameraPosition:(int64_t)a3;
+- (void)setCameraPosition:(int64_t)position;
 - (void)setUpPipSession;
 - (void)startPipSession;
 - (void)stopPipSession;
@@ -15,7 +15,7 @@
 
 @implementation RPPipViewController
 
-- (RPPipViewController)initWithOrientation:(int64_t)a3 position:(int64_t)a4
+- (RPPipViewController)initWithOrientation:(int64_t)orientation position:(int64_t)position
 {
   v16 = *MEMORY[0x277D85DE8];
   v9.receiver = self;
@@ -34,9 +34,9 @@
       _os_log_impl(&dword_23A863000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %p", buf, 0x1Cu);
     }
 
-    [(RPPipViewController *)v6 setInitialOrientation:a3];
-    [(RPPipViewController *)v6 setPreviousOrientation:a3];
-    v6->_cameraPosition = a4;
+    [(RPPipViewController *)v6 setInitialOrientation:orientation];
+    [(RPPipViewController *)v6 setPreviousOrientation:orientation];
+    v6->_cameraPosition = position;
   }
 
   v7 = *MEMORY[0x277D85DE8];
@@ -53,7 +53,7 @@
     v7 = 1024;
     v8 = 98;
     v9 = 2048;
-    v10 = self;
+    selfCopy = self;
     _os_log_impl(&dword_23A863000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %p", buf, 0x1Cu);
   }
 
@@ -64,7 +64,7 @@
   v3 = *MEMORY[0x277D85DE8];
 }
 
-- (id)cameraWithPosition:(int64_t)a3
+- (id)cameraWithPosition:(int64_t)position
 {
   v28 = *MEMORY[0x277D85DE8];
   v4 = [MEMORY[0x277CE5AC8] devicesWithMediaType:*MEMORY[0x277CE5EA8]];
@@ -77,7 +77,7 @@
       v24 = 1024;
       v25 = 118;
       v26 = 1024;
-      v27 = [v4 count];
+      positionCopy = [v4 count];
       v5 = MEMORY[0x277D86220];
       v6 = " [INFO] %{public}s:%d looking for camera in %d capture devices";
       v7 = 24;
@@ -118,7 +118,7 @@ LABEL_8:
         }
 
         v13 = *(*(&v17 + 1) + 8 * i);
-        if ([v13 position] == a3)
+        if ([v13 position] == position)
         {
           if (__RPLogLevel <= 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
           {
@@ -127,7 +127,7 @@ LABEL_8:
             v24 = 1024;
             v25 = 131;
             v26 = 1024;
-            v27 = a3;
+            positionCopy = position;
             _os_log_impl(&dword_23A863000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d camera found with position %d", buf, 0x18u);
           }
 
@@ -160,7 +160,7 @@ LABEL_25:
   return v14;
 }
 
-- (void)configurePipSessionWithCameraPosition:(int64_t)a3
+- (void)configurePipSessionWithCameraPosition:(int64_t)position
 {
   v16 = *MEMORY[0x277D85DE8];
   if (__RPLogLevel <= 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
@@ -178,7 +178,7 @@ LABEL_25:
     [(AVCaptureSession *)self->_pipSession removeInput:?];
   }
 
-  v5 = [(RPPipViewController *)self cameraWithPosition:a3];
+  v5 = [(RPPipViewController *)self cameraWithPosition:position];
   v11 = 0;
   v6 = [objc_alloc(MEMORY[0x277CE5AD8]) initWithDevice:v5 error:&v11];
   v7 = v11;
@@ -210,7 +210,7 @@ LABEL_25:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setCameraPosition:(int64_t)a3
+- (void)setCameraPosition:(int64_t)position
 {
   v10 = *MEMORY[0x277D85DE8];
   if (__RPLogLevel <= 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
@@ -222,12 +222,12 @@ LABEL_25:
     _os_log_impl(&dword_23A863000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d ", &v6, 0x12u);
   }
 
-  if (self->_pipSession && self->_cameraPosition != a3)
+  if (self->_pipSession && self->_cameraPosition != position)
   {
-    [(RPPipViewController *)self configurePipSessionWithCameraPosition:a3];
+    [(RPPipViewController *)self configurePipSessionWithCameraPosition:position];
   }
 
-  self->_cameraPosition = a3;
+  self->_cameraPosition = position;
   v5 = *MEMORY[0x277D85DE8];
 }
 
@@ -252,8 +252,8 @@ LABEL_25:
     _os_log_impl(&dword_23A863000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d ", &v5, 0x12u);
   }
 
-  v3 = [(RPPipViewController *)self pipSession];
-  [v3 startRunning];
+  pipSession = [(RPPipViewController *)self pipSession];
+  [pipSession startRunning];
 
   v4 = *MEMORY[0x277D85DE8];
 }
@@ -271,8 +271,8 @@ LABEL_25:
   }
 
   [(RPPipViewController *)self removeSystemPrefferedCameraObserver];
-  v3 = [(RPPipViewController *)self pipSession];
-  [v3 stopRunning];
+  pipSession = [(RPPipViewController *)self pipSession];
+  [pipSession stopRunning];
 
   v4 = *MEMORY[0x277D85DE8];
 }
@@ -293,9 +293,9 @@ LABEL_25:
   v4 = [(RPPipView *)v3 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   [(RPPipViewController *)self setView:v4];
 
-  v5 = [MEMORY[0x277D75348] clearColor];
-  v6 = [(RPPipViewController *)self view];
-  [v6 setBackgroundColor:v5];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  view = [(RPPipViewController *)self view];
+  [view setBackgroundColor:clearColor];
 
   [(RPPipViewController *)self _updateViewGeometry];
   [(RPPipViewController *)self setUpPipSession];
@@ -304,18 +304,18 @@ LABEL_25:
 
 - (void)_updateViewGeometry
 {
-  v3 = [MEMORY[0x277D759A0] mainScreen];
-  [v3 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
-  v12 = [MEMORY[0x277D75418] currentDevice];
-  if ([v12 orientation])
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  if ([currentDevice orientation])
   {
-    v13 = [MEMORY[0x277D75418] currentDevice];
-    initialOrientation = [v13 orientation];
+    currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+    initialOrientation = [currentDevice2 orientation];
   }
 
   else
@@ -393,20 +393,20 @@ LABEL_25:
 
   v44 = v22 * 0.2;
   v23 = v21 * (v22 * 0.2 / v22);
-  v24 = [(RPPipViewController *)self view];
-  [v24 frame];
+  view = [(RPPipViewController *)self view];
+  [view frame];
   if (v25 == 0.0)
   {
-    v26 = [(RPPipViewController *)self view];
-    [v26 frame];
+    view2 = [(RPPipViewController *)self view];
+    [view2 frame];
     v28 = v27;
 
     v29 = v28 == 0.0;
     v23 = v21 * (v22 * 0.2 / v22);
     if (v29)
     {
-      v30 = [(RPPipViewController *)self view];
-      [v30 setFrame:{v5 + v22 * 0.03, v7 + v21 * 0.03, v44, v21 * (v22 * 0.2 / v22)}];
+      view3 = [(RPPipViewController *)self view];
+      [view3 setFrame:{v5 + v22 * 0.03, v7 + v21 * 0.03, v44, v21 * (v22 * 0.2 / v22)}];
       goto LABEL_40;
     }
   }
@@ -417,8 +417,8 @@ LABEL_25:
 
   if (([(RPPipViewController *)self previousOrientation]- 3) > 1 || v16 >= 2)
   {
-    v31 = [(RPPipViewController *)self previousOrientation];
-    if (v15 < 0xFFFFFFFFFFFFFFFELL || (v31 - 3) < 0xFFFFFFFFFFFFFFFELL)
+    previousOrientation = [(RPPipViewController *)self previousOrientation];
+    if (v15 < 0xFFFFFFFFFFFFFFFELL || (previousOrientation - 3) < 0xFFFFFFFFFFFFFFFELL)
     {
       if ([(RPPipViewController *)self previousOrientation]!= 5 && [(RPPipViewController *)self previousOrientation]!= 6)
       {
@@ -441,14 +441,14 @@ LABEL_25:
     }
   }
 
-  v30 = [(RPPipViewController *)self view];
-  [v30 frame];
+  view3 = [(RPPipViewController *)self view];
+  [view3 frame];
   v39 = v38;
-  v40 = [(RPPipViewController *)self view];
-  [v40 frame];
+  view4 = [(RPPipViewController *)self view];
+  [view4 frame];
   v42 = v41;
-  v43 = [(RPPipViewController *)self view];
-  [v43 setFrame:{v39, v42, v44, v23}];
+  view5 = [(RPPipViewController *)self view];
+  [view5 setFrame:{v39, v42, v44, v23}];
 
 LABEL_40:
 LABEL_41:
@@ -466,23 +466,23 @@ LABEL_41:
   v7[3] = &unk_278B61B70;
   v7[4] = self;
   [MEMORY[0x277D75D18] animateWithDuration:v7 animations:0.3];
-  v3 = [(RPPipViewController *)self _pipView];
-  v4 = [v3 previewLayer];
-  v5 = [v4 connection];
-  v6 = [MEMORY[0x277D75418] currentDevice];
-  [v5 setVideoOrientation:{-[RPPipViewController _captureVideoOrientationForUIDeviceOrientation:](self, "_captureVideoOrientationForUIDeviceOrientation:", objc_msgSend(v6, "orientation"))}];
+  _pipView = [(RPPipViewController *)self _pipView];
+  previewLayer = [_pipView previewLayer];
+  connection = [previewLayer connection];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  [connection setVideoOrientation:{-[RPPipViewController _captureVideoOrientationForUIDeviceOrientation:](self, "_captureVideoOrientationForUIDeviceOrientation:", objc_msgSend(currentDevice, "orientation"))}];
 }
 
-- (int64_t)_captureVideoOrientationForUIDeviceOrientation:(int64_t)a3
+- (int64_t)_captureVideoOrientationForUIDeviceOrientation:(int64_t)orientation
 {
-  if ((a3 - 2) >= 3)
+  if ((orientation - 2) >= 3)
   {
     return 1;
   }
 
   else
   {
-    return a3;
+    return orientation;
   }
 }
 

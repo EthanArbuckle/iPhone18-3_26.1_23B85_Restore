@@ -1,13 +1,13 @@
 @interface CRLCanvasBackground
-- (CGPoint)canvasCenterInCanvasBackgroundLayer:(id)a3;
-- (CGPoint)contentOffsetForCanvasBackgroundLayer:(id)a3;
-- (CGPoint)originOffsetForCanvasBackgroundLayer:(id)a3;
+- (CGPoint)canvasCenterInCanvasBackgroundLayer:(id)layer;
+- (CGPoint)contentOffsetForCanvasBackgroundLayer:(id)layer;
+- (CGPoint)originOffsetForCanvasBackgroundLayer:(id)layer;
 - (CRLInteractiveCanvasController)icc;
 - (Class)layerClass;
 - (Class)viewClass;
 - (_TtC8Freeform19CRLCanvasBackground)init;
-- (_TtC8Freeform19CRLCanvasBackground)initWithICC:(id)a3;
-- (double)contentsScaleForCanvasBackgroundLayer:(id)a3;
+- (_TtC8Freeform19CRLCanvasBackground)initWithICC:(id)c;
+- (double)contentsScaleForCanvasBackgroundLayer:(id)layer;
 @end
 
 @implementation CRLCanvasBackground
@@ -19,7 +19,7 @@
   return Strong;
 }
 
-- (_TtC8Freeform19CRLCanvasBackground)initWithICC:(id)a3
+- (_TtC8Freeform19CRLCanvasBackground)initWithICC:(id)c
 {
   swift_unknownObjectWeakInit();
   swift_unknownObjectWeakAssign();
@@ -42,7 +42,7 @@
   return swift_getObjCClassFromMetadata();
 }
 
-- (double)contentsScaleForCanvasBackgroundLayer:(id)a3
+- (double)contentsScaleForCanvasBackgroundLayer:(id)layer
 {
   Strong = swift_unknownObjectWeakLoadStrong();
   if (!Strong)
@@ -51,15 +51,15 @@
   }
 
   v5 = Strong;
-  v6 = self;
-  v7 = [v5 canvas];
-  [v7 contentsScale];
+  selfCopy = self;
+  canvas = [v5 canvas];
+  [canvas contentsScale];
   v9 = v8;
 
   return v9;
 }
 
-- (CGPoint)canvasCenterInCanvasBackgroundLayer:(id)a3
+- (CGPoint)canvasCenterInCanvasBackgroundLayer:(id)layer
 {
   v3 = 0.0;
   v4 = 0.0;
@@ -68,7 +68,7 @@
   return result;
 }
 
-- (CGPoint)originOffsetForCanvasBackgroundLayer:(id)a3
+- (CGPoint)originOffsetForCanvasBackgroundLayer:(id)layer
 {
   v3 = 0.0;
   v4 = 0.0;
@@ -77,7 +77,7 @@
   return result;
 }
 
-- (CGPoint)contentOffsetForCanvasBackgroundLayer:(id)a3
+- (CGPoint)contentOffsetForCanvasBackgroundLayer:(id)layer
 {
   v3 = 0.0;
   v4 = 0.0;

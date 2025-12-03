@@ -1,10 +1,10 @@
 @interface MedicationMarkdownItemCell
-- (_TtC19HealthMedicationsUI26MedicationMarkdownItemCell)initWithCoder:(id)a3;
+- (_TtC19HealthMedicationsUI26MedicationMarkdownItemCell)initWithCoder:(id)coder;
 @end
 
 @implementation MedicationMarkdownItemCell
 
-- (_TtC19HealthMedicationsUI26MedicationMarkdownItemCell)initWithCoder:(id)a3
+- (_TtC19HealthMedicationsUI26MedicationMarkdownItemCell)initWithCoder:(id)coder
 {
   v3 = self + OBJC_IVAR____TtC19HealthMedicationsUI26MedicationMarkdownItemCell_item;
   *v3 = 0u;

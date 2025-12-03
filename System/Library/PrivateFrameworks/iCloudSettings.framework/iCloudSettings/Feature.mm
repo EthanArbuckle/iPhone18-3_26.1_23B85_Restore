@@ -1,11 +1,11 @@
 @interface Feature
 - (_TtC14iCloudSettings7Feature)init;
-- (_TtC14iCloudSettings7Feature)initWithFeatureId:(id)a3 title:(id)a4 subtitle:(id)a5 icons:(id)a6 action:(id)a7 iTunesItemId:(id)a8 bundleIdentifier:(id)a9;
+- (_TtC14iCloudSettings7Feature)initWithFeatureId:(id)id title:(id)title subtitle:(id)subtitle icons:(id)icons action:(id)action iTunesItemId:(id)itemId bundleIdentifier:(id)identifier;
 @end
 
 @implementation Feature
 
-- (_TtC14iCloudSettings7Feature)initWithFeatureId:(id)a3 title:(id)a4 subtitle:(id)a5 icons:(id)a6 action:(id)a7 iTunesItemId:(id)a8 bundleIdentifier:(id)a9
+- (_TtC14iCloudSettings7Feature)initWithFeatureId:(id)id title:(id)title subtitle:(id)subtitle icons:(id)icons action:(id)action iTunesItemId:(id)itemId bundleIdentifier:(id)identifier
 {
   ObjectType = swift_getObjectType();
   v11 = sub_2759BA298();
@@ -14,10 +14,10 @@
   v16 = v15;
   v17 = sub_2759BA298();
   v19 = v18;
-  if (!a8)
+  if (!itemId)
   {
     v20 = 0;
-    if (a9)
+    if (identifier)
     {
       goto LABEL_3;
     }
@@ -29,8 +29,8 @@ LABEL_5:
   }
 
   v20 = sub_2759BA298();
-  a8 = v21;
-  if (!a9)
+  itemId = v21;
+  if (!identifier)
   {
     goto LABEL_5;
   }
@@ -47,18 +47,18 @@ LABEL_6:
   v26 = (self + OBJC_IVAR____TtC14iCloudSettings7Feature_subtitle);
   *v26 = v17;
   v26[1] = v19;
-  *(self + OBJC_IVAR____TtC14iCloudSettings7Feature_action) = a7;
+  *(self + OBJC_IVAR____TtC14iCloudSettings7Feature_action) = action;
   v27 = (self + OBJC_IVAR____TtC14iCloudSettings7Feature_iTunesItemId);
   *v27 = v20;
-  v27[1] = a8;
+  v27[1] = itemId;
   v28 = (self + OBJC_IVAR____TtC14iCloudSettings7Feature_bundleIdentifier);
   *v28 = v22;
   v28[1] = v23;
-  *(self + OBJC_IVAR____TtC14iCloudSettings7Feature_icons) = a6;
+  *(self + OBJC_IVAR____TtC14iCloudSettings7Feature_icons) = icons;
   v35.receiver = self;
   v35.super_class = ObjectType;
-  v29 = a6;
-  v30 = a7;
+  iconsCopy = icons;
+  actionCopy = action;
   return [(Feature *)&v35 init];
 }
 

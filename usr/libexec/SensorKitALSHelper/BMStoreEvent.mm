@@ -19,19 +19,19 @@ LABEL_2:
   [(BMStoreEvent *)self eventBody];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v5 = [(BMStoreEvent *)self eventBody];
+  eventBody = [(BMStoreEvent *)self eventBody];
   if (isKindOfClass)
   {
-    v6 = [v5 timestamp];
+    timestamp = [eventBody timestamp];
 LABEL_11:
 
-    [v6 timeIntervalSinceReferenceDate];
+    [timestamp timeIntervalSinceReferenceDate];
     return result;
   }
 
   objc_opt_class();
   v7 = objc_opt_isKindOfClass();
-  v8 = [(BMStoreEvent *)self eventBody];
+  eventBody2 = [(BMStoreEvent *)self eventBody];
   if (v7)
   {
     goto LABEL_8;
@@ -39,10 +39,10 @@ LABEL_11:
 
   objc_opt_class();
   v9 = objc_opt_isKindOfClass();
-  v10 = [(BMStoreEvent *)self eventBody];
+  eventBody3 = [(BMStoreEvent *)self eventBody];
   if (v9)
   {
-    v6 = [v10 startDate];
+    timestamp = [eventBody3 startDate];
     goto LABEL_11;
   }
 
@@ -69,11 +69,11 @@ LABEL_11:
   [(BMStoreEvent *)self eventBody];
   objc_opt_class();
   v11 = objc_opt_isKindOfClass();
-  v8 = [(BMStoreEvent *)self eventBody];
-  if (v11 & 1) != 0 || (objc_opt_class(), v12 = objc_opt_isKindOfClass(), v8 = [(BMStoreEvent *)self eventBody], (v12))
+  eventBody2 = [(BMStoreEvent *)self eventBody];
+  if (v11 & 1) != 0 || (objc_opt_class(), v12 = objc_opt_isKindOfClass(), eventBody2 = [(BMStoreEvent *)self eventBody], (v12))
   {
 LABEL_8:
-    v6 = [v8 absoluteTimestamp];
+    timestamp = [eventBody2 absoluteTimestamp];
     goto LABEL_11;
   }
 

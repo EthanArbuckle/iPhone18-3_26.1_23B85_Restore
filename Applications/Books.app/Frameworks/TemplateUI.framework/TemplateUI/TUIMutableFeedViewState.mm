@@ -1,50 +1,50 @@
 @interface TUIMutableFeedViewState
-- (TUIMutableFeedViewState)initWithOther:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setEmbeddedScrollAnchor:(id)a3 forIdentifier:(id)a4;
+- (TUIMutableFeedViewState)initWithOther:(id)other;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setEmbeddedScrollAnchor:(id)anchor forIdentifier:(id)identifier;
 @end
 
 @implementation TUIMutableFeedViewState
 
-- (TUIMutableFeedViewState)initWithOther:(id)a3
+- (TUIMutableFeedViewState)initWithOther:(id)other
 {
   v8.receiver = self;
   v8.super_class = TUIMutableFeedViewState;
-  v3 = [(TUIFeedViewState *)&v8 initWithOther:a3];
+  v3 = [(TUIFeedViewState *)&v8 initWithOther:other];
   v4 = v3;
   if (v3)
   {
-    v5 = [(TUIFeedViewState *)v3 embeddedScrollAnchors];
-    v6 = [v5 mutableCopy];
+    embeddedScrollAnchors = [(TUIFeedViewState *)v3 embeddedScrollAnchors];
+    v6 = [embeddedScrollAnchors mutableCopy];
     [(TUIFeedViewState *)v4 setEmbeddedScrollAnchors:v6];
   }
 
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [TUIFeedViewState alloc];
 
   return [(TUIFeedViewState *)v4 initWithOther:self];
 }
 
-- (void)setEmbeddedScrollAnchor:(id)a3 forIdentifier:(id)a4
+- (void)setEmbeddedScrollAnchor:(id)anchor forIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
-    v6 = a4;
-    v7 = a3;
-    v8 = [(TUIFeedViewState *)self embeddedScrollAnchors];
+    identifierCopy = identifier;
+    anchorCopy = anchor;
+    embeddedScrollAnchors = [(TUIFeedViewState *)self embeddedScrollAnchors];
 
-    if (!v8)
+    if (!embeddedScrollAnchors)
     {
       v9 = objc_opt_new();
       [(TUIFeedViewState *)self setEmbeddedScrollAnchors:v9];
     }
 
-    v10 = [(TUIFeedViewState *)self embeddedScrollAnchors];
-    [v10 setObject:v7 forKeyedSubscript:v6];
+    embeddedScrollAnchors2 = [(TUIFeedViewState *)self embeddedScrollAnchors];
+    [embeddedScrollAnchors2 setObject:anchorCopy forKeyedSubscript:identifierCopy];
   }
 }
 

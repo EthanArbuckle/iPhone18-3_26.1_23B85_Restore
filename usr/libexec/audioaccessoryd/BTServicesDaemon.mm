@@ -1,39 +1,39 @@
 @interface BTServicesDaemon
 + (id)sharedBTServicesDaemon;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (BTServicesDaemon)init;
-- (id)descriptionWithLevel:(int)a3;
+- (id)descriptionWithLevel:(int)level;
 - (void)_activate;
-- (void)_audioQualityShowBanner:(int)a3 title:(id)a4 deviceAddressString:(id)a5 messageKey:(id)a6 messageArgs:(id)a7 timeoutSeconds:(double)a8;
+- (void)_audioQualityShowBanner:(int)banner title:(id)title deviceAddressString:(id)string messageKey:(id)key messageArgs:(id)args timeoutSeconds:(double)seconds;
 - (void)_cbConnectedDiscoveryEnsureStarted;
 - (void)_cbConnectedDiscoveryEnsureStopped;
-- (void)_fileRadar:(id)a3;
-- (void)_fileRadarForFWCrash:(id)a3;
-- (void)_fileRadarForHIDLag:(id)a3;
+- (void)_fileRadar:(id)radar;
+- (void)_fileRadarForFWCrash:(id)crash;
+- (void)_fileRadarForHIDLag:(id)lag;
 - (void)_prefsChanged;
 - (void)_scheduleUpdate;
-- (void)_shareAudioActionScannerDeviceFound:(id)a3;
-- (void)_shareAudioActionScannerDeviceLost:(id)a3;
+- (void)_shareAudioActionScannerDeviceFound:(id)found;
+- (void)_shareAudioActionScannerDeviceLost:(id)lost;
 - (void)_shareAudioActionScannerEnsureStarted;
 - (void)_shareAudioActionScannerEnsureStopped;
-- (void)_shareAudioConnectedDeviceFound:(id)a3;
-- (void)_shareAudioConnectedDeviceLost:(id)a3;
+- (void)_shareAudioConnectedDeviceFound:(id)found;
+- (void)_shareAudioConnectedDeviceLost:(id)lost;
 - (void)_shareAudioConnectedDiscoveryEnsureStarted;
 - (void)_shareAudioConnectedDiscoveryEnsureStopped;
-- (void)_shareAudioSessionEnded:(id)a3;
-- (void)_shareAudioSessionProgressEvent:(int)a3 info:(id)a4;
-- (void)_shareAudioSessionStartWithDarwinDevice:(id)a3 cbDevice:(id)a4;
-- (void)_shareAudioShowConnectBanner:(id)a3;
-- (void)_showConnectBannerIfEnabled:(id)a3;
-- (void)_showHIDConnected:(id)a3;
-- (void)_showHIDIntervalBannerIfEnabled:(id)a3;
-- (void)_showHIDLagBannerIfEnabled:(id)a3;
+- (void)_shareAudioSessionEnded:(id)ended;
+- (void)_shareAudioSessionProgressEvent:(int)event info:(id)info;
+- (void)_shareAudioSessionStartWithDarwinDevice:(id)device cbDevice:(id)cbDevice;
+- (void)_shareAudioShowConnectBanner:(id)banner;
+- (void)_showConnectBannerIfEnabled:(id)enabled;
+- (void)_showHIDConnected:(id)connected;
+- (void)_showHIDIntervalBannerIfEnabled:(id)enabled;
+- (void)_showHIDLagBannerIfEnabled:(id)enabled;
 - (void)_update;
-- (void)_xpcConnectionInvalidated:(id)a3;
+- (void)_xpcConnectionInvalidated:(id)invalidated;
 - (void)activate;
 - (void)invalidate;
 - (void)openRadarforAudioQuality;
-- (void)showCrashBannerIfNeeded:(id)a3;
+- (void)showCrashBannerIfNeeded:(id)needed;
 @end
 
 @implementation BTServicesDaemon
@@ -70,7 +70,7 @@
   return v2;
 }
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
   v75 = 0;
   v76 = &v75;
@@ -168,11 +168,11 @@
         v21 = *(*(&v62 + 1) + 8 * i);
         v22 = (v76 + 5);
         v61 = v76[5];
-        v23 = [v21 xpcCnx];
-        v24 = [v23 processIdentifier];
-        v25 = [v21 entitled];
+        xpcCnx = [v21 xpcCnx];
+        processIdentifier = [xpcCnx processIdentifier];
+        entitled = [v21 entitled];
         v26 = "no";
-        if (v25)
+        if (entitled)
         {
           v26 = "yes";
         }
@@ -181,24 +181,24 @@
         NSAppendPrintF();
         objc_storeStrong(v22, v61);
 
-        v27 = [v21 audioSession];
-        v28 = v27;
-        if (v27)
+        audioSession = [v21 audioSession];
+        v28 = audioSession;
+        if (audioSession)
         {
           v29 = (v76 + 5);
           v60 = v76[5];
-          v49 = v27;
+          v49 = audioSession;
           NSAppendPrintF();
           objc_storeStrong(v29, v60);
         }
 
-        v30 = [v21 shareAudioSession];
-        v31 = v30;
-        if (v30)
+        shareAudioSession = [v21 shareAudioSession];
+        v31 = shareAudioSession;
+        if (shareAudioSession)
         {
           v32 = (v76 + 5);
           v59 = v76[5];
-          v49 = v30;
+          v49 = shareAudioSession;
           NSAppendPrintF();
           objc_storeStrong(v32, v59);
         }
@@ -336,18 +336,18 @@ LABEL_33:
   [v13 openURL:v14 configuration:0 completionHandler:0];
 }
 
-- (void)_audioQualityShowBanner:(int)a3 title:(id)a4 deviceAddressString:(id)a5 messageKey:(id)a6 messageArgs:(id)a7 timeoutSeconds:(double)a8
+- (void)_audioQualityShowBanner:(int)banner title:(id)title deviceAddressString:(id)string messageKey:(id)key messageArgs:(id)args timeoutSeconds:(double)seconds
 {
-  v11 = a4;
-  v12 = a6;
+  titleCopy = title;
+  keyCopy = key;
   v13 = objc_alloc_init(BTBannerUISession);
   audioQualityBanner = self->_audioQualityBanner;
   self->_audioQualityBanner = v13;
   v15 = v13;
 
-  if (v11)
+  if (titleCopy)
   {
-    v16 = v11;
+    v16 = titleCopy;
   }
 
   else
@@ -356,18 +356,18 @@ LABEL_33:
   }
 
   [(BTBannerUISession *)v15 setCenterContentText:v16];
-  [(BTBannerUISession *)v15 setCenterContentItemsText:v12];
+  [(BTBannerUISession *)v15 setCenterContentItemsText:keyCopy];
 
   [(BTBannerUISession *)v15 setDispatchQueue:self->_dispatchQueue];
-  [(BTBannerUISession *)v15 setTimeoutSeconds:a8];
+  [(BTBannerUISession *)v15 setTimeoutSeconds:seconds];
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_1000DFEBC;
   v18[3] = &unk_1002BB740;
   v18[4] = v15;
   v18[5] = self;
-  v19 = v11;
-  v17 = v11;
+  v19 = titleCopy;
+  v17 = titleCopy;
   [(BTBannerUISession *)v15 setActionHandler:v18];
   [(BTBannerUISession *)v15 activate];
 }
@@ -600,9 +600,9 @@ LABEL_33:
   }
 }
 
-- (void)showCrashBannerIfNeeded:(id)a3
+- (void)showCrashBannerIfNeeded:(id)needed
 {
-  v4 = a3;
+  neededCopy = needed;
   mach_absolute_time();
   showFirmwareCrashLastTicks = self->_showFirmwareCrashLastTicks;
   v6 = UpTicksToSeconds();
@@ -622,7 +622,7 @@ LABEL_33:
         [(CUUserNotificationSession *)self->_uiNoteSession invalidate];
       }
 
-      v8 = [v4 objectForKeyedSubscript:@"_input"];
+      v8 = [neededCopy objectForKeyedSubscript:@"_input"];
       v9 = [v8 isEqual:@"HostCrashed"];
 
       if (v9)
@@ -669,7 +669,7 @@ LABEL_33:
       v18[3] = &unk_1002B6CF0;
       v18[4] = v16;
       v18[5] = self;
-      v19 = v4;
+      v19 = neededCopy;
       [(CUUserNotificationSession *)v16 addActionWithIdentifier:@"FileRadarAction" title:@"File Radar" flags:0 handler:v18];
       [(CUUserNotificationSession *)v16 activate];
     }
@@ -693,9 +693,9 @@ LABEL_22:
   }
 }
 
-- (void)_fileRadarForFWCrash:(id)a3
+- (void)_fileRadarForFWCrash:(id)crash
 {
-  v4 = a3;
+  crashCopy = crash;
   if (dword_1002F76E0 <= 30 && (dword_1002F76E0 != -1 || _LogCategory_Initialize()))
   {
     sub_1001FD30C();
@@ -722,9 +722,9 @@ LABEL_22:
   [(BTServicesDaemon *)self _fileRadar:v7];
 }
 
-- (void)_fileRadarForHIDLag:(id)a3
+- (void)_fileRadarForHIDLag:(id)lag
 {
-  v4 = a3;
+  lagCopy = lag;
   if (dword_1002F76E0 <= 30 && (dword_1002F76E0 != -1 || _LogCategory_Initialize()))
   {
     sub_1001FD328();
@@ -749,15 +749,15 @@ LABEL_22:
   [(BTServicesDaemon *)self _fileRadar:v6];
 }
 
-- (void)_fileRadar:(id)a3
+- (void)_fileRadar:(id)radar
 {
-  v3 = a3;
+  radarCopy = radar;
   v4 = +[NSMutableArray array];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = v3;
+  v5 = radarCopy;
   v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
@@ -791,9 +791,9 @@ LABEL_22:
   [v14 openURL:v15 configuration:0 completionHandler:0];
 }
 
-- (void)_showConnectBannerIfEnabled:(id)a3
+- (void)_showConnectBannerIfEnabled:(id)enabled
 {
-  v4 = a3;
+  enabledCopy = enabled;
   mach_absolute_time();
   showConnectBannerLastTicks = self->_showConnectBannerLastTicks;
   v6 = UpTicksToSeconds();
@@ -814,38 +814,38 @@ LABEL_22:
     {
       if (!self->_dontShowConnectBanner)
       {
-        v8 = [v4 name];
-        if (![v8 length])
+        name = [enabledCopy name];
+        if (![name length])
         {
 LABEL_20:
 
           goto LABEL_21;
         }
 
-        v9 = [v4 connectedServices];
+        connectedServices = [enabledCopy connectedServices];
 
-        if (v9 && ([v4 connectedServices] & 0x1000000) == 0)
+        if (connectedServices && ([enabledCopy connectedServices] & 0x1000000) == 0)
         {
           if (dword_1002F76E0 <= 30 && (dword_1002F76E0 != -1 || _LogCategory_Initialize()))
           {
-            sub_1001FD344(v4);
+            sub_1001FD344(enabledCopy);
           }
 
-          v8 = objc_alloc_init(NSDateFormatter);
-          [v8 setDateFormat:@"hh:mm:ss a"];
+          name = objc_alloc_init(NSDateFormatter);
+          [name setDateFormat:@"hh:mm:ss a"];
           v10 = +[NSDate date];
-          v11 = [v8 stringFromDate:v10];
+          v11 = [name stringFromDate:v10];
 
-          v12 = [v4 btAddressData];
+          btAddressData = [enabledCopy btAddressData];
           v13 = CUPrintNSDataAddress();
 
           v14 = [v13 substringFromIndex:{objc_msgSend(v13, "length") - 5}];
-          if (([v4 connectedServices] & 0x400000) != 0)
+          if (([enabledCopy connectedServices] & 0x400000) != 0)
           {
             [NSString stringWithFormat:@"LE Connection at %@", v11];
           }
 
-          else if (([v4 connectedServices] & 0x800000) != 0)
+          else if (([enabledCopy connectedServices] & 0x800000) != 0)
           {
             [NSString stringWithFormat:@"Classic Connection at %@", v11];
           }
@@ -860,8 +860,8 @@ LABEL_20:
           [v16 setCategoryID:@"BTUserNotifications"];
           [v16 setDispatchQueue:self->_dispatchQueue];
           [v16 setIconName:@"Bluetooth.icns"];
-          v17 = [v4 name];
-          v18 = [NSString stringWithFormat:@"%@%@%@%@", v17, @" ("), v14, CFSTR(")"];
+          name2 = [enabledCopy name];
+          v18 = [NSString stringWithFormat:@"%@%@%@%@", name2, @" ("), v14, CFSTR(")"];
           [v16 setTitleKey:v18];
 
           [v16 setSubtitleKey:v15];
@@ -882,9 +882,9 @@ LABEL_20:
 LABEL_21:
 }
 
-- (void)_showHIDLagBannerIfEnabled:(id)a3
+- (void)_showHIDLagBannerIfEnabled:(id)enabled
 {
-  v4 = a3;
+  enabledCopy = enabled;
   mach_absolute_time();
   showHIDLagBannerLastTicks = self->_showHIDLagBannerLastTicks;
   v6 = UpTicksToSeconds();
@@ -912,7 +912,7 @@ LABEL_21:
         [(CUUserNotificationSession *)self->_uiNoteSession invalidate];
       }
 
-      v7 = [v4 objectForKeyedSubscript:@"_input"];
+      v7 = [enabledCopy objectForKeyedSubscript:@"_input"];
       v8 = [v7 isEqual:@"HIDLagDetected"];
 
       if (v8)
@@ -952,17 +952,17 @@ LABEL_21:
       v15 = sub_1000E1CD8;
       v16 = &unk_1002B6CF0;
       v17 = v12;
-      v18 = self;
-      v19 = v4;
+      selfCopy = self;
+      v19 = enabledCopy;
       [(CUUserNotificationSession *)v12 addActionWithIdentifier:@"FileRadarAction" title:@"File Radar" flags:0 handler:&v13];
       [(CUUserNotificationSession *)v12 activate:v13];
     }
   }
 }
 
-- (void)_showHIDIntervalBannerIfEnabled:(id)a3
+- (void)_showHIDIntervalBannerIfEnabled:(id)enabled
 {
-  v9 = a3;
+  enabledCopy = enabled;
   if (IsAppleInternalBuild() && self->_doesShowHIDIntervalBanner)
   {
     if (dword_1002F76E0 <= 30 && (dword_1002F76E0 != -1 || _LogCategory_Initialize()))
@@ -970,8 +970,8 @@ LABEL_21:
       sub_1001FD49C();
     }
 
-    v4 = [v9 objectForKeyedSubscript:@"DeviceName"];
-    v5 = [v9 objectForKeyedSubscript:@"Intervalms"];
+    v4 = [enabledCopy objectForKeyedSubscript:@"DeviceName"];
+    v5 = [enabledCopy objectForKeyedSubscript:@"Intervalms"];
     [v5 doubleValue];
     v7 = [NSString stringWithFormat:@"%@ is %.2f ms", v4, v6];
     v8 = objc_alloc_init(CUUserNotificationSession);
@@ -987,12 +987,12 @@ LABEL_21:
   }
 }
 
-- (void)_showHIDConnected:(id)a3
+- (void)_showHIDConnected:(id)connected
 {
-  v4 = a3;
-  [v4 batteryLevelMain];
+  connectedCopy = connected;
+  [connectedCopy batteryLevelMain];
   v6 = v5;
-  v7 = [v4 name];
+  name = [connectedCopy name];
   if (dword_1002F76E0 <= 30 && (dword_1002F76E0 != -1 || _LogCategory_Initialize()))
   {
     sub_1001FD4B8();
@@ -1013,20 +1013,20 @@ LABEL_21:
   [v11 setTimeoutSeconds:10.0];
   [v11 setBannerType:3];
   objc_storeStrong(&self->_uiHIDDeviceBanner, v11);
-  [v11 setCenterContentText:v7];
-  v12 = [v4 deviceType];
+  [v11 setCenterContentText:name];
+  deviceType = [connectedCopy deviceType];
   v13 = @"gamecontroller.fill";
-  if (v12 == 24)
+  if (deviceType == 24)
   {
     v13 = @"keyboard.fill";
   }
 
-  if (v12 == 25)
+  if (deviceType == 25)
   {
     v13 = @"magicmouse.fill";
   }
 
-  if (v12 == 49)
+  if (deviceType == 49)
   {
     v14 = @"rectangle.fill";
   }
@@ -1101,13 +1101,13 @@ LABEL_21:
   }
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   v6 = objc_alloc_init(BTServicesXPCConnection);
   [(BTServicesXPCConnection *)v6 setDaemon:self];
   [(BTServicesXPCConnection *)v6 setDispatchQueue:self->_dispatchQueue];
-  [(BTServicesXPCConnection *)v6 setXpcCnx:v5];
+  [(BTServicesXPCConnection *)v6 setXpcCnx:connectionCopy];
   xpcConnections = self->_xpcConnections;
   if (!xpcConnections)
   {
@@ -1132,7 +1132,7 @@ LABEL_21:
   v16 = objc_opt_class();
   v33 = [v32 initWithObjects:{v29, v10, v11, v12, v13, v14, v15, v16, objc_opt_class(), 0}];
   [v31 setClasses:? forSelector:? argumentIndex:? ofReply:?];
-  [v5 _setQueue:self->_dispatchQueue];
+  [connectionCopy _setQueue:self->_dispatchQueue];
   v30 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___BTServicesXPCDaemonInterface];
   v28 = [NSSet alloc];
   v17 = objc_opt_class();
@@ -1146,39 +1146,39 @@ LABEL_21:
   v27 = objc_opt_class();
   v25 = [v28 initWithObjects:{v17, v18, v19, v20, v21, v22, v23, v24, v27, objc_opt_class(), 0}];
   [v30 setClasses:v25 forSelector:"showHIDConnectedBannerAperture:completion:" argumentIndex:0 ofReply:1];
-  [v5 setExportedInterface:v30];
-  [v5 setExportedObject:v34];
+  [connectionCopy setExportedInterface:v30];
+  [connectionCopy setExportedObject:v34];
   v35[0] = _NSConcreteStackBlock;
   v35[1] = 3221225472;
   v35[2] = sub_1000E276C;
   v35[3] = &unk_1002B6D18;
   v35[4] = self;
   v35[5] = v34;
-  [v5 setInvalidationHandler:v35];
-  [v5 setRemoteObjectInterface:v31];
-  [v5 resume];
+  [connectionCopy setInvalidationHandler:v35];
+  [connectionCopy setRemoteObjectInterface:v31];
+  [connectionCopy resume];
   if (dword_1002F76E0 <= 20 && (dword_1002F76E0 != -1 || _LogCategory_Initialize()))
   {
-    sub_1001FD5D0(v5);
+    sub_1001FD5D0(connectionCopy);
   }
 
   return 1;
 }
 
-- (void)_xpcConnectionInvalidated:(id)a3
+- (void)_xpcConnectionInvalidated:(id)invalidated
 {
-  v4 = a3;
-  v6 = v4;
+  invalidatedCopy = invalidated;
+  v6 = invalidatedCopy;
   if (dword_1002F76E0 <= 20)
   {
-    if (dword_1002F76E0 != -1 || (v5 = _LogCategory_Initialize(), v4 = v6, v5))
+    if (dword_1002F76E0 != -1 || (v5 = _LogCategory_Initialize(), invalidatedCopy = v6, v5))
     {
-      sub_1001FD614(v4);
-      v4 = v6;
+      sub_1001FD614(invalidatedCopy);
+      invalidatedCopy = v6;
     }
   }
 
-  [v4 xpcConnectionInvalidated];
+  [invalidatedCopy xpcConnectionInvalidated];
   [(NSMutableSet *)self->_xpcConnections removeObject:v6];
 }
 
@@ -1310,15 +1310,15 @@ LABEL_21:
   }
 }
 
-- (void)_shareAudioConnectedDeviceFound:(id)a3
+- (void)_shareAudioConnectedDeviceFound:(id)found
 {
-  v10 = a3;
-  v4 = [v10 deviceFlags];
-  v5 = v10;
-  if ((v4 & 4) != 0)
+  foundCopy = found;
+  deviceFlags = [foundCopy deviceFlags];
+  v5 = foundCopy;
+  if ((deviceFlags & 4) != 0)
   {
-    v6 = [v10 identifier];
-    if (v6)
+    identifier = [foundCopy identifier];
+    if (identifier)
     {
       if (dword_1002F7810 <= 30 && (dword_1002F7810 != -1 || _LogCategory_Initialize()))
       {
@@ -1335,22 +1335,22 @@ LABEL_21:
         shareAudioConnectedDeviceMap = self->_shareAudioConnectedDeviceMap;
       }
 
-      [(NSMutableDictionary *)shareAudioConnectedDeviceMap setObject:v10 forKeyedSubscript:v6];
+      [(NSMutableDictionary *)shareAudioConnectedDeviceMap setObject:foundCopy forKeyedSubscript:identifier];
     }
 
-    v5 = v10;
+    v5 = foundCopy;
   }
 
-  _objc_release_x1(v4, v5);
+  _objc_release_x1(deviceFlags, v5);
 }
 
-- (void)_shareAudioConnectedDeviceLost:(id)a3
+- (void)_shareAudioConnectedDeviceLost:(id)lost
 {
-  v6 = a3;
-  v4 = [v6 identifier];
-  if (v4)
+  lostCopy = lost;
+  identifier = [lostCopy identifier];
+  if (identifier)
   {
-    v5 = [(NSMutableDictionary *)self->_shareAudioConnectedDeviceMap objectForKeyedSubscript:v4];
+    v5 = [(NSMutableDictionary *)self->_shareAudioConnectedDeviceMap objectForKeyedSubscript:identifier];
 
     if (v5)
     {
@@ -1359,26 +1359,26 @@ LABEL_21:
         sub_1001FD7C0();
       }
 
-      [(NSMutableDictionary *)self->_shareAudioConnectedDeviceMap setObject:0 forKeyedSubscript:v4];
+      [(NSMutableDictionary *)self->_shareAudioConnectedDeviceMap setObject:0 forKeyedSubscript:identifier];
     }
   }
 }
 
-- (void)_shareAudioShowConnectBanner:(id)a3
+- (void)_shareAudioShowConnectBanner:(id)banner
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_shareAudioConnectedDeviceMap allValues];
-  v6 = [v5 firstObject];
+  bannerCopy = banner;
+  allValues = [(NSMutableDictionary *)self->_shareAudioConnectedDeviceMap allValues];
+  firstObject = [allValues firstObject];
 
-  if (v6)
+  if (firstObject)
   {
-    v7 = [v4 name];
-    if (![v7 length])
+    name = [bannerCopy name];
+    if (![name length])
     {
       v8 = [NSBundle bundleWithPath:@"/System/Library/UserNotifications/Bundles/com.apple.ShareAudioNotifications.bundle"];
       v9 = CULocalizedStringEx();
 
-      v7 = v9;
+      name = v9;
     }
 
     v10 = objc_alloc_init(CUUserNotificationSession);
@@ -1390,19 +1390,19 @@ LABEL_21:
     [(CUUserNotificationSession *)v12 setCategoryID:@"ShareAudioCategoryID"];
     [(CUUserNotificationSession *)v12 setDispatchQueue:self->_dispatchQueue];
     [(CUUserNotificationSession *)v12 setFlags:9];
-    v13 = [v4 identifier];
-    v14 = [v13 UUIDString];
-    [(CUUserNotificationSession *)v12 setIdentifier:v14];
+    identifier = [bannerCopy identifier];
+    uUIDString = [identifier UUIDString];
+    [(CUUserNotificationSession *)v12 setIdentifier:uUIDString];
 
     [(CUUserNotificationSession *)v12 setLabel:@"ShareAudio"];
-    [(CUUserNotificationSession *)v12 setTitleKey:v7];
+    [(CUUserNotificationSession *)v12 setTitleKey:name];
     [(CUUserNotificationSession *)v12 setBodyKey:@"SHARE_AUDIO_BODY_FORMAT"];
-    v15 = [v6 name];
-    v16 = v15;
+    name2 = [firstObject name];
+    v16 = name2;
     v17 = @"?";
-    if (v15)
+    if (name2)
     {
-      v17 = v15;
+      v17 = name2;
     }
 
     v28 = v17;
@@ -1421,9 +1421,9 @@ LABEL_21:
     v21 = sub_1000E33C0;
     v22 = &unk_1002B7B18;
     v23 = v12;
-    v24 = self;
-    v25 = v4;
-    v26 = v6;
+    selfCopy = self;
+    v25 = bannerCopy;
+    v26 = firstObject;
     [(CUUserNotificationSession *)v12 addActionWithIdentifier:@"ShareAudioActionIDConnect" title:@"SHARE_AUDIO_BUTTON" flags:0 handler:&v19];
     [(CUUserNotificationSession *)v12 activate:v19];
   }
@@ -1434,10 +1434,10 @@ LABEL_21:
   }
 }
 
-- (void)_shareAudioSessionStartWithDarwinDevice:(id)a3 cbDevice:(id)a4
+- (void)_shareAudioSessionStartWithDarwinDevice:(id)device cbDevice:(id)cbDevice
 {
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  cbDeviceCopy = cbDevice;
   if (self->_shareAudioSession)
   {
     if (dword_1002F7810 <= 30 && (dword_1002F7810 != -1 || _LogCategory_Initialize()))
@@ -1458,10 +1458,10 @@ LABEL_21:
   self->_shareAudioSession = v8;
   v10 = v8;
 
-  [(BTShareAudioSessionDaemon *)v10 setDarwinDevice:v6];
+  [(BTShareAudioSessionDaemon *)v10 setDarwinDevice:deviceCopy];
   [(BTShareAudioSessionDaemon *)v10 setDispatchQueue:self->_dispatchQueue];
   [(BTShareAudioSessionDaemon *)v10 setMode:1];
-  [(BTShareAudioSessionDaemon *)v10 setCbDevice:v7];
+  [(BTShareAudioSessionDaemon *)v10 setCbDevice:cbDeviceCopy];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1000E35F4;
@@ -1472,9 +1472,9 @@ LABEL_21:
   [(BTShareAudioSessionDaemon *)v10 activate];
 }
 
-- (void)_shareAudioSessionEnded:(id)a3
+- (void)_shareAudioSessionEnded:(id)ended
 {
-  v5 = a3;
+  endedCopy = ended;
   if (dword_1002F7810 <= 30 && (dword_1002F7810 != -1 || _LogCategory_Initialize()))
   {
     sub_1001FD91C();
@@ -1485,15 +1485,15 @@ LABEL_21:
   self->_shareAudioSession = 0;
 }
 
-- (void)_shareAudioSessionProgressEvent:(int)a3 info:(id)a4
+- (void)_shareAudioSessionProgressEvent:(int)event info:(id)info
 {
-  v8 = a4;
+  infoCopy = info;
   if (dword_1002F7810 <= 30 && (dword_1002F7810 != -1 || _LogCategory_Initialize()))
   {
     sub_1001FD95C();
   }
 
-  if (a3 == 50)
+  if (event == 50)
   {
     CFErrorGetTypeID();
     v6 = CFDictionaryGetTypedValue();
@@ -1509,27 +1509,27 @@ LABEL_21:
     }
   }
 
-  else if (a3 == 40)
+  else if (event == 40)
   {
     [(BTServicesDaemon *)self _shareAudioSessionEnded:0];
   }
 }
 
-- (void)_shareAudioActionScannerDeviceFound:(id)a3
+- (void)_shareAudioActionScannerDeviceFound:(id)found
 {
-  v15 = a3;
-  v4 = [v15 identifier];
-  v5 = [v4 UUIDString];
+  foundCopy = found;
+  identifier = [foundCopy identifier];
+  uUIDString = [identifier UUIDString];
 
-  if (v5)
+  if (uUIDString)
   {
-    if ([v15 deviceActionType] != 31)
+    if ([foundCopy deviceActionType] != 31)
     {
-      [(BTServicesDaemon *)self _shareAudioActionScannerDeviceLost:v15];
+      [(BTServicesDaemon *)self _shareAudioActionScannerDeviceLost:foundCopy];
       goto LABEL_21;
     }
 
-    v6 = [v15 bleDevice];
+    bleDevice = [foundCopy bleDevice];
     if (self->_shareAudioActionUINoteSession)
     {
       if (dword_1002F7810 > 10 || dword_1002F7810 == -1 && !_LogCategory_Initialize())
@@ -1548,7 +1548,7 @@ LABEL_21:
 
     else
     {
-      v7 = [(NSMutableDictionary *)self->_shareAudioActionTriggeredDevices objectForKeyedSubscript:v5];
+      v7 = [(NSMutableDictionary *)self->_shareAudioActionTriggeredDevices objectForKeyedSubscript:uUIDString];
 
       if (v7)
       {
@@ -1558,7 +1558,7 @@ LABEL_21:
         }
       }
 
-      else if ([v6 smoothedRSSI] <= -71)
+      else if ([bleDevice smoothedRSSI] <= -71)
       {
         if (dword_1002F7810 > 10 || dword_1002F7810 == -1 && !_LogCategory_Initialize())
         {
@@ -1572,34 +1572,34 @@ LABEL_21:
         {
           if (dword_1002F7810 <= 30 && (dword_1002F7810 != -1 || _LogCategory_Initialize()))
           {
-            v14 = v6;
+            v14 = bleDevice;
             LogPrintF();
           }
 
           shareAudioActionTriggeredDevices = self->_shareAudioActionTriggeredDevices;
-          v9 = v15;
+          v9 = foundCopy;
           if (!shareAudioActionTriggeredDevices)
           {
             v10 = objc_alloc_init(NSMutableDictionary);
             v11 = self->_shareAudioActionTriggeredDevices;
             self->_shareAudioActionTriggeredDevices = v10;
 
-            v9 = v15;
+            v9 = foundCopy;
             shareAudioActionTriggeredDevices = self->_shareAudioActionTriggeredDevices;
           }
 
-          [(NSMutableDictionary *)shareAudioActionTriggeredDevices setObject:v9 forKeyedSubscript:v5, v14];
-          v12 = [(NSMutableDictionary *)self->_shareAudioConnectedDeviceMap allValues];
-          v13 = [v12 firstObject];
+          [(NSMutableDictionary *)shareAudioActionTriggeredDevices setObject:v9 forKeyedSubscript:uUIDString, v14];
+          allValues = [(NSMutableDictionary *)self->_shareAudioConnectedDeviceMap allValues];
+          firstObject = [allValues firstObject];
 
-          if (v13 && ([v15 deviceFlags] & 8) != 0)
+          if (firstObject && ([foundCopy deviceFlags] & 8) != 0)
           {
-            [(BTServicesDaemon *)self _shareAudioSessionStartWithDarwinDevice:v15 cbDevice:v13];
+            [(BTServicesDaemon *)self _shareAudioSessionStartWithDarwinDevice:foundCopy cbDevice:firstObject];
           }
 
           else
           {
-            [(BTServicesDaemon *)self _shareAudioShowConnectBanner:v15];
+            [(BTServicesDaemon *)self _shareAudioShowConnectBanner:foundCopy];
           }
 
           goto LABEL_20;
@@ -1621,40 +1621,40 @@ LABEL_20:
 LABEL_21:
 }
 
-- (void)_shareAudioActionScannerDeviceLost:(id)a3
+- (void)_shareAudioActionScannerDeviceLost:(id)lost
 {
-  v12 = a3;
-  v4 = [v12 identifier];
-  v5 = [v4 UUIDString];
+  lostCopy = lost;
+  identifier = [lostCopy identifier];
+  uUIDString = [identifier UUIDString];
 
-  if (v5)
+  if (uUIDString)
   {
-    v6 = [(NSMutableDictionary *)self->_shareAudioActionTriggeredDevices objectForKeyedSubscript:v5];
+    v6 = [(NSMutableDictionary *)self->_shareAudioActionTriggeredDevices objectForKeyedSubscript:uUIDString];
 
     if (v6)
     {
       if (dword_1002F7810 <= 30 && (dword_1002F7810 != -1 || _LogCategory_Initialize()))
       {
-        v11 = [v12 bleDevice];
+        bleDevice = [lostCopy bleDevice];
         LogPrintF();
 
-        [(NSMutableDictionary *)self->_shareAudioActionTriggeredDevices setObject:0 forKeyedSubscript:v5, v11];
+        [(NSMutableDictionary *)self->_shareAudioActionTriggeredDevices setObject:0 forKeyedSubscript:uUIDString, bleDevice];
       }
 
       else
       {
-        [(NSMutableDictionary *)self->_shareAudioActionTriggeredDevices setObject:0 forKeyedSubscript:v5, v10];
+        [(NSMutableDictionary *)self->_shareAudioActionTriggeredDevices setObject:0 forKeyedSubscript:uUIDString, bleDevice2];
       }
     }
 
-    v7 = [(CUUserNotificationSession *)self->_shareAudioActionUINoteSession identifier];
-    v8 = [v7 isEqual:v5];
+    identifier2 = [(CUUserNotificationSession *)self->_shareAudioActionUINoteSession identifier];
+    v8 = [identifier2 isEqual:uUIDString];
 
     if (v8)
     {
       if (dword_1002F7810 <= 30 && (dword_1002F7810 != -1 || _LogCategory_Initialize()))
       {
-        v10 = [v12 bleDevice];
+        bleDevice2 = [lostCopy bleDevice];
         LogPrintF();
       }
 

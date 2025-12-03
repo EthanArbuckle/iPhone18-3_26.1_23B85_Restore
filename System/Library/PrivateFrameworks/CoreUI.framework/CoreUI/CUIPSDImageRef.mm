@@ -1,65 +1,65 @@
 @interface CUIPSDImageRef
-+ (BOOL)isValidPSDResourceAtPath:(id)a3;
-+ (BOOL)isValidPSDResourceAtPath:(id)a3 withImageInfo:(_PSDImageInfo *)a4;
-+ (BOOL)isValidPSDResourceAtPath:(id)a3 withLayerCount:(unsigned int *)a4;
-- ($EFF4F97A94432FEE0F91D8A1E88572D8)metricsInAlphaChannel:(SEL)a3 forRect:(int64_t)a4;
-- ($EFF4F97A94432FEE0F91D8A1E88572D8)metricsInMask:(SEL)a3 forRect:(id)a4;
-- (BOOL)_visibilityAtAbsoluteIndex:(unsigned int)a3;
-- (BOOL)loadPSDFileWithLayers:(BOOL)a3;
++ (BOOL)isValidPSDResourceAtPath:(id)path;
++ (BOOL)isValidPSDResourceAtPath:(id)path withImageInfo:(_PSDImageInfo *)info;
++ (BOOL)isValidPSDResourceAtPath:(id)path withLayerCount:(unsigned int *)count;
+- ($EFF4F97A94432FEE0F91D8A1E88572D8)metricsInAlphaChannel:(SEL)channel forRect:(int64_t)rect;
+- ($EFF4F97A94432FEE0F91D8A1E88572D8)metricsInMask:(SEL)mask forRect:(id)rect;
+- (BOOL)_visibilityAtAbsoluteIndex:(unsigned int)index;
+- (BOOL)loadPSDFileWithLayers:(BOOL)layers;
 - (BOOL)openImageFile;
 - (CGColorSpace)copyColorSpace;
-- (CGImage)_copyCGImageAtAbsoluteIndex:(unsigned int)a3;
+- (CGImage)_copyCGImageAtAbsoluteIndex:(unsigned int)index;
 - (CGImage)createCompositeCGImage;
-- (CGRect)_boundsAtAbsoluteIndex:(unsigned int)a3;
-- (CGRect)boundsForSlice:(unsigned int)a3;
+- (CGRect)_boundsAtAbsoluteIndex:(unsigned int)index;
+- (CGRect)boundsForSlice:(unsigned int)slice;
 - (CGSize)size;
-- (CUIPSDImageRef)initWithPath:(id)a3;
+- (CUIPSDImageRef)initWithPath:(id)path;
 - (_PSDImageInfo)imageInfo;
-- (double)_fillOpacityAtAbsoluteIndex:(unsigned int)a3;
-- (double)_opacityAtAbsoluteIndex:(unsigned int)a3;
-- (id)_bevelEmbossFromLayerEffectsInfo:(void *)a3;
-- (id)_colorOverlayFromLayerEffectsInfo:(void *)a3;
-- (id)_copySublayerInfoAtAbsoluteIndex:(unsigned int)a3 atRoot:(BOOL)a4;
-- (id)_createMaskFromSlice:(unsigned int)a3 atAbsoluteIndex:(unsigned int)a4;
-- (id)_dropShadowFromLayerEffectsInfo:(void *)a3;
-- (id)_fillSampleAtAbsoluteIndex:(unsigned int)a3;
-- (id)_gradientAtAbsoluteIndex:(unsigned int)a3;
-- (id)_gradientOverlayFromLayerEffectsAtAbsoluteIndex:(unsigned int)a3;
-- (id)_imageAtAbsoluteIndex:(unsigned int)a3 isZeroSizeImage:(BOOL *)a4;
-- (id)_imageFromSlice:(unsigned int)a3 atAbsoluteIndex:(unsigned int)a4 isEmptyImage:(BOOL *)a5;
-- (id)_innerGlowFromLayerEffectsInfo:(void *)a3;
-- (id)_innerShadowFromLayerEffectsInfo:(void *)a3;
-- (id)_layerEffectsAtAbsoluteIndex:(unsigned int)a3;
+- (double)_fillOpacityAtAbsoluteIndex:(unsigned int)index;
+- (double)_opacityAtAbsoluteIndex:(unsigned int)index;
+- (id)_bevelEmbossFromLayerEffectsInfo:(void *)info;
+- (id)_colorOverlayFromLayerEffectsInfo:(void *)info;
+- (id)_copySublayerInfoAtAbsoluteIndex:(unsigned int)index atRoot:(BOOL)root;
+- (id)_createMaskFromSlice:(unsigned int)slice atAbsoluteIndex:(unsigned int)index;
+- (id)_dropShadowFromLayerEffectsInfo:(void *)info;
+- (id)_fillSampleAtAbsoluteIndex:(unsigned int)index;
+- (id)_gradientAtAbsoluteIndex:(unsigned int)index;
+- (id)_gradientOverlayFromLayerEffectsAtAbsoluteIndex:(unsigned int)index;
+- (id)_imageAtAbsoluteIndex:(unsigned int)index isZeroSizeImage:(BOOL *)image;
+- (id)_imageFromSlice:(unsigned int)slice atAbsoluteIndex:(unsigned int)index isEmptyImage:(BOOL *)image;
+- (id)_innerGlowFromLayerEffectsInfo:(void *)info;
+- (id)_innerShadowFromLayerEffectsInfo:(void *)info;
+- (id)_layerEffectsAtAbsoluteIndex:(unsigned int)index;
 - (id)_layerInfo;
-- (id)_layerRefAtAbsoluteIndex:(unsigned int)a3;
-- (id)_nameAtAbsoluteIndex:(unsigned int)a3;
-- (id)_namesOfSublayers:(id)a3;
-- (id)_outerGlowFromLayerEffectsInfo:(void *)a3;
-- (id)_patternFromSlice:(unsigned int)a3 atAbsoluteIndex:(unsigned int)a4 isZeroSizeImage:(BOOL *)a5;
-- (id)colorFromDocumentColor:(double *)a3;
+- (id)_layerRefAtAbsoluteIndex:(unsigned int)index;
+- (id)_nameAtAbsoluteIndex:(unsigned int)index;
+- (id)_namesOfSublayers:(id)sublayers;
+- (id)_outerGlowFromLayerEffectsInfo:(void *)info;
+- (id)_patternFromSlice:(unsigned int)slice atAbsoluteIndex:(unsigned int)index isZeroSizeImage:(BOOL *)image;
+- (id)colorFromDocumentColor:(double *)color;
 - (id)compositeImage;
 - (id)layerNames;
-- (id)maskFromCompositeAlphaChannel:(int64_t)a3;
+- (id)maskFromCompositeAlphaChannel:(int64_t)channel;
 - (id)metadataString;
-- (int)_blendModeAtAbsluteIndex:(unsigned int)a3;
-- (int)_layerIndexFromLayerNames:(id)a3 indexRangeBegin:(int)a4 indexRangeEnd:(int)a5 isTopLevel:(BOOL)a6;
-- (int)cgBlendModeForPSDLayerOrLayerEffectBlendMode:(unsigned int)a3;
+- (int)_blendModeAtAbsluteIndex:(unsigned int)index;
+- (int)_layerIndexFromLayerNames:(id)names indexRangeBegin:(int)begin indexRangeEnd:(int)end isTopLevel:(BOOL)level;
+- (int)cgBlendModeForPSDLayerOrLayerEffectBlendMode:(unsigned int)mode;
 - (unsigned)numberOfChannels;
 - (unsigned)numberOfLayers;
 - (unsigned)numberOfSlices;
-- (void)_psdFileWithLayers:(BOOL)a3;
-- (void)_psdLayerRecordAtAbsoluteIndex:(unsigned int)a3;
+- (void)_psdFileWithLayers:(BOOL)layers;
+- (void)_psdLayerRecordAtAbsoluteIndex:(unsigned int)index;
 - (void)dealloc;
-- (void)enumerateLayersUsingBlock:(id)a3;
+- (void)enumerateLayersUsingBlock:(id)block;
 - (void)metadataString;
 @end
 
 @implementation CUIPSDImageRef
 
-+ (BOOL)isValidPSDResourceAtPath:(id)a3
++ (BOOL)isValidPSDResourceAtPath:(id)path
 {
   CPSDFile::CPSDFile(v7);
-  FileOptionalLogging = CreateFileOptionalLogging([a3 fileSystemRepresentation], 0, 0);
+  FileOptionalLogging = CreateFileOptionalLogging([path fileSystemRepresentation], 0, 0);
   if (FileOptionalLogging == -1)
   {
     v5 = 0;
@@ -75,10 +75,10 @@
   return v5;
 }
 
-+ (BOOL)isValidPSDResourceAtPath:(id)a3 withLayerCount:(unsigned int *)a4
++ (BOOL)isValidPSDResourceAtPath:(id)path withLayerCount:(unsigned int *)count
 {
   CPSDFile::CPSDFile(v9);
-  FileOptionalLogging = CreateFileOptionalLogging([a3 fileSystemRepresentation], 0, 0);
+  FileOptionalLogging = CreateFileOptionalLogging([path fileSystemRepresentation], 0, 0);
   if (FileOptionalLogging == -1)
   {
     v7 = 0;
@@ -88,7 +88,7 @@
   {
     if (CPSDFile::LoadLayers(v9, FileOptionalLogging))
     {
-      *a4 = v10;
+      *count = v10;
       v7 = 1;
     }
 
@@ -104,18 +104,18 @@
   return v7;
 }
 
-+ (BOOL)isValidPSDResourceAtPath:(id)a3 withImageInfo:(_PSDImageInfo *)a4
++ (BOOL)isValidPSDResourceAtPath:(id)path withImageInfo:(_PSDImageInfo *)info
 {
   CPSDFile::CPSDFile(v10);
-  FileOptionalLogging = CreateFileOptionalLogging([a3 fileSystemRepresentation], 0, 0);
-  if (FileOptionalLogging == -1 || (v7 = CPSDFile::GetImageInfo(v10, FileOptionalLogging, &a4->var1, &a4->var0, &a4->var3, &a4->var2, &a4->var4) == 0, CloseHandle(FileOptionalLogging), v7))
+  FileOptionalLogging = CreateFileOptionalLogging([path fileSystemRepresentation], 0, 0);
+  if (FileOptionalLogging == -1 || (v7 = CPSDFile::GetImageInfo(v10, FileOptionalLogging, &info->var1, &info->var0, &info->var3, &info->var2, &info->var4) == 0, CloseHandle(FileOptionalLogging), v7))
   {
     v8 = 0;
   }
 
   else
   {
-    a4->var5 = CPSDFile::ValidateIsDrawable(v10);
+    info->var5 = CPSDFile::ValidateIsDrawable(v10);
     v8 = 1;
   }
 
@@ -142,14 +142,14 @@
   return path;
 }
 
-- (BOOL)loadPSDFileWithLayers:(BOOL)a3
+- (BOOL)loadPSDFileWithLayers:(BOOL)layers
 {
   if (self->_file == -1)
   {
     return 0;
   }
 
-  v3 = a3;
+  layersCopy = layers;
   psd = self->_psd;
   if (psd)
   {
@@ -162,7 +162,7 @@
   SetFilePointer(self->_file, 0, 0, 0);
   v7 = self->_psd;
   file = self->_file;
-  if (v3)
+  if (layersCopy)
   {
     Layers = CPSDFile::LoadLayers(v7, file);
   }
@@ -175,15 +175,15 @@
   return Layers != 0;
 }
 
-- (CUIPSDImageRef)initWithPath:(id)a3
+- (CUIPSDImageRef)initWithPath:(id)path
 {
   v16.receiver = self;
   v16.super_class = CUIPSDImageRef;
   v4 = [(CUIPSDImageRef *)&v16 init];
   v15 = 0;
-  if ([CUIPSDImageRef isValidPSDResourceAtPath:a3 withLayerCount:&v15])
+  if ([CUIPSDImageRef isValidPSDResourceAtPath:path withLayerCount:&v15])
   {
-    v5 = [a3 copy];
+    v5 = [path copy];
     v4->_file = -1;
     v4->_psd = 0;
     v4->_path = v5;
@@ -193,7 +193,7 @@
   {
     v6 = __error();
     strerror(*v6);
-    _CUILog(4, "[CUIPSDImageRef initWithPath:] - WARNING - invalid or nonexistent file at %@. Image ref not created. '[%s]'", v7, v8, v9, v10, v11, v12, a3);
+    _CUILog(4, "[CUIPSDImageRef initWithPath:] - WARNING - invalid or nonexistent file at %@. Image ref not created. '[%s]'", v7, v8, v9, v10, v11, v12, path);
     v13 = v4;
     return 0;
   }
@@ -220,13 +220,13 @@
   [(CUIPSDImageRef *)&v5 dealloc];
 }
 
-- (void)_psdFileWithLayers:(BOOL)a3
+- (void)_psdFileWithLayers:(BOOL)layers
 {
-  v3 = a3;
+  layersCopy = layers;
   psd = self->_psd;
   if (psd)
   {
-    if (a3)
+    if (layers)
     {
       if (self->_parsedForLayers)
       {
@@ -242,12 +242,12 @@
 
   if (self->_file != -1 || !self->_path || [(CUIPSDImageRef *)self openImageFile])
   {
-    if (![(CUIPSDImageRef *)self loadPSDFileWithLayers:v3])
+    if (![(CUIPSDImageRef *)self loadPSDFileWithLayers:layersCopy])
     {
       self->_psd = 0;
     }
 
-    self->_parsedForLayers = v3;
+    self->_parsedForLayers = layersCopy;
     CloseHandle(self->_file);
     self->_file = -1;
     return self->_psd;
@@ -258,10 +258,10 @@
 
 - (CGImage)createCompositeCGImage
 {
-  v3 = [(CUIPSDImageRef *)self psdFileForComposite];
-  if (v3)
+  psdFileForComposite = [(CUIPSDImageRef *)self psdFileForComposite];
+  if (psdFileForComposite)
   {
-    CPSDFile::GetCompositeImage(v3);
+    CPSDFile::GetCompositeImage(psdFileForComposite);
     if (result)
     {
       v5 = (*(*result + 16))(result);
@@ -302,16 +302,16 @@
   return result;
 }
 
-- (id)maskFromCompositeAlphaChannel:(int64_t)a3
+- (id)maskFromCompositeAlphaChannel:(int64_t)channel
 {
-  v5 = [(CUIPSDImageRef *)self psdFile];
-  v6 = *(v5 + 70);
-  v7 = *(v5 + 77);
+  psdFile = [(CUIPSDImageRef *)self psdFile];
+  v6 = *(psdFile + 70);
+  v7 = *(psdFile + 77);
   v8 = 4;
   v9 = 3;
   if (v7 != 3)
   {
-    v9 = *(v5 + 70);
+    v9 = *(psdFile + 70);
   }
 
   if (v7 != 4)
@@ -324,13 +324,13 @@
     v7 = v8;
   }
 
-  if (a3 < 1)
+  if (channel < 1)
   {
     return 0;
   }
 
-  v10 = v7 + a3;
-  if (v5[104])
+  v10 = v7 + channel;
+  if (psdFile[104])
   {
     ++v10;
   }
@@ -346,7 +346,7 @@
     return 0;
   }
 
-  v12 = (*(*v11 + 24))(v11, (v6 - a3));
+  v12 = (*(*v11 + 24))(v11, (v6 - channel));
   v13 = (*(*v12 + 16))(v12);
   if (!v13)
   {
@@ -358,12 +358,12 @@
   return v14;
 }
 
-- (CGRect)boundsForSlice:(unsigned int)a3
+- (CGRect)boundsForSlice:(unsigned int)slice
 {
-  v4 = [(CUIPSDImageRef *)self psdFile];
-  if (v4)
+  psdFile = [(CUIPSDImageRef *)self psdFile];
+  if (psdFile)
   {
-    v5 = CPSDFile::LookupSliceWithNumber(v4, a3);
+    v5 = CPSDFile::LookupSliceWithNumber(psdFile, slice);
     v7 = v5[13];
     v6 = v5[14];
     x = v7;
@@ -387,27 +387,27 @@
   return result;
 }
 
-- (int)_layerIndexFromLayerNames:(id)a3 indexRangeBegin:(int)a4 indexRangeEnd:(int)a5 isTopLevel:(BOOL)a6
+- (int)_layerIndexFromLayerNames:(id)names indexRangeBegin:(int)begin indexRangeEnd:(int)end isTopLevel:(BOOL)level
 {
-  v6 = a6;
-  v11 = [a3 count];
+  levelCopy = level;
+  v11 = [names count];
   if (v11 < 1)
   {
     return -1;
   }
 
   v12 = v11;
-  v13 = [(CUIPSDImageRef *)self psdFile];
-  v14 = NewCPSDStringFromNSString([a3 objectAtIndex:0]);
+  psdFile = [(CUIPSDImageRef *)self psdFile];
+  v14 = NewCPSDStringFromNSString([names objectAtIndex:0]);
   v15 = 0;
   if (v12 != 1)
   {
-    v15 = [a3 subarrayWithRange:{1, v12 - 1}];
+    v15 = [names subarrayWithRange:{1, v12 - 1}];
   }
 
   while (1)
   {
-    IndexOfFirstLayerNamed = CPSDFile::GetIndexOfFirstLayerNamed(v13, v14, a4, a5);
+    IndexOfFirstLayerNamed = CPSDFile::GetIndexOfFirstLayerNamed(psdFile, v14, begin, end);
     if (IndexOfFirstLayerNamed == -1)
     {
       v18 = -1;
@@ -421,15 +421,15 @@ LABEL_16:
     }
 
     v17 = IndexOfFirstLayerNamed;
-    if (!v6 || CPSDFile::GetLayerIndexOfParentGroup(v13, IndexOfFirstLayerNamed) == -1)
+    if (!levelCopy || CPSDFile::GetLayerIndexOfParentGroup(psdFile, IndexOfFirstLayerNamed) == -1)
     {
       break;
     }
 
-    a4 = v17 + 1;
+    begin = v17 + 1;
     v18 = -1;
 LABEL_11:
-    if (v18 != -1 || a4 > a5)
+    if (v18 != -1 || begin > end)
     {
       goto LABEL_16;
     }
@@ -437,13 +437,13 @@ LABEL_11:
 
   if (v15)
   {
-    v21 = a5;
-    v22 = a4;
-    CPSDFile::GetRangeOfChildLayers(v13, v17, &v22, &v21);
-    v18 = [(CUIPSDImageRef *)self _layerIndexFromLayerNames:v15 indexRangeBegin:v22 indexRangeEnd:v21 isTopLevel:0];
+    endCopy = end;
+    beginCopy = begin;
+    CPSDFile::GetRangeOfChildLayers(psdFile, v17, &beginCopy, &endCopy);
+    v18 = [(CUIPSDImageRef *)self _layerIndexFromLayerNames:v15 indexRangeBegin:beginCopy indexRangeEnd:endCopy isTopLevel:0];
     if (v18 == -1)
     {
-      a4 = v17 + 1;
+      begin = v17 + 1;
     }
 
     goto LABEL_11;
@@ -467,13 +467,13 @@ LABEL_19:
   return v18;
 }
 
-- ($EFF4F97A94432FEE0F91D8A1E88572D8)metricsInAlphaChannel:(SEL)a3 forRect:(int64_t)a4
+- ($EFF4F97A94432FEE0F91D8A1E88572D8)metricsInAlphaChannel:(SEL)channel forRect:(int64_t)rect
 {
   height = a5.size.height;
   width = a5.size.width;
   y = a5.origin.y;
   x = a5.origin.x;
-  result = [(CUIPSDImageRef *)self maskFromCompositeAlphaChannel:a4];
+  result = [(CUIPSDImageRef *)self maskFromCompositeAlphaChannel:rect];
   if (self)
   {
 
@@ -490,16 +490,16 @@ LABEL_19:
   return result;
 }
 
-- ($EFF4F97A94432FEE0F91D8A1E88572D8)metricsInMask:(SEL)a3 forRect:(id)a4
+- ($EFF4F97A94432FEE0F91D8A1E88572D8)metricsInMask:(SEL)mask forRect:(id)rect
 {
   height = a5.size.height;
   width = a5.size.width;
   y = a5.origin.y;
   x = a5.origin.x;
   *retstr = *CSIIllegalMetrics;
-  v10 = [a4 image];
-  BytesPerRow = CGImageGetBytesPerRow(v10);
-  result = CGImageGetHeight(v10);
+  image = [rect image];
+  BytesPerRow = CGImageGetBytesPerRow(image);
+  result = CGImageGetHeight(image);
   v13 = x;
   if ((x & 0x8000000000000000) == 0)
   {
@@ -512,7 +512,7 @@ LABEL_19:
         v16 = (y + height);
         if (result >= v16)
         {
-          DataProvider = CGImageGetDataProvider(v10);
+          DataProvider = CGImageGetDataProvider(image);
           result = CGDataProviderCopyData(DataProvider);
           if (result)
           {
@@ -690,13 +690,13 @@ LABEL_55:
 
 - (CGColorSpace)copyColorSpace
 {
-  v2 = [(CUIPSDImageRef *)self psdFile];
-  if (!CPSDFile::IsTaggedWithICCProfile(v2))
+  psdFile = [(CUIPSDImageRef *)self psdFile];
+  if (!CPSDFile::IsTaggedWithICCProfile(psdFile))
   {
     return 0;
   }
 
-  v3 = v2[77];
+  v3 = psdFile[77];
   if (v3 != 1)
   {
     if (v3 == 4)
@@ -711,11 +711,11 @@ LABEL_55:
 
     else
     {
-      v3 = v2[70];
+      v3 = psdFile[70];
     }
   }
 
-  ICCProfile = CPSDFile::GetICCProfile(v2);
+  ICCProfile = CPSDFile::GetICCProfile(psdFile);
   v6 = (*(*ICCProfile + 56))(ICCProfile);
   v7 = (*(*ICCProfile + 48))(ICCProfile);
   v8 = CGDataProviderCreateWithData(0, v6, v7, 0);
@@ -756,43 +756,43 @@ LABEL_16:
 
 - (unsigned)numberOfLayers
 {
-  v2 = [(CUIPSDImageRef *)self _layerInfo];
+  _layerInfo = [(CUIPSDImageRef *)self _layerInfo];
 
-  return [v2 numberOfSublayers];
+  return [_layerInfo numberOfSublayers];
 }
 
 - (unsigned)numberOfSlices
 {
-  v2 = [(CUIPSDImageRef *)self psdFile];
-  if (v2)
+  psdFile = [(CUIPSDImageRef *)self psdFile];
+  if (psdFile)
   {
-    LODWORD(v2) = CPSDFile::GetSliceCount(v2);
+    LODWORD(psdFile) = CPSDFile::GetSliceCount(psdFile);
   }
 
-  if (v2 <= 2)
+  if (psdFile <= 2)
   {
-    LODWORD(v2) = 2;
+    LODWORD(psdFile) = 2;
   }
 
-  return v2;
+  return psdFile;
 }
 
 - (unsigned)numberOfChannels
 {
-  v2 = [(CUIPSDImageRef *)self psdFile];
-  if (v2)
+  psdFile = [(CUIPSDImageRef *)self psdFile];
+  if (psdFile)
   {
-    LODWORD(v2) = v2[70];
+    LODWORD(psdFile) = psdFile[70];
   }
 
-  return v2;
+  return psdFile;
 }
 
 - (id)layerNames
 {
-  v3 = [(CUIPSDImageRef *)self _layerInfo];
+  _layerInfo = [(CUIPSDImageRef *)self _layerInfo];
 
-  return [(CUIPSDImageRef *)self _namesOfSublayers:v3];
+  return [(CUIPSDImageRef *)self _namesOfSublayers:_layerInfo];
 }
 
 - (id)metadataString
@@ -851,20 +851,20 @@ LABEL_16:
   return result;
 }
 
-- (void)_psdLayerRecordAtAbsoluteIndex:(unsigned int)a3
+- (void)_psdLayerRecordAtAbsoluteIndex:(unsigned int)index
 {
-  v4 = [(CUIPSDImageRef *)self psdFile];
-  if (!v4 || v4[134] <= a3)
+  psdFile = [(CUIPSDImageRef *)self psdFile];
+  if (!psdFile || psdFile[134] <= index)
   {
     return 0;
   }
 
-  return CPSDFile::GetLayerRecord(v4, a3);
+  return CPSDFile::GetLayerRecord(psdFile, index);
 }
 
-- (id)_layerRefAtAbsoluteIndex:(unsigned int)a3
+- (id)_layerRefAtAbsoluteIndex:(unsigned int)index
 {
-  v3 = *&a3;
+  v3 = *&index;
   result = [(CUIPSDImageRef *)self psdFile];
   if (result)
   {
@@ -900,44 +900,44 @@ LABEL_16:
   return result;
 }
 
-- (id)_copySublayerInfoAtAbsoluteIndex:(unsigned int)a3 atRoot:(BOOL)a4
+- (id)_copySublayerInfoAtAbsoluteIndex:(unsigned int)index atRoot:(BOOL)root
 {
-  v7 = [(CUIPSDImageRef *)self psdFile];
-  if (v7)
+  psdFile = [(CUIPSDImageRef *)self psdFile];
+  if (psdFile)
   {
-    v8 = [(CUIPSDImageRef *)self _treatDividerAsLayer];
+    _treatDividerAsLayer = [(CUIPSDImageRef *)self _treatDividerAsLayer];
     v16 = 0;
     v15 = 0;
-    if (a4)
+    if (root)
     {
-      v9 = v7[134];
-      a3 = v9;
+      v9 = psdFile[134];
+      index = v9;
     }
 
     else
     {
-      if (CPSDFile::GetLayerIsSectionDivider(v7, a3, &v16) && !v16 || CPSDFile::GetLayerSectionDividerType(v7, a3, &v15) && v15 - 3 < 0xFFFFFFFE)
+      if (CPSDFile::GetLayerIsSectionDivider(psdFile, index, &v16) && !v16 || CPSDFile::GetLayerSectionDividerType(psdFile, index, &v15) && v15 - 3 < 0xFFFFFFFE)
       {
         return 0;
       }
 
-      v9 = v7[134];
+      v9 = psdFile[134];
     }
 
-    v10 = a3 - 1;
+    v10 = index - 1;
     if (v10 < v9)
     {
       v11 = objc_alloc_init(NSMutableIndexSet);
       v12 = 1;
       while (1)
       {
-        CPSDFile::GetLayerIsSectionDivider(v7, v10, &v16);
-        if ((v16 == 0) | v8 & 1)
+        CPSDFile::GetLayerIsSectionDivider(psdFile, v10, &v16);
+        if ((v16 == 0) | _treatDividerAsLayer & 1)
         {
           break;
         }
 
-        CPSDFile::GetLayerSectionDividerType(v7, v10, &v15);
+        CPSDFile::GetLayerSectionDividerType(psdFile, v10, &v15);
         if (v15 - 1 <= 1)
         {
           if (v12 == 1)
@@ -965,9 +965,9 @@ LABEL_13:
         if (!v10)
         {
 LABEL_22:
-          v7 = +[_CUIPSDSublayerInfo newWithSublayerCount:indexSet:](_CUIPSDSublayerInfo, "newWithSublayerCount:indexSet:", [v11 count], v11);
+          psdFile = +[_CUIPSDSublayerInfo newWithSublayerCount:indexSet:](_CUIPSDSublayerInfo, "newWithSublayerCount:indexSet:", [v11 count], v11);
 
-          return v7;
+          return psdFile;
         }
 
 LABEL_21:
@@ -989,16 +989,16 @@ LABEL_21:
     return 0;
   }
 
-  return v7;
+  return psdFile;
 }
 
-- (id)_nameAtAbsoluteIndex:(unsigned int)a3
+- (id)_nameAtAbsoluteIndex:(unsigned int)index
 {
   result = [(CUIPSDImageRef *)self psdFile];
   if (result)
   {
     v5 = result;
-    if (*(result + 134) <= a3)
+    if (*(result + 134) <= index)
     {
       return 0;
     }
@@ -1006,7 +1006,7 @@ LABEL_21:
     else
     {
       v9 = 0;
-      UnicodeLayerName = CPSDLayerRecord::GetUnicodeLayerName((*(result + 34) + 488 * a3), &v9);
+      UnicodeLayerName = CPSDLayerRecord::GetUnicodeLayerName((*(result + 34) + 488 * index), &v9);
       if (UnicodeLayerName)
       {
         v7 = UnicodeLayerName;
@@ -1014,7 +1014,7 @@ LABEL_21:
         return [v8 initWithCharacters:v7 length:v9];
       }
 
-      else if (*(v5 + 134) > a3 && CPSDLayerRecord::GetLayerName((v5[34] + 488 * a3), v10, 0x100u))
+      else if (*(v5 + 134) > index && CPSDLayerRecord::GetLayerName((v5[34] + 488 * index), v10, 0x100u))
       {
         return [NSString stringWithCString:v10 encoding:30];
       }
@@ -1029,24 +1029,24 @@ LABEL_21:
   return result;
 }
 
-- (id)_namesOfSublayers:(id)a3
+- (id)_namesOfSublayers:(id)sublayers
 {
-  v4 = [(CUIPSDImageRef *)self psdFile];
-  if (!v4)
+  psdFile = [(CUIPSDImageRef *)self psdFile];
+  if (!psdFile)
   {
     return 0;
   }
 
-  v5 = v4;
-  v6 = [a3 numberOfSublayers];
-  v7 = [NSMutableArray arrayWithCapacity:v6];
-  if (v6)
+  v5 = psdFile;
+  numberOfSublayers = [sublayers numberOfSublayers];
+  v7 = [NSMutableArray arrayWithCapacity:numberOfSublayers];
+  if (numberOfSublayers)
   {
     v8 = 0;
     while (1)
     {
       v19 = 0;
-      v9 = [a3 sublayerAtIndex:v8 isValid:&v19];
+      v9 = [sublayers sublayerAtIndex:v8 isValid:&v19];
       if (v19 == 1)
       {
         break;
@@ -1054,7 +1054,7 @@ LABEL_21:
 
 LABEL_15:
       v8 = (v8 + 1);
-      if (v6 == v8)
+      if (numberOfSublayers == v8)
       {
         return v7;
       }
@@ -1095,10 +1095,10 @@ LABEL_14:
   return v7;
 }
 
-- (CGRect)_boundsAtAbsoluteIndex:(unsigned int)a3
+- (CGRect)_boundsAtAbsoluteIndex:(unsigned int)index
 {
-  v4 = [(CUIPSDImageRef *)self psdFile];
-  if (v4 && v4[134] > a3 && CPSDFile::GetLayerBounds(v4, a3, &v11))
+  psdFile = [(CUIPSDImageRef *)self psdFile];
+  if (psdFile && psdFile[134] > index && CPSDFile::GetLayerBounds(psdFile, index, &v11))
   {
     v5 = vsub_s32(v11.u64[1], *v11.i8);
     v6.i64[0] = v5.i32[0];
@@ -1124,35 +1124,35 @@ LABEL_14:
   return result;
 }
 
-- (BOOL)_visibilityAtAbsoluteIndex:(unsigned int)a3
+- (BOOL)_visibilityAtAbsoluteIndex:(unsigned int)index
 {
-  v4 = [(CUIPSDImageRef *)self psdFile];
-  if (v4)
+  psdFile = [(CUIPSDImageRef *)self psdFile];
+  if (psdFile)
   {
-    if (v4[134] <= a3)
+    if (psdFile[134] <= index)
     {
-      LOBYTE(v4) = 0;
+      LOBYTE(psdFile) = 0;
     }
 
     else
     {
       LOBYTE(v6) = 0;
-      CPSDFile::GetLayerIsVisible(v4, a3, &v6);
-      LOBYTE(v4) = v6 != 0;
+      CPSDFile::GetLayerIsVisible(psdFile, index, &v6);
+      LOBYTE(psdFile) = v6 != 0;
     }
   }
 
-  return v4;
+  return psdFile;
 }
 
-- (double)_opacityAtAbsoluteIndex:(unsigned int)a3
+- (double)_opacityAtAbsoluteIndex:(unsigned int)index
 {
-  v4 = [(CUIPSDImageRef *)self psdFile];
+  psdFile = [(CUIPSDImageRef *)self psdFile];
   v5 = 0.0;
-  if (v4 && v4[134] > a3)
+  if (psdFile && psdFile[134] > index)
   {
     v8[0] = 0;
-    CPSDFile::GetLayerOpacity(v4, a3, v8);
+    CPSDFile::GetLayerOpacity(psdFile, index, v8);
     LOBYTE(v6) = v8[0];
     return v6 / 255.0;
   }
@@ -1160,14 +1160,14 @@ LABEL_14:
   return v5;
 }
 
-- (double)_fillOpacityAtAbsoluteIndex:(unsigned int)a3
+- (double)_fillOpacityAtAbsoluteIndex:(unsigned int)index
 {
-  v4 = [(CUIPSDImageRef *)self psdFile];
+  psdFile = [(CUIPSDImageRef *)self psdFile];
   v5 = 1.0;
-  if (v4 && v4[134] > a3)
+  if (psdFile && psdFile[134] > index)
   {
     v8[0] = 0;
-    if (CPSDFile::GetLayerFillOpacity(v4, a3, v8))
+    if (CPSDFile::GetLayerFillOpacity(psdFile, index, v8))
     {
       LOBYTE(v6) = v8[0];
       return v6 / 255.0;
@@ -1182,33 +1182,33 @@ LABEL_14:
   return v5;
 }
 
-- (int)_blendModeAtAbsluteIndex:(unsigned int)a3
+- (int)_blendModeAtAbsluteIndex:(unsigned int)index
 {
-  v5 = [(CUIPSDImageRef *)self psdFile];
-  if (v5)
+  psdFile = [(CUIPSDImageRef *)self psdFile];
+  if (psdFile)
   {
-    if (v5[134] <= a3)
+    if (psdFile[134] <= index)
     {
-      LODWORD(v5) = 0;
+      LODWORD(psdFile) = 0;
     }
 
     else
     {
       LODWORD(v7) = 0;
-      CPSDFile::GetLayerBlendMode(v5, a3, &v7);
-      LODWORD(v5) = [(CUIPSDImageRef *)self cgBlendModeForPSDLayerOrLayerEffectBlendMode:v7];
+      CPSDFile::GetLayerBlendMode(psdFile, index, &v7);
+      LODWORD(psdFile) = [(CUIPSDImageRef *)self cgBlendModeForPSDLayerOrLayerEffectBlendMode:v7];
     }
   }
 
-  return v5;
+  return psdFile;
 }
 
-- (CGImage)_copyCGImageAtAbsoluteIndex:(unsigned int)a3
+- (CGImage)_copyCGImageAtAbsoluteIndex:(unsigned int)index
 {
-  v5 = [(CUIPSDImageRef *)self psdFile];
-  if (v5 && v5[134] > a3)
+  psdFile = [(CUIPSDImageRef *)self psdFile];
+  if (psdFile && psdFile[134] > index)
   {
-    CPSDLayerInfo::CreateImageAtLayer((v5 + 124), a3);
+    CPSDLayerInfo::CreateImageAtLayer((psdFile + 124), index);
     v7 = (*(*v6 + 16))(v6);
     v8 = (*(*v7 + 16))(v7);
   }
@@ -1230,16 +1230,16 @@ LABEL_14:
   return v8;
 }
 
-- (id)_imageAtAbsoluteIndex:(unsigned int)a3 isZeroSizeImage:(BOOL *)a4
+- (id)_imageAtAbsoluteIndex:(unsigned int)index isZeroSizeImage:(BOOL *)image
 {
-  result = [(CUIPSDImageRef *)self _copyCGImageAtAbsoluteIndex:*&a3];
+  result = [(CUIPSDImageRef *)self _copyCGImageAtAbsoluteIndex:*&index];
   if (result)
   {
     v7 = result;
     if (CGImageGetWidth(result))
     {
       v8 = CGImageGetHeight(v7) == 0;
-      if (!a4)
+      if (!image)
       {
 LABEL_5:
         v9 = [(CUIPSDImageRef *)self imageFromRef:v7];
@@ -1251,47 +1251,47 @@ LABEL_5:
     else
     {
       v8 = 1;
-      if (!a4)
+      if (!image)
       {
         goto LABEL_5;
       }
     }
 
-    *a4 = v8;
+    *image = v8;
     goto LABEL_5;
   }
 
   return result;
 }
 
-- (id)_imageFromSlice:(unsigned int)a3 atAbsoluteIndex:(unsigned int)a4 isEmptyImage:(BOOL *)a5
+- (id)_imageFromSlice:(unsigned int)slice atAbsoluteIndex:(unsigned int)index isEmptyImage:(BOOL *)image
 {
-  v9 = [(CUIPSDImageRef *)self psdFile];
-  if (!v9)
+  psdFile = [(CUIPSDImageRef *)self psdFile];
+  if (!psdFile)
   {
     return 0;
   }
 
-  v10 = v9;
-  v11 = v9[134];
-  SliceCount = CPSDFile::GetSliceCount(v9);
-  if (v11 <= a4)
+  v10 = psdFile;
+  v11 = psdFile[134];
+  SliceCount = CPSDFile::GetSliceCount(psdFile);
+  if (v11 <= index)
   {
     return 0;
   }
 
   if (SliceCount)
   {
-    v13 = a3;
+    sliceCopy = slice;
   }
 
   else
   {
-    v13 = 0;
+    sliceCopy = 0;
   }
 
-  v14 = CPSDFile::LookupSliceWithNumber(v10, v13);
-  CPSDLayerInfo::CreateImageAtLayerWithSlice((v10 + 124), a4, v14);
+  v14 = CPSDFile::LookupSliceWithNumber(v10, sliceCopy);
+  CPSDLayerInfo::CreateImageAtLayerWithSlice((v10 + 124), index, v14);
   v16 = v15;
   v17 = (*(*v15 + 16))(v15);
   v18 = (*(*v17 + 16))(v17);
@@ -1301,7 +1301,7 @@ LABEL_5:
     if (v20 && *(v20 + 8))
     {
       v21 = *(v20 + 12) == 0;
-      if (!a5)
+      if (!image)
       {
         return 0;
       }
@@ -1310,20 +1310,20 @@ LABEL_5:
     else
     {
       v21 = 1;
-      if (!a5)
+      if (!image)
       {
         return 0;
       }
     }
 
     v19 = 0;
-    *a5 = v21;
+    *image = v21;
     return v19;
   }
 
-  if (a5)
+  if (image)
   {
-    *a5 = CPSDLayerSliceImage::IsEmptyImage(v16) != 0;
+    *image = CPSDLayerSliceImage::IsEmptyImage(v16) != 0;
   }
 
   v19 = [(CUIPSDImageRef *)self imageFromRef:v18];
@@ -1331,28 +1331,28 @@ LABEL_5:
   return v19;
 }
 
-- (id)_patternFromSlice:(unsigned int)a3 atAbsoluteIndex:(unsigned int)a4 isZeroSizeImage:(BOOL *)a5
+- (id)_patternFromSlice:(unsigned int)slice atAbsoluteIndex:(unsigned int)index isZeroSizeImage:(BOOL *)image
 {
-  v8 = [(CUIPSDImageRef *)self psdFile];
-  v9 = v8;
-  if (v8)
+  psdFile = [(CUIPSDImageRef *)self psdFile];
+  v9 = psdFile;
+  if (psdFile)
   {
-    v10 = v8[134];
-    SliceCount = CPSDFile::GetSliceCount(v8);
-    if (v10 > a4)
+    v10 = psdFile[134];
+    SliceCount = CPSDFile::GetSliceCount(psdFile);
+    if (v10 > index)
     {
       if (SliceCount)
       {
-        v12 = a3;
+        sliceCopy = slice;
       }
 
       else
       {
-        v12 = 0;
+        sliceCopy = 0;
       }
 
-      v13 = CPSDFile::LookupSliceWithNumber(v9, v12);
-      CPSDLayerInfo::CreateImageAtLayerWithSlice(&v9[7]._alpha, a4, v13);
+      v13 = CPSDFile::LookupSliceWithNumber(v9, sliceCopy);
+      CPSDLayerInfo::CreateImageAtLayerWithSlice(&v9[7]._alpha, index, v13);
       v15 = (*(*v14 + 16))(v14);
       v16 = (*(*v15 + 16))(v15);
       if (v16)
@@ -1366,19 +1366,19 @@ LABEL_5:
       if (v17 && *(v17 + 8))
       {
         v18 = *(v17 + 12) == 0;
-        if (!a5)
+        if (!image)
         {
           return 0;
         }
 
 LABEL_13:
         v9 = 0;
-        *a5 = v18;
+        *image = v18;
         return v9;
       }
 
       v18 = 1;
-      if (a5)
+      if (image)
       {
         goto LABEL_13;
       }
@@ -1390,25 +1390,25 @@ LABEL_13:
   return v9;
 }
 
-- (id)_createMaskFromSlice:(unsigned int)a3 atAbsoluteIndex:(unsigned int)a4
+- (id)_createMaskFromSlice:(unsigned int)slice atAbsoluteIndex:(unsigned int)index
 {
-  v7 = [(CUIPSDImageRef *)self psdFile];
-  if (!v7)
+  psdFile = [(CUIPSDImageRef *)self psdFile];
+  if (!psdFile)
   {
     return 0;
   }
 
-  v8 = v7;
-  v9 = v7[134];
-  SliceCount = CPSDFile::GetSliceCount(v7);
-  if (v9 <= a4)
+  v8 = psdFile;
+  v9 = psdFile[134];
+  SliceCount = CPSDFile::GetSliceCount(psdFile);
+  if (v9 <= index)
   {
     return 0;
   }
 
-  v11 = SliceCount ? a3 : 0;
+  v11 = SliceCount ? slice : 0;
   v12 = CPSDFile::LookupSliceWithNumber(v8, v11);
-  CPSDLayerInfo::CreateImageAtLayerWithSlice((v8 + 124), a4, v12);
+  CPSDLayerInfo::CreateImageAtLayerWithSlice((v8 + 124), index, v12);
   v14 = (*(*v13 + 24))(v13, 0);
   v15 = (*(*v14 + 16))(v14);
   if (!v15)
@@ -1421,9 +1421,9 @@ LABEL_13:
   return v16;
 }
 
-- (id)_fillSampleAtAbsoluteIndex:(unsigned int)a3
+- (id)_fillSampleAtAbsoluteIndex:(unsigned int)index
 {
-  v3 = *&a3;
+  v3 = *&index;
   v5 = [(CUIPSDImageRef *)self createCGImageAtLayer:?];
   [(CUIPSDImageRef *)self boundsAtLayer:v3];
   if (!v5)
@@ -1441,11 +1441,11 @@ LABEL_13:
   v9 = v8;
   v10 = *(v8 + 16);
   v11 = *(v8 + 24);
-  v12 = [(CUIPSDImageRef *)self copyColorSpace];
-  if (v12)
+  copyColorSpace = [(CUIPSDImageRef *)self copyColorSpace];
+  if (copyColorSpace)
   {
-    SRGB = v12;
-    CFAutorelease(v12);
+    SRGB = copyColorSpace;
+    CFAutorelease(copyColorSpace);
   }
 
   else
@@ -1506,27 +1506,27 @@ LABEL_13:
   return v14;
 }
 
-- (int)cgBlendModeForPSDLayerOrLayerEffectBlendMode:(unsigned int)a3
+- (int)cgBlendModeForPSDLayerOrLayerEffectBlendMode:(unsigned int)mode
 {
   result = 0;
-  if (a3 > 1668246641)
+  if (mode > 1668246641)
   {
-    if (a3 > 1818518630)
+    if (mode > 1818518630)
     {
-      if (a3 > 1870030193)
+      if (mode > 1870030193)
       {
-        if (a3 > 1935766559)
+        if (mode > 1935766559)
         {
-          if (a3 == 1935766560)
+          if (mode == 1935766560)
           {
             return 13;
           }
 
-          if (a3 != 1935897198)
+          if (mode != 1935897198)
           {
             v4 = 1936553316;
 LABEL_14:
-            if (a3 == v4)
+            if (mode == v4)
             {
               return 11;
             }
@@ -1537,9 +1537,9 @@ LABEL_14:
           return 2;
         }
 
-        if (a3 != 1870030194)
+        if (mode != 1870030194)
         {
-          if (a3 != 1934387572)
+          if (mode != 1934387572)
           {
             return result;
           }
@@ -1550,9 +1550,9 @@ LABEL_14:
         return 3;
       }
 
-      if (a3 > 1819634975)
+      if (mode > 1819634975)
       {
-        if (a3 == 1819634976)
+        if (mode == 1819634976)
         {
           return 15;
         }
@@ -1561,7 +1561,7 @@ LABEL_14:
         goto LABEL_43;
       }
 
-      if (a3 == 1818518631)
+      if (mode == 1818518631)
       {
         return 27;
       }
@@ -1570,15 +1570,15 @@ LABEL_14:
       goto LABEL_60;
     }
 
-    if (a3 <= 1749838195)
+    if (mode <= 1749838195)
     {
-      if (a3 > 1684629093)
+      if (mode > 1684629093)
       {
-        if (a3 != 1684629094)
+        if (mode != 1684629094)
         {
           v5 = 1684633120;
 LABEL_56:
-          if (a3 == v5)
+          if (mode == v5)
           {
             return 6;
           }
@@ -1589,12 +1589,12 @@ LABEL_56:
         return 10;
       }
 
-      if (a3 == 1668246642)
+      if (mode == 1668246642)
       {
         return 14;
       }
 
-      if (a3 != 1684107883)
+      if (mode != 1684107883)
       {
         return result;
       }
@@ -1602,13 +1602,13 @@ LABEL_56:
       return 4;
     }
 
-    if (a3 > 1768188277)
+    if (mode > 1768188277)
     {
-      if (a3 != 1768188278)
+      if (mode != 1768188278)
       {
         v6 = 1818391150;
 LABEL_64:
-        if (a3 == v6)
+        if (mode == v6)
         {
           return 26;
         }
@@ -1619,11 +1619,11 @@ LABEL_64:
       return 7;
     }
 
-    if (a3 != 1749838196)
+    if (mode != 1749838196)
     {
       v8 = 1752524064;
 LABEL_37:
-      if (a3 == v8)
+      if (mode == v8)
       {
         return 12;
       }
@@ -1634,15 +1634,15 @@ LABEL_37:
     return 9;
   }
 
-  if (a3 > 1282240114)
+  if (mode > 1282240114)
   {
-    if (a3 > 1333162603)
+    if (mode > 1333162603)
     {
-      if (a3 > 1399223371)
+      if (mode > 1399223371)
       {
-        if (a3 != 1399223372)
+        if (mode != 1399223372)
         {
-          if (a3 != 1400140404)
+          if (mode != 1400140404)
           {
             v4 = 1482910837;
             goto LABEL_14;
@@ -1654,9 +1654,9 @@ LABEL_37:
         return 8;
       }
 
-      if (a3 != 1333162604)
+      if (mode != 1333162604)
       {
-        if (a3 != 1399026286)
+        if (mode != 1399026286)
         {
           return result;
         }
@@ -1667,9 +1667,9 @@ LABEL_37:
       return 3;
     }
 
-    if (a3 <= 1282240117)
+    if (mode <= 1282240117)
     {
-      if (a3 != 1282240115)
+      if (mode != 1282240115)
       {
         v6 = 1282240116;
         goto LABEL_64;
@@ -1678,11 +1678,11 @@ LABEL_37:
       return 15;
     }
 
-    if (a3 != 1282240118)
+    if (mode != 1282240118)
     {
       v9 = 1298953328;
 LABEL_43:
-      if (a3 == v9)
+      if (mode == v9)
       {
         return 1;
       }
@@ -1693,11 +1693,11 @@ LABEL_43:
     return 27;
   }
 
-  if (a3 <= 1148349293)
+  if (mode <= 1148349293)
   {
-    if (a3 <= 1131180575)
+    if (mode <= 1131180575)
     {
-      if (a3 != 1128428142)
+      if (mode != 1128428142)
       {
         v5 = 1128555623;
         goto LABEL_56;
@@ -1706,9 +1706,9 @@ LABEL_43:
       return 7;
     }
 
-    if (a3 != 1131180576)
+    if (mode != 1131180576)
     {
-      if (a3 != 1147564654)
+      if (mode != 1147564654)
       {
         return result;
       }
@@ -1719,9 +1719,9 @@ LABEL_43:
     return 14;
   }
 
-  if (a3 <= 1215456331)
+  if (mode <= 1215456331)
   {
-    if (a3 != 1148349294)
+    if (mode != 1148349294)
     {
       v8 = 1210064928;
       goto LABEL_37;
@@ -1730,14 +1730,14 @@ LABEL_43:
     return 4;
   }
 
-  if (a3 == 1215456332)
+  if (mode == 1215456332)
   {
     return 9;
   }
 
   v7 = 1281845358;
 LABEL_60:
-  if (a3 == v7)
+  if (mode == v7)
   {
     return 5;
   }
@@ -1745,18 +1745,18 @@ LABEL_60:
   return result;
 }
 
-- (id)_gradientAtAbsoluteIndex:(unsigned int)a3
+- (id)_gradientAtAbsoluteIndex:(unsigned int)index
 {
-  v3 = *&a3;
-  v5 = [(CUIPSDImageRef *)self psdFile];
-  if (!v5)
+  v3 = *&index;
+  psdFile = [(CUIPSDImageRef *)self psdFile];
+  if (!psdFile)
   {
     return 0;
   }
 
-  v6 = v5;
+  v6 = psdFile;
   v72 = 0;
-  LayerGradientStyle = CPSDFile::GetLayerGradientStyle(v5, v3, &v72);
+  LayerGradientStyle = CPSDFile::GetLayerGradientStyle(psdFile, v3, &v72);
   if (!LayerGradientStyle && !CPSDFile::GetLayerEffectGradientStyle(v6, v3, &v72))
   {
     return 0;
@@ -1870,8 +1870,8 @@ LABEL_12:
       v17 = *&v73[8] / 255.0;
       v18 = v68;
       v19 = *&v74 / 255.0;
-      v20 = [v13 lastObject];
-      if (v20 && (v21 = v20, ([v20 isDoubleStop] & 1) == 0) && (v22 = v65, objc_msgSend(v21, "colorLocation"), v22 - v23 <= 0.01001))
+      lastObject = [v13 lastObject];
+      if (lastObject && (v21 = lastObject, ([lastObject isDoubleStop] & 1) == 0) && (v22 = v65, objc_msgSend(v21, "colorLocation"), v22 - v23 <= 0.01001))
       {
         [v21 colorLocation];
         v29 = v28;
@@ -1945,8 +1945,8 @@ LABEL_12:
       }
 
       *v73 = *v73 / 100.0;
-      v43 = [v39 lastObject];
-      if (!v43 || (v44 = v43, ([v43 isDoubleStop] & 1) != 0) || (v45 = v65, objc_msgSend(v44, "opacityLocation"), v45 - v46 >= 0.01001))
+      lastObject2 = [v39 lastObject];
+      if (!lastObject2 || (v44 = lastObject2, ([lastObject2 isDoubleStop] & 1) != 0) || (v45 = v65, objc_msgSend(v44, "opacityLocation"), v45 - v46 >= 0.01001))
       {
         v54 = [CUIPSDGradientOpacityStop alloc];
         v52 = [(CUIPSDGradientOpacityStop *)v54 initWithLocation:v65 opacity:*v73];
@@ -2004,11 +2004,11 @@ LABEL_12:
   return v8;
 }
 
-- (id)colorFromDocumentColor:(double *)a3
+- (id)colorFromDocumentColor:(double *)color
 {
   GenericRGB = _CUIColorSpaceGetGenericRGB();
-  v8 = vdivq_f64(*a3, vdupq_n_s64(0x406FE00000000000uLL));
-  v9 = a3[2] / 255.0;
+  v8 = vdivq_f64(*color, vdupq_n_s64(0x406FE00000000000uLL));
+  v9 = color[2] / 255.0;
   v10 = 0x3FF0000000000000;
   v5 = CGColorCreate(GenericRGB, v8.f64);
   v6 = [CUIColor colorWithCGColor:v5];
@@ -2016,13 +2016,13 @@ LABEL_12:
   return v6;
 }
 
-- (id)_dropShadowFromLayerEffectsInfo:(void *)a3
+- (id)_dropShadowFromLayerEffectsInfo:(void *)info
 {
   result = [(CUIPSDImageRef *)self psdFile];
   if (result)
   {
     v6 = result;
-    result = CPSDObjectEffectsLayerInfo::GetEffect(a3, 1148343144);
+    result = CPSDObjectEffectsLayerInfo::GetEffect(info, 1148343144);
     if (result)
     {
       v7 = result;
@@ -2052,13 +2052,13 @@ LABEL_12:
   return result;
 }
 
-- (id)_innerShadowFromLayerEffectsInfo:(void *)a3
+- (id)_innerShadowFromLayerEffectsInfo:(void *)info
 {
   result = [(CUIPSDImageRef *)self psdFile];
   if (result)
   {
     v6 = result;
-    result = CPSDObjectEffectsLayerInfo::GetEffect(a3, 1232229224);
+    result = CPSDObjectEffectsLayerInfo::GetEffect(info, 1232229224);
     if (result)
     {
       v7 = result;
@@ -2087,12 +2087,12 @@ LABEL_12:
   return result;
 }
 
-- (id)_innerGlowFromLayerEffectsInfo:(void *)a3
+- (id)_innerGlowFromLayerEffectsInfo:(void *)info
 {
   result = [(CUIPSDImageRef *)self psdFile];
   if (result)
   {
-    result = CPSDObjectEffectsLayerInfo::GetEffect(a3, 1232226156);
+    result = CPSDObjectEffectsLayerInfo::GetEffect(info, 1232226156);
     if (result)
     {
       v6 = result;
@@ -2109,12 +2109,12 @@ LABEL_12:
   return result;
 }
 
-- (id)_outerGlowFromLayerEffectsInfo:(void *)a3
+- (id)_outerGlowFromLayerEffectsInfo:(void *)info
 {
   result = [(CUIPSDImageRef *)self psdFile];
   if (result)
   {
-    result = CPSDObjectEffectsLayerInfo::GetEffect(a3, 1332889452);
+    result = CPSDObjectEffectsLayerInfo::GetEffect(info, 1332889452);
     if (result)
     {
       v6 = result;
@@ -2132,12 +2132,12 @@ LABEL_12:
   return result;
 }
 
-- (id)_colorOverlayFromLayerEffectsInfo:(void *)a3
+- (id)_colorOverlayFromLayerEffectsInfo:(void *)info
 {
   result = [(CUIPSDImageRef *)self psdFile];
   if (result)
   {
-    result = CPSDObjectEffectsLayerInfo::GetEffect(a3, 1399801449);
+    result = CPSDObjectEffectsLayerInfo::GetEffect(info, 1399801449);
     if (result)
     {
       v6 = result;
@@ -2153,16 +2153,16 @@ LABEL_12:
   return result;
 }
 
-- (id)_gradientOverlayFromLayerEffectsAtAbsoluteIndex:(unsigned int)a3
+- (id)_gradientOverlayFromLayerEffectsAtAbsoluteIndex:(unsigned int)index
 {
-  v3 = *&a3;
-  v5 = [(CUIPSDImageRef *)self psdFile];
-  if (!v5)
+  v3 = *&index;
+  psdFile = [(CUIPSDImageRef *)self psdFile];
+  if (!psdFile)
   {
     return 0;
   }
 
-  LayerEffectsInfo = CPSDFile::GetLayerEffectsInfo(v5, v3);
+  LayerEffectsInfo = CPSDFile::GetLayerEffectsInfo(psdFile, v3);
   Effect = CPSDObjectEffectsLayerInfo::GetEffect(LayerEffectsInfo, 1198671468);
   v8 = [(CUIPSDImageRef *)self _gradientAtAbsoluteIndex:v3];
   if (!v8)
@@ -2178,13 +2178,13 @@ LABEL_12:
   return v10;
 }
 
-- (id)_bevelEmbossFromLayerEffectsInfo:(void *)a3
+- (id)_bevelEmbossFromLayerEffectsInfo:(void *)info
 {
   result = [(CUIPSDImageRef *)self psdFile];
   if (result)
   {
     v6 = result;
-    result = CPSDObjectEffectsLayerInfo::GetEffect(a3, 1700946540);
+    result = CPSDObjectEffectsLayerInfo::GetEffect(info, 1700946540);
     if (result)
     {
       v7 = result;
@@ -2228,16 +2228,16 @@ LABEL_12:
   return result;
 }
 
-- (id)_layerEffectsAtAbsoluteIndex:(unsigned int)a3
+- (id)_layerEffectsAtAbsoluteIndex:(unsigned int)index
 {
-  v3 = *&a3;
-  v5 = [(CUIPSDImageRef *)self psdFile];
-  if (!v5)
+  v3 = *&index;
+  psdFile = [(CUIPSDImageRef *)self psdFile];
+  if (!psdFile)
   {
     return 0;
   }
 
-  LayerEffectsInfo = CPSDFile::GetLayerEffectsInfo(v5, v3);
+  LayerEffectsInfo = CPSDFile::GetLayerEffectsInfo(psdFile, v3);
   if (!LayerEffectsInfo)
   {
     return 0;
@@ -2292,14 +2292,14 @@ LABEL_12:
   return v8;
 }
 
-- (void)enumerateLayersUsingBlock:(id)a3
+- (void)enumerateLayersUsingBlock:(id)block
 {
-  v4 = [(CUIPSDImageRef *)self layerEnumerator];
+  layerEnumerator = [(CUIPSDImageRef *)self layerEnumerator];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [layerEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -2310,12 +2310,12 @@ LABEL_3:
     {
       if (*v12 != v7)
       {
-        objc_enumerationMutation(v4);
+        objc_enumerationMutation(layerEnumerator);
       }
 
       v9 = *(*(&v11 + 1) + 8 * v8);
       v10 = 0;
-      (*(a3 + 2))(a3, v9, &v10);
+      (*(block + 2))(block, v9, &v10);
       if (v10)
       {
         break;
@@ -2323,7 +2323,7 @@ LABEL_3:
 
       if (v6 == ++v8)
       {
-        v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v6 = [layerEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
         if (v6)
         {
           goto LABEL_3;
@@ -2352,10 +2352,10 @@ LABEL_3:
 
 - (void)metadataString
 {
-  v2 = *(__cxa_get_exception_ptr(a1) + 1);
+  v2 = *(__cxa_get_exception_ptr(self) + 1);
   v3[0] = &unk_1F00D3C88;
   v3[1] = v2;
-  __cxa_begin_catch(a1);
+  __cxa_begin_catch(self);
   CStdException::~CStdException(v3);
   __cxa_end_catch();
 }

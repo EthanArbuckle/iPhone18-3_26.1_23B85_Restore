@@ -1,16 +1,16 @@
 @interface AMSRegulatoryEligibilityTask
 + (AMSRegulatoryEligibilityTask)sharedInstance;
-+ (BOOL)setBillingCountries:(id)a3 withStatus:(unint64_t)a4 error:(id *)a5;
++ (BOOL)setBillingCountries:(id)countries withStatus:(unint64_t)status error:(id *)error;
 + (id)fetchRegulatoryiTunesAccounts;
-+ (id)setRegulatoryPropertyOnAccounts:(id)a3;
++ (id)setRegulatoryPropertyOnAccounts:(id)accounts;
 - (AMSRegulatoryEligibilityTask)init;
-- (AMSRegulatoryEligibilityTask)initWithServerData:(id)a3;
-- (BOOL)setForcedOverride:(id)a3 error:(id *)a4;
+- (AMSRegulatoryEligibilityTask)initWithServerData:(id)data;
+- (BOOL)setForcedOverride:(id)override error:(id *)error;
 - (NSNumber)override;
 - (id)update;
 - (void)handleCachedDataUpdate;
-- (void)setOverride:(id)a3;
-- (void)updateAMSDefaultsWith:(id)a3 accounts:(id)a4;
+- (void)setOverride:(id)override;
+- (void)updateAMSDefaultsWith:(id)with accounts:(id)accounts;
 @end
 
 @implementation AMSRegulatoryEligibilityTask
@@ -33,16 +33,16 @@
   return v3;
 }
 
-- (AMSRegulatoryEligibilityTask)initWithServerData:(id)a3
+- (AMSRegulatoryEligibilityTask)initWithServerData:(id)data
 {
-  v5 = a3;
+  dataCopy = data;
   v9.receiver = self;
   v9.super_class = AMSRegulatoryEligibilityTask;
   v6 = [(AMSTask *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_cachedServerDataService, a3);
+    objc_storeStrong(&v6->_cachedServerDataService, data);
   }
 
   return v7;
@@ -104,8 +104,8 @@ uint64_t __46__AMSRegulatoryEligibilityTask_sharedInstance__block_invoke()
       v6 = +[AMSLogConfig sharedConfig];
     }
 
-    v14 = [v6 OSLogObject];
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v6 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v15 = AMSLogKey();
       v16 = MEMORY[0x1E696AEC0];
@@ -121,19 +121,19 @@ uint64_t __46__AMSRegulatoryEligibilityTask_sharedInstance__block_invoke()
       {
         [v16 stringWithFormat:@"%@: ", v17];
       }
-      v19 = ;
+      selfCopy = ;
       LODWORD(buf) = 138543362;
-      *(&buf + 4) = v19;
-      _os_log_impl(&dword_192869000, v14, OS_LOG_TYPE_ERROR, "%{public}@Skipping regulatory eligibility; process started before first device unlock", &buf, 0xCu);
+      *(&buf + 4) = selfCopy;
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@Skipping regulatory eligibility; process started before first device unlock", &buf, 0xCu);
       if (v15)
       {
 
-        v19 = self;
+        selfCopy = self;
       }
     }
 
-    v20 = AMSError(119, @"Skipping regulatory eligibility", @"Device has not been unlocked", 0);
-    v22 = [AMSBinaryPromise promiseWithError:v20];
+    fetchRegulatoryiTunesAccounts = AMSError(119, @"Skipping regulatory eligibility", @"Device has not been unlocked", 0);
+    binaryPromiseAdapter = [AMSBinaryPromise promiseWithError:fetchRegulatoryiTunesAccounts];
   }
 
   else
@@ -143,8 +143,8 @@ uint64_t __46__AMSRegulatoryEligibilityTask_sharedInstance__block_invoke()
       v6 = +[AMSLogConfig sharedConfig];
     }
 
-    v7 = [v6 OSLogObject];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+    oSLogObject2 = [v6 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
     {
       v8 = AMSLogKey();
       v9 = v8 == 0;
@@ -164,7 +164,7 @@ uint64_t __46__AMSRegulatoryEligibilityTask_sharedInstance__block_invoke()
       v13 = ;
       LODWORD(buf) = 138543362;
       *(&buf + 4) = v13;
-      _os_log_impl(&dword_192869000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@Starting regulatory eligibility update.", &buf, 0xCu);
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@Starting regulatory eligibility update.", &buf, 0xCu);
       if (v8)
       {
 
@@ -172,17 +172,17 @@ uint64_t __46__AMSRegulatoryEligibilityTask_sharedInstance__block_invoke()
       }
     }
 
-    v20 = [objc_opt_class() fetchRegulatoryiTunesAccounts];
+    fetchRegulatoryiTunesAccounts = [objc_opt_class() fetchRegulatoryiTunesAccounts];
     v24[0] = MEMORY[0x1E69E9820];
     v24[1] = 3221225472;
     v24[2] = __38__AMSRegulatoryEligibilityTask_update__block_invoke;
     v24[3] = &unk_1E73BB898;
     v24[4] = self;
-    v21 = [v20 continueWithBlock:v24];
-    v22 = [v21 binaryPromiseAdapter];
+    v21 = [fetchRegulatoryiTunesAccounts continueWithBlock:v24];
+    binaryPromiseAdapter = [v21 binaryPromiseAdapter];
   }
 
-  return v22;
+  return binaryPromiseAdapter;
 }
 
 id __38__AMSRegulatoryEligibilityTask_update__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -871,10 +871,10 @@ void __38__AMSRegulatoryEligibilityTask_update__block_invoke_41(uint64_t a1, voi
   v4 = AMSAccountMediaTypeProduction;
   v5 = [MEMORY[0x1E6959A48] ams_sharedAccountStoreForMediaType:v4];
   v6 = [v5 ams_activeiTunesAccountForMediaType:v4];
-  v7 = [v5 ams_activeiCloudAccount];
-  if (v7)
+  ams_activeiCloudAccount = [v5 ams_activeiCloudAccount];
+  if (ams_activeiCloudAccount)
   {
-    v8 = [v5 ams_iTunesAccountForAccount:v7];
+    v8 = [v5 ams_iTunesAccountForAccount:ams_activeiCloudAccount];
     if (v8)
     {
       [v3 setObject:v8 forKeyedSubscript:@"OS_ELIGIBILITY_INPUT_COUNTRY_BILLING_KEY_ICLOUD_ACCOUNT"];
@@ -886,7 +886,7 @@ void __38__AMSRegulatoryEligibilityTask_update__block_invoke_41(uint64_t a1, voi
   v12[2] = __61__AMSRegulatoryEligibilityTask_fetchRegulatoryiTunesAccounts__block_invoke;
   v12[3] = &unk_1E73BBBE8;
   v13 = v3;
-  v14 = a1;
+  selfCopy = self;
   v9 = v3;
   v10 = [v6 continueWithBlock:v12];
 
@@ -952,17 +952,17 @@ id __61__AMSRegulatoryEligibilityTask_fetchRegulatoryiTunesAccounts__block_invok
   return v7;
 }
 
-+ (BOOL)setBillingCountries:(id)a3 withStatus:(unint64_t)a4 error:(id *)a5
++ (BOOL)setBillingCountries:(id)countries withStatus:(unint64_t)status error:(id *)error
 {
-  v53 = a5;
-  v54 = a1;
+  errorCopy = error;
+  selfCopy = self;
   v64 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = v7;
-  if (v7)
+  countriesCopy = countries;
+  v8 = countriesCopy;
+  if (countriesCopy)
   {
-    v51[2] = a4;
-    v9 = [v7 count];
+    v51[2] = status;
+    v9 = [countriesCopy count];
     v51[1] = v51;
     v10 = (v51 - ((8 * v9 + 15) & 0xFFFFFFFFFFFFFFF0));
     if ((8 * v9) >= 0x200)
@@ -1044,8 +1044,8 @@ id __61__AMSRegulatoryEligibilityTask_fetchRegulatoryiTunesAccounts__block_invok
     v25 = +[AMSLogConfig sharedConfig];
   }
 
-  v26 = [v25 OSLogObject];
-  if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v25 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v27 = AMSLogKey();
     v28 = MEMORY[0x1E696AEC0];
@@ -1067,7 +1067,7 @@ id __61__AMSRegulatoryEligibilityTask_fetchRegulatoryiTunesAccounts__block_invok
     v60 = v31;
     v61 = 2114;
     v62 = v32;
-    _os_log_impl(&dword_192869000, v26, OS_LOG_TYPE_DEFAULT, "%{public}@Reporting billing country %{public}@ to policy engine...", buf, 0x16u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@Reporting billing country %{public}@ to policy engine...", buf, 0x16u);
     if (v27)
     {
 
@@ -1085,8 +1085,8 @@ id __61__AMSRegulatoryEligibilityTask_fetchRegulatoryiTunesAccounts__block_invok
       v35 = +[AMSLogConfig sharedConfig];
     }
 
-    v36 = [v35 OSLogObject];
-    if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
+    oSLogObject2 = [v35 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
     {
       v37 = AMSLogKey();
       v38 = MEMORY[0x1E696AEC0];
@@ -1107,7 +1107,7 @@ id __61__AMSRegulatoryEligibilityTask_fetchRegulatoryiTunesAccounts__block_invok
       v60 = v41;
       v61 = 1024;
       LODWORD(v62) = v33;
-      _os_log_impl(&dword_192869000, v36, OS_LOG_TYPE_ERROR, "%{public}@Failed to set billing country; status code %i", buf, 0x12u);
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@Failed to set billing country; status code %i", buf, 0x12u);
       if (v37)
       {
 
@@ -1115,8 +1115,8 @@ id __61__AMSRegulatoryEligibilityTask_fetchRegulatoryiTunesAccounts__block_invok
       }
     }
 
-    v48 = v53;
-    if (v53)
+    v48 = errorCopy;
+    if (errorCopy)
     {
       *v48 = AMSError(119, @"Eligibility write failed", @"Failed to set account eligibility", 0);
     }
@@ -1129,8 +1129,8 @@ id __61__AMSRegulatoryEligibilityTask_fetchRegulatoryiTunesAccounts__block_invok
       v35 = +[AMSLogConfig sharedConfig];
     }
 
-    v42 = [v35 OSLogObject];
-    if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
+    oSLogObject3 = [v35 OSLogObject];
+    if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_DEFAULT))
     {
       v43 = AMSLogKey();
       v44 = MEMORY[0x1E696AEC0];
@@ -1152,7 +1152,7 @@ id __61__AMSRegulatoryEligibilityTask_fetchRegulatoryiTunesAccounts__block_invok
       v60 = v47;
       v61 = 2114;
       v62 = v49;
-      _os_log_impl(&dword_192869000, v42, OS_LOG_TYPE_DEFAULT, "%{public}@Successfully set billing country to %{public}@.", buf, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject3, OS_LOG_TYPE_DEFAULT, "%{public}@Successfully set billing country to %{public}@.", buf, 0x16u);
       if (v43)
       {
 
@@ -1173,20 +1173,20 @@ id __61__AMSRegulatoryEligibilityTask_fetchRegulatoryiTunesAccounts__block_invok
   return v3;
 }
 
-- (void)setOverride:(id)a3
+- (void)setOverride:(id)override
 {
-  v4 = a3;
+  overrideCopy = override;
   os_unfair_lock_lock_with_options();
   override = self->_override;
-  self->_override = v4;
+  self->_override = overrideCopy;
 
   os_unfair_lock_unlock(&self->_overrideLock);
 }
 
-- (BOOL)setForcedOverride:(id)a3 error:(id *)a4
+- (BOOL)setForcedOverride:(id)override error:(id *)error
 {
   v72 = *MEMORY[0x1E69E9840];
-  v9 = a3;
+  overrideCopy = override;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -1197,7 +1197,7 @@ id __61__AMSRegulatoryEligibilityTask_fetchRegulatoryiTunesAccounts__block_invok
     aBlock[3] = &unk_1E73B3680;
     aBlock[4] = self;
     v66 = _Block_copy(aBlock);
-    if ([(NSNumber *)self->_override isEqualToNumber:v9])
+    if ([(NSNumber *)self->_override isEqualToNumber:overrideCopy])
     {
       v10 = +[AMSLogConfig sharedAccountsConfig];
       if (!v10)
@@ -1205,8 +1205,8 @@ id __61__AMSRegulatoryEligibilityTask_fetchRegulatoryiTunesAccounts__block_invok
         v10 = +[AMSLogConfig sharedConfig];
       }
 
-      v11 = [v10 OSLogObject];
-      if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+      oSLogObject = [v10 OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
       {
         v12 = AMSLogKey();
         v13 = MEMORY[0x1E696AEC0];
@@ -1221,21 +1221,21 @@ id __61__AMSRegulatoryEligibilityTask_fetchRegulatoryiTunesAccounts__block_invok
         {
           [MEMORY[0x1E696AEC0] stringWithFormat:@"%@: ", objc_opt_class()];
         }
-        v15 = ;
+        selfCopy = ;
         *buf = 138543362;
-        v69 = v15;
-        _os_log_impl(&dword_192869000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@The override on the account has not changed, so we will not set it", buf, 0xCu);
+        v69 = selfCopy;
+        _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@The override on the account has not changed, so we will not set it", buf, 0xCu);
         if (v12)
         {
 
-          v15 = self;
+          selfCopy = self;
         }
       }
 
       goto LABEL_36;
     }
 
-    if ([v9 intValue])
+    if ([overrideCopy intValue])
     {
       v23 = +[AMSLogConfig sharedRegulatoryEligibilityConfig];
       if (!v23)
@@ -1243,8 +1243,8 @@ id __61__AMSRegulatoryEligibilityTask_fetchRegulatoryiTunesAccounts__block_invok
         v23 = +[AMSLogConfig sharedConfig];
       }
 
-      v24 = [v23 OSLogObject];
-      if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
+      oSLogObject2 = [v23 OSLogObject];
+      if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
       {
         v4 = AMSLogKey();
         v25 = MEMORY[0x1E696AEC0];
@@ -1263,8 +1263,8 @@ id __61__AMSRegulatoryEligibilityTask_fetchRegulatoryiTunesAccounts__block_invok
         *buf = 138543618;
         v69 = v27;
         v70 = 2112;
-        v71 = v9;
-        _os_log_impl(&dword_192869000, v24, OS_LOG_TYPE_DEFAULT, "%{public}@Setting forced override eligibility to %@.", buf, 0x16u);
+        v71 = overrideCopy;
+        _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@Setting forced override eligibility to %@.", buf, 0x16u);
         if (v4)
         {
 
@@ -1272,7 +1272,7 @@ id __61__AMSRegulatoryEligibilityTask_fetchRegulatoryiTunesAccounts__block_invok
         }
       }
 
-      if ([v9 intValue] != 1 && objc_msgSend(v9, "intValue") != 2)
+      if ([overrideCopy intValue] != 1 && objc_msgSend(overrideCopy, "intValue") != 2)
       {
         v47 = +[AMSLogConfig sharedRegulatoryEligibilityConfig];
         if (!v47)
@@ -1280,8 +1280,8 @@ id __61__AMSRegulatoryEligibilityTask_fetchRegulatoryiTunesAccounts__block_invok
           v47 = +[AMSLogConfig sharedConfig];
         }
 
-        v48 = [v47 OSLogObject];
-        if (os_log_type_enabled(v48, OS_LOG_TYPE_ERROR))
+        oSLogObject3 = [v47 OSLogObject];
+        if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_ERROR))
         {
           v49 = AMSLogKey();
           v50 = MEMORY[0x1E696AEC0];
@@ -1296,18 +1296,18 @@ id __61__AMSRegulatoryEligibilityTask_fetchRegulatoryiTunesAccounts__block_invok
           {
             [MEMORY[0x1E696AEC0] stringWithFormat:@"%@: ", objc_opt_class()];
           }
-          v52 = ;
+          selfCopy2 = ;
           *buf = 138543362;
-          v69 = v52;
-          _os_log_impl(&dword_192869000, v48, OS_LOG_TYPE_ERROR, "%{public}@Failed to set eligibility override because AK3PRegulatoryOverride was none of 0, 1, or 2", buf, 0xCu);
+          v69 = selfCopy2;
+          _os_log_impl(&dword_192869000, oSLogObject3, OS_LOG_TYPE_ERROR, "%{public}@Failed to set eligibility override because AK3PRegulatoryOverride was none of 0, 1, or 2", buf, 0xCu);
           if (v49)
           {
 
-            v52 = self;
+            selfCopy2 = self;
           }
         }
 
-        if (a4)
+        if (error)
         {
           v64 = AMSError(119, @"Force override failed", @"Failed to set eligibility override because AK3PRegulatoryOverride was none of 0, 1, or 2", 0);
           goto LABEL_97;
@@ -1325,8 +1325,8 @@ id __61__AMSRegulatoryEligibilityTask_fetchRegulatoryiTunesAccounts__block_invok
           v35 = +[AMSLogConfig sharedConfig];
         }
 
-        v36 = [v35 OSLogObject];
-        if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
+        oSLogObject4 = [v35 OSLogObject];
+        if (os_log_type_enabled(oSLogObject4, OS_LOG_TYPE_ERROR))
         {
           v37 = AMSLogKey();
           v38 = MEMORY[0x1E696AEC0];
@@ -1341,25 +1341,25 @@ id __61__AMSRegulatoryEligibilityTask_fetchRegulatoryiTunesAccounts__block_invok
           {
             [MEMORY[0x1E696AEC0] stringWithFormat:@"%@: ", objc_opt_class()];
           }
-          v40 = ;
+          selfCopy3 = ;
           *buf = 138543618;
-          v69 = v40;
+          v69 = selfCopy3;
           v70 = 1024;
           LODWORD(v71) = v34;
-          _os_log_impl(&dword_192869000, v36, OS_LOG_TYPE_ERROR, "%{public}@Failed to set forced override; status code %i", buf, 0x12u);
+          _os_log_impl(&dword_192869000, oSLogObject4, OS_LOG_TYPE_ERROR, "%{public}@Failed to set forced override; status code %i", buf, 0x12u);
           if (v37)
           {
 
-            v40 = self;
+            selfCopy3 = self;
           }
         }
 
-        if (a4)
+        if (error)
         {
           v64 = AMSError(119, @"Force eligibility failed", @"Failed to set the eligibility override", 0);
 LABEL_97:
           v33 = 0;
-          *a4 = v64;
+          *error = v64;
           goto LABEL_99;
         }
 
@@ -1372,8 +1372,8 @@ LABEL_97:
         v41 = +[AMSLogConfig sharedConfig];
       }
 
-      v42 = [v41 OSLogObject];
-      if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
+      oSLogObject5 = [v41 OSLogObject];
+      if (os_log_type_enabled(oSLogObject5, OS_LOG_TYPE_DEFAULT))
       {
         v43 = AMSLogKey();
         v44 = MEMORY[0x1E696AEC0];
@@ -1391,7 +1391,7 @@ LABEL_97:
         v46 = ;
         *buf = 138543362;
         v69 = v46;
-        _os_log_impl(&dword_192869000, v42, OS_LOG_TYPE_DEFAULT, "%{public}@Successfully set forced override", buf, 0xCu);
+        _os_log_impl(&dword_192869000, oSLogObject5, OS_LOG_TYPE_DEFAULT, "%{public}@Successfully set forced override", buf, 0xCu);
         if (v43)
         {
 
@@ -1408,8 +1408,8 @@ LABEL_97:
         v28 = +[AMSLogConfig sharedConfig];
       }
 
-      v29 = [v28 OSLogObject];
-      if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
+      oSLogObject6 = [v28 OSLogObject];
+      if (os_log_type_enabled(oSLogObject6, OS_LOG_TYPE_DEFAULT))
       {
         v4 = AMSLogKey();
         v30 = MEMORY[0x1E696AEC0];
@@ -1427,7 +1427,7 @@ LABEL_97:
         v32 = ;
         *buf = 138543362;
         v69 = v32;
-        _os_log_impl(&dword_192869000, v29, OS_LOG_TYPE_DEFAULT, "%{public}@Override value of 0 indicates it has been unset; resetting domain answer", buf, 0xCu);
+        _os_log_impl(&dword_192869000, oSLogObject6, OS_LOG_TYPE_DEFAULT, "%{public}@Override value of 0 indicates it has been unset; resetting domain answer", buf, 0xCu);
         if (v4)
         {
 
@@ -1444,8 +1444,8 @@ LABEL_97:
           v54 = +[AMSLogConfig sharedConfig];
         }
 
-        v55 = [v54 OSLogObject];
-        if (os_log_type_enabled(v55, OS_LOG_TYPE_ERROR))
+        oSLogObject7 = [v54 OSLogObject];
+        if (os_log_type_enabled(oSLogObject7, OS_LOG_TYPE_ERROR))
         {
           v56 = AMSLogKey();
           v57 = MEMORY[0x1E696AEC0];
@@ -1460,20 +1460,20 @@ LABEL_97:
           {
             [MEMORY[0x1E696AEC0] stringWithFormat:@"%@: ", objc_opt_class()];
           }
-          v59 = ;
+          selfCopy4 = ;
           *buf = 138543618;
-          v69 = v59;
+          v69 = selfCopy4;
           v70 = 1024;
           LODWORD(v71) = v53;
-          _os_log_impl(&dword_192869000, v55, OS_LOG_TYPE_ERROR, "%{public}@Failed to reset domain answer; status code %i", buf, 0x12u);
+          _os_log_impl(&dword_192869000, oSLogObject7, OS_LOG_TYPE_ERROR, "%{public}@Failed to reset domain answer; status code %i", buf, 0x12u);
           if (v56)
           {
 
-            v59 = self;
+            selfCopy4 = self;
           }
         }
 
-        if (a4)
+        if (error)
         {
           v64 = AMSError(119, @"Reset domain failed", @"Failed to reset the domain answer", 0);
           goto LABEL_97;
@@ -1490,8 +1490,8 @@ LABEL_98:
         v41 = +[AMSLogConfig sharedConfig];
       }
 
-      v42 = [v41 OSLogObject];
-      if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
+      oSLogObject5 = [v41 OSLogObject];
+      if (os_log_type_enabled(oSLogObject5, OS_LOG_TYPE_DEFAULT))
       {
         v60 = AMSLogKey();
         v61 = MEMORY[0x1E696AEC0];
@@ -1509,7 +1509,7 @@ LABEL_98:
         v63 = ;
         *buf = 138543362;
         v69 = v63;
-        _os_log_impl(&dword_192869000, v42, OS_LOG_TYPE_DEFAULT, "%{public}@Successfully reset the domain answer", buf, 0xCu);
+        _os_log_impl(&dword_192869000, oSLogObject5, OS_LOG_TYPE_DEFAULT, "%{public}@Successfully reset the domain answer", buf, 0xCu);
         if (v60)
         {
 
@@ -1518,7 +1518,7 @@ LABEL_98:
       }
     }
 
-    objc_storeStrong(&self->_override, a3);
+    objc_storeStrong(&self->_override, override);
 LABEL_36:
     v33 = 1;
 LABEL_99:
@@ -1533,8 +1533,8 @@ LABEL_99:
     v16 = +[AMSLogConfig sharedConfig];
   }
 
-  v17 = [v16 OSLogObject];
-  if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+  oSLogObject8 = [v16 OSLogObject];
+  if (os_log_type_enabled(oSLogObject8, OS_LOG_TYPE_ERROR))
   {
     v18 = AMSLogKey();
     v19 = MEMORY[0x1E696AEC0];
@@ -1550,21 +1550,21 @@ LABEL_99:
     {
       [v19 stringWithFormat:@"%@: ", v20];
     }
-    v22 = ;
+    selfCopy5 = ;
     *buf = 138543362;
-    v69 = v22;
-    _os_log_impl(&dword_192869000, v17, OS_LOG_TYPE_ERROR, "%{public}@Failed to set eligibility override because AK3PRegulatoryOverride was not a number", buf, 0xCu);
+    v69 = selfCopy5;
+    _os_log_impl(&dword_192869000, oSLogObject8, OS_LOG_TYPE_ERROR, "%{public}@Failed to set eligibility override because AK3PRegulatoryOverride was not a number", buf, 0xCu);
     if (v18)
     {
 
-      v22 = self;
+      selfCopy5 = self;
     }
   }
 
-  if (a4)
+  if (error)
   {
     AMSError(119, @"Force override failed", @"Failed to set eligibility override because AK3PRegulatoryOverride was not a number", 0);
-    *a4 = v33 = 0;
+    *error = v33 = 0;
   }
 
   else
@@ -1577,16 +1577,16 @@ LABEL_100:
   return v33;
 }
 
-+ (id)setRegulatoryPropertyOnAccounts:(id)a3
++ (id)setRegulatoryPropertyOnAccounts:(id)accounts
 {
   v86 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  accountsCopy = accounts;
   v58 = AMSAccountMediaTypeProduction;
   v4 = [MEMORY[0x1E6959A48] ams_sharedAccountStoreForMediaType:?];
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v6 = +[AMSDefaults regulatoryEligibilityAccounts];
-  v59 = v3;
-  v64 = [MEMORY[0x1E695DFD8] setWithArray:v3];
+  v59 = accountsCopy;
+  v64 = [MEMORY[0x1E695DFD8] setWithArray:accountsCopy];
   v7 = [v64 valueForKey:@"identifier"];
   v76 = 0u;
   v77 = 0u;
@@ -1625,8 +1625,8 @@ LABEL_100:
               v16 = +[AMSLogConfig sharedConfig];
             }
 
-            v17 = [v16 OSLogObject];
-            if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
+            oSLogObject = [v16 OSLogObject];
+            if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
             {
               v18 = AMSLogKey();
               v19 = MEMORY[0x1E696AEC0];
@@ -1651,7 +1651,7 @@ LABEL_100:
               v82 = v22;
               v83 = 2114;
               v84 = v24;
-              _os_log_impl(&dword_192869000, v17, OS_LOG_TYPE_DEFAULT, "%{public}@Unsetting %{public}@ as regulatory account.", buf, 0x16u);
+              _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@Unsetting %{public}@ as regulatory account.", buf, 0x16u);
               v68 = v23;
               if (v18)
               {
@@ -1700,18 +1700,18 @@ LABEL_100:
         }
 
         v32 = *(*(&v72 + 1) + 8 * j);
-        v33 = [v32 ams_isRegulatoryAccount];
-        v34 = [*(v28 + 3552) sharedRegulatoryEligibilityConfig];
-        v35 = v34;
-        if (v33)
+        ams_isRegulatoryAccount = [v32 ams_isRegulatoryAccount];
+        sharedRegulatoryEligibilityConfig = [*(v28 + 3552) sharedRegulatoryEligibilityConfig];
+        sharedConfig = sharedRegulatoryEligibilityConfig;
+        if (ams_isRegulatoryAccount)
         {
-          if (!v34)
+          if (!sharedRegulatoryEligibilityConfig)
           {
-            v35 = [*(v28 + 3552) sharedConfig];
+            sharedConfig = [*(v28 + 3552) sharedConfig];
           }
 
-          v36 = [v35 OSLogObject];
-          if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
+          oSLogObject2 = [sharedConfig OSLogObject];
+          if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
           {
             v37 = AMSLogKey();
             v38 = MEMORY[0x1E696AEC0];
@@ -1736,7 +1736,7 @@ LABEL_100:
             v82 = v41;
             v83 = 2114;
             v84 = v49;
-            _os_log_impl(&dword_192869000, v36, OS_LOG_TYPE_DEFAULT, "%{public}@ %{public}@ is already saved as regulatory account.", buf, 0x16u);
+            _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@ %{public}@ is already saved as regulatory account.", buf, 0x16u);
             v66 = v42;
             v50 = v42;
             v26 = v69;
@@ -1752,13 +1752,13 @@ LABEL_100:
 
         else
         {
-          if (!v34)
+          if (!sharedRegulatoryEligibilityConfig)
           {
-            v35 = [*(v28 + 3552) sharedConfig];
+            sharedConfig = [*(v28 + 3552) sharedConfig];
           }
 
-          v43 = [v35 OSLogObject];
-          if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
+          oSLogObject3 = [sharedConfig OSLogObject];
+          if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_DEFAULT))
           {
             v44 = AMSLogKey();
             v45 = MEMORY[0x1E696AEC0];
@@ -1782,7 +1782,7 @@ LABEL_100:
             v82 = v48;
             v83 = 2114;
             v84 = v51;
-            _os_log_impl(&dword_192869000, v43, OS_LOG_TYPE_DEFAULT, "%{public}@Saving %{public}@ as regulatory account.", buf, 0x16u);
+            _os_log_impl(&dword_192869000, oSLogObject3, OS_LOG_TYPE_DEFAULT, "%{public}@Saving %{public}@ as regulatory account.", buf, 0x16u);
             v52 = v4;
             if (v44)
             {
@@ -1795,8 +1795,8 @@ LABEL_100:
           }
 
           [v32 ams_setRegulatoryAccount:1];
-          v35 = [v70 ams_saveAccount:v32];
-          [v71 addObject:v35];
+          sharedConfig = [v70 ams_saveAccount:v32];
+          [v71 addObject:sharedConfig];
         }
       }
 
@@ -1812,13 +1812,13 @@ LABEL_100:
     [v71 addObject:v53];
   }
 
-  v54 = [v61 allObjects];
+  allObjects = [v61 allObjects];
   [AMSDefaults setRegulatoryEligibilityAccounts:0];
-  [AMSDefaults setRegulatoryEligibilityAccounts:v54];
+  [AMSDefaults setRegulatoryEligibilityAccounts:allObjects];
   v55 = [AMSBinaryPromise promiseWithAny:v71];
-  v56 = [v55 promiseAdapter];
+  promiseAdapter = [v55 promiseAdapter];
 
-  return v56;
+  return promiseAdapter;
 }
 
 - (void)handleCachedDataUpdate
@@ -1830,8 +1830,8 @@ LABEL_100:
     v4 = +[AMSLogConfig sharedConfig];
   }
 
-  v5 = [v4 OSLogObject];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v4 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v6 = AMSLogKey();
     v7 = MEMORY[0x1E696AEC0];
@@ -1850,7 +1850,7 @@ LABEL_100:
     v10 = ;
     *buf = 138543362;
     v13 = v10;
-    _os_log_impl(&dword_192869000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@Starting eligibility flow from cached data update.", buf, 0xCu);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@Starting eligibility flow from cached data update.", buf, 0xCu);
     if (v6)
     {
 
@@ -1858,21 +1858,21 @@ LABEL_100:
     }
   }
 
-  v11 = [(AMSRegulatoryEligibilityTask *)self update];
+  update = [(AMSRegulatoryEligibilityTask *)self update];
 }
 
-- (void)updateAMSDefaultsWith:(id)a3 accounts:(id)a4
+- (void)updateAMSDefaultsWith:(id)with accounts:(id)accounts
 {
   v10[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  withCopy = with;
+  accountsCopy = accounts;
   if (os_variant_has_internal_content() && !+[AMSUnitTests isRunningUnitTests])
   {
     [(AMSRegulatoryEligibilityTask *)self clearAMSDefaults];
     v9[0] = @"accounts-and-overrides";
     v9[1] = @"billing-countries";
-    v10[0] = v7;
-    v10[1] = v6;
+    v10[0] = accountsCopy;
+    v10[1] = withCopy;
     v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:v9 count:2];
     [AMSDefaults setRegulatoryEligibilityAttributes:v8];
   }

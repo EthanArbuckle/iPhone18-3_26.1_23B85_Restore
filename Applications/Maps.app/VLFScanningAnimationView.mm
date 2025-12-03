@@ -1,19 +1,19 @@
 @interface VLFScanningAnimationView
 - (BOOL)isDarkMode;
-- (VLFScanningAnimationView)initWithFrame:(CGRect)a3;
+- (VLFScanningAnimationView)initWithFrame:(CGRect)frame;
 - (id)videoNameForCurrentState;
 - (void)didMoveToWindow;
-- (void)setCurrentScanningState:(int64_t)a3;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)updateForCurrentStateAndPreserveTimestamp:(BOOL)a3 animate:(BOOL)a4;
+- (void)setCurrentScanningState:(int64_t)state;
+- (void)traitCollectionDidChange:(id)change;
+- (void)updateForCurrentStateAndPreserveTimestamp:(BOOL)timestamp animate:(BOOL)animate;
 @end
 
 @implementation VLFScanningAnimationView
 
-- (void)updateForCurrentStateAndPreserveTimestamp:(BOOL)a3 animate:(BOOL)a4
+- (void)updateForCurrentStateAndPreserveTimestamp:(BOOL)timestamp animate:(BOOL)animate
 {
-  v4 = a4;
-  v5 = a3;
+  animateCopy = animate;
+  timestampCopy = timestamp;
   label = dispatch_queue_get_label(&_dispatch_main_q);
   v8 = dispatch_queue_get_label(0);
   if (label != v8)
@@ -56,18 +56,18 @@
   v10 = sub_1005F8714();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
-    v11 = [(VLFScanningAnimationView *)self currentScanningState];
-    if ((v11 - 2) > 3)
+    currentScanningState = [(VLFScanningAnimationView *)self currentScanningState];
+    if ((currentScanningState - 2) > 3)
     {
       v12 = @"VLFScanningStateInitializing";
     }
 
     else
     {
-      v12 = *(&off_101623AF0 + v11 - 2);
+      v12 = *(&off_101623AF0 + currentScanningState - 2);
     }
 
-    if (v5)
+    if (timestampCopy)
     {
       v13 = @"YES";
     }
@@ -81,7 +81,7 @@
     v27 = v12;
     v28 = 2112;
     v29 = v13;
-    if (v4)
+    if (animateCopy)
     {
       v14 = @"YES";
     }
@@ -103,11 +103,11 @@
   v24[2] = sub_1005F8768;
   v24[3] = &unk_101661AE0;
   v24[4] = self;
-  v25 = v5;
+  v25 = timestampCopy;
   v17 = objc_retainBlock(v24);
   v18 = sub_1005F8714();
   v19 = os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG);
-  if (v4)
+  if (animateCopy)
   {
     if (v19)
     {
@@ -115,8 +115,8 @@
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEBUG, "Animating fade out", buf, 2u);
     }
 
-    v20 = [(VLFScanningAnimationView *)self animationManager];
-    [v20 fadeWithFadeOutCompletion:v17];
+    animationManager = [(VLFScanningAnimationView *)self animationManager];
+    [animationManager fadeWithFadeOutCompletion:v17];
   }
 
   else
@@ -127,19 +127,19 @@
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEBUG, "Not animating fade out", buf, 2u);
     }
 
-    v20 = [(VLFScanningAnimationView *)self animationManager];
-    [v20 replaceOnGoingFadeOutCompletion:v17];
+    animationManager = [(VLFScanningAnimationView *)self animationManager];
+    [animationManager replaceOnGoingFadeOutCompletion:v17];
   }
 }
 
 - (id)videoNameForCurrentState
 {
-  v3 = [(VLFScanningAnimationView *)self currentScanningState];
-  if ((v3 - 1) < 3)
+  currentScanningState = [(VLFScanningAnimationView *)self currentScanningState];
+  if ((currentScanningState - 1) < 3)
   {
     if (+[VLFDeviceInfo isIslandDevice])
     {
-      v4 = [(VLFScanningAnimationView *)self isDarkMode];
+      isDarkMode = [(VLFScanningAnimationView *)self isDarkMode];
       v5 = @"VLF_scan_island_light";
       v6 = @"VLF_scan_island_dark";
     }
@@ -147,7 +147,7 @@
     else
     {
       v7 = +[VLFDeviceInfo isNotchDevice];
-      v4 = [(VLFScanningAnimationView *)self isDarkMode];
+      isDarkMode = [(VLFScanningAnimationView *)self isDarkMode];
       if (v7)
       {
         v5 = @"VLF_scan_notch_light";
@@ -162,7 +162,7 @@
     }
 
 LABEL_31:
-    if (v4)
+    if (isDarkMode)
     {
       v5 = v6;
     }
@@ -171,11 +171,11 @@ LABEL_31:
     goto LABEL_34;
   }
 
-  if (v3 == 4)
+  if (currentScanningState == 4)
   {
     if (+[VLFDeviceInfo isIslandDevice])
     {
-      v4 = [(VLFScanningAnimationView *)self isDarkMode];
+      isDarkMode = [(VLFScanningAnimationView *)self isDarkMode];
       v5 = @"VLF_raise_island_light";
       v6 = @"VLF_raise_island_dark";
     }
@@ -183,7 +183,7 @@ LABEL_31:
     else
     {
       v14 = +[VLFDeviceInfo isNotchDevice];
-      v4 = [(VLFScanningAnimationView *)self isDarkMode];
+      isDarkMode = [(VLFScanningAnimationView *)self isDarkMode];
       if (v14)
       {
         v5 = @"VLF_raise_notch_light";
@@ -200,11 +200,11 @@ LABEL_31:
     goto LABEL_31;
   }
 
-  if (v3 == 5)
+  if (currentScanningState == 5)
   {
     if (+[VLFDeviceInfo isIslandDevice])
     {
-      v4 = [(VLFScanningAnimationView *)self isDarkMode];
+      isDarkMode = [(VLFScanningAnimationView *)self isDarkMode];
       v5 = @"VLF_lower_island_light";
       v6 = @"VLF_lower_island_dark";
     }
@@ -212,7 +212,7 @@ LABEL_31:
     else
     {
       v15 = +[VLFDeviceInfo isNotchDevice];
-      v4 = [(VLFScanningAnimationView *)self isDarkMode];
+      isDarkMode = [(VLFScanningAnimationView *)self isDarkMode];
       if (v15)
       {
         v5 = @"VLF_lower_notch_light";
@@ -256,15 +256,15 @@ LABEL_31:
   v11 = sub_1005F8714();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
   {
-    v12 = [(VLFScanningAnimationView *)self currentScanningState];
-    if ((v12 - 2) > 3)
+    currentScanningState2 = [(VLFScanningAnimationView *)self currentScanningState];
+    if ((currentScanningState2 - 2) > 3)
     {
       v13 = @"VLFScanningStateInitializing";
     }
 
     else
     {
-      v13 = *(&off_101623AF0 + v12 - 2);
+      v13 = *(&off_101623AF0 + currentScanningState2 - 2);
     }
 
     v18 = 138412290;
@@ -280,13 +280,13 @@ LABEL_34:
 
 - (BOOL)isDarkMode
 {
-  v2 = [(VLFScanningAnimationView *)self traitCollection];
-  v3 = [v2 userInterfaceStyle] == 2;
+  traitCollection = [(VLFScanningAnimationView *)self traitCollection];
+  v3 = [traitCollection userInterfaceStyle] == 2;
 
   return v3;
 }
 
-- (void)setCurrentScanningState:(int64_t)a3
+- (void)setCurrentScanningState:(int64_t)state
 {
   label = dispatch_queue_get_label(&_dispatch_main_q);
   v6 = dispatch_queue_get_label(0);
@@ -328,9 +328,9 @@ LABEL_34:
   }
 
   currentScanningState = self->_currentScanningState;
-  if (currentScanningState != a3)
+  if (currentScanningState != state)
   {
-    self->_currentScanningState = a3;
+    self->_currentScanningState = state;
     v9 = sub_1005F8714();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
@@ -380,11 +380,11 @@ LABEL_34:
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v6.receiver = self;
   v6.super_class = VLFScanningAnimationView;
-  [(VLFScanningAnimationView *)&v6 traitCollectionDidChange:a3];
+  [(VLFScanningAnimationView *)&v6 traitCollectionDidChange:change];
   v4 = sub_1005F8714();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
@@ -400,20 +400,20 @@ LABEL_34:
   v5.receiver = self;
   v5.super_class = VLFScanningAnimationView;
   [(VLFScanningAnimationView *)&v5 didMoveToWindow];
-  v3 = [(VLFScanningAnimationView *)self window];
-  v4 = [v3 windowScene];
+  window = [(VLFScanningAnimationView *)self window];
+  windowScene = [window windowScene];
 
-  if (v4)
+  if (windowScene)
   {
     [(VLFScanningAnimationView *)self updateForCurrentStateAndPreserveTimestamp:0 animate:0];
   }
 }
 
-- (VLFScanningAnimationView)initWithFrame:(CGRect)a3
+- (VLFScanningAnimationView)initWithFrame:(CGRect)frame
 {
   v26.receiver = self;
   v26.super_class = VLFScanningAnimationView;
-  v3 = [(VLFScanningAnimationView *)&v26 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(VLFScanningAnimationView *)&v26 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -430,8 +430,8 @@ LABEL_34:
     [(VLFScanningAnimationView *)v4 addSubview:v4->_skylineImageView];
     LODWORD(v10) = 1148846080;
     v11 = [(UIImageView *)v4->_skylineImageView _maps_constraintsEqualToEdgesOfView:v4 priority:v10];
-    v12 = [v11 allConstraints];
-    [v5 addObjectsFromArray:v12];
+    allConstraints = [v11 allConstraints];
+    [v5 addObjectsFromArray:allConstraints];
 
     v13 = [[MapsLoopingVideoPlayerView alloc] initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
     playerView = v4->_playerView;
@@ -441,20 +441,20 @@ LABEL_34:
     [(VLFScanningAnimationView *)v4 addSubview:v4->_playerView];
     LODWORD(v15) = 1148846080;
     v16 = [(MapsLoopingVideoPlayerView *)v4->_playerView _maps_constraintsEqualToEdgesOfView:v4 priority:v15];
-    v17 = [v16 allConstraints];
-    [v5 addObjectsFromArray:v17];
+    allConstraints2 = [v16 allConstraints];
+    [v5 addObjectsFromArray:allConstraints2];
 
     [NSLayoutConstraint activateConstraints:v5];
     v18 = [VLFScanningAnimationManager alloc];
-    v19 = [(MapsLoopingVideoPlayerView *)v4->_playerView layer];
-    v20 = [(VLFScanningAnimationManager *)v18 initWithLayer:v19];
+    layer = [(MapsLoopingVideoPlayerView *)v4->_playerView layer];
+    v20 = [(VLFScanningAnimationManager *)v18 initWithLayer:layer];
     animationManager = v4->_animationManager;
     v4->_animationManager = v20;
 
     v22 = +[NSUserDefaults standardUserDefaults];
-    LODWORD(v19) = [v22 BOOLForKey:@"VLFSessionScanningAnimationShowLongestTextKey"];
+    LODWORD(layer) = [v22 BOOLForKey:@"VLFSessionScanningAnimationShowLongestTextKey"];
 
-    if (v19)
+    if (layer)
     {
       v23 = +[UIColor labelColor];
       v24 = [v23 colorWithAlphaComponent:0.300000012];

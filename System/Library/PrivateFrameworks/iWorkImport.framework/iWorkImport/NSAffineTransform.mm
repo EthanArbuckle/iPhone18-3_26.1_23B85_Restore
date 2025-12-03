@@ -1,37 +1,37 @@
 @interface NSAffineTransform
-- (void)gqu_transformRect:(CGRect)a3 upperLeft:(CGPoint *)a4 lowerLeft:(CGPoint *)a5 lowerRight:(CGPoint *)a6 upperRight:(CGPoint *)a7;
+- (void)gqu_transformRect:(CGRect)rect upperLeft:(CGPoint *)left lowerLeft:(CGPoint *)lowerLeft lowerRight:(CGPoint *)right upperRight:(CGPoint *)upperRight;
 @end
 
 @implementation NSAffineTransform
 
-- (void)gqu_transformRect:(CGRect)a3 upperLeft:(CGPoint *)a4 lowerLeft:(CGPoint *)a5 lowerRight:(CGPoint *)a6 upperRight:(CGPoint *)a7
+- (void)gqu_transformRect:(CGRect)rect upperLeft:(CGPoint *)left lowerLeft:(CGPoint *)lowerLeft lowerRight:(CGPoint *)right upperRight:(CGPoint *)upperRight
 {
-  x = a3.origin.x;
-  y = a3.origin.y;
-  v14 = a3.origin.x + a3.size.width;
-  v15 = a3.origin.y + a3.size.height;
-  a4->x = x;
-  a4->y = y;
+  x = rect.origin.x;
+  y = rect.origin.y;
+  v14 = rect.origin.x + rect.size.width;
+  v15 = rect.origin.y + rect.size.height;
+  left->x = x;
+  left->y = y;
   v16 = v15;
-  a5->x = x;
-  a5->y = v16;
+  lowerLeft->x = x;
+  lowerLeft->y = v16;
   v17 = v14;
-  a6->x = v17;
-  a6->y = v16;
-  a7->x = v17;
-  a7->y = y;
-  [(NSAffineTransform *)self transformPoint:a4->x, a4->y];
-  a4->x = v18;
-  a4->y = v19;
-  [(NSAffineTransform *)self transformPoint:a5->x, a5->y];
-  a5->x = v20;
-  a5->y = v21;
-  [(NSAffineTransform *)self transformPoint:a6->x, a6->y];
-  a6->x = v22;
-  a6->y = v23;
-  [(NSAffineTransform *)self transformPoint:a7->x, a7->y];
-  a7->x = v24;
-  a7->y = v25;
+  right->x = v17;
+  right->y = v16;
+  upperRight->x = v17;
+  upperRight->y = y;
+  [(NSAffineTransform *)self transformPoint:left->x, left->y];
+  left->x = v18;
+  left->y = v19;
+  [(NSAffineTransform *)self transformPoint:lowerLeft->x, lowerLeft->y];
+  lowerLeft->x = v20;
+  lowerLeft->y = v21;
+  [(NSAffineTransform *)self transformPoint:right->x, right->y];
+  right->x = v22;
+  right->y = v23;
+  [(NSAffineTransform *)self transformPoint:upperRight->x, upperRight->y];
+  upperRight->x = v24;
+  upperRight->y = v25;
 }
 
 @end

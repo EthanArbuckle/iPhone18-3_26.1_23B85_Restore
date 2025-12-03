@@ -1,29 +1,29 @@
 @interface FCFeedPrewarmResult
-- (FCFeedPrewarmResult)initWithSuccessfulRequests:(id)a3 failedRequests:(id)a4 networkEvents:(id)a5;
+- (FCFeedPrewarmResult)initWithSuccessfulRequests:(id)requests failedRequests:(id)failedRequests networkEvents:(id)events;
 - (NSSet)feedIDs;
 @end
 
 @implementation FCFeedPrewarmResult
 
-- (FCFeedPrewarmResult)initWithSuccessfulRequests:(id)a3 failedRequests:(id)a4 networkEvents:(id)a5
+- (FCFeedPrewarmResult)initWithSuccessfulRequests:(id)requests failedRequests:(id)failedRequests networkEvents:(id)events
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestsCopy = requests;
+  failedRequestsCopy = failedRequests;
+  eventsCopy = events;
   v19.receiver = self;
   v19.super_class = FCFeedPrewarmResult;
   v11 = [(FCFeedPrewarmResult *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [requestsCopy copy];
     successfulRequests = v11->_successfulRequests;
     v11->_successfulRequests = v12;
 
-    v14 = [v9 copy];
+    v14 = [failedRequestsCopy copy];
     failedRequests = v11->_failedRequests;
     v11->_failedRequests = v14;
 
-    v16 = [v10 copy];
+    v16 = [eventsCopy copy];
     networkEvents = v11->_networkEvents;
     v11->_networkEvents = v16;
   }

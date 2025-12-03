@@ -1,9 +1,9 @@
 @interface BMAlarmEvent
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
-- (BMAlarmEvent)initWithEventType:(unint64_t)a3 lastEventType:(unint64_t)a4 alarmID:(id)a5 isSleepAlarm:(BOOL)a6;
-- (BMAlarmEvent)initWithProto:(id)a3;
-- (BMAlarmEvent)initWithProtoData:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
+- (BMAlarmEvent)initWithEventType:(unint64_t)type lastEventType:(unint64_t)eventType alarmID:(id)d isSleepAlarm:(BOOL)alarm;
+- (BMAlarmEvent)initWithProto:(id)proto;
+- (BMAlarmEvent)initWithProtoData:(id)data;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (id)encodeAsProto;
 - (id)json;
@@ -13,19 +13,19 @@
 
 @implementation BMAlarmEvent
 
-- (BMAlarmEvent)initWithEventType:(unint64_t)a3 lastEventType:(unint64_t)a4 alarmID:(id)a5 isSleepAlarm:(BOOL)a6
+- (BMAlarmEvent)initWithEventType:(unint64_t)type lastEventType:(unint64_t)eventType alarmID:(id)d isSleepAlarm:(BOOL)alarm
 {
-  v11 = a5;
+  dCopy = d;
   v15.receiver = self;
   v15.super_class = BMAlarmEvent;
   v12 = [(BMEventBase *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    v12->_eventType = a3;
-    v12->_lastEventType = a4;
-    objc_storeStrong(&v12->_alarmID, a5);
-    v13->_isSleepAlarm = a6;
+    v12->_eventType = type;
+    v12->_lastEventType = eventType;
+    objc_storeStrong(&v12->_alarmID, d);
+    v13->_isSleepAlarm = alarm;
   }
 
   return v13;
@@ -53,20 +53,20 @@
   return v9;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4 == 2)
+  if (version == 2)
   {
-    v4 = BMAlarmEvent_v2;
+    selfCopy = BMAlarmEvent_v2;
   }
 
   else
   {
-    v4 = a1;
+    selfCopy = self;
   }
 
-  v5 = a3;
-  v6 = [[v4 alloc] initWithProtoData:v5];
+  dataCopy = data;
+  v6 = [[selfCopy alloc] initWithProtoData:dataCopy];
 
   return v6;
 }
@@ -75,8 +75,8 @@
 {
   v11[4] = *MEMORY[0x1E69E9840];
   v10[0] = @"alarmID";
-  v3 = [(NSUUID *)self->_alarmID UUIDString];
-  v11[0] = v3;
+  uUIDString = [(NSUUID *)self->_alarmID UUIDString];
+  v11[0] = uUIDString;
   v10[1] = @"isSleepAlarm";
   v4 = [MEMORY[0x1E696AD98] numberWithBool:self->_isSleepAlarm];
   v11[1] = v4;
@@ -96,9 +96,9 @@
 - (id)json
 {
   v2 = MEMORY[0x1E696ACB0];
-  v3 = [(BMAlarmEvent *)self jsonDict];
+  jsonDict = [(BMAlarmEvent *)self jsonDict];
   v8 = 0;
-  v4 = [v2 dataWithJSONObject:v3 options:1 error:&v8];
+  v4 = [v2 dataWithJSONObject:jsonDict options:1 error:&v8];
   v5 = v8;
 
   if (v5)
@@ -115,23 +115,23 @@
 
 - (id)encodeAsProto
 {
-  v2 = [(BMAlarmEvent *)self proto];
-  v3 = [v2 data];
+  proto = [(BMAlarmEvent *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (BMAlarmEvent)initWithProto:(id)a3
+- (BMAlarmEvent)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (v4)
+  protoCopy = proto;
+  if (protoCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [v5 eventType];
-      if (v6 >= 6)
+      v5 = protoCopy;
+      eventType = [v5 eventType];
+      if (eventType >= 6)
       {
         v9 = __biome_log_for_category();
         if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -144,11 +144,11 @@
 
       else
       {
-        v7 = v6;
+        v7 = eventType;
       }
 
-      v10 = [v5 lastEventType];
-      if (v10 >= 0xB)
+      lastEventType = [v5 lastEventType];
+      if (lastEventType >= 0xB)
       {
         v12 = __biome_log_for_category();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -161,15 +161,15 @@
 
       else
       {
-        v11 = v10;
+        v11 = lastEventType;
       }
 
       v13 = objc_alloc(MEMORY[0x1E696AFB0]);
-      v14 = [v5 alarmID];
-      v15 = [v13 initWithUUIDString:v14];
+      alarmID = [v5 alarmID];
+      v15 = [v13 initWithUUIDString:alarmID];
       self = [(BMAlarmEvent *)self initWithEventType:v7 lastEventType:v11 alarmID:v15 isSleepAlarm:[v5 isSleepAlarm]];
 
-      v8 = self;
+      selfCopy = self;
     }
 
     else
@@ -180,35 +180,35 @@
         [BMAlarmEvent initWithProto:];
       }
 
-      v8 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (BMAlarmEvent)initWithProtoData:(id)a3
+- (BMAlarmEvent)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[BMPBAlarmEvent alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[BMPBAlarmEvent alloc] initWithData:dataCopy];
 
     self = [(BMAlarmEvent *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)proto
@@ -238,8 +238,8 @@
 
   else
   {
-    v7 = [(NSUUID *)self->_alarmID UUIDString];
-    [v3 setAlarmID:v7];
+    uUIDString = [(NSUUID *)self->_alarmID UUIDString];
+    [v3 setAlarmID:uUIDString];
 
     v6 = v3;
   }
@@ -247,9 +247,9 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -257,15 +257,15 @@
     goto LABEL_15;
   }
 
-  v6 = v5;
+  v6 = equalCopy;
   v7 = v6;
   alarmID = self->_alarmID;
   v9 = alarmID;
   if (alarmID)
   {
 LABEL_5:
-    v10 = [v7 alarmID];
-    v11 = [(NSUUID *)v9 isEqual:v10];
+    alarmID = [v7 alarmID];
+    v11 = [(NSUUID *)v9 isEqual:alarmID];
 
     if (alarmID)
     {
@@ -275,8 +275,8 @@ LABEL_5:
     goto LABEL_9;
   }
 
-  v3 = [v6 alarmID];
-  if (v3)
+  alarmID2 = [v6 alarmID];
+  if (alarmID2)
   {
     v9 = self->_alarmID;
     goto LABEL_5;

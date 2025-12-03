@@ -1,20 +1,20 @@
 @interface BEHairlineDividerView
-- (BEHairlineDividerView)initWithCoder:(id)a3;
-- (BEHairlineDividerView)initWithFrame:(CGRect)a3;
+- (BEHairlineDividerView)initWithCoder:(id)coder;
+- (BEHairlineDividerView)initWithFrame:(CGRect)frame;
 - (CGSize)intrinsicContentSize;
 - (void)layoutSubviews;
 - (void)p_init;
-- (void)setDividerColor:(id)a3;
-- (void)setHorizontal:(BOOL)a3;
+- (void)setDividerColor:(id)color;
+- (void)setHorizontal:(BOOL)horizontal;
 @end
 
 @implementation BEHairlineDividerView
 
-- (BEHairlineDividerView)initWithFrame:(CGRect)a3
+- (BEHairlineDividerView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = BEHairlineDividerView;
-  v3 = [(BEHairlineDividerView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(BEHairlineDividerView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -24,11 +24,11 @@
   return v4;
 }
 
-- (BEHairlineDividerView)initWithCoder:(id)a3
+- (BEHairlineDividerView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = BEHairlineDividerView;
-  v3 = [(BEHairlineDividerView *)&v6 initWithCoder:a3];
+  v3 = [(BEHairlineDividerView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -45,24 +45,24 @@
   [(BEHairlineDividerView *)self setOpaque:0];
 }
 
-- (void)setHorizontal:(BOOL)a3
+- (void)setHorizontal:(BOOL)horizontal
 {
-  if (self->_horizontal != a3)
+  if (self->_horizontal != horizontal)
   {
-    self->_horizontal = a3;
+    self->_horizontal = horizontal;
     [(BEHairlineDividerView *)self invalidateIntrinsicContentSize];
   }
 }
 
-- (void)setDividerColor:(id)a3
+- (void)setDividerColor:(id)color
 {
-  v5 = a3;
-  if (self->_dividerColor != v5)
+  colorCopy = color;
+  if (self->_dividerColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_dividerColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_dividerColor, color);
     [(CALayer *)self->_dividerLayer setBackgroundColor:[(UIColor *)self->_dividerColor CGColor]];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
@@ -75,8 +75,8 @@
     self->_dividerLayer = v3;
 
     [(CALayer *)self->_dividerLayer setBackgroundColor:[(UIColor *)self->_dividerColor CGColor]];
-    v5 = [(BEHairlineDividerView *)self layer];
-    [v5 addSublayer:self->_dividerLayer];
+    layer = [(BEHairlineDividerView *)self layer];
+    [layer addSublayer:self->_dividerLayer];
   }
 
   [(BEHairlineDividerView *)self bounds];
@@ -88,12 +88,12 @@
   [v14 scale];
   v16 = 1.0 / v15;
 
-  v17 = [(BEHairlineDividerView *)self isHorizontal];
+  isHorizontal = [(BEHairlineDividerView *)self isHorizontal];
   v18 = v7;
   v19 = v9;
   v20 = v11;
   v21 = v13;
-  if (v17)
+  if (isHorizontal)
   {
     Width = CGRectGetWidth(*&v18);
   }
@@ -132,8 +132,8 @@
   [v7 scale];
   v9 = 1.0 / v8;
 
-  v10 = [(BEHairlineDividerView *)self isHorizontal];
-  if (v10)
+  isHorizontal = [(BEHairlineDividerView *)self isHorizontal];
+  if (isHorizontal)
   {
     v11 = v9;
   }
@@ -143,7 +143,7 @@
     v11 = v6;
   }
 
-  if (v10)
+  if (isHorizontal)
   {
     v12 = v4;
   }

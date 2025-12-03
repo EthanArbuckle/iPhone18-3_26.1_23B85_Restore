@@ -1,39 +1,39 @@
 @interface PLFakeCPLPullChangeSession
-- (PLFakeCPLPullChangeSession)initWithLibraryManager:(id)a3 queue:(id)a4;
-- (void)acknowledgeChangeBatch:(id)a3 withCompletionHandler:(id)a4;
-- (void)finalizeWithCompletionHandler:(id)a3;
-- (void)getChangeBatchWithCompletionHandler:(id)a3;
+- (PLFakeCPLPullChangeSession)initWithLibraryManager:(id)manager queue:(id)queue;
+- (void)acknowledgeChangeBatch:(id)batch withCompletionHandler:(id)handler;
+- (void)finalizeWithCompletionHandler:(id)handler;
+- (void)getChangeBatchWithCompletionHandler:(id)handler;
 @end
 
 @implementation PLFakeCPLPullChangeSession
 
-- (void)finalizeWithCompletionHandler:(id)a3
+- (void)finalizeWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __60__PLFakeCPLPullChangeSession_finalizeWithCompletionHandler___block_invoke;
   block[3] = &unk_1E7576AA0;
-  v11 = v4;
-  v6 = v4;
+  v11 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(queue, block);
-  v7 = [MEMORY[0x1E695DF00] date];
+  date = [MEMORY[0x1E695DF00] date];
   WeakRetained = objc_loadWeakRetained(&self->_libraryManager);
-  v9 = [WeakRetained syncStatus];
-  [v9 setLastSuccessfulSyncDate:v7];
+  syncStatus = [WeakRetained syncStatus];
+  [syncStatus setLastSuccessfulSyncDate:date];
 }
 
-- (void)acknowledgeChangeBatch:(id)a3 withCompletionHandler:(id)a4
+- (void)acknowledgeChangeBatch:(id)batch withCompletionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __75__PLFakeCPLPullChangeSession_acknowledgeChangeBatch_withCompletionHandler___block_invoke;
   block[3] = &unk_1E7576AA0;
-  v9 = v5;
-  v7 = v5;
+  v9 = handlerCopy;
+  v7 = handlerCopy;
   dispatch_async(queue, block);
 }
 
@@ -45,31 +45,31 @@ void __75__PLFakeCPLPullChangeSession_acknowledgeChangeBatch_withCompletionHandl
   (*(v1 + 16))(v1, 0, v2);
 }
 
-- (void)getChangeBatchWithCompletionHandler:(id)a3
+- (void)getChangeBatchWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __66__PLFakeCPLPullChangeSession_getChangeBatchWithCompletionHandler___block_invoke;
   block[3] = &unk_1E7576AA0;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(queue, block);
 }
 
-- (PLFakeCPLPullChangeSession)initWithLibraryManager:(id)a3 queue:(id)a4
+- (PLFakeCPLPullChangeSession)initWithLibraryManager:(id)manager queue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  queueCopy = queue;
   v11.receiver = self;
   v11.super_class = PLFakeCPLPullChangeSession;
   v8 = [(PLFakeCPLPullChangeSession *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_libraryManager, v6);
-    objc_storeStrong(&v9->_queue, a4);
+    objc_storeWeak(&v8->_libraryManager, managerCopy);
+    objc_storeStrong(&v9->_queue, queue);
   }
 
   return v9;

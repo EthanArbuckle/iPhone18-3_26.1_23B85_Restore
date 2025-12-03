@@ -1,11 +1,11 @@
 @interface PassthroughView
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (_TtC5Books15PassthroughView)initWithCoder:(id)a3;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (_TtC5Books15PassthroughView)initWithCoder:(id)coder;
 @end
 
 @implementation PassthroughView
 
-- (_TtC5Books15PassthroughView)initWithCoder:(id)a3
+- (_TtC5Books15PassthroughView)initWithCoder:(id)coder
 {
   swift_unknownObjectWeakInit();
   swift_unknownObjectWeakInit();
@@ -14,10 +14,10 @@
   return result;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   Strong = swift_unknownObjectWeakLoadStrong();
   if (!Strong)
   {

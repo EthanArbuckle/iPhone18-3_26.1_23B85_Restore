@@ -1,17 +1,17 @@
 @interface GCControllerElement
-- (BOOL)_commitPendingValueOnQueue:(id)a3;
-- (BOOL)_setPendingValueIfChanged:(float)a3;
+- (BOOL)_commitPendingValueOnQueue:(id)queue;
+- (BOOL)_setPendingValueIfChanged:(float)changed;
 - (GCControllerElement)collection;
 - (GCControllerElement)init;
 - (GCDevice)device;
 - (NSSet)aliases;
 - (NSString)localizedName;
 - (NSString)unmappedLocalizedName;
-- (void)_setPendingValue:(float)a3;
-- (void)setAliases:(id)a3;
-- (void)setDevice:(id)a3;
-- (void)setPrimaryAlias:(id)a3;
-- (void)setUnmappedNameLocalizationKey:(id)a3;
+- (void)_setPendingValue:(float)value;
+- (void)setAliases:(id)aliases;
+- (void)setDevice:(id)device;
+- (void)setPrimaryAlias:(id)alias;
+- (void)setUnmappedNameLocalizationKey:(id)key;
 - (void)setUnmappedSfSymbolsName:(NSString *)unmappedSfSymbolsName;
 @end
 
@@ -32,9 +32,9 @@
   return v2;
 }
 
-- (void)setDevice:(id)a3
+- (void)setDevice:(id)device
 {
-  obj = a3;
+  obj = device;
   WeakRetained = objc_loadWeakRetained(&self->_device);
 
   v5 = obj;
@@ -60,39 +60,39 @@
   }
 }
 
-- (BOOL)_setPendingValueIfChanged:(float)a3
+- (BOOL)_setPendingValueIfChanged:(float)changed
 {
   [(GCControllerElement *)self value];
   v6 = *&v5;
-  if (*&v5 != a3)
+  if (*&v5 != changed)
   {
-    *&v5 = a3;
+    *&v5 = changed;
     [(GCControllerElement *)self _setPendingValue:v5];
   }
 
-  return v6 != a3;
+  return v6 != changed;
 }
 
-- (void)_setPendingValue:(float)a3
+- (void)_setPendingValue:(float)value
 {
   if (self->_updatePending)
   {
-    if (fabsf(a3) > fabsf(self->_pendingValue))
+    if (fabsf(value) > fabsf(self->_pendingValue))
     {
-      self->_pendingValue = a3;
+      self->_pendingValue = value;
     }
   }
 
   else
   {
-    self->_pendingValue = a3;
+    self->_pendingValue = value;
     self->_updatePending = 1;
   }
 }
 
-- (BOOL)_commitPendingValueOnQueue:(id)a3
+- (BOOL)_commitPendingValueOnQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   if (self->_updatePending)
   {
     pendingValue = self->_pendingValue;
@@ -101,7 +101,7 @@
     if (pendingValue != *&v6)
     {
       *&v6 = self->_pendingValue;
-      [(GCControllerElement *)self _setValue:v4 queue:v6];
+      [(GCControllerElement *)self _setValue:queueCopy queue:v6];
     }
 
     [(GCControllerElement *)self _resetPendingValue];
@@ -122,9 +122,9 @@
   return v2;
 }
 
-- (void)setAliases:(id)a3
+- (void)setAliases:(id)aliases
 {
-  [(NSMutableSet *)self->_aliases setSet:a3];
+  [(NSMutableSet *)self->_aliases setSet:aliases];
   if (self->_primaryAlias)
   {
     aliases = self->_aliases;
@@ -133,30 +133,30 @@
   }
 }
 
-- (void)setPrimaryAlias:(id)a3
+- (void)setPrimaryAlias:(id)alias
 {
-  v5 = a3;
+  aliasCopy = alias;
   primaryAlias = self->_primaryAlias;
-  if (primaryAlias != v5)
+  if (primaryAlias != aliasCopy)
   {
-    v8 = v5;
-    v7 = [(NSString *)primaryAlias isEqualToString:v5];
-    v5 = v8;
+    v8 = aliasCopy;
+    v7 = [(NSString *)primaryAlias isEqualToString:aliasCopy];
+    aliasCopy = v8;
     if (!v7)
     {
       if (self->_primaryAlias)
       {
         [(NSMutableSet *)self->_aliases removeObject:?];
-        v5 = v8;
+        aliasCopy = v8;
       }
 
-      if (v5)
+      if (aliasCopy)
       {
         [(NSMutableSet *)self->_aliases addObject:v8];
       }
 
-      objc_storeStrong(&self->_primaryAlias, a3);
-      v5 = v8;
+      objc_storeStrong(&self->_primaryAlias, alias);
+      aliasCopy = v8;
     }
   }
 }
@@ -215,14 +215,14 @@
   return v3;
 }
 
-- (void)setUnmappedNameLocalizationKey:(id)a3
+- (void)setUnmappedNameLocalizationKey:(id)key
 {
-  v4 = a3;
-  v5 = [v4 copy];
+  keyCopy = key;
+  v5 = [keyCopy copy];
   unmappedNameLocalizationKey = self->_unmappedNameLocalizationKey;
   self->_unmappedNameLocalizationKey = v5;
 
-  v7 = [v4 copy];
+  v7 = [keyCopy copy];
   nameLocalizationKey = self->_nameLocalizationKey;
   self->_nameLocalizationKey = v7;
 }

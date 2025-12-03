@@ -1,14 +1,14 @@
 @interface HMDXPCMessageSendPolicy
-- (BOOL)canSendWithPolicyParameters:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)canSendWithPolicyParameters:(id)parameters;
+- (BOOL)isEqual:(id)equal;
 @end
 
 @implementation HMDXPCMessageSendPolicy
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     LOBYTE(v5) = 1;
   }
@@ -16,15 +16,15 @@
   else
   {
     objc_opt_class();
-    v5 = objc_opt_isKindOfClass() & (v4 != 0);
+    v5 = objc_opt_isKindOfClass() & (equalCopy != 0);
   }
 
   return v5;
 }
 
-- (BOOL)canSendWithPolicyParameters:(id)a3
+- (BOOL)canSendWithPolicyParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE658];
   v7 = MEMORY[0x277CCACA8];

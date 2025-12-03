@@ -1,41 +1,41 @@
 @interface PVInstructionGraphGeneratorNode
-+ (id)newGeneratorNode:(id)a3;
-- (HGRef<HGNode>)internalHGNodeForTime:(id *)a3 trackInputs:(const void *)a4 renderer:(const void *)a5 igContext:(HGRef<PVInstructionGraphContext>)a6;
-- (PCMatrix44Tmpl<double>)pixelTransformForPVEffect:(SEL)a3 igContext:(id)a4;
-- (PCRect<double>)inputSizeForPVEffect:(id)a3 igContext:(HGRef<PVInstructionGraphContext>)a4;
-- (id)dotTreeLabel:(HGRef<PVInstructionGraphContext>)a3;
++ (id)newGeneratorNode:(id)node;
+- (HGRef<HGNode>)internalHGNodeForTime:(id *)time trackInputs:(const void *)inputs renderer:(const void *)renderer igContext:(HGRef<PVInstructionGraphContext>)context;
+- (PCMatrix44Tmpl<double>)pixelTransformForPVEffect:(SEL)effect igContext:(id)context;
+- (PCRect<double>)inputSizeForPVEffect:(id)effect igContext:(HGRef<PVInstructionGraphContext>)context;
+- (id)dotTreeLabel:(HGRef<PVInstructionGraphContext>)label;
 - (id)instructionGraphNodeDescription;
-- (void)loadIGNode:(HGRef<PVInstructionGraphContext>)a3 returnLoadedEffects:(id)a4;
+- (void)loadIGNode:(HGRef<PVInstructionGraphContext>)node returnLoadedEffects:(id)effects;
 @end
 
 @implementation PVInstructionGraphGeneratorNode
 
-+ (id)newGeneratorNode:(id)a3
++ (id)newGeneratorNode:(id)node
 {
-  v3 = a3;
+  nodeCopy = node;
   v4 = objc_alloc_init(PVInstructionGraphGeneratorNode);
-  [(PVInstructionGraphGeneratorNode *)v4 setGeneratorEffect:v3];
+  [(PVInstructionGraphGeneratorNode *)v4 setGeneratorEffect:nodeCopy];
 
   return v4;
 }
 
-- (void)loadIGNode:(HGRef<PVInstructionGraphContext>)a3 returnLoadedEffects:(id)a4
+- (void)loadIGNode:(HGRef<PVInstructionGraphContext>)node returnLoadedEffects:(id)effects
 {
-  v5 = a4;
+  effectsCopy = effects;
   [*&self->super._transform.ty loadEffect];
-  if (v5)
+  if (effectsCopy)
   {
-    [v5 addObject:*&self->super._transform.ty];
+    [effectsCopy addObject:*&self->super._transform.ty];
   }
 }
 
-- (HGRef<HGNode>)internalHGNodeForTime:(id *)a3 trackInputs:(const void *)a4 renderer:(const void *)a5 igContext:(HGRef<PVInstructionGraphContext>)a6
+- (HGRef<HGNode>)internalHGNodeForTime:(id *)time trackInputs:(const void *)inputs renderer:(const void *)renderer igContext:(HGRef<PVInstructionGraphContext>)context
 {
   v11 = v6;
   HGTraceGuard::HGTraceGuard(v48, "kPVInstructionGraphToHeliumGraphLogContext", 1, "[PVInstructionGraphGeneratorNode hgNodeForTime:...]");
   if (*&self->super._transform.ty)
   {
-    v47 = *a6.m_Obj;
+    v47 = *context.m_Obj;
     if (v47)
     {
       (*(*v47 + 16))(v47);
@@ -50,9 +50,9 @@
     v15 = atomic_load(HGLogger::_enabled);
     if (v15)
     {
-      v16 = [*&self->super._transform.ty effectID];
-      v17 = [v16 UTF8String];
-      HGLogger::log("kPVInstructionGraphToHeliumGraphLogContext", 1, "Getting output node from generator effect (%s)\n", v18, v19, v17);
+      effectID = [*&self->super._transform.ty effectID];
+      uTF8String = [effectID UTF8String];
+      HGLogger::log("kPVInstructionGraphToHeliumGraphLogContext", 1, "Getting output node from generator effect (%s)\n", v18, v19, uTF8String);
     }
 
     if (HGLogger::getLevel("kPVInstructionGraphToHeliumGraphLogContext", v14) >= 1)
@@ -73,8 +73,8 @@
       v25 = atomic_load(HGLogger::_enabled);
       if (v25)
       {
-        v26 = [v23 UTF8String];
-        HGLogger::log("kPVInstructionGraphToHeliumGraphLogContext", 1, "Effect Time Range: %s\n", v27, v28, v26);
+        uTF8String2 = [v23 UTF8String];
+        HGLogger::log("kPVInstructionGraphToHeliumGraphLogContext", 1, "Effect Time Range: %s\n", v27, v28, uTF8String2);
       }
 
       CFRelease(v24);
@@ -100,9 +100,9 @@
     v45[1] = 0;
     v45[2] = v46;
     v29 = self->super._transform.ty;
-    v39 = *&a3->var0;
-    var3 = a3->var3;
-    v30 = *a6.m_Obj;
+    v39 = *&time->var0;
+    var3 = time->var3;
+    v30 = *context.m_Obj;
     v38 = v30;
     if (v30)
     {
@@ -116,7 +116,7 @@
 
     else
     {
-      [*&v29 hgNodeForTime:&v39 inputs:&range renderer:a5 igContext:&v38];
+      [*&v29 hgNodeForTime:&v39 inputs:&range renderer:renderer igContext:&v38];
       v31 = *&v35[0];
       if (!*&v35[0])
       {
@@ -133,7 +133,7 @@ LABEL_25:
         }
 
         [(PVInstructionGraphSourceNode *)self transform];
-        v32 = (*(**a6.m_Obj + 64))();
+        v32 = (*(**context.m_Obj + 64))();
         HGXFormForCGAffineTransform(&v36, v35, v32, &v37);
         v33 = v37;
         if (v31 == v37)
@@ -187,18 +187,18 @@ LABEL_38:
   return v34;
 }
 
-- (PCRect<double>)inputSizeForPVEffect:(id)a3 igContext:(HGRef<PVInstructionGraphContext>)a4
+- (PCRect<double>)inputSizeForPVEffect:(id)effect igContext:(HGRef<PVInstructionGraphContext>)context
 {
   v6 = v4;
-  v20 = a3;
+  effectCopy = effect;
   *v6 = 0;
   *(v6 + 8) = 0;
   __asm { FMOV            V0.2D, #-1.0 }
 
   *(v6 + 16) = _Q0;
-  v12 = (*(**a4.m_Obj + 40))();
+  v12 = (*(**context.m_Obj + 40))();
   v14 = v13;
-  v15 = (*(**a4.m_Obj + 48))();
+  v15 = (*(**context.m_Obj + 48))();
   *(v6 + 16) = v12 * v15;
   *(v6 + 24) = v14 * v15;
 
@@ -209,13 +209,13 @@ LABEL_38:
   return result;
 }
 
-- (PCMatrix44Tmpl<double>)pixelTransformForPVEffect:(SEL)a3 igContext:(id)a4
+- (PCMatrix44Tmpl<double>)pixelTransformForPVEffect:(SEL)effect igContext:(id)context
 {
-  v17 = a4;
+  contextCopy = context;
   v7 = (*(**a5.m_Obj + 40))();
   v9 = v8;
   v10 = (*(**a5.m_Obj + 48))();
-  [v17 outputSize];
+  [contextCopy outputSize];
   v11 = v9;
   v12 = (v10 * v11);
   v13 = v7;
@@ -238,9 +238,9 @@ LABEL_38:
   return result;
 }
 
-- (id)dotTreeLabel:(HGRef<PVInstructionGraphContext>)a3
+- (id)dotTreeLabel:(HGRef<PVInstructionGraphContext>)label
 {
-  v24 = *a3.m_Obj;
+  v24 = *label.m_Obj;
   if (v24)
   {
     (*(*v24 + 16))(v24, a2);
@@ -256,16 +256,16 @@ LABEL_38:
 
   if (*&self->super._transform.ty)
   {
-    v6 = PVInstructionGraphContext::DotTreeLogLevel(*a3.m_Obj);
-    v7 = [*&self->super._transform.ty displayName];
-    v8 = [v5 stringByAppendingFormat:@" [%@]", v7];
+    v6 = PVInstructionGraphContext::DotTreeLogLevel(*label.m_Obj);
+    displayName = [*&self->super._transform.ty displayName];
+    v8 = [v5 stringByAppendingFormat:@" [%@]", displayName];
 
     if (v6 >= 2)
     {
-      v9 = [*&self->super._transform.ty effectType];
-      v10 = [*&self->super._transform.ty effectID];
-      v11 = [PVEffect categoryForEffectID:v10];
-      v12 = [v8 stringByAppendingFormat:@" {%@, %@}", v9, v11];
+      effectType = [*&self->super._transform.ty effectType];
+      effectID = [*&self->super._transform.ty effectID];
+      v11 = [PVEffect categoryForEffectID:effectID];
+      v12 = [v8 stringByAppendingFormat:@" {%@, %@}", effectType, v11];
 
       v8 = v12;
     }
@@ -314,8 +314,8 @@ LABEL_38:
 {
   v10.receiver = self;
   v10.super_class = PVInstructionGraphGeneratorNode;
-  v3 = [(PVInstructionGraphSourceNode *)&v10 instructionGraphNodeDescription];
-  v4 = [v3 mutableCopy];
+  instructionGraphNodeDescription = [(PVInstructionGraphSourceNode *)&v10 instructionGraphNodeDescription];
+  v4 = [instructionGraphNodeDescription mutableCopy];
 
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
@@ -324,8 +324,8 @@ LABEL_38:
   ty = self->super._transform.ty;
   if (ty != 0.0)
   {
-    v8 = [*&ty effectDescription];
-    [v4 setObject:v8 forKeyedSubscript:@"effect"];
+    effectDescription = [*&ty effectDescription];
+    [v4 setObject:effectDescription forKeyedSubscript:@"effect"];
   }
 
   return v4;

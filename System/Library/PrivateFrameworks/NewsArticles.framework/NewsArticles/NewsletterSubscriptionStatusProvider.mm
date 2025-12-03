@@ -1,7 +1,7 @@
 @interface NewsletterSubscriptionStatusProvider
 - (_TtC12NewsArticles36NewsletterSubscriptionStatusProvider)init;
 - (unint64_t)newsletterSubscriptionStatus;
-- (void)newsletterSubscriptionChangedFromSubscription:(int64_t)a3;
+- (void)newsletterSubscriptionChangedFromSubscription:(int64_t)subscription;
 @end
 
 @implementation NewsletterSubscriptionStatusProvider
@@ -17,16 +17,16 @@
 
 - (unint64_t)newsletterSubscriptionStatus
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1D7B1B64C();
 
   return v3;
 }
 
-- (void)newsletterSubscriptionChangedFromSubscription:(int64_t)a3
+- (void)newsletterSubscriptionChangedFromSubscription:(int64_t)subscription
 {
-  v4 = self;
-  sub_1D7B1B7B8(a3);
+  selfCopy = self;
+  sub_1D7B1B7B8(subscription);
 }
 
 @end

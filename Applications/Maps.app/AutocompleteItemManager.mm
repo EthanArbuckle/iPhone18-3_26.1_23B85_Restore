@@ -1,44 +1,44 @@
 @interface AutocompleteItemManager
 - (AutocompleteItemManager)init;
-- (BOOL)canMoveItem:(id)a3 toSection:(id)a4 withSortedSections:(id)a5 wrappedItems:(id)a6;
+- (BOOL)canMoveItem:(id)item toSection:(id)section withSortedSections:(id)sections wrappedItems:(id)items;
 - (BOOL)useClientRankingScore;
 - (BOOL)usePriority;
-- (double)clientRankingScoreForItem:(id)a3 withSuggestionEntry:(id)a4 hasContributionsFromDiscreteFeaturesResult:(BOOL *)a5;
-- (double)clientRankingScoreOfFirstItemInSection:(id)a3 wrappedItems:(id)a4;
-- (id)defaultSectionsWithCompletionSections:(id)a3;
-- (id)excludingRuleWithClientOnlyAutocompleteType:(int)a3;
-- (id)excludingRulesWithTypes:(id)a3;
-- (id)filterDuplicateContactsFromServerResultUsingItems:(id)a3;
-- (id)includingRulesWithTypes:(id)a3;
-- (id)indexOfSectionWithItem:(id)a3;
-- (id)ruleWithClientOnlyAutocompleteType:(int)a3;
-- (id)sectionsWithWrappedItems:(id)a3;
-- (id)wrappedItems:(id)a3;
-- (void)_gatherItemsWithShouldCancel:(id)a3 completion:(id)a4;
-- (void)computeClientRankingScoresForResolvedItemsIfNeeded:(id)a3 completion:(id)a4;
-- (void)logClientRankingScore:(double)a3 forItem:(id)a4 withSignalPack:(id)a5 serverScore:(id)a6;
-- (void)logSortedItemsWithSections:(id)a3;
-- (void)setCompletionSections:(id)a3;
-- (void)setPriorityFunction:(id)a3;
-- (void)sortWrappedItems:(id)a3;
+- (double)clientRankingScoreForItem:(id)item withSuggestionEntry:(id)entry hasContributionsFromDiscreteFeaturesResult:(BOOL *)result;
+- (double)clientRankingScoreOfFirstItemInSection:(id)section wrappedItems:(id)items;
+- (id)defaultSectionsWithCompletionSections:(id)sections;
+- (id)excludingRuleWithClientOnlyAutocompleteType:(int)type;
+- (id)excludingRulesWithTypes:(id)types;
+- (id)filterDuplicateContactsFromServerResultUsingItems:(id)items;
+- (id)includingRulesWithTypes:(id)types;
+- (id)indexOfSectionWithItem:(id)item;
+- (id)ruleWithClientOnlyAutocompleteType:(int)type;
+- (id)sectionsWithWrappedItems:(id)items;
+- (id)wrappedItems:(id)items;
+- (void)_gatherItemsWithShouldCancel:(id)cancel completion:(id)completion;
+- (void)computeClientRankingScoresForResolvedItemsIfNeeded:(id)needed completion:(id)completion;
+- (void)logClientRankingScore:(double)score forItem:(id)item withSignalPack:(id)pack serverScore:(id)serverScore;
+- (void)logSortedItemsWithSections:(id)sections;
+- (void)setCompletionSections:(id)sections;
+- (void)setPriorityFunction:(id)function;
+- (void)sortWrappedItems:(id)items;
 @end
 
 @implementation AutocompleteItemManager
 
-- (id)excludingRuleWithClientOnlyAutocompleteType:(int)a3
+- (id)excludingRuleWithClientOnlyAutocompleteType:(int)type
 {
   v3 = 0;
-  if (a3 <= 5)
+  if (type <= 5)
   {
-    if (a3 > 2)
+    if (type > 2)
     {
-      if (a3 == 3)
+      if (type == 3)
       {
         v4 = 5;
         v5 = 5;
       }
 
-      else if (a3 == 4)
+      else if (type == 4)
       {
         v4 = 7;
         v5 = 12;
@@ -53,9 +53,9 @@
       goto LABEL_23;
     }
 
-    if (a3 != 1)
+    if (type != 1)
     {
-      if (a3 != 2)
+      if (type != 2)
       {
         goto LABEL_24;
       }
@@ -71,9 +71,9 @@ LABEL_17:
     goto LABEL_24;
   }
 
-  if (a3 > 7)
+  if (type > 7)
   {
-    switch(a3)
+    switch(type)
     {
       case 8:
         v4 = 9;
@@ -94,7 +94,7 @@ LABEL_17:
     goto LABEL_23;
   }
 
-  if (a3 != 6)
+  if (type != 6)
   {
     v6 = 4;
     goto LABEL_17;
@@ -109,20 +109,20 @@ LABEL_24:
   return v3;
 }
 
-- (id)ruleWithClientOnlyAutocompleteType:(int)a3
+- (id)ruleWithClientOnlyAutocompleteType:(int)type
 {
   v3 = 0;
-  if (a3 <= 5)
+  if (type <= 5)
   {
-    if (a3 > 2)
+    if (type > 2)
     {
-      if (a3 == 3)
+      if (type == 3)
       {
         v4 = 5;
         v5 = 5;
       }
 
-      else if (a3 == 4)
+      else if (type == 4)
       {
         v4 = 7;
         v5 = 12;
@@ -137,9 +137,9 @@ LABEL_24:
       goto LABEL_23;
     }
 
-    if (a3 != 1)
+    if (type != 1)
     {
-      if (a3 != 2)
+      if (type != 2)
       {
         goto LABEL_24;
       }
@@ -155,9 +155,9 @@ LABEL_17:
     goto LABEL_24;
   }
 
-  if (a3 > 7)
+  if (type > 7)
   {
-    switch(a3)
+    switch(type)
     {
       case 8:
         v4 = 9;
@@ -178,7 +178,7 @@ LABEL_17:
     goto LABEL_23;
   }
 
-  if (a3 != 6)
+  if (type != 6)
   {
     v6 = 4;
     goto LABEL_17;
@@ -193,17 +193,17 @@ LABEL_24:
   return v3;
 }
 
-- (id)excludingRulesWithTypes:(id)a3
+- (id)excludingRulesWithTypes:(id)types
 {
-  v4 = a3;
+  typesCopy = types;
   v8 = _NSConcreteStackBlock;
   v9 = 3221225472;
   v10 = sub_1008DF034;
   v11 = &unk_10162DD18;
-  v12 = self;
+  selfCopy = self;
   v5 = objc_alloc_init(NSMutableArray);
   v13 = v5;
-  [v4 enumerateObjectsUsingBlock:&v8];
+  [typesCopy enumerateObjectsUsingBlock:&v8];
 
   if ([v5 count])
   {
@@ -218,17 +218,17 @@ LABEL_24:
   return v6;
 }
 
-- (id)includingRulesWithTypes:(id)a3
+- (id)includingRulesWithTypes:(id)types
 {
-  v4 = a3;
+  typesCopy = types;
   v8 = _NSConcreteStackBlock;
   v9 = 3221225472;
   v10 = sub_1008DF18C;
   v11 = &unk_10162DD18;
-  v12 = self;
+  selfCopy = self;
   v5 = objc_alloc_init(NSMutableArray);
   v13 = v5;
-  [v4 enumerateObjectsUsingBlock:&v8];
+  [typesCopy enumerateObjectsUsingBlock:&v8];
 
   if ([v5 count])
   {
@@ -243,15 +243,15 @@ LABEL_24:
   return v6;
 }
 
-- (id)defaultSectionsWithCompletionSections:(id)a3
+- (id)defaultSectionsWithCompletionSections:(id)sections
 {
-  v4 = a3;
+  sectionsCopy = sections;
   v44 = +[NSMutableArray array];
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
-  obj = v4;
+  obj = sectionsCopy;
   v5 = [obj countByEnumeratingWithState:&v48 objects:v54 count:16];
   if (!v5)
   {
@@ -279,16 +279,16 @@ LABEL_24:
       if ([v10 shouldInterleaveClientResults])
       {
         v11 = [NSMutableArray alloc];
-        v12 = [v10 includedClientResultTypes];
-        v13 = [v11 initWithCapacity:{objc_msgSend(v12, "count")}];
+        includedClientResultTypes = [v10 includedClientResultTypes];
+        v13 = [v11 initWithCapacity:{objc_msgSend(includedClientResultTypes, "count")}];
 
-        v14 = [v10 includedClientResultTypes];
-        v15 = [v14 count];
+        includedClientResultTypes2 = [v10 includedClientResultTypes];
+        v15 = [includedClientResultTypes2 count];
 
         if (v15)
         {
-          v16 = [v10 includedClientResultTypes];
-          v17 = [(AutocompleteItemManager *)self includingRulesWithTypes:v16];
+          includedClientResultTypes3 = [v10 includedClientResultTypes];
+          v17 = [(AutocompleteItemManager *)self includingRulesWithTypes:includedClientResultTypes3];
 
           if ([v17 count])
           {
@@ -303,12 +303,12 @@ LABEL_24:
           [v13 addObject:v34];
         }
 
-        v35 = [v10 excludedClientResultTypes];
-        v23 = [(AutocompleteItemManager *)self excludingRulesWithTypes:v35];
+        excludedClientResultTypes = [v10 excludedClientResultTypes];
+        v23 = [(AutocompleteItemManager *)self excludingRulesWithTypes:excludedClientResultTypes];
 
         v36 = [AutocompleteMutableSection alloc];
-        v25 = [v10 title];
-        v28 = [(AutocompleteMutableSection *)v36 initWithRules:v13 excludingRules:v23 title:v25 isQuerySuggestionsSection:0 isSectionForClientOnlyResults:0];
+        title = [v10 title];
+        v28 = [(AutocompleteMutableSection *)v36 initWithRules:v13 excludingRules:v23 title:title isQuerySuggestionsSection:0 isSectionForClientOnlyResults:0];
         v45 = 1;
         goto LABEL_20;
       }
@@ -318,7 +318,7 @@ LABEL_24:
         v29 = [NSNumber numberWithUnsignedInteger:v7];
         v13 = [AutocompleteSectionRule ruleWithSourceType:1 indexInCompletionSections:v29];
 
-        v30 = [(AutocompleteItemManager *)self topSectionIsQuerySuggestions];
+        topSectionIsQuerySuggestions = [(AutocompleteItemManager *)self topSectionIsQuerySuggestions];
         if (v7)
         {
           v31 = 0;
@@ -326,35 +326,35 @@ LABEL_24:
 
         else
         {
-          v31 = v30;
+          v31 = topSectionIsQuerySuggestions;
         }
 
         v32 = [AutocompleteMutableSection alloc];
         v53 = v13;
         v23 = [NSArray arrayWithObjects:&v53 count:1];
-        v25 = [v10 title];
+        title = [v10 title];
         v33 = v31;
         v8 = v44;
-        v28 = [(AutocompleteMutableSection *)v32 initWithRules:v23 excludingRules:0 title:v25 isQuerySuggestionsSection:v33 isSectionForClientOnlyResults:0];
+        v28 = [(AutocompleteMutableSection *)v32 initWithRules:v23 excludingRules:0 title:title isQuerySuggestionsSection:v33 isSectionForClientOnlyResults:0];
         goto LABEL_20;
       }
 
       v20 = [NSMutableArray alloc];
-      v21 = [v10 includedClientResultTypes];
-      v13 = [v20 initWithCapacity:{objc_msgSend(v21, "count")}];
+      includedClientResultTypes4 = [v10 includedClientResultTypes];
+      v13 = [v20 initWithCapacity:{objc_msgSend(includedClientResultTypes4, "count")}];
 
-      v22 = [v10 includedClientResultTypes];
-      v23 = [(AutocompleteItemManager *)self includingRulesWithTypes:v22];
+      includedClientResultTypes5 = [v10 includedClientResultTypes];
+      v23 = [(AutocompleteItemManager *)self includingRulesWithTypes:includedClientResultTypes5];
 
       if ([v23 count])
       {
         [v13 addObjectsFromArray:v23];
-        v24 = [v10 excludedClientResultTypes];
-        v25 = [(AutocompleteItemManager *)self excludingRulesWithTypes:v24];
+        excludedClientResultTypes2 = [v10 excludedClientResultTypes];
+        title = [(AutocompleteItemManager *)self excludingRulesWithTypes:excludedClientResultTypes2];
 
         v26 = [AutocompleteMutableSection alloc];
-        v27 = [v10 title];
-        v28 = [(AutocompleteMutableSection *)v26 initWithRules:v13 excludingRules:v25 title:v27 isQuerySuggestionsSection:0 isSectionForClientOnlyResults:1];
+        title2 = [v10 title];
+        v28 = [(AutocompleteMutableSection *)v26 initWithRules:v13 excludingRules:title title:title2 isQuerySuggestionsSection:0 isSectionForClientOnlyResults:1];
 
         v8 = v44;
 LABEL_20:
@@ -396,10 +396,10 @@ LABEL_27:
   return v42;
 }
 
-- (void)setCompletionSections:(id)a3
+- (void)setCompletionSections:(id)sections
 {
-  v4 = a3;
-  v5 = [v4 copy];
+  sectionsCopy = sections;
+  v5 = [sectionsCopy copy];
   completionSections = self->_completionSections;
   self->_completionSections = v5;
 
@@ -409,37 +409,37 @@ LABEL_27:
   v12 = sub_1008DF8AC;
   v13 = sub_1008DF8BC;
   v14 = 0;
-  v7 = [(AutocompleteItemManager *)self completionSections];
+  completionSections = [(AutocompleteItemManager *)self completionSections];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1008DF8C4;
   v8[3] = &unk_10162DCF0;
   v8[4] = &v9;
-  [v7 enumerateObjectsUsingBlock:v8];
+  [completionSections enumerateObjectsUsingBlock:v8];
 
   objc_storeStrong(&self->_interleavedSectionIndex, v10[5]);
   _Block_object_dispose(&v9, 8);
 }
 
-- (id)indexOfSectionWithItem:(id)a3
+- (id)indexOfSectionWithItem:(id)item
 {
-  v4 = a3;
-  v5 = [v4 compoundItem];
-  v6 = [v5 containsPossiblePersonalizedItemSourceType:1];
+  itemCopy = item;
+  compoundItem = [itemCopy compoundItem];
+  v6 = [compoundItem containsPossiblePersonalizedItemSourceType:1];
 
   if ((v6 & 1) == 0)
   {
-    v11 = [(AutocompleteItemManager *)self interleavedSectionIndex];
+    interleavedSectionIndex = [(AutocompleteItemManager *)self interleavedSectionIndex];
     goto LABEL_29;
   }
 
-  v7 = [v4 item];
-  v8 = [v7 autocompleteObject];
+  item = [itemCopy item];
+  autocompleteObject = [item autocompleteObject];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = v8;
+    v9 = autocompleteObject;
   }
 
   else
@@ -451,7 +451,7 @@ LABEL_27:
 
   if (v10)
   {
-    if (!v8)
+    if (!autocompleteObject)
     {
       goto LABEL_27;
     }
@@ -463,10 +463,10 @@ LABEL_27:
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v12 = [v4 compoundItem];
-    v13 = [v12 items];
+    compoundItem2 = [itemCopy compoundItem];
+    items = [compoundItem2 items];
 
-    v14 = [v13 countByEnumeratingWithState:&v31 objects:v35 count:16];
+    v14 = [items countByEnumeratingWithState:&v31 objects:v35 count:16];
     if (v14)
     {
       v15 = v14;
@@ -477,15 +477,15 @@ LABEL_11:
       {
         if (*v32 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(items);
         }
 
         v18 = *(*(&v31 + 1) + 8 * v17);
         if ([v18 conformsToProtocol:&OBJC_PROTOCOL___PersonalizedAutocompleteItem])
         {
-          v8 = [v18 autocompleteObject];
+          autocompleteObject = [v18 autocompleteObject];
           objc_opt_class();
-          v19 = (objc_opt_isKindOfClass() & 1) != 0 ? v8 : 0;
+          v19 = (objc_opt_isKindOfClass() & 1) != 0 ? autocompleteObject : 0;
           v20 = v19;
 
           if (v20)
@@ -496,7 +496,7 @@ LABEL_11:
 
         if (v15 == ++v17)
         {
-          v15 = [v13 countByEnumeratingWithState:&v31 objects:v35 count:16];
+          v15 = [items countByEnumeratingWithState:&v31 objects:v35 count:16];
           if (v15)
           {
             goto LABEL_11;
@@ -510,28 +510,28 @@ LABEL_11:
     else
     {
 LABEL_21:
-      v8 = 0;
+      autocompleteObject = 0;
     }
 
-    if (!v8)
+    if (!autocompleteObject)
     {
       goto LABEL_27;
     }
   }
 
-  v21 = [(AutocompleteItemManager *)self completionSections];
-  v22 = [v21 count];
+  completionSections = [(AutocompleteItemManager *)self completionSections];
+  v22 = [completionSections count];
 
   if (v22)
   {
     v23 = 0;
     while (1)
     {
-      v24 = [(AutocompleteItemManager *)self completionSections];
-      v25 = [v24 objectAtIndex:v23];
+      completionSections2 = [(AutocompleteItemManager *)self completionSections];
+      v25 = [completionSections2 objectAtIndex:v23];
 
-      v26 = [v25 results];
-      v27 = [v26 containsObject:v8];
+      results = [v25 results];
+      v27 = [results containsObject:autocompleteObject];
 
       if (v27)
       {
@@ -539,8 +539,8 @@ LABEL_21:
       }
 
       ++v23;
-      v28 = [(AutocompleteItemManager *)self completionSections];
-      v29 = [v28 count];
+      completionSections3 = [(AutocompleteItemManager *)self completionSections];
+      v29 = [completionSections3 count];
 
       if (v23 >= v29)
       {
@@ -548,102 +548,102 @@ LABEL_21:
       }
     }
 
-    v11 = [NSNumber numberWithUnsignedInteger:v23];
+    interleavedSectionIndex = [NSNumber numberWithUnsignedInteger:v23];
 
     goto LABEL_28;
   }
 
 LABEL_27:
-  v11 = 0;
+  interleavedSectionIndex = 0;
 LABEL_28:
 
 LABEL_29:
 
-  return v11;
+  return interleavedSectionIndex;
 }
 
-- (void)sortWrappedItems:(id)a3
+- (void)sortWrappedItems:(id)items
 {
-  v4 = a3;
-  if ([v4 count] >= 2)
+  itemsCopy = items;
+  if ([itemsCopy count] >= 2)
   {
     v5[0] = _NSConcreteStackBlock;
     v5[1] = 3221225472;
     v5[2] = sub_1008DFCA8;
     v5[3] = &unk_10162DCC8;
-    v6 = [(AutocompleteItemManager *)self useClientRankingScore];
-    [v4 sortWithOptions:16 usingComparator:v5];
+    useClientRankingScore = [(AutocompleteItemManager *)self useClientRankingScore];
+    [itemsCopy sortWithOptions:16 usingComparator:v5];
   }
 }
 
-- (void)logSortedItemsWithSections:(id)a3
+- (void)logSortedItemsWithSections:(id)sections
 {
-  v3 = a3;
+  sectionsCopy = sections;
   v4 = sub_100067540();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_INFO);
 
-  if (v5 && [v3 count])
+  if (v5 && [sectionsCopy count])
   {
     v7 = 0;
     *&v6 = 138412546;
     v27 = v6;
-    v28 = v3;
+    v28 = sectionsCopy;
     do
     {
-      v8 = [v3 objectAtIndexedSubscript:{v7, v27}];
+      v8 = [sectionsCopy objectAtIndexedSubscript:{v7, v27}];
       v9 = sub_100067540();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
       {
-        v10 = [v8 title];
-        v11 = [v8 items];
-        v12 = [v11 count];
+        title = [v8 title];
+        items = [v8 items];
+        v12 = [items count];
         *buf = v27;
-        v30 = v10;
+        v30 = title;
         v31 = 2048;
         v32 = v12;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "Displaying AC section title=%@, items.count=%lu", buf, 0x16u);
       }
 
-      v13 = [v8 items];
-      v14 = [v13 count];
+      items2 = [v8 items];
+      v14 = [items2 count];
 
       if (v14)
       {
         v15 = 0;
         do
         {
-          v16 = [v8 items];
-          v17 = [v16 objectAtIndexedSubscript:v15];
+          items3 = [v8 items];
+          v17 = [items3 objectAtIndexedSubscript:v15];
 
           if ([v17 conformsToProtocol:&OBJC_PROTOCOL___PersonalizedItem])
           {
             if ([v17 sourceType] == 4)
             {
-              v18 = @"REDACTED - Contact name";
-              v19 = @"REDACTED - Contact address";
+              value = @"REDACTED - Contact name";
+              value2 = @"REDACTED - Contact address";
             }
 
             else
             {
-              v20 = [v17 title];
-              v18 = [v20 value];
+              title2 = [v17 title];
+              value = [title2 value];
 
-              v21 = [v17 subtitle];
-              v19 = [v21 value];
+              subtitle = [v17 subtitle];
+              value2 = [subtitle value];
             }
           }
 
           else
           {
-            v18 = 0;
-            v19 = 0;
+            value = 0;
+            value2 = 0;
           }
 
           v22 = @"NO";
           if ([v17 isCompoundPersonalizedAutocompleteItem])
           {
-            v23 = [v17 leafPersonalizedAutocompleteItems];
-            if ([v23 count] <= 1)
+            leafPersonalizedAutocompleteItems = [v17 leafPersonalizedAutocompleteItems];
+            if ([leafPersonalizedAutocompleteItems count] <= 1)
             {
               v22 = @"NO";
             }
@@ -662,69 +662,69 @@ LABEL_29:
             v31 = 2048;
             v32 = v15;
             v33 = 2113;
-            v34 = v18;
+            v34 = value;
             v35 = 2113;
-            v36 = v19;
+            v36 = value2;
             v37 = 2112;
             v38 = v22;
             _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_INFO, "AC item at DisplayedSection,Index=%lu,%lu: title=%{private}@; subtitle=%{private}@; deduped=%@", buf, 0x34u);
           }
 
           ++v15;
-          v25 = [v8 items];
-          v26 = [v25 count];
+          items4 = [v8 items];
+          v26 = [items4 count];
         }
 
         while (v15 < v26);
       }
 
       ++v7;
-      v3 = v28;
+      sectionsCopy = v28;
     }
 
     while (v7 < [v28 count]);
   }
 }
 
-- (void)logClientRankingScore:(double)a3 forItem:(id)a4 withSignalPack:(id)a5 serverScore:(id)a6
+- (void)logClientRankingScore:(double)score forItem:(id)item withSignalPack:(id)pack serverScore:(id)serverScore
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
+  itemCopy = item;
+  packCopy = pack;
+  serverScoreCopy = serverScore;
   v12 = sub_100067540();
   v13 = os_log_type_enabled(v12, OS_LOG_TYPE_INFO);
 
   if (v13)
   {
-    if ([v9 conformsToProtocol:&OBJC_PROTOCOL___PersonalizedItem])
+    if ([itemCopy conformsToProtocol:&OBJC_PROTOCOL___PersonalizedItem])
     {
-      v14 = [v9 title];
-      v15 = [v14 value];
+      title = [itemCopy title];
+      value = [title value];
 
-      v16 = [v9 subtitle];
-      v37 = [v16 value];
+      subtitle = [itemCopy subtitle];
+      value2 = [subtitle value];
     }
 
     else
     {
-      v37 = 0;
-      v15 = 0;
+      value2 = 0;
+      value = 0;
     }
 
     v17 = +[NSMutableString string];
-    if ([v9 hasServerItemIndex])
+    if ([itemCopy hasServerItemIndex])
     {
-      [v17 appendFormat:@"ServerSection, Index=%lu, %lu; ", objc_msgSend(v9, "serverSectionIndex"), objc_msgSend(v9, "serverItemIndexInSection")];
+      [v17 appendFormat:@"ServerSection, Index=%lu, %lu; ", objc_msgSend(itemCopy, "serverSectionIndex"), objc_msgSend(itemCopy, "serverItemIndexInSection")];
     }
 
-    if (v11)
+    if (serverScoreCopy)
     {
-      [v11 normalizedScore];
+      [serverScoreCopy normalizedScore];
       [v17 appendFormat:@"ServerScore=%f; ", v18];
     }
 
-    v19 = v15;
-    v20 = [v9 sourceType] - 1;
+    v19 = value;
+    v20 = [itemCopy sourceType] - 1;
     if (v20 > 9)
     {
       v21 = @"Unknown";
@@ -735,52 +735,52 @@ LABEL_29:
       v21 = *(&off_10162DD38 + v20);
     }
 
-    v22 = [v9 sourceSubtype];
-    if ((v22 - 1) > 0x25)
+    sourceSubtype = [itemCopy sourceSubtype];
+    if ((sourceSubtype - 1) > 0x25)
     {
       v23 = @"Unknown";
     }
 
     else
     {
-      v23 = *(&off_10162DD88 + (v22 - 1));
+      v23 = *(&off_10162DD88 + (sourceSubtype - 1));
     }
 
     [v17 appendFormat:@"SourceType, Subtype=%@, %@; ", v21, v23];
-    v24 = [v10 itemSuggestionTypeSource];
-    if (v24 >= 0xF)
+    itemSuggestionTypeSource = [packCopy itemSuggestionTypeSource];
+    if (itemSuggestionTypeSource >= 0xF)
     {
-      v25 = [NSString stringWithFormat:@"(unknown: %i)", v24];
+      v25 = [NSString stringWithFormat:@"(unknown: %i)", itemSuggestionTypeSource];
     }
 
     else
     {
-      v25 = *(&off_10162DEB8 + v24);
+      v25 = *(&off_10162DEB8 + itemSuggestionTypeSource);
     }
 
     [v17 appendFormat:@"SuggestionType=%@; ", v25];
 
-    v26 = [v10 itemServerEntryTypeSource];
-    if (v26 >= 4)
+    itemServerEntryTypeSource = [packCopy itemServerEntryTypeSource];
+    if (itemServerEntryTypeSource >= 4)
     {
-      v27 = [NSString stringWithFormat:@"(unknown: %i)", v26];
+      v27 = [NSString stringWithFormat:@"(unknown: %i)", itemServerEntryTypeSource];
     }
 
     else
     {
-      v27 = *(&off_10162DF30 + v26);
+      v27 = *(&off_10162DF30 + itemServerEntryTypeSource);
     }
 
     [v17 appendFormat:@"ServerEntryType=%@; ", v27];
 
-    v28 = [v9 autocompleteObject];
+    autocompleteObject = [itemCopy autocompleteObject];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
-    if ((isKindOfClass & 1) != 0 && v28)
+    if ((isKindOfClass & 1) != 0 && autocompleteObject)
     {
-      v30 = [v9 autocompleteObject];
-      v31 = [v30 description];
+      autocompleteObject2 = [itemCopy autocompleteObject];
+      v31 = [autocompleteObject2 description];
       [v17 appendFormat:@"\nAutcompletePerson=<<%@>>;\n", v31];
     }
 
@@ -789,7 +789,7 @@ LABEL_29:
     v33 = 1;
     do
     {
-      if ([v10 hasValueForFeatureType:v32])
+      if ([packCopy hasValueForFeatureType:v32])
       {
         if ((v33 & 1) == 0)
         {
@@ -797,7 +797,7 @@ LABEL_29:
         }
 
         v34 = *(&off_10162DF50 + v32);
-        [v10 valueForFeatureType:v32];
+        [packCopy valueForFeatureType:v32];
         [v17 appendFormat:@"%@=%f", v34, v35];
         v33 = 0;
       }
@@ -813,9 +813,9 @@ LABEL_29:
       *buf = 138478595;
       v39 = v19;
       v40 = 2113;
-      v41 = v37;
+      v41 = value2;
       v42 = 2048;
-      v43 = a3;
+      scoreCopy = score;
       v44 = 2112;
       v45 = v17;
       _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_INFO, "AC item title=%{private}@; subtitle=%{private}@: ranking score = %f; %@", buf, 0x2Au);
@@ -823,17 +823,17 @@ LABEL_29:
   }
 }
 
-- (double)clientRankingScoreOfFirstItemInSection:(id)a3 wrappedItems:(id)a4
+- (double)clientRankingScoreOfFirstItemInSection:(id)section wrappedItems:(id)items
 {
-  v5 = a4;
-  v6 = [a3 items];
-  v7 = [v6 firstObject];
+  itemsCopy = items;
+  items = [section items];
+  firstObject = [items firstObject];
 
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v8 = v5;
+  v8 = itemsCopy;
   v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
   v10 = 0.0;
   if (v9)
@@ -850,9 +850,9 @@ LABEL_29:
         }
 
         v14 = *(*(&v18 + 1) + 8 * i);
-        v15 = [v14 item];
+        item = [v14 item];
 
-        if (v7 == v15)
+        if (firstObject == item)
         {
           [v14 clientRankingScore];
           v10 = v16;
@@ -875,33 +875,33 @@ LABEL_11:
   return v10;
 }
 
-- (BOOL)canMoveItem:(id)a3 toSection:(id)a4 withSortedSections:(id)a5 wrappedItems:(id)a6
+- (BOOL)canMoveItem:(id)item toSection:(id)section withSortedSections:(id)sections wrappedItems:(id)items
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [v10 compoundItem];
-  if (([v11 itemIsAllowed:v14 indexInCompletionSections:0] & 1) == 0)
+  itemCopy = item;
+  sectionCopy = section;
+  sectionsCopy = sections;
+  itemsCopy = items;
+  compoundItem = [itemCopy compoundItem];
+  if (([sectionCopy itemIsAllowed:compoundItem indexInCompletionSections:0] & 1) == 0)
   {
 
     goto LABEL_8;
   }
 
-  v15 = [v10 section];
+  section = [itemCopy section];
 
-  if (v15 == v11)
+  if (section == sectionCopy)
   {
 LABEL_8:
     v22 = 0;
     goto LABEL_9;
   }
 
-  [v10 clientRankingScore];
+  [itemCopy clientRankingScore];
   v17 = v16;
-  v18 = [v12 indexOfObject:v11];
-  v19 = [v10 section];
-  v20 = [v12 indexOfObject:v19];
+  v18 = [sectionsCopy indexOfObject:sectionCopy];
+  section2 = [itemCopy section];
+  v20 = [sectionsCopy indexOfObject:section2];
 
   v21 = v18 + 1;
   while (1)
@@ -912,8 +912,8 @@ LABEL_8:
       break;
     }
 
-    v23 = [v12 objectAtIndexedSubscript:v21];
-    [(AutocompleteItemManager *)self clientRankingScoreOfFirstItemInSection:v23 wrappedItems:v13];
+    v23 = [sectionsCopy objectAtIndexedSubscript:v21];
+    [(AutocompleteItemManager *)self clientRankingScoreOfFirstItemInSection:v23 wrappedItems:itemsCopy];
     v25 = v24;
 
     ++v21;
@@ -928,9 +928,9 @@ LABEL_9:
   return v22;
 }
 
-- (id)filterDuplicateContactsFromServerResultUsingItems:(id)a3
+- (id)filterDuplicateContactsFromServerResultUsingItems:(id)items
 {
-  v3 = [a3 mutableCopy];
+  v3 = [items mutableCopy];
   v35 = +[NSMutableArray array];
   v4 = +[NSMutableArray array];
   v58 = 0u;
@@ -1043,8 +1043,8 @@ LABEL_9:
               v43 = 0u;
               v44 = 0u;
               v45 = 0u;
-              v20 = [v19 keys];
-              v21 = [v20 countByEnumeratingWithState:&v42 objects:v64 count:16];
+              keys = [v19 keys];
+              v21 = [keys countByEnumeratingWithState:&v42 objects:v64 count:16];
               if (v21)
               {
                 v22 = v21;
@@ -1055,15 +1055,15 @@ LABEL_9:
                   {
                     if (*v43 != v23)
                     {
-                      objc_enumerationMutation(v20);
+                      objc_enumerationMutation(keys);
                     }
 
                     v25 = *(*(&v42 + 1) + 8 * k);
-                    v26 = [v17 keys];
-                    v27 = [v26 allObjects];
-                    v28 = [v27 firstObject];
+                    keys2 = [v17 keys];
+                    allObjects = [keys2 allObjects];
+                    firstObject = [allObjects firstObject];
 
-                    if (v28 && [v25 isEqual:v28])
+                    if (firstObject && [v25 isEqual:firstObject])
                     {
                       v29 = sub_100067540();
                       if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
@@ -1077,7 +1077,7 @@ LABEL_9:
                     }
                   }
 
-                  v22 = [v20 countByEnumeratingWithState:&v42 objects:v64 count:16];
+                  v22 = [keys countByEnumeratingWithState:&v42 objects:v64 count:16];
                 }
 
                 while (v22);
@@ -1108,38 +1108,38 @@ LABEL_9:
   return v30;
 }
 
-- (double)clientRankingScoreForItem:(id)a3 withSuggestionEntry:(id)a4 hasContributionsFromDiscreteFeaturesResult:(BOOL *)a5
+- (double)clientRankingScoreForItem:(id)item withSuggestionEntry:(id)entry hasContributionsFromDiscreteFeaturesResult:(BOOL *)result
 {
-  v8 = a3;
-  v9 = a4;
+  itemCopy = item;
+  entryCopy = entry;
   v10 = 0.0;
   if ([(AutocompleteItemManager *)self useClientRankingScore])
   {
-    v11 = [[PersonalizedItemSignalPack alloc] initWithItem:v8 suggestionEntry:v9];
-    v12 = [(PersonalizedItemManager *)self _clientRankingFunction];
-    v13 = [v8 serverResultScoreMetadata];
-    [v12 clientRankingScoreForPersonalizedItemSignalPack:v11 withServerScore:v13 hasContributionsFromDiscreteFeaturesResult:a5];
+    v11 = [[PersonalizedItemSignalPack alloc] initWithItem:itemCopy suggestionEntry:entryCopy];
+    _clientRankingFunction = [(PersonalizedItemManager *)self _clientRankingFunction];
+    serverResultScoreMetadata = [itemCopy serverResultScoreMetadata];
+    [_clientRankingFunction clientRankingScoreForPersonalizedItemSignalPack:v11 withServerScore:serverResultScoreMetadata hasContributionsFromDiscreteFeaturesResult:result];
     v10 = v14;
 
-    v15 = [v8 serverResultScoreMetadata];
-    [(AutocompleteItemManager *)self logClientRankingScore:v8 forItem:v11 withSignalPack:v15 serverScore:v10];
+    serverResultScoreMetadata2 = [itemCopy serverResultScoreMetadata];
+    [(AutocompleteItemManager *)self logClientRankingScore:itemCopy forItem:v11 withSignalPack:serverResultScoreMetadata2 serverScore:v10];
   }
 
   return v10;
 }
 
-- (void)computeClientRankingScoresForResolvedItemsIfNeeded:(id)a3 completion:(id)a4
+- (void)computeClientRankingScoresForResolvedItemsIfNeeded:(id)needed completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  neededCopy = needed;
+  completionCopy = completion;
   if (![(AutocompleteItemManager *)self useClientRankingScore])
   {
     goto LABEL_67;
   }
 
-  if ([v6 count] <= 1)
+  if ([neededCopy count] <= 1)
   {
-    v8 = [v6 count];
+    v8 = [neededCopy count];
     v9 = sub_100067540();
     v10 = os_log_type_enabled(v9, OS_LOG_TYPE_INFO);
     if (v8)
@@ -1161,36 +1161,36 @@ LABEL_65:
     }
 
 LABEL_67:
-    v7[2](v7);
+    completionCopy[2](completionCopy);
     goto LABEL_68;
   }
 
-  v105 = self;
-  v101 = v7;
+  selfCopy = self;
+  v101 = completionCopy;
   v104 = +[NSMutableArray array];
   v106 = +[NSMutableArray array];
   v12 = +[NSMutableArray array];
-  v103 = v6;
+  v103 = neededCopy;
   v13 = 0;
-  if ([v6 count])
+  if ([neededCopy count])
   {
     v14 = 0;
     do
     {
-      v15 = [v6 objectAtIndexedSubscript:v14];
+      v15 = [neededCopy objectAtIndexedSubscript:v14];
       [v15 setClientRankingScore:-3.40282347e38];
-      v16 = [v15 item];
-      v17 = [v16 isCompoundPersonalizedAutocompleteItem];
-      v18 = [v15 item];
-      v19 = v18;
-      if (v17)
+      item = [v15 item];
+      isCompoundPersonalizedAutocompleteItem = [item isCompoundPersonalizedAutocompleteItem];
+      item2 = [v15 item];
+      v19 = item2;
+      if (isCompoundPersonalizedAutocompleteItem)
       {
-        [v18 leafPersonalizedAutocompleteItems];
+        [item2 leafPersonalizedAutocompleteItems];
       }
 
       else
       {
-        v126 = v18;
+        v126 = item2;
         [NSArray arrayWithObjects:&v126 count:1];
       }
       v20 = ;
@@ -1215,12 +1215,12 @@ LABEL_67:
               objc_enumerationMutation(v21);
             }
 
-            v26 = [*(*(&v115 + 1) + 8 * i) autocompleteObject];
+            autocompleteObject = [*(*(&v115 + 1) + 8 * i) autocompleteObject];
 
-            if (v26)
+            if (autocompleteObject)
             {
-              v27 = [v15 compoundItem];
-              [v106 addObject:v27];
+              compoundItem = [v15 compoundItem];
+              [v106 addObject:compoundItem];
 
               v28 = [NSNumber numberWithUnsignedInteger:v14];
               [v12 addObject:v28];
@@ -1236,29 +1236,29 @@ LABEL_67:
       }
 
       ++v14;
-      v6 = v103;
+      neededCopy = v103;
     }
 
     while (v14 < [v103 count]);
   }
 
-  v29 = [(AutocompleteItemManager *)self autocompleteContext];
+  autocompleteContext = [(AutocompleteItemManager *)self autocompleteContext];
   v30 = MapsSuggestionsResourceDepotForMapsProcess();
-  v31 = [v30 oneInsights];
-  v32 = [(AutocompleteItemManager *)self traits];
+  oneInsights = [v30 oneInsights];
+  traits = [(AutocompleteItemManager *)self traits];
   BYTE1(v100) = [(AutocompleteItemManager *)self shouldUseDistanceFeatureServerResults];
   LOBYTE(v100) = 0;
-  v33 = [MapsAnalyticsHelper acSuggestionEntriesFromAutoCompleteObjects:v106 personalizedItems:v104 context:v29 mapsSuggestionsInsights:v31 skipReportASearchItems:0 traits:v32 usedForLogging:v100 shouldUseDistanceFeatureServerResults:?];
+  v33 = [MapsAnalyticsHelper acSuggestionEntriesFromAutoCompleteObjects:v106 personalizedItems:v104 context:autocompleteContext mapsSuggestionsInsights:oneInsights skipReportASearchItems:0 traits:traits usedForLogging:v100 shouldUseDistanceFeatureServerResults:?];
 
-  v34 = self;
+  selfCopy3 = self;
   if (![(AutocompleteItemManager *)self mapsSuggestionsIsTouristHereScoreValid])
   {
     [(AutocompleteItemManager *)self setMapsSuggestionsIsTouristHereScoreValid:1];
-    v35 = [(AutocompleteItemManager *)self traits];
-    [v35 isTourist];
+    traits2 = [(AutocompleteItemManager *)self traits];
+    [traits2 isTourist];
     [(AutocompleteItemManager *)self setMapsSuggestionsIsTouristHereScore:?];
 
-    v34 = self;
+    selfCopy3 = self;
   }
 
   v113 = 0u;
@@ -1281,7 +1281,7 @@ LABEL_67:
         }
 
         v41 = *(*(&v111 + 1) + 8 * j);
-        [(AutocompleteItemManager *)v34 mapsSuggestionsIsTouristHereScore];
+        [(AutocompleteItemManager *)selfCopy3 mapsSuggestionsIsTouristHereScore];
         [v41 setMapsSuggestionsIsTouristScore:?];
       }
 
@@ -1303,7 +1303,7 @@ LABEL_67:
       v46 = sub_100067540();
       if (os_log_type_enabled(v46, OS_LOG_TYPE_DEBUG))
       {
-        v47 = [v6 count];
+        v47 = [neededCopy count];
         v48 = [v104 count];
         *buf = 134218240;
         v121 = v47;
@@ -1312,9 +1312,9 @@ LABEL_67:
         _os_log_impl(&_mh_execute_header, v46, OS_LOG_TYPE_DEBUG, "Computing AC ranking scores for %lu items (%lu leaf items)", buf, 0x16u);
       }
 
-      v49 = [(PersonalizedItemManager *)v34 _clientRankingFunction];
+      _clientRankingFunction = [(PersonalizedItemManager *)selfCopy3 _clientRankingFunction];
       v50 = sub_100067540();
-      [v49 describeInLog:v50 withType:2];
+      [_clientRankingFunction describeInLog:v50 withType:2];
     }
 
     v102 = v36;
@@ -1324,13 +1324,13 @@ LABEL_67:
       do
       {
         v52 = [v12 objectAtIndexedSubscript:v51];
-        v53 = [v52 unsignedIntegerValue];
+        unsignedIntegerValue = [v52 unsignedIntegerValue];
 
-        v54 = [v6 objectAtIndexedSubscript:v53];
+        v54 = [neededCopy objectAtIndexedSubscript:unsignedIntegerValue];
         buf[0] = 0;
         v55 = [v104 objectAtIndexedSubscript:v51];
         v56 = [v36 objectAtIndexedSubscript:v51];
-        [(AutocompleteItemManager *)v34 clientRankingScoreForItem:v55 withSuggestionEntry:v56 hasContributionsFromDiscreteFeaturesResult:buf];
+        [(AutocompleteItemManager *)selfCopy3 clientRankingScoreForItem:v55 withSuggestionEntry:v56 hasContributionsFromDiscreteFeaturesResult:buf];
         v58 = v57;
 
         v36 = v102;
@@ -1349,28 +1349,28 @@ LABEL_67:
           }
 
           [v54 setClientRankingScore:v58];
-          v65 = [v54 compoundItem];
-          v66 = [v65 autocompleteAnalytics];
+          compoundItem2 = [v54 compoundItem];
+          autocompleteAnalytics = [compoundItem2 autocompleteAnalytics];
 
-          if (!v66)
+          if (!autocompleteAnalytics)
           {
             v67 = objc_alloc_init(PersonalizedCompoundItemAutocompleteAnalytics);
-            v68 = [v54 compoundItem];
-            [v68 setAutocompleteAnalytics:v67];
+            compoundItem3 = [v54 compoundItem];
+            [compoundItem3 setAutocompleteAnalytics:v67];
           }
 
           v69 = buf[0];
-          v70 = [v54 compoundItem];
-          v71 = [v70 autocompleteAnalytics];
-          [v71 setDiscreteFeatureValuesContributedToLatestClientRankingScore:v69];
+          compoundItem4 = [v54 compoundItem];
+          autocompleteAnalytics2 = [compoundItem4 autocompleteAnalytics];
+          [autocompleteAnalytics2 setDiscreteFeatureValuesContributedToLatestClientRankingScore:v69];
 
           v36 = v102;
         }
 
         v72 = [v36 objectAtIndexedSubscript:v51];
-        v73 = [v72 suggestionType];
+        suggestionType = [v72 suggestionType];
 
-        if (v73 == 9)
+        if (suggestionType == 9)
         {
           [v54 poiRelevanceScore];
           if (v74 > v61)
@@ -1400,7 +1400,7 @@ LABEL_67:
     v110 = 0u;
     v107 = 0u;
     v108 = 0u;
-    v44 = v6;
+    v44 = neededCopy;
     v78 = [v44 countByEnumeratingWithState:&v107 objects:v119 count:16];
     if (v78)
     {
@@ -1416,31 +1416,31 @@ LABEL_67:
           }
 
           v82 = *(*(&v107 + 1) + 8 * k);
-          v83 = [v82 item];
-          v84 = [v83 conformsToProtocol:&OBJC_PROTOCOL___AutocompleteItemWithMatchInfo];
+          item3 = [v82 item];
+          v84 = [item3 conformsToProtocol:&OBJC_PROTOCOL___AutocompleteItemWithMatchInfo];
 
           if (v84)
           {
             [v82 clientRankingScore];
             v86 = v85;
-            v87 = [v82 item];
-            v88 = [v87 matchInfo];
-            [v88 setClientRankingDebug:v86];
+            item4 = [v82 item];
+            matchInfo = [item4 matchInfo];
+            [matchInfo setClientRankingDebug:v86];
           }
 
           [v82 clientRankingScore];
           v90 = v89;
-          v91 = [(AutocompleteItemManager *)v105 autocompleteContext];
-          v92 = [v82 item];
-          v93 = [v92 autocompleteObject];
-          v94 = [v91 matchInfoForObject:v93];
+          autocompleteContext2 = [(AutocompleteItemManager *)selfCopy autocompleteContext];
+          item5 = [v82 item];
+          autocompleteObject2 = [item5 autocompleteObject];
+          v94 = [autocompleteContext2 matchInfoForObject:autocompleteObject2];
           [v94 setClientRankingDebug:v90];
 
           [v82 clientRankingScore];
           v96 = v95;
-          v97 = [v82 compoundItem];
-          v98 = [v97 matchInfo];
-          [v98 setClientRankingDebug:v96];
+          compoundItem5 = [v82 compoundItem];
+          matchInfo2 = [compoundItem5 matchInfo];
+          [matchInfo2 setClientRankingDebug:v96];
         }
 
         v79 = [v44 countByEnumeratingWithState:&v107 objects:v119 count:16];
@@ -1448,7 +1448,7 @@ LABEL_67:
 
       while (v79);
       v36 = v102;
-      v6 = v103;
+      neededCopy = v103;
     }
   }
 
@@ -1463,23 +1463,23 @@ LABEL_67:
   }
 
 LABEL_62:
-  v7 = v101;
+  completionCopy = v101;
   v101[2](v101);
 
 LABEL_68:
 }
 
-- (id)sectionsWithWrappedItems:(id)a3
+- (id)sectionsWithWrappedItems:(id)items
 {
-  v4 = a3;
-  v5 = [(AutocompleteItemManager *)self completionSections];
-  v42 = [(AutocompleteItemManager *)self defaultSectionsWithCompletionSections:v5];
+  itemsCopy = items;
+  completionSections = [(AutocompleteItemManager *)self completionSections];
+  v42 = [(AutocompleteItemManager *)self defaultSectionsWithCompletionSections:completionSections];
 
   v67 = 0u;
   v68 = 0u;
   v65 = 0u;
   v66 = 0u;
-  obj = v4;
+  obj = itemsCopy;
   v44 = [obj countByEnumeratingWithState:&v65 objects:v73 count:16];
   if (v44)
   {
@@ -1517,14 +1517,14 @@ LABEL_68:
               }
 
               v14 = *(*(&v61 + 1) + 8 * i);
-              v15 = [v7 compoundItem];
-              v16 = [v14 itemIsAllowed:v15 indexInCompletionSections:v8];
+              compoundItem = [v7 compoundItem];
+              v16 = [v14 itemIsAllowed:compoundItem indexInCompletionSections:v8];
 
               if (v16)
               {
-                v17 = [v7 item];
+                item = [v7 item];
                 [v7 poiRelevanceScore];
-                [v14 addItem:v17 poiRelevanceScore:?];
+                [v14 addItem:item poiRelevanceScore:?];
 
                 [v7 setSection:v14];
                 goto LABEL_16;
@@ -1601,14 +1601,14 @@ LABEL_16:
                 v29 = *(*(&v53 + 1) + 8 * j);
                 if ([(AutocompleteItemManager *)self canMoveItem:v29 toSection:v23 withSortedSections:v18 wrappedItems:v24])
                 {
-                  v30 = [v29 section];
-                  v31 = [v29 item];
+                  section = [v29 section];
+                  item2 = [v29 item];
                   [v29 poiRelevanceScore];
-                  [v30 removeItem:v31 poiRelevanceScore:?];
+                  [section removeItem:item2 poiRelevanceScore:?];
 
-                  v32 = [v29 item];
+                  item3 = [v29 item];
                   [v29 poiRelevanceScore];
-                  [v23 addItem:v32 poiRelevanceScore:?];
+                  [v23 addItem:item3 poiRelevanceScore:?];
                 }
               }
 
@@ -1667,15 +1667,15 @@ LABEL_16:
   return v39;
 }
 
-- (id)wrappedItems:(id)a3
+- (id)wrappedItems:(id)items
 {
-  v4 = a3;
-  v5 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v4 count]);
+  itemsCopy = items;
+  v5 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [itemsCopy count]);
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = v4;
+  v6 = itemsCopy;
   v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
@@ -1695,8 +1695,8 @@ LABEL_16:
         v13 = [(AutocompleteItemManagerItemWrapper *)v12 initWithItem:v11 compoundItem:v11, v16];
         if ([(AutocompleteItemManager *)self usePriority])
         {
-          v14 = [(PersonalizedItemManager *)self _priorityFunction];
-          -[AutocompleteItemManagerItemWrapper setPriority:](v13, "setPriority:", [v14 priorityForPersonalizedAutocompleteItem:v11]);
+          _priorityFunction = [(PersonalizedItemManager *)self _priorityFunction];
+          -[AutocompleteItemManagerItemWrapper setPriority:](v13, "setPriority:", [_priorityFunction priorityForPersonalizedAutocompleteItem:v11]);
         }
 
         [v5 addObject:v13];
@@ -1713,16 +1713,16 @@ LABEL_16:
 
 - (BOOL)usePriority
 {
-  v3 = [(PersonalizedItemManager *)self _clientRankingFunction];
-  if (v3)
+  _clientRankingFunction = [(PersonalizedItemManager *)self _clientRankingFunction];
+  if (_clientRankingFunction)
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = [(PersonalizedItemManager *)self _priorityFunction];
-    v4 = v5 != 0;
+    _priorityFunction = [(PersonalizedItemManager *)self _priorityFunction];
+    v4 = _priorityFunction != 0;
   }
 
   return v4;
@@ -1730,16 +1730,16 @@ LABEL_16:
 
 - (BOOL)useClientRankingScore
 {
-  v2 = [(PersonalizedItemManager *)self _clientRankingFunction];
-  v3 = v2 != 0;
+  _clientRankingFunction = [(PersonalizedItemManager *)self _clientRankingFunction];
+  v3 = _clientRankingFunction != 0;
 
   return v3;
 }
 
-- (void)_gatherItemsWithShouldCancel:(id)a3 completion:(id)a4
+- (void)_gatherItemsWithShouldCancel:(id)cancel completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  cancelCopy = cancel;
+  completionCopy = completion;
   v8 = sub_100067540();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -1752,20 +1752,20 @@ LABEL_16:
   v12[2] = sub_1008E1F20;
   v12[3] = &unk_10162DC68;
   v12[4] = self;
-  v13 = v6;
-  v14 = v7;
+  v13 = cancelCopy;
+  v14 = completionCopy;
   v11.receiver = self;
   v11.super_class = AutocompleteItemManager;
-  v9 = v7;
-  v10 = v6;
+  v9 = completionCopy;
+  v10 = cancelCopy;
   [(PersonalizedItemManager *)&v11 _gatherItemsWithShouldCancel:v10 completion:v12];
 }
 
-- (void)setPriorityFunction:(id)a3
+- (void)setPriorityFunction:(id)function
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  functionCopy = function;
+  v5 = functionCopy;
+  if (!functionCopy)
   {
     v5 = +[PersonalizedItemPriorityFunction defaultPriorityFunctionForAutocomplete];
   }
@@ -1773,7 +1773,7 @@ LABEL_16:
   v6.receiver = self;
   v6.super_class = AutocompleteItemManager;
   [(PersonalizedItemManager *)&v6 setPriorityFunction:v5];
-  if (!v4)
+  if (!functionCopy)
   {
   }
 }

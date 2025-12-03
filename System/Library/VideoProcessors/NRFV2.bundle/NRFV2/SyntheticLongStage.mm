@@ -1,29 +1,29 @@
 @interface SyntheticLongStage
-+ (int)_fillConstants:(SyntheticLongFuseBandsConsts *)a3 slPlist:(id)a4 ev0ExposureParams:(const exposureParameters *)a5;
-+ (int)_fillConstantsForBand:(int)a3 consts:(SyntheticLongFuseBandsConsts *)a4 slPlist:(id)a5 ev0ExposureParams:(const exposureParameters *)a6;
-+ (int)prewarmShaders:(id)a3;
++ (int)_fillConstants:(SyntheticLongFuseBandsConsts *)constants slPlist:(id)plist ev0ExposureParams:(const exposureParameters *)params;
++ (int)_fillConstantsForBand:(int)band consts:(SyntheticLongFuseBandsConsts *)consts slPlist:(id)plist ev0ExposureParams:(const exposureParameters *)params;
++ (int)prewarmShaders:(id)shaders;
 - (SidecarWriter)sidecarWriter;
-- (SyntheticLongStage)initWithMetalContext:(id)a3;
-- (int)_doEv0sPlusRealLongWithBands:(id)a3 slFuseEv0Plist:(id)a4 slFuseLongPlist:(id)a5 slParameters:(const SyntheticLongParameters *)a6 slOutput:(id)a7 noiseDivisorTex:(id)a8 realLongNoiseDivisorTex:(id)a9 lscGainsTex:(id)a10 intermediateMetadata:(id)a11;
-- (int)_fuseEv0s:(id)a3 slParameters:(const SyntheticLongParameters *)a4 slPlist:(id)a5 lscGainsTex:(id)a6 outputLuma:(id)a7 outputChroma:(id)a8 outputWeightsPyramid:(id)a9 noiseDivisorTex:(id)a10 intermediateMetadata:(id)a11;
-- (int)_fuseInLong:(id)a3 slParameters:(const SyntheticLongParameters *)a4 slPlist:(id)a5 lscGainsTex:(id)a6 fusedEv0sPyramid:(id)a7 weightsPyramid:(id)a8 slOutput:(id)a9 noiseDivisorTex:(id)a10 realLongNoiseDivisorTex:(id)a11;
-- (int)doSyntheticLongWithBands:(id)a3 slFuseEv0Plist:(id)a4 slFuseLongPlist:(id)a5 slParameters:(const SyntheticLongParameters *)a6 slOutput:(id)a7 noiseDivisorTex:(id)a8 realLongNoiseDivisorTex:(id)a9 lscGainsTex:(id)a10 intermediateMetadata:(id)a11;
-- (int)pyramidDownscale:(id)a3 cscParams:(const ColorSpaceConversionParameters *)a4 band0IsLinearYCbCr:(BOOL)a5;
+- (SyntheticLongStage)initWithMetalContext:(id)context;
+- (int)_doEv0sPlusRealLongWithBands:(id)bands slFuseEv0Plist:(id)plist slFuseLongPlist:(id)longPlist slParameters:(const SyntheticLongParameters *)parameters slOutput:(id)output noiseDivisorTex:(id)tex realLongNoiseDivisorTex:(id)divisorTex lscGainsTex:(id)self0 intermediateMetadata:(id)self1;
+- (int)_fuseEv0s:(id)ev0s slParameters:(const SyntheticLongParameters *)parameters slPlist:(id)plist lscGainsTex:(id)tex outputLuma:(id)luma outputChroma:(id)chroma outputWeightsPyramid:(id)pyramid noiseDivisorTex:(id)self0 intermediateMetadata:(id)self1;
+- (int)_fuseInLong:(id)long slParameters:(const SyntheticLongParameters *)parameters slPlist:(id)plist lscGainsTex:(id)tex fusedEv0sPyramid:(id)pyramid weightsPyramid:(id)weightsPyramid slOutput:(id)output noiseDivisorTex:(id)self0 realLongNoiseDivisorTex:(id)self1;
+- (int)doSyntheticLongWithBands:(id)bands slFuseEv0Plist:(id)plist slFuseLongPlist:(id)longPlist slParameters:(const SyntheticLongParameters *)parameters slOutput:(id)output noiseDivisorTex:(id)tex realLongNoiseDivisorTex:(id)divisorTex lscGainsTex:(id)self0 intermediateMetadata:(id)self1;
+- (int)pyramidDownscale:(id)downscale cscParams:(const ColorSpaceConversionParameters *)params band0IsLinearYCbCr:(BOOL)cr;
 - (void)dealloc;
 @end
 
 @implementation SyntheticLongStage
 
-- (SyntheticLongStage)initWithMetalContext:(id)a3
+- (SyntheticLongStage)initWithMetalContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v19.receiver = self;
   v19.super_class = SyntheticLongStage;
   v6 = [(SyntheticLongStage *)&v19 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_metal, a3);
+    objc_storeStrong(&v6->_metal, context);
     v11 = objc_msgSend_sharedInstance(SyntheticLongShared, v8, v9, v10);
     v14 = objc_msgSend_getShaders_(v11, v12, v7[1], v13);
     v15 = v7[2];
@@ -47,11 +47,11 @@
   return v17;
 }
 
-+ (int)prewarmShaders:(id)a3
++ (int)prewarmShaders:(id)shaders
 {
-  v3 = a3;
+  shadersCopy = shaders;
   v4 = [SyntheticLongShaders alloc];
-  v7 = objc_msgSend_initWithMetal_(v4, v5, v3, v6);
+  v7 = objc_msgSend_initWithMetal_(v4, v5, shadersCopy, v6);
 
   if (v7)
   {
@@ -74,13 +74,13 @@
   [(SyntheticLongStage *)&v5 dealloc];
 }
 
-- (int)pyramidDownscale:(id)a3 cscParams:(const ColorSpaceConversionParameters *)a4 band0IsLinearYCbCr:(BOOL)a5
+- (int)pyramidDownscale:(id)downscale cscParams:(const ColorSpaceConversionParameters *)params band0IsLinearYCbCr:(BOOL)cr
 {
-  v5 = a5;
-  v7 = a3;
-  v11 = v7;
-  v12 = *(v7 + 2);
-  v87 = a4 && HIBYTE(a4[3].transferFunctionInv.nonLinearPower) == 1 && *(v7 + 82) != 0;
+  crCopy = cr;
+  downscaleCopy = downscale;
+  v11 = downscaleCopy;
+  v12 = *(downscaleCopy + 2);
+  v87 = params && HIBYTE(params[3].transferFunctionInv.nonLinearPower) == 1 && *(downscaleCopy + 82) != 0;
   if (v12 < 2)
   {
     v82 = 0;
@@ -103,7 +103,7 @@
       v17 = 0;
     }
 
-    if (v5)
+    if (crCopy)
     {
       v18 = 128;
     }
@@ -150,26 +150,26 @@
       v97 = 0u;
       v98 = 0u;
       v96 = 0u;
-      if (a4)
+      if (params)
       {
-        v37 = *&a4[3].transferFunctionInv.linearScale;
-        v106 = *&a4[3].transferFunctionFwd.linearThreshold;
+        v37 = *&params[3].transferFunctionInv.linearScale;
+        v106 = *&params[3].transferFunctionFwd.linearThreshold;
         v107 = v37;
-        v108 = *&a4[3].transferFunctionInv.nonLinearPower;
-        v38 = *&a4[2].transferFunctionFwd.nonLinearScale;
-        v102 = *&a4[1].finalScale;
+        v108 = *&params[3].transferFunctionInv.nonLinearPower;
+        v38 = *&params[2].transferFunctionFwd.nonLinearScale;
+        v102 = *&params[1].finalScale;
         v103 = v38;
-        v39 = *&a4[2].finalScaleFwd;
-        v104 = *&a4[2].transferFunctionInv.linearThreshold;
+        v39 = *&params[2].finalScaleFwd;
+        v104 = *&params[2].transferFunctionInv.linearThreshold;
         v105 = v39;
-        v40 = *&a4->outputToLinearYCbCr;
-        v98 = *&a4->transferFunctionInv.nonLinearBias;
+        v40 = *&params->outputToLinearYCbCr;
+        v98 = *&params->transferFunctionInv.nonLinearBias;
         v99 = v40;
-        v41 = *&a4[1].transferFunctionInv.nonLinearScale;
-        v100 = *&a4[1].transferFunctionFwd.nonLinearBias;
+        v41 = *&params[1].transferFunctionInv.nonLinearScale;
+        v100 = *&params[1].transferFunctionFwd.nonLinearBias;
         v101 = v41;
-        v42 = *&a4->transferFunctionFwd.nonLinearPower;
-        v96 = *&a4->transferFunctionFwd.linearScale;
+        v42 = *&params->transferFunctionFwd.nonLinearPower;
+        v96 = *&params->transferFunctionFwd.linearScale;
         v97 = v42;
       }
 
@@ -195,7 +195,7 @@
       objc_msgSend_setTexture_atIndex_(v35, v47, v11[v13 + 63], 3);
       objc_msgSend_setBytes_length_atIndex_(v35, v48, &v96, 208, 0);
       shaders = self->_shaders;
-      if (!a4 || v13)
+      if (!params || v13)
       {
         v52 = objc_msgSend_getKernel_(shaders, v49, 0, v50);
 
@@ -285,11 +285,11 @@ LABEL_35:
   return v82;
 }
 
-+ (int)_fillConstants:(SyntheticLongFuseBandsConsts *)a3 slPlist:(id)a4 ev0ExposureParams:(const exposureParameters *)a5
++ (int)_fillConstants:(SyntheticLongFuseBandsConsts *)constants slPlist:(id)plist ev0ExposureParams:(const exposureParameters *)params
 {
-  v7 = a4;
-  v8 = v7;
-  if (!a3)
+  plistCopy = plist;
+  v8 = plistCopy;
+  if (!constants)
   {
     sub_2958A4ACC(&v15);
 LABEL_11:
@@ -297,28 +297,28 @@ LABEL_11:
     goto LABEL_6;
   }
 
-  if (!v7)
+  if (!plistCopy)
   {
     sub_2958A4A30(&v15);
     goto LABEL_11;
   }
 
-  if (!a5)
+  if (!params)
   {
     sub_2958A4994(&v15);
     goto LABEL_11;
   }
 
-  gain = a5->gain;
-  a3[3].var7.var1 = sub_29584472C(v7[7], a5->gain);
-  a3[4].var0[0].transferFunctionFwd.nonLinearPower = sub_29584472C(v8[2], gain);
-  a3[4].var0[0].transferFunctionInv.linearScale = sub_29584472C(v8[3], gain);
-  a3[4].var0[0].transferFunctionFwd.linearScale = sub_29584472C(v8[4], gain);
-  a3[4].var0[0].transferFunctionFwd.linearThreshold = sub_29584472C(v8[5], gain);
-  a3[4].var0[0].transferFunctionFwd.nonLinearScale = sub_29584472C(v8[6], gain);
-  objc_msgSend_getLumaPedestalWithProperties_plistSource_(DeepFusionCommon, v10, a5, v8[8]);
-  a3[4].var0[0].transferFunctionInv.nonLinearBias = v11;
-  if ((objc_msgSend_fillRawNoiseModelParameters_exposureParams_(DeepFusionCommon, v12, &a3[3].var0[3], a5) & 1) == 0)
+  gain = params->gain;
+  constants[3].var7.var1 = sub_29584472C(plistCopy[7], params->gain);
+  constants[4].var0[0].transferFunctionFwd.nonLinearPower = sub_29584472C(v8[2], gain);
+  constants[4].var0[0].transferFunctionInv.linearScale = sub_29584472C(v8[3], gain);
+  constants[4].var0[0].transferFunctionFwd.linearScale = sub_29584472C(v8[4], gain);
+  constants[4].var0[0].transferFunctionFwd.linearThreshold = sub_29584472C(v8[5], gain);
+  constants[4].var0[0].transferFunctionFwd.nonLinearScale = sub_29584472C(v8[6], gain);
+  objc_msgSend_getLumaPedestalWithProperties_plistSource_(DeepFusionCommon, v10, params, v8[8]);
+  constants[4].var0[0].transferFunctionInv.nonLinearBias = v11;
+  if ((objc_msgSend_fillRawNoiseModelParameters_exposureParams_(DeepFusionCommon, v12, &constants[3].var0[3], params) & 1) == 0)
   {
     sub_2958A48F8(&v15);
     goto LABEL_11;
@@ -330,42 +330,42 @@ LABEL_6:
   return v13;
 }
 
-+ (int)_fillConstantsForBand:(int)a3 consts:(SyntheticLongFuseBandsConsts *)a4 slPlist:(id)a5 ev0ExposureParams:(const exposureParameters *)a6
++ (int)_fillConstantsForBand:(int)band consts:(SyntheticLongFuseBandsConsts *)consts slPlist:(id)plist ev0ExposureParams:(const exposureParameters *)params
 {
-  v9 = a5;
-  v12 = v9;
-  if (a4)
+  plistCopy = plist;
+  v12 = plistCopy;
+  if (consts)
   {
-    if (v9)
+    if (plistCopy)
     {
-      if (a6)
+      if (params)
       {
-        gain = a6->gain;
-        v14 = objc_msgSend_objectAtIndexedSubscript_(v9[1], v10, a3, v11);
+        gain = params->gain;
+        v14 = objc_msgSend_objectAtIndexedSubscript_(plistCopy[1], v10, band, v11);
         v37 = sub_29584472C(v14[1], gain);
 
-        v17 = objc_msgSend_objectAtIndexedSubscript_(v12[1], v15, a3, v16);
+        v17 = objc_msgSend_objectAtIndexedSubscript_(v12[1], v15, band, v16);
         v36 = sub_29584472C(v17[2], gain);
 
-        v20 = objc_msgSend_objectAtIndexedSubscript_(v12[1], v18, a3, v19);
+        v20 = objc_msgSend_objectAtIndexedSubscript_(v12[1], v18, band, v19);
         v35 = sub_29584472C(v20[3], gain);
 
-        v23 = objc_msgSend_objectAtIndexedSubscript_(v12[1], v21, a3, v22);
+        v23 = objc_msgSend_objectAtIndexedSubscript_(v12[1], v21, band, v22);
         v34 = sub_29584472C(v23[4], gain);
 
-        v26 = objc_msgSend_objectAtIndexedSubscript_(v12[1], v24, a3, v25);
+        v26 = objc_msgSend_objectAtIndexedSubscript_(v12[1], v24, band, v25);
         v27 = sub_29584472C(v26[5], gain);
 
-        v30 = objc_msgSend_objectAtIndexedSubscript_(v12[1], v28, a3, v29);
+        v30 = objc_msgSend_objectAtIndexedSubscript_(v12[1], v28, band, v29);
         v31 = sub_29584472C(v30[6], gain);
 
         v32 = 0;
-        a4[3].var5.var2 = v36;
-        *&a4[3].var5.var0 = __PAIR64__(LODWORD(v36), LODWORD(v37));
-        a4[3].var6 = v34;
-        *&a4[3].var5.var4 = __PAIR64__(LODWORD(v34), LODWORD(v35));
-        a4[4].var0[0].transferFunctionInv.linearThreshold = v27;
-        a4[4].var0[0].transferFunctionInv.nonLinearScale = v31;
+        consts[3].var5.var2 = v36;
+        *&consts[3].var5.var0 = __PAIR64__(LODWORD(v36), LODWORD(v37));
+        consts[3].var6 = v34;
+        *&consts[3].var5.var4 = __PAIR64__(LODWORD(v34), LODWORD(v35));
+        consts[4].var0[0].transferFunctionInv.linearThreshold = v27;
+        consts[4].var0[0].transferFunctionInv.nonLinearScale = v31;
       }
 
       else
@@ -391,16 +391,16 @@ LABEL_6:
   return v32;
 }
 
-- (int)_fuseEv0s:(id)a3 slParameters:(const SyntheticLongParameters *)a4 slPlist:(id)a5 lscGainsTex:(id)a6 outputLuma:(id)a7 outputChroma:(id)a8 outputWeightsPyramid:(id)a9 noiseDivisorTex:(id)a10 intermediateMetadata:(id)a11
+- (int)_fuseEv0s:(id)ev0s slParameters:(const SyntheticLongParameters *)parameters slPlist:(id)plist lscGainsTex:(id)tex outputLuma:(id)luma outputChroma:(id)chroma outputWeightsPyramid:(id)pyramid noiseDivisorTex:(id)self0 intermediateMetadata:(id)self1
 {
-  v16 = a3;
-  v402 = a5;
-  v401 = a6;
-  v390 = a7;
-  v389 = a8;
-  v17 = a9;
-  v386 = a10;
-  v21 = a11;
+  ev0sCopy = ev0s;
+  plistCopy = plist;
+  texCopy = tex;
+  lumaCopy = luma;
+  chromaCopy = chroma;
+  pyramidCopy = pyramid;
+  divisorTexCopy = divisorTex;
+  metadataCopy = metadata;
   v428 = 0;
   v429 = 0;
   v427 = 0;
@@ -412,7 +412,7 @@ LABEL_6:
     v23 = *v22;
   }
 
-  v24 = self;
+  selfCopy4 = self;
   if (v23)
   {
     v25 = objc_msgSend_commandQueue(self->_metal, v18, v19, v20);
@@ -423,40 +423,40 @@ LABEL_6:
     objc_msgSend_commit(v29, v34, v35, v36);
   }
 
-  if (!v16)
+  if (!ev0sCopy)
   {
     sub_2958A5F84(v418);
     goto LABEL_109;
   }
 
-  if (!a4)
+  if (!parameters)
   {
     sub_2958A5EE8(v418);
     goto LABEL_109;
   }
 
-  if (!v402)
+  if (!plistCopy)
   {
     sub_2958A5E4C(v418);
     goto LABEL_109;
   }
 
-  if (!v401)
+  if (!texCopy)
   {
     sub_2958A5DB0(v418);
     goto LABEL_109;
   }
 
-  var1 = a4->var1;
+  var1 = parameters->var1;
   if ((var1 & 0x80000000) != 0)
   {
     sub_2958A5D14(v418);
     goto LABEL_109;
   }
 
-  v425 = a4->var1;
-  var0 = a4->var0;
-  if (a4->var0 < 1)
+  v425 = parameters->var1;
+  var0 = parameters->var0;
+  if (parameters->var0 < 1)
   {
     goto LABEL_108;
   }
@@ -465,7 +465,7 @@ LABEL_6:
   v40 = 1;
   do
   {
-    if (var1 != v39 && v39 != a4->var2)
+    if (var1 != v39 && v39 != parameters->var2)
     {
       if (v40 > 3)
       {
@@ -501,21 +501,21 @@ LABEL_111:
     goto LABEL_112;
   }
 
-  if (!v386 && v40 == 4)
+  if (!divisorTexCopy && v40 == 4)
   {
     sub_2958A5BDC(v418);
     goto LABEL_109;
   }
 
   v41 = v40;
-  v42 = objc_msgSend_objectAtIndexedSubscript_(v16, v18, var1, v20);
-  var4 = a4->var4;
-  v44 = a4->var4 + 224128 * a4->var1;
+  v42 = objc_msgSend_objectAtIndexedSubscript_(ev0sCopy, v18, var1, v20);
+  var4 = parameters->var4;
+  v44 = parameters->var4 + 224128 * parameters->var1;
   v399 = v44[195];
   bzero(v419, 0x4E0uLL);
   v421 = v41;
   v398 = v44;
-  v46 = objc_msgSend__fillConstants_slPlist_ev0ExposureParams_(SyntheticLongStage, v45, v419, v402, v44 + 288);
+  v46 = objc_msgSend__fillConstants_slPlist_ev0ExposureParams_(SyntheticLongStage, v45, v419, plistCopy, v44 + 288);
   v400 = v42;
   if (v46)
   {
@@ -529,12 +529,12 @@ LABEL_111:
     goto LABEL_110;
   }
 
-  v409 = v16;
+  v409 = ev0sCopy;
   v51 = v424;
   *&v50 = v424;
   v52 = objc_msgSend_numberWithFloat_(MEMORY[0x29EDBA070], v47, v48, v49, v50);
-  v385 = v21;
-  objc_msgSend_setObject_forKeyedSubscript_(v21, v53, v52, @"syntheticLongPedestal");
+  v385 = metadataCopy;
+  objc_msgSend_setObject_forKeyedSubscript_(metadataCopy, v53, v52, @"syntheticLongPedestal");
 
   v57 = 0;
   v58 = &v422;
@@ -582,7 +582,7 @@ LABEL_111:
   v74 = *&v423[89];
   v75 = *(v42 + 8);
   v76 = (v75 - 1);
-  if (v17)
+  if (pyramidCopy)
   {
     v77 = 0;
     goto LABEL_27;
@@ -665,7 +665,7 @@ LABEL_148:
     goto LABEL_149;
   }
 
-  v408 = v17;
+  v408 = pyramidCopy;
   v161 = objc_msgSend_width(*(v42 + 496 + 8 * v76), v158, v159, v160);
   objc_msgSend_desc(v157, v162, v163, v164);
   v166 = v165 = v157;
@@ -695,7 +695,7 @@ LABEL_98:
       do
       {
         v368 = *v366++;
-        v369 = objc_msgSend_objectAtIndexedSubscript_(v16, v191, v368, v193);
+        v369 = objc_msgSend_objectAtIndexedSubscript_(ev0sCopy, v191, v368, v193);
         v369[2] = 0;
 
         --v367;
@@ -704,7 +704,7 @@ LABEL_98:
       while (v367);
     }
 
-    v17 = v408;
+    pyramidCopy = v408;
     if (v428)
     {
       sub_2958A5354(v418);
@@ -713,7 +713,7 @@ LABEL_98:
       goto LABEL_130;
     }
 
-    v21 = v385;
+    metadataCopy = v385;
     v22 = MEMORY[0x29EDB9270];
     if (!v427)
     {
@@ -772,7 +772,7 @@ LABEL_98:
   v198 = v394;
   while (1)
   {
-    v199 = objc_msgSend__fillConstantsForBand_consts_slPlist_ev0ExposureParams_(SyntheticLongStage, v191, v198, v419, v402, v398 + 288);
+    v199 = objc_msgSend__fillConstantsForBand_consts_slPlist_ev0ExposureParams_(SyntheticLongStage, v191, v198, v419, plistCopy, v398 + 288);
     if (v199)
     {
       sub_2958A4E74(v199, v418);
@@ -781,11 +781,11 @@ LABEL_98:
       v77 = 0;
 LABEL_119:
       v370 = v418[0];
-      v17 = v408;
+      pyramidCopy = v408;
       goto LABEL_131;
     }
 
-    v203 = objc_msgSend_commandQueue(v24->_metal, v200, v201, v202);
+    v203 = objc_msgSend_commandQueue(selfCopy4->_metal, v200, v201, v202);
     v207 = objc_msgSend_commandBuffer(v203, v204, v205, v206);
 
     if (!v207)
@@ -803,7 +803,7 @@ LABEL_119:
     v415 = v207;
     v219 = objc_msgSend_computeCommandEncoder(v207, v216, v217, v218);
 
-    v17 = v408;
+    pyramidCopy = v408;
     if (!v219)
     {
       sub_2958A58D0(v418);
@@ -813,9 +813,9 @@ LABEL_119:
       v157 = 0;
 LABEL_149:
       v370 = v418[0];
-      v21 = v385;
+      metadataCopy = v385;
       v22 = MEMORY[0x29EDB9270];
-      v16 = v409;
+      ev0sCopy = v409;
       goto LABEL_112;
     }
 
@@ -847,13 +847,13 @@ LABEL_149:
       objc_msgSend_setBytes_length_atIndex_(v219, v220, v419, 1248, 1);
       v413 = 0;
       v77 = 0;
-      v16 = v409;
+      ev0sCopy = v409;
       goto LABEL_50;
     }
 
     objc_msgSend_setBytes_length_atIndex_(v219, v220, v419, 1248, 1);
     objc_msgSend_setLabel_(v405, v222, 0, v223);
-    v227 = objc_msgSend_allocator(v24->_metal, v224, v225, v226);
+    v227 = objc_msgSend_allocator(selfCopy4->_metal, v224, v225, v226);
     v77 = objc_msgSend_newTextureWithDescriptor_(v227, v228, v405, v229);
 
     if (!v77)
@@ -865,11 +865,11 @@ LABEL_149:
     }
 
     objc_msgSend_setLabel_(v404, v230, 0, v231);
-    v235 = objc_msgSend_allocator(v24->_metal, v232, v233, v234);
+    v235 = objc_msgSend_allocator(selfCopy4->_metal, v232, v233, v234);
     v238 = objc_msgSend_newTextureWithDescriptor_(v235, v236, v404, v237);
 
     v413 = v238;
-    v16 = v409;
+    ev0sCopy = v409;
     if (!v238)
     {
       sub_2958A4F10(v418);
@@ -918,7 +918,7 @@ LABEL_57:
     {
       while (1)
       {
-        v320 = objc_msgSend_objectAtIndexedSubscript_(v16, v288, *&v426[4 * v317 - 4], v289);
+        v320 = objc_msgSend_objectAtIndexedSubscript_(ev0sCopy, v288, *&v426[4 * v317 - 4], v289);
         v322 = v320;
         v323 = dword_2959D5F70[v317];
         if (v318)
@@ -955,9 +955,9 @@ LABEL_57:
     {
       sub_2958A5180(v418);
       v370 = v418[0];
-      v17 = v408;
-      v21 = v385;
-      v24 = self;
+      pyramidCopy = v408;
+      metadataCopy = v385;
+      selfCopy4 = self;
       v77 = v412;
       goto LABEL_107;
     }
@@ -979,7 +979,7 @@ LABEL_57:
     objc_msgSend_setTexture_atIndex_(v157, v328, v427, 2);
     objc_msgSend_setTexture_atIndex_(v157, v329, v429, 24);
 LABEL_72:
-    objc_msgSend_setTexture_atIndex_(v157, v288, v401, 0);
+    objc_msgSend_setTexture_atIndex_(v157, v288, texCopy, 0);
     if (v198)
     {
       v77 = v412;
@@ -991,7 +991,7 @@ LABEL_72:
 
       v331 = v412;
       v332 = v413;
-      v17 = v408;
+      pyramidCopy = v408;
       if (!v413)
       {
         sub_2958A521C(v418);
@@ -1002,27 +1002,27 @@ LABEL_72:
 
     else
     {
-      v331 = v390;
+      v331 = lumaCopy;
       v77 = v412;
-      if (!v390)
+      if (!lumaCopy)
       {
         sub_2958A5798(v418);
 LABEL_133:
         v370 = v418[0];
-        v17 = v408;
+        pyramidCopy = v408;
         goto LABEL_106;
       }
 
-      v332 = v389;
-      v17 = v408;
-      if (!v389)
+      v332 = chromaCopy;
+      pyramidCopy = v408;
+      if (!chromaCopy)
       {
         sub_2958A56FC(v418);
 LABEL_105:
         v370 = v418[0];
 LABEL_106:
-        v21 = v385;
-        v24 = self;
+        metadataCopy = v385;
+        selfCopy4 = self;
         goto LABEL_107;
       }
     }
@@ -1092,7 +1092,7 @@ LABEL_106:
     objc_msgSend_commit(v415, v352, v353, v354);
     FigMetalDecRef();
     FigMetalDecRef();
-    if (!v17)
+    if (!pyramidCopy)
     {
       FigMetalDecRef();
     }
@@ -1106,7 +1106,7 @@ LABEL_106:
     v357 = v427;
     v427 = v413;
 
-    v16 = v409;
+    ev0sCopy = v409;
     if (v198 != v76 && v392 >= 2)
     {
       v358 = v388;
@@ -1127,7 +1127,7 @@ LABEL_106:
     }
 
     v365 = v198-- <= 0;
-    v24 = self;
+    selfCopy4 = self;
     v76 = v394;
     v60 = v395;
     if (v365)
@@ -1139,7 +1139,7 @@ LABEL_106:
   if (v198)
   {
     objc_msgSend_setLabel_(v391, v286, 0, v287);
-    v293 = objc_msgSend_allocator(v24->_metal, v290, v291, v292);
+    v293 = objc_msgSend_allocator(selfCopy4->_metal, v290, v291, v292);
     v296 = objc_msgSend_newTextureWithDescriptor_(v293, v294, v391, v295);
 
     if (!v296)
@@ -1150,7 +1150,7 @@ LABEL_106:
     goto LABEL_56;
   }
 
-  v296 = v386;
+  v296 = divisorTexCopy;
   if (v296)
   {
 LABEL_56:
@@ -1172,7 +1172,7 @@ LABEL_130:
   v414 = 0;
   v370 = v418[0];
 LABEL_131:
-  v21 = v385;
+  metadataCopy = v385;
 LABEL_107:
   v22 = MEMORY[0x29EDB9270];
 LABEL_112:
@@ -1185,7 +1185,7 @@ LABEL_112:
 
   if (v371)
   {
-    v372 = objc_msgSend_commandQueue(v24->_metal, v191, v192, v193);
+    v372 = objc_msgSend_commandQueue(selfCopy4->_metal, v191, v192, v193);
     v376 = objc_msgSend_commandBuffer(v372, v373, v374, v375);
 
     objc_msgSend_setLabel_(v376, v377, @"KTRACE_END_MTL", v378);
@@ -1203,16 +1203,16 @@ LABEL_112:
   return v370;
 }
 
-- (int)_fuseInLong:(id)a3 slParameters:(const SyntheticLongParameters *)a4 slPlist:(id)a5 lscGainsTex:(id)a6 fusedEv0sPyramid:(id)a7 weightsPyramid:(id)a8 slOutput:(id)a9 noiseDivisorTex:(id)a10 realLongNoiseDivisorTex:(id)a11
+- (int)_fuseInLong:(id)long slParameters:(const SyntheticLongParameters *)parameters slPlist:(id)plist lscGainsTex:(id)tex fusedEv0sPyramid:(id)pyramid weightsPyramid:(id)weightsPyramid slOutput:(id)output noiseDivisorTex:(id)self0 realLongNoiseDivisorTex:(id)self1
 {
-  v353 = a3;
-  v367 = a5;
-  v366 = a6;
-  v16 = a7;
-  v358 = a8;
-  v368 = a9;
-  v356 = a10;
-  v355 = a11;
+  longCopy = long;
+  plistCopy = plist;
+  texCopy = tex;
+  pyramidCopy = pyramid;
+  weightsPyramidCopy = weightsPyramid;
+  outputCopy = output;
+  divisorTexCopy = divisorTex;
+  noiseDivisorTexCopy = noiseDivisorTex;
   v406 = 0;
   v407 = 0;
   v405 = 0;
@@ -1223,7 +1223,7 @@ LABEL_112:
     v20 = *MEMORY[0x29EDB9270];
   }
 
-  v21 = self;
+  selfCopy2 = self;
   if (v20)
   {
     v22 = objc_msgSend_commandQueue(self->_metal, v17, v18, v19);
@@ -1234,7 +1234,7 @@ LABEL_112:
     objc_msgSend_commit(v26, v31, v32, v33);
   }
 
-  if (!v353)
+  if (!longCopy)
   {
     sub_2958A7094(&v382);
 LABEL_96:
@@ -1256,59 +1256,59 @@ LABEL_103:
     goto LABEL_68;
   }
 
-  if (!a4)
+  if (!parameters)
   {
     sub_2958A6FF8(&v382);
     goto LABEL_96;
   }
 
-  if (!v367)
+  if (!plistCopy)
   {
     sub_2958A6F5C(&v382);
     goto LABEL_96;
   }
 
-  if (!v366)
+  if (!texCopy)
   {
     sub_2958A6EC0(&v382);
     goto LABEL_96;
   }
 
-  if (!v16)
+  if (!pyramidCopy)
   {
     sub_2958A6E24(&v382);
     goto LABEL_96;
   }
 
-  if (!v358)
+  if (!weightsPyramidCopy)
   {
     sub_2958A6D88(&v382);
     goto LABEL_96;
   }
 
-  if (!v356)
+  if (!divisorTexCopy)
   {
     sub_2958A6CEC(&v382);
     goto LABEL_96;
   }
 
-  if (a4->var1 < 0)
+  if (parameters->var1 < 0)
   {
     sub_2958A6C50(&v382);
     goto LABEL_96;
   }
 
-  if (a4->var2 < 0)
+  if (parameters->var2 < 0)
   {
     sub_2958A6BB4(&v382);
     goto LABEL_96;
   }
 
-  v34 = v16;
-  var1 = a4->var1;
-  v357 = objc_msgSend_objectAtIndexedSubscript_(v353, v36, a4->var2, v37);
+  v34 = pyramidCopy;
+  var1 = parameters->var1;
+  v357 = objc_msgSend_objectAtIndexedSubscript_(longCopy, v36, parameters->var2, v37);
   v352 = v34;
-  if ((a4->var0 - 6) <= 0xFFFFFFFC)
+  if ((parameters->var0 - 6) <= 0xFFFFFFFC)
   {
     sub_2958A6B18(&v382);
 LABEL_100:
@@ -1321,14 +1321,14 @@ LABEL_100:
     goto LABEL_102;
   }
 
-  v38 = a4->var4 + 224128 * var1;
-  v39 = a4->var4 + 224128 * a4->var2;
+  v38 = parameters->var4 + 224128 * var1;
+  v39 = parameters->var4 + 224128 * parameters->var2;
   v359 = v39[195];
-  v40 = a4->var0 - 1;
+  v40 = parameters->var0 - 1;
   bzero(v384, 0x4E0uLL);
   v399 = v40;
   v363 = v38;
-  v42 = objc_msgSend__fillConstants_slPlist_ev0ExposureParams_(SyntheticLongStage, v41, v384, v367, v38 + 288);
+  v42 = objc_msgSend__fillConstants_slPlist_ev0ExposureParams_(SyntheticLongStage, v41, v384, plistCopy, v38 + 288);
   if (v42)
   {
     sub_2958A6020(v42, &v382);
@@ -1441,7 +1441,7 @@ LABEL_106:
     goto LABEL_106;
   }
 
-  v351 = v16;
+  v351 = pyramidCopy;
   v146 = objc_msgSend_width(*&v34[2 * v65 + 84], v143, v144, v145);
   v150 = objc_msgSend_desc(v142, v147, v148, v149);
   objc_msgSend_setWidth_(v150, v151, v146, v152);
@@ -1475,7 +1475,7 @@ LABEL_106:
 
     v362 = v180 | (16 * (v54 != 1.0)) | (32 * (v55 != 0.0));
     v365 = &v357[v178];
-    v181 = &v358[v178];
+    v181 = &weightsPyramidCopy[v178];
     v182 = &v34[2 * v178];
     v183 = 0;
     v360 = (v56 - 1);
@@ -1484,13 +1484,13 @@ LABEL_106:
     while (1)
     {
       v184 = v178 + v179;
-      v185 = objc_msgSend__fillConstantsForBand_consts_slPlist_ev0ExposureParams_(SyntheticLongStage, v175, v178 + v179, v384, v367, v363 + 288);
+      v185 = objc_msgSend__fillConstantsForBand_consts_slPlist_ev0ExposureParams_(SyntheticLongStage, v175, v178 + v179, v384, plistCopy, v363 + 288);
       if (v185)
       {
         break;
       }
 
-      v189 = objc_msgSend_commandQueue(v21->_metal, v186, v187, v188);
+      v189 = objc_msgSend_commandQueue(selfCopy2->_metal, v186, v187, v188);
       v142 = objc_msgSend_commandBuffer(v189, v190, v191, v192);
 
       if (!v142)
@@ -1526,7 +1526,7 @@ LABEL_106:
       {
         objc_msgSend_setBytes_length_atIndex_(v142, v204, v384, 1248, 1);
         objc_msgSend_setLabel_(v61, v206, 0, v207);
-        v211 = objc_msgSend_allocator(v21->_metal, v208, v209, v210);
+        v211 = objc_msgSend_allocator(selfCopy2->_metal, v208, v209, v210);
         v212 = v61;
         v215 = objc_msgSend_newTextureWithDescriptor_(v211, v213, v61, v214);
 
@@ -1545,7 +1545,7 @@ LABEL_106:
         objc_msgSend_setBytes_length_atIndex_(v142, v204, v384, 1248, 1);
         v212 = v61;
         objc_msgSend_setLabel_(v61, v220, 0, v221);
-        v215 = v368[2];
+        v215 = outputCopy[2];
         if (!v215)
         {
 LABEL_78:
@@ -1554,7 +1554,7 @@ LABEL_78:
           v378 = 0;
           v142 = 0;
           v349 = v382.i32[0];
-          v16 = v351;
+          pyramidCopy = v351;
           v350 = MEMORY[0x29EDB9270];
           v298 = v373;
           v183 = v370;
@@ -1576,13 +1576,13 @@ LABEL_78:
       objc_msgSend_setLabel_(v374, v239, 0, v240);
       if (v184)
       {
-        v244 = objc_msgSend_allocator(v21->_metal, v241, v242, v243);
+        v244 = objc_msgSend_allocator(selfCopy2->_metal, v241, v242, v243);
         v378 = objc_msgSend_newTextureWithDescriptor_(v244, v245, v374, v246);
       }
 
       else
       {
-        v378 = v368[3];
+        v378 = outputCopy[3];
       }
 
       if (!v378)
@@ -1591,7 +1591,7 @@ LABEL_78:
         v375 = 0;
         v378 = 0;
         v349 = v382.i32[0];
-        v16 = v351;
+        pyramidCopy = v351;
         v350 = MEMORY[0x29EDB9270];
         goto LABEL_81;
       }
@@ -1617,7 +1617,7 @@ LABEL_78:
           sub_2958A61F4(&v382);
           v375 = 0;
           v349 = v382.i32[0];
-          v16 = v351;
+          pyramidCopy = v351;
           v350 = MEMORY[0x29EDB9270];
           v61 = v371;
 LABEL_81:
@@ -1670,7 +1670,7 @@ LABEL_82:
           sub_2958A6290(&v382);
 LABEL_86:
           v349 = v382.i32[0];
-          v16 = v351;
+          pyramidCopy = v351;
           v350 = MEMORY[0x29EDB9270];
           v183 = v370;
           v142 = v377;
@@ -1696,7 +1696,7 @@ LABEL_86:
 
       objc_msgSend_setTexture_atIndex_(v102, v305, v306, 13);
       objc_msgSend_setTexture_atIndex_(v102, v307, v361[v179 + 42], 5);
-      objc_msgSend_setTexture_atIndex_(v102, v308, v366, 0);
+      objc_msgSend_setTexture_atIndex_(v102, v308, texCopy, 0);
       objc_msgSend_setTexture_atIndex_(v102, v309, v377, 3);
       objc_msgSend_setTexture_atIndex_(v102, v310, v378, 4);
       if (v184)
@@ -1707,8 +1707,8 @@ LABEL_86:
 
       else
       {
-        objc_msgSend_setTexture_atIndex_(v102, v311, v356, 6);
-        objc_msgSend_setTexture_atIndex_(v102, v314, v355, 7);
+        objc_msgSend_setTexture_atIndex_(v102, v311, divisorTexCopy, 6);
+        objc_msgSend_setTexture_atIndex_(v102, v314, noiseDivisorTexCopy, 7);
         v313 = 2;
       }
 
@@ -1730,7 +1730,7 @@ LABEL_86:
         sub_2958A6638(&v382);
         v298 = 0;
         v349 = v382.i32[0];
-        v16 = v351;
+        pyramidCopy = v351;
         v350 = MEMORY[0x29EDB9270];
         v61 = v371;
         goto LABEL_82;
@@ -1752,10 +1752,10 @@ LABEL_86:
       objc_msgSend_commit(v370, v326, v327, v328);
       if (!v184)
       {
-        v329 = v358[42];
-        if (v329 == v368[2])
+        v329 = weightsPyramidCopy[42];
+        if (v329 == outputCopy[2])
         {
-          v358[42] = 0;
+          weightsPyramidCopy[42] = 0;
         }
       }
 
@@ -1781,7 +1781,7 @@ LABEL_86:
 
       --v179;
       --v181;
-      v21 = self;
+      selfCopy2 = self;
       if (v360 + v179 + 1 <= 0)
       {
         goto LABEL_64;
@@ -1794,7 +1794,7 @@ LABEL_86:
     v142 = 0;
 LABEL_76:
     v349 = v382.i32[0];
-    v16 = v351;
+    pyramidCopy = v351;
     v350 = MEMORY[0x29EDB9270];
     goto LABEL_77;
   }
@@ -1804,11 +1804,11 @@ LABEL_76:
   v183 = 0;
 LABEL_64:
   v350 = MEMORY[0x29EDB9270];
-  if (v407 == v368[2])
+  if (v407 == outputCopy[2])
   {
-    v16 = v351;
+    pyramidCopy = v351;
     v298 = v373;
-    if (v406 == v368[3])
+    if (v406 == outputCopy[3])
     {
       if (!v405)
       {
@@ -1840,7 +1840,7 @@ LABEL_64:
     v378 = 0;
     v142 = 0;
     v349 = v382.i32[0];
-    v16 = v351;
+    pyramidCopy = v351;
 LABEL_77:
     v298 = v373;
   }
@@ -1880,70 +1880,70 @@ LABEL_68:
   return v349;
 }
 
-- (int)_doEv0sPlusRealLongWithBands:(id)a3 slFuseEv0Plist:(id)a4 slFuseLongPlist:(id)a5 slParameters:(const SyntheticLongParameters *)a6 slOutput:(id)a7 noiseDivisorTex:(id)a8 realLongNoiseDivisorTex:(id)a9 lscGainsTex:(id)a10 intermediateMetadata:(id)a11
+- (int)_doEv0sPlusRealLongWithBands:(id)bands slFuseEv0Plist:(id)plist slFuseLongPlist:(id)longPlist slParameters:(const SyntheticLongParameters *)parameters slOutput:(id)output noiseDivisorTex:(id)tex realLongNoiseDivisorTex:(id)divisorTex lscGainsTex:(id)self0 intermediateMetadata:(id)self1
 {
-  v17 = a3;
-  v145 = a4;
-  v18 = a5;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
-  v149 = a10;
-  v24 = a11;
+  bandsCopy = bands;
+  plistCopy = plist;
+  longPlistCopy = longPlist;
+  outputCopy = output;
+  texCopy = tex;
+  divisorTexCopy = divisorTex;
+  gainsTexCopy = gainsTex;
+  metadataCopy = metadata;
   v151 = 0;
   v150 = 0;
-  var1 = a6->var1;
-  var2 = a6->var2;
-  v148 = a6;
+  var1 = parameters->var1;
+  var2 = parameters->var2;
+  parametersCopy = parameters;
   if ((var1 & 0x80000000) != 0)
   {
     sub_2958A7A00(v152);
     v135 = 0;
     v134 = v152[0];
-    v120 = v145;
-    v27 = v20;
+    v120 = plistCopy;
+    v27 = texCopy;
     goto LABEL_26;
   }
 
-  v27 = v20;
-  if (!v19)
+  v27 = texCopy;
+  if (!outputCopy)
   {
     sub_2958A7964(v152);
 LABEL_31:
     v135 = 0;
     v134 = v152[0];
-    v120 = v145;
+    v120 = plistCopy;
     goto LABEL_26;
   }
 
-  if (!*(v19 + 2))
+  if (!*(outputCopy + 2))
   {
     sub_2958A78C8(v152);
     goto LABEL_31;
   }
 
-  if (!*(v19 + 3))
+  if (!*(outputCopy + 3))
   {
     sub_2958A782C(v152);
     goto LABEL_31;
   }
 
-  v144 = v18;
-  v143 = objc_msgSend_objectAtIndexedSubscript_(v17, v22, var1, v23);
+  v144 = longPlistCopy;
+  v143 = objc_msgSend_objectAtIndexedSubscript_(bandsCopy, v22, var1, v23);
   v146 = *(v143 + 8);
-  v147 = objc_msgSend_width(*(v19 + 2), v28, v29, v30);
-  v34 = objc_msgSend_height(*(v19 + 2), v31, v32, v33);
+  v147 = objc_msgSend_width(*(outputCopy + 2), v28, v29, v30);
+  v34 = objc_msgSend_height(*(outputCopy + 2), v31, v32, v33);
   if (var2 < 0)
   {
-    v120 = v145;
-    v122 = objc_msgSend__fuseEv0s_slParameters_slPlist_lscGainsTex_outputLuma_outputChroma_outputWeightsPyramid_noiseDivisorTex_intermediateMetadata_(self, v35, v17, v148, v145, v149, *(v19 + 2), *(v19 + 3), 0, v20, v24);
+    v120 = plistCopy;
+    v122 = objc_msgSend__fuseEv0s_slParameters_slPlist_lscGainsTex_outputLuma_outputChroma_outputWeightsPyramid_noiseDivisorTex_intermediateMetadata_(self, v35, bandsCopy, parametersCopy, plistCopy, gainsTexCopy, *(outputCopy + 2), *(outputCopy + 3), 0, texCopy, metadataCopy);
     if (!v122)
     {
       v134 = 0;
       goto LABEL_25;
     }
 
-    v140 = v20;
+    v140 = texCopy;
     v114 = 0;
 LABEL_45:
     sub_2958A7778(v122, v114, v152);
@@ -1953,7 +1953,7 @@ LABEL_45:
   }
 
   v38 = v34;
-  v142 = v24;
+  v142 = metadataCopy;
   v39 = objc_msgSend_allocator(self->_metal, v35, v36, v37);
   v43 = objc_msgSend_newTextureDescriptor(v39, v40, v41, v42);
 
@@ -1963,12 +1963,12 @@ LABEL_45:
     v134 = v152[0];
 LABEL_49:
 
-    v18 = v144;
-    v120 = v145;
+    longPlistCopy = v144;
+    v120 = plistCopy;
     goto LABEL_22;
   }
 
-  v141 = v17;
+  v141 = bandsCopy;
   v47 = objc_msgSend_desc(v43, v44, v45, v46);
   objc_msgSend_setWidth_(v47, v48, v147, v49);
 
@@ -1990,11 +1990,11 @@ LABEL_49:
   {
     sub_2958A7640(v152);
     v134 = v152[0];
-    v17 = v141;
+    bandsCopy = v141;
     goto LABEL_49;
   }
 
-  v139 = v21;
+  v139 = divisorTexCopy;
   v80 = objc_msgSend_desc(v43, v77, v78, v79);
   objc_msgSend_setWidth_(v80, v81, v147 >> 1, v82);
 
@@ -2016,28 +2016,28 @@ LABEL_49:
   {
     sub_2958A75A4(v152);
     v134 = v152[0];
-    v17 = v141;
+    bandsCopy = v141;
 LABEL_48:
-    v21 = v139;
+    divisorTexCopy = v139;
     goto LABEL_49;
   }
 
-  v140 = v20;
+  v140 = texCopy;
   v110 = objc_opt_new();
   if (!v110)
   {
     sub_2958A7508(v152);
 LABEL_47:
     v134 = v152[0];
-    v27 = v20;
-    v17 = v141;
+    v27 = texCopy;
+    bandsCopy = v141;
     goto LABEL_48;
   }
 
   v114 = v110;
   *(v110 + 8) = v146;
-  v118 = objc_msgSend_pixelFormat(*(v19 + 2), v111, v112, v113);
-  if (v118 == 25 && objc_msgSend_isCompressed(*(v19 + 2), v115, v116, v117))
+  v118 = objc_msgSend_pixelFormat(*(outputCopy + 2), v111, v112, v113);
+  if (v118 == 25 && objc_msgSend_isCompressed(*(outputCopy + 2), v115, v116, v117))
   {
     sub_2958A7454(v114, v152);
     goto LABEL_47;
@@ -2054,19 +2054,19 @@ LABEL_47:
 
   if (v118 == 25)
   {
-    objc_storeStrong((v114 + 336), *(v19 + 2));
+    objc_storeStrong((v114 + 336), *(outputCopy + 2));
   }
 
   *(v114 + 664) = 1;
 
-  v24 = v142;
-  v120 = v145;
-  v122 = objc_msgSend__fuseEv0s_slParameters_slPlist_lscGainsTex_outputLuma_outputChroma_outputWeightsPyramid_noiseDivisorTex_intermediateMetadata_(self, v121, v141, v148, v145, v149, v76, v109, v114, 0, v142);
+  metadataCopy = v142;
+  v120 = plistCopy;
+  v122 = objc_msgSend__fuseEv0s_slParameters_slPlist_lscGainsTex_outputLuma_outputChroma_outputWeightsPyramid_noiseDivisorTex_intermediateMetadata_(self, v121, v141, parametersCopy, plistCopy, gainsTexCopy, v76, v109, v114, 0, v142);
   if (v122)
   {
-    v17 = v141;
-    v18 = v144;
-    v21 = v139;
+    bandsCopy = v141;
+    longPlistCopy = v144;
+    divisorTexCopy = v139;
     goto LABEL_45;
   }
 
@@ -2077,8 +2077,8 @@ LABEL_47:
     sub_2958A73B8(v152);
 LABEL_40:
     v134 = v152[0];
-    v17 = v141;
-    v18 = v144;
+    bandsCopy = v141;
+    longPlistCopy = v144;
     goto LABEL_42;
   }
 
@@ -2093,12 +2093,12 @@ LABEL_40:
 
   objc_msgSend_setLumaTexture_chromaTexture_level_metal_(v125, v127, v76, v109, 0, self->_metal);
   v130 = objc_msgSend_pyramidDownscale_(self, v128, v125, v129);
-  v18 = v144;
+  longPlistCopy = v144;
   if (!v130)
   {
-    v21 = v139;
-    v17 = v141;
-    v132 = objc_msgSend__fuseInLong_slParameters_slPlist_lscGainsTex_fusedEv0sPyramid_weightsPyramid_slOutput_noiseDivisorTex_realLongNoiseDivisorTex_(self, v131, v141, v148, v144, v149, v125, v114, v19, v20, v139);
+    divisorTexCopy = v139;
+    bandsCopy = v141;
+    v132 = objc_msgSend__fuseInLong_slParameters_slPlist_lscGainsTex_fusedEv0sPyramid_weightsPyramid_slOutput_noiseDivisorTex_realLongNoiseDivisorTex_(self, v131, v141, parametersCopy, v144, gainsTexCopy, v125, v114, outputCopy, texCopy, v139);
     if (v132)
     {
       sub_2958A731C(v132, v152);
@@ -2118,14 +2118,14 @@ LABEL_40:
 
   sub_2958A7280(v130, v152);
   v134 = v152[0];
-  v17 = v141;
+  bandsCopy = v141;
 LABEL_42:
-  v21 = v139;
+  divisorTexCopy = v139;
 LABEL_21:
 
-  v27 = v20;
+  v27 = texCopy;
 LABEL_22:
-  v24 = v142;
+  metadataCopy = v142;
 LABEL_25:
   v135 = v143;
 LABEL_26:
@@ -2133,54 +2133,54 @@ LABEL_26:
   return v134;
 }
 
-- (int)doSyntheticLongWithBands:(id)a3 slFuseEv0Plist:(id)a4 slFuseLongPlist:(id)a5 slParameters:(const SyntheticLongParameters *)a6 slOutput:(id)a7 noiseDivisorTex:(id)a8 realLongNoiseDivisorTex:(id)a9 lscGainsTex:(id)a10 intermediateMetadata:(id)a11
+- (int)doSyntheticLongWithBands:(id)bands slFuseEv0Plist:(id)plist slFuseLongPlist:(id)longPlist slParameters:(const SyntheticLongParameters *)parameters slOutput:(id)output noiseDivisorTex:(id)tex realLongNoiseDivisorTex:(id)divisorTex lscGainsTex:(id)self0 intermediateMetadata:(id)self1
 {
-  v76 = a3;
-  v75 = a4;
-  v77 = a5;
-  v17 = a7;
-  v18 = a8;
-  v19 = a9;
-  v20 = a10;
-  v24 = a11;
-  if (!v17)
+  bandsCopy = bands;
+  plistCopy = plist;
+  longPlistCopy = longPlist;
+  outputCopy = output;
+  texCopy = tex;
+  divisorTexCopy = divisorTex;
+  gainsTexCopy = gainsTex;
+  metadataCopy = metadata;
+  if (!outputCopy)
   {
     sub_2958A7FE4(&v78);
 LABEL_24:
     v73 = v78;
-    v54 = v75;
-    v53 = v76;
+    v54 = plistCopy;
+    v53 = bandsCopy;
     goto LABEL_13;
   }
 
-  if (!*(v17 + 2))
+  if (!*(outputCopy + 2))
   {
     sub_2958A7F48(&v78);
     goto LABEL_24;
   }
 
-  if (!*(v17 + 3))
+  if (!*(outputCopy + 3))
   {
     sub_2958A7EAC(&v78);
     goto LABEL_24;
   }
 
-  if (!v18)
+  if (!texCopy)
   {
     sub_2958A7E10(&v78);
     goto LABEL_24;
   }
 
-  var2 = a6->var2;
-  v26 = objc_msgSend_width(v18, v21, v22, v23);
-  if (objc_msgSend_width(*(v17 + 2), v27, v28, v29) != 2 * v26)
+  var2 = parameters->var2;
+  v26 = objc_msgSend_width(texCopy, v21, v22, v23);
+  if (objc_msgSend_width(*(outputCopy + 2), v27, v28, v29) != 2 * v26)
   {
     sub_2958A7A9C(&v78);
     goto LABEL_24;
   }
 
-  v33 = objc_msgSend_height(v18, v30, v31, v32);
-  if (objc_msgSend_height(*(v17 + 2), v34, v35, v36) != 2 * v33)
+  v33 = objc_msgSend_height(texCopy, v30, v31, v32);
+  if (objc_msgSend_height(*(outputCopy + 2), v34, v35, v36) != 2 * v33)
   {
     sub_2958A7B38(&v78);
     goto LABEL_24;
@@ -2191,32 +2191,32 @@ LABEL_24:
     goto LABEL_11;
   }
 
-  if (!v19)
+  if (!divisorTexCopy)
   {
     sub_2958A7D74(&v78);
     goto LABEL_24;
   }
 
-  v40 = objc_msgSend_width(v19, v37, v38, v39);
-  if (objc_msgSend_width(*(v17 + 2), v41, v42, v43) != 2 * v40)
+  v40 = objc_msgSend_width(divisorTexCopy, v37, v38, v39);
+  if (objc_msgSend_width(*(outputCopy + 2), v41, v42, v43) != 2 * v40)
   {
     sub_2958A7BD4(&v78);
     goto LABEL_24;
   }
 
-  v47 = objc_msgSend_height(v19, v44, v45, v46);
-  if (objc_msgSend_height(*(v17 + 2), v48, v49, v50) != 2 * v47)
+  v47 = objc_msgSend_height(divisorTexCopy, v44, v45, v46);
+  if (objc_msgSend_height(*(outputCopy + 2), v48, v49, v50) != 2 * v47)
   {
     sub_2958A7C70(&v78);
     goto LABEL_24;
   }
 
 LABEL_11:
-  var0 = a6->var0;
-  v52 = self;
-  v54 = v75;
-  v53 = v76;
-  v55 = objc_msgSend__doEv0sPlusRealLongWithBands_slFuseEv0Plist_slFuseLongPlist_slParameters_slOutput_noiseDivisorTex_realLongNoiseDivisorTex_lscGainsTex_intermediateMetadata_(v52, v37, v76, v75, v77, a6, v17, v18, v19, v20, v24);
+  var0 = parameters->var0;
+  selfCopy = self;
+  v54 = plistCopy;
+  v53 = bandsCopy;
+  v55 = objc_msgSend__doEv0sPlusRealLongWithBands_slFuseEv0Plist_slFuseLongPlist_slParameters_slOutput_noiseDivisorTex_realLongNoiseDivisorTex_lscGainsTex_intermediateMetadata_(selfCopy, v37, bandsCopy, plistCopy, longPlistCopy, parameters, outputCopy, texCopy, divisorTexCopy, gainsTexCopy, metadataCopy);
   if (v55)
   {
     v73 = v55;
@@ -2226,15 +2226,15 @@ LABEL_11:
   else
   {
     v58 = objc_msgSend_numberWithBool_(MEMORY[0x29EDBA070], v56, var2 >= 0, v57);
-    objc_msgSend_setObject_forKeyedSubscript_(v24, v59, v58, @"SyntheticLongUsedRealLong");
+    objc_msgSend_setObject_forKeyedSubscript_(metadataCopy, v59, v58, @"SyntheticLongUsedRealLong");
 
     v62 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x29EDBA070], v60, var0 + (~var2 >> 31), v61);
-    objc_msgSend_setObject_forKeyedSubscript_(v24, v63, v62, @"ev0count");
+    objc_msgSend_setObject_forKeyedSubscript_(metadataCopy, v63, v62, @"ev0count");
 
     v64 = MEMORY[0x29EDBA070];
     v68 = objc_msgSend_intermediateVersion(DeepFusionCommon, v65, v66, v67);
     v71 = objc_msgSend_numberWithInt_(v64, v69, v68, v70);
-    objc_msgSend_setObject_forKeyedSubscript_(v24, v72, v71, @"IntermediateVersion");
+    objc_msgSend_setObject_forKeyedSubscript_(metadataCopy, v72, v71, @"IntermediateVersion");
 
     v73 = 0;
   }

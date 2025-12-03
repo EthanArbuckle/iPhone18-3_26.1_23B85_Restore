@@ -1,14 +1,14 @@
 @interface _OSInactivityPredictor
-+ (id)logWithCategory:(id)a3;
++ (id)logWithCategory:(id)category;
 + (id)predictor;
 + (unint64_t)readEvaluatedPredictorTypeFromDefaults;
 - (NSString)description;
 - (_OSInactivityPredictor)init;
 - (double)waitedDuration;
-- (id)longInactivityPredictionResultAtDate:(id)a3 withTimeSinceInactive:(double)a4 withOptions:(int64_t)a5 withError:(id *)a6;
-- (id)longInactivityPredictionResultWithOptions:(int64_t)a3 withError:(id *)a4;
+- (id)longInactivityPredictionResultAtDate:(id)date withTimeSinceInactive:(double)inactive withOptions:(int64_t)options withError:(id *)error;
+- (id)longInactivityPredictionResultWithOptions:(int64_t)options withError:(id *)error;
 - (id)metadata;
-- (unint64_t)modelTypeFromPredictorName:(id)a3;
+- (unint64_t)modelTypeFromPredictorName:(id)name;
 @end
 
 @implementation _OSInactivityPredictor
@@ -78,7 +78,7 @@
   if (v5)
   {
     v6 = [v4 integerForKey:@"modelType"];
-    v7 = [a1 log];
+    v7 = [self log];
     v8 = v7;
     if (v6 > 2)
     {
@@ -92,7 +92,7 @@
 
         if (!+[_OSInactivityPredictionBackupManager hasBackup])
         {
-          v11 = [a1 log];
+          v11 = [self log];
           if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
           {
             *v23 = 0;
@@ -133,7 +133,7 @@
           goto LABEL_47;
         }
 
-        v9 = [a1 log];
+        v9 = [self log];
         if (!os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
         {
 LABEL_46:
@@ -163,7 +163,7 @@ LABEL_45:
           goto LABEL_31;
         }
 
-        v9 = [a1 log];
+        v9 = [self log];
         if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
         {
           *v23 = 0;
@@ -187,7 +187,7 @@ LABEL_29:
   {
     if (+[OSIntelligenceUtilities hasRecentTravelHistory])
     {
-      v11 = [a1 log];
+      v11 = [self log];
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
         *v23 = 0;
@@ -200,10 +200,10 @@ LABEL_50:
       goto LABEL_51;
     }
 
-    v15 = [a1 readEvaluatedPredictorTypeFromDefaults];
-    v9 = [a1 log];
+    readEvaluatedPredictorTypeFromDefaults = [self readEvaluatedPredictorTypeFromDefaults];
+    v9 = [self log];
     v16 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
-    if (v15 == 2)
+    if (readEvaluatedPredictorTypeFromDefaults == 2)
     {
       if (v16)
       {
@@ -215,7 +215,7 @@ LABEL_50:
 LABEL_30:
 
 LABEL_31:
-      v17 = +[_OSInactivityPredictorTwoStage alternatePredictor];
+      predictor = +[_OSInactivityPredictorTwoStage alternatePredictor];
       goto LABEL_54;
     }
 
@@ -230,7 +230,7 @@ LABEL_31:
   }
 
   v13 = +[_OSInactivityPredictionBackupManager hasBackup];
-  v11 = [a1 log];
+  v11 = [self log];
   v14 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
   if (!v13)
   {
@@ -257,38 +257,38 @@ LABEL_52:
 LABEL_42:
   v19 = _OSInactivityPredictorBackupBasedModel;
 LABEL_53:
-  v17 = [(__objc2_class *)v19 predictor];
+  predictor = [(__objc2_class *)v19 predictor];
 LABEL_54:
-  v20 = v17;
-  v21 = [_OSInactivityPredictorSignalsAndModel predictorWithPredictor:v17];
+  v20 = predictor;
+  v21 = [_OSInactivityPredictorSignalsAndModel predictorWithPredictor:predictor];
 
   return v21;
 }
 
-- (unint64_t)modelTypeFromPredictorName:(id)a3
+- (unint64_t)modelTypeFromPredictorName:(id)name
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"ruleBased"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"ruleBased"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"backup"])
+  else if ([nameCopy isEqualToString:@"backup"])
   {
     v4 = 4;
   }
 
-  else if ([v3 hasSuffix:@"_alt"])
+  else if ([nameCopy hasSuffix:@"_alt"])
   {
     v4 = 2;
   }
 
-  else if ([v3 hasPrefix:@"twoStage"])
+  else if ([nameCopy hasPrefix:@"twoStage"])
   {
     v4 = 1;
   }
 
-  else if ([v3 containsString:@"lassifier"])
+  else if ([nameCopy containsString:@"lassifier"])
   {
     v4 = 5;
   }
@@ -309,26 +309,26 @@ LABEL_54:
   return v3;
 }
 
-+ (id)logWithCategory:(id)a3
++ (id)logWithCategory:(id)category
 {
-  v3 = [NSString stringWithFormat:@"inactivity.%@", a3];
-  v4 = os_log_create("com.apple.osintelligence", [v3 UTF8String]);
+  category = [NSString stringWithFormat:@"inactivity.%@", category];
+  v4 = os_log_create("com.apple.osintelligence", [category UTF8String]);
 
   return v4;
 }
 
-- (id)longInactivityPredictionResultWithOptions:(int64_t)a3 withError:(id *)a4
+- (id)longInactivityPredictionResultWithOptions:(int64_t)options withError:(id *)error
 {
   v7 = +[NSDate now];
   [(_OSInactivityPredictor *)self waitedDuration];
-  v8 = [(_OSInactivityPredictor *)self longInactivityPredictionResultAtDate:v7 withTimeSinceInactive:a3 withOptions:a4 withError:?];
+  v8 = [(_OSInactivityPredictor *)self longInactivityPredictionResultAtDate:v7 withTimeSinceInactive:options withOptions:error withError:?];
 
   return v8;
 }
 
-- (id)longInactivityPredictionResultAtDate:(id)a3 withTimeSinceInactive:(double)a4 withOptions:(int64_t)a5 withError:(id *)a6
+- (id)longInactivityPredictionResultAtDate:(id)date withTimeSinceInactive:(double)inactive withOptions:(int64_t)options withError:(id *)error
 {
-  v6 = a3;
+  dateCopy = date;
   v7 = [objc_opt_class() log];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
   {
@@ -345,8 +345,8 @@ LABEL_54:
 
 - (NSString)description
 {
-  v2 = [(_OSInactivityPredictor *)self metadata];
-  v3 = [v2 description];
+  metadata = [(_OSInactivityPredictor *)self metadata];
+  v3 = [metadata description];
 
   return v3;
 }

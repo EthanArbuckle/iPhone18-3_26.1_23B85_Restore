@@ -1,6 +1,6 @@
 @interface MCProfileStateHandler
-+ (id)restrictionsStateDictionaryWithDetailsIncluded:(BOOL)a3;
-+ (id)settingsStateDictionaryWithDetailsIncluded:(BOOL)a3;
++ (id)restrictionsStateDictionaryWithDetailsIncluded:(BOOL)included;
++ (id)settingsStateDictionaryWithDetailsIncluded:(BOOL)included;
 + (void)addProfileRestrictionsStateHandler;
 + (void)addProfileSettingsStateHandler;
 @end
@@ -13,8 +13,8 @@
   v2[1] = 3221225472;
   v2[2] = __55__MCProfileStateHandler_addProfileSettingsStateHandler__block_invoke;
   v2[3] = &__block_descriptor_40_e19___NSDictionary_8__0l;
-  v2[4] = a1;
-  [a1 addStateHandlerWithName:"Profile Settings" stateBlock:v2];
+  v2[4] = self;
+  [self addStateHandlerWithName:"Profile Settings" stateBlock:v2];
 }
 
 + (void)addProfileRestrictionsStateHandler
@@ -23,37 +23,37 @@
   v2[1] = 3221225472;
   v2[2] = __59__MCProfileStateHandler_addProfileRestrictionsStateHandler__block_invoke;
   v2[3] = &__block_descriptor_40_e19___NSDictionary_8__0l;
-  v2[4] = a1;
-  [a1 addStateHandlerWithName:"Profile Restrictions" stateBlock:v2];
+  v2[4] = self;
+  [self addStateHandlerWithName:"Profile Restrictions" stateBlock:v2];
 }
 
-+ (id)settingsStateDictionaryWithDetailsIncluded:(BOOL)a3
++ (id)settingsStateDictionaryWithDetailsIncluded:(BOOL)included
 {
-  v3 = a3;
+  includedCopy = included;
   v40 = *MEMORY[0x1E69E9840];
-  v4 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v5 = +[MCProfileConnection sharedConnection];
   v6 = v5;
-  if (v3)
+  if (includedCopy)
   {
-    v7 = [v5 userSettingsForSystem];
-    [v4 setObject:v7 forKeyedSubscript:@"System user settings"];
+    userSettingsForSystem = [v5 userSettingsForSystem];
+    [dictionary setObject:userSettingsForSystem forKeyedSubscript:@"System user settings"];
 
-    v8 = [v6 userSettingsForCurrentUser];
+    userSettingsForCurrentUser = [v6 userSettingsForCurrentUser];
     v9 = @"User's user settings";
   }
 
   else
   {
-    v8 = [v5 userSettings];
+    userSettingsForCurrentUser = [v5 userSettings];
     v9 = @"User settings";
   }
 
-  [v4 setObject:v8 forKeyedSubscript:v9];
+  [dictionary setObject:userSettingsForCurrentUser forKeyedSubscript:v9];
 
-  v10 = [v6 effectiveUserSettings];
-  [v4 setObject:v10 forKeyedSubscript:@"Effective user settings"];
-  v11 = [v10 objectForKey:@"restrictedBool"];
+  effectiveUserSettings = [v6 effectiveUserSettings];
+  [dictionary setObject:effectiveUserSettings forKeyedSubscript:@"Effective user settings"];
+  v11 = [effectiveUserSettings objectForKey:@"restrictedBool"];
   if (v11)
   {
     v12 = objc_opt_new();
@@ -89,10 +89,10 @@
       while (v15);
     }
 
-    [v4 setObject:v12 forKeyedSubscript:@"UI disabled for BOOL settings"];
+    [dictionary setObject:v12 forKeyedSubscript:@"UI disabled for BOOL settings"];
   }
 
-  v19 = [v10 objectForKey:@"restrictedValue"];
+  v19 = [effectiveUserSettings objectForKey:@"restrictedValue"];
   if (v19)
   {
     v29 = v11;
@@ -129,47 +129,47 @@
       while (v23);
     }
 
-    [v4 setObject:v20 forKeyedSubscript:@"UI disabled for value settings"];
+    [dictionary setObject:v20 forKeyedSubscript:@"UI disabled for value settings"];
     v11 = v29;
   }
 
   v27 = *MEMORY[0x1E69E9840];
 
-  return v4;
+  return dictionary;
 }
 
-+ (id)restrictionsStateDictionaryWithDetailsIncluded:(BOOL)a3
++ (id)restrictionsStateDictionaryWithDetailsIncluded:(BOOL)included
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF90] dictionary];
-  if (v3)
+  includedCopy = included;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  if (includedCopy)
   {
     v5 = objc_alloc(MEMORY[0x1E695DF20]);
     v6 = MCSystemProfileRestrictionsFilePath();
     v7 = [v5 initWithContentsOfFile:v6];
-    [v4 setObject:v7 forKeyedSubscript:@"Restrictions per system profile"];
+    [dictionary setObject:v7 forKeyedSubscript:@"Restrictions per system profile"];
 
     v8 = objc_alloc(MEMORY[0x1E695DF20]);
     v9 = MCUserProfileRestrictionsFilePath();
     v10 = [v8 initWithContentsOfFile:v9];
-    [v4 setObject:v10 forKeyedSubscript:@"Restrictions per user profile"];
+    [dictionary setObject:v10 forKeyedSubscript:@"Restrictions per user profile"];
 
     v11 = objc_alloc(MEMORY[0x1E695DF20]);
     v12 = MCSystemClientRestrictionsFilePath();
     v13 = [v11 initWithContentsOfFile:v12];
-    [v4 setObject:v13 forKeyedSubscript:@"Restrictions per system client"];
+    [dictionary setObject:v13 forKeyedSubscript:@"Restrictions per system client"];
 
     v14 = objc_alloc(MEMORY[0x1E695DF20]);
     v15 = MCUserClientRestrictionsFilePath();
     v16 = [v14 initWithContentsOfFile:v15];
-    [v4 setObject:v16 forKeyedSubscript:@"Restrictions per user client"];
+    [dictionary setObject:v16 forKeyedSubscript:@"Restrictions per user client"];
   }
 
   v17 = +[MCProfileConnection sharedConnection];
-  v18 = [v17 effectiveRestrictions];
-  [v4 setObject:v18 forKeyedSubscript:@"Restrictions summary"];
+  effectiveRestrictions = [v17 effectiveRestrictions];
+  [dictionary setObject:effectiveRestrictions forKeyedSubscript:@"Restrictions summary"];
 
-  return v4;
+  return dictionary;
 }
 
 @end

@@ -1,52 +1,52 @@
 @interface NPKProtoStandalonePaymentProvisioningFlowChooseCredentialsStepContext
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addCredentials:(id)a3;
-- (void)addRemoteCredentials:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addCredentials:(id)credentials;
+- (void)addRemoteCredentials:(id)credentials;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NPKProtoStandalonePaymentProvisioningFlowChooseCredentialsStepContext
 
-- (void)addRemoteCredentials:(id)a3
+- (void)addRemoteCredentials:(id)credentials
 {
-  v4 = a3;
+  credentialsCopy = credentials;
   remoteCredentials = self->_remoteCredentials;
-  v8 = v4;
+  v8 = credentialsCopy;
   if (!remoteCredentials)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_remoteCredentials;
     self->_remoteCredentials = v6;
 
-    v4 = v8;
+    credentialsCopy = v8;
     remoteCredentials = self->_remoteCredentials;
   }
 
-  [(NSMutableArray *)remoteCredentials addObject:v4];
+  [(NSMutableArray *)remoteCredentials addObject:credentialsCopy];
 }
 
-- (void)addCredentials:(id)a3
+- (void)addCredentials:(id)credentials
 {
-  v4 = a3;
+  credentialsCopy = credentials;
   credentials = self->_credentials;
-  v8 = v4;
+  v8 = credentialsCopy;
   if (!credentials)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_credentials;
     self->_credentials = v6;
 
-    v4 = v8;
+    credentialsCopy = v8;
     credentials = self->_credentials;
   }
 
-  [(NSMutableArray *)credentials addObject:v4];
+  [(NSMutableArray *)credentials addObject:credentialsCopy];
 }
 
 - (id)description
@@ -55,8 +55,8 @@
   v8.receiver = self;
   v8.super_class = NPKProtoStandalonePaymentProvisioningFlowChooseCredentialsStepContext;
   v4 = [(NPKProtoStandalonePaymentProvisioningFlowChooseCredentialsStepContext *)&v8 description];
-  v5 = [(NPKProtoStandalonePaymentProvisioningFlowChooseCredentialsStepContext *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NPKProtoStandalonePaymentProvisioningFlowChooseCredentialsStepContext *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -64,7 +64,7 @@
 - (id)dictionaryRepresentation
 {
   v31 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if ([(NSMutableArray *)self->_remoteCredentials count])
   {
     v4 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{-[NSMutableArray count](self->_remoteCredentials, "count")}];
@@ -87,8 +87,8 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v25 + 1) + 8 * i) dictionaryRepresentation];
-          [v4 addObject:v10];
+          dictionaryRepresentation = [*(*(&v25 + 1) + 8 * i) dictionaryRepresentation];
+          [v4 addObject:dictionaryRepresentation];
         }
 
         v7 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v25 objects:v30 count:16];
@@ -97,7 +97,7 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKey:@"remoteCredentials"];
+    [dictionary setObject:v4 forKey:@"remoteCredentials"];
   }
 
   if ([(NSMutableArray *)self->_credentials count])
@@ -122,8 +122,8 @@
             objc_enumerationMutation(v12);
           }
 
-          v17 = [*(*(&v21 + 1) + 8 * j) dictionaryRepresentation];
-          [v11 addObject:v17];
+          dictionaryRepresentation2 = [*(*(&v21 + 1) + 8 * j) dictionaryRepresentation];
+          [v11 addObject:dictionaryRepresentation2];
         }
 
         v14 = [(NSMutableArray *)v12 countByEnumeratingWithState:&v21 objects:v29 count:16];
@@ -132,24 +132,24 @@
       while (v14);
     }
 
-    [v3 setObject:v11 forKey:@"credentials"];
+    [dictionary setObject:v11 forKey:@"credentials"];
   }
 
   if (*&self->_has)
   {
     v18 = [MEMORY[0x277CCABB0] numberWithBool:self->_allowsManualEntry];
-    [v3 setObject:v18 forKey:@"allowsManualEntry"];
+    [dictionary setObject:v18 forKey:@"allowsManualEntry"];
   }
 
   v19 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
@@ -223,50 +223,50 @@
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v12 = a3;
+  toCopy = to;
   if ([(NPKProtoStandalonePaymentProvisioningFlowChooseCredentialsStepContext *)self remoteCredentialsCount])
   {
-    [v12 clearRemoteCredentials];
-    v4 = [(NPKProtoStandalonePaymentProvisioningFlowChooseCredentialsStepContext *)self remoteCredentialsCount];
-    if (v4)
+    [toCopy clearRemoteCredentials];
+    remoteCredentialsCount = [(NPKProtoStandalonePaymentProvisioningFlowChooseCredentialsStepContext *)self remoteCredentialsCount];
+    if (remoteCredentialsCount)
     {
-      v5 = v4;
+      v5 = remoteCredentialsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(NPKProtoStandalonePaymentProvisioningFlowChooseCredentialsStepContext *)self remoteCredentialsAtIndex:i];
-        [v12 addRemoteCredentials:v7];
+        [toCopy addRemoteCredentials:v7];
       }
     }
   }
 
   if ([(NPKProtoStandalonePaymentProvisioningFlowChooseCredentialsStepContext *)self credentialsCount])
   {
-    [v12 clearCredentials];
-    v8 = [(NPKProtoStandalonePaymentProvisioningFlowChooseCredentialsStepContext *)self credentialsCount];
-    if (v8)
+    [toCopy clearCredentials];
+    credentialsCount = [(NPKProtoStandalonePaymentProvisioningFlowChooseCredentialsStepContext *)self credentialsCount];
+    if (credentialsCount)
     {
-      v9 = v8;
+      v9 = credentialsCount;
       for (j = 0; j != v9; ++j)
       {
         v11 = [(NPKProtoStandalonePaymentProvisioningFlowChooseCredentialsStepContext *)self credentialsAtIndex:j];
-        [v12 addCredentials:v11];
+        [toCopy addCredentials:v11];
       }
     }
   }
 
   if (*&self->_has)
   {
-    v12[24] = self->_allowsManualEntry;
-    v12[28] |= 1u;
+    toCopy[24] = self->_allowsManualEntry;
+    toCopy[28] |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v30 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
@@ -287,7 +287,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v24 + 1) + 8 * v10) copyWithZone:a3];
+        v11 = [*(*(&v24 + 1) + 8 * v10) copyWithZone:zone];
         [v5 addRemoteCredentials:v11];
 
         ++v10;
@@ -320,7 +320,7 @@
           objc_enumerationMutation(v12);
         }
 
-        v17 = [*(*(&v20 + 1) + 8 * v16) copyWithZone:{a3, v20}];
+        v17 = [*(*(&v20 + 1) + 8 * v16) copyWithZone:{zone, v20}];
         [v5 addCredentials:v17];
 
         ++v16;
@@ -343,16 +343,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_8;
   }
 
   remoteCredentials = self->_remoteCredentials;
-  if (remoteCredentials | *(v4 + 2))
+  if (remoteCredentials | *(equalCopy + 2))
   {
     if (![(NSMutableArray *)remoteCredentials isEqual:?])
     {
@@ -361,7 +361,7 @@
   }
 
   credentials = self->_credentials;
-  if (credentials | *(v4 + 1))
+  if (credentials | *(equalCopy + 1))
   {
     if (![(NSMutableArray *)credentials isEqual:?])
     {
@@ -369,10 +369,10 @@
     }
   }
 
-  v7 = (*(v4 + 28) & 1) == 0;
+  v7 = (*(equalCopy + 28) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 28) & 1) == 0)
+    if ((*(equalCopy + 28) & 1) == 0)
     {
 LABEL_8:
       v7 = 0;
@@ -381,13 +381,13 @@ LABEL_8:
 
     if (self->_allowsManualEntry)
     {
-      if ((*(v4 + 24) & 1) == 0)
+      if ((*(equalCopy + 24) & 1) == 0)
       {
         goto LABEL_8;
       }
     }
 
-    else if (*(v4 + 24))
+    else if (*(equalCopy + 24))
     {
       goto LABEL_8;
     }
@@ -417,15 +417,15 @@ LABEL_9:
   return v4 ^ v3 ^ v5;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fromCopy = from;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v5 = *(v4 + 2);
+  v5 = *(fromCopy + 2);
   v6 = [v5 countByEnumeratingWithState:&v20 objects:v25 count:16];
   if (v6)
   {
@@ -455,7 +455,7 @@ LABEL_9:
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v10 = *(v4 + 1);
+  v10 = *(fromCopy + 1);
   v11 = [v10 countByEnumeratingWithState:&v16 objects:v24 count:16];
   if (v11)
   {
@@ -481,9 +481,9 @@ LABEL_9:
     while (v12);
   }
 
-  if (*(v4 + 28))
+  if (*(fromCopy + 28))
   {
-    self->_allowsManualEntry = *(v4 + 24);
+    self->_allowsManualEntry = *(fromCopy + 24);
     *&self->_has |= 1u;
   }
 

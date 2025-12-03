@@ -1,37 +1,37 @@
 @interface SLFacebookGraphUtils
-+ (id)_likeQueryStringForURL:(id)a3 flags:(unint64_t)a4;
-+ (id)_parseServerResponse:(id)a3 error:(id *)a4;
-+ (void)_likeURL:(id)a3 requestMethod:(int64_t)a4 account:(id)a5 completion:(id)a6;
-+ (void)fetchLikeStatusForURL:(id)a3 flags:(id)a4 account:(id)a5 completion:(id)a6;
++ (id)_likeQueryStringForURL:(id)l flags:(unint64_t)flags;
++ (id)_parseServerResponse:(id)response error:(id *)error;
++ (void)_likeURL:(id)l requestMethod:(int64_t)method account:(id)account completion:(id)completion;
++ (void)fetchLikeStatusForURL:(id)l flags:(id)flags account:(id)account completion:(id)completion;
 @end
 
 @implementation SLFacebookGraphUtils
 
-+ (void)_likeURL:(id)a3 requestMethod:(int64_t)a4 account:(id)a5 completion:(id)a6
++ (void)_likeURL:(id)l requestMethod:(int64_t)method account:(id)account completion:(id)completion
 {
   v7 = MEMORY[0x1E696ABC0];
   v8 = *MEMORY[0x1E6959978];
-  v9 = a6;
+  completionCopy = completion;
   v10 = [v7 errorWithDomain:v8 code:3 userInfo:0];
-  (*(a6 + 2))(v9, v10);
+  (*(completion + 2))(completionCopy, v10);
 }
 
-+ (void)fetchLikeStatusForURL:(id)a3 flags:(id)a4 account:(id)a5 completion:(id)a6
++ (void)fetchLikeStatusForURL:(id)l flags:(id)flags account:(id)account completion:(id)completion
 {
   v7 = MEMORY[0x1E696ABC0];
   v8 = *MEMORY[0x1E6959978];
-  v9 = a6;
+  completionCopy = completion;
   v10 = [v7 errorWithDomain:v8 code:3 userInfo:0];
-  (*(a6 + 2))(v9, 0, v10);
+  (*(completion + 2))(completionCopy, 0, v10);
 }
 
-+ (id)_parseServerResponse:(id)a3 error:(id *)a4
++ (id)_parseServerResponse:(id)response error:(id *)error
 {
-  v4 = a4;
+  errorCopy = error;
   v21[1] = *MEMORY[0x1E69E9840];
-  v5 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:4 error:a4];
+  v5 = [MEMORY[0x1E696ACB0] JSONObjectWithData:response options:4 error:error];
   v6 = v5;
-  if (!v4)
+  if (!errorCopy)
   {
     if (v5)
     {
@@ -39,11 +39,11 @@
     }
 
 LABEL_7:
-    v4 = 0;
+    errorCopy = 0;
     goto LABEL_22;
   }
 
-  if (*v4)
+  if (*errorCopy)
   {
     v7 = 1;
   }
@@ -65,7 +65,7 @@ LABEL_9:
     v8 = [v6 objectForKey:@"error"];
     if (v8)
     {
-      if (v4)
+      if (errorCopy)
       {
         objc_opt_class();
         if (objc_opt_isKindOfClass())
@@ -76,12 +76,12 @@ LABEL_9:
           v12 = MEMORY[0x1E696ABC0];
           if (v9 && v10)
           {
-            v13 = [v9 integerValue];
+            integerValue = [v9 integerValue];
             v20 = *MEMORY[0x1E696A578];
             v21[0] = v11;
             v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v21 forKeys:&v20 count:1];
             v15 = v12;
-            v16 = v13;
+            v16 = integerValue;
           }
 
           else
@@ -93,46 +93,46 @@ LABEL_9:
             v16 = 1;
           }
 
-          *v4 = [v15 errorWithDomain:@"com.apple.sociald.facebook" code:v16 userInfo:v14];
+          *errorCopy = [v15 errorWithDomain:@"com.apple.sociald.facebook" code:v16 userInfo:v14];
         }
 
-        v4 = 0;
+        errorCopy = 0;
       }
     }
 
     else
     {
-      v4 = v6;
+      errorCopy = v6;
     }
   }
 
   else
   {
-    v4 = v6;
+    errorCopy = v6;
   }
 
 LABEL_22:
 
-  return v4;
+  return errorCopy;
 }
 
-+ (id)_likeQueryStringForURL:(id)a3 flags:(unint64_t)a4
++ (id)_likeQueryStringForURL:(id)l flags:(unint64_t)flags
 {
-  v4 = a4;
-  v5 = a3;
+  flagsCopy = flags;
+  lCopy = l;
   v6 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:4];
-  if ((v4 & 1) == 0)
+  if ((flagsCopy & 1) == 0)
   {
-    if ((v4 & 2) == 0)
+    if ((flagsCopy & 2) == 0)
     {
       goto LABEL_3;
     }
 
 LABEL_7:
-    v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"SELECT like_count FROM link_stat where url=%@", v5];
-    [v6 setObject:v10 forKeyedSubscript:@"globalCount"];
+    lCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"SELECT like_count FROM link_stat where url=%@", lCopy];
+    [v6 setObject:lCopy forKeyedSubscript:@"globalCount"];
 
-    if ((v4 & 8) == 0)
+    if ((flagsCopy & 8) == 0)
     {
       goto LABEL_4;
     }
@@ -143,22 +143,22 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"SELECT user_id FROM url_like WHERE user_id = me() and url=%@", v5];
-  [v6 setObject:v9 forKeyedSubscript:@"me"];
+  lCopy2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"SELECT user_id FROM url_like WHERE user_id = me() and url=%@", lCopy];
+  [v6 setObject:lCopy2 forKeyedSubscript:@"me"];
 
-  if ((v4 & 2) != 0)
+  if ((flagsCopy & 2) != 0)
   {
     goto LABEL_7;
   }
 
 LABEL_3:
-  if ((v4 & 8) != 0)
+  if ((flagsCopy & 8) != 0)
   {
     goto LABEL_8;
   }
 
 LABEL_4:
-  if ((v4 & 4) == 0)
+  if ((flagsCopy & 4) == 0)
   {
     goto LABEL_10;
   }
@@ -166,8 +166,8 @@ LABEL_4:
   v7 = @"friendCount";
   v8 = @"SELECT user_id FROM url_like WHERE user_id IN (Select uid2 from friend where uid1 = me()) and url=%@";
 LABEL_9:
-  v11 = [MEMORY[0x1E696AEC0] stringWithFormat:v8, v5];
-  [v6 setObject:v11 forKeyedSubscript:v7];
+  lCopy3 = [MEMORY[0x1E696AEC0] stringWithFormat:v8, lCopy];
+  [v6 setObject:lCopy3 forKeyedSubscript:v7];
 
 LABEL_10:
   v12 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v6 options:0 error:0];

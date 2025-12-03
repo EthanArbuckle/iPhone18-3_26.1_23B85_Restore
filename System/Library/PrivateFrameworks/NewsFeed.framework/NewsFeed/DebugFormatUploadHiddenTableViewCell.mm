@@ -1,15 +1,15 @@
 @interface DebugFormatUploadHiddenTableViewCell
-- (_TtC8NewsFeed36DebugFormatUploadHiddenTableViewCell)initWithCoder:(id)a3;
-- (_TtC8NewsFeed36DebugFormatUploadHiddenTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (_TtC8NewsFeed36DebugFormatUploadHiddenTableViewCell)initWithCoder:(id)coder;
+- (_TtC8NewsFeed36DebugFormatUploadHiddenTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 @end
 
 @implementation DebugFormatUploadHiddenTableViewCell
 
-- (_TtC8NewsFeed36DebugFormatUploadHiddenTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC8NewsFeed36DebugFormatUploadHiddenTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
     v4 = sub_1D726207C();
   }
@@ -23,7 +23,7 @@
   return sub_1D7055A8C(v4, v5);
 }
 
-- (_TtC8NewsFeed36DebugFormatUploadHiddenTableViewCell)initWithCoder:(id)a3
+- (_TtC8NewsFeed36DebugFormatUploadHiddenTableViewCell)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC8NewsFeed36DebugFormatUploadHiddenTableViewCell_button;
   *(&self->super.super.super.super.isa + v4) = [objc_opt_self() buttonWithType_];
@@ -42,8 +42,8 @@
   v2 = v13.receiver;
   [(DebugFormatUploadHiddenTableViewCell *)&v13 layoutSubviews];
   v3 = *&v2[OBJC_IVAR____TtC8NewsFeed36DebugFormatUploadHiddenTableViewCell_button];
-  v4 = [v2 contentView];
-  [v4 bounds];
+  contentView = [v2 contentView];
+  [contentView bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;

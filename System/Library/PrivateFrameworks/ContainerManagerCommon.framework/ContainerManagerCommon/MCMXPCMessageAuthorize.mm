@@ -1,19 +1,19 @@
 @interface MCMXPCMessageAuthorize
 - (_TtC22ContainerManagerCommon22MCMXPCMessageAuthorize)init;
-- (_TtC22ContainerManagerCommon22MCMXPCMessageAuthorize)initWithContext:(id)a3;
-- (_TtC22ContainerManagerCommon22MCMXPCMessageAuthorize)initWithXPCObject:(id)a3 context:(id)a4 error:(unint64_t *)a5;
+- (_TtC22ContainerManagerCommon22MCMXPCMessageAuthorize)initWithContext:(id)context;
+- (_TtC22ContainerManagerCommon22MCMXPCMessageAuthorize)initWithXPCObject:(id)object context:(id)context error:(unint64_t *)error;
 @end
 
 @implementation MCMXPCMessageAuthorize
 
-- (_TtC22ContainerManagerCommon22MCMXPCMessageAuthorize)initWithXPCObject:(id)a3 context:(id)a4 error:(unint64_t *)a5
+- (_TtC22ContainerManagerCommon22MCMXPCMessageAuthorize)initWithXPCObject:(id)object context:(id)context error:(unint64_t *)error
 {
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
-  return sub_1DF2DE5A0(a3, a4, a5);
+  return sub_1DF2DE5A0(object, context, error);
 }
 
-- (_TtC22ContainerManagerCommon22MCMXPCMessageAuthorize)initWithContext:(id)a3
+- (_TtC22ContainerManagerCommon22MCMXPCMessageAuthorize)initWithContext:(id)context
 {
   v4 = (self + OBJC_IVAR____TtC22ContainerManagerCommon22MCMXPCMessageAuthorize_auditToken);
   *v4 = 0u;
@@ -23,7 +23,7 @@
   v7.receiver = self;
   v7.super_class = type metadata accessor for MCMXPCMessageAuthorize();
   swift_unknownObjectRetain();
-  v5 = [(MCMXPCMessageBase *)&v7 initWithContext:a3];
+  v5 = [(MCMXPCMessageBase *)&v7 initWithContext:context];
   swift_unknownObjectRelease();
   if (v5)
   {

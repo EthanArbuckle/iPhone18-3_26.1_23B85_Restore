@@ -1,11 +1,11 @@
 @interface ADBannerView
-+ (CGSize)sizeFromBannerContentSizeIdentifier:(id)a3;
++ (CGSize)sizeFromBannerContentSizeIdentifier:(id)identifier;
 - (id)delegate;
 @end
 
 @implementation ADBannerView
 
-+ (CGSize)sizeFromBannerContentSizeIdentifier:(id)a3
++ (CGSize)sizeFromBannerContentSizeIdentifier:(id)identifier
 {
   v3 = *MEMORY[0x277CBF3A8];
   v4 = *(MEMORY[0x277CBF3A8] + 8);

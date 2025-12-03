@@ -1,9 +1,9 @@
 @interface WKThumbnailWallpaper
 + (id)na_identity;
-- (BOOL)copyWallpaperContentsToDestinationDirectoryURL:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (WKThumbnailWallpaper)initWithIdentifier:(int64_t)a3 name:(id)a4 type:(unint64_t)a5 representedType:(unint64_t)a6 backingType:(unint64_t)a7 thumbnailImageURL:(id)a8;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)copyWallpaperContentsToDestinationDirectoryURL:(id)l error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (WKThumbnailWallpaper)initWithIdentifier:(int64_t)identifier name:(id)name type:(unint64_t)type representedType:(unint64_t)representedType backingType:(unint64_t)backingType thumbnailImageURL:(id)l;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)descriptionBuilderBlock;
 - (id)propertyListRepresentation;
 - (id)thumbnailImage;
@@ -12,15 +12,15 @@
 
 @implementation WKThumbnailWallpaper
 
-- (WKThumbnailWallpaper)initWithIdentifier:(int64_t)a3 name:(id)a4 type:(unint64_t)a5 representedType:(unint64_t)a6 backingType:(unint64_t)a7 thumbnailImageURL:(id)a8
+- (WKThumbnailWallpaper)initWithIdentifier:(int64_t)identifier name:(id)name type:(unint64_t)type representedType:(unint64_t)representedType backingType:(unint64_t)backingType thumbnailImageURL:(id)l
 {
-  v14 = a8;
+  lCopy = l;
   v19.receiver = self;
   v19.super_class = WKThumbnailWallpaper;
-  v15 = [(WKAbstractWallpaper *)&v19 initWithIdentifier:a3 name:a4 type:a5 representedType:a6 backingType:a7];
+  v15 = [(WKAbstractWallpaper *)&v19 initWithIdentifier:identifier name:name type:type representedType:representedType backingType:backingType];
   if (v15)
   {
-    v16 = [v14 copy];
+    v16 = [lCopy copy];
     thumbnailImageURL = v15->_thumbnailImageURL;
     v15->_thumbnailImageURL = v16;
   }
@@ -28,16 +28,16 @@
   return v15;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(WKAbstractWallpaper *)self identifier];
-  v6 = [(WKAbstractWallpaper *)self name];
-  v7 = [(WKAbstractWallpaper *)self type];
-  v8 = [(WKAbstractWallpaper *)self representedType];
-  v9 = [(WKAbstractWallpaper *)self backingType];
-  v10 = [(WKThumbnailWallpaper *)self thumbnailImageURL];
-  v11 = [v4 initWithIdentifier:v5 name:v6 type:v7 representedType:v8 backingType:v9 thumbnailImageURL:v10];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  identifier = [(WKAbstractWallpaper *)self identifier];
+  name = [(WKAbstractWallpaper *)self name];
+  type = [(WKAbstractWallpaper *)self type];
+  representedType = [(WKAbstractWallpaper *)self representedType];
+  backingType = [(WKAbstractWallpaper *)self backingType];
+  thumbnailImageURL = [(WKThumbnailWallpaper *)self thumbnailImageURL];
+  v11 = [v4 initWithIdentifier:identifier name:name type:type representedType:representedType backingType:backingType thumbnailImageURL:thumbnailImageURL];
 
   return v11;
 }
@@ -46,17 +46,17 @@
 {
   v15.receiver = self;
   v15.super_class = WKThumbnailWallpaper;
-  v3 = [(WKAbstractWallpaper *)&v15 propertyListRepresentation];
-  v4 = [MEMORY[0x1E695DF90] dictionary];
-  v5 = v4;
-  if (v3)
+  propertyListRepresentation = [(WKAbstractWallpaper *)&v15 propertyListRepresentation];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v5 = dictionary;
+  if (propertyListRepresentation)
   {
-    [v4 addEntriesFromDictionary:v3];
+    [dictionary addEntriesFromDictionary:propertyListRepresentation];
   }
 
-  v6 = [(WKThumbnailWallpaper *)self thumbnailImageURL];
-  v7 = [v6 lastPathComponent];
-  [v5 na_safeSetObject:v7 forKey:@"thumbnailImageFileName"];
+  thumbnailImageURL = [(WKThumbnailWallpaper *)self thumbnailImageURL];
+  lastPathComponent = [thumbnailImageURL lastPathComponent];
+  [v5 na_safeSetObject:lastPathComponent forKey:@"thumbnailImageFileName"];
 
   v8 = objc_opt_class();
   v9 = NSStringFromClass(v8);
@@ -73,27 +73,27 @@
   return v5;
 }
 
-- (BOOL)copyWallpaperContentsToDestinationDirectoryURL:(id)a3 error:(id *)a4
+- (BOOL)copyWallpaperContentsToDestinationDirectoryURL:(id)l error:(id *)error
 {
-  v6 = a3;
-  v7 = [(WKThumbnailWallpaper *)self thumbnailImageURL];
-  v8 = [v7 lastPathComponent];
-  v9 = [v6 URLByAppendingPathComponent:v8];
+  lCopy = l;
+  thumbnailImageURL = [(WKThumbnailWallpaper *)self thumbnailImageURL];
+  lastPathComponent = [thumbnailImageURL lastPathComponent];
+  v9 = [lCopy URLByAppendingPathComponent:lastPathComponent];
 
-  v10 = [MEMORY[0x1E696AC08] defaultManager];
-  v11 = [v9 path];
-  LOBYTE(v8) = [v10 fileExistsAtPath:v11];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  path = [v9 path];
+  LOBYTE(lastPathComponent) = [defaultManager fileExistsAtPath:path];
 
-  if (v8)
+  if (lastPathComponent)
   {
     v12 = 1;
   }
 
   else
   {
-    v13 = [MEMORY[0x1E696AC08] defaultManager];
-    v14 = [(WKThumbnailWallpaper *)self thumbnailImageURL];
-    v12 = [v13 copyItemAtURL:v14 toURL:v9 error:a4];
+    defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+    thumbnailImageURL2 = [(WKThumbnailWallpaper *)self thumbnailImageURL];
+    v12 = [defaultManager2 copyItemAtURL:thumbnailImageURL2 toURL:v9 error:error];
   }
 
   return v12;
@@ -101,14 +101,14 @@
 
 - (id)thumbnailImage
 {
-  v3 = [(WKThumbnailWallpaper *)self _thumbnailImage];
+  _thumbnailImage = [(WKThumbnailWallpaper *)self _thumbnailImage];
 
-  if (!v3)
+  if (!_thumbnailImage)
   {
     v4 = MEMORY[0x1E69DCAB8];
-    v5 = [(WKThumbnailWallpaper *)self thumbnailImageURL];
-    v6 = [v5 path];
-    v7 = [v4 imageWithContentsOfFile:v6];
+    thumbnailImageURL = [(WKThumbnailWallpaper *)self thumbnailImageURL];
+    path = [thumbnailImageURL path];
+    v7 = [v4 imageWithContentsOfFile:path];
     [(WKThumbnailWallpaper *)self set_thumbnailImage:v7];
   }
 
@@ -121,7 +121,7 @@
   v4[1] = 3221225472;
   v4[2] = __35__WKThumbnailWallpaper_na_identity__block_invoke;
   v4[3] = &__block_descriptor_40_e5__8__0l;
-  v4[4] = a1;
+  v4[4] = self;
   v2 = __35__WKThumbnailWallpaper_na_identity__block_invoke(v4);
 
   return v2;
@@ -170,19 +170,19 @@ id __35__WKThumbnailWallpaper_na_identity__block_invoke_3(uint64_t a1)
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [objc_opt_class() na_identity];
-  LOBYTE(self) = [v5 isObject:self equalToObject:v4];
+  equalCopy = equal;
+  na_identity = [objc_opt_class() na_identity];
+  LOBYTE(self) = [na_identity isObject:self equalToObject:equalCopy];
 
   return self;
 }
 
 - (unint64_t)hash
 {
-  v3 = [objc_opt_class() na_identity];
-  v4 = [v3 hashOfObject:self];
+  na_identity = [objc_opt_class() na_identity];
+  v4 = [na_identity hashOfObject:self];
 
   return v4;
 }
@@ -191,14 +191,14 @@ id __35__WKThumbnailWallpaper_na_identity__block_invoke_3(uint64_t a1)
 {
   v9.receiver = self;
   v9.super_class = WKThumbnailWallpaper;
-  v3 = [(WKAbstractWallpaper *)&v9 descriptionBuilderBlock];
+  descriptionBuilderBlock = [(WKAbstractWallpaper *)&v9 descriptionBuilderBlock];
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __47__WKThumbnailWallpaper_descriptionBuilderBlock__block_invoke;
   aBlock[3] = &unk_1E8766BF0;
   objc_copyWeak(&v7, &location);
-  aBlock[4] = v3;
+  aBlock[4] = descriptionBuilderBlock;
   v4 = _Block_copy(aBlock);
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);

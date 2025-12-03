@@ -1,26 +1,26 @@
 @interface CKDRecordResponse
-- (CKDRecordResponse)initWithRecordID:(id)a3 record:(id)a4 etag:(id)a5;
+- (CKDRecordResponse)initWithRecordID:(id)d record:(id)record etag:(id)etag;
 - (id)CKPropertiesDescription;
 @end
 
 @implementation CKDRecordResponse
 
-- (CKDRecordResponse)initWithRecordID:(id)a3 record:(id)a4 etag:(id)a5
+- (CKDRecordResponse)initWithRecordID:(id)d record:(id)record etag:(id)etag
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  recordCopy = record;
+  etagCopy = etag;
   v21.receiver = self;
   v21.super_class = CKDRecordResponse;
   v13 = [(CKDRecordResponse *)&v21 init];
   if (v13)
   {
-    v14 = objc_msgSend_copy(v8, v11, v12);
+    v14 = objc_msgSend_copy(dCopy, v11, v12);
     recordID = v13->_recordID;
     v13->_recordID = v14;
 
-    objc_storeStrong(&v13->_record, a4);
-    v18 = objc_msgSend_copy(v10, v16, v17);
+    objc_storeStrong(&v13->_record, record);
+    v18 = objc_msgSend_copy(etagCopy, v16, v17);
     etag = v13->_etag;
     v13->_etag = v18;
   }

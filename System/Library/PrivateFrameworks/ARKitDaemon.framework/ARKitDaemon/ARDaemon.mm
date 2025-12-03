@@ -2,17 +2,17 @@
 + (id)_fullDescription;
 + (id)_runningDaemons;
 + (id)createAnonymousListenerDaemon;
-+ (id)createAnonymousListenerDaemonWithReplayURL:(id)a3 replayEnableTelemetry:(BOOL)a4 deterministic:(BOOL)a5 replayDelegate:(id)a6 isDryRun:(BOOL)a7;
-- (ARDaemon)initWithConfiguration:(id)a3 spawnTime:(id)a4 watchdogMonitor:(id)a5 graphScheduler:(id)a6 replayDelegate:(id)a7;
++ (id)createAnonymousListenerDaemonWithReplayURL:(id)l replayEnableTelemetry:(BOOL)telemetry deterministic:(BOOL)deterministic replayDelegate:(id)delegate isDryRun:(BOOL)run;
+- (ARDaemon)initWithConfiguration:(id)configuration spawnTime:(id)time watchdogMonitor:(id)monitor graphScheduler:(id)scheduler replayDelegate:(id)delegate;
 - (id)_fullDescription;
-- (id)listenerEndPointForServiceNamed:(id)a3;
+- (id)listenerEndPointForServiceNamed:(id)named;
 - (void)_heartbeat;
 - (void)dealloc;
-- (void)memoryPressureMonitor:(id)a3 didUpdateProcessMemoryPressureCondition:(int64_t)a4;
-- (void)memoryPressureMonitor:(id)a3 didUpdateSystemMemoryPressureCondition:(int64_t)a4;
+- (void)memoryPressureMonitor:(id)monitor didUpdateProcessMemoryPressureCondition:(int64_t)condition;
+- (void)memoryPressureMonitor:(id)monitor didUpdateSystemMemoryPressureCondition:(int64_t)condition;
 - (void)printInfo;
 - (void)shutdown;
-- (void)startWithServices:(id)a3;
+- (void)startWithServices:(id)services;
 @end
 
 @implementation ARDaemon
@@ -24,9 +24,9 @@
   return [v2 createAnonymousListenerDaemonWithReplayURL:0 deterministic:0 replayDelegate:0];
 }
 
-+ (id)createAnonymousListenerDaemonWithReplayURL:(id)a3 replayEnableTelemetry:(BOOL)a4 deterministic:(BOOL)a5 replayDelegate:(id)a6 isDryRun:(BOOL)a7
++ (id)createAnonymousListenerDaemonWithReplayURL:(id)l replayEnableTelemetry:(BOOL)telemetry deterministic:(BOOL)deterministic replayDelegate:(id)delegate isDryRun:(BOOL)run
 {
-  v7 = a6;
+  delegateCopy = delegate;
   v8 = ARDaemonLocalAnonymousListenerDaemon();
   v9 = v8;
   if (v8)
@@ -39,20 +39,20 @@
     v11 = [ARDaemon alloc];
     v12 = objc_opt_new();
     v13 = objc_opt_new();
-    v10 = [(ARDaemon *)v11 initWithConfiguration:v12 spawnTime:v13 watchdogMonitor:0 graphScheduler:0 replayDelegate:v7];
+    v10 = [(ARDaemon *)v11 initWithConfiguration:v12 spawnTime:v13 watchdogMonitor:0 graphScheduler:0 replayDelegate:delegateCopy];
   }
 
   return v10;
 }
 
-- (ARDaemon)initWithConfiguration:(id)a3 spawnTime:(id)a4 watchdogMonitor:(id)a5 graphScheduler:(id)a6 replayDelegate:(id)a7
+- (ARDaemon)initWithConfiguration:(id)configuration spawnTime:(id)time watchdogMonitor:(id)monitor graphScheduler:(id)scheduler replayDelegate:(id)delegate
 {
   v61 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  configurationCopy = configuration;
+  timeCopy = time;
+  monitorCopy = monitor;
+  schedulerCopy = scheduler;
+  delegateCopy = delegate;
   v18 = _ARLogDaemon_2();
   if (os_signpost_enabled(v18))
   {
@@ -66,8 +66,8 @@
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_configuration, a3);
-    objc_storeStrong(&v20->_spawnTime, a4);
+    objc_storeStrong(&v19->_configuration, configuration);
+    objc_storeStrong(&v20->_spawnTime, time);
     if (([(ARDaemonConfiguration *)v20->_configuration isInProcess]& 1) == 0)
     {
       v21 = dispatch_source_create(MEMORY[0x277D85D38], 0, 1uLL, MEMORY[0x277D85CD0]);
@@ -162,12 +162,12 @@
     }
 
     v43 = objc_opt_new();
-    [v15 updateStatus:6];
-    v44 = [[ARServer alloc] initWithDaemonConfiguration:v13 spawnTime:v20->_spawnTime sessionUUID:v20->_sessionUUID watchdogMonitor:v15 executionManager:v43];
+    [monitorCopy updateStatus:6];
+    v44 = [[ARServer alloc] initWithDaemonConfiguration:configurationCopy spawnTime:v20->_spawnTime sessionUUID:v20->_sessionUUID watchdogMonitor:monitorCopy executionManager:v43];
     server = v20->_server;
     v20->_server = v44;
 
-    [v15 updateStatus:7];
+    [monitorCopy updateStatus:7];
     v46 = _ARLogDaemon_2();
     if (os_log_type_enabled(v46, OS_LOG_TYPE_DEFAULT))
     {
@@ -181,7 +181,7 @@
     }
 
     v49 = v20->_server;
-    v50 = [[ARDaemonServiceListener alloc] initWithDelegate:v49 watchdogMonitor:v15 isInProcess:[(ARDaemonConfiguration *)v20->_configuration isInProcess]];
+    v50 = [[ARDaemonServiceListener alloc] initWithDelegate:v49 watchdogMonitor:monitorCopy isInProcess:[(ARDaemonConfiguration *)v20->_configuration isInProcess]];
     listener = v20->_listener;
     v20->_listener = v50;
 
@@ -230,7 +230,7 @@ void __90__ARDaemon_initWithConfiguration_spawnTime_watchdogMonitor_graphSchedul
     *buf = 138543618;
     v10 = v6;
     v11 = 2048;
-    v12 = self;
+    selfCopy = self;
     _os_log_impl(&dword_23D391000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ <%p>: dealloc", buf, 0x16u);
   }
 
@@ -251,13 +251,13 @@ void __90__ARDaemon_initWithConfiguration_spawnTime_watchdogMonitor_graphSchedul
     *buf = 138543618;
     v25 = v5;
     v26 = 2048;
-    v27 = self;
+    selfCopy2 = self;
     _os_log_impl(&dword_23D391000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ <%p>: Initialized with frameworks:", buf, 0x16u);
   }
 
   v19 = ARFrameworkVersions();
-  v6 = [v19 allKeys];
-  v7 = [v6 sortedArrayUsingSelector:sel_compare_];
+  allKeys = [v19 allKeys];
+  v7 = [allKeys sortedArrayUsingSelector:sel_compare_];
 
   v22 = 0u;
   v23 = 0u;
@@ -288,7 +288,7 @@ void __90__ARDaemon_initWithConfiguration_spawnTime_watchdogMonitor_graphSchedul
           *buf = 138544130;
           v25 = v16;
           v26 = 2048;
-          v27 = self;
+          selfCopy2 = self;
           v28 = 2112;
           v29 = v13;
           v30 = 2112;
@@ -317,7 +317,7 @@ void __90__ARDaemon_initWithConfiguration_spawnTime_watchdogMonitor_graphSchedul
     v13 = 138543618;
     v14 = v5;
     v15 = 2048;
-    v16 = self;
+    selfCopy = self;
     _os_log_impl(&dword_23D391000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ <%p>: Shutting down", &v13, 0x16u);
   }
 
@@ -373,7 +373,7 @@ void __90__ARDaemon_initWithConfiguration_spawnTime_watchdogMonitor_graphSchedul
     *buf = 138544642;
     v24 = v12;
     v25 = 2048;
-    v26 = self;
+    selfCopy = self;
     v27 = 2114;
     v28 = v7;
     v29 = 2114;
@@ -403,10 +403,10 @@ void __90__ARDaemon_initWithConfiguration_spawnTime_watchdogMonitor_graphSchedul
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startWithServices:(id)a3
+- (void)startWithServices:(id)services
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  servicesCopy = services;
   v5 = _ARLogDaemon_2();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -415,7 +415,7 @@ void __90__ARDaemon_initWithConfiguration_spawnTime_watchdogMonitor_graphSchedul
     *buf = 138543618;
     v23 = v7;
     v24 = 2048;
-    v25 = self;
+    selfCopy = self;
     _os_log_impl(&dword_23D391000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ <%p>: Starting up", buf, 0x16u);
   }
 
@@ -426,7 +426,7 @@ void __90__ARDaemon_initWithConfiguration_spawnTime_watchdogMonitor_graphSchedul
     dispatch_activate(heartbeatTimer);
   }
 
-  v9 = [v4 copy];
+  v9 = [servicesCopy copy];
   runningRemoteServices = self->_runningRemoteServices;
   self->_runningRemoteServices = v9;
 
@@ -465,17 +465,17 @@ void __90__ARDaemon_initWithConfiguration_spawnTime_watchdogMonitor_graphSchedul
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (id)listenerEndPointForServiceNamed:(id)a3
+- (id)listenerEndPointForServiceNamed:(id)named
 {
-  v4 = a3;
-  v5 = [(ARServer *)self->_server listenerEndPointForServiceNamed:v4];
-  if (!v5)
+  namedCopy = named;
+  endpoint = [(ARServer *)self->_server listenerEndPointForServiceNamed:namedCopy];
+  if (!endpoint)
   {
-    v6 = [(ARDaemonServiceListener *)self->_listener listenerForServiceNamed:v4];
-    v5 = [v6 endpoint];
+    v6 = [(ARDaemonServiceListener *)self->_listener listenerForServiceNamed:namedCopy];
+    endpoint = [v6 endpoint];
   }
 
-  return v5;
+  return endpoint;
 }
 
 + (id)_runningDaemons
@@ -503,16 +503,16 @@ uint64_t __27__ARDaemon__runningDaemons__block_invoke()
   v2 = +[ARDaemon _runningDaemons];
   if ([v2 count] < 2)
   {
-    v4 = [v2 firstObject];
-    v3 = [v4 _fullDescription];
+    firstObject = [v2 firstObject];
+    _fullDescription = [firstObject _fullDescription];
   }
 
   else
   {
-    v3 = [v2 description];
+    _fullDescription = [v2 description];
   }
 
-  return v3;
+  return _fullDescription;
 }
 
 - (id)_fullDescription
@@ -521,13 +521,13 @@ uint64_t __27__ARDaemon__runningDaemons__block_invoke()
   v4 = [(ARDaemon *)self description];
   v5 = [v3 stringWithFormat:@"%@\n", v4];
 
-  v6 = [(ARServer *)self->_server _fullDescription];
-  [v5 appendFormat:@"Server: %@\n", v6];
+  _fullDescription = [(ARServer *)self->_server _fullDescription];
+  [v5 appendFormat:@"Server: %@\n", _fullDescription];
 
   return v5;
 }
 
-- (void)memoryPressureMonitor:(id)a3 didUpdateProcessMemoryPressureCondition:(int64_t)a4
+- (void)memoryPressureMonitor:(id)monitor didUpdateProcessMemoryPressureCondition:(int64_t)condition
 {
   v21 = *MEMORY[0x277D85DE8];
   ARGetMemoryFootprint();
@@ -536,11 +536,11 @@ uint64_t __27__ARDaemon__runningDaemons__block_invoke()
   {
     v7 = objc_opt_class();
     v8 = NSStringFromClass(v7);
-    v9 = NSStringFromARMemoryPressureCondition(a4);
+    v9 = NSStringFromARMemoryPressureCondition(condition);
     *buf = 138544386;
     v12 = v8;
     v13 = 2048;
-    v14 = self;
+    selfCopy = self;
     v15 = 2112;
     v16 = v9;
     v17 = 2050;
@@ -553,7 +553,7 @@ uint64_t __27__ARDaemon__runningDaemons__block_invoke()
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)memoryPressureMonitor:(id)a3 didUpdateSystemMemoryPressureCondition:(int64_t)a4
+- (void)memoryPressureMonitor:(id)monitor didUpdateSystemMemoryPressureCondition:(int64_t)condition
 {
   v21 = *MEMORY[0x277D85DE8];
   ARGetMemoryFootprint();
@@ -562,11 +562,11 @@ uint64_t __27__ARDaemon__runningDaemons__block_invoke()
   {
     v7 = objc_opt_class();
     v8 = NSStringFromClass(v7);
-    v9 = NSStringFromARMemoryPressureCondition(a4);
+    v9 = NSStringFromARMemoryPressureCondition(condition);
     *buf = 138544386;
     v12 = v8;
     v13 = 2048;
-    v14 = self;
+    selfCopy = self;
     v15 = 2112;
     v16 = v9;
     v17 = 2050;

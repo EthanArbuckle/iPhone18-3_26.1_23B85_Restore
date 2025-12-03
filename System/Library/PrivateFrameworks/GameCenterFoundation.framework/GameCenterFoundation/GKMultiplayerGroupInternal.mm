@@ -41,11 +41,11 @@ void __53__GKMultiplayerGroupInternal_secureCodedPropertyKeys__block_invoke()
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(GKMultiplayerGroupInternal *)self groupID];
+  groupID = [(GKMultiplayerGroupInternal *)self groupID];
   v5 = [MEMORY[0x277CCABB0] numberWithInteger:{-[GKMultiplayerGroupInternal numberOfAutomached](self, "numberOfAutomached")}];
-  v6 = [(GKMultiplayerGroupInternal *)self participants];
+  participants = [(GKMultiplayerGroupInternal *)self participants];
   v7 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:{(-[GKMultiplayerGroupInternal playedAt](self, "playedAt") / 1000)}];
-  v8 = [v3 stringWithFormat:@"groupID: %@, number of automatched: %@ participants: %@ playedAt: %@", v4, v5, v6, v7];
+  v8 = [v3 stringWithFormat:@"groupID: %@, number of automatched: %@ participants: %@ playedAt: %@", groupID, v5, participants, v7];
 
   return v8;
 }

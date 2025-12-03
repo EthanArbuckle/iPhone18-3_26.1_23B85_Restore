@@ -1,51 +1,51 @@
 @interface MOPromptManager
 + (id)defaultManager;
-- (BOOL)_purgeEventsWithHandler:(id)a3;
-- (BOOL)analyzeTrendsInEvents:(id)a3 handler:(id)a4;
-- (BOOL)bundleEventsWithHandler:(id)a3;
-- (BOOL)clearEventsWithHandler:(id)a3;
-- (BOOL)collectEventsWithHandler:(id)a3;
-- (BOOL)fetchEventBundlesWithOptions:(id)a3 handler:(id)a4;
-- (BOOL)fetchEventBundlesWithPredicate:(id)a3 handler:(id)a4;
-- (BOOL)fetchEventsWithOptions:(id)a3 handler:(id)a4;
-- (BOOL)getDiagnosticReporterConfiguration:(id)a3;
-- (BOOL)getMomentsNotificationsSchedule:(id)a3;
-- (BOOL)getTimeToWriteNotificationsScheduleWithHandler:(id)a3;
-- (BOOL)printSettingValue:(id)a3 withType:(id)a4 handler:(id)a5;
-- (BOOL)purgeEventsWithHandler:(id)a3;
-- (BOOL)refreshEventsWithRefreshVariant:(unint64_t)a3 andHandler:(id)a4;
-- (BOOL)runAnalyticsWithHandler:(id)a3;
-- (BOOL)scheduleDatabaseUpgradeWithHandler:(id)a3;
-- (BOOL)setupMomentsNotificationsWithSchedule:(id)a3 options:(id)a4 handler:(id)a5;
-- (BOOL)setupPeriodicTimeToWriteMomentsNotificationsUsingDateComponents:(id)a3 defaultURL:(id)a4 handler:(id)a5;
-- (BOOL)softRefreshEventsWithRefreshVariant:(unint64_t)a3 andIgnoreLastTrigger:(BOOL)a4 andHandler:(id)a5;
-- (BOOL)storeEvents:(id)a3 handler:(id)a4;
-- (BOOL)testNotificationAnalyticsWithHandler:(id)a3;
-- (BOOL)uploadFeedbackWithDBStateToServer:(id)a3 handler:(id)a4;
+- (BOOL)_purgeEventsWithHandler:(id)handler;
+- (BOOL)analyzeTrendsInEvents:(id)events handler:(id)handler;
+- (BOOL)bundleEventsWithHandler:(id)handler;
+- (BOOL)clearEventsWithHandler:(id)handler;
+- (BOOL)collectEventsWithHandler:(id)handler;
+- (BOOL)fetchEventBundlesWithOptions:(id)options handler:(id)handler;
+- (BOOL)fetchEventBundlesWithPredicate:(id)predicate handler:(id)handler;
+- (BOOL)fetchEventsWithOptions:(id)options handler:(id)handler;
+- (BOOL)getDiagnosticReporterConfiguration:(id)configuration;
+- (BOOL)getMomentsNotificationsSchedule:(id)schedule;
+- (BOOL)getTimeToWriteNotificationsScheduleWithHandler:(id)handler;
+- (BOOL)printSettingValue:(id)value withType:(id)type handler:(id)handler;
+- (BOOL)purgeEventsWithHandler:(id)handler;
+- (BOOL)refreshEventsWithRefreshVariant:(unint64_t)variant andHandler:(id)handler;
+- (BOOL)runAnalyticsWithHandler:(id)handler;
+- (BOOL)scheduleDatabaseUpgradeWithHandler:(id)handler;
+- (BOOL)setupMomentsNotificationsWithSchedule:(id)schedule options:(id)options handler:(id)handler;
+- (BOOL)setupPeriodicTimeToWriteMomentsNotificationsUsingDateComponents:(id)components defaultURL:(id)l handler:(id)handler;
+- (BOOL)softRefreshEventsWithRefreshVariant:(unint64_t)variant andIgnoreLastTrigger:(BOOL)trigger andHandler:(id)handler;
+- (BOOL)storeEvents:(id)events handler:(id)handler;
+- (BOOL)testNotificationAnalyticsWithHandler:(id)handler;
+- (BOOL)uploadFeedbackWithDBStateToServer:(id)server handler:(id)handler;
 - (MOPromptManager)init;
 - (id)context;
-- (id)initForSoftLinkwithMOEventClass:(Class)a3 moEventBundleClass:(Class)a4;
-- (id)localizedString:(id)a3 withTable:(id)a4;
-- (id)localizedStringForKey:(id)a3;
-- (id)makeNewConnectionWithInterfaceFor:(id)a3;
-- (void)_buildMetadataAndLabelsForBundles:(id)a3 withOptions:(id)a4;
-- (void)_buildMetadataOnlyForEventBundles:(id)a3;
-- (void)_initForSoftLinkwithMOEventClass:(Class)a3 moEventBundleClass:(Class)a4 moXpcContext:(Class)a5;
-- (void)acquireBackgroundProcessingPermissionsForMomentsWithHander:(id)a3;
-- (void)buildLabelsForEventBundles:(id)a3;
-- (void)dumpDBStateWithHandler:(id)a3;
-- (void)fetchEligiblePOICategoriesWithHandler:(id)a3;
-- (void)fetchEventBundlesWithAllowedSourceTypes:(id)a3 dateInterval:(id)a4 ascending:(BOOL)a5 limit:(id)a6 respectOnboardingDates:(BOOL)a7 handler:(id)a8;
-- (void)fetchEventBundlesWithAllowedSourceTypes:(id)a3 dateInterval:(id)a4 ascending:(BOOL)a5 limit:(id)a6 respectOnboardingDates:(BOOL)a7 respectLearnFromThisApp:(BOOL)a8 handler:(id)a9;
-- (void)generateAvailabilityPredictionsAndRegisterTimerWithHandler:(id)a3;
-- (void)generateAvailabilityPredictionsWithHandler:(id)a3;
-- (void)getSnapshotDictionaryForAnalyticsWithHandler:(id)a3;
-- (void)localizeEventBundles:(id)a3;
-- (void)printEvergreenBundlesWithSeed:(unint64_t)a3 handler:(id)a4;
-- (void)printOnboardingStatusAnalytics:(id)a3;
-- (void)setUpNotificationTimerWithFireDate:(id)a3;
-- (void)testMomentsNotificationsWithOptions:(id)a3 handler:(id)a4;
-- (void)triggerFeedbackAssistantFlow:(id)a3 handler:(id)a4;
+- (id)initForSoftLinkwithMOEventClass:(Class)class moEventBundleClass:(Class)bundleClass;
+- (id)localizedString:(id)string withTable:(id)table;
+- (id)localizedStringForKey:(id)key;
+- (id)makeNewConnectionWithInterfaceFor:(id)for;
+- (void)_buildMetadataAndLabelsForBundles:(id)bundles withOptions:(id)options;
+- (void)_buildMetadataOnlyForEventBundles:(id)bundles;
+- (void)_initForSoftLinkwithMOEventClass:(Class)class moEventBundleClass:(Class)bundleClass moXpcContext:(Class)context;
+- (void)acquireBackgroundProcessingPermissionsForMomentsWithHander:(id)hander;
+- (void)buildLabelsForEventBundles:(id)bundles;
+- (void)dumpDBStateWithHandler:(id)handler;
+- (void)fetchEligiblePOICategoriesWithHandler:(id)handler;
+- (void)fetchEventBundlesWithAllowedSourceTypes:(id)types dateInterval:(id)interval ascending:(BOOL)ascending limit:(id)limit respectOnboardingDates:(BOOL)dates handler:(id)handler;
+- (void)fetchEventBundlesWithAllowedSourceTypes:(id)types dateInterval:(id)interval ascending:(BOOL)ascending limit:(id)limit respectOnboardingDates:(BOOL)dates respectLearnFromThisApp:(BOOL)app handler:(id)handler;
+- (void)generateAvailabilityPredictionsAndRegisterTimerWithHandler:(id)handler;
+- (void)generateAvailabilityPredictionsWithHandler:(id)handler;
+- (void)getSnapshotDictionaryForAnalyticsWithHandler:(id)handler;
+- (void)localizeEventBundles:(id)bundles;
+- (void)printEvergreenBundlesWithSeed:(unint64_t)seed handler:(id)handler;
+- (void)printOnboardingStatusAnalytics:(id)analytics;
+- (void)setUpNotificationTimerWithFireDate:(id)date;
+- (void)testMomentsNotificationsWithOptions:(id)options handler:(id)handler;
+- (void)triggerFeedbackAssistantFlow:(id)flow handler:(id)handler;
 @end
 
 @implementation MOPromptManager
@@ -84,20 +84,20 @@ uint64_t __33__MOPromptManager_defaultManager__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)initForSoftLinkwithMOEventClass:(Class)a3 moEventBundleClass:(Class)a4
+- (id)initForSoftLinkwithMOEventClass:(Class)class moEventBundleClass:(Class)bundleClass
 {
   v8.receiver = self;
   v8.super_class = MOPromptManager;
   v6 = [(MOPromptManager *)&v8 init];
   if (v6)
   {
-    [(MOPromptManager *)v6 _initForSoftLinkwithMOEventClass:a3 moEventBundleClass:a4 moXpcContext:objc_opt_class()];
+    [(MOPromptManager *)v6 _initForSoftLinkwithMOEventClass:class moEventBundleClass:bundleClass moXpcContext:objc_opt_class()];
   }
 
   return v6;
 }
 
-- (id)makeNewConnectionWithInterfaceFor:(id)a3
+- (id)makeNewConnectionWithInterfaceFor:(id)for
 {
   v4 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_284110540];
   v5 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_28410AEF0];
@@ -189,11 +189,11 @@ uint64_t __33__MOPromptManager_defaultManager__block_invoke()
   return v64;
 }
 
-- (void)_initForSoftLinkwithMOEventClass:(Class)a3 moEventBundleClass:(Class)a4 moXpcContext:(Class)a5
+- (void)_initForSoftLinkwithMOEventClass:(Class)class moEventBundleClass:(Class)bundleClass moXpcContext:(Class)context
 {
-  self->moEventClass = a3;
-  self->moEventBundleClass = a4;
-  self->moXpcContextClass = a5;
+  self->moEventClass = class;
+  self->moEventBundleClass = bundleClass;
+  self->moXpcContextClass = context;
   v6 = [[MOConnectionManager alloc] initWithName:@"MOPromptManager" usingDelegate:self];
   connectionManager = self->connectionManager;
   self->connectionManager = v6;
@@ -216,9 +216,9 @@ uint64_t __33__MOPromptManager_defaultManager__block_invoke()
   return v2;
 }
 
-- (BOOL)scheduleDatabaseUpgradeWithHandler:(id)a3
+- (BOOL)scheduleDatabaseUpgradeWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = _mo_log_facility_get_os_log(MOLogFacilityGeneral);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -232,7 +232,7 @@ uint64_t __33__MOPromptManager_defaultManager__block_invoke()
   v11[2] = __54__MOPromptManager_scheduleDatabaseUpgradeWithHandler___block_invoke;
   v11[3] = &unk_278775A70;
   v11[4] = self;
-  v12 = v4;
+  v12 = handlerCopy;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __54__MOPromptManager_scheduleDatabaseUpgradeWithHandler___block_invoke_208;
@@ -319,10 +319,10 @@ uint64_t __54__MOPromptManager_scheduleDatabaseUpgradeWithHandler___block_invoke
   return result;
 }
 
-- (BOOL)storeEvents:(id)a3 handler:(id)a4
+- (BOOL)storeEvents:(id)events handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  eventsCopy = events;
+  handlerCopy = handler;
   v8 = _mo_log_facility_get_os_log(MOLogFacilityGeneral);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -335,16 +335,16 @@ uint64_t __54__MOPromptManager_scheduleDatabaseUpgradeWithHandler___block_invoke
   v15[1] = 3221225472;
   v15[2] = __39__MOPromptManager_storeEvents_handler___block_invoke;
   v15[3] = &unk_278775AC0;
-  v16 = v6;
-  v17 = self;
-  v18 = v7;
+  v16 = eventsCopy;
+  selfCopy = self;
+  v18 = handlerCopy;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __39__MOPromptManager_storeEvents_handler___block_invoke_210;
   v13[3] = &unk_278773648;
   v14 = v18;
   v10 = v18;
-  v11 = v6;
+  v11 = eventsCopy;
   [(MOConnectionManager *)connectionManager callAsyncProxyUsingBlock:v15 onError:v13];
 
   return 1;
@@ -398,10 +398,10 @@ uint64_t __39__MOPromptManager_storeEvents_handler___block_invoke_210(uint64_t a
   return result;
 }
 
-- (BOOL)fetchEventsWithOptions:(id)a3 handler:(id)a4
+- (BOOL)fetchEventsWithOptions:(id)options handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  handlerCopy = handler;
   v8 = _mo_log_facility_get_os_log(MOLogFacilityGeneral);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -414,16 +414,16 @@ uint64_t __39__MOPromptManager_storeEvents_handler___block_invoke_210(uint64_t a
   v15[1] = 3221225472;
   v15[2] = __50__MOPromptManager_fetchEventsWithOptions_handler___block_invoke;
   v15[3] = &unk_278775AC0;
-  v16 = v6;
-  v17 = self;
-  v18 = v7;
+  v16 = optionsCopy;
+  selfCopy = self;
+  v18 = handlerCopy;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __50__MOPromptManager_fetchEventsWithOptions_handler___block_invoke_212;
   v13[3] = &unk_278773648;
   v14 = v18;
   v10 = v18;
-  v11 = v6;
+  v11 = optionsCopy;
   [(MOConnectionManager *)connectionManager callAsyncProxyUsingBlock:v15 onError:v13];
 
   return 1;
@@ -478,7 +478,7 @@ uint64_t __50__MOPromptManager_fetchEventsWithOptions_handler___block_invoke_212
   return result;
 }
 
-- (BOOL)setupPeriodicTimeToWriteMomentsNotificationsUsingDateComponents:(id)a3 defaultURL:(id)a4 handler:(id)a5
+- (BOOL)setupPeriodicTimeToWriteMomentsNotificationsUsingDateComponents:(id)components defaultURL:(id)l handler:(id)handler
 {
   v15[1] = *MEMORY[0x277D85DE8];
   v6 = MEMORY[0x277CCA9B8];
@@ -486,16 +486,16 @@ uint64_t __50__MOPromptManager_fetchEventsWithOptions_handler___block_invoke_212
   v14 = *MEMORY[0x277CCA450];
   v15[0] = @"Notification Scheduling SPIs are deprecated, schedule is now handled internally within moments";
   v8 = MEMORY[0x277CBEAC0];
-  v9 = a5;
+  handlerCopy = handler;
   v10 = [v8 dictionaryWithObjects:v15 forKeys:&v14 count:1];
   v11 = [v6 errorWithDomain:v7 code:1 userInfo:v10];
-  (*(a5 + 2))(v9, v11);
+  (*(handler + 2))(handlerCopy, v11);
 
   v12 = *MEMORY[0x277D85DE8];
   return 0;
 }
 
-- (BOOL)getTimeToWriteNotificationsScheduleWithHandler:(id)a3
+- (BOOL)getTimeToWriteNotificationsScheduleWithHandler:(id)handler
 {
   v13[1] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CCA9B8];
@@ -503,16 +503,16 @@ uint64_t __50__MOPromptManager_fetchEventsWithOptions_handler___block_invoke_212
   v12 = *MEMORY[0x277CCA450];
   v13[0] = @"Notification Scheduling SPIs deprecated, schedule is now handled internally within moments";
   v6 = MEMORY[0x277CBEAC0];
-  v7 = a3;
+  handlerCopy = handler;
   v8 = [v6 dictionaryWithObjects:v13 forKeys:&v12 count:1];
   v9 = [v4 errorWithDomain:v5 code:1 userInfo:v8];
-  (*(a3 + 2))(v7, 0, 0, v9);
+  (*(handler + 2))(handlerCopy, 0, 0, v9);
 
   v10 = *MEMORY[0x277D85DE8];
   return 0;
 }
 
-- (BOOL)setupMomentsNotificationsWithSchedule:(id)a3 options:(id)a4 handler:(id)a5
+- (BOOL)setupMomentsNotificationsWithSchedule:(id)schedule options:(id)options handler:(id)handler
 {
   v15[1] = *MEMORY[0x277D85DE8];
   v6 = MEMORY[0x277CCA9B8];
@@ -520,16 +520,16 @@ uint64_t __50__MOPromptManager_fetchEventsWithOptions_handler___block_invoke_212
   v14 = *MEMORY[0x277CCA450];
   v15[0] = @"Notification Scheduling SPIs are deprecated, schedule is now handled internally within moments";
   v8 = MEMORY[0x277CBEAC0];
-  v9 = a5;
+  handlerCopy = handler;
   v10 = [v8 dictionaryWithObjects:v15 forKeys:&v14 count:1];
   v11 = [v6 errorWithDomain:v7 code:1 userInfo:v10];
-  (*(a5 + 2))(v9, v11);
+  (*(handler + 2))(handlerCopy, v11);
 
   v12 = *MEMORY[0x277D85DE8];
   return 0;
 }
 
-- (BOOL)getMomentsNotificationsSchedule:(id)a3
+- (BOOL)getMomentsNotificationsSchedule:(id)schedule
 {
   v13[1] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CCA9B8];
@@ -537,33 +537,33 @@ uint64_t __50__MOPromptManager_fetchEventsWithOptions_handler___block_invoke_212
   v12 = *MEMORY[0x277CCA450];
   v13[0] = @"Notification Scheduling SPIs are deprecated, schedule is now handled internally within moments";
   v6 = MEMORY[0x277CBEAC0];
-  v7 = a3;
+  scheduleCopy = schedule;
   v8 = [v6 dictionaryWithObjects:v13 forKeys:&v12 count:1];
   v9 = [v4 errorWithDomain:v5 code:1 userInfo:v8];
-  (*(a3 + 2))(v7, 0, 0, v9);
+  (*(schedule + 2))(scheduleCopy, 0, 0, v9);
 
   v10 = *MEMORY[0x277D85DE8];
   return 0;
 }
 
-- (void)_buildMetadataAndLabelsForBundles:(id)a3 withOptions:(id)a4
+- (void)_buildMetadataAndLabelsForBundles:(id)bundles withOptions:(id)options
 {
-  v6 = a3;
-  if ([a4 skipLocalization])
+  bundlesCopy = bundles;
+  if ([options skipLocalization])
   {
-    [(MOPromptManager *)self _buildMetadataOnlyForEventBundles:v6];
+    [(MOPromptManager *)self _buildMetadataOnlyForEventBundles:bundlesCopy];
   }
 
   else
   {
-    [(MOPromptManager *)self buildLabelsForEventBundles:v6];
+    [(MOPromptManager *)self buildLabelsForEventBundles:bundlesCopy];
   }
 }
 
-- (BOOL)fetchEventBundlesWithPredicate:(id)a3 handler:(id)a4
+- (BOOL)fetchEventBundlesWithPredicate:(id)predicate handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  predicateCopy = predicate;
+  handlerCopy = handler;
   v8 = _mo_log_facility_get_os_log(MOLogFacilityGeneral);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -576,16 +576,16 @@ uint64_t __50__MOPromptManager_fetchEventsWithOptions_handler___block_invoke_212
   v16[1] = 3221225472;
   v16[2] = __58__MOPromptManager_fetchEventBundlesWithPredicate_handler___block_invoke;
   v16[3] = &unk_278775AC0;
-  v17 = v6;
-  v18 = self;
-  v19 = v7;
+  v17 = predicateCopy;
+  selfCopy = self;
+  v19 = handlerCopy;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __58__MOPromptManager_fetchEventBundlesWithPredicate_handler___block_invoke_220;
   v14[3] = &unk_278773648;
   v15 = v19;
   v10 = v19;
-  v11 = v6;
+  v11 = predicateCopy;
   [(MOConnectionManager *)connectionManager callAsyncProxyUsingBlock:v16 onError:v14];
   v12 = self->connectionManager != 0;
 
@@ -646,10 +646,10 @@ uint64_t __58__MOPromptManager_fetchEventBundlesWithPredicate_handler___block_in
   return result;
 }
 
-- (BOOL)fetchEventBundlesWithOptions:(id)a3 handler:(id)a4
+- (BOOL)fetchEventBundlesWithOptions:(id)options handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  handlerCopy = handler;
   v8 = _mo_log_facility_get_os_log(MOLogFacilityGeneral);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -667,10 +667,10 @@ uint64_t __58__MOPromptManager_fetchEventBundlesWithPredicate_handler___block_in
   v16[2] = __56__MOPromptManager_fetchEventBundlesWithOptions_handler___block_invoke;
   v16[3] = &unk_278775B38;
   v20 = buf;
-  v10 = v6;
+  v10 = optionsCopy;
   v17 = v10;
-  v18 = self;
-  v19 = v7;
+  selfCopy = self;
+  v19 = handlerCopy;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __56__MOPromptManager_fetchEventBundlesWithOptions_handler___block_invoke_222;
@@ -751,9 +751,9 @@ uint64_t __56__MOPromptManager_fetchEventBundlesWithOptions_handler___block_invo
   return result;
 }
 
-- (void)localizeEventBundles:(id)a3
+- (void)localizeEventBundles:(id)bundles
 {
-  v4 = a3;
+  bundlesCopy = bundles;
   v5 = _mo_log_facility_get_os_log(MOLogFacilityGeneral);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -761,15 +761,15 @@ uint64_t __56__MOPromptManager_fetchEventBundlesWithOptions_handler___block_invo
     _os_log_impl(&dword_22D8C5000, v5, OS_LOG_TYPE_DEFAULT, "calling localizeEventBundles", v6, 2u);
   }
 
-  [(MOPromptManager *)self buildLabelsForEventBundles:v4];
+  [(MOPromptManager *)self buildLabelsForEventBundles:bundlesCopy];
 }
 
-- (void)fetchEventBundlesWithAllowedSourceTypes:(id)a3 dateInterval:(id)a4 ascending:(BOOL)a5 limit:(id)a6 respectOnboardingDates:(BOOL)a7 handler:(id)a8
+- (void)fetchEventBundlesWithAllowedSourceTypes:(id)types dateInterval:(id)interval ascending:(BOOL)ascending limit:(id)limit respectOnboardingDates:(BOOL)dates handler:(id)handler
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
-  v17 = a8;
+  typesCopy = types;
+  intervalCopy = interval;
+  limitCopy = limit;
+  handlerCopy = handler;
   v18 = _mo_log_facility_get_os_log(MOLogFacilityGeneral);
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
@@ -782,22 +782,22 @@ uint64_t __56__MOPromptManager_fetchEventBundlesWithOptions_handler___block_invo
   v26[1] = 3221225472;
   v26[2] = __119__MOPromptManager_fetchEventBundlesWithAllowedSourceTypes_dateInterval_ascending_limit_respectOnboardingDates_handler___block_invoke;
   v26[3] = &unk_278775B88;
-  v32 = a5;
-  v27 = v15;
-  v28 = v16;
-  v29 = self;
-  v30 = v14;
-  v31 = v17;
-  v33 = a7;
+  ascendingCopy = ascending;
+  v27 = intervalCopy;
+  v28 = limitCopy;
+  selfCopy = self;
+  v30 = typesCopy;
+  v31 = handlerCopy;
+  datesCopy = dates;
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __119__MOPromptManager_fetchEventBundlesWithAllowedSourceTypes_dateInterval_ascending_limit_respectOnboardingDates_handler___block_invoke_225;
   v24[3] = &unk_278773648;
   v25 = v31;
   v20 = v31;
-  v21 = v14;
-  v22 = v16;
-  v23 = v15;
+  v21 = typesCopy;
+  v22 = limitCopy;
+  v23 = intervalCopy;
   [(MOConnectionManager *)connectionManager callAsyncProxyUsingBlock:v26 onError:v24];
 }
 
@@ -857,12 +857,12 @@ uint64_t __119__MOPromptManager_fetchEventBundlesWithAllowedSourceTypes_dateInte
   return result;
 }
 
-- (void)fetchEventBundlesWithAllowedSourceTypes:(id)a3 dateInterval:(id)a4 ascending:(BOOL)a5 limit:(id)a6 respectOnboardingDates:(BOOL)a7 respectLearnFromThisApp:(BOOL)a8 handler:(id)a9
+- (void)fetchEventBundlesWithAllowedSourceTypes:(id)types dateInterval:(id)interval ascending:(BOOL)ascending limit:(id)limit respectOnboardingDates:(BOOL)dates respectLearnFromThisApp:(BOOL)app handler:(id)handler
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a6;
-  v18 = a9;
+  typesCopy = types;
+  intervalCopy = interval;
+  limitCopy = limit;
+  handlerCopy = handler;
   v19 = _mo_log_facility_get_os_log(MOLogFacilityGeneral);
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
@@ -875,23 +875,23 @@ uint64_t __119__MOPromptManager_fetchEventBundlesWithAllowedSourceTypes_dateInte
   v27[1] = 3221225472;
   v27[2] = __143__MOPromptManager_fetchEventBundlesWithAllowedSourceTypes_dateInterval_ascending_limit_respectOnboardingDates_respectLearnFromThisApp_handler___block_invoke;
   v27[3] = &unk_278775BD8;
-  v33 = a5;
-  v28 = v16;
-  v29 = v17;
-  v30 = self;
-  v31 = v15;
-  v32 = v18;
-  v34 = a7;
-  v35 = a8;
+  ascendingCopy = ascending;
+  v28 = intervalCopy;
+  v29 = limitCopy;
+  selfCopy = self;
+  v31 = typesCopy;
+  v32 = handlerCopy;
+  datesCopy = dates;
+  appCopy = app;
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = __143__MOPromptManager_fetchEventBundlesWithAllowedSourceTypes_dateInterval_ascending_limit_respectOnboardingDates_respectLearnFromThisApp_handler___block_invoke_227;
   v25[3] = &unk_278773648;
   v26 = v32;
   v21 = v32;
-  v22 = v15;
-  v23 = v17;
-  v24 = v16;
+  v22 = typesCopy;
+  v23 = limitCopy;
+  v24 = intervalCopy;
   [(MOConnectionManager *)connectionManager callAsyncProxyUsingBlock:v27 onError:v25];
 }
 
@@ -967,16 +967,16 @@ uint64_t __143__MOPromptManager_fetchEventBundlesWithAllowedSourceTypes_dateInte
   return result;
 }
 
-- (BOOL)_purgeEventsWithHandler:(id)a3
+- (BOOL)_purgeEventsWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   connectionManager = self->connectionManager;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __43__MOPromptManager__purgeEventsWithHandler___block_invoke;
   v10[3] = &unk_278775C00;
   v10[4] = self;
-  v11 = v4;
+  v11 = handlerCopy;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __43__MOPromptManager__purgeEventsWithHandler___block_invoke_238;
@@ -1036,9 +1036,9 @@ uint64_t __43__MOPromptManager__purgeEventsWithHandler___block_invoke_238(uint64
   return result;
 }
 
-- (BOOL)clearEventsWithHandler:(id)a3
+- (BOOL)clearEventsWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = _mo_log_facility_get_os_log(MOLogFacilityGeneral);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1052,7 +1052,7 @@ uint64_t __43__MOPromptManager__purgeEventsWithHandler___block_invoke_238(uint64
   v12[2] = __42__MOPromptManager_clearEventsWithHandler___block_invoke;
   v12[3] = &unk_278775C00;
   v12[4] = self;
-  v13 = v4;
+  v13 = handlerCopy;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __42__MOPromptManager_clearEventsWithHandler___block_invoke_239;
@@ -1116,9 +1116,9 @@ uint64_t __42__MOPromptManager_clearEventsWithHandler___block_invoke_239(uint64_
   return result;
 }
 
-- (BOOL)collectEventsWithHandler:(id)a3
+- (BOOL)collectEventsWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = _mo_log_facility_get_os_log(MOLogFacilityGeneral);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1132,7 +1132,7 @@ uint64_t __42__MOPromptManager_clearEventsWithHandler___block_invoke_239(uint64_
   v12[2] = __44__MOPromptManager_collectEventsWithHandler___block_invoke;
   v12[3] = &unk_278775C00;
   v12[4] = self;
-  v13 = v4;
+  v13 = handlerCopy;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __44__MOPromptManager_collectEventsWithHandler___block_invoke_240;
@@ -1192,9 +1192,9 @@ uint64_t __44__MOPromptManager_collectEventsWithHandler___block_invoke_240(uint6
   return result;
 }
 
-- (BOOL)bundleEventsWithHandler:(id)a3
+- (BOOL)bundleEventsWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = _mo_log_facility_get_os_log(MOLogFacilityGeneral);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1208,7 +1208,7 @@ uint64_t __44__MOPromptManager_collectEventsWithHandler___block_invoke_240(uint6
   v12[2] = __43__MOPromptManager_bundleEventsWithHandler___block_invoke;
   v12[3] = &unk_278775C00;
   v12[4] = self;
-  v13 = v4;
+  v13 = handlerCopy;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __43__MOPromptManager_bundleEventsWithHandler___block_invoke_241;
@@ -1268,9 +1268,9 @@ uint64_t __43__MOPromptManager_bundleEventsWithHandler___block_invoke_241(uint64
   return result;
 }
 
-- (BOOL)purgeEventsWithHandler:(id)a3
+- (BOOL)purgeEventsWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = _mo_log_facility_get_os_log(MOLogFacilityGeneral);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1284,7 +1284,7 @@ uint64_t __43__MOPromptManager_bundleEventsWithHandler___block_invoke_241(uint64
   v12[2] = __42__MOPromptManager_purgeEventsWithHandler___block_invoke;
   v12[3] = &unk_278775C00;
   v12[4] = self;
-  v13 = v4;
+  v13 = handlerCopy;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __42__MOPromptManager_purgeEventsWithHandler___block_invoke_242;
@@ -1344,9 +1344,9 @@ uint64_t __42__MOPromptManager_purgeEventsWithHandler___block_invoke_242(uint64_
   return result;
 }
 
-- (BOOL)runAnalyticsWithHandler:(id)a3
+- (BOOL)runAnalyticsWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = _mo_log_facility_get_os_log(MOLogFacilityGeneral);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1360,7 +1360,7 @@ uint64_t __42__MOPromptManager_purgeEventsWithHandler___block_invoke_242(uint64_
   v12[2] = __43__MOPromptManager_runAnalyticsWithHandler___block_invoke;
   v12[3] = &unk_278775C00;
   v12[4] = self;
-  v13 = v4;
+  v13 = handlerCopy;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __43__MOPromptManager_runAnalyticsWithHandler___block_invoke_243;
@@ -1420,10 +1420,10 @@ uint64_t __43__MOPromptManager_runAnalyticsWithHandler___block_invoke_243(uint64
   return result;
 }
 
-- (BOOL)analyzeTrendsInEvents:(id)a3 handler:(id)a4
+- (BOOL)analyzeTrendsInEvents:(id)events handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  eventsCopy = events;
+  handlerCopy = handler;
   v8 = _mo_log_facility_get_os_log(MOLogFacilityGeneral);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -1436,16 +1436,16 @@ uint64_t __43__MOPromptManager_runAnalyticsWithHandler___block_invoke_243(uint64
   v16[1] = 3221225472;
   v16[2] = __49__MOPromptManager_analyzeTrendsInEvents_handler___block_invoke;
   v16[3] = &unk_278775AC0;
-  v17 = v6;
-  v18 = self;
-  v19 = v7;
+  v17 = eventsCopy;
+  selfCopy = self;
+  v19 = handlerCopy;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __49__MOPromptManager_analyzeTrendsInEvents_handler___block_invoke_244;
   v14[3] = &unk_278773648;
   v15 = v19;
   v10 = v19;
-  v11 = v6;
+  v11 = eventsCopy;
   [(MOConnectionManager *)connectionManager callAsyncProxyUsingBlock:v16 onError:v14];
   v12 = self->connectionManager != 0;
 
@@ -1501,9 +1501,9 @@ uint64_t __49__MOPromptManager_analyzeTrendsInEvents_handler___block_invoke_244(
   return result;
 }
 
-- (BOOL)refreshEventsWithRefreshVariant:(unint64_t)a3 andHandler:(id)a4
+- (BOOL)refreshEventsWithRefreshVariant:(unint64_t)variant andHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v7 = _mo_log_facility_get_os_log(MOLogFacilityGeneral);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -1517,8 +1517,8 @@ uint64_t __49__MOPromptManager_analyzeTrendsInEvents_handler___block_invoke_244(
   v14[2] = __62__MOPromptManager_refreshEventsWithRefreshVariant_andHandler___block_invoke;
   v14[3] = &unk_278775C50;
   v14[4] = self;
-  v16 = a3;
-  v15 = v6;
+  variantCopy = variant;
+  v15 = handlerCopy;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __62__MOPromptManager_refreshEventsWithRefreshVariant_andHandler___block_invoke_245;
@@ -1579,9 +1579,9 @@ uint64_t __62__MOPromptManager_refreshEventsWithRefreshVariant_andHandler___bloc
   return result;
 }
 
-- (BOOL)softRefreshEventsWithRefreshVariant:(unint64_t)a3 andIgnoreLastTrigger:(BOOL)a4 andHandler:(id)a5
+- (BOOL)softRefreshEventsWithRefreshVariant:(unint64_t)variant andIgnoreLastTrigger:(BOOL)trigger andHandler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   v9 = _mo_log_facility_get_os_log(MOLogFacilityGeneral);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -1595,9 +1595,9 @@ uint64_t __62__MOPromptManager_refreshEventsWithRefreshVariant_andHandler___bloc
   v16[2] = __87__MOPromptManager_softRefreshEventsWithRefreshVariant_andIgnoreLastTrigger_andHandler___block_invoke;
   v16[3] = &unk_278775C78;
   v16[4] = self;
-  v18 = a3;
-  v19 = a4;
-  v17 = v8;
+  variantCopy = variant;
+  triggerCopy = trigger;
+  v17 = handlerCopy;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __87__MOPromptManager_softRefreshEventsWithRefreshVariant_andIgnoreLastTrigger_andHandler___block_invoke_246;
@@ -1659,10 +1659,10 @@ uint64_t __87__MOPromptManager_softRefreshEventsWithRefreshVariant_andIgnoreLast
   return result;
 }
 
-- (BOOL)uploadFeedbackWithDBStateToServer:(id)a3 handler:(id)a4
+- (BOOL)uploadFeedbackWithDBStateToServer:(id)server handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  serverCopy = server;
+  handlerCopy = handler;
   v8 = _mo_log_facility_get_os_log(MOLogFacilityGeneral);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -1675,15 +1675,15 @@ uint64_t __87__MOPromptManager_softRefreshEventsWithRefreshVariant_andIgnoreLast
   v16[1] = 3221225472;
   v16[2] = __61__MOPromptManager_uploadFeedbackWithDBStateToServer_handler___block_invoke;
   v16[3] = &unk_278775C00;
-  v17 = v6;
-  v18 = v7;
+  v17 = serverCopy;
+  v18 = handlerCopy;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __61__MOPromptManager_uploadFeedbackWithDBStateToServer_handler___block_invoke_248;
   v14[3] = &unk_278773648;
   v15 = v18;
   v10 = v18;
-  v11 = v6;
+  v11 = serverCopy;
   [(MOConnectionManager *)connectionManager callAsyncProxyUsingBlock:v16 onError:v14];
   v12 = self->connectionManager != 0;
 
@@ -1735,16 +1735,16 @@ uint64_t __61__MOPromptManager_uploadFeedbackWithDBStateToServer_handler___block
   return result;
 }
 
-- (void)_buildMetadataOnlyForEventBundles:(id)a3
+- (void)_buildMetadataOnlyForEventBundles:(id)bundles
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  bundlesCopy = bundles;
   v4 = objc_autoreleasePoolPush();
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = v3;
+  v5 = bundlesCopy;
   v6 = [v5 countByEnumeratingWithState:&v17 objects:v25 count:16];
   if (v6)
   {
@@ -1764,8 +1764,8 @@ uint64_t __61__MOPromptManager_uploadFeedbackWithDBStateToServer_handler___block
         v12 = [MOEventBundleMetaDataUtility buildMetaDataForEventBundle:v11, v17];
         [v11 setMetaData:v12];
 
-        v13 = [v11 metaData];
-        if ([v13 count])
+        metaData = [v11 metaData];
+        if ([metaData count])
         {
           ++v8;
         }
@@ -1797,17 +1797,17 @@ uint64_t __61__MOPromptManager_uploadFeedbackWithDBStateToServer_handler___block
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)buildLabelsForEventBundles:(id)a3
+- (void)buildLabelsForEventBundles:(id)bundles
 {
   v78 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  bundlesCopy = bundles;
   context = objc_autoreleasePoolPush();
   v51 = objc_alloc_init(MOEventBundleLabelFormatter);
   v64 = 0u;
   v65 = 0u;
   v66 = 0u;
   v67 = 0u;
-  obj = v3;
+  obj = bundlesCopy;
   v59 = [obj countByEnumeratingWithState:&v64 objects:v77 count:16];
   if (v59)
   {
@@ -1830,8 +1830,8 @@ uint64_t __61__MOPromptManager_uploadFeedbackWithDBStateToServer_handler___block
           v61 = 0u;
           v62 = 0u;
           v63 = 0u;
-          v7 = [v5 resources];
-          v8 = [v7 countByEnumeratingWithState:&v60 objects:v76 count:16];
+          resources = [v5 resources];
+          v8 = [resources countByEnumeratingWithState:&v60 objects:v76 count:16];
           if (v8)
           {
             v9 = v8;
@@ -1842,20 +1842,20 @@ uint64_t __61__MOPromptManager_uploadFeedbackWithDBStateToServer_handler___block
               {
                 if (*v61 != v10)
                 {
-                  objc_enumerationMutation(v7);
+                  objc_enumerationMutation(resources);
                 }
 
                 v12 = *(*(&v60 + 1) + 8 * j);
-                v13 = [v12 name];
+                name = [v12 name];
 
-                if (v13)
+                if (name)
                 {
-                  v14 = [v12 name];
-                  [v6 addObject:v14];
+                  name2 = [v12 name];
+                  [v6 addObject:name2];
                 }
               }
 
-              v9 = [v7 countByEnumeratingWithState:&v60 objects:v76 count:16];
+              v9 = [resources countByEnumeratingWithState:&v60 objects:v76 count:16];
             }
 
             while (v9);
@@ -1865,24 +1865,24 @@ uint64_t __61__MOPromptManager_uploadFeedbackWithDBStateToServer_handler___block
           v15 = _mo_log_facility_get_os_log(MOLogFacilityFramework);
           if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
           {
-            v55 = [v5 labels];
-            v52 = [v55 count];
-            v53 = [v5 labels];
-            v16 = [v53 firstObject];
-            v17 = [v16 mask];
-            v18 = [v5 promptLanguages];
-            v19 = [v18 count];
-            v20 = [v5 promptLanguages];
-            v21 = [v20 firstObject];
-            v22 = [v21 mask];
+            labels = [v5 labels];
+            v52 = [labels count];
+            labels2 = [v5 labels];
+            firstObject = [labels2 firstObject];
+            mask = [firstObject mask];
+            promptLanguages = [v5 promptLanguages];
+            v19 = [promptLanguages count];
+            promptLanguages2 = [v5 promptLanguages];
+            firstObject2 = [promptLanguages2 firstObject];
+            mask2 = [firstObject2 mask];
             *buf = 134218754;
             v69 = v52;
             v70 = 2112;
-            v71 = v17;
+            v71 = mask;
             v72 = 2048;
             v73 = v19;
             v74 = 2112;
-            v75 = v22;
+            v75 = mask2;
             _os_log_impl(&dword_22D8C5000, v15, OS_LOG_TYPE_INFO, "build labels, labels, %lu, label, %@, prompts, %lu, prompt, %@", buf, 0x2Au);
           }
         }
@@ -1892,17 +1892,17 @@ uint64_t __61__MOPromptManager_uploadFeedbackWithDBStateToServer_handler___block
           v23 = [MOEventBundleMetaDataUtility buildMetaDataForEventBundle:v5];
           [v5 setMetaData:v23];
 
-          v24 = [v5 metaData];
+          metaData = [v5 metaData];
 
           v25 = _mo_log_facility_get_os_log(MOLogFacilityFramework);
           v6 = v25;
-          if (v24)
+          if (metaData)
           {
             if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
             {
-              v26 = [v5 getBundleType];
+              getBundleType = [v5 getBundleType];
               *buf = 138412546;
-              v69 = v26;
+              v69 = getBundleType;
               v70 = 2112;
               v71 = v5;
               _os_log_impl(&dword_22D8C5000, v6, OS_LOG_TYPE_INFO, "build labels, bundleType, %@, event bundle, %@", buf, 0x16u);
@@ -1911,65 +1911,65 @@ uint64_t __61__MOPromptManager_uploadFeedbackWithDBStateToServer_handler___block
             v27 = _mo_log_facility_get_os_log(MOLogFacilityFramework);
             if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
             {
-              v28 = [v5 metaData];
-              v29 = [v28 allKeys];
+              metaData2 = [v5 metaData];
+              allKeys = [metaData2 allKeys];
               *buf = 138412290;
-              v69 = v29;
+              v69 = allKeys;
               _os_log_impl(&dword_22D8C5000, v27, OS_LOG_TYPE_INFO, "build labels, meta data, %@", buf, 0xCu);
             }
 
-            v30 = [v5 metaData];
-            v31 = [v5 getBundleType];
-            v32 = [(MOEventBundleLabelFormatter *)v51 formattedBundleLabelsForMetaData:v30 bundleType:v31];
+            metaData3 = [v5 metaData];
+            getBundleType2 = [v5 getBundleType];
+            v32 = [(MOEventBundleLabelFormatter *)v51 formattedBundleLabelsForMetaData:metaData3 bundleType:getBundleType2];
             [v5 setLabels:v32];
 
-            v33 = [v5 metaData];
-            v34 = [v5 getBundleType];
-            v35 = [(MOEventBundleLabelFormatter *)v51 formattedBundlePromptsForMetaData:v33 bundleType:v34];
+            metaData4 = [v5 metaData];
+            getBundleType3 = [v5 getBundleType];
+            v35 = [(MOEventBundleLabelFormatter *)v51 formattedBundlePromptsForMetaData:metaData4 bundleType:getBundleType3];
             [v5 setPromptLanguages:v35];
 
-            v36 = [v5 labels];
-            v37 = [v36 count];
+            labels3 = [v5 labels];
+            v37 = [labels3 count];
 
             if (v37)
             {
-              v38 = [v5 labels];
-              v39 = [v38 firstObject];
-              [v5 setPromptLanguage:v39];
+              labels4 = [v5 labels];
+              firstObject3 = [labels4 firstObject];
+              [v5 setPromptLanguage:firstObject3];
             }
 
             v6 = _mo_log_facility_get_os_log(MOLogFacilityFramework);
             if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
             {
-              v56 = [v5 labels];
-              v40 = [v56 count];
-              v54 = [v5 labels];
-              v41 = [v54 firstObject];
-              v42 = [v41 mask];
-              v43 = [v5 promptLanguages];
-              v44 = [v43 count];
-              v45 = [v5 promptLanguages];
-              v46 = [v45 firstObject];
-              v47 = [v46 mask];
+              labels5 = [v5 labels];
+              v40 = [labels5 count];
+              labels6 = [v5 labels];
+              firstObject4 = [labels6 firstObject];
+              mask3 = [firstObject4 mask];
+              promptLanguages3 = [v5 promptLanguages];
+              v44 = [promptLanguages3 count];
+              promptLanguages4 = [v5 promptLanguages];
+              firstObject5 = [promptLanguages4 firstObject];
+              mask4 = [firstObject5 mask];
               *buf = 134218754;
               v69 = v40;
               v70 = 2112;
-              v71 = v42;
+              v71 = mask3;
               v72 = 2048;
               v73 = v44;
               v74 = 2112;
-              v75 = v47;
+              v75 = mask4;
               _os_log_impl(&dword_22D8C5000, v6, OS_LOG_TYPE_INFO, "build labels, labels, %lu, label, %@, prompts, %lu, prompt, %@", buf, 0x2Au);
             }
           }
 
           else if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
           {
-            v48 = [v5 getBundleType];
+            getBundleType4 = [v5 getBundleType];
             *buf = 138412546;
             v69 = v5;
             v70 = 2112;
-            v71 = v48;
+            v71 = getBundleType4;
             _os_log_error_impl(&dword_22D8C5000, v6, OS_LOG_TYPE_ERROR, "build labels, nil meta data, event bundle, %@, bundleType, %@", buf, 0x16u);
           }
         }
@@ -1985,9 +1985,9 @@ uint64_t __61__MOPromptManager_uploadFeedbackWithDBStateToServer_handler___block
   v49 = *MEMORY[0x277D85DE8];
 }
 
-- (void)printEvergreenBundlesWithSeed:(unint64_t)a3 handler:(id)a4
+- (void)printEvergreenBundlesWithSeed:(unint64_t)seed handler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v7 = _mo_log_facility_get_os_log(MOLogFacilityGeneral);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -2000,9 +2000,9 @@ uint64_t __61__MOPromptManager_uploadFeedbackWithDBStateToServer_handler___block
   v12[1] = 3221225472;
   v12[2] = __57__MOPromptManager_printEvergreenBundlesWithSeed_handler___block_invoke;
   v12[3] = &unk_278775CC8;
-  v14 = a3;
+  seedCopy = seed;
   v12[4] = self;
-  v13 = v6;
+  v13 = handlerCopy;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __57__MOPromptManager_printEvergreenBundlesWithSeed_handler___block_invoke_255;
@@ -2058,9 +2058,9 @@ uint64_t __57__MOPromptManager_printEvergreenBundlesWithSeed_handler___block_inv
   return result;
 }
 
-- (BOOL)getDiagnosticReporterConfiguration:(id)a3
+- (BOOL)getDiagnosticReporterConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
@@ -2070,7 +2070,7 @@ uint64_t __57__MOPromptManager_printEvergreenBundlesWithSeed_handler___block_inv
   v18[2] = __54__MOPromptManager_getDiagnosticReporterConfiguration___block_invoke;
   v18[3] = &unk_278775CF0;
   v20 = &v21;
-  v5 = v4;
+  v5 = configurationCopy;
   v19 = v5;
   v6 = MEMORY[0x2318D5790](v18);
   v16[0] = 0;
@@ -2078,7 +2078,7 @@ uint64_t __57__MOPromptManager_printEvergreenBundlesWithSeed_handler___block_inv
   v16[2] = 0x2020000000;
   v17 = 0;
   connectionManager = self->connectionManager;
-  v8 = [(MOConnectionManager *)connectionManager getSyncProxyProvider];
+  getSyncProxyProvider = [(MOConnectionManager *)connectionManager getSyncProxyProvider];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __54__MOPromptManager_getDiagnosticReporterConfiguration___block_invoke_2;
@@ -2091,13 +2091,13 @@ uint64_t __57__MOPromptManager_printEvergreenBundlesWithSeed_handler___block_inv
   v11[3] = &unk_278773648;
   v9 = v14;
   v12 = v9;
-  [(MOConnectionManager *)connectionManager withProxyProvider:v8 proxyHandler:v13 onError:v11];
+  [(MOConnectionManager *)connectionManager withProxyProvider:getSyncProxyProvider proxyHandler:v13 onError:v11];
 
-  LOBYTE(v8) = *(v22 + 24);
+  LOBYTE(getSyncProxyProvider) = *(v22 + 24);
   _Block_object_dispose(v16, 8);
 
   _Block_object_dispose(&v21, 8);
-  return (v8 & 1) == 0;
+  return (getSyncProxyProvider & 1) == 0;
 }
 
 void __54__MOPromptManager_getDiagnosticReporterConfiguration___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -2155,9 +2155,9 @@ void __54__MOPromptManager_getDiagnosticReporterConfiguration___block_invoke_256
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)dumpDBStateWithHandler:(id)a3
+- (void)dumpDBStateWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = _mo_log_facility_get_os_log(MOLogFacilityGeneral);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -2170,7 +2170,7 @@ void __54__MOPromptManager_getDiagnosticReporterConfiguration___block_invoke_256
   v10[1] = 3221225472;
   v10[2] = __42__MOPromptManager_dumpDBStateWithHandler___block_invoke;
   v10[3] = &unk_278775D68;
-  v11 = v4;
+  v11 = handlerCopy;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __42__MOPromptManager_dumpDBStateWithHandler___block_invoke_260;
@@ -2238,9 +2238,9 @@ uint64_t __42__MOPromptManager_dumpDBStateWithHandler___block_invoke_260(uint64_
   return result;
 }
 
-- (void)getSnapshotDictionaryForAnalyticsWithHandler:(id)a3
+- (void)getSnapshotDictionaryForAnalyticsWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = _mo_log_facility_get_os_log(MOLogFacilityGeneral);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -2253,7 +2253,7 @@ uint64_t __42__MOPromptManager_dumpDBStateWithHandler___block_invoke_260(uint64_
   v10[1] = 3221225472;
   v10[2] = __64__MOPromptManager_getSnapshotDictionaryForAnalyticsWithHandler___block_invoke;
   v10[3] = &unk_278775D68;
-  v11 = v4;
+  v11 = handlerCopy;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __64__MOPromptManager_getSnapshotDictionaryForAnalyticsWithHandler___block_invoke_261;
@@ -2304,9 +2304,9 @@ uint64_t __64__MOPromptManager_getSnapshotDictionaryForAnalyticsWithHandler___bl
   return result;
 }
 
-- (BOOL)testNotificationAnalyticsWithHandler:(id)a3
+- (BOOL)testNotificationAnalyticsWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = _mo_log_facility_get_os_log(MOLogFacilityGeneral);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -2320,7 +2320,7 @@ uint64_t __64__MOPromptManager_getSnapshotDictionaryForAnalyticsWithHandler___bl
   v11[2] = __56__MOPromptManager_testNotificationAnalyticsWithHandler___block_invoke;
   v11[3] = &unk_278775C00;
   v11[4] = self;
-  v12 = v4;
+  v12 = handlerCopy;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __56__MOPromptManager_testNotificationAnalyticsWithHandler___block_invoke_3;
@@ -2372,11 +2372,11 @@ uint64_t __56__MOPromptManager_testNotificationAnalyticsWithHandler___block_invo
   return result;
 }
 
-- (BOOL)printSettingValue:(id)a3 withType:(id)a4 handler:(id)a5
+- (BOOL)printSettingValue:(id)value withType:(id)type handler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  valueCopy = value;
+  typeCopy = type;
+  handlerCopy = handler;
   v11 = _mo_log_facility_get_os_log(MOLogFacilityGeneral);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -2389,17 +2389,17 @@ uint64_t __56__MOPromptManager_testNotificationAnalyticsWithHandler___block_invo
   v20[1] = 3221225472;
   v20[2] = __54__MOPromptManager_printSettingValue_withType_handler___block_invoke;
   v20[3] = &unk_278775AC0;
-  v21 = v8;
-  v22 = v9;
-  v23 = v10;
+  v21 = valueCopy;
+  v22 = typeCopy;
+  v23 = handlerCopy;
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __54__MOPromptManager_printSettingValue_withType_handler___block_invoke_262;
   v18[3] = &unk_278773648;
   v19 = v23;
   v13 = v23;
-  v14 = v9;
-  v15 = v8;
+  v14 = typeCopy;
+  v15 = valueCopy;
   [(MOConnectionManager *)connectionManager callAsyncProxyUsingBlock:v20 onError:v18];
   v16 = self->connectionManager != 0;
 
@@ -2452,9 +2452,9 @@ uint64_t __54__MOPromptManager_printSettingValue_withType_handler___block_invoke
   return result;
 }
 
-- (void)printOnboardingStatusAnalytics:(id)a3
+- (void)printOnboardingStatusAnalytics:(id)analytics
 {
-  v4 = a3;
+  analyticsCopy = analytics;
   v5 = _mo_log_facility_get_os_log(MOLogFacilityGeneral);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -2467,7 +2467,7 @@ uint64_t __54__MOPromptManager_printSettingValue_withType_handler___block_invoke
   v10[1] = 3221225472;
   v10[2] = __50__MOPromptManager_printOnboardingStatusAnalytics___block_invoke;
   v10[3] = &unk_278775D68;
-  v11 = v4;
+  v11 = analyticsCopy;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __50__MOPromptManager_printOnboardingStatusAnalytics___block_invoke_263;
@@ -2520,9 +2520,9 @@ uint64_t __50__MOPromptManager_printOnboardingStatusAnalytics___block_invoke_263
   return result;
 }
 
-- (id)localizedStringForKey:(id)a3
+- (id)localizedStringForKey:(id)key
 {
-  if (a3)
+  if (key)
   {
     v4 = [MOEventBundleLabelLocalizer _Moments_LocalizedStringForKey:?];
   }
@@ -2535,11 +2535,11 @@ uint64_t __50__MOPromptManager_printOnboardingStatusAnalytics___block_invoke_263
   return v4;
 }
 
-- (id)localizedString:(id)a3 withTable:(id)a4
+- (id)localizedString:(id)string withTable:(id)table
 {
-  if (a3)
+  if (string)
   {
-    v5 = [MOEventBundleLabelLocalizer _Moments_LocalizedStringForKey:a3 withTable:a4];
+    v5 = [MOEventBundleLabelLocalizer _Moments_LocalizedStringForKey:string withTable:table];
   }
 
   else
@@ -2550,7 +2550,7 @@ uint64_t __50__MOPromptManager_printOnboardingStatusAnalytics___block_invoke_263
   return v5;
 }
 
-- (void)testMomentsNotificationsWithOptions:(id)a3 handler:(id)a4
+- (void)testMomentsNotificationsWithOptions:(id)options handler:(id)handler
 {
   v13[1] = *MEMORY[0x277D85DE8];
   v5 = MEMORY[0x277CCA9B8];
@@ -2558,24 +2558,24 @@ uint64_t __50__MOPromptManager_printOnboardingStatusAnalytics___block_invoke_263
   v12 = *MEMORY[0x277CCA450];
   v13[0] = @"Test notifications Moments command deprecated and moved to MomentsUI";
   v7 = MEMORY[0x277CBEAC0];
-  v8 = a4;
+  handlerCopy = handler;
   v9 = [v7 dictionaryWithObjects:v13 forKeys:&v12 count:1];
   v10 = [v5 errorWithDomain:v6 code:1 userInfo:v9];
-  (*(a4 + 2))(v8, v10);
+  (*(handler + 2))(handlerCopy, v10);
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)triggerFeedbackAssistantFlow:(id)a3 handler:(id)a4
+- (void)triggerFeedbackAssistantFlow:(id)flow handler:(id)handler
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  flowCopy = flow;
+  handlerCopy = handler;
   v8 = _mo_log_facility_get_os_log(MOLogFacilityGeneral);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v19 = v6;
+    v19 = flowCopy;
     _os_log_impl(&dword_22D8C5000, v8, OS_LOG_TYPE_DEFAULT, "calling triggerFeedbackAssistantFlow:%@", buf, 0xCu);
   }
 
@@ -2584,15 +2584,15 @@ uint64_t __50__MOPromptManager_printOnboardingStatusAnalytics___block_invoke_263
   v15[1] = 3221225472;
   v15[2] = __56__MOPromptManager_triggerFeedbackAssistantFlow_handler___block_invoke;
   v15[3] = &unk_278775C00;
-  v16 = v6;
-  v17 = v7;
+  v16 = flowCopy;
+  v17 = handlerCopy;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __56__MOPromptManager_triggerFeedbackAssistantFlow_handler___block_invoke_268;
   v13[3] = &unk_278773648;
   v14 = v17;
   v10 = v17;
-  v11 = v6;
+  v11 = flowCopy;
   [(MOConnectionManager *)connectionManager callAsyncProxyUsingBlock:v15 onError:v13];
 
   v12 = *MEMORY[0x277D85DE8];
@@ -2643,9 +2643,9 @@ uint64_t __56__MOPromptManager_triggerFeedbackAssistantFlow_handler___block_invo
   return result;
 }
 
-- (void)generateAvailabilityPredictionsWithHandler:(id)a3
+- (void)generateAvailabilityPredictionsWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = _mo_log_facility_get_os_log(MOLogFacilityGeneral);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -2658,7 +2658,7 @@ uint64_t __56__MOPromptManager_triggerFeedbackAssistantFlow_handler___block_invo
   v10[1] = 3221225472;
   v10[2] = __62__MOPromptManager_generateAvailabilityPredictionsWithHandler___block_invoke;
   v10[3] = &unk_278775D68;
-  v11 = v4;
+  v11 = handlerCopy;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __62__MOPromptManager_generateAvailabilityPredictionsWithHandler___block_invoke_269;
@@ -2712,9 +2712,9 @@ uint64_t __62__MOPromptManager_generateAvailabilityPredictionsWithHandler___bloc
   return result;
 }
 
-- (void)generateAvailabilityPredictionsAndRegisterTimerWithHandler:(id)a3
+- (void)generateAvailabilityPredictionsAndRegisterTimerWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = _mo_log_facility_get_os_log(MOLogFacilityGeneral);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -2727,7 +2727,7 @@ uint64_t __62__MOPromptManager_generateAvailabilityPredictionsWithHandler___bloc
   v10[1] = 3221225472;
   v10[2] = __78__MOPromptManager_generateAvailabilityPredictionsAndRegisterTimerWithHandler___block_invoke;
   v10[3] = &unk_278775D68;
-  v11 = v4;
+  v11 = handlerCopy;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __78__MOPromptManager_generateAvailabilityPredictionsAndRegisterTimerWithHandler___block_invoke_270;
@@ -2781,9 +2781,9 @@ uint64_t __78__MOPromptManager_generateAvailabilityPredictionsAndRegisterTimerWi
   return result;
 }
 
-- (void)setUpNotificationTimerWithFireDate:(id)a3
+- (void)setUpNotificationTimerWithFireDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v5 = _mo_log_facility_get_os_log(MOLogFacilityGeneral);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -2796,8 +2796,8 @@ uint64_t __78__MOPromptManager_generateAvailabilityPredictionsAndRegisterTimerWi
   v8[1] = 3221225472;
   v8[2] = __54__MOPromptManager_setUpNotificationTimerWithFireDate___block_invoke;
   v8[3] = &unk_278775D90;
-  v9 = v4;
-  v7 = v4;
+  v9 = dateCopy;
+  v7 = dateCopy;
   [(MOConnectionManager *)connectionManager callSyncProxyUsingBlock:v8 onError:&__block_literal_global_273];
 }
 
@@ -2822,9 +2822,9 @@ void __54__MOPromptManager_setUpNotificationTimerWithFireDate___block_invoke_271
   }
 }
 
-- (void)fetchEligiblePOICategoriesWithHandler:(id)a3
+- (void)fetchEligiblePOICategoriesWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = _mo_log_facility_get_os_log(MOLogFacilityGeneral);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -2837,7 +2837,7 @@ void __54__MOPromptManager_setUpNotificationTimerWithFireDate___block_invoke_271
   v10[1] = 3221225472;
   v10[2] = __57__MOPromptManager_fetchEligiblePOICategoriesWithHandler___block_invoke;
   v10[3] = &unk_278775D68;
-  v11 = v4;
+  v11 = handlerCopy;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __57__MOPromptManager_fetchEligiblePOICategoriesWithHandler___block_invoke_274;
@@ -2892,15 +2892,15 @@ uint64_t __57__MOPromptManager_fetchEligiblePOICategoriesWithHandler___block_inv
   return result;
 }
 
-- (void)acquireBackgroundProcessingPermissionsForMomentsWithHander:(id)a3
+- (void)acquireBackgroundProcessingPermissionsForMomentsWithHander:(id)hander
 {
-  v4 = a3;
+  handerCopy = hander;
   connectionManager = self->connectionManager;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __78__MOPromptManager_acquireBackgroundProcessingPermissionsForMomentsWithHander___block_invoke;
   v9[3] = &unk_278775D68;
-  v10 = v4;
+  v10 = handerCopy;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __78__MOPromptManager_acquireBackgroundProcessingPermissionsForMomentsWithHander___block_invoke_276;

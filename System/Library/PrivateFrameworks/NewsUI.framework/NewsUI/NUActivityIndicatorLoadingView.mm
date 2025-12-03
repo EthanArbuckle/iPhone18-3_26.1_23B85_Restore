@@ -1,6 +1,6 @@
 @interface NUActivityIndicatorLoadingView
-- (NUActivityIndicatorLoadingView)initWithActivityIndicatorStyle:(int64_t)a3;
-- (NUActivityIndicatorLoadingView)initWithText:(id)a3 activityIndicatorStyle:(int64_t)a4;
+- (NUActivityIndicatorLoadingView)initWithActivityIndicatorStyle:(int64_t)style;
+- (NUActivityIndicatorLoadingView)initWithText:(id)text activityIndicatorStyle:(int64_t)style;
 - (void)layoutSubviews;
 - (void)loadingViewStartAnimating;
 - (void)loadingViewStopAnimating;
@@ -8,7 +8,7 @@
 
 @implementation NUActivityIndicatorLoadingView
 
-- (NUActivityIndicatorLoadingView)initWithActivityIndicatorStyle:(int64_t)a3
+- (NUActivityIndicatorLoadingView)initWithActivityIndicatorStyle:(int64_t)style
 {
   v22.receiver = self;
   v22.super_class = NUActivityIndicatorLoadingView;
@@ -19,10 +19,10 @@
   v8 = [(NUActivityIndicatorLoadingView *)&v22 initWithFrame:*MEMORY[0x277CBF3A0], v5, v6, v7];
   if (v8)
   {
-    v9 = [MEMORY[0x277D75348] systemBackgroundColor];
-    [(NUActivityIndicatorLoadingView *)v8 setBackgroundColor:v9];
+    systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+    [(NUActivityIndicatorLoadingView *)v8 setBackgroundColor:systemBackgroundColor];
 
-    v10 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:a3];
+    v10 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:style];
     activityIndicatorView = v8->_activityIndicatorView;
     v8->_activityIndicatorView = v10;
 
@@ -55,14 +55,14 @@
   return v8;
 }
 
-- (NUActivityIndicatorLoadingView)initWithText:(id)a3 activityIndicatorStyle:(int64_t)a4
+- (NUActivityIndicatorLoadingView)initWithText:(id)text activityIndicatorStyle:(int64_t)style
 {
-  v6 = a3;
-  v7 = [(NUActivityIndicatorLoadingView *)self initWithActivityIndicatorStyle:a4];
+  textCopy = text;
+  v7 = [(NUActivityIndicatorLoadingView *)self initWithActivityIndicatorStyle:style];
   v8 = v7;
   if (v7)
   {
-    [(UILabel *)v7->_label setText:v6];
+    [(UILabel *)v7->_label setText:textCopy];
   }
 
   return v8;
@@ -76,14 +76,14 @@
   [(NUActivityIndicatorLoadingView *)self center];
   v4 = v3;
   v6 = v5;
-  v7 = [(NUActivityIndicatorLoadingView *)self activityIndicatorView];
-  [v7 setCenter:{v4, v6}];
+  activityIndicatorView = [(NUActivityIndicatorLoadingView *)self activityIndicatorView];
+  [activityIndicatorView setCenter:{v4, v6}];
 
-  v8 = [(NUActivityIndicatorLoadingView *)self label];
-  [v8 sizeToFit];
+  label = [(NUActivityIndicatorLoadingView *)self label];
+  [label sizeToFit];
 
-  v9 = [(NUActivityIndicatorLoadingView *)self label];
-  [v9 frame];
+  label2 = [(NUActivityIndicatorLoadingView *)self label];
+  [label2 frame];
   v11 = v10;
   v13 = v12;
 
@@ -91,23 +91,23 @@
   v15 = (v14 - v11) * 0.5;
   [(NUActivityIndicatorLoadingView *)self frame];
   v17 = (v16 - v13) * 0.5;
-  v18 = [(NUActivityIndicatorLoadingView *)self activityIndicatorView];
-  [v18 bounds];
+  activityIndicatorView2 = [(NUActivityIndicatorLoadingView *)self activityIndicatorView];
+  [activityIndicatorView2 bounds];
   v20 = v17 + v19;
 
-  v21 = [(NUActivityIndicatorLoadingView *)self label];
-  [v21 setFrame:{v15, v20, v11, v13}];
+  label3 = [(NUActivityIndicatorLoadingView *)self label];
+  [label3 setFrame:{v15, v20, v11, v13}];
 }
 
 - (void)loadingViewStartAnimating
 {
-  v3 = [(NUActivityIndicatorLoadingView *)self activityIndicatorView];
-  v4 = [v3 isAnimating];
+  activityIndicatorView = [(NUActivityIndicatorLoadingView *)self activityIndicatorView];
+  isAnimating = [activityIndicatorView isAnimating];
 
-  if ((v4 & 1) == 0)
+  if ((isAnimating & 1) == 0)
   {
-    v5 = [(NUActivityIndicatorLoadingView *)self activityIndicatorView];
-    [v5 startAnimating];
+    activityIndicatorView2 = [(NUActivityIndicatorLoadingView *)self activityIndicatorView];
+    [activityIndicatorView2 startAnimating];
 
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
@@ -126,13 +126,13 @@ void __59__NUActivityIndicatorLoadingView_loadingViewStartAnimating__block_invok
 
 - (void)loadingViewStopAnimating
 {
-  v3 = [(NUActivityIndicatorLoadingView *)self activityIndicatorView];
-  v4 = [v3 isAnimating];
+  activityIndicatorView = [(NUActivityIndicatorLoadingView *)self activityIndicatorView];
+  isAnimating = [activityIndicatorView isAnimating];
 
-  if (v4)
+  if (isAnimating)
   {
-    v5 = [(NUActivityIndicatorLoadingView *)self activityIndicatorView];
-    [v5 stopAnimating];
+    activityIndicatorView2 = [(NUActivityIndicatorLoadingView *)self activityIndicatorView];
+    [activityIndicatorView2 stopAnimating];
 
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;

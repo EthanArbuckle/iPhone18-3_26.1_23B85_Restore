@@ -1,27 +1,27 @@
 @interface SUUIGiftConfirmView
-- (SUUIGiftConfirmView)initWithGift:(id)a3 configuration:(id)a4;
-- (id)_newBoldLabelWithSize:(double)a3;
-- (id)_newLightLabelWithSize:(double)a3 alpha:(double)a4;
+- (SUUIGiftConfirmView)initWithGift:(id)gift configuration:(id)configuration;
+- (id)_newBoldLabelWithSize:(double)size;
+- (id)_newLightLabelWithSize:(double)size alpha:(double)alpha;
 - (id)_termsButton;
 - (void)layoutSubviews;
 @end
 
 @implementation SUUIGiftConfirmView
 
-- (SUUIGiftConfirmView)initWithGift:(id)a3 configuration:(id)a4
+- (SUUIGiftConfirmView)initWithGift:(id)gift configuration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
+  giftCopy = gift;
+  configurationCopy = configuration;
   v136.receiver = self;
   v136.super_class = SUUIGiftConfirmView;
   v8 = [(SUUIGiftConfirmView *)&v136 init];
   if (v8)
   {
-    v133 = v7;
-    v9 = [v7 clientContext];
-    v10 = a4;
-    v11 = v9;
-    objc_storeStrong(&v8->_giftConfiguration, v10);
+    v133 = configurationCopy;
+    clientContext = [configurationCopy clientContext];
+    configurationCopy2 = configuration;
+    v11 = clientContext;
+    objc_storeStrong(&v8->_giftConfiguration, configurationCopy2);
     v12 = [(SUUIGiftConfirmView *)v8 _newLightLabelWithSize:23.0 alpha:1.0];
     confirmYourOrderLabel = v8->_confirmYourOrderLabel;
     v8->_confirmYourOrderLabel = v12;
@@ -65,8 +65,8 @@
     v8->_rule1 = v20;
 
     v22 = v8->_rule1;
-    v23 = [MEMORY[0x277D75348] tertiaryLabelColor];
-    [(UIView *)v22 setBackgroundColor:v23];
+    tertiaryLabelColor = [MEMORY[0x277D75348] tertiaryLabelColor];
+    [(UIView *)v22 setBackgroundColor:tertiaryLabelColor];
 
     [(SUUIGiftConfirmView *)v8 addSubview:v8->_rule1];
     v24 = [[SUUIGiftConfirmLabeledValue alloc] initWithGiftConfirmLabelStyle:0];
@@ -87,8 +87,8 @@
     [(SUUIGiftConfirmLabeledValue *)v26 setLabel:v27];
 
     v28 = v8->_recipientsView;
-    v29 = [v6 recipientAddresses];
-    v30 = [v29 componentsJoinedByString:{@", "}];
+    recipientAddresses = [giftCopy recipientAddresses];
+    v30 = [recipientAddresses componentsJoinedByString:{@", "}];
     [(SUUIGiftConfirmLabeledValue *)v28 setValue:v30];
 
     [(SUUIGiftConfirmView *)v8 addSubview:v8->_recipientsView];
@@ -110,8 +110,8 @@
     [(SUUIGiftConfirmLabeledValue *)v33 setLabel:v34];
 
     v35 = v8->_senderView;
-    v36 = [v6 senderName];
-    [(SUUIGiftConfirmLabeledValue *)v35 setValue:v36];
+    senderName = [giftCopy senderName];
+    [(SUUIGiftConfirmLabeledValue *)v35 setValue:senderName];
 
     [(SUUIGiftConfirmView *)v8 addSubview:v8->_senderView];
     v37 = [[SUUIGiftConfirmLabeledValue alloc] initWithGiftConfirmLabelStyle:0];
@@ -132,8 +132,8 @@
     [(SUUIGiftConfirmLabeledValue *)v39 setLabel:v40];
 
     v41 = v8->_fromView;
-    v42 = [v6 senderEmailAddress];
-    [(SUUIGiftConfirmLabeledValue *)v41 setValue:v42];
+    senderEmailAddress = [giftCopy senderEmailAddress];
+    [(SUUIGiftConfirmLabeledValue *)v41 setValue:senderEmailAddress];
 
     [(SUUIGiftConfirmView *)v8 addSubview:v8->_fromView];
     v43 = objc_alloc_init(MEMORY[0x277D75D18]);
@@ -141,12 +141,12 @@
     v8->_rule2 = v43;
 
     v45 = v8->_rule2;
-    v46 = [MEMORY[0x277D75348] tertiaryLabelColor];
-    [(UIView *)v45 setBackgroundColor:v46];
+    tertiaryLabelColor2 = [MEMORY[0x277D75348] tertiaryLabelColor];
+    [(UIView *)v45 setBackgroundColor:tertiaryLabelColor2];
 
     [(SUUIGiftConfirmView *)v8 addSubview:v8->_rule2];
-    v132 = [v6 message];
-    v47 = [v132 length];
+    message = [giftCopy message];
+    v47 = [message length];
     v48 = [SUUIGiftConfirmLabeledValue alloc];
     if (v47)
     {
@@ -155,7 +155,7 @@
       v8->_messageView = v49;
 
       v51 = v8->_messageView;
-      v52 = [v6 message];
+      message2 = [giftCopy message];
     }
 
     else
@@ -174,11 +174,11 @@
       {
         [SUUIClientContext localizedStringForKey:@"GIFTING_NO_MESSAGE_PLACEHOLDER" inBundles:0 inTable:@"Gifting"];
       }
-      v52 = ;
+      message2 = ;
     }
 
-    v55 = v52;
-    [(SUUIGiftConfirmLabeledValue *)v51 setValue:v52];
+    v55 = message2;
+    [(SUUIGiftConfirmLabeledValue *)v51 setValue:message2];
 
     v56 = v8->_messageView;
     if (v11)
@@ -199,15 +199,15 @@
     v8->_rule3 = v58;
 
     v60 = v8->_rule3;
-    v61 = [MEMORY[0x277D75348] tertiaryLabelColor];
-    [(UIView *)v60 setBackgroundColor:v61];
+    tertiaryLabelColor3 = [MEMORY[0x277D75348] tertiaryLabelColor];
+    [(UIView *)v60 setBackgroundColor:tertiaryLabelColor3];
 
     [(SUUIGiftConfirmView *)v8 addSubview:v8->_rule3];
-    v62 = [v6 item];
+    item = [giftCopy item];
     v63 = [[SUUIGiftConfirmLabeledValue alloc] initWithGiftConfirmLabelStyle:2];
-    v134 = v6;
-    v135 = v62;
-    if (v62)
+    v134 = giftCopy;
+    v135 = item;
+    if (item)
     {
       itemView = v8->_itemView;
       v8->_itemView = v63;
@@ -226,8 +226,8 @@
       [(SUUIGiftConfirmLabeledValue *)v65 setLabel:v68];
 
       v69 = v8->_itemView;
-      v70 = [v62 title];
-      [(SUUIGiftConfirmLabeledValue *)v69 setValue:v70];
+      title = [item title];
+      [(SUUIGiftConfirmLabeledValue *)v69 setValue:title];
 
       [(SUUIGiftConfirmView *)v8 addSubview:v8->_itemView];
       v71 = [[SUUIGiftConfirmLabeledValue alloc] initWithGiftConfirmLabelStyle:2];
@@ -249,8 +249,8 @@
 
       v75 = objc_alloc_init(MEMORY[0x277CCABB8]);
       [v75 setNumberStyle:1];
-      v76 = [v6 recipientAddresses];
-      v77 = [v76 count];
+      recipientAddresses2 = [giftCopy recipientAddresses];
+      v77 = [recipientAddresses2 count];
 
       v131 = v11;
       if (v11)
@@ -268,17 +268,17 @@
       v81 = [v75 stringFromNumber:v80];
       [v135 primaryItemOffer];
       v82 = v130 = v75;
-      v83 = [v82 buttonText];
-      v84 = [v79 stringWithValidatedFormat:v78 validFormatSpecifiers:@"%@%@" error:0, v81, v83];
+      buttonText = [v82 buttonText];
+      v84 = [v79 stringWithValidatedFormat:v78 validFormatSpecifiers:@"%@%@" error:0, v81, buttonText];
 
       [(SUUIGiftConfirmLabeledValue *)v8->_amountView setSubtitleLabel:v84];
       v85 = v8->_amountView;
-      v86 = [v135 primaryItemOffer];
-      v87 = [v86 buttonText];
-      [(SUUIGiftConfirmLabeledValue *)v85 setValue:v87];
+      primaryItemOffer = [v135 primaryItemOffer];
+      buttonText2 = [primaryItemOffer buttonText];
+      [(SUUIGiftConfirmLabeledValue *)v85 setValue:buttonText2];
 
       [(SUUIGiftConfirmView *)v8 addSubview:v8->_amountView];
-      v6 = v134;
+      giftCopy = v134;
       v11 = v131;
     }
 
@@ -301,13 +301,13 @@
       [(SUUIGiftConfirmLabeledValue *)v67 setLabel:v88];
 
       v89 = v8->_amountView;
-      v90 = [v6 giftAmountString];
-      [(SUUIGiftConfirmLabeledValue *)v89 setValue:v90];
+      giftAmountString = [giftCopy giftAmountString];
+      [(SUUIGiftConfirmLabeledValue *)v89 setValue:giftAmountString];
 
       [(SUUIGiftConfirmView *)v8 addSubview:v8->_amountView];
     }
 
-    v91 = [v6 deliveryDate];
+    deliveryDate = [giftCopy deliveryDate];
     v92 = [[SUUIGiftConfirmLabeledValue alloc] initWithGiftConfirmLabelStyle:2];
     sendOnView = v8->_sendOnView;
     v8->_sendOnView = v92;
@@ -325,13 +325,13 @@
     v95 = ;
     [(SUUIGiftConfirmLabeledValue *)v94 setLabel:v95];
 
-    if (v91)
+    if (deliveryDate)
     {
       v96 = objc_alloc_init(MEMORY[0x277CCA968]);
       [v96 setDateStyle:2];
       [v96 setTimeStyle:0];
       v97 = v8->_sendOnView;
-      v98 = [v96 stringFromDate:v91];
+      v98 = [v96 stringFromDate:deliveryDate];
       [(SUUIGiftConfirmLabeledValue *)v97 setValue:v98];
     }
 
@@ -357,8 +357,8 @@
     v8->_rule4 = v100;
 
     v102 = v8->_rule4;
-    v103 = [MEMORY[0x277D75348] tertiaryLabelColor];
-    [(UIView *)v102 setBackgroundColor:v103];
+    tertiaryLabelColor4 = [MEMORY[0x277D75348] tertiaryLabelColor];
+    [(UIView *)v102 setBackgroundColor:tertiaryLabelColor4];
 
     [(SUUIGiftConfirmView *)v8 addSubview:v8->_rule4];
     v104 = [[SUUIGiftConfirmLabeledValue alloc] initWithGiftConfirmLabelStyle:2];
@@ -380,10 +380,10 @@
     [(SUUIGiftConfirmLabeledValue *)v106 setLabel:v107];
 
     v109 = v8->_themeNameView;
-    v6 = v134;
-    v110 = [v134 theme];
-    v111 = [v110 themeName];
-    [(SUUIGiftConfirmLabeledValue *)v109 setValue:v111];
+    giftCopy = v134;
+    theme = [v134 theme];
+    themeName = [theme themeName];
+    [(SUUIGiftConfirmLabeledValue *)v109 setValue:themeName];
 
     [(SUUIGiftConfirmView *)v8 addSubview:v8->_themeNameView];
     v112 = objc_alloc_init(MEMORY[0x277D75D18]);
@@ -391,8 +391,8 @@
     v8->_rule5 = v112;
 
     v114 = v8->_rule5;
-    v115 = [MEMORY[0x277D75348] tertiaryLabelColor];
-    [(UIView *)v114 setBackgroundColor:v115];
+    tertiaryLabelColor5 = [MEMORY[0x277D75348] tertiaryLabelColor];
+    [(UIView *)v114 setBackgroundColor:tertiaryLabelColor5];
 
     [(SUUIGiftConfirmView *)v8 addSubview:v8->_rule5];
     v116 = [(SUUIGiftConfirmView *)v8 _newLightLabelWithSize:20.0 alpha:1.0];
@@ -412,9 +412,9 @@
     v119 = v118 = v108;
     v120 = v8->_totalLabel;
     v121 = MEMORY[0x277CCACA8];
-    v122 = [v134 totalGiftAmountString];
-    v123 = [v121 stringWithValidatedFormat:v119 validFormatSpecifiers:@"%@" error:0, v122];
-    [(UILabel *)v120 setText:v123];
+    totalGiftAmountString = [v134 totalGiftAmountString];
+    v122 = [v121 stringWithValidatedFormat:v119 validFormatSpecifiers:@"%@" error:0, totalGiftAmountString];
+    [(UILabel *)v120 setText:v122];
 
     [(UILabel *)v8->_totalLabel sizeToFit];
     [(SUUIGiftConfirmView *)v8 addSubview:v8->_totalLabel];
@@ -423,14 +423,14 @@
     v8->_rule6 = v124;
 
     v126 = v8->_rule6;
-    v127 = [MEMORY[0x277D75348] tertiaryLabelColor];
-    [(UIView *)v126 setBackgroundColor:v127];
+    tertiaryLabelColor6 = [MEMORY[0x277D75348] tertiaryLabelColor];
+    [(UIView *)v126 setBackgroundColor:tertiaryLabelColor6];
 
     [(SUUIGiftConfirmView *)v8 addSubview:v8->_rule6];
-    v128 = [(SUUIGiftConfirmView *)v8 _termsButton];
-    [(SUUIGiftConfirmView *)v8 addSubview:v128];
+    _termsButton = [(SUUIGiftConfirmView *)v8 _termsButton];
+    [(SUUIGiftConfirmView *)v8 addSubview:_termsButton];
 
-    v7 = v133;
+    configurationCopy = v133;
   }
 
   return v8;
@@ -443,13 +443,13 @@
   v201 = v3;
   v6 = v5;
   v8 = v7;
-  v9 = [MEMORY[0x277D75128] sharedApplication];
-  v10 = [v9 userInterfaceLayoutDirection];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  userInterfaceLayoutDirection = [mEMORY[0x277D75128] userInterfaceLayoutDirection];
 
-  v11 = [MEMORY[0x277D75418] currentDevice];
-  v12 = [v11 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v12 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v13 = 75.0;
   }
@@ -460,10 +460,10 @@
   }
 
   v14 = v8 - v13;
-  v15 = [MEMORY[0x277D75418] currentDevice];
-  v16 = [v15 userInterfaceIdiom];
+  currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom2 = [currentDevice2 userInterfaceIdiom];
 
-  if ((v16 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom2 & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v17 = 55.0;
   }
@@ -475,10 +475,10 @@
 
   [(UILabel *)self->_confirmYourOrderLabel frame];
   v19 = v18;
-  v20 = [MEMORY[0x277D75418] currentDevice];
-  v21 = [v20 userInterfaceIdiom];
+  currentDevice3 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom3 = [currentDevice3 userInterfaceIdiom];
 
-  if ((v21 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom3 & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v22 = 75.0;
   }
@@ -492,7 +492,7 @@
   v23 = v14 - v22;
   confirmYourOrderLabel = self->_confirmYourOrderLabel;
   v199 = v6;
-  if (v10)
+  if (userInterfaceLayoutDirection)
   {
     v25 = v14 - v22;
     v26 = v200;
@@ -516,10 +516,10 @@
   v206.size.height = v19;
   v32 = CGRectGetMaxY(v206) + 16.0;
   [(UILabel *)self->_chargeDisclaimerLabel frame];
-  v33 = [MEMORY[0x277D75418] currentDevice];
-  v34 = [v33 userInterfaceIdiom];
+  currentDevice4 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom4 = [currentDevice4 userInterfaceIdiom];
 
-  if ((v34 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom4 & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v35 = 75.0;
   }
@@ -533,7 +533,7 @@
   v38 = v36;
   v39 = v37;
   chargeDisclaimerLabel = self->_chargeDisclaimerLabel;
-  if (v10)
+  if (userInterfaceLayoutDirection)
   {
     [SUUICGRectHelpers rect:v35 withFlippedOriginXRelativeTo:v32, v36, v37, v201, v199, v31, v26];
   }
@@ -552,24 +552,24 @@
   v207.size.width = v38;
   v207.size.height = v39;
   MaxY = CGRectGetMaxY(v207);
-  v46 = [MEMORY[0x277D75418] currentDevice];
-  v47 = [v46 userInterfaceIdiom];
+  currentDevice5 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom5 = [currentDevice5 userInterfaceIdiom];
 
   v48 = 10.0;
-  if ((v47 & 0xFFFFFFFFFFFFFFFBLL) != 1)
+  if ((userInterfaceIdiom5 & 0xFFFFFFFFFFFFFFFBLL) != 1)
   {
     v48 = 6.0;
   }
 
   v49 = MaxY + v48;
-  v50 = [MEMORY[0x277D759A0] mainScreen];
-  [v50 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v52 = 1.0 / v51;
 
-  v53 = [MEMORY[0x277D75418] currentDevice];
-  v54 = [v53 userInterfaceIdiom];
+  currentDevice6 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom6 = [currentDevice6 userInterfaceIdiom];
 
-  if ((v54 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom6 & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v55 = 75.0;
   }
@@ -579,10 +579,10 @@
     v55 = 30.0;
   }
 
-  v56 = [MEMORY[0x277D75418] currentDevice];
-  v57 = [v56 userInterfaceIdiom];
+  currentDevice7 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom7 = [currentDevice7 userInterfaceIdiom];
 
-  if ((v57 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom7 & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v58 = 75.0;
   }
@@ -601,10 +601,10 @@
   v60 = CGRectGetMaxY(v208) + 6.0;
   v61 = ceilf(v60);
   [(SUUIGiftConfirmLabeledValue *)self->_recipientsView frame];
-  v62 = [MEMORY[0x277D75418] currentDevice];
-  v63 = [v62 userInterfaceIdiom];
+  currentDevice8 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom8 = [currentDevice8 userInterfaceIdiom];
 
-  if ((v63 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom8 & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v64 = 75.0;
   }
@@ -624,10 +624,10 @@
   v209.size.height = v68;
   v69 = CGRectGetMaxY(v209) + 3.0;
   [(SUUIGiftConfirmLabeledValue *)self->_senderView frame];
-  v70 = [MEMORY[0x277D75418] currentDevice];
-  v71 = [v70 userInterfaceIdiom];
+  currentDevice9 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom9 = [currentDevice9 userInterfaceIdiom];
 
-  if ((v71 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom9 & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v72 = 75.0;
   }
@@ -647,10 +647,10 @@
   v210.size.height = v76;
   v77 = CGRectGetMaxY(v210) + 3.0;
   [(SUUIGiftConfirmLabeledValue *)self->_fromView frame];
-  v78 = [MEMORY[0x277D75418] currentDevice];
-  v79 = [v78 userInterfaceIdiom];
+  currentDevice10 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom10 = [currentDevice10 userInterfaceIdiom];
 
-  if ((v79 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom10 & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v80 = 75.0;
   }
@@ -669,10 +669,10 @@
   v211.size.width = v82;
   v211.size.height = v84;
   v85 = CGRectGetMaxY(v211) + 7.0;
-  v86 = [MEMORY[0x277D75418] currentDevice];
-  v87 = [v86 userInterfaceIdiom];
+  currentDevice11 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom11 = [currentDevice11 userInterfaceIdiom];
 
-  if ((v87 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom11 & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v88 = 75.0;
   }
@@ -682,10 +682,10 @@
     v88 = 30.0;
   }
 
-  v89 = [MEMORY[0x277D75418] currentDevice];
-  v90 = [v89 userInterfaceIdiom];
+  currentDevice12 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom12 = [currentDevice12 userInterfaceIdiom];
 
-  if ((v90 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom12 & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v91 = 75.0;
   }
@@ -704,10 +704,10 @@
   v93 = CGRectGetMaxY(v212) + 6.0;
   v94 = ceilf(v93);
   [(SUUIGiftConfirmLabeledValue *)self->_messageView frame];
-  v95 = [MEMORY[0x277D75418] currentDevice];
-  v96 = [v95 userInterfaceIdiom];
+  currentDevice13 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom13 = [currentDevice13 userInterfaceIdiom];
 
-  if ((v96 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom13 & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v97 = 75.0;
   }
@@ -726,10 +726,10 @@
   v213.size.width = v99;
   v213.size.height = v101;
   v102 = CGRectGetMaxY(v213) + 6.0;
-  v103 = [MEMORY[0x277D75418] currentDevice];
-  v104 = [v103 userInterfaceIdiom];
+  currentDevice14 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom14 = [currentDevice14 userInterfaceIdiom];
 
-  if ((v104 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom14 & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v105 = 75.0;
   }
@@ -739,10 +739,10 @@
     v105 = 30.0;
   }
 
-  v106 = [MEMORY[0x277D75418] currentDevice];
-  v107 = [v106 userInterfaceIdiom];
+  currentDevice15 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom15 = [currentDevice15 userInterfaceIdiom];
 
-  if ((v107 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom15 & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v108 = 75.0;
   }
@@ -765,10 +765,10 @@
   if (itemView)
   {
     [(SUUIGiftConfirmLabeledValue *)itemView frame];
-    v113 = [MEMORY[0x277D75418] currentDevice];
-    v114 = [v113 userInterfaceIdiom];
+    currentDevice16 = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom16 = [currentDevice16 userInterfaceIdiom];
 
-    if ((v114 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+    if ((userInterfaceIdiom16 & 0xFFFFFFFFFFFFFFFBLL) == 1)
     {
       v115 = 75.0;
     }
@@ -790,10 +790,10 @@
   }
 
   [(SUUIGiftConfirmLabeledValue *)self->_amountView frame];
-  v120 = [MEMORY[0x277D75418] currentDevice];
-  v121 = [v120 userInterfaceIdiom];
+  currentDevice17 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom17 = [currentDevice17 userInterfaceIdiom];
 
-  if ((v121 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom17 & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v122 = 75.0;
   }
@@ -813,10 +813,10 @@
   v216.size.height = v126;
   v127 = CGRectGetMaxY(v216) + 4.0;
   [(SUUIGiftConfirmLabeledValue *)self->_sendOnView frame];
-  v128 = [MEMORY[0x277D75418] currentDevice];
-  v129 = [v128 userInterfaceIdiom];
+  currentDevice18 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom18 = [currentDevice18 userInterfaceIdiom];
 
-  if ((v129 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom18 & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v130 = 75.0;
   }
@@ -835,10 +835,10 @@
   v217.size.width = v132;
   v217.size.height = v134;
   v135 = CGRectGetMaxY(v217) + 6.0;
-  v136 = [MEMORY[0x277D75418] currentDevice];
-  v137 = [v136 userInterfaceIdiom];
+  currentDevice19 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom19 = [currentDevice19 userInterfaceIdiom];
 
-  if ((v137 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom19 & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v138 = 75.0;
   }
@@ -848,10 +848,10 @@
     v138 = 30.0;
   }
 
-  v139 = [MEMORY[0x277D75418] currentDevice];
-  v140 = [v139 userInterfaceIdiom];
+  currentDevice20 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom20 = [currentDevice20 userInterfaceIdiom];
 
-  if ((v140 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom20 & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v141 = 75.0;
   }
@@ -870,10 +870,10 @@
   v143 = CGRectGetMaxY(v218) + 6.0;
   v144 = ceilf(v143);
   [(SUUIGiftConfirmLabeledValue *)self->_themeNameView frame];
-  v145 = [MEMORY[0x277D75418] currentDevice];
-  v146 = [v145 userInterfaceIdiom];
+  currentDevice21 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom21 = [currentDevice21 userInterfaceIdiom];
 
-  if ((v146 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom21 & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v147 = 75.0;
   }
@@ -892,10 +892,10 @@
   v219.size.width = v149;
   v219.size.height = v151;
   v152 = CGRectGetMaxY(v219) + 6.0;
-  v153 = [MEMORY[0x277D75418] currentDevice];
-  v154 = [v153 userInterfaceIdiom];
+  currentDevice22 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom22 = [currentDevice22 userInterfaceIdiom];
 
-  if ((v154 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom22 & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v155 = 75.0;
   }
@@ -905,10 +905,10 @@
     v155 = 30.0;
   }
 
-  v156 = [MEMORY[0x277D75418] currentDevice];
-  v157 = [v156 userInterfaceIdiom];
+  currentDevice23 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom23 = [currentDevice23 userInterfaceIdiom];
 
-  if ((v157 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom23 & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v158 = 75.0;
   }
@@ -925,10 +925,10 @@
   v220.size.width = v159;
   v220.size.height = v52;
   v160 = CGRectGetMaxY(v220);
-  v161 = [MEMORY[0x277D75418] currentDevice];
-  v162 = [v161 userInterfaceIdiom];
+  currentDevice24 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom24 = [currentDevice24 userInterfaceIdiom];
 
-  if ((v162 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom24 & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v163 = 15.0;
   }
@@ -950,7 +950,7 @@
   v173 = v165;
   v174 = v167;
   v175 = v169;
-  if (v10)
+  if (userInterfaceLayoutDirection)
   {
     [SUUICGRectHelpers rect:v170 withFlippedOriginXRelativeTo:v165, v167, v169, v201, v199, v198, v200];
   }
@@ -961,20 +961,20 @@
   v221.size.width = v167;
   v221.size.height = v169;
   v176 = CGRectGetMaxY(v221);
-  v177 = [MEMORY[0x277D75418] currentDevice];
-  v178 = [v177 userInterfaceIdiom];
+  currentDevice25 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom25 = [currentDevice25 userInterfaceIdiom];
 
   v179 = 6.0;
-  if ((v178 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom25 & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v179 = 15.0;
   }
 
   v180 = v176 + v179;
-  v181 = [MEMORY[0x277D75418] currentDevice];
-  v182 = [v181 userInterfaceIdiom];
+  currentDevice26 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom26 = [currentDevice26 userInterfaceIdiom];
 
-  if ((v182 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom26 & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v183 = 75.0;
   }
@@ -984,10 +984,10 @@
     v183 = 30.0;
   }
 
-  v184 = [MEMORY[0x277D75418] currentDevice];
-  v185 = [v184 userInterfaceIdiom];
+  currentDevice27 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom27 = [currentDevice27 userInterfaceIdiom];
 
-  if ((v185 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom27 & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v186 = 75.0;
   }
@@ -1005,13 +1005,13 @@
   v222.size.height = v202;
   v188 = CGRectGetMaxY(v222) + 25.0;
   v189 = ceilf(v188);
-  v204 = [(SUUIGiftConfirmView *)self _termsButton];
-  [v204 frame];
+  _termsButton = [(SUUIGiftConfirmView *)self _termsButton];
+  [_termsButton frame];
   v191 = v190;
-  v192 = [MEMORY[0x277D75418] currentDevice];
-  v193 = [v192 userInterfaceIdiom];
+  currentDevice28 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom28 = [currentDevice28 userInterfaceIdiom];
 
-  if ((v193 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom28 & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v194 = 75.0;
   }
@@ -1021,10 +1021,10 @@
     v194 = 30.0;
   }
 
-  v195 = [MEMORY[0x277D75418] currentDevice];
-  v196 = [v195 userInterfaceIdiom];
+  currentDevice29 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom29 = [currentDevice29 userInterfaceIdiom];
 
-  if ((v196 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom29 & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v197 = 75.0;
   }
@@ -1034,36 +1034,36 @@
     v197 = 30.0;
   }
 
-  [v204 setFrame:{v194, v189, v198 - v197 - v194, v191}];
+  [_termsButton setFrame:{v194, v189, v198 - v197 - v194, v191}];
 }
 
-- (id)_newBoldLabelWithSize:(double)a3
+- (id)_newBoldLabelWithSize:(double)size
 {
   v4 = objc_alloc_init(MEMORY[0x277D756B8]);
-  v5 = [MEMORY[0x277D75348] clearColor];
-  [v4 setBackgroundColor:v5];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [v4 setBackgroundColor:clearColor];
 
-  v6 = [MEMORY[0x277D74300] boldSystemFontOfSize:a3];
+  v6 = [MEMORY[0x277D74300] boldSystemFontOfSize:size];
   [v4 setFont:v6];
 
-  v7 = [MEMORY[0x277D75348] labelColor];
-  [v4 setTextColor:v7];
+  labelColor = [MEMORY[0x277D75348] labelColor];
+  [v4 setTextColor:labelColor];
 
   [v4 setTextAlignment:4];
   return v4;
 }
 
-- (id)_newLightLabelWithSize:(double)a3 alpha:(double)a4
+- (id)_newLightLabelWithSize:(double)size alpha:(double)alpha
 {
   v6 = objc_alloc_init(MEMORY[0x277D756B8]);
-  v7 = [MEMORY[0x277D75348] clearColor];
-  [v6 setBackgroundColor:v7];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [v6 setBackgroundColor:clearColor];
 
-  v8 = [MEMORY[0x277D74300] systemFontOfSize:a3];
+  v8 = [MEMORY[0x277D74300] systemFontOfSize:size];
   [v6 setFont:v8];
 
-  v9 = [MEMORY[0x277D75348] labelColor];
-  v10 = [v9 colorWithAlphaComponent:a4];
+  labelColor = [MEMORY[0x277D75348] labelColor];
+  v10 = [labelColor colorWithAlphaComponent:alpha];
   [v6 setTextColor:v10];
 
   [v6 setTextAlignment:4];
@@ -1075,37 +1075,37 @@
   termsButton = self->_termsButton;
   if (!termsButton)
   {
-    v4 = [(SUUIGiftConfiguration *)self->_giftConfiguration clientContext];
+    clientContext = [(SUUIGiftConfiguration *)self->_giftConfiguration clientContext];
     v5 = [[SUUILinkButton alloc] initWithArrowStyle:0];
     v6 = self->_termsButton;
     self->_termsButton = &v5->super;
 
-    if (SUUIUserInterfaceIdiom(v4) == 1)
+    if (SUUIUserInterfaceIdiom(clientContext) == 1)
     {
-      if (v4)
+      if (clientContext)
       {
         v7 = @"GIFTING_TERMS_LINK_IPAD";
 LABEL_7:
-        v8 = [v4 localizedStringForKey:v7 inTable:@"Gifting"];
+        v8 = [clientContext localizedStringForKey:v7 inTable:@"Gifting"];
 LABEL_11:
         v10 = v8;
         [(UIButton *)self->_termsButton setTitle:v8 forState:0];
-        v11 = [(UIButton *)self->_termsButton titleLabel];
+        titleLabel = [(UIButton *)self->_termsButton titleLabel];
         v12 = [MEMORY[0x277D74300] systemFontOfSize:12.0];
-        [v11 setFont:v12];
+        [titleLabel setFont:v12];
 
         v13 = self->_termsButton;
-        v14 = [MEMORY[0x277D75348] secondaryLabelColor];
-        [(UIButton *)v13 setTitleColor:v14 forState:0];
+        secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+        [(UIButton *)v13 setTitleColor:secondaryLabelColor forState:0];
 
         v15 = self->_termsButton;
-        v16 = [MEMORY[0x277D75348] labelColor];
-        [(UIButton *)v15 setTitleColor:v16 forState:1];
+        labelColor = [MEMORY[0x277D75348] labelColor];
+        [(UIButton *)v15 setTitleColor:labelColor forState:1];
 
         [(UIButton *)self->_termsButton setAutoresizingMask:5];
         v17 = self->_termsButton;
-        v18 = [MEMORY[0x277D75348] clearColor];
-        [(UIButton *)v17 setBackgroundColor:v18];
+        clearColor = [MEMORY[0x277D75348] clearColor];
+        [(UIButton *)v17 setBackgroundColor:clearColor];
 
         LODWORD(v19) = -1.0;
         [(UIButton *)self->_termsButton setCharge:v19];
@@ -1120,7 +1120,7 @@ LABEL_11:
 
     else
     {
-      if (v4)
+      if (clientContext)
       {
         v7 = @"GIFTING_TERMS_LINK_IPHONE";
         goto LABEL_7;

@@ -1,16 +1,16 @@
 @interface PGMemoryTriggerLastWeek
-- (id)resultsTriggeredWithContext:(id)a3 inGraph:(id)a4 progressReporter:(id)a5;
+- (id)resultsTriggeredWithContext:(id)context inGraph:(id)graph progressReporter:(id)reporter;
 @end
 
 @implementation PGMemoryTriggerLastWeek
 
-- (id)resultsTriggeredWithContext:(id)a3 inGraph:(id)a4 progressReporter:(id)a5
+- (id)resultsTriggeredWithContext:(id)context inGraph:(id)graph progressReporter:(id)reporter
 {
   v34 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v9 isCancelledWithProgress:0.0])
+  contextCopy = context;
+  graphCopy = graph;
+  reporterCopy = reporter;
+  if ([reporterCopy isCancelledWithProgress:0.0])
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -26,27 +26,27 @@
 
   else
   {
-    v11 = [v7 localDate];
+    localDate = [contextCopy localDate];
     v12 = MEMORY[0x277D27690];
-    v13 = [v7 timeZone];
-    v29 = v11;
-    v14 = [v12 universalDateFromLocalDate:v11 inTimeZone:v13];
+    timeZone = [contextCopy timeZone];
+    v29 = localDate;
+    v14 = [v12 universalDateFromLocalDate:localDate inTimeZone:timeZone];
 
     v28 = v14;
     v15 = [v14 dateByAddingTimeInterval:-604800.0];
     v16 = MEMORY[0x277D27690];
-    v17 = [v7 timeZone];
+    timeZone2 = [contextCopy timeZone];
     v27 = v15;
-    v18 = [v16 localDateFromUniversalDate:v15 inTimeZone:v17];
+    v18 = [v16 localDateFromUniversalDate:v15 inTimeZone:timeZone2];
 
-    v19 = [v8 dateNodesForLocalDate:v18];
-    v20 = [v19 momentNodes];
-    v21 = [v20 memoryNodes];
+    v19 = [graphCopy dateNodesForLocalDate:v18];
+    momentNodes = [v19 momentNodes];
+    memoryNodes = [momentNodes memoryNodes];
 
-    v22 = [PGGraphMemoryNodeCollection memoryNodesOfCategory:1 inGraph:v8];
-    v23 = [v21 collectionByIntersecting:v22];
-    v24 = [objc_opt_class() singleDayValidityIntervalWithContext:v7];
-    if ([v9 isCancelledWithProgress:1.0])
+    v22 = [PGGraphMemoryNodeCollection memoryNodesOfCategory:1 inGraph:graphCopy];
+    v23 = [memoryNodes collectionByIntersecting:v22];
+    v24 = [objc_opt_class() singleDayValidityIntervalWithContext:contextCopy];
+    if ([reporterCopy isCancelledWithProgress:1.0])
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {

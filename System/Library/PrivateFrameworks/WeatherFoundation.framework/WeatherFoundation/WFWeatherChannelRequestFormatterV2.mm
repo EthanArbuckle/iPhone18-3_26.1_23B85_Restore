@@ -1,25 +1,25 @@
 @interface WFWeatherChannelRequestFormatterV2
-+ (id)airQualityRequestForLocation:(id)a3 locale:(id)a4;
-+ (id)forecastRequest:(unint64_t)a3 forLocation:(id)a4 withUnits:(int)a5 locale:(id)a6 date:(id)a7 rules:(id)a8 options:(id)a9;
-+ (id)forecastRequestForRequest:(id)a3 queryItems:(id)a4 forLocation:(id)a5 rules:(id)a6;
-+ (id)forecastRequestForURL:(id)a3 queryItems:(id)a4;
++ (id)airQualityRequestForLocation:(id)location locale:(id)locale;
++ (id)forecastRequest:(unint64_t)request forLocation:(id)location withUnits:(int)units locale:(id)locale date:(id)date rules:(id)rules options:(id)options;
++ (id)forecastRequestForRequest:(id)request queryItems:(id)items forLocation:(id)location rules:(id)rules;
++ (id)forecastRequestForURL:(id)l queryItems:(id)items;
 @end
 
 @implementation WFWeatherChannelRequestFormatterV2
 
-+ (id)forecastRequest:(unint64_t)a3 forLocation:(id)a4 withUnits:(int)a5 locale:(id)a6 date:(id)a7 rules:(id)a8 options:(id)a9
++ (id)forecastRequest:(unint64_t)request forLocation:(id)location withUnits:(int)units locale:(id)locale date:(id)date rules:(id)rules options:(id)options
 {
-  v13 = a4;
-  v14 = a6;
-  v15 = a8;
-  v16 = [v13 geoLocation];
+  locationCopy = location;
+  localeCopy = locale;
+  rulesCopy = rules;
+  geoLocation = [locationCopy geoLocation];
 
-  if (!v16)
+  if (!geoLocation)
   {
     v18 = WFLogForCategory(2uLL);
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
-      [WFWeatherStoreServiceConfiguration forecastRequestForTypes:v13 location:v18 units:? date:? apiVersion:? error:? requestOptions:?];
+      [WFWeatherStoreServiceConfiguration forecastRequestForTypes:locationCopy location:v18 units:? date:? apiVersion:? error:? requestOptions:?];
     }
 
 LABEL_8:
@@ -27,11 +27,11 @@ LABEL_8:
     goto LABEL_10;
   }
 
-  if (a3 == 1)
+  if (request == 1)
   {
-    if ([WFRequestFormattingRules aqiEnabledByRules:v15 forLocation:v13])
+    if ([WFRequestFormattingRules aqiEnabledByRules:rulesCopy forLocation:locationCopy])
     {
-      v17 = [a1 airQualityRequestForLocation:v13 locale:v14];
+      v17 = [self airQualityRequestForLocation:locationCopy locale:localeCopy];
       goto LABEL_10;
     }
 
@@ -45,39 +45,39 @@ LABEL_8:
   v21 = [MEMORY[0x277CCAD18] queryItemWithName:@"apiKey" value:@"e45ff1b7c7bda231216c7ab7c33509b8"];
   [v19 addObject:v21];
 
-  v17 = [objc_opt_class() forecastRequestForRequest:@"aggregate.json" queryItems:v19 forLocation:v13 rules:v15];
+  v17 = [objc_opt_class() forecastRequestForRequest:@"aggregate.json" queryItems:v19 forLocation:locationCopy rules:rulesCopy];
 
 LABEL_10:
 
   return v17;
 }
 
-+ (id)airQualityRequestForLocation:(id)a3 locale:(id)a4
++ (id)airQualityRequestForLocation:(id)location locale:(id)locale
 {
-  v5 = a3;
-  v6 = a4;
-  if (!v6)
+  locationCopy = location;
+  localeCopy = locale;
+  if (!localeCopy)
   {
-    v6 = [MEMORY[0x277CBEAF8] currentLocale];
+    localeCopy = [MEMORY[0x277CBEAF8] currentLocale];
   }
 
   v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"https://api.weather.com/v2/globalairquality"];
   v8 = [objc_alloc(MEMORY[0x277CCACE0]) initWithString:v7];
   v9 = MEMORY[0x277CCACA8];
-  v10 = [v6 objectForKey:*MEMORY[0x277CBE6C8]];
-  v11 = [v6 objectForKey:*MEMORY[0x277CBE690]];
+  v10 = [localeCopy objectForKey:*MEMORY[0x277CBE6C8]];
+  v11 = [localeCopy objectForKey:*MEMORY[0x277CBE690]];
   v12 = [v9 stringWithFormat:@"%@-%@", v10, v11];
 
   v13 = MEMORY[0x277CCACA8];
-  v14 = [v5 geoLocation];
-  [v14 coordinate];
+  geoLocation = [locationCopy geoLocation];
+  [geoLocation coordinate];
   v16 = v15;
-  v17 = [v5 geoLocation];
-  [v17 coordinate];
+  geoLocation2 = [locationCopy geoLocation];
+  [geoLocation2 coordinate];
   v19 = [v13 stringWithFormat:@"%f, %f", v16, v18];
 
-  v20 = [v8 queryItems];
-  v21 = [v20 mutableCopy];
+  queryItems = [v8 queryItems];
+  v21 = [queryItems mutableCopy];
   v22 = v21;
   if (v21)
   {
@@ -108,32 +108,32 @@ LABEL_10:
   return v29;
 }
 
-+ (id)forecastRequestForRequest:(id)a3 queryItems:(id)a4 forLocation:(id)a5 rules:(id)a6
++ (id)forecastRequestForRequest:(id)request queryItems:(id)items forLocation:(id)location rules:(id)rules
 {
   v8 = MEMORY[0x277CCACA8];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [v9 geoLocation];
-  [v12 coordinate];
+  locationCopy = location;
+  itemsCopy = items;
+  requestCopy = request;
+  geoLocation = [locationCopy geoLocation];
+  [geoLocation coordinate];
   v14 = v13;
-  v15 = [v9 geoLocation];
+  geoLocation2 = [locationCopy geoLocation];
 
-  [v15 coordinate];
-  v17 = [v8 stringWithFormat:@"https://api.weather.com/v1/geocode/%f/%f/%@", v14, v16, v11];
+  [geoLocation2 coordinate];
+  requestCopy = [v8 stringWithFormat:@"https://api.weather.com/v1/geocode/%f/%f/%@", v14, v16, requestCopy];
 
-  v18 = [objc_alloc(MEMORY[0x277CCACE0]) initWithString:v17];
-  v19 = [objc_opt_class() forecastRequestForURL:v18 queryItems:v10];
+  v18 = [objc_alloc(MEMORY[0x277CCACE0]) initWithString:requestCopy];
+  v19 = [objc_opt_class() forecastRequestForURL:v18 queryItems:itemsCopy];
 
   return v19;
 }
 
-+ (id)forecastRequestForURL:(id)a3 queryItems:(id)a4
++ (id)forecastRequestForURL:(id)l queryItems:(id)items
 {
-  v5 = a3;
-  [v5 setQueryItems:a4];
+  lCopy = l;
+  [lCopy setQueryItems:items];
   v6 = MEMORY[0x277CCAB70];
-  v7 = [v5 URL];
+  v7 = [lCopy URL];
 
   v8 = [v6 requestWithURL:v7 cachePolicy:4 timeoutInterval:30.0];
 

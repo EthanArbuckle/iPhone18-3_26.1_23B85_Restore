@@ -1,49 +1,49 @@
 @interface _UIQueueingProxy
-+ (id)proxyWithTarget:(id)a3 shouldSuspendInvocationBlock:(id)a4;
++ (id)proxyWithTarget:(id)target shouldSuspendInvocationBlock:(id)block;
 - (BOOL)bypassSuspensionForSynchronousReply;
-- (BOOL)respondsToSelector:(SEL)a3;
+- (BOOL)respondsToSelector:(SEL)selector;
 - (id)description;
 - (void)_dispatchSuspendedMessages;
-- (void)forwardInvocation:(id)a3;
+- (void)forwardInvocation:(id)invocation;
 - (void)removeAllEnqueuedInvocations;
 - (void)resume;
-- (void)setBypassSuspensionForSynchronousReply:(BOOL)a3;
+- (void)setBypassSuspensionForSynchronousReply:(BOOL)reply;
 - (void)suspend;
 @end
 
 @implementation _UIQueueingProxy
 
-+ (id)proxyWithTarget:(id)a3 shouldSuspendInvocationBlock:(id)a4
++ (id)proxyWithTarget:(id)target shouldSuspendInvocationBlock:(id)block
 {
-  v12.receiver = a1;
+  v12.receiver = self;
   v12.super_class = &OBJC_METACLASS____UIQueueingProxy;
-  v5 = a4;
-  v6 = objc_msgSendSuper2(&v12, sel_proxyWithTarget_, a3);
-  v7 = [MEMORY[0x1E695DF70] array];
+  blockCopy = block;
+  v6 = objc_msgSendSuper2(&v12, sel_proxyWithTarget_, target);
+  array = [MEMORY[0x1E695DF70] array];
   v8 = v6[4];
-  v6[4] = v7;
+  v6[4] = array;
 
-  v9 = [v5 copy];
+  v9 = [blockCopy copy];
   v10 = v6[5];
   v6[5] = v9;
 
   return v6;
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
-  v4 = a3;
+  invocationCopy = invocation;
   os_unfair_lock_lock(&self->_lock);
-  if (self->_suspensionCount && ((shouldSuspendInvocationBlock = self->_shouldSuspendInvocationBlock) == 0 ? (v6 = 1) : (v6 = shouldSuspendInvocationBlock[2](shouldSuspendInvocationBlock, v4)), !self->_bypassSuspension && v6))
+  if (self->_suspensionCount && ((shouldSuspendInvocationBlock = self->_shouldSuspendInvocationBlock) == 0 ? (v6 = 1) : (v6 = shouldSuspendInvocationBlock[2](shouldSuspendInvocationBlock, invocationCopy)), !self->_bypassSuspension && v6))
   {
-    [v4 retainArguments];
-    [(NSMutableArray *)self->_queuedInvocations addObject:v4];
+    [invocationCopy retainArguments];
+    [(NSMutableArray *)self->_queuedInvocations addObject:invocationCopy];
     os_unfair_lock_unlock(&self->_lock);
-    v7 = [v4 methodSignature];
-    v8 = [v7 methodReturnType];
-    if (*v8 == 118)
+    methodSignature = [invocationCopy methodSignature];
+    methodReturnType = [methodSignature methodReturnType];
+    if (*methodReturnType == 118)
     {
-      v9 = v8[1];
+      v9 = methodReturnType[1];
 
       if (!v9)
       {
@@ -57,7 +57,7 @@
 
     v10 = MEMORY[0x1E695DF30];
     v11 = *MEMORY[0x1E695D940];
-    v12 = NSStringFromSelector([v4 selector]);
+    v12 = NSStringFromSelector([invocationCopy selector]);
     [v10 raise:v11 format:{@"%@ can only handle messages which do not have a return value when it is suspended. (%@)", self, v12}];
   }
 
@@ -66,7 +66,7 @@
     os_unfair_lock_unlock(&self->_lock);
     v13.receiver = self;
     v13.super_class = _UIQueueingProxy;
-    [(_UITargetedProxy *)&v13 forwardInvocation:v4];
+    [(_UITargetedProxy *)&v13 forwardInvocation:invocationCopy];
   }
 
 LABEL_13:
@@ -140,10 +140,10 @@ LABEL_13:
   return bypassSuspension;
 }
 
-- (void)setBypassSuspensionForSynchronousReply:(BOOL)a3
+- (void)setBypassSuspensionForSynchronousReply:(BOOL)reply
 {
   os_unfair_lock_lock(&self->_lock);
-  self->_bypassSuspension = a3;
+  self->_bypassSuspension = reply;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -156,9 +156,9 @@ LABEL_13:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
-  v3 = [(_UITargetedProxy *)self _target];
+  _target = [(_UITargetedProxy *)self _target];
   v4 = objc_opt_respondsToSelector();
 
   return v4 & 1;
@@ -169,8 +169,8 @@ LABEL_13:
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(_UITargetedProxy *)self _target];
-  v7 = [v3 stringWithFormat:@"<%@: %p target: %@; suspension count: %ld>", v5, self, v6, self->_suspensionCount];;
+  _target = [(_UITargetedProxy *)self _target];
+  v7 = [v3 stringWithFormat:@"<%@: %p target: %@; suspension count: %ld>", v5, self, _target, self->_suspensionCount];;
 
   return v7;
 }

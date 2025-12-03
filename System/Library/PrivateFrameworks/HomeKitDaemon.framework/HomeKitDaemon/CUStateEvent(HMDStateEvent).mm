@@ -16,21 +16,21 @@
     v13 = v12;
     if (v12)
     {
-      v14 = v12;
+      dictionary = v12;
     }
 
     else
     {
-      v14 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
     }
 
-    v15 = v14;
+    v15 = dictionary;
 
     v16 = _Block_copy(v11);
     [v15 setObject:v16 forKeyedSubscript:@"HMDStateEventCompletionKey"];
 
     v17 = [v15 copy];
-    v18 = [a1 initWithName:v8 userInfo:v17];
+    v18 = [self initWithName:v8 userInfo:v17];
 
     return v18;
   }

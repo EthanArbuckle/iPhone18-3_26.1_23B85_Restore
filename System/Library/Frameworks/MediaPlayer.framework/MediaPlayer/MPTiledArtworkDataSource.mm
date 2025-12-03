@@ -1,36 +1,36 @@
 @interface MPTiledArtworkDataSource
-+ (CGSize)_tileSizeForFittingSize:(CGSize)a3 rows:(unint64_t)a4 columns:(unint64_t)a5 spacing:(double)a6;
-+ (id)_errorWithDescription:(id)a3;
-+ (id)_loadingRequestForArtworkCatalog:(id)a3;
-+ (id)_representationCacheKeyForArtworkCatalog:(id)a3 forAnyRevision:(BOOL)a4;
++ (CGSize)_tileSizeForFittingSize:(CGSize)size rows:(unint64_t)rows columns:(unint64_t)columns spacing:(double)spacing;
++ (id)_errorWithDescription:(id)description;
++ (id)_loadingRequestForArtworkCatalog:(id)catalog;
++ (id)_representationCacheKeyForArtworkCatalog:(id)catalog forAnyRevision:(BOOL)revision;
 + (id)sharedDataSource;
-- (BOOL)_hasLoadingRequestForArtworkCatalog:(id)a3;
-- (BOOL)isRepresentation:(id)a3 bestRepresentationForArtworkCatalog:(id)a4;
+- (BOOL)_hasLoadingRequestForArtworkCatalog:(id)catalog;
+- (BOOL)isRepresentation:(id)representation bestRepresentationForArtworkCatalog:(id)catalog;
 - (MPTiledArtworkDataSource)init;
-- (id)existingArtworkEffectResultForEffectType:(int64_t)a3 catalog:(id)a4 options:(id)a5;
-- (id)existingRepresentationForArtworkCatalog:(id)a3;
-- (id)visualIdenticalityIdentifierForCatalog:(id)a3;
-- (void)_addLoadingRequestForArtworkCatalog:(id)a3;
-- (void)_performSyncBlock:(id)a3;
-- (void)_removeLoadingRequestForArtworkCatalog:(id)a3;
-- (void)cancelLoadingRepresentationForArtworkCatalog:(id)a3;
-- (void)loadArtworkEffectResultForEffectType:(int64_t)a3 catalog:(id)a4 options:(id)a5 systemEffectHandler:(id)a6 completionHandler:(id)a7;
-- (void)loadRepresentationForArtworkCatalog:(id)a3 completionHandler:(id)a4;
+- (id)existingArtworkEffectResultForEffectType:(int64_t)type catalog:(id)catalog options:(id)options;
+- (id)existingRepresentationForArtworkCatalog:(id)catalog;
+- (id)visualIdenticalityIdentifierForCatalog:(id)catalog;
+- (void)_addLoadingRequestForArtworkCatalog:(id)catalog;
+- (void)_performSyncBlock:(id)block;
+- (void)_removeLoadingRequestForArtworkCatalog:(id)catalog;
+- (void)cancelLoadingRepresentationForArtworkCatalog:(id)catalog;
+- (void)loadArtworkEffectResultForEffectType:(int64_t)type catalog:(id)catalog options:(id)options systemEffectHandler:(id)handler completionHandler:(id)completionHandler;
+- (void)loadRepresentationForArtworkCatalog:(id)catalog completionHandler:(id)handler;
 @end
 
 @implementation MPTiledArtworkDataSource
 
-- (void)_removeLoadingRequestForArtworkCatalog:(id)a3
+- (void)_removeLoadingRequestForArtworkCatalog:(id)catalog
 {
-  v4 = a3;
-  v5 = [objc_opt_class() _loadingRequestForArtworkCatalog:v4];
+  catalogCopy = catalog;
+  v5 = [objc_opt_class() _loadingRequestForArtworkCatalog:catalogCopy];
 
   [(NSCountedSet *)self->_loadingTiledArtworkRequests removeObject:v5];
 }
 
-- (void)_performSyncBlock:(id)a3
+- (void)_performSyncBlock:(id)block
 {
-  block = a3;
+  block = block;
   if (dispatch_get_specific(_MPTiledArtworkDataSourceQueueSpecificIsAccessQueue))
   {
     if (block)
@@ -45,39 +45,39 @@
   }
 }
 
-- (BOOL)_hasLoadingRequestForArtworkCatalog:(id)a3
+- (BOOL)_hasLoadingRequestForArtworkCatalog:(id)catalog
 {
-  v4 = a3;
-  v5 = [objc_opt_class() _loadingRequestForArtworkCatalog:v4];
+  catalogCopy = catalog;
+  v5 = [objc_opt_class() _loadingRequestForArtworkCatalog:catalogCopy];
 
   LOBYTE(self) = [(NSCountedSet *)self->_loadingTiledArtworkRequests containsObject:v5];
   return self;
 }
 
-- (void)_addLoadingRequestForArtworkCatalog:(id)a3
+- (void)_addLoadingRequestForArtworkCatalog:(id)catalog
 {
-  v4 = a3;
-  v5 = [objc_opt_class() _loadingRequestForArtworkCatalog:v4];
+  catalogCopy = catalog;
+  v5 = [objc_opt_class() _loadingRequestForArtworkCatalog:catalogCopy];
 
   [(NSCountedSet *)self->_loadingTiledArtworkRequests addObject:v5];
 }
 
-- (void)loadArtworkEffectResultForEffectType:(int64_t)a3 catalog:(id)a4 options:(id)a5 systemEffectHandler:(id)a6 completionHandler:(id)a7
+- (void)loadArtworkEffectResultForEffectType:(int64_t)type catalog:(id)catalog options:(id)options systemEffectHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = v15;
-  if (a3 == 1)
+  catalogCopy = catalog;
+  optionsCopy = options;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  v16 = completionHandlerCopy;
+  if (type == 1)
   {
-    v17 = [v12 token];
+    token = [catalogCopy token];
     v30[0] = MEMORY[0x1E69E9820];
     v30[1] = 3221225472;
     v30[2] = __119__MPTiledArtworkDataSource_loadArtworkEffectResultForEffectType_catalog_options_systemEffectHandler_completionHandler___block_invoke;
     v30[3] = &unk_1E76823C0;
     v30[4] = self;
-    v18 = v12;
+    v18 = catalogCopy;
     v31 = v18;
     [(MPTiledArtworkDataSource *)self _performSyncBlock:v30];
     tilingArtworkCatalogOperationQueue = self->_tilingArtworkCatalogOperationQueue;
@@ -87,12 +87,12 @@
     v23[3] = &unk_1E7675968;
     v23[4] = self;
     v24 = v18;
-    v25 = v17;
+    v25 = token;
     v29 = 1;
-    v26 = v13;
-    v27 = v14;
+    v26 = optionsCopy;
+    v27 = handlerCopy;
     v28 = v16;
-    v20 = v17;
+    v20 = token;
     [(NSOperationQueue *)tilingArtworkCatalogOperationQueue addOperationWithBlock:v23];
   }
 
@@ -102,8 +102,8 @@
     v21[1] = 3221225472;
     v21[2] = __119__MPTiledArtworkDataSource_loadArtworkEffectResultForEffectType_catalog_options_systemEffectHandler_completionHandler___block_invoke_5;
     v21[3] = &unk_1E7675C20;
-    v22 = v15;
-    (*(v14 + 2))(v14, v21);
+    v22 = completionHandlerCopy;
+    (*(handlerCopy + 2))(handlerCopy, v21);
     v20 = v22;
   }
 }
@@ -186,21 +186,21 @@ uint64_t __119__MPTiledArtworkDataSource_loadArtworkEffectResultForEffectType_ca
   return result;
 }
 
-- (id)existingArtworkEffectResultForEffectType:(int64_t)a3 catalog:(id)a4 options:(id)a5
+- (id)existingArtworkEffectResultForEffectType:(int64_t)type catalog:(id)catalog options:(id)options
 {
-  v7 = a5;
-  if (a3 == 1)
+  optionsCopy = options;
+  if (type == 1)
   {
-    v8 = [a4 token];
-    if ([v8 hasExistingArtworkCatalogsWithCount:1])
+    token = [catalog token];
+    if ([token hasExistingArtworkCatalogsWithCount:1])
     {
-      v9 = [v8 existingArtworkCatalogsWithCount:1];
-      v10 = [v9 firstObject];
+      v9 = [token existingArtworkCatalogsWithCount:1];
+      firstObject = [v9 firstObject];
 
-      v11 = [v10 dataSource];
+      dataSource = [firstObject dataSource];
       if (objc_opt_respondsToSelector())
       {
-        v12 = [v11 existingArtworkEffectResultForEffectType:1 catalog:v10 options:v7];
+        v12 = [dataSource existingArtworkEffectResultForEffectType:1 catalog:firstObject options:optionsCopy];
       }
 
       else
@@ -223,34 +223,34 @@ uint64_t __119__MPTiledArtworkDataSource_loadArtworkEffectResultForEffectType_ca
   return v12;
 }
 
-- (id)visualIdenticalityIdentifierForCatalog:(id)a3
+- (id)visualIdenticalityIdentifierForCatalog:(id)catalog
 {
-  v3 = [a3 token];
+  token = [catalog token];
   v4 = [MPTiledArtworkRepresentationCacheKey alloc];
-  v5 = [(MPTiledArtworkRepresentationCacheKey *)v4 initWithTiledArtworkRequest:v3 scaledFittingSize:*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)];
+  v5 = [(MPTiledArtworkRepresentationCacheKey *)v4 initWithTiledArtworkRequest:token scaledFittingSize:*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)];
 
   return v5;
 }
 
-- (void)loadRepresentationForArtworkCatalog:(id)a3 completionHandler:(id)a4
+- (void)loadRepresentationForArtworkCatalog:(id)catalog completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 token];
+  catalogCopy = catalog;
+  handlerCopy = handler;
+  token = [catalogCopy token];
   v37 = 0;
   v38 = &v37;
   v39 = 0x2020000000;
-  v40 = [v8 numberOfRows];
+  numberOfRows = [token numberOfRows];
   v33 = 0;
   v34 = &v33;
   v35 = 0x2020000000;
-  v36 = [v8 numberOfColumns];
+  numberOfColumns = [token numberOfColumns];
   v29 = 0;
   v30 = &v29;
   v31 = 0x2020000000;
   v32 = v34[3] * v38[3];
-  v9 = [v8 revisionIdentifier];
-  [v8 tileSpacing];
+  revisionIdentifier = [token revisionIdentifier];
+  [token tileSpacing];
   v11 = v10;
   if (!v30[3])
   {
@@ -262,7 +262,7 @@ uint64_t __119__MPTiledArtworkDataSource_loadArtworkEffectResultForEffectType_ca
   v27[2] = __82__MPTiledArtworkDataSource_loadRepresentationForArtworkCatalog_completionHandler___block_invoke;
   v27[3] = &unk_1E76823C0;
   v27[4] = self;
-  v12 = v6;
+  v12 = catalogCopy;
   v28 = v12;
   [(MPTiledArtworkDataSource *)self _performSyncBlock:v27];
   tilingArtworkCatalogOperationQueue = self->_tilingArtworkCatalogOperationQueue;
@@ -273,14 +273,14 @@ uint64_t __119__MPTiledArtworkDataSource_loadArtworkEffectResultForEffectType_ca
   v18[4] = self;
   v14 = v12;
   v19 = v14;
-  v15 = v7;
+  v15 = handlerCopy;
   v22 = v15;
-  v16 = v8;
+  v16 = token;
   v20 = v16;
   v23 = &v29;
   v24 = &v37;
   v25 = &v33;
-  v17 = v9;
+  v17 = revisionIdentifier;
   v21 = v17;
   v26 = v11;
   [(NSOperationQueue *)tilingArtworkCatalogOperationQueue addOperationWithBlock:v18];
@@ -812,49 +812,49 @@ LABEL_6:
 LABEL_7:
 }
 
-- (void)cancelLoadingRepresentationForArtworkCatalog:(id)a3
+- (void)cancelLoadingRepresentationForArtworkCatalog:(id)catalog
 {
-  v4 = a3;
+  catalogCopy = catalog;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __73__MPTiledArtworkDataSource_cancelLoadingRepresentationForArtworkCatalog___block_invoke;
   v6[3] = &unk_1E76823C0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = catalogCopy;
+  v5 = catalogCopy;
   [(MPTiledArtworkDataSource *)self _performSyncBlock:v6];
 }
 
-- (id)existingRepresentationForArtworkCatalog:(id)a3
+- (id)existingRepresentationForArtworkCatalog:(id)catalog
 {
-  v4 = a3;
-  v5 = [v4 cache];
-  tiledArtworkRepresentationFallbackCache = v5;
-  if (!v5)
+  catalogCopy = catalog;
+  cache = [catalogCopy cache];
+  tiledArtworkRepresentationFallbackCache = cache;
+  if (!cache)
   {
     tiledArtworkRepresentationFallbackCache = self->_tiledArtworkRepresentationFallbackCache;
   }
 
   v7 = tiledArtworkRepresentationFallbackCache;
 
-  v8 = [objc_opt_class() _representationCacheKeyForArtworkCatalog:v4 forAnyRevision:0];
+  v8 = [objc_opt_class() _representationCacheKeyForArtworkCatalog:catalogCopy forAnyRevision:0];
   if (!v8 || ([(NSCache *)v7 objectForKey:v8], (v9 = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v10 = [objc_opt_class() _representationCacheKeyForArtworkCatalog:v4 forAnyRevision:1];
+    v10 = [objc_opt_class() _representationCacheKeyForArtworkCatalog:catalogCopy forAnyRevision:1];
     v9 = [(NSCache *)v7 objectForKey:v10];
   }
 
   return v9;
 }
 
-- (BOOL)isRepresentation:(id)a3 bestRepresentationForArtworkCatalog:(id)a4
+- (BOOL)isRepresentation:(id)representation bestRepresentationForArtworkCatalog:(id)catalog
 {
-  v5 = a3;
-  v6 = a4;
-  [v5 representationSize];
+  representationCopy = representation;
+  catalogCopy = catalog;
+  [representationCopy representationSize];
   v8 = v7;
   v10 = v9;
-  [v6 scaledFittingSize];
+  [catalogCopy scaledFittingSize];
   v12 = v11;
   v14 = v13;
   MSVGetMaximumScreenSize();
@@ -892,13 +892,13 @@ LABEL_12:
 
   else
   {
-    v19 = [v6 token];
-    v20 = [v19 revisionIdentifier];
-    if (v20)
+    token = [catalogCopy token];
+    revisionIdentifier = [token revisionIdentifier];
+    if (revisionIdentifier)
     {
-      v21 = [v5 representationToken];
-      v22 = [v21 revisionIdentifier];
-      v23 = [v22 isEqual:v20];
+      representationToken = [representationCopy representationToken];
+      revisionIdentifier2 = [representationToken revisionIdentifier];
+      v23 = [revisionIdentifier2 isEqual:revisionIdentifier];
     }
 
     else
@@ -944,20 +944,20 @@ LABEL_12:
   return v2;
 }
 
-+ (CGSize)_tileSizeForFittingSize:(CGSize)a3 rows:(unint64_t)a4 columns:(unint64_t)a5 spacing:(double)a6
++ (CGSize)_tileSizeForFittingSize:(CGSize)size rows:(unint64_t)rows columns:(unint64_t)columns spacing:(double)spacing
 {
-  v6 = (a3.width - (a5 - 1) * a6) / a5;
-  v7 = (a3.height - (a4 - 1) * a6) / a4;
+  v6 = (size.width - (columns - 1) * spacing) / columns;
+  v7 = (size.height - (rows - 1) * spacing) / rows;
   result.height = v7;
   result.width = v6;
   return result;
 }
 
-+ (id)_loadingRequestForArtworkCatalog:(id)a3
++ (id)_loadingRequestForArtworkCatalog:(id)catalog
 {
-  v3 = a3;
-  v4 = [v3 token];
-  [v3 scaledFittingSize];
+  catalogCopy = catalog;
+  token = [catalogCopy token];
+  [catalogCopy scaledFittingSize];
   v6 = v5;
   v8 = v7;
 
@@ -978,36 +978,36 @@ LABEL_12:
     v8 = v11;
   }
 
-  v12 = [[MPTiledArtworkRepresentationCacheKey alloc] initWithTiledArtworkRequest:v4 scaledFittingSize:v6, v8];
+  v12 = [[MPTiledArtworkRepresentationCacheKey alloc] initWithTiledArtworkRequest:token scaledFittingSize:v6, v8];
 
   return v12;
 }
 
-+ (id)_errorWithDescription:(id)a3
++ (id)_errorWithDescription:(id)description
 {
   v9[1] = *MEMORY[0x1E69E9840];
   v8 = *MEMORY[0x1E696A278];
-  v9[0] = a3;
+  v9[0] = description;
   v3 = MEMORY[0x1E695DF20];
-  v4 = a3;
+  descriptionCopy = description;
   v5 = [v3 dictionaryWithObjects:v9 forKeys:&v8 count:1];
   v6 = [MEMORY[0x1E696ABC0] errorWithDomain:@"MPTiledArtworkError" code:0 userInfo:v5];
 
   return v6;
 }
 
-+ (id)_representationCacheKeyForArtworkCatalog:(id)a3 forAnyRevision:(BOOL)a4
++ (id)_representationCacheKeyForArtworkCatalog:(id)catalog forAnyRevision:(BOOL)revision
 {
-  v5 = a3;
-  v6 = [v5 token];
-  v7 = [v6 entityIdentifier];
-  if (v7)
+  catalogCopy = catalog;
+  token = [catalogCopy token];
+  entityIdentifier = [token entityIdentifier];
+  if (entityIdentifier)
   {
-    v8 = [v6 namespaceIdentifier];
+    namespaceIdentifier = [token namespaceIdentifier];
 
-    if (v8)
+    if (namespaceIdentifier)
     {
-      [v5 scaledFittingSize];
+      [catalogCopy scaledFittingSize];
       v10 = v9;
       v12 = v11;
       MSVGetMaximumScreenSize();
@@ -1027,37 +1027,37 @@ LABEL_12:
         v12 = v15;
       }
 
-      if (a4)
+      if (revision)
       {
-        v16 = [v6 revisionIdentifier];
+        revisionIdentifier = [token revisionIdentifier];
 
-        if (v16)
+        if (revisionIdentifier)
         {
-          v17 = [v6 copy];
+          v17 = [token copy];
           [v17 setRevisionIdentifier:0];
         }
 
         else
         {
-          v17 = v6;
+          v17 = token;
         }
 
-        v7 = [[MPTiledArtworkRepresentationCacheKey alloc] initWithTiledArtworkRequest:v17 scaledFittingSize:v10, v12];
+        entityIdentifier = [[MPTiledArtworkRepresentationCacheKey alloc] initWithTiledArtworkRequest:v17 scaledFittingSize:v10, v12];
       }
 
       else
       {
-        v7 = [[MPTiledArtworkRepresentationCacheKey alloc] initWithTiledArtworkRequest:v6 scaledFittingSize:v10, v12];
+        entityIdentifier = [[MPTiledArtworkRepresentationCacheKey alloc] initWithTiledArtworkRequest:token scaledFittingSize:v10, v12];
       }
     }
 
     else
     {
-      v7 = 0;
+      entityIdentifier = 0;
     }
   }
 
-  return v7;
+  return entityIdentifier;
 }
 
 + (id)sharedDataSource

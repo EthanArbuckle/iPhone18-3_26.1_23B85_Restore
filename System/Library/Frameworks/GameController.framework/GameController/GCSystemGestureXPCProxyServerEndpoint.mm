@@ -1,26 +1,26 @@
 @interface GCSystemGestureXPCProxyServerEndpoint
-- (BOOL)acceptClient:(id)a3 onConnection:(id)a4 error:(id *)a5;
-- (GCSystemGestureXPCProxyServerEndpoint)initWithIdentifier:(id)a3;
+- (BOOL)acceptClient:(id)client onConnection:(id)connection error:(id *)error;
+- (GCSystemGestureXPCProxyServerEndpoint)initWithIdentifier:(id)identifier;
 - (GCSystemGestureXPCProxyServerEndpointDelegate)delegate;
 - (_GCControllerComponentDescription)receiverDescription;
-- (void)disableSystemGestureForInput:(id)a3;
-- (void)enableSystemGestureForInput:(id)a3;
-- (void)fetchObjectIdentifierWithReply:(id)a3;
+- (void)disableSystemGestureForInput:(id)input;
+- (void)enableSystemGestureForInput:(id)input;
+- (void)fetchObjectIdentifierWithReply:(id)reply;
 - (void)invalidateClient;
 - (void)invalidateConnection;
 @end
 
 @implementation GCSystemGestureXPCProxyServerEndpoint
 
-- (GCSystemGestureXPCProxyServerEndpoint)initWithIdentifier:(id)a3
+- (GCSystemGestureXPCProxyServerEndpoint)initWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = GCSystemGestureXPCProxyServerEndpoint;
   v5 = [(GCSystemGestureXPCProxyServerEndpoint *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copyWithZone:0];
+    v6 = [identifierCopy copyWithZone:0];
     identifier = v5->_identifier;
     v5->_identifier = v6;
   }
@@ -59,10 +59,10 @@
   [(GCSystemGestureXPCProxyRemoteClientEndpointInterface *)v5 invalidateConnection];
 }
 
-- (BOOL)acceptClient:(id)a3 onConnection:(id)a4 error:(id *)a5
+- (BOOL)acceptClient:(id)client onConnection:(id)connection error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  clientCopy = client;
+  connectionCopy = connection;
   objc_initWeak(&location, self);
   connectionInterruptionRegistration = self->_connectionInterruptionRegistration;
   self->_connectionInterruptionRegistration = 0;
@@ -82,16 +82,16 @@
   v24 = &unk_1E8418D18;
   objc_copyWeak(&v25, &location);
   v14 = _Block_copy(&v21);
-  v15 = [v9 addInterruptionHandler:{v14, v21, v22, v23, v24}];
+  v15 = [connectionCopy addInterruptionHandler:{v14, v21, v22, v23, v24}];
   v16 = self->_connectionInterruptionRegistration;
   self->_connectionInterruptionRegistration = v15;
 
-  v17 = [v9 addInvalidationHandler:v14];
+  v17 = [connectionCopy addInvalidationHandler:v14];
   v18 = self->_connectionInvalidationRegistration;
   self->_connectionInvalidationRegistration = v17;
 
-  objc_storeStrong(&self->_connection, a4);
-  objc_storeStrong(&self->_clientEndpoint, a3);
+  objc_storeStrong(&self->_connection, connection);
+  objc_storeStrong(&self->_clientEndpoint, client);
   self->_pendingUpdates = 0;
   if (gc_isInternalBuild())
   {
@@ -126,16 +126,16 @@ void __73__GCSystemGestureXPCProxyServerEndpoint_acceptClient_onConnection_error
   }
 }
 
-- (void)disableSystemGestureForInput:(id)a3
+- (void)disableSystemGestureForInput:(id)input
 {
-  v4 = a3;
+  inputCopy = input;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __70__GCSystemGestureXPCProxyServerEndpoint_disableSystemGestureForInput___block_invoke;
   v6[3] = &unk_1E8418C50;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = inputCopy;
+  v5 = inputCopy;
   _os_activity_initiate(&dword_1D2CD5000, "(SystemGesture XPC Proxy Server Endpoint) Disable system gesture with input name", OS_ACTIVITY_FLAG_DEFAULT, v6);
 }
 
@@ -145,16 +145,16 @@ void __70__GCSystemGestureXPCProxyServerEndpoint_disableSystemGestureForInput___
   [WeakRetained systemGestureXPCProxyServerEndpoint:*(a1 + 32) disableSystemGestureForInput:*(a1 + 40)];
 }
 
-- (void)enableSystemGestureForInput:(id)a3
+- (void)enableSystemGestureForInput:(id)input
 {
-  v4 = a3;
+  inputCopy = input;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __69__GCSystemGestureXPCProxyServerEndpoint_enableSystemGestureForInput___block_invoke;
   v6[3] = &unk_1E8418C50;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = inputCopy;
+  v5 = inputCopy;
   _os_activity_initiate(&dword_1D2CD5000, "(SystemGesture XPC Proxy Server Endpoint) Enable system gesture with input name", OS_ACTIVITY_FLAG_DEFAULT, v6);
 }
 
@@ -193,11 +193,11 @@ void __61__GCSystemGestureXPCProxyServerEndpoint_invalidateConnection__block_inv
   *(v8 + 8) = 0;
 }
 
-- (void)fetchObjectIdentifierWithReply:(id)a3
+- (void)fetchObjectIdentifierWithReply:(id)reply
 {
-  v5 = a3;
-  v6 = [(GCSystemGestureXPCProxyServerEndpoint *)self identifier];
-  (*(a3 + 2))(v5, v6);
+  replyCopy = reply;
+  identifier = [(GCSystemGestureXPCProxyServerEndpoint *)self identifier];
+  (*(reply + 2))(replyCopy, identifier);
 }
 
 - (GCSystemGestureXPCProxyServerEndpointDelegate)delegate

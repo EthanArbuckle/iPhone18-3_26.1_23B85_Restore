@@ -1,7 +1,7 @@
 @interface ICSEFolderListItem
 - (BOOL)isCollapsed;
 - (BOOL)isCollapsible;
-- (ICSEFolderListItem)initWithViewState:(id)a3;
+- (ICSEFolderListItem)initWithViewState:(id)state;
 - (ICSEFolderListItem)parent;
 - (ICSEFolderListViewState)viewState;
 - (NSString)title;
@@ -9,24 +9,24 @@
 - (id)flattenedChildItems;
 - (unint64_t)countOfVisibleDescendants;
 - (unint64_t)level;
-- (void)addChildItem:(id)a3;
-- (void)insertChildItem:(id)a3 atIndex:(unint64_t)a4;
-- (void)recursivelyAddChildFolder:(id)a3;
-- (void)setCollapsed:(BOOL)a3;
+- (void)addChildItem:(id)item;
+- (void)insertChildItem:(id)item atIndex:(unint64_t)index;
+- (void)recursivelyAddChildFolder:(id)folder;
+- (void)setCollapsed:(BOOL)collapsed;
 @end
 
 @implementation ICSEFolderListItem
 
-- (ICSEFolderListItem)initWithViewState:(id)a3
+- (ICSEFolderListItem)initWithViewState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v10.receiver = self;
   v10.super_class = ICSEFolderListItem;
   v5 = [(ICSEFolderListItem *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_viewState, v4);
+    objc_storeWeak(&v5->_viewState, stateCopy);
     v7 = objc_alloc_init(NSMutableArray);
     children = v6->_children;
     v6->_children = v7;
@@ -63,17 +63,17 @@
 
   [v5 appendString:v6];
   [v5 appendString:v3];
-  v7 = [(ICSEFolderListItem *)self noteContainer];
-  v8 = [v7 titleForTableViewCell];
-  [v5 appendString:v8];
+  noteContainer = [(ICSEFolderListItem *)self noteContainer];
+  titleForTableViewCell = [noteContainer titleForTableViewCell];
+  [v5 appendString:titleForTableViewCell];
 
   [v5 appendString:@"\n"];
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v9 = [(ICSEFolderListItem *)self children];
-  v10 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  children = [(ICSEFolderListItem *)self children];
+  v10 = [children countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v10)
   {
     v11 = v10;
@@ -84,14 +84,14 @@
       {
         if (*v17 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(children);
         }
 
         v14 = [*(*(&v16 + 1) + 8 * i) debugDescription];
         [v5 appendString:v14];
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v11 = [children countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v11);
@@ -102,15 +102,15 @@
 
 - (unint64_t)level
 {
-  v3 = [(ICSEFolderListItem *)self parent];
+  parent = [(ICSEFolderListItem *)self parent];
 
-  if (!v3)
+  if (!parent)
   {
     return 0;
   }
 
-  v4 = [(ICSEFolderListItem *)self parent];
-  v5 = [v4 level] + 1;
+  parent2 = [(ICSEFolderListItem *)self parent];
+  v5 = [parent2 level] + 1;
 
   return v5;
 }
@@ -119,36 +119,36 @@
 {
   if ([(ICSEFolderListItem *)self isAccount])
   {
-    v3 = [(ICSEFolderListItem *)self parent];
+    parent = [(ICSEFolderListItem *)self parent];
 
-    if (!v3)
+    if (!parent)
     {
       return 1;
     }
   }
 
-  v4 = [(ICSEFolderListItem *)self children];
-  v5 = [v4 count] != 0;
+  children = [(ICSEFolderListItem *)self children];
+  v5 = [children count] != 0;
 
   return v5;
 }
 
 - (BOOL)isCollapsed
 {
-  v2 = self;
+  selfCopy = self;
   if (![(ICSEFolderListItem *)self isCollapsible])
   {
     goto LABEL_6;
   }
 
-  if ([(ICSEFolderListItem *)v2 isAccount])
+  if ([(ICSEFolderListItem *)selfCopy isAccount])
   {
-    v3 = [(ICSEFolderListItem *)v2 parent];
+    parent = [(ICSEFolderListItem *)selfCopy parent];
 
-    if (!v3)
+    if (!parent)
     {
       objc_opt_class();
-      v12 = [(ICSEFolderListItem *)v2 noteContainer];
+      noteContainer = [(ICSEFolderListItem *)selfCopy noteContainer];
       v13 = ICDynamicCast();
 
       if (!v13)
@@ -156,58 +156,58 @@
         [ICAssert handleFailedAssertWithCondition:"((((ICAccount*)ICDynamicCast([ICAccount class] functionName:self.noteContainer))) != nil)" simulateCrash:"[ICSEFolderListItem isCollapsed]" showAlert:1 format:0, @"Expected non-nil value for '%s'", "ICCastAsClass(ICAccount, self.noteContainer)"];
       }
 
-      v6 = [(ICSEFolderListItem *)v2 viewState];
-      v7 = [v6 collapsedAccountIdentifiers];
-      v8 = [(ICSEFolderListItem *)v2 noteContainer];
-      v9 = [v8 identifier];
-      LOBYTE(v2) = [v7 containsObject:v9];
+      viewState = [(ICSEFolderListItem *)selfCopy viewState];
+      collapsedAccountIdentifiers = [viewState collapsedAccountIdentifiers];
+      noteContainer2 = [(ICSEFolderListItem *)selfCopy noteContainer];
+      identifier = [noteContainer2 identifier];
+      LOBYTE(selfCopy) = [collapsedAccountIdentifiers containsObject:identifier];
       goto LABEL_13;
     }
   }
 
-  v4 = [(ICSEFolderListItem *)v2 viewState];
-  v5 = [v4 overrideCollapsed];
+  viewState2 = [(ICSEFolderListItem *)selfCopy viewState];
+  overrideCollapsed = [viewState2 overrideCollapsed];
 
-  if (!v5)
+  if (!overrideCollapsed)
   {
-    v6 = [(ICSEFolderListItem *)v2 viewState];
-    v7 = [v6 expandedFolderIdentifiers];
-    v8 = [(ICSEFolderListItem *)v2 noteContainer];
-    v9 = [v8 identifier];
-    LODWORD(v2) = [v7 containsObject:v9] ^ 1;
+    viewState = [(ICSEFolderListItem *)selfCopy viewState];
+    collapsedAccountIdentifiers = [viewState expandedFolderIdentifiers];
+    noteContainer2 = [(ICSEFolderListItem *)selfCopy noteContainer];
+    identifier = [noteContainer2 identifier];
+    LODWORD(selfCopy) = [collapsedAccountIdentifiers containsObject:identifier] ^ 1;
     goto LABEL_13;
   }
 
-  if (![(ICSEFolderListItem *)v2 isAccount])
+  if (![(ICSEFolderListItem *)selfCopy isAccount])
   {
-    v6 = [(ICSEFolderListItem *)v2 viewState];
-    v7 = [v6 overrideCollapsedFolder];
-    if (!v7)
+    viewState = [(ICSEFolderListItem *)selfCopy viewState];
+    collapsedAccountIdentifiers = [viewState overrideCollapsedFolder];
+    if (!collapsedAccountIdentifiers)
     {
-      LOBYTE(v2) = 0;
+      LOBYTE(selfCopy) = 0;
       goto LABEL_14;
     }
 
-    v8 = [(ICSEFolderListItem *)v2 viewState];
-    v9 = [v8 overrideCollapsedFolder];
-    v10 = [(ICSEFolderListItem *)v2 noteContainer];
-    v11 = [v10 identifier];
-    LOBYTE(v2) = [v9 isEqualToString:v11];
+    noteContainer2 = [(ICSEFolderListItem *)selfCopy viewState];
+    identifier = [noteContainer2 overrideCollapsedFolder];
+    noteContainer3 = [(ICSEFolderListItem *)selfCopy noteContainer];
+    identifier2 = [noteContainer3 identifier];
+    LOBYTE(selfCopy) = [identifier isEqualToString:identifier2];
 
 LABEL_13:
 LABEL_14:
 
-    return v2;
+    return selfCopy;
   }
 
 LABEL_6:
-  LOBYTE(v2) = 0;
-  return v2;
+  LOBYTE(selfCopy) = 0;
+  return selfCopy;
 }
 
-- (void)setCollapsed:(BOOL)a3
+- (void)setCollapsed:(BOOL)collapsed
 {
-  v3 = a3;
+  collapsedCopy = collapsed;
   if (![(ICSEFolderListItem *)self isCollapsible])
   {
     return;
@@ -215,12 +215,12 @@ LABEL_6:
 
   if ([(ICSEFolderListItem *)self isAccount])
   {
-    v5 = [(ICSEFolderListItem *)self parent];
+    parent = [(ICSEFolderListItem *)self parent];
 
-    if (!v5)
+    if (!parent)
     {
       objc_opt_class();
-      v11 = [(ICSEFolderListItem *)self noteContainer];
+      noteContainer = [(ICSEFolderListItem *)self noteContainer];
       v12 = ICDynamicCast();
 
       if (!v12)
@@ -228,32 +228,32 @@ LABEL_6:
         [ICAssert handleFailedAssertWithCondition:"((((ICAccount*)ICDynamicCast([ICAccount class] functionName:self.noteContainer))) != nil)" simulateCrash:"[ICSEFolderListItem setCollapsed:]" showAlert:1 format:0, @"Expected non-nil value for '%s'", "ICCastAsClass(ICAccount, self.noteContainer)"];
       }
 
-      v18 = [(ICSEFolderListItem *)self viewState];
-      v13 = [v18 collapsedAccountIdentifiers];
-      v14 = [(ICSEFolderListItem *)self noteContainer];
-      v15 = [v14 identifier];
-      if (!v3)
+      viewState = [(ICSEFolderListItem *)self viewState];
+      collapsedAccountIdentifiers = [viewState collapsedAccountIdentifiers];
+      noteContainer2 = [(ICSEFolderListItem *)self noteContainer];
+      identifier = [noteContainer2 identifier];
+      if (!collapsedCopy)
       {
         goto LABEL_26;
       }
 
 LABEL_28:
-      [v13 addObject:v15];
+      [collapsedAccountIdentifiers addObject:identifier];
       goto LABEL_29;
     }
   }
 
-  v6 = [(ICSEFolderListItem *)self viewState];
-  v7 = [v6 overrideCollapsed];
+  viewState2 = [(ICSEFolderListItem *)self viewState];
+  overrideCollapsed = [viewState2 overrideCollapsed];
 
-  if (v7)
+  if (overrideCollapsed)
   {
-    v8 = [(ICSEFolderListItem *)self viewState];
-    v9 = [v8 overrideCollapsedFolder];
-    v10 = v9;
-    if (v3)
+    viewState3 = [(ICSEFolderListItem *)self viewState];
+    overrideCollapsedFolder = [viewState3 overrideCollapsedFolder];
+    v10 = overrideCollapsedFolder;
+    if (collapsedCopy)
     {
-      if (!v9)
+      if (!overrideCollapsedFolder)
       {
 
 LABEL_18:
@@ -262,21 +262,21 @@ LABEL_18:
           [ICAssert handleFailedAssertWithCondition:"!self.isAccount" functionName:"[ICSEFolderListItem setCollapsed:]" simulateCrash:1 showAlert:0 format:@"Can't collapse a legacy or account node in edit mode"];
         }
 
-        if (v3)
+        if (collapsedCopy)
         {
-          v8 = [(ICSEFolderListItem *)self noteContainer];
-          v16 = [v8 identifier];
+          viewState3 = [(ICSEFolderListItem *)self noteContainer];
+          identifier2 = [viewState3 identifier];
         }
 
         else
         {
-          v16 = 0;
+          identifier2 = 0;
         }
 
-        v17 = [(ICSEFolderListItem *)self viewState];
-        [v17 setOverrideCollapsedFolder:v16];
+        viewState4 = [(ICSEFolderListItem *)self viewState];
+        [viewState4 setOverrideCollapsedFolder:identifier2];
 
-        if (v3)
+        if (collapsedCopy)
         {
 
           goto LABEL_25;
@@ -299,23 +299,23 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  if (!v3)
+  if (!collapsedCopy)
   {
 LABEL_27:
-    v18 = [(ICSEFolderListItem *)self viewState];
-    v13 = [v18 expandedFolderIdentifiers];
-    v14 = [(ICSEFolderListItem *)self noteContainer];
-    v15 = [v14 identifier];
+    viewState = [(ICSEFolderListItem *)self viewState];
+    collapsedAccountIdentifiers = [viewState expandedFolderIdentifiers];
+    noteContainer2 = [(ICSEFolderListItem *)self noteContainer];
+    identifier = [noteContainer2 identifier];
     goto LABEL_28;
   }
 
 LABEL_25:
-  v18 = [(ICSEFolderListItem *)self viewState];
-  v13 = [v18 expandedFolderIdentifiers];
-  v14 = [(ICSEFolderListItem *)self noteContainer];
-  v15 = [v14 identifier];
+  viewState = [(ICSEFolderListItem *)self viewState];
+  collapsedAccountIdentifiers = [viewState expandedFolderIdentifiers];
+  noteContainer2 = [(ICSEFolderListItem *)self noteContainer];
+  identifier = [noteContainer2 identifier];
 LABEL_26:
-  [v13 removeObject:v15];
+  [collapsedAccountIdentifiers removeObject:identifier];
 LABEL_29:
 }
 
@@ -328,8 +328,8 @@ LABEL_29:
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v4 = [(ICSEFolderListItem *)self children];
-    v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    children = [(ICSEFolderListItem *)self children];
+    v5 = [children countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v5)
     {
       v6 = v5;
@@ -340,16 +340,16 @@ LABEL_29:
         {
           if (*v13 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(children);
           }
 
           v9 = *(*(&v12 + 1) + 8 * i);
           [v3 addObject:v9];
-          v10 = [v9 flattenedChildItems];
-          [v3 addObjectsFromArray:v10];
+          flattenedChildItems = [v9 flattenedChildItems];
+          [v3 addObjectsFromArray:flattenedChildItems];
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v6 = [children countByEnumeratingWithState:&v12 objects:v16 count:16];
       }
 
       while (v6);
@@ -361,39 +361,39 @@ LABEL_29:
 
 - (unint64_t)countOfVisibleDescendants
 {
-  v2 = [(ICSEFolderListItem *)self flattenedChildItems];
-  v3 = [v2 count];
+  flattenedChildItems = [(ICSEFolderListItem *)self flattenedChildItems];
+  v3 = [flattenedChildItems count];
 
   return v3;
 }
 
 - (NSString)title
 {
-  v2 = [(ICSEFolderListItem *)self noteContainer];
-  v3 = [v2 titleForTableViewCell];
+  noteContainer = [(ICSEFolderListItem *)self noteContainer];
+  titleForTableViewCell = [noteContainer titleForTableViewCell];
 
-  return v3;
+  return titleForTableViewCell;
 }
 
-- (void)recursivelyAddChildFolder:(id)a3
+- (void)recursivelyAddChildFolder:(id)folder
 {
-  v4 = a3;
+  folderCopy = folder;
   v5 = [ICSEFolderListItem alloc];
-  v6 = [(ICSEFolderListItem *)self viewState];
-  v7 = [(ICSEFolderListItem *)v5 initWithViewState:v6];
+  viewState = [(ICSEFolderListItem *)self viewState];
+  v7 = [(ICSEFolderListItem *)v5 initWithViewState:viewState];
 
-  [(ICSEFolderListItem *)v7 setNoteContainer:v4];
-  -[ICSEFolderListItem setIsDefaultFolder:](v7, "setIsDefaultFolder:", [v4 isDefaultFolderForAccount]);
+  [(ICSEFolderListItem *)v7 setNoteContainer:folderCopy];
+  -[ICSEFolderListItem setIsDefaultFolder:](v7, "setIsDefaultFolder:", [folderCopy isDefaultFolderForAccount]);
   [(ICSEFolderListItem *)v7 setParent:self];
-  v8 = [(ICSEFolderListItem *)self children];
-  [v8 addObject:v7];
+  children = [(ICSEFolderListItem *)self children];
+  [children addObject:v7];
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v9 = [v4 visibleNoteContainerChildren];
-  v10 = [v9 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  visibleNoteContainerChildren = [folderCopy visibleNoteContainerChildren];
+  v10 = [visibleNoteContainerChildren countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v10)
   {
     v11 = v10;
@@ -405,7 +405,7 @@ LABEL_29:
       {
         if (*v15 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(visibleNoteContainerChildren);
         }
 
         [(ICSEFolderListItem *)v7 recursivelyAddChildFolder:*(*(&v14 + 1) + 8 * v13)];
@@ -413,29 +413,29 @@ LABEL_29:
       }
 
       while (v11 != v13);
-      v11 = [v9 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v11 = [visibleNoteContainerChildren countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v11);
   }
 }
 
-- (void)addChildItem:(id)a3
+- (void)addChildItem:(id)item
 {
-  v5 = a3;
-  v4 = [(ICSEFolderListItem *)self children];
-  [v4 addObject:v5];
+  itemCopy = item;
+  children = [(ICSEFolderListItem *)self children];
+  [children addObject:itemCopy];
 
-  [v5 setParent:self];
+  [itemCopy setParent:self];
 }
 
-- (void)insertChildItem:(id)a3 atIndex:(unint64_t)a4
+- (void)insertChildItem:(id)item atIndex:(unint64_t)index
 {
-  v7 = a3;
-  v6 = [(ICSEFolderListItem *)self children];
-  [v6 insertObject:v7 atIndex:a4];
+  itemCopy = item;
+  children = [(ICSEFolderListItem *)self children];
+  [children insertObject:itemCopy atIndex:index];
 
-  [v7 setParent:self];
+  [itemCopy setParent:self];
 }
 
 - (ICSEFolderListItem)parent

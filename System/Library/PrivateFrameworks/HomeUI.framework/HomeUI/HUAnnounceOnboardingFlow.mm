@@ -1,33 +1,33 @@
 @interface HUAnnounceOnboardingFlow
 + (id)allSteps;
-+ (id)needsOnboardingForHome:(id)a3 options:(id)a4;
-- (BOOL)shouldShowStep:(unint64_t)a3 withOptions:(id)a4;
-- (HUAnnounceOnboardingFlow)initWithUsageOptions:(id)a3 home:(id)a4;
-- (id)processUserInput:(id)a3;
-- (id)viewControllerForStep:(unint64_t)a3;
++ (id)needsOnboardingForHome:(id)home options:(id)options;
+- (BOOL)shouldShowStep:(unint64_t)step withOptions:(id)options;
+- (HUAnnounceOnboardingFlow)initWithUsageOptions:(id)options home:(id)home;
+- (id)processUserInput:(id)input;
+- (id)viewControllerForStep:(unint64_t)step;
 @end
 
 @implementation HUAnnounceOnboardingFlow
 
-- (HUAnnounceOnboardingFlow)initWithUsageOptions:(id)a3 home:(id)a4
+- (HUAnnounceOnboardingFlow)initWithUsageOptions:(id)options home:(id)home
 {
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  homeCopy = home;
   v18.receiver = self;
   v18.super_class = HUAnnounceOnboardingFlow;
   v8 = [(HUAnnounceOnboardingFlow *)&v18 init];
   v9 = v8;
   if (v8)
   {
-    [(HUAnnounceOnboardingFlow *)v8 setHome:v7];
-    v10 = [objc_opt_class() needsOnboardingForHome:v7 options:v6];
+    [(HUAnnounceOnboardingFlow *)v8 setHome:homeCopy];
+    v10 = [objc_opt_class() needsOnboardingForHome:homeCopy options:optionsCopy];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __54__HUAnnounceOnboardingFlow_initWithUsageOptions_home___block_invoke;
     v15[3] = &unk_277DBD4E0;
     v11 = v9;
     v16 = v11;
-    v17 = v6;
+    v17 = optionsCopy;
     v12 = [v10 flatMap:v15];
     onboardingFuture = v11->_onboardingFuture;
     v11->_onboardingFuture = v12;
@@ -108,23 +108,23 @@ uint64_t __54__HUAnnounceOnboardingFlow_initWithUsageOptions_home___block_invoke
   return [v3 shouldShowStep:v4 withOptions:v5];
 }
 
-- (BOOL)shouldShowStep:(unint64_t)a3 withOptions:(id)a4
+- (BOOL)shouldShowStep:(unint64_t)step withOptions:(id)options
 {
-  v6 = [(HUAnnounceOnboardingFlow *)self home:a3];
-  v7 = [v6 hf_allUsersIncludingCurrentUser];
-  v8 = [v7 count];
+  v6 = [(HUAnnounceOnboardingFlow *)self home:step];
+  hf_allUsersIncludingCurrentUser = [v6 hf_allUsersIncludingCurrentUser];
+  v8 = [hf_allUsersIncludingCurrentUser count];
 
-  if (a3 == 2 && v8 < 2)
+  if (step == 2 && v8 < 2)
   {
     return 0;
   }
 
-  v10 = [(HUAnnounceOnboardingFlow *)self home];
-  v11 = [v10 hf_currentUserIsAdministrator];
+  home = [(HUAnnounceOnboardingFlow *)self home];
+  hf_currentUserIsAdministrator = [home hf_currentUserIsAdministrator];
 
-  if (a3 == 2)
+  if (step == 2)
   {
-    return v11;
+    return hf_currentUserIsAdministrator;
   }
 
   else
@@ -133,20 +133,20 @@ uint64_t __54__HUAnnounceOnboardingFlow_initWithUsageOptions_home___block_invoke
   }
 }
 
-- (id)viewControllerForStep:(unint64_t)a3
+- (id)viewControllerForStep:(unint64_t)step
 {
-  if (a3)
+  if (step)
   {
     v5 = [HUAnnounceSetupViewController alloc];
-    v6 = [(HUAnnounceOnboardingFlow *)self home];
-    v7 = [(HUAnnounceSetupViewController *)v5 initWithHome:v6 step:a3];
+    home = [(HUAnnounceOnboardingFlow *)self home];
+    v7 = [(HUAnnounceSetupViewController *)v5 initWithHome:home step:step];
   }
 
   else
   {
     v8 = [HUAnnounceTitleViewController alloc];
-    v6 = [(HUAnnounceOnboardingFlow *)self home];
-    v7 = [(HUAnnounceTitleViewController *)v8 initWithHome:v6];
+    home = [(HUAnnounceOnboardingFlow *)self home];
+    v7 = [(HUAnnounceTitleViewController *)v8 initWithHome:home];
   }
 
   v9 = v7;
@@ -154,11 +154,11 @@ uint64_t __54__HUAnnounceOnboardingFlow_initWithUsageOptions_home___block_invoke
   return v9;
 }
 
-- (id)processUserInput:(id)a3
+- (id)processUserInput:(id)input
 {
-  v4 = a3;
+  inputCopy = input;
   objc_opt_class();
-  v5 = [v4 objectForKeyedSubscript:@"announceSetupStep"];
+  v5 = [inputCopy objectForKeyedSubscript:@"announceSetupStep"];
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
@@ -173,8 +173,8 @@ uint64_t __54__HUAnnounceOnboardingFlow_initWithUsageOptions_home___block_invoke
 
   if (v7)
   {
-    v8 = [(HUAnnounceOnboardingFlow *)self requiredSteps];
-    v9 = [v8 indexOfObject:v7] + 1;
+    requiredSteps = [(HUAnnounceOnboardingFlow *)self requiredSteps];
+    v9 = [requiredSteps indexOfObject:v7] + 1;
   }
 
   else
@@ -182,25 +182,25 @@ uint64_t __54__HUAnnounceOnboardingFlow_initWithUsageOptions_home___block_invoke
     v9 = 0;
   }
 
-  v10 = [(HUAnnounceOnboardingFlow *)self requiredSteps];
-  v11 = [v10 count];
+  requiredSteps2 = [(HUAnnounceOnboardingFlow *)self requiredSteps];
+  v11 = [requiredSteps2 count];
 
   v12 = [MEMORY[0x277CCABB0] numberWithBool:v9 >= v11];
-  [v4 setObject:v12 forKeyedSubscript:@"HUHomeFeatureOnboardingKey_Announce_FinishedOnboarding"];
+  [inputCopy setObject:v12 forKeyedSubscript:@"HUHomeFeatureOnboardingKey_Announce_FinishedOnboarding"];
 
   if (v9 < v11)
   {
-    v15 = [(HUAnnounceOnboardingFlow *)self requiredSteps];
-    v16 = [v15 objectAtIndexedSubscript:v9];
-    v17 = [v16 unsignedIntegerValue];
+    requiredSteps3 = [(HUAnnounceOnboardingFlow *)self requiredSteps];
+    v16 = [requiredSteps3 objectAtIndexedSubscript:v9];
+    unsignedIntegerValue = [v16 unsignedIntegerValue];
 
-    v14 = [(HUAnnounceOnboardingFlow *)self viewControllerForStep:v17];
+    v14 = [(HUAnnounceOnboardingFlow *)self viewControllerForStep:unsignedIntegerValue];
   }
 
   else
   {
-    v13 = [(HUAnnounceOnboardingFlow *)self onboardingFuture];
-    [v13 finishWithNoResult];
+    onboardingFuture = [(HUAnnounceOnboardingFlow *)self onboardingFuture];
+    [onboardingFuture finishWithNoResult];
 
     v14 = 0;
   }
@@ -226,20 +226,20 @@ void __36__HUAnnounceOnboardingFlow_allSteps__block_invoke_2()
   qword_281121F50 = &unk_282492C00;
 }
 
-+ (id)needsOnboardingForHome:(id)a3 options:(id)a4
++ (id)needsOnboardingForHome:(id)home options:(id)options
 {
-  v7 = a3;
-  v8 = a4;
-  objc_initWeak(&location, a1);
+  homeCopy = home;
+  optionsCopy = options;
+  objc_initWeak(&location, self);
   v9 = MEMORY[0x277D2C900];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __59__HUAnnounceOnboardingFlow_needsOnboardingForHome_options___block_invoke;
   v14[3] = &unk_277DBCAB8;
   objc_copyWeak(v17, &location);
-  v10 = v7;
+  v10 = homeCopy;
   v15 = v10;
-  v11 = v8;
+  v11 = optionsCopy;
   v16 = v11;
   v17[1] = a2;
   v12 = [v9 futureWithBlock:v14];

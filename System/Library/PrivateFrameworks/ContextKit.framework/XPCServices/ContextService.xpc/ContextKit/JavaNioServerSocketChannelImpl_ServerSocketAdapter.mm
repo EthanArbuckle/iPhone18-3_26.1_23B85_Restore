@@ -1,18 +1,18 @@
 @interface JavaNioServerSocketChannelImpl_ServerSocketAdapter
-- (JavaNioServerSocketChannelImpl_ServerSocketAdapter)initWithJavaNioServerSocketChannelImpl:(id)a3;
+- (JavaNioServerSocketChannelImpl_ServerSocketAdapter)initWithJavaNioServerSocketChannelImpl:(id)impl;
 - (id)accept;
 - (id)getFD$;
-- (id)implAcceptWithJavaNioSocketChannelImpl:(id)a3;
+- (id)implAcceptWithJavaNioSocketChannelImpl:(id)impl;
 - (void)__javaClone;
 - (void)close;
 @end
 
 @implementation JavaNioServerSocketChannelImpl_ServerSocketAdapter
 
-- (JavaNioServerSocketChannelImpl_ServerSocketAdapter)initWithJavaNioServerSocketChannelImpl:(id)a3
+- (JavaNioServerSocketChannelImpl_ServerSocketAdapter)initWithJavaNioServerSocketChannelImpl:(id)impl
 {
   JavaNetServerSocket_init(self);
-  objc_storeWeak(&self->channelImpl_, a3);
+  objc_storeWeak(&self->channelImpl_, impl);
   return self;
 }
 
@@ -29,37 +29,37 @@
     JreThrowNullPointerException();
   }
 
-  v4 = [Weak accept];
-  if (!v4)
+  accept = [Weak accept];
+  if (!accept)
   {
 LABEL_8:
     v6 = new_JavaNioChannelsIllegalBlockingModeException_init();
     objc_exception_throw(v6);
   }
 
-  return [v4 socket];
+  return [accept socket];
 }
 
-- (id)implAcceptWithJavaNioSocketChannelImpl:(id)a3
+- (id)implAcceptWithJavaNioSocketChannelImpl:(id)impl
 {
-  if (!a3)
+  if (!impl)
   {
     JreThrowNullPointerException();
   }
 
-  v5 = [a3 socket];
+  socket = [impl socket];
   objc_sync_enter(self);
   v7.receiver = self;
   v7.super_class = JavaNioServerSocketChannelImpl_ServerSocketAdapter;
-  [(JavaNetServerSocket *)&v7 implAcceptWithJavaNetSocket:v5];
-  if (!v5)
+  [(JavaNetServerSocket *)&v7 implAcceptWithJavaNetSocket:socket];
+  if (!socket)
   {
     JreThrowNullPointerException();
   }
 
-  [a3 onAcceptWithJavaNetInetSocketAddress:new_JavaNetInetSocketAddress_initWithJavaNetInetAddress_withInt_(objc_msgSend(v5 withBoolean:{"getInetAddress"), objc_msgSend(v5, "getPort")), 0}];
+  [impl onAcceptWithJavaNetInetSocketAddress:new_JavaNetInetSocketAddress_initWithJavaNetInetAddress_withInt_(objc_msgSend(socket withBoolean:{"getInetAddress"), objc_msgSend(socket, "getPort")), 0}];
   objc_sync_exit(self);
-  return v5;
+  return socket;
 }
 
 - (void)close

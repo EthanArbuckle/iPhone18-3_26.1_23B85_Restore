@@ -1,73 +1,73 @@
 @interface DYMTLShaderDebuggerTraceGenerator
-- (BOOL)_createAndSetInstrumentedComputePipelineStateWithDescriptor:(id)a3 computeCommandEncoder:(id)a4;
-- (BOOL)_createAndSetInstrumentedRenderPipelineStateWithDescriptor:(id)a3 renderCommandEncoder:(id)a4 roiType:(int)a5;
-- (BOOL)_createAndSetInstrumentedTileRenderPipelineStateWithDescriptor:(id)a3 renderCommandEncoder:(id)a4;
-- (BOOL)_createTraceBufferWithGenerationOptions:(id)a3;
-- (BOOL)_fragmentBindingNeedsPlaceholderResource:(id)a3 renderCommandEncoder:(id)a4;
-- (BOOL)_kernelBindingNeedsPlaceholderResource:(id)a3 computeCommandEncoder:(id)a4;
-- (BOOL)_prepareComputeCommandEncoder:(id)a3 generationOptions:(id)a4;
-- (BOOL)_prepareRenderCommandEncoder:(id)a3 generationOptions:(id)a4;
-- (BOOL)_prepareTraceBufferWithGenerationOptions:(id)a3;
-- (BOOL)_tileBindingNeedsPlaceholderResource:(id)a3 renderCommandEncoder:(id)a4;
-- (BOOL)_vertexBindingNeedsPlaceholderResource:(id)a3 renderCommandEncoder:(id)a4;
-- (DYMTLShaderDebuggerTraceGenerator)initWithDebugFunctionPlayer:(id)a3;
+- (BOOL)_createAndSetInstrumentedComputePipelineStateWithDescriptor:(id)descriptor computeCommandEncoder:(id)encoder;
+- (BOOL)_createAndSetInstrumentedRenderPipelineStateWithDescriptor:(id)descriptor renderCommandEncoder:(id)encoder roiType:(int)type;
+- (BOOL)_createAndSetInstrumentedTileRenderPipelineStateWithDescriptor:(id)descriptor renderCommandEncoder:(id)encoder;
+- (BOOL)_createTraceBufferWithGenerationOptions:(id)options;
+- (BOOL)_fragmentBindingNeedsPlaceholderResource:(id)resource renderCommandEncoder:(id)encoder;
+- (BOOL)_kernelBindingNeedsPlaceholderResource:(id)resource computeCommandEncoder:(id)encoder;
+- (BOOL)_prepareComputeCommandEncoder:(id)encoder generationOptions:(id)options;
+- (BOOL)_prepareRenderCommandEncoder:(id)encoder generationOptions:(id)options;
+- (BOOL)_prepareTraceBufferWithGenerationOptions:(id)options;
+- (BOOL)_tileBindingNeedsPlaceholderResource:(id)resource renderCommandEncoder:(id)encoder;
+- (BOOL)_vertexBindingNeedsPlaceholderResource:(id)resource renderCommandEncoder:(id)encoder;
+- (DYMTLShaderDebuggerTraceGenerator)initWithDebugFunctionPlayer:(id)player;
 - (id).cxx_construct;
-- (id)_createInstrumentedFunctionWithInstrumentedLibrary:(id)a3 originalFunction:(id)a4;
-- (id)_generateConstantSamplerReflectionWithUniqueIdentifiers:(id)a3 descriptors:(id)a4;
+- (id)_createInstrumentedFunctionWithInstrumentedLibrary:(id)library originalFunction:(id)function;
+- (id)_generateConstantSamplerReflectionWithUniqueIdentifiers:(id)identifiers descriptors:(id)descriptors;
 - (id)_generateResourceResolutionRemappingTables;
-- (id)_instrumentLibrary:(id)a3 generationOptions:(id)a4;
-- (id)_placeholderTextureWithType:(unint64_t)a3;
+- (id)_instrumentLibrary:(id)library generationOptions:(id)options;
+- (id)_placeholderTextureWithType:(unint64_t)type;
 - (id)notifyReplayFinishedAndGenerateTraceContainer;
 - (uint64_t)notifyReplayFinishedAndGenerateTraceContainer;
 - (void)notifyReplayFinishedAndGenerateTraceContainer;
-- (void)prepareCommandEncoderForInstrumentedCall:(unint64_t)a3 generationOptions:(id)a4;
+- (void)prepareCommandEncoderForInstrumentedCall:(unint64_t)call generationOptions:(id)options;
 @end
 
 @implementation DYMTLShaderDebuggerTraceGenerator
 
-- (DYMTLShaderDebuggerTraceGenerator)initWithDebugFunctionPlayer:(id)a3
+- (DYMTLShaderDebuggerTraceGenerator)initWithDebugFunctionPlayer:(id)player
 {
   v27[2] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  playerCopy = player;
   v26.receiver = self;
   v26.super_class = DYMTLShaderDebuggerTraceGenerator;
   v6 = [(DYMTLShaderDebuggerTraceGenerator *)&v26 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_player, a3);
-    v8 = [v5 indirectArgumentManager];
+    objc_storeStrong(&v6->_player, player);
+    indirectArgumentManager = [playerCopy indirectArgumentManager];
     indirectArgumentManager = v7->_indirectArgumentManager;
-    v7->_indirectArgumentManager = v8;
+    v7->_indirectArgumentManager = indirectArgumentManager;
 
-    v10 = [(DYMTLFunctionPlayer *)v7->_player device];
+    device = [(DYMTLFunctionPlayer *)v7->_player device];
     constantSamplerReflection = v7->_constantSamplerReflection;
     v7->_constantSamplerReflection = MEMORY[0x277CBEC10];
 
-    v12 = [v10 newBufferWithLength:2048 options:0];
+    v12 = [device newBufferWithLength:2048 options:0];
     placeholderBuffer = v7->_placeholderBuffer;
     v7->_placeholderBuffer = v12;
 
     v14 = objc_alloc_init(MEMORY[0x277CD6FC8]);
     [v14 setSupportArgumentBuffers:1];
-    v15 = [v10 newSamplerStateWithDescriptor:v14];
+    v15 = [device newSamplerStateWithDescriptor:v14];
     placeholderSamplerState = v7->_placeholderSamplerState;
     v7->_placeholderSamplerState = v15;
 
-    v17 = [MEMORY[0x277CD6C78] argumentDescriptor];
-    [v17 setDataType:58];
-    [v17 setIndex:0];
-    v18 = [MEMORY[0x277CD6C78] argumentDescriptor];
-    [v18 setDataType:59];
-    [v18 setIndex:1];
-    v27[0] = v17;
-    v27[1] = v18;
+    argumentDescriptor = [MEMORY[0x277CD6C78] argumentDescriptor];
+    [argumentDescriptor setDataType:58];
+    [argumentDescriptor setIndex:0];
+    argumentDescriptor2 = [MEMORY[0x277CD6C78] argumentDescriptor];
+    [argumentDescriptor2 setDataType:59];
+    [argumentDescriptor2 setIndex:1];
+    v27[0] = argumentDescriptor;
+    v27[1] = argumentDescriptor2;
     v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v27 count:2];
-    v20 = [v10 newArgumentEncoderWithArguments:v19];
+    v20 = [device newArgumentEncoderWithArguments:v19];
     dummyArgumentEncoder = v7->_dummyArgumentEncoder;
     v7->_dummyArgumentEncoder = v20;
 
-    v22 = [v10 newBufferWithLength:4096 options:0];
+    v22 = [device newBufferWithLength:4096 options:0];
     dummyArgumentBuffer = v7->_dummyArgumentBuffer;
     v7->_dummyArgumentBuffer = v22;
 
@@ -78,9 +78,9 @@
   return v7;
 }
 
-- (id)_placeholderTextureWithType:(unint64_t)a3
+- (id)_placeholderTextureWithType:(unint64_t)type
 {
-  v17[0] = a3;
+  v17[0] = type;
   p_end_node = &self->_placeholderTextures.__tree_.__end_node_;
   left = self->_placeholderTextures.__tree_.__end_node_.__left_;
   if (left)
@@ -89,8 +89,8 @@
     do
     {
       v7 = *(left + 4);
-      v8 = v7 >= a3;
-      v9 = v7 < a3;
+      v8 = v7 >= type;
+      v9 = v7 < type;
       if (v8)
       {
         v6 = left;
@@ -100,20 +100,20 @@
     }
 
     while (left);
-    if (v6 != p_end_node && v6[4].__left_ <= a3)
+    if (v6 != p_end_node && v6[4].__left_ <= type)
     {
       v13 = v6[5].__left_;
       goto LABEL_20;
     }
   }
 
-  v10 = [(DYMTLFunctionPlayer *)self->_player device];
-  if (a3 < 2)
+  device = [(DYMTLFunctionPlayer *)self->_player device];
+  if (type < 2)
   {
     goto LABEL_12;
   }
 
-  if (a3 == 4)
+  if (type == 4)
   {
     v11 = 1;
 LABEL_16:
@@ -121,7 +121,7 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  if (a3 != 9)
+  if (type != 9)
   {
     v11 = 0;
     goto LABEL_16;
@@ -132,7 +132,7 @@ LABEL_12:
   v12 = 1;
 LABEL_17:
   v14 = objc_alloc_init(MEMORY[0x277CD7050]);
-  [v14 setTextureType:a3];
+  [v14 setTextureType:type];
   [v14 setPixelFormat:125];
   [v14 setWidth:16];
   [v14 setHeight:v12];
@@ -144,7 +144,7 @@ LABEL_17:
     [v14 setResourceOptions:32];
   }
 
-  v13 = DYMTLNewTexture(v10, v14);
+  v13 = DYMTLNewTexture(device, v14);
   v17[2] = v17;
   v15 = std::__tree<std::__value_type<MTLTextureType,objc_object  {objcproto10MTLTexture}* {__strong}>,std::__map_value_compare<MTLTextureType,objc_object  {objcproto10MTLTexture}* {__strong},std::less<MTLTextureType>,true>,std::allocator<objc_object  {objcproto10MTLTexture}* {__strong}>>::__emplace_unique_key_args<MTLTextureType,std::piecewise_construct_t const&,std::tuple<MTLTextureType const&>,std::piecewise_construct_t const&<>>(&p_end_node[-1], v17);
   objc_storeStrong(v15 + 5, v13);
@@ -154,39 +154,39 @@ LABEL_20:
   return v13;
 }
 
-- (id)_instrumentLibrary:(id)a3 generationOptions:(id)a4
+- (id)_instrumentLibrary:(id)library generationOptions:(id)options
 {
-  v6 = a3;
-  v7 = a4;
+  libraryCopy = library;
+  optionsCopy = options;
   if (objc_opt_respondsToSelector())
   {
-    v8 = v6;
-    v9 = [v8 code];
+    v8 = libraryCopy;
+    code = [v8 code];
     if (objc_opt_respondsToSelector())
     {
-      v10 = [v8 debugType];
+      debugType = [v8 debugType];
     }
 
     else
     {
-      v10 = [v8 type];
+      debugType = [v8 type];
     }
 
-    v11 = v10;
-    v12 = [v8 compileOptions];
+    type = debugType;
+    compileOptions = [v8 compileOptions];
   }
 
   else
   {
-    v8 = DYMTLGetAssociatedObject(v6, 3u);
-    v11 = [v8 type];
-    v9 = [v8 code];
-    v12 = [v8 compileOptions];
+    v8 = DYMTLGetAssociatedObject(libraryCopy, 3u);
+    type = [v8 type];
+    code = [v8 code];
+    compileOptions = [v8 compileOptions];
   }
 
-  v13 = v12;
+  v13 = compileOptions;
 
-  if (v11 == 2)
+  if (type == 2)
   {
     v14 = [v13 copy];
     v15 = v14;
@@ -208,19 +208,19 @@ LABEL_20:
       [v18 setAdditionalCompilerArguments:@"-fno-tracepoint-instrument-line-markers"];
     }
 
-    v23 = [v6 device];
-    v24 = [v23 argumentBuffersSupport];
+    device = [libraryCopy device];
+    argumentBuffersSupport = [device argumentBuffersSupport];
 
-    if (!v24)
+    if (!argumentBuffersSupport)
     {
       [v18 setAdditionalCompilerArguments:@"-fno-tracepoint-instrument-argument-buffers"];
     }
 
-    objc_storeStrong(&self->_onlineSrc, v9);
-    v25 = [v6 device];
+    objc_storeStrong(&self->_onlineSrc, code);
+    device2 = [libraryCopy device];
     onlineSrc = self->_onlineSrc;
     v38 = 0;
-    v21 = [v25 newLibraryWithSource:onlineSrc options:v18 error:&v38];
+    v21 = [device2 newLibraryWithSource:onlineSrc options:v18 error:&v38];
     v22 = v38;
 
     if (v21)
@@ -238,14 +238,14 @@ LABEL_23:
     goto LABEL_24;
   }
 
-  v17 = [v7 objectForKeyedSubscript:*MEMORY[0x277D0B298]];
+  v17 = [optionsCopy objectForKeyedSubscript:*MEMORY[0x277D0B298]];
   v18 = v17;
   if (v17)
   {
     v19 = dispatch_data_create([v17 bytes], objc_msgSend(v17, "length"), 0, 0);
-    v20 = [v6 device];
+    device3 = [libraryCopy device];
     v37 = 0;
-    v21 = [v20 newLibraryWithData:v19 error:&v37];
+    v21 = [device3 newLibraryWithData:v19 error:&v37];
     v22 = v37;
 
     if (v21)
@@ -276,34 +276,34 @@ LABEL_25:
   return v27;
 }
 
-- (BOOL)_kernelBindingNeedsPlaceholderResource:(id)a3 computeCommandEncoder:(id)a4
+- (BOOL)_kernelBindingNeedsPlaceholderResource:(id)resource computeCommandEncoder:(id)encoder
 {
-  v5 = a3;
-  v6 = a4;
-  if (([v5 isActive] & 1) == 0)
+  resourceCopy = resource;
+  encoderCopy = encoder;
+  if (([resourceCopy isActive] & 1) == 0)
   {
     v14 = 0;
     v15 = &v14;
     v16 = 0x2020000000;
     v17 = 1;
-    v8 = [v5 type];
-    if (v8)
+    type = [resourceCopy type];
+    if (type)
     {
-      if (v8 == 2)
+      if (type == 2)
       {
         v9 = v12;
         v12[0] = MEMORY[0x277D85DD0];
         v12[1] = 3221225472;
         v12[2] = __98__DYMTLShaderDebuggerTraceGenerator__kernelBindingNeedsPlaceholderResource_computeCommandEncoder___block_invoke_2;
         v12[3] = &unk_27930F4C0;
-        v12[4] = v5;
+        v12[4] = resourceCopy;
         v12[5] = &v14;
-        [v6 enumerateTexturesUsingBlock:v12];
+        [encoderCopy enumerateTexturesUsingBlock:v12];
       }
 
       else
       {
-        if (v8 != 3)
+        if (type != 3)
         {
 LABEL_10:
           v7 = *(v15 + 24);
@@ -316,9 +316,9 @@ LABEL_10:
         v11[1] = 3221225472;
         v11[2] = __98__DYMTLShaderDebuggerTraceGenerator__kernelBindingNeedsPlaceholderResource_computeCommandEncoder___block_invoke_3;
         v11[3] = &unk_27930F4E8;
-        v11[4] = v5;
+        v11[4] = resourceCopy;
         v11[5] = &v14;
-        [v6 enumerateSamplersUsingBlock:v11];
+        [encoderCopy enumerateSamplersUsingBlock:v11];
       }
     }
 
@@ -329,9 +329,9 @@ LABEL_10:
       v13[1] = 3221225472;
       v13[2] = __98__DYMTLShaderDebuggerTraceGenerator__kernelBindingNeedsPlaceholderResource_computeCommandEncoder___block_invoke;
       v13[3] = &unk_27930F408;
-      v13[4] = v5;
+      v13[4] = resourceCopy;
       v13[5] = &v14;
-      [v6 enumerateBuffersUsingBlock:v13];
+      [encoderCopy enumerateBuffersUsingBlock:v13];
     }
 
     goto LABEL_10;
@@ -405,34 +405,34 @@ uint64_t __98__DYMTLShaderDebuggerTraceGenerator__kernelBindingNeedsPlaceholderR
   return result;
 }
 
-- (BOOL)_vertexBindingNeedsPlaceholderResource:(id)a3 renderCommandEncoder:(id)a4
+- (BOOL)_vertexBindingNeedsPlaceholderResource:(id)resource renderCommandEncoder:(id)encoder
 {
-  v5 = a3;
-  v6 = a4;
-  if (([v5 isActive] & 1) == 0)
+  resourceCopy = resource;
+  encoderCopy = encoder;
+  if (([resourceCopy isActive] & 1) == 0)
   {
     v14 = 0;
     v15 = &v14;
     v16 = 0x2020000000;
     v17 = 1;
-    v8 = [v5 type];
-    if (v8)
+    type = [resourceCopy type];
+    if (type)
     {
-      if (v8 == 2)
+      if (type == 2)
       {
         v9 = v12;
         v12[0] = MEMORY[0x277D85DD0];
         v12[1] = 3221225472;
         v12[2] = __97__DYMTLShaderDebuggerTraceGenerator__vertexBindingNeedsPlaceholderResource_renderCommandEncoder___block_invoke_2;
         v12[3] = &unk_27930F4C0;
-        v12[4] = v5;
+        v12[4] = resourceCopy;
         v12[5] = &v14;
-        [v6 enumerateVertexTexturesUsingBlock:v12];
+        [encoderCopy enumerateVertexTexturesUsingBlock:v12];
       }
 
       else
       {
-        if (v8 != 3)
+        if (type != 3)
         {
 LABEL_10:
           v7 = *(v15 + 24);
@@ -445,9 +445,9 @@ LABEL_10:
         v11[1] = 3221225472;
         v11[2] = __97__DYMTLShaderDebuggerTraceGenerator__vertexBindingNeedsPlaceholderResource_renderCommandEncoder___block_invoke_3;
         v11[3] = &unk_27930F4E8;
-        v11[4] = v5;
+        v11[4] = resourceCopy;
         v11[5] = &v14;
-        [v6 enumerateVertexSamplersUsingBlock:v11];
+        [encoderCopy enumerateVertexSamplersUsingBlock:v11];
       }
     }
 
@@ -458,9 +458,9 @@ LABEL_10:
       v13[1] = 3221225472;
       v13[2] = __97__DYMTLShaderDebuggerTraceGenerator__vertexBindingNeedsPlaceholderResource_renderCommandEncoder___block_invoke;
       v13[3] = &unk_27930F408;
-      v13[4] = v5;
+      v13[4] = resourceCopy;
       v13[5] = &v14;
-      [v6 enumerateVertexBuffersUsingBlock:v13];
+      [encoderCopy enumerateVertexBuffersUsingBlock:v13];
     }
 
     goto LABEL_10;
@@ -534,34 +534,34 @@ uint64_t __97__DYMTLShaderDebuggerTraceGenerator__vertexBindingNeedsPlaceholderR
   return result;
 }
 
-- (BOOL)_fragmentBindingNeedsPlaceholderResource:(id)a3 renderCommandEncoder:(id)a4
+- (BOOL)_fragmentBindingNeedsPlaceholderResource:(id)resource renderCommandEncoder:(id)encoder
 {
-  v5 = a3;
-  v6 = a4;
-  if (([v5 isActive] & 1) == 0)
+  resourceCopy = resource;
+  encoderCopy = encoder;
+  if (([resourceCopy isActive] & 1) == 0)
   {
     v14 = 0;
     v15 = &v14;
     v16 = 0x2020000000;
     v17 = 1;
-    v8 = [v5 type];
-    if (v8)
+    type = [resourceCopy type];
+    if (type)
     {
-      if (v8 == 2)
+      if (type == 2)
       {
         v9 = v12;
         v12[0] = MEMORY[0x277D85DD0];
         v12[1] = 3221225472;
         v12[2] = __99__DYMTLShaderDebuggerTraceGenerator__fragmentBindingNeedsPlaceholderResource_renderCommandEncoder___block_invoke_2;
         v12[3] = &unk_27930F4C0;
-        v12[4] = v5;
+        v12[4] = resourceCopy;
         v12[5] = &v14;
-        [v6 enumerateFragmentTexturesUsingBlock:v12];
+        [encoderCopy enumerateFragmentTexturesUsingBlock:v12];
       }
 
       else
       {
-        if (v8 != 3)
+        if (type != 3)
         {
 LABEL_10:
           v7 = *(v15 + 24);
@@ -574,9 +574,9 @@ LABEL_10:
         v11[1] = 3221225472;
         v11[2] = __99__DYMTLShaderDebuggerTraceGenerator__fragmentBindingNeedsPlaceholderResource_renderCommandEncoder___block_invoke_3;
         v11[3] = &unk_27930F4E8;
-        v11[4] = v5;
+        v11[4] = resourceCopy;
         v11[5] = &v14;
-        [v6 enumerateFragmentSamplersUsingBlock:v11];
+        [encoderCopy enumerateFragmentSamplersUsingBlock:v11];
       }
     }
 
@@ -587,9 +587,9 @@ LABEL_10:
       v13[1] = 3221225472;
       v13[2] = __99__DYMTLShaderDebuggerTraceGenerator__fragmentBindingNeedsPlaceholderResource_renderCommandEncoder___block_invoke;
       v13[3] = &unk_27930F408;
-      v13[4] = v5;
+      v13[4] = resourceCopy;
       v13[5] = &v14;
-      [v6 enumerateFragmentBuffersUsingBlock:v13];
+      [encoderCopy enumerateFragmentBuffersUsingBlock:v13];
     }
 
     goto LABEL_10;
@@ -663,34 +663,34 @@ uint64_t __99__DYMTLShaderDebuggerTraceGenerator__fragmentBindingNeedsPlaceholde
   return result;
 }
 
-- (BOOL)_tileBindingNeedsPlaceholderResource:(id)a3 renderCommandEncoder:(id)a4
+- (BOOL)_tileBindingNeedsPlaceholderResource:(id)resource renderCommandEncoder:(id)encoder
 {
-  v5 = a3;
-  v6 = a4;
-  if (([v5 isActive] & 1) == 0)
+  resourceCopy = resource;
+  encoderCopy = encoder;
+  if (([resourceCopy isActive] & 1) == 0)
   {
     v14 = 0;
     v15 = &v14;
     v16 = 0x2020000000;
     v17 = 1;
-    v8 = [v5 type];
-    if (v8)
+    type = [resourceCopy type];
+    if (type)
     {
-      if (v8 == 2)
+      if (type == 2)
       {
         v9 = v12;
         v12[0] = MEMORY[0x277D85DD0];
         v12[1] = 3221225472;
         v12[2] = __95__DYMTLShaderDebuggerTraceGenerator__tileBindingNeedsPlaceholderResource_renderCommandEncoder___block_invoke_2;
         v12[3] = &unk_27930F4C0;
-        v12[4] = v5;
+        v12[4] = resourceCopy;
         v12[5] = &v14;
-        [v6 enumerateTileTexturesUsingBlock:v12];
+        [encoderCopy enumerateTileTexturesUsingBlock:v12];
       }
 
       else
       {
-        if (v8 != 3)
+        if (type != 3)
         {
 LABEL_10:
           v7 = *(v15 + 24);
@@ -703,9 +703,9 @@ LABEL_10:
         v11[1] = 3221225472;
         v11[2] = __95__DYMTLShaderDebuggerTraceGenerator__tileBindingNeedsPlaceholderResource_renderCommandEncoder___block_invoke_3;
         v11[3] = &unk_27930F4E8;
-        v11[4] = v5;
+        v11[4] = resourceCopy;
         v11[5] = &v14;
-        [v6 enumerateTileSamplersUsingBlock:v11];
+        [encoderCopy enumerateTileSamplersUsingBlock:v11];
       }
     }
 
@@ -716,9 +716,9 @@ LABEL_10:
       v13[1] = 3221225472;
       v13[2] = __95__DYMTLShaderDebuggerTraceGenerator__tileBindingNeedsPlaceholderResource_renderCommandEncoder___block_invoke;
       v13[3] = &unk_27930F408;
-      v13[4] = v5;
+      v13[4] = resourceCopy;
       v13[5] = &v14;
-      [v6 enumerateTileBuffersUsingBlock:v13];
+      [encoderCopy enumerateTileBuffersUsingBlock:v13];
     }
 
     goto LABEL_10;
@@ -792,23 +792,23 @@ uint64_t __95__DYMTLShaderDebuggerTraceGenerator__tileBindingNeedsPlaceholderRes
   return result;
 }
 
-- (BOOL)_prepareRenderCommandEncoder:(id)a3 generationOptions:(id)a4
+- (BOOL)_prepareRenderCommandEncoder:(id)encoder generationOptions:(id)options
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 valueForKey:*MEMORY[0x277D0B338]];
-  v9 = [v8 unsignedIntValue];
+  encoderCopy = encoder;
+  optionsCopy = options;
+  v8 = [optionsCopy valueForKey:*MEMORY[0x277D0B338]];
+  unsignedIntValue = [v8 unsignedIntValue];
 
-  v10 = [v7 valueForKey:*MEMORY[0x277D0B2A0]];
-  v11 = [v6 renderPipelineState];
-  v12 = DYMTLGetNullableAssociatedObject(v11, 0);
+  v10 = [optionsCopy valueForKey:*MEMORY[0x277D0B2A0]];
+  renderPipelineState = [encoderCopy renderPipelineState];
+  v12 = DYMTLGetNullableAssociatedObject(renderPipelineState, 0);
   v13 = [v12 copy];
 
   v14 = -[DYMTLFunctionPlayer objectForKey:](self->_player, "objectForKey:", [v10 unsignedLongLongValue]);
   v101 = v14;
   if (v14)
   {
-    v100 = [(DYMTLShaderDebuggerTraceGenerator *)self _instrumentLibrary:v14 generationOptions:v7];
+    v100 = [(DYMTLShaderDebuggerTraceGenerator *)self _instrumentLibrary:v14 generationOptions:optionsCopy];
     if (!v100)
     {
       v15 = 0;
@@ -817,33 +817,33 @@ LABEL_58:
       goto LABEL_59;
     }
 
-    v99 = DYMTLGetAssociatedObject(v11, 2u);
+    v99 = DYMTLGetAssociatedObject(renderPipelineState, 2u);
     v15 = 1;
-    if (v9 > 1)
+    if (unsignedIntValue > 1)
     {
-      if (v9 == 2)
+      if (unsignedIntValue == 2)
       {
-        v17 = [v13 fragmentFunction];
-        v62 = [(DYMTLShaderDebuggerTraceGenerator *)self _createInstrumentedFunctionWithInstrumentedLibrary:v100 originalFunction:v17];
+        fragmentFunction = [v13 fragmentFunction];
+        v62 = [(DYMTLShaderDebuggerTraceGenerator *)self _createInstrumentedFunctionWithInstrumentedLibrary:v100 originalFunction:fragmentFunction];
         if (v62)
         {
           [v13 setFragmentFunction:v62];
-          if ([(DYMTLShaderDebuggerTraceGenerator *)self _createAndSetInstrumentedRenderPipelineStateWithDescriptor:v13 renderCommandEncoder:v6 roiType:2])
+          if ([(DYMTLShaderDebuggerTraceGenerator *)self _createAndSetInstrumentedRenderPipelineStateWithDescriptor:v13 renderCommandEncoder:encoderCopy roiType:2])
           {
-            v63 = [v99 fragmentBindings];
+            fragmentBindings = [v99 fragmentBindings];
             v114[0] = MEMORY[0x277D85DD0];
             v114[1] = 3221225472;
             v114[2] = __84__DYMTLShaderDebuggerTraceGenerator__prepareRenderCommandEncoder_generationOptions___block_invoke_3;
             v114[3] = &unk_27930F510;
             v114[4] = self;
-            v64 = v6;
+            v64 = encoderCopy;
             v115 = v64;
-            v98 = v7;
+            v98 = optionsCopy;
             v91 = v13;
-            v94 = v11;
-            v84 = v17;
+            v94 = renderPipelineState;
+            v84 = fragmentFunction;
             v87 = v62;
-            [v63 enumerateObjectsUsingBlock:v114];
+            [fragmentBindings enumerateObjectsUsingBlock:v114];
 
             v113[0] = MEMORY[0x277D85DD0];
             v113[1] = 3221225472;
@@ -880,8 +880,8 @@ LABEL_58:
                 v72 = [v71 copy];
 
                 [v72 setSupportArgumentBuffers:1];
-                v73 = [v70 device];
-                v119 = [v73 newSamplerStateWithDescriptor:v72];
+                device = [v70 device];
+                v119 = [device newSamplerStateWithDescriptor:v72];
 
                 [(MTLArgumentEncoder *)self->_dummyArgumentEncoder setSamplerState:v119 atIndex:1];
                 LODWORD(v74) = v68;
@@ -927,12 +927,12 @@ LABEL_58:
             v109[3] = &unk_27930F588;
             v79 = v64;
             v110 = v79;
-            v111 = self;
+            selfCopy = self;
             [v79 enumerateFragmentBuffersUsingBlock:v109];
             p_first_node = &self->_bytesBufferReplacements.__table_.__first_node_;
-            v7 = v98;
+            optionsCopy = v98;
             v13 = v91;
-            v11 = v94;
+            renderPipelineState = v94;
             v38 = v87;
             while (1)
             {
@@ -955,7 +955,7 @@ LABEL_58:
         goto LABEL_49;
       }
 
-      if (v9 != 3)
+      if (unsignedIntValue != 3)
       {
 LABEL_57:
 
@@ -965,36 +965,36 @@ LABEL_57:
 
     else
     {
-      if (!v9)
+      if (!unsignedIntValue)
       {
-        v39 = DYMTLGetAssociatedObject(v11, 1u);
+        v39 = DYMTLGetAssociatedObject(renderPipelineState, 1u);
         v40 = [v39 copy];
 
-        [v40 setMaxTotalThreadsPerThreadgroup:{objc_msgSend(v11, "maxTotalThreadsPerThreadgroup")}];
-        v41 = [v40 tileFunction];
-        v42 = [(DYMTLShaderDebuggerTraceGenerator *)self _createInstrumentedFunctionWithInstrumentedLibrary:v100 originalFunction:v41];
+        [v40 setMaxTotalThreadsPerThreadgroup:{objc_msgSend(renderPipelineState, "maxTotalThreadsPerThreadgroup")}];
+        tileFunction = [v40 tileFunction];
+        v42 = [(DYMTLShaderDebuggerTraceGenerator *)self _createInstrumentedFunctionWithInstrumentedLibrary:v100 originalFunction:tileFunction];
         if (v42)
         {
           v86 = v42;
           [v40 setTileFunction:?];
-          v43 = [(DYMTLShaderDebuggerTraceGenerator *)self _createAndSetInstrumentedTileRenderPipelineStateWithDescriptor:v40 renderCommandEncoder:v6];
+          v43 = [(DYMTLShaderDebuggerTraceGenerator *)self _createAndSetInstrumentedTileRenderPipelineStateWithDescriptor:v40 renderCommandEncoder:encoderCopy];
           v42 = v86;
           if (v43)
           {
-            v44 = [v99 tileBindings];
+            tileBindings = [v99 tileBindings];
             v90 = v13;
-            v93 = v11;
+            v93 = renderPipelineState;
             v107[0] = MEMORY[0x277D85DD0];
             v107[1] = 3221225472;
             v107[2] = __84__DYMTLShaderDebuggerTraceGenerator__prepareRenderCommandEncoder_generationOptions___block_invoke_7;
             v107[3] = &unk_27930F510;
             v107[4] = self;
-            v45 = v6;
+            v45 = encoderCopy;
             v108 = v45;
-            v88 = v6;
+            v88 = encoderCopy;
             v96 = v10;
-            v83 = v41;
-            [v44 enumerateObjectsUsingBlock:v107];
+            v83 = tileFunction;
+            [tileBindings enumerateObjectsUsingBlock:v107];
 
             v106[0] = MEMORY[0x277D85DD0];
             v106[1] = 3221225472;
@@ -1031,8 +1031,8 @@ LABEL_57:
                 v53 = [v52 copy];
 
                 [v53 setSupportArgumentBuffers:1];
-                v54 = [v49 device];
-                v119 = [v54 newSamplerStateWithDescriptor:v53];
+                device2 = [v49 device];
+                v119 = [device2 newSamplerStateWithDescriptor:v53];
 
                 [(MTLArgumentEncoder *)self->_dummyArgumentEncoder setSamplerState:v119 atIndex:1];
                 LODWORD(v55) = v50;
@@ -1078,13 +1078,13 @@ LABEL_57:
             v102[3] = &unk_27930F588;
             v60 = v45;
             v103 = v60;
-            v104 = self;
+            selfCopy2 = self;
             [v60 enumerateTileBuffersUsingBlock:v102];
             v61 = &self->_bytesBufferReplacements.__table_.__first_node_;
-            v6 = v88;
+            encoderCopy = v88;
             v13 = v90;
             v10 = v96;
-            v11 = v93;
+            renderPipelineState = v93;
             while (1)
             {
               v61 = v61->__next_;
@@ -1106,34 +1106,34 @@ LABEL_57:
         goto LABEL_51;
       }
 
-      if (v9 != 1)
+      if (unsignedIntValue != 1)
       {
         goto LABEL_57;
       }
     }
 
-    v17 = [v13 vertexFunction];
-    v18 = [(DYMTLShaderDebuggerTraceGenerator *)self _createInstrumentedFunctionWithInstrumentedLibrary:v100 originalFunction:v17];
+    fragmentFunction = [v13 vertexFunction];
+    v18 = [(DYMTLShaderDebuggerTraceGenerator *)self _createInstrumentedFunctionWithInstrumentedLibrary:v100 originalFunction:fragmentFunction];
     if (v18)
     {
       [v13 setVertexFunction:v18];
-      if ([(DYMTLShaderDebuggerTraceGenerator *)self _createAndSetInstrumentedRenderPipelineStateWithDescriptor:v13 renderCommandEncoder:v6 roiType:v9])
+      if ([(DYMTLShaderDebuggerTraceGenerator *)self _createAndSetInstrumentedRenderPipelineStateWithDescriptor:v13 renderCommandEncoder:encoderCopy roiType:unsignedIntValue])
       {
-        v19 = [v99 vertexBindings];
+        vertexBindings = [v99 vertexBindings];
         v85 = v18;
         v131[0] = MEMORY[0x277D85DD0];
         v131[1] = 3221225472;
         v131[2] = __84__DYMTLShaderDebuggerTraceGenerator__prepareRenderCommandEncoder_generationOptions___block_invoke;
         v131[3] = &unk_27930F510;
         v131[4] = self;
-        v20 = v6;
+        v20 = encoderCopy;
         v132 = v20;
         v89 = v13;
         v95 = v10;
-        v97 = v7;
-        v92 = v11;
-        v84 = v17;
-        [v19 enumerateObjectsUsingBlock:v131];
+        v97 = optionsCopy;
+        v92 = renderPipelineState;
+        v84 = fragmentFunction;
+        [vertexBindings enumerateObjectsUsingBlock:v131];
 
         v130[0] = MEMORY[0x277D85DD0];
         v130[1] = 3221225472;
@@ -1170,8 +1170,8 @@ LABEL_57:
             v28 = [v27 copy];
 
             [v28 setSupportArgumentBuffers:1];
-            v29 = [v26 device];
-            v119 = [v29 newSamplerStateWithDescriptor:v28];
+            device3 = [v26 device];
+            v119 = [device3 newSamplerStateWithDescriptor:v28];
 
             [(MTLArgumentEncoder *)self->_dummyArgumentEncoder setSamplerState:v119 atIndex:1];
             LODWORD(v30) = v24;
@@ -1217,13 +1217,13 @@ LABEL_57:
         v116[3] = &unk_27930F588;
         v36 = v20;
         v117 = v36;
-        v118 = self;
+        selfCopy3 = self;
         [v36 enumerateVertexBuffersUsingBlock:v116];
         v37 = &self->_bytesBufferReplacements.__table_.__first_node_;
         v13 = v89;
         v10 = v95;
-        v7 = v97;
-        v11 = v92;
+        optionsCopy = v97;
+        renderPipelineState = v92;
         v38 = v85;
         while (1)
         {
@@ -1478,42 +1478,42 @@ void __84__DYMTLShaderDebuggerTraceGenerator__prepareRenderCommandEncoder_genera
   }
 }
 
-- (BOOL)_prepareComputeCommandEncoder:(id)a3 generationOptions:(id)a4
+- (BOOL)_prepareComputeCommandEncoder:(id)encoder generationOptions:(id)options
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 valueForKey:*MEMORY[0x277D0B2A0]];
-  v9 = [v6 computePipelineState];
-  v10 = DYMTLGetAssociatedObject(v9, 0);
+  encoderCopy = encoder;
+  optionsCopy = options;
+  v8 = [optionsCopy valueForKey:*MEMORY[0x277D0B2A0]];
+  computePipelineState = [encoderCopy computePipelineState];
+  v10 = DYMTLGetAssociatedObject(computePipelineState, 0);
   v11 = [v10 copy];
 
-  [v11 setMaxTotalThreadsPerThreadgroup:{objc_msgSend(v9, "maxTotalThreadsPerThreadgroup")}];
+  [v11 setMaxTotalThreadsPerThreadgroup:{objc_msgSend(computePipelineState, "maxTotalThreadsPerThreadgroup")}];
   v12 = -[DYMTLFunctionPlayer objectForKey:](self->_player, "objectForKey:", [v8 unsignedLongLongValue]);
   if (v12)
   {
-    v13 = [(DYMTLShaderDebuggerTraceGenerator *)self _instrumentLibrary:v12 generationOptions:v7];
+    v13 = [(DYMTLShaderDebuggerTraceGenerator *)self _instrumentLibrary:v12 generationOptions:optionsCopy];
     if (v13)
     {
       v42 = v13;
-      v44 = [v11 computeFunction];
-      v14 = [(DYMTLShaderDebuggerTraceGenerator *)self _createInstrumentedFunctionWithInstrumentedLibrary:v13 originalFunction:v44];
+      computeFunction = [v11 computeFunction];
+      v14 = [(DYMTLShaderDebuggerTraceGenerator *)self _createInstrumentedFunctionWithInstrumentedLibrary:v13 originalFunction:computeFunction];
       v43 = v14;
-      if (v14 && ([v11 setComputeFunction:v14], -[DYMTLShaderDebuggerTraceGenerator _createAndSetInstrumentedComputePipelineStateWithDescriptor:computeCommandEncoder:](self, "_createAndSetInstrumentedComputePipelineStateWithDescriptor:computeCommandEncoder:", v11, v6)))
+      if (v14 && ([v11 setComputeFunction:v14], -[DYMTLShaderDebuggerTraceGenerator _createAndSetInstrumentedComputePipelineStateWithDescriptor:computeCommandEncoder:](self, "_createAndSetInstrumentedComputePipelineStateWithDescriptor:computeCommandEncoder:", v11, encoderCopy)))
       {
-        v41 = v6;
-        v39 = v9;
+        v41 = encoderCopy;
+        v39 = computePipelineState;
         v40 = v8;
         v38 = v12;
-        v37 = DYMTLGetAssociatedObject(v9, 2u);
-        v15 = [v37 arguments];
+        v37 = DYMTLGetAssociatedObject(computePipelineState, 2u);
+        arguments = [v37 arguments];
         v59[0] = MEMORY[0x277D85DD0];
         v59[1] = 3221225472;
         v59[2] = __85__DYMTLShaderDebuggerTraceGenerator__prepareComputeCommandEncoder_generationOptions___block_invoke;
         v59[3] = &unk_27930F510;
         v59[4] = self;
-        v16 = v6;
+        v16 = encoderCopy;
         v60 = v16;
-        [v15 enumerateObjectsUsingBlock:v59];
+        [arguments enumerateObjectsUsingBlock:v59];
 
         v58[0] = MEMORY[0x277D85DD0];
         v58[1] = 3221225472;
@@ -1550,8 +1550,8 @@ void __84__DYMTLShaderDebuggerTraceGenerator__prepareRenderCommandEncoder_genera
             v24 = [v23 copy];
 
             [v24 setSupportArgumentBuffers:1];
-            v25 = [v22 device];
-            v48 = [v25 newSamplerStateWithDescriptor:v24];
+            device = [v22 device];
+            v48 = [device newSamplerStateWithDescriptor:v24];
 
             [(MTLArgumentEncoder *)self->_dummyArgumentEncoder setSamplerState:v48 atIndex:1];
             LODWORD(v26) = v20;
@@ -1597,11 +1597,11 @@ void __84__DYMTLShaderDebuggerTraceGenerator__prepareRenderCommandEncoder_genera
         v45[3] = &unk_27930F588;
         v32 = v16;
         v46 = v32;
-        v47 = self;
+        selfCopy = self;
         [v32 enumerateBuffersUsingBlock:v45];
         p_first_node = &self->_bytesBufferReplacements.__table_.__first_node_;
-        v6 = v41;
-        v9 = v39;
+        encoderCopy = v41;
+        computePipelineState = v39;
         v8 = v40;
         v12 = v38;
         while (1)
@@ -1713,27 +1713,27 @@ void __85__DYMTLShaderDebuggerTraceGenerator__prepareComputeCommandEncoder_gener
   }
 }
 
-- (id)_generateConstantSamplerReflectionWithUniqueIdentifiers:(id)a3 descriptors:(id)a4
+- (id)_generateConstantSamplerReflectionWithUniqueIdentifiers:(id)identifiers descriptors:(id)descriptors
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CBEB38] dictionary];
-  v8 = [v5 count];
-  if (v8 == [v6 count])
+  identifiersCopy = identifiers;
+  descriptorsCopy = descriptors;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v8 = [identifiersCopy count];
+  if (v8 == [descriptorsCopy count])
   {
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __105__DYMTLShaderDebuggerTraceGenerator__generateConstantSamplerReflectionWithUniqueIdentifiers_descriptors___block_invoke;
     v13[3] = &unk_27930F5B0;
-    v14 = v5;
-    v9 = v7;
+    v14 = identifiersCopy;
+    v9 = dictionary;
     v15 = v9;
-    [v6 enumerateObjectsUsingBlock:v13];
+    [descriptorsCopy enumerateObjectsUsingBlock:v13];
     v10 = v15;
     v11 = v9;
   }
 
-  return v7;
+  return dictionary;
 }
 
 void __105__DYMTLShaderDebuggerTraceGenerator__generateConstantSamplerReflectionWithUniqueIdentifiers_descriptors___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3)
@@ -1744,36 +1744,36 @@ void __105__DYMTLShaderDebuggerTraceGenerator__generateConstantSamplerReflection
   [*(a1 + 40) setObject:v5 forKeyedSubscript:v6];
 }
 
-- (BOOL)_createAndSetInstrumentedRenderPipelineStateWithDescriptor:(id)a3 renderCommandEncoder:(id)a4 roiType:(int)a5
+- (BOOL)_createAndSetInstrumentedRenderPipelineStateWithDescriptor:(id)descriptor renderCommandEncoder:(id)encoder roiType:(int)type
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v9 device];
+  descriptorCopy = descriptor;
+  encoderCopy = encoder;
+  device = [encoderCopy device];
   v22 = 0;
   v23 = 0;
-  v11 = [v10 newRenderPipelineStateWithDescriptor:v8 options:0x200000 reflection:&v23 error:&v22];
+  v11 = [device newRenderPipelineStateWithDescriptor:descriptorCopy options:0x200000 reflection:&v23 error:&v22];
   v12 = v23;
   v13 = v22;
 
   if (v11)
   {
-    DYMTLSetAssociatedObject(v11, 0, v8);
+    DYMTLSetAssociatedObject(v11, 0, descriptorCopy);
     DYMTLSetAssociatedObject(v11, 2u, v12);
     traceBuffer = self->_traceBuffer;
-    if (a5 == 2)
+    if (type == 2)
     {
-      [v9 setFragmentBuffer:traceBuffer offset:0 atIndex:{objc_msgSend(v12, "traceBufferIndex")}];
+      [encoderCopy setFragmentBuffer:traceBuffer offset:0 atIndex:{objc_msgSend(v12, "traceBufferIndex")}];
     }
 
     else
     {
-      [v9 setVertexBuffer:traceBuffer offset:0 atIndex:{objc_msgSend(v12, "traceBufferIndex")}];
+      [encoderCopy setVertexBuffer:traceBuffer offset:0 atIndex:{objc_msgSend(v12, "traceBufferIndex")}];
     }
 
-    [v9 setRenderPipelineState:v11];
-    v16 = [v12 constantSamplerUniqueIdentifiers];
+    [encoderCopy setRenderPipelineState:v11];
+    constantSamplerUniqueIdentifiers = [v12 constantSamplerUniqueIdentifiers];
     errorStr = [v12 constantSamplerDescriptors];
-    v19 = [(DYMTLShaderDebuggerTraceGenerator *)self _generateConstantSamplerReflectionWithUniqueIdentifiers:v16 descriptors:errorStr];
+    v19 = [(DYMTLShaderDebuggerTraceGenerator *)self _generateConstantSamplerReflectionWithUniqueIdentifiers:constantSamplerUniqueIdentifiers descriptors:errorStr];
     constantSamplerReflection = self->_constantSamplerReflection;
     self->_constantSamplerReflection = v19;
   }
@@ -1781,8 +1781,8 @@ void __105__DYMTLShaderDebuggerTraceGenerator__generateConstantSamplerReflection
   else
   {
     v15 = MEMORY[0x277CCACA8];
-    v16 = [v13 description];
-    v17 = [v15 stringWithFormat:@"Error creating instrumented render pipeline state: %@", v16];
+    constantSamplerUniqueIdentifiers = [v13 description];
+    v17 = [v15 stringWithFormat:@"Error creating instrumented render pipeline state: %@", constantSamplerUniqueIdentifiers];
     errorStr = self->_errorStr;
     self->_errorStr = v17;
   }
@@ -1790,26 +1790,26 @@ void __105__DYMTLShaderDebuggerTraceGenerator__generateConstantSamplerReflection
   return v11 != 0;
 }
 
-- (BOOL)_createAndSetInstrumentedComputePipelineStateWithDescriptor:(id)a3 computeCommandEncoder:(id)a4
+- (BOOL)_createAndSetInstrumentedComputePipelineStateWithDescriptor:(id)descriptor computeCommandEncoder:(id)encoder
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 device];
+  descriptorCopy = descriptor;
+  encoderCopy = encoder;
+  device = [encoderCopy device];
   v19 = 0;
   v20 = 0;
-  v9 = [v8 newComputePipelineStateWithDescriptor:v6 options:0x200000 reflection:&v20 error:&v19];
+  v9 = [device newComputePipelineStateWithDescriptor:descriptorCopy options:0x200000 reflection:&v20 error:&v19];
   v10 = v20;
   v11 = v19;
 
   if (v9)
   {
-    DYMTLSetAssociatedObject(v9, 0, v6);
+    DYMTLSetAssociatedObject(v9, 0, descriptorCopy);
     DYMTLSetAssociatedObject(v9, 2u, v10);
-    [v7 setBuffer:self->_traceBuffer offset:0 atIndex:{objc_msgSend(v10, "traceBufferIndex")}];
-    [v7 setComputePipelineState:v9];
-    v12 = [v10 constantSamplerUniqueIdentifiers];
+    [encoderCopy setBuffer:self->_traceBuffer offset:0 atIndex:{objc_msgSend(v10, "traceBufferIndex")}];
+    [encoderCopy setComputePipelineState:v9];
+    constantSamplerUniqueIdentifiers = [v10 constantSamplerUniqueIdentifiers];
     errorStr = [v10 constantSamplerDescriptors];
-    v14 = [(DYMTLShaderDebuggerTraceGenerator *)self _generateConstantSamplerReflectionWithUniqueIdentifiers:v12 descriptors:errorStr];
+    v14 = [(DYMTLShaderDebuggerTraceGenerator *)self _generateConstantSamplerReflectionWithUniqueIdentifiers:constantSamplerUniqueIdentifiers descriptors:errorStr];
     constantSamplerReflection = self->_constantSamplerReflection;
     self->_constantSamplerReflection = v14;
   }
@@ -1817,8 +1817,8 @@ void __105__DYMTLShaderDebuggerTraceGenerator__generateConstantSamplerReflection
   else
   {
     v16 = MEMORY[0x277CCACA8];
-    v12 = [v11 description];
-    v17 = [v16 stringWithFormat:@"Error creating instrumented compute pipeline state: %@", v12];
+    constantSamplerUniqueIdentifiers = [v11 description];
+    v17 = [v16 stringWithFormat:@"Error creating instrumented compute pipeline state: %@", constantSamplerUniqueIdentifiers];
     errorStr = self->_errorStr;
     self->_errorStr = v17;
   }
@@ -1826,26 +1826,26 @@ void __105__DYMTLShaderDebuggerTraceGenerator__generateConstantSamplerReflection
   return v9 != 0;
 }
 
-- (BOOL)_createAndSetInstrumentedTileRenderPipelineStateWithDescriptor:(id)a3 renderCommandEncoder:(id)a4
+- (BOOL)_createAndSetInstrumentedTileRenderPipelineStateWithDescriptor:(id)descriptor renderCommandEncoder:(id)encoder
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 device];
+  descriptorCopy = descriptor;
+  encoderCopy = encoder;
+  device = [encoderCopy device];
   v19 = 0;
   v20 = 0;
-  v9 = [v8 newRenderPipelineStateWithTileDescriptor:v6 options:0x200000 reflection:&v20 error:&v19];
+  v9 = [device newRenderPipelineStateWithTileDescriptor:descriptorCopy options:0x200000 reflection:&v20 error:&v19];
   v10 = v20;
   v11 = v19;
 
   if (v9)
   {
-    DYMTLSetAssociatedObject(v9, 0, v6);
+    DYMTLSetAssociatedObject(v9, 0, descriptorCopy);
     DYMTLSetAssociatedObject(v9, 2u, v10);
-    [v7 setTileBuffer:self->_traceBuffer offset:0 atIndex:{objc_msgSend(v10, "traceBufferIndex")}];
-    [v7 setRenderPipelineState:v9];
-    v12 = [v10 constantSamplerUniqueIdentifiers];
+    [encoderCopy setTileBuffer:self->_traceBuffer offset:0 atIndex:{objc_msgSend(v10, "traceBufferIndex")}];
+    [encoderCopy setRenderPipelineState:v9];
+    constantSamplerUniqueIdentifiers = [v10 constantSamplerUniqueIdentifiers];
     errorStr = [v10 constantSamplerDescriptors];
-    v14 = [(DYMTLShaderDebuggerTraceGenerator *)self _generateConstantSamplerReflectionWithUniqueIdentifiers:v12 descriptors:errorStr];
+    v14 = [(DYMTLShaderDebuggerTraceGenerator *)self _generateConstantSamplerReflectionWithUniqueIdentifiers:constantSamplerUniqueIdentifiers descriptors:errorStr];
     constantSamplerReflection = self->_constantSamplerReflection;
     self->_constantSamplerReflection = v14;
   }
@@ -1853,8 +1853,8 @@ void __105__DYMTLShaderDebuggerTraceGenerator__generateConstantSamplerReflection
   else
   {
     v16 = MEMORY[0x277CCACA8];
-    v12 = [v11 description];
-    v17 = [v16 stringWithFormat:@"Error creating instrumented render pipeline state: %@", v12];
+    constantSamplerUniqueIdentifiers = [v11 description];
+    v17 = [v16 stringWithFormat:@"Error creating instrumented render pipeline state: %@", constantSamplerUniqueIdentifiers];
     errorStr = self->_errorStr;
     self->_errorStr = v17;
   }
@@ -1862,10 +1862,10 @@ void __105__DYMTLShaderDebuggerTraceGenerator__generateConstantSamplerReflection
   return v9 != 0;
 }
 
-- (id)_createInstrumentedFunctionWithInstrumentedLibrary:(id)a3 originalFunction:(id)a4
+- (id)_createInstrumentedFunctionWithInstrumentedLibrary:(id)library originalFunction:(id)function
 {
-  v6 = a3;
-  v7 = a4;
+  libraryCopy = library;
+  functionCopy = function;
   if ([DYMTLShaderDebuggerTraceGenerator _createInstrumentedFunctionWithInstrumentedLibrary:originalFunction:]::onceToken != -1)
   {
     [DYMTLShaderDebuggerTraceGenerator _createInstrumentedFunctionWithInstrumentedLibrary:originalFunction:];
@@ -1880,12 +1880,12 @@ void __105__DYMTLShaderDebuggerTraceGenerator__generateConstantSamplerReflection
     goto LABEL_17;
   }
 
-  v8 = DYMTLGetNullableAssociatedObject(v7, 4u);
+  v8 = DYMTLGetNullableAssociatedObject(functionCopy, 4u);
   if (v8)
   {
-    v9 = [v7 name];
+    name = [functionCopy name];
     v21 = 0;
-    v10 = [v6 newFunctionWithName:v9 constantValues:v8 error:&v21];
+    v10 = [libraryCopy newFunctionWithName:name constantValues:v8 error:&v21];
     v11 = v21;
 
     if (v10)
@@ -1895,8 +1895,8 @@ void __105__DYMTLShaderDebuggerTraceGenerator__generateConstantSamplerReflection
 
 LABEL_11:
     v16 = MEMORY[0x277CCACA8];
-    v12 = [v11 description];
-    v17 = [v16 stringWithFormat:@"Error creating instrumented function: %@", v12];
+    bitcodeData = [v11 description];
+    v17 = [v16 stringWithFormat:@"Error creating instrumented function: %@", bitcodeData];
     v18 = self->_errorStr;
     self->_errorStr = v17;
 LABEL_15:
@@ -1905,8 +1905,8 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v15 = [v7 name];
-  v10 = [v6 newFunctionWithName:v15];
+  name2 = [functionCopy name];
+  v10 = [libraryCopy newFunctionWithName:name2];
 
   v11 = 0;
   if (!v10)
@@ -1915,8 +1915,8 @@ LABEL_15:
   }
 
 LABEL_6:
-  v12 = [v10 bitcodeData];
-  if (!v12)
+  bitcodeData = [v10 bitcodeData];
+  if (!bitcodeData)
   {
     v18 = self->_errorStr;
     v19 = @"Shader bitcode not found.";
@@ -1964,31 +1964,31 @@ char *__105__DYMTLShaderDebuggerTraceGenerator__createInstrumentedFunctionWithIn
   return result;
 }
 
-- (BOOL)_createTraceBufferWithGenerationOptions:(id)a3
+- (BOOL)_createTraceBufferWithGenerationOptions:(id)options
 {
-  v4 = a3;
-  v5 = [v4 valueForKey:*MEMORY[0x277D0B338]];
-  v6 = [v5 unsignedIntValue];
+  optionsCopy = options;
+  v5 = [optionsCopy valueForKey:*MEMORY[0x277D0B338]];
+  unsignedIntValue = [v5 unsignedIntValue];
 
-  v7 = [v4 objectForKeyedSubscript:*MEMORY[0x277D0B380]];
+  v7 = [optionsCopy objectForKeyedSubscript:*MEMORY[0x277D0B380]];
   v8 = v7;
-  if ((v6 & 0xFFFFFFFD) != 0)
+  if ((unsignedIntValue & 0xFFFFFFFD) != 0)
   {
-    v9 = 0x200000;
+    unsignedIntegerValue = 0x200000;
   }
 
   else
   {
-    v9 = 0x4000000;
+    unsignedIntegerValue = 0x4000000;
   }
 
   if (v7)
   {
-    v9 = [v7 unsignedIntegerValue];
+    unsignedIntegerValue = [v7 unsignedIntegerValue];
   }
 
-  v10 = [(DYMTLFunctionPlayer *)self->_player device];
-  v11 = [v10 newBufferWithLength:v9 options:0];
+  device = [(DYMTLFunctionPlayer *)self->_player device];
+  v11 = [device newBufferWithLength:unsignedIntegerValue options:0];
   traceBuffer = self->_traceBuffer;
   self->_traceBuffer = v11;
 
@@ -1996,33 +1996,33 @@ char *__105__DYMTLShaderDebuggerTraceGenerator__createInstrumentedFunctionWithIn
   return v13;
 }
 
-- (BOOL)_prepareTraceBufferWithGenerationOptions:(id)a3
+- (BOOL)_prepareTraceBufferWithGenerationOptions:(id)options
 {
-  v4 = a3;
-  v5 = [v4 valueForKey:*MEMORY[0x277D0B338]];
-  v6 = [v5 unsignedIntValue];
+  optionsCopy = options;
+  v5 = [optionsCopy valueForKey:*MEMORY[0x277D0B338]];
+  unsignedIntValue = [v5 unsignedIntValue];
 
   v7 = 1;
-  if (v6 > 1)
+  if (unsignedIntValue > 1)
   {
-    if (v6 != 2)
+    if (unsignedIntValue != 2)
     {
-      if (v6 == 3)
+      if (unsignedIntValue == 3)
       {
         v20 = *MEMORY[0x277D0B2C0];
-        v21 = [v4 objectForKey:*MEMORY[0x277D0B2C0]];
+        v21 = [optionsCopy objectForKey:*MEMORY[0x277D0B2C0]];
 
         if (v21)
         {
           v22 = *MEMORY[0x277D0B328];
-          v23 = [v4 objectForKey:*MEMORY[0x277D0B328]];
+          v23 = [optionsCopy objectForKey:*MEMORY[0x277D0B328]];
 
           if (v23)
           {
             self->_traceType = 3;
-            v12 = [v4 objectForKeyedSubscript:v20];
-            v13 = [v4 objectForKeyedSubscript:*MEMORY[0x277D0B2B8]];
-            v14 = [v4 objectForKeyedSubscript:v22];
+            v12 = [optionsCopy objectForKeyedSubscript:v20];
+            v13 = [optionsCopy objectForKeyedSubscript:*MEMORY[0x277D0B2B8]];
+            v14 = [optionsCopy objectForKeyedSubscript:v22];
             ShaderDebugger::TraceBufferVersionedHeader::TraceBufferVersionedHeader(&v94, [(MTLBuffer *)self->_traceBuffer contents], self->_traceBufferVersion);
             v94 = &unk_2860B2BB8;
             v95->i32[0] = 1;
@@ -2048,16 +2048,16 @@ char *__105__DYMTLShaderDebuggerTraceGenerator__createInstrumentedFunctionWithIn
               *(v28 + 4 * i) = [v88 unsignedIntegerValue];
             }
 
-            v89 = [v12 unsignedIntegerValue];
+            unsignedIntegerValue = [v12 unsignedIntegerValue];
             if (v96 <= 2)
             {
-              v95->i32[3] = v89;
+              v95->i32[3] = unsignedIntegerValue;
             }
 
-            v90 = [v13 unsignedIntegerValue];
+            unsignedIntegerValue2 = [v13 unsignedIntegerValue];
             if (v96 - 1 <= 1)
             {
-              v95[1].i32[0] = v90;
+              v95[1].i32[0] = unsignedIntegerValue2;
             }
 
             HeaderSize = ShaderDebugger::PostTessellationVertexTraceBufferVersionedHeader::getHeaderSize(&v94);
@@ -2072,42 +2072,42 @@ char *__105__DYMTLShaderDebuggerTraceGenerator__createInstrumentedFunctionWithIn
     }
 
     v53 = *MEMORY[0x277D0B2F8];
-    v54 = [v4 objectForKey:*MEMORY[0x277D0B2F8]];
+    v54 = [optionsCopy objectForKey:*MEMORY[0x277D0B2F8]];
 
     if (v54)
     {
       v55 = *MEMORY[0x277D0B300];
-      v56 = [v4 objectForKey:*MEMORY[0x277D0B300]];
+      v56 = [optionsCopy objectForKey:*MEMORY[0x277D0B300]];
 
       if (v56)
       {
         v57 = *MEMORY[0x277D0B2C8];
-        v58 = [v4 objectForKey:*MEMORY[0x277D0B2C8]];
+        v58 = [optionsCopy objectForKey:*MEMORY[0x277D0B2C8]];
 
         if (v58)
         {
           v59 = *MEMORY[0x277D0B2D0];
-          v60 = [v4 objectForKey:*MEMORY[0x277D0B2D0]];
+          v60 = [optionsCopy objectForKey:*MEMORY[0x277D0B2D0]];
 
           if (v60)
           {
             v61 = *MEMORY[0x277D0B308];
-            v62 = [v4 objectForKey:*MEMORY[0x277D0B308]];
+            v62 = [optionsCopy objectForKey:*MEMORY[0x277D0B308]];
 
             if (v62)
             {
               v63 = *MEMORY[0x277D0B2D8];
-              v64 = [v4 objectForKey:*MEMORY[0x277D0B2D8]];
+              v64 = [optionsCopy objectForKey:*MEMORY[0x277D0B2D8]];
 
               if (v64)
               {
-                v12 = [v4 objectForKeyedSubscript:v53];
-                v13 = [v4 objectForKeyedSubscript:v55];
-                v14 = [v4 objectForKeyedSubscript:v57];
-                v41 = [v4 objectForKeyedSubscript:v59];
-                v42 = [v4 objectForKeyedSubscript:v61];
-                v43 = [v4 objectForKeyedSubscript:v63];
-                v65 = [v4 objectForKeyedSubscript:*MEMORY[0x277D0B330]];
+                v12 = [optionsCopy objectForKeyedSubscript:v53];
+                v13 = [optionsCopy objectForKeyedSubscript:v55];
+                v14 = [optionsCopy objectForKeyedSubscript:v57];
+                v41 = [optionsCopy objectForKeyedSubscript:v59];
+                v42 = [optionsCopy objectForKeyedSubscript:v61];
+                v43 = [optionsCopy objectForKeyedSubscript:v63];
+                v65 = [optionsCopy objectForKeyedSubscript:*MEMORY[0x277D0B330]];
                 self->_traceType = 1;
                 ShaderDebugger::TraceBufferVersionedHeader::TraceBufferVersionedHeader(&v94, [(MTLBuffer *)self->_traceBuffer contents], self->_traceBufferVersion);
                 v94 = &unk_2860B2B68;
@@ -2136,22 +2136,22 @@ char *__105__DYMTLShaderDebuggerTraceGenerator__createInstrumentedFunctionWithIn
                   v95[2] = v74;
                 }
 
-                v75 = [v42 unsignedIntValue];
+                unsignedIntValue2 = [v42 unsignedIntValue];
                 if (v96 <= 2)
                 {
-                  v95[3].i32[0] = v75;
+                  v95[3].i32[0] = unsignedIntValue2;
                 }
 
-                v76 = [v43 unsignedIntValue];
+                unsignedIntValue3 = [v43 unsignedIntValue];
                 if (v96 <= 2)
                 {
-                  v95[3].i32[1] = v76;
+                  v95[3].i32[1] = unsignedIntValue3;
                 }
 
-                v77 = [v65 unsignedIntValue];
+                unsignedIntValue4 = [v65 unsignedIntValue];
                 if (v96 == 2)
                 {
-                  v95[3].i32[2] = v77;
+                  v95[3].i32[2] = unsignedIntValue4;
                 }
 
                 v78 = ShaderDebugger::FragmentTraceBufferVersionedHeader::getHeaderSize(&v94);
@@ -2174,65 +2174,65 @@ LABEL_39:
     goto LABEL_60;
   }
 
-  if (!v6)
+  if (!unsignedIntValue)
   {
     v29 = *MEMORY[0x277D0B310];
-    v30 = [v4 objectForKey:*MEMORY[0x277D0B310]];
+    v30 = [optionsCopy objectForKey:*MEMORY[0x277D0B310]];
 
     if (v30)
     {
       v31 = *MEMORY[0x277D0B318];
-      v32 = [v4 objectForKey:*MEMORY[0x277D0B318]];
+      v32 = [optionsCopy objectForKey:*MEMORY[0x277D0B318]];
 
       if (v32)
       {
         v33 = *MEMORY[0x277D0B320];
-        v34 = [v4 objectForKey:*MEMORY[0x277D0B320]];
+        v34 = [optionsCopy objectForKey:*MEMORY[0x277D0B320]];
 
         if (v34)
         {
           v35 = *MEMORY[0x277D0B2E0];
-          v36 = [v4 objectForKey:*MEMORY[0x277D0B2E0]];
+          v36 = [optionsCopy objectForKey:*MEMORY[0x277D0B2E0]];
 
           if (v36)
           {
             v37 = *MEMORY[0x277D0B2E8];
-            v38 = [v4 objectForKey:*MEMORY[0x277D0B2E8]];
+            v38 = [optionsCopy objectForKey:*MEMORY[0x277D0B2E8]];
 
             if (v38)
             {
               v39 = *MEMORY[0x277D0B2F0];
-              v40 = [v4 objectForKey:*MEMORY[0x277D0B2F0]];
+              v40 = [optionsCopy objectForKey:*MEMORY[0x277D0B2F0]];
 
               if (v40)
               {
-                v12 = [v4 objectForKeyedSubscript:v29];
-                v13 = [v4 objectForKeyedSubscript:v31];
-                v14 = [v4 objectForKeyedSubscript:v33];
-                v41 = [v4 objectForKeyedSubscript:v35];
-                v42 = [v4 objectForKeyedSubscript:v37];
-                v43 = [v4 objectForKeyedSubscript:v39];
+                v12 = [optionsCopy objectForKeyedSubscript:v29];
+                v13 = [optionsCopy objectForKeyedSubscript:v31];
+                v14 = [optionsCopy objectForKeyedSubscript:v33];
+                v41 = [optionsCopy objectForKeyedSubscript:v35];
+                v42 = [optionsCopy objectForKeyedSubscript:v37];
+                v43 = [optionsCopy objectForKeyedSubscript:v39];
                 self->_traceType = 2;
-                v44 = [(MTLBuffer *)self->_traceBuffer contents];
-                ShaderDebugger::TraceBufferVersionedHeader::TraceBufferVersionedHeader(&v94, v44, self->_traceBufferVersion);
+                contents = [(MTLBuffer *)self->_traceBuffer contents];
+                ShaderDebugger::TraceBufferVersionedHeader::TraceBufferVersionedHeader(&v94, contents, self->_traceBufferVersion);
                 v94 = &unk_2860B2B90;
-                v97 = v44;
+                v97 = contents;
                 v95->i32[0] = 1;
                 v45 = [(MTLBuffer *)self->_traceBuffer length];
                 v95->i32[1] = v45;
-                v46 = [v12 unsignedIntValue];
-                LODWORD(v44) = [v13 unsignedIntValue];
-                v47 = [v14 unsignedIntValue];
-                v97[4] = v46;
-                v97[5] = v44;
-                v97[6] = v47;
-                v48 = [v41 unsignedIntValue];
-                LODWORD(v44) = [v42 unsignedIntValue];
-                v49 = [v43 unsignedIntValue];
+                unsignedIntValue5 = [v12 unsignedIntValue];
+                LODWORD(contents) = [v13 unsignedIntValue];
+                unsignedIntValue6 = [v14 unsignedIntValue];
+                v97[4] = unsignedIntValue5;
+                v97[5] = contents;
+                v97[6] = unsignedIntValue6;
+                unsignedIntValue7 = [v41 unsignedIntValue];
+                LODWORD(contents) = [v42 unsignedIntValue];
+                unsignedIntValue8 = [v43 unsignedIntValue];
                 v50 = v97;
-                v97[8] = v48;
-                v50[9] = v44;
-                v50[10] = v49;
+                v97[8] = unsignedIntValue7;
+                v50[9] = contents;
+                v50[10] = unsignedIntValue8;
                 v51 = ShaderDebugger::KernelTraceBufferVersionedHeader::getHeaderSize(&v94);
                 v95->i32[2] = v51;
                 DispatchMPSMethod(&v94, v52);
@@ -2251,22 +2251,22 @@ LABEL_59:
     goto LABEL_39;
   }
 
-  if (v6 == 1)
+  if (unsignedIntValue == 1)
   {
     v8 = *MEMORY[0x277D0B2C0];
-    v9 = [v4 objectForKey:*MEMORY[0x277D0B2C0]];
+    v9 = [optionsCopy objectForKey:*MEMORY[0x277D0B2C0]];
 
     if (v9)
     {
       v10 = *MEMORY[0x277D0B340];
-      v11 = [v4 objectForKey:*MEMORY[0x277D0B340]];
+      v11 = [optionsCopy objectForKey:*MEMORY[0x277D0B340]];
 
       if (v11)
       {
         self->_traceType = 0;
-        v12 = [v4 objectForKeyedSubscript:v8];
-        v13 = [v4 objectForKeyedSubscript:*MEMORY[0x277D0B2B8]];
-        v14 = [v4 objectForKeyedSubscript:v10];
+        v12 = [optionsCopy objectForKeyedSubscript:v8];
+        v13 = [optionsCopy objectForKeyedSubscript:*MEMORY[0x277D0B2B8]];
+        v14 = [optionsCopy objectForKeyedSubscript:v10];
         ShaderDebugger::TraceBufferVersionedHeader::TraceBufferVersionedHeader(&v94, [(MTLBuffer *)self->_traceBuffer contents], self->_traceBufferVersion);
         v94 = &unk_2860B2B40;
         v95->i32[0] = 1;
@@ -2292,16 +2292,16 @@ LABEL_59:
           *(v19 + 4 * j) = [v82 unsignedIntegerValue];
         }
 
-        v83 = [v12 unsignedIntegerValue];
+        unsignedIntegerValue3 = [v12 unsignedIntegerValue];
         if (v96 <= 2)
         {
-          v95->i32[3] = v83;
+          v95->i32[3] = unsignedIntegerValue3;
         }
 
-        v84 = [v13 unsignedIntegerValue];
+        unsignedIntegerValue4 = [v13 unsignedIntegerValue];
         if (v96 - 1 <= 1)
         {
-          v95[1].i32[0] = v84;
+          v95[1].i32[0] = unsignedIntegerValue4;
         }
 
         HeaderSize = ShaderDebugger::VertexTraceBufferVersionedHeader::getHeaderSize(&v94);
@@ -2320,14 +2320,14 @@ LABEL_60:
   return v7;
 }
 
-- (void)prepareCommandEncoderForInstrumentedCall:(unint64_t)a3 generationOptions:(id)a4
+- (void)prepareCommandEncoderForInstrumentedCall:(unint64_t)call generationOptions:(id)options
 {
-  v15 = a4;
-  v6 = [(DYMTLFunctionPlayer *)self->_player objectForKey:a3];
+  optionsCopy = options;
+  v6 = [(DYMTLFunctionPlayer *)self->_player objectForKey:call];
   v7 = *MEMORY[0x277D0B338];
-  v8 = [v15 objectForKey:*MEMORY[0x277D0B338]];
+  v8 = [optionsCopy objectForKey:*MEMORY[0x277D0B338]];
 
-  if (!v8 || ([v15 objectForKey:*MEMORY[0x277D0B2A8]], v9 = objc_claimAutoreleasedReturnValue(), v9, !v9) || (objc_msgSend(v15, "objectForKey:", *MEMORY[0x277D0B2A0]), v10 = objc_claimAutoreleasedReturnValue(), v10, !v10))
+  if (!v8 || ([optionsCopy objectForKey:*MEMORY[0x277D0B2A8]], v9 = objc_claimAutoreleasedReturnValue(), v9, !v9) || (objc_msgSend(optionsCopy, "objectForKey:", *MEMORY[0x277D0B2A0]), v10 = objc_claimAutoreleasedReturnValue(), v10, !v10))
   {
     v13 = @"Incorrect ROI parameters";
 LABEL_10:
@@ -2337,23 +2337,23 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if (![(DYMTLShaderDebuggerTraceGenerator *)self _createTraceBufferWithGenerationOptions:v15])
+  if (![(DYMTLShaderDebuggerTraceGenerator *)self _createTraceBufferWithGenerationOptions:optionsCopy])
   {
     v13 = @"Unable to create trace buffer.";
     goto LABEL_10;
   }
 
-  v11 = [v15 valueForKey:v7];
-  v12 = [v11 unsignedIntValue];
+  v11 = [optionsCopy valueForKey:v7];
+  unsignedIntValue = [v11 unsignedIntValue];
 
   std::__tree<std::__value_type<objc_object  {objcproto15MTLSamplerState}* {__strong},unsigned long long>,std::__map_value_compare<objc_object  {objcproto15MTLSamplerState}*,objc_object  {objcproto15MTLSamplerState}* {__strong},std::less<objc_object  {objcproto15MTLSamplerState}*>,true>,std::allocator<objc_object  {objcproto15MTLSamplerState}* {__strong}>>::destroy(&self->_replacedSamplerStates, self->_replacedSamplerStates.__tree_.__end_node_.__left_);
   self->_replacedSamplerStates.__tree_.__end_node_.__left_ = 0;
   self->_replacedSamplerStates.__tree_.__size_ = 0;
   self->_replacedSamplerStates.__tree_.__begin_node_ = &self->_replacedSamplerStates.__tree_.__end_node_;
   std::__hash_table<std::__hash_value_type<unsigned long long,NSData * {__strong}>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,NSData * {__strong}>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,NSData * {__strong}>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,NSData * {__strong}>>>::clear(&self->_bytesBufferReplacements);
-  if (v12 > 1)
+  if (unsignedIntValue > 1)
   {
-    if (v12 == 2)
+    if (unsignedIntValue == 2)
     {
       if (([v6 conformsToProtocol:&unk_2860CBE88] & 1) == 0)
       {
@@ -2364,7 +2364,7 @@ LABEL_10:
       goto LABEL_26;
     }
 
-    if (v12 != 3)
+    if (unsignedIntValue != 3)
     {
       goto LABEL_27;
     }
@@ -2377,13 +2377,13 @@ LABEL_17:
     }
 
 LABEL_26:
-    [(DYMTLShaderDebuggerTraceGenerator *)self _prepareRenderCommandEncoder:v6 generationOptions:v15];
+    [(DYMTLShaderDebuggerTraceGenerator *)self _prepareRenderCommandEncoder:v6 generationOptions:optionsCopy];
     goto LABEL_27;
   }
 
-  if (v12)
+  if (unsignedIntValue)
   {
-    if (v12 != 1)
+    if (unsignedIntValue != 1)
     {
       goto LABEL_27;
     }
@@ -2399,7 +2399,7 @@ LABEL_26:
 
   if ([v6 conformsToProtocol:&unk_2860CC178])
   {
-    [(DYMTLShaderDebuggerTraceGenerator *)self _prepareComputeCommandEncoder:v6 generationOptions:v15];
+    [(DYMTLShaderDebuggerTraceGenerator *)self _prepareComputeCommandEncoder:v6 generationOptions:optionsCopy];
     goto LABEL_27;
   }
 
@@ -2409,7 +2409,7 @@ LABEL_26:
   }
 
 LABEL_27:
-  if (![(DYMTLShaderDebuggerTraceGenerator *)self _prepareTraceBufferWithGenerationOptions:v15])
+  if (![(DYMTLShaderDebuggerTraceGenerator *)self _prepareTraceBufferWithGenerationOptions:optionsCopy])
   {
     v13 = @"Error while preparing trace buffer.";
     goto LABEL_10;
@@ -2421,15 +2421,15 @@ LABEL_11:
 - (id)_generateResourceResolutionRemappingTables
 {
   v57[5] = *MEMORY[0x277D85DE8];
-  v50 = [MEMORY[0x277CBEB38] dictionary];
-  v47 = [MEMORY[0x277CBEB38] dictionary];
-  v49 = [MEMORY[0x277CBEB38] dictionary];
-  v48 = [MEMORY[0x277CBEB38] dictionary];
-  v46 = [(DYMTLFunctionPlayer *)self->_player indirectArgumentManager];
-  v3 = [v46 bufferVitualAddressMap];
-  v4 = v3 + 1;
-  v5 = *v3;
-  if (*v3 != v3 + 1)
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary4 = [MEMORY[0x277CBEB38] dictionary];
+  indirectArgumentManager = [(DYMTLFunctionPlayer *)self->_player indirectArgumentManager];
+  bufferVitualAddressMap = [indirectArgumentManager bufferVitualAddressMap];
+  v4 = bufferVitualAddressMap + 1;
+  v5 = *bufferVitualAddressMap;
+  if (*bufferVitualAddressMap != bufferVitualAddressMap + 1)
   {
     do
     {
@@ -2445,14 +2445,14 @@ LABEL_11:
       {
         do
         {
-          v9 = [(DYMTLFunctionPlayer *)self->_player objectMap];
+          objectMap = [(DYMTLFunctionPlayer *)self->_player objectMap];
           v55 = v8;
-          v10 = std::__hash_table<std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,objc_object * {__strong}>>>::__emplace_unique_key_args<unsigned long long,std::piecewise_construct_t const&,std::tuple<unsigned long long const&>,std::tuple<>>(v9, v8);
+          v10 = std::__hash_table<std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,objc_object * {__strong}>>>::__emplace_unique_key_args<unsigned long long,std::piecewise_construct_t const&,std::tuple<unsigned long long const&>,std::tuple<>>(objectMap, v8);
           v11 = DYMTLGetOriginalObject(v10[3]);
-          v12 = [v11 gpuAddress];
-          v13 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v12];
+          gpuAddress = [v11 gpuAddress];
+          v13 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:gpuAddress];
           v14 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v51];
-          [v50 setObject:v13 forKeyedSubscript:v14];
+          [dictionary setObject:v13 forKeyedSubscript:v14];
 
           v8 += 2;
         }
@@ -2513,10 +2513,10 @@ LABEL_11:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v25 = [v21 uniqueIdentifier];
+        uniqueIdentifier = [v21 uniqueIdentifier];
         v23 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v19];
-        v24 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v25];
-        [v49 setObject:v23 forKeyedSubscript:v24];
+        v24 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:uniqueIdentifier];
+        [dictionary3 setObject:v23 forKeyedSubscript:v24];
         goto LABEL_18;
       }
 
@@ -2529,10 +2529,10 @@ LABEL_19:
       }
     }
 
-    v22 = [v21 uniqueIdentifier];
+    uniqueIdentifier2 = [v21 uniqueIdentifier];
     v23 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v19];
-    v24 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v22];
-    [v47 setObject:v23 forKeyedSubscript:v24];
+    v24 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:uniqueIdentifier2];
+    [dictionary2 setObject:v23 forKeyedSubscript:v24];
 LABEL_18:
 
     goto LABEL_19;
@@ -2547,10 +2547,10 @@ LABEL_20:
       v27 = begin_node->_errorStr;
       placeholderBuffer = begin_node->_placeholderBuffer;
       v29 = DYMTLGetOriginalObject(v27);
-      v30 = [v29 uniqueIdentifier];
+      uniqueIdentifier3 = [v29 uniqueIdentifier];
       v31 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:placeholderBuffer];
-      v32 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v30];
-      [v49 setObject:v31 forKeyedSubscript:v32];
+      v32 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:uniqueIdentifier3];
+      [dictionary3 setObject:v31 forKeyedSubscript:v32];
 
       player = begin_node->_player;
       if (player)
@@ -2585,25 +2585,25 @@ LABEL_20:
   for (i = self->_bytesBufferReplacements.__table_.__first_node_.__next_; i; i = i->isa)
   {
     v36 = DYMTLGetOriginalObject(i[3].isa);
-    v37 = [v36 gpuAddress];
-    v38 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v37];
+    gpuAddress2 = [v36 gpuAddress];
+    v38 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:gpuAddress2];
     v39 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:i[2].isa];
-    [v48 setObject:v38 forKeyedSubscript:v39];
+    [dictionary4 setObject:v38 forKeyedSubscript:v39];
   }
 
   v40 = *MEMORY[0x277D0B370];
   v56[0] = *MEMORY[0x277D0B350];
   v56[1] = v40;
-  v57[0] = v50;
-  v57[1] = v47;
+  v57[0] = dictionary;
+  v57[1] = dictionary2;
   v41 = *MEMORY[0x277D0B360];
   v56[2] = *MEMORY[0x277D0B368];
   v56[3] = v41;
   constantSamplerReflection = self->_constantSamplerReflection;
-  v57[2] = v49;
+  v57[2] = dictionary3;
   v57[3] = constantSamplerReflection;
   v56[4] = *MEMORY[0x277D0B358];
-  v57[4] = v48;
+  v57[4] = dictionary4;
   v43 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v57 forKeys:v56 count:5];
 
   v44 = *MEMORY[0x277D85DE8];
@@ -2614,7 +2614,7 @@ LABEL_20:
 - (id)notifyReplayFinishedAndGenerateTraceContainer
 {
   v25[4] = *MEMORY[0x277D85DE8];
-  v17 = self;
+  selfCopy = self;
   errorStr = self->_errorStr;
   if (errorStr)
   {
@@ -2629,17 +2629,17 @@ LABEL_20:
   {
     v22[3] = 0;
     v25[0] = &unk_2860B2A20;
-    v25[1] = &v17;
+    v25[1] = &selfCopy;
     v25[3] = v25;
     std::__function::__value_func<void ()(void)>::swap[abi:ne200100](v25, v22);
     std::__function::__value_func<void ()(void)>::~__value_func[abi:ne200100](v25);
-    v6 = [(MTLBuffer *)v17->_traceBuffer contents];
-    if (*(v6 + 8) <= *(v6 + 4))
+    contents = [(MTLBuffer *)selfCopy->_traceBuffer contents];
+    if (*(contents + 8) <= *(contents + 4))
     {
-      v8 = [MEMORY[0x277CBEB28] dataWithBytes:&v17->_traceType length:4];
+      v8 = [MEMORY[0x277CBEB28] dataWithBytes:&selfCopy->_traceType length:4];
       v7 = v8;
-      v10 = *(v6 + 4);
-      v9 = *(v6 + 8);
+      v10 = *(contents + 4);
+      v9 = *(contents + 8);
       if (v10 >= v9)
       {
         v11 = v9;
@@ -2650,16 +2650,16 @@ LABEL_20:
         v11 = v10;
       }
 
-      [v8 appendBytes:v6 length:{v11, v17}];
-      v12 = [(DYMTLShaderDebuggerTraceGenerator *)v17 _generateResourceResolutionRemappingTables];
-      metadata = v17->_metadata;
+      [v8 appendBytes:contents length:{v11, selfCopy}];
+      _generateResourceResolutionRemappingTables = [(DYMTLShaderDebuggerTraceGenerator *)selfCopy _generateResourceResolutionRemappingTables];
+      metadata = selfCopy->_metadata;
       v14 = *MEMORY[0x277D0B378];
       v18[0] = *MEMORY[0x277D0B2B0];
       v18[1] = v14;
       v19[0] = metadata;
       v19[1] = v7;
       v18[2] = *MEMORY[0x277D0B348];
-      v19[2] = v12;
+      v19[2] = _generateResourceResolutionRemappingTables;
       v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:v18 count:3];
     }
 
@@ -2705,15 +2705,15 @@ LABEL_20:
 
 - (void)notifyReplayFinishedAndGenerateTraceContainer
 {
-  v2 = **(a1 + 8);
+  v2 = **(self + 8);
   v3 = *(v2 + 24);
   *(v2 + 24) = 0;
 
-  v4 = **(a1 + 8);
+  v4 = **(self + 8);
   v5 = *(v4 + 200);
   *(v4 + 200) = 0;
 
-  v6 = **(a1 + 8);
+  v6 = **(self + 8);
   v7 = *(v6 + 184);
   *(v6 + 184) = 0;
 }

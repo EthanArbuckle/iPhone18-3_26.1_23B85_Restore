@@ -1,18 +1,18 @@
 @interface APCacheStatusUpdater
-- (APCacheStatusUpdater)initWithNotificationRegister:(id)a3;
+- (APCacheStatusUpdater)initWithNotificationRegister:(id)register;
 @end
 
 @implementation APCacheStatusUpdater
 
-- (APCacheStatusUpdater)initWithNotificationRegister:(id)a3
+- (APCacheStatusUpdater)initWithNotificationRegister:(id)register
 {
-  v4 = a3;
+  registerCopy = register;
   v7.receiver = self;
   v7.super_class = APCacheStatusUpdater;
   v5 = [(APCacheStatusUpdater *)&v7 init];
   if (v5)
   {
-    [v4 registerHandlerForPurpose:100 andMetric:1405 closure:&stru_100480810];
+    [registerCopy registerHandlerForPurpose:100 andMetric:1405 closure:&stru_100480810];
   }
 
   return v5;

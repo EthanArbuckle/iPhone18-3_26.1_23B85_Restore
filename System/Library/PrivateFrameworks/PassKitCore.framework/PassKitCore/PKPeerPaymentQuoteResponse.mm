@@ -1,25 +1,25 @@
 @interface PKPeerPaymentQuoteResponse
-- (PKPeerPaymentQuoteResponse)initWithData:(id)a3 productTimeZone:(id)a4;
+- (PKPeerPaymentQuoteResponse)initWithData:(id)data productTimeZone:(id)zone;
 @end
 
 @implementation PKPeerPaymentQuoteResponse
 
-- (PKPeerPaymentQuoteResponse)initWithData:(id)a3 productTimeZone:(id)a4
+- (PKPeerPaymentQuoteResponse)initWithData:(id)data productTimeZone:(id)zone
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  zoneCopy = zone;
   v18.receiver = self;
   v18.super_class = PKPeerPaymentQuoteResponse;
-  v7 = [(PKWebServiceResponse *)&v18 initWithData:a3];
+  v7 = [(PKWebServiceResponse *)&v18 initWithData:data];
   v8 = v7;
   if (v7)
   {
-    v9 = [(PKWebServiceResponse *)v7 JSONObject];
+    jSONObject = [(PKWebServiceResponse *)v7 JSONObject];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v10 = v9;
-      v11 = [[PKPeerPaymentQuote alloc] initWithDictionary:v10 productTimeZone:v6];
+      v10 = jSONObject;
+      v11 = [[PKPeerPaymentQuote alloc] initWithDictionary:v10 productTimeZone:zoneCopy];
 
       p_super = &v8->_quote->super;
       v8->_quote = v11;

@@ -1,9 +1,9 @@
 @interface UPResult
-+ (id)createResultFromExistingResult:(id)a3 truncatedTo:(unint64_t)a4;
++ (id)createResultFromExistingResult:(id)result truncatedTo:(unint64_t)to;
 - (SIRINLUINTERNALUAAP_PARSERUaaPParserResponse)protobufRepresentation;
-- (UPResult)initWithCandidates:(id)a3 queryUUID:(id)a4;
+- (UPResult)initWithCandidates:(id)candidates queryUUID:(id)d;
 - (UPResultRootNode)rootNode;
-- (id)candidateAtRank:(int64_t)a3;
+- (id)candidateAtRank:(int64_t)rank;
 @end
 
 @implementation UPResult
@@ -17,9 +17,9 @@
     do
     {
       v5 = [(UPResult *)self candidateAtRank:v4];
-      v6 = [v5 protobufRepresentation];
+      protobufRepresentation = [v5 protobufRepresentation];
 
-      [v3 addHypotheses:v6];
+      [v3 addHypotheses:protobufRepresentation];
       ++v4;
     }
 
@@ -29,18 +29,18 @@
   return v3;
 }
 
-- (UPResult)initWithCandidates:(id)a3 queryUUID:(id)a4
+- (UPResult)initWithCandidates:(id)candidates queryUUID:(id)d
 {
-  v7 = a3;
-  v8 = a4;
+  candidatesCopy = candidates;
+  dCopy = d;
   v12.receiver = self;
   v12.super_class = UPResult;
   v9 = [(UPResult *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->__candidates, a3);
-    objc_storeStrong(&v10->_queryUUID, a4);
+    objc_storeStrong(&v9->__candidates, candidates);
+    objc_storeStrong(&v10->_queryUUID, d);
   }
 
   return v10;
@@ -52,60 +52,60 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 rootNodeRepresentation];
+    rootNodeRepresentation = [v2 rootNodeRepresentation];
   }
 
   else
   {
-    v4 = 0;
+    rootNodeRepresentation = 0;
   }
 
-  return v4;
+  return rootNodeRepresentation;
 }
 
-- (id)candidateAtRank:(int64_t)a3
+- (id)candidateAtRank:(int64_t)rank
 {
-  if ([(NSArray *)self->__candidates count]<= a3)
+  if ([(NSArray *)self->__candidates count]<= rank)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [(NSArray *)self->__candidates objectAtIndexedSubscript:a3];
+    v5 = [(NSArray *)self->__candidates objectAtIndexedSubscript:rank];
   }
 
   return v5;
 }
 
-+ (id)createResultFromExistingResult:(id)a3 truncatedTo:(unint64_t)a4
++ (id)createResultFromExistingResult:(id)result truncatedTo:(unint64_t)to
 {
-  if (a4)
+  if (to)
   {
-    v4 = a4;
-    v5 = a3;
-    v6 = [v5 candidateCount];
-    if (v6 < v4)
+    toCopy = to;
+    resultCopy = result;
+    candidateCount = [resultCopy candidateCount];
+    if (candidateCount < toCopy)
     {
-      v4 = v6;
+      toCopy = candidateCount;
     }
 
-    v7 = [v5 _candidates];
-    v8 = [v7 subarrayWithRange:{0, v4}];
+    _candidates = [resultCopy _candidates];
+    queryUUID2 = [_candidates subarrayWithRange:{0, toCopy}];
 
     v9 = [UPResult alloc];
-    v10 = [v5 queryUUID];
+    queryUUID = [resultCopy queryUUID];
 
-    v11 = [(UPResult *)v9 initWithCandidates:v8 queryUUID:v10];
+    v11 = [(UPResult *)v9 initWithCandidates:queryUUID2 queryUUID:queryUUID];
   }
 
   else
   {
-    v12 = a3;
+    resultCopy2 = result;
     v13 = [UPResult alloc];
-    v8 = [v12 queryUUID];
+    queryUUID2 = [resultCopy2 queryUUID];
 
-    v11 = [(UPResult *)v13 initWithCandidates:MEMORY[0x277CBEBF8] queryUUID:v8];
+    v11 = [(UPResult *)v13 initWithCandidates:MEMORY[0x277CBEBF8] queryUUID:queryUUID2];
   }
 
   return v11;

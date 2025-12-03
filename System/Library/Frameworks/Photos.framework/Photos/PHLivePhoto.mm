@@ -1,15 +1,15 @@
 @interface PHLivePhoto
-+ ($3CC8671D27C23BF42ADDB32F2B5E48AE)_photoTimeForLivePhotoWithImageURL:(SEL)a3 videoURL:(id)a4;
-+ (BOOL)_identifyResourceURLs:(id)a3 outImageURL:(id *)a4 outVideoURL:(id *)a5 error:(id *)a6;
-+ (BOOL)_validateFileURLs:(id)a3 validationOptions:(unint64_t)a4 videoComplementMetadata:(id)a5 outError:(id *)a6;
++ ($3CC8671D27C23BF42ADDB32F2B5E48AE)_photoTimeForLivePhotoWithImageURL:(SEL)l videoURL:(id)rL;
++ (BOOL)_identifyResourceURLs:(id)ls outImageURL:(id *)l outVideoURL:(id *)rL error:(id *)error;
++ (BOOL)_validateFileURLs:(id)ls validationOptions:(unint64_t)options videoComplementMetadata:(id)metadata outError:(id *)error;
 + (NSArray)readableTypeIdentifiersForItemProvider;
-+ (PHLivePhoto)livePhotoWithResourceFileURLs:(id)a3 pairingIdentifier:(id)a4 videoDuration:(id *)a5 photoTime:(id *)a6 error:(id *)a7;
-+ (id)_livePhotoWithResourceFileURLs:(id)a3 pairingIdentifier:(id)a4 videoDuration:(id *)a5 photoTime:(id *)a6 targetSize:(CGSize)a7 contentMode:(int64_t)a8 skipValidation:(BOOL)a9 isLooping:(BOOL)a10 skipInstantiatingImageAndAVAsset:(BOOL)a11 prefersHDR:(BOOL)a12 error:(id *)a13;
-+ (id)_livePhotoWithResourceFileURLs:(id)a3 targetSize:(CGSize)a4 contentMode:(int64_t)a5 skipValidation:(BOOL)a6 isLooping:(BOOL)a7 skipInstantiatingImageAndAVAsset:(BOOL)a8 prefersHDR:(BOOL)a9 error:(id *)a10;
-+ (id)objectWithItemProviderData:(id)a3 typeIdentifier:(id)a4 error:(id *)a5;
-+ (int)requestLivePhotoWithResourceFileURLs:(id)a3 placeholderImage:(id)a4 targetSize:(CGSize)a5 contentMode:(int64_t)a6 prefersHDR:(BOOL)a7 resultHandler:(id)a8;
++ (PHLivePhoto)livePhotoWithResourceFileURLs:(id)ls pairingIdentifier:(id)identifier videoDuration:(id *)duration photoTime:(id *)time error:(id *)error;
++ (id)_livePhotoWithResourceFileURLs:(id)ls pairingIdentifier:(id)identifier videoDuration:(id *)duration photoTime:(id *)time targetSize:(CGSize)size contentMode:(int64_t)mode skipValidation:(BOOL)validation isLooping:(BOOL)self0 skipInstantiatingImageAndAVAsset:(BOOL)self1 prefersHDR:(BOOL)self2 error:(id *)self3;
++ (id)_livePhotoWithResourceFileURLs:(id)ls targetSize:(CGSize)size contentMode:(int64_t)mode skipValidation:(BOOL)validation isLooping:(BOOL)looping skipInstantiatingImageAndAVAsset:(BOOL)asset prefersHDR:(BOOL)r error:(id *)self0;
++ (id)objectWithItemProviderData:(id)data typeIdentifier:(id)identifier error:(id *)error;
++ (int)requestLivePhotoWithResourceFileURLs:(id)ls placeholderImage:(id)image targetSize:(CGSize)size contentMode:(int64_t)mode prefersHDR:(BOOL)r resultHandler:(id)handler;
 + (void)cancelLivePhotoRequestWithRequestID:(PHLivePhotoRequestID)requestID;
-- (BOOL)_synchronouslyLoadImageURL:(id *)a3 videoURL:(id *)a4 error:(id *)a5;
+- (BOOL)_synchronouslyLoadImageURL:(id *)l videoURL:(id *)rL error:(id *)error;
 - (CGSize)size;
 - (CGSize)targetSize;
 - (NSNumber)srlCompensationValue;
@@ -18,19 +18,19 @@
 - (NSString)uniqueIdentifier;
 - (PHAsset)asset;
 - (PHImageManager)imageManager;
-- (PHLivePhoto)initWithBundleAtURL:(id)a3 prefersHDR:(BOOL)a4;
-- (PHLivePhoto)initWithCoder:(id)a3;
+- (PHLivePhoto)initWithBundleAtURL:(id)l prefersHDR:(BOOL)r;
+- (PHLivePhoto)initWithCoder:(id)coder;
 - (id)_imageManager;
-- (id)_initWithImage:(CGImage *)a3 uiOrientation:(int64_t)a4 videoAsset:(id)a5 photoTime:(id *)a6 asset:(id)a7 assetUUID:(id)a8 options:(unint64_t)a9 videoComposition:(id)a10;
-- (id)_initWithImageURL:(id)a3 videoURL:(id)a4 videoComplementMetadata:(id)a5 targetSize:(CGSize)a6 contentMode:(int64_t)a7 prefersHDR:(BOOL)a8;
-- (id)_initWithImageURL:(id)a3 videoURL:(id)a4 videoComplementMetadata:(id)a5 targetSize:(CGSize)a6 contentMode:(int64_t)a7 skipInstantiatingImageAndAVAsset:(BOOL)a8 prefersHDR:(BOOL)a9;
+- (id)_initWithImage:(CGImage *)image uiOrientation:(int64_t)orientation videoAsset:(id)asset photoTime:(id *)time asset:(id)a7 assetUUID:(id)d options:(unint64_t)options videoComposition:(id)self0;
+- (id)_initWithImageURL:(id)l videoURL:(id)rL videoComplementMetadata:(id)metadata targetSize:(CGSize)size contentMode:(int64_t)mode prefersHDR:(BOOL)r;
+- (id)_initWithImageURL:(id)l videoURL:(id)rL videoComplementMetadata:(id)metadata targetSize:(CGSize)size contentMode:(int64_t)mode skipInstantiatingImageAndAVAsset:(BOOL)asset prefersHDR:(BOOL)r;
 - (id)imageFileLoader;
 - (id)videoComplement;
 - (id)videoFileLoader;
 - (void)_ensureConstituentData;
-- (void)_loadConstituentURLsWithNetworkAccessAllowed:(BOOL)a3 completionHandler:(id)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)saveToPhotoLibraryWithCompletionHandler:(id)a3;
+- (void)_loadConstituentURLsWithNetworkAccessAllowed:(BOOL)allowed completionHandler:(id)handler;
+- (void)encodeWithCoder:(id)coder;
+- (void)saveToPhotoLibraryWithCompletionHandler:(id)handler;
 @end
 
 @implementation PHLivePhoto
@@ -63,32 +63,32 @@
 - (NSNumber)srlCompensationValue
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = [(PHLivePhoto *)self asset];
-  v4 = [(PHLivePhoto *)self imageURL];
-  if (!v3)
+  asset = [(PHLivePhoto *)self asset];
+  imageURL = [(PHLivePhoto *)self imageURL];
+  if (!asset)
   {
-    v5 = 0;
+    livePhotoSRLCompensationAmount = 0;
     goto LABEL_7;
   }
 
-  v5 = [v3 livePhotoSRLCompensationAmount];
+  livePhotoSRLCompensationAmount = [asset livePhotoSRLCompensationAmount];
   v6 = PLLivePhotoPlaybackGetLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 138543362;
-    v15 = v5;
+    v15 = livePhotoSRLCompensationAmount;
     _os_log_impl(&dword_19C86F000, v6, OS_LOG_TYPE_DEFAULT, "Read SRL compensation amount %{public}@ from live photo asset.", &v14, 0xCu);
   }
 
-  if (!v5)
+  if (!livePhotoSRLCompensationAmount)
   {
 LABEL_7:
-    if (!v4)
+    if (!imageURL)
     {
       goto LABEL_15;
     }
 
-    v7 = [objc_alloc(MEMORY[0x1E69C0718]) initWithImageURL:v4 contentType:0 timeZoneLookup:0];
+    v7 = [objc_alloc(MEMORY[0x1E69C0718]) initWithImageURL:imageURL contentType:0 timeZoneLookup:0];
     v8 = PLLivePhotoPlaybackGetLog();
     v9 = v8;
     if (v7)
@@ -108,31 +108,31 @@ LABEL_13:
     else if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       v14 = 138412290;
-      v15 = v4;
+      v15 = imageURL;
       v10 = "Failed to read SRL compensation metadata from image URL %@.";
       v11 = v9;
       v12 = OS_LOG_TYPE_ERROR;
       goto LABEL_13;
     }
 
-    v5 = [v7 srlCompensationValue];
+    livePhotoSRLCompensationAmount = [v7 srlCompensationValue];
   }
 
 LABEL_15:
 
-  return v5;
+  return livePhotoSRLCompensationAmount;
 }
 
-- (void)saveToPhotoLibraryWithCompletionHandler:(id)a3
+- (void)saveToPhotoLibraryWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __55__PHLivePhoto_saveToPhotoLibraryWithCompletionHandler___block_invoke;
   aBlock[3] = &unk_1E75A84A0;
   aBlock[4] = self;
-  v11 = v4;
-  v5 = v4;
+  v11 = handlerCopy;
+  v5 = handlerCopy;
   v6 = _Block_copy(aBlock);
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
@@ -222,24 +222,24 @@ void __55__PHLivePhoto_saveToPhotoLibraryWithCompletionHandler___block_invoke_2(
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v16 = self;
+      selfCopy = self;
       v17 = 2112;
       v18 = v6;
       _os_log_impl(&dword_19C86F000, v7, OS_LOG_TYPE_ERROR, "Failed to load video complement for Live Photo %@: %@", buf, 0x16u);
     }
   }
 
-  v8 = [v4 path];
-  v9 = [v5 path];
-  v10 = [objc_alloc(MEMORY[0x1E69C0918]) initWithPathToVideo:v9 pathToImage:v8];
+  path = [v4 path];
+  path2 = [v5 path];
+  v10 = [objc_alloc(MEMORY[0x1E69C0918]) initWithPathToVideo:path2 pathToImage:path];
 
   return v10;
 }
 
-- (void)_loadConstituentURLsWithNetworkAccessAllowed:(BOOL)a3 completionHandler:(id)a4
+- (void)_loadConstituentURLsWithNetworkAccessAllowed:(BOOL)allowed completionHandler:(id)handler
 {
-  v4 = a3;
-  v6 = a4;
+  allowedCopy = allowed;
+  handlerCopy = handler;
   v7 = dispatch_group_create();
   v34[0] = 0;
   v34[1] = v34;
@@ -254,7 +254,7 @@ void __55__PHLivePhoto_saveToPhotoLibraryWithCompletionHandler___block_invoke_2(
   v32[4] = __Block_byref_object_dispose__29952;
   v33 = 0;
   dispatch_group_enter(v7);
-  v8 = [(PHLivePhoto *)self imageFileLoader];
+  imageFileLoader = [(PHLivePhoto *)self imageFileLoader];
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
   v28[2] = __78__PHLivePhoto__loadConstituentURLsWithNetworkAccessAllowed_completionHandler___block_invoke;
@@ -263,7 +263,7 @@ void __55__PHLivePhoto_saveToPhotoLibraryWithCompletionHandler___block_invoke_2(
   v31 = v32;
   v9 = v7;
   v29 = v9;
-  (v8)[2](v8, v4, 0, v28);
+  (imageFileLoader)[2](imageFileLoader, allowedCopy, 0, v28);
 
   v26[0] = 0;
   v26[1] = v26;
@@ -278,7 +278,7 @@ void __55__PHLivePhoto_saveToPhotoLibraryWithCompletionHandler___block_invoke_2(
   v24[4] = __Block_byref_object_dispose__29952;
   v25 = 0;
   dispatch_group_enter(v9);
-  v10 = [(PHLivePhoto *)self videoFileLoader];
+  videoFileLoader = [(PHLivePhoto *)self videoFileLoader];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __78__PHLivePhoto__loadConstituentURLsWithNetworkAccessAllowed_completionHandler___block_invoke_2;
@@ -287,7 +287,7 @@ void __55__PHLivePhoto_saveToPhotoLibraryWithCompletionHandler___block_invoke_2(
   v23 = v24;
   v11 = v9;
   v21 = v11;
-  (v10)[2](v10, v4, 0, v20);
+  (videoFileLoader)[2](videoFileLoader, allowedCopy, 0, v20);
 
   v12 = dispatch_get_global_queue(0, 0);
   block[0] = MEMORY[0x1E69E9820];
@@ -297,9 +297,9 @@ void __55__PHLivePhoto_saveToPhotoLibraryWithCompletionHandler___block_invoke_2(
   v17 = v26;
   v18 = v32;
   v19 = v24;
-  v15 = v6;
+  v15 = handlerCopy;
   v16 = v34;
-  v13 = v6;
+  v13 = handlerCopy;
   dispatch_group_notify(v11, v12, block);
 
   _Block_object_dispose(v24, 8);
@@ -366,46 +366,46 @@ void *__78__PHLivePhoto__loadConstituentURLsWithNetworkAccessAllowed_completionH
 
 - (id)_imageManager
 {
-  v2 = [(PHLivePhoto *)self imageManager];
-  if (!v2)
+  imageManager = [(PHLivePhoto *)self imageManager];
+  if (!imageManager)
   {
-    v2 = +[PHImageManager defaultManager];
+    imageManager = +[PHImageManager defaultManager];
   }
 
-  return v2;
+  return imageManager;
 }
 
 - (PHAsset)asset
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v3 = self->_asset;
-  if (!v3)
+  assetUUID = self->_asset;
+  if (!assetUUID)
   {
-    v3 = [(PHLivePhoto *)self assetUUID];
+    assetUUID = [(PHLivePhoto *)self assetUUID];
 
-    if (v3)
+    if (assetUUID)
     {
-      v4 = [(PHLivePhoto *)self assetUUID];
-      v5 = [(PHObject *)PHAsset localIdentifierWithUUID:v4];
+      assetUUID2 = [(PHLivePhoto *)self assetUUID];
+      v5 = [(PHObject *)PHAsset localIdentifierWithUUID:assetUUID2];
 
       if (v5)
       {
         v6 = +[PHPhotoLibrary sharedPhotoLibrary];
         v11[0] = v5;
         v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
-        v8 = [v6 librarySpecificFetchOptions];
-        v9 = [PHAsset fetchAssetsWithLocalIdentifiers:v7 options:v8];
-        v3 = [v9 firstObject];
+        librarySpecificFetchOptions = [v6 librarySpecificFetchOptions];
+        v9 = [PHAsset fetchAssetsWithLocalIdentifiers:v7 options:librarySpecificFetchOptions];
+        assetUUID = [v9 firstObject];
       }
 
       else
       {
-        v3 = 0;
+        assetUUID = 0;
       }
     }
   }
 
-  return v3;
+  return assetUUID;
 }
 
 - (id)videoFileLoader
@@ -590,39 +590,39 @@ void __30__PHLivePhoto_imageFileLoader__block_invoke_3(uint64_t a1, uint64_t a2,
 
 - (NSString)imageTypeIdentifier
 {
-  v3 = [(PHLivePhoto *)self imageURL];
-  v4 = v3;
-  if (v3)
+  imageURL = [(PHLivePhoto *)self imageURL];
+  v4 = imageURL;
+  if (imageURL)
   {
     v5 = MEMORY[0x1E6982C40];
-    v6 = [v3 pathExtension];
-    v7 = [v5 typeWithFilenameExtension:v6 conformingToType:*MEMORY[0x1E6982E30]];
-    v8 = [v7 identifier];
+    pathExtension = [imageURL pathExtension];
+    v7 = [v5 typeWithFilenameExtension:pathExtension conformingToType:*MEMORY[0x1E6982E30]];
+    identifier = [v7 identifier];
   }
 
   else
   {
-    v6 = [(PHLivePhoto *)self asset];
-    v8 = [v6 uniformTypeIdentifier];
+    pathExtension = [(PHLivePhoto *)self asset];
+    identifier = [pathExtension uniformTypeIdentifier];
   }
 
-  return v8;
+  return identifier;
 }
 
 - (NSString)originalFilename
 {
-  v3 = [(PHLivePhoto *)self imageURL];
-  v4 = v3;
-  if (v3)
+  imageURL = [(PHLivePhoto *)self imageURL];
+  v4 = imageURL;
+  if (imageURL)
   {
-    v5 = [v3 lastPathComponent];
-    [v5 stringByDeletingPathExtension];
+    lastPathComponent = [imageURL lastPathComponent];
+    [lastPathComponent stringByDeletingPathExtension];
   }
 
   else
   {
-    v5 = [(PHLivePhoto *)self asset];
-    [v5 filename];
+    lastPathComponent = [(PHLivePhoto *)self asset];
+    [lastPathComponent filename];
   }
   v6 = ;
 
@@ -631,23 +631,23 @@ void __30__PHLivePhoto_imageFileLoader__block_invoke_3(uint64_t a1, uint64_t a2,
 
 - (NSString)uniqueIdentifier
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  uniqueIdentifier = v2->_uniqueIdentifier;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  uniqueIdentifier = selfCopy->_uniqueIdentifier;
   if (!uniqueIdentifier)
   {
     v4 = [objc_opt_class() description];
-    v5 = [MEMORY[0x1E696AFB0] UUID];
-    v6 = [v5 UUIDString];
-    v7 = [v4 stringByAppendingFormat:@"-%@", v6];
-    v8 = v2->_uniqueIdentifier;
-    v2->_uniqueIdentifier = v7;
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
+    v7 = [v4 stringByAppendingFormat:@"-%@", uUIDString];
+    v8 = selfCopy->_uniqueIdentifier;
+    selfCopy->_uniqueIdentifier = v7;
 
-    uniqueIdentifier = v2->_uniqueIdentifier;
+    uniqueIdentifier = selfCopy->_uniqueIdentifier;
   }
 
   v9 = uniqueIdentifier;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v9;
 }
@@ -658,11 +658,11 @@ void __30__PHLivePhoto_imageFileLoader__block_invoke_3(uint64_t a1, uint64_t a2,
   {
     if (!self->_plImage)
     {
-      v3 = [(PHLivePhoto *)self imageURL];
+      imageURL = [(PHLivePhoto *)self imageURL];
 
-      if (v3)
+      if (imageURL)
       {
-        v4 = [(PHLivePhoto *)self imageURL];
+        imageURL2 = [(PHLivePhoto *)self imageURL];
         [(PHLivePhoto *)self prefersHDR];
         v5 = DCIM_newPLImageWithContentsOfFileURL();
         plImage = self->_plImage;
@@ -672,10 +672,10 @@ void __30__PHLivePhoto_imageFileLoader__block_invoke_3(uint64_t a1, uint64_t a2,
 
     if (!self->_videoAsset)
     {
-      v7 = [(PHLivePhoto *)self videoURL];
-      if (v7)
+      videoURL = [(PHLivePhoto *)self videoURL];
+      if (videoURL)
       {
-        v8 = [MEMORY[0x1E6987E28] assetWithURL:v7];
+        v8 = [MEMORY[0x1E6987E28] assetWithURL:videoURL];
         videoAsset = self->_videoAsset;
         self->_videoAsset = v8;
       }
@@ -690,7 +690,7 @@ void __30__PHLivePhoto_imageFileLoader__block_invoke_3(uint64_t a1, uint64_t a2,
   }
 }
 
-- (BOOL)_synchronouslyLoadImageURL:(id *)a3 videoURL:(id *)a4 error:(id *)a5
+- (BOOL)_synchronouslyLoadImageURL:(id *)l videoURL:(id *)rL error:(id *)error
 {
   v37 = 0;
   v38 = &v37;
@@ -727,19 +727,19 @@ void __30__PHLivePhoto_imageFileLoader__block_invoke_3(uint64_t a1, uint64_t a2,
   v14 = v10;
   [(PHLivePhoto *)self _loadConstituentURLsWithNetworkAccessAllowed:1 completionHandler:v13];
   dispatch_semaphore_wait(v10, 0xFFFFFFFFFFFFFFFFLL);
-  if (a3)
+  if (l)
   {
-    *a3 = v32[5];
+    *l = v32[5];
   }
 
-  if (a4)
+  if (rL)
   {
-    *a4 = v26[5];
+    *rL = v26[5];
   }
 
-  if (a5)
+  if (error)
   {
-    *a5 = v20[5];
+    *error = v20[5];
   }
 
   v11 = *(v38 + 24);
@@ -776,13 +776,13 @@ void __57__PHLivePhoto__synchronouslyLoadImageURL_videoURL_error___block_invoke(
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v18 = *MEMORY[0x1E69E9840];
   v12 = 0;
   v13 = 0;
   v11 = 0;
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(PHLivePhoto *)self _synchronouslyLoadImageURL:&v13 videoURL:&v12 error:&v11];
   v6 = v13;
   v7 = v12;
@@ -793,35 +793,35 @@ void __57__PHLivePhoto__synchronouslyLoadImageURL_videoURL_error___block_invoke(
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v15 = self;
+      selfCopy = self;
       v16 = 2112;
       v17 = v8;
       _os_log_impl(&dword_19C86F000, v9, OS_LOG_TYPE_ERROR, "Failed to encode Live Photo %@: %@", buf, 0x16u);
     }
   }
 
-  [v4 ph_encodeSandboxedURL:v6 forKey:@"imageURL"];
-  [v4 ph_encodeSandboxedURL:v7 forKey:@"videoURL"];
-  [v4 encodeCGSize:@"targetSize" forKey:{self->_targetSize.width, self->_targetSize.height}];
-  [v4 encodeInteger:self->_contentMode forKey:@"contentMode"];
-  [v4 encodeInt64:self->_photoTime.value forKey:@"photoTime.value"];
-  [v4 encodeInt64:self->_photoTime.timescale forKey:@"photoTime.timescale"];
-  [v4 encodeInteger:self->_options forKey:@"options"];
-  [v4 encodeCGSize:@"size" forKey:{self->_size.width, self->_size.height}];
+  [coderCopy ph_encodeSandboxedURL:v6 forKey:@"imageURL"];
+  [coderCopy ph_encodeSandboxedURL:v7 forKey:@"videoURL"];
+  [coderCopy encodeCGSize:@"targetSize" forKey:{self->_targetSize.width, self->_targetSize.height}];
+  [coderCopy encodeInteger:self->_contentMode forKey:@"contentMode"];
+  [coderCopy encodeInt64:self->_photoTime.value forKey:@"photoTime.value"];
+  [coderCopy encodeInt64:self->_photoTime.timescale forKey:@"photoTime.timescale"];
+  [coderCopy encodeInteger:self->_options forKey:@"options"];
+  [coderCopy encodeCGSize:@"size" forKey:{self->_size.width, self->_size.height}];
   *&v10 = self->_audioVolume;
-  [v4 encodeFloat:@"audioVolume" forKey:v10];
+  [coderCopy encodeFloat:@"audioVolume" forKey:v10];
 }
 
-- (PHLivePhoto)initWithCoder:(id)a3
+- (PHLivePhoto)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v24.receiver = self;
   v24.super_class = PHLivePhoto;
   v5 = [(PHLivePhoto *)&v24 init];
   if (v5)
   {
     v23 = 0;
-    v6 = [v4 ph_decodeSandboxedURLForKey:@"imageURL" sandboxExtensionWrapper:&v23];
+    v6 = [coderCopy ph_decodeSandboxedURLForKey:@"imageURL" sandboxExtensionWrapper:&v23];
     v7 = v23;
     v8 = *(v5 + 10);
     *(v5 + 10) = v6;
@@ -831,7 +831,7 @@ void __57__PHLivePhoto__synchronouslyLoadImageURL_videoURL_error___block_invoke(
     v10 = v7;
 
     v22 = 0;
-    v11 = [v4 ph_decodeSandboxedURLForKey:@"videoURL" sandboxExtensionWrapper:&v22];
+    v11 = [coderCopy ph_decodeSandboxedURLForKey:@"videoURL" sandboxExtensionWrapper:&v22];
     v12 = v22;
     v13 = *(v5 + 12);
     *(v5 + 12) = v11;
@@ -839,17 +839,17 @@ void __57__PHLivePhoto__synchronouslyLoadImageURL_videoURL_error___block_invoke(
     v14 = *(v5 + 13);
     *(v5 + 13) = v12;
 
-    CMTimeMake(&v21, [v4 decodeInt64ForKey:@"photoTime.value"], objc_msgSend(v4, "decodeInt32ForKey:", @"photoTime.timescale"));
+    CMTimeMake(&v21, [coderCopy decodeInt64ForKey:@"photoTime.value"], objc_msgSend(coderCopy, "decodeInt32ForKey:", @"photoTime.timescale"));
     *(v5 + 160) = v21;
-    [v4 decodeCGSizeForKey:@"targetSize"];
+    [coderCopy decodeCGSizeForKey:@"targetSize"];
     *(v5 + 18) = v15;
     *(v5 + 19) = v16;
-    *(v5 + 14) = [v4 decodeIntegerForKey:@"contentMode"];
-    *(v5 + 7) = [v4 decodeIntegerForKey:@"options"];
-    [v4 decodeCGSizeForKey:@"size"];
+    *(v5 + 14) = [coderCopy decodeIntegerForKey:@"contentMode"];
+    *(v5 + 7) = [coderCopy decodeIntegerForKey:@"options"];
+    [coderCopy decodeCGSizeForKey:@"size"];
     *(v5 + 16) = v17;
     *(v5 + 17) = v18;
-    [v4 decodeFloatForKey:@"audioVolume"];
+    [coderCopy decodeFloatForKey:@"audioVolume"];
     *(v5 + 7) = v19;
     [v5 _ensureConstituentData];
   }
@@ -857,18 +857,18 @@ void __57__PHLivePhoto__synchronouslyLoadImageURL_videoURL_error___block_invoke(
   return v5;
 }
 
-- (id)_initWithImage:(CGImage *)a3 uiOrientation:(int64_t)a4 videoAsset:(id)a5 photoTime:(id *)a6 asset:(id)a7 assetUUID:(id)a8 options:(unint64_t)a9 videoComposition:(id)a10
+- (id)_initWithImage:(CGImage *)image uiOrientation:(int64_t)orientation videoAsset:(id)asset photoTime:(id *)time asset:(id)a7 assetUUID:(id)d options:(unint64_t)options videoComposition:(id)self0
 {
-  v30 = a5;
+  assetCopy = asset;
   v16 = a7;
-  v17 = a8;
-  v18 = a10;
+  dCopy = d;
+  compositionCopy = composition;
   v19 = [(PHLivePhoto *)self init];
   if (v19)
   {
-    Width = CGImageGetWidth(a3);
-    Height = CGImageGetHeight(a3);
-    if (a3)
+    Width = CGImageGetWidth(image);
+    Height = CGImageGetHeight(image);
+    if (image)
     {
       v22 = DCIM_newPLImageWithCGImage();
     }
@@ -883,17 +883,17 @@ void __57__PHLivePhoto__synchronouslyLoadImageURL_videoURL_error___block_invoke(
 
     v19->_size.width = Width;
     v19->_size.height = Height;
-    objc_storeStrong(&v19->_videoAsset, a5);
-    v24 = *&a6->var0;
-    v19->_photoTime.epoch = a6->var3;
+    objc_storeStrong(&v19->_videoAsset, asset);
+    v24 = *&time->var0;
+    v19->_photoTime.epoch = time->var3;
     *&v19->_photoTime.value = v24;
     objc_storeStrong(&v19->_asset, a7);
-    v25 = [v17 copy];
+    v25 = [dCopy copy];
     assetUUID = v19->_assetUUID;
     v19->_assetUUID = v25;
 
-    v19->_options = a9;
-    v27 = [v18 copy];
+    v19->_options = options;
+    v27 = [compositionCopy copy];
     videoComposition = v19->_videoComposition;
     v19->_videoComposition = v27;
 
@@ -903,28 +903,28 @@ void __57__PHLivePhoto__synchronouslyLoadImageURL_videoURL_error___block_invoke(
   return v19;
 }
 
-- (id)_initWithImageURL:(id)a3 videoURL:(id)a4 videoComplementMetadata:(id)a5 targetSize:(CGSize)a6 contentMode:(int64_t)a7 skipInstantiatingImageAndAVAsset:(BOOL)a8 prefersHDR:(BOOL)a9
+- (id)_initWithImageURL:(id)l videoURL:(id)rL videoComplementMetadata:(id)metadata targetSize:(CGSize)size contentMode:(int64_t)mode skipInstantiatingImageAndAVAsset:(BOOL)asset prefersHDR:(BOOL)r
 {
-  height = a6.height;
-  width = a6.width;
-  v18 = a3;
-  v19 = a4;
-  v20 = a5;
+  height = size.height;
+  width = size.width;
+  lCopy = l;
+  rLCopy = rL;
+  metadataCopy = metadata;
   v21 = [(PHLivePhoto *)self init];
   v22 = v21;
   if (v21)
   {
-    objc_storeStrong(&v21->_imageURL, a3);
-    objc_storeStrong(&v22->_videoURL, a4);
+    objc_storeStrong(&v21->_imageURL, l);
+    objc_storeStrong(&v22->_videoURL, rL);
     v22->_targetSize.width = width;
     v22->_targetSize.height = height;
-    v22->_contentMode = a7;
+    v22->_contentMode = mode;
     v22->_audioVolume = 1.0;
-    v22->_skipInstantiatingImageAndAVAsset = a8;
-    v22->_prefersHDR = a9;
-    if (v20)
+    v22->_skipInstantiatingImageAndAVAsset = asset;
+    v22->_prefersHDR = r;
+    if (metadataCopy)
     {
-      [v20 imageDisplayTime];
+      [metadataCopy imageDisplayTime];
       *&v22->_photoTime.value = v26;
       v22->_photoTime.epoch = v27;
     }
@@ -938,27 +938,27 @@ void __57__PHLivePhoto__synchronouslyLoadImageURL_videoURL_error___block_invoke(
   return v22;
 }
 
-- (id)_initWithImageURL:(id)a3 videoURL:(id)a4 videoComplementMetadata:(id)a5 targetSize:(CGSize)a6 contentMode:(int64_t)a7 prefersHDR:(BOOL)a8
+- (id)_initWithImageURL:(id)l videoURL:(id)rL videoComplementMetadata:(id)metadata targetSize:(CGSize)size contentMode:(int64_t)mode prefersHDR:(BOOL)r
 {
-  height = a6.height;
-  width = a6.width;
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
+  height = size.height;
+  width = size.width;
+  lCopy = l;
+  rLCopy = rL;
+  metadataCopy = metadata;
   v19 = [(PHLivePhoto *)self init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_imageURL, a3);
-    objc_storeStrong(&v20->_videoURL, a4);
+    objc_storeStrong(&v19->_imageURL, l);
+    objc_storeStrong(&v20->_videoURL, rL);
     v20->_targetSize.width = width;
     v20->_targetSize.height = height;
-    v20->_contentMode = a7;
+    v20->_contentMode = mode;
     v20->_audioVolume = 1.0;
-    v20->_prefersHDR = a8;
-    if (v18)
+    v20->_prefersHDR = r;
+    if (metadataCopy)
     {
-      [v18 imageDisplayTime];
+      [metadataCopy imageDisplayTime];
       *&v20->_photoTime.value = v24;
       v20->_photoTime.epoch = v25;
     }
@@ -972,42 +972,42 @@ void __57__PHLivePhoto__synchronouslyLoadImageURL_videoURL_error___block_invoke(
   return v20;
 }
 
-- (PHLivePhoto)initWithBundleAtURL:(id)a3 prefersHDR:(BOOL)a4
+- (PHLivePhoto)initWithBundleAtURL:(id)l prefersHDR:(BOOL)r
 {
-  v4 = a4;
+  rCopy = r;
   v6 = MEMORY[0x1E69C0918];
-  v7 = a3;
-  v8 = [[v6 alloc] initWithBundleAtURL:v7];
+  lCopy = l;
+  v8 = [[v6 alloc] initWithBundleAtURL:lCopy];
 
-  v9 = [v8 imagePath];
-  v10 = [v8 videoPath];
-  if ([v9 length] && objc_msgSend(v10, "length"))
+  imagePath = [v8 imagePath];
+  videoPath = [v8 videoPath];
+  if ([imagePath length] && objc_msgSend(videoPath, "length"))
   {
-    v11 = [MEMORY[0x1E695DFF8] fileURLWithPath:v9 isDirectory:0];
-    v12 = [MEMORY[0x1E695DFF8] fileURLWithPath:v10 isDirectory:0];
-    self = [(PHLivePhoto *)self _initWithImageURL:v11 videoURL:v12 videoComplementMetadata:0 targetSize:0 contentMode:v4 prefersHDR:*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)];
+    v11 = [MEMORY[0x1E695DFF8] fileURLWithPath:imagePath isDirectory:0];
+    v12 = [MEMORY[0x1E695DFF8] fileURLWithPath:videoPath isDirectory:0];
+    self = [(PHLivePhoto *)self _initWithImageURL:v11 videoURL:v12 videoComplementMetadata:0 targetSize:0 contentMode:rCopy prefersHDR:*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)];
 
-    v13 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v13 = 0;
+    selfCopy = 0;
   }
 
-  return v13;
+  return selfCopy;
 }
 
-+ ($3CC8671D27C23BF42ADDB32F2B5E48AE)_photoTimeForLivePhotoWithImageURL:(SEL)a3 videoURL:(id)a4
++ ($3CC8671D27C23BF42ADDB32F2B5E48AE)_photoTimeForLivePhotoWithImageURL:(SEL)l videoURL:(id)rL
 {
   v7 = a5;
-  v8 = [a4 path];
-  v9 = [v7 path];
+  path = [rL path];
+  path2 = [v7 path];
 
   *retstr = **&MEMORY[0x1E6960C70];
-  if (v8 && v9)
+  if (path && path2)
   {
-    v10 = [objc_alloc(MEMORY[0x1E69C0918]) initWithPathToVideo:v9 pathToImage:v8];
+    v10 = [objc_alloc(MEMORY[0x1E69C0918]) initWithPathToVideo:path2 pathToImage:path];
     v11 = v10;
     if (v10)
     {
@@ -1027,29 +1027,29 @@ void __57__PHLivePhoto__synchronouslyLoadImageURL_videoURL_error___block_invoke(
   return result;
 }
 
-+ (BOOL)_validateFileURLs:(id)a3 validationOptions:(unint64_t)a4 videoComplementMetadata:(id)a5 outError:(id *)a6
++ (BOOL)_validateFileURLs:(id)ls validationOptions:(unint64_t)options videoComplementMetadata:(id)metadata outError:(id *)error
 {
-  v9 = a5;
-  v10 = a3;
+  metadataCopy = metadata;
+  lsCopy = ls;
   v11 = objc_alloc_init(PHValidator);
   v17 = 0;
-  v12 = [(PHValidator *)v11 validateURLs:v10 withOptions:a4 videoComplementMetadata:v9 error:&v17];
+  v12 = [(PHValidator *)v11 validateURLs:lsCopy withOptions:options videoComplementMetadata:metadataCopy error:&v17];
 
   v13 = v17;
   v14 = v13;
-  if (a6 && !v12)
+  if (error && !v12)
   {
     v15 = v13;
-    *a6 = v14;
+    *error = v14;
   }
 
   return v12;
 }
 
-+ (BOOL)_identifyResourceURLs:(id)a3 outImageURL:(id *)a4 outVideoURL:(id *)a5 error:(id *)a6
++ (BOOL)_identifyResourceURLs:(id)ls outImageURL:(id *)l outVideoURL:(id *)rL error:(id *)error
 {
   v44 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  lsCopy = ls;
   v37 = 0;
   v38 = &v37;
   v39 = 0x3032000000;
@@ -1066,7 +1066,7 @@ void __57__PHLivePhoto__synchronouslyLoadImageURL_videoURL_error___block_invoke(
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  obj = v6;
+  obj = lsCopy;
   v8 = [obj countByEnumeratingWithState:&v32 objects:v43 count:16];
   if (!v8)
   {
@@ -1096,8 +1096,8 @@ LABEL_21:
 
       v12 = *(*(&v32 + 1) + 8 * i);
       v13 = MEMORY[0x1E6982C40];
-      v14 = [v12 pathExtension];
-      v15 = [v13 typeWithFilenameExtension:v14];
+      pathExtension = [v12 pathExtension];
+      v15 = [v13 typeWithFilenameExtension:pathExtension];
 
       if (v15)
       {
@@ -1158,8 +1158,8 @@ LABEL_22:
   if (v21)
   {
     v22 = v38[5];
-    a5 = a6;
-    if (!a6)
+    rL = error;
+    if (!error)
     {
       goto LABEL_31;
     }
@@ -1167,17 +1167,17 @@ LABEL_22:
     goto LABEL_30;
   }
 
-  if (a4)
+  if (l)
   {
     v23 = v30;
-    *a4 = v30;
+    *l = v30;
   }
 
   v22 = v28;
-  if (a5)
+  if (rL)
   {
 LABEL_30:
-    *a5 = v22;
+    *rL = v22;
   }
 
 LABEL_31:
@@ -1218,16 +1218,16 @@ void __67__PHLivePhoto__identifyResourceURLs_outImageURL_outVideoURL_error___blo
   }
 }
 
-+ (id)_livePhotoWithResourceFileURLs:(id)a3 pairingIdentifier:(id)a4 videoDuration:(id *)a5 photoTime:(id *)a6 targetSize:(CGSize)a7 contentMode:(int64_t)a8 skipValidation:(BOOL)a9 isLooping:(BOOL)a10 skipInstantiatingImageAndAVAsset:(BOOL)a11 prefersHDR:(BOOL)a12 error:(id *)a13
++ (id)_livePhotoWithResourceFileURLs:(id)ls pairingIdentifier:(id)identifier videoDuration:(id *)duration photoTime:(id *)time targetSize:(CGSize)size contentMode:(int64_t)mode skipValidation:(BOOL)validation isLooping:(BOOL)self0 skipInstantiatingImageAndAVAsset:(BOOL)self1 prefersHDR:(BOOL)self2 error:(id *)self3
 {
-  v48 = a9;
-  height = a7.height;
-  width = a7.width;
-  v19 = a13;
-  v20 = a3;
-  v21 = a4;
+  validationCopy = validation;
+  height = size.height;
+  width = size.width;
+  errorCopy4 = error;
+  lsCopy = ls;
+  identifierCopy = identifier;
   v22 = PLPhotoKitGetLog();
-  v23 = os_signpost_id_make_with_pointer(v22, v20);
+  v23 = os_signpost_id_make_with_pointer(v22, lsCopy);
 
   v24 = PLPhotoKitGetLog();
   v25 = v24;
@@ -1241,8 +1241,8 @@ void __67__PHLivePhoto__identifyResourceURLs_outImageURL_outVideoURL_error___blo
   v60 = 0;
   v61[0] = 0;
   v59 = 0;
-  v49 = a1;
-  v26 = [a1 _identifyResourceURLs:v20 outImageURL:v61 outVideoURL:&v60 error:&v59];
+  selfCopy = self;
+  v26 = [self _identifyResourceURLs:lsCopy outImageURL:v61 outVideoURL:&v60 error:&v59];
   v50 = v61[0];
   v27 = v60;
   v28 = v59;
@@ -1253,50 +1253,50 @@ void __67__PHLivePhoto__identifyResourceURLs_outImageURL_outVideoURL_error___blo
     v30 = MEMORY[0x1E695DFF8];
     v46 = v27;
     [v27 path];
-    v32 = v31 = v21;
+    v32 = v31 = identifierCopy;
     v33 = [v30 fileURLWithPath:v32];
     v34 = [v29 assetWithURL:v33];
 
-    v21 = v31;
-    *buf = *&a5->var0;
-    var3 = a5->var3;
+    identifierCopy = v31;
+    *buf = *&duration->var0;
+    var3 = duration->var3;
     v58 = v28;
-    v54 = *&a6->var0;
-    v55 = a6->var3;
+    v54 = *&time->var0;
+    v55 = time->var3;
     v35 = PFVideoComplementMetadataForVideoAVAssetWithKnownValues();
     v36 = v58;
 
     if (v35)
     {
-      if (a10)
+      if (looping)
       {
         v53 = v36;
         v37 = &v53;
-        v38 = [(objc_class *)v49 _canCreateLoopingLivePhotoWithURLs:v20 videoComplementMetadata:v35 outError:&v53];
+        v38 = [(objc_class *)selfCopy _canCreateLoopingLivePhotoWithURLs:lsCopy videoComplementMetadata:v35 outError:&v53];
       }
 
       else
       {
         v52 = v36;
         v37 = &v52;
-        v38 = [(objc_class *)v49 _canCreateLivePhotoWithURLs:v20 videoComplementMetadata:v35 outError:&v52];
+        v38 = [(objc_class *)selfCopy _canCreateLivePhotoWithURLs:lsCopy videoComplementMetadata:v35 outError:&v52];
       }
 
       v41 = v38;
       v23 = v47;
       v28 = *v37;
 
-      if ((v41 & 1) != 0 || v48)
+      if ((v41 & 1) != 0 || validationCopy)
       {
         v40 = v50;
         v27 = v46;
-        v39 = [[v49 alloc] _initWithImageURL:v50 videoURL:v46 videoComplementMetadata:v35 targetSize:1 contentMode:a11 skipInstantiatingImageAndAVAsset:a12 prefersHDR:{width, height}];
-        v19 = a13;
+        v39 = [[selfCopy alloc] _initWithImageURL:v50 videoURL:v46 videoComplementMetadata:v35 targetSize:1 contentMode:asset skipInstantiatingImageAndAVAsset:r prefersHDR:{width, height}];
+        errorCopy4 = error;
         goto LABEL_16;
       }
 
       v39 = 0;
-      v19 = a13;
+      errorCopy4 = error;
     }
 
     else
@@ -1304,7 +1304,7 @@ void __67__PHLivePhoto__identifyResourceURLs_outImageURL_outVideoURL_error___blo
       v39 = 0;
       v28 = v36;
       v23 = v47;
-      v19 = a13;
+      errorCopy4 = error;
     }
 
     v40 = v50;
@@ -1325,36 +1325,36 @@ LABEL_17:
     _os_signpost_emit_with_name_impl(&dword_19C86F000, v43, OS_SIGNPOST_INTERVAL_END, v23, "com.apple.photos.photokit.phlivephoto", byte_19CB567AE, buf, 2u);
   }
 
-  if (v19)
+  if (errorCopy4)
   {
     v44 = v28;
-    *v19 = v28;
+    *errorCopy4 = v28;
   }
 
   return v39;
 }
 
-+ (id)_livePhotoWithResourceFileURLs:(id)a3 targetSize:(CGSize)a4 contentMode:(int64_t)a5 skipValidation:(BOOL)a6 isLooping:(BOOL)a7 skipInstantiatingImageAndAVAsset:(BOOL)a8 prefersHDR:(BOOL)a9 error:(id *)a10
++ (id)_livePhotoWithResourceFileURLs:(id)ls targetSize:(CGSize)size contentMode:(int64_t)mode skipValidation:(BOOL)validation isLooping:(BOOL)looping skipInstantiatingImageAndAVAsset:(BOOL)asset prefersHDR:(BOOL)r error:(id *)self0
 {
   v15 = *MEMORY[0x1E6960C70];
   v16 = *(MEMORY[0x1E6960C70] + 16);
   v13 = v15;
   v14 = v16;
-  BYTE2(v12) = a9;
-  BYTE1(v12) = a8;
-  LOBYTE(v12) = a7;
-  v10 = [a1 _livePhotoWithResourceFileURLs:a3 pairingIdentifier:0 videoDuration:&v15 photoTime:&v13 targetSize:a5 contentMode:a6 skipValidation:a4.width isLooping:a4.height skipInstantiatingImageAndAVAsset:v12 prefersHDR:a10 error:?];
+  BYTE2(v12) = r;
+  BYTE1(v12) = asset;
+  LOBYTE(v12) = looping;
+  v10 = [self _livePhotoWithResourceFileURLs:ls pairingIdentifier:0 videoDuration:&v15 photoTime:&v13 targetSize:mode contentMode:validation skipValidation:size.width isLooping:size.height skipInstantiatingImageAndAVAsset:v12 prefersHDR:error error:?];
 
   return v10;
 }
 
-+ (PHLivePhoto)livePhotoWithResourceFileURLs:(id)a3 pairingIdentifier:(id)a4 videoDuration:(id *)a5 photoTime:(id *)a6 error:(id *)a7
++ (PHLivePhoto)livePhotoWithResourceFileURLs:(id)ls pairingIdentifier:(id)identifier videoDuration:(id *)duration photoTime:(id *)time error:(id *)error
 {
-  v11 = *a5;
-  v10 = *a6;
+  v11 = *duration;
+  v10 = *time;
   BYTE2(v9) = 0;
   LOWORD(v9) = 0;
-  v7 = [a1 _livePhotoWithResourceFileURLs:a3 pairingIdentifier:a4 videoDuration:&v11 photoTime:&v10 targetSize:1 contentMode:0 skipValidation:*MEMORY[0x1E695F060] isLooping:*(MEMORY[0x1E695F060] + 8) skipInstantiatingImageAndAVAsset:v9 prefersHDR:a7 error:?];
+  v7 = [self _livePhotoWithResourceFileURLs:ls pairingIdentifier:identifier videoDuration:&v11 photoTime:&v10 targetSize:1 contentMode:0 skipValidation:*MEMORY[0x1E695F060] isLooping:*(MEMORY[0x1E695F060] + 8) skipInstantiatingImageAndAVAsset:v9 prefersHDR:error error:?];
 
   return v7;
 }
@@ -1380,24 +1380,24 @@ void __51__PHLivePhoto_cancelLivePhotoRequestWithRequestID___block_invoke(uint64
   [sCreationOperationsByRequestID removeObjectForKey:v2];
 }
 
-+ (int)requestLivePhotoWithResourceFileURLs:(id)a3 placeholderImage:(id)a4 targetSize:(CGSize)a5 contentMode:(int64_t)a6 prefersHDR:(BOOL)a7 resultHandler:(id)a8
++ (int)requestLivePhotoWithResourceFileURLs:(id)ls placeholderImage:(id)image targetSize:(CGSize)size contentMode:(int64_t)mode prefersHDR:(BOOL)r resultHandler:(id)handler
 {
-  v9 = a7;
-  height = a5.height;
-  width = a5.width;
+  rCopy = r;
+  height = size.height;
+  width = size.width;
   v45[1] = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a8;
+  lsCopy = ls;
+  imageCopy = image;
+  handlerCopy = handler;
   if (requestLivePhotoWithResourceFileURLs_placeholderImage_targetSize_contentMode_prefersHDR_resultHandler__onceToken != -1)
   {
     dispatch_once(&requestLivePhotoWithResourceFileURLs_placeholderImage_targetSize_contentMode_prefersHDR_resultHandler__onceToken, &__block_literal_global_30067);
   }
 
   add = atomic_fetch_add(sCreationRequestCounter, 1u);
-  if (v15)
+  if (imageCopy)
   {
-    v18 = v15;
+    v18 = imageCopy;
     v19 = DCIM_CGImageRefFromPLImage();
     v20 = MEMORY[0x19EAF16A0](v18);
 
@@ -1413,7 +1413,7 @@ void __51__PHLivePhoto_cancelLivePhotoRequestWithRequestID___block_invoke(uint64
     block[2] = __117__PHLivePhoto_requestLivePhotoWithResourceFileURLs_placeholderImage_targetSize_contentMode_prefersHDR_resultHandler___block_invoke_2;
     block[3] = &unk_1E75AA870;
     v40 = v23;
-    v41 = v16;
+    v41 = handlerCopy;
     v39 = v22;
     v24 = v23;
     v25 = v22;
@@ -1426,17 +1426,17 @@ void __51__PHLivePhoto_cancelLivePhotoRequestWithRequestID___block_invoke(uint64
   v35[2] = __117__PHLivePhoto_requestLivePhotoWithResourceFileURLs_placeholderImage_targetSize_contentMode_prefersHDR_resultHandler___block_invoke_3;
   v35[3] = &unk_1E75A7FA0;
   v37 = add + 1;
-  v36 = v16;
-  v27 = v16;
-  v28 = [(PHLivePhotoCreationOperation *)v26 initWithResourceURLs:v14 targetSize:a6 contentMode:v9 prefersHDR:v35 resultHandler:width, height];
+  v36 = handlerCopy;
+  v27 = handlerCopy;
+  height = [(PHLivePhotoCreationOperation *)v26 initWithResourceURLs:lsCopy targetSize:mode contentMode:rCopy prefersHDR:v35 resultHandler:width, height];
   v29 = sOperationsByRequestQueue;
   v32[0] = MEMORY[0x1E69E9820];
   v32[1] = 3221225472;
   v32[2] = __117__PHLivePhoto_requestLivePhotoWithResourceFileURLs_placeholderImage_targetSize_contentMode_prefersHDR_resultHandler___block_invoke_6;
   v32[3] = &unk_1E75A8BE8;
   v34 = add + 1;
-  v33 = v28;
-  v30 = v28;
+  v33 = height;
+  v30 = height;
   dispatch_sync(v29, v32);
   [requestLivePhotoWithResourceFileURLs_placeholderImage_targetSize_contentMode_prefersHDR_resultHandler__creationOperationQueue addOperation:v30];
 
@@ -1501,12 +1501,12 @@ uint64_t __117__PHLivePhoto_requestLivePhotoWithResourceFileURLs_placeholderImag
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (id)objectWithItemProviderData:(id)a3 typeIdentifier:(id)a4 error:(id *)a5
++ (id)objectWithItemProviderData:(id)data typeIdentifier:(id)identifier error:(id *)error
 {
   v66 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = [MEMORY[0x1E6982C40] typeWithIdentifier:v8];
+  dataCopy = data;
+  identifierCopy = identifier;
+  v9 = [MEMORY[0x1E6982C40] typeWithIdentifier:identifierCopy];
   v10 = PFIsLivePhotoBundleType();
 
   if (!v10)
@@ -1514,23 +1514,23 @@ uint64_t __117__PHLivePhoto_requestLivePhotoWithResourceFileURLs_placeholderImag
     goto LABEL_34;
   }
 
-  v11 = v7;
-  v12 = [MEMORY[0x1E696AFB0] UUID];
-  v13 = [v12 UUIDString];
-  v14 = [v13 stringByAppendingPathExtension:*MEMORY[0x1E69C09D0]];
+  v11 = dataCopy;
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
+  v14 = [uUIDString stringByAppendingPathExtension:*MEMORY[0x1E69C09D0]];
 
-  v15 = [MEMORY[0x1E696AC08] defaultManager];
-  v16 = [v15 temporaryDirectory];
-  v17 = [v16 URLByAppendingPathComponent:@"live-photo-bundle"];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  temporaryDirectory = [defaultManager temporaryDirectory];
+  v17 = [temporaryDirectory URLByAppendingPathComponent:@"live-photo-bundle"];
   v18 = [v17 URLByAppendingPathComponent:v14];
 
   v19 = v18;
-  v20 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
   v61[0] = 0;
-  LODWORD(v16) = [v20 createDirectoryAtURL:v18 withIntermediateDirectories:1 attributes:0 error:v61];
+  LODWORD(temporaryDirectory) = [defaultManager2 createDirectoryAtURL:v18 withIntermediateDirectories:1 attributes:0 error:v61];
   v21 = v61[0];
 
-  if (!v16)
+  if (!temporaryDirectory)
   {
     v25 = PLPhotoKitGetLog();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -1571,10 +1571,10 @@ uint64_t __117__PHLivePhoto_requestLivePhotoWithResourceFileURLs_placeholderImag
   archive_write_disk_set_standard_lookup();
   v24 = v18;
   v61[1] = 0;
-  v56 = a5;
-  v57 = v7;
+  errorCopy = error;
+  v57 = dataCopy;
   v55 = v21;
-  v58 = v8;
+  v58 = identifierCopy;
   while (2)
   {
     next_header = archive_read_next_header();
@@ -1583,37 +1583,37 @@ uint64_t __117__PHLivePhoto_requestLivePhotoWithResourceFileURLs_placeholderImag
       v27 = v19;
       v28 = v21;
       v29 = [MEMORY[0x1E696AEC0] stringWithUTF8String:archive_entry_pathname()];
-      v30 = [v29 pathComponents];
-      if ([v30 count] < 2)
+      pathComponents = [v29 pathComponents];
+      if ([pathComponents count] < 2)
       {
         v52 = PLPhotoKitGetLog();
         if (os_log_type_enabled(v52, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412290;
-          v63 = v30;
+          v63 = pathComponents;
           _os_log_impl(&dword_19C86F000, v52, OS_LOG_TYPE_ERROR, "Failed to read zipped bundle (invalid path components): %@", buf, 0xCu);
         }
 
         v45 = -25;
         v60 = v29;
-        v38 = v30;
+        v38 = pathComponents;
         v21 = v28;
         v19 = v27;
-        v8 = v58;
+        identifierCopy = v58;
       }
 
       else
       {
         v31 = v27;
         v32 = MEMORY[0x1E696AEC0];
-        v59 = v30;
-        v33 = [v30 subarrayWithRange:{1, objc_msgSend(v30, "count") - 1}];
+        v59 = pathComponents;
+        v33 = [pathComponents subarrayWithRange:{1, objc_msgSend(pathComponents, "count") - 1}];
         v34 = [v32 pathWithComponents:v33];
 
         v60 = v34;
         v35 = [v24 URLByAppendingPathComponent:v34];
-        v36 = [v35 path];
-        [v36 fileSystemRepresentation];
+        path = [v35 path];
+        [path fileSystemRepresentation];
         archive_entry_set_pathname();
 
         v37 = archive_write_header();
@@ -1621,7 +1621,7 @@ uint64_t __117__PHLivePhoto_requestLivePhotoWithResourceFileURLs_placeholderImag
         {
           v45 = v37;
           v53 = PLPhotoKitGetLog();
-          v8 = v58;
+          identifierCopy = v58;
           if (os_log_type_enabled(v53, OS_LOG_TYPE_ERROR))
           {
             v54 = archive_error_string();
@@ -1632,8 +1632,8 @@ uint64_t __117__PHLivePhoto_requestLivePhotoWithResourceFileURLs_placeholderImag
 
           v19 = v31;
           v21 = v55;
-          a5 = v56;
-          v7 = v57;
+          error = errorCopy;
+          dataCopy = v57;
           v38 = v59;
         }
 
@@ -1641,9 +1641,9 @@ uint64_t __117__PHLivePhoto_requestLivePhotoWithResourceFileURLs_placeholderImag
         {
           v19 = v31;
           v21 = v55;
-          a5 = v56;
-          v7 = v57;
-          v8 = v58;
+          error = errorCopy;
+          dataCopy = v57;
+          identifierCopy = v58;
           v38 = v59;
           while (1)
           {
@@ -1741,10 +1741,10 @@ LABEL_30:
   }
 
 LABEL_34:
-  if (a5)
+  if (error)
   {
     [MEMORY[0x1E696ABC0] ph_errorWithDomain:@"PHPhotosErrorDomain" code:-1 userInfo:0];
-    *a5 = v49 = 0;
+    *error = v49 = 0;
   }
 
   else
@@ -1761,8 +1761,8 @@ LABEL_37:
 {
   v6[1] = *MEMORY[0x1E69E9840];
   v2 = PFCurrentPlatformLivePhotoBundleType();
-  v3 = [v2 identifier];
-  v6[0] = v3;
+  identifier = [v2 identifier];
+  v6[0] = identifier;
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:1];
 
   return v4;

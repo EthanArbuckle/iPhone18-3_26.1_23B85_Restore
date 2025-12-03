@@ -1,17 +1,17 @@
 @interface MDPrivateXattrServices
 + (id)defaultServices;
-- (id)copyPrivateXattrsDictionary:(id)a3 cryptoCallback:(id)a4;
-- (id)copyPrivateXattrsFromData:(id)a3 decryptedXids:(id *)a4;
-- (id)decryptDataArrayWithCryptoCallback:(id)a3 dataArray:(id)a4 existingXIDArray:(id)a5 uuids:(id)a6 xpc_uuids:(id)a7 xids:(id)a8 decrypted:(id *)a9;
-- (id)xidDictWithUUIDs:(id)a3 allKeyUUIDs:(id)a4;
-- (id)xidDictWithUUIDs:(id)a3 fromKeyRing:(id)a4;
-- (id)xidDictWithXPCUUIDs:(id)a3 allKeyUUIDs:(id)a4;
-- (void)_restoreAttributesFromDictionary:(id)a3 intoDictionary:(id)a4;
-- (void)_restoreAttributesFromPlistBytes:(id)a3 intoDictionary:(id)a4;
-- (void)digestUUIDBytesWithKey:(id)a3 forUUID:(id)a4 uuidBytes:(unsigned __int8)a5[16];
-- (void)digestUUIDBytesWithKey:(id)a3 forXPCUUID:(id)a4 uuidBytes:(unsigned __int8)a5[16];
-- (void)extractDecryptedDataWith:(id)a3 cryptoCallback:(id)a4 decryptableXids:(id)a5 intoDict:(id)a6 keyRing:(id)a7 xid:(id)a8;
-- (void)updatePrivateXattrParams:(id)a3 flags:(unint64_t)a4 forFileDescriptor:(int)a5 mergeCallback:(id)a6 completionHandler:(id)a7;
+- (id)copyPrivateXattrsDictionary:(id)dictionary cryptoCallback:(id)callback;
+- (id)copyPrivateXattrsFromData:(id)data decryptedXids:(id *)xids;
+- (id)decryptDataArrayWithCryptoCallback:(id)callback dataArray:(id)array existingXIDArray:(id)dArray uuids:(id)uuids xpc_uuids:(id)xpc_uuids xids:(id)xids decrypted:(id *)decrypted;
+- (id)xidDictWithUUIDs:(id)ds allKeyUUIDs:(id)iDs;
+- (id)xidDictWithUUIDs:(id)ds fromKeyRing:(id)ring;
+- (id)xidDictWithXPCUUIDs:(id)ds allKeyUUIDs:(id)iDs;
+- (void)_restoreAttributesFromDictionary:(id)dictionary intoDictionary:(id)intoDictionary;
+- (void)_restoreAttributesFromPlistBytes:(id)bytes intoDictionary:(id)dictionary;
+- (void)digestUUIDBytesWithKey:(id)key forUUID:(id)d uuidBytes:(unsigned __int8)bytes[16];
+- (void)digestUUIDBytesWithKey:(id)key forXPCUUID:(id)d uuidBytes:(unsigned __int8)bytes[16];
+- (void)extractDecryptedDataWith:(id)with cryptoCallback:(id)callback decryptableXids:(id)xids intoDict:(id)dict keyRing:(id)ring xid:(id)xid;
+- (void)updatePrivateXattrParams:(id)params flags:(unint64_t)flags forFileDescriptor:(int)descriptor mergeCallback:(id)callback completionHandler:(id)handler;
 @end
 
 @implementation MDPrivateXattrServices
@@ -34,18 +34,18 @@ dispatch_queue_t __41__MDPrivateXattrServices_defaultServices__block_invoke()
   return result;
 }
 
-- (void)_restoreAttributesFromDictionary:(id)a3 intoDictionary:(id)a4
+- (void)_restoreAttributesFromDictionary:(id)dictionary intoDictionary:(id)intoDictionary
 {
-  v6 = [a3 objectForKey:@"uuid"];
-  v7 = [a3 objectForKey:@"keys"];
-  v8 = [a3 objectForKey:@"values"];
+  v6 = [dictionary objectForKey:@"uuid"];
+  v7 = [dictionary objectForKey:@"keys"];
+  v8 = [dictionary objectForKey:@"values"];
   if (v6 != CFUUIDGetConstantUUIDWithBytes(*MEMORY[0x277CBED08], 0x71u, 0x9Fu, 0xB8u, 0xCAu, 0x18u, 0x13u, 0x49u, 0xB0u, 0x8Bu, 0x20u, 0x36u, 0x5Eu, 0xEBu, 0xC3u, 0xEDu, 0x57u))
   {
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __74__MDPrivateXattrServices__restoreAttributesFromDictionary_intoDictionary___block_invoke;
     v9[3] = &unk_278D63580;
-    v9[4] = a4;
+    v9[4] = intoDictionary;
     v9[5] = v8;
     [v7 enumerateObjectsUsingBlock:v9];
   }
@@ -59,18 +59,18 @@ uint64_t __74__MDPrivateXattrServices__restoreAttributesFromDictionary_intoDicti
   return [v3 setObject:v4 forKey:a2];
 }
 
-- (void)_restoreAttributesFromPlistBytes:(id)a3 intoDictionary:(id)a4
+- (void)_restoreAttributesFromPlistBytes:(id)bytes intoDictionary:(id)dictionary
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __74__MDPrivateXattrServices__restoreAttributesFromPlistBytes_intoDictionary___block_invoke;
   v4[3] = &unk_278D63580;
   v4[4] = self;
-  v4[5] = a4;
-  [a3 enumerateObjectsUsingBlock:v4];
+  v4[5] = dictionary;
+  [bytes enumerateObjectsUsingBlock:v4];
 }
 
-- (id)xidDictWithUUIDs:(id)a3 fromKeyRing:(id)a4
+- (id)xidDictWithUUIDs:(id)ds fromKeyRing:(id)ring
 {
   v29 = *MEMORY[0x277D85DE8];
   v6 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:0];
@@ -78,7 +78,7 @@ uint64_t __74__MDPrivateXattrServices__restoreAttributesFromDictionary_intoDicti
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  obj = [a4 allKeyUUIDs];
+  obj = [ring allKeyUUIDs];
   v18 = [obj countByEnumeratingWithState:&v19 objects:v28 count:16];
   if (v18)
   {
@@ -93,16 +93,16 @@ uint64_t __74__MDPrivateXattrServices__restoreAttributesFromDictionary_intoDicti
           objc_enumerationMutation(obj);
         }
 
-        if (a3)
+        if (ds)
         {
           v8 = *(*(&v19 + 1) + 8 * v7);
-          count = xpc_array_get_count(a3);
+          count = xpc_array_get_count(ds);
           if (count)
           {
             v10 = count;
             for (i = 0; i != v10; ++i)
             {
-              uuid = xpc_array_get_uuid(a3, i);
+              uuid = xpc_array_get_uuid(ds, i);
               if (uuid)
               {
                 memset(v26, 0, sizeof(v26));
@@ -112,7 +112,7 @@ uint64_t __74__MDPrivateXattrServices__restoreAttributesFromDictionary_intoDicti
                 v13 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDBytes:&v25];
                 v23 = 0;
                 v24 = 0;
-                [a4 digestUUIDBytesWithKey:v8 forUUID:v13 uuidBytes:&v23];
+                [ring digestUUIDBytesWithKey:v8 forUUID:v13 uuidBytes:&v23];
                 _MDLabelUUIDEncode(v23, v24, v26);
                 [v6 setObject:v8 forKey:{objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"com.apple.metadata.%s", v26)}];
               }
@@ -134,24 +134,24 @@ uint64_t __74__MDPrivateXattrServices__restoreAttributesFromDictionary_intoDicti
   return v6;
 }
 
-- (id)decryptDataArrayWithCryptoCallback:(id)a3 dataArray:(id)a4 existingXIDArray:(id)a5 uuids:(id)a6 xpc_uuids:(id)a7 xids:(id)a8 decrypted:(id *)a9
+- (id)decryptDataArrayWithCryptoCallback:(id)callback dataArray:(id)array existingXIDArray:(id)dArray uuids:(id)uuids xpc_uuids:(id)xpc_uuids xids:(id)xids decrypted:(id *)decrypted
 {
-  v16 = [a5 count];
-  if (v16 != [a4 count])
+  v16 = [dArray count];
+  if (v16 != [array count])
   {
     return 0;
   }
 
-  v31 = a3;
+  callbackCopy = callback;
   v17 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v18 = +[MDKeyRing defaultKeyRing];
   v19 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v32 = v18;
-  if (a7)
+  if (xpc_uuids)
   {
-    v20 = -[MDPrivateXattrServices xidDictWithXPCUUIDs:allKeyUUIDs:](self, "xidDictWithXPCUUIDs:allKeyUUIDs:", a7, [v18 allKeyUUIDs]);
-    a7 = v20;
-    if (!a6)
+    v20 = -[MDPrivateXattrServices xidDictWithXPCUUIDs:allKeyUUIDs:](self, "xidDictWithXPCUUIDs:allKeyUUIDs:", xpc_uuids, [v18 allKeyUUIDs]);
+    xpc_uuids = v20;
+    if (!uuids)
     {
 LABEL_10:
       if (v16)
@@ -166,14 +166,14 @@ LABEL_10:
   else
   {
     v20 = 0;
-    if (!a6)
+    if (!uuids)
     {
       goto LABEL_10;
     }
   }
 
-  v21 = -[MDPrivateXattrServices xidDictWithUUIDs:allKeyUUIDs:](self, "xidDictWithUUIDs:allKeyUUIDs:", a6, [v32 allKeyUUIDs]);
-  a7 = v21;
+  v21 = -[MDPrivateXattrServices xidDictWithUUIDs:allKeyUUIDs:](self, "xidDictWithUUIDs:allKeyUUIDs:", uuids, [v32 allKeyUUIDs]);
+  xpc_uuids = v21;
   if (!v20)
   {
     goto LABEL_10;
@@ -182,21 +182,21 @@ LABEL_10:
   if (v21)
   {
     v22 = [v20 mutableCopy];
-    [v22 addEntriesFromDictionary:a7];
-    a7 = v22;
+    [v22 addEntriesFromDictionary:xpc_uuids];
+    xpc_uuids = v22;
     goto LABEL_10;
   }
 
-  a7 = v20;
+  xpc_uuids = v20;
   if (v16)
   {
 LABEL_11:
     for (i = 0; i != v16; ++i)
     {
-      v24 = [a5 objectAtIndex:i];
-      if ([a7 objectForKey:v24])
+      v24 = [dArray objectAtIndex:i];
+      if ([xpc_uuids objectForKey:v24])
       {
-        [v19 setObject:objc_msgSend(a4 forKey:{"objectAtIndex:", i), v24}];
+        [v19 setObject:objc_msgSend(array forKey:{"objectAtIndex:", i), v24}];
       }
     }
   }
@@ -204,20 +204,20 @@ LABEL_11:
 LABEL_15:
   if ([v19 count])
   {
-    if (a9)
+    if (decrypted)
     {
-      *a9 = [v19 allKeys];
+      *decrypted = [v19 allKeys];
     }
 
-    if (a8)
+    if (xids)
     {
-      count = xpc_array_get_count(a8);
+      count = xpc_array_get_count(xids);
       v26 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:count];
       if (count)
       {
         for (j = 0; j != count; ++j)
         {
-          string = xpc_array_get_string(a8, j);
+          string = xpc_array_get_string(xids, j);
           if (string)
           {
             v29 = [objc_alloc(MEMORY[0x277CCACA8]) initWithCString:string encoding:4];
@@ -231,37 +231,37 @@ LABEL_15:
         }
       }
 
-      [(MDPrivateXattrServices *)self extractDecryptedDataWith:v19 cryptoCallback:v31 decryptableXids:a7 intoDict:v17 keyRing:v32 xid:v26];
+      [(MDPrivateXattrServices *)self extractDecryptedDataWith:v19 cryptoCallback:callbackCopy decryptableXids:xpc_uuids intoDict:v17 keyRing:v32 xid:v26];
     }
 
     else
     {
-      [(MDPrivateXattrServices *)self extractDecryptedDataWith:v19 cryptoCallback:v31 decryptableXids:a7 intoDict:v17 keyRing:v32 xid:a5];
+      [(MDPrivateXattrServices *)self extractDecryptedDataWith:v19 cryptoCallback:callbackCopy decryptableXids:xpc_uuids intoDict:v17 keyRing:v32 xid:dArray];
     }
   }
 
   return v17;
 }
 
-- (void)extractDecryptedDataWith:(id)a3 cryptoCallback:(id)a4 decryptableXids:(id)a5 intoDict:(id)a6 keyRing:(id)a7 xid:(id)a8
+- (void)extractDecryptedDataWith:(id)with cryptoCallback:(id)callback decryptableXids:(id)xids intoDict:(id)dict keyRing:(id)ring xid:(id)xid
 {
-  v8 = a8;
+  xidCopy = xid;
   v85 = *MEMORY[0x277D85DE8];
-  v66 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(a8, "count")}];
+  v66 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(xid, "count")}];
   v78 = 0u;
   v79 = 0u;
   v80 = 0u;
   v81 = 0u;
-  v12 = [v8 countByEnumeratingWithState:&v78 objects:v84 count:16];
+  v12 = [xidCopy countByEnumeratingWithState:&v78 objects:v84 count:16];
   if (v12)
   {
     v13 = v12;
     v73 = *v79;
     alloc = *MEMORY[0x277CBECE8];
-    v64 = a7;
-    v65 = v8;
-    v67 = a3;
-    v68 = a5;
+    ringCopy = ring;
+    v65 = xidCopy;
+    withCopy = with;
+    xidsCopy = xids;
     do
     {
       v14 = 0;
@@ -270,27 +270,27 @@ LABEL_15:
       {
         if (*v79 != v73)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(xidCopy);
         }
 
         v15 = *(*(&v78 + 1) + 8 * v14);
-        v16 = [a3 objectForKey:v15];
+        v16 = [with objectForKey:v15];
         if (!v16)
         {
           NSLog(&cfstr_DonTKnowHowToD.isa, v15);
         }
 
-        v17 = [a5 objectForKey:v15];
+        v17 = [xids objectForKey:v15];
         if (!v17)
         {
-          v18 = [a7 copyDesignatedKeyUUID];
+          copyDesignatedKeyUUID = [ring copyDesignatedKeyUUID];
           if (!v16)
           {
             goto LABEL_48;
           }
 
 LABEL_12:
-          v19 = [v16 bytes];
+          bytes = [v16 bytes];
           v20 = [v16 length];
           if (v20 < 0xA)
           {
@@ -299,10 +299,10 @@ LABEL_12:
 
           else
           {
-            v21 = *v19;
+            v21 = *bytes;
             if (v21 == 242)
             {
-              v27 = copyDecryptedData(a4, v19, v18, v19, v20);
+              v27 = copyDecryptedData(callback, bytes, copyDesignatedKeyUUID, bytes, v20);
               if (v27)
               {
                 v28 = v27;
@@ -317,7 +317,7 @@ LABEL_12:
                 v70 = v28;
                 v32 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:0];
                 v82 = 0;
-                v33 = 0;
+                distantPast = 0;
                 while (v82 < Length)
                 {
                   v34 = copyCFTypeFromBuffer(BytePtr, &v82, Length);
@@ -337,7 +337,7 @@ LABEL_12:
                           v31 = 0x27ECB5000;
                           if (v39)
                           {
-                            v33 = CFRetain(v37);
+                            distantPast = CFRetain(v37);
                           }
                         }
 
@@ -360,36 +360,36 @@ LABEL_12:
                   v32 = 0;
                 }
 
-                a3 = v67;
-                a5 = v68;
+                with = withCopy;
+                xids = xidsCopy;
                 v13 = v69;
-                v40 = [v32 allKeys];
-                v41 = [v32 allValues];
+                allKeys = [v32 allKeys];
+                allValues = [v32 allValues];
 
-                if (v40 && v41)
+                if (allKeys && allValues)
                 {
                   v42 = objc_alloc(MEMORY[0x277CBEB38]);
-                  if (!v33)
+                  if (!distantPast)
                   {
-                    v33 = [MEMORY[0x277CBEAA8] distantPast];
+                    distantPast = [MEMORY[0x277CBEAA8] distantPast];
                   }
 
-                  v32 = [v42 initWithObjectsAndKeys:{v40, @"keys", v41, @"values", v33, @"mod_date", 0}];
+                  v32 = [v42 initWithObjectsAndKeys:{allKeys, @"keys", allValues, @"values", distantPast, @"mod_date", 0}];
                 }
 
                 v23 = v70;
                 v26 = v32;
-                a7 = v64;
-                v8 = v65;
+                ring = ringCopy;
+                xidCopy = v65;
                 goto LABEL_42;
               }
 
-              NSLog(&cfstr_FailedToDecryp_0.isa, v18);
+              NSLog(&cfstr_FailedToDecryp_0.isa, copyDesignatedKeyUUID);
             }
 
             else if (v21 == 241)
             {
-              v22 = copyDecryptedData(a4, v19, v18, v19, v20);
+              v22 = copyDecryptedData(callback, bytes, copyDesignatedKeyUUID, bytes, v20);
               if (v22)
               {
                 v23 = v22;
@@ -437,17 +437,17 @@ LABEL_12:
 
                   [v63 setValue:v46 forKey:@"values"];
                   v26 = v63;
-                  a7 = v64;
-                  v8 = v65;
-                  a3 = v67;
-                  a5 = v68;
+                  ring = ringCopy;
+                  xidCopy = v65;
+                  with = withCopy;
+                  xids = xidsCopy;
                   v13 = v69;
                 }
 
                 else
                 {
-                  a3 = v67;
-                  a5 = v68;
+                  with = withCopy;
+                  xids = xidsCopy;
                   v13 = v69;
                 }
 
@@ -463,13 +463,13 @@ LABEL_42:
 
               else
               {
-                NSLog(&cfstr_FailedToDecryp.isa, v18);
+                NSLog(&cfstr_FailedToDecryp.isa, copyDesignatedKeyUUID);
               }
             }
 
             else
             {
-              NSLog(&cfstr_UnexpectedHead.isa, *v19);
+              NSLog(&cfstr_UnexpectedHead.isa, *bytes);
             }
           }
 
@@ -477,7 +477,7 @@ LABEL_42:
           goto LABEL_48;
         }
 
-        v18 = v17;
+        copyDesignatedKeyUUID = v17;
         CFRetain(v17);
         if (v16)
         {
@@ -485,16 +485,16 @@ LABEL_42:
         }
 
 LABEL_48:
-        if (v18)
+        if (copyDesignatedKeyUUID)
         {
-          CFRelease(v18);
+          CFRelease(copyDesignatedKeyUUID);
         }
 
         ++v14;
       }
 
       while (v14 != v13);
-      v53 = [v8 countByEnumeratingWithState:&v78 objects:v84 count:16];
+      v53 = [xidCopy countByEnumeratingWithState:&v78 objects:v84 count:16];
       v13 = v53;
     }
 
@@ -522,7 +522,7 @@ LABEL_48:
             objc_enumerationMutation(v66);
           }
 
-          [(MDPrivateXattrServices *)self _restoreAttributesFromDictionary:*(*(&v74 + 1) + 8 * i) intoDictionary:a6];
+          [(MDPrivateXattrServices *)self _restoreAttributesFromDictionary:*(*(&v74 + 1) + 8 * i) intoDictionary:dict];
         }
 
         v55 = [v66 countByEnumeratingWithState:&v74 objects:v83 count:16];
@@ -543,27 +543,27 @@ uint64_t __103__MDPrivateXattrServices_extractDecryptedDataWith_cryptoCallback_d
   return [v4 compare:v5];
 }
 
-- (id)copyPrivateXattrsDictionary:(id)a3 cryptoCallback:(id)a4
+- (id)copyPrivateXattrsDictionary:(id)dictionary cryptoCallback:(id)callback
 {
   +[MDKeyRing defaultKeyRing];
-  v7 = [a3 objectForKey:@"xids"];
-  v8 = [a3 objectForKey:@"uuids"];
-  v9 = [a3 objectForKey:@"datas"];
+  v7 = [dictionary objectForKey:@"xids"];
+  v8 = [dictionary objectForKey:@"uuids"];
+  v9 = [dictionary objectForKey:@"datas"];
   if (!v8 || !v9 || !v7)
   {
     return 0;
   }
 
-  return [(MDPrivateXattrServices *)self decryptDataArrayWithCryptoCallback:a4 dataArray:v9 existingXIDArray:v7 uuids:0 xpc_uuids:v8 xids:0];
+  return [(MDPrivateXattrServices *)self decryptDataArrayWithCryptoCallback:callback dataArray:v9 existingXIDArray:v7 uuids:0 xpc_uuids:v8 xids:0];
 }
 
-- (id)copyPrivateXattrsFromData:(id)a3 decryptedXids:(id *)a4
+- (id)copyPrivateXattrsFromData:(id)data decryptedXids:(id *)xids
 {
   v35 = *MEMORY[0x277D85DE8];
   v32 = 0uLL;
   v33 = 0;
-  [a3 bytes];
-  [a3 length];
+  [data bytes];
+  [data length];
   _MDPlistGetRootPlistObjectFromBytes();
   v30 = 0uLL;
   v31 = 0;
@@ -635,7 +635,7 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v23 = self;
+  selfCopy = self;
   v15 = *MEMORY[0x277CBECE8];
   v28 = v30;
   v29 = v31;
@@ -678,7 +678,7 @@ LABEL_10:
   v12 = 0;
   if (v11 && v10 && v8)
   {
-    v12 = [(MDPrivateXattrServices *)v23 decryptDataArrayWithCryptoCallback:&__block_literal_global_50 dataArray:v10 existingXIDArray:v8 uuids:v11 xpc_uuids:0 xids:0 decrypted:a4];
+    v12 = [(MDPrivateXattrServices *)selfCopy decryptDataArrayWithCryptoCallback:&__block_literal_global_50 dataArray:v10 existingXIDArray:v8 uuids:v11 xpc_uuids:0 xids:0 decrypted:xids];
   }
 
 LABEL_11:
@@ -703,22 +703,22 @@ uint64_t __66__MDPrivateXattrServices_copyPrivateXattrsFromData_decryptedXids___
   }
 }
 
-- (void)digestUUIDBytesWithKey:(id)a3 forUUID:(id)a4 uuidBytes:(unsigned __int8)a5[16]
+- (void)digestUUIDBytesWithKey:(id)key forUUID:(id)d uuidBytes:(unsigned __int8)bytes[16]
 {
   v11 = *MEMORY[0x277D85DE8];
   data = 0uLL;
   memset(&v9, 0, sizeof(v9));
   CC_MD5_Init(&v9);
-  [a4 getUUIDBytes:&data];
+  [d getUUIDBytes:&data];
   CC_MD5_Update(&v9, &data, 0x10u);
-  [a3 getUUIDBytes:&data];
+  [key getUUIDBytes:&data];
   CC_MD5_Update(&v9, &data, 0x10u);
   CC_MD5_Final(&data, &v9);
-  *a5 = data;
+  *bytes = data;
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (id)xidDictWithUUIDs:(id)a3 allKeyUUIDs:(id)a4
+- (id)xidDictWithUUIDs:(id)ds allKeyUUIDs:(id)iDs
 {
   v30 = *MEMORY[0x277D85DE8];
   v7 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:0];
@@ -726,8 +726,8 @@ uint64_t __66__MDPrivateXattrServices_copyPrivateXattrsFromData_decryptedXids___
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  obj = a4;
-  v19 = [a4 countByEnumeratingWithState:&v24 objects:v29 count:16];
+  obj = iDs;
+  v19 = [iDs countByEnumeratingWithState:&v24 objects:v29 count:16];
   if (v19)
   {
     v18 = *v25;
@@ -746,7 +746,7 @@ uint64_t __66__MDPrivateXattrServices_copyPrivateXattrsFromData_decryptedXids___
         v21 = 0u;
         v22 = 0u;
         v23 = 0u;
-        v10 = [a3 countByEnumeratingWithState:&v20 objects:v28 count:16];
+        v10 = [ds countByEnumeratingWithState:&v20 objects:v28 count:16];
         if (v10)
         {
           v11 = v10;
@@ -758,7 +758,7 @@ uint64_t __66__MDPrivateXattrServices_copyPrivateXattrsFromData_decryptedXids___
             {
               if (*v21 != v12)
               {
-                objc_enumerationMutation(a3);
+                objc_enumerationMutation(ds);
               }
 
               v14 = *(*(&v20 + 1) + 8 * v13);
@@ -772,7 +772,7 @@ uint64_t __66__MDPrivateXattrServices_copyPrivateXattrsFromData_decryptedXids___
             }
 
             while (v11 != v13);
-            v11 = [a3 countByEnumeratingWithState:&v20 objects:v28 count:16];
+            v11 = [ds countByEnumeratingWithState:&v20 objects:v28 count:16];
           }
 
           while (v11);
@@ -793,22 +793,22 @@ uint64_t __66__MDPrivateXattrServices_copyPrivateXattrsFromData_decryptedXids___
   return v7;
 }
 
-- (void)digestUUIDBytesWithKey:(id)a3 forXPCUUID:(id)a4 uuidBytes:(unsigned __int8)a5[16]
+- (void)digestUUIDBytesWithKey:(id)key forXPCUUID:(id)d uuidBytes:(unsigned __int8)bytes[16]
 {
   v12 = *MEMORY[0x277D85DE8];
   data = 0uLL;
   memset(&v10, 0, sizeof(v10));
   CC_MD5_Init(&v10);
-  bytes = xpc_uuid_get_bytes(a4);
+  bytes = xpc_uuid_get_bytes(d);
   CC_MD5_Update(&v10, bytes, 0x10u);
-  [a3 getUUIDBytes:&data];
+  [key getUUIDBytes:&data];
   CC_MD5_Update(&v10, &data, 0x10u);
   CC_MD5_Final(&data, &v10);
-  *a5 = data;
+  *bytes = data;
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (id)xidDictWithXPCUUIDs:(id)a3 allKeyUUIDs:(id)a4
+- (id)xidDictWithXPCUUIDs:(id)ds allKeyUUIDs:(id)iDs
 {
   v22 = *MEMORY[0x277D85DE8];
   v7 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:0];
@@ -816,8 +816,8 @@ uint64_t __66__MDPrivateXattrServices_copyPrivateXattrsFromData_decryptedXids___
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  obj = a4;
-  v8 = [a4 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  obj = iDs;
+  v8 = [iDs countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v8)
   {
     v9 = v8;
@@ -840,7 +840,7 @@ uint64_t __66__MDPrivateXattrServices_copyPrivateXattrsFromData_decryptedXids___
         applier[4] = self;
         applier[5] = v12;
         applier[6] = v7;
-        xpc_array_apply(a3, applier);
+        xpc_array_apply(ds, applier);
         digestOneInternal(self, v12, v12, v7);
         ++v11;
       }
@@ -873,16 +873,16 @@ uint64_t __58__MDPrivateXattrServices_xidDictWithXPCUUIDs_allKeyUUIDs___block_in
   return 1;
 }
 
-- (void)updatePrivateXattrParams:(id)a3 flags:(unint64_t)a4 forFileDescriptor:(int)a5 mergeCallback:(id)a6 completionHandler:(id)a7
+- (void)updatePrivateXattrParams:(id)params flags:(unint64_t)flags forFileDescriptor:(int)descriptor mergeCallback:(id)callback completionHandler:(id)handler
 {
-  v10 = a4;
+  flagsCopy = flags;
   if (updatePrivateXattrParams_flags_forFileDescriptor_mergeCallback_completionHandler__once != -1)
   {
     [MDPrivateXattrServices updatePrivateXattrParams:flags:forFileDescriptor:mergeCallback:completionHandler:];
   }
 
-  v12 = dup(a5);
-  v13 = [a3 objectForKey:@"uuid"];
+  v12 = dup(descriptor);
+  v13 = [params objectForKey:@"uuid"];
   v14 = v13;
   if (v13 && (v15 = CFGetTypeID(v13), v15 == CFUUIDGetTypeID()))
   {
@@ -906,9 +906,9 @@ uint64_t __58__MDPrivateXattrServices_xidDictWithXPCUUIDs_allKeyUUIDs___block_in
   v21[3] = &unk_278D63610;
   v22 = v12;
   v21[5] = v20;
-  v21[6] = a7;
+  v21[6] = handler;
   v21[4] = v17;
-  (*(a6 + 2))(a6, v20, a3, v18, v10 & 1, v21);
+  (*(callback + 2))(callback, v20, params, v18, flagsCopy & 1, v21);
 }
 
 uint64_t __107__MDPrivateXattrServices_updatePrivateXattrParams_flags_forFileDescriptor_mergeCallback_completionHandler___block_invoke()

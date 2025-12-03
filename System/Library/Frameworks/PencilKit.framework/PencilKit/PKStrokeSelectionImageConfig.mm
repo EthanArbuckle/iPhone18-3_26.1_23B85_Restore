@@ -1,26 +1,26 @@
 @interface PKStrokeSelectionImageConfig
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGRect)imageViewBounds;
 - (CGRect)strokeBounds;
 - (CGSize)imageSize;
-- (PKStrokeSelectionImageConfig)initWithStrokeBounds:(CGRect)a3 imageViewBounds:(CGRect)a4 scale:(double)a5 imageSize:(CGSize)a6 invertedColors:(BOOL)a7 rotated:(BOOL)a8 sixChannel:(BOOL)a9 transparentBlending:(BOOL)a10 highlighted:(BOOL)a11 extendedDynamicRange:(BOOL)a12;
+- (PKStrokeSelectionImageConfig)initWithStrokeBounds:(CGRect)bounds imageViewBounds:(CGRect)viewBounds scale:(double)scale imageSize:(CGSize)size invertedColors:(BOOL)colors rotated:(BOOL)rotated sixChannel:(BOOL)channel transparentBlending:(BOOL)self0 highlighted:(BOOL)self1 extendedDynamicRange:(BOOL)self2;
 - (unint64_t)hash;
 @end
 
 @implementation PKStrokeSelectionImageConfig
 
-- (PKStrokeSelectionImageConfig)initWithStrokeBounds:(CGRect)a3 imageViewBounds:(CGRect)a4 scale:(double)a5 imageSize:(CGSize)a6 invertedColors:(BOOL)a7 rotated:(BOOL)a8 sixChannel:(BOOL)a9 transparentBlending:(BOOL)a10 highlighted:(BOOL)a11 extendedDynamicRange:(BOOL)a12
+- (PKStrokeSelectionImageConfig)initWithStrokeBounds:(CGRect)bounds imageViewBounds:(CGRect)viewBounds scale:(double)scale imageSize:(CGSize)size invertedColors:(BOOL)colors rotated:(BOOL)rotated sixChannel:(BOOL)channel transparentBlending:(BOOL)self0 highlighted:(BOOL)self1 extendedDynamicRange:(BOOL)self2
 {
-  height_low = LOBYTE(a6.height);
-  width_low = LOBYTE(a6.width);
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v22 = a3.size.height;
-  v23 = a3.size.width;
-  v24 = a3.origin.y;
-  v25 = a3.origin.x;
+  height_low = LOBYTE(size.height);
+  width_low = LOBYTE(size.width);
+  height = viewBounds.size.height;
+  width = viewBounds.size.width;
+  y = viewBounds.origin.y;
+  x = viewBounds.origin.x;
+  v22 = bounds.size.height;
+  v23 = bounds.size.width;
+  v24 = bounds.origin.y;
+  v25 = bounds.origin.x;
   result = [(PKStrokeSelectionImageConfig *)self init];
   if (result)
   {
@@ -31,16 +31,16 @@
     result->_imageViewBounds.origin.y = y;
     result->_imageViewBounds.size.width = width;
     result->_imageViewBounds.size.height = height;
-    result->_scale = a5;
-    *&result->_imageSize.width = a11;
+    result->_scale = scale;
+    *&result->_imageSize.width = highlighted;
     result->_imageSize.height = v27;
     result->_strokeBounds.origin.x = v25;
     result->_invertedColors = width_low;
     result->_rotated = height_low;
-    result->_sixChannel = a7;
-    result->_transparentBlending = a8;
-    result->_highlighted = a9;
-    result->_extendedDynamicRange = a10;
+    result->_sixChannel = colors;
+    result->_transparentBlending = rotated;
+    result->_highlighted = channel;
+    result->_extendedDynamicRange = blending;
   }
 
   return result;
@@ -54,13 +54,13 @@
   return v4 ^ v5 ^ PKHashBytes(&self->_imageSize, 16) ^ self->_invertedColors ^ (2 * self->_rotated);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     [v5 strokeBounds];
     v23.origin.x = v6;
     v23.origin.y = v7;

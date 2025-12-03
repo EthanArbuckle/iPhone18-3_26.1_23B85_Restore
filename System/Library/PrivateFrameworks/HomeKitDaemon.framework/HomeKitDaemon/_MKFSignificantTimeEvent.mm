@@ -1,5 +1,5 @@
 @interface _MKFSignificantTimeEvent
-+ (id)modelIDForParentRelationshipTo:(id)a3;
++ (id)modelIDForParentRelationshipTo:(id)to;
 - (MKFHome)home;
 - (MKFSignificantTimeEventDatabaseID)databaseID;
 - (void)awakeFromFetch;
@@ -9,10 +9,10 @@
 
 - (MKFHome)home
 {
-  v2 = [(_MKFSignificantTimeEvent *)self trigger];
-  v3 = [v2 home];
+  trigger = [(_MKFSignificantTimeEvent *)self trigger];
+  home = [trigger home];
 
-  return v3;
+  return home;
 }
 
 - (MKFSignificantTimeEventDatabaseID)databaseID
@@ -27,27 +27,27 @@
   v8.receiver = self;
   v8.super_class = _MKFSignificantTimeEvent;
   [(_MKFSignificantTimeEvent *)&v8 awakeFromFetch];
-  v3 = [(_MKFSignificantTimeEvent *)self offsetSeconds];
-  if (!v3)
+  offsetSeconds = [(_MKFSignificantTimeEvent *)self offsetSeconds];
+  if (!offsetSeconds)
   {
-    v4 = [(_MKFSignificantTimeEvent *)self offset];
+    offset = [(_MKFSignificantTimeEvent *)self offset];
 
-    if (!v4)
+    if (!offset)
     {
       return;
     }
 
     v5 = MEMORY[0x277CCABB0];
-    v3 = [(_MKFSignificantTimeEvent *)self offset];
-    v6 = [v3 decodeDateComponents];
-    v7 = [v5 numberWithInteger:{HMDTimeOffsetFromDateComponents(v6, 0)}];
+    offsetSeconds = [(_MKFSignificantTimeEvent *)self offset];
+    decodeDateComponents = [offsetSeconds decodeDateComponents];
+    v7 = [v5 numberWithInteger:{HMDTimeOffsetFromDateComponents(decodeDateComponents, 0)}];
     [(_MKFSignificantTimeEvent *)self setPrimitiveValue:v7 forKey:@"offsetSeconds"];
   }
 }
 
-+ (id)modelIDForParentRelationshipTo:(id)a3
++ (id)modelIDForParentRelationshipTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE658];
   v7 = MEMORY[0x277CCACA8];

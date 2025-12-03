@@ -1,9 +1,9 @@
 @interface SHSDualSIMToneHelper
 + (BOOL)hasMultipleCTSubscriptionsInUse;
-+ (BOOL)shouldShowSIMBasedToneCustomizationForAlertType:(int64_t)a3;
++ (BOOL)shouldShowSIMBasedToneCustomizationForAlertType:(int64_t)type;
 + (id)fetchCTSubscriptionsInUse;
-+ (id)fetchLocalizedPhoneNumberForContext:(id)a3;
-+ (id)fetchShortLabelForContext:(id)a3;
++ (id)fetchLocalizedPhoneNumberForContext:(id)context;
++ (id)fetchShortLabelForContext:(id)context;
 + (void)fetchCTSubscriptionsInUse;
 @end
 
@@ -18,7 +18,7 @@
   v4 = v20;
 
   v5 = SHSLogForCategory(0);
-  v6 = v5;
+  subscriptionsInUse2 = v5;
   if (v4)
   {
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -33,12 +33,12 @@
   {
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v3 subscriptionsInUse];
+      subscriptionsInUse = [v3 subscriptionsInUse];
       *buf = 136315394;
       v23 = "+[SHSDualSIMToneHelper fetchCTSubscriptionsInUse]";
       v24 = 2112;
-      v25 = v8;
-      _os_log_impl(&dword_265896000, v6, OS_LOG_TYPE_DEFAULT, "%s: Received subscriptionsInUse: %@", buf, 0x16u);
+      v25 = subscriptionsInUse;
+      _os_log_impl(&dword_265896000, subscriptionsInUse2, OS_LOG_TYPE_DEFAULT, "%s: Received subscriptionsInUse: %@", buf, 0x16u);
     }
 
     v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -46,8 +46,8 @@
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v6 = [v3 subscriptionsInUse];
-    v9 = [v6 countByEnumeratingWithState:&v16 objects:v21 count:16];
+    subscriptionsInUse2 = [v3 subscriptionsInUse];
+    v9 = [subscriptionsInUse2 countByEnumeratingWithState:&v16 objects:v21 count:16];
     if (v9)
     {
       v10 = v9;
@@ -58,7 +58,7 @@
         {
           if (*v17 != v11)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(subscriptionsInUse2);
           }
 
           v13 = *(*(&v16 + 1) + 8 * i);
@@ -68,7 +68,7 @@
           }
         }
 
-        v10 = [v6 countByEnumeratingWithState:&v16 objects:v21 count:16];
+        v10 = [subscriptionsInUse2 countByEnumeratingWithState:&v16 objects:v21 count:16];
       }
 
       while (v10);
@@ -80,13 +80,13 @@
   return v7;
 }
 
-+ (id)fetchShortLabelForContext:(id)a3
++ (id)fetchShortLabelForContext:(id)context
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  contextCopy = context;
   v4 = _SHSCTClient();
   v11 = 0;
-  v5 = [v4 getShortLabel:v3 error:&v11];
+  v5 = [v4 getShortLabel:contextCopy error:&v11];
   v6 = v11;
 
   v7 = 0;
@@ -100,7 +100,7 @@
       v14 = 2112;
       v15 = v5;
       v16 = 2112;
-      v17 = v3;
+      v17 = contextCopy;
       _os_log_impl(&dword_265896000, v8, OS_LOG_TYPE_DEFAULT, "%s: Received shortLabel: %@ for Context: %@", buf, 0x20u);
     }
 
@@ -112,18 +112,18 @@
   return v7;
 }
 
-+ (id)fetchLocalizedPhoneNumberForContext:(id)a3
++ (id)fetchLocalizedPhoneNumberForContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = _SHSCTClient();
   v25 = 0;
-  v5 = [v4 getPhoneNumber:v3 error:&v25];
+  v5 = [v4 getPhoneNumber:contextCopy error:&v25];
   v6 = v25;
 
   if (v5)
   {
-    v7 = [v5 number];
-    if (!v7)
+    number = [v5 number];
+    if (!number)
     {
       v8 = SHSLogForCategory(0);
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -144,19 +144,19 @@
       +[SHSDualSIMToneHelper fetchLocalizedPhoneNumberForContext:];
     }
 
-    v7 = 0;
+    number = 0;
   }
 
-  v8 = v7;
+  v8 = number;
   v11 = _SHSCTClient();
   v24 = 0;
-  v12 = [v11 getMobileSubscriberHomeCountryList:v3 error:&v24];
+  v12 = [v11 getMobileSubscriberHomeCountryList:contextCopy error:&v24];
   v13 = v24;
 
-  v14 = &stru_28772CD00;
+  firstObject = &stru_28772CD00;
   if (!v13)
   {
-    v14 = [v12 firstObject];
+    firstObject = [v12 firstObject];
   }
 
   v15 = *MEMORY[0x277CBECE8];
@@ -212,13 +212,13 @@ LABEL_26:
   return v9;
 }
 
-+ (BOOL)shouldShowSIMBasedToneCustomizationForAlertType:(int64_t)a3
++ (BOOL)shouldShowSIMBasedToneCustomizationForAlertType:(int64_t)type
 {
-  v4 = [a1 alertTypeSupportsSIMBasedToneCustomization:a3];
+  v4 = [self alertTypeSupportsSIMBasedToneCustomization:type];
   if (v4)
   {
 
-    LOBYTE(v4) = [a1 hasMultipleCTSubscriptionsInUse];
+    LOBYTE(v4) = [self hasMultipleCTSubscriptionsInUse];
   }
 
   return v4;
@@ -226,8 +226,8 @@ LABEL_26:
 
 + (BOOL)hasMultipleCTSubscriptionsInUse
 {
-  v2 = [a1 fetchCTSubscriptionsInUse];
-  v3 = [v2 count] > 1;
+  fetchCTSubscriptionsInUse = [self fetchCTSubscriptionsInUse];
+  v3 = [fetchCTSubscriptionsInUse count] > 1;
 
   return v3;
 }

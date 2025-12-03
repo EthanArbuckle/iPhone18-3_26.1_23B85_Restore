@@ -1,9 +1,9 @@
 @interface SNTestStore
 - (SNTestRun)extendedLaunchTestRun;
 - (SNTestStore)init;
-- (id)testRunForTestName:(id)a3;
-- (void)addTestCase:(id)a3;
-- (void)addTestSuite:(id)a3;
+- (id)testRunForTestName:(id)name;
+- (void)addTestCase:(id)case;
+- (void)addTestSuite:(id)suite;
 @end
 
 @implementation SNTestStore
@@ -29,13 +29,13 @@
 
 - (SNTestRun)extendedLaunchTestRun
 {
-  v3 = [(SNTestStore *)self extendedLaunchTest];
+  extendedLaunchTest = [(SNTestStore *)self extendedLaunchTest];
 
-  if (v3)
+  if (extendedLaunchTest)
   {
     v4 = [SNTestRun alloc];
-    v5 = [(SNTestStore *)self extendedLaunchTest];
-    v6 = [(SNTestRun *)v4 initWithTestCase:v5 testSuite:0];
+    extendedLaunchTest2 = [(SNTestStore *)self extendedLaunchTest];
+    v6 = [(SNTestRun *)v4 initWithTestCase:extendedLaunchTest2 testSuite:0];
   }
 
   else
@@ -46,27 +46,27 @@
   return v6;
 }
 
-- (void)addTestSuite:(id)a3
+- (void)addTestSuite:(id)suite
 {
-  v4 = a3;
-  v5 = [(SNTestStore *)self testSuites];
-  [v5 addObject:v4];
+  suiteCopy = suite;
+  testSuites = [(SNTestStore *)self testSuites];
+  [testSuites addObject:suiteCopy];
 }
 
-- (void)addTestCase:(id)a3
+- (void)addTestCase:(id)case
 {
-  v4 = a3;
-  v6 = [(SNTestStore *)self testCases];
-  v5 = [v4 testName];
-  [v6 setObject:v4 forKey:v5];
+  caseCopy = case;
+  testCases = [(SNTestStore *)self testCases];
+  testName = [caseCopy testName];
+  [testCases setObject:caseCopy forKey:testName];
 }
 
-- (id)testRunForTestName:(id)a3
+- (id)testRunForTestName:(id)name
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SNTestStore *)self testCases];
-  v6 = [v5 objectForKey:v4];
+  nameCopy = name;
+  testCases = [(SNTestStore *)self testCases];
+  v6 = [testCases objectForKey:nameCopy];
 
   if (v6)
   {
@@ -79,8 +79,8 @@
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v8 = [(SNTestStore *)self testSuites];
-    v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    testSuites = [(SNTestStore *)self testSuites];
+    v9 = [testSuites countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v9)
     {
       v10 = v9;
@@ -91,10 +91,10 @@
         {
           if (*v17 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(testSuites);
           }
 
-          v13 = [*(*(&v16 + 1) + 8 * i) testRunForTestName:v4];
+          v13 = [*(*(&v16 + 1) + 8 * i) testRunForTestName:nameCopy];
           if (v13)
           {
             v7 = v13;
@@ -103,7 +103,7 @@
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v10 = [testSuites countByEnumeratingWithState:&v16 objects:v20 count:16];
         if (v10)
         {
           continue;

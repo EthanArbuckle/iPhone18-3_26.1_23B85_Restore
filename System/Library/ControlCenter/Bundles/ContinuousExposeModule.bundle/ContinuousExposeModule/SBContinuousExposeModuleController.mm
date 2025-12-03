@@ -1,20 +1,20 @@
 @interface SBContinuousExposeModuleController
 - (BOOL)previouslyEnabledStageManager;
-- (int64_t)_telemetryMultitaskingModeForMode:(int64_t)a3;
+- (int64_t)_telemetryMultitaskingModeForMode:(int64_t)mode;
 - (int64_t)currentMultitaskingMode;
-- (void)_emitWindowingPersonalizationTelemetryWithPreviousMultitaskingMode:(int64_t)a3 currentMultitaskingMode:(int64_t)a4;
-- (void)setCurrentMultitaskingMode:(int64_t)a3;
+- (void)_emitWindowingPersonalizationTelemetryWithPreviousMultitaskingMode:(int64_t)mode currentMultitaskingMode:(int64_t)multitaskingMode;
+- (void)setCurrentMultitaskingMode:(int64_t)mode;
 @end
 
 @implementation SBContinuousExposeModuleController
 
 - (int64_t)currentMultitaskingMode
 {
-  v3 = [(SBContinuousExposeModuleController *)self _defaults];
-  v4 = [v3 BOOLForKey:@"SBChamoisWindowingEnabled"];
+  _defaults = [(SBContinuousExposeModuleController *)self _defaults];
+  v4 = [_defaults BOOLForKey:@"SBChamoisWindowingEnabled"];
 
-  v5 = [(SBContinuousExposeModuleController *)self _defaults];
-  v6 = [v5 BOOLForKey:@"SBMedusaMultitaskingEnabled"];
+  _defaults2 = [(SBContinuousExposeModuleController *)self _defaults];
+  v6 = [_defaults2 BOOLForKey:@"SBMedusaMultitaskingEnabled"];
 
   if (v4)
   {
@@ -27,48 +27,48 @@
   }
 }
 
-- (void)setCurrentMultitaskingMode:(int64_t)a3
+- (void)setCurrentMultitaskingMode:(int64_t)mode
 {
-  v5 = [(SBContinuousExposeModuleController *)self currentMultitaskingMode];
-  v6 = [(SBContinuousExposeModuleController *)self _defaults];
-  [v6 setBool:a3 == 2 forKey:@"SBChamoisWindowingEnabled"];
+  currentMultitaskingMode = [(SBContinuousExposeModuleController *)self currentMultitaskingMode];
+  _defaults = [(SBContinuousExposeModuleController *)self _defaults];
+  [_defaults setBool:mode == 2 forKey:@"SBChamoisWindowingEnabled"];
 
-  if (a3 == 2 || (-[SBContinuousExposeModuleController _defaults](self, "_defaults"), v7 = objc_claimAutoreleasedReturnValue(), [v7 setBool:a3 == 1 forKey:@"SBMedusaMultitaskingEnabled"], v7, (a3 - 1) <= 1))
+  if (mode == 2 || (-[SBContinuousExposeModuleController _defaults](self, "_defaults"), v7 = objc_claimAutoreleasedReturnValue(), [v7 setBool:mode == 1 forKey:@"SBMedusaMultitaskingEnabled"], v7, (mode - 1) <= 1))
   {
-    v8 = [(SBContinuousExposeModuleController *)self _defaults];
-    [v8 setBool:a3 == 2 forKey:@"SBFlexibleWindowingAutomaticStageCreationEnabledExternal"];
+    _defaults2 = [(SBContinuousExposeModuleController *)self _defaults];
+    [_defaults2 setBool:mode == 2 forKey:@"SBFlexibleWindowingAutomaticStageCreationEnabledExternal"];
   }
 
-  if (v5 != a3)
+  if (currentMultitaskingMode != mode)
   {
 
-    [(SBContinuousExposeModuleController *)self _emitWindowingPersonalizationTelemetryWithPreviousMultitaskingMode:v5 currentMultitaskingMode:a3];
+    [(SBContinuousExposeModuleController *)self _emitWindowingPersonalizationTelemetryWithPreviousMultitaskingMode:currentMultitaskingMode currentMultitaskingMode:mode];
   }
 }
 
 - (BOOL)previouslyEnabledStageManager
 {
-  v2 = [(SBContinuousExposeModuleController *)self _defaults];
-  v3 = [v2 BOOLForKey:@"SBFlexibleWindowingPreviouslyEnabledAutomaticStageCreation"];
+  _defaults = [(SBContinuousExposeModuleController *)self _defaults];
+  v3 = [_defaults BOOLForKey:@"SBFlexibleWindowingPreviouslyEnabledAutomaticStageCreation"];
 
   return v3;
 }
 
-- (void)_emitWindowingPersonalizationTelemetryWithPreviousMultitaskingMode:(int64_t)a3 currentMultitaskingMode:(int64_t)a4
+- (void)_emitWindowingPersonalizationTelemetryWithPreviousMultitaskingMode:(int64_t)mode currentMultitaskingMode:(int64_t)multitaskingMode
 {
-  v4 = [[SBSControlCenterWindowingTelemetryPersonalizationMetrics alloc] initWithPreviousMultitaskingMode:-[SBContinuousExposeModuleController _telemetryMultitaskingModeForMode:](self currentMultitaskingMode:{"_telemetryMultitaskingModeForMode:", a3), -[SBContinuousExposeModuleController _telemetryMultitaskingModeForMode:](self, "_telemetryMultitaskingModeForMode:", a4)}];
+  v4 = [[SBSControlCenterWindowingTelemetryPersonalizationMetrics alloc] initWithPreviousMultitaskingMode:-[SBContinuousExposeModuleController _telemetryMultitaskingModeForMode:](self currentMultitaskingMode:{"_telemetryMultitaskingModeForMode:", mode), -[SBContinuousExposeModuleController _telemetryMultitaskingModeForMode:](self, "_telemetryMultitaskingModeForMode:", multitaskingMode)}];
   [v4 emit];
 }
 
-- (int64_t)_telemetryMultitaskingModeForMode:(int64_t)a3
+- (int64_t)_telemetryMultitaskingModeForMode:(int64_t)mode
 {
   v3 = 1;
-  if (a3 == 1)
+  if (mode == 1)
   {
     v3 = 2;
   }
 
-  if (a3 == 2)
+  if (mode == 2)
   {
     return 3;
   }

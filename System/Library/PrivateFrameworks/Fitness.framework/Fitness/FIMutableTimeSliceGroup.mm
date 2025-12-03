@@ -1,40 +1,40 @@
 @interface FIMutableTimeSliceGroup
-+ (id)timeSliceGroupForQuantityTypes:(id)a3 startDate:(id)a4;
++ (id)timeSliceGroupForQuantityTypes:(id)types startDate:(id)date;
 - (BOOL)allSlicesFinalized;
-- (FIMutableTimeSliceGroup)initWithTimeSlices:(id)a3;
-- (void)commitAllSlicesToDate:(id)a3;
-- (void)updateSlicesWithEndDate:(id)a3;
-- (void)updateSlicesWithSample:(id)a3;
+- (FIMutableTimeSliceGroup)initWithTimeSlices:(id)slices;
+- (void)commitAllSlicesToDate:(id)date;
+- (void)updateSlicesWithEndDate:(id)date;
+- (void)updateSlicesWithSample:(id)sample;
 @end
 
 @implementation FIMutableTimeSliceGroup
 
-- (FIMutableTimeSliceGroup)initWithTimeSlices:(id)a3
+- (FIMutableTimeSliceGroup)initWithTimeSlices:(id)slices
 {
-  v5 = a3;
+  slicesCopy = slices;
   v9.receiver = self;
   v9.super_class = FIMutableTimeSliceGroup;
   v6 = [(FIMutableTimeSliceGroup *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_slices, a3);
+    objc_storeStrong(&v6->_slices, slices);
   }
 
   return v7;
 }
 
-+ (id)timeSliceGroupForQuantityTypes:(id)a3 startDate:(id)a4
++ (id)timeSliceGroupForQuantityTypes:(id)types startDate:(id)date
 {
-  v5 = a4;
-  v6 = [a3 allObjects];
+  dateCopy = date;
+  allObjects = [types allObjects];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __68__FIMutableTimeSliceGroup_timeSliceGroupForQuantityTypes_startDate___block_invoke;
   v11[3] = &unk_279004C48;
-  v12 = v5;
-  v7 = v5;
-  v8 = [v6 fi_mapUsingBlock:v11];
+  v12 = dateCopy;
+  v7 = dateCopy;
+  v8 = [allObjects fi_mapUsingBlock:v11];
 
   v9 = [[FIMutableTimeSliceGroup alloc] initWithTimeSlices:v8];
 
@@ -49,46 +49,46 @@ FIQuantityTimeSlice *__68__FIMutableTimeSliceGroup_timeSliceGroupForQuantityType
   return v4;
 }
 
-- (void)commitAllSlicesToDate:(id)a3
+- (void)commitAllSlicesToDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   slices = self->_slices;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __49__FIMutableTimeSliceGroup_commitAllSlicesToDate___block_invoke;
   v9[3] = &unk_279004C70;
-  v10 = v4;
-  v6 = v4;
+  v10 = dateCopy;
+  v6 = dateCopy;
   v7 = [(NSArray *)slices fi_mapUsingBlock:v9];
   v8 = self->_slices;
   self->_slices = v7;
 }
 
-- (void)updateSlicesWithEndDate:(id)a3
+- (void)updateSlicesWithEndDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   slices = self->_slices;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __51__FIMutableTimeSliceGroup_updateSlicesWithEndDate___block_invoke;
   v9[3] = &unk_279004C70;
-  v10 = v4;
-  v6 = v4;
+  v10 = dateCopy;
+  v6 = dateCopy;
   v7 = [(NSArray *)slices fi_mapUsingBlock:v9];
   v8 = self->_slices;
   self->_slices = v7;
 }
 
-- (void)updateSlicesWithSample:(id)a3
+- (void)updateSlicesWithSample:(id)sample
 {
-  v4 = a3;
+  sampleCopy = sample;
   slices = self->_slices;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __50__FIMutableTimeSliceGroup_updateSlicesWithSample___block_invoke;
   v9[3] = &unk_279004C70;
-  v10 = v4;
-  v6 = v4;
+  v10 = sampleCopy;
+  v6 = sampleCopy;
   v7 = [(NSArray *)slices fi_mapUsingBlock:v9];
   v8 = self->_slices;
   self->_slices = v7;

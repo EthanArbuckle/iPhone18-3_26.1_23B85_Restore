@@ -1,7 +1,7 @@
 @interface SUWebViewAccessibility
 - (BOOL)_accessibilitySUWebViewIsScrollAncestor;
 - (BOOL)accessibilityPerformEscape;
-- (BOOL)accessibilityScroll:(int64_t)a3;
+- (BOOL)accessibilityScroll:(int64_t)scroll;
 - (BOOL)accessibilityScrollRightPage;
 @end
 
@@ -24,7 +24,7 @@
       if (v7 > 1)
       {
 
-        v8 = 1;
+        _accessibilityIsScrollAncestor = 1;
         goto LABEL_6;
       }
     }
@@ -32,23 +32,23 @@
 
   v10.receiver = self;
   v10.super_class = SUWebViewAccessibility;
-  v8 = [(SUWebViewAccessibility *)&v10 _accessibilityIsScrollAncestor];
+  _accessibilityIsScrollAncestor = [(SUWebViewAccessibility *)&v10 _accessibilityIsScrollAncestor];
 LABEL_6:
 
-  return v8;
+  return _accessibilityIsScrollAncestor;
 }
 
-- (BOOL)accessibilityScroll:(int64_t)a3
+- (BOOL)accessibilityScroll:(int64_t)scroll
 {
   v10[2] = *MEMORY[0x29EDCA608];
-  v4 = [MEMORY[0x29EDBA068] defaultCenter];
+  defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
   v9[0] = @"key";
   v9[1] = @"direction";
   v10[0] = @"scroll";
-  v5 = [MEMORY[0x29EDBA070] numberWithInteger:a3];
+  v5 = [MEMORY[0x29EDBA070] numberWithInteger:scroll];
   v10[1] = v5;
   v6 = [MEMORY[0x29EDB8DC0] dictionaryWithObjects:v10 forKeys:v9 count:2];
-  [v4 postNotificationName:@"AXActionForWebNotification" object:0 userInfo:v6];
+  [defaultCenter postNotificationName:@"AXActionForWebNotification" object:0 userInfo:v6];
 
   v7 = *MEMORY[0x29EDCA608];
   return 0;
@@ -56,8 +56,8 @@ LABEL_6:
 
 - (BOOL)accessibilityPerformEscape
 {
-  v2 = [MEMORY[0x29EDBA068] defaultCenter];
-  [v2 postNotificationName:@"AXActionForWebNotification" object:0 userInfo:&unk_2A23C7250];
+  defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+  [defaultCenter postNotificationName:@"AXActionForWebNotification" object:0 userInfo:&unk_2A23C7250];
 
   return 0;
 }
@@ -81,7 +81,7 @@ LABEL_5:
 LABEL_6:
     v19.receiver = self;
     v19.super_class = SUWebViewAccessibility;
-    v8 = [(SUWebViewAccessibility *)&v19 accessibilityScrollRightPage];
+    accessibilityScrollRightPage = [(SUWebViewAccessibility *)&v19 accessibilityScrollRightPage];
     goto LABEL_7;
   }
 
@@ -95,9 +95,9 @@ LABEL_6:
 
   v10 = v7;
   v11 = [v5 safeValueForKey:@"_selectedViewControllerIndex"];
-  v12 = [v11 integerValue];
+  integerValue = [v11 integerValue];
 
-  v13 = [v6 objectAtIndex:v12];
+  v13 = [v6 objectAtIndex:integerValue];
   [v5 dismissOverlay:v13 animated:1];
 
   if (v10 == 2)
@@ -116,10 +116,10 @@ LABEL_6:
 
   UIAccessibilityPostNotification(*MEMORY[0x29EDC7EF0], v14);
 
-  v8 = 1;
+  accessibilityScrollRightPage = 1;
 LABEL_7:
 
-  return v8;
+  return accessibilityScrollRightPage;
 }
 
 @end

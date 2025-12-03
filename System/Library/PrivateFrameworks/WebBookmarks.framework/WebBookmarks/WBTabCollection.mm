@@ -1,45 +1,45 @@
 @interface WBTabCollection
 + (NSString)deviceIdentifier;
-+ (id)databasePathForConfiguration:(id)a3;
-- (BOOL)_deleteItems:(id)a3 leaveTombstones:(BOOL)a4 cleanBookmarks:(BOOL)a5;
-- (BOOL)_deleteTabGroup:(id)a3 leaveTombstone:(BOOL)a4;
-- (BOOL)_insertItems:(id)a3 inParentWithID:(unsigned int)a4 afterItem:(id)a5;
-- (BOOL)_insertItemsIntoPlace:(id)a3 inParentWithID:(unsigned int)a4;
-- (BOOL)_reorderBookmarkIntoPlace:(id)a3;
-- (BOOL)_reorderItem:(id)a3 afterItem:(id)a4;
-- (BOOL)_reorderItemIntoPlace:(id)a3;
-- (BOOL)_saveBrowserState:(id)a3;
-- (BOOL)_saveItem:(id)a3;
-- (BOOL)_saveItems:(id)a3;
-- (BOOL)_saveSettingsIfNeededForItem:(id)a3;
-- (BOOL)_updatePinnedTabs:(id)a3 privatePinnedTabs:(id)a4;
-- (BOOL)_updatePinnedTabsByProfileIdentifier:(id)a3;
-- (BOOL)closeWindowState:(id)a3;
-- (BOOL)copyTabsDatabase:(id)a3 hidingSensitiveData:(BOOL)a4 error:(id *)a5;
++ (id)databasePathForConfiguration:(id)configuration;
+- (BOOL)_deleteItems:(id)items leaveTombstones:(BOOL)tombstones cleanBookmarks:(BOOL)bookmarks;
+- (BOOL)_deleteTabGroup:(id)group leaveTombstone:(BOOL)tombstone;
+- (BOOL)_insertItems:(id)items inParentWithID:(unsigned int)d afterItem:(id)item;
+- (BOOL)_insertItemsIntoPlace:(id)place inParentWithID:(unsigned int)d;
+- (BOOL)_reorderBookmarkIntoPlace:(id)place;
+- (BOOL)_reorderItem:(id)item afterItem:(id)afterItem;
+- (BOOL)_reorderItemIntoPlace:(id)place;
+- (BOOL)_saveBrowserState:(id)state;
+- (BOOL)_saveItem:(id)item;
+- (BOOL)_saveItems:(id)items;
+- (BOOL)_saveSettingsIfNeededForItem:(id)item;
+- (BOOL)_updatePinnedTabs:(id)tabs privatePinnedTabs:(id)pinnedTabs;
+- (BOOL)_updatePinnedTabsByProfileIdentifier:(id)identifier;
+- (BOOL)closeWindowState:(id)state;
+- (BOOL)copyTabsDatabase:(id)database hidingSensitiveData:(BOOL)data error:(id *)error;
 - (BOOL)deleteAllLocalSavedState;
 - (BOOL)deleteAllWindowStates;
-- (BOOL)deleteItems:(id)a3 leaveTombstones:(BOOL)a4;
-- (BOOL)deleteItems:(id)a3 leaveTombstones:(BOOL)a4 cleanBookmarks:(BOOL)a5;
-- (BOOL)deleteTabGroup:(id)a3;
-- (BOOL)deleteTabs:(id)a3;
-- (BOOL)deleteWindowState:(id)a3;
-- (BOOL)deleteWindowStates:(id)a3;
+- (BOOL)deleteItems:(id)items leaveTombstones:(BOOL)tombstones;
+- (BOOL)deleteItems:(id)items leaveTombstones:(BOOL)tombstones cleanBookmarks:(BOOL)bookmarks;
+- (BOOL)deleteTabGroup:(id)group;
+- (BOOL)deleteTabs:(id)tabs;
+- (BOOL)deleteWindowState:(id)state;
+- (BOOL)deleteWindowStates:(id)states;
 - (BOOL)deleteWindowsNotInLastSession;
 - (BOOL)hasCompletedMigration;
 - (BOOL)hasMultipleProfiles;
-- (BOOL)insertItems:(id)a3 inParentWithID:(unsigned int)a4 afterItem:(id)a5;
-- (BOOL)insertTab:(id)a3 inTabGroup:(id)a4 afterTab:(id)a5;
-- (BOOL)insertTabGroup:(id)a3 afterTabGroup:(id)a4;
-- (BOOL)insertTabs:(id)a3 inTabGroup:(id)a4 afterTab:(id)a5;
+- (BOOL)insertItems:(id)items inParentWithID:(unsigned int)d afterItem:(id)item;
+- (BOOL)insertTab:(id)tab inTabGroup:(id)group afterTab:(id)afterTab;
+- (BOOL)insertTabGroup:(id)group afterTabGroup:(id)tabGroup;
+- (BOOL)insertTabs:(id)tabs inTabGroup:(id)group afterTab:(id)tab;
 - (BOOL)isLockedSync;
 - (BOOL)lockSync;
-- (BOOL)reorderItem:(id)a3 afterItem:(id)a4;
-- (BOOL)saveBrowserState:(id)a3;
-- (BOOL)saveItem:(id)a3;
-- (BOOL)saveTabGroup:(id)a3;
-- (BOOL)saveWindowState:(id)a3;
-- (BOOL)updateItems:(id)a3 inParentWithID:(unsigned int)a4;
-- (BOOL)updateTabs:(id)a3 inTabGroup:(id)a4;
+- (BOOL)reorderItem:(id)item afterItem:(id)afterItem;
+- (BOOL)saveBrowserState:(id)state;
+- (BOOL)saveItem:(id)item;
+- (BOOL)saveTabGroup:(id)group;
+- (BOOL)saveWindowState:(id)state;
+- (BOOL)updateItems:(id)items inParentWithID:(unsigned int)d;
+- (BOOL)updateTabs:(id)tabs inTabGroup:(id)group;
 - (NSArray)allMutableNamedTabGroupsUnsorted;
 - (NSArray)mutableNamedTabGroupsInDefaultProfile;
 - (NSArray)mutableProfiles;
@@ -48,85 +48,85 @@
 - (WBBookmarkDatabaseSyncData)databaseSyncData;
 - (WBBrowserState)browserState;
 - (WBBrowserState)lastSessionBrowserState;
-- (WBTabCollection)initWithTabCollection:(id)a3;
-- (id)_activeParticipantsFromParticipantData:(id)a3;
+- (WBTabCollection)initWithTabCollection:(id)collection;
+- (id)_activeParticipantsFromParticipantData:(id)data;
 - (id)_allMutableTabGroupsUnsorted;
-- (id)_bookmarksForTabs:(id)a3;
-- (id)_bookmarksForTabs:(id)a3 syncable:(BOOL)a4;
-- (id)_bookmarksFromItems:(id)a3;
+- (id)_bookmarksForTabs:(id)tabs;
+- (id)_bookmarksForTabs:(id)tabs syncable:(BOOL)syncable;
+- (id)_bookmarksFromItems:(id)items;
 - (id)_collection;
-- (id)_descriptionForScopedBookmark:(id)a3;
+- (id)_descriptionForScopedBookmark:(id)bookmark;
 - (id)_lastSessionBrowserState;
-- (id)_participantDataForTab:(id)a3;
+- (id)_participantDataForTab:(id)tab;
 - (id)_profiles;
 - (id)_profilesQuery;
-- (id)_shareRecordForTabGroup:(id)a3;
+- (id)_shareRecordForTabGroup:(id)group;
 - (id)_tabGroupsInDefaultProfile;
-- (id)activeParticipantsInTab:(id)a3;
-- (id)activeParticipantsInTabGroup:(id)a3;
-- (id)devicesForProfile:(id)a3;
-- (id)itemsInParentWithID:(unsigned int)a3 ofType:(Class)a4;
-- (id)mutableProfileWithIdentifier:(id)a3;
-- (id)mutableTabGroupWithUUID:(id)a3;
-- (id)mutableTabWithUUID:(id)a3;
-- (id)mutableTabsForTabGroup:(id)a3;
-- (id)namedTabGroupsForProfileWithIdentifier:(id)a3;
-- (id)pinnedTabsForProfileWithIdentifier:(id)a3;
-- (id)presenceTabUUIDForParticipantIdentifier:(id)a3 inTabGroup:(id)a4;
-- (id)profileWithServerID:(id)a3;
-- (id)recordIDForTab:(id)a3;
-- (id)scopedBookmarkListWithID:(int)a3;
-- (id)scopedBookmarkWithUUID:(id)a3;
-- (id)shareRecordForTabGroup:(id)a3;
-- (id)syncDataForItem:(id)a3;
-- (id)syncDataForItemWithID:(int)a3;
-- (id)tabGroupMatchingShare:(id)a3 inTabGroups:(id)a4;
-- (id)tabGroupUUIDForServerID:(id)a3;
-- (id)tabGroupWithUUID:(id)a3;
-- (id)tabUUIDForServerID:(id)a3;
-- (id)tabWithUUID:(id)a3;
-- (id)tabsForTabGroup:(id)a3;
-- (id)topScopedBookmarkListForTabGroup:(id)a3;
-- (id)windowStateWithUUID:(id)a3;
-- (int)frequentlyVisitedSitesFolderIDForProfileWithIdentifier:(id)a3;
+- (id)activeParticipantsInTab:(id)tab;
+- (id)activeParticipantsInTabGroup:(id)group;
+- (id)devicesForProfile:(id)profile;
+- (id)itemsInParentWithID:(unsigned int)d ofType:(Class)type;
+- (id)mutableProfileWithIdentifier:(id)identifier;
+- (id)mutableTabGroupWithUUID:(id)d;
+- (id)mutableTabWithUUID:(id)d;
+- (id)mutableTabsForTabGroup:(id)group;
+- (id)namedTabGroupsForProfileWithIdentifier:(id)identifier;
+- (id)pinnedTabsForProfileWithIdentifier:(id)identifier;
+- (id)presenceTabUUIDForParticipantIdentifier:(id)identifier inTabGroup:(id)group;
+- (id)profileWithServerID:(id)d;
+- (id)recordIDForTab:(id)tab;
+- (id)scopedBookmarkListWithID:(int)d;
+- (id)scopedBookmarkWithUUID:(id)d;
+- (id)shareRecordForTabGroup:(id)group;
+- (id)syncDataForItem:(id)item;
+- (id)syncDataForItemWithID:(int)d;
+- (id)tabGroupMatchingShare:(id)share inTabGroups:(id)groups;
+- (id)tabGroupUUIDForServerID:(id)d;
+- (id)tabGroupWithUUID:(id)d;
+- (id)tabUUIDForServerID:(id)d;
+- (id)tabWithUUID:(id)d;
+- (id)tabsForTabGroup:(id)group;
+- (id)topScopedBookmarkListForTabGroup:(id)group;
+- (id)windowStateWithUUID:(id)d;
+- (int)frequentlyVisitedSitesFolderIDForProfileWithIdentifier:(id)identifier;
 - (int)pinnedTabsFolderID;
-- (int)pinnedTabsFolderIDForProfileWithIdentifier:(id)a3;
+- (int)pinnedTabsFolderIDForProfileWithIdentifier:(id)identifier;
 - (int)privatePinnedTabsFolderID;
-- (int64_t)tabCountForTabGroupWithUUID:(id)a3;
+- (int64_t)tabCountForTabGroupWithUUID:(id)d;
 - (unint64_t)numberOfLocalTabsToBeClosed;
-- (void)_addProfile:(id)a3 toLog:(id)a4 hidingSensitiveData:(BOOL)a5;
-- (void)_addTabGroup:(id)a3 toLog:(id)a4 hidingSensitiveData:(BOOL)a5;
+- (void)_addProfile:(id)profile toLog:(id)log hidingSensitiveData:(BOOL)data;
+- (void)_addTabGroup:(id)group toLog:(id)log hidingSensitiveData:(BOOL)data;
 - (void)_createDatabaseQueue;
-- (void)_readPropertiesOfBookmark:(id)a3;
-- (void)createTopScopedBookmarkListIfNeededForTabGroup:(id)a3;
-- (void)deleteItems:(id)a3 leaveTombstones:(BOOL)a4 completionHandler:(id)a5;
-- (void)deleteWindowStates:(id)a3 completionHandler:(id)a4;
-- (void)deleteWindowsNotInLastSessionWithCompletionHandler:(id)a3;
-- (void)enumerateDescendantsOfItemWithID:(int)a3 usingBlock:(id)a4;
-- (void)flushDeletedTabsInTabGroup:(id)a3 completionHandler:(id)a4;
-- (void)frequentlyVisitedSitesForProfileWithIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)getActiveParticipantsInTab:(id)a3 completionHandler:(id)a4;
-- (void)insertItems:(id)a3 inParent:(id)a4 afterItem:(id)a5 completionHandler:(id)a6;
-- (void)insertItems:(id)a3 inParentWithID:(unsigned int)a4 afterItem:(id)a5 completionHandler:(id)a6;
-- (void)insertItemsIntoPlace:(id)a3 inParent:(id)a4 completionHandler:(id)a5;
-- (void)insertItemsIntoPlace:(id)a3 inParentWithID:(unsigned int)a4 completionHandler:(id)a5;
+- (void)_readPropertiesOfBookmark:(id)bookmark;
+- (void)createTopScopedBookmarkListIfNeededForTabGroup:(id)group;
+- (void)deleteItems:(id)items leaveTombstones:(BOOL)tombstones completionHandler:(id)handler;
+- (void)deleteWindowStates:(id)states completionHandler:(id)handler;
+- (void)deleteWindowsNotInLastSessionWithCompletionHandler:(id)handler;
+- (void)enumerateDescendantsOfItemWithID:(int)d usingBlock:(id)block;
+- (void)flushDeletedTabsInTabGroup:(id)group completionHandler:(id)handler;
+- (void)frequentlyVisitedSitesForProfileWithIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)getActiveParticipantsInTab:(id)tab completionHandler:(id)handler;
+- (void)insertItems:(id)items inParent:(id)parent afterItem:(id)item completionHandler:(id)handler;
+- (void)insertItems:(id)items inParentWithID:(unsigned int)d afterItem:(id)item completionHandler:(id)handler;
+- (void)insertItemsIntoPlace:(id)place inParent:(id)parent completionHandler:(id)handler;
+- (void)insertItemsIntoPlace:(id)place inParentWithID:(unsigned int)d completionHandler:(id)handler;
 - (void)performMaintenance;
-- (void)reorderItem:(id)a3 afterItem:(id)a4 completionHandler:(id)a5;
-- (void)reorderItemIntoPlace:(id)a3 completionHandler:(id)a4;
-- (void)saveBrowserState:(id)a3 completionHandler:(id)a4;
-- (void)saveItem:(id)a3 completionHandler:(id)a4;
-- (void)saveItems:(id)a3 completionHandler:(id)a4;
-- (void)saveMinimumAPISyncVersionOfDescendantItemsForMovedItem:(id)a3;
-- (void)saveWindowRestorationArchiveData:(id)a3 forWindowUUIDString:(id)a4 completionHandler:(id)a5;
-- (void)saveWindowState:(id)a3 completionHandler:(id)a4;
-- (void)setCompletedMigration:(BOOL)a3;
-- (void)setFrequentlyVisitedSites:(id)a3 forProfileWithIdentifier:(id)a4 completionHandler:(id)a5;
-- (void)setHasSharedTabGroupsWithCompletionHandler:(id)a3;
-- (void)setShouldPrepareBackgroundTaskExpiration:(BOOL)a3;
-- (void)shareRecordForTabGroup:(id)a3 completionHandler:(id)a4;
+- (void)reorderItem:(id)item afterItem:(id)afterItem completionHandler:(id)handler;
+- (void)reorderItemIntoPlace:(id)place completionHandler:(id)handler;
+- (void)saveBrowserState:(id)state completionHandler:(id)handler;
+- (void)saveItem:(id)item completionHandler:(id)handler;
+- (void)saveItems:(id)items completionHandler:(id)handler;
+- (void)saveMinimumAPISyncVersionOfDescendantItemsForMovedItem:(id)item;
+- (void)saveWindowRestorationArchiveData:(id)data forWindowUUIDString:(id)string completionHandler:(id)handler;
+- (void)saveWindowState:(id)state completionHandler:(id)handler;
+- (void)setCompletedMigration:(BOOL)migration;
+- (void)setFrequentlyVisitedSites:(id)sites forProfileWithIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)setHasSharedTabGroupsWithCompletionHandler:(id)handler;
+- (void)setShouldPrepareBackgroundTaskExpiration:(BOOL)expiration;
+- (void)shareRecordForTabGroup:(id)group completionHandler:(id)handler;
 - (void)unlockSync;
-- (void)updateItems:(id)a3 inParentWithID:(unsigned int)a4 completionHandler:(id)a5;
-- (void)updateTabsInTabGroup:(id)a3 completionHandler:(id)a4;
+- (void)updateItems:(id)items inParentWithID:(unsigned int)d completionHandler:(id)handler;
+- (void)updateTabsInTabGroup:(id)group completionHandler:(id)handler;
 @end
 
 @implementation WBTabCollection
@@ -134,9 +134,9 @@
 - (void)_createDatabaseQueue
 {
   v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.WebBookmarks.WBTabCollection.databaseQueue.%p", self];
-  v3 = [v7 UTF8String];
+  uTF8String = [v7 UTF8String];
   v4 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-  v5 = dispatch_queue_create(v3, v4);
+  v5 = dispatch_queue_create(uTF8String, v4);
   databaseQueue = self->_databaseQueue;
   self->_databaseQueue = v5;
 }
@@ -180,16 +180,16 @@ uint64_t __34__WBTabCollection_mutableProfiles__block_invoke(uint64_t a1)
 {
   v3 = [[WebBookmarkListQuery alloc] initWithBookmarksWhere:@"parent = 0 AND syncable = 1 AND type = 1 AND subtype = 2 AND special_id = 0" folderID:0 orderBy:@"order_index ASC" usingFilter:0];
   v4 = [WebBookmarkList alloc];
-  v5 = [(WBTabCollection *)self _collection];
-  v6 = [(WebBookmarkList *)v4 initWithQuery:v3 skipOffset:0 collection:v5];
+  _collection = [(WBTabCollection *)self _collection];
+  v6 = [(WebBookmarkList *)v4 initWithQuery:v3 skipOffset:0 collection:_collection];
 
-  v7 = [(WebBookmarkList *)v6 bookmarkArray];
+  bookmarkArray = [(WebBookmarkList *)v6 bookmarkArray];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __28__WBTabCollection__profiles__block_invoke;
   v13[3] = &unk_279E76DC0;
   v13[4] = self;
-  v8 = [v7 safari_mapAndFilterObjectsUsingBlock:v13];
+  v8 = [bookmarkArray safari_mapAndFilterObjectsUsingBlock:v13];
   v9 = v8;
   if (v8)
   {
@@ -298,22 +298,22 @@ void __31__WBTabCollection_browserState__block_invoke(uint64_t a1)
 + (NSString)deviceIdentifier
 {
   v2 = [(WebBookmarkCollection *)WebBookmarkTabCollection deviceIdentifierForCloudKitWithCollectionType:1 generateIfNeeded:1];
-  v3 = [v2 UUID];
-  v4 = [v3 UUIDString];
+  uUID = [v2 UUID];
+  uUIDString = [uUID UUIDString];
 
-  return v4;
+  return uUIDString;
 }
 
-+ (id)databasePathForConfiguration:(id)a3
++ (id)databasePathForConfiguration:(id)configuration
 {
-  v3 = [(WebBookmarkCollection *)WebBookmarkTabCollection databasePathForConfiguration:a3];
+  v3 = [(WebBookmarkCollection *)WebBookmarkTabCollection databasePathForConfiguration:configuration];
 
   return v3;
 }
 
-- (WBTabCollection)initWithTabCollection:(id)a3
+- (WBTabCollection)initWithTabCollection:(id)collection
 {
-  v5 = a3;
+  collectionCopy = collection;
   v10.receiver = self;
   v10.super_class = WBTabCollection;
   v6 = [(WBTabCollection *)&v10 init];
@@ -321,7 +321,7 @@ void __31__WBTabCollection_browserState__block_invoke(uint64_t a1)
   if (v6)
   {
     [(WBTabCollection *)v6 _createDatabaseQueue];
-    objc_storeStrong(&v7->_collection, a3);
+    objc_storeStrong(&v7->_collection, collection);
     [(WBTabCollection *)v7 _commonInit];
     v8 = v7;
   }
@@ -329,19 +329,19 @@ void __31__WBTabCollection_browserState__block_invoke(uint64_t a1)
   return v7;
 }
 
-- (void)setShouldPrepareBackgroundTaskExpiration:(BOOL)a3
+- (void)setShouldPrepareBackgroundTaskExpiration:(BOOL)expiration
 {
-  if (self->_shouldPrepareBackgroundTaskExpiration != a3)
+  if (self->_shouldPrepareBackgroundTaskExpiration != expiration)
   {
-    self->_shouldPrepareBackgroundTaskExpiration = a3;
-    if (a3)
+    self->_shouldPrepareBackgroundTaskExpiration = expiration;
+    if (expiration)
     {
       [(WebBookmarkCollection *)self->_collection _interruptDatabase];
     }
   }
 }
 
-- (void)setCompletedMigration:(BOOL)a3
+- (void)setCompletedMigration:(BOOL)migration
 {
   MEMORY[0x2743D62A0](v8, @"com.apple.WebBookmarks.WBTabCollection");
   databaseQueue = self->_databaseQueue;
@@ -350,7 +350,7 @@ void __31__WBTabCollection_browserState__block_invoke(uint64_t a1)
   block[2] = __41__WBTabCollection_setCompletedMigration___block_invoke;
   block[3] = &unk_279E75F60;
   block[4] = self;
-  v7 = a3;
+  migrationCopy = migration;
   dispatch_sync(databaseQueue, block);
   SafariShared::SuddenTerminationDisabler::~SuddenTerminationDisabler(v8);
 }
@@ -458,18 +458,18 @@ uint64_t __42__WBTabCollection_lastSessionBrowserState__block_invoke(uint64_t a1
 {
   v25 = *MEMORY[0x277D85DE8];
   v3 = [WBBrowserState alloc];
-  v4 = [(WebBookmarkTabCollection *)self->_collection pinnedTabs];
-  v5 = [(WebBookmarkTabCollection *)self->_collection privatePinnedTabs];
-  v6 = [(WebBookmarkTabCollection *)self->_collection lastSessionWindowStates];
-  v7 = [(WBBrowserState *)v3 initWithPinnedTabs:v4 privatePinnedTabs:v5 windowStates:v6];
+  pinnedTabs = [(WebBookmarkTabCollection *)self->_collection pinnedTabs];
+  privatePinnedTabs = [(WebBookmarkTabCollection *)self->_collection privatePinnedTabs];
+  lastSessionWindowStates = [(WebBookmarkTabCollection *)self->_collection lastSessionWindowStates];
+  v7 = [(WBBrowserState *)v3 initWithPinnedTabs:pinnedTabs privatePinnedTabs:privatePinnedTabs windowStates:lastSessionWindowStates];
 
-  v8 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v9 = [(WBTabCollection *)self _profiles];
-  v10 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  _profiles = [(WBTabCollection *)self _profiles];
+  v10 = [_profiles countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v10)
   {
     v11 = *v21;
@@ -479,35 +479,35 @@ uint64_t __42__WBTabCollection_lastSessionBrowserState__block_invoke(uint64_t a1
       {
         if (*v21 != v11)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(_profiles);
         }
 
         v13 = *(*(&v20 + 1) + 8 * i);
         if ([v13 kind])
         {
           collection = self->_collection;
-          v15 = [v13 identifier];
-          v16 = [(WebBookmarkTabCollection *)collection pinnedTabsForProfileWithIdentifier:v15];
-          v17 = [v13 identifier];
-          [v8 setObject:v16 forKeyedSubscript:v17];
+          identifier = [v13 identifier];
+          v16 = [(WebBookmarkTabCollection *)collection pinnedTabsForProfileWithIdentifier:identifier];
+          identifier2 = [v13 identifier];
+          [dictionary setObject:v16 forKeyedSubscript:identifier2];
         }
       }
 
-      v10 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v10 = [_profiles countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v10);
   }
 
-  [(WBBrowserState *)v7 setPinnedTabsByProfileIdentifier:v8];
+  [(WBBrowserState *)v7 setPinnedTabsByProfileIdentifier:dictionary];
   v18 = *MEMORY[0x277D85DE8];
 
   return v7;
 }
 
-- (BOOL)saveBrowserState:(id)a3
+- (BOOL)saveBrowserState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   MEMORY[0x2743D62A0](v15, @"com.apple.WebBookmarks.WBTabCollection");
   v11 = 0;
   v12 = &v11;
@@ -518,10 +518,10 @@ uint64_t __42__WBTabCollection_lastSessionBrowserState__block_invoke(uint64_t a1
   v8[1] = 3221225472;
   v8[2] = __36__WBTabCollection_saveBrowserState___block_invoke;
   v8[3] = &unk_279E766C8;
-  v9 = v4;
+  v9 = stateCopy;
   v10 = &v11;
   v8[4] = self;
-  v6 = v4;
+  v6 = stateCopy;
   dispatch_sync(databaseQueue, v8);
   LOBYTE(self) = *(v12 + 24);
 
@@ -537,18 +537,18 @@ uint64_t __36__WBTabCollection_saveBrowserState___block_invoke(uint64_t a1)
   return result;
 }
 
-- (BOOL)_saveBrowserState:(id)a3
+- (BOOL)_saveBrowserState:(id)state
 {
-  v4 = a3;
-  v5 = [(WBTabCollection *)self _collection];
+  stateCopy = state;
+  _collection = [(WBTabCollection *)self _collection];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __37__WBTabCollection__saveBrowserState___block_invoke;
   v8[3] = &unk_279E75968;
-  v6 = v4;
+  v6 = stateCopy;
   v9 = v6;
-  v10 = self;
-  LOBYTE(self) = [v5 performDatabaseUpdatesWithTransaction:v8 secureDelete:1];
+  selfCopy = self;
+  LOBYTE(self) = [_collection performDatabaseUpdatesWithTransaction:v8 secureDelete:1];
 
   return self;
 }
@@ -632,10 +632,10 @@ id __37__WBTabCollection__saveBrowserState___block_invoke_3(uint64_t a1, void *a
   return v2;
 }
 
-- (void)saveBrowserState:(id)a3 completionHandler:(id)a4
+- (void)saveBrowserState:(id)state completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  stateCopy = state;
+  handlerCopy = handler;
   if (!self->_shouldPrepareBackgroundTaskExpiration)
   {
     *buf = 0;
@@ -748,24 +748,24 @@ void __46__WBTabCollection_numberOfLocalTabsToBeClosed__block_invoke(uint64_t a1
   *(*(*(a1 + 40) + 8) + 24) = [v2 _countOfAllLocalTabsToBeDeleted];
 }
 
-- (BOOL)_insertItems:(id)a3 inParentWithID:(unsigned int)a4 afterItem:(id)a5
+- (BOOL)_insertItems:(id)items inParentWithID:(unsigned int)d afterItem:(id)item
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(WBTabCollection *)self _collection];
+  itemsCopy = items;
+  itemCopy = item;
+  _collection = [(WBTabCollection *)self _collection];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __57__WBTabCollection__insertItems_inParentWithID_afterItem___block_invoke;
   v14[3] = &unk_279E76738;
   v14[4] = self;
-  v11 = v9;
+  v11 = itemCopy;
   v15 = v11;
-  v12 = v8;
+  v12 = itemsCopy;
   v16 = v12;
-  v17 = a4;
-  LOBYTE(a4) = [v10 performDatabaseUpdatesWithTransaction:v14 secureDelete:0];
+  dCopy = d;
+  LOBYTE(d) = [_collection performDatabaseUpdatesWithTransaction:v14 secureDelete:0];
 
-  return a4;
+  return d;
 }
 
 uint64_t __57__WBTabCollection__insertItems_inParentWithID_afterItem___block_invoke(uint64_t a1)
@@ -832,10 +832,10 @@ LABEL_13:
   return v10;
 }
 
-- (BOOL)insertItems:(id)a3 inParentWithID:(unsigned int)a4 afterItem:(id)a5
+- (BOOL)insertItems:(id)items inParentWithID:(unsigned int)d afterItem:(id)item
 {
-  v8 = a3;
-  v9 = a5;
+  itemsCopy = items;
+  itemCopy = item;
   MEMORY[0x2743D62A0](v23, @"com.apple.WebBookmarks.WBTabCollection");
   v19 = 0;
   v20 = &v19;
@@ -847,18 +847,18 @@ LABEL_13:
   v14[2] = __56__WBTabCollection_insertItems_inParentWithID_afterItem___block_invoke;
   v14[3] = &unk_279E76760;
   v14[4] = self;
-  v15 = v8;
-  v18 = a4;
-  v16 = v9;
+  v15 = itemsCopy;
+  dCopy = d;
+  v16 = itemCopy;
   v17 = &v19;
-  v11 = v9;
-  v12 = v8;
+  v11 = itemCopy;
+  v12 = itemsCopy;
   dispatch_sync(databaseQueue, v14);
-  LOBYTE(v9) = *(v20 + 24);
+  LOBYTE(itemCopy) = *(v20 + 24);
 
   _Block_object_dispose(&v19, 8);
   SafariShared::SuddenTerminationDisabler::~SuddenTerminationDisabler(v23);
-  return v9;
+  return itemCopy;
 }
 
 uint64_t __56__WBTabCollection_insertItems_inParentWithID_afterItem___block_invoke(uint64_t a1)
@@ -868,11 +868,11 @@ uint64_t __56__WBTabCollection_insertItems_inParentWithID_afterItem___block_invo
   return result;
 }
 
-- (void)insertItems:(id)a3 inParentWithID:(unsigned int)a4 afterItem:(id)a5 completionHandler:(id)a6
+- (void)insertItems:(id)items inParentWithID:(unsigned int)d afterItem:(id)item completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
+  itemsCopy = items;
+  itemCopy = item;
+  handlerCopy = handler;
   if (!self->_shouldPrepareBackgroundTaskExpiration)
   {
     *buf = 0;
@@ -910,12 +910,12 @@ uint64_t __74__WBTabCollection_insertItems_inParentWithID_afterItem_completionHa
   return result;
 }
 
-- (void)insertItems:(id)a3 inParent:(id)a4 afterItem:(id)a5 completionHandler:(id)a6
+- (void)insertItems:(id)items inParent:(id)parent afterItem:(id)item completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  itemsCopy = items;
+  parentCopy = parent;
+  itemCopy = item;
+  handlerCopy = handler;
   if (!self->_shouldPrepareBackgroundTaskExpiration)
   {
     *buf = 0;
@@ -957,21 +957,21 @@ uint64_t __68__WBTabCollection_insertItems_inParent_afterItem_completionHandler_
   return result;
 }
 
-- (BOOL)_insertItemsIntoPlace:(id)a3 inParentWithID:(unsigned int)a4
+- (BOOL)_insertItemsIntoPlace:(id)place inParentWithID:(unsigned int)d
 {
-  v6 = a3;
-  v7 = [(WBTabCollection *)self _collection];
+  placeCopy = place;
+  _collection = [(WBTabCollection *)self _collection];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __56__WBTabCollection__insertItemsIntoPlace_inParentWithID___block_invoke;
   v10[3] = &unk_279E75FD0;
   v10[4] = self;
-  v8 = v6;
+  v8 = placeCopy;
   v11 = v8;
-  v12 = a4;
-  LOBYTE(a4) = [v7 performDatabaseUpdatesWithTransaction:v10 secureDelete:0];
+  dCopy = d;
+  LOBYTE(d) = [_collection performDatabaseUpdatesWithTransaction:v10 secureDelete:0];
 
-  return a4;
+  return d;
 }
 
 uint64_t __56__WBTabCollection__insertItemsIntoPlace_inParentWithID___block_invoke(uint64_t a1)
@@ -1036,10 +1036,10 @@ LABEL_14:
   return v11;
 }
 
-- (void)insertItemsIntoPlace:(id)a3 inParentWithID:(unsigned int)a4 completionHandler:(id)a5
+- (void)insertItemsIntoPlace:(id)place inParentWithID:(unsigned int)d completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a5;
+  placeCopy = place;
+  handlerCopy = handler;
   if (!self->_shouldPrepareBackgroundTaskExpiration)
   {
     *buf = 0;
@@ -1077,11 +1077,11 @@ uint64_t __73__WBTabCollection_insertItemsIntoPlace_inParentWithID_completionHan
   return result;
 }
 
-- (void)insertItemsIntoPlace:(id)a3 inParent:(id)a4 completionHandler:(id)a5
+- (void)insertItemsIntoPlace:(id)place inParent:(id)parent completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  placeCopy = place;
+  parentCopy = parent;
+  handlerCopy = handler;
   if (!self->_shouldPrepareBackgroundTaskExpiration)
   {
     *buf = 0;
@@ -1123,19 +1123,19 @@ uint64_t __67__WBTabCollection_insertItemsIntoPlace_inParent_completionHandler__
   return result;
 }
 
-- (BOOL)_saveItem:(id)a3
+- (BOOL)_saveItem:(id)item
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  itemCopy = item;
   if (self->_shouldPrepareBackgroundTaskExpiration)
   {
-    v5 = WBS_LOG_CHANNEL_PREFIXBookmarks();
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
+    _collection = WBS_LOG_CHANNEL_PREFIXBookmarks();
+    if (os_log_type_enabled(_collection, OS_LOG_TYPE_INFO))
     {
-      v6 = [v4 privacyPreservingDescription];
+      privacyPreservingDescription = [itemCopy privacyPreservingDescription];
       *buf = 138543362;
-      v13 = v6;
-      _os_log_impl(&dword_272C20000, v5, OS_LOG_TYPE_INFO, "Background task will expire soon. Block performing saving bookmarks. %{public}@", buf, 0xCu);
+      v13 = privacyPreservingDescription;
+      _os_log_impl(&dword_272C20000, _collection, OS_LOG_TYPE_INFO, "Background task will expire soon. Block performing saving bookmarks. %{public}@", buf, 0xCu);
     }
 
     v7 = 0;
@@ -1143,14 +1143,14 @@ uint64_t __67__WBTabCollection_insertItemsIntoPlace_inParent_completionHandler__
 
   else
   {
-    v5 = [(WBTabCollection *)self _collection];
+    _collection = [(WBTabCollection *)self _collection];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __29__WBTabCollection__saveItem___block_invoke;
     v10[3] = &unk_279E75968;
     v10[4] = self;
-    v11 = v4;
-    v7 = [v5 performDatabaseUpdatesWithTransaction:v10 secureDelete:0];
+    v11 = itemCopy;
+    v7 = [_collection performDatabaseUpdatesWithTransaction:v10 secureDelete:0];
   }
 
   v8 = *MEMORY[0x277D85DE8];
@@ -1174,27 +1174,27 @@ uint64_t __29__WBTabCollection__saveItem___block_invoke(uint64_t a1)
   return [v5 _saveSettingsIfNeededForItem:v6];
 }
 
-- (BOOL)_saveSettingsIfNeededForItem:(id)a3
+- (BOOL)_saveSettingsIfNeededForItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v4 bookmark];
+    bookmark = [itemCopy bookmark];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __48__WBTabCollection__saveSettingsIfNeededForItem___block_invoke;
     v15[3] = &unk_279E757C8;
-    v6 = v4;
+    v6 = itemCopy;
     v16 = v6;
-    [v5 performWithFieldsWriteLock:v15];
+    [bookmark performWithFieldsWriteLock:v15];
 
-    v7 = [(WBTabCollection *)self _collection];
-    v8 = [v6 modifiedSettingsFieldsByName];
-    v9 = [v6 bookmark];
-    v10 = [v9 identifier];
-    v11 = [v6 bookmark];
-    v12 = [v11 serverID];
-    v13 = [v7 saveSettings:v8 inParentWithID:v10 parentServerID:v12];
+    _collection = [(WBTabCollection *)self _collection];
+    modifiedSettingsFieldsByName = [v6 modifiedSettingsFieldsByName];
+    bookmark2 = [v6 bookmark];
+    identifier = [bookmark2 identifier];
+    bookmark3 = [v6 bookmark];
+    serverID = [bookmark3 serverID];
+    v13 = [_collection saveSettings:modifiedSettingsFieldsByName inParentWithID:identifier parentServerID:serverID];
   }
 
   else
@@ -1219,18 +1219,18 @@ void __48__WBTabCollection__saveSettingsIfNeededForItem___block_invoke(uint64_t 
   }
 }
 
-- (BOOL)_saveItems:(id)a3
+- (BOOL)_saveItems:(id)items
 {
-  v4 = a3;
-  v5 = [(WBTabCollection *)self _collection];
+  itemsCopy = items;
+  _collection = [(WBTabCollection *)self _collection];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __30__WBTabCollection__saveItems___block_invoke;
   v8[3] = &unk_279E75968;
-  v6 = v4;
+  v6 = itemsCopy;
   v9 = v6;
-  v10 = self;
-  LOBYTE(self) = [v5 performDatabaseUpdatesWithTransaction:v8 secureDelete:0];
+  selfCopy = self;
+  LOBYTE(self) = [_collection performDatabaseUpdatesWithTransaction:v8 secureDelete:0];
 
   return self;
 }
@@ -1290,9 +1290,9 @@ LABEL_13:
   return v10;
 }
 
-- (BOOL)saveItem:(id)a3
+- (BOOL)saveItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   MEMORY[0x2743D62A0](v15, @"com.apple.WebBookmarks.WBTabCollection");
   v11 = 0;
   v12 = &v11;
@@ -1303,10 +1303,10 @@ LABEL_13:
   v8[1] = 3221225472;
   v8[2] = __28__WBTabCollection_saveItem___block_invoke;
   v8[3] = &unk_279E766C8;
-  v9 = v4;
+  v9 = itemCopy;
   v10 = &v11;
   v8[4] = self;
-  v6 = v4;
+  v6 = itemCopy;
   dispatch_sync(databaseQueue, v8);
   LOBYTE(self) = *(v12 + 24);
 
@@ -1322,10 +1322,10 @@ uint64_t __28__WBTabCollection_saveItem___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)saveItem:(id)a3 completionHandler:(id)a4
+- (void)saveItem:(id)item completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  handlerCopy = handler;
   if (!self->_shouldPrepareBackgroundTaskExpiration)
   {
     *buf = 0;
@@ -1363,10 +1363,10 @@ uint64_t __46__WBTabCollection_saveItem_completionHandler___block_invoke(uint64_
   return result;
 }
 
-- (void)saveItems:(id)a3 completionHandler:(id)a4
+- (void)saveItems:(id)items completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  itemsCopy = items;
+  handlerCopy = handler;
   if (!self->_shouldPrepareBackgroundTaskExpiration)
   {
     *buf = 0;
@@ -1404,21 +1404,21 @@ uint64_t __47__WBTabCollection_saveItems_completionHandler___block_invoke(uint64
   return result;
 }
 
-- (BOOL)_reorderItem:(id)a3 afterItem:(id)a4
+- (BOOL)_reorderItem:(id)item afterItem:(id)afterItem
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WBTabCollection *)self _collection];
+  itemCopy = item;
+  afterItemCopy = afterItem;
+  _collection = [(WBTabCollection *)self _collection];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __42__WBTabCollection__reorderItem_afterItem___block_invoke;
   v13[3] = &unk_279E759E0;
   v13[4] = self;
-  v9 = v6;
+  v9 = itemCopy;
   v14 = v9;
-  v10 = v7;
+  v10 = afterItemCopy;
   v15 = v10;
-  v11 = [v8 performDatabaseUpdatesWithTransaction:v13 secureDelete:0];
+  v11 = [_collection performDatabaseUpdatesWithTransaction:v13 secureDelete:0];
 
   return v11;
 }
@@ -1433,10 +1433,10 @@ uint64_t __42__WBTabCollection__reorderItem_afterItem___block_invoke(id *a1)
   return v5;
 }
 
-- (BOOL)reorderItem:(id)a3 afterItem:(id)a4
+- (BOOL)reorderItem:(id)item afterItem:(id)afterItem
 {
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  afterItemCopy = afterItem;
   MEMORY[0x2743D62A0](v20, @"com.apple.WebBookmarks.WBTabCollection");
   v16 = 0;
   v17 = &v16;
@@ -1448,11 +1448,11 @@ uint64_t __42__WBTabCollection__reorderItem_afterItem___block_invoke(id *a1)
   block[2] = __41__WBTabCollection_reorderItem_afterItem___block_invoke;
   block[3] = &unk_279E76828;
   block[4] = self;
-  v13 = v6;
-  v14 = v7;
+  v13 = itemCopy;
+  v14 = afterItemCopy;
   v15 = &v16;
-  v9 = v7;
-  v10 = v6;
+  v9 = afterItemCopy;
+  v10 = itemCopy;
   dispatch_sync(databaseQueue, block);
   LOBYTE(self) = *(v17 + 24);
 
@@ -1468,11 +1468,11 @@ uint64_t __41__WBTabCollection_reorderItem_afterItem___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)reorderItem:(id)a3 afterItem:(id)a4 completionHandler:(id)a5
+- (void)reorderItem:(id)item afterItem:(id)afterItem completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  itemCopy = item;
+  afterItemCopy = afterItem;
+  handlerCopy = handler;
   if (!self->_shouldPrepareBackgroundTaskExpiration)
   {
     *buf = 0;
@@ -1510,18 +1510,18 @@ uint64_t __59__WBTabCollection_reorderItem_afterItem_completionHandler___block_i
   return result;
 }
 
-- (BOOL)_reorderItemIntoPlace:(id)a3
+- (BOOL)_reorderItemIntoPlace:(id)place
 {
-  v4 = a3;
-  v5 = [(WBTabCollection *)self _collection];
+  placeCopy = place;
+  _collection = [(WBTabCollection *)self _collection];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __41__WBTabCollection__reorderItemIntoPlace___block_invoke;
   v9[3] = &unk_279E75968;
   v9[4] = self;
-  v6 = v4;
+  v6 = placeCopy;
   v10 = v6;
-  v7 = [v5 performDatabaseUpdatesWithTransaction:v9 secureDelete:0];
+  v7 = [_collection performDatabaseUpdatesWithTransaction:v9 secureDelete:0];
 
   return v7;
 }
@@ -1535,10 +1535,10 @@ uint64_t __41__WBTabCollection__reorderItemIntoPlace___block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)reorderItemIntoPlace:(id)a3 completionHandler:(id)a4
+- (void)reorderItemIntoPlace:(id)place completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  placeCopy = place;
+  handlerCopy = handler;
   if (!self->_shouldPrepareBackgroundTaskExpiration)
   {
     *buf = 0;
@@ -1576,21 +1576,21 @@ uint64_t __58__WBTabCollection_reorderItemIntoPlace_completionHandler___block_in
   return result;
 }
 
-- (BOOL)_deleteItems:(id)a3 leaveTombstones:(BOOL)a4 cleanBookmarks:(BOOL)a5
+- (BOOL)_deleteItems:(id)items leaveTombstones:(BOOL)tombstones cleanBookmarks:(BOOL)bookmarks
 {
-  v8 = a3;
-  v9 = [v8 safari_containsObjectPassingTest:&__block_literal_global_42];
-  v10 = [(WBTabCollection *)self _collection];
+  itemsCopy = items;
+  v9 = [itemsCopy safari_containsObjectPassingTest:&__block_literal_global_42];
+  _collection = [(WBTabCollection *)self _collection];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __63__WBTabCollection__deleteItems_leaveTombstones_cleanBookmarks___block_invoke_2;
   v14[3] = &unk_279E76870;
   v14[4] = self;
-  v11 = v8;
+  v11 = itemsCopy;
   v15 = v11;
-  v16 = a4;
-  v17 = a5;
-  v12 = [v10 performDatabaseUpdatesWithTransaction:v14 secureDelete:v9];
+  tombstonesCopy = tombstones;
+  bookmarksCopy = bookmarks;
+  v12 = [_collection performDatabaseUpdatesWithTransaction:v14 secureDelete:v9];
 
   return v12;
 }
@@ -1604,9 +1604,9 @@ uint64_t __63__WBTabCollection__deleteItems_leaveTombstones_cleanBookmarks___blo
   return v4;
 }
 
-- (BOOL)deleteItems:(id)a3 leaveTombstones:(BOOL)a4 cleanBookmarks:(BOOL)a5
+- (BOOL)deleteItems:(id)items leaveTombstones:(BOOL)tombstones cleanBookmarks:(BOOL)bookmarks
 {
-  v8 = a3;
+  itemsCopy = items;
   MEMORY[0x2743D62A0](v22, @"com.apple.WebBookmarks.WBTabCollection");
   v18 = 0;
   v19 = &v18;
@@ -1617,12 +1617,12 @@ uint64_t __63__WBTabCollection__deleteItems_leaveTombstones_cleanBookmarks___blo
   block[1] = 3221225472;
   block[2] = __62__WBTabCollection_deleteItems_leaveTombstones_cleanBookmarks___block_invoke;
   block[3] = &unk_279E76898;
-  v14 = v8;
+  v14 = itemsCopy;
   v15 = &v18;
   block[4] = self;
-  v16 = a4;
-  v17 = a5;
-  v10 = v8;
+  tombstonesCopy = tombstones;
+  bookmarksCopy = bookmarks;
+  v10 = itemsCopy;
   dispatch_sync(databaseQueue, block);
   v11 = *(v19 + 24);
 
@@ -1638,9 +1638,9 @@ uint64_t __62__WBTabCollection_deleteItems_leaveTombstones_cleanBookmarks___bloc
   return result;
 }
 
-- (BOOL)deleteItems:(id)a3 leaveTombstones:(BOOL)a4
+- (BOOL)deleteItems:(id)items leaveTombstones:(BOOL)tombstones
 {
-  v6 = a3;
+  itemsCopy = items;
   MEMORY[0x2743D62A0](v19, @"com.apple.WebBookmarks.WBTabCollection");
   v15 = 0;
   v16 = &v15;
@@ -1651,11 +1651,11 @@ uint64_t __62__WBTabCollection_deleteItems_leaveTombstones_cleanBookmarks___bloc
   block[1] = 3221225472;
   block[2] = __47__WBTabCollection_deleteItems_leaveTombstones___block_invoke;
   block[3] = &unk_279E768C0;
-  v12 = v6;
+  v12 = itemsCopy;
   v13 = &v15;
   block[4] = self;
-  v14 = a4;
-  v8 = v6;
+  tombstonesCopy = tombstones;
+  v8 = itemsCopy;
   dispatch_sync(databaseQueue, block);
   v9 = *(v16 + 24);
 
@@ -1671,10 +1671,10 @@ uint64_t __47__WBTabCollection_deleteItems_leaveTombstones___block_invoke(uint64
   return result;
 }
 
-- (void)deleteItems:(id)a3 leaveTombstones:(BOOL)a4 completionHandler:(id)a5
+- (void)deleteItems:(id)items leaveTombstones:(BOOL)tombstones completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a5;
+  itemsCopy = items;
+  handlerCopy = handler;
   if (!self->_shouldPrepareBackgroundTaskExpiration)
   {
     *buf = 0;
@@ -1712,9 +1712,9 @@ uint64_t __65__WBTabCollection_deleteItems_leaveTombstones_completionHandler___b
   return result;
 }
 
-- (id)_bookmarksFromItems:(id)a3
+- (id)_bookmarksFromItems:(id)items
 {
-  v3 = [a3 safari_mapAndFilterObjectsUsingBlock:&__block_literal_global_47];
+  v3 = [items safari_mapAndFilterObjectsUsingBlock:&__block_literal_global_47];
 
   return v3;
 }
@@ -1735,9 +1735,9 @@ id __39__WBTabCollection__bookmarksFromItems___block_invoke(uint64_t a1, void *a
   return v3;
 }
 
-- (BOOL)updateItems:(id)a3 inParentWithID:(unsigned int)a4
+- (BOOL)updateItems:(id)items inParentWithID:(unsigned int)d
 {
-  v6 = a3;
+  itemsCopy = items;
   MEMORY[0x2743D62A0](v18, @"com.apple.WebBookmarks.WBTabCollection");
   v14 = 0;
   v15 = &v14;
@@ -1748,17 +1748,17 @@ id __39__WBTabCollection__bookmarksFromItems___block_invoke(uint64_t a1, void *a
   block[1] = 3221225472;
   block[2] = __46__WBTabCollection_updateItems_inParentWithID___block_invoke;
   block[3] = &unk_279E76930;
-  v11 = v6;
+  v11 = itemsCopy;
   v12 = &v14;
   block[4] = self;
-  v13 = a4;
-  v8 = v6;
+  dCopy = d;
+  v8 = itemsCopy;
   dispatch_sync(databaseQueue, block);
-  LOBYTE(a4) = *(v15 + 24);
+  LOBYTE(d) = *(v15 + 24);
 
   _Block_object_dispose(&v14, 8);
   SafariShared::SuddenTerminationDisabler::~SuddenTerminationDisabler(v18);
-  return a4;
+  return d;
 }
 
 uint64_t __46__WBTabCollection_updateItems_inParentWithID___block_invoke(uint64_t a1)
@@ -1768,10 +1768,10 @@ uint64_t __46__WBTabCollection_updateItems_inParentWithID___block_invoke(uint64_
   return result;
 }
 
-- (void)updateItems:(id)a3 inParentWithID:(unsigned int)a4 completionHandler:(id)a5
+- (void)updateItems:(id)items inParentWithID:(unsigned int)d completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a5;
+  itemsCopy = items;
+  handlerCopy = handler;
   if (!self->_shouldPrepareBackgroundTaskExpiration)
   {
     *buf = 0;
@@ -1809,7 +1809,7 @@ uint64_t __64__WBTabCollection_updateItems_inParentWithID_completionHandler___bl
   return result;
 }
 
-- (id)itemsInParentWithID:(unsigned int)a3 ofType:(Class)a4
+- (id)itemsInParentWithID:(unsigned int)d ofType:(Class)type
 {
   MEMORY[0x2743D62A0](v18, @"com.apple.WebBookmarks.WBTabCollection");
   v12 = 0;
@@ -1825,8 +1825,8 @@ uint64_t __64__WBTabCollection_updateItems_inParentWithID_completionHandler___bl
   block[3] = &unk_279E769A0;
   block[4] = self;
   block[5] = &v12;
-  v11 = a3;
-  block[6] = a4;
+  dCopy = d;
+  block[6] = type;
   dispatch_sync(databaseQueue, block);
   v8 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -1926,29 +1926,29 @@ id *__31__WBTabCollection_reloadItems___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)saveMinimumAPISyncVersionOfDescendantItemsForMovedItem:(id)a3
+- (void)saveMinimumAPISyncVersionOfDescendantItemsForMovedItem:(id)item
 {
-  v8 = a3;
-  v4 = [(WBTabCollection *)self _collection];
-  v5 = [(WBTabCollection *)self _collection];
-  v6 = [v8 bookmark];
-  v7 = [v5 bookmarkWithID:{objc_msgSend(v6, "identifier")}];
-  [v4 saveMinimumAPISyncVersionOfDescendantItemsForItem:v7 includingAncestorItem:0];
+  itemCopy = item;
+  _collection = [(WBTabCollection *)self _collection];
+  _collection2 = [(WBTabCollection *)self _collection];
+  bookmark = [itemCopy bookmark];
+  v7 = [_collection2 bookmarkWithID:{objc_msgSend(bookmark, "identifier")}];
+  [_collection saveMinimumAPISyncVersionOfDescendantItemsForItem:v7 includingAncestorItem:0];
 }
 
-- (void)enumerateDescendantsOfItemWithID:(int)a3 usingBlock:(id)a4
+- (void)enumerateDescendantsOfItemWithID:(int)d usingBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   MEMORY[0x2743D62A0](v12, @"com.apple.WebBookmarks.WBTabCollection");
   databaseQueue = self->_databaseQueue;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __63__WBTabCollection_enumerateDescendantsOfItemWithID_usingBlock___block_invoke;
   v9[3] = &unk_279E769F0;
-  v11 = a3;
+  dCopy = d;
   v9[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = blockCopy;
+  v8 = blockCopy;
   dispatch_sync(databaseQueue, v9);
 
   SafariShared::SuddenTerminationDisabler::~SuddenTerminationDisabler(v12);
@@ -1966,18 +1966,18 @@ void __63__WBTabCollection_enumerateDescendantsOfItemWithID_usingBlock___block_i
   [v2 enumerateDescendantsOfBookmarkID:v3 usingBlock:v4];
 }
 
-- (BOOL)_updatePinnedTabs:(id)a3 privatePinnedTabs:(id)a4
+- (BOOL)_updatePinnedTabs:(id)tabs privatePinnedTabs:(id)pinnedTabs
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  tabsCopy = tabs;
+  pinnedTabsCopy = pinnedTabs;
   v8 = WBS_LOG_CHANNEL_PREFIXBookmarks();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     *buf = 134218240;
-    v28 = [v6 count];
+    v28 = [tabsCopy count];
     v29 = 2048;
-    v30 = [v7 count];
+    v30 = [pinnedTabsCopy count];
     _os_log_impl(&dword_272C20000, v8, OS_LOG_TYPE_INFO, "Update %zu pinned tabs and %zu private pinned tabs", buf, 0x16u);
   }
 
@@ -1985,7 +1985,7 @@ void __63__WBTabCollection_enumerateDescendantsOfItemWithID_usingBlock___block_i
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v9 = [v6 arrayByAddingObjectsFromArray:{v7, 0}];
+  v9 = [tabsCopy arrayByAddingObjectsFromArray:{pinnedTabsCopy, 0}];
   v10 = [v9 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v10)
   {
@@ -2001,8 +2001,8 @@ void __63__WBTabCollection_enumerateDescendantsOfItemWithID_usingBlock___block_i
 
         v13 = *(*(&v22 + 1) + 8 * i);
         [v13 setSyncable:0];
-        v14 = [v13 bookmark];
-        [(WBTabCollection *)self _readPropertiesOfBookmark:v14];
+        bookmark = [v13 bookmark];
+        [(WBTabCollection *)self _readPropertiesOfBookmark:bookmark];
       }
 
       v10 = [v9 countByEnumeratingWithState:&v22 objects:v26 count:16];
@@ -2011,14 +2011,14 @@ void __63__WBTabCollection_enumerateDescendantsOfItemWithID_usingBlock___block_i
     while (v10);
   }
 
-  v15 = [(WBTabCollection *)self _collection];
-  v16 = [v6 valueForKey:@"bookmark"];
-  v17 = [v15 _updateBookmarks:v16 inFolderWithID:{objc_msgSend(v15, "pinnedTabsFolderID")}];
+  _collection = [(WBTabCollection *)self _collection];
+  v16 = [tabsCopy valueForKey:@"bookmark"];
+  v17 = [_collection _updateBookmarks:v16 inFolderWithID:{objc_msgSend(_collection, "pinnedTabsFolderID")}];
 
   if (v17)
   {
-    v18 = [v7 valueForKey:@"bookmark"];
-    v19 = [v15 _updateBookmarks:v18 inFolderWithID:{objc_msgSend(v15, "privatePinnedTabsFolderID")}];
+    v18 = [pinnedTabsCopy valueForKey:@"bookmark"];
+    v19 = [_collection _updateBookmarks:v18 inFolderWithID:{objc_msgSend(_collection, "privatePinnedTabsFolderID")}];
   }
 
   else
@@ -2030,27 +2030,27 @@ void __63__WBTabCollection_enumerateDescendantsOfItemWithID_usingBlock___block_i
   return v19;
 }
 
-- (BOOL)_updatePinnedTabsByProfileIdentifier:(id)a3
+- (BOOL)_updatePinnedTabsByProfileIdentifier:(id)identifier
 {
   v44 = *MEMORY[0x277D85DE8];
-  v24 = a3;
-  if ([v24 count])
+  identifierCopy = identifier;
+  if ([identifierCopy count])
   {
-    v4 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v40[0] = MEMORY[0x277D85DD0];
     v40[1] = 3221225472;
     v40[2] = __56__WBTabCollection__updatePinnedTabsByProfileIdentifier___block_invoke;
     v40[3] = &unk_279E76A18;
-    v5 = v4;
+    v5 = dictionary;
     v41 = v5;
     v23 = v5;
-    [v24 enumerateKeysAndObjectsUsingBlock:v40];
+    [identifierCopy enumerateKeysAndObjectsUsingBlock:v40];
     v38 = 0u;
     v39 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v6 = [v5 objectEnumerator];
-    v7 = [v6 countByEnumeratingWithState:&v36 objects:v43 count:16];
+    objectEnumerator = [v5 objectEnumerator];
+    v7 = [objectEnumerator countByEnumeratingWithState:&v36 objects:v43 count:16];
     if (v7)
     {
       v8 = *v37;
@@ -2060,7 +2060,7 @@ void __63__WBTabCollection_enumerateDescendantsOfItemWithID_usingBlock___block_i
         {
           if (*v37 != v8)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(objectEnumerator);
           }
 
           v10 = *(*(&v36 + 1) + 8 * i);
@@ -2084,8 +2084,8 @@ void __63__WBTabCollection_enumerateDescendantsOfItemWithID_usingBlock___block_i
 
                 v15 = *(*(&v32 + 1) + 8 * j);
                 [v15 setSyncable:0];
-                v16 = [v15 bookmark];
-                [(WBTabCollection *)self _readPropertiesOfBookmark:v16];
+                bookmark = [v15 bookmark];
+                [(WBTabCollection *)self _readPropertiesOfBookmark:bookmark];
               }
 
               v12 = [v11 countByEnumeratingWithState:&v32 objects:v42 count:16];
@@ -2095,7 +2095,7 @@ void __63__WBTabCollection_enumerateDescendantsOfItemWithID_usingBlock___block_i
           }
         }
 
-        v7 = [v6 countByEnumeratingWithState:&v36 objects:v43 count:16];
+        v7 = [objectEnumerator countByEnumeratingWithState:&v36 objects:v43 count:16];
       }
 
       while (v7);
@@ -2105,14 +2105,14 @@ void __63__WBTabCollection_enumerateDescendantsOfItemWithID_usingBlock___block_i
     v29 = &v28;
     v30 = 0x2020000000;
     v31 = 0;
-    v17 = [(WBTabCollection *)self _collection];
+    _collection = [(WBTabCollection *)self _collection];
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
     v25[2] = __56__WBTabCollection__updatePinnedTabsByProfileIdentifier___block_invoke_3;
     v25[3] = &unk_279E76A60;
-    v26 = v17;
+    v26 = _collection;
     v27 = &v28;
-    v18 = v17;
+    v18 = _collection;
     [v23 enumerateKeysAndObjectsUsingBlock:v25];
     v19 = *(v29 + 24);
 
@@ -2216,9 +2216,9 @@ void __44__WBTabCollection_privatePinnedTabsFolderID__block_invoke(uint64_t a1)
   *(*(*(a1 + 40) + 8) + 24) = [v2 privatePinnedTabsFolderID];
 }
 
-- (int)pinnedTabsFolderIDForProfileWithIdentifier:(id)a3
+- (int)pinnedTabsFolderIDForProfileWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   MEMORY[0x2743D62A0](v15, @"com.apple.WebBookmarks.WBTabCollection");
   v11 = 0;
   v12 = &v11;
@@ -2229,10 +2229,10 @@ void __44__WBTabCollection_privatePinnedTabsFolderID__block_invoke(uint64_t a1)
   v8[1] = 3221225472;
   v8[2] = __62__WBTabCollection_pinnedTabsFolderIDForProfileWithIdentifier___block_invoke;
   v8[3] = &unk_279E766C8;
-  v9 = v4;
+  v9 = identifierCopy;
   v10 = &v11;
   v8[4] = self;
-  v6 = v4;
+  v6 = identifierCopy;
   dispatch_sync(databaseQueue, v8);
   LODWORD(self) = *(v12 + 6);
 
@@ -2247,9 +2247,9 @@ void __62__WBTabCollection_pinnedTabsFolderIDForProfileWithIdentifier___block_in
   *(*(*(a1 + 48) + 8) + 24) = [v2 pinnedTabsFolderIDForProfileWithIdentifier:*(a1 + 40)];
 }
 
-- (id)pinnedTabsForProfileWithIdentifier:(id)a3
+- (id)pinnedTabsForProfileWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   MEMORY[0x2743D62A0](v18, @"com.apple.WebBookmarks.WBTabCollection");
   v12 = 0;
   v13 = &v12;
@@ -2262,10 +2262,10 @@ void __62__WBTabCollection_pinnedTabsFolderIDForProfileWithIdentifier___block_in
   v9[1] = 3221225472;
   v9[2] = __54__WBTabCollection_pinnedTabsForProfileWithIdentifier___block_invoke;
   v9[3] = &unk_279E766C8;
-  v10 = v4;
+  v10 = identifierCopy;
   v11 = &v12;
   v9[4] = self;
-  v6 = v4;
+  v6 = identifierCopy;
   dispatch_sync(databaseQueue, v9);
   v7 = v13[5];
 
@@ -2284,20 +2284,20 @@ void __54__WBTabCollection_pinnedTabsForProfileWithIdentifier___block_invoke(uin
   *(v3 + 40) = v2;
 }
 
-- (void)frequentlyVisitedSitesForProfileWithIdentifier:(id)a3 completionHandler:(id)a4
+- (void)frequentlyVisitedSitesForProfileWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   databaseQueue = self->_databaseQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __84__WBTabCollection_frequentlyVisitedSitesForProfileWithIdentifier_completionHandler___block_invoke;
   block[3] = &unk_279E76A88;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = identifierCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = identifierCopy;
   dispatch_async(databaseQueue, block);
 }
 
@@ -2318,12 +2318,12 @@ void __84__WBTabCollection_frequentlyVisitedSitesForProfileWithIdentifier_comple
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)setFrequentlyVisitedSites:(id)a3 forProfileWithIdentifier:(id)a4 completionHandler:(id)a5
+- (void)setFrequentlyVisitedSites:(id)sites forProfileWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 copy];
+  sitesCopy = sites;
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  v11 = [sitesCopy copy];
 
   if (!self->_shouldPrepareBackgroundTaskExpiration)
   {
@@ -2366,9 +2366,9 @@ uint64_t __88__WBTabCollection_setFrequentlyVisitedSites_forProfileWithIdentifie
   return result;
 }
 
-- (int)frequentlyVisitedSitesFolderIDForProfileWithIdentifier:(id)a3
+- (int)frequentlyVisitedSitesFolderIDForProfileWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   MEMORY[0x2743D62A0](v15, @"com.apple.WebBookmarks.WBTabCollection");
   v11 = 0;
   v12 = &v11;
@@ -2379,10 +2379,10 @@ uint64_t __88__WBTabCollection_setFrequentlyVisitedSites_forProfileWithIdentifie
   v8[1] = 3221225472;
   v8[2] = __74__WBTabCollection_frequentlyVisitedSitesFolderIDForProfileWithIdentifier___block_invoke;
   v8[3] = &unk_279E766C8;
-  v9 = v4;
+  v9 = identifierCopy;
   v10 = &v11;
   v8[4] = self;
-  v6 = v4;
+  v6 = identifierCopy;
   dispatch_sync(databaseQueue, v8);
   LODWORD(self) = *(v12 + 6);
 
@@ -2401,16 +2401,16 @@ void __74__WBTabCollection_frequentlyVisitedSitesFolderIDForProfileWithIdentifie
 {
   v3 = [[WebBookmarkListQuery alloc] initWithBookmarksWhere:@"parent = 0 AND syncable = 1 AND type = 1 AND subtype = 0 AND hidden = 0 AND special_id = 0" folderID:0 orderBy:@"order_index ASC" usingFilter:0];
   v4 = [WebBookmarkList alloc];
-  v5 = [(WBTabCollection *)self _collection];
-  v6 = [(WebBookmarkList *)v4 initWithQuery:v3 skipOffset:0 collection:v5];
+  _collection = [(WBTabCollection *)self _collection];
+  v6 = [(WebBookmarkList *)v4 initWithQuery:v3 skipOffset:0 collection:_collection];
 
-  v7 = [(WebBookmarkList *)v6 bookmarkArray];
+  bookmarkArray = [(WebBookmarkList *)v6 bookmarkArray];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __45__WBTabCollection__tabGroupsInDefaultProfile__block_invoke;
   v13[3] = &unk_279E75918;
   v13[4] = self;
-  v8 = [v7 safari_mapAndFilterObjectsUsingBlock:v13];
+  v8 = [bookmarkArray safari_mapAndFilterObjectsUsingBlock:v13];
   v9 = v8;
   if (v8)
   {
@@ -2513,9 +2513,9 @@ uint64_t __51__WBTabCollection_allMutableNamedTabGroupsUnsorted__block_invoke(ui
 
 - (id)_allMutableTabGroupsUnsorted
 {
-  v2 = [(WBTabCollection *)self _profiles];
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [v2 safari_reduceObjectsWithInitialValue:v3 usingBlock:&__block_literal_global_75];
+  _profiles = [(WBTabCollection *)self _profiles];
+  array = [MEMORY[0x277CBEB18] array];
+  v4 = [_profiles safari_reduceObjectsWithInitialValue:array usingBlock:&__block_literal_global_75];
 
   return v4;
 }
@@ -2529,37 +2529,37 @@ id __47__WBTabCollection__allMutableTabGroupsUnsorted__block_invoke(uint64_t a1,
   return v4;
 }
 
-- (id)namedTabGroupsForProfileWithIdentifier:(id)a3
+- (id)namedTabGroupsForProfileWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && ![v4 isEqualToString:*MEMORY[0x277D49BD8]])
+  identifierCopy = identifier;
+  v5 = identifierCopy;
+  if (identifierCopy && ![identifierCopy isEqualToString:*MEMORY[0x277D49BD8]])
   {
-    v7 = [(WBTabCollection *)self profiles];
+    profiles = [(WBTabCollection *)self profiles];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __58__WBTabCollection_namedTabGroupsForProfileWithIdentifier___block_invoke;
     v13[3] = &unk_279E76AD0;
     v14 = v5;
-    v8 = [v7 safari_firstObjectPassingTest:v13];
+    v8 = [profiles safari_firstObjectPassingTest:v13];
 
-    v9 = [v8 tabGroups];
-    v10 = v9;
+    tabGroups = [v8 tabGroups];
+    v10 = tabGroups;
     v11 = MEMORY[0x277CBEBF8];
-    if (v9)
+    if (tabGroups)
     {
-      v11 = v9;
+      v11 = tabGroups;
     }
 
-    v6 = v11;
+    namedTabGroupsInDefaultProfile = v11;
   }
 
   else
   {
-    v6 = [(WBTabCollection *)self namedTabGroupsInDefaultProfile];
+    namedTabGroupsInDefaultProfile = [(WBTabCollection *)self namedTabGroupsInDefaultProfile];
   }
 
-  return v6;
+  return namedTabGroupsInDefaultProfile;
 }
 
 uint64_t __58__WBTabCollection_namedTabGroupsForProfileWithIdentifier___block_invoke(uint64_t a1, void *a2)
@@ -2570,9 +2570,9 @@ uint64_t __58__WBTabCollection_namedTabGroupsForProfileWithIdentifier___block_in
   return v4;
 }
 
-- (id)mutableTabGroupWithUUID:(id)a3
+- (id)mutableTabGroupWithUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   MEMORY[0x2743D62A0](v18, @"com.apple.WebBookmarks.WBTabCollection");
   v12 = 0;
   v13 = &v12;
@@ -2585,10 +2585,10 @@ uint64_t __58__WBTabCollection_namedTabGroupsForProfileWithIdentifier___block_in
   v9[1] = 3221225472;
   v9[2] = __43__WBTabCollection_mutableTabGroupWithUUID___block_invoke;
   v9[3] = &unk_279E766C8;
-  v10 = v4;
+  v10 = dCopy;
   v11 = &v12;
   v9[4] = self;
-  v6 = v4;
+  v6 = dCopy;
   dispatch_sync(databaseQueue, v9);
   v7 = v13[5];
 
@@ -2609,16 +2609,16 @@ void __43__WBTabCollection_mutableTabGroupWithUUID___block_invoke(uint64_t a1)
   *(v5 + 40) = v4;
 }
 
-- (id)tabGroupWithUUID:(id)a3
+- (id)tabGroupWithUUID:(id)d
 {
-  v3 = [(WBTabCollection *)self mutableTabGroupWithUUID:a3];
+  v3 = [(WBTabCollection *)self mutableTabGroupWithUUID:d];
 
   return v3;
 }
 
-- (id)tabGroupUUIDForServerID:(id)a3
+- (id)tabGroupUUIDForServerID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   MEMORY[0x2743D62A0](v18, @"com.apple.WebBookmarks.WBTabCollection");
   v12 = 0;
   v13 = &v12;
@@ -2631,10 +2631,10 @@ void __43__WBTabCollection_mutableTabGroupWithUUID___block_invoke(uint64_t a1)
   v9[1] = 3221225472;
   v9[2] = __43__WBTabCollection_tabGroupUUIDForServerID___block_invoke;
   v9[3] = &unk_279E766C8;
-  v10 = v4;
+  v10 = dCopy;
   v11 = &v12;
   v9[4] = self;
-  v6 = v4;
+  v6 = dCopy;
   dispatch_sync(databaseQueue, v9);
   v7 = v13[5];
 
@@ -2677,9 +2677,9 @@ id __43__WBTabCollection_tabGroupUUIDForServerID___block_invoke_2(uint64_t a1)
   return v4;
 }
 
-- (BOOL)deleteTabGroup:(id)a3
+- (BOOL)deleteTabGroup:(id)group
 {
-  v4 = a3;
+  groupCopy = group;
   MEMORY[0x2743D62A0](v15, @"com.apple.WebBookmarks.WBTabCollection");
   v11 = 0;
   v12 = &v11;
@@ -2690,10 +2690,10 @@ id __43__WBTabCollection_tabGroupUUIDForServerID___block_invoke_2(uint64_t a1)
   v8[1] = 3221225472;
   v8[2] = __34__WBTabCollection_deleteTabGroup___block_invoke;
   v8[3] = &unk_279E766C8;
-  v9 = v4;
+  v9 = groupCopy;
   v10 = &v11;
   v8[4] = self;
-  v6 = v4;
+  v6 = groupCopy;
   dispatch_sync(databaseQueue, v8);
   LOBYTE(self) = *(v12 + 24);
 
@@ -2709,19 +2709,19 @@ uint64_t __34__WBTabCollection_deleteTabGroup___block_invoke(uint64_t a1)
   return result;
 }
 
-- (BOOL)_deleteTabGroup:(id)a3 leaveTombstone:(BOOL)a4
+- (BOOL)_deleteTabGroup:(id)group leaveTombstone:(BOOL)tombstone
 {
-  v6 = a3;
-  v7 = [(WBTabCollection *)self _collection];
+  groupCopy = group;
+  _collection = [(WBTabCollection *)self _collection];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __50__WBTabCollection__deleteTabGroup_leaveTombstone___block_invoke;
   v11[3] = &unk_279E76B20;
   v11[4] = self;
-  v8 = v6;
+  v8 = groupCopy;
   v12 = v8;
-  v13 = a4;
-  v9 = [v7 performDatabaseUpdatesWithTransaction:v11 secureDelete:{objc_msgSend(v8, "isPrivateBrowsing")}];
+  tombstoneCopy = tombstone;
+  v9 = [_collection performDatabaseUpdatesWithTransaction:v11 secureDelete:{objc_msgSend(v8, "isPrivateBrowsing")}];
 
   return v9;
 }
@@ -2735,10 +2735,10 @@ uint64_t __50__WBTabCollection__deleteTabGroup_leaveTombstone___block_invoke(uin
   return v4;
 }
 
-- (BOOL)insertTabGroup:(id)a3 afterTabGroup:(id)a4
+- (BOOL)insertTabGroup:(id)group afterTabGroup:(id)tabGroup
 {
-  v6 = a3;
-  v7 = a4;
+  groupCopy = group;
+  tabGroupCopy = tabGroup;
   MEMORY[0x2743D62A0](v20, @"com.apple.WebBookmarks.WBTabCollection");
   v16 = 0;
   v17 = &v16;
@@ -2750,11 +2750,11 @@ uint64_t __50__WBTabCollection__deleteTabGroup_leaveTombstone___block_invoke(uin
   block[2] = __48__WBTabCollection_insertTabGroup_afterTabGroup___block_invoke;
   block[3] = &unk_279E76828;
   block[4] = self;
-  v13 = v6;
-  v14 = v7;
+  v13 = groupCopy;
+  v14 = tabGroupCopy;
   v15 = &v16;
-  v9 = v7;
-  v10 = v6;
+  v9 = tabGroupCopy;
+  v10 = groupCopy;
   dispatch_sync(databaseQueue, block);
   LOBYTE(self) = *(v17 + 24);
 
@@ -2814,9 +2814,9 @@ uint64_t __48__WBTabCollection_insertTabGroup_afterTabGroup___block_invoke_2(id 
   return v14;
 }
 
-- (BOOL)saveTabGroup:(id)a3
+- (BOOL)saveTabGroup:(id)group
 {
-  v4 = a3;
+  groupCopy = group;
   MEMORY[0x2743D62A0](v15, @"com.apple.WebBookmarks.WBTabCollection");
   v11 = 0;
   v12 = &v11;
@@ -2827,10 +2827,10 @@ uint64_t __48__WBTabCollection_insertTabGroup_afterTabGroup___block_invoke_2(id 
   v8[1] = 3221225472;
   v8[2] = __32__WBTabCollection_saveTabGroup___block_invoke;
   v8[3] = &unk_279E766C8;
-  v9 = v4;
+  v9 = groupCopy;
   v10 = &v11;
   v8[4] = self;
-  v6 = v4;
+  v6 = groupCopy;
   dispatch_sync(databaseQueue, v8);
   LOBYTE(self) = *(v12 + 24);
 
@@ -2867,9 +2867,9 @@ uint64_t __32__WBTabCollection_saveTabGroup___block_invoke_2(uint64_t a1)
   return v7;
 }
 
-- (id)mutableTabsForTabGroup:(id)a3
+- (id)mutableTabsForTabGroup:(id)group
 {
-  v4 = a3;
+  groupCopy = group;
   MEMORY[0x2743D62A0](v18, @"com.apple.WebBookmarks.WBTabCollection");
   v12 = 0;
   v13 = &v12;
@@ -2882,10 +2882,10 @@ uint64_t __32__WBTabCollection_saveTabGroup___block_invoke_2(uint64_t a1)
   v9[1] = 3221225472;
   v9[2] = __42__WBTabCollection_mutableTabsForTabGroup___block_invoke;
   v9[3] = &unk_279E766C8;
-  v10 = v4;
+  v10 = groupCopy;
   v11 = &v12;
   v9[4] = self;
-  v6 = v4;
+  v6 = groupCopy;
   dispatch_sync(databaseQueue, v9);
   v7 = v13[5];
 
@@ -2905,16 +2905,16 @@ void __42__WBTabCollection_mutableTabsForTabGroup___block_invoke(uint64_t a1)
   *(v4 + 40) = v3;
 }
 
-- (id)tabsForTabGroup:(id)a3
+- (id)tabsForTabGroup:(id)group
 {
-  v3 = [(WBTabCollection *)self mutableTabsForTabGroup:a3];
+  v3 = [(WBTabCollection *)self mutableTabsForTabGroup:group];
 
   return v3;
 }
 
-- (int64_t)tabCountForTabGroupWithUUID:(id)a3
+- (int64_t)tabCountForTabGroupWithUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   MEMORY[0x2743D62A0](v16, @"com.apple.WebBookmarks.WBTabCollection");
   v12 = 0;
   v13 = &v12;
@@ -2925,10 +2925,10 @@ void __42__WBTabCollection_mutableTabsForTabGroup___block_invoke(uint64_t a1)
   v9[1] = 3221225472;
   v9[2] = __47__WBTabCollection_tabCountForTabGroupWithUUID___block_invoke;
   v9[3] = &unk_279E766C8;
-  v10 = v4;
+  v10 = dCopy;
   v11 = &v12;
   v9[4] = self;
-  v6 = v4;
+  v6 = dCopy;
   dispatch_sync(databaseQueue, v9);
   v7 = v13[3];
 
@@ -2943,9 +2943,9 @@ void __47__WBTabCollection_tabCountForTabGroupWithUUID___block_invoke(uint64_t a
   *(*(*(a1 + 48) + 8) + 24) = [v2 tabCountForTabGroupWithUUID:*(a1 + 40)];
 }
 
-- (id)mutableTabWithUUID:(id)a3
+- (id)mutableTabWithUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   MEMORY[0x2743D62A0](v18, @"com.apple.WebBookmarks.WBTabCollection");
   v12 = 0;
   v13 = &v12;
@@ -2958,10 +2958,10 @@ void __47__WBTabCollection_tabCountForTabGroupWithUUID___block_invoke(uint64_t a
   v9[1] = 3221225472;
   v9[2] = __38__WBTabCollection_mutableTabWithUUID___block_invoke;
   v9[3] = &unk_279E766C8;
-  v10 = v4;
+  v10 = dCopy;
   v11 = &v12;
   v9[4] = self;
-  v6 = v4;
+  v6 = dCopy;
   dispatch_sync(databaseQueue, v9);
   v7 = v13[5];
 
@@ -3004,17 +3004,17 @@ WBMutableTab *__38__WBTabCollection_mutableTabWithUUID___block_invoke_2(uint64_t
   return v4;
 }
 
-- (id)tabWithUUID:(id)a3
+- (id)tabWithUUID:(id)d
 {
-  v3 = [(WBTabCollection *)self mutableTabWithUUID:a3];
+  v3 = [(WBTabCollection *)self mutableTabWithUUID:d];
 
   return v3;
 }
 
-- (BOOL)deleteTabs:(id)a3
+- (BOOL)deleteTabs:(id)tabs
 {
-  v4 = a3;
-  v5 = [v4 safari_containsObjectPassingTest:&__block_literal_global_82];
+  tabsCopy = tabs;
+  v5 = [tabsCopy safari_containsObjectPassingTest:&__block_literal_global_82];
   MEMORY[0x2743D62A0](v17, @"com.apple.WebBookmarks.WBTabCollection");
   v13 = 0;
   v14 = &v13;
@@ -3025,11 +3025,11 @@ WBMutableTab *__38__WBTabCollection_mutableTabWithUUID___block_invoke_2(uint64_t
   block[1] = 3221225472;
   block[2] = __30__WBTabCollection_deleteTabs___block_invoke_2;
   block[3] = &unk_279E768C0;
-  v10 = v4;
+  v10 = tabsCopy;
   v11 = &v13;
   block[4] = self;
   v12 = v5;
-  v7 = v4;
+  v7 = tabsCopy;
   dispatch_sync(databaseQueue, block);
   LOBYTE(self) = *(v14 + 24);
 
@@ -3060,11 +3060,11 @@ uint64_t __30__WBTabCollection_deleteTabs___block_invoke_3(uint64_t a1)
   return v4;
 }
 
-- (BOOL)insertTab:(id)a3 inTabGroup:(id)a4 afterTab:(id)a5
+- (BOOL)insertTab:(id)tab inTabGroup:(id)group afterTab:(id)afterTab
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  tabCopy = tab;
+  groupCopy = group;
+  afterTabCopy = afterTab;
   MEMORY[0x2743D62A0](v25, @"com.apple.WebBookmarks.WBTabCollection");
   v21 = 0;
   v22 = &v21;
@@ -3075,20 +3075,20 @@ uint64_t __30__WBTabCollection_deleteTabs___block_invoke_3(uint64_t a1)
   v16[1] = 3221225472;
   v16[2] = __49__WBTabCollection_insertTab_inTabGroup_afterTab___block_invoke;
   v16[3] = &unk_279E76BB8;
-  v19 = v9;
+  v19 = groupCopy;
   v20 = &v21;
   v16[4] = self;
-  v17 = v8;
-  v18 = v10;
-  v12 = v9;
-  v13 = v10;
-  v14 = v8;
+  v17 = tabCopy;
+  v18 = afterTabCopy;
+  v12 = groupCopy;
+  v13 = afterTabCopy;
+  v14 = tabCopy;
   dispatch_sync(databaseQueue, v16);
-  LOBYTE(v10) = *(v22 + 24);
+  LOBYTE(afterTabCopy) = *(v22 + 24);
 
   _Block_object_dispose(&v21, 8);
   SafariShared::SuddenTerminationDisabler::~SuddenTerminationDisabler(v25);
-  return v10;
+  return afterTabCopy;
 }
 
 void __49__WBTabCollection_insertTab_inTabGroup_afterTab___block_invoke(uint64_t a1)
@@ -3124,9 +3124,9 @@ uint64_t __49__WBTabCollection_insertTab_inTabGroup_afterTab___block_invoke_2(id
   return v6;
 }
 
-- (id)tabUUIDForServerID:(id)a3
+- (id)tabUUIDForServerID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   MEMORY[0x2743D62A0](v18, @"com.apple.WebBookmarks.WBTabCollection");
   v12 = 0;
   v13 = &v12;
@@ -3139,10 +3139,10 @@ uint64_t __49__WBTabCollection_insertTab_inTabGroup_afterTab___block_invoke_2(id
   v9[1] = 3221225472;
   v9[2] = __38__WBTabCollection_tabUUIDForServerID___block_invoke;
   v9[3] = &unk_279E766C8;
-  v10 = v4;
+  v10 = dCopy;
   v11 = &v12;
   v9[4] = self;
-  v6 = v4;
+  v6 = dCopy;
   dispatch_sync(databaseQueue, v9);
   v7 = v13[5];
 
@@ -3185,11 +3185,11 @@ id __38__WBTabCollection_tabUUIDForServerID___block_invoke_2(uint64_t a1)
   return v4;
 }
 
-- (BOOL)insertTabs:(id)a3 inTabGroup:(id)a4 afterTab:(id)a5
+- (BOOL)insertTabs:(id)tabs inTabGroup:(id)group afterTab:(id)tab
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  tabsCopy = tabs;
+  groupCopy = group;
+  tabCopy = tab;
   MEMORY[0x2743D62A0](v25, @"com.apple.WebBookmarks.WBTabCollection");
   v21 = 0;
   v22 = &v21;
@@ -3200,14 +3200,14 @@ id __38__WBTabCollection_tabUUIDForServerID___block_invoke_2(uint64_t a1)
   v16[1] = 3221225472;
   v16[2] = __50__WBTabCollection_insertTabs_inTabGroup_afterTab___block_invoke;
   v16[3] = &unk_279E76BB8;
-  v19 = v8;
+  v19 = tabsCopy;
   v20 = &v21;
   v16[4] = self;
-  v17 = v10;
-  v18 = v9;
-  v12 = v8;
-  v13 = v9;
-  v14 = v10;
+  v17 = tabCopy;
+  v18 = groupCopy;
+  v12 = tabsCopy;
+  v13 = groupCopy;
+  v14 = tabCopy;
   dispatch_sync(databaseQueue, v16);
   LOBYTE(self) = *(v22 + 24);
 
@@ -3303,11 +3303,11 @@ id __50__WBTabCollection_insertTabs_inTabGroup_afterTab___block_invoke_3(uint64_
   return v2;
 }
 
-- (BOOL)updateTabs:(id)a3 inTabGroup:(id)a4
+- (BOOL)updateTabs:(id)tabs inTabGroup:(id)group
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = -[WBTabCollection _bookmarksForTabs:syncable:](self, "_bookmarksForTabs:syncable:", v6, [v7 isSyncable]);
+  tabsCopy = tabs;
+  groupCopy = group;
+  v8 = -[WBTabCollection _bookmarksForTabs:syncable:](self, "_bookmarksForTabs:syncable:", tabsCopy, [groupCopy isSyncable]);
   MEMORY[0x2743D62A0](v21, @"com.apple.WebBookmarks.WBTabCollection");
   v17 = 0;
   v18 = &v17;
@@ -3320,9 +3320,9 @@ id __50__WBTabCollection_insertTabs_inTabGroup_afterTab___block_invoke_3(uint64_
   block[3] = &unk_279E76828;
   block[4] = self;
   v14 = v8;
-  v15 = v7;
+  v15 = groupCopy;
   v16 = &v17;
-  v10 = v7;
+  v10 = groupCopy;
   v11 = v8;
   dispatch_sync(databaseQueue, block);
   LOBYTE(v8) = *(v18 + 24);
@@ -3339,31 +3339,31 @@ void __41__WBTabCollection_updateTabs_inTabGroup___block_invoke(uint64_t a1)
   *(*(*(a1 + 56) + 8) + 24) = [v2 updateBookmarks:*(a1 + 40) inFolderWithID:objc_msgSend(*(a1 + 48) secureDelete:{"identifier"), objc_msgSend(*(a1 + 48), "isPrivateBrowsing")}];
 }
 
-- (void)updateTabsInTabGroup:(id)a3 completionHandler:(id)a4
+- (void)updateTabsInTabGroup:(id)group completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  [(WBTabCollection *)self flushDeletedTabsInTabGroup:v6 completionHandler:0];
-  v8 = [v6 isSyncable];
-  v9 = [v6 allTabs];
+  groupCopy = group;
+  handlerCopy = handler;
+  [(WBTabCollection *)self flushDeletedTabsInTabGroup:groupCopy completionHandler:0];
+  isSyncable = [groupCopy isSyncable];
+  allTabs = [groupCopy allTabs];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __58__WBTabCollection_updateTabsInTabGroup_completionHandler___block_invoke;
   v16[3] = &unk_279E76BE0;
-  v20 = v8;
-  v10 = v6;
+  v20 = isSyncable;
+  v10 = groupCopy;
   v17 = v10;
-  v18 = v9;
-  v19 = self;
-  v11 = v9;
+  v18 = allTabs;
+  selfCopy = self;
+  v11 = allTabs;
   [v11 enumerateObjectsUsingBlock:v16];
   databaseQueue = self->_databaseQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __58__WBTabCollection_updateTabsInTabGroup_completionHandler___block_invoke_89;
   block[3] = &unk_279E76C08;
-  v15 = v7;
-  v13 = v7;
+  v15 = handlerCopy;
+  v13 = handlerCopy;
   dispatch_async(databaseQueue, block);
 }
 
@@ -3446,13 +3446,13 @@ uint64_t __58__WBTabCollection_updateTabsInTabGroup_completionHandler___block_in
   return result;
 }
 
-- (void)flushDeletedTabsInTabGroup:(id)a3 completionHandler:(id)a4
+- (void)flushDeletedTabsInTabGroup:(id)group completionHandler:(id)handler
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 deletedTabs];
-  v9 = [v8 copy];
+  groupCopy = group;
+  handlerCopy = handler;
+  deletedTabs = [groupCopy deletedTabs];
+  v9 = [deletedTabs copy];
 
   if ([v9 count])
   {
@@ -3460,29 +3460,29 @@ uint64_t __58__WBTabCollection_updateTabsInTabGroup_completionHandler___block_in
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       v11 = [v9 count];
-      v12 = [v6 privacyPreservingDescription];
+      privacyPreservingDescription = [groupCopy privacyPreservingDescription];
       *buf = 134349314;
       v24 = v11;
       v25 = 2114;
-      v26 = v12;
+      v26 = privacyPreservingDescription;
       _os_log_impl(&dword_272C20000, v10, OS_LOG_TYPE_INFO, "Flushing %{public}zu deleted tabs in tab group: %{public}@", buf, 0x16u);
     }
   }
 
-  [v6 clearDeletedTabs];
-  v13 = [v6 isSyncable];
+  [groupCopy clearDeletedTabs];
+  isSyncable = [groupCopy isSyncable];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __64__WBTabCollection_flushDeletedTabsInTabGroup_completionHandler___block_invoke;
   v18[3] = &unk_279E76C30;
-  v14 = v6;
+  v14 = groupCopy;
   v19 = v14;
   v15 = v9;
   v20 = v15;
-  v16 = v7;
-  v21 = self;
+  v16 = handlerCopy;
+  selfCopy = self;
   v22 = v16;
-  [(WBTabCollection *)self deleteItems:v15 leaveTombstones:v13 completionHandler:v18];
+  [(WBTabCollection *)self deleteItems:v15 leaveTombstones:isSyncable completionHandler:v18];
 
   v17 = *MEMORY[0x277D85DE8];
 }
@@ -3507,18 +3507,18 @@ void __64__WBTabCollection_flushDeletedTabsInTabGroup_completionHandler___block_
   }
 }
 
-- (id)topScopedBookmarkListForTabGroup:(id)a3
+- (id)topScopedBookmarkListForTabGroup:(id)group
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  groupCopy = group;
   if (self->_shouldPrepareBackgroundTaskExpiration)
   {
     v5 = WBS_LOG_CHANNEL_PREFIXBookmarks();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
-      v6 = [v4 privacyPreservingDescription];
+      privacyPreservingDescription = [groupCopy privacyPreservingDescription];
       LODWORD(buf) = 138543362;
-      *(&buf + 4) = v6;
+      *(&buf + 4) = privacyPreservingDescription;
       _os_log_impl(&dword_272C20000, v5, OS_LOG_TYPE_INFO, "Background task will expire soon. Block reading bookmarks. %{public}@", &buf, 0xCu);
     }
 
@@ -3541,7 +3541,7 @@ void __64__WBTabCollection_flushDeletedTabsInTabGroup_completionHandler___block_
     v11[3] = &unk_279E766C8;
     p_buf = &buf;
     v11[4] = self;
-    v12 = v4;
+    v12 = groupCopy;
     dispatch_sync(databaseQueue, v11);
     v7 = *(*(&buf + 1) + 40);
 
@@ -3563,17 +3563,17 @@ void __52__WBTabCollection_topScopedBookmarkListForTabGroup___block_invoke(uint6
   *(v3 + 40) = v2;
 }
 
-- (void)createTopScopedBookmarkListIfNeededForTabGroup:(id)a3
+- (void)createTopScopedBookmarkListIfNeededForTabGroup:(id)group
 {
-  v5 = a3;
-  v4 = [(WBTabCollection *)self _collection];
-  if ([v4 allowsScopedBookmarksInTabGroup:v5])
+  groupCopy = group;
+  _collection = [(WBTabCollection *)self _collection];
+  if ([_collection allowsScopedBookmarksInTabGroup:groupCopy])
   {
-    [v4 createTopScopedBookmarkListForTabGroup:v5];
+    [_collection createTopScopedBookmarkListForTabGroup:groupCopy];
   }
 }
 
-- (id)scopedBookmarkListWithID:(int)a3
+- (id)scopedBookmarkListWithID:(int)d
 {
   MEMORY[0x2743D62A0](v16, @"com.apple.WebBookmarks.WBTabCollection");
   v10 = 0;
@@ -3589,7 +3589,7 @@ void __52__WBTabCollection_topScopedBookmarkListForTabGroup___block_invoke(uint6
   v8[3] = &unk_279E76C80;
   v8[4] = self;
   v8[5] = &v10;
-  v9 = a3;
+  dCopy = d;
   dispatch_sync(databaseQueue, v8);
   v6 = v11[5];
   _Block_object_dispose(&v10, 8);
@@ -3697,10 +3697,10 @@ id __64__WBTabCollection_scopedBookmarkListWithID_filteredUsingString___block_in
   return v5;
 }
 
-- (id)scopedBookmarkWithUUID:(id)a3
+- (id)scopedBookmarkWithUUID:(id)d
 {
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
     MEMORY[0x2743D62A0](v17, @"com.apple.WebBookmarks.WBTabCollection");
     v11 = 0;
@@ -3716,7 +3716,7 @@ id __64__WBTabCollection_scopedBookmarkListWithID_filteredUsingString___block_in
     v8[3] = &unk_279E766C8;
     v10 = &v11;
     v8[4] = self;
-    v9 = v4;
+    v9 = dCopy;
     dispatch_sync(databaseQueue, v8);
     v6 = v12[5];
 
@@ -3771,20 +3771,20 @@ id __42__WBTabCollection_scopedBookmarkWithUUID___block_invoke_2(uint64_t a1)
   return v3;
 }
 
-- (id)_descriptionForScopedBookmark:(id)a3
+- (id)_descriptionForScopedBookmark:(id)bookmark
 {
-  v3 = a3;
+  bookmarkCopy = bookmark;
   v4 = MEMORY[0x277CCACA8];
-  v5 = [v3 subtype];
-  v6 = [v3 isFolder];
+  subtype = [bookmarkCopy subtype];
+  isFolder = [bookmarkCopy isFolder];
   v7 = @"non-scoped";
-  if (v5 == 1)
+  if (subtype == 1)
   {
     v7 = @"scoped";
   }
 
   v8 = @"bookmark";
-  if (v6)
+  if (isFolder)
   {
     v8 = @"folder";
   }
@@ -3794,9 +3794,9 @@ id __42__WBTabCollection_scopedBookmarkWithUUID___block_invoke_2(uint64_t a1)
   return v9;
 }
 
-- (id)syncDataForItem:(id)a3
+- (id)syncDataForItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   MEMORY[0x2743D62A0](v18, @"com.apple.WebBookmarks.WBTabCollection");
   v12 = 0;
   v13 = &v12;
@@ -3809,10 +3809,10 @@ id __42__WBTabCollection_scopedBookmarkWithUUID___block_invoke_2(uint64_t a1)
   v9[1] = 3221225472;
   v9[2] = __35__WBTabCollection_syncDataForItem___block_invoke;
   v9[3] = &unk_279E766C8;
-  v10 = v4;
+  v10 = itemCopy;
   v11 = &v12;
   v9[4] = self;
-  v6 = v4;
+  v6 = itemCopy;
   dispatch_sync(databaseQueue, v9);
   v7 = v13[5];
 
@@ -3832,7 +3832,7 @@ void __35__WBTabCollection_syncDataForItem___block_invoke(uint64_t a1)
   *(v4 + 40) = v3;
 }
 
-- (id)syncDataForItemWithID:(int)a3
+- (id)syncDataForItemWithID:(int)d
 {
   MEMORY[0x2743D62A0](v16, @"com.apple.WebBookmarks.WBTabCollection");
   v10 = 0;
@@ -3848,7 +3848,7 @@ void __35__WBTabCollection_syncDataForItem___block_invoke(uint64_t a1)
   v8[3] = &unk_279E76C80;
   v8[4] = self;
   v8[5] = &v10;
-  v9 = a3;
+  dCopy = d;
   dispatch_sync(databaseQueue, v8);
   v6 = v11[5];
   _Block_object_dispose(&v10, 8);
@@ -3901,9 +3901,9 @@ void __35__WBTabCollection_databaseSyncData__block_invoke(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-- (id)recordIDForTab:(id)a3
+- (id)recordIDForTab:(id)tab
 {
-  v4 = a3;
+  tabCopy = tab;
   MEMORY[0x2743D62A0](v18, @"com.apple.WebBookmarks.WBTabCollection");
   v12 = 0;
   v13 = &v12;
@@ -3916,10 +3916,10 @@ void __35__WBTabCollection_databaseSyncData__block_invoke(uint64_t a1)
   v9[1] = 3221225472;
   v9[2] = __34__WBTabCollection_recordIDForTab___block_invoke;
   v9[3] = &unk_279E766C8;
-  v10 = v4;
+  v10 = tabCopy;
   v11 = &v12;
   v9[4] = self;
-  v6 = v4;
+  v6 = tabCopy;
   dispatch_sync(databaseQueue, v9);
   v7 = v13[5];
 
@@ -3978,20 +3978,20 @@ id __34__WBTabCollection_recordIDForTab___block_invoke_2(uint64_t a1)
   return v6;
 }
 
-- (id)_shareRecordForTabGroup:(id)a3
+- (id)_shareRecordForTabGroup:(id)group
 {
-  v4 = a3;
-  v5 = [(WBTabCollection *)self _collection];
-  v6 = [v4 bookmark];
-  v7 = [v5 syncDataForBookmark:v6];
-  v8 = [v7 shareRecord];
+  groupCopy = group;
+  _collection = [(WBTabCollection *)self _collection];
+  bookmark = [groupCopy bookmark];
+  v7 = [_collection syncDataForBookmark:bookmark];
+  shareRecord = [v7 shareRecord];
 
-  return v8;
+  return shareRecord;
 }
 
-- (id)shareRecordForTabGroup:(id)a3
+- (id)shareRecordForTabGroup:(id)group
 {
-  v4 = a3;
+  groupCopy = group;
   MEMORY[0x2743D62A0](v18, @"com.apple.WebBookmarks.WBTabCollection");
   v12 = 0;
   v13 = &v12;
@@ -4004,10 +4004,10 @@ id __34__WBTabCollection_recordIDForTab___block_invoke_2(uint64_t a1)
   v9[1] = 3221225472;
   v9[2] = __42__WBTabCollection_shareRecordForTabGroup___block_invoke;
   v9[3] = &unk_279E766C8;
-  v10 = v4;
+  v10 = groupCopy;
   v11 = &v12;
   v9[4] = self;
-  v6 = v4;
+  v6 = groupCopy;
   dispatch_sync(databaseQueue, v9);
   v7 = v13[5];
 
@@ -4027,10 +4027,10 @@ uint64_t __42__WBTabCollection_shareRecordForTabGroup___block_invoke(uint64_t a1
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)shareRecordForTabGroup:(id)a3 completionHandler:(id)a4
+- (void)shareRecordForTabGroup:(id)group completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  groupCopy = group;
+  handlerCopy = handler;
   if (!self->_shouldPrepareBackgroundTaskExpiration)
   {
     *buf = 0;
@@ -4064,9 +4064,9 @@ void __60__WBTabCollection_shareRecordForTabGroup_completionHandler___block_invo
   }
 }
 
-- (void)setHasSharedTabGroupsWithCompletionHandler:(id)a3
+- (void)setHasSharedTabGroupsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (!self->_shouldPrepareBackgroundTaskExpiration)
   {
     *buf = 0;
@@ -4104,10 +4104,10 @@ uint64_t __62__WBTabCollection_setHasSharedTabGroupsWithCompletionHandler___bloc
   return result;
 }
 
-- (id)activeParticipantsInTabGroup:(id)a3
+- (id)activeParticipantsInTabGroup:(id)group
 {
   v40 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  groupCopy = group;
   v33 = 0;
   v34 = &v33;
   v35 = 0x3032000000;
@@ -4127,7 +4127,7 @@ uint64_t __62__WBTabCollection_setHasSharedTabGroupsWithCompletionHandler___bloc
   block[2] = __48__WBTabCollection_activeParticipantsInTabGroup___block_invoke;
   block[3] = &unk_279E76D48;
   block[4] = self;
-  v6 = v4;
+  v6 = groupCopy;
   v23 = v6;
   v24 = &v33;
   v25 = &v27;
@@ -4136,7 +4136,7 @@ uint64_t __62__WBTabCollection_setHasSharedTabGroupsWithCompletionHandler___bloc
   SafariShared::SuddenTerminationDisabler::~SuddenTerminationDisabler(v26);
   if (v34[5])
   {
-    v7 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
@@ -4159,12 +4159,12 @@ uint64_t __62__WBTabCollection_setHasSharedTabGroupsWithCompletionHandler___bloc
           if (([v12 isCurrentUser] & 1) == 0 && objc_msgSend(v12, "acceptanceStatus") == 2)
           {
             v13 = v28[5];
-            v14 = [v12 safari_shareParticipantIdentifier];
-            LODWORD(v13) = [v13 containsObject:v14];
+            safari_shareParticipantIdentifier = [v12 safari_shareParticipantIdentifier];
+            LODWORD(v13) = [v13 containsObject:safari_shareParticipantIdentifier];
 
             if (v13)
             {
-              [v7 addObject:v12];
+              [array addObject:v12];
             }
           }
         }
@@ -4175,7 +4175,7 @@ uint64_t __62__WBTabCollection_setHasSharedTabGroupsWithCompletionHandler___bloc
       while (v9);
     }
 
-    v15 = [v7 copy];
+    v15 = [array copy];
   }
 
   else
@@ -4214,9 +4214,9 @@ void __48__WBTabCollection_activeParticipantsInTabGroup___block_invoke(uint64_t 
   }
 }
 
-- (id)activeParticipantsInTab:(id)a3
+- (id)activeParticipantsInTab:(id)tab
 {
-  v4 = a3;
+  tabCopy = tab;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -4230,16 +4230,16 @@ void __48__WBTabCollection_activeParticipantsInTabGroup___block_invoke(uint64_t 
   v11 = __43__WBTabCollection_activeParticipantsInTab___block_invoke;
   v12 = &unk_279E766C8;
   v15 = &v17;
-  v13 = self;
-  v6 = v4;
+  selfCopy = self;
+  v6 = tabCopy;
   v14 = v6;
   dispatch_sync(databaseQueue, &v9);
 
   SafariShared::SuddenTerminationDisabler::~SuddenTerminationDisabler(v16);
-  v7 = [(WBTabCollection *)self _activeParticipantsFromParticipantData:v18[5], v9, v10, v11, v12, v13];
+  selfCopy = [(WBTabCollection *)self _activeParticipantsFromParticipantData:v18[5], v9, v10, v11, v12, selfCopy];
   _Block_object_dispose(&v17, 8);
 
-  return v7;
+  return selfCopy;
 }
 
 uint64_t __43__WBTabCollection_activeParticipantsInTab___block_invoke(uint64_t a1)
@@ -4252,10 +4252,10 @@ uint64_t __43__WBTabCollection_activeParticipantsInTab___block_invoke(uint64_t a
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)getActiveParticipantsInTab:(id)a3 completionHandler:(id)a4
+- (void)getActiveParticipantsInTab:(id)tab completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  tabCopy = tab;
+  handlerCopy = handler;
   if (!self->_shouldPrepareBackgroundTaskExpiration)
   {
     *buf = 0;
@@ -4313,23 +4313,23 @@ void __64__WBTabCollection_getActiveParticipantsInTab_completionHandler___block_
   (*(v2 + 16))(v2);
 }
 
-- (id)_participantDataForTab:(id)a3
+- (id)_participantDataForTab:(id)tab
 {
-  v4 = a3;
-  v5 = [(WBTabCollection *)self _collection];
-  v6 = [v4 bookmark];
-  v7 = [v5 syncDataForBookmarkID:{objc_msgSend(v6, "parentID")}];
-  v8 = [v7 shareRecord];
+  tabCopy = tab;
+  _collection = [(WBTabCollection *)self _collection];
+  bookmark = [tabCopy bookmark];
+  v7 = [_collection syncDataForBookmarkID:{objc_msgSend(bookmark, "parentID")}];
+  shareRecord = [v7 shareRecord];
 
-  if (v8)
+  if (shareRecord)
   {
     v9 = objc_opt_new();
-    v10 = [v8 participants];
-    [v9 setParticipants:v10];
+    participants = [shareRecord participants];
+    [v9 setParticipants:participants];
 
-    v11 = [v4 bookmark];
-    v12 = [v11 serverID];
-    v13 = [v5 activeParticipantsInTabWithServerID:v12];
+    bookmark2 = [tabCopy bookmark];
+    serverID = [bookmark2 serverID];
+    v13 = [_collection activeParticipantsInTabWithServerID:serverID];
     [v9 setActiveParticipantIDs:v13];
   }
 
@@ -4341,21 +4341,21 @@ void __64__WBTabCollection_getActiveParticipantsInTab_completionHandler___block_
   return v9;
 }
 
-- (id)_activeParticipantsFromParticipantData:(id)a3
+- (id)_activeParticipantsFromParticipantData:(id)data
 {
   v24 = *MEMORY[0x277D85DE8];
-  v18 = a3;
-  v3 = [v18 participants];
+  dataCopy = data;
+  participants = [dataCopy participants];
 
-  if (v3)
+  if (participants)
   {
     v17 = [MEMORY[0x277CBEB58] set];
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v4 = [v18 participants];
-    v5 = [v4 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    participants2 = [dataCopy participants];
+    v5 = [participants2 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v5)
     {
       v6 = *v20;
@@ -4365,17 +4365,17 @@ void __64__WBTabCollection_getActiveParticipantsInTab_completionHandler___block_
         {
           if (*v20 != v6)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(participants2);
           }
 
           v8 = *(*(&v19 + 1) + 8 * i);
           if (([v8 isCurrentUser] & 1) == 0 && objc_msgSend(v8, "acceptanceStatus") == 2)
           {
-            v9 = [v8 userIdentity];
-            v10 = [v18 activeParticipantIDs];
-            v11 = [v9 userRecordID];
-            v12 = [v11 recordName];
-            v13 = [v10 containsObject:v12];
+            userIdentity = [v8 userIdentity];
+            activeParticipantIDs = [dataCopy activeParticipantIDs];
+            userRecordID = [userIdentity userRecordID];
+            recordName = [userRecordID recordName];
+            v13 = [activeParticipantIDs containsObject:recordName];
 
             if (v13)
             {
@@ -4384,7 +4384,7 @@ void __64__WBTabCollection_getActiveParticipantsInTab_completionHandler___block_
           }
         }
 
-        v5 = [v4 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v5 = [participants2 countByEnumeratingWithState:&v19 objects:v23 count:16];
       }
 
       while (v5);
@@ -4403,10 +4403,10 @@ void __64__WBTabCollection_getActiveParticipantsInTab_completionHandler___block_
   return v14;
 }
 
-- (id)presenceTabUUIDForParticipantIdentifier:(id)a3 inTabGroup:(id)a4
+- (id)presenceTabUUIDForParticipantIdentifier:(id)identifier inTabGroup:(id)group
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  groupCopy = group;
   MEMORY[0x2743D62A0](v23, @"com.apple.WebBookmarks.WBTabCollection");
   v17 = 0;
   v18 = &v17;
@@ -4420,11 +4420,11 @@ void __64__WBTabCollection_getActiveParticipantsInTab_completionHandler___block_
   block[2] = __70__WBTabCollection_presenceTabUUIDForParticipantIdentifier_inTabGroup___block_invoke;
   block[3] = &unk_279E76828;
   block[4] = self;
-  v14 = v6;
-  v15 = v7;
+  v14 = identifierCopy;
+  v15 = groupCopy;
   v16 = &v17;
-  v9 = v7;
-  v10 = v6;
+  v9 = groupCopy;
+  v10 = identifierCopy;
   dispatch_sync(databaseQueue, block);
   v11 = v18[5];
 
@@ -4446,19 +4446,19 @@ void __70__WBTabCollection_presenceTabUUIDForParticipantIdentifier_inTabGroup___
   *(v6 + 40) = v5;
 }
 
-- (id)tabGroupMatchingShare:(id)a3 inTabGroups:(id)a4
+- (id)tabGroupMatchingShare:(id)share inTabGroups:(id)groups
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 recordID];
+  shareCopy = share;
+  groupsCopy = groups;
+  recordID = [shareCopy recordID];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __53__WBTabCollection_tabGroupMatchingShare_inTabGroups___block_invoke;
   v12[3] = &unk_279E76D98;
-  v13 = v8;
-  v14 = self;
-  v9 = v8;
-  v10 = [v7 safari_firstObjectPassingTest:v12];
+  v13 = recordID;
+  selfCopy = self;
+  v9 = recordID;
+  v10 = [groupsCopy safari_firstObjectPassingTest:v12];
 
   return v10;
 }
@@ -4480,9 +4480,9 @@ uint64_t __53__WBTabCollection_tabGroupMatchingShare_inTabGroups___block_invoke(
   return v2;
 }
 
-- (id)mutableProfileWithIdentifier:(id)a3
+- (id)mutableProfileWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   MEMORY[0x2743D62A0](v18, @"com.apple.WebBookmarks.WBTabCollection");
   v12 = 0;
   v13 = &v12;
@@ -4495,10 +4495,10 @@ uint64_t __53__WBTabCollection_tabGroupMatchingShare_inTabGroups___block_invoke(
   v9[1] = 3221225472;
   v9[2] = __48__WBTabCollection_mutableProfileWithIdentifier___block_invoke;
   v9[3] = &unk_279E766C8;
-  v10 = v4;
+  v10 = identifierCopy;
   v11 = &v12;
   v9[4] = self;
-  v6 = v4;
+  v6 = identifierCopy;
   dispatch_sync(databaseQueue, v9);
   v7 = v13[5];
 
@@ -4519,9 +4519,9 @@ void __48__WBTabCollection_mutableProfileWithIdentifier___block_invoke(uint64_t 
   *(v5 + 40) = v4;
 }
 
-- (id)devicesForProfile:(id)a3
+- (id)devicesForProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   MEMORY[0x2743D62A0](v18, @"com.apple.WebBookmarks.WBTabCollection");
   v12 = 0;
   v13 = &v12;
@@ -4534,10 +4534,10 @@ void __48__WBTabCollection_mutableProfileWithIdentifier___block_invoke(uint64_t 
   v9[1] = 3221225472;
   v9[2] = __37__WBTabCollection_devicesForProfile___block_invoke;
   v9[3] = &unk_279E766C8;
-  v10 = v4;
+  v10 = profileCopy;
   v11 = &v12;
   v9[4] = self;
-  v6 = v4;
+  v6 = profileCopy;
   dispatch_sync(databaseQueue, v9);
   v7 = v13[5];
 
@@ -4556,9 +4556,9 @@ void __37__WBTabCollection_devicesForProfile___block_invoke(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-- (id)profileWithServerID:(id)a3
+- (id)profileWithServerID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   MEMORY[0x2743D62A0](v18, @"com.apple.WebBookmarks.WBTabCollection");
   v12 = 0;
   v13 = &v12;
@@ -4571,10 +4571,10 @@ void __37__WBTabCollection_devicesForProfile___block_invoke(uint64_t a1)
   v9[1] = 3221225472;
   v9[2] = __39__WBTabCollection_profileWithServerID___block_invoke;
   v9[3] = &unk_279E766C8;
-  v10 = v4;
+  v10 = dCopy;
   v11 = &v12;
   v9[4] = self;
-  v6 = v4;
+  v6 = dCopy;
   dispatch_sync(databaseQueue, v9);
   v7 = v13[5];
 
@@ -4623,9 +4623,9 @@ void __38__WBTabCollection_hasMultipleProfiles__block_invoke(uint64_t a1)
   *(*(*(a1 + 40) + 8) + 24) = [v3 countInCollection:v2] > 1;
 }
 
-- (id)windowStateWithUUID:(id)a3
+- (id)windowStateWithUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   MEMORY[0x2743D62A0](v18, @"com.apple.WebBookmarks.WBTabCollection");
   v12 = 0;
   v13 = &v12;
@@ -4638,10 +4638,10 @@ void __38__WBTabCollection_hasMultipleProfiles__block_invoke(uint64_t a1)
   v9[1] = 3221225472;
   v9[2] = __39__WBTabCollection_windowStateWithUUID___block_invoke;
   v9[3] = &unk_279E766C8;
-  v10 = v4;
+  v10 = dCopy;
   v11 = &v12;
   v9[4] = self;
-  v6 = v4;
+  v6 = dCopy;
   dispatch_sync(databaseQueue, v9);
   v7 = v13[5];
 
@@ -4695,9 +4695,9 @@ uint64_t __31__WBTabCollection_windowStates__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (BOOL)closeWindowState:(id)a3
+- (BOOL)closeWindowState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   MEMORY[0x2743D62A0](v15, @"com.apple.WebBookmarks.WBTabCollection");
   v11 = 0;
   v12 = &v11;
@@ -4708,10 +4708,10 @@ uint64_t __31__WBTabCollection_windowStates__block_invoke(uint64_t a1)
   v8[1] = 3221225472;
   v8[2] = __36__WBTabCollection_closeWindowState___block_invoke;
   v8[3] = &unk_279E766C8;
-  v9 = v4;
+  v9 = stateCopy;
   v10 = &v11;
   v8[4] = self;
-  v6 = v4;
+  v6 = stateCopy;
   dispatch_sync(databaseQueue, v8);
   LOBYTE(self) = *(v12 + 24);
 
@@ -4726,9 +4726,9 @@ void __36__WBTabCollection_closeWindowState___block_invoke(uint64_t a1)
   *(*(*(a1 + 48) + 8) + 24) = [v2 closeWindowState:*(a1 + 40)];
 }
 
-- (BOOL)deleteWindowState:(id)a3
+- (BOOL)deleteWindowState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   MEMORY[0x2743D62A0](v15, @"com.apple.WebBookmarks.WBTabCollection");
   v11 = 0;
   v12 = &v11;
@@ -4739,10 +4739,10 @@ void __36__WBTabCollection_closeWindowState___block_invoke(uint64_t a1)
   v8[1] = 3221225472;
   v8[2] = __37__WBTabCollection_deleteWindowState___block_invoke;
   v8[3] = &unk_279E766C8;
-  v9 = v4;
+  v9 = stateCopy;
   v10 = &v11;
   v8[4] = self;
-  v6 = v4;
+  v6 = stateCopy;
   dispatch_sync(databaseQueue, v8);
   LOBYTE(self) = *(v12 + 24);
 
@@ -4757,9 +4757,9 @@ void __37__WBTabCollection_deleteWindowState___block_invoke(uint64_t a1)
   *(*(*(a1 + 48) + 8) + 24) = [v2 deleteWindowState:*(a1 + 40)];
 }
 
-- (BOOL)deleteWindowStates:(id)a3
+- (BOOL)deleteWindowStates:(id)states
 {
-  v4 = a3;
+  statesCopy = states;
   MEMORY[0x2743D62A0](v15, @"com.apple.WebBookmarks.WBTabCollection");
   v11 = 0;
   v12 = &v11;
@@ -4770,10 +4770,10 @@ void __37__WBTabCollection_deleteWindowState___block_invoke(uint64_t a1)
   v8[1] = 3221225472;
   v8[2] = __38__WBTabCollection_deleteWindowStates___block_invoke;
   v8[3] = &unk_279E766C8;
-  v9 = v4;
+  v9 = statesCopy;
   v10 = &v11;
   v8[4] = self;
-  v6 = v4;
+  v6 = statesCopy;
   dispatch_sync(databaseQueue, v8);
   LOBYTE(self) = *(v12 + 24);
 
@@ -4788,10 +4788,10 @@ void __38__WBTabCollection_deleteWindowStates___block_invoke(uint64_t a1)
   *(*(*(a1 + 48) + 8) + 24) = [v2 deleteWindowStates:*(a1 + 40)];
 }
 
-- (void)deleteWindowStates:(id)a3 completionHandler:(id)a4
+- (void)deleteWindowStates:(id)states completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  statesCopy = states;
+  handlerCopy = handler;
   if (!self->_shouldPrepareBackgroundTaskExpiration)
   {
     *buf = 0;
@@ -4885,9 +4885,9 @@ void __48__WBTabCollection_deleteWindowsNotInLastSession__block_invoke(uint64_t 
   *(*(*(a1 + 40) + 8) + 24) = [v2 _deleteWindowsNotInLastSession];
 }
 
-- (void)deleteWindowsNotInLastSessionWithCompletionHandler:(id)a3
+- (void)deleteWindowsNotInLastSessionWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (!self->_shouldPrepareBackgroundTaskExpiration)
   {
     *buf = 0;
@@ -4927,9 +4927,9 @@ uint64_t __70__WBTabCollection_deleteWindowsNotInLastSessionWithCompletionHandle
   return result;
 }
 
-- (BOOL)saveWindowState:(id)a3
+- (BOOL)saveWindowState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   MEMORY[0x2743D62A0](v15, @"com.apple.WebBookmarks.WBTabCollection");
   v11 = 0;
   v12 = &v11;
@@ -4940,10 +4940,10 @@ uint64_t __70__WBTabCollection_deleteWindowsNotInLastSessionWithCompletionHandle
   v8[1] = 3221225472;
   v8[2] = __35__WBTabCollection_saveWindowState___block_invoke;
   v8[3] = &unk_279E766C8;
-  v9 = v4;
+  v9 = stateCopy;
   v10 = &v11;
   v8[4] = self;
-  v6 = v4;
+  v6 = stateCopy;
   dispatch_sync(databaseQueue, v8);
   LOBYTE(self) = *(v12 + 24);
 
@@ -4958,10 +4958,10 @@ void __35__WBTabCollection_saveWindowState___block_invoke(uint64_t a1)
   *(*(*(a1 + 48) + 8) + 24) = [v2 saveWindowState:*(a1 + 40)];
 }
 
-- (void)saveWindowState:(id)a3 completionHandler:(id)a4
+- (void)saveWindowState:(id)state completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  stateCopy = state;
+  handlerCopy = handler;
   if (!self->_shouldPrepareBackgroundTaskExpiration)
   {
     *buf = 0;
@@ -5001,19 +5001,19 @@ uint64_t __53__WBTabCollection_saveWindowState_completionHandler___block_invoke(
   return result;
 }
 
-- (void)saveWindowRestorationArchiveData:(id)a3 forWindowUUIDString:(id)a4 completionHandler:(id)a5
+- (void)saveWindowRestorationArchiveData:(id)data forWindowUUIDString:(id)string completionHandler:(id)handler
 {
   v15 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dataCopy = data;
+  stringCopy = string;
+  handlerCopy = handler;
   v11 = WBS_LOG_CHANNEL_PREFIXTabGroup();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     *buf = 138543618;
-    *&buf[4] = v9;
+    *&buf[4] = stringCopy;
     *&buf[12] = 2048;
-    *&buf[14] = v8;
+    *&buf[14] = dataCopy;
     _os_log_impl(&dword_272C20000, v11, OS_LOG_TYPE_INFO, "Queueing save operation for Window(%{public}@) restoration archive(%p).", buf, 0x16u);
   }
 
@@ -5058,9 +5058,9 @@ uint64_t __90__WBTabCollection_saveWindowRestorationArchiveData_forWindowUUIDStr
   return result;
 }
 
-- (id)_bookmarksForTabs:(id)a3
+- (id)_bookmarksForTabs:(id)tabs
 {
-  v3 = [a3 safari_mapObjectsUsingBlock:&__block_literal_global_122];
+  v3 = [tabs safari_mapObjectsUsingBlock:&__block_literal_global_122];
 
   return v3;
 }
@@ -5072,14 +5072,14 @@ id __37__WBTabCollection__bookmarksForTabs___block_invoke(uint64_t a1, void *a2)
   return v2;
 }
 
-- (id)_bookmarksForTabs:(id)a3 syncable:(BOOL)a4
+- (id)_bookmarksForTabs:(id)tabs syncable:(BOOL)syncable
 {
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __46__WBTabCollection__bookmarksForTabs_syncable___block_invoke;
   v6[3] = &__block_descriptor_33_e28___WebBookmark_16__0__WBTab_8l;
-  v7 = a4;
-  v4 = [a3 safari_mapObjectsUsingBlock:v6];
+  syncableCopy = syncable;
+  v4 = [tabs safari_mapObjectsUsingBlock:v6];
 
   return v4;
 }
@@ -5095,60 +5095,60 @@ id __46__WBTabCollection__bookmarksForTabs_syncable___block_invoke(uint64_t a1, 
   return v3;
 }
 
-- (void)_readPropertiesOfBookmark:(id)a3
+- (void)_readPropertiesOfBookmark:(id)bookmark
 {
-  v7 = a3;
-  v4 = [(WBTabCollection *)self _collection];
-  v5 = [v7 UUID];
-  v6 = [v4 identifierOfBookmarkWithUUID:v5];
+  bookmarkCopy = bookmark;
+  _collection = [(WBTabCollection *)self _collection];
+  uUID = [bookmarkCopy UUID];
+  v6 = [_collection identifierOfBookmarkWithUUID:uUID];
 
-  [v7 _setID:v6];
-  [v7 _setInserted:v6 != 0x7FFFFFFF];
-  [v7 _setOrderIndex:{objc_msgSend(v4, "orderIndexOfBookmark:", v7)}];
-  [v7 _setParentID:{objc_msgSend(v4, "parentIdentifierOfBookmarkWithID:", objc_msgSend(v7, "identifier"))}];
-  [v7 setModifiedAttributes:{objc_msgSend(v7, "modifiedAttributes") | objc_msgSend(v4, "modifiedAttributesOfBookmark:", v7)}];
+  [bookmarkCopy _setID:v6];
+  [bookmarkCopy _setInserted:v6 != 0x7FFFFFFF];
+  [bookmarkCopy _setOrderIndex:{objc_msgSend(_collection, "orderIndexOfBookmark:", bookmarkCopy)}];
+  [bookmarkCopy _setParentID:{objc_msgSend(_collection, "parentIdentifierOfBookmarkWithID:", objc_msgSend(bookmarkCopy, "identifier"))}];
+  [bookmarkCopy setModifiedAttributes:{objc_msgSend(bookmarkCopy, "modifiedAttributes") | objc_msgSend(_collection, "modifiedAttributesOfBookmark:", bookmarkCopy)}];
 }
 
-- (BOOL)_reorderBookmarkIntoPlace:(id)a3
+- (BOOL)_reorderBookmarkIntoPlace:(id)place
 {
-  v4 = a3;
-  v5 = [(WBTabCollection *)self _collection];
-  if ([v4 isSyncable])
+  placeCopy = place;
+  _collection = [(WBTabCollection *)self _collection];
+  if ([placeCopy isSyncable])
   {
-    v6 = [v4 syncPosition];
-    v7 = [v5 orderIndexOfBookmark:v4 withSyncPosition:v6 inFolderWithID:{objc_msgSend(v4, "parentID")}];
+    syncPosition = [placeCopy syncPosition];
+    orderIndex = [_collection orderIndexOfBookmark:placeCopy withSyncPosition:syncPosition inFolderWithID:{objc_msgSend(placeCopy, "parentID")}];
   }
 
   else
   {
-    v7 = [v4 orderIndex];
+    orderIndex = [placeCopy orderIndex];
   }
 
-  v8 = [v5 _reorderBookmark:v4 toIndex:v7 generateSyncPositionIfNeeded:0];
+  v8 = [_collection _reorderBookmark:placeCopy toIndex:orderIndex generateSyncPositionIfNeeded:0];
 
   return v8;
 }
 
 - (BOOL)lockSync
 {
-  v2 = [(WBTabCollection *)self _collection];
-  v3 = [objc_opt_class() lockSync];
+  _collection = [(WBTabCollection *)self _collection];
+  lockSync = [objc_opt_class() lockSync];
 
-  return v3;
+  return lockSync;
 }
 
 - (void)unlockSync
 {
-  v2 = [(WBTabCollection *)self _collection];
+  _collection = [(WBTabCollection *)self _collection];
   [objc_opt_class() unlockSync];
 }
 
 - (BOOL)isLockedSync
 {
-  v2 = [(WBTabCollection *)self _collection];
-  v3 = [objc_opt_class() isLockedSync];
+  _collection = [(WBTabCollection *)self _collection];
+  isLockedSync = [objc_opt_class() isLockedSync];
 
-  return v3;
+  return isLockedSync;
 }
 
 - (void)performMaintenance
@@ -5170,44 +5170,44 @@ void __37__WBTabCollection_performMaintenance__block_invoke(uint64_t a1)
   [v1 performMaintenance];
 }
 
-- (BOOL)copyTabsDatabase:(id)a3 hidingSensitiveData:(BOOL)a4 error:(id *)a5
+- (BOOL)copyTabsDatabase:(id)database hidingSensitiveData:(BOOL)data error:(id *)error
 {
-  v8 = a3;
+  databaseCopy = database;
   v9 = +[WBCollectionConfiguration safariTabCollectionConfiguration];
-  v36 = self;
+  selfCopy = self;
   v10 = [WBTabCollection databasePathForConfiguration:v9];
 
   v11 = [MEMORY[0x277CBEBC0] fileURLWithPath:v10];
   v12 = MEMORY[0x277CBEBC0];
   v13 = [v10 stringByAppendingString:@"-shm"];
-  v35 = a4;
+  dataCopy = data;
   v14 = [v12 fileURLWithPath:v13];
 
   v15 = MEMORY[0x277CBEBC0];
   v16 = [v10 stringByAppendingString:@"-wal"];
   v17 = [v15 fileURLWithPath:v16];
 
-  v18 = [MEMORY[0x277CCAA00] defaultManager];
-  if (([v18 safari_removeFileAtURL:v8 error:a5] & 1) != 0 && objc_msgSend(v18, "copyItemAtURL:toURL:error:", v11, v8, a5))
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  if (([defaultManager safari_removeFileAtURL:databaseCopy error:error] & 1) != 0 && objc_msgSend(defaultManager, "copyItemAtURL:toURL:error:", v11, databaseCopy, error))
   {
     v34 = v11;
     v19 = MEMORY[0x277CBEBC0];
-    v20 = [v8 path];
-    v21 = [v20 stringByAppendingString:@"-shm"];
+    path = [databaseCopy path];
+    v21 = [path stringByAppendingString:@"-shm"];
     v22 = [v19 fileURLWithPath:v21];
 
     v33 = v22;
-    if ([v18 copyItemAtURL:v14 toURL:v22 error:a5])
+    if ([defaultManager copyItemAtURL:v14 toURL:v22 error:error])
     {
       v23 = MEMORY[0x277CBEBC0];
-      v24 = [v8 path];
-      v25 = [v24 stringByAppendingString:@"-wal"];
+      path2 = [databaseCopy path];
+      v25 = [path2 stringByAppendingString:@"-wal"];
       v26 = [v23 fileURLWithPath:v25];
 
       v11 = v34;
-      if ([v18 copyItemAtURL:v17 toURL:v26 error:a5])
+      if ([defaultManager copyItemAtURL:v17 toURL:v26 error:error])
       {
-        v27 = [objc_alloc(MEMORY[0x277D49B00]) initWithURL:v8 queue:v36->_databaseQueue];
+        v27 = [objc_alloc(MEMORY[0x277D49B00]) initWithURL:databaseCopy queue:selfCopy->_databaseQueue];
         v48 = 0;
         v49 = &v48;
         v50 = 0x3032000000;
@@ -5218,7 +5218,7 @@ void __37__WBTabCollection_performMaintenance__block_invoke(uint64_t a1)
         v45 = &v44;
         v46 = 0x2020000000;
         v47 = 1;
-        databaseQueue = v36->_databaseQueue;
+        databaseQueue = selfCopy->_databaseQueue;
         block[0] = MEMORY[0x277D85DD0];
         block[1] = 3221225472;
         block[2] = __62__WBTabCollection_copyTabsDatabase_hidingSensitiveData_error___block_invoke;
@@ -5227,20 +5227,20 @@ void __37__WBTabCollection_performMaintenance__block_invoke(uint64_t a1)
         v42 = &v48;
         v29 = v27;
         v38 = v29;
-        v39 = v36;
-        v43 = v35;
+        v39 = selfCopy;
+        v43 = dataCopy;
         v40 = &unk_2882696C8;
         dispatch_sync(databaseQueue, block);
         v30 = v49[5];
         if (v30 || (v45[3] & 1) == 0)
         {
           v11 = v34;
-          if (a5)
+          if (error)
           {
-            *a5 = v30;
+            *error = v30;
           }
 
-          [v18 safari_removeFileAtURL:v8 error:0];
+          [defaultManager safari_removeFileAtURL:databaseCopy error:0];
           v31 = 0;
         }
 
@@ -5709,48 +5709,48 @@ uint64_t __62__WBTabCollection_copyTabsDatabase_hidingSensitiveData_error___bloc
   return 1;
 }
 
-- (void)_addProfile:(id)a3 toLog:(id)a4 hidingSensitiveData:(BOOL)a5
+- (void)_addProfile:(id)profile toLog:(id)log hidingSensitiveData:(BOOL)data
 {
-  v5 = a5;
-  v9 = a3;
-  v7 = a4;
-  if (v5)
+  dataCopy = data;
+  profileCopy = profile;
+  logCopy = log;
+  if (dataCopy)
   {
-    [v9 privacyPreservingDescription];
+    [profileCopy privacyPreservingDescription];
   }
 
   else
   {
-    [v9 description];
+    [profileCopy description];
   }
   v8 = ;
-  [v7 appendFormat:@"%@\n\n", v8];
+  [logCopy appendFormat:@"%@\n\n", v8];
 }
 
-- (void)_addTabGroup:(id)a3 toLog:(id)a4 hidingSensitiveData:(BOOL)a5
+- (void)_addTabGroup:(id)group toLog:(id)log hidingSensitiveData:(BOOL)data
 {
-  v5 = a5;
+  dataCopy = data;
   v30 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v24 = a4;
-  v22 = v7;
-  if (v5)
+  groupCopy = group;
+  logCopy = log;
+  v22 = groupCopy;
+  if (dataCopy)
   {
-    [v7 privacyPreservingDescription];
+    [groupCopy privacyPreservingDescription];
   }
 
   else
   {
-    [v7 description];
+    [groupCopy description];
   }
   v8 = ;
-  [v24 appendFormat:@"%@\n", v8];
+  [logCopy appendFormat:@"%@\n", v8];
 
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  obj = [v7 tabs];
+  obj = [groupCopy tabs];
   v9 = [obj countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v9)
   {
@@ -5766,25 +5766,25 @@ uint64_t __62__WBTabCollection_copyTabsDatabase_hidingSensitiveData_error___bloc
 
         v12 = *(*(&v25 + 1) + 8 * i);
         v13 = MEMORY[0x277CCACA8];
-        if (v5)
+        if (dataCopy)
         {
-          v14 = [*(*(&v25 + 1) + 8 * i) url];
-          v15 = [v14 absoluteString];
-          v16 = [v15 safari_urlHashesOfComponents];
-          v17 = [v13 stringWithFormat:@"hashed url: %@, ", v16];
+          title = [*(*(&v25 + 1) + 8 * i) url];
+          absoluteString = [title absoluteString];
+          safari_urlHashesOfComponents = [absoluteString safari_urlHashesOfComponents];
+          v17 = [v13 stringWithFormat:@"hashed url: %@, ", safari_urlHashesOfComponents];
         }
 
         else
         {
-          v14 = [*(*(&v25 + 1) + 8 * i) title];
-          v15 = [v12 url];
-          v17 = [v13 stringWithFormat:@"title: %@, url: %@, ", v14, v15];
+          title = [*(*(&v25 + 1) + 8 * i) title];
+          absoluteString = [v12 url];
+          v17 = [v13 stringWithFormat:@"title: %@, url: %@, ", title, absoluteString];
         }
 
-        v18 = [v12 uuid];
-        v19 = [v12 bookmark];
-        v20 = [v19 serverID];
-        [v24 appendFormat:@"Tab, %@identifier: %@, server_id: %@\n", v17, v18, v20];
+        uuid = [v12 uuid];
+        bookmark = [v12 bookmark];
+        serverID = [bookmark serverID];
+        [logCopy appendFormat:@"Tab, %@identifier: %@, server_id: %@\n", v17, uuid, serverID];
       }
 
       v9 = [obj countByEnumeratingWithState:&v25 objects:v29 count:16];
@@ -5793,7 +5793,7 @@ uint64_t __62__WBTabCollection_copyTabsDatabase_hidingSensitiveData_error___bloc
     while (v9);
   }
 
-  [v24 appendString:@"\n\n"];
+  [logCopy appendString:@"\n\n"];
   v21 = *MEMORY[0x277D85DE8];
 }
 

@@ -1,14 +1,14 @@
 @interface SyntheticLongShaders
-- (SyntheticLongShaders)initWithMetal:(id)a3;
-- (id)getKernel:(int)a3;
-- (id)getKernel:(int)a3 configFlags:(unsigned int)a4;
+- (SyntheticLongShaders)initWithMetal:(id)metal;
+- (id)getKernel:(int)kernel;
+- (id)getKernel:(int)kernel configFlags:(unsigned int)flags;
 @end
 
 @implementation SyntheticLongShaders
 
-- (id)getKernel:(int)a3
+- (id)getKernel:(int)kernel
 {
-  if (a3)
+  if (kernel)
   {
     v4 = 0;
   }
@@ -21,20 +21,20 @@
   return v4;
 }
 
-- (id)getKernel:(int)a3 configFlags:(unsigned int)a4
+- (id)getKernel:(int)kernel configFlags:(unsigned int)flags
 {
   v6 = 0;
-  if (a3 <= 2 && a4 <= 0xFF)
+  if (kernel <= 2 && flags <= 0xFF)
   {
-    v6 = self->_kernelWithFunctionConstant[a3][a4];
+    v6 = self->_kernelWithFunctionConstant[kernel][flags];
   }
 
   return v6;
 }
 
-- (SyntheticLongShaders)initWithMetal:(id)a3
+- (SyntheticLongShaders)initWithMetal:(id)metal
 {
-  v4 = a3;
+  metalCopy = metal;
   v33.receiver = self;
   v33.super_class = SyntheticLongShaders;
   v5 = [(SyntheticLongShaders *)&v33 init];
@@ -74,7 +74,7 @@ LABEL_19:
         if (v9 == (dword_2959D5F80[v13] & v9))
         {
           v15 = objc_msgSend_stringWithUTF8String_(MEMORY[0x29EDBA0F8], v6, off_29EDDC0C8[v13], v7);
-          v17 = objc_msgSend_computePipelineStateFor_constants_(v4, v16, v15, v8);
+          v17 = objc_msgSend_computePipelineStateFor_constants_(metalCopy, v16, v15, v8);
           v18 = *v14;
           *v14 = v17;
 
@@ -99,7 +99,7 @@ LABEL_19:
 
   while (v9 != 256);
   v19 = objc_msgSend_stringWithUTF8String_(MEMORY[0x29EDBA0F8], v6, "kernelDownSample", v7);
-  v23 = objc_msgSend_library(v4, v20, v21, v22);
+  v23 = objc_msgSend_library(metalCopy, v20, v21, v22);
   v25 = objc_msgSend_newFunctionWithName_constantValues_error_(v23, v24, v19, v8, 0);
 
   if (!v25)
@@ -111,7 +111,7 @@ LABEL_23:
     goto LABEL_19;
   }
 
-  v27 = objc_msgSend_computePipelineStateFor_constants_(v4, v26, v19, v8);
+  v27 = objc_msgSend_computePipelineStateFor_constants_(metalCopy, v26, v19, v8);
   v5 = v31;
   v28 = v31->_kernel[0];
   v31->_kernel[0] = v27;

@@ -1,21 +1,21 @@
 @interface VideoAccessIndex
 - (id).cxx_construct;
-- (id)initFromFile:(id)a3 pixelFormat:(unsigned int)a4 frameTimes:(const void *)a5;
-- (int)getFrameAtIndex:(unsigned int)a3 pixBuf:(__CVBuffer *)a4;
+- (id)initFromFile:(id)file pixelFormat:(unsigned int)format frameTimes:(const void *)times;
+- (int)getFrameAtIndex:(unsigned int)index pixBuf:(__CVBuffer *)buf;
 @end
 
 @implementation VideoAccessIndex
 
-- (id)initFromFile:(id)a3 pixelFormat:(unsigned int)a4 frameTimes:(const void *)a5
+- (id)initFromFile:(id)file pixelFormat:(unsigned int)format frameTimes:(const void *)times
 {
-  v6 = *&a4;
-  v8 = a3;
+  v6 = *&format;
+  fileCopy = file;
   v19.receiver = self;
   v19.super_class = VideoAccessIndex;
   v9 = [(VideoAccessIndex *)&v19 init];
   if (v9)
   {
-    v10 = [[VideoReaderRand alloc] initFromFile:v8 frameTimes:a5];
+    v10 = [[VideoReaderRand alloc] initFromFile:fileCopy frameTimes:times];
     readerRand = v9->readerRand;
     v9->readerRand = v10;
 
@@ -27,19 +27,19 @@
     }
 
     [(VideoReader *)v12 setPixelFormatOptions:v6];
-    if (&v9->mFrameTimes != a5)
+    if (&v9->mFrameTimes != times)
     {
-      sub_2418DF350(&v9->mFrameTimes.__begin_, *a5, *(a5 + 1), 0xAAAAAAAAAAAAAAABLL * ((*(a5 + 1) - *a5) >> 3));
+      sub_2418DF350(&v9->mFrameTimes.__begin_, *times, *(times + 1), 0xAAAAAAAAAAAAAAABLL * ((*(times + 1) - *times) >> 3));
     }
 
     v9->numFrames = -1431655765 * ((v9->mFrameTimes.__end_ - v9->mFrameTimes.__begin_) >> 3);
-    v13 = [(VideoReader *)v9->readerRand videoTrack];
+    videoTrack = [(VideoReader *)v9->readerRand videoTrack];
     videoTrack = v9->videoTrack;
-    v9->videoTrack = v13;
+    v9->videoTrack = videoTrack;
 
-    v15 = [(VideoReader *)v9->readerRand asset];
+    asset = [(VideoReader *)v9->readerRand asset];
     asset = v9->asset;
-    v9->asset = v15;
+    v9->asset = asset;
   }
 
   v17 = v9;
@@ -48,14 +48,14 @@ LABEL_8:
   return v17;
 }
 
-- (int)getFrameAtIndex:(unsigned int)a3 pixBuf:(__CVBuffer *)a4
+- (int)getFrameAtIndex:(unsigned int)index pixBuf:(__CVBuffer *)buf
 {
-  if (self->numFrames < a3)
+  if (self->numFrames < index)
   {
     return 4;
   }
 
-  v6 = self->mFrameTimes.__begin_ + 24 * a3;
+  v6 = self->mFrameTimes.__begin_ + 24 * index;
   v14 = *v6;
   v15 = *(v6 + 2);
   v13 = 0;
@@ -67,7 +67,7 @@ LABEL_8:
   if (!v4)
   {
     ImageBuffer = CMSampleBufferGetImageBuffer(sbuf);
-    *a4 = ImageBuffer;
+    *buf = ImageBuffer;
     CFRetain(ImageBuffer);
     CFRelease(sbuf);
   }

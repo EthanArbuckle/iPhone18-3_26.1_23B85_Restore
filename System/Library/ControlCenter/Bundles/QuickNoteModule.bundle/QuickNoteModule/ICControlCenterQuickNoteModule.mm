@@ -1,17 +1,17 @@
 @interface ICControlCenterQuickNoteModule
 - (id)iconGlyph;
-- (id)launchURLForTouchType:(int64_t)a3;
-- (void)handleTapWithTouchType:(int64_t)a3;
+- (id)launchURLForTouchType:(int64_t)type;
+- (void)handleTapWithTouchType:(int64_t)type;
 @end
 
 @implementation ICControlCenterQuickNoteModule
 
-- (id)launchURLForTouchType:(int64_t)a3
+- (id)launchURLForTouchType:(int64_t)type
 {
   v22[1] = *MEMORY[0x29EDCA608];
   v5 = MEMORY[0x29EDC5E98];
   v21 = *MEMORY[0x29EDC5E88];
-  v6 = objc_msgSend_numberWithBool_(MEMORY[0x29EDBA070], a2, v3, v4, a3 == 2);
+  v6 = objc_msgSend_numberWithBool_(MEMORY[0x29EDBA070], a2, v3, v4, type == 2);
   v10 = objc_msgSend_stringValue(v6, v7, v8, v9);
   v22[0] = v10;
   v14 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x29EDB8DC0], v11, v12, v13, v22, &v21, 1);
@@ -22,10 +22,10 @@
   return v18;
 }
 
-- (void)handleTapWithTouchType:(int64_t)a3
+- (void)handleTapWithTouchType:(int64_t)type
 {
   v7 = objc_msgSend_showOnLockScreen(MEMORY[0x29EDC5EC8], a2, v3, v4);
-  v11 = objc_msgSend_launchURLForTouchType_(self, v8, v9, v10, a3);
+  v11 = objc_msgSend_launchURLForTouchType_(self, v8, v9, v10, type);
   v12 = objc_opt_new();
   objc_msgSend_setObject_forKeyedSubscript_(v12, v13, v14, v15, MEMORY[0x29EDB8EB0], *MEMORY[0x29EDC1190]);
   objc_msgSend_setObject_forKeyedSubscript_(v12, v16, v17, v18, *MEMORY[0x29EDC0C78], *MEMORY[0x29EDC1188]);

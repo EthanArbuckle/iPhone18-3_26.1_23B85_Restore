@@ -1,18 +1,18 @@
 @interface SFCompanionManager
 + (id)serviceManager;
 - (SFCompanionManager)init;
-- (id)serviceForIdentifier:(id)a3;
-- (id)streamDataForIdentifier:(id)a3;
+- (id)serviceForIdentifier:(id)identifier;
+- (id)streamDataForIdentifier:(id)identifier;
 - (void)dealloc;
-- (void)disableStreamSupportForIdentifier:(id)a3;
-- (void)getStreamsForData:(id)a3 withStreamHandler:(id)a4;
+- (void)disableStreamSupportForIdentifier:(id)identifier;
+- (void)getStreamsForData:(id)data withStreamHandler:(id)handler;
 - (void)retrieveManagerProxy;
 - (void)signalSemaphore;
-- (void)streamToService:(id)a3 withFileHandle:(id)a4 acceptReply:(id)a5;
-- (void)streamsFromFileHandle:(id)a3 withCompletionHandler:(id)a4;
-- (void)supportStreamsWithIdentifier:(id)a3 withStreamHandler:(id)a4;
+- (void)streamToService:(id)service withFileHandle:(id)handle acceptReply:(id)reply;
+- (void)streamsFromFileHandle:(id)handle withCompletionHandler:(id)handler;
+- (void)supportStreamsWithIdentifier:(id)identifier withStreamHandler:(id)handler;
 - (void)xpcManagerConnectionInterrupted;
-- (void)xpcManagerDidInvalidate:(id)a3;
+- (void)xpcManagerDidInvalidate:(id)invalidate;
 @end
 
 @implementation SFCompanionManager
@@ -51,10 +51,10 @@ void __36__SFCompanionManager_serviceManager__block_invoke()
     services = v3->_services;
     v3->_services = v5;
 
-    v7 = [MEMORY[0x1E696AFB0] UUID];
-    v8 = [v7 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
     identifier = v3->_identifier;
-    v3->_identifier = v8;
+    v3->_identifier = uUIDString;
 
     v10 = objc_alloc_init(MEMORY[0x1E695DF90]);
     streamHandlers = v3->_streamHandlers;
@@ -80,33 +80,33 @@ void __36__SFCompanionManager_serviceManager__block_invoke()
   [(SFCompanionManager *)&v4 dealloc];
 }
 
-- (id)serviceForIdentifier:(id)a3
+- (id)serviceForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(SFCompanionManager *)self serviceIdentifierQueue];
+  identifierCopy = identifier;
+  serviceIdentifierQueue = [(SFCompanionManager *)self serviceIdentifierQueue];
 
-  if (!v5)
+  if (!serviceIdentifierQueue)
   {
     v6 = dispatch_queue_create("com.apple.sharing.service-identifier-queue", 0);
     [(SFCompanionManager *)self setServiceIdentifierQueue:v6];
   }
 
-  v7 = [(SFCompanionManager *)self serviceIdentifierQueue];
+  serviceIdentifierQueue2 = [(SFCompanionManager *)self serviceIdentifierQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __43__SFCompanionManager_serviceForIdentifier___block_invoke;
   block[3] = &unk_1E788B198;
   block[4] = self;
-  dispatch_sync(v7, block);
+  dispatch_sync(serviceIdentifierQueue2, block);
 
-  v8 = self;
-  objc_sync_enter(v8);
-  v9 = [(NSMutableDictionary *)v8->_services objectForKeyedSubscript:v4];
-  objc_sync_exit(v8);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v9 = [(NSMutableDictionary *)selfCopy->_services objectForKeyedSubscript:identifierCopy];
+  objc_sync_exit(selfCopy);
 
-  v10 = [v9 deviceID];
+  deviceID = [v9 deviceID];
 
-  if (!v10)
+  if (!deviceID)
   {
     v11 = streams_log();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -162,22 +162,22 @@ void __43__SFCompanionManager_serviceForIdentifier___block_invoke(uint64_t a1)
   }
 }
 
-- (id)streamDataForIdentifier:(id)a3
+- (id)streamDataForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(SFCompanionManager *)self serviceForIdentifier:v4];
+  identifierCopy = identifier;
+  v5 = [(SFCompanionManager *)self serviceForIdentifier:identifierCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 messageData];
+    messageData = [v5 messageData];
   }
 
   else
   {
-    v7 = 0;
+    messageData = 0;
   }
 
-  return v7;
+  return messageData;
 }
 
 - (void)retrieveManagerProxy
@@ -285,9 +285,9 @@ void __42__SFCompanionManager_retrieveManagerProxy__block_invoke(uint64_t a1, vo
 
 - (void)signalSemaphore
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2->_managerSemaphore)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_managerSemaphore)
   {
     v3 = streams_log();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -296,26 +296,26 @@ void __42__SFCompanionManager_retrieveManagerProxy__block_invoke(uint64_t a1, vo
       _os_log_impl(&dword_1A9662000, v3, OS_LOG_TYPE_DEFAULT, "Signaling the semaphore", v4, 2u);
     }
 
-    dispatch_semaphore_signal(v2->_managerSemaphore);
+    dispatch_semaphore_signal(selfCopy->_managerSemaphore);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)streamToService:(id)a3 withFileHandle:(id)a4 acceptReply:(id)a5
+- (void)streamToService:(id)service withFileHandle:(id)handle acceptReply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  serviceCopy = service;
+  handleCopy = handle;
+  replyCopy = reply;
   v32 = 0;
   v33 = &v32;
   v34 = 0x2020000000;
   v35 = 0;
-  if (v9)
+  if (handleCopy)
   {
     streamHandlers = self->_streamHandlers;
-    v12 = [v8 identifier];
-    v13 = [(NSMutableDictionary *)streamHandlers objectForKeyedSubscript:v12];
+    identifier = [serviceCopy identifier];
+    v13 = [(NSMutableDictionary *)streamHandlers objectForKeyedSubscript:identifier];
 
     if (v13)
     {
@@ -325,7 +325,7 @@ void __42__SFCompanionManager_retrieveManagerProxy__block_invoke(uint64_t a1, vo
       v29[3] = &unk_1E788CF30;
       v31 = &v32;
       v30 = v13;
-      [(SFCompanionManager *)self streamsFromFileHandle:v9 withCompletionHandler:v29];
+      [(SFCompanionManager *)self streamsFromFileHandle:handleCopy withCompletionHandler:v29];
       v14 = v30;
     }
 
@@ -348,7 +348,7 @@ void __42__SFCompanionManager_retrieveManagerProxy__block_invoke(uint64_t a1, vo
     }
   }
 
-  v10[2](v10, *(v33 + 24));
+  replyCopy[2](replyCopy, *(v33 + 24));
   _Block_object_dispose(&v32, 8);
 }
 
@@ -382,7 +382,7 @@ uint64_t __65__SFCompanionManager_streamToService_withFileHandle_acceptReply___b
   [(SFCompanionManager *)self retrieveManagerProxy];
 }
 
-- (void)xpcManagerDidInvalidate:(id)a3
+- (void)xpcManagerDidInvalidate:(id)invalidate
 {
   managerProxy = self->_managerProxy;
   self->_managerProxy = 0;
@@ -390,14 +390,14 @@ uint64_t __65__SFCompanionManager_streamToService_withFileHandle_acceptReply___b
   [(SFCompanionManager *)self signalSemaphore];
 }
 
-- (void)getStreamsForData:(id)a3 withStreamHandler:(id)a4
+- (void)getStreamsForData:(id)data withStreamHandler:(id)handler
 {
   v16[3] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  handlerCopy = handler;
   v15 = 0;
   v16[0] = 0;
-  v8 = [MEMORY[0x1E696AE40] propertyListWithData:v6 options:0 format:v16 error:&v15];
+  v8 = [MEMORY[0x1E696AE40] propertyListWithData:dataCopy options:0 format:v16 error:&v15];
   v9 = v15;
   if (v9)
   {
@@ -407,7 +407,7 @@ uint64_t __65__SFCompanionManager_streamToService_withFileHandle_acceptReply___b
       [(SFCompanionManager *)v9 getStreamsForData:v16 withStreamHandler:v10];
     }
 
-    (*(v7 + 2))(v7, 0, 0, v9);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, v9);
   }
 
   else
@@ -418,7 +418,7 @@ uint64_t __65__SFCompanionManager_streamToService_withFileHandle_acceptReply___b
     v13[2] = __58__SFCompanionManager_getStreamsForData_withStreamHandler___block_invoke;
     v13[3] = &unk_1E788CF80;
     v13[4] = self;
-    v14 = v7;
+    v14 = handlerCopy;
     [v11 streamsForMessage:v8 withCompletionHandler:v13];
   }
 
@@ -447,25 +447,25 @@ void __58__SFCompanionManager_getStreamsForData_withStreamHandler___block_invoke
   }
 }
 
-- (void)supportStreamsWithIdentifier:(id)a3 withStreamHandler:(id)a4
+- (void)supportStreamsWithIdentifier:(id)identifier withStreamHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  objc_sync_enter(v8);
-  v9 = [[SFCompanionService alloc] initWithServiceName:v6];
-  [(SFCompanionService *)v9 setManagerID:v8->_identifier];
-  v10 = [(SFCompanionManager *)v8 deviceName];
-  [(SFCompanionService *)v9 setDeviceName:v10];
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v9 = [[SFCompanionService alloc] initWithServiceName:identifierCopy];
+  [(SFCompanionService *)v9 setManagerID:selfCopy->_identifier];
+  deviceName = [(SFCompanionManager *)selfCopy deviceName];
+  [(SFCompanionService *)v9 setDeviceName:deviceName];
 
-  v11 = [(SFCompanionManager *)v8 deviceID];
-  [(SFCompanionService *)v9 setDeviceID:v11];
+  deviceID = [(SFCompanionManager *)selfCopy deviceID];
+  [(SFCompanionService *)v9 setDeviceID:deviceID];
 
-  v12 = [(SFCompanionManager *)v8 deviceIP];
-  [(SFCompanionService *)v9 setIpAddress:v12];
+  deviceIP = [(SFCompanionManager *)selfCopy deviceIP];
+  [(SFCompanionService *)v9 setIpAddress:deviceIP];
 
-  [(NSMutableDictionary *)v8->_services setObject:v9 forKeyedSubscript:v6];
-  if (v7)
+  [(NSMutableDictionary *)selfCopy->_services setObject:v9 forKeyedSubscript:identifierCopy];
+  if (handlerCopy)
   {
     v13 = streams_log();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -474,14 +474,14 @@ void __58__SFCompanionManager_getStreamsForData_withStreamHandler___block_invoke
       _os_log_impl(&dword_1A9662000, v13, OS_LOG_TYPE_DEFAULT, "Storing stream handler", buf, 2u);
     }
 
-    v14 = [v7 copy];
+    v14 = [handlerCopy copy];
     v15 = _Block_copy(v14);
-    streamHandlers = v8->_streamHandlers;
-    v17 = [(SFCompanionService *)v9 identifier];
-    [(NSMutableDictionary *)streamHandlers setObject:v15 forKeyedSubscript:v17];
+    streamHandlers = selfCopy->_streamHandlers;
+    identifier = [(SFCompanionService *)v9 identifier];
+    [(NSMutableDictionary *)streamHandlers setObject:v15 forKeyedSubscript:identifier];
   }
 
-  managerProxy = v8->_managerProxy;
+  managerProxy = selfCopy->_managerProxy;
   if (managerProxy)
   {
     [(SFCompanionServiceManagerProtocol *)managerProxy enableService:v9];
@@ -497,58 +497,58 @@ void __58__SFCompanionManager_getStreamsForData_withStreamHandler___block_invoke
     }
   }
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)disableStreamSupportForIdentifier:(id)a3
+- (void)disableStreamSupportForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(NSMutableDictionary *)v5->_services objectForKeyedSubscript:v4];
+  identifierCopy = identifier;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(NSMutableDictionary *)selfCopy->_services objectForKeyedSubscript:identifierCopy];
   v7 = v6;
   if (v6 && ([v6 identifier], v8 = objc_claimAutoreleasedReturnValue(), v8, v8))
   {
-    managerProxy = v5->_managerProxy;
+    managerProxy = selfCopy->_managerProxy;
     if (managerProxy)
     {
       [(SFCompanionServiceManagerProtocol *)managerProxy disableService:v7];
     }
 
-    [(NSMutableDictionary *)v5->_services removeObjectForKey:v4];
-    streamHandlers = v5->_streamHandlers;
-    v11 = [v7 identifier];
-    [(NSMutableDictionary *)streamHandlers removeObjectForKey:v11];
+    [(NSMutableDictionary *)selfCopy->_services removeObjectForKey:identifierCopy];
+    streamHandlers = selfCopy->_streamHandlers;
+    identifier = [v7 identifier];
+    [(NSMutableDictionary *)streamHandlers removeObjectForKey:identifier];
   }
 
   else
   {
-    v11 = streams_log();
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+    identifier = streams_log();
+    if (os_log_type_enabled(identifier, OS_LOG_TYPE_DEFAULT))
     {
       *v12 = 0;
-      _os_log_impl(&dword_1A9662000, v11, OS_LOG_TYPE_DEFAULT, "Trying to disable service that has never been enabled", v12, 2u);
+      _os_log_impl(&dword_1A9662000, identifier, OS_LOG_TYPE_DEFAULT, "Trying to disable service that has never been enabled", v12, 2u);
     }
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)streamsFromFileHandle:(id)a3 withCompletionHandler:(id)a4
+- (void)streamsFromFileHandle:(id)handle withCompletionHandler:(id)handler
 {
   stream = 0;
   readStream = 0;
-  v5 = a4;
-  v6 = a3;
-  v7 = dup([v6 fileDescriptor]);
+  handlerCopy = handler;
+  handleCopy = handle;
+  v7 = dup([handleCopy fileDescriptor]);
   CFStreamCreatePairWithSocket(0, v7, &readStream, &stream);
   v8 = *MEMORY[0x1E695E940];
   v9 = *MEMORY[0x1E695E4D0];
   CFReadStreamSetProperty(readStream, *MEMORY[0x1E695E940], *MEMORY[0x1E695E4D0]);
   CFWriteStreamSetProperty(stream, v8, v9);
-  [v6 closeFile];
+  [handleCopy closeFile];
 
-  v5[2](v5, readStream, stream);
+  handlerCopy[2](handlerCopy, readStream, stream);
 }
 
 - (void)streamDataForIdentifier:(uint64_t)a1 .cold.1(uint64_t a1, NSObject *a2)

@@ -1,39 +1,39 @@
 @interface HUScheduleDateEditorItemModuleController
-- (Class)cellClassForItem:(id)a3;
+- (Class)cellClassForItem:(id)item;
 - (id)_editorItemModule;
-- (unint64_t)didSelectItem:(id)a3;
-- (void)dateAndTimePickerCell:(id)a3 didSelectDate:(id)a4;
-- (void)setupCell:(id)a3 forItem:(id)a4;
-- (void)updateCell:(id)a3 forItem:(id)a4 animated:(BOOL)a5;
+- (unint64_t)didSelectItem:(id)item;
+- (void)dateAndTimePickerCell:(id)cell didSelectDate:(id)date;
+- (void)setupCell:(id)cell forItem:(id)item;
+- (void)updateCell:(id)cell forItem:(id)item animated:(BOOL)animated;
 @end
 
 @implementation HUScheduleDateEditorItemModuleController
 
-- (Class)cellClassForItem:(id)a3
+- (Class)cellClassForItem:(id)item
 {
-  v4 = a3;
-  v5 = [(HUScheduleDateEditorItemModuleController *)self _editorItemModule];
-  v6 = [v5 startTodayDateItem];
-  if ([v4 isEqual:v6])
+  itemCopy = item;
+  _editorItemModule = [(HUScheduleDateEditorItemModuleController *)self _editorItemModule];
+  startTodayDateItem = [_editorItemModule startTodayDateItem];
+  if ([itemCopy isEqual:startTodayDateItem])
   {
     goto LABEL_4;
   }
 
-  v7 = [v5 endNeverDateItem];
-  if ([v4 isEqual:v7])
+  endNeverDateItem = [_editorItemModule endNeverDateItem];
+  if ([itemCopy isEqual:endNeverDateItem])
   {
 
 LABEL_4:
     goto LABEL_5;
   }
 
-  v10 = [v5 specificDateItem];
-  v11 = [v4 isEqual:v10];
+  specificDateItem = [_editorItemModule specificDateItem];
+  v11 = [itemCopy isEqual:specificDateItem];
 
   if ((v11 & 1) == 0)
   {
-    v12 = [v5 datePickerItem];
-    [v4 isEqual:v12];
+    datePickerItem = [_editorItemModule datePickerItem];
+    [itemCopy isEqual:datePickerItem];
   }
 
 LABEL_5:
@@ -42,18 +42,18 @@ LABEL_5:
   return v8;
 }
 
-- (void)setupCell:(id)a3 forItem:(id)a4
+- (void)setupCell:(id)cell forItem:(id)item
 {
-  v6 = a3;
+  cellCopy = cell;
   v15.receiver = self;
   v15.super_class = HUScheduleDateEditorItemModuleController;
-  [(HUItemModuleController *)&v15 setupCell:v6 forItem:a4];
-  v7 = [(HUScheduleDateEditorItemModuleController *)self _editorItemModule];
+  [(HUItemModuleController *)&v15 setupCell:cellCopy forItem:item];
+  _editorItemModule = [(HUScheduleDateEditorItemModuleController *)self _editorItemModule];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     objc_opt_class();
-    v8 = v6;
+    v8 = cellCopy;
     if (objc_opt_isKindOfClass())
     {
       v9 = v8;
@@ -68,36 +68,36 @@ LABEL_5:
 
     [v10 toggleTimePickerOptionVisibility:0];
     [v10 setHideTitleLabel:1];
-    v11 = [v7 existingDate];
-    v12 = [MEMORY[0x277CBEAA8] distantFuture];
-    if ([v11 isEqualToDate:v12])
+    existingDate = [_editorItemModule existingDate];
+    distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+    if ([existingDate isEqualToDate:distantFuture])
     {
-      v13 = [MEMORY[0x277CBEAA8] date];
-      v14 = [v13 hf_endOfDay];
+      date = [MEMORY[0x277CBEAA8] date];
+      hf_endOfDay = [date hf_endOfDay];
     }
 
     else
     {
-      v14 = [v7 existingDate];
+      hf_endOfDay = [_editorItemModule existingDate];
     }
 
-    [v10 setDateAndTimePickerDate:v14];
-    [v7 setEditedDate:v14];
+    [v10 setDateAndTimePickerDate:hf_endOfDay];
+    [_editorItemModule setEditedDate:hf_endOfDay];
     [v10 setDelegate:self];
   }
 }
 
-- (void)updateCell:(id)a3 forItem:(id)a4 animated:(BOOL)a5
+- (void)updateCell:(id)cell forItem:(id)item animated:(BOOL)animated
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  animatedCopy = animated;
+  cellCopy = cell;
+  itemCopy = item;
   v23.receiver = self;
   v23.super_class = HUScheduleDateEditorItemModuleController;
-  [(HUItemModuleController *)&v23 updateCell:v8 forItem:v9 animated:v5];
-  v10 = [(HUScheduleDateEditorItemModuleController *)self _editorItemModule];
+  [(HUItemModuleController *)&v23 updateCell:cellCopy forItem:itemCopy animated:animatedCopy];
+  _editorItemModule = [(HUScheduleDateEditorItemModuleController *)self _editorItemModule];
   objc_opt_class();
-  v11 = v8;
+  v11 = cellCopy;
   if (objc_opt_isKindOfClass())
   {
     v12 = v11;
@@ -115,14 +115,14 @@ LABEL_5:
     goto LABEL_13;
   }
 
-  v14 = [v10 startTodayDateItem];
-  if (([v9 isEqual:v14] & 1) == 0)
+  startTodayDateItem = [_editorItemModule startTodayDateItem];
+  if (([itemCopy isEqual:startTodayDateItem] & 1) == 0)
   {
-    v15 = [v10 endNeverDateItem];
-    if (![v9 isEqual:v15])
+    endNeverDateItem = [_editorItemModule endNeverDateItem];
+    if (![itemCopy isEqual:endNeverDateItem])
     {
-      v21 = [v10 specificDateItem];
-      v22 = [v9 isEqual:v21];
+      specificDateItem = [_editorItemModule specificDateItem];
+      v22 = [itemCopy isEqual:specificDateItem];
 
       if ((v22 & 1) == 0)
       {
@@ -134,8 +134,8 @@ LABEL_5:
   }
 
 LABEL_9:
-  v16 = [v9 latestResults];
-  v17 = [v16 objectForKeyedSubscript:*MEMORY[0x277D13FE8]];
+  latestResults = [itemCopy latestResults];
+  v17 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13FE8]];
   if ([v17 BOOLValue])
   {
     v18 = 3;
@@ -149,57 +149,57 @@ LABEL_9:
   [v13 setAccessoryType:v18];
 
   [v13 setDisabled:0];
-  v19 = [v9 latestResults];
-  v20 = [v19 objectForKeyedSubscript:*MEMORY[0x277D13DC8]];
+  latestResults2 = [itemCopy latestResults];
+  v20 = [latestResults2 objectForKeyedSubscript:*MEMORY[0x277D13DC8]];
   [v13 setAccessibilityIdentifier:v20];
 
 LABEL_13:
 }
 
-- (unint64_t)didSelectItem:(id)a3
+- (unint64_t)didSelectItem:(id)item
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  itemCopy = item;
   v6 = HFLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = NSStringFromSelector(a2);
     v16 = 138412802;
-    v17 = self;
+    selfCopy = self;
     v18 = 2112;
     v19 = v7;
     v20 = 2112;
-    v21 = v5;
+    v21 = itemCopy;
     _os_log_impl(&dword_20CEB6000, v6, OS_LOG_TYPE_DEFAULT, "%@:%@ User selected item [%@]", &v16, 0x20u);
   }
 
-  v8 = [(HUScheduleDateEditorItemModuleController *)self _editorItemModule];
-  v9 = [v8 startTodayDateItem];
-  v10 = [v5 isEqual:v9];
+  _editorItemModule = [(HUScheduleDateEditorItemModuleController *)self _editorItemModule];
+  startTodayDateItem = [_editorItemModule startTodayDateItem];
+  v10 = [itemCopy isEqual:startTodayDateItem];
 
   if (v10)
   {
-    [v8 updateToTodayDateOption];
+    [_editorItemModule updateToTodayDateOption];
   }
 
   else
   {
-    v11 = [v8 endNeverDateItem];
-    v12 = [v5 isEqual:v11];
+    endNeverDateItem = [_editorItemModule endNeverDateItem];
+    v12 = [itemCopy isEqual:endNeverDateItem];
 
     if (v12)
     {
-      [v8 updateToNeverDateOption];
+      [_editorItemModule updateToNeverDateOption];
     }
 
     else
     {
-      v13 = [v8 specificDateItem];
-      v14 = [v5 isEqual:v13];
+      specificDateItem = [_editorItemModule specificDateItem];
+      v14 = [itemCopy isEqual:specificDateItem];
 
       if (v14)
       {
-        [v8 updateToSpecificDateOption];
+        [_editorItemModule updateToSpecificDateOption];
       }
     }
   }
@@ -207,34 +207,34 @@ LABEL_13:
   return 0;
 }
 
-- (void)dateAndTimePickerCell:(id)a3 didSelectDate:(id)a4
+- (void)dateAndTimePickerCell:(id)cell didSelectDate:(id)date
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  dateCopy = date;
   v7 = HFLogForCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = NSStringFromSelector(a2);
     v10 = 138412802;
-    v11 = self;
+    selfCopy = self;
     v12 = 2112;
     v13 = v8;
     v14 = 2112;
-    v15 = v6;
+    v15 = dateCopy;
     _os_log_impl(&dword_20CEB6000, v7, OS_LOG_TYPE_DEFAULT, "%@:%@ User selected date [%@] from calendar picker.", &v10, 0x20u);
   }
 
-  v9 = [(HUScheduleDateEditorItemModuleController *)self _editorItemModule];
-  [v9 setEditedDate:v6];
+  _editorItemModule = [(HUScheduleDateEditorItemModuleController *)self _editorItemModule];
+  [_editorItemModule setEditedDate:dateCopy];
 }
 
 - (id)_editorItemModule
 {
   objc_opt_class();
-  v3 = [(HUItemModuleController *)self module];
+  module = [(HUItemModuleController *)self module];
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = module;
   }
 
   else

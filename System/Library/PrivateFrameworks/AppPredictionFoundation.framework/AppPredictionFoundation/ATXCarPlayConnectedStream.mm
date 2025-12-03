@@ -1,16 +1,16 @@
 @interface ATXCarPlayConnectedStream
-- (void)_enumerateEventsConnected:(BOOL)a3 startDate:(id)a4 endDate:(id)a5 filterBlock:(id)a6 limit:(unint64_t)a7 ascending:(BOOL)a8 shouldContinue:(id)a9 block:(id)a10;
+- (void)_enumerateEventsConnected:(BOOL)connected startDate:(id)date endDate:(id)endDate filterBlock:(id)block limit:(unint64_t)limit ascending:(BOOL)ascending shouldContinue:(id)continue block:(id)self0;
 @end
 
 @implementation ATXCarPlayConnectedStream
 
-- (void)_enumerateEventsConnected:(BOOL)a3 startDate:(id)a4 endDate:(id)a5 filterBlock:(id)a6 limit:(unint64_t)a7 ascending:(BOOL)a8 shouldContinue:(id)a9 block:(id)a10
+- (void)_enumerateEventsConnected:(BOOL)connected startDate:(id)date endDate:(id)endDate filterBlock:(id)block limit:(unint64_t)limit ascending:(BOOL)ascending shouldContinue:(id)continue block:(id)self0
 {
-  v10 = a8;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a9;
+  ascendingCopy = ascending;
+  dateCopy = date;
+  endDateCopy = endDate;
+  blockCopy = block;
+  continueCopy = continue;
   v19 = a10;
   v34[0] = 0;
   v34[1] = v34;
@@ -18,20 +18,20 @@
   v34[3] = __Block_byref_object_copy__2;
   v34[4] = __Block_byref_object_dispose__2;
   v35 = 0;
-  v20 = !v10;
-  v21 = [(ATXCarPlayConnectedStream *)self _carPlayPublisherWithStartDate:v15 endDate:v16 limit:a7 shouldReverse:!v10];
+  v20 = !ascendingCopy;
+  v21 = [(ATXCarPlayConnectedStream *)self _carPlayPublisherWithStartDate:dateCopy endDate:endDateCopy limit:limit shouldReverse:!ascendingCopy];
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
   v27[2] = __122__ATXCarPlayConnectedStream__enumerateEventsConnected_startDate_endDate_filterBlock_limit_ascending_shouldContinue_block___block_invoke_1;
   v27[3] = &unk_2785903F0;
   v32 = v20;
-  v33 = a3;
+  connectedCopy = connected;
   v31 = v34;
-  v22 = v17;
+  v22 = blockCopy;
   v28 = v22;
   v23 = v19;
   v29 = v23;
-  v24 = v18;
+  v24 = continueCopy;
   v30 = v24;
   v25 = [v21 sinkWithCompletion:&__block_literal_global_5 shouldContinue:v27];
 

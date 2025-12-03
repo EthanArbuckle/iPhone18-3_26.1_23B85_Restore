@@ -1,7 +1,7 @@
 @interface SBFluidSwitcherGesture
-- (SBFluidSwitcherGesture)initWithType:(int64_t)a3 eventProvider:(id)a4;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (SBFluidSwitcherGesture)initWithType:(int64_t)type eventProvider:(id)provider;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)gestureEvent;
 - (id)studyLogData;
 - (id)succinctDescription;
@@ -10,10 +10,10 @@
 
 @implementation SBFluidSwitcherGesture
 
-- (SBFluidSwitcherGesture)initWithType:(int64_t)a3 eventProvider:(id)a4
+- (SBFluidSwitcherGesture)initWithType:(int64_t)type eventProvider:(id)provider
 {
-  v7 = a4;
-  if (!v7)
+  providerCopy = provider;
+  if (!providerCopy)
   {
     [SBFluidSwitcherGesture initWithType:a2 eventProvider:self];
   }
@@ -24,8 +24,8 @@
   v9 = v8;
   if (v8)
   {
-    v8->_type = a3;
-    v10 = [v7 copy];
+    v8->_type = type;
+    v10 = [providerCopy copy];
     eventProvider = v9->_eventProvider;
     v9->_eventProvider = v10;
 
@@ -50,15 +50,15 @@
 {
   if (self->_gestureRecognizerForStudyLog)
   {
-    v3 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v4 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:self->_gestureRecognizerForStudyLog];
-    [v3 setObject:v4 forKeyedSubscript:@"address"];
+    [dictionary setObject:v4 forKeyedSubscript:@"address"];
 
-    v5 = [(UIGestureRecognizer *)self->_gestureRecognizerForStudyLog name];
-    v6 = v5;
-    if (v5)
+    name = [(UIGestureRecognizer *)self->_gestureRecognizerForStudyLog name];
+    v6 = name;
+    if (name)
     {
-      v7 = v5;
+      v7 = name;
     }
 
     else
@@ -66,48 +66,48 @@
       v7 = &stru_283094718;
     }
 
-    [v3 setObject:v7 forKeyedSubscript:@"name"];
+    [dictionary setObject:v7 forKeyedSubscript:@"name"];
 
     v8 = [MEMORY[0x277CCABB0] numberWithInteger:{-[UIGestureRecognizer state](self->_gestureRecognizerForStudyLog, "state")}];
-    [v3 setObject:v8 forKeyedSubscript:@"state"];
+    [dictionary setObject:v8 forKeyedSubscript:@"state"];
   }
 
   else
   {
-    v3 = 0;
+    dictionary = 0;
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)succinctDescription
 {
-  v2 = [(SBFluidSwitcherGesture *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBFluidSwitcherGesture *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBFluidSwitcherGesture *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBFluidSwitcherGesture *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(SBFluidSwitcherGesture *)self succinctDescriptionBuilder];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(SBFluidSwitcherGesture *)self succinctDescriptionBuilder];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __64__SBFluidSwitcherGesture_descriptionBuilderWithMultilinePrefix___block_invoke;
   v9[3] = &unk_2783A92D8;
-  v6 = v5;
+  v6 = succinctDescriptionBuilder;
   v10 = v6;
-  v11 = self;
-  [v6 appendBodySectionWithName:0 multilinePrefix:v4 block:v9];
+  selfCopy = self;
+  [v6 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v9];
 
   v7 = v6;
   return v6;
@@ -128,8 +128,8 @@ void __64__SBFluidSwitcherGesture_descriptionBuilderWithMultilinePrefix___block_
 
 - (void)gestureEvent
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"SBFluidSwitcherGesture.m" lineNumber:107 description:@"The event provider must return a gesture event."];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"SBFluidSwitcherGesture.m" lineNumber:107 description:@"The event provider must return a gesture event."];
 }
 
 @end

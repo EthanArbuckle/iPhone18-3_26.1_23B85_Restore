@@ -1,23 +1,23 @@
 @interface TUIReusableSubviewPool
-- (TUIReusableSubviewPool)initWithRegistry:(id)a3;
-- (id)dequeueReusableSubviewWithReuseIdentifier:(id)a3 host:(id)a4;
+- (TUIReusableSubviewPool)initWithRegistry:(id)registry;
+- (id)dequeueReusableSubviewWithReuseIdentifier:(id)identifier host:(id)host;
 - (void)clearPool;
-- (void)prepareToReuseHost:(id)a3;
-- (void)reuseSubviews:(id)a3 host:(id)a4;
+- (void)prepareToReuseHost:(id)host;
+- (void)reuseSubviews:(id)subviews host:(id)host;
 @end
 
 @implementation TUIReusableSubviewPool
 
-- (TUIReusableSubviewPool)initWithRegistry:(id)a3
+- (TUIReusableSubviewPool)initWithRegistry:(id)registry
 {
-  v5 = a3;
+  registryCopy = registry;
   v11.receiver = self;
   v11.super_class = TUIReusableSubviewPool;
   v6 = [(TUIReusableSubviewPool *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_registry, a3);
+    objc_storeStrong(&v6->_registry, registry);
     v8 = objc_opt_new();
     subviewsAvailableByIdentifier = v7->_subviewsAvailableByIdentifier;
     v7->_subviewsAvailableByIdentifier = v8;
@@ -26,16 +26,16 @@
   return v7;
 }
 
-- (id)dequeueReusableSubviewWithReuseIdentifier:(id)a3 host:(id)a4
+- (id)dequeueReusableSubviewWithReuseIdentifier:(id)identifier host:(id)host
 {
-  v7 = a3;
-  v8 = a4;
-  if (v7)
+  identifierCopy = identifier;
+  hostCopy = host;
+  if (identifierCopy)
   {
-    v9 = [(NSMutableDictionary *)self->_subviewsAvailableByIdentifier objectForKeyedSubscript:v7];
-    v10 = [v8 tui_hostingView];
-    v11 = v10;
-    if (v10)
+    v9 = [(NSMutableDictionary *)self->_subviewsAvailableByIdentifier objectForKeyedSubscript:identifierCopy];
+    tui_hostingView = [hostCopy tui_hostingView];
+    v11 = tui_hostingView;
+    if (tui_hostingView)
     {
       v12 = v9 == 0;
     }
@@ -46,25 +46,25 @@
     }
 
     v13 = !v12;
-    if (v12 || (v22[0] = _NSConcreteStackBlock, v22[1] = 3221225472, v22[2] = sub_DC5E4, v22[3] = &unk_261750, v4 = &v23, v23 = v10, v14 = [v9 indexOfObjectPassingTest:v22], v14 == 0x7FFFFFFFFFFFFFFFLL))
+    if (v12 || (v22[0] = _NSConcreteStackBlock, v22[1] = 3221225472, v22[2] = sub_DC5E4, v22[3] = &unk_261750, v4 = &v23, v23 = tui_hostingView, v14 = [v9 indexOfObjectPassingTest:v22], v14 == 0x7FFFFFFFFFFFFFFFLL))
     {
       if ([v9 count])
       {
-        v15 = [v9 lastObject];
+        lastObject = [v9 lastObject];
         [v9 removeLastObject];
-        if (v15)
+        if (lastObject)
         {
 LABEL_12:
-          if ([v8 isDescendantOfView:v15])
+          if ([hostCopy isDescendantOfView:lastObject])
           {
-            [v8 removeFromSuperview];
+            [hostCopy removeFromSuperview];
           }
 
           v20[0] = _NSConcreteStackBlock;
           v20[1] = 3221225472;
           v20[2] = sub_DC624;
           v20[3] = &unk_25DE30;
-          v16 = v15;
+          v16 = lastObject;
           v21 = v16;
           [UIView performWithoutAnimation:v20];
 
@@ -81,15 +81,15 @@ LABEL_12:
     else
     {
       v18 = v14;
-      v15 = [v9 objectAtIndexedSubscript:v14];
+      lastObject = [v9 objectAtIndexedSubscript:v14];
       [v9 removeObjectAtIndex:v18];
-      if (v15)
+      if (lastObject)
       {
         goto LABEL_12;
       }
     }
 
-    v16 = [(TUIViewRegistry *)self->_registry newSubviewWithReuseIdentifier:v7];
+    v16 = [(TUIViewRegistry *)self->_registry newSubviewWithReuseIdentifier:identifierCopy];
     if (!v13)
     {
 LABEL_23:
@@ -119,14 +119,14 @@ LABEL_24:
   return v16;
 }
 
-- (void)prepareToReuseHost:(id)a3
+- (void)prepareToReuseHost:(id)host
 {
-  v4 = a3;
-  v5 = [v4 tui_hostedSubviewsMap];
-  v6 = [v5 allValues];
-  v7 = [v6 copy];
+  hostCopy = host;
+  tui_hostedSubviewsMap = [hostCopy tui_hostedSubviewsMap];
+  allValues = [tui_hostedSubviewsMap allValues];
+  v7 = [allValues copy];
 
-  [v4 setTui_hostedSubviewsMap:0];
+  [hostCopy setTui_hostedSubviewsMap:0];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_DC75C;
@@ -134,18 +134,18 @@ LABEL_24:
   v10 = v7;
   v8 = v7;
   [UIView performWithoutAnimation:v9];
-  [(TUIReusableSubviewPool *)self reuseSubviews:v8 host:v4];
+  [(TUIReusableSubviewPool *)self reuseSubviews:v8 host:hostCopy];
 }
 
-- (void)reuseSubviews:(id)a3 host:(id)a4
+- (void)reuseSubviews:(id)subviews host:(id)host
 {
-  v6 = a3;
-  v20 = a4;
+  subviewsCopy = subviews;
+  hostCopy = host;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v7 = v6;
+  v7 = subviewsCopy;
   v8 = [v7 countByEnumeratingWithState:&v21 objects:v29 count:16];
   if (v8)
   {
@@ -161,15 +161,15 @@ LABEL_24:
         }
 
         v12 = *(*(&v21 + 1) + 8 * i);
-        v13 = [v12 reuseIdentifier];
-        if (v13)
+        reuseIdentifier = [v12 reuseIdentifier];
+        if (reuseIdentifier)
         {
           [v12 setHidden:1];
-          v14 = [(NSMutableDictionary *)self->_subviewsAvailableByIdentifier objectForKeyedSubscript:v13];
+          v14 = [(NSMutableDictionary *)self->_subviewsAvailableByIdentifier objectForKeyedSubscript:reuseIdentifier];
           if (!v14)
           {
             v14 = objc_opt_new();
-            [(NSMutableDictionary *)self->_subviewsAvailableByIdentifier setObject:v14 forKeyedSubscript:v13];
+            [(NSMutableDictionary *)self->_subviewsAvailableByIdentifier setObject:v14 forKeyedSubscript:reuseIdentifier];
           }
 
           if ([v14 indexOfObjectIdenticalTo:v12] == 0x7FFFFFFFFFFFFFFFLL)
@@ -213,8 +213,8 @@ LABEL_24:
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v3 = [(NSMutableDictionary *)self->_subviewsAvailableByIdentifier allKeys];
-  v4 = [v3 countByEnumeratingWithState:&v18 objects:v23 count:16];
+  allKeys = [(NSMutableDictionary *)self->_subviewsAvailableByIdentifier allKeys];
+  v4 = [allKeys countByEnumeratingWithState:&v18 objects:v23 count:16];
   if (v4)
   {
     v5 = v4;
@@ -226,7 +226,7 @@ LABEL_24:
       {
         if (*v19 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allKeys);
         }
 
         v8 = *(*(&v18 + 1) + 8 * v7);
@@ -265,7 +265,7 @@ LABEL_24:
       }
 
       while (v7 != v5);
-      v5 = [v3 countByEnumeratingWithState:&v18 objects:v23 count:16];
+      v5 = [allKeys countByEnumeratingWithState:&v18 objects:v23 count:16];
     }
 
     while (v5);

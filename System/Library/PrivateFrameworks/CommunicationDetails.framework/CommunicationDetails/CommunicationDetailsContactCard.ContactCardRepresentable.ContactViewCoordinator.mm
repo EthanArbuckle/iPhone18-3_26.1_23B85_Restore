@@ -1,11 +1,11 @@
 @interface CommunicationDetailsContactCard.ContactCardRepresentable.ContactViewCoordinator
 - (_TtCVV20CommunicationDetails31CommunicationDetailsContactCard24ContactCardRepresentable22ContactViewCoordinator)init;
-- (void)contactViewController:(id)a3 didCompleteWithContact:(id)a4;
+- (void)contactViewController:(id)controller didCompleteWithContact:(id)contact;
 @end
 
 @implementation CommunicationDetailsContactCard.ContactCardRepresentable.ContactViewCoordinator
 
-- (void)contactViewController:(id)a3 didCompleteWithContact:(id)a4
+- (void)contactViewController:(id)controller didCompleteWithContact:(id)contact
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -15,7 +15,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  [a3 dismissViewControllerAnimated:1 completion:0];
+  [controller dismissViewControllerAnimated:1 completion:0];
 }
 
 - (_TtCVV20CommunicationDetails31CommunicationDetailsContactCard24ContactCardRepresentable22ContactViewCoordinator)init

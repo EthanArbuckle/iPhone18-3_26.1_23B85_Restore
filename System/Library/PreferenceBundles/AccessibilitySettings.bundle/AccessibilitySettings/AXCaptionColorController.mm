@@ -1,10 +1,10 @@
 @interface AXCaptionColorController
-- (id)_videoOverridesStyle:(id)a3;
+- (id)_videoOverridesStyle:(id)style;
 - (id)specifiers;
 - (int)colorType;
-- (void)_setVideoOverridesStyle:(id)a3 specifier:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
+- (void)_setVideoOverridesStyle:(id)style specifier:(id)specifier;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -15,16 +15,16 @@
   v6.receiver = self;
   v6.super_class = AXCaptionColorController;
   [(AXCaptionStyleChooserController *)&v6 viewDidLoad];
-  v3 = [(AXCaptionColorController *)self table];
+  table = [(AXCaptionColorController *)self table];
   v4 = objc_opt_class();
   v5 = +[AXCaptionColorCell cellReuseIdentifier];
-  [v3 registerClass:v4 forCellReuseIdentifier:v5];
+  [table registerClass:v4 forCellReuseIdentifier:v5];
 }
 
 - (int)colorType
 {
-  v2 = [(AXCaptionColorController *)self specifier];
-  v3 = [v2 propertyForKey:@"colorType"];
+  specifier = [(AXCaptionColorController *)self specifier];
+  v3 = [specifier propertyForKey:@"colorType"];
 
   if ([v3 isEqualToString:@"textColor"])
   {
@@ -56,9 +56,9 @@
   {
     v21 = OBJC_IVAR___PSListController__specifiers;
     v4 = objc_alloc_init(NSMutableArray);
-    v5 = [(AXCaptionStyleChooserController *)self captionPreviewSpecifiers];
+    captionPreviewSpecifiers = [(AXCaptionStyleChooserController *)self captionPreviewSpecifiers];
     v24 = v4;
-    [v4 addObjectsFromArray:v5];
+    [v4 addObjectsFromArray:captionPreviewSpecifiers];
 
     v23 = AXCaptionColorDefault([(AXCaptionColorController *)self colorType]);
     v25 = 0u;
@@ -111,8 +111,8 @@
       while (v7);
     }
 
-    v18 = [(AXCaptionStyleChooserController *)self videoOverrideSpecifiers];
-    [v24 addObjectsFromArray:v18];
+    videoOverrideSpecifiers = [(AXCaptionStyleChooserController *)self videoOverrideSpecifiers];
+    [v24 addObjectsFromArray:videoOverrideSpecifiers];
 
     v19 = *&self->super.AXUISettingsBaseListController_opaque[v21];
     *&self->super.AXUISettingsBaseListController_opaque[v21] = v24;
@@ -123,41 +123,41 @@
   return v3;
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v8 = a4;
-  v9 = a5;
+  cellCopy = cell;
+  pathCopy = path;
   v15.receiver = self;
   v15.super_class = AXCaptionColorController;
-  [(AXCaptionStyleChooserController *)&v15 tableView:a3 willDisplayCell:v8 forRowAtIndexPath:v9];
-  if ([v9 row] || objc_msgSend(v9, "section"))
+  [(AXCaptionStyleChooserController *)&v15 tableView:view willDisplayCell:cellCopy forRowAtIndexPath:pathCopy];
+  if ([pathCopy row] || objc_msgSend(pathCopy, "section"))
   {
-    v10 = v8;
+    v10 = cellCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v11 = [(AXCaptionColorController *)self colorType];
-      v12 = [v10 specifier];
-      v13 = [v12 propertyForKey:@"rgb"];
-      v14 = [(AXCaptionStyleChooserController *)self isStoredColorType:v11 equalWithColors:v13];
+      colorType = [(AXCaptionColorController *)self colorType];
+      specifier = [v10 specifier];
+      v13 = [specifier propertyForKey:@"rgb"];
+      v14 = [(AXCaptionStyleChooserController *)self isStoredColorType:colorType equalWithColors:v13];
 
       [v10 setChecked:v14];
     }
   }
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v21.receiver = self;
   v21.super_class = AXCaptionColorController;
-  v6 = a4;
-  v7 = a3;
-  [(AXCaptionColorController *)&v21 tableView:v7 didSelectRowAtIndexPath:v6];
-  v8 = [v7 cellForRowAtIndexPath:v6];
+  pathCopy = path;
+  viewCopy = view;
+  [(AXCaptionColorController *)&v21 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
+  v8 = [viewCopy cellForRowAtIndexPath:pathCopy];
 
-  v9 = [v8 specifier];
+  specifier = [v8 specifier];
 
-  v10 = [v9 propertyForKey:@"rgb"];
+  v10 = [specifier propertyForKey:@"rgb"];
   v11 = [v10 objectAtIndexedSubscript:0];
   [v11 floatValue];
   v13 = v12;
@@ -171,7 +171,7 @@
   [(AXCaptionColorController *)self colorType];
   v20 = v19;
   AXPerformBlockOnMainThreadAfterDelay();
-  [(AXCaptionStyleChooserController *)self updateTableCheckedSelection:v6];
+  [(AXCaptionStyleChooserController *)self updateTableCheckedSelection:pathCopy];
 }
 
 uint64_t __62__AXCaptionColorController_tableView_didSelectRowAtIndexPath___block_invoke(uint64_t result)
@@ -200,10 +200,10 @@ uint64_t __62__AXCaptionColorController_tableView_didSelectRowAtIndexPath___bloc
   return result;
 }
 
-- (id)_videoOverridesStyle:(id)a3
+- (id)_videoOverridesStyle:(id)style
 {
-  v4 = [(AXCaptionColorController *)self colorType];
-  switch(v4)
+  colorType = [(AXCaptionColorController *)self colorType];
+  switch(colorType)
   {
     case 1u:
       [(AXCaptionStyleChooserController *)self profileId];
@@ -225,35 +225,35 @@ uint64_t __62__AXCaptionColorController_tableView_didSelectRowAtIndexPath___bloc
   return v5;
 }
 
-- (void)_setVideoOverridesStyle:(id)a3 specifier:(id)a4
+- (void)_setVideoOverridesStyle:(id)style specifier:(id)specifier
 {
-  v8 = a3;
-  v5 = [(AXCaptionColorController *)self colorType];
-  if (v5 == 1)
+  styleCopy = style;
+  colorType = [(AXCaptionColorController *)self colorType];
+  if (colorType == 1)
   {
     [(AXCaptionStyleChooserController *)self profileId];
-    [v8 BOOLValue];
+    [styleCopy BOOLValue];
     MACaptionAppearancePrefSetVideoOverrideForegroundColor();
     goto LABEL_8;
   }
 
-  if (v5 == 3)
+  if (colorType == 3)
   {
     [(AXCaptionStyleChooserController *)self profileId];
-    [v8 BOOLValue];
+    [styleCopy BOOLValue];
     MACaptionAppearancePrefSetVideoOverrideWindowColor();
     goto LABEL_8;
   }
 
-  v6 = v5 == 2;
-  v7 = v8;
+  v6 = colorType == 2;
+  v7 = styleCopy;
   if (v6)
   {
     [(AXCaptionStyleChooserController *)self profileId];
-    [v8 BOOLValue];
+    [styleCopy BOOLValue];
     MACaptionAppearancePrefSetVideoOverrideBackgroundColor();
 LABEL_8:
-    v7 = v8;
+    v7 = styleCopy;
   }
 }
 

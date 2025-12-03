@@ -1,23 +1,23 @@
 @interface PKMentionQueryItem
-- (BOOL)isEqual:(id)a3;
-- (PKMentionQueryItem)initWithCoreHandwritingPrefixQueryItem:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (PKMentionQueryItem)initWithCoreHandwritingPrefixQueryItem:(id)item;
 - (id)baselinePath;
 @end
 
 @implementation PKMentionQueryItem
 
-- (PKMentionQueryItem)initWithCoreHandwritingPrefixQueryItem:(id)a3
+- (PKMentionQueryItem)initWithCoreHandwritingPrefixQueryItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v9.receiver = self;
   v9.super_class = PKMentionQueryItem;
   v5 = [(PKMentionQueryItem *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    [(PKMentionQueryItem *)v5 setCoreHandwritingPrefixQueryItem:v4];
-    v7 = [v4 queryResult];
-    [(PKMentionQueryItem *)v6 setMentionResult:v7];
+    [(PKMentionQueryItem *)v5 setCoreHandwritingPrefixQueryItem:itemCopy];
+    queryResult = [itemCopy queryResult];
+    [(PKMentionQueryItem *)v6 setMentionResult:queryResult];
   }
 
   return v6;
@@ -26,15 +26,15 @@
 - (id)baselinePath
 {
   v2 = MEMORY[0x1E69DC728];
-  v3 = [(CHPrefixQueryItem *)self->_coreHandwritingPrefixQueryItem estimatedBaseline];
+  estimatedBaseline = [(CHPrefixQueryItem *)self->_coreHandwritingPrefixQueryItem estimatedBaseline];
 
-  return [v2 bezierPathWithCGPath:v3];
+  return [v2 bezierPathWithCGPath:estimatedBaseline];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -45,8 +45,8 @@
     if (objc_opt_isKindOfClass())
     {
       coreHandwritingPrefixQueryItem = self->_coreHandwritingPrefixQueryItem;
-      v6 = [(PKMentionQueryItem *)v4 coreHandwritingPrefixQueryItem];
-      v7 = [(CHPrefixQueryItem *)coreHandwritingPrefixQueryItem isEqualToPrefixQueryItem:v6];
+      coreHandwritingPrefixQueryItem = [(PKMentionQueryItem *)equalCopy coreHandwritingPrefixQueryItem];
+      v7 = [(CHPrefixQueryItem *)coreHandwritingPrefixQueryItem isEqualToPrefixQueryItem:coreHandwritingPrefixQueryItem];
     }
 
     else

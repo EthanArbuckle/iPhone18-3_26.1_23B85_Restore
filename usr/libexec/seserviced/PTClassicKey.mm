@@ -1,7 +1,7 @@
 @interface PTClassicKey
-+ (id)_withExportedBlob:(id)a3 error:(id *)a4;
-+ (id)_withNativePTData:(id)a3 error:(id *)a4;
-+ (id)withData:(id)a3 error:(id *)a4;
++ (id)_withExportedBlob:(id)blob error:(id *)error;
++ (id)_withNativePTData:(id)data error:(id *)error;
++ (id)withData:(id)data error:(id *)error;
 - ($BE749665CD263385F3F5ED554982D87D)accessControlConstraintsItem;
 - ($BE749665CD263385F3F5ED554982D87D)assetACLAttestationItem;
 - ($BE749665CD263385F3F5ED554982D87D)assetACLItem;
@@ -13,47 +13,47 @@
 
 @implementation PTClassicKey
 
-+ (id)withData:(id)a3 error:(id *)a4
++ (id)withData:(id)data error:(id *)error
 {
-  v5 = a3;
-  if ([v5 length])
+  dataCopy = data;
+  if ([dataCopy length])
   {
-    v6 = [v5 u8:0];
+    v6 = [dataCopy u8:0];
     if (v6 == 230)
     {
-      v7 = [PTClassicKey _withExportedBlob:v5 error:a4];
+      v7 = [PTClassicKey _withExportedBlob:dataCopy error:error];
       goto LABEL_8;
     }
 
     if (v6 == 48)
     {
-      v7 = [PTClassicKey _withNativePTData:v5 error:a4];
+      v7 = [PTClassicKey _withNativePTData:dataCopy error:error];
 LABEL_8:
-      a4 = v7;
+      error = v7;
       goto LABEL_9;
     }
   }
 
-  if (a4)
+  if (error)
   {
     v8 = SESDefaultLogObject();
-    *a4 = SESCreateAndLogError();
+    *error = SESCreateAndLogError();
 
-    a4 = 0;
+    error = 0;
   }
 
 LABEL_9:
 
-  return a4;
+  return error;
 }
 
-+ (id)_withNativePTData:(id)a3 error:(id *)a4
++ (id)_withNativePTData:(id)data error:(id *)error
 {
-  v6 = a3;
-  if (v6)
+  dataCopy = data;
+  if (dataCopy)
   {
     v7 = objc_opt_new();
-    objc_storeStrong((v7 + 128), a3);
+    objc_storeStrong((v7 + 128), data);
     *(v7 + 120) = 0;
     v16 = 0u;
     v17 = 0u;
@@ -61,14 +61,14 @@ LABEL_9:
     v15 = 0u;
     if (DERParseSequenceSpec())
     {
-      if (a4)
+      if (error)
       {
         v8 = SESDefaultLogObject();
-        v9 = [v6 base64];
-        *a4 = SESCreateAndLogError();
+        base64 = [dataCopy base64];
+        *error = SESCreateAndLogError();
 LABEL_14:
 
-        a4 = 0;
+        error = 0;
       }
 
 LABEL_15:
@@ -78,14 +78,14 @@ LABEL_15:
 
     if (DERParseSequenceSpec())
     {
-      if (!a4)
+      if (!error)
       {
         goto LABEL_15;
       }
 
       v8 = SESDefaultLogObject();
-      v9 = [NSData dataWithDERItem:&v16];
-      v11 = [v9 base64];
+      base64 = [NSData dataWithDERItem:&v16];
+      v9Base64 = [base64 base64];
     }
 
     else
@@ -98,45 +98,45 @@ LABEL_15:
         *(v7 + 136) = v16;
         *(v7 + 152) = v13;
         *(v7 + 200) = 0u;
-        a4 = v7;
+        error = v7;
         goto LABEL_15;
       }
 
-      if (!a4)
+      if (!error)
       {
         goto LABEL_15;
       }
 
       v8 = SESDefaultLogObject();
-      v9 = [NSData dataWithDERItem:&v14];
-      v11 = [v9 base64];
+      base64 = [NSData dataWithDERItem:&v14];
+      v9Base64 = [base64 base64];
     }
 
-    *a4 = SESCreateAndLogError();
+    *error = SESCreateAndLogError();
 
     goto LABEL_14;
   }
 
-  if (a4)
+  if (error)
   {
     v10 = SESDefaultLogObject();
-    *a4 = SESCreateAndLogError();
+    *error = SESCreateAndLogError();
 
-    a4 = 0;
+    error = 0;
   }
 
 LABEL_16:
 
-  return a4;
+  return error;
 }
 
-+ (id)_withExportedBlob:(id)a3 error:(id *)a4
++ (id)_withExportedBlob:(id)blob error:(id *)error
 {
-  v6 = a3;
+  blobCopy = blob;
   v29 = 0;
   v30[0] = 0;
   v30[1] = 0;
-  v28[0] = [v6 DERItem];
+  v28[0] = [blobCopy DERItem];
   v28[1] = v7;
   if (!DERDecodeItem(v28, &v29))
   {
@@ -153,7 +153,7 @@ LABEL_16:
     v21[4] = &v22;
     if (DERDecodeSequenceContentWithBlock(v30, v21) || !v23[5])
     {
-      if (!a4)
+      if (!error)
       {
 LABEL_10:
         _Block_object_dispose(&v22, 8);
@@ -161,26 +161,26 @@ LABEL_10:
       }
 
       v9 = SESDefaultLogObject();
-      v10 = [v6 base64];
+      base64 = [blobCopy base64];
       v11 = SESCreateAndLogError();
     }
 
     else
     {
       v9 = objc_opt_new();
-      objc_storeStrong((v9 + 128), a3);
+      objc_storeStrong((v9 + 128), blob);
       *(v9 + 120) = 1;
       if (DERParseSequenceSpec())
       {
-        if (!a4)
+        if (!error)
         {
           goto LABEL_9;
         }
 
-        v10 = SESDefaultLogObject();
+        base64 = SESDefaultLogObject();
         v13 = [NSData dataWithDERItem:v23 + 4];
-        v20 = [v13 base64];
-        *a4 = SESCreateAndLogError();
+        base642 = [v13 base64];
+        *error = SESCreateAndLogError();
 
         goto LABEL_8;
       }
@@ -196,48 +196,48 @@ LABEL_10:
         v18[1] = v17;
         DERParseSequenceSpec();
         *(v9 + 200) = 0u;
-        a4 = v9;
+        error = v9;
         goto LABEL_9;
       }
 
-      if (!a4)
+      if (!error)
       {
 LABEL_9:
 
         goto LABEL_10;
       }
 
-      v10 = SESDefaultLogObject();
+      base64 = SESDefaultLogObject();
       v11 = SESCreateAndLogError();
     }
 
-    *a4 = v11;
+    *error = v11;
 LABEL_8:
 
-    a4 = 0;
+    error = 0;
     goto LABEL_9;
   }
 
-  if (a4)
+  if (error)
   {
     v8 = SESDefaultLogObject();
-    v19 = [v6 base64];
-    *a4 = SESCreateAndLogError();
+    base643 = [blobCopy base64];
+    *error = SESCreateAndLogError();
 
-    a4 = 0;
+    error = 0;
   }
 
 LABEL_11:
 
-  return a4;
+  return error;
 }
 
 - (id)description
 {
-  v3 = [(PTClassicKey *)self keyNumber];
-  v4 = [(PTClassicKey *)self keyIdentifier];
-  v5 = [v4 asHexString];
-  v6 = [NSString stringWithFormat:@"Key: keyNumber 0x%X keyIdentifier %@ isExported %d", v3, v5, self->_isExportedData];
+  keyNumber = [(PTClassicKey *)self keyNumber];
+  keyIdentifier = [(PTClassicKey *)self keyIdentifier];
+  asHexString = [keyIdentifier asHexString];
+  v6 = [NSString stringWithFormat:@"Key: keyNumber 0x%X keyIdentifier %@ isExported %d", keyNumber, asHexString, self->_isExportedData];
 
   return v6;
 }

@@ -1,30 +1,30 @@
 @interface BDSMutableSecureEngagementData
-- (BDSMutableSecureEngagementData)initWithCloudData:(id)a3;
-- (BDSMutableSecureEngagementData)initWithCoder:(id)a3;
-- (BDSMutableSecureEngagementData)initWithRecord:(id)a3;
-- (BDSMutableSecureEngagementData)initWithStartTimestampString:(id)a3 durationInterval:(double)a4;
+- (BDSMutableSecureEngagementData)initWithCloudData:(id)data;
+- (BDSMutableSecureEngagementData)initWithCoder:(id)coder;
+- (BDSMutableSecureEngagementData)initWithRecord:(id)record;
+- (BDSMutableSecureEngagementData)initWithStartTimestampString:(id)string durationInterval:(double)interval;
 - (NSString)description;
 - (id)configuredRecordFromAttributes;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BDSMutableSecureEngagementData
 
-- (BDSMutableSecureEngagementData)initWithStartTimestampString:(id)a3 durationInterval:(double)a4
+- (BDSMutableSecureEngagementData)initWithStartTimestampString:(id)string durationInterval:(double)interval
 {
-  v6 = a3;
-  if (v6)
+  stringCopy = string;
+  if (stringCopy)
   {
     v12.receiver = self;
     v12.super_class = BDSMutableSecureEngagementData;
     v7 = [(BCMutableCloudData *)&v12 init];
     if (v7)
     {
-      v8 = [v6 copy];
+      v8 = [stringCopy copy];
       startTimestampString = v7->_startTimestampString;
       v7->_startTimestampString = v8;
 
-      v7->_durationInterval = a4;
+      v7->_durationInterval = interval;
     }
   }
 
@@ -42,27 +42,27 @@
   return v7;
 }
 
-- (BDSMutableSecureEngagementData)initWithCloudData:(id)a3
+- (BDSMutableSecureEngagementData)initWithCloudData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v16.receiver = self;
   v16.super_class = BDSMutableSecureEngagementData;
-  v5 = [(BCMutableCloudData *)&v16 initWithCloudData:v4];
+  v5 = [(BCMutableCloudData *)&v16 initWithCloudData:dataCopy];
   if (v5)
   {
     v6 = BUProtocolCast();
     v7 = v6;
     if (v6)
     {
-      v8 = [v6 startTimestampString];
-      v9 = [v8 copy];
+      startTimestampString = [v6 startTimestampString];
+      v9 = [startTimestampString copy];
       startTimestampString = v5->_startTimestampString;
       v5->_startTimestampString = v9;
 
       [v7 durationInterval];
       v5->_durationInterval = v11;
-      v12 = [v7 value];
-      v13 = [v12 copy];
+      value = [v7 value];
+      v13 = [value copy];
       p_super = &v5->_value->super;
       v5->_value = v13;
     }
@@ -75,7 +75,7 @@
         sub_1E4704C38();
       }
 
-      v12 = v5;
+      value = v5;
       v5 = 0;
     }
   }
@@ -83,10 +83,10 @@
   return v5;
 }
 
-- (BDSMutableSecureEngagementData)initWithRecord:(id)a3
+- (BDSMutableSecureEngagementData)initWithRecord:(id)record
 {
-  v4 = a3;
-  if (!v4)
+  recordCopy = record;
+  if (!recordCopy)
   {
     p_super = BDSCloudKitLog();
     if (os_log_type_enabled(p_super, OS_LOG_TYPE_ERROR))
@@ -99,18 +99,18 @@
 
   v15.receiver = self;
   v15.super_class = BDSMutableSecureEngagementData;
-  v5 = [(BCMutableCloudData *)&v15 initWithRecord:v4];
+  v5 = [(BCMutableCloudData *)&v15 initWithRecord:recordCopy];
   if (v5)
   {
-    self = [v4 objectForKey:@"value"];
+    self = [recordCopy objectForKey:@"value"];
     if (![BDSSecureEngagementDataHelper isEngagementTimeSliceDataEmpty:self])
     {
-      p_super = [BCCloudData localIdentifierFromRecord:v4];
+      p_super = [BCCloudData localIdentifierFromRecord:recordCopy];
       v8 = [p_super copy];
       startTimestampString = v5->_startTimestampString;
       v5->_startTimestampString = v8;
 
-      v10 = [v4 objectForKey:@"durationInterval"];
+      v10 = [recordCopy objectForKey:@"durationInterval"];
       [v10 doubleValue];
       v5->_durationInterval = v11;
 
@@ -139,9 +139,9 @@ LABEL_11:
 - (NSString)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(BDSMutableSecureEngagementData *)self startTimestampString];
+  startTimestampString = [(BDSMutableSecureEngagementData *)self startTimestampString];
   [(BDSMutableSecureEngagementData *)self durationInterval];
-  v6 = [v3 stringWithFormat:@"start timestamp: %@, duration interval: %.1lf", v4, v5];
+  v6 = [v3 stringWithFormat:@"start timestamp: %@, duration interval: %.1lf", startTimestampString, v5];
 
   return v6;
 }
@@ -150,47 +150,47 @@ LABEL_11:
 {
   v8.receiver = self;
   v8.super_class = BDSMutableSecureEngagementData;
-  v3 = [(BCMutableCloudData *)&v8 configuredRecordFromAttributes];
+  configuredRecordFromAttributes = [(BCMutableCloudData *)&v8 configuredRecordFromAttributes];
   v4 = MEMORY[0x1E696AD98];
   [(BDSMutableSecureEngagementData *)self durationInterval];
   v5 = [v4 numberWithDouble:?];
-  [v3 setObject:v5 forKey:@"durationInterval"];
+  [configuredRecordFromAttributes setObject:v5 forKey:@"durationInterval"];
 
-  v6 = [(BDSMutableSecureEngagementData *)self value];
-  [v3 setObject:v6 forKey:@"value"];
+  value = [(BDSMutableSecureEngagementData *)self value];
+  [configuredRecordFromAttributes setObject:value forKey:@"value"];
 
-  return v3;
+  return configuredRecordFromAttributes;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = BDSMutableSecureEngagementData;
-  v4 = a3;
-  [(BCMutableCloudData *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(BCMutableCloudData *)&v6 encodeWithCoder:coderCopy];
   [(BDSMutableSecureEngagementData *)self durationInterval:v6.receiver];
-  [v4 encodeDouble:@"durationInterval" forKey:?];
-  v5 = [(BDSMutableSecureEngagementData *)self value];
-  [v4 encodeObject:v5 forKey:@"value"];
+  [coderCopy encodeDouble:@"durationInterval" forKey:?];
+  value = [(BDSMutableSecureEngagementData *)self value];
+  [coderCopy encodeObject:value forKey:@"value"];
 }
 
-- (BDSMutableSecureEngagementData)initWithCoder:(id)a3
+- (BDSMutableSecureEngagementData)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = BDSMutableSecureEngagementData;
-  v5 = [(BCMutableCloudData *)&v14 initWithCoder:v4];
+  v5 = [(BCMutableCloudData *)&v14 initWithCoder:coderCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = [(BCMutableCloudData *)v5 localRecordID];
-    v8 = [v7 copy];
+    localRecordID = [(BCMutableCloudData *)v5 localRecordID];
+    v8 = [localRecordID copy];
     startTimestampString = v6->_startTimestampString;
     v6->_startTimestampString = v8;
 
-    [v4 decodeDoubleForKey:@"durationInterval"];
+    [coderCopy decodeDoubleForKey:@"durationInterval"];
     v6->_durationInterval = v10;
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"value"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"value"];
     value = v6->_value;
     v6->_value = v11;
   }

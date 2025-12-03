@@ -1,12 +1,12 @@
 @interface CellularPlanCrossPlatformTransportUtility
-- (CFSharedRef<const)serializeDeviceInfo:(const void *)a3;
+- (CFSharedRef<const)serializeDeviceInfo:(const void *)info;
 - (CellularPlanCrossPlatformTransportUtility)init;
 - (CellularPlanTransferDeviceInfo)getTransferDeviceInfoFromProfileResponse:(CellularPlanTransferDeviceInfo *__return_ptr)retstr;
 - (CellularPlanTransferDeviceInfo)getTransferDeviceInfoFromSessionResponse:(CellularPlanTransferDeviceInfo *__return_ptr)retstr;
 - (CellularPlanTransferDeviceInfo)parseTransferItem:(CellularPlanTransferDeviceInfo *__return_ptr)retstr hasToken:(CellularPlanCrossPlatformTransportUtility *)self withStream:;
-- (id)findHighestMatchingVersionFrom:(id)a3 to:(id)a4;
-- (int64_t)convertPendingStateToTransferStatus:(unsigned __int8)a3;
-- (void)dumpData:(id)a3 withLabel:(id)a4;
+- (id)findHighestMatchingVersionFrom:(id)from to:(id)to;
+- (int64_t)convertPendingStateToTransferStatus:(unsigned __int8)status;
+- (void)dumpData:(id)data withLabel:(id)label;
 @end
 
 @implementation CellularPlanCrossPlatformTransportUtility
@@ -23,24 +23,24 @@
   return 0;
 }
 
-- (id)findHighestMatchingVersionFrom:(id)a3 to:(id)a4
+- (id)findHighestMatchingVersionFrom:(id)from to:(id)to
 {
-  v5 = a3;
-  v20 = a4;
-  v18 = v5;
-  if (!v5)
+  fromCopy = from;
+  toCopy = to;
+  v18 = fromCopy;
+  if (!fromCopy)
   {
     goto LABEL_24;
   }
 
-  v6 = [v5 count];
+  v6 = [fromCopy count];
   v7 = 0;
-  if (!v20 || !v6)
+  if (!toCopy || !v6)
   {
     goto LABEL_25;
   }
 
-  if (![v20 count])
+  if (![toCopy count])
   {
 LABEL_24:
     v7 = 0;
@@ -51,7 +51,7 @@ LABEL_24:
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  obj = v5;
+  obj = fromCopy;
   v7 = 0;
   v8 = [obj countByEnumeratingWithState:&v25 objects:v30 count:16];
   if (v8)
@@ -71,7 +71,7 @@ LABEL_24:
         v22 = 0u;
         v23 = 0u;
         v24 = 0u;
-        v12 = v20;
+        v12 = toCopy;
         v13 = [v12 countByEnumeratingWithState:&v21 objects:v29 count:16];
         if (v13)
         {
@@ -118,8 +118,8 @@ LABEL_25:
   v8 = v2;
   v70 = v6;
   v9 = sub_10000C030(v6 + 16);
-  v71 = [v8 iccid];
-  strlen([v71 UTF8String]);
+  iccid = [v8 iccid];
+  strlen([iccid UTF8String]);
   v10 = sub_10000C030(v9);
   v11 = sub_10000C030(v10);
   v12 = sub_10000C030(v11);
@@ -135,51 +135,51 @@ LABEL_25:
   v18 = sub_10000C030(v16);
   v19 = sub_10000C030(v18);
   v20 = sub_10000C030(v19);
-  v74 = [v8 gid1];
-  v21 = v74;
-  strlen([v74 UTF8String]);
+  gid1 = [v8 gid1];
+  v21 = gid1;
+  strlen([gid1 UTF8String]);
   v22 = sub_10000C030(v20);
   v23 = sub_10000C030(v22);
   v24 = sub_10000C030(v23);
-  v73 = [v8 gid2];
-  v25 = v73;
-  strlen([v73 UTF8String]);
+  gid2 = [v8 gid2];
+  v25 = gid2;
+  strlen([gid2 UTF8String]);
   v26 = sub_10000C030(v24);
   LOBYTE(v80[0]) = 36;
   v27 = sub_10000C030(v26);
   v28 = sub_10000C030(v27);
-  v72 = [v8 imsi];
-  if (v72)
+  imsi = [v8 imsi];
+  if (imsi)
   {
-    v69 = [v8 imsi];
-    v29 = v69;
-    v30 = [v69 UTF8String];
+    imsi2 = [v8 imsi];
+    v29 = imsi2;
+    uTF8String = [imsi2 UTF8String];
   }
 
   else
   {
-    v30 = "";
+    uTF8String = "";
   }
 
-  strlen(v30);
+  strlen(uTF8String);
   v31 = sub_10000C030(v28);
   LOBYTE(v80[0]) = 36;
   v32 = sub_10000C030(v31);
   v33 = sub_10000C030(v32);
   if (v77)
   {
-    v66 = [v8 token];
-    v67 = [v66 token];
-    v34 = v67;
-    v35 = [v67 UTF8String];
+    token = [v8 token];
+    v66Token = [token token];
+    v34 = v66Token;
+    uTF8String2 = [v66Token UTF8String];
   }
 
   else
   {
-    v35 = "";
+    uTF8String2 = "";
   }
 
-  strlen(v35);
+  strlen(uTF8String2);
   v36 = sub_10000C030(v33);
   v37 = sub_10000C030(v36);
   v38 = sub_10000C030(v37);
@@ -187,74 +187,74 @@ LABEL_25:
   LOBYTE(v80[0]) = 36;
   v40 = sub_10000C030(v39);
   v41 = sub_10000C030(v40);
-  v42 = [v8 imei];
-  if (v42)
+  imei = [v8 imei];
+  if (imei)
   {
-    v68 = [v8 imei];
-    v43 = v68;
-    v44 = [v68 UTF8String];
+    imei2 = [v8 imei];
+    v43 = imei2;
+    uTF8String3 = [imei2 UTF8String];
   }
 
   else
   {
-    v44 = "";
+    uTF8String3 = "";
   }
 
-  strlen(v44);
+  strlen(uTF8String3);
   v45 = sub_10000C030(v41);
   LOBYTE(v80[0]) = 36;
   v46 = sub_10000C030(v45);
   v47 = sub_10000C030(v46);
-  v48 = [v8 phoneNumber];
-  if (v48)
+  phoneNumber = [v8 phoneNumber];
+  if (phoneNumber)
   {
-    v44 = [v8 phoneNumber];
-    v49 = v44;
-    v50 = [v44 UTF8String];
+    uTF8String3 = [v8 phoneNumber];
+    v49 = uTF8String3;
+    v44UTF8String = [uTF8String3 UTF8String];
   }
 
   else
   {
-    v50 = "";
+    v44UTF8String = "";
   }
 
-  strlen(v50);
+  strlen(v44UTF8String);
   v51 = sub_10000C030(v47);
   LOBYTE(v80[0]) = 36;
   v52 = sub_10000C030(v51);
   v53 = sub_10000C030(v52);
   if (v77)
   {
-    v50 = [v8 token];
-    v5 = [v50 tokenExpiry];
-    v54 = v5;
-    v55 = [v5 UTF8String];
+    v44UTF8String = [v8 token];
+    tokenExpiry = [v44UTF8String tokenExpiry];
+    v54 = tokenExpiry;
+    uTF8String4 = [tokenExpiry UTF8String];
   }
 
   else
   {
-    v55 = "";
+    uTF8String4 = "";
   }
 
-  strlen(v55);
+  strlen(uTF8String4);
   v56 = sub_10000C030(v53);
   LOBYTE(v80[0]) = 36;
   v57 = sub_10000C030(v56);
   v58 = sub_10000C030(v57);
-  v59 = [v8 carrierName];
-  v60 = v59;
-  strlen([v59 UTF8String]);
+  carrierName = [v8 carrierName];
+  v60 = carrierName;
+  strlen([carrierName UTF8String]);
   sub_10000C030(v58);
 
   if (v77)
   {
   }
 
-  if (v48)
+  if (phoneNumber)
   {
   }
 
-  if (v42)
+  if (imei)
   {
   }
 
@@ -262,11 +262,11 @@ LABEL_25:
   {
   }
 
-  v61 = v72;
-  if (v72)
+  v61 = imsi;
+  if (imsi)
   {
 
-    v61 = v72;
+    v61 = imsi;
   }
 
   v81 = 0u;
@@ -345,15 +345,15 @@ LABEL_25:
   v5 = v2;
   v53 = 0;
   memset(v52, 0, sizeof(v52));
-  v6 = [v5 items];
-  v7 = [v6 count];
+  items = [v5 items];
+  v7 = [items count];
 
   if (v7)
   {
-    v8 = [v5 items];
-    v9 = [v8 objectAtIndexedSubscript:0];
+    items2 = [v5 items];
+    v9 = [items2 objectAtIndexedSubscript:0];
 
-    v10 = [v9 token];
+    token = [v9 token];
 
     v49 = 0;
     v47 = 0u;
@@ -393,24 +393,24 @@ LABEL_25:
     v50 = 36;
     v24 = sub_10000C030(v23);
     v25 = sub_10000C030(v24);
-    v26 = [v5 friendlyDeviceName];
-    if (v26)
+    friendlyDeviceName = [v5 friendlyDeviceName];
+    if (friendlyDeviceName)
     {
       p_p = [v5 friendlyDeviceName];
       v27 = p_p;
-      v28 = [p_p UTF8String];
+      uTF8String = [p_p UTF8String];
     }
 
     else
     {
-      v28 = "";
+      uTF8String = "";
     }
 
-    strlen(v28);
+    strlen(uTF8String);
     v29 = sub_10000C030(v25);
     v50 = 36;
     sub_10000C030(v29);
-    if (v26)
+    if (friendlyDeviceName)
     {
     }
 
@@ -419,7 +419,7 @@ LABEL_25:
       operator delete(__p);
     }
 
-    [(CellularPlanCrossPlatformTransportUtility *)self parseTransferItem:v9 hasToken:v10 != 0 withStream:&v34];
+    [(CellularPlanCrossPlatformTransportUtility *)self parseTransferItem:v9 hasToken:token != 0 withStream:&v34];
     *&v35 = v30;
     if (SHIBYTE(v38) < 0)
     {
@@ -448,16 +448,16 @@ LABEL_25:
   v5 = v2;
   v57 = 0;
   memset(v56, 0, sizeof(v56));
-  v6 = [v5 item];
-  v7 = [v6 token];
+  item = [v5 item];
+  token = [item token];
 
-  if (v7 && (([v5 item], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "simType"), v8, objc_msgSend(v5, "sourceEID"), (v10 = objc_claimAutoreleasedReturnValue()) != 0) && (objc_msgSend(v5, "sourceEID"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "length"), v11, v10, v12) || v9 == 1))
+  if (token && (([v5 item], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "simType"), v8, objc_msgSend(v5, "sourceEID"), (v10 = objc_claimAutoreleasedReturnValue()) != 0) && (objc_msgSend(v5, "sourceEID"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "length"), v11, v10, v12) || v9 == 1))
   {
     __dst = 0uLL;
     v54 = 0;
-    v13 = [v5 sourceEID];
-    v14 = [v13 UTF8String];
-    v15 = strlen(v14);
+    sourceEID = [v5 sourceEID];
+    uTF8String = [sourceEID UTF8String];
+    v15 = strlen(uTF8String);
     if (v15 >= 0x7FFFFFFFFFFFFFF8)
     {
       sub_1000A2378();
@@ -472,7 +472,7 @@ LABEL_25:
     HIBYTE(v54) = v15;
     if (v15)
     {
-      memmove(&__dst, v14, v15);
+      memmove(&__dst, uTF8String, v15);
     }
 
     *(&__dst + v16) = 0;
@@ -537,7 +537,7 @@ LABEL_25:
     v34 = sub_10000C030(v33);
     LOBYTE(v55[0]) = 36;
     sub_10000C030(v34);
-    [(CellularPlanCrossPlatformTransportUtility *)self parseTransferItem:v6 hasToken:1 withStream:&v37];
+    [(CellularPlanCrossPlatformTransportUtility *)self parseTransferItem:item hasToken:1 withStream:&v37];
     *&v38 = v35;
     if (SHIBYTE(v41) < 0)
     {
@@ -564,10 +564,10 @@ LABEL_25:
   return result;
 }
 
-- (CFSharedRef<const)serializeDeviceInfo:(const void *)a3
+- (CFSharedRef<const)serializeDeviceInfo:(const void *)info
 {
   v4 = v3;
-  if (*(a3 + 240))
+  if (*(info + 240))
   {
     v23 = 0;
     v24 = 0;
@@ -578,9 +578,9 @@ LABEL_25:
     v19 = 0;
     v20 = 0;
     v21 = 0;
-    sub_10027F834(__dst, (a3 + 248));
+    sub_10027F834(__dst, (info + 248));
     v18 = 1;
-    v6 = sub_100832314(a3, __dst, v22);
+    v6 = sub_100832314(info, __dst, v22);
     if (v18 != 1)
     {
       goto LABEL_12;
@@ -647,23 +647,23 @@ LABEL_18:
   return self;
 }
 
-- (int64_t)convertPendingStateToTransferStatus:(unsigned __int8)a3
+- (int64_t)convertPendingStateToTransferStatus:(unsigned __int8)status
 {
-  if ((a3 - 2) > 0xE)
+  if ((status - 2) > 0xE)
   {
     return 2;
   }
 
   else
   {
-    return qword_1017FB078[(a3 - 2)];
+    return qword_1017FB078[(status - 2)];
   }
 }
 
-- (void)dumpData:(id)a3 withLabel:(id)a4
+- (void)dumpData:(id)data withLabel:(id)label
 {
-  v5 = a3;
-  v6 = a4;
+  dataCopy = data;
+  labelCopy = label;
   if ((atomic_load_explicit(&qword_101FBA2C8, memory_order_acquire) & 1) == 0 && __cxa_guard_acquire(&qword_101FBA2C8))
   {
     sub_1000CE0A8(&__p);
@@ -681,15 +681,15 @@ LABEL_18:
 
   if (qword_101FBA2B8)
   {
-    v7 = [v5 bytes];
+    bytes = [dataCopy bytes];
     v8 = qword_101FBA2B8;
-    v9 = [v6 UTF8String];
-    v10 = [v5 length];
+    uTF8String = [labelCopy UTF8String];
+    v10 = [dataCopy length];
     __p = 0;
     v13 = 0;
     v14 = 0;
-    sub_1000DCF88(&__p, v7, v10 + v7, v10);
-    sub_1009A2010(v8, v9);
+    sub_1000DCF88(&__p, bytes, v10 + bytes, v10);
+    sub_1009A2010(v8, uTF8String);
     if (__p)
     {
       v13 = __p;

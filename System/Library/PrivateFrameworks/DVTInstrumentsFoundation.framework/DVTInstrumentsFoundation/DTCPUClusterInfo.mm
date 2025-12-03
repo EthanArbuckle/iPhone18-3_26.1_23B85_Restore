@@ -1,28 +1,28 @@
 @interface DTCPUClusterInfo
-- (DTCPUClusterInfo)initWithClusterID:(unint64_t)a3 flags:(unint64_t)a4;
-- (DTCPUClusterInfo)initWithCoder:(id)a3;
+- (DTCPUClusterInfo)initWithClusterID:(unint64_t)d flags:(unint64_t)flags;
+- (DTCPUClusterInfo)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DTCPUClusterInfo
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  if (([v5 allowsKeyedCoding] & 1) == 0)
+  coderCopy = coder;
+  if (([coderCopy allowsKeyedCoding] & 1) == 0)
   {
     sub_24802EA50(a2, self);
   }
 
-  [v5 encodeInteger:self->_clusterID forKey:@"_clusterID"];
-  [v5 encodeInteger:self->_clusterFlags forKey:@"_clusterFlags"];
+  [coderCopy encodeInteger:self->_clusterID forKey:@"_clusterID"];
+  [coderCopy encodeInteger:self->_clusterFlags forKey:@"_clusterFlags"];
 }
 
-- (DTCPUClusterInfo)initWithCoder:(id)a3
+- (DTCPUClusterInfo)initWithCoder:(id)coder
 {
-  v5 = a3;
-  if (([v5 allowsKeyedCoding] & 1) == 0)
+  coderCopy = coder;
+  if (([coderCopy allowsKeyedCoding] & 1) == 0)
   {
     sub_24802EACC(a2, self);
   }
@@ -32,8 +32,8 @@
   v6 = [(DTCPUClusterInfo *)&v8 init];
   if (v6)
   {
-    v6->_clusterID = [v5 decodeIntegerForKey:@"_clusterID"];
-    v6->_clusterFlags = [v5 decodeIntegerForKey:@"_clusterFlags"];
+    v6->_clusterID = [coderCopy decodeIntegerForKey:@"_clusterID"];
+    v6->_clusterFlags = [coderCopy decodeIntegerForKey:@"_clusterFlags"];
   }
 
   return v6;
@@ -49,15 +49,15 @@
   return v6;
 }
 
-- (DTCPUClusterInfo)initWithClusterID:(unint64_t)a3 flags:(unint64_t)a4
+- (DTCPUClusterInfo)initWithClusterID:(unint64_t)d flags:(unint64_t)flags
 {
   v7.receiver = self;
   v7.super_class = DTCPUClusterInfo;
   result = [(DTCPUClusterInfo *)&v7 init];
   if (result)
   {
-    result->_clusterID = a3;
-    result->_clusterFlags = a4;
+    result->_clusterID = d;
+    result->_clusterFlags = flags;
   }
 
   return result;

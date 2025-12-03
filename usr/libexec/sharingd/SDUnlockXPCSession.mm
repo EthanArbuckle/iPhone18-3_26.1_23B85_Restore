@@ -1,55 +1,55 @@
 @interface SDUnlockXPCSession
-- (BOOL)checkEntitlementWithHandler:(id)a3;
+- (BOOL)checkEntitlementWithHandler:(id)handler;
 - (NSString)bundleID;
-- (void)attemptAutoUnlockForSiriWithClientProxy:(id)a3;
-- (void)attemptAutoUnlockWithClientProxy:(id)a3;
-- (void)attemptAutoUnlockWithoutNotifyingWatchWithClientProxy:(id)a3;
-- (void)authPromptInfoWithCompletionHandler:(id)a3;
-- (void)authenticateUsingClientProxy:(id)a3 type:(unint64_t)a4 sessionID:(id)a5 options:(id)a6;
-- (void)autoUnlockStateWithCompletionHandler:(id)a3;
-- (void)canAuthenticateUsingClientProxy:(id)a3 authenticationType:(unint64_t)a4 options:(id)a5 sessionID:(id)a6;
-- (void)cancelAuthenticationSessionWithID:(id)a3;
+- (void)attemptAutoUnlockForSiriWithClientProxy:(id)proxy;
+- (void)attemptAutoUnlockWithClientProxy:(id)proxy;
+- (void)attemptAutoUnlockWithoutNotifyingWatchWithClientProxy:(id)proxy;
+- (void)authPromptInfoWithCompletionHandler:(id)handler;
+- (void)authenticateUsingClientProxy:(id)proxy type:(unint64_t)type sessionID:(id)d options:(id)options;
+- (void)autoUnlockStateWithCompletionHandler:(id)handler;
+- (void)canAuthenticateUsingClientProxy:(id)proxy authenticationType:(unint64_t)type options:(id)options sessionID:(id)d;
+- (void)cancelAuthenticationSessionWithID:(id)d;
 - (void)cancelAutoUnlock;
-- (void)cancelAutoUnlock:(BOOL)a3;
-- (void)cancelEnablingAutoUnlockForDevice:(id)a3;
-- (void)disableAutoUnlockForDevice:(id)a3 completionHandler:(id)a4;
-- (void)disableUnlockWithDevice:(id)a3 completionHandler:(id)a4;
-- (void)disableUsingClientProxy:(id)a3 authenticationType:(unint64_t)a4 device:(id)a5 sessionID:(id)a6;
-- (void)eligibleAutoUnlockDevicesWithCompletionHandler:(id)a3;
-- (void)enableAutoUnlockWithDevice:(id)a3 passcode:(id)a4 clientProxy:(id)a5;
-- (void)enableUnlockWithDevice:(id)a3 fromKey:(BOOL)a4 withPasscode:(id)a5 completionHandler:(id)a6;
-- (void)enableUsingClientProxy:(id)a3 authenticationType:(unint64_t)a4 device:(id)a5 passcode:(id)a6 sessionID:(id)a7;
-- (void)establishStashBagWithCompletionHandler:(id)a3;
-- (void)establishStashBagWithManifest:(id)a3 completionHandler:(id)a4;
-- (void)getEnabledAuthenticationTypesWithCompletionHandler:(id)a3;
+- (void)cancelAutoUnlock:(BOOL)unlock;
+- (void)cancelEnablingAutoUnlockForDevice:(id)device;
+- (void)disableAutoUnlockForDevice:(id)device completionHandler:(id)handler;
+- (void)disableUnlockWithDevice:(id)device completionHandler:(id)handler;
+- (void)disableUsingClientProxy:(id)proxy authenticationType:(unint64_t)type device:(id)device sessionID:(id)d;
+- (void)eligibleAutoUnlockDevicesWithCompletionHandler:(id)handler;
+- (void)enableAutoUnlockWithDevice:(id)device passcode:(id)passcode clientProxy:(id)proxy;
+- (void)enableUnlockWithDevice:(id)device fromKey:(BOOL)key withPasscode:(id)passcode completionHandler:(id)handler;
+- (void)enableUsingClientProxy:(id)proxy authenticationType:(unint64_t)type device:(id)device passcode:(id)passcode sessionID:(id)d;
+- (void)establishStashBagWithCompletionHandler:(id)handler;
+- (void)establishStashBagWithManifest:(id)manifest completionHandler:(id)handler;
+- (void)getEnabledAuthenticationTypesWithCompletionHandler:(id)handler;
 - (void)invalidate;
-- (void)listEligibleDevicesForAuthenticationType:(unint64_t)a3 completionHandler:(id)a4;
-- (void)manager:(id)a3 didCompleteAuthenticationFor:(id)a4;
-- (void)manager:(id)a3 didDisableAuthenticationFor:(id)a4;
-- (void)manager:(id)a3 didEnableAuthenticationFor:(id)a4;
-- (void)manager:(id)a3 didFailApproveFor:(id)a4 error:(id)a5;
-- (void)manager:(id)a3 didFailAuthenticationFor:(id)a4 error:(id)a5;
-- (void)manager:(id)a3 didFailToDisableDeviceFor:(id)a4 error:(id)a5;
-- (void)manager:(id)a3 didFailToEnableDeviceFor:(id)a4 error:(id)a5;
-- (void)manager:(id)a3 didReceiveApproveRequestFor:(id)a4 info:(id)a5;
-- (void)manager:(id)a3 didStartAuthenticationFor:(id)a4;
+- (void)listEligibleDevicesForAuthenticationType:(unint64_t)type completionHandler:(id)handler;
+- (void)manager:(id)manager didCompleteAuthenticationFor:(id)for;
+- (void)manager:(id)manager didDisableAuthenticationFor:(id)for;
+- (void)manager:(id)manager didEnableAuthenticationFor:(id)for;
+- (void)manager:(id)manager didFailApproveFor:(id)for error:(id)error;
+- (void)manager:(id)manager didFailAuthenticationFor:(id)for error:(id)error;
+- (void)manager:(id)manager didFailToDisableDeviceFor:(id)for error:(id)error;
+- (void)manager:(id)manager didFailToEnableDeviceFor:(id)for error:(id)error;
+- (void)manager:(id)manager didReceiveApproveRequestFor:(id)for info:(id)info;
+- (void)manager:(id)manager didStartAuthenticationFor:(id)for;
 - (void)notifyDelegate;
 - (void)prewarmAutoUnlock;
-- (void)registerForApprovalRequestsUsingClientProxy:(id)a3 forType:(unint64_t)a4;
+- (void)registerForApprovalRequestsUsingClientProxy:(id)proxy forType:(unint64_t)type;
 - (void)repairCloudPairing;
-- (void)reportUserApprovalWithACMToken:(id)a3 error:(id)a4 sessionID:(id)a5;
-- (void)requestEnablementUsingClientProxy:(id)a3 authenticationType:(unint64_t)a4 device:(id)a5 sessionID:(id)a6;
+- (void)reportUserApprovalWithACMToken:(id)token error:(id)error sessionID:(id)d;
+- (void)requestEnablementUsingClientProxy:(id)proxy authenticationType:(unint64_t)type device:(id)device sessionID:(id)d;
 - (void)requestRelock;
-- (void)session:(id)a3 didBeginAttemptWithDevice:(id)a4;
-- (void)session:(id)a3 didCompleteUnlockWithDevice:(id)a4;
-- (void)session:(id)a3 didEnableWithDevice:(id)a4;
-- (void)session:(id)a3 didFailToEnableDevice:(id)a4 error:(id)a5;
-- (void)session:(id)a3 didFailUnlockWithResults:(id)a4 error:(id)a5 incrementedAttempt:(BOOL)a6;
-- (void)session:(id)a3 didReceiveKeyDeviceLocked:(id)a4;
-- (void)startObservingAuthentationStateChangesWithObserver:(id)a3 forIdentifier:(id)a4;
-- (void)stopObservingAuthentationStateChangesForIdentifier:(id)a3;
-- (void)unlockEnabledWithDevice:(id)a3 completionHandler:(id)a4;
-- (void)unlockStateForDevice:(id)a3 completionHandler:(id)a4;
+- (void)session:(id)session didBeginAttemptWithDevice:(id)device;
+- (void)session:(id)session didCompleteUnlockWithDevice:(id)device;
+- (void)session:(id)session didEnableWithDevice:(id)device;
+- (void)session:(id)session didFailToEnableDevice:(id)device error:(id)error;
+- (void)session:(id)session didFailUnlockWithResults:(id)results error:(id)error incrementedAttempt:(BOOL)attempt;
+- (void)session:(id)session didReceiveKeyDeviceLocked:(id)locked;
+- (void)startObservingAuthentationStateChangesWithObserver:(id)observer forIdentifier:(id)identifier;
+- (void)stopObservingAuthentationStateChangesForIdentifier:(id)identifier;
+- (void)unlockEnabledWithDevice:(id)device completionHandler:(id)handler;
+- (void)unlockStateForDevice:(id)device completionHandler:(id)handler;
 @end
 
 @implementation SDUnlockXPCSession
@@ -60,8 +60,8 @@
   if (!bundleID)
   {
     v4 = +[NSXPCConnection currentConnection];
-    v5 = [v4 _xpcConnection];
-    v6 = sub_10000C344(v5);
+    _xpcConnection = [v4 _xpcConnection];
+    v6 = sub_10000C344(_xpcConnection);
 
     if (!v6)
     {
@@ -91,9 +91,9 @@
 
 - (void)invalidate
 {
-  v3 = [(SDUnlockXPCSession *)self clientProxy];
+  clientProxy = [(SDUnlockXPCSession *)self clientProxy];
 
-  if (v3)
+  if (clientProxy)
   {
     v4 = +[SDAutoUnlockSessionManager sharedManager];
     [v4 cancelEnablingAllDevices];
@@ -112,21 +112,21 @@
   [v2 repairCloudPairing];
 }
 
-- (void)eligibleAutoUnlockDevicesWithCompletionHandler:(id)a3
+- (void)eligibleAutoUnlockDevicesWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if ([(SDUnlockXPCSession *)self checkEntitlementWithHandler:0])
   {
-    v5 = [(SDUnlockXPCSession *)self bundleID];
+    bundleID = [(SDUnlockXPCSession *)self bundleID];
     objc_initWeak(&location, self);
     v6 = +[SDAutoUnlockSessionManager sharedManager];
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_10010A218;
     v9[3] = &unk_1008D07C8;
-    v10 = v4;
+    v10 = handlerCopy;
     objc_copyWeak(&v11, &location);
-    [v6 eligibleDevicesRequestFromBundleID:v5 withCompletionHandler:v9];
+    [v6 eligibleDevicesRequestFromBundleID:bundleID withCompletionHandler:v9];
 
     objc_destroyWeak(&v11);
     objc_destroyWeak(&location);
@@ -138,27 +138,27 @@
     v14 = @"This process does not have permission to perform this action";
     v7 = [NSDictionary dictionaryWithObjects:&v14 forKeys:&v13 count:1];
     v8 = [NSError errorWithDomain:SFAutoUnlockErrorDomain code:111 userInfo:v7];
-    (*(v4 + 2))(v4, 0, v8);
+    (*(handlerCopy + 2))(handlerCopy, 0, v8);
 
     [(SDUnlockXPCSession *)self notifyDelegate];
   }
 }
 
-- (void)enableAutoUnlockWithDevice:(id)a3 passcode:(id)a4 clientProxy:(id)a5
+- (void)enableAutoUnlockWithDevice:(id)device passcode:(id)passcode clientProxy:(id)proxy
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  deviceCopy = device;
+  passcodeCopy = passcode;
+  proxyCopy = proxy;
   if ([(SDUnlockXPCSession *)self checkEntitlementWithHandler:0])
   {
-    [(SDUnlockXPCSession *)self setEnableDevice:v8];
-    [(SDUnlockXPCSession *)self setClientProxy:v10];
+    [(SDUnlockXPCSession *)self setEnableDevice:deviceCopy];
+    [(SDUnlockXPCSession *)self setClientProxy:proxyCopy];
 
     v11 = auto_unlock_log();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v16 = 138412290;
-      v17 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Adding observer for enabling device %@", &v16, 0xCu);
     }
 
@@ -166,7 +166,7 @@
     [v12 registerObserver:self];
 
     v13 = +[SDAutoUnlockSessionManager sharedManager];
-    [v13 enableAutoUnlockWithDevice:v8 passcode:v9];
+    [v13 enableAutoUnlockWithDevice:deviceCopy passcode:passcodeCopy];
   }
 
   else
@@ -177,26 +177,26 @@
     v15 = [NSDictionary dictionaryWithObjects:&v19 forKeys:&v18 count:1];
     v13 = [NSError errorWithDomain:v14 code:111 userInfo:v15];
 
-    [v10 failedToEnableDevice:v8 error:v13];
+    [proxyCopy failedToEnableDevice:deviceCopy error:v13];
     [(SDUnlockXPCSession *)self notifyDelegate];
   }
 }
 
-- (void)cancelEnablingAutoUnlockForDevice:(id)a3
+- (void)cancelEnablingAutoUnlockForDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   if ([(SDUnlockXPCSession *)self checkEntitlementWithHandler:0])
   {
     v4 = +[SDAutoUnlockSessionManager sharedManager];
-    [v4 cancelEnablingAutoUnlockForDevice:v5];
+    [v4 cancelEnablingAutoUnlockForDevice:deviceCopy];
   }
 }
 
-- (void)disableAutoUnlockForDevice:(id)a3 completionHandler:(id)a4
+- (void)disableAutoUnlockForDevice:(id)device completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(SDUnlockXPCSession *)self checkEntitlementWithHandler:v7])
+  deviceCopy = device;
+  handlerCopy = handler;
+  if ([(SDUnlockXPCSession *)self checkEntitlementWithHandler:handlerCopy])
   {
     objc_initWeak(&location, self);
     v8 = +[SDAutoUnlockSessionManager sharedManager];
@@ -204,9 +204,9 @@
     v9[1] = 3221225472;
     v9[2] = sub_10010A5E8;
     v9[3] = &unk_1008D07F0;
-    v10 = v7;
+    v10 = handlerCopy;
     objc_copyWeak(&v11, &location);
-    [v8 disableAutoUnlockForDevice:v6 completionHandler:v9];
+    [v8 disableAutoUnlockForDevice:deviceCopy completionHandler:v9];
 
     objc_destroyWeak(&v11);
     objc_destroyWeak(&location);
@@ -219,17 +219,17 @@
   [v2 prewarmAutoUnlock];
 }
 
-- (void)attemptAutoUnlockWithClientProxy:(id)a3
+- (void)attemptAutoUnlockWithClientProxy:(id)proxy
 {
-  v4 = a3;
+  proxyCopy = proxy;
   if ([(SDUnlockXPCSession *)self checkEntitlementWithHandler:0])
   {
-    [(SDUnlockXPCSession *)self setClientProxy:v4];
+    [(SDUnlockXPCSession *)self setClientProxy:proxyCopy];
     v5 = auto_unlock_log();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138412290;
-      v11 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Adding observer for auto unlock attempt %@", &v10, 0xCu);
     }
 
@@ -248,22 +248,22 @@
     v9 = [NSDictionary dictionaryWithObjects:&v13 forKeys:&v12 count:1];
     v7 = [NSError errorWithDomain:v8 code:111 userInfo:v9];
 
-    [v4 failedUnlockWithError:v7];
+    [proxyCopy failedUnlockWithError:v7];
     [(SDUnlockXPCSession *)self notifyDelegate];
   }
 }
 
-- (void)attemptAutoUnlockWithoutNotifyingWatchWithClientProxy:(id)a3
+- (void)attemptAutoUnlockWithoutNotifyingWatchWithClientProxy:(id)proxy
 {
-  v4 = a3;
+  proxyCopy = proxy;
   if ([(SDUnlockXPCSession *)self checkEntitlementWithHandler:0])
   {
-    [(SDUnlockXPCSession *)self setClientProxy:v4];
+    [(SDUnlockXPCSession *)self setClientProxy:proxyCopy];
     v5 = auto_unlock_log();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138412290;
-      v11 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Adding observer for auto unlock attempt without notifying watch %@", &v10, 0xCu);
     }
 
@@ -282,22 +282,22 @@
     v9 = [NSDictionary dictionaryWithObjects:&v13 forKeys:&v12 count:1];
     v7 = [NSError errorWithDomain:v8 code:111 userInfo:v9];
 
-    [v4 failedUnlockWithError:v7];
+    [proxyCopy failedUnlockWithError:v7];
     [(SDUnlockXPCSession *)self notifyDelegate];
   }
 }
 
-- (void)attemptAutoUnlockForSiriWithClientProxy:(id)a3
+- (void)attemptAutoUnlockForSiriWithClientProxy:(id)proxy
 {
-  v4 = a3;
+  proxyCopy = proxy;
   if ([(SDUnlockXPCSession *)self checkEntitlementWithHandler:0])
   {
-    [(SDUnlockXPCSession *)self setClientProxy:v4];
+    [(SDUnlockXPCSession *)self setClientProxy:proxyCopy];
     v5 = auto_unlock_log();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138412290;
-      v11 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Adding observer for auto unlock attempt for Siri %@", &v10, 0xCu);
     }
 
@@ -316,7 +316,7 @@
     v9 = [NSDictionary dictionaryWithObjects:&v13 forKeys:&v12 count:1];
     v7 = [NSError errorWithDomain:v8 code:111 userInfo:v9];
 
-    [v4 failedUnlockWithError:v7];
+    [proxyCopy failedUnlockWithError:v7];
     [(SDUnlockXPCSession *)self notifyDelegate];
   }
 }
@@ -342,13 +342,13 @@
   }
 }
 
-- (void)cancelAutoUnlock:(BOOL)a3
+- (void)cancelAutoUnlock:(BOOL)unlock
 {
-  v3 = a3;
+  unlockCopy = unlock;
   v5 = +[SDAutoUnlockSessionManager sharedManager];
   [v5 cancelAutoUnlock];
 
-  if (v3)
+  if (unlockCopy)
   {
 
     [(SDUnlockXPCSession *)self notifyDelegate];
@@ -376,13 +376,13 @@
   }
 }
 
-- (void)autoUnlockStateWithCompletionHandler:(id)a3
+- (void)autoUnlockStateWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if ([(SDUnlockXPCSession *)self checkEntitlementWithHandler:0])
   {
     v5 = +[SDAutoUnlockSessionManager sharedManager];
-    [v5 autoUnlockStateWithCompletionHandler:v4];
+    [v5 autoUnlockStateWithCompletionHandler:handlerCopy];
 
     [(SDUnlockXPCSession *)self notifyDelegate];
   }
@@ -394,19 +394,19 @@
     v10 = @"This process does not have permission to perform this action";
     v7 = [NSDictionary dictionaryWithObjects:&v10 forKeys:&v9 count:1];
     v8 = [NSError errorWithDomain:v6 code:111 userInfo:v7];
-    (*(v4 + 2))(v4, 0, v8);
+    (*(handlerCopy + 2))(handlerCopy, 0, v8);
 
     [(SDUnlockXPCSession *)self notifyDelegate];
   }
 }
 
-- (void)authPromptInfoWithCompletionHandler:(id)a3
+- (void)authPromptInfoWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if ([(SDUnlockXPCSession *)self checkEntitlementWithHandler:0])
   {
     v5 = +[SDAutoUnlockSessionManager sharedManager];
-    [v5 authPromptInfoWithCompletionHandler:v4];
+    [v5 authPromptInfoWithCompletionHandler:handlerCopy];
 
     [(SDUnlockXPCSession *)self notifyDelegate];
   }
@@ -418,31 +418,31 @@
     v10 = @"This process does not have permission to perform this action";
     v7 = [NSDictionary dictionaryWithObjects:&v10 forKeys:&v9 count:1];
     v8 = [NSError errorWithDomain:v6 code:111 userInfo:v7];
-    (*(v4 + 2))(v4, 0, v8);
+    (*(handlerCopy + 2))(handlerCopy, 0, v8);
 
     [(SDUnlockXPCSession *)self notifyDelegate];
   }
 }
 
-- (void)session:(id)a3 didReceiveKeyDeviceLocked:(id)a4
+- (void)session:(id)session didReceiveKeyDeviceLocked:(id)locked
 {
-  v5 = a4;
-  v6 = [(SDUnlockXPCSession *)self clientProxy];
-  [v6 keyDeviceLocked:v5];
+  lockedCopy = locked;
+  clientProxy = [(SDUnlockXPCSession *)self clientProxy];
+  [clientProxy keyDeviceLocked:lockedCopy];
 }
 
-- (void)session:(id)a3 didEnableWithDevice:(id)a4
+- (void)session:(id)session didEnableWithDevice:(id)device
 {
-  v11 = a4;
-  v5 = [(SDUnlockXPCSession *)self enableDevice];
-  v6 = [v5 uniqueID];
-  v7 = [v11 uniqueID];
-  v8 = [v6 isEqualToString:v7];
+  deviceCopy = device;
+  enableDevice = [(SDUnlockXPCSession *)self enableDevice];
+  uniqueID = [enableDevice uniqueID];
+  uniqueID2 = [deviceCopy uniqueID];
+  v8 = [uniqueID isEqualToString:uniqueID2];
 
   if (v8)
   {
-    v9 = [(SDUnlockXPCSession *)self clientProxy];
-    [v9 enabledDevice:v11];
+    clientProxy = [(SDUnlockXPCSession *)self clientProxy];
+    [clientProxy enabledDevice:deviceCopy];
 
     v10 = +[SDAutoUnlockSessionManager sharedManager];
     [v10 unregisterObserver:self];
@@ -451,19 +451,19 @@
   }
 }
 
-- (void)session:(id)a3 didFailToEnableDevice:(id)a4 error:(id)a5
+- (void)session:(id)session didFailToEnableDevice:(id)device error:(id)error
 {
-  v14 = a4;
-  v7 = a5;
-  v8 = [(SDUnlockXPCSession *)self enableDevice];
-  v9 = [v8 uniqueID];
-  v10 = [v14 uniqueID];
-  v11 = [v9 isEqualToString:v10];
+  deviceCopy = device;
+  errorCopy = error;
+  enableDevice = [(SDUnlockXPCSession *)self enableDevice];
+  uniqueID = [enableDevice uniqueID];
+  uniqueID2 = [deviceCopy uniqueID];
+  v11 = [uniqueID isEqualToString:uniqueID2];
 
   if (v11)
   {
-    v12 = [(SDUnlockXPCSession *)self clientProxy];
-    [v12 failedToEnableDevice:v14 error:v7];
+    clientProxy = [(SDUnlockXPCSession *)self clientProxy];
+    [clientProxy failedToEnableDevice:deviceCopy error:errorCopy];
 
     v13 = +[SDAutoUnlockSessionManager sharedManager];
     [v13 unregisterObserver:self];
@@ -472,36 +472,36 @@
   }
 }
 
-- (void)session:(id)a3 didBeginAttemptWithDevice:(id)a4
+- (void)session:(id)session didBeginAttemptWithDevice:(id)device
 {
-  v5 = a4;
+  deviceCopy = device;
   v6 = auto_unlock_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(SDUnlockXPCSession *)self clientProxy];
+    clientProxy = [(SDUnlockXPCSession *)self clientProxy];
     v9 = 138412290;
-    v10 = v7;
+    v10 = clientProxy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Began: Calling client proxy %@", &v9, 0xCu);
   }
 
-  v8 = [(SDUnlockXPCSession *)self clientProxy];
-  [v8 beganAttemptWithDevice:v5];
+  clientProxy2 = [(SDUnlockXPCSession *)self clientProxy];
+  [clientProxy2 beganAttemptWithDevice:deviceCopy];
 }
 
-- (void)session:(id)a3 didCompleteUnlockWithDevice:(id)a4
+- (void)session:(id)session didCompleteUnlockWithDevice:(id)device
 {
-  v5 = a4;
+  deviceCopy = device;
   v6 = auto_unlock_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(SDUnlockXPCSession *)self clientProxy];
+    clientProxy = [(SDUnlockXPCSession *)self clientProxy];
     v10 = 138412290;
-    v11 = v7;
+    v11 = clientProxy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Completed: Calling client proxy %@", &v10, 0xCu);
   }
 
-  v8 = [(SDUnlockXPCSession *)self clientProxy];
-  [v8 completedUnlockWithDevice:v5];
+  clientProxy2 = [(SDUnlockXPCSession *)self clientProxy];
+  [clientProxy2 completedUnlockWithDevice:deviceCopy];
 
   v9 = +[SDAutoUnlockSessionManager sharedManager];
   [v9 unregisterObserver:self];
@@ -509,11 +509,11 @@
   [(SDUnlockXPCSession *)self notifyDelegate];
 }
 
-- (void)session:(id)a3 didFailUnlockWithResults:(id)a4 error:(id)a5 incrementedAttempt:(BOOL)a6
+- (void)session:(id)session didFailUnlockWithResults:(id)results error:(id)error incrementedAttempt:(BOOL)attempt
 {
-  v7 = a5;
-  v8 = [(SDUnlockXPCSession *)self clientProxy];
-  [v8 failedUnlockWithError:v7];
+  errorCopy = error;
+  clientProxy = [(SDUnlockXPCSession *)self clientProxy];
+  [clientProxy failedUnlockWithError:errorCopy];
 
   v9 = +[SDAutoUnlockSessionManager sharedManager];
   [v9 unregisterObserver:self];
@@ -521,21 +521,21 @@
   [(SDUnlockXPCSession *)self notifyDelegate];
 }
 
-- (void)enableUnlockWithDevice:(id)a3 fromKey:(BOOL)a4 withPasscode:(id)a5 completionHandler:(id)a6
+- (void)enableUnlockWithDevice:(id)device fromKey:(BOOL)key withPasscode:(id)passcode completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  if ([(SDUnlockXPCSession *)self checkEntitlementWithHandler:v12])
+  deviceCopy = device;
+  passcodeCopy = passcode;
+  handlerCopy = handler;
+  if ([(SDUnlockXPCSession *)self checkEntitlementWithHandler:handlerCopy])
   {
-    if (a4)
+    if (key)
     {
       v13 = SFUnlockErrorDomian;
       v19 = NSLocalizedDescriptionKey;
       v20 = @"Enabling from the key side is not yet supported";
       v14 = [NSDictionary dictionaryWithObjects:&v20 forKeys:&v19 count:1];
       v15 = [NSError errorWithDomain:v13 code:111 userInfo:v14];
-      v12[2](v12, 0, v15);
+      handlerCopy[2](handlerCopy, 0, v15);
 
       [(SDUnlockXPCSession *)self notifyDelegate];
     }
@@ -548,17 +548,17 @@
       v17[2] = sub_10010B7A0;
       v17[3] = &unk_1008D0818;
       v17[4] = self;
-      v18 = v12;
-      [v16 enableUnlockWithDevice:v10 passcode:v11 completionHandler:v17];
+      v18 = handlerCopy;
+      [v16 enableUnlockWithDevice:deviceCopy passcode:passcodeCopy completionHandler:v17];
     }
   }
 }
 
-- (void)disableUnlockWithDevice:(id)a3 completionHandler:(id)a4
+- (void)disableUnlockWithDevice:(id)device completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(SDUnlockXPCSession *)self checkEntitlementWithHandler:v7])
+  deviceCopy = device;
+  handlerCopy = handler;
+  if ([(SDUnlockXPCSession *)self checkEntitlementWithHandler:handlerCopy])
   {
     v8 = +[SDUnlockKeyManager sharedKeyManager];
     v9[0] = _NSConcreteStackBlock;
@@ -566,27 +566,27 @@
     v9[2] = sub_10010B8BC;
     v9[3] = &unk_1008D0818;
     v9[4] = self;
-    v10 = v7;
-    [v8 disableUnlockWithDevice:v6 completionHandler:v9];
+    v10 = handlerCopy;
+    [v8 disableUnlockWithDevice:deviceCopy completionHandler:v9];
   }
 }
 
-- (void)unlockEnabledWithDevice:(id)a3 completionHandler:(id)a4
+- (void)unlockEnabledWithDevice:(id)device completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   if ([(SDUnlockXPCSession *)self checkEntitlementWithHandler:?])
   {
     v5 = +[SDUnlockKeyManager sharedKeyManager];
-    v6[2](v6, [v5 unlockEnabled], 0);
+    handlerCopy[2](handlerCopy, [v5 unlockEnabled], 0);
 
     [(SDUnlockXPCSession *)self notifyDelegate];
   }
 }
 
-- (void)establishStashBagWithCompletionHandler:(id)a3
+- (void)establishStashBagWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  if ([(SDUnlockXPCSession *)self checkEntitlementWithHandler:v4])
+  handlerCopy = handler;
+  if ([(SDUnlockXPCSession *)self checkEntitlementWithHandler:handlerCopy])
   {
     v5 = +[SDUnlockKeyManager sharedKeyManager];
     v6[0] = _NSConcreteStackBlock;
@@ -594,16 +594,16 @@
     v6[2] = sub_10010BA54;
     v6[3] = &unk_1008D0818;
     v6[4] = self;
-    v7 = v4;
+    v7 = handlerCopy;
     [v5 establishStashBagWithCompletionHandler:v6];
   }
 }
 
-- (void)establishStashBagWithManifest:(id)a3 completionHandler:(id)a4
+- (void)establishStashBagWithManifest:(id)manifest completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(SDUnlockXPCSession *)self checkEntitlementWithHandler:v7])
+  manifestCopy = manifest;
+  handlerCopy = handler;
+  if ([(SDUnlockXPCSession *)self checkEntitlementWithHandler:handlerCopy])
   {
     v8 = +[SDUnlockKeyManager sharedKeyManager];
     v9[0] = _NSConcreteStackBlock;
@@ -611,15 +611,15 @@
     v9[2] = sub_10010BB70;
     v9[3] = &unk_1008D0818;
     v9[4] = self;
-    v10 = v7;
-    [v8 establishStashBagWithManifest:v6 completionHandler:v9];
+    v10 = handlerCopy;
+    [v8 establishStashBagWithManifest:manifestCopy completionHandler:v9];
   }
 }
 
-- (void)unlockStateForDevice:(id)a3 completionHandler:(id)a4
+- (void)unlockStateForDevice:(id)device completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  handlerCopy = handler;
   if ([(SDUnlockXPCSession *)self checkEntitlementWithHandler:0])
   {
     v8 = +[SDUnlockKeyManager sharedKeyManager];
@@ -628,8 +628,8 @@
     v12[2] = sub_10010BD54;
     v12[3] = &unk_1008D0840;
     v12[4] = self;
-    v13 = v7;
-    [v8 unlockStateForDevice:v6 completionHandler:v12];
+    v13 = handlerCopy;
+    [v8 unlockStateForDevice:deviceCopy completionHandler:v12];
   }
 
   else
@@ -639,26 +639,26 @@
     v15 = @"This process does not have permission to perform this action";
     v10 = [NSDictionary dictionaryWithObjects:&v15 forKeys:&v14 count:1];
     v11 = [NSError errorWithDomain:v9 code:111 userInfo:v10];
-    (*(v7 + 2))(v7, 0, v11);
+    (*(handlerCopy + 2))(handlerCopy, 0, v11);
 
     [(SDUnlockXPCSession *)self notifyDelegate];
   }
 }
 
-- (void)listEligibleDevicesForAuthenticationType:(unint64_t)a3 completionHandler:(id)a4
+- (void)listEligibleDevicesForAuthenticationType:(unint64_t)type completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   if ([(SDUnlockXPCSession *)self checkEntitlementWithHandler:0])
   {
     v7 = +[_TtC16DaemoniOSLibrary23SDAuthenticationManager shared];
-    v8 = [v7 queue];
+    queue = [v7 queue];
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_10010BEA8;
     v10[3] = &unk_1008D0890;
-    v12 = a3;
-    v11 = v6;
-    dispatch_async(v8, v10);
+    typeCopy = type;
+    v11 = handlerCopy;
+    dispatch_async(queue, v10);
   }
 
   else
@@ -673,17 +673,17 @@
   }
 }
 
-- (void)enableUsingClientProxy:(id)a3 authenticationType:(unint64_t)a4 device:(id)a5 passcode:(id)a6 sessionID:(id)a7
+- (void)enableUsingClientProxy:(id)proxy authenticationType:(unint64_t)type device:(id)device passcode:(id)passcode sessionID:(id)d
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  proxyCopy = proxy;
+  deviceCopy = device;
+  passcodeCopy = passcode;
+  dCopy = d;
   v16 = authentications_log();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v31 = a4;
+    typeCopy = type;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "enableUsingClientProxy type:%lu", buf, 0xCu);
   }
 
@@ -698,32 +698,32 @@
     [(SDUnlockXPCSession *)self notifyDelegate];
   }
 
-  [(SDUnlockXPCSession *)self setClientProxy:v12];
+  [(SDUnlockXPCSession *)self setClientProxy:proxyCopy];
   v18 = +[_TtC16DaemoniOSLibrary23SDAuthenticationManager shared];
   [v18 setDelegate:self];
 
   v19 = +[_TtC16DaemoniOSLibrary23SDAuthenticationManager shared];
-  v20 = [v19 queue];
+  queue = [v19 queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10010C184;
   block[3] = &unk_1008CDC58;
-  v28 = self;
-  v29 = a4;
-  v25 = v13;
-  v26 = v14;
-  v27 = v15;
-  v21 = v15;
-  v22 = v14;
-  v23 = v13;
-  dispatch_async(v20, block);
+  selfCopy = self;
+  typeCopy2 = type;
+  v25 = deviceCopy;
+  v26 = passcodeCopy;
+  v27 = dCopy;
+  v21 = dCopy;
+  v22 = passcodeCopy;
+  v23 = deviceCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)requestEnablementUsingClientProxy:(id)a3 authenticationType:(unint64_t)a4 device:(id)a5 sessionID:(id)a6
+- (void)requestEnablementUsingClientProxy:(id)proxy authenticationType:(unint64_t)type device:(id)device sessionID:(id)d
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  proxyCopy = proxy;
+  deviceCopy = device;
+  dCopy = d;
   if (![(SDUnlockXPCSession *)self checkEntitlementWithHandler:0])
   {
     v13 = authentications_log();
@@ -735,47 +735,47 @@
     [(SDUnlockXPCSession *)self notifyDelegate];
   }
 
-  [(SDUnlockXPCSession *)self setClientProxy:v10];
+  [(SDUnlockXPCSession *)self setClientProxy:proxyCopy];
   v14 = +[_TtC16DaemoniOSLibrary23SDAuthenticationManager shared];
   [v14 setDelegate:self];
 
   v15 = +[_TtC16DaemoniOSLibrary23SDAuthenticationManager shared];
-  v16 = [v15 queue];
+  queue = [v15 queue];
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_10010C35C;
   v19[3] = &unk_1008D08B8;
-  v20 = v11;
-  v21 = v12;
-  v22 = self;
-  v23 = a4;
-  v17 = v12;
-  v18 = v11;
-  dispatch_async(v16, v19);
+  v20 = deviceCopy;
+  v21 = dCopy;
+  selfCopy = self;
+  typeCopy = type;
+  v17 = dCopy;
+  v18 = deviceCopy;
+  dispatch_async(queue, v19);
 }
 
-- (void)disableUsingClientProxy:(id)a3 authenticationType:(unint64_t)a4 device:(id)a5 sessionID:(id)a6
+- (void)disableUsingClientProxy:(id)proxy authenticationType:(unint64_t)type device:(id)device sessionID:(id)d
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  proxyCopy = proxy;
+  deviceCopy = device;
+  dCopy = d;
   if ([(SDUnlockXPCSession *)self checkEntitlementWithHandler:0])
   {
-    [(SDUnlockXPCSession *)self setClientProxy:v10];
+    [(SDUnlockXPCSession *)self setClientProxy:proxyCopy];
     v13 = +[_TtC16DaemoniOSLibrary23SDAuthenticationManager shared];
     [v13 setDelegate:self];
 
     v14 = +[_TtC16DaemoniOSLibrary23SDAuthenticationManager shared];
-    v15 = [v14 queue];
+    queue = [v14 queue];
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
     v17[2] = sub_10010C530;
     v17[3] = &unk_1008D08B8;
-    v21 = a4;
-    v18 = v11;
-    v19 = v12;
-    v20 = self;
-    dispatch_async(v15, v17);
+    typeCopy = type;
+    v18 = deviceCopy;
+    v19 = dCopy;
+    selfCopy = self;
+    dispatch_async(queue, v17);
   }
 
   else
@@ -790,11 +790,11 @@
   }
 }
 
-- (void)canAuthenticateUsingClientProxy:(id)a3 authenticationType:(unint64_t)a4 options:(id)a5 sessionID:(id)a6
+- (void)canAuthenticateUsingClientProxy:(id)proxy authenticationType:(unint64_t)type options:(id)options sessionID:(id)d
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  proxyCopy = proxy;
+  optionsCopy = options;
+  dCopy = d;
   if (![(SDUnlockXPCSession *)self checkEntitlementWithHandler:0])
   {
     v13 = authentications_log();
@@ -806,47 +806,47 @@
     [(SDUnlockXPCSession *)self notifyDelegate];
   }
 
-  [(SDUnlockXPCSession *)self setClientProxy:v10];
+  [(SDUnlockXPCSession *)self setClientProxy:proxyCopy];
   v14 = +[_TtC16DaemoniOSLibrary23SDAuthenticationManager shared];
   [v14 setDelegate:self];
 
   v15 = +[_TtC16DaemoniOSLibrary23SDAuthenticationManager shared];
-  v16 = [v15 queue];
+  queue = [v15 queue];
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_10010C704;
   v19[3] = &unk_1008D08B8;
-  v20 = v11;
-  v21 = v12;
-  v22 = self;
-  v23 = a4;
-  v17 = v12;
-  v18 = v11;
-  dispatch_async(v16, v19);
+  v20 = optionsCopy;
+  v21 = dCopy;
+  selfCopy = self;
+  typeCopy = type;
+  v17 = dCopy;
+  v18 = optionsCopy;
+  dispatch_async(queue, v19);
 }
 
-- (void)authenticateUsingClientProxy:(id)a3 type:(unint64_t)a4 sessionID:(id)a5 options:(id)a6
+- (void)authenticateUsingClientProxy:(id)proxy type:(unint64_t)type sessionID:(id)d options:(id)options
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  proxyCopy = proxy;
+  dCopy = d;
+  optionsCopy = options;
   if ([(SDUnlockXPCSession *)self checkEntitlementWithHandler:0])
   {
-    [(SDUnlockXPCSession *)self setClientProxy:v10];
+    [(SDUnlockXPCSession *)self setClientProxy:proxyCopy];
     v13 = +[_TtC16DaemoniOSLibrary23SDAuthenticationManager shared];
     [v13 setDelegate:self];
 
     v14 = +[_TtC16DaemoniOSLibrary23SDAuthenticationManager shared];
-    v15 = [v14 queue];
+    queue = [v14 queue];
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
     v17[2] = sub_10010C8D8;
     v17[3] = &unk_1008D08B8;
-    v21 = a4;
-    v18 = v11;
-    v19 = v12;
-    v20 = self;
-    dispatch_async(v15, v17);
+    typeCopy = type;
+    v18 = dCopy;
+    v19 = optionsCopy;
+    selfCopy = self;
+    dispatch_async(queue, v17);
   }
 
   else
@@ -861,19 +861,19 @@
   }
 }
 
-- (void)cancelAuthenticationSessionWithID:(id)a3
+- (void)cancelAuthenticationSessionWithID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   if ([(SDUnlockXPCSession *)self checkEntitlementWithHandler:0])
   {
     v5 = +[_TtC16DaemoniOSLibrary23SDAuthenticationManager shared];
-    v6 = [v5 queue];
+    queue = [v5 queue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10010CA3C;
     block[3] = &unk_1008CDEA0;
-    v9 = v4;
-    dispatch_async(v6, block);
+    v9 = dCopy;
+    dispatch_async(queue, block);
   }
 
   else
@@ -888,24 +888,24 @@
   }
 }
 
-- (void)registerForApprovalRequestsUsingClientProxy:(id)a3 forType:(unint64_t)a4
+- (void)registerForApprovalRequestsUsingClientProxy:(id)proxy forType:(unint64_t)type
 {
-  v6 = a3;
+  proxyCopy = proxy;
   if ([(SDUnlockXPCSession *)self checkEntitlementWithHandler:0])
   {
-    [(SDUnlockXPCSession *)self setClientProxy:v6];
+    [(SDUnlockXPCSession *)self setClientProxy:proxyCopy];
     v7 = +[_TtC16DaemoniOSLibrary23SDAuthenticationManager shared];
     [v7 setDelegate:self];
 
     v8 = +[_TtC16DaemoniOSLibrary23SDAuthenticationManager shared];
-    v9 = [v8 queue];
+    queue = [v8 queue];
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_10010CBC0;
     v11[3] = &unk_1008CFD30;
     v11[4] = self;
-    v11[5] = a4;
-    dispatch_async(v9, v11);
+    v11[5] = type;
+    dispatch_async(queue, v11);
   }
 
   else
@@ -920,54 +920,54 @@
   }
 }
 
-- (void)startObservingAuthentationStateChangesWithObserver:(id)a3 forIdentifier:(id)a4
+- (void)startObservingAuthentationStateChangesWithObserver:(id)observer forIdentifier:(id)identifier
 {
-  v5 = a3;
-  v6 = a4;
+  observerCopy = observer;
+  identifierCopy = identifier;
   v7 = +[_TtC16DaemoniOSLibrary23SDAuthenticationManager shared];
-  v8 = [v7 queue];
+  queue = [v7 queue];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10010CCFC;
   v11[3] = &unk_1008CE028;
-  v12 = v5;
-  v13 = v6;
-  v9 = v6;
-  v10 = v5;
-  dispatch_async(v8, v11);
+  v12 = observerCopy;
+  v13 = identifierCopy;
+  v9 = identifierCopy;
+  v10 = observerCopy;
+  dispatch_async(queue, v11);
 }
 
-- (void)stopObservingAuthentationStateChangesForIdentifier:(id)a3
+- (void)stopObservingAuthentationStateChangesForIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = +[_TtC16DaemoniOSLibrary23SDAuthenticationManager shared];
-  v5 = [v4 queue];
+  queue = [v4 queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10010CE18;
   block[3] = &unk_1008CDEA0;
-  v8 = v3;
-  v6 = v3;
-  dispatch_async(v5, block);
+  v8 = identifierCopy;
+  v6 = identifierCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)reportUserApprovalWithACMToken:(id)a3 error:(id)a4 sessionID:(id)a5
+- (void)reportUserApprovalWithACMToken:(id)token error:(id)error sessionID:(id)d
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  tokenCopy = token;
+  errorCopy = error;
+  dCopy = d;
   if ([(SDUnlockXPCSession *)self checkEntitlementWithHandler:0])
   {
     v11 = +[_TtC16DaemoniOSLibrary23SDAuthenticationManager shared];
-    v12 = [v11 queue];
+    queue = [v11 queue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10010CFC0;
     block[3] = &unk_1008CE900;
-    v15 = v8;
-    v16 = v9;
-    v17 = v10;
-    dispatch_async(v12, block);
+    v15 = tokenCopy;
+    v16 = errorCopy;
+    v17 = dCopy;
+    dispatch_async(queue, block);
   }
 
   else
@@ -982,19 +982,19 @@
   }
 }
 
-- (void)getEnabledAuthenticationTypesWithCompletionHandler:(id)a3
+- (void)getEnabledAuthenticationTypesWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if ([(SDUnlockXPCSession *)self checkEntitlementWithHandler:0])
   {
     v5 = +[_TtC16DaemoniOSLibrary23SDAuthenticationManager shared];
-    v6 = [v5 queue];
+    queue = [v5 queue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10010D124;
     block[3] = &unk_1008D08E0;
-    v9 = v4;
-    dispatch_async(v6, block);
+    v9 = handlerCopy;
+    dispatch_async(queue, block);
   }
 
   else
@@ -1009,11 +1009,11 @@
   }
 }
 
-- (void)manager:(id)a3 didEnableAuthenticationFor:(id)a4
+- (void)manager:(id)manager didEnableAuthenticationFor:(id)for
 {
-  v5 = a4;
-  v6 = [(SDUnlockXPCSession *)self clientProxy];
-  [v6 enabledAuthenticationSessionWithID:v5];
+  forCopy = for;
+  clientProxy = [(SDUnlockXPCSession *)self clientProxy];
+  [clientProxy enabledAuthenticationSessionWithID:forCopy];
 
   v7 = +[_TtC16DaemoniOSLibrary23SDAuthenticationManager shared];
   [v7 setDelegate:0];
@@ -1021,11 +1021,11 @@
   [(SDUnlockXPCSession *)self notifyDelegate];
 }
 
-- (void)manager:(id)a3 didDisableAuthenticationFor:(id)a4
+- (void)manager:(id)manager didDisableAuthenticationFor:(id)for
 {
-  v5 = a4;
-  v6 = [(SDUnlockXPCSession *)self clientProxy];
-  [v6 disabledAuthenticationSessionWithID:v5];
+  forCopy = for;
+  clientProxy = [(SDUnlockXPCSession *)self clientProxy];
+  [clientProxy disabledAuthenticationSessionWithID:forCopy];
 
   v7 = +[_TtC16DaemoniOSLibrary23SDAuthenticationManager shared];
   [v7 setDelegate:0];
@@ -1033,11 +1033,11 @@
   [(SDUnlockXPCSession *)self notifyDelegate];
 }
 
-- (void)manager:(id)a3 didCompleteAuthenticationFor:(id)a4
+- (void)manager:(id)manager didCompleteAuthenticationFor:(id)for
 {
-  v5 = a4;
-  v6 = [(SDUnlockXPCSession *)self clientProxy];
-  [v6 completedAuthenticationSessionWithID:v5];
+  forCopy = for;
+  clientProxy = [(SDUnlockXPCSession *)self clientProxy];
+  [clientProxy completedAuthenticationSessionWithID:forCopy];
 
   v7 = +[_TtC16DaemoniOSLibrary23SDAuthenticationManager shared];
   [v7 setDelegate:0];
@@ -1045,12 +1045,12 @@
   [(SDUnlockXPCSession *)self notifyDelegate];
 }
 
-- (void)manager:(id)a3 didFailToEnableDeviceFor:(id)a4 error:(id)a5
+- (void)manager:(id)manager didFailToEnableDeviceFor:(id)for error:(id)error
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [(SDUnlockXPCSession *)self clientProxy];
-  [v9 failedToEnableDeviceForSessionID:v8 error:v7];
+  errorCopy = error;
+  forCopy = for;
+  clientProxy = [(SDUnlockXPCSession *)self clientProxy];
+  [clientProxy failedToEnableDeviceForSessionID:forCopy error:errorCopy];
 
   v10 = +[_TtC16DaemoniOSLibrary23SDAuthenticationManager shared];
   [v10 setDelegate:0];
@@ -1058,12 +1058,12 @@
   [(SDUnlockXPCSession *)self notifyDelegate];
 }
 
-- (void)manager:(id)a3 didFailToDisableDeviceFor:(id)a4 error:(id)a5
+- (void)manager:(id)manager didFailToDisableDeviceFor:(id)for error:(id)error
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [(SDUnlockXPCSession *)self clientProxy];
-  [v9 failedToDisableDeviceForSessionID:v8 error:v7];
+  errorCopy = error;
+  forCopy = for;
+  clientProxy = [(SDUnlockXPCSession *)self clientProxy];
+  [clientProxy failedToDisableDeviceForSessionID:forCopy error:errorCopy];
 
   v10 = +[_TtC16DaemoniOSLibrary23SDAuthenticationManager shared];
   [v10 setDelegate:0];
@@ -1071,12 +1071,12 @@
   [(SDUnlockXPCSession *)self notifyDelegate];
 }
 
-- (void)manager:(id)a3 didFailAuthenticationFor:(id)a4 error:(id)a5
+- (void)manager:(id)manager didFailAuthenticationFor:(id)for error:(id)error
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [(SDUnlockXPCSession *)self clientProxy];
-  [v9 failedAuthenticationSessionWithID:v8 error:v7];
+  errorCopy = error;
+  forCopy = for;
+  clientProxy = [(SDUnlockXPCSession *)self clientProxy];
+  [clientProxy failedAuthenticationSessionWithID:forCopy error:errorCopy];
 
   v10 = +[_TtC16DaemoniOSLibrary23SDAuthenticationManager shared];
   [v10 setDelegate:0];
@@ -1084,32 +1084,32 @@
   [(SDUnlockXPCSession *)self notifyDelegate];
 }
 
-- (void)manager:(id)a3 didStartAuthenticationFor:(id)a4
+- (void)manager:(id)manager didStartAuthenticationFor:(id)for
 {
-  v5 = a4;
-  v6 = [(SDUnlockXPCSession *)self clientProxy];
-  [v6 startedAuthenticationSessionWithID:v5];
+  forCopy = for;
+  clientProxy = [(SDUnlockXPCSession *)self clientProxy];
+  [clientProxy startedAuthenticationSessionWithID:forCopy];
 }
 
-- (void)manager:(id)a3 didReceiveApproveRequestFor:(id)a4 info:(id)a5
+- (void)manager:(id)manager didReceiveApproveRequestFor:(id)for info:(id)info
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [(SDUnlockXPCSession *)self clientProxy];
-  [v9 receivedApproveRequestForSessionID:v8 info:v7];
+  infoCopy = info;
+  forCopy = for;
+  clientProxy = [(SDUnlockXPCSession *)self clientProxy];
+  [clientProxy receivedApproveRequestForSessionID:forCopy info:infoCopy];
 }
 
-- (void)manager:(id)a3 didFailApproveFor:(id)a4 error:(id)a5
+- (void)manager:(id)manager didFailApproveFor:(id)for error:(id)error
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [(SDUnlockXPCSession *)self clientProxy];
-  [v9 failedApproveSessionWithID:v8 error:v7];
+  errorCopy = error;
+  forCopy = for;
+  clientProxy = [(SDUnlockXPCSession *)self clientProxy];
+  [clientProxy failedApproveSessionWithID:forCopy error:errorCopy];
 }
 
-- (BOOL)checkEntitlementWithHandler:(id)a3
+- (BOOL)checkEntitlementWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = +[NSXPCConnection currentConnection];
   v6 = [v5 _connectionHasEntitlement:@"com.apple.private.sharing.unlock-manager"];
 
@@ -1118,9 +1118,9 @@
     v7 = auto_unlock_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(SDUnlockXPCSession *)self bundleID];
+      bundleID = [(SDUnlockXPCSession *)self bundleID];
       v13 = 138412290;
-      v14 = v8;
+      v14 = bundleID;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Client bundle ID: %@", &v13, 0xCu);
     }
   }
@@ -1133,13 +1133,13 @@
       sub_10010D858(self, v9);
     }
 
-    if (v4)
+    if (handlerCopy)
     {
       v15 = NSLocalizedDescriptionKey;
       v16 = @"This process does not have permission to perform this action";
       v10 = [NSDictionary dictionaryWithObjects:&v16 forKeys:&v15 count:1];
       v11 = [NSError errorWithDomain:@"SFUnlockErrorDomian" code:111 userInfo:v10];
-      v4[2](v4, 0, v11);
+      handlerCopy[2](handlerCopy, 0, v11);
 
       [(SDUnlockXPCSession *)self notifyDelegate];
     }

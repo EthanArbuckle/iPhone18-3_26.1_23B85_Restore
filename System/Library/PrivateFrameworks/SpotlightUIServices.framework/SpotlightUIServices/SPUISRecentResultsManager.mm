@@ -1,9 +1,9 @@
 @interface SPUISRecentResultsManager
-+ (BOOL)isValidSearchString:(id)a3;
-+ (id)updateResult:(id)a3 topic:(id)a4 queryContext:(id)a5;
-+ (void)cacheResult:(id)a3 searchString:(id)a4;
-+ (void)cacheSearchString:(id)a3;
-+ (void)deleteResult:(id)a3 requiresRefresh:(BOOL)a4;
++ (BOOL)isValidSearchString:(id)string;
++ (id)updateResult:(id)result topic:(id)topic queryContext:(id)context;
++ (void)cacheResult:(id)result searchString:(id)string;
++ (void)cacheSearchString:(id)string;
++ (void)deleteResult:(id)result requiresRefresh:(BOOL)refresh;
 + (void)preheat;
 + (void)sendRefreshNotification;
 @end
@@ -17,12 +17,12 @@
     +[SPUISRecentResultsManager preheat];
   }
 
-  v5 = [MEMORY[0x277CCA9A0] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
   v2 = objc_alloc_init(MEMORY[0x277CCABD8]);
   [v2 setMaxConcurrentOperationCount:1];
   [v2 setUnderlyingQueue:preheat_gCacheManagerQueue];
-  v3 = [v5 addObserverForName:@"com.apple.LaunchServices.applicationRegistered" object:0 suspensionBehavior:3 queue:v2 usingBlock:&__block_literal_global_447];
-  v4 = [v5 addObserverForName:@"com.apple.LaunchServices.applicationUnregistered" object:0 suspensionBehavior:3 queue:v2 usingBlock:&__block_literal_global_447];
+  v3 = [defaultCenter addObserverForName:@"com.apple.LaunchServices.applicationRegistered" object:0 suspensionBehavior:3 queue:v2 usingBlock:&__block_literal_global_447];
+  v4 = [defaultCenter addObserverForName:@"com.apple.LaunchServices.applicationUnregistered" object:0 suspensionBehavior:3 queue:v2 usingBlock:&__block_literal_global_447];
 }
 
 void __36__SPUISRecentResultsManager_preheat__block_invoke()
@@ -39,51 +39,51 @@ void __36__SPUISRecentResultsManager_preheat__block_invoke_2()
   [MEMORY[0x277D65788] updateApplicationContexts:v0];
 }
 
-+ (BOOL)isValidSearchString:(id)a3
++ (BOOL)isValidSearchString:(id)string
 {
   v3 = MEMORY[0x277CCA900];
-  v4 = a3;
-  v5 = [v3 whitespaceAndNewlineCharacterSet];
-  v6 = [v4 stringByTrimmingCharactersInSet:v5];
+  stringCopy = string;
+  whitespaceAndNewlineCharacterSet = [v3 whitespaceAndNewlineCharacterSet];
+  v6 = [stringCopy stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
-  LOBYTE(v4) = [v6 length] != 0;
-  return v4;
+  LOBYTE(stringCopy) = [v6 length] != 0;
+  return stringCopy;
 }
 
-+ (void)cacheSearchString:(id)a3
++ (void)cacheSearchString:(id)string
 {
-  v4 = a3;
-  if ([a1 isValidSearchString:?])
+  stringCopy = string;
+  if ([self isValidSearchString:?])
   {
-    [MEMORY[0x277D65788] cacheSuggestion:v4 type:30 score:&unk_287C59F48 searchString:v4];
+    [MEMORY[0x277D65788] cacheSuggestion:stringCopy type:30 score:&unk_287C59F48 searchString:stringCopy];
   }
 }
 
-+ (void)cacheResult:(id)a3 searchString:(id)a4
++ (void)cacheResult:(id)result searchString:(id)string
 {
-  v59 = a3;
-  v6 = a4;
-  if ([a1 isValidSearchString:v6])
+  resultCopy = result;
+  stringCopy = string;
+  if ([self isValidSearchString:stringCopy])
   {
-    switch([v59 type])
+    switch([resultCopy type])
     {
       case 1u:
-        v30 = [v59 completedQuery];
-        if (v30)
+        completedQuery = [resultCopy completedQuery];
+        if (completedQuery)
         {
           goto LABEL_28;
         }
 
-        v31 = [v59 completion];
-        v32 = v31;
-        if (v31)
+        completion = [resultCopy completion];
+        title6 = completion;
+        if (completion)
         {
-          v33 = v31;
+          text4 = completion;
           goto LABEL_54;
         }
 
-        v55 = [v59 title];
-        v8 = [v55 text];
+        title = [resultCopy title];
+        text = [title text];
 
         goto LABEL_55;
       case 2u:
@@ -96,62 +96,62 @@ void __36__SPUISRecentResultsManager_preheat__block_invoke_2()
           break;
         }
 
-        v7 = [v59 resultBundleId];
-        if (!v7)
+        resultBundleId = [resultCopy resultBundleId];
+        if (!resultBundleId)
         {
           break;
         }
 
-        v8 = v7;
-        v9 = [v59 applicationBundleIdentifier];
-        if (!v9)
+        text = resultBundleId;
+        applicationBundleIdentifier = [resultCopy applicationBundleIdentifier];
+        if (!applicationBundleIdentifier)
         {
           goto LABEL_49;
         }
 
-        v10 = v9;
-        v11 = [v59 sectionBundleIdentifier];
-        if (!v11)
+        text2 = applicationBundleIdentifier;
+        sectionBundleIdentifier = [resultCopy sectionBundleIdentifier];
+        if (!sectionBundleIdentifier)
         {
           goto LABEL_48;
         }
 
-        v12 = v11;
-        v13 = [v59 identifier];
+        v12 = sectionBundleIdentifier;
+        identifier = [resultCopy identifier];
 
-        if (!v13)
+        if (!identifier)
         {
           break;
         }
 
-        v8 = *MEMORY[0x277CCA1A0];
-        v10 = v59;
-        v14 = [(__CFString *)v10 sectionBundleIdentifier];
-        v15 = [v14 isEqualToString:*MEMORY[0x277D65BD0]];
+        text = *MEMORY[0x277CCA1A0];
+        text2 = resultCopy;
+        sectionBundleIdentifier2 = [(__CFString *)text2 sectionBundleIdentifier];
+        v15 = [sectionBundleIdentifier2 isEqualToString:*MEMORY[0x277D65BD0]];
 
         if ((v15 & 1) == 0)
         {
-          v16 = [(__CFString *)v10 valueForAttribute:*MEMORY[0x277CC30B8] withType:objc_opt_class()];
-          v17 = [v16 BOOLValue];
+          v16 = [(__CFString *)text2 valueForAttribute:*MEMORY[0x277CC30B8] withType:objc_opt_class()];
+          bOOLValue = [v16 BOOLValue];
 
-          if ((v17 & 1) == 0)
+          if ((bOOLValue & 1) == 0)
           {
             if (objc_opt_respondsToSelector())
             {
-              v18 = [(__CFString *)v10 protectionClass];
+              protectionClass = [(__CFString *)text2 protectionClass];
             }
 
             else
             {
-              v18 = 0;
+              protectionClass = 0;
             }
 
             v56 = MEMORY[0x277D65788];
-            v57 = [(__CFString *)v10 identifier];
-            v58 = [(__CFString *)v10 resultBundleId];
-            [v56 cacheLocalResult:v10 identifier:v57 bundleIdentifier:v58 protectionClass:v18 searchString:v6];
+            identifier2 = [(__CFString *)text2 identifier];
+            resultBundleId2 = [(__CFString *)text2 resultBundleId];
+            [v56 cacheLocalResult:text2 identifier:identifier2 bundleIdentifier:resultBundleId2 protectionClass:protectionClass searchString:stringCopy];
 
-            v8 = v18;
+            text = protectionClass;
           }
         }
 
@@ -165,57 +165,57 @@ void __36__SPUISRecentResultsManager_preheat__block_invoke_2()
       case 0x10u:
       case 0x1Eu:
       case 0x1Fu:
-        v8 = v59;
-        v19 = [v8 completion];
-        v20 = v19;
-        if (v19)
+        text = resultCopy;
+        completion2 = [text completion];
+        v20 = completion2;
+        if (completion2)
         {
-          v10 = v19;
+          text2 = completion2;
         }
 
         else
         {
-          v25 = [v8 title];
-          v10 = [v25 text];
+          title2 = [text title];
+          text2 = [title2 text];
         }
 
-        if ([(__CFString *)v10 length])
+        if ([(__CFString *)text2 length])
         {
           v26 = MEMORY[0x277D65788];
-          v27 = [v8 type];
+          type = [text type];
           v28 = MEMORY[0x277CCABB0];
-          [v8 rankingScore];
+          [text rankingScore];
           v29 = [v28 numberWithDouble:?];
-          [v26 cacheSuggestion:v10 type:v27 score:v29 searchString:v6];
+          [v26 cacheSuggestion:text2 type:type score:v29 searchString:stringCopy];
         }
 
         goto LABEL_48;
       case 0x11u:
       case 0x1Cu:
       case 0x1Du:
-        v8 = v59;
-        v10 = [v8 completion];
-        if (!v10)
+        text = resultCopy;
+        text2 = [text completion];
+        if (!text2)
         {
-          v21 = [v8 title];
-          v22 = [v21 text];
+          title3 = [text title];
+          text3 = [title3 text];
 
-          if (v22)
+          if (text3)
           {
-            v10 = v22;
+            text2 = text3;
           }
 
           else
           {
-            v10 = &stru_287C50EE8;
+            text2 = &stru_287C50EE8;
           }
         }
 
-        [MEMORY[0x277D65788] cacheResult:v8 title:v10 searchString:v6];
+        [MEMORY[0x277D65788] cacheResult:text title:text2 searchString:stringCopy];
         goto LABEL_48;
       case 0x20u:
-        v41 = v59;
-        v8 = v41;
+        v41 = resultCopy;
+        text = v41;
         goto LABEL_37;
       case 0x24u:
         objc_opt_class();
@@ -224,66 +224,66 @@ void __36__SPUISRecentResultsManager_preheat__block_invoke_2()
           break;
         }
 
-        v34 = [v59 resultBundleId];
-        if (!v34)
+        resultBundleId3 = [resultCopy resultBundleId];
+        if (!resultBundleId3)
         {
           break;
         }
 
-        v8 = v34;
-        v35 = [v59 applicationBundleIdentifier];
-        if (!v35)
+        text = resultBundleId3;
+        applicationBundleIdentifier2 = [resultCopy applicationBundleIdentifier];
+        if (!applicationBundleIdentifier2)
         {
           goto LABEL_49;
         }
 
-        v10 = v35;
-        v36 = [v59 sectionBundleIdentifier];
-        if (!v36)
+        text2 = applicationBundleIdentifier2;
+        sectionBundleIdentifier3 = [resultCopy sectionBundleIdentifier];
+        if (!sectionBundleIdentifier3)
         {
           goto LABEL_48;
         }
 
-        v37 = v36;
-        v38 = [v59 identifier];
+        v37 = sectionBundleIdentifier3;
+        identifier3 = [resultCopy identifier];
 
-        if (!v38)
+        if (!identifier3)
         {
           break;
         }
 
-        v8 = v59;
-        v39 = [v8 sectionBundleIdentifier];
-        v40 = [v39 isEqualToString:*MEMORY[0x277D65BE8]];
+        text = resultCopy;
+        sectionBundleIdentifier4 = [text sectionBundleIdentifier];
+        v40 = [sectionBundleIdentifier4 isEqualToString:*MEMORY[0x277D65BE8]];
 
         if (v40)
         {
           goto LABEL_49;
         }
 
-        v41 = v8;
+        v41 = text;
 LABEL_37:
-        v42 = [v41 completion];
-        v43 = v42;
-        if (v42)
+        completion3 = [v41 completion];
+        v43 = completion3;
+        if (completion3)
         {
-          v10 = v42;
+          text2 = completion3;
         }
 
         else
         {
-          v52 = [v8 title];
-          v10 = [v52 text];
+          title4 = [text title];
+          text2 = [title4 text];
         }
 
-        v48 = [v8 contactIdentifier];
-        if (-[__CFString length](v10, "length") && [v48 length])
+        contactIdentifier = [text contactIdentifier];
+        if (-[__CFString length](text2, "length") && [contactIdentifier length])
         {
           v53 = MEMORY[0x277D65788];
           v54 = MEMORY[0x277CCABB0];
-          [v8 rankingScore];
+          [text rankingScore];
           v51 = [v54 numberWithDouble:?];
-          [v53 cacheContact:v10 contactIdentifier:v48 score:v51 searchString:v6];
+          [v53 cacheContact:text2 contactIdentifier:contactIdentifier score:v51 searchString:stringCopy];
 LABEL_46:
         }
 
@@ -293,56 +293,56 @@ LABEL_49:
         break;
       case 0x25u:
       case 0x26u:
-        v8 = v59;
-        v23 = [v8 completion];
-        v24 = v23;
-        if (v23)
+        text = resultCopy;
+        completion4 = [text completion];
+        v24 = completion4;
+        if (completion4)
         {
-          v10 = v23;
+          text2 = completion4;
         }
 
         else
         {
-          v44 = [v8 title];
-          v10 = [v44 text];
+          title5 = [text title];
+          text2 = [title5 text];
         }
 
-        if (![(__CFString *)v10 length])
+        if (![(__CFString *)text2 length])
         {
           goto LABEL_48;
         }
 
         v45 = MEMORY[0x277D65888];
-        v46 = [v8 personQueryIdentifier];
-        v47 = [v8 personIdentifier];
-        v48 = [v45 updatePersonQueryIdentifier:v46 withPersonIdentifier:v47];
+        personQueryIdentifier = [text personQueryIdentifier];
+        personIdentifier = [text personIdentifier];
+        contactIdentifier = [v45 updatePersonQueryIdentifier:personQueryIdentifier withPersonIdentifier:personIdentifier];
 
         v49 = MEMORY[0x277D65788];
         v50 = MEMORY[0x277CCABB0];
-        [v8 rankingScore];
+        [text rankingScore];
         v51 = [v50 numberWithDouble:?];
-        [v49 cachePerson:v10 personQueryIdentifier:v48 score:v51 searchString:v6];
+        [v49 cachePerson:text2 personQueryIdentifier:contactIdentifier score:v51 searchString:stringCopy];
         goto LABEL_46;
       default:
-        v30 = [v59 completion];
-        if (v30)
+        completedQuery = [resultCopy completion];
+        if (completedQuery)
         {
 LABEL_28:
-          v8 = v30;
+          text = completedQuery;
         }
 
         else
         {
-          v32 = [v59 title];
-          v33 = [v32 text];
+          title6 = [resultCopy title];
+          text4 = [title6 text];
 LABEL_54:
-          v8 = v33;
+          text = text4;
 LABEL_55:
         }
 
-        if ([v8 length])
+        if ([text length])
         {
-          [MEMORY[0x277D65788] cacheResult:v59 title:v8 searchString:v6];
+          [MEMORY[0x277D65788] cacheResult:resultCopy title:text searchString:stringCopy];
         }
 
         goto LABEL_49;
@@ -350,38 +350,38 @@ LABEL_55:
   }
 }
 
-+ (void)deleteResult:(id)a3 requiresRefresh:(BOOL)a4
++ (void)deleteResult:(id)result requiresRefresh:(BOOL)refresh
 {
-  v4 = a4;
-  v61 = a3;
-  v6 = [v61 type];
-  if (v6 > 27)
+  refreshCopy = refresh;
+  resultCopy = result;
+  type = [resultCopy type];
+  if (type > 27)
   {
-    if (v6 > 31)
+    if (type > 31)
     {
-      v7 = v61;
-      if (v6 > 36)
+      v7 = resultCopy;
+      if (type > 36)
       {
-        if (v6 != 37 && v6 != 38)
+        if (type != 37 && type != 38)
         {
           goto LABEL_46;
         }
 
-        v9 = v61;
-        v29 = [(__CFString *)v9 completion];
-        v30 = v29;
-        if (v29)
+        completion5 = resultCopy;
+        completion = [(__CFString *)completion5 completion];
+        v30 = completion;
+        if (completion)
         {
-          v16 = v29;
+          text = completion;
         }
 
         else
         {
-          v48 = [(__CFString *)v9 title];
-          v16 = [v48 text];
+          title = [(__CFString *)completion5 title];
+          text = [title text];
         }
 
-        if (![(__CFString *)v16 length])
+        if (![(__CFString *)text length])
         {
 LABEL_67:
 
@@ -389,37 +389,37 @@ LABEL_67:
         }
 
         v49 = MEMORY[0x277D65888];
-        v50 = [(__CFString *)v9 personQueryIdentifier];
-        v51 = [(__CFString *)v9 personIdentifier];
-        v36 = [v49 updatePersonQueryIdentifier:v50 withPersonIdentifier:v51];
+        personQueryIdentifier = [(__CFString *)completion5 personQueryIdentifier];
+        personIdentifier = [(__CFString *)completion5 personIdentifier];
+        contactIdentifier = [v49 updatePersonQueryIdentifier:personQueryIdentifier withPersonIdentifier:personIdentifier];
 
         v52 = MEMORY[0x277D65788];
         v53 = MEMORY[0x277CCABB0];
-        [(__CFString *)v9 rankingScore];
-        v38 = [v53 numberWithDouble:?];
-        [v52 deletePerson:v16 personQueryIdentifier:v36 score:v38];
+        [(__CFString *)completion5 rankingScore];
+        identifier = [v53 numberWithDouble:?];
+        [v52 deletePerson:text personQueryIdentifier:contactIdentifier score:identifier];
       }
 
       else
       {
-        if (v6 == 32)
+        if (type == 32)
         {
-          v9 = v61;
-          v46 = [(__CFString *)v9 completion];
-          v47 = v46;
-          if (v46)
+          completion5 = resultCopy;
+          completion2 = [(__CFString *)completion5 completion];
+          v47 = completion2;
+          if (completion2)
           {
-            v16 = v46;
+            text = completion2;
           }
 
           else
           {
-            v54 = [(__CFString *)v9 title];
-            v16 = [v54 text];
+            title2 = [(__CFString *)completion5 title];
+            text = [title2 text];
           }
 
-          v36 = [(__CFString *)v9 contactIdentifier];
-          if (!-[__CFString length](v16, "length") || ![v36 length])
+          contactIdentifier = [(__CFString *)completion5 contactIdentifier];
+          if (!-[__CFString length](text, "length") || ![contactIdentifier length])
           {
             goto LABEL_66;
           }
@@ -427,7 +427,7 @@ LABEL_67:
 
         else
         {
-          if (v6 != 36)
+          if (type != 36)
           {
             goto LABEL_46;
           }
@@ -438,35 +438,35 @@ LABEL_67:
             goto LABEL_69;
           }
 
-          v9 = v61;
-          v22 = [(__CFString *)v9 contactIdentifier];
+          completion5 = resultCopy;
+          contactIdentifier2 = [(__CFString *)completion5 contactIdentifier];
 
-          if (!v22)
+          if (!contactIdentifier2)
           {
             goto LABEL_68;
           }
 
-          v23 = [(__CFString *)v9 completion];
-          v24 = v23;
-          if (v23)
+          completion3 = [(__CFString *)completion5 completion];
+          v24 = completion3;
+          if (completion3)
           {
-            v16 = v23;
+            text = completion3;
           }
 
           else
           {
-            v58 = [(__CFString *)v9 title];
-            v16 = [v58 text];
+            title3 = [(__CFString *)completion5 title];
+            text = [title3 text];
           }
 
-          v36 = [(__CFString *)v9 contactIdentifier];
+          contactIdentifier = [(__CFString *)completion5 contactIdentifier];
         }
 
         v59 = MEMORY[0x277D65788];
         v60 = MEMORY[0x277CCABB0];
-        [(__CFString *)v9 rankingScore];
-        v38 = [v60 numberWithDouble:?];
-        [v59 deleteContact:v16 contactIdentifier:v36 score:v38];
+        [(__CFString *)completion5 rankingScore];
+        identifier = [v60 numberWithDouble:?];
+        [v59 deleteContact:text contactIdentifier:contactIdentifier score:identifier];
       }
 
 LABEL_65:
@@ -475,13 +475,13 @@ LABEL_66:
       goto LABEL_67;
     }
 
-    v7 = v61;
-    if ((v6 - 28) < 2)
+    v7 = resultCopy;
+    if ((type - 28) < 2)
     {
       goto LABEL_29;
     }
 
-    if ((v6 - 30) >= 2)
+    if ((type - 30) >= 2)
     {
       goto LABEL_46;
     }
@@ -489,14 +489,14 @@ LABEL_66:
     goto LABEL_27;
   }
 
-  if (v6 > 14)
+  if (type > 14)
   {
-    v7 = v61;
-    if ((v6 - 15) >= 2)
+    v7 = resultCopy;
+    if ((type - 15) >= 2)
     {
-      if (v6 != 17)
+      if (type != 17)
       {
-        if (v6 != 20)
+        if (type != 20)
         {
           goto LABEL_46;
         }
@@ -505,212 +505,212 @@ LABEL_66:
       }
 
 LABEL_29:
-      v9 = v7;
-      v16 = [(__CFString *)v9 completion];
-      if (!v16)
+      completion5 = v7;
+      text = [(__CFString *)completion5 completion];
+      if (!text)
       {
-        v27 = [(__CFString *)v9 title];
-        v28 = [v27 text];
+        title4 = [(__CFString *)completion5 title];
+        text2 = [title4 text];
 
-        if (v28)
+        if (text2)
         {
-          v16 = v28;
+          text = text2;
         }
 
         else
         {
-          v16 = &stru_287C50EE8;
+          text = &stru_287C50EE8;
         }
       }
 
-      [MEMORY[0x277D65788] deleteResult:v9 title:v16];
+      [MEMORY[0x277D65788] deleteResult:completion5 title:text];
       goto LABEL_67;
     }
 
 LABEL_27:
-    v9 = v7;
-    v25 = [(__CFString *)v9 completion];
-    v26 = v25;
-    if (v25)
+    completion5 = v7;
+    completion4 = [(__CFString *)completion5 completion];
+    v26 = completion4;
+    if (completion4)
     {
-      v16 = v25;
+      text = completion4;
     }
 
     else
     {
-      v39 = [(__CFString *)v9 title];
-      v16 = [v39 text];
+      title5 = [(__CFString *)completion5 title];
+      text = [title5 text];
     }
 
-    if ([(__CFString *)v16 length])
+    if ([(__CFString *)text length])
     {
       v40 = MEMORY[0x277D65788];
-      v41 = [(__CFString *)v9 type];
+      type2 = [(__CFString *)completion5 type];
       v42 = MEMORY[0x277CCABB0];
-      [(__CFString *)v9 rankingScore];
+      [(__CFString *)completion5 rankingScore];
       v43 = [v42 numberWithDouble:?];
-      [v40 deleteSuggestion:v16 type:v41 score:v43];
+      [v40 deleteSuggestion:text type:type2 score:v43];
     }
 
     goto LABEL_67;
   }
 
-  v7 = v61;
-  if ((v6 - 2) >= 3)
+  v7 = resultCopy;
+  if ((type - 2) >= 3)
   {
-    if (v6 == 8)
+    if (type == 8)
     {
       v8 = MEMORY[0x277D65788];
-      v9 = [v61 completion];
-      v10 = [v61 type];
+      completion5 = [resultCopy completion];
+      type3 = [resultCopy type];
       v11 = MEMORY[0x277CCABB0];
-      [v61 rankingScore];
+      [resultCopy rankingScore];
       v12 = [v11 numberWithDouble:?];
-      [v8 deleteSuggestion:v9 type:v10 score:v12];
+      [v8 deleteSuggestion:completion5 type:type3 score:v12];
 
 LABEL_68:
       goto LABEL_69;
     }
 
 LABEL_46:
-    v9 = [v7 completion];
-    if (!v9)
+    completion5 = [v7 completion];
+    if (!completion5)
     {
-      v44 = [v61 title];
-      v45 = [v44 text];
+      title6 = [resultCopy title];
+      text3 = [title6 text];
 
-      if (v45)
+      if (text3)
       {
-        v9 = v45;
+        completion5 = text3;
       }
 
       else
       {
-        v9 = &stru_287C50EE8;
+        completion5 = &stru_287C50EE8;
       }
     }
 
-    [MEMORY[0x277D65788] deleteResult:v61 title:v9];
+    [MEMORY[0x277D65788] deleteResult:resultCopy title:completion5];
     goto LABEL_68;
   }
 
 LABEL_13:
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v14 = [v61 resultBundleId];
-  v9 = v14;
+  resultBundleId = [resultCopy resultBundleId];
+  completion5 = resultBundleId;
   if ((isKindOfClass & 1) == 0)
   {
-    if (!v14)
+    if (!resultBundleId)
     {
       goto LABEL_69;
     }
 
-    v31 = [v61 sectionBundleIdentifier];
-    if (!v31)
+    sectionBundleIdentifier = [resultCopy sectionBundleIdentifier];
+    if (!sectionBundleIdentifier)
     {
       goto LABEL_68;
     }
 
-    v32 = v31;
-    v33 = [v61 sectionBundleIdentifier];
-    v34 = [v33 isEqualToString:*MEMORY[0x277D65C60]];
+    v32 = sectionBundleIdentifier;
+    sectionBundleIdentifier2 = [resultCopy sectionBundleIdentifier];
+    v34 = [sectionBundleIdentifier2 isEqualToString:*MEMORY[0x277D65C60]];
 
     if (!v34)
     {
       goto LABEL_69;
     }
 
-    v35 = [v61 resultBundleId];
-    v9 = [v35 componentsSeparatedByString:@":"];
+    resultBundleId2 = [resultCopy resultBundleId];
+    completion5 = [resultBundleId2 componentsSeparatedByString:@":"];
 
-    if ([(__CFString *)v9 count]!= 2)
+    if ([(__CFString *)completion5 count]!= 2)
     {
       goto LABEL_68;
     }
 
-    v16 = [(__CFString *)v9 firstObject];
-    v36 = [(__CFString *)v9 lastObject];
+    text = [(__CFString *)completion5 firstObject];
+    contactIdentifier = [(__CFString *)completion5 lastObject];
     v37 = MEMORY[0x277D65788];
-    v38 = [v61 identifier];
-    [v37 deleteLocalResult:v61 identifier:v38 bundleIdentifier:v36 protectionClass:v16];
+    identifier = [resultCopy identifier];
+    [v37 deleteLocalResult:resultCopy identifier:identifier bundleIdentifier:contactIdentifier protectionClass:text];
     goto LABEL_65;
   }
 
-  if (!v14)
+  if (!resultBundleId)
   {
     goto LABEL_69;
   }
 
-  v15 = [v61 applicationBundleIdentifier];
-  if (!v15)
+  applicationBundleIdentifier = [resultCopy applicationBundleIdentifier];
+  if (!applicationBundleIdentifier)
   {
     goto LABEL_68;
   }
 
-  v16 = v15;
-  v17 = [v61 sectionBundleIdentifier];
-  if (!v17)
+  text = applicationBundleIdentifier;
+  sectionBundleIdentifier3 = [resultCopy sectionBundleIdentifier];
+  if (!sectionBundleIdentifier3)
   {
     goto LABEL_67;
   }
 
-  v18 = v17;
-  v19 = [v61 identifier];
+  v18 = sectionBundleIdentifier3;
+  identifier2 = [resultCopy identifier];
 
-  if (v19)
+  if (identifier2)
   {
-    v20 = v61;
+    v20 = resultCopy;
     if (objc_opt_respondsToSelector())
     {
-      v21 = [v20 protectionClass];
+      protectionClass = [v20 protectionClass];
     }
 
     else
     {
-      v21 = 0;
+      protectionClass = 0;
     }
 
     v55 = MEMORY[0x277D65788];
-    v56 = [v20 identifier];
-    v57 = [v20 resultBundleId];
-    [v55 deleteLocalResult:v20 identifier:v56 bundleIdentifier:v57 protectionClass:v21];
+    identifier3 = [v20 identifier];
+    resultBundleId3 = [v20 resultBundleId];
+    [v55 deleteLocalResult:v20 identifier:identifier3 bundleIdentifier:resultBundleId3 protectionClass:protectionClass];
 
     goto LABEL_71;
   }
 
 LABEL_69:
-  if (v4)
+  if (refreshCopy)
   {
-    [a1 sendRefreshNotification];
+    [self sendRefreshNotification];
   }
 
 LABEL_71:
 }
 
-+ (id)updateResult:(id)a3 topic:(id)a4 queryContext:(id)a5
++ (id)updateResult:(id)result topic:(id)topic queryContext:(id)context
 {
   v78 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  resultCopy = result;
+  topicCopy = topic;
+  contextCopy = context;
   v10 = SPUISRecentsLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v7 resultBundleId];
+    resultBundleId = [resultCopy resultBundleId];
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v11;
+    *(&buf + 4) = resultBundleId;
     _os_log_impl(&dword_26B882000, v10, OS_LOG_TYPE_DEFAULT, "updateResult withResultBUndleId: %@", &buf, 0xCu);
   }
 
   v12 = SPUISRecentsLog();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
-    [(SPUISRecentResultsManager *)v8 updateResult:v12 topic:v13 queryContext:v14, v15, v16, v17, v18];
+    [(SPUISRecentResultsManager *)topicCopy updateResult:v12 topic:v13 queryContext:v14, v15, v16, v17, v18];
   }
 
-  v19 = [v7 sectionBundleIdentifier];
-  v20 = [v19 isEqualToString:*MEMORY[0x277D65C60]];
+  sectionBundleIdentifier = [resultCopy sectionBundleIdentifier];
+  v20 = [sectionBundleIdentifier isEqualToString:*MEMORY[0x277D65C60]];
 
   if (v20)
   {
@@ -727,43 +727,43 @@ LABEL_71:
     v75 = __Block_byref_object_copy__1;
     v76 = __Block_byref_object_dispose__1;
     v77 = 0;
-    v22 = [v7 resultBundleId];
-    v23 = [v22 componentsSeparatedByString:@":"];
+    resultBundleId2 = [resultCopy resultBundleId];
+    v23 = [resultBundleId2 componentsSeparatedByString:@":"];
     v24 = [v23 mutableCopy];
 
     if ([v24 count] >= 2)
     {
-      v25 = [v24 firstObject];
+      firstObject = [v24 firstObject];
       [v24 removeObjectAtIndex:0];
       v26 = [v24 componentsJoinedByString:&stru_287C50EE8];
       if ((SSScreenTimeStatusForBundleIDWithCompletionHandler() & 1) == 0 && (SSHiddenStatusForBundleIDWithCompletionHandler() & 1) == 0)
       {
-        v27 = [v7 identifier];
+        identifier = [resultCopy identifier];
         v58 = +[SPUISResultBuilder fetchAttributes];
-        v61 = v9;
+        v61 = contextCopy;
         v28 = dispatch_group_create();
         dispatch_group_enter(v28);
-        v60 = [MEMORY[0x277CC34A8] defaultSearchableIndex];
-        v72 = v27;
+        defaultSearchableIndex = [MEMORY[0x277CC34A8] defaultSearchableIndex];
+        v72 = identifier;
         v29 = [MEMORY[0x277CBEA60] arrayWithObjects:&v72 count:1];
         v62[0] = MEMORY[0x277D85DD0];
         v62[1] = 3221225472;
         v62[2] = __61__SPUISRecentResultsManager_updateResult_topic_queryContext___block_invoke;
         v62[3] = &unk_279D0C138;
-        v57 = v27;
+        v57 = identifier;
         v63 = v57;
         v64 = v26;
-        v65 = v25;
+        v65 = firstObject;
         v66 = v58;
-        v67 = v7;
+        v67 = resultCopy;
         p_buf = &buf;
         v68 = v61;
         v30 = v28;
         v69 = v30;
         v59 = v66;
-        [v60 slowFetchAttributes:v66 protectionClass:v65 bundleID:v64 identifiers:v29 completionHandler:v62];
+        [defaultSearchableIndex slowFetchAttributes:v66 protectionClass:v65 bundleID:v64 identifiers:v29 completionHandler:v62];
 
-        v9 = v61;
+        contextCopy = v61;
         v31 = v30;
 
         v32 = dispatch_time(0, 750000000);
@@ -777,14 +777,14 @@ LABEL_71:
       }
     }
 
-    v36 = *(*(&buf + 1) + 40);
+    buildResult = *(*(&buf + 1) + 40);
 
     _Block_object_dispose(&buf, 8);
     goto LABEL_32;
   }
 
-  v37 = [v7 sectionBundleIdentifier];
-  v38 = [v37 isEqualToString:*MEMORY[0x277D65C58]];
+  sectionBundleIdentifier2 = [resultCopy sectionBundleIdentifier];
+  v38 = [sectionBundleIdentifier2 isEqualToString:*MEMORY[0x277D65C58]];
 
   if (v38)
   {
@@ -795,22 +795,22 @@ LABEL_71:
       _os_log_impl(&dword_26B882000, v39, OS_LOG_TYPE_DEFAULT, "recent dictionary result", &buf, 2u);
     }
 
-    v40 = [SPUISResultBuilder resultBuilderWithResult:v7];
-    v36 = [v40 buildResult];
-    v41 = [v36 compactCard];
-    v42 = [v41 cardSections];
-    v43 = [v42 firstObject];
-    [v43 setShouldUseCompactDisplay:1];
+    v40 = [SPUISResultBuilder resultBuilderWithResult:resultCopy];
+    buildResult = [v40 buildResult];
+    compactCard = [buildResult compactCard];
+    cardSections = [compactCard cardSections];
+    firstObject2 = [cardSections firstObject];
+    [firstObject2 setShouldUseCompactDisplay:1];
 
-    [v36 setShouldUseCompactDisplay:1];
-    [v36 setUsesCompactDisplay:1];
-    [v36 setInlineCard:0];
+    [buildResult setShouldUseCompactDisplay:1];
+    [buildResult setUsesCompactDisplay:1];
+    [buildResult setInlineCard:0];
 
     goto LABEL_32;
   }
 
-  v44 = [v7 sectionBundleIdentifier];
-  v45 = [v44 isEqualToString:*MEMORY[0x277D65C68]];
+  sectionBundleIdentifier3 = [resultCopy sectionBundleIdentifier];
+  v45 = [sectionBundleIdentifier3 isEqualToString:*MEMORY[0x277D65C68]];
 
   if (v45)
   {
@@ -821,12 +821,12 @@ LABEL_71:
       _os_log_impl(&dword_26B882000, v46, OS_LOG_TYPE_DEFAULT, "recent suggestion", &buf, 2u);
     }
 
-    v47 = [SPUISSuggestionResultBuilder buildResultWithResult:v7 queryContext:v9];
+    v47 = [SPUISSuggestionResultBuilder buildResultWithResult:resultCopy queryContext:contextCopy];
     goto LABEL_31;
   }
 
-  v48 = [v7 identifier];
-  if (v48)
+  identifier2 = [resultCopy identifier];
+  if (identifier2)
   {
 
 LABEL_27:
@@ -836,16 +836,16 @@ LABEL_27:
       [SPUISRecentResultsManager updateResult:v51 topic:? queryContext:?];
     }
 
-    [v7 setUsesCompactDisplay:1];
+    [resultCopy setUsesCompactDisplay:1];
 LABEL_30:
-    v47 = v7;
+    v47 = resultCopy;
 LABEL_31:
-    v36 = v47;
+    buildResult = v47;
     goto LABEL_32;
   }
 
-  v49 = [v7 sectionBundleIdentifier];
-  v50 = v49 == 0;
+  sectionBundleIdentifier4 = [resultCopy sectionBundleIdentifier];
+  v50 = sectionBundleIdentifier4 == 0;
 
   if (!v50)
   {
@@ -859,7 +859,7 @@ LABEL_31:
     _os_log_impl(&dword_26B882000, v54, OS_LOG_TYPE_DEFAULT, "fallback result from topic", &buf, 2u);
   }
 
-  v55 = [MEMORY[0x277D65788] resultFromTopic:v8];
+  v55 = [MEMORY[0x277D65788] resultFromTopic:topicCopy];
   if (!v55)
   {
     goto LABEL_30;
@@ -872,12 +872,12 @@ LABEL_31:
     _os_log_impl(&dword_26B882000, v56, OS_LOG_TYPE_DEFAULT, "successfully created fallback search result", &buf, 2u);
   }
 
-  v36 = [SPUISSuggestionResultBuilder buildResultWithResult:v55 queryContext:v9];
+  buildResult = [SPUISSuggestionResultBuilder buildResultWithResult:v55 queryContext:contextCopy];
 
 LABEL_32:
   v52 = *MEMORY[0x277D85DE8];
 
-  return v36;
+  return buildResult;
 }
 
 void __61__SPUISRecentResultsManager_updateResult_topic_queryContext___block_invoke(uint64_t a1, void *a2)
@@ -951,8 +951,8 @@ void __61__SPUISRecentResultsManager_updateResult_topic_queryContext___block_inv
 
 + (void)sendRefreshNotification
 {
-  v2 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v2 postNotificationName:@"com.apple.spotlight.refreshZKW" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"com.apple.spotlight.refreshZKW" object:0];
 }
 
 + (void)updateResult:(uint64_t)a3 topic:(uint64_t)a4 queryContext:(uint64_t)a5 .cold.1(uint64_t a1, NSObject *a2, uint64_t a3, uint64_t a4, uint64_t a5, uint64_t a6, uint64_t a7, uint64_t a8)

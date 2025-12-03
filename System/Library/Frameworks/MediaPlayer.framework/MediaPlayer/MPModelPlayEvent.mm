@@ -1,5 +1,5 @@
 @interface MPModelPlayEvent
-+ (id)playEventWithModelObject:(id)a3 nestedPlayEvent:(id)a4 featureName:(id)a5;
++ (id)playEventWithModelObject:(id)object nestedPlayEvent:(id)event featureName:(id)name;
 + (void)__MPModelPropertyPlayEventDatePlayed__MAPPING_MISSING__;
 + (void)__MPModelPropertyPlayEventFeatureName__MAPPING_MISSING__;
 + (void)__MPModelRelationshipPlayEventAlbum__MAPPING_MISSING__;
@@ -170,24 +170,24 @@ void __47__MPModelPlayEvent_genericObjectRepresentation__block_invoke(uint64_t a
   }
 }
 
-+ (id)playEventWithModelObject:(id)a3 nestedPlayEvent:(id)a4 featureName:(id)a5
++ (id)playEventWithModelObject:(id)object nestedPlayEvent:(id)event featureName:(id)name
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v7 | v9)
+  objectCopy = object;
+  eventCopy = event;
+  nameCopy = name;
+  if (objectCopy | nameCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v11 = [v7 identifiers];
+      identifiers = [objectCopy identifiers];
       v21[0] = MEMORY[0x1E69E9820];
       v21[1] = 3221225472;
       v21[2] = __73__MPModelPlayEvent_playEventWithModelObject_nestedPlayEvent_featureName___block_invoke;
       v21[3] = &unk_1E767A000;
       v12 = &v22;
-      v22 = v9;
-      v10 = [v7 copyWithIdentifiers:v11 block:v21];
+      v22 = nameCopy;
+      v10 = [objectCopy copyWithIdentifiers:identifiers block:v21];
     }
 
     else
@@ -195,24 +195,24 @@ void __47__MPModelPlayEvent_genericObjectRepresentation__block_invoke(uint64_t a
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v13 = [v7 flattenedGenericObject];
-        v14 = [v13 anyObject];
+        flattenedGenericObject = [objectCopy flattenedGenericObject];
+        anyObject = [flattenedGenericObject anyObject];
 
-        v7 = v14;
+        objectCopy = anyObject;
       }
 
       v15 = [MPModelPlayEvent alloc];
-      v11 = +[MPIdentifierSet emptyIdentifierSet];
+      identifiers = +[MPIdentifierSet emptyIdentifierSet];
       v17[0] = MEMORY[0x1E69E9820];
       v17[1] = 3221225472;
       v17[2] = __73__MPModelPlayEvent_playEventWithModelObject_nestedPlayEvent_featureName___block_invoke_2;
       v17[3] = &unk_1E767A028;
       v12 = &v18;
-      v18 = v7;
-      v19 = v8;
-      v20 = v9;
-      v7 = v7;
-      v10 = [(MPModelObject *)v15 initWithIdentifiers:v11 block:v17];
+      v18 = objectCopy;
+      v19 = eventCopy;
+      v20 = nameCopy;
+      objectCopy = objectCopy;
+      v10 = [(MPModelObject *)v15 initWithIdentifiers:identifiers block:v17];
     }
   }
 
@@ -275,97 +275,97 @@ void __73__MPModelPlayEvent_playEventWithModelObject_nestedPlayEvent_featureName
 
 + (void)__MPModelRelationshipPlayEventNestedPlayEvent__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelPlayEvent.m" lineNumber:27 description:@"Translator was missing mapping for MPModelRelationshipPlayEventNestedPlayEvent"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelPlayEvent.m" lineNumber:27 description:@"Translator was missing mapping for MPModelRelationshipPlayEventNestedPlayEvent"];
 }
 
 + (void)__MPModelRelationshipPlayEventGroup__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelPlayEvent.m" lineNumber:26 description:@"Translator was missing mapping for MPModelRelationshipPlayEventGroup"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelPlayEvent.m" lineNumber:26 description:@"Translator was missing mapping for MPModelRelationshipPlayEventGroup"];
 }
 
 + (void)__MPModelRelationshipPlayEventRadioStation__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelPlayEvent.m" lineNumber:25 description:@"Translator was missing mapping for MPModelRelationshipPlayEventRadioStation"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelPlayEvent.m" lineNumber:25 description:@"Translator was missing mapping for MPModelRelationshipPlayEventRadioStation"];
 }
 
 + (void)__MPModelRelationshipPlayEventPlaylist__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelPlayEvent.m" lineNumber:24 description:@"Translator was missing mapping for MPModelRelationshipPlayEventPlaylist"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelPlayEvent.m" lineNumber:24 description:@"Translator was missing mapping for MPModelRelationshipPlayEventPlaylist"];
 }
 
 + (void)__MPModelRelationshipPlayEventArtist__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelPlayEvent.m" lineNumber:23 description:@"Translator was missing mapping for MPModelRelationshipPlayEventArtist"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelPlayEvent.m" lineNumber:23 description:@"Translator was missing mapping for MPModelRelationshipPlayEventArtist"];
 }
 
 + (void)__MPModelRelationshipPlayEventAlbum__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelPlayEvent.m" lineNumber:22 description:@"Translator was missing mapping for MPModelRelationshipPlayEventAlbum"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelPlayEvent.m" lineNumber:22 description:@"Translator was missing mapping for MPModelRelationshipPlayEventAlbum"];
 }
 
 + (void)__MPModelPropertyPlayEventFeatureName__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelPlayEvent.m" lineNumber:21 description:@"Translator was missing mapping for MPModelPropertyPlayEventFeatureName"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelPlayEvent.m" lineNumber:21 description:@"Translator was missing mapping for MPModelPropertyPlayEventFeatureName"];
 }
 
 + (void)__MPModelPropertyPlayEventDatePlayed__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelPlayEvent.m" lineNumber:20 description:@"Translator was missing mapping for MPModelPropertyPlayEventDatePlayed"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelPlayEvent.m" lineNumber:20 description:@"Translator was missing mapping for MPModelPropertyPlayEventDatePlayed"];
 }
 
 - (NSString)title
 {
-  v3 = [(MPModelPlayEvent *)self itemType];
+  itemType = [(MPModelPlayEvent *)self itemType];
   v4 = 0;
-  if (v3 <= 2)
+  if (itemType <= 2)
   {
-    if (v3 == 1)
+    if (itemType == 1)
     {
-      v5 = [(MPModelPlayEvent *)self album];
+      album = [(MPModelPlayEvent *)self album];
 LABEL_13:
-      v7 = v5;
-      v8 = [v5 title];
+      v7 = album;
+      title = [album title];
       goto LABEL_14;
     }
 
-    if (v3 != 2)
+    if (itemType != 2)
     {
       goto LABEL_15;
     }
 
-    v6 = [(MPModelPlayEvent *)self artist];
+    artist = [(MPModelPlayEvent *)self artist];
   }
 
   else
   {
-    switch(v3)
+    switch(itemType)
     {
       case 3:
-        v6 = [(MPModelPlayEvent *)self playlist];
+        artist = [(MPModelPlayEvent *)self playlist];
         break;
       case 4:
-        v6 = [(MPModelPlayEvent *)self radioStation];
+        artist = [(MPModelPlayEvent *)self radioStation];
         break;
       case 5:
-        v5 = [(MPModelPlayEvent *)self group];
+        album = [(MPModelPlayEvent *)self group];
         goto LABEL_13;
       default:
         goto LABEL_15;
     }
   }
 
-  v7 = v6;
-  v8 = [v6 name];
+  v7 = artist;
+  title = [artist name];
 LABEL_14:
-  v4 = v8;
+  v4 = title;
 
 LABEL_15:
 
@@ -374,47 +374,47 @@ LABEL_15:
 
 - (id)contentItemCollectionInfo
 {
-  v3 = [(MPModelPlayEvent *)self itemType];
-  v4 = 0;
-  if (v3 > 2)
+  itemType = [(MPModelPlayEvent *)self itemType];
+  contentItemCollectionInfo = 0;
+  if (itemType > 2)
   {
-    if (v3 == 4)
+    if (itemType == 4)
     {
-      v5 = [(MPModelPlayEvent *)self radioStation];
+      radioStation = [(MPModelPlayEvent *)self radioStation];
     }
 
     else
     {
-      if (v3 != 3)
+      if (itemType != 3)
       {
         goto LABEL_11;
       }
 
-      v5 = [(MPModelPlayEvent *)self playlist];
+      radioStation = [(MPModelPlayEvent *)self playlist];
     }
   }
 
-  else if (v3 == 1)
+  else if (itemType == 1)
   {
-    v5 = [(MPModelPlayEvent *)self album];
+    radioStation = [(MPModelPlayEvent *)self album];
   }
 
   else
   {
-    if (v3 != 2)
+    if (itemType != 2)
     {
       goto LABEL_11;
     }
 
-    v5 = [(MPModelPlayEvent *)self artist];
+    radioStation = [(MPModelPlayEvent *)self artist];
   }
 
-  v6 = v5;
-  v4 = [v5 contentItemCollectionInfo];
+  v6 = radioStation;
+  contentItemCollectionInfo = [radioStation contentItemCollectionInfo];
 
 LABEL_11:
 
-  return v4;
+  return contentItemCollectionInfo;
 }
 
 @end

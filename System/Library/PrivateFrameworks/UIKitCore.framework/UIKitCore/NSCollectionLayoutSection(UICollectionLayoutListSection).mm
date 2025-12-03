@@ -6,8 +6,8 @@
 
 + (_UICollectionViewListLayoutSection)sectionWithListConfiguration:()UICollectionLayoutListSection layoutEnvironment:
 {
-  v5 = [a3 _spiConfiguration];
-  v6 = [[_UICollectionViewListLayoutSection alloc] initWithConfiguration:v5 layoutEnvironment:a4];
+  _spiConfiguration = [a3 _spiConfiguration];
+  v6 = [[_UICollectionViewListLayoutSection alloc] initWithConfiguration:_spiConfiguration layoutEnvironment:a4];
 
   return v6;
 }

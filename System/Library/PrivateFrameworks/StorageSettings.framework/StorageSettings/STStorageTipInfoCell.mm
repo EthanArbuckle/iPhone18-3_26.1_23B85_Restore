@@ -1,22 +1,22 @@
 @interface STStorageTipInfoCell
-- (STStorageTipInfoCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (STStorageTipInfoCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 - (void)updateConstraints;
 @end
 
 @implementation STStorageTipInfoCell
 
-- (STStorageTipInfoCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (STStorageTipInfoCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
   v21[1] = *MEMORY[0x277D85DE8];
-  v8 = a5;
+  specifierCopy = specifier;
   v20.receiver = self;
   v20.super_class = STStorageTipInfoCell;
-  v9 = [(PSTableCell *)&v20 initWithStyle:a3 reuseIdentifier:a4 specifier:v8];
+  v9 = [(PSTableCell *)&v20 initWithStyle:style reuseIdentifier:identifier specifier:specifierCopy];
   v10 = v9;
   if (v9)
   {
-    v11 = [(STStorageTipInfoCell *)v9 contentView];
+    contentView = [(STStorageTipInfoCell *)v9 contentView];
     v12 = objc_alloc(MEMORY[0x277D756B8]);
     v13 = [v12 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
     infoLabel = v10->_infoLabel;
@@ -25,19 +25,19 @@
     v15 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D769D0]];
     [(UILabel *)v10->_infoLabel setFont:v15];
 
-    v16 = [MEMORY[0x277D75348] secondaryLabelColor];
-    [(UILabel *)v10->_infoLabel setTextColor:v16];
+    secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+    [(UILabel *)v10->_infoLabel setTextColor:secondaryLabelColor];
 
     [(UILabel *)v10->_infoLabel setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UILabel *)v10->_infoLabel setAccessibilityIdentifier:@"Info"];
     [(UILabel *)v10->_infoLabel setNumberOfLines:0];
     [(UILabel *)v10->_infoLabel setLineBreakMode:0];
-    [v11 addSubview:v10->_infoLabel];
+    [contentView addSubview:v10->_infoLabel];
     v21[0] = v10->_infoLabel;
     v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:1];
-    [v11 setAccessibilityElements:v17];
+    [contentView setAccessibilityElements:v17];
 
-    [(STStorageTipInfoCell *)v10 refreshCellContentsWithSpecifier:v8];
+    [(STStorageTipInfoCell *)v10 refreshCellContentsWithSpecifier:specifierCopy];
   }
 
   v18 = *MEMORY[0x277D85DE8];
@@ -52,9 +52,9 @@
     [MEMORY[0x277CCAAD0] deactivateConstraints:self->_constraints];
   }
 
-  v4 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   constraints = self->_constraints;
-  self->_constraints = v4;
+  self->_constraints = array;
 
   v6 = self->_constraints;
   v7 = [MEMORY[0x277CCAAD0] constraintsWithVisualFormat:@"H:|-60-[_infoLabel]-10-|" options:0 metrics:0 views:v3];
@@ -70,49 +70,49 @@
   [(STStorageTipInfoCell *)&v10 updateConstraints];
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
   v22.receiver = self;
   v22.super_class = STStorageTipInfoCell;
-  v4 = a3;
-  [(PSTableCell *)&v22 refreshCellContentsWithSpecifier:v4];
-  v5 = [v4 propertyForKey:@"stInfo"];
-  v6 = [v4 propertyForKey:@"stTipKind"];
+  specifierCopy = specifier;
+  [(PSTableCell *)&v22 refreshCellContentsWithSpecifier:specifierCopy];
+  v5 = [specifierCopy propertyForKey:@"stInfo"];
+  v6 = [specifierCopy propertyForKey:@"stTipKind"];
   v7 = [v6 isEqualToString:@"stActionTip"];
 
-  v8 = [v4 propertyForKey:@"stSize"];
-  v9 = [v8 unsignedLongLongValue];
+  v8 = [specifierCopy propertyForKey:@"stSize"];
+  unsignedLongLongValue = [v8 unsignedLongLongValue];
 
-  v10 = [v4 propertyForKey:@"stImmediateGain"];
-  v11 = [v10 unsignedLongLongValue];
+  v10 = [specifierCopy propertyForKey:@"stImmediateGain"];
+  unsignedLongLongValue2 = [v10 unsignedLongLongValue];
 
-  v12 = [v4 propertyForKey:@"stEventualGain"];
+  v12 = [specifierCopy propertyForKey:@"stEventualGain"];
 
-  v13 = [v12 unsignedLongLongValue];
-  if (v9)
+  unsignedLongLongValue3 = [v12 unsignedLongLongValue];
+  if (unsignedLongLongValue)
   {
-    v14 = v9;
+    v14 = unsignedLongLongValue;
   }
 
   else
   {
-    v14 = v11;
+    v14 = unsignedLongLongValue2;
   }
 
-  if (v13 <= 0x3E8)
+  if (unsignedLongLongValue3 <= 0x3E8)
   {
     v15 = 0;
   }
 
   else
   {
-    v15 = v13;
+    v15 = unsignedLongLongValue3;
   }
 
   if (v15 + v14 >= 0x3E9)
   {
     v16 = STFormattedSize();
-    if (v13 > 0x3E8)
+    if (unsignedLongLongValue3 > 0x3E8)
     {
       v17 = 1;
     }

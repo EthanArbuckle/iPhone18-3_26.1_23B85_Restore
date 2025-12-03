@@ -1,17 +1,17 @@
 @interface _PXAnalyticsSlideshowInfo
-- (void)pauseWithEvent:(id)a3;
-- (void)unpauseWithEvent:(id)a3;
+- (void)pauseWithEvent:(id)event;
+- (void)unpauseWithEvent:(id)event;
 @end
 
 @implementation _PXAnalyticsSlideshowInfo
 
-- (void)unpauseWithEvent:(id)a3
+- (void)unpauseWithEvent:(id)event
 {
   if (self->_lastPauseEvent)
   {
-    v4 = [a3 timestamp];
-    v5 = [(CPAnalyticsEventProtocol *)self->_lastPauseEvent timestamp];
-    [v4 timeIntervalSinceDate:v5];
+    timestamp = [event timestamp];
+    timestamp2 = [(CPAnalyticsEventProtocol *)self->_lastPauseEvent timestamp];
+    [timestamp timeIntervalSinceDate:timestamp2];
     self->_timePaused = v6 + self->_timePaused;
 
     lastPauseEvent = self->_lastPauseEvent;
@@ -19,14 +19,14 @@
   }
 }
 
-- (void)pauseWithEvent:(id)a3
+- (void)pauseWithEvent:(id)event
 {
-  v5 = a3;
-  if (self->_lastPauseEvent != v5)
+  eventCopy = event;
+  if (self->_lastPauseEvent != eventCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_lastPauseEvent, a3);
-    v5 = v6;
+    v6 = eventCopy;
+    objc_storeStrong(&self->_lastPauseEvent, event);
+    eventCopy = v6;
     ++self->_pauseCount;
   }
 }

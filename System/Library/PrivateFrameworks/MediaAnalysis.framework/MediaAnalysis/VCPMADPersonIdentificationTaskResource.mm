@@ -66,9 +66,9 @@ VCPMADPersonIdentificationTaskResource *__56__VCPMADPersonIdentificationTaskReso
   if (!photoLibrary)
   {
     v8 = +[VCPDefaultPhotoLibraryManager sharedManager];
-    v9 = [v8 defaultPhotoLibrary];
+    defaultPhotoLibrary = [v8 defaultPhotoLibrary];
     v10 = self->_photoLibrary;
-    self->_photoLibrary = v9;
+    self->_photoLibrary = defaultPhotoLibrary;
 
     photoLibrary = self->_photoLibrary;
   }
@@ -83,8 +83,8 @@ VCPMADPersonIdentificationTaskResource *__56__VCPMADPersonIdentificationTaskReso
   }
 
   v13 = [(PHPhotoLibrary *)photoLibrary vcp_vipModelFilepathForVIPType:0];
-  v14 = [MEMORY[0x1E696AC08] defaultManager];
-  v15 = [v14 fileExistsAtPath:v13];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v15 = [defaultManager fileExistsAtPath:v13];
 
   if (!v15)
   {
@@ -107,10 +107,10 @@ VCPMADPersonIdentificationTaskResource *__56__VCPMADPersonIdentificationTaskReso
   v19 = self->_personsModel;
   if (v19)
   {
-    v20 = [(VNPersonsModel *)v19 configuration];
-    v21 = [v20 faceprintRequestRevision];
+    configuration = [(VNPersonsModel *)v19 configuration];
+    faceprintRequestRevision = [configuration faceprintRequestRevision];
 
-    if (v21 == 3737841669)
+    if (faceprintRequestRevision == 3737841669)
     {
       v22 = 15;
     }
@@ -127,7 +127,7 @@ VCPMADPersonIdentificationTaskResource *__56__VCPMADPersonIdentificationTaskReso
     }
 
     *buf = 134217984;
-    v37 = v21;
+    v37 = faceprintRequestRevision;
     v23 = MEMORY[0x1E69E9C10];
     v24 = "VIP Model uses faceprint with revision %lu";
     v25 = OS_LOG_TYPE_INFO;
@@ -153,8 +153,8 @@ LABEL_25:
 LABEL_26:
   v26 = [(PHPhotoLibrary *)self->_photoLibrary vcp_vipModelFilepathForVIPType:1];
 
-  v27 = [MEMORY[0x1E696AC08] defaultManager];
-  v28 = [v27 fileExistsAtPath:v26];
+  defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+  v28 = [defaultManager2 fileExistsAtPath:v26];
 
   if (v28)
   {
@@ -208,9 +208,9 @@ LABEL_26:
     if (!photoLibrary)
     {
       v8 = +[VCPDefaultPhotoLibraryManager sharedManager];
-      v9 = [v8 defaultPhotoLibrary];
+      defaultPhotoLibrary = [v8 defaultPhotoLibrary];
       v10 = self->_photoLibrary;
-      self->_photoLibrary = v9;
+      self->_photoLibrary = defaultPhotoLibrary;
 
       photoLibrary = self->_photoLibrary;
     }
@@ -224,9 +224,9 @@ LABEL_26:
       photoLibrary = self->_photoLibrary;
     }
 
-    v13 = [(PHPhotoLibrary *)photoLibrary vcp_visionCacheStorageDirectoryURL];
+    vcp_visionCacheStorageDirectoryURL = [(PHPhotoLibrary *)photoLibrary vcp_visionCacheStorageDirectoryURL];
     v20 = 0;
-    v14 = [objc_alloc(MEMORY[0x1E69E0678]) initWithClient:0 path:v13 error:&v20];
+    v14 = [objc_alloc(MEMORY[0x1E69E0678]) initWithClient:0 path:vcp_visionCacheStorageDirectoryURL error:&v20];
     v15 = v20;
     gallery = self->_gallery;
     self->_gallery = v14;
@@ -240,9 +240,9 @@ LABEL_26:
 
     if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
     {
-      v17 = [(VUWGallery *)self->_gallery faceprintRevision];
+      faceprintRevision = [(VUWGallery *)self->_gallery faceprintRevision];
       *buf = 134217984;
-      v22 = v17;
+      v22 = faceprintRevision;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "Gallery uses faceprint with revision %ld", buf, 0xCu);
     }
 

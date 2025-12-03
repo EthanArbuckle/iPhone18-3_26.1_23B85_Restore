@@ -1,30 +1,30 @@
 @interface TKSlotServer
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (BOOL)validateNFCSlotAccessWithSlotName:(id)a3 connectionPID:(int)a4 error:(id *)a5;
-- (TKSlotServer)initWithRegistryListener:(id)a3 clientListener:(id)a4;
-- (TKSlotServer)initWithRegistryListener:(id)a3 clientListener:(id)a4 nfcSlotFactory:(id)a5;
-- (void)addClient:(id)a3 reply:(id)a4;
-- (void)addSlotRegistration:(id)a3 name:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (BOOL)validateNFCSlotAccessWithSlotName:(id)name connectionPID:(int)d error:(id *)error;
+- (TKSlotServer)initWithRegistryListener:(id)listener clientListener:(id)clientListener;
+- (TKSlotServer)initWithRegistryListener:(id)listener clientListener:(id)clientListener nfcSlotFactory:(id)factory;
+- (void)addClient:(id)client reply:(id)reply;
+- (void)addSlotRegistration:(id)registration name:(id)name;
 - (void)dealloc;
 - (void)ensureSlotWatchersRunning;
-- (void)handleExistingNFCSlot:(id)a3 connectionPID:(int)a4 reply:(id)a5;
-- (void)isNFCSupportedWithReply:(id)a3;
+- (void)handleExistingNFCSlot:(id)slot connectionPID:(int)d reply:(id)reply;
+- (void)isNFCSupportedWithReply:(id)reply;
 - (void)notifyDesktopUp;
-- (void)removeClient:(id)a3;
-- (void)removeSlotRegistration:(id)a3;
-- (void)setupReaderDisconnectHandler:(id)a3 slotName:(id)a4;
+- (void)removeClient:(id)client;
+- (void)removeSlotRegistration:(id)registration;
+- (void)setupReaderDisconnectHandler:(id)handler slotName:(id)name;
 - (void)start;
-- (void)startPollingWithNewSlot:(id)a3 slotName:(id)a4 reply:(id)a5;
+- (void)startPollingWithNewSlot:(id)slot slotName:(id)name reply:(id)reply;
 - (void)stop;
-- (void)verifyNFCSlotInvalidationWithRemovedClientPID:(int)a3;
+- (void)verifyNFCSlotInvalidationWithRemovedClientPID:(int)d;
 @end
 
 @implementation TKSlotServer
 
-- (TKSlotServer)initWithRegistryListener:(id)a3 clientListener:(id)a4
+- (TKSlotServer)initWithRegistryListener:(id)listener clientListener:(id)clientListener
 {
-  v7 = a3;
-  v8 = a4;
+  listenerCopy = listener;
+  clientListenerCopy = clientListener;
   v17.receiver = self;
   v17.super_class = TKSlotServer;
   v9 = [(TKSlotServer *)&v17 init];
@@ -38,9 +38,9 @@
     registrations = v9->_registrations;
     v9->_registrations = v12;
 
-    objc_storeStrong(&v9->_registryListener, a3);
+    objc_storeStrong(&v9->_registryListener, listener);
     [(NSXPCListener *)v9->_registryListener setDelegate:v9];
-    objc_storeStrong(&v9->_clientListener, a4);
+    objc_storeStrong(&v9->_clientListener, clientListener);
     [(NSXPCListener *)v9->_clientListener setDelegate:v9];
     v14 = objc_alloc_init(NSObject);
     nfcSlotLock = v9->_nfcSlotLock;
@@ -50,14 +50,14 @@
   return v9;
 }
 
-- (TKSlotServer)initWithRegistryListener:(id)a3 clientListener:(id)a4 nfcSlotFactory:(id)a5
+- (TKSlotServer)initWithRegistryListener:(id)listener clientListener:(id)clientListener nfcSlotFactory:(id)factory
 {
-  v9 = a5;
-  v10 = [(TKSlotServer *)self initWithRegistryListener:a3 clientListener:a4];
+  factoryCopy = factory;
+  v10 = [(TKSlotServer *)self initWithRegistryListener:listener clientListener:clientListener];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_nfcSlotFactory, a5);
+    objc_storeStrong(&v10->_nfcSlotFactory, factory);
   }
 
   return v11;
@@ -91,24 +91,24 @@
   objc_sync_exit(obj);
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  if (self->_registryListener != v6)
+  listenerCopy = listener;
+  connectionCopy = connection;
+  if (self->_registryListener != listenerCopy)
   {
-    if (self->_clientListener != v6 || ![TKSlotClient handleConnection:v7 server:self])
+    if (self->_clientListener != listenerCopy || ![TKSlotClient handleConnection:connectionCopy server:self])
     {
       goto LABEL_4;
     }
 
 LABEL_6:
-    [v7 resume];
+    [connectionCopy resume];
     v8 = 1;
     goto LABEL_7;
   }
 
-  if ([TKSlotRegistration handleConnection:v7 server:self])
+  if ([TKSlotRegistration handleConnection:connectionCopy server:self])
   {
     goto LABEL_6;
   }
@@ -120,21 +120,21 @@ LABEL_7:
   return v8;
 }
 
-- (void)addSlotRegistration:(id)a3 name:(id)a4
+- (void)addSlotRegistration:(id)registration name:(id)name
 {
-  v6 = a3;
-  v36 = a4;
-  v7 = self;
-  objc_sync_enter(v7);
-  obj = &v7->super.isa;
-  if (![(NSMutableArray *)v7->_registrations count])
+  registrationCopy = registration;
+  nameCopy = name;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  obj = &selfCopy->super.isa;
+  if (![(NSMutableArray *)selfCopy->_registrations count])
   {
-    [(TKSlotServer *)v7 ensureSlotWatchersRunning];
+    [(TKSlotServer *)selfCopy ensureSlotWatchersRunning];
   }
 
   LODWORD(v8) = 0;
 LABEL_5:
-  [v6 setSlotName:v36];
+  [registrationCopy setSlotName:nameCopy];
 LABEL_6:
   v44 = 0u;
   v45 = 0u;
@@ -154,9 +154,9 @@ LABEL_6:
           objc_enumerationMutation(v10);
         }
 
-        v14 = [*(*(&v42 + 1) + 8 * i) slotName];
-        v15 = [v6 slotName];
-        v16 = [v14 isEqualToString:v15];
+        slotName = [*(*(&v42 + 1) + 8 * i) slotName];
+        slotName2 = [registrationCopy slotName];
+        v16 = [slotName isEqualToString:slotName2];
 
         if (v16)
         {
@@ -164,8 +164,8 @@ LABEL_6:
           v8 = (v8 + 1);
           if (v8)
           {
-            v9 = [NSString stringWithFormat:@"%@ %02d", v36, v8];
-            [v6 setSlotName:v9];
+            v9 = [NSString stringWithFormat:@"%@ %02d", nameCopy, v8];
+            [registrationCopy setSlotName:v9];
 
             goto LABEL_6;
           }
@@ -184,13 +184,13 @@ LABEL_6:
     }
   }
 
-  [obj[1] addObject:v6];
-  v17 = [v6 slotName];
-  v18 = [NSString stringWithFormat:@"slot server registration:%@", v17];
+  [obj[1] addObject:registrationCopy];
+  slotName3 = [registrationCopy slotName];
+  v18 = [NSString stringWithFormat:@"slot server registration:%@", slotName3];
   v19 = v18;
   [v18 UTF8String];
   v20 = os_transaction_create();
-  [v6 setTransaction:v20];
+  [registrationCopy setTransaction:v20];
 
   v40 = 0u;
   v41 = 0u;
@@ -211,24 +211,24 @@ LABEL_6:
         }
 
         v25 = *(*(&v38 + 1) + 8 * j);
-        v26 = [v25 slotType];
-        if (!v26)
+        slotType = [v25 slotType];
+        if (!slotType)
         {
           goto LABEL_24;
         }
 
-        v27 = [v25 slotType];
-        v28 = [v6 slotType];
-        v29 = [v27 isEqualToString:v28];
+        slotType2 = [v25 slotType];
+        slotType3 = [registrationCopy slotType];
+        v29 = [slotType2 isEqualToString:slotType3];
 
         if (v29)
         {
 LABEL_24:
-          v30 = [v25 notification];
-          v31 = [v6 slotName];
-          v32 = [v6 endpoint];
-          v33 = [v6 slotType];
-          [v30 setSlotWithName:v31 endpoint:v32 type:v33 reply:&stru_100038C98];
+          notification = [v25 notification];
+          slotName4 = [registrationCopy slotName];
+          endpoint = [registrationCopy endpoint];
+          slotType4 = [registrationCopy slotType];
+          [notification setSlotWithName:slotName4 endpoint:endpoint type:slotType4 reply:&stru_100038C98];
         }
       }
 
@@ -241,8 +241,8 @@ LABEL_24:
   v34 = sub_10000EE10();
   if (os_log_type_enabled(v34, OS_LOG_TYPE_DEBUG))
   {
-    v35 = [v6 slotName];
-    sub_10001F5F4(v35, buf, v34);
+    slotName5 = [registrationCopy slotName];
+    sub_10001F5F4(slotName5, buf, v34);
   }
 
   objc_sync_exit(obj);
@@ -266,19 +266,19 @@ LABEL_24:
   dispatch_async(v2, &stru_100038CB8);
 }
 
-- (void)removeSlotRegistration:(id)a3
+- (void)removeSlotRegistration:(id)registration
 {
-  v4 = a3;
+  registrationCopy = registration;
   obj = self;
   objc_sync_enter(obj);
   v5 = sub_10000EE10();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    v6 = [v4 slotName];
-    sub_10001F800(v6, buf, v5);
+    slotName = [registrationCopy slotName];
+    sub_10001F800(slotName, buf, v5);
   }
 
-  [(NSMutableArray *)obj->_registrations removeObject:v4];
+  [(NSMutableArray *)obj->_registrations removeObject:registrationCopy];
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
@@ -298,23 +298,23 @@ LABEL_24:
         }
 
         v11 = *(*(&v20 + 1) + 8 * i);
-        v12 = [v11 slotType];
-        if (!v12)
+        slotType = [v11 slotType];
+        if (!slotType)
         {
           goto LABEL_10;
         }
 
-        v13 = [v11 slotType];
-        v14 = [v4 slotType];
-        v15 = [v13 isEqualToString:v14];
+        slotType2 = [v11 slotType];
+        slotType3 = [registrationCopy slotType];
+        v15 = [slotType2 isEqualToString:slotType3];
 
         if (v15)
         {
 LABEL_10:
-          v16 = [v11 notification];
-          v17 = [v4 slotName];
-          v18 = [v4 slotType];
-          [v16 setSlotWithName:v17 endpoint:0 type:v18 reply:&stru_100038D00];
+          notification = [v11 notification];
+          slotName2 = [registrationCopy slotName];
+          slotType4 = [registrationCopy slotType];
+          [notification setSlotWithName:slotName2 endpoint:0 type:slotType4 reply:&stru_100038D00];
         }
       }
 
@@ -327,20 +327,20 @@ LABEL_10:
   objc_sync_exit(obj);
 }
 
-- (void)addClient:(id)a3 reply:(id)a4
+- (void)addClient:(id)client reply:(id)reply
 {
-  v6 = a3;
-  block = a4;
-  v7 = self;
-  objc_sync_enter(v7);
-  v22 = v7;
-  [(NSMutableArray *)v7->_clients addObject:v6];
+  clientCopy = client;
+  block = reply;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v22 = selfCopy;
+  [(NSMutableArray *)selfCopy->_clients addObject:clientCopy];
   v8 = dispatch_group_create();
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  obj = v7->_registrations;
+  obj = selfCopy->_registrations;
   v9 = [(NSMutableArray *)obj countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v9)
   {
@@ -356,30 +356,30 @@ LABEL_10:
         }
 
         v12 = *(*(&v27 + 1) + 8 * v11);
-        v13 = [v6 slotType];
-        if (!v13)
+        slotType = [clientCopy slotType];
+        if (!slotType)
         {
           goto LABEL_8;
         }
 
-        v14 = [v6 slotType];
-        v15 = [v12 slotType];
-        v16 = [v14 isEqualToString:v15];
+        slotType2 = [clientCopy slotType];
+        slotType3 = [v12 slotType];
+        v16 = [slotType2 isEqualToString:slotType3];
 
         if (v16)
         {
 LABEL_8:
           dispatch_group_enter(v8);
-          v17 = [v6 notification];
-          v18 = [v12 slotName];
-          v19 = [v12 endpoint];
-          v20 = [v12 slotType];
+          notification = [clientCopy notification];
+          slotName = [v12 slotName];
+          endpoint = [v12 endpoint];
+          slotType4 = [v12 slotType];
           v25[0] = _NSConcreteStackBlock;
           v25[1] = 3221225472;
           v25[2] = sub_100010378;
           v25[3] = &unk_100038710;
           v26 = v8;
-          [v17 setSlotWithName:v18 endpoint:v19 type:v20 reply:v25];
+          [notification setSlotWithName:slotName endpoint:endpoint type:slotType4 reply:v25];
         }
 
         v11 = v11 + 1;
@@ -398,41 +398,41 @@ LABEL_8:
   objc_sync_exit(v22);
 }
 
-- (void)removeClient:(id)a3
+- (void)removeClient:(id)client
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [(NSMutableArray *)v4->_clients removeObject:v5];
-  objc_sync_exit(v4);
+  clientCopy = client;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSMutableArray *)selfCopy->_clients removeObject:clientCopy];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)isNFCSupportedWithReply:(id)a3
+- (void)isNFCSupportedWithReply:(id)reply
 {
-  v3 = a3;
+  replyCopy = reply;
   v4 = objc_alloc_init(TKNFCHardwareManager);
   v7 = 0;
   v5 = [(TKNFCHardwareManager *)v4 isNFCSupportedWithError:&v7];
   v6 = v7;
-  v3[2](v3, v5, v6);
+  replyCopy[2](replyCopy, v5, v6);
 }
 
-- (void)startPollingWithNewSlot:(id)a3 slotName:(id)a4 reply:(id)a5
+- (void)startPollingWithNewSlot:(id)slot slotName:(id)name reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  slotCopy = slot;
+  nameCopy = name;
+  replyCopy = reply;
   objc_initWeak(&location, self);
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_100010950;
   v14[3] = &unk_100038D28;
   objc_copyWeak(&v18, &location);
-  v11 = v10;
+  v11 = replyCopy;
   v17 = v11;
-  v12 = v9;
+  v12 = nameCopy;
   v15 = v12;
-  v13 = v8;
+  v13 = slotCopy;
   v16 = v13;
   [v13 startPollingWithCompletion:v14];
 
@@ -440,28 +440,28 @@ LABEL_8:
   objc_destroyWeak(&location);
 }
 
-- (void)setupReaderDisconnectHandler:(id)a3 slotName:(id)a4
+- (void)setupReaderDisconnectHandler:(id)handler slotName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  handlerCopy = handler;
+  nameCopy = name;
   objc_initWeak(&location, self);
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100010C08;
   v9[3] = &unk_100038D50;
   objc_copyWeak(&v11, &location);
-  v8 = v7;
+  v8 = nameCopy;
   v10 = v8;
-  [v6 setOnReaderDisconnect:v9];
+  [handlerCopy setOnReaderDisconnect:v9];
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
 }
 
-- (void)handleExistingNFCSlot:(id)a3 connectionPID:(int)a4 reply:(id)a5
+- (void)handleExistingNFCSlot:(id)slot connectionPID:(int)d reply:(id)reply
 {
-  v8 = a3;
-  v9 = a5;
+  slotCopy = slot;
+  replyCopy = reply;
   objc_initWeak(&location, self);
   nfcSlot = self->_nfcSlot;
   v13[0] = _NSConcreteStackBlock;
@@ -469,23 +469,23 @@ LABEL_8:
   v13[2] = sub_100010E1C;
   v13[3] = &unk_100038D78;
   objc_copyWeak(&v16, &location);
-  v11 = v9;
+  v11 = replyCopy;
   v15 = v11;
-  v12 = v8;
+  v12 = slotCopy;
   v14 = v12;
-  v17 = a4;
+  dCopy = d;
   [(TKNFCSlot *)nfcSlot startPollingWithCompletion:v13];
 
   objc_destroyWeak(&v16);
   objc_destroyWeak(&location);
 }
 
-- (void)verifyNFCSlotInvalidationWithRemovedClientPID:(int)a3
+- (void)verifyNFCSlotInvalidationWithRemovedClientPID:(int)d
 {
   v5 = self->_nfcSlotLock;
   objc_sync_enter(v5);
   nfcSlot = self->_nfcSlot;
-  if (nfcSlot && [(TKNFCSlot *)nfcSlot creatorPID]== a3)
+  if (nfcSlot && [(TKNFCSlot *)nfcSlot creatorPID]== d)
   {
     v7 = self->_nfcSlot;
     v8[0] = _NSConcreteStackBlock;
@@ -499,13 +499,13 @@ LABEL_8:
   objc_sync_exit(v5);
 }
 
-- (BOOL)validateNFCSlotAccessWithSlotName:(id)a3 connectionPID:(int)a4 error:(id *)a5
+- (BOOL)validateNFCSlotAccessWithSlotName:(id)name connectionPID:(int)d error:(id *)error
 {
-  v8 = a3;
+  nameCopy = name;
   nfcSlot = self->_nfcSlot;
-  if (!nfcSlot || (-[TKNFCSlot name](nfcSlot, "name"), v10 = objc_claimAutoreleasedReturnValue(), v11 = [v10 isEqualToString:v8], v10, (v11 & 1) == 0))
+  if (!nfcSlot || (-[TKNFCSlot name](nfcSlot, "name"), v10 = objc_claimAutoreleasedReturnValue(), v11 = [v10 isEqualToString:nameCopy], v10, (v11 & 1) == 0))
   {
-    if (!a5)
+    if (!error)
     {
       goto LABEL_8;
     }
@@ -517,15 +517,15 @@ LABEL_8:
     v14 = &v19;
 LABEL_7:
     v15 = [NSDictionary dictionaryWithObjects:v13 forKeys:v14 count:1];
-    *a5 = [NSError errorWithDomain:v12 code:-6 userInfo:v15];
+    *error = [NSError errorWithDomain:v12 code:-6 userInfo:v15];
 
-    LOBYTE(a5) = 0;
+    LOBYTE(error) = 0;
     goto LABEL_8;
   }
 
-  if ([(TKNFCSlot *)self->_nfcSlot creatorPID]!= a4)
+  if ([(TKNFCSlot *)self->_nfcSlot creatorPID]!= d)
   {
-    if (!a5)
+    if (!error)
     {
       goto LABEL_8;
     }
@@ -538,10 +538,10 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  LOBYTE(a5) = 1;
+  LOBYTE(error) = 1;
 LABEL_8:
 
-  return a5;
+  return error;
 }
 
 @end

@@ -2,12 +2,12 @@
 - (DMCRapidReturnToServiceFlowController)controller;
 - (DMCWiFiAutoJoinStateMachine)init;
 - (id)_invalidStateTransitionError;
-- (void)processWiFiAutoJoinStateRequest:(unint64_t)a3 reason:(id)a4 completion:(id)a5;
-- (void)progressToDisableWiFiWithReason:(id)a3;
-- (void)progressToHaveNetworkWithCompletion:(id)a3;
-- (void)progressToPowerOnWithCompletion:(id)a3;
-- (void)progressToState:(unint64_t)a3 reason:(id)a4 completion:(id)a5;
-- (void)resetToState:(unint64_t)a3;
+- (void)processWiFiAutoJoinStateRequest:(unint64_t)request reason:(id)reason completion:(id)completion;
+- (void)progressToDisableWiFiWithReason:(id)reason;
+- (void)progressToHaveNetworkWithCompletion:(id)completion;
+- (void)progressToPowerOnWithCompletion:(id)completion;
+- (void)progressToState:(unint64_t)state reason:(id)reason completion:(id)completion;
+- (void)resetToState:(unint64_t)state;
 @end
 
 @implementation DMCWiFiAutoJoinStateMachine
@@ -29,15 +29,15 @@
   return v3;
 }
 
-- (void)progressToState:(unint64_t)a3 reason:(id)a4 completion:(id)a5
+- (void)progressToState:(unint64_t)state reason:(id)reason completion:(id)completion
 {
   v24 = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  v10 = a5;
+  reasonCopy = reason;
+  completionCopy = completion;
   currentState = self->_currentState;
   v12 = *DMCLogObjects();
   v13 = v12;
-  if (currentState >= a3)
+  if (currentState >= state)
   {
     v16 = os_log_type_enabled(v12, OS_LOG_TYPE_FAULT);
     if (v16)
@@ -48,20 +48,20 @@
       }
 
       v17 = v16;
-      if (a3 <= 3)
+      if (state <= 3)
       {
-        v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"WiFiAutoJoinState: [%ld]", a3];
+        state = [MEMORY[0x277CCACA8] stringWithFormat:@"WiFiAutoJoinState: [%ld]", state];
       }
 
       *buf = 138543618;
       v21 = v17;
       v22 = 2114;
-      v23 = v5;
+      v23 = state;
       _os_log_impl(&dword_247E39000, v13, OS_LOG_TYPE_FAULT, "[DMCWiFiAutoJoinStateMachine] Invalid transition: %{public}@ -> %{public}@", buf, 0x16u);
     }
 
-    v18 = [(DMCWiFiAutoJoinStateMachine *)self _invalidStateTransitionError];
-    v10[2](v10, 0, v18);
+    _invalidStateTransitionError = [(DMCWiFiAutoJoinStateMachine *)self _invalidStateTransitionError];
+    completionCopy[2](completionCopy, 0, _invalidStateTransitionError);
 
     self->_currentState = 0;
   }
@@ -77,34 +77,34 @@
       }
 
       v15 = v14;
-      if (a3 <= 3)
+      if (state <= 3)
       {
-        v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"WiFiAutoJoinState: [%ld]", a3];
+        state = [MEMORY[0x277CCACA8] stringWithFormat:@"WiFiAutoJoinState: [%ld]", state];
       }
 
       *buf = 138412546;
       v21 = v15;
       v22 = 2112;
-      v23 = v5;
+      v23 = state;
       _os_log_impl(&dword_247E39000, v13, OS_LOG_TYPE_DEFAULT, "[DMCWiFiAutoJoinStateMachine] Perform valid state transition: %@ -> %@", buf, 0x16u);
     }
 
-    self->_currentState = a3;
-    if (a3 == 3)
+    self->_currentState = state;
+    if (state == 3)
     {
-      [(DMCWiFiAutoJoinStateMachine *)self progressToDisableWiFiWithReason:v9];
+      [(DMCWiFiAutoJoinStateMachine *)self progressToDisableWiFiWithReason:reasonCopy];
     }
 
-    [(DMCWiFiAutoJoinStateMachine *)self processWiFiAutoJoinStateRequest:a3 reason:v9 completion:v10];
+    [(DMCWiFiAutoJoinStateMachine *)self processWiFiAutoJoinStateRequest:state reason:reasonCopy completion:completionCopy];
   }
 
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)progressToPowerOnWithCompletion:(id)a3
+- (void)progressToPowerOnWithCompletion:(id)completion
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  completionCopy = completion;
   v6 = *DMCLogObjects();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -120,7 +120,7 @@
 
   if ([(DMCWiFiUtilities *)self->_wifi powerOn])
   {
-    [(DMCWiFiAutoJoinStateMachine *)self progressToState:1 reason:@"None" completion:v5];
+    [(DMCWiFiAutoJoinStateMachine *)self progressToState:1 reason:@"None" completion:completionCopy];
   }
 
   else
@@ -141,29 +141,29 @@
       }
 
       v11 = @"Unable to turn on WiFi power";
-      v12 = self;
+      selfCopy2 = self;
       v13 = 3;
     }
 
     else
     {
       v11 = @"None";
-      v12 = self;
+      selfCopy2 = self;
       v13 = 1;
     }
 
-    [(DMCWiFiAutoJoinStateMachine *)v12 progressToState:v13 reason:v11 completion:v5];
+    [(DMCWiFiAutoJoinStateMachine *)selfCopy2 progressToState:v13 reason:v11 completion:completionCopy];
   }
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)progressToHaveNetworkWithCompletion:(id)a3
+- (void)progressToHaveNetworkWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([(DMCWiFiUtilities *)self->_wifi haveNetwork])
   {
-    [(DMCWiFiAutoJoinStateMachine *)self progressToState:2 reason:@"None" completion:v4];
+    [(DMCWiFiAutoJoinStateMachine *)self progressToState:2 reason:@"None" completion:completionCopy];
   }
 
   else
@@ -174,7 +174,7 @@
     v6[2] = __67__DMCWiFiAutoJoinStateMachine_progressToHaveNetworkWithCompletion___block_invoke;
     v6[3] = &unk_278EE4150;
     v6[4] = self;
-    v7 = v4;
+    v7 = completionCopy;
     [(DMCWiFiUtilities *)wifi enableAutoJoinIfNeededWithTimeout:v6 completionHandler:30.0];
   }
 }
@@ -197,10 +197,10 @@ uint64_t __67__DMCWiFiAutoJoinStateMachine_progressToHaveNetworkWithCompletion__
   return [v4 progressToState:v6 reason:v5 completion:*(a1 + 40)];
 }
 
-- (void)progressToDisableWiFiWithReason:(id)a3
+- (void)progressToDisableWiFiWithReason:(id)reason
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  reasonCopy = reason;
   wifi = self->_wifi;
   v15 = 0;
   v6 = [(DMCWiFiUtilities *)wifi setPower:0 error:&v15];
@@ -208,14 +208,14 @@ uint64_t __67__DMCWiFiAutoJoinStateMachine_progressToHaveNetworkWithCompletion__
   if (v6)
   {
     WeakRetained = objc_loadWeakRetained(&self->_controller);
-    v9 = [WeakRetained delegate];
+    delegate = [WeakRetained delegate];
     v10 = objc_opt_respondsToSelector();
 
     if (v10)
     {
       v11 = objc_loadWeakRetained(&self->_controller);
-      v12 = [v11 delegate];
-      [v12 wifiAutoJoinFailedWithReason:v4];
+      delegate2 = [v11 delegate];
+      [delegate2 wifiAutoJoinFailedWithReason:reasonCopy];
     }
   }
 
@@ -233,36 +233,36 @@ uint64_t __67__DMCWiFiAutoJoinStateMachine_progressToHaveNetworkWithCompletion__
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)processWiFiAutoJoinStateRequest:(unint64_t)a3 reason:(id)a4 completion:(id)a5
+- (void)processWiFiAutoJoinStateRequest:(unint64_t)request reason:(id)reason completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (a3 <= 1)
+  reasonCopy = reason;
+  completionCopy = completion;
+  v10 = completionCopy;
+  if (request <= 1)
   {
-    if (!a3)
+    if (!request)
     {
-      [(DMCWiFiAutoJoinStateMachine *)self progressToPowerOnWithCompletion:v9];
+      [(DMCWiFiAutoJoinStateMachine *)self progressToPowerOnWithCompletion:completionCopy];
       goto LABEL_14;
     }
 
-    if (a3 == 1)
+    if (request == 1)
     {
-      [(DMCWiFiAutoJoinStateMachine *)self progressToHaveNetworkWithCompletion:v9];
+      [(DMCWiFiAutoJoinStateMachine *)self progressToHaveNetworkWithCompletion:completionCopy];
       goto LABEL_14;
     }
 
     goto LABEL_10;
   }
 
-  if (a3 == 2)
+  if (request == 2)
   {
     self->_currentState = 0;
-    (*(v9 + 2))(v9, 1, 0);
+    (*(completionCopy + 2))(completionCopy, 1, 0);
     goto LABEL_14;
   }
 
-  if (a3 != 3)
+  if (request != 3)
   {
 LABEL_10:
     v14 = *DMCLogObjects();
@@ -276,7 +276,7 @@ LABEL_10:
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_controller);
-  v12 = [WeakRetained errorWithCode:16005 message:v8];
+  v12 = [WeakRetained errorWithCode:16005 message:reasonCopy];
   (v10)[2](v10, 0, v12);
 
   v13 = *DMCLogObjects();
@@ -290,7 +290,7 @@ LABEL_10:
 LABEL_14:
 }
 
-- (void)resetToState:(unint64_t)a3
+- (void)resetToState:(unint64_t)state
 {
   v5 = *DMCLogObjects();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -299,7 +299,7 @@ LABEL_14:
     _os_log_impl(&dword_247E39000, v5, OS_LOG_TYPE_DEFAULT, "State machine reset requested", v6, 2u);
   }
 
-  self->_currentState = a3;
+  self->_currentState = state;
 }
 
 - (id)_invalidStateTransitionError

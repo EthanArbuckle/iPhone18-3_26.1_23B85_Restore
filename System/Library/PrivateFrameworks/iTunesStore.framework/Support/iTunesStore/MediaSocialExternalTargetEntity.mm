@@ -1,36 +1,36 @@
 @interface MediaSocialExternalTargetEntity
-+ (id)newEntityValuesWithMediaSocialExternalDestination:(id)a3;
++ (id)newEntityValuesWithMediaSocialExternalDestination:(id)destination;
 @end
 
 @implementation MediaSocialExternalTargetEntity
 
-+ (id)newEntityValuesWithMediaSocialExternalDestination:(id)a3
++ (id)newEntityValuesWithMediaSocialExternalDestination:(id)destination
 {
-  v3 = a3;
+  destinationCopy = destination;
   v4 = objc_alloc_init(NSMutableDictionary);
-  v5 = [v3 accessToken];
-  if (v5)
+  accessToken = [destinationCopy accessToken];
+  if (accessToken)
   {
-    [v4 setObject:v5 forKey:@"access_token"];
+    [v4 setObject:accessToken forKey:@"access_token"];
   }
 
-  v6 = [v3 pageAccessToken];
+  pageAccessToken = [destinationCopy pageAccessToken];
 
-  if (v6)
+  if (pageAccessToken)
   {
-    [v4 setObject:v6 forKey:@"page_access_token"];
+    [v4 setObject:pageAccessToken forKey:@"page_access_token"];
   }
 
-  v7 = [v3 pageIdentifier];
+  pageIdentifier = [destinationCopy pageIdentifier];
 
-  if (v7)
+  if (pageIdentifier)
   {
-    [v4 setObject:v7 forKey:@"page_id"];
+    [v4 setObject:pageIdentifier forKey:@"page_id"];
   }
 
   v8 = [NSNumber alloc];
-  v9 = [v3 serviceIdentifier];
-  v10 = [v8 initWithInteger:sub_1001231D0(v9)];
+  serviceIdentifier = [destinationCopy serviceIdentifier];
+  v10 = [v8 initWithInteger:sub_1001231D0(serviceIdentifier)];
 
   [v4 setObject:v10 forKey:@"service_type"];
   return v4;

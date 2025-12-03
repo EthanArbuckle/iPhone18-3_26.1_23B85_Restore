@@ -2,17 +2,17 @@
 + (id)xpcConnectionToDaemon;
 + (void)xpcConnectionToDaemon;
 - (AUObserverXPC)init;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (id)remoteObject;
-- (void)addAccessoryID:(id)a3 assetID:(id)a4;
-- (void)clearDropboxForModelNumber:(id)a3 withFusing:(id)a4;
+- (void)addAccessoryID:(id)d assetID:(id)iD;
+- (void)clearDropboxForModelNumber:(id)number withFusing:(id)fusing;
 - (void)dealloc;
-- (void)firmwareUpdateProgressForAccessoryID:(id)a3 assetID:(id)a4 bytesSent:(unint64_t)a5 bytesTotal:(unint64_t)a6;
-- (void)registerClient:(id)a3;
-- (void)removeAccessoryID:(id)a3;
+- (void)firmwareUpdateProgressForAccessoryID:(id)d assetID:(id)iD bytesSent:(unint64_t)sent bytesTotal:(unint64_t)total;
+- (void)registerClient:(id)client;
+- (void)removeAccessoryID:(id)d;
 - (void)removeObserver;
-- (void)settingsChangedForSerialNumber:(id)a3;
-- (void)stagingCompleteForAccessoryID:(id)a3 assetID:(id)a4 status:(unint64_t)a5;
+- (void)settingsChangedForSerialNumber:(id)number;
+- (void)stagingCompleteForAccessoryID:(id)d assetID:(id)iD status:(unint64_t)status;
 - (void)stopMonitoring;
 - (void)unregisterClient;
 @end
@@ -26,26 +26,26 @@
   v2 = [(AUObserverXPC *)&v16 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAD78] UUID];
+    uUID = [MEMORY[0x277CCAD78] UUID];
     uuid = v2->_uuid;
-    v2->_uuid = v3;
+    v2->_uuid = uUID;
 
-    v5 = [MEMORY[0x277CCA8D8] mainBundle];
-    v6 = [v5 bundleIdentifier];
-    v7 = dispatch_queue_create([v6 UTF8String], 0);
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
+    v7 = dispatch_queue_create([bundleIdentifier UTF8String], 0);
     internalQueue = v2->_internalQueue;
     v2->_internalQueue = v7;
 
-    v9 = [MEMORY[0x277CCAE98] anonymousListener];
+    anonymousListener = [MEMORY[0x277CCAE98] anonymousListener];
     xpcListener = v2->_xpcListener;
-    v2->_xpcListener = v9;
+    v2->_xpcListener = anonymousListener;
 
     [(NSXPCListener *)v2->_xpcListener setDelegate:v2];
     [(NSXPCListener *)v2->_xpcListener resume];
-    v11 = [(AUObserverXPC *)v2 remoteObject];
+    remoteObject = [(AUObserverXPC *)v2 remoteObject];
     v12 = v2->_uuid;
-    v13 = [(NSXPCListener *)v2->_xpcListener endpoint];
-    [v11 addObserver:v12 withEndpoint:v13];
+    endpoint = [(NSXPCListener *)v2->_xpcListener endpoint];
+    [remoteObject addObserver:v12 withEndpoint:endpoint];
 
     xpcConnection = v2->_xpcConnection;
     v2->_xpcConnection = 0;
@@ -64,9 +64,9 @@
   [(AUObserverXPC *)&v3 dealloc];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
@@ -76,10 +76,10 @@
   block[1] = 3221225472;
   block[2] = __52__AUObserverXPC_listener_shouldAcceptNewConnection___block_invoke;
   block[3] = &unk_278BD0B68;
-  v10 = v5;
-  v11 = self;
+  v10 = connectionCopy;
+  selfCopy = self;
   v12 = &v13;
-  v7 = v5;
+  v7 = connectionCopy;
   dispatch_sync(internalQueue, block);
   LOBYTE(internalQueue) = *(v14 + 24);
 
@@ -208,17 +208,17 @@ void __29__AUObserverXPC_remoteObject__block_invoke()
   return v3;
 }
 
-- (void)registerClient:(id)a3
+- (void)registerClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   internalQueue = self->_internalQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __32__AUObserverXPC_registerClient___block_invoke;
   v7[3] = &unk_278BD0BB0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = clientCopy;
+  v6 = clientCopy;
   dispatch_async(internalQueue, v7);
 }
 
@@ -261,8 +261,8 @@ void __33__AUObserverXPC_unregisterClient__block_invoke(uint64_t a1)
     _os_log_impl(&dword_23D433000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%s", &v6, 0xCu);
   }
 
-  v3 = [(AUObserverXPC *)self remoteObject];
-  [v3 removeObserver:self->_uuid];
+  remoteObject = [(AUObserverXPC *)self remoteObject];
+  [remoteObject removeObserver:self->_uuid];
 
   xpcConnection = self->_xpcConnection;
   self->_xpcConnection = 0;
@@ -270,10 +270,10 @@ void __33__AUObserverXPC_unregisterClient__block_invoke(uint64_t a1)
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)clearDropboxForModelNumber:(id)a3 withFusing:(id)a4
+- (void)clearDropboxForModelNumber:(id)number withFusing:(id)fusing
 {
   v10 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  numberCopy = number;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v8 = 136315138;
@@ -281,16 +281,16 @@ void __33__AUObserverXPC_unregisterClient__block_invoke(uint64_t a1)
     _os_log_impl(&dword_23D433000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%s", &v8, 0xCu);
   }
 
-  v6 = [(AUObserverXPC *)self remoteObject];
-  [v6 clearDropboxForModelNumber:v5 withFusing:0];
+  remoteObject = [(AUObserverXPC *)self remoteObject];
+  [remoteObject clearDropboxForModelNumber:numberCopy withFusing:0];
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)settingsChangedForSerialNumber:(id)a3
+- (void)settingsChangedForSerialNumber:(id)number
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  numberCopy = number;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v7 = 136315138;
@@ -298,26 +298,26 @@ void __33__AUObserverXPC_unregisterClient__block_invoke(uint64_t a1)
     _os_log_impl(&dword_23D433000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%s", &v7, 0xCu);
   }
 
-  v5 = [(AUObserverXPC *)self remoteObject];
-  [v5 settingsChangedForSerialNumber:v4];
+  remoteObject = [(AUObserverXPC *)self remoteObject];
+  [remoteObject settingsChangedForSerialNumber:numberCopy];
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addAccessoryID:(id)a3 assetID:(id)a4
+- (void)addAccessoryID:(id)d assetID:(id)iD
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  iDCopy = iD;
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __40__AUObserverXPC_addAccessoryID_assetID___block_invoke;
   block[3] = &unk_278BD0C00;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = dCopy;
+  v13 = iDCopy;
+  v9 = iDCopy;
+  v10 = dCopy;
   dispatch_async(internalQueue, block);
 }
 
@@ -331,17 +331,17 @@ void *__40__AUObserverXPC_addAccessoryID_assetID___block_invoke(void *result)
   return result;
 }
 
-- (void)removeAccessoryID:(id)a3
+- (void)removeAccessoryID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   internalQueue = self->_internalQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __35__AUObserverXPC_removeAccessoryID___block_invoke;
   v7[3] = &unk_278BD0BB0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dCopy;
+  v6 = dCopy;
   dispatch_async(internalQueue, v7);
 }
 
@@ -355,22 +355,22 @@ uint64_t __35__AUObserverXPC_removeAccessoryID___block_invoke(uint64_t result)
   return result;
 }
 
-- (void)firmwareUpdateProgressForAccessoryID:(id)a3 assetID:(id)a4 bytesSent:(unint64_t)a5 bytesTotal:(unint64_t)a6
+- (void)firmwareUpdateProgressForAccessoryID:(id)d assetID:(id)iD bytesSent:(unint64_t)sent bytesTotal:(unint64_t)total
 {
-  v10 = a3;
-  v11 = a4;
+  dCopy = d;
+  iDCopy = iD;
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __83__AUObserverXPC_firmwareUpdateProgressForAccessoryID_assetID_bytesSent_bytesTotal___block_invoke;
   block[3] = &unk_278BD0C28;
   block[4] = self;
-  v16 = v10;
-  v17 = v11;
-  v18 = a5;
-  v19 = a6;
-  v13 = v11;
-  v14 = v10;
+  v16 = dCopy;
+  v17 = iDCopy;
+  sentCopy = sent;
+  totalCopy = total;
+  v13 = iDCopy;
+  v14 = dCopy;
   dispatch_async(internalQueue, block);
 }
 
@@ -384,21 +384,21 @@ void *__83__AUObserverXPC_firmwareUpdateProgressForAccessoryID_assetID_bytesSent
   return result;
 }
 
-- (void)stagingCompleteForAccessoryID:(id)a3 assetID:(id)a4 status:(unint64_t)a5
+- (void)stagingCompleteForAccessoryID:(id)d assetID:(id)iD status:(unint64_t)status
 {
-  v8 = a3;
-  v9 = a4;
+  dCopy = d;
+  iDCopy = iD;
   internalQueue = self->_internalQueue;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __62__AUObserverXPC_stagingCompleteForAccessoryID_assetID_status___block_invoke;
   v13[3] = &unk_278BD0C50;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v16 = a5;
-  v11 = v9;
-  v12 = v8;
+  v14 = dCopy;
+  v15 = iDCopy;
+  statusCopy = status;
+  v11 = iDCopy;
+  v12 = dCopy;
   dispatch_async(internalQueue, v13);
 }
 

@@ -1,13 +1,13 @@
 @interface ANSTFaceAttributeAlgorithm
-- (ANSTFaceAttributeAlgorithm)initWithConfiguration:(id)a3;
-- (BOOL)_allocateAndBindInputBuffer:(id *)a3;
-- (BOOL)_allocateAndBindOutputBuffers:(id *)a3;
-- (BOOL)_initializePixelTransferSession:(id *)a3;
-- (BOOL)_initializePostProcessor:(id *)a3;
-- (BOOL)_loadE5ExecutionStreamOperation:(id *)a3;
-- (BOOL)_updateFaceAttributesOfAcResult:(id *)a3 inputImage:(__CVBuffer *)a4 error:(id *)a5;
-- (BOOL)prepareWithError:(id *)a3;
-- (BOOL)updateFaceAttributesOfAcResult:(id *)a3 inputImage:(__CVBuffer *)a4 error:(id *)a5;
+- (ANSTFaceAttributeAlgorithm)initWithConfiguration:(id)configuration;
+- (BOOL)_allocateAndBindInputBuffer:(id *)buffer;
+- (BOOL)_allocateAndBindOutputBuffers:(id *)buffers;
+- (BOOL)_initializePixelTransferSession:(id *)session;
+- (BOOL)_initializePostProcessor:(id *)processor;
+- (BOOL)_loadE5ExecutionStreamOperation:(id *)operation;
+- (BOOL)_updateFaceAttributesOfAcResult:(id *)result inputImage:(__CVBuffer *)image error:(id *)error;
+- (BOOL)prepareWithError:(id *)error;
+- (BOOL)updateFaceAttributesOfAcResult:(id *)result inputImage:(__CVBuffer *)image error:(id *)error;
 - (void)_destroyAcHandles;
 - (void)_releaseInputBuffer;
 - (void)_releaseOutputBuffers;
@@ -17,16 +17,16 @@
 
 @implementation ANSTFaceAttributeAlgorithm
 
-- (ANSTFaceAttributeAlgorithm)initWithConfiguration:(id)a3
+- (ANSTFaceAttributeAlgorithm)initWithConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v9.receiver = self;
   v9.super_class = ANSTFaceAttributeAlgorithm;
-  v6 = [(ANSTAlgorithm *)&v9 initWithConfiguration:v5];
+  v6 = [(ANSTAlgorithm *)&v9 initWithConfiguration:configurationCopy];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_configuration, a3);
+    objc_storeStrong(&v6->_configuration, configuration);
     v7->_prepared = 0;
     v7->_es = 0;
     v7->_esop = 0;
@@ -82,7 +82,7 @@
   [(ANSTFaceAttributeAlgorithm *)&v22 dealloc];
 }
 
-- (BOOL)prepareWithError:(id *)a3
+- (BOOL)prepareWithError:(id *)error
 {
   v33[1] = *MEMORY[0x277D85DE8];
   if (self->_prepared)
@@ -91,7 +91,7 @@
     goto LABEL_21;
   }
 
-  E5ExecutionStreamOperation = objc_msgSend__initializePostProcessor_(self, a2, a3);
+  E5ExecutionStreamOperation = objc_msgSend__initializePostProcessor_(self, a2, error);
   if (!E5ExecutionStreamOperation)
   {
     goto LABEL_21;
@@ -111,7 +111,7 @@
         sub_22E65AA74();
       }
 
-      if (!a3)
+      if (!error)
       {
         goto LABEL_20;
       }
@@ -121,7 +121,7 @@
       v33[0] = v16;
       objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v25, v33, &v32, 1);
       v26 = LABEL_19:;
-      *a3 = objc_msgSend_errorWithDomain_code_userInfo_(v19, v27, @"ANSTErrorDomain", 5, v26);
+      *error = objc_msgSend_errorWithDomain_code_userInfo_(v19, v27, @"ANSTErrorDomain", 5, v26);
 
 LABEL_20:
       LOBYTE(E5ExecutionStreamOperation) = 0;
@@ -129,16 +129,16 @@ LABEL_20:
     }
   }
 
-  E5ExecutionStreamOperation = objc_msgSend__loadE5ExecutionStreamOperation_(self, v6, a3);
+  E5ExecutionStreamOperation = objc_msgSend__loadE5ExecutionStreamOperation_(self, v6, error);
   if (E5ExecutionStreamOperation)
   {
-    E5ExecutionStreamOperation = objc_msgSend__allocateAndBindInputBuffer_(self, v7, a3);
+    E5ExecutionStreamOperation = objc_msgSend__allocateAndBindInputBuffer_(self, v7, error);
     if (E5ExecutionStreamOperation)
     {
-      E5ExecutionStreamOperation = objc_msgSend__allocateAndBindOutputBuffers_(self, v8, a3);
+      E5ExecutionStreamOperation = objc_msgSend__allocateAndBindOutputBuffers_(self, v8, error);
       if (E5ExecutionStreamOperation)
       {
-        E5ExecutionStreamOperation = objc_msgSend__initializePixelTransferSession_(self, v9, a3);
+        E5ExecutionStreamOperation = objc_msgSend__initializePixelTransferSession_(self, v9, error);
         if (E5ExecutionStreamOperation)
         {
           es = self->_es;
@@ -160,7 +160,7 @@ LABEL_20:
             sub_22E65AA74();
           }
 
-          if (!a3)
+          if (!error)
           {
             goto LABEL_20;
           }
@@ -180,7 +180,7 @@ LABEL_21:
   return E5ExecutionStreamOperation;
 }
 
-- (BOOL)updateFaceAttributesOfAcResult:(id *)a3 inputImage:(__CVBuffer *)a4 error:(id *)a5
+- (BOOL)updateFaceAttributesOfAcResult:(id *)result inputImage:(__CVBuffer *)image error:(id *)error
 {
   v9 = _ANSTLoggingGetOSLogForCategoryANSTKit();
   v10 = os_signpost_id_make_with_pointer(v9, self);
@@ -191,7 +191,7 @@ LABEL_21:
     _os_signpost_emit_with_name_impl(&dword_22E5D5000, v9, OS_SIGNPOST_INTERVAL_BEGIN, v10, "ANSTFaceAttributeAlgorithm", &unk_22E663F87, buf, 2u);
   }
 
-  updated = objc_msgSend__updateFaceAttributesOfAcResult_inputImage_error_(self, v11, a3, a4, a5);
+  updated = objc_msgSend__updateFaceAttributesOfAcResult_inputImage_error_(self, v11, result, image, error);
   v13 = os_signpost_id_make_with_pointer(v9, self);
 
   if (v13 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v9))
@@ -203,19 +203,19 @@ LABEL_21:
   return updated;
 }
 
-- (BOOL)_updateFaceAttributesOfAcResult:(id *)a3 inputImage:(__CVBuffer *)a4 error:(id *)a5
+- (BOOL)_updateFaceAttributesOfAcResult:(id *)result inputImage:(__CVBuffer *)image error:(id *)error
 {
   v82[1] = *MEMORY[0x277D85DE8];
   if (!self->_prepared)
   {
-    v29 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], a2, @"Need to call [prepareWithError:] before binding input pixel buffer.", a4);
+    v29 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], a2, @"Need to call [prepareWithError:] before binding input pixel buffer.", image);
     v30 = _ANSTLoggingGetOSLogForCategoryANSTKit();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
     {
       sub_22E65AAE8();
     }
 
-    if (a5)
+    if (error)
     {
       v32 = MEMORY[0x277CCA9B8];
       v81 = *MEMORY[0x277CCA068];
@@ -228,7 +228,7 @@ LABEL_21:
     goto LABEL_43;
   }
 
-  CVPixelBufferLockBaseAddress(a4, 1uLL);
+  CVPixelBufferLockBaseAddress(image, 1uLL);
   v9 = 0;
   input_face_buffers = self->_input_face_buffers;
   do
@@ -237,9 +237,9 @@ LABEL_21:
   }
 
   while (v9 != 10);
-  LODWORD(var2) = a3->var2;
-  v71 = a5;
-  v72 = a3;
+  LODWORD(var2) = result->var2;
+  errorCopy = error;
+  resultCopy = result;
   if (!var2)
   {
     goto LABEL_10;
@@ -247,7 +247,7 @@ LABEL_21:
 
   v12 = 0;
   v13 = *MEMORY[0x277CE28B8];
-  p_var3 = &a3->var3[0].var3.var3;
+  p_var3 = &result->var3[0].var3.var3;
   do
   {
     v15 = *(p_var3 - 3);
@@ -266,47 +266,47 @@ LABEL_21:
       v39 = objc_msgSend_stringWithFormat_(v36, v38, @"Failed to configure VTPixelTransferSession to crop face at index %d bbox %@", v12, v37);
 
       v40 = _ANSTLoggingGetOSLogForCategoryANSTKit();
-      a5 = v71;
+      error = errorCopy;
       if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
       {
         sub_22E65AAE8();
       }
 
-      if (v71)
+      if (errorCopy)
       {
         v42 = MEMORY[0x277CCA9B8];
         v79 = *MEMORY[0x277CCA068];
         v80 = v39;
         v43 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v41, &v80, &v79, 1);
         objc_msgSend_errorWithDomain_code_userInfo_(v42, v44, @"ANSTErrorDomain", 4, v43);
-        *v71 = a5 = v71;
+        *errorCopy = error = errorCopy;
       }
 
       goto LABEL_28;
     }
 
     CFRelease(DictionaryRepresentation);
-    if (VTPixelTransferSessionTransferImage(self->_pixelTransferSession, a4, input_face_buffers[v12]))
+    if (VTPixelTransferSessionTransferImage(self->_pixelTransferSession, image, input_face_buffers[v12]))
     {
       v45 = MEMORY[0x277CCACA8];
       v46 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v21, @"[X %f, Y %f, W %f, H %f]", *&v15, *&v16, *&v17, *&v18);
       v48 = objc_msgSend_stringWithFormat_(v45, v47, @"Failed to pixel transfer face crop at index %d bbox %@", v12, v46);
 
       v49 = _ANSTLoggingGetOSLogForCategoryANSTKit();
-      a5 = v71;
+      error = errorCopy;
       if (os_log_type_enabled(v49, OS_LOG_TYPE_ERROR))
       {
         sub_22E65AAE8();
       }
 
-      if (v71)
+      if (errorCopy)
       {
         v51 = MEMORY[0x277CCA9B8];
         v77 = *MEMORY[0x277CCA068];
         v78 = v48;
         v52 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v50, &v78, &v77, 1);
         objc_msgSend_errorWithDomain_code_userInfo_(v51, v53, @"ANSTErrorDomain", 4, v52);
-        *v71 = a5 = v71;
+        *errorCopy = error = errorCopy;
       }
 
 LABEL_28:
@@ -315,7 +315,7 @@ LABEL_28:
     }
 
     ++v12;
-    var2 = a3->var2;
+    var2 = result->var2;
     p_var3 += 702;
   }
 
@@ -340,9 +340,9 @@ LABEL_10:
   while (v23++ != 10);
 LABEL_13:
   v28 = 1;
-  a5 = v71;
+  error = errorCopy;
 LABEL_29:
-  CVPixelBufferUnlockBaseAddress(a4, 1uLL);
+  CVPixelBufferUnlockBaseAddress(image, 1uLL);
   for (i = 0; i != 10; ++i)
   {
     CVPixelBufferUnlockBaseAddress(input_face_buffers[i], 0);
@@ -365,7 +365,7 @@ LABEL_29:
       sub_22E65AAE8();
     }
 
-    if (a5)
+    if (error)
     {
       v61 = MEMORY[0x277CCA9B8];
       v75 = *MEMORY[0x277CCA068];
@@ -378,9 +378,9 @@ LABEL_29:
     goto LABEL_43;
   }
 
-  self->_detControl.originalImageWidth = CVPixelBufferGetWidth(a4);
-  self->_detControl.originalImageHeight = CVPixelBufferGetHeight(a4);
-  v63 = AcAttrPostProcessNetOutputs(self->_det, &self->_detControl, &self->_attrNetOutputBuffers, self->_detState.data, &v72->var0.var0);
+  self->_detControl.originalImageWidth = CVPixelBufferGetWidth(image);
+  self->_detControl.originalImageHeight = CVPixelBufferGetHeight(image);
+  v63 = AcAttrPostProcessNetOutputs(self->_det, &self->_detControl, &self->_attrNetOutputBuffers, self->_detState.data, &resultCopy->var0.var0);
   if (v63)
   {
     v29 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v64, @"%s returned error code %u", "AcAttrPostProcessNetOutputs(_det, &_detControl, &_attrNetOutputBuffers, &_detState, acResult)", v63);
@@ -390,7 +390,7 @@ LABEL_29:
       sub_22E65AAE8();
     }
 
-    if (a5)
+    if (error)
     {
       v67 = MEMORY[0x277CCA9B8];
       v73 = *MEMORY[0x277CCA068];
@@ -398,7 +398,7 @@ LABEL_29:
       v33 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v66, &v74, &v73, 1);
       v35 = objc_msgSend_errorWithDomain_code_userInfo_(v67, v68, @"ANSTErrorDomain", 3, v33);
 LABEL_42:
-      *a5 = v35;
+      *error = v35;
     }
 
 LABEL_43:
@@ -416,7 +416,7 @@ LABEL_44:
   return result;
 }
 
-- (BOOL)_initializePostProcessor:(id *)a3
+- (BOOL)_initializePostProcessor:(id *)processor
 {
   v40[1] = *MEMORY[0x277D85DE8];
   if (self->_det)
@@ -459,7 +459,7 @@ LABEL_44:
       sub_22E65AB5C();
     }
 
-    if (!a3)
+    if (!processor)
     {
       goto LABEL_21;
     }
@@ -470,7 +470,7 @@ LABEL_44:
     v16 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v14, v40, &v39, 1);
     v18 = objc_msgSend_errorWithDomain_code_userInfo_(v15, v17, @"ANSTErrorDomain", 3, v16);
 LABEL_20:
-    *a3 = v18;
+    *processor = v18;
 
 LABEL_21:
     objc_msgSend__destroyAcHandles(self, v31, v32);
@@ -488,7 +488,7 @@ LABEL_21:
       sub_22E65AB5C();
     }
 
-    if (!a3)
+    if (!processor)
     {
       goto LABEL_21;
     }
@@ -511,7 +511,7 @@ LABEL_21:
       sub_22E65AB5C();
     }
 
-    if (!a3)
+    if (!processor)
     {
       goto LABEL_21;
     }
@@ -564,7 +564,7 @@ LABEL_22:
   self->_detControl.imageOrientation = 0;
 }
 
-- (BOOL)_loadE5ExecutionStreamOperation:(id *)a3
+- (BOOL)_loadE5ExecutionStreamOperation:(id *)operation
 {
   v35[1] = *MEMORY[0x277D85DE8];
   if (self->_esop)
@@ -598,13 +598,13 @@ LABEL_22:
         sub_22E65AC44();
       }
 
-      if (a3)
+      if (operation)
       {
         v29 = MEMORY[0x277CCA9B8];
         v34 = *MEMORY[0x277CCA068];
         v35[0] = v26;
         v30 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v28, v35, &v34, 1);
-        *a3 = objc_msgSend_errorWithDomain_code_userInfo_(v29, v31, @"ANSTErrorDomain", 5, v30);
+        *operation = objc_msgSend_errorWithDomain_code_userInfo_(v29, v31, @"ANSTErrorDomain", 5, v30);
       }
     }
   }
@@ -613,7 +613,7 @@ LABEL_22:
   return v3;
 }
 
-- (BOOL)_allocateAndBindInputBuffer:(id *)a3
+- (BOOL)_allocateAndBindInputBuffer:(id *)buffer
 {
   v50[1] = *MEMORY[0x277D85DE8];
   so_inputs_array = self->_so_inputs_array;
@@ -657,13 +657,13 @@ LABEL_2:
           _os_log_error_impl(&dword_22E5D5000, v27, OS_LOG_TYPE_ERROR, "%{public}s: %{public}@", buf, 0x16u);
         }
 
-        if (a3)
+        if (buffer)
         {
           v29 = MEMORY[0x277CCA9B8];
           v43 = v42;
           v44 = v26;
           v30 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v28, &v44, &v43, 1);
-          *a3 = objc_msgSend_errorWithDomain_code_userInfo_(v29, v31, @"ANSTErrorDomain", 5, v30);
+          *buffer = objc_msgSend_errorWithDomain_code_userInfo_(v29, v31, @"ANSTErrorDomain", 5, v30);
         }
 
         v32 = 0;
@@ -694,13 +694,13 @@ LABEL_2:
       sub_22E65ACB8();
     }
 
-    if (a3)
+    if (buffer)
     {
       v38 = MEMORY[0x277CCA9B8];
       v49 = v42;
       v50[0] = v35;
       v39 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v37, v50, &v49, 1);
-      *a3 = objc_msgSend_errorWithDomain_code_userInfo_(v38, v40, @"ANSTErrorDomain", 5, v39);
+      *buffer = objc_msgSend_errorWithDomain_code_userInfo_(v38, v40, @"ANSTErrorDomain", 5, v39);
     }
 
 LABEL_23:
@@ -746,7 +746,7 @@ LABEL_23:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_allocateAndBindOutputBuffers:(id *)a3
+- (BOOL)_allocateAndBindOutputBuffers:(id *)buffers
 {
   v71 = *MEMORY[0x277D85DE8];
   if (self->_bo_outputs_array[0])
@@ -763,7 +763,7 @@ LABEL_2:
   netOutputWidths = self->_detParams.netOutputWidths;
   netOutputChannels = self->_detParams.netOutputChannels;
   v59 = *MEMORY[0x277CCA068];
-  v9 = self;
+  selfCopy = self;
   while (1)
   {
     esop = self->_esop;
@@ -800,13 +800,13 @@ LABEL_2:
       _os_log_error_impl(&dword_22E5D5000, v18, OS_LOG_TYPE_ERROR, "%{public}s: %{public}@", buf, 0x16u);
     }
 
-    if (a3)
+    if (buffers)
     {
       v20 = MEMORY[0x277CCA9B8];
       v66 = v59;
       v67 = v17;
       v21 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v19, &v67, &v66, 1);
-      *a3 = objc_msgSend_errorWithDomain_code_userInfo_(v20, v22, @"ANSTErrorDomain", 5, v21);
+      *buffers = objc_msgSend_errorWithDomain_code_userInfo_(v20, v22, @"ANSTErrorDomain", 5, v21);
     }
 
     v25 = 0;
@@ -818,7 +818,7 @@ LABEL_14:
     }
 
     ++v7;
-    v9 = (v9 + 24);
+    selfCopy = (selfCopy + 24);
     if (v7 == 7)
     {
       goto LABEL_2;
@@ -839,7 +839,7 @@ LABEL_14:
       sub_22E65AD2C();
     }
 
-    if (!a3)
+    if (!buffers)
     {
       goto LABEL_38;
     }
@@ -864,7 +864,7 @@ LABEL_14:
       sub_22E65AD2C();
     }
 
-    if (!a3)
+    if (!buffers)
     {
       goto LABEL_38;
     }
@@ -874,7 +874,7 @@ LABEL_14:
     v63 = v39;
     objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v47, &v63, &v62, 1);
     v53 = LABEL_37:;
-    *a3 = objc_msgSend_errorWithDomain_code_userInfo_(v42, v54, @"ANSTErrorDomain", 5, v53);
+    *buffers = objc_msgSend_errorWithDomain_code_userInfo_(v42, v54, @"ANSTErrorDomain", 5, v53);
 
     goto LABEL_38;
   }
@@ -888,7 +888,7 @@ LABEL_14:
     v34 = -1680;
     do
     {
-      v35 = &v9->_attrNetOutputBuffers + v34;
+      v35 = &selfCopy->_attrNetOutputBuffers + v34;
       *(v35 + 240) = BaseAddress;
       *(v35 + 483) = v31;
       *(v35 + 482) = v33;
@@ -912,7 +912,7 @@ LABEL_14:
     sub_22E65AD2C();
   }
 
-  if (a3)
+  if (buffers)
   {
     v42 = MEMORY[0x277CCA9B8];
     v60 = v59;
@@ -968,7 +968,7 @@ LABEL_3:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_initializePixelTransferSession:(id *)a3
+- (BOOL)_initializePixelTransferSession:(id *)session
 {
   v21[1] = *MEMORY[0x277D85DE8];
   if (!self->_pixelTransferSession && (VTPixelTransferSessionCreate(0, &self->_pixelTransferSession) || VTSessionSetProperty(self->_pixelTransferSession, *MEMORY[0x277CE28B0], *MEMORY[0x277CE2A78]) || VTSessionSetProperty(self->_pixelTransferSession, *MEMORY[0x277CE28A8], *MEMORY[0x277CBED28])))
@@ -979,13 +979,13 @@ LABEL_3:
       sub_22E65ADA0(v6, v7, v8, v9, v10, v11, v12, v13);
     }
 
-    if (a3)
+    if (session)
     {
       v16 = MEMORY[0x277CCA9B8];
       v20 = *MEMORY[0x277CCA068];
       v21[0] = @"Failed to prepare VTPixelTransferSession";
       v17 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v14, v21, &v20, 1);
-      *a3 = objc_msgSend_errorWithDomain_code_userInfo_(v16, v18, @"ANSTErrorDomain", 3, v17);
+      *session = objc_msgSend_errorWithDomain_code_userInfo_(v16, v18, @"ANSTErrorDomain", 3, v17);
     }
 
     objc_msgSend__releasePixelTransferSession(self, v14, v15);

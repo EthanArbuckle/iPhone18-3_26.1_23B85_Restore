@@ -1,45 +1,45 @@
 @interface CRLiOSShapePresetCollectionViewLayoutProvider
-- (BOOL)p_isLabeledContext:(id)a3;
-- (BOOL)p_isUserDefinedShapeContext:(id)a3;
-- (BOOL)shouldVerticallyDistributeEvenlyForContext:(id)a3;
-- (CGSize)p_preferredGridSpacingInSection:(unint64_t)a3 forContext:(id)a4;
+- (BOOL)p_isLabeledContext:(id)context;
+- (BOOL)p_isUserDefinedShapeContext:(id)context;
+- (BOOL)shouldVerticallyDistributeEvenlyForContext:(id)context;
+- (CGSize)p_preferredGridSpacingInSection:(unint64_t)section forContext:(id)context;
 - (CGSize)p_preferredSwatchSize;
 - (CGSize)swatchInsets;
-- (CRLiOSShapePresetCollectionViewLayoutProvider)initWithShapeCollectionDataSource:(id)a3 searchResultsCollection:(id)a4;
+- (CRLiOSShapePresetCollectionViewLayoutProvider)initWithShapeCollectionDataSource:(id)source searchResultsCollection:(id)collection;
 - (NSArray)pageControlTitles;
-- (double)additionalHeightForItemInSection:(unint64_t)a3 context:(id)a4;
-- (double)horizontalInsetForItemInSection:(unint64_t)a3 context:(id)a4;
-- (double)minimumHorizontalSpacingMultiplierInSection:(unint64_t)a3 forContext:(id)a4;
-- (double)minimumVerticalSpacingMultiplierInSection:(unint64_t)a3 forContext:(id)a4;
+- (double)additionalHeightForItemInSection:(unint64_t)section context:(id)context;
+- (double)horizontalInsetForItemInSection:(unint64_t)section context:(id)context;
+- (double)minimumHorizontalSpacingMultiplierInSection:(unint64_t)section forContext:(id)context;
+- (double)minimumVerticalSpacingMultiplierInSection:(unint64_t)section forContext:(id)context;
 - (id)cellRegistrationDictionary;
-- (id)cellReuseIdentifierForSection:(unint64_t)a3 context:(id)a4;
-- (unint64_t)itemsPerRowForContext:(id)a3;
-- (unint64_t)numberOfItemsInSection:(unint64_t)a3 context:(id)a4;
-- (unint64_t)numberOfSectionsInCollectionViewForContext:(id)a3;
+- (id)cellReuseIdentifierForSection:(unint64_t)section context:(id)context;
+- (unint64_t)itemsPerRowForContext:(id)context;
+- (unint64_t)numberOfItemsInSection:(unint64_t)section context:(id)context;
+- (unint64_t)numberOfSectionsInCollectionViewForContext:(id)context;
 @end
 
 @implementation CRLiOSShapePresetCollectionViewLayoutProvider
 
-- (CRLiOSShapePresetCollectionViewLayoutProvider)initWithShapeCollectionDataSource:(id)a3 searchResultsCollection:(id)a4
+- (CRLiOSShapePresetCollectionViewLayoutProvider)initWithShapeCollectionDataSource:(id)source searchResultsCollection:(id)collection
 {
-  v7 = a3;
-  v8 = a4;
+  sourceCopy = source;
+  collectionCopy = collection;
   v12.receiver = self;
   v12.super_class = CRLiOSShapePresetCollectionViewLayoutProvider;
   v9 = [(CRLiOSShapePresetCollectionViewLayoutProvider *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_shapeCollectionDataSource, a3);
-    objc_storeStrong(&v10->_searchResultsCollection, a4);
+    objc_storeStrong(&v9->_shapeCollectionDataSource, source);
+    objc_storeStrong(&v10->_searchResultsCollection, collection);
   }
 
   return v10;
 }
 
-- (double)additionalHeightForItemInSection:(unint64_t)a3 context:(id)a4
+- (double)additionalHeightForItemInSection:(unint64_t)section context:(id)context
 {
-  v4 = [(CRLiOSShapePresetCollectionViewLayoutProvider *)self p_isLabeledContext:a4];
+  v4 = [(CRLiOSShapePresetCollectionViewLayoutProvider *)self p_isLabeledContext:context];
   result = 30.0 + -2.0;
   if (!v4)
   {
@@ -49,9 +49,9 @@
   return result;
 }
 
-- (id)cellReuseIdentifierForSection:(unint64_t)a3 context:(id)a4
+- (id)cellReuseIdentifierForSection:(unint64_t)section context:(id)context
 {
-  if ([(CRLiOSShapePresetCollectionViewLayoutProvider *)self p_isLabeledContext:a4])
+  if ([(CRLiOSShapePresetCollectionViewLayoutProvider *)self p_isLabeledContext:context])
   {
     v4 = @"CRLiOSPresetCollectionViewLabeledCell";
   }
@@ -175,9 +175,9 @@ LABEL_28:
   return v13;
 }
 
-- (double)horizontalInsetForItemInSection:(unint64_t)a3 context:(id)a4
+- (double)horizontalInsetForItemInSection:(unint64_t)section context:(id)context
 {
-  v4 = [(CRLiOSShapePresetCollectionViewLayoutProvider *)self p_isLabeledContext:a4];
+  v4 = [(CRLiOSShapePresetCollectionViewLayoutProvider *)self p_isLabeledContext:context];
   result = 0.0;
   if (v4)
   {
@@ -187,10 +187,10 @@ LABEL_28:
   return result;
 }
 
-- (unint64_t)itemsPerRowForContext:(id)a3
+- (unint64_t)itemsPerRowForContext:(id)context
 {
-  v3 = a3;
-  if (([v3 hasCompactHeightRegularWidthTraitCollection] & 1) != 0 || objc_msgSend(v3, "hasCompactHeightCompactWidthTraitCollection"))
+  contextCopy = context;
+  if (([contextCopy hasCompactHeightRegularWidthTraitCollection] & 1) != 0 || objc_msgSend(contextCopy, "hasCompactHeightCompactWidthTraitCollection"))
   {
     v4 = 5;
   }
@@ -203,35 +203,35 @@ LABEL_28:
   return v4;
 }
 
-- (double)minimumHorizontalSpacingMultiplierInSection:(unint64_t)a3 forContext:(id)a4
+- (double)minimumHorizontalSpacingMultiplierInSection:(unint64_t)section forContext:(id)context
 {
-  [(CRLiOSShapePresetCollectionViewLayoutProvider *)self p_preferredGridSpacingInSection:a3 forContext:a4];
+  [(CRLiOSShapePresetCollectionViewLayoutProvider *)self p_preferredGridSpacingInSection:section forContext:context];
   v6 = v5;
   [(CRLiOSShapePresetCollectionViewLayoutProvider *)self p_preferredSwatchSize];
   return v6 / v7;
 }
 
-- (double)minimumVerticalSpacingMultiplierInSection:(unint64_t)a3 forContext:(id)a4
+- (double)minimumVerticalSpacingMultiplierInSection:(unint64_t)section forContext:(id)context
 {
-  [(CRLiOSShapePresetCollectionViewLayoutProvider *)self p_preferredGridSpacingInSection:a3 forContext:a4];
+  [(CRLiOSShapePresetCollectionViewLayoutProvider *)self p_preferredGridSpacingInSection:section forContext:context];
   v6 = v5;
   [(CRLiOSShapePresetCollectionViewLayoutProvider *)self p_preferredSwatchSize];
   return v6 / v7;
 }
 
-- (unint64_t)numberOfItemsInSection:(unint64_t)a3 context:(id)a4
+- (unint64_t)numberOfItemsInSection:(unint64_t)section context:(id)context
 {
-  v6 = a4;
-  if ([v6 isSearching])
+  contextCopy = context;
+  if ([contextCopy isSearching])
   {
-    v7 = [(CRLiOSShapePresetCollectionViewLayoutProvider *)self p_searchResultsCollection];
-    v8 = [v7 numberOfShapesInSection:a3];
+    p_searchResultsCollection = [(CRLiOSShapePresetCollectionViewLayoutProvider *)self p_searchResultsCollection];
+    v8 = [p_searchResultsCollection numberOfShapesInSection:section];
   }
 
   else
   {
-    v7 = [(CRLiOSShapePresetCollectionViewLayoutProvider *)self p_shapeCollectionDataSource];
-    v8 = [v7 numberOfShapesInCategoryAtIndex:{objc_msgSend(v6, "pageIndex")}];
+    p_searchResultsCollection = [(CRLiOSShapePresetCollectionViewLayoutProvider *)self p_shapeCollectionDataSource];
+    v8 = [p_searchResultsCollection numberOfShapesInCategoryAtIndex:{objc_msgSend(contextCopy, "pageIndex")}];
   }
 
   v9 = v8;
@@ -239,28 +239,28 @@ LABEL_28:
   return v9;
 }
 
-- (unint64_t)numberOfSectionsInCollectionViewForContext:(id)a3
+- (unint64_t)numberOfSectionsInCollectionViewForContext:(id)context
 {
-  if (![a3 isSearching])
+  if (![context isSearching])
   {
     return 1;
   }
 
-  v4 = [(CRLiOSShapePresetCollectionViewLayoutProvider *)self p_searchResultsCollection];
-  v5 = [v4 numberOfSections];
+  p_searchResultsCollection = [(CRLiOSShapePresetCollectionViewLayoutProvider *)self p_searchResultsCollection];
+  numberOfSections = [p_searchResultsCollection numberOfSections];
 
-  return v5;
+  return numberOfSections;
 }
 
-- (BOOL)shouldVerticallyDistributeEvenlyForContext:(id)a3
+- (BOOL)shouldVerticallyDistributeEvenlyForContext:(id)context
 {
-  v3 = a3;
-  v4 = [v3 pageIndex];
-  v5 = [v3 traitCollection];
-  v6 = [v5 userInterfaceIdiom];
+  contextCopy = context;
+  pageIndex = [contextCopy pageIndex];
+  traitCollection = [contextCopy traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  [v3 contentSize];
-  if (v6)
+  [contextCopy contentSize];
+  if (userInterfaceIdiom)
   {
     v8 = v7 < 450.0;
   }
@@ -270,12 +270,12 @@ LABEL_28:
     v8 = 0;
   }
 
-  if ((!v8 || v4 != 0) && v4 == 0)
+  if ((!v8 || pageIndex != 0) && pageIndex == 0)
   {
-    v12 = [v3 isInPopover];
-    if (v6)
+    isInPopover = [contextCopy isInPopover];
+    if (userInterfaceIdiom)
     {
-      v11 = v12;
+      v11 = isInPopover;
     }
 
     else
@@ -308,10 +308,10 @@ LABEL_28:
 
 - (NSArray)pageControlTitles
 {
-  v2 = [(CRLiOSShapePresetCollectionViewLayoutProvider *)self p_shapeCollectionDataSource];
-  v3 = [v2 categoryNames];
+  p_shapeCollectionDataSource = [(CRLiOSShapePresetCollectionViewLayoutProvider *)self p_shapeCollectionDataSource];
+  categoryNames = [p_shapeCollectionDataSource categoryNames];
 
-  return v3;
+  return categoryNames;
 }
 
 - (CGSize)p_preferredSwatchSize
@@ -323,22 +323,22 @@ LABEL_28:
   return result;
 }
 
-- (CGSize)p_preferredGridSpacingInSection:(unint64_t)a3 forContext:(id)a4
+- (CGSize)p_preferredGridSpacingInSection:(unint64_t)section forContext:(id)context
 {
-  v5 = a4;
-  v6 = [v5 traitCollection];
-  v7 = [v6 userInterfaceIdiom];
+  contextCopy = context;
+  traitCollection = [contextCopy traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v7)
+  if (userInterfaceIdiom)
   {
-    [v5 contentSize];
+    [contextCopy contentSize];
     v9 = v8;
     v10 = v8 <= 438.0 && v8 > 375.0;
-    v11 = [v5 pageIndex];
+    pageIndex = [contextCopy pageIndex];
     v12 = +[UIScreen crl_deviceIsLandscape];
-    v13 = [v5 isSearching];
-    v14 = [v5 isInPopover];
-    if ([v5 isSidebarLike])
+    isSearching = [contextCopy isSearching];
+    isInPopover = [contextCopy isInPopover];
+    if ([contextCopy isSidebarLike])
     {
       if (v9 <= 375.0)
       {
@@ -357,9 +357,9 @@ LABEL_28:
 
       else
       {
-        if (v11)
+        if (pageIndex)
         {
-          v15 = v13 == 0;
+          v15 = isSearching == 0;
           if (v12)
           {
             v16 = 35.0;
@@ -418,17 +418,17 @@ LABEL_28:
       v21 = v25;
     }
 
-    v20 = v11 == 0;
-    if (v14)
+    v20 = pageIndex == 0;
+    if (isInPopover)
     {
       v22 = 25.0;
       v23 = 17.0;
       goto LABEL_41;
     }
 
-    if (v11)
+    if (pageIndex)
     {
-      v27 = v13 == 0;
+      v27 = isSearching == 0;
       if (v10)
       {
         v28 = 32.0;
@@ -462,13 +462,13 @@ LABEL_51:
     goto LABEL_54;
   }
 
-  v18 = [v5 traitCollection];
-  v19 = [v18 verticalSizeClass];
+  traitCollection2 = [contextCopy traitCollection];
+  verticalSizeClass = [traitCollection2 verticalSizeClass];
 
   if (+[UIScreen crl_screenClass]== 4)
   {
-    v20 = v19 == 1;
-    v21 = dbl_101465EA0[v19 == 1];
+    v20 = verticalSizeClass == 1;
+    v21 = dbl_101465EA0[verticalSizeClass == 1];
     v22 = 32.0;
     v23 = 27.0;
     goto LABEL_41;
@@ -476,8 +476,8 @@ LABEL_51:
 
   if (+[UIScreen crl_phoneUI568H])
   {
-    v20 = v19 == 1;
-    v21 = dbl_101465E90[v19 == 1];
+    v20 = verticalSizeClass == 1;
+    v21 = dbl_101465E90[verticalSizeClass == 1];
     v22 = 36.0;
     v23 = 30.0;
     goto LABEL_41;
@@ -485,8 +485,8 @@ LABEL_51:
 
   if (!+[UIScreen crl_screenClassPhoneUIRegularOrLarge])
   {
-    v20 = v19 == 1;
-    v21 = dbl_101465E70[v19 == 1];
+    v20 = verticalSizeClass == 1;
+    v21 = dbl_101465E70[verticalSizeClass == 1];
     v22 = 35.0;
     v23 = 20.0;
 LABEL_41:
@@ -503,21 +503,21 @@ LABEL_41:
     goto LABEL_54;
   }
 
-  v30 = [v5 pageIndex];
-  v21 = dbl_101465E80[v19 == 1];
+  pageIndex2 = [contextCopy pageIndex];
+  v21 = dbl_101465E80[verticalSizeClass == 1];
   v31 = 56.0;
-  if (v19 == 1)
+  if (verticalSizeClass == 1)
   {
     v31 = 23.0;
   }
 
   v32 = 40.0;
-  if (v19 == 1)
+  if (verticalSizeClass == 1)
   {
     v32 = 20.0;
   }
 
-  if (v30)
+  if (pageIndex2)
   {
     v26 = v32;
   }
@@ -528,7 +528,7 @@ LABEL_41:
   }
 
 LABEL_54:
-  if ([(CRLiOSShapePresetCollectionViewLayoutProvider *)self p_isLabeledContext:v5])
+  if ([(CRLiOSShapePresetCollectionViewLayoutProvider *)self p_isLabeledContext:contextCopy])
   {
     v26 = v26 + -5.0;
   }
@@ -540,29 +540,29 @@ LABEL_54:
   return result;
 }
 
-- (BOOL)p_isLabeledContext:(id)a3
+- (BOOL)p_isLabeledContext:(id)context
 {
-  v4 = a3;
-  if ([(CRLiOSShapePresetCollectionViewLayoutProvider *)self p_isUserDefinedShapeContext:v4])
+  contextCopy = context;
+  if ([(CRLiOSShapePresetCollectionViewLayoutProvider *)self p_isUserDefinedShapeContext:contextCopy])
   {
-    v5 = 1;
+    isSearching = 1;
   }
 
   else
   {
-    v5 = [v4 isSearching];
+    isSearching = [contextCopy isSearching];
   }
 
-  return v5;
+  return isSearching;
 }
 
-- (BOOL)p_isUserDefinedShapeContext:(id)a3
+- (BOOL)p_isUserDefinedShapeContext:(id)context
 {
-  v4 = [a3 pageIndex];
-  v5 = [(CRLiOSShapePresetCollectionViewLayoutProvider *)self p_shapeCollectionDataSource];
-  LOBYTE(v4) = v4 == [v5 indexOfUserDefinedLibraryCategory];
+  pageIndex = [context pageIndex];
+  p_shapeCollectionDataSource = [(CRLiOSShapePresetCollectionViewLayoutProvider *)self p_shapeCollectionDataSource];
+  LOBYTE(pageIndex) = pageIndex == [p_shapeCollectionDataSource indexOfUserDefinedLibraryCategory];
 
-  return v4;
+  return pageIndex;
 }
 
 @end

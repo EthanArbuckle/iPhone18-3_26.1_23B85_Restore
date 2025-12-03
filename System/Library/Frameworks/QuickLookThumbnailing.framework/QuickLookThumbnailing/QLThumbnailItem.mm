@@ -1,72 +1,72 @@
 @interface QLThumbnailItem
-- (QLThumbnailItem)initWithCoder:(id)a3;
-- (QLThumbnailItem)initWithData:(id)a3 contentType:(id)a4;
-- (QLThumbnailItem)initWithURL:(id)a3;
-- (QLThumbnailItem)initWithURL:(id)a3 contentType:(id)a4;
-- (QLThumbnailItem)initWithURLWrapper:(id)a3 parentDirectoryWrapper:(id)a4 contentType:(id)a5;
+- (QLThumbnailItem)initWithCoder:(id)coder;
+- (QLThumbnailItem)initWithData:(id)data contentType:(id)type;
+- (QLThumbnailItem)initWithURL:(id)l;
+- (QLThumbnailItem)initWithURL:(id)l contentType:(id)type;
+- (QLThumbnailItem)initWithURLWrapper:(id)wrapper parentDirectoryWrapper:(id)directoryWrapper contentType:(id)type;
 - (id)fileData;
 - (id)fileURL;
 - (void)cleanup;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)startAccessingIfNeeded;
 @end
 
 @implementation QLThumbnailItem
 
-- (QLThumbnailItem)initWithURL:(id)a3
+- (QLThumbnailItem)initWithURL:(id)l
 {
-  v4 = a3;
-  v5 = [QLUTIAnalyzer contentTypeForURL:v4];
-  v6 = [(QLThumbnailItem *)self initWithURL:v4 contentType:v5];
+  lCopy = l;
+  v5 = [QLUTIAnalyzer contentTypeForURL:lCopy];
+  v6 = [(QLThumbnailItem *)self initWithURL:lCopy contentType:v5];
 
   return v6;
 }
 
-- (QLThumbnailItem)initWithURL:(id)a3 contentType:(id)a4
+- (QLThumbnailItem)initWithURL:(id)l contentType:(id)type
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [getFPSandboxingURLWrapperClass() wrapperWithURL:v7 readonly:1 error:0];
+  typeCopy = type;
+  lCopy = l;
+  v8 = [getFPSandboxingURLWrapperClass() wrapperWithURL:lCopy readonly:1 error:0];
 
-  v9 = [(QLThumbnailItem *)self initWithURLWrapper:v8 parentDirectoryWrapper:0 contentType:v6];
+  v9 = [(QLThumbnailItem *)self initWithURLWrapper:v8 parentDirectoryWrapper:0 contentType:typeCopy];
   return v9;
 }
 
-- (QLThumbnailItem)initWithURLWrapper:(id)a3 parentDirectoryWrapper:(id)a4 contentType:(id)a5
+- (QLThumbnailItem)initWithURLWrapper:(id)wrapper parentDirectoryWrapper:(id)directoryWrapper contentType:(id)type
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  wrapperCopy = wrapper;
+  directoryWrapperCopy = directoryWrapper;
+  typeCopy = type;
   v18.receiver = self;
   v18.super_class = QLThumbnailItem;
   v11 = [(QLThumbnailItem *)&v18 init];
   contentType = v11->_contentType;
-  v11->_contentType = v10;
-  v13 = v10;
+  v11->_contentType = typeCopy;
+  v13 = typeCopy;
 
   urlWrapper = v11->_urlWrapper;
-  v11->_urlWrapper = v8;
-  v15 = v8;
+  v11->_urlWrapper = wrapperCopy;
+  v15 = wrapperCopy;
 
   parentDirectoryWrapper = v11->_parentDirectoryWrapper;
-  v11->_parentDirectoryWrapper = v9;
+  v11->_parentDirectoryWrapper = directoryWrapperCopy;
 
   return v11;
 }
 
-- (QLThumbnailItem)initWithData:(id)a3 contentType:(id)a4
+- (QLThumbnailItem)initWithData:(id)data contentType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  typeCopy = type;
   v13.receiver = self;
   v13.super_class = QLThumbnailItem;
   v8 = [(QLThumbnailItem *)&v13 init];
   data = v8->_data;
-  v8->_data = v6;
-  v10 = v6;
+  v8->_data = dataCopy;
+  v10 = dataCopy;
 
   contentType = v8->_contentType;
-  v8->_contentType = v7;
+  v8->_contentType = typeCopy;
 
   return v8;
 }
@@ -75,15 +75,15 @@
 {
   if (![(QLThumbnailItem *)self needStopAccessing])
   {
-    v3 = [(QLThumbnailItem *)self urlWrapper];
-    v4 = [v3 url];
+    urlWrapper = [(QLThumbnailItem *)self urlWrapper];
+    v4 = [urlWrapper url];
     -[QLThumbnailItem setNeedStopAccessing:](self, "setNeedStopAccessing:", [v4 startAccessingSecurityScopedResource]);
   }
 
   if (![(QLThumbnailItem *)self needStopAccessingParent])
   {
-    v6 = [(QLThumbnailItem *)self parentDirectoryWrapper];
-    v5 = [v6 url];
+    parentDirectoryWrapper = [(QLThumbnailItem *)self parentDirectoryWrapper];
+    v5 = [parentDirectoryWrapper url];
     -[QLThumbnailItem setNeedStopAccessingParent:](self, "setNeedStopAccessingParent:", [v5 startAccessingSecurityScopedResource]);
   }
 }
@@ -92,8 +92,8 @@
 {
   if ([(QLThumbnailItem *)self needStopAccessing])
   {
-    v3 = [(QLThumbnailItem *)self urlWrapper];
-    v4 = [v3 url];
+    urlWrapper = [(QLThumbnailItem *)self urlWrapper];
+    v4 = [urlWrapper url];
     [v4 stopAccessingSecurityScopedResource];
 
     [(QLThumbnailItem *)self setNeedStopAccessing:0];
@@ -101,20 +101,20 @@
 
   if ([(QLThumbnailItem *)self needStopAccessingParent])
   {
-    v5 = [(QLThumbnailItem *)self parentDirectoryWrapper];
-    v6 = [v5 url];
+    parentDirectoryWrapper = [(QLThumbnailItem *)self parentDirectoryWrapper];
+    v6 = [parentDirectoryWrapper url];
     [v6 stopAccessingSecurityScopedResource];
 
     [(QLThumbnailItem *)self setNeedStopAccessingParent:0];
   }
 
-  v7 = [(QLThumbnailItem *)self temporaryURL];
+  temporaryURL = [(QLThumbnailItem *)self temporaryURL];
 
-  if (v7)
+  if (temporaryURL)
   {
-    v8 = [MEMORY[0x1E696AC08] defaultManager];
-    v9 = [(QLThumbnailItem *)self temporaryURL];
-    [v8 removeItemAtURL:v9 error:0];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    temporaryURL2 = [(QLThumbnailItem *)self temporaryURL];
+    [defaultManager removeItemAtURL:temporaryURL2 error:0];
 
     [(QLThumbnailItem *)self setTemporaryURL:0];
   }
@@ -122,116 +122,116 @@
 
 - (id)fileURL
 {
-  v3 = [(QLThumbnailItem *)self temporaryURL];
+  temporaryURL = [(QLThumbnailItem *)self temporaryURL];
 
-  if (v3)
+  if (temporaryURL)
   {
     goto LABEL_2;
   }
 
-  v5 = [(QLThumbnailItem *)self urlWrapper];
+  urlWrapper = [(QLThumbnailItem *)self urlWrapper];
 
-  if (v5)
+  if (urlWrapper)
   {
-    v6 = [(QLThumbnailItem *)self urlWrapper];
-    v4 = [v6 url];
+    urlWrapper2 = [(QLThumbnailItem *)self urlWrapper];
+    temporaryURL4 = [urlWrapper2 url];
   }
 
   else
   {
-    v8 = [(QLThumbnailItem *)self data];
+    data = [(QLThumbnailItem *)self data];
 
-    if (v8)
+    if (data)
     {
-      v9 = [MEMORY[0x1E696AC08] defaultManager];
-      v10 = [v9 temporaryDirectory];
-      v11 = [MEMORY[0x1E696AFB0] UUID];
-      v12 = [v11 UUIDString];
-      v13 = [(QLThumbnailItem *)self contentType];
-      v14 = [v10 URLByAppendingPathComponent:v12 conformingToType:v13];
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+      temporaryDirectory = [defaultManager temporaryDirectory];
+      uUID = [MEMORY[0x1E696AFB0] UUID];
+      uUIDString = [uUID UUIDString];
+      contentType = [(QLThumbnailItem *)self contentType];
+      v14 = [temporaryDirectory URLByAppendingPathComponent:uUIDString conformingToType:contentType];
       [(QLThumbnailItem *)self setTemporaryURL:v14];
 
-      v15 = [(QLThumbnailItem *)self data];
-      v16 = [(QLThumbnailItem *)self temporaryURL];
-      [v15 writeToURL:v16 atomically:1];
+      data2 = [(QLThumbnailItem *)self data];
+      temporaryURL2 = [(QLThumbnailItem *)self temporaryURL];
+      [data2 writeToURL:temporaryURL2 atomically:1];
 
-      v17 = [(QLThumbnailItem *)self temporaryURL];
-      NSLog(&cfstr_WritingTempora.isa, v17);
+      temporaryURL3 = [(QLThumbnailItem *)self temporaryURL];
+      NSLog(&cfstr_WritingTempora.isa, temporaryURL3);
 
 LABEL_2:
-      v4 = [(QLThumbnailItem *)self temporaryURL];
+      temporaryURL4 = [(QLThumbnailItem *)self temporaryURL];
       goto LABEL_5;
     }
 
-    v4 = 0;
+    temporaryURL4 = 0;
   }
 
 LABEL_5:
 
-  return v4;
+  return temporaryURL4;
 }
 
 - (id)fileData
 {
-  v3 = [(QLThumbnailItem *)self data];
+  data = [(QLThumbnailItem *)self data];
 
-  if (v3)
+  if (data)
   {
-    v4 = [(QLThumbnailItem *)self data];
+    data2 = [(QLThumbnailItem *)self data];
   }
 
   else
   {
-    v5 = [(QLThumbnailItem *)self urlWrapper];
+    urlWrapper = [(QLThumbnailItem *)self urlWrapper];
 
-    if (v5)
+    if (urlWrapper)
     {
       v6 = MEMORY[0x1E695DEF0];
-      v7 = [(QLThumbnailItem *)self urlWrapper];
-      v8 = [v7 url];
-      v4 = [v6 dataWithContentsOfURL:v8 options:1 error:0];
+      urlWrapper2 = [(QLThumbnailItem *)self urlWrapper];
+      v8 = [urlWrapper2 url];
+      data2 = [v6 dataWithContentsOfURL:v8 options:1 error:0];
     }
 
     else
     {
-      v4 = 0;
+      data2 = 0;
     }
   }
 
-  return v4;
+  return data2;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   data = self->_data;
-  v5 = a3;
-  [v5 encodeObject:data forKey:@"d"];
-  [v5 encodeObject:self->_urlWrapper forKey:@"u"];
-  [v5 encodeObject:self->_parentDirectoryWrapper forKey:@"p"];
-  [v5 encodeObject:self->_contentType forKey:@"c"];
-  [v5 encodeObject:self->_attachments forKey:@"a"];
+  coderCopy = coder;
+  [coderCopy encodeObject:data forKey:@"d"];
+  [coderCopy encodeObject:self->_urlWrapper forKey:@"u"];
+  [coderCopy encodeObject:self->_parentDirectoryWrapper forKey:@"p"];
+  [coderCopy encodeObject:self->_contentType forKey:@"c"];
+  [coderCopy encodeObject:self->_attachments forKey:@"a"];
 }
 
-- (QLThumbnailItem)initWithCoder:(id)a3
+- (QLThumbnailItem)initWithCoder:(id)coder
 {
   v25[1] = *MEMORY[0x1E69E9840];
   v23.receiver = self;
   v23.super_class = QLThumbnailItem;
-  v3 = a3;
+  coderCopy = coder;
   v4 = [(QLThumbnailItem *)&v23 init];
-  v5 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"d"];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"d"];
   data = v4->_data;
   v4->_data = v5;
 
-  v7 = [v3 decodeObjectOfClass:getFPSandboxingURLWrapperClass() forKey:@"u"];
+  v7 = [coderCopy decodeObjectOfClass:getFPSandboxingURLWrapperClass() forKey:@"u"];
   urlWrapper = v4->_urlWrapper;
   v4->_urlWrapper = v7;
 
-  v9 = [v3 decodeObjectOfClass:getFPSandboxingURLWrapperClass() forKey:@"p"];
+  v9 = [coderCopy decodeObjectOfClass:getFPSandboxingURLWrapperClass() forKey:@"p"];
   parentDirectoryWrapper = v4->_parentDirectoryWrapper;
   v4->_parentDirectoryWrapper = v9;
 
-  v11 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"c"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"c"];
   contentType = v4->_contentType;
   v4->_contentType = v11;
 
@@ -243,7 +243,7 @@ LABEL_5:
   v24 = objc_opt_class();
   v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v24 count:1];
   v18 = [v16 setWithArray:v17];
-  v19 = [v3 decodeDictionaryWithKeysOfClasses:v15 objectsOfClasses:v18 forKey:@"a"];
+  v19 = [coderCopy decodeDictionaryWithKeysOfClasses:v15 objectsOfClasses:v18 forKey:@"a"];
 
   attachments = v4->_attachments;
   v4->_attachments = v19;

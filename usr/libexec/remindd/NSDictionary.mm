@@ -1,27 +1,27 @@
 @interface NSDictionary
-- (id)ic_prettyDescriptionWithTabLevel:(unint64_t)a3;
+- (id)ic_prettyDescriptionWithTabLevel:(unint64_t)level;
 - (id)jsonify;
 @end
 
 @implementation NSDictionary
 
-- (id)ic_prettyDescriptionWithTabLevel:(unint64_t)a3
+- (id)ic_prettyDescriptionWithTabLevel:(unint64_t)level
 {
   v5 = objc_alloc_init(NSMutableString);
   [v5 appendString:@"{\n"];
-  if (a3)
+  if (level)
   {
     v6 = &stru_1008FE8A0;
-    v7 = a3;
+    levelCopy = level;
     do
     {
       v8 = [(__CFString *)v6 stringByAppendingString:@"\t"];
 
       v6 = v8;
-      --v7;
+      --levelCopy;
     }
 
-    while (v7);
+    while (levelCopy);
   }
 
   else
@@ -37,7 +37,7 @@
   v10 = v5;
   v19 = v10;
   v20 = v9;
-  v21 = a3;
+  levelCopy2 = level;
   v11 = v9;
   [(NSDictionary *)self enumerateKeysAndObjectsUsingBlock:&v15];
   [v10 appendFormat:@"%@}", v8, v15, v16, v17, v18];
@@ -49,7 +49,7 @@
 
 - (id)jsonify
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10044F760();
 
   return v3;

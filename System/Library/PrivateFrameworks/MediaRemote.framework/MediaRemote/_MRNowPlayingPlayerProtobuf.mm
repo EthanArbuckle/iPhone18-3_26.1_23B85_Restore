@@ -1,17 +1,17 @@
 @interface _MRNowPlayingPlayerProtobuf
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsAudioSessionType:(id)a3;
+- (int)StringAsAudioSessionType:(id)type;
 - (int)audioSessionType;
-- (int64_t)mxSessionIDAtIndex:(unint64_t)a3;
+- (int64_t)mxSessionIDAtIndex:(unint64_t)index;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAudioSessionType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasAudioSessionType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _MRNowPlayingPlayerProtobuf
@@ -37,9 +37,9 @@
   [(_MRNowPlayingPlayerProtobuf *)&v3 dealloc];
 }
 
-- (void)setHasAudioSessionType:(BOOL)a3
+- (void)setHasAudioSessionType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -52,20 +52,20 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (int)StringAsAudioSessionType:(id)a3
+- (int)StringAsAudioSessionType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Default"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"Default"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"LongForm"])
+  else if ([typeCopy isEqualToString:@"LongForm"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Independent"])
+  else if ([typeCopy isEqualToString:@"Independent"])
   {
     v4 = 2;
   }
@@ -78,20 +78,20 @@
   return v4;
 }
 
-- (int64_t)mxSessionIDAtIndex:(unint64_t)a3
+- (int64_t)mxSessionIDAtIndex:(unint64_t)index
 {
   p_mxSessionIDs = &self->_mxSessionIDs;
   count = self->_mxSessionIDs.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x1E695DF30];
     v7 = *MEMORY[0x1E695DA20];
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_mxSessionIDs->list[a3];
+  return p_mxSessionIDs->list[index];
 }
 
 - (id)description
@@ -100,20 +100,20 @@
   v8.receiver = self;
   v8.super_class = _MRNowPlayingPlayerProtobuf;
   v4 = [(_MRNowPlayingPlayerProtobuf *)&v8 description];
-  v5 = [(_MRNowPlayingPlayerProtobuf *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(_MRNowPlayingPlayerProtobuf *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   identifier = self->_identifier;
   if (identifier)
   {
-    [v3 setObject:identifier forKey:@"identifier"];
+    [dictionary setObject:identifier forKey:@"identifier"];
   }
 
   displayName = self->_displayName;
@@ -156,27 +156,27 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v9 = v4;
+  toCopy = to;
+  v9 = toCopy;
   if (self->_identifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_displayName)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if ((*&self->_has & 2) != 0)
   {
     audioSessionType = self->_audioSessionType;
     PBDataWriterWriteInt32Field();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_mxSessionIDs.count)
@@ -186,7 +186,7 @@
     {
       v7 = self->_mxSessionIDs.list[v6];
       PBDataWriterWriteInt64Field();
-      v4 = v9;
+      toCopy = v9;
       ++v6;
     }
 
@@ -197,45 +197,45 @@
   {
     audioSessionID = self->_audioSessionID;
     PBDataWriterWriteUint32Field();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_iconURL)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v9 = v4;
+  toCopy = to;
+  v9 = toCopy;
   if (self->_identifier)
   {
-    [v4 setIdentifier:?];
-    v4 = v9;
+    [toCopy setIdentifier:?];
+    toCopy = v9;
   }
 
   if (self->_displayName)
   {
     [v9 setDisplayName:?];
-    v4 = v9;
+    toCopy = v9;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    *(v4 + 9) = self->_audioSessionType;
-    *(v4 + 64) |= 2u;
+    *(toCopy + 9) = self->_audioSessionType;
+    *(toCopy + 64) |= 2u;
   }
 
   if ([(_MRNowPlayingPlayerProtobuf *)self mxSessionIDsCount])
   {
     [v9 clearMxSessionIDs];
-    v5 = [(_MRNowPlayingPlayerProtobuf *)self mxSessionIDsCount];
-    if (v5)
+    mxSessionIDsCount = [(_MRNowPlayingPlayerProtobuf *)self mxSessionIDsCount];
+    if (mxSessionIDsCount)
     {
-      v6 = v5;
+      v6 = mxSessionIDsCount;
       for (i = 0; i != v6; ++i)
       {
         [v9 addMxSessionID:{-[_MRNowPlayingPlayerProtobuf mxSessionIDAtIndex:](self, "mxSessionIDAtIndex:", i)}];
@@ -257,14 +257,14 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_identifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_identifier copyWithZone:zone];
   v7 = *(v5 + 56);
   *(v5 + 56) = v6;
 
-  v8 = [(NSString *)self->_displayName copyWithZone:a3];
+  v8 = [(NSString *)self->_displayName copyWithZone:zone];
   v9 = *(v5 + 40);
   *(v5 + 40) = v8;
 
@@ -281,23 +281,23 @@
     *(v5 + 64) |= 1u;
   }
 
-  v10 = [(NSString *)self->_iconURL copyWithZone:a3];
+  v10 = [(NSString *)self->_iconURL copyWithZone:zone];
   v11 = *(v5 + 48);
   *(v5 + 48) = v10;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_19;
   }
 
   identifier = self->_identifier;
-  if (identifier | *(v4 + 7))
+  if (identifier | *(equalCopy + 7))
   {
     if (![(NSString *)identifier isEqual:?])
     {
@@ -306,7 +306,7 @@
   }
 
   displayName = self->_displayName;
-  if (displayName | *(v4 + 5))
+  if (displayName | *(equalCopy + 5))
   {
     if (![(NSString *)displayName isEqual:?])
     {
@@ -314,16 +314,16 @@
     }
   }
 
-  v7 = *(v4 + 64);
+  v7 = *(equalCopy + 64);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 64) & 2) == 0 || self->_audioSessionType != *(v4 + 9))
+    if ((*(equalCopy + 64) & 2) == 0 || self->_audioSessionType != *(equalCopy + 9))
     {
       goto LABEL_19;
     }
   }
 
-  else if ((*(v4 + 64) & 2) != 0)
+  else if ((*(equalCopy + 64) & 2) != 0)
   {
     goto LABEL_19;
   }
@@ -335,22 +335,22 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  v8 = *(v4 + 64);
+  v8 = *(equalCopy + 64);
   if (*&self->_has)
   {
-    if ((*(v4 + 64) & 1) == 0 || self->_audioSessionID != *(v4 + 8))
+    if ((*(equalCopy + 64) & 1) == 0 || self->_audioSessionID != *(equalCopy + 8))
     {
       goto LABEL_19;
     }
   }
 
-  else if (*(v4 + 64))
+  else if (*(equalCopy + 64))
   {
     goto LABEL_19;
   }
 
   iconURL = self->_iconURL;
-  if (iconURL | *(v4 + 6))
+  if (iconURL | *(equalCopy + 6))
   {
     v10 = [(NSString *)iconURL isEqual:?];
   }
@@ -393,32 +393,32 @@ LABEL_20:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ [(NSString *)self->_iconURL hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v9 = v4;
-  if (*(v4 + 7))
+  fromCopy = from;
+  v9 = fromCopy;
+  if (*(fromCopy + 7))
   {
     [(_MRNowPlayingPlayerProtobuf *)self setIdentifier:?];
-    v4 = v9;
+    fromCopy = v9;
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(_MRNowPlayingPlayerProtobuf *)self setDisplayName:?];
-    v4 = v9;
+    fromCopy = v9;
   }
 
-  if ((v4[16] & 2) != 0)
+  if ((fromCopy[16] & 2) != 0)
   {
-    self->_audioSessionType = v4[9];
+    self->_audioSessionType = fromCopy[9];
     *&self->_has |= 2u;
   }
 
-  v5 = [v4 mxSessionIDsCount];
-  if (v5)
+  mxSessionIDsCount = [fromCopy mxSessionIDsCount];
+  if (mxSessionIDsCount)
   {
-    v6 = v5;
+    v6 = mxSessionIDsCount;
     for (i = 0; i != v6; ++i)
     {
       -[_MRNowPlayingPlayerProtobuf addMxSessionID:](self, "addMxSessionID:", [v9 mxSessionIDAtIndex:i]);

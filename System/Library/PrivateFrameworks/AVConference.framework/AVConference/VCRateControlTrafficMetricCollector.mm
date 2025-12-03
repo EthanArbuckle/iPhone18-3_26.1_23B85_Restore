@@ -1,5 +1,5 @@
 @interface VCRateControlTrafficMetricCollector
-- (VCRateControlTrafficMetricCollector)initWithMediaController:(void *)a3 statisticsCollector:(id)a4;
+- (VCRateControlTrafficMetricCollector)initWithMediaController:(void *)controller statisticsCollector:(id)collector;
 - (void)calculateTrafficMetrics;
 - (void)dealloc;
 - (void)startVCRateControlTrafficMetricCollector;
@@ -8,10 +8,10 @@
 
 @implementation VCRateControlTrafficMetricCollector
 
-- (VCRateControlTrafficMetricCollector)initWithMediaController:(void *)a3 statisticsCollector:(id)a4
+- (VCRateControlTrafficMetricCollector)initWithMediaController:(void *)controller statisticsCollector:(id)collector
 {
   v34 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!controller)
   {
     [VCRateControlTrafficMetricCollector initWithMediaController:buf statisticsCollector:?];
 LABEL_20:
@@ -19,7 +19,7 @@ LABEL_20:
     goto LABEL_8;
   }
 
-  if (!a4)
+  if (!collector)
   {
     [VCRateControlTrafficMetricCollector initWithMediaController:buf statisticsCollector:?];
     goto LABEL_20;
@@ -37,8 +37,8 @@ LABEL_8:
   }
 
   v7 = v6;
-  v6->_mediaController = a3;
-  v7->_statisticsCollector = a4;
+  v6->_mediaController = controller;
+  v7->_statisticsCollector = collector;
   v7->_isStopped = 1;
   if (objc_opt_class() == v7)
   {
@@ -165,7 +165,7 @@ LABEL_11:
         v18 = 2112;
         v19 = v3;
         v20 = 2048;
-        v21 = self;
+        selfCopy = self;
         v6 = " [%s] %s:%d %@(%p) VCRateControlTrafficMetricCollector dealloc";
         v7 = v10;
         v8 = 48;
@@ -211,7 +211,7 @@ LABEL_11:
           v22 = 2112;
           v23 = v3;
           v24 = 2048;
-          v25 = self;
+          selfCopy2 = self;
           v9 = " [%s] %s:%d %@(%p) VCRateControlTrafficMetricCollector already stopped";
 LABEL_26:
           v11 = v14;
@@ -315,7 +315,7 @@ LABEL_27:
       v22 = 2112;
       v23 = v6;
       v24 = 2048;
-      v25 = self;
+      selfCopy2 = self;
       v9 = " [%s] %s:%d %@(%p) VCRateControlTrafficMetricCollector stopped";
       goto LABEL_26;
     }
@@ -324,7 +324,7 @@ LABEL_27:
 
 - (void)startVCRateControlTrafficMetricCollector
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     if (VRTraceGetErrorLogLevelForModule() < 3)
     {
@@ -347,7 +347,7 @@ LABEL_11:
 
   if (objc_opt_respondsToSelector())
   {
-    [a1 performSelector:sel_logPrefix];
+    [self performSelector:sel_logPrefix];
   }
 
   if (VRTraceGetErrorLogLevelForModule() >= 3)
@@ -367,7 +367,7 @@ LABEL_11:
 
 - (void)calculateTrafficMetrics
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     if (VRTraceGetErrorLogLevelForModule() < 3)
     {
@@ -390,7 +390,7 @@ LABEL_11:
 
   if (objc_opt_respondsToSelector())
   {
-    [a1 performSelector:sel_logPrefix];
+    [self performSelector:sel_logPrefix];
   }
 
   if (VRTraceGetErrorLogLevelForModule() >= 3)

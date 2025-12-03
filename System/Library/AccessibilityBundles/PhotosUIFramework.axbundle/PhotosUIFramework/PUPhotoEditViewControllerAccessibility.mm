@@ -1,5 +1,5 @@
 @interface PUPhotoEditViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_reloadToolbarButtonsIfNeeded;
 - (void)viewDidLoad;
@@ -7,19 +7,19 @@
 
 @implementation PUPhotoEditViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PUPhotoEditViewController" hasInstanceVariable:@"_moreButton" withType:"PUPhotoEditToolbarButton"];
-  [v3 validateClass:@"PUPhotoEditViewController" hasInstanceVariable:@"_redEyeButton" withType:"PUPhotoEditToolbarButton"];
-  [v3 validateClass:@"PUPhotoEditViewController" hasInstanceMethod:@"viewDidLoad" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"PUPhotoEditViewController" hasInstanceMethod:@"_updateToolbarsAnimated:" withFullSignature:{"v", "B", 0}];
-  [v3 validateClass:@"PUPhotoEditViewController" hasInstanceMethod:@"_updateMainActionButtonAnimated:" withFullSignature:{"v", "B", 0}];
-  [v3 validateClass:@"PUPhotoEditViewController" hasInstanceMethod:@"_reloadToolbarButtonsIfNeeded" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"PUPhotoEditViewController" hasInstanceVariable:@"_mediaView" withType:"NUMediaView"];
-  [v3 validateClass:@"NUMediaView" hasInstanceVariable:@"_renderView" withType:"NURenderView"];
-  [v3 validateClass:@"NUMediaView" hasInstanceVariable:@"_renderer" withType:"NUMediaViewRenderer"];
-  [v3 validateClass:@"NUMediaViewRenderer" hasInstanceMethod:@"computedDisplayType" withFullSignature:{"Q", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PUPhotoEditViewController" hasInstanceVariable:@"_moreButton" withType:"PUPhotoEditToolbarButton"];
+  [validationsCopy validateClass:@"PUPhotoEditViewController" hasInstanceVariable:@"_redEyeButton" withType:"PUPhotoEditToolbarButton"];
+  [validationsCopy validateClass:@"PUPhotoEditViewController" hasInstanceMethod:@"viewDidLoad" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"PUPhotoEditViewController" hasInstanceMethod:@"_updateToolbarsAnimated:" withFullSignature:{"v", "B", 0}];
+  [validationsCopy validateClass:@"PUPhotoEditViewController" hasInstanceMethod:@"_updateMainActionButtonAnimated:" withFullSignature:{"v", "B", 0}];
+  [validationsCopy validateClass:@"PUPhotoEditViewController" hasInstanceMethod:@"_reloadToolbarButtonsIfNeeded" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"PUPhotoEditViewController" hasInstanceVariable:@"_mediaView" withType:"NUMediaView"];
+  [validationsCopy validateClass:@"NUMediaView" hasInstanceVariable:@"_renderView" withType:"NURenderView"];
+  [validationsCopy validateClass:@"NUMediaView" hasInstanceVariable:@"_renderer" withType:"NUMediaViewRenderer"];
+  [validationsCopy validateClass:@"NUMediaViewRenderer" hasInstanceMethod:@"computedDisplayType" withFullSignature:{"Q", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

@@ -1,7 +1,7 @@
 @interface EKEventTravelTimeEditItem
-- (BOOL)editItemViewControllerSave:(id)a3;
-- (id)cellForSubitemAtIndex:(unint64_t)a3;
-- (id)detailViewControllerWithFrame:(CGRect)a3 forSubitemAtIndex:(unint64_t)a4;
+- (BOOL)editItemViewControllerSave:(id)save;
+- (id)cellForSubitemAtIndex:(unint64_t)index;
+- (id)detailViewControllerWithFrame:(CGRect)frame forSubitemAtIndex:(unint64_t)index;
 - (id)generatePopupMenu;
 - (void)_updateHiddenState;
 @end
@@ -11,20 +11,20 @@
 - (void)_updateHiddenState
 {
   WeakRetained = objc_loadWeakRetained(&self->super.super._calendarItem);
-  v3 = [WeakRetained allowsTravelTimeModifications];
-  self->_isHidden = v3 ^ 1;
-  if ((v3 & 1) == 0)
+  allowsTravelTimeModifications = [WeakRetained allowsTravelTimeModifications];
+  self->_isHidden = allowsTravelTimeModifications ^ 1;
+  if ((allowsTravelTimeModifications & 1) == 0)
   {
-    v4 = [(EKEventEditItem *)self event];
-    v5 = [v4 travelStartLocation];
-    if (v5)
+    event = [(EKEventEditItem *)self event];
+    travelStartLocation = [event travelStartLocation];
+    if (travelStartLocation)
     {
     }
 
     else
     {
-      v6 = [(EKEventEditItem *)self event];
-      [v6 travelTime];
+      event2 = [(EKEventEditItem *)self event];
+      [event2 travelTime];
       v8 = v7;
 
       if (v8 <= 0.0)
@@ -33,11 +33,11 @@
       }
     }
 
-    v9 = [(EKEventEditItem *)self event];
-    [v9 setTravelStartLocation:0];
+    event3 = [(EKEventEditItem *)self event];
+    [event3 setTravelStartLocation:0];
 
-    v10 = [(EKEventEditItem *)self event];
-    [v10 setTravelTime:0.0];
+    event4 = [(EKEventEditItem *)self event];
+    [event4 setTravelTime:0.0];
 
     [(EKCalendarItemEditItem *)self notifySubitemDidSave:0];
   }
@@ -45,75 +45,75 @@
 LABEL_6:
 }
 
-- (id)detailViewControllerWithFrame:(CGRect)a3 forSubitemAtIndex:(unint64_t)a4
+- (id)detailViewControllerWithFrame:(CGRect)frame forSubitemAtIndex:(unint64_t)index
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v9 = [EKEventTravelTimeEditViewController alloc];
   WeakRetained = objc_loadWeakRetained(&self->super.super._calendarItem);
   v11 = objc_loadWeakRetained(&self->super.super._store);
-  v12 = [(EKEventTravelTimeEditViewController *)v9 initWithFrame:WeakRetained calendarItem:v11 eventStore:x, y, width, height];
+  height = [(EKEventTravelTimeEditViewController *)v9 initWithFrame:WeakRetained calendarItem:v11 eventStore:x, y, width, height];
 
-  v13 = [(EKEventEditItem *)self event];
-  [v13 travelTime];
-  [(EKEventTravelTimeEditViewController *)v12 setSelectedTravelTime:?];
+  event = [(EKEventEditItem *)self event];
+  [event travelTime];
+  [(EKEventTravelTimeEditViewController *)height setSelectedTravelTime:?];
 
-  v14 = [(EKEventEditItem *)self event];
-  v15 = [v14 structuredLocation];
-  v16 = [v15 isStructured];
+  event2 = [(EKEventEditItem *)self event];
+  structuredLocation = [event2 structuredLocation];
+  isStructured = [structuredLocation isStructured];
 
-  if (v16)
+  if (isStructured)
   {
-    v17 = [(EKEventEditItem *)self event];
-    -[EKEventTravelTimeEditViewController setSelectedRoutingMode:](v12, "setSelectedRoutingMode:", [v17 travelRoutingMode]);
+    event3 = [(EKEventEditItem *)self event];
+    -[EKEventTravelTimeEditViewController setSelectedRoutingMode:](height, "setSelectedRoutingMode:", [event3 travelRoutingMode]);
 
-    v18 = [(EKEventEditItem *)self event];
-    v19 = [v18 travelStartLocation];
-    [(EKEventTravelTimeEditViewController *)v12 setOriginStructuredLocation:v19];
+    event4 = [(EKEventEditItem *)self event];
+    travelStartLocation = [event4 travelStartLocation];
+    [(EKEventTravelTimeEditViewController *)height setOriginStructuredLocation:travelStartLocation];
 
-    v20 = [(EKEventEditItem *)self event];
-    v21 = [v20 structuredLocation];
-    [(EKEventTravelTimeEditViewController *)v12 setDestinationStructuredLocation:v21];
+    event5 = [(EKEventEditItem *)self event];
+    structuredLocation2 = [event5 structuredLocation];
+    [(EKEventTravelTimeEditViewController *)height setDestinationStructuredLocation:structuredLocation2];
 
-    v22 = [(EKEventEditItem *)self event];
-    v23 = [v22 startDate];
-    [(EKEventTravelTimeEditViewController *)v12 setArrivalDate:v23];
+    event6 = [(EKEventEditItem *)self event];
+    startDate = [event6 startDate];
+    [(EKEventTravelTimeEditViewController *)height setArrivalDate:startDate];
   }
 
   else
   {
-    [(EKEventTravelTimeEditViewController *)v12 setSelectedRoutingMode:0];
-    [(EKEventTravelTimeEditViewController *)v12 setOriginStructuredLocation:0];
-    [(EKEventTravelTimeEditViewController *)v12 setDestinationStructuredLocation:0];
-    [(EKEventTravelTimeEditViewController *)v12 setArrivalDate:0];
+    [(EKEventTravelTimeEditViewController *)height setSelectedRoutingMode:0];
+    [(EKEventTravelTimeEditViewController *)height setOriginStructuredLocation:0];
+    [(EKEventTravelTimeEditViewController *)height setDestinationStructuredLocation:0];
+    [(EKEventTravelTimeEditViewController *)height setArrivalDate:0];
   }
 
-  return v12;
+  return height;
 }
 
-- (BOOL)editItemViewControllerSave:(id)a3
+- (BOOL)editItemViewControllerSave:(id)save
 {
-  v4 = a3;
-  [v4 selectedTravelTime];
+  saveCopy = save;
+  [saveCopy selectedTravelTime];
   v6 = v5;
-  v7 = [v4 selectedRoutingMode];
-  v8 = [v4 originStructuredLocation];
+  selectedRoutingMode = [saveCopy selectedRoutingMode];
+  originStructuredLocation = [saveCopy originStructuredLocation];
 
   if (v6 > 0.0)
   {
-    v9 = [v8 copy];
-    v10 = v9;
-    if (v7)
+    v9 = [originStructuredLocation copy];
+    event4 = v9;
+    if (selectedRoutingMode)
     {
       if (!v9)
       {
-        v10 = objc_opt_new();
+        event4 = objc_opt_new();
       }
 
       v11 = MEMORY[0x1E6992FD8];
-      v12 = v7;
+      v12 = selectedRoutingMode;
     }
 
     else
@@ -121,11 +121,11 @@ LABEL_6:
       if (!v9)
       {
 LABEL_10:
-        v15 = [(EKEventEditItem *)self event];
-        [v15 setTravelStartLocation:v10];
+        event = [(EKEventEditItem *)self event];
+        [event setTravelStartLocation:event4];
 
-        v16 = [(EKEventEditItem *)self event];
-        [v16 setTravelTime:v6];
+        event2 = [(EKEventEditItem *)self event];
+        [event2 setTravelTime:v6];
 
         goto LABEL_11;
       }
@@ -135,50 +135,50 @@ LABEL_10:
     }
 
     v14 = [v11 routeTypeStringForCalLocationRoutingMode:v12];
-    [v10 setRouting:v14];
+    [event4 setRouting:v14];
 
     goto LABEL_10;
   }
 
-  v13 = [(EKEventEditItem *)self event];
-  [v13 setTravelStartLocation:0];
+  event3 = [(EKEventEditItem *)self event];
+  [event3 setTravelStartLocation:0];
 
-  v10 = [(EKEventEditItem *)self event];
-  [v10 setTravelTime:0.0];
+  event4 = [(EKEventEditItem *)self event];
+  [event4 setTravelTime:0.0];
 LABEL_11:
 
   [(EKCalendarItemEditItem *)self notifySubitemDidSave:0];
   return 1;
 }
 
-- (id)cellForSubitemAtIndex:(unint64_t)a3
+- (id)cellForSubitemAtIndex:(unint64_t)index
 {
-  v4 = [(EKEventEditItem *)self event];
-  v5 = [v4 structuredLocation];
-  v6 = [v5 isStructured];
+  event = [(EKEventEditItem *)self event];
+  structuredLocation = [event structuredLocation];
+  isStructured = [structuredLocation isStructured];
 
-  if (v6)
+  if (isStructured)
   {
     v7 = [[EKUITableViewCell alloc] initWithStyle:1 reuseIdentifier:0];
     [(EKUIPopupTableViewCell *)v7 setAccessoryType:1];
-    v8 = [(EKEventEditItem *)self event];
-    [v8 travelTime];
+    event2 = [(EKEventEditItem *)self event];
+    [event2 travelTime];
     v9 = CUIKDisplayStringForTravelTimeUsingShortFormat();
-    v10 = [(EKUIPopupTableViewCell *)v7 detailTextLabel];
-    [v10 setText:v9];
+    detailTextLabel = [(EKUIPopupTableViewCell *)v7 detailTextLabel];
+    [detailTextLabel setText:v9];
   }
 
   else
   {
     v7 = [[EKUIPopupTableViewCell alloc] initWithStyle:1 reuseIdentifier:0];
-    v8 = [(EKEventTravelTimeEditItem *)self generatePopupMenu];
-    [(EKUIPopupTableViewCell *)v7 setPopupMenu:v8];
+    event2 = [(EKEventTravelTimeEditItem *)self generatePopupMenu];
+    [(EKUIPopupTableViewCell *)v7 setPopupMenu:event2];
   }
 
   v11 = EventKitUIBundle();
   v12 = [v11 localizedStringForKey:@"Travel Time" value:&stru_1F4EF6790 table:0];
-  v13 = [(EKUIPopupTableViewCell *)v7 textLabel];
-  [v13 setText:v12];
+  textLabel = [(EKUIPopupTableViewCell *)v7 textLabel];
+  [textLabel setText:v12];
 
   [(EKUIPopupTableViewCell *)v7 setAccessibilityIdentifier:@"travel-time-cell"];
 
@@ -189,8 +189,8 @@ LABEL_11:
 {
   v3 = objc_alloc_init(EKUITravelUtilities);
   objc_initWeak(&location, self);
-  v4 = [(EKEventEditItem *)self event];
-  [v4 travelTime];
+  event = [(EKEventEditItem *)self event];
+  [event travelTime];
   v6 = v5;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;

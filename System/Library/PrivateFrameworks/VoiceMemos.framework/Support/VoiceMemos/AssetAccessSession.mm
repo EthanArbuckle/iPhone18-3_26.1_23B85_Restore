@@ -1,26 +1,26 @@
 @interface AssetAccessSession
-- (AssetAccessSession)initWithAccessToken:(id)a3 compositionAVURL:(id)a4 xpcConnection:(id)a5 xpcTransaction:(id)a6;
+- (AssetAccessSession)initWithAccessToken:(id)token compositionAVURL:(id)l xpcConnection:(id)connection xpcTransaction:(id)transaction;
 - (id)debugDescription;
 @end
 
 @implementation AssetAccessSession
 
-- (AssetAccessSession)initWithAccessToken:(id)a3 compositionAVURL:(id)a4 xpcConnection:(id)a5 xpcTransaction:(id)a6
+- (AssetAccessSession)initWithAccessToken:(id)token compositionAVURL:(id)l xpcConnection:(id)connection xpcTransaction:(id)transaction
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  tokenCopy = token;
+  lCopy = l;
+  connectionCopy = connection;
+  transactionCopy = transaction;
   v18.receiver = self;
   v18.super_class = AssetAccessSession;
   v15 = [(AssetAccessSession *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_accessToken, a3);
-    objc_storeStrong(&v16->_compositionAVURL, a4);
-    objc_storeStrong(&v16->_xpcConnection, a5);
-    objc_storeStrong(&v16->_xpcTransaction, a6);
+    objc_storeStrong(&v15->_accessToken, token);
+    objc_storeStrong(&v16->_compositionAVURL, l);
+    objc_storeStrong(&v16->_xpcConnection, connection);
+    objc_storeStrong(&v16->_xpcTransaction, transaction);
   }
 
   return v16;

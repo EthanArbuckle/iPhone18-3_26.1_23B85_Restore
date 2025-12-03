@@ -6,16 +6,16 @@
 
 - (void)shadowSettings
 {
-  [a1 shadowRadius];
+  [self shadowRadius];
   v5 = v4;
-  [a1 shadowAlpha];
+  [self shadowAlpha];
   v7 = v6;
-  [a1 imageOutset];
+  [self imageOutset];
   *a2 = v5;
   a2[1] = v7;
   a2[2] = v8;
-  v9 = [a1 shadowCompositingFilterName];
-  a2[3] = SBUILegibilityShadowCompositingFilterForCAFilterName(v9);
+  shadowCompositingFilterName = [self shadowCompositingFilterName];
+  a2[3] = SBUILegibilityShadowCompositingFilterForCAFilterName(shadowCompositingFilterName);
 }
 
 @end

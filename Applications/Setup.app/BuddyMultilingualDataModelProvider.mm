@@ -1,5 +1,5 @@
 @interface BuddyMultilingualDataModelProvider
-+ (id)_createDictationSelectorIncludeSuggested:(BOOL)a3 shouldIncludeUserSelectedKeyboards:(BOOL)a4;
++ (id)_createDictationSelectorIncludeSuggested:(BOOL)suggested shouldIncludeUserSelectedKeyboards:(BOOL)keyboards;
 + (id)_createKeyboardSelectorAllData;
 + (id)_createKeyboardSelectorDefaults;
 + (id)_createKeyboardSelectorSelectedData;
@@ -10,7 +10,7 @@
 + (id)instanceForKeyboardSelector;
 + (id)instanceForLanguageSelector;
 + (id)selectedLanguage;
-- (BuddyMultilingualDataModelProvider)initWithDefault:(id)a3 suggested:(id)a4 selected:(id)a5;
+- (BuddyMultilingualDataModelProvider)initWithDefault:(id)default suggested:(id)suggested selected:(id)selected;
 - (id)createDataSourceForPreselectedItems;
 - (id)createDataSourceForSelectedItems;
 - (id)createDataSourceItemsAvailableForAdding;
@@ -18,54 +18,54 @@
 
 @implementation BuddyMultilingualDataModelProvider
 
-- (BuddyMultilingualDataModelProvider)initWithDefault:(id)a3 suggested:(id)a4 selected:(id)a5
+- (BuddyMultilingualDataModelProvider)initWithDefault:(id)default suggested:(id)suggested selected:(id)selected
 {
-  v21 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, default);
   v19 = 0;
-  objc_storeStrong(&v19, a4);
+  objc_storeStrong(&v19, suggested);
   v18 = 0;
-  objc_storeStrong(&v18, a5);
-  v7 = v21;
-  v21 = 0;
+  objc_storeStrong(&v18, selected);
+  v7 = selfCopy;
+  selfCopy = 0;
   v17.receiver = v7;
   v17.super_class = BuddyMultilingualDataModelProvider;
   v8 = [(BuddyMultilingualDataModelProvider *)&v17 init];
-  v21 = v8;
-  objc_storeStrong(&v21, v8);
+  selfCopy = v8;
+  objc_storeStrong(&selfCopy, v8);
   if (v8)
   {
     v9 = [location[0] copy];
-    v10 = *(v21 + 1);
-    *(v21 + 1) = v9;
+    v10 = *(selfCopy + 1);
+    *(selfCopy + 1) = v9;
 
     v11 = [v19 copy];
-    v12 = *(v21 + 2);
-    *(v21 + 2) = v11;
+    v12 = *(selfCopy + 2);
+    *(selfCopy + 2) = v11;
 
     v13 = [v18 copy];
-    v14 = *(v21 + 3);
-    *(v21 + 3) = v13;
+    v14 = *(selfCopy + 3);
+    *(selfCopy + 3) = v13;
   }
 
-  v15 = v21;
+  v15 = selfCopy;
   objc_storeStrong(&v18, 0);
   objc_storeStrong(&v19, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v21, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v15;
 }
 
 - (id)createDataSourceItemsAvailableForAdding
 {
-  v2 = [(BuddyMultilingualDataModelProvider *)self suggestedDataProvider];
+  suggestedDataProvider = [(BuddyMultilingualDataModelProvider *)self suggestedDataProvider];
 
-  if (v2)
+  if (suggestedDataProvider)
   {
-    v3 = [(BuddyMultilingualDataModelProvider *)self suggestedDataProvider];
-    v6 = v3[2](v3);
+    suggestedDataProvider2 = [(BuddyMultilingualDataModelProvider *)self suggestedDataProvider];
+    v6 = suggestedDataProvider2[2](suggestedDataProvider2);
   }
 
   else
@@ -78,12 +78,12 @@
 
 - (id)createDataSourceForPreselectedItems
 {
-  v2 = [(BuddyMultilingualDataModelProvider *)self defaultDataProvider];
+  defaultDataProvider = [(BuddyMultilingualDataModelProvider *)self defaultDataProvider];
 
-  if (v2)
+  if (defaultDataProvider)
   {
-    v3 = [(BuddyMultilingualDataModelProvider *)self defaultDataProvider];
-    v6 = v3[2](v3);
+    defaultDataProvider2 = [(BuddyMultilingualDataModelProvider *)self defaultDataProvider];
+    v6 = defaultDataProvider2[2](defaultDataProvider2);
   }
 
   else
@@ -96,12 +96,12 @@
 
 - (id)createDataSourceForSelectedItems
 {
-  v2 = [(BuddyMultilingualDataModelProvider *)self selectedDataProvider];
+  selectedDataProvider = [(BuddyMultilingualDataModelProvider *)self selectedDataProvider];
 
-  if (v2)
+  if (selectedDataProvider)
   {
-    v3 = [(BuddyMultilingualDataModelProvider *)self selectedDataProvider];
-    v6 = v3[2](v3);
+    selectedDataProvider2 = [(BuddyMultilingualDataModelProvider *)self selectedDataProvider];
+    v6 = selectedDataProvider2[2](selectedDataProvider2);
   }
 
   else
@@ -114,44 +114,44 @@
 
 + (id)instanceForLanguageSelector
 {
-  v2 = [[BuddyMultilingualDataModelProvider alloc] initWithDefault:&stru_10032BF78 suggested:&stru_10032BF98 selected:0, a2, a1];
+  v2 = [[BuddyMultilingualDataModelProvider alloc] initWithDefault:&stru_10032BF78 suggested:&stru_10032BF98 selected:0, a2, self];
 
   return v2;
 }
 
 + (id)instanceForKeyboardSelector
 {
-  v2 = [[BuddyMultilingualDataModelProvider alloc] initWithDefault:&stru_10032BFB8 suggested:&stru_10032BFD8 selected:&stru_10032BFF8, a2, a1];
+  v2 = [[BuddyMultilingualDataModelProvider alloc] initWithDefault:&stru_10032BFB8 suggested:&stru_10032BFD8 selected:&stru_10032BFF8, a2, self];
 
   return v2;
 }
 
 + (id)instanceForDictationSelector
 {
-  v2 = [[BuddyMultilingualDataModelProvider alloc] initWithDefault:&stru_10032C018 suggested:&stru_10032C038 selected:0, a2, a1];
+  v2 = [[BuddyMultilingualDataModelProvider alloc] initWithDefault:&stru_10032C018 suggested:&stru_10032C038 selected:0, a2, self];
 
   return v2;
 }
 
 + (id)instanceForDictationSelectorExpress
 {
-  v2 = [[BuddyMultilingualDataModelProvider alloc] initWithDefault:&stru_10032C058 suggested:&stru_10032C078 selected:0, a2, a1];
+  v2 = [[BuddyMultilingualDataModelProvider alloc] initWithDefault:&stru_10032C058 suggested:&stru_10032C078 selected:0, a2, self];
 
   return v2;
 }
 
 + (id)selectedLanguage
 {
-  v9 = a1;
+  selfCopy = self;
   v8 = a2;
   v2 = +[NSLocale preferredLanguages];
-  v3 = [(NSArray *)v2 firstObject];
-  location = [NSLocale baseLanguageFromLanguage:v3];
+  firstObject = [(NSArray *)v2 firstObject];
+  location = [NSLocale baseLanguageFromLanguage:firstObject];
 
   if (!location)
   {
     v4 = +[NSAssertionHandler currentHandler];
-    [(NSAssertionHandler *)v4 handleFailureInMethod:v8 object:v9 file:@"BuddyMultilingualDataModelProvider.m" lineNumber:109 description:@"selectedLanguage should not be nil, it should have been set from the second pane in buddy."];
+    [(NSAssertionHandler *)v4 handleFailureInMethod:v8 object:selfCopy file:@"BuddyMultilingualDataModelProvider.m" lineNumber:109 description:@"selectedLanguage should not be nil, it should have been set from the second pane in buddy."];
   }
 
   v5 = location;
@@ -161,7 +161,7 @@
 
 + (id)_createLanguageSelectorDefaults
 {
-  v22[2] = a1;
+  v22[2] = self;
   v22[1] = a2;
   v22[0] = +[NSLocale buddyDefaultLanguages];
   v21 = objc_alloc_init(NSMutableOrderedSet);
@@ -215,16 +215,16 @@
     while (v3);
   }
 
-  v13 = [v21 array];
+  array = [v21 array];
   objc_storeStrong(&v21, 0);
   objc_storeStrong(v22, 0);
 
-  return v13;
+  return array;
 }
 
 + (id)_createLanguageSelectorAllData
 {
-  v34[2] = a1;
+  v34[2] = self;
   v34[1] = a2;
   v34[0] = objc_alloc_init(NSMutableOrderedSet);
   v33 = +[IPLanguageListManager manager];
@@ -238,17 +238,17 @@
   }
 
   objc_storeStrong(&oslog, 0);
-  v29 = [v33 otherLanguages];
+  otherLanguages = [v33 otherLanguages];
   v28 = _BYLoggingFacility();
   v27 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
   {
-    sub_10006AE18(v36, v29);
+    sub_10006AE18(v36, otherLanguages);
     _os_log_impl(&_mh_execute_header, v28, v27, "Called from _createLanguageSelectorAllData: Other Languages from IPLanguageListManager %@", v36, 0xCu);
   }
 
   objc_storeStrong(&v28, 0);
-  v2 = [v32 arrayByAddingObjectsFromArray:v29];
+  v2 = [v32 arrayByAddingObjectsFromArray:otherLanguages];
   v3 = v32;
   v32 = v2;
 
@@ -268,10 +268,10 @@
         }
 
         v26 = *(__b[1] + 8 * i);
-        v8 = [v26 localizedStringForName];
-        v9 = [v26 name];
-        v10 = [v26 identifier];
-        location = [BuddyMultilingualLanguageData withLanguageMainDisplayText:v8 secondaryDisplayText:v9 identifier:v10 isDefault:1 editingOption:3];
+        localizedStringForName = [v26 localizedStringForName];
+        name = [v26 name];
+        identifier = [v26 identifier];
+        location = [BuddyMultilingualLanguageData withLanguageMainDisplayText:localizedStringForName secondaryDisplayText:name identifier:identifier isDefault:1 editingOption:3];
 
         [v34[0] addObject:location];
         objc_storeStrong(&location, 0);
@@ -297,22 +297,22 @@
   v20 = v23;
   v21 = v22;
   [v13 sortUsingComparator:&v16];
-  v14 = [v34[0] array];
+  array = [v34[0] array];
   objc_storeStrong(&v21, 0);
   objc_storeStrong(&v20, 0);
   objc_storeStrong(&v22, 0);
   objc_storeStrong(&v23, 0);
-  objc_storeStrong(&v29, 0);
+  objc_storeStrong(&otherLanguages, 0);
   objc_storeStrong(&v32, 0);
   objc_storeStrong(&v33, 0);
   objc_storeStrong(v34, 0);
 
-  return v14;
+  return array;
 }
 
 + (id)_createKeyboardSelectorDefaults
 {
-  v16[2] = a1;
+  v16[2] = self;
   v16[1] = a2;
   v16[0] = +[NSLocale buddyDefaultKeyboards];
   v15 = objc_alloc_init(NSMutableOrderedSet);
@@ -335,19 +335,19 @@
   v10 = location;
   v11 = v15;
   [v2 enumerateObjectsUsingBlock:&v5];
-  v3 = [v15 array];
+  array = [v15 array];
   objc_storeStrong(&v11, 0);
   objc_storeStrong(&v10, 0);
   objc_storeStrong(&location, 0);
   objc_storeStrong(&v15, 0);
   objc_storeStrong(v16, 0);
 
-  return v3;
+  return array;
 }
 
 + (id)_createKeyboardSelectorAllData
 {
-  v18[2] = a1;
+  v18[2] = self;
   v18[1] = a2;
   v18[0] = +[NSLocale buddyDefaultKeyboards];
   v17 = +[NSLocale buddySuggestedKeyboards];
@@ -372,7 +372,7 @@
   v10 = v15;
   v11 = v16;
   [v2 enumerateObjectsUsingBlock:&v5];
-  v3 = [v16 array];
+  array = [v16 array];
   objc_storeStrong(&v11, 0);
   objc_storeStrong(&v10, 0);
   objc_storeStrong(&v9, 0);
@@ -382,27 +382,27 @@
   objc_storeStrong(&v17, 0);
   objc_storeStrong(v18, 0);
 
-  return v3;
+  return array;
 }
 
 + (id)_createKeyboardSelectorSelectedData
 {
-  v35[2] = a1;
+  v35[2] = self;
   v35[1] = a2;
   v35[0] = +[NSLocale buddyDefaultKeyboards];
   v2 = +[UIKeyboardInputModeController sharedInputModeController];
-  v34 = [v2 enabledInputModeIdentifiers];
+  enabledInputModeIdentifiers = [v2 enabledInputModeIdentifiers];
 
   oslog = _BYLoggingFacility();
   v32 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
-    sub_10006AE18(buf, v34);
+    sub_10006AE18(buf, enabledInputModeIdentifiers);
     _os_log_impl(&_mh_execute_header, oslog, v32, "_createKeyboardSelectorSelectedData: enabled identifiers before aggregating sets %@", buf, 0xCu);
   }
 
   objc_storeStrong(&oslog, 0);
-  v31 = [UIKeyboardInputMode multilingualSetsFromInputModeIdentifiers:v34];
+  v31 = [UIKeyboardInputMode multilingualSetsFromInputModeIdentifiers:enabledInputModeIdentifiers];
   v30 = _BYLoggingFacility();
   v29 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
@@ -444,27 +444,27 @@
         }
 
         v22 = *(__b[1] + 8 * i);
-        v20 = [v22 displayName];
+        displayName = [v22 displayName];
         v19 = 0;
-        if ([v25 countForObject:v20] > 1)
+        if ([v25 countForObject:displayName] > 1)
         {
-          v7 = [v22 identifier];
+          identifier = [v22 identifier];
           v8 = UIKeyboardLocalizedSWLayoutName();
           v9 = v19;
           v19 = v8;
         }
 
-        v10 = v20;
+        v10 = displayName;
         v11 = v19;
-        v12 = [v22 identifierWithLayouts];
+        identifierWithLayouts = [v22 identifierWithLayouts];
         v13 = v26;
-        v14 = [v22 identifierWithLayouts];
-        v18 = +[BuddyMultilingualLanguageData withLanguageMainDisplayText:secondaryDisplayText:identifier:isDefault:editingOption:](BuddyMultilingualLanguageData, "withLanguageMainDisplayText:secondaryDisplayText:identifier:isDefault:editingOption:", v10, v11, v12, [v13 containsObject:v14] & 1, 3);
+        identifierWithLayouts2 = [v22 identifierWithLayouts];
+        v18 = +[BuddyMultilingualLanguageData withLanguageMainDisplayText:secondaryDisplayText:identifier:isDefault:editingOption:](BuddyMultilingualLanguageData, "withLanguageMainDisplayText:secondaryDisplayText:identifier:isDefault:editingOption:", v10, v11, identifierWithLayouts, [v13 containsObject:identifierWithLayouts2] & 1, 3);
 
         [v27 addObject:v18];
         objc_storeStrong(&v18, 0);
         objc_storeStrong(&v19, 0);
-        objc_storeStrong(&v20, 0);
+        objc_storeStrong(&displayName, 0);
       }
 
       v4 = [v3 countByEnumeratingWithState:__b objects:v36 count:16];
@@ -473,31 +473,31 @@
     while (v4);
   }
 
-  v15 = [v27 array];
+  array = [v27 array];
   objc_storeStrong(&v25, 0);
   objc_storeStrong(&v26, 0);
   objc_storeStrong(&v27, 0);
   objc_storeStrong(&v31, 0);
-  objc_storeStrong(&v34, 0);
+  objc_storeStrong(&enabledInputModeIdentifiers, 0);
   objc_storeStrong(v35, 0);
 
-  return v15;
+  return array;
 }
 
-+ (id)_createDictationSelectorIncludeSuggested:(BOOL)a3 shouldIncludeUserSelectedKeyboards:(BOOL)a4
++ (id)_createDictationSelectorIncludeSuggested:(BOOL)suggested shouldIncludeUserSelectedKeyboards:(BOOL)keyboards
 {
-  v42 = a1;
+  selfCopy = self;
   v41 = a2;
-  v40 = a3;
-  v39 = a4;
+  suggestedCopy = suggested;
+  keyboardsCopy = keyboards;
   v38 = +[NSMutableOrderedSet orderedSet];
   v37 = 0;
-  if (v39)
+  if (keyboardsCopy)
   {
     v4 = +[UIKeyboardInputModeController sharedInputModeController];
-    v5 = [v4 activeInputModes];
+    activeInputModes = [v4 activeInputModes];
     v6 = v37;
-    v37 = v5;
+    v37 = activeInputModes;
   }
 
   else
@@ -524,8 +524,8 @@
 
         v36 = *(__b[1] + 8 * i);
         v13 = v38;
-        v14 = [v36 languageWithRegion];
-        [v13 addObject:v14];
+        languageWithRegion = [v36 languageWithRegion];
+        [v13 addObject:languageWithRegion];
       }
 
       v10 = [v9 countByEnumeratingWithState:__b objects:v45 count:16];
@@ -535,8 +535,8 @@
   }
 
   v15 = +[TUIPreferencesController sharedPreferencesController];
-  v16 = [v38 array];
-  v34 = [v15 suggestedDictationModesForKeyboardLanguages:v16];
+  array = [v38 array];
+  v34 = [v15 suggestedDictationModesForKeyboardLanguages:array];
 
   v33 = objc_alloc_init(NSMutableOrderedSet);
   oslog = _BYLoggingFacility();
@@ -545,7 +545,7 @@
   {
     v17 = [v34 description];
     location = v17;
-    if (v40)
+    if (suggestedCopy)
     {
       v18 = @"YES";
     }
@@ -578,11 +578,11 @@
         }
 
         v29 = *(v28[1] + 8 * j);
-        if (v40 || ([v29 enabled] & 1) != 0)
+        if (suggestedCopy || ([v29 enabled] & 1) != 0)
         {
-          v23 = [v29 displayName];
-          v24 = [v29 identifier];
-          v27 = [BuddyMultilingualLanguageData withLanguageMainDisplayText:v23 secondaryDisplayText:&stru_10032F900 identifier:v24 isDefault:0 editingOption:2];
+          displayName = [v29 displayName];
+          identifier = [v29 identifier];
+          v27 = [BuddyMultilingualLanguageData withLanguageMainDisplayText:displayName secondaryDisplayText:&stru_10032F900 identifier:identifier isDefault:0 editingOption:2];
 
           [v27 setShowDetailText:0];
           [v33 addObject:v27];
@@ -596,13 +596,13 @@
     while (v20);
   }
 
-  v25 = [v33 array];
+  array2 = [v33 array];
   objc_storeStrong(&v33, 0);
   objc_storeStrong(&v34, 0);
   objc_storeStrong(&v37, 0);
   objc_storeStrong(&v38, 0);
 
-  return v25;
+  return array2;
 }
 
 @end

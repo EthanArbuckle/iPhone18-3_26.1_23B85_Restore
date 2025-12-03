@@ -1,49 +1,49 @@
 @interface AccountTransformerMail
-- (BOOL)changesRequireRecreation:(id)a3 properties:(id)a4;
-- (id)_authSchemeForAuthenticationMethod:(id)a3;
-- (void)accountPropertiesFromConfiguration:(id)a3 account:(id)a4 accountStore:(id)a5 completionHandler:(id)a6;
-- (void)applyProperties:(id)a3 toAccount:(id)a4 accountStore:(id)a5 completionHandler:(id)a6;
-- (void)configurationUIForConfiguration:(id)a3 completionHandler:(id)a4;
+- (BOOL)changesRequireRecreation:(id)recreation properties:(id)properties;
+- (id)_authSchemeForAuthenticationMethod:(id)method;
+- (void)accountPropertiesFromConfiguration:(id)configuration account:(id)account accountStore:(id)store completionHandler:(id)handler;
+- (void)applyProperties:(id)properties toAccount:(id)account accountStore:(id)store completionHandler:(id)handler;
+- (void)configurationUIForConfiguration:(id)configuration completionHandler:(id)handler;
 @end
 
 @implementation AccountTransformerMail
 
-- (void)accountPropertiesFromConfiguration:(id)a3 account:(id)a4 accountStore:(id)a5 completionHandler:(id)a6
+- (void)accountPropertiesFromConfiguration:(id)configuration account:(id)account accountStore:(id)store completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
+  configurationCopy = configuration;
+  accountCopy = account;
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_10000ED34;
   v17[3] = &unk_10001CCA0;
-  v21 = a5;
-  v22 = a6;
-  v18 = v10;
-  v19 = self;
-  v20 = v11;
+  storeCopy = store;
+  handlerCopy = handler;
+  v18 = configurationCopy;
+  selfCopy = self;
+  v20 = accountCopy;
   v16.receiver = self;
   v16.super_class = AccountTransformerMail;
-  v12 = v21;
-  v13 = v11;
-  v14 = v22;
-  v15 = v10;
+  v12 = storeCopy;
+  v13 = accountCopy;
+  v14 = handlerCopy;
+  v15 = configurationCopy;
   [(AccountTransformer *)&v16 accountPropertiesFromConfiguration:v15 account:v13 accountStore:v12 completionHandler:v17];
 }
 
-- (id)_authSchemeForAuthenticationMethod:(id)a3
+- (id)_authSchemeForAuthenticationMethod:(id)method
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"EmailAuthCRAMMD5"])
+  methodCopy = method;
+  if ([methodCopy isEqualToString:@"EmailAuthCRAMMD5"])
   {
     v4 = @"CRAM-MD5";
   }
 
-  else if ([v3 isEqualToString:@"EmailAuthNTLM"])
+  else if ([methodCopy isEqualToString:@"EmailAuthNTLM"])
   {
     v4 = @"NTLM";
   }
 
-  else if ([v3 isEqualToString:@"EmailAuthHTTPMD5"])
+  else if ([methodCopy isEqualToString:@"EmailAuthHTTPMD5"])
   {
     v4 = @"DIGEST-MD5";
   }
@@ -56,12 +56,12 @@
   return v4;
 }
 
-- (void)applyProperties:(id)a3 toAccount:(id)a4 accountStore:(id)a5 completionHandler:(id)a6
+- (void)applyProperties:(id)properties toAccount:(id)account accountStore:(id)store completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v62 = a6;
-  v10 = [v9 objectForKeyedSubscript:@"RemoteManagementSecondaryAccountIdentifier"];
+  propertiesCopy = properties;
+  accountCopy = account;
+  handlerCopy = handler;
+  v10 = [accountCopy objectForKeyedSubscript:@"RemoteManagementSecondaryAccountIdentifier"];
   v11 = +[RMLog accountTransformerMail];
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG);
   if (!v10)
@@ -99,10 +99,10 @@ LABEL_9:
     sub_1000137D8();
   }
 
-  v16 = [v13 persistentAccount];
-  [v16 setAuthenticated:1];
+  persistentAccount = [v13 persistentAccount];
+  [persistentAccount setAuthenticated:1];
 
-  v17 = [v8 objectForKeyedSubscript:@"RemoteManagementAccountType"];
+  v17 = [propertiesCopy objectForKeyedSubscript:@"RemoteManagementAccountType"];
   v18 = [v17 isEqualToString:ACAccountTypeIdentifierIMAP];
   v19 = IMAPAccount_ptr;
   if (!v18)
@@ -113,20 +113,20 @@ LABEL_9:
   v20 = *v19;
   v21 = objc_opt_class();
 
-  v22 = [[v21 alloc] initWithPersistentAccount:v9];
+  v22 = [[v21 alloc] initWithPersistentAccount:accountCopy];
   v23 = NSStringFromClass(v21);
   [v22 setAccountProperty:v23 forKey:MFMailAccountClass];
 
-  [v9 setAuthenticated:1];
+  [accountCopy setAuthenticated:1];
   v80[0] = _NSConcreteStackBlock;
   v80[1] = 3221225472;
   v80[2] = sub_1000103AC;
   v80[3] = &unk_10001CCC8;
   v24 = v22;
   v81 = v24;
-  v60 = v9;
+  v60 = accountCopy;
   v82 = v60;
-  v25 = v8;
+  v25 = propertiesCopy;
   v83 = v25;
   [v25 enumerateKeysAndObjectsUsingBlock:v80];
   v78[0] = _NSConcreteStackBlock;
@@ -137,11 +137,11 @@ LABEL_9:
   v79 = v26;
   [v25 enumerateKeysAndObjectsUsingBlock:v78];
   [v24 setDeliveryAccount:v26];
-  v27 = [v26 identifier];
-  [v24 setAccountProperty:v27 forKey:@"RemoteManagementSecondaryAccountIdentifier"];
+  identifier = [v26 identifier];
+  [v24 setAccountProperty:identifier forKey:@"RemoteManagementSecondaryAccountIdentifier"];
 
-  v28 = [v24 identifier];
-  [v26 setAccountProperty:v28 forKey:@"RemoteManagementPrimaryAccountIdentifier"];
+  identifier2 = [v24 identifier];
+  [v26 setAccountProperty:identifier2 forKey:@"RemoteManagementPrimaryAccountIdentifier"];
 
   +[MailAccount reloadAccounts];
   v29 = +[MailAccount mailAccounts];
@@ -263,23 +263,23 @@ LABEL_9:
     v33 = &NSStringFromClass_ptr;
   }
 
-  v57 = [v33[133] accountTransformerMail];
-  if (os_log_type_enabled(v57, OS_LOG_TYPE_DEBUG))
+  accountTransformerMail = [v33[133] accountTransformerMail];
+  if (os_log_type_enabled(accountTransformerMail, OS_LOG_TYPE_DEBUG))
   {
     sub_100013978();
   }
 
-  v62[2](v62, 0);
+  handlerCopy[2](handlerCopy, 0);
 }
 
-- (BOOL)changesRequireRecreation:(id)a3 properties:(id)a4
+- (BOOL)changesRequireRecreation:(id)recreation properties:(id)properties
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5)
+  recreationCopy = recreation;
+  propertiesCopy = properties;
+  v7 = propertiesCopy;
+  if (recreationCopy)
   {
-    v8 = [v6 objectForKeyedSubscript:@"RemoteManagementAccountType"];
+    v8 = [propertiesCopy objectForKeyedSubscript:@"RemoteManagementAccountType"];
     v9 = [v8 isEqualToString:ACAccountTypeIdentifierIMAP];
     v10 = IMAPAccount_ptr;
     if (!v9)
@@ -290,16 +290,16 @@ LABEL_9:
     v11 = *v10;
     v12 = objc_opt_class();
 
-    v13 = [[v12 alloc] initWithPersistentAccount:v5];
-    v14 = [v13 username];
+    v13 = [[v12 alloc] initWithPersistentAccount:recreationCopy];
+    username = [v13 username];
     v15 = [v7 objectForKeyedSubscript:@"_remotemanagement_username"];
-    v16 = [v14 isEqualToString:v15];
+    v16 = [username isEqualToString:v15];
 
     if (v16)
     {
-      v17 = [v13 hostname];
+      hostname = [v13 hostname];
       v18 = [v7 objectForKeyedSubscript:@"_remotemanagement_hostname"];
-      v19 = [v17 isEqualToString:v18];
+      v19 = [hostname isEqualToString:v18];
 
       if (v19)
       {
@@ -319,12 +319,12 @@ LABEL_9:
         else
         {
           v22 = NSStringFromClass(v12);
-          v23 = [v5 objectForKeyedSubscript:MFMailAccountClass];
+          v23 = [recreationCopy objectForKeyedSubscript:MFMailAccountClass];
           v24 = [v22 isEqualToString:v23];
 
           if (v24)
           {
-            v25 = [v5 objectForKeyedSubscript:@"RemoteManagementSecondaryAccountIdentifier"];
+            v25 = [recreationCopy objectForKeyedSubscript:@"RemoteManagementSecondaryAccountIdentifier"];
             if (!v25)
             {
 LABEL_15:
@@ -335,15 +335,15 @@ LABEL_35:
             }
 
             v26 = [SMTPAccount accountWithIdentifier:v25];
-            v27 = [v26 username];
+            username2 = [v26 username];
             v28 = [v7 objectForKeyedSubscript:@"_remotemanagement_usernameSecondary"];
-            v29 = [v27 isEqualToString:v28];
+            v29 = [username2 isEqualToString:v28];
 
             if (v29)
             {
-              v30 = [v26 hostname];
+              hostname2 = [v26 hostname];
               v31 = [v7 objectForKeyedSubscript:@"_remotemanagement_hostnameSecondary"];
-              v32 = [v30 isEqualToString:v31];
+              v32 = [hostname2 isEqualToString:v31];
 
               if (v32)
               {
@@ -443,39 +443,39 @@ LABEL_37:
   return v35;
 }
 
-- (void)configurationUIForConfiguration:(id)a3 completionHandler:(id)a4
+- (void)configurationUIForConfiguration:(id)configuration completionHandler:(id)handler
 {
-  v5 = a3;
-  v25 = a4;
+  configurationCopy = configuration;
+  handlerCopy = handler;
   v6 = +[RMLog accountTransformerMail];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
-    v7 = [v5 declaration];
-    v8 = [v7 declarationIdentifier];
+    declaration = [configurationCopy declaration];
+    declarationIdentifier = [declaration declarationIdentifier];
     *buf = 138543362;
-    v30 = v8;
+    v30 = declarationIdentifier;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Get configuration UI for: %{public}@", buf, 0xCu);
   }
 
-  v24 = [v5 declaration];
-  v9 = [v24 payloadVisibleName];
-  v10 = [v24 payloadIncomingServer];
-  v11 = [v10 payloadHostName];
+  declaration2 = [configurationCopy declaration];
+  payloadVisibleName = [declaration2 payloadVisibleName];
+  payloadIncomingServer = [declaration2 payloadIncomingServer];
+  payloadHostName = [payloadIncomingServer payloadHostName];
 
-  v23 = v5;
-  if (v9)
+  v23 = configurationCopy;
+  if (payloadVisibleName)
   {
-    v12 = v9;
+    v12 = payloadVisibleName;
   }
 
   else
   {
-    v12 = v11;
+    v12 = payloadHostName;
   }
 
-  if (v9)
+  if (payloadVisibleName)
   {
-    v13 = v9;
+    v13 = payloadVisibleName;
   }
 
   else
@@ -483,7 +483,7 @@ LABEL_37:
     v13 = @"-";
   }
 
-  v14 = [RMStoreLocalizable string:v12, RMConfigurationUIDetails];
+  rMConfigurationUIDetails = [RMStoreLocalizable string:v12, RMConfigurationUIDetails];
   v15 = [RMStoreLocalizable string:@"UI.Description.Mail"];
   v16 = [RMStoreLocalizable string:@"UI.Key.Name"];
   v27[0] = v16;
@@ -492,13 +492,13 @@ LABEL_37:
   v28[0] = v17;
   v18 = [RMStoreLocalizable string:@"UI.Key.Server"];
   v26[0] = v18;
-  v26[1] = v11;
+  v26[1] = payloadHostName;
   v19 = [NSArray arrayWithObjects:v26 count:2];
   v28[1] = v19;
   v20 = [NSArray arrayWithObjects:v28 count:2];
-  v21 = [v22 configurationUIWithTitle:v14 description:v15 details:v20];
+  v21 = [v22 configurationUIWithTitle:rMConfigurationUIDetails description:v15 details:v20];
 
-  v25[2](v25, 1, v21, 0);
+  handlerCopy[2](handlerCopy, 1, v21, 0);
 }
 
 @end

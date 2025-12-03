@@ -1,14 +1,14 @@
 @interface _CNBlockTask
-- (_CNBlockTask)initWithName:(id)a3 block:(id)a4;
+- (_CNBlockTask)initWithName:(id)name block:(id)block;
 @end
 
 @implementation _CNBlockTask
 
-- (_CNBlockTask)initWithName:(id)a3 block:(id)a4
+- (_CNBlockTask)initWithName:(id)name block:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  nameCopy = name;
+  blockCopy = block;
+  if (!blockCopy)
   {
     if (CNGuardOSLog_cn_once_token_0_5 != -1)
     {
@@ -24,10 +24,10 @@
 
   v14.receiver = self;
   v14.super_class = _CNBlockTask;
-  v9 = [(CNTask *)&v14 initWithName:v6];
+  v9 = [(CNTask *)&v14 initWithName:nameCopy];
   if (v9)
   {
-    v10 = [v7 copy];
+    v10 = [blockCopy copy];
     block = v9->_block;
     v9->_block = v10;
 

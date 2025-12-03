@@ -24,80 +24,80 @@
 
 - (void)actionsImage
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    v3 = a1[1];
+    selfCopy = self;
+    v3 = self[1];
     if (!v3)
     {
       v4 = +[UIImageSymbolConfiguration configurationPreferringMulticolor];
       v5 = [UIImage systemImageNamed:@"ellipsis.circle.fill" withConfiguration:v4];
-      v6 = v2[1];
-      v2[1] = v5;
+      v6 = selfCopy[1];
+      selfCopy[1] = v5;
 
-      v3 = v2[1];
+      v3 = selfCopy[1];
     }
 
-    a1 = v3;
+    self = v3;
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (void)addImage
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    v3 = a1[2];
+    selfCopy = self;
+    v3 = self[2];
     if (!v3)
     {
       v4 = +[UIImageSymbolConfiguration configurationPreferringMulticolor];
       v5 = [UIImage systemImageNamed:@"plus.circle.fill" withConfiguration:v4];
-      v6 = v2[2];
-      v2[2] = v5;
+      v6 = selfCopy[2];
+      selfCopy[2] = v5;
 
-      v3 = v2[2];
+      v3 = selfCopy[2];
     }
 
-    a1 = v3;
+    self = v3;
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (void)removeImage
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    v3 = a1[3];
+    selfCopy = self;
+    v3 = self[3];
     if (!v3)
     {
       v4 = +[UIImageSymbolConfiguration configurationPreferringMulticolor];
       v5 = [UIImage systemImageNamed:@"minus.circle.fill" withConfiguration:v4];
-      v6 = v2[3];
-      v2[3] = v5;
+      v6 = selfCopy[3];
+      selfCopy[3] = v5;
 
-      v3 = v2[3];
+      v3 = selfCopy[3];
     }
 
-    a1 = v3;
+    self = v3;
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (void)checkmarkImage
 {
   v10[2] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v1 = a1;
-    v2 = a1[4];
+    selfCopy = self;
+    v2 = self[4];
     if (!v2)
     {
       v3 = +[UIColor systemWhiteColor];
@@ -107,39 +107,39 @@
       v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:2];
       v6 = [UIImageSymbolConfiguration configurationWithPaletteColors:v5];
       v7 = [UIImage systemImageNamed:@"checkmark.circle.fill" withConfiguration:v6];
-      v8 = v1[4];
-      v1[4] = v7;
+      v8 = selfCopy[4];
+      selfCopy[4] = v7;
 
-      v2 = v1[4];
+      v2 = selfCopy[4];
     }
 
-    a1 = v2;
+    self = v2;
   }
 
-  return a1;
+  return self;
 }
 
 - (void)strokedCheckmarkImage
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    v3 = a1[5];
+    selfCopy = self;
+    v3 = self[5];
     if (!v3)
     {
       v4 = +[UIImageSymbolConfiguration configurationPreferringMulticolor];
       v5 = [UIImage _systemImageNamed:@"checkmark.circle.platter" withConfiguration:v4];
-      v6 = v2[5];
-      v2[5] = v5;
+      v6 = selfCopy[5];
+      selfCopy[5] = v5;
 
-      v3 = v2[5];
+      v3 = selfCopy[5];
     }
 
-    a1 = v3;
+    self = v3;
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 @end

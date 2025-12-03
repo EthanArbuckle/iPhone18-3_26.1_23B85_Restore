@@ -1,50 +1,50 @@
 @interface _UILabelConfigurationInternal
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_UILabelConfigurationInternal)init;
-- (_UILabelConfigurationInternal)initWithCoder:(id)a3;
+- (_UILabelConfigurationInternal)initWithCoder:(id)coder;
 - (id)_cuiCatalog;
 - (id)_cuiStyleEffectConfiguration;
 - (id)_disabledTextColor;
 - (id)_resolvedCuiCatalog;
 - (id)_resolvedCuiStyleEffectConfiguration;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)_setDisabledTextColor:(uint64_t)a1;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)_setDisabledTextColor:(uint64_t)color;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _UILabelConfigurationInternal
 
 - (id)_disabledTextColor
 {
-  if (a1)
+  if (self)
   {
-    a1 = a1[2];
+    self = self[2];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (id)_resolvedCuiCatalog
 {
-  if (a1)
+  if (self)
   {
-    a1 = [(_UILabelConfigurationInternal *)a1 _cuiCatalog];
+    self = [(_UILabelConfigurationInternal *)self _cuiCatalog];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (id)_resolvedCuiStyleEffectConfiguration
 {
-  if (a1)
+  if (self)
   {
-    a1 = [(_UILabelConfigurationInternal *)a1 _cuiStyleEffectConfiguration];
+    self = [(_UILabelConfigurationInternal *)self _cuiStyleEffectConfiguration];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (_UILabelConfigurationInternal)init
@@ -70,10 +70,10 @@
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     LOBYTE(v7) = 1;
     goto LABEL_10;
@@ -83,9 +83,9 @@
   if (objc_opt_isKindOfClass())
   {
     configurationFlags = self->_configurationFlags;
-    if (configurationFlags == v4->_configurationFlags && ((*&configurationFlags ^ *&v4->_configurationFlags) & 0x300) == 0 && v4->_lineSpacing == self->_lineSpacing)
+    if (configurationFlags == equalCopy->_configurationFlags && ((*&configurationFlags ^ *&equalCopy->_configurationFlags) & 0x300) == 0 && equalCopy->_lineSpacing == self->_lineSpacing)
     {
-      v9 = v4->_disabledTextColor;
+      v9 = equalCopy->_disabledTextColor;
       v10 = self->_disabledTextColor;
       v11 = v9;
       v12 = v10;
@@ -115,10 +115,10 @@ LABEL_26:
         }
       }
 
-      v17 = [(_UILabelConfigurationInternal *)v4 _cuiCatalog];
-      v18 = [(_UILabelConfigurationInternal *)self _cuiCatalog];
-      v15 = v17;
-      v19 = v18;
+      _cuiCatalog = [(_UILabelConfigurationInternal *)equalCopy _cuiCatalog];
+      _cuiCatalog2 = [(_UILabelConfigurationInternal *)self _cuiCatalog];
+      v15 = _cuiCatalog;
+      v19 = _cuiCatalog2;
       v14 = v19;
       if (v15 == v19)
       {
@@ -127,8 +127,8 @@ LABEL_26:
       else
       {
         LOBYTE(v7) = 0;
-        v20 = v19;
-        v21 = v15;
+        _cuiStyleEffectConfiguration2 = v19;
+        _cuiStyleEffectConfiguration = v15;
         if (!v15 || !v19)
         {
           goto LABEL_24;
@@ -142,9 +142,9 @@ LABEL_26:
         }
       }
 
-      v21 = [(_UILabelConfigurationInternal *)v4 _cuiStyleEffectConfiguration];
-      v20 = [(_UILabelConfigurationInternal *)self _cuiStyleEffectConfiguration];
-      LOBYTE(v7) = CUIStyleEffectConfigurationEqualToStyleEffectConfiguration(v21, v20);
+      _cuiStyleEffectConfiguration = [(_UILabelConfigurationInternal *)equalCopy _cuiStyleEffectConfiguration];
+      _cuiStyleEffectConfiguration2 = [(_UILabelConfigurationInternal *)self _cuiStyleEffectConfiguration];
+      LOBYTE(v7) = CUIStyleEffectConfigurationEqualToStyleEffectConfiguration(_cuiStyleEffectConfiguration, _cuiStyleEffectConfiguration2);
 LABEL_24:
 
 LABEL_25:
@@ -160,74 +160,74 @@ LABEL_10:
 
 - (id)_cuiCatalog
 {
-  if (a1)
+  if (self)
   {
-    a1 = objc_getAssociatedObject(a1, &cuiCatalogKey);
+    self = objc_getAssociatedObject(self, &cuiCatalogKey);
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (id)_cuiStyleEffectConfiguration
 {
-  if (a1)
+  if (self)
   {
-    a1 = objc_getAssociatedObject(a1, &cuiStyleEffectConfigurationKey);
+    self = objc_getAssociatedObject(self, &cuiStyleEffectConfigurationKey);
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(_UILabelConfigurationInternal *)&self->super.isa _disabledTextColor];
-  [(_UILabelConfigurationInternal *)v4 _setDisabledTextColor:v5];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  _disabledTextColor = [(_UILabelConfigurationInternal *)&self->super.isa _disabledTextColor];
+  [(_UILabelConfigurationInternal *)v4 _setDisabledTextColor:_disabledTextColor];
 
-  v6 = [(_UILabelConfigurationInternal *)self _cuiCatalog];
+  _cuiCatalog = [(_UILabelConfigurationInternal *)self _cuiCatalog];
   if (v4)
   {
-    objc_setAssociatedObject(v4, &cuiCatalogKey, v6, 1);
+    objc_setAssociatedObject(v4, &cuiCatalogKey, _cuiCatalog, 1);
   }
 
-  v7 = [(_UILabelConfigurationInternal *)self _cuiStyleEffectConfiguration];
+  _cuiStyleEffectConfiguration = [(_UILabelConfigurationInternal *)self _cuiStyleEffectConfiguration];
   if (v4)
   {
-    objc_setAssociatedObject(v4, &cuiStyleEffectConfigurationKey, v7, 1);
+    objc_setAssociatedObject(v4, &cuiStyleEffectConfigurationKey, _cuiStyleEffectConfiguration, 1);
   }
 
   v4[6] = self->_configurationFlags;
   return v4;
 }
 
-- (void)_setDisabledTextColor:(uint64_t)a1
+- (void)_setDisabledTextColor:(uint64_t)color
 {
   v4 = a2;
-  if (a1)
+  if (color)
   {
-    objc_storeStrong((a1 + 16), a2);
-    *(a1 + 24) |= 0x400000u;
+    objc_storeStrong((color + 16), a2);
+    *(color + 24) |= 0x400000u;
   }
 }
 
-- (_UILabelConfigurationInternal)initWithCoder:(id)a3
+- (_UILabelConfigurationInternal)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = _UILabelConfigurationInternal;
   v5 = [(_UILabelConfigurationInternal *)&v16 init];
   if (v5)
   {
-    if ([v4 containsValueForKey:@"UILabelConfiguration_hasCustomized_autotracksTextToFit"])
+    if ([coderCopy containsValueForKey:@"UILabelConfiguration_hasCustomized_autotracksTextToFit"])
     {
-      v5->_configurationFlags = (*&v5->_configurationFlags & 0xFFFFFFFE | [v4 decodeBoolForKey:@"UILabelConfiguration_autotracksTextToFit"] | 0x400);
+      v5->_configurationFlags = (*&v5->_configurationFlags & 0xFFFFFFFE | [coderCopy decodeBoolForKey:@"UILabelConfiguration_autotracksTextToFit"] | 0x400);
     }
 
-    if ([v4 containsValueForKey:@"UILabelConfiguration_hasCustomized_textAlignmentMirrored"])
+    if ([coderCopy containsValueForKey:@"UILabelConfiguration_hasCustomized_textAlignmentMirrored"])
     {
-      if ([v4 decodeBoolForKey:@"UILabelConfiguration_textAlignmentMirrored"])
+      if ([coderCopy decodeBoolForKey:@"UILabelConfiguration_textAlignmentMirrored"])
       {
         v6 = 8200;
       }
@@ -240,9 +240,9 @@ LABEL_10:
       v5->_configurationFlags = (*&v5->_configurationFlags & 0xFFFFFFF7 | v6);
     }
 
-    if ([v4 containsValueForKey:@"UILabelConfiguration_hasCustomized_textAlignmentFollowsWritingDirection"])
+    if ([coderCopy containsValueForKey:@"UILabelConfiguration_hasCustomized_textAlignmentFollowsWritingDirection"])
     {
-      if ([v4 decodeBoolForKey:@"UILabelConfiguration_textAlignmentFollowsWritingDirection"])
+      if ([coderCopy decodeBoolForKey:@"UILabelConfiguration_textAlignmentFollowsWritingDirection"])
       {
         v7 = 4100;
       }
@@ -255,9 +255,9 @@ LABEL_10:
       v5->_configurationFlags = (*&v5->_configurationFlags & 0xFFFFFFFB | v7);
     }
 
-    if ([v4 containsValueForKey:@"UILabelConfiguration_hasCustomized_usesSimpleTextEffects"])
+    if ([coderCopy containsValueForKey:@"UILabelConfiguration_hasCustomized_usesSimpleTextEffects"])
     {
-      if ([v4 decodeBoolForKey:@"UILabelConfiguration_usesSimpleTextEffects"])
+      if ([coderCopy decodeBoolForKey:@"UILabelConfiguration_usesSimpleTextEffects"])
       {
         v8 = 16400;
       }
@@ -270,37 +270,37 @@ LABEL_10:
       v5->_configurationFlags = (*&v5->_configurationFlags & 0xFFFFFFEF | v8);
     }
 
-    if ([v4 containsValueForKey:@"UILabelConfiguration_hasCustomized_cuiCatalog"])
+    if ([coderCopy containsValueForKey:@"UILabelConfiguration_hasCustomized_cuiCatalog"])
     {
       *&v5->_configurationFlags |= 0x8000u;
-      v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UILabelConfiguration_cuiCatalog"];
+      v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UILabelConfiguration_cuiCatalog"];
       objc_setAssociatedObject(v5, &cuiCatalogKey, v9, 1);
     }
 
-    if ([v4 containsValueForKey:@"UILabelConfiguration_hasCustomized_cuiStyleEffectConfiguration"])
+    if ([coderCopy containsValueForKey:@"UILabelConfiguration_hasCustomized_cuiStyleEffectConfiguration"])
     {
       *&v5->_configurationFlags |= 0x10000u;
-      v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UILabelConfiguration_cuiStyleEffectConfiguration"];
+      v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UILabelConfiguration_cuiStyleEffectConfiguration"];
       objc_setAssociatedObject(v5, &cuiStyleEffectConfigurationKey, v10, 1);
     }
 
-    if ([v4 containsValueForKey:@"UILabelConfiguration_hasCustomized_lineSpacing"])
+    if ([coderCopy containsValueForKey:@"UILabelConfiguration_hasCustomized_lineSpacing"])
     {
-      [v4 decodeFloatForKey:@"UILabelConfiguration_lineSpacing"];
+      [coderCopy decodeFloatForKey:@"UILabelConfiguration_lineSpacing"];
       v5->_lineSpacing = v11;
       *&v5->_configurationFlags |= 0x20000u;
     }
 
-    if ([v4 containsValueForKey:@"UILabelConfiguration_hasCustomized_disabledTextColor"])
+    if ([coderCopy containsValueForKey:@"UILabelConfiguration_hasCustomized_disabledTextColor"])
     {
       *&v5->_configurationFlags |= 0x400000u;
-      v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UILabelConfiguration_disabledTextColor"];
+      v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UILabelConfiguration_disabledTextColor"];
       [(_UILabelConfigurationInternal *)v5 _setDisabledTextColor:v12];
     }
 
-    if ([v4 containsValueForKey:@"UILabelConfiguration_hasCustomized_hyphenationFactorIgnoredIfURLsDetected"])
+    if ([coderCopy containsValueForKey:@"UILabelConfiguration_hasCustomized_hyphenationFactorIgnoredIfURLsDetected"])
     {
-      if ([v4 decodeBoolForKey:@"UILabelConfiguration_hyphenationFactorIgnoredIfURLsDetected"])
+      if ([coderCopy decodeBoolForKey:@"UILabelConfiguration_hyphenationFactorIgnoredIfURLsDetected"])
       {
         v13 = 262208;
       }
@@ -313,9 +313,9 @@ LABEL_10:
       v5->_configurationFlags = (*&v5->_configurationFlags & 0xFFFFFFBF | v13);
     }
 
-    if ([v4 containsValueForKey:@"UILabelConfiguration_hasCustomized_overallWritingDirectionFollowsLayoutDirection"])
+    if ([coderCopy containsValueForKey:@"UILabelConfiguration_hasCustomized_overallWritingDirectionFollowsLayoutDirection"])
     {
-      if ([v4 decodeBoolForKey:@"UILabelConfiguration_overallWritingDirectionFollowsLayoutDirection"])
+      if ([coderCopy decodeBoolForKey:@"UILabelConfiguration_overallWritingDirectionFollowsLayoutDirection"])
       {
         v14 = 1048608;
       }
@@ -328,23 +328,23 @@ LABEL_10:
       v5->_configurationFlags = (*&v5->_configurationFlags & 0xFFFFFFDF | v14);
     }
 
-    if ([v4 containsValueForKey:@"UILabelConfiguration_hasCustomized_baselineAdjustment"])
+    if ([coderCopy containsValueForKey:@"UILabelConfiguration_hasCustomized_baselineAdjustment"])
     {
-      v5->_configurationFlags = (*&v5->_configurationFlags & 0xFFF7FFFF | (([v4 decodeIntegerForKey:@"UILabelConfiguration_baselineAdjustment"] & 1) << 19));
+      v5->_configurationFlags = (*&v5->_configurationFlags & 0xFFF7FFFF | (([coderCopy decodeIntegerForKey:@"UILabelConfiguration_baselineAdjustment"] & 1) << 19));
     }
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v9 = a3;
+  coderCopy = coder;
   configurationFlags = self->_configurationFlags;
   if ((*&configurationFlags & 0x400) != 0)
   {
-    [v9 encodeBool:*&configurationFlags & 1 forKey:@"UILabelConfiguration_autotracksTextToFit"];
-    [v9 encodeBool:1 forKey:@"UILabelConfiguration_hasCustomized_autotracksTextToFit"];
+    [coderCopy encodeBool:*&configurationFlags & 1 forKey:@"UILabelConfiguration_autotracksTextToFit"];
+    [coderCopy encodeBool:1 forKey:@"UILabelConfiguration_hasCustomized_autotracksTextToFit"];
     configurationFlags = self->_configurationFlags;
     if ((*&configurationFlags & 0x2000) == 0)
     {
@@ -363,8 +363,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  [v9 encodeBool:(*&configurationFlags >> 3) & 1 forKey:@"UILabelConfiguration_textAlignmentMirrored"];
-  [v9 encodeBool:1 forKey:@"UILabelConfiguration_hasCustomized_textAlignmentMirrored"];
+  [coderCopy encodeBool:(*&configurationFlags >> 3) & 1 forKey:@"UILabelConfiguration_textAlignmentMirrored"];
+  [coderCopy encodeBool:1 forKey:@"UILabelConfiguration_hasCustomized_textAlignmentMirrored"];
   configurationFlags = self->_configurationFlags;
   if ((*&configurationFlags & 0x1000) == 0)
   {
@@ -378,8 +378,8 @@ LABEL_4:
   }
 
 LABEL_18:
-  [v9 encodeBool:(*&configurationFlags >> 2) & 1 forKey:@"UILabelConfiguration_textAlignmentFollowsWritingDirection"];
-  [v9 encodeBool:1 forKey:@"UILabelConfiguration_hasCustomized_textAlignmentFollowsWritingDirection"];
+  [coderCopy encodeBool:(*&configurationFlags >> 2) & 1 forKey:@"UILabelConfiguration_textAlignmentFollowsWritingDirection"];
+  [coderCopy encodeBool:1 forKey:@"UILabelConfiguration_hasCustomized_textAlignmentFollowsWritingDirection"];
   configurationFlags = self->_configurationFlags;
   if ((*&configurationFlags & 0x4000) == 0)
   {
@@ -393,8 +393,8 @@ LABEL_5:
   }
 
 LABEL_19:
-  [v9 encodeBool:(*&configurationFlags >> 4) & 1 forKey:@"UILabelConfiguration_usesSimpleTextEffects"];
-  [v9 encodeBool:1 forKey:@"UILabelConfiguration_hasCustomized_usesSimpleTextEffects"];
+  [coderCopy encodeBool:(*&configurationFlags >> 4) & 1 forKey:@"UILabelConfiguration_usesSimpleTextEffects"];
+  [coderCopy encodeBool:1 forKey:@"UILabelConfiguration_hasCustomized_usesSimpleTextEffects"];
   configurationFlags = self->_configurationFlags;
   if ((*&configurationFlags & 0x8000) == 0)
   {
@@ -408,10 +408,10 @@ LABEL_6:
   }
 
 LABEL_20:
-  v5 = [(_UILabelConfigurationInternal *)self _cuiCatalog];
-  [v9 encodeObject:v5 forKey:@"UILabelConfiguration_cuiCatalog"];
+  _cuiCatalog = [(_UILabelConfigurationInternal *)self _cuiCatalog];
+  [coderCopy encodeObject:_cuiCatalog forKey:@"UILabelConfiguration_cuiCatalog"];
 
-  [v9 encodeBool:1 forKey:@"UILabelConfiguration_hasCustomized_cuiCatalog"];
+  [coderCopy encodeBool:1 forKey:@"UILabelConfiguration_hasCustomized_cuiCatalog"];
   configurationFlags = self->_configurationFlags;
   if ((*&configurationFlags & 0x10000) == 0)
   {
@@ -425,10 +425,10 @@ LABEL_7:
   }
 
 LABEL_21:
-  v6 = [(_UILabelConfigurationInternal *)self _cuiStyleEffectConfiguration];
-  [v9 encodeObject:v6 forKey:@"UILabelConfiguration_cuiStyleEffectConfiguration"];
+  _cuiStyleEffectConfiguration = [(_UILabelConfigurationInternal *)self _cuiStyleEffectConfiguration];
+  [coderCopy encodeObject:_cuiStyleEffectConfiguration forKey:@"UILabelConfiguration_cuiStyleEffectConfiguration"];
 
-  [v9 encodeBool:1 forKey:@"UILabelConfiguration_hasCustomized_cuiStyleEffectConfiguration"];
+  [coderCopy encodeBool:1 forKey:@"UILabelConfiguration_hasCustomized_cuiStyleEffectConfiguration"];
   configurationFlags = self->_configurationFlags;
   if ((*&configurationFlags & 0x20000) == 0)
   {
@@ -444,8 +444,8 @@ LABEL_8:
 LABEL_22:
   lineSpacing = self->_lineSpacing;
   *&lineSpacing = lineSpacing;
-  [v9 encodeFloat:@"UILabelConfiguration_lineSpacing" forKey:lineSpacing];
-  [v9 encodeBool:1 forKey:@"UILabelConfiguration_hasCustomized_lineSpacing"];
+  [coderCopy encodeFloat:@"UILabelConfiguration_lineSpacing" forKey:lineSpacing];
+  [coderCopy encodeBool:1 forKey:@"UILabelConfiguration_hasCustomized_lineSpacing"];
   configurationFlags = self->_configurationFlags;
   if ((*&configurationFlags & 0x400000) == 0)
   {
@@ -460,9 +460,9 @@ LABEL_9:
 
 LABEL_23:
   v8 = self->_disabledTextColor;
-  [v9 encodeObject:v8 forKey:@"UILabelConfiguration_disabledTextColor"];
+  [coderCopy encodeObject:v8 forKey:@"UILabelConfiguration_disabledTextColor"];
 
-  [v9 encodeBool:1 forKey:@"UILabelConfiguration_hasCustomized_disabledTextColor"];
+  [coderCopy encodeBool:1 forKey:@"UILabelConfiguration_hasCustomized_disabledTextColor"];
   configurationFlags = self->_configurationFlags;
   if ((*&configurationFlags & 0x40000) == 0)
   {
@@ -476,8 +476,8 @@ LABEL_10:
   }
 
 LABEL_24:
-  [v9 encodeBool:(*&configurationFlags >> 6) & 1 forKey:@"UILabelConfiguration_hyphenationFactorIgnoredIfURLsDetected"];
-  [v9 encodeBool:1 forKey:@"UILabelConfiguration_hasCustomized_hyphenationFactorIgnoredIfURLsDetected"];
+  [coderCopy encodeBool:(*&configurationFlags >> 6) & 1 forKey:@"UILabelConfiguration_hyphenationFactorIgnoredIfURLsDetected"];
+  [coderCopy encodeBool:1 forKey:@"UILabelConfiguration_hasCustomized_hyphenationFactorIgnoredIfURLsDetected"];
   configurationFlags = self->_configurationFlags;
   if ((*&configurationFlags & 0x100000) == 0)
   {
@@ -491,14 +491,14 @@ LABEL_11:
   }
 
 LABEL_25:
-  [v9 encodeBool:(*&configurationFlags >> 5) & 1 forKey:@"UILabelConfiguration_overallWritingDirectionFollowsLayoutDirection"];
-  [v9 encodeBool:1 forKey:@"UILabelConfiguration_hasCustomized_overallWritingDirectionFollowsLayoutDirection"];
+  [coderCopy encodeBool:(*&configurationFlags >> 5) & 1 forKey:@"UILabelConfiguration_overallWritingDirectionFollowsLayoutDirection"];
+  [coderCopy encodeBool:1 forKey:@"UILabelConfiguration_hasCustomized_overallWritingDirectionFollowsLayoutDirection"];
   configurationFlags = self->_configurationFlags;
   if ((*&configurationFlags & 0x80000) != 0)
   {
 LABEL_12:
-    [v9 encodeInt:(*&configurationFlags >> 8) & 3 forKey:@"UILabelConfiguration_baselineAdjustment"];
-    [v9 encodeBool:(*&self->_configurationFlags >> 19) & 1 forKey:@"UILabelConfiguration_hasCustomized_baselineAdjustment"];
+    [coderCopy encodeInt:(*&configurationFlags >> 8) & 3 forKey:@"UILabelConfiguration_baselineAdjustment"];
+    [coderCopy encodeBool:(*&self->_configurationFlags >> 19) & 1 forKey:@"UILabelConfiguration_hasCustomized_baselineAdjustment"];
   }
 
 LABEL_13:

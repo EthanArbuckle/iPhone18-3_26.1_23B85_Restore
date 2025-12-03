@@ -1,10 +1,10 @@
 @interface KTSignalTermHandler
 + (BOOL)terminated;
 + (void)reset;
-+ (void)setTryExit:(id)a3;
++ (void)setTryExit:(id)exit;
 + (void)setup;
 + (void)signalEventHandler;
-- (KTSignalTermHandler)initWithSIGTERMNotification:(id)a3;
+- (KTSignalTermHandler)initWithSIGTERMNotification:(id)notification;
 - (void)dealloc;
 - (void)unregister;
 @end
@@ -30,11 +30,11 @@
   }
 }
 
-+ (void)setTryExit:(id)a3
++ (void)setTryExit:(id)exit
 {
-  if (a3)
+  if (exit)
   {
-    v4 = objc_retainBlock(a3);
+    v4 = objc_retainBlock(exit);
     v3 = vars8;
   }
 
@@ -77,8 +77,8 @@
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v10 + 1) + 8 * v8) complete];
-        v9[2]();
+        complete = [*(*(&v10 + 1) + 8 * v8) complete];
+        complete[2]();
 
         v8 = v8 + 1;
       }
@@ -126,7 +126,7 @@
     handler[1] = 3221225472;
     handler[2] = sub_1001CE35C;
     handler[3] = &unk_100327700;
-    handler[4] = a1;
+    handler[4] = self;
     dispatch_source_set_event_handler(qword_10039C990, handler);
     dispatch_activate(qword_10039C990);
   }
@@ -134,16 +134,16 @@
   os_unfair_lock_unlock(&unk_10039C988);
 }
 
-- (KTSignalTermHandler)initWithSIGTERMNotification:(id)a3
+- (KTSignalTermHandler)initWithSIGTERMNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v11.receiver = self;
   v11.super_class = KTSignalTermHandler;
   v5 = [(KTSignalTermHandler *)&v11 init];
   if (v5)
   {
     [objc_opt_class() setup];
-    [(KTSignalTermHandler *)v5 setComplete:v4];
+    [(KTSignalTermHandler *)v5 setComplete:notificationCopy];
     os_unfair_lock_lock(&unk_10039C988);
     if (qword_10039C9A0)
     {
@@ -159,7 +159,7 @@
       block[1] = 3221225472;
       block[2] = sub_1001CE4F4;
       block[3] = &unk_10031BCC0;
-      v10 = v4;
+      v10 = notificationCopy;
       dispatch_async(v6, block);
     }
 

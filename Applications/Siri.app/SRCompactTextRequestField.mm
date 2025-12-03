@@ -1,47 +1,47 @@
 @interface SRCompactTextRequestField
 - (BOOL)_hasText;
 - (BOOL)resignFirstResponder;
-- (CGRect)_adjustTextOrEditingRect:(CGRect)a3 forBounds:(CGRect)a4;
-- (CGRect)_frameForPlaceholderRectForBounds:(CGRect)a3 alignment:(int64_t)a4 layingOutContentRightToLeft:(BOOL)a5;
-- (CGRect)_placeholderRectForBounds:(CGRect)a3 alignment:(int64_t)a4 layingOutContentRightToLeft:(BOOL)a5;
-- (CGRect)_textRectForBounds:(CGRect)a3 alignment:(int64_t)a4 layingOutContentRightToLeft:(BOOL)a5;
-- (CGRect)clearButtonRectForBounds:(CGRect)a3;
-- (CGRect)editingRectForBounds:(CGRect)a3;
-- (CGRect)leftViewRectForBounds:(CGRect)a3;
-- (CGRect)placeholderRectForBounds:(CGRect)a3;
-- (CGRect)rightViewRectForBounds:(CGRect)a3;
-- (CGRect)textRectForBounds:(CGRect)a3;
+- (CGRect)_adjustTextOrEditingRect:(CGRect)rect forBounds:(CGRect)bounds;
+- (CGRect)_frameForPlaceholderRectForBounds:(CGRect)bounds alignment:(int64_t)alignment layingOutContentRightToLeft:(BOOL)left;
+- (CGRect)_placeholderRectForBounds:(CGRect)bounds alignment:(int64_t)alignment layingOutContentRightToLeft:(BOOL)left;
+- (CGRect)_textRectForBounds:(CGRect)bounds alignment:(int64_t)alignment layingOutContentRightToLeft:(BOOL)left;
+- (CGRect)clearButtonRectForBounds:(CGRect)bounds;
+- (CGRect)editingRectForBounds:(CGRect)bounds;
+- (CGRect)leftViewRectForBounds:(CGRect)bounds;
+- (CGRect)placeholderRectForBounds:(CGRect)bounds;
+- (CGRect)rightViewRectForBounds:(CGRect)bounds;
+- (CGRect)textRectForBounds:(CGRect)bounds;
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SRCompactTextRequestField)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SRCompactTextRequestField)initWithFrame:(CGRect)frame;
 - (SRCompactTextRequestSiriSuggestionsButtonDelegate)buttonDelegate;
 - (double)_preferredHeight;
-- (id)_borderColorForUserInterfaceStyle:(int64_t)a3;
+- (id)_borderColorForUserInterfaceStyle:(int64_t)style;
 - (int64_t)_preferredTextAlignment;
-- (int64_t)_preferredTextAlignmentForEditing:(BOOL)a3;
+- (int64_t)_preferredTextAlignmentForEditing:(BOOL)editing;
 - (void)_dynamicUserInterfaceTraitDidChange;
-- (void)_setContinuousCornerRadius:(double)a3;
-- (void)_textDidChange:(id)a3;
+- (void)_setContinuousCornerRadius:(double)radius;
+- (void)_textDidChange:(id)change;
 - (void)_updateBorderVisualStyling;
-- (void)_updateStyleForAccessoryView:(id)a3;
+- (void)_updateStyleForAccessoryView:(id)view;
 - (void)_updateStyleForClearButton;
 - (void)_updateStyleForLeftView;
 - (void)_updateStyleForPlaceholderView;
 - (void)_updateStyleForRightView;
-- (void)_updateTextAlignmentForEditing:(BOOL)a3 animated:(BOOL)a4;
+- (void)_updateTextAlignmentForEditing:(BOOL)editing animated:(BOOL)animated;
 - (void)_updateVisualStyling;
 - (void)layoutSubviews;
-- (void)textRequestSuggestionsButton:(id)a3 didEnableSuggestions:(BOOL)a4;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)textRequestSuggestionsButton:(id)button didEnableSuggestions:(BOOL)suggestions;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation SRCompactTextRequestField
 
-- (SRCompactTextRequestField)initWithFrame:(CGRect)a3
+- (SRCompactTextRequestField)initWithFrame:(CGRect)frame
 {
   v17.receiver = self;
   v17.super_class = SRCompactTextRequestField;
-  v3 = [(SRCompactTextRequestField *)&v17 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SRCompactTextRequestField *)&v17 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -63,8 +63,8 @@
     v4->_backgroundView = v7;
 
     [(MTMaterialView *)v4->_backgroundView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v9 = [(MTMaterialView *)v4->_backgroundView layer];
-    [v9 setBorderWidth:0.300000012];
+    layer = [(MTMaterialView *)v4->_backgroundView layer];
+    [layer setBorderWidth:0.300000012];
 
     [(SRCompactTextRequestField *)v4 _updateBorderVisualStyling];
     [(MTMaterialView *)v4->_backgroundView setAutoresizingMask:18];
@@ -99,11 +99,11 @@
   return v4;
 }
 
-- (id)_borderColorForUserInterfaceStyle:(int64_t)a3
+- (id)_borderColorForUserInterfaceStyle:(int64_t)style
 {
-  if (a3 <= 2)
+  if (style <= 2)
   {
-    self = [UIColor colorWithWhite:dbl_1000F6B78[a3] alpha:0.08, v3];
+    self = [UIColor colorWithWhite:dbl_1000F6B78[style] alpha:0.08, v3];
   }
 
   return self;
@@ -111,23 +111,23 @@
 
 - (void)_updateBorderVisualStyling
 {
-  v3 = [(SRCompactTextRequestField *)self traitCollection];
-  v4 = [v3 userInterfaceStyle];
+  traitCollection = [(SRCompactTextRequestField *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  v8 = [(SRCompactTextRequestField *)self _borderColorForUserInterfaceStyle:v4];
-  v5 = [(SRCompactTextRequestField *)self _backgroundView];
-  v6 = [v5 layer];
+  v8 = [(SRCompactTextRequestField *)self _borderColorForUserInterfaceStyle:userInterfaceStyle];
+  _backgroundView = [(SRCompactTextRequestField *)self _backgroundView];
+  layer = [_backgroundView layer];
 
   v7 = v8;
-  [v6 setBorderColor:{objc_msgSend(v8, "CGColor")}];
+  [layer setBorderColor:{objc_msgSend(v8, "CGColor")}];
 }
 
 - (double)_preferredHeight
 {
-  v2 = [(SRCompactTextRequestField *)self font];
-  [v2 lineHeight];
+  font = [(SRCompactTextRequestField *)self font];
+  [font lineHeight];
   v4 = v3 + 26.0;
-  [v2 descender];
+  [font descender];
   v6 = fmax(v4 + v5, 48.0);
 
   return v6;
@@ -135,24 +135,24 @@
 
 - (void)_updateVisualStyling
 {
-  v3 = [(SRCompactTextRequestField *)self traitCollection];
-  v4 = [v3 preferredContentSizeCategory];
-  v5 = sub_100088A08(v4, UIContentSizeCategorySmall, UIContentSizeCategoryAccessibilityExtraExtraLarge);
+  traitCollection = [(SRCompactTextRequestField *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  v5 = sub_100088A08(preferredContentSizeCategory, UIContentSizeCategorySmall, UIContentSizeCategoryAccessibilityExtraExtraLarge);
   v6 = [UITraitCollection traitCollectionWithPreferredContentSizeCategory:v5];
 
   v7 = [UIFont preferredFontForTextStyle:UIFontTextStyleTitle3 compatibleWithTraitCollection:v6];
   [(SRCompactTextRequestField *)self setFont:v7];
-  v8 = [(SRCompactTextRequestField *)self _secondaryTintColor];
-  v9 = [(SRCompactTextRequestField *)self _clearButton];
+  _secondaryTintColor = [(SRCompactTextRequestField *)self _secondaryTintColor];
+  _clearButton = [(SRCompactTextRequestField *)self _clearButton];
   v10 = dispatch_get_global_queue(21, 0);
   v17 = _NSConcreteStackBlock;
   v18 = 3221225472;
   v19 = sub_10008941C;
   v20 = &unk_100167298;
-  v21 = v8;
-  v22 = v9;
-  v11 = v9;
-  v12 = v8;
+  v21 = _secondaryTintColor;
+  v22 = _clearButton;
+  v11 = _clearButton;
+  v12 = _secondaryTintColor;
   dispatch_async(v10, &v17);
 
   v13 = [UIColor whiteColor:v17];
@@ -161,54 +161,54 @@
   v14 = +[UIColor whiteColor];
   [(SRCompactTextRequestField *)self setTextColor:v14];
 
-  v15 = [(SRCompactTextRequestField *)self _placeholderLabel];
-  [v15 setTextColor:v12];
+  _placeholderLabel = [(SRCompactTextRequestField *)self _placeholderLabel];
+  [_placeholderLabel setTextColor:v12];
   [(SRCompactTextRequestField *)self _updateStyleForLeftView];
   [(SRCompactTextRequestField *)self _updateStyleForRightView];
   [(SRCompactTextRequestField *)self _updateStyleForClearButton];
   [(SRCompactTextRequestField *)self _updateStyleForPlaceholderView];
-  v16 = [(SRCompactTextRequestField *)self layer];
-  [v16 setAllowsGroupBlending:0];
+  layer = [(SRCompactTextRequestField *)self layer];
+  [layer setAllowsGroupBlending:0];
 }
 
 - (void)_updateStyleForPlaceholderView
 {
-  v10 = [(SRCompactTextRequestField *)self _placeholderView];
-  v3 = [(SRCompactTextRequestField *)self _styledViews];
-  if (([v3 containsObject:v10] & 1) == 0)
+  _placeholderView = [(SRCompactTextRequestField *)self _placeholderView];
+  _styledViews = [(SRCompactTextRequestField *)self _styledViews];
+  if (([_styledViews containsObject:_placeholderView] & 1) == 0)
   {
-    v4 = [(SRCompactTextRequestField *)self _backgroundView];
-    v5 = [v4 visualStylingProviderForCategory:1];
-    [v5 automaticallyUpdateView:v10 withStyle:1];
+    _backgroundView = [(SRCompactTextRequestField *)self _backgroundView];
+    v5 = [_backgroundView visualStylingProviderForCategory:1];
+    [v5 automaticallyUpdateView:_placeholderView withStyle:1];
 
-    v6 = [v10 layer];
+    layer = [_placeholderView layer];
     v7 = [CAFilter filterWithType:kCAFilterPlusL];
-    [v6 setCompositingFilter:v7];
+    [layer setCompositingFilter:v7];
 
-    [v3 addObject:v10];
+    [_styledViews addObject:_placeholderView];
   }
 
   v8 = objc_opt_class();
-  v9 = sub_100019948(v8, v10);
+  v9 = sub_100019948(v8, _placeholderView);
   [v9 setAdjustsFontSizeToFitWidth:1];
 }
 
-- (void)_updateStyleForAccessoryView:(id)a3
+- (void)_updateStyleForAccessoryView:(id)view
 {
-  v9 = a3;
-  v4 = [(SRCompactTextRequestField *)self _styledViews];
-  if (([v4 containsObject:v9] & 1) == 0)
+  viewCopy = view;
+  _styledViews = [(SRCompactTextRequestField *)self _styledViews];
+  if (([_styledViews containsObject:viewCopy] & 1) == 0)
   {
-    v5 = [(SRCompactTextRequestField *)self _backgroundView];
-    v6 = [v5 visualStylingProviderForCategory:1];
-    [v6 automaticallyUpdateView:v9 withStyle:1];
+    _backgroundView = [(SRCompactTextRequestField *)self _backgroundView];
+    v6 = [_backgroundView visualStylingProviderForCategory:1];
+    [v6 automaticallyUpdateView:viewCopy withStyle:1];
 
-    v7 = [v9 layer];
+    layer = [viewCopy layer];
     v8 = [CAFilter filterWithType:kCAFilterPlusL];
-    [v7 setCompositingFilter:v8];
+    [layer setCompositingFilter:v8];
 
-    [v9 setContentMode:1];
-    [v4 addObject:v9];
+    [viewCopy setContentMode:1];
+    [_styledViews addObject:viewCopy];
   }
 }
 
@@ -216,39 +216,39 @@
 {
   if ((+[AFSystemAssistantExperienceStatusManager saeAvailable]& 1) == 0)
   {
-    v3 = [(SRCompactTextRequestField *)self leftView];
-    [(SRCompactTextRequestField *)self _updateStyleForAccessoryView:v3];
+    leftView = [(SRCompactTextRequestField *)self leftView];
+    [(SRCompactTextRequestField *)self _updateStyleForAccessoryView:leftView];
   }
 }
 
 - (void)_updateStyleForRightView
 {
-  v3 = [(SRCompactTextRequestField *)self rightView];
-  [(SRCompactTextRequestField *)self _updateStyleForAccessoryView:v3];
+  rightView = [(SRCompactTextRequestField *)self rightView];
+  [(SRCompactTextRequestField *)self _updateStyleForAccessoryView:rightView];
 }
 
 - (void)_updateStyleForClearButton
 {
-  v8 = [(SRCompactTextRequestField *)self _clearButton];
-  v3 = [(SRCompactTextRequestField *)self _styledViews];
-  if (([v3 containsObject:v8] & 1) == 0)
+  _clearButton = [(SRCompactTextRequestField *)self _clearButton];
+  _styledViews = [(SRCompactTextRequestField *)self _styledViews];
+  if (([_styledViews containsObject:_clearButton] & 1) == 0)
   {
-    v4 = [(SRCompactTextRequestField *)self _backgroundView];
-    v5 = [v4 visualStylingProviderForCategory:1];
-    [v5 automaticallyUpdateView:v8 withStyle:1];
+    _backgroundView = [(SRCompactTextRequestField *)self _backgroundView];
+    v5 = [_backgroundView visualStylingProviderForCategory:1];
+    [v5 automaticallyUpdateView:_clearButton withStyle:1];
 
-    v6 = [v8 layer];
+    layer = [_clearButton layer];
     v7 = [CAFilter filterWithType:kCAFilterPlusL];
-    [v6 setCompositingFilter:v7];
+    [layer setCompositingFilter:v7];
 
-    [v8 setContentMode:1];
-    [v3 addObject:v8];
+    [_clearButton setContentMode:1];
+    [_styledViews addObject:_clearButton];
   }
 }
 
-- (int64_t)_preferredTextAlignmentForEditing:(BOOL)a3
+- (int64_t)_preferredTextAlignmentForEditing:(BOOL)editing
 {
-  if (a3)
+  if (editing)
   {
     return 4;
   }
@@ -261,15 +261,15 @@
 
 - (int64_t)_preferredTextAlignment
 {
-  v3 = [(SRCompactTextRequestField *)self isEditing];
+  isEditing = [(SRCompactTextRequestField *)self isEditing];
 
-  return [(SRCompactTextRequestField *)self _preferredTextAlignmentForEditing:v3];
+  return [(SRCompactTextRequestField *)self _preferredTextAlignmentForEditing:isEditing];
 }
 
-- (void)_updateTextAlignmentForEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)_updateTextAlignmentForEditing:(BOOL)editing animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = [(SRCompactTextRequestField *)self _preferredTextAlignmentForEditing:a3];
+  animatedCopy = animated;
+  v6 = [(SRCompactTextRequestField *)self _preferredTextAlignmentForEditing:editing];
   if (v6 != [(SRCompactTextRequestField *)self textAlignment])
   {
     v9[0] = _NSConcreteStackBlock;
@@ -280,7 +280,7 @@
     v9[5] = v6;
     v7 = objc_retainBlock(v9);
     v8 = v7;
-    if (v4)
+    if (animatedCopy)
     {
       [UIView _animateUsingDefaultTimingWithOptions:6 animations:v7 completion:0];
     }
@@ -294,13 +294,13 @@
 
 - (BOOL)_hasText
 {
-  v2 = [(SRCompactTextRequestField *)self text];
-  v3 = [v2 length] != 0;
+  text = [(SRCompactTextRequestField *)self text];
+  v3 = [text length] != 0;
 
   return v3;
 }
 
-- (void)_textDidChange:(id)a3
+- (void)_textDidChange:(id)change
 {
   if ([(SRCompactTextRequestField *)self _hasText])
   {
@@ -315,18 +315,18 @@
   [(SRCompactTextRequestField *)self setClearButtonMode:v4];
 }
 
-- (CGRect)_placeholderRectForBounds:(CGRect)a3 alignment:(int64_t)a4 layingOutContentRightToLeft:(BOOL)a5
+- (CGRect)_placeholderRectForBounds:(CGRect)bounds alignment:(int64_t)alignment layingOutContentRightToLeft:(BOOL)left
 {
-  v5 = a5;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  leftCopy = left;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [SRCompactTextRequestField _frameForPlaceholderRectForBounds:"_frameForPlaceholderRectForBounds:alignment:layingOutContentRightToLeft:" alignment:? layingOutContentRightToLeft:?];
   v13 = v12;
   v15 = v14;
   v17 = v16;
-  if (a4 == 1)
+  if (alignment == 1)
   {
     UIRectCenteredXInRectScale();
     v19 = v18;
@@ -337,20 +337,20 @@
 
   else
   {
-    [(SRCompactTextRequestField *)self _textRectForBounds:a4 alignment:v5 layingOutContentRightToLeft:x, y, width, height];
+    [(SRCompactTextRequestField *)self _textRectForBounds:alignment alignment:leftCopy layingOutContentRightToLeft:x, y, width, height];
     v27 = v23;
     v28 = v24;
     v29 = v25;
     v30 = v26;
-    if (v5)
+    if (leftCopy)
     {
       v19 = CGRectGetMaxX(*&v23) - (v15 + 8.0);
     }
 
     else
     {
-      v31 = [(SRCompactTextRequestField *)self leftView];
-      [v31 frame];
+      leftView = [(SRCompactTextRequestField *)self leftView];
+      [leftView frame];
       v33 = v32;
       v38.origin.x = v27;
       v38.origin.y = v28;
@@ -371,14 +371,14 @@
   return result;
 }
 
-- (CGRect)_frameForPlaceholderRectForBounds:(CGRect)a3 alignment:(int64_t)a4 layingOutContentRightToLeft:(BOOL)a5
+- (CGRect)_frameForPlaceholderRectForBounds:(CGRect)bounds alignment:(int64_t)alignment layingOutContentRightToLeft:(BOOL)left
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  v8 = [(SRCompactTextRequestField *)self placeholder:a4];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  v8 = [(SRCompactTextRequestField *)self placeholder:alignment];
   v15 = NSFontAttributeName;
-  v9 = [(SRCompactTextRequestField *)self font];
-  v16 = v9;
+  font = [(SRCompactTextRequestField *)self font];
+  v16 = font;
   v10 = [NSDictionary dictionaryWithObjects:&v16 forKeys:&v15 count:1];
   [v8 boundingRectWithSize:0 options:v10 attributes:0 context:{width, height}];
 
@@ -390,22 +390,22 @@
   return result;
 }
 
-- (CGRect)_textRectForBounds:(CGRect)a3 alignment:(int64_t)a4 layingOutContentRightToLeft:(BOOL)a5
+- (CGRect)_textRectForBounds:(CGRect)bounds alignment:(int64_t)alignment layingOutContentRightToLeft:(BOOL)left
 {
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (a4 == 1)
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  if (alignment == 1)
   {
-    [(SRCompactTextRequestField *)self _frameForPlaceholderRectForBounds:1 alignment:a5 layingOutContentRightToLeft:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+    [(SRCompactTextRequestField *)self _frameForPlaceholderRectForBounds:1 alignment:left layingOutContentRightToLeft:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
     v12 = v11;
   }
 
   else
   {
-    v12 = a3.size.height + -26.0;
-    v13 = a3.size.height + -26.0 + 8.0 + 13.0;
-    if ([(SRCompactTextRequestField *)self _laysOutContentRightToLeft:a4])
+    v12 = bounds.size.height + -26.0;
+    v13 = bounds.size.height + -26.0 + 8.0 + 13.0;
+    if ([(SRCompactTextRequestField *)self _laysOutContentRightToLeft:alignment])
     {
       v14 = v13;
     }
@@ -428,26 +428,26 @@
   return result;
 }
 
-- (CGRect)_adjustTextOrEditingRect:(CGRect)a3 forBounds:(CGRect)a4
+- (CGRect)_adjustTextOrEditingRect:(CGRect)rect forBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4.size.height - (a3.origin.y + a3.size.height);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v9 = bounds.size.height - (rect.origin.y + rect.size.height);
   [(SRCompactTextRequestField *)self bounds];
   v11 = v10 - y - v9;
   [(SRCompactTextRequestField *)self _padding];
   v13 = v11 - v12;
-  v14 = [(SRCompactTextRequestField *)self font];
-  [v14 lineHeight];
+  font = [(SRCompactTextRequestField *)self font];
+  [font lineHeight];
   v16 = v13 - v15;
 
   v17 = height - v16;
   UIRectCenteredRect();
   v19 = v18;
-  v20 = [(SRCompactTextRequestField *)self leftView];
-  [v20 frame];
+  leftView = [(SRCompactTextRequestField *)self leftView];
+  [leftView frame];
   v22 = x + v21;
 
   v23 = v22;
@@ -461,16 +461,16 @@
   return result;
 }
 
-- (CGRect)placeholderRectForBounds:(CGRect)a3
+- (CGRect)placeholderRectForBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(SRCompactTextRequestField *)self _preferredTextAlignment];
-  v9 = [(SRCompactTextRequestField *)self _laysOutContentRightToLeft];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  _preferredTextAlignment = [(SRCompactTextRequestField *)self _preferredTextAlignment];
+  _laysOutContentRightToLeft = [(SRCompactTextRequestField *)self _laysOutContentRightToLeft];
 
-  [(SRCompactTextRequestField *)self _placeholderRectForBounds:v8 alignment:v9 layingOutContentRightToLeft:x, y, width, height];
+  [(SRCompactTextRequestField *)self _placeholderRectForBounds:_preferredTextAlignment alignment:_laysOutContentRightToLeft layingOutContentRightToLeft:x, y, width, height];
   result.size.height = v13;
   result.size.width = v12;
   result.origin.y = v11;
@@ -478,9 +478,9 @@
   return result;
 }
 
-- (CGRect)textRectForBounds:(CGRect)a3
+- (CGRect)textRectForBounds:(CGRect)bounds
 {
-  [(SRCompactTextRequestField *)self _textRectForBounds:[(SRCompactTextRequestField *)self _preferredTextAlignment] alignment:[(SRCompactTextRequestField *)self _laysOutContentRightToLeft] layingOutContentRightToLeft:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(SRCompactTextRequestField *)self _textRectForBounds:[(SRCompactTextRequestField *)self _preferredTextAlignment] alignment:[(SRCompactTextRequestField *)self _laysOutContentRightToLeft] layingOutContentRightToLeft:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
 
   [SRCompactTextRequestField _adjustTextOrEditingRect:"_adjustTextOrEditingRect:forBounds:" forBounds:?];
   result.size.height = v7;
@@ -490,9 +490,9 @@
   return result;
 }
 
-- (CGRect)editingRectForBounds:(CGRect)a3
+- (CGRect)editingRectForBounds:(CGRect)bounds
 {
-  [(SRCompactTextRequestField *)self _textRectForBounds:[(SRCompactTextRequestField *)self _preferredTextAlignment] alignment:[(SRCompactTextRequestField *)self _laysOutContentRightToLeft] layingOutContentRightToLeft:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(SRCompactTextRequestField *)self _textRectForBounds:[(SRCompactTextRequestField *)self _preferredTextAlignment] alignment:[(SRCompactTextRequestField *)self _laysOutContentRightToLeft] layingOutContentRightToLeft:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
 
   [SRCompactTextRequestField _adjustTextOrEditingRect:"_adjustTextOrEditingRect:forBounds:" forBounds:?];
   result.size.height = v7;
@@ -502,12 +502,12 @@
   return result;
 }
 
-- (CGRect)leftViewRectForBounds:(CGRect)a3
+- (CGRect)leftViewRectForBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(SRCompactTextRequestField *)self _laysOutContentRightToLeft];
   UIRectCenteredYInRectScale();
   if ([(SRCompactTextRequestField *)self textAlignment]== 1)
@@ -523,12 +523,12 @@
     v11 = height;
   }
 
-  v12 = [(SRCompactTextRequestField *)self leftView];
+  leftView = [(SRCompactTextRequestField *)self leftView];
 
-  if (v12)
+  if (leftView)
   {
-    v13 = [(SRCompactTextRequestField *)self leftView];
-    [v13 frame];
+    leftView2 = [(SRCompactTextRequestField *)self leftView];
+    [leftView2 frame];
   }
 
   UIRectCenteredYInRectScale();
@@ -539,12 +539,12 @@
   return result;
 }
 
-- (CGRect)rightViewRectForBounds:(CGRect)a3
+- (CGRect)rightViewRectForBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(SRCompactTextRequestField *)self _laysOutContentRightToLeft];
   UIRectCenteredYInRectScale();
   if ([(SRCompactTextRequestField *)self textAlignment]== 1)
@@ -569,12 +569,12 @@
   return result;
 }
 
-- (CGRect)clearButtonRectForBounds:(CGRect)a3
+- (CGRect)clearButtonRectForBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   if ([(SRCompactTextRequestField *)self _laysOutContentRightToLeft])
   {
     [(SRCompactTextRequestField *)self leftViewRectForBounds:x, y, width, height];
@@ -606,12 +606,12 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
+  width = fits.width;
   v15.receiver = self;
   v15.super_class = SRCompactTextRequestField;
-  [(SRCompactTextRequestField *)&v15 sizeThatFits:a3.width, a3.height];
+  [(SRCompactTextRequestField *)&v15 sizeThatFits:fits.width, fits.height];
   v6 = v5;
   v8 = v7;
   [(SRCompactTextRequestField *)self _preferredHeight];
@@ -635,8 +635,8 @@
   v16.receiver = self;
   v16.super_class = SRCompactTextRequestField;
   [(SRCompactTextRequestField *)&v16 layoutSubviews];
-  v3 = [(SRCompactTextRequestField *)self _suggestionsButton];
-  [v3 frame];
+  _suggestionsButton = [(SRCompactTextRequestField *)self _suggestionsButton];
+  [_suggestionsButton frame];
   v5 = v4;
   v7 = v6;
   suggestionsButton = self->_suggestionsButton;
@@ -650,17 +650,17 @@
   v18.origin.y = v7;
   v18.size.width = v12;
   v18.size.height = v14;
-  [v3 setFrame:{v5, (Height - CGRectGetHeight(v18)) * 0.5, v12, v14}];
+  [_suggestionsButton setFrame:{v5, (Height - CGRectGetHeight(v18)) * 0.5, v12, v14}];
   [(SRCompactTextRequestField *)self _updateVisualStyling];
 }
 
-- (void)_setContinuousCornerRadius:(double)a3
+- (void)_setContinuousCornerRadius:(double)radius
 {
   v6.receiver = self;
   v6.super_class = SRCompactTextRequestField;
   [(SRCompactTextRequestField *)&v6 _setContinuousCornerRadius:?];
-  v5 = [(SRCompactTextRequestField *)self _backgroundView];
-  [v5 _setContinuousCornerRadius:a3];
+  _backgroundView = [(SRCompactTextRequestField *)self _backgroundView];
+  [_backgroundView _setContinuousCornerRadius:radius];
 }
 
 - (void)_dynamicUserInterfaceTraitDidChange
@@ -675,36 +675,36 @@
 {
   v5.receiver = self;
   v5.super_class = SRCompactTextRequestField;
-  v3 = [(SRCompactTextRequestField *)&v5 resignFirstResponder];
-  if (v3)
+  resignFirstResponder = [(SRCompactTextRequestField *)&v5 resignFirstResponder];
+  if (resignFirstResponder)
   {
     [(SRCompactTextRequestField *)self setText:&stru_10016AE90];
   }
 
-  return v3;
+  return resignFirstResponder;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v12.receiver = self;
   v12.super_class = SRCompactTextRequestField;
-  [(SRCompactTextRequestField *)&v12 traitCollectionDidChange:v4];
-  v5 = [(SRCompactTextRequestField *)self _styledViews];
-  [v5 removeAllObjects];
+  [(SRCompactTextRequestField *)&v12 traitCollectionDidChange:changeCopy];
+  _styledViews = [(SRCompactTextRequestField *)self _styledViews];
+  [_styledViews removeAllObjects];
 
   [(SRCompactTextRequestField *)self _updateVisualStyling];
-  if (v4)
+  if (changeCopy)
   {
-    v6 = [v4 preferredContentSizeCategory];
-    v7 = [(SRCompactTextRequestField *)self traitCollection];
-    v8 = [v7 preferredContentSizeCategory];
+    preferredContentSizeCategory = [changeCopy preferredContentSizeCategory];
+    traitCollection = [(SRCompactTextRequestField *)self traitCollection];
+    preferredContentSizeCategory2 = [traitCollection preferredContentSizeCategory];
 
-    if (v6 != v8)
+    if (preferredContentSizeCategory != preferredContentSizeCategory2)
     {
-      v9 = [(SRCompactTextRequestField *)self traitCollection];
-      v10 = [v9 preferredContentSizeCategory];
-      IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v10);
+      traitCollection2 = [(SRCompactTextRequestField *)self traitCollection];
+      preferredContentSizeCategory3 = [traitCollection2 preferredContentSizeCategory];
+      IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory3);
 
       if (IsAccessibilityCategory)
       {
@@ -714,12 +714,12 @@
   }
 }
 
-- (void)textRequestSuggestionsButton:(id)a3 didEnableSuggestions:(BOOL)a4
+- (void)textRequestSuggestionsButton:(id)button didEnableSuggestions:(BOOL)suggestions
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(SRCompactTextRequestField *)self buttonDelegate];
-  [v7 textRequestSuggestionsButton:v6 didEnableSuggestions:v4];
+  suggestionsCopy = suggestions;
+  buttonCopy = button;
+  buttonDelegate = [(SRCompactTextRequestField *)self buttonDelegate];
+  [buttonDelegate textRequestSuggestionsButton:buttonCopy didEnableSuggestions:suggestionsCopy];
 }
 
 - (SRCompactTextRequestSiriSuggestionsButtonDelegate)buttonDelegate

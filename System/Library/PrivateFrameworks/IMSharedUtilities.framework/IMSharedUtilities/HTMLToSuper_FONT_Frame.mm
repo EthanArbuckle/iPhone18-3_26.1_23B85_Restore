@@ -1,21 +1,21 @@
 @interface HTMLToSuper_FONT_Frame
-- (void)parser:(id)a3 context:(id)a4 didEndElement:(id)a5 namespaceURI:(id)a6 qualifiedName:(id)a7;
-- (void)parser:(id)a3 context:(id)a4 didStartElement:(id)a5 namespaceURI:(id)a6 qualifiedName:(id)a7 attributes:(id)a8;
+- (void)parser:(id)parser context:(id)context didEndElement:(id)element namespaceURI:(id)i qualifiedName:(id)name;
+- (void)parser:(id)parser context:(id)context didStartElement:(id)element namespaceURI:(id)i qualifiedName:(id)name attributes:(id)attributes;
 @end
 
 @implementation HTMLToSuper_FONT_Frame
 
-- (void)parser:(id)a3 context:(id)a4 didStartElement:(id)a5 namespaceURI:(id)a6 qualifiedName:(id)a7 attributes:(id)a8
+- (void)parser:(id)parser context:(id)context didStartElement:(id)element namespaceURI:(id)i qualifiedName:(id)name attributes:(id)attributes
 {
-  v20 = IMCopyNormalizedAttributes(a8, 1, 0);
+  v20 = IMCopyNormalizedAttributes(attributes, 1, 0);
   v10 = [v20 objectForKey:@"face"];
   v11 = [v20 objectForKey:@"absz"];
   v12 = [v20 objectForKey:@"size"];
   if (v11)
   {
-    v13 = [v11 integerValue];
+    integerValue = [v11 integerValue];
 LABEL_3:
-    v14 = [MEMORY[0x1E696AD98] numberWithInteger:v13];
+    v14 = [MEMORY[0x1E696AD98] numberWithInteger:integerValue];
     goto LABEL_4;
   }
 
@@ -53,7 +53,7 @@ LABEL_17:
         case '2':
           goto LABEL_39;
         case '3':
-          v13 = 12;
+          integerValue = 12;
           goto LABEL_3;
       }
 
@@ -71,7 +71,7 @@ LABEL_17:
     }
 
 LABEL_38:
-    v13 = 14;
+    integerValue = 14;
     goto LABEL_3;
   }
 
@@ -79,7 +79,7 @@ LABEL_38:
   {
     if (v19 == 55)
     {
-      v13 = 36;
+      integerValue = 36;
       goto LABEL_3;
     }
 
@@ -91,7 +91,7 @@ LABEL_38:
       }
 
 LABEL_40:
-      v13 = 18;
+      integerValue = 18;
       goto LABEL_3;
     }
 
@@ -108,53 +108,53 @@ LABEL_40:
       }
 
 LABEL_39:
-      v13 = 10;
+      integerValue = 10;
       goto LABEL_3;
     }
 
 LABEL_34:
-    v13 = 24;
+    integerValue = 24;
     goto LABEL_3;
   }
 
   if (v19 == 2295)
   {
-    v13 = 6;
+    integerValue = 6;
     goto LABEL_3;
   }
 
   if (v19 == 2250)
   {
 LABEL_37:
-    v13 = 8;
+    integerValue = 8;
     goto LABEL_3;
   }
 
 LABEL_4:
   if (v10)
   {
-    [a4 pushFontFamily:v10];
+    [context pushFontFamily:v10];
     self->_shouldPopFontName = 1;
   }
 
   if (v14)
   {
-    [a4 pushFontSize:v14];
+    [context pushFontSize:v14];
     self->_shouldPopFontSize = 1;
   }
 }
 
-- (void)parser:(id)a3 context:(id)a4 didEndElement:(id)a5 namespaceURI:(id)a6 qualifiedName:(id)a7
+- (void)parser:(id)parser context:(id)context didEndElement:(id)element namespaceURI:(id)i qualifiedName:(id)name
 {
   if (self->_shouldPopFontName)
   {
-    [a4 popFontFamily];
+    [context popFontFamily];
   }
 
   if (self->_shouldPopFontSize)
   {
 
-    MEMORY[0x1EEE66B58](a4, sel_popFontSize);
+    MEMORY[0x1EEE66B58](context, sel_popFontSize);
   }
 }
 

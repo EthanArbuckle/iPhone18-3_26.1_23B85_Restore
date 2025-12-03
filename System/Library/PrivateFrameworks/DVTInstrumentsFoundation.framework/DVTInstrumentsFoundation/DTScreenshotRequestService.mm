@@ -1,15 +1,15 @@
 @interface DTScreenshotRequestService
-+ (void)registerCapabilities:(id)a3;
-- (id)_screenshotServiceRequestWithError:(id *)a3;
++ (void)registerCapabilities:(id)capabilities;
+- (id)_screenshotServiceRequestWithError:(id *)error;
 - (id)takeScreenshot;
 @end
 
 @implementation DTScreenshotRequestService
 
-+ (void)registerCapabilities:(id)a3
++ (void)registerCapabilities:(id)capabilities
 {
   v8 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  capabilitiesCopy = capabilities;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     *v7 = 138412290;
@@ -18,7 +18,7 @@
     _os_log_impl(&dword_247F67000, MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG, "Registering service %@", v7, 0xCu);
   }
 
-  [v4 publishCapability:@"com.apple.instruments.server.services.screenshot" withVersion:2 forClass:{a1, *v7}];
+  [capabilitiesCopy publishCapability:@"com.apple.instruments.server.services.screenshot" withVersion:2 forClass:{self, *v7}];
 
   v6 = *MEMORY[0x277D85DE8];
 }
@@ -81,7 +81,7 @@
   return v15;
 }
 
-- (id)_screenshotServiceRequestWithError:(id *)a3
+- (id)_screenshotServiceRequestWithError:(id *)error
 {
   v4 = [objc_alloc(MEMORY[0x277CCAE80]) initWithServiceName:@"com.apple.dt.DTScreenshotService"];
   v5 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_285A4DE88];
@@ -101,7 +101,7 @@
   v19 = sub_247FCE348;
   v20 = 0;
   v6 = dispatch_semaphore_create(0);
-  v7 = [v4 remoteObjectProxy];
+  remoteObjectProxy = [v4 remoteObjectProxy];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = sub_247FCE350;
@@ -110,12 +110,12 @@
   v14 = &v15;
   v8 = v6;
   v12 = v8;
-  [v7 takeScreenshotWithReply:v11];
+  [remoteObjectProxy takeScreenshotWithReply:v11];
 
   dispatch_semaphore_wait(v8, 0xFFFFFFFFFFFFFFFFLL);
-  if (a3)
+  if (error)
   {
-    *a3 = v16[5];
+    *error = v16[5];
   }
 
   [v4 invalidate];

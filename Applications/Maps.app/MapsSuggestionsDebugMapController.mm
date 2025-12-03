@@ -1,12 +1,12 @@
 @interface MapsSuggestionsDebugMapController
 - (id)_currentlySelectedAnnotation;
-- (id)mapView:(id)a3 rendererForOverlay:(id)a4;
-- (id)mapView:(id)a3 viewForAnnotation:(id)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)mapView:(id)view rendererForOverlay:(id)overlay;
+- (id)mapView:(id)view viewForAnnotation:(id)annotation;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)_setupMapView;
-- (void)mapView:(id)a3 didDeselectAnnotationView:(id)a4;
-- (void)mapView:(id)a3 didSelectAnnotationView:(id)a4;
+- (void)mapView:(id)view didDeselectAnnotationView:(id)annotationView;
+- (void)mapView:(id)view didSelectAnnotationView:(id)annotationView;
 - (void)viewDidLoad;
 @end
 
@@ -14,31 +14,31 @@
 
 - (id)_currentlySelectedAnnotation
 {
-  v3 = [(MKMapView *)self->_mapView selectedAnnotations];
-  v4 = [v3 count];
+  selectedAnnotations = [(MKMapView *)self->_mapView selectedAnnotations];
+  v4 = [selectedAnnotations count];
 
   if (v4)
   {
-    v5 = [(MKMapView *)self->_mapView selectedAnnotations];
-    v6 = [v5 firstObject];
+    selectedAnnotations2 = [(MKMapView *)self->_mapView selectedAnnotations];
+    firstObject = [selectedAnnotations2 firstObject];
   }
 
   else
   {
-    v6 = 0;
+    firstObject = 0;
   }
 
-  return v6;
+  return firstObject;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(MapsSuggestionsDebugMapController *)self _currentlySelectedAnnotation:a3];
+  v4 = [(MapsSuggestionsDebugMapController *)self _currentlySelectedAnnotation:view];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 entriesDictionaries];
-    v7 = [v6 count];
+    entriesDictionaries = [v4 entriesDictionaries];
+    v7 = [entriesDictionaries count];
   }
 
   else
@@ -49,30 +49,30 @@
   return v7;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MapsSuggestionsDebugMapController *)self _currentlySelectedAnnotation];
-  v9 = v8;
-  if (v8)
+  viewCopy = view;
+  pathCopy = path;
+  _currentlySelectedAnnotation = [(MapsSuggestionsDebugMapController *)self _currentlySelectedAnnotation];
+  v9 = _currentlySelectedAnnotation;
+  if (_currentlySelectedAnnotation)
   {
-    v10 = [v8 entriesDictionaries];
-    v11 = [v10 objectAtIndex:{objc_msgSend(v7, "row")}];
+    entriesDictionaries = [_currentlySelectedAnnotation entriesDictionaries];
+    v11 = [entriesDictionaries objectAtIndex:{objc_msgSend(pathCopy, "row")}];
 
     v12 = [v11 objectForKey:@"title"];
     v13 = [v11 objectForKey:@"type"];
-    v14 = [v6 dequeueReusableCellWithIdentifier:@"entryCell"];
+    v14 = [viewCopy dequeueReusableCellWithIdentifier:@"entryCell"];
     if (!v14)
     {
       v14 = [[UITableViewCell alloc] initWithStyle:3 reuseIdentifier:@"entryCell"];
     }
 
-    v15 = [v14 textLabel];
-    [v15 setText:v12];
+    textLabel = [v14 textLabel];
+    [textLabel setText:v12];
 
-    v16 = [v14 detailTextLabel];
-    [v16 setText:v13];
+    detailTextLabel = [v14 detailTextLabel];
+    [detailTextLabel setText:v13];
   }
 
   else
@@ -97,47 +97,47 @@
   return v14;
 }
 
-- (void)mapView:(id)a3 didSelectAnnotationView:(id)a4
+- (void)mapView:(id)view didSelectAnnotationView:(id)annotationView
 {
-  v6 = a4;
-  if ([v6 isSelected])
+  annotationViewCopy = annotationView;
+  if ([annotationViewCopy isSelected])
   {
-    [v6 hideCalloutView];
+    [annotationViewCopy hideCalloutView];
   }
 
   else
   {
-    [v6 showCalloutView];
+    [annotationViewCopy showCalloutView];
   }
 
-  [v6 setCalloutTableViewDataSource:self];
-  [v6 setCalloutTableViewDelegate:self];
-  [v6 reloadCalloutTableView];
-  v5 = [v6 layer];
-  [v5 setZPosition:9.22337204e18];
+  [annotationViewCopy setCalloutTableViewDataSource:self];
+  [annotationViewCopy setCalloutTableViewDelegate:self];
+  [annotationViewCopy reloadCalloutTableView];
+  layer = [annotationViewCopy layer];
+  [layer setZPosition:9.22337204e18];
 }
 
-- (void)mapView:(id)a3 didDeselectAnnotationView:(id)a4
+- (void)mapView:(id)view didDeselectAnnotationView:(id)annotationView
 {
-  v4 = a4;
-  if ([v4 isSelected])
+  annotationViewCopy = annotationView;
+  if ([annotationViewCopy isSelected])
   {
-    [v4 hideCalloutView];
+    [annotationViewCopy hideCalloutView];
   }
 
   else
   {
-    [v4 showCalloutView];
+    [annotationViewCopy showCalloutView];
   }
 }
 
-- (id)mapView:(id)a3 rendererForOverlay:(id)a4
+- (id)mapView:(id)view rendererForOverlay:(id)overlay
 {
-  v5 = a4;
-  if (v5)
+  overlayCopy = overlay;
+  if (overlayCopy)
   {
-    v6 = [[MKPolylineRenderer alloc] initWithOverlay:v5];
-    v7 = -[NSArray objectAtIndexedSubscript:](self->_possibleOverlayColors, "objectAtIndexedSubscript:", [v5 index] % -[NSArray count](self->_possibleOverlayColors, "count"));
+    v6 = [[MKPolylineRenderer alloc] initWithOverlay:overlayCopy];
+    v7 = -[NSArray objectAtIndexedSubscript:](self->_possibleOverlayColors, "objectAtIndexedSubscript:", [overlayCopy index] % -[NSArray count](self->_possibleOverlayColors, "count"));
     [v6 setStrokeColor:v7];
     [v6 setLineWidth:3.0];
   }
@@ -150,13 +150,13 @@
   return v6;
 }
 
-- (id)mapView:(id)a3 viewForAnnotation:(id)a4
+- (id)mapView:(id)view viewForAnnotation:(id)annotation
 {
-  v5 = a4;
-  v6 = [a3 dequeueReusableAnnotationViewWithIdentifier:@"entryCell"];
+  annotationCopy = annotation;
+  v6 = [view dequeueReusableAnnotationViewWithIdentifier:@"entryCell"];
   if (!v6)
   {
-    v6 = [[MapsSuggestionsDGVAnnotationView alloc] initWithAnnotation:v5 reuseIdentifier:@"entryCell"];
+    v6 = [[MapsSuggestionsDGVAnnotationView alloc] initWithAnnotation:annotationCopy reuseIdentifier:@"entryCell"];
     [(MapsSuggestionsDGVAnnotationView *)v6 setCanShowCallout:1];
   }
 
@@ -168,32 +168,32 @@
 
 - (void)_setupMapView
 {
-  v3 = [(MapsSuggestionsDebugMapController *)self view];
-  [v3 addSubview:self->_mapView];
+  view = [(MapsSuggestionsDebugMapController *)self view];
+  [view addSubview:self->_mapView];
 
   [(MKMapView *)self->_mapView setTranslatesAutoresizingMaskIntoConstraints:0];
-  v4 = [(MKMapView *)self->_mapView topAnchor];
-  v5 = [(MapsSuggestionsDebugMapController *)self view];
-  v6 = [v5 topAnchor];
-  v7 = [v4 constraintEqualToAnchor:v6];
+  topAnchor = [(MKMapView *)self->_mapView topAnchor];
+  view2 = [(MapsSuggestionsDebugMapController *)self view];
+  topAnchor2 = [view2 topAnchor];
+  v7 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v7 setActive:1];
 
-  v8 = [(MKMapView *)self->_mapView bottomAnchor];
-  v9 = [(MapsSuggestionsDebugMapController *)self view];
-  v10 = [v9 bottomAnchor];
-  v11 = [v8 constraintEqualToAnchor:v10];
+  bottomAnchor = [(MKMapView *)self->_mapView bottomAnchor];
+  view3 = [(MapsSuggestionsDebugMapController *)self view];
+  bottomAnchor2 = [view3 bottomAnchor];
+  v11 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [v11 setActive:1];
 
-  v12 = [(MKMapView *)self->_mapView leftAnchor];
-  v13 = [(MapsSuggestionsDebugMapController *)self view];
-  v14 = [v13 leftAnchor];
-  v15 = [v12 constraintEqualToAnchor:v14];
+  leftAnchor = [(MKMapView *)self->_mapView leftAnchor];
+  view4 = [(MapsSuggestionsDebugMapController *)self view];
+  leftAnchor2 = [view4 leftAnchor];
+  v15 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
   [v15 setActive:1];
 
-  v19 = [(MKMapView *)self->_mapView rightAnchor];
-  v16 = [(MapsSuggestionsDebugMapController *)self view];
-  v17 = [v16 rightAnchor];
-  v18 = [v19 constraintEqualToAnchor:v17];
+  rightAnchor = [(MKMapView *)self->_mapView rightAnchor];
+  view5 = [(MapsSuggestionsDebugMapController *)self view];
+  rightAnchor2 = [view5 rightAnchor];
+  v18 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
   [v18 setActive:1];
 }
 
@@ -222,8 +222,8 @@
 
   if (![v14 length])
   {
-    v25 = GEOFindOrCreateLog();
-    if (!os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
+    annotations2 = GEOFindOrCreateLog();
+    if (!os_log_type_enabled(annotations2, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_9;
     }
@@ -235,7 +235,7 @@
     v33 = v27;
     v28 = "Could not read %@";
 LABEL_8:
-    _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_ERROR, v28, buf, 0xCu);
+    _os_log_impl(&_mh_execute_header, annotations2, OS_LOG_TYPE_ERROR, v28, buf, 0xCu);
 
     goto LABEL_9;
   }
@@ -246,8 +246,8 @@ LABEL_8:
 
   if (!self->_dataSource)
   {
-    v25 = GEOFindOrCreateLog();
-    if (!os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
+    annotations2 = GEOFindOrCreateLog();
+    if (!os_log_type_enabled(annotations2, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_9;
     }
@@ -268,16 +268,16 @@ LABEL_8:
   [(MapsSuggestionsDebugMapController *)self _setupMapView];
   [(MKMapView *)self->_mapView setDelegate:self];
   v20 = self->_mapView;
-  v21 = [(MapsSuggestionsDGVDataSource *)self->_dataSource annotations];
-  [(MKMapView *)v20 addAnnotations:v21];
+  annotations = [(MapsSuggestionsDGVDataSource *)self->_dataSource annotations];
+  [(MKMapView *)v20 addAnnotations:annotations];
 
   v22 = self->_mapView;
-  v23 = [(MapsSuggestionsDGVDataSource *)self->_dataSource linkOverlays];
-  [(MKMapView *)v22 addOverlays:v23];
+  linkOverlays = [(MapsSuggestionsDGVDataSource *)self->_dataSource linkOverlays];
+  [(MKMapView *)v22 addOverlays:linkOverlays];
 
   v24 = self->_mapView;
-  v25 = [(MKMapView *)v24 annotations];
-  [(MKMapView *)v24 showAnnotations:v25 animated:1];
+  annotations2 = [(MKMapView *)v24 annotations];
+  [(MKMapView *)v24 showAnnotations:annotations2 animated:1];
 LABEL_9:
 }
 

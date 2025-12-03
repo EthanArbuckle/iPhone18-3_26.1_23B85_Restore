@@ -1,14 +1,14 @@
 @interface IntentHandler
-- (id)handlerForIntent:(id)a3;
+- (id)handlerForIntent:(id)intent;
 @end
 
 @implementation IntentHandler
 
-- (id)handlerForIntent:(id)a3
+- (id)handlerForIntent:(id)intent
 {
-  v4 = a3;
-  v5 = self;
-  sub_1000013D4(v4, v8);
+  intentCopy = intent;
+  selfCopy = self;
+  sub_1000013D4(intentCopy, v8);
 
   sub_100001818(v8, v8[3]);
   v6 = sub_100002160();

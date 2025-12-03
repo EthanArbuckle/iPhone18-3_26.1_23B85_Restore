@@ -1,19 +1,19 @@
 @interface CSQuickActionControl
-- (CSQuickActionControl)initWithCategory:(int64_t)a3 position:(int64_t)a4;
+- (CSQuickActionControl)initWithCategory:(int64_t)category position:(int64_t)position;
 - (NSString)title;
 @end
 
 @implementation CSQuickActionControl
 
-- (CSQuickActionControl)initWithCategory:(int64_t)a3 position:(int64_t)a4
+- (CSQuickActionControl)initWithCategory:(int64_t)category position:(int64_t)position
 {
   v7.receiver = self;
   v7.super_class = CSQuickActionControl;
   result = [(CSQuickActionControl *)&v7 init];
   if (result)
   {
-    result->_category = a3;
-    result->_position = a4;
+    result->_category = category;
+    result->_position = position;
   }
 
   return result;

@@ -1,7 +1,7 @@
 @interface InterstitialListViewCell.HeaderView
 - (UIColor)tintColor;
 - (void)performButtonAction;
-- (void)setTintColor:(id)a3;
+- (void)setTintColor:(id)color;
 @end
 
 @implementation InterstitialListViewCell.HeaderView
@@ -10,27 +10,27 @@
 {
   v4.receiver = self;
   v4.super_class = type metadata accessor for InterstitialListViewCell.HeaderView();
-  v2 = [(InterstitialListViewCell.HeaderView *)&v4 tintColor];
+  tintColor = [(InterstitialListViewCell.HeaderView *)&v4 tintColor];
 
-  return v2;
+  return tintColor;
 }
 
-- (void)setTintColor:(id)a3
+- (void)setTintColor:(id)color
 {
   v8.receiver = self;
   v8.super_class = type metadata accessor for InterstitialListViewCell.HeaderView();
-  v4 = a3;
+  colorCopy = color;
   v5 = v8.receiver;
-  [(InterstitialListViewCell.HeaderView *)&v8 setTintColor:v4];
+  [(InterstitialListViewCell.HeaderView *)&v8 setTintColor:colorCopy];
   v6 = *&v5[OBJC_IVAR____TtCC9MomentsUI24InterstitialListViewCell10HeaderView_button];
-  v7 = [v5 tintColor];
+  tintColor = [v5 tintColor];
   [v6 setTintColor_];
 }
 
 - (void)performButtonAction
 {
   v2 = *((*MEMORY[0x277D85000] & self->super.super.super.isa) + 0xA8);
-  v9 = self;
+  selfCopy = self;
   v3 = v2();
   if (v5 == -1)
   {

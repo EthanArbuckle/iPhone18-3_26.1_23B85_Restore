@@ -1,27 +1,27 @@
 @interface PXPhotosLayoutSpecManager
-- (BOOL)shouldUpdateSpecForExtendedTraitCollection:(id)a3 change:(unint64_t)a4;
+- (BOOL)shouldUpdateSpecForExtendedTraitCollection:(id)collection change:(unint64_t)change;
 - (Class)specClass;
-- (PXPhotosLayoutSpecManager)initWithExtendedTraitCollection:(id)a3 options:(unint64_t)a4 enableSectionHeaders:(BOOL)a5;
-- (double)dynamicHeaderHeightForReferenceSize:(CGSize)a3;
+- (PXPhotosLayoutSpecManager)initWithExtendedTraitCollection:(id)collection options:(unint64_t)options enableSectionHeaders:(BOOL)headers;
+- (double)dynamicHeaderHeightForReferenceSize:(CGSize)size;
 - (id)createSpec;
-- (void)setBackgroundStyle:(int64_t)a3;
-- (void)setGridStyle:(int64_t)a3;
-- (void)setOverrideDefaultNumberOfColumns:(int64_t)a3;
-- (void)setShouldMakeSpaceForLeadingChrome:(BOOL)a3;
-- (void)setWantsToggleSidebarButton:(BOOL)a3;
+- (void)setBackgroundStyle:(int64_t)style;
+- (void)setGridStyle:(int64_t)style;
+- (void)setOverrideDefaultNumberOfColumns:(int64_t)columns;
+- (void)setShouldMakeSpaceForLeadingChrome:(BOOL)chrome;
+- (void)setWantsToggleSidebarButton:(BOOL)button;
 @end
 
 @implementation PXPhotosLayoutSpecManager
 
-- (double)dynamicHeaderHeightForReferenceSize:(CGSize)a3
+- (double)dynamicHeaderHeightForReferenceSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(PXPhotosLayoutSpecManager *)self dynamicHeaderHeightCallback];
-  v6 = v5;
-  if (v5)
+  height = size.height;
+  width = size.width;
+  dynamicHeaderHeightCallback = [(PXPhotosLayoutSpecManager *)self dynamicHeaderHeightCallback];
+  v6 = dynamicHeaderHeightCallback;
+  if (dynamicHeaderHeightCallback)
   {
-    v7 = (*(v5 + 16))(v5, width, height);
+    v7 = (*(dynamicHeaderHeightCallback + 16))(dynamicHeaderHeightCallback, width, height);
   }
 
   else
@@ -32,83 +32,83 @@
   return v7;
 }
 
-- (BOOL)shouldUpdateSpecForExtendedTraitCollection:(id)a3 change:(unint64_t)a4
+- (BOOL)shouldUpdateSpecForExtendedTraitCollection:(id)collection change:(unint64_t)change
 {
-  v6 = a3;
+  collectionCopy = collection;
   if (([(PXFeatureSpecManager *)self options]& 2) != 0)
   {
-    v7 = (([(PXFeatureSpecManager *)self defaultChangesToUpdateFor]& 0xFFFFFFFFFFFF5CFFLL | 0xA000) & a4) != 0;
+    v7 = (([(PXFeatureSpecManager *)self defaultChangesToUpdateFor]& 0xFFFFFFFFFFFF5CFFLL | 0xA000) & change) != 0;
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = PXPhotosLayoutSpecManager;
-    v7 = [(PXFeatureSpecManager *)&v9 shouldUpdateSpecForExtendedTraitCollection:v6 change:a4];
+    v7 = [(PXFeatureSpecManager *)&v9 shouldUpdateSpecForExtendedTraitCollection:collectionCopy change:change];
   }
 
   return v7;
 }
 
-- (void)setOverrideDefaultNumberOfColumns:(int64_t)a3
+- (void)setOverrideDefaultNumberOfColumns:(int64_t)columns
 {
-  if (self->_overrideDefaultNumberOfColumns != a3)
+  if (self->_overrideDefaultNumberOfColumns != columns)
   {
-    self->_overrideDefaultNumberOfColumns = a3;
+    self->_overrideDefaultNumberOfColumns = columns;
     [(PXFeatureSpecManager *)self invalidateSpec];
   }
 }
 
-- (void)setShouldMakeSpaceForLeadingChrome:(BOOL)a3
+- (void)setShouldMakeSpaceForLeadingChrome:(BOOL)chrome
 {
-  if (self->_shouldMakeSpaceForLeadingChrome != a3)
+  if (self->_shouldMakeSpaceForLeadingChrome != chrome)
   {
-    self->_shouldMakeSpaceForLeadingChrome = a3;
+    self->_shouldMakeSpaceForLeadingChrome = chrome;
     [(PXFeatureSpecManager *)self invalidateSpec];
   }
 }
 
-- (void)setWantsToggleSidebarButton:(BOOL)a3
+- (void)setWantsToggleSidebarButton:(BOOL)button
 {
-  if (self->_wantsToggleSidebarButton != a3)
+  if (self->_wantsToggleSidebarButton != button)
   {
-    self->_wantsToggleSidebarButton = a3;
+    self->_wantsToggleSidebarButton = button;
     [(PXFeatureSpecManager *)self invalidateSpec];
   }
 }
 
-- (void)setBackgroundStyle:(int64_t)a3
+- (void)setBackgroundStyle:(int64_t)style
 {
-  if (self->_backgroundStyle != a3)
+  if (self->_backgroundStyle != style)
   {
-    self->_backgroundStyle = a3;
+    self->_backgroundStyle = style;
     [(PXFeatureSpecManager *)self invalidateSpec];
   }
 }
 
-- (void)setGridStyle:(int64_t)a3
+- (void)setGridStyle:(int64_t)style
 {
-  if (self->_gridStyle != a3)
+  if (self->_gridStyle != style)
   {
-    self->_gridStyle = a3;
+    self->_gridStyle = style;
     [(PXFeatureSpecManager *)self invalidateSpec];
   }
 }
 
 - (id)createSpec
 {
-  v3 = [(PXFeatureSpecManager *)self extendedTraitCollection];
-  v4 = [(PXFeatureSpecManager *)self options];
-  [v3 layoutReferenceSize];
+  extendedTraitCollection = [(PXFeatureSpecManager *)self extendedTraitCollection];
+  options = [(PXFeatureSpecManager *)self options];
+  [extendedTraitCollection layoutReferenceSize];
   [(PXPhotosLayoutSpecManager *)self dynamicHeaderHeightForReferenceSize:?];
   v6 = v5;
   v7 = objc_alloc([(PXPhotosLayoutSpecManager *)self specClass]);
-  v8 = [(PXPhotosLayoutSpecManager *)self gridStyle];
-  v9 = [(PXPhotosLayoutSpecManager *)self backgroundStyle];
-  v10 = [(PXPhotosLayoutSpecManager *)self wantsToggleSidebarButton];
-  v11 = [(PXPhotosLayoutSpecManager *)self shouldMakeSpaceForLeadingChrome];
+  gridStyle = [(PXPhotosLayoutSpecManager *)self gridStyle];
+  backgroundStyle = [(PXPhotosLayoutSpecManager *)self backgroundStyle];
+  wantsToggleSidebarButton = [(PXPhotosLayoutSpecManager *)self wantsToggleSidebarButton];
+  shouldMakeSpaceForLeadingChrome = [(PXPhotosLayoutSpecManager *)self shouldMakeSpaceForLeadingChrome];
   LOBYTE(v14) = [(PXPhotosLayoutSpecManager *)self hasPhysicalHomeButton];
-  v12 = [v7 initWithExtendedTraitCollection:v3 options:v4 gridStyle:v8 backgroundStyle:v9 wantsToggleSidebarButton:v10 shouldMakeSpaceForLeadingChrome:v11 hasPhysicalHomeButton:v6 dynamicHeaderHeight:v14 overrideDefaultNumberOfColumns:{-[PXPhotosLayoutSpecManager overrideDefaultNumberOfColumns](self, "overrideDefaultNumberOfColumns")}];
+  v12 = [v7 initWithExtendedTraitCollection:extendedTraitCollection options:options gridStyle:gridStyle backgroundStyle:backgroundStyle wantsToggleSidebarButton:wantsToggleSidebarButton shouldMakeSpaceForLeadingChrome:shouldMakeSpaceForLeadingChrome hasPhysicalHomeButton:v6 dynamicHeaderHeight:v14 overrideDefaultNumberOfColumns:{-[PXPhotosLayoutSpecManager overrideDefaultNumberOfColumns](self, "overrideDefaultNumberOfColumns")}];
 
   return v12;
 }
@@ -121,19 +121,19 @@
   return v2;
 }
 
-- (PXPhotosLayoutSpecManager)initWithExtendedTraitCollection:(id)a3 options:(unint64_t)a4 enableSectionHeaders:(BOOL)a5
+- (PXPhotosLayoutSpecManager)initWithExtendedTraitCollection:(id)collection options:(unint64_t)options enableSectionHeaders:(BOOL)headers
 {
-  v8 = a3;
+  collectionCopy = collection;
   v14.receiver = self;
   v14.super_class = PXPhotosLayoutSpecManager;
-  v9 = [(PXFeatureSpecManager *)&v14 initWithExtendedTraitCollection:v8 options:a4];
+  v9 = [(PXFeatureSpecManager *)&v14 initWithExtendedTraitCollection:collectionCopy options:options];
   v10 = v9;
   if (v9)
   {
-    v9->_sectionHeadersEnabled = a5;
-    v11 = [v8 headerCustomizationModel];
+    v9->_sectionHeadersEnabled = headers;
+    headerCustomizationModel = [collectionCopy headerCustomizationModel];
     headerCustomizationModel = v10->_headerCustomizationModel;
-    v10->_headerCustomizationModel = v11;
+    v10->_headerCustomizationModel = headerCustomizationModel;
   }
 
   return v10;

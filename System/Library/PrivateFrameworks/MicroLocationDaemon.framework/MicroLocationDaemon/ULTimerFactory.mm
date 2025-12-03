@@ -1,7 +1,7 @@
 @interface ULTimerFactory
 + (id)_instance;
-+ (id)timerOnPrimaryQueueWithInterval:(id)a3 repeats:(id)a4 block:(id)a5;
-+ (void)setPrimaryQueue:(id)a3;
++ (id)timerOnPrimaryQueueWithInterval:(id)interval repeats:(id)repeats block:(id)block;
++ (void)setPrimaryQueue:(id)queue;
 @end
 
 @implementation ULTimerFactory
@@ -25,17 +25,17 @@ void __27__ULTimerFactory__instance__block_invoke()
   _instance_instance = v0;
 }
 
-+ (id)timerOnPrimaryQueueWithInterval:(id)a3 repeats:(id)a4 block:(id)a5
++ (id)timerOnPrimaryQueueWithInterval:(id)interval repeats:(id)repeats block:(id)block
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  intervalCopy = interval;
+  repeatsCopy = repeats;
+  blockCopy = block;
   v10 = +[ULTimerFactory _instance];
-  v11 = [v10 primaryQueue];
+  primaryQueue = [v10 primaryQueue];
 
   if ([MEMORY[0x277D28868] isRunningInXCTestEnvironment])
   {
-    v12 = v11 == 0;
+    v12 = primaryQueue == 0;
   }
 
   else
@@ -45,7 +45,7 @@ void __27__ULTimerFactory__instance__block_invoke()
 
   if (!v12)
   {
-    if (v11)
+    if (primaryQueue)
     {
       goto LABEL_8;
     }
@@ -53,26 +53,26 @@ void __27__ULTimerFactory__instance__block_invoke()
     +[ULTimerFactory timerOnPrimaryQueueWithInterval:repeats:block:];
   }
 
-  v11 = MEMORY[0x277D85CD0];
+  primaryQueue = MEMORY[0x277D85CD0];
   v13 = MEMORY[0x277D85CD0];
 LABEL_8:
   v14 = [ULTimer alloc];
-  [v7 doubleValue];
-  v16 = -[ULTimer initWithInterval:repeats:queue:block:](v14, "initWithInterval:repeats:queue:block:", [v8 BOOLValue], v11, v9, v15);
+  [intervalCopy doubleValue];
+  v16 = -[ULTimer initWithInterval:repeats:queue:block:](v14, "initWithInterval:repeats:queue:block:", [repeatsCopy BOOLValue], primaryQueue, blockCopy, v15);
 
   return v16;
 }
 
-+ (void)setPrimaryQueue:(id)a3
++ (void)setPrimaryQueue:(id)queue
 {
-  v8 = a3;
+  queueCopy = queue;
   v3 = +[ULTimerFactory _instance];
-  v4 = [v3 primaryQueue];
+  primaryQueue = [v3 primaryQueue];
 
-  if (([MEMORY[0x277D28868] isRunningInXCTestEnvironment] & 1) != 0 || (v4 ? (v5 = v4 == v8) : (v5 = 1), v5))
+  if (([MEMORY[0x277D28868] isRunningInXCTestEnvironment] & 1) != 0 || (primaryQueue ? (v5 = primaryQueue == queueCopy) : (v5 = 1), v5))
   {
     v6 = +[ULTimerFactory _instance];
-    [v6 setPrimaryQueue:v8];
+    [v6 setPrimaryQueue:queueCopy];
   }
 
   else

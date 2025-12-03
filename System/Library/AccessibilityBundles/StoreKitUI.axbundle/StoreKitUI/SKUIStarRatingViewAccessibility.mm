@@ -1,23 +1,23 @@
 @interface SKUIStarRatingViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation SKUIStarRatingViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SKUIStarRatingView" hasInstanceVariable:@"_ratingStarsImageView" withType:"UIImageView"];
-  [v3 validateClass:@"SKUIStarRatingView" hasInstanceVariable:@"_textLabel" withType:"UILabel"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SKUIStarRatingView" hasInstanceVariable:@"_ratingStarsImageView" withType:"UIImageView"];
+  [validationsCopy validateClass:@"SKUIStarRatingView" hasInstanceVariable:@"_textLabel" withType:"UILabel"];
 }
 
 - (id)accessibilityLabel
 {
   v3 = [(SKUIStarRatingViewAccessibility *)self safeValueForKey:@"_ratingStarsImageView"];
-  v4 = [v3 accessibilityLabel];
+  accessibilityLabel = [v3 accessibilityLabel];
   v5 = [(SKUIStarRatingViewAccessibility *)self safeValueForKey:@"_textLabel"];
-  v8 = [v5 accessibilityLabel];
+  accessibilityLabel2 = [v5 accessibilityLabel];
   v6 = __UIAXStringForVariables();
 
   return v6;

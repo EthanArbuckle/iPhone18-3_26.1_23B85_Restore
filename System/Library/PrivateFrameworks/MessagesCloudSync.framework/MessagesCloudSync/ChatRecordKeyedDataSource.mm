@@ -1,14 +1,14 @@
 @interface ChatRecordKeyedDataSource
 - (_TtC17MessagesCloudSync25ChatRecordKeyedDataSource)init;
-- (id)arrayForKey:(id)a3;
-- (id)assetURLForKey:(id)a3;
-- (id)dataForKey:(id)a3;
-- (id)dictForKey:(id)a3;
-- (id)numberForKey:(id)a3;
+- (id)arrayForKey:(id)key;
+- (id)assetURLForKey:(id)key;
+- (id)dataForKey:(id)key;
+- (id)dictForKey:(id)key;
+- (id)numberForKey:(id)key;
 - (id)sourceRecordChangeTag;
 - (id)sourceRecordName;
 - (id)sourceRecordType;
-- (id)stringForKey:(id)a3;
+- (id)stringForKey:(id)key;
 @end
 
 @implementation ChatRecordKeyedDataSource
@@ -73,9 +73,9 @@
   return v4;
 }
 
-- (id)stringForKey:(id)a3
+- (id)stringForKey:(id)key
 {
-  if (a3)
+  if (key)
   {
     v4 = sub_22BA0FFFC();
     v6 = v5;
@@ -87,7 +87,7 @@
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   sub_22B98D8CC(v4, v6);
   v9 = v8;
 
@@ -104,9 +104,9 @@
   return v10;
 }
 
-- (id)numberForKey:(id)a3
+- (id)numberForKey:(id)key
 {
-  if (a3)
+  if (key)
   {
     v4 = sub_22BA0FFFC();
     v6 = v5;
@@ -118,15 +118,15 @@
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   v8 = sub_22B98DE60(v4, v6);
 
   return v8;
 }
 
-- (id)dictForKey:(id)a3
+- (id)dictForKey:(id)key
 {
-  if (a3)
+  if (key)
   {
     v4 = sub_22BA0FFFC();
     v6 = v5;
@@ -138,7 +138,7 @@
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   v8 = sub_22B98E2A8(v4, v6);
 
   if (v8)
@@ -154,9 +154,9 @@
   return v9;
 }
 
-- (id)dataForKey:(id)a3
+- (id)dataForKey:(id)key
 {
-  if (a3)
+  if (key)
   {
     v4 = sub_22BA0FFFC();
     v6 = v5;
@@ -168,7 +168,7 @@
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   v8 = sub_22B98E674(v4, v6);
   v10 = v9;
 
@@ -187,9 +187,9 @@
   return v11;
 }
 
-- (id)arrayForKey:(id)a3
+- (id)arrayForKey:(id)key
 {
-  if (a3)
+  if (key)
   {
     v4 = sub_22BA0FFFC();
     v6 = v5;
@@ -201,7 +201,7 @@
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   v8 = sub_22B98ED44(v4, v6);
 
   if (v8)
@@ -217,16 +217,16 @@
   return v9;
 }
 
-- (id)assetURLForKey:(id)a3
+- (id)assetURLForKey:(id)key
 {
   v5 = sub_22B9349C8(&qword_27D8D5210, qword_22BA16040);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x28223BE20](v5 - 8, v7);
   v9 = &v19 - v8;
-  if (a3)
+  if (key)
   {
     v10 = sub_22BA0FFFC();
-    a3 = v11;
+    key = v11;
   }
 
   else
@@ -234,8 +234,8 @@
     v10 = 0;
   }
 
-  v12 = self;
-  sub_22B98F0F8(v10, a3, v9);
+  selfCopy = self;
+  sub_22B98F0F8(v10, key, v9);
 
   v13 = sub_22BA0FC4C();
   v14 = *(v13 - 8);

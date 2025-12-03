@@ -1,49 +1,49 @@
 @interface HomeOutlineSuggestionsSectionController
-- (BOOL)_canDisplaySuggestionsEntry:(id)a3;
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4;
-- (BOOL)shouldPersistExpandedIdentifierPath:(id)a3;
-- (HomeOutlineSuggestionsSectionController)initWithConfiguration:(id)a3 suggestionsDataProvider:(id)a4;
+- (BOOL)_canDisplaySuggestionsEntry:(id)entry;
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path;
+- (BOOL)shouldPersistExpandedIdentifierPath:(id)path;
+- (HomeOutlineSuggestionsSectionController)initWithConfiguration:(id)configuration suggestionsDataProvider:(id)provider;
 - (MapsUIDiffableDataSourceViewModel)sectionHeaderViewModel;
 - (NSArray)dataProviders;
 - (NSArray)itemSnapshots;
-- (id)_childItemsInCollection:(id)a3;
-- (id)_sortItemForCollection:(id)a3;
-- (id)contentInjectorForSnapshot:(id)a3;
-- (id)contextMenuForSnapshot:(id)a3;
-- (void)_deleteSnapshot:(id)a3;
-- (void)_processDeletion:(id)a3 forMapsSuggestionsEntry:(id)a4;
-- (void)_processDeletion:(id)a3 forSharedTripSummary:(id)a4;
+- (id)_childItemsInCollection:(id)collection;
+- (id)_sortItemForCollection:(id)collection;
+- (id)contentInjectorForSnapshot:(id)snapshot;
+- (id)contextMenuForSnapshot:(id)snapshot;
+- (void)_deleteSnapshot:(id)snapshot;
+- (void)_processDeletion:(id)deletion forMapsSuggestionsEntry:(id)entry;
+- (void)_processDeletion:(id)deletion forSharedTripSummary:(id)summary;
 - (void)_scrubSortItems;
-- (void)collectionSortItem:(id)a3 didSelectSortType:(int64_t)a4;
-- (void)collectionView:(id)a3 didDeselectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 didUpdateFocusInContext:(id)a4 withAnimationCoordinator:(id)a5;
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)showSharedCollection:(id)a3;
-- (void)twoLinesOutlineCell:(id)a3 accessoryViewTapped:(id)a4 accessoryModel:(id)a5;
-- (void)twoLinesOutlineCell:(id)a3 tappedActionButtonAtIndex:(int64_t)a4;
+- (void)collectionSortItem:(id)item didSelectSortType:(int64_t)type;
+- (void)collectionView:(id)view didDeselectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path;
+- (void)showSharedCollection:(id)collection;
+- (void)twoLinesOutlineCell:(id)cell accessoryViewTapped:(id)tapped accessoryModel:(id)model;
+- (void)twoLinesOutlineCell:(id)cell tappedActionButtonAtIndex:(int64_t)index;
 @end
 
 @implementation HomeOutlineSuggestionsSectionController
 
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path
 {
-  v6 = a5;
-  v7 = [(HomeOutlineSectionController *)self delegate];
-  v16 = [v7 sectionController:self nodeSnapshotAtIndexPath:v6];
+  pathCopy = path;
+  delegate = [(HomeOutlineSectionController *)self delegate];
+  v16 = [delegate sectionController:self nodeSnapshotAtIndexPath:pathCopy];
 
-  v8 = [v16 viewModel];
+  viewModel = [v16 viewModel];
   objc_opt_class();
-  LOBYTE(v7) = objc_opt_isKindOfClass();
+  LOBYTE(delegate) = objc_opt_isKindOfClass();
 
-  v9 = [v16 viewModel];
-  v10 = v9;
-  if ((v7 & 1) != 0 && v8)
+  viewModel2 = [v16 viewModel];
+  viewModel3 = viewModel2;
+  if ((delegate & 1) != 0 && viewModel)
   {
-    v11 = [v9 entry];
-    v12 = [v11 type];
+    entry = [viewModel2 entry];
+    type = [entry type];
 
-    if (v12 == 21)
+    if (type == 21)
     {
       [GEOAPPortal captureUserAction:339 target:8 value:0];
     }
@@ -54,75 +54,75 @@
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  if ((isKindOfClass & 1) != 0 && v10)
+  if ((isKindOfClass & 1) != 0 && viewModel3)
   {
-    v10 = [v16 viewModel];
-    v14 = [v10 sharedTripSummary];
-    v15 = [v14 _transportTypeStringForAnalytics];
-    [GEOAPPortal captureUserAction:9002 target:737 value:v15];
+    viewModel3 = [v16 viewModel];
+    sharedTripSummary = [viewModel3 sharedTripSummary];
+    _transportTypeStringForAnalytics = [sharedTripSummary _transportTypeStringForAnalytics];
+    [GEOAPPortal captureUserAction:9002 target:737 value:_transportTypeStringForAnalytics];
 
 LABEL_8:
   }
 }
 
-- (void)collectionView:(id)a3 didUpdateFocusInContext:(id)a4 withAnimationCoordinator:(id)a5
+- (void)collectionView:(id)view didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(HomeOutlineSectionController *)self delegate];
-  v12 = [v11 isCollectionViewFocusedWithSectionController:self];
+  coordinatorCopy = coordinator;
+  contextCopy = context;
+  viewCopy = view;
+  delegate = [(HomeOutlineSectionController *)self delegate];
+  v12 = [delegate isCollectionViewFocusedWithSectionController:self];
 
   v15.receiver = self;
   v15.super_class = HomeOutlineSuggestionsSectionController;
-  [(HomeOutlineSectionController *)&v15 collectionView:v10 didUpdateFocusInContext:v9 withAnimationCoordinator:v8];
+  [(HomeOutlineSectionController *)&v15 collectionView:viewCopy didUpdateFocusInContext:contextCopy withAnimationCoordinator:coordinatorCopy];
 
-  v13 = [(HomeOutlineSectionController *)self delegate];
-  LODWORD(v10) = [v13 isCollectionViewFocusedWithSectionController:self];
+  delegate2 = [(HomeOutlineSectionController *)self delegate];
+  LODWORD(viewCopy) = [delegate2 isCollectionViewFocusedWithSectionController:self];
 
-  if (v12 != v10)
+  if (v12 != viewCopy)
   {
-    v14 = [(HomeOutlineSectionController *)self delegate];
-    [v14 sectionController:self setNeedsApplySnapshotAnimated:1];
+    delegate3 = [(HomeOutlineSectionController *)self delegate];
+    [delegate3 sectionController:self setNeedsApplySnapshotAnimated:1];
   }
 }
 
-- (void)collectionView:(id)a3 didDeselectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didDeselectItemAtIndexPath:(id)path
 {
   v6.receiver = self;
   v6.super_class = HomeOutlineSuggestionsSectionController;
-  [(HomeOutlineSectionController *)&v6 collectionView:a3 didDeselectItemAtIndexPath:a4];
-  v5 = [(HomeOutlineSectionController *)self delegate];
-  [v5 sectionController:self setNeedsApplySnapshotAnimated:1];
+  [(HomeOutlineSectionController *)&v6 collectionView:view didDeselectItemAtIndexPath:path];
+  delegate = [(HomeOutlineSectionController *)self delegate];
+  [delegate sectionController:self setNeedsApplySnapshotAnimated:1];
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v6 = a4;
+  pathCopy = path;
   v22.receiver = self;
   v22.super_class = HomeOutlineSuggestionsSectionController;
-  [(HomeOutlineSectionController *)&v22 collectionView:a3 didSelectItemAtIndexPath:v6];
-  v7 = [(HomeOutlineSectionController *)self delegate];
-  [v7 sectionController:self setNeedsApplySnapshotAnimated:1];
+  [(HomeOutlineSectionController *)&v22 collectionView:view didSelectItemAtIndexPath:pathCopy];
+  delegate = [(HomeOutlineSectionController *)self delegate];
+  [delegate sectionController:self setNeedsApplySnapshotAnimated:1];
 
-  v8 = [(HomeOutlineSectionController *)self delegate];
-  v9 = [v8 sectionController:self nodeSnapshotAtIndexPath:v6];
+  delegate2 = [(HomeOutlineSectionController *)self delegate];
+  v9 = [delegate2 sectionController:self nodeSnapshotAtIndexPath:pathCopy];
 
-  v10 = [v9 viewModel];
+  viewModel = [v9 viewModel];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  v12 = [v9 viewModel];
-  v13 = v12;
-  if ((isKindOfClass & 1) != 0 && v10)
+  viewModel2 = [v9 viewModel];
+  v13 = viewModel2;
+  if ((isKindOfClass & 1) != 0 && viewModel)
   {
-    v14 = [v12 entry];
+    entry = [viewModel2 entry];
 
-    v15 = [v14 analyticsGrouping];
+    analyticsGrouping = [entry analyticsGrouping];
     v16 = 2039;
     v17 = 8;
 LABEL_7:
-    [GEOAPPortal captureUserAction:v16 target:v17 value:v15];
+    [GEOAPPortal captureUserAction:v16 target:v17 value:analyticsGrouping];
 LABEL_8:
 
     goto LABEL_9;
@@ -133,23 +133,23 @@ LABEL_8:
 
   if ((v18 & 1) != 0 && v13)
   {
-    v14 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v6 row]);
-    v15 = [v14 stringValue];
+    entry = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [pathCopy row]);
+    analyticsGrouping = [entry stringValue];
     v16 = 2068;
     v17 = 256;
     goto LABEL_7;
   }
 
-  v19 = [v9 viewModel];
+  viewModel3 = [v9 viewModel];
   objc_opt_class();
   v20 = objc_opt_isKindOfClass();
 
-  if ((v20 & 1) != 0 && v19)
+  if ((v20 & 1) != 0 && viewModel3)
   {
-    v14 = [v9 viewModel];
-    v15 = [v14 sharedTripSummary];
-    v21 = [v15 _transportTypeStringForAnalytics];
-    [GEOAPPortal captureUserAction:9003 target:737 value:v21];
+    entry = [v9 viewModel];
+    analyticsGrouping = [entry sharedTripSummary];
+    _transportTypeStringForAnalytics = [analyticsGrouping _transportTypeStringForAnalytics];
+    [GEOAPPortal captureUserAction:9003 target:737 value:_transportTypeStringForAnalytics];
 
     goto LABEL_8;
   }
@@ -157,18 +157,18 @@ LABEL_8:
 LABEL_9:
 }
 
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HomeOutlineSectionController *)self delegate];
-  v9 = [v8 sectionController:self nodeSnapshotAtIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  delegate = [(HomeOutlineSectionController *)self delegate];
+  v9 = [delegate sectionController:self nodeSnapshotAtIndexPath:pathCopy];
 
-  v10 = [v9 viewModel];
+  viewModel = [v9 viewModel];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  if ((isKindOfClass & 1) != 0 && v10)
+  if ((isKindOfClass & 1) != 0 && viewModel)
   {
     v12 = 1;
   }
@@ -177,19 +177,19 @@ LABEL_9:
   {
     v14.receiver = self;
     v14.super_class = HomeOutlineSuggestionsSectionController;
-    v12 = [(HomeOutlineSectionController *)&v14 collectionView:v6 shouldSelectItemAtIndexPath:v7];
+    v12 = [(HomeOutlineSectionController *)&v14 collectionView:viewCopy shouldSelectItemAtIndexPath:pathCopy];
   }
 
   return v12;
 }
 
-- (void)twoLinesOutlineCell:(id)a3 tappedActionButtonAtIndex:(int64_t)a4
+- (void)twoLinesOutlineCell:(id)cell tappedActionButtonAtIndex:(int64_t)index
 {
-  v6 = [a3 cellModel];
+  cellModel = [cell cellModel];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
+    v7 = cellModel;
   }
 
   else
@@ -202,11 +202,11 @@ LABEL_9:
   v8 = v11;
   if (v11)
   {
-    v9 = [v11 collection];
-    v10 = v9;
-    if (!a4)
+    collection = [v11 collection];
+    v10 = collection;
+    if (!index)
     {
-      [v9 createCollection:&stru_101624B38];
+      [collection createCollection:&stru_101624B38];
       [GEOAPPortal captureUserAction:2071 target:256 value:0];
     }
 
@@ -216,47 +216,47 @@ LABEL_9:
   }
 }
 
-- (void)twoLinesOutlineCell:(id)a3 accessoryViewTapped:(id)a4 accessoryModel:(id)a5
+- (void)twoLinesOutlineCell:(id)cell accessoryViewTapped:(id)tapped accessoryModel:(id)model
 {
-  v23 = a3;
-  v7 = a4;
-  v8 = [v23 cellModel];
+  cellCopy = cell;
+  tappedCopy = tapped;
+  cellModel = [cellCopy cellModel];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  v10 = [v23 cellModel];
-  v11 = v10;
+  cellModel2 = [cellCopy cellModel];
+  cellModel4 = cellModel2;
   if (isKindOfClass)
   {
-    v12 = [v10 entry];
-    if ([v12 type] != 21 && !GEOConfigGetBOOL())
+    entry = [cellModel2 entry];
+    if ([entry type] != 21 && !GEOConfigGetBOOL())
     {
       goto LABEL_9;
     }
 
-    [HomeAnalyticsManager captureTapActionWithEntry:v12];
+    [HomeAnalyticsManager captureTapActionWithEntry:entry];
     +[HomeAnalyticsManager captureRatingSuggestionTapAction];
-    v13 = [(HomeOutlineSectionController *)self configuration];
-    v14 = [v13 actionCoordinator];
-    v15 = [v12 geoMapItem];
-    [v14 addRatingsForMapItem:v15];
+    configuration = [(HomeOutlineSectionController *)self configuration];
+    actionCoordinator = [configuration actionCoordinator];
+    geoMapItem = [entry geoMapItem];
+    [actionCoordinator addRatingsForMapItem:geoMapItem];
     goto LABEL_7;
   }
 
   objc_opt_class();
   v16 = objc_opt_isKindOfClass();
 
-  v17 = [v23 cellModel];
-  v11 = v17;
+  cellModel3 = [cellCopy cellModel];
+  cellModel4 = cellModel3;
   if (v16)
   {
-    v12 = [v17 sharedTripSummary];
-    v18 = [v12 sharedTrips];
-    v13 = [v18 firstObject];
+    entry = [cellModel3 sharedTripSummary];
+    sharedTrips = [entry sharedTrips];
+    configuration = [sharedTrips firstObject];
 
-    v14 = [(HomeOutlineSectionController *)self configuration];
-    v15 = [v14 actionCoordinator];
-    [v15 presentSharedTrip:v13 inPopoverFromView:v7];
+    actionCoordinator = [(HomeOutlineSectionController *)self configuration];
+    geoMapItem = [actionCoordinator actionCoordinator];
+    [geoMapItem presentSharedTrip:configuration inPopoverFromView:tappedCopy];
 LABEL_7:
 
 LABEL_8:
@@ -270,69 +270,69 @@ LABEL_9:
 
   if (v19)
   {
-    v11 = [v23 cellModel];
-    v12 = [v11 collection];
-    v20 = [(HomeOutlineSectionController *)self sectionIdentifierPath];
-    v21 = [(HomeOutlineSectionController *)self identifierCache];
-    v22 = [v21 identifierForObject:v12];
-    v13 = [v20 identifierPathByAppendingIdentifier:v22];
+    cellModel4 = [cellCopy cellModel];
+    entry = [cellModel4 collection];
+    sectionIdentifierPath = [(HomeOutlineSectionController *)self sectionIdentifierPath];
+    identifierCache = [(HomeOutlineSectionController *)self identifierCache];
+    v22 = [identifierCache identifierForObject:entry];
+    configuration = [sectionIdentifierPath identifierPathByAppendingIdentifier:v22];
 
-    [(HomeOutlineSectionController *)self toggleElementAtIdentifierPath:v13];
+    [(HomeOutlineSectionController *)self toggleElementAtIdentifierPath:configuration];
     goto LABEL_8;
   }
 
 LABEL_10:
 }
 
-- (void)_processDeletion:(id)a3 forSharedTripSummary:(id)a4
+- (void)_processDeletion:(id)deletion forSharedTripSummary:(id)summary
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 sharedTrips];
-  if ([v8 count] == 1)
+  deletionCopy = deletion;
+  summaryCopy = summary;
+  sharedTrips = [summaryCopy sharedTrips];
+  if ([sharedTrips count] == 1)
   {
-    v9 = [v7 sharedTrips];
-    v10 = [v9 lastObject];
+    sharedTrips2 = [summaryCopy sharedTrips];
+    lastObject = [sharedTrips2 lastObject];
   }
 
   else
   {
-    v10 = 0;
+    lastObject = 0;
   }
 
-  v11 = [v10 groupIdentifier];
-  if (v11)
+  groupIdentifier = [lastObject groupIdentifier];
+  if (groupIdentifier)
   {
     objc_initWeak(&location, self);
-    v12 = [(HomeOutlineSectionController *)self configuration];
-    v13 = [v12 actionCoordinator];
+    configuration = [(HomeOutlineSectionController *)self configuration];
+    actionCoordinator = [configuration actionCoordinator];
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_10064C950;
     v14[3] = &unk_10165F3F0;
     objc_copyWeak(&v17, &location);
-    v15 = v6;
-    v16 = v11;
-    [v13 confirmDeleteSharedTripWithSummary:v7 sourceView:0 sourceRect:v14 completion:{CGRectNull.origin.x, CGRectNull.origin.y, CGRectNull.size.width, CGRectNull.size.height}];
+    v15 = deletionCopy;
+    v16 = groupIdentifier;
+    [actionCoordinator confirmDeleteSharedTripWithSummary:summaryCopy sourceView:0 sourceRect:v14 completion:{CGRectNull.origin.x, CGRectNull.origin.y, CGRectNull.size.width, CGRectNull.size.height}];
 
     objc_destroyWeak(&v17);
     objc_destroyWeak(&location);
   }
 }
 
-- (void)_processDeletion:(id)a3 forMapsSuggestionsEntry:(id)a4
+- (void)_processDeletion:(id)deletion forMapsSuggestionsEntry:(id)entry
 {
-  v6 = a3;
-  v7 = a4;
+  deletionCopy = deletion;
+  entryCopy = entry;
   objc_initWeak(&location, self);
-  v8 = [(HomeOutlineSectionController *)self configuration];
-  v9 = [v8 actionCoordinator];
+  configuration = [(HomeOutlineSectionController *)self configuration];
+  actionCoordinator = [configuration actionCoordinator];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_10064CBD4;
   v15[3] = &unk_101661340;
   objc_copyWeak(&v17, &location);
-  v10 = v6;
+  v10 = deletionCopy;
   v16 = v10;
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
@@ -341,27 +341,27 @@ LABEL_10:
   objc_copyWeak(&v14, &location);
   v11 = v10;
   v13 = v11;
-  [v9 viewController:0 removeMapsSuggestionsEntry:v7 sourceView:0 sourceRect:v15 startBlock:v12 completionBlock:{CGRectNull.origin.x, CGRectNull.origin.y, CGRectNull.size.width, CGRectNull.size.height}];
+  [actionCoordinator viewController:0 removeMapsSuggestionsEntry:entryCopy sourceView:0 sourceRect:v15 startBlock:v12 completionBlock:{CGRectNull.origin.x, CGRectNull.origin.y, CGRectNull.size.width, CGRectNull.size.height}];
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&v17);
   objc_destroyWeak(&location);
 }
 
-- (void)_deleteSnapshot:(id)a3
+- (void)_deleteSnapshot:(id)snapshot
 {
-  v18 = a3;
-  v4 = [(HomeOutlineSectionController *)self deletions];
-  v5 = [v18 identifierPath];
-  v6 = [v4 objectForKeyedSubscript:v5];
+  snapshotCopy = snapshot;
+  deletions = [(HomeOutlineSectionController *)self deletions];
+  identifierPath = [snapshotCopy identifierPath];
+  v6 = [deletions objectForKeyedSubscript:identifierPath];
 
   if (!v6)
   {
-    v7 = [v18 viewModel];
+    viewModel = [snapshotCopy viewModel];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = v7;
+      v8 = viewModel;
     }
 
     else
@@ -371,13 +371,13 @@ LABEL_10:
 
     v9 = v8;
 
-    v10 = [v9 sharedTripSummary];
+    sharedTripSummary = [v9 sharedTripSummary];
 
-    v11 = [v18 viewModel];
+    viewModel2 = [snapshotCopy viewModel];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v12 = v11;
+      v12 = viewModel2;
     }
 
     else
@@ -387,48 +387,48 @@ LABEL_10:
 
     v13 = v12;
 
-    v14 = [v13 entry];
+    entry = [v13 entry];
 
-    if (v14)
+    if (entry)
     {
-      v15 = [(HomeOutlineSectionController *)self deletionWithSnapshot:v18];
-      [(HomeOutlineSuggestionsSectionController *)self _processDeletion:v15 forMapsSuggestionsEntry:v14];
+      v15 = [(HomeOutlineSectionController *)self deletionWithSnapshot:snapshotCopy];
+      [(HomeOutlineSuggestionsSectionController *)self _processDeletion:v15 forMapsSuggestionsEntry:entry];
     }
 
     else
     {
-      if (!v10)
+      if (!sharedTripSummary)
       {
         goto LABEL_11;
       }
 
-      v16 = [v10 sharedTrips];
-      v17 = [v16 count];
+      sharedTrips = [sharedTripSummary sharedTrips];
+      v17 = [sharedTrips count];
 
       if (v17 > 1)
       {
         goto LABEL_11;
       }
 
-      v15 = [(HomeOutlineSectionController *)self deletionWithSnapshot:v18];
-      [(HomeOutlineSuggestionsSectionController *)self _processDeletion:v15 forSharedTripSummary:v10];
+      v15 = [(HomeOutlineSectionController *)self deletionWithSnapshot:snapshotCopy];
+      [(HomeOutlineSuggestionsSectionController *)self _processDeletion:v15 forSharedTripSummary:sharedTripSummary];
     }
 
 LABEL_11:
   }
 }
 
-- (void)collectionSortItem:(id)a3 didSelectSortType:(int64_t)a4
+- (void)collectionSortItem:(id)item didSelectSortType:(int64_t)type
 {
   sharedCollectionsDataProvider = self->_sharedCollectionsDataProvider;
-  v7 = a3;
+  itemCopy = item;
   [(SharedCollectionsDataProvider *)sharedCollectionsDataProvider setActive:0];
-  v8 = [v7 collection];
+  collection = [itemCopy collection];
 
-  [v8 setSortType:a4];
+  [collection setSortType:type];
   [(SharedCollectionsDataProvider *)self->_sharedCollectionsDataProvider setActive:1];
-  v9 = [(HomeOutlineSectionController *)self delegate];
-  [v9 sectionController:self setNeedsApplySnapshotAnimated:0];
+  delegate = [(HomeOutlineSectionController *)self delegate];
+  [delegate sectionController:self setNeedsApplySnapshotAnimated:0];
 }
 
 - (void)_scrubSortItems
@@ -438,8 +438,8 @@ LABEL_11:
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = [(SharedCollectionsDataProvider *)self->_sharedCollectionsDataProvider sharedCollections];
-  v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  sharedCollections = [(SharedCollectionsDataProvider *)self->_sharedCollectionsDataProvider sharedCollections];
+  v5 = [sharedCollections countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
     v6 = v5;
@@ -450,18 +450,18 @@ LABEL_11:
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(sharedCollections);
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
         sortItems = self->_sortItems;
-        v11 = [v9 identifier];
-        v12 = [(NSMutableDictionary *)sortItems objectForKeyedSubscript:v11];
-        v13 = [v9 identifier];
-        [(NSMutableDictionary *)v3 setObject:v12 forKeyedSubscript:v13];
+        identifier = [v9 identifier];
+        v12 = [(NSMutableDictionary *)sortItems objectForKeyedSubscript:identifier];
+        identifier2 = [v9 identifier];
+        [(NSMutableDictionary *)v3 setObject:v12 forKeyedSubscript:identifier2];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v6 = [sharedCollections countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v6);
@@ -471,38 +471,38 @@ LABEL_11:
   self->_sortItems = v3;
 }
 
-- (id)_sortItemForCollection:(id)a3
+- (id)_sortItemForCollection:(id)collection
 {
-  v4 = a3;
+  collectionCopy = collection;
   sortItems = self->_sortItems;
-  v6 = [v4 identifier];
-  v7 = [(NSMutableDictionary *)sortItems objectForKeyedSubscript:v6];
+  identifier = [collectionCopy identifier];
+  v7 = [(NSMutableDictionary *)sortItems objectForKeyedSubscript:identifier];
 
   if (!v7)
   {
-    v7 = [[HomeCollectionSortItem alloc] initWithCollection:v4 delegate:self];
+    v7 = [[HomeCollectionSortItem alloc] initWithCollection:collectionCopy delegate:self];
     v8 = self->_sortItems;
-    v9 = [v4 identifier];
-    [(NSMutableDictionary *)v8 setObject:v7 forKeyedSubscript:v9];
+    identifier2 = [collectionCopy identifier];
+    [(NSMutableDictionary *)v8 setObject:v7 forKeyedSubscript:identifier2];
   }
 
   return v7;
 }
 
-- (id)_childItemsInCollection:(id)a3
+- (id)_childItemsInCollection:(id)collection
 {
-  v4 = a3;
-  v5 = [v4 content];
-  v6 = [v5 count];
+  collectionCopy = collection;
+  content = [collectionCopy content];
+  v6 = [content count];
 
   if (v6)
   {
     v7 = +[NSMutableArray array];
-    v8 = [(HomeOutlineSuggestionsSectionController *)self _sortItemForCollection:v4];
+    v8 = [(HomeOutlineSuggestionsSectionController *)self _sortItemForCollection:collectionCopy];
     [v7 addObject:v8];
 
-    v9 = [v4 content];
-    [v7 addObjectsFromArray:v9];
+    content2 = [collectionCopy content];
+    [v7 addObjectsFromArray:content2];
 
     v10 = [v7 copy];
   }
@@ -515,54 +515,54 @@ LABEL_11:
   return v10;
 }
 
-- (id)contentInjectorForSnapshot:(id)a3
+- (id)contentInjectorForSnapshot:(id)snapshot
 {
-  v4 = a3;
-  v5 = [v4 viewModel];
+  snapshotCopy = snapshot;
+  viewModel = [snapshotCopy viewModel];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   v7 = 0;
-  if ((isKindOfClass & 1) != 0 && v5)
+  if ((isKindOfClass & 1) != 0 && viewModel)
   {
-    v8 = [v4 viewModel];
-    v9 = [v8 collection];
-    v7 = [[HomeCollectionContentInjector alloc] initWithCollection:v9];
-    v10 = [(HomeOutlineSectionController *)self configuration];
-    v11 = [v10 actionCoordinator];
-    [(HomeCollectionContentInjector *)v7 setActionCoordinator:v11];
+    viewModel2 = [snapshotCopy viewModel];
+    collection = [viewModel2 collection];
+    v7 = [[HomeCollectionContentInjector alloc] initWithCollection:collection];
+    configuration = [(HomeOutlineSectionController *)self configuration];
+    actionCoordinator = [configuration actionCoordinator];
+    [(HomeCollectionContentInjector *)v7 setActionCoordinator:actionCoordinator];
   }
 
   return v7;
 }
 
-- (void)showSharedCollection:(id)a3
+- (void)showSharedCollection:(id)collection
 {
-  v4 = a3;
-  if ([v4 handlerType] == 3)
+  collectionCopy = collection;
+  if ([collectionCopy handlerType] == 3)
   {
-    [(SharedCollectionsDataProvider *)self->_sharedCollectionsDataProvider addSharedCollection:v4];
+    [(SharedCollectionsDataProvider *)self->_sharedCollectionsDataProvider addSharedCollection:collectionCopy];
   }
 }
 
-- (BOOL)shouldPersistExpandedIdentifierPath:(id)a3
+- (BOOL)shouldPersistExpandedIdentifierPath:(id)path
 {
-  v4 = a3;
-  v5 = [(HomeOutlineSectionController *)self sectionIdentifierPath];
-  v6 = [v4 isEqual:v5];
+  pathCopy = path;
+  sectionIdentifierPath = [(HomeOutlineSectionController *)self sectionIdentifierPath];
+  v6 = [pathCopy isEqual:sectionIdentifierPath];
 
   return v6;
 }
 
-- (id)contextMenuForSnapshot:(id)a3
+- (id)contextMenuForSnapshot:(id)snapshot
 {
-  v4 = a3;
+  snapshotCopy = snapshot;
   objc_initWeak(&location, self);
-  v5 = [v4 viewModel];
+  viewModel = [snapshotCopy viewModel];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = viewModel;
   }
 
   else
@@ -581,7 +581,7 @@ LABEL_7:
     v14[2] = sub_10064D6AC;
     v14[3] = &unk_101661340;
     objc_copyWeak(&v16, &location);
-    v15 = v4;
+    v15 = snapshotCopy;
     v10 = sub_100C64B44(v14);
     v18 = v10;
     v11 = [NSArray arrayWithObjects:&v18 count:1];
@@ -591,11 +591,11 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v8 = [v4 viewModel];
+  viewModel2 = [snapshotCopy viewModel];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  if ((isKindOfClass & (v8 != 0)) == 1)
+  if ((isKindOfClass & (viewModel2 != 0)) == 1)
   {
     goto LABEL_7;
   }
@@ -609,22 +609,22 @@ LABEL_8:
 
 - (NSArray)itemSnapshots
 {
-  v3 = [(CurrentLocationDataProvider *)self->_currentLocationDataProvider currentLocation];
-  v4 = [(DistanceUnitDataProvider *)self->_distanceUnitDataProvider distanceUnit];
-  v5 = [(HomeOutlineSectionController *)self selectedIdentifierPaths];
+  currentLocation = [(CurrentLocationDataProvider *)self->_currentLocationDataProvider currentLocation];
+  distanceUnit = [(DistanceUnitDataProvider *)self->_distanceUnitDataProvider distanceUnit];
+  selectedIdentifierPaths = [(HomeOutlineSectionController *)self selectedIdentifierPaths];
   v6 = +[NSMutableArray array];
-  v7 = [(SharedCollectionsDataProvider *)self->_sharedCollectionsDataProvider sharedCollections];
-  [v6 addObjectsFromArray:v7];
+  sharedCollections = [(SharedCollectionsDataProvider *)self->_sharedCollectionsDataProvider sharedCollections];
+  [v6 addObjectsFromArray:sharedCollections];
 
-  v8 = [(SharedTripsDataProvider *)self->_sharedTripsDataProvider sharedTripSummaries];
-  [v6 addObjectsFromArray:v8];
+  sharedTripSummaries = [(SharedTripsDataProvider *)self->_sharedTripsDataProvider sharedTripSummaries];
+  [v6 addObjectsFromArray:sharedTripSummaries];
 
   v31 = 0u;
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v9 = [(SuggestionsDataProvider *)self->_suggestionsDataProvider suggestions];
-  v10 = [v9 countByEnumeratingWithState:&v29 objects:v33 count:16];
+  suggestions = [(SuggestionsDataProvider *)self->_suggestionsDataProvider suggestions];
+  v10 = [suggestions countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v10)
   {
     v11 = v10;
@@ -635,7 +635,7 @@ LABEL_8:
       {
         if (*v30 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(suggestions);
         }
 
         v14 = *(*(&v29 + 1) + 8 * i);
@@ -645,15 +645,15 @@ LABEL_8:
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v29 objects:v33 count:16];
+      v11 = [suggestions countByEnumeratingWithState:&v29 objects:v33 count:16];
     }
 
     while (v11);
   }
 
-  v15 = [(HomeOutlineSectionController *)self configuration];
-  v16 = [v15 sectionIdentifier];
-  v17 = [(HomeOutlineSectionController *)self expanded];
+  configuration = [(HomeOutlineSectionController *)self configuration];
+  sectionIdentifier = [configuration sectionIdentifier];
+  expanded = [(HomeOutlineSectionController *)self expanded];
   v28[0] = _NSConcreteStackBlock;
   v28[1] = 3221225472;
   v28[2] = sub_10064DA78;
@@ -664,9 +664,9 @@ LABEL_8:
   v24[2] = sub_10064DAE4;
   v24[3] = &unk_10165D128;
   v24[4] = self;
-  v25 = v5;
-  v26 = v3;
-  v27 = v4;
+  v25 = selectedIdentifierPaths;
+  v26 = currentLocation;
+  v27 = distanceUnit;
   v22[4] = self;
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
@@ -677,18 +677,18 @@ LABEL_8:
   v22[1] = 3221225472;
   v22[2] = sub_10064E450;
   v22[3] = &unk_10165D178;
-  v18 = v3;
-  v19 = v5;
-  v20 = [HomeOutlineSectionBuilder itemSnapshotsWithItems:v6 sectionIdentifier:v16 sectionExpanded:v17 itemIdentifierBlock:v28 viewModelBlock:v24 childItemsBlock:v23 expandedBlock:v22];
+  v18 = currentLocation;
+  v19 = selectedIdentifierPaths;
+  v20 = [HomeOutlineSectionBuilder itemSnapshotsWithItems:v6 sectionIdentifier:sectionIdentifier sectionExpanded:expanded itemIdentifierBlock:v28 viewModelBlock:v24 childItemsBlock:v23 expandedBlock:v22];
 
   [(HomeOutlineSuggestionsSectionController *)self _scrubSortItems];
 
   return v20;
 }
 
-- (BOOL)_canDisplaySuggestionsEntry:(id)a3
+- (BOOL)_canDisplaySuggestionsEntry:(id)entry
 {
-  if ([a3 type] != 21)
+  if ([entry type] != 21)
   {
     return 1;
   }
@@ -732,12 +732,12 @@ LABEL_8:
   return v4;
 }
 
-- (HomeOutlineSuggestionsSectionController)initWithConfiguration:(id)a3 suggestionsDataProvider:(id)a4
+- (HomeOutlineSuggestionsSectionController)initWithConfiguration:(id)configuration suggestionsDataProvider:(id)provider
 {
-  v7 = a4;
+  providerCopy = provider;
   v20.receiver = self;
   v20.super_class = HomeOutlineSuggestionsSectionController;
-  v8 = [(HomeOutlineSectionController *)&v20 initWithConfiguration:a3];
+  v8 = [(HomeOutlineSectionController *)&v20 initWithConfiguration:configuration];
   if (v8)
   {
     v9 = objc_alloc_init(CurrentLocationDataProvider);
@@ -756,7 +756,7 @@ LABEL_8:
     sharedTripsDataProvider = v8->_sharedTripsDataProvider;
     v8->_sharedTripsDataProvider = v15;
 
-    objc_storeStrong(&v8->_suggestionsDataProvider, a4);
+    objc_storeStrong(&v8->_suggestionsDataProvider, provider);
     v17 = +[NSMutableDictionary dictionary];
     sortItems = v8->_sortItems;
     v8->_sortItems = v17;

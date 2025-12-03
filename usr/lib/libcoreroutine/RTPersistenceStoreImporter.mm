@@ -1,28 +1,28 @@
 @interface RTPersistenceStoreImporter
-- (BOOL)enumerateRelationshipsInEntityDescription:(id)a3 sourceObject:(id)a4 error:(id *)a5;
-- (BOOL)establishEntityRelationships:(id *)a3;
-- (BOOL)import:(id *)a3;
-- (BOOL)importEntityRowsAndAttributes:(id *)a3;
-- (BOOL)updateRelationshipWithEntity:(id)a3 relationshipDescription:(id)a4 relationshipIdentifiers:(id)a5 context:(id)a6 error:(id *)a7;
-- (RTPersistenceStoreImporter)initWithManagedObjectModel:(id)a3 configuration:(id)a4 sourceStore:(id)a5 sourceCoordinator:(id)a6 destinationStore:(id)a7 destinationCoordinator:(id)a8;
+- (BOOL)enumerateRelationshipsInEntityDescription:(id)description sourceObject:(id)object error:(id *)error;
+- (BOOL)establishEntityRelationships:(id *)relationships;
+- (BOOL)import:(id *)import;
+- (BOOL)importEntityRowsAndAttributes:(id *)attributes;
+- (BOOL)updateRelationshipWithEntity:(id)entity relationshipDescription:(id)description relationshipIdentifiers:(id)identifiers context:(id)context error:(id *)error;
+- (RTPersistenceStoreImporter)initWithManagedObjectModel:(id)model configuration:(id)configuration sourceStore:(id)store sourceCoordinator:(id)coordinator destinationStore:(id)destinationStore destinationCoordinator:(id)destinationCoordinator;
 - (id)entityDescriptions;
-- (id)fetchDestinationObjectWithEntityDescription:(id)a3 predicate:(id)a4 context:(id)a5 error:(id *)a6;
-- (id)managedObjectContextTargetingType:(int64_t)a3;
+- (id)fetchDestinationObjectWithEntityDescription:(id)description predicate:(id)predicate context:(id)context error:(id *)error;
+- (id)managedObjectContextTargetingType:(int64_t)type;
 @end
 
 @implementation RTPersistenceStoreImporter
 
-- (RTPersistenceStoreImporter)initWithManagedObjectModel:(id)a3 configuration:(id)a4 sourceStore:(id)a5 sourceCoordinator:(id)a6 destinationStore:(id)a7 destinationCoordinator:(id)a8
+- (RTPersistenceStoreImporter)initWithManagedObjectModel:(id)model configuration:(id)configuration sourceStore:(id)store sourceCoordinator:(id)coordinator destinationStore:(id)destinationStore destinationCoordinator:(id)destinationCoordinator
 {
   v45 = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v37 = a6;
-  v36 = a7;
-  v18 = a8;
-  v35 = v18;
-  if (!v15)
+  modelCopy = model;
+  configurationCopy = configuration;
+  storeCopy = store;
+  coordinatorCopy = coordinator;
+  destinationStoreCopy = destinationStore;
+  destinationCoordinatorCopy = destinationCoordinator;
+  v35 = destinationCoordinatorCopy;
+  if (!modelCopy)
   {
     v29 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
@@ -37,7 +37,7 @@ LABEL_26:
     goto LABEL_27;
   }
 
-  if (!v17)
+  if (!storeCopy)
   {
     v29 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
@@ -50,7 +50,7 @@ LABEL_26:
     goto LABEL_26;
   }
 
-  if (!v37)
+  if (!coordinatorCopy)
   {
     v29 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
@@ -63,7 +63,7 @@ LABEL_26:
     goto LABEL_26;
   }
 
-  if (!v36)
+  if (!destinationStoreCopy)
   {
     v29 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
@@ -76,7 +76,7 @@ LABEL_26:
     goto LABEL_26;
   }
 
-  if (!v18)
+  if (!destinationCoordinatorCopy)
   {
     v29 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
@@ -100,20 +100,20 @@ LABEL_27:
     goto LABEL_32;
   }
 
-  v33 = v17;
-  v34 = v16;
-  objc_storeStrong(&v19->_model, a3);
-  objc_storeStrong(&self->_configuration, a4);
-  objc_storeStrong(&self->_sourceStore, a5);
-  objc_storeStrong(&self->_sourceCoordinator, a6);
-  objc_storeStrong(&self->_destinationStore, a7);
-  objc_storeStrong(&self->_destinationCoordinator, a8);
+  v33 = storeCopy;
+  v34 = configurationCopy;
+  objc_storeStrong(&v19->_model, model);
+  objc_storeStrong(&self->_configuration, configuration);
+  objc_storeStrong(&self->_sourceStore, store);
+  objc_storeStrong(&self->_sourceCoordinator, coordinator);
+  objc_storeStrong(&self->_destinationStore, destinationStore);
+  objc_storeStrong(&self->_destinationCoordinator, destinationCoordinator);
   v40 = 0u;
   v41 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v20 = [(NSPersistentStoreCoordinator *)self->_destinationCoordinator persistentStores];
-  v21 = [v20 countByEnumeratingWithState:&v38 objects:v44 count:16];
+  persistentStores = [(NSPersistentStoreCoordinator *)self->_destinationCoordinator persistentStores];
+  v21 = [persistentStores countByEnumeratingWithState:&v38 objects:v44 count:16];
   if (v21)
   {
     v22 = v21;
@@ -124,7 +124,7 @@ LABEL_27:
       {
         if (*v39 != v23)
         {
-          objc_enumerationMutation(v20);
+          objc_enumerationMutation(persistentStores);
         }
 
         v25 = *(*(&v38 + 1) + 8 * i);
@@ -139,7 +139,7 @@ LABEL_27:
         }
       }
 
-      v22 = [v20 countByEnumeratingWithState:&v38 objects:v44 count:16];
+      v22 = [persistentStores countByEnumeratingWithState:&v38 objects:v44 count:16];
       if (v22)
       {
         continue;
@@ -151,32 +151,32 @@ LABEL_27:
 
 LABEL_31:
 
-  v17 = v33;
-  v16 = v34;
+  storeCopy = v33;
+  configurationCopy = v34;
   if (self->_affectedStore)
   {
 LABEL_32:
     self = self;
-    v31 = self;
+    selfCopy = self;
     goto LABEL_29;
   }
 
 LABEL_28:
-  v31 = 0;
+  selfCopy = 0;
 LABEL_29:
 
-  return v31;
+  return selfCopy;
 }
 
-- (id)managedObjectContextTargetingType:(int64_t)a3
+- (id)managedObjectContextTargetingType:(int64_t)type
 {
   v5 = [objc_alloc(MEMORY[0x277CBE440]) initWithConcurrencyType:1];
-  v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%ld", @"RTPersistenceStoreImporter", a3];
-  [v5 setTransactionAuthor:v6];
+  type = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%ld", @"RTPersistenceStoreImporter", type];
+  [v5 setTransactionAuthor:type];
 
-  if (a3)
+  if (type)
   {
-    if (a3 != 1)
+    if (type != 1)
     {
       __break(1u);
       return result;
@@ -213,7 +213,7 @@ LABEL_29:
   return v5;
 }
 
-- (BOOL)importEntityRowsAndAttributes:(id *)a3
+- (BOOL)importEntityRowsAndAttributes:(id *)attributes
 {
   v5 = [(RTPersistenceStoreImporter *)self managedObjectContextTargetingType:0];
   v6 = [(RTPersistenceStoreImporter *)self managedObjectContextTargetingType:1];
@@ -245,10 +245,10 @@ LABEL_29:
   v11 = _RTSafeArray();
   v12 = _RTMultiErrorCreate();
 
-  if (a3)
+  if (attributes)
   {
     v13 = v12;
-    *a3 = v12;
+    *attributes = v12;
   }
 
   return v12 == 0;
@@ -473,12 +473,12 @@ void __60__RTPersistenceStoreImporter_importEntityRowsAndAttributes___block_invo
   }
 }
 
-- (BOOL)enumerateRelationshipsInEntityDescription:(id)a3 sourceObject:(id)a4 error:(id *)a5
+- (BOOL)enumerateRelationshipsInEntityDescription:(id)description sourceObject:(id)object error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (!v8)
+  descriptionCopy = description;
+  objectCopy = object;
+  v10 = objectCopy;
+  if (!descriptionCopy)
   {
     v20 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -487,12 +487,12 @@ void __60__RTPersistenceStoreImporter_importEntityRowsAndAttributes___block_invo
       _os_log_error_impl(&dword_2304B3000, v20, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: entityDescription", buf, 2u);
     }
 
-    if (a5)
+    if (error)
     {
       v21 = @"entityDescription";
 LABEL_14:
       _RTErrorInvalidParameterCreate(v21);
-      *a5 = v19 = 0;
+      *error = v19 = 0;
       goto LABEL_16;
     }
 
@@ -501,7 +501,7 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if (!v9)
+  if (!objectCopy)
   {
     v22 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -510,7 +510,7 @@ LABEL_15:
       _os_log_error_impl(&dword_2304B3000, v22, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: sourceManagedObject", buf, 2u);
     }
 
-    if (a5)
+    if (error)
     {
       v21 = @"sourceManagedObject";
       goto LABEL_14;
@@ -527,9 +527,9 @@ LABEL_15:
   v24[2] = __91__RTPersistenceStoreImporter_enumerateRelationshipsInEntityDescription_sourceObject_error___block_invoke;
   v24[3] = &unk_2788CAD48;
   v25 = v10;
-  v26 = v8;
+  v26 = descriptionCopy;
   v27 = v12;
-  v28 = self;
+  selfCopy = self;
   v14 = v13;
   v29 = v14;
   v15 = v12;
@@ -537,10 +537,10 @@ LABEL_15:
   v16 = _RTSafeArray();
   v17 = _RTMultiErrorCreate();
 
-  if (a5)
+  if (error)
   {
     v18 = v17;
-    *a5 = v17;
+    *error = v17;
   }
 
   v19 = v17 == 0;
@@ -747,14 +747,14 @@ void __91__RTPersistenceStoreImporter_enumerateRelationshipsInEntityDescription_
   }
 }
 
-- (BOOL)updateRelationshipWithEntity:(id)a3 relationshipDescription:(id)a4 relationshipIdentifiers:(id)a5 context:(id)a6 error:(id *)a7
+- (BOOL)updateRelationshipWithEntity:(id)entity relationshipDescription:(id)description relationshipIdentifiers:(id)identifiers context:(id)context error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = v15;
-  if (!v12)
+  entityCopy = entity;
+  descriptionCopy = description;
+  identifiersCopy = identifiers;
+  contextCopy = context;
+  v16 = contextCopy;
+  if (!entityCopy)
   {
     v23 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -763,7 +763,7 @@ void __91__RTPersistenceStoreImporter_enumerateRelationshipsInEntityDescription_
       _os_log_error_impl(&dword_2304B3000, v23, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: entity", buf, 2u);
     }
 
-    if (!a7)
+    if (!error)
     {
       goto LABEL_25;
     }
@@ -772,7 +772,7 @@ void __91__RTPersistenceStoreImporter_enumerateRelationshipsInEntityDescription_
     goto LABEL_24;
   }
 
-  if (!v13)
+  if (!descriptionCopy)
   {
     v25 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -781,7 +781,7 @@ void __91__RTPersistenceStoreImporter_enumerateRelationshipsInEntityDescription_
       _os_log_error_impl(&dword_2304B3000, v25, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: relationshipDescription", buf, 2u);
     }
 
-    if (!a7)
+    if (!error)
     {
       goto LABEL_25;
     }
@@ -790,7 +790,7 @@ void __91__RTPersistenceStoreImporter_enumerateRelationshipsInEntityDescription_
     goto LABEL_24;
   }
 
-  if (!v14)
+  if (!identifiersCopy)
   {
     v26 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
@@ -799,7 +799,7 @@ void __91__RTPersistenceStoreImporter_enumerateRelationshipsInEntityDescription_
       _os_log_error_impl(&dword_2304B3000, v26, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: relationshipIdentifiers", buf, 2u);
     }
 
-    if (!a7)
+    if (!error)
     {
       goto LABEL_25;
     }
@@ -807,11 +807,11 @@ void __91__RTPersistenceStoreImporter_enumerateRelationshipsInEntityDescription_
     v24 = @"relationshipIdentifiers";
 LABEL_24:
     _RTErrorInvalidParameterCreate(v24);
-    *a7 = v22 = 0;
+    *error = v22 = 0;
     goto LABEL_26;
   }
 
-  if (!v15)
+  if (!contextCopy)
   {
     v27 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -820,7 +820,7 @@ LABEL_24:
       _os_log_error_impl(&dword_2304B3000, v27, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: context", buf, 2u);
     }
 
-    if (a7)
+    if (error)
     {
       v24 = @"context";
       goto LABEL_24;
@@ -836,21 +836,21 @@ LABEL_25:
   v29[1] = 3221225472;
   v29[2] = __121__RTPersistenceStoreImporter_updateRelationshipWithEntity_relationshipDescription_relationshipIdentifiers_context_error___block_invoke;
   v29[3] = &unk_2788D22C0;
-  v30 = v13;
-  v31 = v14;
-  v32 = self;
+  v30 = descriptionCopy;
+  v31 = identifiersCopy;
+  selfCopy = self;
   v33 = v16;
   v18 = v17;
   v34 = v18;
-  v35 = v12;
+  v35 = entityCopy;
   [v33 performBlockAndWait:v29];
   v19 = _RTSafeArray();
   v20 = _RTMultiErrorCreate();
 
-  if (a7)
+  if (error)
   {
     v21 = v20;
-    *a7 = v20;
+    *error = v20;
   }
 
   v22 = v20 == 0;
@@ -990,7 +990,7 @@ LABEL_7:
   __break(1u);
 }
 
-- (BOOL)establishEntityRelationships:(id *)a3
+- (BOOL)establishEntityRelationships:(id *)relationships
 {
   v5 = objc_opt_new();
   v6 = [(RTPersistenceStoreImporter *)self managedObjectContextTargetingType:0];
@@ -1007,10 +1007,10 @@ LABEL_7:
   v9 = _RTSafeArray();
   v10 = _RTMultiErrorCreate();
 
-  if (a3)
+  if (relationships)
   {
     v11 = v10;
-    *a3 = v10;
+    *relationships = v10;
   }
 
   return v10 == 0;
@@ -1133,13 +1133,13 @@ void __59__RTPersistenceStoreImporter_establishEntityRelationships___block_invok
   }
 }
 
-- (id)fetchDestinationObjectWithEntityDescription:(id)a3 predicate:(id)a4 context:(id)a5 error:(id *)a6
+- (id)fetchDestinationObjectWithEntityDescription:(id)description predicate:(id)predicate context:(id)context error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = v12;
-  if (!v10)
+  descriptionCopy = description;
+  predicateCopy = predicate;
+  contextCopy = context;
+  v13 = contextCopy;
+  if (!descriptionCopy)
   {
     v15 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -1148,12 +1148,12 @@ void __59__RTPersistenceStoreImporter_establishEntityRelationships___block_invok
       _os_log_error_impl(&dword_2304B3000, v15, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: entityDescription", buf, 2u);
     }
 
-    if (a6)
+    if (error)
     {
       v16 = @"entityDescription";
 LABEL_14:
       _RTErrorInvalidParameterCreate(v16);
-      *a6 = v14 = 0;
+      *error = v14 = 0;
       goto LABEL_16;
     }
 
@@ -1162,7 +1162,7 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if (!v12)
+  if (!contextCopy)
   {
     v17 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -1171,7 +1171,7 @@ LABEL_15:
       _os_log_error_impl(&dword_2304B3000, v17, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: context", buf, 2u);
     }
 
-    if (a6)
+    if (error)
     {
       v16 = @"context";
       goto LABEL_14;
@@ -1196,16 +1196,16 @@ LABEL_15:
   v19[1] = 3221225472;
   v19[2] = __98__RTPersistenceStoreImporter_fetchDestinationObjectWithEntityDescription_predicate_context_error___block_invoke;
   v19[3] = &unk_2788CC4B8;
-  v20 = v10;
-  v21 = v11;
-  v22 = self;
+  v20 = descriptionCopy;
+  v21 = predicateCopy;
+  selfCopy = self;
   v23 = v13;
   v24 = &v26;
   v25 = buf;
   [v23 performBlockAndWait:v19];
-  if (a6)
+  if (error)
   {
-    *a6 = v27[5];
+    *error = v27[5];
   }
 
   v14 = *(v33 + 5);
@@ -1267,7 +1267,7 @@ void __98__RTPersistenceStoreImporter_fetchDestinationObjectWithEntityDescriptio
   *(v11 + 40) = v10;
 }
 
-- (BOOL)import:(id *)a3
+- (BOOL)import:(id *)import
 {
   v21 = *MEMORY[0x277D85DE8];
   v18 = 0;
@@ -1310,10 +1310,10 @@ LABEL_10:
   v13 = _RTSafeArray();
   v14 = _RTMultiErrorCreate();
 
-  if (a3)
+  if (import)
   {
     v15 = v14;
-    *a3 = v14;
+    *import = v14;
   }
 
   return v14 == 0;

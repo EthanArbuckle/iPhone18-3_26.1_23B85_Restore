@@ -2,17 +2,17 @@
 + (id)localDictionaryPath;
 + (id)localDirectoryPath;
 + (id)sharedStorage;
-- (BOOL)clearKeys:(id)a3;
-- (BOOL)saveKeyValuePairs:(id)a3 error:(id *)a4;
+- (BOOL)clearKeys:(id)keys;
+- (BOOL)saveKeyValuePairs:(id)pairs error:(id *)error;
 - (LKUniversalDiskStorage)init;
 - (_opaque_pthread_rwlock_t)lock;
-- (id)retrieveValueForKey:(id)a3;
+- (id)retrieveValueForKey:(id)key;
 - (void)_refreshStorageCacheIfNeeded;
-- (void)clearAllKeyValueStorage:(id)a3;
-- (void)clearKeys:(id)a3 completionHandler:(id)a4;
-- (void)saveKeyValuePairs:(id)a3 completionHandler:(id)a4;
-- (void)setLock:(_opaque_pthread_rwlock_t *)a3;
-- (void)setStorageDictionaryModified:(BOOL)a3;
+- (void)clearAllKeyValueStorage:(id)storage;
+- (void)clearKeys:(id)keys completionHandler:(id)handler;
+- (void)saveKeyValuePairs:(id)pairs completionHandler:(id)handler;
+- (void)setLock:(_opaque_pthread_rwlock_t *)lock;
+- (void)setStorageDictionaryModified:(BOOL)modified;
 @end
 
 @implementation LKUniversalDiskStorage
@@ -49,14 +49,14 @@ uint64_t __39__LKUniversalDiskStorage_sharedStorage__block_invoke()
 
     pthread_rwlock_init(&v2->_lock, 0);
     v2->_storageDictionaryModified = 1;
-    v5 = [@"LKUStorageDictionaryModified" UTF8String];
+    uTF8String = [@"LKUStorageDictionaryModified" UTF8String];
     v6 = v2->_storageQueue;
     handler[0] = MEMORY[0x277D85DD0];
     handler[1] = 3221225472;
     handler[2] = __30__LKUniversalDiskStorage_init__block_invoke;
     handler[3] = &unk_279826610;
     v9 = v2;
-    notify_register_dispatch(v5, &init_notifyToken, v6, handler);
+    notify_register_dispatch(uTF8String, &init_notifyToken, v6, handler);
   }
 
   return v2;
@@ -81,32 +81,32 @@ uint64_t __30__LKUniversalDiskStorage_init__block_invoke(uint64_t a1)
   return result;
 }
 
-- (BOOL)saveKeyValuePairs:(id)a3 error:(id *)a4
+- (BOOL)saveKeyValuePairs:(id)pairs error:(id *)error
 {
-  v6 = a3;
+  pairsCopy = pairs;
   pthread_rwlock_wrlock(&self->_lock);
   [(LKUniversalDiskStorage *)self _refreshStorageCacheIfNeeded];
-  v7 = [(LKUniversalDiskStorage *)self storageDictionary];
+  storageDictionary = [(LKUniversalDiskStorage *)self storageDictionary];
 
-  if (v7)
+  if (storageDictionary)
   {
-    v8 = [(LKUniversalDiskStorage *)self storageDictionary];
-    v9 = [v8 mutableCopy];
+    storageDictionary2 = [(LKUniversalDiskStorage *)self storageDictionary];
+    v9 = [storageDictionary2 mutableCopy];
 
-    [v9 addEntriesFromDictionary:v6];
+    [v9 addEntriesFromDictionary:pairsCopy];
     v10 = [v9 copy];
     [(LKUniversalDiskStorage *)self setStorageDictionary:v10];
   }
 
   else
   {
-    v9 = [v6 copy];
+    v9 = [pairsCopy copy];
     [(LKUniversalDiskStorage *)self setStorageDictionary:v9];
   }
 
-  v11 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v12 = +[LKUniversalDiskStorage localDirectoryPath];
-  v13 = [v11 fileExistsAtPath:v12];
+  v13 = [defaultManager fileExistsAtPath:v12];
 
   if (v13)
   {
@@ -114,10 +114,10 @@ uint64_t __30__LKUniversalDiskStorage_init__block_invoke(uint64_t a1)
     goto LABEL_7;
   }
 
-  v15 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
   v16 = +[LKUniversalDiskStorage localDirectoryPath];
   v28 = 0;
-  v17 = [v15 createDirectoryAtPath:v16 withIntermediateDirectories:1 attributes:0 error:&v28];
+  v17 = [defaultManager2 createDirectoryAtPath:v16 withIntermediateDirectories:1 attributes:0 error:&v28];
   v14 = v28;
 
   if ((v17 & 1) == 0)
@@ -126,18 +126,18 @@ uint64_t __30__LKUniversalDiskStorage_init__block_invoke(uint64_t a1)
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
       [LKUniversalDiskStorage saveKeyValuePairs:error:];
-      if (a4)
+      if (error)
       {
         goto LABEL_15;
       }
     }
 
-    else if (a4)
+    else if (error)
     {
 LABEL_15:
       v26 = v14;
       v23 = 0;
-      *a4 = v14;
+      *error = v14;
       goto LABEL_12;
     }
 
@@ -147,12 +147,12 @@ LABEL_15:
 
 LABEL_7:
   v18 = v14;
-  v19 = [(LKUniversalDiskStorage *)self storageDictionary];
+  storageDictionary3 = [(LKUniversalDiskStorage *)self storageDictionary];
   v20 = MEMORY[0x277CBEBC0];
   v21 = +[LKUniversalDiskStorage localDictionaryPath];
   v22 = [v20 fileURLWithPath:v21 isDirectory:0];
   v27 = v18;
-  v23 = [v19 writeToURL:v22 error:&v27];
+  v23 = [storageDictionary3 writeToURL:v22 error:&v27];
   v14 = v27;
 
   if ((v23 & 1) == 0)
@@ -160,7 +160,7 @@ LABEL_7:
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
       [LKUniversalDiskStorage saveKeyValuePairs:error:];
-      if (!a4)
+      if (!error)
       {
         goto LABEL_11;
       }
@@ -168,11 +168,11 @@ LABEL_7:
       goto LABEL_10;
     }
 
-    if (a4)
+    if (error)
     {
 LABEL_10:
       v24 = v14;
-      *a4 = v14;
+      *error = v14;
     }
   }
 
@@ -184,21 +184,21 @@ LABEL_12:
   return v23;
 }
 
-- (void)saveKeyValuePairs:(id)a3 completionHandler:(id)a4
+- (void)saveKeyValuePairs:(id)pairs completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(LKUniversalDiskStorage *)self storageQueue];
+  pairsCopy = pairs;
+  handlerCopy = handler;
+  storageQueue = [(LKUniversalDiskStorage *)self storageQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __62__LKUniversalDiskStorage_saveKeyValuePairs_completionHandler___block_invoke;
   block[3] = &unk_279826588;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = pairsCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = pairsCopy;
+  dispatch_async(storageQueue, block);
 }
 
 void __62__LKUniversalDiskStorage_saveKeyValuePairs_completionHandler___block_invoke(void *a1)
@@ -215,37 +215,37 @@ void __62__LKUniversalDiskStorage_saveKeyValuePairs_completionHandler___block_in
   }
 }
 
-- (id)retrieveValueForKey:(id)a3
+- (id)retrieveValueForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   pthread_rwlock_rdlock(&self->_lock);
   [(LKUniversalDiskStorage *)self _refreshStorageCacheIfNeeded];
-  v5 = [(LKUniversalDiskStorage *)self storageDictionary];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  storageDictionary = [(LKUniversalDiskStorage *)self storageDictionary];
+  v6 = [storageDictionary objectForKeyedSubscript:keyCopy];
 
   pthread_rwlock_unlock(&self->_lock);
 
   return v6;
 }
 
-- (BOOL)clearKeys:(id)a3
+- (BOOL)clearKeys:(id)keys
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  keysCopy = keys;
   pthread_rwlock_wrlock(&self->_lock);
   [(LKUniversalDiskStorage *)self _refreshStorageCacheIfNeeded];
-  v5 = [(LKUniversalDiskStorage *)self storageDictionary];
+  storageDictionary = [(LKUniversalDiskStorage *)self storageDictionary];
 
-  if (v5)
+  if (storageDictionary)
   {
-    v6 = [(LKUniversalDiskStorage *)self storageDictionary];
-    v7 = [v6 mutableCopy];
+    storageDictionary2 = [(LKUniversalDiskStorage *)self storageDictionary];
+    v7 = [storageDictionary2 mutableCopy];
 
     v26 = 0u;
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v8 = v4;
+    v8 = keysCopy;
     v9 = [v8 countByEnumeratingWithState:&v24 objects:v30 count:16];
     if (v9)
     {
@@ -274,18 +274,18 @@ void __62__LKUniversalDiskStorage_saveKeyValuePairs_completionHandler___block_in
 
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [(LKUniversalDiskStorage *)self storageDictionary];
+      storageDictionary3 = [(LKUniversalDiskStorage *)self storageDictionary];
       *buf = 138543362;
-      v29 = v14;
+      v29 = storageDictionary3;
       _os_log_impl(&dword_25618F000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Storing storage dictionary to disk... %{public}@", buf, 0xCu);
     }
 
-    v15 = [(LKUniversalDiskStorage *)self storageDictionary];
+    storageDictionary4 = [(LKUniversalDiskStorage *)self storageDictionary];
     v16 = MEMORY[0x277CBEBC0];
     v17 = +[LKUniversalDiskStorage localDictionaryPath];
     v18 = [v16 fileURLWithPath:v17 isDirectory:0];
     v23 = 0;
-    v19 = [v15 writeToURL:v18 error:&v23];
+    v19 = [storageDictionary4 writeToURL:v18 error:&v23];
     v20 = v23;
 
     if ((v19 & 1) == 0 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
@@ -307,21 +307,21 @@ void __62__LKUniversalDiskStorage_saveKeyValuePairs_completionHandler___block_in
   return v19;
 }
 
-- (void)clearKeys:(id)a3 completionHandler:(id)a4
+- (void)clearKeys:(id)keys completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(LKUniversalDiskStorage *)self storageQueue];
+  keysCopy = keys;
+  handlerCopy = handler;
+  storageQueue = [(LKUniversalDiskStorage *)self storageQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __54__LKUniversalDiskStorage_clearKeys_completionHandler___block_invoke;
   block[3] = &unk_279826588;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = keysCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = keysCopy;
+  dispatch_async(storageQueue, block);
 }
 
 uint64_t __54__LKUniversalDiskStorage_clearKeys_completionHandler___block_invoke(uint64_t a1)
@@ -338,18 +338,18 @@ uint64_t __54__LKUniversalDiskStorage_clearKeys_completionHandler___block_invoke
   return result;
 }
 
-- (void)clearAllKeyValueStorage:(id)a3
+- (void)clearAllKeyValueStorage:(id)storage
 {
-  v4 = a3;
-  v5 = [(LKUniversalDiskStorage *)self storageQueue];
+  storageCopy = storage;
+  storageQueue = [(LKUniversalDiskStorage *)self storageQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __50__LKUniversalDiskStorage_clearAllKeyValueStorage___block_invoke;
   v7[3] = &unk_279826428;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = storageCopy;
+  v6 = storageCopy;
+  dispatch_async(storageQueue, v7);
 }
 
 void __50__LKUniversalDiskStorage_clearAllKeyValueStorage___block_invoke(uint64_t a1)
@@ -376,11 +376,11 @@ void __50__LKUniversalDiskStorage_clearAllKeyValueStorage___block_invoke(uint64_
   }
 }
 
-- (void)setStorageDictionaryModified:(BOOL)a3
+- (void)setStorageDictionaryModified:(BOOL)modified
 {
   v8 = *MEMORY[0x277D85DE8];
-  self->_storageDictionaryModified = a3;
-  if (a3)
+  self->_storageDictionaryModified = modified;
+  if (modified)
   {
     notify_register_check([@"LKUStorageDictionaryModified" UTF8String], &setStorageDictionaryModified__token);
     if (setStorageDictionaryModified__token != -1)
@@ -531,27 +531,27 @@ void __45__LKUniversalDiskStorage_localDictionaryPath__block_invoke()
   return self;
 }
 
-- (void)setLock:(_opaque_pthread_rwlock_t *)a3
+- (void)setLock:(_opaque_pthread_rwlock_t *)lock
 {
-  *&self->_lock.__sig = *&a3->__sig;
-  v3 = *&a3->__opaque[8];
-  v4 = *&a3->__opaque[24];
-  v5 = *&a3->__opaque[56];
-  *&self->_lock.__opaque[40] = *&a3->__opaque[40];
+  *&self->_lock.__sig = *&lock->__sig;
+  v3 = *&lock->__opaque[8];
+  v4 = *&lock->__opaque[24];
+  v5 = *&lock->__opaque[56];
+  *&self->_lock.__opaque[40] = *&lock->__opaque[40];
   *&self->_lock.__opaque[56] = v5;
   *&self->_lock.__opaque[8] = v3;
   *&self->_lock.__opaque[24] = v4;
-  v6 = *&a3->__opaque[72];
-  v7 = *&a3->__opaque[88];
-  v8 = *&a3->__opaque[120];
-  *&self->_lock.__opaque[104] = *&a3->__opaque[104];
+  v6 = *&lock->__opaque[72];
+  v7 = *&lock->__opaque[88];
+  v8 = *&lock->__opaque[120];
+  *&self->_lock.__opaque[104] = *&lock->__opaque[104];
   *&self->_lock.__opaque[120] = v8;
   *&self->_lock.__opaque[72] = v6;
   *&self->_lock.__opaque[88] = v7;
-  v9 = *&a3->__opaque[136];
-  v10 = *&a3->__opaque[152];
-  v11 = *&a3->__opaque[168];
-  *&self->_lock.__opaque[184] = *&a3->__opaque[184];
+  v9 = *&lock->__opaque[136];
+  v10 = *&lock->__opaque[152];
+  v11 = *&lock->__opaque[168];
+  *&self->_lock.__opaque[184] = *&lock->__opaque[184];
   *&self->_lock.__opaque[152] = v10;
   *&self->_lock.__opaque[168] = v11;
   *&self->_lock.__opaque[136] = v9;

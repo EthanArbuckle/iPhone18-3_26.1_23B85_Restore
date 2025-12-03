@@ -1,16 +1,16 @@
 @interface AKPrivateEmailValidator
-+ (BOOL)canPerformRequestWithAccount:(id)a3 error:(id *)a4;
++ (BOOL)canPerformRequestWithAccount:(id)account error:(id *)error;
 @end
 
 @implementation AKPrivateEmailValidator
 
-+ (BOOL)canPerformRequestWithAccount:(id)a3 error:(id *)a4
++ (BOOL)canPerformRequestWithAccount:(id)account error:(id *)error
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v25 = a4;
+  objc_storeStrong(location, account);
+  errorCopy = error;
   v24 = +[AKAccountManager sharedInstance];
   if ([v24 securityLevelForAccount:location[0]] == 4)
   {
@@ -37,11 +37,11 @@
       }
 
       objc_storeStrong(&v18, 0);
-      if (v25)
+      if (errorCopy)
       {
         v7 = [MEMORY[0x1E696ABC0] errorWithDomain:@"AKPrivateEmailError" code:-11007 userInfo:0];
         v5 = v7;
-        *v25 = v7;
+        *errorCopy = v7;
       }
 
       v27 = 0;
@@ -62,11 +62,11 @@
     }
 
     objc_storeStrong(&v23, 0);
-    if (v25)
+    if (errorCopy)
     {
       v12 = [MEMORY[0x1E696ABC0] ak_errorWithCode:-7070];
       v4 = v12;
-      *v25 = v12;
+      *errorCopy = v12;
     }
 
     v27 = 0;

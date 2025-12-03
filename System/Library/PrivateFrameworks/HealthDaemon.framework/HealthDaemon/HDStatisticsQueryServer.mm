@@ -1,42 +1,42 @@
 @interface HDStatisticsQueryServer
-+ (BOOL)validateConfiguration:(id)a3 client:(id)a4 error:(id *)a5;
-- (HDStatisticsQueryServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6;
++ (BOOL)validateConfiguration:(id)configuration client:(id)client error:(id *)error;
+- (HDStatisticsQueryServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate;
 - (void)_queue_start;
 @end
 
 @implementation HDStatisticsQueryServer
 
-- (HDStatisticsQueryServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6
+- (HDStatisticsQueryServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate
 {
-  v10 = a4;
+  configurationCopy = configuration;
   v24.receiver = self;
   v24.super_class = HDStatisticsQueryServer;
-  v11 = [(HDQueryServer *)&v24 initWithUUID:a3 configuration:v10 client:a5 delegate:a6];
+  v11 = [(HDQueryServer *)&v24 initWithUUID:d configuration:configurationCopy client:client delegate:delegate];
   if (v11)
   {
-    v12 = [v10 dateInterval];
+    dateInterval = [configurationCopy dateInterval];
     dateInterval = v11->_dateInterval;
-    v11->_dateInterval = v12;
+    v11->_dateInterval = dateInterval;
 
-    v11->_statisticsOptions = [v10 options];
-    v11->_mergeStrategy = [v10 mergeStrategy];
+    v11->_statisticsOptions = [configurationCopy options];
+    v11->_mergeStrategy = [configurationCopy mergeStrategy];
     v23.receiver = v11;
     v23.super_class = HDStatisticsQueryServer;
-    v14 = [(HDQueryServer *)&v23 quantityType];
+    quantityType = [(HDQueryServer *)&v23 quantityType];
     quantityType = v11->_quantityType;
-    v11->_quantityType = v14;
+    v11->_quantityType = quantityType;
 
     if (!v11->_quantityType)
     {
-      v16 = [(HDQueryServer *)v11 sampleType];
+      sampleType = [(HDQueryServer *)v11 sampleType];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
       if (isKindOfClass)
       {
-        v18 = [(HDQueryServer *)v11 sampleType];
-        v19 = [MEMORY[0x277CCDAB0] countUnit];
-        v20 = [_HDStatisticsSyntheticQuantityType syntheticQuantityTypeWithUnderlyingSampleType:v18 aggregationStyle:1 canonicalUnit:v19];
+        sampleType2 = [(HDQueryServer *)v11 sampleType];
+        countUnit = [MEMORY[0x277CCDAB0] countUnit];
+        v20 = [_HDStatisticsSyntheticQuantityType syntheticQuantityTypeWithUnderlyingSampleType:sampleType2 aggregationStyle:1 canonicalUnit:countUnit];
         v21 = v11->_quantityType;
         v11->_quantityType = v20;
       }
@@ -46,34 +46,34 @@
   return v11;
 }
 
-+ (BOOL)validateConfiguration:(id)a3 client:(id)a4 error:(id *)a5
++ (BOOL)validateConfiguration:(id)configuration client:(id)client error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v8;
+  configurationCopy = configuration;
+  clientCopy = client;
+  v10 = configurationCopy;
   objc_opt_self();
-  v11 = [v10 options];
-  if ((_HKStatisticsOptionPercentile() & v11) != 0 || (v12 = [v10 options], (_HKStatisticsOptionPresence() & v12) != 0) || (v13 = objc_msgSend(v10, "options"), (_HKStatisticOptionsAverageSampleDuration() & v13) != 0) || (v14 = objc_msgSend(v10, "options"), (_HKStatisticsOptionBaselineRelativeQuantities() & v14) != 0) || (v15 = objc_msgSend(v10, "options"), (_HKStatisticsOptionSleepStages() & v15) != 0))
+  options = [v10 options];
+  if ((_HKStatisticsOptionPercentile() & options) != 0 || (v12 = [v10 options], (_HKStatisticsOptionPresence() & v12) != 0) || (v13 = objc_msgSend(v10, "options"), (_HKStatisticOptionsAverageSampleDuration() & v13) != 0) || (v14 = objc_msgSend(v10, "options"), (_HKStatisticsOptionBaselineRelativeQuantities() & v14) != 0) || (v15 = objc_msgSend(v10, "options"), (_HKStatisticsOptionSleepStages() & v15) != 0))
   {
 
     goto LABEL_7;
   }
 
-  v23 = [v10 objectType];
+  objectType = [v10 objectType];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if ((isKindOfClass & 1) == 0)
   {
 LABEL_7:
-    if (![v9 hasRequiredEntitlement:*MEMORY[0x277CCC8B0] error:a5])
+    if (![clientCopy hasRequiredEntitlement:*MEMORY[0x277CCC8B0] error:error])
     {
       goto LABEL_15;
     }
   }
 
-  v16 = [v10 options];
-  if ((_HKStatisticsOptionPresence() & v16) != 0)
+  options2 = [v10 options];
+  if ((_HKStatisticsOptionPresence() & options2) != 0)
   {
     v17 = MEMORY[0x277CCA9B8];
     v18 = @"Use a sample query with limit 1 for non-collection presence calculations.";
@@ -81,8 +81,8 @@ LABEL_7:
 
   else
   {
-    v19 = [v10 options];
-    if ((_HKStatisticsOptionBaselineRelativeQuantities() & v19) != 0)
+    options3 = [v10 options];
+    if ((_HKStatisticsOptionBaselineRelativeQuantities() & options3) != 0)
     {
       v17 = MEMORY[0x277CCA9B8];
       v18 = @"Use HKStatisticsCollectionQuery for relative quantity calculations";
@@ -90,12 +90,12 @@ LABEL_7:
 
     else
     {
-      v20 = [v10 options];
-      if ((_HKStatisticsOptionSleepStages() & v20) == 0)
+      options4 = [v10 options];
+      if ((_HKStatisticsOptionSleepStages() & options4) == 0)
       {
-        v25.receiver = a1;
+        v25.receiver = self;
         v25.super_class = &OBJC_METACLASS___HDStatisticsQueryServer;
-        v21 = objc_msgSendSuper2(&v25, sel_validateConfiguration_client_error_, v10, v9, a5);
+        v21 = objc_msgSendSuper2(&v25, sel_validateConfiguration_client_error_, v10, clientCopy, error);
         goto LABEL_16;
       }
 
@@ -104,7 +104,7 @@ LABEL_7:
     }
   }
 
-  [v17 hk_assignError:a5 code:3 format:v18];
+  [v17 hk_assignError:error code:3 format:v18];
 LABEL_15:
   v21 = 0;
 LABEL_16:
@@ -125,16 +125,16 @@ LABEL_16:
     goto LABEL_24;
   }
 
-  v3 = [(HDQueryServer *)self objectType];
-  v4 = [(HDQueryServer *)self authorizationStatusRecordForType:v3 error:&v36];
+  objectType = [(HDQueryServer *)self objectType];
+  v4 = [(HDQueryServer *)self authorizationStatusRecordForType:objectType error:&v36];
 
   if (v4 && [v4 canRead])
   {
-    v5 = [(HDQueryServer *)self filter];
-    if (v5)
+    filter = [(HDQueryServer *)self filter];
+    if (filter)
     {
-      v6 = [(HDQueryServer *)self profile];
-      v7 = [v5 predicateWithProfile:v6];
+      profile = [(HDQueryServer *)self profile];
+      v7 = [filter predicateWithProfile:profile];
 
       if (!v7)
       {
@@ -152,15 +152,15 @@ LABEL_22:
     }
 
     v9 = MEMORY[0x277D10B20];
-    v10 = [v4 authorizationPredicate];
-    v11 = [v9 compoundPredicateWithPredicate:v7 otherPredicate:v10];
+    authorizationPredicate = [v4 authorizationPredicate];
+    v11 = [v9 compoundPredicateWithPredicate:v7 otherPredicate:authorizationPredicate];
 
-    v12 = [(HDStatisticsQueryServer *)self quantityType];
-    v13 = [v4 restrictedSourceEntities];
-    v14 = v12;
+    quantityType = [(HDStatisticsQueryServer *)self quantityType];
+    restrictedSourceEntities = [v4 restrictedSourceEntities];
+    v14 = quantityType;
     v15 = v11;
-    v16 = v13;
-    v17 = v5;
+    v16 = restrictedSourceEntities;
+    v17 = filter;
     statisticsOptions = self->_statisticsOptions;
     if ((_HKStatisticsOptionAttenuateSamples() & statisticsOptions) == 0)
     {
@@ -177,23 +177,23 @@ LABEL_22:
 
     v21 = [MEMORY[0x277CCD830] _quantityTypeWithCode:272];
     v22 = [HDStatisticsCollectionCalculatorAttenuatedDataSource alloc];
-    v23 = [(HDQueryServer *)self profile];
-    v24 = [(HDStatisticsCollectionCalculatorAttenuatedDataSource *)v22 initForProfile:v23 quantityType:v14 predicate:v15 restrictedSourceEntities:v16 attenuationType:v21];
+    profile2 = [(HDQueryServer *)self profile];
+    v24 = [(HDStatisticsCollectionCalculatorAttenuatedDataSource *)v22 initForProfile:profile2 quantityType:v14 predicate:v15 restrictedSourceEntities:v16 attenuationType:v21];
 
     if (!v24)
     {
 LABEL_12:
       v25 = [HDStatisticsCollectionCalculatorDefaultDataSource alloc];
-      v26 = [(HDQueryServer *)self profile];
-      v24 = [(HDStatisticsCollectionCalculatorDefaultDataSource *)v25 initForProfile:v26 quantityType:v14 predicate:v15 restrictedSourceEntities:v16];
+      profile3 = [(HDQueryServer *)self profile];
+      v24 = [(HDStatisticsCollectionCalculatorDefaultDataSource *)v25 initForProfile:profile3 quantityType:v14 predicate:v15 restrictedSourceEntities:v16];
     }
 
     [v24 setFilter:v17];
     [v24 setIncludeUnfrozenSeries:1];
 
     v27 = [HDStatisticsCollectionCalculatorDefaultSourceOrderProvider alloc];
-    v28 = [(HDQueryServer *)self profile];
-    v29 = [(HDStatisticsCollectionCalculatorDefaultSourceOrderProvider *)v27 initWithProfile:v28 quantityType:v14];
+    profile4 = [(HDQueryServer *)self profile];
+    v29 = [(HDStatisticsCollectionCalculatorDefaultSourceOrderProvider *)v27 initWithProfile:profile4 quantityType:v14];
 
     v30 = [HDStatisticsCollectionCalculator calculatorForQuantityType:v14 intervalCollection:0 options:self->_statisticsOptions mergeStrategy:self->_mergeStrategy];
     [v30 setDataSource:v24];
@@ -205,10 +205,10 @@ LABEL_12:
 
     if ([v30 queryForInitialStatisticsWithError:&v36])
     {
-      v31 = [v30 currentStatistics];
-      if ([v31 dataCount])
+      currentStatistics = [v30 currentStatistics];
+      if ([currentStatistics dataCount])
       {
-        v8 = v31;
+        v8 = currentStatistics;
       }
 
       else
@@ -231,18 +231,18 @@ LABEL_23:
   v32 = v36;
 LABEL_24:
   v33 = v32;
-  v34 = [(HDQueryServer *)self clientProxy];
+  clientProxy = [(HDQueryServer *)self clientProxy];
   if (v8 || !v33)
   {
     -[HDQueryServer setDataCount:](self, "setDataCount:", [v8 dataCount]);
-    v35 = [(HDQueryServer *)self queryUUID];
-    [v34 client_deliverStatistics:v8 forQuery:v35];
+    queryUUID = [(HDQueryServer *)self queryUUID];
+    [clientProxy client_deliverStatistics:v8 forQuery:queryUUID];
   }
 
   else
   {
-    v35 = [(HDQueryServer *)self queryUUID];
-    [v34 client_deliverError:v33 forQuery:v35];
+    queryUUID = [(HDQueryServer *)self queryUUID];
+    [clientProxy client_deliverError:v33 forQuery:queryUUID];
   }
 }
 

@@ -1,13 +1,13 @@
 @interface HMDRapportMessagingClientFactory
-- (id)newRapportDeviceClientWrapperWithClient:(id)a3;
+- (id)newRapportDeviceClientWrapperWithClient:(id)client;
 @end
 
 @implementation HMDRapportMessagingClientFactory
 
-- (id)newRapportDeviceClientWrapperWithClient:(id)a3
+- (id)newRapportDeviceClientWrapperWithClient:(id)client
 {
-  v3 = a3;
-  v4 = [[HMDRapportDeviceClientWrapper alloc] initWithClient:v3];
+  clientCopy = client;
+  v4 = [[HMDRapportDeviceClientWrapper alloc] initWithClient:clientCopy];
 
   return v4;
 }

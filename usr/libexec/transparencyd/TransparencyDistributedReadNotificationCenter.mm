@@ -1,9 +1,9 @@
 @interface TransparencyDistributedReadNotificationCenter
 + (id)defaultCenter;
 - (TransparencyDistributedReadNotificationCenter)init;
-- (void)addObserver:(id)a3 selector:(SEL)a4 name:(id)a5;
-- (void)notificationProxyMethod:(id)a3;
-- (void)removeObserver:(id)a3 name:(id)a4;
+- (void)addObserver:(id)observer selector:(SEL)selector name:(id)name;
+- (void)notificationProxyMethod:(id)method;
+- (void)removeObserver:(id)observer name:(id)name;
 @end
 
 @implementation TransparencyDistributedReadNotificationCenter
@@ -15,7 +15,7 @@
   if (!v3)
   {
     os_unfair_lock_unlock(&unk_10039CCB0);
-    v4 = objc_alloc_init(a1);
+    v4 = objc_alloc_init(self);
     os_unfair_lock_lock(&unk_10039CCB0);
     if (qword_10039CCA8)
     {
@@ -57,16 +57,16 @@
   return v2;
 }
 
-- (void)addObserver:(id)a3 selector:(SEL)a4 name:(id)a5
+- (void)addObserver:(id)observer selector:(SEL)selector name:(id)name
 {
-  v8 = a5;
-  if (v8)
+  nameCopy = name;
+  if (nameCopy)
   {
-    v15 = v8;
-    v9 = a3;
+    v15 = nameCopy;
+    observerCopy = observer;
     os_unfair_lock_lock(&unk_10039CCB0);
-    v10 = [(TransparencyDistributedReadNotificationCenter *)self cachedNotification];
-    v11 = [v10 containsObject:v15];
+    cachedNotification = [(TransparencyDistributedReadNotificationCenter *)self cachedNotification];
+    v11 = [cachedNotification containsObject:v15];
 
     if (v11)
     {
@@ -75,36 +75,36 @@
 
     else
     {
-      v12 = [(TransparencyDistributedReadNotificationCenter *)self cachedNotification];
-      [v12 addObject:v15];
+      cachedNotification2 = [(TransparencyDistributedReadNotificationCenter *)self cachedNotification];
+      [cachedNotification2 addObject:v15];
 
       os_unfair_lock_unlock(&unk_10039CCB0);
-      v13 = [(TransparencyDistributedReadNotificationCenter *)self nsDNC];
-      [v13 addObserver:self selector:"notificationProxyMethod:" name:v15 object:0];
+      nsDNC = [(TransparencyDistributedReadNotificationCenter *)self nsDNC];
+      [nsDNC addObserver:self selector:"notificationProxyMethod:" name:v15 object:0];
     }
 
-    v14 = [(TransparencyDistributedReadNotificationCenter *)self localNC];
-    [v14 addObserver:v9 selector:a4 name:v15 object:0];
+    localNC = [(TransparencyDistributedReadNotificationCenter *)self localNC];
+    [localNC addObserver:observerCopy selector:selector name:v15 object:0];
 
-    v8 = v15;
+    nameCopy = v15;
   }
 }
 
-- (void)notificationProxyMethod:(id)a3
+- (void)notificationProxyMethod:(id)method
 {
-  v4 = a3;
-  v5 = [(TransparencyDistributedReadNotificationCenter *)self localNC];
-  [v5 postNotification:v4];
+  methodCopy = method;
+  localNC = [(TransparencyDistributedReadNotificationCenter *)self localNC];
+  [localNC postNotification:methodCopy];
 }
 
-- (void)removeObserver:(id)a3 name:(id)a4
+- (void)removeObserver:(id)observer name:(id)name
 {
-  if (a4)
+  if (name)
   {
-    v6 = a4;
-    v7 = a3;
-    v8 = [(TransparencyDistributedReadNotificationCenter *)self localNC];
-    [v8 removeObserver:v7 name:v6 object:0];
+    nameCopy = name;
+    observerCopy = observer;
+    localNC = [(TransparencyDistributedReadNotificationCenter *)self localNC];
+    [localNC removeObserver:observerCopy name:nameCopy object:0];
   }
 }
 

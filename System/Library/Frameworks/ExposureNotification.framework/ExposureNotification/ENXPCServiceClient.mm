@@ -1,9 +1,9 @@
 @interface ENXPCServiceClient
 - (ENXPCServiceClient)init;
-- (id)_ensureXPCStartedAndReturnError:(id *)a3;
-- (id)getXPCConnectionAndReturnError:(id *)a3;
-- (void)_invalidateForced:(BOOL)a3;
-- (void)_xpcReceivedEvent:(id)a3;
+- (id)_ensureXPCStartedAndReturnError:(id *)error;
+- (id)getXPCConnectionAndReturnError:(id *)error;
+- (void)_invalidateForced:(BOOL)forced;
+- (void)_xpcReceivedEvent:(id)event;
 - (void)dealloc;
 @end
 
@@ -35,7 +35,7 @@
   [(ENXPCServiceClient *)&v3 dealloc];
 }
 
-- (void)_invalidateForced:(BOOL)a3
+- (void)_invalidateForced:(BOOL)forced
 {
   os_unfair_lock_lock(&self->_lock);
   xpcConnection = self->_xpcConnection;
@@ -50,27 +50,27 @@
   self->_xpcConnection = 0;
 
   os_unfair_lock_unlock(&self->_lock);
-  if (!invalidated && !a3 && gLogCategory__ENXPCServiceClient <= 90 && (gLogCategory__ENXPCServiceClient != -1 || _LogCategory_Initialize()))
+  if (!invalidated && !forced && gLogCategory__ENXPCServiceClient <= 90 && (gLogCategory__ENXPCServiceClient != -1 || _LogCategory_Initialize()))
   {
     [ENXPCServiceClient _invalidateForced:];
   }
 }
 
-- (id)getXPCConnectionAndReturnError:(id *)a3
+- (id)getXPCConnectionAndReturnError:(id *)error
 {
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(ENXPCServiceClient *)self _ensureXPCStartedAndReturnError:a3];
+  v5 = [(ENXPCServiceClient *)self _ensureXPCStartedAndReturnError:error];
   os_unfair_lock_unlock(&self->_lock);
 
   return v5;
 }
 
-- (id)_ensureXPCStartedAndReturnError:(id *)a3
+- (id)_ensureXPCStartedAndReturnError:(id *)error
 {
   os_unfair_lock_assert_owner(&self->_lock);
   if (self->_invalidated)
   {
-    [(ENXPCServiceClient *)a3 _ensureXPCStartedAndReturnError:&v14];
+    [(ENXPCServiceClient *)error _ensureXPCStartedAndReturnError:&v14];
     v6 = v14;
   }
 
@@ -125,14 +125,14 @@ void *__54__ENXPCServiceClient__ensureXPCStartedAndReturnError___block_invoke(ui
   return result;
 }
 
-- (void)_xpcReceivedEvent:(id)a3
+- (void)_xpcReceivedEvent:(id)event
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 != MEMORY[0x277D863F0])
+  eventCopy = event;
+  v5 = eventCopy;
+  if (eventCopy != MEMORY[0x277D863F0])
   {
-    v11 = v4;
-    if (v4 == MEMORY[0x277D863F8])
+    v11 = eventCopy;
+    if (eventCopy == MEMORY[0x277D863F8])
     {
       [(ENXPCServiceClient *)self _invalidateForced:0];
     }
@@ -164,7 +164,7 @@ void *__54__ENXPCServiceClient__ensureXPCStartedAndReturnError___block_invoke(ui
 
   if (gLogCategory__ENXPCServiceClient <= 90)
   {
-    v11 = v4;
+    v11 = eventCopy;
     if (gLogCategory__ENXPCServiceClient != -1 || (v9 = _LogCategory_Initialize(), v5 = v11, v9))
     {
       [ENXPCServiceClient _xpcReceivedEvent:];

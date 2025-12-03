@@ -1,24 +1,24 @@
 @interface OpenResourceOperationCompletionAdapter
 - (_TtC14CoreServicesUI38OpenResourceOperationCompletionAdapter)init;
-- (void)openResourceOperation:(id)a3 didFailWithError:(id)a4;
-- (void)openResourceOperationDidComplete:(id)a3;
+- (void)openResourceOperation:(id)operation didFailWithError:(id)error;
+- (void)openResourceOperationDidComplete:(id)complete;
 @end
 
 @implementation OpenResourceOperationCompletionAdapter
 
-- (void)openResourceOperationDidComplete:(id)a3
+- (void)openResourceOperationDidComplete:(id)complete
 {
-  v4 = a3;
-  v5 = self;
+  completeCopy = complete;
+  selfCopy = self;
   sub_2478C147C();
 }
 
-- (void)openResourceOperation:(id)a3 didFailWithError:(id)a4
+- (void)openResourceOperation:(id)operation didFailWithError:(id)error
 {
-  v6 = a3;
-  v7 = self;
-  v8 = a4;
-  sub_2478C1690(a4);
+  operationCopy = operation;
+  selfCopy = self;
+  errorCopy = error;
+  sub_2478C1690(error);
 }
 
 - (_TtC14CoreServicesUI38OpenResourceOperationCompletionAdapter)init

@@ -1,59 +1,59 @@
 @interface CUFile
 + (OS_dispatch_queue)fileIODispatchQueue;
-+ (id)realPath:(id)a3 error:(id *)a4;
-+ (id)resolveRelativePath:(id)a3 rootPath:(id)a4 error:(id *)a5;
-+ (void)realPath:(id)a3 dispatchQueue:(id)a4 completionHandler:(id)a5;
-+ (void)resolveRelativePath:(id)a3 rootPath:(id)a4 dispatchQueue:(id)a5 completionHandler:(id)a6;
-- (id)initForReadingFromURL:(id)a3 dispatchQueue:(id)a4;
-- (id)initForWritingToURL:(id)a3 dispatchQueue:(id)a4;
-- (id)initForWritingToURL:(id)a3 totalLength:(unint64_t)a4 dispatchQueue:(id)a5;
-- (int)_openForReadingAndReturnError:(id *)a3;
-- (int)_openForWritingAndReturnError:(id *)a3;
-- (void)_completeReadRequest:(id)a3 data:(id)a4 error:(id)a5;
-- (void)_completeWriteRequest:(id)a3 error:(id)a4;
-- (void)_getLengthWithCompletionHandler:(id)a3;
-- (void)_processRead:(id)a3;
++ (id)realPath:(id)path error:(id *)error;
++ (id)resolveRelativePath:(id)path rootPath:(id)rootPath error:(id *)error;
++ (void)realPath:(id)path dispatchQueue:(id)queue completionHandler:(id)handler;
++ (void)resolveRelativePath:(id)path rootPath:(id)rootPath dispatchQueue:(id)queue completionHandler:(id)handler;
+- (id)initForReadingFromURL:(id)l dispatchQueue:(id)queue;
+- (id)initForWritingToURL:(id)l dispatchQueue:(id)queue;
+- (id)initForWritingToURL:(id)l totalLength:(unint64_t)length dispatchQueue:(id)queue;
+- (int)_openForReadingAndReturnError:(id *)error;
+- (int)_openForWritingAndReturnError:(id *)error;
+- (void)_completeReadRequest:(id)request data:(id)data error:(id)error;
+- (void)_completeWriteRequest:(id)request error:(id)error;
+- (void)_getLengthWithCompletionHandler:(id)handler;
+- (void)_processRead:(id)read;
 - (void)_processReads;
-- (void)_processWrite:(id)a3;
+- (void)_processWrite:(id)write;
 - (void)_processWrites;
-- (void)_readRequest:(id)a3;
-- (void)_writeRequest:(id)a3;
-- (void)closeWithCompletionHandler:(id)a3;
+- (void)_readRequest:(id)request;
+- (void)_writeRequest:(id)request;
+- (void)closeWithCompletionHandler:(id)handler;
 - (void)dealloc;
-- (void)getLengthWithCompletionHandler:(id)a3;
-- (void)openWithCompletionHandler:(id)a3;
-- (void)readLength:(unint64_t)a3 completionHandler:(id)a4;
-- (void)readLength:(unint64_t)a3 offset:(unint64_t)a4 completionHandler:(id)a5;
-- (void)writeData:(id)a3 completionHandler:(id)a4;
-- (void)writeData:(id)a3 offset:(unint64_t)a4 completionHandler:(id)a5;
+- (void)getLengthWithCompletionHandler:(id)handler;
+- (void)openWithCompletionHandler:(id)handler;
+- (void)readLength:(unint64_t)length completionHandler:(id)handler;
+- (void)readLength:(unint64_t)length offset:(unint64_t)offset completionHandler:(id)handler;
+- (void)writeData:(id)data completionHandler:(id)handler;
+- (void)writeData:(id)data offset:(unint64_t)offset completionHandler:(id)handler;
 @end
 
 @implementation CUFile
 
-- (void)_completeWriteRequest:(id)a3 error:(id)a4
+- (void)_completeWriteRequest:(id)request error:(id)error
 {
-  v8 = a3;
-  v5 = a4;
-  v6 = [v8 completionHandler];
+  requestCopy = request;
+  errorCopy = error;
+  completionHandler = [requestCopy completionHandler];
 
-  if (v6)
+  if (completionHandler)
   {
-    v7 = [v8 completionHandler];
-    (v7)[2](v7, v5);
+    completionHandler2 = [requestCopy completionHandler];
+    (completionHandler2)[2](completionHandler2, errorCopy);
   }
 }
 
-- (int)_openForWritingAndReturnError:(id *)a3
+- (int)_openForWritingAndReturnError:(id *)error
 {
   fd = self->_fd;
   if (fd < 0)
   {
-    v6 = [(NSURL *)self->_url path];
-    v7 = [v6 UTF8String];
+    path = [(NSURL *)self->_url path];
+    uTF8String = [path UTF8String];
 
-    if (!v7)
+    if (!uTF8String)
     {
-      if (!a3)
+      if (!error)
       {
         return -1;
       }
@@ -65,7 +65,7 @@
     }
 
     v28 = 384;
-    v13 = open(v7, 513);
+    v13 = open(uTF8String, 513);
     if (v13 < 0)
     {
       if (*__error() != 2)
@@ -73,10 +73,10 @@
         goto LABEL_15;
       }
 
-      v14 = [(NSURL *)self->_url URLByDeletingLastPathComponent];
-      if (!v14)
+      uRLByDeletingLastPathComponent = [(NSURL *)self->_url URLByDeletingLastPathComponent];
+      if (!uRLByDeletingLastPathComponent)
       {
-        if (!a3)
+        if (!error)
         {
           return -1;
         }
@@ -87,29 +87,29 @@
         goto LABEL_18;
       }
 
-      v15 = v14;
-      v16 = [MEMORY[0x1E696AC08] defaultManager];
+      v15 = uRLByDeletingLastPathComponent;
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
       v30 = 0;
-      v17 = [v16 createDirectoryAtURL:v15 withIntermediateDirectories:1 attributes:0 error:&v30];
+      v17 = [defaultManager createDirectoryAtURL:v15 withIntermediateDirectories:1 attributes:0 error:&v30];
       v18 = v30;
 
       if ((v17 & 1) == 0)
       {
-        if (a3)
+        if (error)
         {
-          *a3 = NSErrorNestedF_safe(*MEMORY[0x1E696A768], 4294960592, v18, "Create parent failed", v19, v20, v21, v22, 384);
+          *error = NSErrorNestedF_safe(*MEMORY[0x1E696A768], 4294960592, v18, "Create parent failed", v19, v20, v21, v22, 384);
         }
 
         return -1;
       }
 
       v28 = 384;
-      fd = open(v7, 513);
+      fd = open(uTF8String, 513);
 
       if (fd < 0)
       {
 LABEL_15:
-        if (a3)
+        if (error)
         {
           v23 = *MEMORY[0x1E696A798];
           v24 = *__error();
@@ -129,7 +129,7 @@ LABEL_15:
     self->_fd = fd;
     if (fcntl(fd, 48, 1))
     {
-      if (!a3)
+      if (!error)
       {
         return -1;
       }
@@ -143,7 +143,7 @@ LABEL_15:
     v28 = 1;
     if (fcntl(fd, 76))
     {
-      if (!a3)
+      if (!error)
       {
         return -1;
       }
@@ -163,7 +163,7 @@ LABEL_15:
       v28 = v29;
       if (fcntl(fd, 42))
       {
-        if (a3)
+        if (error)
         {
           v23 = *MEMORY[0x1E696A798];
           v24 = *__error();
@@ -171,7 +171,7 @@ LABEL_15:
 LABEL_17:
           v26 = v23;
 LABEL_18:
-          *a3 = NSErrorF_safe(v26, v24, v25, v8, v9, v10, v11, v12, v28);
+          *error = NSErrorF_safe(v26, v24, v25, v8, v9, v10, v11, v12, v28);
           return -1;
         }
 
@@ -183,52 +183,52 @@ LABEL_18:
   return fd;
 }
 
-- (void)_processWrite:(id)a3
+- (void)_processWrite:(id)write
 {
-  v4 = a3;
+  writeCopy = write;
   fd = self->_fd;
   if (fd < 0)
   {
     v31 = 0;
     fd = [(CUFile *)self _openForWritingAndReturnError:&v31];
     v6 = v31;
-    v7 = v6;
+    data = v6;
     if (fd < 0)
     {
 LABEL_15:
-      v17 = self;
-      v18 = v4;
-      v19 = v7;
+      selfCopy2 = self;
+      v18 = writeCopy;
+      v19 = data;
       goto LABEL_16;
     }
   }
 
-  if ([v4 offset] != -1 && lseek(fd, objc_msgSend(v4, "offset"), 0) == -1)
+  if ([writeCopy offset] != -1 && lseek(fd, objc_msgSend(writeCopy, "offset"), 0) == -1)
   {
     v20 = *MEMORY[0x1E696A798];
     v21 = __error();
-    v7 = NSErrorF_safe(v20, *v21, "lseek failed", v22, v23, v24, v25, v26, v30);
+    data = NSErrorF_safe(v20, *v21, "lseek failed", v22, v23, v24, v25, v26, v30);
     goto LABEL_15;
   }
 
-  v7 = [v4 data];
-  v8 = [v7 bytes];
-  v9 = [v7 length];
+  data = [writeCopy data];
+  bytes = [data bytes];
+  v9 = [data length];
   if (v9 < 1)
   {
 LABEL_13:
-    v17 = self;
-    v18 = v4;
+    selfCopy2 = self;
+    v18 = writeCopy;
     v19 = 0;
 LABEL_16:
-    [(CUFile *)v17 _completeWriteRequest:v18 error:v19];
+    [(CUFile *)selfCopy2 _completeWriteRequest:v18 error:v19];
     goto LABEL_20;
   }
 
-  v10 = &v8[v9];
+  v10 = &bytes[v9];
   while (1)
   {
-    v11 = write(fd, v8, v10 - v8);
+    v11 = write(fd, bytes, v10 - bytes);
     if (v11 < 0)
     {
       break;
@@ -241,9 +241,9 @@ LABEL_16:
       goto LABEL_19;
     }
 
-    v8 += v11;
+    bytes += v11;
 LABEL_12:
-    if (v8 >= v10)
+    if (bytes >= v10)
     {
       goto LABEL_13;
     }
@@ -258,35 +258,35 @@ LABEL_12:
   v28 = *__error();
 LABEL_19:
   v29 = NSErrorF_safe(v27, v28, "write failed", v12, v13, v14, v15, v16, v30);
-  [(CUFile *)self _completeWriteRequest:v4 error:v29];
+  [(CUFile *)self _completeWriteRequest:writeCopy error:v29];
 
 LABEL_20:
 }
 
 - (void)_processWrites
 {
-  v3 = [(NSMutableArray *)self->_writeQueue popFirstObject];
-  if (v3)
+  popFirstObject = [(NSMutableArray *)self->_writeQueue popFirstObject];
+  if (popFirstObject)
   {
-    v4 = v3;
+    popFirstObject2 = popFirstObject;
     do
     {
-      [(CUFile *)self _processWrite:v4];
+      [(CUFile *)self _processWrite:popFirstObject2];
 
-      v4 = [(NSMutableArray *)self->_writeQueue popFirstObject];
+      popFirstObject2 = [(NSMutableArray *)self->_writeQueue popFirstObject];
     }
 
-    while (v4);
+    while (popFirstObject2);
   }
 }
 
-- (void)_writeRequest:(id)a3
+- (void)_writeRequest:(id)request
 {
   writeQueue = self->_writeQueue;
   if (writeQueue)
   {
-    v5 = a3;
-    [(NSMutableArray *)writeQueue addObject:v5];
+    requestCopy = request;
+    [(NSMutableArray *)writeQueue addObject:requestCopy];
 
     [(CUFile *)self _processWrites];
   }
@@ -294,21 +294,21 @@ LABEL_20:
   else
   {
     v6 = *MEMORY[0x1E696A768];
-    v7 = a3;
+    requestCopy2 = request;
     v14 = NSErrorF_safe(v6, 4294960551, "not prepared for writing", v8, v9, v10, v11, v12, v13);
-    [(CUFile *)self _completeWriteRequest:v7 error:v14];
+    [(CUFile *)self _completeWriteRequest:requestCopy2 error:v14];
   }
 }
 
-- (void)writeData:(id)a3 offset:(unint64_t)a4 completionHandler:(id)a5
+- (void)writeData:(id)data offset:(unint64_t)offset completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a3;
+  handlerCopy = handler;
+  dataCopy = data;
   v10 = objc_alloc_init(CUFileWriteRequest);
-  [(CUFileWriteRequest *)v10 setCompletionHandler:v8];
+  [(CUFileWriteRequest *)v10 setCompletionHandler:handlerCopy];
 
-  [(CUFileWriteRequest *)v10 setData:v9];
-  [(CUFileWriteRequest *)v10 setOffset:a4];
+  [(CUFileWriteRequest *)v10 setData:dataCopy];
+  [(CUFileWriteRequest *)v10 setOffset:offset];
   dispatchQueue = self->_dispatchQueue;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
@@ -320,14 +320,14 @@ LABEL_20:
   dispatch_async(dispatchQueue, v13);
 }
 
-- (void)writeData:(id)a3 completionHandler:(id)a4
+- (void)writeData:(id)data completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  dataCopy = data;
   v8 = objc_alloc_init(CUFileWriteRequest);
-  [(CUFileWriteRequest *)v8 setCompletionHandler:v6];
+  [(CUFileWriteRequest *)v8 setCompletionHandler:handlerCopy];
 
-  [(CUFileWriteRequest *)v8 setData:v7];
+  [(CUFileWriteRequest *)v8 setData:dataCopy];
   [(CUFileWriteRequest *)v8 setOffset:-1];
   dispatchQueue = self->_dispatchQueue;
   v11[0] = MEMORY[0x1E69E9820];
@@ -340,34 +340,34 @@ LABEL_20:
   dispatch_async(dispatchQueue, v11);
 }
 
-- (void)_completeReadRequest:(id)a3 data:(id)a4 error:(id)a5
+- (void)_completeReadRequest:(id)request data:(id)data error:(id)error
 {
-  v11 = a3;
-  v7 = a4;
-  v8 = a5;
-  v9 = [v11 completionHandler];
+  requestCopy = request;
+  dataCopy = data;
+  errorCopy = error;
+  completionHandler = [requestCopy completionHandler];
 
-  if (v9)
+  if (completionHandler)
   {
-    v10 = [v11 completionHandler];
-    (v10)[2](v10, v7, v8);
+    completionHandler2 = [requestCopy completionHandler];
+    (completionHandler2)[2](completionHandler2, dataCopy, errorCopy);
   }
 }
 
-- (int)_openForReadingAndReturnError:(id *)a3
+- (int)_openForReadingAndReturnError:(id *)error
 {
   fd = self->_fd;
   if (fd < 0)
   {
-    v6 = [(NSURL *)self->_url path];
-    v7 = [v6 UTF8String];
+    path = [(NSURL *)self->_url path];
+    uTF8String = [path UTF8String];
 
-    if (v7)
+    if (uTF8String)
     {
-      v13 = open(v7, 0);
+      v13 = open(uTF8String, 0);
       if (v13 < 0)
       {
-        if (!a3)
+        if (!error)
         {
           return -1;
         }
@@ -390,7 +390,7 @@ LABEL_20:
             return fd;
           }
 
-          if (a3)
+          if (error)
           {
             v18 = *MEMORY[0x1E696A798];
             v17 = *__error();
@@ -401,7 +401,7 @@ LABEL_20:
           return -1;
         }
 
-        if (!a3)
+        if (!error)
         {
           return -1;
         }
@@ -416,13 +416,13 @@ LABEL_15:
       goto LABEL_16;
     }
 
-    if (a3)
+    if (error)
     {
       v15 = *MEMORY[0x1E696A768];
       v16 = "No path";
       v17 = 4294960592;
 LABEL_16:
-      *a3 = NSErrorF_safe(v15, v17, v16, v8, v9, v10, v11, v12, v19);
+      *error = NSErrorF_safe(v15, v17, v16, v8, v9, v10, v11, v12, v19);
       return -1;
     }
 
@@ -432,9 +432,9 @@ LABEL_16:
   return fd;
 }
 
-- (void)_processRead:(id)a3
+- (void)_processRead:(id)read
 {
-  v4 = a3;
+  readCopy = read;
   fd = self->_fd;
   if (fd < 0)
   {
@@ -448,7 +448,7 @@ LABEL_16:
     }
   }
 
-  if ([v4 offset] != -1 && lseek(fd, objc_msgSend(v4, "offset"), 0) == -1)
+  if ([readCopy offset] != -1 && lseek(fd, objc_msgSend(readCopy, "offset"), 0) == -1)
   {
     v24 = *MEMORY[0x1E696A798];
     v25 = *__error();
@@ -456,7 +456,7 @@ LABEL_16:
     goto LABEL_22;
   }
 
-  v8 = [v4 length];
+  v8 = [readCopy length];
   v9 = v8;
   if (v8 <= 1)
   {
@@ -475,8 +475,8 @@ LABEL_16:
   {
 LABEL_16:
     v7 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytesNoCopy:v16 length:v9];
-    v20 = self;
-    v21 = v4;
+    selfCopy2 = self;
+    v21 = readCopy;
     v22 = v7;
     v23 = 0;
     goto LABEL_25;
@@ -522,38 +522,38 @@ LABEL_22:
   NSErrorF_safe(v24, v25, v31, v26, v27, v28, v29, v30, v32);
   v7 = LABEL_23:;
 LABEL_24:
-  v20 = self;
-  v21 = v4;
+  selfCopy2 = self;
+  v21 = readCopy;
   v22 = 0;
   v23 = v7;
 LABEL_25:
-  [(CUFile *)v20 _completeReadRequest:v21 data:v22 error:v23];
+  [(CUFile *)selfCopy2 _completeReadRequest:v21 data:v22 error:v23];
 }
 
 - (void)_processReads
 {
-  v3 = [(NSMutableArray *)self->_readQueue popFirstObject];
-  if (v3)
+  popFirstObject = [(NSMutableArray *)self->_readQueue popFirstObject];
+  if (popFirstObject)
   {
-    v4 = v3;
+    popFirstObject2 = popFirstObject;
     do
     {
-      [(CUFile *)self _processRead:v4];
+      [(CUFile *)self _processRead:popFirstObject2];
 
-      v4 = [(NSMutableArray *)self->_readQueue popFirstObject];
+      popFirstObject2 = [(NSMutableArray *)self->_readQueue popFirstObject];
     }
 
-    while (v4);
+    while (popFirstObject2);
   }
 }
 
-- (void)_readRequest:(id)a3
+- (void)_readRequest:(id)request
 {
   readQueue = self->_readQueue;
   if (readQueue)
   {
-    v5 = a3;
-    [(NSMutableArray *)readQueue addObject:v5];
+    requestCopy = request;
+    [(NSMutableArray *)readQueue addObject:requestCopy];
 
     [(CUFile *)self _processReads];
   }
@@ -561,20 +561,20 @@ LABEL_25:
   else
   {
     v6 = *MEMORY[0x1E696A768];
-    v7 = a3;
+    requestCopy2 = request;
     v14 = NSErrorF_safe(v6, 4294960551, "not prepared for reading", v8, v9, v10, v11, v12, v13);
-    [(CUFile *)self _completeReadRequest:v7 data:0 error:v14];
+    [(CUFile *)self _completeReadRequest:requestCopy2 data:0 error:v14];
   }
 }
 
-- (void)readLength:(unint64_t)a3 offset:(unint64_t)a4 completionHandler:(id)a5
+- (void)readLength:(unint64_t)length offset:(unint64_t)offset completionHandler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   v9 = objc_alloc_init(CUFileReadRequest);
-  [(CUFileReadRequest *)v9 setCompletionHandler:v8];
+  [(CUFileReadRequest *)v9 setCompletionHandler:handlerCopy];
 
-  [(CUFileReadRequest *)v9 setLength:a3];
-  [(CUFileReadRequest *)v9 setOffset:a4];
+  [(CUFileReadRequest *)v9 setLength:length];
+  [(CUFileReadRequest *)v9 setOffset:offset];
   dispatchQueue = self->_dispatchQueue;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
@@ -586,13 +586,13 @@ LABEL_25:
   dispatch_async(dispatchQueue, v12);
 }
 
-- (void)readLength:(unint64_t)a3 completionHandler:(id)a4
+- (void)readLength:(unint64_t)length completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v7 = objc_alloc_init(CUFileReadRequest);
-  [(CUFileReadRequest *)v7 setCompletionHandler:v6];
+  [(CUFileReadRequest *)v7 setCompletionHandler:handlerCopy];
 
-  [(CUFileReadRequest *)v7 setLength:a3];
+  [(CUFileReadRequest *)v7 setLength:length];
   [(CUFileReadRequest *)v7 setOffset:-1];
   dispatchQueue = self->_dispatchQueue;
   v10[0] = MEMORY[0x1E69E9820];
@@ -605,63 +605,63 @@ LABEL_25:
   dispatch_async(dispatchQueue, v10);
 }
 
-- (void)_getLengthWithCompletionHandler:(id)a3
+- (void)_getLengthWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(NSURL *)self->_url path];
-  v6 = [v5 UTF8String];
+  handlerCopy = handler;
+  path = [(NSURL *)self->_url path];
+  uTF8String = [path UTF8String];
 
-  if (v6)
+  if (uTF8String)
   {
     memset(&v20.st_blksize, 0, 32);
     memset(&v20, 0, 96);
     *&v20.st_size = 0xFFFFFFFFFFFFFFFFLL;
-    if (!stat(v6, &v20))
+    if (!stat(uTF8String, &v20))
     {
-      v4[2](v4, v20.st_size, 0);
+      handlerCopy[2](handlerCopy, v20.st_size, 0);
       goto LABEL_7;
     }
 
     v12 = *MEMORY[0x1E696A798];
     v13 = __error();
     v19 = NSErrorF_safe(v12, *v13, "stat failed", v14, v15, v16, v17, v18, *&v20.st_dev);
-    (v4)[2](v4, 0, v19);
+    (handlerCopy)[2](handlerCopy, 0, v19);
   }
 
   else
   {
     v19 = NSErrorF_safe(*MEMORY[0x1E696A768], 4294960592, "No path", v7, v8, v9, v10, v11, *&v20.st_dev);
-    (v4)[2](v4, 0, v19);
+    (handlerCopy)[2](handlerCopy, 0, v19);
   }
 
 LABEL_7:
 }
 
-- (void)getLengthWithCompletionHandler:(id)a3
+- (void)getLengthWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __41__CUFile_getLengthWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E73A49A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)closeWithCompletionHandler:(id)a3
+- (void)closeWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __37__CUFile_closeWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E73A49A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -763,17 +763,17 @@ void __37__CUFile_closeWithCompletionHandler___block_invoke(uint64_t a1)
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)openWithCompletionHandler:(id)a3
+- (void)openWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __36__CUFile_openWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E73A49A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -920,92 +920,92 @@ void __17__CUFile_dealloc__block_invoke(uint64_t a1)
   }
 }
 
-- (id)initForWritingToURL:(id)a3 totalLength:(unint64_t)a4 dispatchQueue:(id)a5
+- (id)initForWritingToURL:(id)l totalLength:(unint64_t)length dispatchQueue:(id)queue
 {
-  v9 = a3;
-  v10 = a5;
+  lCopy = l;
+  queueCopy = queue;
   v17.receiver = self;
   v17.super_class = CUFile;
   v11 = [(CUFile *)&v17 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_dispatchQueue, a5);
+    objc_storeStrong(&v11->_dispatchQueue, queue);
     v12->_fd = -1;
     v13 = objc_alloc_init(MEMORY[0x1E695DF70]);
     writeQueue = v12->_writeQueue;
     v12->_writeQueue = v13;
 
-    v12->_totalLength = a4;
-    objc_storeStrong(&v12->_url, a3);
+    v12->_totalLength = length;
+    objc_storeStrong(&v12->_url, l);
     v15 = v12;
   }
 
   return v12;
 }
 
-- (id)initForWritingToURL:(id)a3 dispatchQueue:(id)a4
+- (id)initForWritingToURL:(id)l dispatchQueue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
+  lCopy = l;
+  queueCopy = queue;
   v15.receiver = self;
   v15.super_class = CUFile;
   v9 = [(CUFile *)&v15 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_dispatchQueue, a4);
+    objc_storeStrong(&v9->_dispatchQueue, queue);
     v10->_fd = -1;
     v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
     writeQueue = v10->_writeQueue;
     v10->_writeQueue = v11;
 
-    objc_storeStrong(&v10->_url, a3);
+    objc_storeStrong(&v10->_url, l);
     v13 = v10;
   }
 
   return v10;
 }
 
-- (id)initForReadingFromURL:(id)a3 dispatchQueue:(id)a4
+- (id)initForReadingFromURL:(id)l dispatchQueue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
+  lCopy = l;
+  queueCopy = queue;
   v15.receiver = self;
   v15.super_class = CUFile;
   v9 = [(CUFile *)&v15 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_dispatchQueue, a4);
+    objc_storeStrong(&v9->_dispatchQueue, queue);
     v10->_fd = -1;
     v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
     readQueue = v10->_readQueue;
     v10->_readQueue = v11;
 
-    objc_storeStrong(&v10->_url, a3);
+    objc_storeStrong(&v10->_url, l);
     v13 = v10;
   }
 
   return v10;
 }
 
-+ (void)resolveRelativePath:(id)a3 rootPath:(id)a4 dispatchQueue:(id)a5 completionHandler:(id)a6
++ (void)resolveRelativePath:(id)path rootPath:(id)rootPath dispatchQueue:(id)queue completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
+  pathCopy = path;
+  rootPathCopy = rootPath;
+  handlerCopy = handler;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __71__CUFile_resolveRelativePath_rootPath_dispatchQueue_completionHandler___block_invoke;
   block[3] = &unk_1E73A4BD8;
-  v16 = v9;
-  v17 = v10;
-  v18 = v11;
-  v12 = v11;
-  v13 = v10;
-  v14 = v9;
-  dispatch_async(a5, block);
+  v16 = pathCopy;
+  v17 = rootPathCopy;
+  v18 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = rootPathCopy;
+  v14 = pathCopy;
+  dispatch_async(queue, block);
 }
 
 void __71__CUFile_resolveRelativePath_rootPath_dispatchQueue_completionHandler___block_invoke(void *a1)
@@ -1018,10 +1018,10 @@ void __71__CUFile_resolveRelativePath_rootPath_dispatchQueue_completionHandler__
   (*(a1[6] + 16))();
 }
 
-+ (id)resolveRelativePath:(id)a3 rootPath:(id)a4 error:(id *)a5
++ (id)resolveRelativePath:(id)path rootPath:(id)rootPath error:(id *)error
 {
-  v8 = a3;
-  v9 = [a1 realPath:a4 error:a5];
+  pathCopy = path;
+  v9 = [self realPath:rootPath error:error];
   if (v9)
   {
     v10 = v9;
@@ -1032,8 +1032,8 @@ void __71__CUFile_resolveRelativePath_rootPath_dispatchQueue_completionHandler__
       v10 = v11;
     }
 
-    v12 = [v10 stringByAppendingString:v8];
-    v13 = [a1 realPath:v12 error:a5];
+    v12 = [v10 stringByAppendingString:pathCopy];
+    v13 = [self realPath:v12 error:error];
     v14 = v13;
     if (v13)
     {
@@ -1048,7 +1048,7 @@ LABEL_8:
           goto LABEL_9;
         }
 
-        if (a5)
+        if (error)
         {
           v23 = *MEMORY[0x1E696A768];
           v24 = "Path matches root";
@@ -1056,13 +1056,13 @@ LABEL_8:
         }
       }
 
-      else if (a5)
+      else if (error)
       {
         v23 = *MEMORY[0x1E696A768];
         v24 = "Path outside root";
 LABEL_17:
         NSErrorF_safe(v23, 4294960592, v24, v15, v16, v17, v18, v19, v25);
-        *a5 = v21 = 0;
+        *error = v21 = 0;
         goto LABEL_8;
       }
     }
@@ -1077,19 +1077,19 @@ LABEL_9:
   return v21;
 }
 
-+ (void)realPath:(id)a3 dispatchQueue:(id)a4 completionHandler:(id)a5
++ (void)realPath:(id)path dispatchQueue:(id)queue completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a5;
+  pathCopy = path;
+  handlerCopy = handler;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __51__CUFile_realPath_dispatchQueue_completionHandler___block_invoke;
   v11[3] = &unk_1E73A49A0;
-  v12 = v7;
-  v13 = v8;
-  v9 = v8;
-  v10 = v7;
-  dispatch_async(a4, v11);
+  v12 = pathCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = pathCopy;
+  dispatch_async(queue, v11);
 }
 
 void __51__CUFile_realPath_dispatchQueue_completionHandler___block_invoke(uint64_t a1)
@@ -1101,17 +1101,17 @@ void __51__CUFile_realPath_dispatchQueue_completionHandler___block_invoke(uint64
   (*(*(a1 + 40) + 16))();
 }
 
-+ (id)realPath:(id)a3 error:(id *)a4
++ (id)realPath:(id)path error:(id *)error
 {
-  v5 = [a3 UTF8String];
-  if (!v5)
+  uTF8String = [path UTF8String];
+  if (!uTF8String)
   {
-    if (a4)
+    if (error)
     {
       v23 = NSErrorF_safe(*MEMORY[0x1E696A768], 4294960591, "No UTF8 path", v6, v7, v8, v9, v10, v32);
 LABEL_18:
       v15 = 0;
-      *a4 = v23;
+      *error = v23;
       goto LABEL_8;
     }
 
@@ -1120,11 +1120,11 @@ LABEL_19:
     goto LABEL_8;
   }
 
-  v11 = v5;
-  v12 = realpath_DARWIN_EXTSN(v5, 0);
+  v11 = uTF8String;
+  v12 = realpath_DARWIN_EXTSN(uTF8String, 0);
   if (!v12)
   {
-    if (a4)
+    if (error)
     {
       v24 = *MEMORY[0x1E696A798];
       v30 = *__error();
@@ -1156,9 +1156,9 @@ LABEL_19:
   else
   {
     free(v13);
-    if (a4)
+    if (error)
     {
-      *a4 = NSErrorF_safe(*MEMORY[0x1E696A768], 4294960596, "Create path string failed", v16, v17, v18, v19, v20, v32);
+      *error = NSErrorF_safe(*MEMORY[0x1E696A768], 4294960596, "Create path string failed", v16, v17, v18, v19, v20, v32);
     }
   }
 

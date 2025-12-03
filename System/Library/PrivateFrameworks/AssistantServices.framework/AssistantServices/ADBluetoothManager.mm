@@ -1,9 +1,9 @@
 @interface ADBluetoothManager
 + (id)sharedInstance;
 - (id)_init;
-- (id)deviceWithAddress:(id)a3;
-- (id)deviceWithRecordingInfo:(id)a3;
-- (void)prewarmDeviceWithIdentifier:(id)a3;
+- (id)deviceWithAddress:(id)address;
+- (id)deviceWithRecordingInfo:(id)info;
+- (void)prewarmDeviceWithIdentifier:(id)identifier;
 @end
 
 @implementation ADBluetoothManager
@@ -20,10 +20,10 @@
   return v3;
 }
 
-- (id)deviceWithAddress:(id)a3
+- (id)deviceWithAddress:(id)address
 {
-  v4 = a3;
-  v5 = [[NSUUID alloc] initWithUUIDString:v4];
+  addressCopy = address;
+  v5 = [[NSUUID alloc] initWithUUIDString:addressCopy];
   if (v5)
   {
     v6 = AFSiriLogContextDaemon;
@@ -41,7 +41,7 @@
 
   else
   {
-    v8 = v4;
+    v8 = addressCopy;
     if ([v8 length] >= 0x12)
     {
       v9 = [v8 substringToIndex:17];
@@ -55,16 +55,16 @@
   return v7;
 }
 
-- (id)deviceWithRecordingInfo:(id)a3
+- (id)deviceWithRecordingInfo:(id)info
 {
-  v4 = a3;
-  v5 = [v4 source];
-  v6 = [v5 isEqualToString:SASStartSpeechAudioSourceBluetoothDoAPDeviceValue];
+  infoCopy = info;
+  source = [infoCopy source];
+  v6 = [source isEqualToString:SASStartSpeechAudioSourceBluetoothDoAPDeviceValue];
 
   if (v6)
   {
-    v7 = [v4 deviceInfo];
-    v8 = [v7 remoteDeviceUID];
+    deviceInfo = [infoCopy deviceInfo];
+    remoteDeviceUID = [deviceInfo remoteDeviceUID];
 
     v9 = AFSiriLogContextDaemon;
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
@@ -72,18 +72,18 @@
       v17 = 136315394;
       v18 = "[ADBluetoothManager deviceWithRecordingInfo:]";
       v19 = 2112;
-      v20 = v8;
+      v20 = remoteDeviceUID;
       _os_log_debug_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEBUG, "%s Recording DoAP Headset with Bluetooth UID: %@", &v17, 0x16u);
-      if (v8)
+      if (remoteDeviceUID)
       {
         goto LABEL_4;
       }
     }
 
-    else if (v8)
+    else if (remoteDeviceUID)
     {
 LABEL_4:
-      v10 = [(ADBluetoothManager *)self deviceWithUID:v8];
+      v10 = [(ADBluetoothManager *)self deviceWithUID:remoteDeviceUID];
 LABEL_9:
       v13 = v10;
 
@@ -93,24 +93,24 @@ LABEL_9:
 
   else
   {
-    v11 = [v4 headsetAddress];
+    headsetAddress = [infoCopy headsetAddress];
 
-    if (v11)
+    if (headsetAddress)
     {
       v12 = AFSiriLogContextDaemon;
       if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
       {
         v15 = v12;
-        v16 = [v4 headsetAddress];
+        headsetAddress2 = [infoCopy headsetAddress];
         v17 = 136315394;
         v18 = "[ADBluetoothManager deviceWithRecordingInfo:]";
         v19 = 2112;
-        v20 = v16;
+        v20 = headsetAddress2;
         _os_log_debug_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEBUG, "%s Recording Headset with Bluetooth Address: %@", &v17, 0x16u);
       }
 
-      v8 = [v4 headsetAddress];
-      v10 = [(ADBluetoothManager *)self deviceWithAddress:v8];
+      remoteDeviceUID = [infoCopy headsetAddress];
+      v10 = [(ADBluetoothManager *)self deviceWithAddress:remoteDeviceUID];
       goto LABEL_9;
     }
   }
@@ -121,13 +121,13 @@ LABEL_12:
   return v13;
 }
 
-- (void)prewarmDeviceWithIdentifier:(id)a3
+- (void)prewarmDeviceWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v7 = v4;
-    v5 = [[NSUUID alloc] initWithUUIDString:v4];
+    v7 = identifierCopy;
+    v5 = [[NSUUID alloc] initWithUUIDString:identifierCopy];
     if (v5)
     {
       [(ADBluetoothManager *)self deviceWithUID:v5];
@@ -140,7 +140,7 @@ LABEL_12:
     v6 = ;
     [v6 prewarm];
 
-    v4 = v7;
+    identifierCopy = v7;
   }
 }
 

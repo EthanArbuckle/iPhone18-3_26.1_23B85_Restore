@@ -2,7 +2,7 @@
 - (void)_closeConnection;
 - (void)_openConnectionIfNeeded;
 - (void)dealloc;
-- (void)getBackgroundColorOnImageData:(id)a3 bitmapFormat:(id)a4 reply:(id)a5;
+- (void)getBackgroundColorOnImageData:(id)data bitmapFormat:(id)format reply:(id)reply;
 @end
 
 @implementation CNUIImageRemoteBackgroundColorAnalyzer
@@ -39,28 +39,28 @@
   self->_serviceConnection = 0;
 }
 
-- (void)getBackgroundColorOnImageData:(id)a3 bitmapFormat:(id)a4 reply:(id)a5
+- (void)getBackgroundColorOnImageData:(id)data bitmapFormat:(id)format reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dataCopy = data;
+  formatCopy = format;
+  replyCopy = reply;
   [(CNUIImageRemoteBackgroundColorAnalyzer *)self _openConnectionIfNeeded];
-  if (v8)
+  if (dataCopy)
   {
-    v11 = [(CNUIImageRemoteBackgroundColorAnalyzer *)self serviceConnection];
+    serviceConnection = [(CNUIImageRemoteBackgroundColorAnalyzer *)self serviceConnection];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __91__CNUIImageRemoteBackgroundColorAnalyzer_getBackgroundColorOnImageData_bitmapFormat_reply___block_invoke;
     v16[3] = &unk_1E76EA2B0;
-    v12 = v10;
+    v12 = replyCopy;
     v17 = v12;
-    v13 = [v11 synchronousRemoteObjectProxyWithErrorHandler:v16];
+    v13 = [serviceConnection synchronousRemoteObjectProxyWithErrorHandler:v16];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __91__CNUIImageRemoteBackgroundColorAnalyzer_getBackgroundColorOnImageData_bitmapFormat_reply___block_invoke_2;
     v14[3] = &unk_1E76EA2D8;
     v15 = v12;
-    [v13 getBackgroundColorOnImageData:v8 bitmapFormat:v9 withReply:v14];
+    [v13 getBackgroundColorOnImageData:dataCopy bitmapFormat:formatCopy withReply:v14];
   }
 }
 

@@ -1,19 +1,19 @@
 @interface NTKEChooseWatchFaceViewController
-+ (id)viewControllerWithAssets:(id)a3;
-- (NTKEChooseWatchFaceViewController)initWithFaces:(id)a3;
++ (id)viewControllerWithAssets:(id)assets;
+- (NTKEChooseWatchFaceViewController)initWithFaces:(id)faces;
 - (void)_adjustContentHeight;
 - (void)_updateEdgeMargins;
 - (void)dealloc;
-- (void)didChooseFace:(id)a3;
+- (void)didChooseFace:(id)face;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
 
 @implementation NTKEChooseWatchFaceViewController
 
-+ (id)viewControllerWithAssets:(id)a3
++ (id)viewControllerWithAssets:(id)assets
 {
-  v44 = a3;
+  assetsCopy = assets;
   v3 = +[CLKDevice currentDevice];
   v53 = 0;
   v54 = &v53;
@@ -79,18 +79,18 @@
         }
 
         v15 = *(*(&v49 + 1) + 8 * i);
-        v16 = [v15 faceClass];
-        v17 = [v16 supportsExternalAssets];
-        if ((v17 & ([v16 needsAppleNeuralEngine] ^ 1 | v8)) == 1)
+        faceClass = [v15 faceClass];
+        supportsExternalAssets = [faceClass supportsExternalAssets];
+        if ((supportsExternalAssets & ([faceClass needsAppleNeuralEngine] ^ 1 | v8)) == 1)
         {
-          v18 = [v16 sortableFaceWithAssets:v44 forDevice:v3];
+          v18 = [faceClass sortableFaceWithAssets:assetsCopy forDevice:v3];
           if (v18)
           {
-            v19 = [v15 bundleIdentifier];
-            v20 = v19;
-            if (v19)
+            bundleIdentifier = [v15 bundleIdentifier];
+            v20 = bundleIdentifier;
+            if (bundleIdentifier)
             {
-              v21 = v19;
+              v21 = bundleIdentifier;
             }
 
             else
@@ -122,12 +122,12 @@
 
   if ([v43 count] == 1)
   {
-    v24 = [v43 firstObject];
-    v25 = [v24 face];
-    v26 = sub_100001C74(v25);
-    v27 = [v26 ntke_cancelExtensionBarButton];
-    v28 = [v26 navigationItem];
-    [v28 setLeftBarButtonItem:v27];
+    firstObject = [v43 firstObject];
+    face = [firstObject face];
+    v26 = sub_100001C74(face);
+    ntke_cancelExtensionBarButton = [v26 ntke_cancelExtensionBarButton];
+    navigationItem = [v26 navigationItem];
+    [navigationItem setLeftBarButtonItem:ntke_cancelExtensionBarButton];
 
     v29 = v26;
   }
@@ -135,7 +135,7 @@
   else
   {
     [v43 sortUsingSelector:"compare:"];
-    v24 = +[NSMutableArray array];
+    firstObject = +[NSMutableArray array];
     v47 = 0u;
     v48 = 0u;
     v45 = 0u;
@@ -154,10 +154,10 @@
             objc_enumerationMutation(v30);
           }
 
-          v34 = [*(*(&v45 + 1) + 8 * j) face];
-          if (v34)
+          face2 = [*(*(&v45 + 1) + 8 * j) face];
+          if (face2)
           {
-            [v24 addObject:v34];
+            [firstObject addObject:face2];
           }
         }
 
@@ -167,13 +167,13 @@
       while (v31);
     }
 
-    v35 = [a1 alloc];
-    v36 = [v24 copy];
+    v35 = [self alloc];
+    v36 = [firstObject copy];
     v37 = [v35 initWithFaces:v36];
 
-    v38 = [v37 ntke_cancelExtensionBarButton];
-    v39 = [v37 navigationItem];
-    [v39 setLeftBarButtonItem:v38];
+    ntke_cancelExtensionBarButton2 = [v37 ntke_cancelExtensionBarButton];
+    navigationItem2 = [v37 navigationItem];
+    [navigationItem2 setLeftBarButtonItem:ntke_cancelExtensionBarButton2];
 
     v29 = v37;
   }
@@ -181,30 +181,30 @@
   return v29;
 }
 
-- (NTKEChooseWatchFaceViewController)initWithFaces:(id)a3
+- (NTKEChooseWatchFaceViewController)initWithFaces:(id)faces
 {
-  v4 = a3;
+  facesCopy = faces;
   v17.receiver = self;
   v17.super_class = NTKEChooseWatchFaceViewController;
   v5 = [(NTKEChooseWatchFaceViewController *)&v17 initWithNibName:0 bundle:0];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [facesCopy copy];
     [(NTKEChooseWatchFaceViewController *)v5 setFaces:v6];
 
     v7 = +[NSBundle mainBundle];
     v8 = [v7 localizedStringForKey:@"CHOOSE_WATCH_FACE" value:&stru_10000C548 table:0];
     [(NTKEChooseWatchFaceViewController *)v5 setTitle:v8];
 
-    v9 = [(NTKEChooseWatchFaceViewController *)v5 navigationItem];
-    [v9 _setLargeTitleTwoLineMode:1];
+    navigationItem = [(NTKEChooseWatchFaceViewController *)v5 navigationItem];
+    [navigationItem _setLargeTitleTwoLineMode:1];
 
     v10 = [UIBarButtonItem alloc];
     v11 = +[NSBundle mainBundle];
     v12 = [v11 localizedStringForKey:@"CHOOSE_WATCH_FACE_BACK" value:&stru_10000C548 table:0];
     v13 = [v10 initWithTitle:v12 style:0 target:0 action:0];
-    v14 = [(NTKEChooseWatchFaceViewController *)v5 navigationItem];
-    [v14 setBackBarButtonItem:v13];
+    navigationItem2 = [(NTKEChooseWatchFaceViewController *)v5 navigationItem];
+    [navigationItem2 setBackBarButtonItem:v13];
 
     v15 = +[NSNotificationCenter defaultCenter];
     [v15 addObserver:v5 selector:"_fontSizeDidChange" name:UIContentSizeCategoryDidChangeNotification object:0];
@@ -229,23 +229,23 @@
   v126.super_class = NTKEChooseWatchFaceViewController;
   [(NTKEChooseWatchFaceViewController *)&v126 viewDidLoad];
   v3 = +[UIColor systemBackgroundColor];
-  v4 = [(NTKEChooseWatchFaceViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  view = [(NTKEChooseWatchFaceViewController *)self view];
+  [view setBackgroundColor:v3];
 
   v5 = objc_opt_new();
   [(NTKEChooseWatchFaceViewController *)self setScrollView:v5];
 
   [(UIScrollView *)self->_scrollView setDelegate:self];
-  v6 = [(NTKEChooseWatchFaceViewController *)self view];
-  [v6 addSubview:self->_scrollView];
+  view2 = [(NTKEChooseWatchFaceViewController *)self view];
+  [view2 addSubview:self->_scrollView];
 
   v7 = +[NSMutableArray array];
   v122 = 0u;
   v123 = 0u;
   v124 = 0u;
   v125 = 0u;
-  v8 = [(NTKEChooseWatchFaceViewController *)self faces];
-  v9 = [v8 countByEnumeratingWithState:&v122 objects:v130 count:16];
+  faces = [(NTKEChooseWatchFaceViewController *)self faces];
+  v9 = [faces countByEnumeratingWithState:&v122 objects:v130 count:16];
   if (v9)
   {
     v10 = v9;
@@ -256,7 +256,7 @@
       {
         if (*v123 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(faces);
         }
 
         v13 = [[_NTKEFaceChoice alloc] initWithFace:*(*(&v122 + 1) + 8 * i)];
@@ -269,32 +269,32 @@
         [v7 addObject:v13];
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v122 objects:v130 count:16];
+      v10 = [faces countByEnumeratingWithState:&v122 objects:v130 count:16];
     }
 
     while (v10);
   }
 
   [(UIScrollView *)self->_scrollView setTranslatesAutoresizingMaskIntoConstraints:0];
-  v118 = [(UIScrollView *)self->_scrollView leadingAnchor];
-  v120 = [(NTKEChooseWatchFaceViewController *)self view];
-  v114 = [v120 leadingAnchor];
-  v111 = [v118 constraintEqualToAnchor:v114];
+  leadingAnchor = [(UIScrollView *)self->_scrollView leadingAnchor];
+  view3 = [(NTKEChooseWatchFaceViewController *)self view];
+  leadingAnchor2 = [view3 leadingAnchor];
+  v111 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v129[0] = v111;
-  v105 = [(UIScrollView *)self->_scrollView trailingAnchor];
-  v108 = [(NTKEChooseWatchFaceViewController *)self view];
-  v102 = [v108 trailingAnchor];
-  v99 = [v105 constraintEqualToAnchor:v102];
+  trailingAnchor = [(UIScrollView *)self->_scrollView trailingAnchor];
+  view4 = [(NTKEChooseWatchFaceViewController *)self view];
+  trailingAnchor2 = [view4 trailingAnchor];
+  v99 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v129[1] = v99;
-  v96 = [(UIScrollView *)self->_scrollView topAnchor];
-  v16 = [(NTKEChooseWatchFaceViewController *)self view];
-  v17 = [v16 topAnchor];
-  v18 = [v96 constraintEqualToAnchor:v17];
+  topAnchor = [(UIScrollView *)self->_scrollView topAnchor];
+  view5 = [(NTKEChooseWatchFaceViewController *)self view];
+  topAnchor2 = [view5 topAnchor];
+  v18 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v129[2] = v18;
-  v19 = [(UIScrollView *)self->_scrollView bottomAnchor];
-  v20 = [(NTKEChooseWatchFaceViewController *)self view];
-  v21 = [v20 bottomAnchor];
-  v22 = [v19 constraintEqualToAnchor:v21];
+  bottomAnchor = [(UIScrollView *)self->_scrollView bottomAnchor];
+  view6 = [(NTKEChooseWatchFaceViewController *)self view];
+  bottomAnchor2 = [view6 bottomAnchor];
+  v22 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v129[3] = v22;
   v23 = [NSArray arrayWithObjects:v129 count:4];
 
@@ -302,111 +302,111 @@
   v119 = [v23 mutableCopy];
   if ([v7 count] == 2)
   {
-    v24 = [v7 firstObject];
+    firstObject = [v7 firstObject];
     LODWORD(v25) = 1148846080;
-    [v24 setContentHuggingPriority:1 forAxis:v25];
+    [firstObject setContentHuggingPriority:1 forAxis:v25];
     LODWORD(v26) = 1148846080;
-    [v24 setContentCompressionResistancePriority:1 forAxis:v26];
-    [v24 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v27 = [v7 lastObject];
+    [firstObject setContentCompressionResistancePriority:1 forAxis:v26];
+    [firstObject setTranslatesAutoresizingMaskIntoConstraints:0];
+    lastObject = [v7 lastObject];
     LODWORD(v28) = 1148846080;
-    [v27 setContentHuggingPriority:1 forAxis:v28];
+    [lastObject setContentHuggingPriority:1 forAxis:v28];
     LODWORD(v29) = 1148846080;
-    [v27 setContentCompressionResistancePriority:1 forAxis:v29];
-    [v27 setTranslatesAutoresizingMaskIntoConstraints:0];
+    [lastObject setContentCompressionResistancePriority:1 forAxis:v29];
+    [lastObject setTranslatesAutoresizingMaskIntoConstraints:0];
     v30 = objc_opt_new();
     [v30 setTranslatesAutoresizingMaskIntoConstraints:0];
-    [v30 addSubview:v24];
-    [v30 addSubview:v27];
+    [v30 addSubview:firstObject];
+    [v30 addSubview:lastObject];
     [(UIScrollView *)self->_scrollView addSubview:v30];
     v31 = objc_opt_new();
     contentGuide = self->_contentGuide;
     self->_contentGuide = v31;
 
-    v33 = [(NTKEChooseWatchFaceViewController *)self view];
-    [v33 addLayoutGuide:self->_contentGuide];
+    view7 = [(NTKEChooseWatchFaceViewController *)self view];
+    [view7 addLayoutGuide:self->_contentGuide];
 
-    v34 = [v30 heightAnchor];
-    v35 = [v34 constraintEqualToConstant:0.0];
+    heightAnchor = [v30 heightAnchor];
+    v35 = [heightAnchor constraintEqualToConstant:0.0];
     [(NTKEChooseWatchFaceViewController *)self setContentViewHeightConstraint:v35];
 
-    v36 = [v24 leadingAnchor];
-    v37 = [(UILayoutGuide *)self->_contentGuide leadingAnchor];
-    v38 = [v36 constraintGreaterThanOrEqualToAnchor:v37 constant:0.0];
+    leadingAnchor3 = [firstObject leadingAnchor];
+    leadingAnchor4 = [(UILayoutGuide *)self->_contentGuide leadingAnchor];
+    v38 = [leadingAnchor3 constraintGreaterThanOrEqualToAnchor:leadingAnchor4 constant:0.0];
     [(NTKEChooseWatchFaceViewController *)self setLeadingMarginConstraint:v38];
 
-    v39 = [v24 trailingAnchor];
-    v40 = [(UILayoutGuide *)self->_contentGuide trailingAnchor];
-    v41 = [v39 constraintGreaterThanOrEqualToAnchor:v40 constant:-0.0];
+    trailingAnchor3 = [firstObject trailingAnchor];
+    trailingAnchor4 = [(UILayoutGuide *)self->_contentGuide trailingAnchor];
+    v41 = [trailingAnchor3 constraintGreaterThanOrEqualToAnchor:trailingAnchor4 constant:-0.0];
     [(NTKEChooseWatchFaceViewController *)self setTrailingMarginConstraint:v41];
 
     [(NTKEChooseWatchFaceViewController *)self _updateEdgeMargins];
-    v115 = [v30 leadingAnchor];
-    v112 = [(UIScrollView *)self->_scrollView leadingAnchor];
-    v109 = [v115 constraintEqualToAnchor:v112];
+    leadingAnchor5 = [v30 leadingAnchor];
+    leadingAnchor6 = [(UIScrollView *)self->_scrollView leadingAnchor];
+    v109 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
     v128[0] = v109;
-    v106 = [v30 trailingAnchor];
-    v103 = [(UIScrollView *)self->_scrollView trailingAnchor];
-    v100 = [v106 constraintEqualToAnchor:v103];
+    trailingAnchor5 = [v30 trailingAnchor];
+    trailingAnchor6 = [(UIScrollView *)self->_scrollView trailingAnchor];
+    v100 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
     v128[1] = v100;
-    v97 = [v30 topAnchor];
-    v94 = [(UIScrollView *)self->_scrollView topAnchor];
-    v93 = [v97 constraintEqualToAnchor:v94];
+    topAnchor3 = [v30 topAnchor];
+    topAnchor4 = [(UIScrollView *)self->_scrollView topAnchor];
+    v93 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     v128[2] = v93;
-    v92 = [v30 bottomAnchor];
-    v91 = [(UIScrollView *)self->_scrollView bottomAnchor];
-    v90 = [v92 constraintEqualToAnchor:v91];
+    bottomAnchor3 = [v30 bottomAnchor];
+    bottomAnchor4 = [(UIScrollView *)self->_scrollView bottomAnchor];
+    v90 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
     contentViewHeightConstraint = self->_contentViewHeightConstraint;
     v128[3] = v90;
     v128[4] = contentViewHeightConstraint;
-    v89 = [v30 widthAnchor];
-    v117 = [(UIScrollView *)self->_scrollView widthAnchor];
-    v88 = [v89 constraintEqualToAnchor:v117];
+    widthAnchor = [v30 widthAnchor];
+    widthAnchor2 = [(UIScrollView *)self->_scrollView widthAnchor];
+    v88 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
     v128[5] = v88;
-    v87 = [(UILayoutGuide *)self->_contentGuide leadingAnchor];
-    v86 = [v30 leadingAnchor];
-    v85 = [v87 constraintEqualToAnchor:v86];
+    leadingAnchor7 = [(UILayoutGuide *)self->_contentGuide leadingAnchor];
+    leadingAnchor8 = [v30 leadingAnchor];
+    v85 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8];
     v128[6] = v85;
-    v84 = [(UILayoutGuide *)self->_contentGuide trailingAnchor];
+    trailingAnchor7 = [(UILayoutGuide *)self->_contentGuide trailingAnchor];
     v82 = v30;
-    v83 = [v30 trailingAnchor];
-    v81 = [v84 constraintEqualToAnchor:v83];
+    trailingAnchor8 = [v30 trailingAnchor];
+    v81 = [trailingAnchor7 constraintEqualToAnchor:trailingAnchor8];
     v128[7] = v81;
-    v80 = [v24 centerXAnchor];
-    v79 = [(UILayoutGuide *)self->_contentGuide centerXAnchor];
-    v78 = [v80 constraintEqualToAnchor:v79];
+    centerXAnchor = [firstObject centerXAnchor];
+    centerXAnchor2 = [(UILayoutGuide *)self->_contentGuide centerXAnchor];
+    v78 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v128[8] = v78;
-    v43 = v27;
-    v77 = [v27 centerXAnchor];
-    v76 = [v24 centerXAnchor];
-    v75 = [v77 constraintEqualToAnchor:v76];
+    v43 = lastObject;
+    centerXAnchor3 = [lastObject centerXAnchor];
+    centerXAnchor4 = [firstObject centerXAnchor];
+    v75 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
     leadingMarginConstraint = self->_leadingMarginConstraint;
     v128[9] = v75;
     v128[10] = leadingMarginConstraint;
     v128[11] = self->_trailingMarginConstraint;
-    v74 = [v27 leadingAnchor];
-    v72 = [v24 leadingAnchor];
-    v71 = [v74 constraintEqualToAnchor:v72];
+    leadingAnchor9 = [lastObject leadingAnchor];
+    leadingAnchor10 = [firstObject leadingAnchor];
+    v71 = [leadingAnchor9 constraintEqualToAnchor:leadingAnchor10];
     v128[12] = v71;
-    v70 = [v27 trailingAnchor];
-    v69 = [v24 trailingAnchor];
-    v68 = [v70 constraintEqualToAnchor:v69];
+    trailingAnchor9 = [lastObject trailingAnchor];
+    trailingAnchor10 = [firstObject trailingAnchor];
+    v68 = [trailingAnchor9 constraintEqualToAnchor:trailingAnchor10];
     v128[13] = v68;
-    v67 = [(UILayoutGuide *)self->_contentGuide centerYAnchor];
-    v66 = [v30 centerYAnchor];
-    v65 = [v67 constraintEqualToAnchor:v66];
+    centerYAnchor = [(UILayoutGuide *)self->_contentGuide centerYAnchor];
+    centerYAnchor2 = [v30 centerYAnchor];
+    v65 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v128[14] = v65;
-    v64 = [v24 topAnchor];
-    v63 = [(UILayoutGuide *)self->_contentGuide topAnchor];
-    v45 = [v64 constraintEqualToAnchor:v63 constant:14.0];
+    topAnchor5 = [firstObject topAnchor];
+    topAnchor6 = [(UILayoutGuide *)self->_contentGuide topAnchor];
+    v45 = [topAnchor5 constraintEqualToAnchor:topAnchor6 constant:14.0];
     v128[15] = v45;
-    v46 = [v27 topAnchor];
-    v47 = [v24 bottomAnchor];
-    v48 = [v46 constraintEqualToAnchor:v47 constant:30.0];
+    topAnchor7 = [lastObject topAnchor];
+    bottomAnchor5 = [firstObject bottomAnchor];
+    v48 = [topAnchor7 constraintEqualToAnchor:bottomAnchor5 constant:30.0];
     v128[16] = v48;
-    v49 = [v43 bottomAnchor];
-    v50 = [(UILayoutGuide *)self->_contentGuide bottomAnchor];
-    v51 = [v49 constraintEqualToAnchor:v50 constant:-14.0];
+    bottomAnchor6 = [v43 bottomAnchor];
+    bottomAnchor7 = [(UILayoutGuide *)self->_contentGuide bottomAnchor];
+    v51 = [bottomAnchor6 constraintEqualToAnchor:bottomAnchor7 constant:-14.0];
     v128[17] = v51;
     v73 = [NSArray arrayWithObjects:v128 count:18];
 
@@ -417,32 +417,32 @@
 
   else
   {
-    v24 = [[UIStackView alloc] initWithArrangedSubviews:v7];
-    [v24 setAxis:1];
-    [v24 setSpacing:30.0];
-    [v24 setAlignment:0];
-    [v24 setDistribution:3];
-    [v24 setTranslatesAutoresizingMaskIntoConstraints:0];
-    [(UIScrollView *)self->_scrollView addSubview:v24];
-    v116 = [v24 leadingAnchor];
-    v113 = [(UIScrollView *)self->_scrollView leadingAnchor];
-    v110 = [v116 constraintEqualToAnchor:v113];
+    firstObject = [[UIStackView alloc] initWithArrangedSubviews:v7];
+    [firstObject setAxis:1];
+    [firstObject setSpacing:30.0];
+    [firstObject setAlignment:0];
+    [firstObject setDistribution:3];
+    [firstObject setTranslatesAutoresizingMaskIntoConstraints:0];
+    [(UIScrollView *)self->_scrollView addSubview:firstObject];
+    leadingAnchor11 = [firstObject leadingAnchor];
+    leadingAnchor12 = [(UIScrollView *)self->_scrollView leadingAnchor];
+    v110 = [leadingAnchor11 constraintEqualToAnchor:leadingAnchor12];
     v127[0] = v110;
-    v107 = [v24 trailingAnchor];
-    v104 = [(UIScrollView *)self->_scrollView trailingAnchor];
-    v101 = [v107 constraintEqualToAnchor:v104];
+    trailingAnchor11 = [firstObject trailingAnchor];
+    trailingAnchor12 = [(UIScrollView *)self->_scrollView trailingAnchor];
+    v101 = [trailingAnchor11 constraintEqualToAnchor:trailingAnchor12];
     v127[1] = v101;
-    v98 = [v24 topAnchor];
-    v95 = [(UIScrollView *)self->_scrollView topAnchor];
-    v54 = [v98 constraintEqualToAnchor:v95];
+    topAnchor8 = [firstObject topAnchor];
+    topAnchor9 = [(UIScrollView *)self->_scrollView topAnchor];
+    v54 = [topAnchor8 constraintEqualToAnchor:topAnchor9];
     v127[2] = v54;
-    v55 = [v24 bottomAnchor];
-    v56 = [(UIScrollView *)self->_scrollView bottomAnchor];
-    v57 = [v55 constraintEqualToAnchor:v56];
+    bottomAnchor8 = [firstObject bottomAnchor];
+    bottomAnchor9 = [(UIScrollView *)self->_scrollView bottomAnchor];
+    v57 = [bottomAnchor8 constraintEqualToAnchor:bottomAnchor9];
     v127[3] = v57;
-    v58 = [v24 widthAnchor];
-    v59 = [(UIScrollView *)self->_scrollView widthAnchor];
-    v60 = [v58 constraintEqualToAnchor:v59];
+    widthAnchor3 = [firstObject widthAnchor];
+    widthAnchor4 = [(UIScrollView *)self->_scrollView widthAnchor];
+    v60 = [widthAnchor3 constraintEqualToAnchor:widthAnchor4];
     v127[4] = v60;
     v61 = [NSArray arrayWithObjects:v127 count:5];
 
@@ -467,8 +467,8 @@
 {
   if (self->_contentViewHeightConstraint)
   {
-    v3 = [(UIScrollView *)self->_scrollView frameLayoutGuide];
-    [v3 layoutFrame];
+    frameLayoutGuide = [(UIScrollView *)self->_scrollView frameLayoutGuide];
+    [frameLayoutGuide layoutFrame];
     v5 = v4;
     v7 = v6;
     v9 = v8;
@@ -531,11 +531,11 @@
   }
 }
 
-- (void)didChooseFace:(id)a3
+- (void)didChooseFace:(id)face
 {
-  v5 = sub_100001C74(a3);
-  v4 = [(NTKEChooseWatchFaceViewController *)self navigationController];
-  [v4 pushViewController:v5 animated:1];
+  v5 = sub_100001C74(face);
+  navigationController = [(NTKEChooseWatchFaceViewController *)self navigationController];
+  [navigationController pushViewController:v5 animated:1];
 }
 
 @end

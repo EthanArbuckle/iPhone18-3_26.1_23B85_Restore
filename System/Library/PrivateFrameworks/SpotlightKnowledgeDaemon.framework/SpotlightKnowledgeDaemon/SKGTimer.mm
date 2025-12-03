@@ -1,6 +1,6 @@
 @interface SKGTimer
 - (BOOL)isValid;
-- (SKGTimer)initWithTimeIntervalSinceNow:(double)a3 tolerance:(double)a4 queue:(id)a5 block:(id)a6;
+- (SKGTimer)initWithTimeIntervalSinceNow:(double)now tolerance:(double)tolerance queue:(id)queue block:(id)block;
 - (void)dealloc;
 - (void)reset;
 - (void)suspend;
@@ -8,19 +8,19 @@
 
 @implementation SKGTimer
 
-- (SKGTimer)initWithTimeIntervalSinceNow:(double)a3 tolerance:(double)a4 queue:(id)a5 block:(id)a6
+- (SKGTimer)initWithTimeIntervalSinceNow:(double)now tolerance:(double)tolerance queue:(id)queue block:(id)block
 {
-  v11 = a5;
-  v12 = a6;
+  queueCopy = queue;
+  blockCopy = block;
   v22.receiver = self;
   v22.super_class = SKGTimer;
   v13 = [(SKGTimer *)&v22 init];
   v14 = v13;
   if (v13)
   {
-    v13->_interval = (a3 * 1000000000.0);
-    v13->_leeway = (a4 * 1000000000.0);
-    objc_storeStrong(&v13->_queue, a5);
+    v13->_interval = (now * 1000000000.0);
+    v13->_leeway = (tolerance * 1000000000.0);
+    objc_storeStrong(&v13->_queue, queue);
     v15 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, v14->_queue);
     timer = v14->_timer;
     v14->_timer = v15;
@@ -30,7 +30,7 @@
     v19[1] = 3221225472;
     v19[2] = __63__SKGTimer_initWithTimeIntervalSinceNow_tolerance_queue_block___block_invoke;
     v19[3] = &unk_27893F768;
-    v21 = v12;
+    v21 = blockCopy;
     v20 = v14;
     dispatch_source_set_event_handler(v17, v19);
   }
@@ -51,13 +51,13 @@ uint64_t __63__SKGTimer_initWithTimeIntervalSinceNow_tolerance_queue_block___blo
 
 - (void)reset
 {
-  v3 = [(SKGTimer *)self queue];
+  queue = [(SKGTimer *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __17__SKGTimer_reset__block_invoke;
   block[3] = &unk_27893CE68;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 void __17__SKGTimer_reset__block_invoke(uint64_t a1)
@@ -76,13 +76,13 @@ void __17__SKGTimer_reset__block_invoke(uint64_t a1)
 
 - (void)suspend
 {
-  v3 = [(SKGTimer *)self queue];
+  queue = [(SKGTimer *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __19__SKGTimer_suspend__block_invoke;
   block[3] = &unk_27893CE68;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 void __19__SKGTimer_suspend__block_invoke(uint64_t a1)
@@ -96,23 +96,23 @@ void __19__SKGTimer_suspend__block_invoke(uint64_t a1)
 
 - (BOOL)isValid
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(SKGTimer *)self queue];
+  queue = [(SKGTimer *)self queue];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __19__SKGTimer_isValid__block_invoke;
   v5[3] = &unk_27893F660;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_async(v3, v5);
+  dispatch_async(queue, v5);
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 NSObject *__19__SKGTimer_isValid__block_invoke(uint64_t a1)
@@ -129,13 +129,13 @@ NSObject *__19__SKGTimer_isValid__block_invoke(uint64_t a1)
 
 - (void)dealloc
 {
-  v3 = [(SKGTimer *)self queue];
+  queue = [(SKGTimer *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __19__SKGTimer_dealloc__block_invoke;
   block[3] = &unk_27893CE68;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(queue, block);
 
   v4.receiver = self;
   v4.super_class = SKGTimer;

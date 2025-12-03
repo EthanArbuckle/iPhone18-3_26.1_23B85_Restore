@@ -1,7 +1,7 @@
 @interface HUScheduleDateEditorItemModule
-- (HUScheduleDateEditorItemModule)initWithItemUpdater:(id)a3;
-- (HUScheduleDateEditorItemModule)initWithItemUpdater:(id)a3 date:(id)a4 editorContext:(unint64_t)a5;
-- (id)buildSectionsWithDisplayedItems:(id)a3;
+- (HUScheduleDateEditorItemModule)initWithItemUpdater:(id)updater;
+- (HUScheduleDateEditorItemModule)initWithItemUpdater:(id)updater date:(id)date editorContext:(unint64_t)context;
+- (id)buildSectionsWithDisplayedItems:(id)items;
 - (id)itemProviders;
 - (void)_buildItemProviders;
 - (void)_configureSelectedOptions;
@@ -12,14 +12,14 @@
 
 @implementation HUScheduleDateEditorItemModule
 
-- (HUScheduleDateEditorItemModule)initWithItemUpdater:(id)a3 date:(id)a4 editorContext:(unint64_t)a5
+- (HUScheduleDateEditorItemModule)initWithItemUpdater:(id)updater date:(id)date editorContext:(unint64_t)context
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = v10;
-  if (v9)
+  updaterCopy = updater;
+  dateCopy = date;
+  v11 = dateCopy;
+  if (updaterCopy)
   {
-    if (v10)
+    if (dateCopy)
     {
       goto LABEL_3;
     }
@@ -27,8 +27,8 @@
 
   else
   {
-    v15 = [MEMORY[0x277CCA890] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"HUScheduleDateEditorItemModule.m" lineNumber:32 description:{@"Invalid parameter not satisfying: %@", @"itemUpdater"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HUScheduleDateEditorItemModule.m" lineNumber:32 description:{@"Invalid parameter not satisfying: %@", @"itemUpdater"}];
 
     if (v11)
     {
@@ -36,30 +36,30 @@
     }
   }
 
-  v16 = [MEMORY[0x277CCA890] currentHandler];
-  [v16 handleFailureInMethod:a2 object:self file:@"HUScheduleDateEditorItemModule.m" lineNumber:33 description:{@"Invalid parameter not satisfying: %@", @"date"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"HUScheduleDateEditorItemModule.m" lineNumber:33 description:{@"Invalid parameter not satisfying: %@", @"date"}];
 
 LABEL_3:
   v17.receiver = self;
   v17.super_class = HUScheduleDateEditorItemModule;
-  v12 = [(HFItemModule *)&v17 initWithItemUpdater:v9];
+  v12 = [(HFItemModule *)&v17 initWithItemUpdater:updaterCopy];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_existingDate, a4);
-    objc_storeStrong(&v13->_editedDate, a4);
-    v13->_editorContext = a5;
+    objc_storeStrong(&v12->_existingDate, date);
+    objc_storeStrong(&v13->_editedDate, date);
+    v13->_editorContext = context;
     [(HUScheduleDateEditorItemModule *)v13 _buildItemProviders];
   }
 
   return v13;
 }
 
-- (HUScheduleDateEditorItemModule)initWithItemUpdater:(id)a3
+- (HUScheduleDateEditorItemModule)initWithItemUpdater:(id)updater
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v6 = NSStringFromSelector(sel_initWithItemUpdater_date_editorContext_);
-  [v5 handleFailureInMethod:a2 object:self file:@"HUScheduleDateEditorItemModule.m" lineNumber:47 description:{@"%s is unavailable; use %@ instead", "-[HUScheduleDateEditorItemModule initWithItemUpdater:]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUScheduleDateEditorItemModule.m" lineNumber:47 description:{@"%s is unavailable; use %@ instead", "-[HUScheduleDateEditorItemModule initWithItemUpdater:]", v6}];
 
   return 0;
 }
@@ -67,36 +67,36 @@ LABEL_3:
 - (id)itemProviders
 {
   v2 = MEMORY[0x277CBEB98];
-  v3 = [(HUScheduleDateEditorItemModule *)self staticItemProvider];
-  v4 = [v2 setWithObjects:{v3, 0}];
+  staticItemProvider = [(HUScheduleDateEditorItemModule *)self staticItemProvider];
+  v4 = [v2 setWithObjects:{staticItemProvider, 0}];
 
   return v4;
 }
 
-- (id)buildSectionsWithDisplayedItems:(id)a3
+- (id)buildSectionsWithDisplayedItems:(id)items
 {
   v16[1] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277D14850];
-  v5 = a3;
+  itemsCopy = items;
   v6 = [[v4 alloc] initWithIdentifier:@"HUScheduleDateEditorDateSectionIdentifier"];
   v7 = objc_opt_new();
-  v8 = [(HUScheduleDateEditorItemModule *)self startTodayDateItem];
-  [v7 na_safeAddObject:v8];
+  startTodayDateItem = [(HUScheduleDateEditorItemModule *)self startTodayDateItem];
+  [v7 na_safeAddObject:startTodayDateItem];
 
-  v9 = [(HUScheduleDateEditorItemModule *)self endNeverDateItem];
-  [v7 na_safeAddObject:v9];
+  endNeverDateItem = [(HUScheduleDateEditorItemModule *)self endNeverDateItem];
+  [v7 na_safeAddObject:endNeverDateItem];
 
-  v10 = [(HUScheduleDateEditorItemModule *)self specificDateItem];
-  [v7 na_safeAddObject:v10];
+  specificDateItem = [(HUScheduleDateEditorItemModule *)self specificDateItem];
+  [v7 na_safeAddObject:specificDateItem];
 
-  v11 = [(HUScheduleDateEditorItemModule *)self datePickerItem];
-  [v7 na_safeAddObject:v11];
+  datePickerItem = [(HUScheduleDateEditorItemModule *)self datePickerItem];
+  [v7 na_safeAddObject:datePickerItem];
 
   [v6 setItems:v7];
   v12 = MEMORY[0x277D14778];
   v16[0] = v6;
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:1];
-  v14 = [v12 filterSections:v13 toDisplayedItems:v5];
+  v14 = [v12 filterSections:v13 toDisplayedItems:itemsCopy];
 
   return v14;
 }
@@ -115,8 +115,8 @@ LABEL_3:
   v5 = [v4 initWithResultsBlock:v25];
   [(HUScheduleDateEditorItemModule *)self setStartTodayDateItem:v5];
 
-  v6 = [(HUScheduleDateEditorItemModule *)self startTodayDateItem];
-  [v3 addObject:v6];
+  startTodayDateItem = [(HUScheduleDateEditorItemModule *)self startTodayDateItem];
+  [v3 addObject:startTodayDateItem];
 
   v7 = objc_alloc(MEMORY[0x277D14B38]);
   v23[0] = MEMORY[0x277D85DD0];
@@ -127,8 +127,8 @@ LABEL_3:
   v8 = [v7 initWithResultsBlock:v23];
   [(HUScheduleDateEditorItemModule *)self setEndNeverDateItem:v8];
 
-  v9 = [(HUScheduleDateEditorItemModule *)self endNeverDateItem];
-  [v3 addObject:v9];
+  endNeverDateItem = [(HUScheduleDateEditorItemModule *)self endNeverDateItem];
+  [v3 addObject:endNeverDateItem];
 
   v10 = objc_alloc(MEMORY[0x277D14B38]);
   v21[0] = MEMORY[0x277D85DD0];
@@ -139,8 +139,8 @@ LABEL_3:
   v11 = [v10 initWithResultsBlock:v21];
   [(HUScheduleDateEditorItemModule *)self setSpecificDateItem:v11];
 
-  v12 = [(HUScheduleDateEditorItemModule *)self specificDateItem];
-  [v3 addObject:v12];
+  specificDateItem = [(HUScheduleDateEditorItemModule *)self specificDateItem];
+  [v3 addObject:specificDateItem];
 
   v13 = objc_alloc(MEMORY[0x277D14B38]);
   v19[0] = MEMORY[0x277D85DD0];
@@ -151,8 +151,8 @@ LABEL_3:
   v14 = [v13 initWithResultsBlock:v19];
   [(HUScheduleDateEditorItemModule *)self setDatePickerItem:v14];
 
-  v15 = [(HUScheduleDateEditorItemModule *)self datePickerItem];
-  [v3 addObject:v15];
+  datePickerItem = [(HUScheduleDateEditorItemModule *)self datePickerItem];
+  [v3 addObject:datePickerItem];
 
   v16 = objc_alloc(MEMORY[0x277D14B40]);
   v17 = [MEMORY[0x277CBEB98] setWithArray:v3];
@@ -267,29 +267,29 @@ id __53__HUScheduleDateEditorItemModule__buildItemProviders__block_invoke_4(uint
 {
   [(HUScheduleDateEditorItemModule *)self setIsTodayOptionSelected:1];
   [(HUScheduleDateEditorItemModule *)self setIsSpecificDateOptionSelected:[(HUScheduleDateEditorItemModule *)self isTodayOptionSelected]^ 1];
-  v4 = [MEMORY[0x277CBEAA8] date];
-  v5 = [v4 hf_startOfDay];
-  [(HUScheduleDateEditorItemModule *)self setEditedDate:v5];
+  date = [MEMORY[0x277CBEAA8] date];
+  hf_startOfDay = [date hf_startOfDay];
+  [(HUScheduleDateEditorItemModule *)self setEditedDate:hf_startOfDay];
 
-  v10 = [(HFItemModule *)self itemUpdater];
+  itemUpdater = [(HFItemModule *)self itemUpdater];
   v6 = MEMORY[0x277D14788];
-  v7 = [(HUScheduleDateEditorItemModule *)self itemProviders];
-  v8 = [v6 requestToReloadItemProviders:v7 senderSelector:a2];
-  v9 = [v10 performItemUpdateRequest:v8];
+  itemProviders = [(HUScheduleDateEditorItemModule *)self itemProviders];
+  v8 = [v6 requestToReloadItemProviders:itemProviders senderSelector:a2];
+  v9 = [itemUpdater performItemUpdateRequest:v8];
 }
 
 - (void)updateToNeverDateOption
 {
   [(HUScheduleDateEditorItemModule *)self setIsNeverOptionSelected:1];
   [(HUScheduleDateEditorItemModule *)self setIsSpecificDateOptionSelected:[(HUScheduleDateEditorItemModule *)self isNeverOptionSelected]^ 1];
-  v4 = [MEMORY[0x277CBEAA8] distantFuture];
-  [(HUScheduleDateEditorItemModule *)self setEditedDate:v4];
+  distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+  [(HUScheduleDateEditorItemModule *)self setEditedDate:distantFuture];
 
-  v9 = [(HFItemModule *)self itemUpdater];
+  itemUpdater = [(HFItemModule *)self itemUpdater];
   v5 = MEMORY[0x277D14788];
-  v6 = [(HUScheduleDateEditorItemModule *)self itemProviders];
-  v7 = [v5 requestToReloadItemProviders:v6 senderSelector:a2];
-  v8 = [v9 performItemUpdateRequest:v7];
+  itemProviders = [(HUScheduleDateEditorItemModule *)self itemProviders];
+  v7 = [v5 requestToReloadItemProviders:itemProviders senderSelector:a2];
+  v8 = [itemUpdater performItemUpdateRequest:v7];
 }
 
 - (void)updateToSpecificDateOption
@@ -302,22 +302,22 @@ id __53__HUScheduleDateEditorItemModule__buildItemProviders__block_invoke_4(uint
     }
 
     [(HUScheduleDateEditorItemModule *)self setIsNeverOptionSelected:0];
-    v4 = [(HUScheduleDateEditorItemModule *)self isNeverOptionSelected];
+    isNeverOptionSelected = [(HUScheduleDateEditorItemModule *)self isNeverOptionSelected];
   }
 
   else
   {
     [(HUScheduleDateEditorItemModule *)self setIsTodayOptionSelected:0];
-    v4 = [(HUScheduleDateEditorItemModule *)self isTodayOptionSelected];
+    isNeverOptionSelected = [(HUScheduleDateEditorItemModule *)self isTodayOptionSelected];
   }
 
-  [(HUScheduleDateEditorItemModule *)self setIsSpecificDateOptionSelected:!v4];
+  [(HUScheduleDateEditorItemModule *)self setIsSpecificDateOptionSelected:!isNeverOptionSelected];
 LABEL_6:
-  v9 = [(HFItemModule *)self itemUpdater];
+  itemUpdater = [(HFItemModule *)self itemUpdater];
   v5 = MEMORY[0x277D14788];
-  v6 = [(HUScheduleDateEditorItemModule *)self itemProviders];
-  v7 = [v5 requestToReloadItemProviders:v6 senderSelector:a2];
-  v8 = [v9 performItemUpdateRequest:v7];
+  itemProviders = [(HUScheduleDateEditorItemModule *)self itemProviders];
+  v7 = [v5 requestToReloadItemProviders:itemProviders senderSelector:a2];
+  v8 = [itemUpdater performItemUpdateRequest:v7];
 }
 
 - (void)_configureSelectedOptions
@@ -329,25 +329,25 @@ LABEL_6:
       return;
     }
 
-    v3 = [MEMORY[0x277CBEAA8] distantFuture];
-    v4 = [(HUScheduleDateEditorItemModule *)self existingDate];
-    v5 = [v3 isEqualToDate:v4];
+    distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+    existingDate = [(HUScheduleDateEditorItemModule *)self existingDate];
+    v5 = [distantFuture isEqualToDate:existingDate];
 
     [(HUScheduleDateEditorItemModule *)self setIsNeverOptionSelected:v5];
-    v6 = [(HUScheduleDateEditorItemModule *)self isNeverOptionSelected];
+    isNeverOptionSelected = [(HUScheduleDateEditorItemModule *)self isNeverOptionSelected];
   }
 
   else
   {
-    v7 = [MEMORY[0x277CBEAA8] hf_sharedCalendar];
-    v8 = [(HUScheduleDateEditorItemModule *)self existingDate];
-    v9 = [v7 isDateInToday:v8];
+    hf_sharedCalendar = [MEMORY[0x277CBEAA8] hf_sharedCalendar];
+    existingDate2 = [(HUScheduleDateEditorItemModule *)self existingDate];
+    v9 = [hf_sharedCalendar isDateInToday:existingDate2];
 
     [(HUScheduleDateEditorItemModule *)self setIsTodayOptionSelected:v9];
-    v6 = [(HUScheduleDateEditorItemModule *)self isTodayOptionSelected];
+    isNeverOptionSelected = [(HUScheduleDateEditorItemModule *)self isTodayOptionSelected];
   }
 
-  [(HUScheduleDateEditorItemModule *)self setIsSpecificDateOptionSelected:!v6];
+  [(HUScheduleDateEditorItemModule *)self setIsSpecificDateOptionSelected:!isNeverOptionSelected];
 }
 
 @end

@@ -1,5 +1,5 @@
 @interface WFHomeAccessoryAction
-- (BOOL)setParameterState:(id)a3 forKey:(id)a4;
+- (BOOL)setParameterState:(id)state forKey:(id)key;
 - (HMHome)home;
 - (NSArray)actionSets;
 - (NSArray)shortcutsDictionaryRepresentations;
@@ -7,18 +7,18 @@
 - (id)homeName;
 - (id)localizedSummaryText;
 - (void)dealloc;
-- (void)homeManagerDidUpdateHomes:(id)a3;
+- (void)homeManagerDidUpdateHomes:(id)homes;
 - (void)initializeParameters;
-- (void)localizedParameterSummaryWithCompletion:(id)a3;
+- (void)localizedParameterSummaryWithCompletion:(id)completion;
 - (void)performHomeAccessoryAction;
-- (void)runAsynchronouslyWithInput:(id)a3;
-- (void)wasAddedToWorkflow:(id)a3;
-- (void)wasAddedToWorkflowByUser:(id)a3;
+- (void)runAsynchronouslyWithInput:(id)input;
+- (void)wasAddedToWorkflow:(id)workflow;
+- (void)wasAddedToWorkflowByUser:(id)user;
 @end
 
 @implementation WFHomeAccessoryAction
 
-- (void)homeManagerDidUpdateHomes:(id)a3
+- (void)homeManagerDidUpdateHomes:(id)homes
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -30,12 +30,12 @@
 
 - (id)localizedSummaryText
 {
-  v3 = [(WFHomeAccessoryAction *)self home];
-  if (v3)
+  home = [(WFHomeAccessoryAction *)self home];
+  if (home)
   {
     v4 = objc_alloc(getHFTriggerActionSetsBuilderClass_35823());
-    v5 = [(WFHomeAccessoryAction *)self actionSets];
-    v6 = [v4 initWithActionSets:v5 inHome:v3];
+    actionSets = [(WFHomeAccessoryAction *)self actionSets];
+    v6 = [v4 initWithActionSets:actionSets inHome:home];
   }
 
   else
@@ -43,35 +43,35 @@
     v6 = 0;
   }
 
-  v7 = [v6 actionSetsSummary];
-  v8 = [v7 summaryText];
+  actionSetsSummary = [v6 actionSetsSummary];
+  summaryText = [actionSetsSummary summaryText];
 
-  if ([v8 length])
+  if ([summaryText length])
   {
     v9 = MEMORY[0x1E696AEC0];
     v10 = WFLocalizedString(@"Set %@");
-    v11 = [v9 stringWithFormat:v10, v8];
+    localizedName = [v9 stringWithFormat:v10, summaryText];
   }
 
   else
   {
-    v11 = [(WFAction *)self localizedName];
+    localizedName = [(WFAction *)self localizedName];
   }
 
-  return v11;
+  return localizedName;
 }
 
-- (void)localizedParameterSummaryWithCompletion:(id)a3
+- (void)localizedParameterSummaryWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = +[WFHomeManager sharedManager];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __65__WFHomeAccessoryAction_localizedParameterSummaryWithCompletion___block_invoke;
   v7[3] = &unk_1E837E1F8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   [v5 ensureHomesAreLoadedWithCompletionHandler:v7];
 }
 
@@ -84,18 +84,18 @@ void __65__WFHomeAccessoryAction_localizedParameterSummaryWithCompletion___block
 
 - (id)homeName
 {
-  v2 = [(WFHomeAccessoryAction *)self home];
-  v3 = [v2 name];
+  home = [(WFHomeAccessoryAction *)self home];
+  name = [home name];
 
-  return v3;
+  return name;
 }
 
 - (void)performHomeAccessoryAction
 {
   v25 = *MEMORY[0x1E69E9840];
   v12 = [(WFAction *)self parameterStateForKey:@"WFHomeTriggerActionSets"];
-  v2 = [v12 home];
-  v3 = [v12 actionSets];
+  home = [v12 home];
+  actionSets = [v12 actionSets];
   v4 = dispatch_group_create();
   v22[0] = 0;
   v22[1] = v22;
@@ -107,7 +107,7 @@ void __65__WFHomeAccessoryAction_localizedParameterSummaryWithCompletion___block
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  obj = v3;
+  obj = actionSets;
   v5 = [obj countByEnumeratingWithState:&v18 objects:v24 count:16];
   if (v5)
   {
@@ -130,7 +130,7 @@ void __65__WFHomeAccessoryAction_localizedParameterSummaryWithCompletion___block
         v15[3] = &unk_1E8378A38;
         v17 = v22;
         v16 = v4;
-        [v2 executeActionSet:v8 completionHandler:v15];
+        [home executeActionSet:v8 completionHandler:v15];
 
         ++v7;
       }
@@ -194,7 +194,7 @@ void __51__WFHomeAccessoryAction_performHomeAccessoryAction__block_invoke(uint64
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)runAsynchronouslyWithInput:(id)a3
+- (void)runAsynchronouslyWithInput:(id)input
 {
   v4 = +[WFHomeManager sharedManager];
   v5[0] = MEMORY[0x1E69E9820];
@@ -401,13 +401,13 @@ void __52__WFHomeAccessoryAction_runAsynchronouslyWithInput___block_invoke_4(uin
   [v1 finishRunningWithError:v2];
 }
 
-- (BOOL)setParameterState:(id)a3 forKey:(id)a4
+- (BOOL)setParameterState:(id)state forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 isEqualToString:@"WFHome"])
+  stateCopy = state;
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"WFHome"])
   {
-    v8 = v6;
+    v8 = stateCopy;
     if (v8)
     {
       objc_opt_class();
@@ -429,12 +429,12 @@ void __52__WFHomeAccessoryAction_runAsynchronouslyWithInput___block_invoke_4(uin
 
     v11 = v9;
 
-    v12 = [v11 value];
+    value = [v11 value];
 
-    if (v12)
+    if (value)
     {
       v13 = [WFHFTriggerActionSetsBuilderParameterState alloc];
-      v14 = [(WFHFTriggerActionSetsBuilderParameterState *)v13 initWithActionSets:MEMORY[0x1E695E0F0] homeIdentifier:v12];
+      v14 = [(WFHFTriggerActionSetsBuilderParameterState *)v13 initWithActionSets:MEMORY[0x1E695E0F0] homeIdentifier:value];
       v10 = [(WFHomeAccessoryAction *)self setParameterState:v14 forKey:@"WFHomeTriggerActionSets"];
     }
 
@@ -448,7 +448,7 @@ void __52__WFHomeAccessoryAction_runAsynchronouslyWithInput___block_invoke_4(uin
   {
     v16.receiver = self;
     v16.super_class = WFHomeAccessoryAction;
-    v10 = [(WFAction *)&v16 setParameterState:v6 forKey:v7];
+    v10 = [(WFAction *)&v16 setParameterState:stateCopy forKey:keyCopy];
   }
 
   return v10;
@@ -457,17 +457,17 @@ void __52__WFHomeAccessoryAction_runAsynchronouslyWithInput___block_invoke_4(uin
 - (NSArray)shortcutsDictionaryRepresentations
 {
   v2 = [(WFAction *)self parameterStateForKey:@"WFHomeTriggerActionSets"];
-  v3 = [v2 serializedActionSets];
+  serializedActionSets = [v2 serializedActionSets];
 
-  return v3;
+  return serializedActionSets;
 }
 
 - (NSString)homeIdentifier
 {
   v2 = [(WFAction *)self parameterStateForKey:@"WFHomeTriggerActionSets"];
-  v3 = [v2 homeIdentifier];
+  homeIdentifier = [v2 homeIdentifier];
 
-  return v3;
+  return homeIdentifier;
 }
 
 - (NSArray)actionSets
@@ -480,15 +480,15 @@ void __52__WFHomeAccessoryAction_runAsynchronouslyWithInput___block_invoke_4(uin
   {
     if (v5)
     {
-      v6 = [v3 actionSets];
+      actionSets = [v3 actionSets];
       v21 = 136315394;
       v22 = "[WFHomeAccessoryAction actionSets]";
       v23 = 2112;
-      v24 = v6;
+      v24 = actionSets;
       _os_log_impl(&dword_1CA256000, v4, OS_LOG_TYPE_DEBUG, "%s Retrieved action sets from parameter state: %@", &v21, 0x16u);
     }
 
-    v7 = [v3 actionSets];
+    actionSets2 = [v3 actionSets];
   }
 
   else
@@ -503,7 +503,7 @@ void __52__WFHomeAccessoryAction_runAsynchronouslyWithInput___block_invoke_4(uin
     v8 = [(WFAction *)self supplementalParameterValueForKey:@"WFHomeName" ofClass:objc_opt_class()];
     v9 = [(WFAction *)self supplementalParameterValueForKey:@"WFHomeSceneName" ofClass:objc_opt_class()];
     v10 = v9;
-    v7 = 0;
+    actionSets2 = 0;
     if (v8 && v9)
     {
       v11 = +[WFHomeManager sharedManager];
@@ -516,17 +516,17 @@ void __52__WFHomeAccessoryAction_runAsynchronouslyWithInput___block_invoke_4(uin
 
         if (v14 && (v25[0] = v14, [MEMORY[0x1E695DEC8] arrayWithObjects:v25 count:1], (v15 = objc_claimAutoreleasedReturnValue()) != 0))
         {
-          v7 = v15;
+          actionSets2 = v15;
           v16 = [WFHFTriggerActionSetsBuilderParameterState alloc];
           v17 = WFSerializableHomeIdentifier(v12);
-          v18 = [(WFHFTriggerActionSetsBuilderParameterState *)v16 initWithActionSets:v7 homeIdentifier:v17];
+          v18 = [(WFHFTriggerActionSetsBuilderParameterState *)v16 initWithActionSets:actionSets2 homeIdentifier:v17];
           [(WFHomeAccessoryAction *)self setParameterState:v18 forKey:@"WFHomeTriggerActionSets"];
         }
 
         else
         {
           [(WFHomeAccessoryAction *)self setParameterState:0 forKey:@"WFHomeTriggerActionSets"];
-          v7 = 0;
+          actionSets2 = 0;
         }
 
         [(WFAction *)self setSupplementalParameterValue:0 forKey:@"WFHomeName"];
@@ -535,41 +535,41 @@ void __52__WFHomeAccessoryAction_runAsynchronouslyWithInput___block_invoke_4(uin
 
       else
       {
-        v7 = 0;
+        actionSets2 = 0;
       }
     }
   }
 
   v19 = *MEMORY[0x1E69E9840];
 
-  return v7;
+  return actionSets2;
 }
 
 - (HMHome)home
 {
   v2 = [(WFAction *)self parameterStateForKey:@"WFHomeTriggerActionSets"];
-  v3 = [v2 home];
+  home = [v2 home];
 
-  return v3;
+  return home;
 }
 
-- (void)wasAddedToWorkflow:(id)a3
+- (void)wasAddedToWorkflow:(id)workflow
 {
-  v4 = a3;
+  workflowCopy = workflow;
   v7.receiver = self;
   v7.super_class = WFHomeAccessoryAction;
-  [(WFAction *)&v7 wasAddedToWorkflow:v4];
+  [(WFAction *)&v7 wasAddedToWorkflow:workflowCopy];
   v5 = [(WFAction *)self parameterForKey:@"WFHome"];
-  v6 = [v4 environment] == 2 || objc_msgSend(v4, "environment") == 1;
+  v6 = [workflowCopy environment] == 2 || objc_msgSend(workflowCopy, "environment") == 1;
   [v5 setHidden:v6];
 }
 
-- (void)wasAddedToWorkflowByUser:(id)a3
+- (void)wasAddedToWorkflowByUser:(id)user
 {
-  v4 = a3;
-  v5 = [(WFHomeAccessoryAction *)self home];
+  userCopy = user;
+  home = [(WFHomeAccessoryAction *)self home];
 
-  if (!v5)
+  if (!home)
   {
     v6 = +[WFHomeManager sharedManager];
     v8[0] = MEMORY[0x1E69E9820];
@@ -582,7 +582,7 @@ void __52__WFHomeAccessoryAction_runAsynchronouslyWithInput___block_invoke_4(uin
 
   v7.receiver = self;
   v7.super_class = WFHomeAccessoryAction;
-  [(WFAction *)&v7 wasAddedToWorkflowByUser:v4];
+  [(WFAction *)&v7 wasAddedToWorkflowByUser:userCopy];
 }
 
 void __50__WFHomeAccessoryAction_wasAddedToWorkflowByUser___block_invoke(uint64_t a1)

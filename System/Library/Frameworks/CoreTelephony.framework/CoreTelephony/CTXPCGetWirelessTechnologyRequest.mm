@@ -1,21 +1,21 @@
 @interface CTXPCGetWirelessTechnologyRequest
-- (void)performRequestWithHandler:(id)a3 completionHandler:(id)a4;
+- (void)performRequestWithHandler:(id)handler completionHandler:(id)completionHandler;
 @end
 
 @implementation CTXPCGetWirelessTechnologyRequest
 
-- (void)performRequestWithHandler:(id)a3 completionHandler:(id)a4
+- (void)performRequestWithHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CTXPCSubscriptionContextRequest *)self context];
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  context = [(CTXPCSubscriptionContextRequest *)self context];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __81__CTXPCGetWirelessTechnologyRequest_performRequestWithHandler_completionHandler___block_invoke;
   v10[3] = &unk_1E6A45F28;
-  v9 = v7;
+  v9 = completionHandlerCopy;
   v11 = v9;
-  [v6 copyWirelessTechnology:v8 completion:v10];
+  [handlerCopy copyWirelessTechnology:context completion:v10];
 }
 
 void __81__CTXPCGetWirelessTechnologyRequest_performRequestWithHandler_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3)

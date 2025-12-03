@@ -1,73 +1,73 @@
 @interface TSSubFlowViewController
 - (TSSIMSetupFlowDelegate)delegate;
-- (TSSubFlowViewController)initWithFlow:(id)a3 navigationController:(id)a4 delegate:(id)a5;
-- (TSSubFlowViewController)initWithOptions:(id)a3 navigationController:(id)a4 delegate:(id)a5;
+- (TSSubFlowViewController)initWithFlow:(id)flow navigationController:(id)controller delegate:(id)delegate;
+- (TSSubFlowViewController)initWithOptions:(id)options navigationController:(id)controller delegate:(id)delegate;
 - (UIViewController)prevViewController;
 - (void)_presentFirstViewController;
-- (void)prepare:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)simSetupFlowCompleted:(unint64_t)a3;
-- (void)takeScreenShot:(id)a3;
+- (void)prepare:(id)prepare;
+- (void)setDelegate:(id)delegate;
+- (void)simSetupFlowCompleted:(unint64_t)completed;
+- (void)takeScreenShot:(id)shot;
 - (void)viewDidLoad;
 @end
 
 @implementation TSSubFlowViewController
 
-- (TSSubFlowViewController)initWithOptions:(id)a3 navigationController:(id)a4 delegate:(id)a5
+- (TSSubFlowViewController)initWithOptions:(id)options navigationController:(id)controller delegate:(id)delegate
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [TSSIMSetupFlow flowWithOptions:a3];
-  v11 = [(TSSubFlowViewController *)self initWithFlow:v10 navigationController:v9 delegate:v8];
+  delegateCopy = delegate;
+  controllerCopy = controller;
+  v10 = [TSSIMSetupFlow flowWithOptions:options];
+  v11 = [(TSSubFlowViewController *)self initWithFlow:v10 navigationController:controllerCopy delegate:delegateCopy];
 
   return v11;
 }
 
-- (TSSubFlowViewController)initWithFlow:(id)a3 navigationController:(id)a4 delegate:(id)a5
+- (TSSubFlowViewController)initWithFlow:(id)flow navigationController:(id)controller delegate:(id)delegate
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  flowCopy = flow;
+  controllerCopy = controller;
+  delegateCopy = delegate;
   v16.receiver = self;
   v16.super_class = TSSubFlowViewController;
   v12 = [(TSSubFlowViewController *)&v16 initWithTitle:&stru_28753DF48 detailText:0 icon:0];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_subFlow, a3);
+    objc_storeStrong(&v12->_subFlow, flow);
     [(TSSIMSetupFlow *)v13->_subFlow setDelegate:v13];
-    v13->_subFlowType = [v9 flowType];
-    [(TSSIMSetupFlow *)v13->_subFlow setNavigationController:v10];
+    v13->_subFlowType = [flowCopy flowType];
+    [(TSSIMSetupFlow *)v13->_subFlow setNavigationController:controllerCopy];
     v13->_isViewControllerPresenting = 0;
     v13->_isViewControllerPresented = 0;
-    [(TSSIMSetupFlow *)v13->_subFlow setParentFlow:v11];
-    objc_storeWeak(&v13->_delegate, v11);
+    [(TSSIMSetupFlow *)v13->_subFlow setParentFlow:delegateCopy];
+    objc_storeWeak(&v13->_delegate, delegateCopy);
     v14 = v13;
   }
 
   return v13;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (WeakRetained)
   {
     v6 = WeakRetained;
     v7 = objc_loadWeakRetained(&self->_delegate);
 
-    if (v7 != v4)
+    if (v7 != delegateCopy)
     {
       v8 = _TSLogDomain();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_FAULT))
       {
-        [(TSSubFlowViewController *)v4 setDelegate:v8];
+        [(TSSubFlowViewController *)delegateCopy setDelegate:v8];
       }
     }
   }
 
-  objc_storeWeak(&self->_delegate, v4);
+  objc_storeWeak(&self->_delegate, delegateCopy);
 }
 
 - (TSSIMSetupFlowDelegate)delegate
@@ -77,13 +77,13 @@
   return WeakRetained;
 }
 
-- (void)takeScreenShot:(id)a3
+- (void)takeScreenShot:(id)shot
 {
-  v4 = a3;
-  objc_storeWeak(&self->_prevViewController, v4);
-  v7 = [v4 view];
+  shotCopy = shot;
+  objc_storeWeak(&self->_prevViewController, shotCopy);
+  view = [shotCopy view];
 
-  v5 = [v7 snapshotViewAfterScreenUpdates:0];
+  v5 = [view snapshotViewAfterScreenUpdates:0];
   snapshot = self->_snapshot;
   self->_snapshot = v5;
 }
@@ -95,8 +95,8 @@
   [(TSOBWelcomeController *)&v5 viewDidLoad];
   if (self->_snapshot)
   {
-    v3 = [(TSSubFlowViewController *)self view];
-    [v3 addSubview:self->_snapshot];
+    view = [(TSSubFlowViewController *)self view];
+    [view addSubview:self->_snapshot];
   }
 
   if ((_os_feature_enabled_impl() & 1) == 0)
@@ -104,8 +104,8 @@
     [(TSSubFlowViewController *)self _presentFirstViewController];
   }
 
-  v4 = [(OBBaseWelcomeController *)self navigationItem];
-  [v4 setHidesBackButton:1 animated:0];
+  navigationItem = [(OBBaseWelcomeController *)self navigationItem];
+  [navigationItem setHidesBackButton:1 animated:0];
 }
 
 - (void)_presentFirstViewController
@@ -115,9 +115,9 @@
   {
     if (!self->_isViewControllerPresenting)
     {
-      v3 = [(TSSubFlowViewController *)self navigationController];
+      navigationController = [(TSSubFlowViewController *)self navigationController];
 
-      if (v3)
+      if (navigationController)
       {
         self->_isViewControllerPresenting = 1;
         v4 = _TSLogDomain();
@@ -131,8 +131,8 @@
           _os_log_impl(&dword_262AA8000, v4, OS_LOG_TYPE_DEFAULT, "presenting : %@ @%s", &v8, 0x16u);
         }
 
-        v6 = [(TSSubFlowViewController *)self navigationController];
-        [v6 pushViewController:self->_firstViewController animated:1];
+        navigationController2 = [(TSSubFlowViewController *)self navigationController];
+        [navigationController2 pushViewController:self->_firstViewController animated:1];
       }
     }
   }
@@ -140,10 +140,10 @@
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)prepare:(id)a3
+- (void)prepare:(id)prepare
 {
-  v4 = a3;
-  v5 = v4;
+  prepareCopy = prepare;
+  v5 = prepareCopy;
   if (self->_subFlow)
   {
     objc_initWeak(&location, self);
@@ -153,14 +153,14 @@
     {
       self->_usingFirstViewControllerParadigm = 0;
       v7 = self->_subFlow;
-      v8 = [(TSSIMSetupFlow *)v7 navigationController];
-      v9 = [v8 topViewController];
+      navigationController = [(TSSIMSetupFlow *)v7 navigationController];
+      topViewController = [navigationController topViewController];
       v15[0] = MEMORY[0x277D85DD0];
       v15[1] = 3221225472;
       v15[2] = __35__TSSubFlowViewController_prepare___block_invoke;
       v15[3] = &unk_279B45618;
       v16 = v5;
-      [(TSSIMSetupFlow *)v7 showFirstViewControllerWithHostController:v9 completion:v15];
+      [(TSSIMSetupFlow *)v7 showFirstViewControllerWithHostController:topViewController completion:v15];
       v10 = &v16;
     }
 
@@ -184,7 +184,7 @@
 
   else
   {
-    (*(v4 + 2))(v4, 0);
+    (*(prepareCopy + 2))(prepareCopy, 0);
   }
 }
 
@@ -200,27 +200,27 @@ void __35__TSSubFlowViewController_prepare___block_invoke_2(uint64_t a1, void *a
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)simSetupFlowCompleted:(unint64_t)a3
+- (void)simSetupFlowCompleted:(unint64_t)completed
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = [(TSSubFlowViewController *)self subFlow];
-  v6 = [v5 parentFlow];
-  if (v6)
+  subFlow = [(TSSubFlowViewController *)self subFlow];
+  parentFlow = [subFlow parentFlow];
+  if (parentFlow)
   {
-    v7 = v6;
-    v8 = [(TSSubFlowViewController *)self subFlow];
-    v9 = [v8 parentFlow];
+    v7 = parentFlow;
+    subFlow2 = [(TSSubFlowViewController *)self subFlow];
+    parentFlow2 = [subFlow2 parentFlow];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
-    if (v9 == WeakRetained)
+    if (parentFlow2 == WeakRetained)
     {
       goto LABEL_6;
     }
 
-    v5 = _TSLogDomain();
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))
+    subFlow = _TSLogDomain();
+    if (os_log_type_enabled(subFlow, OS_LOG_TYPE_FAULT))
     {
-      [(TSSubFlowViewController *)self simSetupFlowCompleted:v5];
+      [(TSSubFlowViewController *)self simSetupFlowCompleted:subFlow];
     }
   }
 
@@ -233,7 +233,7 @@ LABEL_6:
     v17 = 138413058;
     v18 = subFlow;
     v19 = 2048;
-    v20 = a3;
+    completedCopy = completed;
     v21 = 2112;
     v22 = v13;
     v23 = 2080;
@@ -241,14 +241,14 @@ LABEL_6:
     _os_log_impl(&dword_262AA8000, v11, OS_LOG_TYPE_DEFAULT, "sub flow %@ completed with type:%ld, delegate: %@ @%s", &v17, 0x2Au);
   }
 
-  if (a3 == 3)
+  if (completed == 3)
   {
     v14 = objc_loadWeakRetained(&self->_delegate);
     [v14 attemptFailed];
     goto LABEL_17;
   }
 
-  if (a3 == 2)
+  if (completed == 2)
   {
 LABEL_16:
     v14 = objc_loadWeakRetained(&self->_delegate);
@@ -256,7 +256,7 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  if (a3 != 1)
+  if (completed != 1)
   {
     v15 = _TSLogDomain();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_FAULT))

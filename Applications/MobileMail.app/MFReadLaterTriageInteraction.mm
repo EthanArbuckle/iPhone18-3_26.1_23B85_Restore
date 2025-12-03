@@ -1,81 +1,81 @@
 @interface MFReadLaterTriageInteraction
-+ (id)interactionWithMessageListItemSelection:(id)a3 undoManager:(id)a4 origin:(int64_t)a5 actor:(int64_t)a6;
-+ (id)interactionWithMessageListItemSelection:(id)a3 undoManager:(id)a4 origin:(int64_t)a5 actor:(int64_t)a6 state:(id)a7;
-+ (id)interactionWithMessageListItems:(id)a3 undoManager:(id)a4 origin:(int64_t)a5 actor:(int64_t)a6;
-+ (id)interactionWithMessageListItems:(id)a3 undoManager:(id)a4 origin:(int64_t)a5 actor:(int64_t)a6 state:(id)a7;
-+ (id)localizedStringForAction:(int64_t)a3;
-+ (id)mailMenuCommandsWithSelector:(SEL)a3;
++ (id)interactionWithMessageListItemSelection:(id)selection undoManager:(id)manager origin:(int64_t)origin actor:(int64_t)actor;
++ (id)interactionWithMessageListItemSelection:(id)selection undoManager:(id)manager origin:(int64_t)origin actor:(int64_t)actor state:(id)state;
++ (id)interactionWithMessageListItems:(id)items undoManager:(id)manager origin:(int64_t)origin actor:(int64_t)actor;
++ (id)interactionWithMessageListItems:(id)items undoManager:(id)manager origin:(int64_t)origin actor:(int64_t)actor state:(id)state;
++ (id)localizedStringForAction:(int64_t)action;
++ (id)mailMenuCommandsWithSelector:(SEL)selector;
 - (BOOL)hasReadLater;
 - (BOOL)isPresentCustom;
 - (BOOL)isRemoveReadLater;
 - (BOOL)messagesHaveReadLaterSet;
 - (MFReadLaterTriageInteraction)init;
 - (NSDate)selectedDate;
-- (id)_alertControllerWithCompletion:(id)a3;
+- (id)_alertControllerWithCompletion:(id)completion;
 - (id)_iconImageName;
 - (id)_initialReadLaterDate;
-- (id)_menuWithPreparation:(id)a3 completion:(id)a4;
+- (id)_menuWithPreparation:(id)preparation completion:(id)completion;
 - (id)color;
-- (id)menuWithCompletion:(id)a3;
+- (id)menuWithCompletion:(id)completion;
 - (id)shortTitle;
-- (id)swipeActionWithPreparation:(id)a3 completion:(id)a4;
+- (id)swipeActionWithPreparation:(id)preparation completion:(id)completion;
 - (id)title;
 - (id)triageAction;
-- (void)_performInteractionAfterPreparation:(id)a3 completion:(id)a4;
-- (void)_presentCustomDatePickerWithPreparation:(id)a3 completion:(id)a4;
-- (void)datePickerViewController:(id)a3 didSelectDate:(id)a4;
-- (void)datePickerViewControllerDidDeleteDate:(id)a3;
-- (void)performReadLaterAction:(int64_t)a3 preparation:(id)a4 completion:(id)a5;
+- (void)_performInteractionAfterPreparation:(id)preparation completion:(id)completion;
+- (void)_presentCustomDatePickerWithPreparation:(id)preparation completion:(id)completion;
+- (void)datePickerViewController:(id)controller didSelectDate:(id)date;
+- (void)datePickerViewControllerDidDeleteDate:(id)date;
+- (void)performReadLaterAction:(int64_t)action preparation:(id)preparation completion:(id)completion;
 @end
 
 @implementation MFReadLaterTriageInteraction
 
-+ (id)interactionWithMessageListItems:(id)a3 undoManager:(id)a4 origin:(int64_t)a5 actor:(int64_t)a6
++ (id)interactionWithMessageListItems:(id)items undoManager:(id)manager origin:(int64_t)origin actor:(int64_t)actor
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = [_TtC10MobileMail33MFReadLaterTriageInteractionState stateWithMessageListItems:v9];
-  v12 = [MFReadLaterTriageInteraction interactionWithMessageListItems:v9 undoManager:v10 origin:a5 actor:a6 state:v11];
+  itemsCopy = items;
+  managerCopy = manager;
+  v11 = [_TtC10MobileMail33MFReadLaterTriageInteractionState stateWithMessageListItems:itemsCopy];
+  v12 = [MFReadLaterTriageInteraction interactionWithMessageListItems:itemsCopy undoManager:managerCopy origin:origin actor:actor state:v11];
 
   return v12;
 }
 
-+ (id)interactionWithMessageListItemSelection:(id)a3 undoManager:(id)a4 origin:(int64_t)a5 actor:(int64_t)a6
++ (id)interactionWithMessageListItemSelection:(id)selection undoManager:(id)manager origin:(int64_t)origin actor:(int64_t)actor
 {
-  v11 = a3;
-  v12 = a4;
-  if ([v11 isSelectAll])
+  selectionCopy = selection;
+  managerCopy = manager;
+  if ([selectionCopy isSelectAll])
   {
     v17 = +[NSAssertionHandler currentHandler];
-    [v17 handleFailureInMethod:a2 object:a1 file:@"MFReadLaterTriageInteraction.m" lineNumber:37 description:@"Select all is not supported"];
+    [v17 handleFailureInMethod:a2 object:self file:@"MFReadLaterTriageInteraction.m" lineNumber:37 description:@"Select all is not supported"];
   }
 
-  v13 = [v11 messageListItems];
-  v14 = [_TtC10MobileMail33MFReadLaterTriageInteractionState stateWithMessageListItems:v13];
+  messageListItems = [selectionCopy messageListItems];
+  v14 = [_TtC10MobileMail33MFReadLaterTriageInteractionState stateWithMessageListItems:messageListItems];
 
-  v15 = [MFReadLaterTriageInteraction interactionWithMessageListItemSelection:v11 undoManager:v12 origin:a5 actor:a6 state:v14];
+  v15 = [MFReadLaterTriageInteraction interactionWithMessageListItemSelection:selectionCopy undoManager:managerCopy origin:origin actor:actor state:v14];
 
   return v15;
 }
 
-+ (id)interactionWithMessageListItems:(id)a3 undoManager:(id)a4 origin:(int64_t)a5 actor:(int64_t)a6 state:(id)a7
++ (id)interactionWithMessageListItems:(id)items undoManager:(id)manager origin:(int64_t)origin actor:(int64_t)actor state:(id)state
 {
-  v12 = a7;
-  v15.receiver = a1;
+  stateCopy = state;
+  v15.receiver = self;
   v15.super_class = &OBJC_METACLASS___MFReadLaterTriageInteraction;
-  v13 = objc_msgSendSuper2(&v15, "interactionWithMessageListItems:undoManager:origin:actor:", a3, a4, a5, a6);
-  [v13 setState:v12];
+  v13 = objc_msgSendSuper2(&v15, "interactionWithMessageListItems:undoManager:origin:actor:", items, manager, origin, actor);
+  [v13 setState:stateCopy];
 
   return v13;
 }
 
-+ (id)interactionWithMessageListItemSelection:(id)a3 undoManager:(id)a4 origin:(int64_t)a5 actor:(int64_t)a6 state:(id)a7
++ (id)interactionWithMessageListItemSelection:(id)selection undoManager:(id)manager origin:(int64_t)origin actor:(int64_t)actor state:(id)state
 {
-  v12 = a7;
-  v15.receiver = a1;
+  stateCopy = state;
+  v15.receiver = self;
   v15.super_class = &OBJC_METACLASS___MFReadLaterTriageInteraction;
-  v13 = objc_msgSendSuper2(&v15, "interactionWithMessageListItemSelection:undoManager:origin:actor:", a3, a4, a5, a6);
-  [v13 setState:v12];
+  v13 = objc_msgSendSuper2(&v15, "interactionWithMessageListItemSelection:undoManager:origin:actor:", selection, manager, origin, actor);
+  [v13 setState:stateCopy];
 
   return v13;
 }
@@ -93,9 +93,9 @@
   return result;
 }
 
-- (id)_alertControllerWithCompletion:(id)a3
+- (id)_alertControllerWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = _EFLocalizedString();
   v6 = [UIAlertController alertControllerWithTitle:v5 message:0 preferredStyle:0];
 
@@ -106,8 +106,8 @@
   v12[3] = &unk_100655458;
   v7 = v6;
   v13 = v7;
-  v14 = self;
-  v8 = v4;
+  selfCopy = self;
+  v8 = completionCopy;
   v15 = v8;
   v9 = objc_retainBlock(v12);
   if ([EMInternalPreferences preferenceEnabled:15])
@@ -129,13 +129,13 @@
   return v7;
 }
 
-+ (id)mailMenuCommandsWithSelector:(SEL)a3
++ (id)mailMenuCommandsWithSelector:(SEL)selector
 {
   v7 = _NSConcreteStackBlock;
   v8 = 3221225472;
   v9 = sub_1002087B8;
   v10 = &unk_100653788;
-  v12 = a3;
+  selectorCopy = selector;
   v3 = objc_alloc_init(NSMutableArray);
   v11 = v3;
   v4 = objc_retainBlock(&v7);
@@ -158,25 +158,25 @@
   return v5;
 }
 
-- (id)menuWithCompletion:(id)a3
+- (id)menuWithCompletion:(id)completion
 {
-  v3 = [(MFReadLaterTriageInteraction *)self _menuWithPreparation:0 completion:a3];
+  v3 = [(MFReadLaterTriageInteraction *)self _menuWithPreparation:0 completion:completion];
 
   return v3;
 }
 
-- (id)_menuWithPreparation:(id)a3 completion:(id)a4
+- (id)_menuWithPreparation:(id)preparation completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  preparationCopy = preparation;
+  completionCopy = completion;
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_100208C24;
   v20[3] = &unk_1006554A8;
   v20[4] = self;
-  v8 = v6;
+  v8 = preparationCopy;
   v21 = v8;
-  v9 = v7;
+  v9 = completionCopy;
   v22 = v9;
   v10 = objc_retainBlock(v20);
   v11 = objc_alloc_init(NSMutableArray);
@@ -207,53 +207,53 @@
   return v18;
 }
 
-- (void)performReadLaterAction:(int64_t)a3 preparation:(id)a4 completion:(id)a5
+- (void)performReadLaterAction:(int64_t)action preparation:(id)preparation completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [(MFReadLaterTriageInteraction *)self state];
-  [v10 perform:a3];
-  if ([v10 shouldPresentCustomDatePicker])
+  preparationCopy = preparation;
+  completionCopy = completion;
+  state = [(MFReadLaterTriageInteraction *)self state];
+  [state perform:action];
+  if ([state shouldPresentCustomDatePicker])
   {
-    [(MFReadLaterTriageInteraction *)self _presentCustomDatePickerWithPreparation:0 completion:v9];
+    [(MFReadLaterTriageInteraction *)self _presentCustomDatePickerWithPreparation:0 completion:completionCopy];
   }
 
   else
   {
     v11.receiver = self;
     v11.super_class = MFReadLaterTriageInteraction;
-    [(MFTriageInteraction *)&v11 _performInteractionAfterPreparation:v8 completion:v9];
+    [(MFTriageInteraction *)&v11 _performInteractionAfterPreparation:preparationCopy completion:completionCopy];
   }
 }
 
-- (id)swipeActionWithPreparation:(id)a3 completion:(id)a4
+- (id)swipeActionWithPreparation:(id)preparation completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  preparationCopy = preparation;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v8 = [(MFReadLaterTriageInteraction *)self isDestructive];
-  v9 = [(MFReadLaterTriageInteraction *)self shortTitle];
-  v10 = v8;
+  isDestructive = [(MFReadLaterTriageInteraction *)self isDestructive];
+  shortTitle = [(MFReadLaterTriageInteraction *)self shortTitle];
+  v10 = isDestructive;
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_100209108;
   v19[3] = &unk_1006554D0;
   objc_copyWeak(&v22, &location);
-  v11 = v6;
+  v11 = preparationCopy;
   v20 = v11;
-  v12 = v7;
+  v12 = completionCopy;
   v21 = v12;
   v19[4] = self;
-  v13 = [UIContextualAction contextualActionWithStyle:v10 title:v9 handler:v19];
+  v13 = [UIContextualAction contextualActionWithStyle:v10 title:shortTitle handler:v19];
 
-  v14 = [(MFReadLaterTriageInteraction *)self color];
-  [v13 setBackgroundColor:v14];
+  color = [(MFReadLaterTriageInteraction *)self color];
+  [v13 setBackgroundColor:color];
 
-  v15 = [(MFTriageInteraction *)self swipeActionIcon];
-  [v13 setImage:v15];
+  swipeActionIcon = [(MFTriageInteraction *)self swipeActionIcon];
+  [v13 setImage:swipeActionIcon];
 
-  v16 = [(MFReadLaterTriageInteraction *)self state];
-  LODWORD(v10) = [v16 isInitialState];
+  state = [(MFReadLaterTriageInteraction *)self state];
+  LODWORD(v10) = [state isInitialState];
 
   if (v10)
   {
@@ -267,17 +267,17 @@
   return v13;
 }
 
-- (void)_performInteractionAfterPreparation:(id)a3 completion:(id)a4
+- (void)_performInteractionAfterPreparation:(id)preparation completion:(id)completion
 {
-  v6 = a3;
+  preparationCopy = preparation;
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1002092F0;
   v10[3] = &unk_1006554F8;
   v10[4] = self;
-  v7 = a4;
-  v11 = v7;
-  v8 = v6;
+  completionCopy = completion;
+  v11 = completionCopy;
+  v8 = preparationCopy;
   v12 = v8;
   v9 = +[EFScheduler mainThreadScheduler];
   [v9 performBlock:v10];
@@ -289,13 +289,13 @@
   if (!triageAction)
   {
     v4 = [MSReadLaterTriageAction alloc];
-    v5 = [(MFTriageInteraction *)self messageListItemSelection];
-    v6 = [(MFTriageInteraction *)self origin];
-    v7 = [(MFTriageInteraction *)self actor];
-    v8 = [(MFReadLaterTriageInteraction *)self state];
-    v9 = [v8 date];
-    v10 = [v9 ec_integerDate];
-    v11 = [v4 initWithMessageListSelection:v5 origin:v6 actor:v7 delegate:self readLaterDate:v10];
+    messageListItemSelection = [(MFTriageInteraction *)self messageListItemSelection];
+    origin = [(MFTriageInteraction *)self origin];
+    actor = [(MFTriageInteraction *)self actor];
+    state = [(MFReadLaterTriageInteraction *)self state];
+    date = [state date];
+    ec_integerDate = [date ec_integerDate];
+    v11 = [v4 initWithMessageListSelection:messageListItemSelection origin:origin actor:actor delegate:self readLaterDate:ec_integerDate];
     v12 = self->_triageAction;
     self->_triageAction = v11;
 
@@ -305,9 +305,9 @@
   return triageAction;
 }
 
-+ (id)localizedStringForAction:(int64_t)a3
++ (id)localizedStringForAction:(int64_t)action
 {
-  if (a3 > 5)
+  if (action > 5)
   {
     v4 = 0;
   }
@@ -361,9 +361,9 @@
 
   else
   {
-    v4 = [(MFReadLaterTriageInteraction *)self messagesHaveReadLaterSet];
+    messagesHaveReadLaterSet = [(MFReadLaterTriageInteraction *)self messagesHaveReadLaterSet];
     v3 = &MFImageGlyphUpdateReadLater;
-    if (!v4)
+    if (!messagesHaveReadLaterSet)
     {
       v3 = &MFImageGlyphReadLater;
     }
@@ -376,25 +376,25 @@
 
 - (BOOL)hasReadLater
 {
-  v2 = [(MFReadLaterTriageInteraction *)self state];
-  v3 = [v2 hasReadLater];
+  state = [(MFReadLaterTriageInteraction *)self state];
+  hasReadLater = [state hasReadLater];
 
-  return v3;
+  return hasReadLater;
 }
 
 - (BOOL)isRemoveReadLater
 {
-  v2 = [(MFReadLaterTriageInteraction *)self state];
-  v3 = [v2 isRemoveDate];
+  state = [(MFReadLaterTriageInteraction *)self state];
+  isRemoveDate = [state isRemoveDate];
 
-  return v3;
+  return isRemoveDate;
 }
 
 - (BOOL)messagesHaveReadLaterSet
 {
-  v2 = [(MFTriageInteraction *)self messageListItemSelection];
-  v3 = [v2 messageListItems];
-  v4 = [v3 ef_any:&stru_100655518];
+  messageListItemSelection = [(MFTriageInteraction *)self messageListItemSelection];
+  messageListItems = [messageListItemSelection messageListItems];
+  v4 = [messageListItems ef_any:&stru_100655518];
 
   return v4;
 }
@@ -405,10 +405,10 @@
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(MFTriageInteraction *)self messageListItemSelection];
-  v3 = [v2 messageListItems];
+  messageListItemSelection = [(MFTriageInteraction *)self messageListItemSelection];
+  messageListItems = [messageListItemSelection messageListItems];
 
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v4 = [messageListItems countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = *v11;
@@ -418,20 +418,20 @@ LABEL_3:
     {
       if (*v11 != v5)
       {
-        objc_enumerationMutation(v3);
+        objc_enumerationMutation(messageListItems);
       }
 
-      v7 = [*(*(&v10 + 1) + 8 * v6) readLater];
-      v8 = [v7 date];
+      readLater = [*(*(&v10 + 1) + 8 * v6) readLater];
+      date = [readLater date];
 
-      if (v8)
+      if (date)
       {
         break;
       }
 
       if (v4 == ++v6)
       {
-        v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v4 = [messageListItems countByEnumeratingWithState:&v10 objects:v14 count:16];
         if (v4)
         {
           goto LABEL_3;
@@ -445,86 +445,86 @@ LABEL_3:
   else
   {
 LABEL_9:
-    v8 = 0;
+    date = 0;
   }
 
-  return v8;
+  return date;
 }
 
 - (BOOL)isPresentCustom
 {
-  v2 = [(MFReadLaterTriageInteraction *)self state];
-  v3 = [v2 shouldPresentCustomDatePicker];
+  state = [(MFReadLaterTriageInteraction *)self state];
+  shouldPresentCustomDatePicker = [state shouldPresentCustomDatePicker];
 
-  return v3;
+  return shouldPresentCustomDatePicker;
 }
 
-- (void)_presentCustomDatePickerWithPreparation:(id)a3 completion:(id)a4
+- (void)_presentCustomDatePickerWithPreparation:(id)preparation completion:(id)completion
 {
-  v6 = a4;
-  [(MFReadLaterTriageInteraction *)self setDatePickerPreparation:a3];
+  completionCopy = completion;
+  [(MFReadLaterTriageInteraction *)self setDatePickerPreparation:preparation];
   v18 = _NSConcreteStackBlock;
   v19 = 3221225472;
   v20 = sub_100209CB8;
   v21 = &unk_100655540;
-  v7 = self;
-  v22 = v7;
-  v8 = v6;
+  selfCopy = self;
+  v22 = selfCopy;
+  v8 = completionCopy;
   v23 = v8;
-  [(MFReadLaterTriageInteraction *)v7 setDatePickerCompletion:&v18];
+  [(MFReadLaterTriageInteraction *)selfCopy setDatePickerCompletion:&v18];
   v9 = [MFDatePickerViewController alloc];
-  v10 = [(MFReadLaterTriageInteraction *)v7 messagesHaveReadLaterSet:v18];
-  v11 = [(MFReadLaterTriageInteraction *)v7 _initialReadLaterDate];
-  v12 = [v9 initWithType:1 shouldShowDeleteButton:v10 initialDate:v11];
+  v10 = [(MFReadLaterTriageInteraction *)selfCopy messagesHaveReadLaterSet:v18];
+  _initialReadLaterDate = [(MFReadLaterTriageInteraction *)selfCopy _initialReadLaterDate];
+  v12 = [v9 initWithType:1 shouldShowDeleteButton:v10 initialDate:_initialReadLaterDate];
 
-  [v12 setDelegate:v7];
+  [v12 setDelegate:selfCopy];
   v13 = [[UINavigationController alloc] initWithRootViewController:v12];
-  [v13 setModalPresentationStyle:{-[MFReadLaterTriageInteraction datePickerPresentationStyle](v7, "datePickerPresentationStyle")}];
-  v14 = [(MFTriageInteraction *)v7 presentationSource];
-  v15 = [v13 popoverPresentationController];
-  [v15 setSourceItem:v14];
+  [v13 setModalPresentationStyle:{-[MFReadLaterTriageInteraction datePickerPresentationStyle](selfCopy, "datePickerPresentationStyle")}];
+  presentationSource = [(MFTriageInteraction *)selfCopy presentationSource];
+  popoverPresentationController = [v13 popoverPresentationController];
+  [popoverPresentationController setSourceItem:presentationSource];
 
-  v16 = [(MFTriageInteraction *)v7 delegate];
-  v17 = [v16 presentingViewControllerForTriageInteraction:v7];
+  delegate = [(MFTriageInteraction *)selfCopy delegate];
+  v17 = [delegate presentingViewControllerForTriageInteraction:selfCopy];
 
   [v17 presentViewController:v13 animated:1 completion:0];
 }
 
 - (NSDate)selectedDate
 {
-  v2 = [(MFReadLaterTriageInteraction *)self state];
-  v3 = [v2 date];
+  state = [(MFReadLaterTriageInteraction *)self state];
+  date = [state date];
 
-  return v3;
+  return date;
 }
 
-- (void)datePickerViewController:(id)a3 didSelectDate:(id)a4
+- (void)datePickerViewController:(id)controller didSelectDate:(id)date
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MFReadLaterTriageInteraction *)self state];
-  [v8 didSelectCustomDate:v7];
+  controllerCopy = controller;
+  dateCopy = date;
+  state = [(MFReadLaterTriageInteraction *)self state];
+  [state didSelectCustomDate:dateCopy];
 
-  [v6 dismissViewControllerAnimated:1 completion:0];
-  v9 = [(MFReadLaterTriageInteraction *)self datePickerCompletion];
-  v10 = [(MFReadLaterTriageInteraction *)self datePickerPreparation];
+  [controllerCopy dismissViewControllerAnimated:1 completion:0];
+  datePickerCompletion = [(MFReadLaterTriageInteraction *)self datePickerCompletion];
+  datePickerPreparation = [(MFReadLaterTriageInteraction *)self datePickerPreparation];
   v11.receiver = self;
   v11.super_class = MFReadLaterTriageInteraction;
-  [(MFTriageInteraction *)&v11 _performInteractionAfterPreparation:v10 completion:v9];
+  [(MFTriageInteraction *)&v11 _performInteractionAfterPreparation:datePickerPreparation completion:datePickerCompletion];
 }
 
-- (void)datePickerViewControllerDidDeleteDate:(id)a3
+- (void)datePickerViewControllerDidDeleteDate:(id)date
 {
-  v4 = a3;
-  v5 = [(MFReadLaterTriageInteraction *)self state];
-  [v5 removeDate];
+  dateCopy = date;
+  state = [(MFReadLaterTriageInteraction *)self state];
+  [state removeDate];
 
-  [v4 dismissViewControllerAnimated:1 completion:0];
-  v6 = [(MFReadLaterTriageInteraction *)self datePickerCompletion];
-  v7 = [(MFReadLaterTriageInteraction *)self datePickerPreparation];
+  [dateCopy dismissViewControllerAnimated:1 completion:0];
+  datePickerCompletion = [(MFReadLaterTriageInteraction *)self datePickerCompletion];
+  datePickerPreparation = [(MFReadLaterTriageInteraction *)self datePickerPreparation];
   v8.receiver = self;
   v8.super_class = MFReadLaterTriageInteraction;
-  [(MFTriageInteraction *)&v8 _performInteractionAfterPreparation:v7 completion:v6];
+  [(MFTriageInteraction *)&v8 _performInteractionAfterPreparation:datePickerPreparation completion:datePickerCompletion];
 
   [(MFReadLaterTriageInteraction *)self setDatePickerPreparation:0];
 }

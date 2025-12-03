@@ -1,8 +1,8 @@
 @interface FCPersistedContentArchive
-- (FCPersistedContentArchive)initWithCoder:(id)a3;
+- (FCPersistedContentArchive)initWithCoder:(id)coder;
 - (id)description;
 - (id)manifest;
-- (id)unarchiveIntoContentContext:(id)a3;
+- (id)unarchiveIntoContentContext:(id)context;
 - (int64_t)storageSize;
 @end
 
@@ -12,14 +12,14 @@
 {
   v3 = [[FCDescription alloc] initWithObject:self];
   [(FCDescription *)v3 addField:@"archivePath" value:self->_archivePath];
-  v4 = [(FCDescription *)v3 descriptionString];
+  descriptionString = [(FCDescription *)v3 descriptionString];
 
-  return v4;
+  return descriptionString;
 }
 
-- (FCPersistedContentArchive)initWithCoder:(id)a3
+- (FCPersistedContentArchive)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = FCPersistedContentArchive;
   v5 = [(FCPersistedContentArchive *)&v9 init];
@@ -30,7 +30,7 @@
       dispatch_once(&qword_1EDB26E48, &__block_literal_global_260);
     }
 
-    v6 = [v4 decodeObjectOfClasses:qword_1EDB26E40 forKey:@"archivePath"];
+    v6 = [coderCopy decodeObjectOfClasses:qword_1EDB26E40 forKey:@"archivePath"];
     archivePath = v5->_archivePath;
     v5->_archivePath = v6;
   }
@@ -47,9 +47,9 @@ uint64_t __43__FCPersistedContentArchive_initWithCoder___block_invoke()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-- (id)unarchiveIntoContentContext:(id)a3
+- (id)unarchiveIntoContentContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = objc_autoreleasePoolPush();
   v6 = [MEMORY[0x1E695DEF0] dataWithContentsOfFile:self->_archivePath];
   v13 = 0;
@@ -57,7 +57,7 @@ uint64_t __43__FCPersistedContentArchive_initWithCoder___block_invoke()
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 unarchiveIntoContentContext:v4];
+    v9 = [v7 unarchiveIntoContentContext:contextCopy];
   }
 
   else
@@ -96,8 +96,8 @@ uint64_t __43__FCPersistedContentArchive_initWithCoder___block_invoke()
 
 - (int64_t)storageSize
 {
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
-  v4 = [v3 fc_sizeOfItemAtPath:self->_archivePath error:0];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v4 = [defaultManager fc_sizeOfItemAtPath:self->_archivePath error:0];
 
   return v4;
 }

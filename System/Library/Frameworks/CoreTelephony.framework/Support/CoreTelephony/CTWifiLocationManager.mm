@@ -1,21 +1,21 @@
 @interface CTWifiLocationManager
-- (BOOL)isLocationAcceptable:(double)a3 integrity:(unsigned int)a4 accuracy:(double)a5;
+- (BOOL)isLocationAcceptable:(double)acceptable integrity:(unsigned int)integrity accuracy:(double)accuracy;
 - (CTWifiLocationManager)init;
 - (id).cxx_construct;
 - (id)copyLastKnownLocation;
-- (void)configureLocationManagerWithForceLocationLookup:(BOOL)a3;
+- (void)configureLocationManagerWithForceLocationLookup:(BOOL)lookup;
 - (void)dealloc;
 - (void)disableVoWiFiLocationStatusOnFirstLaunch;
-- (void)enableVoWiFiLocationStatus:(BOOL)a3;
+- (void)enableVoWiFiLocationStatus:(BOOL)status;
 - (void)handleDataMigration;
 - (void)handleDumpState;
 - (void)initialize;
-- (void)locationManager:(id)a3 didChangeAuthorizationStatus:(int)a4;
-- (void)locationManager:(id)a3 didFailWithError:(id)a4;
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4;
+- (void)locationManager:(id)manager didChangeAuthorizationStatus:(int)status;
+- (void)locationManager:(id)manager didFailWithError:(id)error;
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations;
 - (void)registerWifiCallingEntity;
-- (void)shouldUpdateLocation:(BOOL)a3 forceLocationLookup:(BOOL)a4;
-- (void)startLocationUpdateWithForceLocationLookup:(BOOL)a3;
+- (void)shouldUpdateLocation:(BOOL)location forceLocationLookup:(BOOL)lookup;
+- (void)startLocationUpdateWithForceLocationLookup:(BOOL)lookup;
 - (void)stopLocationUpdates;
 @end
 
@@ -118,12 +118,12 @@
   sub_10114C138(ptr);
 }
 
-- (void)configureLocationManagerWithForceLocationLookup:(BOOL)a3
+- (void)configureLocationManagerWithForceLocationLookup:(BOOL)lookup
 {
-  v3 = a3;
+  lookupCopy = lookup;
   [(CTWifiLocationManager *)self setForceLocationLookup:?];
   manager = self->_manager;
-  if (v3)
+  if (lookupCopy)
   {
     [(CLLocationManager *)manager setDesiredAccuracy:kCLLocationAccuracyBest];
     self->_desiredLocationAccuracy = kCLLocationAccuracyHundredMeters;
@@ -146,14 +146,14 @@
   }
 }
 
-- (BOOL)isLocationAcceptable:(double)a3 integrity:(unsigned int)a4 accuracy:(double)a5
+- (BOOL)isLocationAcceptable:(double)acceptable integrity:(unsigned int)integrity accuracy:(double)accuracy
 {
   if ([(CTWifiLocationManager *)self forceLocationLookup])
   {
-    if ([(CTWifiLocationManager *)self desiredIntegrity]<= a4)
+    if ([(CTWifiLocationManager *)self desiredIntegrity]<= integrity)
     {
       [(CTWifiLocationManager *)self desiredLocationAccuracy];
-      if (v14 >= a5)
+      if (v14 >= accuracy)
       {
         LOBYTE(v9) = 1;
         return v9;
@@ -200,16 +200,16 @@ LABEL_11:
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "#I Checking only integrity for a non-precise location request.", &v18, 2u);
     }
 
-    LOBYTE(v9) = [(CTWifiLocationManager *)self desiredIntegrity]<= a4;
+    LOBYTE(v9) = [(CTWifiLocationManager *)self desiredIntegrity]<= integrity;
   }
 
   return v9;
 }
 
-- (void)shouldUpdateLocation:(BOOL)a3 forceLocationLookup:(BOOL)a4
+- (void)shouldUpdateLocation:(BOOL)location forceLocationLookup:(BOOL)lookup
 {
-  v4 = a4;
-  v5 = a3;
+  lookupCopy = lookup;
+  locationCopy = location;
   v7 = self->_manager;
   if (!v7)
   {
@@ -232,7 +232,7 @@ LABEL_11:
 
   v16 = *self->logger.__ptr_;
   v17 = os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT);
-  if (!v4)
+  if (!lookupCopy)
   {
     if (!v17)
     {
@@ -254,9 +254,9 @@ LABEL_25:
   }
 
 LABEL_3:
-  if ([(CTWifiLocationManager *)self locationRequested]== v5)
+  if ([(CTWifiLocationManager *)self locationRequested]== locationCopy)
   {
-    if (v5 && v4 && ![(CTWifiLocationManager *)self forceLocationLookup])
+    if (locationCopy && lookupCopy && ![(CTWifiLocationManager *)self forceLocationLookup])
     {
       [(CLLocationManager *)v7 stopUpdatingLocation];
       v23 = *self->logger.__ptr_;
@@ -276,7 +276,7 @@ LABEL_3:
     }
 
     v19 = "disabled";
-    if (v5)
+    if (locationCopy)
     {
       v19 = "enabled";
     }
@@ -292,12 +292,12 @@ LABEL_26:
   }
 
 LABEL_4:
-  if (v5)
+  if (locationCopy)
   {
-    if (v4)
+    if (lookupCopy)
     {
-      v8 = [(CTWifiLocationManager *)self locationServicesAssertion];
-      v9 = v8 == 0;
+      locationServicesAssertion = [(CTWifiLocationManager *)self locationServicesAssertion];
+      v9 = locationServicesAssertion == 0;
 
       if (v9)
       {
@@ -314,14 +314,14 @@ LABEL_4:
       }
     }
 
-    [(CTWifiLocationManager *)self configureLocationManagerWithForceLocationLookup:v4];
+    [(CTWifiLocationManager *)self configureLocationManagerWithForceLocationLookup:lookupCopy];
     [(CLLocationManager *)v7 startUpdatingLocation];
   }
 
   else
   {
-    v21 = [(CTWifiLocationManager *)self locationServicesAssertion];
-    v22 = v21 == 0;
+    locationServicesAssertion2 = [(CTWifiLocationManager *)self locationServicesAssertion];
+    v22 = locationServicesAssertion2 == 0;
 
     if (!v22)
     {
@@ -335,22 +335,22 @@ LABEL_4:
     }
   }
 
-  [(CTWifiLocationManager *)self setLocationRequested:v5];
+  [(CTWifiLocationManager *)self setLocationRequested:locationCopy];
 LABEL_32:
 }
 
-- (void)startLocationUpdateWithForceLocationLookup:(BOOL)a3
+- (void)startLocationUpdateWithForceLocationLookup:(BOOL)lookup
 {
-  v3 = a3;
+  lookupCopy = lookup;
   v5 = *self->logger.__ptr_;
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 136315138;
-    v7 = CSIBOOLAsString(v3);
+    v7 = CSIBOOLAsString(lookupCopy);
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "#I Start WifiLocation Update. Force location lookup: %s", &v6, 0xCu);
   }
 
-  [(CTWifiLocationManager *)self shouldUpdateLocation:1 forceLocationLookup:v3];
+  [(CTWifiLocationManager *)self shouldUpdateLocation:1 forceLocationLookup:lookupCopy];
 }
 
 - (void)stopLocationUpdates
@@ -372,8 +372,8 @@ LABEL_32:
     return 0;
   }
 
-  v3 = [(CTWifiLocationManager *)self location];
-  v4 = [v3 copy];
+  location = [(CTWifiLocationManager *)self location];
+  v4 = [location copy];
 
   return v4;
 }
@@ -388,16 +388,16 @@ LABEL_32:
   }
 }
 
-- (void)enableVoWiFiLocationStatus:(BOOL)a3
+- (void)enableVoWiFiLocationStatus:(BOOL)status
 {
-  v3 = a3;
-  sub_10114BEE8(*self->logger.__ptr_, a3);
+  statusCopy = status;
+  sub_10114BEE8(*self->logger.__ptr_, status);
   sub_10114BFEC();
   v5 = *self->logger.__ptr_;
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = "'Denied'";
-    if (v3)
+    if (statusCopy)
     {
       v6 = "'Authorized'";
     }
@@ -476,14 +476,14 @@ LABEL_32:
   }
 }
 
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations
 {
-  v5 = a4;
-  v6 = [v5 lastObject];
-  v7 = [v6 timestamp];
+  locationsCopy = locations;
+  lastObject = [locationsCopy lastObject];
+  timestamp = [lastObject timestamp];
   memset(&__p, 0, sizeof(__p));
   sub_10000501C(&__p, "unknown");
-  v8 = [v7 description];
+  v8 = [timestamp description];
   v9 = v8;
   if (v8)
   {
@@ -491,11 +491,11 @@ LABEL_32:
     sub_100016890(&__p, [v9 UTF8String]);
   }
 
-  [v7 timeIntervalSinceNow];
+  [timestamp timeIntervalSinceNow];
   v12 = v11;
-  [v6 horizontalAccuracy];
+  [lastObject horizontalAccuracy];
   v14 = v13;
-  v15 = [v6 integrity];
+  integrity = [lastObject integrity];
   v16 = *self->logger.__ptr_;
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
@@ -508,13 +508,13 @@ LABEL_32:
     *buf = 134218498;
     v30 = v14;
     v31 = 1024;
-    v32 = v15;
+    v32 = integrity;
     v33 = 2080;
     v34 = p_p;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "#I WifiLocation accuracy = %f, integrity = %d, timestamp = %s", buf, 0x1Cu);
   }
 
-  v18 = [(CTWifiLocationManager *)self isLocationAcceptable:v15 integrity:v12 accuracy:v14];
+  v18 = [(CTWifiLocationManager *)self isLocationAcceptable:integrity integrity:v12 accuracy:v14];
   v19 = *self->logger.__ptr_;
   v20 = os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT);
   if (v18)
@@ -525,13 +525,13 @@ LABEL_32:
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "#I Desired WifiLocation Obtained", buf, 2u);
     }
 
-    [(CTWifiLocationManager *)self setLocation:v6];
-    v21 = [(CTWifiLocationManager *)self location];
-    [v21 coordinate];
+    [(CTWifiLocationManager *)self setLocation:lastObject];
+    location = [(CTWifiLocationManager *)self location];
+    [location coordinate];
     v23 = v22;
 
-    v24 = [(CTWifiLocationManager *)self location];
-    [v24 coordinate];
+    location2 = [(CTWifiLocationManager *)self location];
+    [location2 coordinate];
     v26 = v25;
 
     v27 = sub_1000FFCA4(&event::location::wifiLocationAvailable[1]);
@@ -550,12 +550,12 @@ LABEL_32:
   }
 }
 
-- (void)locationManager:(id)a3 didFailWithError:(id)a4
+- (void)locationManager:(id)manager didFailWithError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7 && ![v7 code])
+  managerCopy = manager;
+  errorCopy = error;
+  v8 = errorCopy;
+  if (errorCopy && ![errorCopy code])
   {
     v9 = *self->logger.__ptr_;
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -573,13 +573,13 @@ LABEL_32:
   }
 }
 
-- (void)locationManager:(id)a3 didChangeAuthorizationStatus:(int)a4
+- (void)locationManager:(id)manager didChangeAuthorizationStatus:(int)status
 {
-  v6 = a3;
-  self->_locationServiceAuthorized = a4 != 2;
+  managerCopy = manager;
+  self->_locationServiceAuthorized = status != 2;
   v7 = *self->logger.__ptr_;
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
-  if (a4 == 2)
+  if (status == 2)
   {
     if (v8)
     {

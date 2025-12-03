@@ -1,59 +1,59 @@
 @interface PHPhotoLibraryFeatureAvailabilityReporter
-- (PHPhotoLibraryFeatureAvailabilityReporter)initWithPhotoLibrary:(id)a3;
-- (PHPhotoLibraryFeatureAvailabilityReporter)initWithPhotoLibrary:(id)a3 readOptions:(id)a4;
-- (void)availabilityForFeature:(unint64_t)a3 completionHandler:(id)a4;
-- (void)availabilityStatusForFeature:(unint64_t)a3 availabilityConfig:(id)a4 completionHandler:(id)a5;
-- (void)availabilityStatusForFeature:(unint64_t)a3 completionHandler:(id)a4;
+- (PHPhotoLibraryFeatureAvailabilityReporter)initWithPhotoLibrary:(id)library;
+- (PHPhotoLibraryFeatureAvailabilityReporter)initWithPhotoLibrary:(id)library readOptions:(id)options;
+- (void)availabilityForFeature:(unint64_t)feature completionHandler:(id)handler;
+- (void)availabilityStatusForFeature:(unint64_t)feature availabilityConfig:(id)config completionHandler:(id)handler;
+- (void)availabilityStatusForFeature:(unint64_t)feature completionHandler:(id)handler;
 @end
 
 @implementation PHPhotoLibraryFeatureAvailabilityReporter
 
-- (void)availabilityForFeature:(unint64_t)a3 completionHandler:(id)a4
+- (void)availabilityForFeature:(unint64_t)feature completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [(PHFeatureAvailabilityReadOptions *)self->_readOptions validateSpotlightAvailability];
+  handlerCopy = handler;
+  validateSpotlightAvailability = [(PHFeatureAvailabilityReadOptions *)self->_readOptions validateSpotlightAvailability];
   photoLibrary = self->_photoLibrary;
   readOptions = self->_readOptions;
-  if (v7)
+  if (validateSpotlightAvailability)
   {
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __86__PHPhotoLibraryFeatureAvailabilityReporter_availabilityForFeature_completionHandler___block_invoke;
     v13[3] = &unk_1E75A8778;
-    v14 = v6;
-    [(PHPhotoLibrary *)photoLibrary featureAvailabilityForFeature:a3 readOptions:readOptions completionHandler:v13];
+    v14 = handlerCopy;
+    [(PHPhotoLibrary *)photoLibrary featureAvailabilityForFeature:feature readOptions:readOptions completionHandler:v13];
     v10 = v14;
   }
 
   else
   {
     v12 = 0;
-    v11 = [(PHPhotoLibrary *)photoLibrary featureAvailabilityForFeature:a3 readOptions:readOptions error:&v12];
+    v11 = [(PHPhotoLibrary *)photoLibrary featureAvailabilityForFeature:feature readOptions:readOptions error:&v12];
     v10 = v12;
-    (*(v6 + 2))(v6, v11, v10);
+    (*(handlerCopy + 2))(handlerCopy, v11, v10);
   }
 }
 
-- (void)availabilityStatusForFeature:(unint64_t)a3 completionHandler:(id)a4
+- (void)availabilityStatusForFeature:(unint64_t)feature completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [[PHFeatureAvailabilityConfig alloc] initWithFeature:a3];
-  [(PHPhotoLibraryFeatureAvailabilityReporter *)self availabilityStatusForFeature:a3 availabilityConfig:v7 completionHandler:v6];
+  handlerCopy = handler;
+  v7 = [[PHFeatureAvailabilityConfig alloc] initWithFeature:feature];
+  [(PHPhotoLibraryFeatureAvailabilityReporter *)self availabilityStatusForFeature:feature availabilityConfig:v7 completionHandler:handlerCopy];
 }
 
-- (void)availabilityStatusForFeature:(unint64_t)a3 availabilityConfig:(id)a4 completionHandler:(id)a5
+- (void)availabilityStatusForFeature:(unint64_t)feature availabilityConfig:(id)config completionHandler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   photoLibrary = self->_photoLibrary;
   v19 = 0;
-  v10 = [PHPhotoLibraryFeatureAvailabilityTask availabilityStatusTaskForFeature:a3 photoLibrary:photoLibrary availabilityConfig:a4 error:&v19];
+  v10 = [PHPhotoLibraryFeatureAvailabilityTask availabilityStatusTaskForFeature:feature photoLibrary:photoLibrary availabilityConfig:config error:&v19];
   v11 = v19;
   if (v10)
   {
     os_unfair_lock_lock(&self->_lock_tasks);
     tasks = self->_tasks;
-    v13 = [v10 taskID];
-    [(NSMutableDictionary *)tasks setObject:v10 forKeyedSubscript:v13];
+    taskID = [v10 taskID];
+    [(NSMutableDictionary *)tasks setObject:v10 forKeyedSubscript:taskID];
 
     os_unfair_lock_unlock(&self->_lock_tasks);
     queue = self->_queue;
@@ -62,14 +62,14 @@
     v15[2] = __111__PHPhotoLibraryFeatureAvailabilityReporter_availabilityStatusForFeature_availabilityConfig_completionHandler___block_invoke;
     v15[3] = &unk_1E75AA870;
     v16 = v10;
-    v17 = self;
-    v18 = v8;
+    selfCopy = self;
+    v18 = handlerCopy;
     dispatch_async(queue, v15);
   }
 
   else
   {
-    (*(v8 + 2))(v8, 0, v11);
+    (*(handlerCopy + 2))(handlerCopy, 0, v11);
   }
 }
 
@@ -100,29 +100,29 @@ void __111__PHPhotoLibraryFeatureAvailabilityReporter_availabilityStatusForFeatu
   (*(*(a1 + 48) + 16))();
 }
 
-- (PHPhotoLibraryFeatureAvailabilityReporter)initWithPhotoLibrary:(id)a3 readOptions:(id)a4
+- (PHPhotoLibraryFeatureAvailabilityReporter)initWithPhotoLibrary:(id)library readOptions:(id)options
 {
-  v7 = a4;
-  v8 = [(PHPhotoLibraryFeatureAvailabilityReporter *)self initWithPhotoLibrary:a3];
+  optionsCopy = options;
+  v8 = [(PHPhotoLibraryFeatureAvailabilityReporter *)self initWithPhotoLibrary:library];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_readOptions, a4);
+    objc_storeStrong(&v8->_readOptions, options);
   }
 
   return v9;
 }
 
-- (PHPhotoLibraryFeatureAvailabilityReporter)initWithPhotoLibrary:(id)a3
+- (PHPhotoLibraryFeatureAvailabilityReporter)initWithPhotoLibrary:(id)library
 {
-  v5 = a3;
+  libraryCopy = library;
   v17.receiver = self;
   v17.super_class = PHPhotoLibraryFeatureAvailabilityReporter;
   v6 = [(PHPhotoLibraryFeatureAvailabilityReporter *)&v17 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_photoLibrary, a3);
+    objc_storeStrong(&v6->_photoLibrary, library);
     v8 = objc_alloc_init(PHFeatureAvailabilityReadOptions);
     readOptions = v7->_readOptions;
     v7->_readOptions = v8;

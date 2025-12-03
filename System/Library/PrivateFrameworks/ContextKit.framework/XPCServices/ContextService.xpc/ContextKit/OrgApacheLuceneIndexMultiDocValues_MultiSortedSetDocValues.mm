@@ -1,9 +1,9 @@
 @interface OrgApacheLuceneIndexMultiDocValues_MultiSortedSetDocValues
-- (id)lookupOrdWithLong:(int64_t)a3;
+- (id)lookupOrdWithLong:(int64_t)long;
 - (int64_t)getValueCount;
 - (int64_t)nextOrd;
 - (void)dealloc;
-- (void)setDocumentWithInt:(int)a3;
+- (void)setDocumentWithInt:(int)int;
 @end
 
 @implementation OrgApacheLuceneIndexMultiDocValues_MultiSortedSetDocValues
@@ -46,9 +46,9 @@ LABEL_11:
   return [(OrgApacheLuceneUtilLongValues *)currentGlobalOrds getWithLong:v8];
 }
 
-- (void)setDocumentWithInt:(int)a3
+- (void)setDocumentWithInt:(int)int
 {
-  v5 = OrgApacheLuceneIndexReaderUtil_subIndexWithInt_withIntArray_(a3, self->docStarts_);
+  v5 = OrgApacheLuceneIndexReaderUtil_subIndexWithInt_withIntArray_(int, self->docStarts_);
   self->currentSubIndex_ = v5;
   mapping = self->mapping_;
   if (!mapping)
@@ -84,12 +84,12 @@ LABEL_12:
     IOSArray_throwOutOfBoundsWithMsg(v13, v12);
   }
 
-  v14 = (a3 - *(&docStarts->super.size_ + v12 + 1));
+  v14 = (int - *(&docStarts->super.size_ + v12 + 1));
 
   [(IOSClass *)v10 setDocumentWithInt:v14];
 }
 
-- (id)lookupOrdWithLong:(int64_t)a3
+- (id)lookupOrdWithLong:(int64_t)long
 {
   mapping = self->mapping_;
   if (!mapping)
@@ -98,7 +98,7 @@ LABEL_12:
   }
 
   v6 = [(OrgApacheLuceneIndexMultiDocValues_OrdinalMap *)mapping getFirstSegmentNumberWithLong:?];
-  v7 = [(OrgApacheLuceneIndexMultiDocValues_OrdinalMap *)self->mapping_ getFirstSegmentOrdWithLong:a3];
+  v7 = [(OrgApacheLuceneIndexMultiDocValues_OrdinalMap *)self->mapping_ getFirstSegmentOrdWithLong:long];
   values = self->values_;
   if (!values)
   {

@@ -1,31 +1,31 @@
 @interface SULegacyClientBridge
-- (BOOL)composeReviewWithViewController:(id)a3 animated:(BOOL)a4;
-- (BOOL)enterAccountFlowWithViewController:(id)a3 animated:(BOOL)a4;
-- (BOOL)presentOverlayBackgroundViewController:(id)a3;
-- (SULegacyClientBridge)initWithClientInterface:(id)a3;
+- (BOOL)composeReviewWithViewController:(id)controller animated:(BOOL)animated;
+- (BOOL)enterAccountFlowWithViewController:(id)controller animated:(BOOL)animated;
+- (BOOL)presentOverlayBackgroundViewController:(id)controller;
+- (SULegacyClientBridge)initWithClientInterface:(id)interface;
 - (id)_previewOverlayViewController;
 - (void)_removePreviewOverlayViewController;
-- (void)_showPreviewOverlayAnimated:(BOOL)a3;
-- (void)composeEmailWithSubject:(id)a3 body:(id)a4;
+- (void)_showPreviewOverlayAnimated:(BOOL)animated;
+- (void)composeEmailWithSubject:(id)subject body:(id)body;
 - (void)dealloc;
-- (void)hidePreviewOverlayAnimated:(BOOL)a3;
-- (void)mailComposeController:(id)a3 didFinishWithResult:(int64_t)a4 error:(id)a5;
-- (void)scriptOverlayBackgroundDidDismiss:(id)a3;
-- (void)showPreviewOverlayAnimated:(BOOL)a3;
+- (void)hidePreviewOverlayAnimated:(BOOL)animated;
+- (void)mailComposeController:(id)controller didFinishWithResult:(int64_t)result error:(id)error;
+- (void)scriptOverlayBackgroundDidDismiss:(id)dismiss;
+- (void)showPreviewOverlayAnimated:(BOOL)animated;
 @end
 
 @implementation SULegacyClientBridge
 
-- (SULegacyClientBridge)initWithClientInterface:(id)a3
+- (SULegacyClientBridge)initWithClientInterface:(id)interface
 {
-  v5 = a3;
+  interfaceCopy = interface;
   v9.receiver = self;
   v9.super_class = SULegacyClientBridge;
   v6 = [(SULegacyClientBridge *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_clientInterface, a3);
+    objc_storeStrong(&v6->_clientInterface, interface);
   }
 
   return v7;
@@ -39,29 +39,29 @@
   [(SULegacyClientBridge *)&v3 dealloc];
 }
 
-- (void)composeEmailWithSubject:(id)a3 body:(id)a4
+- (void)composeEmailWithSubject:(id)subject body:(id)body
 {
-  v6 = a4;
-  v7 = a3;
+  bodyCopy = body;
+  subjectCopy = subject;
   v8 = objc_alloc_init(ISWeakLinkedClassForString());
   [v8 setKeyboardVisible:1];
   [v8 setMailComposeDelegate:self];
-  [v8 setSubject:v7];
+  [v8 setSubject:subjectCopy];
 
-  [v8 setMessageBody:v6 isHTML:1];
+  [v8 setMessageBody:bodyCopy isHTML:1];
   [(UITabBarController *)self->_rootViewController presentViewController:v8 animated:1 completion:0];
 }
 
-- (BOOL)composeReviewWithViewController:(id)a3 animated:(BOOL)a4
+- (BOOL)composeReviewWithViewController:(id)controller animated:(BOOL)animated
 {
-  v5 = a3;
+  controllerCopy = controller;
   objc_initWeak(&location, self);
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __65__SULegacyClientBridge_composeReviewWithViewController_animated___block_invoke;
   v8[3] = &unk_1E8166E58;
   objc_copyWeak(&v10, &location);
-  v6 = v5;
+  v6 = controllerCopy;
   v9 = v6;
   [v6 prepareWithCompletionBlock:v8];
 
@@ -81,38 +81,38 @@ void __65__SULegacyClientBridge_composeReviewWithViewController_animated___block
   }
 }
 
-- (BOOL)enterAccountFlowWithViewController:(id)a3 animated:(BOOL)a4
+- (BOOL)enterAccountFlowWithViewController:(id)controller animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [[SUNavigationController alloc] initWithRootViewController:v6];
-  v8 = [v6 clientInterface];
+  animatedCopy = animated;
+  controllerCopy = controller;
+  v7 = [[SUNavigationController alloc] initWithRootViewController:controllerCopy];
+  clientInterface = [controllerCopy clientInterface];
 
-  [(SUNavigationController *)v7 setClientInterface:v8];
+  [(SUNavigationController *)v7 setClientInterface:clientInterface];
   [(SUNavigationController *)v7 setNavigationBarHidden:1];
   [(SUNavigationController *)v7 setModalPresentationStyle:2];
-  [(UITabBarController *)self->_rootViewController presentViewController:v7 animated:v4 completion:0];
+  [(UITabBarController *)self->_rootViewController presentViewController:v7 animated:animatedCopy completion:0];
 
   return 1;
 }
 
-- (void)hidePreviewOverlayAnimated:(BOOL)a3
+- (void)hidePreviewOverlayAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [MEMORY[0x1E69DC938] currentDevice];
-  v6 = [v5 userInterfaceIdiom];
+  animatedCopy = animated;
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v6 == 1)
+  if (userInterfaceIdiom == 1)
   {
     previewOverlayViewController = self->_previewOverlayViewController;
     rootViewController = self->_rootViewController;
 
-    [(SUPreviewOverlayViewController *)previewOverlayViewController hideInViewController:rootViewController animated:v3 completionBlock:0];
+    [(SUPreviewOverlayViewController *)previewOverlayViewController hideInViewController:rootViewController animated:animatedCopy completionBlock:0];
   }
 
   else
   {
-    v9 = [(UITabBarController *)self->_rootViewController selectedViewController];
+    selectedViewController = [(UITabBarController *)self->_rootViewController selectedViewController];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -122,7 +122,7 @@ void __65__SULegacyClientBridge_composeReviewWithViewController_animated___block
       v11[2] = __51__SULegacyClientBridge_hidePreviewOverlayAnimated___block_invoke;
       v11[3] = &unk_1E81645E8;
       v11[4] = self;
-      [(SUPreviewOverlayViewController *)v10 hideInNavigationController:v9 animated:v3 completionBlock:v11];
+      [(SUPreviewOverlayViewController *)v10 hideInNavigationController:selectedViewController animated:animatedCopy completionBlock:v11];
     }
 
     else
@@ -132,9 +132,9 @@ void __65__SULegacyClientBridge_composeReviewWithViewController_animated___block
   }
 }
 
-- (BOOL)presentOverlayBackgroundViewController:(id)a3
+- (BOOL)presentOverlayBackgroundViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   if (self->_overlayBackgroundViewController || !self->_rootViewController)
   {
     v6 = 0;
@@ -142,14 +142,14 @@ void __65__SULegacyClientBridge_composeReviewWithViewController_animated___block
 
   else
   {
-    objc_storeStrong(&self->_overlayBackgroundViewController, a3);
+    objc_storeStrong(&self->_overlayBackgroundViewController, controller);
     [(SUOverlayBackgroundViewController *)self->_overlayBackgroundViewController setDelegate:self];
     [(UITabBarController *)self->_rootViewController addChildViewController:self->_overlayBackgroundViewController];
-    v7 = [(UITabBarController *)self->_rootViewController view];
-    v8 = [(SUOverlayBackgroundViewController *)self->_overlayBackgroundViewController view];
-    [v7 bounds];
-    [v8 setFrame:?];
-    [v7 addSubview:v8];
+    view = [(UITabBarController *)self->_rootViewController view];
+    view2 = [(SUOverlayBackgroundViewController *)self->_overlayBackgroundViewController view];
+    [view bounds];
+    [view2 setFrame:?];
+    [view addSubview:view2];
 
     v6 = 1;
   }
@@ -157,18 +157,18 @@ void __65__SULegacyClientBridge_composeReviewWithViewController_animated___block
   return v6;
 }
 
-- (void)showPreviewOverlayAnimated:(BOOL)a3
+- (void)showPreviewOverlayAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(SULegacyClientBridge *)self _previewOverlayViewController];
-  if (![v5 isViewLoaded] || (objc_msgSend(v5, "view"), v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "window"), v7 = objc_claimAutoreleasedReturnValue(), v7, v6, !v7))
+  animatedCopy = animated;
+  _previewOverlayViewController = [(SULegacyClientBridge *)self _previewOverlayViewController];
+  if (![_previewOverlayViewController isViewLoaded] || (objc_msgSend(_previewOverlayViewController, "view"), v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "window"), v7 = objc_claimAutoreleasedReturnValue(), v7, v6, !v7))
   {
-    if ([v5 isContentLoaded])
+    if ([_previewOverlayViewController isContentLoaded])
     {
-      [(SULegacyClientBridge *)self _showPreviewOverlayAnimated:v3];
+      [(SULegacyClientBridge *)self _showPreviewOverlayAnimated:animatedCopy];
     }
 
-    else if (([v5 isSkLoading] & 1) == 0)
+    else if (([_previewOverlayViewController isSkLoading] & 1) == 0)
     {
       objc_initWeak(&location, self);
       v8[0] = MEMORY[0x1E69E9820];
@@ -176,8 +176,8 @@ void __65__SULegacyClientBridge_composeReviewWithViewController_animated___block
       v8[2] = __51__SULegacyClientBridge_showPreviewOverlayAnimated___block_invoke;
       v8[3] = &unk_1E8166E80;
       objc_copyWeak(&v9, &location);
-      v10 = v3;
-      [v5 loadWithCompletionBlock:v8];
+      v10 = animatedCopy;
+      [_previewOverlayViewController loadWithCompletionBlock:v8];
       objc_destroyWeak(&v9);
       objc_destroyWeak(&location);
     }
@@ -193,19 +193,19 @@ void __51__SULegacyClientBridge_showPreviewOverlayAnimated___block_invoke(uint64
   }
 }
 
-- (void)mailComposeController:(id)a3 didFinishWithResult:(int64_t)a4 error:(id)a5
+- (void)mailComposeController:(id)controller didFinishWithResult:(int64_t)result error:(id)error
 {
-  v5 = a3;
-  [v5 setDelegate:0];
-  [v5 dismissViewControllerAnimated:1 completion:0];
+  controllerCopy = controller;
+  [controllerCopy setDelegate:0];
+  [controllerCopy dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)scriptOverlayBackgroundDidDismiss:(id)a3
+- (void)scriptOverlayBackgroundDidDismiss:(id)dismiss
 {
   if ([(SUOverlayBackgroundViewController *)self->_overlayBackgroundViewController isViewLoaded])
   {
-    v4 = [(SUOverlayBackgroundViewController *)self->_overlayBackgroundViewController view];
-    [v4 removeFromSuperview];
+    view = [(SUOverlayBackgroundViewController *)self->_overlayBackgroundViewController view];
+    [view removeFromSuperview];
   }
 
   [(SUOverlayBackgroundViewController *)self->_overlayBackgroundViewController removeFromParentViewController];
@@ -224,8 +224,8 @@ void __51__SULegacyClientBridge_showPreviewOverlayAnimated___block_invoke(uint64
     self->_previewOverlayViewController = v4;
 
     v6 = self->_previewOverlayViewController;
-    v7 = [(SULegacyClientBridge *)self clientInterface];
-    [(SUViewController *)v6 setClientInterface:v7];
+    clientInterface = [(SULegacyClientBridge *)self clientInterface];
+    [(SUViewController *)v6 setClientInterface:clientInterface];
 
     previewOverlayViewController = self->_previewOverlayViewController;
   }
@@ -237,8 +237,8 @@ void __51__SULegacyClientBridge_showPreviewOverlayAnimated___block_invoke(uint64
 {
   if ([(SUPreviewOverlayViewController *)self->_previewOverlayViewController isViewLoaded])
   {
-    v3 = [(SUPreviewOverlayViewController *)self->_previewOverlayViewController view];
-    [v3 removeFromSuperview];
+    view = [(SUPreviewOverlayViewController *)self->_previewOverlayViewController view];
+    [view removeFromSuperview];
   }
 
   previewOverlayViewController = self->_previewOverlayViewController;
@@ -249,21 +249,21 @@ void __51__SULegacyClientBridge_showPreviewOverlayAnimated___block_invoke(uint64
   }
 }
 
-- (void)_showPreviewOverlayAnimated:(BOOL)a3
+- (void)_showPreviewOverlayAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(SULegacyClientBridge *)self _previewOverlayViewController];
-  v6 = [MEMORY[0x1E69DC938] currentDevice];
-  v7 = [v6 userInterfaceIdiom];
+  animatedCopy = animated;
+  _previewOverlayViewController = [(SULegacyClientBridge *)self _previewOverlayViewController];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v7 == 1)
+  if (userInterfaceIdiom == 1)
   {
-    [v5 showInViewController:self->_rootViewController animated:v3 completionBlock:0];
+    [_previewOverlayViewController showInViewController:self->_rootViewController animated:animatedCopy completionBlock:0];
   }
 
   else
   {
-    v8 = [(UITabBarController *)self->_rootViewController selectedViewController];
+    selectedViewController = [(UITabBarController *)self->_rootViewController selectedViewController];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -271,9 +271,9 @@ void __51__SULegacyClientBridge_showPreviewOverlayAnimated___block_invoke(uint64
       v9[1] = 3221225472;
       v9[2] = __52__SULegacyClientBridge__showPreviewOverlayAnimated___block_invoke;
       v9[3] = &unk_1E81644A8;
-      v10 = v5;
-      v11 = self;
-      [v10 showInNavigationController:v8 animated:v3 completionBlock:v9];
+      v10 = _previewOverlayViewController;
+      selfCopy = self;
+      [v10 showInNavigationController:selectedViewController animated:animatedCopy completionBlock:v9];
     }
   }
 }

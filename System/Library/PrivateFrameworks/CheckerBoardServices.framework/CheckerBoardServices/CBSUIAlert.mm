@@ -1,48 +1,48 @@
 @interface CBSUIAlert
-+ (id)alertWithTitle:(id)a3 message:(id)a4 preferredStyle:(int64_t)a5;
-- (CBSUIAlert)initWithCoder:(id)a3;
-- (CBSUIAlert)initWithTitle:(id)a3 message:(id)a4 preferredStyle:(int64_t)a5;
++ (id)alertWithTitle:(id)title message:(id)message preferredStyle:(int64_t)style;
+- (CBSUIAlert)initWithCoder:(id)coder;
+- (CBSUIAlert)initWithTitle:(id)title message:(id)message preferredStyle:(int64_t)style;
 - (id)alertController;
 - (void)_receiveResponse;
 - (void)_sendCreate;
 - (void)activate;
 - (void)deactivate;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CBSUIAlert
 
-- (CBSUIAlert)initWithTitle:(id)a3 message:(id)a4 preferredStyle:(int64_t)a5
+- (CBSUIAlert)initWithTitle:(id)title message:(id)message preferredStyle:(int64_t)style
 {
-  v9 = a3;
-  v10 = a4;
+  titleCopy = title;
+  messageCopy = message;
   v19.receiver = self;
   v19.super_class = CBSUIAlert;
   v11 = [(CBSUIAlert *)&v19 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_title, a3);
-    objc_storeStrong(&v12->_message, a4);
-    v12->_preferredStyle = a5;
-    v13 = [MEMORY[0x277CBEB18] array];
+    objc_storeStrong(&v11->_title, title);
+    objc_storeStrong(&v12->_message, message);
+    v12->_preferredStyle = style;
+    array = [MEMORY[0x277CBEB18] array];
     actions = v12->_actions;
-    v12->_actions = v13;
+    v12->_actions = array;
 
-    v15 = [MEMORY[0x277CCAD78] UUID];
-    v16 = [v15 UUIDString];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
     identifier = v12->_identifier;
-    v12->_identifier = v16;
+    v12->_identifier = uUIDString;
   }
 
   return v12;
 }
 
-+ (id)alertWithTitle:(id)a3 message:(id)a4 preferredStyle:(int64_t)a5
++ (id)alertWithTitle:(id)title message:(id)message preferredStyle:(int64_t)style
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [[a1 alloc] initWithTitle:v9 message:v8 preferredStyle:a5];
+  messageCopy = message;
+  titleCopy = title;
+  v10 = [[self alloc] initWithTitle:titleCopy message:messageCopy preferredStyle:style];
 
   return v10;
 }
@@ -71,9 +71,9 @@
 {
   v25 = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277D75110];
-  v4 = [(CBSUIAlert *)self title];
-  v5 = [(CBSUIAlert *)self message];
-  v6 = [v3 alertControllerWithTitle:v4 message:v5 preferredStyle:{-[CBSUIAlert preferredStyle](self, "preferredStyle")}];
+  title = [(CBSUIAlert *)self title];
+  message = [(CBSUIAlert *)self message];
+  v6 = [v3 alertControllerWithTitle:title message:message preferredStyle:{-[CBSUIAlert preferredStyle](self, "preferredStyle")}];
 
   v22 = 0u;
   v23 = 0u;
@@ -96,14 +96,14 @@
 
         v11 = *(*(&v20 + 1) + 8 * i);
         v12 = MEMORY[0x277D750F8];
-        v13 = [v11 title];
-        v14 = [v11 style];
+        title2 = [v11 title];
+        style = [v11 style];
         v19[0] = MEMORY[0x277D85DD0];
         v19[1] = 3221225472;
         v19[2] = __29__CBSUIAlert_alertController__block_invoke;
         v19[3] = &unk_278DB2E78;
         v19[4] = v11;
-        v15 = [v12 actionWithTitle:v13 style:v14 handler:v19];
+        v15 = [v12 actionWithTitle:title2 style:style handler:v19];
 
         [v6 addAction:v15];
       }
@@ -135,7 +135,7 @@ void __29__CBSUIAlert_alertController__block_invoke(uint64_t a1)
   v3 = dispatch_semaphore_create(0);
   objc_initWeak(&location, self);
   v4 = +[CBSClient defaultClient];
-  v5 = [v4 remoteAlertServer];
+  remoteAlertServer = [v4 remoteAlertServer];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __25__CBSUIAlert__sendCreate__block_invoke;
@@ -143,7 +143,7 @@ void __29__CBSUIAlert_alertController__block_invoke(uint64_t a1)
   objc_copyWeak(&v9, &location);
   v6 = v3;
   v8 = v6;
-  [v5 createAlert:self timeout:0 completion:v7];
+  [remoteAlertServer createAlert:self timeout:0 completion:v7];
 
   dispatch_semaphore_wait(v6, 0xFFFFFFFFFFFFFFFFLL);
   [(CBSUIAlert *)self _receiveResponse];
@@ -176,8 +176,8 @@ void __25__CBSUIAlert__sendCreate__block_invoke(uint64_t a1, int a2)
   v3 = dispatch_semaphore_create(0);
   objc_initWeak(&location, self);
   v4 = +[CBSClient defaultClient];
-  v5 = [v4 remoteAlertServer];
-  v6 = [(CBSUIAlert *)self identifier];
+  remoteAlertServer = [v4 remoteAlertServer];
+  identifier = [(CBSUIAlert *)self identifier];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __30__CBSUIAlert__receiveResponse__block_invoke;
@@ -185,7 +185,7 @@ void __25__CBSUIAlert__sendCreate__block_invoke(uint64_t a1, int a2)
   objc_copyWeak(&v10, &location);
   v7 = v3;
   v9 = v7;
-  [v5 receiveResponseFromAlertWithIdentifier:v6 timeout:v8 completion:0.0];
+  [remoteAlertServer receiveResponseFromAlertWithIdentifier:identifier timeout:v8 completion:0.0];
 
   dispatch_semaphore_wait(v7, 0xFFFFFFFFFFFFFFFFLL);
   objc_destroyWeak(&v10);
@@ -240,31 +240,31 @@ void __30__CBSUIAlert__receiveResponse__block_invoke(uint64_t a1, unint64_t a2)
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (CBSUIAlert)initWithCoder:(id)a3
+- (CBSUIAlert)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v18.receiver = self;
   v18.super_class = CBSUIAlert;
   v5 = [(CBSUIAlert *)&v18 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"title"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"title"];
     title = v5->_title;
     v5->_title = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"message"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"message"];
     message = v5->_message;
     v5->_message = v8;
 
-    v5->_preferredStyle = [v4 decodeIntegerForKey:@"preferredStyle"];
+    v5->_preferredStyle = [coderCopy decodeIntegerForKey:@"preferredStyle"];
     v10 = MEMORY[0x277CBEB98];
     v11 = objc_opt_class();
     v12 = [v10 setWithObjects:{v11, objc_opt_class(), 0}];
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"actions"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"actions"];
     actions = v5->_actions;
     v5->_actions = v13;
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v15;
   }
@@ -272,21 +272,21 @@ void __30__CBSUIAlert__receiveResponse__block_invoke(uint64_t a1, unint64_t a2)
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(CBSUIAlert *)self title];
-  [v4 encodeObject:v5 forKey:@"title"];
+  coderCopy = coder;
+  title = [(CBSUIAlert *)self title];
+  [coderCopy encodeObject:title forKey:@"title"];
 
-  v6 = [(CBSUIAlert *)self message];
-  [v4 encodeObject:v6 forKey:@"message"];
+  message = [(CBSUIAlert *)self message];
+  [coderCopy encodeObject:message forKey:@"message"];
 
-  [v4 encodeInteger:-[CBSUIAlert preferredStyle](self forKey:{"preferredStyle"), @"preferredStyle"}];
-  v7 = [(CBSUIAlert *)self actions];
-  [v4 encodeObject:v7 forKey:@"actions"];
+  [coderCopy encodeInteger:-[CBSUIAlert preferredStyle](self forKey:{"preferredStyle"), @"preferredStyle"}];
+  actions = [(CBSUIAlert *)self actions];
+  [coderCopy encodeObject:actions forKey:@"actions"];
 
-  v8 = [(CBSUIAlert *)self identifier];
-  [v4 encodeObject:v8 forKey:@"identifier"];
+  identifier = [(CBSUIAlert *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 }
 
 @end

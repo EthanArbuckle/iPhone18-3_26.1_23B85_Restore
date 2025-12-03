@@ -1,30 +1,30 @@
 @interface FPUIAuthenticationCredentialsViewController
 - (BOOL)_canMoveToNextStep;
-- (BOOL)textFieldShouldReturn:(id)a3;
-- (FPUIAuthenticationCredentialsViewController)initWithCredentialDescriptors:(id)a3;
-- (id)_rowDescriptorForCredentialDescriptor:(id)a3;
+- (BOOL)textFieldShouldReturn:(id)return;
+- (FPUIAuthenticationCredentialsViewController)initWithCredentialDescriptors:(id)descriptors;
+- (id)_rowDescriptorForCredentialDescriptor:(id)descriptor;
 - (id)defaultRightBarButtonItem;
-- (void)_next:(id)a3;
+- (void)_next:(id)_next;
 - (void)_updateCanTransitionToNextStepState;
-- (void)_updateCurrentlyVisibleSectionsNeedsReloadData:(BOOL)a3;
+- (void)_updateCurrentlyVisibleSectionsNeedsReloadData:(BOOL)data;
 - (void)_updateTextFieldConstraints;
 - (void)setupTableViewSections;
-- (void)textFieldDidChange:(id)a3;
+- (void)textFieldDidChange:(id)change;
 - (void)viewDidLoad;
 @end
 
 @implementation FPUIAuthenticationCredentialsViewController
 
-- (FPUIAuthenticationCredentialsViewController)initWithCredentialDescriptors:(id)a3
+- (FPUIAuthenticationCredentialsViewController)initWithCredentialDescriptors:(id)descriptors
 {
-  v5 = a3;
+  descriptorsCopy = descriptors;
   v9.receiver = self;
   v9.super_class = FPUIAuthenticationCredentialsViewController;
   v6 = [(FPUIAuthenticationTableViewController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_credentialDescriptors, a3);
+    objc_storeStrong(&v6->_credentialDescriptors, descriptors);
   }
 
   return v7;
@@ -46,13 +46,13 @@
   return v10;
 }
 
-- (id)_rowDescriptorForCredentialDescriptor:(id)a3
+- (id)_rowDescriptorForCredentialDescriptor:(id)descriptor
 {
-  v5 = a3;
+  descriptorCopy = descriptor;
   v6 = objc_opt_new();
-  v7 = [v5 type];
+  type = [descriptorCopy type];
 
-  switch(v7)
+  switch(type)
   {
     case 2:
       v15 = @"APPLE_ID_OPTION";
@@ -67,8 +67,8 @@ LABEL_7:
       goto LABEL_9;
   }
 
-  v17 = [MEMORY[0x277CCA890] currentHandler];
-  [v17 handleFailureInMethod:a2 object:self file:@"FPUIAuthenticationCredentialsViewController.m" lineNumber:72 description:@"bad credential descriptor type"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"FPUIAuthenticationCredentialsViewController.m" lineNumber:72 description:@"bad credential descriptor type"];
 
   v16 = 0;
 LABEL_9:
@@ -77,7 +77,7 @@ LABEL_9:
   v22[2] = __85__FPUIAuthenticationCredentialsViewController__rowDescriptorForCredentialDescriptor___block_invoke;
   v22[3] = &unk_278A513E8;
   v23 = v16;
-  v24 = self;
+  selfCopy = self;
   v18 = v16;
   [v6 setCellCustomizationHandler:v22];
   v21[0] = MEMORY[0x277D85DD0];
@@ -187,7 +187,7 @@ void __85__FPUIAuthenticationCredentialsViewController__rowDescriptorForCredenti
   [v3 setHeaderTitle:v11];
 
   [v3 setHeaderHeight:*MEMORY[0x277D76F30]];
-  v12 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
@@ -215,7 +215,7 @@ void __85__FPUIAuthenticationCredentialsViewController__rowDescriptorForCredenti
         }
 
         v20 = [(FPUIAuthenticationCredentialsViewController *)self _rowDescriptorForCredentialDescriptor:v19];
-        [v12 addObject:v20];
+        [array addObject:v20];
         ++v16;
       }
 
@@ -288,7 +288,7 @@ void __85__FPUIAuthenticationCredentialsViewController__rowDescriptorForCredenti
   v29 = [MEMORY[0x277CBEA60] arrayWithObjects:v50 count:3];
   [(FPUIAuthenticationTableViewController *)self setSectionDescriptors:v29];
 
-  v49[0] = v12;
+  v49[0] = array;
   v48[0] = &unk_284B1D698;
   v48[1] = &unk_284B1D6B0;
   v47[0] = v23;
@@ -415,9 +415,9 @@ void __69__FPUIAuthenticationCredentialsViewController_setupTableViewSections__b
     {
       if ((v4)[2](v4, self->_passwordInputTextField))
       {
-        v5 = [(UITextField *)self->_nameInputTextField leadingAnchor];
-        v6 = [(UITextField *)self->_passwordInputTextField leadingAnchor];
-        v7 = [v5 constraintEqualToAnchor:v6];
+        leadingAnchor = [(UITextField *)self->_nameInputTextField leadingAnchor];
+        leadingAnchor2 = [(UITextField *)self->_passwordInputTextField leadingAnchor];
+        v7 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
         objc_storeWeak(&self->_textFieldLeadingAnchorConstraint, v7);
 
         v8 = objc_loadWeakRetained(&self->_textFieldLeadingAnchorConstraint);
@@ -457,9 +457,9 @@ BOOL __74__FPUIAuthenticationCredentialsViewController__updateTextFieldConstrain
   return v7;
 }
 
-- (void)_updateCurrentlyVisibleSectionsNeedsReloadData:(BOOL)a3
+- (void)_updateCurrentlyVisibleSectionsNeedsReloadData:(BOOL)data
 {
-  v3 = a3;
+  dataCopy = data;
   v6 = [(NSArray *)self->_credentialDescriptors objectAtIndexedSubscript:self->_selectedCredentialRow];
   v8 = v6;
   if (!v6)
@@ -470,28 +470,28 @@ BOOL __74__FPUIAuthenticationCredentialsViewController__updateTextFieldConstrain
 
   -[FPUIAuthenticationSectionDescriptor setActive:](self->_credentialsInputSection, "setActive:", [v6 type] != 0);
   [(FPUIAuthenticationSectionDescriptor *)self->_rememberPasswordSection setActive:0];
-  if (v3)
+  if (dataCopy)
   {
-    v7 = [(FPUIAuthenticationCredentialsViewController *)self tableView];
-    [v7 reloadData];
+    tableView = [(FPUIAuthenticationCredentialsViewController *)self tableView];
+    [tableView reloadData];
   }
 }
 
-- (void)_next:(id)a3
+- (void)_next:(id)_next
 {
   [(FPUIAuthenticationTableViewController *)self setNavBarActivityIndicatorHidden:0];
   v8 = [(NSArray *)self->_credentialDescriptors objectAtIndexedSubscript:self->_selectedCredentialRow];
   v4 = objc_opt_new();
   [v4 setType:{objc_msgSend(v8, "type")}];
-  v5 = [v8 username];
-  [v4 setUsername:v5];
+  username = [v8 username];
+  [v4 setUsername:username];
 
-  v6 = [v8 password];
-  [v4 setPassword:v6];
+  password = [v8 password];
+  [v4 setPassword:password];
 
   [(FPUIAuthenticationTableViewController *)self setTransitioning:1];
-  v7 = [(FPUIAuthenticationTableViewController *)self authenticationDelegate];
-  [v7 connectionFlowDelegate:self didInputCredentials:v4];
+  authenticationDelegate = [(FPUIAuthenticationTableViewController *)self authenticationDelegate];
+  [authenticationDelegate connectionFlowDelegate:self didInputCredentials:v4];
 }
 
 - (BOOL)_canMoveToNextStep
@@ -499,8 +499,8 @@ BOOL __74__FPUIAuthenticationCredentialsViewController__updateTextFieldConstrain
   v3 = [(NSArray *)self->_credentialDescriptors objectAtIndexedSubscript:self->_selectedCredentialRow];
   if ([v3 type])
   {
-    v4 = [(UITextField *)self->_nameInputTextField text];
-    v5 = [v4 length] != 0;
+    text = [(UITextField *)self->_nameInputTextField text];
+    v5 = [text length] != 0;
   }
 
   else
@@ -511,9 +511,9 @@ BOOL __74__FPUIAuthenticationCredentialsViewController__updateTextFieldConstrain
   return v5;
 }
 
-- (BOOL)textFieldShouldReturn:(id)a3
+- (BOOL)textFieldShouldReturn:(id)return
 {
-  v4 = a3;
+  returnCopy = return;
   if ([(UITextField *)self->_nameInputTextField isFirstResponder])
   {
     [(UITextField *)self->_passwordInputTextField becomeFirstResponder];
@@ -527,7 +527,7 @@ BOOL __74__FPUIAuthenticationCredentialsViewController__updateTextFieldConstrain
       goto LABEL_7;
     }
 
-    [(FPUIAuthenticationCredentialsViewController *)self _next:v4];
+    [(FPUIAuthenticationCredentialsViewController *)self _next:returnCopy];
   }
 
   v5 = 0;
@@ -536,25 +536,25 @@ LABEL_7:
   return v5;
 }
 
-- (void)textFieldDidChange:(id)a3
+- (void)textFieldDidChange:(id)change
 {
-  v6 = a3;
+  changeCopy = change;
   v4 = [(NSArray *)self->_credentialDescriptors objectAtIndexedSubscript:self->_selectedCredentialRow];
-  if (self->_nameInputTextField == v6)
+  if (self->_nameInputTextField == changeCopy)
   {
-    v5 = [(UITextField *)v6 text];
-    [v4 setUsername:v5];
+    text = [(UITextField *)changeCopy text];
+    [v4 setUsername:text];
   }
 
   else
   {
-    if (self->_passwordInputTextField != v6)
+    if (self->_passwordInputTextField != changeCopy)
     {
       goto LABEL_6;
     }
 
-    v5 = [(UITextField *)v6 text];
-    [v4 setPassword:v5];
+    text = [(UITextField *)changeCopy text];
+    [v4 setPassword:text];
   }
 
 LABEL_6:
@@ -563,9 +563,9 @@ LABEL_6:
 
 - (void)_updateCanTransitionToNextStepState
 {
-  v3 = [(FPUIAuthenticationCredentialsViewController *)self _canMoveToNextStep];
+  _canMoveToNextStep = [(FPUIAuthenticationCredentialsViewController *)self _canMoveToNextStep];
 
-  [(FPUIAuthenticationTableViewController *)self setCanTransitionToNextStep:v3];
+  [(FPUIAuthenticationTableViewController *)self setCanTransitionToNextStep:_canMoveToNextStep];
 }
 
 - (void)_updateCurrentlyVisibleSectionsNeedsReloadData:(uint64_t)a1 .cold.1(uint64_t a1, uint64_t a2)

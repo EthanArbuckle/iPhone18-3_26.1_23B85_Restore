@@ -1,44 +1,44 @@
 @interface FedStatsCollectionKeyGenerator
-+ (id)extractCohortKeyValuesFrom:(id)a3;
-- (FedStatsCollectionKeyGenerator)initWithPrefix:(id)a3 cohortKeys:(id)a4 requiredFields:(id)a5 assetProvider:(id)a6 recipeIdentifier:(id)a7;
-- (id)generateCollectionKeyForDataPoint:(id)a3 error:(id *)a4;
++ (id)extractCohortKeyValuesFrom:(id)from;
+- (FedStatsCollectionKeyGenerator)initWithPrefix:(id)prefix cohortKeys:(id)keys requiredFields:(id)fields assetProvider:(id)provider recipeIdentifier:(id)identifier;
+- (id)generateCollectionKeyForDataPoint:(id)point error:(id *)error;
 @end
 
 @implementation FedStatsCollectionKeyGenerator
 
-- (FedStatsCollectionKeyGenerator)initWithPrefix:(id)a3 cohortKeys:(id)a4 requiredFields:(id)a5 assetProvider:(id)a6 recipeIdentifier:(id)a7
+- (FedStatsCollectionKeyGenerator)initWithPrefix:(id)prefix cohortKeys:(id)keys requiredFields:(id)fields assetProvider:(id)provider recipeIdentifier:(id)identifier
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  prefixCopy = prefix;
+  keysCopy = keys;
+  fieldsCopy = fields;
+  providerCopy = provider;
+  identifierCopy = identifier;
   v37.receiver = self;
   v37.super_class = FedStatsCollectionKeyGenerator;
   v17 = [(FedStatsCollectionKeyGenerator *)&v37 init];
   if (v17)
   {
-    v18 = [v12 length];
-    if (v18 >= [@"fedstats:" length] && (objc_msgSend(v12, "substringToIndex:", objc_msgSend(@"fedstats:", "length")), v19 = objc_claimAutoreleasedReturnValue(), v20 = objc_msgSend(v19, "isEqualToString:", @"fedstats:"), v19, (v20 & 1) != 0))
+    v18 = [prefixCopy length];
+    if (v18 >= [@"fedstats:" length] && (objc_msgSend(prefixCopy, "substringToIndex:", objc_msgSend(@"fedstats:", "length")), v19 = objc_claimAutoreleasedReturnValue(), v20 = objc_msgSend(v19, "isEqualToString:", @"fedstats:"), v19, (v20 & 1) != 0))
     {
-      v21 = v12;
+      v21 = prefixCopy;
     }
 
     else
     {
-      v21 = [@"fedstats:" stringByAppendingString:v12];
+      v21 = [@"fedstats:" stringByAppendingString:prefixCopy];
     }
 
     prefix = v17->_prefix;
     v17->_prefix = v21;
 
-    objc_storeStrong(&v17->_cohortKeys, a4);
-    objc_storeStrong(&v17->_requiredFields, a5);
-    v23 = [v15 namespaceIdentifierForRecipe:v16];
+    objc_storeStrong(&v17->_cohortKeys, keys);
+    objc_storeStrong(&v17->_requiredFields, fields);
+    v23 = [providerCopy namespaceIdentifierForRecipe:identifierCopy];
     namespaceIdentifier = v17->_namespaceIdentifier;
     v17->_namespaceIdentifier = v23;
 
-    v25 = [v15 experimentIdentifierForRecipe:v16];
+    v25 = [providerCopy experimentIdentifierForRecipe:identifierCopy];
     experimentIdentifier = v17->_experimentIdentifier;
     v17->_experimentIdentifier = v25;
 
@@ -47,7 +47,7 @@
       v17->_experimentIdentifier = @"N/A";
     }
 
-    v27 = [v15 deploymentIdentifierForRecipe:v16];
+    v27 = [providerCopy deploymentIdentifierForRecipe:identifierCopy];
     deploymentIdentifier = v17->_deploymentIdentifier;
     v17->_deploymentIdentifier = v27;
 
@@ -56,7 +56,7 @@
       v17->_deploymentIdentifier = @"N/A";
     }
 
-    v29 = [v15 treatmentIdentifierForRecipe:v16];
+    v29 = [providerCopy treatmentIdentifierForRecipe:identifierCopy];
     treatmentIdentifier = v17->_treatmentIdentifier;
     v17->_treatmentIdentifier = v29;
 
@@ -67,8 +67,8 @@
 
     v31 = [MEMORY[0x277CBEB98] setWithArray:v17->_requiredFields];
     v32 = [v31 setByAddingObjectsFromArray:v17->_cohortKeys];
-    v33 = [v32 allObjects];
-    v34 = [v33 sortedArrayUsingSelector:sel_localizedCompare_];
+    allObjects = [v32 allObjects];
+    v34 = [allObjects sortedArrayUsingSelector:sel_localizedCompare_];
     unifiedFields = v17->_unifiedFields;
     v17->_unifiedFields = v34;
   }
@@ -76,16 +76,16 @@
   return v17;
 }
 
-- (id)generateCollectionKeyForDataPoint:(id)a3 error:(id *)a4
+- (id)generateCollectionKeyForDataPoint:(id)point error:(id *)error
 {
   v52 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  pointCopy = point;
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v7 = [(FedStatsCollectionKeyGenerator *)self requiredFields];
-  v8 = [v7 countByEnumeratingWithState:&v45 objects:v51 count:16];
+  requiredFields = [(FedStatsCollectionKeyGenerator *)self requiredFields];
+  v8 = [requiredFields countByEnumeratingWithState:&v45 objects:v51 count:16];
   if (v8)
   {
     v9 = v8;
@@ -96,27 +96,27 @@
       {
         if (*v46 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(requiredFields);
         }
 
         v12 = *(*(&v45 + 1) + 8 * i);
-        v13 = [v6 allKeys];
-        v14 = [v13 containsObject:v12];
+        allKeys = [pointCopy allKeys];
+        v14 = [allKeys containsObject:v12];
 
         if ((v14 & 1) == 0)
         {
-          if (a4)
+          if (error)
           {
             v20 = MEMORY[0x277D08460];
             v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"The data-point does not contain the required field '%@'", v12];
-            *a4 = [v20 errorWithCode:401 description:v21];
+            *error = [v20 errorWithCode:401 description:v21];
           }
 
           goto LABEL_14;
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v45 objects:v51 count:16];
+      v9 = [requiredFields countByEnumeratingWithState:&v45 objects:v51 count:16];
       if (v9)
       {
         continue;
@@ -126,46 +126,46 @@
     }
   }
 
-  v15 = [(FedStatsCollectionKeyGenerator *)self unifiedFields];
-  v16 = [v15 count];
+  unifiedFields = [(FedStatsCollectionKeyGenerator *)self unifiedFields];
+  v16 = [unifiedFields count];
 
   if (!v16)
   {
-    v7 = MEMORY[0x277CBEBF8];
+    requiredFields = MEMORY[0x277CBEBF8];
     goto LABEL_16;
   }
 
-  v17 = [(FedStatsCollectionKeyGenerator *)self unifiedFields];
-  v18 = [(FedStatsCollectionKeyGenerator *)self namespaceIdentifier];
+  unifiedFields2 = [(FedStatsCollectionKeyGenerator *)self unifiedFields];
+  namespaceIdentifier = [(FedStatsCollectionKeyGenerator *)self namespaceIdentifier];
   v44 = 0;
-  v19 = [FedStatsDataCohort keysForCohorts:v17 namespaceID:v18 parameters:v6 possibleError:&v44];
-  v7 = v44;
+  v19 = [FedStatsDataCohort keysForCohorts:unifiedFields2 namespaceID:namespaceIdentifier parameters:pointCopy possibleError:&v44];
+  requiredFields = v44;
 
   if (v19)
   {
 
-    v7 = v19;
+    requiredFields = v19;
 LABEL_16:
     v23 = 0x277CBE000uLL;
-    if ([v7 count])
+    if ([requiredFields count])
     {
-      v24 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v7, "count")}];
-      if ([v7 count])
+      v24 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(requiredFields, "count")}];
+      if ([requiredFields count])
       {
         v25 = 0;
         do
         {
-          v26 = [(FedStatsCollectionKeyGenerator *)self unifiedFields];
-          v27 = [v26 objectAtIndex:v25];
+          unifiedFields3 = [(FedStatsCollectionKeyGenerator *)self unifiedFields];
+          v27 = [unifiedFields3 objectAtIndex:v25];
 
-          v28 = [v7 objectAtIndex:v25];
+          v28 = [requiredFields objectAtIndex:v25];
           v29 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@%@", v27, @"=", v28];
           [v24 addObject:v29];
 
           ++v25;
         }
 
-        while (v25 < [v7 count]);
+        while (v25 < [requiredFields count]);
         v23 = 0x277CBE000;
       }
     }
@@ -177,42 +177,42 @@ LABEL_16:
       v24 = [v30 mutableCopy];
     }
 
-    v31 = [(FedStatsCollectionKeyGenerator *)self prefix];
-    v32 = [v6 objectForKey:@"%%FedStatsMaskingData%%"];
-    v33 = [v32 BOOLValue];
+    prefix = [(FedStatsCollectionKeyGenerator *)self prefix];
+    v32 = [pointCopy objectForKey:@"%%FedStatsMaskingData%%"];
+    bOOLValue = [v32 BOOLValue];
 
-    if (v33)
+    if (bOOLValue)
     {
-      v34 = [(FedStatsCollectionKeyGenerator *)self prefix];
-      v35 = [&unk_285E17AE8 objectForKey:v34];
+      prefix2 = [(FedStatsCollectionKeyGenerator *)self prefix];
+      v35 = [&unk_285E17AE8 objectForKey:prefix2];
 
       if (v35)
       {
         v36 = v35;
 
-        v31 = v36;
+        prefix = v36;
       }
     }
 
-    v49[0] = v31;
+    v49[0] = prefix;
     v37 = [v24 componentsJoinedByString:@"|"];
     v49[1] = v37;
-    v38 = [(FedStatsCollectionKeyGenerator *)self experimentIdentifier];
-    v49[2] = v38;
-    v39 = [(FedStatsCollectionKeyGenerator *)self deploymentIdentifier];
-    v49[3] = v39;
-    v40 = [(FedStatsCollectionKeyGenerator *)self treatmentIdentifier];
-    v49[4] = v40;
+    experimentIdentifier = [(FedStatsCollectionKeyGenerator *)self experimentIdentifier];
+    v49[2] = experimentIdentifier;
+    deploymentIdentifier = [(FedStatsCollectionKeyGenerator *)self deploymentIdentifier];
+    v49[3] = deploymentIdentifier;
+    treatmentIdentifier = [(FedStatsCollectionKeyGenerator *)self treatmentIdentifier];
+    v49[4] = treatmentIdentifier;
     v41 = [*(v23 + 2656) arrayWithObjects:v49 count:5];
     v22 = [v41 componentsJoinedByString:@":"];
 
     goto LABEL_27;
   }
 
-  if (a4)
+  if (error)
   {
-    [MEMORY[0x277D08460] errorWithCode:401 underlyingError:v7 description:@"Cannot validate and retrieve cohort values"];
-    *a4 = v22 = 0;
+    [MEMORY[0x277D08460] errorWithCode:401 underlyingError:requiredFields description:@"Cannot validate and retrieve cohort values"];
+    *error = v22 = 0;
   }
 
   else
@@ -228,12 +228,12 @@ LABEL_27:
   return v22;
 }
 
-+ (id)extractCohortKeyValuesFrom:(id)a3
++ (id)extractCohortKeyValuesFrom:(id)from
 {
   v30 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 componentsSeparatedByString:@":"];
-  if ([v3 length] >= 3)
+  fromCopy = from;
+  v4 = [fromCopy componentsSeparatedByString:@":"];
+  if ([fromCopy length] >= 3)
   {
     v6 = [v4 objectAtIndex:2];
     v7 = [v6 componentsSeparatedByString:@"|"];
@@ -246,7 +246,7 @@ LABEL_27:
     else
     {
       v21 = v4;
-      v22 = v3;
+      v22 = fromCopy;
       v5 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v7, "count")}];
       v23 = 0u;
       v24 = 0u;
@@ -271,19 +271,19 @@ LABEL_27:
             v16 = [v15 componentsSeparatedByString:@"="];
             if ([v16 count] == 2)
             {
-              v17 = [v16 lastObject];
-              v18 = [v16 firstObject];
-              [v5 setObject:v17 forKey:v18];
+              lastObject = [v16 lastObject];
+              firstObject = [v16 firstObject];
+              [v5 setObject:lastObject forKey:firstObject];
             }
 
             else
             {
-              v17 = +[FedStatsPluginLog logger];
-              if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+              lastObject = +[FedStatsPluginLog logger];
+              if (os_log_type_enabled(lastObject, OS_LOG_TYPE_ERROR))
               {
                 *buf = 138412290;
                 v28 = v15;
-                _os_log_error_impl(&dword_24AB24000, v17, OS_LOG_TYPE_ERROR, "Cannot separate cohort key and value for '%@'", buf, 0xCu);
+                _os_log_error_impl(&dword_24AB24000, lastObject, OS_LOG_TYPE_ERROR, "Cannot separate cohort key and value for '%@'", buf, 0xCu);
               }
             }
           }
@@ -295,7 +295,7 @@ LABEL_27:
       }
 
       v4 = v21;
-      v3 = v22;
+      fromCopy = v22;
     }
   }
 

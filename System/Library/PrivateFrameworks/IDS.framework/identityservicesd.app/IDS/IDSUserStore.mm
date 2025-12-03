@@ -1,52 +1,52 @@
 @interface IDSUserStore
-- (IDSUserStore)initWithQueue:(id)a3;
-- (IDSUserStore)initWithQueue:(id)a3 persister:(id)a4 registrationKeychainManager:(id)a5;
-- (id)_calculateUserDescriptionUpdatesForCurrentUserDescriptions:(id)a3 updatedUserDescriptions:(id)a4;
-- (id)_stringRepresentationOfUserRealm:(int64_t)a3;
-- (id)authenticationCertificateForUser:(id)a3;
-- (id)credentialForUser:(id)a3;
+- (IDSUserStore)initWithQueue:(id)queue;
+- (IDSUserStore)initWithQueue:(id)queue persister:(id)persister registrationKeychainManager:(id)manager;
+- (id)_calculateUserDescriptionUpdatesForCurrentUserDescriptions:(id)descriptions updatedUserDescriptions:(id)userDescriptions;
+- (id)_stringRepresentationOfUserRealm:(int64_t)realm;
+- (id)authenticationCertificateForUser:(id)user;
+- (id)credentialForUser:(id)user;
 - (id)debugDescription;
-- (id)propertiesForUser:(id)a3;
-- (id)userDescriptionsWithRealm:(int64_t)a3;
-- (id)userDescriptionsWithRealms:(id)a3;
-- (id)userWithUniqueIdentifier:(id)a3;
-- (id)usersWithRealm:(int64_t)a3;
-- (id)usersWithRealms:(id)a3;
-- (void)_addUserDescription:(id)a3;
-- (void)_iterateByRealm:(int64_t)a3 block:(id)a4;
-- (void)_removeUserDescription:(id)a3;
-- (void)_updateUserDescription:(id)a3;
-- (void)_updateUserDescriptionsForCurrentUserDescriptions:(id)a3 updatedUserDescriptions:(id)a4;
-- (void)addActionListener:(id)a3 forRealm:(int64_t)a4;
-- (void)forceRemoveUser:(id)a3 silently:(BOOL)a4;
+- (id)propertiesForUser:(id)user;
+- (id)userDescriptionsWithRealm:(int64_t)realm;
+- (id)userDescriptionsWithRealms:(id)realms;
+- (id)userWithUniqueIdentifier:(id)identifier;
+- (id)usersWithRealm:(int64_t)realm;
+- (id)usersWithRealms:(id)realms;
+- (void)_addUserDescription:(id)description;
+- (void)_iterateByRealm:(int64_t)realm block:(id)block;
+- (void)_removeUserDescription:(id)description;
+- (void)_updateUserDescription:(id)description;
+- (void)_updateUserDescriptionsForCurrentUserDescriptions:(id)descriptions updatedUserDescriptions:(id)userDescriptions;
+- (void)addActionListener:(id)listener forRealm:(int64_t)realm;
+- (void)forceRemoveUser:(id)user silently:(BOOL)silently;
 - (void)reloadUsers;
-- (void)reloadUsersForRealm:(int64_t)a3;
-- (void)setAuthenticationCertificate:(id)a3 forUser:(id)a4;
-- (void)setCredential:(id)a3 forUser:(id)a4;
-- (void)setDataProvider:(id)a3 forRealm:(int64_t)a4;
-- (void)setProperties:(id)a3 forUser:(id)a4;
-- (void)silentlySetAuthenticationCertificate:(id)a3 forUser:(id)a4;
-- (void)updateUser:(id)a3;
+- (void)reloadUsersForRealm:(int64_t)realm;
+- (void)setAuthenticationCertificate:(id)certificate forUser:(id)user;
+- (void)setCredential:(id)credential forUser:(id)user;
+- (void)setDataProvider:(id)provider forRealm:(int64_t)realm;
+- (void)setProperties:(id)properties forUser:(id)user;
+- (void)silentlySetAuthenticationCertificate:(id)certificate forUser:(id)user;
+- (void)updateUser:(id)user;
 @end
 
 @implementation IDSUserStore
 
-- (IDSUserStore)initWithQueue:(id)a3
+- (IDSUserStore)initWithQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v5 = [IDSPersistentMap defaultPersisterForIdentifier:@"com.apple.identityservices.userStore" dataProtectionClass:2];
   v6 = +[IDSRegistrationKeychainManager sharedInstance];
-  v7 = [(IDSUserStore *)self initWithQueue:v4 persister:v5 registrationKeychainManager:v6];
+  v7 = [(IDSUserStore *)self initWithQueue:queueCopy persister:v5 registrationKeychainManager:v6];
 
   return v7;
 }
 
-- (IDSUserStore)initWithQueue:(id)a3 persister:(id)a4 registrationKeychainManager:(id)a5
+- (IDSUserStore)initWithQueue:(id)queue persister:(id)persister registrationKeychainManager:(id)manager
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v10)
+  queueCopy = queue;
+  persisterCopy = persister;
+  managerCopy = manager;
+  if (persisterCopy)
   {
     v28.receiver = self;
     v28.super_class = IDSUserStore;
@@ -54,7 +54,7 @@
     v13 = v12;
     if (v12)
     {
-      objc_storeStrong(&v12->_queue, a3);
+      objc_storeStrong(&v12->_queue, queue);
       v27 = [[IDSPersistentMapMergePolicy alloc] initWithPolicyBlock:&stru_100BDF410];
       v14 = objc_opt_class();
       v15 = objc_opt_class();
@@ -63,34 +63,34 @@
       v26 = objc_opt_class();
       v18 = [NSSet setWithObjects:v14, v15, v16, v17, v26, objc_opt_class(), 0];
       LOBYTE(v25) = 1;
-      v19 = [[IDSPersistentMap alloc] initWithIdentifier:@"com.apple.identityservices.userStore" versionNumber:2 decodableClasses:v18 mergePolicy:v27 writeCoalescingDelay:v10 writeCoalescingLeeway:&stru_100BDF430 persister:5.0 migrationBlock:1.0 allowBackup:v25];
+      v19 = [[IDSPersistentMap alloc] initWithIdentifier:@"com.apple.identityservices.userStore" versionNumber:2 decodableClasses:v18 mergePolicy:v27 writeCoalescingDelay:persisterCopy writeCoalescingLeeway:&stru_100BDF430 persister:5.0 migrationBlock:1.0 allowBackup:v25];
       persistentMap = v13->_persistentMap;
       v13->_persistentMap = v19;
 
-      objc_storeStrong(&v13->_registrationKeychainManager, a5);
+      objc_storeStrong(&v13->_registrationKeychainManager, manager);
       v21 = +[NSMapTable weakToStrongObjectsMapTable];
       realmByListener = v13->_realmByListener;
       v13->_realmByListener = v21;
     }
 
     self = v13;
-    v23 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v23 = 0;
+    selfCopy = 0;
   }
 
-  return v23;
+  return selfCopy;
 }
 
-- (void)setDataProvider:(id)a3 forRealm:(int64_t)a4
+- (void)setDataProvider:(id)provider forRealm:(int64_t)realm
 {
-  v6 = a3;
-  v7 = [NSNumber numberWithInteger:a4];
+  providerCopy = provider;
+  v7 = [NSNumber numberWithInteger:realm];
   v14 = v7;
-  v15 = v6;
+  v15 = providerCopy;
   v8 = [NSDictionary dictionaryWithObjects:&v15 forKeys:&v14 count:1];
 
   dataProviderByRealm = self->_dataProviderByRealm;
@@ -121,74 +121,74 @@
   return v6;
 }
 
-- (id)usersWithRealm:(int64_t)a3
+- (id)usersWithRealm:(int64_t)realm
 {
-  v4 = [(IDSPersistentMap *)self->_persistentMap allValues];
+  allValues = [(IDSPersistentMap *)self->_persistentMap allValues];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100511DC8;
   v7[3] = &unk_100BDF450;
-  v7[4] = a3;
-  v5 = [v4 __imArrayByApplyingBlock:v7];
+  v7[4] = realm;
+  v5 = [allValues __imArrayByApplyingBlock:v7];
 
   return v5;
 }
 
-- (id)usersWithRealms:(id)a3
+- (id)usersWithRealms:(id)realms
 {
-  v4 = a3;
-  v5 = [(IDSPersistentMap *)self->_persistentMap allValues];
+  realmsCopy = realms;
+  allValues = [(IDSPersistentMap *)self->_persistentMap allValues];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100511F18;
   v9[3] = &unk_100BDF478;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 __imArrayByApplyingBlock:v9];
+  v10 = realmsCopy;
+  v6 = realmsCopy;
+  v7 = [allValues __imArrayByApplyingBlock:v9];
 
   return v7;
 }
 
-- (id)userWithUniqueIdentifier:(id)a3
+- (id)userWithUniqueIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v3 = [(IDSPersistentMap *)self->_persistentMap objectForKey:?];
-    v4 = [v3 user];
+    user = [v3 user];
   }
 
   else
   {
-    v4 = 0;
+    user = 0;
   }
 
-  return v4;
+  return user;
 }
 
-- (id)userDescriptionsWithRealm:(int64_t)a3
+- (id)userDescriptionsWithRealm:(int64_t)realm
 {
-  v4 = [(IDSPersistentMap *)self->_persistentMap allValues];
+  allValues = [(IDSPersistentMap *)self->_persistentMap allValues];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1005120C4;
   v7[3] = &unk_100BDF450;
-  v7[4] = a3;
-  v5 = [v4 __imArrayByApplyingBlock:v7];
+  v7[4] = realm;
+  v5 = [allValues __imArrayByApplyingBlock:v7];
 
   return v5;
 }
 
-- (id)userDescriptionsWithRealms:(id)a3
+- (id)userDescriptionsWithRealms:(id)realms
 {
-  v4 = a3;
-  v5 = [(IDSPersistentMap *)self->_persistentMap allValues];
+  realmsCopy = realms;
+  allValues = [(IDSPersistentMap *)self->_persistentMap allValues];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1005121F4;
   v9[3] = &unk_100BDF478;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 __imArrayByApplyingBlock:v9];
+  v10 = realmsCopy;
+  v6 = realmsCopy;
+  v7 = [allValues __imArrayByApplyingBlock:v9];
 
   return v7;
 }
@@ -200,27 +200,27 @@
   [(IDSUserStore *)self reloadUsersForRealm:1];
 }
 
-- (void)reloadUsersForRealm:(int64_t)a3
+- (void)reloadUsersForRealm:(int64_t)realm
 {
   v5 = +[IMRGLog registration];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(IDSUserStore *)self _stringRepresentationOfUserRealm:a3];
+    v6 = [(IDSUserStore *)self _stringRepresentationOfUserRealm:realm];
     v14 = 138412290;
     v15 = v6;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "UserStore reloading {realm: %@}", &v14, 0xCu);
   }
 
   dataProviderByRealm = self->_dataProviderByRealm;
-  v8 = [NSNumber numberWithInteger:a3];
+  v8 = [NSNumber numberWithInteger:realm];
   v9 = [(NSDictionary *)dataProviderByRealm objectForKeyedSubscript:v8];
 
   if (v9)
   {
-    v10 = [(IDSUserStore *)self userDescriptionsWithRealm:a3];
+    v10 = [(IDSUserStore *)self userDescriptionsWithRealm:realm];
     v11 = [NSSet setWithArray:v10];
 
-    v12 = [v9 updatedUserDescriptionSetForRealm:a3 currentUserDescriptions:v11];
+    v12 = [v9 updatedUserDescriptionSetForRealm:realm currentUserDescriptions:v11];
     v13 = +[IMRGLog registration];
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
@@ -237,68 +237,68 @@
   }
 }
 
-- (void)forceRemoveUser:(id)a3 silently:(BOOL)a4
+- (void)forceRemoveUser:(id)user silently:(BOOL)silently
 {
-  v4 = a4;
-  v6 = a3;
-  if (v6)
+  silentlyCopy = silently;
+  userCopy = user;
+  if (userCopy)
   {
     dataProviderByRealm = self->_dataProviderByRealm;
-    v10 = v6;
-    v8 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v6 realm]);
+    v10 = userCopy;
+    v8 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [userCopy realm]);
     v9 = [(NSDictionary *)dataProviderByRealm objectForKeyedSubscript:v8];
 
     if (v9)
     {
-      [v9 forceRemoveUser:v10 silently:v4];
+      [v9 forceRemoveUser:v10 silently:silentlyCopy];
     }
 
-    v6 = v10;
+    userCopy = v10;
   }
 }
 
-- (void)updateUser:(id)a3
+- (void)updateUser:(id)user
 {
-  v4 = a3;
-  if (v4)
+  userCopy = user;
+  if (userCopy)
   {
     v5 = +[IMRGLog registration];
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v20 = v4;
+      v20 = userCopy;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Updating user {user: %@}", buf, 0xCu);
     }
 
     persistentMap = self->_persistentMap;
-    v7 = [v4 uniqueIdentifier];
-    v8 = [(IDSPersistentMap *)persistentMap objectForKey:v7];
+    uniqueIdentifier = [userCopy uniqueIdentifier];
+    v8 = [(IDSPersistentMap *)persistentMap objectForKey:uniqueIdentifier];
 
     if (v8)
     {
       v9 = self->_persistentMap;
       v10 = [IDSUserDescription alloc];
-      v11 = [v8 properties];
-      v12 = [(IDSUserDescription *)v10 initWithUser:v4 properties:v11];
-      v13 = [v4 uniqueIdentifier];
-      [(IDSPersistentMap *)v9 setObject:v12 forKey:v13];
+      properties = [v8 properties];
+      v12 = [(IDSUserDescription *)v10 initWithUser:userCopy properties:properties];
+      uniqueIdentifier2 = [userCopy uniqueIdentifier];
+      [(IDSPersistentMap *)v9 setObject:v12 forKey:uniqueIdentifier2];
 
       v14 = +[IMRGLog registration];
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v20 = v4;
+        v20 = userCopy;
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Broadcasting update user {user: %@}", buf, 0xCu);
       }
 
-      v15 = [v4 realm];
+      realm = [userCopy realm];
       v17[0] = _NSConcreteStackBlock;
       v17[1] = 3221225472;
       v17[2] = sub_1005127D8;
       v17[3] = &unk_100BDF4A0;
       v17[4] = self;
-      v18 = v4;
-      [(IDSUserStore *)self _iterateByRealm:v15 block:v17];
+      v18 = userCopy;
+      [(IDSUserStore *)self _iterateByRealm:realm block:v17];
     }
 
     else
@@ -307,22 +307,22 @@
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v20 = v4;
+        v20 = userCopy;
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "User is not present -- not updating {user: %@}", buf, 0xCu);
       }
     }
   }
 }
 
-- (void)_updateUserDescriptionsForCurrentUserDescriptions:(id)a3 updatedUserDescriptions:(id)a4
+- (void)_updateUserDescriptionsForCurrentUserDescriptions:(id)descriptions updatedUserDescriptions:(id)userDescriptions
 {
-  [(IDSUserStore *)self _calculateUserDescriptionUpdatesForCurrentUserDescriptions:a3 updatedUserDescriptions:a4];
+  [(IDSUserStore *)self _calculateUserDescriptionUpdatesForCurrentUserDescriptions:descriptions updatedUserDescriptions:userDescriptions];
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
   v30 = v46 = 0u;
-  v5 = [v30 silentUpdates];
-  v6 = [v5 countByEnumeratingWithState:&v43 objects:v52 count:16];
+  silentUpdates = [v30 silentUpdates];
+  v6 = [silentUpdates countByEnumeratingWithState:&v43 objects:v52 count:16];
   if (v6)
   {
     v7 = v6;
@@ -333,7 +333,7 @@
       {
         if (*v44 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(silentUpdates);
         }
 
         v10 = *(*(&v43 + 1) + 8 * i);
@@ -346,12 +346,12 @@
         }
 
         persistentMap = self->_persistentMap;
-        v13 = [v10 user];
-        v14 = [v13 uniqueIdentifier];
-        [(IDSPersistentMap *)persistentMap setObject:v10 forKey:v14];
+        user = [v10 user];
+        uniqueIdentifier = [user uniqueIdentifier];
+        [(IDSPersistentMap *)persistentMap setObject:v10 forKey:uniqueIdentifier];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v43 objects:v52 count:16];
+      v7 = [silentUpdates countByEnumeratingWithState:&v43 objects:v52 count:16];
     }
 
     while (v7);
@@ -361,8 +361,8 @@
   v42 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v15 = [v30 removals];
-  v16 = [v15 countByEnumeratingWithState:&v39 objects:v49 count:16];
+  removals = [v30 removals];
+  v16 = [removals countByEnumeratingWithState:&v39 objects:v49 count:16];
   if (v16)
   {
     v17 = v16;
@@ -373,13 +373,13 @@
       {
         if (*v40 != v18)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(removals);
         }
 
         [(IDSUserStore *)self _removeUserDescription:*(*(&v39 + 1) + 8 * j)];
       }
 
-      v17 = [v15 countByEnumeratingWithState:&v39 objects:v49 count:16];
+      v17 = [removals countByEnumeratingWithState:&v39 objects:v49 count:16];
     }
 
     while (v17);
@@ -389,8 +389,8 @@
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v20 = [v30 additions];
-  v21 = [v20 countByEnumeratingWithState:&v35 objects:v48 count:16];
+  additions = [v30 additions];
+  v21 = [additions countByEnumeratingWithState:&v35 objects:v48 count:16];
   if (v21)
   {
     v22 = v21;
@@ -401,13 +401,13 @@
       {
         if (*v36 != v23)
         {
-          objc_enumerationMutation(v20);
+          objc_enumerationMutation(additions);
         }
 
         [(IDSUserStore *)self _addUserDescription:*(*(&v35 + 1) + 8 * k)];
       }
 
-      v22 = [v20 countByEnumeratingWithState:&v35 objects:v48 count:16];
+      v22 = [additions countByEnumeratingWithState:&v35 objects:v48 count:16];
     }
 
     while (v22);
@@ -417,8 +417,8 @@
   v34 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v25 = [v30 loudUpdates];
-  v26 = [v25 countByEnumeratingWithState:&v31 objects:v47 count:16];
+  loudUpdates = [v30 loudUpdates];
+  v26 = [loudUpdates countByEnumeratingWithState:&v31 objects:v47 count:16];
   if (v26)
   {
     v27 = v26;
@@ -429,23 +429,23 @@
       {
         if (*v32 != v28)
         {
-          objc_enumerationMutation(v25);
+          objc_enumerationMutation(loudUpdates);
         }
 
         [(IDSUserStore *)self _updateUserDescription:*(*(&v31 + 1) + 8 * m)];
       }
 
-      v27 = [v25 countByEnumeratingWithState:&v31 objects:v47 count:16];
+      v27 = [loudUpdates countByEnumeratingWithState:&v31 objects:v47 count:16];
     }
 
     while (v27);
   }
 }
 
-- (id)_calculateUserDescriptionUpdatesForCurrentUserDescriptions:(id)a3 updatedUserDescriptions:(id)a4
+- (id)_calculateUserDescriptionUpdatesForCurrentUserDescriptions:(id)descriptions updatedUserDescriptions:(id)userDescriptions
 {
-  v5 = a3;
-  v6 = a4;
+  descriptionsCopy = descriptions;
+  userDescriptionsCopy = userDescriptions;
   v40 = objc_alloc_init(IDSUserDescriptionUpdates);
   v43 = +[NSMutableArray array];
   v42 = +[NSMutableArray array];
@@ -455,7 +455,7 @@
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
-  v8 = v5;
+  v8 = descriptionsCopy;
   v9 = [v8 countByEnumeratingWithState:&v52 objects:v58 count:16];
   if (v9)
   {
@@ -471,7 +471,7 @@
         }
 
         v13 = *(*(&v52 + 1) + 8 * i);
-        if (([v6 containsObject:v13] & 1) == 0)
+        if (([userDescriptionsCopy containsObject:v13] & 1) == 0)
         {
           [v43 addObject:v13];
         }
@@ -487,7 +487,7 @@
   v51 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v14 = v6;
+  v14 = userDescriptionsCopy;
   v15 = [v14 countByEnumeratingWithState:&v48 objects:v57 count:16];
   if (v15)
   {
@@ -507,10 +507,10 @@
         v21 = v20;
         if (v20)
         {
-          v22 = [v20 properties];
-          v23 = [v19 properties];
-          v24 = v23;
-          if ((!(v22 | v23) || [v23 isEqual:v22]) && (objc_msgSend(v19, "isIdenticalToUserDescription:", v21) & 1) == 0)
+          properties = [v20 properties];
+          properties2 = [v19 properties];
+          v24 = properties2;
+          if ((!(properties | properties2) || [properties2 isEqual:properties]) && (objc_msgSend(v19, "isIdenticalToUserDescription:", v21) & 1) == 0)
           {
             [v42 addObject:v19];
           }
@@ -546,10 +546,10 @@
         if ([v8 containsObject:v30])
         {
           v31 = [v8 member:v30];
-          v32 = [v31 properties];
-          v33 = [v30 properties];
-          v34 = v33;
-          if (v32 | v33 && ([v33 isEqual:v32] & 1) == 0)
+          properties3 = [v31 properties];
+          properties4 = [v30 properties];
+          v34 = properties4;
+          if (properties3 | properties4 && ([properties4 isEqual:properties3] & 1) == 0)
           {
             [v41 addObject:v30];
           }
@@ -579,40 +579,40 @@
   return v40;
 }
 
-- (void)_addUserDescription:(id)a3
+- (void)_addUserDescription:(id)description
 {
-  v4 = a3;
-  if (v4)
+  descriptionCopy = description;
+  if (descriptionCopy)
   {
     v5 = +[IMRGLog registration];
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v27 = v4;
+      v27 = descriptionCopy;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Adding user description {userDescription: %@}", buf, 0xCu);
     }
 
     persistentMap = self->_persistentMap;
-    v7 = [v4 user];
-    v8 = [v7 uniqueIdentifier];
-    v9 = [(IDSPersistentMap *)persistentMap objectForKey:v8];
+    user = [descriptionCopy user];
+    uniqueIdentifier = [user uniqueIdentifier];
+    v9 = [(IDSPersistentMap *)persistentMap objectForKey:uniqueIdentifier];
 
     if (v9)
     {
-      v10 = [v9 properties];
-      if (!v10)
+      properties = [v9 properties];
+      if (!properties)
       {
-        v10 = [v4 properties];
-        if (!v10)
+        properties = [descriptionCopy properties];
+        if (!properties)
         {
-          v18 = [v9 properties];
-          v19 = [v4 properties];
-          v20 = [v18 isEqual:v19];
+          properties2 = [v9 properties];
+          properties3 = [descriptionCopy properties];
+          v20 = [properties2 isEqual:properties3];
 
           v21 = self->_persistentMap;
-          v22 = [v4 user];
-          v23 = [v22 uniqueIdentifier];
-          [(IDSPersistentMap *)v21 setObject:v4 forKey:v23];
+          user2 = [descriptionCopy user];
+          uniqueIdentifier2 = [user2 uniqueIdentifier];
+          [(IDSPersistentMap *)v21 setObject:descriptionCopy forKey:uniqueIdentifier2];
 
           if ((v20 & 1) == 0)
           {
@@ -625,21 +625,21 @@ LABEL_9:
           v14 = +[IMRGLog registration];
           if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
           {
-            v15 = [v4 user];
+            user3 = [descriptionCopy user];
             *buf = 138412290;
-            v27 = v15;
+            v27 = user3;
             _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Broadcasting new user {user: %@}", buf, 0xCu);
           }
 
-          v16 = [v4 user];
-          v17 = [v16 realm];
+          user4 = [descriptionCopy user];
+          realm = [user4 realm];
           v24[0] = _NSConcreteStackBlock;
           v24[1] = 3221225472;
           v24[2] = sub_100513268;
           v24[3] = &unk_100BDF4A0;
           v24[4] = self;
-          v25 = v4;
-          [(IDSUserStore *)self _iterateByRealm:v17 block:v24];
+          v25 = descriptionCopy;
+          [(IDSUserStore *)self _iterateByRealm:realm block:v24];
 
           goto LABEL_12;
         }
@@ -647,9 +647,9 @@ LABEL_9:
     }
 
     v11 = self->_persistentMap;
-    v12 = [v4 user];
-    v13 = [v12 uniqueIdentifier];
-    [(IDSPersistentMap *)v11 setObject:v4 forKey:v13];
+    user5 = [descriptionCopy user];
+    uniqueIdentifier3 = [user5 uniqueIdentifier];
+    [(IDSPersistentMap *)v11 setObject:descriptionCopy forKey:uniqueIdentifier3];
 
     goto LABEL_9;
   }
@@ -657,98 +657,98 @@ LABEL_9:
 LABEL_13:
 }
 
-- (void)_removeUserDescription:(id)a3
+- (void)_removeUserDescription:(id)description
 {
-  v4 = a3;
-  if (v4)
+  descriptionCopy = description;
+  if (descriptionCopy)
   {
     v5 = +[IMRGLog registration];
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v23 = v4;
+      v23 = descriptionCopy;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Removing user description {userDescription: %@}", buf, 0xCu);
     }
 
-    v6 = [v4 user];
-    [(IDSUserStore *)self setCredential:0 forUser:v6];
+    user = [descriptionCopy user];
+    [(IDSUserStore *)self setCredential:0 forUser:user];
 
-    v7 = [v4 user];
-    v8 = [(IDSUserStore *)self authenticationCertificateForUser:v7];
+    user2 = [descriptionCopy user];
+    v8 = [(IDSUserStore *)self authenticationCertificateForUser:user2];
 
-    v9 = [v4 user];
-    v10 = [v9 realm];
+    user3 = [descriptionCopy user];
+    realm = [user3 realm];
 
-    if (!v10)
+    if (!realm)
     {
       v11 = +[IDSPACStateTracker sharedInstance];
       [v11 notePhoneAuthCertLost:9];
     }
 
-    v12 = [v4 user];
-    [(IDSUserStore *)self silentlySetAuthenticationCertificate:0 forUser:v12];
+    user4 = [descriptionCopy user];
+    [(IDSUserStore *)self silentlySetAuthenticationCertificate:0 forUser:user4];
 
     persistentMap = self->_persistentMap;
-    v14 = [v4 user];
-    v15 = [v14 uniqueIdentifier];
-    [(IDSPersistentMap *)persistentMap removeObjectForKey:v15];
+    user5 = [descriptionCopy user];
+    uniqueIdentifier = [user5 uniqueIdentifier];
+    [(IDSPersistentMap *)persistentMap removeObjectForKey:uniqueIdentifier];
 
-    v16 = [v4 user];
-    v17 = [v16 realm];
+    user6 = [descriptionCopy user];
+    realm2 = [user6 realm];
     v19[0] = _NSConcreteStackBlock;
     v19[1] = 3221225472;
     v19[2] = sub_100513520;
     v19[3] = &unk_100BDF4C8;
     v19[4] = self;
-    v20 = v4;
+    v20 = descriptionCopy;
     v21 = v8;
     v18 = v8;
-    [(IDSUserStore *)self _iterateByRealm:v17 block:v19];
+    [(IDSUserStore *)self _iterateByRealm:realm2 block:v19];
   }
 }
 
-- (void)_updateUserDescription:(id)a3
+- (void)_updateUserDescription:(id)description
 {
-  v4 = a3;
-  if (v4)
+  descriptionCopy = description;
+  if (descriptionCopy)
   {
     v5 = +[IMRGLog registration];
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v20 = v4;
+      v20 = descriptionCopy;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Updating userDescription {userDescription: %@}", buf, 0xCu);
     }
 
     persistentMap = self->_persistentMap;
-    v7 = [v4 user];
-    v8 = [v7 uniqueIdentifier];
-    v9 = [(IDSPersistentMap *)persistentMap objectForKey:v8];
+    user = [descriptionCopy user];
+    uniqueIdentifier = [user uniqueIdentifier];
+    v9 = [(IDSPersistentMap *)persistentMap objectForKey:uniqueIdentifier];
 
     if (v9)
     {
       v10 = self->_persistentMap;
-      v11 = [v4 user];
-      v12 = [v11 uniqueIdentifier];
-      [(IDSPersistentMap *)v10 setObject:v4 forKey:v12];
+      user2 = [descriptionCopy user];
+      uniqueIdentifier2 = [user2 uniqueIdentifier];
+      [(IDSPersistentMap *)v10 setObject:descriptionCopy forKey:uniqueIdentifier2];
 
       v13 = +[IMRGLog registration];
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v20 = v4;
+        v20 = descriptionCopy;
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Broadcasting update user description {userDescription: %@}", buf, 0xCu);
       }
 
-      v14 = [v4 user];
-      v15 = [v14 realm];
+      user3 = [descriptionCopy user];
+      realm = [user3 realm];
       v17[0] = _NSConcreteStackBlock;
       v17[1] = 3221225472;
       v17[2] = sub_100513818;
       v17[3] = &unk_100BDF4A0;
       v17[4] = self;
-      v18 = v4;
-      [(IDSUserStore *)self _iterateByRealm:v15 block:v17];
+      v18 = descriptionCopy;
+      [(IDSUserStore *)self _iterateByRealm:realm block:v17];
     }
 
     else
@@ -757,22 +757,22 @@ LABEL_13:
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v20 = v4;
+        v20 = descriptionCopy;
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "User is not present -- not updating {userDescription: %@}", buf, 0xCu);
       }
     }
   }
 }
 
-- (id)_stringRepresentationOfUserRealm:(int64_t)a3
+- (id)_stringRepresentationOfUserRealm:(int64_t)realm
 {
   v3 = @"p";
-  if (a3 == 1)
+  if (realm == 1)
   {
     v3 = @"aid";
   }
 
-  if (a3 == 2)
+  if (realm == 2)
   {
     return @"tp";
   }
@@ -783,19 +783,19 @@ LABEL_13:
   }
 }
 
-- (id)credentialForUser:(id)a3
+- (id)credentialForUser:(id)user
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  userCopy = user;
+  v5 = userCopy;
+  if (!userCopy)
   {
     goto LABEL_17;
   }
 
-  v6 = [v4 realm];
-  if (v6 != 2)
+  realm = [userCopy realm];
+  if (realm != 2)
   {
-    if (v6 == 1)
+    if (realm == 1)
     {
       v38 = +[IMRGLog registration];
       if (os_log_type_enabled(v38, OS_LOG_TYPE_FAULT))
@@ -804,76 +804,76 @@ LABEL_13:
       }
     }
 
-    else if (!v6)
+    else if (!realm)
     {
       v7 = v5;
       registrationKeychainManager = self->_registrationKeychainManager;
-      v9 = [v7 storageIdentifier];
-      v10 = [(IDSRegistrationKeychainManager *)registrationKeychainManager smsSignatureForID:v9];
+      storageIdentifier = [v7 storageIdentifier];
+      v10 = [(IDSRegistrationKeychainManager *)registrationKeychainManager smsSignatureForID:storageIdentifier];
 
       if (!v10)
       {
         v11 = self->_registrationKeychainManager;
-        v12 = [v7 phoneNumber];
-        v10 = [(IDSRegistrationKeychainManager *)v11 smsSignatureForID:v12];
+        phoneNumber = [v7 phoneNumber];
+        v10 = [(IDSRegistrationKeychainManager *)v11 smsSignatureForID:phoneNumber];
 
         if (v10)
         {
           v13 = +[IMRGLog sms];
           if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
           {
-            v14 = [v7 phoneNumber];
-            v15 = [v7 storageIdentifier];
+            phoneNumber2 = [v7 phoneNumber];
+            storageIdentifier2 = [v7 storageIdentifier];
             v44 = 138412546;
-            v45 = v14;
+            v45 = phoneNumber2;
             v46 = 2112;
-            v47 = v15;
+            v47 = storageIdentifier2;
             _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Migrating sms signature from phone number: %@ to SIM label ID: %@", &v44, 0x16u);
           }
 
           v16 = v10;
           v17 = self->_registrationKeychainManager;
-          v18 = [v7 storageIdentifier];
-          [(IDSRegistrationKeychainManager *)v17 setSMSSignature:v16 mainID:v18];
+          storageIdentifier3 = [v7 storageIdentifier];
+          [(IDSRegistrationKeychainManager *)v17 setSMSSignature:v16 mainID:storageIdentifier3];
 
           v19 = self->_registrationKeychainManager;
-          v20 = [v7 phoneNumber];
-          v21 = [(IDSRegistrationKeychainManager *)v19 smsSignatureMechanismForID:v20];
-          v22 = [v21 intValue];
+          phoneNumber3 = [v7 phoneNumber];
+          v21 = [(IDSRegistrationKeychainManager *)v19 smsSignatureMechanismForID:phoneNumber3];
+          intValue = [v21 intValue];
 
           v23 = +[IMRGLog sms];
           if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
           {
-            v24 = [v7 phoneNumber];
-            v25 = [v7 storageIdentifier];
+            phoneNumber4 = [v7 phoneNumber];
+            storageIdentifier4 = [v7 storageIdentifier];
             v44 = 138412546;
-            v45 = v24;
+            v45 = phoneNumber4;
             v46 = 2112;
-            v47 = v25;
+            v47 = storageIdentifier4;
             _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "Migrating sms signature mechanism from phone number: %@ to SIM label ID: %@", &v44, 0x16u);
           }
 
           v26 = self->_registrationKeychainManager;
-          v27 = [NSNumber numberWithInteger:v22];
-          v28 = [v7 storageIdentifier];
-          [(IDSRegistrationKeychainManager *)v26 setSMSSignatureMechanism:v27 mainID:v28];
+          v27 = [NSNumber numberWithInteger:intValue];
+          storageIdentifier5 = [v7 storageIdentifier];
+          [(IDSRegistrationKeychainManager *)v26 setSMSSignatureMechanism:v27 mainID:storageIdentifier5];
 
           v29 = self->_registrationKeychainManager;
-          v30 = [v7 phoneNumber];
-          [(IDSRegistrationKeychainManager *)v29 setSMSSignature:0 mainID:v30];
+          phoneNumber5 = [v7 phoneNumber];
+          [(IDSRegistrationKeychainManager *)v29 setSMSSignature:0 mainID:phoneNumber5];
 
           v31 = self->_registrationKeychainManager;
-          v32 = [v7 phoneNumber];
-          [(IDSRegistrationKeychainManager *)v31 setSMSSignatureMechanism:0 mainID:v32];
+          phoneNumber6 = [v7 phoneNumber];
+          [(IDSRegistrationKeychainManager *)v31 setSMSSignatureMechanism:0 mainID:phoneNumber6];
         }
       }
 
       v33 = self->_registrationKeychainManager;
-      v34 = [v7 storageIdentifier];
-      v35 = [(IDSRegistrationKeychainManager *)v33 smsSignatureMechanismForID:v34];
-      v36 = [v35 intValue];
+      storageIdentifier6 = [v7 storageIdentifier];
+      v35 = [(IDSRegistrationKeychainManager *)v33 smsSignatureMechanismForID:storageIdentifier6];
+      intValue2 = [v35 intValue];
 
-      v37 = [[IDSPhoneUserCredential alloc] initWithSMSSignature:v10 mechanismUsed:v36];
+      v37 = [[IDSPhoneUserCredential alloc] initWithSMSSignature:v10 mechanismUsed:intValue2];
       goto LABEL_19;
     }
 
@@ -884,8 +884,8 @@ LABEL_17:
 
   v39 = self->_registrationKeychainManager;
   v40 = v5;
-  v41 = [v40 phoneNumber];
-  v7 = [(IDSRegistrationKeychainManager *)v39 tempPhoneCredentialForID:v41];
+  phoneNumber7 = [v40 phoneNumber];
+  v7 = [(IDSRegistrationKeychainManager *)v39 tempPhoneCredentialForID:phoneNumber7];
 
   v42 = [IDSTemporaryPhoneUserCredential alloc];
   v37 = [(IDSTemporaryPhoneUserCredential *)v42 initWithDataRepresentation:v7];
@@ -896,49 +896,49 @@ LABEL_20:
   return v37;
 }
 
-- (void)setCredential:(id)a3 forUser:(id)a4
+- (void)setCredential:(id)credential forUser:(id)user
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  credentialCopy = credential;
+  userCopy = user;
+  if (!userCopy)
   {
     goto LABEL_16;
   }
 
-  if (v6)
+  if (credentialCopy)
   {
-    v8 = [v6 realm];
-    if (v8 != [v7 realm])
+    realm = [credentialCopy realm];
+    if (realm != [userCopy realm])
     {
       v19 = +[IMRGLog registration];
       if (os_log_type_enabled(v19, OS_LOG_TYPE_FAULT))
       {
-        sub_100927E5C(v6, v7, v19);
+        sub_100927E5C(credentialCopy, userCopy, v19);
       }
 
       goto LABEL_14;
     }
   }
 
-  v9 = [v7 realm];
-  if (v9 == 2)
+  realm2 = [userCopy realm];
+  if (realm2 == 2)
   {
     registrationKeychainManager = self->_registrationKeychainManager;
-    v21 = v6;
-    v22 = v7;
-    v23 = [v21 dataRepresentation];
-    v24 = [v22 phoneNumber];
-    [(IDSRegistrationKeychainManager *)registrationKeychainManager setTempPhoneCredential:v23 forID:v24];
+    v21 = credentialCopy;
+    v22 = userCopy;
+    dataRepresentation = [v21 dataRepresentation];
+    phoneNumber = [v22 phoneNumber];
+    [(IDSRegistrationKeychainManager *)registrationKeychainManager setTempPhoneCredential:dataRepresentation forID:phoneNumber];
 
     goto LABEL_16;
   }
 
-  if (v9 == 1)
+  if (realm2 == 1)
   {
     v19 = +[IMRGLog registration];
     if (os_log_type_enabled(v19, OS_LOG_TYPE_FAULT))
     {
-      sub_100927DE4(v7, v19);
+      sub_100927DE4(userCopy, v19);
     }
 
 LABEL_14:
@@ -946,46 +946,46 @@ LABEL_14:
     goto LABEL_16;
   }
 
-  if (!v9)
+  if (!realm2)
   {
-    v10 = v7;
-    v11 = v6;
-    v12 = [v10 phoneNumber];
+    v10 = userCopy;
+    v11 = credentialCopy;
+    phoneNumber2 = [v10 phoneNumber];
 
-    if (v12)
+    if (phoneNumber2)
     {
       v13 = self->_registrationKeychainManager;
-      v14 = [v11 smsSignature];
-      v15 = [v10 storageIdentifier];
-      [(IDSRegistrationKeychainManager *)v13 setSMSSignature:v14 mainID:v15];
+      smsSignature = [v11 smsSignature];
+      storageIdentifier = [v10 storageIdentifier];
+      [(IDSRegistrationKeychainManager *)v13 setSMSSignature:smsSignature mainID:storageIdentifier];
 
       v16 = self->_registrationKeychainManager;
       v17 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v11 mechanismUsed]);
-      v18 = [v10 storageIdentifier];
-      [(IDSRegistrationKeychainManager *)v16 setSMSSignatureMechanism:v17 mainID:v18];
+      storageIdentifier2 = [v10 storageIdentifier];
+      [(IDSRegistrationKeychainManager *)v16 setSMSSignatureMechanism:v17 mainID:storageIdentifier2];
     }
   }
 
 LABEL_16:
 }
 
-- (id)authenticationCertificateForUser:(id)a3
+- (id)authenticationCertificateForUser:(id)user
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4 || ([v4 storageIdentifier], v6 = objc_claimAutoreleasedReturnValue(), v6, !v6))
+  userCopy = user;
+  v5 = userCopy;
+  if (!userCopy || ([userCopy storageIdentifier], v6 = objc_claimAutoreleasedReturnValue(), v6, !v6))
   {
     v13 = 0;
     goto LABEL_15;
   }
 
   registrationKeychainManager = self->_registrationKeychainManager;
-  v8 = [v5 storageIdentifier];
-  v9 = [(IDSRegistrationKeychainManager *)registrationKeychainManager authenticationCertForID:v8];
+  storageIdentifier = [v5 storageIdentifier];
+  v9 = [(IDSRegistrationKeychainManager *)registrationKeychainManager authenticationCertForID:storageIdentifier];
 
   v10 = self->_registrationKeychainManager;
-  v11 = [v5 realmPrefixedIdentifier];
-  v12 = [(IDSRegistrationKeychainManager *)v10 authenticationCertForID:v11];
+  realmPrefixedIdentifier = [v5 realmPrefixedIdentifier];
+  v12 = [(IDSRegistrationKeychainManager *)v10 authenticationCertForID:realmPrefixedIdentifier];
 
   if (v9 || !v12)
   {
@@ -1004,23 +1004,23 @@ LABEL_13:
     v14 = +[IMRGLog sms];
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [v5 realmPrefixedIdentifier];
-      v16 = [v5 storageIdentifier];
+      realmPrefixedIdentifier2 = [v5 realmPrefixedIdentifier];
+      storageIdentifier2 = [v5 storageIdentifier];
       v22 = 138412546;
-      v23 = v15;
+      v23 = realmPrefixedIdentifier2;
       v24 = 2112;
-      v25 = v16;
+      v25 = storageIdentifier2;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Migrating phone user auth cert from phone number: %@ to label ID: %@", &v22, 0x16u);
     }
 
     v9 = v12;
     v17 = self->_registrationKeychainManager;
-    v18 = [v5 storageIdentifier];
-    [(IDSRegistrationKeychainManager *)v17 setAuthenticationCert:v9 forID:v18];
+    storageIdentifier3 = [v5 storageIdentifier];
+    [(IDSRegistrationKeychainManager *)v17 setAuthenticationCert:v9 forID:storageIdentifier3];
 
     v19 = self->_registrationKeychainManager;
-    v20 = [v5 realmPrefixedIdentifier];
-    [(IDSRegistrationKeychainManager *)v19 setAuthenticationCert:0 forID:v20];
+    realmPrefixedIdentifier3 = [v5 realmPrefixedIdentifier];
+    [(IDSRegistrationKeychainManager *)v19 setAuthenticationCert:0 forID:realmPrefixedIdentifier3];
 
     goto LABEL_13;
   }
@@ -1035,13 +1035,13 @@ LABEL_15:
   return v13;
 }
 
-- (void)setAuthenticationCertificate:(id)a3 forUser:(id)a4
+- (void)setAuthenticationCertificate:(id)certificate forUser:(id)user
 {
-  v6 = a3;
-  v7 = a4;
-  [(IDSUserStore *)self silentlySetAuthenticationCertificate:v6 forUser:v7];
-  v8 = [v7 realm];
-  if (v6)
+  certificateCopy = certificate;
+  userCopy = user;
+  [(IDSUserStore *)self silentlySetAuthenticationCertificate:certificateCopy forUser:userCopy];
+  realm = [userCopy realm];
+  if (certificateCopy)
   {
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
@@ -1049,10 +1049,10 @@ LABEL_15:
     v12[3] = &unk_100BDF4C8;
     v12[4] = self;
     v9 = &v13;
-    v13 = v6;
-    v14 = v7;
-    v10 = v7;
-    [(IDSUserStore *)self _iterateByRealm:v8 block:v12];
+    v13 = certificateCopy;
+    v14 = userCopy;
+    v10 = userCopy;
+    [(IDSUserStore *)self _iterateByRealm:realm block:v12];
   }
 
   else
@@ -1063,51 +1063,51 @@ LABEL_15:
     v15[3] = &unk_100BDF4A0;
     v9 = &v16;
     v15[4] = self;
-    v16 = v7;
-    v11 = v7;
-    [(IDSUserStore *)self _iterateByRealm:v8 block:v15];
+    v16 = userCopy;
+    v11 = userCopy;
+    [(IDSUserStore *)self _iterateByRealm:realm block:v15];
   }
 }
 
-- (void)silentlySetAuthenticationCertificate:(id)a3 forUser:(id)a4
+- (void)silentlySetAuthenticationCertificate:(id)certificate forUser:(id)user
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [v6 storageIdentifier];
+  certificateCopy = certificate;
+  userCopy = user;
+  storageIdentifier = [userCopy storageIdentifier];
 
-  if (v7)
+  if (storageIdentifier)
   {
     registrationKeychainManager = self->_registrationKeychainManager;
-    v9 = [v11 dataRepresentation];
-    v10 = [v6 storageIdentifier];
-    [(IDSRegistrationKeychainManager *)registrationKeychainManager setAuthenticationCert:v9 forID:v10];
+    dataRepresentation = [certificateCopy dataRepresentation];
+    storageIdentifier2 = [userCopy storageIdentifier];
+    [(IDSRegistrationKeychainManager *)registrationKeychainManager setAuthenticationCert:dataRepresentation forID:storageIdentifier2];
   }
 }
 
-- (id)propertiesForUser:(id)a3
+- (id)propertiesForUser:(id)user
 {
-  if (a3)
+  if (user)
   {
     persistentMap = self->_persistentMap;
-    v4 = [a3 uniqueIdentifier];
-    v5 = [(IDSPersistentMap *)persistentMap objectForKey:v4];
-    v6 = [v5 properties];
+    uniqueIdentifier = [user uniqueIdentifier];
+    v5 = [(IDSPersistentMap *)persistentMap objectForKey:uniqueIdentifier];
+    properties = [v5 properties];
   }
 
   else
   {
-    v6 = 0;
+    properties = 0;
   }
 
-  return v6;
+  return properties;
 }
 
-- (void)setProperties:(id)a3 forUser:(id)a4
+- (void)setProperties:(id)properties forUser:(id)user
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 && v7)
+  propertiesCopy = properties;
+  userCopy = user;
+  v8 = userCopy;
+  if (propertiesCopy && userCopy)
   {
     v9 = +[IMRGLog registration];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -1115,20 +1115,20 @@ LABEL_15:
       *buf = 138412546;
       v22 = v8;
       v23 = 2112;
-      v24 = v6;
+      v24 = propertiesCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Updating user properties {user: %@, props: %@}", buf, 0x16u);
     }
 
     persistentMap = self->_persistentMap;
-    v11 = [v8 uniqueIdentifier];
-    v12 = [(IDSPersistentMap *)persistentMap objectForKey:v11];
+    uniqueIdentifier = [v8 uniqueIdentifier];
+    v12 = [(IDSPersistentMap *)persistentMap objectForKey:uniqueIdentifier];
 
     if (v12)
     {
       v13 = self->_persistentMap;
-      v14 = [[IDSUserDescription alloc] initWithUser:v8 properties:v6];
-      v15 = [v8 uniqueIdentifier];
-      [(IDSPersistentMap *)v13 setObject:v14 forKey:v15];
+      v14 = [[IDSUserDescription alloc] initWithUser:v8 properties:propertiesCopy];
+      uniqueIdentifier2 = [v8 uniqueIdentifier];
+      [(IDSPersistentMap *)v13 setObject:v14 forKey:uniqueIdentifier2];
 
       v16 = +[IMRGLog registration];
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -1138,14 +1138,14 @@ LABEL_15:
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Broadcasting update user props {user: %@}", buf, 0xCu);
       }
 
-      v17 = [v8 realm];
+      realm = [v8 realm];
       v19[0] = _NSConcreteStackBlock;
       v19[1] = 3221225472;
       v19[2] = sub_100514634;
       v19[3] = &unk_100BDF4A0;
       v19[4] = self;
       v20 = v8;
-      [(IDSUserStore *)self _iterateByRealm:v17 block:v19];
+      [(IDSUserStore *)self _iterateByRealm:realm block:v19];
     }
 
     else
@@ -1161,9 +1161,9 @@ LABEL_15:
   }
 }
 
-- (void)_iterateByRealm:(int64_t)a3 block:(id)a4
+- (void)_iterateByRealm:(int64_t)realm block:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -1185,11 +1185,11 @@ LABEL_15:
 
         v11 = *(*(&v15 + 1) + 8 * i);
         v12 = [(NSMapTable *)self->_realmByListener objectForKey:v11];
-        v13 = [v12 integerValue];
+        integerValue = [v12 integerValue];
 
-        if (v13 == a3 || v13 == -42)
+        if (integerValue == realm || integerValue == -42)
         {
-          v6[2](v6, v11);
+          blockCopy[2](blockCopy, v11);
         }
       }
 
@@ -1200,12 +1200,12 @@ LABEL_15:
   }
 }
 
-- (void)addActionListener:(id)a3 forRealm:(int64_t)a4
+- (void)addActionListener:(id)listener forRealm:(int64_t)realm
 {
   realmByListener = self->_realmByListener;
-  v6 = a3;
-  v7 = [NSNumber numberWithInteger:a4];
-  [(NSMapTable *)realmByListener setObject:v7 forKey:v6];
+  listenerCopy = listener;
+  v7 = [NSNumber numberWithInteger:realm];
+  [(NSMapTable *)realmByListener setObject:v7 forKey:listenerCopy];
 }
 
 @end

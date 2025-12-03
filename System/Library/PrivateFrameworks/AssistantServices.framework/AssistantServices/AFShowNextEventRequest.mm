@@ -1,20 +1,20 @@
 @interface AFShowNextEventRequest
-+ (id)_calendarIDsForSyncHashes:(id)a3 inCalendars:(id)a4;
-- (BOOL)_shouldExcludeEvent:(id)a3 allowAllDayEvents:(BOOL)a4;
-- (id)_nextEventFromFilteredEvents:(id)a3;
-- (id)_selectedCalendarsForEventStore:(id)a3;
-- (void)_ad_handleShowNextEventRequestWithCompletionHandler:(id)a3;
++ (id)_calendarIDsForSyncHashes:(id)hashes inCalendars:(id)calendars;
+- (BOOL)_shouldExcludeEvent:(id)event allowAllDayEvents:(BOOL)events;
+- (id)_nextEventFromFilteredEvents:(id)events;
+- (id)_selectedCalendarsForEventStore:(id)store;
+- (void)_ad_handleShowNextEventRequestWithCompletionHandler:(id)handler;
 @end
 
 @implementation AFShowNextEventRequest
 
-- (id)_selectedCalendarsForEventStore:(id)a3
+- (id)_selectedCalendarsForEventStore:(id)store
 {
-  v3 = a3;
-  if (v3)
+  storeCopy = store;
+  if (storeCopy)
   {
-    v4 = [off_10058E068() shared];
-    if (!v4)
+    shared = [off_10058E068() shared];
+    if (!shared)
     {
       v5 = AFSiriLogContextSession;
       if (os_log_type_enabled(AFSiriLogContextSession, OS_LOG_TYPE_ERROR))
@@ -25,11 +25,11 @@
       }
     }
 
-    v21 = v4;
-    v6 = [v4 deselectedCalendarSyncHashes];
-    v7 = [v3 calendarsForEntityType:0];
-    v20 = v6;
-    v8 = [objc_opt_class() _calendarIDsForSyncHashes:v6 inCalendars:v7];
+    v21 = shared;
+    deselectedCalendarSyncHashes = [shared deselectedCalendarSyncHashes];
+    v7 = [storeCopy calendarsForEntityType:0];
+    v20 = deselectedCalendarSyncHashes;
+    v8 = [objc_opt_class() _calendarIDsForSyncHashes:deselectedCalendarSyncHashes inCalendars:v7];
     v9 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [v7 count]);
     v10 = [NSSet setWithArray:v8];
     v22 = 0u;
@@ -52,8 +52,8 @@
           }
 
           v16 = *(*(&v22 + 1) + 8 * i);
-          v17 = [v16 calendarIdentifier];
-          if (v17 && ([v10 containsObject:v17] & 1) == 0)
+          calendarIdentifier = [v16 calendarIdentifier];
+          if (calendarIdentifier && ([v10 containsObject:calendarIdentifier] & 1) == 0)
           {
             [v9 addObject:v16];
           }
@@ -65,29 +65,29 @@
       while (v13);
     }
 
-    v18 = [v9 allObjects];
+    allObjects = [v9 allObjects];
   }
 
   else
   {
-    v18 = 0;
+    allObjects = 0;
   }
 
-  return v18;
+  return allObjects;
 }
 
-- (BOOL)_shouldExcludeEvent:(id)a3 allowAllDayEvents:(BOOL)a4
+- (BOOL)_shouldExcludeEvent:(id)event allowAllDayEvents:(BOOL)events
 {
-  v5 = a3;
-  v6 = [v5 calendar];
-  v7 = [v6 type];
+  eventCopy = event;
+  calendar = [eventCopy calendar];
+  type = [calendar type];
 
-  v8 = [v5 isAllDay];
-  v9 = [v5 status];
-  if ([v5 hasAttendees])
+  isAllDay = [eventCopy isAllDay];
+  status = [eventCopy status];
+  if ([eventCopy hasAttendees])
   {
-    v10 = [v5 organizer];
-    v11 = ([v10 isCurrentUser] & 1) == 0 && objc_msgSend(v5, "selfParticipantStatus") == 3;
+    organizer = [eventCopy organizer];
+    v11 = ([organizer isCurrentUser] & 1) == 0 && objc_msgSend(eventCopy, "selfParticipantStatus") == 3;
   }
 
   else
@@ -95,35 +95,35 @@
     v11 = 0;
   }
 
-  v12 = !a4;
-  if (v7 == 4)
+  v12 = !events;
+  if (type == 4)
   {
     v12 = 1;
-    v13 = a4;
+    eventsCopy = events;
   }
 
   else
   {
-    v13 = 0;
+    eventsCopy = 0;
   }
 
-  if (!v8)
+  if (!isAllDay)
   {
-    v12 = v13;
+    v12 = eventsCopy;
   }
 
-  v14 = v9 == 3 || v11;
+  v14 = status == 3 || v11;
   v15 = v14 | v12;
 
   return v15 & 1;
 }
 
-- (id)_nextEventFromFilteredEvents:(id)a3
+- (id)_nextEventFromFilteredEvents:(id)events
 {
-  v3 = a3;
-  if (![v3 count])
+  eventsCopy = events;
+  if (![eventsCopy count])
   {
-    v19 = 0;
+    firstObject2 = 0;
     goto LABEL_29;
   }
 
@@ -134,14 +134,14 @@
   v28[2] = sub_1002F24D0;
   v4 = v28[3] = &unk_10051AF60;
   v29 = v4;
-  v5 = [v3 indexesOfObjectsPassingTest:v28];
+  v5 = [eventsCopy indexesOfObjectsPassingTest:v28];
   if ([v5 count])
   {
-    v6 = [v3 objectAtIndex:{objc_msgSend(v5, "lastIndex")}];
+    v6 = [eventsCopy objectAtIndex:{objc_msgSend(v5, "lastIndex")}];
     [v6 duration];
     v8 = v7;
-    v9 = [v6 startDate];
-    [v4 timeIntervalSinceDate:v9];
+    startDate = [v6 startDate];
+    [v4 timeIntervalSinceDate:startDate];
     v11 = v10;
 
     if (v11 / v8 < 0.5)
@@ -155,17 +155,17 @@
     }
 
     v13 = v12;
-    v14 = [v3 mutableCopy];
+    v14 = [eventsCopy mutableCopy];
     if ([v5 count])
     {
       [v14 removeObjectsAtIndexes:v5];
     }
 
-    v15 = [v14 firstObject];
-    v16 = v15;
+    firstObject = [v14 firstObject];
+    v16 = firstObject;
     if (v13)
     {
-      v17 = v15 == 0;
+      v17 = firstObject == 0;
     }
 
     else
@@ -175,12 +175,12 @@
 
     if (!v17)
     {
-      v27 = [v13 startDate];
-      v20 = [v16 startDate];
-      v21 = [off_10058E060() rangeWithStartDate:v27 endDate:v20];
-      v22 = [v21 midpoint];
+      startDate2 = [v13 startDate];
+      startDate3 = [v16 startDate];
+      v21 = [off_10058E060() rangeWithStartDate:startDate2 endDate:startDate3];
+      midpoint = [v21 midpoint];
 
-      v23 = [v4 CalIsBeforeDate:v22];
+      v23 = [v4 CalIsBeforeDate:midpoint];
       if (v23)
       {
         v24 = v13;
@@ -193,12 +193,12 @@
 
       if (v23)
       {
-        v19 = v6;
+        firstObject2 = v6;
       }
 
       else
       {
-        v19 = v16;
+        firstObject2 = v16;
       }
 
       v25 = v24;
@@ -206,44 +206,44 @@
       goto LABEL_27;
     }
 
-    if (v15)
+    if (firstObject)
     {
-      v18 = v15;
+      v18 = firstObject;
     }
 
     else
     {
       if (!v6)
       {
-        v19 = 0;
+        firstObject2 = 0;
         goto LABEL_27;
       }
 
       v18 = v6;
     }
 
-    v19 = v18;
+    firstObject2 = v18;
 LABEL_27:
 
     goto LABEL_28;
   }
 
-  v19 = [v3 firstObject];
+  firstObject2 = [eventsCopy firstObject];
 LABEL_28:
 
 LABEL_29:
 
-  return v19;
+  return firstObject2;
 }
 
-- (void)_ad_handleShowNextEventRequestWithCompletionHandler:(id)a3
+- (void)_ad_handleShowNextEventRequestWithCompletionHandler:(id)handler
 {
   v42[0] = _NSConcreteStackBlock;
   v42[1] = 3221225472;
   v42[2] = sub_1002F29FC;
   v42[3] = &unk_10051AF38;
-  v4 = a3;
-  v43 = v4;
+  handlerCopy = handler;
+  v43 = handlerCopy;
   v5 = objc_retainBlock(v42);
   v6 = objc_alloc_init(off_10058E058());
   v7 = [(AFShowNextEventRequest *)self _selectedCalendarsForEventStore:v6];
@@ -264,17 +264,17 @@ LABEL_29:
   }
 
   v35 = v5;
-  v36 = v4;
+  v36 = handlerCopy;
   sub_1002F2470();
   v10 = +[NSDate CalDateForNow];
   v32 = +[NSCalendar currentCalendar];
   [v10 dateByAddingWeeks:1 inCalendar:?];
   v31 = v33 = v10;
   v11 = [objc_alloc(off_10058E060()) initWithStartDate:v10 endDate:v31];
-  v12 = [v11 startDate];
-  v13 = [v11 endDate];
+  startDate = [v11 startDate];
+  endDate = [v11 endDate];
   v34 = v7;
-  v14 = [v6 predicateForEventsWithStartDate:v12 endDate:v13 calendars:v7];
+  v14 = [v6 predicateForEventsWithStartDate:startDate endDate:endDate calendars:v7];
 
   v30 = v14;
   v15 = [v6 eventsMatchingPredicate:v14];
@@ -315,7 +315,7 @@ LABEL_29:
   v24 = [(AFShowNextEventRequest *)self _nextEventFromFilteredEvents:v17];
 
   v5 = v35;
-  v4 = v36;
+  handlerCopy = v36;
   v7 = v34;
   if (!v24)
   {
@@ -346,18 +346,18 @@ LABEL_18:
   }
 }
 
-+ (id)_calendarIDsForSyncHashes:(id)a3 inCalendars:(id)a4
++ (id)_calendarIDsForSyncHashes:(id)hashes inCalendars:(id)calendars
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 count];
+  hashesCopy = hashes;
+  calendarsCopy = calendars;
+  v7 = [calendarsCopy count];
   v8 = [NSMutableArray arrayWithCapacity:v7];
   v9 = [NSMutableArray arrayWithCapacity:v7];
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v10 = v6;
+  v10 = calendarsCopy;
   v11 = [v10 countByEnumeratingWithState:&v30 objects:v35 count:16];
   if (v11)
   {
@@ -372,10 +372,10 @@ LABEL_18:
           objc_enumerationMutation(v10);
         }
 
-        v15 = [*(*(&v30 + 1) + 8 * i) selectionSyncIdentifier];
-        if (v15)
+        selectionSyncIdentifier = [*(*(&v30 + 1) + 8 * i) selectionSyncIdentifier];
+        if (selectionSyncIdentifier)
         {
-          [v9 addObject:v15];
+          [v9 addObject:selectionSyncIdentifier];
         }
       }
 
@@ -389,7 +389,7 @@ LABEL_18:
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v16 = v5;
+  v16 = hashesCopy;
   v17 = [v16 countByEnumeratingWithState:&v26 objects:v34 count:16];
   if (v17)
   {
@@ -408,8 +408,8 @@ LABEL_18:
         if (v21 != 0x7FFFFFFFFFFFFFFFLL)
         {
           v22 = [v10 objectAtIndexedSubscript:v21];
-          v23 = [v22 calendarIdentifier];
-          [v8 addObject:v23];
+          calendarIdentifier = [v22 calendarIdentifier];
+          [v8 addObject:calendarIdentifier];
         }
       }
 

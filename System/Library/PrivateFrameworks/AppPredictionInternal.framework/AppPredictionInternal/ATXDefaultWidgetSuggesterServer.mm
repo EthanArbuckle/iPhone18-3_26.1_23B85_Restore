@@ -1,9 +1,9 @@
 @interface ATXDefaultWidgetSuggesterServer
 + (id)sharedInstance;
 - (ATXDefaultWidgetSuggesterServer)init;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (void)shouldSuggestTVWithCompletionHandler:(id)a3;
-- (void)updateCachedValuesWithActivity:(id)a3;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (void)shouldSuggestTVWithCompletionHandler:(id)handler;
+- (void)updateCachedValuesWithActivity:(id)activity;
 @end
 
 @implementation ATXDefaultWidgetSuggesterServer
@@ -49,11 +49,11 @@ void __49__ATXDefaultWidgetSuggesterServer_sharedInstance__block_invoke()
   return v2;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   v6 = *MEMORY[0x277CEBA80];
-  v7 = [v5 valueForEntitlement:*MEMORY[0x277CEBA80]];
+  v7 = [connectionCopy valueForEntitlement:*MEMORY[0x277CEBA80]];
   if (v7 && (objc_opt_respondsToSelector() & 1) != 0 && ([v7 BOOLValue] & 1) != 0)
   {
     v8 = __atxlog_handle_home_screen();
@@ -63,12 +63,12 @@ void __49__ATXDefaultWidgetSuggesterServer_sharedInstance__block_invoke()
     }
 
     v16 = ATXDefaultWidgetSuggesterInterface();
-    [v5 setExportedInterface:v16];
+    [connectionCopy setExportedInterface:v16];
 
-    [v5 setExportedObject:self];
-    [v5 setInterruptionHandler:&__block_literal_global_21_5];
-    [v5 setInvalidationHandler:&__block_literal_global_24_4];
-    [v5 resume];
+    [connectionCopy setExportedObject:self];
+    [connectionCopy setInterruptionHandler:&__block_literal_global_21_5];
+    [connectionCopy setInvalidationHandler:&__block_literal_global_24_4];
+    [connectionCopy resume];
     v17 = 1;
   }
 
@@ -77,7 +77,7 @@ void __49__ATXDefaultWidgetSuggesterServer_sharedInstance__block_invoke()
     v18 = __atxlog_handle_home_screen();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
-      [(ATXNotificationDigestRankerServer *)v5 listener:v6 shouldAcceptNewConnection:v18];
+      [(ATXNotificationDigestRankerServer *)connectionCopy listener:v6 shouldAcceptNewConnection:v18];
     }
 
     v17 = 0;
@@ -104,19 +104,19 @@ void __70__ATXDefaultWidgetSuggesterServer_listener_shouldAcceptNewConnection___
   }
 }
 
-- (void)shouldSuggestTVWithCompletionHandler:(id)a3
+- (void)shouldSuggestTVWithCompletionHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v4 = [ATXDefaultWidgetSuggester alloc];
   v5 = +[_ATXAppLaunchHistogramManager sharedInstance];
   v6 = [(ATXDefaultWidgetSuggester *)v4 initWithHistogramManager:v5];
 
-  v3[2](v3, [(ATXDefaultWidgetSuggester *)v6 shouldSuggestTV], 0);
+  handlerCopy[2](handlerCopy, [(ATXDefaultWidgetSuggester *)v6 shouldSuggestTV], 0);
 }
 
-- (void)updateCachedValuesWithActivity:(id)a3
+- (void)updateCachedValuesWithActivity:(id)activity
 {
-  if (([a3 didDefer] & 1) == 0)
+  if (([activity didDefer] & 1) == 0)
   {
     v3 = [ATXDefaultWidgetSuggester alloc];
     v4 = +[_ATXAppLaunchHistogramManager sharedInstance];

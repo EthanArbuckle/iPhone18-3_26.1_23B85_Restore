@@ -3,12 +3,12 @@
 - (void)controllerDone;
 - (void)loadView;
 - (void)nextPressed;
-- (void)phoneSettingsFragment:(id)a3 didChangePhoneNumber:(id)a4 countryInfo:(id)a5;
+- (void)phoneSettingsFragment:(id)fragment didChangePhoneNumber:(id)number countryInfo:(id)info;
 - (void)reloadSpecifiers;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation KeychainSyncPhoneNumberController
@@ -22,19 +22,19 @@
   v4 = PS_LocalizedStringForKeychainSync(@"NEXT");
   v5 = [v3 initWithTitle:v4 style:2 target:self action:sel_nextPressed];
 
-  v6 = [(KeychainSyncPhoneNumberController *)self navigationItem];
-  [v6 setRightBarButtonItem:v5];
+  navigationItem = [(KeychainSyncPhoneNumberController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:v5];
 
-  v7 = +[PSKeychainSyncManager sharedManager];
-  if (![v7 isRunningInBuddy])
+  view = +[PSKeychainSyncManager sharedManager];
+  if (![view isRunningInBuddy])
   {
     goto LABEL_4;
   }
 
-  v8 = [MEMORY[0x1E69DC938] currentDevice];
-  v9 = [v8 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (!v9)
+  if (!userInterfaceIdiom)
   {
     v10 = objc_alloc(MEMORY[0x1E69DCC10]);
     v11 = [v10 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
@@ -51,32 +51,32 @@
     [(UILabel *)v15 setText:v16];
 
     [(UILabel *)self->_footerLabel setTextAlignment:1];
-    v7 = [(KeychainSyncPhoneNumberController *)self view];
-    [v7 addSubview:self->_footerLabel];
+    view = [(KeychainSyncPhoneNumberController *)self view];
+    [view addSubview:self->_footerLabel];
 LABEL_4:
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
-  v5 = [(KeychainSyncPhoneNumberController *)self navigationItem];
-  v6 = [v5 rightBarButtonItem];
-  v7 = [(KeychainSyncPhoneSettingsFragment *)self->_phoneSettingsFragment phoneNumber];
-  if ([v7 length])
+  appearCopy = appear;
+  navigationItem = [(KeychainSyncPhoneNumberController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  phoneNumber = [(KeychainSyncPhoneSettingsFragment *)self->_phoneSettingsFragment phoneNumber];
+  if ([phoneNumber length])
   {
-    v8 = [(KeychainSyncPhoneSettingsFragment *)self->_phoneSettingsFragment countryInfo];
-    [v6 setEnabled:v8 != 0];
+    countryInfo = [(KeychainSyncPhoneSettingsFragment *)self->_phoneSettingsFragment countryInfo];
+    [rightBarButtonItem setEnabled:countryInfo != 0];
   }
 
   else
   {
-    [v6 setEnabled:0];
+    [rightBarButtonItem setEnabled:0];
   }
 
   v9.receiver = self;
   v9.super_class = KeychainSyncPhoneNumberController;
-  [(PSListController *)&v9 viewWillAppear:v3];
+  [(PSListController *)&v9 viewWillAppear:appearCopy];
 }
 
 - (id)specifiers
@@ -102,9 +102,9 @@ LABEL_4:
       phoneSettingsFragment = self->_phoneSettingsFragment;
     }
 
-    v10 = [(KeychainSyncPhoneSettingsFragment *)phoneSettingsFragment specifiers];
+    specifiers = [(KeychainSyncPhoneSettingsFragment *)phoneSettingsFragment specifiers];
     v11 = self->super.super._specifiers;
-    self->super.super._specifiers = v10;
+    self->super.super._specifiers = specifiers;
 
     specifiers = self->super.super._specifiers;
   }
@@ -120,20 +120,20 @@ LABEL_4:
   [(PSListController *)&v3 reloadSpecifiers];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v8.receiver = self;
   v8.super_class = KeychainSyncPhoneNumberController;
-  [(PSListController *)&v8 viewDidAppear:a3];
+  [(PSListController *)&v8 viewDidAppear:appear];
   if ([(KeychainSyncPhoneNumberController *)self isMovingToParentViewController])
   {
     v4 = +[PSKeychainSyncManager sharedManager];
     if ([v4 isRunningInBuddy])
     {
-      v5 = [MEMORY[0x1E69DC938] currentDevice];
-      v6 = [v5 userInterfaceIdiom];
+      currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+      userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-      if (v6 != 1)
+      if (userInterfaceIdiom != 1)
       {
         return;
       }
@@ -143,18 +143,18 @@ LABEL_4:
     {
     }
 
-    v7 = [(KeychainSyncPhoneSettingsFragment *)self->_phoneSettingsFragment phoneNumberCell];
-    [v7 becomeFirstResponder];
+    phoneNumberCell = [(KeychainSyncPhoneSettingsFragment *)self->_phoneSettingsFragment phoneNumberCell];
+    [phoneNumberCell becomeFirstResponder];
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   [(KeychainSyncPhoneSettingsFragment *)self->_phoneSettingsFragment resignFirstResponder];
   v5.receiver = self;
   v5.super_class = KeychainSyncPhoneNumberController;
-  [(PSListController *)&v5 viewWillDisappear:v3];
+  [(PSListController *)&v5 viewWillDisappear:disappearCopy];
 }
 
 - (void)viewDidLayoutSubviews
@@ -164,8 +164,8 @@ LABEL_4:
   [(PSListController *)&v18 viewDidLayoutSubviews];
   if (self->_footerLabel)
   {
-    v3 = [(KeychainSyncPhoneNumberController *)self view];
-    [v3 bounds];
+    view = [(KeychainSyncPhoneNumberController *)self view];
+    [view bounds];
     v5 = v4;
     v7 = v6;
     v9 = v8;
@@ -194,15 +194,15 @@ LABEL_4:
 {
   v8[2] = *MEMORY[0x1E69E9840];
   v7[0] = @"phoneNumber";
-  v3 = [(KeychainSyncPhoneSettingsFragment *)self->_phoneSettingsFragment unformattedPhoneNumber];
+  unformattedPhoneNumber = [(KeychainSyncPhoneSettingsFragment *)self->_phoneSettingsFragment unformattedPhoneNumber];
   v7[1] = @"countryInfo";
-  v8[0] = v3;
-  v4 = [(KeychainSyncPhoneSettingsFragment *)self->_phoneSettingsFragment countryInfo];
-  v8[1] = v4;
+  v8[0] = unformattedPhoneNumber;
+  countryInfo = [(KeychainSyncPhoneSettingsFragment *)self->_phoneSettingsFragment countryInfo];
+  v8[1] = countryInfo;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v8 forKeys:v7 count:2];
 
-  v6 = [(PSKeychainSyncViewController *)self delegate];
-  [v6 keychainSyncController:self didFinishWithResult:v5 error:0];
+  delegate = [(PSKeychainSyncViewController *)self delegate];
+  [delegate keychainSyncController:self didFinishWithResult:v5 error:0];
 }
 
 - (void)nextPressed
@@ -212,14 +212,14 @@ LABEL_4:
   [(KeychainSyncPhoneNumberController *)self controllerDone];
 }
 
-- (void)phoneSettingsFragment:(id)a3 didChangePhoneNumber:(id)a4 countryInfo:(id)a5
+- (void)phoneSettingsFragment:(id)fragment didChangePhoneNumber:(id)number countryInfo:(id)info
 {
-  v7 = a4;
-  v12 = [(KeychainSyncPhoneNumberController *)self navigationItem];
-  v8 = [v12 rightBarButtonItem];
-  v9 = [v7 length];
+  numberCopy = number;
+  navigationItem = [(KeychainSyncPhoneNumberController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  v9 = [numberCopy length];
 
-  if (a5)
+  if (info)
   {
     v10 = v9 == 0;
   }
@@ -230,7 +230,7 @@ LABEL_4:
   }
 
   v11 = !v10;
-  [v8 setEnabled:v11];
+  [rightBarButtonItem setEnabled:v11];
 }
 
 @end

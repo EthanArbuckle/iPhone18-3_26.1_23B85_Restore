@@ -8,15 +8,15 @@
 {
   if ([MEMORY[0x277D0ACD8] isEmulatedDevice] && objc_msgSend(MEMORY[0x277D0ACD8], "hasEmulatedDeviceBounds"))
   {
-    v9 = [a1 displayConfiguration];
+    displayConfiguration = [self displayConfiguration];
     [MEMORY[0x277D0ACD8] emulatedDeviceBounds];
     v3 = v2;
     v5 = v4;
-    v6 = [v9 currentMode];
-    v7 = [v6 _copyWithOverrideSize:{v3, v5}];
+    currentMode = [displayConfiguration currentMode];
+    v7 = [currentMode _copyWithOverrideSize:{v3, v5}];
 
-    v8 = [v9 copyWithOverrideMode:v7];
-    [a1 setDisplayConfiguration:v8];
+    v8 = [displayConfiguration copyWithOverrideMode:v7];
+    [self setDisplayConfiguration:v8];
   }
 }
 

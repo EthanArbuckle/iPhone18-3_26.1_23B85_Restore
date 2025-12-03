@@ -2,50 +2,50 @@
 + (BOOL)disableBenchmarkService;
 + (BOOL)enableBenchmarkService;
 + (id)createBenchamrkXPCConnection;
-+ (void)benchmarkOnDeviceCompilationCleanup:(id)a3;
-+ (void)pingpong:(id)a3 completion:(id)a4;
-+ (void)runAudioInjectionOnly:(id)a3 completion:(id)a4;
-+ (void)runLstmPhsModelWithConfig:(id)a3 withUrl:(id)a4 withConfigRoot:(id)a5 completion:(id)a6;
-+ (void)runNCModelWithConfig:(id)a3 completion:(id)a4;
-+ (void)runNovDetectorWithConfig:(id)a3 configRoot:(id)a4 withUrl:(id)a5 completion:(id)a6;
-+ (void)runODLDModelWithConfig:(id)a3 locale:(id)a4 inputText:(id)a5 completion:(id)a6;
-+ (void)runOSDAnalyzerWithConfig:(id)a3 withUrl:(id)a4 completion:(id)a5;
-+ (void)runVTSecondPassModelWithConfig:(id)a3 locale:(id)a4 withUrl:(id)a5 completion:(id)a6;
++ (void)benchmarkOnDeviceCompilationCleanup:(id)cleanup;
++ (void)pingpong:(id)pingpong completion:(id)completion;
++ (void)runAudioInjectionOnly:(id)only completion:(id)completion;
++ (void)runLstmPhsModelWithConfig:(id)config withUrl:(id)url withConfigRoot:(id)root completion:(id)completion;
++ (void)runNCModelWithConfig:(id)config completion:(id)completion;
++ (void)runNovDetectorWithConfig:(id)config configRoot:(id)root withUrl:(id)url completion:(id)completion;
++ (void)runODLDModelWithConfig:(id)config locale:(id)locale inputText:(id)text completion:(id)completion;
++ (void)runOSDAnalyzerWithConfig:(id)config withUrl:(id)url completion:(id)completion;
++ (void)runVTSecondPassModelWithConfig:(id)config locale:(id)locale withUrl:(id)url completion:(id)completion;
 @end
 
 @implementation CSBenchmarkService
 
 + (BOOL)disableBenchmarkService
 {
-  v2 = [MEMORY[0x277D01788] sharedPreferences];
-  v3 = [v2 enableBenchmarkService:0];
+  mEMORY[0x277D01788] = [MEMORY[0x277D01788] sharedPreferences];
+  v3 = [mEMORY[0x277D01788] enableBenchmarkService:0];
 
-  v4 = [MEMORY[0x277D01788] sharedPreferences];
-  v5 = [v4 enableProgrammableAudioInjection:0];
+  mEMORY[0x277D01788]2 = [MEMORY[0x277D01788] sharedPreferences];
+  v5 = [mEMORY[0x277D01788]2 enableProgrammableAudioInjection:0];
 
   return v3 & v5;
 }
 
 + (BOOL)enableBenchmarkService
 {
-  v2 = [MEMORY[0x277D01788] sharedPreferences];
-  v3 = [v2 enableBenchmarkService:1];
+  mEMORY[0x277D01788] = [MEMORY[0x277D01788] sharedPreferences];
+  v3 = [mEMORY[0x277D01788] enableBenchmarkService:1];
 
-  v4 = [MEMORY[0x277D01788] sharedPreferences];
-  v5 = [v4 enableProgrammableAudioInjection:1];
+  mEMORY[0x277D01788]2 = [MEMORY[0x277D01788] sharedPreferences];
+  v5 = [mEMORY[0x277D01788]2 enableProgrammableAudioInjection:1];
 
   return v3 & v5;
 }
 
-+ (void)benchmarkOnDeviceCompilationCleanup:(id)a3
++ (void)benchmarkOnDeviceCompilationCleanup:(id)cleanup
 {
-  v3 = a3;
+  cleanupCopy = cleanup;
   v4 = +[CSBenchmarkService createBenchamrkXPCConnection];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __58__CSBenchmarkService_benchmarkOnDeviceCompilationCleanup___block_invoke;
   v13[3] = &unk_2784C6C90;
-  v5 = v3;
+  v5 = cleanupCopy;
   v14 = v5;
   [v4 setInterruptionHandler:v13];
   v11[0] = MEMORY[0x277D85DD0];
@@ -172,16 +172,16 @@ void __58__CSBenchmarkService_benchmarkOnDeviceCompilationCleanup___block_invoke
   v4 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)runNCModelWithConfig:(id)a3 completion:(id)a4
++ (void)runNCModelWithConfig:(id)config completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  configCopy = config;
+  completionCopy = completion;
   v7 = +[CSBenchmarkService createBenchamrkXPCConnection];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __54__CSBenchmarkService_runNCModelWithConfig_completion___block_invoke;
   v16[3] = &unk_2784C6C90;
-  v8 = v6;
+  v8 = completionCopy;
   v17 = v8;
   [v7 setInterruptionHandler:v16];
   v14[0] = MEMORY[0x277D85DD0];
@@ -201,7 +201,7 @@ void __58__CSBenchmarkService_benchmarkOnDeviceCompilationCleanup___block_invoke
     v12[2] = __54__CSBenchmarkService_runNCModelWithConfig_completion___block_invoke_71;
     v12[3] = &unk_2784C6480;
     v13 = v9;
-    [v11 runNCModelWithConfig:v5 completion:v12];
+    [v11 runNCModelWithConfig:configCopy completion:v12];
   }
 }
 
@@ -308,16 +308,16 @@ void __54__CSBenchmarkService_runNCModelWithConfig_completion___block_invoke_65(
   v4 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)runAudioInjectionOnly:(id)a3 completion:(id)a4
++ (void)runAudioInjectionOnly:(id)only completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  onlyCopy = only;
+  completionCopy = completion;
   v7 = +[CSBenchmarkService createBenchamrkXPCConnection];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __55__CSBenchmarkService_runAudioInjectionOnly_completion___block_invoke;
   v16[3] = &unk_2784C6C90;
-  v8 = v6;
+  v8 = completionCopy;
   v17 = v8;
   [v7 setInterruptionHandler:v16];
   v14[0] = MEMORY[0x277D85DD0];
@@ -337,7 +337,7 @@ void __54__CSBenchmarkService_runNCModelWithConfig_completion___block_invoke_65(
     v12[2] = __55__CSBenchmarkService_runAudioInjectionOnly_completion___block_invoke_63;
     v12[3] = &unk_2784C34B8;
     v13 = v9;
-    [v11 runAudioInjectionOnly:v5 completion:v12];
+    [v11 runAudioInjectionOnly:onlyCopy completion:v12];
   }
 }
 
@@ -444,18 +444,18 @@ void __55__CSBenchmarkService_runAudioInjectionOnly_completion___block_invoke_57
   v4 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)runNovDetectorWithConfig:(id)a3 configRoot:(id)a4 withUrl:(id)a5 completion:(id)a6
++ (void)runNovDetectorWithConfig:(id)config configRoot:(id)root withUrl:(id)url completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  configCopy = config;
+  rootCopy = root;
+  urlCopy = url;
+  completionCopy = completion;
   v13 = +[CSBenchmarkService createBenchamrkXPCConnection];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __77__CSBenchmarkService_runNovDetectorWithConfig_configRoot_withUrl_completion___block_invoke;
   v22[3] = &unk_2784C6C90;
-  v14 = v12;
+  v14 = completionCopy;
   v23 = v14;
   [v13 setInterruptionHandler:v22];
   v20[0] = MEMORY[0x277D85DD0];
@@ -475,7 +475,7 @@ void __55__CSBenchmarkService_runAudioInjectionOnly_completion___block_invoke_57
     v18[2] = __77__CSBenchmarkService_runNovDetectorWithConfig_configRoot_withUrl_completion___block_invoke_55;
     v18[3] = &unk_2784C34B8;
     v19 = v15;
-    [v17 runNovDetectorWithConfig:v9 configRoot:v10 withUrl:v11 completion:v18];
+    [v17 runNovDetectorWithConfig:configCopy configRoot:rootCopy withUrl:urlCopy completion:v18];
   }
 }
 
@@ -582,18 +582,18 @@ void __77__CSBenchmarkService_runNovDetectorWithConfig_configRoot_withUrl_comple
   v4 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)runODLDModelWithConfig:(id)a3 locale:(id)a4 inputText:(id)a5 completion:(id)a6
++ (void)runODLDModelWithConfig:(id)config locale:(id)locale inputText:(id)text completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  configCopy = config;
+  localeCopy = locale;
+  textCopy = text;
+  completionCopy = completion;
   v13 = +[CSBenchmarkService createBenchamrkXPCConnection];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __73__CSBenchmarkService_runODLDModelWithConfig_locale_inputText_completion___block_invoke;
   v22[3] = &unk_2784C6C90;
-  v14 = v12;
+  v14 = completionCopy;
   v23 = v14;
   [v13 setInterruptionHandler:v22];
   v20[0] = MEMORY[0x277D85DD0];
@@ -613,7 +613,7 @@ void __77__CSBenchmarkService_runNovDetectorWithConfig_configRoot_withUrl_comple
     v18[2] = __73__CSBenchmarkService_runODLDModelWithConfig_locale_inputText_completion___block_invoke_47;
     v18[3] = &unk_2784C6480;
     v19 = v15;
-    [v17 runODLDModelWithConfig:v9 locale:v10 inputText:v11 completion:v18];
+    [v17 runODLDModelWithConfig:configCopy locale:localeCopy inputText:textCopy completion:v18];
   }
 }
 
@@ -720,17 +720,17 @@ void __73__CSBenchmarkService_runODLDModelWithConfig_locale_inputText_completion
   v4 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)runOSDAnalyzerWithConfig:(id)a3 withUrl:(id)a4 completion:(id)a5
++ (void)runOSDAnalyzerWithConfig:(id)config withUrl:(id)url completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  configCopy = config;
+  urlCopy = url;
+  completionCopy = completion;
   v10 = +[CSBenchmarkService createBenchamrkXPCConnection];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __66__CSBenchmarkService_runOSDAnalyzerWithConfig_withUrl_completion___block_invoke;
   v19[3] = &unk_2784C6C90;
-  v11 = v9;
+  v11 = completionCopy;
   v20 = v11;
   [v10 setInterruptionHandler:v19];
   v17[0] = MEMORY[0x277D85DD0];
@@ -750,7 +750,7 @@ void __73__CSBenchmarkService_runODLDModelWithConfig_locale_inputText_completion
     v15[2] = __66__CSBenchmarkService_runOSDAnalyzerWithConfig_withUrl_completion___block_invoke_39;
     v15[3] = &unk_2784C34B8;
     v16 = v12;
-    [v14 runOSDAnalyzerWithConfig:v7 withUrl:v8 completion:v15];
+    [v14 runOSDAnalyzerWithConfig:configCopy withUrl:urlCopy completion:v15];
   }
 }
 
@@ -857,18 +857,18 @@ void __66__CSBenchmarkService_runOSDAnalyzerWithConfig_withUrl_completion___bloc
   v4 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)runVTSecondPassModelWithConfig:(id)a3 locale:(id)a4 withUrl:(id)a5 completion:(id)a6
++ (void)runVTSecondPassModelWithConfig:(id)config locale:(id)locale withUrl:(id)url completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  configCopy = config;
+  localeCopy = locale;
+  urlCopy = url;
+  completionCopy = completion;
   v13 = +[CSBenchmarkService createBenchamrkXPCConnection];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __79__CSBenchmarkService_runVTSecondPassModelWithConfig_locale_withUrl_completion___block_invoke;
   v22[3] = &unk_2784C6C90;
-  v14 = v12;
+  v14 = completionCopy;
   v23 = v14;
   [v13 setInterruptionHandler:v22];
   v20[0] = MEMORY[0x277D85DD0];
@@ -888,7 +888,7 @@ void __66__CSBenchmarkService_runOSDAnalyzerWithConfig_withUrl_completion___bloc
     v18[2] = __79__CSBenchmarkService_runVTSecondPassModelWithConfig_locale_withUrl_completion___block_invoke_31;
     v18[3] = &unk_2784C34B8;
     v19 = v15;
-    [v17 runVTSecondPassModelWithConfig:v9 locale:v10 withUrl:v11 completion:v18];
+    [v17 runVTSecondPassModelWithConfig:configCopy locale:localeCopy withUrl:urlCopy completion:v18];
   }
 }
 
@@ -995,18 +995,18 @@ void __79__CSBenchmarkService_runVTSecondPassModelWithConfig_locale_withUrl_comp
   v4 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)runLstmPhsModelWithConfig:(id)a3 withUrl:(id)a4 withConfigRoot:(id)a5 completion:(id)a6
++ (void)runLstmPhsModelWithConfig:(id)config withUrl:(id)url withConfigRoot:(id)root completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  configCopy = config;
+  urlCopy = url;
+  rootCopy = root;
+  completionCopy = completion;
   v13 = +[CSBenchmarkService createBenchamrkXPCConnection];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __82__CSBenchmarkService_runLstmPhsModelWithConfig_withUrl_withConfigRoot_completion___block_invoke;
   v22[3] = &unk_2784C6C90;
-  v14 = v12;
+  v14 = completionCopy;
   v23 = v14;
   [v13 setInterruptionHandler:v22];
   v20[0] = MEMORY[0x277D85DD0];
@@ -1026,7 +1026,7 @@ void __79__CSBenchmarkService_runVTSecondPassModelWithConfig_locale_withUrl_comp
     v18[2] = __82__CSBenchmarkService_runLstmPhsModelWithConfig_withUrl_withConfigRoot_completion___block_invoke_22;
     v18[3] = &unk_2784C34B8;
     v19 = v15;
-    [v17 runLstmPhsModelWithConfig:v9 withUrl:v10 withConfigRoot:v11 completion:v18];
+    [v17 runLstmPhsModelWithConfig:configCopy withUrl:urlCopy withConfigRoot:rootCopy completion:v18];
   }
 }
 
@@ -1133,16 +1133,16 @@ void __82__CSBenchmarkService_runLstmPhsModelWithConfig_withUrl_withConfigRoot_c
   v4 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)pingpong:(id)a3 completion:(id)a4
++ (void)pingpong:(id)pingpong completion:(id)completion
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a4;
+  completionCopy = completion;
   v5 = +[CSBenchmarkService createBenchamrkXPCConnection];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __42__CSBenchmarkService_pingpong_completion___block_invoke;
   v16[3] = &unk_2784C6C90;
-  v6 = v4;
+  v6 = completionCopy;
   v17 = v6;
   [v5 setInterruptionHandler:v16];
   v14[0] = MEMORY[0x277D85DD0];
@@ -1153,8 +1153,8 @@ void __82__CSBenchmarkService_runLstmPhsModelWithConfig_withUrl_withConfigRoot_c
   v15 = v7;
   [v5 setInvalidationHandler:v14];
   [v5 resume];
-  v8 = [v5 remoteObjectProxy];
-  if (!v8)
+  remoteObjectProxy = [v5 remoteObjectProxy];
+  if (!remoteObjectProxy)
   {
     v10 = *MEMORY[0x277D015D8];
     if (os_log_type_enabled(*MEMORY[0x277D015D8], OS_LOG_TYPE_ERROR))
@@ -1177,13 +1177,13 @@ void __82__CSBenchmarkService_runLstmPhsModelWithConfig_withUrl_withConfigRoot_c
     goto LABEL_6;
   }
 
-  v9 = [v5 remoteObjectProxy];
+  remoteObjectProxy2 = [v5 remoteObjectProxy];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __42__CSBenchmarkService_pingpong_completion___block_invoke_13;
   v12[3] = &unk_2784C6CB8;
   v13 = v7;
-  [v9 pingpong:@"TEST" completion:v12];
+  [remoteObjectProxy2 pingpong:@"TEST" completion:v12];
 
 LABEL_6:
   v11 = *MEMORY[0x277D85DE8];

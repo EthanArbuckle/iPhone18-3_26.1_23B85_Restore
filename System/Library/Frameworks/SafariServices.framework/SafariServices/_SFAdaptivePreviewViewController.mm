@@ -1,32 +1,32 @@
 @interface _SFAdaptivePreviewViewController
 - (CGSize)preferredDocumentContentSize;
 - (UIViewController)contentViewController;
-- (_SFAdaptivePreviewViewController)initWithURL:(id)a3;
+- (_SFAdaptivePreviewViewController)initWithURL:(id)l;
 - (_SFAdaptivePreviewViewControllerDelegate)delegate;
-- (void)_addViewFromViewController:(id)a3;
-- (void)_removeViewController:(id)a3;
+- (void)_addViewFromViewController:(id)controller;
+- (void)_removeViewController:(id)controller;
 - (void)_setUpLinkPreviewViewControllerIfNeeded;
 - (void)_setUpTextPreviewViewControllerIfNeeded;
 - (void)_updatePreferredContentSize;
-- (void)linkPreviewHeader:(id)a3 didEnableLinkPreview:(BOOL)a4;
-- (void)linkPreviewHeaderBoundsDidChange:(id)a3;
-- (void)setLinkPreviewEnabled:(BOOL)a3;
-- (void)setPreferredDocumentContentSize:(CGSize)a3;
+- (void)linkPreviewHeader:(id)header didEnableLinkPreview:(BOOL)preview;
+- (void)linkPreviewHeaderBoundsDidChange:(id)change;
+- (void)setLinkPreviewEnabled:(BOOL)enabled;
+- (void)setPreferredDocumentContentSize:(CGSize)size;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation _SFAdaptivePreviewViewController
 
-- (_SFAdaptivePreviewViewController)initWithURL:(id)a3
+- (_SFAdaptivePreviewViewController)initWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v10.receiver = self;
   v10.super_class = _SFAdaptivePreviewViewController;
   v5 = [(_SFAdaptivePreviewViewController *)&v10 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [lCopy copy];
     URL = v5->_URL;
     v5->_URL = v6;
 
@@ -41,9 +41,9 @@
   v5.receiver = self;
   v5.super_class = _SFAdaptivePreviewViewController;
   [(_SFAdaptivePreviewViewController *)&v5 viewDidLoad];
-  v3 = [(_SFAdaptivePreviewViewController *)self view];
-  v4 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  [v3 setBackgroundColor:v4];
+  view = [(_SFAdaptivePreviewViewController *)self view];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  [view setBackgroundColor:systemBackgroundColor];
 
   if (_SFShouldShowLinkPreviews())
   {
@@ -56,11 +56,11 @@
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = _SFAdaptivePreviewViewController;
-  [(_SFAdaptivePreviewViewController *)&v4 viewWillAppear:a3];
+  [(_SFAdaptivePreviewViewController *)&v4 viewWillAppear:appear];
   [(_SFAdaptivePreviewViewController *)self _updatePreferredContentSize];
 }
 
@@ -82,34 +82,34 @@
   }
 }
 
-- (void)_addViewFromViewController:(id)a3
+- (void)_addViewFromViewController:(id)controller
 {
   v23[4] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_SFAdaptivePreviewViewController *)self view];
-  v6 = [v4 view];
+  controllerCopy = controller;
+  view = [(_SFAdaptivePreviewViewController *)self view];
+  view2 = [controllerCopy view];
 
-  [v5 addSubview:v6];
-  [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v7 = [v6 bottomAnchor];
-  v8 = [v5 bottomAnchor];
-  v9 = [v7 constraintEqualToAnchor:v8];
+  [view addSubview:view2];
+  [view2 setTranslatesAutoresizingMaskIntoConstraints:0];
+  bottomAnchor = [view2 bottomAnchor];
+  bottomAnchor2 = [view bottomAnchor];
+  v9 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
 
   LODWORD(v10) = 1144586240;
   v19 = v9;
   [v9 setPriority:v10];
   v20 = MEMORY[0x1E696ACD8];
-  v22 = [v6 leadingAnchor];
-  v21 = [v5 leadingAnchor];
-  v11 = [v22 constraintEqualToAnchor:v21];
+  leadingAnchor = [view2 leadingAnchor];
+  leadingAnchor2 = [view leadingAnchor];
+  v11 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v23[0] = v11;
-  v12 = [v6 trailingAnchor];
-  v13 = [v5 trailingAnchor];
-  v14 = [v12 constraintEqualToAnchor:v13];
+  trailingAnchor = [view2 trailingAnchor];
+  trailingAnchor2 = [view trailingAnchor];
+  v14 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v23[1] = v14;
-  v15 = [v6 topAnchor];
-  v16 = [v5 topAnchor];
-  v17 = [v15 constraintEqualToAnchor:v16];
+  topAnchor = [view2 topAnchor];
+  topAnchor2 = [view topAnchor];
+  v17 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v23[2] = v17;
   v23[3] = v9;
   v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:4];
@@ -127,38 +127,38 @@
     [(_SFAdaptivePreviewViewController *)self addChildViewController:self->_textPreviewViewController];
     [(_SFAdaptivePreviewViewController *)self _addViewFromViewController:self->_textPreviewViewController];
     [(_SFURLTextPreviewViewController *)self->_textPreviewViewController didMoveToParentViewController:self];
-    v5 = [(_SFURLTextPreviewViewController *)self->_textPreviewViewController _previewHeader];
-    [v5 setDelegate:self];
+    _previewHeader = [(_SFURLTextPreviewViewController *)self->_textPreviewViewController _previewHeader];
+    [_previewHeader setDelegate:self];
   }
 }
 
-- (void)_removeViewController:(id)a3
+- (void)_removeViewController:(id)controller
 {
-  v4 = a3;
-  if (v4)
+  controllerCopy = controller;
+  if (controllerCopy)
   {
-    v8 = v4;
-    v5 = [v4 view];
-    [v5 removeFromSuperview];
+    v8 = controllerCopy;
+    view = [controllerCopy view];
+    [view removeFromSuperview];
 
     [(_SFAdaptivePreviewViewController *)self removeChildViewController:v8];
     [v8 didMoveToParentViewController:0];
-    v4 = v8;
+    controllerCopy = v8;
     p_textPreviewViewController = &self->_textPreviewViewController;
     textPreviewViewController = self->_textPreviewViewController;
     if (textPreviewViewController == v8 || (p_textPreviewViewController = &self->_linkPreviewViewController, textPreviewViewController = self->_linkPreviewViewController, textPreviewViewController == v8))
     {
       *p_textPreviewViewController = 0;
 
-      v4 = v8;
+      controllerCopy = v8;
     }
   }
 }
 
-- (void)setLinkPreviewEnabled:(BOOL)a3
+- (void)setLinkPreviewEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  if (a3)
+  enabledCopy = enabled;
+  if (enabled)
   {
     [(_SFAdaptivePreviewViewController *)self _setUpLinkPreviewViewControllerIfNeeded];
     v5 = &OBJC_IVAR____SFAdaptivePreviewViewController__textPreviewViewController;
@@ -177,7 +177,7 @@
   v8[3] = &unk_1E848F810;
   v8[4] = self;
   [MEMORY[0x1E69DD250] animateWithDuration:v8 animations:0.25];
-  v6 = [MEMORY[0x1E696AD98] numberWithBool:v3];
+  v6 = [MEMORY[0x1E696AD98] numberWithBool:enabledCopy];
   v7 = *MEMORY[0x1E695E890];
   CFPreferencesSetAppValue(*MEMORY[0x1E69B1F88], v6, *MEMORY[0x1E695E890]);
   CFPreferencesAppSynchronize(v7);
@@ -194,11 +194,11 @@
   return linkPreviewViewController;
 }
 
-- (void)setPreferredDocumentContentSize:(CGSize)a3
+- (void)setPreferredDocumentContentSize:(CGSize)size
 {
-  if (a3.width != self->_preferredDocumentContentSize.width || a3.height != self->_preferredDocumentContentSize.height)
+  if (size.width != self->_preferredDocumentContentSize.width || size.height != self->_preferredDocumentContentSize.height)
   {
-    self->_preferredDocumentContentSize = a3;
+    self->_preferredDocumentContentSize = size;
     linkPreviewViewController = self->_linkPreviewViewController;
     if (linkPreviewViewController)
     {
@@ -214,15 +214,15 @@
   textPreviewViewController = self->_textPreviewViewController;
   if (textPreviewViewController)
   {
-    v4 = [(_SFURLTextPreviewViewController *)textPreviewViewController view];
+    view = [(_SFURLTextPreviewViewController *)textPreviewViewController view];
     v5 = MEMORY[0x1E69DD250];
     v15 = MEMORY[0x1E69E9820];
     v16 = 3221225472;
     v17 = __63___SFAdaptivePreviewViewController__updatePreferredContentSize__block_invoke;
     v18 = &unk_1E848F548;
-    v19 = self;
-    v20 = v4;
-    v6 = v4;
+    selfCopy = self;
+    v20 = view;
+    v6 = view;
     [v5 performWithoutAnimation:&v15];
     v7 = [(_SFAdaptivePreviewViewController *)self view:v15];
     [v7 bounds];
@@ -255,10 +255,10 @@
   }
 }
 
-- (void)linkPreviewHeader:(id)a3 didEnableLinkPreview:(BOOL)a4
+- (void)linkPreviewHeader:(id)header didEnableLinkPreview:(BOOL)preview
 {
-  v4 = a4;
-  if (!a4)
+  previewCopy = preview;
+  if (!preview)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     if (objc_opt_respondsToSelector())
@@ -267,10 +267,10 @@
     }
   }
 
-  [(_SFAdaptivePreviewViewController *)self setLinkPreviewEnabled:v4];
+  [(_SFAdaptivePreviewViewController *)self setLinkPreviewEnabled:previewCopy];
 }
 
-- (void)linkPreviewHeaderBoundsDidChange:(id)a3
+- (void)linkPreviewHeaderBoundsDidChange:(id)change
 {
   if (self->_linkPreviewViewController)
   {

@@ -1,21 +1,21 @@
 @interface AVVoiceTriggerServerPortManager
-- (AVVoiceTriggerServerPortManager)initWithPortType:(unint64_t)a3 hysteresisDurationSeconds:(float)a4 notificationBlock:(id)a5;
-- (void)notifyStateChanged:(BOOL)a3 onQueue:(id)a4;
+- (AVVoiceTriggerServerPortManager)initWithPortType:(unint64_t)type hysteresisDurationSeconds:(float)seconds notificationBlock:(id)block;
+- (void)notifyStateChanged:(BOOL)changed onQueue:(id)queue;
 @end
 
 @implementation AVVoiceTriggerServerPortManager
 
-- (void)notifyStateChanged:(BOOL)a3 onQueue:(id)a4
+- (void)notifyStateChanged:(BOOL)changed onQueue:(id)queue
 {
-  v6 = a4;
+  queueCopy = queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __62__AVVoiceTriggerServerPortManager_notifyStateChanged_onQueue___block_invoke;
   block[3] = &unk_1E7ECDF50;
-  v10 = a3;
+  changedCopy = changed;
   block[4] = self;
-  v9 = v6;
-  v7 = v6;
+  v9 = queueCopy;
+  v7 = queueCopy;
   dispatch_async(v7, block);
 }
 
@@ -76,24 +76,24 @@ uint64_t __62__AVVoiceTriggerServerPortManager_notifyStateChanged_onQueue___bloc
   return result;
 }
 
-- (AVVoiceTriggerServerPortManager)initWithPortType:(unint64_t)a3 hysteresisDurationSeconds:(float)a4 notificationBlock:(id)a5
+- (AVVoiceTriggerServerPortManager)initWithPortType:(unint64_t)type hysteresisDurationSeconds:(float)seconds notificationBlock:(id)block
 {
-  v8 = a5;
+  blockCopy = block;
   v14.receiver = self;
   v14.super_class = AVVoiceTriggerServerPortManager;
   v9 = [(AVVoiceTriggerServerPortManager *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    v9->_portType = a3;
-    v9->_hysteresisDurationSeconds = a4;
-    v11 = [v8 copy];
+    v9->_portType = type;
+    v9->_hysteresisDurationSeconds = seconds;
+    v11 = [blockCopy copy];
     notificationBlock = v10->_notificationBlock;
     v10->_notificationBlock = v11;
 
     *&v10->_listeningEnabled = 1;
     v10->_generation = 0;
-    if (a3 == 1)
+    if (type == 1)
     {
       v10->_listeningEnabled = 0;
     }

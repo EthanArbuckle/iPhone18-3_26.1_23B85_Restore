@@ -2,7 +2,7 @@
 - (BOOL)lockScreenPlatterHasContent;
 - (MRDLockScreenContentController)init;
 - (MRDLockScreenContentControllerDelegate)delegate;
-- (void)_handlePlaybackQueueChangedNotification:(id)a3;
+- (void)_handlePlaybackQueueChangedNotification:(id)notification;
 - (void)_notifyDelegate;
 - (void)_updateSuggestionCountIfNeeded;
 @end
@@ -49,28 +49,28 @@
 - (void)_updateSuggestionCountIfNeeded
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(MRDLockScreenContentController *)self shouldConsiderSuggestions];
-  v4 = [(MRDLockScreenContentController *)self isQuerying];
-  v5 = [(MRDLockScreenContentController *)self suggestionPreferences];
-  v6 = [v5 suggestionsDisabledInContext:MRSuggestionContextHomeScreen];
+  shouldConsiderSuggestions = [(MRDLockScreenContentController *)self shouldConsiderSuggestions];
+  isQuerying = [(MRDLockScreenContentController *)self isQuerying];
+  suggestionPreferences = [(MRDLockScreenContentController *)self suggestionPreferences];
+  v6 = [suggestionPreferences suggestionsDisabledInContext:MRSuggestionContextHomeScreen];
 
   if (v6)
   {
-    v7 = [(MRDLockScreenContentController *)self suggestionCount];
-    if (v7 >= 1)
+    suggestionCount = [(MRDLockScreenContentController *)self suggestionCount];
+    if (suggestionCount >= 1)
     {
       [(MRDLockScreenContentController *)self setSuggestionCount:0];
     }
 
     os_unfair_lock_unlock(&self->_lock);
-    if (!(v4 & 1 | ((v3 & 1) == 0)) && v7 >= 1)
+    if (!(isQuerying & 1 | ((shouldConsiderSuggestions & 1) == 0)) && suggestionCount >= 1)
     {
 
       [(MRDLockScreenContentController *)self _notifyDelegate];
     }
   }
 
-  else if (v4 & 1 | ((v3 & 1) == 0))
+  else if (isQuerying & 1 | ((shouldConsiderSuggestions & 1) == 0))
   {
 
     os_unfair_lock_unlock(&self->_lock);
@@ -87,39 +87,39 @@
     }
 
     v9 = dispatch_time(0, 60000000000);
-    v10 = [(MRDLockScreenContentController *)self queryQueue];
+    queryQueue = [(MRDLockScreenContentController *)self queryQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100196EF4;
     block[3] = &unk_1004B6D08;
     block[4] = self;
-    dispatch_after(v9, v10, block);
+    dispatch_after(v9, queryQueue, block);
   }
 }
 
 - (void)_notifyDelegate
 {
-  v3 = [(MRDLockScreenContentController *)self delegate];
+  delegate = [(MRDLockScreenContentController *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(MRDLockScreenContentController *)self delegate];
-    [v5 lockScreenContentControllerStateDidChange:self];
+    delegate2 = [(MRDLockScreenContentController *)self delegate];
+    [delegate2 lockScreenContentControllerStateDidChange:self];
   }
 }
 
-- (void)_handlePlaybackQueueChangedNotification:(id)a3
+- (void)_handlePlaybackQueueChangedNotification:(id)notification
 {
-  v4 = [a3 userInfo];
-  v7 = [v4 objectForKeyedSubscript:kMRNowPlayingPlayerPathUserInfoKey];
+  userInfo = [notification userInfo];
+  v7 = [userInfo objectForKeyedSubscript:kMRNowPlayingPlayerPathUserInfoKey];
 
   if ([(MRDLockScreenContentController *)self suggestionCount]<= 3)
   {
-    v5 = [v7 origin];
-    v6 = [v5 isLocal];
+    origin = [v7 origin];
+    isLocal = [origin isLocal];
 
-    if (v6)
+    if (isLocal)
     {
       [(MRDLockScreenContentController *)self _updateSuggestionCountIfNeeded];
     }
@@ -129,10 +129,10 @@
 - (BOOL)lockScreenPlatterHasContent
 {
   v3 = +[MRDMediaRemoteServer server];
-  v4 = [v3 nowPlayingServer];
-  v5 = [v4 localActivePlayerClient];
-  v6 = [v5 playbackQueue];
-  v7 = [v6 contentItemWithOffset:0];
+  nowPlayingServer = [v3 nowPlayingServer];
+  localActivePlayerClient = [nowPlayingServer localActivePlayerClient];
+  playbackQueue = [localActivePlayerClient playbackQueue];
+  v7 = [playbackQueue contentItemWithOffset:0];
 
   if (v7)
   {
@@ -140,17 +140,17 @@
   }
 
   os_unfair_lock_lock(&self->_lock);
-  v9 = [(MRDLockScreenContentController *)self shouldConsiderSuggestions];
-  if ((v9 & 1) == 0)
+  shouldConsiderSuggestions = [(MRDLockScreenContentController *)self shouldConsiderSuggestions];
+  if ((shouldConsiderSuggestions & 1) == 0)
   {
     [(MRDLockScreenContentController *)self setShouldConsiderSuggestions:1];
   }
 
-  v10 = [(MRDLockScreenContentController *)self suggestionCount];
+  suggestionCount = [(MRDLockScreenContentController *)self suggestionCount];
   os_unfair_lock_unlock(&self->_lock);
-  if (v9)
+  if (shouldConsiderSuggestions)
   {
-    return v10 > 3;
+    return suggestionCount > 3;
   }
 
   [(MRDLockScreenContentController *)self _updateSuggestionCountIfNeeded];

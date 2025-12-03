@@ -6,15 +6,15 @@
 - (void)_invalidated;
 - (void)activate;
 - (void)invalidate;
-- (void)reportEvent:(id)a3;
-- (void)reportEventToExtension:(id)a3;
+- (void)reportEvent:(id)event;
+- (void)reportEventToExtension:(id)extension;
 @end
 
 @implementation DADiscoveryExtension
 
 - (id)description
 {
-  v4 = [(_EXExtensionIdentity *)self->_ekExtension bundleIdentifier];
+  bundleIdentifier = [(_EXExtensionIdentity *)self->_ekExtension bundleIdentifier];
   NSAppendPrintF();
   v2 = 0;
 
@@ -142,7 +142,7 @@ uint64_t __33__DADiscoveryExtension__activate__block_invoke_4(uint64_t a1, void 
   }
 }
 
-- (void)reportEventToExtension:(id)a3
+- (void)reportEventToExtension:(id)extension
 {
   xpcConnection = self->_xpcConnection;
   v6[0] = MEMORY[0x277D85DD0];
@@ -150,9 +150,9 @@ uint64_t __33__DADiscoveryExtension__activate__block_invoke_4(uint64_t a1, void 
   v6[2] = __47__DADiscoveryExtension_reportEventToExtension___block_invoke;
   v6[3] = &unk_278F580C0;
   v6[4] = self;
-  v4 = a3;
+  extensionCopy = extension;
   v5 = [(NSXPCConnection *)xpcConnection remoteObjectProxyWithErrorHandler:v6];
-  [v5 didReceiveDeviceChangedEvent:v4];
+  [v5 didReceiveDeviceChangedEvent:extensionCopy];
 }
 
 uint64_t __47__DADiscoveryExtension_reportEventToExtension___block_invoke(uint64_t a1, void *a2)
@@ -172,9 +172,9 @@ uint64_t __47__DADiscoveryExtension_reportEventToExtension___block_invoke(uint64
   return MEMORY[0x2821F96F8](v3, v4);
 }
 
-- (void)reportEvent:(id)a3
+- (void)reportEvent:(id)event
 {
-  v9 = a3;
+  eventCopy = event;
   v4 = [(NSXPCConnection *)self->_xpcConnection cuValueForEntitlementNoCache:@"com.apple.developer.accessory-setup-discovery-extension"];
   v5 = [v4 isEqual:MEMORY[0x277CBEC38]];
 
@@ -185,12 +185,12 @@ uint64_t __47__DADiscoveryExtension_reportEventToExtension___block_invoke(uint64
     {
       if (gLogCategory_DADiscovery <= 30 && (gLogCategory_DADiscovery != -1 || _LogCategory_Initialize()))
       {
-        v7 = self;
-        v8 = v9;
+        selfCopy = self;
+        v8 = eventCopy;
         LogPrintF();
       }
 
-      [(DADiscovery *)self->_parent _reportASKEvent:v9, v7, v8];
+      [(DADiscovery *)self->_parent _reportASKEvent:eventCopy, selfCopy, v8];
     }
   }
 
@@ -199,12 +199,12 @@ uint64_t __47__DADiscoveryExtension_reportEventToExtension___block_invoke(uint64
     if (gLogCategory_DADiscovery <= 30 && (gLogCategory_DADiscovery != -1 || _LogCategory_Initialize()))
     {
       LogPrintF();
-      [(DADiscovery *)self->_parent _reportEvent:v9, self, v9];
+      [(DADiscovery *)self->_parent _reportEvent:eventCopy, self, eventCopy];
     }
 
     else
     {
-      [(DADiscovery *)self->_parent _reportEvent:v9, v7, v8];
+      [(DADiscovery *)self->_parent _reportEvent:eventCopy, selfCopy, v8];
     }
   }
 }

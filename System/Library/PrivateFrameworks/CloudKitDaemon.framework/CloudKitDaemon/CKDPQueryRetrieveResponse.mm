@@ -1,32 +1,32 @@
 @interface CKDPQueryRetrieveResponse
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)addQueryResults:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addQueryResults:(id)results;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CKDPQueryRetrieveResponse
 
-- (void)addQueryResults:(id)a3
+- (void)addQueryResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   queryResults = self->_queryResults;
-  v8 = v4;
+  v8 = resultsCopy;
   if (!queryResults)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_queryResults;
     self->_queryResults = v6;
 
-    v4 = v8;
+    resultsCopy = v8;
     queryResults = self->_queryResults;
   }
 
-  objc_msgSend_addObject_(queryResults, v4, v4);
+  objc_msgSend_addObject_(queryResults, resultsCopy, resultsCopy);
 }
 
 - (id)description
@@ -93,10 +93,10 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -137,12 +137,12 @@
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v16 = a3;
+  toCopy = to;
   if (objc_msgSend_queryResultsCount(self, v4, v5))
   {
-    objc_msgSend_clearQueryResults(v16, v6, v7);
+    objc_msgSend_clearQueryResults(toCopy, v6, v7);
     ResultsCount = objc_msgSend_queryResultsCount(self, v8, v9);
     if (ResultsCount)
     {
@@ -150,7 +150,7 @@
       for (i = 0; i != v11; ++i)
       {
         v13 = objc_msgSend_queryResultsAtIndex_(self, v6, i);
-        objc_msgSend_addQueryResults_(v16, v14, v13);
+        objc_msgSend_addQueryResults_(toCopy, v14, v13);
       }
     }
   }
@@ -158,15 +158,15 @@
   continuationMarker = self->_continuationMarker;
   if (continuationMarker)
   {
-    objc_msgSend_setContinuationMarker_(v16, v6, continuationMarker);
+    objc_msgSend_setContinuationMarker_(toCopy, v6, continuationMarker);
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v30 = *MEMORY[0x277D85DE8];
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
   v25 = 0u;
   v26 = 0u;
@@ -188,7 +188,7 @@
           objc_enumerationMutation(v11);
         }
 
-        v18 = objc_msgSend_copyWithZone_(*(*(&v25 + 1) + 8 * v17), v14, a3, v25);
+        v18 = objc_msgSend_copyWithZone_(*(*(&v25 + 1) + 8 * v17), v14, zone, v25);
         objc_msgSend_addQueryResults_(v10, v19, v18);
 
         ++v17;
@@ -201,7 +201,7 @@
     while (v15);
   }
 
-  v21 = objc_msgSend_copyWithZone_(self->_continuationMarker, v20, a3);
+  v21 = objc_msgSend_copyWithZone_(self->_continuationMarker, v20, zone);
   v22 = v10[1];
   v10[1] = v21;
 
@@ -209,14 +209,14 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (objc_msgSend_isMemberOfClass_(v4, v6, v5) && ((queryResults = self->_queryResults, v9 = v4[2], !(queryResults | v9)) || objc_msgSend_isEqual_(queryResults, v7, v9)))
+  if (objc_msgSend_isMemberOfClass_(equalCopy, v6, v5) && ((queryResults = self->_queryResults, v9 = equalCopy[2], !(queryResults | v9)) || objc_msgSend_isEqual_(queryResults, v7, v9)))
   {
     continuationMarker = self->_continuationMarker;
-    v11 = v4[1];
+    v11 = equalCopy[1];
     if (continuationMarker | v11)
     {
       isEqual = objc_msgSend_isEqual_(continuationMarker, v7, v11);
@@ -236,15 +236,15 @@
   return isEqual;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fromCopy = from;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = *(v4 + 2);
+  v5 = *(fromCopy + 2);
   v7 = objc_msgSend_countByEnumeratingWithState_objects_count_(v5, v6, &v15, v19, 16);
   if (v7)
   {
@@ -268,7 +268,7 @@
     while (v9);
   }
 
-  v13 = *(v4 + 1);
+  v13 = *(fromCopy + 1);
   if (v13)
   {
     objc_msgSend_setContinuationMarker_(self, v12, v13);

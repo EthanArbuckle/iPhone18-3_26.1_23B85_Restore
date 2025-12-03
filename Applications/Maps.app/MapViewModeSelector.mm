@@ -1,30 +1,30 @@
 @interface MapViewModeSelector
-- (BOOL)updateSegmentsIfNeededToFitWidth:(double)a3;
-- (MapViewModeSelector)initWithDesiredViewModes:(id)a3;
+- (BOOL)updateSegmentsIfNeededToFitWidth:(double)width;
+- (MapViewModeSelector)initWithDesiredViewModes:(id)modes;
 - (NSArray)orderedViewModes;
 - (int64_t)selectedViewMode;
-- (void)setSelectedViewMode:(int64_t)a3;
+- (void)setSelectedViewMode:(int64_t)mode;
 @end
 
 @implementation MapViewModeSelector
 
-- (BOOL)updateSegmentsIfNeededToFitWidth:(double)a3
+- (BOOL)updateSegmentsIfNeededToFitWidth:(double)width
 {
-  if (a3 <= 0.0)
+  if (width <= 0.0)
   {
     lastLayoutWidthFits = 0;
   }
 
-  else if (self->_lastLayoutWidth == a3)
+  else if (self->_lastLayoutWidth == width)
   {
     lastLayoutWidthFits = self->_lastLayoutWidthFits;
   }
 
   else
   {
-    self->_lastLayoutWidth = a3;
+    self->_lastLayoutWidth = width;
     [(MapViewModeSelector *)self setApportionsSegmentWidthsByContent:0];
-    v6 = [(MapViewModeSelector *)self _maps_testFitSegmentTitlesToWidth:a3];
+    v6 = [(MapViewModeSelector *)self _maps_testFitSegmentTitlesToWidth:width];
     self->_lastLayoutWidthFits = v6;
     if (v6)
     {
@@ -34,7 +34,7 @@
     else
     {
       [(MapViewModeSelector *)self setApportionsSegmentWidthsByContent:1];
-      lastLayoutWidthFits = [(MapViewModeSelector *)self _maps_testFitSegmentTitlesToWidth:a3];
+      lastLayoutWidthFits = [(MapViewModeSelector *)self _maps_testFitSegmentTitlesToWidth:width];
       self->_lastLayoutWidthFits = lastLayoutWidthFits;
     }
   }
@@ -42,16 +42,16 @@
   return lastLayoutWidthFits & 1;
 }
 
-- (void)setSelectedViewMode:(int64_t)a3
+- (void)setSelectedViewMode:(int64_t)mode
 {
-  if (a3 > 7)
+  if (mode > 7)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = qword_101215550[a3];
+    v4 = qword_101215550[mode];
   }
 
   if (((v4 - 1) & 0xFFFFFFFFFFFFFFFALL) != 0)
@@ -64,9 +64,9 @@
     v5 = 2;
   }
 
-  v6 = [(MapViewModeSelector *)self orderedViewModes];
+  orderedViewModes = [(MapViewModeSelector *)self orderedViewModes];
   v7 = [NSNumber numberWithInteger:v5];
-  v8 = [v6 indexOfObject:v7];
+  v8 = [orderedViewModes indexOfObject:v7];
 
   if (v8 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -83,26 +83,26 @@
 
 - (int64_t)selectedViewMode
 {
-  v3 = [(MapViewModeSelector *)self selectedSegmentIndex];
-  if (v3 > 0x7FFFFFFFFFFFFFFELL)
+  selectedSegmentIndex = [(MapViewModeSelector *)self selectedSegmentIndex];
+  if (selectedSegmentIndex > 0x7FFFFFFFFFFFFFFELL)
   {
     return -1;
   }
 
-  v4 = v3;
-  v5 = [(MapViewModeSelector *)self orderedViewModes];
-  v6 = [v5 count];
+  v4 = selectedSegmentIndex;
+  orderedViewModes = [(MapViewModeSelector *)self orderedViewModes];
+  v6 = [orderedViewModes count];
 
   if (v4 >= v6)
   {
     return -1;
   }
 
-  v7 = [(MapViewModeSelector *)self orderedViewModes];
-  v8 = [v7 objectAtIndexedSubscript:v4];
-  v9 = [v8 integerValue];
+  orderedViewModes2 = [(MapViewModeSelector *)self orderedViewModes];
+  v8 = [orderedViewModes2 objectAtIndexedSubscript:v4];
+  integerValue = [v8 integerValue];
 
-  return v9;
+  return integerValue;
 }
 
 - (NSArray)orderedViewModes
@@ -131,8 +131,8 @@
           }
 
           v10 = *(*(&v16 + 1) + 8 * i);
-          v11 = [v10 integerValue];
-          if (v11 <= 7 && v11 != 4)
+          integerValue = [v10 integerValue];
+          if (integerValue <= 7 && integerValue != 4)
           {
             [v4 addObject:v10];
           }
@@ -154,23 +154,23 @@
   return orderedViewModes;
 }
 
-- (MapViewModeSelector)initWithDesiredViewModes:(id)a3
+- (MapViewModeSelector)initWithDesiredViewModes:(id)modes
 {
-  v5 = a3;
+  modesCopy = modes;
   v21.receiver = self;
   v21.super_class = MapViewModeSelector;
   v6 = [(MapViewModeSelector *)&v21 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_desiredViewModes, a3);
-    v8 = [(MapViewModeSelector *)v7 orderedViewModes];
+    objc_storeStrong(&v6->_desiredViewModes, modes);
+    orderedViewModes = [(MapViewModeSelector *)v7 orderedViewModes];
     v20 = objc_opt_new();
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v9 = v8;
+    v9 = orderedViewModes;
     v10 = [v9 countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v10)
     {
@@ -185,10 +185,10 @@
             objc_enumerationMutation(v9);
           }
 
-          v14 = [*(*(&v22 + 1) + 8 * i) integerValue];
-          if (v14 <= 7 && ((0xEFu >> v14) & 1) != 0)
+          integerValue = [*(*(&v22 + 1) + 8 * i) integerValue];
+          if (integerValue <= 7 && ((0xEFu >> integerValue) & 1) != 0)
           {
-            v15 = *(&off_1016270F8 + v14);
+            v15 = *(&off_1016270F8 + integerValue);
             v16 = +[NSBundle mainBundle];
             v17 = [v16 localizedStringForKey:v15 value:@"localized string not found" table:0];
 

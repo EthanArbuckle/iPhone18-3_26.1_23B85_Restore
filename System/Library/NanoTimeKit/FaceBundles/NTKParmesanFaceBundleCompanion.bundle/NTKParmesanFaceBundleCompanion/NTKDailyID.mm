@@ -2,8 +2,8 @@
 - (NSString)description;
 - (NSString)uuidString;
 - (_TtC30NTKParmesanFaceBundleCompanion10NTKDailyID)init;
-- (_TtC30NTKParmesanFaceBundleCompanion10NTKDailyID)initWithUuidString:(id)a3;
-- (void)setUuidString:(id)a3;
+- (_TtC30NTKParmesanFaceBundleCompanion10NTKDailyID)initWithUuidString:(id)string;
+- (void)setUuidString:(id)string;
 @end
 
 @implementation NTKDailyID
@@ -16,7 +16,7 @@
   return v2;
 }
 
-- (void)setUuidString:(id)a3
+- (void)setUuidString:(id)string
 {
   v4 = sub_23BFFA300();
   v5 = (self + OBJC_IVAR____TtC30NTKParmesanFaceBundleCompanion10NTKDailyID_uuidString);
@@ -24,7 +24,7 @@
   v5[1] = v6;
 }
 
-- (_TtC30NTKParmesanFaceBundleCompanion10NTKDailyID)initWithUuidString:(id)a3
+- (_TtC30NTKParmesanFaceBundleCompanion10NTKDailyID)initWithUuidString:(id)string
 {
   v4 = sub_23BFFA300();
   v5 = (self + OBJC_IVAR____TtC30NTKParmesanFaceBundleCompanion10NTKDailyID_uuidString);
@@ -37,7 +37,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_23BF55BD0();
 
   v3 = sub_23BFFA2C0();

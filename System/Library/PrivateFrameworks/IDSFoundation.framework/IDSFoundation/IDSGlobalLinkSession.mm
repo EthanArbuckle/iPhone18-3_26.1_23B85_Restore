@@ -1,7 +1,7 @@
 @interface IDSGlobalLinkSession
 - (BOOL)shouldLinkEngineAllowOngoingTasks;
 - (BOOL)wantsToBeConnected;
-- (IDSGlobalLinkSession)initWithSessionInfo:(id)a3 sessionInfoDict:(id)a4 linkEngine:(id)a5;
+- (IDSGlobalLinkSession)initWithSessionInfo:(id)info sessionInfoDict:(id)dict linkEngine:(id)engine;
 - (NSData)sessionToken;
 - (const)serverAddress;
 - (const)serverAddressV6;
@@ -9,35 +9,35 @@
 - (void)_handleSessionConvergenceTimer;
 - (void)_handleSessionGoAwayTimer;
 - (void)invalidate;
-- (void)setSessionInfo:(id)a3 sessionInfoDict:(id)a4;
-- (void)startSessionConvergenceTimer:(int)a3 block:(id)a4;
-- (void)startSessionGoAwayTimer:(int)a3 block:(id)a4;
+- (void)setSessionInfo:(id)info sessionInfoDict:(id)dict;
+- (void)startSessionConvergenceTimer:(int)timer block:(id)block;
+- (void)startSessionGoAwayTimer:(int)timer block:(id)block;
 - (void)stopSessionConvergenceTimer;
 - (void)stopSessionGoAwayTimer;
 @end
 
 @implementation IDSGlobalLinkSession
 
-- (IDSGlobalLinkSession)initWithSessionInfo:(id)a3 sessionInfoDict:(id)a4 linkEngine:(id)a5
+- (IDSGlobalLinkSession)initWithSessionInfo:(id)info sessionInfoDict:(id)dict linkEngine:(id)engine
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  infoCopy = info;
+  dictCopy = dict;
+  engineCopy = engine;
   v17.receiver = self;
   v17.super_class = IDSGlobalLinkSession;
   v12 = [(IDSGlobalLinkSession *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_sessionInfo, a3);
-    objc_storeStrong(&v13->_sessionInfoDict, a4);
-    objc_storeStrong(&v13->_linkEngine, a5);
-    v14 = [MEMORY[0x1E695DF70] array];
+    objc_storeStrong(&v12->_sessionInfo, info);
+    objc_storeStrong(&v13->_sessionInfoDict, dict);
+    objc_storeStrong(&v13->_linkEngine, engine);
+    array = [MEMORY[0x1E695DF70] array];
     remotePushTokens = v13->_remotePushTokens;
-    v13->_remotePushTokens = v14;
+    v13->_remotePushTokens = array;
 
-    -[IDSGlobalLinkSession setServerAddress:](v13, "setServerAddress:", [v9 serverAddress]);
-    -[IDSGlobalLinkSession setServerAddressV6:](v13, "setServerAddressV6:", [v9 serverAddressIPv6]);
+    -[IDSGlobalLinkSession setServerAddress:](v13, "setServerAddress:", [infoCopy serverAddress]);
+    -[IDSGlobalLinkSession setServerAddressV6:](v13, "setServerAddressV6:", [infoCopy serverAddressIPv6]);
   }
 
   return v13;
@@ -123,15 +123,15 @@
   sessionToken = self->_sessionToken;
   if (sessionToken)
   {
-    v3 = sessionToken;
+    relaySessionToken = sessionToken;
   }
 
   else
   {
-    v3 = [(IDSQuickRelaySessionInfo *)self->_sessionInfo relaySessionToken];
+    relaySessionToken = [(IDSQuickRelaySessionInfo *)self->_sessionInfo relaySessionToken];
   }
 
-  return v3;
+  return relaySessionToken;
 }
 
 - (void)_handleSessionConvergenceTimer
@@ -175,11 +175,11 @@
   [(IDSGlobalLinkSession *)self stopSessionConvergenceTimer:v8];
 }
 
-- (void)startSessionConvergenceTimer:(int)a3 block:(id)a4
+- (void)startSessionConvergenceTimer:(int)timer block:(id)block
 {
-  v4 = *&a3;
+  v4 = *&timer;
   v46 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  blockCopy = block;
   if (*&self->_sessionConvergenceTimer == 0)
   {
     v17 = im_primary_queue();
@@ -197,7 +197,7 @@
     handler[3] = &unk_1E77E0818;
     handler[4] = self;
     dispatch_source_set_event_handler(v22, handler);
-    v23 = _Block_copy(v6);
+    v23 = _Block_copy(blockCopy);
     sessionConvergenceBlock = self->_sessionConvergenceBlock;
     self->_sessionConvergenceBlock = v23;
 
@@ -207,8 +207,8 @@
     {
       v26 = self->_sessionConvergenceTimer;
       v27 = _Block_copy(self->_sessionConvergenceBlock);
-      v28 = [(IDSGlobalLinkSession *)self idsSessionID];
-      v29 = [(IDSGlobalLinkSession *)self qrSessionID];
+      idsSessionID = [(IDSGlobalLinkSession *)self idsSessionID];
+      qrSessionID = [(IDSGlobalLinkSession *)self qrSessionID];
       *buf = 134219010;
       v43 = v26;
       v44 = 1024;
@@ -216,9 +216,9 @@
       *&v45[4] = 2048;
       *&v45[6] = v27;
       *&v45[14] = 2112;
-      *&v45[16] = v28;
+      *&v45[16] = idsSessionID;
       *&v45[24] = 2112;
-      *&v45[26] = v29;
+      *&v45[26] = qrSessionID;
       _os_log_impl(&dword_1A7AD9000, v25, OS_LOG_TYPE_DEFAULT, "start session convergence timer %p, timeout %d sec, block %p for idsSessionID=%@ qrSessionID=%@.", buf, 0x30u);
     }
 
@@ -228,8 +228,8 @@
       {
         v30 = self->_sessionConvergenceTimer;
         v31 = _Block_copy(self->_sessionConvergenceBlock);
-        v32 = [(IDSGlobalLinkSession *)self idsSessionID];
-        v39 = [(IDSGlobalLinkSession *)self qrSessionID];
+        idsSessionID2 = [(IDSGlobalLinkSession *)self idsSessionID];
+        qrSessionID2 = [(IDSGlobalLinkSession *)self qrSessionID];
         v36 = v31;
         _IDSLogTransport(@"GL", @"IDS", @"start session convergence timer %p, timeout %d sec, block %p for idsSessionID=%@ qrSessionID=%@.");
 
@@ -237,7 +237,7 @@
         {
           v33 = _Block_copy(self->_sessionConvergenceBlock);
           v34 = [(IDSGlobalLinkSession *)self idsSessionID:v30];
-          v40 = [(IDSGlobalLinkSession *)self qrSessionID];
+          qrSessionID3 = [(IDSGlobalLinkSession *)self qrSessionID];
           _IDSLogV(0, @"IDSFoundation", @"GL", @"start session convergence timer %p, timeout %d sec, block %p for idsSessionID=%@ qrSessionID=%@.");
         }
       }
@@ -251,16 +251,16 @@
     {
       v8 = self->_sessionConvergenceTimer;
       v9 = _Block_copy(self->_sessionConvergenceBlock);
-      v10 = [(IDSGlobalLinkSession *)self idsSessionID];
-      v11 = [(IDSGlobalLinkSession *)self qrSessionID];
+      idsSessionID3 = [(IDSGlobalLinkSession *)self idsSessionID];
+      qrSessionID4 = [(IDSGlobalLinkSession *)self qrSessionID];
       *buf = 134218754;
       v43 = v8;
       v44 = 2048;
       *v45 = v9;
       *&v45[8] = 2112;
-      *&v45[10] = v10;
+      *&v45[10] = idsSessionID3;
       *&v45[18] = 2112;
-      *&v45[20] = v11;
+      *&v45[20] = qrSessionID4;
       _os_log_impl(&dword_1A7AD9000, v7, OS_LOG_TYPE_DEFAULT, "session convergence timer %p and block %p for idsSessionID=%@ qrSessionID=%@ are already scheduled.", buf, 0x2Au);
     }
 
@@ -270,8 +270,8 @@
       {
         v12 = self->_sessionConvergenceTimer;
         v13 = _Block_copy(self->_sessionConvergenceBlock);
-        v14 = [(IDSGlobalLinkSession *)self idsSessionID];
-        v37 = [(IDSGlobalLinkSession *)self qrSessionID];
+        idsSessionID4 = [(IDSGlobalLinkSession *)self idsSessionID];
+        qrSessionID5 = [(IDSGlobalLinkSession *)self qrSessionID];
         v35 = v13;
         _IDSLogTransport(@"GL", @"IDS", @"session convergence timer %p and block %p for idsSessionID=%@ qrSessionID=%@ are already scheduled.");
 
@@ -279,7 +279,7 @@
         {
           v15 = _Block_copy(self->_sessionConvergenceBlock);
           v16 = [(IDSGlobalLinkSession *)self idsSessionID:v12];
-          v38 = [(IDSGlobalLinkSession *)self qrSessionID];
+          qrSessionID6 = [(IDSGlobalLinkSession *)self qrSessionID];
           _IDSLogV(0, @"IDSFoundation", @"GL", @"session convergence timer %p and block %p for idsSessionID=%@ qrSessionID=%@ are already scheduled.");
         }
       }
@@ -367,11 +367,11 @@
   [(IDSGlobalLinkSession *)self stopSessionGoAwayTimer:v8];
 }
 
-- (void)startSessionGoAwayTimer:(int)a3 block:(id)a4
+- (void)startSessionGoAwayTimer:(int)timer block:(id)block
 {
-  v4 = *&a3;
+  v4 = *&timer;
   v40 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  blockCopy = block;
   if (*&self->_sessionGoAwayTimer == 0)
   {
     v14 = im_primary_queue();
@@ -389,7 +389,7 @@
     handler[3] = &unk_1E77E0818;
     handler[4] = self;
     dispatch_source_set_event_handler(v19, handler);
-    v20 = _Block_copy(v6);
+    v20 = _Block_copy(blockCopy);
     sessionGoAwayBlock = self->_sessionGoAwayBlock;
     self->_sessionGoAwayBlock = v20;
 
@@ -399,7 +399,7 @@
     {
       v23 = self->_sessionGoAwayTimer;
       v24 = _Block_copy(self->_sessionGoAwayBlock);
-      v25 = [(IDSGlobalLinkSession *)self qrSessionID];
+      qrSessionID = [(IDSGlobalLinkSession *)self qrSessionID];
       *buf = 134218754;
       v37 = v23;
       v38 = 1024;
@@ -407,7 +407,7 @@
       *&v39[4] = 2048;
       *&v39[6] = v24;
       *&v39[14] = 2112;
-      *&v39[16] = v25;
+      *&v39[16] = qrSessionID;
       _os_log_impl(&dword_1A7AD9000, v22, OS_LOG_TYPE_DEFAULT, "start session goaway timer %p, timeout %d sec, block %p for %@.", buf, 0x26u);
     }
 
@@ -438,13 +438,13 @@
     {
       v8 = self->_sessionGoAwayTimer;
       v9 = _Block_copy(self->_sessionGoAwayBlock);
-      v10 = [(IDSGlobalLinkSession *)self qrSessionID];
+      qrSessionID2 = [(IDSGlobalLinkSession *)self qrSessionID];
       *buf = 134218498;
       v37 = v8;
       v38 = 2048;
       *v39 = v9;
       *&v39[8] = 2112;
-      *&v39[10] = v10;
+      *&v39[10] = qrSessionID2;
       _os_log_impl(&dword_1A7AD9000, v7, OS_LOG_TYPE_DEFAULT, "session goaway timer %p and block %p for %@ are already scheduled.", buf, 0x20u);
     }
 
@@ -508,10 +508,10 @@
   }
 }
 
-- (void)setSessionInfo:(id)a3 sessionInfoDict:(id)a4
+- (void)setSessionInfo:(id)info sessionInfoDict:(id)dict
 {
-  v6 = a3;
-  v7 = a4;
+  infoCopy = info;
+  dictCopy = dict;
   v8 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -552,11 +552,11 @@
   *&p_serverAddressV6->__ss_pad2[80] = 0u;
   *&p_serverAddressV6->__ss_pad2[96] = 0u;
   v11 = *&p_serverAddressV6[1].__ss_pad2[8];
-  *&p_serverAddressV6[1].__ss_pad2[8] = v6;
-  v12 = v6;
+  *&p_serverAddressV6[1].__ss_pad2[8] = infoCopy;
+  v12 = infoCopy;
 
   v13 = *&p_serverAddressV6[1].__ss_pad2[16];
-  *&p_serverAddressV6[1].__ss_pad2[16] = v7;
+  *&p_serverAddressV6[1].__ss_pad2[16] = dictCopy;
 }
 
 - (void)invalidate

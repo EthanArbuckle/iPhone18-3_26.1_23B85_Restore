@@ -3,8 +3,8 @@
 - (BOOL)isPickerPreviewing;
 - (JFXPickerCameraSource)init;
 - (PVLivePlayerCameraSource)pickerSource;
-- (void)registerPickerAsPreviewingWithObject:(id)a3;
-- (void)unregisterPickerAsPreviewingWithObject:(id)a3;
+- (void)registerPickerAsPreviewingWithObject:(id)object;
+- (void)unregisterPickerAsPreviewingWithObject:(id)object;
 @end
 
 @implementation JFXPickerCameraSource
@@ -49,18 +49,18 @@ uint64_t __39__JFXPickerCameraSource_sharedInstance__block_invoke()
   return v2;
 }
 
-- (void)registerPickerAsPreviewingWithObject:(id)a3
+- (void)registerPickerAsPreviewingWithObject:(id)object
 {
-  v4 = a3;
-  v5 = [(JFXPickerCameraSource *)self registeredPickersQueue];
+  objectCopy = object;
+  registeredPickersQueue = [(JFXPickerCameraSource *)self registeredPickersQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __62__JFXPickerCameraSource_registerPickerAsPreviewingWithObject___block_invoke;
   v7[3] = &unk_278D79C88;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_barrier_async(v5, v7);
+  v8 = objectCopy;
+  v6 = objectCopy;
+  dispatch_barrier_async(registeredPickersQueue, v7);
 }
 
 void __62__JFXPickerCameraSource_registerPickerAsPreviewingWithObject___block_invoke(uint64_t a1)
@@ -83,18 +83,18 @@ void __62__JFXPickerCameraSource_registerPickerAsPreviewingWithObject___block_in
   }
 }
 
-- (void)unregisterPickerAsPreviewingWithObject:(id)a3
+- (void)unregisterPickerAsPreviewingWithObject:(id)object
 {
-  v4 = a3;
-  v5 = [(JFXPickerCameraSource *)self registeredPickersQueue];
+  objectCopy = object;
+  registeredPickersQueue = [(JFXPickerCameraSource *)self registeredPickersQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __64__JFXPickerCameraSource_unregisterPickerAsPreviewingWithObject___block_invoke;
   v7[3] = &unk_278D79C88;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_barrier_async(v5, v7);
+  v8 = objectCopy;
+  v6 = objectCopy;
+  dispatch_barrier_async(registeredPickersQueue, v7);
 }
 
 void __64__JFXPickerCameraSource_unregisterPickerAsPreviewingWithObject___block_invoke(uint64_t a1)
@@ -118,23 +118,23 @@ void __64__JFXPickerCameraSource_unregisterPickerAsPreviewingWithObject___block_
 
 - (BOOL)isPickerPreviewing
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(JFXPickerCameraSource *)self registeredPickersQueue];
+  registeredPickersQueue = [(JFXPickerCameraSource *)self registeredPickersQueue];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __43__JFXPickerCameraSource_isPickerPreviewing__block_invoke;
   v5[3] = &unk_278D79C60;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_sync(v3, v5);
+  dispatch_sync(registeredPickersQueue, v5);
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 void __43__JFXPickerCameraSource_isPickerPreviewing__block_invoke(uint64_t a1)
@@ -151,14 +151,14 @@ void __43__JFXPickerCameraSource_isPickerPreviewing__block_invoke(uint64_t a1)
   v10 = __Block_byref_object_copy__21;
   v11 = __Block_byref_object_dispose__21;
   v12 = 0;
-  v3 = [(JFXPickerCameraSource *)self registeredPickersQueue];
+  registeredPickersQueue = [(JFXPickerCameraSource *)self registeredPickersQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __37__JFXPickerCameraSource_pickerSource__block_invoke;
   v6[3] = &unk_278D79C60;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(registeredPickersQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);

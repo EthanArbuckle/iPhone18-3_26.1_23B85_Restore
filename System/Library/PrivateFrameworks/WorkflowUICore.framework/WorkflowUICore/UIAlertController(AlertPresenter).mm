@@ -10,18 +10,18 @@
 {
   v6 = a3;
   v7 = a4;
-  v8 = [v6 style];
-  if (v8 == 1)
+  style = [v6 style];
+  if (style == 1)
   {
     v9 = 1;
   }
 
   else
   {
-    v9 = 2 * (v8 == 2);
+    v9 = 2 * (style == 2);
   }
 
-  objc_initWeak(&location, a1);
+  objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __61__UIAlertController_AlertPresenter__actionForButton_inAlert___block_invoke;
@@ -36,8 +36,8 @@
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v21 = MEMORY[0x277D750F8];
-    v14 = [v11 title];
-    v19 = [v21 actionWithTitle:v14 style:v9 handler:v12];
+    title = [v11 title];
+    v19 = [v21 actionWithTitle:title style:v9 handler:v12];
     goto LABEL_18;
   }
 
@@ -46,15 +46,15 @@
   v29 = 3221225472;
   v30 = __61__UIAlertController_AlertPresenter__actionForButton_inAlert___block_invoke_3;
   v31 = &unk_279EF52D8;
-  v14 = v13;
-  v32 = v14;
+  title = v13;
+  v32 = title;
   v15 = _Block_copy(&v28);
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    v16 = objc_alloc_init(WFRichContentItemCellView);
-    [(WFRichContentItemCellView *)v16 setSelectableAlertButton:v14];
-    if ([v14 isSelected])
+    v14Title = objc_alloc_init(WFRichContentItemCellView);
+    [(WFRichContentItemCellView *)v14Title setSelectableAlertButton:title];
+    if ([title isSelected])
     {
       v17 = 25.0;
     }
@@ -64,41 +64,41 @@
       v17 = 0.0;
     }
 
-    v18 = [WFUIAlertControllerAlertPresenter contentViewControllerForContentView:v16 padding:0.0, 0.0, 0.0, v17];
-    v19 = [MEMORY[0x277D750F8] _actionWithContentViewController:v18 style:v9 handler:v12];
-    v20 = _Block_copy(v15);
-    [v19 setValue:v20 forKey:@"shouldDismissHandler"];
+    subtitle2 = [WFUIAlertControllerAlertPresenter contentViewControllerForContentView:v14Title padding:0.0, 0.0, 0.0, v17];
+    v19 = [MEMORY[0x277D750F8] _actionWithContentViewController:subtitle2 style:v9 handler:v12];
+    image2 = _Block_copy(v15);
+    [v19 setValue:image2 forKey:@"shouldDismissHandler"];
   }
 
   else
   {
-    v22 = [v14 subtitle];
-    if (v22)
+    subtitle = [title subtitle];
+    if (subtitle)
     {
     }
 
     else
     {
-      v23 = [v14 image];
+      image = [title image];
 
-      if (!v23)
+      if (!image)
       {
         v26 = MEMORY[0x277D750F8];
-        v16 = [v14 title];
-        v19 = [v26 _actionWithTitle:v16 descriptiveText:0 image:0 style:v9 handler:v12 shouldDismissHandler:v15];
+        v14Title = [title title];
+        v19 = [v26 _actionWithTitle:v14Title descriptiveText:0 image:0 style:v9 handler:v12 shouldDismissHandler:v15];
         goto LABEL_17;
       }
     }
 
-    v16 = [v14 title];
-    v18 = [v14 subtitle];
-    v20 = [v14 image];
-    v24 = [v20 UIImage];
-    v19 = [v27 _actionWithTitle:v16 descriptiveText:v18 image:v24 style:v9 handler:v12 shouldDismissHandler:v15];
+    v14Title = [title title];
+    subtitle2 = [title subtitle];
+    image2 = [title image];
+    uIImage = [image2 UIImage];
+    v19 = [v27 _actionWithTitle:v14Title descriptiveText:subtitle2 image:uIImage style:v9 handler:v12 shouldDismissHandler:v15];
   }
 
 LABEL_17:
-  [v19 _setChecked:{objc_msgSend(v14, "isSelected")}];
+  [v19 _setChecked:{objc_msgSend(title, "isSelected")}];
 
 LABEL_18:
   objc_destroyWeak(&v36);
@@ -110,19 +110,19 @@ LABEL_18:
 - (void)replaceButtonAtIndex:()AlertPresenter withButton:forAlert:
 {
   v9 = a4;
-  v6 = [a1 actionForButton:? inAlert:?];
-  v7 = [a1 actions];
-  v8 = [v7 mutableCopy];
+  v6 = [self actionForButton:? inAlert:?];
+  actions = [self actions];
+  v8 = [actions mutableCopy];
 
   if ([v8 count] > a3)
   {
     [v8 replaceObjectAtIndex:a3 withObject:v6];
-    [a1 _setActions:v8];
+    [self _setActions:v8];
   }
 
   if ([v9 isPreferred])
   {
-    [a1 setPreferredAction:v6];
+    [self setPreferredAction:v6];
   }
 }
 
@@ -176,13 +176,13 @@ LABEL_18:
   v17[1] = 3221225472;
   v17[2] = __57__UIAlertController_AlertPresenter__setButtons_forAlert___block_invoke;
   v17[3] = &unk_279EF5268;
-  v17[4] = a1;
+  v17[4] = self;
   v15 = v7;
   v18 = v15;
   v19 = &v20;
   v16 = [v8 if_map:v17];
-  [a1 _setActions:v16];
-  [a1 setPreferredAction:v21[5]];
+  [self _setActions:v16];
+  [self setPreferredAction:v21[5]];
 
   _Block_object_dispose(&v20, 8);
 }

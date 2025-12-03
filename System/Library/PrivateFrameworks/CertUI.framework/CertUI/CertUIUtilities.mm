@@ -1,17 +1,17 @@
 @interface CertUIUtilities
 + (id)_certUIBundle;
-+ (id)bundleIDFromAuditToken:(id *)a3;
-+ (id)localizedAppTitleForBundleID:(id)a3;
++ (id)bundleIDFromAuditToken:(id *)token;
++ (id)localizedAppTitleForBundleID:(id)d;
 @end
 
 @implementation CertUIUtilities
 
-+ (id)bundleIDFromAuditToken:(id *)a3
++ (id)bundleIDFromAuditToken:(id *)token
 {
   v14 = *MEMORY[0x277D85DE8];
   cf = 0;
-  v3 = *&a3->var0[4];
-  *buf = *a3->var0;
+  v3 = *&token->var0[4];
+  *buf = *token->var0;
   v13 = v3;
   if (CPCopyBundleIdentifierAndTeamFromAuditToken())
   {
@@ -60,40 +60,40 @@ LABEL_11:
   return v6;
 }
 
-+ (id)localizedAppTitleForBundleID:(id)a3
++ (id)localizedAppTitleForBundleID:(id)d
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (([v4 isEqualToString:@"com.apple.SafariViewService"] & 1) != 0 || objc_msgSend(v4, "hasPrefix:", @"com.apple.webapp"))
+  dCopy = d;
+  if (([dCopy isEqualToString:@"com.apple.SafariViewService"] & 1) != 0 || objc_msgSend(dCopy, "hasPrefix:", @"com.apple.webapp"))
   {
-    v5 = [MEMORY[0x277CC1E60] applicationProxyForIdentifier:@"com.apple.mobilesafari"];
-    if (!v5)
+    _certUIBundle = [MEMORY[0x277CC1E60] applicationProxyForIdentifier:@"com.apple.mobilesafari"];
+    if (!_certUIBundle)
     {
       v6 = _CertUILogObjects;
       if (os_log_type_enabled(_CertUILogObjects, OS_LOG_TYPE_ERROR))
       {
         v19 = 138543362;
-        v20 = v4;
+        v20 = dCopy;
         _os_log_impl(&dword_2433D3000, v6, OS_LOG_TYPE_ERROR, "Could not retrieve localized app title for Safari for bundle ID: %{public}@", &v19, 0xCu);
       }
     }
 
-    v7 = [v5 localizedName];
-    v8 = v7;
+    localizedName = [_certUIBundle localizedName];
+    v8 = localizedName;
     v9 = @"Safari";
-    if (v7)
+    if (localizedName)
     {
-      v9 = v7;
+      v9 = localizedName;
     }
 
     v10 = v9;
 LABEL_9:
-    v11 = v10;
+    localizedName2 = v10;
 
     goto LABEL_10;
   }
 
-  if ([v4 isEqualToString:@"com.apple.WebSheet"])
+  if ([dCopy isEqualToString:@"com.apple.WebSheet"])
   {
     v14 = MGGetBoolAnswer();
     v15 = @"WEBSHEET_LOCALIZED_NAME";
@@ -103,30 +103,30 @@ LABEL_9:
     }
 
     v8 = v15;
-    v5 = [a1 _certUIBundle];
-    v10 = [v5 localizedStringForKey:v8 value:&stru_285620EE0 table:0];
+    _certUIBundle = [self _certUIBundle];
+    v10 = [_certUIBundle localizedStringForKey:v8 value:&stru_285620EE0 table:0];
     goto LABEL_9;
   }
 
-  v16 = [MEMORY[0x277CC1E60] applicationProxyForIdentifier:v4];
-  v5 = v16;
+  v16 = [MEMORY[0x277CC1E60] applicationProxyForIdentifier:dCopy];
+  _certUIBundle = v16;
   if (!v16 || ([v16 localizedName], v17 = objc_claimAutoreleasedReturnValue(), v17, !v17))
   {
     v18 = _CertUILogObjects;
     if (os_log_type_enabled(_CertUILogObjects, OS_LOG_TYPE_ERROR))
     {
       v19 = 138543362;
-      v20 = v4;
+      v20 = dCopy;
       _os_log_impl(&dword_2433D3000, v18, OS_LOG_TYPE_ERROR, "Could not retrieve localized app title given bundle ID: %{public}@", &v19, 0xCu);
     }
   }
 
-  v11 = [v5 localizedName];
+  localizedName2 = [_certUIBundle localizedName];
 LABEL_10:
 
   v12 = *MEMORY[0x277D85DE8];
 
-  return v11;
+  return localizedName2;
 }
 
 + (id)_certUIBundle
@@ -135,7 +135,7 @@ LABEL_10:
   block[1] = 3221225472;
   block[2] = __32__CertUIUtilities__certUIBundle__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_certUIBundle_onceToken != -1)
   {
     dispatch_once(&_certUIBundle_onceToken, block);

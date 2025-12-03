@@ -1,25 +1,25 @@
 @interface PXStoryTransitionProducer
-+ (BOOL)isSupportedTransitionWithKind:(char)a3 betweenSegmentWithClipComposition:(id *)a4 andSegmentWithClipComposition:(id *)a5;
-+ (BOOL)isSupportedTransitionWithKind:(char)a3 fromSegmentIdentifier:(int64_t)a4 toSegmentIdentifier:(int64_t)a5 inTimeline:(id)a6;
++ (BOOL)isSupportedTransitionWithKind:(char)kind betweenSegmentWithClipComposition:(id *)composition andSegmentWithClipComposition:(id *)clipComposition;
++ (BOOL)isSupportedTransitionWithKind:(char)kind fromSegmentIdentifier:(int64_t)identifier toSegmentIdentifier:(int64_t)segmentIdentifier inTimeline:(id)timeline;
 + (id)supportedTransitionKinds;
-- (id)_panTransitionsForOrderOutSegment:(id)a3 orderInSegment:(id)a4 viewportSize:(CGSize)a5 transitionInfo:(id *)a6;
-- (id)_wipeTransitionsForOrderOutSegment:(id)a3 orderInSegment:(id)a4 viewportSize:(CGSize)a5 dividerWidth:(double)a6 transitionInfo:(id *)a7;
-- (id)transitionsWithConfiguration:(id)a3;
-- (void)_recordFallbackToCutTransitionBetweenSegmentWithIdentifier:(int64_t)a3 andSegmentWithIdentifier:(int64_t)a4 reason:(id)a5;
+- (id)_panTransitionsForOrderOutSegment:(id)segment orderInSegment:(id)inSegment viewportSize:(CGSize)size transitionInfo:(id *)info;
+- (id)_wipeTransitionsForOrderOutSegment:(id)segment orderInSegment:(id)inSegment viewportSize:(CGSize)size dividerWidth:(double)width transitionInfo:(id *)info;
+- (id)transitionsWithConfiguration:(id)configuration;
+- (void)_recordFallbackToCutTransitionBetweenSegmentWithIdentifier:(int64_t)identifier andSegmentWithIdentifier:(int64_t)withIdentifier reason:(id)reason;
 @end
 
 @implementation PXStoryTransitionProducer
 
-- (id)_panTransitionsForOrderOutSegment:(id)a3 orderInSegment:(id)a4 viewportSize:(CGSize)a5 transitionInfo:(id *)a6
+- (id)_panTransitionsForOrderOutSegment:(id)segment orderInSegment:(id)inSegment viewportSize:(CGSize)size transitionInfo:(id *)info
 {
   v26 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if (a6->var1)
+  segmentCopy = segment;
+  inSegmentCopy = inSegment;
+  if (info->var1)
   {
-    var0 = a6->var0;
-    v11 = BYTE5(a6->var2.var3);
-    v12 = a6->var1 & 0xFE;
+    var0 = info->var0;
+    v11 = BYTE5(info->var2.var3);
+    v12 = info->var1 & 0xFE;
     if (var0 == 5)
     {
       if (v11 == 1)
@@ -33,15 +33,15 @@
       }
     }
 
-    a6->var0 = var0;
-    a6->var1 = v12;
-    BYTE5(a6->var2.var3) = v11;
+    info->var0 = var0;
+    info->var1 = v12;
+    BYTE5(info->var2.var3) = v11;
   }
 
   v13 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v23 = *(&a6->var1 + 3);
-  v24 = *&a6->var2.var2;
-  if (BYTE5(a6->var2.var3) <= 1u && !BYTE5(a6->var2.var3))
+  v23 = *(&info->var1 + 3);
+  v24 = *&info->var2.var2;
+  if (BYTE5(info->var2.var3) <= 1u && !BYTE5(info->var2.var3))
   {
     PXAssertGetLog();
   }
@@ -51,8 +51,8 @@
   v22 = v24;
   v15 = [(PXStoryPanTransitionConfiguration *)v14 initWithDuration:buf];
   memset(v20, 0, sizeof(v20));
-  v16 = [v8 clipLayouts];
-  if ([v16 countByEnumeratingWithState:v20 objects:v25 count:16])
+  clipLayouts = [segmentCopy clipLayouts];
+  if ([clipLayouts countByEnumeratingWithState:v20 objects:v25 count:16])
   {
     [**(&v20[0] + 1) contentSize];
     PXRectWithOriginAndSize();
@@ -68,18 +68,18 @@
   PXPointSubtract();
 }
 
-- (id)_wipeTransitionsForOrderOutSegment:(id)a3 orderInSegment:(id)a4 viewportSize:(CGSize)a5 dividerWidth:(double)a6 transitionInfo:(id *)a7
+- (id)_wipeTransitionsForOrderOutSegment:(id)segment orderInSegment:(id)inSegment viewportSize:(CGSize)size dividerWidth:(double)width transitionInfo:(id *)info
 {
-  v8 = a3;
-  v9 = a4;
-  if (v8)
+  segmentCopy = segment;
+  inSegmentCopy = inSegment;
+  if (segmentCopy)
   {
-    [v8 segmentInfo];
+    [segmentCopy segmentInfo];
   }
 
-  if (v9)
+  if (inSegmentCopy)
   {
-    [v9 segmentInfo];
+    [inSegmentCopy segmentInfo];
   }
 
   PXAxisTransposed();
@@ -665,36 +665,36 @@ uint64_t __120__PXStoryTransitionProducer__wipeTransitionsForOrderOutSegment_ord
   return result;
 }
 
-- (void)_recordFallbackToCutTransitionBetweenSegmentWithIdentifier:(int64_t)a3 andSegmentWithIdentifier:(int64_t)a4 reason:(id)a5
+- (void)_recordFallbackToCutTransitionBetweenSegmentWithIdentifier:(int64_t)identifier andSegmentWithIdentifier:(int64_t)withIdentifier reason:(id)reason
 {
-  v8 = a5;
-  v9 = [(PXStoryTransitionProducer *)self fallbackTransitionReasons];
-  v10 = v9;
+  reasonCopy = reason;
+  fallbackTransitionReasons = [(PXStoryTransitionProducer *)self fallbackTransitionReasons];
+  v10 = fallbackTransitionReasons;
   v11 = MEMORY[0x1E695E0F0];
-  if (v9)
+  if (fallbackTransitionReasons)
   {
-    v11 = v9;
+    v11 = fallbackTransitionReasons;
   }
 
   v12 = v11;
 
-  v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%ld → %ld: %@", a3, a4, v8];
+  reasonCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%ld → %ld: %@", identifier, withIdentifier, reasonCopy];
 
-  v13 = [v12 arrayByAddingObject:v14];
+  v13 = [v12 arrayByAddingObject:reasonCopy];
 
   [(PXStoryTransitionProducer *)self setFallbackTransitionReasons:v13];
 }
 
-- (id)transitionsWithConfiguration:(id)a3
+- (id)transitionsWithConfiguration:(id)configuration
 {
-  v3 = a3;
+  configurationCopy = configuration;
   v49 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v4 = [v3 timeline];
-  v5 = [v3 transitionModel];
-  v6 = [v5 segmentTransitionInfo];
+  timeline = [configurationCopy timeline];
+  transitionModel = [configurationCopy transitionModel];
+  segmentTransitionInfo = [transitionModel segmentTransitionInfo];
   v8 = v7;
-  v53 = [v3 entityManager];
-  v9 = [v3 source];
+  entityManager = [configurationCopy entityManager];
+  source = [configurationCopy source];
   v101 = 0;
   v99 = 0u;
   v100 = 0u;
@@ -706,9 +706,9 @@ uint64_t __120__PXStoryTransitionProducer__wipeTransitionsForOrderOutSegment_ord
   memset(v94, 0, sizeof(v94));
   v91 = 0u;
   v92 = 0u;
-  if (v4)
+  if (timeline)
   {
-    [v4 infoForSegmentWithIdentifier:v6];
+    [timeline infoForSegmentWithIdentifier:segmentTransitionInfo];
     v90 = 0;
     v88 = 0u;
     v89 = 0u;
@@ -722,13 +722,13 @@ uint64_t __120__PXStoryTransitionProducer__wipeTransitionsForOrderOutSegment_ord
     v81 = 0u;
     v78 = 0u;
     v79 = 0u;
-    [v4 infoForSegmentWithIdentifier:v8];
-    v10 = v94[0];
+    [timeline infoForSegmentWithIdentifier:v8];
+    fallbackTransitionKind = v94[0];
   }
 
   else
   {
-    v10 = 0;
+    fallbackTransitionKind = 0;
     v90 = 0;
     v88 = 0uLL;
     v89 = 0uLL;
@@ -744,7 +744,7 @@ uint64_t __120__PXStoryTransitionProducer__wipeTransitionsForOrderOutSegment_ord
     v79 = 0uLL;
   }
 
-  v50 = v4;
+  v50 = timeline;
   v76 = *(v94 + 1);
   v77[0] = *(&v94[1] + 1);
   *(v77 + 15) = *&v94[2];
@@ -783,7 +783,7 @@ uint64_t __120__PXStoryTransitionProducer__wipeTransitionsForOrderOutSegment_ord
   v60[1] = 3221225472;
   v60[2] = __58__PXStoryTransitionProducer_transitionsWithConfiguration___block_invoke;
   v60[3] = &unk_1E7733500;
-  v16 = v9;
+  v16 = source;
   v61 = v16;
   v52 = v13;
   v62 = v52;
@@ -791,14 +791,14 @@ uint64_t __120__PXStoryTransitionProducer__wipeTransitionsForOrderOutSegment_ord
   v63 = v51;
   v17 = v11;
   v64 = v17;
-  v48 = v5;
-  [v5 enumerateClipIdentifiersUsingBlock:v60];
-  v18 = [v3 timelineSpec];
-  v19 = [v18 allowedTransitionKinds];
-  if ([v19 count])
+  v48 = transitionModel;
+  [transitionModel enumerateClipIdentifiersUsingBlock:v60];
+  timelineSpec = [configurationCopy timelineSpec];
+  allowedTransitionKinds = [timelineSpec allowedTransitionKinds];
+  if ([allowedTransitionKinds count])
   {
-    v20 = [v18 allowedTransitionKinds];
-    v21 = [v20 containsIndex:1];
+    allowedTransitionKinds2 = [timelineSpec allowedTransitionKinds];
+    v21 = [allowedTransitionKinds2 containsIndex:1];
 
     v22 = v49;
     if (!v21)
@@ -813,7 +813,7 @@ uint64_t __120__PXStoryTransitionProducer__wipeTransitionsForOrderOutSegment_ord
     v22 = v49;
   }
 
-  if (![PXStoryTransitionProducer isSupportedTransitionWithKind:v10 fromSegmentIdentifier:v6 toSegmentIdentifier:v8 inTimeline:v50])
+  if (![PXStoryTransitionProducer isSupportedTransitionWithKind:fallbackTransitionKind fromSegmentIdentifier:segmentTransitionInfo toSegmentIdentifier:v8 inTimeline:v50])
   {
     PXAssertGetLog();
   }
@@ -825,18 +825,18 @@ LABEL_10:
     v24 = [v17 componentsJoinedByString:{@", "}];
     v25 = [v23 stringWithFormat:@"Transition source failed to provide layouts for clips: %@. Falling back to cut.", v24];
 
-    [(PXStoryTransitionProducer *)self _recordFallbackToCutTransitionBetweenSegmentWithIdentifier:v6 andSegmentWithIdentifier:v8 reason:v25];
-    v26 = [v3 timelineSpec];
-    v10 = [v26 fallbackTransitionKind];
+    [(PXStoryTransitionProducer *)self _recordFallbackToCutTransitionBetweenSegmentWithIdentifier:segmentTransitionInfo andSegmentWithIdentifier:v8 reason:v25];
+    timelineSpec2 = [configurationCopy timelineSpec];
+    fallbackTransitionKind = [timelineSpec2 fallbackTransitionKind];
   }
 
-  [v18 viewportSize];
+  [timelineSpec viewportSize];
   v28 = v27;
   [v16 transitionViewport];
   v30 = v29;
   v32 = v31;
-  [v18 nUpDividerWidth];
-  if (v10 == 5)
+  [timelineSpec nUpDividerWidth];
+  if (fallbackTransitionKind == 5)
   {
     buf[0] = 5;
     *&buf[1] = v76;
@@ -846,7 +846,7 @@ LABEL_10:
     goto LABEL_16;
   }
 
-  if (v10 == 8)
+  if (fallbackTransitionKind == 8)
   {
     buf[0] = 8;
     *&buf[1] = v76;
@@ -854,40 +854,40 @@ LABEL_10:
     *&buf[32] = *(v77 + 15);
     v34 = [(PXStoryTransitionProducer *)self _wipeTransitionsForOrderOutSegment:v51 orderInSegment:v52 viewportSize:buf dividerWidth:v30 transitionInfo:v32, v33 * (v30 / v28)];
 LABEL_16:
-    v35 = v34;
+    clipLayouts2 = v34;
     [v22 addObjectsFromArray:v34];
     goto LABEL_18;
   }
 
-  v36 = [(PXStoryTransitionProducerSegment *)v51 clipLayouts];
-  v37 = [v18 storyTransitionCurveType];
-  buf[0] = v10;
+  clipLayouts = [(PXStoryTransitionProducerSegment *)v51 clipLayouts];
+  storyTransitionCurveType = [timelineSpec storyTransitionCurveType];
+  buf[0] = fallbackTransitionKind;
   *&buf[1] = v76;
   *&buf[17] = v77[0];
   *&buf[32] = *(v77 + 15);
-  v38 = [PXStoryTransitionFactory segmentTransitionWithInfo:buf event:2 clipLayouts:v36 storyTransitionCurveType:v37];
+  v38 = [PXStoryTransitionFactory segmentTransitionWithInfo:buf event:2 clipLayouts:clipLayouts storyTransitionCurveType:storyTransitionCurveType];
   [v22 addObject:v38];
 
-  v35 = [(PXStoryTransitionProducerSegment *)v52 clipLayouts];
-  v39 = [v18 storyTransitionCurveType];
-  buf[0] = v10;
+  clipLayouts2 = [(PXStoryTransitionProducerSegment *)v52 clipLayouts];
+  storyTransitionCurveType2 = [timelineSpec storyTransitionCurveType];
+  buf[0] = fallbackTransitionKind;
   *&buf[1] = v76;
   *&buf[17] = v77[0];
   *&buf[32] = *(v77 + 15);
-  v40 = [PXStoryTransitionFactory segmentTransitionWithInfo:buf event:1 clipLayouts:v35 storyTransitionCurveType:v39];
+  v40 = [PXStoryTransitionFactory segmentTransitionWithInfo:buf event:1 clipLayouts:clipLayouts2 storyTransitionCurveType:storyTransitionCurveType2];
   [v22 addObject:v40];
 
 LABEL_18:
-  buf[0] = v10;
+  buf[0] = fallbackTransitionKind;
   *&buf[1] = v76;
   *&buf[17] = v77[0];
   *&buf[32] = *(v77 + 15);
-  v41 = [PXStoryTransitionFactory effectTransitionWithInfo:buf entityManager:v53];
-  v42 = [v41 effect];
-  v43 = [v41 auxiliaryEffect];
+  v41 = [PXStoryTransitionFactory effectTransitionWithInfo:buf entityManager:entityManager];
+  effect = [v41 effect];
+  auxiliaryEffect = [v41 auxiliaryEffect];
   if (v41)
   {
-    [v16 didBeginTransitionWithEffect:v42 auxiliaryEffect:v43];
+    [v16 didBeginTransitionWithEffect:effect auxiliaryEffect:auxiliaryEffect];
     v58[0] = MEMORY[0x1E69E9820];
     v58[1] = 3221225472;
     v58[2] = __58__PXStoryTransitionProducer_transitionsWithConfiguration___block_invoke_43;
@@ -900,8 +900,8 @@ LABEL_18:
     v54[2] = __58__PXStoryTransitionProducer_transitionsWithConfiguration___block_invoke_2;
     v54[3] = &unk_1E7747D28;
     v55 = v44;
-    v56 = v42;
-    v57 = v43;
+    v56 = effect;
+    v57 = auxiliaryEffect;
     [v41 setCompletionHandler:v54];
     [v22 addObject:v41];
   }
@@ -935,12 +935,12 @@ void __58__PXStoryTransitionProducer_transitionsWithConfiguration___block_invoke
   }
 }
 
-+ (BOOL)isSupportedTransitionWithKind:(char)a3 fromSegmentIdentifier:(int64_t)a4 toSegmentIdentifier:(int64_t)a5 inTimeline:(id)a6
++ (BOOL)isSupportedTransitionWithKind:(char)kind fromSegmentIdentifier:(int64_t)identifier toSegmentIdentifier:(int64_t)segmentIdentifier inTimeline:(id)timeline
 {
-  v8 = a3;
-  v9 = a6;
-  v10 = v9;
-  if (v8 >= 2)
+  kindCopy = kind;
+  timelineCopy = timeline;
+  v10 = timelineCopy;
+  if (kindCopy >= 2)
   {
     v50 = 0;
     v48 = 0u;
@@ -955,9 +955,9 @@ void __58__PXStoryTransitionProducer_transitionsWithConfiguration___block_invoke
     v41 = 0u;
     v38 = 0u;
     v39 = 0u;
-    if (v9)
+    if (timelineCopy)
     {
-      [v9 infoForSegmentWithIdentifier:a4];
+      [timelineCopy infoForSegmentWithIdentifier:identifier];
       v37 = 0;
       v36 = 0u;
       v35 = 0u;
@@ -971,7 +971,7 @@ void __58__PXStoryTransitionProducer_transitionsWithConfiguration___block_invoke
       v27 = 0u;
       v26 = 0u;
       v25 = 0u;
-      [v10 infoForSegmentWithIdentifier:a5];
+      [v10 infoForSegmentWithIdentifier:segmentIdentifier];
       v12 = *(&v38 + 1);
       v13 = *(&v40 + 1);
       v14 = v40;
@@ -1006,7 +1006,7 @@ void __58__PXStoryTransitionProducer_transitionsWithConfiguration___block_invoke
     v23 = v13;
     v16 = 0;
     v18 = 0;
-    v11 = [PXStoryTransitionProducer isSupportedTransitionWithKind:v8 betweenSegmentWithClipComposition:&v20 andSegmentWithClipComposition:&v16];
+    v11 = [PXStoryTransitionProducer isSupportedTransitionWithKind:kindCopy betweenSegmentWithClipComposition:&v20 andSegmentWithClipComposition:&v16];
   }
 
   else
@@ -1129,38 +1129,38 @@ void __53__PXStoryTransitionProducer_supportedTransitionKinds__block_invoke()
   supportedTransitionKinds_indexSet = v0;
 }
 
-+ (BOOL)isSupportedTransitionWithKind:(char)a3 betweenSegmentWithClipComposition:(id *)a4 andSegmentWithClipComposition:(id *)a5
++ (BOOL)isSupportedTransitionWithKind:(char)kind betweenSegmentWithClipComposition:(id *)composition andSegmentWithClipComposition:(id *)clipComposition
 {
-  v7 = a3;
-  v8 = [a1 supportedTransitionKinds];
-  v9 = [v8 containsIndex:v7];
+  kindCopy = kind;
+  supportedTransitionKinds = [self supportedTransitionKinds];
+  v9 = [supportedTransitionKinds containsIndex:kindCopy];
 
   if (!v9)
   {
     return 0;
   }
 
-  if (v7 == 8)
+  if (kindCopy == 8)
   {
     PXFloatApproximatelyEqualToFloat();
   }
 
-  if (v7 == 2)
+  if (kindCopy == 2)
   {
-    return a4->var0 < 2;
+    return composition->var0 < 2;
   }
 
-  if ((v7 & 0xFFFFFFFE) != 6)
+  if ((kindCopy & 0xFFFFFFFE) != 6)
   {
     return 1;
   }
 
-  if (a4->var0 != 1 || !a4->var1)
+  if (composition->var0 != 1 || !composition->var1)
   {
     return 0;
   }
 
-  return a5->var1 && a5->var0 == 1;
+  return clipComposition->var1 && clipComposition->var0 == 1;
 }
 
 @end

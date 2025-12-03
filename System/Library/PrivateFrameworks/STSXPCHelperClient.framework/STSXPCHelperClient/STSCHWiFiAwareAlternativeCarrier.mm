@@ -1,45 +1,45 @@
 @interface STSCHWiFiAwareAlternativeCarrier
-+ (id)connectionHandoverAlternativeCarrierWithBundle:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (STSCHWiFiAwareAlternativeCarrier)initWithCoder:(id)a3;
-- (STSCHWiFiAwareAlternativeCarrier)initWithNdefRecordBundle:(id)a3;
-- (STSCHWiFiAwareAlternativeCarrier)initWithSecurityInfo:(id)a3 discoveryChannelInfo:(id)a4 powerState:(unint64_t)a5 auxiliaryRecords:(id)a6;
++ (id)connectionHandoverAlternativeCarrierWithBundle:(id)bundle;
+- (BOOL)isEqual:(id)equal;
+- (STSCHWiFiAwareAlternativeCarrier)initWithCoder:(id)coder;
+- (STSCHWiFiAwareAlternativeCarrier)initWithNdefRecordBundle:(id)bundle;
+- (STSCHWiFiAwareAlternativeCarrier)initWithSecurityInfo:(id)info discoveryChannelInfo:(id)channelInfo powerState:(unint64_t)state auxiliaryRecords:(id)records;
 - (id)_createCarrierConfigurationRecord;
 - (id)description;
-- (void)_initWithCarrierConfiguration:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_initWithCarrierConfiguration:(id)configuration;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation STSCHWiFiAwareAlternativeCarrier
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = STSCHWiFiAwareAlternativeCarrier;
-  v4 = a3;
-  [(STSCHAlternativeCarrier *)&v7 encodeWithCoder:v4];
-  objc_msgSend_encodeObject_forKey_(v4, v5, self->_securityInfo, @"securityInfos", v7.receiver, v7.super_class);
-  objc_msgSend_encodeObject_forKey_(v4, v6, self->_discoveryChannelInfo, @"discoveryChannelInfo");
+  coderCopy = coder;
+  [(STSCHAlternativeCarrier *)&v7 encodeWithCoder:coderCopy];
+  objc_msgSend_encodeObject_forKey_(coderCopy, v5, self->_securityInfo, @"securityInfos", v7.receiver, v7.super_class);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v6, self->_discoveryChannelInfo, @"discoveryChannelInfo");
 }
 
-- (STSCHWiFiAwareAlternativeCarrier)initWithCoder:(id)a3
+- (STSCHWiFiAwareAlternativeCarrier)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = STSCHWiFiAwareAlternativeCarrier;
-  v5 = [(STSCHAlternativeCarrier *)&v19 initWithCoder:v4];
+  v5 = [(STSCHAlternativeCarrier *)&v19 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = MEMORY[0x277CBEB98];
     v7 = objc_opt_class();
     v8 = objc_opt_class();
     v10 = objc_msgSend_setWithObjects_(v6, v9, v7, v8, 0);
-    v12 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v11, v10, @"securityInfos");
+    v12 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v11, v10, @"securityInfos");
     securityInfo = v5->_securityInfo;
     v5->_securityInfo = v12;
 
     v14 = objc_opt_class();
-    v16 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v15, v14, @"discoveryChannelInfo");
+    v16 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v15, v14, @"discoveryChannelInfo");
     discoveryChannelInfo = v5->_discoveryChannelInfo;
     v5->_discoveryChannelInfo = v16;
   }
@@ -47,20 +47,20 @@
   return v5;
 }
 
-- (void)_initWithCarrierConfiguration:(id)a3
+- (void)_initWithCarrierConfiguration:(id)configuration
 {
-  v68 = a3;
-  if ((objc_msgSend_isWiFiAwareConfigurationRecord(v68, v4, v5) & 1) == 0)
+  configurationCopy = configuration;
+  if ((objc_msgSend_isWiFiAwareConfigurationRecord(configurationCopy, v4, v5) & 1) == 0)
   {
     sub_2645010D8(OS_LOG_TYPE_INFO, 0, "[STSCHWiFiAwareAlternativeCarrier _initWithCarrierConfiguration:]", 313, self, @"Not WiFi Aware Carrier Configuration record", v8, v9, v63);
     goto LABEL_47;
   }
 
-  v10 = objc_msgSend_payload(v68, v6, v7);
+  v10 = objc_msgSend_payload(configurationCopy, v6, v7);
   v11 = v10;
   v14 = objc_msgSend_bytes(v11, v12, v13);
 
-  v17 = objc_msgSend_payload(v68, v15, v16);
+  v17 = objc_msgSend_payload(configurationCopy, v15, v16);
   v20 = objc_msgSend_length(v17, v18, v19);
 
   v23 = objc_msgSend_array(MEMORY[0x277CBEB18], v21, v22);
@@ -218,31 +218,31 @@ LABEL_46:
 LABEL_47:
 }
 
-- (STSCHWiFiAwareAlternativeCarrier)initWithSecurityInfo:(id)a3 discoveryChannelInfo:(id)a4 powerState:(unint64_t)a5 auxiliaryRecords:(id)a6
+- (STSCHWiFiAwareAlternativeCarrier)initWithSecurityInfo:(id)info discoveryChannelInfo:(id)channelInfo powerState:(unint64_t)state auxiliaryRecords:(id)records
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  infoCopy = info;
+  channelInfoCopy = channelInfo;
+  recordsCopy = records;
   v24.receiver = self;
   v24.super_class = STSCHWiFiAwareAlternativeCarrier;
   v14 = [(STSCHWiFiAwareAlternativeCarrier *)&v24 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_securityInfo, a3);
-    objc_storeStrong(&v15->_discoveryChannelInfo, a4);
+    objc_storeStrong(&v14->_securityInfo, info);
+    objc_storeStrong(&v15->_discoveryChannelInfo, channelInfo);
     objc_msgSend_setType_(v15, v16, 1);
-    if (a5 >= 3)
+    if (state >= 3)
     {
       objc_msgSend_setPowerState_(v15, v17, 3);
     }
 
     else
     {
-      objc_msgSend_setPowerState_(v15, v17, a5);
+      objc_msgSend_setPowerState_(v15, v17, state);
     }
 
-    objc_msgSend_setAuxiliaryRecords_(v15, v18, v13);
+    objc_msgSend_setAuxiliaryRecords_(v15, v18, recordsCopy);
     v21 = objc_msgSend__createCarrierConfigurationRecord(v15, v19, v20);
     objc_msgSend_setCarrierRecord_(v15, v22, v21);
   }
@@ -250,14 +250,14 @@ LABEL_47:
   return v15;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v13.receiver = self;
   v13.super_class = STSCHWiFiAwareAlternativeCarrier;
-  if ([(STSCHAlternativeCarrier *)&v13 isEqual:v4])
+  if ([(STSCHAlternativeCarrier *)&v13 isEqual:equalCopy])
   {
-    v6 = v4;
+    v6 = equalCopy;
     securityInfo = self->_securityInfo;
     v8 = v6[5];
     if (securityInfo)
@@ -316,31 +316,31 @@ LABEL_15:
   return v19;
 }
 
-- (STSCHWiFiAwareAlternativeCarrier)initWithNdefRecordBundle:(id)a3
+- (STSCHWiFiAwareAlternativeCarrier)initWithNdefRecordBundle:(id)bundle
 {
-  v4 = a3;
+  bundleCopy = bundle;
   v11.receiver = self;
   v11.super_class = STSCHWiFiAwareAlternativeCarrier;
-  v7 = [(STSCHAlternativeCarrier *)&v11 initWithNdefRecordBundle:v4];
+  v7 = [(STSCHAlternativeCarrier *)&v11 initWithNdefRecordBundle:bundleCopy];
   if (v7)
   {
-    v8 = objc_msgSend_configurationRecord(v4, v5, v6);
+    v8 = objc_msgSend_configurationRecord(bundleCopy, v5, v6);
     objc_msgSend__initWithCarrierConfiguration_(v7, v9, v8);
   }
 
   return v7;
 }
 
-+ (id)connectionHandoverAlternativeCarrierWithBundle:(id)a3
++ (id)connectionHandoverAlternativeCarrierWithBundle:(id)bundle
 {
-  v4 = a3;
-  v7 = objc_msgSend_configurationRecord(v4, v5, v6);
+  bundleCopy = bundle;
+  v7 = objc_msgSend_configurationRecord(bundleCopy, v5, v6);
   isWiFiAwareConfigurationRecord = objc_msgSend_isWiFiAwareConfigurationRecord(v7, v8, v9);
 
   if (isWiFiAwareConfigurationRecord)
   {
-    v11 = [a1 alloc];
-    v13 = objc_msgSend_initWithNdefRecordBundle_(v11, v12, v4);
+    v11 = [self alloc];
+    v13 = objc_msgSend_initWithNdefRecordBundle_(v11, v12, bundleCopy);
   }
 
   else

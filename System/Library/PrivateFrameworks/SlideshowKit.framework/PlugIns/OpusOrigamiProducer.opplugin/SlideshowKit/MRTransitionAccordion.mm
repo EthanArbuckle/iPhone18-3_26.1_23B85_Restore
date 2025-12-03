@@ -1,33 +1,33 @@
 @interface MRTransitionAccordion
-- (BOOL)prerenderForTime:(double)a3 inContext:(id)a4 withArguments:(id)a5;
-- (void)renderAtTime:(double)a3 inContext:(id)a4 withArguments:(id)a5;
-- (void)setAttributes:(id)a3;
+- (BOOL)prerenderForTime:(double)time inContext:(id)context withArguments:(id)arguments;
+- (void)renderAtTime:(double)time inContext:(id)context withArguments:(id)arguments;
+- (void)setAttributes:(id)attributes;
 @end
 
 @implementation MRTransitionAccordion
 
-- (void)setAttributes:(id)a3
+- (void)setAttributes:(id)attributes
 {
   v4.receiver = self;
   v4.super_class = MRTransitionAccordion;
-  [(MRTransition *)&v4 setAttributes:a3];
+  [(MRTransition *)&v4 setAttributes:attributes];
   self->super._direction = 0;
 }
 
-- (BOOL)prerenderForTime:(double)a3 inContext:(id)a4 withArguments:(id)a5
+- (BOOL)prerenderForTime:(double)time inContext:(id)context withArguments:(id)arguments
 {
   v6.receiver = self;
   v6.super_class = MRTransitionAccordion;
-  return [(MRTransition *)&v6 prerenderForTime:a4 inContext:a5 withArguments:a3];
+  return [(MRTransition *)&v6 prerenderForTime:context inContext:arguments withArguments:time];
 }
 
-- (void)renderAtTime:(double)a3 inContext:(id)a4 withArguments:(id)a5
+- (void)renderAtTime:(double)time inContext:(id)context withArguments:(id)arguments
 {
-  [a4 localAspectRatio];
+  [context localAspectRatio];
   v10 = 1.0 / v9;
   if ((1.0 / v9) > 0.0)
   {
-    v11 = a3 * a3 * (a3 * -2.0 + 3.0);
+    v11 = time * time * (time * -2.0 + 3.0);
     if (self->super._direction - 1) < 8u && ((0x8Bu >> (self->super._direction - 1)))
     {
       v12 = dword_1640C0[(self->super._direction - 1)];
@@ -42,10 +42,10 @@
     v14 = [-[NSDictionary objectForKey:](self->super.mFlattenedAttributes objectForKey:{@"numberOfFoldingsOut", "unsignedCharValue"}];
     mSourceLayer = self->super.mSourceLayer;
     [(MRLayerClock *)[(MRLayer *)mSourceLayer clock] externalTime];
-    v16 = [(MRLayer *)mSourceLayer patchworkAtTime:a4 inContext:a5 withArguments:?];
+    v16 = [(MRLayer *)mSourceLayer patchworkAtTime:context inContext:arguments withArguments:?];
     mTargetLayer = self->super.mTargetLayer;
     [(MRLayerClock *)[(MRLayer *)mTargetLayer clock] externalTime];
-    v18 = [(MRLayer *)mTargetLayer patchworkAtTime:a4 inContext:a5 withArguments:?];
+    v18 = [(MRLayer *)mTargetLayer patchworkAtTime:context inContext:arguments withArguments:?];
     if ((v12 & 0xFA) != 0)
     {
       v19 = v12;
@@ -115,7 +115,7 @@
       v27 = 2;
     }
 
-    [a4 cull:v27];
+    [context cull:v27];
     v28 = 1.0;
     v29 = 1.0 - v22;
     if (v25)
@@ -293,7 +293,7 @@
       v80 = v102;
       v81 = v103;
       v82 = v104;
-      RenderPatchworkWithMesh(v24, &v79, a4);
+      RenderPatchworkWithMesh(v24, &v79, context);
       v87 = v98;
       v88 = v99;
       LODWORD(v89) = v100;
@@ -477,7 +477,7 @@
         v80 = v102;
         v81 = v103;
         v82 = v104;
-        RenderPatchworkWithMesh(v24, &v79, a4);
+        RenderPatchworkWithMesh(v24, &v79, context);
       }
 
       v87 = v98;
@@ -493,12 +493,12 @@
       v82 = v93;
       if (v13 == 2)
       {
-        RenderPatchworkWithMeshInverted(v23, &v79, a4);
+        RenderPatchworkWithMeshInverted(v23, &v79, context);
       }
 
       else
       {
-        RenderPatchworkWithMesh(v23, &v79, a4);
+        RenderPatchworkWithMesh(v23, &v79, context);
       }
 
       if (v22 >= 0.5)
@@ -520,9 +520,9 @@
       v59 = v24;
     }
 
-    RenderPatchworkWithMesh(v59, &v79, a4);
+    RenderPatchworkWithMesh(v59, &v79, context);
 LABEL_98:
-    [a4 cull:{0, v79, v80, v81, v82, v83, v84, v85, v86, v87, v88, v89}];
+    [context cull:{0, v79, v80, v81, v82, v83, v84, v85, v86, v87, v88, v89}];
     [v24 removeImages];
     [v23 removeImages];
   }

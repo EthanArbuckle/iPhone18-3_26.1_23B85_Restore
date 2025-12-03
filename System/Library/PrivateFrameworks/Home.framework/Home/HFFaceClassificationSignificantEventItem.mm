@@ -1,11 +1,11 @@
 @interface HFFaceClassificationSignificantEventItem
 + (id)dateFormatter;
-- (HFFaceClassificationSignificantEventItem)initWithSignificantEvent:(id)a3 home:(id)a4;
+- (HFFaceClassificationSignificantEventItem)initWithSignificantEvent:(id)event home:(id)home;
 - (HMFaceClassification)faceClassification;
 - (HMPerson)person;
 - (HMPersonManager)personManager;
-- (id)_subclass_updateWithOptions:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_subclass_updateWithOptions:(id)options;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation HFFaceClassificationSignificantEventItem
@@ -34,100 +34,100 @@ uint64_t __57__HFFaceClassificationSignificantEventItem_dateFormatter__block_inv
   return [v3 setTimeStyle:0];
 }
 
-- (HFFaceClassificationSignificantEventItem)initWithSignificantEvent:(id)a3 home:(id)a4
+- (HFFaceClassificationSignificantEventItem)initWithSignificantEvent:(id)event home:(id)home
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 faceClassification];
+  eventCopy = event;
+  homeCopy = home;
+  faceClassification = [eventCopy faceClassification];
 
-  if (!v8)
+  if (!faceClassification)
   {
-    NSLog(&cfstr_EventIsMissing.isa, v6);
+    NSLog(&cfstr_EventIsMissing.isa, eventCopy);
   }
 
-  v9 = [v6 faceClassification];
+  faceClassification2 = [eventCopy faceClassification];
 
-  if (!v9)
+  if (!faceClassification2)
   {
     v10 = HFLogForCategory(0x13uLL);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v16 = v6;
+      v16 = eventCopy;
       _os_log_error_impl(&dword_20D9BF000, v10, OS_LOG_TYPE_ERROR, "Event %@ is missing a face classification", buf, 0xCu);
     }
   }
 
   v14.receiver = self;
   v14.super_class = HFFaceClassificationSignificantEventItem;
-  v11 = [(HFCameraClipSignificantEventItem *)&v14 initWithSignificantEvent:v6 home:v7];
+  v11 = [(HFCameraClipSignificantEventItem *)&v14 initWithSignificantEvent:eventCopy home:homeCopy];
 
   v12 = *MEMORY[0x277D85DE8];
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [HFFaceClassificationSignificantEventItem alloc];
-  v5 = [(HFCameraClipSignificantEventItem *)self event];
-  v6 = [(HFCameraClipSignificantEventItem *)self home];
-  v7 = [(HFFaceClassificationSignificantEventItem *)v4 initWithSignificantEvent:v5 home:v6];
+  event = [(HFCameraClipSignificantEventItem *)self event];
+  home = [(HFCameraClipSignificantEventItem *)self home];
+  v7 = [(HFFaceClassificationSignificantEventItem *)v4 initWithSignificantEvent:event home:home];
 
-  v8 = [(HFFaceClassificationSignificantEventItem *)self faceCropImage];
-  [(HFFaceClassificationSignificantEventItem *)v7 setFaceCropImage:v8];
+  faceCropImage = [(HFFaceClassificationSignificantEventItem *)self faceCropImage];
+  [(HFFaceClassificationSignificantEventItem *)v7 setFaceCropImage:faceCropImage];
 
   return v7;
 }
 
 - (HMFaceClassification)faceClassification
 {
-  v2 = [(HFCameraClipSignificantEventItem *)self event];
-  v3 = [v2 faceClassification];
+  event = [(HFCameraClipSignificantEventItem *)self event];
+  faceClassification = [event faceClassification];
 
-  return v3;
+  return faceClassification;
 }
 
 - (HMPerson)person
 {
-  v2 = [(HFCameraClipSignificantEventItem *)self event];
-  v3 = [v2 faceClassification];
-  v4 = [v3 person];
+  event = [(HFCameraClipSignificantEventItem *)self event];
+  faceClassification = [event faceClassification];
+  person = [faceClassification person];
 
-  return v4;
+  return person;
 }
 
 - (HMPersonManager)personManager
 {
-  v3 = [(HFCameraClipSignificantEventItem *)self home];
-  v4 = [(HFFaceClassificationSignificantEventItem *)self faceClassification];
-  v5 = [v4 personManagerUUID];
-  v6 = [v3 hf_personManagerWithIdentifier:v5];
+  home = [(HFCameraClipSignificantEventItem *)self home];
+  faceClassification = [(HFFaceClassificationSignificantEventItem *)self faceClassification];
+  personManagerUUID = [faceClassification personManagerUUID];
+  v6 = [home hf_personManagerWithIdentifier:personManagerUUID];
 
   return v6;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
   v23[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HFCameraClipSignificantEventItem *)self home];
-  v6 = [v5 personManagerSettings];
-  v7 = [v6 isFaceClassificationEnabled];
+  optionsCopy = options;
+  home = [(HFCameraClipSignificantEventItem *)self home];
+  personManagerSettings = [home personManagerSettings];
+  isFaceClassificationEnabled = [personManagerSettings isFaceClassificationEnabled];
 
-  if (v7)
+  if (isFaceClassificationEnabled)
   {
-    v8 = [v4 objectForKeyedSubscript:HFItemUpdateOptionLogger];
+    v8 = [optionsCopy objectForKeyedSubscript:HFItemUpdateOptionLogger];
     objc_initWeak(&location, self);
     v20.receiver = self;
     v20.super_class = HFFaceClassificationSignificantEventItem;
-    v9 = [(HFCameraClipSignificantEventItem *)&v20 _subclass_updateWithOptions:v4];
+    v9 = [(HFCameraClipSignificantEventItem *)&v20 _subclass_updateWithOptions:optionsCopy];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __72__HFFaceClassificationSignificantEventItem__subclass_updateWithOptions___block_invoke;
     v16[3] = &unk_277DFCAB0;
     objc_copyWeak(&v19, &location);
-    v17 = v4;
+    v17 = optionsCopy;
     v10 = v8;
     v18 = v10;
     v11 = [v9 flatMap:v16];

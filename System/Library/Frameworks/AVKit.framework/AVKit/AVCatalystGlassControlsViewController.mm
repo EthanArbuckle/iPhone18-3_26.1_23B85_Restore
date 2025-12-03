@@ -1,5 +1,5 @@
 @interface AVCatalystGlassControlsViewController
-- (AVCatalystGlassControlsViewController)initWithPlayerViewController:(id)a3;
+- (AVCatalystGlassControlsViewController)initWithPlayerViewController:(id)controller;
 - (AVCatalystGlassPlaybackControlsController)playbackControlsController;
 - (BOOL)showsAnalysisControl;
 - (BOOL)showsFullScreenControl;
@@ -10,37 +10,37 @@
 - (id)volumeControlsLayoutItem;
 - (uint64_t)_loadPlaybackControlsViewIfNeeded;
 - (void)_loadControlsViewIfNeeded;
-- (void)_updateLegibleContentInsetsWithControlsVisibility:(BOOL)a3;
+- (void)_updateLegibleContentInsetsWithControlsVisibility:(BOOL)visibility;
 - (void)_updatePrefersFullWidthTransportBarStateIfNeeded;
 - (void)_updateStyleSheet;
 - (void)dealloc;
 - (void)didBeginIndirectUserInteraction;
 - (void)didEndIndirectUserInteraction;
-- (void)flashControlsWithDuration:(double)a3;
-- (void)glassPlaybackControlsView:(id)a3 animateAlongsideVisibilityAnimationsWithAnimationCoordinator:(id)a4 appearingViews:(id)a5 disappearingViews:(id)a6;
+- (void)flashControlsWithDuration:(double)duration;
+- (void)glassPlaybackControlsView:(id)view animateAlongsideVisibilityAnimationsWithAnimationCoordinator:(id)coordinator appearingViews:(id)views disappearingViews:(id)disappearingViews;
 - (void)loadView;
-- (void)setControlItems:(id)a3;
-- (void)setEmbeddedInlineLayoutMargins:(id)a3;
-- (void)setIncludedControls:(unint64_t)a3;
-- (void)setOptimizeForPerformance:(BOOL)a3;
-- (void)setPrefersCompactFullScreenControls:(BOOL)a3;
-- (void)setPrefersFullWidthTransportControls:(BOOL)a3;
-- (void)setRoutingConfiguration:(id)a3;
-- (void)setShowsAnalysisControl:(BOOL)a3;
-- (void)setShowsFullScreenControl:(BOOL)a3;
-- (void)setTransformForProminentPlayButton:(CGAffineTransform *)a3;
-- (void)setTransportBarCustomMenuItems:(id)a3;
-- (void)setVolumeController:(id)a3;
-- (void)toggleVisibility:(id)a3;
+- (void)setControlItems:(id)items;
+- (void)setEmbeddedInlineLayoutMargins:(id)margins;
+- (void)setIncludedControls:(unint64_t)controls;
+- (void)setOptimizeForPerformance:(BOOL)performance;
+- (void)setPrefersCompactFullScreenControls:(BOOL)controls;
+- (void)setPrefersFullWidthTransportControls:(BOOL)controls;
+- (void)setRoutingConfiguration:(id)configuration;
+- (void)setShowsAnalysisControl:(BOOL)control;
+- (void)setShowsFullScreenControl:(BOOL)control;
+- (void)setTransformForProminentPlayButton:(CGAffineTransform *)button;
+- (void)setTransportBarCustomMenuItems:(id)items;
+- (void)setVolumeController:(id)controller;
+- (void)toggleVisibility:(id)visibility;
 @end
 
 @implementation AVCatalystGlassControlsViewController
 
-- (void)setTransformForProminentPlayButton:(CGAffineTransform *)a3
+- (void)setTransformForProminentPlayButton:(CGAffineTransform *)button
 {
-  v4 = *&a3->c;
-  v3 = *&a3->tx;
-  *&self->_transformForProminentPlayButton.a = *&a3->a;
+  v4 = *&button->c;
+  v3 = *&button->tx;
+  *&self->_transformForProminentPlayButton.a = *&button->a;
   *&self->_transformForProminentPlayButton.c = v4;
   *&self->_transformForProminentPlayButton.tx = v3;
 }
@@ -57,9 +57,9 @@
 - (void)_updateStyleSheet
 {
   v3 = [AVCatalystGlassStyleSheet alloc];
-  v4 = [MEMORY[0x1E69DCEB0] avkit_mainScreen];
-  v5 = [v4 traitCollection];
-  v6 = [(AVCatalystGlassStyleSheet *)v3 initWithTraitCollection:v5 shouldUseCompactFullScreenSize:self->_prefersCompactFullScreenControls];
+  avkit_mainScreen = [MEMORY[0x1E69DCEB0] avkit_mainScreen];
+  traitCollection = [avkit_mainScreen traitCollection];
+  v6 = [(AVCatalystGlassStyleSheet *)v3 initWithTraitCollection:traitCollection shouldUseCompactFullScreenSize:self->_prefersCompactFullScreenControls];
   styleSheet = self->_styleSheet;
   self->_styleSheet = v6;
 
@@ -72,32 +72,32 @@
 
 - (void)_updatePrefersFullWidthTransportBarStateIfNeeded
 {
-  v3 = [(AVCatalystGlassPlaybackControlsView *)self->_playbackControlsView transportControlsView];
-  [v3 setPrefersFlexibleWidthScrubber:self->_prefersFullWidthTransportControls];
+  transportControlsView = [(AVCatalystGlassPlaybackControlsView *)self->_playbackControlsView transportControlsView];
+  [transportControlsView setPrefersFlexibleWidthScrubber:self->_prefersFullWidthTransportControls];
 }
 
-- (void)_updateLegibleContentInsetsWithControlsVisibility:(BOOL)a3
+- (void)_updateLegibleContentInsetsWithControlsVisibility:(BOOL)visibility
 {
   v4 = *MEMORY[0x1E69DDCE0];
   v6 = *(MEMORY[0x1E69DDCE0] + 16);
   v5 = *(MEMORY[0x1E69DDCE0] + 24);
-  if (a3)
+  if (visibility)
   {
     v32 = *MEMORY[0x1E69DDCE0];
     v33 = *(MEMORY[0x1E69DDCE0] + 16);
     v31 = *(MEMORY[0x1E69DDCE0] + 24);
-    v7 = [(AVCatalystGlassPlaybackControlsView *)self->_playbackControlsView transportControlsView];
-    v8 = v7;
-    if (v7)
+    transportControlsView = [(AVCatalystGlassPlaybackControlsView *)self->_playbackControlsView transportControlsView];
+    v8 = transportControlsView;
+    if (transportControlsView)
     {
-      v9 = [v7 superview];
+      superview = [transportControlsView superview];
       [v8 frame];
       v11 = v10;
       v13 = v12;
       v15 = v14;
       v17 = v16;
-      v18 = [(AVCatalystGlassPlaybackControlsView *)self->_playbackControlsView superview];
-      [v9 convertRect:v18 toView:{v11, v13, v15, v17}];
+      superview2 = [(AVCatalystGlassPlaybackControlsView *)self->_playbackControlsView superview];
+      [superview convertRect:superview2 toView:{v11, v13, v15, v17}];
       v20 = v19;
       v22 = v21;
       v24 = v23;
@@ -124,53 +124,53 @@
     *&self->_legibleContentInsetsAvoidingControlsUI.top = v4;
     self->_legibleContentInsetsAvoidingControlsUI.bottom = v6;
     self->_legibleContentInsetsAvoidingControlsUI.right = v5;
-    v29 = [(AVMobileControlsViewController *)self delegate];
+    delegate = [(AVMobileControlsViewController *)self delegate];
     v30 = objc_opt_respondsToSelector();
 
     if (v30)
     {
-      v34 = [(AVMobileControlsViewController *)self delegate];
-      [v34 controlsViewControllerDidUpdateLegibleContentInsetsAvoidingUI:self];
+      delegate2 = [(AVMobileControlsViewController *)self delegate];
+      [delegate2 controlsViewControllerDidUpdateLegibleContentInsetsAvoidingUI:self];
     }
   }
 }
 
 - (void)_loadControlsViewIfNeeded
 {
-  if (!a1)
+  if (!self)
   {
     return;
   }
 
-  v2 = [a1 viewIfLoaded];
-  if (v2 && !*(a1 + 1248))
+  viewIfLoaded = [self viewIfLoaded];
+  if (viewIfLoaded && !*(self + 1248))
   {
-    v14 = v2;
-    if (!*(a1 + 1192))
+    v14 = viewIfLoaded;
+    if (!*(self + 1192))
     {
-      v3 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v3 addObserver:a1 selector:sel__updateStyleSheet name:*MEMORY[0x1E69DDC48] object:0];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter addObserver:self selector:sel__updateStyleSheet name:*MEMORY[0x1E69DDC48] object:0];
 
       v4 = [AVCatalystGlassStyleSheet alloc];
-      v5 = [MEMORY[0x1E69DCEB0] avkit_mainScreen];
-      v6 = [v5 traitCollection];
-      v7 = [(AVCatalystGlassStyleSheet *)v4 initWithTraitCollection:v6 shouldUseCompactFullScreenSize:*(a1 + 1232)];
-      v8 = *(a1 + 1192);
-      *(a1 + 1192) = v7;
+      avkit_mainScreen = [MEMORY[0x1E69DCEB0] avkit_mainScreen];
+      traitCollection = [avkit_mainScreen traitCollection];
+      v7 = [(AVCatalystGlassStyleSheet *)v4 initWithTraitCollection:traitCollection shouldUseCompactFullScreenSize:*(self + 1232)];
+      v8 = *(self + 1192);
+      *(self + 1192) = v7;
     }
 
-    if (([a1 optimizeForPerformance] & 1) == 0)
+    if (([self optimizeForPerformance] & 1) == 0)
     {
-      [(AVCatalystGlassControlsViewController *)a1 _loadPlaybackControlsViewIfNeeded];
+      [(AVCatalystGlassControlsViewController *)self _loadPlaybackControlsViewIfNeeded];
 LABEL_14:
-      v2 = v14;
+      viewIfLoaded = v14;
       goto LABEL_15;
     }
 
-    v2 = v14;
-    if (!*(a1 + 1256))
+    viewIfLoaded = v14;
+    if (!*(self + 1256))
     {
-      if (*(a1 + 1248))
+      if (*(self + 1248))
       {
         v9 = _AVLog();
         if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -181,15 +181,15 @@ LABEL_14:
       }
 
       v10 = [AVCatalystTurboModePlaybackControlsPlaceholderView alloc];
-      [*(a1 + 1176) bounds];
-      v11 = [(AVCatalystTurboModePlaybackControlsPlaceholderView *)v10 initWithFrame:*(a1 + 1192) styleSheet:?];
-      v12 = *(a1 + 1256);
-      *(a1 + 1256) = v11;
+      [*(self + 1176) bounds];
+      v11 = [(AVCatalystTurboModePlaybackControlsPlaceholderView *)v10 initWithFrame:*(self + 1192) styleSheet:?];
+      v12 = *(self + 1256);
+      *(self + 1256) = v11;
 
-      v13 = [a1 playbackControlsController];
-      [v13 turboModePlaybackControlsPlaceholderViewDidLoad:*(a1 + 1256)];
+      playbackControlsController = [self playbackControlsController];
+      [playbackControlsController turboModePlaybackControlsPlaceholderViewDidLoad:*(self + 1256)];
 
-      [*(a1 + 1176) setActivePlaybackControlsView:*(a1 + 1256)];
+      [*(self + 1176) setActivePlaybackControlsView:*(self + 1256)];
       goto LABEL_14;
     }
   }
@@ -211,12 +211,12 @@ LABEL_15:
       *(v1 + 1248) = v3;
 
       [*(v1 + 1248) setOverrideLayoutMarginsWhenEmbeddedInline:*(v1 + 1240)];
-      v5 = [*(v1 + 1248) routePickerView];
-      v6 = [v1 routingConfiguration];
-      [v5 setRoutingConfiguration:v6];
+      routePickerView = [*(v1 + 1248) routePickerView];
+      routingConfiguration = [v1 routingConfiguration];
+      [routePickerView setRoutingConfiguration:routingConfiguration];
 
-      v7 = [v1 playbackControlsController];
-      [v7 playbackControlsViewDidLoad:*(v1 + 1248)];
+      playbackControlsController = [v1 playbackControlsController];
+      [playbackControlsController playbackControlsViewDidLoad:*(v1 + 1248)];
 
       [*(v1 + 1176) setActivePlaybackControlsView:*(v1 + 1248)];
       v8 = *(v1 + 1256);
@@ -236,39 +236,39 @@ LABEL_15:
   self->_controlsView = v3;
 
   v5 = self->_controlsView;
-  v6 = [MEMORY[0x1E69DC888] clearColor];
-  [(AVMobileChromeControlsView *)v5 setBackgroundColor:v6];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [(AVMobileChromeControlsView *)v5 setBackgroundColor:clearColor];
 
   v7 = self->_controlsView;
 
   [(AVCatalystGlassControlsViewController *)self setView:v7];
 }
 
-- (void)toggleVisibility:(id)a3
+- (void)toggleVisibility:(id)visibility
 {
-  v3 = [(AVCatalystGlassControlsViewController *)self playbackControlsController];
-  [v3 togglePlaybackControlsVisibility];
+  playbackControlsController = [(AVCatalystGlassControlsViewController *)self playbackControlsController];
+  [playbackControlsController togglePlaybackControlsVisibility];
 }
 
-- (void)flashControlsWithDuration:(double)a3
+- (void)flashControlsWithDuration:(double)duration
 {
-  v4 = [(AVCatalystGlassControlsViewController *)self playbackControlsController];
-  [v4 flashPlaybackControlsWithDuration:a3];
+  playbackControlsController = [(AVCatalystGlassControlsViewController *)self playbackControlsController];
+  [playbackControlsController flashPlaybackControlsWithDuration:duration];
 }
 
-- (void)glassPlaybackControlsView:(id)a3 animateAlongsideVisibilityAnimationsWithAnimationCoordinator:(id)a4 appearingViews:(id)a5 disappearingViews:(id)a6
+- (void)glassPlaybackControlsView:(id)view animateAlongsideVisibilityAnimationsWithAnimationCoordinator:(id)coordinator appearingViews:(id)views disappearingViews:(id)disappearingViews
 {
-  v8 = a6;
-  v9 = a5;
+  disappearingViewsCopy = disappearingViews;
+  viewsCopy = views;
   WeakRetained = objc_loadWeakRetained(&self->_playerViewController);
-  v11 = [WeakRetained contentView];
-  v12 = [v11 glassPlaybackControlsView];
-  v14 = [v12 playbackControlsContainer];
+  contentView = [WeakRetained contentView];
+  glassPlaybackControlsView = [contentView glassPlaybackControlsView];
+  playbackControlsContainer = [glassPlaybackControlsView playbackControlsContainer];
 
-  v13 = [v9 containsObject:v14];
-  LODWORD(v9) = [v8 containsObject:v14];
+  v13 = [viewsCopy containsObject:playbackControlsContainer];
+  LODWORD(viewsCopy) = [disappearingViewsCopy containsObject:playbackControlsContainer];
 
-  if (v13 != v9)
+  if (v13 != viewsCopy)
   {
     [(AVCatalystGlassControlsViewController *)self _updateLegibleContentInsetsWithControlsVisibility:v13];
   }
@@ -289,44 +289,44 @@ LABEL_15:
 
 - (void)didEndIndirectUserInteraction
 {
-  v2 = [(AVCatalystGlassControlsViewController *)self playbackControlsController];
-  [v2 endShowingItemsDueToIndirectUserInteraction];
+  playbackControlsController = [(AVCatalystGlassControlsViewController *)self playbackControlsController];
+  [playbackControlsController endShowingItemsDueToIndirectUserInteraction];
 }
 
 - (void)didBeginIndirectUserInteraction
 {
-  v2 = [(AVCatalystGlassControlsViewController *)self playbackControlsController];
-  [v2 beginShowingItemsDueToIndirectUserInteraction];
+  playbackControlsController = [(AVCatalystGlassControlsViewController *)self playbackControlsController];
+  [playbackControlsController beginShowingItemsDueToIndirectUserInteraction];
 }
 
 - (BOOL)showsAnalysisControl
 {
-  v2 = [(AVCatalystGlassControlsViewController *)self playbackControlsController];
-  v3 = [v2 showsShowTextControl];
+  playbackControlsController = [(AVCatalystGlassControlsViewController *)self playbackControlsController];
+  showsShowTextControl = [playbackControlsController showsShowTextControl];
 
-  return v3;
+  return showsShowTextControl;
 }
 
-- (void)setShowsAnalysisControl:(BOOL)a3
+- (void)setShowsAnalysisControl:(BOOL)control
 {
-  v3 = a3;
-  v4 = [(AVCatalystGlassControlsViewController *)self playbackControlsController];
-  [v4 setShowsShowTextControl:v3];
+  controlCopy = control;
+  playbackControlsController = [(AVCatalystGlassControlsViewController *)self playbackControlsController];
+  [playbackControlsController setShowsShowTextControl:controlCopy];
 }
 
 - (BOOL)showsFullScreenControl
 {
-  v2 = [(AVCatalystGlassControlsViewController *)self playbackControlsController];
-  v3 = [v2 allowsEnteringFullScreen];
+  playbackControlsController = [(AVCatalystGlassControlsViewController *)self playbackControlsController];
+  allowsEnteringFullScreen = [playbackControlsController allowsEnteringFullScreen];
 
-  return v3;
+  return allowsEnteringFullScreen;
 }
 
-- (void)setShowsFullScreenControl:(BOOL)a3
+- (void)setShowsFullScreenControl:(BOOL)control
 {
-  v3 = a3;
-  v4 = [(AVCatalystGlassControlsViewController *)self playbackControlsController];
-  [v4 setAllowsEnteringFullScreen:v3];
+  controlCopy = control;
+  playbackControlsController = [(AVCatalystGlassControlsViewController *)self playbackControlsController];
+  [playbackControlsController setAllowsEnteringFullScreen:controlCopy];
 }
 
 - (id)volumeControlsLayoutItem
@@ -337,14 +337,14 @@ LABEL_15:
   return [(AVCatalystGlassPlaybackControlsView *)playbackControlsView volumeControls];
 }
 
-- (void)setVolumeController:(id)a3
+- (void)setVolumeController:(id)controller
 {
   v6.receiver = self;
   v6.super_class = AVCatalystGlassControlsViewController;
-  v4 = a3;
-  [(AVMobileControlsViewController *)&v6 setVolumeController:v4];
+  controllerCopy = controller;
+  [(AVMobileControlsViewController *)&v6 setVolumeController:controllerCopy];
   v5 = [(AVCatalystGlassControlsViewController *)self playbackControlsController:v6.receiver];
-  [v5 setVolumeController:v4];
+  [v5 setVolumeController:controllerCopy];
 }
 
 - (id)transportControlsLayoutItem
@@ -355,39 +355,39 @@ LABEL_15:
   return [(AVCatalystGlassPlaybackControlsView *)playbackControlsView transportControlsView];
 }
 
-- (void)setTransportBarCustomMenuItems:(id)a3
+- (void)setTransportBarCustomMenuItems:(id)items
 {
   v6.receiver = self;
   v6.super_class = AVCatalystGlassControlsViewController;
-  v4 = a3;
-  [(AVMobileControlsViewController *)&v6 setTransportBarCustomMenuItems:v4];
+  itemsCopy = items;
+  [(AVMobileControlsViewController *)&v6 setTransportBarCustomMenuItems:itemsCopy];
   v5 = [(AVCatalystGlassControlsViewController *)self playbackControlsController:v6.receiver];
-  [v5 setTransportBarCustomMenuItems:v4];
+  [v5 setTransportBarCustomMenuItems:itemsCopy];
 }
 
-- (void)setOptimizeForPerformance:(BOOL)a3
+- (void)setOptimizeForPerformance:(BOOL)performance
 {
   v4.receiver = self;
   v4.super_class = AVCatalystGlassControlsViewController;
-  [(AVMobileControlsViewController *)&v4 setOptimizeForPerformance:a3];
+  [(AVMobileControlsViewController *)&v4 setOptimizeForPerformance:performance];
   [(AVCatalystGlassControlsViewController *)self _loadControlsViewIfNeeded];
 }
 
-- (void)setIncludedControls:(unint64_t)a3
+- (void)setIncludedControls:(unint64_t)controls
 {
-  if ([(AVMobileControlsViewController *)self includedControls]!= a3)
+  if ([(AVMobileControlsViewController *)self includedControls]!= controls)
   {
     v8.receiver = self;
     v8.super_class = AVCatalystGlassControlsViewController;
-    [(AVMobileControlsViewController *)&v8 setIncludedControls:a3];
-    v5 = [(AVCatalystGlassControlsViewController *)self playbackControlsController];
-    [v5 setPlaybackControlsIncludeTransportControls:(a3 & 0x19) != 0];
+    [(AVMobileControlsViewController *)&v8 setIncludedControls:controls];
+    playbackControlsController = [(AVCatalystGlassControlsViewController *)self playbackControlsController];
+    [playbackControlsController setPlaybackControlsIncludeTransportControls:(controls & 0x19) != 0];
 
-    v6 = [(AVCatalystGlassControlsViewController *)self playbackControlsController];
-    [v6 setPlaybackControlsIncludeDisplayModeControls:(a3 >> 2) & 1];
+    playbackControlsController2 = [(AVCatalystGlassControlsViewController *)self playbackControlsController];
+    [playbackControlsController2 setPlaybackControlsIncludeDisplayModeControls:(controls >> 2) & 1];
 
-    v7 = [(AVCatalystGlassControlsViewController *)self playbackControlsController];
-    [v7 setPlaybackControlsIncludeVolumeControls:(a3 >> 1) & 1];
+    playbackControlsController3 = [(AVCatalystGlassControlsViewController *)self playbackControlsController];
+    [playbackControlsController3 setPlaybackControlsIncludeVolumeControls:(controls >> 1) & 1];
   }
 }
 
@@ -399,30 +399,30 @@ LABEL_15:
   return [(AVCatalystGlassPlaybackControlsView *)playbackControlsView screenModeControls];
 }
 
-- (void)setRoutingConfiguration:(id)a3
+- (void)setRoutingConfiguration:(id)configuration
 {
   v6.receiver = self;
   v6.super_class = AVCatalystGlassControlsViewController;
-  v4 = a3;
-  [(AVMobileControlsViewController *)&v6 setRoutingConfiguration:v4];
+  configurationCopy = configuration;
+  [(AVMobileControlsViewController *)&v6 setRoutingConfiguration:configurationCopy];
   v5 = [(AVCatalystGlassPlaybackControlsView *)self->_playbackControlsView routePickerView:v6.receiver];
-  [v5 setRoutingConfiguration:v4];
+  [v5 setRoutingConfiguration:configurationCopy];
 }
 
-- (void)setPrefersFullWidthTransportControls:(BOOL)a3
+- (void)setPrefersFullWidthTransportControls:(BOOL)controls
 {
-  if (self->_prefersFullWidthTransportControls != a3)
+  if (self->_prefersFullWidthTransportControls != controls)
   {
-    self->_prefersFullWidthTransportControls = a3;
+    self->_prefersFullWidthTransportControls = controls;
     [(AVCatalystGlassControlsViewController *)self _updatePrefersFullWidthTransportBarStateIfNeeded];
   }
 }
 
-- (void)setPrefersCompactFullScreenControls:(BOOL)a3
+- (void)setPrefersCompactFullScreenControls:(BOOL)controls
 {
-  if (self->_prefersCompactFullScreenControls != a3)
+  if (self->_prefersCompactFullScreenControls != controls)
   {
-    self->_prefersCompactFullScreenControls = a3;
+    self->_prefersCompactFullScreenControls = controls;
     [(AVCatalystGlassControlsViewController *)self _updateStyleSheet];
   }
 }
@@ -444,34 +444,34 @@ LABEL_15:
   return playbackControlsController;
 }
 
-- (void)setEmbeddedInlineLayoutMargins:(id)a3
+- (void)setEmbeddedInlineLayoutMargins:(id)margins
 {
-  v5 = a3;
-  if (self->_embeddedInlineLayoutMargins != v5)
+  marginsCopy = margins;
+  if (self->_embeddedInlineLayoutMargins != marginsCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_embeddedInlineLayoutMargins, a3);
+    v6 = marginsCopy;
+    objc_storeStrong(&self->_embeddedInlineLayoutMargins, margins);
     [(AVCatalystGlassPlaybackControlsView *)self->_playbackControlsView setOverrideLayoutMarginsWhenEmbeddedInline:v6];
-    v5 = v6;
+    marginsCopy = v6;
   }
 }
 
-- (void)setControlItems:(id)a3
+- (void)setControlItems:(id)items
 {
   v6.receiver = self;
   v6.super_class = AVCatalystGlassControlsViewController;
-  v4 = a3;
-  [(AVMobileControlsViewController *)&v6 setControlItems:v4];
+  itemsCopy = items;
+  [(AVMobileControlsViewController *)&v6 setControlItems:itemsCopy];
   v5 = [(AVCatalystGlassControlsViewController *)self playbackControlsController:v6.receiver];
-  [v5 setCustomControlItems:v4];
+  [v5 setCustomControlItems:itemsCopy];
 }
 
 - (void)dealloc
 {
   if (self->_styleSheet)
   {
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v3 removeObserver:self name:*MEMORY[0x1E69DDC48] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter removeObserver:self name:*MEMORY[0x1E69DDC48] object:0];
   }
 
   v4.receiver = self;
@@ -479,16 +479,16 @@ LABEL_15:
   [(AVCatalystGlassControlsViewController *)&v4 dealloc];
 }
 
-- (AVCatalystGlassControlsViewController)initWithPlayerViewController:(id)a3
+- (AVCatalystGlassControlsViewController)initWithPlayerViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v8.receiver = self;
   v8.super_class = AVCatalystGlassControlsViewController;
   v5 = [(AVCatalystGlassControlsViewController *)&v8 initWithNibName:0 bundle:0];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_playerViewController, v4);
+    objc_storeWeak(&v5->_playerViewController, controllerCopy);
     v6->_prefersFullWidthTransportControls = 0;
   }
 

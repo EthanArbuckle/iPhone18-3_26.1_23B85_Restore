@@ -1,22 +1,22 @@
 @interface BMPBDoNotDisturbWhileDrivingEvent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsReason:(id)a3;
+- (int)StringAsReason:(id)reason;
 - (int)reason;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasIsStart:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasIsStart:(BOOL)start;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMPBDoNotDisturbWhileDrivingEvent
 
-- (void)setHasIsStart:(BOOL)a3
+- (void)setHasIsStart:(BOOL)start
 {
-  if (a3)
+  if (start)
   {
     v3 = 2;
   }
@@ -42,40 +42,40 @@
   }
 }
 
-- (int)StringAsReason:(id)a3
+- (int)StringAsReason:(id)reason
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Unknown"])
+  reasonCopy = reason;
+  if ([reasonCopy isEqualToString:@"Unknown"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"ManualControlCenter"])
+  else if ([reasonCopy isEqualToString:@"ManualControlCenter"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Vehicular"])
+  else if ([reasonCopy isEqualToString:@"Vehicular"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"CarPlay"])
+  else if ([reasonCopy isEqualToString:@"CarPlay"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"ManualExitFriction"])
+  else if ([reasonCopy isEqualToString:@"ManualExitFriction"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"ManualBulletin"])
+  else if ([reasonCopy isEqualToString:@"ManualBulletin"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"ManualVanillaControlCenter"])
+  else if ([reasonCopy isEqualToString:@"ManualVanillaControlCenter"])
   {
     v4 = 6;
   }
@@ -94,20 +94,20 @@
   v8.receiver = self;
   v8.super_class = BMPBDoNotDisturbWhileDrivingEvent;
   v4 = [(BMPBDoNotDisturbWhileDrivingEvent *)&v8 description];
-  v5 = [(BMPBDoNotDisturbWhileDrivingEvent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(BMPBDoNotDisturbWhileDrivingEvent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithBool:self->_isStart];
-    [v3 setObject:v5 forKey:@"isStart"];
+    [dictionary setObject:v5 forKey:@"isStart"];
 
     has = self->_has;
   }
@@ -125,22 +125,22 @@
       v7 = off_1E6E52F88[reason];
     }
 
-    [v3 setObject:v7 forKey:@"reason"];
+    [dictionary setObject:v7 forKey:@"reason"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v8 = v4;
+  v8 = toCopy;
   if ((has & 2) != 0)
   {
     isStart = self->_isStart;
     PBDataWriterWriteBOOLField();
-    v4 = v8;
+    toCopy = v8;
     has = self->_has;
   }
 
@@ -148,31 +148,31 @@
   {
     reason = self->_reason;
     PBDataWriterWriteInt32Field();
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
-    v4[12] = self->_isStart;
-    v4[16] |= 2u;
+    toCopy[12] = self->_isStart;
+    toCopy[16] |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    *(v4 + 2) = self->_reason;
-    v4[16] |= 1u;
+    *(toCopy + 2) = self->_reason;
+    toCopy[16] |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -190,45 +190,45 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_9;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 16) & 2) == 0)
+    if ((*(equalCopy + 16) & 2) == 0)
     {
       goto LABEL_9;
     }
 
-    v7 = *(v4 + 12);
+    v7 = *(equalCopy + 12);
     if (self->_isStart)
     {
-      if ((*(v4 + 12) & 1) == 0)
+      if ((*(equalCopy + 12) & 1) == 0)
       {
         goto LABEL_9;
       }
     }
 
-    else if (*(v4 + 12))
+    else if (*(equalCopy + 12))
     {
       goto LABEL_9;
     }
   }
 
-  else if ((*(v4 + 16) & 2) != 0)
+  else if ((*(equalCopy + 16) & 2) != 0)
   {
     goto LABEL_9;
   }
 
-  v5 = (*(v4 + 16) & 1) == 0;
+  v5 = (*(equalCopy + 16) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 16) & 1) != 0 && self->_reason == *(v4 + 2))
+    if ((*(equalCopy + 16) & 1) != 0 && self->_reason == *(equalCopy + 2))
     {
       v5 = 1;
       goto LABEL_10;
@@ -269,20 +269,20 @@ LABEL_3:
   return v3 ^ v2;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 16);
+  fromCopy = from;
+  v5 = *(fromCopy + 16);
   if ((v5 & 2) != 0)
   {
-    self->_isStart = *(v4 + 12);
+    self->_isStart = *(fromCopy + 12);
     *&self->_has |= 2u;
-    v5 = *(v4 + 16);
+    v5 = *(fromCopy + 16);
   }
 
   if (v5)
   {
-    self->_reason = *(v4 + 2);
+    self->_reason = *(fromCopy + 2);
     *&self->_has |= 1u;
   }
 }

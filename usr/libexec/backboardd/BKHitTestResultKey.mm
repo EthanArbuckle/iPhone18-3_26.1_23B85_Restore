@@ -1,18 +1,18 @@
 @interface BKHitTestResultKey
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 @end
 
 @implementation BKHitTestResultKey
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v5 = objc_opt_class();
-  v6 = a3;
+  equalCopy = equal;
   if (v5)
   {
     if (objc_opt_isKindOfClass())
     {
-      v7 = v6;
+      v7 = equalCopy;
     }
 
     else
@@ -28,7 +28,7 @@
 
   v8 = v7;
 
-  v11 = v6 && (destination = self->_destination, v10 = v8[2], BSEqualObjects()) && self->_userIdentifier == *(v8 + 2);
+  v11 = equalCopy && (destination = self->_destination, v10 = v8[2], BSEqualObjects()) && self->_userIdentifier == *(v8 + 2);
   return v11;
 }
 

@@ -1,16 +1,16 @@
 @interface _MKMapItemAttributionProviderLogoImageCache
 + (id)sharedInstance;
 - (_MKMapItemAttributionProviderLogoImageCache)init;
-- (void)setImage:(id)a3 forKey:(id)a4;
+- (void)setImage:(id)image forKey:(id)key;
 @end
 
 @implementation _MKMapItemAttributionProviderLogoImageCache
 
-- (void)setImage:(id)a3 forKey:(id)a4
+- (void)setImage:(id)image forKey:(id)key
 {
-  if (a3)
+  if (image)
   {
-    [(NSCache *)self->_cache setObject:a3 forKey:a4];
+    [(NSCache *)self->_cache setObject:image forKey:key];
   }
 }
 
@@ -35,7 +35,7 @@
   block[1] = 3221225472;
   block[2] = __61___MKMapItemAttributionProviderLogoImageCache_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken != -1)
   {
     dispatch_once(&sharedInstance_onceToken, block);

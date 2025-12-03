@@ -1,15 +1,15 @@
 @interface AVTCategorySegmentedControl
-- (AVTCategorySegmentedControl)initWithItems:(id)a3;
+- (AVTCategorySegmentedControl)initWithItems:(id)items;
 @end
 
 @implementation AVTCategorySegmentedControl
 
-- (AVTCategorySegmentedControl)initWithItems:(id)a3
+- (AVTCategorySegmentedControl)initWithItems:(id)items
 {
   v27[2] = *MEMORY[0x1E69E9840];
   v20.receiver = self;
   v20.super_class = AVTCategorySegmentedControl;
-  v3 = [(AVTCategorySegmentedControl *)&v20 initWithItems:a3];
+  v3 = [(AVTCategorySegmentedControl *)&v20 initWithItems:items];
   v4 = v3;
   if (v3)
   {

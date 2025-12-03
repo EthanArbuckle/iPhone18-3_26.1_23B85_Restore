@@ -1,31 +1,31 @@
 @interface TRICEnvironmentManager
-+ (BOOL)validateTrialPath:(id)a3 requireUserPath:(BOOL)a4;
++ (BOOL)validateTrialPath:(id)path requireUserPath:(BOOL)userPath;
 + (const)getLoginPasswd;
-+ (id)envToString:(int64_t)a3;
++ (id)envToString:(int64_t)string;
 + (int)checkDeviceUnlocked;
-+ (int)checkIfConnectedToVPN:(BOOL *)a3;
++ (int)checkIfConnectedToVPN:(BOOL *)n;
 + (int)resetDaemonProcess;
 + (int64_t)currentEnv;
 @end
 
 @implementation TRICEnvironmentManager
 
-+ (BOOL)validateTrialPath:(id)a3 requireUserPath:(BOOL)a4
++ (BOOL)validateTrialPath:(id)path requireUserPath:(BOOL)userPath
 {
-  v4 = a4;
-  v6 = [a3 pathComponents];
-  if (v6)
+  userPathCopy = userPath;
+  pathComponents = [path pathComponents];
+  if (pathComponents)
   {
-    v7 = [a1 trialDaemonUserName];
-    if (v4 && ![v6 containsObject:v7])
+    trialDaemonUserName = [self trialDaemonUserName];
+    if (userPathCopy && ![pathComponents containsObject:trialDaemonUserName])
     {
       v9 = 0;
     }
 
     else
     {
-      v8 = [v6 lastObject];
-      v9 = [v8 isEqualToString:@"Trial"];
+      lastObject = [pathComponents lastObject];
+      v9 = [lastObject isEqualToString:@"Trial"];
     }
   }
 
@@ -136,28 +136,28 @@ LABEL_9:
   return v6;
 }
 
-+ (int)checkIfConnectedToVPN:(BOOL *)a3
++ (int)checkIfConnectedToVPN:(BOOL *)n
 {
   v8 = 0;
   v9 = 0;
   v4 = [TRICCommandRunner runCommand:@"/sbin/ifconfig" withArgs:&unk_28436FAE0 output:&v9 error:&v8];
   v5 = v9;
   v6 = v8;
-  *a3 = [v5 rangeOfString:@"VPN: Corporate"] != 0x7FFFFFFFFFFFFFFFLL;
+  *n = [v5 rangeOfString:@"VPN: Corporate"] != 0x7FFFFFFFFFFFFFFFLL;
 
   return v4;
 }
 
-+ (id)envToString:(int64_t)a3
++ (id)envToString:(int64_t)string
 {
-  if ((a3 - 1) > 4)
+  if ((string - 1) > 4)
   {
     return @"UNKNOWN";
   }
 
   else
   {
-    return off_27885DF00[a3 - 1];
+    return off_27885DF00[string - 1];
   }
 }
 

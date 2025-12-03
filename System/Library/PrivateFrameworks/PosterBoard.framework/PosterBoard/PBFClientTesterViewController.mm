@@ -1,7 +1,7 @@
 @interface PBFClientTesterViewController
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)modalController:(id)a3 didDismissSheetWithResponse:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)modalController:(id)controller didDismissSheetWithResponse:(id)response;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -13,31 +13,31 @@
   v4.super_class = PBFClientTesterViewController;
   [(PBFClientTesterViewController *)&v4 viewDidLoad];
   [(PBFClientTesterViewController *)self setTitle:@"Client Tester"];
-  v3 = [(PBFClientTesterViewController *)self tableView];
-  [v3 registerClass:objc_opt_class() forCellReuseIdentifier:@"api"];
+  tableView = [(PBFClientTesterViewController *)self tableView];
+  [tableView registerClass:objc_opt_class() forCellReuseIdentifier:@"api"];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [a3 dequeueReusableCellWithIdentifier:@"api" forIndexPath:v5];
-  v7 = [v5 row];
+  pathCopy = path;
+  v6 = [view dequeueReusableCellWithIdentifier:@"api" forIndexPath:pathCopy];
+  v7 = [pathCopy row];
 
   if (v7 <= 4)
   {
     v8 = off_2782C8F28[v7];
-    v9 = [v6 textLabel];
-    [v9 setText:v8];
+    textLabel = [v6 textLabel];
+    [textLabel setText:v8];
   }
 
   return v6;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  [a3 deselectRowAtIndexPath:v6 animated:1];
-  v7 = [v6 row];
+  pathCopy = path;
+  [view deselectRowAtIndexPath:pathCopy animated:1];
+  v7 = [pathCopy row];
 
   v8 = 0;
   if (v7 <= 1)
@@ -92,19 +92,19 @@ LABEL_15:
   }
 
 LABEL_18:
-  v15 = [MEMORY[0x277D75128] sharedApplication];
-  v16 = [v15 connectedScenes];
-  v17 = [v16 anyObject];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  connectedScenes = [mEMORY[0x277D75128] connectedScenes];
+  anyObject = [connectedScenes anyObject];
 
   v18 = [objc_alloc(MEMORY[0x277D3EAA0]) initWithEntryPoint:v8];
   modalController = self->_modalController;
   self->_modalController = v18;
 
   [(PRUISModalController *)self->_modalController setDelegate:self];
-  [(PRUISModalController *)self->_modalController presentFromWindowScene:v17];
+  [(PRUISModalController *)self->_modalController presentFromWindowScene:anyObject];
 }
 
-- (void)modalController:(id)a3 didDismissSheetWithResponse:(id)a4
+- (void)modalController:(id)controller didDismissSheetWithResponse:(id)response
 {
   modalController = self->_modalController;
   self->_modalController = 0;

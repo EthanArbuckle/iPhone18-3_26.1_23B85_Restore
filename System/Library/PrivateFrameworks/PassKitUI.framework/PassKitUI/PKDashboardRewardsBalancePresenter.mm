@@ -1,9 +1,9 @@
 @interface PKDashboardRewardsBalancePresenter
-- (CGSize)sizeForItem:(id)a3 inCollectionView:(id)a4 safeAreaWidth:(double)a5 atIndexPath:(id)a6;
-- (id)cellForItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5;
+- (CGSize)sizeForItem:(id)item inCollectionView:(id)view safeAreaWidth:(double)width atIndexPath:(id)path;
+- (id)cellForItem:(id)item inCollectionView:(id)view atIndexPath:(id)path;
 - (id)collectionViewCellClasses;
-- (void)didSelectItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5 navigationController:(id)a6 canPresent:(id)a7;
-- (void)traitCollectionDidChangeFromTrait:(id)a3 toTrait:(id)a4 inCollectionView:(id)a5;
+- (void)didSelectItem:(id)item inCollectionView:(id)view atIndexPath:(id)path navigationController:(id)controller canPresent:(id)present;
+- (void)traitCollectionDidChangeFromTrait:(id)trait toTrait:(id)toTrait inCollectionView:(id)view;
 @end
 
 @implementation PKDashboardRewardsBalancePresenter
@@ -18,31 +18,31 @@
   return v2;
 }
 
-- (id)cellForItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5
+- (id)cellForItem:(id)item inCollectionView:(id)view atIndexPath:(id)path
 {
-  v7 = a3;
-  v8 = [a4 dequeueReusableCellWithReuseIdentifier:@"paymentRewardsBalanceCellReuseIdentifier" forIndexPath:a5];
-  [v8 configureWithRewardsBalanceItem:v7];
+  itemCopy = item;
+  v8 = [view dequeueReusableCellWithReuseIdentifier:@"paymentRewardsBalanceCellReuseIdentifier" forIndexPath:path];
+  [v8 configureWithRewardsBalanceItem:itemCopy];
 
   return v8;
 }
 
-- (void)didSelectItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5 navigationController:(id)a6 canPresent:(id)a7
+- (void)didSelectItem:(id)item inCollectionView:(id)view atIndexPath:(id)path navigationController:(id)controller canPresent:(id)present
 {
-  v8 = a6;
-  v11 = [PKDashboardRewardsBalanceDetailsViewHosting makeViewControllerWithRewardsBalanceItem:a3];
-  v9 = [v8 navigationBar];
-  [v9 setPrefersLargeTitles:1];
+  controllerCopy = controller;
+  v11 = [PKDashboardRewardsBalanceDetailsViewHosting makeViewControllerWithRewardsBalanceItem:item];
+  navigationBar = [controllerCopy navigationBar];
+  [navigationBar setPrefersLargeTitles:1];
 
-  v10 = [v11 navigationItem];
-  [v10 setLargeTitleDisplayMode:1];
+  navigationItem = [v11 navigationItem];
+  [navigationItem setLargeTitleDisplayMode:1];
 
-  [v8 pushViewController:v11 animated:1];
+  [controllerCopy pushViewController:v11 animated:1];
 }
 
-- (CGSize)sizeForItem:(id)a3 inCollectionView:(id)a4 safeAreaWidth:(double)a5 atIndexPath:(id)a6
+- (CGSize)sizeForItem:(id)item inCollectionView:(id)view safeAreaWidth:(double)width atIndexPath:(id)path
 {
-  v8 = a3;
+  itemCopy = item;
   sampleCell = self->_sampleCell;
   if (!sampleCell)
   {
@@ -54,9 +54,9 @@
     sampleCell = self->_sampleCell;
   }
 
-  [(PKDashboardRewardsBalanceCell *)sampleCell configureWithRewardsBalanceItem:v8];
+  [(PKDashboardRewardsBalanceCell *)sampleCell configureWithRewardsBalanceItem:itemCopy];
   +[PKDashboardCollectionViewCell defaultHorizontalInset];
-  v14 = a5 + v13 * -2.0;
+  v14 = width + v13 * -2.0;
   [(PKDashboardRewardsBalanceCell *)self->_sampleCell sizeThatFits:v14, 1.79769313e308];
   v16 = v15;
   [(PKDashboardCollectionViewCell *)self->_sampleCell prepareForReuse];
@@ -68,17 +68,17 @@
   return result;
 }
 
-- (void)traitCollectionDidChangeFromTrait:(id)a3 toTrait:(id)a4 inCollectionView:(id)a5
+- (void)traitCollectionDidChangeFromTrait:(id)trait toTrait:(id)toTrait inCollectionView:(id)view
 {
-  if (a3)
+  if (trait)
   {
-    if (a4)
+    if (toTrait)
     {
-      v7 = a4;
-      v8 = [a3 preferredContentSizeCategory];
-      v9 = [v7 preferredContentSizeCategory];
+      toTraitCopy = toTrait;
+      preferredContentSizeCategory = [trait preferredContentSizeCategory];
+      preferredContentSizeCategory2 = [toTraitCopy preferredContentSizeCategory];
 
-      v10 = UIContentSizeCategoryCompareToCategory(v8, v9);
+      v10 = UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, preferredContentSizeCategory2);
       if (v10)
       {
         sampleCell = self->_sampleCell;

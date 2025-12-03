@@ -1,19 +1,19 @@
 @interface CNiOSABEmailAddressContactPredicate
 - (BOOL)_inputsAreValid;
-- (BOOL)_stringsAreNonEmpty:(id)a3;
-- (__CFArray)cn_copyPeopleInAddressBook:(void *)a3 fetchRequest:(id)a4 matchInfos:(id *)a5 environment:(id)a6 error:(__CFError *)a7;
-- (id)cn_ABQSLPredicateForAddressBook:(void *)a3 fetchRequest:(id)a4 error:(id *)a5;
+- (BOOL)_stringsAreNonEmpty:(id)empty;
+- (__CFArray)cn_copyPeopleInAddressBook:(void *)book fetchRequest:(id)request matchInfos:(id *)infos environment:(id)environment error:(__CFError *)error;
+- (id)cn_ABQSLPredicateForAddressBook:(void *)book fetchRequest:(id)request error:(id *)error;
 @end
 
 @implementation CNiOSABEmailAddressContactPredicate
 
 - (BOOL)_inputsAreValid
 {
-  v3 = [(CNEmailAddressContactPredicate *)self emailAddresses];
-  if ([v3 count])
+  emailAddresses = [(CNEmailAddressContactPredicate *)self emailAddresses];
+  if ([emailAddresses count])
   {
-    v4 = [(CNEmailAddressContactPredicate *)self emailAddresses];
-    v5 = [(CNiOSABEmailAddressContactPredicate *)self _stringsAreNonEmpty:v4];
+    emailAddresses2 = [(CNEmailAddressContactPredicate *)self emailAddresses];
+    v5 = [(CNiOSABEmailAddressContactPredicate *)self _stringsAreNonEmpty:emailAddresses2];
   }
 
   else
@@ -21,11 +21,11 @@
     v5 = 0;
   }
 
-  v6 = [(CNEmailAddressContactPredicate *)self groupIdentifiers];
-  if ([v6 count])
+  groupIdentifiers = [(CNEmailAddressContactPredicate *)self groupIdentifiers];
+  if ([groupIdentifiers count])
   {
-    v7 = [(CNEmailAddressContactPredicate *)self groupIdentifiers];
-    v8 = [(CNiOSABEmailAddressContactPredicate *)self _stringsAreNonEmpty:v7];
+    groupIdentifiers2 = [(CNEmailAddressContactPredicate *)self groupIdentifiers];
+    v8 = [(CNiOSABEmailAddressContactPredicate *)self _stringsAreNonEmpty:groupIdentifiers2];
   }
 
   else
@@ -36,9 +36,9 @@
   return v5 && v8;
 }
 
-- (BOOL)_stringsAreNonEmpty:(id)a3
+- (BOOL)_stringsAreNonEmpty:(id)empty
 {
-  v3 = a3;
+  emptyCopy = empty;
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
@@ -48,7 +48,7 @@
   v6[2] = __59__CNiOSABEmailAddressContactPredicate__stringsAreNonEmpty___block_invoke;
   v6[3] = &unk_1E74160D0;
   v6[4] = &v7;
-  [v3 enumerateObjectsUsingBlock:v6];
+  [emptyCopy enumerateObjectsUsingBlock:v6];
   v4 = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
 
@@ -67,25 +67,25 @@ uint64_t __59__CNiOSABEmailAddressContactPredicate__stringsAreNonEmpty___block_i
   return result;
 }
 
-- (__CFArray)cn_copyPeopleInAddressBook:(void *)a3 fetchRequest:(id)a4 matchInfos:(id *)a5 environment:(id)a6 error:(__CFError *)a7
+- (__CFArray)cn_copyPeopleInAddressBook:(void *)book fetchRequest:(id)request matchInfos:(id *)infos environment:(id)environment error:(__CFError *)error
 {
-  v9 = a4;
+  requestCopy = request;
   if ([(CNiOSABEmailAddressContactPredicate *)self _inputsAreValid])
   {
     v10 = MEMORY[0x1E698A130];
     v11 = *MEMORY[0x1E698A340];
-    v12 = [(CNEmailAddressContactPredicate *)self emailAddresses];
-    v13 = [(CNEmailAddressContactPredicate *)self groupIdentifiers];
-    v14 = [v10 predicateForContactsMatchingMultivalueProperty:v11 values:v12 groupIdentifiers:v13 containerIdentifiers:0 limitToOneResult:-[CNEmailAddressContactPredicate returnsMultipleResults](self map:{"returnsMultipleResults") ^ 1, 0}];
+    emailAddresses = [(CNEmailAddressContactPredicate *)self emailAddresses];
+    groupIdentifiers = [(CNEmailAddressContactPredicate *)self groupIdentifiers];
+    v14 = [v10 predicateForContactsMatchingMultivalueProperty:v11 values:emailAddresses groupIdentifiers:groupIdentifiers containerIdentifiers:0 limitToOneResult:-[CNEmailAddressContactPredicate returnsMultipleResults](self map:{"returnsMultipleResults") ^ 1, 0}];
 
-    [v9 sortOrder];
+    [requestCopy sortOrder];
     v15 = ABAddressBookCopyAllPeopleForBufferPredicate();
   }
 
-  else if (a7)
+  else if (error)
   {
     [CNErrorFactory errorWithCode:400 userInfo:0];
-    *a7 = v15 = 0;
+    *error = v15 = 0;
   }
 
   else
@@ -96,20 +96,20 @@ uint64_t __59__CNiOSABEmailAddressContactPredicate__stringsAreNonEmpty___block_i
   return v15;
 }
 
-- (id)cn_ABQSLPredicateForAddressBook:(void *)a3 fetchRequest:(id)a4 error:(id *)a5
+- (id)cn_ABQSLPredicateForAddressBook:(void *)book fetchRequest:(id)request error:(id *)error
 {
-  if ([(CNiOSABEmailAddressContactPredicate *)self _inputsAreValid:a3])
+  if ([(CNiOSABEmailAddressContactPredicate *)self _inputsAreValid:book])
   {
     v7 = MEMORY[0x1E698A130];
     v8 = *MEMORY[0x1E698A340];
-    v9 = [(CNEmailAddressContactPredicate *)self emailAddresses];
-    v10 = [(CNEmailAddressContactPredicate *)self groupIdentifiers];
-    v11 = [v7 predicateForContactsMatchingMultivalueProperty:v8 values:v9 groupIdentifiers:v10 containerIdentifiers:0 limitToOneResult:-[CNEmailAddressContactPredicate returnsMultipleResults](self map:{"returnsMultipleResults") ^ 1, 0}];
+    emailAddresses = [(CNEmailAddressContactPredicate *)self emailAddresses];
+    groupIdentifiers = [(CNEmailAddressContactPredicate *)self groupIdentifiers];
+    v11 = [v7 predicateForContactsMatchingMultivalueProperty:v8 values:emailAddresses groupIdentifiers:groupIdentifiers containerIdentifiers:0 limitToOneResult:-[CNEmailAddressContactPredicate returnsMultipleResults](self map:{"returnsMultipleResults") ^ 1, 0}];
   }
 
   else
   {
-    CNSetError(a5, 400, 0);
+    CNSetError(error, 400, 0);
     v11 = 0;
   }
 

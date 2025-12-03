@@ -1,16 +1,16 @@
 @interface PIParallaxStyleDefinition
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToParallaxStyleDefinition:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToParallaxStyleDefinition:(id)definition;
 - (NSString)type;
-- (id)evaluateWithContext:(id)a3 error:(id *)a4;
+- (id)evaluateWithContext:(id)context error:(id *)error;
 @end
 
 @implementation PIParallaxStyleDefinition
 
-- (id)evaluateWithContext:(id)a3 error:(id *)a4
+- (id)evaluateWithContext:(id)context error:(id *)error
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  contextCopy = context;
   v5 = MEMORY[0x1E69B3D78];
   if (*MEMORY[0x1E69B3D78] != -1)
   {
@@ -48,8 +48,8 @@ LABEL_11:
           v21 = MEMORY[0x1E696AF00];
           v22 = specific;
           v23 = v19;
-          v24 = [v21 callStackSymbols];
-          v5 = [v24 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v21 callStackSymbols];
+          v5 = [callStackSymbols componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v27 = specific;
           v28 = 2114;
@@ -76,8 +76,8 @@ LABEL_11:
     {
       v15 = MEMORY[0x1E696AF00];
       v16 = v14;
-      v17 = [v15 callStackSymbols];
-      v18 = [v17 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [v15 callStackSymbols];
+      v18 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v27 = v18;
       _os_log_error_impl(&dword_1C7694000, v16, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -93,10 +93,10 @@ LABEL_14:
   }
 }
 
-- (BOOL)isEqualToParallaxStyleDefinition:(id)a3
+- (BOOL)isEqualToParallaxStyleDefinition:(id)definition
 {
   v29 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  definitionCopy = definition;
   v4 = MEMORY[0x1E69B3D78];
   if (*MEMORY[0x1E69B3D78] != -1)
   {
@@ -134,8 +134,8 @@ LABEL_11:
           v20 = MEMORY[0x1E696AF00];
           v21 = specific;
           v22 = v18;
-          v23 = [v20 callStackSymbols];
-          v4 = [v23 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v20 callStackSymbols];
+          v4 = [callStackSymbols componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v26 = specific;
           v27 = 2114;
@@ -162,8 +162,8 @@ LABEL_11:
     {
       v14 = MEMORY[0x1E696AF00];
       v15 = v13;
-      v16 = [v14 callStackSymbols];
-      v17 = [v16 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [v14 callStackSymbols];
+      v17 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v26 = v17;
       _os_log_error_impl(&dword_1C7694000, v15, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -179,16 +179,16 @@ LABEL_14:
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(PIParallaxStyleDefinition *)self type];
-    v7 = [v5 type];
-    v8 = [v6 isEqualToString:v7];
+    v5 = equalCopy;
+    type = [(PIParallaxStyleDefinition *)self type];
+    type2 = [v5 type];
+    v8 = [type isEqualToString:type2];
 
     if (v8)
     {
@@ -249,8 +249,8 @@ LABEL_11:
           v18 = MEMORY[0x1E696AF00];
           v19 = specific;
           v20 = v16;
-          v21 = [v18 callStackSymbols];
-          v2 = [v21 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v18 callStackSymbols];
+          v2 = [callStackSymbols componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v24 = specific;
           v25 = 2114;
@@ -277,8 +277,8 @@ LABEL_11:
     {
       v12 = MEMORY[0x1E696AF00];
       v13 = v11;
-      v14 = [v12 callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [v12 callStackSymbols];
+      v15 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v24 = v15;
       _os_log_error_impl(&dword_1C7694000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);

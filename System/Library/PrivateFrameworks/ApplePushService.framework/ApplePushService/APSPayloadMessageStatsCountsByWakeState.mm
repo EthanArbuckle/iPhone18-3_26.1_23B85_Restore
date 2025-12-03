@@ -1,7 +1,7 @@
 @interface APSPayloadMessageStatsCountsByWakeState
 - (APSPayloadMessageStatsCountsByWakeState)init;
-- (void)countTopic:(id)a3 now:(double)a4;
-- (void)moveUnknownToDestination:(id)a3;
+- (void)countTopic:(id)topic now:(double)now;
+- (void)moveUnknownToDestination:(id)destination;
 @end
 
 @implementation APSPayloadMessageStatsCountsByWakeState
@@ -29,35 +29,35 @@
   return v2;
 }
 
-- (void)countTopic:(id)a3 now:(double)a4
+- (void)countTopic:(id)topic now:(double)now
 {
-  v19 = a3;
+  topicCopy = topic;
   v6 = self->_unknown;
   v7 = +[APSWakeStateManager wakeStateManager];
-  v8 = [v7 inFullWake];
+  inFullWake = [v7 inFullWake];
 
-  if (v8)
+  if (inFullWake)
   {
     goto LABEL_2;
   }
 
   v10 = +[APSWakeStateManager wakeStateManager];
-  v11 = [v10 inDarkWake];
+  inDarkWake = [v10 inDarkWake];
 
-  if (v11)
+  if (inDarkWake)
   {
     goto LABEL_4;
   }
 
   v13 = +[APSWakeStateManager wakeStateManager];
-  v14 = [v13 isGoingToSleep];
+  isGoingToSleep = [v13 isGoingToSleep];
 
-  if (v14)
+  if (isGoingToSleep)
   {
     v15 = +[APSWakeStateManager wakeStateManager];
-    v16 = [v15 wasInFullWake];
+    wasInFullWake = [v15 wasInFullWake];
 
-    if (v16)
+    if (wasInFullWake)
     {
 LABEL_2:
       v9 = 16;
@@ -69,9 +69,9 @@ LABEL_5:
     }
 
     v17 = +[APSWakeStateManager wakeStateManager];
-    v18 = [v17 wasInDarkWake];
+    wasInDarkWake = [v17 wasInDarkWake];
 
-    if (v18)
+    if (wasInDarkWake)
     {
 LABEL_4:
       v9 = 8;
@@ -80,24 +80,24 @@ LABEL_4:
   }
 
 LABEL_6:
-  [(APSPayloadMessageStatsCount *)v6 countTopic:v19 now:a4];
+  [(APSPayloadMessageStatsCount *)v6 countTopic:topicCopy now:now];
 }
 
-- (void)moveUnknownToDestination:(id)a3
+- (void)moveUnknownToDestination:(id)destination
 {
-  v8 = a3;
+  destinationCopy = destination;
   if ([(APSPayloadMessageStatsCount *)self->_unknown count])
   {
-    [v8 setCount:{-[APSPayloadMessageStatsCount count](self->_unknown, "count") + objc_msgSend(v8, "count")}];
+    [destinationCopy setCount:{-[APSPayloadMessageStatsCount count](self->_unknown, "count") + objc_msgSend(destinationCopy, "count")}];
     [(APSPayloadMessageStatsCount *)self->_unknown lastMessageTime];
     v5 = v4;
-    [v8 lastMessageTime];
+    [destinationCopy lastMessageTime];
     if (v5 < v6)
     {
-      [v8 lastMessageTime];
+      [destinationCopy lastMessageTime];
       [(APSPayloadMessageStatsCount *)self->_unknown setLastMessageTime:?];
-      v7 = [(APSPayloadMessageStatsCount *)self->_unknown lastMessageTopic];
-      [v8 setLastMessageTopic:v7];
+      lastMessageTopic = [(APSPayloadMessageStatsCount *)self->_unknown lastMessageTopic];
+      [destinationCopy setLastMessageTopic:lastMessageTopic];
     }
 
     [(APSPayloadMessageStatsCount *)self->_unknown setCount:0];

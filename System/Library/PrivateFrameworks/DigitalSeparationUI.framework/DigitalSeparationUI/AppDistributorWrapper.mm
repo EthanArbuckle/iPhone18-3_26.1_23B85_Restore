@@ -1,20 +1,20 @@
 @interface AppDistributorWrapper
-+ (void)handleEmergencyResetWithCompletionHandler:(id)a3;
++ (void)handleEmergencyResetWithCompletionHandler:(id)handler;
 - (_TtC19DigitalSeparationUI21AppDistributorWrapper)init;
 @end
 
 @implementation AppDistributorWrapper
 
-+ (void)handleEmergencyResetWithCompletionHandler:(id)a3
++ (void)handleEmergencyResetWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27EECB368, &qword_248CDE7F0);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x28223BE20](v5 - 8);
   v8 = &v14 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
-  *(v10 + 24) = a1;
+  *(v10 + 24) = self;
   v11 = sub_248CD46CC();
   (*(*(v11 - 8) + 56))(v8, 1, 1, v11);
   v12 = swift_allocObject();

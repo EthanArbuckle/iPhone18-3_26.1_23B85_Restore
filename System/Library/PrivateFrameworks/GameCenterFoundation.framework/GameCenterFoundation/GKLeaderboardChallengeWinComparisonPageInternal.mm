@@ -1,5 +1,5 @@
 @interface GKLeaderboardChallengeWinComparisonPageInternal
-+ (id)initWithServerFragment:(id)a3;
++ (id)initWithServerFragment:(id)fragment;
 + (id)secureCodedPropertyKeys;
 @end
 
@@ -36,15 +36,15 @@ void __74__GKLeaderboardChallengeWinComparisonPageInternal_secureCodedPropertyKe
   v5 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)initWithServerFragment:(id)a3
++ (id)initWithServerFragment:(id)fragment
 {
-  v3 = a3;
+  fragmentCopy = fragment;
   v4 = objc_alloc_init(GKLeaderboardChallengeWinComparisonPageInternal);
-  v5 = [v3 objectForKeyedSubscript:@"result"];
+  v5 = [fragmentCopy objectForKeyedSubscript:@"result"];
   v6 = [v5 _gkMapWithBlock:&__block_literal_global_589];
   [(GKLeaderboardChallengeWinComparisonPageInternal *)v4 setComparisons:v6];
 
-  v7 = [v3 objectForKeyedSubscript:@"next-url"];
+  v7 = [fragmentCopy objectForKeyedSubscript:@"next-url"];
 
   [(GKLeaderboardChallengeWinComparisonPageInternal *)v4 setNextURL:v7];
 

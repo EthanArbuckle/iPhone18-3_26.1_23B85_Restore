@@ -7,9 +7,9 @@
 
 + (id)nullPayload
 {
-  v2 = [[PRSPosterUpdatePayload alloc] _init];
+  _init = [[PRSPosterUpdatePayload alloc] _init];
 
-  return v2;
+  return _init;
 }
 
 - (id)_init

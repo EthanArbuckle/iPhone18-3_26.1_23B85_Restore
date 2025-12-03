@@ -1,12 +1,12 @@
 @interface WiFiUsageLQMSample
-+ (BOOL)isPerSecond:(id)a3;
++ (BOOL)isPerSecond:(id)second;
 + (id)allLQMProperties;
-+ (id)binLabelfromFieldName:(id)a3 value:(int64_t)a4;
-+ (int64_t)subtract:(int64_t)a3 From:(int64_t)a4;
++ (id)binLabelfromFieldName:(id)name value:(int64_t)value;
++ (int64_t)subtract:(int64_t)subtract From:(int64_t)from;
 + (void)initialize;
-- (id)asDictionaryInto:(id)a3;
+- (id)asDictionaryInto:(id)into;
 - (id)description;
-- (id)numberForKeyPath:(id)a3;
+- (id)numberForKeyPath:(id)path;
 @end
 
 @implementation WiFiUsageLQMSample
@@ -15,24 +15,24 @@
 {
   outCount = 0;
   v3 = objc_opt_new();
-  if ([a1 isSubclassOfClass:objc_opt_class()])
+  if ([self isSubclassOfClass:objc_opt_class()])
   {
     while (1)
     {
-      v4 = class_copyPropertyList(a1, &outCount);
+      v4 = class_copyPropertyList(self, &outCount);
       if (outCount)
       {
         break;
       }
 
-      a1 = [a1 superclass];
+      self = [self superclass];
       if (v4)
       {
         goto LABEL_12;
       }
 
 LABEL_13:
-      if (([a1 isSubclassOfClass:objc_opt_class()] & 1) == 0)
+      if (([self isSubclassOfClass:objc_opt_class()] & 1) == 0)
       {
         goto LABEL_14;
       }
@@ -70,7 +70,7 @@ LABEL_8:
       }
     }
 
-    a1 = [a1 superclass];
+    self = [self superclass];
 LABEL_12:
     free(v4);
     goto LABEL_13;
@@ -82,9 +82,9 @@ LABEL_14:
   return v15;
 }
 
-- (id)numberForKeyPath:(id)a3
+- (id)numberForKeyPath:(id)path
 {
-  v3 = [(WiFiUsageLQMSample *)self valueForKeyPath:a3];
+  v3 = [(WiFiUsageLQMSample *)self valueForKeyPath:path];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -118,8 +118,8 @@ LABEL_14:
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [objc_opt_class() allLQMProperties];
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  allLQMProperties = [objc_opt_class() allLQMProperties];
+  v5 = [allLQMProperties countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -130,7 +130,7 @@ LABEL_14:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allLQMProperties);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
@@ -138,7 +138,7 @@ LABEL_14:
         [v3 appendFormat:@"%@:%@, ", v9, v10, v14];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [allLQMProperties countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);
@@ -151,24 +151,24 @@ LABEL_14:
   return v11;
 }
 
-+ (BOOL)isPerSecond:(id)a3
++ (BOOL)isPerSecond:(id)second
 {
   v3 = WiFiUsageLQMFieldNameToRoundMethod;
-  v4 = a3;
-  v5 = [v3 allKeys];
-  v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@PerSecond", v4];
+  secondCopy = second;
+  allKeys = [v3 allKeys];
+  secondCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@PerSecond", secondCopy];
 
-  LOBYTE(v4) = [v5 containsObject:v6];
-  return v4;
+  LOBYTE(secondCopy) = [allKeys containsObject:secondCopy];
+  return secondCopy;
 }
 
-- (id)asDictionaryInto:(id)a3
+- (id)asDictionaryInto:(id)into
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  intoCopy = into;
+  if (!intoCopy)
   {
-    v4 = objc_opt_new();
+    intoCopy = objc_opt_new();
   }
 
   v30 = 0u;
@@ -195,20 +195,20 @@ LABEL_14:
 
         v10 = *(*(&v28 + 1) + 8 * v9);
         v11 = [(WiFiUsageLQMSample *)self numberForKeyPath:v10];
-        [v4 setObject:v11 forKeyedSubscript:v10];
+        [intoCopy setObject:v11 forKeyedSubscript:v10];
 
         if ([objc_opt_class() isPerSecond:v10])
         {
           v12 = v7;
           v13 = v8;
           v14 = MEMORY[0x277CCABB0];
-          v15 = [v4 objectForKeyedSubscript:v10];
+          v15 = [intoCopy objectForKeyedSubscript:v10];
           [v15 doubleValue];
           v17 = v16;
           v18 = [(WiFiUsageLQMSample *)self numberForKeyPath:@"duration"];
           v19 = [v14 numberWithLong:{(v17 / objc_msgSend(v18, "integerValue"))}];
           v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@PerSecond", v10];
-          [v4 setObject:v19 forKeyedSubscript:v20];
+          [intoCopy setObject:v19 forKeyedSubscript:v20];
 
           v8 = v13;
           v7 = v12;
@@ -217,11 +217,11 @@ LABEL_14:
 
         if ([v10 isEqualToString:v8])
         {
-          v21 = [v4 objectForKeyedSubscript:v10];
-          v22 = [v21 unsignedIntValue];
+          v21 = [intoCopy objectForKeyedSubscript:v10];
+          unsignedIntValue = [v21 unsignedIntValue];
 
-          v23 = [WiFiUsagePrivacyFilter getLabelForCoreRssiMode:v22];
-          [v4 setObject:v23 forKeyedSubscript:v10];
+          v23 = [WiFiUsagePrivacyFilter getLabelForCoreRssiMode:unsignedIntValue];
+          [intoCopy setObject:v23 forKeyedSubscript:v10];
         }
 
         ++v9;
@@ -236,7 +236,7 @@ LABEL_14:
 
   v24 = *MEMORY[0x277D85DE8];
 
-  return v4;
+  return intoCopy;
 }
 
 + (void)initialize
@@ -343,157 +343,157 @@ LABEL_14:
   WiFiUsageLQMFieldNameToRoundMethod = v8;
 }
 
-+ (id)binLabelfromFieldName:(id)a3 value:(int64_t)a4
++ (id)binLabelfromFieldName:(id)name value:(int64_t)value
 {
-  v5 = a3;
-  v6 = [WiFiUsageLQMFieldNameToRoundMethod objectForKeyedSubscript:v5];
-  v7 = [v6 integerValue];
+  nameCopy = name;
+  v6 = [WiFiUsageLQMFieldNameToRoundMethod objectForKeyedSubscript:nameCopy];
+  integerValue = [v6 integerValue];
 
-  if (v7)
+  if (integerValue)
   {
     goto LABEL_5;
   }
 
-  if (([v5 hasSuffix:@"Perc"] & 1) != 0 || objc_msgSend(v5, "hasSuffix:", @"Percentage"))
+  if (([nameCopy hasSuffix:@"Perc"] & 1) != 0 || objc_msgSend(nameCopy, "hasSuffix:", @"Percentage"))
   {
-    v7 = defaultForPercentages;
+    integerValue = defaultForPercentages;
 LABEL_5:
-    switch(v7)
+    switch(integerValue)
     {
       case 0:
         break;
       case 1:
-        v11 = a4;
+        valueCopy14 = value;
         v12 = 0;
         goto LABEL_25;
       case 2:
-        v21 = a4;
+        valueCopy15 = value;
         v22 = 0;
         goto LABEL_20;
       case 3:
-        v9 = a4;
+        valueCopy16 = value;
         v10 = 0;
         goto LABEL_22;
       case 4:
-        v15 = a4;
+        valueCopy17 = value;
         v16 = 0;
         goto LABEL_27;
       case 5:
-        v25 = a4;
+        valueCopy18 = value;
         v26 = 0;
         goto LABEL_35;
       case 6:
-        v31 = a4;
+        valueCopy19 = value;
         v32 = 0;
         goto LABEL_42;
       case 7:
-        v23 = a4;
+        valueCopy20 = value;
         v24 = 0;
         goto LABEL_29;
       case 8:
-        v27 = a4;
+        valueCopy21 = value;
         v28 = 0;
         goto LABEL_38;
       case 9:
-        v19 = a4;
+        valueCopy22 = value;
         v20 = 0;
         goto LABEL_40;
       case 10:
-        v33 = a4;
+        valueCopy23 = value;
         v34 = 0;
         goto LABEL_44;
       case 11:
-        v13 = a4;
+        valueCopy24 = value;
         v14 = 0;
         goto LABEL_17;
       case 12:
-        v17 = a4;
+        valueCopy25 = value;
         v18 = 0;
         goto LABEL_15;
       case 13:
-        v29 = a4;
+        valueCopy26 = value;
         v30 = 0;
         goto LABEL_47;
       case 14:
-        v11 = a4;
+        valueCopy14 = value;
         v12 = 2;
 LABEL_25:
-        v8 = [WiFiUsagePrivacyFilter getBinEvery10Over100:v11 As:v12];
+        v8 = [WiFiUsagePrivacyFilter getBinEvery10Over100:valueCopy14 As:v12];
         goto LABEL_48;
       case 15:
-        v21 = a4;
+        valueCopy15 = value;
         v22 = 2;
 LABEL_20:
-        v8 = [WiFiUsageLQMTransformations getBinEvery10thOverRatioScale:v21 As:v22];
+        v8 = [WiFiUsageLQMTransformations getBinEvery10thOverRatioScale:valueCopy15 As:v22];
         goto LABEL_48;
       case 16:
-        v9 = a4;
+        valueCopy16 = value;
         v10 = 2;
 LABEL_22:
-        v8 = [WiFiUsageLQMTransformations getBinRssi:v9 As:v10];
+        v8 = [WiFiUsageLQMTransformations getBinRssi:valueCopy16 As:v10];
         goto LABEL_48;
       case 17:
-        v15 = a4;
+        valueCopy17 = value;
         v16 = 2;
 LABEL_27:
-        v8 = [WiFiUsageLQMTransformations getBinNoise:v15 As:v16];
+        v8 = [WiFiUsageLQMTransformations getBinNoise:valueCopy17 As:v16];
         goto LABEL_48;
       case 18:
-        v25 = a4;
+        valueCopy18 = value;
         v26 = 2;
 LABEL_35:
-        v8 = [WiFiUsageLQMTransformations getBinSnr:v25 As:v26];
+        v8 = [WiFiUsageLQMTransformations getBinSnr:valueCopy18 As:v26];
         goto LABEL_48;
       case 19:
-        v31 = a4;
+        valueCopy19 = value;
         v32 = 2;
 LABEL_42:
-        v8 = [WiFiUsageLQMTransformations getBinDecodingAttempts:v31 As:v32];
+        v8 = [WiFiUsageLQMTransformations getBinDecodingAttempts:valueCopy19 As:v32];
         goto LABEL_48;
       case 20:
-        v23 = a4;
+        valueCopy20 = value;
         v24 = 2;
 LABEL_29:
-        v8 = [WiFiUsageLQMTransformations getBinBytesPerFrame:v23 As:v24];
+        v8 = [WiFiUsageLQMTransformations getBinBytesPerFrame:valueCopy20 As:v24];
         goto LABEL_48;
       case 21:
-        v27 = a4;
+        valueCopy21 = value;
         v28 = 2;
 LABEL_38:
-        v8 = [WiFiUsageLQMTransformations getBinBytesPerPacket:v27 As:v28];
+        v8 = [WiFiUsageLQMTransformations getBinBytesPerPacket:valueCopy21 As:v28];
         goto LABEL_48;
       case 22:
-        v19 = a4;
+        valueCopy22 = value;
         v20 = 2;
 LABEL_40:
-        v8 = [WiFiUsageLQMTransformations getBinFrames:v19 As:v20];
+        v8 = [WiFiUsageLQMTransformations getBinFrames:valueCopy22 As:v20];
         goto LABEL_48;
       case 23:
-        v33 = a4;
+        valueCopy23 = value;
         v34 = 2;
 LABEL_44:
-        v8 = [WiFiUsageLQMTransformations getBinRetries:v33 As:v34];
+        v8 = [WiFiUsageLQMTransformations getBinRetries:valueCopy23 As:v34];
         goto LABEL_48;
       case 24:
-        v13 = a4;
+        valueCopy24 = value;
         v14 = 2;
 LABEL_17:
-        v8 = [WiFiUsageLQMTransformations getBinMpduDensity:v13 As:v14];
+        v8 = [WiFiUsageLQMTransformations getBinMpduDensity:valueCopy24 As:v14];
         goto LABEL_48;
       case 25:
-        v17 = a4;
+        valueCopy25 = value;
         v18 = 2;
 LABEL_15:
-        v8 = [WiFiUsageLQMTransformations getBinQueuedAmpdu:v17 As:v18];
+        v8 = [WiFiUsageLQMTransformations getBinQueuedAmpdu:valueCopy25 As:v18];
         goto LABEL_48;
       case 26:
-        v29 = a4;
+        valueCopy26 = value;
         v30 = 2;
 LABEL_47:
-        v8 = [WiFiUsageLQMTransformations getBinDesense:v29 As:v30];
+        v8 = [WiFiUsageLQMTransformations getBinDesense:valueCopy26 As:v30];
         goto LABEL_48;
       case 27:
-        v8 = [WiFiUsageLQMTransformations getLabelTrafficState:a4];
+        v8 = [WiFiUsageLQMTransformations getLabelTrafficState:value];
         goto LABEL_48;
       default:
         v35 = 0;
@@ -501,7 +501,7 @@ LABEL_47:
     }
   }
 
-  v8 = [MEMORY[0x277CCABB0] numberWithLong:a4];
+  v8 = [MEMORY[0x277CCABB0] numberWithLong:value];
 LABEL_48:
   v35 = v8;
 LABEL_49:
@@ -509,16 +509,16 @@ LABEL_49:
   return v35;
 }
 
-+ (int64_t)subtract:(int64_t)a3 From:(int64_t)a4
++ (int64_t)subtract:(int64_t)subtract From:(int64_t)from
 {
-  if (a4 == 0x7FFFFFFFFFFFFFFFLL || a3 == 0x7FFFFFFFFFFFFFFFLL)
+  if (from == 0x7FFFFFFFFFFFFFFFLL || subtract == 0x7FFFFFFFFFFFFFFFLL)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
   else
   {
-    return a4 - a3;
+    return from - subtract;
   }
 }
 

@@ -1,20 +1,20 @@
 @interface HKObject
-+ (id)_newDataObjectWithMetadata:(id)a3 device:(id)a4 config:(id)a5;
-- (BOOL)_validateForSavingWithClientEntitlements:(id)a3 applicationSDKVersionToken:(unint64_t)a4 isAppleWatch:(BOOL)a5 error:(id *)a6;
-- (BOOL)isEqual:(id)a3;
++ (id)_newDataObjectWithMetadata:(id)metadata device:(id)device config:(id)config;
+- (BOOL)_validateForSavingWithClientEntitlements:(id)entitlements applicationSDKVersionToken:(unint64_t)token isAppleWatch:(BOOL)watch error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (HKObject)init;
-- (HKObject)initWithCoder:(id)a3;
+- (HKObject)initWithCoder:(id)coder;
 - (NSString)_timeZoneName;
 - (NSString)description;
 - (id)_copyByArchiving;
 - (id)_init;
 - (id)_validateConfiguration;
-- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)a3;
+- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)configuration;
 - (id)asJSONObject;
 - (int64_t)hk_integerValue;
-- (void)_setMetadata:(id)a3;
+- (void)_setMetadata:(id)metadata;
 - (void)_validateForCreation;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKObject
@@ -35,11 +35,11 @@
 - (void)_validateForCreation
 {
   v8 = *MEMORY[0x1E69E9840];
-  v3 = a1;
-  v4 = [a2 localizedDescription];
+  selfCopy = self;
+  localizedDescription = [a2 localizedDescription];
   v6 = 138412290;
-  v7 = v4;
-  _os_log_fault_impl(&dword_19197B000, v3, OS_LOG_TYPE_FAULT, "_validateForCreation encountered an error: %@", &v6, 0xCu);
+  v7 = localizedDescription;
+  _os_log_fault_impl(&dword_19197B000, selfCopy, OS_LOG_TYPE_FAULT, "_validateForCreation encountered an error: %@", &v6, 0xCu);
 
   v5 = *MEMORY[0x1E69E9840];
 }
@@ -53,52 +53,52 @@
 
 - (NSString)description
 {
-  v3 = [(HKObject *)self _valueDescription];
-  v4 = v3;
+  _valueDescription = [(HKObject *)self _valueDescription];
+  v4 = _valueDescription;
   v5 = &stru_1F05FF230;
-  if (v3)
+  if (_valueDescription)
   {
-    v5 = v3;
+    v5 = _valueDescription;
   }
 
   v6 = v5;
 
   v7 = MEMORY[0x1E696AD60];
-  v8 = [(HKObject *)self UUID];
-  v9 = [v7 stringWithFormat:@"%@ %@ ", v8, v6];
+  uUID = [(HKObject *)self UUID];
+  v9 = [v7 stringWithFormat:@"%@ %@ ", uUID, v6];
 
-  v10 = [(HKObject *)self sourceRevision];
-  if (v10)
+  sourceRevision = [(HKObject *)self sourceRevision];
+  if (sourceRevision)
   {
-    v11 = [(NSUUID *)self->_UUID UUIDString];
-    v12 = [v10 version];
-    v13 = [v10 productType];
-    [v10 operatingSystemVersion];
+    uUIDString = [(NSUUID *)self->_UUID UUIDString];
+    version = [sourceRevision version];
+    productType = [sourceRevision productType];
+    [sourceRevision operatingSystemVersion];
     v14 = HKNSOperatingSystemVersionString(v24);
-    [v9 appendFormat:@"%@, (%@), %@ (%@)", v11, v12, v13, v14];
+    [v9 appendFormat:@"%@, (%@), %@ (%@)", uUIDString, version, productType, v14];
   }
 
-  v15 = [(HKObject *)self device];
-  v16 = v15;
-  if (v15)
+  device = [(HKObject *)self device];
+  v16 = device;
+  if (device)
   {
-    v17 = [v15 name];
-    [v9 appendFormat:@" %@ ", v17];
+    name = [device name];
+    [v9 appendFormat:@" %@ ", name];
   }
 
-  v18 = [(HKObject *)self metadata];
-  v19 = v18;
-  if (v18 && [v18 count])
+  metadata = [(HKObject *)self metadata];
+  v19 = metadata;
+  if (metadata && [metadata count])
   {
     [v9 appendFormat:@"metadata: %@", v19];
   }
 
-  v20 = [(HKObject *)self contributor];
-  v21 = v20;
-  if (v20)
+  contributor = [(HKObject *)self contributor];
+  v21 = contributor;
+  if (contributor)
   {
-    v22 = [v20 appleID];
-    [v9 appendFormat:@", contributor %@", v22];
+    appleID = [contributor appleID];
+    [v9 appendFormat:@", contributor %@", appleID];
   }
 
   return v9;
@@ -122,49 +122,49 @@
   return v3;
 }
 
-+ (id)_newDataObjectWithMetadata:(id)a3 device:(id)a4 config:(id)a5
++ (id)_newDataObjectWithMetadata:(id)metadata device:(id)device config:(id)config
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a3;
-  if (([a1 _isConcreteObjectClass] & 1) == 0)
+  deviceCopy = device;
+  configCopy = config;
+  metadataCopy = metadata;
+  if (([self _isConcreteObjectClass] & 1) == 0)
   {
-    [HKObject _newDataObjectWithMetadata:a2 device:a1 config:?];
+    [HKObject _newDataObjectWithMetadata:a2 device:self config:?];
   }
 
-  v12 = [[a1 alloc] _init];
-  v13 = [MEMORY[0x1E696AFB0] UUID];
-  v14 = v12[1];
-  v12[1] = v13;
+  _init = [[self alloc] _init];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  v14 = _init[1];
+  _init[1] = uUID;
 
-  v15 = v12[3];
-  v12[3] = v9;
-  v16 = v9;
+  v15 = _init[3];
+  _init[3] = deviceCopy;
+  v16 = deviceCopy;
 
-  v17 = [v11 copy];
-  v18 = v12[4];
-  v12[4] = v17;
+  v17 = [metadataCopy copy];
+  v18 = _init[4];
+  _init[4] = v17;
 
-  if (v10)
+  if (configCopy)
   {
-    v10[2](v10, v12);
+    configCopy[2](configCopy, _init);
   }
 
-  [v12 _validateForCreation];
+  [_init _validateForCreation];
 
-  return v12;
+  return _init;
 }
 
-- (BOOL)_validateForSavingWithClientEntitlements:(id)a3 applicationSDKVersionToken:(unint64_t)a4 isAppleWatch:(BOOL)a5 error:(id *)a6
+- (BOOL)_validateForSavingWithClientEntitlements:(id)entitlements applicationSDKVersionToken:(unint64_t)token isAppleWatch:(BOOL)watch error:(id *)error
 {
-  v7 = -[HKObject _validateConfigurationAllowingPrivateMetadata:applicationSDKVersionToken:](self, "_validateConfigurationAllowingPrivateMetadata:applicationSDKVersionToken:", [a3 hasPrivateMetadataAccess], a4);
+  v7 = -[HKObject _validateConfigurationAllowingPrivateMetadata:applicationSDKVersionToken:](self, "_validateConfigurationAllowingPrivateMetadata:applicationSDKVersionToken:", [entitlements hasPrivateMetadataAccess], token);
   v8 = v7;
   if (v7)
   {
-    if (a6)
+    if (error)
     {
       v9 = v7;
-      *a6 = v8;
+      *error = v8;
     }
 
     else
@@ -176,7 +176,7 @@
   return v8 == 0;
 }
 
-- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)a3
+- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)configuration
 {
   if (self->_UUID)
   {
@@ -191,15 +191,15 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     UUID = self->_UUID;
-    v6 = [v4 UUID];
-    v7 = [(NSUUID *)UUID isEqual:v6];
+    uUID = [equalCopy UUID];
+    v7 = [(NSUUID *)UUID isEqual:uUID];
   }
 
   else
@@ -210,82 +210,82 @@
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   UUID = self->_UUID;
-  v5 = a3;
-  [v5 encodeObject:UUID forKey:@"UUID"];
-  [v5 encodeObject:self->_metadata forKey:@"Metadata"];
-  [v5 encodeObject:self->_sourceBundleIdentifier forKey:@"SourceBundleID"];
-  [v5 encodeObject:self->_sourceRevision forKey:@"SourceRevision"];
-  [v5 encodeObject:self->_device forKey:@"Device"];
-  [v5 encodeDouble:@"CTS" forKey:self->_creationTimestamp];
-  [v5 encodeObject:self->_contributor forKey:@"Contributor"];
+  coderCopy = coder;
+  [coderCopy encodeObject:UUID forKey:@"UUID"];
+  [coderCopy encodeObject:self->_metadata forKey:@"Metadata"];
+  [coderCopy encodeObject:self->_sourceBundleIdentifier forKey:@"SourceBundleID"];
+  [coderCopy encodeObject:self->_sourceRevision forKey:@"SourceRevision"];
+  [coderCopy encodeObject:self->_device forKey:@"Device"];
+  [coderCopy encodeDouble:@"CTS" forKey:self->_creationTimestamp];
+  [coderCopy encodeObject:self->_contributor forKey:@"Contributor"];
 }
 
-- (HKObject)initWithCoder:(id)a3
+- (HKObject)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HKObject *)self _init];
-  if (v5)
+  coderCopy = coder;
+  _init = [(HKObject *)self _init];
+  if (_init)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UUID"];
-    UUID = v5->_UUID;
-    v5->_UUID = v6;
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UUID"];
+    UUID = _init->_UUID;
+    _init->_UUID = v6;
 
-    v8 = [MEMORY[0x1E695DF20] hk_secureCodingClasses];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"Metadata"];
-    v10 = [v9 hk_replaceKeysFromSharedStringCache];
-    metadata = v5->_metadata;
-    v5->_metadata = v10;
+    hk_secureCodingClasses = [MEMORY[0x1E695DF20] hk_secureCodingClasses];
+    v9 = [coderCopy decodeObjectOfClasses:hk_secureCodingClasses forKey:@"Metadata"];
+    hk_replaceKeysFromSharedStringCache = [v9 hk_replaceKeysFromSharedStringCache];
+    metadata = _init->_metadata;
+    _init->_metadata = hk_replaceKeysFromSharedStringCache;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SourceBundleID"];
-    sourceBundleIdentifier = v5->_sourceBundleIdentifier;
-    v5->_sourceBundleIdentifier = v12;
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SourceBundleID"];
+    sourceBundleIdentifier = _init->_sourceBundleIdentifier;
+    _init->_sourceBundleIdentifier = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SourceRevision"];
-    sourceRevision = v5->_sourceRevision;
-    v5->_sourceRevision = v14;
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SourceRevision"];
+    sourceRevision = _init->_sourceRevision;
+    _init->_sourceRevision = v14;
 
-    if (!v5->_sourceRevision)
+    if (!_init->_sourceRevision)
     {
-      v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Source"];
+      v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Source"];
       if (v16)
       {
         v17 = [[HKSourceRevision alloc] _initWithSource:v16];
-        v18 = v5->_sourceRevision;
-        v5->_sourceRevision = v17;
+        v18 = _init->_sourceRevision;
+        _init->_sourceRevision = v17;
       }
     }
 
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Device"];
-    device = v5->_device;
-    v5->_device = v19;
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Device"];
+    device = _init->_device;
+    _init->_device = v19;
 
-    if ([v4 containsValueForKey:@"CTS"])
+    if ([coderCopy containsValueForKey:@"CTS"])
     {
-      [v4 decodeDoubleForKey:@"CTS"];
-      v5->_creationTimestamp = v21;
+      [coderCopy decodeDoubleForKey:@"CTS"];
+      _init->_creationTimestamp = v21;
     }
 
     else
     {
-      v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CreationDate"];
+      v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CreationDate"];
       [v22 timeIntervalSinceReferenceDate];
-      v5->_creationTimestamp = v23;
+      _init->_creationTimestamp = v23;
     }
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Contributor"];
-    contributor = v5->_contributor;
-    v5->_contributor = v24;
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Contributor"];
+    contributor = _init->_contributor;
+    _init->_contributor = v24;
   }
 
-  return v5;
+  return _init;
 }
 
-- (void)_setMetadata:(id)a3
+- (void)_setMetadata:(id)metadata
 {
-  v4 = [a3 copy];
+  v4 = [metadata copy];
   metadata = self->_metadata;
   self->_metadata = v4;
 
@@ -335,27 +335,27 @@
   v4 = [objc_opt_class() description];
   [v3 setObject:v4 forKeyedSubscript:@"class"];
 
-  v5 = [(HKObject *)self UUID];
-  v6 = [v5 UUIDString];
-  [v3 setObject:v6 forKeyedSubscript:@"UUID"];
+  uUID = [(HKObject *)self UUID];
+  uUIDString = [uUID UUIDString];
+  [v3 setObject:uUIDString forKeyedSubscript:@"UUID"];
 
-  v7 = [(HKObject *)self sourceRevision];
-  v8 = [v7 asJSONObject];
-  [v3 setObject:v8 forKeyedSubscript:@"sourceRevision"];
+  sourceRevision = [(HKObject *)self sourceRevision];
+  asJSONObject = [sourceRevision asJSONObject];
+  [v3 setObject:asJSONObject forKeyedSubscript:@"sourceRevision"];
 
-  v9 = [(HKObject *)self metadata];
+  metadata = [(HKObject *)self metadata];
 
-  if (v9)
+  if (metadata)
   {
-    v10 = [MEMORY[0x1E695DF90] dictionary];
-    v11 = [(HKObject *)self metadata];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    metadata2 = [(HKObject *)self metadata];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __33__HKObject_HK_JSON__asJSONObject__block_invoke;
     v14[3] = &unk_1E737BB50;
-    v15 = v10;
-    v12 = v10;
-    [v11 enumerateKeysAndObjectsUsingBlock:v14];
+    v15 = dictionary;
+    v12 = dictionary;
+    [metadata2 enumerateKeysAndObjectsUsingBlock:v14];
 
     [v3 setObject:v12 forKeyedSubscript:@"metadata"];
   }

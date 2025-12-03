@@ -1,59 +1,59 @@
 @interface BWVISNode
 - (BOOL)hasNonLiveConfigurationChanges;
-- (BWVISNode)initWithSensorIDDict:(id)a3 stabilizationMethod:(int)a4 stabilizationType:(int)a5 ispProcessingSession:(id)a6 maxSupportedFrameRate:(float)a7 activeMaxFrameRate:(float)a8 gpuPriority:(int)a9 metalSubmissionAndCompletionQueuePriority:(unsigned int)a10 motionAttachmentsSource:(int)a11 fillExtendedRowsOfOutputBuffer:(BOOL)a12 overCaptureEnabled:(BOOL)a13 stereoMode:(int)a14 videoStabilizationOverscanOverride:(float)a15 videoStabilizationStrength:(int)a16 zoomSmoothingEnabled:(BOOL)a17 applyFrameCropOffset:(BOOL)a18 motionMetadataPreloadingEnabled:(BOOL)a19 visExecutionMode:(int)a20 livePhotoCleanOutputRect:(CGRect)a21 cameraInfoByPortType:(id)a22 cvisExtendedLookAheadDuration:(float)a23 distortionCorrectionEnabledPortTypes:(id)a24 distortionCompensationEnabledPortTypes:(id)a25 minDistanceForBravoParallaxShift:(float)a26 videoGreenGhostOfflineMetadataEnabled:(BOOL)a27 videoGreenGhostOfflineLightSourceMaskEnabled:(BOOL)a28 lightSourceMaskAndKeypointDescriptorDataEnabled:(BOOL)a29 attachStabilizedOutputCameraTrajectory:(BOOL)a30 systemIsUnderCriticalThermalPressure:(BOOL)a31 faceAwareVideoStabilizationEnabled:(BOOL)a32;
+- (BWVISNode)initWithSensorIDDict:(id)dict stabilizationMethod:(int)method stabilizationType:(int)type ispProcessingSession:(id)session maxSupportedFrameRate:(float)rate activeMaxFrameRate:(float)frameRate gpuPriority:(int)priority metalSubmissionAndCompletionQueuePriority:(unsigned int)self0 motionAttachmentsSource:(int)self1 fillExtendedRowsOfOutputBuffer:(BOOL)self2 overCaptureEnabled:(BOOL)self3 stereoMode:(int)self4 videoStabilizationOverscanOverride:(float)self5 videoStabilizationStrength:(int)self6 zoomSmoothingEnabled:(BOOL)self7 applyFrameCropOffset:(BOOL)self8 motionMetadataPreloadingEnabled:(BOOL)self9 visExecutionMode:(int)executionMode livePhotoCleanOutputRect:(CGRect)rect cameraInfoByPortType:(id)portType cvisExtendedLookAheadDuration:(float)duration distortionCorrectionEnabledPortTypes:(id)types distortionCompensationEnabledPortTypes:(id)portTypes minDistanceForBravoParallaxShift:(float)shift videoGreenGhostOfflineMetadataEnabled:(BOOL)metadataEnabled videoGreenGhostOfflineLightSourceMaskEnabled:(BOOL)maskEnabled lightSourceMaskAndKeypointDescriptorDataEnabled:(BOOL)dataEnabled attachStabilizedOutputCameraTrajectory:(BOOL)dict0 systemIsUnderCriticalThermalPressure:(BOOL)dict1 faceAwareVideoStabilizationEnabled:(BOOL)dict2;
 - (CGRect)irisVISCleanOutputRect;
-- (double)_calculateOpticalCenterFromMetadata:(uint64_t)a1;
-- (double)_droppedSamplePTSFromSampleBuffer:(uint64_t)a3@<X8>;
-- (double)_transformPointsInMetadata:(double)a3 pts:(double)a4;
+- (double)_calculateOpticalCenterFromMetadata:(uint64_t)metadata;
+- (double)_droppedSamplePTSFromSampleBuffer:(uint64_t)buffer@<X8>;
+- (double)_transformPointsInMetadata:(double)metadata pts:(double)pts;
 - (id)_updateSupportedPixelFormats;
-- (uint64_t)_attachHarvestedStabilizationMetadataToCinematographyFrame:(os_unfair_lock_s *)a1;
-- (uint64_t)_checkIfGreenGhostIsPresentWithSampleBuffer:(uint64_t)a1;
-- (uint64_t)_cinematographyFrameForSampleBuffer:(uint64_t)a1;
-- (uint64_t)_collectAttachedMediaForReprocessingFrom:(uint64_t)a3 offlineKey:(uint64_t)a4 offlineKeyData:(void *)a5 to:;
-- (uint64_t)_collectMetadataForReprocessingFrom:(void *)a3 to:;
-- (uint64_t)_findBestMotionTensorsInRingBufferWithKey:(os_unfair_lock_s *)a1 pts:(uint64_t)a2;
-- (uint64_t)_harvestMetadataFromSampleBuffer:(uint64_t)a1;
+- (uint64_t)_attachHarvestedStabilizationMetadataToCinematographyFrame:(os_unfair_lock_s *)frame;
+- (uint64_t)_checkIfGreenGhostIsPresentWithSampleBuffer:(uint64_t)buffer;
+- (uint64_t)_cinematographyFrameForSampleBuffer:(uint64_t)buffer;
+- (uint64_t)_collectAttachedMediaForReprocessingFrom:(uint64_t)from offlineKey:(uint64_t)key offlineKeyData:(void *)data to:;
+- (uint64_t)_collectMetadataForReprocessingFrom:(void *)from to:;
+- (uint64_t)_findBestMotionTensorsInRingBufferWithKey:(os_unfair_lock_s *)key pts:(uint64_t)pts;
+- (uint64_t)_harvestMetadataFromSampleBuffer:(uint64_t)buffer;
 - (uint64_t)_newFormatRequirementsAdjustedToOutputDimensionAspectRatio:(uint64_t)result;
 - (uint64_t)_reportIOSurfaceCompressionCoreAnalyticsData;
 - (uint64_t)_setupVISProcessorController;
-- (uint64_t)_stabilizeCinematographyMetadataInCinematographyFrame:(uint64_t)a1;
-- (uint64_t)_stabilizeMetadataForSampleBuffer:(uint64_t)a1;
-- (uint64_t)_transformRectanglesInMetadata:(__int128 *)a3 pts:;
+- (uint64_t)_stabilizeCinematographyMetadataInCinematographyFrame:(uint64_t)frame;
+- (uint64_t)_stabilizeMetadataForSampleBuffer:(uint64_t)buffer;
+- (uint64_t)_transformRectanglesInMetadata:(__int128 *)metadata pts:;
 - (uint64_t)_updateInputRequirements;
 - (uint64_t)prepareForCurrentConfigurationToBecomeLive;
-- (void)_addMotionTensorsToRingBuffer:(uint64_t)a3 pts:;
-- (void)_addVISDigitalZoomToMetadata:(uint64_t)a3 sampleBuffer:(int)a4 forReprocessing:;
+- (void)_addMotionTensorsToRingBuffer:(uint64_t)buffer pts:;
+- (void)_addVISDigitalZoomToMetadata:(uint64_t)metadata sampleBuffer:(int)buffer forReprocessing:;
 - (void)_flushBuffers;
-- (void)_handleIrisKeyFrameCachingForSampleBuffer:(uint64_t)a1;
-- (void)_releaseResourcesForReconfig:(uint64_t)a1;
-- (void)_tallyAndEmitDroppedSample:(uint64_t)a1;
-- (void)_tallyAndEmitSampleBuffer:(uint64_t)a1;
-- (void)_tallyCompressedIOSurfaceStatsForSBuf:(uint64_t)a1;
+- (void)_handleIrisKeyFrameCachingForSampleBuffer:(uint64_t)buffer;
+- (void)_releaseResourcesForReconfig:(uint64_t)reconfig;
+- (void)_tallyAndEmitDroppedSample:(uint64_t)sample;
+- (void)_tallyAndEmitSampleBuffer:(uint64_t)buffer;
+- (void)_tallyCompressedIOSurfaceStatsForSBuf:(uint64_t)buf;
 - (void)_updateOutputRequirements;
-- (void)configurationWithID:(int64_t)a3 updatedFormat:(id)a4 didBecomeLiveForInput:(id)a5;
+- (void)configurationWithID:(int64_t)d updatedFormat:(id)format didBecomeLiveForInput:(id)input;
 - (void)dealloc;
-- (void)didCompleteProcessingOfBuffer:(opaqueCMSampleBuffer *)a3 withStatus:(int)a4;
-- (void)didReachEndOfDataForConfigurationID:(id)a3 input:(id)a4;
-- (void)didSelectFormat:(id)a3 forInput:(id)a4 forAttachedMediaKey:(id)a5;
-- (void)handleDroppedSample:(id)a3 forInput:(id)a4;
+- (void)didCompleteProcessingOfBuffer:(opaqueCMSampleBuffer *)buffer withStatus:(int)status;
+- (void)didReachEndOfDataForConfigurationID:(id)d input:(id)input;
+- (void)didSelectFormat:(id)format forInput:(id)input forAttachedMediaKey:(id)key;
+- (void)handleDroppedSample:(id)sample forInput:(id)input;
 - (void)prepareForCurrentConfigurationToBecomeLive;
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4;
-- (void)setEmitSampleBufferSemaphore:(id)a3;
-- (void)setIspProcessingSession:(id)a3;
-- (void)setLowResImageUsedByVideoEncoderEnabled:(BOOL)a3;
-- (void)setMaxLossyCompressionLevel:(int)a3;
-- (void)setOutputColorSpaceProperties:(int)a3;
-- (void)setOutputDepthDimensions:(id)a3;
-- (void)setOutputDimensions:(id)a3;
-- (void)setPersonSegmentationRenderingEnabled:(BOOL)a3;
-- (void)setProcessingSemaphore:(id)a3;
-- (void)setSmartStyleConfigurationDict:(id)a3;
-- (void)setSmartStyleRenderingEnabled:(BOOL)a3;
-- (void)setSmartStyleReversibilityEnabled:(BOOL)a3;
-- (void)setStabilizeDepthAttachments:(BOOL)a3;
-- (void)setVideoGreenGhostMitigationEnabled:(BOOL)a3;
-- (void)setVideoSTFEnabled:(BOOL)a3;
-- (void)willStartProcessingBuffer:(opaqueCMSampleBuffer *)a3 withStatus:(int)a4;
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input;
+- (void)setEmitSampleBufferSemaphore:(id)semaphore;
+- (void)setIspProcessingSession:(id)session;
+- (void)setLowResImageUsedByVideoEncoderEnabled:(BOOL)enabled;
+- (void)setMaxLossyCompressionLevel:(int)level;
+- (void)setOutputColorSpaceProperties:(int)properties;
+- (void)setOutputDepthDimensions:(id)dimensions;
+- (void)setOutputDimensions:(id)dimensions;
+- (void)setPersonSegmentationRenderingEnabled:(BOOL)enabled;
+- (void)setProcessingSemaphore:(id)semaphore;
+- (void)setSmartStyleConfigurationDict:(id)dict;
+- (void)setSmartStyleRenderingEnabled:(BOOL)enabled;
+- (void)setSmartStyleReversibilityEnabled:(BOOL)enabled;
+- (void)setStabilizeDepthAttachments:(BOOL)attachments;
+- (void)setVideoGreenGhostMitigationEnabled:(BOOL)enabled;
+- (void)setVideoSTFEnabled:(BOOL)enabled;
+- (void)willStartProcessingBuffer:(opaqueCMSampleBuffer *)buffer withStatus:(int)status;
 @end
 
 @implementation BWVISNode
@@ -65,16 +65,16 @@
     v1 = result;
     if ((*(result + 33) - 3) > 1)
     {
-      v3 = [MEMORY[0x1E695DF70] array];
-      [v3 addObjectsFromArray:&unk_1F22491B0];
+      array = [MEMORY[0x1E695DF70] array];
+      [array addObjectsFromArray:&unk_1F22491B0];
       if (*(v1 + 33) == 2)
       {
         FigCaptureSupportedPixelFormatsForCompressionType(4, 1, 1, *(v1 + 44));
         [OUTLINED_FUNCTION_4() addObjectsFromArray:?];
       }
 
-      v1[20] = [v3 copy];
-      result = [v3 copy];
+      v1[20] = [array copy];
+      result = [array copy];
       goto LABEL_16;
     }
 
@@ -100,11 +100,11 @@
     v19 = v4;
     v16 = v1;
     v7 = [MEMORY[0x1E696AE18] predicateWithBlock:&v12];
-    v8 = [objc_msgSend(OUTLINED_FUNCTION_3_77() ispProcessingSession];
+    ispProcessingSession = [objc_msgSend(OUTLINED_FUNCTION_3_77() ispProcessingSession];
     v9 = MEMORY[0x1E6966130];
-    if (v8)
+    if (ispProcessingSession)
     {
-      v10 = v8;
+      v10 = ispProcessingSession;
 
       v1[20] = [visn_pixelFormatsArrayFromPixelFormatTypeValue(objc_msgSend(v10 objectForKeyedSubscript:{*v9)), "filteredArrayUsingPredicate:", v7}];
     }
@@ -133,15 +133,15 @@ LABEL_16:
     OUTLINED_FUNCTION_33();
     if (v3)
     {
-      v4 = [+[FigCaptureCameraParameters sharedInstance](FigCaptureCameraParameters commonVideoGreenGhostMitigationParameters];
-      v5 = [objc_msgSend(-[NSDictionary objectForKeyedSubscript:](v4 objectForKeyedSubscript:{@"BrightLightMitigationParameters", "objectForKeyedSubscript:", @"Version", "intValue"}];
-      v6 = [objc_msgSend(-[NSDictionary objectForKeyedSubscript:](v4 objectForKeyedSubscript:{@"LowLightMitigationParameters", "objectForKeyedSubscript:", @"Version", "intValue"}];
+      commonVideoGreenGhostMitigationParameters = [+[FigCaptureCameraParameters sharedInstance](FigCaptureCameraParameters commonVideoGreenGhostMitigationParameters];
+      v5 = [objc_msgSend(-[NSDictionary objectForKeyedSubscript:](commonVideoGreenGhostMitigationParameters objectForKeyedSubscript:{@"BrightLightMitigationParameters", "objectForKeyedSubscript:", @"Version", "intValue"}];
+      v6 = [objc_msgSend(-[NSDictionary objectForKeyedSubscript:](commonVideoGreenGhostMitigationParameters objectForKeyedSubscript:{@"LowLightMitigationParameters", "objectForKeyedSubscript:", @"Version", "intValue"}];
       if (v5 >= 3 && v6 < 3)
       {
         v8 = 3;
       }
 
-      else if ([objc_msgSend(-[NSDictionary objectForKeyedSubscript:](v4 objectForKeyedSubscript:{@"LowLightMitigationParameters", "objectForKeyedSubscript:", @"Version", "intValue"}] <= 2)
+      else if ([objc_msgSend(-[NSDictionary objectForKeyedSubscript:](commonVideoGreenGhostMitigationParameters objectForKeyedSubscript:{@"LowLightMitigationParameters", "objectForKeyedSubscript:", @"Version", "intValue"}] <= 2)
       {
         v8 = 2;
       }
@@ -207,18 +207,18 @@ LABEL_16:
             v20 = v13;
             v21 = v9;
             v22 = v2;
-            v23 = [v8 delayedBufferCount];
-            if (v23 <= [OUTLINED_FUNCTION_3_77() cinematicLookAheadFrameCount] + 1)
+            delayedBufferCount = [v8 delayedBufferCount];
+            if (delayedBufferCount <= [OUTLINED_FUNCTION_3_77() cinematicLookAheadFrameCount] + 1)
             {
-              v24 = [OUTLINED_FUNCTION_3_77() cinematicLookAheadFrameCount] + 1;
+              delayedBufferCount2 = [OUTLINED_FUNCTION_3_77() cinematicLookAheadFrameCount] + 1;
             }
 
             else
             {
-              v24 = [v8 delayedBufferCount];
+              delayedBufferCount2 = [v8 delayedBufferCount];
             }
 
-            [v8 setDelayedBufferCount:{v24, v33}];
+            [v8 setDelayedBufferCount:{delayedBufferCount2, v33}];
             v2 = v22;
             v9 = v21;
             v13 = v20;
@@ -310,12 +310,12 @@ LABEL_31:
 
 - (void)_updateOutputRequirements
 {
-  if (a1)
+  if (self)
   {
     v2 = objc_alloc_init(BWVideoFormatRequirements);
     +[BWVideoFormatRequirements cacheModesForOptimizedCPUAccess];
     [OUTLINED_FUNCTION_4() setSupportedCacheModes:?];
-    v3 = *(a1 + 648);
+    v3 = *(self + 648);
     if (v3 || (v3 = [OUTLINED_FUNCTION_19_26() colorSpaceProperties], v3))
     {
       v33 = [MEMORY[0x1E696AD98] numberWithInt:v3];
@@ -328,24 +328,24 @@ LABEL_31:
     }
 
     [(BWVideoFormatRequirements *)v2 setSupportedColorSpaceProperties:v4];
-    if (*(a1 + 224) != 4)
+    if (*(self + 224) != 4)
     {
       v5 = OUTLINED_FUNCTION_19_26();
       v6 = v5;
-      if (*(a1 + 180) && *(a1 + 184))
+      if (*(self + 180) && *(self + 184))
       {
         [(BWVideoFormatRequirements *)v2 setWidth:?];
-        v7 = *(a1 + 184);
+        height = *(self + 184);
       }
 
       else
       {
         [v5 width];
         [OUTLINED_FUNCTION_4() setWidth:?];
-        v7 = [v6 height];
+        height = [v6 height];
       }
 
-      [(BWVideoFormatRequirements *)v2 setHeight:v7];
+      [(BWVideoFormatRequirements *)v2 setHeight:height];
       if (v6)
       {
         IsFullRange = FigCapturePixelFormatIsFullRange([v6 pixelFormat]);
@@ -358,23 +358,23 @@ LABEL_31:
         v30 = IsTenBit;
         v31 = v10;
         v32 = IsFullRange;
-        v11 = [*(a1 + 168) filteredArrayUsingPredicate:{objc_msgSend(MEMORY[0x1E696AE18], "predicateWithBlock:", v29)}];
+        v11 = [*(self + 168) filteredArrayUsingPredicate:{objc_msgSend(MEMORY[0x1E696AE18], "predicateWithBlock:", v29)}];
       }
 
       else
       {
-        v11 = *(a1 + 168);
+        v11 = *(self + 168);
       }
 
       [(BWVideoFormatRequirements *)v2 setSupportedPixelFormats:v11];
       v12 = off_1E7989000;
-      if (*(a1 + 713) == 1)
+      if (*(self + 713) == 1)
       {
         v13 = objc_alloc_init(BWNodeOutputMediaConfiguration);
         v14 = objc_alloc_init(BWVideoFormatRequirements);
         [(BWVideoFormatRequirements *)v14 setSupportedPixelFormats:&unk_1F22491C8];
-        [(BWVideoFormatRequirements *)v14 setWidth:*(a1 + 716)];
-        [(BWVideoFormatRequirements *)v14 setHeight:*(a1 + 720)];
+        [(BWVideoFormatRequirements *)v14 setWidth:*(self + 716)];
+        [(BWVideoFormatRequirements *)v14 setHeight:*(self + 720)];
         [OUTLINED_FUNCTION_39() setFormatRequirements:?];
         [(BWNodeOutputMediaConfiguration *)v13 setPassthroughMode:0];
         [(BWNodeOutputMediaConfiguration *)v13 setProvidesPixelBufferPool:1];
@@ -403,7 +403,7 @@ LABEL_31:
 
         [(BWVideoFormatRequirements *)v16 setSupportedPixelFormats:v17];
         v18 = objc_opt_new();
-        v19 = [(BWVideoFormatRequirements *)v2 supportedColorSpaceProperties];
+        supportedColorSpaceProperties = [(BWVideoFormatRequirements *)v2 supportedColorSpaceProperties];
         OUTLINED_FUNCTION_17_20();
         v21 = [v20 countByEnumeratingWithState:? objects:? count:?];
         if (v21)
@@ -416,7 +416,7 @@ LABEL_31:
             {
               if (MEMORY[0] != v23)
               {
-                objc_enumerationMutation(v19);
+                objc_enumerationMutation(supportedColorSpaceProperties);
               }
 
               if ([*(8 * i) intValue] == 3)
@@ -433,7 +433,7 @@ LABEL_31:
             }
 
             OUTLINED_FUNCTION_17_20();
-            v22 = [NSArray countByEnumeratingWithState:v19 objects:"countByEnumeratingWithState:objects:count:" count:?];
+            v22 = [NSArray countByEnumeratingWithState:supportedColorSpaceProperties objects:"countByEnumeratingWithState:objects:count:" count:?];
           }
 
           while (v22);
@@ -482,7 +482,7 @@ LABEL_31:
     if (v15)
     {
 
-      *(a1 + 248) = v2;
+      *(self + 248) = v2;
       v2 = objc_alloc_init(BWVideoFormatRequirements);
     }
 
@@ -490,35 +490,35 @@ LABEL_31:
   }
 }
 
-- (BWVISNode)initWithSensorIDDict:(id)a3 stabilizationMethod:(int)a4 stabilizationType:(int)a5 ispProcessingSession:(id)a6 maxSupportedFrameRate:(float)a7 activeMaxFrameRate:(float)a8 gpuPriority:(int)a9 metalSubmissionAndCompletionQueuePriority:(unsigned int)a10 motionAttachmentsSource:(int)a11 fillExtendedRowsOfOutputBuffer:(BOOL)a12 overCaptureEnabled:(BOOL)a13 stereoMode:(int)a14 videoStabilizationOverscanOverride:(float)a15 videoStabilizationStrength:(int)a16 zoomSmoothingEnabled:(BOOL)a17 applyFrameCropOffset:(BOOL)a18 motionMetadataPreloadingEnabled:(BOOL)a19 visExecutionMode:(int)a20 livePhotoCleanOutputRect:(CGRect)a21 cameraInfoByPortType:(id)a22 cvisExtendedLookAheadDuration:(float)a23 distortionCorrectionEnabledPortTypes:(id)a24 distortionCompensationEnabledPortTypes:(id)a25 minDistanceForBravoParallaxShift:(float)a26 videoGreenGhostOfflineMetadataEnabled:(BOOL)a27 videoGreenGhostOfflineLightSourceMaskEnabled:(BOOL)a28 lightSourceMaskAndKeypointDescriptorDataEnabled:(BOOL)a29 attachStabilizedOutputCameraTrajectory:(BOOL)a30 systemIsUnderCriticalThermalPressure:(BOOL)a31 faceAwareVideoStabilizationEnabled:(BOOL)a32
+- (BWVISNode)initWithSensorIDDict:(id)dict stabilizationMethod:(int)method stabilizationType:(int)type ispProcessingSession:(id)session maxSupportedFrameRate:(float)rate activeMaxFrameRate:(float)frameRate gpuPriority:(int)priority metalSubmissionAndCompletionQueuePriority:(unsigned int)self0 motionAttachmentsSource:(int)self1 fillExtendedRowsOfOutputBuffer:(BOOL)self2 overCaptureEnabled:(BOOL)self3 stereoMode:(int)self4 videoStabilizationOverscanOverride:(float)self5 videoStabilizationStrength:(int)self6 zoomSmoothingEnabled:(BOOL)self7 applyFrameCropOffset:(BOOL)self8 motionMetadataPreloadingEnabled:(BOOL)self9 visExecutionMode:(int)executionMode livePhotoCleanOutputRect:(CGRect)rect cameraInfoByPortType:(id)portType cvisExtendedLookAheadDuration:(float)duration distortionCorrectionEnabledPortTypes:(id)types distortionCompensationEnabledPortTypes:(id)portTypes minDistanceForBravoParallaxShift:(float)shift videoGreenGhostOfflineMetadataEnabled:(BOOL)metadataEnabled videoGreenGhostOfflineLightSourceMaskEnabled:(BOOL)maskEnabled lightSourceMaskAndKeypointDescriptorDataEnabled:(BOOL)dataEnabled attachStabilizedOutputCameraTrajectory:(BOOL)dict0 systemIsUnderCriticalThermalPressure:(BOOL)dict1 faceAwareVideoStabilizationEnabled:(BOOL)dict2
 {
-  v32 = self;
-  if (!a3)
+  selfCopy = self;
+  if (!dict)
   {
     goto LABEL_96;
   }
 
-  height = a21.size.height;
-  width = a21.size.width;
-  y = a21.origin.y;
-  x = a21.origin.x;
-  if (a5 != 2 && ((a5 - 5) < 0xFFFFFFFE || !a6 || a20 == 3 || self->_onlyGeneratingTransforms))
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  if (type != 2 && ((type - 5) < 0xFFFFFFFE || !session || executionMode == 3 || self->_onlyGeneratingTransforms))
   {
     goto LABEL_96;
   }
 
   v99.receiver = self;
   v99.super_class = BWVISNode;
-  v32 = [(BWNode *)&v99 init];
-  if (!v32)
+  selfCopy = [(BWNode *)&v99 init];
+  if (!selfCopy)
   {
-    return v32;
+    return selfCopy;
   }
 
-  v96 = a5;
-  v95 = a3;
-  v93 = a6;
-  v46 = a29;
+  typeCopy = type;
+  dictCopy = dict;
+  sessionCopy = session;
+  dataEnabledCopy = dataEnabled;
   v100.origin.x = x;
   v100.origin.y = y;
   v100.size.width = width;
@@ -526,13 +526,13 @@ LABEL_31:
   if (CGRectIsEmpty(v100))
   {
     v47 = 0;
-    v48 = a4;
+    methodCopy2 = method;
   }
 
   else
   {
-    v48 = a4;
-    v47 = a4 == 3 || a4 == 5;
+    methodCopy2 = method;
+    v47 = method == 3 || method == 5;
   }
 
   v101.origin.x = x;
@@ -540,55 +540,55 @@ LABEL_31:
   v101.size.width = width;
   v101.size.height = height;
   IsEmpty = CGRectIsEmpty(v101);
-  v32->_stabilizationMethod = v48;
-  v32->_stabilizationType = v96;
-  v32->_fillExtendedRowsOfOutputBuffer = a12;
-  v32->_visExecutionMode = a20;
-  v32->_usingExtendedCVISLivePhotoStabilization = v47;
-  if (a23 == 0.0)
+  selfCopy->_stabilizationMethod = methodCopy2;
+  selfCopy->_stabilizationType = typeCopy;
+  selfCopy->_fillExtendedRowsOfOutputBuffer = buffer;
+  selfCopy->_visExecutionMode = executionMode;
+  selfCopy->_usingExtendedCVISLivePhotoStabilization = v47;
+  if (duration == 0.0)
   {
-    a23 = 0.5;
+    duration = 0.5;
   }
 
-  v32->_cinematicLookAheadFrameCount = 0;
+  selfCopy->_cinematicLookAheadFrameCount = 0;
   v50 = MEMORY[0x1E6960C70];
-  *&v32->_lastEmittedPTS.value = *MEMORY[0x1E6960C70];
-  v32->_lastEmittedPTS.epoch = *(v50 + 16);
-  visExecutionMode = v32->_visExecutionMode;
-  v32->_onlyGeneratingTransforms = (visExecutionMode < 6) & (0x26u >> visExecutionMode);
+  *&selfCopy->_lastEmittedPTS.value = *MEMORY[0x1E6960C70];
+  selfCopy->_lastEmittedPTS.epoch = *(v50 + 16);
+  visExecutionMode = selfCopy->_visExecutionMode;
+  selfCopy->_onlyGeneratingTransforms = (visExecutionMode < 6) & (0x26u >> visExecutionMode);
   v53 = visExecutionMode == 3 || visExecutionMode == 0;
-  v32->_stabilizeMetadata = v53;
-  v32->_pipelineTraceID = 81;
-  v32->_videoStabilizationOverscanOverride = a15;
-  v32->_gpuPriority = a9;
-  v32->_videoGreenGhostOfflineMetadataEnabled = a27;
-  v32->_videoGreenGhostOfflineLightSourceMaskEnabled = a28;
-  v32->_lightSourceMaskAndKeypointDescriptorDataEnabled = a29;
-  v32->_lowLightGreenGhostMitigationEnabled = 1;
-  v32->_stereoMode = a14;
-  v32->_systemIsUnderCriticalThermalPressure = a31;
-  v32->_greenGhostStatus.detectedGreenGhostFrameCount = 0;
-  v32->_greenGhostStatus.greenGhostSampleBufferMetadataDetected = 0;
+  selfCopy->_stabilizeMetadata = v53;
+  selfCopy->_pipelineTraceID = 81;
+  selfCopy->_videoStabilizationOverscanOverride = override;
+  selfCopy->_gpuPriority = priority;
+  selfCopy->_videoGreenGhostOfflineMetadataEnabled = metadataEnabled;
+  selfCopy->_videoGreenGhostOfflineLightSourceMaskEnabled = maskEnabled;
+  selfCopy->_lightSourceMaskAndKeypointDescriptorDataEnabled = dataEnabled;
+  selfCopy->_lowLightGreenGhostMitigationEnabled = 1;
+  selfCopy->_stereoMode = mode;
+  selfCopy->_systemIsUnderCriticalThermalPressure = pressure;
+  selfCopy->_greenGhostStatus.detectedGreenGhostFrameCount = 0;
+  selfCopy->_greenGhostStatus.greenGhostSampleBufferMetadataDetected = 0;
   v54 = -[NSDictionary objectForKeyedSubscript:]([+[FigCaptureCameraParameters sharedInstance](FigCaptureCameraParameters commonVideoGreenGhostMitigationParameters], "objectForKeyedSubscript:", @"OfflineMitigationParameters");
   v55 = v47;
   if (v54)
   {
     v56 = v54;
-    v32->_greenGhostOfflineParameters.luxSuperLow = [objc_msgSend(v54 objectForKeyedSubscript:{@"LuxSuperLow", "intValue"}];
-    v32->_greenGhostOfflineParameters.luxLow = [objc_msgSend(v56 objectForKeyedSubscript:{@"LuxLow", "intValue"}];
+    selfCopy->_greenGhostOfflineParameters.luxSuperLow = [objc_msgSend(v54 objectForKeyedSubscript:{@"LuxSuperLow", "intValue"}];
+    selfCopy->_greenGhostOfflineParameters.luxLow = [objc_msgSend(v56 objectForKeyedSubscript:{@"LuxLow", "intValue"}];
     [objc_msgSend(v56 objectForKeyedSubscript:{@"ExposureHigh", "floatValue"}];
-    v32->_greenGhostOfflineParameters.exposureHigh = v57;
-    v32->_greenGhostOfflineParameters.clippedSmall = [objc_msgSend(v56 objectForKeyedSubscript:{@"ClippedSmall", "intValue"}];
+    selfCopy->_greenGhostOfflineParameters.exposureHigh = v57;
+    selfCopy->_greenGhostOfflineParameters.clippedSmall = [objc_msgSend(v56 objectForKeyedSubscript:{@"ClippedSmall", "intValue"}];
     [objc_msgSend(v56 objectForKeyedSubscript:{@"MovieThresholdInSecond", "floatValue"}];
-    v32->_greenGhostOfflineParameters.movieThresholdInSecond = v58;
+    selfCopy->_greenGhostOfflineParameters.movieThresholdInSecond = v58;
     v55 = v47;
   }
 
-  v32->_faceStabilizationEnabled = a32;
-  if (a32)
+  selfCopy->_faceStabilizationEnabled = stabilizationEnabled;
+  if (stabilizationEnabled)
   {
     v59 = -[NSDictionary objectForKeyedSubscript:]([+[FigCaptureCameraParameters sharedInstance](FigCaptureCameraParameters videoStabilizationParameters], "objectForKeyedSubscript:", @"FaceStabilizationTunings");
-    if (a4 == 5)
+    if (method == 5)
     {
       v60 = @"FacePriority";
     }
@@ -603,55 +603,55 @@ LABEL_31:
     {
       v62 = v61;
       [objc_msgSend(v61 objectForKeyedSubscript:{@"SigmaMultiplierForFaceFiltering", "floatValue"}];
-      v32->_faceStabilizationSigmaMultiplierForFaceFiltering = v63;
+      selfCopy->_faceStabilizationSigmaMultiplierForFaceFiltering = v63;
       [objc_msgSend(v62 objectForKeyedSubscript:{@"SigmaMultiplierForBiasTracking", "floatValue"}];
     }
 
     else
     {
-      LODWORD(v32->_faceStabilizationSigmaMultiplierForFaceFiltering) = dword_1AD056408[a4 == 5];
+      LODWORD(selfCopy->_faceStabilizationSigmaMultiplierForFaceFiltering) = dword_1AD056408[method == 5];
       v64 = 0.975;
-      if (a4 != 5)
+      if (method != 5)
       {
         v64 = 1.0;
       }
     }
 
-    v32->_faceStabilizationSigmaMultiplierForBiasTracking = v64;
+    selfCopy->_faceStabilizationSigmaMultiplierForBiasTracking = v64;
     v65 = 1.75;
-    if (a4 == 5)
+    if (method == 5)
     {
       v65 = 1.5;
     }
 
-    v32->_faceStabilizationSigmaModulationExponent = v65;
-    LODWORD(v32->_faceStabilizationSigmaModulationSmoothTransitionMultiplier) = dword_1AD056410[a4 == 5];
+    selfCopy->_faceStabilizationSigmaModulationExponent = v65;
+    LODWORD(selfCopy->_faceStabilizationSigmaModulationSmoothTransitionMultiplier) = dword_1AD056410[method == 5];
   }
 
-  v66 = fmaxf(a8, 30.0);
-  v32->_maxFrameRate = v66;
+  v66 = fmaxf(frameRate, 30.0);
+  selfCopy->_maxFrameRate = v66;
   v67 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v32->_intermediatePixelBufferPools = v67;
+  selfCopy->_intermediatePixelBufferPools = v67;
   if (!v67)
   {
     goto LABEL_96;
   }
 
-  LODWORD(v46) = vcvtps_s32_f32(v66 * a23);
-  v68 = v32->_visExecutionMode;
+  LODWORD(dataEnabledCopy) = vcvtps_s32_f32(v66 * duration);
+  v68 = selfCopy->_visExecutionMode;
   if (v68 != 4)
   {
     v69 = 0;
     v92 = v55 || IsEmpty;
     v70 = 1;
-    if (a4 > 5)
+    if (method > 5)
     {
       stereoMode = 0;
       goto LABEL_51;
     }
 
     stereoMode = 0;
-    if (((1 << a4) & 0x2C) != 0)
+    if (((1 << method) & 0x2C) != 0)
     {
       v69 = 0;
       stereoMode = 4;
@@ -661,15 +661,15 @@ LABEL_31:
         {
           if (v92)
           {
-            if (a19)
+            if (preloadingEnabled)
             {
               v69 = 0;
-              v32->_cinematicLookAheadFrameCount = v46;
+              selfCopy->_cinematicLookAheadFrameCount = dataEnabledCopy;
               stereoMode = 2;
               goto LABEL_51;
             }
 
-            stereoMode = v32->_stereoMode;
+            stereoMode = selfCopy->_stereoMode;
             if (stereoMode == 1)
             {
               v69 = 3;
@@ -695,7 +695,7 @@ LABEL_31:
             stereoMode = 3;
           }
 
-          v70 = v46 + 1;
+          v70 = dataEnabledCopy + 1;
           goto LABEL_51;
         }
 
@@ -706,13 +706,13 @@ LABEL_31:
 
 LABEL_51:
     v98 = v70;
-    if (v96 == 2 && a7 >= 120.0)
+    if (typeCopy == 2 && rate >= 120.0)
     {
-      v95 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:a3];
-      [v95 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", 0), *off_1E798A9F0}];
+      dictCopy = [MEMORY[0x1E695DF90] dictionaryWithDictionary:dict];
+      [dictCopy setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", 0), *off_1E798A9F0}];
     }
 
-    if (([a24 count] || objc_msgSend(a25, "count")) && v96 != 2 && v96 != 4)
+    if (([types count] || objc_msgSend(portTypes, "count")) && typeCopy != 2 && typeCopy != 4)
     {
       FrameworkRadarComponent = FigCaptureGetFrameworkRadarComponent();
       os_log_and_send_and_compose_flags_and_os_log_type = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
@@ -726,32 +726,32 @@ LABEL_51:
     else
     {
       v72 = objc_alloc_init(BWVISProcessorControllerConfiguration);
-      v32->_processorControllerConfiguration = v72;
+      selfCopy->_processorControllerConfiguration = v72;
       if (v72)
       {
-        [(BWVISProcessorControllerConfiguration *)v72 setSensorIDDict:v95];
-        [(BWVISProcessorControllerConfiguration *)v32->_processorControllerConfiguration setSmoothingMethod:stereoMode];
-        [(BWVISProcessorControllerConfiguration *)v32->_processorControllerConfiguration setMotionBlurShimmerMitigationMethod:v69];
-        *&v73 = a23;
-        [(BWVISProcessorControllerConfiguration *)v32->_processorControllerConfiguration setCinematicLookAheadTime:v73];
-        [(BWVISProcessorControllerConfiguration *)v32->_processorControllerConfiguration setCinematicLookAheadFrameCount:v46];
-        [(BWVISProcessorControllerConfiguration *)v32->_processorControllerConfiguration setUseISPMotionData:(a11 - 1) < 2];
-        [(BWVISProcessorControllerConfiguration *)v32->_processorControllerConfiguration setSphereCorrectionEnabled:a11 == 2];
-        *&v74 = a26;
-        [(BWVISProcessorControllerConfiguration *)v32->_processorControllerConfiguration setMinDistanceForBravoParallaxShift:v74];
-        [(BWVISProcessorControllerConfiguration *)v32->_processorControllerConfiguration setIspProcessingSession:v93];
-        [(BWVISProcessorControllerConfiguration *)v32->_processorControllerConfiguration setMetalSubmissionAndCompletionQueuePriority:a10];
-        if ([a24 count])
+        [(BWVISProcessorControllerConfiguration *)v72 setSensorIDDict:dictCopy];
+        [(BWVISProcessorControllerConfiguration *)selfCopy->_processorControllerConfiguration setSmoothingMethod:stereoMode];
+        [(BWVISProcessorControllerConfiguration *)selfCopy->_processorControllerConfiguration setMotionBlurShimmerMitigationMethod:v69];
+        *&v73 = duration;
+        [(BWVISProcessorControllerConfiguration *)selfCopy->_processorControllerConfiguration setCinematicLookAheadTime:v73];
+        [(BWVISProcessorControllerConfiguration *)selfCopy->_processorControllerConfiguration setCinematicLookAheadFrameCount:dataEnabledCopy];
+        [(BWVISProcessorControllerConfiguration *)selfCopy->_processorControllerConfiguration setUseISPMotionData:(source - 1) < 2];
+        [(BWVISProcessorControllerConfiguration *)selfCopy->_processorControllerConfiguration setSphereCorrectionEnabled:source == 2];
+        *&v74 = shift;
+        [(BWVISProcessorControllerConfiguration *)selfCopy->_processorControllerConfiguration setMinDistanceForBravoParallaxShift:v74];
+        [(BWVISProcessorControllerConfiguration *)selfCopy->_processorControllerConfiguration setIspProcessingSession:sessionCopy];
+        [(BWVISProcessorControllerConfiguration *)selfCopy->_processorControllerConfiguration setMetalSubmissionAndCompletionQueuePriority:queuePriority];
+        if ([types count])
         {
-          [(BWVISProcessorControllerConfiguration *)v32->_processorControllerConfiguration setDistortionCorrectionEnabledPortTypes:a24];
+          [(BWVISProcessorControllerConfiguration *)selfCopy->_processorControllerConfiguration setDistortionCorrectionEnabledPortTypes:types];
         }
 
-        if ([a25 count])
+        if ([portTypes count])
         {
-          [(BWVISProcessorControllerConfiguration *)v32->_processorControllerConfiguration setDistortionCompensationEnabledPortTypes:a25];
+          [(BWVISProcessorControllerConfiguration *)selfCopy->_processorControllerConfiguration setDistortionCompensationEnabledPortTypes:portTypes];
         }
 
-        if (stereoMode == 2 || !a19)
+        if (stereoMode == 2 || !preloadingEnabled)
         {
           if (!v55 && IsEmpty)
           {
@@ -760,13 +760,13 @@ LABEL_51:
 
           if (((stereoMode != 3) & ~v92) == 0)
           {
-            [(BWVISProcessorControllerConfiguration *)v32->_processorControllerConfiguration setLivePhotoCleanOutputRect:x, y, width, height];
-            [(BWVISProcessorControllerConfiguration *)v32->_processorControllerConfiguration setBlurBorderPixels:1];
+            [(BWVISProcessorControllerConfiguration *)selfCopy->_processorControllerConfiguration setLivePhotoCleanOutputRect:x, y, width, height];
+            [(BWVISProcessorControllerConfiguration *)selfCopy->_processorControllerConfiguration setBlurBorderPixels:1];
 LABEL_68:
-            [(BWVISProcessorControllerConfiguration *)v32->_processorControllerConfiguration setAttachStabilizedOutputCameraTrajectory:a30];
-            if (a13)
+            [(BWVISProcessorControllerConfiguration *)selfCopy->_processorControllerConfiguration setAttachStabilizedOutputCameraTrajectory:trajectory];
+            if (enabled)
             {
-              v75 = v32->_visExecutionMode;
+              v75 = selfCopy->_visExecutionMode;
               if ((v75 & 0xFFFFFFFE) == 2)
               {
 LABEL_72:
@@ -777,30 +777,30 @@ LABEL_72:
 
                 else
                 {
-                  [(BWVISProcessorControllerConfiguration *)v32->_processorControllerConfiguration setAttachStabilizedTrajectoryHomography:1];
-                  v76 = v32->_visExecutionMode > 2u;
+                  [(BWVISProcessorControllerConfiguration *)selfCopy->_processorControllerConfiguration setAttachStabilizedTrajectoryHomography:1];
+                  v76 = selfCopy->_visExecutionMode > 2u;
                 }
 
                 if ((v92 & v76 & 1) == 0)
                 {
-                  [(BWVISProcessorControllerConfiguration *)v32->_processorControllerConfiguration setAttachEstimatedMotionVector:1];
+                  [(BWVISProcessorControllerConfiguration *)selfCopy->_processorControllerConfiguration setAttachEstimatedMotionVector:1];
                 }
 
-                if (v32->_onlyGeneratingTransforms)
+                if (selfCopy->_onlyGeneratingTransforms)
                 {
-                  [(BWVISProcessorControllerConfiguration *)v32->_processorControllerConfiguration setOnlyGenerateTransformsParameters:1];
+                  [(BWVISProcessorControllerConfiguration *)selfCopy->_processorControllerConfiguration setOnlyGenerateTransformsParameters:1];
                 }
 
-                [(BWVISProcessorControllerConfiguration *)v32->_processorControllerConfiguration setEnableRollingShutterCorrectionOnly:v32->_visExecutionMode == 5];
-                v78 = stereoMode == 4 && v32->_visExecutionMode == 5;
-                v32->_overrideFinalCropRect = v78;
-                [(BWVISProcessorControllerConfiguration *)v32->_processorControllerConfiguration setDisableTransformLimitsForPredeterminedTrajectory:?];
+                [(BWVISProcessorControllerConfiguration *)selfCopy->_processorControllerConfiguration setEnableRollingShutterCorrectionOnly:selfCopy->_visExecutionMode == 5];
+                v78 = stereoMode == 4 && selfCopy->_visExecutionMode == 5;
+                selfCopy->_overrideFinalCropRect = v78;
+                [(BWVISProcessorControllerConfiguration *)selfCopy->_processorControllerConfiguration setDisableTransformLimitsForPredeterminedTrajectory:?];
                 if ((stereoMode - 1) <= 4)
                 {
-                  -[BWVISProcessorControllerConfiguration setUseCameraGeometry:](v32->_processorControllerConfiguration, "setUseCameraGeometry:", [-[NSDictionary objectForKeyedSubscript:](-[FigCaptureCameraParameters videoStabilizationParameters](+[FigCaptureCameraParameters sharedInstance](FigCaptureCameraParameters "sharedInstance")]);
-                  processorControllerConfiguration = v32->_processorControllerConfiguration;
-                  v80 = v32->_stereoMode;
-                  v81 = [(BWVISProcessorControllerConfiguration *)processorControllerConfiguration useCameraGeometry];
+                  -[BWVISProcessorControllerConfiguration setUseCameraGeometry:](selfCopy->_processorControllerConfiguration, "setUseCameraGeometry:", [-[NSDictionary objectForKeyedSubscript:](-[FigCaptureCameraParameters videoStabilizationParameters](+[FigCaptureCameraParameters sharedInstance](FigCaptureCameraParameters "sharedInstance")]);
+                  processorControllerConfiguration = selfCopy->_processorControllerConfiguration;
+                  v80 = selfCopy->_stereoMode;
+                  useCameraGeometry = [(BWVISProcessorControllerConfiguration *)processorControllerConfiguration useCameraGeometry];
                   if (v80)
                   {
                     v82 = 1;
@@ -808,24 +808,24 @@ LABEL_72:
 
                   else
                   {
-                    v82 = v81;
+                    v82 = useCameraGeometry;
                   }
 
                   [(BWVISProcessorControllerConfiguration *)processorControllerConfiguration setUseCameraGeometry:v82];
                 }
 
-                [(BWVISProcessorControllerConfiguration *)v32->_processorControllerConfiguration setCameraInfoByPortType:a22];
-                [(BWVISProcessorControllerConfiguration *)v32->_processorControllerConfiguration setVideoStabilizationStrength:a16];
-                v32->_zoomSmoothingEnabled = a17;
-                [(BWVISProcessorControllerConfiguration *)v32->_processorControllerConfiguration setZoomSmoothingEnabled:a17];
-                [(BWVISProcessorControllerConfiguration *)v32->_processorControllerConfiguration setApplyFrameCropOffset:a18];
+                [(BWVISProcessorControllerConfiguration *)selfCopy->_processorControllerConfiguration setCameraInfoByPortType:portType];
+                [(BWVISProcessorControllerConfiguration *)selfCopy->_processorControllerConfiguration setVideoStabilizationStrength:strength];
+                selfCopy->_zoomSmoothingEnabled = smoothingEnabled;
+                [(BWVISProcessorControllerConfiguration *)selfCopy->_processorControllerConfiguration setZoomSmoothingEnabled:smoothingEnabled];
+                [(BWVISProcessorControllerConfiguration *)selfCopy->_processorControllerConfiguration setApplyFrameCropOffset:offset];
                 goto LABEL_91;
               }
 
-              [(BWVISProcessorControllerConfiguration *)v32->_processorControllerConfiguration setAttachStabilizedOutputCameraTrajectory:1];
+              [(BWVISProcessorControllerConfiguration *)selfCopy->_processorControllerConfiguration setAttachStabilizedOutputCameraTrajectory:1];
             }
 
-            v75 = v32->_visExecutionMode;
+            v75 = selfCopy->_visExecutionMode;
             goto LABEL_72;
           }
         }
@@ -837,56 +837,56 @@ LABEL_96:
     return 0;
   }
 
-  v32->_cinematicLookAheadFrameCount = v46;
-  v32->_offlineCameraInfoByPortType = a22;
+  selfCopy->_cinematicLookAheadFrameCount = dataEnabledCopy;
+  selfCopy->_offlineCameraInfoByPortType = portType;
   v98 = 1;
 LABEL_91:
-  v83 = v32->_onlyGeneratingTransforms || v32->_visExecutionMode == 4;
-  [(BWVISNode *)&v32->super.super.isa _updateSupportedPixelFormats];
-  v84 = [[BWNodeInput alloc] initWithMediaType:1986618469 node:v32];
+  v83 = selfCopy->_onlyGeneratingTransforms || selfCopy->_visExecutionMode == 4;
+  [(BWVISNode *)&selfCopy->super.super.isa _updateSupportedPixelFormats];
+  v84 = [[BWNodeInput alloc] initWithMediaType:1986618469 node:selfCopy];
   v85 = objc_alloc_init(BWVideoFormatRequirements);
   [(BWNodeInput *)v84 setFormatRequirements:v85];
   [(BWNodeInput *)v84 setDelayedBufferCount:v98];
   [(BWNodeInput *)v84 setPassthroughMode:v83];
 
-  [(BWNode *)v32 addInput:v84];
-  [(BWVISNode *)v32 _updateInputRequirements];
-  v86 = [[BWNodeOutput alloc] initWithMediaType:1986618469 node:v32];
+  [(BWNode *)selfCopy addInput:v84];
+  [(BWVISNode *)selfCopy _updateInputRequirements];
+  v86 = [[BWNodeOutput alloc] initWithMediaType:1986618469 node:selfCopy];
   v87 = objc_alloc_init(BWVideoFormatRequirements);
   [(BWNodeOutput *)v86 setFormatRequirements:v87];
   [(BWNodeOutput *)v86 setPassthroughMode:v83];
   [(BWNodeOutput *)v86 setOwningNodeRetainedBufferCount:1];
 
-  [(BWNode *)v32 addOutput:v86];
-  [(BWVISNode *)v32 _updateOutputRequirements];
+  [(BWNode *)selfCopy addOutput:v86];
+  [(BWVISNode *)selfCopy _updateOutputRequirements];
 
-  v32->_limitedGMErrorLogger = [[BWLimitedGMErrorLogger alloc] initWithName:@"VIS" maxLoggingCount:10];
-  *&v32->_frameMotionTensorsRingBuffer[0].entries = 0u;
-  *&v32->_frameMotionTensorsRingBuffer[0].framePTS.timescale = 0u;
-  *&v32->_frameMotionTensorsRingBuffer[1].entries = 0u;
-  *&v32->_frameMotionTensorsRingBuffer[1].framePTS.timescale = 0u;
-  *&v32->_frameMotionTensorsRingBuffer[2].entries = 0u;
-  *&v32->_frameMotionTensorsRingBuffer[2].framePTS.timescale = 0u;
-  *&v32->_frameMotionTensorsRingBuffer[3].entries = 0u;
-  *&v32->_frameMotionTensorsRingBuffer[3].framePTS.timescale = 0u;
-  *&v32->_frameMotionTensorsRingBuffer[4].entries = 0u;
-  *&v32->_frameMotionTensorsRingBuffer[4].framePTS.timescale = 0u;
-  *&v32->_frameMotionTensorsRingBuffer[5].entries = 0u;
-  *&v32->_frameMotionTensorsRingBuffer[5].framePTS.timescale = 0u;
-  *&v32->_frameMotionTensorsRingBuffer[6].entries = 0u;
-  *&v32->_frameMotionTensorsRingBuffer[6].framePTS.timescale = 0u;
-  *&v32->_frameMotionTensorsRingBuffer[7].entries = 0u;
-  *&v32->_frameMotionTensorsRingBuffer[7].framePTS.timescale = 0u;
-  *&v32->_frameMotionTensorsRingBuffer[8].entries = 0u;
-  *&v32->_frameMotionTensorsRingBuffer[8].framePTS.timescale = 0u;
-  *&v32->_frameMotionTensorsRingBuffer[9].entries = 0u;
-  *&v32->_frameMotionTensorsRingBuffer[9].framePTS.timescale = 0u;
-  v32->_frameMotionTensorsRingBuffeLock._os_unfair_lock_opaque = 0;
-  v32->_processingSemaphore = 0;
-  v32->_ispProcessingSession = v93;
-  [(BWNode *)v32 setSupportsLiveReconfiguration:1];
-  [(BWNode *)v32 setRequiresEndOfDataForConfigurationChanges:1];
-  return v32;
+  selfCopy->_limitedGMErrorLogger = [[BWLimitedGMErrorLogger alloc] initWithName:@"VIS" maxLoggingCount:10];
+  *&selfCopy->_frameMotionTensorsRingBuffer[0].entries = 0u;
+  *&selfCopy->_frameMotionTensorsRingBuffer[0].framePTS.timescale = 0u;
+  *&selfCopy->_frameMotionTensorsRingBuffer[1].entries = 0u;
+  *&selfCopy->_frameMotionTensorsRingBuffer[1].framePTS.timescale = 0u;
+  *&selfCopy->_frameMotionTensorsRingBuffer[2].entries = 0u;
+  *&selfCopy->_frameMotionTensorsRingBuffer[2].framePTS.timescale = 0u;
+  *&selfCopy->_frameMotionTensorsRingBuffer[3].entries = 0u;
+  *&selfCopy->_frameMotionTensorsRingBuffer[3].framePTS.timescale = 0u;
+  *&selfCopy->_frameMotionTensorsRingBuffer[4].entries = 0u;
+  *&selfCopy->_frameMotionTensorsRingBuffer[4].framePTS.timescale = 0u;
+  *&selfCopy->_frameMotionTensorsRingBuffer[5].entries = 0u;
+  *&selfCopy->_frameMotionTensorsRingBuffer[5].framePTS.timescale = 0u;
+  *&selfCopy->_frameMotionTensorsRingBuffer[6].entries = 0u;
+  *&selfCopy->_frameMotionTensorsRingBuffer[6].framePTS.timescale = 0u;
+  *&selfCopy->_frameMotionTensorsRingBuffer[7].entries = 0u;
+  *&selfCopy->_frameMotionTensorsRingBuffer[7].framePTS.timescale = 0u;
+  *&selfCopy->_frameMotionTensorsRingBuffer[8].entries = 0u;
+  *&selfCopy->_frameMotionTensorsRingBuffer[8].framePTS.timescale = 0u;
+  *&selfCopy->_frameMotionTensorsRingBuffer[9].entries = 0u;
+  *&selfCopy->_frameMotionTensorsRingBuffer[9].framePTS.timescale = 0u;
+  selfCopy->_frameMotionTensorsRingBuffeLock._os_unfair_lock_opaque = 0;
+  selfCopy->_processingSemaphore = 0;
+  selfCopy->_ispProcessingSession = sessionCopy;
+  [(BWNode *)selfCopy setSupportsLiveReconfiguration:1];
+  [(BWNode *)selfCopy setRequiresEndOfDataForConfigurationChanges:1];
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -909,33 +909,33 @@ LABEL_91:
   return v3;
 }
 
-- (void)didSelectFormat:(id)a3 forInput:(id)a4 forAttachedMediaKey:(id)a5
+- (void)didSelectFormat:(id)format forInput:(id)input forAttachedMediaKey:(id)key
 {
   v9 = BWAttachedMediaKeysRequiredBySmartStyleRenderingPipelines(1, 1);
-  if ([a5 isEqualToString:@"PrimaryFormat"])
+  if ([key isEqualToString:@"PrimaryFormat"])
   {
     if (self->_visExecutionMode == 4)
     {
       output = self->super._output;
 
-      [(BWNodeOutput *)output setFormat:a3];
+      [(BWNodeOutput *)output setFormat:format];
     }
 
     else
     {
-      [BWVISNode didSelectFormat:a3 forInput:? forAttachedMediaKey:?];
+      [BWVISNode didSelectFormat:format forInput:? forAttachedMediaKey:?];
     }
 
     return;
   }
 
-  if ((!self->_personSegmentationRenderingEnabled || ([a5 isEqualToString:0x1F21AABF0] & 1) == 0 && (!self->_personSegmentationRenderingEnabled || (objc_msgSend(a5, "isEqualToString:", 0x1F21AAC30) & 1) == 0)) && (!self->_stabilizeDepthAttachments || (objc_msgSend(a5, "isEqualToString:", @"Depth") & 1) == 0) && (!self->_lightSourceMaskAndKeypointDescriptorDataEnabled || (objc_msgSend(a5, "isEqualToString:", 0x1F219CD50) & 1) == 0 && (objc_msgSend(a5, "isEqualToString:", 0x1F219CD70) & 1) == 0) && (!self->_videoGreenGhostOfflineMetadataEnabled || !self->_videoGreenGhostOfflineLightSourceMaskEnabled || (objc_msgSend(a5, "isEqualToString:", 0x1F219CD50) & 1) == 0))
+  if ((!self->_personSegmentationRenderingEnabled || ([key isEqualToString:0x1F21AABF0] & 1) == 0 && (!self->_personSegmentationRenderingEnabled || (objc_msgSend(key, "isEqualToString:", 0x1F21AAC30) & 1) == 0)) && (!self->_stabilizeDepthAttachments || (objc_msgSend(key, "isEqualToString:", @"Depth") & 1) == 0) && (!self->_lightSourceMaskAndKeypointDescriptorDataEnabled || (objc_msgSend(key, "isEqualToString:", 0x1F219CD50) & 1) == 0 && (objc_msgSend(key, "isEqualToString:", 0x1F219CD70) & 1) == 0) && (!self->_videoGreenGhostOfflineMetadataEnabled || !self->_videoGreenGhostOfflineLightSourceMaskEnabled || (objc_msgSend(key, "isEqualToString:", 0x1F219CD50) & 1) == 0))
   {
-    if (!self->_smartStyleRenderingEnabled || ![v9 containsObject:a5])
+    if (!self->_smartStyleRenderingEnabled || ![v9 containsObject:key])
     {
       v39.receiver = self;
       v39.super_class = BWVISNode;
-      [(BWNode *)&v39 didSelectFormat:a3 forInput:a4 forAttachedMediaKey:a5];
+      [(BWNode *)&v39 didSelectFormat:format forInput:input forAttachedMediaKey:key];
       return;
     }
 
@@ -949,9 +949,9 @@ LABEL_91:
     v48[2] = 0x1F21AAED0;
     v48[3] = 0x1F21AB110;
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v48 count:4];
-    if ([a5 isEqual:0x1F21AB070])
+    if ([key isEqual:0x1F21AB070])
     {
-      [(NSMutableDictionary *)self->_intermediatePixelBufferResolvedFormats setObject:a3 forKeyedSubscript:0x1F21AB070];
+      [(NSMutableDictionary *)self->_intermediatePixelBufferResolvedFormats setObject:format forKeyedSubscript:0x1F21AB070];
       if (!self->_smartStyleReversibilityEnabled)
       {
         return;
@@ -977,8 +977,8 @@ LABEL_91:
       }
 
       v16 = [MEMORY[0x1E6991728] configurationForUseCase:v15];
-      v17 = [v16 outputCoefficientsF16];
-      [MEMORY[0x1E6991738] coefficientPixelBufferSizeForConfiguration:v16 float16:v17];
+      outputCoefficientsF16 = [v16 outputCoefficientsF16];
+      [MEMORY[0x1E6991738] coefficientPixelBufferSizeForConfiguration:v16 float16:outputCoefficientsF16];
       v19 = v18;
       v21 = v20;
       v22 = objc_alloc_init(BWVideoFormatRequirements);
@@ -989,7 +989,7 @@ LABEL_91:
       }
 
       v23 = v22;
-      if (v17)
+      if (outputCoefficientsF16)
       {
         v24 = 1278226536;
       }
@@ -1009,14 +1009,14 @@ LABEL_91:
       [(BWNodeOutputMediaConfiguration *)v13 setPassthroughMode:0];
       [(BWNodeOutputMediaConfiguration *)v13 setProvidesPixelBufferPool:1];
       v25 = self->super._output;
-      v26 = @"SmartStyleStreamingReverseLearnedCoefficients";
+      keyCopy = @"SmartStyleStreamingReverseLearnedCoefficients";
       v27 = v13;
       goto LABEL_33;
     }
 
-    if (![a5 isEqual:0x1F21AB0D0])
+    if (![key isEqual:0x1F21AB0D0])
     {
-      if (!self->_smartStyleReversibilityEnabled || ![v11 containsObject:a5])
+      if (!self->_smartStyleReversibilityEnabled || ![v11 containsObject:key])
       {
         return;
       }
@@ -1029,8 +1029,8 @@ LABEL_91:
       }
 
       v35 = v34;
-      v36 = [a5 isEqual:0x1F21AB110];
-      v37 = [(BWVISNode *)self _newFormatRequirementsAdjustedToOutputDimensionAspectRatio:a3];
+      v36 = [key isEqual:0x1F21AB110];
+      v37 = [(BWVISNode *)self _newFormatRequirementsAdjustedToOutputDimensionAspectRatio:format];
       if (v36)
       {
         v38 = objc_alloc_init(BWVideoFormatRequirements);
@@ -1055,9 +1055,9 @@ LABEL_91:
       [(BWNodeOutputMediaConfiguration *)v35 setProvidesPixelBufferPool:1];
       v25 = self->super._output;
       v27 = v35;
-      v26 = a5;
+      keyCopy = key;
 LABEL_33:
-      [(BWNodeOutput *)v25 setMediaConfiguration:v27 forAttachedMediaKey:v26];
+      [(BWNodeOutput *)v25 setMediaConfiguration:v27 forAttachedMediaKey:keyCopy];
       return;
     }
 
@@ -1085,7 +1085,7 @@ LABEL_33:
             }
 
             v33 = *(*(&v43 + 1) + 8 * i);
-            v40 = [(BWVISNode *)self _newFormatRequirementsAdjustedToOutputDimensionAspectRatio:a3];
+            v40 = [(BWVISNode *)self _newFormatRequirementsAdjustedToOutputDimensionAspectRatio:format];
             -[NSMutableDictionary setObject:forKeyedSubscript:](self->_intermediatePixelBufferResolvedFormats, "setObject:forKeyedSubscript:", +[BWVideoFormat formatByResolvingRequirements:](BWVideoFormat, "formatByResolvingRequirements:", [MEMORY[0x1E695DEC8] arrayWithObjects:&v40 count:1]), v33);
           }
 
@@ -1122,18 +1122,18 @@ LABEL_33:
     LODWORD(v4) = [-[BWNodeInput mediaConfigurationForAttachedMediaKey:](self->super._input mediaConfigurationForAttachedMediaKey:{@"PrimaryFormat", "delayedBufferCount"}];
     v5 = [(BWNodeOutput *)self->super._output mediaPropertiesForAttachedMediaKey:@"PrimaryFormat"];
     v6 = [(BWNodeOutput *)self->super._output mediaConfigurationForAttachedMediaKey:@"PrimaryFormat"];
-    v7 = [v5 resolvedRetainedBufferCount];
-    if (v7 <= [v6 owningNodeRetainedBufferCount])
+    resolvedRetainedBufferCount = [v5 resolvedRetainedBufferCount];
+    if (resolvedRetainedBufferCount <= [v6 owningNodeRetainedBufferCount])
     {
-      v8 = [v6 owningNodeRetainedBufferCount];
+      owningNodeRetainedBufferCount = [v6 owningNodeRetainedBufferCount];
     }
 
     else
     {
-      v8 = [v5 resolvedRetainedBufferCount];
+      owningNodeRetainedBufferCount = [v5 resolvedRetainedBufferCount];
     }
 
-    v9 = v8;
+    v9 = owningNodeRetainedBufferCount;
     v67 = 0u;
     v68 = 0u;
     v65 = 0u;
@@ -1170,19 +1170,19 @@ LABEL_33:
           if (!v18)
           {
             v19 = v17;
-            v20 = [v16 resolvedRetainedBufferCount];
-            if (v20 <= [v19 owningNodeRetainedBufferCount])
+            resolvedRetainedBufferCount2 = [v16 resolvedRetainedBufferCount];
+            if (resolvedRetainedBufferCount2 <= [v19 owningNodeRetainedBufferCount])
             {
-              v21 = [v19 owningNodeRetainedBufferCount];
+              owningNodeRetainedBufferCount2 = [v19 owningNodeRetainedBufferCount];
             }
 
             else
             {
-              v21 = [v16 resolvedRetainedBufferCount];
+              owningNodeRetainedBufferCount2 = [v16 resolvedRetainedBufferCount];
             }
 
-            v22 = v21;
-            if (v21 < v9)
+            v22 = owningNodeRetainedBufferCount2;
+            if (owningNodeRetainedBufferCount2 < v9)
             {
               [v19 setOwningNodeRetainedBufferCount:v9];
             }
@@ -1259,8 +1259,8 @@ LABEL_33:
             v30 = v12;
             v31 = [BWPixelBufferPool alloc];
             v32 = [(NSMutableDictionary *)self->_intermediatePixelBufferResolvedFormats objectForKeyedSubscript:v28];
-            v33 = [(BWNodeOutput *)self->super._output retainedBufferCount];
-            v29 = -[BWPixelBufferPool initWithVideoFormat:capacity:name:memoryPool:](v31, "initWithVideoFormat:capacity:name:memoryPool:", v32, v33, [MEMORY[0x1E696AEC0] stringWithFormat:@"VIS %@ Intermediate Pool", v28], -[BWNodeOutput memoryPool](self->super._output, "memoryPool"));
+            retainedBufferCount = [(BWNodeOutput *)self->super._output retainedBufferCount];
+            v29 = -[BWPixelBufferPool initWithVideoFormat:capacity:name:memoryPool:](v31, "initWithVideoFormat:capacity:name:memoryPool:", v32, retainedBufferCount, [MEMORY[0x1E696AEC0] stringWithFormat:@"VIS %@ Intermediate Pool", v28], -[BWNodeOutput memoryPool](self->super._output, "memoryPool"));
             if (v29)
             {
               [(NSMutableDictionary *)self->_intermediatePixelBufferPools setObject:v29 forKeyedSubscript:v28];
@@ -1291,9 +1291,9 @@ LABEL_33:
     }
 
     self->_intermediatePixelBufferResolvedFormats = 0;
-    v38 = [MEMORY[0x1E695DF90] dictionary];
-    v39 = [(BWVideoFormat *)[(BWNodeInput *)self->super._input videoFormat] width];
-    if (v39 == [(BWVideoFormat *)[(BWNodeInput *)self->super._input videoFormat] height])
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    width = [(BWVideoFormat *)[(BWNodeInput *)self->super._input videoFormat] width];
+    if (width == [(BWVideoFormat *)[(BWNodeInput *)self->super._input videoFormat] height])
     {
       v40 = &unk_1F2245898;
     }
@@ -1303,7 +1303,7 @@ LABEL_33:
       v40 = &unk_1F22458B0;
     }
 
-    [v38 setObject:v40 forKeyedSubscript:*off_1E798CEB0];
+    [dictionary setObject:v40 forKeyedSubscript:*off_1E798CEB0];
     if (FigCaptureAspectRatioForDimensions(*&self->_outputDimensions) >= 1.0)
     {
       v41 = &unk_1F22458E0;
@@ -1314,21 +1314,21 @@ LABEL_33:
       v41 = &unk_1F22458C8;
     }
 
-    [v38 setObject:v41 forKeyedSubscript:*off_1E798CEB8];
-    [(BWVISNode *)self setSmartStyleConfigurationDict:v38];
+    [dictionary setObject:v41 forKeyedSubscript:*off_1E798CEB8];
+    [(BWVISNode *)self setSmartStyleConfigurationDict:dictionary];
   }
 
   if (self->_lowResImageUsedByVideoEncoderEnabled && self->_stabilizationType == 4)
   {
     v42 = [(BWNodeOutput *)self->super._output mediaPropertiesForAttachedMediaKey:@"PrimaryFormat"];
     v43 = [(BWNodeOutput *)self->super._output mediaConfigurationForAttachedMediaKey:@"PrimaryFormat"];
-    v44 = [v42 resolvedRetainedBufferCount];
-    v45 = v44 <= [v43 owningNodeRetainedBufferCount] ? objc_msgSend(v43, "owningNodeRetainedBufferCount") : objc_msgSend(v42, "resolvedRetainedBufferCount");
+    resolvedRetainedBufferCount3 = [v42 resolvedRetainedBufferCount];
+    v45 = resolvedRetainedBufferCount3 <= [v43 owningNodeRetainedBufferCount] ? objc_msgSend(v43, "owningNodeRetainedBufferCount") : objc_msgSend(v42, "resolvedRetainedBufferCount");
     v46 = v45;
     v47 = [(BWNodeOutput *)self->super._output mediaPropertiesForAttachedMediaKey:0x1F21AB190];
     v48 = [(BWNodeOutput *)self->super._output mediaConfigurationForAttachedMediaKey:0x1F21AB190];
-    v49 = [v47 resolvedRetainedBufferCount];
-    v50 = v49 <= [v48 owningNodeRetainedBufferCount] ? objc_msgSend(v48, "owningNodeRetainedBufferCount") : objc_msgSend(v47, "resolvedRetainedBufferCount");
+    resolvedRetainedBufferCount4 = [v47 resolvedRetainedBufferCount];
+    v50 = resolvedRetainedBufferCount4 <= [v48 owningNodeRetainedBufferCount] ? objc_msgSend(v48, "owningNodeRetainedBufferCount") : objc_msgSend(v47, "resolvedRetainedBufferCount");
     if (v50 < v46)
     {
       [v48 setOwningNodeRetainedBufferCount:v46];
@@ -1352,11 +1352,11 @@ LABEL_33:
   }
 }
 
-- (void)configurationWithID:(int64_t)a3 updatedFormat:(id)a4 didBecomeLiveForInput:(id)a5
+- (void)configurationWithID:(int64_t)d updatedFormat:(id)format didBecomeLiveForInput:(id)input
 {
   v10.receiver = self;
   v10.super_class = BWVISNode;
-  [(BWNode *)&v10 configurationWithID:a3 updatedFormat:a4 didBecomeLiveForInput:a5];
+  [(BWNode *)&v10 configurationWithID:d updatedFormat:format didBecomeLiveForInput:input];
   MediaSubType = CMFormatDescriptionGetMediaSubType([(BWFormat *)[(BWNodeOutput *)self->super._output format] formatDescription]);
   CompressionType = FigCapturePixelFormatGetCompressionType(MediaSubType);
   if (CompressionType)
@@ -1374,13 +1374,13 @@ LABEL_33:
   }
 }
 
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input
 {
   memset(&v39, 0, sizeof(v39));
-  CMSampleBufferGetPresentationTimeStamp(&v39, a3);
+  CMSampleBufferGetPresentationTimeStamp(&v39, buffer);
   time = v39;
   CMTimeGetSeconds(&time);
-  v6 = CMGetAttachment(a3, *off_1E798A3C8, 0);
+  v6 = CMGetAttachment(buffer, *off_1E798A3C8, 0);
   v37 = 0;
   v7 = MEMORY[0x1E695FF58];
   if (*MEMORY[0x1E695FF58])
@@ -1395,11 +1395,11 @@ LABEL_33:
 
   if (self->_generatedTransformsOutputDimensionsOverride.height >= 1)
   {
-    CMSetAttachment(a3, @"VideoStabilizationMethod", [MEMORY[0x1E696AD98] numberWithInt:self->_stabilizationMethod], 1u);
+    CMSetAttachment(buffer, @"VideoStabilizationMethod", [MEMORY[0x1E696AD98] numberWithInt:self->_stabilizationMethod], 1u);
     v40.width = self->_generatedTransformsOutputDimensionsOverride.width;
     v40.height = self->_generatedTransformsOutputDimensionsOverride.height;
     DictionaryRepresentation = CGSizeCreateDictionaryRepresentation(v40);
-    CMSetAttachment(a3, @"VideoStabilizationGeneratedTransformsOutputDimensionsOverride", DictionaryRepresentation, 1u);
+    CMSetAttachment(buffer, @"VideoStabilizationGeneratedTransformsOutputDimensionsOverride", DictionaryRepresentation, 1u);
     if (DictionaryRepresentation)
     {
       CFRelease(DictionaryRepresentation);
@@ -1407,11 +1407,11 @@ LABEL_33:
   }
 
   [(BWNode *)self name];
-  if (BWSampleBufferIsMarkerBuffer(a3))
+  if (BWSampleBufferIsMarkerBuffer(buffer))
   {
-    v9 = CMGetAttachment(a3, @"FileWriterAction", 0);
-    v10 = CMGetAttachment(a3, @"AttachedMediaSwapPlaceholderSampleBuffer", 0);
-    v11 = CMGetAttachment(a3, @"RecordingSettings", 0);
+    v9 = CMGetAttachment(buffer, @"FileWriterAction", 0);
+    v10 = CMGetAttachment(buffer, @"AttachedMediaSwapPlaceholderSampleBuffer", 0);
+    v11 = CMGetAttachment(buffer, @"RecordingSettings", 0);
     if (v9 && (v12 = CFGetTypeID(v9), v12 == CFStringGetTypeID()))
     {
       if (!CFEqual(v9, @"Stop") && !CFEqual(v9, @"Pause") && !CFEqual(v9, @"Flush") && !CFEqual(v9, @"Terminate") && !CFEqual(v9, @"StreamForcedOff") && v10 != *MEMORY[0x1E695E4D0])
@@ -1458,7 +1458,7 @@ LABEL_19:
     if (!v13)
     {
 LABEL_45:
-      [(BWNodeOutput *)self->super._output emitSampleBuffer:a3];
+      [(BWNodeOutput *)self->super._output emitSampleBuffer:buffer];
       if ((v39.flags & 0x1D) == 1)
       {
         self->_lastEmittedPTS = v39;
@@ -1473,25 +1473,25 @@ LABEL_52:
 LABEL_26:
     if (self->_usingExtendedCVISLivePhotoStabilization && v14)
     {
-      v15 = [v14 isIrisMovieRecording];
-      self->_stabilizeForLongPressVideo = v15;
-      [(BWVISProcessorController *)self->_processorController setLongPressModeEnabled:v15];
+      isIrisMovieRecording = [v14 isIrisMovieRecording];
+      self->_stabilizeForLongPressVideo = isIrisMovieRecording;
+      [(BWVISProcessorController *)self->_processorController setLongPressModeEnabled:isIrisMovieRecording];
     }
 
     if (self->_flipHorizontalExcludingIris && v14)
     {
       if ([v14 isIrisRecording] && !objc_msgSend(v14, "isIrisMovieRecording"))
       {
-        v16 = 0;
+        videoMirrored = 0;
       }
 
       else
       {
-        v16 = [v14 videoMirrored];
+        videoMirrored = [v14 videoMirrored];
       }
 
-      [(BWVISProcessorController *)self->_processorController setFlipHorizontalOrientationEnabled:v16];
-      self->_liveFlipHorizontal = v16;
+      [(BWVISProcessorController *)self->_processorController setFlipHorizontalOrientationEnabled:videoMirrored];
+      self->_liveFlipHorizontal = videoMirrored;
     }
 
     if (self->_personSegmentationRenderingEnabled && v14)
@@ -1528,7 +1528,7 @@ LABEL_26:
   }
 
   [BWVISNode _handleIrisKeyFrameCachingForSampleBuffer:?];
-  [(BWVISNode *)self _addVISDigitalZoomToMetadata:v6 sampleBuffer:a3 forReprocessing:0];
+  [(BWVISNode *)self _addVISDigitalZoomToMetadata:v6 sampleBuffer:buffer forReprocessing:0];
   if (self->_visExecutionMode == 1)
   {
     Value = CFDictionaryGetValue(v6, *off_1E798CE60);
@@ -1550,7 +1550,7 @@ LABEL_26:
             objc_enumerationMutation(Value);
           }
 
-          [(BWVISNode *)self _addVISDigitalZoomToMetadata:a3 sampleBuffer:0 forReprocessing:?];
+          [(BWVISNode *)self _addVISDigitalZoomToMetadata:buffer sampleBuffer:0 forReprocessing:?];
         }
 
         v19 = [Value countByEnumeratingWithState:&v33 objects:v32 count:16];
@@ -1562,16 +1562,16 @@ LABEL_26:
     v22 = CFDictionaryGetValue(v6, *off_1E798CE58);
     if (v22)
     {
-      [(BWVISNode *)self _addVISDigitalZoomToMetadata:v22 sampleBuffer:a3 forReprocessing:0];
+      [(BWVISNode *)self _addVISDigitalZoomToMetadata:v22 sampleBuffer:buffer forReprocessing:0];
     }
   }
 
   if (self->_stabilizeDepthAttachments)
   {
-    AttachedMedia = BWSampleBufferGetAttachedMedia(a3, @"Depth");
+    AttachedMedia = BWSampleBufferGetAttachedMedia(buffer, @"Depth");
     if (AttachedMedia)
     {
-      CMSetAttachment(a3, *off_1E798D430, AttachedMedia, 0);
+      CMSetAttachment(buffer, *off_1E798D430, AttachedMedia, 0);
     }
   }
 
@@ -1582,15 +1582,15 @@ LABEL_26:
       goto LABEL_72;
     }
 
-    v24 = BWSampleBufferGetAttachedMedia(a3, 0x1F21AABF0);
+    v24 = BWSampleBufferGetAttachedMedia(buffer, 0x1F21AABF0);
     if (v24)
     {
-      CMSetAttachment(a3, *off_1E798A4E0, v24, 0);
-      CMSetAttachment(a3, *off_1E798A4D8, self->_foregroundColorCube, 0);
-      CMSetAttachment(a3, *off_1E798A4D0, self->_backgroundColorCube, 0);
+      CMSetAttachment(buffer, *off_1E798A4E0, v24, 0);
+      CMSetAttachment(buffer, *off_1E798A4D8, self->_foregroundColorCube, 0);
+      CMSetAttachment(buffer, *off_1E798A4D0, self->_backgroundColorCube, 0);
 LABEL_72:
-      BWSampleBufferRemoveAttachedMedia(a3, 0x1F21AABF0);
-      BWSampleBufferRemoveAttachedMedia(a3, 0x1F21AAC30);
+      BWSampleBufferRemoveAttachedMedia(buffer, 0x1F21AABF0);
+      BWSampleBufferRemoveAttachedMedia(buffer, 0x1F21AAC30);
       goto LABEL_73;
     }
 
@@ -1607,7 +1607,7 @@ LABEL_84:
   }
 
 LABEL_73:
-  v25 = CMGetAttachment(a3, @"SubjectRelightingResult", 0);
+  v25 = CMGetAttachment(buffer, @"SubjectRelightingResult", 0);
   if (v25)
   {
     v26 = v25;
@@ -1621,11 +1621,11 @@ LABEL_73:
       v27 = *off_1E798A4E8;
       v28 = MEMORY[0x1E696AD98];
       [v26 curveParameter];
-      CMSetAttachment(a3, v27, [v28 numberWithFloat:?], 1u);
+      CMSetAttachment(buffer, v27, [v28 numberWithFloat:?], 1u);
     }
   }
 
-  v29 = [(BWVISProcessorController *)self->_processorController enqueueBufferForProcessing:a3];
+  v29 = [(BWVISProcessorController *)self->_processorController enqueueBufferForProcessing:buffer];
   if (v29)
   {
     v30 = v29;
@@ -1635,7 +1635,7 @@ LABEL_73:
 
   if (self->_smartStyleRenderingEnabled)
   {
-    CMSetAttachment(a3, @"FiltersApplied", MEMORY[0x1E695E118], 1u);
+    CMSetAttachment(buffer, @"FiltersApplied", MEMORY[0x1E695E118], 1u);
   }
 
 LABEL_47:
@@ -1646,44 +1646,44 @@ LABEL_47:
   }
 }
 
-- (void)handleDroppedSample:(id)a3 forInput:(id)a4
+- (void)handleDroppedSample:(id)sample forInput:(id)input
 {
   if (self->_emitSampleBufferSemaphore)
   {
     emitSampleBufferSemaphore = self->_emitSampleBufferSemaphore;
-    v5 = +[BWDroppedSample newDroppedSampleFromDroppedSample:backPressureSemaphoresToIgnore:](BWDroppedSample, "newDroppedSampleFromDroppedSample:backPressureSemaphoresToIgnore:", a3, [MEMORY[0x1E695DEC8] arrayWithObjects:&emitSampleBufferSemaphore count:1]);
+    sampleCopy = +[BWDroppedSample newDroppedSampleFromDroppedSample:backPressureSemaphoresToIgnore:](BWDroppedSample, "newDroppedSampleFromDroppedSample:backPressureSemaphoresToIgnore:", sample, [MEMORY[0x1E695DEC8] arrayWithObjects:&emitSampleBufferSemaphore count:1]);
   }
 
   else
   {
-    v5 = a3;
+    sampleCopy = sample;
   }
 
-  v6 = v5;
-  [(BWNodeOutput *)self->super._output emitDroppedSample:v5];
+  v6 = sampleCopy;
+  [(BWNodeOutput *)self->super._output emitDroppedSample:sampleCopy];
 }
 
-- (void)setOutputDimensions:(id)a3
+- (void)setOutputDimensions:(id)dimensions
 {
-  if (self->_outputDimensions.width != a3.var0 || self->_outputDimensions.height != a3.var1)
+  if (self->_outputDimensions.width != dimensions.var0 || self->_outputDimensions.height != dimensions.var1)
   {
-    [(BWVISNode *)a3.var0 setOutputDimensions:a3.var1, self];
+    [(BWVISNode *)dimensions.var0 setOutputDimensions:dimensions.var1, self];
   }
 }
 
-- (void)setEmitSampleBufferSemaphore:(id)a3
+- (void)setEmitSampleBufferSemaphore:(id)semaphore
 {
   emitSampleBufferSemaphore = self->_emitSampleBufferSemaphore;
-  if (emitSampleBufferSemaphore != a3)
+  if (emitSampleBufferSemaphore != semaphore)
   {
 
-    self->_emitSampleBufferSemaphore = a3;
+    self->_emitSampleBufferSemaphore = semaphore;
   }
 }
 
-- (void)setStabilizeDepthAttachments:(BOOL)a3
+- (void)setStabilizeDepthAttachments:(BOOL)attachments
 {
-  if (!a3)
+  if (!attachments)
   {
     v6 = 0;
     p_input = &self->super._input;
@@ -1693,7 +1693,7 @@ LABEL_47:
   visExecutionMode = self->_visExecutionMode;
   if (visExecutionMode == 3 || visExecutionMode == 0)
   {
-    [(BWVISNode *)self setStabilizeDepthAttachments:a3, &v8, &v9];
+    [(BWVISNode *)self setStabilizeDepthAttachments:attachments, &v8, &v9];
     v6 = v8;
     p_input = v9;
 LABEL_9:
@@ -1703,69 +1703,69 @@ LABEL_9:
   }
 }
 
-- (void)setOutputDepthDimensions:(id)a3
+- (void)setOutputDepthDimensions:(id)dimensions
 {
-  if (self->_outputDepthDimensions.width != a3.var0 || self->_outputDepthDimensions.height != a3.var1)
+  if (self->_outputDepthDimensions.width != dimensions.var0 || self->_outputDepthDimensions.height != dimensions.var1)
   {
-    self->_outputDepthDimensions = a3;
+    self->_outputDepthDimensions = dimensions;
     [(BWVISNode *)self _updateOutputRequirements];
   }
 }
 
-- (void)setPersonSegmentationRenderingEnabled:(BOOL)a3
+- (void)setPersonSegmentationRenderingEnabled:(BOOL)enabled
 {
-  if (self->_personSegmentationRenderingEnabled != a3)
+  if (self->_personSegmentationRenderingEnabled != enabled)
   {
-    self->_personSegmentationRenderingEnabled = a3;
+    self->_personSegmentationRenderingEnabled = enabled;
     [(BWVISNode *)self _updateInputRequirements];
   }
 }
 
-- (void)setSmartStyleRenderingEnabled:(BOOL)a3
+- (void)setSmartStyleRenderingEnabled:(BOOL)enabled
 {
-  if (self->_smartStyleRenderingEnabled != a3)
+  if (self->_smartStyleRenderingEnabled != enabled)
   {
-    self->_smartStyleRenderingEnabled = a3;
+    self->_smartStyleRenderingEnabled = enabled;
     [(BWVISNode *)self _updateInputRequirements];
   }
 }
 
-- (void)setSmartStyleReversibilityEnabled:(BOOL)a3
+- (void)setSmartStyleReversibilityEnabled:(BOOL)enabled
 {
-  if (self->_smartStyleReversibilityEnabled != a3)
+  if (self->_smartStyleReversibilityEnabled != enabled)
   {
-    self->_smartStyleReversibilityEnabled = a3;
+    self->_smartStyleReversibilityEnabled = enabled;
     [(BWVISNode *)self _updateInputRequirements];
 
     [(BWVISNode *)self _updateOutputRequirements];
   }
 }
 
-- (void)setSmartStyleConfigurationDict:(id)a3
+- (void)setSmartStyleConfigurationDict:(id)dict
 {
-  if (([a3 isEqualToDictionary:self->_smartStyleConfigurationDict] & 1) == 0)
+  if (([dict isEqualToDictionary:self->_smartStyleConfigurationDict] & 1) == 0)
   {
 
-    self->_smartStyleConfigurationDict = a3;
+    self->_smartStyleConfigurationDict = dict;
   }
 }
 
-- (void)setLowResImageUsedByVideoEncoderEnabled:(BOOL)a3
+- (void)setLowResImageUsedByVideoEncoderEnabled:(BOOL)enabled
 {
-  if (self->_lowResImageUsedByVideoEncoderEnabled != a3)
+  if (self->_lowResImageUsedByVideoEncoderEnabled != enabled)
   {
-    self->_lowResImageUsedByVideoEncoderEnabled = a3;
+    self->_lowResImageUsedByVideoEncoderEnabled = enabled;
     [(BWVISNode *)self _updateOutputRequirements];
   }
 }
 
-- (void)setProcessingSemaphore:(id)a3
+- (void)setProcessingSemaphore:(id)semaphore
 {
   processingSemaphore = self->_processingSemaphore;
-  if (processingSemaphore != a3)
+  if (processingSemaphore != semaphore)
   {
 
-    self->_processingSemaphore = a3;
+    self->_processingSemaphore = semaphore;
   }
 }
 
@@ -1779,13 +1779,13 @@ LABEL_9:
   return result;
 }
 
-- (void)setIspProcessingSession:(id)a3
+- (void)setIspProcessingSession:(id)session
 {
   ispProcessingSession = self->_ispProcessingSession;
-  if (ispProcessingSession != a3)
+  if (ispProcessingSession != session)
   {
 
-    self->_ispProcessingSession = a3;
+    self->_ispProcessingSession = session;
   }
 }
 
@@ -1821,20 +1821,20 @@ LABEL_4:
   return 0;
 }
 
-- (void)setOutputColorSpaceProperties:(int)a3
+- (void)setOutputColorSpaceProperties:(int)properties
 {
-  if (self->_outputColorSpaceProperties != a3)
+  if (self->_outputColorSpaceProperties != properties)
   {
-    self->_outputColorSpaceProperties = a3;
+    self->_outputColorSpaceProperties = properties;
     [(BWVISNode *)self _updateOutputRequirements];
   }
 }
 
-- (void)setMaxLossyCompressionLevel:(int)a3
+- (void)setMaxLossyCompressionLevel:(int)level
 {
-  if (self->_maxLossyCompressionLevel != a3)
+  if (self->_maxLossyCompressionLevel != level)
   {
-    self->_maxLossyCompressionLevel = a3;
+    self->_maxLossyCompressionLevel = level;
     [(BWVISNode *)&self->super.super.isa _updateSupportedPixelFormats];
     [(BWVISNode *)self _updateInputRequirements];
 
@@ -1842,11 +1842,11 @@ LABEL_4:
   }
 }
 
-- (void)setVideoSTFEnabled:(BOOL)a3
+- (void)setVideoSTFEnabled:(BOOL)enabled
 {
-  if (!a3 || ((stabilizationType = self->_stabilizationType, stabilizationType != 2) ? (v4 = stabilizationType == 4) : (v4 = 1), v4))
+  if (!enabled || ((stabilizationType = self->_stabilizationType, stabilizationType != 2) ? (v4 = stabilizationType == 4) : (v4 = 1), v4))
   {
-    self->_videoSTFEnabled = a3;
+    self->_videoSTFEnabled = enabled;
   }
 
   else
@@ -1861,13 +1861,13 @@ LABEL_4:
   }
 }
 
-- (void)setVideoGreenGhostMitigationEnabled:(BOOL)a3
+- (void)setVideoGreenGhostMitigationEnabled:(BOOL)enabled
 {
-  if (!a3 || ((stabilizationType = self->_stabilizationType, stabilizationType != 2) ? (v5 = stabilizationType == 4) : (v5 = 1), v5))
+  if (!enabled || ((stabilizationType = self->_stabilizationType, stabilizationType != 2) ? (v5 = stabilizationType == 4) : (v5 = 1), v5))
   {
-    if (self->_videoGreenGhostMitigationEnabled != a3)
+    if (self->_videoGreenGhostMitigationEnabled != enabled)
     {
-      self->_videoGreenGhostMitigationEnabled = a3;
+      self->_videoGreenGhostMitigationEnabled = enabled;
 
       [(BWVISNode *)self _updateInputRequirements];
     }
@@ -1885,11 +1885,11 @@ LABEL_4:
   }
 }
 
-- (void)willStartProcessingBuffer:(opaqueCMSampleBuffer *)a3 withStatus:(int)a4
+- (void)willStartProcessingBuffer:(opaqueCMSampleBuffer *)buffer withStatus:(int)status
 {
-  if (a4)
+  if (status)
   {
-    [BWVISNode willStartProcessingBuffer:*&a4 withStatus:?];
+    [BWVISNode willStartProcessingBuffer:*&status withStatus:?];
   }
 
   else
@@ -1905,40 +1905,40 @@ LABEL_4:
   }
 }
 
-- (void)_releaseResourcesForReconfig:(uint64_t)a1
+- (void)_releaseResourcesForReconfig:(uint64_t)reconfig
 {
-  if (a1)
+  if (reconfig)
   {
-    v4 = *(a1 + 304);
+    v4 = *(reconfig + 304);
     if (v4)
     {
-      [*(a1 + 312) logErrorNumber:0xFFFFFFFFLL errorString:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"unprocessed still frame settings ID %@", v4)}];
+      [*(reconfig + 312) logErrorNumber:0xFFFFFFFFLL errorString:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"unprocessed still frame settings ID %@", v4)}];
     }
 
-    *(a1 + 296) = 0;
-    *(a1 + 304) = 0;
+    *(reconfig + 296) = 0;
+    *(reconfig + 304) = 0;
 
-    *(a1 + 656) = 0;
-    *(a1 + 784) = 0;
+    *(reconfig + 656) = 0;
+    *(reconfig + 784) = 0;
 
-    *(a1 + 792) = 0;
+    *(reconfig + 792) = 0;
     v5 = 10;
-    v6 = a1;
+    reconfigCopy = reconfig;
     do
     {
 
-      *(v6 + 320) = 0;
-      v6 += 32;
+      *(reconfigCopy + 320) = 0;
+      reconfigCopy += 32;
       --v5;
     }
 
     while (v5);
-    bzero((a1 + 320), 0x140uLL);
+    bzero((reconfig + 320), 0x140uLL);
 
-    *(a1 + 752) = 0;
+    *(reconfig + 752) = 0;
     if (a2)
     {
-      v7 = [*(a1 + 736) allKeys];
+      allKeys = [*(reconfig + 736) allKeys];
       OUTLINED_FUNCTION_17_20();
       v9 = [v8 countByEnumeratingWithState:? objects:? count:?];
       if (v9)
@@ -1951,20 +1951,20 @@ LABEL_4:
           {
             if (MEMORY[0] != v11)
             {
-              objc_enumerationMutation(v7);
+              objc_enumerationMutation(allKeys);
             }
 
             v13 = *(8 * i);
-            [objc_msgSend(*(a1 + 736) objectForKeyedSubscript:{v13), "videoFormat"}];
-            [*(a1 + 728) objectForKeyedSubscript:v13];
+            [objc_msgSend(*(reconfig + 736) objectForKeyedSubscript:{v13), "videoFormat"}];
+            [*(reconfig + 728) objectForKeyedSubscript:v13];
             if (([OUTLINED_FUNCTION_28() isEqual:?] & 1) == 0)
             {
-              [*(a1 + 736) setObject:0 forKeyedSubscript:v13];
+              [*(reconfig + 736) setObject:0 forKeyedSubscript:v13];
             }
           }
 
           OUTLINED_FUNCTION_17_20();
-          v10 = [v7 countByEnumeratingWithState:? objects:? count:?];
+          v10 = [allKeys countByEnumeratingWithState:? objects:? count:?];
         }
 
         while (v10);
@@ -1974,38 +1974,38 @@ LABEL_4:
     else
     {
 
-      *(a1 + 872) = 0;
-      *(a1 + 144) = 0;
+      *(reconfig + 872) = 0;
+      *(reconfig + 144) = 0;
 
-      *(a1 + 136) = 0;
-      *(a1 + 160) = 0;
+      *(reconfig + 136) = 0;
+      *(reconfig + 160) = 0;
 
-      *(a1 + 168) = 0;
-      *(a1 + 256) = 0;
+      *(reconfig + 168) = 0;
+      *(reconfig + 256) = 0;
 
-      *(a1 + 232) = 0;
-      *(a1 + 248) = 0;
+      *(reconfig + 232) = 0;
+      *(reconfig + 248) = 0;
 
-      *(a1 + 288) = 0;
-      *(a1 + 312) = 0;
+      *(reconfig + 288) = 0;
+      *(reconfig + 312) = 0;
 
-      *(a1 + 728) = 0;
-      *(a1 + 736) = 0;
-      v14 = *(a1 + 768);
+      *(reconfig + 728) = 0;
+      *(reconfig + 736) = 0;
+      v14 = *(reconfig + 768);
       if (v14)
       {
         CFRelease(v14);
-        *(a1 + 768) = 0;
+        *(reconfig + 768) = 0;
       }
 
-      *(a1 + 800) = 0;
-      v15 = *(a1 + 864);
+      *(reconfig + 800) = 0;
+      v15 = *(reconfig + 864);
       if (v15)
       {
         dispatch_semaphore_wait(v15, 0xFFFFFFFFFFFFFFFFLL);
-        dispatch_semaphore_signal(*(a1 + 864));
+        dispatch_semaphore_signal(*(reconfig + 864));
 
-        *(a1 + 864) = 0;
+        *(reconfig + 864) = 0;
       }
     }
   }
@@ -2013,28 +2013,28 @@ LABEL_4:
 
 - (void)_flushBuffers
 {
-  if (a1)
+  if (self)
   {
-    if (*(a1 + 144))
+    if (*(self + 144))
     {
-      *(a1 + 152) = 1;
-      [*(a1 + 144) finishPendingProcessing];
-      *(a1 + 152) = 0;
+      *(self + 152) = 1;
+      [*(self + 144) finishPendingProcessing];
+      *(self + 152) = 0;
     }
 
-    [*(a1 + 312) resetCurrentLoggingCounter];
+    [*(self + 312) resetCurrentLoggingCounter];
     v2 = 10;
-    v3 = a1;
+    selfCopy = self;
     do
     {
 
-      v3 += 32;
+      selfCopy += 32;
       --v2;
     }
 
     while (v2);
 
-    bzero((a1 + 320), 0x140uLL);
+    bzero((self + 320), 0x140uLL);
   }
 }
 
@@ -2045,11 +2045,11 @@ LABEL_4:
     v2 = a2;
     v3 = result;
     v4 = [objc_msgSend(a2 "pixelBufferAttributes")];
-    v5 = [v2 width];
+    width = [v2 width];
     LODWORD(v2) = [v2 height];
     v6 = FigCaptureAspectRatioForDimensions(*(v3 + 180));
     AspectRatioFromFractionalAspectRatio = FigCaptureGetAspectRatioFromFractionalAspectRatio(v6);
-    v8 = FigCaptureConvertDimensionsForAspectRatio(v5 | (v2 << 32), AspectRatioFromFractionalAspectRatio);
+    v8 = FigCaptureConvertDimensionsForAspectRatio(width | (v2 << 32), AspectRatioFromFractionalAspectRatio);
     [v4 setObject:&unk_1F2245880 forKeyedSubscript:*MEMORY[0x1E6966020]];
     v9 = [MEMORY[0x1E696AD98] numberWithInt:v8];
     [v4 setObject:v9 forKeyedSubscript:*MEMORY[0x1E6966208]];
@@ -2065,16 +2065,16 @@ LABEL_4:
 
 - (uint64_t)_setupVISProcessorController
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v2 = *(a1 + 132);
+  v2 = *(self + 132);
   if (v2 == 4 || v2 == 3)
   {
-    v3 = [OUTLINED_FUNCTION_19_26() pixelFormat];
-    FigCapturePixelFormatGetCompressionType(v3);
+    pixelFormat = [OUTLINED_FUNCTION_19_26() pixelFormat];
+    FigCapturePixelFormatGetCompressionType(pixelFormat);
     v4 = [objc_msgSend(OUTLINED_FUNCTION_6_59() "videoFormat")];
     FigCapturePixelFormatGetCompressionType(v4);
   }
@@ -2086,19 +2086,19 @@ LABEL_4:
     [OUTLINED_FUNCTION_3_77() setExtendedOutputRowsToFill:?];
   }
 
-  if (*(a1 + 201) == 1)
+  if (*(self + 201) == 1)
   {
-    v41 = *(a1 + 248);
+    v41 = *(self + 248);
     [MEMORY[0x1E695DEC8] arrayWithObjects:&v41 count:1];
-    v6 = [OUTLINED_FUNCTION_4() formatByResolvingRequirements:?];
+    videoFormat = [OUTLINED_FUNCTION_4() formatByResolvingRequirements:?];
   }
 
   else
   {
-    v6 = [OUTLINED_FUNCTION_6_59() videoFormat];
+    videoFormat = [OUTLINED_FUNCTION_6_59() videoFormat];
   }
 
-  v7 = v6;
+  v7 = videoFormat;
   [OUTLINED_FUNCTION_3_77() setEmitSampleBufferSemaphore:?];
   [OUTLINED_FUNCTION_3_77() setGpuPriority:?];
   [OUTLINED_FUNCTION_3_77() setSphereVideoEnabled:?];
@@ -2108,7 +2108,7 @@ LABEL_4:
   [OUTLINED_FUNCTION_3_77() setInputPixelBufferAttributes:?];
   [v7 pixelBufferAttributes];
   [OUTLINED_FUNCTION_3_77() setOutputPixelBufferAttributes:?];
-  v8 = *(a1 + 188);
+  v8 = *(self + 188);
   if (v8 >= 1 && SHIDWORD(v8) >= 1)
   {
     [OUTLINED_FUNCTION_3_77() setGeneratedTransformsOutputDimensionsOverride:?];
@@ -2207,7 +2207,7 @@ LABEL_4:
       }
     }
 
-    [v11 addEntriesFromDictionary:*(a1 + 736)];
+    [v11 addEntriesFromDictionary:*(self + 736)];
     [OUTLINED_FUNCTION_3_77() setOutputAttachmentsPixelBufferPools:v11];
   }
 
@@ -2238,7 +2238,7 @@ LABEL_4:
     [OUTLINED_FUNCTION_3_77() setOutputAttachmentsPixelBufferPools:v25];
   }
 
-  if (*(a1 + 212) == 1)
+  if (*(self + 212) == 1)
   {
     [+[FigCaptureCameraParameters sharedInstance](FigCaptureCameraParameters videoStabilizationSTFParameters];
     [OUTLINED_FUNCTION_3_77() setVideoSTFParameters:?];
@@ -2256,7 +2256,7 @@ LABEL_4:
     }
 
     v28 = v27;
-    if ((*(a1 + 216) & 1) == 0)
+    if ((*(self + 216) & 1) == 0)
     {
       [OUTLINED_FUNCTION_69() setObject:? forKeyedSubscript:?];
     }
@@ -2266,14 +2266,14 @@ LABEL_4:
 
   [OUTLINED_FUNCTION_3_77() setCameraExtrinsicMatrix:?];
   [OUTLINED_FUNCTION_3_77() setIspProcessingSession:?];
-  v29 = *(a1 + 144);
+  v29 = *(self + 144);
   if (v29)
   {
     goto LABEL_58;
   }
 
   v30 = objc_alloc_init(BWVISProcessorController);
-  *(a1 + 144) = v30;
+  *(self + 144) = v30;
   if (!v30)
   {
 LABEL_62:
@@ -2281,30 +2281,30 @@ LABEL_62:
     goto LABEL_60;
   }
 
-  [(BWVISProcessorController *)v30 setDelegate:a1];
-  v29 = *(a1 + 144);
+  [(BWVISProcessorController *)v30 setDelegate:self];
+  v29 = *(self + 144);
 LABEL_58:
-  [v29 setConfiguration:*(a1 + 136)];
-  v31 = [*(a1 + 144) prepareToProcess];
-  if (!*(a1 + 144))
+  [v29 setConfiguration:*(self + 136)];
+  prepareToProcess = [*(self + 144) prepareToProcess];
+  if (!*(self + 144))
   {
     v32 = 4294954516;
     goto LABEL_60;
   }
 
-  v32 = v31;
-  if (v31)
+  v32 = prepareToProcess;
+  if (prepareToProcess)
   {
 LABEL_60:
-    [*(a1 + 312) logErrorNumber:v32 errorString:@"Setup VIS Processor"];
+    [*(self + 312) logErrorNumber:v32 errorString:@"Setup VIS Processor"];
 
-    *(a1 + 144) = 0;
+    *(self + 144) = 0;
   }
 
   return v32;
 }
 
-- (void)didReachEndOfDataForConfigurationID:(id)a3 input:(id)a4
+- (void)didReachEndOfDataForConfigurationID:(id)d input:(id)input
 {
   [(BWVISNode *)self _flushBuffers];
   ioSurfaceCompressionRatioStats = self->_ioSurfaceCompressionRatioStats;
@@ -2321,7 +2321,7 @@ LABEL_60:
   [(BWVISNode *)self _releaseResourcesForReconfig:?];
   v8.receiver = self;
   v8.super_class = BWVISNode;
-  [(BWNode *)&v8 didReachEndOfDataForConfigurationID:a3 input:a4];
+  [(BWNode *)&v8 didReachEndOfDataForConfigurationID:d input:input];
 }
 
 - (uint64_t)_reportIOSurfaceCompressionCoreAnalyticsData
@@ -2353,9 +2353,9 @@ LABEL_60:
   return result;
 }
 
-- (void)_tallyAndEmitSampleBuffer:(uint64_t)a1
+- (void)_tallyAndEmitSampleBuffer:(uint64_t)buffer
 {
-  if (a1)
+  if (buffer)
   {
     OUTLINED_FUNCTION_54();
     v3 = OUTLINED_FUNCTION_69();
@@ -2402,12 +2402,12 @@ LABEL_60:
     {
       if (*(v1 + 288))
       {
-        v15 = [*(v1 + 16) videoFormat];
-        v16 = [v15 width];
-        [v15 height];
+        videoFormat = [*(v1 + 16) videoFormat];
+        width = [videoFormat width];
+        [videoFormat height];
         if ((*(v1 + 201) & 1) != 0 || (OUTLINED_FUNCTION_17_27(), v11))
         {
-          v16 = *(v1 + 180);
+          width = *(v1 + 180);
           v32 = *(v1 + 184);
         }
 
@@ -2416,7 +2416,7 @@ LABEL_60:
           v32 = v17;
         }
 
-        [*(v1 + 288) cacheStillImageTransformDataFromMetadata:v10 transformReferenceDimensions:v16 | (v32 << 32)];
+        [*(v1 + 288) cacheStillImageTransformDataFromMetadata:v10 transformReferenceDimensions:width | (v32 << 32)];
       }
 
       OUTLINED_FUNCTION_33();
@@ -2480,9 +2480,9 @@ LABEL_60:
   }
 }
 
-- (void)_handleIrisKeyFrameCachingForSampleBuffer:(uint64_t)a1
+- (void)_handleIrisKeyFrameCachingForSampleBuffer:(uint64_t)buffer
 {
-  if (a1)
+  if (buffer)
   {
     OUTLINED_FUNCTION_54();
     v3 = OUTLINED_FUNCTION_69();
@@ -2528,52 +2528,52 @@ LABEL_60:
   }
 }
 
-- (void)_addVISDigitalZoomToMetadata:(uint64_t)a3 sampleBuffer:(int)a4 forReprocessing:
+- (void)_addVISDigitalZoomToMetadata:(uint64_t)metadata sampleBuffer:(int)buffer forReprocessing:
 {
-  if (!a1)
+  if (!self)
   {
     return;
   }
 
-  v8 = [*(a1 + 8) videoFormat];
-  v9 = [v8 width];
-  v10 = [v8 height];
-  v11 = [*(a1 + 16) videoFormat];
-  v12 = [v11 width];
-  v13 = [v11 height];
-  v14 = v13;
+  videoFormat = [*(self + 8) videoFormat];
+  width = [videoFormat width];
+  height = [videoFormat height];
+  videoFormat2 = [*(self + 16) videoFormat];
+  width2 = [videoFormat2 width];
+  height2 = [videoFormat2 height];
+  v14 = height2;
   v38 = 0.0;
   v39 = 0.0;
   __asm { FMOV            V0.2D, #1.0 }
 
   v40 = _Q0;
-  if (*(a1 + 201) == 1)
+  if (*(self + 201) == 1)
   {
-    if (*(a1 + 188) >= 1 && *(a1 + 192) > 0)
+    if (*(self + 188) >= 1 && *(self + 192) > 0)
     {
-      v14 = *(a1 + 192);
-      v12 = *(a1 + 188);
+      v14 = *(self + 192);
+      width2 = *(self + 188);
       goto LABEL_15;
     }
   }
 
-  else if (!a4)
+  else if (!buffer)
   {
     goto LABEL_15;
   }
 
-  if (*(a1 + 180))
+  if (*(self + 180))
   {
-    v21 = *(a1 + 184);
-    v14 = v21 ? *(a1 + 184) : v13;
+    v21 = *(self + 184);
+    v14 = v21 ? *(self + 184) : height2;
     if (v21)
     {
-      v12 = *(a1 + 180);
+      width2 = *(self + 180);
     }
   }
 
 LABEL_15:
-  if (*(a1 + 809) == 1)
+  if (*(self + 809) == 1)
   {
     v40 = _Q0;
   }
@@ -2582,7 +2582,7 @@ LABEL_15:
   {
     if (!FigCFDictionaryGetCGRectIfPresent())
     {
-      if (a4)
+      if (buffer)
       {
         v22 = OUTLINED_FUNCTION_69();
         if (CMGetAttachment(v22, v23, v24))
@@ -2592,9 +2592,9 @@ LABEL_15:
       }
     }
 
-    if (*(a1 + 219) == 1 && (*(a1 + 220) & 1) == 0)
+    if (*(self + 219) == 1 && (*(self + 220) & 1) == 0)
     {
-      v38 = FigCaptureMetadataUtilitiesScaleRect(0.0, 0.0, *&v40, *(&v40 + 1), (*(a1 + 240) + 1.0));
+      v38 = FigCaptureMetadataUtilitiesScaleRect(0.0, 0.0, *&v40, *(&v40 + 1), (*(self + 240) + 1.0));
       v39 = v25;
       *&v40 = v26;
       *(&v40 + 1) = v27;
@@ -2602,29 +2602,29 @@ LABEL_15:
     }
   }
 
-  v28 = *&v40 * v9;
-  v29 = *(&v40 + 1) * v10;
-  v30 = (v12 / v28 + v14 / v29) * 0.5;
+  v28 = *&v40 * width;
+  v29 = *(&v40 + 1) * height;
+  v30 = (width2 / v28 + v14 / v29) * 0.5;
   v31 = v30;
-  if (*(a1 + 856) == 2 && FigCFDictionaryGetFloatIfPresent())
+  if (*(self + 856) == 2 && FigCFDictionaryGetFloatIfPresent())
   {
     fig_log_get_emitter();
     OUTLINED_FUNCTION_0();
     FigDebugAssert3();
-    if (!a3)
+    if (!metadata)
     {
       goto LABEL_33;
     }
 
 LABEL_28:
-    if ((*(a1 + 132) - 3) <= 1 && v31 > 2.25)
+    if ((*(self + 132) - 3) <= 1 && v31 > 2.25)
     {
       v35 = *off_1E798D460;
       *&v30 = v31 / 2.25;
       [MEMORY[0x1E696AD98] numberWithFloat:v30];
       v36 = OUTLINED_FUNCTION_4();
       CMSetAttachment(v36, v35, v37, 1u);
-      if (a4)
+      if (buffer)
       {
         FigCFDictionarySetCGFloat();
       }
@@ -2633,15 +2633,15 @@ LABEL_28:
     goto LABEL_33;
   }
 
-  if (a3)
+  if (metadata)
   {
     goto LABEL_28;
   }
 
 LABEL_33:
   FigCFDictionarySetCGFloat();
-  v41.x = v38 - (v9 - v28) * 0.5 / v9;
-  v41.y = v39 - (v10 - v29) * 0.5 / v10;
+  v41.x = v38 - (width - v28) * 0.5 / width;
+  v41.y = v39 - (height - v29) * 0.5 / height;
   DictionaryRepresentation = CGPointCreateDictionaryRepresentation(v41);
   CFDictionarySetValue(a2, *off_1E798D4A8, DictionaryRepresentation);
   if (DictionaryRepresentation)
@@ -2649,7 +2649,7 @@ LABEL_33:
     CFRelease(DictionaryRepresentation);
   }
 
-  if (((*(a1 + 808) & 1) != 0 || a4) && !CFDictionaryGetValue(a2, @"TotalZoomFactor"))
+  if (((*(self + 808) & 1) != 0 || buffer) && !CFDictionaryGetValue(a2, @"TotalZoomFactor"))
   {
     v34 = OUTLINED_FUNCTION_9_46();
     if (v34)
@@ -2659,9 +2659,9 @@ LABEL_33:
   }
 }
 
-- (void)_tallyAndEmitDroppedSample:(uint64_t)a1
+- (void)_tallyAndEmitDroppedSample:(uint64_t)sample
 {
-  if (a1)
+  if (sample)
   {
     OUTLINED_FUNCTION_54();
     v5 = [*(v3 + 16) emitDroppedSample:v4];
@@ -2680,7 +2680,7 @@ LABEL_33:
   }
 }
 
-- (uint64_t)_collectMetadataForReprocessingFrom:(void *)a3 to:
+- (uint64_t)_collectMetadataForReprocessingFrom:(void *)from to:
 {
   if (result)
   {
@@ -2688,13 +2688,13 @@ LABEL_33:
     result = 4294954516;
     if (a2)
     {
-      if (a3)
+      if (from)
       {
         v6 = *off_1E798A3C8;
         if (OUTLINED_FUNCTION_9_46())
         {
-          [a3 setObject:*(v4 + 232) forKeyedSubscript:*off_1E798A970];
-          [(BWVISNode *)v4 _addVISDigitalZoomToMetadata:a3 sampleBuffer:a2 forReprocessing:1];
+          [from setObject:*(v4 + 232) forKeyedSubscript:*off_1E798A970];
+          [(BWVISNode *)v4 _addVISDigitalZoomToMetadata:from sampleBuffer:a2 forReprocessing:1];
           v7 = *off_1E798CE60;
           if (OUTLINED_FUNCTION_32_11())
           {
@@ -2725,7 +2725,7 @@ LABEL_33:
               while (v11);
             }
 
-            [a3 setObject:v8 forKeyedSubscript:v7];
+            [from setObject:v8 forKeyedSubscript:v7];
           }
 
           v15 = *off_1E798CE58;
@@ -2736,7 +2736,7 @@ LABEL_33:
             {
               v33 = v16;
               [(BWVISNode *)v4 _addVISDigitalZoomToMetadata:v16 sampleBuffer:a2 forReprocessing:1];
-              [a3 setObject:v33 forKeyedSubscript:v15];
+              [from setObject:v33 forKeyedSubscript:v15];
             }
           }
 
@@ -2792,7 +2792,7 @@ LABEL_33:
                   [v30 setObject:objc_msgSend(v32 forKeyedSubscript:{"compressedDataUsingAlgorithm:error:", 1, 0), *off_1E798AFE0}];
 
                   IOSurfaceUnlock(v29, 1u, 0);
-                  [a3 setObject:v30 forKeyedSubscript:*off_1E798CD80];
+                  [from setObject:v30 forKeyedSubscript:*off_1E798CD80];
                 }
               }
             }
@@ -2832,25 +2832,25 @@ LABEL_33:
   return result;
 }
 
-- (void)_tallyCompressedIOSurfaceStatsForSBuf:(uint64_t)a1
+- (void)_tallyCompressedIOSurfaceStatsForSBuf:(uint64_t)buf
 {
-  if (a1)
+  if (buf)
   {
     v5 = 0;
     v6 = 0;
     v3 = BWSampleBufferComputeIOSurfaceCompressionRatio(a2, &v6, &v5);
     if (v3 > 0.0 && v3 <= 1.0)
     {
-      [*(a1 + 656) addDataPoint:v3];
-      *(a1 + 672) += v6;
-      *(a1 + 680) += v5;
+      [*(buf + 656) addDataPoint:v3];
+      *(buf + 672) += v6;
+      *(buf + 680) += v5;
     }
   }
 }
 
-- (uint64_t)_harvestMetadataFromSampleBuffer:(uint64_t)a1
+- (uint64_t)_harvestMetadataFromSampleBuffer:(uint64_t)buffer
 {
-  if (a1 && target && CMGetAttachment(target, *off_1E798A3C8, 0))
+  if (buffer && target && CMGetAttachment(target, *off_1E798A3C8, 0))
   {
     memset(&v13, 0, sizeof(v13));
     CMSampleBufferGetPresentationTimeStamp(&v13, target);
@@ -2883,9 +2883,9 @@ LABEL_33:
   return 0;
 }
 
-- (uint64_t)_stabilizeMetadataForSampleBuffer:(uint64_t)a1
+- (uint64_t)_stabilizeMetadataForSampleBuffer:(uint64_t)buffer
 {
-  if (a1)
+  if (buffer)
   {
     if (target)
     {
@@ -2898,10 +2898,10 @@ LABEL_33:
         v6 = OUTLINED_FUNCTION_3_19();
         v8 = [(BWVISNode *)v6 _calculateOpticalCenterFromMetadata:v7];
         v78 = v79;
-        v10 = [(BWVISNode *)a1 _transformPointsInMetadata:v8 pts:v9];
+        v10 = [(BWVISNode *)buffer _transformPointsInMetadata:v8 pts:v9];
         v12 = v11;
-        v13 = [objc_msgSend(*(a1 + 16) "videoFormat")];
-        [objc_msgSend(*(a1 + 16) "videoFormat")];
+        v13 = [objc_msgSend(*(buffer + 16) "videoFormat")];
+        [objc_msgSend(*(buffer + 16) "videoFormat")];
         v80.x = FigCaptureMetadataUtilitiesNormalizePoint(v10, v12, v13);
         [v5 setObject:CGPointCreateDictionaryRepresentation(v80) forKeyedSubscript:*off_1E798D4C0];
         v14 = [v5 objectForKeyedSubscript:*off_1E798B218];
@@ -2968,9 +2968,9 @@ LABEL_33:
   return 0;
 }
 
-- (uint64_t)_checkIfGreenGhostIsPresentWithSampleBuffer:(uint64_t)a1
+- (uint64_t)_checkIfGreenGhostIsPresentWithSampleBuffer:(uint64_t)buffer
 {
-  if (a1)
+  if (buffer)
   {
     if (target)
     {
@@ -2980,7 +2980,7 @@ LABEL_33:
       {
         v6 = v5;
         [v5 objectForKeyedSubscript:*off_1E798B540];
-        if (*(a1 + 214) == 1)
+        if (*(buffer + 214) == 1)
         {
           AttachedMedia = BWSampleBufferGetAttachedMedia(target, 0x1F219CD50);
           if (!AttachedMedia)
@@ -3001,11 +3001,11 @@ LABEL_13:
             [objc_msgSend(v6 objectForKeyedSubscript:{*off_1E798B2A8), "floatValue"}];
             [objc_msgSend(v6 objectForKeyedSubscript:{*off_1E798B210), "floatValue"}];
             v12 = v11;
-            v18 = *(a1 + 828);
-            LODWORD(v19) = *(a1 + 844);
+            v18 = *(buffer + 828);
+            LODWORD(v19) = *(buffer + 844);
             if (FigCaptureMetadataUtilitiesGreenGhostDetectedInFrame(v10))
             {
-              ++*(a1 + 848);
+              ++*(buffer + 848);
               v13 = &unk_1F2245A30;
             }
 
@@ -3015,11 +3015,11 @@ LABEL_13:
             }
 
             [v6 setObject:v13 forKeyedSubscript:{*off_1E798D498, v18, v19}];
-            v16 = *(a1 + 848);
-            v18 = *(a1 + 828);
-            LODWORD(v19) = *(a1 + 844);
-            *(a1 + 852) = FigCaptureMetadataUtilitiesGreenGhostDetectedInMovie(v16, &v18, v12);
-            v15 = [MEMORY[0x1E696AD98] numberWithBool:*(a1 + 852)];
+            v16 = *(buffer + 848);
+            v18 = *(buffer + 828);
+            LODWORD(v19) = *(buffer + 844);
+            *(buffer + 852) = FigCaptureMetadataUtilitiesGreenGhostDetectedInMovie(v16, &v18, v12);
+            v15 = [MEMORY[0x1E696AD98] numberWithBool:*(buffer + 852)];
             v14 = *off_1E798D4A0;
             goto LABEL_13;
           }
@@ -3031,9 +3031,9 @@ LABEL_13:
   return 0;
 }
 
-- (uint64_t)_cinematographyFrameForSampleBuffer:(uint64_t)a1
+- (uint64_t)_cinematographyFrameForSampleBuffer:(uint64_t)buffer
 {
-  if (!a1)
+  if (!buffer)
   {
     return 0;
   }
@@ -3052,9 +3052,9 @@ LABEL_13:
   return [v2 objectForKeyedSubscript:0x1F21A9950];
 }
 
-- (uint64_t)_attachHarvestedStabilizationMetadataToCinematographyFrame:(os_unfair_lock_s *)a1
+- (uint64_t)_attachHarvestedStabilizationMetadataToCinematographyFrame:(os_unfair_lock_s *)frame
 {
-  if (a1)
+  if (frame)
   {
     if (a2)
     {
@@ -3063,17 +3063,17 @@ LABEL_13:
       [a2 time];
       v16 = 0uLL;
       v17 = 0;
-      v4 = [BWVISNode _findBestMotionTensorsInRingBufferWithKey:a1 pts:0];
+      v4 = [BWVISNode _findBestMotionTensorsInRingBufferWithKey:frame pts:0];
       if ((v4 & 0x80000000) == 0)
       {
         v5 = v4;
-        v6 = [*&a1[8 * v4 + 80]._os_unfair_lock_opaque objectForKeyedSubscript:*off_1E798D478];
+        v6 = [*&frame[8 * v4 + 80]._os_unfair_lock_opaque objectForKeyedSubscript:*off_1E798D478];
         if ([v6 length] == 36)
         {
-          v7 = [*&a1[8 * v5 + 80]._os_unfair_lock_opaque objectForKeyedSubscript:*off_1E798D440];
+          v7 = [*&frame[8 * v5 + 80]._os_unfair_lock_opaque objectForKeyedSubscript:*off_1E798D440];
           if ([v7 length] == 8)
           {
-            v8 = [v6 bytes];
+            bytes = [v6 bytes];
             v9 = 0;
             v13 = 0u;
             v14 = 0u;
@@ -3086,7 +3086,7 @@ LABEL_13:
                 v10 = 2;
               }
 
-              *((&v13 + v9 % 3u) | (4 * v10)) = *(v8 + 4 * v9);
+              *((&v13 + v9 % 3u) | (4 * v10)) = *(bytes + 4 * v9);
               ++v9;
             }
 
@@ -3104,28 +3104,28 @@ LABEL_13:
   return 0;
 }
 
-- (uint64_t)_stabilizeCinematographyMetadataInCinematographyFrame:(uint64_t)a1
+- (uint64_t)_stabilizeCinematographyMetadataInCinematographyFrame:(uint64_t)frame
 {
-  if (a1)
+  if (frame)
   {
     if (a2)
     {
       [a2 time];
       v4 = *off_1E798D428;
-      v5 = [BWVISNode _findBestMotionTensorsInRingBufferWithKey:a1 pts:*off_1E798D428];
+      v5 = [BWVISNode _findBestMotionTensorsInRingBufferWithKey:frame pts:*off_1E798D428];
       if ((v5 & 0x80000000) == 0)
       {
-        v6 = [*(a1 + 320 + 32 * v5) objectForKeyedSubscript:v4];
+        v6 = [*(frame + 320 + 32 * v5) objectForKeyedSubscript:v4];
         if ([v6 length] == 36)
         {
           if ([v6 bytes])
           {
-            v7 = [*(a1 + 8) videoFormat];
-            [v7 width];
-            [v7 height];
-            v8 = [*(a1 + 16) videoFormat];
-            v9 = [v8 width];
-            [v8 height];
+            videoFormat = [*(frame + 8) videoFormat];
+            [videoFormat width];
+            [videoFormat height];
+            videoFormat2 = [*(frame + 16) videoFormat];
+            width = [videoFormat2 width];
+            [videoFormat2 height];
             v10 = [objc_msgSend(a2 "detections")];
             if ([v10 count])
             {
@@ -3148,7 +3148,7 @@ LABEL_13:
                     v16 = *(8 * i);
                     [v16 rect];
                     v17 = OUTLINED_FUNCTION_3_19();
-                    [v16 setRect:{visn_transformRectangle(v17, v18, v9, v19, v20, v21, v22)}];
+                    [v16 setRect:{visn_transformRectangle(v17, v18, width, v19, v20, v21, v22)}];
                   }
 
                   OUTLINED_FUNCTION_43();
@@ -3167,27 +3167,27 @@ LABEL_13:
   return 0;
 }
 
-- (double)_droppedSamplePTSFromSampleBuffer:(uint64_t)a3@<X8>
+- (double)_droppedSamplePTSFromSampleBuffer:(uint64_t)buffer@<X8>
 {
-  *a3 = 0;
-  *(a3 + 8) = 0;
-  *(a3 + 16) = 0;
+  *buffer = 0;
+  *(buffer + 8) = 0;
+  *(buffer + 16) = 0;
   if (a2)
   {
     if (sbuf)
     {
-      CMSampleBufferGetPresentationTimeStamp(a3, sbuf);
+      CMSampleBufferGetPresentationTimeStamp(buffer, sbuf);
     }
 
     else
     {
       v6 = MEMORY[0x1E6960C70];
       v5 = *MEMORY[0x1E6960C70];
-      *a3 = *MEMORY[0x1E6960C70];
-      *(a3 + 16) = *(v6 + 16);
+      *buffer = *MEMORY[0x1E6960C70];
+      *(buffer + 16) = *(v6 + 16);
     }
 
-    if ((*(a3 + 12) & 1) == 0)
+    if ((*(buffer + 12) & 1) == 0)
     {
       if ((*(a2 + 700) & 1) == 0)
       {
@@ -3210,16 +3210,16 @@ LABEL_13:
       OUTLINED_FUNCTION_2_10();
       CMTimeAdd(&v12, &v10, &rhs);
       *&v5 = v12.value;
-      *a3 = v12;
+      *buffer = v12;
     }
   }
 
   return *&v5;
 }
 
-- (uint64_t)_collectAttachedMediaForReprocessingFrom:(uint64_t)a3 offlineKey:(uint64_t)a4 offlineKeyData:(void *)a5 to:
+- (uint64_t)_collectAttachedMediaForReprocessingFrom:(uint64_t)from offlineKey:(uint64_t)key offlineKeyData:(void *)data to:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
@@ -3279,7 +3279,7 @@ LABEL_17:
 
   [OUTLINED_FUNCTION_17() setObject:? forKeyedSubscript:?];
   CVPixelBufferUnlockBaseAddress(v11, 1uLL);
-  [a5 setObject:v5 forKeyedSubscript:a3];
+  [data setObject:v5 forKeyedSubscript:from];
 LABEL_12:
   v19 = 0;
 LABEL_13:
@@ -3287,12 +3287,12 @@ LABEL_13:
   return v19;
 }
 
-- (void)didCompleteProcessingOfBuffer:(opaqueCMSampleBuffer *)a3 withStatus:(int)a4
+- (void)didCompleteProcessingOfBuffer:(opaqueCMSampleBuffer *)buffer withStatus:(int)status
 {
-  v5 = *&a4;
+  v5 = *&status;
   if ([(BWVISProcessorControllerConfiguration *)self->_processorControllerConfiguration smartStyleReversibilityEnabled])
   {
-    BWSynchronizeSmartStyleAttachedMediaPTS(a3);
+    BWSynchronizeSmartStyleAttachedMediaPTS(buffer);
   }
 
   if (v5)
@@ -3304,7 +3304,7 @@ LABEL_13:
   v11 = CMGetAttachment(v8, v9, v10);
   if (self->_frameRateConversionEnabled)
   {
-    if (!a3)
+    if (!buffer)
     {
       return;
     }
@@ -3345,7 +3345,7 @@ LABEL_13:
     CFDictionarySetValue(v11, @"VariableFrameRateStats", v21);
   }
 
-  if (a3)
+  if (buffer)
   {
 LABEL_13:
     v23 = *MEMORY[0x1E69604E0];
@@ -3374,7 +3374,7 @@ LABEL_13:
               objc_enumerationMutation(v31);
             }
 
-            AttachedMedia = BWSampleBufferGetAttachedMedia(a3, *(*(&v70 + 1) + 8 * i));
+            AttachedMedia = BWSampleBufferGetAttachedMedia(buffer, *(*(&v70 + 1) + 8 * i));
             CMSetAttachment(AttachedMedia, v23, v27, 1u);
           }
 
@@ -3392,7 +3392,7 @@ LABEL_13:
       v40 = CMGetAttachment(v38, v39, 0);
       if (v40)
       {
-        BWSampleBufferSetAttachedMedia(a3, @"Depth", v40);
+        BWSampleBufferSetAttachedMedia(buffer, @"Depth", v40);
         v41 = OUTLINED_FUNCTION_14_32();
         CMRemoveAttachment(v41, v42);
       }
@@ -3442,7 +3442,7 @@ LABEL_38:
       goto LABEL_45;
     }
 
-    ImageBuffer = CMSampleBufferGetImageBuffer(a3);
+    ImageBuffer = CMSampleBufferGetImageBuffer(buffer);
     v52 = *off_1E798A3B8;
     v53 = CMGetAttachment(ImageBuffer, *off_1E798A3B8, 0);
     if (!v53)
@@ -3451,7 +3451,7 @@ LABEL_38:
     }
 
     v54 = v53;
-    if (v22 && CFDictionaryContainsKey(v11, *off_1E798A5C8) || (v55 = BWSampleBufferSetAttachedMediaFromPixelBuffer(a3, 0x1F21AB190, v54, &self->_lowResImageUsedByVideoEncoderFormatDescription, [MEMORY[0x1E695DF90] dictionary], 0, 0), !v55))
+    if (v22 && CFDictionaryContainsKey(v11, *off_1E798A5C8) || (v55 = BWSampleBufferSetAttachedMediaFromPixelBuffer(buffer, 0x1F21AB190, v54, &self->_lowResImageUsedByVideoEncoderFormatDescription, [MEMORY[0x1E695DF90] dictionary], 0, 0), !v55))
     {
       CMRemoveAttachment(ImageBuffer, v52);
 LABEL_45:
@@ -3460,13 +3460,13 @@ LABEL_45:
       if (v57)
       {
         v58 = v57;
-        v59 = [(BWVISProcessorControllerConfiguration *)self->_processorControllerConfiguration videoStabilizationStrength];
-        if (v59 == 3)
+        videoStabilizationStrength = [(BWVISProcessorControllerConfiguration *)self->_processorControllerConfiguration videoStabilizationStrength];
+        if (videoStabilizationStrength == 3)
         {
           v60 = @"action";
         }
 
-        else if (v59 == 4)
+        else if (videoStabilizationStrength == 4)
         {
           v60 = @"actionUltra";
         }
@@ -3482,7 +3482,7 @@ LABEL_45:
         }
 
         [v58 setObject:v60 forKeyedSubscript:*off_1E798CEA8];
-        CMSetAttachment(a3, v56, v58, 1u);
+        CMSetAttachment(buffer, v56, v58, 1u);
       }
 
       v61 = OUTLINED_FUNCTION_3_19();
@@ -3505,16 +3505,16 @@ LABEL_58:
   }
 }
 
-- (void)_addMotionTensorsToRingBuffer:(uint64_t)a3 pts:
+- (void)_addMotionTensorsToRingBuffer:(uint64_t)buffer pts:
 {
-  if (a1)
+  if (self)
   {
     OUTLINED_FUNCTION_54();
     os_unfair_lock_lock(v6 + 161);
     v7 = &v3[8 * v3[160]._os_unfair_lock_opaque + 80];
     v8 = *v7;
-    v9 = *(a3 + 16);
-    *(v7 + 8) = *a3;
+    v9 = *(buffer + 16);
+    *(v7 + 8) = *buffer;
     *(v7 + 24) = v9;
     *&v3[8 * v3[160]._os_unfair_lock_opaque + 80]._os_unfair_lock_opaque = v4;
 
@@ -3524,24 +3524,24 @@ LABEL_58:
   }
 }
 
-- (uint64_t)_findBestMotionTensorsInRingBufferWithKey:(os_unfair_lock_s *)a1 pts:(uint64_t)a2
+- (uint64_t)_findBestMotionTensorsInRingBufferWithKey:(os_unfair_lock_s *)key pts:(uint64_t)pts
 {
-  if (!a1)
+  if (!key)
   {
     return 0;
   }
 
   v13 = **&MEMORY[0x1E6960C88];
-  os_unfair_lock_lock(a1 + 161);
+  os_unfair_lock_lock(key + 161);
   v4 = 0xFFFFFFFFLL;
   for (i = 9; i != -1; --i)
   {
-    v6 = i + a1[160]._os_unfair_lock_opaque - 10 * ((a1[160]._os_unfair_lock_opaque + i) / 0xA);
-    v7 = *&a1[8 * v6 + 80]._os_unfair_lock_opaque;
-    if (v7 && (!a2 || [v7 objectForKeyedSubscript:a2]))
+    v6 = i + key[160]._os_unfair_lock_opaque - 10 * ((key[160]._os_unfair_lock_opaque + i) / 0xA);
+    v7 = *&key[8 * v6 + 80]._os_unfair_lock_opaque;
+    if (v7 && (!pts || [v7 objectForKeyedSubscript:pts]))
     {
       memset(&v12, 0, sizeof(v12));
-      lhs = *&a1[8 * v6 + 82]._os_unfair_lock_opaque;
+      lhs = *&key[8 * v6 + 82]._os_unfair_lock_opaque;
       OUTLINED_FUNCTION_2_10();
       CMTimeSubtract(&time, &lhs, &v9);
       CMTimeAbsoluteValue(&v12, &time);
@@ -3557,21 +3557,21 @@ LABEL_58:
     }
   }
 
-  os_unfair_lock_unlock(a1 + 161);
+  os_unfair_lock_unlock(key + 161);
   return v4;
 }
 
-- (double)_calculateOpticalCenterFromMetadata:(uint64_t)a1
+- (double)_calculateOpticalCenterFromMetadata:(uint64_t)metadata
 {
-  if (!a1)
+  if (!metadata)
   {
     return 0.0;
   }
 
   point = *MEMORY[0x1E695EFF8];
-  v3 = [*(a1 + 8) videoFormat];
-  v4 = [v3 width];
-  v5 = [v3 height];
+  videoFormat = [*(metadata + 8) videoFormat];
+  width = [videoFormat width];
+  height = [videoFormat height];
   v6 = [objc_msgSend(a2 objectForKeyedSubscript:{*off_1E798B5A8), "intValue"}];
   v7 = [objc_msgSend(a2 objectForKeyedSubscript:{*off_1E798B5A0), "intValue"}];
   v8 = *off_1E798B258;
@@ -3602,89 +3602,89 @@ LABEL_58:
 
   v21[0] = 0;
   v21[1] = 0;
-  v13 = FigMotionComputeRawSensorCenterInBuffer(a2, v4 | (v5 << 32), v12, v12, v21);
+  v13 = FigMotionComputeRawSensorCenterInBuffer(a2, width | (height << 32), v12, v12, v21);
   v14 = *v21;
   if (v13)
   {
-    v14 = ((v4 + -1.0) * 0.5);
+    v14 = ((width + -1.0) * 0.5);
   }
 
   return v14 + (point.x - ((v6 + -1.0) * 0.5)) * v10 * v12;
 }
 
-- (double)_transformPointsInMetadata:(double)a3 pts:(double)a4
+- (double)_transformPointsInMetadata:(double)metadata pts:(double)pts
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  v8 = [*(a1 + 8) videoFormat];
-  v9 = [v8 width];
-  [v8 height];
-  v10 = [*(a1 + 16) videoFormat];
-  v11 = [v10 width];
-  [v10 height];
-  v12 = vcvts_n_f32_s32(v11, 1uLL);
+  videoFormat = [*(self + 8) videoFormat];
+  width = [videoFormat width];
+  [videoFormat height];
+  videoFormat2 = [*(self + 16) videoFormat];
+  width2 = [videoFormat2 width];
+  [videoFormat2 height];
+  v12 = vcvts_n_f32_s32(width2, 1uLL);
   v13 = *off_1E798D428;
   v21 = *a2;
   v22 = *(a2 + 2);
-  v14 = [BWVISNode _findBestMotionTensorsInRingBufferWithKey:a1 pts:v13];
+  v14 = [BWVISNode _findBestMotionTensorsInRingBufferWithKey:self pts:v13];
   if ((v14 & 0x80000000) == 0)
   {
-    v15 = [*(a1 + 320 + 32 * v14) objectForKeyedSubscript:{v13, v21, v22}];
+    v15 = [*(self + 320 + 32 * v14) objectForKeyedSubscript:{v13, v21, v22}];
     if ([v15 length] == 36)
     {
-      v16 = [v15 bytes];
+      bytes = [v15 bytes];
       *&v21 = 0;
-      v17 = a3;
-      v18 = a4;
-      ComputePerspectiveProjectedPoint(v16, &v21, &v21 + 1, v17, v18);
-      v19 = *&v21 - ((v9 - v11) / 2);
-      return fmaxf(fminf(v11, v19), 0.0);
+      metadataCopy = metadata;
+      ptsCopy = pts;
+      ComputePerspectiveProjectedPoint(bytes, &v21, &v21 + 1, metadataCopy, ptsCopy);
+      v19 = *&v21 - ((width - width2) / 2);
+      return fmaxf(fminf(width2, v19), 0.0);
     }
   }
 
   return v12;
 }
 
-- (uint64_t)_transformRectanglesInMetadata:(__int128 *)a3 pts:
+- (uint64_t)_transformRectanglesInMetadata:(__int128 *)metadata pts:
 {
-  if (a1)
+  if (self)
   {
     if ([a2 count])
     {
-      v4 = [*(a1 + 8) videoFormat];
-      v5 = [v4 width];
-      v6 = [v4 height];
-      v7 = [*(a1 + 16) videoFormat];
-      v73 = [v7 width];
-      v8 = [v7 height];
+      videoFormat = [*(self + 8) videoFormat];
+      width = [videoFormat width];
+      height = [videoFormat height];
+      videoFormat2 = [*(self + 16) videoFormat];
+      width2 = [videoFormat2 width];
+      height2 = [videoFormat2 height];
       v9 = *off_1E798D428;
-      v86 = *a3;
-      *&v87 = *(a3 + 2);
+      v86 = *metadata;
+      *&v87 = *(metadata + 2);
       v10 = OUTLINED_FUNCTION_14_32();
       v12 = [BWVISNode _findBestMotionTensorsInRingBufferWithKey:v10 pts:v11];
       if ((v12 & 0x80000000) == 0)
       {
-        v13 = [*(a1 + 320 + 32 * v12) objectForKeyedSubscript:v9];
+        v13 = [*(self + 320 + 32 * v12) objectForKeyedSubscript:v9];
         if ([v13 length] == 36)
         {
-          v14 = [v13 bytes];
+          bytes = [v13 bytes];
           v89 = 0u;
           v90 = 0u;
           v91 = 0u;
           v92 = 0u;
-          v22 = OUTLINED_FUNCTION_30_10(v14, v15, v16, v17, v18, v19, v20, v21, a2, a1, v62, v64, v65, v67, v68, v70, v14, v73, *&v76, v77, v78, v79, v80, v81, *&v82, *&v83, *&v84, *&v85, v86, *(&v86 + 1), v87, *(&v87 + 1), v88);
+          v22 = OUTLINED_FUNCTION_30_10(bytes, v15, v16, v17, v18, v19, v20, v21, a2, self, v62, v64, v65, v67, v68, v70, bytes, width2, *&v76, v77, v78, v79, v80, v81, *&v82, *&v83, *&v84, *&v85, v86, *(&v86 + 1), v87, *(&v87 + 1), v88);
           if (v22)
           {
             v23 = v22;
             v71 = *v90;
-            v69 = v5 | (v6 << 32);
-            v75 = v74 | (v8 << 32);
+            v69 = width | (height << 32);
+            v75 = v74 | (height2 << 32);
             v24 = *off_1E798B160;
-            v25 = v5;
-            v26 = v6;
+            v25 = width;
+            v26 = height;
             v27 = *off_1E798B168;
             v28 = (v72 + 8);
             v63 = *(MEMORY[0x1E695F050] + 16);

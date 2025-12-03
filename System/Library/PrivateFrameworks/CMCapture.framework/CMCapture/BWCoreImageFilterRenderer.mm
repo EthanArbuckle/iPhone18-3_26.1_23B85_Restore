@@ -1,14 +1,14 @@
 @interface BWCoreImageFilterRenderer
-+ (id)context:(BOOL)a3 deferredPhotoProcessorEnabled:(BOOL)a4 allocatorBackend:(id)a5 err:(int *)a6;
++ (id)context:(BOOL)context deferredPhotoProcessorEnabled:(BOOL)enabled allocatorBackend:(id)backend err:(int *)err;
 + (void)_prewarmCoreImagePortraitFilterV1;
 + (void)initialize;
 + (void)prewarmCoreImageSDOFRenderingFilter;
-+ (void)prewarmPortraitFilterVersion:(unsigned int)a3 semanticStyleFilters:(BOOL)a4;
-- (id)initForRenderingWithDepth:(BOOL)a3 context:(id)a4 portraitRenderQuality:(int)a5 hairnetEnabled:(BOOL)a6 metalCommandQueue:(id)a7 figThreadPriority:(unsigned int)a8;
-- (int)prepareForRenderingWithParameters:(id)a3 inputVideoFormat:(id)a4 inputMediaPropertiesByAttachedMediaKey:(id)a5;
-- (void)_renderUsingParameters:(const void *)a3 inputPixelBuffer:(const void *)a4 inputSampleBuffer:(const void *)a5 originalPixelBuffer:(const void *)a6 processedPixelBuffer:(char)a7 prewarming:(uint64_t)a8 completionHandler:;
-- (void)_visionKitFaceObservationToCoreImageDictionary:(uint64_t)a3 orientation:;
-- (void)coreImageArrayRepresentationForRegion:(uint64_t)a1;
++ (void)prewarmPortraitFilterVersion:(unsigned int)version semanticStyleFilters:(BOOL)filters;
+- (id)initForRenderingWithDepth:(BOOL)depth context:(id)context portraitRenderQuality:(int)quality hairnetEnabled:(BOOL)enabled metalCommandQueue:(id)queue figThreadPriority:(unsigned int)priority;
+- (int)prepareForRenderingWithParameters:(id)parameters inputVideoFormat:(id)format inputMediaPropertiesByAttachedMediaKey:(id)key;
+- (void)_renderUsingParameters:(const void *)parameters inputPixelBuffer:(const void *)buffer inputSampleBuffer:(const void *)sampleBuffer originalPixelBuffer:(const void *)pixelBuffer processedPixelBuffer:(char)processedPixelBuffer prewarming:(uint64_t)prewarming completionHandler:;
+- (void)_visionKitFaceObservationToCoreImageDictionary:(uint64_t)dictionary orientation:;
+- (void)coreImageArrayRepresentationForRegion:(uint64_t)region;
 - (void)dealloc;
 @end
 
@@ -16,7 +16,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work_cf();
@@ -266,23 +266,23 @@
   }
 }
 
-+ (id)context:(BOOL)a3 deferredPhotoProcessorEnabled:(BOOL)a4 allocatorBackend:(id)a5 err:(int *)a6
++ (id)context:(BOOL)context deferredPhotoProcessorEnabled:(BOOL)enabled allocatorBackend:(id)backend err:(int *)err
 {
-  v8 = a4;
-  v9 = a3;
-  if (a4)
+  enabledCopy = enabled;
+  contextCopy = context;
+  if (enabled)
   {
     v10 = [objc_msgSend(MEMORY[0x1E6991778] "metalDevice")];
     v11 = v10;
-    v12 = [v10 device];
+    device = [v10 device];
   }
 
   else
   {
-    v12 = 0;
+    device = 0;
   }
 
-  v13 = [+[BWMemoryPool sharedMemoryPool](BWMemoryPool poolIdentifier];
+  poolIdentifier = [+[BWMemoryPool sharedMemoryPool](BWMemoryPool poolIdentifier];
   v14 = MEMORY[0x1E695FF58];
   if (*MEMORY[0x1E695FF58] == 1)
   {
@@ -290,11 +290,11 @@
   }
 
   v15 = 0;
-  if (a5 && v8)
+  if (backend && enabledCopy)
   {
-    if ([a5 memSize])
+    if ([backend memSize])
     {
-      v15 = [[BWCoreImageIntermediateAllocator alloc] initWithBackend:v12 allocatorBackend:a5 memoryPool:v13];
+      v15 = [[BWCoreImageIntermediateAllocator alloc] initWithBackend:device allocatorBackend:backend memoryPool:poolIdentifier];
     }
 
     else
@@ -303,7 +303,7 @@
     }
   }
 
-  if (v8)
+  if (enabledCopy)
   {
     v16 = 350;
   }
@@ -314,7 +314,7 @@
   }
 
   v17 = MEMORY[0x1E695F910];
-  if (v9)
+  if (contextCopy)
   {
     v17 = MEMORY[0x1E695F920];
   }
@@ -330,7 +330,7 @@
   v30[2] = v21;
   v31[2] = [MEMORY[0x1E696AD98] numberWithInt:v16];
   v30[3] = *MEMORY[0x1E695F808];
-  v31[3] = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v13];
+  v31[3] = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:poolIdentifier];
   v22 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v31 forKeys:v30 count:4];
   v23 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:v22];
   if (v15)
@@ -340,9 +340,9 @@
     [v23 addEntriesFromDictionary:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v29, &v28, 1)}];
   }
 
-  if (v12)
+  if (device)
   {
-    v24 = [MEMORY[0x1E695F620] contextWithMTLDevice:v12 options:v23];
+    v24 = [MEMORY[0x1E695F620] contextWithMTLDevice:device options:v23];
   }
 
   else
@@ -361,9 +361,9 @@
     v26 = -12786;
   }
 
-  if (a6)
+  if (err)
   {
-    *a6 = v26;
+    *err = v26;
   }
 
   if (*v14 == 1)
@@ -374,7 +374,7 @@
   return v25;
 }
 
-- (id)initForRenderingWithDepth:(BOOL)a3 context:(id)a4 portraitRenderQuality:(int)a5 hairnetEnabled:(BOOL)a6 metalCommandQueue:(id)a7 figThreadPriority:(unsigned int)a8
+- (id)initForRenderingWithDepth:(BOOL)depth context:(id)context portraitRenderQuality:(int)quality hairnetEnabled:(BOOL)enabled metalCommandQueue:(id)queue figThreadPriority:(unsigned int)priority
 {
   v17.receiver = self;
   v17.super_class = BWCoreImageFilterRenderer;
@@ -382,12 +382,12 @@
   v14 = v13;
   if (v13)
   {
-    v13->_metalCommandQueue = a7;
-    v13->_usingDepth = a3;
-    v13->_renderingQueueContext = a4;
-    v14->_portraitRenderQuality = a5;
+    v13->_metalCommandQueue = queue;
+    v13->_usingDepth = depth;
+    v13->_renderingQueueContext = context;
+    v14->_portraitRenderQuality = quality;
     v15 = 1.0;
-    if (!a5)
+    if (!quality)
     {
       v15 = 0.0;
     }
@@ -395,7 +395,7 @@
     v14->_inputRenderQuality = v15;
     v14->_renderingQueue = FigDispatchQueueCreateWithPriority();
     v14->_callbackQueue = dispatch_queue_create("com.apple.bwgraph.callback.core-image", 0);
-    v14->_hairnetEnabled = a6;
+    v14->_hairnetEnabled = enabled;
   }
 
   return v14;
@@ -418,7 +418,7 @@
   [(BWCoreImageFilterRenderer *)&v4 dealloc];
 }
 
-- (int)prepareForRenderingWithParameters:(id)a3 inputVideoFormat:(id)a4 inputMediaPropertiesByAttachedMediaKey:(id)a5
+- (int)prepareForRenderingWithParameters:(id)parameters inputVideoFormat:(id)format inputMediaPropertiesByAttachedMediaKey:(id)key
 {
   v10 = 0;
   v11 = &v10;
@@ -432,10 +432,10 @@
   v9[4] = self;
   v9[5] = &v10;
   dispatch_sync(renderingQueue, v9);
-  LODWORD(a4) = [a3 prepareForRenderingWithInputVideoFormat:a4];
-  *(v11 + 6) = a4;
+  LODWORD(format) = [parameters prepareForRenderingWithInputVideoFormat:format];
+  *(v11 + 6) = format;
   _Block_object_dispose(&v10, 8);
-  return a4;
+  return format;
 }
 
 uint64_t __119__BWCoreImageFilterRenderer_prepareForRenderingWithParameters_inputVideoFormat_inputMediaPropertiesByAttachedMediaKey___block_invoke(uint64_t result)
@@ -1244,16 +1244,16 @@ LABEL_158:
   }
 }
 
-+ (void)prewarmPortraitFilterVersion:(unsigned int)a3 semanticStyleFilters:(BOOL)a4
++ (void)prewarmPortraitFilterVersion:(unsigned int)version semanticStyleFilters:(BOOL)filters
 {
-  if (a4)
+  if (filters)
   {
     [MEMORY[0x1E695F620] loadArchive:*MEMORY[0x1E695FB58]];
   }
 
   if (MGGetBoolAnswer())
   {
-    if (a3 == 2)
+    if (version == 2)
     {
       v5 = NSSelectorFromString(&cfstr_Prewarm.isa);
       v6 = [MEMORY[0x1E695F648] filterWithName:@"CIPortraitEffectLightV2"];
@@ -1264,7 +1264,7 @@ LABEL_158:
       }
     }
 
-    else if (a3 == 1)
+    else if (version == 1)
     {
 
       +[BWCoreImageFilterRenderer _prewarmCoreImagePortraitFilterV1];
@@ -1272,46 +1272,46 @@ LABEL_158:
   }
 }
 
-- (void)_renderUsingParameters:(const void *)a3 inputPixelBuffer:(const void *)a4 inputSampleBuffer:(const void *)a5 originalPixelBuffer:(const void *)a6 processedPixelBuffer:(char)a7 prewarming:(uint64_t)a8 completionHandler:
+- (void)_renderUsingParameters:(const void *)parameters inputPixelBuffer:(const void *)buffer inputSampleBuffer:(const void *)sampleBuffer originalPixelBuffer:(const void *)pixelBuffer processedPixelBuffer:(char)processedPixelBuffer prewarming:(uint64_t)prewarming completionHandler:
 {
-  if (a1)
+  if (self)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      if (a3)
+      if (parameters)
       {
-        CFRetain(a3);
+        CFRetain(parameters);
       }
 
-      if (a4)
+      if (buffer)
       {
-        CFRetain(a4);
+        CFRetain(buffer);
       }
 
-      if (a5)
+      if (sampleBuffer)
       {
-        CFRetain(a5);
+        CFRetain(sampleBuffer);
       }
 
-      if (a6)
+      if (pixelBuffer)
       {
-        CFRetain(a6);
+        CFRetain(pixelBuffer);
       }
 
-      v16 = *(a1 + 24);
+      v16 = *(self + 24);
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __157__BWCoreImageFilterRenderer__renderUsingParameters_inputPixelBuffer_inputSampleBuffer_originalPixelBuffer_processedPixelBuffer_prewarming_completionHandler___block_invoke;
       block[3] = &unk_1E799A680;
-      block[4] = a1;
+      block[4] = self;
       block[5] = a2;
-      block[6] = a8;
-      block[7] = a3;
-      v18 = a7;
-      block[8] = a4;
-      block[9] = a5;
-      block[10] = a6;
+      block[6] = prewarming;
+      block[7] = parameters;
+      processedPixelBufferCopy = processedPixelBuffer;
+      block[8] = buffer;
+      block[9] = sampleBuffer;
+      block[10] = pixelBuffer;
       dispatch_async(v16, block);
     }
 
@@ -1323,9 +1323,9 @@ LABEL_158:
   }
 }
 
-- (void)_visionKitFaceObservationToCoreImageDictionary:(uint64_t)a3 orientation:
+- (void)_visionKitFaceObservationToCoreImageDictionary:(uint64_t)dictionary orientation:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
@@ -1351,7 +1351,7 @@ LABEL_158:
   CFRelease(v49);
   [v5 setObject:Mutable forKeyedSubscript:@"faceBoundingBox"];
 
-  [v5 setObject:a3 forKeyedSubscript:@"orientation"];
+  [v5 setObject:dictionary forKeyedSubscript:@"orientation"];
   v50 = MEMORY[0x1E696AD98];
   [a2 faceJunkinessIndex];
   [v5 setObject:objc_msgSend(v50 forKeyedSubscript:{"numberWithFloat:"), @"faceJunkinessIndex"}];
@@ -1360,26 +1360,26 @@ LABEL_158:
   [v5 setObject:objc_msgSend(v51 forKeyedSubscript:{"numberWithFloat:"), @"faceOrientationIndex"}];
   [v5 setObject:objc_msgSend(a2 forKeyedSubscript:{"yaw"), @"yaw"}];
   [v5 setObject:objc_msgSend(a2 forKeyedSubscript:{"roll"), @"roll"}];
-  v52 = [a2 landmarks];
-  [v5 setObject:OUTLINED_FUNCTION_2_99(objc_msgSend(v52 forKeyedSubscript:{"allPoints")), @"allPoints"}];
-  [v5 setObject:OUTLINED_FUNCTION_2_99(objc_msgSend(v52 forKeyedSubscript:{"faceContour")), @"faceContour"}];
-  [v5 setObject:OUTLINED_FUNCTION_2_99(objc_msgSend(v52 forKeyedSubscript:{"leftEye")), @"leftEye"}];
-  [v5 setObject:OUTLINED_FUNCTION_2_99(objc_msgSend(v52 forKeyedSubscript:{"rightEye")), @"rightEye"}];
-  [v5 setObject:OUTLINED_FUNCTION_2_99(objc_msgSend(v52 forKeyedSubscript:{"leftEyebrow")), @"leftEyebrow"}];
-  [v5 setObject:OUTLINED_FUNCTION_2_99(objc_msgSend(v52 forKeyedSubscript:{"rightEyebrow")), @"rightEyebrow"}];
-  [v5 setObject:OUTLINED_FUNCTION_2_99(objc_msgSend(v52 forKeyedSubscript:{"nose")), @"nose"}];
-  [v5 setObject:OUTLINED_FUNCTION_2_99(objc_msgSend(v52 forKeyedSubscript:{"noseCrest")), @"noseCrest"}];
-  [v5 setObject:OUTLINED_FUNCTION_2_99(objc_msgSend(v52 forKeyedSubscript:{"medianLine")), @"medianLips"}];
-  [v5 setObject:OUTLINED_FUNCTION_2_99(objc_msgSend(v52 forKeyedSubscript:{"outerLips")), @"outerLips"}];
-  [v5 setObject:OUTLINED_FUNCTION_2_99(objc_msgSend(v52 forKeyedSubscript:{"innerLips")), @"innerLips"}];
-  [v5 setObject:OUTLINED_FUNCTION_2_99(objc_msgSend(v52 forKeyedSubscript:{"leftPupil")), @"leftPupil"}];
-  [v5 setObject:OUTLINED_FUNCTION_2_99(objc_msgSend(v52 forKeyedSubscript:{"rightPupil")), @"rightPupil"}];
+  landmarks = [a2 landmarks];
+  [v5 setObject:OUTLINED_FUNCTION_2_99(objc_msgSend(landmarks forKeyedSubscript:{"allPoints")), @"allPoints"}];
+  [v5 setObject:OUTLINED_FUNCTION_2_99(objc_msgSend(landmarks forKeyedSubscript:{"faceContour")), @"faceContour"}];
+  [v5 setObject:OUTLINED_FUNCTION_2_99(objc_msgSend(landmarks forKeyedSubscript:{"leftEye")), @"leftEye"}];
+  [v5 setObject:OUTLINED_FUNCTION_2_99(objc_msgSend(landmarks forKeyedSubscript:{"rightEye")), @"rightEye"}];
+  [v5 setObject:OUTLINED_FUNCTION_2_99(objc_msgSend(landmarks forKeyedSubscript:{"leftEyebrow")), @"leftEyebrow"}];
+  [v5 setObject:OUTLINED_FUNCTION_2_99(objc_msgSend(landmarks forKeyedSubscript:{"rightEyebrow")), @"rightEyebrow"}];
+  [v5 setObject:OUTLINED_FUNCTION_2_99(objc_msgSend(landmarks forKeyedSubscript:{"nose")), @"nose"}];
+  [v5 setObject:OUTLINED_FUNCTION_2_99(objc_msgSend(landmarks forKeyedSubscript:{"noseCrest")), @"noseCrest"}];
+  [v5 setObject:OUTLINED_FUNCTION_2_99(objc_msgSend(landmarks forKeyedSubscript:{"medianLine")), @"medianLips"}];
+  [v5 setObject:OUTLINED_FUNCTION_2_99(objc_msgSend(landmarks forKeyedSubscript:{"outerLips")), @"outerLips"}];
+  [v5 setObject:OUTLINED_FUNCTION_2_99(objc_msgSend(landmarks forKeyedSubscript:{"innerLips")), @"innerLips"}];
+  [v5 setObject:OUTLINED_FUNCTION_2_99(objc_msgSend(landmarks forKeyedSubscript:{"leftPupil")), @"leftPupil"}];
+  [v5 setObject:OUTLINED_FUNCTION_2_99(objc_msgSend(landmarks forKeyedSubscript:{"rightPupil")), @"rightPupil"}];
   return v5;
 }
 
-- (void)coreImageArrayRepresentationForRegion:(uint64_t)a1
+- (void)coreImageArrayRepresentationForRegion:(uint64_t)region
 {
-  if (!a1)
+  if (!region)
   {
     return 0;
   }

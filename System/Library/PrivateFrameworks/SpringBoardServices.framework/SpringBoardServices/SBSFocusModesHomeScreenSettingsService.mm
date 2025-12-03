@@ -1,28 +1,28 @@
 @interface SBSFocusModesHomeScreenSettingsService
 + (id)activateConnection;
-+ (void)addSuggestedHomeScreenPageWithRequest:(id)a3;
-+ (void)homeScreenSnapshotsForSuggestedPagesWithRequest:(id)a3 completion:(id)a4;
-+ (void)homeScreenSnapshotsWithRequest:(id)a3 completion:(id)a4;
-+ (void)updateFocusModeHomeScreenSettingsWithRequest:(id)a3;
++ (void)addSuggestedHomeScreenPageWithRequest:(id)request;
++ (void)homeScreenSnapshotsForSuggestedPagesWithRequest:(id)request completion:(id)completion;
++ (void)homeScreenSnapshotsWithRequest:(id)request completion:(id)completion;
++ (void)updateFocusModeHomeScreenSettingsWithRequest:(id)request;
 @end
 
 @implementation SBSFocusModesHomeScreenSettingsService
 
-+ (void)homeScreenSnapshotsWithRequest:(id)a3 completion:(id)a4
++ (void)homeScreenSnapshotsWithRequest:(id)request completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [objc_opt_class() activateConnection];
-  v8 = [v7 remoteTarget];
+  completionCopy = completion;
+  requestCopy = request;
+  activateConnection = [objc_opt_class() activateConnection];
+  remoteTarget = [activateConnection remoteTarget];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __84__SBSFocusModesHomeScreenSettingsService_homeScreenSnapshotsWithRequest_completion___block_invoke;
   v11[3] = &unk_1E7361A28;
-  v12 = v7;
-  v13 = v5;
-  v9 = v7;
-  v10 = v5;
-  [v8 homeScreenSnapshotsWithRequest:v6 completion:v11];
+  v12 = activateConnection;
+  v13 = completionCopy;
+  v9 = activateConnection;
+  v10 = completionCopy;
+  [remoteTarget homeScreenSnapshotsWithRequest:requestCopy completion:v11];
 }
 
 void __84__SBSFocusModesHomeScreenSettingsService_homeScreenSnapshotsWithRequest_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -41,21 +41,21 @@ void __84__SBSFocusModesHomeScreenSettingsService_homeScreenSnapshotsWithRequest
   [*(a1 + 32) invalidate];
 }
 
-+ (void)homeScreenSnapshotsForSuggestedPagesWithRequest:(id)a3 completion:(id)a4
++ (void)homeScreenSnapshotsForSuggestedPagesWithRequest:(id)request completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [objc_opt_class() activateConnection];
-  v8 = [v7 remoteTarget];
+  completionCopy = completion;
+  requestCopy = request;
+  activateConnection = [objc_opt_class() activateConnection];
+  remoteTarget = [activateConnection remoteTarget];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __101__SBSFocusModesHomeScreenSettingsService_homeScreenSnapshotsForSuggestedPagesWithRequest_completion___block_invoke;
   v11[3] = &unk_1E7361A28;
-  v12 = v7;
-  v13 = v5;
-  v9 = v7;
-  v10 = v5;
-  [v8 homeScreenSnapshotsForSuggestedPagesWithRequest:v6 completion:v11];
+  v12 = activateConnection;
+  v13 = completionCopy;
+  v9 = activateConnection;
+  v10 = completionCopy;
+  [remoteTarget homeScreenSnapshotsForSuggestedPagesWithRequest:requestCopy completion:v11];
 }
 
 void __101__SBSFocusModesHomeScreenSettingsService_homeScreenSnapshotsForSuggestedPagesWithRequest_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -74,33 +74,33 @@ void __101__SBSFocusModesHomeScreenSettingsService_homeScreenSnapshotsForSuggest
   [*(a1 + 32) invalidate];
 }
 
-+ (void)updateFocusModeHomeScreenSettingsWithRequest:(id)a3
++ (void)updateFocusModeHomeScreenSettingsWithRequest:(id)request
 {
-  v3 = a3;
-  v5 = [objc_opt_class() activateConnection];
-  v4 = [v5 remoteTarget];
-  [v4 updateFocusModeHomeScreenSettingsWithRequest:v3];
+  requestCopy = request;
+  activateConnection = [objc_opt_class() activateConnection];
+  remoteTarget = [activateConnection remoteTarget];
+  [remoteTarget updateFocusModeHomeScreenSettingsWithRequest:requestCopy];
 
-  [v5 invalidate];
+  [activateConnection invalidate];
 }
 
-+ (void)addSuggestedHomeScreenPageWithRequest:(id)a3
++ (void)addSuggestedHomeScreenPageWithRequest:(id)request
 {
-  v3 = a3;
-  v5 = [objc_opt_class() activateConnection];
-  v4 = [v5 remoteTarget];
-  [v4 addSuggestedHomeScreenPageWithRequest:v3];
+  requestCopy = request;
+  activateConnection = [objc_opt_class() activateConnection];
+  remoteTarget = [activateConnection remoteTarget];
+  [remoteTarget addSuggestedHomeScreenPageWithRequest:requestCopy];
 
-  [v5 invalidate];
+  [activateConnection invalidate];
 }
 
 + (id)activateConnection
 {
   v21 = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E698F498];
-  v4 = [MEMORY[0x1E698F498] defaultShellMachName];
+  defaultShellMachName = [MEMORY[0x1E698F498] defaultShellMachName];
   v5 = +[SBSFocusModesHomeScreenSettingsServiceInterfaceSpecification identifier];
-  v6 = [v3 endpointForMachName:v4 service:v5 instance:0];
+  v6 = [v3 endpointForMachName:defaultShellMachName service:v5 instance:0];
 
   v7 = [MEMORY[0x1E698F490] connectionWithEndpoint:v6];
   v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
@@ -111,7 +111,7 @@ void __101__SBSFocusModesHomeScreenSettingsService_homeScreenSnapshotsForSuggest
   v15 = __60__SBSFocusModesHomeScreenSettingsService_activateConnection__block_invoke;
   v16 = &unk_1E7360370;
   v17 = v9;
-  v18 = a1;
+  selfCopy = self;
   v10 = v9;
   [v7 configureConnection:&v13];
   v11 = SBLogFocusModes();

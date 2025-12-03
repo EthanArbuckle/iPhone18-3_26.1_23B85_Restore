@@ -1,35 +1,35 @@
 @interface TPSSubscriptionPickerCell
-- (TPSSubscriptionPickerCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (void)_setBadge:(id)a3 andLabel:(id)a4 andPhoneNumber:(id)a5;
-- (void)_setCenteredBadge:(id)a3 andLabel:(id)a4;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (TPSSubscriptionPickerCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (void)_setBadge:(id)badge andLabel:(id)label andPhoneNumber:(id)number;
+- (void)_setCenteredBadge:(id)badge andLabel:(id)label;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation TPSSubscriptionPickerCell
 
-- (TPSSubscriptionPickerCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (TPSSubscriptionPickerCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v94[14] = *MEMORY[0x277D85DE8];
   v93.receiver = self;
   v93.super_class = TPSSubscriptionPickerCell;
-  v4 = [(PSTableCell *)&v93 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(PSTableCell *)&v93 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = [objc_alloc(MEMORY[0x277D6ED58]) initWithTitle:&stru_282D54710 theme:7];
     badgeView = v4->_badgeView;
     v4->_badgeView = v5;
 
-    v7 = [(TPSSubscriptionPickerCell *)v4 contentView];
-    v8 = [(TPSSubscriptionPickerCell *)v4 badgeView];
-    [v7 addSubview:v8];
+    contentView = [(TPSSubscriptionPickerCell *)v4 contentView];
+    badgeView = [(TPSSubscriptionPickerCell *)v4 badgeView];
+    [contentView addSubview:badgeView];
 
     [(TPBadgeView *)v4->_badgeView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v9 = [(TPSSubscriptionPickerCell *)v4 badgeView];
-    v10 = [v9 leadingAnchor];
-    v11 = [(TPSSubscriptionPickerCell *)v4 contentView];
-    v12 = [v11 layoutMarginsGuide];
-    v13 = [v12 leadingAnchor];
-    v92 = [v10 constraintEqualToAnchor:v13];
+    badgeView2 = [(TPSSubscriptionPickerCell *)v4 badgeView];
+    leadingAnchor = [badgeView2 leadingAnchor];
+    contentView2 = [(TPSSubscriptionPickerCell *)v4 contentView];
+    layoutMarginsGuide = [contentView2 layoutMarginsGuide];
+    leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+    v92 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
 
     v14 = objc_alloc_init(MEMORY[0x277D756B8]);
     nameLabel = v4->_nameLabel;
@@ -41,25 +41,25 @@
 
     [(UILabel *)v4->_nameLabel setNumberOfLines:2];
     [(UILabel *)v4->_nameLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-    v18 = [(TPSSubscriptionPickerCell *)v4 contentView];
-    [v18 addSubview:v4->_nameLabel];
+    contentView3 = [(TPSSubscriptionPickerCell *)v4 contentView];
+    [contentView3 addSubview:v4->_nameLabel];
 
-    v19 = [(UILabel *)v4->_nameLabel firstBaselineAnchor];
-    v20 = [(TPSSubscriptionPickerCell *)v4 contentView];
-    v21 = [v20 topAnchor];
-    v91 = [v19 constraintEqualToSystemSpacingBelowAnchor:v21 multiplier:1.0];
+    firstBaselineAnchor = [(UILabel *)v4->_nameLabel firstBaselineAnchor];
+    contentView4 = [(TPSSubscriptionPickerCell *)v4 contentView];
+    topAnchor = [contentView4 topAnchor];
+    v91 = [firstBaselineAnchor constraintEqualToSystemSpacingBelowAnchor:topAnchor multiplier:1.0];
 
-    v22 = [(UILabel *)v4->_nameLabel leadingAnchor];
-    v23 = [(TPSSubscriptionPickerCell *)v4 badgeView];
-    v24 = [v23 trailingAnchor];
-    v25 = [MEMORY[0x277D75520] defaultMetrics];
-    [v25 scaledValueForValue:4.0];
-    v90 = [v22 constraintEqualToAnchor:v24 constant:?];
+    leadingAnchor3 = [(UILabel *)v4->_nameLabel leadingAnchor];
+    badgeView3 = [(TPSSubscriptionPickerCell *)v4 badgeView];
+    trailingAnchor = [badgeView3 trailingAnchor];
+    defaultMetrics = [MEMORY[0x277D75520] defaultMetrics];
+    [defaultMetrics scaledValueForValue:4.0];
+    v90 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor constant:?];
 
-    v26 = [(TPSSubscriptionPickerCell *)v4 badgeView];
-    v27 = [v26 centerYAnchor];
-    v28 = [(UILabel *)v4->_nameLabel centerYAnchor];
-    v89 = [v27 constraintEqualToAnchor:v28];
+    badgeView4 = [(TPSSubscriptionPickerCell *)v4 badgeView];
+    centerYAnchor = [badgeView4 centerYAnchor];
+    centerYAnchor2 = [(UILabel *)v4->_nameLabel centerYAnchor];
+    v89 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
 
     v29 = objc_alloc_init(MEMORY[0x277D756B8]);
     numberLabel = v4->_numberLabel;
@@ -70,47 +70,47 @@
 
     [(UILabel *)v4->_numberLabel setNumberOfLines:2];
     [(UILabel *)v4->_numberLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-    v32 = [MEMORY[0x277D75348] systemGrayColor];
-    [(UILabel *)v4->_numberLabel setTextColor:v32];
+    systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
+    [(UILabel *)v4->_numberLabel setTextColor:systemGrayColor];
 
-    v33 = [(TPSSubscriptionPickerCell *)v4 contentView];
-    [v33 addSubview:v4->_numberLabel];
+    contentView5 = [(TPSSubscriptionPickerCell *)v4 contentView];
+    [contentView5 addSubview:v4->_numberLabel];
 
-    v34 = [(UILabel *)v4->_numberLabel firstBaselineAnchor];
-    v35 = [(UILabel *)v4->_nameLabel lastBaselineAnchor];
-    v88 = [v34 constraintEqualToSystemSpacingBelowAnchor:v35 multiplier:1.0];
+    firstBaselineAnchor2 = [(UILabel *)v4->_numberLabel firstBaselineAnchor];
+    lastBaselineAnchor = [(UILabel *)v4->_nameLabel lastBaselineAnchor];
+    v88 = [firstBaselineAnchor2 constraintEqualToSystemSpacingBelowAnchor:lastBaselineAnchor multiplier:1.0];
 
-    v36 = [(UILabel *)v4->_numberLabel leadingAnchor];
-    v37 = [(TPSSubscriptionPickerCell *)v4 badgeView];
-    v38 = [v37 leadingAnchor];
-    v87 = [v36 constraintEqualToAnchor:v38];
+    leadingAnchor4 = [(UILabel *)v4->_numberLabel leadingAnchor];
+    badgeView5 = [(TPSSubscriptionPickerCell *)v4 badgeView];
+    leadingAnchor5 = [badgeView5 leadingAnchor];
+    v87 = [leadingAnchor4 constraintEqualToAnchor:leadingAnchor5];
 
-    v39 = [(UILabel *)v4->_numberLabel trailingAnchor];
-    v40 = [(TPSSubscriptionPickerCell *)v4 contentView];
-    v41 = [v40 layoutMarginsGuide];
-    v42 = [v41 trailingAnchor];
-    v86 = [v39 constraintLessThanOrEqualToAnchor:v42];
+    trailingAnchor2 = [(UILabel *)v4->_numberLabel trailingAnchor];
+    contentView6 = [(TPSSubscriptionPickerCell *)v4 contentView];
+    layoutMarginsGuide2 = [contentView6 layoutMarginsGuide];
+    trailingAnchor3 = [layoutMarginsGuide2 trailingAnchor];
+    v86 = [trailingAnchor2 constraintLessThanOrEqualToAnchor:trailingAnchor3];
 
-    v43 = [(TPSSubscriptionPickerCell *)v4 contentView];
-    v44 = [v43 bottomAnchor];
-    v45 = [(UILabel *)v4->_numberLabel lastBaselineAnchor];
-    v85 = [v44 constraintEqualToSystemSpacingBelowAnchor:v45 multiplier:1.0];
+    contentView7 = [(TPSSubscriptionPickerCell *)v4 contentView];
+    bottomAnchor = [contentView7 bottomAnchor];
+    lastBaselineAnchor2 = [(UILabel *)v4->_numberLabel lastBaselineAnchor];
+    v85 = [bottomAnchor constraintEqualToSystemSpacingBelowAnchor:lastBaselineAnchor2 multiplier:1.0];
 
     v46 = [objc_alloc(MEMORY[0x277D6ED58]) initWithTitle:&stru_282D54710 theme:7];
     centeredBadgeView = v4->_centeredBadgeView;
     v4->_centeredBadgeView = v46;
 
-    v48 = [(TPSSubscriptionPickerCell *)v4 contentView];
-    v49 = [(TPSSubscriptionPickerCell *)v4 centeredBadgeView];
-    [v48 addSubview:v49];
+    contentView8 = [(TPSSubscriptionPickerCell *)v4 contentView];
+    centeredBadgeView = [(TPSSubscriptionPickerCell *)v4 centeredBadgeView];
+    [contentView8 addSubview:centeredBadgeView];
 
     [(TPBadgeView *)v4->_centeredBadgeView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v50 = [(TPSSubscriptionPickerCell *)v4 centeredBadgeView];
-    v51 = [v50 leadingAnchor];
-    v52 = [(TPSSubscriptionPickerCell *)v4 contentView];
-    v53 = [v52 layoutMarginsGuide];
-    v54 = [v53 leadingAnchor];
-    v84 = [v51 constraintEqualToAnchor:v54];
+    centeredBadgeView2 = [(TPSSubscriptionPickerCell *)v4 centeredBadgeView];
+    leadingAnchor6 = [centeredBadgeView2 leadingAnchor];
+    contentView9 = [(TPSSubscriptionPickerCell *)v4 contentView];
+    layoutMarginsGuide3 = [contentView9 layoutMarginsGuide];
+    leadingAnchor7 = [layoutMarginsGuide3 leadingAnchor];
+    v84 = [leadingAnchor6 constraintEqualToAnchor:leadingAnchor7];
 
     v55 = objc_alloc_init(MEMORY[0x277D756B8]);
     centeredNameLabel = v4->_centeredNameLabel;
@@ -121,35 +121,35 @@
 
     [(UILabel *)v4->_centeredNameLabel setNumberOfLines:2];
     [(UILabel *)v4->_centeredNameLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-    v58 = [(TPSSubscriptionPickerCell *)v4 contentView];
-    [v58 addSubview:v4->_centeredNameLabel];
+    contentView10 = [(TPSSubscriptionPickerCell *)v4 contentView];
+    [contentView10 addSubview:v4->_centeredNameLabel];
 
-    v59 = [(UILabel *)v4->_centeredNameLabel centerYAnchor];
-    v60 = [(TPSSubscriptionPickerCell *)v4 contentView];
-    v61 = [v60 centerYAnchor];
-    v83 = [v59 constraintEqualToAnchor:v61];
+    centerYAnchor3 = [(UILabel *)v4->_centeredNameLabel centerYAnchor];
+    contentView11 = [(TPSSubscriptionPickerCell *)v4 contentView];
+    centerYAnchor4 = [contentView11 centerYAnchor];
+    v83 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
 
-    v62 = [(UILabel *)v4->_centeredNameLabel leadingAnchor];
-    v63 = [(TPSSubscriptionPickerCell *)v4 centeredBadgeView];
-    v64 = [v63 trailingAnchor];
-    v65 = [MEMORY[0x277D75520] defaultMetrics];
-    [v65 scaledValueForValue:4.0];
-    v82 = [v62 constraintEqualToAnchor:v64 constant:?];
+    leadingAnchor8 = [(UILabel *)v4->_centeredNameLabel leadingAnchor];
+    centeredBadgeView3 = [(TPSSubscriptionPickerCell *)v4 centeredBadgeView];
+    trailingAnchor4 = [centeredBadgeView3 trailingAnchor];
+    defaultMetrics2 = [MEMORY[0x277D75520] defaultMetrics];
+    [defaultMetrics2 scaledValueForValue:4.0];
+    v82 = [leadingAnchor8 constraintEqualToAnchor:trailingAnchor4 constant:?];
 
-    v66 = [(TPSSubscriptionPickerCell *)v4 centeredBadgeView];
-    v67 = [v66 centerYAnchor];
-    v68 = [(UILabel *)v4->_centeredNameLabel centerYAnchor];
-    v81 = [v67 constraintEqualToAnchor:v68];
+    centeredBadgeView4 = [(TPSSubscriptionPickerCell *)v4 centeredBadgeView];
+    centerYAnchor5 = [centeredBadgeView4 centerYAnchor];
+    centerYAnchor6 = [(UILabel *)v4->_centeredNameLabel centerYAnchor];
+    v81 = [centerYAnchor5 constraintEqualToAnchor:centerYAnchor6];
 
-    v69 = [(UILabel *)v4->_nameLabel trailingAnchor];
-    v70 = [(TPSSubscriptionPickerCell *)v4 contentView];
-    v71 = [v70 trailingAnchor];
-    v80 = [v69 constraintLessThanOrEqualToAnchor:v71];
+    trailingAnchor5 = [(UILabel *)v4->_nameLabel trailingAnchor];
+    contentView12 = [(TPSSubscriptionPickerCell *)v4 contentView];
+    trailingAnchor6 = [contentView12 trailingAnchor];
+    v80 = [trailingAnchor5 constraintLessThanOrEqualToAnchor:trailingAnchor6];
 
-    v72 = [(UILabel *)v4->_centeredNameLabel trailingAnchor];
-    v73 = [(TPSSubscriptionPickerCell *)v4 contentView];
-    v74 = [v73 trailingAnchor];
-    v75 = [v72 constraintLessThanOrEqualToAnchor:v74];
+    trailingAnchor7 = [(UILabel *)v4->_centeredNameLabel trailingAnchor];
+    contentView13 = [(TPSSubscriptionPickerCell *)v4 contentView];
+    trailingAnchor8 = [contentView13 trailingAnchor];
+    v75 = [trailingAnchor7 constraintLessThanOrEqualToAnchor:trailingAnchor8];
 
     v76 = MEMORY[0x277CCAAD0];
     v94[0] = v92;
@@ -174,77 +174,77 @@
   return v4;
 }
 
-- (void)_setCenteredBadge:(id)a3 andLabel:(id)a4
+- (void)_setCenteredBadge:(id)badge andLabel:(id)label
 {
   badgeView = self->_badgeView;
-  v8 = a4;
-  v7 = a3;
+  labelCopy = label;
+  badgeCopy = badge;
   [(TPBadgeView *)badgeView setHidden:1];
   [(UILabel *)self->_nameLabel setHidden:1];
   [(UILabel *)self->_numberLabel setHidden:1];
   [(TPBadgeView *)self->_centeredBadgeView setHidden:0];
   [(UILabel *)self->_centeredNameLabel setHidden:0];
-  [(TPBadgeView *)self->_badgeView setTitle:v7];
-  [(UILabel *)self->_nameLabel setText:v8];
+  [(TPBadgeView *)self->_badgeView setTitle:badgeCopy];
+  [(UILabel *)self->_nameLabel setText:labelCopy];
   [(UILabel *)self->_numberLabel setText:@"+1 (123) 456-7890"];
-  [(TPBadgeView *)self->_centeredBadgeView setTitle:v7];
+  [(TPBadgeView *)self->_centeredBadgeView setTitle:badgeCopy];
 
-  [(UILabel *)self->_centeredNameLabel setText:v8];
+  [(UILabel *)self->_centeredNameLabel setText:labelCopy];
 }
 
-- (void)_setBadge:(id)a3 andLabel:(id)a4 andPhoneNumber:(id)a5
+- (void)_setBadge:(id)badge andLabel:(id)label andPhoneNumber:(id)number
 {
   badgeView = self->_badgeView;
-  v9 = a5;
-  v11 = a4;
-  v10 = a3;
+  numberCopy = number;
+  labelCopy = label;
+  badgeCopy = badge;
   [(TPBadgeView *)badgeView setHidden:0];
   [(UILabel *)self->_nameLabel setHidden:0];
   [(UILabel *)self->_numberLabel setHidden:0];
   [(TPBadgeView *)self->_centeredBadgeView setHidden:1];
   [(UILabel *)self->_centeredNameLabel setHidden:1];
-  [(TPBadgeView *)self->_badgeView setTitle:v10];
-  [(UILabel *)self->_nameLabel setText:v11];
-  [(UILabel *)self->_numberLabel setText:v9];
+  [(TPBadgeView *)self->_badgeView setTitle:badgeCopy];
+  [(UILabel *)self->_nameLabel setText:labelCopy];
+  [(UILabel *)self->_numberLabel setText:numberCopy];
 
-  [(TPBadgeView *)self->_centeredBadgeView setTitle:v10];
-  [(UILabel *)self->_centeredNameLabel setText:v11];
+  [(TPBadgeView *)self->_centeredBadgeView setTitle:badgeCopy];
+  [(UILabel *)self->_centeredNameLabel setText:labelCopy];
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
   v20 = *MEMORY[0x277D85DE8];
   v11.receiver = self;
   v11.super_class = TPSSubscriptionPickerCell;
-  v4 = a3;
-  [(PSTableCell *)&v11 refreshCellContentsWithSpecifier:v4];
-  v5 = [v4 propertyForKey:{*MEMORY[0x277D40128], v11.receiver, v11.super_class}];
+  specifierCopy = specifier;
+  [(PSTableCell *)&v11 refreshCellContentsWithSpecifier:specifierCopy];
+  v5 = [specifierCopy propertyForKey:{*MEMORY[0x277D40128], v11.receiver, v11.super_class}];
 
-  v6 = [v5 tps_localizedShortLabel];
-  v7 = [v5 label];
-  v8 = [v5 tps_localizedPhoneNumber];
+  tps_localizedShortLabel = [v5 tps_localizedShortLabel];
+  label = [v5 label];
+  tps_localizedPhoneNumber = [v5 tps_localizedPhoneNumber];
   v9 = TPSLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315906;
     v13 = "[TPSSubscriptionPickerCell refreshCellContentsWithSpecifier:]";
     v14 = 2112;
-    v15 = v6;
+    v15 = tps_localizedShortLabel;
     v16 = 2112;
-    v17 = v7;
+    v17 = label;
     v18 = 2112;
-    v19 = v8;
+    v19 = tps_localizedPhoneNumber;
     _os_log_impl(&dword_21B8E9000, v9, OS_LOG_TYPE_DEFAULT, "%s : Received badge: %@, label: %@, phoneNumber: %@", buf, 0x2Au);
   }
 
-  if ([v8 length])
+  if ([tps_localizedPhoneNumber length])
   {
-    [(TPSSubscriptionPickerCell *)self _setBadge:v6 andLabel:v7 andPhoneNumber:v8];
+    [(TPSSubscriptionPickerCell *)self _setBadge:tps_localizedShortLabel andLabel:label andPhoneNumber:tps_localizedPhoneNumber];
   }
 
   else
   {
-    [(TPSSubscriptionPickerCell *)self _setCenteredBadge:v6 andLabel:v7];
+    [(TPSSubscriptionPickerCell *)self _setCenteredBadge:tps_localizedShortLabel andLabel:label];
   }
 
   [(TPSSubscriptionPickerCell *)self setNeedsLayout];

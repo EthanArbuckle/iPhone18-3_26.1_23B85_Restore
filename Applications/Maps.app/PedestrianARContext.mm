@@ -1,98 +1,98 @@
 @interface PedestrianARContext
-- (BOOL)provideAttachmentsForRadarDraft:(id)a3 withCompletion:(id)a4;
+- (BOOL)provideAttachmentsForRadarDraft:(id)draft withCompletion:(id)completion;
 - (ChromeViewController)chromeViewController;
-- (PedestrianARContext)initWithRoute:(id)a3 platformController:(id)a4 guidanceObserver:(id)a5 navigationService:(id)a6;
+- (PedestrianARContext)initWithRoute:(id)route platformController:(id)controller guidanceObserver:(id)observer navigationService:(id)service;
 - (id)fullscreenViewControllerDismissalTransition;
 - (id)fullscreenViewControllerPresentationTransition;
-- (void)becomeTopContextInChromeViewController:(id)a3 withAnimation:(id)a4;
+- (void)becomeTopContextInChromeViewController:(id)controller withAnimation:(id)animation;
 - (void)dealloc;
-- (void)pedestrianARViewControllerDidStop:(id)a3;
-- (void)resignTopContextInChromeViewController:(id)a3 withAnimation:(id)a4;
-- (void)setChromeViewController:(id)a3;
+- (void)pedestrianARViewControllerDidStop:(id)stop;
+- (void)resignTopContextInChromeViewController:(id)controller withAnimation:(id)animation;
+- (void)setChromeViewController:(id)controller;
 - (void)willBeginDisplayingInSecureLockScreen;
 @end
 
 @implementation PedestrianARContext
 
-- (BOOL)provideAttachmentsForRadarDraft:(id)a3 withCompletion:(id)a4
+- (BOOL)provideAttachmentsForRadarDraft:(id)draft withCompletion:(id)completion
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100B1DD24;
   block[3] = &unk_1016605F8;
   block[4] = self;
-  v9 = a3;
-  v10 = a4;
-  v5 = v10;
-  v6 = v9;
+  draftCopy = draft;
+  completionCopy = completion;
+  v5 = completionCopy;
+  v6 = draftCopy;
   dispatch_async(&_dispatch_main_q, block);
 
   return 1;
 }
 
-- (void)pedestrianARViewControllerDidStop:(id)a3
+- (void)pedestrianARViewControllerDidStop:(id)stop
 {
-  v4 = [(PedestrianARContext *)self chromeViewController];
-  v5 = [v4 previousTopContext];
+  chromeViewController = [(PedestrianARContext *)self chromeViewController];
+  previousTopContext = [chromeViewController previousTopContext];
 
-  if (v5 == self)
+  if (previousTopContext == self)
   {
     v7 = sub_100B1DF5C();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
       *buf = 134349056;
-      v10 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "[%{public}p] VC stopped but we're currently in the process of being dismissed; ignoring", buf, 0xCu);
     }
   }
 
   else
   {
-    v8 = [(PedestrianARContext *)self iosBasedChromeViewController];
-    v6 = [v8 appCoordinator];
-    [v6 exitPedestrianAR];
+    iosBasedChromeViewController = [(PedestrianARContext *)self iosBasedChromeViewController];
+    appCoordinator = [iosBasedChromeViewController appCoordinator];
+    [appCoordinator exitPedestrianAR];
   }
 }
 
 - (void)willBeginDisplayingInSecureLockScreen
 {
-  v2 = [(PedestrianARContext *)self pedestrianARViewController];
-  [v2 willBeginDisplayingInSecureLockScreen];
+  pedestrianARViewController = [(PedestrianARContext *)self pedestrianARViewController];
+  [pedestrianARViewController willBeginDisplayingInSecureLockScreen];
 }
 
-- (void)resignTopContextInChromeViewController:(id)a3 withAnimation:(id)a4
+- (void)resignTopContextInChromeViewController:(id)controller withAnimation:(id)animation
 {
   v5 = sub_100B1DF5C();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v7 = 134349314;
-    v8 = self;
+    selfCopy = self;
     v9 = 2080;
     v10 = "[PedestrianARContext resignTopContextInChromeViewController:withAnimation:]";
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%{public}p] %s", &v7, 0x16u);
   }
 
-  v6 = [(PedestrianARContext *)self pedestrianARViewController];
-  [v6 stop];
+  pedestrianARViewController = [(PedestrianARContext *)self pedestrianARViewController];
+  [pedestrianARViewController stop];
 }
 
-- (void)becomeTopContextInChromeViewController:(id)a3 withAnimation:(id)a4
+- (void)becomeTopContextInChromeViewController:(id)controller withAnimation:(id)animation
 {
   v5 = sub_100B1DF5C();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = 134349314;
-    v7 = self;
+    selfCopy = self;
     v8 = 2080;
     v9 = "[PedestrianARContext becomeTopContextInChromeViewController:withAnimation:]";
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%{public}p] %s", &v6, 0x16u);
   }
 }
 
-- (void)setChromeViewController:(id)a3
+- (void)setChromeViewController:(id)controller
 {
-  v4 = a3;
-  if (!v4)
+  controllerCopy = controller;
+  if (!controllerCopy)
   {
     goto LABEL_4;
   }
@@ -104,7 +104,7 @@
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
       v9 = 136315906;
-      v10 = "[PedestrianARContext setChromeViewController:]";
+      selfCopy = "[PedestrianARContext setChromeViewController:]";
       v11 = 2080;
       v12 = "PedestrianARContext.m";
       v13 = 1024;
@@ -121,7 +121,7 @@
       {
         v8 = +[NSThread callStackSymbols];
         v9 = 138412290;
-        v10 = v8;
+        selfCopy = v8;
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, "%@", &v9, 0xCu);
       }
     }
@@ -130,31 +130,31 @@
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v5 = sub_100B1DF5C();
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    pedestrianARViewController = sub_100B1DF5C();
+    if (os_log_type_enabled(pedestrianARViewController, OS_LOG_TYPE_ERROR))
     {
       v9 = 134349314;
-      v10 = self;
+      selfCopy = self;
       v11 = 2112;
-      v12 = v4;
-      _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_ERROR, "[%{public}p] Chrome VC must be an iOS one: %@", &v9, 0x16u);
+      v12 = controllerCopy;
+      _os_log_impl(&_mh_execute_header, pedestrianARViewController, OS_LOG_TYPE_ERROR, "[%{public}p] Chrome VC must be an iOS one: %@", &v9, 0x16u);
     }
   }
 
   else
   {
 LABEL_4:
-    v5 = [(PedestrianARContext *)self pedestrianARViewController];
-    [v5 setChromeViewController:v4];
+    pedestrianARViewController = [(PedestrianARContext *)self pedestrianARViewController];
+    [pedestrianARViewController setChromeViewController:controllerCopy];
   }
 }
 
 - (ChromeViewController)chromeViewController
 {
-  v2 = [(PedestrianARContext *)self pedestrianARViewController];
-  v3 = [v2 chromeViewController];
+  pedestrianARViewController = [(PedestrianARContext *)self pedestrianARViewController];
+  chromeViewController = [pedestrianARViewController chromeViewController];
 
-  return v3;
+  return chromeViewController;
 }
 
 - (id)fullscreenViewControllerDismissalTransition
@@ -177,7 +177,7 @@ LABEL_4:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     *buf = 134349056;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}p] Deallocating", buf, 0xCu);
   }
 
@@ -186,13 +186,13 @@ LABEL_4:
   [(PedestrianARContext *)&v4 dealloc];
 }
 
-- (PedestrianARContext)initWithRoute:(id)a3 platformController:(id)a4 guidanceObserver:(id)a5 navigationService:(id)a6
+- (PedestrianARContext)initWithRoute:(id)route platformController:(id)controller guidanceObserver:(id)observer navigationService:(id)service
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!v10)
+  routeCopy = route;
+  controllerCopy = controller;
+  observerCopy = observer;
+  serviceCopy = service;
+  if (!routeCopy)
   {
     v19 = sub_10006D178();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -221,7 +221,7 @@ LABEL_4:
     }
   }
 
-  if (!v11)
+  if (!controllerCopy)
   {
     v22 = sub_10006D178();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -250,7 +250,7 @@ LABEL_4:
     }
   }
 
-  if (!v12)
+  if (!observerCopy)
   {
     v25 = sub_10006D178();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -279,7 +279,7 @@ LABEL_4:
     }
   }
 
-  if (!v13)
+  if (!serviceCopy)
   {
     v28 = sub_10006D178();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
@@ -321,7 +321,7 @@ LABEL_4:
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "[%{public}p] Initializing", buf, 0xCu);
     }
 
-    v16 = [[PedestrianARViewController alloc] initWithRoute:v10 platformController:v11 guidanceObserver:v12 navigationService:v13];
+    v16 = [[PedestrianARViewController alloc] initWithRoute:routeCopy platformController:controllerCopy guidanceObserver:observerCopy navigationService:serviceCopy];
     pedestrianARViewController = v14->_pedestrianARViewController;
     v14->_pedestrianARViewController = v16;
 

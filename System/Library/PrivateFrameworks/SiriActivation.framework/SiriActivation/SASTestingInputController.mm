@@ -2,8 +2,8 @@
 - (SASTestingInputController)init;
 - (id)dequeuePreloadedTestingContext;
 - (void)_registerForTestingNotifications;
-- (void)_testingAudioInputPathsDidChange:(id)a3;
-- (void)_testingStringsDidChange:(id)a3;
+- (void)_testingAudioInputPathsDidChange:(id)change;
+- (void)_testingStringsDidChange:(id)change;
 - (void)dealloc;
 @end
 
@@ -37,43 +37,43 @@
 
 - (void)_registerForTestingNotifications
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 addObserver:self selector:sel__testingStringsDidChange_ name:@"SBTestingConfigureNextAssistantRecognitionStrings" object:0];
-  [v3 addObserver:self selector:sel__testingAudioInputPathsDidChange_ name:@"SBTestingConfigureNextVoiceRecognitionAudioInputPathsNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__testingStringsDidChange_ name:@"SBTestingConfigureNextAssistantRecognitionStrings" object:0];
+  [defaultCenter addObserver:self selector:sel__testingAudioInputPathsDidChange_ name:@"SBTestingConfigureNextVoiceRecognitionAudioInputPathsNotification" object:0];
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = SASTestingInputController;
   [(SASTestingInputController *)&v4 dealloc];
 }
 
-- (void)_testingStringsDidChange:(id)a3
+- (void)_testingStringsDidChange:(id)change
 {
   preloadedTestingInput = self->_preloadedTestingInput;
   self->_preloadedTestingInput = 0;
-  v5 = a3;
+  changeCopy = change;
 
-  v8 = [v5 object];
+  object = [changeCopy object];
 
-  if ([v8 count])
+  if ([object count])
   {
-    v6 = [[SiriTestingContext alloc] initWithRecognitionStrings:v8];
+    v6 = [[SiriTestingContext alloc] initWithRecognitionStrings:object];
     v7 = self->_preloadedTestingInput;
     self->_preloadedTestingInput = v6;
   }
 }
 
-- (void)_testingAudioInputPathsDidChange:(id)a3
+- (void)_testingAudioInputPathsDidChange:(id)change
 {
-  v6 = [a3 object];
-  if ([v6 count])
+  object = [change object];
+  if ([object count])
   {
-    v4 = [[SiriTestingContext alloc] initWithAudioInput:v6];
+    v4 = [[SiriTestingContext alloc] initWithAudioInput:object];
     preloadedTestingInput = self->_preloadedTestingInput;
     self->_preloadedTestingInput = v4;
   }

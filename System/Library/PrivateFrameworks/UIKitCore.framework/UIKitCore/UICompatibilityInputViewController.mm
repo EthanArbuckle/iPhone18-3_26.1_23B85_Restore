@@ -1,69 +1,69 @@
 @interface UICompatibilityInputViewController
-+ (id)deferredInputModeControllerWithKeyboard:(id)a3;
-+ (id)inputSnapshotViewForInputMode:(id)a3 orientation:(int64_t)a4;
-+ (id)inputViewControllerWithView:(id)a3;
++ (id)deferredInputModeControllerWithKeyboard:(id)keyboard;
++ (id)inputSnapshotViewForInputMode:(id)mode orientation:(int64_t)orientation;
++ (id)inputViewControllerWithView:(id)view;
 - (UILayoutGuide)focusSafeAreaLayoutGuide;
 - (id)_compatView;
 - (id)_compatibilityController;
 - (id)_initAsDeferredController;
 - (id)_keyboard;
 - (id)_keyboardForThisViewController;
-- (id)_systemViewControllerForInputMode:(id)a3;
+- (id)_systemViewControllerForInputMode:(id)mode;
 - (id)animatableElement;
 - (id)childCompatibilityController;
 - (id)preferredFocusedView;
 - (void)_tvUpdateAppearanceForUserInterfaceStyle;
-- (void)addSnapshotViewForInputMode:(id)a3;
+- (void)addSnapshotViewForInputMode:(id)mode;
 - (void)assertCurrentInputModeIfNecessary;
 - (void)dealloc;
 - (void)didFinishTranslation;
-- (void)didMoveToParentViewController:(id)a3;
-- (void)didRotateFromInterfaceOrientation:(int64_t)a3;
-- (void)didSuspend:(id)a3;
-- (void)finishSplitTransition:(BOOL)a3;
+- (void)didMoveToParentViewController:(id)controller;
+- (void)didRotateFromInterfaceOrientation:(int64_t)orientation;
+- (void)didSuspend:(id)suspend;
+- (void)finishSplitTransition:(BOOL)transition;
 - (void)generateCompatibleSizeConstraintsIfNecessary;
-- (void)isHosted:(id)a3;
-- (void)keyboardWillChangeFromDelegate:(id)a3 toDelegate:(id)a4;
+- (void)isHosted:(id)hosted;
+- (void)keyboardWillChangeFromDelegate:(id)delegate toDelegate:(id)toDelegate;
 - (void)killIncomingExtension;
 - (void)loadView;
 - (void)rebuildChildConstraints;
 - (void)removeSnapshotView;
 - (void)resetInputMode;
 - (void)resetInputModeInMainThread;
-- (void)setDeferredSystemView:(id)a3;
-- (void)setInputMode:(id)a3;
-- (void)shouldUpdateInputMode:(id)a3;
+- (void)setDeferredSystemView:(id)view;
+- (void)setInputMode:(id)mode;
+- (void)shouldUpdateInputMode:(id)mode;
 - (void)takeSnapshotView;
 - (void)tearDownInputController;
 - (void)validateInputModeIsDisplayed;
 - (void)viewDidLayoutSubviews;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)willAnimateRotationToInterfaceOrientation:(int64_t)a3 duration:(double)a4;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)willAnimateRotationToInterfaceOrientation:(int64_t)orientation duration:(double)duration;
 - (void)willBeginTranslation;
-- (void)willResume:(id)a3;
-- (void)willRotateToInterfaceOrientation:(int64_t)a3 duration:(double)a4;
+- (void)willResume:(id)resume;
+- (void)willRotateToInterfaceOrientation:(int64_t)orientation duration:(double)duration;
 @end
 
 @implementation UICompatibilityInputViewController
 
 - (id)_compatibilityController
 {
-  v3 = [(UIViewController *)self view];
+  view = [(UIViewController *)self view];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (id)_initAsDeferredController
@@ -73,16 +73,16 @@
   v2 = [(UIViewController *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v3 addObserver:v2 selector:sel_didSuspend_ name:@"UIApplicationDidEnterBackgroundNotification" object:0];
-    [v3 addObserver:v2 selector:sel_willResume_ name:@"UIApplicationWillEnterForegroundNotification" object:0];
-    [v3 addObserver:v2 selector:sel_isHosted_ name:@"UITextEffectsWindowIsHostedNotification" object:0];
-    [v3 addObserver:v2 selector:sel_shouldUpdateInputMode_ name:@"UICompatibilityInputViewControllerShouldUpdateNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_didSuspend_ name:@"UIApplicationDidEnterBackgroundNotification" object:0];
+    [defaultCenter addObserver:v2 selector:sel_willResume_ name:@"UIApplicationWillEnterForegroundNotification" object:0];
+    [defaultCenter addObserver:v2 selector:sel_isHosted_ name:@"UITextEffectsWindowIsHostedNotification" object:0];
+    [defaultCenter addObserver:v2 selector:sel_shouldUpdateInputMode_ name:@"UICompatibilityInputViewControllerShouldUpdateNotification" object:0];
     if ([UIApp isSuspended])
     {
       v4 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-      v5 = [v4 containerWindow];
-      v2->_shouldSuppressRemoteInputController = [v5 _isHostedInAnotherProcess] ^ 1;
+      containerWindow = [v4 containerWindow];
+      v2->_shouldSuppressRemoteInputController = [containerWindow _isHostedInAnotherProcess] ^ 1;
     }
 
     else
@@ -97,37 +97,37 @@
 - (void)tearDownInputController
 {
   v3 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-  v4 = [v3 skipTearDownInputController];
+  skipTearDownInputController = [v3 skipTearDownInputController];
 
-  if ((v4 & 1) == 0)
+  if ((skipTearDownInputController & 1) == 0)
   {
     [(UIKeyboardInputMode *)self->_inputMode setIsDisplayed:0];
     if ([(UIKeyboardInputMode *)self->_inputMode isExtensionInputMode])
     {
-      v5 = [(UIKeyboardInputMode *)self->_inputMode extension];
-      [v5 setRequestInterruptionBlock:0];
+      extension = [(UIKeyboardInputMode *)self->_inputMode extension];
+      [extension setRequestInterruptionBlock:0];
     }
 
-    v6 = [(UICompatibilityInputViewController *)self inputController];
+    inputController = [(UICompatibilityInputViewController *)self inputController];
 
-    if (v6)
+    if (inputController)
     {
-      v7 = [(UIInputViewController *)self _proxyInterface];
-      v8 = [v7 forwardingInterface];
-      [v8 _tearDownRemoteService];
+      _proxyInterface = [(UIInputViewController *)self _proxyInterface];
+      forwardingInterface = [_proxyInterface forwardingInterface];
+      [forwardingInterface _tearDownRemoteService];
 
-      v9 = [(UIInputViewController *)self _proxyInterface];
-      [v9 setForwardingInterface:0];
+      _proxyInterface2 = [(UIInputViewController *)self _proxyInterface];
+      [_proxyInterface2 setForwardingInterface:0];
 
-      v10 = [(UICompatibilityInputViewController *)self _compatView];
-      [v10 setTouchableView:0];
+      _compatView = [(UICompatibilityInputViewController *)self _compatView];
+      [_compatView setTouchableView:0];
 
-      v11 = [(UICompatibilityInputViewController *)self inputController];
-      v12 = [v11 view];
-      [v12 removeFromSuperview];
+      inputController2 = [(UICompatibilityInputViewController *)self inputController];
+      view = [inputController2 view];
+      [view removeFromSuperview];
 
-      v13 = [(UICompatibilityInputViewController *)self inputController];
-      [v13 removeFromParentViewController];
+      inputController3 = [(UICompatibilityInputViewController *)self inputController];
+      [inputController3 removeFromParentViewController];
 
       [(UICompatibilityInputViewController *)self setInputController:0];
     }
@@ -142,143 +142,143 @@
   v4 = [(UIView *)v3 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   [(UIInputViewController *)self setView:v4];
 
-  v5 = [(UIViewController *)self view];
-  [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
+  view = [(UIViewController *)self view];
+  [view setTranslatesAutoresizingMaskIntoConstraints:0];
 }
 
 - (void)removeSnapshotView
 {
-  v3 = [(UICompatibilityInputViewController *)self _compatibilityController];
-  v4 = [v3 _compatView];
-  v5 = [v4 snapshotView];
+  _compatibilityController = [(UICompatibilityInputViewController *)self _compatibilityController];
+  _compatView = [_compatibilityController _compatView];
+  snapshotView = [_compatView snapshotView];
 
-  if (v5)
+  if (snapshotView)
   {
-    v6 = [(UICompatibilityInputViewController *)self _compatibilityController];
-    v7 = [v6 _compatView];
-    v8 = [v7 snapshotView];
-    [v8 removeFromSuperview];
+    _compatibilityController2 = [(UICompatibilityInputViewController *)self _compatibilityController];
+    _compatView2 = [_compatibilityController2 _compatView];
+    snapshotView2 = [_compatView2 snapshotView];
+    [snapshotView2 removeFromSuperview];
 
-    v10 = [(UICompatibilityInputViewController *)self _compatibilityController];
-    v9 = [v10 _compatView];
-    [v9 setSnapshotView:0];
+    _compatibilityController3 = [(UICompatibilityInputViewController *)self _compatibilityController];
+    _compatView3 = [_compatibilityController3 _compatView];
+    [_compatView3 setSnapshotView:0];
   }
 }
 
 - (id)_compatView
 {
-  v3 = [(UIViewController *)self view];
+  view = [(UIViewController *)self view];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(UIViewController *)self view];
+    view2 = [(UIViewController *)self view];
   }
 
   else
   {
-    v5 = 0;
+    view2 = 0;
   }
 
-  return v5;
+  return view2;
 }
 
 - (void)rebuildChildConstraints
 {
-  v3 = [(UICompatibilityInputViewController *)self internalEdgeMatchConstraints];
+  internalEdgeMatchConstraints = [(UICompatibilityInputViewController *)self internalEdgeMatchConstraints];
 
-  if (v3)
+  if (internalEdgeMatchConstraints)
   {
-    v4 = [(UIViewController *)self view];
-    v5 = [(UICompatibilityInputViewController *)self internalEdgeMatchConstraints];
-    [v4 removeConstraints:v5];
+    view = [(UIViewController *)self view];
+    internalEdgeMatchConstraints2 = [(UICompatibilityInputViewController *)self internalEdgeMatchConstraints];
+    [view removeConstraints:internalEdgeMatchConstraints2];
 
     [(UICompatibilityInputViewController *)self setInternalEdgeMatchConstraints:0];
   }
 
-  v6 = [(UICompatibilityInputViewController *)self inputController];
-  v30 = [v6 view];
+  inputController = [(UICompatibilityInputViewController *)self inputController];
+  view2 = [inputController view];
 
-  if (!v30)
+  if (!view2)
   {
-    v7 = [(UICompatibilityInputViewController *)self _compatView];
-    v30 = [v7 touchableView];
+    _compatView = [(UICompatibilityInputViewController *)self _compatView];
+    view2 = [_compatView touchableView];
   }
 
-  v8 = [(UIViewController *)self view];
-  v9 = [v30 isDescendantOfView:v8];
+  view3 = [(UIViewController *)self view];
+  v9 = [view2 isDescendantOfView:view3];
 
   if (v9)
   {
-    v10 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v11 = MEMORY[0x1E69977A0];
-    v12 = [(UIViewController *)self view];
-    v13 = [v11 constraintWithItem:v12 attribute:1 relatedBy:0 toItem:v30 attribute:1 multiplier:1.0 constant:0.0];
-    [v10 addObject:v13];
+    view4 = [(UIViewController *)self view];
+    v13 = [v11 constraintWithItem:view4 attribute:1 relatedBy:0 toItem:view2 attribute:1 multiplier:1.0 constant:0.0];
+    [array addObject:v13];
 
     v14 = MEMORY[0x1E69977A0];
-    v15 = [(UIViewController *)self view];
-    v16 = [v14 constraintWithItem:v15 attribute:2 relatedBy:0 toItem:v30 attribute:2 multiplier:1.0 constant:0.0];
-    [v10 addObject:v16];
+    view5 = [(UIViewController *)self view];
+    v16 = [v14 constraintWithItem:view5 attribute:2 relatedBy:0 toItem:view2 attribute:2 multiplier:1.0 constant:0.0];
+    [array addObject:v16];
 
     v17 = MEMORY[0x1E69977A0];
-    v18 = [(UIViewController *)self view];
-    v19 = [v17 constraintWithItem:v18 attribute:3 relatedBy:0 toItem:v30 attribute:3 multiplier:1.0 constant:0.0];
-    [v10 addObject:v19];
+    view6 = [(UIViewController *)self view];
+    v19 = [v17 constraintWithItem:view6 attribute:3 relatedBy:0 toItem:view2 attribute:3 multiplier:1.0 constant:0.0];
+    [array addObject:v19];
 
     v20 = MEMORY[0x1E69977A0];
-    v21 = [(UIViewController *)self view];
-    v22 = [v20 constraintWithItem:v21 attribute:4 relatedBy:0 toItem:v30 attribute:4 multiplier:1.0 constant:0.0];
-    [v10 addObject:v22];
+    view7 = [(UIViewController *)self view];
+    v22 = [v20 constraintWithItem:view7 attribute:4 relatedBy:0 toItem:view2 attribute:4 multiplier:1.0 constant:0.0];
+    [array addObject:v22];
 
-    v23 = [(UICompatibilityInputViewController *)self inputController];
-    v24 = [v23 view];
-    [v24 setTranslatesAutoresizingMaskIntoConstraints:0];
+    inputController2 = [(UICompatibilityInputViewController *)self inputController];
+    view8 = [inputController2 view];
+    [view8 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v25 = [(UIViewController *)self view];
-    [v25 addConstraints:v10];
+    view9 = [(UIViewController *)self view];
+    [view9 addConstraints:array];
 
-    [(UICompatibilityInputViewController *)self setInternalEdgeMatchConstraints:v10];
+    [(UICompatibilityInputViewController *)self setInternalEdgeMatchConstraints:array];
   }
 
-  v26 = [(UIViewController *)self view];
-  [v26 invalidateIntrinsicContentSize];
+  view10 = [(UIViewController *)self view];
+  [view10 invalidateIntrinsicContentSize];
 
-  v27 = [(UIViewController *)self view];
-  [v27 setNeedsLayout];
+  view11 = [(UIViewController *)self view];
+  [view11 setNeedsLayout];
 
-  v28 = [(UIViewController *)self view];
-  v29 = [v28 _rootInputWindowController];
-  [v29 updateViewSizingConstraints];
+  view12 = [(UIViewController *)self view];
+  _rootInputWindowController = [view12 _rootInputWindowController];
+  [_rootInputWindowController updateViewSizingConstraints];
 }
 
 - (id)childCompatibilityController
 {
-  v3 = [(UICompatibilityInputViewController *)self inputController];
+  inputController = [(UICompatibilityInputViewController *)self inputController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(UICompatibilityInputViewController *)self inputController];
+    inputController2 = [(UICompatibilityInputViewController *)self inputController];
   }
 
   else
   {
-    v5 = 0;
+    inputController2 = 0;
   }
 
-  return v5;
+  return inputController2;
 }
 
 - (void)generateCompatibleSizeConstraintsIfNecessary
 {
-  v3 = [(UIViewController *)self view];
-  if ([v3 translatesAutoresizingMaskIntoConstraints])
+  view = [(UIViewController *)self view];
+  if ([view translatesAutoresizingMaskIntoConstraints])
   {
-    v4 = [(UIViewController *)self view];
-    v5 = ([v4 autoresizingMask] >> 4) & 1;
+    view2 = [(UIViewController *)self view];
+    v5 = ([view2 autoresizingMask] >> 4) & 1;
   }
 
   else
@@ -286,18 +286,18 @@
     LODWORD(v5) = 1;
   }
 
-  v6 = [(UIViewController *)self view];
-  [v6 intrinsicContentSize];
+  view3 = [(UIViewController *)self view];
+  [view3 intrinsicContentSize];
   v8 = v7;
   v10 = v9;
 
-  v11 = [(UICompatibilityInputViewController *)self _keyboard];
-  if (v11)
+  _keyboard = [(UICompatibilityInputViewController *)self _keyboard];
+  if (_keyboard)
   {
 
 LABEL_9:
-    v13 = [(UIViewController *)self view];
-    [v13 setTranslatesAutoresizingMaskIntoConstraints:0];
+    view4 = [(UIViewController *)self view];
+    [view4 setTranslatesAutoresizingMaskIntoConstraints:0];
 
     goto LABEL_10;
   }
@@ -314,19 +314,19 @@ LABEL_9:
   }
 
 LABEL_10:
-  v14 = [(UIViewController *)self view];
-  [v14 _convertToAutolayoutSizingIfNecessary];
+  view5 = [(UIViewController *)self view];
+  [view5 _convertToAutolayoutSizingIfNecessary];
 }
 
 - (id)_keyboard
 {
-  v3 = [(UIViewController *)self view];
+  view = [(UIViewController *)self view];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [(UIViewController *)self view];
+    view2 = [(UIViewController *)self view];
 
-    if (v4)
+    if (view2)
     {
       goto LABEL_11;
     }
@@ -338,16 +338,16 @@ LABEL_10:
 
   if ([(UIInputViewController *)self _isPlaceholder])
   {
-    v5 = [(UIViewController *)self view];
-    v6 = [v5 placeheldView];
-    v7 = [UIViewController viewControllerForView:v6];
+    view3 = [(UIViewController *)self view];
+    placeheldView = [view3 placeheldView];
+    v7 = [UIViewController viewControllerForView:placeheldView];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = [v7 _keyboard];
+      view2 = [v7 _keyboard];
 
-      if (v4)
+      if (view2)
       {
         goto LABEL_11;
       }
@@ -358,24 +358,24 @@ LABEL_10:
     }
   }
 
-  v8 = [(UICompatibilityInputViewController *)self childCompatibilityController];
-  v4 = [v8 _keyboard];
+  childCompatibilityController = [(UICompatibilityInputViewController *)self childCompatibilityController];
+  view2 = [childCompatibilityController _keyboard];
 
 LABEL_11:
 
-  return v4;
+  return view2;
 }
 
 - (void)dealloc
 {
   v6[4] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v6[0] = @"UIApplicationDidEnterBackgroundNotification";
   v6[1] = @"UIApplicationWillEnterForegroundNotification";
   v6[2] = @"UITextEffectsWindowIsHostedNotification";
   v6[3] = @"UICompatibilityInputViewControllerShouldUpdateNotification";
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:4];
-  [(NSNotificationCenter *)v3 _uiRemoveObserver:v4 names:?];
+  [(NSNotificationCenter *)defaultCenter _uiRemoveObserver:v4 names:?];
 
   [(UICompatibilityInputViewController *)self tearDownInputController];
   v5.receiver = self;
@@ -388,44 +388,44 @@ LABEL_11:
   v5.receiver = self;
   v5.super_class = UICompatibilityInputViewController;
   [(UIViewController *)&v5 viewDidLayoutSubviews];
-  v3 = [(UIViewController *)self parentViewController];
-  if ([v3 conformsToProtocol:&unk_1F003A0E0])
+  parentViewController = [(UIViewController *)self parentViewController];
+  if ([parentViewController conformsToProtocol:&unk_1F003A0E0])
   {
-    v4 = [v3 controllerDelegate];
-    [v4 controllerDidLayoutSubviews:v3];
+    controllerDelegate = [parentViewController controllerDelegate];
+    [controllerDelegate controllerDidLayoutSubviews:parentViewController];
   }
 }
 
 - (id)_keyboardForThisViewController
 {
-  v3 = [(UIViewController *)self view];
+  view = [(UIViewController *)self view];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [(UIViewController *)self view];
+    view2 = [(UIViewController *)self view];
   }
 
   else
   {
-    v4 = 0;
+    view2 = 0;
   }
 
-  return v4;
+  return view2;
 }
 
 - (id)animatableElement
 {
   v2 = +[UIKeyboardImpl activeInstance];
-  v3 = [v2 _layout];
-  v4 = [v3 animatableLayout];
+  _layout = [v2 _layout];
+  animatableLayout = [_layout animatableLayout];
 
-  return v4;
+  return animatableLayout;
 }
 
-+ (id)inputViewControllerWithView:(id)a3
++ (id)inputViewControllerWithView:(id)view
 {
-  v3 = a3;
-  v4 = [UIViewController viewControllerForView:v3];
+  viewCopy = view;
+  v4 = [UIViewController viewControllerForView:viewCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -433,8 +433,8 @@ LABEL_11:
     goto LABEL_13;
   }
 
-  v6 = [v3 superview];
-  v7 = [UIViewController viewControllerForView:v6];
+  superview = [viewCopy superview];
+  v7 = [UIViewController viewControllerForView:superview];
 
   if (!v7)
   {
@@ -444,18 +444,18 @@ LABEL_11:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v8 = [v3 superview];
-    [UIViewController removeViewControllerForView:v8];
+    superview2 = [viewCopy superview];
+    [UIViewController removeViewControllerForView:superview2];
 
 LABEL_7:
     v9 = [(UIInputViewController *)[UICompatibilityInputViewController alloc] initWithNibName:0 bundle:0];
     v5 = v9;
     if (v4)
     {
-      [v3 _convertToAutolayoutSizingIfNecessary];
+      [viewCopy _convertToAutolayoutSizingIfNecessary];
       [(UIViewController *)v5 addChildViewController:v4];
-      v10 = [(UIViewController *)v5 view];
-      [v10 addSubview:v3];
+      view = [(UIViewController *)v5 view];
+      [view addSubview:viewCopy];
 
       [v4 didMoveToParentViewController:v5];
       [(UICompatibilityInputViewController *)v5 rebuildChildConstraints];
@@ -463,7 +463,7 @@ LABEL_7:
 
     else
     {
-      [(UIInputViewController *)v9 setView:v3];
+      [(UIInputViewController *)v9 setView:viewCopy];
     }
 
     v11 = objc_opt_class();
@@ -484,19 +484,19 @@ LABEL_13:
   return v5;
 }
 
-+ (id)deferredInputModeControllerWithKeyboard:(id)a3
++ (id)deferredInputModeControllerWithKeyboard:(id)keyboard
 {
-  v4 = a3;
+  keyboardCopy = keyboard;
   if (qword_1ED49C030 != -1)
   {
     dispatch_once(&qword_1ED49C030, &__block_literal_global_344);
   }
 
   v5 = qword_1ED49C028;
-  if (*(qword_1ED49C028 + 1040) != v4)
+  if (*(qword_1ED49C028 + 1040) != keyboardCopy)
   {
     [qword_1ED49C028 tearDownInputController];
-    objc_storeStrong((qword_1ED49C028 + 1040), a3);
+    objc_storeStrong((qword_1ED49C028 + 1040), keyboard);
     v5 = qword_1ED49C028;
   }
 
@@ -512,28 +512,28 @@ void __78__UICompatibilityInputViewController_deferredInputModeControllerWithKey
   qword_1ED49C028 = v0;
 }
 
-- (void)setDeferredSystemView:(id)a3
+- (void)setDeferredSystemView:(id)view
 {
-  v5 = a3;
-  if (self->_deferredSystemView != v5)
+  viewCopy = view;
+  if (self->_deferredSystemView != viewCopy)
   {
-    v6 = v5;
+    v6 = viewCopy;
     [(UICompatibilityInputViewController *)self tearDownInputController];
-    objc_storeStrong(&self->_deferredSystemView, a3);
-    v5 = v6;
+    objc_storeStrong(&self->_deferredSystemView, view);
+    viewCopy = v6;
   }
 }
 
 - (void)killIncomingExtension
 {
-  v3 = [(UIKeyboardInputMode *)self->_incomingExtensionInputMode extension];
-  [v3 _kill:3];
+  extension = [(UIKeyboardInputMode *)self->_incomingExtensionInputMode extension];
+  [extension _kill:3];
 
   incomingExtensionInputMode = self->_incomingExtensionInputMode;
   self->_incomingExtensionInputMode = 0;
 }
 
-- (void)didSuspend:(id)a3
+- (void)didSuspend:(id)suspend
 {
   [(UICompatibilityInputViewController *)self didMoveToParentViewController:0];
   self->_shouldSuppressRemoteInputController = 1;
@@ -544,36 +544,36 @@ void __78__UICompatibilityInputViewController_deferredInputModeControllerWithKey
     {
       [(UICompatibilityInputViewController *)self killIncomingExtension];
       v4 = TIGetKeyboardExtensionNoAutoFallbackValue();
-      v5 = [v4 BOOLValue];
+      bOOLValue = [v4 BOOLValue];
 
-      if ((v5 & 1) == 0)
+      if ((bOOLValue & 1) == 0)
       {
         v8 = +[UIKeyboardImpl activeInstance];
         v6 = +[UIKeyboardInputModeController sharedInputModeController];
-        v7 = [v6 currentSystemInputMode];
-        [v8 setKeyboardInputMode:v7 userInitiated:1];
+        currentSystemInputMode = [v6 currentSystemInputMode];
+        [v8 setKeyboardInputMode:currentSystemInputMode userInitiated:1];
       }
     }
   }
 }
 
-- (void)isHosted:(id)a3
+- (void)isHosted:(id)hosted
 {
   if (self->_shouldSuppressRemoteInputController)
   {
-    [(UICompatibilityInputViewController *)self willResume:a3];
+    [(UICompatibilityInputViewController *)self willResume:hosted];
   }
 }
 
-- (void)willResume:(id)a3
+- (void)willResume:(id)resume
 {
   self->_shouldSuppressRemoteInputController = 0;
   self->_currentResumeTime = CFAbsoluteTimeGetCurrent();
   v4 = +[UIKeyboardImpl activeInstance];
   if (v4 && (v9 = v4, v5 = [(UIKeyboardInputMode *)self->_inputMode isExtensionInputMode], v4 = v9, v5))
   {
-    v6 = [(UICompatibilityInputViewController *)self inputController];
-    if (v6)
+    inputController = [(UICompatibilityInputViewController *)self inputController];
+    if (inputController)
     {
     }
 
@@ -595,11 +595,11 @@ void __78__UICompatibilityInputViewController_deferredInputModeControllerWithKey
   }
 }
 
-- (void)didMoveToParentViewController:(id)a3
+- (void)didMoveToParentViewController:(id)controller
 {
-  if (!a3)
+  if (!controller)
   {
-    v4 = [(UICompatibilityInputViewController *)self inputController];
+    inputController = [(UICompatibilityInputViewController *)self inputController];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -611,11 +611,11 @@ void __78__UICompatibilityInputViewController_deferredInputModeControllerWithKey
   }
 }
 
-+ (id)inputSnapshotViewForInputMode:(id)a3 orientation:(int64_t)a4
++ (id)inputSnapshotViewForInputMode:(id)mode orientation:(int64_t)orientation
 {
   v5 = __snapshotViews;
-  v6 = [a3 identifier];
-  v7 = [v6 stringByAppendingFormat:@"%d", (a4 - 3) < 2];
+  identifier = [mode identifier];
+  v7 = [identifier stringByAppendingFormat:@"%d", (orientation - 3) < 2];
   v8 = [v5 objectForKey:v7];
 
   return v8;
@@ -685,61 +685,61 @@ void __54__UICompatibilityInputViewController_takeSnapshotView__block_invoke(uin
 LABEL_10:
 }
 
-- (void)addSnapshotViewForInputMode:(id)a3
+- (void)addSnapshotViewForInputMode:(id)mode
 {
-  v19 = a3;
-  v4 = [(UICompatibilityInputViewController *)self _compatibilityController];
-  v5 = [v4 _compatView];
+  modeCopy = mode;
+  _compatibilityController = [(UICompatibilityInputViewController *)self _compatibilityController];
+  _compatView = [_compatibilityController _compatView];
 
-  if (v5)
+  if (_compatView)
   {
-    v6 = [(UICompatibilityInputViewController *)self _compatibilityController];
-    v7 = [v6 _compatView];
-    v8 = [v7 snapshotView];
+    _compatibilityController2 = [(UICompatibilityInputViewController *)self _compatibilityController];
+    _compatView2 = [_compatibilityController2 _compatView];
+    snapshotView = [_compatView2 snapshotView];
 
-    if (!v8)
+    if (!snapshotView)
     {
-      v9 = [objc_opt_class() inputSnapshotViewForInputMode:v19 orientation:{+[UIKeyboardSceneDelegate interfaceOrientation](UIKeyboardSceneDelegate, "interfaceOrientation")}];
+      v9 = [objc_opt_class() inputSnapshotViewForInputMode:modeCopy orientation:{+[UIKeyboardSceneDelegate interfaceOrientation](UIKeyboardSceneDelegate, "interfaceOrientation")}];
       if (!v9)
       {
         v10 = +[UIKeyboardImpl activeInstance];
-        v11 = [v10 _layout];
-        v12 = [(UIViewController *)self view];
-        [v11 updateGlobeKeyAndLayoutOriginBeforeSnapshotForInputView:v12];
+        _layout = [v10 _layout];
+        view = [(UIViewController *)self view];
+        [_layout updateGlobeKeyAndLayoutOriginBeforeSnapshotForInputView:view];
 
-        v13 = [(UIViewController *)self view];
-        v14 = [v13 _rootInputWindowController];
-        v15 = [(UIViewController *)self view];
-        v9 = [v14 inputViewSnapshotOfView:v15 afterScreenUpdates:1];
+        view2 = [(UIViewController *)self view];
+        _rootInputWindowController = [view2 _rootInputWindowController];
+        view3 = [(UIViewController *)self view];
+        v9 = [_rootInputWindowController inputViewSnapshotOfView:view3 afterScreenUpdates:1];
       }
 
-      v16 = [(UIViewController *)self view];
-      [v16 addSubview:v9];
+      view4 = [(UIViewController *)self view];
+      [view4 addSubview:v9];
 
-      v17 = [(UICompatibilityInputViewController *)self _compatibilityController];
-      v18 = [v17 _compatView];
-      [v18 setSnapshotView:v9];
+      _compatibilityController3 = [(UICompatibilityInputViewController *)self _compatibilityController];
+      _compatView3 = [_compatibilityController3 _compatView];
+      [_compatView3 setSnapshotView:v9];
     }
   }
 }
 
-- (void)shouldUpdateInputMode:(id)a3
+- (void)shouldUpdateInputMode:(id)mode
 {
-  v13 = a3;
-  v4 = [v13 userInfo];
-  v5 = [v4 objectForKey:@"UICompatibilityInputViewControllerScreenKey"];
+  modeCopy = mode;
+  userInfo = [modeCopy userInfo];
+  v5 = [userInfo objectForKey:@"UICompatibilityInputViewControllerScreenKey"];
 
   if (v5)
   {
-    v6 = [(UIResponder *)self _responderWindow];
-    v7 = [v6 screen];
-    if (v7)
+    _responderWindow = [(UIResponder *)self _responderWindow];
+    screen = [_responderWindow screen];
+    if (screen)
     {
-      v8 = v7;
-      v9 = [(UIResponder *)self _responderWindow];
-      v10 = [v9 screen];
+      v8 = screen;
+      _responderWindow2 = [(UIResponder *)self _responderWindow];
+      screen2 = [_responderWindow2 screen];
 
-      if (v5 != v10)
+      if (v5 != screen2)
       {
         goto LABEL_9;
       }
@@ -750,8 +750,8 @@ LABEL_10:
     }
   }
 
-  v11 = [v13 userInfo];
-  v12 = [v11 objectForKey:@"UICompatibilityInputViewControllerInputModeKey"];
+  userInfo2 = [modeCopy userInfo];
+  v12 = [userInfo2 objectForKey:@"UICompatibilityInputViewControllerInputModeKey"];
 
   if (v12)
   {
@@ -761,16 +761,16 @@ LABEL_10:
 LABEL_9:
 }
 
-- (id)_systemViewControllerForInputMode:(id)a3
+- (id)_systemViewControllerForInputMode:(id)mode
 {
-  v4 = a3;
+  modeCopy = mode;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = [v4 viewControllerClass]) != 0)
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = [modeCopy viewControllerClass]) != 0)
   {
     v6 = objc_alloc_init(v5);
-    v7 = [(UIViewController *)self view];
-    v8 = [v7 _inheritedRenderConfig];
-    if ([v8 lightKeyboard])
+    view = [(UIViewController *)self view];
+    _inheritedRenderConfig = [view _inheritedRenderConfig];
+    if ([_inheritedRenderConfig lightKeyboard])
     {
       v9 = 1;
     }
@@ -780,8 +780,8 @@ LABEL_9:
       v9 = 2;
     }
 
-    v10 = [v6 traitOverrides];
-    [v10 setUserInterfaceStyle:v9];
+    traitOverrides = [v6 traitOverrides];
+    [traitOverrides setUserInterfaceStyle:v9];
   }
 
   else
@@ -806,8 +806,8 @@ LABEL_9:
 
     else
     {
-      v7 = [(UIKeyboardInputMode *)self->_inputMode identifier];
-      objc_initWeak(&location, v7);
+      identifier = [(UIKeyboardInputMode *)self->_inputMode identifier];
+      objc_initWeak(&location, identifier);
 
       v8 = +[UIKeyboardInputModeController sharedInputModeController];
       [v8 switchToCurrentSystemInputMode];
@@ -840,11 +840,11 @@ LABEL_9:
           [v12 _inputModeChangedWhileContextTracked];
 
           v13 = +[UIKeyboardPreferencesController sharedPreferencesController];
-          v14 = [v13 preferencesActions];
+          preferencesActions = [v13 preferencesActions];
           v15 = +[UIKeyboardInputModeController sharedInputModeController];
-          v16 = [v15 currentInputMode];
-          v17 = [v16 identifier];
-          [v14 setLanguageAwareInputModeLastUsed:v17];
+          currentInputMode = [v15 currentInputMode];
+          identifier2 = [currentInputMode identifier];
+          [preferencesActions setLanguageAwareInputModeLastUsed:identifier2];
         }
       }
 
@@ -865,8 +865,8 @@ void __64__UICompatibilityInputViewController_resetInputModeInMainThread__block_
 - (void)resetInputMode
 {
   +[_UIKeyboardUsageTracking keyboardExtensionCrashed];
-  v3 = [(UIKeyboardInputMode *)self->_inputMode extension];
-  [v3 setRequestInterruptionBlock:0];
+  extension = [(UIKeyboardInputMode *)self->_inputMode extension];
+  [extension setRequestInterruptionBlock:0];
 
   if (pthread_main_np() == 1)
   {
@@ -898,11 +898,11 @@ void __64__UICompatibilityInputViewController_resetInputModeInMainThread__block_
   else
   {
     v4 = +[UIKeyboardInputModeController sharedInputModeController];
-    v6 = [v4 currentInputMode];
+    currentInputMode = [v4 currentInputMode];
 
-    if (([v6 isDisplayed] & 1) == 0)
+    if (([currentInputMode isDisplayed] & 1) == 0)
     {
-      [(UICompatibilityInputViewController *)self setInputMode:v6];
+      [(UICompatibilityInputViewController *)self setInputMode:currentInputMode];
     }
   }
 }
@@ -918,15 +918,15 @@ void __64__UICompatibilityInputViewController_resetInputModeInMainThread__block_
   }
 }
 
-- (void)setInputMode:(id)a3
+- (void)setInputMode:(id)mode
 {
-  v5 = a3;
+  modeCopy = mode;
   if (qword_1ED49C038 != -1)
   {
     dispatch_once(&qword_1ED49C038, &__block_literal_global_262_0);
   }
 
-  if ([(UIKeyboardInputMode *)v5 isExtensionInputMode])
+  if ([(UIKeyboardInputMode *)modeCopy isExtensionInputMode])
   {
     v6 = +[UIKeyboardImpl activeInstance];
     if ([v6 _shouldSuppressSoftwareKeyboard])
@@ -944,18 +944,18 @@ void __64__UICompatibilityInputViewController_resetInputModeInMainThread__block_
     }
   }
 
-  if ([(UIKeyboardInputMode *)self->_inputMode isExtensionInputMode]|| [(UIKeyboardInputMode *)v5 isExtensionInputMode])
+  if ([(UIKeyboardInputMode *)self->_inputMode isExtensionInputMode]|| [(UIKeyboardInputMode *)modeCopy isExtensionInputMode])
   {
     v8 = 0;
   }
 
   else
   {
-    v9 = [(UIKeyboardInputMode *)self->_inputMode normalizedIdentifier];
-    if (UIKeyboardInputModeUsesKBStar(v9))
+    normalizedIdentifier = [(UIKeyboardInputMode *)self->_inputMode normalizedIdentifier];
+    if (UIKeyboardInputModeUsesKBStar(normalizedIdentifier))
     {
-      v10 = [(UIKeyboardInputMode *)v5 normalizedIdentifier];
-      v8 = UIKeyboardInputModeUsesKBStar(v10);
+      normalizedIdentifier2 = [(UIKeyboardInputMode *)modeCopy normalizedIdentifier];
+      v8 = UIKeyboardInputModeUsesKBStar(normalizedIdentifier2);
     }
 
     else
@@ -964,16 +964,16 @@ void __64__UICompatibilityInputViewController_resetInputModeInMainThread__block_
     }
   }
 
-  if (![(UIKeyboardInputMode *)self->_inputMode isEqual:v5]&& !v8)
+  if (![(UIKeyboardInputMode *)self->_inputMode isEqual:modeCopy]&& !v8)
   {
     goto LABEL_17;
   }
 
-  v19 = [(UICompatibilityInputViewController *)self inputController];
-  v20 = [v19 view];
-  v21 = [v20 superview];
-  v22 = [(UIViewController *)self view];
-  if (v21 == v22)
+  inputController = [(UICompatibilityInputViewController *)self inputController];
+  view = [inputController view];
+  superview = [view superview];
+  view2 = [(UIViewController *)self view];
+  if (superview == view2)
   {
   }
 
@@ -998,7 +998,7 @@ void __64__UICompatibilityInputViewController_resetInputModeInMainThread__block_
     v48 = 5.0;
   }
 
-  if ([(UIKeyboardInputMode *)v5 isExtensionInputMode]&& self->_incomingExtensionInputMode && (Current = CFAbsoluteTimeGetCurrent(), incomingExtensionInputModeTime = self->_incomingExtensionInputModeTime, Current - incomingExtensionInputModeTime > v48) && vabdd_f64(self->_lastSuspendedTime, incomingExtensionInputModeTime) > v48)
+  if ([(UIKeyboardInputMode *)modeCopy isExtensionInputMode]&& self->_incomingExtensionInputMode && (Current = CFAbsoluteTimeGetCurrent(), incomingExtensionInputModeTime = self->_incomingExtensionInputModeTime, Current - incomingExtensionInputModeTime > v48) && vabdd_f64(self->_lastSuspendedTime, incomingExtensionInputModeTime) > v48)
   {
     [(UICompatibilityInputViewController *)self killIncomingExtension];
     [(UICompatibilityInputViewController *)self resetInputMode];
@@ -1009,7 +1009,7 @@ void __64__UICompatibilityInputViewController_resetInputModeInMainThread__block_
     if (!self->_tearingDownInputController || !-[UIKeyboardInputMode isExtensionInputMode](self->_inputMode, "isExtensionInputMode") && (-[UICompatibilityInputViewController inputController](self, "inputController"), v51 = objc_claimAutoreleasedReturnValue(), [v51 view], v52 = objc_claimAutoreleasedReturnValue(), -[UICompatibilityInputViewController _keyboard](self, "_keyboard"), v53 = objc_claimAutoreleasedReturnValue(), v53, v52, v51, v52 == v53))
     {
       [(UIKeyboardInputMode *)self->_inputMode setIsDisplayed:0];
-      objc_storeStrong(&self->_inputMode, a3);
+      objc_storeStrong(&self->_inputMode, mode);
 LABEL_74:
       [(UIKeyboardInputMode *)self->_inputMode setIsDisplayed:1];
       goto LABEL_75;
@@ -1017,9 +1017,9 @@ LABEL_74:
 
     [(UICompatibilityInputViewController *)self tearDownInputController];
 LABEL_17:
-    v11 = [(UIViewController *)self view];
-    v12 = [v11 _rootInputWindowController];
-    [v12 registerPowerLogEvent:1];
+    view3 = [(UIViewController *)self view];
+    _rootInputWindowController = [view3 _rootInputWindowController];
+    [_rootInputWindowController registerPowerLogEvent:1];
 
     if ([(UIKeyboardInputMode *)self->_inputMode isExtensionInputMode]&& self->_shouldSuppressRemoteInputController)
     {
@@ -1028,44 +1028,44 @@ LABEL_17:
 
     else
     {
-      v14 = [(UIKeyboardInputMode *)v5 isExtensionInputMode];
-      inputMode = v5;
-      if (!v14)
+      isExtensionInputMode = [(UIKeyboardInputMode *)modeCopy isExtensionInputMode];
+      inputMode = modeCopy;
+      if (!isExtensionInputMode)
       {
 LABEL_22:
         [(UICompatibilityInputViewController *)self tearDownInputController];
-        objc_storeStrong(&self->_inputMode, a3);
-        if ([(UIKeyboardInputMode *)v5 isExtensionInputMode])
+        objc_storeStrong(&self->_inputMode, mode);
+        if ([(UIKeyboardInputMode *)modeCopy isExtensionInputMode])
         {
           if (!self->_shouldSuppressRemoteInputController && !+[UIKeyboard usesInputSystemUI])
           {
             v15 = +[_UIRemoteKeyboards sharedRemoteKeyboards];
-            v16 = [v15 keyboardIsForSystemService];
+            keyboardIsForSystemService = [v15 keyboardIsForSystemService];
 
-            if ((v16 & 1) == 0)
+            if ((keyboardIsForSystemService & 1) == 0)
             {
-              objc_storeStrong(&self->_incomingExtensionInputMode, a3);
+              objc_storeStrong(&self->_incomingExtensionInputMode, mode);
               self->_incomingExtensionInputModeTime = CFAbsoluteTimeGetCurrent();
               v81[0] = MEMORY[0x1E69E9820];
               v81[1] = 3221225472;
               v81[2] = __51__UICompatibilityInputViewController_setInputMode___block_invoke_2;
               v81[3] = &unk_1E710E548;
               v81[4] = self;
-              v61 = [(UIKeyboardInputMode *)v5 extension];
-              [v61 setRequestInterruptionBlock:v81];
+              extension = [(UIKeyboardInputMode *)modeCopy extension];
+              [extension setRequestInterruptionBlock:v81];
 
-              v62 = [(UIKeyboardInputMode *)v5 extension];
+              extension2 = [(UIKeyboardInputMode *)modeCopy extension];
               v79[0] = MEMORY[0x1E69E9820];
               v79[1] = 3221225472;
               v79[2] = __51__UICompatibilityInputViewController_setInputMode___block_invoke_4;
               v79[3] = &unk_1E710E570;
               v79[4] = self;
-              v80 = v5;
-              [v62 instantiateViewControllerWithInputItems:MEMORY[0x1E695E0F0] connectionHandler:v79];
+              v80 = modeCopy;
+              [extension2 instantiateViewControllerWithInputItems:MEMORY[0x1E695E0F0] connectionHandler:v79];
 
               v63 = _MergedGlobals_15_5;
-              v64 = [(UIKeyboardInputMode *)self->_incomingExtensionInputMode identifier];
-              v65 = [v63 objectForKey:v64];
+              identifier = [(UIKeyboardInputMode *)self->_incomingExtensionInputMode identifier];
+              v65 = [v63 objectForKey:identifier];
 
               v66 = 3.0;
               if (self->_lastSuspendedTime <= self->_currentResumeTime)
@@ -1107,26 +1107,26 @@ LABEL_22:
           }
         }
 
-        v17 = [(UIKeyboardInputMode *)v5 identifier];
-        if ([v17 isEqualToString:@"autofillsignup"])
+        identifier2 = [(UIKeyboardInputMode *)modeCopy identifier];
+        if ([identifier2 isEqualToString:@"autofillsignup"])
         {
           if (!self->_incomingExtensionInputMode)
           {
 
 LABEL_55:
             v54 = +[UIKeyboardImpl activeInstance];
-            v40 = [v54 _autofillContext];
+            _autofillContext = [v54 _autofillContext];
 
-            v55 = [v40 objectForKey:@"_automaticPasswordKeyboard"];
+            v55 = [_autofillContext objectForKey:@"_automaticPasswordKeyboard"];
 
             if (!v55)
             {
 
-              v40 = 0;
+              _autofillContext = 0;
             }
 
             v56 = +[UIKeyboardImpl activeInstance];
-            v57 = [v56 _passwordRules];
+            _passwordRules = [v56 _passwordRules];
 
             if (get_SFAutomaticPasswordInputViewControllerClass() && ![(UIKeyboardInputMode *)self->_inputMode isDisplayed])
             {
@@ -1135,8 +1135,8 @@ LABEL_55:
               v72 = 3221225472;
               v73 = __51__UICompatibilityInputViewController_setInputMode___block_invoke_7;
               v74 = &unk_1E710E598;
-              v75 = self;
-              v76 = v5;
+              selfCopy = self;
+              v76 = modeCopy;
               v59 = v58;
               v77 = v59;
               v60 = _Block_copy(&v71);
@@ -1151,7 +1151,7 @@ LABEL_55:
                 if (objc_opt_respondsToSelector())
                 {
                   objc_storeStrong(&self->_incomingExtensionInputMode, self->_inputMode);
-                  [get_SFAutomaticPasswordInputViewControllerClass() inputViewControllerWithAutoFillContext:v40 passwordRules:v57 completion:v60];
+                  [get_SFAutomaticPasswordInputViewControllerClass() inputViewControllerWithAutoFillContext:_autofillContext passwordRules:_passwordRules completion:v60];
                   v69 = dispatch_time(0, 500000000);
                   dispatch_semaphore_wait(v59, v69);
                 }
@@ -1179,7 +1179,7 @@ LABEL_73:
         {
         }
 
-        if ([(UIKeyboardInputMode *)v5 isExtensionInputMode])
+        if ([(UIKeyboardInputMode *)modeCopy isExtensionInputMode])
         {
           goto LABEL_74;
         }
@@ -1189,8 +1189,8 @@ LABEL_73:
           goto LABEL_74;
         }
 
-        v24 = [(UIKeyboardInputMode *)v5 identifier];
-        v25 = [v24 isEqualToString:@"autofillsignup"];
+        identifier3 = [(UIKeyboardInputMode *)modeCopy identifier];
+        v25 = [identifier3 isEqualToString:@"autofillsignup"];
 
         if (v25)
         {
@@ -1198,27 +1198,27 @@ LABEL_73:
         }
 
         [(UICompatibilityInputViewController *)self removeSnapshotView];
-        v26 = [(UICompatibilityInputViewController *)self _systemViewControllerForInputMode:v5];
+        v26 = [(UICompatibilityInputViewController *)self _systemViewControllerForInputMode:modeCopy];
         [(UICompatibilityInputViewController *)self setInputController:v26];
 
-        v27 = [(UIInputViewController *)self _proxyInterface];
-        [v27 setForwardingInterface:0];
+        _proxyInterface = [(UIInputViewController *)self _proxyInterface];
+        [_proxyInterface setForwardingInterface:0];
 
-        v28 = [(UICompatibilityInputViewController *)self inputController];
-        [(UIViewController *)self addChildViewController:v28];
+        inputController2 = [(UICompatibilityInputViewController *)self inputController];
+        [(UIViewController *)self addChildViewController:inputController2];
 
-        v29 = [(UIViewController *)self view];
-        v30 = [(UICompatibilityInputViewController *)self inputController];
-        v31 = [v30 view];
-        [v29 addSubview:v31];
+        view4 = [(UIViewController *)self view];
+        inputController3 = [(UICompatibilityInputViewController *)self inputController];
+        view5 = [inputController3 view];
+        [view4 addSubview:view5];
 
-        v32 = [(UICompatibilityInputViewController *)self _compatView];
-        v33 = [(UICompatibilityInputViewController *)self inputController];
-        v34 = [v33 view];
-        [v32 setTouchableView:v34];
+        _compatView = [(UICompatibilityInputViewController *)self _compatView];
+        inputController4 = [(UICompatibilityInputViewController *)self inputController];
+        view6 = [inputController4 view];
+        [_compatView setTouchableView:view6];
 
-        v35 = [(UICompatibilityInputViewController *)self inputController];
-        [v35 didMoveToParentViewController:self];
+        inputController5 = [(UICompatibilityInputViewController *)self inputController];
+        [inputController5 didMoveToParentViewController:self];
 
         [(UICompatibilityInputViewController *)self rebuildChildConstraints];
         if (![(UIKeyboard *)self->_deferredSystemView isActive])
@@ -1226,22 +1226,22 @@ LABEL_73:
           [(UIKeyboard *)self->_deferredSystemView activate];
         }
 
-        v36 = [(UICompatibilityInputViewController *)self inputController];
-        v37 = [v36 view];
-        [v37 frame];
-        v40 = [UIKBKeyplaneChangeContext keyplaneChangeContextWithSize:v38, v39];
+        inputController6 = [(UICompatibilityInputViewController *)self inputController];
+        view7 = [inputController6 view];
+        [view7 frame];
+        _autofillContext = [UIKBKeyplaneChangeContext keyplaneChangeContextWithSize:v38, v39];
 
-        [v40 setSplitWidthsChanged:1];
-        [v40 setUpdateAssistantView:1];
-        v41 = [(UIViewController *)self view];
-        v42 = [v41 superview];
-        [v42 _didChangeKeyplaneWithContext:v40];
+        [_autofillContext setSplitWidthsChanged:1];
+        [_autofillContext setUpdateAssistantView:1];
+        view8 = [(UIViewController *)self view];
+        superview2 = [view8 superview];
+        [superview2 _didChangeKeyplaneWithContext:_autofillContext];
 
-        v43 = [(UICompatibilityInputViewController *)self inputController];
-        v44 = [v43 view];
-        v45 = [(UIViewController *)self view];
-        v46 = [v45 _inheritedRenderConfig];
-        [v44 _setRenderConfig:v46];
+        inputController7 = [(UICompatibilityInputViewController *)self inputController];
+        view9 = [inputController7 view];
+        view10 = [(UIViewController *)self view];
+        _inheritedRenderConfig = [view10 _inheritedRenderConfig];
+        [view9 _setRenderConfig:_inheritedRenderConfig];
 
         +[UIAssistantBarButtonItemProvider updateFloatingAssistantBarIfNeeded];
         goto LABEL_73;
@@ -1500,89 +1500,89 @@ LABEL_9:
 
 - (id)preferredFocusedView
 {
-  v2 = [(UICompatibilityInputViewController *)self inputController];
-  v3 = [v2 view];
+  inputController = [(UICompatibilityInputViewController *)self inputController];
+  view = [inputController view];
 
-  return v3;
+  return view;
 }
 
-- (void)keyboardWillChangeFromDelegate:(id)a3 toDelegate:(id)a4
+- (void)keyboardWillChangeFromDelegate:(id)delegate toDelegate:(id)toDelegate
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(UICompatibilityInputViewController *)self inputController];
+  delegateCopy = delegate;
+  toDelegateCopy = toDelegate;
+  inputController = [(UICompatibilityInputViewController *)self inputController];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(UICompatibilityInputViewController *)self inputController];
-    [v9 keyboardWillChangeFromDelegate:v10 toDelegate:v6];
+    inputController2 = [(UICompatibilityInputViewController *)self inputController];
+    [inputController2 keyboardWillChangeFromDelegate:delegateCopy toDelegate:toDelegateCopy];
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v6.receiver = self;
   v6.super_class = UICompatibilityInputViewController;
-  [(UIViewController *)&v6 viewWillDisappear:a3];
+  [(UIViewController *)&v6 viewWillDisappear:disappear];
   v3 = +[UIInputSwitcherView activeInstance];
-  v4 = [v3 isVisible];
+  isVisible = [v3 isVisible];
 
-  if (v4)
+  if (isVisible)
   {
     v5 = +[UIInputSwitcherView activeInstance];
     [v5 hide];
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v7.receiver = self;
   v7.super_class = UICompatibilityInputViewController;
-  [(UIViewController *)&v7 viewWillAppear:a3];
-  v4 = [(UICompatibilityInputViewController *)self _keyboardForThisViewController];
-  v5 = [v4 isActive];
+  [(UIViewController *)&v7 viewWillAppear:appear];
+  _keyboardForThisViewController = [(UICompatibilityInputViewController *)self _keyboardForThisViewController];
+  isActive = [_keyboardForThisViewController isActive];
 
-  if ((v5 & 1) == 0)
+  if ((isActive & 1) == 0)
   {
-    v6 = [(UICompatibilityInputViewController *)self _keyboardForThisViewController];
-    [v6 activate];
+    _keyboardForThisViewController2 = [(UICompatibilityInputViewController *)self _keyboardForThisViewController];
+    [_keyboardForThisViewController2 activate];
   }
 }
 
-- (void)willRotateToInterfaceOrientation:(int64_t)a3 duration:(double)a4
+- (void)willRotateToInterfaceOrientation:(int64_t)orientation duration:(double)duration
 {
-  v6 = [(UICompatibilityInputViewController *)self _keyboardForThisViewController];
-  v7 = [v6 isActive];
+  _keyboardForThisViewController = [(UICompatibilityInputViewController *)self _keyboardForThisViewController];
+  isActive = [_keyboardForThisViewController isActive];
 
-  if (v7)
+  if (isActive)
   {
     v8 = +[UIKeyboardImpl activeInstance];
-    [v8 prepareLayoutForInterfaceOrientation:a3];
+    [v8 prepareLayoutForInterfaceOrientation:orientation];
   }
 
-  v9 = [(UICompatibilityInputViewController *)self inputController];
-  if (v9)
+  inputController = [(UICompatibilityInputViewController *)self inputController];
+  if (inputController)
   {
     goto LABEL_4;
   }
 
-  v12 = [(UIViewController *)self childViewControllers];
-  v13 = [v12 count];
+  childViewControllers = [(UIViewController *)self childViewControllers];
+  v13 = [childViewControllers count];
 
   if (v13)
   {
-    v14 = [(UICompatibilityInputViewController *)self _compatView];
-    v9 = [v14 touchableView];
+    _compatView = [(UICompatibilityInputViewController *)self _compatView];
+    inputController = [_compatView touchableView];
 
-    if ([v9 _hasAutolayoutHeightConstraint])
+    if ([inputController _hasAutolayoutHeightConstraint])
     {
-      if (v9)
+      if (inputController)
       {
-        v15 = [v9 _disableLayoutFlushingCount];
-        if (v15 >= 1)
+        _disableLayoutFlushingCount = [inputController _disableLayoutFlushingCount];
+        if (_disableLayoutFlushingCount >= 1)
         {
-          v16 = v15 + 1;
+          v16 = _disableLayoutFlushingCount + 1;
         }
 
         else
@@ -1590,11 +1590,11 @@ LABEL_9:
           v16 = 1;
         }
 
-        [v9 _setDisableLayoutFlushingCount:v16];
-        [v9 _disableLayoutFlushing];
+        [inputController _setDisableLayoutFlushingCount:v16];
+        [inputController _disableLayoutFlushing];
       }
 
-      [v9 _removeAutolayoutSizingConstraints];
+      [inputController _removeAutolayoutSizingConstraints];
       self->_shouldRegenerateSizingConstraints = 1;
     }
 
@@ -1602,21 +1602,21 @@ LABEL_4:
   }
 
   v10 = +[UIInputSwitcherView activeInstance];
-  v11 = [v10 isVisible];
+  isVisible = [v10 isVisible];
 
-  if (v11)
+  if (isVisible)
   {
     v17 = +[UIInputSwitcherView activeInstance];
     [v17 hide];
   }
 }
 
-- (void)willAnimateRotationToInterfaceOrientation:(int64_t)a3 duration:(double)a4
+- (void)willAnimateRotationToInterfaceOrientation:(int64_t)orientation duration:(double)duration
 {
-  v6 = [(UICompatibilityInputViewController *)self _keyboardForThisViewController];
-  v7 = [v6 isActive];
+  _keyboardForThisViewController = [(UICompatibilityInputViewController *)self _keyboardForThisViewController];
+  isActive = [_keyboardForThisViewController isActive];
 
-  if (v7)
+  if (isActive)
   {
     v9 = +[UIKeyboardImpl activeInstance];
     [v9 updateLayoutToCurrentInterfaceOrientation];
@@ -1626,26 +1626,26 @@ LABEL_4:
   {
     deferredSystemView = self->_deferredSystemView;
 
-    [(UIKeyboard *)deferredSystemView setOrientation:a3];
+    [(UIKeyboard *)deferredSystemView setOrientation:orientation];
   }
 }
 
-- (void)didRotateFromInterfaceOrientation:(int64_t)a3
+- (void)didRotateFromInterfaceOrientation:(int64_t)orientation
 {
-  v4 = [(UICompatibilityInputViewController *)self _keyboardForThisViewController];
-  v5 = [v4 isActive];
+  _keyboardForThisViewController = [(UICompatibilityInputViewController *)self _keyboardForThisViewController];
+  isActive = [_keyboardForThisViewController isActive];
 
-  if (v5)
+  if (isActive)
   {
     v6 = +[UIKeyboardImpl activeInstance];
     [v6 finishLayoutToCurrentInterfaceOrientation];
   }
 
-  v7 = [(UICompatibilityInputViewController *)self inputController];
-  if (!v7)
+  inputController = [(UICompatibilityInputViewController *)self inputController];
+  if (!inputController)
   {
-    v8 = [(UIViewController *)self childViewControllers];
-    v9 = [v8 count];
+    childViewControllers = [(UIViewController *)self childViewControllers];
+    v9 = [childViewControllers count];
 
     if (!v9 || !self->_shouldRegenerateSizingConstraints)
     {
@@ -1653,68 +1653,68 @@ LABEL_4:
     }
 
     self->_shouldRegenerateSizingConstraints = 0;
-    v10 = [(UICompatibilityInputViewController *)self _compatView];
-    v11 = [v10 touchableView];
+    _compatView = [(UICompatibilityInputViewController *)self _compatView];
+    touchableView = [_compatView touchableView];
 
-    [v11 _convertToAutolayoutSizingIfNecessary];
-    [(UIView *)v11 _popDisableLayoutFlushing];
-    v7 = v11;
+    [touchableView _convertToAutolayoutSizingIfNecessary];
+    [(UIView *)touchableView _popDisableLayoutFlushing];
+    inputController = touchableView;
   }
 }
 
 - (void)willBeginTranslation
 {
-  v3 = [(UICompatibilityInputViewController *)self _keyboard];
-  v4 = [v3 isActive];
+  _keyboard = [(UICompatibilityInputViewController *)self _keyboard];
+  isActive = [_keyboard isActive];
 
-  if (v4)
+  if (isActive)
   {
     if (![(UIInputViewController *)self _isPlaceholder])
     {
-      v5 = [(UICompatibilityInputViewController *)self blinkAssertion];
-      [v5 invalidate];
+      blinkAssertion = [(UICompatibilityInputViewController *)self blinkAssertion];
+      [blinkAssertion invalidate];
 
       v6 = +[UIKeyboardImpl activeInstance];
-      v7 = [v6 _activeAssertionController];
-      v8 = [v7 nonBlinkingAssertionWithReason:@"Split/Floating Keyboard Translation"];
+      _activeAssertionController = [v6 _activeAssertionController];
+      v8 = [_activeAssertionController nonBlinkingAssertionWithReason:@"Split/Floating Keyboard Translation"];
       [(UICompatibilityInputViewController *)self setBlinkAssertion:v8];
 
       v9 = +[UIKeyboardImpl activeInstance];
-      v10 = [v9 autocorrectPrompt];
+      autocorrectPrompt = [v9 autocorrectPrompt];
 
-      if (v10)
+      if (autocorrectPrompt)
       {
         v11 = +[UIKeyboardImpl activeInstance];
         [v11 prepareForGeometryChange];
       }
     }
 
-    v12 = [(UICompatibilityInputViewController *)self _keyboard];
-    if (v12)
+    _keyboard2 = [(UICompatibilityInputViewController *)self _keyboard];
+    if (_keyboard2)
     {
-      v13 = v12;
+      v13 = _keyboard2;
       v14 = +[UIKeyboardImpl activeInstance];
-      v15 = [v14 showsCandidateBar];
+      showsCandidateBar = [v14 showsCandidateBar];
 
-      if (v15)
+      if (showsCandidateBar)
       {
         v16 = +[UIKeyboardImpl activeInstance];
-        v17 = [v16 candidateController];
+        candidateController = [v16 candidateController];
 
-        if ([v17 barIsExtended])
+        if ([candidateController barIsExtended])
         {
-          [v17 collapse];
+          [candidateController collapse];
         }
       }
     }
 
     v19 = +[UIKeyboardImpl activeInstance];
-    v18 = [v19 _layout];
-    [v18 deactivateActiveKeys];
+    _layout = [v19 _layout];
+    [_layout deactivateActiveKeys];
   }
 }
 
-- (void)finishSplitTransition:(BOOL)a3
+- (void)finishSplitTransition:(BOOL)transition
 {
   if (![(UIInputViewController *)self _isPlaceholder])
   {
@@ -1722,22 +1722,22 @@ LABEL_4:
     aBlock[1] = 3221225472;
     aBlock[2] = __60__UICompatibilityInputViewController_finishSplitTransition___block_invoke;
     aBlock[3] = &__block_descriptor_33_e5_v8__0l;
-    v11 = a3;
+    transitionCopy = transition;
     v5 = _Block_copy(aBlock);
-    v6 = [(UICompatibilityInputViewController *)self _keyboard];
-    v7 = [v6 isActive];
+    _keyboard = [(UICompatibilityInputViewController *)self _keyboard];
+    isActive = [_keyboard isActive];
 
-    if (v7)
+    if (isActive)
     {
       v5[2](v5);
     }
 
     else
     {
-      v8 = [(UICompatibilityInputViewController *)self _keyboard];
+      _keyboard2 = [(UICompatibilityInputViewController *)self _keyboard];
       v9 = +[UIKeyboard activeKeyboard];
 
-      if (v8 == v9)
+      if (_keyboard2 == v9)
       {
         [UIView performWithoutAnimation:v5];
       }
@@ -1763,46 +1763,46 @@ void __60__UICompatibilityInputViewController_finishSplitTransition___block_invo
 
 - (void)didFinishTranslation
 {
-  v6 = [(UICompatibilityInputViewController *)self _keyboard];
-  if ([v6 isActive])
+  _keyboard = [(UICompatibilityInputViewController *)self _keyboard];
+  if ([_keyboard isActive])
   {
-    v3 = [(UIInputViewController *)self _isPlaceholder];
+    _isPlaceholder = [(UIInputViewController *)self _isPlaceholder];
 
-    if (v3)
+    if (_isPlaceholder)
     {
       return;
     }
 
-    v4 = [(UICompatibilityInputViewController *)self blinkAssertion];
-    [v4 invalidate];
+    blinkAssertion = [(UICompatibilityInputViewController *)self blinkAssertion];
+    [blinkAssertion invalidate];
 
     [(UICompatibilityInputViewController *)self setBlinkAssertion:0];
     v5 = +[UIKeyboardImpl activeInstance];
-    LODWORD(v4) = [v5 geometryIsChanging];
+    LODWORD(blinkAssertion) = [v5 geometryIsChanging];
 
-    if (!v4)
+    if (!blinkAssertion)
     {
       return;
     }
 
-    v6 = +[UIKeyboardImpl activeInstance];
-    [v6 geometryChangeDone:1];
+    _keyboard = +[UIKeyboardImpl activeInstance];
+    [_keyboard geometryChangeDone:1];
   }
 }
 
 - (void)_tvUpdateAppearanceForUserInterfaceStyle
 {
-  v3 = [(UIViewController *)self traitCollection];
-  v4 = [v3 userInterfaceStyle];
+  traitCollection = [(UIViewController *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  v6 = v4 != 2 && v4 != 1000;
-  v7 = [(UIViewController *)self view];
-  v8 = [v7 _inheritedRenderConfig];
-  v10 = [v8 copy];
+  v6 = userInterfaceStyle != 2 && userInterfaceStyle != 1000;
+  view = [(UIViewController *)self view];
+  _inheritedRenderConfig = [view _inheritedRenderConfig];
+  v10 = [_inheritedRenderConfig copy];
 
   [v10 setLightKeyboard:v6];
-  v9 = [(UIViewController *)self view];
-  [v9 _setRenderConfig:v10];
+  view2 = [(UIViewController *)self view];
+  [view2 _setRenderConfig:v10];
 }
 
 - (UILayoutGuide)focusSafeAreaLayoutGuide
@@ -1817,29 +1817,29 @@ void __60__UICompatibilityInputViewController_finishSplitTransition___block_invo
     v9 = v8;
     v11 = v10;
     v12 = objc_alloc_init(UILayoutGuide);
-    v13 = [(UIViewController *)self view];
-    [v13 addLayoutGuide:v12];
+    view = [(UIViewController *)self view];
+    [view addLayoutGuide:v12];
 
     v26 = MEMORY[0x1E69977A0];
-    v32 = [(UILayoutGuide *)v12 topAnchor];
-    v33 = [(UIViewController *)self view];
-    v31 = [v33 topAnchor];
-    v30 = [v32 constraintEqualToAnchor:v31 constant:v5];
+    topAnchor = [(UILayoutGuide *)v12 topAnchor];
+    view2 = [(UIViewController *)self view];
+    topAnchor2 = [view2 topAnchor];
+    v30 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:v5];
     v34[0] = v30;
-    v28 = [(UILayoutGuide *)v12 leftAnchor];
-    v29 = [(UIViewController *)self view];
-    v27 = [v29 leftAnchor];
-    v25 = [v28 constraintEqualToAnchor:v27 constant:v7];
+    leftAnchor = [(UILayoutGuide *)v12 leftAnchor];
+    view3 = [(UIViewController *)self view];
+    leftAnchor2 = [view3 leftAnchor];
+    v25 = [leftAnchor constraintEqualToAnchor:leftAnchor2 constant:v7];
     v34[1] = v25;
-    v24 = [(UIViewController *)self view];
-    v23 = [v24 bottomAnchor];
-    v14 = [(UILayoutGuide *)v12 bottomAnchor];
-    v15 = [v23 constraintEqualToAnchor:v14 constant:v9];
+    view4 = [(UIViewController *)self view];
+    bottomAnchor = [view4 bottomAnchor];
+    bottomAnchor2 = [(UILayoutGuide *)v12 bottomAnchor];
+    v15 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:v9];
     v34[2] = v15;
-    v16 = [(UIViewController *)self view];
-    v17 = [v16 rightAnchor];
-    v18 = [(UILayoutGuide *)v12 rightAnchor];
-    v19 = [v17 constraintEqualToAnchor:v18 constant:v11];
+    view5 = [(UIViewController *)self view];
+    rightAnchor = [view5 rightAnchor];
+    rightAnchor2 = [(UILayoutGuide *)v12 rightAnchor];
+    v19 = [rightAnchor constraintEqualToAnchor:rightAnchor2 constant:v11];
     v34[3] = v19;
     v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v34 count:4];
     [v26 activateConstraints:v20];

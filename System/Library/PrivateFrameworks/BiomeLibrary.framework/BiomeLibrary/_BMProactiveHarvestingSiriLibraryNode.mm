@@ -2,25 +2,25 @@
 + (id)Query;
 + (id)configurationForQuery;
 + (id)storeConfigurationForQuery;
-+ (id)streamWithName:(id)a3;
++ (id)streamWithName:(id)name;
 + (id)validKeyPaths;
 @end
 
 @implementation _BMProactiveHarvestingSiriLibraryNode
 
-+ (id)streamWithName:(id)a3
++ (id)streamWithName:(id)name
 {
-  if ([a3 isEqualToString:@"Query"])
+  if ([name isEqualToString:@"Query"])
   {
-    v4 = [a1 Query];
+    query = [self Query];
   }
 
   else
   {
-    v4 = 0;
+    query = 0;
   }
 
-  return v4;
+  return query;
 }
 
 + (id)validKeyPaths
@@ -37,8 +37,8 @@
 + (id)configurationForQuery
 {
   v18[2] = *MEMORY[0x1E69E9840];
-  v3 = [a1 storeConfigurationForQuery];
-  v4 = [a1 syncPolicyForQuery];
+  storeConfigurationForQuery = [self storeConfigurationForQuery];
+  syncPolicyForQuery = [self syncPolicyForQuery];
   v5 = objc_alloc(MEMORY[0x1E698F330]);
   v6 = [MEMORY[0x1E696AE18] predicateWithFormat:@"TRUEPREDICATE" argumentArray:0];
   v7 = [v5 initWithIdentifier:@"delete-siri-dictation-history" predicate:v6];
@@ -53,7 +53,7 @@
   v13 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"E7DA65A1-087C-4E02-AA40-FED0235D3ED8"];
   BYTE2(v17) = 0;
   LOWORD(v17) = 1;
-  v14 = [v12 _libraryStreamConfigurationWithUUID:v13 streamIdentifier:@"ProactiveHarvesting.Siri.Query" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:&unk_1EF3EA2F0 internalMetadata:0 enableSubscriptions:v17 enableSubscriptionSubstream:0 enableTombstoneSubstream:v11 allowedClients:0 pruningTriggers:v18[0] spaceAttributionOwner:?];
+  v14 = [v12 _libraryStreamConfigurationWithUUID:v13 streamIdentifier:@"ProactiveHarvesting.Siri.Query" eventClass:objc_opt_class() storeConfig:storeConfigurationForQuery syncPolicy:syncPolicyForQuery legacyNames:&unk_1EF3EA2F0 internalMetadata:0 enableSubscriptions:v17 enableSubscriptionSubstream:0 enableTombstoneSubstream:v11 allowedClients:0 pruningTriggers:v18[0] spaceAttributionOwner:?];
 
   v15 = *MEMORY[0x1E69E9840];
 
@@ -71,7 +71,7 @@
 + (id)Query
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForQuery];
+  configurationForQuery = [self configurationForQuery];
   v3 = +[BMProactiveHarvestingQuery columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -83,7 +83,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"ProactiveHarvesting.Siri.Query" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"ProactiveHarvesting.Siri.Query" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"ProactiveHarvesting.Siri.Query" schema:v9 configuration:configurationForQuery];
 
   v11 = *MEMORY[0x1E69E9840];
 

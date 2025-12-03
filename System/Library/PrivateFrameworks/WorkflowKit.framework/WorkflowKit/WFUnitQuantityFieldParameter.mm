@@ -1,13 +1,13 @@
 @interface WFUnitQuantityFieldParameter
-- (BOOL)parameterStateIsValid:(id)a3;
+- (BOOL)parameterStateIsValid:(id)valid;
 - (NSString)defaultUnitString;
-- (WFUnitQuantityFieldParameter)initWithDefinition:(id)a3;
-- (id)availableUnitForStringValue:(id)a3;
+- (WFUnitQuantityFieldParameter)initWithDefinition:(id)definition;
+- (id)availableUnitForStringValue:(id)value;
 - (id)defaultSerializedRepresentation;
-- (id)localizedLabelForPossibleUnit:(id)a3 magnitude:(id)a4 style:(unint64_t)a5;
-- (void)setDefaultUnit:(id)a3;
-- (void)setFallbackToAllSupportedUnits:(BOOL)a3;
-- (void)setUnitType:(id)a3;
+- (id)localizedLabelForPossibleUnit:(id)unit magnitude:(id)magnitude style:(unint64_t)style;
+- (void)setDefaultUnit:(id)unit;
+- (void)setFallbackToAllSupportedUnits:(BOOL)units;
+- (void)setUnitType:(id)type;
 - (void)updatePossibleUnits;
 @end
 
@@ -15,20 +15,20 @@
 
 - (id)defaultSerializedRepresentation
 {
-  v3 = [(WFUnitQuantityFieldParameter *)self unitType];
+  unitType = [(WFUnitQuantityFieldParameter *)self unitType];
 
-  if (v3)
+  if (unitType)
   {
-    v4 = [(WFParameter *)self definition];
-    v5 = [v4 objectForKey:@"DefaultValue"];
+    definition = [(WFParameter *)self definition];
+    v5 = [definition objectForKey:@"DefaultValue"];
     v6 = objc_opt_class();
     v7 = WFEnforceClass_1501(v5, v6);
 
     if (v7)
     {
       v8 = [WFNumberStringSubstitutableState alloc];
-      v9 = [v7 stringValue];
-      v10 = [(WFNumberStringSubstitutableState *)v8 initWithValue:v9];
+      stringValue = [v7 stringValue];
+      v10 = [(WFNumberStringSubstitutableState *)v8 initWithValue:stringValue];
     }
 
     else
@@ -36,78 +36,78 @@
       v10 = 0;
     }
 
-    v12 = [(WFUnitQuantityFieldParameter *)self defaultUnitString];
-    if (v12)
+    defaultUnitString = [(WFUnitQuantityFieldParameter *)self defaultUnitString];
+    if (defaultUnitString)
     {
-      v13 = [[WFQuantityParameterState alloc] initWithMagnitudeState:v10 unitString:v12];
-      v11 = [(WFQuantityParameterState *)v13 serializedRepresentation];
+      v13 = [[WFQuantityParameterState alloc] initWithMagnitudeState:v10 unitString:defaultUnitString];
+      serializedRepresentation = [(WFQuantityParameterState *)v13 serializedRepresentation];
     }
 
     else
     {
-      v11 = 0;
+      serializedRepresentation = 0;
     }
   }
 
   else
   {
-    v11 = 0;
+    serializedRepresentation = 0;
   }
 
-  return v11;
+  return serializedRepresentation;
 }
 
 - (NSString)defaultUnitString
 {
-  v3 = [(WFUnitQuantityFieldParameter *)self defaultUnit];
-  v4 = [v3 symbol];
+  defaultUnit = [(WFUnitQuantityFieldParameter *)self defaultUnit];
+  symbol = [defaultUnit symbol];
 
-  if (!v4)
+  if (!symbol)
   {
-    v5 = [(WFParameter *)self definition];
-    v6 = [v5 objectForKey:@"DefaultUnit"];
+    definition = [(WFParameter *)self definition];
+    v6 = [definition objectForKey:@"DefaultUnit"];
     v7 = objc_opt_class();
     v8 = WFEnforceClass_1501(v6, v7);
 
     v9 = [MEMORY[0x1E69E0BE8] unitFromString:v8];
     if (v9)
     {
-      v4 = v8;
+      symbol = v8;
     }
 
     else
     {
       v10 = MEMORY[0x1E69E0BE8];
-      v11 = [(WFUnitQuantityFieldParameter *)self unitType];
-      v12 = [v10 defaultUnitForUnitType:v11];
-      v4 = [v12 symbol];
+      unitType = [(WFUnitQuantityFieldParameter *)self unitType];
+      v12 = [v10 defaultUnitForUnitType:unitType];
+      symbol = [v12 symbol];
 
-      v13 = [(WFUnitQuantityFieldParameter *)self possibleUnits];
-      LOBYTE(v12) = [v13 containsObject:v4];
+      possibleUnits = [(WFUnitQuantityFieldParameter *)self possibleUnits];
+      LOBYTE(v12) = [possibleUnits containsObject:symbol];
 
       if ((v12 & 1) == 0)
       {
-        v14 = [(WFUnitQuantityFieldParameter *)self possibleUnits];
-        v15 = [v14 firstObject];
+        possibleUnits2 = [(WFUnitQuantityFieldParameter *)self possibleUnits];
+        firstObject = [possibleUnits2 firstObject];
 
-        v4 = v15;
+        symbol = firstObject;
       }
     }
   }
 
-  return v4;
+  return symbol;
 }
 
-- (BOOL)parameterStateIsValid:(id)a3
+- (BOOL)parameterStateIsValid:(id)valid
 {
-  v4 = a3;
-  if (v4)
+  validCopy = valid;
+  if (validCopy)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
     if (isKindOfClass)
     {
-      v6 = v4;
+      v6 = validCopy;
     }
 
     else
@@ -118,14 +118,14 @@
     v7 = v6;
     if (isKindOfClass)
     {
-      v8 = [v4 unitString];
-      v9 = [(WFUnitQuantityFieldParameter *)self availableUnitForStringValue:v8];
+      unitString = [validCopy unitString];
+      v9 = [(WFUnitQuantityFieldParameter *)self availableUnitForStringValue:unitString];
       v10 = v9 != 0;
     }
 
     else
     {
-      v11 = v4;
+      v11 = validCopy;
       objc_opt_class();
       v12 = objc_opt_isKindOfClass();
       if (v12)
@@ -138,7 +138,7 @@
         v13 = 0;
       }
 
-      v8 = v13;
+      unitString = v13;
 
       if (v12)
       {
@@ -146,14 +146,14 @@
         v18 = &v17;
         v19 = 0x2020000000;
         v20 = 1;
-        v14 = [v11 parameterStates];
+        parameterStates = [v11 parameterStates];
         v16[0] = MEMORY[0x1E69E9820];
         v16[1] = 3221225472;
         v16[2] = __54__WFUnitQuantityFieldParameter_parameterStateIsValid___block_invoke;
         v16[3] = &unk_1E837FEC8;
         v16[4] = self;
         v16[5] = &v17;
-        [v14 enumerateObjectsUsingBlock:v16];
+        [parameterStates enumerateObjectsUsingBlock:v16];
 
         v10 = *(v18 + 24);
         _Block_object_dispose(&v17, 8);
@@ -196,10 +196,10 @@ void __54__WFUnitQuantityFieldParameter_parameterStateIsValid___block_invoke(uin
   *a4 = *(*(*(a1 + 40) + 8) + 24) ^ 1;
 }
 
-- (id)localizedLabelForPossibleUnit:(id)a3 magnitude:(id)a4 style:(unint64_t)a5
+- (id)localizedLabelForPossibleUnit:(id)unit magnitude:(id)magnitude style:(unint64_t)style
 {
-  v6 = [(WFUnitQuantityFieldParameter *)self availableUnitForStringValue:a3, a4];
-  if (!v6)
+  magnitude = [(WFUnitQuantityFieldParameter *)self availableUnitForStringValue:unit, magnitude];
+  if (!magnitude)
   {
     v10 = 0;
     goto LABEL_29;
@@ -208,8 +208,8 @@ void __54__WFUnitQuantityFieldParameter_parameterStateIsValid___block_invoke(uin
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [MEMORY[0x1E696B050] bytes];
-    v8 = [v6 isEqual:v7];
+    bytes = [MEMORY[0x1E696B050] bytes];
+    v8 = [magnitude isEqual:bytes];
 
     if (v8)
     {
@@ -219,8 +219,8 @@ LABEL_22:
       goto LABEL_29;
     }
 
-    v11 = [MEMORY[0x1E696B050] kilobytes];
-    v12 = [v6 isEqual:v11];
+    kilobytes = [MEMORY[0x1E696B050] kilobytes];
+    v12 = [magnitude isEqual:kilobytes];
 
     if (v12)
     {
@@ -228,8 +228,8 @@ LABEL_22:
       goto LABEL_22;
     }
 
-    v13 = [MEMORY[0x1E696B050] megabytes];
-    v14 = [v6 isEqual:v13];
+    megabytes = [MEMORY[0x1E696B050] megabytes];
+    v14 = [magnitude isEqual:megabytes];
 
     if (v14)
     {
@@ -237,8 +237,8 @@ LABEL_22:
       goto LABEL_22;
     }
 
-    v15 = [MEMORY[0x1E696B050] gigabytes];
-    v16 = [v6 isEqual:v15];
+    gigabytes = [MEMORY[0x1E696B050] gigabytes];
+    v16 = [magnitude isEqual:gigabytes];
 
     if (v16)
     {
@@ -246,8 +246,8 @@ LABEL_22:
       goto LABEL_22;
     }
 
-    v17 = [MEMORY[0x1E696B050] terabytes];
-    v18 = [v6 isEqual:v17];
+    terabytes = [MEMORY[0x1E696B050] terabytes];
+    v18 = [magnitude isEqual:terabytes];
 
     if (v18)
     {
@@ -255,8 +255,8 @@ LABEL_22:
       goto LABEL_22;
     }
 
-    v19 = [MEMORY[0x1E696B050] petabytes];
-    v20 = [v6 isEqual:v19];
+    petabytes = [MEMORY[0x1E696B050] petabytes];
+    v20 = [magnitude isEqual:petabytes];
 
     if (v20)
     {
@@ -264,8 +264,8 @@ LABEL_22:
       goto LABEL_22;
     }
 
-    v21 = [MEMORY[0x1E696B050] exabytes];
-    v22 = [v6 isEqual:v21];
+    exabytes = [MEMORY[0x1E696B050] exabytes];
+    v22 = [magnitude isEqual:exabytes];
 
     if (v22)
     {
@@ -273,8 +273,8 @@ LABEL_22:
       goto LABEL_22;
     }
 
-    v23 = [MEMORY[0x1E696B050] zettabytes];
-    v24 = [v6 isEqual:v23];
+    zettabytes = [MEMORY[0x1E696B050] zettabytes];
+    v24 = [magnitude isEqual:zettabytes];
 
     if (v24)
     {
@@ -282,8 +282,8 @@ LABEL_22:
       goto LABEL_22;
     }
 
-    v25 = [MEMORY[0x1E696B050] yottabytes];
-    v26 = [v6 isEqual:v25];
+    yottabytes = [MEMORY[0x1E696B050] yottabytes];
+    v26 = [magnitude isEqual:yottabytes];
 
     if (v26)
     {
@@ -294,20 +294,20 @@ LABEL_22:
 
   v27 = objc_alloc_init(MEMORY[0x1E696AD30]);
   v28 = v27;
-  if (!a5)
+  if (!style)
   {
     v29 = 1;
     goto LABEL_27;
   }
 
-  if (a5 == 1)
+  if (style == 1)
   {
     v29 = 3;
 LABEL_27:
     [v27 setUnitStyle:v29];
   }
 
-  v10 = [v28 stringFromUnit:v6];
+  v10 = [v28 stringFromUnit:magnitude];
 
 LABEL_29:
 
@@ -316,13 +316,13 @@ LABEL_29:
 
 - (void)updatePossibleUnits
 {
-  v2 = self;
+  selfCopy = self;
   v70 = *MEMORY[0x1E69E9840];
-  v3 = [(WFUnitQuantityFieldParameter *)self unitType];
-  if (v3)
+  unitType = [(WFUnitQuantityFieldParameter *)self unitType];
+  if (unitType)
   {
-    v4 = [(WFParameter *)v2 definition];
-    v5 = [v4 objectForKey:@"PossibleUnits"];
+    definition = [(WFParameter *)selfCopy definition];
+    v5 = [definition objectForKey:@"PossibleUnits"];
 
     if (v5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
@@ -346,9 +346,9 @@ LABEL_29:
               objc_enumerationMutation(v7);
             }
 
-            v12 = [MEMORY[0x1E69E0BE8] unitFromString:*(*(&v62 + 1) + 8 * i) unitType:v3 caseSensitive:0];
-            v13 = [v12 symbol];
-            [v6 setObject:v12 forKey:v13];
+            v12 = [MEMORY[0x1E69E0BE8] unitFromString:*(*(&v62 + 1) + 8 * i) unitType:unitType caseSensitive:0];
+            symbol = [v12 symbol];
+            [v6 setObject:v12 forKey:symbol];
           }
 
           v9 = [v7 countByEnumeratingWithState:&v62 objects:v69 count:16];
@@ -370,7 +370,7 @@ LABEL_29:
       v59 = 0u;
       v60 = 0u;
       v61 = 0u;
-      v16 = [MEMORY[0x1E69E0BE8] availableUnitsForUnitType:v3];
+      v16 = [MEMORY[0x1E69E0BE8] availableUnitsForUnitType:unitType];
       v17 = [v16 countByEnumeratingWithState:&v58 objects:v68 count:16];
       if (v17)
       {
@@ -386,11 +386,11 @@ LABEL_29:
             }
 
             v21 = *(*(&v58 + 1) + 8 * j);
-            v22 = [v21 symbol];
-            [v6 setObject:v21 forKey:v22];
+            symbol2 = [v21 symbol];
+            [v6 setObject:v21 forKey:symbol2];
 
-            v23 = [v21 symbol];
-            [v15 addObject:v23];
+            symbol3 = [v21 symbol];
+            [v15 addObject:symbol3];
           }
 
           v18 = [v16 countByEnumeratingWithState:&v58 objects:v68 count:16];
@@ -403,17 +403,17 @@ LABEL_29:
       v7 = v6;
     }
 
-    possibleUnits = v2->_possibleUnits;
-    v2->_possibleUnits = v14;
+    possibleUnits = selfCopy->_possibleUnits;
+    selfCopy->_possibleUnits = v14;
 
     v25 = [v6 copy];
-    unitSymbolMap = v2->_unitSymbolMap;
-    v2->_unitSymbolMap = v25;
+    unitSymbolMap = selfCopy->_unitSymbolMap;
+    selfCopy->_unitSymbolMap = v25;
   }
 
-  else if ([(WFUnitQuantityFieldParameter *)v2 fallbackToAllSupportedUnits])
+  else if ([(WFUnitQuantityFieldParameter *)selfCopy fallbackToAllSupportedUnits])
   {
-    v48 = v2;
+    v48 = selfCopy;
     v27 = objc_opt_new();
     v54 = 0u;
     v55 = 0u;
@@ -455,8 +455,8 @@ LABEL_29:
                 }
 
                 v38 = *(*(&v50 + 1) + 8 * m);
-                v39 = [v38 symbol];
-                [v27 setObject:v38 forKey:v39];
+                symbol4 = [v38 symbol];
+                [v27 setObject:v38 forKey:symbol4];
               }
 
               v35 = [v33 countByEnumeratingWithState:&v50 objects:v66 count:16];
@@ -472,9 +472,9 @@ LABEL_29:
       while (v29);
     }
 
-    v40 = [v27 allKeys];
-    v41 = [v40 sortedArrayUsingSelector:sel_localizedStandardCompare_];
-    v2 = v48;
+    allKeys = [v27 allKeys];
+    v41 = [allKeys sortedArrayUsingSelector:sel_localizedStandardCompare_];
+    selfCopy = v48;
     v42 = v48->_possibleUnits;
     v48->_possibleUnits = v41;
 
@@ -482,62 +482,62 @@ LABEL_29:
     v44 = v48->_unitSymbolMap;
     v48->_unitSymbolMap = v43;
 
-    v3 = 0;
+    unitType = 0;
   }
 
   else
   {
-    v45 = v2->_possibleUnits;
-    v2->_possibleUnits = MEMORY[0x1E695E0F0];
+    v45 = selfCopy->_possibleUnits;
+    selfCopy->_possibleUnits = MEMORY[0x1E695E0F0];
 
-    v46 = v2->_unitSymbolMap;
-    v2->_unitSymbolMap = MEMORY[0x1E695E0F8];
+    v46 = selfCopy->_unitSymbolMap;
+    selfCopy->_unitSymbolMap = MEMORY[0x1E695E0F8];
   }
 
-  [(WFParameter *)v2 attributesDidChange];
+  [(WFParameter *)selfCopy attributesDidChange];
 
   v47 = *MEMORY[0x1E69E9840];
 }
 
-- (id)availableUnitForStringValue:(id)a3
+- (id)availableUnitForStringValue:(id)value
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"sec"])
+  valueCopy = value;
+  if ([valueCopy isEqualToString:@"sec"])
   {
-    v5 = [MEMORY[0x1E696B008] seconds];
+    seconds = [MEMORY[0x1E696B008] seconds];
 LABEL_7:
-    v6 = v5;
+    v6 = seconds;
     goto LABEL_8;
   }
 
-  if ([v4 isEqualToString:@"min"])
+  if ([valueCopy isEqualToString:@"min"])
   {
-    v5 = [MEMORY[0x1E696B008] minutes];
+    seconds = [MEMORY[0x1E696B008] minutes];
     goto LABEL_7;
   }
 
-  if ([v4 isEqualToString:@"hr"])
+  if ([valueCopy isEqualToString:@"hr"])
   {
-    v5 = [MEMORY[0x1E696B008] hours];
+    seconds = [MEMORY[0x1E696B008] hours];
     goto LABEL_7;
   }
 
-  v8 = [(WFUnitQuantityFieldParameter *)self unitSymbolMap];
-  v6 = [v8 objectForKey:v4];
+  unitSymbolMap = [(WFUnitQuantityFieldParameter *)self unitSymbolMap];
+  v6 = [unitSymbolMap objectForKey:valueCopy];
 
 LABEL_8:
 
   return v6;
 }
 
-- (void)setFallbackToAllSupportedUnits:(BOOL)a3
+- (void)setFallbackToAllSupportedUnits:(BOOL)units
 {
-  if (self->_fallbackToAllSupportedUnits != a3)
+  if (self->_fallbackToAllSupportedUnits != units)
   {
-    self->_fallbackToAllSupportedUnits = a3;
-    v4 = [(WFUnitQuantityFieldParameter *)self unitType];
+    self->_fallbackToAllSupportedUnits = units;
+    unitType = [(WFUnitQuantityFieldParameter *)self unitType];
 
-    if (!v4)
+    if (!unitType)
     {
       [(WFUnitQuantityFieldParameter *)self updatePossibleUnits];
 
@@ -546,30 +546,30 @@ LABEL_8:
   }
 }
 
-- (void)setDefaultUnit:(id)a3
+- (void)setDefaultUnit:(id)unit
 {
-  v8 = a3;
-  v5 = [(WFUnitQuantityFieldParameter *)self unitType];
+  unitCopy = unit;
+  unitType = [(WFUnitQuantityFieldParameter *)self unitType];
 
-  if (v5)
+  if (unitType)
   {
-    if (!v8 || (v6 = MEMORY[0x1E69E0BE8], -[WFUnitQuantityFieldParameter unitType](self, "unitType"), v7 = objc_claimAutoreleasedReturnValue(), [v6 unitClassForUnitType:v7], v7, (objc_opt_isKindOfClass() & 1) != 0))
+    if (!unitCopy || (v6 = MEMORY[0x1E69E0BE8], -[WFUnitQuantityFieldParameter unitType](self, "unitType"), v7 = objc_claimAutoreleasedReturnValue(), [v6 unitClassForUnitType:v7], v7, (objc_opt_isKindOfClass() & 1) != 0))
     {
-      objc_storeStrong(&self->_defaultUnit, a3);
+      objc_storeStrong(&self->_defaultUnit, unit);
       [(WFParameter *)self defaultSerializedRepresentationDidChange];
     }
   }
 }
 
-- (void)setUnitType:(id)a3
+- (void)setUnitType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   unitType = self->_unitType;
-  if (unitType != v4)
+  if (unitType != typeCopy)
   {
-    v12 = v4;
-    v6 = [(NSString *)unitType isEqualToString:v4];
-    v4 = v12;
+    v12 = typeCopy;
+    v6 = [(NSString *)unitType isEqualToString:typeCopy];
+    typeCopy = v12;
     if (!v6)
     {
       v7 = [(NSString *)v12 copy];
@@ -598,37 +598,37 @@ LABEL_8:
 LABEL_8:
       [(WFUnitQuantityFieldParameter *)self updatePossibleUnits];
       [(WFParameter *)self defaultSerializedRepresentationDidChange];
-      v4 = v12;
+      typeCopy = v12;
     }
   }
 }
 
-- (WFUnitQuantityFieldParameter)initWithDefinition:(id)a3
+- (WFUnitQuantityFieldParameter)initWithDefinition:(id)definition
 {
-  v4 = a3;
+  definitionCopy = definition;
   v22.receiver = self;
   v22.super_class = WFUnitQuantityFieldParameter;
-  v5 = [(WFQuantityFieldParameter *)&v22 initWithDefinition:v4];
+  v5 = [(WFQuantityFieldParameter *)&v22 initWithDefinition:definitionCopy];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"WFUnitType"];
+    v6 = [definitionCopy objectForKey:@"WFUnitType"];
     v7 = objc_opt_class();
     v8 = WFEnforceClass_1501(v6, v7);
     unitType = v5->_unitType;
     v5->_unitType = v8;
 
-    v10 = [v4 objectForKey:@"WFParameterUnit"];
+    v10 = [definitionCopy objectForKey:@"WFParameterUnit"];
     v11 = objc_opt_class();
     v12 = WFEnforceClass_1501(v10, v11);
     unit = v5->_unit;
     v5->_unit = v12;
 
-    v14 = [v4 objectForKey:@"WFParameterUnitAdjustForLocale"];
+    v14 = [definitionCopy objectForKey:@"WFParameterUnitAdjustForLocale"];
     v15 = objc_opt_class();
     v16 = WFEnforceClass_1501(v14, v15);
     v5->_unitAdjustForLocale = [v16 BOOLValue];
 
-    v17 = [v4 objectForKey:@"FallbackToAllSupportedUnits"];
+    v17 = [definitionCopy objectForKey:@"FallbackToAllSupportedUnits"];
     v18 = objc_opt_class();
     v19 = WFEnforceClass_1501(v17, v18);
     v5->_fallbackToAllSupportedUnits = [v19 BOOLValue];

@@ -2,42 +2,42 @@
 + (void)initialize;
 - (BOOL)_autoPlayEnabled;
 - (BOOL)_canPause;
-- (BOOL)_currentMediaInfoContentMatchesMediaInfo:(id)a3;
-- (BOOL)_currentMediaInfoImagesMatchesNewMediaInfoImage:(id)a3;
+- (BOOL)_currentMediaInfoContentMatchesMediaInfo:(id)info;
+- (BOOL)_currentMediaInfoImagesMatchesNewMediaInfoImage:(id)image;
 - (BOOL)_hasSecondaryView;
 - (BOOL)_isViewInTopMostVisibleView;
-- (BOOL)_mediaInfo:(id)a3 contentMatchesMediaInfo:(id)a4;
-- (BOOL)_playlist:(id)a3 contentMatchesPlaylist:(id)a4;
+- (BOOL)_mediaInfo:(id)info contentMatchesMediaInfo:(id)mediaInfo;
+- (BOOL)_playlist:(id)_playlist contentMatchesPlaylist:(id)playlist;
 - (BOOL)_shouldShowSecondaryView;
 - (BOOL)hasBackgroundVideo;
 - (BOOL)isBackgrounded;
 - (BOOL)isForeground;
-- (CGRect)_playbackContainerViewFrame:(BOOL)a3 hasSecondaryVideoView:(BOOL)a4;
-- (CGRect)_secondaryVideoViewFrame:(BOOL)a3;
+- (CGRect)_playbackContainerViewFrame:(BOOL)frame hasSecondaryVideoView:(BOOL)view;
+- (CGRect)_secondaryVideoViewFrame:(BOOL)frame;
 - (NSArray)mediaInfos;
 - (NSTimer)imageDelayTimer;
 - (NSTimer)pauseStateTimeoutTimer;
 - (NSTimer)playbackDelayTimer;
 - (NSTimer)playbackLoadingTimer;
 - (UIEdgeInsets)legibleContentInsets;
-- (VUIBackgroundMediaController)initWithName:(id)a3;
-- (VUIBackgroundMediaController)initWithName:(id)a3 mediaInfoFetchController:(id)a4;
+- (VUIBackgroundMediaController)initWithName:(id)name;
+- (VUIBackgroundMediaController)initWithName:(id)name mediaInfoFetchController:(id)controller;
 - (VUIMediaInfo)currentMediaInfo;
 - (double)_computedPlaybackDelayInterval;
 - (double)_secondaryVideoViewHeight;
 - (id)_activePIPPlayer;
 - (id)_createPlayerViewController;
-- (id)createTransitionViewAtIndex:(unint64_t)a3 oldView:(id)a4;
+- (id)createTransitionViewAtIndex:(unint64_t)index oldView:(id)view;
 - (id)surrenderCurrentPlayer;
-- (unint64_t)_flippedDirection:(unint64_t)a3 isRTL:(BOOL)a4;
+- (unint64_t)_flippedDirection:(unint64_t)direction isRTL:(BOOL)l;
 - (void)_addAlphaProxyImageViewIfNeeded;
 - (void)_addContentViewIfNeeded;
-- (void)_addOverlayViewAnimatedIfNeeded:(BOOL)a3 dismissAfter:(double)a4;
-- (void)_addPlaybackViewControllerForPlayback:(BOOL)a3 restoringAVPlayerViewController:(BOOL)a4;
-- (void)_addProxyImageView:(id)a3;
-- (void)_animateTransitionFromView:(id)a3 toView:(id)a4 duration:(double)a5 direction:(unint64_t)a6 completion:(id)a7;
-- (void)_applicationDidRemoveDeactivationReason:(id)a3;
-- (void)_applicationWillAddDeactivationReason:(id)a3;
+- (void)_addOverlayViewAnimatedIfNeeded:(BOOL)needed dismissAfter:(double)after;
+- (void)_addPlaybackViewControllerForPlayback:(BOOL)playback restoringAVPlayerViewController:(BOOL)controller;
+- (void)_addProxyImageView:(id)view;
+- (void)_animateTransitionFromView:(id)view toView:(id)toView duration:(double)duration direction:(unint64_t)direction completion:(id)completion;
+- (void)_applicationDidRemoveDeactivationReason:(id)reason;
+- (void)_applicationWillAddDeactivationReason:(id)reason;
 - (void)_cleanUpEverything;
 - (void)_cleanUpEverythingPlaybackRelated;
 - (void)_cleanUpPlaybackTimers;
@@ -46,105 +46,105 @@
 - (void)_cleanupPrefetchPlayback;
 - (void)_clearPreloadPlayback;
 - (void)_configureAudioSession;
-- (void)_configureAudioSessionForState:(id)a3;
-- (void)_configureLegibleContentInsetFromState:(id)a3 toState:(id)a4;
-- (void)_configurePlayerViewController:(id)a3;
-- (void)_constrainToView:(id)a3;
-- (void)_didPlayMediaItemToEnd:(id)a3;
+- (void)_configureAudioSessionForState:(id)state;
+- (void)_configureLegibleContentInsetFromState:(id)state toState:(id)toState;
+- (void)_configurePlayerViewController:(id)controller;
+- (void)_constrainToView:(id)view;
+- (void)_didPlayMediaItemToEnd:(id)end;
 - (void)_disablePlaybackWhenShowingFullScreenUIIfNeeded;
 - (void)_disableSubtitleIfNeeded;
 - (void)_enablePlaybackWhenFullScreenPlaybackEnd;
-- (void)_externalPlaybackStateChanged:(id)a3;
-- (void)_handleApplicationDidBecomeActiveNotification:(id)a3;
-- (void)_handleApplicationDidEnterBackgroundNotification:(id)a3;
-- (void)_handleApplicationWillResignActiveNotification:(id)a3;
+- (void)_externalPlaybackStateChanged:(id)changed;
+- (void)_handleApplicationDidBecomeActiveNotification:(id)notification;
+- (void)_handleApplicationDidEnterBackgroundNotification:(id)notification;
+- (void)_handleApplicationWillResignActiveNotification:(id)notification;
 - (void)_handleNavigationControllerDidShow;
 - (void)_handlePlaybackManagerUIDidChange;
 - (void)_handleViewDisappear;
-- (void)_loadImage:(id)a3;
-- (void)_mediaControllerStartedPlayback:(id)a3;
-- (void)_notifyAVPlayerViewControllerDisplaySize:(id)a3 player:(id)a4;
+- (void)_loadImage:(id)image;
+- (void)_mediaControllerStartedPlayback:(id)playback;
+- (void)_notifyAVPlayerViewControllerDisplaySize:(id)size player:(id)player;
 - (void)_observeModalNavigationControllerNotifications;
-- (void)_performPlayerVolumeAnimatedUpdate:(BOOL)a3;
+- (void)_performPlayerVolumeAnimatedUpdate:(BOOL)update;
 - (void)_pipPlaybackDidChangeMutedState;
-- (void)_pipPlaybackStateChanged:(id)a3;
-- (void)_playbackErrorDidOccur:(id)a3;
-- (void)_playbackRateDidChange:(id)a3;
-- (void)_playbackStateChanged:(id)a3;
-- (void)_playbackStateWillChange:(id)a3;
-- (void)_populatePlayerWithMediaItemsIfNeeded:(id)a3;
+- (void)_pipPlaybackStateChanged:(id)changed;
+- (void)_playbackErrorDidOccur:(id)occur;
+- (void)_playbackRateDidChange:(id)change;
+- (void)_playbackStateChanged:(id)changed;
+- (void)_playbackStateWillChange:(id)change;
+- (void)_populatePlayerWithMediaItemsIfNeeded:(id)needed;
 - (void)_postDidStopPlaybackNotification;
-- (void)_postWillStartPlaybackNotification:(BOOL)a3;
+- (void)_postWillStartPlaybackNotification:(BOOL)notification;
 - (void)_postWillStopPlaybackNotification;
 - (void)_prefetchNextVideo;
-- (void)_recordBgAutoPlayMediaEventForPlaybackState:(id)a3;
+- (void)_recordBgAutoPlayMediaEventForPlaybackState:(id)state;
 - (void)_registerAudioSessionNotification;
 - (void)_registerForApplicationStateNotifications;
 - (void)_registerPlaybackManagerNotification;
 - (void)_registerPlayerNotifications;
 - (void)_registerStateMachineHandlers;
-- (void)_removeOverlayView:(id)a3 animated:(BOOL)a4;
+- (void)_removeOverlayView:(id)view animated:(BOOL)animated;
 - (void)_removePlaybackViewController;
 - (void)_removeProxyImageView;
-- (void)_setAlphaImageProxy:(id)a3;
+- (void)_setAlphaImageProxy:(id)proxy;
 - (void)_showPlaybackIfPossible;
 - (void)_startPreloadPlaybackIfNeeded;
-- (void)_stateDidChangeFromState:(id)a3 toState:(id)a4 onEvent:(id)a5 context:(id)a6 userInfo:(id)a7;
-- (void)_swapActiveMedia:(BOOL)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)_transitionToNewImage:(id)a3 animated:(BOOL)a4 direction:(unint64_t)a5 completion:(id)a6;
+- (void)_stateDidChangeFromState:(id)state toState:(id)toState onEvent:(id)event context:(id)context userInfo:(id)info;
+- (void)_swapActiveMedia:(BOOL)media animated:(BOOL)animated completion:(id)completion;
+- (void)_transitionToNewImage:(id)image animated:(BOOL)animated direction:(unint64_t)direction completion:(id)completion;
 - (void)_unregisterPlayerNotifications;
-- (void)_updateAVPlayerViewControllerWithAVPlayerForPlayer:(id)a3;
-- (void)_updateCurrentPlaybackViewFrameForPlaybackInBackground:(BOOL)a3 animated:(BOOL)a4;
-- (void)_updatePlayerMuteStateForBackgroundPlaybackWithReason:(id)a3;
-- (void)_updatePlayerVolume:(id)a3;
-- (void)_updateVideoPlayerLegibleContentInsets:(BOOL)a3;
-- (void)_updateWithMediaInfo:(id)a3 withDirection:(unint64_t)a4 imageVideoSwapBehavior:(unint64_t)a5 animated:(BOOL)a6;
-- (void)adoptAVPlayerViewController:(id)a3 player:(id)a4;
-- (void)appendMediaInfos:(id)a3;
+- (void)_updateAVPlayerViewControllerWithAVPlayerForPlayer:(id)player;
+- (void)_updateCurrentPlaybackViewFrameForPlaybackInBackground:(BOOL)background animated:(BOOL)animated;
+- (void)_updatePlayerMuteStateForBackgroundPlaybackWithReason:(id)reason;
+- (void)_updatePlayerVolume:(id)volume;
+- (void)_updateVideoPlayerLegibleContentInsets:(BOOL)insets;
+- (void)_updateWithMediaInfo:(id)info withDirection:(unint64_t)direction imageVideoSwapBehavior:(unint64_t)behavior animated:(BOOL)animated;
+- (void)adoptAVPlayerViewController:(id)controller player:(id)player;
+- (void)appendMediaInfos:(id)infos;
 - (void)dealloc;
 - (void)didReceiveMemoryWarning;
 - (void)loadAlphaImageProxy;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)pause;
 - (void)play;
-- (void)playBackManagerFullscreenPlaybackUIDidChangeNotification:(id)a3;
-- (void)playbackManagerShowingExtrasDidChangeNotification:(id)a3;
-- (void)playerViewController:(id)a3 failedToStartPictureInPictureWithError:(id)a4;
-- (void)playerViewController:(id)a3 restoreUserInterfaceForPictureInPictureStopWithCompletionHandler:(id)a4;
-- (void)playerViewController:(id)a3 willEndFullScreenPresentationWithAnimationCoordinator:(id)a4;
-- (void)playerViewController:(id)a3 willTransitionToVisibilityOfPlaybackControls:(BOOL)a4 withAnimationCoordinator:(id)a5;
-- (void)playerViewControllerDidStartPictureInPicture:(id)a3;
-- (void)playerViewControllerDidStopPictureInPicture:(id)a3;
-- (void)removeMediaInfoAtIndex:(unint64_t)a3;
+- (void)playBackManagerFullscreenPlaybackUIDidChangeNotification:(id)notification;
+- (void)playbackManagerShowingExtrasDidChangeNotification:(id)notification;
+- (void)playerViewController:(id)controller failedToStartPictureInPictureWithError:(id)error;
+- (void)playerViewController:(id)controller restoreUserInterfaceForPictureInPictureStopWithCompletionHandler:(id)handler;
+- (void)playerViewController:(id)controller willEndFullScreenPresentationWithAnimationCoordinator:(id)coordinator;
+- (void)playerViewController:(id)controller willTransitionToVisibilityOfPlaybackControls:(BOOL)controls withAnimationCoordinator:(id)coordinator;
+- (void)playerViewControllerDidStartPictureInPicture:(id)picture;
+- (void)playerViewControllerDidStopPictureInPicture:(id)picture;
+- (void)removeMediaInfoAtIndex:(unint64_t)index;
 - (void)replay;
-- (void)setActivePIPingPlayer:(id)a3;
-- (void)setAllowsExternalPlayback:(BOOL)a3;
-- (void)setAllowsVideoCellularUsage:(BOOL)a3;
-- (void)setAvPlayerViewController:(id)a3;
-- (void)setControlsVisible:(BOOL)a3;
-- (void)setExitsFullscreenWhenPlaybackEnds:(BOOL)a3;
-- (void)setImageContentMode:(unint64_t)a3;
-- (void)setLegibleContentInsets:(UIEdgeInsets)a3;
-- (void)setMediaInfo:(id)a3 atIndex:(unint64_t)a4 animated:(BOOL)a5;
-- (void)setMediaInfoIndex:(unint64_t)a3 imageVideoSwapBehavior:(unint64_t)a4 animated:(BOOL)a5 forwardAnimation:(BOOL)a6;
-- (void)setMediaInfos:(id)a3 selectedIndex:(unint64_t)a4 animated:(BOOL)a5;
-- (void)setMutePlaybackInBackground:(BOOL)a3;
-- (void)setMuted:(BOOL)a3;
-- (void)setPlaybackEnabled:(BOOL)a3 imageVideoSwapBehavior:(unint64_t)a4;
-- (void)setPrefetchPlayerViewController:(id)a3;
-- (void)setPreloadPlaybackEnabled:(BOOL)a3;
-- (void)setShowsVideoControls:(BOOL)a3;
-- (void)setState:(unint64_t)a3;
-- (void)setUpdatesNowPlayingInfoCenter:(BOOL)a3;
-- (void)setVideoGravity:(id)a3;
-- (void)showAlphaImage:(BOOL)a3 animated:(BOOL)a4;
+- (void)setActivePIPingPlayer:(id)player;
+- (void)setAllowsExternalPlayback:(BOOL)playback;
+- (void)setAllowsVideoCellularUsage:(BOOL)usage;
+- (void)setAvPlayerViewController:(id)controller;
+- (void)setControlsVisible:(BOOL)visible;
+- (void)setExitsFullscreenWhenPlaybackEnds:(BOOL)ends;
+- (void)setImageContentMode:(unint64_t)mode;
+- (void)setLegibleContentInsets:(UIEdgeInsets)insets;
+- (void)setMediaInfo:(id)info atIndex:(unint64_t)index animated:(BOOL)animated;
+- (void)setMediaInfoIndex:(unint64_t)index imageVideoSwapBehavior:(unint64_t)behavior animated:(BOOL)animated forwardAnimation:(BOOL)animation;
+- (void)setMediaInfos:(id)infos selectedIndex:(unint64_t)index animated:(BOOL)animated;
+- (void)setMutePlaybackInBackground:(BOOL)background;
+- (void)setMuted:(BOOL)muted;
+- (void)setPlaybackEnabled:(BOOL)enabled imageVideoSwapBehavior:(unint64_t)behavior;
+- (void)setPrefetchPlayerViewController:(id)controller;
+- (void)setPreloadPlaybackEnabled:(BOOL)enabled;
+- (void)setShowsVideoControls:(BOOL)controls;
+- (void)setState:(unint64_t)state;
+- (void)setUpdatesNowPlayingInfoCenter:(BOOL)center;
+- (void)setVideoGravity:(id)gravity;
+- (void)showAlphaImage:(BOOL)image animated:(BOOL)animated;
 - (void)stop;
-- (void)transitionToForeground:(BOOL)a3 withPlaybackControls:(BOOL)a4 fullScreenPlayer:(BOOL)a5 animated:(BOOL)a6;
+- (void)transitionToForeground:(BOOL)foreground withPlaybackControls:(BOOL)controls fullScreenPlayer:(BOOL)player animated:(BOOL)animated;
 - (void)updateAudioMuteWithPIPingPlayback;
 - (void)updateFrames;
 - (void)vui_viewDidLoad;
-- (void)vui_viewWillAppear:(BOOL)a3;
-- (void)vui_viewWillDisappear:(BOOL)a3;
+- (void)vui_viewWillAppear:(BOOL)appear;
+- (void)vui_viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation VUIBackgroundMediaController
@@ -164,23 +164,23 @@ void __42__VUIBackgroundMediaController_initialize__block_invoke()
   sAVAudioSessionQueue = v0;
 }
 
-- (VUIBackgroundMediaController)initWithName:(id)a3 mediaInfoFetchController:(id)a4
+- (VUIBackgroundMediaController)initWithName:(id)name mediaInfoFetchController:(id)controller
 {
-  v7 = a4;
-  v8 = [(VUIBackgroundMediaController *)self initWithName:a3];
+  controllerCopy = controller;
+  v8 = [(VUIBackgroundMediaController *)self initWithName:name];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_mediaInfoFetchController, a4);
+    objc_storeStrong(&v8->_mediaInfoFetchController, controller);
   }
 
   return v9;
 }
 
-- (VUIBackgroundMediaController)initWithName:(id)a3
+- (VUIBackgroundMediaController)initWithName:(id)name
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  nameCopy = name;
   v28.receiver = self;
   v28.super_class = VUIBackgroundMediaController;
   v5 = [(VUIBackgroundMediaController *)&v28 initWithNibName:0 bundle:0];
@@ -259,7 +259,7 @@ void __42__VUIBackgroundMediaController_initialize__block_invoke()
     [(VUIBackgroundMediaController *)v6 _registerAudioSessionNotification];
     objc_initWeak(&location, v6);
     v12 = initWithName__instanceNumber_0++;
-    v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@(%ld)", v4, v12];
+    v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@(%ld)", nameCopy, v12];
     name = v6->_name;
     v6->_name = v13;
 
@@ -322,30 +322,30 @@ void __45__VUIBackgroundMediaController_initWithName___block_invoke(uint64_t a1,
 {
   v15 = *MEMORY[0x1E69E9840];
   [(VUIBackgroundMediaController *)self setActivePIPingPlayer:0];
-  v3 = [(VUIBackgroundMediaController *)self prefetchPlayer];
+  prefetchPlayer = [(VUIBackgroundMediaController *)self prefetchPlayer];
 
-  if (v3)
+  if (prefetchPlayer)
   {
-    v4 = [(VUIBackgroundMediaController *)self prefetchPlayer];
-    [v4 removeObserver:self forKeyPath:@"avPlayer" context:__PlayerAVPlayerKVOContext_1];
+    prefetchPlayer2 = [(VUIBackgroundMediaController *)self prefetchPlayer];
+    [prefetchPlayer2 removeObserver:self forKeyPath:@"avPlayer" context:__PlayerAVPlayerKVOContext_1];
   }
 
   [(VUIBackgroundMediaController *)self _cleanupPrefetchPlayback];
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v5 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [(VUIBackgroundMediaController *)self setVideoAudioRampDuration:0.0];
   [(VUIBackgroundMediaController *)self _cleanUpEverything];
   v6 = VUIDefaultLogObject();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(VUIBackgroundMediaController *)self name];
+    name = [(VUIBackgroundMediaController *)self name];
     *buf = 134218498;
-    v10 = self;
+    selfCopy = self;
     v11 = 2112;
-    v12 = v7;
+    v12 = name;
     v13 = 1024;
-    v14 = [MEMORY[0x1E696AF00] isMainThread];
+    isMainThread = [MEMORY[0x1E696AF00] isMainThread];
     _os_log_impl(&dword_1E323F000, v6, OS_LOG_TYPE_DEFAULT, "VUIBackgroundMediaController::(%p: %@) dealloc cleaning up, isMainThread=%d", buf, 0x1Cu);
   }
 
@@ -359,59 +359,59 @@ void __45__VUIBackgroundMediaController_initWithName___block_invoke(uint64_t a1,
   v5.receiver = self;
   v5.super_class = VUIBackgroundMediaController;
   [(VUIBackgroundMediaController *)&v5 vui_viewDidLoad];
-  v3 = [(VUIBackgroundMediaController *)self vuiView];
-  [v3 setVuiClipsToBounds:1];
+  vuiView = [(VUIBackgroundMediaController *)self vuiView];
+  [vuiView setVuiClipsToBounds:1];
 
-  v4 = [(VUIBackgroundMediaController *)self proxyImageView];
-  [(VUIBackgroundMediaController *)self _addProxyImageView:v4];
+  proxyImageView = [(VUIBackgroundMediaController *)self proxyImageView];
+  [(VUIBackgroundMediaController *)self _addProxyImageView:proxyImageView];
 
   [(VUIBackgroundMediaController *)self _observeModalNavigationControllerNotifications];
 }
 
-- (void)vui_viewWillDisappear:(BOOL)a3
+- (void)vui_viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v14 = *MEMORY[0x1E69E9840];
   v5 = VUIDefaultLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(VUIBackgroundMediaController *)self name];
+    name = [(VUIBackgroundMediaController *)self name];
     *buf = 136315650;
     v9 = "[VUIBackgroundMediaController vui_viewWillDisappear:]";
     v10 = 2048;
-    v11 = self;
+    selfCopy = self;
     v12 = 2112;
-    v13 = v6;
+    v13 = name;
     _os_log_impl(&dword_1E323F000, v5, OS_LOG_TYPE_DEFAULT, "VUIBackgroundMediaController::%s (%p: %@)", buf, 0x20u);
   }
 
   v7.receiver = self;
   v7.super_class = VUIBackgroundMediaController;
-  [(VUIBackgroundMediaController *)&v7 vui_viewWillDisappear:v3];
+  [(VUIBackgroundMediaController *)&v7 vui_viewWillDisappear:disappearCopy];
   [(VUIBackgroundMediaController *)self setHasViewAppeared:0];
   [(VUIBackgroundMediaController *)self _handleViewDisappear];
 }
 
-- (void)vui_viewWillAppear:(BOOL)a3
+- (void)vui_viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v14 = *MEMORY[0x1E69E9840];
   v5 = VUIDefaultLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(VUIBackgroundMediaController *)self name];
+    name = [(VUIBackgroundMediaController *)self name];
     *buf = 136315650;
     v9 = "[VUIBackgroundMediaController vui_viewWillAppear:]";
     v10 = 2048;
-    v11 = self;
+    selfCopy = self;
     v12 = 2112;
-    v13 = v6;
+    v13 = name;
     _os_log_impl(&dword_1E323F000, v5, OS_LOG_TYPE_DEFAULT, "VUIBackgroundMediaController::%s (%p: %@)", buf, 0x20u);
   }
 
   v7.receiver = self;
   v7.super_class = VUIBackgroundMediaController;
-  [(VUIBackgroundMediaController *)&v7 vui_viewWillAppear:v3];
+  [(VUIBackgroundMediaController *)&v7 vui_viewWillAppear:appearCopy];
   [(VUIBackgroundMediaController *)self setHasViewAppeared:1];
 }
 
@@ -421,21 +421,21 @@ void __45__VUIBackgroundMediaController_initWithName___block_invoke(uint64_t a1,
   v3 = VUIDefaultLogObject();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(VUIBackgroundMediaController *)self name];
+    name = [(VUIBackgroundMediaController *)self name];
     v8 = 136315650;
     v9 = "[VUIBackgroundMediaController _handleViewDisappear]";
     v10 = 2048;
-    v11 = self;
+    selfCopy = self;
     v12 = 2112;
-    v13 = v4;
+    v13 = name;
     _os_log_impl(&dword_1E323F000, v3, OS_LOG_TYPE_DEFAULT, "VUIBackgroundMediaController::%s (%p: %@)", &v8, 0x20u);
   }
 
   [MEMORY[0x1E69E58C0] cancelPreviousPerformRequestsWithTarget:self];
   v5 = +[VUIPlaybackManager sharedInstance];
-  v6 = [v5 backgroundMediaPlayer];
+  backgroundMediaPlayer = [v5 backgroundMediaPlayer];
 
-  if (!v6 || ([(VUIBackgroundMediaController *)self player], v7 = objc_claimAutoreleasedReturnValue(), v7, v6 != v7))
+  if (!backgroundMediaPlayer || ([(VUIBackgroundMediaController *)self player], v7 = objc_claimAutoreleasedReturnValue(), v7, backgroundMediaPlayer != v7))
   {
     if ([(VUIBackgroundMediaController *)self shouldStopPlayerWhenViewDisappears]&& [(VUIBackgroundMediaController *)self isPlaybackEnabled])
     {
@@ -446,8 +446,8 @@ void __45__VUIBackgroundMediaController_initWithName___block_invoke(uint64_t a1,
 
 - (void)_observeModalNavigationControllerNotifications
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 addObserver:self selector:sel__handleNavigationControllerDidShow name:*MEMORY[0x1E69DF870] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__handleNavigationControllerDidShow name:*MEMORY[0x1E69DF870] object:0];
 }
 
 - (void)_handleNavigationControllerDidShow
@@ -456,13 +456,13 @@ void __45__VUIBackgroundMediaController_initWithName___block_invoke(uint64_t a1,
   v3 = VUIDefaultLogObject();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(VUIBackgroundMediaController *)self name];
+    name = [(VUIBackgroundMediaController *)self name];
     v5 = 136315650;
     v6 = "[VUIBackgroundMediaController _handleNavigationControllerDidShow]";
     v7 = 2048;
-    v8 = self;
+    selfCopy = self;
     v9 = 2112;
-    v10 = v4;
+    v10 = name;
     _os_log_impl(&dword_1E323F000, v3, OS_LOG_TYPE_DEFAULT, "VUIBackgroundMediaController::%s (%p: %@)", &v5, 0x20u);
   }
 
@@ -476,24 +476,24 @@ void __45__VUIBackgroundMediaController_initWithName___block_invoke(uint64_t a1,
 {
   v16 = *MEMORY[0x1E69E9840];
   v3 = +[VUIApplicationRouter topMostVisibleViewController];
-  v4 = [v3 vuiView];
+  vuiView = [v3 vuiView];
   v5 = VUIDefaultLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(VUIBackgroundMediaController *)self name];
+    name = [(VUIBackgroundMediaController *)self name];
     v10 = 134218498;
-    v11 = self;
+    selfCopy = self;
     v12 = 2112;
-    v13 = v6;
+    v13 = name;
     v14 = 2112;
     v15 = v3;
     _os_log_impl(&dword_1E323F000, v5, OS_LOG_TYPE_DEFAULT, "VUIBackgroundMediaController::(%p: %@) topMostVisibleViewController: %@", &v10, 0x20u);
   }
 
-  if (v4)
+  if (vuiView)
   {
-    v7 = [(VUIBackgroundMediaController *)self vuiView];
-    v8 = [v7 isDescendantOfView:v4];
+    vuiView2 = [(VUIBackgroundMediaController *)self vuiView];
+    v8 = [vuiView2 isDescendantOfView:vuiView];
   }
 
   else
@@ -504,30 +504,30 @@ void __45__VUIBackgroundMediaController_initWithName___block_invoke(uint64_t a1,
   return v8;
 }
 
-- (void)_constrainToView:(id)a3
+- (void)_constrainToView:(id)view
 {
   v23[4] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 widthAnchor];
-  v6 = [(VUIBackgroundMediaController *)self view];
-  v7 = [v6 widthAnchor];
-  v8 = [v5 constraintEqualToAnchor:v7];
+  viewCopy = view;
+  widthAnchor = [viewCopy widthAnchor];
+  view = [(VUIBackgroundMediaController *)self view];
+  widthAnchor2 = [view widthAnchor];
+  v8 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
 
-  v9 = [v4 heightAnchor];
-  v10 = [(VUIBackgroundMediaController *)self view];
-  v11 = [v10 heightAnchor];
-  v12 = [v9 constraintEqualToAnchor:v11];
+  heightAnchor = [viewCopy heightAnchor];
+  view2 = [(VUIBackgroundMediaController *)self view];
+  heightAnchor2 = [view2 heightAnchor];
+  v12 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
 
-  v13 = [v4 centerXAnchor];
-  v14 = [(VUIBackgroundMediaController *)self view];
-  v15 = [v14 centerXAnchor];
-  v16 = [v13 constraintEqualToAnchor:v15];
+  centerXAnchor = [viewCopy centerXAnchor];
+  view3 = [(VUIBackgroundMediaController *)self view];
+  centerXAnchor2 = [view3 centerXAnchor];
+  v16 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
 
-  v17 = [v4 centerYAnchor];
+  centerYAnchor = [viewCopy centerYAnchor];
 
-  v18 = [(VUIBackgroundMediaController *)self view];
-  v19 = [v18 centerYAnchor];
-  v20 = [v17 constraintEqualToAnchor:v19];
+  view4 = [(VUIBackgroundMediaController *)self view];
+  centerYAnchor2 = [view4 centerYAnchor];
+  v20 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
 
   v21 = MEMORY[0x1E696ACD8];
   v23[0] = v8;
@@ -541,8 +541,8 @@ void __45__VUIBackgroundMediaController_initWithName___block_invoke(uint64_t a1,
 - (void)updateFrames
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = [(VUIBackgroundMediaController *)self view];
-  [v3 bounds];
+  view = [(VUIBackgroundMediaController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
 
@@ -561,53 +561,53 @@ void __45__VUIBackgroundMediaController_initWithName___block_invoke(uint64_t a1,
   v12 = v11;
   v14 = v13;
   v16 = v15;
-  v17 = [(VUIBackgroundMediaController *)self playbackContainerController];
-  v18 = [v17 view];
-  [v18 setFrame:{v10, v12, v14, v16}];
+  playbackContainerController = [(VUIBackgroundMediaController *)self playbackContainerController];
+  view2 = [playbackContainerController view];
+  [view2 setFrame:{v10, v12, v14, v16}];
 
   if ([(VUIBackgroundMediaController *)self _shouldShowSecondaryView])
   {
     if ([(VUIBackgroundMediaController *)self _hasSecondaryView])
     {
-      v19 = [(VUIBackgroundMediaController *)self secondaryVideoView];
+      secondaryVideoView = [(VUIBackgroundMediaController *)self secondaryVideoView];
       [(VUIBackgroundMediaController *)self _secondaryVideoViewFrame:1];
-      [v19 setFrame:?];
+      [secondaryVideoView setFrame:?];
     }
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (__PlayerAVPlayerKVOContext_1 == a6)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (__PlayerAVPlayerKVOContext_1 == context)
   {
-    [(VUIBackgroundMediaController *)self _updateAVPlayerViewControllerWithAVPlayerForPlayer:v11];
+    [(VUIBackgroundMediaController *)self _updateAVPlayerViewControllerWithAVPlayerForPlayer:objectCopy];
     goto LABEL_25;
   }
 
-  if (__PlayerPreferredAudioLanguageCode == a6)
+  if (__PlayerPreferredAudioLanguageCode == context)
   {
-    v13 = [v11 preferredAudioLanguageCode];
-    [(VUIBackgroundMediaController *)self setPreferredAudioLanguageCode:v13];
+    preferredAudioLanguageCode = [objectCopy preferredAudioLanguageCode];
+    [(VUIBackgroundMediaController *)self setPreferredAudioLanguageCode:preferredAudioLanguageCode];
 LABEL_24:
 
     goto LABEL_25;
   }
 
-  if (__PlayerPrefersAudioDescriptions == a6)
+  if (__PlayerPrefersAudioDescriptions == context)
   {
-    v13 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v11, "prefersAudioDescriptions")}];
-    [(VUIBackgroundMediaController *)self setPrefersAudioDescriptions:v13];
+    preferredAudioLanguageCode = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(objectCopy, "prefersAudioDescriptions")}];
+    [(VUIBackgroundMediaController *)self setPrefersAudioDescriptions:preferredAudioLanguageCode];
     goto LABEL_24;
   }
 
-  if (__PlayerInitialMediaItemHasCompletedInitialLoadingKVOContext_0 != a6)
+  if (__PlayerInitialMediaItemHasCompletedInitialLoadingKVOContext_0 != context)
   {
-    if (__PlayerAVPlayerViewControllerDisplaySizeKVOContext_0 != a6)
+    if (__PlayerAVPlayerViewControllerDisplaySizeKVOContext_0 != context)
     {
-      if (__PIPingPlayerMutedKVOContext == a6)
+      if (__PIPingPlayerMutedKVOContext == context)
       {
         [(VUIBackgroundMediaController *)self _pipPlaybackDidChangeMutedState];
       }
@@ -616,46 +616,46 @@ LABEL_24:
       {
         v20.receiver = self;
         v20.super_class = VUIBackgroundMediaController;
-        [(VUIBackgroundMediaController *)&v20 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+        [(VUIBackgroundMediaController *)&v20 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
       }
 
       goto LABEL_25;
     }
 
-    v16 = [(VUIBackgroundMediaController *)self avPlayerViewController];
+    avPlayerViewController = [(VUIBackgroundMediaController *)self avPlayerViewController];
 
-    if (v16 == v11)
+    if (avPlayerViewController == objectCopy)
     {
-      v13 = [(VUIBackgroundMediaController *)self avPlayerViewController];
-      v19 = [(VUIBackgroundMediaController *)self player];
+      preferredAudioLanguageCode = [(VUIBackgroundMediaController *)self avPlayerViewController];
+      player = [(VUIBackgroundMediaController *)self player];
     }
 
     else
     {
-      v17 = [(VUIBackgroundMediaController *)self prefetchPlayerViewController];
+      prefetchPlayerViewController = [(VUIBackgroundMediaController *)self prefetchPlayerViewController];
 
-      if (v17 != v11)
+      if (prefetchPlayerViewController != objectCopy)
       {
-        v13 = 0;
+        preferredAudioLanguageCode = 0;
         v18 = 0;
 LABEL_23:
-        [(VUIBackgroundMediaController *)self _notifyAVPlayerViewControllerDisplaySize:v13 player:v18];
+        [(VUIBackgroundMediaController *)self _notifyAVPlayerViewControllerDisplaySize:preferredAudioLanguageCode player:v18];
 
         goto LABEL_24;
       }
 
-      v13 = [(VUIBackgroundMediaController *)self prefetchPlayerViewController];
-      v19 = [(VUIBackgroundMediaController *)self prefetchPlayer];
+      preferredAudioLanguageCode = [(VUIBackgroundMediaController *)self prefetchPlayerViewController];
+      player = [(VUIBackgroundMediaController *)self prefetchPlayer];
     }
 
-    v18 = v19;
+    v18 = player;
     goto LABEL_23;
   }
 
-  if ([v11 initialMediaItemHasCompletedInitialLoading])
+  if ([objectCopy initialMediaItemHasCompletedInitialLoading])
   {
-    v14 = [v11 currentMediaItem];
-    v15 = [v14 mediaItemMetadataForProperty:*MEMORY[0x1E69D5CA8]];
+    currentMediaItem = [objectCopy currentMediaItem];
+    v15 = [currentMediaItem mediaItemMetadataForProperty:*MEMORY[0x1E69D5CA8]];
 
     if (v15 && ([v15 complete] & 1) == 0)
     {
@@ -669,52 +669,52 @@ LABEL_25:
 
 - (VUIMediaInfo)currentMediaInfo
 {
-  v3 = [(VUIBackgroundMediaController *)self mediaInfoIndex];
-  v4 = [(VUIBackgroundMediaController *)self mediaInfos];
-  v5 = [v4 count];
+  mediaInfoIndex = [(VUIBackgroundMediaController *)self mediaInfoIndex];
+  mediaInfos = [(VUIBackgroundMediaController *)self mediaInfos];
+  v5 = [mediaInfos count];
 
-  if (v3 >= v5)
+  if (mediaInfoIndex >= v5)
   {
     v7 = 0;
   }
 
   else
   {
-    v6 = [(VUIBackgroundMediaController *)self mediaInfos];
-    v7 = [v6 objectAtIndex:{-[VUIBackgroundMediaController mediaInfoIndex](self, "mediaInfoIndex")}];
+    mediaInfos2 = [(VUIBackgroundMediaController *)self mediaInfos];
+    v7 = [mediaInfos2 objectAtIndex:{-[VUIBackgroundMediaController mediaInfoIndex](self, "mediaInfoIndex")}];
   }
 
   return v7;
 }
 
-- (void)setMediaInfos:(id)a3 selectedIndex:(unint64_t)a4 animated:(BOOL)a5
+- (void)setMediaInfos:(id)infos selectedIndex:(unint64_t)index animated:(BOOL)animated
 {
-  v5 = a5;
-  v18 = a3;
-  if ([v18 count] > a4)
+  animatedCopy = animated;
+  infosCopy = infos;
+  if ([infosCopy count] > index)
   {
-    if ([v18 count] > a4)
+    if ([infosCopy count] > index)
     {
-      v8 = [(VUIBackgroundMediaController *)self currentMediaInfo];
+      currentMediaInfo = [(VUIBackgroundMediaController *)self currentMediaInfo];
 
-      if (v8)
+      if (currentMediaInfo)
       {
-        v9 = [v18 objectAtIndex:a4];
-        v10 = [v9 imageProxies];
-        v11 = [v10 firstObject];
-        v12 = [(VUIBackgroundMediaController *)self currentMediaInfo];
-        v13 = [v12 imageProxies];
-        v14 = [v13 firstObject];
-        v5 = [v11 isEqual:v14] ^ 1;
+        v9 = [infosCopy objectAtIndex:index];
+        imageProxies = [v9 imageProxies];
+        firstObject = [imageProxies firstObject];
+        currentMediaInfo2 = [(VUIBackgroundMediaController *)self currentMediaInfo];
+        imageProxies2 = [currentMediaInfo2 imageProxies];
+        firstObject2 = [imageProxies2 firstObject];
+        animatedCopy = [firstObject isEqual:firstObject2] ^ 1;
       }
     }
 
-    self->_mediaInfoIndex = a4;
-    self->_lastMediaInfoIndex = a4;
-    v15 = [(VUIBackgroundMediaController *)self mediaInfoFetchController];
-    if (v18)
+    self->_mediaInfoIndex = index;
+    self->_lastMediaInfoIndex = index;
+    mediaInfoFetchController = [(VUIBackgroundMediaController *)self mediaInfoFetchController];
+    if (infosCopy)
     {
-      v16 = v18;
+      v16 = infosCopy;
     }
 
     else
@@ -722,63 +722,63 @@ LABEL_25:
       v16 = MEMORY[0x1E695E0F0];
     }
 
-    [v15 setMediaInfos:v16];
+    [mediaInfoFetchController setMediaInfos:v16];
 
-    v17 = [(VUIBackgroundMediaController *)self currentMediaInfo];
-    [(VUIBackgroundMediaController *)self _updateWithMediaInfo:v17 withDirection:0 imageVideoSwapBehavior:0 animated:v5];
+    currentMediaInfo3 = [(VUIBackgroundMediaController *)self currentMediaInfo];
+    [(VUIBackgroundMediaController *)self _updateWithMediaInfo:currentMediaInfo3 withDirection:0 imageVideoSwapBehavior:0 animated:animatedCopy];
   }
 }
 
-- (void)setMediaInfo:(id)a3 atIndex:(unint64_t)a4 animated:(BOOL)a5
+- (void)setMediaInfo:(id)info atIndex:(unint64_t)index animated:(BOOL)animated
 {
-  v5 = a5;
-  v12 = a3;
-  v8 = [(VUIBackgroundMediaController *)self mediaInfos];
-  v9 = [v8 count];
+  animatedCopy = animated;
+  infoCopy = info;
+  mediaInfos = [(VUIBackgroundMediaController *)self mediaInfos];
+  v9 = [mediaInfos count];
 
-  if (v9 > a4)
+  if (v9 > index)
   {
-    v10 = [(VUIBackgroundMediaController *)self mediaInfoFetchController];
-    [v10 setMediaInfo:v12 atIndex:a4];
+    mediaInfoFetchController = [(VUIBackgroundMediaController *)self mediaInfoFetchController];
+    [mediaInfoFetchController setMediaInfo:infoCopy atIndex:index];
 
-    v11 = [(VUIBackgroundMediaController *)self currentMediaInfo];
-    [(VUIBackgroundMediaController *)self _updateWithMediaInfo:v11 withDirection:0 imageVideoSwapBehavior:0 animated:v5];
+    currentMediaInfo = [(VUIBackgroundMediaController *)self currentMediaInfo];
+    [(VUIBackgroundMediaController *)self _updateWithMediaInfo:currentMediaInfo withDirection:0 imageVideoSwapBehavior:0 animated:animatedCopy];
   }
 }
 
 - (NSArray)mediaInfos
 {
-  v2 = [(VUIBackgroundMediaController *)self mediaInfoFetchController];
-  v3 = [v2 mediaInfos];
+  mediaInfoFetchController = [(VUIBackgroundMediaController *)self mediaInfoFetchController];
+  mediaInfos = [mediaInfoFetchController mediaInfos];
 
-  return v3;
+  return mediaInfos;
 }
 
-- (void)setMediaInfoIndex:(unint64_t)a3 imageVideoSwapBehavior:(unint64_t)a4 animated:(BOOL)a5 forwardAnimation:(BOOL)a6
+- (void)setMediaInfoIndex:(unint64_t)index imageVideoSwapBehavior:(unint64_t)behavior animated:(BOOL)animated forwardAnimation:(BOOL)animation
 {
-  v7 = a5;
+  animatedCopy = animated;
   v33 = *MEMORY[0x1E69E9840];
-  v11 = [(VUIBackgroundMediaController *)self currentMediaInfo];
-  if (a6)
+  currentMediaInfo = [(VUIBackgroundMediaController *)self currentMediaInfo];
+  if (animation)
   {
     v12 = 2;
     goto LABEL_12;
   }
 
   lastMediaInfoIndex = self->_lastMediaInfoIndex;
-  if (lastMediaInfoIndex == a3)
+  if (lastMediaInfoIndex == index)
   {
     v12 = 0;
     goto LABEL_12;
   }
 
-  if (lastMediaInfoIndex >= a3)
+  if (lastMediaInfoIndex >= index)
   {
     goto LABEL_8;
   }
 
-  v14 = [(VUIBackgroundMediaController *)self mediaInfos];
-  if ([v14 count] - 1 == a3)
+  mediaInfos = [(VUIBackgroundMediaController *)self mediaInfos];
+  if ([mediaInfos count] - 1 == index)
   {
 
 LABEL_8:
@@ -803,89 +803,89 @@ LABEL_12:
   v17 = VUIDefaultLogObject();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
-    v18 = [(VUIBackgroundMediaController *)self name];
+    name = [(VUIBackgroundMediaController *)self name];
     mediaInfoIndex = self->_mediaInfoIndex;
     v25 = 134218754;
-    v26 = self;
+    selfCopy = self;
     v27 = 2112;
-    v28 = v18;
+    v28 = name;
     v29 = 2048;
     v30 = mediaInfoIndex;
     v31 = 2048;
-    v32 = a3;
+    indexCopy = index;
     _os_log_impl(&dword_1E323F000, v17, OS_LOG_TYPE_DEFAULT, "VUIBackgroundMediaController::(%p: %@) mediaInfo oldIndex:[%lu] newIndex:[%lu]", &v25, 0x2Au);
   }
 
-  self->_mediaInfoIndex = a3;
-  self->_lastMediaInfoIndex = a3;
-  v20 = [(VUIBackgroundMediaController *)self mediaInfoFetchController];
-  [v20 setIndex:a3];
+  self->_mediaInfoIndex = index;
+  self->_lastMediaInfoIndex = index;
+  mediaInfoFetchController = [(VUIBackgroundMediaController *)self mediaInfoFetchController];
+  [mediaInfoFetchController setIndex:index];
 
-  v21 = [(VUIBackgroundMediaController *)self mediaInfos];
-  if (![v21 count])
+  mediaInfos2 = [(VUIBackgroundMediaController *)self mediaInfos];
+  if (![mediaInfos2 count])
   {
     goto LABEL_20;
   }
 
-  v22 = [(VUIBackgroundMediaController *)self mediaInfos];
-  v23 = [v22 count];
+  mediaInfos3 = [(VUIBackgroundMediaController *)self mediaInfos];
+  v23 = [mediaInfos3 count];
 
-  if (v23 > a3)
+  if (v23 > index)
   {
-    v24 = [(VUIBackgroundMediaController *)self mediaInfos];
-    v21 = [v24 objectAtIndex:a3];
+    mediaInfos4 = [(VUIBackgroundMediaController *)self mediaInfos];
+    mediaInfos2 = [mediaInfos4 objectAtIndex:index];
 
-    if (![(VUIBackgroundMediaController *)self _mediaInfo:v11 contentMatchesMediaInfo:v21])
+    if (![(VUIBackgroundMediaController *)self _mediaInfo:currentMediaInfo contentMatchesMediaInfo:mediaInfos2])
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         [(VUIBackgroundMediaController *)self setAutomaticPlaybackStart:1];
-        -[VUIBackgroundMediaController setVpafPlaybackStartReason:](self, "setVpafPlaybackStartReason:", [v21 playbackStartReason]);
-        -[VUIBackgroundMediaController setVpafPlaybackStopReason:](self, "setVpafPlaybackStopReason:", [v21 playbackStopReason]);
+        -[VUIBackgroundMediaController setVpafPlaybackStartReason:](self, "setVpafPlaybackStartReason:", [mediaInfos2 playbackStartReason]);
+        -[VUIBackgroundMediaController setVpafPlaybackStopReason:](self, "setVpafPlaybackStopReason:", [mediaInfos2 playbackStopReason]);
       }
 
-      [(VUIBackgroundMediaController *)self _updateWithMediaInfo:v21 withDirection:v16 imageVideoSwapBehavior:a4 animated:v7];
+      [(VUIBackgroundMediaController *)self _updateWithMediaInfo:mediaInfos2 withDirection:v16 imageVideoSwapBehavior:behavior animated:animatedCopy];
     }
 
 LABEL_20:
   }
 }
 
-- (unint64_t)_flippedDirection:(unint64_t)a3 isRTL:(BOOL)a4
+- (unint64_t)_flippedDirection:(unint64_t)direction isRTL:(BOOL)l
 {
   v4 = 1;
-  v5 = 2;
-  if (a3 != 1)
+  directionCopy = 2;
+  if (direction != 1)
   {
-    v5 = a3;
+    directionCopy = direction;
   }
 
-  if (a3 != 2)
+  if (direction != 2)
   {
-    v4 = v5;
+    v4 = directionCopy;
   }
 
-  if (a4)
+  if (l)
   {
     return v4;
   }
 
   else
   {
-    return a3;
+    return direction;
   }
 }
 
-- (id)createTransitionViewAtIndex:(unint64_t)a3 oldView:(id)a4
+- (id)createTransitionViewAtIndex:(unint64_t)index oldView:(id)view
 {
-  v6 = a4;
-  v7 = [(VUIBackgroundMediaController *)self mediaInfos];
-  v8 = [v7 count];
+  viewCopy = view;
+  mediaInfos = [(VUIBackgroundMediaController *)self mediaInfos];
+  v8 = [mediaInfos count];
 
-  if (v8 <= a3)
+  if (v8 <= index)
   {
-    v14 = 0;
+    view = 0;
   }
 
   else
@@ -893,10 +893,10 @@ LABEL_20:
     v9 = [(VUIBackgroundMediaController *)self mediaInfoIndex]+ 1;
     if ([(VUIBackgroundMediaController *)self isVideoFrameFallbackEnabled])
     {
-      v10 = [(VUIBackgroundMediaController *)self prefetchPlayer];
-      v11 = [v10 state];
-      v12 = [MEMORY[0x1E69D5A40] paused];
-      v13 = v11 == v12;
+      prefetchPlayer = [(VUIBackgroundMediaController *)self prefetchPlayer];
+      state = [prefetchPlayer state];
+      paused = [MEMORY[0x1E69D5A40] paused];
+      v13 = state == paused;
     }
 
     else
@@ -904,25 +904,25 @@ LABEL_20:
       v13 = 1;
     }
 
-    if (v9 == a3 && -[VUIBackgroundMediaController prefetchesVideoFrame](self, "prefetchesVideoFrame") && (-[VUIBackgroundMediaController mediaInfoFetchController](self, "mediaInfoFetchController"), v15 = objc_claimAutoreleasedReturnValue(), v16 = [v15 mediaInfoContainsPlayerAtIndex:a3] & v13, v15, v16 == 1))
+    if (v9 == index && -[VUIBackgroundMediaController prefetchesVideoFrame](self, "prefetchesVideoFrame") && (-[VUIBackgroundMediaController mediaInfoFetchController](self, "mediaInfoFetchController"), v15 = objc_claimAutoreleasedReturnValue(), v16 = [v15 mediaInfoContainsPlayerAtIndex:index] & v13, v15, v16 == 1))
     {
-      v17 = [(VUIBackgroundMediaController *)self mediaInfos];
-      v18 = [v17 objectAtIndex:a3];
+      mediaInfos2 = [(VUIBackgroundMediaController *)self mediaInfos];
+      v18 = [mediaInfos2 objectAtIndex:index];
 
-      v19 = [v18 tvpPlaylist];
-      v20 = [(VUIBackgroundMediaController *)self prefetchPlayer];
-      v21 = [v20 playlist];
-      v22 = [(VUIBackgroundMediaController *)self _playlist:v19 contentMatchesPlaylist:v21];
+      tvpPlaylist = [v18 tvpPlaylist];
+      prefetchPlayer2 = [(VUIBackgroundMediaController *)self prefetchPlayer];
+      playlist = [prefetchPlayer2 playlist];
+      v22 = [(VUIBackgroundMediaController *)self _playlist:tvpPlaylist contentMatchesPlaylist:playlist];
 
       if (v22)
       {
-        v23 = [(VUIBackgroundMediaController *)self prefetchPlayerViewController];
-        v14 = [v23 view];
+        prefetchPlayerViewController = [(VUIBackgroundMediaController *)self prefetchPlayerViewController];
+        view = [prefetchPlayerViewController view];
       }
 
       else
       {
-        v14 = 0;
+        view = 0;
       }
     }
 
@@ -930,23 +930,23 @@ LABEL_20:
     {
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
-      if (v6 && (isKindOfClass & 1) != 0)
+      if (viewCopy && (isKindOfClass & 1) != 0)
       {
-        v25 = v6;
+        v25 = viewCopy;
         [v25 setImage:0];
       }
 
       else
       {
         v26 = objc_alloc(MEMORY[0x1E69DF740]);
-        v27 = [(VUIBackgroundMediaController *)self view];
-        [v27 bounds];
+        view2 = [(VUIBackgroundMediaController *)self view];
+        [view2 bounds];
         v25 = [v26 initWithFrame:?];
       }
 
       [v25 setVuiContentMode:{-[VUIBackgroundMediaController imageContentMode](self, "imageContentMode")}];
       [(VUIBackgroundMediaController *)self _configMirroredImageForBackgroundImage:v25];
-      v28 = [(VUIBackgroundMediaController *)self mediaInfoFetchController];
+      mediaInfoFetchController = [(VUIBackgroundMediaController *)self mediaInfoFetchController];
       v32[0] = MEMORY[0x1E69E9820];
       v32[1] = 3221225472;
       v32[2] = __68__VUIBackgroundMediaController_createTransitionViewAtIndex_oldView___block_invoke;
@@ -954,14 +954,14 @@ LABEL_20:
       v32[4] = self;
       v29 = v25;
       v33 = v29;
-      [v28 loadImageAtIndex:a3 completion:v32];
+      [mediaInfoFetchController loadImageAtIndex:index completion:v32];
 
       v30 = v33;
-      v14 = v29;
+      view = v29;
     }
   }
 
-  return v14;
+  return view;
 }
 
 void __68__VUIBackgroundMediaController_createTransitionViewAtIndex_oldView___block_invoke(uint64_t a1, void *a2)
@@ -1015,127 +1015,127 @@ void __68__VUIBackgroundMediaController_createTransitionViewAtIndex_oldView___bl
   }
 }
 
-- (void)appendMediaInfos:(id)a3
+- (void)appendMediaInfos:(id)infos
 {
-  v4 = a3;
-  v5 = [(VUIBackgroundMediaController *)self mediaInfoFetchController];
-  [v5 appendMediaInfos:v4];
+  infosCopy = infos;
+  mediaInfoFetchController = [(VUIBackgroundMediaController *)self mediaInfoFetchController];
+  [mediaInfoFetchController appendMediaInfos:infosCopy];
 }
 
-- (void)removeMediaInfoAtIndex:(unint64_t)a3
+- (void)removeMediaInfoAtIndex:(unint64_t)index
 {
-  if ([(VUIBackgroundMediaController *)self mediaInfoIndex]> a3)
+  if ([(VUIBackgroundMediaController *)self mediaInfoIndex]> index)
   {
     v5 = self->_mediaInfoIndex - 1;
     self->_mediaInfoIndex = v5;
     self->_lastMediaInfoIndex = v5;
   }
 
-  v6 = [(VUIBackgroundMediaController *)self mediaInfoFetchController];
-  [v6 removeMediaInfoAtIndex:a3];
+  mediaInfoFetchController = [(VUIBackgroundMediaController *)self mediaInfoFetchController];
+  [mediaInfoFetchController removeMediaInfoAtIndex:index];
 }
 
 - (void)play
 {
-  v2 = [(VUIBackgroundMediaController *)self stateMachine];
-  [v2 postEvent:@"Play"];
+  stateMachine = [(VUIBackgroundMediaController *)self stateMachine];
+  [stateMachine postEvent:@"Play"];
 }
 
 - (void)replay
 {
-  v2 = [(VUIBackgroundMediaController *)self stateMachine];
-  [v2 postEvent:@"Replay"];
+  stateMachine = [(VUIBackgroundMediaController *)self stateMachine];
+  [stateMachine postEvent:@"Replay"];
 }
 
 - (void)pause
 {
-  v2 = [(VUIBackgroundMediaController *)self stateMachine];
-  [v2 postEvent:@"Pause"];
+  stateMachine = [(VUIBackgroundMediaController *)self stateMachine];
+  [stateMachine postEvent:@"Pause"];
 }
 
 - (void)stop
 {
   v6[1] = *MEMORY[0x1E69E9840];
   [MEMORY[0x1E69E58C0] cancelPreviousPerformRequestsWithTarget:self selector:sel_stop object:0];
-  v3 = [(VUIBackgroundMediaController *)self stateMachine];
+  stateMachine = [(VUIBackgroundMediaController *)self stateMachine];
   v5 = @"PlaybackStopReasonKey";
   v6[0] = &unk_1F5E5E748;
   v4 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v6 forKeys:&v5 count:1];
-  [v3 postEvent:@"Stop" withContext:0 userInfo:v4];
+  [stateMachine postEvent:@"Stop" withContext:0 userInfo:v4];
 }
 
-- (void)setExitsFullscreenWhenPlaybackEnds:(BOOL)a3
+- (void)setExitsFullscreenWhenPlaybackEnds:(BOOL)ends
 {
-  v3 = a3;
-  self->_exitsFullscreenWhenPlaybackEnds = a3;
-  v5 = [(VUIBackgroundMediaController *)self avPlayerViewController];
+  endsCopy = ends;
+  self->_exitsFullscreenWhenPlaybackEnds = ends;
+  avPlayerViewController = [(VUIBackgroundMediaController *)self avPlayerViewController];
 
-  if (v5)
+  if (avPlayerViewController)
   {
-    v6 = [(VUIBackgroundMediaController *)self avPlayerViewController];
-    [v6 setExitsFullScreenWhenPlaybackEnds:v3];
+    avPlayerViewController2 = [(VUIBackgroundMediaController *)self avPlayerViewController];
+    [avPlayerViewController2 setExitsFullScreenWhenPlaybackEnds:endsCopy];
   }
 }
 
-- (void)setMuted:(BOOL)a3
+- (void)setMuted:(BOOL)muted
 {
-  v3 = a3;
+  mutedCopy = muted;
   [(VUIBackgroundMediaController *)self willChangeValueForKey:@"muted"];
-  self->_muted = v3;
-  v5 = [(VUIBackgroundMediaController *)self player];
-  [v5 setMuted:v3];
+  self->_muted = mutedCopy;
+  player = [(VUIBackgroundMediaController *)self player];
+  [player setMuted:mutedCopy];
 
-  v6 = [(VUIBackgroundMediaController *)self prefetchPlayer];
-  [v6 setMuted:v3];
+  prefetchPlayer = [(VUIBackgroundMediaController *)self prefetchPlayer];
+  [prefetchPlayer setMuted:mutedCopy];
 
   [(VUIBackgroundMediaController *)self didChangeValueForKey:@"muted"];
 }
 
-- (void)setMutePlaybackInBackground:(BOOL)a3
+- (void)setMutePlaybackInBackground:(BOOL)background
 {
-  if (self->_mutePlaybackInBackground != a3)
+  if (self->_mutePlaybackInBackground != background)
   {
     [(VUIBackgroundMediaController *)self willChangeValueForKey:@"mutePlaybackInBackground"];
-    self->_mutePlaybackInBackground = a3;
+    self->_mutePlaybackInBackground = background;
     [(VUIBackgroundMediaController *)self _updatePlayerMuteStateForBackgroundPlaybackWithReason:@"VUIBackgroundMediaControllerPlaybackMuteReasonAssigned"];
 
     [(VUIBackgroundMediaController *)self didChangeValueForKey:@"mutePlaybackInBackground"];
   }
 }
 
-- (void)setLegibleContentInsets:(UIEdgeInsets)a3
+- (void)setLegibleContentInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
   v20 = *MEMORY[0x1E69E9840];
-  self->_legibleContentInsets = a3;
+  self->_legibleContentInsets = insets;
   v8 = VUIDefaultLogObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(VUIBackgroundMediaController *)self name];
+    name = [(VUIBackgroundMediaController *)self name];
     v21.top = top;
     v21.left = left;
     v21.bottom = bottom;
     v21.right = right;
     v10 = NSStringFromPlatformEdgeInsets(v21);
     v14 = 134218498;
-    v15 = self;
+    selfCopy = self;
     v16 = 2112;
-    v17 = v9;
+    v17 = name;
     v18 = 2112;
     v19 = v10;
     _os_log_impl(&dword_1E323F000, v8, OS_LOG_TYPE_DEFAULT, "VUIBackgroundMediaController::(%p: %@) set legibleContentInsets: %@", &v14, 0x20u);
   }
 
-  v11 = [(VUIBackgroundMediaController *)self avPlayerViewController];
+  avPlayerViewController = [(VUIBackgroundMediaController *)self avPlayerViewController];
 
-  if (v11)
+  if (avPlayerViewController)
   {
-    v12 = [(VUIBackgroundMediaController *)self stateMachine];
-    v13 = [v12 currentState];
-    [(VUIBackgroundMediaController *)self _updateVideoPlayerLegibleContentInsets:[(VUIBackgroundMediaController *)self _shouldApplyLegibleContentInsetForState:v13]];
+    stateMachine = [(VUIBackgroundMediaController *)self stateMachine];
+    currentState = [stateMachine currentState];
+    [(VUIBackgroundMediaController *)self _updateVideoPlayerLegibleContentInsets:[(VUIBackgroundMediaController *)self _shouldApplyLegibleContentInsetForState:currentState]];
   }
 }
 
@@ -1147,24 +1147,24 @@ void __68__VUIBackgroundMediaController_createTransitionViewAtIndex_oldView___bl
     v3 = VUIDefaultLogObject();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
-      v4 = [(VUIBackgroundMediaController *)self name];
+      name = [(VUIBackgroundMediaController *)self name];
       v6 = 134218242;
-      v7 = self;
+      selfCopy = self;
       v8 = 2112;
-      v9 = v4;
+      v9 = name;
       _os_log_impl(&dword_1E323F000, v3, OS_LOG_TYPE_DEFAULT, "VUIBackgroundMediaController::(%p: %@) disable subtitle", &v6, 0x16u);
     }
 
-    v5 = [(VUIBackgroundMediaController *)self player];
-    [v5 setSelectedSubtitleOption:0 setGlobalPreference:0];
+    player = [(VUIBackgroundMediaController *)self player];
+    [player setSelectedSubtitleOption:0 setGlobalPreference:0];
   }
 }
 
-- (void)_updateVideoPlayerLegibleContentInsets:(BOOL)a3
+- (void)_updateVideoPlayerLegibleContentInsets:(BOOL)insets
 {
-  v3 = a3;
+  insetsCopy = insets;
   v39 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (insets)
   {
     [(VUIBackgroundMediaController *)self legibleContentInsets];
     v6 = v5;
@@ -1179,14 +1179,14 @@ void __68__VUIBackgroundMediaController_createTransitionViewAtIndex_oldView___bl
 
     if (([MEMORY[0x1E69DF6F0] isTV] & 1) != 0 || objc_msgSend(MEMORY[0x1E69DF6F0], "isMac"))
     {
-      v14 = [(VUIBackgroundMediaController *)self avPlayerViewController];
-      v15 = [v14 vuiIsViewLoaded];
+      avPlayerViewController = [(VUIBackgroundMediaController *)self avPlayerViewController];
+      vuiIsViewLoaded = [avPlayerViewController vuiIsViewLoaded];
 
-      if (v15)
+      if (vuiIsViewLoaded)
       {
-        v16 = [(VUIBackgroundMediaController *)self avPlayerViewController];
-        v17 = [v16 vuiView];
-        [v17 frame];
+        avPlayerViewController2 = [(VUIBackgroundMediaController *)self avPlayerViewController];
+        vuiView = [avPlayerViewController2 vuiView];
+        [vuiView frame];
         v19 = v18;
         v21 = v20;
 
@@ -1198,8 +1198,8 @@ void __68__VUIBackgroundMediaController_createTransitionViewAtIndex_oldView___bl
         }
 
         v6 = v6 - v19;
-        v24 = [(VUIBackgroundMediaController *)self vuiView];
-        [v24 bounds];
+        vuiView2 = [(VUIBackgroundMediaController *)self vuiView];
+        [vuiView2 bounds];
         v26 = v25 - v22;
 
         v10 = v10 + v19 + v21 - v26;
@@ -1228,44 +1228,44 @@ void __68__VUIBackgroundMediaController_createTransitionViewAtIndex_oldView___bl
   v27 = VUIDefaultLogObject();
   if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
   {
-    v28 = [(VUIBackgroundMediaController *)self name];
+    name = [(VUIBackgroundMediaController *)self name];
     v40.top = v6;
     v40.left = v8;
     v40.bottom = v10;
     v40.right = v12;
     v29 = NSStringFromPlatformEdgeInsets(v40);
     v31 = 134218754;
-    v32 = self;
+    selfCopy = self;
     v33 = 2112;
-    v34 = v28;
+    v34 = name;
     v35 = 2112;
     v36 = v29;
     v37 = 1024;
-    v38 = v3;
+    v38 = insetsCopy;
     _os_log_impl(&dword_1E323F000, v27, OS_LOG_TYPE_DEFAULT, "VUIBackgroundMediaController::(%p: %@) update video's legibleContentInsets: %@, shouldApplyLegibleContentInset=%d", &v31, 0x26u);
   }
 
-  v30 = [(VUIBackgroundMediaController *)self avPlayerViewController];
-  [v30 setLegibleContentInsets:{v6, v8, v10, v12}];
+  avPlayerViewController3 = [(VUIBackgroundMediaController *)self avPlayerViewController];
+  [avPlayerViewController3 setLegibleContentInsets:{v6, v8, v10, v12}];
 }
 
-- (void)_configureLegibleContentInsetFromState:(id)a3 toState:(id)a4
+- (void)_configureLegibleContentInsetFromState:(id)state toState:(id)toState
 {
   v15 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [(VUIBackgroundMediaController *)self _shouldApplyLegibleContentInsetForState:a3];
-  v8 = [(VUIBackgroundMediaController *)self _shouldApplyLegibleContentInsetForState:v6];
+  toStateCopy = toState;
+  v7 = [(VUIBackgroundMediaController *)self _shouldApplyLegibleContentInsetForState:state];
+  v8 = [(VUIBackgroundMediaController *)self _shouldApplyLegibleContentInsetForState:toStateCopy];
 
   if (v7 != v8)
   {
     v9 = VUIDefaultLogObject();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [(VUIBackgroundMediaController *)self name];
+      name = [(VUIBackgroundMediaController *)self name];
       v11 = 134218242;
-      v12 = self;
+      selfCopy = self;
       v13 = 2112;
-      v14 = v10;
+      v14 = name;
       _os_log_impl(&dword_1E323F000, v9, OS_LOG_TYPE_DEFAULT, "VUIBackgroundMediaController::(%p: %@) Video changes between background & foreground, update legibleContentInsets", &v11, 0x16u);
     }
 
@@ -1273,70 +1273,70 @@ void __68__VUIBackgroundMediaController_createTransitionViewAtIndex_oldView___bl
   }
 }
 
-- (void)setShowsVideoControls:(BOOL)a3
+- (void)setShowsVideoControls:(BOOL)controls
 {
-  v3 = a3;
-  self->_showsVideoControls = a3;
-  [(VUIBackgroundMediaController *)self showAlphaImage:!a3 animated:1];
-  v8 = [(VUIBackgroundMediaController *)self avPlayerViewController];
-  v5 = [v8 view];
-  [v5 setUserInteractionEnabled:v3];
+  controlsCopy = controls;
+  self->_showsVideoControls = controls;
+  [(VUIBackgroundMediaController *)self showAlphaImage:!controls animated:1];
+  avPlayerViewController = [(VUIBackgroundMediaController *)self avPlayerViewController];
+  view = [avPlayerViewController view];
+  [view setUserInteractionEnabled:controlsCopy];
 
-  if (self->_keepVideoGravityUnchangedByVideoControlsVisibility || !v3)
+  if (self->_keepVideoGravityUnchangedByVideoControlsVisibility || !controlsCopy)
   {
-    v6 = [(VUIBackgroundMediaController *)self videoGravity];
+    videoGravity = [(VUIBackgroundMediaController *)self videoGravity];
   }
 
   else
   {
-    v6 = *MEMORY[0x1E69874E8];
+    videoGravity = *MEMORY[0x1E69874E8];
   }
 
-  v7 = v6;
-  [v8 setVideoGravity:v6];
+  v7 = videoGravity;
+  [avPlayerViewController setVideoGravity:videoGravity];
 
-  [(VUIBackgroundMediaController *)self setControlsVisible:v3];
+  [(VUIBackgroundMediaController *)self setControlsVisible:controlsCopy];
 }
 
-- (void)setUpdatesNowPlayingInfoCenter:(BOOL)a3
+- (void)setUpdatesNowPlayingInfoCenter:(BOOL)center
 {
-  v3 = a3;
-  self->_updatesNowPlayingInfoCenter = a3;
-  v5 = [(VUIBackgroundMediaController *)self avPlayerViewController];
-  [v5 setUpdatesNowPlayingInfoCenter:v3];
+  centerCopy = center;
+  self->_updatesNowPlayingInfoCenter = center;
+  avPlayerViewController = [(VUIBackgroundMediaController *)self avPlayerViewController];
+  [avPlayerViewController setUpdatesNowPlayingInfoCenter:centerCopy];
 
-  v6 = [(VUIBackgroundMediaController *)self prefetchPlayerViewController];
-  [v6 setUpdatesNowPlayingInfoCenter:v3];
+  prefetchPlayerViewController = [(VUIBackgroundMediaController *)self prefetchPlayerViewController];
+  [prefetchPlayerViewController setUpdatesNowPlayingInfoCenter:centerCopy];
 }
 
-- (void)showAlphaImage:(BOOL)a3 animated:(BOOL)a4
+- (void)showAlphaImage:(BOOL)image animated:(BOOL)animated
 {
-  v4 = a4;
-  v7 = [(VUIBackgroundMediaController *)self alphaProxyImageView];
-  if (v7)
+  animatedCopy = animated;
+  alphaProxyImageView = [(VUIBackgroundMediaController *)self alphaProxyImageView];
+  if (alphaProxyImageView)
   {
-    v15 = v7;
-    v8 = [(VUIBackgroundMediaController *)self alphaProxyImageView];
-    v9 = [v8 superview];
-    if (v9)
+    v15 = alphaProxyImageView;
+    alphaProxyImageView2 = [(VUIBackgroundMediaController *)self alphaProxyImageView];
+    superview = [alphaProxyImageView2 superview];
+    if (superview)
     {
-      v10 = v9;
-      v11 = [(VUIBackgroundMediaController *)self alphaProxyImageView];
-      v12 = [v11 image];
+      v10 = superview;
+      alphaProxyImageView3 = [(VUIBackgroundMediaController *)self alphaProxyImageView];
+      image = [alphaProxyImageView3 image];
 
-      if (v12)
+      if (image)
       {
         v13 = MEMORY[0x1E69DD250];
-        if (v4)
+        if (animatedCopy)
         {
-          v14 = [(VUIBackgroundMediaController *)self view];
+          view = [(VUIBackgroundMediaController *)self view];
           v18[0] = MEMORY[0x1E69E9820];
           v18[1] = 3221225472;
           v18[2] = __56__VUIBackgroundMediaController_showAlphaImage_animated___block_invoke;
           v18[3] = &unk_1E872ECA0;
           v18[4] = self;
-          v19 = a3;
-          [v13 vui_transitionWithView:v14 duration:5242880 options:v18 animations:0 completion:0.3];
+          imageCopy = image;
+          [v13 vui_transitionWithView:view duration:5242880 options:v18 animations:0 completion:0.3];
         }
 
         else
@@ -1346,7 +1346,7 @@ void __68__VUIBackgroundMediaController_createTransitionViewAtIndex_oldView___bl
           v16[2] = __56__VUIBackgroundMediaController_showAlphaImage_animated___block_invoke_2;
           v16[3] = &unk_1E872ECA0;
           v16[4] = self;
-          v17 = a3;
+          imageCopy2 = image;
           [MEMORY[0x1E69DD250] vui_performWithoutAnimation:v16];
         }
       }
@@ -1392,14 +1392,14 @@ void __56__VUIBackgroundMediaController_showAlphaImage_animated___block_invoke_2
   [v6 vui_bringSubviewToFront:v5];
 }
 
-- (void)transitionToForeground:(BOOL)a3 withPlaybackControls:(BOOL)a4 fullScreenPlayer:(BOOL)a5 animated:(BOOL)a6
+- (void)transitionToForeground:(BOOL)foreground withPlaybackControls:(BOOL)controls fullScreenPlayer:(BOOL)player animated:(BOOL)animated
 {
-  v6 = a6;
-  v7 = a4;
+  animatedCopy = animated;
+  controlsCopy = controls;
   v20[3] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (foreground)
   {
-    v9 = a5;
+    playerCopy = player;
     [(VUIBackgroundMediaController *)self foregroundVolume];
     if (v10 != -1.0)
     {
@@ -1407,23 +1407,23 @@ void __56__VUIBackgroundMediaController_showAlphaImage_animated___block_invoke_2
       [(VUIBackgroundMediaController *)self _performPlayerVolumeAnimatedUpdate:1];
     }
 
-    v11 = [(VUIBackgroundMediaController *)self stateMachine];
+    stateMachine = [(VUIBackgroundMediaController *)self stateMachine];
     v19[0] = @"AnimatedKey";
-    v12 = [MEMORY[0x1E696AD98] numberWithBool:v6];
+    v12 = [MEMORY[0x1E696AD98] numberWithBool:animatedCopy];
     v20[0] = v12;
     v19[1] = @"IsFullScreenPlayerKey";
-    v13 = [MEMORY[0x1E696AD98] numberWithBool:v9];
+    v13 = [MEMORY[0x1E696AD98] numberWithBool:playerCopy];
     v20[1] = v13;
     v19[2] = @"ShowsPlaybackControlsKey";
-    v14 = [MEMORY[0x1E696AD98] numberWithBool:v7];
+    v14 = [MEMORY[0x1E696AD98] numberWithBool:controlsCopy];
     v20[2] = v14;
     v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:v19 count:3];
-    [v11 postEvent:@"Transition to foreground" withContext:0 userInfo:v15];
+    [stateMachine postEvent:@"Transition to foreground" withContext:0 userInfo:v15];
   }
 
   else
   {
-    if (![(VUIBackgroundMediaController *)self mutePlaybackInBackground:a3])
+    if (![(VUIBackgroundMediaController *)self mutePlaybackInBackground:foreground])
     {
       [(VUIBackgroundMediaController *)self backgroundVolume];
       if (v16 != -1.0)
@@ -1433,34 +1433,34 @@ void __56__VUIBackgroundMediaController_showAlphaImage_animated___block_invoke_2
       }
     }
 
-    v11 = [(VUIBackgroundMediaController *)self stateMachine];
+    stateMachine = [(VUIBackgroundMediaController *)self stateMachine];
     v17[0] = @"AnimatedKey";
-    v12 = [MEMORY[0x1E696AD98] numberWithBool:v6];
+    v12 = [MEMORY[0x1E696AD98] numberWithBool:animatedCopy];
     v17[1] = @"ShowsPlaybackControlsKey";
     v18[0] = v12;
-    v13 = [MEMORY[0x1E696AD98] numberWithBool:v7];
+    v13 = [MEMORY[0x1E696AD98] numberWithBool:controlsCopy];
     v18[1] = v13;
     v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:v17 count:2];
-    [v11 postEvent:@"Transition background" withContext:0 userInfo:v14];
+    [stateMachine postEvent:@"Transition background" withContext:0 userInfo:v14];
   }
 }
 
-- (void)setControlsVisible:(BOOL)a3
+- (void)setControlsVisible:(BOOL)visible
 {
-  v3 = a3;
+  visibleCopy = visible;
   v19 = *MEMORY[0x1E69E9840];
-  v5 = [(VUIBackgroundMediaController *)self avPlayerViewController];
+  avPlayerViewController = [(VUIBackgroundMediaController *)self avPlayerViewController];
   v6 = VUIDefaultLogObject();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(VUIBackgroundMediaController *)self name];
+    name = [(VUIBackgroundMediaController *)self name];
     v8 = VUIBoolLogString();
     [(VUIBackgroundMediaController *)self showsPlaybackControlsInForeground];
     v9 = VUIBoolLogString();
     v11 = 134218754;
-    v12 = self;
+    selfCopy = self;
     v13 = 2112;
-    v14 = v7;
+    v14 = name;
     v15 = 2112;
     v16 = v8;
     v17 = 2112;
@@ -1470,148 +1470,148 @@ void __56__VUIBackgroundMediaController_showAlphaImage_animated___block_invoke_2
 
   if ([(VUIBackgroundMediaController *)self showsPlaybackControlsInForeground])
   {
-    [v5 setShowsPlaybackControls:v3];
-    if (v3)
+    [avPlayerViewController setShowsPlaybackControls:visibleCopy];
+    if (visibleCopy)
     {
-      [v5 flashPlaybackControlsWithDuration:5.0];
+      [avPlayerViewController flashPlaybackControlsWithDuration:5.0];
     }
   }
 
-  v10 = [v5 view];
-  [v10 setUserInteractionEnabled:v3];
+  view = [avPlayerViewController view];
+  [view setUserInteractionEnabled:visibleCopy];
 }
 
 - (id)surrenderCurrentPlayer
 {
-  v3 = [(VUIBackgroundMediaController *)self player];
-  if (v3)
+  player = [(VUIBackgroundMediaController *)self player];
+  if (player)
   {
     [(VUIBackgroundMediaController *)self _cleanUpPlaybackTimers];
     [(VUIBackgroundMediaController *)self _unregisterPlayerNotifications];
-    v4 = [(VUIBackgroundMediaController *)self player];
-    [v4 removeObserver:self forKeyPath:@"avPlayer" context:__PlayerAVPlayerKVOContext_1];
+    player2 = [(VUIBackgroundMediaController *)self player];
+    [player2 removeObserver:self forKeyPath:@"avPlayer" context:__PlayerAVPlayerKVOContext_1];
 
-    v5 = [(VUIBackgroundMediaController *)self player];
-    [v5 removeObserver:self forKeyPath:@"preferredAudioLanguageCode" context:__PlayerPreferredAudioLanguageCode];
+    player3 = [(VUIBackgroundMediaController *)self player];
+    [player3 removeObserver:self forKeyPath:@"preferredAudioLanguageCode" context:__PlayerPreferredAudioLanguageCode];
 
-    v6 = [(VUIBackgroundMediaController *)self player];
-    [v6 removeObserver:self forKeyPath:@"prefersAudioDescriptions" context:__PlayerPrefersAudioDescriptions];
+    player4 = [(VUIBackgroundMediaController *)self player];
+    [player4 removeObserver:self forKeyPath:@"prefersAudioDescriptions" context:__PlayerPrefersAudioDescriptions];
 
     [(VUIBackgroundMediaController *)self setPlayer:0];
     v7 = +[VUIPlayerValidationManager sharedInstance];
-    [v7 removeReferenceForPlayer:v3 stoppingIfNeeded:0];
+    [v7 removeReferenceForPlayer:player stoppingIfNeeded:0];
   }
 
-  v8 = [(VUIBackgroundMediaController *)self prefetchPlayer];
+  prefetchPlayer = [(VUIBackgroundMediaController *)self prefetchPlayer];
 
-  if (v8)
+  if (prefetchPlayer)
   {
-    v9 = [(VUIBackgroundMediaController *)self prefetchPlayer];
-    [v9 removeObserver:self forKeyPath:@"avPlayer" context:__PlayerAVPlayerKVOContext_1];
+    prefetchPlayer2 = [(VUIBackgroundMediaController *)self prefetchPlayer];
+    [prefetchPlayer2 removeObserver:self forKeyPath:@"avPlayer" context:__PlayerAVPlayerKVOContext_1];
 
     [(VUIBackgroundMediaController *)self _cleanupPrefetchPlayback];
   }
 
-  v10 = [(VUIBackgroundMediaController *)self mediaInfos];
-  v11 = [v10 objectAtIndex:{-[VUIBackgroundMediaController mediaInfoIndex](self, "mediaInfoIndex")}];
+  mediaInfos = [(VUIBackgroundMediaController *)self mediaInfos];
+  v11 = [mediaInfos objectAtIndex:{-[VUIBackgroundMediaController mediaInfoIndex](self, "mediaInfoIndex")}];
 
   -[VUIBackgroundMediaController setVpafPlaybackStopReason:](self, "setVpafPlaybackStopReason:", [v11 playbackStopReason]);
   [(VUIBackgroundMediaController *)self _postWillStopPlaybackNotification];
 
-  return v3;
+  return player;
 }
 
-- (void)adoptAVPlayerViewController:(id)a3 player:(id)a4
+- (void)adoptAVPlayerViewController:(id)controller player:(id)player
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  playerCopy = player;
   v8 = VUIDefaultLogObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(VUIBackgroundMediaController *)self name];
-    v10 = [(VUIBackgroundMediaController *)self stateMachine];
-    v11 = [v10 currentState];
+    name = [(VUIBackgroundMediaController *)self name];
+    stateMachine = [(VUIBackgroundMediaController *)self stateMachine];
+    currentState = [stateMachine currentState];
     v14 = 134219010;
-    v15 = self;
+    selfCopy = self;
     v16 = 2112;
-    v17 = v9;
+    v17 = name;
     v18 = 2112;
-    v19 = v6;
+    v19 = controllerCopy;
     v20 = 2112;
-    v21 = v7;
+    v21 = playerCopy;
     v22 = 2112;
-    v23 = v11;
+    v23 = currentState;
     _os_log_impl(&dword_1E323F000, v8, OS_LOG_TYPE_DEFAULT, "VUIBackgroundMediaController::(%p: %@) adoptAVPlayerViewController avPlayerViewController = %@, player = %@ on state %@", &v14, 0x34u);
   }
 
-  if (v6 && v7)
+  if (controllerCopy && playerCopy)
   {
-    v12 = [MEMORY[0x1E695DF90] dictionary];
-    [v12 vui_setObjectIfNotNil:v7 forKey:@"PlayerKey"];
-    [v12 vui_setObjectIfNotNil:v6 forKey:@"AVPlayerViewControllerKey"];
-    [(VUIBackgroundMediaController *)self _configurePlayerViewController:v6];
-    v13 = [(VUIBackgroundMediaController *)self stateMachine];
-    [v13 postEvent:@"Restore avPlayerViewController" withContext:0 userInfo:v12];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    [dictionary vui_setObjectIfNotNil:playerCopy forKey:@"PlayerKey"];
+    [dictionary vui_setObjectIfNotNil:controllerCopy forKey:@"AVPlayerViewControllerKey"];
+    [(VUIBackgroundMediaController *)self _configurePlayerViewController:controllerCopy];
+    stateMachine2 = [(VUIBackgroundMediaController *)self stateMachine];
+    [stateMachine2 postEvent:@"Restore avPlayerViewController" withContext:0 userInfo:dictionary];
   }
 }
 
-- (void)setPlaybackEnabled:(BOOL)a3 imageVideoSwapBehavior:(unint64_t)a4
+- (void)setPlaybackEnabled:(BOOL)enabled imageVideoSwapBehavior:(unint64_t)behavior
 {
-  v5 = a3;
+  enabledCopy = enabled;
   v59[2] = *MEMORY[0x1E69E9840];
   v7 = VUIDefaultLogObject();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [(VUIBackgroundMediaController *)self name];
+    name = [(VUIBackgroundMediaController *)self name];
     *buf = 134218754;
-    v55 = self;
+    selfCopy9 = self;
     v56 = 2112;
-    v57 = v8;
+    v57 = name;
     v58 = 1024;
-    LODWORD(v59[0]) = v5;
+    LODWORD(v59[0]) = enabledCopy;
     WORD2(v59[0]) = 2048;
-    *(v59 + 6) = a4;
+    *(v59 + 6) = behavior;
     _os_log_impl(&dword_1E323F000, v7, OS_LOG_TYPE_DEFAULT, "VUIBackgroundMediaController::(%p: %@) setPlaybackEnabled = %d, imageVideoSwapBehavior = %lu", buf, 0x26u);
   }
 
-  v9 = [(VUIBackgroundMediaController *)self _autoPlayEnabled];
-  if (!v9)
+  _autoPlayEnabled = [(VUIBackgroundMediaController *)self _autoPlayEnabled];
+  if (!_autoPlayEnabled)
   {
     v10 = VUIDefaultLogObject();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [(VUIBackgroundMediaController *)self name];
+      name2 = [(VUIBackgroundMediaController *)self name];
       *buf = 134218242;
-      v55 = self;
+      selfCopy9 = self;
       v56 = 2112;
-      v57 = v11;
+      v57 = name2;
       _os_log_impl(&dword_1E323F000, v10, OS_LOG_TYPE_DEFAULT, "VUIBackgroundMediaController::(%p: %@) accessibility video autoplay is disabled", buf, 0x16u);
     }
   }
 
   v12 = +[VUIFeaturesConfiguration sharedInstance];
-  v13 = [v12 autoPlayConfig];
-  v14 = [v13 disableBackgroundMediaPlayback];
+  autoPlayConfig = [v12 autoPlayConfig];
+  disableBackgroundMediaPlayback = [autoPlayConfig disableBackgroundMediaPlayback];
 
   v15 = VUIDefaultLogObject();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
-    v16 = [(VUIBackgroundMediaController *)self name];
+    name3 = [(VUIBackgroundMediaController *)self name];
     *buf = 134218498;
-    v55 = self;
+    selfCopy9 = self;
     v56 = 2112;
-    v57 = v16;
+    v57 = name3;
     v58 = 1024;
-    LODWORD(v59[0]) = v14;
+    LODWORD(v59[0]) = disableBackgroundMediaPlayback;
     _os_log_impl(&dword_1E323F000, v15, OS_LOG_TYPE_DEFAULT, "VUIBackgroundMediaController::(%p: %@) is playback disabled by defaults %d.", buf, 0x1Cu);
   }
 
-  self->_playbackEnabled = v5 & (v14 ^ 1);
-  v17 = [(VUIBackgroundMediaController *)self player];
+  self->_playbackEnabled = enabledCopy & (disableBackgroundMediaPlayback ^ 1);
+  player = [(VUIBackgroundMediaController *)self player];
 
   playbackEnabled = self->_playbackEnabled;
-  if (v17)
+  if (player)
   {
     if (playbackEnabled)
     {
@@ -1619,32 +1619,32 @@ LABEL_11:
       v19 = VUIDefaultLogObject();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
-        v20 = [(VUIBackgroundMediaController *)self name];
-        v21 = [(VUIBackgroundMediaController *)self stateMachine];
-        v22 = [v21 currentState];
+        name4 = [(VUIBackgroundMediaController *)self name];
+        stateMachine = [(VUIBackgroundMediaController *)self stateMachine];
+        currentState = [stateMachine currentState];
         *buf = 134218498;
-        v55 = self;
+        selfCopy9 = self;
         v56 = 2112;
-        v57 = v20;
+        v57 = name4;
         v58 = 2112;
-        v59[0] = v22;
+        v59[0] = currentState;
         _os_log_impl(&dword_1E323F000, v19, OS_LOG_TYPE_DEFAULT, "VUIBackgroundMediaController::(%p: %@, machine state: %@) playback is enabled and we have a stale player, perform cleanup and start reloading.", buf, 0x20u);
       }
 
       [(VUIBackgroundMediaController *)self _cleanUpEverythingPlaybackRelated];
-      if (v9)
+      if (_autoPlayEnabled)
       {
-        v23 = [(VUIBackgroundMediaController *)self stateMachine];
-        [v23 postEvent:@"Replay"];
+        stateMachine2 = [(VUIBackgroundMediaController *)self stateMachine];
+        [stateMachine2 postEvent:@"Replay"];
       }
 
       goto LABEL_37;
     }
 
-    v27 = [(VUIBackgroundMediaController *)self player];
-    v28 = [v27 state];
-    v29 = [MEMORY[0x1E69D5A40] stopped];
-    v30 = v28 == v29;
+    player2 = [(VUIBackgroundMediaController *)self player];
+    state = [player2 state];
+    stopped = [MEMORY[0x1E69D5A40] stopped];
+    v30 = state == stopped;
 
     if (v30)
     {
@@ -1656,32 +1656,32 @@ LABEL_11:
       v34 = VUIDefaultLogObject();
       if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
       {
-        v35 = [(VUIBackgroundMediaController *)self name];
+        name5 = [(VUIBackgroundMediaController *)self name];
         *buf = 134218242;
-        v55 = self;
+        selfCopy9 = self;
         v56 = 2112;
-        v57 = v35;
+        v57 = name5;
         _os_log_impl(&dword_1E323F000, v34, OS_LOG_TYPE_DEFAULT, "VUIBackgroundMediaController::(%p: %@) cleanup everything playback related in defensive case", buf, 0x16u);
       }
 
       [(VUIBackgroundMediaController *)self _cleanUpEverythingPlaybackRelated];
     }
 
-    else if (a4 == 1)
+    else if (behavior == 1)
     {
       v31 = VUIDefaultLogObject();
       if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
       {
-        v32 = [(VUIBackgroundMediaController *)self name];
+        name6 = [(VUIBackgroundMediaController *)self name];
         *buf = 134218242;
-        v55 = self;
+        selfCopy9 = self;
         v56 = 2112;
-        v57 = v32;
+        v57 = name6;
         _os_log_impl(&dword_1E323F000, v31, OS_LOG_TYPE_DEFAULT, "VUIBackgroundMediaController::(%p: %@) pausing playback, will show image and then stop.", buf, 0x16u);
       }
 
-      v33 = [(VUIBackgroundMediaController *)self stateMachine];
-      [v33 postEvent:@"Pause show image and stop"];
+      stateMachine3 = [(VUIBackgroundMediaController *)self stateMachine];
+      [stateMachine3 postEvent:@"Pause show image and stop"];
     }
 
     else
@@ -1689,22 +1689,22 @@ LABEL_11:
       v52[0] = @"PlaybackStopReasonKey";
       v52[1] = @"ImageVideoSwapBehaviorKey";
       v53[0] = &unk_1F5E5E760;
-      v36 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
+      v36 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:behavior];
       v53[1] = v36;
       v37 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v53 forKeys:v52 count:2];
 
-      LODWORD(v36) = a4 == 3;
+      LODWORD(v36) = behavior == 3;
       v38 = VUIDefaultLogObject();
       v39 = os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT);
       if (v36)
       {
         if (v39)
         {
-          v40 = [(VUIBackgroundMediaController *)self name];
+          name7 = [(VUIBackgroundMediaController *)self name];
           *buf = 134218242;
-          v55 = self;
+          selfCopy9 = self;
           v56 = 2112;
-          v57 = v40;
+          v57 = name7;
           _os_log_impl(&dword_1E323F000, v38, OS_LOG_TYPE_DEFAULT, "VUIBackgroundMediaController::(%p: %@) showing image and then will stop playback.", buf, 0x16u);
         }
 
@@ -1725,35 +1725,35 @@ LABEL_11:
       {
         if (v39)
         {
-          v41 = [(VUIBackgroundMediaController *)self name];
+          name8 = [(VUIBackgroundMediaController *)self name];
           *buf = 134218242;
-          v55 = self;
+          selfCopy9 = self;
           v56 = 2112;
-          v57 = v41;
+          v57 = name8;
           _os_log_impl(&dword_1E323F000, v38, OS_LOG_TYPE_DEFAULT, "VUIBackgroundMediaController::(%p: %@) stopping playback.", buf, 0x16u);
         }
 
-        v42 = [(VUIBackgroundMediaController *)self stateMachine];
-        [v42 postEvent:@"Stop" withContext:0 userInfo:v37];
+        stateMachine4 = [(VUIBackgroundMediaController *)self stateMachine];
+        [stateMachine4 postEvent:@"Stop" withContext:0 userInfo:v37];
       }
     }
   }
 
-  else if (v9 && playbackEnabled)
+  else if (_autoPlayEnabled && playbackEnabled)
   {
     v24 = VUIDefaultLogObject();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
     {
-      v25 = [(VUIBackgroundMediaController *)self name];
+      name9 = [(VUIBackgroundMediaController *)self name];
       *buf = 134218242;
-      v55 = self;
+      selfCopy9 = self;
       v56 = 2112;
-      v57 = v25;
+      v57 = name9;
       _os_log_impl(&dword_1E323F000, v24, OS_LOG_TYPE_DEFAULT, "VUIBackgroundMediaController::(%p: %@) playback is enabled but we don't have a player, start reloading.", buf, 0x16u);
     }
 
-    v26 = [(VUIBackgroundMediaController *)self stateMachine];
-    [v26 postEvent:@"Replay"];
+    stateMachine5 = [(VUIBackgroundMediaController *)self stateMachine];
+    [stateMachine5 postEvent:@"Replay"];
   }
 
   else
@@ -1764,15 +1764,15 @@ LABEL_11:
 LABEL_37:
   if (!self->_playbackEnabled)
   {
-    v43 = [(VUIBackgroundMediaController *)self prefetchPlayer];
+    prefetchPlayer = [(VUIBackgroundMediaController *)self prefetchPlayer];
 
-    if (v43)
+    if (prefetchPlayer)
     {
-      v44 = [(VUIBackgroundMediaController *)self prefetchPlayer];
-      [v44 stop];
+      prefetchPlayer2 = [(VUIBackgroundMediaController *)self prefetchPlayer];
+      [prefetchPlayer2 stop];
 
-      v45 = [(VUIBackgroundMediaController *)self prefetchPlayer];
-      [v45 invalidate];
+      prefetchPlayer3 = [(VUIBackgroundMediaController *)self prefetchPlayer];
+      [prefetchPlayer3 invalidate];
 
       [(VUIBackgroundMediaController *)self setPrefetchPlayer:0];
     }
@@ -1796,11 +1796,11 @@ void __74__VUIBackgroundMediaController_setPlaybackEnabled_imageVideoSwapBehavio
     v3 = VUIDefaultLogObject();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
-      v4 = [(VUIBackgroundMediaController *)self name];
+      name = [(VUIBackgroundMediaController *)self name];
       v17 = 134218242;
-      v18 = self;
+      selfCopy3 = self;
       v19 = 2112;
-      v20 = v4;
+      v20 = name;
       _os_log_impl(&dword_1E323F000, v3, OS_LOG_TYPE_DEFAULT, "VUIBackgroundMediaController::(%p: %@) auto play is enabled because forceAutoPlay is YES", &v17, 0x16u);
     }
 
@@ -1811,52 +1811,52 @@ void __74__VUIBackgroundMediaController_setPlaybackEnabled_imageVideoSwapBehavio
   {
     v6 = +[VUIGroupActivitiesManagerObjC isSessionActive];
     v7 = [MEMORY[0x1E69DF678] isFeatureEnabled:1];
-    v8 = [MEMORY[0x1E696AE30] processInfo];
-    v9 = [v8 isLowPowerModeEnabled];
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    isLowPowerModeEnabled = [processInfo isLowPowerModeEnabled];
 
-    v10 = [(VUIBackgroundMediaController *)self _isViewInTopMostVisibleView];
+    _isViewInTopMostVisibleView = [(VUIBackgroundMediaController *)self _isViewInTopMostVisibleView];
     IsVideoAutoplayEnabled = UIAccessibilityIsVideoAutoplayEnabled();
     v12 = VUIDefaultLogObject();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [(VUIBackgroundMediaController *)self name];
+      name2 = [(VUIBackgroundMediaController *)self name];
       v17 = 134219010;
-      v18 = self;
+      selfCopy3 = self;
       v19 = 2112;
-      v20 = v13;
+      v20 = name2;
       v21 = 1024;
       v22 = 0;
       v23 = 1024;
       v24 = 0;
       v25 = 1024;
-      v26 = [(VUIBackgroundMediaController *)self loadsPlayerWithFullscreenPlayback];
+      loadsPlayerWithFullscreenPlayback = [(VUIBackgroundMediaController *)self loadsPlayerWithFullscreenPlayback];
       _os_log_impl(&dword_1E323F000, v12, OS_LOG_TYPE_DEFAULT, "VUIBackgroundMediaController::(%p: %@) isDisabledBecauseOfFullScreenPlayback=%d, isPlaybackUIBeingShown=%d, loadsPlayerWithFullscreenPlayback=%d", &v17, 0x28u);
     }
 
-    v5 = !(v7 & 1 | !IsVideoAutoplayEnabled | v9 & 1) && (!v6 || [(VUIBackgroundMediaController *)self autoPlayInSharePlay]) && v10;
+    v5 = !(v7 & 1 | !IsVideoAutoplayEnabled | isLowPowerModeEnabled & 1) && (!v6 || [(VUIBackgroundMediaController *)self autoPlayInSharePlay]) && _isViewInTopMostVisibleView;
     v3 = VUIDefaultLogObject();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [(VUIBackgroundMediaController *)self name];
-      v15 = [(VUIBackgroundMediaController *)self autoPlayInSharePlay];
+      name3 = [(VUIBackgroundMediaController *)self name];
+      autoPlayInSharePlay = [(VUIBackgroundMediaController *)self autoPlayInSharePlay];
       v17 = 134220034;
-      v18 = self;
+      selfCopy3 = self;
       v19 = 2112;
-      v20 = v14;
+      v20 = name3;
       v21 = 1024;
       v22 = v5;
       v23 = 1024;
       v24 = IsVideoAutoplayEnabled;
       v25 = 1024;
-      v26 = v7;
+      loadsPlayerWithFullscreenPlayback = v7;
       v27 = 1024;
-      v28 = v9;
+      v28 = isLowPowerModeEnabled;
       v29 = 1024;
       v30 = v6;
       v31 = 1024;
-      v32 = v15;
+      v32 = autoPlayInSharePlay;
       v33 = 1024;
-      v34 = v10;
+      v34 = _isViewInTopMostVisibleView;
       _os_log_impl(&dword_1E323F000, v3, OS_LOG_TYPE_DEFAULT, "VUIBackgroundMediaController::(%p: %@) check _autoPlayEnabled=%d, isVideoAutoPlayEnabled=%d, isReduceMotionEnabled=%d,            isLowPowerModeEnabled=%d, isSharePlay=%d, autoPlayInSharePlay=%d, isViewInTopMostVisibleView=%d", &v17, 0x40u);
     }
   }
@@ -1866,35 +1866,35 @@ void __74__VUIBackgroundMediaController_setPlaybackEnabled_imageVideoSwapBehavio
 
 - (void)_registerForApplicationStateNotifications
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 addObserver:self selector:sel__handleApplicationWillResignActiveNotification_ name:*MEMORY[0x1E69DF7F0] object:0];
-  [v3 addObserver:self selector:sel__handleApplicationDidEnterBackgroundNotification_ name:*MEMORY[0x1E69DF7E0] object:0];
-  [v3 addObserver:self selector:sel__handleApplicationDidBecomeActiveNotification_ name:*MEMORY[0x1E69DF7D8] object:0];
-  [v3 addObserver:self selector:sel__applicationWillAddDeactivationReason_ name:*MEMORY[0x1E69DE878] object:0];
-  [v3 addObserver:self selector:sel__applicationDidRemoveDeactivationReason_ name:*MEMORY[0x1E69DE840] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__handleApplicationWillResignActiveNotification_ name:*MEMORY[0x1E69DF7F0] object:0];
+  [defaultCenter addObserver:self selector:sel__handleApplicationDidEnterBackgroundNotification_ name:*MEMORY[0x1E69DF7E0] object:0];
+  [defaultCenter addObserver:self selector:sel__handleApplicationDidBecomeActiveNotification_ name:*MEMORY[0x1E69DF7D8] object:0];
+  [defaultCenter addObserver:self selector:sel__applicationWillAddDeactivationReason_ name:*MEMORY[0x1E69DE878] object:0];
+  [defaultCenter addObserver:self selector:sel__applicationDidRemoveDeactivationReason_ name:*MEMORY[0x1E69DE840] object:0];
 }
 
-- (void)_handleApplicationWillResignActiveNotification:(id)a3
+- (void)_handleApplicationWillResignActiveNotification:(id)notification
 {
-  v4 = [(VUIBackgroundMediaController *)self player];
-  if (v4)
+  player = [(VUIBackgroundMediaController *)self player];
+  if (player)
   {
-    v5 = v4;
-    v6 = [(VUIBackgroundMediaController *)self player];
-    v7 = [v6 state];
-    v8 = [MEMORY[0x1E69D5A40] playing];
-    v9 = v8;
-    if (v7 == v8)
+    v5 = player;
+    player2 = [(VUIBackgroundMediaController *)self player];
+    state = [player2 state];
+    playing = [MEMORY[0x1E69D5A40] playing];
+    v9 = playing;
+    if (state == playing)
     {
     }
 
     else
     {
-      v10 = [(VUIBackgroundMediaController *)self player];
-      v11 = [v10 state];
-      v12 = [MEMORY[0x1E69D5A40] loading];
+      player3 = [(VUIBackgroundMediaController *)self player];
+      state2 = [player3 state];
+      loading = [MEMORY[0x1E69D5A40] loading];
 
-      if (v11 != v12)
+      if (state2 != loading)
       {
         return;
       }
@@ -1909,26 +1909,26 @@ void __74__VUIBackgroundMediaController_setPlaybackEnabled_imageVideoSwapBehavio
   }
 }
 
-- (void)_handleApplicationDidEnterBackgroundNotification:(id)a3
+- (void)_handleApplicationDidEnterBackgroundNotification:(id)notification
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = [(VUIBackgroundMediaController *)self vuiNavigationController];
-  v5 = [v4 topViewController];
+  vuiNavigationController = [(VUIBackgroundMediaController *)self vuiNavigationController];
+  topViewController = [vuiNavigationController topViewController];
 
-  v6 = [(VUIBackgroundMediaController *)self vuiView];
-  v7 = [v5 vuiView];
-  v8 = [v6 vui_isDescendantOfView:v7];
+  vuiView = [(VUIBackgroundMediaController *)self vuiView];
+  vuiView2 = [topViewController vuiView];
+  v8 = [vuiView vui_isDescendantOfView:vuiView2];
 
   v9 = VUIDefaultLogObject();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [(VUIBackgroundMediaController *)self name];
+    name = [(VUIBackgroundMediaController *)self name];
     v14 = 134218754;
-    v15 = self;
+    selfCopy2 = self;
     v16 = 2112;
-    v17 = v10;
+    v17 = name;
     v18 = 1024;
-    v19 = [(VUIBackgroundMediaController *)self stopsPlaybackWhenInactive];
+    stopsPlaybackWhenInactive = [(VUIBackgroundMediaController *)self stopsPlaybackWhenInactive];
     v20 = 1024;
     v21 = v8;
     _os_log_impl(&dword_1E323F000, v9, OS_LOG_TYPE_DEFAULT, "VUIBackgroundMediaController::(%p: %@) handleApplicationDidEnterBackgroundNotification, stopsPlaybackWhenInactive=%d, isTopViewController=%d", &v14, 0x22u);
@@ -1936,18 +1936,18 @@ void __74__VUIBackgroundMediaController_setPlaybackEnabled_imageVideoSwapBehavio
 
   if (([(VUIBackgroundMediaController *)self stopsPlaybackWhenInactive]& v8) == 1)
   {
-    v11 = [(VUIBackgroundMediaController *)self player];
+    player = [(VUIBackgroundMediaController *)self player];
 
-    if (v11)
+    if (player)
     {
       v12 = VUIDefaultLogObject();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
-        v13 = [(VUIBackgroundMediaController *)self name];
+        name2 = [(VUIBackgroundMediaController *)self name];
         v14 = 134218242;
-        v15 = self;
+        selfCopy2 = self;
         v16 = 2112;
-        v17 = v13;
+        v17 = name2;
         _os_log_impl(&dword_1E323F000, v12, OS_LOG_TYPE_DEFAULT, "VUIBackgroundMediaController::(%p: %@) AppDidEnterBackground: Try to show the image and stop the video", &v14, 0x16u);
       }
 
@@ -1965,33 +1965,33 @@ void __74__VUIBackgroundMediaController_setPlaybackEnabled_imageVideoSwapBehavio
   }
 }
 
-- (void)_handleApplicationDidBecomeActiveNotification:(id)a3
+- (void)_handleApplicationDidBecomeActiveNotification:(id)notification
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = [(VUIBackgroundMediaController *)self vuiNavigationController];
-  v5 = [v4 topViewController];
+  vuiNavigationController = [(VUIBackgroundMediaController *)self vuiNavigationController];
+  topViewController = [vuiNavigationController topViewController];
 
-  v6 = [(VUIBackgroundMediaController *)self vuiView];
-  v7 = [v5 vuiView];
-  v8 = [v6 vui_isDescendantOfView:v7];
+  vuiView = [(VUIBackgroundMediaController *)self vuiView];
+  vuiView2 = [topViewController vuiView];
+  v8 = [vuiView vui_isDescendantOfView:vuiView2];
 
   v9 = VUIDefaultLogObject();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [(VUIBackgroundMediaController *)self name];
+    name = [(VUIBackgroundMediaController *)self name];
     v12 = 134218754;
-    v13 = self;
+    selfCopy = self;
     v14 = 2112;
-    v15 = v10;
+    v15 = name;
     v16 = 1024;
-    v17 = [(VUIBackgroundMediaController *)self shouldPlayAfterAppBecomesActive];
+    shouldPlayAfterAppBecomesActive = [(VUIBackgroundMediaController *)self shouldPlayAfterAppBecomesActive];
     v18 = 1024;
     v19 = v8;
     _os_log_impl(&dword_1E323F000, v9, OS_LOG_TYPE_DEFAULT, "VUIBackgroundMediaController::(%p: %@) handleApplicationDidBecomeActiveNotification, shouldPlayAfterAppBecomesActive=%d, isTopViewController=%d", &v12, 0x22u);
   }
 
-  v11 = [(VUIBackgroundMediaController *)self player];
-  if (v11 && [(VUIBackgroundMediaController *)self shouldPlayAfterAppBecomesActive])
+  player = [(VUIBackgroundMediaController *)self player];
+  if (player && [(VUIBackgroundMediaController *)self shouldPlayAfterAppBecomesActive])
   {
 
     if (v8)
@@ -2008,29 +2008,29 @@ void __74__VUIBackgroundMediaController_setPlaybackEnabled_imageVideoSwapBehavio
   [(VUIBackgroundMediaController *)self _startPreloadPlaybackIfNeeded];
 }
 
-- (void)setPreloadPlaybackEnabled:(BOOL)a3
+- (void)setPreloadPlaybackEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v17 = *MEMORY[0x1E69E9840];
   v5 = VUIDefaultLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(VUIBackgroundMediaController *)self name];
-    v7 = [(VUIBackgroundMediaController *)self mediaInfoFetchController];
+    name = [(VUIBackgroundMediaController *)self name];
+    mediaInfoFetchController = [(VUIBackgroundMediaController *)self mediaInfoFetchController];
     v9 = 134218754;
-    v10 = self;
+    selfCopy = self;
     v11 = 2112;
-    v12 = v6;
+    v12 = name;
     v13 = 1024;
-    v14 = v3;
+    v14 = enabledCopy;
     v15 = 2048;
-    v16 = v7;
+    v16 = mediaInfoFetchController;
     _os_log_impl(&dword_1E323F000, v5, OS_LOG_TYPE_DEFAULT, "VUIBackgroundMediaController::(%p: %@) setPreloadPlaybackEnabled = %d, mediaInfoFetch: %p", &v9, 0x26u);
   }
 
-  self->_preloadPlaybackEnabled = v3;
-  v8 = [(VUIBackgroundMediaController *)self mediaInfoFetchController];
-  [v8 setPreloadPlaybackEnabled:v3];
+  self->_preloadPlaybackEnabled = enabledCopy;
+  mediaInfoFetchController2 = [(VUIBackgroundMediaController *)self mediaInfoFetchController];
+  [mediaInfoFetchController2 setPreloadPlaybackEnabled:enabledCopy];
 }
 
 - (void)_clearPreloadPlayback
@@ -2039,19 +2039,19 @@ void __74__VUIBackgroundMediaController_setPlaybackEnabled_imageVideoSwapBehavio
   v3 = VUIDefaultLogObject();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(VUIBackgroundMediaController *)self name];
+    name = [(VUIBackgroundMediaController *)self name];
     v7 = 134218242;
-    v8 = self;
+    selfCopy = self;
     v9 = 2112;
-    v10 = v4;
+    v10 = name;
     _os_log_impl(&dword_1E323F000, v3, OS_LOG_TYPE_DEFAULT, "VUIBackgroundMediaController::(%p: %@) clearPreloadPlayback", &v7, 0x16u);
   }
 
-  v5 = [(VUIBackgroundMediaController *)self mediaInfoFetchController];
-  [v5 setPreloadPlaybackEnabled:0];
+  mediaInfoFetchController = [(VUIBackgroundMediaController *)self mediaInfoFetchController];
+  [mediaInfoFetchController setPreloadPlaybackEnabled:0];
 
-  v6 = [(VUIBackgroundMediaController *)self mediaInfoFetchController];
-  [v6 clearPreloadedPlayback];
+  mediaInfoFetchController2 = [(VUIBackgroundMediaController *)self mediaInfoFetchController];
+  [mediaInfoFetchController2 clearPreloadedPlayback];
 }
 
 - (void)_startPreloadPlaybackIfNeeded
@@ -2060,33 +2060,33 @@ void __74__VUIBackgroundMediaController_setPlaybackEnabled_imageVideoSwapBehavio
   v3 = VUIDefaultLogObject();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(VUIBackgroundMediaController *)self name];
+    name = [(VUIBackgroundMediaController *)self name];
     v12 = 134218498;
-    v13 = self;
+    selfCopy3 = self;
     v14 = 2112;
-    v15 = v4;
+    v15 = name;
     v16 = 1024;
-    v17 = [(VUIBackgroundMediaController *)self isPreloadPlaybackEnabled];
+    isPreloadPlaybackEnabled = [(VUIBackgroundMediaController *)self isPreloadPlaybackEnabled];
     _os_log_impl(&dword_1E323F000, v3, OS_LOG_TYPE_DEFAULT, "VUIBackgroundMediaController::(%p: %@) update preloadPlaybackEnabled = %d", &v12, 0x1Cu);
   }
 
-  v5 = [(VUIBackgroundMediaController *)self mediaInfoFetchController];
-  [v5 setPreloadPlaybackEnabled:{-[VUIBackgroundMediaController isPreloadPlaybackEnabled](self, "isPreloadPlaybackEnabled")}];
+  mediaInfoFetchController = [(VUIBackgroundMediaController *)self mediaInfoFetchController];
+  [mediaInfoFetchController setPreloadPlaybackEnabled:{-[VUIBackgroundMediaController isPreloadPlaybackEnabled](self, "isPreloadPlaybackEnabled")}];
 
   v6 = +[VUIPlaybackManager sharedInstance];
-  v7 = [v6 isFullscreenPlaybackUIBeingShown];
+  isFullscreenPlaybackUIBeingShown = [v6 isFullscreenPlaybackUIBeingShown];
 
-  if (v7)
+  if (isFullscreenPlaybackUIBeingShown)
   {
-    v8 = VUIDefaultLogObject();
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    mediaInfoFetchController2 = VUIDefaultLogObject();
+    if (os_log_type_enabled(mediaInfoFetchController2, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [(VUIBackgroundMediaController *)self name];
+      name2 = [(VUIBackgroundMediaController *)self name];
       v12 = 134218242;
-      v13 = self;
+      selfCopy3 = self;
       v14 = 2112;
-      v15 = v9;
-      _os_log_impl(&dword_1E323F000, v8, OS_LOG_TYPE_DEFAULT, "VUIBackgroundMediaController::(%p: %@) skipped startPreloadPlayback due to full screen playback", &v12, 0x16u);
+      v15 = name2;
+      _os_log_impl(&dword_1E323F000, mediaInfoFetchController2, OS_LOG_TYPE_DEFAULT, "VUIBackgroundMediaController::(%p: %@) skipped startPreloadPlayback due to full screen playback", &v12, 0x16u);
     }
 
 LABEL_11:
@@ -2099,67 +2099,67 @@ LABEL_11:
     v10 = VUIDefaultLogObject();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [(VUIBackgroundMediaController *)self name];
+      name3 = [(VUIBackgroundMediaController *)self name];
       v12 = 134218242;
-      v13 = self;
+      selfCopy3 = self;
       v14 = 2112;
-      v15 = v11;
+      v15 = name3;
       _os_log_impl(&dword_1E323F000, v10, OS_LOG_TYPE_DEFAULT, "VUIBackgroundMediaController::(%p: %@) startPreloadPlayback", &v12, 0x16u);
     }
 
-    v8 = [(VUIBackgroundMediaController *)self mediaInfoFetchController];
-    [v8 preloadPlayback];
+    mediaInfoFetchController2 = [(VUIBackgroundMediaController *)self mediaInfoFetchController];
+    [mediaInfoFetchController2 preloadPlayback];
     goto LABEL_11;
   }
 }
 
-- (void)_applicationWillAddDeactivationReason:(id)a3
+- (void)_applicationWillAddDeactivationReason:(id)reason
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69DE838]];
-  v6 = [v5 integerValue];
+  userInfo = [reason userInfo];
+  v5 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E69DE838]];
+  integerValue = [v5 integerValue];
 
-  self->_deactivationReasons |= (1 << v6);
+  self->_deactivationReasons |= (1 << integerValue);
 }
 
-- (void)_applicationDidRemoveDeactivationReason:(id)a3
+- (void)_applicationDidRemoveDeactivationReason:(id)reason
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69DE838]];
-  v6 = [v5 integerValue];
+  userInfo = [reason userInfo];
+  v5 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E69DE838]];
+  integerValue = [v5 integerValue];
 
-  self->_deactivationReasons &= ~(1 << v6);
+  self->_deactivationReasons &= ~(1 << integerValue);
 }
 
 - (void)_registerPlaybackManagerNotification
 {
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 addObserver:self selector:sel_playBackManagerFullscreenPlaybackUIDidChangeNotification_ name:VUIPlaybackManagerFullscreenPlaybackUIDidChangeNotification[0] object:0];
-  [v4 addObserver:self selector:sel_playbackManagerShowingExtrasDidChangeNotification_ name:VUIPlaybackManagerShowingExtrasDidChangeNotification[0] object:0];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 addObserver:self selector:sel_updateAudioMuteWithPIPingPlayback name:VUIPlaybackManagerIsPIPingDidChangeNotification[0] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_playBackManagerFullscreenPlaybackUIDidChangeNotification_ name:VUIPlaybackManagerFullscreenPlaybackUIDidChangeNotification[0] object:0];
+  [defaultCenter addObserver:self selector:sel_playbackManagerShowingExtrasDidChangeNotification_ name:VUIPlaybackManagerShowingExtrasDidChangeNotification[0] object:0];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel_updateAudioMuteWithPIPingPlayback name:VUIPlaybackManagerIsPIPingDidChangeNotification[0] object:0];
 }
 
-- (void)playBackManagerFullscreenPlaybackUIDidChangeNotification:(id)a3
+- (void)playBackManagerFullscreenPlaybackUIDidChangeNotification:(id)notification
 {
   v17 = *MEMORY[0x1E69E9840];
   v4 = +[VUIPlaybackManager sharedInstance];
-  v5 = [v4 isFullscreenPlaybackUIBeingShown];
+  isFullscreenPlaybackUIBeingShown = [v4 isFullscreenPlaybackUIBeingShown];
 
   v6 = VUIDefaultLogObject();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(VUIBackgroundMediaController *)self name];
+    name = [(VUIBackgroundMediaController *)self name];
     *buf = 134218498;
-    v12 = self;
+    selfCopy = self;
     v13 = 2112;
-    v14 = v7;
+    v14 = name;
     v15 = 1024;
-    v16 = v5;
+    v16 = isFullscreenPlaybackUIBeingShown;
     _os_log_impl(&dword_1E323F000, v6, OS_LOG_TYPE_DEFAULT, "VUIBackgroundMediaController::(%p: %@) playbackManagerFullScreenUIDidChange: %d", buf, 0x1Cu);
   }
 
-  if (v5)
+  if (isFullscreenPlaybackUIBeingShown)
   {
     [(VUIBackgroundMediaController *)self _clearPreloadPlayback];
     [(VUIBackgroundMediaController *)self _handlePlaybackManagerUIDidChange];
@@ -2186,17 +2186,17 @@ void __89__VUIBackgroundMediaController_playBackManagerFullscreenPlaybackUIDidCh
   [WeakRetained _handlePlaybackManagerUIDidChange];
 }
 
-- (void)playbackManagerShowingExtrasDidChangeNotification:(id)a3
+- (void)playbackManagerShowingExtrasDidChangeNotification:(id)notification
 {
   v10 = *MEMORY[0x1E69E9840];
   v4 = VUIDefaultLogObject();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(VUIBackgroundMediaController *)self name];
+    name = [(VUIBackgroundMediaController *)self name];
     v6 = 134218242;
-    v7 = self;
+    selfCopy = self;
     v8 = 2112;
-    v9 = v5;
+    v9 = name;
     _os_log_impl(&dword_1E323F000, v4, OS_LOG_TYPE_DEFAULT, "VUIBackgroundMediaController::(%p: %@) playbackManagerShowingExtrasDidChangeNotification", &v6, 0x16u);
   }
 
@@ -2211,11 +2211,11 @@ void __89__VUIBackgroundMediaController_playBackManagerFullscreenPlaybackUIDidCh
     v3 = VUIDefaultLogObject();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
-      v4 = [(VUIBackgroundMediaController *)self name];
+      name = [(VUIBackgroundMediaController *)self name];
       v11 = 134218242;
-      v12 = self;
+      selfCopy2 = self;
       v13 = 2112;
-      v14 = v4;
+      v14 = name;
       _os_log_impl(&dword_1E323F000, v3, OS_LOG_TYPE_DEFAULT, "VUIBackgroundMediaController::(%p: %@) _handlePlaybackManagerUIDidChange: skip as loadsPlayerWithFullscreenPlayback=true", &v11, 0x16u);
     }
   }
@@ -2223,27 +2223,27 @@ void __89__VUIBackgroundMediaController_playBackManagerFullscreenPlaybackUIDidCh
   else
   {
     v5 = +[VUIPlaybackManager sharedInstance];
-    v6 = [v5 isFullscreenPlaybackUIBeingShown];
+    isFullscreenPlaybackUIBeingShown = [v5 isFullscreenPlaybackUIBeingShown];
 
     v7 = +[VUIPlaybackManager sharedInstance];
-    v8 = [v7 isShowingExtras];
+    isShowingExtras = [v7 isShowingExtras];
 
     v9 = VUIDefaultLogObject();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [(VUIBackgroundMediaController *)self name];
+      name2 = [(VUIBackgroundMediaController *)self name];
       v11 = 134218754;
-      v12 = self;
+      selfCopy2 = self;
       v13 = 2112;
-      v14 = v10;
+      v14 = name2;
       v15 = 1024;
-      v16 = v6;
+      v16 = isFullscreenPlaybackUIBeingShown;
       v17 = 1024;
-      v18 = v8;
+      v18 = isShowingExtras;
       _os_log_impl(&dword_1E323F000, v9, OS_LOG_TYPE_DEFAULT, "VUIBackgroundMediaController::(%p: %@) _handlePlaybackManagerUIDidChange isFullscreenPlaybackUIBeingShown=%d, isShowingExtras=%d", &v11, 0x22u);
     }
 
-    if ((v6 | v8))
+    if ((isFullscreenPlaybackUIBeingShown | isShowingExtras))
     {
       [(VUIBackgroundMediaController *)self _disablePlaybackWhenShowingFullScreenUIIfNeeded];
     }
@@ -2258,17 +2258,17 @@ void __89__VUIBackgroundMediaController_playBackManagerFullscreenPlaybackUIDidCh
 - (void)_disablePlaybackWhenShowingFullScreenUIIfNeeded
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = [(VUIBackgroundMediaController *)self stateMachine];
-  v4 = [v3 currentState];
-  v5 = [v4 isEqualToString:@"waiting for timeout while paused"];
+  stateMachine = [(VUIBackgroundMediaController *)self stateMachine];
+  currentState = [stateMachine currentState];
+  v5 = [currentState isEqualToString:@"waiting for timeout while paused"];
 
-  v6 = [(VUIBackgroundMediaController *)self player];
-  if (v6)
+  player = [(VUIBackgroundMediaController *)self player];
+  if (player)
   {
-    v7 = [(VUIBackgroundMediaController *)self player];
-    v8 = [v7 state];
-    v9 = [MEMORY[0x1E69D5A40] stopped];
-    v10 = v8 == v9;
+    player2 = [(VUIBackgroundMediaController *)self player];
+    state = [player2 state];
+    stopped = [MEMORY[0x1E69D5A40] stopped];
+    v10 = state == stopped;
   }
 
   else
@@ -2276,18 +2276,18 @@ void __89__VUIBackgroundMediaController_playBackManagerFullscreenPlaybackUIDidCh
     v10 = 0;
   }
 
-  v11 = [(VUIBackgroundMediaController *)self isPlaybackEnabled];
+  isPlaybackEnabled = [(VUIBackgroundMediaController *)self isPlaybackEnabled];
   v12 = VUIDefaultLogObject();
   v13 = os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT);
-  if (v11)
+  if (isPlaybackEnabled)
   {
     if (v13)
     {
-      v14 = [(VUIBackgroundMediaController *)self name];
+      name = [(VUIBackgroundMediaController *)self name];
       v18 = 134218242;
-      v19 = self;
+      selfCopy3 = self;
       v20 = 2112;
-      v21 = v14;
+      v21 = name;
       _os_log_impl(&dword_1E323F000, v12, OS_LOG_TYPE_DEFAULT, "VUIBackgroundMediaController::(%p: %@) fullscreenPlayback did shown, disable playback", &v18, 0x16u);
     }
 
@@ -2296,11 +2296,11 @@ void __89__VUIBackgroundMediaController_playBackManagerFullscreenPlaybackUIDidCh
       v15 = VUIDefaultLogObject();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
-        v16 = [(VUIBackgroundMediaController *)self name];
+        name2 = [(VUIBackgroundMediaController *)self name];
         v18 = 134218242;
-        v19 = self;
+        selfCopy3 = self;
         v20 = 2112;
-        v21 = v16;
+        v21 = name2;
         _os_log_impl(&dword_1E323F000, v15, OS_LOG_TYPE_DEFAULT, "VUIBackgroundMediaController::(%p: %@) fullscreenPlayback did shown, update shouldPlayAfterFullplaybackUIDidEnd to YES", &v18, 0x16u);
       }
 
@@ -2314,11 +2314,11 @@ void __89__VUIBackgroundMediaController_playBackManagerFullscreenPlaybackUIDidCh
   {
     if (v13)
     {
-      v17 = [(VUIBackgroundMediaController *)self name];
+      name3 = [(VUIBackgroundMediaController *)self name];
       v18 = 134218242;
-      v19 = self;
+      selfCopy3 = self;
       v20 = 2112;
-      v21 = v17;
+      v21 = name3;
       _os_log_impl(&dword_1E323F000, v12, OS_LOG_TYPE_DEFAULT, "VUIBackgroundMediaController::(%p: %@) fullscreenPlayback did shown, playback is disabled, ignore", &v18, 0x16u);
     }
   }
@@ -2332,11 +2332,11 @@ void __89__VUIBackgroundMediaController_playBackManagerFullscreenPlaybackUIDidCh
     v3 = VUIDefaultLogObject();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
-      v4 = [(VUIBackgroundMediaController *)self name];
+      name = [(VUIBackgroundMediaController *)self name];
       v5 = 134218242;
-      v6 = self;
+      selfCopy = self;
       v7 = 2112;
-      v8 = v4;
+      v8 = name;
       _os_log_impl(&dword_1E323F000, v3, OS_LOG_TYPE_DEFAULT, "VUIBackgroundMediaController::(%p: %@) fullscreenPlayback did end, enable playback", &v5, 0x16u);
     }
 
@@ -2348,78 +2348,78 @@ void __89__VUIBackgroundMediaController_playBackManagerFullscreenPlaybackUIDidCh
 - (id)_activePIPPlayer
 {
   v2 = +[VUIPlaybackManager sharedInstance];
-  v3 = [v2 backgroundMediaPlayer];
-  v4 = v3;
-  if (v3)
+  backgroundMediaPlayer = [v2 backgroundMediaPlayer];
+  v4 = backgroundMediaPlayer;
+  if (backgroundMediaPlayer)
   {
-    v5 = v3;
+    activePlayer = backgroundMediaPlayer;
   }
 
   else
   {
     v6 = +[VUIPlaybackManager sharedInstance];
-    v5 = [v6 activePlayer];
+    activePlayer = [v6 activePlayer];
   }
 
-  return v5;
+  return activePlayer;
 }
 
 - (void)updateAudioMuteWithPIPingPlayback
 {
-  v1 = [a1 name];
+  name = [self name];
   OUTLINED_FUNCTION_1_44();
   OUTLINED_FUNCTION_0_3();
   _os_log_error_impl(v2, v3, v4, v5, v6, 0x16u);
 }
 
-- (void)setActivePIPingPlayer:(id)a3
+- (void)setActivePIPingPlayer:(id)player
 {
-  v5 = a3;
+  playerCopy = player;
   activePIPingPlayer = self->_activePIPingPlayer;
-  if (activePIPingPlayer != v5)
+  if (activePIPingPlayer != playerCopy)
   {
-    v10 = v5;
+    v10 = playerCopy;
     v7 = MEMORY[0x1E69D6090];
     if (activePIPingPlayer)
     {
-      v8 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v8 removeObserver:self name:*v7 object:self->_activePIPingPlayer];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter removeObserver:self name:*v7 object:self->_activePIPingPlayer];
 
       [(VUIPlayer *)self->_activePIPingPlayer removeObserver:self forKeyPath:@"muted" context:__PIPingPlayerMutedKVOContext];
     }
 
-    objc_storeStrong(&self->_activePIPingPlayer, a3);
-    v5 = v10;
+    objc_storeStrong(&self->_activePIPingPlayer, player);
+    playerCopy = v10;
     if (v10)
     {
-      v9 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v9 addObserver:self selector:sel__pipPlaybackStateChanged_ name:*v7 object:v10];
+      defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter2 addObserver:self selector:sel__pipPlaybackStateChanged_ name:*v7 object:v10];
 
       [(VUIPlayer *)v10 addObserver:self forKeyPath:@"muted" options:0 context:__PIPingPlayerMutedKVOContext];
-      v5 = v10;
+      playerCopy = v10;
     }
   }
 }
 
-- (void)_pipPlaybackStateChanged:(id)a3
+- (void)_pipPlaybackStateChanged:(id)changed
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKey:*MEMORY[0x1E69D6098]];
+  changedCopy = changed;
+  userInfo = [changedCopy userInfo];
+  v6 = [userInfo objectForKey:*MEMORY[0x1E69D6098]];
 
-  v7 = [v4 userInfo];
+  userInfo2 = [changedCopy userInfo];
 
-  v8 = [v7 objectForKey:*MEMORY[0x1E69D60A0]];
+  v8 = [userInfo2 objectForKey:*MEMORY[0x1E69D60A0]];
 
   v9 = VUIDefaultLogObject();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [(VUIBackgroundMediaController *)self name];
+    name = [(VUIBackgroundMediaController *)self name];
     v12 = 134218754;
-    v13 = self;
+    selfCopy = self;
     v14 = 2112;
-    v15 = v10;
+    v15 = name;
     v16 = 2112;
     v17 = v6;
     v18 = 2112;
@@ -2427,9 +2427,9 @@ void __89__VUIBackgroundMediaController_playBackManagerFullscreenPlaybackUIDidCh
     _os_log_impl(&dword_1E323F000, v9, OS_LOG_TYPE_DEFAULT, "VUIBackgroundMediaController::(%p: %@) PIP playback state changed, new state %@, old state %@", &v12, 0x2Au);
   }
 
-  v11 = [MEMORY[0x1E69D5A40] playing];
+  playing = [MEMORY[0x1E69D5A40] playing];
 
-  if (v6 == v11)
+  if (v6 == playing)
   {
     [(VUIBackgroundMediaController *)self setMutePlaybackInBackground:1];
   }
@@ -2438,21 +2438,21 @@ void __89__VUIBackgroundMediaController_playBackManagerFullscreenPlaybackUIDidCh
 - (void)_pipPlaybackDidChangeMutedState
 {
   v12 = *MEMORY[0x1E69E9840];
-  v3 = [(VUIBackgroundMediaController *)self _activePIPPlayer];
+  _activePIPPlayer = [(VUIBackgroundMediaController *)self _activePIPPlayer];
   v4 = VUIDefaultLogObject();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(VUIBackgroundMediaController *)self name];
+    name = [(VUIBackgroundMediaController *)self name];
     v6 = 134218498;
-    v7 = self;
+    selfCopy = self;
     v8 = 2112;
-    v9 = v5;
+    v9 = name;
     v10 = 1024;
-    v11 = [v3 muted];
+    muted = [_activePIPPlayer muted];
     _os_log_impl(&dword_1E323F000, v4, OS_LOG_TYPE_DEFAULT, "VUIBackgroundMediaController::(%p: %@) PIP playback did change muted state: %d", &v6, 0x1Cu);
   }
 
-  if (v3 && ([v3 muted] & 1) == 0)
+  if (_activePIPPlayer && ([_activePIPPlayer muted] & 1) == 0)
   {
     [(VUIBackgroundMediaController *)self setMutePlaybackInBackground:1];
   }
@@ -2460,8 +2460,8 @@ void __89__VUIBackgroundMediaController_playBackManagerFullscreenPlaybackUIDidCh
 
 - (void)_registerAudioSessionNotification
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 addObserver:self selector:sel__audioSessionSilentSecondaryAudioDidChange_ name:*MEMORY[0x1E6958248] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__audioSessionSilentSecondaryAudioDidChange_ name:*MEMORY[0x1E6958248] object:0];
 }
 
 - (void)_registerPlayerNotifications
@@ -2470,41 +2470,41 @@ void __89__VUIBackgroundMediaController_playBackManagerFullscreenPlaybackUIDidCh
   v3 = VUIDefaultLogObject();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(VUIBackgroundMediaController *)self name];
+    name = [(VUIBackgroundMediaController *)self name];
     v17 = 134218242;
-    v18 = self;
+    selfCopy = self;
     v19 = 2112;
-    v20 = v4;
+    v20 = name;
     _os_log_impl(&dword_1E323F000, v3, OS_LOG_TYPE_DEFAULT, "VUIBackgroundMediaController::(%p: %@) register player notifications and add observers", &v17, 0x16u);
   }
 
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v6 = *MEMORY[0x1E69D6090];
-  v7 = [(VUIBackgroundMediaController *)self player];
-  [v5 addObserver:self selector:sel__playbackStateChanged_ name:v6 object:v7];
+  player = [(VUIBackgroundMediaController *)self player];
+  [defaultCenter addObserver:self selector:sel__playbackStateChanged_ name:v6 object:player];
 
   v8 = *MEMORY[0x1E69D5F38];
-  v9 = [(VUIBackgroundMediaController *)self player];
-  [v5 addObserver:self selector:sel__playbackErrorDidOccur_ name:v8 object:v9];
+  player2 = [(VUIBackgroundMediaController *)self player];
+  [defaultCenter addObserver:self selector:sel__playbackErrorDidOccur_ name:v8 object:player2];
 
   v10 = *MEMORY[0x1E69D60A8];
-  v11 = [(VUIBackgroundMediaController *)self player];
-  [v5 addObserver:self selector:sel__playbackStateWillChange_ name:v10 object:v11];
+  player3 = [(VUIBackgroundMediaController *)self player];
+  [defaultCenter addObserver:self selector:sel__playbackStateWillChange_ name:v10 object:player3];
 
   v12 = *MEMORY[0x1E69D5F40];
-  v13 = [(VUIBackgroundMediaController *)self player];
-  [v5 addObserver:self selector:sel__playbackRateDidChange_ name:v12 object:v13];
+  player4 = [(VUIBackgroundMediaController *)self player];
+  [defaultCenter addObserver:self selector:sel__playbackRateDidChange_ name:v12 object:player4];
 
   v14 = *MEMORY[0x1E69D60C8];
-  v15 = [(VUIBackgroundMediaController *)self player];
-  [v5 addObserver:self selector:sel__externalPlaybackStateChanged_ name:v14 object:v15];
+  player5 = [(VUIBackgroundMediaController *)self player];
+  [defaultCenter addObserver:self selector:sel__externalPlaybackStateChanged_ name:v14 object:player5];
 
-  [v5 addObserver:self selector:sel__mediaControllerStartedPlayback_ name:@"VUIBackgroundMediaControllerWillStartPlaybackNotification" object:0];
-  [v5 addObserver:self selector:sel__mediaControllerStartedPlayback_ name:@"VUIBackgroundMediaControllerDidStartPlaybackNotification" object:0];
+  [defaultCenter addObserver:self selector:sel__mediaControllerStartedPlayback_ name:@"VUIBackgroundMediaControllerWillStartPlaybackNotification" object:0];
+  [defaultCenter addObserver:self selector:sel__mediaControllerStartedPlayback_ name:@"VUIBackgroundMediaControllerDidStartPlaybackNotification" object:0];
   if (![(VUIBackgroundMediaController *)self observingInitialMediaItemHasCompletedInitialLoading])
   {
-    v16 = [(VUIBackgroundMediaController *)self player];
-    [v16 addObserver:self forKeyPath:@"initialMediaItemHasCompletedInitialLoading" options:0 context:__PlayerInitialMediaItemHasCompletedInitialLoadingKVOContext_0];
+    player6 = [(VUIBackgroundMediaController *)self player];
+    [player6 addObserver:self forKeyPath:@"initialMediaItemHasCompletedInitialLoading" options:0 context:__PlayerInitialMediaItemHasCompletedInitialLoadingKVOContext_0];
 
     [(VUIBackgroundMediaController *)self setObservingInitialMediaItemHasCompletedInitialLoading:1];
   }
@@ -2516,37 +2516,37 @@ void __89__VUIBackgroundMediaController_playBackManagerFullscreenPlaybackUIDidCh
   v3 = VUIDefaultLogObject();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(VUIBackgroundMediaController *)self name];
+    name = [(VUIBackgroundMediaController *)self name];
     v15 = 134218242;
-    v16 = self;
+    selfCopy = self;
     v17 = 2112;
-    v18 = v4;
+    v18 = name;
     _os_log_impl(&dword_1E323F000, v3, OS_LOG_TYPE_DEFAULT, "VUIBackgroundMediaController::(%p: %@) unregister player notifications and remove observers", &v15, 0x16u);
   }
 
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v6 = *MEMORY[0x1E69D6090];
-  v7 = [(VUIBackgroundMediaController *)self player];
-  [v5 removeObserver:self name:v6 object:v7];
+  player = [(VUIBackgroundMediaController *)self player];
+  [defaultCenter removeObserver:self name:v6 object:player];
 
   v8 = *MEMORY[0x1E69D5F38];
-  v9 = [(VUIBackgroundMediaController *)self player];
-  [v5 removeObserver:self name:v8 object:v9];
+  player2 = [(VUIBackgroundMediaController *)self player];
+  [defaultCenter removeObserver:self name:v8 object:player2];
 
   v10 = *MEMORY[0x1E69D60A8];
-  v11 = [(VUIBackgroundMediaController *)self player];
-  [v5 removeObserver:self name:v10 object:v11];
+  player3 = [(VUIBackgroundMediaController *)self player];
+  [defaultCenter removeObserver:self name:v10 object:player3];
 
   v12 = *MEMORY[0x1E69D60C8];
-  v13 = [(VUIBackgroundMediaController *)self player];
-  [v5 removeObserver:self name:v12 object:v13];
+  player4 = [(VUIBackgroundMediaController *)self player];
+  [defaultCenter removeObserver:self name:v12 object:player4];
 
-  [v5 removeObserver:self name:@"VUIBackgroundMediaControllerWillStartPlaybackNotification" object:0];
-  [v5 removeObserver:self name:@"VUIBackgroundMediaControllerDidStartPlaybackNotification" object:0];
+  [defaultCenter removeObserver:self name:@"VUIBackgroundMediaControllerWillStartPlaybackNotification" object:0];
+  [defaultCenter removeObserver:self name:@"VUIBackgroundMediaControllerDidStartPlaybackNotification" object:0];
   if ([(VUIBackgroundMediaController *)self observingInitialMediaItemHasCompletedInitialLoading])
   {
-    v14 = [(VUIBackgroundMediaController *)self player];
-    [v14 removeObserver:self forKeyPath:@"initialMediaItemHasCompletedInitialLoading" context:__PlayerInitialMediaItemHasCompletedInitialLoadingKVOContext_0];
+    player5 = [(VUIBackgroundMediaController *)self player];
+    [player5 removeObserver:self forKeyPath:@"initialMediaItemHasCompletedInitialLoading" context:__PlayerInitialMediaItemHasCompletedInitialLoadingKVOContext_0];
 
     [(VUIBackgroundMediaController *)self setObservingInitialMediaItemHasCompletedInitialLoading:0];
   }
@@ -2554,45 +2554,45 @@ void __89__VUIBackgroundMediaController_playBackManagerFullscreenPlaybackUIDidCh
 
 - (BOOL)_canPause
 {
-  v2 = [(VUIBackgroundMediaController *)self player];
-  [v2 duration];
+  player = [(VUIBackgroundMediaController *)self player];
+  [player duration];
   v4 = v3 != *MEMORY[0x1E69D5A78];
 
   return v4;
 }
 
-- (void)_updateWithMediaInfo:(id)a3 withDirection:(unint64_t)a4 imageVideoSwapBehavior:(unint64_t)a5 animated:(BOOL)a6
+- (void)_updateWithMediaInfo:(id)info withDirection:(unint64_t)direction imageVideoSwapBehavior:(unint64_t)behavior animated:(BOOL)animated
 {
-  v6 = a6;
+  animatedCopy = animated;
   v32[4] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  if (v10)
+  infoCopy = info;
+  if (infoCopy)
   {
     [(VUIBackgroundMediaController *)self _addContentViewIfNeeded];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v11 = [v10 tvpPlaylist];
-      -[VUIBackgroundMediaController setVpafPlaybackStartReason:](self, "setVpafPlaybackStartReason:", [v10 playbackStartReason]);
-      -[VUIBackgroundMediaController setVpafPlaybackStopReason:](self, "setVpafPlaybackStopReason:", [v10 playbackStopReason]);
+      tvpPlaylist = [infoCopy tvpPlaylist];
+      -[VUIBackgroundMediaController setVpafPlaybackStartReason:](self, "setVpafPlaybackStartReason:", [infoCopy playbackStartReason]);
+      -[VUIBackgroundMediaController setVpafPlaybackStopReason:](self, "setVpafPlaybackStopReason:", [infoCopy playbackStopReason]);
     }
 
     else
     {
-      v11 = 0;
+      tvpPlaylist = 0;
     }
 
-    v12 = [(VUIBackgroundMediaController *)self titleForLogging];
-    if ([v12 length])
+    titleForLogging = [(VUIBackgroundMediaController *)self titleForLogging];
+    if ([titleForLogging length])
     {
-      v13 = [(VUIBackgroundMediaController *)self name];
-      v14 = [v13 rangeOfString:v12];
+      name = [(VUIBackgroundMediaController *)self name];
+      v14 = [name rangeOfString:titleForLogging];
       v16 = v15;
 
       if (v14 != 0x7FFFFFFFFFFFFFFFLL)
       {
-        v17 = [(VUIBackgroundMediaController *)self name];
-        v18 = [v17 stringByReplacingCharactersInRange:v14 withString:{v16, &stru_1F5DB25C0}];
+        name2 = [(VUIBackgroundMediaController *)self name];
+        v18 = [name2 stringByReplacingCharactersInRange:v14 withString:{v16, &stru_1F5DB25C0}];
         name = self->_name;
         self->_name = v18;
 
@@ -2600,8 +2600,8 @@ void __89__VUIBackgroundMediaController_playBackManagerFullscreenPlaybackUIDidCh
       }
     }
 
-    v20 = [v11 currentMediaItem];
-    v21 = [v20 mediaItemMetadataForProperty:*MEMORY[0x1E69D5DC0]];
+    currentMediaItem = [tvpPlaylist currentMediaItem];
+    v21 = [currentMediaItem mediaItemMetadataForProperty:*MEMORY[0x1E69D5DC0]];
 
     if ([v21 length])
     {
@@ -2612,45 +2612,45 @@ void __89__VUIBackgroundMediaController_playBackManagerFullscreenPlaybackUIDidCh
       self->_name = v23;
     }
 
-    v25 = [v10 alphaImageProxy];
-    [(VUIBackgroundMediaController *)self _setAlphaImageProxy:v25];
+    alphaImageProxy = [infoCopy alphaImageProxy];
+    [(VUIBackgroundMediaController *)self _setAlphaImageProxy:alphaImageProxy];
 
     v31[0] = @"DirectionKey";
-    v26 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
+    v26 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:direction];
     v32[0] = v26;
     v31[1] = @"AnimatedKey";
-    v27 = [MEMORY[0x1E696AD98] numberWithBool:v6];
+    v27 = [MEMORY[0x1E696AD98] numberWithBool:animatedCopy];
     v32[1] = v27;
     v31[2] = @"ImageVideoSwapBehaviorKey";
-    v28 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a5];
+    v28 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:behavior];
     v31[3] = @"PlaybackStopReasonKey";
     v32[2] = v28;
     v32[3] = &unk_1F5E5E778;
     v29 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v32 forKeys:v31 count:4];
 
-    v30 = [(VUIBackgroundMediaController *)self stateMachine];
-    [v30 postEvent:@"Set media info" withContext:0 userInfo:v29];
+    stateMachine = [(VUIBackgroundMediaController *)self stateMachine];
+    [stateMachine postEvent:@"Set media info" withContext:0 userInfo:v29];
   }
 }
 
-- (BOOL)_playlist:(id)a3 contentMatchesPlaylist:(id)a4
+- (BOOL)_playlist:(id)_playlist contentMatchesPlaylist:(id)playlist
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 currentMediaItem];
+  playlistCopy = playlist;
+  _playlistCopy = _playlist;
+  currentMediaItem = [_playlistCopy currentMediaItem];
   v8 = *MEMORY[0x1E69D5D88];
-  v9 = [v7 mediaItemMetadataForProperty:*MEMORY[0x1E69D5D88]];
+  v9 = [currentMediaItem mediaItemMetadataForProperty:*MEMORY[0x1E69D5D88]];
 
-  v10 = [v5 currentMediaItem];
-  v11 = [v10 mediaItemMetadataForProperty:v8];
+  currentMediaItem2 = [playlistCopy currentMediaItem];
+  v11 = [currentMediaItem2 mediaItemMetadataForProperty:v8];
 
-  v12 = [v6 currentMediaItem];
-  v13 = [v12 mediaItemMetadataForProperty:@"VUIMediaItemMetadataClipId"];
+  currentMediaItem3 = [_playlistCopy currentMediaItem];
+  v13 = [currentMediaItem3 mediaItemMetadataForProperty:@"VUIMediaItemMetadataClipId"];
 
-  v14 = [v5 currentMediaItem];
-  v15 = [v14 mediaItemMetadataForProperty:@"VUIMediaItemMetadataClipId"];
+  currentMediaItem4 = [playlistCopy currentMediaItem];
+  v15 = [currentMediaItem4 mediaItemMetadataForProperty:@"VUIMediaItemMetadataClipId"];
 
-  v16 = [v6 isEqualToPlaylist:v5];
+  v16 = [_playlistCopy isEqualToPlaylist:playlistCopy];
   if (v9 | v11)
   {
     v17 = [v9 isEqualToDate:v11];
@@ -2687,26 +2687,26 @@ LABEL_9:
   return v19;
 }
 
-- (BOOL)_mediaInfo:(id)a3 contentMatchesMediaInfo:(id)a4
+- (BOOL)_mediaInfo:(id)info contentMatchesMediaInfo:(id)mediaInfo
 {
   v4 = 0;
-  if (a3 && a4)
+  if (info && mediaInfo)
   {
-    v7 = a4;
-    v8 = a3;
-    v9 = [v8 imageProxies];
-    v10 = [v9 firstObject];
+    mediaInfoCopy = mediaInfo;
+    infoCopy = info;
+    imageProxies = [infoCopy imageProxies];
+    firstObject = [imageProxies firstObject];
 
-    v11 = [v7 imageProxies];
-    v12 = [v11 firstObject];
+    imageProxies2 = [mediaInfoCopy imageProxies];
+    firstObject2 = [imageProxies2 firstObject];
 
-    v13 = [v8 tvpPlaylist];
+    tvpPlaylist = [infoCopy tvpPlaylist];
 
-    v14 = [v7 tvpPlaylist];
+    tvpPlaylist2 = [mediaInfoCopy tvpPlaylist];
 
-    if (v10 | v12)
+    if (firstObject | firstObject2)
     {
-      v15 = [v10 isEqual:v12];
+      v15 = [firstObject isEqual:firstObject2];
     }
 
     else
@@ -2714,9 +2714,9 @@ LABEL_9:
       v15 = 1;
     }
 
-    if (v13 | v14)
+    if (tvpPlaylist | tvpPlaylist2)
     {
-      v16 = [(VUIBackgroundMediaController *)self _playlist:v13 contentMatchesPlaylist:v14];
+      v16 = [(VUIBackgroundMediaController *)self _playlist:tvpPlaylist contentMatchesPlaylist:tvpPlaylist2];
     }
 
     else
@@ -2730,45 +2730,45 @@ LABEL_9:
   return v4;
 }
 
-- (BOOL)_currentMediaInfoImagesMatchesNewMediaInfoImage:(id)a3
+- (BOOL)_currentMediaInfoImagesMatchesNewMediaInfoImage:(id)image
 {
-  v4 = a3;
-  v5 = [(VUIBackgroundMediaController *)self currentMediaInfo];
-  v6 = [v5 imageProxies];
-  v7 = [v6 firstObject];
+  imageCopy = image;
+  currentMediaInfo = [(VUIBackgroundMediaController *)self currentMediaInfo];
+  imageProxies = [currentMediaInfo imageProxies];
+  firstObject = [imageProxies firstObject];
 
-  v8 = [v4 imageProxies];
+  imageProxies2 = [imageCopy imageProxies];
 
-  v9 = [v8 firstObject];
+  firstObject2 = [imageProxies2 firstObject];
 
   v10 = 0;
-  if (v7 && v9)
+  if (firstObject && firstObject2)
   {
-    v10 = [v7 isEqual:v9];
+    v10 = [firstObject isEqual:firstObject2];
   }
 
   return v10;
 }
 
-- (BOOL)_currentMediaInfoContentMatchesMediaInfo:(id)a3
+- (BOOL)_currentMediaInfoContentMatchesMediaInfo:(id)info
 {
-  v4 = a3;
-  v5 = [(VUIBackgroundMediaController *)self currentMediaInfo];
-  LOBYTE(self) = [(VUIBackgroundMediaController *)self _mediaInfo:v5 contentMatchesMediaInfo:v4];
+  infoCopy = info;
+  currentMediaInfo = [(VUIBackgroundMediaController *)self currentMediaInfo];
+  LOBYTE(self) = [(VUIBackgroundMediaController *)self _mediaInfo:currentMediaInfo contentMatchesMediaInfo:infoCopy];
 
   return self;
 }
 
-- (void)_setAlphaImageProxy:(id)a3
+- (void)_setAlphaImageProxy:(id)proxy
 {
-  v6 = a3;
+  proxyCopy = proxy;
   if (([(VUIImageProxy *)self->_alphaImageProxy isEqual:?]& 1) == 0)
   {
     [(VUIImageProxy *)self->_alphaImageProxy cancel];
-    v5 = [(VUIBackgroundMediaController *)self alphaProxyImageView];
-    [v5 setImage:0];
+    alphaProxyImageView = [(VUIBackgroundMediaController *)self alphaProxyImageView];
+    [alphaProxyImageView setImage:0];
 
-    objc_storeStrong(&self->_alphaImageProxy, a3);
+    objc_storeStrong(&self->_alphaImageProxy, proxy);
     [(VUIBackgroundMediaController *)self loadAlphaImageProxy];
     [(VUIBackgroundMediaController *)self _addAlphaProxyImageViewIfNeeded];
   }
@@ -2776,23 +2776,23 @@ LABEL_9:
 
 - (void)loadAlphaImageProxy
 {
-  v3 = [(VUIBackgroundMediaController *)self alphaImageProxy];
-  if (v3)
+  alphaImageProxy = [(VUIBackgroundMediaController *)self alphaImageProxy];
+  if (alphaImageProxy)
   {
-    v4 = v3;
-    v5 = [(VUIBackgroundMediaController *)self alphaProxyImageView];
-    v6 = [v5 image];
+    v4 = alphaImageProxy;
+    alphaProxyImageView = [(VUIBackgroundMediaController *)self alphaProxyImageView];
+    image = [alphaProxyImageView image];
 
-    if (!v6)
+    if (!image)
     {
       objc_initWeak(&location, self);
-      v7 = [(VUIBackgroundMediaController *)self alphaImageProxy];
+      alphaImageProxy2 = [(VUIBackgroundMediaController *)self alphaImageProxy];
       v9 = MEMORY[0x1E69E9820];
       v10 = 3221225472;
       v11 = __51__VUIBackgroundMediaController_loadAlphaImageProxy__block_invoke;
       v12 = &unk_1E87376E8;
       objc_copyWeak(&v13, &location);
-      [v7 setCompletionHandler:&v9];
+      [alphaImageProxy2 setCompletionHandler:&v9];
 
       v8 = [(VUIBackgroundMediaController *)self alphaImageProxy:v9];
       [v8 load];
@@ -2854,15 +2854,15 @@ void __51__VUIBackgroundMediaController_loadAlphaImageProxy__block_invoke_2(uint
   }
 }
 
-- (void)_performPlayerVolumeAnimatedUpdate:(BOOL)a3
+- (void)_performPlayerVolumeAnimatedUpdate:(BOOL)update
 {
-  v3 = a3;
+  updateCopy = update;
   v28 = *MEMORY[0x1E69E9840];
-  v5 = [(VUIBackgroundMediaController *)self player];
-  [v5 volume];
+  player = [(VUIBackgroundMediaController *)self player];
+  [player volume];
   v7 = v6;
 
-  if (v3)
+  if (updateCopy)
   {
     [(VUIBackgroundMediaController *)self foregroundVolume];
   }
@@ -2878,11 +2878,11 @@ void __51__VUIBackgroundMediaController_loadAlphaImageProxy__block_invoke_2(uint
     v10 = VUIDefaultLogObject();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [(VUIBackgroundMediaController *)self name];
+      name = [(VUIBackgroundMediaController *)self name];
       *buf = 134218242;
-      v23 = self;
+      selfCopy2 = self;
       v24 = 2112;
-      v25 = v11;
+      v25 = name;
       _os_log_impl(&dword_1E323F000, v10, OS_LOG_TYPE_DEFAULT, "VUIBackgroundMediaController::(%p: %@) volume fading is not supported, returning without any volume changes.", buf, 0x16u);
     }
   }
@@ -2890,7 +2890,7 @@ void __51__VUIBackgroundMediaController_loadAlphaImageProxy__block_invoke_2(uint
   else
   {
     v12 = v7 < v8;
-    if (!v3)
+    if (!updateCopy)
     {
       v12 = v7 > v8;
     }
@@ -2900,7 +2900,7 @@ void __51__VUIBackgroundMediaController_loadAlphaImageProxy__block_invoke_2(uint
       [(VUIBackgroundMediaController *)self fullscreenTransitionVolumeAnimationChanges];
       if (v13 == -1.0)
       {
-        if (v3)
+        if (updateCopy)
         {
           v14 = v9 - v7;
         }
@@ -2916,7 +2916,7 @@ void __51__VUIBackgroundMediaController_loadAlphaImageProxy__block_invoke_2(uint
 
       [(VUIBackgroundMediaController *)self volumeTransitionAnimationDuration];
       v17 = v16 / [(VUIBackgroundMediaController *)self numberOfVolumeIncrements];
-      v21 = [MEMORY[0x1E696AD98] numberWithBool:v3];
+      v21 = [MEMORY[0x1E696AD98] numberWithBool:updateCopy];
       [(VUIBackgroundMediaController *)self performSelector:sel__updatePlayerVolume_ withObject:v17 afterDelay:?];
     }
 
@@ -2925,11 +2925,11 @@ void __51__VUIBackgroundMediaController_loadAlphaImageProxy__block_invoke_2(uint
       v18 = VUIDefaultLogObject();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
-        v19 = [(VUIBackgroundMediaController *)self name];
+        name2 = [(VUIBackgroundMediaController *)self name];
         *buf = 134218498;
-        v23 = self;
+        selfCopy2 = self;
         v24 = 2112;
-        v25 = v19;
+        v25 = name2;
         v26 = 2048;
         v27 = v9;
         _os_log_impl(&dword_1E323F000, v18, OS_LOG_TYPE_DEFAULT, "VUIBackgroundMediaController::(%p: %@) reached final volume: [%f].", buf, 0x20u);
@@ -2941,26 +2941,26 @@ void __51__VUIBackgroundMediaController_loadAlphaImageProxy__block_invoke_2(uint
   }
 }
 
-- (void)_updatePlayerVolume:(id)a3
+- (void)_updatePlayerVolume:(id)volume
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  volumeCopy = volume;
+  v5 = volumeCopy;
+  if (volumeCopy)
   {
-    v6 = [v4 BOOLValue];
+    bOOLValue = [volumeCopy BOOLValue];
   }
 
   else
   {
-    v6 = 0;
+    bOOLValue = 0;
   }
 
-  v7 = [(VUIBackgroundMediaController *)self player];
-  [v7 volume];
+  player = [(VUIBackgroundMediaController *)self player];
+  [player volume];
   v9 = v8;
 
-  if (v6)
+  if (bOOLValue)
   {
     [(VUIBackgroundMediaController *)self foregroundVolume];
     v11 = v10;
@@ -2972,11 +2972,11 @@ LABEL_17:
       v20 = VUIDefaultLogObject();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
       {
-        v21 = [(VUIBackgroundMediaController *)self name];
+        name = [(VUIBackgroundMediaController *)self name];
         v23 = 134218754;
-        v24 = self;
+        selfCopy = self;
         v25 = 2112;
-        v26 = v21;
+        v26 = name;
         v27 = 2048;
         v28 = v11;
         v29 = 2048;
@@ -2998,13 +2998,13 @@ LABEL_17:
     v13 = v15;
   }
 
-  if (((v9 <= v11) & ~v6) != 0 || v13 == -1.0)
+  if (((v9 <= v11) & ~bOOLValue) != 0 || v13 == -1.0)
   {
     goto LABEL_17;
   }
 
   v16 = v11 - v9;
-  if (!v6)
+  if (!bOOLValue)
   {
     v16 = v9 - v11;
   }
@@ -3014,57 +3014,57 @@ LABEL_17:
     v16 = v13;
   }
 
-  if (!v6)
+  if (!bOOLValue)
   {
     v16 = -v16;
   }
 
   v17 = v9 + v16;
-  v18 = [(VUIBackgroundMediaController *)self player];
+  player2 = [(VUIBackgroundMediaController *)self player];
   *&v19 = v17;
-  [v18 setVolume:v19];
+  [player2 setVolume:v19];
 
-  [(VUIBackgroundMediaController *)self _performPlayerVolumeAnimatedUpdate:v6];
+  [(VUIBackgroundMediaController *)self _performPlayerVolumeAnimatedUpdate:bOOLValue];
 LABEL_20:
 }
 
 - (void)_cleanUpPlaybackTimers
 {
   v13 = *MEMORY[0x1E69E9840];
-  v3 = [(VUIBackgroundMediaController *)self playbackLoadingTimer];
-  if (v3)
+  playbackLoadingTimer = [(VUIBackgroundMediaController *)self playbackLoadingTimer];
+  if (playbackLoadingTimer)
   {
     v4 = VUIDefaultLogObject();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
-      v5 = [(VUIBackgroundMediaController *)self name];
+      name = [(VUIBackgroundMediaController *)self name];
       v9 = 134218242;
-      v10 = self;
+      selfCopy2 = self;
       v11 = 2112;
-      v12 = v5;
+      v12 = name;
       _os_log_impl(&dword_1E323F000, v4, OS_LOG_TYPE_DEFAULT, "VUIBackgroundMediaController::(%p: %@) invalidating playlist loading timer.", &v9, 0x16u);
     }
 
-    [v3 invalidate];
+    [playbackLoadingTimer invalidate];
     [(VUIBackgroundMediaController *)self setPlaybackLoadingTimer:0];
     [(VUIBackgroundMediaController *)self setPlaybackLoadingStartDate:0];
   }
 
-  v6 = [(VUIBackgroundMediaController *)self playbackDelayTimer];
-  if (v6)
+  playbackDelayTimer = [(VUIBackgroundMediaController *)self playbackDelayTimer];
+  if (playbackDelayTimer)
   {
     v7 = VUIDefaultLogObject();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(VUIBackgroundMediaController *)self name];
+      name2 = [(VUIBackgroundMediaController *)self name];
       v9 = 134218242;
-      v10 = self;
+      selfCopy2 = self;
       v11 = 2112;
-      v12 = v8;
+      v12 = name2;
       _os_log_impl(&dword_1E323F000, v7, OS_LOG_TYPE_DEFAULT, "VUIBackgroundMediaController::(%p: %@) invalidating playback timer.", &v9, 0x16u);
     }
 
-    [v6 invalidate];
+    [playbackDelayTimer invalidate];
     [(VUIBackgroundMediaController *)self setPlaybackDelayTimer:0];
     [(VUIBackgroundMediaController *)self setPlaybackLoadingStartDate:0];
   }
@@ -3076,22 +3076,22 @@ LABEL_20:
   v3 = VUIDefaultLogObject();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(VUIBackgroundMediaController *)self name];
+    name = [(VUIBackgroundMediaController *)self name];
     v8 = 134218242;
-    v9 = self;
+    selfCopy = self;
     v10 = 2112;
-    v11 = v4;
+    v11 = name;
     _os_log_impl(&dword_1E323F000, v3, OS_LOG_TYPE_DEFAULT, "VUIBackgroundMediaController::(%p: %@) cleaning up everything for", &v8, 0x16u);
   }
 
-  v5 = [(VUIBackgroundMediaController *)self proxyImageView];
-  [v5 setImage:0];
+  proxyImageView = [(VUIBackgroundMediaController *)self proxyImageView];
+  [proxyImageView setImage:0];
 
-  v6 = [(VUIBackgroundMediaController *)self proxyImageView];
-  [v6 setImageProxy:0];
+  proxyImageView2 = [(VUIBackgroundMediaController *)self proxyImageView];
+  [proxyImageView2 setImageProxy:0];
 
-  v7 = [(VUIBackgroundMediaController *)self alphaImageProxy];
-  [v7 cancel];
+  alphaImageProxy = [(VUIBackgroundMediaController *)self alphaImageProxy];
+  [alphaImageProxy cancel];
 
   [(VUIBackgroundMediaController *)self _cleanUpEverythingPlaybackRelated];
   [MEMORY[0x1E69E58C0] cancelPreviousPerformRequestsWithTarget:self];
@@ -3103,28 +3103,28 @@ LABEL_20:
   v3 = VUIDefaultLogObject();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(VUIBackgroundMediaController *)self name];
+    name = [(VUIBackgroundMediaController *)self name];
     *buf = 134218242;
-    v43 = self;
+    selfCopy = self;
     v44 = 2112;
-    v45 = v4;
+    v45 = name;
     _os_log_impl(&dword_1E323F000, v3, OS_LOG_TYPE_DEFAULT, "VUIBackgroundMediaController::(%p: %@) cleaning up player and playback view controller.", buf, 0x16u);
   }
 
   [(VUIBackgroundMediaController *)self _cleanUpPlaybackTimers];
   [(VUIBackgroundMediaController *)self _unregisterPlayerNotifications];
   [(VUIBackgroundMediaController *)self _removePlaybackViewController];
-  v5 = [(VUIBackgroundMediaController *)self secondaryVideoView];
-  if (v5)
+  secondaryVideoView = [(VUIBackgroundMediaController *)self secondaryVideoView];
+  if (secondaryVideoView)
   {
-    v6 = [(VUIBackgroundMediaController *)self secondaryVideoView];
-    v7 = [v6 superview];
-    v8 = v7 == 0;
+    secondaryVideoView2 = [(VUIBackgroundMediaController *)self secondaryVideoView];
+    superview = [secondaryVideoView2 superview];
+    v8 = superview == 0;
 
     if (!v8)
     {
-      v9 = [(VUIBackgroundMediaController *)self secondaryVideoView];
-      [v9 removeFromSuperview];
+      secondaryVideoView3 = [(VUIBackgroundMediaController *)self secondaryVideoView];
+      [secondaryVideoView3 removeFromSuperview];
     }
   }
 
@@ -3133,52 +3133,52 @@ LABEL_20:
   [(VUIBackgroundMediaController *)self setPlaybackContainerController:0];
   if ([(VUIBackgroundMediaController *)self didWeCreatePlayer])
   {
-    v10 = [(VUIBackgroundMediaController *)self player];
-    [v10 removeObserver:self forKeyPath:@"avPlayer" context:__PlayerAVPlayerKVOContext_1];
+    player = [(VUIBackgroundMediaController *)self player];
+    [player removeObserver:self forKeyPath:@"avPlayer" context:__PlayerAVPlayerKVOContext_1];
 
-    v11 = [(VUIBackgroundMediaController *)self player];
-    [v11 removeObserver:self forKeyPath:@"preferredAudioLanguageCode" context:__PlayerPreferredAudioLanguageCode];
+    player2 = [(VUIBackgroundMediaController *)self player];
+    [player2 removeObserver:self forKeyPath:@"preferredAudioLanguageCode" context:__PlayerPreferredAudioLanguageCode];
 
-    v12 = [(VUIBackgroundMediaController *)self player];
-    [v12 removeObserver:self forKeyPath:@"prefersAudioDescriptions" context:__PlayerPrefersAudioDescriptions];
+    player3 = [(VUIBackgroundMediaController *)self player];
+    [player3 removeObserver:self forKeyPath:@"prefersAudioDescriptions" context:__PlayerPrefersAudioDescriptions];
 
     [(VUIBackgroundMediaController *)self videoAudioRampDuration];
     v14 = v13;
     if (v13 <= 0.0)
     {
-      v20 = [(VUIBackgroundMediaController *)self player];
-      v21 = [v20 state];
-      v22 = [MEMORY[0x1E69D5A40] stopped];
-      v23 = v21 == v22;
+      player4 = [(VUIBackgroundMediaController *)self player];
+      state = [player4 state];
+      stopped = [MEMORY[0x1E69D5A40] stopped];
+      v23 = state == stopped;
 
       if (v23)
       {
-        v24 = [(VUIBackgroundMediaController *)self player];
-        [v24 setElapsedTime:0.0];
+        player5 = [(VUIBackgroundMediaController *)self player];
+        [player5 setElapsedTime:0.0];
       }
     }
 
     else
     {
       objc_initWeak(buf, self);
-      v15 = [(VUIBackgroundMediaController *)self player];
-      v16 = [(VUIBackgroundMediaController *)self rampDownPlayer];
+      player6 = [(VUIBackgroundMediaController *)self player];
+      rampDownPlayer = [(VUIBackgroundMediaController *)self rampDownPlayer];
 
-      if (v16)
+      if (rampDownPlayer)
       {
         v17 = +[VUIPlayerValidationManager sharedInstance];
-        v18 = [(VUIBackgroundMediaController *)self rampDownPlayer];
-        [v17 removeReferenceForPlayer:v18];
+        rampDownPlayer2 = [(VUIBackgroundMediaController *)self rampDownPlayer];
+        [v17 removeReferenceForPlayer:rampDownPlayer2];
       }
 
-      [(VUIBackgroundMediaController *)self setRampDownPlayer:v15];
+      [(VUIBackgroundMediaController *)self setRampDownPlayer:player6];
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __65__VUIBackgroundMediaController__cleanUpEverythingPlaybackRelated__block_invoke;
       block[3] = &unk_1E8737710;
-      v40 = v15;
+      v40 = player6;
       v41[1] = *&v14;
-      v19 = v15;
+      v19 = player6;
       objc_copyWeak(v41, buf);
       dispatch_async(MEMORY[0x1E69E96A0], block);
       objc_destroyWeak(v41);
@@ -3187,13 +3187,13 @@ LABEL_20:
     }
   }
 
-  v25 = [(VUIBackgroundMediaController *)self player];
-  if (v25)
+  player7 = [(VUIBackgroundMediaController *)self player];
+  if (player7)
   {
-    v26 = [(VUIBackgroundMediaController *)self player];
-    v27 = [v26 state];
-    v28 = [MEMORY[0x1E69D5A40] stopped];
-    v29 = v27 == v28;
+    player8 = [(VUIBackgroundMediaController *)self player];
+    state2 = [player8 state];
+    stopped2 = [MEMORY[0x1E69D5A40] stopped];
+    v29 = state2 == stopped2;
 
     if (!v29)
     {
@@ -3201,27 +3201,27 @@ LABEL_20:
       if (v30 == 0.0)
       {
         v31 = MEMORY[0x1E696AD98];
-        v32 = [(VUIBackgroundMediaController *)self player];
-        [v32 cachedElapsedTime];
+        player9 = [(VUIBackgroundMediaController *)self player];
+        [player9 cachedElapsedTime];
         v33 = [v31 numberWithDouble:?];
         [(VUIBackgroundMediaController *)self setElapsedTimeWhenStopped:v33];
 
-        v34 = [(VUIBackgroundMediaController *)self player];
-        [v34 stop];
+        player10 = [(VUIBackgroundMediaController *)self player];
+        [player10 stop];
       }
 
-      v35 = [MEMORY[0x1E69D5A40] stopped];
-      [(VUIBackgroundMediaController *)self _recordBgAutoPlayMediaEventForPlaybackState:v35];
+      stopped3 = [MEMORY[0x1E69D5A40] stopped];
+      [(VUIBackgroundMediaController *)self _recordBgAutoPlayMediaEventForPlaybackState:stopped3];
     }
   }
 
-  v36 = [(VUIBackgroundMediaController *)self player];
+  player11 = [(VUIBackgroundMediaController *)self player];
 
-  if (v36)
+  if (player11)
   {
     v37 = +[VUIPlayerValidationManager sharedInstance];
-    v38 = [(VUIBackgroundMediaController *)self player];
-    [v37 removeReferenceForPlayer:v38];
+    player12 = [(VUIBackgroundMediaController *)self player];
+    [v37 removeReferenceForPlayer:player12];
   }
 
   [(VUIBackgroundMediaController *)self setPlayer:0];
@@ -3254,54 +3254,54 @@ void __65__VUIBackgroundMediaController__cleanUpEverythingPlaybackRelated__block
 
 - (void)_cleanUpRampDownPlayer
 {
-  v3 = [(VUIBackgroundMediaController *)self rampDownPlayer];
+  rampDownPlayer = [(VUIBackgroundMediaController *)self rampDownPlayer];
 
-  if (v3)
+  if (rampDownPlayer)
   {
-    v4 = [(VUIBackgroundMediaController *)self rampDownPlayer];
-    [v4 stop];
+    rampDownPlayer2 = [(VUIBackgroundMediaController *)self rampDownPlayer];
+    [rampDownPlayer2 stop];
 
-    v5 = [(VUIBackgroundMediaController *)self rampDownPlayer];
-    [v5 setElapsedTime:0.0];
+    rampDownPlayer3 = [(VUIBackgroundMediaController *)self rampDownPlayer];
+    [rampDownPlayer3 setElapsedTime:0.0];
 
     v6 = +[VUIPlayerValidationManager sharedInstance];
-    v7 = [(VUIBackgroundMediaController *)self rampDownPlayer];
-    [v6 removeReferenceForPlayer:v7];
+    rampDownPlayer4 = [(VUIBackgroundMediaController *)self rampDownPlayer];
+    [v6 removeReferenceForPlayer:rampDownPlayer4];
 
     [(VUIBackgroundMediaController *)self setRampDownPlayer:0];
   }
 }
 
-- (void)_addOverlayViewAnimatedIfNeeded:(BOOL)a3 dismissAfter:(double)a4
+- (void)_addOverlayViewAnimatedIfNeeded:(BOOL)needed dismissAfter:(double)after
 {
-  v5 = a3;
-  v7 = [(VUIBackgroundMediaController *)self currentMediaInfo];
-  v8 = [v7 overlayView];
+  neededCopy = needed;
+  currentMediaInfo = [(VUIBackgroundMediaController *)self currentMediaInfo];
+  overlayView = [currentMediaInfo overlayView];
 
-  if (v8)
+  if (overlayView)
   {
-    v9 = [v8 superview];
+    superview = [overlayView superview];
 
-    if (!v9)
+    if (!superview)
     {
-      [v8 vuiAlpha];
+      [overlayView vuiAlpha];
       v11 = v10;
-      [v8 setVuiAlpha:0.0];
-      v12 = [(VUIBackgroundMediaController *)self view];
-      [v12 vui_addSubview:v8 oldView:0];
+      [overlayView setVuiAlpha:0.0];
+      view = [(VUIBackgroundMediaController *)self view];
+      [view vui_addSubview:overlayView oldView:0];
 
       objc_initWeak(&location, self);
       aBlock[0] = MEMORY[0x1E69E9820];
       aBlock[1] = 3221225472;
       aBlock[2] = __77__VUIBackgroundMediaController__addOverlayViewAnimatedIfNeeded_dismissAfter___block_invoke;
       aBlock[3] = &unk_1E872E4E0;
-      v25[1] = *&a4;
+      v25[1] = *&after;
       objc_copyWeak(v25, &location);
-      v13 = v8;
+      v13 = overlayView;
       v24 = v13;
-      v26 = v5;
+      v26 = neededCopy;
       v14 = _Block_copy(aBlock);
-      if (v5)
+      if (neededCopy)
       {
         v15 = MEMORY[0x1E69DD250];
         imageAnimationDuration = self->_imageAnimationDuration;
@@ -3357,15 +3357,15 @@ void __77__VUIBackgroundMediaController__addOverlayViewAnimatedIfNeeded_dismissA
   [WeakRetained _removeOverlayView:*(a1 + 32) animated:*(a1 + 48)];
 }
 
-- (void)_removeOverlayView:(id)a3 animated:(BOOL)a4
+- (void)_removeOverlayView:(id)view animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  animatedCopy = animated;
+  viewCopy = view;
+  v7 = viewCopy;
+  if (viewCopy)
   {
-    [v6 setVuiAlpha:1.0];
-    if (v4)
+    [viewCopy setVuiAlpha:1.0];
+    if (animatedCopy)
     {
       v8 = MEMORY[0x1E69DD250];
       imageAnimationDuration = self->_imageAnimationDuration;
@@ -3391,67 +3391,67 @@ void __77__VUIBackgroundMediaController__addOverlayViewAnimatedIfNeeded_dismissA
   }
 }
 
-- (void)_animateTransitionFromView:(id)a3 toView:(id)a4 duration:(double)a5 direction:(unint64_t)a6 completion:(id)a7
+- (void)_animateTransitionFromView:(id)view toView:(id)toView duration:(double)duration direction:(unint64_t)direction completion:(id)completion
 {
   v58[4] = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a7;
+  viewCopy = view;
+  toViewCopy = toView;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   if ([(VUIBackgroundMediaController *)self animateImageChange]&& [(VUIBackgroundMediaController *)self imageSwappingAnimationType])
   {
-    v14 = [v12 constraints];
-    [v12 removeConstraints:v14];
+    constraints = [toViewCopy constraints];
+    [toViewCopy removeConstraints:constraints];
 
-    v15 = [(VUIBackgroundMediaController *)self view];
-    [v15 bounds];
+    view = [(VUIBackgroundMediaController *)self view];
+    [view bounds];
     Width = CGRectGetWidth(v59);
 
-    v17 = [v12 widthAnchor];
-    v18 = [(VUIBackgroundMediaController *)self view];
-    v19 = [v18 widthAnchor];
-    v45 = [v17 constraintEqualToAnchor:v19];
+    widthAnchor = [toViewCopy widthAnchor];
+    view2 = [(VUIBackgroundMediaController *)self view];
+    widthAnchor2 = [view2 widthAnchor];
+    v45 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
 
-    v20 = [v12 heightAnchor];
-    v21 = [(VUIBackgroundMediaController *)self view];
-    v22 = [v21 heightAnchor];
-    v23 = [v20 constraintEqualToAnchor:v22];
+    heightAnchor = [toViewCopy heightAnchor];
+    view3 = [(VUIBackgroundMediaController *)self view];
+    heightAnchor2 = [view3 heightAnchor];
+    v23 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
 
-    v24 = [v12 centerXAnchor];
-    v25 = [(VUIBackgroundMediaController *)self view];
-    v26 = [v25 centerXAnchor];
-    v27 = [v24 constraintEqualToAnchor:v26];
+    centerXAnchor = [toViewCopy centerXAnchor];
+    view4 = [(VUIBackgroundMediaController *)self view];
+    centerXAnchor2 = [view4 centerXAnchor];
+    v27 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
 
-    v28 = [v12 centerYAnchor];
-    v29 = [(VUIBackgroundMediaController *)self view];
-    v30 = [v29 centerYAnchor];
-    v31 = [v28 constraintEqualToAnchor:v30];
+    centerYAnchor = [toViewCopy centerYAnchor];
+    view5 = [(VUIBackgroundMediaController *)self view];
+    centerYAnchor2 = [view5 centerYAnchor];
+    v31 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
 
-    v32 = [(VUIBackgroundMediaController *)self imageSwappingAnimationType];
-    if (v32 == 1)
+    imageSwappingAnimationType = [(VUIBackgroundMediaController *)self imageSwappingAnimationType];
+    if (imageSwappingAnimationType == 1)
     {
-      v36 = [(VUIBackgroundMediaController *)self view];
-      [v36 vui_bringSubviewToFront:v12];
+      view6 = [(VUIBackgroundMediaController *)self view];
+      [view6 vui_bringSubviewToFront:toViewCopy];
 
-      [v11 setVuiAlpha:1.0];
-      [v12 setVuiAlpha:0.0];
+      [viewCopy setVuiAlpha:1.0];
+      [toViewCopy setVuiAlpha:0.0];
       goto LABEL_18;
     }
 
-    if (v32 != 2)
+    if (imageSwappingAnimationType != 2)
     {
-      if (v32 == 3)
+      if (imageSwappingAnimationType == 3)
       {
-        v33 = [(VUIBackgroundMediaController *)self view];
-        [v33 vui_bringSubviewToFront:v12];
+        view7 = [(VUIBackgroundMediaController *)self view];
+        [view7 vui_bringSubviewToFront:toViewCopy];
 
-        if (a6 == 2)
+        if (direction == 2)
         {
           [v27 setConstant:Width * 0.5];
           goto LABEL_16;
         }
 
-        if (a6 == 1)
+        if (direction == 1)
         {
           [v27 setConstant:Width * -0.5];
 LABEL_16:
@@ -3470,27 +3470,27 @@ LABEL_18:
       v38 = [MEMORY[0x1E695DEC8] arrayWithObjects:v58 count:{4, v45}];
       [v37 activateConstraints:v38];
 
-      v39 = [(VUIBackgroundMediaController *)self view];
-      [v39 vui_setNeedsLayout];
+      view8 = [(VUIBackgroundMediaController *)self view];
+      [view8 vui_setNeedsLayout];
 
-      v40 = [(VUIBackgroundMediaController *)self view];
-      [v40 vui_layoutIfNeeded];
+      view9 = [(VUIBackgroundMediaController *)self view];
+      [view9 vui_layoutIfNeeded];
 
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __96__VUIBackgroundMediaController__animateTransitionFromView_toView_duration_direction_completion___block_invoke;
       block[3] = &unk_1E8737760;
       objc_copyWeak(v56, &location);
-      v56[1] = a6;
+      v56[1] = direction;
       v49 = v27;
       v50 = v46;
       v56[2] = *&Width;
-      v56[3] = *&a5;
-      v51 = v11;
-      v52 = v12;
+      v56[3] = *&duration;
+      v51 = viewCopy;
+      v52 = toViewCopy;
       v53 = v23;
       v54 = v31;
-      v55 = v13;
+      v55 = completionCopy;
       v41 = v31;
       v42 = v23;
       v43 = v46;
@@ -3503,9 +3503,9 @@ LABEL_18:
 
     v34 = v27;
     v35 = Width;
-    if (a6 != 2)
+    if (direction != 2)
     {
-      if (a6 != 1)
+      if (direction != 1)
       {
         goto LABEL_18;
       }
@@ -3519,9 +3519,9 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  if (v13)
+  if (completionCopy)
   {
-    v13[2](v13);
+    completionCopy[2](completionCopy);
   }
 
 LABEL_19:
@@ -3640,36 +3640,36 @@ void __96__VUIBackgroundMediaController__animateTransitionFromView_toView_durati
   }
 }
 
-- (void)_transitionToNewImage:(id)a3 animated:(BOOL)a4 direction:(unint64_t)a5 completion:(id)a6
+- (void)_transitionToNewImage:(id)image animated:(BOOL)animated direction:(unint64_t)direction completion:(id)completion
 {
-  v8 = a4;
-  v10 = a3;
-  v11 = a6;
+  animatedCopy = animated;
+  imageCopy = image;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v12 = [(VUIBackgroundMediaController *)self proxyImageView];
+  proxyImageView = [(VUIBackgroundMediaController *)self proxyImageView];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __84__VUIBackgroundMediaController__transitionToNewImage_animated_direction_completion___block_invoke;
   aBlock[3] = &unk_1E872F038;
   objc_copyWeak(&v34, &location);
-  v13 = v12;
+  v13 = proxyImageView;
   v33 = v13;
   v14 = _Block_copy(aBlock);
-  if (v8 && [(VUIBackgroundMediaController *)self animateImageChange])
+  if (animatedCopy && [(VUIBackgroundMediaController *)self animateImageChange])
   {
     v15 = objc_alloc_init(MEMORY[0x1E69DF740]);
     [(VUIBackgroundMediaController *)self _configMirroredImageForBackgroundImage:v15];
     [(VUIBackgroundMediaController *)self _configImageTransitionContextForBackgroundImage:v15];
-    v16 = [v10 uiImage];
-    [v15 setImage:v16];
+    uiImage = [imageCopy uiImage];
+    [v15 setImage:uiImage];
 
     [v15 setVuiContentMode:{objc_msgSend(v13, "vuiContentMode")}];
-    v17 = [(VUIBackgroundMediaController *)self view];
-    [v17 vui_insertSubview:v15 belowSubview:v13 oldView:0];
+    view = [(VUIBackgroundMediaController *)self view];
+    [view vui_insertSubview:v15 belowSubview:v13 oldView:0];
 
     [v15 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v18 = [(VUIBackgroundMediaController *)self proxyImageView];
-    [v18 setVuiAlpha:1.0];
+    proxyImageView2 = [(VUIBackgroundMediaController *)self proxyImageView];
+    [proxyImageView2 setVuiAlpha:1.0];
 
     [(VUIBackgroundMediaController *)self setProxyImageView:v15];
     [(VUIBackgroundMediaController *)self imageTransitionAnimationDuration];
@@ -3680,28 +3680,28 @@ void __96__VUIBackgroundMediaController__animateTransitionFromView_toView_durati
     v28 = &unk_1E8737788;
     v30 = v14;
     v29 = v13;
-    v31 = v11;
-    [(VUIBackgroundMediaController *)self _animateTransitionFromView:v29 toView:v15 duration:a5 direction:&v25 completion:v20];
+    v31 = completionCopy;
+    [(VUIBackgroundMediaController *)self _animateTransitionFromView:v29 toView:v15 duration:direction direction:&v25 completion:v20];
   }
 
   else
   {
-    v21 = [(VUIBackgroundMediaController *)self proxyImageView];
-    [(VUIBackgroundMediaController *)self _configMirroredImageForBackgroundImage:v21];
+    proxyImageView3 = [(VUIBackgroundMediaController *)self proxyImageView];
+    [(VUIBackgroundMediaController *)self _configMirroredImageForBackgroundImage:proxyImageView3];
 
-    v22 = [(VUIBackgroundMediaController *)self proxyImageView];
-    v23 = [v10 uiImage];
-    [v22 setImage:v23];
+    proxyImageView4 = [(VUIBackgroundMediaController *)self proxyImageView];
+    uiImage2 = [imageCopy uiImage];
+    [proxyImageView4 setImage:uiImage2];
 
     v14[2](v14);
-    if (v11)
+    if (completionCopy)
     {
-      v11[2](v11);
+      completionCopy[2](completionCopy);
     }
   }
 
-  v24 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v24 postNotificationName:@"VUIBackgroundMediaControllerImageLoadedNotification" object:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"VUIBackgroundMediaControllerImageLoadedNotification" object:self];
 
   objc_destroyWeak(&v34);
   objc_destroyWeak(&location);
@@ -3752,19 +3752,19 @@ uint64_t __84__VUIBackgroundMediaController__transitionToNewImage_animated_direc
   return result;
 }
 
-- (void)_swapActiveMedia:(BOOL)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)_swapActiveMedia:(BOOL)media animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
-  v8 = a5;
-  if (a3)
+  animatedCopy = animated;
+  completionCopy = completion;
+  if (media)
   {
-    v9 = 1;
+    isAudioOnly = 1;
   }
 
   else
   {
-    v10 = [(VUIBackgroundMediaController *)self currentMediaInfo];
-    v9 = [v10 isAudioOnly];
+    currentMediaInfo = [(VUIBackgroundMediaController *)self currentMediaInfo];
+    isAudioOnly = [currentMediaInfo isAudioOnly];
   }
 
   objc_initWeak(&location, self);
@@ -3773,17 +3773,17 @@ uint64_t __84__VUIBackgroundMediaController__transitionToNewImage_animated_direc
   aBlock[2] = __69__VUIBackgroundMediaController__swapActiveMedia_animated_completion___block_invoke;
   aBlock[3] = &unk_1E8731108;
   objc_copyWeak(&v37, &location);
-  v38 = v9;
-  v39 = v5;
+  v38 = isAudioOnly;
+  v39 = animatedCopy;
   v11 = _Block_copy(aBlock);
-  if (!v5)
+  if (!animatedCopy)
   {
     goto LABEL_11;
   }
 
-  v12 = [(VUIBackgroundMediaController *)self playbackContainerController];
-  v13 = [v12 view];
-  if (!v13)
+  playbackContainerController = [(VUIBackgroundMediaController *)self playbackContainerController];
+  view = [playbackContainerController view];
+  if (!view)
   {
 
 LABEL_11:
@@ -3793,25 +3793,25 @@ LABEL_11:
     v25[2] = __69__VUIBackgroundMediaController__swapActiveMedia_animated_completion___block_invoke_5;
     v25[3] = &unk_1E872FF20;
     v26 = v11;
-    v27 = v8;
+    v27 = completionCopy;
     [v22 vui_performWithoutAnimation:v25];
     [(VUIBackgroundMediaController *)self showAlphaImage:1 animated:0];
 
     goto LABEL_12;
   }
 
-  v14 = [(VUIBackgroundMediaController *)self proxyImageView];
+  proxyImageView = [(VUIBackgroundMediaController *)self proxyImageView];
 
-  if (!v14 || ![(VUIBackgroundMediaController *)self animateVideoChange])
+  if (!proxyImageView || ![(VUIBackgroundMediaController *)self animateVideoChange])
   {
     goto LABEL_11;
   }
 
-  v15 = [(VUIBackgroundMediaController *)self videoSwappingAnimationType];
+  videoSwappingAnimationType = [(VUIBackgroundMediaController *)self videoSwappingAnimationType];
   v16 = MEMORY[0x1E69DD250];
-  if (v15)
+  if (videoSwappingAnimationType)
   {
-    v17 = [(VUIBackgroundMediaController *)self view];
+    view2 = [(VUIBackgroundMediaController *)self view];
     [(VUIBackgroundMediaController *)self imageVideoTransitionAnimationDuration];
     v19 = v18;
     v30[0] = MEMORY[0x1E69E9820];
@@ -3823,8 +3823,8 @@ LABEL_11:
     v28[1] = 3221225472;
     v28[2] = __69__VUIBackgroundMediaController__swapActiveMedia_animated_completion___block_invoke_4;
     v28[3] = &unk_1E872D790;
-    v29 = v8;
-    [v16 vui_transitionWithView:v17 duration:5242880 options:v30 animations:v28 completion:v19];
+    v29 = completionCopy;
+    [v16 vui_transitionWithView:view2 duration:5242880 options:v30 animations:v28 completion:v19];
     v20 = &v31;
     v21 = &v29;
   }
@@ -3842,7 +3842,7 @@ LABEL_11:
     v32[1] = 3221225472;
     v32[2] = __69__VUIBackgroundMediaController__swapActiveMedia_animated_completion___block_invoke_2;
     v32[3] = &unk_1E872D790;
-    v33 = v8;
+    v33 = completionCopy;
     [v16 vui_animateWithDuration:5242912 delay:v34 options:v32 animations:v24 completion:0.0];
     v20 = &v35;
     v21 = &v33;
@@ -3970,146 +3970,146 @@ uint64_t __69__VUIBackgroundMediaController__swapActiveMedia_animated_completion
 
 - (void)_addContentViewIfNeeded
 {
-  v3 = [(VUIBackgroundMediaController *)self currentMediaInfo];
-  v5 = [v3 contentView];
+  currentMediaInfo = [(VUIBackgroundMediaController *)self currentMediaInfo];
+  contentView = [currentMediaInfo contentView];
 
-  if (v5)
+  if (contentView)
   {
-    v4 = [(VUIBackgroundMediaController *)self view];
-    [v4 vui_insertSubview:v5 aboveSubview:0 oldView:0];
+    view = [(VUIBackgroundMediaController *)self view];
+    [view vui_insertSubview:contentView aboveSubview:0 oldView:0];
 
-    [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
-    [(VUIBackgroundMediaController *)self _constrainToView:v5];
+    [contentView setTranslatesAutoresizingMaskIntoConstraints:0];
+    [(VUIBackgroundMediaController *)self _constrainToView:contentView];
   }
 }
 
-- (void)setImageContentMode:(unint64_t)a3
+- (void)setImageContentMode:(unint64_t)mode
 {
-  self->_imageContentMode = a3;
-  v4 = [(VUIBackgroundMediaController *)self proxyImageView];
-  [v4 setVuiContentMode:a3];
+  self->_imageContentMode = mode;
+  proxyImageView = [(VUIBackgroundMediaController *)self proxyImageView];
+  [proxyImageView setVuiContentMode:mode];
 }
 
-- (void)setVideoGravity:(id)a3
+- (void)setVideoGravity:(id)gravity
 {
-  v11 = a3;
-  objc_storeStrong(&self->_videoGravity, a3);
+  gravityCopy = gravity;
+  objc_storeStrong(&self->_videoGravity, gravity);
   if (self->_keepVideoGravityUnchangedByVideoControlsVisibility)
   {
-    v5 = [(VUIBackgroundMediaController *)self avPlayerViewController];
-    [v5 setVideoGravity:v11];
+    avPlayerViewController = [(VUIBackgroundMediaController *)self avPlayerViewController];
+    [avPlayerViewController setVideoGravity:gravityCopy];
 
-    v6 = [(VUIBackgroundMediaController *)self prefetchPlayerViewController];
-    [v6 setVideoGravity:v11];
+    prefetchPlayerViewController = [(VUIBackgroundMediaController *)self prefetchPlayerViewController];
+    [prefetchPlayerViewController setVideoGravity:gravityCopy];
   }
 
   else
   {
-    v7 = [(VUIBackgroundMediaController *)self showsVideoControls];
+    showsVideoControls = [(VUIBackgroundMediaController *)self showsVideoControls];
     v8 = *MEMORY[0x1E69874E8];
-    if (!v7)
+    if (!showsVideoControls)
     {
-      v8 = v11;
+      v8 = gravityCopy;
     }
 
     v9 = v8;
-    v10 = [(VUIBackgroundMediaController *)self avPlayerViewController];
-    [v10 setVideoGravity:v9];
+    avPlayerViewController2 = [(VUIBackgroundMediaController *)self avPlayerViewController];
+    [avPlayerViewController2 setVideoGravity:v9];
 
-    v6 = [(VUIBackgroundMediaController *)self prefetchPlayerViewController];
-    [v6 setVideoGravity:v9];
+    prefetchPlayerViewController = [(VUIBackgroundMediaController *)self prefetchPlayerViewController];
+    [prefetchPlayerViewController setVideoGravity:v9];
   }
 }
 
-- (void)setAllowsExternalPlayback:(BOOL)a3
+- (void)setAllowsExternalPlayback:(BOOL)playback
 {
-  v3 = a3;
-  self->_allowsExternalPlayback = a3;
-  v5 = [(VUIBackgroundMediaController *)self player];
-  [v5 setAllowsExternalPlayback:v3];
+  playbackCopy = playback;
+  self->_allowsExternalPlayback = playback;
+  player = [(VUIBackgroundMediaController *)self player];
+  [player setAllowsExternalPlayback:playbackCopy];
 
-  v6 = [(VUIBackgroundMediaController *)self prefetchPlayer];
-  [v6 setAllowsExternalPlayback:v3];
+  prefetchPlayer = [(VUIBackgroundMediaController *)self prefetchPlayer];
+  [prefetchPlayer setAllowsExternalPlayback:playbackCopy];
 }
 
-- (void)setAllowsVideoCellularUsage:(BOOL)a3
+- (void)setAllowsVideoCellularUsage:(BOOL)usage
 {
-  v3 = a3;
-  self->_allowsVideoCellularUsage = a3;
-  v5 = [(VUIBackgroundMediaController *)self player];
-  [v5 setAllowsCellularUsage:v3];
+  usageCopy = usage;
+  self->_allowsVideoCellularUsage = usage;
+  player = [(VUIBackgroundMediaController *)self player];
+  [player setAllowsCellularUsage:usageCopy];
 
-  v6 = [(VUIBackgroundMediaController *)self prefetchPlayer];
-  [v6 setAllowsCellularUsage:v3];
+  prefetchPlayer = [(VUIBackgroundMediaController *)self prefetchPlayer];
+  [prefetchPlayer setAllowsCellularUsage:usageCopy];
 }
 
-- (void)_addProxyImageView:(id)a3
+- (void)_addProxyImageView:(id)view
 {
-  v8 = a3;
-  [v8 setVuiContentMode:{-[VUIBackgroundMediaController imageContentMode](self, "imageContentMode")}];
-  v4 = v8;
-  if (v8)
+  viewCopy = view;
+  [viewCopy setVuiContentMode:{-[VUIBackgroundMediaController imageContentMode](self, "imageContentMode")}];
+  v4 = viewCopy;
+  if (viewCopy)
   {
-    v5 = [(VUIBackgroundMediaController *)self currentMediaInfo];
-    v6 = [v5 overlayView];
+    currentMediaInfo = [(VUIBackgroundMediaController *)self currentMediaInfo];
+    overlayView = [currentMediaInfo overlayView];
 
-    if (v6)
+    if (overlayView)
     {
-      v7 = [(VUIBackgroundMediaController *)self view];
-      [v7 vui_insertSubview:v8 belowSubview:v6 oldView:0];
+      view = [(VUIBackgroundMediaController *)self view];
+      [view vui_insertSubview:viewCopy belowSubview:overlayView oldView:0];
     }
 
     else
     {
-      [v8 setVuiUserInteractionEnabled:0];
-      v7 = [(VUIBackgroundMediaController *)self view];
-      [v7 vui_addSubview:v8 oldView:0];
+      [viewCopy setVuiUserInteractionEnabled:0];
+      view = [(VUIBackgroundMediaController *)self view];
+      [view vui_addSubview:viewCopy oldView:0];
     }
 
-    [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
-    [(VUIBackgroundMediaController *)self _constrainToView:v8];
-    [v8 setVuiAlpha:0.0];
+    [viewCopy setTranslatesAutoresizingMaskIntoConstraints:0];
+    [(VUIBackgroundMediaController *)self _constrainToView:viewCopy];
+    [viewCopy setVuiAlpha:0.0];
 
-    v4 = v8;
+    v4 = viewCopy;
   }
 }
 
 - (void)_removeProxyImageView
 {
-  v3 = [(VUIBackgroundMediaController *)self proxyImageView];
-  if (v3)
+  proxyImageView = [(VUIBackgroundMediaController *)self proxyImageView];
+  if (proxyImageView)
   {
-    v4 = v3;
-    v5 = [(VUIBackgroundMediaController *)self proxyImageView];
-    v6 = [v5 superview];
+    v4 = proxyImageView;
+    proxyImageView2 = [(VUIBackgroundMediaController *)self proxyImageView];
+    superview = [proxyImageView2 superview];
 
-    if (v6)
+    if (superview)
     {
-      v7 = [(VUIBackgroundMediaController *)self proxyImageView];
-      [v7 removeFromSuperview];
+      proxyImageView3 = [(VUIBackgroundMediaController *)self proxyImageView];
+      [proxyImageView3 removeFromSuperview];
     }
   }
 }
 
 - (void)_addAlphaProxyImageViewIfNeeded
 {
-  v9 = [(VUIBackgroundMediaController *)self alphaProxyImageView];
+  alphaProxyImageView = [(VUIBackgroundMediaController *)self alphaProxyImageView];
   if ([(VUIBackgroundMediaController *)self isViewLoaded])
   {
-    if (!v9 || ([v9 superview], v3 = objc_claimAutoreleasedReturnValue(), v3, v4 = v9, !v3))
+    if (!alphaProxyImageView || ([alphaProxyImageView superview], v3 = objc_claimAutoreleasedReturnValue(), v3, v4 = alphaProxyImageView, !v3))
     {
       v5 = objc_alloc_init(MEMORY[0x1E69DF740]);
 
       [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
       [v5 setVuiAlpha:0.0];
       [v5 vui_isAccessibilityElement:1];
-      v6 = [(VUIBackgroundMediaController *)self currentMediaInfo];
-      v7 = [v6 alphaLayerAccessibilityText];
-      [v5 setAccessibilityLabel:v7];
+      currentMediaInfo = [(VUIBackgroundMediaController *)self currentMediaInfo];
+      alphaLayerAccessibilityText = [currentMediaInfo alphaLayerAccessibilityText];
+      [v5 setAccessibilityLabel:alphaLayerAccessibilityText];
 
       [v5 setVuiUserInteractionEnabled:0];
-      v8 = [(VUIBackgroundMediaController *)self view];
-      [v8 vui_addSubview:v5 oldView:0];
+      view = [(VUIBackgroundMediaController *)self view];
+      [view vui_addSubview:v5 oldView:0];
 
       [(VUIBackgroundMediaController *)self _constrainToView:v5];
       [(VUIBackgroundMediaController *)self setAlphaProxyImageView:v5];
@@ -4119,24 +4119,24 @@ uint64_t __69__VUIBackgroundMediaController__swapActiveMedia_animated_completion
 
   else
   {
-    v4 = v9;
+    v4 = alphaProxyImageView;
   }
 }
 
-- (void)_loadImage:(id)a3
+- (void)_loadImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   objc_initWeak(&location, self);
-  v5 = [(VUIBackgroundMediaController *)self mediaInfoFetchController];
-  v6 = [(VUIBackgroundMediaController *)self mediaInfoIndex];
+  mediaInfoFetchController = [(VUIBackgroundMediaController *)self mediaInfoFetchController];
+  mediaInfoIndex = [(VUIBackgroundMediaController *)self mediaInfoIndex];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __43__VUIBackgroundMediaController__loadImage___block_invoke;
   v8[3] = &unk_1E87322C0;
   objc_copyWeak(&v10, &location);
-  v7 = v4;
+  v7 = imageCopy;
   v9 = v7;
-  [v5 loadImageAtIndex:v6 completion:v8];
+  [mediaInfoFetchController loadImageAtIndex:mediaInfoIndex completion:v8];
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(&location);
@@ -4304,26 +4304,26 @@ void __43__VUIBackgroundMediaController__loadImage___block_invoke_4(uint64_t a1)
   v5.receiver = self;
   v5.super_class = VUIBackgroundMediaController;
   [(VUIBackgroundMediaController *)&v5 didReceiveMemoryWarning];
-  v3 = [(VUIBackgroundMediaController *)self mediaInfoFetchController];
-  [v3 clearPreloadedPlayback];
+  mediaInfoFetchController = [(VUIBackgroundMediaController *)self mediaInfoFetchController];
+  [mediaInfoFetchController clearPreloadedPlayback];
 
-  v4 = [(VUIBackgroundMediaController *)self mediaInfoFetchController];
-  [v4 clearCachedImageExclude:{-[VUIBackgroundMediaController mediaInfoIndex](self, "mediaInfoIndex")}];
+  mediaInfoFetchController2 = [(VUIBackgroundMediaController *)self mediaInfoFetchController];
+  [mediaInfoFetchController2 clearCachedImageExclude:{-[VUIBackgroundMediaController mediaInfoIndex](self, "mediaInfoIndex")}];
 }
 
-- (void)_playbackStateWillChange:(id)a3
+- (void)_playbackStateWillChange:(id)change
 {
-  v4 = [a3 userInfo];
-  v10 = [v4 objectForKey:*MEMORY[0x1E69D6098]];
+  userInfo = [change userInfo];
+  v10 = [userInfo objectForKey:*MEMORY[0x1E69D6098]];
 
-  v5 = [MEMORY[0x1E69D5A40] stopped];
+  stopped = [MEMORY[0x1E69D5A40] stopped];
 
   v6 = v10;
-  if (v10 == v5)
+  if (v10 == stopped)
   {
     v7 = MEMORY[0x1E696AD98];
-    v8 = [(VUIBackgroundMediaController *)self player];
-    [v8 cachedElapsedTime];
+    player = [(VUIBackgroundMediaController *)self player];
+    [player cachedElapsedTime];
     v9 = [v7 numberWithDouble:?];
     [(VUIBackgroundMediaController *)self setElapsedTimeWhenStopped:v9];
 
@@ -4331,53 +4331,53 @@ void __43__VUIBackgroundMediaController__loadImage___block_invoke_4(uint64_t a1)
   }
 }
 
-- (void)_playbackRateDidChange:(id)a3
+- (void)_playbackRateDidChange:(id)change
 {
-  v4 = a3;
-  v11 = [v4 object];
-  v5 = [v4 userInfo];
+  changeCopy = change;
+  object = [changeCopy object];
+  userInfo = [changeCopy userInfo];
 
-  v6 = [v5 vui_stringForKey:*MEMORY[0x1E6987A90]];
+  v6 = [userInfo vui_stringForKey:*MEMORY[0x1E6987A90]];
 
   if ([v6 isEqualToString:*MEMORY[0x1E6987AA8]])
   {
-    [v11 rateUsedForPlayback];
+    [object rateUsedForPlayback];
     if (v7 > 0.0)
     {
       v8 = MEMORY[0x1E696AD98];
-      [v11 rateUsedForPlayback];
+      [object rateUsedForPlayback];
       v9 = [v8 numberWithDouble:?];
       [(VUIBackgroundMediaController *)self setRateUsedForPlayback:v9];
 
-      v10 = [(VUIBackgroundMediaController *)self prefetchPlayer];
-      [v11 rateUsedForPlayback];
-      [v10 setRateUsedForPlayback:?];
+      prefetchPlayer = [(VUIBackgroundMediaController *)self prefetchPlayer];
+      [object rateUsedForPlayback];
+      [prefetchPlayer setRateUsedForPlayback:?];
     }
   }
 }
 
-- (void)_playbackStateChanged:(id)a3
+- (void)_playbackStateChanged:(id)changed
 {
   v47 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKey:*MEMORY[0x1E69D6098]];
+  changedCopy = changed;
+  userInfo = [changedCopy userInfo];
+  v6 = [userInfo objectForKey:*MEMORY[0x1E69D6098]];
 
-  v7 = [v4 userInfo];
+  userInfo2 = [changedCopy userInfo];
 
-  v8 = [v7 objectForKey:*MEMORY[0x1E69D60A0]];
+  v8 = [userInfo2 objectForKey:*MEMORY[0x1E69D60A0]];
 
   v9 = VUIDefaultLogObject();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [(VUIBackgroundMediaController *)self name];
-    v11 = [(VUIBackgroundMediaController *)self player];
+    name = [(VUIBackgroundMediaController *)self name];
+    player = [(VUIBackgroundMediaController *)self player];
     *buf = 134219010;
-    v38 = self;
+    selfCopy = self;
     v39 = 2112;
-    v40 = v10;
+    v40 = name;
     v41 = 2048;
-    v42 = v11;
+    v42 = player;
     v43 = 2112;
     v44 = v6;
     v45 = 2112;
@@ -4385,9 +4385,9 @@ void __43__VUIBackgroundMediaController__loadImage___block_invoke_4(uint64_t a1)
     _os_log_impl(&dword_1E323F000, v9, OS_LOG_TYPE_DEFAULT, "VUIBackgroundMediaController::(%p: %@) playback state changed (%p), new state %@, old state %@", buf, 0x34u);
   }
 
-  v12 = [MEMORY[0x1E69D5A40] playing];
+  playing = [MEMORY[0x1E69D5A40] playing];
 
-  if (v6 == v12)
+  if (v6 == playing)
   {
     v35[0] = @"VUIBackgroundMediaControllerIsForegroundedKey";
     v16 = [MEMORY[0x1E696AD98] numberWithInt:{-[VUIBackgroundMediaController isBackgrounded](self, "isBackgrounded") ^ 1}];
@@ -4398,42 +4398,42 @@ void __43__VUIBackgroundMediaController__loadImage___block_invoke_4(uint64_t a1)
     v35[2] = @"VUIBackgroundMediaControllerPlaybackStartReasonKey";
     v18 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[VUIBackgroundMediaController vpafPlaybackStartReason](self, "vpafPlaybackStartReason")}];
     v36[2] = v18;
-    v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v36 forKeys:v35 count:3];
+    defaultCenter2 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v36 forKeys:v35 count:3];
 
     [(VUIBackgroundMediaController *)self _updateCurrentPlaybackViewFrameForPlaybackInBackground:[(VUIBackgroundMediaController *)self isBackgrounded] animated:0];
-    v20 = [MEMORY[0x1E695DF00] date];
-    [(VUIBackgroundMediaController *)self setPlaybackStartDate:v20];
+    date = [MEMORY[0x1E695DF00] date];
+    [(VUIBackgroundMediaController *)self setPlaybackStartDate:date];
 
     [(VUIBackgroundMediaController *)self _recordBgAutoPlayMediaEventForPlaybackState:v6];
-    v21 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v21 postNotificationName:@"VUIBackgroundMediaControllerDidStartPlaybackNotification" object:self userInfo:v19];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"VUIBackgroundMediaControllerDidStartPlaybackNotification" object:self userInfo:defaultCenter2];
 
 LABEL_16:
     goto LABEL_17;
   }
 
-  v13 = [MEMORY[0x1E69D5A40] paused];
-  v14 = v13;
-  if (v6 == v13)
+  paused = [MEMORY[0x1E69D5A40] paused];
+  v14 = paused;
+  if (v6 == paused)
   {
   }
 
   else
   {
-    v15 = [MEMORY[0x1E69D5A40] stopped];
+    stopped = [MEMORY[0x1E69D5A40] stopped];
 
-    if (v6 != v15)
+    if (v6 != stopped)
     {
       goto LABEL_17;
     }
   }
 
-  v22 = [(VUIBackgroundMediaController *)self player];
-  [v22 cachedElapsedTime];
+  player2 = [(VUIBackgroundMediaController *)self player];
+  [player2 cachedElapsedTime];
   v24 = v23;
 
-  v25 = [(VUIBackgroundMediaController *)self player];
-  [v25 duration];
+  player3 = [(VUIBackgroundMediaController *)self player];
+  [player3 duration];
   v27 = v26;
   v28 = *MEMORY[0x1E69D5A78];
 
@@ -4442,70 +4442,70 @@ LABEL_16:
     [(VUIBackgroundMediaController *)self _recordBgAutoPlayMediaEventForPlaybackState:v6];
   }
 
-  v30 = [MEMORY[0x1E69D5A40] paused];
+  paused2 = [MEMORY[0x1E69D5A40] paused];
 
-  if (v6 == v30)
+  if (v6 == paused2)
   {
-    v19 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v19 postNotificationName:@"VUIBackgroundMediaControllerDidPausePlaybackNotification" object:self userInfo:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 postNotificationName:@"VUIBackgroundMediaControllerDidPausePlaybackNotification" object:self userInfo:0];
     goto LABEL_16;
   }
 
 LABEL_17:
-  v31 = [(VUIBackgroundMediaController *)self stateMachine];
+  stateMachine = [(VUIBackgroundMediaController *)self stateMachine];
   v33 = @"PlaybackStateKey";
   v34 = v6;
   v32 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v34 forKeys:&v33 count:1];
-  [v31 postEvent:@"Player state changed" withContext:0 userInfo:v32];
+  [stateMachine postEvent:@"Player state changed" withContext:0 userInfo:v32];
 }
 
-- (void)_playbackErrorDidOccur:(id)a3
+- (void)_playbackErrorDidOccur:(id)occur
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKey:*MEMORY[0x1E69D60B8]];
-  v7 = [v6 BOOLValue];
+  occurCopy = occur;
+  userInfo = [occurCopy userInfo];
+  v6 = [userInfo objectForKey:*MEMORY[0x1E69D60B8]];
+  bOOLValue = [v6 BOOLValue];
 
-  if (v7)
+  if (bOOLValue)
   {
-    v8 = [(VUIBackgroundMediaController *)self player];
-    v9 = [v8 currentMediaItem];
-    v10 = [v9 mediaItemMetadataForProperty:*MEMORY[0x1E69D5CA8]];
+    player = [(VUIBackgroundMediaController *)self player];
+    currentMediaItem = [player currentMediaItem];
+    v10 = [currentMediaItem mediaItemMetadataForProperty:*MEMORY[0x1E69D5CA8]];
     [v10 addSingleShotEventWithName:*MEMORY[0x1E69D6020] value:*MEMORY[0x1E69D6068]];
   }
 
-  v13 = [(VUIBackgroundMediaController *)self stateMachine];
-  v11 = [v4 object];
-  v12 = [v4 userInfo];
+  stateMachine = [(VUIBackgroundMediaController *)self stateMachine];
+  object = [occurCopy object];
+  userInfo2 = [occurCopy userInfo];
 
-  [v13 postEvent:@"Playback error occurred" withContext:v11 userInfo:v12];
+  [stateMachine postEvent:@"Playback error occurred" withContext:object userInfo:userInfo2];
 }
 
-- (void)_mediaControllerStartedPlayback:(id)a3
+- (void)_mediaControllerStartedPlayback:(id)playback
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = [a3 object];
-  if (v4 != self)
+  object = [playback object];
+  if (object != self)
   {
-    v5 = [(VUIBackgroundMediaController *)self player];
-    v6 = [v5 state];
-    v7 = [MEMORY[0x1E69D5A40] stopped];
+    player = [(VUIBackgroundMediaController *)self player];
+    state = [player state];
+    stopped = [MEMORY[0x1E69D5A40] stopped];
 
-    if (v6 != v7)
+    if (state != stopped)
     {
       if ([(VUIBackgroundMediaController *)self shouldStopWhenAnotherMediaControllerStarts])
       {
         v8 = VUIDefaultLogObject();
         if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
         {
-          v9 = [(VUIBackgroundMediaController *)self name];
-          v10 = [(VUIBackgroundMediaController *)v4 name];
+          name = [(VUIBackgroundMediaController *)self name];
+          name2 = [(VUIBackgroundMediaController *)object name];
           v11 = 134218498;
-          v12 = self;
+          selfCopy = self;
           v13 = 2112;
-          v14 = v9;
+          v14 = name;
           v15 = 2112;
-          v16 = v10;
+          v16 = name2;
           _os_log_impl(&dword_1E323F000, v8, OS_LOG_TYPE_DEFAULT, "VUIBackgroundMediaController::(%p: %@) received stop event because %@ will start playback.", &v11, 0x20u);
         }
 
@@ -4517,37 +4517,37 @@ LABEL_17:
   }
 }
 
-- (void)_updatePlayerMuteStateForBackgroundPlaybackWithReason:(id)a3
+- (void)_updatePlayerMuteStateForBackgroundPlaybackWithReason:(id)reason
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(VUIBackgroundMediaController *)self currentMediaInfo];
-  if ([v5 intent])
+  reasonCopy = reason;
+  currentMediaInfo = [(VUIBackgroundMediaController *)self currentMediaInfo];
+  if ([currentMediaInfo intent])
   {
     goto LABEL_2;
   }
 
-  v6 = [(VUIBackgroundMediaController *)self player];
+  player = [(VUIBackgroundMediaController *)self player];
 
-  if (!v6)
+  if (!player)
   {
     goto LABEL_3;
   }
 
-  v7 = [(VUIBackgroundMediaController *)self isBackgrounded];
+  isBackgrounded = [(VUIBackgroundMediaController *)self isBackgrounded];
   v8 = VUIDefaultLogObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(VUIBackgroundMediaController *)self name];
+    name = [(VUIBackgroundMediaController *)self name];
     v10 = VUIBoolLogString();
     [(VUIBackgroundMediaController *)self mutePlaybackInBackground];
     v11 = VUIBoolLogString();
     [(VUIBackgroundMediaController *)self isMuted];
     v12 = VUIBoolLogString();
     v18 = 134219010;
-    v19 = self;
+    selfCopy = self;
     v20 = 2112;
-    v21 = v9;
+    v21 = name;
     v22 = 2112;
     v23 = v10;
     v24 = 2112;
@@ -4557,37 +4557,37 @@ LABEL_17:
     _os_log_impl(&dword_1E323F000, v8, OS_LOG_TYPE_DEFAULT, "VUIBackgroundMediaController::(%p: %@) isBackgrounded:<%@>, mutePlaybackInBackground<%@>, isMuted:<%@>", &v18, 0x34u);
   }
 
-  if (v7)
+  if (isBackgrounded)
   {
-    v7 = [(VUIBackgroundMediaController *)self mutePlaybackInBackground]|| [(VUIBackgroundMediaController *)self isMuted];
+    isBackgrounded = [(VUIBackgroundMediaController *)self mutePlaybackInBackground]|| [(VUIBackgroundMediaController *)self isMuted];
   }
 
-  v13 = [(VUIBackgroundMediaController *)self player];
-  [v13 setMuted:v7];
+  player2 = [(VUIBackgroundMediaController *)self player];
+  [player2 setMuted:isBackgrounded];
 
-  v5 = +[VUIPlaybackManager sharedInstance];
-  if (![v5 isPIPing] || -[VUIBackgroundMediaController mutePlaybackInBackground](self, "mutePlaybackInBackground"))
+  currentMediaInfo = +[VUIPlaybackManager sharedInstance];
+  if (![currentMediaInfo isPIPing] || -[VUIBackgroundMediaController mutePlaybackInBackground](self, "mutePlaybackInBackground"))
   {
 LABEL_2:
   }
 
   else
   {
-    v14 = [v4 isEqualToString:@"VUIBackgroundMediaControllerPlaybackMuteReasonAssigned"];
+    v14 = [reasonCopy isEqualToString:@"VUIBackgroundMediaControllerPlaybackMuteReasonAssigned"];
 
     if (v14)
     {
       v15 = +[VUIGroupActivitiesManagerObjC isSessionActive];
-      v16 = [(VUIBackgroundMediaController *)self _activePIPPlayer];
-      v17 = v16;
+      _activePIPPlayer = [(VUIBackgroundMediaController *)self _activePIPPlayer];
+      v17 = _activePIPPlayer;
       if (v15)
       {
-        [v16 setMuted:1];
+        [_activePIPPlayer setMuted:1];
       }
 
       else
       {
-        [v16 pause];
+        [_activePIPPlayer pause];
       }
     }
   }
@@ -4597,39 +4597,39 @@ LABEL_3:
 
 - (BOOL)isForeground
 {
-  v2 = [(VUIBackgroundMediaController *)self stateMachine];
-  v3 = [v2 currentState];
-  v4 = [v3 isEqualToString:@"Showing playback in foreground"];
+  stateMachine = [(VUIBackgroundMediaController *)self stateMachine];
+  currentState = [stateMachine currentState];
+  v4 = [currentState isEqualToString:@"Showing playback in foreground"];
 
   return v4;
 }
 
 - (BOOL)isBackgrounded
 {
-  v3 = [(VUIBackgroundMediaController *)self avPlayerViewController];
+  avPlayerViewController = [(VUIBackgroundMediaController *)self avPlayerViewController];
 
-  if (v3)
+  if (avPlayerViewController)
   {
     return ![(VUIBackgroundMediaController *)self showsVideoControls];
   }
 
-  v5 = [(VUIBackgroundMediaController *)self currentMediaInfo];
+  currentMediaInfo = [(VUIBackgroundMediaController *)self currentMediaInfo];
 
-  return v5 != 0;
+  return currentMediaInfo != 0;
 }
 
-- (CGRect)_playbackContainerViewFrame:(BOOL)a3 hasSecondaryVideoView:(BOOL)a4
+- (CGRect)_playbackContainerViewFrame:(BOOL)frame hasSecondaryVideoView:(BOOL)view
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [(VUIBackgroundMediaController *)self view];
-  [v7 bounds];
+  viewCopy = view;
+  frameCopy = frame;
+  view = [(VUIBackgroundMediaController *)self view];
+  [view bounds];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
 
-  if (v5 && v4)
+  if (frameCopy && viewCopy)
   {
     [(VUIBackgroundMediaController *)self _secondaryVideoViewHeight];
     v15 = v15 - v16;
@@ -4648,34 +4648,34 @@ LABEL_3:
 
 - (BOOL)_hasSecondaryView
 {
-  v2 = [(VUIBackgroundMediaController *)self secondaryVideoView];
-  v3 = v2 != 0;
+  secondaryVideoView = [(VUIBackgroundMediaController *)self secondaryVideoView];
+  v3 = secondaryVideoView != 0;
 
   return v3;
 }
 
 - (BOOL)_shouldShowSecondaryView
 {
-  v3 = [(VUIBackgroundMediaController *)self currentMediaInfo];
+  currentMediaInfo = [(VUIBackgroundMediaController *)self currentMediaInfo];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [(VUIBackgroundMediaController *)self currentMediaInfo];
-    v5 = [v4 showsSecondaryVideoView];
+    currentMediaInfo2 = [(VUIBackgroundMediaController *)self currentMediaInfo];
+    showsSecondaryVideoView = [currentMediaInfo2 showsSecondaryVideoView];
   }
 
   else
   {
-    v5 = 0;
+    showsSecondaryVideoView = 0;
   }
 
-  return v5;
+  return showsSecondaryVideoView;
 }
 
 - (double)_secondaryVideoViewHeight
 {
-  v3 = [(VUIBackgroundMediaController *)self currentMediaInfo];
-  [v3 primaryVideoAspectRatio];
+  currentMediaInfo = [(VUIBackgroundMediaController *)self currentMediaInfo];
+  [currentMediaInfo primaryVideoAspectRatio];
   v5 = v4;
 
   if (v5 <= 0.0)
@@ -4683,33 +4683,33 @@ LABEL_3:
     return 300.0;
   }
 
-  v6 = [(VUIBackgroundMediaController *)self view];
-  [v6 bounds];
+  view = [(VUIBackgroundMediaController *)self view];
+  [view bounds];
   v8 = v7;
   v10 = v9;
 
-  v11 = [(VUIBackgroundMediaController *)self currentMediaInfo];
-  [v11 primaryVideoAspectRatio];
+  currentMediaInfo2 = [(VUIBackgroundMediaController *)self currentMediaInfo];
+  [currentMediaInfo2 primaryVideoAspectRatio];
   v13 = v8 / v12;
 
   return fmax(v10 - v13, 0.0);
 }
 
-- (CGRect)_secondaryVideoViewFrame:(BOOL)a3
+- (CGRect)_secondaryVideoViewFrame:(BOOL)frame
 {
-  v3 = a3;
-  v5 = [(VUIBackgroundMediaController *)self view];
-  [v5 bounds];
+  frameCopy = frame;
+  view = [(VUIBackgroundMediaController *)self view];
+  [view bounds];
   v7 = v6;
   [(VUIBackgroundMediaController *)self _secondaryVideoViewHeight];
   v9 = v8;
 
-  v10 = [(VUIBackgroundMediaController *)self view];
-  [v10 bounds];
+  view2 = [(VUIBackgroundMediaController *)self view];
+  [view2 bounds];
   v12 = v11;
   v14 = v13;
 
-  if (v3)
+  if (frameCopy)
   {
     [(VUIBackgroundMediaController *)self _secondaryVideoViewHeight];
     v14 = v14 - v15;
@@ -4726,29 +4726,29 @@ LABEL_3:
   return result;
 }
 
-- (void)_updateCurrentPlaybackViewFrameForPlaybackInBackground:(BOOL)a3 animated:(BOOL)a4
+- (void)_updateCurrentPlaybackViewFrameForPlaybackInBackground:(BOOL)background animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
+  animatedCopy = animated;
+  backgroundCopy = background;
   if (![(VUIBackgroundMediaController *)self _hasSecondaryView])
   {
     return;
   }
 
-  v7 = [(VUIBackgroundMediaController *)self avPlayerViewController];
+  avPlayerViewController = [(VUIBackgroundMediaController *)self avPlayerViewController];
 
-  if (!v7)
+  if (!avPlayerViewController)
   {
     return;
   }
 
-  [(VUIBackgroundMediaController *)self _playbackContainerViewFrame:v5 hasSecondaryVideoView:[(VUIBackgroundMediaController *)self _hasSecondaryView]];
+  [(VUIBackgroundMediaController *)self _playbackContainerViewFrame:backgroundCopy hasSecondaryVideoView:[(VUIBackgroundMediaController *)self _hasSecondaryView]];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
-  v16 = [(VUIBackgroundMediaController *)self player];
-  [v16 currentMediaItemPresentationSize];
+  player = [(VUIBackgroundMediaController *)self player];
+  [player currentMediaItemPresentationSize];
   v18 = v17;
   v20 = v19;
 
@@ -4774,7 +4774,7 @@ LABEL_12:
   v27 = *&v9;
   if (*&v15 > 0.0)
   {
-    if (v5)
+    if (backgroundCopy)
     {
       v28 = v23 / v20;
       if (v28 >= *&v13 / *&v15)
@@ -4821,8 +4821,8 @@ LABEL_12:
 
 LABEL_18:
   v33 = v24;
-  v34 = [(VUIBackgroundMediaController *)self view];
-  [v34 vui_layoutIfNeeded];
+  view = [(VUIBackgroundMediaController *)self view];
+  [view vui_layoutIfNeeded];
 
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -4834,7 +4834,7 @@ LABEL_18:
   v39[2] = v11;
   v39[3] = v13;
   v39[4] = v15;
-  v41 = v5;
+  v41 = backgroundCopy;
   v39[5] = *&v27;
   v39[6] = *&v26;
   v39[7] = *&v25;
@@ -4843,9 +4843,9 @@ LABEL_18:
   v42 = v22;
   v35 = _Block_copy(aBlock);
   v36 = v35;
-  if (v4)
+  if (animatedCopy)
   {
-    if (v5)
+    if (backgroundCopy)
     {
       v37 = 0x10000;
     }
@@ -4911,121 +4911,121 @@ void __96__VUIBackgroundMediaController__updateCurrentPlaybackViewFrameForPlayba
   [v18 vui_layoutIfNeeded];
 }
 
-- (void)_addPlaybackViewControllerForPlayback:(BOOL)a3 restoringAVPlayerViewController:(BOOL)a4
+- (void)_addPlaybackViewControllerForPlayback:(BOOL)playback restoringAVPlayerViewController:(BOOL)controller
 {
-  v5 = a3;
-  v7 = [(VUIBackgroundMediaController *)self playbackContainerController];
-  v8 = v7;
-  if (v7)
+  playbackCopy = playback;
+  playbackContainerController = [(VUIBackgroundMediaController *)self playbackContainerController];
+  v8 = playbackContainerController;
+  if (playbackContainerController)
   {
-    v9 = [v7 view];
-    v10 = [MEMORY[0x1E69DC888] blackColor];
-    [v9 setVuiBackgroundColor:v10];
+    view = [playbackContainerController view];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    [view setVuiBackgroundColor:blackColor];
 
     [(VUIBackgroundMediaController *)self vui_addChildViewController:v8];
-    v11 = [(VUIBackgroundMediaController *)self alphaProxyImageView];
+    alphaProxyImageView = [(VUIBackgroundMediaController *)self alphaProxyImageView];
 
-    v12 = [(VUIBackgroundMediaController *)self view];
-    v13 = [v8 view];
-    if (v11)
+    view2 = [(VUIBackgroundMediaController *)self view];
+    view3 = [v8 view];
+    if (alphaProxyImageView)
     {
-      v14 = [(VUIBackgroundMediaController *)self alphaProxyImageView];
-      [v12 vui_insertSubview:v13 belowSubview:v14 oldView:0];
+      alphaProxyImageView2 = [(VUIBackgroundMediaController *)self alphaProxyImageView];
+      [view2 vui_insertSubview:view3 belowSubview:alphaProxyImageView2 oldView:0];
     }
 
     else
     {
-      [v12 vui_addSubview:v13 oldView:0];
+      [view2 vui_addSubview:view3 oldView:0];
     }
 
     if ([(VUIBackgroundMediaController *)self _shouldShowSecondaryView])
     {
-      [(VUIBackgroundMediaController *)self _playbackContainerViewFrame:v5 hasSecondaryVideoView:1];
+      [(VUIBackgroundMediaController *)self _playbackContainerViewFrame:playbackCopy hasSecondaryVideoView:1];
       v16 = v15;
       v18 = v17;
       v20 = v19;
       v22 = v21;
-      v23 = [v8 view];
-      [v23 setFrame:{v16, v18, v20, v22}];
+      view4 = [v8 view];
+      [view4 setFrame:{v16, v18, v20, v22}];
 
-      v24 = [v8 view];
-      [v24 setVuiClipsToBounds:1];
+      view5 = [v8 view];
+      [view5 setVuiClipsToBounds:1];
 
       [(VUIBackgroundMediaController *)self _secondaryVideoViewFrame:1];
-      v29 = [objc_alloc(MEMORY[0x1E69D5A70]) initWithFrame:{v25, v26, v27, v28}];
+      view8 = [objc_alloc(MEMORY[0x1E69D5A70]) initWithFrame:{v25, v26, v27, v28}];
       CGAffineTransformMakeScale(&v59, 1.0, -1.0);
-      [v29 setTransform:&v59];
-      v30 = [(VUIBackgroundMediaController *)self player];
-      [v29 setPlayer:v30];
+      [view8 setTransform:&v59];
+      player = [(VUIBackgroundMediaController *)self player];
+      [view8 setPlayer:player];
 
-      [v29 setVuiAlpha:0.0];
-      [v29 setVideoGravity:1];
-      v31 = [(VUIBackgroundMediaController *)self view];
-      v32 = [v8 view];
-      [v31 vui_insertSubview:v29 aboveSubview:v32 oldView:0];
+      [view8 setVuiAlpha:0.0];
+      [view8 setVideoGravity:1];
+      view6 = [(VUIBackgroundMediaController *)self view];
+      view7 = [v8 view];
+      [view6 vui_insertSubview:view8 aboveSubview:view7 oldView:0];
 
-      [(VUIBackgroundMediaController *)self setSecondaryVideoView:v29];
+      [(VUIBackgroundMediaController *)self setSecondaryVideoView:view8];
     }
 
     else
     {
-      [(VUIBackgroundMediaController *)self _playbackContainerViewFrame:v5 hasSecondaryVideoView:0];
+      [(VUIBackgroundMediaController *)self _playbackContainerViewFrame:playbackCopy hasSecondaryVideoView:0];
       v34 = v33;
       v36 = v35;
       v38 = v37;
       v40 = v39;
-      v29 = [v8 view];
-      [v29 setFrame:{v34, v36, v38, v40}];
+      view8 = [v8 view];
+      [view8 setFrame:{v34, v36, v38, v40}];
     }
 
-    if (!a4)
+    if (!controller)
     {
-      v41 = [v8 view];
-      [v41 setVuiAlpha:0.0];
+      view9 = [v8 view];
+      [view9 setVuiAlpha:0.0];
     }
 
     [v8 didMoveToParentViewController:self];
     avPlayerViewController = self->_avPlayerViewController;
     if (avPlayerViewController)
     {
-      v43 = [(AVPlayerViewController *)avPlayerViewController view];
-      v44 = [v8 view];
+      view10 = [(AVPlayerViewController *)avPlayerViewController view];
+      view11 = [v8 view];
       [v8 addChildViewController:self->_avPlayerViewController];
-      v45 = [(VUIBackgroundMediaController *)self currentMediaInfo];
-      v46 = [v45 overlayView];
+      currentMediaInfo = [(VUIBackgroundMediaController *)self currentMediaInfo];
+      overlayView = [currentMediaInfo overlayView];
 
-      if (v46)
+      if (overlayView)
       {
-        [v44 vui_insertSubview:v43 belowSubview:v46 oldView:0];
+        [view11 vui_insertSubview:view10 belowSubview:overlayView oldView:0];
       }
 
       else
       {
-        [v44 addSubview:v43];
+        [view11 addSubview:view10];
       }
 
-      v47 = [v43 leadingAnchor];
-      v48 = [v44 leadingAnchor];
-      v49 = [v47 constraintEqualToAnchor:v48];
+      leadingAnchor = [view10 leadingAnchor];
+      leadingAnchor2 = [view11 leadingAnchor];
+      v49 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
       [v49 setActive:1];
 
-      v50 = [v43 trailingAnchor];
-      v51 = [v44 trailingAnchor];
-      v52 = [v50 constraintEqualToAnchor:v51];
+      trailingAnchor = [view10 trailingAnchor];
+      trailingAnchor2 = [view11 trailingAnchor];
+      v52 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
       [v52 setActive:1];
 
-      v53 = [v43 topAnchor];
-      v54 = [v44 topAnchor];
-      v55 = [v53 constraintEqualToAnchor:v54];
+      topAnchor = [view10 topAnchor];
+      topAnchor2 = [view11 topAnchor];
+      v55 = [topAnchor constraintEqualToAnchor:topAnchor2];
       [v55 setActive:1];
 
-      v56 = [v43 bottomAnchor];
-      v57 = [v44 bottomAnchor];
-      v58 = [v56 constraintEqualToAnchor:v57];
+      bottomAnchor = [view10 bottomAnchor];
+      bottomAnchor2 = [view11 bottomAnchor];
+      v58 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
       [v58 setActive:1];
 
-      [v44 bounds];
-      [v43 setFrame:?];
+      [view11 bounds];
+      [view10 setFrame:?];
       [(AVPlayerViewController *)self->_avPlayerViewController didMoveToParentViewController:v8];
     }
   }
@@ -5033,61 +5033,61 @@ void __96__VUIBackgroundMediaController__updateCurrentPlaybackViewFrameForPlayba
 
 - (void)_removePlaybackViewController
 {
-  v9 = [(VUIBackgroundMediaController *)self avPlayerViewController];
-  v3 = [v9 vuiParentViewController];
-  v4 = [(VUIBackgroundMediaController *)self playbackContainerController];
+  avPlayerViewController = [(VUIBackgroundMediaController *)self avPlayerViewController];
+  vuiParentViewController = [avPlayerViewController vuiParentViewController];
+  playbackContainerController = [(VUIBackgroundMediaController *)self playbackContainerController];
 
-  if (v3 == v4)
+  if (vuiParentViewController == playbackContainerController)
   {
-    [v9 vui_willMoveToParentViewController:0];
-    v5 = [v9 vuiView];
-    [v5 vui_removeFromSuperView];
+    [avPlayerViewController vui_willMoveToParentViewController:0];
+    vuiView = [avPlayerViewController vuiView];
+    [vuiView vui_removeFromSuperView];
 
-    [v9 vui_removeFromParentViewController];
+    [avPlayerViewController vui_removeFromParentViewController];
   }
 
-  v6 = [(VUIBackgroundMediaController *)self playbackContainerController];
-  v7 = [v6 vuiParentViewController];
+  playbackContainerController2 = [(VUIBackgroundMediaController *)self playbackContainerController];
+  vuiParentViewController2 = [playbackContainerController2 vuiParentViewController];
 
-  if (v7 == self)
+  if (vuiParentViewController2 == self)
   {
-    [v6 vui_willMoveToParentViewController:0];
-    v8 = [v6 vuiView];
-    [v8 vui_removeFromSuperView];
+    [playbackContainerController2 vui_willMoveToParentViewController:0];
+    vuiView2 = [playbackContainerController2 vuiView];
+    [vuiView2 vui_removeFromSuperView];
 
-    [v6 vui_removeFromParentViewController];
+    [playbackContainerController2 vui_removeFromParentViewController];
   }
 }
 
-- (void)_updateAVPlayerViewControllerWithAVPlayerForPlayer:(id)a3
+- (void)_updateAVPlayerViewControllerWithAVPlayerForPlayer:(id)player
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(VUIBackgroundMediaController *)self player];
+  playerCopy = player;
+  player = [(VUIBackgroundMediaController *)self player];
 
-  if (v5 == v4)
+  if (player == playerCopy)
   {
     v10 = VUIDefaultLogObject();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [(VUIBackgroundMediaController *)self name];
+      name = [(VUIBackgroundMediaController *)self name];
       *buf = 134218498;
-      v23 = self;
+      selfCopy2 = self;
       v24 = 2112;
-      v25 = v11;
+      v25 = name;
       v26 = 2112;
-      v27 = v4;
+      v27 = playerCopy;
       _os_log_impl(&dword_1E323F000, v10, OS_LOG_TYPE_DEFAULT, "VUIBackgroundMediaController::(%p: %@) setting player on main %@", buf, 0x20u);
     }
 
-    v9 = [(VUIBackgroundMediaController *)self avPlayerViewController];
+    avPlayerViewController = [(VUIBackgroundMediaController *)self avPlayerViewController];
   }
 
   else
   {
-    v6 = [(VUIBackgroundMediaController *)self prefetchPlayer];
+    prefetchPlayer = [(VUIBackgroundMediaController *)self prefetchPlayer];
 
-    if (v6 != v4)
+    if (prefetchPlayer != playerCopy)
     {
       goto LABEL_18;
     }
@@ -5095,47 +5095,47 @@ void __96__VUIBackgroundMediaController__updateCurrentPlaybackViewFrameForPlayba
     v7 = VUIDefaultLogObject();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(VUIBackgroundMediaController *)self name];
+      name2 = [(VUIBackgroundMediaController *)self name];
       *buf = 134218498;
-      v23 = self;
+      selfCopy2 = self;
       v24 = 2112;
-      v25 = v8;
+      v25 = name2;
       v26 = 2112;
-      v27 = v4;
+      v27 = playerCopy;
       _os_log_impl(&dword_1E323F000, v7, OS_LOG_TYPE_DEFAULT, "VUIBackgroundMediaController::(%p: %@) setting player on prefetch %@", buf, 0x20u);
     }
 
-    v9 = [(VUIBackgroundMediaController *)self prefetchPlayerViewController];
+    avPlayerViewController = [(VUIBackgroundMediaController *)self prefetchPlayerViewController];
   }
 
-  v12 = v9;
-  if (v9)
+  v12 = avPlayerViewController;
+  if (avPlayerViewController)
   {
-    v13 = [v9 player];
+    player2 = [avPlayerViewController player];
 
-    if (v13)
+    if (player2)
     {
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __83__VUIBackgroundMediaController__updateAVPlayerViewControllerWithAVPlayerForPlayer___block_invoke;
       block[3] = &unk_1E872D990;
       v19 = v12;
-      v20 = v4;
+      v20 = playerCopy;
       dispatch_async(MEMORY[0x1E69E96A0], block);
 
-      v14 = v19;
+      avPlayer = v19;
     }
 
     else
     {
-      v14 = [v4 avPlayer];
-      [v12 setPlayer:v14];
+      avPlayer = [playerCopy avPlayer];
+      [v12 setPlayer:avPlayer];
     }
 
-    v15 = [v4 currentMediaItem];
-    if ([(VUIBackgroundMediaController *)self supportsMediaSharing]&& [VUIMediaShareCoordinator shouldShowShareForMediaItem:v15])
+    currentMediaItem = [playerCopy currentMediaItem];
+    if ([(VUIBackgroundMediaController *)self supportsMediaSharing]&& [VUIMediaShareCoordinator shouldShowShareForMediaItem:currentMediaItem])
     {
-      v16 = [VUIMediaShareControlButton shareControlItemForMediaItem:v15 inPlayerViewController:v12];
+      v16 = [VUIMediaShareControlButton shareControlItemForMediaItem:currentMediaItem inPlayerViewController:v12];
       v21 = v16;
       v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v21 count:1];
       [v12 setCustomControlItems:v17];
@@ -5160,24 +5160,24 @@ void __83__VUIBackgroundMediaController__updateAVPlayerViewControllerWithAVPlaye
   }
 }
 
-- (void)_notifyAVPlayerViewControllerDisplaySize:(id)a3 player:(id)a4
+- (void)_notifyAVPlayerViewControllerDisplaySize:(id)size player:(id)player
 {
-  v16 = a3;
-  v6 = a4;
+  sizeCopy = size;
+  playerCopy = player;
   v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  [v16 videoDisplaySize];
+  [sizeCopy videoDisplaySize];
   v10 = v9;
   v11 = v8;
   if (v9 != *MEMORY[0x1E695F060] || v8 != *(MEMORY[0x1E695F060] + 8))
   {
-    [v16 videoDisplayScale];
+    [sizeCopy videoDisplayScale];
     v18.height = round(v11) * v13;
     v18.width = round(v10) * v13;
     DictionaryRepresentation = CGSizeCreateDictionaryRepresentation(v18);
     [v7 vui_setObjectIfNotNil:DictionaryRepresentation forKey:@"VUIBackgroundMediaControllerDisplaySizeKey"];
-    [v7 vui_setObjectIfNotNil:v6 forKey:@"VUIBackgroundMediaControllerPlayerKey"];
-    v15 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v15 postNotificationName:@"VUIBackgroundMediaControllerVideoDisplaySizeDidChangeNotification" object:self userInfo:v7];
+    [v7 vui_setObjectIfNotNil:playerCopy forKey:@"VUIBackgroundMediaControllerPlayerKey"];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"VUIBackgroundMediaControllerVideoDisplaySizeDidChangeNotification" object:self userInfo:v7];
   }
 }
 
@@ -5186,13 +5186,13 @@ void __83__VUIBackgroundMediaController__updateAVPlayerViewControllerWithAVPlaye
   v27 = *MEMORY[0x1E69E9840];
   if ([(VUIBackgroundMediaController *)self isPlaybackEnabled]&& [(VUIBackgroundMediaController *)self _autoPlayEnabled])
   {
-    v3 = [(VUIBackgroundMediaController *)self playbackLoadingStartDate];
+    playbackLoadingStartDate = [(VUIBackgroundMediaController *)self playbackLoadingStartDate];
     [(VUIBackgroundMediaController *)self _computedPlaybackDelayInterval];
     v5 = v4;
-    if (v3)
+    if (playbackLoadingStartDate)
     {
-      v6 = [MEMORY[0x1E695DF00] date];
-      [v6 timeIntervalSinceDate:v3];
+      date = [MEMORY[0x1E695DF00] date];
+      [date timeIntervalSinceDate:playbackLoadingStartDate];
       v8 = v7;
 
       [(VUIBackgroundMediaController *)self setPlaybackLoadingStartDate:0];
@@ -5206,11 +5206,11 @@ void __83__VUIBackgroundMediaController__updateAVPlayerViewControllerWithAVPlaye
     v10 = VUIDefaultLogObject();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [(VUIBackgroundMediaController *)self name];
+      name = [(VUIBackgroundMediaController *)self name];
       *buf = 134218754;
-      v20 = self;
+      selfCopy2 = self;
       v21 = 2112;
-      v22 = v11;
+      v22 = name;
       v23 = 2048;
       v24 = v8;
       v25 = 2048;
@@ -5220,7 +5220,7 @@ void __83__VUIBackgroundMediaController__updateAVPlayerViewControllerWithAVPlaye
 
     if ([(VUIBackgroundMediaController *)self isBackgrounded]&& (v5 == 0.0 || v8 < v5))
     {
-      v13 = [(VUIBackgroundMediaController *)self currentMediaInfo];
+      currentMediaInfo = [(VUIBackgroundMediaController *)self currentMediaInfo];
       objc_initWeak(buf, self);
       v14 = MEMORY[0x1E695DFF0];
       v16[0] = MEMORY[0x1E69E9820];
@@ -5229,8 +5229,8 @@ void __83__VUIBackgroundMediaController__updateAVPlayerViewControllerWithAVPlaye
       v16[3] = &unk_1E8737828;
       objc_copyWeak(&v18, buf);
       v16[4] = self;
-      v12 = v13;
-      v17 = v12;
+      stateMachine = currentMediaInfo;
+      v17 = stateMachine;
       v15 = [v14 scheduledTimerWithTimeInterval:0 repeats:v16 block:v5 - v8];
       [(VUIBackgroundMediaController *)self setPlaybackDelayTimer:v15];
 
@@ -5241,23 +5241,23 @@ void __83__VUIBackgroundMediaController__updateAVPlayerViewControllerWithAVPlaye
 
     if (v5 != -1.0)
     {
-      v12 = [(VUIBackgroundMediaController *)self stateMachine];
-      [v12 postEvent:@"Play" withContext:0 userInfo:0];
+      stateMachine = [(VUIBackgroundMediaController *)self stateMachine];
+      [stateMachine postEvent:@"Play" withContext:0 userInfo:0];
 LABEL_16:
     }
   }
 
   else
   {
-    v3 = VUIDefaultLogObject();
-    if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+    playbackLoadingStartDate = VUIDefaultLogObject();
+    if (os_log_type_enabled(playbackLoadingStartDate, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [(VUIBackgroundMediaController *)self name];
+      name2 = [(VUIBackgroundMediaController *)self name];
       *buf = 134218242;
-      v20 = self;
+      selfCopy2 = self;
       v21 = 2112;
-      v22 = v9;
-      _os_log_impl(&dword_1E323F000, v3, OS_LOG_TYPE_DEFAULT, "VUIBackgroundMediaController::(%p: %@) playback is not enabled yet. Will show playback when it gets enabled.", buf, 0x16u);
+      v22 = name2;
+      _os_log_impl(&dword_1E323F000, playbackLoadingStartDate, OS_LOG_TYPE_DEFAULT, "VUIBackgroundMediaController::(%p: %@) playback is not enabled yet. Will show playback when it gets enabled.", buf, 0x16u);
     }
   }
 }
@@ -5304,20 +5304,20 @@ void __55__VUIBackgroundMediaController__showPlaybackIfPossible__block_invoke(ui
     v6 = *&PlaybackDelayTimeIntervalOverride_playbackDelayInterval_0;
     [(VUIBackgroundMediaController *)self playbackStartDelay];
     v8 = v7;
-    v9 = [(VUIBackgroundMediaController *)self currentMediaInfo];
+    currentMediaInfo = [(VUIBackgroundMediaController *)self currentMediaInfo];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v11 = [(VUIBackgroundMediaController *)self currentMediaInfo];
-      [v11 playbackDelayInterval];
+      currentMediaInfo2 = [(VUIBackgroundMediaController *)self currentMediaInfo];
+      [currentMediaInfo2 playbackDelayInterval];
       v13 = v12;
 
       if (v13 != -1.0)
       {
-        v14 = [(VUIBackgroundMediaController *)self currentMediaInfo];
-        [v14 playbackDelayInterval];
+        currentMediaInfo3 = [(VUIBackgroundMediaController *)self currentMediaInfo];
+        [currentMediaInfo3 playbackDelayInterval];
         v8 = v15;
       }
     }
@@ -5336,39 +5336,39 @@ void __55__VUIBackgroundMediaController__showPlaybackIfPossible__block_invoke(ui
   return result;
 }
 
-- (void)setAvPlayerViewController:(id)a3
+- (void)setAvPlayerViewController:(id)controller
 {
-  v7 = a3;
+  controllerCopy = controller;
   avPlayerViewController = self->_avPlayerViewController;
   if (avPlayerViewController)
   {
     [(AVPlayerViewController *)avPlayerViewController removeObserver:self forKeyPath:@"videoBounds" context:__PlayerAVPlayerViewControllerDisplaySizeKVOContext_0];
   }
 
-  objc_storeStrong(&self->_avPlayerViewController, a3);
-  v6 = v7;
-  if (v7)
+  objc_storeStrong(&self->_avPlayerViewController, controller);
+  v6 = controllerCopy;
+  if (controllerCopy)
   {
-    [v7 addObserver:self forKeyPath:@"videoBounds" options:0 context:__PlayerAVPlayerViewControllerDisplaySizeKVOContext_0];
-    v6 = v7;
+    [controllerCopy addObserver:self forKeyPath:@"videoBounds" options:0 context:__PlayerAVPlayerViewControllerDisplaySizeKVOContext_0];
+    v6 = controllerCopy;
   }
 }
 
-- (void)setPrefetchPlayerViewController:(id)a3
+- (void)setPrefetchPlayerViewController:(id)controller
 {
-  v7 = a3;
+  controllerCopy = controller;
   prefetchPlayerViewController = self->_prefetchPlayerViewController;
   if (prefetchPlayerViewController)
   {
     [(AVPlayerViewController *)prefetchPlayerViewController removeObserver:self forKeyPath:@"videoBounds" context:__PlayerAVPlayerViewControllerDisplaySizeKVOContext_0];
   }
 
-  objc_storeStrong(&self->_prefetchPlayerViewController, a3);
-  v6 = v7;
-  if (v7)
+  objc_storeStrong(&self->_prefetchPlayerViewController, controller);
+  v6 = controllerCopy;
+  if (controllerCopy)
   {
-    [v7 addObserver:self forKeyPath:@"videoBounds" options:0 context:__PlayerAVPlayerViewControllerDisplaySizeKVOContext_0];
-    v6 = v7;
+    [controllerCopy addObserver:self forKeyPath:@"videoBounds" options:0 context:__PlayerAVPlayerViewControllerDisplaySizeKVOContext_0];
+    v6 = controllerCopy;
   }
 }
 
@@ -5380,26 +5380,26 @@ void __55__VUIBackgroundMediaController__showPlaybackIfPossible__block_invoke(ui
   return v3;
 }
 
-- (void)_configurePlayerViewController:(id)a3
+- (void)_configurePlayerViewController:(id)controller
 {
-  v4 = a3;
-  [v4 setUpdatesNowPlayingInfoCenter:{-[VUIBackgroundMediaController updatesNowPlayingInfoCenter](self, "updatesNowPlayingInfoCenter")}];
-  [v4 setAllowsPictureInPicturePlayback:{-[VUIBackgroundMediaController allowsPictureInPicturePlayback](self, "allowsPictureInPicturePlayback")}];
-  [v4 setCanIncludePlaybackControlsWhenInline:0];
-  [v4 setCanPausePlaybackWhenExitingFullScreen:0];
-  [v4 setShowsMinimalPlaybackControlsWhenEmbeddedInline:1];
-  [v4 setDelegate:self];
-  v5 = [(VUIBackgroundMediaController *)self videoGravity];
-  [v4 setVideoGravity:v5];
+  controllerCopy = controller;
+  [controllerCopy setUpdatesNowPlayingInfoCenter:{-[VUIBackgroundMediaController updatesNowPlayingInfoCenter](self, "updatesNowPlayingInfoCenter")}];
+  [controllerCopy setAllowsPictureInPicturePlayback:{-[VUIBackgroundMediaController allowsPictureInPicturePlayback](self, "allowsPictureInPicturePlayback")}];
+  [controllerCopy setCanIncludePlaybackControlsWhenInline:0];
+  [controllerCopy setCanPausePlaybackWhenExitingFullScreen:0];
+  [controllerCopy setShowsMinimalPlaybackControlsWhenEmbeddedInline:1];
+  [controllerCopy setDelegate:self];
+  videoGravity = [(VUIBackgroundMediaController *)self videoGravity];
+  [controllerCopy setVideoGravity:videoGravity];
 
-  [v4 setExitsFullScreenWhenPlaybackEnds:{-[VUIBackgroundMediaController exitsFullscreenWhenPlaybackEnds](self, "exitsFullscreenWhenPlaybackEnds")}];
-  [v4 setShowsPlaybackControls:0];
+  [controllerCopy setExitsFullScreenWhenPlaybackEnds:{-[VUIBackgroundMediaController exitsFullscreenWhenPlaybackEnds](self, "exitsFullscreenWhenPlaybackEnds")}];
+  [controllerCopy setShowsPlaybackControls:0];
   if ([(VUIBackgroundMediaController *)self disableSupplementalSubtitle])
   {
-    [v4 setPreferredPlaybackControlsSupplementalSubtitleDisplayOption:0];
+    [controllerCopy setPreferredPlaybackControlsSupplementalSubtitleDisplayOption:0];
   }
 
-  [v4 setAllowsVideoFrameAnalysis:0];
+  [controllerCopy setAllowsVideoFrameAnalysis:0];
   v6 = VUIDefaultLogObject();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -5407,31 +5407,31 @@ void __55__VUIBackgroundMediaController__showPlaybackIfPossible__block_invoke(ui
     _os_log_impl(&dword_1E323F000, v6, OS_LOG_TYPE_DEFAULT, "VUIBackgroundMediaController::setAllowInfoMetadataSubpanel: NO", v9, 2u);
   }
 
-  [v4 vui_setAllowInfoMetadataSubpanel:0];
-  v7 = [v4 view];
-  v8 = [(VUIBackgroundMediaController *)self view];
-  [v8 bounds];
-  [v7 setFrame:?];
+  [controllerCopy vui_setAllowInfoMetadataSubpanel:0];
+  view = [controllerCopy view];
+  view2 = [(VUIBackgroundMediaController *)self view];
+  [view2 bounds];
+  [view setFrame:?];
 }
 
 - (void)_cleanupPrefetchPlayback
 {
-  v3 = [(VUIBackgroundMediaController *)self prefetchPlayer];
+  prefetchPlayer = [(VUIBackgroundMediaController *)self prefetchPlayer];
 
-  if (v3)
+  if (prefetchPlayer)
   {
-    v4 = [(VUIBackgroundMediaController *)self prefetchPlayer];
-    [v4 stop];
+    prefetchPlayer2 = [(VUIBackgroundMediaController *)self prefetchPlayer];
+    [prefetchPlayer2 stop];
 
-    v5 = [(VUIBackgroundMediaController *)self prefetchPlayer];
-    [v5 invalidate];
+    prefetchPlayer3 = [(VUIBackgroundMediaController *)self prefetchPlayer];
+    [prefetchPlayer3 invalidate];
 
     [(VUIBackgroundMediaController *)self setPrefetchPlayer:0];
   }
 
-  v6 = [(VUIBackgroundMediaController *)self prefetchPlayerViewController];
+  prefetchPlayerViewController = [(VUIBackgroundMediaController *)self prefetchPlayerViewController];
 
-  if (v6)
+  if (prefetchPlayerViewController)
   {
 
     [(VUIBackgroundMediaController *)self setPrefetchPlayerViewController:0];
@@ -5441,22 +5441,22 @@ void __55__VUIBackgroundMediaController__showPlaybackIfPossible__block_invoke(ui
 - (void)_prefetchNextVideo
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [(VUIBackgroundMediaController *)self player];
-  if (v3)
+  player = [(VUIBackgroundMediaController *)self player];
+  if (player)
   {
-    v4 = [(VUIBackgroundMediaController *)self player];
-    v5 = [v4 externalPlaybackType];
+    player2 = [(VUIBackgroundMediaController *)self player];
+    externalPlaybackType = [player2 externalPlaybackType];
 
-    if (v5)
+    if (externalPlaybackType)
     {
       v6 = VUIDefaultLogObject();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
-        v7 = [(VUIBackgroundMediaController *)self name];
+        name = [(VUIBackgroundMediaController *)self name];
         *buf = 134218242;
-        v15 = self;
+        selfCopy2 = self;
         v16 = 2112;
-        v17 = v7;
+        v17 = name;
         _os_log_impl(&dword_1E323F000, v6, OS_LOG_TYPE_DEFAULT, "VUIBackgroundMediaController::(%p: %@) Not prefetching player because external playback is not none", buf, 0x16u);
       }
 
@@ -5471,11 +5471,11 @@ LABEL_5:
     v6 = VUIDefaultLogObject();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [(VUIBackgroundMediaController *)self name];
+      name2 = [(VUIBackgroundMediaController *)self name];
       *buf = 134218242;
-      v15 = self;
+      selfCopy2 = self;
       v16 = 2112;
-      v17 = v9;
+      v17 = name2;
       _os_log_impl(&dword_1E323F000, v6, OS_LOG_TYPE_DEFAULT, "VUIBackgroundMediaController::(%p: %@) Not prefetching next video because prefetchesVideoFrame is NO", buf, 0x16u);
     }
 
@@ -5554,57 +5554,57 @@ void __50__VUIBackgroundMediaController__prefetchNextVideo__block_invoke(uint64_
   [v3 pause];
 }
 
-- (void)_recordBgAutoPlayMediaEventForPlaybackState:(id)a3
+- (void)_recordBgAutoPlayMediaEventForPlaybackState:(id)state
 {
   v55 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(VUIBackgroundMediaController *)self player];
-  v6 = [v5 playlist];
+  stateCopy = state;
+  player = [(VUIBackgroundMediaController *)self player];
+  playlist = [player playlist];
 
-  v7 = [v6 currentMediaItem];
-  if (v7)
+  currentMediaItem = [playlist currentMediaItem];
+  if (currentMediaItem)
   {
-    v8 = [MEMORY[0x1E69D5A40] playing];
+    playing = [MEMORY[0x1E69D5A40] playing];
 
-    if (v8 == v4)
+    if (playing == stateCopy)
     {
       v14 = VUIMetricsMediaActionTypePlay;
     }
 
     else
     {
-      v9 = [MEMORY[0x1E69D5A40] stopped];
-      v10 = v9;
-      if (v9 == v4)
+      stopped = [MEMORY[0x1E69D5A40] stopped];
+      v10 = stopped;
+      if (stopped == stateCopy)
       {
       }
 
       else
       {
-        v11 = [MEMORY[0x1E69D5A40] paused];
-        v12 = v11;
-        if (v11 != v4)
+        paused = [MEMORY[0x1E69D5A40] paused];
+        v12 = paused;
+        if (paused != stateCopy)
         {
 
 LABEL_19:
-          v29 = VUIDefaultLogObject();
-          if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
+          elapsedTimeWhenStopped2 = VUIDefaultLogObject();
+          if (os_log_type_enabled(elapsedTimeWhenStopped2, OS_LOG_TYPE_DEFAULT))
           {
-            v30 = [(VUIBackgroundMediaController *)self name];
+            name = [(VUIBackgroundMediaController *)self name];
             v47 = 134218242;
-            v48 = self;
+            selfCopy2 = self;
             v49 = 2112;
-            v50 = v30;
-            _os_log_impl(&dword_1E323F000, v29, OS_LOG_TYPE_DEFAULT, "VUIBackgroundMediaController::(%p: %@) ignoring playback state media event for ", &v47, 0x16u);
+            v50 = name;
+            _os_log_impl(&dword_1E323F000, elapsedTimeWhenStopped2, OS_LOG_TYPE_DEFAULT, "VUIBackgroundMediaController::(%p: %@) ignoring playback state media event for ", &v47, 0x16u);
           }
 
           v13 = 0;
           goto LABEL_22;
         }
 
-        v15 = [(VUIBackgroundMediaController *)self recordPausedMediaEventAsStop];
+        recordPausedMediaEventAsStop = [(VUIBackgroundMediaController *)self recordPausedMediaEventAsStop];
 
-        if (!v15)
+        if (!recordPausedMediaEventAsStop)
         {
           goto LABEL_19;
         }
@@ -5614,13 +5614,13 @@ LABEL_19:
     }
 
     v13 = *v14;
-    v16 = [(VUIBackgroundMediaController *)self lastMediaEventActionType];
-    v17 = v16;
-    if (v13 == v16)
+    lastMediaEventActionType = [(VUIBackgroundMediaController *)self lastMediaEventActionType];
+    v17 = lastMediaEventActionType;
+    if (v13 == lastMediaEventActionType)
     {
-      v31 = [(VUIBackgroundMediaController *)self lastMediaEventActionType];
+      lastMediaEventActionType2 = [(VUIBackgroundMediaController *)self lastMediaEventActionType];
 
-      if (v31)
+      if (lastMediaEventActionType2)
       {
         goto LABEL_23;
       }
@@ -5634,11 +5634,11 @@ LABEL_19:
     v18 = VUIDefaultLogObject();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
-      v19 = [(VUIBackgroundMediaController *)self name];
+      name2 = [(VUIBackgroundMediaController *)self name];
       v47 = 134218754;
-      v48 = self;
+      selfCopy2 = self;
       v49 = 2112;
-      v50 = v19;
+      v50 = name2;
       v51 = 2112;
       v52 = v13;
       v53 = 1024;
@@ -5646,51 +5646,51 @@ LABEL_19:
       _os_log_impl(&dword_1E323F000, v18, OS_LOG_TYPE_DEFAULT, "VUIBackgroundMediaController::(%p: %@) record bg video media event, actionType %@, isAmbientVideo %i", &v47, 0x26u);
     }
 
-    v20 = [v7 mediaItemMetadataForProperty:@"VUIMediaItemMetadataClipId"];
+    v20 = [currentMediaItem mediaItemMetadataForProperty:@"VUIMediaItemMetadataClipId"];
     v21 = [v20 length];
 
-    v22 = [(VUIBackgroundMediaController *)self player];
-    v23 = v22;
+    player2 = [(VUIBackgroundMediaController *)self player];
+    v23 = player2;
     if (v21)
     {
-      v24 = [v22 currentMediaItem];
-      v25 = [v24 mediaItemMetadataForProperty:*MEMORY[0x1E69D5D88]];
+      currentMediaItem2 = [player2 currentMediaItem];
+      v25 = [currentMediaItem2 mediaItemMetadataForProperty:*MEMORY[0x1E69D5D88]];
 
       v26 = MEMORY[0x1E696AD98];
-      v27 = [(VUIBackgroundMediaController *)self player];
-      v28 = [v27 playbackDate];
-      [v28 timeIntervalSinceDate:v25];
-      v29 = [v26 numberWithDouble:?];
+      player3 = [(VUIBackgroundMediaController *)self player];
+      playbackDate = [player3 playbackDate];
+      [playbackDate timeIntervalSinceDate:v25];
+      elapsedTimeWhenStopped2 = [v26 numberWithDouble:?];
     }
 
     else
     {
-      [v22 duration];
+      [player2 duration];
       v33 = v32;
       v34 = *MEMORY[0x1E69D5A78];
 
       if (v33 == v34)
       {
-        v35 = [MEMORY[0x1E69D5A40] playing];
+        playing2 = [MEMORY[0x1E69D5A40] playing];
 
-        if (v35 != v4)
+        if (playing2 != stateCopy)
         {
-          v36 = [MEMORY[0x1E69D5A40] stopped];
-          if (v36 == v4 || ([MEMORY[0x1E69D5A40] paused], v37 = objc_claimAutoreleasedReturnValue(), v21 = v37, v37 == v4))
+          stopped2 = [MEMORY[0x1E69D5A40] stopped];
+          if (stopped2 == stateCopy || ([MEMORY[0x1E69D5A40] paused], v37 = objc_claimAutoreleasedReturnValue(), v21 = v37, v37 == stateCopy))
           {
-            v42 = [(VUIBackgroundMediaController *)self playbackStartDate];
+            playbackStartDate = [(VUIBackgroundMediaController *)self playbackStartDate];
 
-            if (v36 != v4)
+            if (stopped2 != stateCopy)
             {
             }
 
-            if (v42)
+            if (playbackStartDate)
             {
               v43 = MEMORY[0x1E696AD98];
-              v44 = [MEMORY[0x1E695DF00] date];
-              v45 = [(VUIBackgroundMediaController *)self playbackStartDate];
-              [v44 timeIntervalSinceDate:v45];
-              v29 = [v43 numberWithDouble:?];
+              date = [MEMORY[0x1E695DF00] date];
+              playbackStartDate2 = [(VUIBackgroundMediaController *)self playbackStartDate];
+              [date timeIntervalSinceDate:playbackStartDate2];
+              elapsedTimeWhenStopped2 = [v43 numberWithDouble:?];
 
               goto LABEL_18;
             }
@@ -5700,24 +5700,24 @@ LABEL_19:
           {
           }
 
-          v29 = 0;
+          elapsedTimeWhenStopped2 = 0;
           goto LABEL_18;
         }
 
-        v29 = &unk_1F5E5EE20;
+        elapsedTimeWhenStopped2 = &unk_1F5E5EE20;
       }
 
       else
       {
-        v38 = [MEMORY[0x1E69D5A40] stopped];
-        v39 = v38;
-        if (v38 == v4)
+        stopped3 = [MEMORY[0x1E69D5A40] stopped];
+        v39 = stopped3;
+        if (stopped3 == stateCopy)
         {
-          v46 = [(VUIBackgroundMediaController *)self elapsedTimeWhenStopped];
+          elapsedTimeWhenStopped = [(VUIBackgroundMediaController *)self elapsedTimeWhenStopped];
 
-          if (v46)
+          if (elapsedTimeWhenStopped)
           {
-            v29 = [(VUIBackgroundMediaController *)self elapsedTimeWhenStopped];
+            elapsedTimeWhenStopped2 = [(VUIBackgroundMediaController *)self elapsedTimeWhenStopped];
             goto LABEL_18;
           }
         }
@@ -5727,14 +5727,14 @@ LABEL_19:
         }
 
         v40 = MEMORY[0x1E696AD98];
-        v41 = [(VUIBackgroundMediaController *)self player];
-        [v41 cachedElapsedTime];
-        v29 = [v40 numberWithDouble:?];
+        player4 = [(VUIBackgroundMediaController *)self player];
+        [player4 cachedElapsedTime];
+        elapsedTimeWhenStopped2 = [v40 numberWithDouble:?];
       }
     }
 
 LABEL_18:
-    [VUIMetricsMediaEvent recordBGVideoPlayOfTVPMediaItem:v7 contentPosition:v29 isAmbient:0 actionType:v13];
+    [VUIMetricsMediaEvent recordBGVideoPlayOfTVPMediaItem:currentMediaItem contentPosition:elapsedTimeWhenStopped2 isAmbient:0 actionType:v13];
 LABEL_22:
 
     goto LABEL_23;
@@ -5749,25 +5749,25 @@ LABEL_22:
 LABEL_23:
 }
 
-- (void)_didPlayMediaItemToEnd:(id)a3
+- (void)_didPlayMediaItemToEnd:(id)end
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(VUIBackgroundMediaController *)self player];
-  v6 = [v5 playlist];
-  v7 = [v6 count];
+  endCopy = end;
+  player = [(VUIBackgroundMediaController *)self player];
+  playlist = [player playlist];
+  v7 = [playlist count];
 
   if (v7 == 1)
   {
-    v8 = [MEMORY[0x1E696AD88] defaultCenter];
-    v9 = [(VUIBackgroundMediaController *)self player];
-    [v8 removeObserver:self name:*MEMORY[0x1E69D5F28] object:v9];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    player2 = [(VUIBackgroundMediaController *)self player];
+    [defaultCenter removeObserver:self name:*MEMORY[0x1E69D5F28] object:player2];
   }
 
   if ([(VUIBackgroundMediaController *)self shouldPauseAtEnd])
   {
-    v10 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v10 postNotificationName:@"VUIBackgroundMediaControllerDidPlayToEndNotification" object:self userInfo:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 postNotificationName:@"VUIBackgroundMediaControllerDidPlayToEndNotification" object:self userInfo:0];
 
     if ([(VUIBackgroundMediaController *)self shouldShowImageAndStopAfterPausingAtEnd])
     {
@@ -5785,10 +5785,10 @@ LABEL_23:
 
   else
   {
-    v11 = [(VUIBackgroundMediaController *)self player];
-    v12 = [v11 playlist];
-    v13 = [v12 nextMediaItem];
-    v14 = v13 == 0;
+    player3 = [(VUIBackgroundMediaController *)self player];
+    playlist2 = [player3 playlist];
+    nextMediaItem = [playlist2 nextMediaItem];
+    v14 = nextMediaItem == 0;
 
     v15 = VUIDefaultLogObject();
     v16 = os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT);
@@ -5796,11 +5796,11 @@ LABEL_23:
     {
       if (v16)
       {
-        v18 = [(VUIBackgroundMediaController *)self name];
+        name = [(VUIBackgroundMediaController *)self name];
         *location = 134218242;
         *&location[4] = self;
         v22 = 2112;
-        v23 = v18;
+        v23 = name;
         _os_log_impl(&dword_1E323F000, v15, OS_LOG_TYPE_DEFAULT, "VUIBackgroundMediaController::(%p: %@) DidPlayMediaItemToEnd, stop now", location, 0x16u);
       }
 
@@ -5811,11 +5811,11 @@ LABEL_23:
     {
       if (v16)
       {
-        v17 = [(VUIBackgroundMediaController *)self name];
+        name2 = [(VUIBackgroundMediaController *)self name];
         *location = 134218242;
         *&location[4] = self;
         v22 = 2112;
-        v23 = v17;
+        v23 = name2;
         _os_log_impl(&dword_1E323F000, v15, OS_LOG_TYPE_DEFAULT, "VUIBackgroundMediaController::(%p: %@) DidPlayMediaItemToEnd, there is next item to play, keep playing", location, 0x16u);
       }
     }
@@ -5828,46 +5828,46 @@ void __55__VUIBackgroundMediaController__didPlayMediaItemToEnd___block_invoke(ui
   [WeakRetained stop];
 }
 
-- (void)_populatePlayerWithMediaItemsIfNeeded:(id)a3
+- (void)_populatePlayerWithMediaItemsIfNeeded:(id)needed
 {
-  v8 = a3;
-  v4 = [v8 externalPlaybackType];
-  v5 = [(VUIBackgroundMediaController *)self mediaInfoFetchController];
-  v6 = [v8 playlist];
-  v7 = [(VUIBackgroundMediaController *)self mediaInfoIndex];
-  if (v4)
+  neededCopy = needed;
+  externalPlaybackType = [neededCopy externalPlaybackType];
+  mediaInfoFetchController = [(VUIBackgroundMediaController *)self mediaInfoFetchController];
+  playlist = [neededCopy playlist];
+  mediaInfoIndex = [(VUIBackgroundMediaController *)self mediaInfoIndex];
+  if (externalPlaybackType)
   {
-    [v5 populatePlaylistWithMediaItems:v6 atIndex:v7];
+    [mediaInfoFetchController populatePlaylistWithMediaItems:playlist atIndex:mediaInfoIndex];
 
-    [v8 setMediaItemEndAction:0];
+    [neededCopy setMediaItemEndAction:0];
 
     [(VUIBackgroundMediaController *)self _cleanupPrefetchPlayback];
   }
 
   else
   {
-    [v5 removePopulatedMediaItems:v6 atIndex:v7];
+    [mediaInfoFetchController removePopulatedMediaItems:playlist atIndex:mediaInfoIndex];
 
-    [v8 setMediaItemEndAction:1];
+    [neededCopy setMediaItemEndAction:1];
   }
 }
 
-- (void)_externalPlaybackStateChanged:(id)a3
+- (void)_externalPlaybackStateChanged:(id)changed
 {
-  v4 = [a3 object];
+  object = [changed object];
   if ([(VUIBackgroundMediaController *)self prefetchesVideoFrame])
   {
-    [(VUIBackgroundMediaController *)self _populatePlayerWithMediaItemsIfNeeded:v4];
+    [(VUIBackgroundMediaController *)self _populatePlayerWithMediaItemsIfNeeded:object];
   }
 }
 
-- (void)_postWillStartPlaybackNotification:(BOOL)a3
+- (void)_postWillStartPlaybackNotification:(BOOL)notification
 {
-  v3 = a3;
+  notificationCopy = notification;
   v11[3] = *MEMORY[0x1E69E9840];
   [(VUIBackgroundMediaController *)self setAutomaticPlaybackStop:0];
   v10[0] = @"VUIBackgroundMediaControllerIsForegroundedKey";
-  v5 = [MEMORY[0x1E696AD98] numberWithBool:v3];
+  v5 = [MEMORY[0x1E696AD98] numberWithBool:notificationCopy];
   v11[0] = v5;
   v10[1] = @"VUIBackgroundMediaControllerIsAutomaticPlaybackStartKey";
   v6 = [MEMORY[0x1E696AD98] numberWithBool:{-[VUIBackgroundMediaController isAutomaticPlaybackStart](self, "isAutomaticPlaybackStart")}];
@@ -5877,8 +5877,8 @@ void __55__VUIBackgroundMediaController__didPlayMediaItemToEnd___block_invoke(ui
   v11[2] = v7;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:v10 count:3];
 
-  v9 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v9 postNotificationName:@"VUIBackgroundMediaControllerWillStartPlaybackNotification" object:self userInfo:v8];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"VUIBackgroundMediaControllerWillStartPlaybackNotification" object:self userInfo:v8];
 }
 
 - (void)_postWillStopPlaybackNotification
@@ -5892,8 +5892,8 @@ void __55__VUIBackgroundMediaController__didPlayMediaItemToEnd___block_invoke(ui
   v8[1] = v4;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v8 forKeys:v7 count:2];
 
-  v6 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v6 postNotificationName:@"VUIBackgroundMediaControllerWillStopPlaybackNotification" object:self userInfo:v5];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"VUIBackgroundMediaControllerWillStopPlaybackNotification" object:self userInfo:v5];
 }
 
 - (void)_postDidStopPlaybackNotification
@@ -5907,87 +5907,87 @@ void __55__VUIBackgroundMediaController__didPlayMediaItemToEnd___block_invoke(ui
   v8[1] = v4;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v8 forKeys:v7 count:2];
 
-  v6 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v6 postNotificationName:@"VUIBackgroundMediaControllerDidStopPlaybackNotification" object:self userInfo:v5];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"VUIBackgroundMediaControllerDidStopPlaybackNotification" object:self userInfo:v5];
 }
 
-- (void)_stateDidChangeFromState:(id)a3 toState:(id)a4 onEvent:(id)a5 context:(id)a6 userInfo:(id)a7
+- (void)_stateDidChangeFromState:(id)state toState:(id)toState onEvent:(id)event context:(id)context userInfo:(id)info
 {
   v34 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  stateCopy = state;
+  toStateCopy = toState;
+  eventCopy = event;
   v13 = VUIDefaultLogObject();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [(VUIBackgroundMediaController *)self name];
+    name = [(VUIBackgroundMediaController *)self name];
     v24 = 134219010;
-    v25 = self;
+    selfCopy3 = self;
     v26 = 2112;
-    v27 = v14;
+    v27 = name;
     v28 = 2112;
-    v29 = v12;
+    v29 = eventCopy;
     v30 = 2112;
-    v31 = v10;
+    v31 = stateCopy;
     v32 = 2112;
-    v33 = v11;
+    v33 = toStateCopy;
     _os_log_impl(&dword_1E323F000, v13, OS_LOG_TYPE_DEFAULT, "VUIBackgroundMediaController::(%p: %@) event:%@, fromState:%@, toState:%@", &v24, 0x34u);
   }
 
-  if (v10 && v11)
+  if (stateCopy && toStateCopy)
   {
-    if ([v10 isEqualToString:@"waiting for timeout while paused"])
+    if ([stateCopy isEqualToString:@"waiting for timeout while paused"])
     {
       v15 = VUIDefaultLogObject();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
-        v16 = [(VUIBackgroundMediaController *)self name];
+        name2 = [(VUIBackgroundMediaController *)self name];
         v24 = 134218242;
-        v25 = self;
+        selfCopy3 = self;
         v26 = 2112;
-        v27 = v16;
+        v27 = name2;
         _os_log_impl(&dword_1E323F000, v15, OS_LOG_TYPE_DEFAULT, "VUIBackgroundMediaController::(%p: %@) invalidating waiting for timeout timer in paused state.", &v24, 0x16u);
       }
 
-      v17 = [(VUIBackgroundMediaController *)self pauseStateTimeoutTimer];
-      [v17 invalidate];
+      pauseStateTimeoutTimer = [(VUIBackgroundMediaController *)self pauseStateTimeoutTimer];
+      [pauseStateTimeoutTimer invalidate];
 
       [(VUIBackgroundMediaController *)self setPauseStateTimeoutTimer:0];
       goto LABEL_23;
     }
 
-    if ([v10 isEqualToString:@"Loading image"])
+    if ([stateCopy isEqualToString:@"Loading image"])
     {
       [MEMORY[0x1E69E58C0] cancelPreviousPerformRequestsWithTarget:self];
     }
 
     else
     {
-      if (![v10 isEqualToString:@"Showing image"])
+      if (![stateCopy isEqualToString:@"Showing image"])
       {
-        if ([v10 isEqualToString:@"waiting to stop playback"])
+        if ([stateCopy isEqualToString:@"waiting to stop playback"])
         {
           v18 = VUIDefaultLogObject();
           if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
           {
-            v19 = [(VUIBackgroundMediaController *)self name];
+            name3 = [(VUIBackgroundMediaController *)self name];
             v24 = 134218498;
-            v25 = self;
+            selfCopy3 = self;
             v26 = 2112;
-            v27 = v19;
+            v27 = name3;
             v28 = 2112;
-            v29 = v11;
+            v29 = toStateCopy;
           }
 
           v20 = MEMORY[0x1E69E58C0];
           v21 = sel_stop;
-          v22 = self;
+          selfCopy5 = self;
           v23 = 0;
         }
 
         else
         {
-          if ([v10 isEqualToString:@"Showing playback in foreground"])
+          if ([stateCopy isEqualToString:@"Showing playback in foreground"])
           {
             v20 = MEMORY[0x1E69E58C0];
             v21 = sel__updatePlayerVolume_;
@@ -5996,7 +5996,7 @@ void __55__VUIBackgroundMediaController__didPlayMediaItemToEnd___block_invoke(ui
 
           else
           {
-            if (![v10 isEqualToString:@"Showing playback in background"])
+            if (![stateCopy isEqualToString:@"Showing playback in background"])
             {
               goto LABEL_23;
             }
@@ -6006,10 +6006,10 @@ void __55__VUIBackgroundMediaController__didPlayMediaItemToEnd___block_invoke(ui
             v23 = MEMORY[0x1E695E110];
           }
 
-          v22 = self;
+          selfCopy5 = self;
         }
 
-        [v20 cancelPreviousPerformRequestsWithTarget:v22 selector:v21 object:v23];
+        [v20 cancelPreviousPerformRequestsWithTarget:selfCopy5 selector:v21 object:v23];
         goto LABEL_23;
       }
 
@@ -6017,36 +6017,36 @@ void __55__VUIBackgroundMediaController__didPlayMediaItemToEnd___block_invoke(ui
     }
 
 LABEL_23:
-    [(VUIBackgroundMediaController *)self _configureAudioSessionForState:v11];
-    [(VUIBackgroundMediaController *)self _configureLegibleContentInsetFromState:v10 toState:v11];
+    [(VUIBackgroundMediaController *)self _configureAudioSessionForState:toStateCopy];
+    [(VUIBackgroundMediaController *)self _configureLegibleContentInsetFromState:stateCopy toState:toStateCopy];
   }
 }
 
 - (void)_configureAudioSession
 {
-  v3 = [(VUIBackgroundMediaController *)self stateMachine];
-  v4 = [v3 currentState];
+  stateMachine = [(VUIBackgroundMediaController *)self stateMachine];
+  currentState = [stateMachine currentState];
 
-  [(VUIBackgroundMediaController *)self _configureAudioSessionForState:v4];
+  [(VUIBackgroundMediaController *)self _configureAudioSessionForState:currentState];
 }
 
-- (void)_configureAudioSessionForState:(id)a3
+- (void)_configureAudioSessionForState:(id)state
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 isEqualToString:@"Showing playback in background"] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"Showing playback in foreground"))
+  stateCopy = state;
+  if ([stateCopy isEqualToString:@"Showing playback in background"] & 1) != 0 || (objc_msgSend(stateCopy, "isEqualToString:", @"Showing playback in foreground"))
   {
     v5 = VUIDefaultLogObject();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(VUIBackgroundMediaController *)self name];
+      name = [(VUIBackgroundMediaController *)self name];
       [(VUIBackgroundMediaController *)self isBackgrounded];
       v7 = VUIBoolLogString();
       v8 = VUIBoolLogString();
       v11 = 134218754;
-      v12 = self;
+      selfCopy2 = self;
       v13 = 2112;
-      v14 = v6;
+      v14 = name;
       v15 = 2112;
       v16 = v7;
       v17 = 2112;
@@ -6063,13 +6063,13 @@ LABEL_23:
     v9 = VUIDefaultLogObject();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [(VUIBackgroundMediaController *)self name];
+      name2 = [(VUIBackgroundMediaController *)self name];
       v11 = 134218498;
-      v12 = self;
+      selfCopy2 = self;
       v13 = 2112;
-      v14 = v10;
+      v14 = name2;
       v15 = 2112;
-      v16 = v4;
+      v16 = stateCopy;
       _os_log_impl(&dword_1E323F000, v9, OS_LOG_TYPE_DEFAULT, "VUIBackgroundMediaController::(%p: %@) state = %@, video isn't playing, skip audio session configuration", &v11, 0x20u);
     }
   }
@@ -6099,7 +6099,7 @@ LABEL_23:
   v139[3] = &unk_1E872E4B8;
   objc_copyWeak(&v140, &location);
   v5 = _Block_copy(v139);
-  v6 = [(VUIBackgroundMediaController *)self stateMachine];
+  stateMachine = [(VUIBackgroundMediaController *)self stateMachine];
   v157[0] = @"Showing playback in foreground";
   v157[1] = @"Showing playback in background";
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v157 count:2];
@@ -6108,17 +6108,17 @@ LABEL_23:
   v137[2] = __61__VUIBackgroundMediaController__registerStateMachineHandlers__block_invoke_348;
   v137[3] = &unk_1E872FAD8;
   objc_copyWeak(&v138, &location);
-  [v6 registerHandlerForEvent:@"Set media info" onStates:v7 withBlock:v137];
+  [stateMachine registerHandlerForEvent:@"Set media info" onStates:v7 withBlock:v137];
 
-  v8 = [(VUIBackgroundMediaController *)self stateMachine];
+  stateMachine2 = [(VUIBackgroundMediaController *)self stateMachine];
   v135[0] = MEMORY[0x1E69E9820];
   v135[1] = 3221225472;
   v135[2] = __61__VUIBackgroundMediaController__registerStateMachineHandlers__block_invoke_353;
   v135[3] = &unk_1E872FAD8;
   objc_copyWeak(&v136, &location);
-  [v8 registerDefaultHandlerForEvent:@"Set media info" withBlock:v135];
+  [stateMachine2 registerDefaultHandlerForEvent:@"Set media info" withBlock:v135];
 
-  v9 = [(VUIBackgroundMediaController *)self stateMachine];
+  stateMachine3 = [(VUIBackgroundMediaController *)self stateMachine];
   v156[0] = @"Not doing anything";
   v156[1] = @"Loading image";
   v156[2] = @"Showing image";
@@ -6130,9 +6130,9 @@ LABEL_23:
   v133[2] = __61__VUIBackgroundMediaController__registerStateMachineHandlers__block_invoke_4_356;
   v133[3] = &unk_1E872FAD8;
   objc_copyWeak(&v134, &location);
-  [v9 registerHandlerForEvent:@"Load image" onStates:v10 withBlock:v133];
+  [stateMachine3 registerHandlerForEvent:@"Load image" onStates:v10 withBlock:v133];
 
-  v11 = [(VUIBackgroundMediaController *)self stateMachine];
+  stateMachine4 = [(VUIBackgroundMediaController *)self stateMachine];
   v155[0] = @"Showing playback in background";
   v155[1] = @"Showing playback in foreground";
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v155 count:2];
@@ -6141,9 +6141,9 @@ LABEL_23:
   v131[2] = __61__VUIBackgroundMediaController__registerStateMachineHandlers__block_invoke_357;
   v131[3] = &unk_1E872FAD8;
   objc_copyWeak(&v132, &location);
-  [v11 registerHandlerForEvent:@"Load image" onStates:v12 withBlock:v131];
+  [stateMachine4 registerHandlerForEvent:@"Load image" onStates:v12 withBlock:v131];
 
-  v13 = [(VUIBackgroundMediaController *)self stateMachine];
+  stateMachine5 = [(VUIBackgroundMediaController *)self stateMachine];
   v128[0] = MEMORY[0x1E69E9820];
   v128[1] = 3221225472;
   v128[2] = __61__VUIBackgroundMediaController__registerStateMachineHandlers__block_invoke_3_359;
@@ -6151,25 +6151,25 @@ LABEL_23:
   objc_copyWeak(&v130, &location);
   v14 = v5;
   v129 = v14;
-  [v13 registerHandlerForEvent:@"Show image" onState:@"Loading image" withBlock:v128];
+  [stateMachine5 registerHandlerForEvent:@"Show image" onState:@"Loading image" withBlock:v128];
 
-  v15 = [(VUIBackgroundMediaController *)self stateMachine];
+  stateMachine6 = [(VUIBackgroundMediaController *)self stateMachine];
   v126[0] = MEMORY[0x1E69E9820];
   v126[1] = 3221225472;
   v126[2] = __61__VUIBackgroundMediaController__registerStateMachineHandlers__block_invoke_3_364;
   v126[3] = &unk_1E872FAD8;
   objc_copyWeak(&v127, &location);
-  [v15 registerHandlerForEvent:@"Show image" onState:@"Finished playback" withBlock:v126];
+  [stateMachine6 registerHandlerForEvent:@"Show image" onState:@"Finished playback" withBlock:v126];
 
-  v16 = [(VUIBackgroundMediaController *)self stateMachine];
+  stateMachine7 = [(VUIBackgroundMediaController *)self stateMachine];
   v124[0] = MEMORY[0x1E69E9820];
   v124[1] = 3221225472;
   v124[2] = __61__VUIBackgroundMediaController__registerStateMachineHandlers__block_invoke_5_366;
   v124[3] = &unk_1E872FAD8;
   objc_copyWeak(&v125, &location);
-  [v16 registerHandlerForEvent:@"Show image" onState:@"Waiting to stop after showing image" withBlock:v124];
+  [stateMachine7 registerHandlerForEvent:@"Show image" onState:@"Waiting to stop after showing image" withBlock:v124];
 
-  v17 = [(VUIBackgroundMediaController *)self stateMachine];
+  stateMachine8 = [(VUIBackgroundMediaController *)self stateMachine];
   v154[0] = @"Showing playback in foreground";
   v154[1] = @"Showing playback in background";
   v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v154 count:2];
@@ -6178,9 +6178,9 @@ LABEL_23:
   v122[2] = __61__VUIBackgroundMediaController__registerStateMachineHandlers__block_invoke_8;
   v122[3] = &unk_1E872FAD8;
   objc_copyWeak(&v123, &location);
-  [v17 registerHandlerForEvent:@"Show image" onStates:v18 withBlock:v122];
+  [stateMachine8 registerHandlerForEvent:@"Show image" onStates:v18 withBlock:v122];
 
-  v19 = [(VUIBackgroundMediaController *)self stateMachine];
+  stateMachine9 = [(VUIBackgroundMediaController *)self stateMachine];
   v153[0] = @"Not doing anything";
   v153[1] = @"Showing image";
   v153[2] = @"Loading image";
@@ -6193,9 +6193,9 @@ LABEL_23:
   objc_copyWeak(&v121, &location);
   v21 = v4;
   v120 = v21;
-  [v19 registerHandlerForEvent:@"Load playback" onStates:v20 withBlock:v119];
+  [stateMachine9 registerHandlerForEvent:@"Load playback" onStates:v20 withBlock:v119];
 
-  v22 = [(VUIBackgroundMediaController *)self stateMachine];
+  stateMachine10 = [(VUIBackgroundMediaController *)self stateMachine];
   v152[0] = @"Showing playback in foreground";
   v152[1] = @"Showing playback in background";
   v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:v152 count:2];
@@ -6206,41 +6206,41 @@ LABEL_23:
   objc_copyWeak(&v118, &location);
   v24 = v21;
   v117 = v24;
-  [v22 registerHandlerForEvent:@"Load playback" onStates:v23 withBlock:v116];
+  [stateMachine10 registerHandlerForEvent:@"Load playback" onStates:v23 withBlock:v116];
 
-  v25 = [(VUIBackgroundMediaController *)self stateMachine];
+  stateMachine11 = [(VUIBackgroundMediaController *)self stateMachine];
   v114[0] = MEMORY[0x1E69E9820];
   v114[1] = 3221225472;
   v114[2] = __61__VUIBackgroundMediaController__registerStateMachineHandlers__block_invoke_2_372;
   v114[3] = &unk_1E872FAD8;
   objc_copyWeak(&v115, &location);
-  [v25 registerHandlerForEvent:@"Show playback" onState:@"Loading playback" withBlock:v114];
+  [stateMachine11 registerHandlerForEvent:@"Show playback" onState:@"Loading playback" withBlock:v114];
 
-  v26 = [(VUIBackgroundMediaController *)self stateMachine];
+  stateMachine12 = [(VUIBackgroundMediaController *)self stateMachine];
   v112[0] = MEMORY[0x1E69E9820];
   v112[1] = 3221225472;
   v112[2] = __61__VUIBackgroundMediaController__registerStateMachineHandlers__block_invoke_5_377;
   v112[3] = &unk_1E872FAD8;
   objc_copyWeak(&v113, &location);
-  [v26 registerHandlerForEvent:@"Show playback" onState:@"Showing image" withBlock:v112];
+  [stateMachine12 registerHandlerForEvent:@"Show playback" onState:@"Showing image" withBlock:v112];
 
-  v27 = [(VUIBackgroundMediaController *)self stateMachine];
+  stateMachine13 = [(VUIBackgroundMediaController *)self stateMachine];
   v110[0] = MEMORY[0x1E69E9820];
   v110[1] = 3221225472;
   v110[2] = __61__VUIBackgroundMediaController__registerStateMachineHandlers__block_invoke_8_380;
   v110[3] = &unk_1E872FAD8;
   objc_copyWeak(&v111, &location);
-  [v27 registerHandlerForEvent:@"Player state changed" onState:@"Waiting for player to start loading" withBlock:v110];
+  [stateMachine13 registerHandlerForEvent:@"Player state changed" onState:@"Waiting for player to start loading" withBlock:v110];
 
-  v28 = [(VUIBackgroundMediaController *)self stateMachine];
+  stateMachine14 = [(VUIBackgroundMediaController *)self stateMachine];
   v108[0] = MEMORY[0x1E69E9820];
   v108[1] = 3221225472;
   v108[2] = __61__VUIBackgroundMediaController__registerStateMachineHandlers__block_invoke_382;
   v108[3] = &unk_1E872FAD8;
   objc_copyWeak(&v109, &location);
-  [v28 registerHandlerForEvent:@"Player state changed" onState:@"Loading playback" withBlock:v108];
+  [stateMachine14 registerHandlerForEvent:@"Player state changed" onState:@"Loading playback" withBlock:v108];
 
-  v29 = [(VUIBackgroundMediaController *)self stateMachine];
+  stateMachine15 = [(VUIBackgroundMediaController *)self stateMachine];
   v151[0] = @"waiting for timeout while paused";
   v151[1] = @"Showing playback in background";
   v151[2] = @"Showing playback in foreground";
@@ -6251,41 +6251,41 @@ LABEL_23:
   v106[2] = __61__VUIBackgroundMediaController__registerStateMachineHandlers__block_invoke_383;
   v106[3] = &unk_1E872FAD8;
   objc_copyWeak(&v107, &location);
-  [v29 registerHandlerForEvent:@"Player state changed" onStates:v30 withBlock:v106];
+  [stateMachine15 registerHandlerForEvent:@"Player state changed" onStates:v30 withBlock:v106];
 
-  v31 = [(VUIBackgroundMediaController *)self stateMachine];
+  stateMachine16 = [(VUIBackgroundMediaController *)self stateMachine];
   v104[0] = MEMORY[0x1E69E9820];
   v104[1] = 3221225472;
   v104[2] = __61__VUIBackgroundMediaController__registerStateMachineHandlers__block_invoke_2_384;
   v104[3] = &unk_1E872FAD8;
   objc_copyWeak(&v105, &location);
-  [v31 registerHandlerForEvent:@"Player state changed" onState:@"Waiting to stop after showing image" withBlock:v104];
+  [stateMachine16 registerHandlerForEvent:@"Player state changed" onState:@"Waiting to stop after showing image" withBlock:v104];
 
-  v32 = [(VUIBackgroundMediaController *)self stateMachine];
+  stateMachine17 = [(VUIBackgroundMediaController *)self stateMachine];
   v102[0] = MEMORY[0x1E69E9820];
   v102[1] = 3221225472;
   v102[2] = __61__VUIBackgroundMediaController__registerStateMachineHandlers__block_invoke_3_385;
   v102[3] = &unk_1E872FAD8;
   objc_copyWeak(&v103, &location);
-  [v32 registerDefaultHandlerForEvent:@"Finished playback" withBlock:v102];
+  [stateMachine17 registerDefaultHandlerForEvent:@"Finished playback" withBlock:v102];
 
-  v33 = [(VUIBackgroundMediaController *)self stateMachine];
+  stateMachine18 = [(VUIBackgroundMediaController *)self stateMachine];
   v100[0] = MEMORY[0x1E69E9820];
   v100[1] = 3221225472;
   v100[2] = __61__VUIBackgroundMediaController__registerStateMachineHandlers__block_invoke_5_388;
   v100[3] = &unk_1E872FAD8;
   objc_copyWeak(&v101, &location);
-  [v33 registerDefaultHandlerForEvent:@"Playback error occurred" withBlock:v100];
+  [stateMachine18 registerDefaultHandlerForEvent:@"Playback error occurred" withBlock:v100];
 
-  v34 = [(VUIBackgroundMediaController *)self stateMachine];
+  stateMachine19 = [(VUIBackgroundMediaController *)self stateMachine];
   v98[0] = MEMORY[0x1E69E9820];
   v98[1] = 3221225472;
   v98[2] = __61__VUIBackgroundMediaController__registerStateMachineHandlers__block_invoke_11;
   v98[3] = &unk_1E872FAD8;
   objc_copyWeak(&v99, &location);
-  [v34 registerHandlerForEvent:@"Transition to foreground" onState:@"Loading image" withBlock:v98];
+  [stateMachine19 registerHandlerForEvent:@"Transition to foreground" onState:@"Loading image" withBlock:v98];
 
-  v35 = [(VUIBackgroundMediaController *)self stateMachine];
+  stateMachine20 = [(VUIBackgroundMediaController *)self stateMachine];
   v150[0] = @"Showing playback in background";
   v150[1] = @"waiting for timeout while paused";
   v36 = [MEMORY[0x1E695DEC8] arrayWithObjects:v150 count:2];
@@ -6294,33 +6294,33 @@ LABEL_23:
   v96[2] = __61__VUIBackgroundMediaController__registerStateMachineHandlers__block_invoke_12;
   v96[3] = &unk_1E872FAD8;
   objc_copyWeak(&v97, &location);
-  [v35 registerHandlerForEvent:@"Transition to foreground" onStates:v36 withBlock:v96];
+  [stateMachine20 registerHandlerForEvent:@"Transition to foreground" onStates:v36 withBlock:v96];
 
-  v37 = [(VUIBackgroundMediaController *)self stateMachine];
+  stateMachine21 = [(VUIBackgroundMediaController *)self stateMachine];
   v94[0] = MEMORY[0x1E69E9820];
   v94[1] = 3221225472;
   v94[2] = __61__VUIBackgroundMediaController__registerStateMachineHandlers__block_invoke_405;
   v94[3] = &unk_1E872FAD8;
   objc_copyWeak(&v95, &location);
-  [v37 registerHandlerForEvent:@"Transition background" onState:@"Loading image" withBlock:v94];
+  [stateMachine21 registerHandlerForEvent:@"Transition background" onState:@"Loading image" withBlock:v94];
 
-  v38 = [(VUIBackgroundMediaController *)self stateMachine];
+  stateMachine22 = [(VUIBackgroundMediaController *)self stateMachine];
   v92[0] = MEMORY[0x1E69E9820];
   v92[1] = 3221225472;
   v92[2] = __61__VUIBackgroundMediaController__registerStateMachineHandlers__block_invoke_2_406;
   v92[3] = &unk_1E872FAD8;
   objc_copyWeak(&v93, &location);
-  [v38 registerHandlerForEvent:@"Transition background" onState:@"Loading playback" withBlock:v92];
+  [stateMachine22 registerHandlerForEvent:@"Transition background" onState:@"Loading playback" withBlock:v92];
 
-  v39 = [(VUIBackgroundMediaController *)self stateMachine];
+  stateMachine23 = [(VUIBackgroundMediaController *)self stateMachine];
   v90[0] = MEMORY[0x1E69E9820];
   v90[1] = 3221225472;
   v90[2] = __61__VUIBackgroundMediaController__registerStateMachineHandlers__block_invoke_3_407;
   v90[3] = &unk_1E872FAD8;
   objc_copyWeak(&v91, &location);
-  [v39 registerHandlerForEvent:@"Transition background" onState:@"Showing playback in foreground" withBlock:v90];
+  [stateMachine23 registerHandlerForEvent:@"Transition background" onState:@"Showing playback in foreground" withBlock:v90];
 
-  v40 = [(VUIBackgroundMediaController *)self stateMachine];
+  stateMachine24 = [(VUIBackgroundMediaController *)self stateMachine];
   v149[0] = @"Showing playback in background";
   v149[1] = @"Showing playback in foreground";
   v149[2] = @"Loading playback";
@@ -6330,9 +6330,9 @@ LABEL_23:
   v88[2] = __61__VUIBackgroundMediaController__registerStateMachineHandlers__block_invoke_5_409;
   v88[3] = &unk_1E872FAD8;
   objc_copyWeak(&v89, &location);
-  [v40 registerHandlerForEvent:@"Play" onStates:v41 withBlock:v88];
+  [stateMachine24 registerHandlerForEvent:@"Play" onStates:v41 withBlock:v88];
 
-  v42 = [(VUIBackgroundMediaController *)self stateMachine];
+  stateMachine25 = [(VUIBackgroundMediaController *)self stateMachine];
   v148[0] = @"waiting for timeout while paused";
   v148[1] = @"waiting to stop playback";
   v43 = [MEMORY[0x1E695DEC8] arrayWithObjects:v148 count:2];
@@ -6341,36 +6341,36 @@ LABEL_23:
   v86[2] = __61__VUIBackgroundMediaController__registerStateMachineHandlers__block_invoke_410;
   v86[3] = &unk_1E872FAD8;
   objc_copyWeak(&v87, &location);
-  [v42 registerHandlerForEvent:@"Play" onStates:v43 withBlock:v86];
+  [stateMachine25 registerHandlerForEvent:@"Play" onStates:v43 withBlock:v86];
 
-  v44 = [(VUIBackgroundMediaController *)self stateMachine];
+  stateMachine26 = [(VUIBackgroundMediaController *)self stateMachine];
   v84[0] = MEMORY[0x1E69E9820];
   v84[1] = 3221225472;
   v84[2] = __61__VUIBackgroundMediaController__registerStateMachineHandlers__block_invoke_3_412;
   v84[3] = &unk_1E872FAD8;
   objc_copyWeak(&v85, &location);
-  [v44 registerHandlerForEvent:@"Pause" onState:@"Showing playback in background" withBlock:v84];
+  [stateMachine26 registerHandlerForEvent:@"Pause" onState:@"Showing playback in background" withBlock:v84];
 
-  v45 = [(VUIBackgroundMediaController *)self stateMachine];
+  stateMachine27 = [(VUIBackgroundMediaController *)self stateMachine];
   v82[0] = MEMORY[0x1E69E9820];
   v82[1] = 3221225472;
   v82[2] = __61__VUIBackgroundMediaController__registerStateMachineHandlers__block_invoke_415;
   v82[3] = &unk_1E872FAD8;
   objc_copyWeak(&v83, &location);
-  [v45 registerHandlerForEvent:@"Pause show image and stop" onState:@"Showing playback in background" withBlock:v82];
+  [stateMachine27 registerHandlerForEvent:@"Pause show image and stop" onState:@"Showing playback in background" withBlock:v82];
 
-  v46 = [(VUIBackgroundMediaController *)self stateMachine];
-  [v46 registerDefaultHandlerForEvent:@"Pause show image and stop" withBlock:&__block_literal_global_419];
+  stateMachine28 = [(VUIBackgroundMediaController *)self stateMachine];
+  [stateMachine28 registerDefaultHandlerForEvent:@"Pause show image and stop" withBlock:&__block_literal_global_419];
 
-  v47 = [(VUIBackgroundMediaController *)self stateMachine];
+  stateMachine29 = [(VUIBackgroundMediaController *)self stateMachine];
   v80[0] = MEMORY[0x1E69E9820];
   v80[1] = 3221225472;
   v80[2] = __61__VUIBackgroundMediaController__registerStateMachineHandlers__block_invoke_5_421;
   v80[3] = &unk_1E872FAD8;
   objc_copyWeak(&v81, &location);
-  [v47 registerDefaultHandlerForEvent:@"Stop" withBlock:v80];
+  [stateMachine29 registerDefaultHandlerForEvent:@"Stop" withBlock:v80];
 
-  v48 = [(VUIBackgroundMediaController *)self stateMachine];
+  stateMachine30 = [(VUIBackgroundMediaController *)self stateMachine];
   v77[0] = MEMORY[0x1E69E9820];
   v77[1] = 3221225472;
   v77[2] = __61__VUIBackgroundMediaController__registerStateMachineHandlers__block_invoke_6_422;
@@ -6378,9 +6378,9 @@ LABEL_23:
   objc_copyWeak(&v79, &location);
   v49 = v14;
   v78 = v49;
-  [v48 registerHandlerForEvent:@"Replay" onState:@"Not doing anything" withBlock:v77];
+  [stateMachine30 registerHandlerForEvent:@"Replay" onState:@"Not doing anything" withBlock:v77];
 
-  v50 = [(VUIBackgroundMediaController *)self stateMachine];
+  stateMachine31 = [(VUIBackgroundMediaController *)self stateMachine];
   v73[0] = MEMORY[0x1E69E9820];
   v73[1] = 3221225472;
   v73[2] = __61__VUIBackgroundMediaController__registerStateMachineHandlers__block_invoke_424;
@@ -6390,9 +6390,9 @@ LABEL_23:
   v74 = v51;
   v52 = v61;
   v75 = v52;
-  [v50 registerHandlerForEvent:@"Replay" onState:@"Showing image" withBlock:v73];
+  [stateMachine31 registerHandlerForEvent:@"Replay" onState:@"Showing image" withBlock:v73];
 
-  v53 = [(VUIBackgroundMediaController *)self stateMachine];
+  stateMachine32 = [(VUIBackgroundMediaController *)self stateMachine];
   v147[0] = @"Waiting for player to start loading";
   v147[1] = @"Loading playback";
   v54 = [MEMORY[0x1E695DEC8] arrayWithObjects:v147 count:2];
@@ -6403,9 +6403,9 @@ LABEL_23:
   objc_copyWeak(&v72, &location);
   v55 = v51;
   v71 = v55;
-  [v53 registerHandlerForEvent:@"Replay" onStates:v54 withBlock:v70];
+  [stateMachine32 registerHandlerForEvent:@"Replay" onStates:v54 withBlock:v70];
 
-  v56 = [(VUIBackgroundMediaController *)self stateMachine];
+  stateMachine33 = [(VUIBackgroundMediaController *)self stateMachine];
   v67[0] = MEMORY[0x1E69E9820];
   v67[1] = 3221225472;
   v67[2] = __61__VUIBackgroundMediaController__registerStateMachineHandlers__block_invoke_427;
@@ -6413,9 +6413,9 @@ LABEL_23:
   objc_copyWeak(&v69, &location);
   v57 = v24;
   v68 = v57;
-  [v56 registerHandlerForEvent:@"Restore avPlayerViewController" onState:@"Not doing anything" withBlock:v67];
+  [stateMachine33 registerHandlerForEvent:@"Restore avPlayerViewController" onState:@"Not doing anything" withBlock:v67];
 
-  v58 = [(VUIBackgroundMediaController *)self stateMachine];
+  stateMachine34 = [(VUIBackgroundMediaController *)self stateMachine];
   v64[0] = MEMORY[0x1E69E9820];
   v64[1] = 3221225472;
   v64[2] = __61__VUIBackgroundMediaController__registerStateMachineHandlers__block_invoke_3_429;
@@ -6423,15 +6423,15 @@ LABEL_23:
   objc_copyWeak(&v66, &location);
   v59 = v57;
   v65 = v59;
-  [v58 registerDefaultHandlerForEvent:@"Restore avPlayerViewController" withBlock:v64];
+  [stateMachine34 registerDefaultHandlerForEvent:@"Restore avPlayerViewController" withBlock:v64];
 
-  v60 = [(VUIBackgroundMediaController *)self stateMachine];
+  stateMachine35 = [(VUIBackgroundMediaController *)self stateMachine];
   v62[0] = MEMORY[0x1E69E9820];
   v62[1] = 3221225472;
   v62[2] = __61__VUIBackgroundMediaController__registerStateMachineHandlers__block_invoke_5_431;
   v62[3] = &unk_1E872FAD8;
   objc_copyWeak(&v63, &location);
-  [v60 registerHandlerForEvent:@"AvPlayerViewController did exit fullscreen presentation" onState:@"Showing playback in foreground" withBlock:v62];
+  [stateMachine35 registerHandlerForEvent:@"AvPlayerViewController did exit fullscreen presentation" onState:@"Showing playback in foreground" withBlock:v62];
 
   objc_destroyWeak(&v63);
   objc_destroyWeak(&v66);
@@ -9400,25 +9400,25 @@ LABEL_9:
   [v8 postNotificationName:@"VUIBackgroundMediaControllerDidEndFullscreenPresentationNotification" object:WeakRetained userInfo:v10];
 }
 
-- (void)setState:(unint64_t)a3
+- (void)setState:(unint64_t)state
 {
   [(VUIBackgroundMediaController *)self willChangeValueForKey:@"state"];
-  self->_state = a3;
+  self->_state = state;
   [(VUIBackgroundMediaController *)self didChangeValueForKey:@"state"];
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v5 postNotificationName:@"VUIBackgroundMediaControllerDidChangeStateNotification" object:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"VUIBackgroundMediaControllerDidChangeStateNotification" object:self];
 }
 
 - (BOOL)hasBackgroundVideo
 {
-  v3 = [(VUIBackgroundMediaController *)self currentMediaInfo];
+  currentMediaInfo = [(VUIBackgroundMediaController *)self currentMediaInfo];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [(VUIBackgroundMediaController *)self currentMediaInfo];
-    v5 = [v4 tvpPlaylist];
+    currentMediaInfo2 = [(VUIBackgroundMediaController *)self currentMediaInfo];
+    tvpPlaylist = [currentMediaInfo2 tvpPlaylist];
 
-    v6 = v5 != 0;
+    v6 = tvpPlaylist != 0;
   }
 
   else
@@ -9429,19 +9429,19 @@ LABEL_9:
   return v6;
 }
 
-- (void)playerViewController:(id)a3 willEndFullScreenPresentationWithAnimationCoordinator:(id)a4
+- (void)playerViewController:(id)controller willEndFullScreenPresentationWithAnimationCoordinator:(id)coordinator
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  coordinatorCopy = coordinator;
   v8 = VUIDefaultLogObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(VUIBackgroundMediaController *)self name];
+    name = [(VUIBackgroundMediaController *)self name];
     *buf = 134218242;
-    v15 = self;
+    selfCopy = self;
     v16 = 2112;
-    v17 = v9;
+    v17 = name;
     _os_log_impl(&dword_1E323F000, v8, OS_LOG_TYPE_DEFAULT, "VUIBackgroundMediaController::(%p: %@) playerViewController willEndFullScreenPresentationWithAnimationCoordinator", buf, 0x16u);
   }
 
@@ -9451,9 +9451,9 @@ LABEL_9:
   v11[2] = __107__VUIBackgroundMediaController_playerViewController_willEndFullScreenPresentationWithAnimationCoordinator___block_invoke_2;
   v11[3] = &unk_1E8736308;
   objc_copyWeak(&v13, buf);
-  v10 = v6;
+  v10 = controllerCopy;
   v12 = v10;
-  [v7 animateAlongsideTransition:&__block_literal_global_438 completion:v11];
+  [coordinatorCopy animateAlongsideTransition:&__block_literal_global_438 completion:v11];
 
   objc_destroyWeak(&v13);
   objc_destroyWeak(buf);
@@ -9469,79 +9469,79 @@ void __107__VUIBackgroundMediaController_playerViewController_willEndFullScreenP
   }
 }
 
-- (void)playerViewController:(id)a3 willTransitionToVisibilityOfPlaybackControls:(BOOL)a4 withAnimationCoordinator:(id)a5
+- (void)playerViewController:(id)controller willTransitionToVisibilityOfPlaybackControls:(BOOL)controls withAnimationCoordinator:(id)coordinator
 {
   v10[1] = *MEMORY[0x1E69E9840];
   v9 = @"VUIBackgroundMediaControllerControlVisibilityKey";
-  v6 = [MEMORY[0x1E696AD98] numberWithBool:a4];
+  v6 = [MEMORY[0x1E696AD98] numberWithBool:controls];
   v10[0] = v6;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:&v9 count:1];
 
-  v8 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v8 postNotificationName:@"VUIBackgroundMediaControllerControlVisibilityChangedNotification" object:self userInfo:v7];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"VUIBackgroundMediaControllerControlVisibilityChangedNotification" object:self userInfo:v7];
 }
 
-- (void)playerViewControllerDidStartPictureInPicture:(id)a3
+- (void)playerViewControllerDidStartPictureInPicture:(id)picture
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  pictureCopy = picture;
   v5 = VUIDefaultLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(VUIBackgroundMediaController *)self name];
+    name = [(VUIBackgroundMediaController *)self name];
     v16 = 134218242;
-    v17 = self;
+    selfCopy = self;
     v18 = 2112;
-    v19 = v6;
+    v19 = name;
     _os_log_impl(&dword_1E323F000, v5, OS_LOG_TYPE_DEFAULT, "VUIBackgroundMediaController::(%p: %@) did start picture in picture", &v16, 0x16u);
   }
 
-  v7 = [v4 presentedViewController];
+  presentedViewController = [pictureCopy presentedViewController];
 
-  if (v7)
+  if (presentedViewController)
   {
-    [v4 dismissViewControllerAnimated:1 completion:0];
+    [pictureCopy dismissViewControllerAnimated:1 completion:0];
   }
 
-  v8 = [MEMORY[0x1E695DF90] dictionary];
-  v9 = [(VUIBackgroundMediaController *)self player];
-  [v8 vui_setObjectIfNotNil:v9 forKey:@"VUIBackgroundMediaControllerPlayerKey"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  player = [(VUIBackgroundMediaController *)self player];
+  [dictionary vui_setObjectIfNotNil:player forKey:@"VUIBackgroundMediaControllerPlayerKey"];
 
-  v10 = [MEMORY[0x1E696AD88] defaultCenter];
-  v11 = [v8 copy];
-  [v10 postNotificationName:@"VUIBackgroundMediaControllerDidEnterPIPNotification" object:self userInfo:v11];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  v11 = [dictionary copy];
+  [defaultCenter postNotificationName:@"VUIBackgroundMediaControllerDidEnterPIPNotification" object:self userInfo:v11];
 
   if ([(VUIBackgroundMediaController *)self prefetchesVideoFrame])
   {
-    v12 = [(VUIBackgroundMediaController *)self player];
-    v13 = [v12 playlist];
+    player2 = [(VUIBackgroundMediaController *)self player];
+    playlist = [player2 playlist];
 
-    if (v13)
+    if (playlist)
     {
-      v14 = [(VUIBackgroundMediaController *)self mediaInfoFetchController];
-      v15 = [v12 playlist];
-      [v14 populatePlaylistWithMediaItems:v15 atIndex:{-[VUIBackgroundMediaController mediaInfoIndex](self, "mediaInfoIndex")}];
+      mediaInfoFetchController = [(VUIBackgroundMediaController *)self mediaInfoFetchController];
+      playlist2 = [player2 playlist];
+      [mediaInfoFetchController populatePlaylistWithMediaItems:playlist2 atIndex:{-[VUIBackgroundMediaController mediaInfoIndex](self, "mediaInfoIndex")}];
 
-      [v12 setMediaItemEndAction:0];
+      [player2 setMediaItemEndAction:0];
       [(VUIBackgroundMediaController *)self _cleanupPrefetchPlayback];
     }
   }
 }
 
-- (void)playerViewController:(id)a3 failedToStartPictureInPictureWithError:(id)a4
+- (void)playerViewController:(id)controller failedToStartPictureInPictureWithError:(id)error
 {
   v15 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  errorCopy = error;
   v6 = VUIDefaultLogObject();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(VUIBackgroundMediaController *)self name];
+    name = [(VUIBackgroundMediaController *)self name];
     v9 = 134218498;
-    v10 = self;
+    selfCopy = self;
     v11 = 2112;
-    v12 = v7;
+    v12 = name;
     v13 = 2112;
-    v14 = v5;
+    v14 = errorCopy;
     _os_log_impl(&dword_1E323F000, v6, OS_LOG_TYPE_DEFAULT, "VUIBackgroundMediaController::(%p: %@) failed to start picture in picture with error %@", &v9, 0x20u);
   }
 
@@ -9549,81 +9549,81 @@ void __107__VUIBackgroundMediaController_playerViewController_willEndFullScreenP
   [v8 setBackgroundMediaControllerForPIP:0];
 }
 
-- (void)playerViewControllerDidStopPictureInPicture:(id)a3
+- (void)playerViewControllerDidStopPictureInPicture:(id)picture
 {
   v24 = *MEMORY[0x1E69E9840];
   v4 = VUIDefaultLogObject();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(VUIBackgroundMediaController *)self name];
-    v6 = [(VUIBackgroundMediaController *)self player];
-    v7 = [v6 state];
+    name = [(VUIBackgroundMediaController *)self name];
+    player = [(VUIBackgroundMediaController *)self player];
+    state = [player state];
     v18 = 134218498;
-    v19 = self;
+    selfCopy = self;
     v20 = 2112;
-    v21 = v5;
+    v21 = name;
     v22 = 2112;
-    v23 = v7;
+    v23 = state;
     _os_log_impl(&dword_1E323F000, v4, OS_LOG_TYPE_DEFAULT, "VUIBackgroundMediaController::(%p: %@) did stop picture in picture %@", &v18, 0x20u);
   }
 
-  v8 = [MEMORY[0x1E695DF90] dictionary];
-  v9 = [(VUIBackgroundMediaController *)self player];
-  [v8 vui_setObjectIfNotNil:v9 forKey:@"VUIBackgroundMediaControllerPlayerKey"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  player2 = [(VUIBackgroundMediaController *)self player];
+  [dictionary vui_setObjectIfNotNil:player2 forKey:@"VUIBackgroundMediaControllerPlayerKey"];
 
-  v10 = [MEMORY[0x1E696AD88] defaultCenter];
-  v11 = [v8 copy];
-  [v10 postNotificationName:@"VUIBackgroundMediaControllerDidStopPIPNotification" object:self userInfo:v11];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  v11 = [dictionary copy];
+  [defaultCenter postNotificationName:@"VUIBackgroundMediaControllerDidStopPIPNotification" object:self userInfo:v11];
 
   if ([(VUIBackgroundMediaController *)self prefetchesVideoFrame])
   {
-    v12 = [(VUIBackgroundMediaController *)self player];
-    v13 = [v12 playlist];
+    player3 = [(VUIBackgroundMediaController *)self player];
+    playlist = [player3 playlist];
 
-    if (v13)
+    if (playlist)
     {
-      v14 = [v12 playlist];
-      v15 = [v14 activeListIndex];
+      playlist2 = [player3 playlist];
+      activeListIndex = [playlist2 activeListIndex];
 
-      v16 = [(VUIBackgroundMediaController *)self mediaInfoFetchController];
-      v17 = [v12 playlist];
-      [v16 removePopulatedMediaItems:v17 atIndex:v15];
+      mediaInfoFetchController = [(VUIBackgroundMediaController *)self mediaInfoFetchController];
+      playlist3 = [player3 playlist];
+      [mediaInfoFetchController removePopulatedMediaItems:playlist3 atIndex:activeListIndex];
 
-      [v12 setMediaItemEndAction:1];
+      [player3 setMediaItemEndAction:1];
     }
   }
 
   [(VUIBackgroundMediaController *)self performSelector:sel__cleanupPIPPlayback withObject:0 afterDelay:1.0];
 }
 
-- (void)playerViewController:(id)a3 restoreUserInterfaceForPictureInPictureStopWithCompletionHandler:(id)a4
+- (void)playerViewController:(id)controller restoreUserInterfaceForPictureInPictureStopWithCompletionHandler:(id)handler
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  handlerCopy = handler;
   v6 = VUIDefaultLogObject();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(VUIBackgroundMediaController *)self name];
-    v8 = [(VUIBackgroundMediaController *)self player];
-    v9 = [v8 state];
+    name = [(VUIBackgroundMediaController *)self name];
+    player = [(VUIBackgroundMediaController *)self player];
+    state = [player state];
     *buf = 134218498;
-    v17 = self;
+    selfCopy = self;
     v18 = 2112;
-    v19 = v7;
+    v19 = name;
     v20 = 2112;
-    v21 = v9;
+    v21 = state;
     _os_log_impl(&dword_1E323F000, v6, OS_LOG_TYPE_DEFAULT, "VUIBackgroundMediaController::(%p: %@) restore picture in picture %@", buf, 0x20u);
   }
 
   [MEMORY[0x1E69E58C0] cancelPreviousPerformRequestsWithTarget:self selector:sel__cleanupPIPPlayback object:0];
-  v10 = [(VUIBackgroundMediaController *)self player];
-  v11 = [v10 state];
-  v12 = [MEMORY[0x1E69D5A40] stopped];
+  player2 = [(VUIBackgroundMediaController *)self player];
+  state2 = [player2 state];
+  stopped = [MEMORY[0x1E69D5A40] stopped];
 
-  if (v11 == v12)
+  if (state2 == stopped)
   {
     [(VUIBackgroundMediaController *)self _cleanupPIPPlayback];
-    v5[2](v5, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 
   else
@@ -9633,7 +9633,7 @@ void __107__VUIBackgroundMediaController_playerViewController_willEndFullScreenP
     v14[1] = 3221225472;
     v14[2] = __118__VUIBackgroundMediaController_playerViewController_restoreUserInterfaceForPictureInPictureStopWithCompletionHandler___block_invoke;
     v14[3] = &unk_1E872D7E0;
-    v15 = v5;
+    v15 = handlerCopy;
     [v13 restoreBackgroundMediaControllerFromPIP:v14];
   }
 }

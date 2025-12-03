@@ -1,25 +1,25 @@
 @interface HMFMessageBinding
-- (HMFMessageBinding)initWithName:(id)a3 policies:(id)a4 selector:(SEL)a5 messageReceiver:(id)a6;
+- (HMFMessageBinding)initWithName:(id)name policies:(id)policies selector:(SEL)selector messageReceiver:(id)receiver;
 - (HMFMessageReceiver)messageReceiver;
 @end
 
 @implementation HMFMessageBinding
 
-- (HMFMessageBinding)initWithName:(id)a3 policies:(id)a4 selector:(SEL)a5 messageReceiver:(id)a6
+- (HMFMessageBinding)initWithName:(id)name policies:(id)policies selector:(SEL)selector messageReceiver:(id)receiver
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  nameCopy = name;
+  policiesCopy = policies;
+  receiverCopy = receiver;
   v17.receiver = self;
   v17.super_class = HMFMessageBinding;
   v14 = [(HMFMessageBinding *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_name, a3);
-    v15->_selector = a5;
-    objc_storeStrong(&v15->_policies, a4);
-    objc_storeWeak(&v15->_messageReceiver, v13);
+    objc_storeStrong(&v14->_name, name);
+    v15->_selector = selector;
+    objc_storeStrong(&v15->_policies, policies);
+    objc_storeWeak(&v15->_messageReceiver, receiverCopy);
   }
 
   return v15;

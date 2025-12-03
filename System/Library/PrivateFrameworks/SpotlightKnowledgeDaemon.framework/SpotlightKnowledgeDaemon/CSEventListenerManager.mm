@@ -1,5 +1,5 @@
 @interface CSEventListenerManager
-- (CSEventListenerManager)initWithIndexType:(int)a3 indexPath:(id)a4 eventListener:(id)a5 isManagedEventListener:(BOOL)a6 homePathHash:(unsigned int)a7;
+- (CSEventListenerManager)initWithIndexType:(int)type indexPath:(id)path eventListener:(id)listener isManagedEventListener:(BOOL)eventListener homePathHash:(unsigned int)hash;
 - (double)journalMapLock;
 - (double)journalQueueLock;
 - (id)description;
@@ -16,21 +16,21 @@
 - (uint64_t)signposter;
 - (uint64_t)throttled;
 - (uint64_t)totalJournalSize;
-- (void)_cleanupJournalsWithEvent:(id)a3;
+- (void)_cleanupJournalsWithEvent:(id)event;
 - (void)_loadJournals;
-- (void)_processJournalsWithProcessedJournalsCount:(unint64_t)a3 completionHandler:(id)a4;
+- (void)_processJournalsWithProcessedJournalsCount:(unint64_t)count completionHandler:(id)handler;
 - (void)dealloc;
-- (void)deleteFirstJournal:(id)a3;
-- (void)dropAssertions:(id)a3;
-- (void)handleMessage:(void *)a3 basePath:(void *)a4 withDispatchGroup:;
+- (void)deleteFirstJournal:(id)journal;
+- (void)dropAssertions:(id)assertions;
+- (void)handleMessage:(void *)message basePath:(void *)path withDispatchGroup:;
 - (void)lostConnection;
 - (void)processJournals;
 - (void)purgeJournalsProactive;
 - (void)runThrottledTaskAsync;
-- (void)setSignposter:(uint64_t)a1;
+- (void)setSignposter:(uint64_t)signposter;
 - (void)sortJournals;
 - (void)startUp;
-- (void)takeAssertions:(id)a3;
+- (void)takeAssertions:(id)assertions;
 @end
 
 @implementation CSEventListenerManager
@@ -126,7 +126,7 @@
           if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
           {
             *v64 = 138412290;
-            v65 = v18;
+            selfCopy = v18;
             _os_log_error_impl(&dword_231B25000, v21, OS_LOG_TYPE_ERROR, "CSEventListenerManager#_loadJournals invalid journalName %@", v64, 0xCu);
           }
         }
@@ -137,7 +137,7 @@
         v25 = [v24 objectAtIndexedSubscript:0];
         v26 = [v22 numberFromString:v25];
 
-        v27 = [v26 unsignedLongLongValue];
+        unsignedLongLongValue = [v26 unsignedLongLongValue];
         v28 = [v20 objectAtIndexedSubscript:2];
         v29 = [CSJournalProcessor alloc];
         if (self)
@@ -150,7 +150,7 @@
           v30 = 0;
         }
 
-        v31 = [(CSJournalProcessor *)v29 initWithParentFd:v30 eventListener:self->_eventListener indexType:self->_indexType journalNumber:v27 journalCookie:v28 name:v18];
+        v31 = [(CSJournalProcessor *)v29 initWithParentFd:v30 eventListener:self->_eventListener indexType:self->_indexType journalNumber:unsignedLongLongValue journalCookie:v28 name:v18];
         v33 = v31;
         if (v31)
         {
@@ -224,7 +224,7 @@
             if (os_log_type_enabled(v47, OS_LOG_TYPE_INFO))
             {
               *v64 = 138412546;
-              v65 = self;
+              selfCopy = self;
               v66 = 2112;
               v67 = v46;
               _os_log_impl(&dword_231B25000, v47, OS_LOG_TYPE_INFO, "### loaded %@ - %@ ", v64, 0x16u);
@@ -245,11 +245,11 @@
   v48 = *MEMORY[0x277D85DE8];
 }
 
-- (CSEventListenerManager)initWithIndexType:(int)a3 indexPath:(id)a4 eventListener:(id)a5 isManagedEventListener:(BOOL)a6 homePathHash:(unsigned int)a7
+- (CSEventListenerManager)initWithIndexType:(int)type indexPath:(id)path eventListener:(id)listener isManagedEventListener:(BOOL)eventListener homePathHash:(unsigned int)hash
 {
   v71 = *MEMORY[0x277D85DE8];
-  v12 = a4;
-  v13 = a5;
+  pathCopy = path;
+  listenerCopy = listener;
   v50.receiver = self;
   v50.super_class = CSEventListenerManager;
   v14 = [(CSEventListenerManager *)&v50 init];
@@ -259,13 +259,13 @@
     goto LABEL_31;
   }
 
-  v14->_indexType = a3;
-  objc_storeStrong(&v14->_eventListener, a5);
-  v15->_isManagedEventListener = a6;
+  v14->_indexType = type;
+  objc_storeStrong(&v14->_eventListener, listener);
+  v15->_isManagedEventListener = eventListener;
   v15->_folderFd = -1;
-  v15->_homePathHash = a7;
-  v16 = [MEMORY[0x277CCAA00] defaultManager];
-  v17 = [v16 fileExistsAtPath:v12];
+  v15->_homePathHash = hash;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v17 = [defaultManager fileExistsAtPath:pathCopy];
 
   if (!v17)
   {
@@ -275,7 +275,7 @@ LABEL_17:
     goto LABEL_31;
   }
 
-  v18 = open([v12 fileSystemRepresentation], 0x8000);
+  v18 = open([pathCopy fileSystemRepresentation], 0x8000);
   v15->_folderFd = v18;
   if (v18 == -1)
   {
@@ -307,29 +307,29 @@ LABEL_17:
   v58 = 0u;
   *__str = 0u;
   v56 = 0u;
-  if (v13)
+  if (listenerCopy)
   {
-    v19 = [v13[1] taskName];
-    v20 = [v19 UTF8String];
+    taskName = [listenerCopy[1] taskName];
+    uTF8String = [taskName UTF8String];
 
-    CSIndexTypeShortNameCString = getCSIndexTypeShortNameCString(a3);
-    snprintf(__str, 0x100uLL, "com.apple.spotlight.indexevents.%s.%s.queue", CSIndexTypeShortNameCString, v20);
-    v22 = v13[1];
+    CSIndexTypeShortNameCString = getCSIndexTypeShortNameCString(type);
+    snprintf(__str, 0x100uLL, "com.apple.spotlight.indexevents.%s.%s.queue", CSIndexTypeShortNameCString, uTF8String);
+    v22 = listenerCopy[1];
   }
 
   else
   {
-    [CSEventListenerManager initWithIndexType:a3 indexPath:__str eventListener:? isManagedEventListener:? homePathHash:?];
+    [CSEventListenerManager initWithIndexType:type indexPath:__str eventListener:? isManagedEventListener:? homePathHash:?];
     v22 = 0;
   }
 
   v23 = v22;
-  v24 = [v23 eventType];
-  if (v24 != 2)
+  eventType = [v23 eventType];
+  if (eventType != 2)
   {
-    v25 = v13 ? v13[1] : 0;
-    a5 = v25;
-    if ([a5 eventType] != 1)
+    v25 = listenerCopy ? listenerCopy[1] : 0;
+    listener = v25;
+    if ([listener eventType] != 1)
     {
 
       v28 = 5;
@@ -339,13 +339,13 @@ LABEL_26:
     }
   }
 
-  v26 = [MEMORY[0x277D657A8] sharedProcessorListener];
-  v27 = [v26 enableEmbeddingsHigherQoS];
+  mEMORY[0x277D657A8] = [MEMORY[0x277D657A8] sharedProcessorListener];
+  enableEmbeddingsHigherQoS = [mEMORY[0x277D657A8] enableEmbeddingsHigherQoS];
 
-  if (v24 != 2)
+  if (eventType != 2)
   {
 
-    if ((v27 & 1) == 0)
+    if ((enableEmbeddingsHigherQoS & 1) == 0)
     {
       goto LABEL_12;
     }
@@ -353,7 +353,7 @@ LABEL_26:
     goto LABEL_19;
   }
 
-  if (v27)
+  if (enableEmbeddingsHigherQoS)
   {
 LABEL_19:
     if (SKGLogGetCurrentLoggingLevel() < 5)
@@ -365,9 +365,9 @@ LABEL_19:
     v23 = SKGLogUpdaterInit();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
     {
-      if (v13)
+      if (listenerCopy)
       {
-        v30 = v13[1];
+        v30 = listenerCopy[1];
       }
 
       else
@@ -375,11 +375,11 @@ LABEL_19:
         v30 = 0;
       }
 
-      v31 = [v30 eventType];
+      eventType2 = [v30 eventType];
       *buf = 67109376;
-      v52 = v31;
+      v52 = eventType2;
       v53 = 1024;
-      v54 = a3;
+      typeCopy = type;
       _os_log_impl(&dword_231B25000, v23, OS_LOG_TYPE_INFO, "### Using QOS_CLASS_UTILITY for eventType: %u indexType: %u", buf, 0xEu);
     }
 
@@ -400,9 +400,9 @@ LABEL_28:
 
   v37 = +[CSEventListenerTasksManager sharedInstance];
   v38 = v37;
-  if (v13)
+  if (listenerCopy)
   {
-    v39 = v13[1];
+    v39 = listenerCopy[1];
   }
 
   else
@@ -423,7 +423,7 @@ LABEL_28:
   v15->_totalJournalSize = 0;
   pthread_rwlock_init(&v15->_journalMapLock, 0);
   pthread_rwlock_init(&v15->_journalQueueLock, 0);
-  v15->_isAssertionsAllowed = (a3 - 1) < 2;
+  v15->_isAssertionsAllowed = (type - 1) < 2;
   v44 = [[CSThresholdedTrigger alloc] initWithCountThreshold:1000 timeInterval:900.0];
   thresholdTrigger = v15->_thresholdTrigger;
   v15->_thresholdTrigger = v44;
@@ -498,37 +498,37 @@ void __33__CSEventListenerManager_startUp__block_invoke(uint64_t a1)
   [(CSEventListenerManager *)&v4 dealloc];
 }
 
-- (void)deleteFirstJournal:(id)a3
+- (void)deleteFirstJournal:(id)journal
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 loaded])
+  journalCopy = journal;
+  if ([journalCopy loaded])
   {
     if (SKGLogGetCurrentLoggingLevel() >= 7)
     {
       v5 = SKGLogUpdaterInit();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
       {
-        [(CSEventListenerManager *)self deleteFirstJournal:v4, v5];
+        [(CSEventListenerManager *)self deleteFirstJournal:journalCopy, v5];
       }
     }
 
     pthread_rwlock_wrlock(&self->_journalMapLock);
     journalMap = self->_journalMap;
-    v7 = [v4 key];
+    v7 = [journalCopy key];
     [(NSMutableDictionary *)journalMap removeObjectForKey:v7];
 
     pthread_rwlock_unlock(&self->_journalMapLock);
   }
 
-  [v4 cooldown];
+  [journalCopy cooldown];
   pthread_rwlock_wrlock(&self->_journalQueueLock);
   [(NSMutableArray *)self->_journalQueue removeObjectAtIndex:0];
   totalJournalSize = self->_totalJournalSize;
-  if (v4)
+  if (journalCopy)
   {
-    self->_totalJournalSize = (totalJournalSize - v4[15]) & ~((totalJournalSize - v4[15]) >> 63);
-    v4[15] = 0;
+    self->_totalJournalSize = (totalJournalSize - journalCopy[15]) & ~((totalJournalSize - journalCopy[15]) >> 63);
+    journalCopy[15] = 0;
   }
 
   else
@@ -536,7 +536,7 @@ void __33__CSEventListenerManager_startUp__block_invoke(uint64_t a1)
     self->_totalJournalSize = totalJournalSize & ~(totalJournalSize >> 63);
   }
 
-  [v4 deleteFiles];
+  [journalCopy deleteFiles];
   pthread_rwlock_unlock(&self->_journalQueueLock);
   +[SKGUpdaterStore flushAndCommitAll];
   if (SKGLogGetCurrentLoggingLevel() >= 5)
@@ -545,9 +545,9 @@ void __33__CSEventListenerManager_startUp__block_invoke(uint64_t a1)
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       v11 = 138412546;
-      v12 = self;
+      selfCopy = self;
       v13 = 2112;
-      v14 = v4;
+      v14 = journalCopy;
       _os_log_impl(&dword_231B25000, v9, OS_LOG_TYPE_INFO, "### finished %@ - %@", &v11, 0x16u);
     }
   }
@@ -564,16 +564,16 @@ void __33__CSEventListenerManager_startUp__block_invoke(uint64_t a1)
   while (1)
   {
     pthread_rwlock_rdlock(&self->_journalQueueLock);
-    v5 = [(NSMutableArray *)self->_journalQueue firstObject];
+    firstObject = [(NSMutableArray *)self->_journalQueue firstObject];
     v6 = [(NSMutableArray *)self->_journalQueue count];
     totalJournalSize = self->_totalJournalSize;
     pthread_rwlock_unlock(&self->_journalQueueLock);
-    v8 = [MEMORY[0x277D657A0] sharedContext];
-    v9 = v8;
-    v10 = (v4 & 1) != 0 ? [v8 journalSizeGetBelowLimit] : objc_msgSend(v8, "maxJournalSizeInQueue");
+    mEMORY[0x277D657A0] = [MEMORY[0x277D657A0] sharedContext];
+    v9 = mEMORY[0x277D657A0];
+    v10 = (v4 & 1) != 0 ? [mEMORY[0x277D657A0] journalSizeGetBelowLimit] : objc_msgSend(mEMORY[0x277D657A0], "maxJournalSizeInQueue");
     v11 = v10;
 
-    if (!v5 || v6 < 2 || totalJournalSize <= v11)
+    if (!firstObject || v6 < 2 || totalJournalSize <= v11)
     {
       break;
     }
@@ -583,7 +583,7 @@ void __33__CSEventListenerManager_startUp__block_invoke(uint64_t a1)
       v12 = SKGLogUpdaterInit();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
-        v13 = [v5 journal_name];
+        journal_name = [firstObject journal_name];
         *buf = v15;
         v17 = totalJournalSize;
         v18 = 2048;
@@ -591,30 +591,30 @@ void __33__CSEventListenerManager_startUp__block_invoke(uint64_t a1)
         v20 = 2048;
         v21 = v11;
         v22 = 2080;
-        v23 = v13;
+        v23 = journal_name;
         _os_log_error_impl(&dword_231B25000, v12, OS_LOG_TYPE_ERROR, "###purgeJournalsProactive Total journal size %lld (qc: %lu) exceeds %lld, skipping journal %s", buf, 0x2Au);
       }
     }
 
     v4 = 1;
-    [v5 markComplete:-1 processingDone:{1, v15}];
-    [(CSEventListenerManager *)self deleteFirstJournal:v5];
+    [firstObject markComplete:-1 processingDone:{1, v15}];
+    [(CSEventListenerManager *)self deleteFirstJournal:firstObject];
   }
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_processJournalsWithProcessedJournalsCount:(unint64_t)a3 completionHandler:(id)a4
+- (void)_processJournalsWithProcessedJournalsCount:(unint64_t)count completionHandler:(id)handler
 {
   v49 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  handlerCopy = handler;
   [(CSEventListenerManager *)self purgeJournalsProactive];
   pthread_rwlock_rdlock(&self->_journalQueueLock);
-  v7 = [(NSMutableArray *)self->_journalQueue firstObject];
+  firstObject = [(NSMutableArray *)self->_journalQueue firstObject];
   v8 = [(NSMutableArray *)self->_journalQueue count];
   pthread_rwlock_unlock(&self->_journalQueueLock);
   v9 = @"empty-queue";
-  if (!v7)
+  if (!firstObject)
   {
 LABEL_31:
     if (SKGLogGetCurrentLoggingLevel() >= 5)
@@ -646,13 +646,13 @@ LABEL_31:
     v34 = eventListener;
     [v31 endJobForDelegate:delegate];
 
-    v6[2](v6, a3, v9);
+    handlerCopy[2](handlerCopy, count, v9);
     goto LABEL_38;
   }
 
-  while (([v7 isComplete] & 1) != 0)
+  while (([firstObject isComplete] & 1) != 0)
   {
-    if (v8 == 1 && ([v7 processingDone] & 1) == 0)
+    if (v8 == 1 && ([firstObject processingDone] & 1) == 0)
     {
 
       v9 = @"last-journal";
@@ -660,26 +660,26 @@ LABEL_31:
     }
 
 LABEL_12:
-    [(CSEventListenerManager *)self deleteFirstJournal:v7];
+    [(CSEventListenerManager *)self deleteFirstJournal:firstObject];
     pthread_rwlock_rdlock(&self->_journalQueueLock);
-    v13 = [(NSMutableArray *)self->_journalQueue firstObject];
+    firstObject2 = [(NSMutableArray *)self->_journalQueue firstObject];
 
     v8 = [(NSMutableArray *)self->_journalQueue count];
     pthread_rwlock_unlock(&self->_journalQueueLock);
-    v7 = v13;
-    if (!v13)
+    firstObject = firstObject2;
+    if (!firstObject2)
     {
       goto LABEL_31;
     }
   }
 
-  [v7 warmup];
-  if ([v7 warmedup])
+  [firstObject warmup];
+  if ([firstObject warmedup])
   {
     goto LABEL_18;
   }
 
-  v10 = [v7 warmupFailCtr] < 10;
+  v10 = [firstObject warmupFailCtr] < 10;
   CurrentLoggingLevel = SKGLogGetCurrentLoggingLevel();
   if (!v10)
   {
@@ -688,11 +688,11 @@ LABEL_12:
       v12 = SKGLogUpdaterInit();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
-        v14 = [v7 journal_name];
+        journal_name = [firstObject journal_name];
         *buf = 138412546;
         *&buf[4] = self;
         *&buf[12] = 2080;
-        *&buf[14] = v14;
+        *&buf[14] = journal_name;
         _os_log_error_impl(&dword_231B25000, v12, OS_LOG_TYPE_ERROR, "### Unable to warmup %@ - %s, deleting it.", buf, 0x16u);
       }
     }
@@ -705,7 +705,7 @@ LABEL_12:
     v15 = SKGLogUpdaterInit();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
-      [CSEventListenerManager _processJournalsWithProcessedJournalsCount:v7 completionHandler:?];
+      [CSEventListenerManager _processJournalsWithProcessedJournalsCount:firstObject completionHandler:?];
     }
   }
 
@@ -725,9 +725,9 @@ LABEL_18:
     if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
     {
       *v41 = 138412546;
-      v42 = self;
+      selfCopy2 = self;
       v43 = 2112;
-      v44 = v7;
+      v44 = firstObject;
       _os_log_impl(&dword_231B25000, v18, OS_LOG_TYPE_INFO, "### batch start %@ - %@", v41, 0x16u);
     }
   }
@@ -738,10 +738,10 @@ LABEL_18:
   v36[2] = __87__CSEventListenerManager__processJournalsWithProcessedJournalsCount_completionHandler___block_invoke;
   v36[3] = &unk_27893CEE0;
   v36[4] = self;
-  v20 = v7;
+  v20 = firstObject;
   v37 = v20;
-  v40 = a3;
-  v21 = v6;
+  countCopy = count;
+  v21 = handlerCopy;
   v38 = v21;
   v39 = buf;
   if (([v20 processNext:queue completion:v36] & 1) == 0)
@@ -754,7 +754,7 @@ LABEL_18:
       {
         v23 = [(NSMutableArray *)self->_journalQueue count];
         *v41 = 138412546;
-        v42 = self;
+        selfCopy2 = self;
         v43 = 2048;
         v44 = v23;
         _os_log_impl(&dword_231B25000, v22, OS_LOG_TYPE_INFO, "### not processing journals anymore - %@ , queue size = %lu", v41, 0x16u);
@@ -777,7 +777,7 @@ LABEL_18:
     v28 = v27;
     [v24 endJobForDelegate:v28];
 
-    v21[2](v21, a3, @"eof-or-error");
+    v21[2](v21, count, @"eof-or-error");
   }
 
   _Block_object_dispose(buf, 8);
@@ -829,10 +829,10 @@ void __87__CSEventListenerManager__processJournalsWithProcessedJournalsCount_com
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)takeAssertions:(id)a3
+- (void)takeAssertions:(id)assertions
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  assertionsCopy = assertions;
   if (self->_isAssertionsAllowed)
   {
     pthread_rwlock_rdlock(&self->_journalQueueLock);
@@ -860,13 +860,13 @@ void __87__CSEventListenerManager__processJournalsWithProcessedJournalsCount_com
 
         v10 = *(*(&v21 + 1) + 8 * i);
         v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:{objc_msgSend(v10, "journal_name")}];
-        if (([v4 containsObject:v11] & 1) == 0)
+        if (([assertionsCopy containsObject:v11] & 1) == 0)
         {
-          v12 = [v10 retainJournalFd];
-          if (v12 != -1)
+          retainJournalFd = [v10 retainJournalFd];
+          if (retainJournalFd != -1)
           {
             v20 = xmmword_231C224F0;
-            if (fcntl(v12, 108, &v20) < 0)
+            if (fcntl(retainJournalFd, 108, &v20) < 0)
             {
               if (SKGLogGetCurrentLoggingLevel() >= 2)
               {
@@ -891,7 +891,7 @@ LABEL_20:
 
             else
             {
-              [v4 addObject:v11];
+              [assertionsCopy addObject:v11];
               if (SKGLogGetCurrentLoggingLevel() >= 7)
               {
                 v13 = SKGLogUpdaterInit();
@@ -950,10 +950,10 @@ LABEL_29:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)dropAssertions:(id)a3
+- (void)dropAssertions:(id)assertions
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  assertionsCopy = assertions;
   if (self->_isAssertionsAllowed)
   {
     pthread_rwlock_rdlock(&self->_journalQueueLock);
@@ -961,7 +961,7 @@ LABEL_29:
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v20 = self;
+    selfCopy = self;
     v5 = self->_journalQueue;
     v6 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v21 objects:v31 count:16];
     if (!v6)
@@ -982,12 +982,12 @@ LABEL_29:
 
         v10 = *(*(&v21 + 1) + 8 * i);
         v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:{objc_msgSend(v10, "journal_name")}];
-        if (([v4 containsObject:v11] & 1) == 0)
+        if (([assertionsCopy containsObject:v11] & 1) == 0)
         {
-          v12 = [v10 retainJournalFd];
-          if (v12 != -1)
+          retainJournalFd = [v10 retainJournalFd];
+          if (retainJournalFd != -1)
           {
-            if (fcntl(v12, 109, 0) < 0)
+            if (fcntl(retainJournalFd, 109, 0) < 0)
             {
               if (SKGLogGetCurrentLoggingLevel() >= 2)
               {
@@ -1012,7 +1012,7 @@ LABEL_20:
 
             else
             {
-              [v4 addObject:v11];
+              [assertionsCopy addObject:v11];
               if (SKGLogGetCurrentLoggingLevel() >= 7)
               {
                 v13 = SKGLogUpdaterInit();
@@ -1051,7 +1051,7 @@ LABEL_22:
       {
 LABEL_24:
 
-        pthread_rwlock_unlock(&v20->_journalQueueLock);
+        pthread_rwlock_unlock(&selfCopy->_journalQueueLock);
         goto LABEL_29;
       }
     }
@@ -1073,9 +1073,9 @@ LABEL_29:
 
 - (uint64_t)journalMapLockPtr
 {
-  if (a1)
+  if (self)
   {
-    return a1 + 280;
+    return self + 280;
   }
 
   else
@@ -1086,9 +1086,9 @@ LABEL_29:
 
 - (uint64_t)journalQueueLockPtr
 {
-  if (a1)
+  if (self)
   {
-    return a1 + 80;
+    return self + 80;
   }
 
   else
@@ -1099,26 +1099,26 @@ LABEL_29:
 
 - (double)journalQueueLock
 {
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 256);
-    *(a2 + 160) = *(a1 + 240);
+    v2 = *(self + 256);
+    *(a2 + 160) = *(self + 240);
     *(a2 + 176) = v2;
-    *(a2 + 192) = *(a1 + 272);
-    v3 = *(a1 + 192);
-    *(a2 + 96) = *(a1 + 176);
+    *(a2 + 192) = *(self + 272);
+    v3 = *(self + 192);
+    *(a2 + 96) = *(self + 176);
     *(a2 + 112) = v3;
-    v4 = *(a1 + 224);
-    *(a2 + 128) = *(a1 + 208);
+    v4 = *(self + 224);
+    *(a2 + 128) = *(self + 208);
     *(a2 + 144) = v4;
-    v5 = *(a1 + 128);
-    *(a2 + 32) = *(a1 + 112);
+    v5 = *(self + 128);
+    *(a2 + 32) = *(self + 112);
     *(a2 + 48) = v5;
-    v6 = *(a1 + 160);
-    *(a2 + 64) = *(a1 + 144);
+    v6 = *(self + 160);
+    *(a2 + 64) = *(self + 144);
     *(a2 + 80) = v6;
-    v7 = *(a1 + 96);
-    *a2 = *(a1 + 80);
+    v7 = *(self + 96);
+    *a2 = *(self + 80);
     *(a2 + 16) = v7;
   }
 
@@ -1145,26 +1145,26 @@ LABEL_29:
 
 - (double)journalMapLock
 {
-  if (a1)
+  if (self)
   {
-    *(a2 + 192) = *(a1 + 472);
-    v2 = *(a1 + 456);
-    *(a2 + 160) = *(a1 + 440);
+    *(a2 + 192) = *(self + 472);
+    v2 = *(self + 456);
+    *(a2 + 160) = *(self + 440);
     *(a2 + 176) = v2;
-    v3 = *(a1 + 392);
-    *(a2 + 96) = *(a1 + 376);
+    v3 = *(self + 392);
+    *(a2 + 96) = *(self + 376);
     *(a2 + 112) = v3;
-    v4 = *(a1 + 424);
-    *(a2 + 128) = *(a1 + 408);
+    v4 = *(self + 424);
+    *(a2 + 128) = *(self + 408);
     *(a2 + 144) = v4;
-    v5 = *(a1 + 328);
-    *(a2 + 32) = *(a1 + 312);
+    v5 = *(self + 328);
+    *(a2 + 32) = *(self + 312);
     *(a2 + 48) = v5;
-    v6 = *(a1 + 360);
-    *(a2 + 64) = *(a1 + 344);
+    v6 = *(self + 360);
+    *(a2 + 64) = *(self + 344);
     *(a2 + 80) = v6;
-    v7 = *(a1 + 296);
-    *a2 = *(a1 + 280);
+    v7 = *(self + 296);
+    *a2 = *(self + 280);
     *(a2 + 16) = v7;
   }
 
@@ -1205,8 +1205,8 @@ LABEL_29:
     delegate = 0;
   }
 
-  v8 = [(CSEventListenerDelegate *)delegate taskName];
-  v9 = [v3 initWithFormat:@"<%@:%p; %s %@ fd:%d>", v4, self, CSIndexTypeShortNameCString, v8, self->_folderFd];
+  taskName = [(CSEventListenerDelegate *)delegate taskName];
+  v9 = [v3 initWithFormat:@"<%@:%p; %s %@ fd:%d>", v4, self, CSIndexTypeShortNameCString, taskName, self->_folderFd];
 
   return v9;
 }
@@ -1342,10 +1342,10 @@ LABEL_10:
   return v8;
 }
 
-- (void)_cleanupJournalsWithEvent:(id)a3
+- (void)_cleanupJournalsWithEvent:(id)event
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  eventCopy = event;
   pthread_rwlock_wrlock(&self->_journalQueueLock);
   v21 = 0u;
   v22 = 0u;
@@ -1388,8 +1388,8 @@ LABEL_10:
           v12 = 0;
         }
 
-        v13 = [(CSEventListenerManager *)v4 signposter];
-        if (strcmp(v12, v13))
+        signposter = [(CSEventListenerManager *)eventCopy signposter];
+        if (strcmp(v12, signposter))
         {
           [v11 markComplete:-1 processingDone:1];
           if (SKGLogGetCurrentLoggingLevel() < 5)
@@ -1417,7 +1417,7 @@ LABEL_10:
             v27 = 2048;
             v28 = v16;
             v29 = 2112;
-            v30 = v4;
+            v30 = eventCopy;
             _os_log_impl(&dword_231B25000, v14, OS_LOG_TYPE_INFO, "### cleanup journal [cookie:%s jno:%llu] due to cookie mismatch with the event message recieved [%@]", buf, 0x20u);
           }
 
@@ -1429,7 +1429,7 @@ LABEL_10:
           if (v11[19] >= v11[18])
           {
             v17 = v11[10];
-            if (v17 < [(CSEmbeddingsUpdater *)v4 activityJournal])
+            if (v17 < [(CSEmbeddingsUpdater *)eventCopy activityJournal])
             {
               v18 = v11[18];
               goto LABEL_20;
@@ -1437,7 +1437,7 @@ LABEL_10:
           }
         }
 
-        else if ([(CSEmbeddingsUpdater *)v4 activityJournal])
+        else if ([(CSEmbeddingsUpdater *)eventCopy activityJournal])
         {
           v18 = 0;
 LABEL_20:
@@ -1453,7 +1453,7 @@ LABEL_20:
             *buf = 138412546;
             v26 = v11;
             v27 = 2112;
-            v28 = v4;
+            v28 = eventCopy;
             _os_log_debug_impl(&dword_231B25000, v14, OS_LOG_TYPE_DEBUG, "### cleanup journal after event message recieved %@ -  %@]", buf, 0x16u);
           }
 
@@ -1478,9 +1478,9 @@ LABEL_24:
 
 - (uint64_t)throttled
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_11(*(a1 + 8));
+    return OUTLINED_FUNCTION_11(*(self + 8));
   }
 
   else
@@ -1491,7 +1491,7 @@ LABEL_24:
 
 - (void)processJournals
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     self = self->_signposter;
@@ -1502,9 +1502,9 @@ LABEL_24:
   v4[1] = 3221225472;
   v4[2] = __41__CSEventListenerManager_processJournals__block_invoke;
   v4[3] = &unk_27893CE90;
-  v4[4] = v2;
+  v4[4] = selfCopy;
   v4[5] = v3;
-  [(CSEventListenerManager *)v2 _processJournalsWithProcessedJournalsCount:0 completionHandler:v4];
+  [(CSEventListenerManager *)selfCopy _processJournalsWithProcessedJournalsCount:0 completionHandler:v4];
 }
 
 - (uint64_t)signposter
@@ -1550,18 +1550,18 @@ void __41__CSEventListenerManager_processJournals__block_invoke(uint64_t a1, uin
   [v16 endProcessJournalsIntervalWithSignpostID:v11 stopReason:v6 indexType:v12 taskName:v15 processedJournalsCount:a2 journalQueueCount:v7];
 }
 
-- (void)handleMessage:(void *)a3 basePath:(void *)a4 withDispatchGroup:
+- (void)handleMessage:(void *)message basePath:(void *)path withDispatchGroup:
 {
   v92 = *MEMORY[0x277D85DE8];
   v7 = a2;
-  v8 = a3;
-  v9 = a4;
-  if (!a1)
+  messageCopy = message;
+  pathCopy = path;
+  if (!self)
   {
     goto LABEL_46;
   }
 
-  v10 = *(a1 + 32);
+  v10 = *(self + 32);
   if (v10)
   {
     v11 = v10[1];
@@ -1573,32 +1573,32 @@ void __41__CSEventListenerManager_processJournals__block_invoke(uint64_t a1, uin
   }
 
   v12 = v10;
-  v13 = [v11 isAcceptingJournals];
+  isAcceptingJournals = [v11 isAcceptingJournals];
 
-  if (v13)
+  if (isAcceptingJournals)
   {
     bzero(__str, 0xFFuLL);
-    v14 = [(CSEventListenerManager *)v7 homePathHash];
-    v15 = [(CSEmbeddingsUpdater *)v7 defaults];
-    snprintf(__str, 0xFFuLL, "/.vol/%u/%llu", v14, v15);
+    homePathHash = [(CSEventListenerManager *)v7 homePathHash];
+    defaults = [(CSEmbeddingsUpdater *)v7 defaults];
+    snprintf(__str, 0xFFuLL, "/.vol/%u/%llu", homePathHash, defaults);
     v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:__str];
-    v17 = [(CSEventListenerManager *)v7 folderFd];
-    pthread_rwlock_wrlock((a1 + 280));
-    v18 = *(a1 + 56);
+    folderFd = [(CSEventListenerManager *)v7 folderFd];
+    pthread_rwlock_wrlock((self + 280));
+    v18 = *(self + 56);
     v76 = v16;
     v19 = [(CSJournalProcessor *)v18 objectForKeyedSubscript:v16];
 
-    pthread_rwlock_unlock((a1 + 280));
+    pthread_rwlock_unlock((self + 280));
     v75 = v7;
-    v77 = v17;
+    v77 = folderFd;
     if (v19)
     {
 LABEL_36:
-      if (v17 == 1)
+      if (folderFd == 1)
       {
-        if (v9)
+        if (pathCopy)
         {
-          dispatch_group_leave(v9);
+          dispatch_group_leave(pathCopy);
         }
 
         else if (SKGLogGetCurrentLoggingLevel() >= 2)
@@ -1613,15 +1613,15 @@ LABEL_36:
         }
       }
 
-      v74 = v9;
-      v51 = a1;
-      pthread_rwlock_rdlock((v51 + 80));
-      v52 = [*(v51 + 8) count];
-      pthread_rwlock_unlock((v51 + 80));
+      v74 = pathCopy;
+      selfCopy = self;
+      pthread_rwlock_rdlock((selfCopy + 80));
+      v52 = [*(selfCopy + 8) count];
+      pthread_rwlock_unlock((selfCopy + 80));
       v53 = +[SKGActivityJournal sharedJournal];
       v89[0] = &unk_2846E76E0;
-      v54 = *(a1 + 32);
-      v55 = v8;
+      v54 = *(self + 32);
+      v55 = messageCopy;
       if (v54)
       {
         v56 = v54[1];
@@ -1634,10 +1634,10 @@ LABEL_36:
 
       v57 = v56;
       v58 = v54;
-      v59 = [v57 taskName];
-      *&buf = v59;
+      taskName = [v57 taskName];
+      *&buf = taskName;
       v89[1] = &unk_2846E76F8;
-      v60 = [MEMORY[0x277CCACA8] stringWithUTF8String:getCSIndexTypeShortNameCString(*(v51 + 3))];
+      v60 = [MEMORY[0x277CCACA8] stringWithUTF8String:getCSIndexTypeShortNameCString(*(selfCopy + 3))];
       *(&buf + 1) = v60;
       v89[2] = &unk_2846E7710;
       v61 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v52];
@@ -1645,12 +1645,12 @@ LABEL_36:
       v62 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&buf forKeys:v89 count:3];
       [v53 addEventWithType:38 params:v62];
 
-      v63 = *(v51 + 3);
+      v63 = *(selfCopy + 3);
       OUTLINED_FUNCTION_9();
       v79 = 3221225472;
       v80 = __67__CSEventListenerManager_handleMessage_basePath_withDispatchGroup___block_invoke_139;
       v81 = &unk_27893CF08;
-      v82 = v51;
+      v82 = selfCopy;
       v7 = v75;
       v83 = v75;
       v84 = v19;
@@ -1658,21 +1658,21 @@ LABEL_36:
       v64 = v19;
       dispatch_async(v63, block);
 
-      v8 = v55;
-      v9 = v74;
+      messageCopy = v55;
+      pathCopy = v74;
       goto LABEL_46;
     }
 
-    if (v17 == 3)
+    if (folderFd == 3)
     {
-      v36 = [v8 pathComponents];
-      v23 = v36;
-      if (!v36)
+      pathComponents = [messageCopy pathComponents];
+      v23 = pathComponents;
+      if (!pathComponents)
       {
         goto LABEL_24;
       }
 
-      v37 = [v36 indexOfObject:@"SpotlightKnowledgeEvents"];
+      v37 = [pathComponents indexOfObject:@"SpotlightKnowledgeEvents"];
       if (v37 == 0x7FFFFFFFFFFFFFFFLL)
       {
         goto LABEL_24;
@@ -1683,8 +1683,8 @@ LABEL_36:
       v18 = [v38 pathWithComponents:v39];
 
       v40 = [CSJournalProcessor alloc];
-      v41 = *(a1 + 16);
-      v42 = *(a1 + 32);
+      v41 = *(self + 16);
+      v42 = *(self + 32);
       v43 = v18;
       v44 = v42;
       v19 = [(CSJournalProcessor *)v40 initFromSpotlightDaemonWithParentFd:v41 eventListener:v44 key:v76 msg:v75 spotlightBasePath:[(CSJournalProcessor *)v18 UTF8String]];
@@ -1709,37 +1709,37 @@ LABEL_24:
 
     else
     {
-      if (v17 != 1)
+      if (folderFd != 1)
       {
         goto LABEL_31;
       }
 
       v18 = [CSJournalProcessor alloc];
-      v20 = *(a1 + 16);
-      v21 = *(a1 + 32);
-      v22 = v8;
+      v20 = *(self + 16);
+      v21 = *(self + 32);
+      v22 = messageCopy;
       v23 = v21;
-      v19 = -[CSJournalProcessor initWithParentFd:eventListener:key:msg:journalBasePath:](v18, "initWithParentFd:eventListener:key:msg:journalBasePath:", v20, v23, v76, v7, [v8 UTF8String]);
+      v19 = -[CSJournalProcessor initWithParentFd:eventListener:key:msg:journalBasePath:](v18, "initWithParentFd:eventListener:key:msg:journalBasePath:", v20, v23, v76, v7, [messageCopy UTF8String]);
     }
 
-    v17 = v77;
+    folderFd = v77;
     if (v19)
     {
-      *(v19 + 13) = *(a1 + 10);
-      *(v19 + 64) = *(a1 + 20);
+      *(v19 + 13) = *(self + 10);
+      *(v19 + 64) = *(self + 20);
       objc_setProperty_nonatomic_copy(v19, v46, &__block_literal_global_138, 184);
-      pthread_rwlock_wrlock((a1 + 280));
-      v47 = *(a1 + 56);
+      pthread_rwlock_wrlock((self + 280));
+      v47 = *(self + 56);
       v48 = [v19 key];
       [v47 setObject:v19 forKeyedSubscript:v48];
 
-      pthread_rwlock_unlock((a1 + 280));
-      pthread_rwlock_wrlock((a1 + 80));
-      v18 = *(a1 + 64);
+      pthread_rwlock_unlock((self + 280));
+      pthread_rwlock_wrlock((self + 80));
+      v18 = *(self + 64);
       [(CSJournalProcessor *)v18 setObject:v19 atIndexedSubscript:[(CSJournalProcessor *)v18 count]];
 
-      *(a1 + 48) += *(v19 + 120);
-      pthread_rwlock_unlock((a1 + 80));
+      *(self + 48) += *(v19 + 120);
+      pthread_rwlock_unlock((self + 80));
       goto LABEL_36;
     }
 
@@ -1762,7 +1762,7 @@ LABEL_31:
   v24 = +[SKGActivityJournal sharedJournal];
   v87 = &unk_2846E76C8;
   v25 = MEMORY[0x277CCABB0];
-  v26 = *(a1 + 32);
+  v26 = *(self + 32);
   if (v26)
   {
     v27 = v26[1];
@@ -1780,9 +1780,9 @@ LABEL_31:
   v31 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v88 forKeys:&v87 count:1];
   [v24 addEventWithType:34 params:v31];
 
-  if (v9)
+  if (pathCopy)
   {
-    dispatch_group_leave(v9);
+    dispatch_group_leave(pathCopy);
   }
 
   else if (SKGLogGetCurrentLoggingLevel() >= 2)
@@ -1955,14 +1955,14 @@ void __67__CSEventListenerManager_handleMessage_basePath_withDispatchGroup___blo
 
 - (void)lostConnection
 {
-  if (a1)
+  if (self)
   {
-    v1 = *(a1 + 24);
+    v1 = *(self + 24);
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __40__CSEventListenerManager_lostConnection__block_invoke;
     block[3] = &unk_27893CE68;
-    block[4] = a1;
+    block[4] = self;
     dispatch_async(v1, block);
   }
 }
@@ -2014,9 +2014,9 @@ uint64_t __40__CSEventListenerManager_lostConnection__block_invoke(uint64_t a1)
 
 - (uint64_t)isAssertionsAllowed
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_11(*(a1 + 9));
+    return OUTLINED_FUNCTION_11(*(self + 9));
   }
 
   else
@@ -2027,9 +2027,9 @@ uint64_t __40__CSEventListenerManager_lostConnection__block_invoke(uint64_t a1)
 
 - (uint64_t)isManagedEventListener
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_11(*(a1 + 10));
+    return OUTLINED_FUNCTION_11(*(self + 10));
   }
 
   else
@@ -2068,11 +2068,11 @@ uint64_t __40__CSEventListenerManager_lostConnection__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setSignposter:(uint64_t)a1
+- (void)setSignposter:(uint64_t)signposter
 {
-  if (a1)
+  if (signposter)
   {
-    objc_storeStrong((a1 + 72), a2);
+    objc_storeStrong((signposter + 72), a2);
   }
 }
 

@@ -1,9 +1,9 @@
 @interface MapsConnectionBrokerServer
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (MapsConnectionBrokerServer)init;
 - (void)dealloc;
-- (void)listenerEndpointDidChange:(id)a3 forIdentifier:(id)a4;
-- (void)listenerEndpointForIdentifer:(id)a3 reply:(id)a4;
+- (void)listenerEndpointDidChange:(id)change forIdentifier:(id)identifier;
+- (void)listenerEndpointForIdentifer:(id)identifer reply:(id)reply;
 @end
 
 @implementation MapsConnectionBrokerServer
@@ -65,61 +65,61 @@
   [(MapsConnectionBrokerServer *)&v3 dealloc];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   v8 = sub_1000124D8();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     *buf = 136315650;
     v37 = "[MapsConnectionBrokerServer listener:shouldAcceptNewConnection:]";
     v38 = 2112;
-    v39 = v6;
+    v39 = listenerCopy;
     v40 = 2112;
-    v41 = v7;
+    v41 = connectionCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "MapsConnectionBrokerServer %s %@ %@", buf, 0x20u);
   }
 
-  if (self->_endpointSourceListener == v6)
+  if (self->_endpointSourceListener == listenerCopy)
   {
     v10 = sub_1000124D8();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v37 = v7;
+      v37 = connectionCopy;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "MapsConnectionBrokerServer Received new endpoint source connection: %@", buf, 0xCu);
     }
 
-    [v7 setExportedObject:self];
+    [connectionCopy setExportedObject:self];
     v11 = +[NSXPCInterface _maps_mapsConnectionBrokerEndpointRecorderInterface];
-    [v7 setExportedInterface:v11];
+    [connectionCopy setExportedInterface:v11];
 
     v12 = +[NSXPCInterface _maps_mapsConnectionBrokerEndpointSourceInterface];
-    [v7 setRemoteObjectInterface:v12];
+    [connectionCopy setRemoteObjectInterface:v12];
 
     objc_initWeak(buf, self);
-    objc_initWeak(&location, v7);
+    objc_initWeak(&location, connectionCopy);
     v32[0] = _NSConcreteStackBlock;
     v32[1] = 3221225472;
     v32[2] = sub_10000AC1C;
     v32[3] = &unk_10003CC90;
     objc_copyWeak(&v33, &location);
     objc_copyWeak(&v34, buf);
-    [v7 setInvalidationHandler:v32];
+    [connectionCopy setInvalidationHandler:v32];
     v30[0] = _NSConcreteStackBlock;
     v30[1] = 3221225472;
     v30[2] = sub_10000AD74;
     v30[3] = &unk_10003CCB8;
     objc_copyWeak(&v31, &location);
-    [v7 setInterruptionHandler:v30];
+    [connectionCopy setInterruptionHandler:v30];
     connectionQueue = self->_connectionQueue;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10000AE28;
     block[3] = &unk_10003C9D8;
     block[4] = self;
-    v14 = v7;
+    v14 = connectionCopy;
     v29 = v14;
     dispatch_async(connectionQueue, block);
     [v14 resume];
@@ -132,45 +132,45 @@
     goto LABEL_12;
   }
 
-  if (self->_endpointConsumerListener == v6)
+  if (self->_endpointConsumerListener == listenerCopy)
   {
     v15 = sub_1000124D8();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v37 = v7;
+      v37 = connectionCopy;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "MapsConnectionBrokerServer Received new endpoint consumer connection: %@", buf, 0xCu);
     }
 
-    [v7 setExportedObject:self];
+    [connectionCopy setExportedObject:self];
     v16 = +[NSXPCInterface _maps_mapsConnectionBrokerEndpointProviderInterface];
-    [v7 setExportedInterface:v16];
+    [connectionCopy setExportedInterface:v16];
 
     v17 = +[NSXPCInterface _maps_mapsConnectionBrokerEndpointConsumerInterface];
-    [v7 setRemoteObjectInterface:v17];
+    [connectionCopy setRemoteObjectInterface:v17];
 
     objc_initWeak(buf, self);
-    objc_initWeak(&location, v7);
+    objc_initWeak(&location, connectionCopy);
     v25[0] = _NSConcreteStackBlock;
     v25[1] = 3221225472;
     v25[2] = sub_10000AE34;
     v25[3] = &unk_10003CC90;
     objc_copyWeak(&v26, &location);
     objc_copyWeak(&v27, buf);
-    [v7 setInvalidationHandler:v25];
+    [connectionCopy setInvalidationHandler:v25];
     v23[0] = _NSConcreteStackBlock;
     v23[1] = 3221225472;
     v23[2] = sub_10000AF8C;
     v23[3] = &unk_10003CCB8;
     objc_copyWeak(&v24, &location);
-    [v7 setInterruptionHandler:v23];
+    [connectionCopy setInterruptionHandler:v23];
     v18 = self->_connectionQueue;
     v21[0] = _NSConcreteStackBlock;
     v21[1] = 3221225472;
     v21[2] = sub_10000B040;
     v21[3] = &unk_10003C9D8;
     v21[4] = self;
-    v19 = v7;
+    v19 = connectionCopy;
     v22 = v19;
     dispatch_async(v18, v21);
     [v19 resume];
@@ -191,36 +191,36 @@ LABEL_13:
   return v9;
 }
 
-- (void)listenerEndpointForIdentifer:(id)a3 reply:(id)a4
+- (void)listenerEndpointForIdentifer:(id)identifer reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  identiferCopy = identifer;
+  replyCopy = reply;
   endpointQueue = self->_endpointQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000B110;
   block[3] = &unk_10003CB40;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = identiferCopy;
+  v13 = replyCopy;
+  v9 = replyCopy;
+  v10 = identiferCopy;
   dispatch_async(endpointQueue, block);
 }
 
-- (void)listenerEndpointDidChange:(id)a3 forIdentifier:(id)a4
+- (void)listenerEndpointDidChange:(id)change forIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  changeCopy = change;
+  identifierCopy = identifier;
   v8 = sub_1000124D8();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     *buf = 136315650;
     v16 = "[MapsConnectionBrokerServer listenerEndpointDidChange:forIdentifier:]";
     v17 = 2112;
-    v18 = v6;
+    v18 = changeCopy;
     v19 = 2112;
-    v20 = v7;
+    v20 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "MapsConnectionBrokerServer %s %@ %@", buf, 0x20u);
   }
 
@@ -230,10 +230,10 @@ LABEL_13:
   block[2] = sub_10000B2D4;
   block[3] = &unk_10003CA78;
   block[4] = self;
-  v13 = v7;
-  v14 = v6;
-  v10 = v6;
-  v11 = v7;
+  v13 = identifierCopy;
+  v14 = changeCopy;
+  v10 = changeCopy;
+  v11 = identifierCopy;
   dispatch_async(endpointQueue, block);
 }
 

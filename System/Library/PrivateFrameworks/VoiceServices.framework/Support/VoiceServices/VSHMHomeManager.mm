@@ -1,14 +1,14 @@
 @interface VSHMHomeManager
-- (void)transferPreinstallErrorMessagesOfLanguage:(id)a3 voiceName:(id)a4 forAccessoryID:(id)a5;
+- (void)transferPreinstallErrorMessagesOfLanguage:(id)language voiceName:(id)name forAccessoryID:(id)d;
 @end
 
 @implementation VSHMHomeManager
 
-- (void)transferPreinstallErrorMessagesOfLanguage:(id)a3 voiceName:(id)a4 forAccessoryID:(id)a5
+- (void)transferPreinstallErrorMessagesOfLanguage:(id)language voiceName:(id)name forAccessoryID:(id)d
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  languageCopy = language;
+  nameCopy = name;
+  dCopy = d;
   objc_exception_throw(0);
 }
 

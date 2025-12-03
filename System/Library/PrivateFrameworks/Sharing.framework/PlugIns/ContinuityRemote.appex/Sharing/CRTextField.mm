@@ -47,7 +47,7 @@
   {
     v4 = rtiSourceSession;
 LABEL_10:
-    v6 = v4;
+    sourceSession = v4;
     goto LABEL_11;
   }
 
@@ -62,8 +62,8 @@ LABEL_10:
     sub_100005F5C(v5);
   }
 
-  v6 = [(SFRemoteTextInputClient *)self->_rtiClient sourceSession];
-  if (!v6)
+  sourceSession = [(SFRemoteTextInputClient *)self->_rtiClient sourceSession];
+  if (!sourceSession)
   {
 LABEL_7:
     v7 = remote_log();
@@ -77,18 +77,18 @@ LABEL_7:
   }
 
 LABEL_11:
-  if (v6 != self->__rtiSourceSession)
+  if (sourceSession != self->__rtiSourceSession)
   {
     v8 = remote_log();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
-      sub_100005FE4(v6, v8);
+      sub_100005FE4(sourceSession, v8);
     }
 
-    objc_storeStrong(&self->__rtiSourceSession, v6);
+    objc_storeStrong(&self->__rtiSourceSession, sourceSession);
   }
 
-  return v6;
+  return sourceSession;
 }
 
 - (void)doneButtonPressed

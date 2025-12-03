@@ -1,8 +1,8 @@
 @interface FCCurrentIssuesFetchOperation
 - (BOOL)validateOperation;
 - (FCCurrentIssuesFetchOperation)init;
-- (FCCurrentIssuesFetchOperation)initWithContext:(id)a3;
-- (void)operationWillFinishWithError:(id)a3;
+- (FCCurrentIssuesFetchOperation)initWithContext:(id)context;
+- (void)operationWillFinishWithError:(id)error;
 - (void)performOperation;
 @end
 
@@ -34,16 +34,16 @@
   objc_exception_throw(v6);
 }
 
-- (FCCurrentIssuesFetchOperation)initWithContext:(id)a3
+- (FCCurrentIssuesFetchOperation)initWithContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v9.receiver = self;
   v9.super_class = FCCurrentIssuesFetchOperation;
   v6 = [(FCOperation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_context, a3);
+    objc_storeStrong(&v6->_context, context);
   }
 
   return v7;
@@ -52,9 +52,9 @@
 - (BOOL)validateOperation
 {
   v14 = *MEMORY[0x1E69E9840];
-  v2 = [(FCCurrentIssuesFetchOperation *)self context];
+  context = [(FCCurrentIssuesFetchOperation *)self context];
 
-  if (!v2 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (!context && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v5 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"current issues fetch operation requires a context"];
     v6 = 136315906;
@@ -68,7 +68,7 @@
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", &v6, 0x26u);
   }
 
-  result = v2 != 0;
+  result = context != 0;
   v4 = *MEMORY[0x1E69E9840];
   return result;
 }
@@ -76,18 +76,18 @@
 - (void)performOperation
 {
   v29[1] = *MEMORY[0x1E69E9840];
-  v3 = [(FCCurrentIssuesFetchOperation *)self context];
-  v4 = [v3 configurationManager];
-  v5 = [v4 configuration];
-  v6 = [v5 paidBundleConfig];
-  v7 = [v6 recommendableIssuesTagList];
+  context = [(FCCurrentIssuesFetchOperation *)self context];
+  configurationManager = [context configurationManager];
+  configuration = [configurationManager configuration];
+  paidBundleConfig = [configuration paidBundleConfig];
+  recommendableIssuesTagList = [paidBundleConfig recommendableIssuesTagList];
 
-  if (v7)
+  if (recommendableIssuesTagList)
   {
-    v8 = v7;
+    v8 = recommendableIssuesTagList;
     v9 = objc_alloc_init(FCRecordChainFetchOperation);
-    v10 = [(FCCurrentIssuesFetchOperation *)self context];
-    [(FCRecordChainFetchOperation *)v9 setContext:v10];
+    context2 = [(FCCurrentIssuesFetchOperation *)self context];
+    [(FCRecordChainFetchOperation *)v9 setContext:context2];
 
     v11 = +[FCEdgeCacheHint edgeCacheHintForCurrentIssues];
     [(FCRecordChainFetchOperation *)v9 setEdgeCacheHint:v11];
@@ -109,11 +109,11 @@
     v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v28 forKeys:v27 count:3];
     [(FCRecordChainFetchOperation *)v9 setLinkKeysByRecordType:v15];
 
-    v16 = [(FCCurrentIssuesFetchOperation *)self cachePolicy];
-    v17 = v16;
-    if (v16)
+    cachePolicy = [(FCCurrentIssuesFetchOperation *)self cachePolicy];
+    v17 = cachePolicy;
+    if (cachePolicy)
     {
-      v18 = v16;
+      v18 = cachePolicy;
     }
 
     else
@@ -241,16 +241,16 @@ FCIssue *__49__FCCurrentIssuesFetchOperation_performOperation__block_invoke_2_20
   return v14;
 }
 
-- (void)operationWillFinishWithError:(id)a3
+- (void)operationWillFinishWithError:(id)error
 {
-  v7 = a3;
-  v4 = [(FCCurrentIssuesFetchOperation *)self fetchCompletionHandler];
+  errorCopy = error;
+  fetchCompletionHandler = [(FCCurrentIssuesFetchOperation *)self fetchCompletionHandler];
 
-  if (v4)
+  if (fetchCompletionHandler)
   {
-    v5 = [(FCCurrentIssuesFetchOperation *)self fetchCompletionHandler];
-    v6 = [(FCCurrentIssuesFetchOperation *)self resultIssues];
-    (v5)[2](v5, v6, v7);
+    fetchCompletionHandler2 = [(FCCurrentIssuesFetchOperation *)self fetchCompletionHandler];
+    resultIssues = [(FCCurrentIssuesFetchOperation *)self resultIssues];
+    (fetchCompletionHandler2)[2](fetchCompletionHandler2, resultIssues, errorCopy);
   }
 }
 

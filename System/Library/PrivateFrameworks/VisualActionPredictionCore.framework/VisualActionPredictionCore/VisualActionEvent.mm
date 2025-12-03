@@ -1,9 +1,9 @@
 @interface VisualActionEvent
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 - (_TtC26VisualActionPredictionCore17VisualActionEvent)init;
 - (id)serialize;
 - (unsigned)dataVersion;
-- (void)setDataVersion:(unsigned int)a3;
+- (void)setDataVersion:(unsigned int)version;
 @end
 
 @implementation VisualActionEvent
@@ -15,16 +15,16 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setDataVersion:(unsigned int)a3
+- (void)setDataVersion:(unsigned int)version
 {
   v5 = OBJC_IVAR____TtC26VisualActionPredictionCore17VisualActionEvent_dataVersion;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = version;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = sub_22634EE3C();
   v7 = v6;
 
@@ -36,7 +36,7 @@
 
 - (id)serialize
 {
-  v2 = self;
+  selfCopy = self;
   v3 = VisualActionEvent.serialize()();
   v5 = v4;
 

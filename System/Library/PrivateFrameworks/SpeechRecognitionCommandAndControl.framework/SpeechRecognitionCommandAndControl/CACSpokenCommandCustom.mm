@@ -1,28 +1,28 @@
 @interface CACSpokenCommandCustom
-- (CACSpokenCommandCustom)initWithCommandIdentifier:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CACSpokenCommandCustom)initWithCommandIdentifier:(id)identifier;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)handleSpokenCommand:(id)a3;
+- (void)handleSpokenCommand:(id)command;
 @end
 
 @implementation CACSpokenCommandCustom
 
-- (CACSpokenCommandCustom)initWithCommandIdentifier:(id)a3
+- (CACSpokenCommandCustom)initWithCommandIdentifier:(id)identifier
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = [(CACSpokenCommand *)self initWithProperties:0];
   if (v5)
   {
     p_isa = &v5->super.super.isa;
     v7 = +[CACPreferences sharedPreferences];
-    v8 = [v7 propertiesForCommandIdentifier:v4];
+    v8 = [v7 propertiesForCommandIdentifier:identifierCopy];
     v9 = p_isa[12];
     p_isa[12] = v8;
 
     v10 = [p_isa[12] objectForKey:@"CustomCommands"];
-    v11 = [v7 bestLocaleIdentifier];
-    v12 = [v10 objectForKey:v11];
+    bestLocaleIdentifier = [v7 bestLocaleIdentifier];
+    v12 = [v10 objectForKey:bestLocaleIdentifier];
 
     v30 = 0u;
     v31 = 0u;
@@ -69,24 +69,24 @@ LABEL_4:
         goto LABEL_23;
       }
 
-      [p_isa setIdentifier:v4];
+      [p_isa setIdentifier:identifierCopy];
       [p_isa setStrings:v13];
       [p_isa setPrimaryCommand:v20];
       [p_isa setAction:sel_handleSpokenCommand_];
       v19 = [p_isa[12] objectForKey:@"CustomType"];
       if (([v19 isEqualToString:@"PasteText"] & 1) != 0 || objc_msgSend(v19, "isEqualToString:", @"PasteBoard"))
       {
-        v21 = [p_isa contextEvaluation];
+        contextEvaluation = [p_isa contextEvaluation];
         v22 = [MEMORY[0x277CCABB0] numberWithBool:1];
-        [v21 setObject:v22 forKey:kCACCommandContextRequiresFocusedEditableText];
+        [contextEvaluation setObject:v22 forKey:kCACCommandContextRequiresFocusedEditableText];
       }
 
       v23 = [p_isa[12] objectForKey:@"CustomScope"];
       if (v23 && (objc_opt_respondsToSelector() & 1) != 0 && ([v23 isEqualToString:@"com.apple.speech.SystemWideScope"] & 1) == 0)
       {
-        v24 = [p_isa contextEvaluation];
+        contextEvaluation2 = [p_isa contextEvaluation];
         v25 = [MEMORY[0x277CBEA60] arrayWithObject:v23];
-        [v24 setObject:v25 forKey:kCACCommandContextRequiresOneOfAppIdentifiers];
+        [contextEvaluation2 setObject:v25 forKey:kCACCommandContextRequiresOneOfAppIdentifiers];
       }
     }
 
@@ -112,37 +112,37 @@ LABEL_23:
   return v26;
 }
 
-- (void)handleSpokenCommand:(id)a3
+- (void)handleSpokenCommand:(id)command
 {
   v48 = *MEMORY[0x277D85DE8];
-  v4 = [(CACSpokenCommandCustom *)self customProperties];
-  v5 = [v4 objectForKey:@"CustomType"];
+  customProperties = [(CACSpokenCommandCustom *)self customProperties];
+  v5 = [customProperties objectForKey:@"CustomType"];
   if ([v5 isEqualToString:@"PasteText"])
   {
     [(CACSpokenCommand *)self setCompletionDeterminedManually:1];
-    v6 = [(CACSpokenCommand *)self isRestrictedForAAC];
+    isRestrictedForAAC = [(CACSpokenCommand *)self isRestrictedForAAC];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __46__CACSpokenCommandCustom_handleSpokenCommand___block_invoke;
     block[3] = &unk_279CECAE8;
-    v45 = v6;
-    v43 = v4;
-    v44 = self;
+    v45 = isRestrictedForAAC;
+    v43 = customProperties;
+    selfCopy = self;
     dispatch_async(MEMORY[0x277D85CD0], block);
-    v7 = v43;
+    focusedElement = v43;
   }
 
   else if ([v5 isEqualToString:@"RunShortcutsWorkflow"])
   {
     [(CACSpokenCommand *)self setCompletionDeterminedManually:1];
-    v7 = [v4 objectForKey:@"CustomShortcutsWorkflow"];
-    v8 = [MEMORY[0x277CE7E38] sharedManager];
-    v9 = [v8 shortcutForIdentifier:v7];
+    focusedElement = [customProperties objectForKey:@"CustomShortcutsWorkflow"];
+    mEMORY[0x277CE7E38] = [MEMORY[0x277CE7E38] sharedManager];
+    v9 = [mEMORY[0x277CE7E38] shortcutForIdentifier:focusedElement];
 
     if (v9)
     {
-      v10 = [MEMORY[0x277CE7E38] sharedManager];
-      [v10 performShortcut:v9];
+      mEMORY[0x277CE7E38]2 = [MEMORY[0x277CE7E38] sharedManager];
+      [mEMORY[0x277CE7E38]2 performShortcut:v9];
     }
 
     else
@@ -150,7 +150,7 @@ LABEL_23:
       v23 = CACLogShortcuts();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
       {
-        [(CACSpokenCommandCustom *)v7 handleSpokenCommand:v23];
+        [(CACSpokenCommandCustom *)focusedElement handleSpokenCommand:v23];
       }
     }
 
@@ -166,20 +166,20 @@ LABEL_23:
   else if ([v5 isEqualToString:@"PasteBoard"])
   {
     v11 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
-    v7 = [v11 focusedElement];
+    focusedElement = [v11 focusedElement];
 
-    if (v7)
+    if (focusedElement)
     {
       v26 = v5;
       [(CACSpokenCommand *)self setCompletionDeterminedManually:1];
-      v25 = [MEMORY[0x277D75810] generalPasteboard];
+      generalPasteboard = [MEMORY[0x277D75810] generalPasteboard];
       v12 = objc_opt_new();
       v37 = 0u;
       v38 = 0u;
       v39 = 0u;
       v40 = 0u;
-      v27 = v4;
-      v13 = [v4 objectForKey:@"CustomPasteBoard"];
+      v27 = customProperties;
+      v13 = [customProperties objectForKey:@"CustomPasteBoard"];
       v14 = [v13 countByEnumeratingWithState:&v37 objects:v47 count:16];
       if (v14)
       {
@@ -195,7 +195,7 @@ LABEL_23:
             }
 
             v18 = *(*(&v37 + 1) + 8 * i);
-            v19 = [v18 objectForKey:{@"CustomPasteBoardType", v25}];
+            v19 = [v18 objectForKey:{@"CustomPasteBoardType", generalPasteboard}];
             v20 = [v18 objectForKey:@"CustomPasteBoardData"];
             if (v20)
             {
@@ -221,19 +221,19 @@ LABEL_23:
 
       v46 = v12;
       v22 = [MEMORY[0x277CBEA60] arrayWithObjects:&v46 count:1];
-      [v25 setItems:v22];
+      [generalPasteboard setItems:v22];
 
       v34[0] = MEMORY[0x277D85DD0];
       v34[1] = 3221225472;
       v34[2] = __46__CACSpokenCommandCustom_handleSpokenCommand___block_invoke_2;
       v34[3] = &unk_279CEB4C0;
-      v7 = v7;
-      v35 = v7;
-      v36 = self;
+      focusedElement = focusedElement;
+      v35 = focusedElement;
+      selfCopy2 = self;
       dispatch_async(MEMORY[0x277D85CD0], v34);
 
       v5 = v26;
-      v4 = v27;
+      customProperties = v27;
     }
   }
 
@@ -244,10 +244,10 @@ LABEL_23:
     v31[1] = 3221225472;
     v31[2] = __46__CACSpokenCommandCustom_handleSpokenCommand___block_invoke_3;
     v31[3] = &unk_279CEB4C0;
-    v32 = v4;
-    v33 = self;
+    v32 = customProperties;
+    selfCopy3 = self;
     dispatch_async(MEMORY[0x277D85CD0], v31);
-    v7 = v32;
+    focusedElement = v32;
   }
 
   else if ([v5 isEqualToString:@"RunUserActionFlow"])
@@ -257,18 +257,18 @@ LABEL_23:
     v28[1] = 3221225472;
     v28[2] = __46__CACSpokenCommandCustom_handleSpokenCommand___block_invoke_61;
     v28[3] = &unk_279CEB4C0;
-    v29 = v4;
-    v30 = self;
+    v29 = customProperties;
+    selfCopy4 = self;
     dispatch_async(MEMORY[0x277D85CD0], v28);
-    v7 = v29;
+    focusedElement = v29;
   }
 
   else
   {
-    v7 = CACLogGeneral();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    focusedElement = CACLogGeneral();
+    if (os_log_type_enabled(focusedElement, OS_LOG_TYPE_ERROR))
     {
-      [(CACSpokenCommandCustom *)v5 handleSpokenCommand:v7];
+      [(CACSpokenCommandCustom *)v5 handleSpokenCommand:focusedElement];
     }
   }
 }
@@ -379,14 +379,14 @@ void __46__CACSpokenCommandCustom_handleSpokenCommand___block_invoke_2_67(uint64
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "initWithSpokenCommand:", self}];
-  v5 = [(CACSpokenCommandCustom *)self customProperties];
-  [v4 _setCustomProperties:v5];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "initWithSpokenCommand:", self}];
+  customProperties = [(CACSpokenCommandCustom *)self customProperties];
+  [v4 _setCustomProperties:customProperties];
 
-  v6 = [(CACSpokenCommandCustom *)self primaryCommand];
-  [v4 setPrimaryCommand:v6];
+  primaryCommand = [(CACSpokenCommandCustom *)self primaryCommand];
+  [v4 setPrimaryCommand:primaryCommand];
 
   return v4;
 }
@@ -394,8 +394,8 @@ void __46__CACSpokenCommandCustom_handleSpokenCommand___block_invoke_2_67(uint64
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(CACSpokenCommand *)self strings];
-  v5 = [v3 stringWithFormat:@"%@, %@", v4, self->_customProperties];
+  strings = [(CACSpokenCommand *)self strings];
+  v5 = [v3 stringWithFormat:@"%@, %@", strings, self->_customProperties];
 
   return v5;
 }

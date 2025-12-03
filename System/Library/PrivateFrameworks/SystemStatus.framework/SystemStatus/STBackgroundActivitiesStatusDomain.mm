@@ -1,14 +1,14 @@
 @interface STBackgroundActivitiesStatusDomain
-- (void)observeData:(id)a3;
+- (void)observeData:(id)data;
 @end
 
 @implementation STBackgroundActivitiesStatusDomain
 
-- (void)observeData:(id)a3
+- (void)observeData:(id)data
 {
   v3.receiver = self;
   v3.super_class = STBackgroundActivitiesStatusDomain;
-  [(STStatusDomain *)&v3 observeData:a3];
+  [(STStatusDomain *)&v3 observeData:data];
 }
 
 @end

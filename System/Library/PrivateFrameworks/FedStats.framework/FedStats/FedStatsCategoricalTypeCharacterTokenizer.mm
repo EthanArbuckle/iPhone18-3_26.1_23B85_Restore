@@ -1,33 +1,33 @@
 @interface FedStatsCategoricalTypeCharacterTokenizer
-+ (id)instanceWithParameters:(id)a3 error:(id *)a4;
-- (id)tokenize:(id)a3;
++ (id)instanceWithParameters:(id)parameters error:(id *)error;
+- (id)tokenize:(id)tokenize;
 @end
 
 @implementation FedStatsCategoricalTypeCharacterTokenizer
 
-+ (id)instanceWithParameters:(id)a3 error:(id *)a4
++ (id)instanceWithParameters:(id)parameters error:(id *)error
 {
-  v4 = objc_alloc_init(a1);
+  v4 = objc_alloc_init(self);
 
   return v4;
 }
 
-- (id)tokenize:(id)a3
+- (id)tokenize:(id)tokenize
 {
-  if (a3)
+  if (tokenize)
   {
-    v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@", a3];
-    v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v3, "length")}];
-    v5 = [MEMORY[0x277CCA900] URLPathAllowedCharacterSet];
-    v6 = [v5 mutableCopy];
+    tokenize = [MEMORY[0x277CCACA8] stringWithFormat:@"%@", tokenize];
+    v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(tokenize, "length")}];
+    uRLPathAllowedCharacterSet = [MEMORY[0x277CCA900] URLPathAllowedCharacterSet];
+    v6 = [uRLPathAllowedCharacterSet mutableCopy];
 
     [v6 addCharactersInString:@"%"];
-    if ([v3 length])
+    if ([tokenize length])
     {
       v7 = 0;
       do
       {
-        v8 = [v3 substringWithRange:{v7, 1}];
+        v8 = [tokenize substringWithRange:{v7, 1}];
         v9 = [v8 stringByAddingPercentEncodingWithAllowedCharacters:v6];
 
         if (v9)
@@ -45,7 +45,7 @@
         ++v7;
       }
 
-      while (v7 < [v3 length]);
+      while (v7 < [tokenize length]);
     }
   }
 

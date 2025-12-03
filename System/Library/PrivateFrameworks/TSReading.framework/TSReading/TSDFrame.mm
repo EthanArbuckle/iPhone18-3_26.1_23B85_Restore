@@ -1,37 +1,37 @@
 @interface TSDFrame
 - (BOOL)hasMask;
-- (BOOL)i_willRenderForRect:(CGRect)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)shouldRenderForSizeIncludingCoverage:(CGSize)a3;
-- (CGRect)coverageRect:(CGRect)a3;
-- (CGRect)coverageRectWithoutAdornment:(CGRect)a3;
-- (CGRect)i_adornmentRectForRect:(CGRect)a3;
-- (CGRect)p_coverageRectWithAdornment:(CGRect)a3;
-- (CGRect)p_coverageRectWithoutAdornment:(CGRect)a3;
+- (BOOL)i_willRenderForRect:(CGRect)rect;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)shouldRenderForSizeIncludingCoverage:(CGSize)coverage;
+- (CGRect)coverageRect:(CGRect)rect;
+- (CGRect)coverageRectWithoutAdornment:(CGRect)adornment;
+- (CGRect)i_adornmentRectForRect:(CGRect)rect;
+- (CGRect)p_coverageRectWithAdornment:(CGRect)adornment;
+- (CGRect)p_coverageRectWithoutAdornment:(CGRect)adornment;
 - (CGSize)p_minimumRenderedSize;
-- (TSDFrame)initWithFrameName:(id)a3;
-- (TSDFrame)initWithFrameSpec:(id)a3 assetScale:(double)a4;
-- (TSDFrame)initWithFrameSpec:(id)a3 assetScale:(double)a4 archivableFrameName:(id)a5;
+- (TSDFrame)initWithFrameName:(id)name;
+- (TSDFrame)initWithFrameSpec:(id)spec assetScale:(double)scale;
+- (TSDFrame)initWithFrameSpec:(id)spec assetScale:(double)scale archivableFrameName:(id)name;
 - (_TSDStrokeOutsets)outsets;
 - (double)minimumAssetScale;
 - (id)archivableFrameName;
 - (id)description;
 - (id)frameName;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (id)strokeByTransformingByTransform:(CGAffineTransform *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (id)strokeByTransformingByTransform:(CGAffineTransform *)transform;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)drawSwatchInRect:(CGRect)a3 inContext:(CGContext *)a4;
-- (void)paintPath:(CGPath *)a3 wantsInteriorStroke:(BOOL)a4 inContext:(CGContext *)a5 useFastDrawing:(BOOL)a6;
+- (void)drawSwatchInRect:(CGRect)rect inContext:(CGContext *)context;
+- (void)paintPath:(CGPath *)path wantsInteriorStroke:(BOOL)stroke inContext:(CGContext *)context useFastDrawing:(BOOL)drawing;
 @end
 
 @implementation TSDFrame
 
-- (TSDFrame)initWithFrameSpec:(id)a3 assetScale:(double)a4 archivableFrameName:(id)a5
+- (TSDFrame)initWithFrameSpec:(id)spec assetScale:(double)scale archivableFrameName:(id)name
 {
-  if (a3)
+  if (spec)
   {
-    if (a5)
+    if (name)
     {
       goto LABEL_3;
     }
@@ -39,18 +39,18 @@
 
   else
   {
-    v11 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDFrame initWithFrameSpec:assetScale:archivableFrameName:]"];
-    [v11 handleFailureInFunction:v12 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDFrame.m"), 81, @"invalid nil value for '%s'", "spec"}];
-    if (a5)
+    [currentHandler handleFailureInFunction:v12 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDFrame.m"), 81, @"invalid nil value for '%s'", "spec"}];
+    if (name)
     {
       goto LABEL_3;
     }
   }
 
-  v13 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
   v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDFrame initWithFrameSpec:assetScale:archivableFrameName:]"];
-  [v13 handleFailureInFunction:v14 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDFrame.m"), 82, @"invalid nil value for '%s'", "archivableFrameName"}];
+  [currentHandler2 handleFailureInFunction:v14 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDFrame.m"), 82, @"invalid nil value for '%s'", "archivableFrameName"}];
 LABEL_3:
   v17.receiver = self;
   v17.super_class = TSDFrame;
@@ -58,10 +58,10 @@ LABEL_3:
   v9 = v8;
   if (v8)
   {
-    if (a3)
+    if (spec)
     {
-      v8->mSpec = [a3 copy];
-      v9->mFrameName = [a5 copy];
+      v8->mSpec = [spec copy];
+      v9->mFrameName = [name copy];
       [(TSDFrameSpec *)v9->mSpec i_minimumAssetScale];
       TSUClamp();
       v9->mAssetScale = v10;
@@ -78,16 +78,16 @@ LABEL_3:
   return v9;
 }
 
-- (TSDFrame)initWithFrameSpec:(id)a3 assetScale:(double)a4
+- (TSDFrame)initWithFrameSpec:(id)spec assetScale:(double)scale
 {
-  v7 = [a3 frameName];
+  frameName = [spec frameName];
 
-  return [(TSDFrame *)self initWithFrameSpec:a3 assetScale:v7 archivableFrameName:a4];
+  return [(TSDFrame *)self initWithFrameSpec:spec assetScale:frameName archivableFrameName:scale];
 }
 
-- (TSDFrame)initWithFrameName:(id)a3
+- (TSDFrame)initWithFrameName:(id)name
 {
-  v4 = [TSDFrameSpec frameSpecWithName:a3];
+  v4 = [TSDFrameSpec frameSpecWithName:name];
 
   return [(TSDFrame *)self initWithFrameSpec:v4];
 }
@@ -99,18 +99,18 @@ LABEL_3:
   [(TSDFrame *)&v3 dealloc];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [TSDMutableFrame allocWithZone:a3];
-  v5 = [(TSDFrame *)self frameSpec];
+  v4 = [TSDMutableFrame allocWithZone:zone];
+  frameSpec = [(TSDFrame *)self frameSpec];
   [(TSDFrame *)self assetScale];
   v7 = v6;
-  v8 = [(TSDFrame *)self archivableFrameName];
+  archivableFrameName = [(TSDFrame *)self archivableFrameName];
 
-  return [(TSDFrame *)v4 initWithFrameSpec:v5 assetScale:v8 archivableFrameName:v7];
+  return [(TSDFrame *)v4 initWithFrameSpec:frameSpec assetScale:archivableFrameName archivableFrameName:v7];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v11.receiver = self;
   v11.super_class = TSDFrame;
@@ -160,16 +160,16 @@ LABEL_3:
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(TSDFrame *)self frameName];
+  frameName = [(TSDFrame *)self frameName];
   [(TSDFrame *)self assetScale];
-  return [v3 stringWithFormat:@"<%@ %p frameName='%@' assetScale=%f>", v5, self, v6, v7];
+  return [v3 stringWithFormat:@"<%@ %p frameName='%@' assetScale=%f>", v5, self, frameName, v7];
 }
 
 - (id)frameName
 {
-  v2 = [(TSDFrame *)self frameSpec];
+  frameSpec = [(TSDFrame *)self frameSpec];
 
-  return [(TSDFrameSpec *)v2 frameName];
+  return [(TSDFrameSpec *)frameSpec frameName];
 }
 
 - (id)archivableFrameName
@@ -177,15 +177,15 @@ LABEL_3:
   result = self->mFrameName;
   if (!result)
   {
-    v4 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDFrame archivableFrameName]"];
-    [v4 handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDFrame.m"), 194, @"invalid nil value for '%s'", "mFrameName"}];
+    [currentHandler handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDFrame.m"), 194, @"invalid nil value for '%s'", "mFrameName"}];
     result = self->mFrameName;
     if (!result)
     {
-      v6 = [(TSDFrame *)self frameSpec];
+      frameSpec = [(TSDFrame *)self frameSpec];
 
-      return [(TSDFrameSpec *)v6 frameName];
+      return [(TSDFrameSpec *)frameSpec frameName];
     }
   }
 
@@ -194,25 +194,25 @@ LABEL_3:
 
 - (double)minimumAssetScale
 {
-  v2 = [(TSDFrame *)self frameSpec];
+  frameSpec = [(TSDFrame *)self frameSpec];
 
-  [(TSDFrameSpec *)v2 i_minimumAssetScale];
+  [(TSDFrameSpec *)frameSpec i_minimumAssetScale];
   return result;
 }
 
 - (BOOL)hasMask
 {
-  v2 = [(TSDFrame *)self frameSpec];
+  frameSpec = [(TSDFrame *)self frameSpec];
 
-  return [(TSDFrameSpec *)v2 i_hasMask];
+  return [(TSDFrameSpec *)frameSpec i_hasMask];
 }
 
-- (CGRect)p_coverageRectWithoutAdornment:(CGRect)a3
+- (CGRect)p_coverageRectWithoutAdornment:(CGRect)adornment
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = adornment.size.height;
+  width = adornment.size.width;
+  y = adornment.origin.y;
+  x = adornment.origin.x;
   if ([(TSDFrameSpec *)self->mSpec i_hasImages])
   {
     v8 = width < 2.0;
@@ -264,9 +264,9 @@ LABEL_3:
   return result;
 }
 
-- (CGRect)p_coverageRectWithAdornment:(CGRect)a3
+- (CGRect)p_coverageRectWithAdornment:(CGRect)adornment
 {
-  [(TSDFrame *)self p_coverageRectWithoutAdornment:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(TSDFrame *)self p_coverageRectWithoutAdornment:adornment.origin.x, adornment.origin.y, adornment.size.width, adornment.size.height];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -291,12 +291,12 @@ LABEL_3:
   return result;
 }
 
-- (CGRect)coverageRect:(CGRect)a3
+- (CGRect)coverageRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   [(TSDFrame *)self p_coverageRectWithAdornment:?];
   v9 = v8;
   v11 = v10;
@@ -322,12 +322,12 @@ LABEL_3:
   return result;
 }
 
-- (CGRect)coverageRectWithoutAdornment:(CGRect)a3
+- (CGRect)coverageRectWithoutAdornment:(CGRect)adornment
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = adornment.size.height;
+  width = adornment.size.width;
+  y = adornment.origin.y;
+  x = adornment.origin.x;
   [(TSDFrame *)self coverageRect:?];
   v22.origin.x = v8;
   v22.origin.y = v9;
@@ -357,10 +357,10 @@ LABEL_3:
   return result;
 }
 
-- (BOOL)shouldRenderForSizeIncludingCoverage:(CGSize)a3
+- (BOOL)shouldRenderForSizeIncludingCoverage:(CGSize)coverage
 {
-  height = a3.height;
-  width = a3.width;
+  height = coverage.height;
+  width = coverage.width;
   [(TSDFrame *)self p_minimumRenderedSize];
   return height >= v6 && width >= v5;
 }
@@ -401,34 +401,34 @@ LABEL_3:
   return result;
 }
 
-- (void)paintPath:(CGPath *)a3 wantsInteriorStroke:(BOOL)a4 inContext:(CGContext *)a5 useFastDrawing:(BOOL)a6
+- (void)paintPath:(CGPath *)path wantsInteriorStroke:(BOOL)stroke inContext:(CGContext *)context useFastDrawing:(BOOL)drawing
 {
-  if (a4)
+  if (stroke)
   {
-    v9 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDFrame paintPath:wantsInteriorStroke:inContext:useFastDrawing:]"];
-    [v9 handleFailureInFunction:v10 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDFrame.m"), 365, @"Can't draw interior frame stroke"}];
+    [currentHandler handleFailureInFunction:v10 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDFrame.m"), 365, @"Can't draw interior frame stroke"}];
   }
 
   v14 = [[TSDFrameRep alloc] initWithTSDFrame:self];
   TSUScreenScale();
-  if (v11 != TSDCGContextAssociatedScreenScale(a5))
+  if (v11 != TSDCGContextAssociatedScreenScale(context))
   {
-    v12 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
     v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDFrame paintPath:wantsInteriorStroke:inContext:useFastDrawing:]"];
-    [v12 handleFailureInFunction:v13 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDFrame.m"), 368, @"rendering a frame into a context with incorrect associated screen scale"}];
+    [currentHandler2 handleFailureInFunction:v13 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDFrame.m"), 368, @"rendering a frame into a context with incorrect associated screen scale"}];
   }
 
-  BoundingBox = CGPathGetBoundingBox(a3);
-  [(TSDFrameRep *)v14 frameRect:a5 inContext:BoundingBox.origin.x withTotalScale:BoundingBox.origin.y, BoundingBox.size.width, BoundingBox.size.height, TSDCGContextAssociatedScreenScale(a5)];
+  BoundingBox = CGPathGetBoundingBox(path);
+  [(TSDFrameRep *)v14 frameRect:context inContext:BoundingBox.origin.x withTotalScale:BoundingBox.origin.y, BoundingBox.size.width, BoundingBox.size.height, TSDCGContextAssociatedScreenScale(context)];
 }
 
-- (void)drawSwatchInRect:(CGRect)a3 inContext:(CGContext *)a4
+- (void)drawSwatchInRect:(CGRect)rect inContext:(CGContext *)context
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  x = a3.origin.x;
-  y = a3.origin.y;
+  height = rect.size.height;
+  width = rect.size.width;
+  x = rect.origin.x;
+  y = rect.origin.y;
   if ([(TSDFrameSpec *)self->mSpec i_hasAdornment])
   {
     v8 = self->mAdornmentSize.height * 0.5;
@@ -457,11 +457,11 @@ LABEL_3:
   mBottomHeight = self->mBottomHeight;
   v40 = [[TSDFrameRep alloc] initWithTSDFrame:self];
   TSUScreenScale();
-  if (v21 != TSDCGContextAssociatedScreenScale(a4))
+  if (v21 != TSDCGContextAssociatedScreenScale(context))
   {
-    v22 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v23 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDFrame drawSwatchInRect:inContext:]"];
-    [v22 handleFailureInFunction:v23 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDFrame.m"), 409, @"rendering a frame into a context with incorrect associated screen scale"}];
+    [currentHandler handleFailureInFunction:v23 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDFrame.m"), 409, @"rendering a frame into a context with incorrect associated screen scale"}];
   }
 
   v24 = v13 * v14;
@@ -472,7 +472,7 @@ LABEL_3:
   v29 = v35 * mAssetScale;
   v30 = ceilf(v29);
   *&v26 = v33 * v32;
-  [(TSDFrameRep *)v40 frameRect:a4 inContext:x - v30 + mLeftWidth withTotalScale:v28, width + v30 + ceilf(*&v26) - (mLeftWidth + mRightWidth), v27, TSDCGContextAssociatedScreenScale(a4)];
+  [(TSDFrameRep *)v40 frameRect:context inContext:x - v30 + mLeftWidth withTotalScale:v28, width + v30 + ceilf(*&v26) - (mLeftWidth + mRightWidth), v27, TSDCGContextAssociatedScreenScale(context)];
 }
 
 - (CGSize)p_minimumRenderedSize
@@ -484,13 +484,13 @@ LABEL_3:
   return result;
 }
 
-- (CGRect)i_adornmentRectForRect:(CGRect)a3
+- (CGRect)i_adornmentRectForRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = CGRectGetWidth(a3) - (self->mLeftWidth + self->mRightWidth);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v8 = CGRectGetWidth(rect) - (self->mLeftWidth + self->mRightWidth);
   [(TSDFrameSpec *)self->mSpec i_adornmentPosition];
   v10 = v8 * v9;
   v19.origin.x = x;
@@ -516,12 +516,12 @@ LABEL_3:
   return result;
 }
 
-- (BOOL)i_willRenderForRect:(CGRect)a3
+- (BOOL)i_willRenderForRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   [(TSDFrame *)self p_minimumRenderedSize];
   v9 = v8;
   v11 = v10;
@@ -529,7 +529,7 @@ LABEL_3:
   return v13 >= v11 && v12 >= v9;
 }
 
-- (id)strokeByTransformingByTransform:(CGAffineTransform *)a3
+- (id)strokeByTransformingByTransform:(CGAffineTransform *)transform
 {
   [(TSDFrame *)self assetScale];
   [(TSDFrame *)self minimumAssetScale];

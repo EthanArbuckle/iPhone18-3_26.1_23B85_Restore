@@ -1,7 +1,7 @@
 @interface MTLResidencySetDescriptor
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (MTLResidencySetDescriptor)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 - (void)dealloc;
 @end
@@ -23,7 +23,7 @@
   [(MTLResidencySetDescriptor *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_new();
   [v4 setLabel:{-[MTLResidencySetDescriptor label](self, "label")}];
@@ -32,9 +32,9 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v6) = 1;
   }
@@ -42,22 +42,22 @@
   else
   {
     Class = object_getClass(self);
-    if (Class != object_getClass(a3))
+    if (Class != object_getClass(equal))
     {
 LABEL_3:
       LOBYTE(v6) = 0;
       return v6;
     }
 
-    v7 = *(a3 + 1);
+    v7 = *(equal + 1);
     if (v7 == self->_label || (v6 = [(NSString *)v7 isEqual:?]) != 0)
     {
-      if (*(a3 + 24) != self->_evictsImmediately)
+      if (*(equal + 24) != self->_evictsImmediately)
       {
         goto LABEL_3;
       }
 
-      LOBYTE(v6) = *(a3 + 2) == self->_initialCapacity;
+      LOBYTE(v6) = *(equal + 2) == self->_initialCapacity;
     }
   }
 

@@ -1,26 +1,26 @@
 @interface SUCoreActivityScheduler
 + (id)sharedInstance;
-- (SUCoreActivityScheduler)initWithPersistedStatePath:(id)a3;
+- (SUCoreActivityScheduler)initWithPersistedStatePath:(id)path;
 - (id)_contextStoreRegisteredActivities;
 - (id)_copyRegisteredActivities;
-- (id)_queue_registrationForActivity:(id)a3;
+- (id)_queue_registrationForActivity:(id)activity;
 - (id)sharedMemoryStore;
 - (void)_loadPersistedRegistrationMap;
-- (void)_queue_addRegistration:(id)a3 forActivity:(id)a4;
+- (void)_queue_addRegistration:(id)registration forActivity:(id)activity;
 - (void)_queue_persistRegistrationMap;
-- (void)_queue_removeRegistrationForActivity:(id)a3;
-- (void)_registerRegistration:(id)a3 forActivity:(id)a4;
-- (void)_unregisterAllActivitiesWithName:(id)a3;
-- (void)_unregisterRegistrationForActivity:(id)a3;
-- (void)scheduleActivity:(id)a3 withHandler:(id)a4;
+- (void)_queue_removeRegistrationForActivity:(id)activity;
+- (void)_registerRegistration:(id)registration forActivity:(id)activity;
+- (void)_unregisterAllActivitiesWithName:(id)name;
+- (void)_unregisterRegistrationForActivity:(id)activity;
+- (void)scheduleActivity:(id)activity withHandler:(id)handler;
 @end
 
 @implementation SUCoreActivityScheduler
 
-- (SUCoreActivityScheduler)initWithPersistedStatePath:(id)a3
+- (SUCoreActivityScheduler)initWithPersistedStatePath:(id)path
 {
   v40 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  pathCopy = path;
   v35.receiver = self;
   v35.super_class = SUCoreActivityScheduler;
   v5 = [(SUCoreActivityScheduler *)&v35 init];
@@ -31,22 +31,22 @@
 
   if (!objc_opt_class() || !objc_opt_class())
   {
-    v28 = [MEMORY[0x277D64460] sharedLogger];
-    v29 = [v28 oslog];
+    mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+    oslog = [mEMORY[0x277D64460] oslog];
 
-    if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
     {
       [SUCoreActivityScheduler initWithPersistedStatePath:];
     }
 
-    v15 = v5;
+    path = v5;
     v5 = 0;
     goto LABEL_15;
   }
 
-  v6 = [MEMORY[0x277CFE320] userContext];
+  userContext = [MEMORY[0x277CFE320] userContext];
   context = v5->_context;
-  v5->_context = v6;
+  v5->_context = userContext;
 
   v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
   activityArray = v5->_activityArray;
@@ -60,42 +60,42 @@
   stateQueue = v5->_stateQueue;
   v5->_stateQueue = v12;
 
-  if (v4)
+  if (pathCopy)
   {
-    v14 = [v4 URLByDeletingLastPathComponent];
-    v15 = [v14 path];
+    uRLByDeletingLastPathComponent = [pathCopy URLByDeletingLastPathComponent];
+    path = [uRLByDeletingLastPathComponent path];
 
-    v16 = [MEMORY[0x277CCAA00] defaultManager];
-    v17 = [v16 fileExistsAtPath:v15];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    v17 = [defaultManager fileExistsAtPath:path];
 
     if ((v17 & 1) == 0)
     {
-      v18 = [MEMORY[0x277CCAA00] defaultManager];
+      defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
       v34 = 0;
-      [v18 createDirectoryAtPath:v15 withIntermediateDirectories:1 attributes:0 error:&v34];
+      [defaultManager2 createDirectoryAtPath:path withIntermediateDirectories:1 attributes:0 error:&v34];
       v19 = v34;
 
       if (v19)
       {
-        v20 = [MEMORY[0x277D64460] sharedLogger];
-        v21 = [v20 oslog];
+        mEMORY[0x277D64460]2 = [MEMORY[0x277D64460] sharedLogger];
+        oslog2 = [mEMORY[0x277D64460]2 oslog];
 
-        if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
+        if (os_log_type_enabled(oslog2, OS_LOG_TYPE_DEFAULT))
         {
-          v22 = [v4 path];
+          path2 = [pathCopy path];
           *buf = 138543618;
-          v37 = v22;
+          v37 = path2;
           v38 = 2114;
           v39 = v19;
-          _os_log_impl(&dword_23193C000, v21, OS_LOG_TYPE_DEFAULT, "Error creating persisted state file %{public}@: %{public}@", buf, 0x16u);
+          _os_log_impl(&dword_23193C000, oslog2, OS_LOG_TYPE_DEFAULT, "Error creating persisted state file %{public}@: %{public}@", buf, 0x16u);
         }
       }
     }
 
     v23 = objc_alloc(MEMORY[0x277D64478]);
     v24 = v5->_stateQueue;
-    v25 = [v4 path];
-    v26 = [v23 initWithDispatchQueue:v24 withPersistencePath:v25 forPolicyVersion:@"1.0"];
+    path3 = [pathCopy path];
+    v26 = [v23 initWithDispatchQueue:v24 withPersistencePath:path3 forPolicyVersion:@"1.0"];
     persistedState = v5->_persistedState;
     v5->_persistedState = v26;
 
@@ -103,14 +103,14 @@
 LABEL_15:
   }
 
-  v30 = [MEMORY[0x277D64460] sharedLogger];
-  v31 = [v30 oslog];
+  mEMORY[0x277D64460]3 = [MEMORY[0x277D64460] sharedLogger];
+  oslog3 = [mEMORY[0x277D64460]3 oslog];
 
-  if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oslog3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v37 = v4;
-    _os_log_impl(&dword_23193C000, v31, OS_LOG_TYPE_DEFAULT, "Created SUCoreActivityScheduler with persisted state path: %{public}@", buf, 0xCu);
+    v37 = pathCopy;
+    _os_log_impl(&dword_23193C000, oslog3, OS_LOG_TYPE_DEFAULT, "Created SUCoreActivityScheduler with persisted state path: %{public}@", buf, 0xCu);
   }
 
 LABEL_19:
@@ -194,33 +194,33 @@ LABEL_14:
   sharedInstance___instance = v13;
 }
 
-- (void)_queue_addRegistration:(id)a3 forActivity:(id)a4
+- (void)_queue_addRegistration:(id)registration forActivity:(id)activity
 {
   stateQueue = self->_stateQueue;
-  v7 = a4;
-  v8 = a3;
+  activityCopy = activity;
+  registrationCopy = registration;
   dispatch_assert_queue_V2(stateQueue);
-  [(NSMutableArray *)self->_activityArray addObject:v7];
+  [(NSMutableArray *)self->_activityArray addObject:activityCopy];
 
-  [(NSMutableArray *)self->_registrationArray addObject:v8];
+  [(NSMutableArray *)self->_registrationArray addObject:registrationCopy];
 }
 
-- (void)_queue_removeRegistrationForActivity:(id)a3
+- (void)_queue_removeRegistrationForActivity:(id)activity
 {
-  v5 = a3;
+  activityCopy = activity;
   dispatch_assert_queue_V2(self->_stateQueue);
-  v4 = [(NSMutableArray *)self->_activityArray indexOfObject:v5];
+  v4 = [(NSMutableArray *)self->_activityArray indexOfObject:activityCopy];
   if (v4 != 0x7FFFFFFFFFFFFFFFLL && [(NSMutableArray *)self->_registrationArray count]> v4)
   {
-    [(NSMutableArray *)self->_registrationArray removeObjectAtIndex:[(NSMutableArray *)self->_activityArray indexOfObject:v5]];
-    [(NSMutableArray *)self->_activityArray removeObject:v5];
+    [(NSMutableArray *)self->_registrationArray removeObjectAtIndex:[(NSMutableArray *)self->_activityArray indexOfObject:activityCopy]];
+    [(NSMutableArray *)self->_activityArray removeObject:activityCopy];
   }
 }
 
-- (id)_queue_registrationForActivity:(id)a3
+- (id)_queue_registrationForActivity:(id)activity
 {
-  v4 = a3;
-  v5 = [(NSMutableArray *)self->_activityArray indexOfObject:v4];
+  activityCopy = activity;
+  v5 = [(NSMutableArray *)self->_activityArray indexOfObject:activityCopy];
   if (v5 == 0x7FFFFFFFFFFFFFFFLL || [(NSMutableArray *)self->_registrationArray count]<= v5)
   {
     v6 = 0;
@@ -228,27 +228,27 @@ LABEL_14:
 
   else
   {
-    v6 = [(NSMutableArray *)self->_registrationArray objectAtIndex:[(NSMutableArray *)self->_activityArray indexOfObject:v4]];
+    v6 = [(NSMutableArray *)self->_registrationArray objectAtIndex:[(NSMutableArray *)self->_activityArray indexOfObject:activityCopy]];
   }
 
   return v6;
 }
 
-- (void)_registerRegistration:(id)a3 forActivity:(id)a4
+- (void)_registerRegistration:(id)registration forActivity:(id)activity
 {
-  v6 = a3;
-  v7 = a4;
+  registrationCopy = registration;
+  activityCopy = activity;
   dispatch_assert_queue_not_V2(self->_stateQueue);
   stateQueue = self->_stateQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __61__SUCoreActivityScheduler__registerRegistration_forActivity___block_invoke;
   block[3] = &unk_27892D340;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = registrationCopy;
+  selfCopy = self;
+  v14 = activityCopy;
+  v9 = activityCopy;
+  v10 = registrationCopy;
   dispatch_sync(stateQueue, block);
 }
 
@@ -265,17 +265,17 @@ uint64_t __61__SUCoreActivityScheduler__registerRegistration_forActivity___block
   return [v2 _queue_persistRegistrationMap];
 }
 
-- (void)_unregisterRegistrationForActivity:(id)a3
+- (void)_unregisterRegistrationForActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   stateQueue = self->_stateQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __62__SUCoreActivityScheduler__unregisterRegistrationForActivity___block_invoke;
   v7[3] = &unk_27892D478;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = activityCopy;
+  v6 = activityCopy;
   dispatch_async(stateQueue, v7);
 }
 
@@ -291,17 +291,17 @@ void __62__SUCoreActivityScheduler__unregisterRegistrationForActivity___block_in
   [*(a1 + 32) _queue_persistRegistrationMap];
 }
 
-- (void)_unregisterAllActivitiesWithName:(id)a3
+- (void)_unregisterAllActivitiesWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   stateQueue = self->_stateQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __60__SUCoreActivityScheduler__unregisterAllActivitiesWithName___block_invoke;
   v7[3] = &unk_27892D478;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = nameCopy;
+  v6 = nameCopy;
   dispatch_async(stateQueue, v7);
 }
 
@@ -418,7 +418,7 @@ uint64_t __52__SUCoreActivityScheduler__copyRegisteredActivities__block_invoke(u
 
 - (void)_queue_persistRegistrationMap
 {
-  v2 = self;
+  selfCopy = self;
   v41 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(self->_stateQueue);
   v27 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -427,7 +427,7 @@ uint64_t __52__SUCoreActivityScheduler__copyRegisteredActivities__block_invoke(u
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  obj = v2->_activityArray;
+  obj = selfCopy->_activityArray;
   v3 = [(NSMutableArray *)obj countByEnumeratingWithState:&v32 objects:v40 count:16];
   if (v3)
   {
@@ -446,7 +446,7 @@ uint64_t __52__SUCoreActivityScheduler__copyRegisteredActivities__block_invoke(u
         }
 
         v9 = *(*(&v32 + 1) + 8 * i);
-        v10 = [(SUCoreActivityScheduler *)v2 _queue_registrationForActivity:v9, v25];
+        v10 = [(SUCoreActivityScheduler *)selfCopy _queue_registrationForActivity:v9, v25];
         if (v10)
         {
           v11 = *(v7 + 2736);
@@ -456,16 +456,16 @@ uint64_t __52__SUCoreActivityScheduler__copyRegisteredActivities__block_invoke(u
           v29 = v12;
           if (v13)
           {
-            v14 = [MEMORY[0x277D64460] sharedLogger];
-            v15 = [v14 oslog];
+            mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+            oslog = [mEMORY[0x277D64460] oslog];
 
-            if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+            if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
             {
               *buf = v25;
               v37 = v10;
               v38 = 2114;
               v39 = v13;
-              _os_log_error_impl(&dword_23193C000, v15, OS_LOG_TYPE_ERROR, "Error archiving registration:%{public}@ error:%{public}@", buf, 0x16u);
+              _os_log_error_impl(&dword_23193C000, oslog, OS_LOG_TYPE_ERROR, "Error archiving registration:%{public}@ error:%{public}@", buf, 0x16u);
             }
           }
 
@@ -483,20 +483,20 @@ uint64_t __52__SUCoreActivityScheduler__copyRegisteredActivities__block_invoke(u
           {
             v19 = v5;
             v20 = v6;
-            v21 = v2;
-            v22 = [MEMORY[0x277D64460] sharedLogger];
-            v23 = [v22 oslog];
+            v21 = selfCopy;
+            mEMORY[0x277D64460]2 = [MEMORY[0x277D64460] sharedLogger];
+            oslog2 = [mEMORY[0x277D64460]2 oslog];
 
-            if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
+            if (os_log_type_enabled(oslog2, OS_LOG_TYPE_ERROR))
             {
               *buf = v25;
               v37 = v9;
               v38 = 2114;
               v39 = v16;
-              _os_log_error_impl(&dword_23193C000, v23, OS_LOG_TYPE_ERROR, "Error archiving activity:%{public}@ error:%{public}@", buf, 0x16u);
+              _os_log_error_impl(&dword_23193C000, oslog2, OS_LOG_TYPE_ERROR, "Error archiving activity:%{public}@ error:%{public}@", buf, 0x16u);
             }
 
-            v2 = v21;
+            selfCopy = v21;
             v6 = v20;
             v5 = v19;
             v7 = 0x277CCA000;
@@ -520,8 +520,8 @@ uint64_t __52__SUCoreActivityScheduler__copyRegisteredActivities__block_invoke(u
     while (v5);
   }
 
-  [(SUCorePersistedState *)v2->_persistedState persistObject:v27 forKey:@"RegistrationKey"];
-  [(SUCorePersistedState *)v2->_persistedState persistObject:v26 forKey:@"ActivityKey"];
+  [(SUCorePersistedState *)selfCopy->_persistedState persistObject:v27 forKey:@"RegistrationKey"];
+  [(SUCorePersistedState *)selfCopy->_persistedState persistObject:v26 forKey:@"ActivityKey"];
 
   v24 = *MEMORY[0x277D85DE8];
 }
@@ -811,48 +811,48 @@ uint64_t __44__SUCoreActivityScheduler_sharedMemoryStore__block_invoke()
 
 - (id)_contextStoreRegisteredActivities
 {
-  v3 = [MEMORY[0x277CFE0D0] knowledgeDirectory];
-  v4 = [MEMORY[0x277CFE370] persistenceWithDirectory:v3];
+  knowledgeDirectory = [MEMORY[0x277CFE0D0] knowledgeDirectory];
+  v4 = [MEMORY[0x277CFE370] persistenceWithDirectory:knowledgeDirectory];
   v5 = MEMORY[0x277CFE398];
-  v6 = [(SUCoreActivityScheduler *)self sharedMemoryStore];
-  v7 = [v5 persistenceWithSharedMemoryKeyValueStore:v6];
+  sharedMemoryStore = [(SUCoreActivityScheduler *)self sharedMemoryStore];
+  v7 = [v5 persistenceWithSharedMemoryKeyValueStore:sharedMemoryStore];
 
   v8 = [MEMORY[0x277CFE390] persistenceWithPersistenceSurvivingReboot:v4 persistenceSurvivingRelaunch:v7];
-  v9 = [v8 loadRegistrations];
+  loadRegistrations = [v8 loadRegistrations];
 
-  return v9;
+  return loadRegistrations;
 }
 
-- (void)scheduleActivity:(id)a3 withHandler:(id)a4
+- (void)scheduleActivity:(id)activity withHandler:(id)handler
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  activityCopy = activity;
+  handlerCopy = handler;
   context = self->_context;
-  v9 = [v6 createContextualPredicate];
-  LODWORD(context) = [(_CDContext *)context evaluatePredicate:v9];
+  createContextualPredicate = [activityCopy createContextualPredicate];
+  LODWORD(context) = [(_CDContext *)context evaluatePredicate:createContextualPredicate];
 
   if (!context)
   {
-    v12 = [v6 createRegistrationWithHandler:v7];
-    v16 = [MEMORY[0x277D64460] sharedLogger];
-    v17 = [v16 oslog];
+    activityName = [activityCopy createRegistrationWithHandler:handlerCopy];
+    mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+    oslog = [mEMORY[0x277D64460] oslog];
 
-    if (v12)
+    if (activityName)
     {
-      if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v22 = v6;
-        _os_log_impl(&dword_23193C000, v17, OS_LOG_TYPE_DEFAULT, "Scheduling activity = %{public}@", buf, 0xCu);
+        v22 = activityCopy;
+        _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "Scheduling activity = %{public}@", buf, 0xCu);
       }
 
-      [(SUCoreActivityScheduler *)self _registerRegistration:v12 forActivity:v6];
+      [(SUCoreActivityScheduler *)self _registerRegistration:activityName forActivity:activityCopy];
     }
 
     else
     {
-      if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
       {
         [SUCoreActivityScheduler scheduleActivity:withHandler:];
       }
@@ -861,26 +861,26 @@ uint64_t __44__SUCoreActivityScheduler_sharedMemoryStore__block_invoke()
     goto LABEL_13;
   }
 
-  v10 = [MEMORY[0x277D64460] sharedLogger];
-  v11 = [v10 oslog];
+  mEMORY[0x277D64460]2 = [MEMORY[0x277D64460] sharedLogger];
+  oslog2 = [mEMORY[0x277D64460]2 oslog];
 
-  if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oslog2, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v22 = v6;
-    _os_log_impl(&dword_23193C000, v11, OS_LOG_TYPE_DEFAULT, "Conditions met for activity: %{public}@", buf, 0xCu);
+    v22 = activityCopy;
+    _os_log_impl(&dword_23193C000, oslog2, OS_LOG_TYPE_DEFAULT, "Conditions met for activity: %{public}@", buf, 0xCu);
   }
 
-  if (v7)
+  if (handlerCopy)
   {
-    v12 = [v6 activityName];
-    v13 = [v6 UUID];
+    activityName = [activityCopy activityName];
+    uUID = [activityCopy UUID];
     v19[1] = @"WasScheduled";
-    v20[0] = v13;
+    v20[0] = uUID;
     v14 = [MEMORY[0x277CCABB0] numberWithBool:0];
     v20[1] = v14;
     v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:v19 count:2];
-    v7[2](v7, v12, v15);
+    handlerCopy[2](handlerCopy, activityName, v15);
 
 LABEL_13:
   }

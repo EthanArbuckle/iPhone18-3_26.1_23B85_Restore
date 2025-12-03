@@ -1,26 +1,26 @@
 @interface SRMediaEvent
 + (void)initialize;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (SRMediaEvent)initWithBinarySampleRepresentation:(id)a3 metadata:(id)a4 timestamp:(double)a5;
-- (SRMediaEvent)initWithCoder:(id)a3;
-- (SRMediaEvent)initWithMediaIdentifier:(id)a3 eventType:(int64_t)a4;
+- (SRMediaEvent)initWithBinarySampleRepresentation:(id)representation metadata:(id)metadata timestamp:(double)timestamp;
+- (SRMediaEvent)initWithCoder:(id)coder;
+- (SRMediaEvent)initWithMediaIdentifier:(id)identifier eventType:(int64_t)type;
 - (id)sr_dictionaryRepresentation;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SRMediaEvent
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     SRLogMediaEvent = os_log_create("com.apple.SensorKit", "SRLogMediaEvent");
   }
 }
 
-- (SRMediaEvent)initWithMediaIdentifier:(id)a3 eventType:(int64_t)a4
+- (SRMediaEvent)initWithMediaIdentifier:(id)identifier eventType:(int64_t)type
 {
   v9.receiver = self;
   v9.super_class = SRMediaEvent;
@@ -28,8 +28,8 @@
   v7 = v6;
   if (v6)
   {
-    v6->_eventType = a4;
-    v6->_mediaIdentifier = [a3 copy];
+    v6->_eventType = type;
+    v6->_mediaIdentifier = [identifier copy];
   }
 
   return v7;
@@ -42,29 +42,29 @@
   [(SRMediaEvent *)&v3 dealloc];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
-  [a3 encodeInteger:-[SRMediaEvent eventType](self forKey:{"eventType"), @"eventType"}];
-  v6 = [(SRMediaEvent *)self mediaIdentifier];
+  [coder encodeInteger:-[SRMediaEvent eventType](self forKey:{"eventType"), @"eventType"}];
+  mediaIdentifier = [(SRMediaEvent *)self mediaIdentifier];
 
-  [a3 encodeObject:v6 forKey:@"mediaIdentifier"];
+  [coder encodeObject:mediaIdentifier forKey:@"mediaIdentifier"];
 }
 
-- (SRMediaEvent)initWithCoder:(id)a3
+- (SRMediaEvent)initWithCoder:(id)coder
 {
   v17 = *MEMORY[0x1E69E9840];
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
-  v6 = [a3 decodeIntegerForKey:@"eventType"];
-  v7 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"mediaIdentifier"];
+  v6 = [coder decodeIntegerForKey:@"eventType"];
+  v7 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"mediaIdentifier"];
   v8 = v7;
   if (v6 && v7)
   {
@@ -93,9 +93,9 @@
   return v9;
 }
 
-- (SRMediaEvent)initWithBinarySampleRepresentation:(id)a3 metadata:(id)a4 timestamp:(double)a5
+- (SRMediaEvent)initWithBinarySampleRepresentation:(id)representation metadata:(id)metadata timestamp:(double)timestamp
 {
-  if ([a3 length])
+  if ([representation length])
   {
     v11.receiver = self;
     v11.super_class = SRMediaEvent;
@@ -104,7 +104,7 @@
     {
       v8 = result;
       v10 = 0;
-      result = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:a3 error:&v10];
+      result = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:representation error:&v10];
       if (result)
       {
         v9 = result;
@@ -142,9 +142,9 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     LOBYTE(v5) = 1;
   }
@@ -154,11 +154,11 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = -[NSString isEqual:](-[SRMediaEvent mediaIdentifier](self, "mediaIdentifier"), "isEqual:", [a3 mediaIdentifier]);
+      v5 = -[NSString isEqual:](-[SRMediaEvent mediaIdentifier](self, "mediaIdentifier"), "isEqual:", [equal mediaIdentifier]);
       if (v5)
       {
-        v6 = [(SRMediaEvent *)self eventType];
-        LOBYTE(v5) = v6 == [a3 eventType];
+        eventType = [(SRMediaEvent *)self eventType];
+        LOBYTE(v5) = eventType == [equal eventType];
       }
     }
 

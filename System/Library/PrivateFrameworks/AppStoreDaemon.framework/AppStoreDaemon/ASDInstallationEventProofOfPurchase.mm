@@ -1,104 +1,104 @@
 @interface ASDInstallationEventProofOfPurchase
-- (ASDInstallationEventProofOfPurchase)initWithCoder:(id)a3;
-- (ASDInstallationEventProofOfPurchase)initWithItemID:(unint64_t)a3 timestampString:(id)a4 isRedownload:(BOOL)a5 privateInput:(id)a6 certificate:(id)a7 finalizedToken:(id)a8;
+- (ASDInstallationEventProofOfPurchase)initWithCoder:(id)coder;
+- (ASDInstallationEventProofOfPurchase)initWithItemID:(unint64_t)d timestampString:(id)string isRedownload:(BOOL)redownload privateInput:(id)input certificate:(id)certificate finalizedToken:(id)token;
 - (NSData)publicKey;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ASDInstallationEventProofOfPurchase
 
-- (ASDInstallationEventProofOfPurchase)initWithItemID:(unint64_t)a3 timestampString:(id)a4 isRedownload:(BOOL)a5 privateInput:(id)a6 certificate:(id)a7 finalizedToken:(id)a8
+- (ASDInstallationEventProofOfPurchase)initWithItemID:(unint64_t)d timestampString:(id)string isRedownload:(BOOL)redownload privateInput:(id)input certificate:(id)certificate finalizedToken:(id)token
 {
   v27.receiver = self;
   v27.super_class = ASDInstallationEventProofOfPurchase;
-  v13 = a8;
-  v14 = a7;
-  v15 = a6;
-  v16 = a4;
+  tokenCopy = token;
+  certificateCopy = certificate;
+  inputCopy = input;
+  stringCopy = string;
   v17 = [(ASDInstallationEventProofOfPurchase *)&v27 init];
-  v17->_itemID = a3;
-  v18 = [v16 copy];
+  v17->_itemID = d;
+  v18 = [stringCopy copy];
 
   timestampString = v17->_timestampString;
   v17->_timestampString = v18;
 
-  v17->_isRedownload = a5;
-  v20 = [v15 copy];
+  v17->_isRedownload = redownload;
+  v20 = [inputCopy copy];
 
   privateInput = v17->_privateInput;
   v17->_privateInput = v20;
 
-  v22 = [v14 copy];
+  v22 = [certificateCopy copy];
   certificate = v17->_certificate;
   v17->_certificate = v22;
 
-  v24 = [v13 copy];
+  v24 = [tokenCopy copy];
   finalizedToken = v17->_finalizedToken;
   v17->_finalizedToken = v24;
 
   return v17;
 }
 
-- (ASDInstallationEventProofOfPurchase)initWithCoder:(id)a3
+- (ASDInstallationEventProofOfPurchase)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeInt64ForKey:@"_itemID"];
-  if (v5)
+  coderCopy = coder;
+  selfCopy = [coderCopy decodeInt64ForKey:@"_itemID"];
+  if (selfCopy)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_timestampString"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_timestampString"];
     if (v6)
     {
-      v7 = [v4 decodeBoolForKey:@"_isRedownload"];
-      v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_privateInput"];
+      v7 = [coderCopy decodeBoolForKey:@"_isRedownload"];
+      v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_privateInput"];
       if (v8)
       {
-        v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_certificate"];
+        v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_certificate"];
         if (v9)
         {
-          v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_finalizedToken"];
+          v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_finalizedToken"];
           if (v10)
           {
-            self = [(ASDInstallationEventProofOfPurchase *)self initWithItemID:v5 timestampString:v6 isRedownload:v7 privateInput:v8 certificate:v9 finalizedToken:v10];
-            v5 = self;
+            self = [(ASDInstallationEventProofOfPurchase *)self initWithItemID:selfCopy timestampString:v6 isRedownload:v7 privateInput:v8 certificate:v9 finalizedToken:v10];
+            selfCopy = self;
           }
 
           else
           {
-            v5 = 0;
+            selfCopy = 0;
           }
         }
 
         else
         {
-          v5 = 0;
+          selfCopy = 0;
         }
       }
 
       else
       {
-        v5 = 0;
+        selfCopy = 0;
       }
     }
 
     else
     {
-      v5 = 0;
+      selfCopy = 0;
     }
   }
 
-  return v5;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   itemID = self->_itemID;
-  v5 = a3;
-  [v5 encodeInt64:itemID forKey:@"_itemID"];
-  [v5 encodeObject:self->_timestampString forKey:@"_timestampString"];
-  [v5 encodeBool:self->_isRedownload forKey:@"_isRedownload"];
-  [v5 encodeObject:self->_privateInput forKey:@"_privateInput"];
-  [v5 encodeObject:self->_certificate forKey:@"_certificate"];
-  [v5 encodeObject:self->_finalizedToken forKey:@"_finalizedToken"];
+  coderCopy = coder;
+  [coderCopy encodeInt64:itemID forKey:@"_itemID"];
+  [coderCopy encodeObject:self->_timestampString forKey:@"_timestampString"];
+  [coderCopy encodeBool:self->_isRedownload forKey:@"_isRedownload"];
+  [coderCopy encodeObject:self->_privateInput forKey:@"_privateInput"];
+  [coderCopy encodeObject:self->_certificate forKey:@"_certificate"];
+  [coderCopy encodeObject:self->_finalizedToken forKey:@"_finalizedToken"];
 }
 
 - (NSData)publicKey

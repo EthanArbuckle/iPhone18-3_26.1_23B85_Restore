@@ -2,10 +2,10 @@
 + (id)sharedInstance;
 - (BOOL)_checkSpringBoardStarted;
 - (VTSpringboardStartMonitor)init;
-- (void)_didReceiveSpringboardStarted:(BOOL)a3;
-- (void)_didReceiveSpringboardStartedInQueue:(BOOL)a3;
-- (void)_notifyObserver:(id)a3 withStarted:(BOOL)a4;
-- (void)_startMonitoringWithQueue:(id)a3;
+- (void)_didReceiveSpringboardStarted:(BOOL)started;
+- (void)_didReceiveSpringboardStartedInQueue:(BOOL)queue;
+- (void)_notifyObserver:(id)observer withStarted:(BOOL)started;
+- (void)_startMonitoringWithQueue:(id)queue;
 - (void)_stopMonitoring;
 @end
 
@@ -54,36 +54,36 @@
   return v2;
 }
 
-- (void)_notifyObserver:(id)a3 withStarted:(BOOL)a4
+- (void)_notifyObserver:(id)observer withStarted:(BOOL)started
 {
-  v4 = a4;
-  v6 = a3;
-  [(VTEventMonitor *)self notifyObserver:v6];
+  startedCopy = started;
+  observerCopy = observer;
+  [(VTEventMonitor *)self notifyObserver:observerCopy];
   if (objc_opt_respondsToSelector())
   {
-    [v6 VTSpringboardStartMonitor:self didReceiveStarted:v4];
+    [observerCopy VTSpringboardStartMonitor:self didReceiveStarted:startedCopy];
   }
 }
 
-- (void)_didReceiveSpringboardStarted:(BOOL)a3
+- (void)_didReceiveSpringboardStarted:(BOOL)started
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __59__VTSpringboardStartMonitor__didReceiveSpringboardStarted___block_invoke;
   v3[3] = &unk_2784ECDA8;
   v3[4] = self;
-  v4 = a3;
+  startedCopy = started;
   [(VTEventMonitor *)self enumerateObservers:v3];
 }
 
-- (void)_didReceiveSpringboardStartedInQueue:(BOOL)a3
+- (void)_didReceiveSpringboardStartedInQueue:(BOOL)queue
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __66__VTSpringboardStartMonitor__didReceiveSpringboardStartedInQueue___block_invoke;
   v3[3] = &unk_2784ECDA8;
   v3[4] = self;
-  v4 = a3;
+  queueCopy = queue;
   [(VTEventMonitor *)self enumerateObserversInQueue:v3];
 }
 
@@ -103,9 +103,9 @@
   }
 }
 
-- (void)_startMonitoringWithQueue:(id)a3
+- (void)_startMonitoringWithQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   if (self->_notifyToken == -1)
   {
     handler[0] = MEMORY[0x277D85DD0];
@@ -113,7 +113,7 @@
     handler[2] = __55__VTSpringboardStartMonitor__startMonitoringWithQueue___block_invoke;
     handler[3] = &unk_2784ECD80;
     handler[4] = self;
-    notify_register_dispatch("com.apple.springboard.finishedstartup", &self->_notifyToken, v4, handler);
+    notify_register_dispatch("com.apple.springboard.finishedstartup", &self->_notifyToken, queueCopy, handler);
     v5 = VTLogContextFacilityVoiceTrigger;
     if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_DEFAULT))
     {

@@ -1,26 +1,26 @@
 @interface NEProfilePayloadBase
-- (BOOL)addCertificatePending:(id)a3 certificateTag:(id)a4 accessGroup:(id)a5;
-- (NEProfilePayloadBase)initWithPayload:(id)a3;
+- (BOOL)addCertificatePending:(id)pending certificateTag:(id)tag accessGroup:(id)group;
+- (NEProfilePayloadBase)initWithPayload:(id)payload;
 - (id)validatePayload;
 @end
 
 @implementation NEProfilePayloadBase
 
-- (BOOL)addCertificatePending:(id)a3 certificateTag:(id)a4 accessGroup:(id)a5
+- (BOOL)addCertificatePending:(id)pending certificateTag:(id)tag accessGroup:(id)group
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  pendingCopy = pending;
+  tagCopy = tag;
+  groupCopy = group;
   if (self->_pendingCertificates || (v11 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:4], pendingCertificates = self->_pendingCertificates, self->_pendingCertificates = v11, pendingCertificates, self->_pendingCertificates))
   {
     v13 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    [v13 setObject:v8 forKeyedSubscript:@"PayloadUUID"];
-    if (v10)
+    [v13 setObject:pendingCopy forKeyedSubscript:@"PayloadUUID"];
+    if (groupCopy)
     {
-      [v13 setObject:v10 forKeyedSubscript:@"AccessGroup"];
+      [v13 setObject:groupCopy forKeyedSubscript:@"AccessGroup"];
     }
 
-    [(NSMutableDictionary *)self->_pendingCertificates setObject:v13 forKey:v9];
+    [(NSMutableDictionary *)self->_pendingCertificates setObject:v13 forKey:tagCopy];
 
     v14 = 1;
   }
@@ -41,11 +41,11 @@
   {
     v6 = objc_opt_class();
     v7 = v6;
-    v8 = [(NEProfilePayloadBase *)self payloadAtom];
+    payloadAtom = [(NEProfilePayloadBase *)self payloadAtom];
     v9 = 138412546;
     v10 = v6;
     v11 = 2112;
-    v12 = v8;
+    v12 = payloadAtom;
     _os_log_debug_impl(&dword_1BA83C000, v3, OS_LOG_TYPE_DEBUG, "%@: NEProfilePayloadBase validatePayload should be overriden, dict %@", &v9, 0x16u);
   }
 
@@ -53,14 +53,14 @@
   return 0;
 }
 
-- (NEProfilePayloadBase)initWithPayload:(id)a3
+- (NEProfilePayloadBase)initWithPayload:(id)payload
 {
-  v4 = a3;
+  payloadCopy = payload;
   v8.receiver = self;
   v8.super_class = NEProfilePayloadBase;
   v5 = [(NEProfilePayloadBase *)&v8 init];
   payloadAtom = v5->_payloadAtom;
-  v5->_payloadAtom = v4;
+  v5->_payloadAtom = payloadCopy;
 
   return v5;
 }

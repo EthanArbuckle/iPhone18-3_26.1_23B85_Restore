@@ -1,23 +1,23 @@
 @interface MapsUILayout
-+ (id)_buildAttributedDisplayStringForComponents:(id)a3 isRTL:(BOOL)a4;
-+ (id)buildAttributedDisplayStringForComponents:(id)a3 forContainingView:(id)a4;
++ (id)_buildAttributedDisplayStringForComponents:(id)components isRTL:(BOOL)l;
++ (id)buildAttributedDisplayStringForComponents:(id)components forContainingView:(id)view;
 @end
 
 @implementation MapsUILayout
 
-+ (id)_buildAttributedDisplayStringForComponents:(id)a3 isRTL:(BOOL)a4
++ (id)_buildAttributedDisplayStringForComponents:(id)components isRTL:(BOOL)l
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = v5;
-  if (a4)
+  componentsCopy = components;
+  v6 = componentsCopy;
+  if (l)
   {
-    [v5 reverseObjectEnumerator];
+    [componentsCopy reverseObjectEnumerator];
   }
 
   else
   {
-    [v5 objectEnumerator];
+    [componentsCopy objectEnumerator];
   }
   v7 = ;
   v8 = objc_alloc_init(MEMORY[0x1E696AD40]);
@@ -55,10 +55,10 @@
   return v14;
 }
 
-+ (id)buildAttributedDisplayStringForComponents:(id)a3 forContainingView:(id)a4
++ (id)buildAttributedDisplayStringForComponents:(id)components forContainingView:(id)view
 {
-  v6 = a3;
-  v7 = [a1 _buildAttributedDisplayStringForComponents:v6 isRTL:{objc_msgSend(a4, "effectiveUserInterfaceLayoutDirection") == 1}];
+  componentsCopy = components;
+  v7 = [self _buildAttributedDisplayStringForComponents:componentsCopy isRTL:{objc_msgSend(view, "effectiveUserInterfaceLayoutDirection") == 1}];
 
   return v7;
 }

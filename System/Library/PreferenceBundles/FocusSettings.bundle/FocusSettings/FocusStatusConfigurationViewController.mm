@@ -1,7 +1,7 @@
 @interface FocusStatusConfigurationViewController
 - (_TtC13FocusSettings38FocusStatusConfigurationViewController)init;
-- (_TtC13FocusSettings38FocusStatusConfigurationViewController)initWithCoder:(id)a3;
-- (_TtC13FocusSettings38FocusStatusConfigurationViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC13FocusSettings38FocusStatusConfigurationViewController)initWithCoder:(id)coder;
+- (_TtC13FocusSettings38FocusStatusConfigurationViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
 @end
 
@@ -14,7 +14,7 @@
   return [(FocusStatusConfigurationViewController *)&v3 initWithNibName:0 bundle:0];
 }
 
-- (_TtC13FocusSettings38FocusStatusConfigurationViewController)initWithCoder:(id)a3
+- (_TtC13FocusSettings38FocusStatusConfigurationViewController)initWithCoder:(id)coder
 {
   result = sub_13B04();
   __break(1u);
@@ -23,11 +23,11 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_7998();
 }
 
-- (_TtC13FocusSettings38FocusStatusConfigurationViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC13FocusSettings38FocusStatusConfigurationViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

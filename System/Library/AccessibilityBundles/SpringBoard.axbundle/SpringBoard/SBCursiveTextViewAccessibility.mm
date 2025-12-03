@@ -2,18 +2,18 @@
 - (CGRect)accessibilityFrame;
 - (id)accessibilityHint;
 - (id)accessibilityLabel;
-- (void)loadText:(id)a3 pointSize:(double)a4;
+- (void)loadText:(id)text pointSize:(double)size;
 @end
 
 @implementation SBCursiveTextViewAccessibility
 
-- (void)loadText:(id)a3 pointSize:(double)a4
+- (void)loadText:(id)text pointSize:(double)size
 {
   v14.receiver = self;
   v14.super_class = SBCursiveTextViewAccessibility;
-  v6 = a3;
-  [(SBCursiveTextViewAccessibility *)&v14 loadText:v6 pointSize:a4];
-  v7 = [MEMORY[0x29EDB8DA0] dataWithContentsOfURL:v6];
+  textCopy = text;
+  [(SBCursiveTextViewAccessibility *)&v14 loadText:textCopy pointSize:size];
+  v7 = [MEMORY[0x29EDB8DA0] dataWithContentsOfURL:textCopy];
 
   if (!v7)
   {
@@ -45,20 +45,20 @@ LABEL_8:
 
 - (CGRect)accessibilityFrame
 {
-  v2 = self;
-  v3 = [(SBCursiveTextViewAccessibility *)v2 window];
-  [v3 frame];
+  selfCopy = self;
+  window = [(SBCursiveTextViewAccessibility *)selfCopy window];
+  [window frame];
   v5 = v4 * 0.5 + -150.0;
-  v6 = [(SBCursiveTextViewAccessibility *)v2 window];
-  [v6 frame];
+  window2 = [(SBCursiveTextViewAccessibility *)selfCopy window];
+  [window2 frame];
   v8 = v7;
-  v9 = [(SBCursiveTextViewAccessibility *)v2 window];
+  window3 = [(SBCursiveTextViewAccessibility *)selfCopy window];
 
   v18.size.height = 300.0;
   v18.origin.x = 0.0;
   v18.origin.y = v5;
   v18.size.width = v8;
-  v19 = UIAccessibilityConvertFrameToScreenCoordinates(v18, v9);
+  v19 = UIAccessibilityConvertFrameToScreenCoordinates(v18, window3);
   x = v19.origin.x;
   y = v19.origin.y;
   width = v19.size.width;
@@ -78,7 +78,7 @@ LABEL_8:
 - (id)accessibilityLabel
 {
   v3 = [MEMORY[0x29EDB9F48] bundleForClass:objc_opt_class()];
-  v4 = [(SBCursiveTextViewAccessibility *)self accessibilityLanguage];
+  accessibilityLanguage = [(SBCursiveTextViewAccessibility *)self accessibilityLanguage];
   v5 = AXNSLocalizedStringForLocale();
 
   return v5;
@@ -88,7 +88,7 @@ LABEL_8:
 {
   AXDeviceHasHomeButton();
   v3 = [MEMORY[0x29EDB9F48] bundleForClass:objc_opt_class()];
-  v4 = [(SBCursiveTextViewAccessibility *)self accessibilityLanguage];
+  accessibilityLanguage = [(SBCursiveTextViewAccessibility *)self accessibilityLanguage];
   v5 = AXNSLocalizedStringForLocale();
 
   return v5;

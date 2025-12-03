@@ -1,50 +1,50 @@
 @interface WBSExtensionsExporter
-+ (id)extensionDataWithDisplayName:(id)a3 developerName:(id)a4 composedIdentifier:(id)a5 adamIdentifier:(id)a6 alternatePlatformExtensionBundleIdentifier:(id)a7 alternatePlatformAppBundleIdentifier:(id)a8;
-- (WBSExtensionsExporter)initWithURL:(id)a3 error:(id *)a4;
-- (void)exportExtensionDictionaries:(id)a3 completionHandler:(id)a4;
++ (id)extensionDataWithDisplayName:(id)name developerName:(id)developerName composedIdentifier:(id)identifier adamIdentifier:(id)adamIdentifier alternatePlatformExtensionBundleIdentifier:(id)bundleIdentifier alternatePlatformAppBundleIdentifier:(id)appBundleIdentifier;
+- (WBSExtensionsExporter)initWithURL:(id)l error:(id *)error;
+- (void)exportExtensionDictionaries:(id)dictionaries completionHandler:(id)handler;
 @end
 
 @implementation WBSExtensionsExporter
 
-+ (id)extensionDataWithDisplayName:(id)a3 developerName:(id)a4 composedIdentifier:(id)a5 adamIdentifier:(id)a6 alternatePlatformExtensionBundleIdentifier:(id)a7 alternatePlatformAppBundleIdentifier:(id)a8
++ (id)extensionDataWithDisplayName:(id)name developerName:(id)developerName composedIdentifier:(id)identifier adamIdentifier:(id)adamIdentifier alternatePlatformExtensionBundleIdentifier:(id)bundleIdentifier alternatePlatformAppBundleIdentifier:(id)appBundleIdentifier
 {
   v33 = *MEMORY[0x1E69E9840];
-  v13 = a4;
-  v28 = a6;
-  v14 = a7;
-  v15 = a8;
+  developerNameCopy = developerName;
+  adamIdentifierCopy = adamIdentifier;
+  bundleIdentifierCopy = bundleIdentifier;
+  appBundleIdentifierCopy = appBundleIdentifier;
   v16 = MEMORY[0x1E695DF90];
   v17 = *MEMORY[0x1E69C8B88];
   v29 = *MEMORY[0x1E69C8BA0];
   v30 = v17;
-  v31 = a3;
-  v32 = a5;
+  nameCopy = name;
+  identifierCopy = identifier;
   v18 = MEMORY[0x1E695DF20];
-  v19 = a5;
-  v20 = a3;
-  v21 = [v18 dictionaryWithObjects:&v31 forKeys:&v29 count:2];
+  identifierCopy2 = identifier;
+  nameCopy2 = name;
+  v21 = [v18 dictionaryWithObjects:&nameCopy forKeys:&v29 count:2];
   v22 = [v16 dictionaryWithDictionary:v21];
 
   v23 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  if (v13)
+  if (developerNameCopy)
   {
-    [v22 setObject:v13 forKeyedSubscript:*MEMORY[0x1E69C8B98]];
+    [v22 setObject:developerNameCopy forKeyedSubscript:*MEMORY[0x1E69C8B98]];
   }
 
-  v24 = v28;
-  if (v28)
+  v24 = adamIdentifierCopy;
+  if (adamIdentifierCopy)
   {
-    [v23 setObject:v28 forKeyedSubscript:*MEMORY[0x1E69C8BC8]];
+    [v23 setObject:adamIdentifierCopy forKeyedSubscript:*MEMORY[0x1E69C8BC8]];
   }
 
-  if (v14)
+  if (bundleIdentifierCopy)
   {
-    [v23 setObject:v14 forKeyedSubscript:*MEMORY[0x1E69C8BB0]];
+    [v23 setObject:bundleIdentifierCopy forKeyedSubscript:*MEMORY[0x1E69C8BB0]];
   }
 
-  if (v15)
+  if (appBundleIdentifierCopy)
   {
-    [v23 setObject:v15 forKeyedSubscript:*MEMORY[0x1E69C8BA8]];
+    [v23 setObject:appBundleIdentifierCopy forKeyedSubscript:*MEMORY[0x1E69C8BA8]];
   }
 
   if ([v23 count])
@@ -58,11 +58,11 @@
   return v26;
 }
 
-- (WBSExtensionsExporter)initWithURL:(id)a3 error:(id *)a4
+- (WBSExtensionsExporter)initWithURL:(id)l error:(id *)error
 {
   v10.receiver = self;
   v10.super_class = WBSExtensionsExporter;
-  v4 = [(WBSJSONExporter *)&v10 initWithURL:a3 error:a4];
+  v4 = [(WBSJSONExporter *)&v10 initWithURL:l error:error];
   if (v4)
   {
     v5 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
@@ -76,20 +76,20 @@
   return v4;
 }
 
-- (void)exportExtensionDictionaries:(id)a3 completionHandler:(id)a4
+- (void)exportExtensionDictionaries:(id)dictionaries completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dictionariesCopy = dictionaries;
+  handlerCopy = handler;
   extensionsDataExportQueue = self->_extensionsDataExportQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __71__WBSExtensionsExporter_exportExtensionDictionaries_completionHandler___block_invoke;
   block[3] = &unk_1E8283058;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = dictionariesCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = dictionariesCopy;
   dispatch_async(extensionsDataExportQueue, block);
 }
 

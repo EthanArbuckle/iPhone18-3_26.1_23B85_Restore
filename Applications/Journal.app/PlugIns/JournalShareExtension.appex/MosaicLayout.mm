@@ -1,10 +1,10 @@
 @interface MosaicLayout
 + (Class)layoutAttributesClass;
-- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)a3;
+- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)change;
 - (CGSize)collectionViewContentSize;
 - (_TtC21JournalShareExtension12MosaicLayout)init;
-- (id)layoutAttributesForElementsInRect:(CGRect)a3;
-- (id)layoutAttributesForItemAtIndexPath:(id)a3;
+- (id)layoutAttributesForElementsInRect:(CGRect)rect;
+- (id)layoutAttributesForItemAtIndexPath:(id)path;
 - (void)prepareLayout;
 @end
 
@@ -19,7 +19,7 @@
 
 - (void)prepareLayout
 {
-  v2 = self;
+  selfCopy = self;
   sub_10001A0C4();
 }
 
@@ -32,16 +32,16 @@
   return result;
 }
 
-- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)a3
+- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)change
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  v5 = self;
-  v6 = [(MosaicLayout *)v5 collectionView];
-  if (v6)
+  height = change.size.height;
+  width = change.size.width;
+  selfCopy = self;
+  collectionView = [(MosaicLayout *)selfCopy collectionView];
+  if (collectionView)
   {
-    v7 = v6;
-    [v6 bounds];
+    v7 = collectionView;
+    [collectionView bounds];
     v10.width = width;
     v10.height = height;
     v8 = CGSizeEqualToSize(v10, v11);
@@ -56,14 +56,14 @@
   }
 }
 
-- (id)layoutAttributesForItemAtIndexPath:(id)a3
+- (id)layoutAttributesForItemAtIndexPath:(id)path
 {
   v4 = sub_1000FFA44();
   v5 = *(v4 - 8);
   __chkstk_darwin(v4);
   v7 = &v11 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1000FFA24();
-  v8 = self;
+  selfCopy = self;
   v9 = sub_1000225D4();
 
   (*(v5 + 8))(v7, v4);
@@ -71,13 +71,13 @@
   return v9;
 }
 
-- (id)layoutAttributesForElementsInRect:(CGRect)a3
+- (id)layoutAttributesForElementsInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  selfCopy = self;
   v8 = sub_1000227C8(x, y, width, height);
 
   if (v8)

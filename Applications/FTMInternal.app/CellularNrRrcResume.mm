@@ -1,25 +1,25 @@
 @interface CellularNrRrcResume
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasNumSubs:(BOOL)a3;
-- (void)setHasPsPref:(BOOL)a3;
-- (void)setHasResumeRequestReason:(BOOL)a3;
-- (void)setHasResumeSuccess:(BOOL)a3;
-- (void)setHasResumeSuccessDuration:(BOOL)a3;
-- (void)setHasSubsId:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasNumSubs:(BOOL)subs;
+- (void)setHasPsPref:(BOOL)pref;
+- (void)setHasResumeRequestReason:(BOOL)reason;
+- (void)setHasResumeSuccess:(BOOL)success;
+- (void)setHasResumeSuccessDuration:(BOOL)duration;
+- (void)setHasSubsId:(BOOL)id;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CellularNrRrcResume
 
-- (void)setHasResumeSuccessDuration:(BOOL)a3
+- (void)setHasResumeSuccessDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 16;
   }
@@ -32,9 +32,9 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasResumeRequestReason:(BOOL)a3
+- (void)setHasResumeRequestReason:(BOOL)reason
 {
-  if (a3)
+  if (reason)
   {
     v3 = 8;
   }
@@ -47,9 +47,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasResumeSuccess:(BOOL)a3
+- (void)setHasResumeSuccess:(BOOL)success
 {
-  if (a3)
+  if (success)
   {
     v3 = 64;
   }
@@ -62,9 +62,9 @@
   *&self->_has = *&self->_has & 0xBF | v3;
 }
 
-- (void)setHasSubsId:(BOOL)a3
+- (void)setHasSubsId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 32;
   }
@@ -77,9 +77,9 @@
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasNumSubs:(BOOL)a3
+- (void)setHasNumSubs:(BOOL)subs
 {
-  if (a3)
+  if (subs)
   {
     v3 = 2;
   }
@@ -92,9 +92,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasPsPref:(BOOL)a3
+- (void)setHasPsPref:(BOOL)pref
 {
-  if (a3)
+  if (pref)
   {
     v3 = 4;
   }
@@ -112,8 +112,8 @@
   v7.receiver = self;
   v7.super_class = CellularNrRrcResume;
   v3 = [(CellularNrRrcResume *)&v7 description];
-  v4 = [(CellularNrRrcResume *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(CellularNrRrcResume *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -229,9 +229,9 @@ LABEL_9:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v12 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -322,14 +322,14 @@ LABEL_8:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[1] = self->_timestamp;
-    *(v4 + 52) |= 1u;
+    toCopy[1] = self->_timestamp;
+    *(toCopy + 52) |= 1u;
     has = self->_has;
     if ((has & 0x10) == 0)
     {
@@ -348,8 +348,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(v4 + 10) = self->_resumeSuccessDuration;
-  *(v4 + 52) |= 0x10u;
+  *(toCopy + 10) = self->_resumeSuccessDuration;
+  *(toCopy + 52) |= 0x10u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -363,8 +363,8 @@ LABEL_4:
   }
 
 LABEL_17:
-  *(v4 + 9) = self->_resumeRequestReason;
-  *(v4 + 52) |= 8u;
+  *(toCopy + 9) = self->_resumeRequestReason;
+  *(toCopy + 52) |= 8u;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -378,8 +378,8 @@ LABEL_5:
   }
 
 LABEL_18:
-  *(v4 + 48) = self->_resumeSuccess;
-  *(v4 + 52) |= 0x40u;
+  *(toCopy + 48) = self->_resumeSuccess;
+  *(toCopy + 52) |= 0x40u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -393,33 +393,33 @@ LABEL_6:
   }
 
 LABEL_19:
-  *(v4 + 4) = self->_numSubs;
-  *(v4 + 52) |= 2u;
+  *(toCopy + 4) = self->_numSubs;
+  *(toCopy + 52) |= 2u;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_7:
-    *(v4 + 8) = self->_psPref;
-    *(v4 + 52) |= 4u;
+    *(toCopy + 8) = self->_psPref;
+    *(toCopy + 52) |= 4u;
   }
 
 LABEL_8:
   if (self->_plmn)
   {
-    v6 = v4;
-    [v4 setPlmn:?];
-    v4 = v6;
+    v6 = toCopy;
+    [toCopy setPlmn:?];
+    toCopy = v6;
   }
 
   if ((*&self->_has & 0x20) != 0)
   {
-    *(v4 + 11) = self->_subsId;
-    *(v4 + 52) |= 0x20u;
+    *(toCopy + 11) = self->_subsId;
+    *(toCopy + 52) |= 0x20u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if (has)
@@ -499,7 +499,7 @@ LABEL_7:
   }
 
 LABEL_8:
-  v8 = [(NSData *)self->_plmn copyWithZone:a3];
+  v8 = [(NSData *)self->_plmn copyWithZone:zone];
   v9 = v6[3];
   v6[3] = v8;
 
@@ -512,110 +512,110 @@ LABEL_8:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_42;
   }
 
   has = self->_has;
-  v6 = *(v4 + 52);
+  v6 = *(equalCopy + 52);
   if (has)
   {
-    if ((*(v4 + 52) & 1) == 0 || self->_timestamp != *(v4 + 1))
+    if ((*(equalCopy + 52) & 1) == 0 || self->_timestamp != *(equalCopy + 1))
     {
       goto LABEL_42;
     }
   }
 
-  else if (*(v4 + 52))
+  else if (*(equalCopy + 52))
   {
     goto LABEL_42;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 52) & 0x10) == 0 || self->_resumeSuccessDuration != *(v4 + 10))
+    if ((*(equalCopy + 52) & 0x10) == 0 || self->_resumeSuccessDuration != *(equalCopy + 10))
     {
       goto LABEL_42;
     }
   }
 
-  else if ((*(v4 + 52) & 0x10) != 0)
+  else if ((*(equalCopy + 52) & 0x10) != 0)
   {
     goto LABEL_42;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 52) & 8) == 0 || self->_resumeRequestReason != *(v4 + 9))
+    if ((*(equalCopy + 52) & 8) == 0 || self->_resumeRequestReason != *(equalCopy + 9))
     {
       goto LABEL_42;
     }
   }
 
-  else if ((*(v4 + 52) & 8) != 0)
+  else if ((*(equalCopy + 52) & 8) != 0)
   {
     goto LABEL_42;
   }
 
   if ((*&self->_has & 0x40) != 0)
   {
-    if ((*(v4 + 52) & 0x40) == 0)
+    if ((*(equalCopy + 52) & 0x40) == 0)
     {
       goto LABEL_42;
     }
 
-    v7 = *(v4 + 48);
+    v7 = *(equalCopy + 48);
     if (self->_resumeSuccess)
     {
-      if ((*(v4 + 48) & 1) == 0)
+      if ((*(equalCopy + 48) & 1) == 0)
       {
         goto LABEL_42;
       }
     }
 
-    else if (*(v4 + 48))
+    else if (*(equalCopy + 48))
     {
       goto LABEL_42;
     }
   }
 
-  else if ((*(v4 + 52) & 0x40) != 0)
+  else if ((*(equalCopy + 52) & 0x40) != 0)
   {
     goto LABEL_42;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 52) & 2) == 0 || self->_numSubs != *(v4 + 4))
+    if ((*(equalCopy + 52) & 2) == 0 || self->_numSubs != *(equalCopy + 4))
     {
       goto LABEL_42;
     }
   }
 
-  else if ((*(v4 + 52) & 2) != 0)
+  else if ((*(equalCopy + 52) & 2) != 0)
   {
     goto LABEL_42;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 52) & 4) == 0 || self->_psPref != *(v4 + 8))
+    if ((*(equalCopy + 52) & 4) == 0 || self->_psPref != *(equalCopy + 8))
     {
       goto LABEL_42;
     }
   }
 
-  else if ((*(v4 + 52) & 4) != 0)
+  else if ((*(equalCopy + 52) & 4) != 0)
   {
     goto LABEL_42;
   }
 
   plmn = self->_plmn;
-  if (plmn | *(v4 + 3))
+  if (plmn | *(equalCopy + 3))
   {
     if ([(NSData *)plmn isEqual:?])
     {
@@ -629,10 +629,10 @@ LABEL_42:
   }
 
 LABEL_38:
-  v9 = (*(v4 + 52) & 0x20) == 0;
+  v9 = (*(equalCopy + 52) & 0x20) == 0;
   if ((has & 0x20) != 0)
   {
-    if ((*(v4 + 52) & 0x20) == 0 || self->_subsId != *(v4 + 11))
+    if ((*(equalCopy + 52) & 0x20) == 0 || self->_subsId != *(equalCopy + 11))
     {
       goto LABEL_42;
     }
@@ -739,15 +739,15 @@ LABEL_14:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v10 ^ v9;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 52);
+  fromCopy = from;
+  v5 = *(fromCopy + 52);
   if (v5)
   {
-    self->_timestamp = *(v4 + 1);
+    self->_timestamp = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v5 = *(v4 + 52);
+    v5 = *(fromCopy + 52);
     if ((v5 & 0x10) == 0)
     {
 LABEL_3:
@@ -760,14 +760,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 52) & 0x10) == 0)
+  else if ((*(fromCopy + 52) & 0x10) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_resumeSuccessDuration = *(v4 + 10);
+  self->_resumeSuccessDuration = *(fromCopy + 10);
   *&self->_has |= 0x10u;
-  v5 = *(v4 + 52);
+  v5 = *(fromCopy + 52);
   if ((v5 & 8) == 0)
   {
 LABEL_4:
@@ -780,9 +780,9 @@ LABEL_4:
   }
 
 LABEL_17:
-  self->_resumeRequestReason = *(v4 + 9);
+  self->_resumeRequestReason = *(fromCopy + 9);
   *&self->_has |= 8u;
-  v5 = *(v4 + 52);
+  v5 = *(fromCopy + 52);
   if ((v5 & 0x40) == 0)
   {
 LABEL_5:
@@ -795,9 +795,9 @@ LABEL_5:
   }
 
 LABEL_18:
-  self->_resumeSuccess = *(v4 + 48);
+  self->_resumeSuccess = *(fromCopy + 48);
   *&self->_has |= 0x40u;
-  v5 = *(v4 + 52);
+  v5 = *(fromCopy + 52);
   if ((v5 & 2) == 0)
   {
 LABEL_6:
@@ -810,26 +810,26 @@ LABEL_6:
   }
 
 LABEL_19:
-  self->_numSubs = *(v4 + 4);
+  self->_numSubs = *(fromCopy + 4);
   *&self->_has |= 2u;
-  if ((*(v4 + 52) & 4) != 0)
+  if ((*(fromCopy + 52) & 4) != 0)
   {
 LABEL_7:
-    self->_psPref = *(v4 + 8);
+    self->_psPref = *(fromCopy + 8);
     *&self->_has |= 4u;
   }
 
 LABEL_8:
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
-    v6 = v4;
+    v6 = fromCopy;
     [(CellularNrRrcResume *)self setPlmn:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if ((*(v4 + 52) & 0x20) != 0)
+  if ((*(fromCopy + 52) & 0x20) != 0)
   {
-    self->_subsId = *(v4 + 11);
+    self->_subsId = *(fromCopy + 11);
     *&self->_has |= 0x20u;
   }
 }

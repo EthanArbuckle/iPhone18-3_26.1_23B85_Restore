@@ -1,66 +1,66 @@
 @interface SCATModernMenuScrollSheet
-+ (BOOL)isValidForElement:(id)a3;
-- (BOOL)_shouldIncludeFallbackScrollAncestorActionsInVerticalDirection:(BOOL)a3;
-- (SCATModernMenuScrollSheet)initWithMenu:(id)a3;
++ (BOOL)isValidForElement:(id)element;
+- (BOOL)_shouldIncludeFallbackScrollAncestorActionsInVerticalDirection:(BOOL)direction;
+- (SCATModernMenuScrollSheet)initWithMenu:(id)menu;
 - (id)_fallbackAncestorForScrollToTop;
 - (id)makeMenuItemsIfNeeded;
 - (void)_updateScrollableElement;
 - (void)reload;
-- (void)setScrollableElement:(id)a3;
+- (void)setScrollableElement:(id)element;
 @end
 
 @implementation SCATModernMenuScrollSheet
 
-+ (BOOL)isValidForElement:(id)a3
++ (BOOL)isValidForElement:(id)element
 {
-  v3 = a3;
-  v4 = [v3 scatTraits];
-  if ((kAXCausesPageTurnTrait & v4) != 0)
+  elementCopy = element;
+  scatTraits = [elementCopy scatTraits];
+  if ((kAXCausesPageTurnTrait & scatTraits) != 0)
   {
-    v5 = 1;
+    scatCanScrollInAtLeastOneDirection = 1;
   }
 
   else
   {
-    v5 = [v3 scatCanScrollInAtLeastOneDirection];
+    scatCanScrollInAtLeastOneDirection = [elementCopy scatCanScrollInAtLeastOneDirection];
   }
 
-  return v5;
+  return scatCanScrollInAtLeastOneDirection;
 }
 
-- (void)setScrollableElement:(id)a3
+- (void)setScrollableElement:(id)element
 {
-  v5 = a3;
-  if (self->_scrollableElement != v5)
+  elementCopy = element;
+  if (self->_scrollableElement != elementCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_scrollableElement, a3);
+    v6 = elementCopy;
+    objc_storeStrong(&self->_scrollableElement, element);
     [(SCATModernMenuSheet *)self invalidateMenuItems];
-    v5 = v6;
+    elementCopy = v6;
   }
 }
 
 - (void)_updateScrollableElement
 {
-  v3 = [(SCATModernMenuSheet *)self menu];
-  v4 = [v3 delegate];
-  v5 = [(SCATModernMenuSheet *)self menu];
-  v6 = [v4 shouldShowAppWideScrollActionsInMenu:v5];
+  menu = [(SCATModernMenuSheet *)self menu];
+  delegate = [menu delegate];
+  menu2 = [(SCATModernMenuSheet *)self menu];
+  v6 = [delegate shouldShowAppWideScrollActionsInMenu:menu2];
 
   if ((v6 & 1) == 0)
   {
-    v9 = [(SCATModernMenuSheet *)self menu];
-    v7 = [v9 element];
-    v8 = [v7 scrollableElement];
-    [(SCATModernMenuScrollSheet *)self setScrollableElement:v8];
+    menu3 = [(SCATModernMenuSheet *)self menu];
+    element = [menu3 element];
+    scrollableElement = [element scrollableElement];
+    [(SCATModernMenuScrollSheet *)self setScrollableElement:scrollableElement];
   }
 }
 
-- (SCATModernMenuScrollSheet)initWithMenu:(id)a3
+- (SCATModernMenuScrollSheet)initWithMenu:(id)menu
 {
   v6.receiver = self;
   v6.super_class = SCATModernMenuScrollSheet;
-  v3 = [(SCATModernMenuSheet *)&v6 initWithMenu:a3];
+  v3 = [(SCATModernMenuSheet *)&v6 initWithMenu:menu];
   v4 = v3;
   if (v3)
   {
@@ -73,9 +73,9 @@
 - (id)makeMenuItemsIfNeeded
 {
   v3 = +[NSMutableArray array];
-  v4 = [(SCATModernMenuScrollSheet *)self scrollableElement];
+  scrollableElement = [(SCATModernMenuScrollSheet *)self scrollableElement];
 
-  if (!v4)
+  if (!scrollableElement)
   {
     v17 = +[HNDAccessibilityManager sharedManager];
     v18 = [v17 scrollViewsForAction:2007];
@@ -118,9 +118,9 @@ LABEL_32:
     }
 
     v35 = +[HNDAccessibilityManager sharedManager];
-    v36 = [v35 applicationIsRTL];
+    applicationIsRTL = [v35 applicationIsRTL];
 
-    if (v36)
+    if (applicationIsRTL)
     {
       v37 = 2009;
     }
@@ -130,7 +130,7 @@ LABEL_32:
       v37 = 2008;
     }
 
-    if (v36)
+    if (applicationIsRTL)
     {
       v38 = 2008;
     }
@@ -149,8 +149,8 @@ LABEL_32:
     goto LABEL_42;
   }
 
-  v5 = [(SCATModernMenuScrollSheet *)self scrollableElement];
-  if ([v5 scatSupportsAction:2006])
+  scrollableElement2 = [(SCATModernMenuScrollSheet *)self scrollableElement];
+  if ([scrollableElement2 scatSupportsAction:2006])
   {
 LABEL_5:
 
@@ -165,8 +165,8 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v6 = [(SCATModernMenuScrollSheet *)self scrollableElement];
-  if ([v6 scatSupportsAction:2007])
+  scrollableElement3 = [(SCATModernMenuScrollSheet *)self scrollableElement];
+  if ([scrollableElement3 scatSupportsAction:2007])
   {
 
     goto LABEL_5;
@@ -182,11 +182,11 @@ LABEL_6:
   v9 = 0;
 LABEL_7:
   v10 = +[HNDAccessibilityManager sharedManager];
-  v11 = [v10 applicationIsRTL];
+  applicationIsRTL2 = [v10 applicationIsRTL];
 
-  v12 = [(SCATModernMenuScrollSheet *)self scrollableElement];
-  v13 = [v12 scatTraits];
-  v14 = kAXCausesPageTurnTrait & v13;
+  scrollableElement4 = [(SCATModernMenuScrollSheet *)self scrollableElement];
+  scatTraits = [scrollableElement4 scatTraits];
+  v14 = kAXCausesPageTurnTrait & scatTraits;
 
   if (v14)
   {
@@ -202,19 +202,19 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  v19 = [(SCATModernMenuScrollSheet *)self scrollableElement];
-  if ([v19 scatSupportsAction:2009])
+  scrollableElement5 = [(SCATModernMenuScrollSheet *)self scrollableElement];
+  if ([scrollableElement5 scatSupportsAction:2009])
   {
     goto LABEL_14;
   }
 
-  v20 = [(SCATModernMenuScrollSheet *)self scrollableElement];
-  if ([v20 scatSupportsAction:2008])
+  scrollableElement6 = [(SCATModernMenuScrollSheet *)self scrollableElement];
+  if ([scrollableElement6 scatSupportsAction:2008])
   {
 
 LABEL_14:
 LABEL_15:
-    if (v11)
+    if (applicationIsRTL2)
     {
       v16 = 2009;
     }
@@ -224,7 +224,7 @@ LABEL_15:
       v16 = 2008;
     }
 
-    if (v11)
+    if (applicationIsRTL2)
     {
       v15 = 2008;
     }
@@ -245,8 +245,8 @@ LABEL_15:
   }
 
 LABEL_22:
-  v23 = [(SCATModernMenuScrollSheet *)self scrollableElement];
-  if ([v23 scatSupportsAction:2030])
+  scrollableElement7 = [(SCATModernMenuScrollSheet *)self scrollableElement];
+  if ([scrollableElement7 scatSupportsAction:2030])
   {
 
 LABEL_25:
@@ -256,8 +256,8 @@ LABEL_25:
     goto LABEL_26;
   }
 
-  v24 = [(SCATModernMenuScrollSheet *)self _fallbackAncestorForScrollToTop];
-  v25 = [v24 scatSupportsAction:2030];
+  _fallbackAncestorForScrollToTop = [(SCATModernMenuScrollSheet *)self _fallbackAncestorForScrollToTop];
+  v25 = [_fallbackAncestorForScrollToTop scatSupportsAction:2030];
 
   if (v25)
   {
@@ -281,21 +281,21 @@ LABEL_43:
 
 - (id)_fallbackAncestorForScrollToTop
 {
-  v3 = [(SCATModernMenuSheet *)self menu];
-  v4 = [v3 fallbackScrollUpAncestor];
-  v5 = v4;
-  if (v4)
+  menu = [(SCATModernMenuSheet *)self menu];
+  fallbackScrollUpAncestor = [menu fallbackScrollUpAncestor];
+  v5 = fallbackScrollUpAncestor;
+  if (fallbackScrollUpAncestor)
   {
-    v6 = v4;
+    fallbackScrollDownAncestor = fallbackScrollUpAncestor;
   }
 
   else
   {
-    v7 = [(SCATModernMenuSheet *)self menu];
-    v6 = [v7 fallbackScrollDownAncestor];
+    menu2 = [(SCATModernMenuSheet *)self menu];
+    fallbackScrollDownAncestor = [menu2 fallbackScrollDownAncestor];
   }
 
-  v8 = [AXElement elementWithUIElement:v6];
+  v8 = [AXElement elementWithUIElement:fallbackScrollDownAncestor];
 
   return v8;
 }
@@ -308,20 +308,20 @@ LABEL_43:
   [(SCATModernMenuSheet *)&v3 reload];
 }
 
-- (BOOL)_shouldIncludeFallbackScrollAncestorActionsInVerticalDirection:(BOOL)a3
+- (BOOL)_shouldIncludeFallbackScrollAncestorActionsInVerticalDirection:(BOOL)direction
 {
-  v3 = a3;
-  v5 = [(SCATModernMenuSheet *)self menu];
-  v6 = v5;
-  if (v3)
+  directionCopy = direction;
+  menu = [(SCATModernMenuSheet *)self menu];
+  v6 = menu;
+  if (directionCopy)
   {
-    v7 = [v5 fallbackScrollUpAncestor];
-    if (!v7)
+    fallbackScrollUpAncestor = [menu fallbackScrollUpAncestor];
+    if (!fallbackScrollUpAncestor)
     {
-      v8 = [(SCATModernMenuSheet *)self menu];
-      v9 = [v8 fallbackScrollDownAncestor];
+      menu2 = [(SCATModernMenuSheet *)self menu];
+      fallbackScrollDownAncestor = [menu2 fallbackScrollDownAncestor];
 LABEL_7:
-      v10 = v9 != 0;
+      v10 = fallbackScrollDownAncestor != 0;
 
       goto LABEL_8;
     }
@@ -329,11 +329,11 @@ LABEL_7:
 
   else
   {
-    v7 = [v5 fallbackScrollLeftAncestor];
-    if (!v7)
+    fallbackScrollUpAncestor = [menu fallbackScrollLeftAncestor];
+    if (!fallbackScrollUpAncestor)
     {
-      v8 = [(SCATModernMenuSheet *)self menu];
-      v9 = [v8 fallbackScrollRightAncestor];
+      menu2 = [(SCATModernMenuSheet *)self menu];
+      fallbackScrollDownAncestor = [menu2 fallbackScrollRightAncestor];
       goto LABEL_7;
     }
   }

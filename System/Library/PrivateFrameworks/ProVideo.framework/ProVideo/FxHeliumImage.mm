@@ -1,23 +1,23 @@
 @interface FxHeliumImage
-- (FxHeliumImage)initWithInfo:(id *)a3;
-- (FxHeliumImage)initWithInfo:(id *)a3 andHeliumNode:(void *)a4;
-- (FxHeliumImage)initWithInfo:(id *)a3 andHeliumRef:(const void *)a4;
+- (FxHeliumImage)initWithInfo:(id *)info;
+- (FxHeliumImage)initWithInfo:(id *)info andHeliumNode:(void *)node;
+- (FxHeliumImage)initWithInfo:(id *)info andHeliumRef:(const void *)ref;
 - (HGRef<HGNode>)heliumRef;
 - (void)dealloc;
-- (void)setHeliumNode:(void *)a3;
-- (void)setHeliumRef:(const void *)a3;
+- (void)setHeliumNode:(void *)node;
+- (void)setHeliumRef:(const void *)ref;
 @end
 
 @implementation FxHeliumImage
 
-- (FxHeliumImage)initWithInfo:(id *)a3
+- (FxHeliumImage)initWithInfo:(id *)info
 {
-  v3 = *&a3->var6;
-  v7[2] = *&a3->var4;
+  v3 = *&info->var6;
+  v7[2] = *&info->var4;
   v7[3] = v3;
-  var8 = a3->var8;
-  v4 = *&a3->var2;
-  v7[0] = *&a3->var0;
+  var8 = info->var8;
+  v4 = *&info->var2;
+  v7[0] = *&info->var0;
   v7[1] = v4;
   v6.receiver = self;
   v6.super_class = FxHeliumImage;
@@ -29,14 +29,14 @@
   return 0;
 }
 
-- (FxHeliumImage)initWithInfo:(id *)a3 andHeliumNode:(void *)a4
+- (FxHeliumImage)initWithInfo:(id *)info andHeliumNode:(void *)node
 {
-  v4 = *&a3->var6;
-  v8[2] = *&a3->var4;
+  v4 = *&info->var6;
+  v8[2] = *&info->var4;
   v8[3] = v4;
-  var8 = a3->var8;
-  v5 = *&a3->var2;
-  v8[0] = *&a3->var0;
+  var8 = info->var8;
+  v5 = *&info->var2;
+  v8[0] = *&info->var0;
   v8[1] = v5;
   v7.receiver = self;
   v7.super_class = FxHeliumImage;
@@ -48,14 +48,14 @@
   return 0;
 }
 
-- (FxHeliumImage)initWithInfo:(id *)a3 andHeliumRef:(const void *)a4
+- (FxHeliumImage)initWithInfo:(id *)info andHeliumRef:(const void *)ref
 {
-  v4 = *&a3->var6;
-  v8[2] = *&a3->var4;
+  v4 = *&info->var6;
+  v8[2] = *&info->var4;
   v8[3] = v4;
-  var8 = a3->var8;
-  v5 = *&a3->var2;
-  v8[0] = *&a3->var0;
+  var8 = info->var8;
+  v5 = *&info->var2;
+  v8[0] = *&info->var0;
   v8[1] = v5;
   v7.receiver = self;
   v7.super_class = FxHeliumImage;
@@ -85,16 +85,16 @@
   [(FxImage *)&v4 dealloc];
 }
 
-- (void)setHeliumNode:(void *)a3
+- (void)setHeliumNode:(void *)node
 {
-  if (a3)
+  if (node)
   {
-    (*(*a3 + 16))(a3, a2);
+    (*(*node + 16))(node, a2);
     heliumImagePriv = self->_heliumImagePriv;
     v6 = *heliumImagePriv;
-    if (*heliumImagePriv == a3)
+    if (*heliumImagePriv == node)
     {
-      (*(*a3 + 24))(a3);
+      (*(*node + 24))(node);
       return;
     }
   }
@@ -114,20 +114,20 @@
     (*(*v6 + 24))(v6);
   }
 
-  *heliumImagePriv = a3;
+  *heliumImagePriv = node;
 }
 
-- (void)setHeliumRef:(const void *)a3
+- (void)setHeliumRef:(const void *)ref
 {
   heliumImagePriv = self->_heliumImagePriv;
   v4 = *heliumImagePriv;
-  v5 = *a3;
-  if (*heliumImagePriv != *a3)
+  v5 = *ref;
+  if (*heliumImagePriv != *ref)
   {
     if (v4)
     {
       (*(*v4 + 24))(*heliumImagePriv, a2);
-      v5 = *a3;
+      v5 = *ref;
     }
 
     *heliumImagePriv = v5;

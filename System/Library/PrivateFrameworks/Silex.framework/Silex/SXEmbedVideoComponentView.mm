@@ -1,62 +1,62 @@
 @interface SXEmbedVideoComponentView
 + (id)sharedConfiguration;
 - (BOOL)allowHierarchyRemoval;
-- (BOOL)shouldAllowRequestToURL:(id)a3;
+- (BOOL)shouldAllowRequestToURL:(id)l;
 - (CGRect)transitionContentFrame;
-- (SXEmbedVideoComponentView)initWithDOMObjectProvider:(id)a3 viewport:(id)a4 presentationDelegate:(id)a5 componentStyleRendererFactory:(id)a6 analyticsReporting:(id)a7 appStateMonitor:(id)a8 sceneStateMonitor:(id)a9 actionHandler:(id)a10 websiteDataStore:(id)a11 proxyAuthenticationHandler:(id)a12;
-- (id)webView:(id)a3 createWebViewWithConfiguration:(id)a4 forNavigationAction:(id)a5 windowFeatures:(id)a6;
-- (void)_webViewWebProcessDidCrash:(id)a3;
+- (SXEmbedVideoComponentView)initWithDOMObjectProvider:(id)provider viewport:(id)viewport presentationDelegate:(id)delegate componentStyleRendererFactory:(id)factory analyticsReporting:(id)reporting appStateMonitor:(id)monitor sceneStateMonitor:(id)stateMonitor actionHandler:(id)self0 websiteDataStore:(id)self1 proxyAuthenticationHandler:(id)self2;
+- (id)webView:(id)view createWebViewWithConfiguration:(id)configuration forNavigationAction:(id)action windowFeatures:(id)features;
+- (void)_webViewWebProcessDidCrash:(id)crash;
 - (void)discardContents;
-- (void)handleError:(id)a3;
-- (void)initializeWebViewWithURL:(id)a3;
+- (void)handleError:(id)error;
+- (void)initializeWebViewWithURL:(id)l;
 - (void)layoutSubviews;
-- (void)presentComponentWithChanges:(id)a3;
+- (void)presentComponentWithChanges:(id)changes;
 - (void)renderContents;
-- (void)reportLoadEventWithError:(id)a3;
-- (void)updateWebViewToWidth:(double)a3;
-- (void)viewport:(id)a3 appearStateChangedFromState:(unint64_t)a4;
-- (void)webView:(id)a3 decidePolicyForNavigationAction:(id)a4 decisionHandler:(id)a5;
-- (void)webView:(id)a3 didFailNavigation:(id)a4 withError:(id)a5;
-- (void)webView:(id)a3 didFailProvisionalNavigation:(id)a4 withError:(id)a5;
-- (void)webView:(id)a3 didFinishNavigation:(id)a4;
-- (void)webView:(id)a3 didReceiveAuthenticationChallenge:(id)a4 completionHandler:(id)a5;
-- (void)webViewEnteredFullscreen:(id)a3;
-- (void)webViewExitedFullscreen:(id)a3;
+- (void)reportLoadEventWithError:(id)error;
+- (void)updateWebViewToWidth:(double)width;
+- (void)viewport:(id)viewport appearStateChangedFromState:(unint64_t)state;
+- (void)webView:(id)view decidePolicyForNavigationAction:(id)action decisionHandler:(id)handler;
+- (void)webView:(id)view didFailNavigation:(id)navigation withError:(id)error;
+- (void)webView:(id)view didFailProvisionalNavigation:(id)navigation withError:(id)error;
+- (void)webView:(id)view didFinishNavigation:(id)navigation;
+- (void)webView:(id)view didReceiveAuthenticationChallenge:(id)challenge completionHandler:(id)handler;
+- (void)webViewEnteredFullscreen:(id)fullscreen;
+- (void)webViewExitedFullscreen:(id)fullscreen;
 @end
 
 @implementation SXEmbedVideoComponentView
 
-- (SXEmbedVideoComponentView)initWithDOMObjectProvider:(id)a3 viewport:(id)a4 presentationDelegate:(id)a5 componentStyleRendererFactory:(id)a6 analyticsReporting:(id)a7 appStateMonitor:(id)a8 sceneStateMonitor:(id)a9 actionHandler:(id)a10 websiteDataStore:(id)a11 proxyAuthenticationHandler:(id)a12
+- (SXEmbedVideoComponentView)initWithDOMObjectProvider:(id)provider viewport:(id)viewport presentationDelegate:(id)delegate componentStyleRendererFactory:(id)factory analyticsReporting:(id)reporting appStateMonitor:(id)monitor sceneStateMonitor:(id)stateMonitor actionHandler:(id)self0 websiteDataStore:(id)self1 proxyAuthenticationHandler:(id)self2
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v36 = a9;
-  v34 = a10;
-  v33 = a11;
-  v32 = a12;
+  providerCopy = provider;
+  viewportCopy = viewport;
+  delegateCopy = delegate;
+  factoryCopy = factory;
+  reportingCopy = reporting;
+  monitorCopy = monitor;
+  stateMonitorCopy = stateMonitor;
+  handlerCopy = handler;
+  storeCopy = store;
+  authenticationHandlerCopy = authenticationHandler;
   v41.receiver = self;
   v41.super_class = SXEmbedVideoComponentView;
-  v22 = [(SXMediaComponentView *)&v41 initWithDOMObjectProvider:v16 viewport:v17 presentationDelegate:v18 componentStyleRendererFactory:v19 analyticsReporting:v20 appStateMonitor:v21];
+  v22 = [(SXMediaComponentView *)&v41 initWithDOMObjectProvider:providerCopy viewport:viewportCopy presentationDelegate:delegateCopy componentStyleRendererFactory:factoryCopy analyticsReporting:reportingCopy appStateMonitor:monitorCopy];
   v23 = v22;
   if (v22)
   {
-    objc_storeStrong(&v22->_actionHandler, a10);
-    objc_storeStrong(&v23->_dataStore, a11);
-    objc_storeStrong(&v23->_proxyAuthenticationHandler, a12);
-    objc_storeStrong(&v23->_sceneStateMonitor, a9);
+    objc_storeStrong(&v22->_actionHandler, handler);
+    objc_storeStrong(&v23->_dataStore, store);
+    objc_storeStrong(&v23->_proxyAuthenticationHandler, authenticationHandler);
+    objc_storeStrong(&v23->_sceneStateMonitor, stateMonitor);
     v24 = [objc_alloc(MEMORY[0x1E69DC638]) initWithActivityIndicatorStyle:100];
     activityIndicator = v23->_activityIndicator;
     v23->_activityIndicator = v24;
 
-    v26 = [(SXComponentView *)v23 contentView];
-    [v26 addSubview:v23->_activityIndicator];
+    contentView = [(SXComponentView *)v23 contentView];
+    [contentView addSubview:v23->_activityIndicator];
 
-    v27 = [(SXComponentView *)v23 viewport];
-    [v27 addViewportChangeListener:v23 forOptions:8];
+    viewport = [(SXComponentView *)v23 viewport];
+    [viewport addViewportChangeListener:v23 forOptions:8];
 
     v28 = objc_alloc_init(MEMORY[0x1E69CE150]);
     webCrashRetryThrottler = v23->_webCrashRetryThrottler;
@@ -90,15 +90,15 @@ void __226__SXEmbedVideoComponentView_initWithDOMObjectProvider_viewport_present
   }
 }
 
-- (void)presentComponentWithChanges:(id)a3
+- (void)presentComponentWithChanges:(id)changes
 {
   v5.receiver = self;
   v5.super_class = SXEmbedVideoComponentView;
-  [(SXComponentView *)&v5 presentComponentWithChanges:*&a3.var0 & 0xFFFFFFLL];
+  [(SXComponentView *)&v5 presentComponentWithChanges:*&changes.var0 & 0xFFFFFFLL];
   if ([(SXEmbedVideoComponentView *)self webViewIsLoaded])
   {
-    v4 = [(SXEmbedVideoComponentView *)self webView];
-    [v4 frame];
+    webView = [(SXEmbedVideoComponentView *)self webView];
+    [webView frame];
     [(SXEmbedVideoComponentView *)self updateWebViewToWidth:CGRectGetWidth(v6)];
   }
 }
@@ -108,13 +108,13 @@ void __226__SXEmbedVideoComponentView_initWithDOMObjectProvider_viewport_present
   v7.receiver = self;
   v7.super_class = SXEmbedVideoComponentView;
   [(SXEmbedVideoComponentView *)&v7 layoutSubviews];
-  v3 = [(SXEmbedVideoComponentView *)self activityIndicator];
-  v4 = [(SXComponentView *)self contentView];
-  [v4 bounds];
+  activityIndicator = [(SXEmbedVideoComponentView *)self activityIndicator];
+  contentView = [(SXComponentView *)self contentView];
+  [contentView bounds];
   MidX = CGRectGetMidX(v8);
-  v6 = [(SXComponentView *)self contentView];
-  [v6 bounds];
-  [v3 setCenter:{MidX, CGRectGetMidY(v9)}];
+  contentView2 = [(SXComponentView *)self contentView];
+  [contentView2 bounds];
+  [activityIndicator setCenter:{MidX, CGRectGetMidY(v9)}];
 }
 
 - (void)renderContents
@@ -124,11 +124,11 @@ void __226__SXEmbedVideoComponentView_initWithDOMObjectProvider_viewport_present
   [(SXComponentView *)&v6 renderContents];
   if (![(SXEmbedVideoComponentView *)self webViewIsLoaded])
   {
-    v3 = [(SXEmbedVideoComponentView *)self activityIndicator];
-    [v3 startAnimating];
+    activityIndicator = [(SXEmbedVideoComponentView *)self activityIndicator];
+    [activityIndicator startAnimating];
 
-    v4 = [(SXComponentView *)self component];
-    v5 = [v4 URL];
+    component = [(SXComponentView *)self component];
+    v5 = [component URL];
     [(SXEmbedVideoComponentView *)self initializeWebViewWithURL:v5];
   }
 }
@@ -140,20 +140,20 @@ void __226__SXEmbedVideoComponentView_initWithDOMObjectProvider_viewport_present
   [(SXComponentView *)&v4 discardContents];
   if (![(SXEmbedVideoComponentView *)self isPresentingFullscreen])
   {
-    v3 = [(SXEmbedVideoComponentView *)self webView];
-    [v3 removeFromSuperview];
+    webView = [(SXEmbedVideoComponentView *)self webView];
+    [webView removeFromSuperview];
 
     [(SXEmbedVideoComponentView *)self setWebView:0];
     [(SXEmbedVideoComponentView *)self setWebViewIsLoaded:0];
   }
 }
 
-- (void)viewport:(id)a3 appearStateChangedFromState:(unint64_t)a4
+- (void)viewport:(id)viewport appearStateChangedFromState:(unint64_t)state
 {
-  if (![a3 appearState])
+  if (![viewport appearState])
   {
-    v5 = [(SXEmbedVideoComponentView *)self webView];
-    [v5 pauseAllMediaPlaybackWithCompletionHandler:0];
+    webView = [(SXEmbedVideoComponentView *)self webView];
+    [webView pauseAllMediaPlaybackWithCompletionHandler:0];
   }
 }
 
@@ -206,70 +206,70 @@ void __48__SXEmbedVideoComponentView_sharedConfiguration__block_invoke()
   [sharedConfiguration_configuration setPreferences:v7];
 }
 
-- (void)initializeWebViewWithURL:(id)a3
+- (void)initializeWebViewWithURL:(id)l
 {
-  v4 = a3;
-  v5 = [(SXEmbedVideoComponentView *)self webView];
+  lCopy = l;
+  webView = [(SXEmbedVideoComponentView *)self webView];
 
-  if (!v5)
+  if (!webView)
   {
-    v6 = [objc_opt_class() sharedConfiguration];
-    v7 = [(SXEmbedVideoComponentView *)self dataStore];
-    [v6 setWebsiteDataStore:v7];
+    sharedConfiguration = [objc_opt_class() sharedConfiguration];
+    dataStore = [(SXEmbedVideoComponentView *)self dataStore];
+    [sharedConfiguration setWebsiteDataStore:dataStore];
 
     v8 = objc_alloc(MEMORY[0x1E69853A0]);
-    v9 = [(SXComponentView *)self contentView];
-    [v9 bounds];
-    v10 = [v8 initWithFrame:v6 configuration:?];
+    contentView = [(SXComponentView *)self contentView];
+    [contentView bounds];
+    v10 = [v8 initWithFrame:sharedConfiguration configuration:?];
     webView = self->_webView;
     self->_webView = v10;
 
-    v12 = [(SXEmbedVideoComponentView *)self webView];
-    v13 = [v12 scrollView];
-    [v13 setScrollsToTop:0];
+    webView2 = [(SXEmbedVideoComponentView *)self webView];
+    scrollView = [webView2 scrollView];
+    [scrollView setScrollsToTop:0];
 
-    v14 = [(SXEmbedVideoComponentView *)self webView];
-    v15 = [v14 scrollView];
-    [v15 setContentInsetAdjustmentBehavior:2];
+    webView3 = [(SXEmbedVideoComponentView *)self webView];
+    scrollView2 = [webView3 scrollView];
+    [scrollView2 setContentInsetAdjustmentBehavior:2];
 
-    v16 = [(SXEmbedVideoComponentView *)self webView];
-    v17 = [v16 scrollView];
-    [v17 setScrollEnabled:0];
+    webView4 = [(SXEmbedVideoComponentView *)self webView];
+    scrollView3 = [webView4 scrollView];
+    [scrollView3 setScrollEnabled:0];
 
-    v18 = [(SXEmbedVideoComponentView *)self webView];
-    v19 = [v18 scrollView];
-    [v19 setBounces:0];
+    webView5 = [(SXEmbedVideoComponentView *)self webView];
+    scrollView4 = [webView5 scrollView];
+    [scrollView4 setBounces:0];
 
-    v20 = [(SXEmbedVideoComponentView *)self webView];
-    [v20 setAutoresizingMask:18];
+    webView6 = [(SXEmbedVideoComponentView *)self webView];
+    [webView6 setAutoresizingMask:18];
 
-    v21 = [(SXEmbedVideoComponentView *)self webView];
-    [v21 setNavigationDelegate:self];
+    webView7 = [(SXEmbedVideoComponentView *)self webView];
+    [webView7 setNavigationDelegate:self];
 
-    v22 = [(SXEmbedVideoComponentView *)self webView];
-    [v22 setUIDelegate:self];
+    webView8 = [(SXEmbedVideoComponentView *)self webView];
+    [webView8 setUIDelegate:self];
 
-    v23 = [(SXEmbedVideoComponentView *)self webView];
-    [v23 _setFullscreenDelegate:self];
+    webView9 = [(SXEmbedVideoComponentView *)self webView];
+    [webView9 _setFullscreenDelegate:self];
 
-    v24 = [(SXEmbedVideoComponentView *)self webView];
-    [v24 setHidden:1];
+    webView10 = [(SXEmbedVideoComponentView *)self webView];
+    [webView10 setHidden:1];
 
-    v25 = [(SXEmbedVideoComponentView *)self webView];
-    [v25 setAlpha:0.0];
+    webView11 = [(SXEmbedVideoComponentView *)self webView];
+    [webView11 setAlpha:0.0];
 
-    v26 = [(SXComponentView *)self contentView];
-    v27 = [(SXEmbedVideoComponentView *)self webView];
-    [v26 addSubview:v27];
+    contentView2 = [(SXComponentView *)self contentView];
+    webView12 = [(SXEmbedVideoComponentView *)self webView];
+    [contentView2 addSubview:webView12];
   }
 
-  v28 = [[SXWebContentLoadEvent alloc] initWithURL:v4];
+  v28 = [[SXWebContentLoadEvent alloc] initWithURL:lCopy];
   [(SXEmbedVideoComponentView *)self setLoadEvent:v28];
 
   v29 = MEMORY[0x1E696AEC0];
-  v30 = [v4 scheme];
-  v31 = [v4 host];
-  v46 = [v29 stringWithFormat:@"%@://%@", v30, v31];
+  scheme = [lCopy scheme];
+  host = [lCopy host];
+  v46 = [v29 stringWithFormat:@"%@://%@", scheme, host];
 
   v32 = [MEMORY[0x1E695DFF8] URLWithString:v46];
   v33 = [MEMORY[0x1E695AC18] requestWithURL:v32];
@@ -281,41 +281,41 @@ void __48__SXEmbedVideoComponentView_sharedConfiguration__block_invoke()
   v38 = v37;
   [(SXComponentView *)self contentFrame];
   v40 = v39;
-  v41 = [v4 absoluteString];
+  absoluteString = [lCopy absoluteString];
 
-  v42 = [v34 stringWithFormat:@"<style>* {padding: 0 margin: 0}</style></style><meta name='viewport' content='width=%f, user-scalable=no, initial-scale=1, max-scale=1'><iframe width='%f' height='%f' src='%@' frameborder='0' allowfullscreen></iframe>", v36, v38, v40, v41];;
+  v42 = [v34 stringWithFormat:@"<style>* {padding: 0 margin: 0}</style></style><meta name='viewport' content='width=%f, user-scalable=no, initial-scale=1, max-scale=1'><iframe width='%f' height='%f' src='%@' frameborder='0' allowfullscreen></iframe>", v36, v38, v40, absoluteString];;
 
-  v43 = [(SXEmbedVideoComponentView *)self webView];
-  v44 = [v43 loadSimulatedRequest:v33 responseHTMLString:v42];
+  webView13 = [(SXEmbedVideoComponentView *)self webView];
+  v44 = [webView13 loadSimulatedRequest:v33 responseHTMLString:v42];
 
   [(SXEmbedVideoComponentView *)self setWebViewIsLoaded:1];
   [(SXMediaComponentView *)self setIsDisplayingMedia:1];
-  v45 = [(SXEmbedVideoComponentView *)self webView];
-  [v45 frame];
+  webView14 = [(SXEmbedVideoComponentView *)self webView];
+  [webView14 frame];
   [(SXEmbedVideoComponentView *)self updateWebViewToWidth:CGRectGetWidth(v48)];
 }
 
-- (void)updateWebViewToWidth:(double)a3
+- (void)updateWebViewToWidth:(double)width
 {
   v4 = MEMORY[0x1E696AEC0];
   [(SXComponentView *)self contentFrame];
   v6 = v5;
   [(SXComponentView *)self contentFrame];
   v9 = [v4 stringWithFormat:@"var iframe = document.getElementsByTagName('iframe')[0] iframe.style.width = '%dpx'; iframe.style.height = '%dpx';", v6, v7];;
-  v8 = [(SXEmbedVideoComponentView *)self webView];
-  [v8 evaluateJavaScript:v9 completionHandler:0];
+  webView = [(SXEmbedVideoComponentView *)self webView];
+  [webView evaluateJavaScript:v9 completionHandler:0];
 }
 
 - (CGRect)transitionContentFrame
 {
-  v3 = [(SXEmbedVideoComponentView *)self webView];
-  [v3 frame];
+  webView = [(SXEmbedVideoComponentView *)self webView];
+  [webView frame];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(SXEmbedVideoComponentView *)self superview];
-  [(SXEmbedVideoComponentView *)self convertRect:v12 toView:v5, v7, v9, v11];
+  superview = [(SXEmbedVideoComponentView *)self superview];
+  [(SXEmbedVideoComponentView *)self convertRect:superview toView:v5, v7, v9, v11];
   v14 = v13;
   v16 = v15;
   v18 = v17;
@@ -332,9 +332,9 @@ void __48__SXEmbedVideoComponentView_sharedConfiguration__block_invoke()
   return result;
 }
 
-- (void)handleError:(id)a3
+- (void)handleError:(id)error
 {
-  v12 = a3;
+  errorCopy = error;
   v4 = objc_alloc(MEMORY[0x1E69DCC10]);
   [(SXEmbedVideoComponentView *)self bounds];
   v5 = CGRectGetWidth(v14) + -20.0;
@@ -347,73 +347,73 @@ void __48__SXEmbedVideoComponentView_sharedConfiguration__block_invoke()
   [v6 setText:v8];
 
   [(SXEmbedVideoComponentView *)self addSubview:v6];
-  v9 = [(SXEmbedVideoComponentView *)self activityIndicator];
-  [v9 stopAnimating];
+  activityIndicator = [(SXEmbedVideoComponentView *)self activityIndicator];
+  [activityIndicator stopAnimating];
 
-  v10 = [(SXEmbedVideoComponentView *)self webView];
-  [v10 removeFromSuperview];
+  webView = [(SXEmbedVideoComponentView *)self webView];
+  [webView removeFromSuperview];
 
   [(SXEmbedVideoComponentView *)self setWebView:0];
-  if (v12)
+  if (errorCopy)
   {
-    [(SXEmbedVideoComponentView *)self reportLoadEventWithError:v12];
+    [(SXEmbedVideoComponentView *)self reportLoadEventWithError:errorCopy];
   }
 
   else
   {
-    v11 = [MEMORY[0x1E696ABC0] unknownError];
-    [(SXEmbedVideoComponentView *)self reportLoadEventWithError:v11];
+    unknownError = [MEMORY[0x1E696ABC0] unknownError];
+    [(SXEmbedVideoComponentView *)self reportLoadEventWithError:unknownError];
   }
 }
 
-- (id)webView:(id)a3 createWebViewWithConfiguration:(id)a4 forNavigationAction:(id)a5 windowFeatures:(id)a6
+- (id)webView:(id)view createWebViewWithConfiguration:(id)configuration forNavigationAction:(id)action windowFeatures:(id)features
 {
-  v7 = a5;
+  actionCopy = action;
   v8 = [SXLinkAction alloc];
-  v9 = [v7 request];
+  request = [actionCopy request];
 
-  v10 = [v9 URL];
+  v10 = [request URL];
   v11 = [(SXLinkAction *)v8 initWithURL:v10];
 
-  v12 = [(SXEmbedVideoComponentView *)self actionHandler];
-  v13 = [(SXEmbedVideoComponentView *)self webView];
-  [v13 frame];
-  [v12 handleAction:v11 sourceView:self sourceRect:0 invocationType:?];
+  actionHandler = [(SXEmbedVideoComponentView *)self actionHandler];
+  webView = [(SXEmbedVideoComponentView *)self webView];
+  [webView frame];
+  [actionHandler handleAction:v11 sourceView:self sourceRect:0 invocationType:?];
 
   return 0;
 }
 
-- (void)_webViewWebProcessDidCrash:(id)a3
+- (void)_webViewWebProcessDidCrash:(id)crash
 {
-  v4 = a3;
-  v5 = [(SXEmbedVideoComponentView *)self webView];
+  crashCopy = crash;
+  webView = [(SXEmbedVideoComponentView *)self webView];
 
-  if (v5 == v4)
+  if (webView == crashCopy)
   {
-    v6 = [(SXEmbedVideoComponentView *)self webCrashRetryThrottler];
-    v7 = [v6 shouldReloadAfterWebProcessCrash];
+    webCrashRetryThrottler = [(SXEmbedVideoComponentView *)self webCrashRetryThrottler];
+    shouldReloadAfterWebProcessCrash = [webCrashRetryThrottler shouldReloadAfterWebProcessCrash];
 
-    if (v7)
+    if (shouldReloadAfterWebProcessCrash)
     {
-      v9 = [(SXComponentView *)self component];
-      v8 = [v9 URL];
+      component = [(SXComponentView *)self component];
+      v8 = [component URL];
       [(SXEmbedVideoComponentView *)self initializeWebViewWithURL:v8];
     }
   }
 }
 
-- (void)webView:(id)a3 decidePolicyForNavigationAction:(id)a4 decisionHandler:(id)a5
+- (void)webView:(id)view decidePolicyForNavigationAction:(id)action decisionHandler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
+  actionCopy = action;
+  handlerCopy = handler;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __85__SXEmbedVideoComponentView_webView_decidePolicyForNavigationAction_decisionHandler___block_invoke;
   v12[3] = &unk_1E8501F28;
-  v9 = v7;
+  v9 = actionCopy;
   v13 = v9;
-  v14 = self;
-  v10 = v8;
+  selfCopy = self;
+  v10 = handlerCopy;
   v15 = v10;
   v11 = MEMORY[0x1DA716BE0](v12);
   if ([MEMORY[0x1E696AF00] isMainThread])
@@ -482,35 +482,35 @@ LABEL_5:
   (*(*(a1 + 48) + 16))();
 }
 
-- (BOOL)shouldAllowRequestToURL:(id)a3
+- (BOOL)shouldAllowRequestToURL:(id)l
 {
-  v3 = a3;
-  v4 = [v3 scheme];
-  if ([v4 isEqualToString:@"http"])
+  lCopy = l;
+  scheme = [lCopy scheme];
+  if ([scheme isEqualToString:@"http"])
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [v3 scheme];
-    v5 = [v6 isEqualToString:@"https"];
+    scheme2 = [lCopy scheme];
+    v5 = [scheme2 isEqualToString:@"https"];
   }
 
-  v7 = [v3 absoluteString];
-  v8 = [v7 isEqualToString:@"about:blank"];
+  absoluteString = [lCopy absoluteString];
+  v8 = [absoluteString isEqualToString:@"about:blank"];
 
   return (v5 | v8) & 1;
 }
 
-- (void)webView:(id)a3 didFinishNavigation:(id)a4
+- (void)webView:(id)view didFinishNavigation:(id)navigation
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __57__SXEmbedVideoComponentView_webView_didFinishNavigation___block_invoke;
   v5[3] = &unk_1E84FED18;
   v5[4] = self;
-  [MEMORY[0x1E69DD250] animateWithDuration:v5 animations:{a4, 0.15}];
+  [MEMORY[0x1E69DD250] animateWithDuration:v5 animations:{navigation, 0.15}];
   [(SXEmbedVideoComponentView *)self reportLoadEventWithError:0];
 }
 
@@ -526,68 +526,68 @@ void __57__SXEmbedVideoComponentView_webView_didFinishNavigation___block_invoke(
   [v4 stopAnimating];
 }
 
-- (void)webView:(id)a3 didFailProvisionalNavigation:(id)a4 withError:(id)a5
+- (void)webView:(id)view didFailProvisionalNavigation:(id)navigation withError:(id)error
 {
-  if (a5)
+  if (error)
   {
-    [(SXEmbedVideoComponentView *)self handleError:a5, a4];
+    [(SXEmbedVideoComponentView *)self handleError:error, navigation];
   }
 }
 
-- (void)webView:(id)a3 didFailNavigation:(id)a4 withError:(id)a5
+- (void)webView:(id)view didFailNavigation:(id)navigation withError:(id)error
 {
-  if (a5)
+  if (error)
   {
-    [(SXEmbedVideoComponentView *)self handleError:a5, a4];
+    [(SXEmbedVideoComponentView *)self handleError:error, navigation];
   }
 }
 
-- (void)webView:(id)a3 didReceiveAuthenticationChallenge:(id)a4 completionHandler:(id)a5
+- (void)webView:(id)view didReceiveAuthenticationChallenge:(id)challenge completionHandler:(id)handler
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [(SXEmbedVideoComponentView *)self proxyAuthenticationHandler];
-  [v9 handleAuthenticationChallenge:v8 completion:v7];
+  handlerCopy = handler;
+  challengeCopy = challenge;
+  proxyAuthenticationHandler = [(SXEmbedVideoComponentView *)self proxyAuthenticationHandler];
+  [proxyAuthenticationHandler handleAuthenticationChallenge:challengeCopy completion:handlerCopy];
 }
 
 - (BOOL)allowHierarchyRemoval
 {
   v5.receiver = self;
   v5.super_class = SXEmbedVideoComponentView;
-  v3 = [(SXComponentView *)&v5 allowHierarchyRemoval];
-  return ![(SXEmbedVideoComponentView *)self isPresentingFullscreen]& v3;
+  allowHierarchyRemoval = [(SXComponentView *)&v5 allowHierarchyRemoval];
+  return ![(SXEmbedVideoComponentView *)self isPresentingFullscreen]& allowHierarchyRemoval;
 }
 
-- (void)webViewEnteredFullscreen:(id)a3
+- (void)webViewEnteredFullscreen:(id)fullscreen
 {
   [(SXEmbedVideoComponentView *)self setIsPresentingFullscreen:1];
-  v4 = [(SXComponentView *)self presentationDelegate];
-  [v4 willReturnToFullscreenForComponent:self];
+  presentationDelegate = [(SXComponentView *)self presentationDelegate];
+  [presentationDelegate willReturnToFullscreenForComponent:self];
 }
 
-- (void)webViewExitedFullscreen:(id)a3
+- (void)webViewExitedFullscreen:(id)fullscreen
 {
   [(SXEmbedVideoComponentView *)self setIsPresentingFullscreen:0];
-  v4 = [(SXComponentView *)self presentationDelegate];
-  [v4 willDismissFullscreenCanvasForComponent:self];
+  presentationDelegate = [(SXComponentView *)self presentationDelegate];
+  [presentationDelegate willDismissFullscreenCanvasForComponent:self];
 }
 
-- (void)reportLoadEventWithError:(id)a3
+- (void)reportLoadEventWithError:(id)error
 {
-  v9 = a3;
-  v4 = [(SXEmbedVideoComponentView *)self loadEvent];
+  errorCopy = error;
+  loadEvent = [(SXEmbedVideoComponentView *)self loadEvent];
 
-  if (v4)
+  if (loadEvent)
   {
-    v5 = [(SXEmbedVideoComponentView *)self loadEvent];
-    [v5 setError:v9];
+    loadEvent2 = [(SXEmbedVideoComponentView *)self loadEvent];
+    [loadEvent2 setError:errorCopy];
 
-    v6 = [(SXEmbedVideoComponentView *)self loadEvent];
-    [v6 determineEndDate];
+    loadEvent3 = [(SXEmbedVideoComponentView *)self loadEvent];
+    [loadEvent3 determineEndDate];
 
-    v7 = [(SXMediaComponentView *)self analyticsReporting];
-    v8 = [(SXEmbedVideoComponentView *)self loadEvent];
-    [v7 reportEvent:v8];
+    analyticsReporting = [(SXMediaComponentView *)self analyticsReporting];
+    loadEvent4 = [(SXEmbedVideoComponentView *)self loadEvent];
+    [analyticsReporting reportEvent:loadEvent4];
 
     [(SXEmbedVideoComponentView *)self setLoadEvent:0];
   }

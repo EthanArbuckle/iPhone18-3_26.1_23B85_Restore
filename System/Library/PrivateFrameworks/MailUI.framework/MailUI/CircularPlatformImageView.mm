@@ -1,5 +1,5 @@
 @interface CircularPlatformImageView
-- (_TtC6MailUI25CircularPlatformImageView)initWithImage:(id)a3 highlightedImage:(id)a4;
+- (_TtC6MailUI25CircularPlatformImageView)initWithImage:(id)image highlightedImage:(id)highlightedImage;
 - (void)layoutSubviews;
 @end
 
@@ -12,11 +12,11 @@
   MEMORY[0x277D82BD8](self);
 }
 
-- (_TtC6MailUI25CircularPlatformImageView)initWithImage:(id)a3 highlightedImage:(id)a4
+- (_TtC6MailUI25CircularPlatformImageView)initWithImage:(id)image highlightedImage:(id)highlightedImage
 {
-  MEMORY[0x277D82BE0](a3);
-  MEMORY[0x277D82BE0](a4);
-  return CircularPlatformImageView.init(image:highlightedImage:)(a3, a4);
+  MEMORY[0x277D82BE0](image);
+  MEMORY[0x277D82BE0](highlightedImage);
+  return CircularPlatformImageView.init(image:highlightedImage:)(image, highlightedImage);
 }
 
 @end

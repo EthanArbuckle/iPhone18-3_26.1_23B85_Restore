@@ -1,41 +1,41 @@
 @interface BMVisualIntelligenceCameraLookupEventVisualComponent
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMVisualIntelligenceCameraLookupEventVisualComponent)initWithComponentType:(int)a3 pillAttribute:(id)a4;
-- (BMVisualIntelligenceCameraLookupEventVisualComponent)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMVisualIntelligenceCameraLookupEventVisualComponent)initWithComponentType:(int)type pillAttribute:(id)attribute;
+- (BMVisualIntelligenceCameraLookupEventVisualComponent)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMVisualIntelligenceCameraLookupEventVisualComponent
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMVisualIntelligenceCameraLookupEventVisualComponent *)self componentType];
-    if (v6 == [v5 componentType])
+    v5 = equalCopy;
+    componentType = [(BMVisualIntelligenceCameraLookupEventVisualComponent *)self componentType];
+    if (componentType == [v5 componentType])
     {
-      v7 = [(BMVisualIntelligenceCameraLookupEventVisualComponent *)self pillAttribute];
-      v8 = [v5 pillAttribute];
-      if (v7 == v8)
+      pillAttribute = [(BMVisualIntelligenceCameraLookupEventVisualComponent *)self pillAttribute];
+      pillAttribute2 = [v5 pillAttribute];
+      if (pillAttribute == pillAttribute2)
       {
         v11 = 1;
       }
 
       else
       {
-        v9 = [(BMVisualIntelligenceCameraLookupEventVisualComponent *)self pillAttribute];
-        v10 = [v5 pillAttribute];
-        v11 = [v9 isEqual:v10];
+        pillAttribute3 = [(BMVisualIntelligenceCameraLookupEventVisualComponent *)self pillAttribute];
+        pillAttribute4 = [v5 pillAttribute];
+        v11 = [pillAttribute3 isEqual:pillAttribute4];
       }
     }
 
@@ -57,27 +57,27 @@
 {
   v12[2] = *MEMORY[0x1E69E9840];
   v3 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMVisualIntelligenceCameraLookupEventVisualComponent componentType](self, "componentType")}];
-  v4 = [(BMVisualIntelligenceCameraLookupEventVisualComponent *)self pillAttribute];
-  v5 = [v4 jsonDictionary];
+  pillAttribute = [(BMVisualIntelligenceCameraLookupEventVisualComponent *)self pillAttribute];
+  jsonDictionary = [pillAttribute jsonDictionary];
 
   v11[0] = @"componentType";
-  v6 = v3;
+  null = v3;
   if (!v3)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
   v11[1] = @"pillAttribute";
-  v12[0] = v6;
-  v7 = v5;
-  if (!v5)
+  v12[0] = null;
+  null2 = jsonDictionary;
+  if (!jsonDictionary)
   {
-    v7 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v12[1] = v7;
+  v12[1] = null2;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:v11 count:2];
-  if (v5)
+  if (jsonDictionary)
   {
     if (v3)
     {
@@ -100,11 +100,11 @@ LABEL_7:
   return v8;
 }
 
-- (BMVisualIntelligenceCameraLookupEventVisualComponent)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMVisualIntelligenceCameraLookupEventVisualComponent)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v27[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"componentType"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"componentType"];
   if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
@@ -118,10 +118,10 @@ LABEL_7:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v8 = 0;
-          v12 = 0;
+          selfCopy = 0;
           goto LABEL_15;
         }
 
@@ -133,8 +133,8 @@ LABEL_7:
         v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v27 forKeys:&v26 count:1];
         v21 = [v19 initWithDomain:v20 code:2 userInfo:v11];
         v8 = 0;
-        v12 = 0;
-        *a4 = v21;
+        selfCopy = 0;
+        *error = v21;
         goto LABEL_13;
       }
 
@@ -149,13 +149,13 @@ LABEL_7:
     v8 = 0;
   }
 
-  v10 = [v6 objectForKeyedSubscript:@"pillAttribute"];
+  v10 = [dictionaryCopy objectForKeyedSubscript:@"pillAttribute"];
   if (!v10 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v11 = 0;
 LABEL_12:
     self = -[BMVisualIntelligenceCameraLookupEventVisualComponent initWithComponentType:pillAttribute:](self, "initWithComponentType:pillAttribute:", [v8 intValue], v11);
-    v12 = self;
+    selfCopy = self;
     goto LABEL_13;
   }
 
@@ -168,13 +168,13 @@ LABEL_12:
     v16 = v23;
     if (v16)
     {
-      if (a4)
+      if (error)
       {
         v16 = v16;
-        *a4 = v16;
+        *error = v16;
       }
 
-      v12 = 0;
+      selfCopy = 0;
       v10 = v15;
       goto LABEL_13;
     }
@@ -182,9 +182,9 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  if (!a4)
+  if (!error)
   {
-    v12 = 0;
+    selfCopy = 0;
     goto LABEL_14;
   }
 
@@ -194,43 +194,43 @@ LABEL_12:
   v11 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSDictionary", objc_opt_class(), @"pillAttribute"];
   v25 = v11;
   v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v25 forKeys:&v24 count:1];
-  *a4 = [v22 initWithDomain:v17 code:2 userInfo:v18];
+  *error = [v22 initWithDomain:v17 code:2 userInfo:v18];
 
-  v12 = 0;
+  selfCopy = 0;
 LABEL_13:
 
 LABEL_14:
 LABEL_15:
 
   v13 = *MEMORY[0x1E69E9840];
-  return v12;
+  return selfCopy;
 }
 
 - (id)serialize
 {
   v3 = objc_opt_new();
   [(BMVisualIntelligenceCameraLookupEventVisualComponent *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   componentType = self->_componentType;
   PBDataWriterWriteUint32Field();
   if (self->_pillAttribute)
   {
     PBDataWriterPlaceMark();
-    [(BMVisualIntelligenceCameraLookupEventPillAttribute *)self->_pillAttribute writeTo:v4];
+    [(BMVisualIntelligenceCameraLookupEventPillAttribute *)self->_pillAttribute writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v27.receiver = self;
   v27.super_class = BMVisualIntelligenceCameraLookupEventVisualComponent;
   v5 = [(BMEventBase *)&v27 init];
@@ -239,12 +239,12 @@ LABEL_15:
     goto LABEL_41;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -255,18 +255,18 @@ LABEL_15:
       while (1)
       {
         LOBYTE(v28[0]) = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:v28 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:v28 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v28[0] & 0x7F) << v7;
@@ -283,9 +283,9 @@ LABEL_15:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -299,7 +299,7 @@ LABEL_16:
           goto LABEL_40;
         }
 
-        v22 = [[BMVisualIntelligenceCameraLookupEventPillAttribute alloc] initByReadFrom:v4];
+        v22 = [[BMVisualIntelligenceCameraLookupEventPillAttribute alloc] initByReadFrom:fromCopy];
         if (!v22)
         {
           goto LABEL_40;
@@ -319,18 +319,18 @@ LABEL_16:
         while (1)
         {
           LOBYTE(v28[0]) = 0;
-          v18 = [v4 position] + 1;
-          if (v18 >= [v4 position] && (v19 = objc_msgSend(v4, "position") + 1, v19 <= objc_msgSend(v4, "length")))
+          v18 = [fromCopy position] + 1;
+          if (v18 >= [fromCopy position] && (v19 = objc_msgSend(fromCopy, "position") + 1, v19 <= objc_msgSend(fromCopy, "length")))
           {
-            v20 = [v4 data];
-            [v20 getBytes:v28 range:{objc_msgSend(v4, "position"), 1}];
+            data2 = [fromCopy data];
+            [data2 getBytes:v28 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v17 |= (v28[0] & 0x7F) << v15;
@@ -346,7 +346,7 @@ LABEL_16:
           }
         }
 
-        if (([v4 hasError] & 1) != 0 || v17 > 2)
+        if (([fromCopy hasError] & 1) != 0 || v17 > 2)
         {
 LABEL_36:
           LODWORD(v17) = 0;
@@ -360,13 +360,13 @@ LABEL_36:
         goto LABEL_40;
       }
 
-      v24 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v24 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_40:
     v25 = 0;
@@ -385,23 +385,23 @@ LABEL_41:
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
   v4 = BMVisualIntelligenceCameraLookupEventComponentTypeAsString([(BMVisualIntelligenceCameraLookupEventVisualComponent *)self componentType]);
-  v5 = [(BMVisualIntelligenceCameraLookupEventVisualComponent *)self pillAttribute];
-  v6 = [v3 initWithFormat:@"BMVisualIntelligenceCameraLookupEventVisualComponent with componentType: %@, pillAttribute: %@", v4, v5];
+  pillAttribute = [(BMVisualIntelligenceCameraLookupEventVisualComponent *)self pillAttribute];
+  v6 = [v3 initWithFormat:@"BMVisualIntelligenceCameraLookupEventVisualComponent with componentType: %@, pillAttribute: %@", v4, pillAttribute];
 
   return v6;
 }
 
-- (BMVisualIntelligenceCameraLookupEventVisualComponent)initWithComponentType:(int)a3 pillAttribute:(id)a4
+- (BMVisualIntelligenceCameraLookupEventVisualComponent)initWithComponentType:(int)type pillAttribute:(id)attribute
 {
-  v7 = a4;
+  attributeCopy = attribute;
   v10.receiver = self;
   v10.super_class = BMVisualIntelligenceCameraLookupEventVisualComponent;
   v8 = [(BMEventBase *)&v10 init];
   if (v8)
   {
     v8->_dataVersion = [objc_opt_class() latestDataVersion];
-    v8->_componentType = a3;
-    objc_storeStrong(&v8->_pillAttribute, a4);
+    v8->_componentType = type;
+    objc_storeStrong(&v8->_pillAttribute, attribute);
   }
 
   return v8;
@@ -445,9 +445,9 @@ id __63__BMVisualIntelligenceCameraLookupEventVisualComponent_columns__block_inv
   return v5;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -455,8 +455,8 @@ id __63__BMVisualIntelligenceCameraLookupEventVisualComponent_columns__block_inv
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMVisualIntelligenceCameraLookupEventVisualComponent alloc] initByReadFrom:v7];
     v4 = v8;

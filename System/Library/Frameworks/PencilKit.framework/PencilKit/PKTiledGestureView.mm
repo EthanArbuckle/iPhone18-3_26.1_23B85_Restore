@@ -1,29 +1,29 @@
 @interface PKTiledGestureView
-- (BOOL)_shouldForwardSelectionAtPoint:(CGPoint)a3 withEvent:(id)a4;
-- (BOOL)_shouldSelectionBeginAtPoint:(CGPoint)a3 withEvent:(id)a4;
-- (BOOL)hitTestAttachmentChrome_point:(CGPoint)a3 isStylus:(BOOL)a4 withEvent:(id)a5 hit:(id *)a6;
-- (BOOL)hitTestClearSelectionIfItExists_point:(CGPoint)a3 isHover:(BOOL)a4 withEvent:(id)a5 hit:(id *)a6;
-- (BOOL)hitTestDataDetector_point:(CGPoint)a3 isStylus:(BOOL)a4 withEvent:(id)a5 hit:(id *)a6;
-- (BOOL)hitTestDelegateSelection_point:(CGPoint)a3 isHover:(BOOL)a4 withEvent:(id)a5 hit:(id *)a6;
-- (BOOL)hitTestDragEvent_point:(CGPoint)a3 withEvent:(id)a4 hit:(id *)a5;
-- (BOOL)hitTestHandleScrolling_point:(CGPoint)a3 isStylus:(BOOL)a4 isHover:(BOOL)a5;
-- (BOOL)hitTestHandwritingInk_point:(CGPoint)a3 isStylus:(BOOL)a4 isHover:(BOOL)a5;
-- (BOOL)hitTestInsertNewAttachments_point:(CGPoint)a3 isStylus:(BOOL)a4 isHover:(BOOL)a5 withEvent:(id)a6 hit:(id *)a7;
-- (BOOL)hitTestPencilStickiness_point:(CGPoint)a3 isStylus:(BOOL)a4 isHover:(BOOL)a5 withEvent:(id)a6 hit:(id *)a7;
-- (BOOL)hitTestSelectionGestures_point:(CGPoint)a3 isStylus:(BOOL)a4 isHover:(BOOL)a5 withEvent:(id)a6 hit:(id *)a7;
-- (BOOL)hitTestSelectionView_point:(CGPoint)a3 withEvent:(id)a4 hit:(id *)a5;
+- (BOOL)_shouldForwardSelectionAtPoint:(CGPoint)point withEvent:(id)event;
+- (BOOL)_shouldSelectionBeginAtPoint:(CGPoint)point withEvent:(id)event;
+- (BOOL)hitTestAttachmentChrome_point:(CGPoint)chrome_point isStylus:(BOOL)stylus withEvent:(id)event hit:(id *)hit;
+- (BOOL)hitTestClearSelectionIfItExists_point:(CGPoint)exists_point isHover:(BOOL)hover withEvent:(id)event hit:(id *)hit;
+- (BOOL)hitTestDataDetector_point:(CGPoint)detector_point isStylus:(BOOL)stylus withEvent:(id)event hit:(id *)hit;
+- (BOOL)hitTestDelegateSelection_point:(CGPoint)selection_point isHover:(BOOL)hover withEvent:(id)event hit:(id *)hit;
+- (BOOL)hitTestDragEvent_point:(CGPoint)event_point withEvent:(id)event hit:(id *)hit;
+- (BOOL)hitTestHandleScrolling_point:(CGPoint)scrolling_point isStylus:(BOOL)stylus isHover:(BOOL)hover;
+- (BOOL)hitTestHandwritingInk_point:(CGPoint)ink_point isStylus:(BOOL)stylus isHover:(BOOL)hover;
+- (BOOL)hitTestInsertNewAttachments_point:(CGPoint)attachments_point isStylus:(BOOL)stylus isHover:(BOOL)hover withEvent:(id)event hit:(id *)hit;
+- (BOOL)hitTestPencilStickiness_point:(CGPoint)stickiness_point isStylus:(BOOL)stylus isHover:(BOOL)hover withEvent:(id)event hit:(id *)hit;
+- (BOOL)hitTestSelectionGestures_point:(CGPoint)gestures_point isStylus:(BOOL)stylus isHover:(BOOL)hover withEvent:(id)event hit:(id *)hit;
+- (BOOL)hitTestSelectionView_point:(CGPoint)view_point withEvent:(id)event hit:(id *)hit;
 - (PKTiledGestureView)init;
 - (PKTiledView)tiledView;
-- (id)_hitTestAttachmentMiniMenu:(CGPoint)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)_hitTestAttachmentMiniMenu:(CGPoint)menu;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (id)hoverController;
 - (id)ink;
 - (id)rulerController;
 - (id)scrollView;
 - (id)selectionController;
-- (void)_recordDrawingStatisticsForHitPoint:(CGPoint)a3 withEvent:(id)a4;
+- (void)_recordDrawingStatisticsForHitPoint:(CGPoint)point withEvent:(id)event;
 - (void)_setupPencilShadowViewIfNecessary;
-- (void)hitTestUpdateEffects_point:(CGPoint)a3 isStylus:(BOOL)a4 isHover:(BOOL)a5;
+- (void)hitTestUpdateEffects_point:(CGPoint)effects_point isStylus:(BOOL)stylus isHover:(BOOL)hover;
 @end
 
 @implementation PKTiledGestureView
@@ -52,66 +52,66 @@
 
 - (id)scrollView
 {
-  v2 = [(PKTiledGestureView *)self tiledView];
-  v3 = [v2 scrollView];
+  tiledView = [(PKTiledGestureView *)self tiledView];
+  scrollView = [tiledView scrollView];
 
-  return v3;
+  return scrollView;
 }
 
 - (id)ink
 {
-  v2 = [(PKTiledGestureView *)self tiledView];
-  v3 = [v2 ink];
+  tiledView = [(PKTiledGestureView *)self tiledView];
+  v3 = [tiledView ink];
 
   return v3;
 }
 
 - (id)hoverController
 {
-  v2 = [(PKTiledGestureView *)self tiledView];
-  v3 = [v2 hoverController];
+  tiledView = [(PKTiledGestureView *)self tiledView];
+  hoverController = [tiledView hoverController];
 
-  return v3;
+  return hoverController;
 }
 
 - (void)_setupPencilShadowViewIfNecessary
 {
-  v3 = [(PKTiledGestureView *)self tiledView];
-  v4 = [v3 toolShadowShouldBeActive];
+  tiledView = [(PKTiledGestureView *)self tiledView];
+  toolShadowShouldBeActive = [tiledView toolShadowShouldBeActive];
 
-  if (v4)
+  if (toolShadowShouldBeActive)
   {
-    v5 = [(PKTiledGestureView *)self window];
-    v6 = [v5 windowScene];
-    v17 = [PKPencilObserverInteraction interactionForScene:v6];
+    window = [(PKTiledGestureView *)self window];
+    windowScene = [window windowScene];
+    window5 = [PKPencilObserverInteraction interactionForScene:windowScene];
 
-    if (![(PKPencilObserverInteraction *)v17 isActive])
+    if (![(PKPencilObserverInteraction *)window5 isActive])
     {
       goto LABEL_6;
     }
 
-    v7 = [(PKTiledGestureView *)self window];
-    v8 = [v7 windowScene];
-    [PKPencilShadowView createShadowViewForSceneIfNecessary:v8];
+    window2 = [(PKTiledGestureView *)self window];
+    windowScene2 = [window2 windowScene];
+    [PKPencilShadowView createShadowViewForSceneIfNecessary:windowScene2];
 
-    v9 = [(PKTiledGestureView *)self window];
-    v10 = [v9 windowScene];
-    v11 = [PKPencilShadowView shadowViewForScene:v10];
-    v12 = [(PKTiledGestureView *)self tiledView];
-    [v11 keepVisibleInTiledView:v12];
+    window3 = [(PKTiledGestureView *)self window];
+    windowScene3 = [window3 windowScene];
+    v11 = [PKPencilShadowView shadowViewForScene:windowScene3];
+    tiledView2 = [(PKTiledGestureView *)self tiledView];
+    [v11 keepVisibleInTiledView:tiledView2];
 
-    v13 = [(PKTiledGestureView *)self window];
-    v14 = [v13 windowScene];
-    v15 = [PKPencilShadowView shadowViewForScene:v14];
+    window4 = [(PKTiledGestureView *)self window];
+    windowScene4 = [window4 windowScene];
+    v15 = [PKPencilShadowView shadowViewForScene:windowScene4];
     v16 = [(PKTiledGestureView *)self ink];
     [v15 setInk:v16];
   }
 
   else
   {
-    v17 = [(PKTiledGestureView *)self window];
-    v13 = [v17 windowScene];
-    [PKPencilShadowView hideShadowViewForSceneIfNecessary:v13];
+    window5 = [(PKTiledGestureView *)self window];
+    window4 = [window5 windowScene];
+    [PKPencilShadowView hideShadowViewForSceneIfNecessary:window4];
   }
 
 LABEL_6:
@@ -119,49 +119,49 @@ LABEL_6:
 
 - (id)rulerController
 {
-  v2 = [(PKTiledGestureView *)self tiledView];
-  v3 = [v2 rulerController];
+  tiledView = [(PKTiledGestureView *)self tiledView];
+  rulerController = [tiledView rulerController];
 
-  return v3;
+  return rulerController;
 }
 
 - (id)selectionController
 {
-  v2 = [(PKTiledGestureView *)self tiledView];
-  v3 = [v2 selectionController];
+  tiledView = [(PKTiledGestureView *)self tiledView];
+  selectionController = [tiledView selectionController];
 
-  return v3;
+  return selectionController;
 }
 
-- (void)hitTestUpdateEffects_point:(CGPoint)a3 isStylus:(BOOL)a4 isHover:(BOOL)a5
+- (void)hitTestUpdateEffects_point:(CGPoint)effects_point isStylus:(BOOL)stylus isHover:(BOOL)hover
 {
-  if (a4)
+  if (stylus)
   {
-    y = a3.y;
-    x = a3.x;
+    y = effects_point.y;
+    x = effects_point.x;
     [(PKTiledGestureView *)self bounds];
     v12.x = x;
     v12.y = y;
     if (CGRectContainsPoint(v13, v12))
     {
-      v9 = [(PKTiledGestureView *)self tiledView];
-      [v9 _setupPencilShadowViewIfNecessary];
+      tiledView = [(PKTiledGestureView *)self tiledView];
+      [tiledView _setupPencilShadowViewIfNecessary];
     }
 
-    if (!a5)
+    if (!hover)
     {
-      v10 = [(PKTiledGestureView *)self hoverController];
-      [(PKHoverController *)v10 didReceiveNormalTouch:?];
+      hoverController = [(PKTiledGestureView *)self hoverController];
+      [(PKHoverController *)hoverController didReceiveNormalTouch:?];
     }
   }
 }
 
-- (BOOL)hitTestHandwritingInk_point:(CGPoint)a3 isStylus:(BOOL)a4 isHover:(BOOL)a5
+- (BOOL)hitTestHandwritingInk_point:(CGPoint)ink_point isStylus:(BOOL)stylus isHover:(BOOL)hover
 {
-  v7 = [(PKTiledGestureView *)self ink:a3.x];
+  v7 = [(PKTiledGestureView *)self ink:ink_point.x];
   if ([v7 _isHandwritingInk])
   {
-    v8 = a4 & ~a5;
+    v8 = stylus & ~hover;
   }
 
   else
@@ -172,13 +172,13 @@ LABEL_6:
   return v8;
 }
 
-- (BOOL)hitTestHandleScrolling_point:(CGPoint)a3 isStylus:(BOOL)a4 isHover:(BOOL)a5
+- (BOOL)hitTestHandleScrolling_point:(CGPoint)scrolling_point isStylus:(BOOL)stylus isHover:(BOOL)hover
 {
-  v5 = a4;
-  v7 = [(PKTiledGestureView *)self scrollView:a4];
-  v8 = [v7 isDecelerating];
+  stylusCopy = stylus;
+  v7 = [(PKTiledGestureView *)self scrollView:stylus];
+  isDecelerating = [v7 isDecelerating];
 
-  if (v8)
+  if (isDecelerating)
   {
     v9 = os_log_create("com.apple.pencilkit", "");
     v10 = 1;
@@ -195,10 +195,10 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  v13 = [(PKTiledGestureView *)self scrollView];
-  v14 = [v13 _isAnimatingScroll];
+  scrollView = [(PKTiledGestureView *)self scrollView];
+  _isAnimatingScroll = [scrollView _isAnimatingScroll];
 
-  if (v14)
+  if (_isAnimatingScroll)
   {
     v9 = os_log_create("com.apple.pencilkit", "");
     v10 = 1;
@@ -215,22 +215,22 @@ LABEL_17:
     return v10;
   }
 
-  v15 = [(PKTiledGestureView *)self scrollView];
-  v16 = [v15 isDragging];
+  scrollView2 = [(PKTiledGestureView *)self scrollView];
+  isDragging = [scrollView2 isDragging];
 
-  if (v16)
+  if (isDragging)
   {
-    if (v5)
+    if (stylusCopy)
     {
-      v17 = [(PKTiledGestureView *)self scrollView];
-      v18 = [v17 panGestureRecognizer];
-      v19 = [v18 state];
+      scrollView3 = [(PKTiledGestureView *)self scrollView];
+      panGestureRecognizer = [scrollView3 panGestureRecognizer];
+      state = [panGestureRecognizer state];
 
-      if (v19)
+      if (state)
       {
-        v20 = [(PKTiledGestureView *)self scrollView];
-        v21 = [v20 panGestureRecognizer];
-        [v21 setState:4];
+        scrollView4 = [(PKTiledGestureView *)self scrollView];
+        panGestureRecognizer2 = [scrollView4 panGestureRecognizer];
+        [panGestureRecognizer2 setState:4];
 
         v9 = os_log_create("com.apple.pencilkit", "");
         if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
@@ -260,16 +260,16 @@ LABEL_17:
   return 0;
 }
 
-- (BOOL)hitTestSelectionView_point:(CGPoint)a3 withEvent:(id)a4 hit:(id *)a5
+- (BOOL)hitTestSelectionView_point:(CGPoint)view_point withEvent:(id)event hit:(id *)hit
 {
-  y = a3.y;
-  x = a3.x;
-  v9 = a4;
-  v10 = [(PKTiledGestureView *)self selectionController];
-  v11 = v10;
-  if (v10)
+  y = view_point.y;
+  x = view_point.x;
+  eventCopy = event;
+  selectionController = [(PKTiledGestureView *)self selectionController];
+  v11 = selectionController;
+  if (selectionController)
   {
-    v12 = *(v10 + 152);
+    v12 = *(selectionController + 152);
   }
 
   else
@@ -285,14 +285,14 @@ LABEL_17:
   }
 
   [v13 convertPoint:self fromView:{x, y}];
-  v14 = [v13 hitTest:v9 withEvent:?];
+  v14 = [v13 hitTest:eventCopy withEvent:?];
   v15 = v14;
   if (!v14)
   {
     if ([v13 isDragging])
     {
-      v18 = [(PKTiledGestureView *)self tiledView];
-      v19 = [v18 hitAttachment:1 includeStandinAttachment:{x, y}];
+      tiledView = [(PKTiledGestureView *)self tiledView];
+      v19 = [tiledView hitAttachment:1 includeStandinAttachment:{x, y}];
 
       if (v19)
       {
@@ -307,7 +307,7 @@ LABEL_9:
 
   v16 = v14;
 LABEL_6:
-  *a5 = v15;
+  *hit = v15;
 
   v17 = 1;
 LABEL_10:
@@ -315,65 +315,65 @@ LABEL_10:
   return v17;
 }
 
-- (BOOL)hitTestDragEvent_point:(CGPoint)a3 withEvent:(id)a4 hit:(id *)a5
+- (BOOL)hitTestDragEvent_point:(CGPoint)event_point withEvent:(id)event hit:(id *)hit
 {
-  y = a3.y;
-  x = a3.x;
-  v9 = a4;
+  y = event_point.y;
+  x = event_point.x;
+  eventCopy = event;
   NSClassFromString(&cfstr_Uidragevent.isa);
   isKindOfClass = objc_opt_isKindOfClass();
   if (isKindOfClass)
   {
-    v11 = [(PKTiledGestureView *)self tiledView];
-    v12 = [(PKTiledGestureView *)self tiledView];
-    v13 = [v11 hitAttachment:0 includeStandinAttachment:objc_msgSend(v12 expandBottomAttachment:{"_shouldExpandBottomAttachmentForDragAndDrop"), x, y}];
+    tiledView = [(PKTiledGestureView *)self tiledView];
+    tiledView2 = [(PKTiledGestureView *)self tiledView];
+    v13 = [tiledView hitAttachment:0 includeStandinAttachment:objc_msgSend(tiledView2 expandBottomAttachment:{"_shouldExpandBottomAttachmentForDragAndDrop"), x, y}];
 
     if (v13)
     {
-      v14 = [v13 attachmentContainerView];
-      v15 = v14;
-      if (v14 == v13)
+      attachmentContainerView = [v13 attachmentContainerView];
+      v15 = attachmentContainerView;
+      if (attachmentContainerView == v13)
       {
         v18 = v13;
-        *a5 = v13;
+        *hit = v13;
       }
 
       else
       {
-        [v14 convertPoint:self fromView:{x, y}];
-        v16 = [v15 hitTest:v9 withEvent:?];
+        [attachmentContainerView convertPoint:self fromView:{x, y}];
+        v16 = [v15 hitTest:eventCopy withEvent:?];
         v17 = v16;
         if (!v16)
         {
           v16 = v15;
         }
 
-        *a5 = v16;
+        *hit = v16;
       }
     }
 
     else
     {
-      *a5 = 0;
+      *hit = 0;
     }
   }
 
   return isKindOfClass & 1;
 }
 
-- (id)_hitTestAttachmentMiniMenu:(CGPoint)a3
+- (id)_hitTestAttachmentMiniMenu:(CGPoint)menu
 {
-  y = a3.y;
-  x = a3.x;
+  y = menu.y;
+  x = menu.x;
   v21 = *MEMORY[0x1E69E9840];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = [(PKTiledGestureView *)self tiledView];
-  v7 = [v6 visibleAttachments];
+  tiledView = [(PKTiledGestureView *)self tiledView];
+  visibleAttachments = [tiledView visibleAttachments];
 
-  v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v8 = [visibleAttachments countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v8)
   {
     v9 = v8;
@@ -384,7 +384,7 @@ LABEL_10:
       {
         if (*v17 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(visibleAttachments);
         }
 
         v12 = *(*(&v16 + 1) + 8 * i);
@@ -397,7 +397,7 @@ LABEL_10:
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v9 = [visibleAttachments countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v9)
       {
         continue;
@@ -413,19 +413,19 @@ LABEL_11:
   return v14;
 }
 
-- (BOOL)hitTestAttachmentChrome_point:(CGPoint)a3 isStylus:(BOOL)a4 withEvent:(id)a5 hit:(id *)a6
+- (BOOL)hitTestAttachmentChrome_point:(CGPoint)chrome_point isStylus:(BOOL)stylus withEvent:(id)event hit:(id *)hit
 {
-  v7 = a4;
-  y = a3.y;
-  x = a3.x;
+  stylusCopy = stylus;
+  y = chrome_point.y;
+  x = chrome_point.x;
   v34 = *MEMORY[0x1E69E9840];
-  v11 = a5;
+  eventCopy = event;
   v12 = [(PKTiledGestureView *)self _hitTestAttachmentMiniMenu:x, y];
   v13 = v12;
   if (v12)
   {
     v14 = v12;
-    *a6 = v13;
+    *hit = v13;
     v15 = 1;
   }
 
@@ -435,10 +435,10 @@ LABEL_11:
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v16 = [(PKTiledGestureView *)self tiledView];
-    v17 = [v16 visibleAttachments];
+    tiledView = [(PKTiledGestureView *)self tiledView];
+    visibleAttachments = [tiledView visibleAttachments];
 
-    v18 = [v17 countByEnumeratingWithState:&v29 objects:v33 count:16];
+    v18 = [visibleAttachments countByEnumeratingWithState:&v29 objects:v33 count:16];
     if (v18)
     {
       v19 = v18;
@@ -449,21 +449,21 @@ LABEL_11:
         {
           if (*v30 != v20)
           {
-            objc_enumerationMutation(v17);
+            objc_enumerationMutation(visibleAttachments);
           }
 
           v22 = *(*(&v29 + 1) + 8 * i);
           [v22 convertPoint:self fromView:{x, y}];
           v24 = v23;
           v26 = v25;
-          if ([v22 hitChrome:v7 isStylus:v11 event:?])
+          if ([v22 hitChrome:stylusCopy isStylus:eventCopy event:?])
           {
-            *a6 = 0;
+            *hit = 0;
             v15 = 1;
             goto LABEL_15;
           }
 
-          v27 = [v22 hitTest:v11 withEvent:{v24, v26}];
+          v27 = [v22 hitTest:eventCopy withEvent:{v24, v26}];
 
           if (v27)
           {
@@ -471,7 +471,7 @@ LABEL_11:
           }
         }
 
-        v19 = [v17 countByEnumeratingWithState:&v29 objects:v33 count:16];
+        v19 = [visibleAttachments countByEnumeratingWithState:&v29 objects:v33 count:16];
         v15 = 0;
         if (v19)
         {
@@ -494,13 +494,13 @@ LABEL_15:
   return v15;
 }
 
-- (BOOL)hitTestDataDetector_point:(CGPoint)a3 isStylus:(BOOL)a4 withEvent:(id)a5 hit:(id *)a6
+- (BOOL)hitTestDataDetector_point:(CGPoint)detector_point isStylus:(BOOL)stylus withEvent:(id)event hit:(id *)hit
 {
-  y = a3.y;
-  x = a3.x;
+  y = detector_point.y;
+  x = detector_point.x;
   v27 = *MEMORY[0x1E69E9840];
-  v11 = a5;
-  if (a4)
+  eventCopy = event;
+  if (stylus)
   {
     v12 = 0;
   }
@@ -511,10 +511,10 @@ LABEL_15:
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v13 = [(PKTiledGestureView *)self tiledView];
-    v14 = [v13 visibleAttachments];
+    tiledView = [(PKTiledGestureView *)self tiledView];
+    visibleAttachments = [tiledView visibleAttachments];
 
-    v15 = [v14 countByEnumeratingWithState:&v22 objects:v26 count:16];
+    v15 = [visibleAttachments countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v15)
     {
       v16 = v15;
@@ -525,13 +525,13 @@ LABEL_15:
         {
           if (*v23 != v17)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(visibleAttachments);
           }
 
           v19 = *(*(&v22 + 1) + 8 * i);
           [v19 convertPoint:self fromView:{x, y}];
           v20 = [v19 inlineViewAtPoint:?];
-          *a6 = v20;
+          *hit = v20;
           if (v20)
           {
             v12 = 1;
@@ -539,7 +539,7 @@ LABEL_15:
           }
         }
 
-        v16 = [v14 countByEnumeratingWithState:&v22 objects:v26 count:16];
+        v16 = [visibleAttachments countByEnumeratingWithState:&v22 objects:v26 count:16];
         if (v16)
         {
           continue;
@@ -556,20 +556,20 @@ LABEL_13:
   return v12;
 }
 
-- (BOOL)_shouldSelectionBeginAtPoint:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)_shouldSelectionBeginAtPoint:(CGPoint)point withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(PKTiledGestureView *)self selectionController];
-  v9 = [(PKSelectionController *)v8 selectionInteraction];
-  v10 = [v9 isEnabled];
+  y = point.y;
+  x = point.x;
+  eventCopy = event;
+  selectionController = [(PKTiledGestureView *)self selectionController];
+  selectionInteraction = [(PKSelectionController *)selectionController selectionInteraction];
+  isEnabled = [selectionInteraction isEnabled];
 
-  if (v10)
+  if (isEnabled)
   {
-    v11 = [(PKTiledGestureView *)self selectionController];
-    v12 = [(PKSelectionController *)v11 selectionInteraction];
-    v13 = [v12 _selectionInteractionShouldBeginAtPoint:v7 forEvent:0 orGestureRecognizer:{x, y}];
+    selectionController2 = [(PKTiledGestureView *)self selectionController];
+    selectionInteraction2 = [(PKSelectionController *)selectionController2 selectionInteraction];
+    v13 = [selectionInteraction2 _selectionInteractionShouldBeginAtPoint:eventCopy forEvent:0 orGestureRecognizer:{x, y}];
   }
 
   else
@@ -580,20 +580,20 @@ LABEL_13:
   return v13 & 1;
 }
 
-- (BOOL)_shouldForwardSelectionAtPoint:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)_shouldForwardSelectionAtPoint:(CGPoint)point withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(PKTiledGestureView *)self selectionController];
-  v9 = [(PKSelectionController *)v8 selectionInteraction];
-  v10 = [v9 isEnabled];
+  y = point.y;
+  x = point.x;
+  eventCopy = event;
+  selectionController = [(PKTiledGestureView *)self selectionController];
+  selectionInteraction = [(PKSelectionController *)selectionController selectionInteraction];
+  isEnabled = [selectionInteraction isEnabled];
 
-  if (v10)
+  if (isEnabled)
   {
-    v11 = [(PKTiledGestureView *)self selectionController];
-    v12 = [(PKSelectionController *)v11 selectionInteraction];
-    v13 = [v12 _selectionInteractionShouldForwardAtPoint:v7 forEvent:{x, y}];
+    selectionController2 = [(PKTiledGestureView *)self selectionController];
+    selectionInteraction2 = [(PKSelectionController *)selectionController2 selectionInteraction];
+    v13 = [selectionInteraction2 _selectionInteractionShouldForwardAtPoint:eventCopy forEvent:{x, y}];
   }
 
   else
@@ -604,24 +604,24 @@ LABEL_13:
   return v13;
 }
 
-- (BOOL)hitTestSelectionGestures_point:(CGPoint)a3 isStylus:(BOOL)a4 isHover:(BOOL)a5 withEvent:(id)a6 hit:(id *)a7
+- (BOOL)hitTestSelectionGestures_point:(CGPoint)gestures_point isStylus:(BOOL)stylus isHover:(BOOL)hover withEvent:(id)event hit:(id *)hit
 {
-  v9 = a4;
-  y = a3.y;
-  x = a3.x;
-  v13 = a6;
-  if (a5 || ![(PKTiledGestureView *)self _shouldSelectionBeginAtPoint:v13 withEvent:x, y])
+  stylusCopy = stylus;
+  y = gestures_point.y;
+  x = gestures_point.x;
+  eventCopy = event;
+  if (hover || ![(PKTiledGestureView *)self _shouldSelectionBeginAtPoint:eventCopy withEvent:x, y])
   {
     v21 = 0;
   }
 
   else
   {
-    v14 = [(PKTiledGestureView *)self selectionController];
-    v15 = v14;
-    if (v14)
+    selectionController = [(PKTiledGestureView *)self selectionController];
+    v15 = selectionController;
+    if (selectionController)
     {
-      v16 = *(v14 + 160);
+      v16 = *(selectionController + 160);
     }
 
     else
@@ -632,27 +632,27 @@ LABEL_13:
     v17 = v16;
 
     v18 = [(PKTiledGestureView *)self ink];
-    v19 = [v18 _isLassoInk];
+    _isLassoInk = [v18 _isLassoInk];
 
-    if (v19)
+    if (_isLassoInk)
     {
       v20 = 0;
     }
 
     else
     {
-      v22 = [(PKTiledGestureView *)self tiledView];
-      v20 = ([v22 allowsFingerDrawing] | v9) ^ 1;
+      tiledView = [(PKTiledGestureView *)self tiledView];
+      v20 = ([tiledView allowsFingerDrawing] | stylusCopy) ^ 1;
     }
 
-    v23 = [(PKTiledGestureView *)self tiledView];
-    v24 = [v23 hitAttachment:1 includeStandinAttachment:1 expandBottomAttachment:{x, y}];
+    tiledView2 = [(PKTiledGestureView *)self tiledView];
+    v24 = [tiledView2 hitAttachment:1 includeStandinAttachment:1 expandBottomAttachment:{x, y}];
     if (v24)
     {
-      v25 = [(PKTiledGestureView *)self selectionController];
-      if (v25)
+      selectionController2 = [(PKTiledGestureView *)self selectionController];
+      if (selectionController2)
       {
-        v26 = v25[16] != 0;
+        v26 = selectionController2[16] != 0;
       }
 
       else
@@ -666,16 +666,16 @@ LABEL_13:
       v26 = 0;
     }
 
-    v27 = [(PKTiledGestureView *)self tiledView];
-    v28 = [v27 hitAttachment:0 includeStandinAttachment:0 expandBottomAttachment:{x, y}];
+    tiledView3 = [(PKTiledGestureView *)self tiledView];
+    v28 = [tiledView3 hitAttachment:0 includeStandinAttachment:0 expandBottomAttachment:{x, y}];
     v29 = v28 != 0;
 
     v21 = 0;
-    if (v17 && ((v20 | v19) & 1) != 0 && (v29 || v26))
+    if (v17 && ((v20 | _isLassoInk) & 1) != 0 && (v29 || v26))
     {
       [v17 convertPoint:self fromView:{x, y}];
-      v30 = [v17 hitTest:v13 withEvent:?];
-      *a7 = v30;
+      v30 = [v17 hitTest:eventCopy withEvent:?];
+      *hit = v30;
       if (v30)
       {
         v21 = -1;
@@ -691,32 +691,32 @@ LABEL_13:
   return v21 & 1;
 }
 
-- (BOOL)hitTestDelegateSelection_point:(CGPoint)a3 isHover:(BOOL)a4 withEvent:(id)a5 hit:(id *)a6
+- (BOOL)hitTestDelegateSelection_point:(CGPoint)selection_point isHover:(BOOL)hover withEvent:(id)event hit:(id *)hit
 {
-  y = a3.y;
-  x = a3.x;
-  v10 = a5;
-  if (![(PKTiledGestureView *)self _shouldForwardSelectionAtPoint:v10 withEvent:x, y])
+  y = selection_point.y;
+  x = selection_point.x;
+  eventCopy = event;
+  if (![(PKTiledGestureView *)self _shouldForwardSelectionAtPoint:eventCopy withEvent:x, y])
   {
     goto LABEL_5;
   }
 
-  v11 = [(PKTiledGestureView *)self tiledView];
+  tiledView = [(PKTiledGestureView *)self tiledView];
   v12 = 1;
-  v13 = [v11 hitAttachment:1 includeStandinAttachment:{x, y}];
+  v13 = [tiledView hitAttachment:1 includeStandinAttachment:{x, y}];
 
-  v14 = [v13 attachmentContainerView];
-  [v14 convertPoint:self fromView:{x, y}];
-  v15 = [v14 hitTest:v10 withEvent:?];
+  attachmentContainerView = [v13 attachmentContainerView];
+  [attachmentContainerView convertPoint:self fromView:{x, y}];
+  v15 = [attachmentContainerView hitTest:eventCopy withEvent:?];
   v16 = v15;
   if (!v15)
   {
-    v15 = v14;
+    v15 = attachmentContainerView;
   }
 
-  *a6 = v15;
+  *hit = v15;
 
-  v17 = *a6;
+  v17 = *hit;
   if (!v17)
   {
 LABEL_5:
@@ -726,72 +726,72 @@ LABEL_5:
   return v12;
 }
 
-- (BOOL)hitTestClearSelectionIfItExists_point:(CGPoint)a3 isHover:(BOOL)a4 withEvent:(id)a5 hit:(id *)a6
+- (BOOL)hitTestClearSelectionIfItExists_point:(CGPoint)exists_point isHover:(BOOL)hover withEvent:(id)event hit:(id *)hit
 {
-  v10 = [(PKTiledGestureView *)self selectionController:a3.x];
+  v10 = [(PKTiledGestureView *)self selectionController:exists_point.x];
   if (([(PKSelectionController *)v10 hasStrokesOrElementsSelection]& 1) == 0)
   {
 
     return 0;
   }
 
-  v11 = [(PKTiledGestureView *)self tiledView];
-  v12 = [v11 selectionInteraction];
-  v13 = [v12 isEnabled];
+  tiledView = [(PKTiledGestureView *)self tiledView];
+  selectionInteraction = [tiledView selectionInteraction];
+  isEnabled = [selectionInteraction isEnabled];
 
-  if (!v13)
+  if (!isEnabled)
   {
     return 0;
   }
 
-  if (a5 && !a4)
+  if (event && !hover)
   {
-    v14 = [(PKTiledGestureView *)self selectionController];
-    v15 = v14;
-    if (v14)
+    selectionController = [(PKTiledGestureView *)self selectionController];
+    v15 = selectionController;
+    if (selectionController)
     {
-      [(PKSelectionController *)v14 clearSelectionIfNecessaryAnimated:0 withCompletion:?];
+      [(PKSelectionController *)selectionController clearSelectionIfNecessaryAnimated:0 withCompletion:?];
     }
 
-    v16 = [(PKTiledGestureView *)self selectionController];
-    [(PKSelectionController *)v16 clearExternalSelectionIfNecessary];
+    selectionController2 = [(PKTiledGestureView *)self selectionController];
+    [(PKSelectionController *)selectionController2 clearExternalSelectionIfNecessary];
   }
 
-  *a6 = 0;
+  *hit = 0;
   return 1;
 }
 
-- (BOOL)hitTestPencilStickiness_point:(CGPoint)a3 isStylus:(BOOL)a4 isHover:(BOOL)a5 withEvent:(id)a6 hit:(id *)a7
+- (BOOL)hitTestPencilStickiness_point:(CGPoint)stickiness_point isStylus:(BOOL)stylus isHover:(BOOL)hover withEvent:(id)event hit:(id *)hit
 {
-  y = a3.y;
-  x = a3.x;
-  v14 = a6;
-  v15 = [(PKTiledGestureView *)self tiledView];
-  if (![v15 allowsFingerDrawing])
+  y = stickiness_point.y;
+  x = stickiness_point.x;
+  eventCopy = event;
+  tiledView = [(PKTiledGestureView *)self tiledView];
+  if (![tiledView allowsFingerDrawing])
   {
 
-    if (a4)
+    if (stylus)
     {
       v17 = 0;
       goto LABEL_21;
     }
 
 LABEL_7:
-    v18 = [(PKTiledGestureView *)self tiledView];
-    v19 = [v18 hitAttachment:1 includeStandinAttachment:{x, y}];
+    tiledView2 = [(PKTiledGestureView *)self tiledView];
+    v19 = [tiledView2 hitAttachment:1 includeStandinAttachment:{x, y}];
 
-    v20 = [v19 attachmentContainerView];
-    v21 = [v19 isAtEndOfDocument];
-    if ((v21 & 1) == 0)
+    attachmentContainerView = [v19 attachmentContainerView];
+    isAtEndOfDocument = [v19 isAtEndOfDocument];
+    if ((isAtEndOfDocument & 1) == 0)
     {
-      v7 = [(PKTiledGestureView *)self tiledView];
-      v22 = [v7 standInAttachmentView];
-      v8 = v22;
-      if (v19 != v22)
+      tiledView3 = [(PKTiledGestureView *)self tiledView];
+      standInAttachmentView = [tiledView3 standInAttachmentView];
+      v8 = standInAttachmentView;
+      if (v19 != standInAttachmentView)
       {
 
 LABEL_10:
-        *a7 = 0;
+        *hit = 0;
 LABEL_20:
 
         v17 = 1;
@@ -799,19 +799,19 @@ LABEL_20:
       }
     }
 
-    if (([v19 isFirstResponder] & 1) != 0 || objc_msgSend(v20, "isFirstResponder"))
+    if (([v19 isFirstResponder] & 1) != 0 || objc_msgSend(attachmentContainerView, "isFirstResponder"))
     {
-      if ((v21 & 1) == 0)
+      if ((isAtEndOfDocument & 1) == 0)
       {
       }
     }
 
     else
     {
-      v27 = [(PKTiledGestureView *)self window];
-      v28 = [PKToolPicker isActiveToolPickerVisibleForWindow:v27];
+      window = [(PKTiledGestureView *)self window];
+      v28 = [PKToolPicker isActiveToolPickerVisibleForWindow:window];
 
-      if (v21)
+      if (isAtEndOfDocument)
       {
         if (!v28)
         {
@@ -829,33 +829,33 @@ LABEL_20:
       }
     }
 
-    if (v20 == v19)
+    if (attachmentContainerView == v19)
     {
       v25 = v19;
-      *a7 = v19;
+      *hit = v19;
     }
 
     else
     {
-      [v20 convertPoint:self fromView:{x, y}];
-      v23 = [v20 hitTest:v14 withEvent:?];
+      [attachmentContainerView convertPoint:self fromView:{x, y}];
+      v23 = [attachmentContainerView hitTest:eventCopy withEvent:?];
       v24 = v23;
       if (!v23)
       {
-        v23 = v20;
+        v23 = attachmentContainerView;
       }
 
-      *a7 = v23;
+      *hit = v23;
     }
 
     goto LABEL_20;
   }
 
-  v7 = [(PKTiledGestureView *)self tiledView];
-  v16 = [v7 isReadOnlyView];
+  tiledView3 = [(PKTiledGestureView *)self tiledView];
+  isReadOnlyView = [tiledView3 isReadOnlyView];
 
   v17 = 0;
-  if (v16 && !a4)
+  if (isReadOnlyView && !stylus)
   {
     goto LABEL_7;
   }
@@ -865,12 +865,12 @@ LABEL_21:
   return v17;
 }
 
-- (BOOL)hitTestInsertNewAttachments_point:(CGPoint)a3 isStylus:(BOOL)a4 isHover:(BOOL)a5 withEvent:(id)a6 hit:(id *)a7
+- (BOOL)hitTestInsertNewAttachments_point:(CGPoint)attachments_point isStylus:(BOOL)stylus isHover:(BOOL)hover withEvent:(id)event hit:(id *)hit
 {
-  y = a3.y;
-  x = a3.x;
-  v12 = a6;
-  if (!a5)
+  y = attachments_point.y;
+  x = attachments_point.x;
+  eventCopy = event;
+  if (!hover)
   {
     v16 = [(PKTiledGestureView *)self ink];
     if ([v16 _isHandwritingInk])
@@ -879,15 +879,15 @@ LABEL_21:
 
     else
     {
-      v17 = [(PKTiledGestureView *)self tiledView];
-      v18 = [v17 hitAttachment:{x, y}];
+      tiledView = [(PKTiledGestureView *)self tiledView];
+      v18 = [tiledView hitAttachment:{x, y}];
 
       if (!v18)
       {
-        v19 = [(PKTiledGestureView *)self tiledView];
-        v20 = [(PKTiledGestureView *)self scrollView];
-        [v20 convertPoint:self fromView:{x, y}];
-        v21 = [v19 insertAttachmentIfInBlankSpace:?];
+        tiledView2 = [(PKTiledGestureView *)self tiledView];
+        scrollView = [(PKTiledGestureView *)self scrollView];
+        [scrollView convertPoint:self fromView:{x, y}];
+        v21 = [tiledView2 insertAttachmentIfInBlankSpace:?];
 
         if ((v21 & 1) == 0)
         {
@@ -901,8 +901,8 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v13 = [(PKTiledGestureView *)self tiledView];
-  v14 = [v13 hitAttachment:1 includeStandinAttachment:{x, y}];
+  tiledView3 = [(PKTiledGestureView *)self tiledView];
+  v14 = [tiledView3 hitAttachment:1 includeStandinAttachment:{x, y}];
 
   if (v14)
   {
@@ -910,42 +910,42 @@ LABEL_8:
   }
 
 LABEL_3:
-  *a7 = 0;
+  *hit = 0;
   v15 = 1;
 LABEL_9:
 
   return v15;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = v7;
-  if (!v7 || ![v7 _hidEvent])
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  v8 = eventCopy;
+  if (!eventCopy || ![eventCopy _hidEvent])
   {
     v12 = 0;
     goto LABEL_13;
   }
 
-  v9 = [v8 PK_isEventFromPencil];
-  v10 = [v8 type];
-  v11 = v10 == 11;
-  [(PKTiledGestureView *)self hitTestUpdateEffects_point:v9 isStylus:v11 isHover:x, y];
+  pK_isEventFromPencil = [v8 PK_isEventFromPencil];
+  type = [v8 type];
+  v11 = type == 11;
+  [(PKTiledGestureView *)self hitTestUpdateEffects_point:pK_isEventFromPencil isStylus:v11 isHover:x, y];
   [(PKTiledGestureView *)self _recordDrawingStatisticsForHitPoint:v8 withEvent:x, y];
-  if (![(PKTiledGestureView *)self hitTestHandwritingInk_point:v9 isStylus:v11 isHover:x, y]&& ![(PKTiledGestureView *)self hitTestHandleScrolling_point:v9 isStylus:v10 == 11 isHover:x, y])
+  if (![(PKTiledGestureView *)self hitTestHandwritingInk_point:pK_isEventFromPencil isStylus:v11 isHover:x, y]&& ![(PKTiledGestureView *)self hitTestHandleScrolling_point:pK_isEventFromPencil isStylus:type == 11 isHover:x, y])
   {
     v37 = 0;
     v14 = [(PKTiledGestureView *)self hitTestSelectionView_point:v8 withEvent:&v37 hit:x, y];
     v15 = v37;
-    v16 = v15;
+    selfCopy = v15;
     if (v14)
     {
 LABEL_8:
-      v13 = v16;
+      v13 = selfCopy;
 LABEL_11:
-      v12 = v16;
+      v12 = selfCopy;
       goto LABEL_12;
     }
 
@@ -956,71 +956,71 @@ LABEL_11:
     if (!v17)
     {
       v35 = v13;
-      v19 = [(PKTiledGestureView *)self hitTestAttachmentChrome_point:v9 isStylus:v8 withEvent:&v35 hit:x, y];
-      v16 = v35;
+      v19 = [(PKTiledGestureView *)self hitTestAttachmentChrome_point:pK_isEventFromPencil isStylus:v8 withEvent:&v35 hit:x, y];
+      selfCopy = v35;
 
       if (v19)
       {
         goto LABEL_8;
       }
 
-      v34 = v16;
-      v20 = [(PKTiledGestureView *)self hitTestDataDetector_point:v9 isStylus:v8 withEvent:&v34 hit:x, y];
+      v34 = selfCopy;
+      v20 = [(PKTiledGestureView *)self hitTestDataDetector_point:pK_isEventFromPencil isStylus:v8 withEvent:&v34 hit:x, y];
       v13 = v34;
 
       if (!v20)
       {
         v33 = v13;
-        v21 = [(PKTiledGestureView *)self hitTestSelectionGestures_point:v9 isStylus:v10 == 11 isHover:v8 withEvent:&v33 hit:x, y];
-        v16 = v33;
+        v21 = [(PKTiledGestureView *)self hitTestSelectionGestures_point:pK_isEventFromPencil isStylus:type == 11 isHover:v8 withEvent:&v33 hit:x, y];
+        selfCopy = v33;
 
         if (v21)
         {
           goto LABEL_8;
         }
 
-        v32 = v16;
-        v22 = [(PKTiledGestureView *)self hitTestDelegateSelection_point:v10 == 11 isHover:v8 withEvent:&v32 hit:x, y];
+        v32 = selfCopy;
+        v22 = [(PKTiledGestureView *)self hitTestDelegateSelection_point:type == 11 isHover:v8 withEvent:&v32 hit:x, y];
         v13 = v32;
 
         if (!v22)
         {
           v31 = v13;
-          v23 = [(PKTiledGestureView *)self hitTestClearSelectionIfItExists_point:v10 == 11 isHover:v8 withEvent:&v31 hit:x, y];
-          v16 = v31;
+          v23 = [(PKTiledGestureView *)self hitTestClearSelectionIfItExists_point:type == 11 isHover:v8 withEvent:&v31 hit:x, y];
+          selfCopy = v31;
 
           if (v23)
           {
             goto LABEL_8;
           }
 
-          v30 = v16;
-          v24 = [(PKTiledGestureView *)self hitTestPencilStickiness_point:v9 isStylus:v10 == 11 isHover:v8 withEvent:&v30 hit:x, y];
+          v30 = selfCopy;
+          v24 = [(PKTiledGestureView *)self hitTestPencilStickiness_point:pK_isEventFromPencil isStylus:type == 11 isHover:v8 withEvent:&v30 hit:x, y];
           v13 = v30;
 
           if (!v24)
           {
-            v25 = [(PKTiledGestureView *)self tiledView];
-            v26 = [v25 isReadOnlyView];
+            tiledView = [(PKTiledGestureView *)self tiledView];
+            isReadOnlyView = [tiledView isReadOnlyView];
 
-            if (v26)
+            if (isReadOnlyView)
             {
               v12 = 0;
               goto LABEL_12;
             }
 
             v29 = v13;
-            v27 = [(PKTiledGestureView *)self hitTestInsertNewAttachments_point:v9 isStylus:v10 == 11 isHover:v8 withEvent:&v29 hit:x, y];
+            v27 = [(PKTiledGestureView *)self hitTestInsertNewAttachments_point:pK_isEventFromPencil isStylus:type == 11 isHover:v8 withEvent:&v29 hit:x, y];
             v28 = v29;
 
             if (v27)
             {
-              v16 = v28;
+              selfCopy = v28;
             }
 
             else
             {
-              v16 = self;
+              selfCopy = self;
             }
 
             v13 = v28;
@@ -1030,7 +1030,7 @@ LABEL_11:
       }
     }
 
-    v16 = v13;
+    selfCopy = v13;
     goto LABEL_11;
   }
 
@@ -1043,37 +1043,37 @@ LABEL_13:
   return v12;
 }
 
-- (void)_recordDrawingStatisticsForHitPoint:(CGPoint)a3 withEvent:(id)a4
+- (void)_recordDrawingStatisticsForHitPoint:(CGPoint)point withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v14 = a4;
-  if ([v14 PK_isEventFromPencil])
+  y = point.y;
+  x = point.x;
+  eventCopy = event;
+  if ([eventCopy PK_isEventFromPencil])
   {
-    v7 = [(PKTiledGestureView *)self tiledView];
-    v8 = [v7 hitAttachment:1 includeStandinAttachment:0 expandBottomAttachment:{x, y}];
+    tiledView = [(PKTiledGestureView *)self tiledView];
+    v8 = [tiledView hitAttachment:1 includeStandinAttachment:0 expandBottomAttachment:{x, y}];
 
     v9 = [(PKTiledGestureView *)self ink];
-    v10 = [v9 _isHandwritingInk];
+    _isHandwritingInk = [v9 _isHandwritingInk];
 
-    if (v10 && v8)
+    if (_isHandwritingInk && v8)
     {
-      v11 = [(PKTiledGestureView *)self drawingPaletteStatistics];
-      [v14 timestamp];
-      [v11 recordHandwritingToolUsedOverDrawingAttachmentWithTimestamp:?];
+      drawingPaletteStatistics = [(PKTiledGestureView *)self drawingPaletteStatistics];
+      [eventCopy timestamp];
+      [drawingPaletteStatistics recordHandwritingToolUsedOverDrawingAttachmentWithTimestamp:?];
 LABEL_8:
 
       goto LABEL_9;
     }
 
     v12 = [(PKTiledGestureView *)self ink];
-    v13 = [v12 _isStrokeGeneratingInk];
+    _isStrokeGeneratingInk = [v12 _isStrokeGeneratingInk];
 
-    if (v13 && !v8)
+    if (_isStrokeGeneratingInk && !v8)
     {
-      v11 = [(PKTiledGestureView *)self drawingPaletteStatistics];
-      [v14 timestamp];
-      [v11 recordInkingToolUsedOverNonDrawingAttachmentWithTimestamp:?];
+      drawingPaletteStatistics = [(PKTiledGestureView *)self drawingPaletteStatistics];
+      [eventCopy timestamp];
+      [drawingPaletteStatistics recordInkingToolUsedOverNonDrawingAttachmentWithTimestamp:?];
       goto LABEL_8;
     }
   }

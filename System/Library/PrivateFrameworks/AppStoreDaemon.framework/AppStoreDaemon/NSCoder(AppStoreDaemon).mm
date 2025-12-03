@@ -12,7 +12,7 @@
   v21 = *MEMORY[0x1E69E9840];
   v4 = a3;
   v14 = 0;
-  v5 = [a1 _asd_decodeJSONObjectForKey:v4 error:&v14];
+  v5 = [self _asd_decodeJSONObjectForKey:v4 error:&v14];
   v6 = v14;
   if (v6)
   {
@@ -53,7 +53,7 @@
   v19 = *MEMORY[0x1E69E9840];
   v6 = a4;
   v12 = 0;
-  [a1 _asd_encodeJSONObject:a3 forKey:v6 error:&v12];
+  [self _asd_encodeJSONObject:a3 forKey:v6 error:&v12];
   v7 = v12;
   if (v7)
   {
@@ -78,7 +78,7 @@
 - (id)_asd_decodeJSONObjectForKey:()AppStoreDaemon error:
 {
   v6 = a3;
-  v7 = [a1 decodeObjectOfClass:objc_opt_class() forKey:v6];
+  v7 = [self decodeObjectOfClass:objc_opt_class() forKey:v6];
 
   if (v7)
   {
@@ -104,7 +104,7 @@
     v11 = v10 != 0;
     if (v10)
     {
-      [a1 encodeObject:v10 forKey:v9];
+      [self encodeObject:v10 forKey:v9];
     }
   }
 

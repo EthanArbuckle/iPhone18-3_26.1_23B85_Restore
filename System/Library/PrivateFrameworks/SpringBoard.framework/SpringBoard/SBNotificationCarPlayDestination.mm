@@ -1,61 +1,61 @@
 @interface SBNotificationCarPlayDestination
 - (BOOL)_inCallOrFaceTime;
-- (BOOL)_notificationRequestShouldShowModalSubActions:(id)a3;
-- (BOOL)_notificationRequestSupportsSubActions:(id)a3;
-- (BOOL)_setSuspended:(BOOL)a3 forPresentingAlertControllerForPresentable:(id)a4;
-- (BOOL)_shouldAnnounceNotificationForActiveAVSession:(id)a3;
-- (BOOL)_shouldAnnounceNotificationRequest:(id)a3;
-- (BOOL)_shouldDeferPostingNotificationRequestForAnnounce:(id)a3;
-- (BOOL)presentableViewControllerClosesByDefault:(id)a3;
+- (BOOL)_notificationRequestShouldShowModalSubActions:(id)actions;
+- (BOOL)_notificationRequestSupportsSubActions:(id)actions;
+- (BOOL)_setSuspended:(BOOL)suspended forPresentingAlertControllerForPresentable:(id)presentable;
+- (BOOL)_shouldAnnounceNotificationForActiveAVSession:(id)session;
+- (BOOL)_shouldAnnounceNotificationRequest:(id)request;
+- (BOOL)_shouldDeferPostingNotificationRequestForAnnounce:(id)announce;
+- (BOOL)presentableViewControllerClosesByDefault:(id)default;
 - (NCCarPlayBannerSource)_carPlayBannerSource;
 - (NCNotificationAlertDestinationDelegate)delegate;
 - (SBNCAlertingController)alertingController;
 - (SBNotificationCarPlayDestination)init;
-- (id)_actionForNotificationRequest:(id)a3;
-- (id)_allNotificationActionsForNotificationRequest:(id)a3;
+- (id)_actionForNotificationRequest:(id)request;
+- (id)_allNotificationActionsForNotificationRequest:(id)request;
 - (id)_announcementStateObserver;
 - (id)_appPolicyEvaluator;
-- (id)_bulletinForNotificationRequest:(id)a3;
-- (id)_closeNotificationActionForNotificationRequest:(id)a3;
-- (id)_ignoreActionForNotificationRequest:(id)a3;
-- (id)_newPresentableForNotificationRequest:(id)a3 layoutDescription:(id)a4;
-- (id)_notificationRequestForAnnounceWithIdentifier:(id)a3;
-- (id)_policyForApp:(id)a3;
-- (id)_presentablesWithRequestIdentifier:(id)a3;
-- (id)_removePresentable:(id)a3;
-- (id)_subActionLabelsForNotificationRequest:(id)a3;
-- (id)_subActionsForNotificationRequest:(id)a3;
-- (id)_supplementaryActionsForNotificationRequest:(id)a3;
-- (id)keyWindowForScreen:(id)a3;
-- (int64_t)_announceDeactivationReasonForBannerRevocationReason:(id)a3;
-- (int64_t)_defaultActionTypeForNotificationRequest:(id)a3;
-- (int64_t)_effectiveDefaultActionTypeForNotificationRequest:(id)a3;
-- (void)_addPresentable:(id)a3;
+- (id)_bulletinForNotificationRequest:(id)request;
+- (id)_closeNotificationActionForNotificationRequest:(id)request;
+- (id)_ignoreActionForNotificationRequest:(id)request;
+- (id)_newPresentableForNotificationRequest:(id)request layoutDescription:(id)description;
+- (id)_notificationRequestForAnnounceWithIdentifier:(id)identifier;
+- (id)_policyForApp:(id)app;
+- (id)_presentablesWithRequestIdentifier:(id)identifier;
+- (id)_removePresentable:(id)presentable;
+- (id)_subActionLabelsForNotificationRequest:(id)request;
+- (id)_subActionsForNotificationRequest:(id)request;
+- (id)_supplementaryActionsForNotificationRequest:(id)request;
+- (id)keyWindowForScreen:(id)screen;
+- (int64_t)_announceDeactivationReasonForBannerRevocationReason:(id)reason;
+- (int64_t)_defaultActionTypeForNotificationRequest:(id)request;
+- (int64_t)_effectiveDefaultActionTypeForNotificationRequest:(id)request;
+- (void)_addPresentable:(id)presentable;
 - (void)_callOrFaceTimeStateChanged;
-- (void)_cancelAnnounceForNotificationRequest:(id)a3 withReason:(int64_t)a4 deactivateAnnounce:(BOOL)a5;
+- (void)_cancelAnnounceForNotificationRequest:(id)request withReason:(int64_t)reason deactivateAnnounce:(BOOL)announce;
 - (void)_clearNotificationRequestPendingAnnounceDeactivationIfNecessary;
-- (void)_flushAnnounceNotificationRequestsShouldAnnounce:(BOOL)a3;
+- (void)_flushAnnounceNotificationRequestsShouldAnnounce:(BOOL)announce;
 - (void)_flushNotificationRequestsPendingAnnounce;
 - (void)_invalidateAnnounceTimeoutTimer;
-- (void)_modifyNotificationRequest:(id)a3 inStore:(id)a4;
-- (void)_postNotificationRequest:(id)a3 shouldAnnounce:(BOOL)a4;
-- (void)_queueNotificationRequestWhileAnnouncing:(id)a3;
-- (void)_requestAnnounceForNotificationRequest:(id)a3;
-- (void)_setNotificationRequestCurrentlyAnnouncing:(id)a3;
+- (void)_modifyNotificationRequest:(id)request inStore:(id)store;
+- (void)_postNotificationRequest:(id)request shouldAnnounce:(BOOL)announce;
+- (void)_queueNotificationRequestWhileAnnouncing:(id)announcing;
+- (void)_requestAnnounceForNotificationRequest:(id)request;
+- (void)_setNotificationRequestCurrentlyAnnouncing:(id)announcing;
 - (void)_startAnnounceTimeoutTimer;
-- (void)_voicePromptStyleChanged:(id)a3;
-- (void)_withdrawNotificationRequest:(id)a3 inStore:(id)a4;
-- (void)bannerHostDidBecomeAvailableForMonitorListener:(id)a3;
-- (void)bannerHostDidBecomeUnavailableForMonitorListener:(id)a3;
+- (void)_voicePromptStyleChanged:(id)changed;
+- (void)_withdrawNotificationRequest:(id)request inStore:(id)store;
+- (void)bannerHostDidBecomeAvailableForMonitorListener:(id)listener;
+- (void)bannerHostDidBecomeUnavailableForMonitorListener:(id)listener;
 - (void)dealloc;
-- (void)didCancelBannerOfPresentableViewController:(id)a3 reason:(id)a4;
-- (void)didSelectBannerOfPresentableViewController:(id)a3;
-- (void)modifyNotificationRequest:(id)a3;
-- (void)notificationAnnouncementObserver:(id)a3 announcementSpeakingStateDidUpdate:(int64_t)a4 forNotificationRequestIdentifiers:(id)a5;
-- (void)postNotificationRequest:(id)a3;
-- (void)presentableDidDisappearAsBanner:(id)a3 withReason:(id)a4;
-- (void)presentableWillAppearAsBanner:(id)a3;
-- (void)withdrawNotificationRequest:(id)a3;
+- (void)didCancelBannerOfPresentableViewController:(id)controller reason:(id)reason;
+- (void)didSelectBannerOfPresentableViewController:(id)controller;
+- (void)modifyNotificationRequest:(id)request;
+- (void)notificationAnnouncementObserver:(id)observer announcementSpeakingStateDidUpdate:(int64_t)update forNotificationRequestIdentifiers:(id)identifiers;
+- (void)postNotificationRequest:(id)request;
+- (void)presentableDidDisappearAsBanner:(id)banner withReason:(id)reason;
+- (void)presentableWillAppearAsBanner:(id)banner;
+- (void)withdrawNotificationRequest:(id)request;
 @end
 
 @implementation SBNotificationCarPlayDestination
@@ -88,16 +88,16 @@
   v2 = +[SBTelephonyManager sharedTelephonyManager];
   if ([v2 inCall])
   {
-    v3 = 1;
+    inFaceTime = 1;
   }
 
   else
   {
     v4 = +[SBConferenceManager sharedInstance];
-    v3 = [v4 inFaceTime];
+    inFaceTime = [v4 inFaceTime];
   }
 
-  return v3;
+  return inFaceTime;
 }
 
 - (SBNCAlertingController)alertingController
@@ -170,15 +170,15 @@
     v2->_bannerHostMonitorListener = v5;
 
     [(BNBannerHostMonitorListener *)v2->_bannerHostMonitorListener addObserver:v2];
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v7 addObserver:v2 selector:sel__callOrFaceTimeStateChanged name:@"SBCallCountChangedNotification" object:0];
-    [v7 addObserver:v2 selector:sel__callOrFaceTimeStateChanged name:@"SBFaceTimeStateChangedNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__callOrFaceTimeStateChanged name:@"SBCallCountChangedNotification" object:0];
+    [defaultCenter addObserver:v2 selector:sel__callOrFaceTimeStateChanged name:@"SBFaceTimeStateChangedNotification" object:0];
     v8 = MEMORY[0x277D26E10];
     v9 = [MEMORY[0x277CBEA60] arrayWithObject:*MEMORY[0x277D26E10]];
-    v10 = [MEMORY[0x277D26E58] sharedAVSystemController];
-    [v10 setAttribute:v9 forKey:*MEMORY[0x277D26DD0] error:0];
+    mEMORY[0x277D26E58] = [MEMORY[0x277D26E58] sharedAVSystemController];
+    [mEMORY[0x277D26E58] setAttribute:v9 forKey:*MEMORY[0x277D26DD0] error:0];
 
-    [v7 addObserver:v2 selector:sel__voicePromptStyleChanged_ name:*v8 object:0];
+    [defaultCenter addObserver:v2 selector:sel__voicePromptStyleChanged_ name:*v8 object:0];
   }
 
   return v2;
@@ -186,8 +186,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [(BSAbsoluteMachTimer *)self->_announceTimeoutTimer invalidate];
   v4.receiver = self;
@@ -195,13 +195,13 @@
   [(SBNotificationCarPlayDestination *)&v4 dealloc];
 }
 
-- (id)keyWindowForScreen:(id)a3
+- (id)keyWindowForScreen:(id)screen
 {
-  v4 = a3;
+  screenCopy = screen;
   if ([(SBNotificationCarPlayDestination *)self isActive])
   {
-    v5 = [(SBNotificationCarPlayDestination *)self _carPlayBannerSource];
-    v6 = [v5 keyWindowForScreen:v4];
+    _carPlayBannerSource = [(SBNotificationCarPlayDestination *)self _carPlayBannerSource];
+    v6 = [_carPlayBannerSource keyWindowForScreen:screenCopy];
   }
 
   else
@@ -212,23 +212,23 @@
   return v6;
 }
 
-- (void)postNotificationRequest:(id)a3
+- (void)postNotificationRequest:(id)request
 {
-  v4 = a3;
-  [(SBNotificationCarPlayDestination *)self _postNotificationRequest:v4 shouldAnnounce:[(SBNotificationCarPlayDestination *)self _shouldAnnounceNotificationRequest:v4]];
+  requestCopy = request;
+  [(SBNotificationCarPlayDestination *)self _postNotificationRequest:requestCopy shouldAnnounce:[(SBNotificationCarPlayDestination *)self _shouldAnnounceNotificationRequest:requestCopy]];
 }
 
-- (void)_postNotificationRequest:(id)a3 shouldAnnounce:(BOOL)a4
+- (void)_postNotificationRequest:(id)request shouldAnnounce:(BOOL)announce
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  announceCopy = announce;
+  requestCopy = request;
+  v7 = requestCopy;
+  if (requestCopy)
   {
-    v8 = [v6 alertOptions];
-    v9 = [v8 shouldSuppress];
+    alertOptions = [requestCopy alertOptions];
+    shouldSuppress = [alertOptions shouldSuppress];
 
-    if ((v9 & 1) == 0)
+    if ((shouldSuppress & 1) == 0)
     {
       if ([(SBNotificationCarPlayDestination *)self _shouldDeferPostingNotificationRequestForAnnounce:v7])
       {
@@ -240,17 +240,17 @@
         [(SBNotificationCarPlayDestination *)self _clearNotificationRequestPendingAnnounceDeactivationIfNecessary];
         if (!-[SBNotificationCarPlayDestination _isCurrentlyAnnouncing](self, "_isCurrentlyAnnouncing") || (-[SBNotificationCarPlayDestination _notificationRequestCurrentlyAnnouncing](self, "_notificationRequestCurrentlyAnnouncing"), v10 = objc_claimAutoreleasedReturnValue(), v11 = [v10 matchesRequest:v7], v10, v11))
         {
-          v12 = [(SBNotificationCarPlayDestination *)self _carPlayBannerSource];
+          _carPlayBannerSource = [(SBNotificationCarPlayDestination *)self _carPlayBannerSource];
           v25 = 0;
-          v13 = [v12 layoutDescriptionWithError:&v25];
+          v13 = [_carPlayBannerSource layoutDescriptionWithError:&v25];
           v14 = v25;
 
           if (v13)
           {
             v15 = [(SBNotificationCarPlayDestination *)self _newPresentableForNotificationRequest:v7 layoutDescription:v13];
-            v16 = [(SBNotificationCarPlayDestination *)self _carPlayBannerSource];
+            _carPlayBannerSource2 = [(SBNotificationCarPlayDestination *)self _carPlayBannerSource];
             v24 = 0;
-            v17 = [v16 postPresentable:v15 options:0 userInfo:0 error:&v24];
+            v17 = [_carPlayBannerSource2 postPresentable:v15 options:0 userInfo:0 error:&v24];
             v18 = v24;
 
             if ((v17 & 1) == 0)
@@ -275,13 +275,13 @@
           }
         }
 
-        if (v4)
+        if (announceCopy)
         {
-          v20 = [(SBNotificationCarPlayDestination *)self _notificationRequestCurrentlyAnnouncing];
-          v21 = v20;
-          if (v20)
+          _notificationRequestCurrentlyAnnouncing = [(SBNotificationCarPlayDestination *)self _notificationRequestCurrentlyAnnouncing];
+          v21 = _notificationRequestCurrentlyAnnouncing;
+          if (_notificationRequestCurrentlyAnnouncing)
           {
-            v22 = v20;
+            v22 = _notificationRequestCurrentlyAnnouncing;
           }
 
           else
@@ -311,19 +311,19 @@ void __76__SBNotificationCarPlayDestination__postNotificationRequest_shouldAnnou
   [v2 destinationDidBecomeReadyToReceiveNotifications:*(a1 + 32)];
 }
 
-- (void)modifyNotificationRequest:(id)a3
+- (void)modifyNotificationRequest:(id)request
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  requestCopy = request;
+  v5 = requestCopy;
+  if (requestCopy)
   {
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v6 = [v4 carPlayRequestIdentifier];
-    v7 = [(SBNotificationCarPlayDestination *)self _presentablesWithRequestIdentifier:v6];
+    carPlayRequestIdentifier = [requestCopy carPlayRequestIdentifier];
+    v7 = [(SBNotificationCarPlayDestination *)self _presentablesWithRequestIdentifier:carPlayRequestIdentifier];
 
     v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v8)
@@ -355,16 +355,16 @@ void __76__SBNotificationCarPlayDestination__postNotificationRequest_shouldAnnou
   }
 }
 
-- (void)withdrawNotificationRequest:(id)a3
+- (void)withdrawNotificationRequest:(id)request
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  requestCopy = request;
+  v5 = requestCopy;
+  if (requestCopy)
   {
-    v6 = [v4 carPlayRequestIdentifier];
-    v7 = [(SBNotificationCarPlayDestination *)self _carPlayBannerSource];
+    carPlayRequestIdentifier = [requestCopy carPlayRequestIdentifier];
+    _carPlayBannerSource = [(SBNotificationCarPlayDestination *)self _carPlayBannerSource];
     v10 = 0;
-    v8 = [v7 revokePresentableWithRequestIdentifier:v6 reason:@"SBBannerRevocationReasonCarPlayDestinationExplicitDismissal" animated:1 userInfo:0 error:&v10];
+    v8 = [_carPlayBannerSource revokePresentableWithRequestIdentifier:carPlayRequestIdentifier reason:@"SBBannerRevocationReasonCarPlayDestinationExplicitDismissal" animated:1 userInfo:0 error:&v10];
     v9 = v10;
 
     if (v8)
@@ -380,32 +380,32 @@ void __76__SBNotificationCarPlayDestination__postNotificationRequest_shouldAnnou
   }
 }
 
-- (void)bannerHostDidBecomeAvailableForMonitorListener:(id)a3
+- (void)bannerHostDidBecomeAvailableForMonitorListener:(id)listener
 {
-  v4 = [MEMORY[0x277D0EB00] sharedConfiguration];
-  v5 = [v4 currentCountrySupportsCarIntegration];
+  mEMORY[0x277D0EB00] = [MEMORY[0x277D0EB00] sharedConfiguration];
+  currentCountrySupportsCarIntegration = [mEMORY[0x277D0EB00] currentCountrySupportsCarIntegration];
 
-  [(CRCarPlayAppPolicyEvaluator *)self->_appPolicyEvaluator setGeoSupported:v5];
-  v6 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v6 postNotificationName:@"SBNotificationCarPlayDestinationAvailabilityDidChange" object:self];
+  [(CRCarPlayAppPolicyEvaluator *)self->_appPolicyEvaluator setGeoSupported:currentCountrySupportsCarIntegration];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"SBNotificationCarPlayDestinationAvailabilityDidChange" object:self];
 }
 
-- (void)bannerHostDidBecomeUnavailableForMonitorListener:(id)a3
+- (void)bannerHostDidBecomeUnavailableForMonitorListener:(id)listener
 {
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 postNotificationName:@"SBNotificationCarPlayDestinationAvailabilityDidChange" object:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"SBNotificationCarPlayDestinationAvailabilityDidChange" object:self];
 
   [(NCCarPlayBannerSource *)self->_carPlayBannerSource invalidate];
   carPlayBannerSource = self->_carPlayBannerSource;
   self->_carPlayBannerSource = 0;
 }
 
-- (void)presentableWillAppearAsBanner:(id)a3
+- (void)presentableWillAppearAsBanner:(id)banner
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  bannerCopy = banner;
   v5 = objc_opt_class();
-  v6 = v4;
+  v6 = bannerCopy;
   if (v5)
   {
     if (objc_opt_isKindOfClass())
@@ -426,51 +426,51 @@ void __76__SBNotificationCarPlayDestination__postNotificationRequest_shouldAnnou
 
   v8 = v7;
 
-  v9 = [v8 notificationRequest];
+  notificationRequest = [v8 notificationRequest];
 
-  v10 = [(SBNotificationCarPlayDestination *)self _notificationRequestCurrentlyAnnouncing];
-  v11 = [v9 matchesRequest:v10];
+  _notificationRequestCurrentlyAnnouncing = [(SBNotificationCarPlayDestination *)self _notificationRequestCurrentlyAnnouncing];
+  v11 = [notificationRequest matchesRequest:_notificationRequestCurrentlyAnnouncing];
 
-  v12 = [(SBNotificationCarPlayDestination *)self delegate];
-  [v12 destination:self willPresentNotificationRequest:v9 suppressAlerts:v11];
+  delegate = [(SBNotificationCarPlayDestination *)self delegate];
+  [delegate destination:self willPresentNotificationRequest:notificationRequest suppressAlerts:v11];
 
-  if ([(SBNotificationCarPlayDestination *)self _shouldAnnounceNotificationRequest:v9]&& ([(NSMutableArray *)self->_notificationRequestsForAnnounce containsObject:v9]& 1) == 0 && ([(NSMutableArray *)self->_notificationRequestsPendingAVSession containsObject:v9]& 1) == 0)
+  if ([(SBNotificationCarPlayDestination *)self _shouldAnnounceNotificationRequest:notificationRequest]&& ([(NSMutableArray *)self->_notificationRequestsForAnnounce containsObject:notificationRequest]& 1) == 0 && ([(NSMutableArray *)self->_notificationRequestsPendingAVSession containsObject:notificationRequest]& 1) == 0)
   {
     v13 = *MEMORY[0x277D77DB0];
     if (os_log_type_enabled(*MEMORY[0x277D77DB0], OS_LOG_TYPE_DEFAULT))
     {
       v14 = v13;
-      v15 = [v9 notificationIdentifier];
-      v16 = [v15 un_logDigest];
+      notificationIdentifier = [notificationRequest notificationIdentifier];
+      un_logDigest = [notificationIdentifier un_logDigest];
       v20 = 138543362;
-      v21 = v16;
+      v21 = un_logDigest;
       _os_log_impl(&dword_21ED4E000, v14, OS_LOG_TYPE_DEFAULT, "CarPlay requesting announce again for notification request %{public}@ on banner presentation", &v20, 0xCu);
     }
 
-    v17 = [(SBNotificationCarPlayDestination *)self _notificationRequestCurrentlyAnnouncing];
-    v18 = v17;
-    if (v17)
+    _notificationRequestCurrentlyAnnouncing2 = [(SBNotificationCarPlayDestination *)self _notificationRequestCurrentlyAnnouncing];
+    v18 = _notificationRequestCurrentlyAnnouncing2;
+    if (_notificationRequestCurrentlyAnnouncing2)
     {
-      v19 = v17;
+      v19 = _notificationRequestCurrentlyAnnouncing2;
     }
 
     else
     {
-      v19 = v9;
+      v19 = notificationRequest;
     }
 
     [(SBNotificationCarPlayDestination *)self _setNotificationRequestCurrentlyAnnouncing:v19];
 
-    [(SBNotificationCarPlayDestination *)self _requestAnnounceForNotificationRequest:v9];
+    [(SBNotificationCarPlayDestination *)self _requestAnnounceForNotificationRequest:notificationRequest];
   }
 }
 
-- (void)presentableDidDisappearAsBanner:(id)a3 withReason:(id)a4
+- (void)presentableDidDisappearAsBanner:(id)banner withReason:(id)reason
 {
-  v6 = a3;
-  v7 = a4;
+  bannerCopy = banner;
+  reasonCopy = reason;
   v8 = objc_opt_class();
-  v17 = v6;
+  v17 = bannerCopy;
   if (v8)
   {
     if (objc_opt_isKindOfClass())
@@ -493,10 +493,10 @@ void __76__SBNotificationCarPlayDestination__postNotificationRequest_shouldAnnou
 
   v11 = [(SBNotificationCarPlayDestination *)self _removePresentable:v10];
 
-  v12 = [v11 notificationRequest];
-  if (([v7 isEqualToString:*MEMORY[0x277CF91C0]] & 1) != 0 || (objc_msgSend(v7, "isEqualToString:", *MEMORY[0x277CF91D0]) & 1) != 0 || (objc_msgSend(v7, "isEqualToString:", *MEMORY[0x277D77FF8]) & 1) != 0 || objc_msgSend(v7, "isEqualToString:", *MEMORY[0x277D78000]))
+  notificationRequest = [v11 notificationRequest];
+  if (([reasonCopy isEqualToString:*MEMORY[0x277CF91C0]] & 1) != 0 || (objc_msgSend(reasonCopy, "isEqualToString:", *MEMORY[0x277CF91D0]) & 1) != 0 || (objc_msgSend(reasonCopy, "isEqualToString:", *MEMORY[0x277D77FF8]) & 1) != 0 || objc_msgSend(reasonCopy, "isEqualToString:", *MEMORY[0x277D78000]))
   {
-    v13 = [(SBNotificationCarPlayDestination *)self _ignoreActionForNotificationRequest:v12];
+    v13 = [(SBNotificationCarPlayDestination *)self _ignoreActionForNotificationRequest:notificationRequest];
     v14 = v13;
     if (v13)
     {
@@ -504,44 +504,44 @@ void __76__SBNotificationCarPlayDestination__postNotificationRequest_shouldAnnou
     }
   }
 
-  if (([v7 isEqualToString:@"SBBannerRevocationReasonCarPlayDestinationUserAction"] & 1) == 0)
+  if (([reasonCopy isEqualToString:@"SBBannerRevocationReasonCarPlayDestinationUserAction"] & 1) == 0)
   {
-    [(SBNotificationCarPlayDestination *)self _cancelAnnounceForNotificationRequest:v12 withReason:[(SBNotificationCarPlayDestination *)self _announceDeactivationReasonForBannerRevocationReason:v7] deactivateAnnounce:1];
+    [(SBNotificationCarPlayDestination *)self _cancelAnnounceForNotificationRequest:notificationRequest withReason:[(SBNotificationCarPlayDestination *)self _announceDeactivationReasonForBannerRevocationReason:reasonCopy] deactivateAnnounce:1];
   }
 
-  v15 = [v17 viewController];
-  [v15 dismissViewControllerAnimated:1 completion:0];
+  viewController = [v17 viewController];
+  [viewController dismissViewControllerAnimated:1 completion:0];
 
   [(SBNotificationCarPlayDestination *)self _setSuspended:0 forPresentingAlertControllerForPresentable:v17];
-  v16 = [(SBNotificationCarPlayDestination *)self delegate];
-  [v16 destination:self didDismissNotificationRequest:v12];
+  delegate = [(SBNotificationCarPlayDestination *)self delegate];
+  [delegate destination:self didDismissNotificationRequest:notificationRequest];
 }
 
-- (BOOL)presentableViewControllerClosesByDefault:(id)a3
+- (BOOL)presentableViewControllerClosesByDefault:(id)default
 {
-  v4 = [a3 notificationRequest];
-  LOBYTE(self) = [(SBNotificationCarPlayDestination *)self _effectiveDefaultActionTypeForNotificationRequest:v4]== 1;
+  notificationRequest = [default notificationRequest];
+  LOBYTE(self) = [(SBNotificationCarPlayDestination *)self _effectiveDefaultActionTypeForNotificationRequest:notificationRequest]== 1;
 
   return self;
 }
 
-- (void)didSelectBannerOfPresentableViewController:(id)a3
+- (void)didSelectBannerOfPresentableViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [v4 notificationRequest];
-  if ([(SBNotificationCarPlayDestination *)self _notificationRequestShouldShowModalSubActions:v5])
+  controllerCopy = controller;
+  notificationRequest = [controllerCopy notificationRequest];
+  if ([(SBNotificationCarPlayDestination *)self _notificationRequestShouldShowModalSubActions:notificationRequest])
   {
-    [(SBNotificationCarPlayDestination *)self _setSuspended:1 forPresentingAlertControllerForPresentable:v4];
-    v6 = [(SBNotificationCarPlayDestination *)self _subActionLabelsForNotificationRequest:v5];
+    [(SBNotificationCarPlayDestination *)self _setSuspended:1 forPresentingAlertControllerForPresentable:controllerCopy];
+    v6 = [(SBNotificationCarPlayDestination *)self _subActionLabelsForNotificationRequest:notificationRequest];
     v7 = MEMORY[0x277D75110];
-    v8 = [v5 carPlayTitle];
-    v29 = v5;
-    v9 = [v5 carPlayMessage];
-    v31 = [v7 alertControllerWithTitle:v8 message:v9 preferredStyle:1];
+    carPlayTitle = [notificationRequest carPlayTitle];
+    v29 = notificationRequest;
+    carPlayMessage = [notificationRequest carPlayMessage];
+    v31 = [v7 alertControllerWithTitle:carPlayTitle message:carPlayMessage preferredStyle:1];
 
     v10 = [v6 count];
     val = self;
-    v30 = [(SBNotificationCarPlayDestination *)self _carPlayBannerSource];
+    _carPlayBannerSource = [(SBNotificationCarPlayDestination *)self _carPlayBannerSource];
     if (v10)
     {
       v11 = 0;
@@ -571,8 +571,8 @@ void __76__SBNotificationCarPlayDestination__postNotificationRequest_shouldAnnou
         objc_copyWeak(v44, location);
         v41 = v29;
         v44[1] = v14;
-        v42 = v30;
-        v43 = v4;
+        v42 = _carPlayBannerSource;
+        v43 = controllerCopy;
         v18 = [v17 actionWithTitle:v16 style:v14 == v12 handler:v39];
         [v31 addAction:v18];
         if (v14 == v12)
@@ -591,31 +591,31 @@ void __76__SBNotificationCarPlayDestination__postNotificationRequest_shouldAnnou
       while (v13 != -1);
     }
 
-    v19 = [v4 parentViewController];
+    parentViewController = [controllerCopy parentViewController];
     if (objc_opt_respondsToSelector())
     {
       v36[0] = MEMORY[0x277D85DD0];
       v36[1] = 3221225472;
       v36[2] = __79__SBNotificationCarPlayDestination_didSelectBannerOfPresentableViewController___block_invoke_104;
       v36[3] = &unk_2783A92D8;
-      v37 = v30;
-      v38 = v4;
+      v37 = _carPlayBannerSource;
+      v38 = controllerCopy;
       v33[0] = MEMORY[0x277D85DD0];
       v33[1] = 3221225472;
       v33[2] = __79__SBNotificationCarPlayDestination_didSelectBannerOfPresentableViewController___block_invoke_2;
       v33[3] = &unk_2783A92D8;
       v34 = v38;
       v35 = v31;
-      [v19 performCoordinatedUpdate:v36 updateResponseHandler:v33];
+      [parentViewController performCoordinatedUpdate:v36 updateResponseHandler:v33];
     }
 
-    v5 = v29;
+    notificationRequest = v29;
   }
 
   else
   {
-    v20 = [v4 notificationRequest];
-    v6 = [(SBNotificationCarPlayDestination *)self _actionForNotificationRequest:v20];
+    notificationRequest2 = [controllerCopy notificationRequest];
+    v6 = [(SBNotificationCarPlayDestination *)self _actionForNotificationRequest:notificationRequest2];
 
     if (v6)
     {
@@ -623,21 +623,21 @@ void __76__SBNotificationCarPlayDestination__postNotificationRequest_shouldAnnou
     }
 
     v21 = MEMORY[0x277CF0A80];
-    v22 = [MEMORY[0x277D78040] requesterIdentifier];
-    v23 = [v21 bannerSourceForDestination:1 forRequesterIdentifier:v22];
+    requesterIdentifier = [MEMORY[0x277D78040] requesterIdentifier];
+    v23 = [v21 bannerSourceForDestination:1 forRequesterIdentifier:requesterIdentifier];
 
-    v24 = [v4 requestIdentifier];
+    requestIdentifier = [controllerCopy requestIdentifier];
     v31 = v23;
     v32 = 0;
-    v25 = [v23 revokePresentableWithRequestIdentifier:v24 reason:@"SBBannerRevocationReasonCarPlayDestinationUserAction" animated:1 userInfo:0 error:&v32];
-    v30 = v32;
+    v25 = [v23 revokePresentableWithRequestIdentifier:requestIdentifier reason:@"SBBannerRevocationReasonCarPlayDestinationUserAction" animated:1 userInfo:0 error:&v32];
+    _carPlayBannerSource = v32;
 
     if (!v25)
     {
       v26 = *MEMORY[0x277D77DB0];
       if (os_log_type_enabled(*MEMORY[0x277D77DB0], OS_LOG_TYPE_ERROR))
       {
-        [(SBNotificationCarPlayDestination *)v26 didSelectBannerOfPresentableViewController:v4, v30];
+        [(SBNotificationCarPlayDestination *)v26 didSelectBannerOfPresentableViewController:controllerCopy, _carPlayBannerSource];
       }
     }
   }
@@ -700,18 +700,18 @@ void __79__SBNotificationCarPlayDestination_didSelectBannerOfPresentableViewCont
   dispatch_async(MEMORY[0x277D85CD0], v2);
 }
 
-- (void)didCancelBannerOfPresentableViewController:(id)a3 reason:(id)a4
+- (void)didCancelBannerOfPresentableViewController:(id)controller reason:(id)reason
 {
-  v5 = a3;
+  controllerCopy = controller;
   v6 = MEMORY[0x277CF0A80];
   v7 = MEMORY[0x277D78040];
-  v8 = a4;
-  v9 = [v7 requesterIdentifier];
-  v10 = [v6 bannerSourceForDestination:1 forRequesterIdentifier:v9];
+  reasonCopy = reason;
+  requesterIdentifier = [v7 requesterIdentifier];
+  v10 = [v6 bannerSourceForDestination:1 forRequesterIdentifier:requesterIdentifier];
 
-  v11 = [v5 requestIdentifier];
+  requestIdentifier = [controllerCopy requestIdentifier];
   v15 = 0;
-  v12 = [v10 revokePresentableWithRequestIdentifier:v11 reason:v8 animated:1 userInfo:0 error:&v15];
+  v12 = [v10 revokePresentableWithRequestIdentifier:requestIdentifier reason:reasonCopy animated:1 userInfo:0 error:&v15];
 
   v13 = v15;
   if (!v12)
@@ -719,25 +719,25 @@ void __79__SBNotificationCarPlayDestination_didSelectBannerOfPresentableViewCont
     v14 = *MEMORY[0x277D77DB0];
     if (os_log_type_enabled(*MEMORY[0x277D77DB0], OS_LOG_TYPE_ERROR))
     {
-      [SBNotificationCarPlayDestination didCancelBannerOfPresentableViewController:v14 reason:v5];
+      [SBNotificationCarPlayDestination didCancelBannerOfPresentableViewController:v14 reason:controllerCopy];
     }
   }
 }
 
-- (id)_newPresentableForNotificationRequest:(id)a3 layoutDescription:(id)a4
+- (id)_newPresentableForNotificationRequest:(id)request layoutDescription:(id)description
 {
   v6 = MEMORY[0x277D78040];
-  v7 = a4;
-  v8 = a3;
-  v9 = [[v6 alloc] initWithNotificationRequest:v8];
+  descriptionCopy = description;
+  requestCopy = request;
+  v9 = [[v6 alloc] initWithNotificationRequest:requestCopy];
 
   [(SBNotificationCarPlayDestination *)self _addPresentable:v9];
   [v9 setDelegate:self];
   [v9 addPresentableObserver:self];
-  [v7 presentationSize];
+  [descriptionCopy presentationSize];
   v11 = v10;
   v13 = v12;
-  [v7 containerSize];
+  [descriptionCopy containerSize];
   v15 = v14;
   v17 = v16;
 
@@ -746,45 +746,45 @@ void __79__SBNotificationCarPlayDestination_didSelectBannerOfPresentableViewCont
   return v9;
 }
 
-- (void)_addPresentable:(id)a3
+- (void)_addPresentable:(id)presentable
 {
-  v4 = a3;
-  if (v4)
+  presentableCopy = presentable;
+  if (presentableCopy)
   {
-    v9 = v4;
-    v5 = self;
-    objc_sync_enter(v5);
-    presentables = v5->_presentables;
+    v9 = presentableCopy;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    presentables = selfCopy->_presentables;
     if (!presentables)
     {
       v7 = [MEMORY[0x277CCAA50] hashTableWithOptions:517];
-      v8 = v5->_presentables;
-      v5->_presentables = v7;
+      v8 = selfCopy->_presentables;
+      selfCopy->_presentables = v7;
 
-      presentables = v5->_presentables;
+      presentables = selfCopy->_presentables;
     }
 
     [(NSHashTable *)presentables addObject:v9];
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
 
-    v4 = v9;
+    presentableCopy = v9;
   }
 }
 
-- (id)_presentablesWithRequestIdentifier:(id)a3
+- (id)_presentablesWithRequestIdentifier:(id)identifier
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v5 = self;
-    objc_sync_enter(v5);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v7 = v5->_presentables;
+    v7 = selfCopy->_presentables;
     v8 = [(NSHashTable *)v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v8)
     {
@@ -799,8 +799,8 @@ void __79__SBNotificationCarPlayDestination_didSelectBannerOfPresentableViewCont
           }
 
           v11 = *(*(&v18 + 1) + 8 * i);
-          v12 = [v11 requestIdentifier];
-          v13 = [v12 isEqualToString:v4];
+          requestIdentifier = [v11 requestIdentifier];
+          v13 = [requestIdentifier isEqualToString:identifierCopy];
 
           if (v13)
           {
@@ -820,7 +820,7 @@ void __79__SBNotificationCarPlayDestination_didSelectBannerOfPresentableViewCont
       [SBNotificationCarPlayDestination _presentablesWithRequestIdentifier:];
     }
 
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -843,16 +843,16 @@ void __79__SBNotificationCarPlayDestination_didSelectBannerOfPresentableViewCont
   return v15;
 }
 
-- (id)_removePresentable:(id)a3
+- (id)_removePresentable:(id)presentable
 {
-  v4 = a3;
-  if (v4)
+  presentableCopy = presentable;
+  if (presentableCopy)
   {
-    v5 = self;
-    objc_sync_enter(v5);
-    if ([(NSHashTable *)v5->_presentables containsObject:v4])
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    if ([(NSHashTable *)selfCopy->_presentables containsObject:presentableCopy])
     {
-      [(NSHashTable *)v5->_presentables removeObject:v4];
+      [(NSHashTable *)selfCopy->_presentables removeObject:presentableCopy];
     }
 
     else if (os_log_type_enabled(*MEMORY[0x277D77DB0], OS_LOG_TYPE_ERROR))
@@ -860,34 +860,34 @@ void __79__SBNotificationCarPlayDestination_didSelectBannerOfPresentableViewCont
       [SBNotificationCarPlayDestination _removePresentable:];
     }
 
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
   }
 
-  return v4;
+  return presentableCopy;
 }
 
-- (id)_policyForApp:(id)a3
+- (id)_policyForApp:(id)app
 {
-  v4 = a3;
+  appCopy = app;
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [SBNotificationCarPlayDestination _policyForApp:];
   }
 
-  v5 = [v4 info];
-  v6 = [v5 carPlayDeclaration];
-  if (v6)
+  info = [appCopy info];
+  carPlayDeclaration = [info carPlayDeclaration];
+  if (carPlayDeclaration)
   {
-    v7 = [v5 bundleIdentifier];
-    v8 = [(NSMutableDictionary *)self->_appPolicyForBundleID objectForKey:v7];
+    bundleIdentifier = [info bundleIdentifier];
+    v8 = [(NSMutableDictionary *)self->_appPolicyForBundleID objectForKey:bundleIdentifier];
     if (!v8)
     {
-      v9 = [(SBNotificationCarPlayDestination *)self _appPolicyEvaluator];
-      v8 = [v9 effectivePolicyForAppDeclaration:v6];
+      _appPolicyEvaluator = [(SBNotificationCarPlayDestination *)self _appPolicyEvaluator];
+      v8 = [_appPolicyEvaluator effectivePolicyForAppDeclaration:carPlayDeclaration];
 
       if (v8)
       {
-        [(NSMutableDictionary *)self->_appPolicyForBundleID setObject:v8 forKey:v7];
+        [(NSMutableDictionary *)self->_appPolicyForBundleID setObject:v8 forKey:bundleIdentifier];
       }
     }
   }
@@ -900,18 +900,18 @@ void __79__SBNotificationCarPlayDestination_didSelectBannerOfPresentableViewCont
   return v8;
 }
 
-- (int64_t)_defaultActionTypeForNotificationRequest:(id)a3
+- (int64_t)_defaultActionTypeForNotificationRequest:(id)request
 {
-  v4 = a3;
-  v5 = [v4 sectionIdentifier];
+  requestCopy = request;
+  sectionIdentifier = [requestCopy sectionIdentifier];
   v6 = +[SBApplicationController sharedInstance];
-  v7 = [v6 applicationWithBundleIdentifier:v5];
+  v7 = [v6 applicationWithBundleIdentifier:sectionIdentifier];
 
   v8 = [(SBNotificationCarPlayDestination *)self _policyForApp:v7];
-  v9 = [v4 content];
-  v10 = [v9 contentType];
+  content = [requestCopy content];
+  contentType = [content contentType];
 
-  if ([v8 bannerLaunchTypeForNotificationContentType:v10] == 1 || (objc_msgSend(v4, "options"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "lauchUsingSiriForCarPlayDefaultAction"), v11, (v12 & 1) != 0))
+  if ([v8 bannerLaunchTypeForNotificationContentType:contentType] == 1 || (objc_msgSend(requestCopy, "options"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "lauchUsingSiriForCarPlayDefaultAction"), v11, (v12 & 1) != 0))
   {
     v13 = 2;
   }
@@ -921,7 +921,7 @@ void __79__SBNotificationCarPlayDestination_didSelectBannerOfPresentableViewCont
     v13 = 0;
     if (([v8 canDisplayOnCarScreen] & 1) == 0)
     {
-      v14 = [(SBNotificationCarPlayDestination *)self _supplementaryActionsForNotificationRequest:v4];
+      v14 = [(SBNotificationCarPlayDestination *)self _supplementaryActionsForNotificationRequest:requestCopy];
       v15 = [v14 count];
 
       if (!v15)
@@ -934,9 +934,9 @@ void __79__SBNotificationCarPlayDestination_didSelectBannerOfPresentableViewCont
   return v13;
 }
 
-- (int64_t)_effectiveDefaultActionTypeForNotificationRequest:(id)a3
+- (int64_t)_effectiveDefaultActionTypeForNotificationRequest:(id)request
 {
-  v4 = [(SBNotificationCarPlayDestination *)self _defaultActionTypeForNotificationRequest:a3];
+  v4 = [(SBNotificationCarPlayDestination *)self _defaultActionTypeForNotificationRequest:request];
   if ([(SBNotificationCarPlayDestination *)self _inCallOrFaceTime]&& v4 == 2)
   {
     return 1;
@@ -948,19 +948,19 @@ void __79__SBNotificationCarPlayDestination_didSelectBannerOfPresentableViewCont
   }
 }
 
-- (id)_actionForNotificationRequest:(id)a3
+- (id)_actionForNotificationRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(SBNotificationCarPlayDestination *)self delegate];
+  requestCopy = request;
+  delegate = [(SBNotificationCarPlayDestination *)self delegate];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __66__SBNotificationCarPlayDestination__actionForNotificationRequest___block_invoke;
   v11[3] = &unk_2783B2078;
   v11[4] = self;
-  v12 = v4;
-  v13 = v5;
-  v6 = v5;
-  v7 = v4;
+  v12 = requestCopy;
+  v13 = delegate;
+  v6 = delegate;
+  v7 = requestCopy;
   v8 = MEMORY[0x223D6F7F0](v11);
   v9 = [v8 copy];
 
@@ -1013,19 +1013,19 @@ LABEL_8:
   return 1;
 }
 
-- (id)_ignoreActionForNotificationRequest:(id)a3
+- (id)_ignoreActionForNotificationRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(SBNotificationCarPlayDestination *)self delegate];
+  requestCopy = request;
+  delegate = [(SBNotificationCarPlayDestination *)self delegate];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __72__SBNotificationCarPlayDestination__ignoreActionForNotificationRequest___block_invoke;
   v10[3] = &unk_2783B2078;
-  v11 = v5;
-  v12 = self;
-  v13 = v4;
-  v6 = v4;
-  v7 = v5;
+  v11 = delegate;
+  selfCopy = self;
+  v13 = requestCopy;
+  v6 = requestCopy;
+  v7 = delegate;
   v8 = [v10 copy];
 
   return v8;
@@ -1041,68 +1041,68 @@ uint64_t __72__SBNotificationCarPlayDestination__ignoreActionForNotificationRequ
   return 1;
 }
 
-- (id)_supplementaryActionsForNotificationRequest:(id)a3
+- (id)_supplementaryActionsForNotificationRequest:(id)request
 {
-  v3 = [a3 supplementaryActions];
-  v4 = [v3 objectForKey:*MEMORY[0x277D77DA0]];
+  supplementaryActions = [request supplementaryActions];
+  v4 = [supplementaryActions objectForKey:*MEMORY[0x277D77DA0]];
 
   return v4;
 }
 
-- (id)_closeNotificationActionForNotificationRequest:(id)a3
+- (id)_closeNotificationActionForNotificationRequest:(id)request
 {
-  v3 = a3;
-  v4 = [v3 options];
-  if ([v4 hideCloseActionForCarPlay])
+  requestCopy = request;
+  options = [requestCopy options];
+  if ([options hideCloseActionForCarPlay])
   {
-    v5 = 0;
+    closeAction = 0;
   }
 
   else
   {
-    v5 = [v3 closeAction];
+    closeAction = [requestCopy closeAction];
   }
 
-  return v5;
+  return closeAction;
 }
 
-- (id)_allNotificationActionsForNotificationRequest:(id)a3
+- (id)_allNotificationActionsForNotificationRequest:(id)request
 {
   v4 = MEMORY[0x277CBEB18];
-  v5 = a3;
+  requestCopy = request;
   v6 = objc_alloc_init(v4);
-  v7 = [(SBNotificationCarPlayDestination *)self _supplementaryActionsForNotificationRequest:v5];
+  v7 = [(SBNotificationCarPlayDestination *)self _supplementaryActionsForNotificationRequest:requestCopy];
   [v6 addObjectsFromArray:v7];
-  v8 = [(SBNotificationCarPlayDestination *)self _closeNotificationActionForNotificationRequest:v5];
+  v8 = [(SBNotificationCarPlayDestination *)self _closeNotificationActionForNotificationRequest:requestCopy];
 
   [v6 bs_safeAddObject:v8];
 
   return v6;
 }
 
-- (BOOL)_notificationRequestSupportsSubActions:(id)a3
+- (BOOL)_notificationRequestSupportsSubActions:(id)actions
 {
-  v4 = a3;
-  if ([(SBNotificationCarPlayDestination *)self _defaultActionTypeForNotificationRequest:v4]== 2)
+  actionsCopy = actions;
+  if ([(SBNotificationCarPlayDestination *)self _defaultActionTypeForNotificationRequest:actionsCopy]== 2)
   {
-    v5 = 0;
+    allowActionsForCarPlay = 0;
   }
 
   else
   {
-    v6 = [v4 options];
-    v5 = [v6 allowActionsForCarPlay];
+    options = [actionsCopy options];
+    allowActionsForCarPlay = [options allowActionsForCarPlay];
   }
 
-  return v5;
+  return allowActionsForCarPlay;
 }
 
-- (BOOL)_notificationRequestShouldShowModalSubActions:(id)a3
+- (BOOL)_notificationRequestShouldShowModalSubActions:(id)actions
 {
-  v4 = a3;
-  if ([(SBNotificationCarPlayDestination *)self _notificationRequestSupportsSubActions:v4])
+  actionsCopy = actions;
+  if ([(SBNotificationCarPlayDestination *)self _notificationRequestSupportsSubActions:actionsCopy])
   {
-    v5 = [(SBNotificationCarPlayDestination *)self _supplementaryActionsForNotificationRequest:v4];
+    v5 = [(SBNotificationCarPlayDestination *)self _supplementaryActionsForNotificationRequest:actionsCopy];
     v6 = [v5 count] != 0;
   }
 
@@ -1114,14 +1114,14 @@ uint64_t __72__SBNotificationCarPlayDestination__ignoreActionForNotificationRequ
   return v6;
 }
 
-- (id)_subActionLabelsForNotificationRequest:(id)a3
+- (id)_subActionLabelsForNotificationRequest:(id)request
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([(SBNotificationCarPlayDestination *)self _notificationRequestSupportsSubActions:v4])
+  requestCopy = request;
+  if ([(SBNotificationCarPlayDestination *)self _notificationRequestSupportsSubActions:requestCopy])
   {
-    v5 = [MEMORY[0x277CBEB18] array];
-    v6 = [(SBNotificationCarPlayDestination *)self _supplementaryActionsForNotificationRequest:v4];
+    array = [MEMORY[0x277CBEB18] array];
+    v6 = [(SBNotificationCarPlayDestination *)self _supplementaryActionsForNotificationRequest:requestCopy];
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
@@ -1140,10 +1140,10 @@ uint64_t __72__SBNotificationCarPlayDestination__ignoreActionForNotificationRequ
             objc_enumerationMutation(v6);
           }
 
-          v11 = [*(*(&v16 + 1) + 8 * i) title];
-          if ([v11 length])
+          title = [*(*(&v16 + 1) + 8 * i) title];
+          if ([title length])
           {
-            [v5 addObject:v11];
+            [array addObject:title];
           }
         }
 
@@ -1153,36 +1153,36 @@ uint64_t __72__SBNotificationCarPlayDestination__ignoreActionForNotificationRequ
       while (v8);
     }
 
-    v12 = [(SBNotificationCarPlayDestination *)self _closeNotificationActionForNotificationRequest:v4];
+    v12 = [(SBNotificationCarPlayDestination *)self _closeNotificationActionForNotificationRequest:requestCopy];
     if (v12)
     {
-      v13 = [MEMORY[0x277CCA8D8] mainBundle];
-      v14 = [v13 localizedStringForKey:@"BANNER_ALERT_CLOSE" value:&stru_283094718 table:@"CarDisplay"];
-      [v5 addObject:v14];
+      mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+      v14 = [mainBundle localizedStringForKey:@"BANNER_ALERT_CLOSE" value:&stru_283094718 table:@"CarDisplay"];
+      [array addObject:v14];
     }
   }
 
   else
   {
-    v5 = 0;
+    array = 0;
   }
 
-  return v5;
+  return array;
 }
 
-- (id)_subActionsForNotificationRequest:(id)a3
+- (id)_subActionsForNotificationRequest:(id)request
 {
-  v4 = a3;
-  if ([(SBNotificationCarPlayDestination *)self _notificationRequestSupportsSubActions:v4])
+  requestCopy = request;
+  if ([(SBNotificationCarPlayDestination *)self _notificationRequestSupportsSubActions:requestCopy])
   {
     objc_initWeak(&location, self);
-    v5 = [(SBNotificationCarPlayDestination *)self _allNotificationActionsForNotificationRequest:v4];
+    v5 = [(SBNotificationCarPlayDestination *)self _allNotificationActionsForNotificationRequest:requestCopy];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __70__SBNotificationCarPlayDestination__subActionsForNotificationRequest___block_invoke;
     v8[3] = &unk_2783C05C0;
     objc_copyWeak(&v10, &location);
-    v9 = v4;
+    v9 = requestCopy;
     v6 = [v5 bs_map:v8];
 
     objc_destroyWeak(&v10);
@@ -1224,44 +1224,44 @@ uint64_t __70__SBNotificationCarPlayDestination__subActionsForNotificationReques
   return 1;
 }
 
-- (id)_bulletinForNotificationRequest:(id)a3
+- (id)_bulletinForNotificationRequest:(id)request
 {
-  v3 = a3;
-  v4 = [v3 bulletin];
-  if (!v4)
+  requestCopy = request;
+  bulletin = [requestCopy bulletin];
+  if (!bulletin)
   {
-    v4 = objc_alloc_init(MEMORY[0x277CF3518]);
-    v5 = [v3 sectionIdentifier];
-    [v4 setSectionID:v5];
+    bulletin = objc_alloc_init(MEMORY[0x277CF3518]);
+    sectionIdentifier = [requestCopy sectionIdentifier];
+    [bulletin setSectionID:sectionIdentifier];
 
-    v6 = [v3 carPlayTitle];
-    [v4 setTitle:v6];
+    carPlayTitle = [requestCopy carPlayTitle];
+    [bulletin setTitle:carPlayTitle];
 
-    v7 = [v3 carPlayMessage];
-    [v4 setMessage:v7];
+    carPlayMessage = [requestCopy carPlayMessage];
+    [bulletin setMessage:carPlayMessage];
   }
 
-  return v4;
+  return bulletin;
 }
 
-- (BOOL)_setSuspended:(BOOL)a3 forPresentingAlertControllerForPresentable:(id)a4
+- (BOOL)_setSuspended:(BOOL)suspended forPresentingAlertControllerForPresentable:(id)presentable
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(SBNotificationCarPlayDestination *)self _carPlayBannerSource];
+  suspendedCopy = suspended;
+  presentableCopy = presentable;
+  _carPlayBannerSource = [(SBNotificationCarPlayDestination *)self _carPlayBannerSource];
   v8 = *MEMORY[0x277D78010];
   v16 = 0;
-  v9 = [v7 setSuspended:v4 forReason:v8 revokingCurrent:0 error:&v16];
+  v9 = [_carPlayBannerSource setSuspended:suspendedCopy forReason:v8 revokingCurrent:0 error:&v16];
   v10 = v16;
 
   if (v9)
   {
     WeakRetained = objc_loadWeakRetained(&self->_presentablePresentingAlertController);
     v12 = WeakRetained;
-    v13 = v6;
-    if (!v4)
+    v13 = presentableCopy;
+    if (!suspendedCopy)
     {
-      if (WeakRetained != v6)
+      if (WeakRetained != presentableCopy)
       {
 LABEL_6:
 
@@ -1278,7 +1278,7 @@ LABEL_6:
   v14 = *MEMORY[0x277D77DB0];
   if (os_log_type_enabled(*MEMORY[0x277D77DB0], OS_LOG_TYPE_ERROR))
   {
-    [(SBNotificationCarPlayDestination *)v4 _setSuspended:v10 forPresentingAlertControllerForPresentable:v14];
+    [(SBNotificationCarPlayDestination *)suspendedCopy _setSuspended:v10 forPresentingAlertControllerForPresentable:v14];
   }
 
 LABEL_9:
@@ -1286,11 +1286,11 @@ LABEL_9:
   return v9;
 }
 
-- (void)notificationAnnouncementObserver:(id)a3 announcementSpeakingStateDidUpdate:(int64_t)a4 forNotificationRequestIdentifiers:(id)a5
+- (void)notificationAnnouncementObserver:(id)observer announcementSpeakingStateDidUpdate:(int64_t)update forNotificationRequestIdentifiers:(id)identifiers
 {
   v78 = *MEMORY[0x277D85DE8];
-  v7 = a5;
-  v8 = [v7 bs_compactMap:&__block_literal_global_362];
+  identifiersCopy = identifiers;
+  v8 = [identifiersCopy bs_compactMap:&__block_literal_global_362];
   v9 = MEMORY[0x277D77DB0];
   v10 = *MEMORY[0x277D77DB0];
   if (os_log_type_enabled(*MEMORY[0x277D77DB0], OS_LOG_TYPE_DEFAULT))
@@ -1304,46 +1304,46 @@ LABEL_9:
     _os_log_impl(&dword_21ED4E000, v11, OS_LOG_TYPE_DEFAULT, "CarPlay received updated announce state:%{public}@ for requests %{public}@", buf, 0x16u);
   }
 
-  if (a4 == 2)
+  if (update == 2)
   {
-    v14 = [(SBNotificationCarPlayDestination *)self _notificationRequestCurrentlyAnnouncing];
-    v30 = [(SBNotificationCarPlayDestination *)self _carPlayBannerSource];
-    [v30 didFinishAnnounceForNotificationRequest:v14];
+    _notificationRequestCurrentlyAnnouncing = [(SBNotificationCarPlayDestination *)self _notificationRequestCurrentlyAnnouncing];
+    _carPlayBannerSource = [(SBNotificationCarPlayDestination *)self _carPlayBannerSource];
+    [_carPlayBannerSource didFinishAnnounceForNotificationRequest:_notificationRequestCurrentlyAnnouncing];
 
     if ([(NSMutableArray *)self->_notificationRequestsForAnnounce count]< 2)
     {
-      v54 = [(SBNotificationCarPlayDestination *)self _announcementStateObserver];
-      v55 = [v7 firstObject];
-      [v54 stopObservingNotificationWithRequestIdentifier:v55];
+      _announcementStateObserver = [(SBNotificationCarPlayDestination *)self _announcementStateObserver];
+      firstObject = [identifiersCopy firstObject];
+      [_announcementStateObserver stopObservingNotificationWithRequestIdentifier:firstObject];
 
       v56 = *v9;
       if (os_log_type_enabled(*v9, OS_LOG_TYPE_DEFAULT))
       {
         v57 = v56;
-        v58 = [v14 notificationIdentifier];
-        v59 = [v58 un_logDigest];
+        notificationIdentifier = [_notificationRequestCurrentlyAnnouncing notificationIdentifier];
+        un_logDigest = [notificationIdentifier un_logDigest];
         *buf = 138543362;
-        v75 = v59;
+        v75 = un_logDigest;
         _os_log_impl(&dword_21ED4E000, v57, OS_LOG_TYPE_DEFAULT, "Carplay setting up deferred announce deactivation for %{public}@ on announce finish since this is the last notification to be announced", buf, 0xCu);
       }
 
-      objc_storeStrong(&self->_notificationRequestPendingDeactivation, v14);
+      objc_storeStrong(&self->_notificationRequestPendingDeactivation, _notificationRequestCurrentlyAnnouncing);
     }
 
     else
     {
       log = v8;
-      if (v14)
+      if (_notificationRequestCurrentlyAnnouncing)
       {
-        [(NSMutableArray *)self->_notificationRequestsForAnnounce removeObject:v14];
-        [(NSMutableDictionary *)self->_announceRequestsForNotificationRequests removeObjectForKey:v14];
+        [(NSMutableArray *)self->_notificationRequestsForAnnounce removeObject:_notificationRequestCurrentlyAnnouncing];
+        [(NSMutableDictionary *)self->_announceRequestsForNotificationRequests removeObjectForKey:_notificationRequestCurrentlyAnnouncing];
       }
 
       v70 = 0u;
       v71 = 0u;
       v68 = 0u;
       v69 = 0u;
-      v31 = v7;
+      v31 = identifiersCopy;
       v32 = [v31 countByEnumeratingWithState:&v68 objects:v73 count:16];
       if (v32)
       {
@@ -1359,8 +1359,8 @@ LABEL_9:
             }
 
             v36 = *(*(&v68 + 1) + 8 * i);
-            v37 = [(SBNotificationCarPlayDestination *)self _announcementStateObserver];
-            [v37 stopObservingNotificationWithRequestIdentifier:v36];
+            _announcementStateObserver2 = [(SBNotificationCarPlayDestination *)self _announcementStateObserver];
+            [_announcementStateObserver2 stopObservingNotificationWithRequestIdentifier:v36];
 
             v38 = [(SBNotificationCarPlayDestination *)self _notificationRequestForAnnounceWithIdentifier:v36];
             if (v38)
@@ -1383,16 +1383,16 @@ LABEL_9:
         if (os_log_type_enabled(*v9, OS_LOG_TYPE_DEFAULT))
         {
           v40 = v39;
-          v41 = [(SBNotificationCarPlayDestination *)self _notificationRequestCurrentlyAnnouncing];
-          v42 = [v41 notificationIdentifier];
-          v43 = [v42 un_logDigest];
+          _notificationRequestCurrentlyAnnouncing2 = [(SBNotificationCarPlayDestination *)self _notificationRequestCurrentlyAnnouncing];
+          notificationIdentifier2 = [_notificationRequestCurrentlyAnnouncing2 notificationIdentifier];
+          un_logDigest2 = [notificationIdentifier2 un_logDigest];
           *buf = 138543362;
-          v75 = v43;
+          v75 = un_logDigest2;
           _os_log_impl(&dword_21ED4E000, v40, OS_LOG_TYPE_DEFAULT, "Carplay withdrawing notification request %{public}@ on announce finish while pending other announce notifications", buf, 0xCu);
         }
 
-        v44 = [(SBNotificationCarPlayDestination *)self _notificationRequestCurrentlyAnnouncing];
-        [(SBNotificationCarPlayDestination *)self withdrawNotificationRequest:v44];
+        _notificationRequestCurrentlyAnnouncing3 = [(SBNotificationCarPlayDestination *)self _notificationRequestCurrentlyAnnouncing];
+        [(SBNotificationCarPlayDestination *)self withdrawNotificationRequest:_notificationRequestCurrentlyAnnouncing3];
 
         [(SBNotificationCarPlayDestination *)self _setNotificationRequestCurrentlyAnnouncing:0];
         [(SBNotificationCarPlayDestination *)self _startAnnounceTimeoutTimer];
@@ -1415,18 +1415,18 @@ LABEL_9:
 
   else
   {
-    if (a4 == 1)
+    if (update == 1)
     {
       [(SBNotificationCarPlayDestination *)self _invalidateAnnounceTimeoutTimer];
-      v13 = [v7 firstObject];
-      v14 = [(SBNotificationCarPlayDestination *)self _notificationRequestForAnnounceWithIdentifier:v13];
+      firstObject2 = [identifiersCopy firstObject];
+      _notificationRequestCurrentlyAnnouncing = [(SBNotificationCarPlayDestination *)self _notificationRequestForAnnounceWithIdentifier:firstObject2];
 
-      v15 = [(SBNotificationCarPlayDestination *)self _notificationRequestCurrentlyAnnouncing];
-      if (v15)
+      _notificationRequestCurrentlyAnnouncing4 = [(SBNotificationCarPlayDestination *)self _notificationRequestCurrentlyAnnouncing];
+      if (_notificationRequestCurrentlyAnnouncing4)
       {
-        v16 = v15;
-        v17 = [(SBNotificationCarPlayDestination *)self _notificationRequestCurrentlyAnnouncing];
-        v18 = [v14 matchesRequest:v17];
+        v16 = _notificationRequestCurrentlyAnnouncing4;
+        _notificationRequestCurrentlyAnnouncing5 = [(SBNotificationCarPlayDestination *)self _notificationRequestCurrentlyAnnouncing];
+        v18 = [_notificationRequestCurrentlyAnnouncing matchesRequest:_notificationRequestCurrentlyAnnouncing5];
 
         if (v18)
         {
@@ -1434,22 +1434,22 @@ LABEL_9:
         }
       }
 
-      v19 = [(SBNotificationCarPlayDestination *)self _notificationRequestCurrentlyAnnouncing];
-      if (([v14 matchesRequest:v19] & 1) == 0)
+      _notificationRequestCurrentlyAnnouncing6 = [(SBNotificationCarPlayDestination *)self _notificationRequestCurrentlyAnnouncing];
+      if (([_notificationRequestCurrentlyAnnouncing matchesRequest:_notificationRequestCurrentlyAnnouncing6] & 1) == 0)
       {
-        v20 = [(SBNotificationCarPlayDestination *)self _notificationRequestCurrentlyAnnouncing];
+        _notificationRequestCurrentlyAnnouncing7 = [(SBNotificationCarPlayDestination *)self _notificationRequestCurrentlyAnnouncing];
 
-        if (!v20)
+        if (!_notificationRequestCurrentlyAnnouncing7)
         {
 LABEL_13:
-          [(SBNotificationCarPlayDestination *)self _setNotificationRequestCurrentlyAnnouncing:v14];
-          v27 = [(SBNotificationCarPlayDestination *)self _notificationRequestCurrentlyAnnouncing];
-          [(SBNotificationCarPlayDestination *)self _postNotificationRequest:v27 shouldAnnounce:0];
+          [(SBNotificationCarPlayDestination *)self _setNotificationRequestCurrentlyAnnouncing:_notificationRequestCurrentlyAnnouncing];
+          _notificationRequestCurrentlyAnnouncing8 = [(SBNotificationCarPlayDestination *)self _notificationRequestCurrentlyAnnouncing];
+          [(SBNotificationCarPlayDestination *)self _postNotificationRequest:_notificationRequestCurrentlyAnnouncing8 shouldAnnounce:0];
 
 LABEL_14:
-          v28 = [(SBNotificationCarPlayDestination *)self _carPlayBannerSource];
-          v29 = [(SBNotificationCarPlayDestination *)self _notificationRequestCurrentlyAnnouncing];
-          [v28 didBeginAnnounceForNotificationRequest:v29];
+          _carPlayBannerSource2 = [(SBNotificationCarPlayDestination *)self _carPlayBannerSource];
+          _notificationRequestCurrentlyAnnouncing9 = [(SBNotificationCarPlayDestination *)self _notificationRequestCurrentlyAnnouncing];
+          [_carPlayBannerSource2 didBeginAnnounceForNotificationRequest:_notificationRequestCurrentlyAnnouncing9];
 
           goto LABEL_47;
         }
@@ -1458,37 +1458,37 @@ LABEL_14:
         if (os_log_type_enabled(*v9, OS_LOG_TYPE_DEFAULT))
         {
           loga = v21;
-          v22 = [(SBNotificationCarPlayDestination *)self _notificationRequestCurrentlyAnnouncing];
-          v23 = [v22 notificationIdentifier];
-          v24 = [v23 un_logDigest];
-          v25 = [v14 notificationIdentifier];
-          v26 = [v25 un_logDigest];
+          _notificationRequestCurrentlyAnnouncing10 = [(SBNotificationCarPlayDestination *)self _notificationRequestCurrentlyAnnouncing];
+          notificationIdentifier3 = [_notificationRequestCurrentlyAnnouncing10 notificationIdentifier];
+          un_logDigest3 = [notificationIdentifier3 un_logDigest];
+          notificationIdentifier4 = [_notificationRequestCurrentlyAnnouncing notificationIdentifier];
+          un_logDigest4 = [notificationIdentifier4 un_logDigest];
           *buf = 138543618;
-          v75 = v24;
+          v75 = un_logDigest3;
           v76 = 2114;
-          v77 = v26;
+          v77 = un_logDigest4;
           _os_log_impl(&dword_21ED4E000, loga, OS_LOG_TYPE_DEFAULT, "Carplay withdrawing currently announcing notification request %{public}@ as it is starting announce for request %{public}@", buf, 0x16u);
         }
 
-        v19 = [(SBNotificationCarPlayDestination *)self _notificationRequestCurrentlyAnnouncing];
-        [(SBNotificationCarPlayDestination *)self withdrawNotificationRequest:v19];
+        _notificationRequestCurrentlyAnnouncing6 = [(SBNotificationCarPlayDestination *)self _notificationRequestCurrentlyAnnouncing];
+        [(SBNotificationCarPlayDestination *)self withdrawNotificationRequest:_notificationRequestCurrentlyAnnouncing6];
       }
 
       goto LABEL_13;
     }
 
-    v14 = [(SBNotificationCarPlayDestination *)self _notificationRequestCurrentlyAnnouncing];
-    if (v14)
+    _notificationRequestCurrentlyAnnouncing = [(SBNotificationCarPlayDestination *)self _notificationRequestCurrentlyAnnouncing];
+    if (_notificationRequestCurrentlyAnnouncing)
     {
-      v45 = [(SBNotificationCarPlayDestination *)self _carPlayBannerSource];
-      [v45 didFinishAnnounceForNotificationRequest:v14];
+      _carPlayBannerSource3 = [(SBNotificationCarPlayDestination *)self _carPlayBannerSource];
+      [_carPlayBannerSource3 didFinishAnnounceForNotificationRequest:_notificationRequestCurrentlyAnnouncing];
     }
 
     v66 = 0u;
     v67 = 0u;
     v64 = 0u;
     v65 = 0u;
-    v46 = v7;
+    v46 = identifiersCopy;
     v47 = [v46 countByEnumeratingWithState:&v64 objects:v72 count:16];
     if (v47)
     {
@@ -1504,8 +1504,8 @@ LABEL_14:
           }
 
           v51 = *(*(&v64 + 1) + 8 * j);
-          v52 = [(SBNotificationCarPlayDestination *)self _announcementStateObserver];
-          [v52 stopObservingNotificationWithRequestIdentifier:v51];
+          _announcementStateObserver3 = [(SBNotificationCarPlayDestination *)self _announcementStateObserver];
+          [_announcementStateObserver3 stopObservingNotificationWithRequestIdentifier:v51];
 
           v53 = [(SBNotificationCarPlayDestination *)self _notificationRequestForAnnounceWithIdentifier:v51];
           if (v53)
@@ -1530,29 +1530,29 @@ LABEL_14:
 LABEL_47:
 }
 
-- (BOOL)_shouldAnnounceNotificationRequest:(id)a3
+- (BOOL)_shouldAnnounceNotificationRequest:(id)request
 {
-  v3 = a3;
+  requestCopy = request;
   if (_os_feature_enabled_impl())
   {
-    v4 = [v3 options];
-    v5 = [v4 shouldAnnounceForCarPlay];
+    options = [requestCopy options];
+    shouldAnnounceForCarPlay = [options shouldAnnounceForCarPlay];
   }
 
   else
   {
-    v5 = 0;
+    shouldAnnounceForCarPlay = 0;
   }
 
-  return v5;
+  return shouldAnnounceForCarPlay;
 }
 
-- (BOOL)_shouldDeferPostingNotificationRequestForAnnounce:(id)a3
+- (BOOL)_shouldDeferPostingNotificationRequestForAnnounce:(id)announce
 {
-  v4 = a3;
+  announceCopy = announce;
   if ([(SBNotificationCarPlayDestination *)self _isCurrentlyAnnouncing])
   {
-    v5 = ![(SBNotificationCarPlayDestination *)self _shouldAnnounceNotificationRequest:v4];
+    v5 = ![(SBNotificationCarPlayDestination *)self _shouldAnnounceNotificationRequest:announceCopy];
   }
 
   else
@@ -1579,27 +1579,27 @@ LABEL_47:
   return announcementStateObserver;
 }
 
-- (void)_requestAnnounceForNotificationRequest:(id)a3
+- (void)_requestAnnounceForNotificationRequest:(id)request
 {
   v47 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  requestCopy = request;
   v5 = MEMORY[0x277D77DB0];
   v6 = *MEMORY[0x277D77DB0];
   if (os_log_type_enabled(*MEMORY[0x277D77DB0], OS_LOG_TYPE_DEFAULT))
   {
     v7 = v6;
-    v8 = [v4 notificationIdentifier];
-    v9 = [v8 un_logDigest];
+    notificationIdentifier = [requestCopy notificationIdentifier];
+    un_logDigest = [notificationIdentifier un_logDigest];
     *buf = 138543362;
-    v46 = v9;
+    v46 = un_logDigest;
     _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_DEFAULT, "CarPlay requesting announce for notification request %{public}@", buf, 0xCu);
   }
 
-  if ([(SBNotificationCarPlayDestination *)self _isCurrentlyAnnouncing]|| [(SBNotificationCarPlayDestination *)self _shouldAnnounceNotificationForActiveAVSession:v4])
+  if ([(SBNotificationCarPlayDestination *)self _isCurrentlyAnnouncing]|| [(SBNotificationCarPlayDestination *)self _shouldAnnounceNotificationForActiveAVSession:requestCopy])
   {
-    v10 = [v4 notificationIdentifier];
-    v11 = [(SBNotificationCarPlayDestination *)self _announcementStateObserver];
-    [v11 startObservingNotificationWithRequestIdentifier:v10];
+    notificationIdentifier2 = [requestCopy notificationIdentifier];
+    _announcementStateObserver = [(SBNotificationCarPlayDestination *)self _announcementStateObserver];
+    [_announcementStateObserver startObservingNotificationWithRequestIdentifier:notificationIdentifier2];
 
     notificationRequestsForAnnounce = self->_notificationRequestsForAnnounce;
     if (!notificationRequestsForAnnounce)
@@ -1611,15 +1611,15 @@ LABEL_47:
       notificationRequestsForAnnounce = self->_notificationRequestsForAnnounce;
     }
 
-    [(NSMutableArray *)notificationRequestsForAnnounce addObject:v4];
-    v37 = [v4 userNotification];
-    v15 = [(SBNotificationCarPlayDestination *)self _bulletinForNotificationRequest:v4];
-    v16 = [v15 summary];
-    v17 = [v16 string];
+    [(NSMutableArray *)notificationRequestsForAnnounce addObject:requestCopy];
+    userNotification = [requestCopy userNotification];
+    v15 = [(SBNotificationCarPlayDestination *)self _bulletinForNotificationRequest:requestCopy];
+    summary = [v15 summary];
+    string = [summary string];
 
-    if ([v17 length])
+    if ([string length])
     {
-      v18 = [objc_alloc(MEMORY[0x277CEF418]) initWithSummary:v17 summaryType:2 error:0];
+      v18 = [objc_alloc(MEMORY[0x277CEF418]) initWithSummary:string summaryType:2 error:0];
       v19 = 0;
     }
 
@@ -1630,8 +1630,8 @@ LABEL_47:
     }
 
     v20 = objc_alloc(MEMORY[0x277CEF410]);
-    v21 = [v4 sectionIdentifier];
-    v22 = [v20 initWithUserNotification:v37 sourceAppId:v21 platform:2 summaryDecision:v19 summary:v18];
+    sectionIdentifier = [requestCopy sectionIdentifier];
+    v22 = [v20 initWithUserNotification:userNotification sourceAppId:sectionIdentifier platform:2 summaryDecision:v19 summary:v18];
 
     announceRequestsForNotificationRequests = self->_announceRequestsForNotificationRequests;
     if (!announceRequestsForNotificationRequests)
@@ -1643,17 +1643,17 @@ LABEL_47:
       announceRequestsForNotificationRequests = self->_announceRequestsForNotificationRequests;
     }
 
-    [(NSMutableDictionary *)announceRequestsForNotificationRequests setObject:v22 forKey:v4];
-    v26 = [(SBNotificationCarPlayDestination *)self _notificationRequestCurrentlyAnnouncing];
-    v27 = v26;
-    if (v26)
+    [(NSMutableDictionary *)announceRequestsForNotificationRequests setObject:v22 forKey:requestCopy];
+    _notificationRequestCurrentlyAnnouncing = [(SBNotificationCarPlayDestination *)self _notificationRequestCurrentlyAnnouncing];
+    v27 = _notificationRequestCurrentlyAnnouncing;
+    if (_notificationRequestCurrentlyAnnouncing)
     {
-      v28 = v26;
+      v28 = _notificationRequestCurrentlyAnnouncing;
     }
 
     else
     {
-      v28 = v4;
+      v28 = requestCopy;
     }
 
     [(SBNotificationCarPlayDestination *)self _setNotificationRequestCurrentlyAnnouncing:v28];
@@ -1663,15 +1663,15 @@ LABEL_47:
     v40[1] = 3221225472;
     v40[2] = __75__SBNotificationCarPlayDestination__requestAnnounceForNotificationRequest___block_invoke;
     v40[3] = &unk_2783ADB58;
-    v29 = v10;
+    v29 = notificationIdentifier2;
     v41 = v29;
     objc_copyWeak(&v44, buf);
-    v42 = v4;
-    v43 = self;
+    v42 = requestCopy;
+    selfCopy = self;
     [v22 performRequestWithCompletion:v40];
-    if ([v17 length])
+    if ([string length])
     {
-      v30 = [objc_alloc(MEMORY[0x277CEF418]) initWithSummary:v17 summaryType:2 error:0];
+      v30 = [objc_alloc(MEMORY[0x277CEF418]) initWithSummary:string summaryType:2 error:0];
       v38[0] = MEMORY[0x277D85DD0];
       v38[1] = 3221225472;
       v38[2] = __75__SBNotificationCarPlayDestination__requestAnnounceForNotificationRequest___block_invoke_157;
@@ -1690,15 +1690,15 @@ LABEL_47:
     if (os_log_type_enabled(*v5, OS_LOG_TYPE_DEFAULT))
     {
       v32 = v31;
-      v33 = [v4 notificationIdentifier];
-      v34 = [v33 un_logDigest];
+      notificationIdentifier3 = [requestCopy notificationIdentifier];
+      un_logDigest2 = [notificationIdentifier3 un_logDigest];
       *buf = 138543362;
-      v46 = v34;
+      v46 = un_logDigest2;
       _os_log_impl(&dword_21ED4E000, v32, OS_LOG_TYPE_DEFAULT, "CarPlay request to announce notification request %{public}@ dropped due to current AV session", buf, 0xCu);
     }
 
-    v35 = [(SBNotificationCarPlayDestination *)self _notificationRequestCurrentlyAnnouncing];
-    v36 = v35 == v4;
+    _notificationRequestCurrentlyAnnouncing2 = [(SBNotificationCarPlayDestination *)self _notificationRequestCurrentlyAnnouncing];
+    v36 = _notificationRequestCurrentlyAnnouncing2 == requestCopy;
 
     if (v36)
     {
@@ -1806,40 +1806,40 @@ void __75__SBNotificationCarPlayDestination__requestAnnounceForNotificationReque
   }
 }
 
-- (int64_t)_announceDeactivationReasonForBannerRevocationReason:(id)a3
+- (int64_t)_announceDeactivationReasonForBannerRevocationReason:(id)reason
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"SBBannerRevocationReasonCarPlayDestinationExplicitDismissal"])
+  reasonCopy = reason;
+  if ([reasonCopy isEqualToString:@"SBBannerRevocationReasonCarPlayDestinationExplicitDismissal"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x277D77FF0]])
+  else if ([reasonCopy isEqualToString:*MEMORY[0x277D77FF0]])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x277CF91C0]])
+  else if ([reasonCopy isEqualToString:*MEMORY[0x277CF91C0]])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x277CF91D0]])
+  else if ([reasonCopy isEqualToString:*MEMORY[0x277CF91D0]])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x277D77FF8]])
+  else if ([reasonCopy isEqualToString:*MEMORY[0x277D77FF8]])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x277D78000]])
+  else if ([reasonCopy isEqualToString:*MEMORY[0x277D78000]])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x277D78008]])
+  else if ([reasonCopy isEqualToString:*MEMORY[0x277D78008]])
   {
     v4 = 10;
   }
@@ -1852,17 +1852,17 @@ void __75__SBNotificationCarPlayDestination__requestAnnounceForNotificationReque
   return v4;
 }
 
-- (void)_cancelAnnounceForNotificationRequest:(id)a3 withReason:(int64_t)a4 deactivateAnnounce:(BOOL)a5
+- (void)_cancelAnnounceForNotificationRequest:(id)request withReason:(int64_t)reason deactivateAnnounce:(BOOL)announce
 {
-  v5 = a5;
+  announceCopy = announce;
   v49 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  requestCopy = request;
   notificationRequestsForAnnounce = self->_notificationRequestsForAnnounce;
   v41[0] = MEMORY[0x277D85DD0];
   v41[1] = 3221225472;
   v41[2] = __104__SBNotificationCarPlayDestination__cancelAnnounceForNotificationRequest_withReason_deactivateAnnounce___block_invoke;
   v41[3] = &unk_2783C0610;
-  v10 = v8;
+  v10 = requestCopy;
   v42 = v10;
   v11 = [(NSMutableArray *)notificationRequestsForAnnounce indexOfObjectPassingTest:v41];
   v12 = MEMORY[0x277D77DB0];
@@ -1873,22 +1873,22 @@ void __75__SBNotificationCarPlayDestination__requestAnnounceForNotificationReque
     if (os_log_type_enabled(*MEMORY[0x277D77DB0], OS_LOG_TYPE_DEFAULT))
     {
       v15 = v14;
-      v16 = [v10 notificationIdentifier];
-      v17 = [v16 un_logDigest];
+      notificationIdentifier = [v10 notificationIdentifier];
+      un_logDigest = [notificationIdentifier un_logDigest];
       v18 = AFSiriDeactivationReasonGetName();
       *buf = 138543874;
-      v44 = v17;
+      v44 = un_logDigest;
       v45 = 2114;
       v46 = v18;
       v47 = 1024;
-      v48 = v5;
+      v48 = announceCopy;
       _os_log_impl(&dword_21ED4E000, v15, OS_LOG_TYPE_DEFAULT, "CarPlay clearing announce for notification request %{public}@ for reason %{public}@ with deactivation = %{BOOL}d", buf, 0x1Cu);
     }
 
     v19 = [(NSMutableArray *)self->_notificationRequestsForAnnounce objectAtIndex:v13];
     [(NSMutableArray *)self->_notificationRequestsForAnnounce removeObject:v19];
-    v20 = [(SBNotificationCarPlayDestination *)self _notificationRequestCurrentlyAnnouncing];
-    v21 = [v19 matchesRequest:v20];
+    _notificationRequestCurrentlyAnnouncing = [(SBNotificationCarPlayDestination *)self _notificationRequestCurrentlyAnnouncing];
+    v21 = [v19 matchesRequest:_notificationRequestCurrentlyAnnouncing];
 
     if (v21)
     {
@@ -1897,17 +1897,17 @@ void __75__SBNotificationCarPlayDestination__requestAnnounceForNotificationReque
 
     v22 = [(NSMutableDictionary *)self->_announceRequestsForNotificationRequests objectForKey:v19];
     [(NSMutableDictionary *)self->_announceRequestsForNotificationRequests removeObjectForKey:v19];
-    if (v22 && v5 && AFSiriDeactivationReasonGetIsValidAndSpecified())
+    if (v22 && announceCopy && AFSiriDeactivationReasonGetIsValidAndSpecified())
     {
       v23 = *v12;
       if (os_log_type_enabled(*v12, OS_LOG_TYPE_DEFAULT))
       {
         v24 = v23;
-        v25 = [v10 notificationIdentifier];
-        v26 = [v25 un_logDigest];
+        notificationIdentifier2 = [v10 notificationIdentifier];
+        un_logDigest2 = [notificationIdentifier2 un_logDigest];
         v27 = AFSiriDeactivationReasonGetName();
         *buf = 138543618;
-        v44 = v26;
+        v44 = un_logDigest2;
         v45 = 2114;
         v46 = v27;
         _os_log_impl(&dword_21ED4E000, v24, OS_LOG_TYPE_DEFAULT, "CarPlay requesting deactivate announce for notification request %{public}@ for reason %{public}@", buf, 0x16u);
@@ -1918,7 +1918,7 @@ void __75__SBNotificationCarPlayDestination__requestAnnounceForNotificationReque
       v38 = __104__SBNotificationCarPlayDestination__cancelAnnounceForNotificationRequest_withReason_deactivateAnnounce___block_invoke_159;
       v39 = &unk_2783A9398;
       v40 = v19;
-      [v22 deactivateRequestForReason:a4 completion:&v36];
+      [v22 deactivateRequestForReason:reason completion:&v36];
     }
 
     if (![(NSMutableArray *)self->_notificationRequestsForAnnounce count:v36])
@@ -1943,10 +1943,10 @@ void __75__SBNotificationCarPlayDestination__requestAnnounceForNotificationReque
     if (os_log_type_enabled(*v12, OS_LOG_TYPE_DEFAULT))
     {
       v32 = v31;
-      v33 = [v10 notificationIdentifier];
-      v34 = [v33 un_logDigest];
+      notificationIdentifier3 = [v10 notificationIdentifier];
+      un_logDigest3 = [notificationIdentifier3 un_logDigest];
       *buf = 138543362;
-      v44 = v34;
+      v44 = un_logDigest3;
       _os_log_impl(&dword_21ED4E000, v32, OS_LOG_TYPE_DEFAULT, "CarPlay removing request %{public}@ from announce list pending AV session completion", buf, 0xCu);
     }
 
@@ -1984,12 +1984,12 @@ void __104__SBNotificationCarPlayDestination__cancelAnnounceForNotificationReque
   }
 }
 
-- (BOOL)_shouldAnnounceNotificationForActiveAVSession:(id)a3
+- (BOOL)_shouldAnnounceNotificationForActiveAVSession:(id)session
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277D26E58] sharedAVSystemController];
-  v6 = [v5 attributeForKey:*MEMORY[0x277D26E08]];
+  sessionCopy = session;
+  mEMORY[0x277D26E58] = [MEMORY[0x277D26E58] sharedAVSystemController];
+  v6 = [mEMORY[0x277D26E58] attributeForKey:*MEMORY[0x277D26E08]];
 
   v7 = [v6 isEqualToString:*MEMORY[0x277D26E20]];
   if (v7)
@@ -2009,13 +2009,13 @@ LABEL_7:
 
   else
   {
-    v12 = [MEMORY[0x277D26E58] sharedAVSystemController];
-    v13 = [v12 attributeForKey:*MEMORY[0x277D26B78]];
-    v14 = [v13 BOOLValue];
+    mEMORY[0x277D26E58]2 = [MEMORY[0x277D26E58] sharedAVSystemController];
+    v13 = [mEMORY[0x277D26E58]2 attributeForKey:*MEMORY[0x277D26B78]];
+    bOOLValue = [v13 BOOLValue];
 
     v15 = *MEMORY[0x277D77DB0];
     v16 = os_log_type_enabled(*MEMORY[0x277D77DB0], OS_LOG_TYPE_DEFAULT);
-    if (v14)
+    if (bOOLValue)
     {
       if (v16)
       {
@@ -2032,10 +2032,10 @@ LABEL_7:
       if (v16)
       {
         v17 = v15;
-        v18 = [v4 notificationIdentifier];
-        v19 = [v18 un_logDigest];
+        notificationIdentifier = [sessionCopy notificationIdentifier];
+        un_logDigest = [notificationIdentifier un_logDigest];
         v24 = 138543618;
-        v25 = v19;
+        v25 = un_logDigest;
         v26 = 2112;
         v27 = v6;
         _os_log_impl(&dword_21ED4E000, v17, OS_LOG_TYPE_DEFAULT, "CarPlay deferring announce for notification %{public}@ because current AV prompt style is %@", &v24, 0x16u);
@@ -2051,9 +2051,9 @@ LABEL_7:
         notificationRequestsPendingAVSession = self->_notificationRequestsPendingAVSession;
       }
 
-      if (([(NSMutableArray *)notificationRequestsPendingAVSession containsObject:v4]& 1) == 0)
+      if (([(NSMutableArray *)notificationRequestsPendingAVSession containsObject:sessionCopy]& 1) == 0)
       {
-        [(NSMutableArray *)self->_notificationRequestsPendingAVSession addObject:v4];
+        [(NSMutableArray *)self->_notificationRequestsPendingAVSession addObject:sessionCopy];
       }
     }
   }
@@ -2061,11 +2061,11 @@ LABEL_7:
   return v7;
 }
 
-- (void)_voicePromptStyleChanged:(id)a3
+- (void)_voicePromptStyleChanged:(id)changed
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:*MEMORY[0x277D26E18]];
+  userInfo = [changed userInfo];
+  v5 = [userInfo objectForKey:*MEMORY[0x277D26E18]];
 
   if ([v5 isEqualToString:*MEMORY[0x277D26E20]] && -[NSMutableArray count](self->_notificationRequestsPendingAVSession, "count"))
   {
@@ -2113,30 +2113,30 @@ LABEL_7:
   }
 }
 
-- (void)_setNotificationRequestCurrentlyAnnouncing:(id)a3
+- (void)_setNotificationRequestCurrentlyAnnouncing:(id)announcing
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  announcingCopy = announcing;
   notificationRequestCurrentlyAnnouncing = self->_notificationRequestCurrentlyAnnouncing;
   p_notificationRequestCurrentlyAnnouncing = &self->_notificationRequestCurrentlyAnnouncing;
-  if (notificationRequestCurrentlyAnnouncing != v5)
+  if (notificationRequestCurrentlyAnnouncing != announcingCopy)
   {
     v8 = *MEMORY[0x277D77DB0];
     if (os_log_type_enabled(*MEMORY[0x277D77DB0], OS_LOG_TYPE_DEFAULT))
     {
       v9 = v8;
-      v10 = [(NCNotificationRequest *)v5 notificationIdentifier];
-      v11 = [v10 un_logDigest];
-      v12 = [(NCNotificationRequest *)*p_notificationRequestCurrentlyAnnouncing notificationIdentifier];
-      v13 = [v12 un_logDigest];
+      notificationIdentifier = [(NCNotificationRequest *)announcingCopy notificationIdentifier];
+      un_logDigest = [notificationIdentifier un_logDigest];
+      notificationIdentifier2 = [(NCNotificationRequest *)*p_notificationRequestCurrentlyAnnouncing notificationIdentifier];
+      un_logDigest2 = [notificationIdentifier2 un_logDigest];
       v14 = 138543618;
-      v15 = v11;
+      v15 = un_logDigest;
       v16 = 2114;
-      v17 = v13;
+      v17 = un_logDigest2;
       _os_log_impl(&dword_21ED4E000, v9, OS_LOG_TYPE_DEFAULT, "CarPlay setting currently announcing notification request to %{public}@ from %{public}@", &v14, 0x16u);
     }
 
-    objc_storeStrong(p_notificationRequestCurrentlyAnnouncing, a3);
+    objc_storeStrong(p_notificationRequestCurrentlyAnnouncing, announcing);
   }
 }
 
@@ -2145,20 +2145,20 @@ LABEL_7:
   v12 = *MEMORY[0x277D85DE8];
   if (self->_notificationRequestPendingDeactivation)
   {
-    v3 = [(SBNotificationCarPlayDestination *)self _notificationRequestCurrentlyAnnouncing];
+    _notificationRequestCurrentlyAnnouncing = [(SBNotificationCarPlayDestination *)self _notificationRequestCurrentlyAnnouncing];
     notificationRequestPendingDeactivation = self->_notificationRequestPendingDeactivation;
 
-    if (v3 == notificationRequestPendingDeactivation)
+    if (_notificationRequestCurrentlyAnnouncing == notificationRequestPendingDeactivation)
     {
       v5 = *MEMORY[0x277D77DB0];
       if (os_log_type_enabled(*MEMORY[0x277D77DB0], OS_LOG_TYPE_DEFAULT))
       {
         v6 = self->_notificationRequestPendingDeactivation;
         v7 = v5;
-        v8 = [(NCNotificationRequest *)v6 notificationIdentifier];
-        v9 = [v8 un_logDigest];
+        notificationIdentifier = [(NCNotificationRequest *)v6 notificationIdentifier];
+        un_logDigest = [notificationIdentifier un_logDigest];
         v10 = 138543362;
-        v11 = v9;
+        v11 = un_logDigest;
         _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_DEFAULT, "CarPlay clearing notification request %{public}@ pending announce deactivation and requesting early deactivation", &v10, 0xCu);
       }
 
@@ -2167,15 +2167,15 @@ LABEL_7:
   }
 }
 
-- (id)_notificationRequestForAnnounceWithIdentifier:(id)a3
+- (id)_notificationRequestForAnnounceWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   notificationRequestsForAnnounce = self->_notificationRequestsForAnnounce;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __82__SBNotificationCarPlayDestination__notificationRequestForAnnounceWithIdentifier___block_invoke;
   v10[3] = &unk_2783C0610;
-  v6 = v4;
+  v6 = identifierCopy;
   v11 = v6;
   v7 = [(NSMutableArray *)notificationRequestsForAnnounce indexOfObjectPassingTest:v10];
   if (v7 == 0x7FFFFFFFFFFFFFFFLL)
@@ -2199,59 +2199,59 @@ uint64_t __82__SBNotificationCarPlayDestination__notificationRequestForAnnounceW
   return v4;
 }
 
-- (void)_queueNotificationRequestWhileAnnouncing:(id)a3
+- (void)_queueNotificationRequestWhileAnnouncing:(id)announcing
 {
-  v4 = a3;
+  announcingCopy = announcing;
   notificationRequestsPendingAnnounce = self->_notificationRequestsPendingAnnounce;
-  v8 = v4;
+  v8 = announcingCopy;
   if (!notificationRequestsPendingAnnounce)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_notificationRequestsPendingAnnounce;
     self->_notificationRequestsPendingAnnounce = v6;
 
-    v4 = v8;
+    announcingCopy = v8;
     notificationRequestsPendingAnnounce = self->_notificationRequestsPendingAnnounce;
   }
 
-  [(NSMutableArray *)notificationRequestsPendingAnnounce addObject:v4];
+  [(NSMutableArray *)notificationRequestsPendingAnnounce addObject:announcingCopy];
 }
 
-- (void)_modifyNotificationRequest:(id)a3 inStore:(id)a4
+- (void)_modifyNotificationRequest:(id)request inStore:(id)store
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v6 count])
+  requestCopy = request;
+  storeCopy = store;
+  if ([storeCopy count])
   {
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __71__SBNotificationCarPlayDestination__modifyNotificationRequest_inStore___block_invoke;
     v9[3] = &unk_2783C0610;
-    v7 = v5;
+    v7 = requestCopy;
     v10 = v7;
-    v8 = [v6 indexOfObjectPassingTest:v9];
+    v8 = [storeCopy indexOfObjectPassingTest:v9];
     if (v8 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      [v6 replaceObjectAtIndex:v8 withObject:v7];
+      [storeCopy replaceObjectAtIndex:v8 withObject:v7];
     }
   }
 }
 
-- (void)_withdrawNotificationRequest:(id)a3 inStore:(id)a4
+- (void)_withdrawNotificationRequest:(id)request inStore:(id)store
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v6 count])
+  requestCopy = request;
+  storeCopy = store;
+  if ([storeCopy count])
   {
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __73__SBNotificationCarPlayDestination__withdrawNotificationRequest_inStore___block_invoke;
     v8[3] = &unk_2783C0610;
-    v9 = v5;
-    v7 = [v6 indexOfObjectPassingTest:v8];
+    v9 = requestCopy;
+    v7 = [storeCopy indexOfObjectPassingTest:v8];
     if (v7 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      [v6 removeObjectAtIndex:v7];
+      [storeCopy removeObjectAtIndex:v7];
     }
   }
 }
@@ -2280,7 +2280,7 @@ uint64_t __82__SBNotificationCarPlayDestination__notificationRequestForAnnounceW
   }
 }
 
-- (void)_flushAnnounceNotificationRequestsShouldAnnounce:(BOOL)a3
+- (void)_flushAnnounceNotificationRequestsShouldAnnounce:(BOOL)announce
 {
   if ([(NSMutableArray *)self->_notificationRequestsForAnnounce count])
   {
@@ -2303,7 +2303,7 @@ uint64_t __82__SBNotificationCarPlayDestination__notificationRequestForAnnounceW
     v10[2] = __85__SBNotificationCarPlayDestination__flushAnnounceNotificationRequestsShouldAnnounce___block_invoke;
     v10[3] = &unk_2783C0660;
     v10[4] = self;
-    v11 = a3;
+    announceCopy = announce;
     [(NSMutableArray *)v7 enumerateObjectsUsingBlock:v10];
     notificationRequestPendingDeactivation = self->_notificationRequestPendingDeactivation;
     self->_notificationRequestPendingDeactivation = 0;

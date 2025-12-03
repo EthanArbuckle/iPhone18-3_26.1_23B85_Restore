@@ -1,14 +1,14 @@
 @interface VUIAppDocumentPurchaseEventDescriptor
-- (BOOL)isEqual:(id)a3;
-- (VUIAppDocumentPurchaseEventDescriptor)initWithCanonicalID:(id)a3;
-- (VUIAppDocumentPurchaseEventDescriptor)initWithEventType:(unint64_t)a3;
+- (BOOL)isEqual:(id)equal;
+- (VUIAppDocumentPurchaseEventDescriptor)initWithCanonicalID:(id)d;
+- (VUIAppDocumentPurchaseEventDescriptor)initWithEventType:(unint64_t)type;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation VUIAppDocumentPurchaseEventDescriptor
 
-- (VUIAppDocumentPurchaseEventDescriptor)initWithEventType:(unint64_t)a3
+- (VUIAppDocumentPurchaseEventDescriptor)initWithEventType:(unint64_t)type
 {
   v4 = MEMORY[0x1E695DF30];
   v5 = *MEMORY[0x1E695D940];
@@ -18,15 +18,15 @@
   return 0;
 }
 
-- (VUIAppDocumentPurchaseEventDescriptor)initWithCanonicalID:(id)a3
+- (VUIAppDocumentPurchaseEventDescriptor)initWithCanonicalID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v9.receiver = self;
   v9.super_class = VUIAppDocumentPurchaseEventDescriptor;
   v5 = [(VUIAppDocumentUpdateEventDescriptor *)&v9 initWithEventType:4];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dCopy copy];
     canonicalID = v5->_canonicalID;
     v5->_canonicalID = v6;
   }
@@ -36,32 +36,32 @@
 
 - (unint64_t)hash
 {
-  v3 = [(VUIAppDocumentUpdateEventDescriptor *)self type];
-  v4 = [(VUIAppDocumentPurchaseEventDescriptor *)self canonicalID];
-  v5 = [v4 hash];
+  type = [(VUIAppDocumentUpdateEventDescriptor *)self type];
+  canonicalID = [(VUIAppDocumentPurchaseEventDescriptor *)self canonicalID];
+  v5 = [canonicalID hash];
 
-  return v5 ^ v3;
+  return v5 ^ type;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v13 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
-    v7 = [(VUIAppDocumentUpdateEventDescriptor *)self type];
-    if (v7 == [(VUIAppDocumentUpdateEventDescriptor *)v6 type])
+    type = [(VUIAppDocumentUpdateEventDescriptor *)self type];
+    if (type == [(VUIAppDocumentUpdateEventDescriptor *)v6 type])
     {
-      v8 = [(VUIAppDocumentPurchaseEventDescriptor *)self canonicalID];
-      v9 = [(VUIAppDocumentPurchaseEventDescriptor *)v6 canonicalID];
-      v10 = v8;
-      v11 = v9;
+      canonicalID = [(VUIAppDocumentPurchaseEventDescriptor *)self canonicalID];
+      canonicalID2 = [(VUIAppDocumentPurchaseEventDescriptor *)v6 canonicalID];
+      v10 = canonicalID;
+      v11 = canonicalID2;
       v12 = v11;
       if (v10 == v11)
       {
@@ -101,8 +101,8 @@
   [v3 addObject:v4];
 
   v5 = MEMORY[0x1E696AEC0];
-  v6 = [(VUIAppDocumentPurchaseEventDescriptor *)self canonicalID];
-  v7 = [v5 stringWithFormat:@"%@=%@", @"canonicalID", v6];
+  canonicalID = [(VUIAppDocumentPurchaseEventDescriptor *)self canonicalID];
+  v7 = [v5 stringWithFormat:@"%@=%@", @"canonicalID", canonicalID];
   [v3 addObject:v7];
 
   v8 = MEMORY[0x1E696AEC0];

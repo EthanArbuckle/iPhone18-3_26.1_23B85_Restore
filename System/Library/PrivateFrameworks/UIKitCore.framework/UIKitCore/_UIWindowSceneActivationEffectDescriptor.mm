@@ -1,20 +1,20 @@
 @interface _UIWindowSceneActivationEffectDescriptor
-+ (id)descriptorWithPreview:(id)a3;
-- (BOOL)canTransitionInPlaceToEffectWithDescriptor:(id)a3;
++ (id)descriptorWithPreview:(id)preview;
+- (BOOL)canTransitionInPlaceToEffectWithDescriptor:(id)descriptor;
 - (NSArray)compatibleDescriptors;
 @end
 
 @implementation _UIWindowSceneActivationEffectDescriptor
 
-+ (id)descriptorWithPreview:(id)a3
++ (id)descriptorWithPreview:(id)preview
 {
-  v3 = a3;
+  previewCopy = preview;
   v4 = objc_opt_new();
-  v5 = [v3 parameters];
-  [v5 setAppliesShadow:1];
+  parameters = [previewCopy parameters];
+  [parameters setAppliesShadow:1];
 
   v6 = v4[1];
-  v4[1] = v3;
+  v4[1] = previewCopy;
 
   return v4;
 }
@@ -28,15 +28,15 @@
   return v2;
 }
 
-- (BOOL)canTransitionInPlaceToEffectWithDescriptor:(id)a3
+- (BOOL)canTransitionInPlaceToEffectWithDescriptor:(id)descriptor
 {
-  v4 = a3;
-  v5 = [(_UIWindowSceneActivationEffectDescriptor *)self targetedPreview];
-  v6 = [v5 view];
-  v7 = [v4 targetedPreview];
+  descriptorCopy = descriptor;
+  targetedPreview = [(_UIWindowSceneActivationEffectDescriptor *)self targetedPreview];
+  view = [targetedPreview view];
+  targetedPreview2 = [descriptorCopy targetedPreview];
 
-  v8 = [v7 view];
-  v9 = [v6 isEqual:v8];
+  view2 = [targetedPreview2 view];
+  v9 = [view isEqual:view2];
 
   return v9;
 }

@@ -7,7 +7,7 @@
 - (uint64_t)matchesUID:()PickableRoute
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = [a1 objectForKey:AVController_RouteDescriptionKey_RouteUID];
+  v5 = [self objectForKey:AVController_RouteDescriptionKey_RouteUID];
   if (v5 && [v5 rangeOfString:a3] != 0x7FFFFFFFFFFFFFFFLL)
   {
 LABEL_14:
@@ -15,7 +15,7 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  result = [a1 objectForKey:AVController_RouteDescriptionKey_AlternateUIDs];
+  result = [self objectForKey:AVController_RouteDescriptionKey_AlternateUIDs];
   if (result)
   {
     v7 = result;

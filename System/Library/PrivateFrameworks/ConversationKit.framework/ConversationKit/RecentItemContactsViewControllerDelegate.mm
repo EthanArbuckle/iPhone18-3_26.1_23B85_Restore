@@ -1,15 +1,15 @@
 @interface RecentItemContactsViewControllerDelegate
-- (void)contactViewController:(id)a3 didExecuteBlockAndReportContactAction:(id)a4;
+- (void)contactViewController:(id)controller didExecuteBlockAndReportContactAction:(id)action;
 @end
 
 @implementation RecentItemContactsViewControllerDelegate
 
-- (void)contactViewController:(id)a3 didExecuteBlockAndReportContactAction:(id)a4
+- (void)contactViewController:(id)controller didExecuteBlockAndReportContactAction:(id)action
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  RecentItemContactsViewControllerDelegate.contactViewController(_:didExecuteBlockAndReportContactAction:)(v8, v10);
+  controllerCopy = controller;
+  actionCopy = action;
+  selfCopy = self;
+  RecentItemContactsViewControllerDelegate.contactViewController(_:didExecuteBlockAndReportContactAction:)(selfCopy, v10);
 }
 
 @end

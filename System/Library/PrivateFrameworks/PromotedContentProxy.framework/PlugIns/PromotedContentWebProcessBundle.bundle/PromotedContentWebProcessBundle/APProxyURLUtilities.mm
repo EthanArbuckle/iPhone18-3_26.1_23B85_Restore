@@ -1,16 +1,16 @@
 @interface APProxyURLUtilities
-+ (BOOL)_shouldProxyRequestToHost:(id)a3;
-+ (BOOL)shouldProxyRequestToHost:(id)a3;
-+ (id)_proxyURLForVideoURL:(id)a3 adIdentifier:(id)a4 changeScheme:(BOOL)a5;
-+ (id)composeUserAgentString:(id)a3 adIdentifier:(id)a4 maxRequestCount:(int64_t)a5;
-+ (void)changeSchemeTo:(int64_t)a3 forUrlRequest:(id)a4;
++ (BOOL)_shouldProxyRequestToHost:(id)host;
++ (BOOL)shouldProxyRequestToHost:(id)host;
++ (id)_proxyURLForVideoURL:(id)l adIdentifier:(id)identifier changeScheme:(BOOL)scheme;
++ (id)composeUserAgentString:(id)string adIdentifier:(id)identifier maxRequestCount:(int64_t)count;
++ (void)changeSchemeTo:(int64_t)to forUrlRequest:(id)request;
 @end
 
 @implementation APProxyURLUtilities
 
-+ (BOOL)shouldProxyRequestToHost:(id)a3
++ (BOOL)shouldProxyRequestToHost:(id)host
 {
-  v4 = a3;
+  hostCopy = host;
   if (!+[APSystemInternal isAppleInternalInstall])
   {
     goto LABEL_6;
@@ -23,7 +23,7 @@
   {
 
 LABEL_6:
-    v7 = [a1 _shouldProxyRequestToHost:v4];
+    v7 = [self _shouldProxyRequestToHost:hostCopy];
     goto LABEL_7;
   }
 
@@ -33,20 +33,20 @@ LABEL_7:
   return v7;
 }
 
-+ (BOOL)_shouldProxyRequestToHost:(id)a3
++ (BOOL)_shouldProxyRequestToHost:(id)host
 {
-  v3 = a3;
-  if ([v3 length])
+  hostCopy = host;
+  if ([hostCopy length])
   {
-    v4 = [v3 lowercaseString];
-    if ([v4 isEqualToString:@"localhost"] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"apple.com") & 1) != 0 || (objc_msgSend(v4, "hasSuffix:", @".apple.com") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"qwapi.com") & 1) != 0 || (objc_msgSend(v4, "hasSuffix:", @".qwapi.com") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"mzstatic.com"))
+    lowercaseString = [hostCopy lowercaseString];
+    if ([lowercaseString isEqualToString:@"localhost"] & 1) != 0 || (objc_msgSend(lowercaseString, "isEqualToString:", @"apple.com") & 1) != 0 || (objc_msgSend(lowercaseString, "hasSuffix:", @".apple.com") & 1) != 0 || (objc_msgSend(lowercaseString, "isEqualToString:", @"qwapi.com") & 1) != 0 || (objc_msgSend(lowercaseString, "hasSuffix:", @".qwapi.com") & 1) != 0 || (objc_msgSend(lowercaseString, "isEqualToString:", @"mzstatic.com"))
     {
       LOBYTE(v5) = 0;
     }
 
     else
     {
-      v5 = [v4 hasSuffix:@".mzstatic.com"] ^ 1;
+      v5 = [lowercaseString hasSuffix:@".mzstatic.com"] ^ 1;
     }
   }
 
@@ -58,12 +58,12 @@ LABEL_7:
   return v5;
 }
 
-+ (id)composeUserAgentString:(id)a3 adIdentifier:(id)a4 maxRequestCount:(int64_t)a5
++ (id)composeUserAgentString:(id)string adIdentifier:(id)identifier maxRequestCount:(int64_t)count
 {
-  v7 = a3;
-  if (v7)
+  stringCopy = string;
+  if (stringCopy)
   {
-    v8 = v7;
+    v8 = stringCopy;
   }
 
   else
@@ -71,29 +71,29 @@ LABEL_7:
     v8 = &stru_107A0;
   }
 
-  v9 = a4;
+  identifierCopy = identifier;
   v10 = [(__CFString *)v8 componentsSeparatedByString:@"##"];
-  v11 = [v10 firstObject];
+  firstObject = [v10 firstObject];
 
-  v12 = [v11 stringByAppendingFormat:@"##%@##%@##%@##%ld", @"ad-x-identifier", v9, @"max-request-count", a5];
+  v12 = [firstObject stringByAppendingFormat:@"##%@##%@##%@##%ld", @"ad-x-identifier", identifierCopy, @"max-request-count", count];
 
   return v12;
 }
 
-+ (void)changeSchemeTo:(int64_t)a3 forUrlRequest:(id)a4
++ (void)changeSchemeTo:(int64_t)to forUrlRequest:(id)request
 {
-  v5 = a4;
-  v7 = [v5 URL];
-  v6 = [v7 changeSchemeTo:a3];
-  [v5 setURL:v6];
+  requestCopy = request;
+  v7 = [requestCopy URL];
+  v6 = [v7 changeSchemeTo:to];
+  [requestCopy setURL:v6];
 }
 
-+ (id)_proxyURLForVideoURL:(id)a3 adIdentifier:(id)a4 changeScheme:(BOOL)a5
++ (id)_proxyURLForVideoURL:(id)l adIdentifier:(id)identifier changeScheme:(BOOL)scheme
 {
-  v5 = a5;
-  v6 = [a3 setQueryItem:a4 forKey:@"videoAdvertisingIdentifier"];
+  schemeCopy = scheme;
+  v6 = [l setQueryItem:identifier forKey:@"videoAdvertisingIdentifier"];
   v7 = v6;
-  if (v5)
+  if (schemeCopy)
   {
     if ([v6 isHTTP])
     {

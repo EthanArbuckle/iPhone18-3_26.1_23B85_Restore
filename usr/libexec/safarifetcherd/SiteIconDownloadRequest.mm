@@ -1,23 +1,23 @@
 @interface SiteIconDownloadRequest
-- (SiteIconDownloadRequest)initWithBookmark:(id)a3 singleResourceURL:(id)a4;
+- (SiteIconDownloadRequest)initWithBookmark:(id)bookmark singleResourceURL:(id)l;
 - (SiteIconDownloadRequestDelegate)delegate;
-- (id)_bestImageWithData:(id)a3 forWidth:(double)a4;
+- (id)_bestImageWithData:(id)data forWidth:(double)width;
 - (void)_cancelConnectionAndFetchNextIcon;
-- (void)_processIconDataAndNotifyDelegateWithIconURL:(id)a3;
-- (void)connection:(id)a3 didReceiveAuthenticationChallenge:(id)a4;
-- (void)connection:(id)a3 didReceiveData:(id)a4;
-- (void)connection:(id)a3 didReceiveResponse:(id)a4;
-- (void)connectionDidFinishLoading:(id)a3;
+- (void)_processIconDataAndNotifyDelegateWithIconURL:(id)l;
+- (void)connection:(id)connection didReceiveAuthenticationChallenge:(id)challenge;
+- (void)connection:(id)connection didReceiveData:(id)data;
+- (void)connection:(id)connection didReceiveResponse:(id)response;
+- (void)connectionDidFinishLoading:(id)loading;
 - (void)fetchNextIcon;
 - (void)setBookmarkFetchedIconData;
 @end
 
 @implementation SiteIconDownloadRequest
 
-- (SiteIconDownloadRequest)initWithBookmark:(id)a3 singleResourceURL:(id)a4
+- (SiteIconDownloadRequest)initWithBookmark:(id)bookmark singleResourceURL:(id)l
 {
-  v6 = a3;
-  v7 = a4;
+  bookmarkCopy = bookmark;
+  lCopy = l;
   v19.receiver = self;
   v19.super_class = SiteIconDownloadRequest;
   v8 = [(SiteIconDownloadRequest *)&v19 init];
@@ -25,16 +25,16 @@
   if (v8)
   {
     *&v8->_fetchForFavoritesIcon = 256;
-    v8->_bookmarkID = [v6 identifier];
-    v10 = [v6 UUID];
+    v8->_bookmarkID = [bookmarkCopy identifier];
+    uUID = [bookmarkCopy UUID];
     bookmarkUUID = v9->_bookmarkUUID;
-    v9->_bookmarkUUID = v10;
+    v9->_bookmarkUUID = uUID;
 
-    v12 = [v6 address];
+    address = [bookmarkCopy address];
     bookmarkAddress = v9->_bookmarkAddress;
-    v9->_bookmarkAddress = v12;
+    v9->_bookmarkAddress = address;
 
-    v20 = v7;
+    v20 = lCopy;
     v14 = [NSArray arrayWithObjects:&v20 count:1];
     v15 = [v14 mutableCopy];
     iconURLs = v9->_iconURLs;
@@ -68,11 +68,11 @@
 
 - (void)fetchNextIcon
 {
-  v3 = [(NSMutableArray *)self->_iconURLs firstObject];
-  v10 = v3;
-  if (v3)
+  firstObject = [(NSMutableArray *)self->_iconURLs firstObject];
+  v10 = firstObject;
+  if (firstObject)
   {
-    WeakRetained = [NSMutableURLRequest requestWithURL:v3];
+    WeakRetained = [NSMutableURLRequest requestWithURL:firstObject];
     [WeakRetained setAttribution:1];
     v5 = _SFCustomUserAgentStringIfNeeded();
     v6 = v5;
@@ -106,16 +106,16 @@
   [(SiteIconDownloadRequest *)self fetchNextIcon];
 }
 
-- (id)_bestImageWithData:(id)a3 forWidth:(double)a4
+- (id)_bestImageWithData:(id)data forWidth:(double)width
 {
-  v5 = a3;
-  if (![v5 length])
+  dataCopy = data;
+  if (![dataCopy length])
   {
     v17 = 0;
     goto LABEL_22;
   }
 
-  v6 = CGImageSourceCreateWithData(v5, 0);
+  v6 = CGImageSourceCreateWithData(dataCopy, 0);
   v7 = objc_alloc_init(WBSScopeExitHandler);
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
@@ -150,7 +150,7 @@ LABEL_15:
 
   v14 = [(__CFDictionary *)v12 objectForKeyedSubscript:kCGImagePropertyPixelWidth];
   v15 = v14;
-  if (!v14 || ([v14 doubleValue], v9) && (v11 >= a4 || v16 <= v11) && (v11 <= a4 || v16 >= v11 || v16 < a4) || (v11 = v16, v10 = v9, v16 != a4))
+  if (!v14 || ([v14 doubleValue], v9) && (v11 >= width || v16 <= v11) && (v11 <= width || v16 >= v11 || v16 < width) || (v11 = v16, v10 = v9, v16 != width))
   {
 
     goto LABEL_15;
@@ -168,9 +168,9 @@ LABEL_22:
   return v17;
 }
 
-- (void)_processIconDataAndNotifyDelegateWithIconURL:(id)a3
+- (void)_processIconDataAndNotifyDelegateWithIconURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = +[UIScreen mainScreen];
   [v5 scale];
   v7 = v6;
@@ -188,41 +188,41 @@ LABEL_22:
   block[1] = 3221225472;
   block[2] = sub_100001CE8;
   block[3] = &unk_10001C718;
-  v13 = v4;
+  v13 = lCopy;
   v14 = v17;
   v15 = v9;
   v16 = v7;
   block[4] = self;
-  v11 = v4;
+  v11 = lCopy;
   dispatch_async(v10, block);
 
   _Block_object_dispose(v17, 8);
 }
 
-- (void)connection:(id)a3 didReceiveAuthenticationChallenge:(id)a4
+- (void)connection:(id)connection didReceiveAuthenticationChallenge:(id)challenge
 {
-  v6 = a4;
-  v4 = [v6 proposedCredential];
-  if ([v6 previousFailureCount] || !objc_msgSend(v4, "hasPassword"))
+  challengeCopy = challenge;
+  proposedCredential = [challengeCopy proposedCredential];
+  if ([challengeCopy previousFailureCount] || !objc_msgSend(proposedCredential, "hasPassword"))
   {
-    v5 = [v6 sender];
-    [v5 cancelAuthenticationChallenge:v6];
+    sender = [challengeCopy sender];
+    [sender cancelAuthenticationChallenge:challengeCopy];
   }
 
   else
   {
-    v5 = [v6 sender];
-    [v5 useCredential:v4 forAuthenticationChallenge:v6];
+    sender = [challengeCopy sender];
+    [sender useCredential:proposedCredential forAuthenticationChallenge:challengeCopy];
   }
 }
 
-- (void)connection:(id)a3 didReceiveResponse:(id)a4
+- (void)connection:(id)connection didReceiveResponse:(id)response
 {
-  v7 = a4;
+  responseCopy = response;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    iconData = v7;
+    iconData = responseCopy;
     if ([(NSMutableData *)iconData statusCode]!= 200 || self->_fetchForFavoritesIcon && [(NSMutableData *)iconData expectedContentLength]> 0x40000)
     {
       [(SiteIconDownloadRequest *)self _cancelConnectionAndFetchNextIcon];
@@ -236,24 +236,24 @@ LABEL_22:
 LABEL_8:
 }
 
-- (void)connection:(id)a3 didReceiveData:(id)a4
+- (void)connection:(id)connection didReceiveData:(id)data
 {
-  v8 = a3;
-  v6 = a4;
-  if (self->_fetchForFavoritesIcon && (v7 = -[NSMutableData length](self->_iconData, "length"), [v6 length] + v7 > 0x40000))
+  connectionCopy = connection;
+  dataCopy = data;
+  if (self->_fetchForFavoritesIcon && (v7 = -[NSMutableData length](self->_iconData, "length"), [dataCopy length] + v7 > 0x40000))
   {
     [(SiteIconDownloadRequest *)self _cancelConnectionAndFetchNextIcon];
   }
 
   else
   {
-    [(NSMutableData *)self->_iconData appendData:v6];
+    [(NSMutableData *)self->_iconData appendData:dataCopy];
   }
 }
 
-- (void)connectionDidFinishLoading:(id)a3
+- (void)connectionDidFinishLoading:(id)loading
 {
-  v11 = a3;
+  loadingCopy = loading;
   v4 = [UIImage imageWithData:self->_iconData];
   [v4 size];
   if (v6 < 2.0 || v5 < 2.0)
@@ -263,10 +263,10 @@ LABEL_8:
 
   else
   {
-    v8 = [v11 originalRequest];
-    v9 = [v8 URL];
-    v10 = [v9 safari_originalDataAsString];
-    [(SiteIconDownloadRequest *)self _processIconDataAndNotifyDelegateWithIconURL:v10];
+    originalRequest = [loadingCopy originalRequest];
+    v9 = [originalRequest URL];
+    safari_originalDataAsString = [v9 safari_originalDataAsString];
+    [(SiteIconDownloadRequest *)self _processIconDataAndNotifyDelegateWithIconURL:safari_originalDataAsString];
   }
 }
 

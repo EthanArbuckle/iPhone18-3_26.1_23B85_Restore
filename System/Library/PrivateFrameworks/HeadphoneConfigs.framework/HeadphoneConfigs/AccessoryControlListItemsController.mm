@@ -4,8 +4,8 @@
 - (id)listeningModeCombinations;
 - (id)specifiers;
 - (void)dealloc;
-- (void)listItemSelected:(id)a3;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
+- (void)listItemSelected:(id)selected;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
 @end
 
 @implementation AccessoryControlListItemsController
@@ -110,34 +110,34 @@
   v3 = MEMORY[0x277CBEB18];
   v108.receiver = self;
   v108.super_class = AccessoryControlListItemsController;
-  v4 = [(PSListItemsController *)&v108 specifiers];
-  v5 = [v3 arrayWithArray:v4];
+  specifiers = [(PSListItemsController *)&v108 specifiers];
+  v5 = [v3 arrayWithArray:specifiers];
 
   v6 = *MEMORY[0x277D3FD20];
-  v7 = [*(&self->super.super.super.super.super.super.isa + v6) userInfo];
+  userInfo = [*(&self->super.super.super.super.super.super.isa + v6) userInfo];
   v8 = +[HPSDevice deviceKey];
-  v9 = [v7 objectForKeyedSubscript:v8];
+  v9 = [userInfo objectForKeyedSubscript:v8];
   currentDevice = self->_currentDevice;
   self->_currentDevice = v9;
 
   self->_autoANCSupported = [(BluetoothDeviceProtocol *)self->_currentDevice getAutoANCSupport];
-  v11 = [(BluetoothDeviceProtocol *)self->_currentDevice productId];
+  productId = [(BluetoothDeviceProtocol *)self->_currentDevice productId];
   v107 = 0;
   v106 = 0;
   v105 = v5;
-  if (v11 != 8230)
+  if (productId != 8230)
   {
-    v12 = v11;
+    v12 = productId;
     v13 = &v107;
     [(BluetoothDeviceProtocol *)self->_currentDevice clickHoldMode:&v107 rightAction:&v106];
-    v14 = [*(&self->super.super.super.super.super.super.isa + v6) identifier];
-    v15 = [v14 isEqualToString:@"LEFT_ID"];
+    identifier = [*(&self->super.super.super.super.super.super.isa + v6) identifier];
+    v15 = [identifier isEqualToString:@"LEFT_ID"];
 
     v16 = 0x277CBE000;
     if ((v15 & 1) == 0)
     {
-      v17 = [*(&self->super.super.super.super.super.super.isa + v6) identifier];
-      v18 = [v17 isEqualToString:@"RIGHT_ID"];
+      identifier2 = [*(&self->super.super.super.super.super.super.isa + v6) identifier];
+      v18 = [identifier2 isEqualToString:@"RIGHT_ID"];
 
       if (!v18)
       {
@@ -149,14 +149,14 @@
 
     if (*v13 == 5 && (![HPSProductUtils isBeatsNonWx:self->_currentDevice]|| ![(BluetoothDeviceProtocol *)self->_currentDevice featureCapability:30]|| [(BluetoothDeviceProtocol *)self->_currentDevice getAACPCapabilityBit:12]))
     {
-      v19 = [(BluetoothDeviceProtocol *)self->_currentDevice listeningModeConfigs];
-      self->_listeningModeConfigs.anc = (v19 & 2) != 0;
-      self->_listeningModeConfigs.transparency = (v19 & 4) != 0;
-      self->_listeningModeConfigs.normal = v19 & 1;
-      self->_listeningModeConfigs.autoANC = (v19 & 8) != 0;
+      listeningModeConfigs = [(BluetoothDeviceProtocol *)self->_currentDevice listeningModeConfigs];
+      self->_listeningModeConfigs.anc = (listeningModeConfigs & 2) != 0;
+      self->_listeningModeConfigs.transparency = (listeningModeConfigs & 4) != 0;
+      self->_listeningModeConfigs.normal = listeningModeConfigs & 1;
+      self->_listeningModeConfigs.autoANC = (listeningModeConfigs & 8) != 0;
       autoANCSupported = self->_autoANCSupported;
-      v21 = [*(&self->super.super.super.super.super.super.isa + v6) identifier];
-      v22 = [v21 isEqualToString:@"LEFT_ID"];
+      identifier3 = [*(&self->super.super.super.super.super.super.isa + v6) identifier];
+      v22 = [identifier3 isEqualToString:@"LEFT_ID"];
 
       if (autoANCSupported)
       {
@@ -170,10 +170,10 @@ LABEL_20:
           currentSelectedSpecifier = self->_currentSelectedSpecifier;
           self->_currentSelectedSpecifier = &v25->isa;
 
-          v31 = [(AccessoryControlListItemsController *)self listeningModeCombinations];
-          v32 = [objc_alloc(MEMORY[0x277CBEAC0]) initWithObjectsAndKeys:{v31, v24, 0}];
-          v33 = [MEMORY[0x277CCAB98] defaultCenter];
-          [v33 postNotificationName:v23 object:0 userInfo:v32];
+          listeningModeCombinations = [(AccessoryControlListItemsController *)self listeningModeCombinations];
+          v32 = [objc_alloc(MEMORY[0x277CBEAC0]) initWithObjectsAndKeys:{listeningModeCombinations, v24, 0}];
+          defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+          [defaultCenter postNotificationName:v23 object:0 userInfo:v32];
 
 LABEL_21:
           v34 = MEMORY[0x277D3FAD8];
@@ -240,9 +240,9 @@ LABEL_32:
           v49 = [MEMORY[0x277D755B8] _systemImageNamed:@"person.closed.fill"];
           v50 = [v49 imageByApplyingSymbolConfiguration:v104];
 
-          v51 = [MEMORY[0x277D75348] systemBlueColor];
+          systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
           v96 = v50;
-          v52 = [v50 imageWithTintColor:v51];
+          v52 = [v50 imageWithTintColor:systemBlueColor];
           v102 = *MEMORY[0x277D3FFC0];
           [v46 setProperty:v52 forKey:?];
 
@@ -280,11 +280,11 @@ LABEL_32:
 
           v69 = [MEMORY[0x277D755B8] _systemImageNamed:@"person.closed.fill"];
           v70 = MEMORY[0x277D755D0];
-          v71 = [MEMORY[0x277D75348] systemBlueColor];
-          v72 = [v71 colorWithAlphaComponent:0.5];
+          systemBlueColor2 = [MEMORY[0x277D75348] systemBlueColor];
+          v72 = [systemBlueColor2 colorWithAlphaComponent:0.5];
           v109[0] = v72;
-          v73 = [MEMORY[0x277D75348] systemBlueColor];
-          v109[1] = v73;
+          systemBlueColor3 = [MEMORY[0x277D75348] systemBlueColor];
+          v109[1] = systemBlueColor3;
           v74 = [MEMORY[0x277CBEA60] arrayWithObjects:v109 count:2];
           v75 = [v70 configurationWithPaletteColors:v74];
           v76 = [v69 imageByApplyingSymbolConfiguration:v75];
@@ -308,8 +308,8 @@ LABEL_32:
             v84 = [MEMORY[0x277D755B8] _systemImageNamed:@"person.and.sparkles.fill"];
             v85 = [v84 imageByApplyingSymbolConfiguration:v104];
 
-            v86 = [MEMORY[0x277D75348] systemBlueColor];
-            v87 = [v85 imageWithTintColor:v86];
+            systemBlueColor4 = [MEMORY[0x277D75348] systemBlueColor];
+            v87 = [v85 imageWithTintColor:systemBlueColor4];
             [v78 setProperty:v87 forKey:v102];
 
             [v78 setProperty:objc_opt_class() forKey:v100];
@@ -332,8 +332,8 @@ LABEL_32:
           goto LABEL_40;
         }
 
-        v26 = [*(&self->super.super.super.super.super.super.isa + v6) identifier];
-        v27 = [v26 isEqualToString:@"RIGHT_ID"];
+        identifier4 = [*(&self->super.super.super.super.super.super.isa + v6) identifier];
+        v27 = [identifier4 isEqualToString:@"RIGHT_ID"];
 
         if ((v27 & 1) == 0)
         {
@@ -353,8 +353,8 @@ LABEL_32:
           goto LABEL_14;
         }
 
-        v28 = [*(&self->super.super.super.super.super.super.isa + v6) identifier];
-        v29 = [v28 isEqualToString:@"RIGHT_ID"];
+        identifier5 = [*(&self->super.super.super.super.super.super.isa + v6) identifier];
+        v29 = [identifier5 isEqualToString:@"RIGHT_ID"];
 
         if (!v29)
         {
@@ -385,13 +385,13 @@ LABEL_40:
   return v91;
 }
 
-- (void)listItemSelected:(id)a3
+- (void)listItemSelected:(id)selected
 {
-  v4 = a3;
-  if ([v4 section])
+  selectedCopy = selected;
+  if ([selectedCopy section])
   {
-    v5 = [*(&self->super.super.super.super.super.super.isa + *MEMORY[0x277D3FC60]) cellForRowAtIndexPath:v4];
-    v6 = [(AccessoryControlListItemsController *)self specifierAtIndexPath:v4];
+    v5 = [*(&self->super.super.super.super.super.super.isa + *MEMORY[0x277D3FC60]) cellForRowAtIndexPath:selectedCopy];
+    v6 = [(AccessoryControlListItemsController *)self specifierAtIndexPath:selectedCopy];
     v7 = v6;
     p_listeningModeConfigs = &self->_listeningModeConfigs;
     p_anc = &self->_listeningModeConfigs.anc;
@@ -403,15 +403,15 @@ LABEL_40:
 
     if (v10 == 2)
     {
-      v11 = [v6 identifier];
+      identifier = [v6 identifier];
       v41 = v5;
-      if ([v11 isEqualToString:@"ANC"] && p_anc->normal)
+      if ([identifier isEqualToString:@"ANC"] && p_anc->normal)
       {
         goto LABEL_10;
       }
 
-      v12 = [v7 identifier];
-      if ([v12 isEqualToString:@"Passthrough"] && self->_listeningModeConfigs.transparency)
+      identifier2 = [v7 identifier];
+      if ([identifier2 isEqualToString:@"Passthrough"] && self->_listeningModeConfigs.transparency)
       {
 
 LABEL_10:
@@ -430,8 +430,8 @@ LABEL_49:
       }
 
       v13 = v7;
-      v14 = [v7 identifier];
-      if ([v14 isEqualToString:@"Off"])
+      identifier3 = [v7 identifier];
+      if ([identifier3 isEqualToString:@"Off"])
       {
         normal = p_listeningModeConfigs->normal;
 
@@ -451,8 +451,8 @@ LABEL_49:
       v5 = v41;
       if (self->_autoANCSupported)
       {
-        v16 = [v7 identifier];
-        if ([v16 isEqualToString:@"AutoANC"])
+        identifier4 = [v7 identifier];
+        if ([identifier4 isEqualToString:@"AutoANC"])
         {
           autoANC = self->_listeningModeConfigs.autoANC;
 
@@ -477,33 +477,33 @@ LABEL_49:
     }
 
     [v5 setChecked:{objc_msgSend(v5, "isChecked") ^ 1}];
-    v19 = [v7 identifier];
-    v20 = [v19 isEqualToString:@"ANC"];
+    identifier5 = [v7 identifier];
+    v20 = [identifier5 isEqualToString:@"ANC"];
 
     if (v20)
     {
-      v21 = [v5 isChecked];
+      isChecked = [v5 isChecked];
     }
 
     else
     {
-      v22 = [v7 identifier];
-      v23 = [v22 isEqualToString:@"Passthrough"];
+      identifier6 = [v7 identifier];
+      v23 = [identifier6 isEqualToString:@"Passthrough"];
 
       if (v23)
       {
-        v21 = [v5 isChecked];
+        isChecked = [v5 isChecked];
         p_anc = &self->_listeningModeConfigs.transparency;
       }
 
       else
       {
-        v24 = [v7 identifier];
-        v25 = [v24 isEqualToString:@"Off"];
+        identifier7 = [v7 identifier];
+        v25 = [identifier7 isEqualToString:@"Off"];
 
         if (v25)
         {
-          v21 = [v5 isChecked];
+          isChecked = [v5 isChecked];
           p_anc = &self->_listeningModeConfigs;
         }
 
@@ -542,21 +542,21 @@ LABEL_33:
               }
 
               v29 = [(NSString *)self->_currentSelectedSpecifier isEqualToString:@"Left"];
-              v30 = [(AccessoryControlListItemsController *)self listeningModeCombinations];
+              listeningModeCombinations = [(AccessoryControlListItemsController *)self listeningModeCombinations];
               v31 = objc_alloc(MEMORY[0x277CBEAC0]);
               if (v29)
               {
-                v32 = [v31 initWithObjectsAndKeys:{v30, @"cycleBetweenV2LeftBudValue", 0}];
-                v33 = [MEMORY[0x277CCAB98] defaultCenter];
-                v34 = v33;
+                v32 = [v31 initWithObjectsAndKeys:{listeningModeCombinations, @"cycleBetweenV2LeftBudValue", 0}];
+                defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+                v34 = defaultCenter;
                 v35 = @"CycleBetweenV2LeftBudValue";
               }
 
               else
               {
-                v32 = [v31 initWithObjectsAndKeys:{v30, @"cycleBetweenV2RightBudValue", 0}];
-                v33 = [MEMORY[0x277CCAB98] defaultCenter];
-                v34 = v33;
+                v32 = [v31 initWithObjectsAndKeys:{listeningModeCombinations, @"cycleBetweenV2RightBudValue", 0}];
+                defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+                v34 = defaultCenter;
                 v35 = @"CycleBetweenV2RightBudValue";
               }
             }
@@ -564,67 +564,67 @@ LABEL_33:
             else
             {
               v36 = [(NSString *)self->_currentSelectedSpecifier isEqualToString:@"Left"];
-              v30 = [(AccessoryControlListItemsController *)self listeningModeCombinations];
+              listeningModeCombinations = [(AccessoryControlListItemsController *)self listeningModeCombinations];
               v37 = objc_alloc(MEMORY[0x277CBEAC0]);
               if (v36)
               {
-                v32 = [v37 initWithObjectsAndKeys:{v30, @"cycleBetweenLeftBudValue", 0}];
-                v33 = [MEMORY[0x277CCAB98] defaultCenter];
-                v34 = v33;
+                v32 = [v37 initWithObjectsAndKeys:{listeningModeCombinations, @"cycleBetweenLeftBudValue", 0}];
+                defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+                v34 = defaultCenter;
                 v35 = @"CycleBetweenLeftBudValue";
               }
 
               else
               {
-                v32 = [v37 initWithObjectsAndKeys:{v30, @"cycleBetweenRightBudValue", 0}];
-                v33 = [MEMORY[0x277CCAB98] defaultCenter];
-                v34 = v33;
+                v32 = [v37 initWithObjectsAndKeys:{listeningModeCombinations, @"cycleBetweenRightBudValue", 0}];
+                defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+                v34 = defaultCenter;
                 v35 = @"CycleBetweenRightBudValue";
               }
             }
 
-            [v33 postNotificationName:v35 object:0 userInfo:v32];
+            [defaultCenter postNotificationName:v35 object:0 userInfo:v32];
 
             [(BluetoothDeviceProtocol *)self->_currentDevice setListeningModeConfigs:v28];
             goto LABEL_49;
           }
 
-          v21 = [v5 isChecked];
+          isChecked = [v5 isChecked];
           p_anc = &self->_listeningModeConfigs.autoANC;
         }
       }
     }
 
-    p_anc->normal = v21;
+    p_anc->normal = isChecked;
     goto LABEL_33;
   }
 
   v42.receiver = self;
   v42.super_class = AccessoryControlListItemsController;
-  [(PSListItemsController *)&v42 listItemSelected:v4];
+  [(PSListItemsController *)&v42 listItemSelected:selectedCopy];
   [(AccessoryControlListItemsController *)self reloadSpecifiers];
 LABEL_50:
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v22 = a4;
+  cellCopy = cell;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_13;
   }
 
-  v6 = v22;
-  v7 = [v6 valueLabel];
-  [v7 setLineBreakMode:0];
+  v6 = cellCopy;
+  valueLabel = [v6 valueLabel];
+  [valueLabel setLineBreakMode:0];
 
-  v8 = [v6 valueLabel];
-  [v8 setNumberOfLines:0];
+  valueLabel2 = [v6 valueLabel];
+  [valueLabel2 setNumberOfLines:0];
 
-  v9 = [v6 specifier];
-  v10 = [v9 identifier];
-  v11 = [v10 isEqualToString:@"ANC"];
+  specifier = [v6 specifier];
+  identifier = [specifier identifier];
+  v11 = [identifier isEqualToString:@"ANC"];
 
   if (v11)
   {
@@ -633,9 +633,9 @@ LABEL_50:
 
   else
   {
-    v13 = [v6 specifier];
-    v14 = [v13 identifier];
-    v15 = [v14 isEqualToString:@"Passthrough"];
+    specifier2 = [v6 specifier];
+    identifier2 = [specifier2 identifier];
+    v15 = [identifier2 isEqualToString:@"Passthrough"];
 
     if (v15)
     {
@@ -644,9 +644,9 @@ LABEL_50:
 
     else
     {
-      v16 = [v6 specifier];
-      v17 = [v16 identifier];
-      v18 = [v17 isEqualToString:@"Off"];
+      specifier3 = [v6 specifier];
+      identifier3 = [specifier3 identifier];
+      v18 = [identifier3 isEqualToString:@"Off"];
 
       if (!v18)
       {
@@ -661,9 +661,9 @@ LABEL_50:
 LABEL_9:
   if (self->_autoANCSupported)
   {
-    v19 = [v6 specifier];
-    v20 = [v19 identifier];
-    v21 = [v20 isEqualToString:@"AutoANC"];
+    specifier4 = [v6 specifier];
+    identifier4 = [specifier4 identifier];
+    v21 = [identifier4 isEqualToString:@"AutoANC"];
 
     if (v21)
     {
@@ -678,7 +678,7 @@ LABEL_13:
 
 - (BOOL)allowOffListeningMode
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_2511E9234();
 
   return v3;

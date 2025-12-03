@@ -7,16 +7,16 @@
 - (id)hu_containedServices
 {
   v2 = [MEMORY[0x277CBEB58] set];
-  v3 = [a1 service];
-  v4 = [v3 accessory];
-  v5 = [v4 hf_isBridge];
+  service = [self service];
+  accessory = [service accessory];
+  hf_isBridge = [accessory hf_isBridge];
 
-  if (v5)
+  if (hf_isBridge)
   {
-    v6 = [a1 service];
-    v7 = [v6 accessory];
-    v8 = [v7 hf_servicesBehindBridge];
-    [v2 unionSet:v8];
+    service2 = [self service];
+    accessory2 = [service2 accessory];
+    hf_servicesBehindBridge = [accessory2 hf_servicesBehindBridge];
+    [v2 unionSet:hf_servicesBehindBridge];
   }
 
   return v2;

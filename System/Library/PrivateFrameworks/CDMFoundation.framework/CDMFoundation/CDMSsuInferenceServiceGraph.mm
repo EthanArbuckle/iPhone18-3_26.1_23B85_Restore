@@ -1,5 +1,5 @@
 @interface CDMSsuInferenceServiceGraph
-+ (id)getUsageForAssetSetName:(int64_t)a3 withLocale:(id)a4;
++ (id)getUsageForAssetSetName:(int64_t)name withLocale:(id)locale;
 + (id)requiredDAGServices;
 - (void)buildGraph;
 @end
@@ -27,15 +27,15 @@
   return v10;
 }
 
-+ (id)getUsageForAssetSetName:(int64_t)a3 withLocale:(id)a4
++ (id)getUsageForAssetSetName:(int64_t)name withLocale:(id)locale
 {
   v14 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (name)
   {
     v5 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
-      v9 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+      v9 = [MEMORY[0x1E696AD98] numberWithInteger:name];
       v10 = 136315394;
       v11 = "+[CDMSsuInferenceServiceGraph getUsageForAssetSetName:withLocale:]";
       v12 = 2112;
@@ -48,7 +48,7 @@
 
   else
   {
-    v6 = [CDMAssetsUtils getSsuUsages:a4];
+    v6 = [CDMAssetsUtils getSsuUsages:locale];
   }
 
   v7 = *MEMORY[0x1E69E9840];
@@ -80,32 +80,32 @@
   v43[3] = __Block_byref_object_copy__2112;
   v43[4] = __Block_byref_object_dispose__2113;
   v44 = 0;
-  v6 = [(CDMServiceGraph *)self getGraphInput];
-  v7 = [(CDMServiceGraph *)self getLanguage];
+  getGraphInput = [(CDMServiceGraph *)self getGraphInput];
+  getLanguage = [(CDMServiceGraph *)self getLanguage];
   v41[0] = 0;
   v41[1] = v41;
   v41[2] = 0x3032000000;
   v41[3] = __Block_byref_object_copy__2112;
   v41[4] = __Block_byref_object_dispose__2113;
-  v8 = [v6 ssuRequest];
-  v42 = [v8 utterance];
+  ssuRequest = [getGraphInput ssuRequest];
+  utterance = [ssuRequest utterance];
 
-  v9 = [v6 ssuRequest];
-  v10 = [v9 requestId];
+  ssuRequest2 = [getGraphInput ssuRequest];
+  requestId = [ssuRequest2 requestId];
   v36[0] = MEMORY[0x1E69E9820];
   v36[1] = 3221225472;
   v36[2] = __41__CDMSsuInferenceServiceGraph_buildGraph__block_invoke;
   v36[3] = &unk_1E862FA78;
   v39 = v41;
-  v11 = v7;
+  v11 = getLanguage;
   v37 = v11;
   v40 = v47;
   v12 = v3;
   v38 = v12;
-  v13 = [(CDMServiceGraph *)self addNodeWithName:@"doCurrentTokenize" bindService:v12 requestId:v10 block:v36];
+  v13 = [(CDMServiceGraph *)self addNodeWithName:@"doCurrentTokenize" bindService:v12 requestId:requestId block:v36];
 
-  v14 = [v6 ssuRequest];
-  v15 = [v14 requestId];
+  ssuRequest3 = [getGraphInput ssuRequest];
+  requestId2 = [ssuRequest3 requestId];
   v32[0] = MEMORY[0x1E69E9820];
   v32[1] = 3221225472;
   v32[2] = __41__CDMSsuInferenceServiceGraph_buildGraph__block_invoke_585;
@@ -114,15 +114,15 @@
   v35 = v45;
   v16 = v4;
   v33 = v16;
-  v17 = [(CDMServiceGraph *)self addNodeWithName:@"doSpanization" bindService:v16 requestId:v15 block:v32];
+  v17 = [(CDMServiceGraph *)self addNodeWithName:@"doSpanization" bindService:v16 requestId:requestId2 block:v32];
 
-  v18 = [v6 ssuRequest];
-  v19 = [v18 requestId];
+  ssuRequest4 = [getGraphInput ssuRequest];
+  requestId3 = [ssuRequest4 requestId];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __41__CDMSsuInferenceServiceGraph_buildGraph__block_invoke_589;
   v24[3] = &unk_1E862ECD8;
-  v20 = v6;
+  v20 = getGraphInput;
   v25 = v20;
   v21 = v11;
   v26 = v21;
@@ -132,7 +132,7 @@
   v22 = v5;
   v27 = v22;
   objc_copyWeak(&v31, location);
-  v23 = [(CDMServiceGraph *)self addNodeWithName:@"doSSUMatching" bindService:v22 requestId:v19 block:v24];
+  v23 = [(CDMServiceGraph *)self addNodeWithName:@"doSSUMatching" bindService:v22 requestId:requestId3 block:v24];
 
   [v17 addDependency:v13];
   [v23 addDependency:v17];

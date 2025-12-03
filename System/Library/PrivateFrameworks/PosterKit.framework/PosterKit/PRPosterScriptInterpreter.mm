@@ -1,25 +1,25 @@
 @interface PRPosterScriptInterpreter
-- (BOOL)receiveAction:(id)a3;
+- (BOOL)receiveAction:(id)action;
 - (PRPosterScriptInterpreter)init;
-- (PRPosterScriptInterpreter)initWithScript:(id)a3 delegate:(id)a4;
+- (PRPosterScriptInterpreter)initWithScript:(id)script delegate:(id)delegate;
 - (PRPosterScriptInterpreterDelegate)delegate;
 - (id)nextLine;
 - (void)_fireNextLine;
 - (void)dealloc;
 - (void)invalidate;
-- (void)updateRecordingMovie:(BOOL)a3 action:(id)a4;
+- (void)updateRecordingMovie:(BOOL)movie action:(id)action;
 @end
 
 @implementation PRPosterScriptInterpreter
 
-- (PRPosterScriptInterpreter)initWithScript:(id)a3 delegate:(id)a4
+- (PRPosterScriptInterpreter)initWithScript:(id)script delegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  scriptCopy = script;
+  delegateCopy = delegate;
+  v9 = delegateCopy;
+  if (scriptCopy)
   {
-    if (v8)
+    if (delegateCopy)
     {
       goto LABEL_3;
     }
@@ -45,7 +45,7 @@ LABEL_3:
     invalidationSignal = v10->_invalidationSignal;
     v10->_invalidationSignal = v11;
 
-    v13 = [v7 copy];
+    v13 = [scriptCopy copy];
     script = v10->_script;
     v10->_script = v13;
 
@@ -70,12 +70,12 @@ LABEL_3:
   [(PRPosterScriptInterpreter *)&v3 dealloc];
 }
 
-- (BOOL)receiveAction:(id)a3
+- (BOOL)receiveAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   if ([(BSAtomicSignal *)self->_invalidationSignal hasBeenSignalled]& 1) == 0 && ((objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), (isKindOfClass) || (objc_opt_class(), (objc_opt_isKindOfClass())))
   {
-    [(PRPosterScriptInterpreter *)self updateRecordingMovie:isKindOfClass & 1 action:v4];
+    [(PRPosterScriptInterpreter *)self updateRecordingMovie:isKindOfClass & 1 action:actionCopy];
     v5 = 1;
   }
 
@@ -87,13 +87,13 @@ LABEL_3:
   return v5;
 }
 
-- (void)updateRecordingMovie:(BOOL)a3 action:(id)a4
+- (void)updateRecordingMovie:(BOOL)movie action:(id)action
 {
-  v4 = a3;
-  v6 = a4;
-  if (([(BSAtomicSignal *)self->_invalidationSignal hasBeenSignalled]& 1) == 0 && self->_isInterpretingScript != v4)
+  movieCopy = movie;
+  actionCopy = action;
+  if (([(BSAtomicSignal *)self->_invalidationSignal hasBeenSignalled]& 1) == 0 && self->_isInterpretingScript != movieCopy)
   {
-    if (v4)
+    if (movieCopy)
     {
       if (self->_didStartFilming)
       {
@@ -102,17 +102,17 @@ LABEL_3:
 LABEL_12:
         v16 = v8;
         v17 = [v7 responseForError:v8];
-        [v6 sendResponse:v17];
+        [actionCopy sendResponse:v17];
 
-        v18 = [(PRPosterScriptInterpreter *)self delegate];
-        [v18 scriptInterpreterDidFinish:self];
+        delegate = [(PRPosterScriptInterpreter *)self delegate];
+        [delegate scriptInterpreterDidFinish:self];
 
         goto LABEL_13;
       }
 
-      v11 = [(PRPosterScriptInterpreter *)self delegate];
-      v12 = [(PRPosterScriptInterpreter *)self nextLine];
-      v13 = [v11 scriptInterperterShouldBeginExecution:self initialStatement:v12];
+      delegate2 = [(PRPosterScriptInterpreter *)self delegate];
+      nextLine = [(PRPosterScriptInterpreter *)self nextLine];
+      v13 = [delegate2 scriptInterperterShouldBeginExecution:self initialStatement:nextLine];
 
       v7 = MEMORY[0x1E698E600];
       if ((v13 & 1) == 0)
@@ -121,13 +121,13 @@ LABEL_12:
         goto LABEL_12;
       }
 
-      v14 = [MEMORY[0x1E698E600] response];
-      [v6 sendResponse:v14];
+      response = [MEMORY[0x1E698E600] response];
+      [actionCopy sendResponse:response];
 
       self->_didStartFilming = 1;
       self->_isInterpretingScript = 1;
-      v15 = [(PRPosterScriptInterpreter *)self delegate];
-      [v15 scriptInterpreterDidBeginExecution:self];
+      delegate3 = [(PRPosterScriptInterpreter *)self delegate];
+      [delegate3 scriptInterpreterDidBeginExecution:self];
 
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
@@ -142,12 +142,12 @@ LABEL_12:
       self->_isInterpretingScript = 0;
       if (self->_didStartFilming)
       {
-        v9 = [(PRPosterScriptInterpreter *)self delegate];
-        [v9 scriptInterpreterDidFinish:self];
+        delegate4 = [(PRPosterScriptInterpreter *)self delegate];
+        [delegate4 scriptInterpreterDidFinish:self];
       }
 
-      v10 = [MEMORY[0x1E698E600] response];
-      [v6 sendResponse:v10];
+      response2 = [MEMORY[0x1E698E600] response];
+      [actionCopy sendResponse:response2];
     }
   }
 
@@ -176,14 +176,14 @@ LABEL_13:
 {
   if (self->_isInterpretingScript)
   {
-    v3 = [(PRPosterScriptInterpreter *)self nextLine];
-    v4 = v3;
-    if (v3)
+    nextLine = [(PRPosterScriptInterpreter *)self nextLine];
+    v4 = nextLine;
+    if (nextLine)
     {
-      [v3 duration];
+      [nextLine duration];
       v6 = v5;
-      v7 = [(PRPosterScriptInterpreter *)self delegate];
-      [v7 scriptInterpreter:self executeStatement:v4];
+      delegate = [(PRPosterScriptInterpreter *)self delegate];
+      [delegate scriptInterpreter:self executeStatement:v4];
 
       [(BSAbsoluteMachTimer *)self->_lineTimer invalidate];
       v8 = [objc_alloc(MEMORY[0x1E698E5E8]) initWithIdentifier:@"PRPosterScriptInterpreter-LineTimer"];
@@ -223,9 +223,9 @@ void __42__PRPosterScriptInterpreter__fireNextLine__block_invoke(uint64_t a1)
   lineEnumerator = self->_lineEnumerator;
   if (!lineEnumerator)
   {
-    v4 = [(PRPosterScript *)self->_script objectEnumerator];
+    objectEnumerator = [(PRPosterScript *)self->_script objectEnumerator];
     v5 = self->_lineEnumerator;
-    self->_lineEnumerator = v4;
+    self->_lineEnumerator = objectEnumerator;
 
     lineEnumerator = self->_lineEnumerator;
   }

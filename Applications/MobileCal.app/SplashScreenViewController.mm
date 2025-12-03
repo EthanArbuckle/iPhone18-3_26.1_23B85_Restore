@@ -24,9 +24,9 @@
     [(SplashScreenViewController *)v4 addBulletedListItemWithTitle:v6 description:v7 image:v9];
 
     v10 = +[UIDevice currentDevice];
-    v11 = [v10 userInterfaceIdiom];
+    userInterfaceIdiom = [v10 userInterfaceIdiom];
 
-    if (!v11)
+    if (!userInterfaceIdiom)
     {
       v12 = +[CUIKSplashScreenStrings monthViewScaleTitle];
       v13 = +[CUIKSplashScreenStrings monthViewScaleText];
@@ -58,8 +58,8 @@
     [v24 setTitle:v25 forState:0];
 
     [v24 addTarget:v4 action:"dismissSplashScreen" forControlEvents:64];
-    v26 = [(SplashScreenViewController *)v4 buttonTray];
-    [v26 addButton:v24];
+    buttonTray = [(SplashScreenViewController *)v4 buttonTray];
+    [buttonTray addButton:v24];
   }
 
   return v4;
@@ -67,8 +67,8 @@
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v2 = [(SplashScreenViewController *)self view];
-  [v2 bounds];
+  view = [(SplashScreenViewController *)self view];
+  [view bounds];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -94,11 +94,11 @@
 - (void)_continueButtonTappedCallback
 {
   dispatch_async(&_dispatch_main_q, &stru_10020F178);
-  v3 = [(SplashScreenViewController *)self doneBlock];
-  v4 = v3;
-  if (v3)
+  doneBlock = [(SplashScreenViewController *)self doneBlock];
+  v4 = doneBlock;
+  if (doneBlock)
   {
-    (*(v3 + 16))(v3);
+    (*(doneBlock + 16))(doneBlock);
     [(SplashScreenViewController *)self setDoneBlock:0];
   }
 
@@ -108,7 +108,7 @@
     if (os_log_type_enabled(kCalUILogHandle, OS_LOG_TYPE_ERROR))
     {
       v6 = 138412290;
-      v7 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_ERROR, "No 'done' blocked given.  Will not notify that [%@] is done.", &v6, 0xCu);
     }
   }

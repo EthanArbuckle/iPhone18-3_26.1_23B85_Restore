@@ -1,76 +1,76 @@
 @interface SUUIScreenshotDataConsumer
-+ (SUUIScreenshotDataConsumer)consumerWithScreenshotSize:(CGSize)a3;
++ (SUUIScreenshotDataConsumer)consumerWithScreenshotSize:(CGSize)size;
 + (id)consumer;
-- (id)imageForColor:(id)a3 size:(CGSize)a4;
-- (id)imageForImage:(id)a3;
+- (id)imageForColor:(id)color size:(CGSize)size;
+- (id)imageForImage:(id)image;
 @end
 
 @implementation SUUIScreenshotDataConsumer
 
 + (id)consumer
 {
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = &OBJC_METACLASS___SUUIScreenshotDataConsumer;
   v2 = objc_msgSendSuper2(&v4, sel_consumer);
 
   return v2;
 }
 
-+ (SUUIScreenshotDataConsumer)consumerWithScreenshotSize:(CGSize)a3
++ (SUUIScreenshotDataConsumer)consumerWithScreenshotSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [a1 consumer];
-  [v5 setImageSize:{width, height}];
+  height = size.height;
+  width = size.width;
+  consumer = [self consumer];
+  [consumer setImageSize:{width, height}];
   v6 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.2];
-  [v5 setBorderColor:v6];
+  [consumer setBorderColor:v6];
 
-  [v5 setBorderWidths:{1.0, 1.0, 1.0, 1.0}];
+  [consumer setBorderWidths:{1.0, 1.0, 1.0, 1.0}];
 
-  return v5;
+  return consumer;
 }
 
-- (id)imageForColor:(id)a3 size:(CGSize)a4
+- (id)imageForColor:(id)color size:(CGSize)size
 {
   forcesPortrait = self->_forcesPortrait;
-  v5 = a4.width > a4.height;
+  v5 = size.width > size.height;
   if (forcesPortrait && v5)
   {
-    height = a4.height;
+    height = size.height;
   }
 
   else
   {
-    height = a4.width;
+    height = size.width;
   }
 
   if (forcesPortrait && v5)
   {
-    a4.height = a4.width;
+    size.height = size.width;
   }
 
   v9.receiver = self;
   v9.super_class = SUUIScreenshotDataConsumer;
-  v7 = [(SUUIStyledImageDataConsumer *)&v9 imageForColor:a3 size:height, a4.height];
+  v7 = [(SUUIStyledImageDataConsumer *)&v9 imageForColor:color size:height, size.height];
 
   return v7;
 }
 
-- (id)imageForImage:(id)a3
+- (id)imageForImage:(id)image
 {
-  v4 = a3;
-  v5 = v4;
+  imageCopy = image;
+  v5 = imageCopy;
   if (self->_forcesPortrait)
   {
-    [v4 size];
+    [imageCopy size];
     v7 = v6;
     [v5 size];
     if (v7 > v8)
     {
       v9 = objc_alloc(MEMORY[0x277D755B8]);
-      v10 = [v5 CGImage];
+      cGImage = [v5 CGImage];
       [v5 scale];
-      v11 = [v9 initWithCGImage:v10 scale:2 orientation:?];
+      v11 = [v9 initWithCGImage:cGImage scale:2 orientation:?];
 
       v5 = v11;
     }

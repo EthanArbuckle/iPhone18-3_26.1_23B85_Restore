@@ -1,11 +1,11 @@
 @interface MPCQueueControllerEdit
-- (MPCQueueControllerEdit)initWithQueueController:(id)a3 label:(id)a4;
+- (MPCQueueControllerEdit)initWithQueueController:(id)controller label:(id)label;
 - (NSDictionary)suggestedContentItemIDsForDeletedContentItemIDs;
 - (void)commit;
 - (void)dealloc;
 - (void)rollback;
-- (void)setSuggestedContentItemID:(id)a3 forDeletedContentItemID:(id)a4;
-- (void)setSuggestedContentItemIDForStart:(id)a3;
+- (void)setSuggestedContentItemID:(id)d forDeletedContentItemID:(id)iD;
+- (void)setSuggestedContentItemIDForStart:(id)start;
 @end
 
 @implementation MPCQueueControllerEdit
@@ -21,8 +21,8 @@
 {
   if (self->_committed)
   {
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v5 handleFailureInMethod:a2 object:self file:@"MPCQueueController.m" lineNumber:1962 description:{@"Attempt to rollback an already committed edit: %@", self}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPCQueueController.m" lineNumber:1962 description:{@"Attempt to rollback an already committed edit: %@", self}];
   }
 
   [(MPCQueueController *)self->_queueController _rollbackEdit:self];
@@ -36,8 +36,8 @@
 {
   if (self->_committed)
   {
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v5 handleFailureInMethod:a2 object:self file:@"MPCQueueController.m" lineNumber:1954 description:{@"Attempt to commit an already committed edit: %@", self}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPCQueueController.m" lineNumber:1954 description:{@"Attempt to commit an already committed edit: %@", self}];
   }
 
   [(MPCQueueController *)self->_queueController _commitEdit:self];
@@ -47,13 +47,13 @@
   self->_committed = 1;
 }
 
-- (void)setSuggestedContentItemID:(id)a3 forDeletedContentItemID:(id)a4
+- (void)setSuggestedContentItemID:(id)d forDeletedContentItemID:(id)iD
 {
-  v11 = a3;
-  v7 = a4;
-  if (v11)
+  dCopy = d;
+  iDCopy = iD;
+  if (dCopy)
   {
-    if (v7)
+    if (iDCopy)
     {
       goto LABEL_3;
     }
@@ -61,49 +61,49 @@
 
   else
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"MPCQueueController.m" lineNumber:1946 description:{@"Invalid parameter not satisfying: %@", @"suggestedContentItemID != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPCQueueController.m" lineNumber:1946 description:{@"Invalid parameter not satisfying: %@", @"suggestedContentItemID != nil"}];
 
-    if (v7)
+    if (iDCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v9 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v9 handleFailureInMethod:a2 object:self file:@"MPCQueueController.m" lineNumber:1947 description:{@"Invalid parameter not satisfying: %@", @"deletedContentItemID != nil"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"MPCQueueController.m" lineNumber:1947 description:{@"Invalid parameter not satisfying: %@", @"deletedContentItemID != nil"}];
 
 LABEL_3:
   if (self->_committed)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"MPCQueueController.m" lineNumber:1948 description:{@"Attempt to modify committed edit: %@", self}];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"MPCQueueController.m" lineNumber:1948 description:{@"Attempt to modify committed edit: %@", self}];
   }
 
-  [(NSMutableDictionary *)self->_suggestedContentItemIDs setObject:v11 forKeyedSubscript:v7];
+  [(NSMutableDictionary *)self->_suggestedContentItemIDs setObject:dCopy forKeyedSubscript:iDCopy];
 }
 
-- (void)setSuggestedContentItemIDForStart:(id)a3
+- (void)setSuggestedContentItemIDForStart:(id)start
 {
-  v5 = a3;
-  v10 = v5;
-  if (!v5)
+  startCopy = start;
+  v10 = startCopy;
+  if (!startCopy)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"MPCQueueController.m" lineNumber:1939 description:{@"Invalid parameter not satisfying: %@", @"suggestedContentItemID != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPCQueueController.m" lineNumber:1939 description:{@"Invalid parameter not satisfying: %@", @"suggestedContentItemID != nil"}];
 
-    v5 = 0;
+    startCopy = 0;
   }
 
   if (self->_committed)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"MPCQueueController.m" lineNumber:1940 description:{@"Attempt to modify committed edit: %@", self}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"MPCQueueController.m" lineNumber:1940 description:{@"Attempt to modify committed edit: %@", self}];
 
-    v5 = v10;
+    startCopy = v10;
   }
 
-  v6 = [v5 copy];
+  v6 = [startCopy copy];
   suggestedStartingContentItemID = self->_suggestedStartingContentItemID;
   self->_suggestedStartingContentItemID = v6;
 }
@@ -112,8 +112,8 @@ LABEL_3:
 {
   if (!self->_committed)
   {
-    v4 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v4 handleFailureInMethod:a2 object:self file:@"MPCQueueController.m" lineNumber:1931 description:{@"Didn't call -commit/-rollback for edit: %@", self}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPCQueueController.m" lineNumber:1931 description:{@"Didn't call -commit/-rollback for edit: %@", self}];
   }
 
   v5.receiver = self;
@@ -121,22 +121,22 @@ LABEL_3:
   [(MPCQueueControllerEdit *)&v5 dealloc];
 }
 
-- (MPCQueueControllerEdit)initWithQueueController:(id)a3 label:(id)a4
+- (MPCQueueControllerEdit)initWithQueueController:(id)controller label:(id)label
 {
-  v7 = a3;
-  v8 = a4;
+  controllerCopy = controller;
+  labelCopy = label;
   v18.receiver = self;
   v18.super_class = MPCQueueControllerEdit;
   v9 = [(MPCQueueControllerEdit *)&v18 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_queueController, a3);
+    objc_storeStrong(&v9->_queueController, controller);
     v11 = MSVNanoIDCreateTaggedPointer();
     identifier = v10->_identifier;
     v10->_identifier = v11;
 
-    v13 = [v8 copy];
+    v13 = [labelCopy copy];
     label = v10->_label;
     v10->_label = v13;
 

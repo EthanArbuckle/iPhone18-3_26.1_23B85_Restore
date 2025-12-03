@@ -1,8 +1,8 @@
 @interface SongCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (BOOL)_axPerformCustomAction:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (BOOL)_axPerformCustomAction:(id)action;
 - (id)_accessibilityIndexPathForCell;
-- (id)_accessibilityLabelForPlaybackState:(int64_t)a3;
+- (id)_accessibilityLabelForPlaybackState:(int64_t)state;
 - (id)_privateAccessibilityCustomActions;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
@@ -10,25 +10,25 @@
 
 @implementation SongCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"NowPlayingUI.SongCell" hasInstanceMethod:@"accessibilityTrackNumberString" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NowPlayingUI.SongCell" hasInstanceMethod:@"accessibilityTitle" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NowPlayingUI.SongCell" hasInstanceMethod:@"accessibilityArtistName" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NowPlayingUI.SongCell" hasInstanceMethod:@"accessibilityAlbumTitle" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NowPlayingUI.SongCell" hasInstanceMethod:@"accessibilityDuration" withFullSignature:{"d", 0}];
-  [v3 validateClass:@"NowPlayingUI.SongCell" hasInstanceMethod:@"accessibilityIsExplicit" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"NowPlayingUI.SongCell" hasInstanceMethod:@"accessibilityIsPopular" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"NowPlayingUI.SongCell" hasInstanceMethod:@"accessibilityIsAddButtonSelected" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"NowPlayingUI.SongCell" hasInstanceMethod:@"accessibilityIsVideoTrack" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"NowPlayingUI.SongCell" hasInstanceMethod:@"accessibilityWantsNowPlayingIndicator" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"NowPlayingUI.SongCell" hasInstanceMethod:@"accessibilityPlaybackState" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"UICollectionViewTableCell" hasProperty:@"tableLayout" customGetter:@"_tableLayout" customSetter:0 withType:"@"];
-  [v3 validateClass:@"NowPlayingUI.CompositeCollectionViewAwareTableCell"];
-  [v3 validateClass:@"NowPlayingUI.SongCell" isKindOfClass:@"NowPlayingUI.CompositeCollectionViewAwareTableCell"];
-  [v3 validateClass:@"NowPlayingUI.SongCell" isKindOfClass:@"UICollectionViewTableCell"];
-  [v3 validateClass:@"NowPlayingUI.CompositeCollectionViewAwareTableCell" hasProperty:@"collectionView" withType:"@"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"NowPlayingUI.SongCell" hasInstanceMethod:@"accessibilityTrackNumberString" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NowPlayingUI.SongCell" hasInstanceMethod:@"accessibilityTitle" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NowPlayingUI.SongCell" hasInstanceMethod:@"accessibilityArtistName" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NowPlayingUI.SongCell" hasInstanceMethod:@"accessibilityAlbumTitle" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NowPlayingUI.SongCell" hasInstanceMethod:@"accessibilityDuration" withFullSignature:{"d", 0}];
+  [validationsCopy validateClass:@"NowPlayingUI.SongCell" hasInstanceMethod:@"accessibilityIsExplicit" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"NowPlayingUI.SongCell" hasInstanceMethod:@"accessibilityIsPopular" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"NowPlayingUI.SongCell" hasInstanceMethod:@"accessibilityIsAddButtonSelected" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"NowPlayingUI.SongCell" hasInstanceMethod:@"accessibilityIsVideoTrack" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"NowPlayingUI.SongCell" hasInstanceMethod:@"accessibilityWantsNowPlayingIndicator" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"NowPlayingUI.SongCell" hasInstanceMethod:@"accessibilityPlaybackState" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"UICollectionViewTableCell" hasProperty:@"tableLayout" customGetter:@"_tableLayout" customSetter:0 withType:"@"];
+  [validationsCopy validateClass:@"NowPlayingUI.CompositeCollectionViewAwareTableCell"];
+  [validationsCopy validateClass:@"NowPlayingUI.SongCell" isKindOfClass:@"NowPlayingUI.CompositeCollectionViewAwareTableCell"];
+  [validationsCopy validateClass:@"NowPlayingUI.SongCell" isKindOfClass:@"UICollectionViewTableCell"];
+  [validationsCopy validateClass:@"NowPlayingUI.CompositeCollectionViewAwareTableCell" hasProperty:@"collectionView" withType:"@"];
 }
 
 - (id)accessibilityLabel
@@ -106,9 +106,9 @@
   return v17;
 }
 
-- (id)_accessibilityLabelForPlaybackState:(int64_t)a3
+- (id)_accessibilityLabelForPlaybackState:(int64_t)state
 {
-  if (a3 == 2)
+  if (state == 2)
   {
     v4 = @"paused";
 LABEL_5:
@@ -117,7 +117,7 @@ LABEL_5:
     return v5;
   }
 
-  if (a3 == 1)
+  if (state == 1)
   {
     v4 = @"now.playing";
     goto LABEL_5;
@@ -143,11 +143,11 @@ LABEL_5:
   return v3 | v5;
 }
 
-- (BOOL)_axPerformCustomAction:(id)a3
+- (BOOL)_axPerformCustomAction:(id)action
 {
-  v3 = a3;
+  actionCopy = action;
   objc_opt_class();
-  v4 = [v3 _accessibilityValueForKey:@"AXSongCellActionKey"];
+  v4 = [actionCopy _accessibilityValueForKey:@"AXSongCellActionKey"];
   v5 = __UIAccessibilityCastAsClass();
 
   if (v5)
@@ -185,15 +185,15 @@ void __48__SongCellAccessibility__axPerformCustomAction___block_invoke(uint64_t 
 
 - (id)_privateAccessibilityCustomActions
 {
-  v3 = [MEMORY[0x29EDB8DE8] array];
-  v4 = [(SongCellAccessibility *)self _accessibilityIndexPathForCell];
+  array = [MEMORY[0x29EDB8DE8] array];
+  _accessibilityIndexPathForCell = [(SongCellAccessibility *)self _accessibilityIndexPathForCell];
   objc_opt_class();
   v5 = [(SongCellAccessibility *)self safeValueForKey:@"_tableLayout"];
   v6 = __UIAccessibilityCastAsClass();
 
   if (v6)
   {
-    v7 = v4 == 0;
+    v7 = _accessibilityIndexPathForCell == 0;
   }
 
   else
@@ -203,26 +203,26 @@ void __48__SongCellAccessibility__axPerformCustomAction___block_invoke(uint64_t 
 
   if (!v7 && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v8 = [v6 contextualActionForDeletingRowAtIndexPath:v4];
+    v8 = [v6 contextualActionForDeletingRowAtIndexPath:_accessibilityIndexPathForCell];
     v9 = v8;
     if (v8)
     {
-      v10 = [v8 title];
-      v11 = [v10 length];
+      title = [v8 title];
+      v11 = [title length];
 
       if (v11)
       {
         v12 = objc_alloc(MEMORY[0x29EDC78E0]);
-        v13 = [v9 title];
-        v14 = [v12 initWithName:v13 target:self selector:sel__axPerformCustomAction_];
+        title2 = [v9 title];
+        v14 = [v12 initWithName:title2 target:self selector:sel__axPerformCustomAction_];
 
         [v14 _accessibilitySetRetainedValue:v9 forKey:@"AXSongCellActionKey"];
-        [v3 axSafelyAddObject:v14];
+        [array axSafelyAddObject:v14];
       }
     }
   }
 
-  return v3;
+  return array;
 }
 
 @end

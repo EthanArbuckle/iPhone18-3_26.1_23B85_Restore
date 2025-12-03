@@ -1,25 +1,25 @@
 @interface TSCH3DChartAbstractBarSceneObject
-+ (void)setLowDetailedGeometriesForScene:(id)a3;
-- (float)chartMinZForScene:(id)a3;
-- (float)depthForScene:(id)a3;
-- (tvec2<float>)p_valueLabelPaddingForLabelPosition:(unsigned int)a3;
-- (tvec3<float>)adjustedScaleForInfoChartScale:(void *)a3 scene:(id)a4;
-- (tvec3<float>)sortingPositionForElement:(id)a3;
-- (void)renderLabelsSceneObject:(id)a3 pipeline:(id)a4 enumerator:(id)a5 properties:(id)a6;
-- (void)renderSeriesLabelsSceneObject:(id)a3 pipeline:(id)a4;
-- (void)renderSeriesLabelsSceneObject:(id)a3 pipeline:(id)a4 enumerator:(id)a5 properties:(id)a6;
-- (void)sortElements:(id *)a3 pipeline:(id)a4;
-- (void)updateElementEffectsStates:(id)a3 depthToWidthRatio:(float)a4;
-- (void)updateTilingEffect:(void *)a3 series:(id)a4 properties:(id)a5 textureTiling:(id)a6 areaSize:(void *)a7 element:(void *)a8;
++ (void)setLowDetailedGeometriesForScene:(id)scene;
+- (float)chartMinZForScene:(id)scene;
+- (float)depthForScene:(id)scene;
+- (tvec2<float>)p_valueLabelPaddingForLabelPosition:(unsigned int)position;
+- (tvec3<float>)adjustedScaleForInfoChartScale:(void *)scale scene:(id)scene;
+- (tvec3<float>)sortingPositionForElement:(id)element;
+- (void)renderLabelsSceneObject:(id)object pipeline:(id)pipeline enumerator:(id)enumerator properties:(id)properties;
+- (void)renderSeriesLabelsSceneObject:(id)object pipeline:(id)pipeline;
+- (void)renderSeriesLabelsSceneObject:(id)object pipeline:(id)pipeline enumerator:(id)enumerator properties:(id)properties;
+- (void)sortElements:(id *)elements pipeline:(id)pipeline;
+- (void)updateElementEffectsStates:(id)states depthToWidthRatio:(float)ratio;
+- (void)updateTilingEffect:(void *)effect series:(id)series properties:(id)properties textureTiling:(id)tiling areaSize:(void *)size element:(void *)element;
 @end
 
 @implementation TSCH3DChartAbstractBarSceneObject
 
-+ (void)setLowDetailedGeometriesForScene:(id)a3
++ (void)setLowDetailedGeometriesForScene:(id)scene
 {
-  v4 = a3;
-  v9 = objc_msgSend_scenePropertiesKey(a1, v5, v6, v7, v8);
-  v14 = objc_msgSend_mutablePropertiesForType_(v4, v10, v11, v12, v13, v9);
+  sceneCopy = scene;
+  v9 = objc_msgSend_scenePropertiesKey(self, v5, v6, v7, v8);
+  v14 = objc_msgSend_mutablePropertiesForType_(sceneCopy, v10, v11, v12, v13, v9);
 
   if (!v14)
   {
@@ -46,22 +46,22 @@
   objc_msgSend_setExtrusionDetails_forShape_(v14, v39, *&v35, *&v36, v38, &v40, 0);
 }
 
-- (void)renderSeriesLabelsSceneObject:(id)a3 pipeline:(id)a4 enumerator:(id)a5 properties:(id)a6
+- (void)renderSeriesLabelsSceneObject:(id)object pipeline:(id)pipeline enumerator:(id)enumerator properties:(id)properties
 {
-  v139 = a3;
-  v9 = a4;
-  v133 = a5;
-  v140 = a6;
-  v138 = v9;
-  v14 = objc_msgSend_scene(v9, v10, v11, v12, v13);
+  objectCopy = object;
+  pipelineCopy = pipeline;
+  enumeratorCopy = enumerator;
+  propertiesCopy = properties;
+  v138 = pipelineCopy;
+  v14 = objc_msgSend_scene(pipelineCopy, v10, v11, v12, v13);
   v19 = objc_msgSend_nonNilAccessorWithScene_(TSCH3DChartScenePropertyAccessor, v15, v16, v17, v18, v14);
 
-  v24 = objc_msgSend_scene(v9, v20, v21, v22, v23);
-  v135 = objc_msgSend_delegateForSceneObject_(v24, v25, v26, v27, v28, v139);
+  v24 = objc_msgSend_scene(pipelineCopy, v20, v21, v22, v23);
+  v135 = objc_msgSend_delegateForSceneObject_(v24, v25, v26, v27, v28, objectCopy);
 
-  v136 = objc_msgSend_seriesEnumerator(v133, v29, v30, v31, v32);
-  v37 = objc_msgSend_skipZeroValues(v133, v33, v34, v35, v36);
-  v42 = objc_msgSend_info(v133, v38, v39, v40, v41);
+  v136 = objc_msgSend_seriesEnumerator(enumeratorCopy, v29, v30, v31, v32);
+  v37 = objc_msgSend_skipZeroValues(enumeratorCopy, v33, v34, v35, v36);
+  v42 = objc_msgSend_info(enumeratorCopy, v38, v39, v40, v41);
   v47 = objc_msgSend_chartType(v42, v43, v44, v45, v46);
   isHorizontal = objc_msgSend_isHorizontal(v47, v48, v49, v50, v51);
 
@@ -76,7 +76,7 @@
   }
 
   v137 = v57;
-  v58 = objc_msgSend_info(v133, v53, v54, v55, v56);
+  v58 = objc_msgSend_info(enumeratorCopy, v53, v54, v55, v56);
   v134 = objc_msgSend_model(v58, v59, v60, v61, v62);
 
   v66 = 0.00781250185;
@@ -93,7 +93,7 @@
     v73 = v162.i32[1];
     v78 = objc_msgSend_index(v72, v74, v75, v76, v77);
     v83 = objc_msgSend_index(v72, v79, v80, v81, v82);
-    if ((objc_msgSend_willSubmitLabelType_boundsIndex_alignment_elementIndex_forSceneObject_(v135, v84, v85, v86, v87, 6, v78, 0, v83, v139) & 1) == 0)
+    if ((objc_msgSend_willSubmitLabelType_boundsIndex_alignment_elementIndex_forSceneObject_(v135, v84, v85, v86, v87, 6, v78, 0, v83, objectCopy) & 1) == 0)
     {
       v92 = objc_msgSend_nameForSeries_(v134, v88, v89, v90, v91, v73);
       v98 = objc_msgSend_elementEnumerator(v72, v93, v94, v95, v96);
@@ -114,7 +114,7 @@
           memset(v164, 0, sizeof(v164));
           memset(&v162, 0, 32);
           v115 = objc_msgSend_series(v72, v112, 0.0, v113, v114);
-          v120 = objc_msgSend_applyCombinedTransform_series_index_propertyAccessor_(v140, v116, v117, v118, v119, &v162, v115, v165, v19);
+          v120 = objc_msgSend_applyCombinedTransform_series_index_propertyAccessor_(propertiesCopy, v116, v117, v118, v119, &v162, v115, v165, v19);
 
           if ((v120 | v37 ^ 1))
           {
@@ -143,7 +143,7 @@
             sub_27615613C(&v141);
             LODWORD(v132) = v137;
             v127 = objc_msgSend_infoWithPipeline_index_resourceIndex_renderString_position_offset_alignment_wrapWidth_offset2D_rotation_alignmentPadding_(TSCH3DChartLabelsContainingLabelRenderInfo, v125, 0.0, 0.0, v126, v138, v144, v143, v92, &v148, &v145, v132, &v142, &v141);
-            objc_msgSend_renderLabelRenderInfo_(v139, v128, v129, v130, v131, v127);
+            objc_msgSend_renderLabelRenderInfo_(objectCopy, v128, v129, v130, v131, v127);
           }
 
           sub_27616B32C(v164);
@@ -154,11 +154,11 @@
   }
 }
 
-- (void)renderSeriesLabelsSceneObject:(id)a3 pipeline:(id)a4
+- (void)renderSeriesLabelsSceneObject:(id)object pipeline:(id)pipeline
 {
-  v6 = a3;
-  v7 = a4;
-  v12 = objc_msgSend_scene(v7, v8, v9, v10, v11);
+  objectCopy = object;
+  pipelineCopy = pipeline;
+  v12 = objc_msgSend_scene(pipelineCopy, v8, v9, v10, v11);
   v17 = objc_msgSend_scenePropertiesKey(self, v13, v14, v15, v16);
   v22 = objc_msgSend_partForType_(v12, v18, v19, v20, v21, v17);
 
@@ -202,8 +202,8 @@
     v86[2] = sub_276180544;
     v86[3] = &unk_27A6B65A0;
     v86[4] = self;
-    v87 = v6;
-    v88 = v7;
+    v87 = objectCopy;
+    v88 = pipelineCopy;
     v89 = v27;
     v80 = v70;
     v90 = v80;
@@ -211,10 +211,10 @@
   }
 }
 
-- (tvec2<float>)p_valueLabelPaddingForLabelPosition:(unsigned int)a3
+- (tvec2<float>)p_valueLabelPaddingForLabelPosition:(unsigned int)position
 {
   *v3 = 0;
-  if ((a3 & 2) != 0)
+  if ((position & 2) != 0)
   {
     v4 = v3;
     v10[0] = 1092616192;
@@ -227,21 +227,21 @@
   return self;
 }
 
-- (void)renderLabelsSceneObject:(id)a3 pipeline:(id)a4 enumerator:(id)a5 properties:(id)a6
+- (void)renderLabelsSceneObject:(id)object pipeline:(id)pipeline enumerator:(id)enumerator properties:(id)properties
 {
-  v142 = a3;
-  v140 = a4;
-  v10 = a5;
-  v146 = a6;
-  v139 = objc_msgSend_seriesEnumerator(v10, v11, v12, v13, v14);
-  v19 = objc_msgSend_skipZeroValues(v10, v15, v16, v17, v18);
-  v24 = objc_msgSend_scene(v140, v20, v21, v22, v23);
+  objectCopy = object;
+  pipelineCopy = pipeline;
+  enumeratorCopy = enumerator;
+  propertiesCopy = properties;
+  v139 = objc_msgSend_seriesEnumerator(enumeratorCopy, v11, v12, v13, v14);
+  v19 = objc_msgSend_skipZeroValues(enumeratorCopy, v15, v16, v17, v18);
+  v24 = objc_msgSend_scene(pipelineCopy, v20, v21, v22, v23);
   v29 = objc_msgSend_nonNilAccessorWithScene_(TSCH3DChartScenePropertyAccessor, v25, v26, v27, v28, v24);
 
-  v34 = objc_msgSend_scene(v140, v30, v31, v32, v33);
-  v137 = objc_msgSend_delegateForSceneObject_(v34, v35, v36, v37, v38, v142);
+  v34 = objc_msgSend_scene(pipelineCopy, v30, v31, v32, v33);
+  v137 = objc_msgSend_delegateForSceneObject_(v34, v35, v36, v37, v38, objectCopy);
 
-  v138 = objc_msgSend_labels(v146, v39, v40, v41, v42);
+  v138 = objc_msgSend_labels(propertiesCopy, v39, v40, v41, v42);
   while (1)
   {
     v47 = objc_msgSend_nextSeries(v139, v43, v44, v45, v46);
@@ -255,7 +255,7 @@
     {
       v57 = objc_msgSend_index(v52, v53, v54, v55, v56);
       v62 = objc_msgSend_index(v52, v58, v59, v60, v61);
-      if ((objc_msgSend_willSubmitLabelType_boundsIndex_alignment_elementIndex_forSceneObject_(v137, v63, v64, v65, v66, 5, v57, 0, v62, v142) & 1) == 0)
+      if ((objc_msgSend_willSubmitLabelType_boundsIndex_alignment_elementIndex_forSceneObject_(v137, v63, v64, v65, v66, 5, v57, 0, v62, objectCopy) & 1) == 0)
       {
         objc_msgSend_intercept(v52, v67, v68, v69, v70);
         v141 = v71;
@@ -277,7 +277,7 @@
             memset(v166, 0, 48);
             memset(v165, 0, sizeof(v165));
             v98 = objc_msgSend_series(v52, v95, 0.0, v96, v97);
-            v103 = objc_msgSend_applyCombinedTransform_series_index_propertyAccessor_(v146, v99, v100, v101, v102, v165, v98, &v167, v29);
+            v103 = objc_msgSend_applyCombinedTransform_series_index_propertyAccessor_(propertiesCopy, v99, v100, v101, v102, v165, v98, &v167, v29);
 
             if ((v103 | v19 ^ 1))
             {
@@ -310,8 +310,8 @@
               v147 = v151;
               v148 = 0;
               LODWORD(v136) = v107;
-              v131 = objc_msgSend_infoWithPipeline_index_resourceIndex_renderString_position_offset_alignment_wrapWidth_offset2D_rotation_alignmentPadding_(TSCH3DChartLabelsContainingLabelRenderInfo, v130, 0.0, 0.0, v145, v140, v150, v149, v129, &v155, &v152, v136, &v148, &v147);
-              objc_msgSend_renderLabelRenderInfo_(v142, v132, v133, v134, v135, v131);
+              v131 = objc_msgSend_infoWithPipeline_index_resourceIndex_renderString_position_offset_alignment_wrapWidth_offset2D_rotation_alignmentPadding_(TSCH3DChartLabelsContainingLabelRenderInfo, v130, 0.0, 0.0, v145, pipelineCopy, v150, v149, v129, &v155, &v152, v136, &v148, &v147);
+              objc_msgSend_renderLabelRenderInfo_(objectCopy, v132, v133, v134, v135, v131);
             }
 
             sub_27616B32C(v166);
@@ -323,13 +323,13 @@
   }
 }
 
-- (void)updateTilingEffect:(void *)a3 series:(id)a4 properties:(id)a5 textureTiling:(id)a6 areaSize:(void *)a7 element:(void *)a8
+- (void)updateTilingEffect:(void *)effect series:(id)series properties:(id)properties textureTiling:(id)tiling areaSize:(void *)size element:(void *)element
 {
-  v149 = a4;
-  v13 = a5;
-  v14 = a6;
-  v148 = v13;
-  if (objc_msgSend_wrap(v14, v15, v16, v17, v18))
+  seriesCopy = series;
+  propertiesCopy = properties;
+  tilingCopy = tiling;
+  v148 = propertiesCopy;
+  if (objc_msgSend_wrap(tilingCopy, v15, v16, v17, v18))
   {
     v23 = MEMORY[0x277D81150];
     v24 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v19, v20, v21, v22, "[TSCH3DChartAbstractBarSceneObject updateTilingEffect:series:properties:textureTiling:areaSize:element:]");
@@ -339,7 +339,7 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v34, v35, v36, v37);
   }
 
-  if (objc_msgSend_face(v14, v19, v20, v21, v22))
+  if (objc_msgSend_face(tilingCopy, v19, v20, v21, v22))
   {
     v42 = MEMORY[0x277D81150];
     v43 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v38, v39, v40, v41, "[TSCH3DChartAbstractBarSceneObject updateTilingEffect:series:properties:textureTiling:areaSize:element:]");
@@ -350,7 +350,7 @@
   }
 
   v57 = objc_opt_class();
-  v63 = objc_msgSend_getPropertiesOfType_(v13, v58, v59, v60, v61, v57);
+  v63 = objc_msgSend_getPropertiesOfType_(propertiesCopy, v58, v59, v60, v61, v57);
   if (!v63)
   {
     v67 = MEMORY[0x277D81150];
@@ -362,17 +362,17 @@
   }
 
   v82 = objc_msgSend_appearance(v63, v62, v64, v65, v66);
-  v84 = *a7;
-  v83 = *(a7 + 1);
-  v85 = *(a7 + 2);
-  objc_msgSend_signedValueForSeries_index_(v82, v86, v87, v88, v89, v149, a8);
+  v84 = *size;
+  v83 = *(size + 1);
+  v85 = *(size + 2);
+  objc_msgSend_signedValueForSeries_index_(v82, v86, v87, v88, v89, seriesCopy, element);
   v150 = *&v90;
-  objc_msgSend_maxValueForSeries_(v82, v91, v90, v92, v93, *(a8 + 1));
+  objc_msgSend_maxValueForSeries_(v82, v91, v90, v92, v93, *(element + 1));
   v98 = *&v95;
-  if (v14)
+  if (tilingCopy)
   {
-    v99 = objc_msgSend_mode(v14, v94, v95, v96, v97);
-    objc_msgSend_scale(v14, v100, v101, v102, v103);
+    v99 = objc_msgSend_mode(tilingCopy, v94, v95, v96, v97);
+    objc_msgSend_scale(tilingCopy, v100, v101, v102, v103);
     LODWORD(v95) = 1.0;
     if (v99 == 1)
     {
@@ -390,7 +390,7 @@
     v105 = 1.0;
   }
 
-  v106 = objc_msgSend_mode(v14, v94, v95, v96, v97);
+  v106 = objc_msgSend_mode(tilingCopy, v94, v95, v96, v97);
   LODWORD(v110) = 1.0;
   if (v106)
   {
@@ -506,7 +506,7 @@
     v151.i64[0] = 0;
   }
 
-  v139 = objc_msgSend_mode(v14, v134, v135, v136, v137) == 0;
+  v139 = objc_msgSend_mode(tilingCopy, v134, v135, v136, v137) == 0;
   sub_2761565DC(&v151, isCircular, 0, v139, &v152, v138, v111, v147, v150);
   v140.i64[0] = *(v163[0].i64 + 4);
   v141.i64[0] = *(v163[0].i64 + 4);
@@ -519,16 +519,16 @@
   v142.i32[2] = v162.i32[0];
   *v141.i8 = v152;
   v141.u64[1] = v152;
-  *(a3 + 2) = v140;
+  *(effect + 2) = v140;
   v142.i32[3] = v162.i32[3];
-  *a3 = v143;
-  *(a3 + 1) = vmulq_f32(v142, v141);
+  *effect = v143;
+  *(effect + 1) = vmulq_f32(v142, v141);
 }
 
-- (void)updateElementEffectsStates:(id)a3 depthToWidthRatio:(float)a4
+- (void)updateElementEffectsStates:(id)states depthToWidthRatio:(float)ratio
 {
-  v6 = a3;
-  v12 = objc_msgSend_properties(v6, v7, v8, v9, v10);
+  statesCopy = states;
+  v12 = objc_msgSend_properties(statesCopy, v7, v8, v9, v10);
   if (!v12)
   {
     v16 = MEMORY[0x277D81150];
@@ -539,7 +539,7 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v27, v28, v29, v30);
   }
 
-  v31 = objc_msgSend_series(v6, v11, v13, v14, v15);
+  v31 = objc_msgSend_series(statesCopy, v11, v13, v14, v15);
   v36 = objc_msgSend_renderingLightingModelForSeries_(v12, v32, v33, v34, v35, v31);
 
   if (!v36)
@@ -554,17 +554,17 @@
 
   v56 = objc_msgSend_lightingModel(v36, v37, v38, v39, v40);
   v61 = objc_msgSend_diffuseTextureTiling(v56, v57, v58, v59, v60);
-  v66 = objc_msgSend_pipeline(v6, v62, v63, v64, v65);
+  v66 = objc_msgSend_pipeline(statesCopy, v62, v63, v64, v65);
   v71 = objc_msgSend_scene(v66, v67, v68, v69, v70);
   v76 = objc_msgSend_nonNilAccessorWithScene_(TSCH3DChartScenePropertyAccessor, v72, v73, v74, v75, v71);
 
   v113 = 0u;
   memset(v114, 0, 48);
   memset(v112, 0, sizeof(v112));
-  v81 = objc_msgSend_series(v6, v77, 0.0, v78, v79);
-  if (v6)
+  v81 = objc_msgSend_series(statesCopy, v77, 0.0, v78, v79);
+  if (statesCopy)
   {
-    objc_msgSend_index(v6, v80, v82, v83, v84);
+    objc_msgSend_index(statesCopy, v80, v82, v83, v84);
   }
 
   else
@@ -575,15 +575,15 @@
   objc_msgSend_applyElementTransform_series_index_propertyAccessor_(v12, v80, v82, v83, v84, v112, v81, v109, v76);
 
   v110 = *(*(*(&v112[0] + 1) + 8 * (v113 / 0x49)) + 56 * (v113 % 0x49) + 12);
-  v111 = a4;
-  v88 = objc_msgSend_processor(v6, v85, v110, v86, v87);
+  ratioCopy = ratio;
+  v88 = objc_msgSend_processor(statesCopy, v85, v110, v86, v87);
   v109[0] = xmmword_2764D5F30;
   v109[1] = xmmword_2764D5F30;
   v109[2] = xmmword_2764D5F30;
-  v93 = objc_msgSend_series(v6, v89, 0.00781250185, v90, v91);
-  if (v6)
+  v93 = objc_msgSend_series(statesCopy, v89, 0.00781250185, v90, v91);
+  if (statesCopy)
   {
-    objc_msgSend_index(v6, v92, v94, v95, v96);
+    objc_msgSend_index(statesCopy, v92, v94, v95, v96);
   }
 
   else
@@ -602,10 +602,10 @@
   sub_27616B32C(v112);
 }
 
-- (float)depthForScene:(id)a3
+- (float)depthForScene:(id)scene
 {
-  v4 = a3;
-  v10 = objc_msgSend_elementPropertiesFromScene_(self, v5, v6, v7, v8, v4);
+  sceneCopy = scene;
+  v10 = objc_msgSend_elementPropertiesFromScene_(self, v5, v6, v7, v8, sceneCopy);
   if (!v10)
   {
     v14 = MEMORY[0x277D81150];
@@ -617,16 +617,16 @@
   }
 
   v29 = objc_msgSend_appearance(v10, v9, v11, v12, v13);
-  objc_msgSend_depthForScene_(v29, v30, v31, v32, v33, v4);
+  objc_msgSend_depthForScene_(v29, v30, v31, v32, v33, sceneCopy);
   v35 = v34;
 
   return v35;
 }
 
-- (float)chartMinZForScene:(id)a3
+- (float)chartMinZForScene:(id)scene
 {
-  v4 = a3;
-  v10 = objc_msgSend_elementPropertiesFromScene_(self, v5, v6, v7, v8, v4);
+  sceneCopy = scene;
+  v10 = objc_msgSend_elementPropertiesFromScene_(self, v5, v6, v7, v8, sceneCopy);
   if (!v10)
   {
     v14 = MEMORY[0x277D81150];
@@ -638,17 +638,17 @@
   }
 
   v29 = objc_msgSend_appearance(v10, v9, v11, v12, v13);
-  objc_msgSend_chartMinZForScene_(v29, v30, v31, v32, v33, v4);
+  objc_msgSend_chartMinZForScene_(v29, v30, v31, v32, v33, sceneCopy);
   v35 = v34;
 
   return v35;
 }
 
-- (tvec3<float>)adjustedScaleForInfoChartScale:(void *)a3 scene:(id)a4
+- (tvec3<float>)adjustedScaleForInfoChartScale:(void *)scale scene:(id)scene
 {
   v6 = v4;
-  v7 = a4;
-  v12 = objc_msgSend_scenePartForScene_(self, v8, v9, v10, v11, v7);
+  sceneCopy = scene;
+  v12 = objc_msgSend_scenePartForScene_(self, v8, v9, v10, v11, sceneCopy);
   v17 = objc_msgSend_properties(v12, v13, v14, v15, v16);
   v23 = objc_msgSend_enumerator(v12, v18, v19, v20, v21);
   if (!v17)
@@ -671,7 +671,7 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v53, v54, v55, v56);
   }
 
-  v57 = objc_msgSend_nonNilAccessorWithScene_(TSCH3DChartScenePropertyAccessor, v22, v24, v25, v26, v7);
+  v57 = objc_msgSend_nonNilAccessorWithScene_(TSCH3DChartScenePropertyAccessor, v22, v24, v25, v26, sceneCopy);
   objc_opt_class();
   v62 = objc_msgSend_info(v23, v58, v59, v60, v61);
   v67 = objc_msgSend_chartType(v62, v63, v64, v65, v66);
@@ -717,7 +717,7 @@
   return result;
 }
 
-- (tvec3<float>)sortingPositionForElement:(id)a3
+- (tvec3<float>)sortingPositionForElement:(id)element
 {
   *v3 = 1056964608;
   *(v3 + 4) = 0x3F00000000000000;
@@ -727,11 +727,11 @@
   return result;
 }
 
-- (void)sortElements:(id *)a3 pipeline:(id)a4
+- (void)sortElements:(id *)elements pipeline:(id)pipeline
 {
-  v5 = a4;
-  v148 = self;
-  v150 = v5;
+  pipelineCopy = pipeline;
+  selfCopy = self;
+  v150 = pipelineCopy;
   v11 = objc_msgSend_processor(v150, v6, v7, v8, v9);
   if (!v11)
   {
@@ -746,7 +746,7 @@
   v30 = objc_msgSend_scene(v150, v10, v12, v13, v14);
   v151 = objc_msgSend_nonNilAccessorWithScene_(TSCH3DChartScenePropertyAccessor, v31, v32, v33, v34, v30);
 
-  v35 = *a3;
+  v35 = *elements;
   __src = 0;
   v160 = 0;
   v161 = 0;
@@ -872,13 +872,13 @@
     v128 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v124, v125, v126, v127, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCH3DChartElementSceneObject_SortElements.h");
     v133 = objc_msgSend_count(v35, v129, v130, v131, v132);
     v138 = objc_msgSend_count(v103, v134, v135, v136, v137);
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v122, v139, v140, v141, v142, v123, v128, 59, 0, "size mismatch between elements and sorted %lu, %lu", v133, v138, v148);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v122, v139, v140, v141, v142, v123, v128, 59, 0, "size mismatch between elements and sorted %lu, %lu", v133, v138, selfCopy);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v143, v144, v145, v146);
   }
 
   v147 = v103;
-  *a3 = v103;
+  *elements = v103;
 
   if (__src)
   {

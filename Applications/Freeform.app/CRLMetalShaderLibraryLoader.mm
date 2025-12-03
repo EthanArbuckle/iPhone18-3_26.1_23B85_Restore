@@ -1,25 +1,25 @@
 @interface CRLMetalShaderLibraryLoader
-+ (id)loadDefaultLibraryWithDevice:(id)a3;
-+ (id)loadLibraryWithDevice:(id)a3 bundle:(id)a4;
++ (id)loadDefaultLibraryWithDevice:(id)device;
++ (id)loadLibraryWithDevice:(id)device bundle:(id)bundle;
 @end
 
 @implementation CRLMetalShaderLibraryLoader
 
-+ (id)loadDefaultLibraryWithDevice:(id)a3
++ (id)loadDefaultLibraryWithDevice:(id)device
 {
-  v4 = a3;
-  v5 = [NSBundle bundleForClass:a1];
-  v6 = [a1 loadLibraryWithDevice:v4 bundle:v5];
+  deviceCopy = device;
+  v5 = [NSBundle bundleForClass:self];
+  v6 = [self loadLibraryWithDevice:deviceCopy bundle:v5];
 
   return v6;
 }
 
-+ (id)loadLibraryWithDevice:(id)a3 bundle:(id)a4
++ (id)loadLibraryWithDevice:(id)device bundle:(id)bundle
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (!v5)
+  deviceCopy = device;
+  bundleCopy = bundle;
+  v7 = bundleCopy;
+  if (!deviceCopy)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -52,7 +52,7 @@
     goto LABEL_31;
   }
 
-  if (!v6)
+  if (!bundleCopy)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -89,7 +89,7 @@ LABEL_31:
   }
 
   v20 = 0;
-  v8 = [v5 newDefaultLibraryWithBundle:v6 error:&v20];
+  v8 = [deviceCopy newDefaultLibraryWithBundle:bundleCopy error:&v20];
   v9 = v20;
   if (v8)
   {

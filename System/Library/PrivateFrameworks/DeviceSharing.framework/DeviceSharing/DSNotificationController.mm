@@ -17,7 +17,7 @@
 
 - (void)cancelNotificationIfNecessary
 {
-  v2 = self;
+  selfCopy = self;
   NotificationController.cancelNotificationIfNecessary()();
 }
 

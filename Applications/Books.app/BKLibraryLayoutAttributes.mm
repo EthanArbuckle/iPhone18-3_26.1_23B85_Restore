@@ -1,8 +1,8 @@
 @interface BKLibraryLayoutAttributes
 + (void)initialize;
-+ (void)setGlobalLayoutDebugMode:(int)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (void)setGlobalLayoutDebugMode:(int)mode;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -10,7 +10,7 @@
 
 + (void)initialize
 {
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___BKLibraryLayoutAttributes;
   objc_msgSendSuper2(&v6, "initialize");
   v2 = objc_opt_class();
@@ -33,9 +33,9 @@
   }
 }
 
-+ (void)setGlobalLayoutDebugMode:(int)a3
++ (void)setGlobalLayoutDebugMode:(int)mode
 {
-  dword_100AF7420 = a3;
+  dword_100AF7420 = mode;
   v3 = +[NSUserDefaults standardUserDefaults];
   [v3 setBool:dword_100AF7420 == 2 forKey:@"BKLibraryBookshelfLayoutDebugEnabledUserDefaultsKey"];
 
@@ -43,11 +43,11 @@
   [v4 synchronize];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = BKLibraryLayoutAttributes;
-  v4 = [(BKLibraryLayoutAttributes *)&v8 copyWithZone:a3];
+  v4 = [(BKLibraryLayoutAttributes *)&v8 copyWithZone:zone];
   objc_storeStrong(v4 + 2, self->_foregroundColor);
   v5 = [(NSDictionary *)self->_fontAttrs copy];
   v6 = v4[3];
@@ -66,51 +66,51 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v49.receiver = self;
   v49.super_class = BKLibraryLayoutAttributes;
   if ([(BKLibraryLayoutAttributes *)&v49 isEqual:?])
   {
-    v7 = [(BKLibraryLayoutAttributes *)self foregroundColor];
-    v8 = [a3 foregroundColor];
-    if (v7 != v8)
+    foregroundColor = [(BKLibraryLayoutAttributes *)self foregroundColor];
+    foregroundColor2 = [equal foregroundColor];
+    if (foregroundColor != foregroundColor2)
     {
-      v9 = [(BKLibraryLayoutAttributes *)self foregroundColor];
-      v3 = [a3 foregroundColor];
-      v48 = v9;
-      if (![v9 isEqual:v3])
+      foregroundColor3 = [(BKLibraryLayoutAttributes *)self foregroundColor];
+      foregroundColor4 = [equal foregroundColor];
+      v48 = foregroundColor3;
+      if (![foregroundColor3 isEqual:foregroundColor4])
       {
         LOBYTE(v10) = 0;
         goto LABEL_39;
       }
     }
 
-    v11 = [(BKLibraryLayoutAttributes *)self fontAttrs];
-    v12 = [a3 fontAttrs];
-    if (v11 != v12)
+    fontAttrs = [(BKLibraryLayoutAttributes *)self fontAttrs];
+    fontAttrs2 = [equal fontAttrs];
+    if (fontAttrs != fontAttrs2)
     {
-      v13 = [(BKLibraryLayoutAttributes *)self fontAttrs];
-      v4 = [a3 fontAttrs];
-      if (![v13 isEqual:v4])
+      fontAttrs3 = [(BKLibraryLayoutAttributes *)self fontAttrs];
+      fontAttrs4 = [equal fontAttrs];
+      if (![fontAttrs3 isEqual:fontAttrs4])
       {
         LOBYTE(v10) = 0;
         goto LABEL_37;
       }
 
-      v47 = v13;
+      v47 = fontAttrs3;
     }
 
-    v14 = [(BKLibraryLayoutAttributes *)self editable];
-    if (v14 != [a3 editable])
+    editable = [(BKLibraryLayoutAttributes *)self editable];
+    if (editable != [equal editable])
     {
       LOBYTE(v10) = 0;
-      v13 = v47;
-      if (v11 == v12)
+      fontAttrs3 = v47;
+      if (fontAttrs == fontAttrs2)
       {
 LABEL_38:
 
-        if (v7 == v8)
+        if (foregroundColor == foregroundColor2)
         {
 LABEL_40:
 
@@ -127,27 +127,27 @@ LABEL_37:
       goto LABEL_38;
     }
 
-    v15 = [(BKLibraryLayoutAttributes *)self cellMetrics];
-    v45 = [a3 cellMetrics];
-    v46 = v15;
-    v16 = v15 == v45;
-    v13 = v47;
-    v44 = v4;
+    cellMetrics = [(BKLibraryLayoutAttributes *)self cellMetrics];
+    cellMetrics2 = [equal cellMetrics];
+    v46 = cellMetrics;
+    v16 = cellMetrics == cellMetrics2;
+    fontAttrs3 = v47;
+    v44 = fontAttrs4;
     if (!v16)
     {
-      v17 = [(BKLibraryLayoutAttributes *)self cellMetrics];
-      v40 = [a3 cellMetrics];
-      v41 = v17;
-      if (![v17 isEqual:?])
+      cellMetrics3 = [(BKLibraryLayoutAttributes *)self cellMetrics];
+      cellMetrics4 = [equal cellMetrics];
+      v41 = cellMetrics3;
+      if (![cellMetrics3 isEqual:?])
       {
         LOBYTE(v10) = 0;
-        v23 = v45;
+        v23 = cellMetrics2;
         v20 = v46;
 LABEL_35:
 
 LABEL_36:
-        v4 = v44;
-        if (v11 == v12)
+        fontAttrs4 = v44;
+        if (fontAttrs == fontAttrs2)
         {
           goto LABEL_38;
         }
@@ -156,25 +156,25 @@ LABEL_36:
       }
     }
 
-    v18 = [(BKLibraryLayoutAttributes *)self columnMetrics];
-    v42 = [a3 columnMetrics];
-    v43 = v18;
-    if (v18 != v42)
+    columnMetrics = [(BKLibraryLayoutAttributes *)self columnMetrics];
+    columnMetrics2 = [equal columnMetrics];
+    v43 = columnMetrics;
+    if (columnMetrics != columnMetrics2)
     {
-      v19 = [(BKLibraryLayoutAttributes *)self columnMetrics];
-      v37 = [a3 columnMetrics];
-      v38 = v19;
-      if (![v19 isEqual:?])
+      columnMetrics3 = [(BKLibraryLayoutAttributes *)self columnMetrics];
+      columnMetrics4 = [equal columnMetrics];
+      v38 = columnMetrics3;
+      if (![columnMetrics3 isEqual:?])
       {
         LOBYTE(v10) = 0;
         v20 = v46;
-        v22 = v42;
+        v22 = columnMetrics2;
         v21 = v43;
 LABEL_33:
 
 LABEL_34:
-        v23 = v45;
-        if (v20 == v45)
+        v23 = cellMetrics2;
+        if (v20 == cellMetrics2)
         {
           goto LABEL_36;
         }
@@ -183,15 +183,15 @@ LABEL_34:
       }
     }
 
-    v24 = [(BKLibraryLayoutAttributes *)self mainHeaderMetrics];
-    v39 = [a3 mainHeaderMetrics];
-    if (v24 == v39 || (-[BKLibraryLayoutAttributes mainHeaderMetrics](self, "mainHeaderMetrics"), v25 = objc_claimAutoreleasedReturnValue(), [a3 mainHeaderMetrics], v35 = objc_claimAutoreleasedReturnValue(), v36 = v25, objc_msgSend(v25, "isEqual:")))
+    mainHeaderMetrics = [(BKLibraryLayoutAttributes *)self mainHeaderMetrics];
+    mainHeaderMetrics2 = [equal mainHeaderMetrics];
+    if (mainHeaderMetrics == mainHeaderMetrics2 || (-[BKLibraryLayoutAttributes mainHeaderMetrics](self, "mainHeaderMetrics"), v25 = objc_claimAutoreleasedReturnValue(), [equal mainHeaderMetrics], v35 = objc_claimAutoreleasedReturnValue(), v36 = v25, objc_msgSend(v25, "isEqual:")))
     {
-      v27 = [(BKLibraryLayoutAttributes *)self rtlLayout];
-      if (v27 == [a3 rtlLayout] && (v28 = -[BKLibraryLayoutAttributes compactLayout](self, "compactLayout"), v28 == objc_msgSend(a3, "compactLayout")) && (v29 = -[BKLibraryLayoutAttributes verticalStackedLayout](self, "verticalStackedLayout"), v29 == objc_msgSend(a3, "verticalStackedLayout")) && (v30 = -[BKLibraryLayoutAttributes editMode](self, "editMode"), v30 == objc_msgSend(a3, "editMode")) && (v31 = -[BKLibraryLayoutAttributes firstItem](self, "firstItem"), v31 == objc_msgSend(a3, "firstItem")))
+      rtlLayout = [(BKLibraryLayoutAttributes *)self rtlLayout];
+      if (rtlLayout == [equal rtlLayout] && (v28 = -[BKLibraryLayoutAttributes compactLayout](self, "compactLayout"), v28 == objc_msgSend(equal, "compactLayout")) && (v29 = -[BKLibraryLayoutAttributes verticalStackedLayout](self, "verticalStackedLayout"), v29 == objc_msgSend(equal, "verticalStackedLayout")) && (v30 = -[BKLibraryLayoutAttributes editMode](self, "editMode"), v30 == objc_msgSend(equal, "editMode")) && (v31 = -[BKLibraryLayoutAttributes firstItem](self, "firstItem"), v31 == objc_msgSend(equal, "firstItem")))
       {
-        v34 = [(BKLibraryLayoutAttributes *)self lastItem];
-        v10 = v34 ^ [a3 lastItem] ^ 1;
+        lastItem = [(BKLibraryLayoutAttributes *)self lastItem];
+        v10 = lastItem ^ [equal lastItem] ^ 1;
         v32 = v10;
       }
 
@@ -201,17 +201,17 @@ LABEL_34:
         v32 = 0;
       }
 
-      v26 = v39;
-      if (v24 == v39)
+      v26 = mainHeaderMetrics2;
+      if (mainHeaderMetrics == mainHeaderMetrics2)
       {
 
         LOBYTE(v10) = v32;
 LABEL_32:
-        v22 = v42;
+        v22 = columnMetrics2;
         v21 = v43;
         v20 = v46;
-        v13 = v47;
-        if (v43 == v42)
+        fontAttrs3 = v47;
+        if (v43 == columnMetrics2)
         {
           goto LABEL_34;
         }
@@ -223,7 +223,7 @@ LABEL_32:
     else
     {
       LOBYTE(v10) = 0;
-      v26 = v39;
+      v26 = mainHeaderMetrics2;
     }
 
     goto LABEL_32;

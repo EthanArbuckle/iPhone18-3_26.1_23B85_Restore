@@ -1,16 +1,16 @@
 @interface SXNumberRecordValueTransformer
-- (id)transformValueForRecord:(id)a3 descriptor:(id)a4;
+- (id)transformValueForRecord:(id)record descriptor:(id)descriptor;
 @end
 
 @implementation SXNumberRecordValueTransformer
 
-- (id)transformValueForRecord:(id)a3 descriptor:(id)a4
+- (id)transformValueForRecord:(id)record descriptor:(id)descriptor
 {
-  v5 = a4;
-  v6 = [a3 jsonDictionary];
-  v7 = [v5 key];
+  descriptorCopy = descriptor;
+  jsonDictionary = [record jsonDictionary];
+  v7 = [descriptorCopy key];
 
-  v8 = [v6 objectForKey:v7];
+  v8 = [jsonDictionary objectForKey:v7];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())

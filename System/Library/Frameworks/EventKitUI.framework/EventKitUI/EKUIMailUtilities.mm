@@ -1,41 +1,41 @@
 @interface EKUIMailUtilities
-+ (id)_stringForIsolatedAtomPresentationOption:(unint64_t)a3;
-+ (id)atomPresentationOptionsAsString:(unint64_t)a3;
++ (id)_stringForIsolatedAtomPresentationOption:(unint64_t)option;
++ (id)atomPresentationOptionsAsString:(unint64_t)string;
 @end
 
 @implementation EKUIMailUtilities
 
-+ (id)atomPresentationOptionsAsString:(unint64_t)a3
++ (id)atomPresentationOptionsAsString:(unint64_t)string
 {
   v5 = [objc_alloc(MEMORY[0x1E696AD60]) initWithString:@"{"];
   v10 = MEMORY[0x1E69E9820];
   v11 = 3221225472;
   v12 = __53__EKUIMailUtilities_atomPresentationOptionsAsString___block_invoke;
   v13 = &unk_1E84415B8;
-  v15 = a1;
+  selfCopy = self;
   v6 = v5;
   v14 = v6;
   v7 = _Block_copy(&v10);
-  v7[2](v7, a3, 0);
-  v7[2](v7, a3, 1);
-  v7[2](v7, a3, 2);
-  v7[2](v7, a3, 4);
-  v7[2](v7, a3, 8);
-  v7[2](v7, a3, 16);
-  v7[2](v7, a3, 32);
-  v7[2](v7, a3, 64);
-  v7[2](v7, a3, 128);
-  v7[2](v7, a3, 256);
-  v7[2](v7, a3, 512);
-  v7[2](v7, a3, 1024);
-  v7[2](v7, a3, 2048);
-  v7[2](v7, a3, 4096);
-  v7[2](v7, a3, 0x2000);
-  v7[2](v7, a3, 0x4000);
-  v7[2](v7, a3, 0x8000);
-  v7[2](v7, a3, 0x10000);
-  v7[2](v7, a3, 0x20000);
-  v7[2](v7, a3, 0x100000);
+  v7[2](v7, string, 0);
+  v7[2](v7, string, 1);
+  v7[2](v7, string, 2);
+  v7[2](v7, string, 4);
+  v7[2](v7, string, 8);
+  v7[2](v7, string, 16);
+  v7[2](v7, string, 32);
+  v7[2](v7, string, 64);
+  v7[2](v7, string, 128);
+  v7[2](v7, string, 256);
+  v7[2](v7, string, 512);
+  v7[2](v7, string, 1024);
+  v7[2](v7, string, 2048);
+  v7[2](v7, string, 4096);
+  v7[2](v7, string, 0x2000);
+  v7[2](v7, string, 0x4000);
+  v7[2](v7, string, 0x8000);
+  v7[2](v7, string, 0x10000);
+  v7[2](v7, string, 0x20000);
+  v7[2](v7, string, 0x100000);
   [v6 appendString:{@"}", v10, v11, v12, v13}];
   v8 = v6;
 
@@ -57,20 +57,20 @@ void __53__EKUIMailUtilities_atomPresentationOptionsAsString___block_invoke(uint
   }
 }
 
-+ (id)_stringForIsolatedAtomPresentationOption:(unint64_t)a3
++ (id)_stringForIsolatedAtomPresentationOption:(unint64_t)option
 {
-  if (a3 > 511)
+  if (option > 511)
   {
-    if (a3 >= 0x4000)
+    if (option >= 0x4000)
     {
-      if (a3 < 0x10000)
+      if (option < 0x10000)
       {
-        if (a3 == 0x4000)
+        if (option == 0x4000)
         {
           return @"DisplayBackgroundOnHover";
         }
 
-        if (a3 == 0x8000)
+        if (option == 0x8000)
         {
           return @"IsFaceTimeReachable";
         }
@@ -78,7 +78,7 @@ void __53__EKUIMailUtilities_atomPresentationOptionsAsString___block_invoke(uint
 
       else
       {
-        switch(a3)
+        switch(option)
         {
           case 0x10000uLL:
             return @"FaceTimeUnresolved";
@@ -90,14 +90,14 @@ void __53__EKUIMailUtilities_atomPresentationOptionsAsString___block_invoke(uint
       }
     }
 
-    else if (a3 <= 2047)
+    else if (option <= 2047)
     {
-      if (a3 == 512)
+      if (option == 512)
       {
         return @"PendingLeading";
       }
 
-      if (a3 == 1024)
+      if (option == 1024)
       {
         return @"AvailableIcon";
       }
@@ -105,28 +105,28 @@ void __53__EKUIMailUtilities_atomPresentationOptionsAsString___block_invoke(uint
 
     else
     {
-      if (a3 == 2048)
+      if (option == 2048)
       {
         return @"UnavailableIcon";
       }
 
-      if (a3 == 4096 || a3 == 0x2000)
+      if (option == 4096 || option == 0x2000)
       {
         return @"UnknownCircleIcon";
       }
     }
   }
 
-  else if (a3 > 15)
+  else if (option > 15)
   {
-    if (a3 <= 63)
+    if (option <= 63)
     {
-      if (a3 == 16)
+      if (option == 16)
       {
         return @"VIPIcon";
       }
 
-      if (a3 == 32)
+      if (option == 32)
       {
         return @"SignedIcon";
       }
@@ -134,7 +134,7 @@ void __53__EKUIMailUtilities_atomPresentationOptionsAsString___block_invoke(uint
 
     else
     {
-      switch(a3)
+      switch(option)
       {
         case 0x40uLL:
           return @"InsecureIcon";
@@ -146,14 +146,14 @@ void __53__EKUIMailUtilities_atomPresentationOptionsAsString___block_invoke(uint
     }
   }
 
-  else if (a3 <= 1)
+  else if (option <= 1)
   {
-    if (!a3)
+    if (!option)
     {
       return @"None";
     }
 
-    if (a3 == 1)
+    if (option == 1)
     {
       return @"FailureColor";
     }
@@ -161,7 +161,7 @@ void __53__EKUIMailUtilities_atomPresentationOptionsAsString___block_invoke(uint
 
   else
   {
-    switch(a3)
+    switch(option)
     {
       case 2uLL:
         return @"IsSMS";

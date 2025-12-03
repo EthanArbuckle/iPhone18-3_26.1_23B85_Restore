@@ -1,20 +1,20 @@
 @interface BLTPBAckInitialSequenceNumberRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAssert:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasAssert:(BOOL)assert;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BLTPBAckInitialSequenceNumberRequest
 
-- (void)setHasAssert:(BOOL)a3
+- (void)setHasAssert:(BOOL)assert
 {
-  if (a3)
+  if (assert)
   {
     v3 = 2;
   }
@@ -33,87 +33,87 @@
   v8.receiver = self;
   v8.super_class = BLTPBAckInitialSequenceNumberRequest;
   v4 = [(BLTPBAckInitialSequenceNumberRequest *)&v8 description];
-  v5 = [(BLTPBAckInitialSequenceNumberRequest *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(BLTPBAckInitialSequenceNumberRequest *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if ((*&self->_has & 2) != 0)
   {
     v4 = [MEMORY[0x277CCABB0] numberWithBool:self->_assert];
-    [v3 setObject:v4 forKey:@"assert"];
+    [dictionary setObject:v4 forKey:@"assert"];
   }
 
   sessionIdentifier = self->_sessionIdentifier;
   if (sessionIdentifier)
   {
-    [v3 setObject:sessionIdentifier forKey:@"sessionIdentifier"];
+    [dictionary setObject:sessionIdentifier forKey:@"sessionIdentifier"];
   }
 
   if (*&self->_has)
   {
     v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_sessionState];
-    [v3 setObject:v6 forKey:@"sessionState"];
+    [dictionary setObject:v6 forKey:@"sessionState"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v7 = v4;
+  toCopy = to;
+  v7 = toCopy;
   if ((*&self->_has & 2) != 0)
   {
     assert = self->_assert;
     PBDataWriterWriteBOOLField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_sessionIdentifier)
   {
     PBDataWriterWriteDataField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (*&self->_has)
   {
     sessionState = self->_sessionState;
     PBDataWriterWriteUint32Field();
-    v4 = v7;
+    toCopy = v7;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 2) != 0)
   {
-    v4[20] = self->_assert;
-    v4[24] |= 2u;
+    toCopy[20] = self->_assert;
+    toCopy[24] |= 2u;
   }
 
   if (self->_sessionIdentifier)
   {
-    v5 = v4;
-    [v4 setSessionIdentifier:?];
-    v4 = v5;
+    v5 = toCopy;
+    [toCopy setSessionIdentifier:?];
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 4) = self->_sessionState;
-    v4[24] |= 1u;
+    *(toCopy + 4) = self->_sessionState;
+    toCopy[24] |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if ((*&self->_has & 2) != 0)
   {
@@ -121,7 +121,7 @@
     *(v5 + 24) |= 2u;
   }
 
-  v7 = [(NSData *)self->_sessionIdentifier copyWithZone:a3];
+  v7 = [(NSData *)self->_sessionIdentifier copyWithZone:zone];
   v8 = *(v6 + 8);
   *(v6 + 8) = v7;
 
@@ -134,45 +134,45 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
   has = self->_has;
-  v6 = *(v4 + 24);
+  v6 = *(equalCopy + 24);
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 24) & 2) == 0)
+    if ((*(equalCopy + 24) & 2) == 0)
     {
       goto LABEL_12;
     }
 
-    v10 = *(v4 + 20);
+    v10 = *(equalCopy + 20);
     if (self->_assert)
     {
-      if ((*(v4 + 20) & 1) == 0)
+      if ((*(equalCopy + 20) & 1) == 0)
       {
         goto LABEL_12;
       }
     }
 
-    else if (*(v4 + 20))
+    else if (*(equalCopy + 20))
     {
       goto LABEL_12;
     }
   }
 
-  else if ((*(v4 + 24) & 2) != 0)
+  else if ((*(equalCopy + 24) & 2) != 0)
   {
     goto LABEL_12;
   }
 
   sessionIdentifier = self->_sessionIdentifier;
-  if (sessionIdentifier | *(v4 + 1))
+  if (sessionIdentifier | *(equalCopy + 1))
   {
     if (![(NSData *)sessionIdentifier isEqual:?])
     {
@@ -182,10 +182,10 @@
     has = self->_has;
   }
 
-  v8 = (*(v4 + 24) & 1) == 0;
+  v8 = (*(equalCopy + 24) & 1) == 0;
   if (has)
   {
-    if ((*(v4 + 24) & 1) != 0 && self->_sessionState == *(v4 + 4))
+    if ((*(equalCopy + 24) & 1) != 0 && self->_sessionState == *(equalCopy + 4))
     {
       v8 = 1;
       goto LABEL_13;
@@ -226,25 +226,25 @@ LABEL_13:
   return v4 ^ v3 ^ v5;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if ((*(v4 + 24) & 2) != 0)
+  fromCopy = from;
+  if ((*(fromCopy + 24) & 2) != 0)
   {
-    self->_assert = *(v4 + 20);
+    self->_assert = *(fromCopy + 20);
     *&self->_has |= 2u;
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
-    v5 = v4;
+    v5 = fromCopy;
     [(BLTPBAckInitialSequenceNumberRequest *)self setSessionIdentifier:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 24))
+  if (*(fromCopy + 24))
   {
-    self->_sessionState = *(v4 + 4);
+    self->_sessionState = *(fromCopy + 4);
     *&self->_has |= 1u;
   }
 }

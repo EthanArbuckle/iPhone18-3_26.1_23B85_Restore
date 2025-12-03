@@ -1,6 +1,6 @@
 @interface FLOWLINKSchemaFLOWLINKClientEvent
-+ (id)getInnerTypeStringByTag:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)getInnerTypeStringByTag:(unint64_t)tag;
+- (BOOL)isEqual:(id)equal;
 - (FLOWLINKSchemaFLOWLINKActionConfirmationContext)actionConfirmationContext;
 - (FLOWLINKSchemaFLOWLINKActionContext)linkActionContext;
 - (FLOWLINKSchemaFLOWLINKActionConversionContext)actionConversionContext;
@@ -13,12 +13,12 @@
 - (FLOWLINKSchemaFLOWLINKAppShortcutFirstRunConfirmationContext)appShortcutFirstRunConfirmationContext;
 - (FLOWLINKSchemaFLOWLINKAppShortcutGeneralizedExecutionUsed)appShortcutGeneralizedExecutionUsed;
 - (FLOWLINKSchemaFLOWLINKAutoShortcutTemplateUsed)autoShortcutTemplateUsed;
-- (FLOWLINKSchemaFLOWLINKClientEvent)initWithDictionary:(id)a3;
-- (FLOWLINKSchemaFLOWLINKClientEvent)initWithJSON:(id)a3;
+- (FLOWLINKSchemaFLOWLINKClientEvent)initWithDictionary:(id)dictionary;
+- (FLOWLINKSchemaFLOWLINKClientEvent)initWithJSON:(id)n;
 - (FLOWLINKSchemaFLOWLINKEntityDisambiguationContext)entityDisambiguationContext;
 - (NSData)jsonData;
 - (SISchemaInstrumentationMessage)innerEvent;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)getComponentId;
 - (id)qualifiedMessageName;
@@ -38,33 +38,33 @@
 - (void)deleteEntityDisambiguationContext;
 - (void)deleteLinkActionContext;
 - (void)deleteLinkActionTier1;
-- (void)setActionConfirmationContext:(id)a3;
-- (void)setActionConversionContext:(id)a3;
-- (void)setActionExecutionContext:(id)a3;
-- (void)setActionParameterConfirmationContext:(id)a3;
-- (void)setActionParameterDisambiguationContext:(id)a3;
-- (void)setActionParameterUpdated:(id)a3;
-- (void)setActionPromptForValueContext:(id)a3;
-- (void)setAppShortcutFirstRunConfirmationContext:(id)a3;
-- (void)setAppShortcutGeneralizedExecutionUsed:(id)a3;
-- (void)setAutoShortcutTemplateUsed:(id)a3;
-- (void)setEntityDisambiguationContext:(id)a3;
-- (void)setLinkActionContext:(id)a3;
-- (void)setLinkActionTier1:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setActionConfirmationContext:(id)context;
+- (void)setActionConversionContext:(id)context;
+- (void)setActionExecutionContext:(id)context;
+- (void)setActionParameterConfirmationContext:(id)context;
+- (void)setActionParameterDisambiguationContext:(id)context;
+- (void)setActionParameterUpdated:(id)updated;
+- (void)setActionPromptForValueContext:(id)context;
+- (void)setAppShortcutFirstRunConfirmationContext:(id)context;
+- (void)setAppShortcutGeneralizedExecutionUsed:(id)used;
+- (void)setAutoShortcutTemplateUsed:(id)used;
+- (void)setEntityDisambiguationContext:(id)context;
+- (void)setLinkActionContext:(id)context;
+- (void)setLinkActionTier1:(id)tier1;
+- (void)writeTo:(id)to;
 @end
 
 @implementation FLOWLINKSchemaFLOWLINKClientEvent
 
-- (FLOWLINKSchemaFLOWLINKClientEvent)initWithDictionary:(id)a3
+- (FLOWLINKSchemaFLOWLINKClientEvent)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v44.receiver = self;
   v44.super_class = FLOWLINKSchemaFLOWLINKClientEvent;
   v5 = [(FLOWLINKSchemaFLOWLINKClientEvent *)&v44 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"eventMetadata"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"eventMetadata"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -72,7 +72,7 @@
       [(FLOWLINKSchemaFLOWLINKClientEvent *)v5 setEventMetadata:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"linkActionContext"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"linkActionContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -80,7 +80,7 @@
       [(FLOWLINKSchemaFLOWLINKClientEvent *)v5 setLinkActionContext:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"entityDisambiguationContext"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"entityDisambiguationContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -88,7 +88,7 @@
       [(FLOWLINKSchemaFLOWLINKClientEvent *)v5 setEntityDisambiguationContext:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"actionConversionContext"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"actionConversionContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -96,7 +96,7 @@
       [(FLOWLINKSchemaFLOWLINKClientEvent *)v5 setActionConversionContext:v13];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"actionExecutionContext"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"actionExecutionContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -104,7 +104,7 @@
       [(FLOWLINKSchemaFLOWLINKClientEvent *)v5 setActionExecutionContext:v15];
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"actionPromptForValueContext"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"actionPromptForValueContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -112,7 +112,7 @@
       [(FLOWLINKSchemaFLOWLINKClientEvent *)v5 setActionPromptForValueContext:v17];
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"actionParameterDisambiguationContext"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"actionParameterDisambiguationContext"];
     objc_opt_class();
     v43 = v18;
     if (objc_opt_isKindOfClass())
@@ -122,7 +122,7 @@
     }
 
     v42 = v6;
-    v20 = [v4 objectForKeyedSubscript:@"actionParameterConfirmationContext"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"actionParameterConfirmationContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -132,7 +132,7 @@
 
     v37 = v20;
     v41 = v8;
-    v22 = [v4 objectForKeyedSubscript:@"actionConfirmationContext"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"actionConfirmationContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -141,7 +141,7 @@
     }
 
     v40 = v10;
-    v24 = [v4 objectForKeyedSubscript:@"autoShortcutTemplateUsed"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"autoShortcutTemplateUsed"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -151,7 +151,7 @@
 
     v38 = v16;
     v39 = v12;
-    v26 = [v4 objectForKeyedSubscript:@"linkActionTier1"];
+    v26 = [dictionaryCopy objectForKeyedSubscript:@"linkActionTier1"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -160,7 +160,7 @@
     }
 
     v28 = v14;
-    v29 = [v4 objectForKeyedSubscript:@"actionParameterUpdated"];
+    v29 = [dictionaryCopy objectForKeyedSubscript:@"actionParameterUpdated"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -168,7 +168,7 @@
       [(FLOWLINKSchemaFLOWLINKClientEvent *)v5 setActionParameterUpdated:v30];
     }
 
-    v31 = [v4 objectForKeyedSubscript:@"appShortcutFirstRunConfirmationContext"];
+    v31 = [dictionaryCopy objectForKeyedSubscript:@"appShortcutFirstRunConfirmationContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -176,7 +176,7 @@
       [(FLOWLINKSchemaFLOWLINKClientEvent *)v5 setAppShortcutFirstRunConfirmationContext:v32];
     }
 
-    v33 = [v4 objectForKeyedSubscript:@"appShortcutGeneralizedExecutionUsed"];
+    v33 = [dictionaryCopy objectForKeyedSubscript:@"appShortcutGeneralizedExecutionUsed"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -190,30 +190,30 @@
   return v5;
 }
 
-- (FLOWLINKSchemaFLOWLINKClientEvent)initWithJSON:(id)a3
+- (FLOWLINKSchemaFLOWLINKClientEvent)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(FLOWLINKSchemaFLOWLINKClientEvent *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(FLOWLINKSchemaFLOWLINKClientEvent *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -226,234 +226,234 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_actionConfirmationContext)
   {
-    v4 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self actionConfirmationContext];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    actionConfirmationContext = [(FLOWLINKSchemaFLOWLINKClientEvent *)self actionConfirmationContext];
+    dictionaryRepresentation = [actionConfirmationContext dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"actionConfirmationContext"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"actionConfirmationContext"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"actionConfirmationContext"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"actionConfirmationContext"];
     }
   }
 
   if (self->_actionConversionContext)
   {
-    v7 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self actionConversionContext];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    actionConversionContext = [(FLOWLINKSchemaFLOWLINKClientEvent *)self actionConversionContext];
+    dictionaryRepresentation2 = [actionConversionContext dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"actionConversionContext"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"actionConversionContext"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"actionConversionContext"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"actionConversionContext"];
     }
   }
 
   if (self->_actionExecutionContext)
   {
-    v10 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self actionExecutionContext];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    actionExecutionContext = [(FLOWLINKSchemaFLOWLINKClientEvent *)self actionExecutionContext];
+    dictionaryRepresentation3 = [actionExecutionContext dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"actionExecutionContext"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"actionExecutionContext"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"actionExecutionContext"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"actionExecutionContext"];
     }
   }
 
   if (self->_actionParameterConfirmationContext)
   {
-    v13 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self actionParameterConfirmationContext];
-    v14 = [v13 dictionaryRepresentation];
-    if (v14)
+    actionParameterConfirmationContext = [(FLOWLINKSchemaFLOWLINKClientEvent *)self actionParameterConfirmationContext];
+    dictionaryRepresentation4 = [actionParameterConfirmationContext dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v14 forKeyedSubscript:@"actionParameterConfirmationContext"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"actionParameterConfirmationContext"];
     }
 
     else
     {
-      v15 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v15 forKeyedSubscript:@"actionParameterConfirmationContext"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"actionParameterConfirmationContext"];
     }
   }
 
   if (self->_actionParameterDisambiguationContext)
   {
-    v16 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self actionParameterDisambiguationContext];
-    v17 = [v16 dictionaryRepresentation];
-    if (v17)
+    actionParameterDisambiguationContext = [(FLOWLINKSchemaFLOWLINKClientEvent *)self actionParameterDisambiguationContext];
+    dictionaryRepresentation5 = [actionParameterDisambiguationContext dictionaryRepresentation];
+    if (dictionaryRepresentation5)
     {
-      [v3 setObject:v17 forKeyedSubscript:@"actionParameterDisambiguationContext"];
+      [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"actionParameterDisambiguationContext"];
     }
 
     else
     {
-      v18 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v18 forKeyedSubscript:@"actionParameterDisambiguationContext"];
+      null5 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null5 forKeyedSubscript:@"actionParameterDisambiguationContext"];
     }
   }
 
   if (self->_actionParameterUpdated)
   {
-    v19 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self actionParameterUpdated];
-    v20 = [v19 dictionaryRepresentation];
-    if (v20)
+    actionParameterUpdated = [(FLOWLINKSchemaFLOWLINKClientEvent *)self actionParameterUpdated];
+    dictionaryRepresentation6 = [actionParameterUpdated dictionaryRepresentation];
+    if (dictionaryRepresentation6)
     {
-      [v3 setObject:v20 forKeyedSubscript:@"actionParameterUpdated"];
+      [dictionary setObject:dictionaryRepresentation6 forKeyedSubscript:@"actionParameterUpdated"];
     }
 
     else
     {
-      v21 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v21 forKeyedSubscript:@"actionParameterUpdated"];
+      null6 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null6 forKeyedSubscript:@"actionParameterUpdated"];
     }
   }
 
   if (self->_actionPromptForValueContext)
   {
-    v22 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self actionPromptForValueContext];
-    v23 = [v22 dictionaryRepresentation];
-    if (v23)
+    actionPromptForValueContext = [(FLOWLINKSchemaFLOWLINKClientEvent *)self actionPromptForValueContext];
+    dictionaryRepresentation7 = [actionPromptForValueContext dictionaryRepresentation];
+    if (dictionaryRepresentation7)
     {
-      [v3 setObject:v23 forKeyedSubscript:@"actionPromptForValueContext"];
+      [dictionary setObject:dictionaryRepresentation7 forKeyedSubscript:@"actionPromptForValueContext"];
     }
 
     else
     {
-      v24 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v24 forKeyedSubscript:@"actionPromptForValueContext"];
+      null7 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null7 forKeyedSubscript:@"actionPromptForValueContext"];
     }
   }
 
   if (self->_appShortcutFirstRunConfirmationContext)
   {
-    v25 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self appShortcutFirstRunConfirmationContext];
-    v26 = [v25 dictionaryRepresentation];
-    if (v26)
+    appShortcutFirstRunConfirmationContext = [(FLOWLINKSchemaFLOWLINKClientEvent *)self appShortcutFirstRunConfirmationContext];
+    dictionaryRepresentation8 = [appShortcutFirstRunConfirmationContext dictionaryRepresentation];
+    if (dictionaryRepresentation8)
     {
-      [v3 setObject:v26 forKeyedSubscript:@"appShortcutFirstRunConfirmationContext"];
+      [dictionary setObject:dictionaryRepresentation8 forKeyedSubscript:@"appShortcutFirstRunConfirmationContext"];
     }
 
     else
     {
-      v27 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v27 forKeyedSubscript:@"appShortcutFirstRunConfirmationContext"];
+      null8 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null8 forKeyedSubscript:@"appShortcutFirstRunConfirmationContext"];
     }
   }
 
   if (self->_appShortcutGeneralizedExecutionUsed)
   {
-    v28 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self appShortcutGeneralizedExecutionUsed];
-    v29 = [v28 dictionaryRepresentation];
-    if (v29)
+    appShortcutGeneralizedExecutionUsed = [(FLOWLINKSchemaFLOWLINKClientEvent *)self appShortcutGeneralizedExecutionUsed];
+    dictionaryRepresentation9 = [appShortcutGeneralizedExecutionUsed dictionaryRepresentation];
+    if (dictionaryRepresentation9)
     {
-      [v3 setObject:v29 forKeyedSubscript:@"appShortcutGeneralizedExecutionUsed"];
+      [dictionary setObject:dictionaryRepresentation9 forKeyedSubscript:@"appShortcutGeneralizedExecutionUsed"];
     }
 
     else
     {
-      v30 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v30 forKeyedSubscript:@"appShortcutGeneralizedExecutionUsed"];
+      null9 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null9 forKeyedSubscript:@"appShortcutGeneralizedExecutionUsed"];
     }
   }
 
   if (self->_autoShortcutTemplateUsed)
   {
-    v31 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self autoShortcutTemplateUsed];
-    v32 = [v31 dictionaryRepresentation];
-    if (v32)
+    autoShortcutTemplateUsed = [(FLOWLINKSchemaFLOWLINKClientEvent *)self autoShortcutTemplateUsed];
+    dictionaryRepresentation10 = [autoShortcutTemplateUsed dictionaryRepresentation];
+    if (dictionaryRepresentation10)
     {
-      [v3 setObject:v32 forKeyedSubscript:@"autoShortcutTemplateUsed"];
+      [dictionary setObject:dictionaryRepresentation10 forKeyedSubscript:@"autoShortcutTemplateUsed"];
     }
 
     else
     {
-      v33 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v33 forKeyedSubscript:@"autoShortcutTemplateUsed"];
+      null10 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null10 forKeyedSubscript:@"autoShortcutTemplateUsed"];
     }
   }
 
   if (self->_entityDisambiguationContext)
   {
-    v34 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self entityDisambiguationContext];
-    v35 = [v34 dictionaryRepresentation];
-    if (v35)
+    entityDisambiguationContext = [(FLOWLINKSchemaFLOWLINKClientEvent *)self entityDisambiguationContext];
+    dictionaryRepresentation11 = [entityDisambiguationContext dictionaryRepresentation];
+    if (dictionaryRepresentation11)
     {
-      [v3 setObject:v35 forKeyedSubscript:@"entityDisambiguationContext"];
+      [dictionary setObject:dictionaryRepresentation11 forKeyedSubscript:@"entityDisambiguationContext"];
     }
 
     else
     {
-      v36 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v36 forKeyedSubscript:@"entityDisambiguationContext"];
+      null11 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null11 forKeyedSubscript:@"entityDisambiguationContext"];
     }
   }
 
   if (self->_eventMetadata)
   {
-    v37 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self eventMetadata];
-    v38 = [v37 dictionaryRepresentation];
-    if (v38)
+    eventMetadata = [(FLOWLINKSchemaFLOWLINKClientEvent *)self eventMetadata];
+    dictionaryRepresentation12 = [eventMetadata dictionaryRepresentation];
+    if (dictionaryRepresentation12)
     {
-      [v3 setObject:v38 forKeyedSubscript:@"eventMetadata"];
+      [dictionary setObject:dictionaryRepresentation12 forKeyedSubscript:@"eventMetadata"];
     }
 
     else
     {
-      v39 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v39 forKeyedSubscript:@"eventMetadata"];
+      null12 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null12 forKeyedSubscript:@"eventMetadata"];
     }
   }
 
   if (self->_linkActionContext)
   {
-    v40 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self linkActionContext];
-    v41 = [v40 dictionaryRepresentation];
-    if (v41)
+    linkActionContext = [(FLOWLINKSchemaFLOWLINKClientEvent *)self linkActionContext];
+    dictionaryRepresentation13 = [linkActionContext dictionaryRepresentation];
+    if (dictionaryRepresentation13)
     {
-      [v3 setObject:v41 forKeyedSubscript:@"linkActionContext"];
+      [dictionary setObject:dictionaryRepresentation13 forKeyedSubscript:@"linkActionContext"];
     }
 
     else
     {
-      v42 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v42 forKeyedSubscript:@"linkActionContext"];
+      null13 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null13 forKeyedSubscript:@"linkActionContext"];
     }
   }
 
   if (self->_linkActionTier1)
   {
-    v43 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self linkActionTier1];
-    v44 = [v43 dictionaryRepresentation];
-    if (v44)
+    linkActionTier1 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self linkActionTier1];
+    dictionaryRepresentation14 = [linkActionTier1 dictionaryRepresentation];
+    if (dictionaryRepresentation14)
     {
-      [v3 setObject:v44 forKeyedSubscript:@"linkActionTier1"];
+      [dictionary setObject:dictionaryRepresentation14 forKeyedSubscript:@"linkActionTier1"];
     }
 
     else
     {
-      v45 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v45 forKeyedSubscript:@"linkActionTier1"];
+      null14 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null14 forKeyedSubscript:@"linkActionTier1"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -474,34 +474,34 @@
   return v13 ^ v15 ^ [(FLOWLINKSchemaFLOWLINKAppShortcutGeneralizedExecutionUsed *)self->_appShortcutGeneralizedExecutionUsed hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_73;
   }
 
   whichEvent_Type = self->_whichEvent_Type;
-  if (whichEvent_Type != [v4 whichEvent_Type])
+  if (whichEvent_Type != [equalCopy whichEvent_Type])
   {
     goto LABEL_73;
   }
 
-  v6 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self eventMetadata];
-  v7 = [v4 eventMetadata];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(FLOWLINKSchemaFLOWLINKClientEvent *)self eventMetadata];
+  eventMetadata2 = [equalCopy eventMetadata];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_72;
   }
 
-  v8 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self eventMetadata];
-  if (v8)
+  eventMetadata3 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self eventMetadata];
+  if (eventMetadata3)
   {
-    v9 = v8;
-    v10 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self eventMetadata];
-    v11 = [v4 eventMetadata];
-    v12 = [v10 isEqual:v11];
+    v9 = eventMetadata3;
+    eventMetadata4 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self eventMetadata];
+    eventMetadata5 = [equalCopy eventMetadata];
+    v12 = [eventMetadata4 isEqual:eventMetadata5];
 
     if (!v12)
     {
@@ -513,20 +513,20 @@
   {
   }
 
-  v6 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self linkActionContext];
-  v7 = [v4 linkActionContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(FLOWLINKSchemaFLOWLINKClientEvent *)self linkActionContext];
+  eventMetadata2 = [equalCopy linkActionContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_72;
   }
 
-  v13 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self linkActionContext];
-  if (v13)
+  linkActionContext = [(FLOWLINKSchemaFLOWLINKClientEvent *)self linkActionContext];
+  if (linkActionContext)
   {
-    v14 = v13;
-    v15 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self linkActionContext];
-    v16 = [v4 linkActionContext];
-    v17 = [v15 isEqual:v16];
+    v14 = linkActionContext;
+    linkActionContext2 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self linkActionContext];
+    linkActionContext3 = [equalCopy linkActionContext];
+    v17 = [linkActionContext2 isEqual:linkActionContext3];
 
     if (!v17)
     {
@@ -538,20 +538,20 @@
   {
   }
 
-  v6 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self entityDisambiguationContext];
-  v7 = [v4 entityDisambiguationContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(FLOWLINKSchemaFLOWLINKClientEvent *)self entityDisambiguationContext];
+  eventMetadata2 = [equalCopy entityDisambiguationContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_72;
   }
 
-  v18 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self entityDisambiguationContext];
-  if (v18)
+  entityDisambiguationContext = [(FLOWLINKSchemaFLOWLINKClientEvent *)self entityDisambiguationContext];
+  if (entityDisambiguationContext)
   {
-    v19 = v18;
-    v20 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self entityDisambiguationContext];
-    v21 = [v4 entityDisambiguationContext];
-    v22 = [v20 isEqual:v21];
+    v19 = entityDisambiguationContext;
+    entityDisambiguationContext2 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self entityDisambiguationContext];
+    entityDisambiguationContext3 = [equalCopy entityDisambiguationContext];
+    v22 = [entityDisambiguationContext2 isEqual:entityDisambiguationContext3];
 
     if (!v22)
     {
@@ -563,20 +563,20 @@
   {
   }
 
-  v6 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self actionConversionContext];
-  v7 = [v4 actionConversionContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(FLOWLINKSchemaFLOWLINKClientEvent *)self actionConversionContext];
+  eventMetadata2 = [equalCopy actionConversionContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_72;
   }
 
-  v23 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self actionConversionContext];
-  if (v23)
+  actionConversionContext = [(FLOWLINKSchemaFLOWLINKClientEvent *)self actionConversionContext];
+  if (actionConversionContext)
   {
-    v24 = v23;
-    v25 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self actionConversionContext];
-    v26 = [v4 actionConversionContext];
-    v27 = [v25 isEqual:v26];
+    v24 = actionConversionContext;
+    actionConversionContext2 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self actionConversionContext];
+    actionConversionContext3 = [equalCopy actionConversionContext];
+    v27 = [actionConversionContext2 isEqual:actionConversionContext3];
 
     if (!v27)
     {
@@ -588,20 +588,20 @@
   {
   }
 
-  v6 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self actionExecutionContext];
-  v7 = [v4 actionExecutionContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(FLOWLINKSchemaFLOWLINKClientEvent *)self actionExecutionContext];
+  eventMetadata2 = [equalCopy actionExecutionContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_72;
   }
 
-  v28 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self actionExecutionContext];
-  if (v28)
+  actionExecutionContext = [(FLOWLINKSchemaFLOWLINKClientEvent *)self actionExecutionContext];
+  if (actionExecutionContext)
   {
-    v29 = v28;
-    v30 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self actionExecutionContext];
-    v31 = [v4 actionExecutionContext];
-    v32 = [v30 isEqual:v31];
+    v29 = actionExecutionContext;
+    actionExecutionContext2 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self actionExecutionContext];
+    actionExecutionContext3 = [equalCopy actionExecutionContext];
+    v32 = [actionExecutionContext2 isEqual:actionExecutionContext3];
 
     if (!v32)
     {
@@ -613,20 +613,20 @@
   {
   }
 
-  v6 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self actionPromptForValueContext];
-  v7 = [v4 actionPromptForValueContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(FLOWLINKSchemaFLOWLINKClientEvent *)self actionPromptForValueContext];
+  eventMetadata2 = [equalCopy actionPromptForValueContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_72;
   }
 
-  v33 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self actionPromptForValueContext];
-  if (v33)
+  actionPromptForValueContext = [(FLOWLINKSchemaFLOWLINKClientEvent *)self actionPromptForValueContext];
+  if (actionPromptForValueContext)
   {
-    v34 = v33;
-    v35 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self actionPromptForValueContext];
-    v36 = [v4 actionPromptForValueContext];
-    v37 = [v35 isEqual:v36];
+    v34 = actionPromptForValueContext;
+    actionPromptForValueContext2 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self actionPromptForValueContext];
+    actionPromptForValueContext3 = [equalCopy actionPromptForValueContext];
+    v37 = [actionPromptForValueContext2 isEqual:actionPromptForValueContext3];
 
     if (!v37)
     {
@@ -638,20 +638,20 @@
   {
   }
 
-  v6 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self actionParameterDisambiguationContext];
-  v7 = [v4 actionParameterDisambiguationContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(FLOWLINKSchemaFLOWLINKClientEvent *)self actionParameterDisambiguationContext];
+  eventMetadata2 = [equalCopy actionParameterDisambiguationContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_72;
   }
 
-  v38 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self actionParameterDisambiguationContext];
-  if (v38)
+  actionParameterDisambiguationContext = [(FLOWLINKSchemaFLOWLINKClientEvent *)self actionParameterDisambiguationContext];
+  if (actionParameterDisambiguationContext)
   {
-    v39 = v38;
-    v40 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self actionParameterDisambiguationContext];
-    v41 = [v4 actionParameterDisambiguationContext];
-    v42 = [v40 isEqual:v41];
+    v39 = actionParameterDisambiguationContext;
+    actionParameterDisambiguationContext2 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self actionParameterDisambiguationContext];
+    actionParameterDisambiguationContext3 = [equalCopy actionParameterDisambiguationContext];
+    v42 = [actionParameterDisambiguationContext2 isEqual:actionParameterDisambiguationContext3];
 
     if (!v42)
     {
@@ -663,20 +663,20 @@
   {
   }
 
-  v6 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self actionParameterConfirmationContext];
-  v7 = [v4 actionParameterConfirmationContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(FLOWLINKSchemaFLOWLINKClientEvent *)self actionParameterConfirmationContext];
+  eventMetadata2 = [equalCopy actionParameterConfirmationContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_72;
   }
 
-  v43 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self actionParameterConfirmationContext];
-  if (v43)
+  actionParameterConfirmationContext = [(FLOWLINKSchemaFLOWLINKClientEvent *)self actionParameterConfirmationContext];
+  if (actionParameterConfirmationContext)
   {
-    v44 = v43;
-    v45 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self actionParameterConfirmationContext];
-    v46 = [v4 actionParameterConfirmationContext];
-    v47 = [v45 isEqual:v46];
+    v44 = actionParameterConfirmationContext;
+    actionParameterConfirmationContext2 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self actionParameterConfirmationContext];
+    actionParameterConfirmationContext3 = [equalCopy actionParameterConfirmationContext];
+    v47 = [actionParameterConfirmationContext2 isEqual:actionParameterConfirmationContext3];
 
     if (!v47)
     {
@@ -688,20 +688,20 @@
   {
   }
 
-  v6 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self actionConfirmationContext];
-  v7 = [v4 actionConfirmationContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(FLOWLINKSchemaFLOWLINKClientEvent *)self actionConfirmationContext];
+  eventMetadata2 = [equalCopy actionConfirmationContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_72;
   }
 
-  v48 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self actionConfirmationContext];
-  if (v48)
+  actionConfirmationContext = [(FLOWLINKSchemaFLOWLINKClientEvent *)self actionConfirmationContext];
+  if (actionConfirmationContext)
   {
-    v49 = v48;
-    v50 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self actionConfirmationContext];
-    v51 = [v4 actionConfirmationContext];
-    v52 = [v50 isEqual:v51];
+    v49 = actionConfirmationContext;
+    actionConfirmationContext2 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self actionConfirmationContext];
+    actionConfirmationContext3 = [equalCopy actionConfirmationContext];
+    v52 = [actionConfirmationContext2 isEqual:actionConfirmationContext3];
 
     if (!v52)
     {
@@ -713,20 +713,20 @@
   {
   }
 
-  v6 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self autoShortcutTemplateUsed];
-  v7 = [v4 autoShortcutTemplateUsed];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(FLOWLINKSchemaFLOWLINKClientEvent *)self autoShortcutTemplateUsed];
+  eventMetadata2 = [equalCopy autoShortcutTemplateUsed];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_72;
   }
 
-  v53 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self autoShortcutTemplateUsed];
-  if (v53)
+  autoShortcutTemplateUsed = [(FLOWLINKSchemaFLOWLINKClientEvent *)self autoShortcutTemplateUsed];
+  if (autoShortcutTemplateUsed)
   {
-    v54 = v53;
-    v55 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self autoShortcutTemplateUsed];
-    v56 = [v4 autoShortcutTemplateUsed];
-    v57 = [v55 isEqual:v56];
+    v54 = autoShortcutTemplateUsed;
+    autoShortcutTemplateUsed2 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self autoShortcutTemplateUsed];
+    autoShortcutTemplateUsed3 = [equalCopy autoShortcutTemplateUsed];
+    v57 = [autoShortcutTemplateUsed2 isEqual:autoShortcutTemplateUsed3];
 
     if (!v57)
     {
@@ -738,20 +738,20 @@
   {
   }
 
-  v6 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self linkActionTier1];
-  v7 = [v4 linkActionTier1];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(FLOWLINKSchemaFLOWLINKClientEvent *)self linkActionTier1];
+  eventMetadata2 = [equalCopy linkActionTier1];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_72;
   }
 
-  v58 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self linkActionTier1];
-  if (v58)
+  linkActionTier1 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self linkActionTier1];
+  if (linkActionTier1)
   {
-    v59 = v58;
-    v60 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self linkActionTier1];
-    v61 = [v4 linkActionTier1];
-    v62 = [v60 isEqual:v61];
+    v59 = linkActionTier1;
+    linkActionTier12 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self linkActionTier1];
+    linkActionTier13 = [equalCopy linkActionTier1];
+    v62 = [linkActionTier12 isEqual:linkActionTier13];
 
     if (!v62)
     {
@@ -763,20 +763,20 @@
   {
   }
 
-  v6 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self actionParameterUpdated];
-  v7 = [v4 actionParameterUpdated];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(FLOWLINKSchemaFLOWLINKClientEvent *)self actionParameterUpdated];
+  eventMetadata2 = [equalCopy actionParameterUpdated];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_72;
   }
 
-  v63 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self actionParameterUpdated];
-  if (v63)
+  actionParameterUpdated = [(FLOWLINKSchemaFLOWLINKClientEvent *)self actionParameterUpdated];
+  if (actionParameterUpdated)
   {
-    v64 = v63;
-    v65 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self actionParameterUpdated];
-    v66 = [v4 actionParameterUpdated];
-    v67 = [v65 isEqual:v66];
+    v64 = actionParameterUpdated;
+    actionParameterUpdated2 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self actionParameterUpdated];
+    actionParameterUpdated3 = [equalCopy actionParameterUpdated];
+    v67 = [actionParameterUpdated2 isEqual:actionParameterUpdated3];
 
     if (!v67)
     {
@@ -788,20 +788,20 @@
   {
   }
 
-  v6 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self appShortcutFirstRunConfirmationContext];
-  v7 = [v4 appShortcutFirstRunConfirmationContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(FLOWLINKSchemaFLOWLINKClientEvent *)self appShortcutFirstRunConfirmationContext];
+  eventMetadata2 = [equalCopy appShortcutFirstRunConfirmationContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_72;
   }
 
-  v68 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self appShortcutFirstRunConfirmationContext];
-  if (v68)
+  appShortcutFirstRunConfirmationContext = [(FLOWLINKSchemaFLOWLINKClientEvent *)self appShortcutFirstRunConfirmationContext];
+  if (appShortcutFirstRunConfirmationContext)
   {
-    v69 = v68;
-    v70 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self appShortcutFirstRunConfirmationContext];
-    v71 = [v4 appShortcutFirstRunConfirmationContext];
-    v72 = [v70 isEqual:v71];
+    v69 = appShortcutFirstRunConfirmationContext;
+    appShortcutFirstRunConfirmationContext2 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self appShortcutFirstRunConfirmationContext];
+    appShortcutFirstRunConfirmationContext3 = [equalCopy appShortcutFirstRunConfirmationContext];
+    v72 = [appShortcutFirstRunConfirmationContext2 isEqual:appShortcutFirstRunConfirmationContext3];
 
     if (!v72)
     {
@@ -813,12 +813,12 @@
   {
   }
 
-  v6 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self appShortcutGeneralizedExecutionUsed];
-  v7 = [v4 appShortcutGeneralizedExecutionUsed];
-  if ((v6 != 0) != (v7 == 0))
+  eventMetadata = [(FLOWLINKSchemaFLOWLINKClientEvent *)self appShortcutGeneralizedExecutionUsed];
+  eventMetadata2 = [equalCopy appShortcutGeneralizedExecutionUsed];
+  if ((eventMetadata != 0) != (eventMetadata2 == 0))
   {
-    v73 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self appShortcutGeneralizedExecutionUsed];
-    if (!v73)
+    appShortcutGeneralizedExecutionUsed = [(FLOWLINKSchemaFLOWLINKClientEvent *)self appShortcutGeneralizedExecutionUsed];
+    if (!appShortcutGeneralizedExecutionUsed)
     {
 
 LABEL_76:
@@ -826,10 +826,10 @@ LABEL_76:
       goto LABEL_74;
     }
 
-    v74 = v73;
-    v75 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self appShortcutGeneralizedExecutionUsed];
-    v76 = [v4 appShortcutGeneralizedExecutionUsed];
-    v77 = [v75 isEqual:v76];
+    v74 = appShortcutGeneralizedExecutionUsed;
+    appShortcutGeneralizedExecutionUsed2 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self appShortcutGeneralizedExecutionUsed];
+    appShortcutGeneralizedExecutionUsed3 = [equalCopy appShortcutGeneralizedExecutionUsed];
+    v77 = [appShortcutGeneralizedExecutionUsed2 isEqual:appShortcutGeneralizedExecutionUsed3];
 
     if (v77)
     {
@@ -849,122 +849,122 @@ LABEL_74:
   return v78;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v33 = a3;
-  v4 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self eventMetadata];
+  toCopy = to;
+  eventMetadata = [(FLOWLINKSchemaFLOWLINKClientEvent *)self eventMetadata];
 
-  if (v4)
+  if (eventMetadata)
   {
-    v5 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self eventMetadata];
+    eventMetadata2 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self eventMetadata];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self linkActionContext];
+  linkActionContext = [(FLOWLINKSchemaFLOWLINKClientEvent *)self linkActionContext];
 
-  if (v6)
+  if (linkActionContext)
   {
-    v7 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self linkActionContext];
+    linkActionContext2 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self linkActionContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self entityDisambiguationContext];
+  entityDisambiguationContext = [(FLOWLINKSchemaFLOWLINKClientEvent *)self entityDisambiguationContext];
 
-  if (v8)
+  if (entityDisambiguationContext)
   {
-    v9 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self entityDisambiguationContext];
+    entityDisambiguationContext2 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self entityDisambiguationContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self actionConversionContext];
+  actionConversionContext = [(FLOWLINKSchemaFLOWLINKClientEvent *)self actionConversionContext];
 
-  if (v10)
+  if (actionConversionContext)
   {
-    v11 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self actionConversionContext];
+    actionConversionContext2 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self actionConversionContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v12 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self actionExecutionContext];
+  actionExecutionContext = [(FLOWLINKSchemaFLOWLINKClientEvent *)self actionExecutionContext];
 
-  if (v12)
+  if (actionExecutionContext)
   {
-    v13 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self actionExecutionContext];
+    actionExecutionContext2 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self actionExecutionContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v14 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self actionPromptForValueContext];
+  actionPromptForValueContext = [(FLOWLINKSchemaFLOWLINKClientEvent *)self actionPromptForValueContext];
 
-  if (v14)
+  if (actionPromptForValueContext)
   {
-    v15 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self actionPromptForValueContext];
+    actionPromptForValueContext2 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self actionPromptForValueContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v16 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self actionParameterDisambiguationContext];
+  actionParameterDisambiguationContext = [(FLOWLINKSchemaFLOWLINKClientEvent *)self actionParameterDisambiguationContext];
 
-  if (v16)
+  if (actionParameterDisambiguationContext)
   {
-    v17 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self actionParameterDisambiguationContext];
+    actionParameterDisambiguationContext2 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self actionParameterDisambiguationContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v18 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self actionParameterConfirmationContext];
+  actionParameterConfirmationContext = [(FLOWLINKSchemaFLOWLINKClientEvent *)self actionParameterConfirmationContext];
 
-  if (v18)
+  if (actionParameterConfirmationContext)
   {
-    v19 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self actionParameterConfirmationContext];
+    actionParameterConfirmationContext2 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self actionParameterConfirmationContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v20 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self actionConfirmationContext];
+  actionConfirmationContext = [(FLOWLINKSchemaFLOWLINKClientEvent *)self actionConfirmationContext];
 
-  if (v20)
+  if (actionConfirmationContext)
   {
-    v21 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self actionConfirmationContext];
+    actionConfirmationContext2 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self actionConfirmationContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v22 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self autoShortcutTemplateUsed];
+  autoShortcutTemplateUsed = [(FLOWLINKSchemaFLOWLINKClientEvent *)self autoShortcutTemplateUsed];
 
-  if (v22)
+  if (autoShortcutTemplateUsed)
   {
-    v23 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self autoShortcutTemplateUsed];
+    autoShortcutTemplateUsed2 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self autoShortcutTemplateUsed];
     PBDataWriterWriteSubmessage();
   }
 
-  v24 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self linkActionTier1];
+  linkActionTier1 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self linkActionTier1];
 
-  if (v24)
+  if (linkActionTier1)
   {
-    v25 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self linkActionTier1];
+    linkActionTier12 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self linkActionTier1];
     PBDataWriterWriteSubmessage();
   }
 
-  v26 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self actionParameterUpdated];
+  actionParameterUpdated = [(FLOWLINKSchemaFLOWLINKClientEvent *)self actionParameterUpdated];
 
-  if (v26)
+  if (actionParameterUpdated)
   {
-    v27 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self actionParameterUpdated];
+    actionParameterUpdated2 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self actionParameterUpdated];
     PBDataWriterWriteSubmessage();
   }
 
-  v28 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self appShortcutFirstRunConfirmationContext];
+  appShortcutFirstRunConfirmationContext = [(FLOWLINKSchemaFLOWLINKClientEvent *)self appShortcutFirstRunConfirmationContext];
 
-  if (v28)
+  if (appShortcutFirstRunConfirmationContext)
   {
-    v29 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self appShortcutFirstRunConfirmationContext];
+    appShortcutFirstRunConfirmationContext2 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self appShortcutFirstRunConfirmationContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v30 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self appShortcutGeneralizedExecutionUsed];
+  appShortcutGeneralizedExecutionUsed = [(FLOWLINKSchemaFLOWLINKClientEvent *)self appShortcutGeneralizedExecutionUsed];
 
-  v31 = v33;
-  if (v30)
+  v31 = toCopy;
+  if (appShortcutGeneralizedExecutionUsed)
   {
-    v32 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self appShortcutGeneralizedExecutionUsed];
+    appShortcutGeneralizedExecutionUsed2 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self appShortcutGeneralizedExecutionUsed];
     PBDataWriterWriteSubmessage();
 
-    v31 = v33;
+    v31 = toCopy;
   }
 }
 
@@ -993,9 +993,9 @@ LABEL_74:
   return v3;
 }
 
-- (void)setAppShortcutGeneralizedExecutionUsed:(id)a3
+- (void)setAppShortcutGeneralizedExecutionUsed:(id)used
 {
-  v4 = a3;
+  usedCopy = used;
   linkActionContext = self->_linkActionContext;
   self->_linkActionContext = 0;
 
@@ -1033,14 +1033,14 @@ LABEL_74:
   self->_appShortcutFirstRunConfirmationContext = 0;
 
   v17 = 112;
-  if (!v4)
+  if (!usedCopy)
   {
     v17 = 0;
   }
 
   self->_whichEvent_Type = v17;
   appShortcutGeneralizedExecutionUsed = self->_appShortcutGeneralizedExecutionUsed;
-  self->_appShortcutGeneralizedExecutionUsed = v4;
+  self->_appShortcutGeneralizedExecutionUsed = usedCopy;
 }
 
 - (void)deleteAppShortcutFirstRunConfirmationContext
@@ -1068,9 +1068,9 @@ LABEL_74:
   return v3;
 }
 
-- (void)setAppShortcutFirstRunConfirmationContext:(id)a3
+- (void)setAppShortcutFirstRunConfirmationContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   linkActionContext = self->_linkActionContext;
   self->_linkActionContext = 0;
 
@@ -1108,14 +1108,14 @@ LABEL_74:
   self->_appShortcutGeneralizedExecutionUsed = 0;
 
   v17 = 111;
-  if (!v4)
+  if (!contextCopy)
   {
     v17 = 0;
   }
 
   self->_whichEvent_Type = v17;
   appShortcutFirstRunConfirmationContext = self->_appShortcutFirstRunConfirmationContext;
-  self->_appShortcutFirstRunConfirmationContext = v4;
+  self->_appShortcutFirstRunConfirmationContext = contextCopy;
 }
 
 - (void)deleteActionParameterUpdated
@@ -1143,9 +1143,9 @@ LABEL_74:
   return v3;
 }
 
-- (void)setActionParameterUpdated:(id)a3
+- (void)setActionParameterUpdated:(id)updated
 {
-  v4 = a3;
+  updatedCopy = updated;
   linkActionContext = self->_linkActionContext;
   self->_linkActionContext = 0;
 
@@ -1183,14 +1183,14 @@ LABEL_74:
   self->_appShortcutGeneralizedExecutionUsed = 0;
 
   v17 = 110;
-  if (!v4)
+  if (!updatedCopy)
   {
     v17 = 0;
   }
 
   self->_whichEvent_Type = v17;
   actionParameterUpdated = self->_actionParameterUpdated;
-  self->_actionParameterUpdated = v4;
+  self->_actionParameterUpdated = updatedCopy;
 }
 
 - (void)deleteLinkActionTier1
@@ -1218,9 +1218,9 @@ LABEL_74:
   return v3;
 }
 
-- (void)setLinkActionTier1:(id)a3
+- (void)setLinkActionTier1:(id)tier1
 {
-  v4 = a3;
+  tier1Copy = tier1;
   linkActionContext = self->_linkActionContext;
   self->_linkActionContext = 0;
 
@@ -1258,14 +1258,14 @@ LABEL_74:
   self->_appShortcutGeneralizedExecutionUsed = 0;
 
   v17 = 109;
-  if (!v4)
+  if (!tier1Copy)
   {
     v17 = 0;
   }
 
   self->_whichEvent_Type = v17;
   linkActionTier1 = self->_linkActionTier1;
-  self->_linkActionTier1 = v4;
+  self->_linkActionTier1 = tier1Copy;
 }
 
 - (void)deleteAutoShortcutTemplateUsed
@@ -1293,9 +1293,9 @@ LABEL_74:
   return v3;
 }
 
-- (void)setAutoShortcutTemplateUsed:(id)a3
+- (void)setAutoShortcutTemplateUsed:(id)used
 {
-  v4 = a3;
+  usedCopy = used;
   linkActionContext = self->_linkActionContext;
   self->_linkActionContext = 0;
 
@@ -1333,14 +1333,14 @@ LABEL_74:
   self->_appShortcutGeneralizedExecutionUsed = 0;
 
   v17 = 108;
-  if (!v4)
+  if (!usedCopy)
   {
     v17 = 0;
   }
 
   self->_whichEvent_Type = v17;
   autoShortcutTemplateUsed = self->_autoShortcutTemplateUsed;
-  self->_autoShortcutTemplateUsed = v4;
+  self->_autoShortcutTemplateUsed = usedCopy;
 }
 
 - (void)deleteActionConfirmationContext
@@ -1368,9 +1368,9 @@ LABEL_74:
   return v3;
 }
 
-- (void)setActionConfirmationContext:(id)a3
+- (void)setActionConfirmationContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   linkActionContext = self->_linkActionContext;
   self->_linkActionContext = 0;
 
@@ -1408,14 +1408,14 @@ LABEL_74:
   self->_appShortcutGeneralizedExecutionUsed = 0;
 
   v17 = 107;
-  if (!v4)
+  if (!contextCopy)
   {
     v17 = 0;
   }
 
   self->_whichEvent_Type = v17;
   actionConfirmationContext = self->_actionConfirmationContext;
-  self->_actionConfirmationContext = v4;
+  self->_actionConfirmationContext = contextCopy;
 }
 
 - (void)deleteActionParameterConfirmationContext
@@ -1443,9 +1443,9 @@ LABEL_74:
   return v3;
 }
 
-- (void)setActionParameterConfirmationContext:(id)a3
+- (void)setActionParameterConfirmationContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   linkActionContext = self->_linkActionContext;
   self->_linkActionContext = 0;
 
@@ -1483,14 +1483,14 @@ LABEL_74:
   self->_appShortcutGeneralizedExecutionUsed = 0;
 
   v17 = 106;
-  if (!v4)
+  if (!contextCopy)
   {
     v17 = 0;
   }
 
   self->_whichEvent_Type = v17;
   actionParameterConfirmationContext = self->_actionParameterConfirmationContext;
-  self->_actionParameterConfirmationContext = v4;
+  self->_actionParameterConfirmationContext = contextCopy;
 }
 
 - (void)deleteActionParameterDisambiguationContext
@@ -1518,9 +1518,9 @@ LABEL_74:
   return v3;
 }
 
-- (void)setActionParameterDisambiguationContext:(id)a3
+- (void)setActionParameterDisambiguationContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   linkActionContext = self->_linkActionContext;
   self->_linkActionContext = 0;
 
@@ -1558,14 +1558,14 @@ LABEL_74:
   self->_appShortcutGeneralizedExecutionUsed = 0;
 
   v17 = 105;
-  if (!v4)
+  if (!contextCopy)
   {
     v17 = 0;
   }
 
   self->_whichEvent_Type = v17;
   actionParameterDisambiguationContext = self->_actionParameterDisambiguationContext;
-  self->_actionParameterDisambiguationContext = v4;
+  self->_actionParameterDisambiguationContext = contextCopy;
 }
 
 - (void)deleteActionPromptForValueContext
@@ -1593,9 +1593,9 @@ LABEL_74:
   return v3;
 }
 
-- (void)setActionPromptForValueContext:(id)a3
+- (void)setActionPromptForValueContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   linkActionContext = self->_linkActionContext;
   self->_linkActionContext = 0;
 
@@ -1633,14 +1633,14 @@ LABEL_74:
   self->_appShortcutGeneralizedExecutionUsed = 0;
 
   v17 = 104;
-  if (!v4)
+  if (!contextCopy)
   {
     v17 = 0;
   }
 
   self->_whichEvent_Type = v17;
   actionPromptForValueContext = self->_actionPromptForValueContext;
-  self->_actionPromptForValueContext = v4;
+  self->_actionPromptForValueContext = contextCopy;
 }
 
 - (void)deleteActionExecutionContext
@@ -1668,9 +1668,9 @@ LABEL_74:
   return v3;
 }
 
-- (void)setActionExecutionContext:(id)a3
+- (void)setActionExecutionContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   linkActionContext = self->_linkActionContext;
   self->_linkActionContext = 0;
 
@@ -1708,14 +1708,14 @@ LABEL_74:
   self->_appShortcutGeneralizedExecutionUsed = 0;
 
   v17 = 103;
-  if (!v4)
+  if (!contextCopy)
   {
     v17 = 0;
   }
 
   self->_whichEvent_Type = v17;
   actionExecutionContext = self->_actionExecutionContext;
-  self->_actionExecutionContext = v4;
+  self->_actionExecutionContext = contextCopy;
 }
 
 - (void)deleteActionConversionContext
@@ -1743,9 +1743,9 @@ LABEL_74:
   return v3;
 }
 
-- (void)setActionConversionContext:(id)a3
+- (void)setActionConversionContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   linkActionContext = self->_linkActionContext;
   self->_linkActionContext = 0;
 
@@ -1783,14 +1783,14 @@ LABEL_74:
   self->_appShortcutGeneralizedExecutionUsed = 0;
 
   v17 = 102;
-  if (!v4)
+  if (!contextCopy)
   {
     v17 = 0;
   }
 
   self->_whichEvent_Type = v17;
   actionConversionContext = self->_actionConversionContext;
-  self->_actionConversionContext = v4;
+  self->_actionConversionContext = contextCopy;
 }
 
 - (void)deleteEntityDisambiguationContext
@@ -1818,9 +1818,9 @@ LABEL_74:
   return v3;
 }
 
-- (void)setEntityDisambiguationContext:(id)a3
+- (void)setEntityDisambiguationContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   linkActionContext = self->_linkActionContext;
   self->_linkActionContext = 0;
 
@@ -1858,14 +1858,14 @@ LABEL_74:
   self->_appShortcutGeneralizedExecutionUsed = 0;
 
   v17 = 101;
-  if (!v4)
+  if (!contextCopy)
   {
     v17 = 0;
   }
 
   self->_whichEvent_Type = v17;
   entityDisambiguationContext = self->_entityDisambiguationContext;
-  self->_entityDisambiguationContext = v4;
+  self->_entityDisambiguationContext = contextCopy;
 }
 
 - (void)deleteLinkActionContext
@@ -1893,9 +1893,9 @@ LABEL_74:
   return v3;
 }
 
-- (void)setLinkActionContext:(id)a3
+- (void)setLinkActionContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   entityDisambiguationContext = self->_entityDisambiguationContext;
   self->_entityDisambiguationContext = 0;
 
@@ -1933,158 +1933,158 @@ LABEL_74:
   self->_appShortcutGeneralizedExecutionUsed = 0;
 
   v17 = 100;
-  if (!v4)
+  if (!contextCopy)
   {
     v17 = 0;
   }
 
   self->_whichEvent_Type = v17;
   linkActionContext = self->_linkActionContext;
-  self->_linkActionContext = v4;
+  self->_linkActionContext = contextCopy;
 }
 
 - (id)qualifiedMessageName
 {
-  v2 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self whichEvent_Type];
-  if (v2 - 100 > 0xC)
+  whichEvent_Type = [(FLOWLINKSchemaFLOWLINKClientEvent *)self whichEvent_Type];
+  if (whichEvent_Type - 100 > 0xC)
   {
     return @"com.apple.aiml.siri.flow.link.FLOWLINKClientEvent";
   }
 
   else
   {
-    return off_1E78D4E50[v2 - 100];
+    return off_1E78D4E50[whichEvent_Type - 100];
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v49.receiver = self;
   v49.super_class = FLOWLINKSchemaFLOWLINKClientEvent;
-  v5 = [(SISchemaInstrumentationMessage *)&v49 applySensitiveConditionsPolicy:v4];
-  v6 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self eventMetadata];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v49 applySensitiveConditionsPolicy:policyCopy];
+  eventMetadata = [(FLOWLINKSchemaFLOWLINKClientEvent *)self eventMetadata];
+  v7 = [eventMetadata applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(FLOWLINKSchemaFLOWLINKClientEvent *)self deleteEventMetadata];
   }
 
-  v9 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self linkActionContext];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  linkActionContext = [(FLOWLINKSchemaFLOWLINKClientEvent *)self linkActionContext];
+  v10 = [linkActionContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(FLOWLINKSchemaFLOWLINKClientEvent *)self deleteLinkActionContext];
   }
 
-  v12 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self entityDisambiguationContext];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  entityDisambiguationContext = [(FLOWLINKSchemaFLOWLINKClientEvent *)self entityDisambiguationContext];
+  v13 = [entityDisambiguationContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(FLOWLINKSchemaFLOWLINKClientEvent *)self deleteEntityDisambiguationContext];
   }
 
-  v15 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self actionConversionContext];
-  v16 = [v15 applySensitiveConditionsPolicy:v4];
-  v17 = [v16 suppressMessage];
+  actionConversionContext = [(FLOWLINKSchemaFLOWLINKClientEvent *)self actionConversionContext];
+  v16 = [actionConversionContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage4 = [v16 suppressMessage];
 
-  if (v17)
+  if (suppressMessage4)
   {
     [(FLOWLINKSchemaFLOWLINKClientEvent *)self deleteActionConversionContext];
   }
 
-  v18 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self actionExecutionContext];
-  v19 = [v18 applySensitiveConditionsPolicy:v4];
-  v20 = [v19 suppressMessage];
+  actionExecutionContext = [(FLOWLINKSchemaFLOWLINKClientEvent *)self actionExecutionContext];
+  v19 = [actionExecutionContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage5 = [v19 suppressMessage];
 
-  if (v20)
+  if (suppressMessage5)
   {
     [(FLOWLINKSchemaFLOWLINKClientEvent *)self deleteActionExecutionContext];
   }
 
-  v21 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self actionPromptForValueContext];
-  v22 = [v21 applySensitiveConditionsPolicy:v4];
-  v23 = [v22 suppressMessage];
+  actionPromptForValueContext = [(FLOWLINKSchemaFLOWLINKClientEvent *)self actionPromptForValueContext];
+  v22 = [actionPromptForValueContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage6 = [v22 suppressMessage];
 
-  if (v23)
+  if (suppressMessage6)
   {
     [(FLOWLINKSchemaFLOWLINKClientEvent *)self deleteActionPromptForValueContext];
   }
 
-  v24 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self actionParameterDisambiguationContext];
-  v25 = [v24 applySensitiveConditionsPolicy:v4];
-  v26 = [v25 suppressMessage];
+  actionParameterDisambiguationContext = [(FLOWLINKSchemaFLOWLINKClientEvent *)self actionParameterDisambiguationContext];
+  v25 = [actionParameterDisambiguationContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage7 = [v25 suppressMessage];
 
-  if (v26)
+  if (suppressMessage7)
   {
     [(FLOWLINKSchemaFLOWLINKClientEvent *)self deleteActionParameterDisambiguationContext];
   }
 
-  v27 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self actionParameterConfirmationContext];
-  v28 = [v27 applySensitiveConditionsPolicy:v4];
-  v29 = [v28 suppressMessage];
+  actionParameterConfirmationContext = [(FLOWLINKSchemaFLOWLINKClientEvent *)self actionParameterConfirmationContext];
+  v28 = [actionParameterConfirmationContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage8 = [v28 suppressMessage];
 
-  if (v29)
+  if (suppressMessage8)
   {
     [(FLOWLINKSchemaFLOWLINKClientEvent *)self deleteActionParameterConfirmationContext];
   }
 
-  v30 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self actionConfirmationContext];
-  v31 = [v30 applySensitiveConditionsPolicy:v4];
-  v32 = [v31 suppressMessage];
+  actionConfirmationContext = [(FLOWLINKSchemaFLOWLINKClientEvent *)self actionConfirmationContext];
+  v31 = [actionConfirmationContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage9 = [v31 suppressMessage];
 
-  if (v32)
+  if (suppressMessage9)
   {
     [(FLOWLINKSchemaFLOWLINKClientEvent *)self deleteActionConfirmationContext];
   }
 
-  v33 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self autoShortcutTemplateUsed];
-  v34 = [v33 applySensitiveConditionsPolicy:v4];
-  v35 = [v34 suppressMessage];
+  autoShortcutTemplateUsed = [(FLOWLINKSchemaFLOWLINKClientEvent *)self autoShortcutTemplateUsed];
+  v34 = [autoShortcutTemplateUsed applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage10 = [v34 suppressMessage];
 
-  if (v35)
+  if (suppressMessage10)
   {
     [(FLOWLINKSchemaFLOWLINKClientEvent *)self deleteAutoShortcutTemplateUsed];
   }
 
-  v36 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self linkActionTier1];
-  v37 = [v36 applySensitiveConditionsPolicy:v4];
-  v38 = [v37 suppressMessage];
+  linkActionTier1 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self linkActionTier1];
+  v37 = [linkActionTier1 applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage11 = [v37 suppressMessage];
 
-  if (v38)
+  if (suppressMessage11)
   {
     [(FLOWLINKSchemaFLOWLINKClientEvent *)self deleteLinkActionTier1];
   }
 
-  v39 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self actionParameterUpdated];
-  v40 = [v39 applySensitiveConditionsPolicy:v4];
-  v41 = [v40 suppressMessage];
+  actionParameterUpdated = [(FLOWLINKSchemaFLOWLINKClientEvent *)self actionParameterUpdated];
+  v40 = [actionParameterUpdated applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage12 = [v40 suppressMessage];
 
-  if (v41)
+  if (suppressMessage12)
   {
     [(FLOWLINKSchemaFLOWLINKClientEvent *)self deleteActionParameterUpdated];
   }
 
-  v42 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self appShortcutFirstRunConfirmationContext];
-  v43 = [v42 applySensitiveConditionsPolicy:v4];
-  v44 = [v43 suppressMessage];
+  appShortcutFirstRunConfirmationContext = [(FLOWLINKSchemaFLOWLINKClientEvent *)self appShortcutFirstRunConfirmationContext];
+  v43 = [appShortcutFirstRunConfirmationContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage13 = [v43 suppressMessage];
 
-  if (v44)
+  if (suppressMessage13)
   {
     [(FLOWLINKSchemaFLOWLINKClientEvent *)self deleteAppShortcutFirstRunConfirmationContext];
   }
 
-  v45 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self appShortcutGeneralizedExecutionUsed];
-  v46 = [v45 applySensitiveConditionsPolicy:v4];
-  v47 = [v46 suppressMessage];
+  appShortcutGeneralizedExecutionUsed = [(FLOWLINKSchemaFLOWLINKClientEvent *)self appShortcutGeneralizedExecutionUsed];
+  v46 = [appShortcutGeneralizedExecutionUsed applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage14 = [v46 suppressMessage];
 
-  if (v47)
+  if (suppressMessage14)
   {
     [(FLOWLINKSchemaFLOWLINKClientEvent *)self deleteAppShortcutGeneralizedExecutionUsed];
   }
@@ -2102,73 +2102,73 @@ LABEL_74:
 
 - (int)componentName
 {
-  v3 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self eventMetadata];
-  v4 = [v3 flowId];
+  eventMetadata = [(FLOWLINKSchemaFLOWLINKClientEvent *)self eventMetadata];
+  flowId = [eventMetadata flowId];
 
-  if (v4 && ([v4 value], (v5 = objc_claimAutoreleasedReturnValue()) != 0) && (v6 = v5, objc_msgSend(v4, "value"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "length"), v7, v6, v8))
+  if (flowId && ([flowId value], (v5 = objc_claimAutoreleasedReturnValue()) != 0) && (v6 = v5, objc_msgSend(flowId, "value"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "length"), v7, v6, v8))
   {
-    LODWORD(v9) = 3;
+    LODWORD(value) = 3;
   }
 
   else
   {
-    v10 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self eventMetadata];
-    v11 = [v10 requestId];
+    eventMetadata2 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self eventMetadata];
+    requestId = [eventMetadata2 requestId];
 
-    if (v11 && ([v11 value], (v12 = objc_claimAutoreleasedReturnValue()) != 0) && (v13 = v12, objc_msgSend(v11, "value"), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "length"), v14, v13, v15))
+    if (requestId && ([requestId value], (v12 = objc_claimAutoreleasedReturnValue()) != 0) && (v13 = v12, objc_msgSend(requestId, "value"), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "length"), v14, v13, v15))
     {
-      LODWORD(v9) = 1;
-      v4 = v11;
+      LODWORD(value) = 1;
+      flowId = requestId;
     }
 
     else
     {
-      v16 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self eventMetadata];
-      v4 = [v16 subRequestId];
+      eventMetadata3 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self eventMetadata];
+      flowId = [eventMetadata3 subRequestId];
 
-      if (v4)
+      if (flowId)
       {
-        v9 = [v4 value];
-        if (v9)
+        value = [flowId value];
+        if (value)
         {
-          v17 = [v4 value];
-          v18 = [v17 length];
+          value2 = [flowId value];
+          v18 = [value2 length];
 
           if (v18)
           {
-            LODWORD(v9) = 43;
+            LODWORD(value) = 43;
           }
 
           else
           {
-            LODWORD(v9) = 0;
+            LODWORD(value) = 0;
           }
         }
       }
 
       else
       {
-        LODWORD(v9) = 0;
+        LODWORD(value) = 0;
       }
     }
   }
 
-  return v9;
+  return value;
 }
 
 - (id)getComponentId
 {
-  v3 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self eventMetadata];
-  v4 = [v3 flowId];
+  eventMetadata = [(FLOWLINKSchemaFLOWLINKClientEvent *)self eventMetadata];
+  flowId = [eventMetadata flowId];
 
-  if (v4)
+  if (flowId)
   {
-    v5 = [v4 value];
-    if (v5)
+    value = [flowId value];
+    if (value)
     {
-      v6 = v5;
-      v7 = [v4 value];
-      v8 = [v7 length];
+      v6 = value;
+      value2 = [flowId value];
+      v8 = [value2 length];
 
       if (v8)
       {
@@ -2177,42 +2177,42 @@ LABEL_74:
     }
   }
 
-  v9 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self eventMetadata];
-  v10 = [v9 requestId];
+  eventMetadata2 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self eventMetadata];
+  requestId = [eventMetadata2 requestId];
 
-  if (v10)
+  if (requestId)
   {
-    v11 = [v10 value];
-    if (v11)
+    value3 = [requestId value];
+    if (value3)
     {
-      v12 = v11;
-      v13 = [v10 value];
-      v14 = [v13 length];
+      v12 = value3;
+      value4 = [requestId value];
+      v14 = [value4 length];
 
       if (v14)
       {
-        v4 = v10;
+        flowId = requestId;
 LABEL_11:
-        v16 = v4;
-        v4 = v16;
+        value5 = flowId;
+        flowId = value5;
         goto LABEL_13;
       }
     }
   }
 
-  v15 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self eventMetadata];
-  v4 = [v15 subRequestId];
+  eventMetadata3 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self eventMetadata];
+  flowId = [eventMetadata3 subRequestId];
 
-  if (v4)
+  if (flowId)
   {
-    v16 = [v4 value];
-    if (!v16)
+    value5 = [flowId value];
+    if (!value5)
     {
       goto LABEL_13;
     }
 
-    v17 = [v4 value];
-    v18 = [v17 length];
+    value6 = [flowId value];
+    v18 = [value6 length];
 
     if (v18)
     {
@@ -2220,38 +2220,38 @@ LABEL_11:
     }
   }
 
-  v16 = 0;
+  value5 = 0;
 LABEL_13:
 
-  return v16;
+  return value5;
 }
 
 - (SISchemaInstrumentationMessage)innerEvent
 {
-  v3 = [(FLOWLINKSchemaFLOWLINKClientEvent *)self whichEvent_Type];
-  if (v3 - 100 > 0xC)
+  whichEvent_Type = [(FLOWLINKSchemaFLOWLINKClientEvent *)self whichEvent_Type];
+  if (whichEvent_Type - 100 > 0xC)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = *(&self->super.super.super.super.isa + *off_1E78E9748[v3 - 100]);
+    v4 = *(&self->super.super.super.super.isa + *off_1E78E9748[whichEvent_Type - 100]);
   }
 
   return v4;
 }
 
-+ (id)getInnerTypeStringByTag:(unint64_t)a3
++ (id)getInnerTypeStringByTag:(unint64_t)tag
 {
-  if (a3 - 100 > 0xC)
+  if (tag - 100 > 0xC)
   {
     return 0;
   }
 
   else
   {
-    return off_1E78E97B0[a3 - 100];
+    return off_1E78E97B0[tag - 100];
   }
 }
 

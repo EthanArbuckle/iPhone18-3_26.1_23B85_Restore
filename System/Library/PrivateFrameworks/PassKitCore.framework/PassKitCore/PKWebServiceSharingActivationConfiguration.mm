@@ -1,14 +1,14 @@
 @interface PKWebServiceSharingActivationConfiguration
-- (PKWebServiceSharingActivationConfiguration)initWithDictionary:(id)a3;
+- (PKWebServiceSharingActivationConfiguration)initWithDictionary:(id)dictionary;
 - (id)description;
 @end
 
 @implementation PKWebServiceSharingActivationConfiguration
 
-- (PKWebServiceSharingActivationConfiguration)initWithDictionary:(id)a3
+- (PKWebServiceSharingActivationConfiguration)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  if (v4)
+  dictionaryCopy = dictionary;
+  if (dictionaryCopy)
   {
     v44.receiver = self;
     v44.super_class = PKWebServiceSharingActivationConfiguration;
@@ -17,15 +17,15 @@
     {
 LABEL_25:
       self = v5;
-      v22 = self;
+      selfCopy = self;
       goto LABEL_26;
     }
 
-    v6 = [v4 PKStringForKey:@"channelBundleIdentifier"];
+    v6 = [dictionaryCopy PKStringForKey:@"channelBundleIdentifier"];
     channelBundleIdentifier = v5->_channelBundleIdentifier;
     v5->_channelBundleIdentifier = v6;
 
-    v8 = [v4 PKStringForKey:@"channelRiskLevel"];
+    v8 = [dictionaryCopy PKStringForKey:@"channelRiskLevel"];
     v9 = v8;
     if (v8 == @"high")
     {
@@ -64,18 +64,18 @@ LABEL_6:
           if (!v40)
           {
 LABEL_8:
-            v12 = [v4 PKStringForKey:@"manufacturerIdentifier"];
+            v12 = [dictionaryCopy PKStringForKey:@"manufacturerIdentifier"];
             manufacturerIdentifier = v5->_manufacturerIdentifier;
             v5->_manufacturerIdentifier = v12;
 
-            v14 = [v4 PKStringForKey:@"accessPassType"];
+            v14 = [dictionaryCopy PKStringForKey:@"accessPassType"];
             v15 = v14;
             if (v14)
             {
               v5->_accessPassType = PKSecureElementAccessPassTypeFromString(v14);
             }
 
-            v16 = [v4 PKDictionaryForKey:@"versionRange"];
+            v16 = [dictionaryCopy PKDictionaryForKey:@"versionRange"];
             if (v16)
             {
               v17 = [[PKOSVersionRequirementRange alloc] initWithDictionary:v16];
@@ -83,11 +83,11 @@ LABEL_8:
               v5->_versionRange = v17;
             }
 
-            v19 = [v4 objectForKeyedSubscript:@"defaultState"];
+            v19 = [dictionaryCopy objectForKeyedSubscript:@"defaultState"];
 
             if (v19)
             {
-              v20 = [v4 PKBoolForKey:@"defaultState"];
+              v20 = [dictionaryCopy PKBoolForKey:@"defaultState"];
               v21 = 1;
               if (!v20)
               {
@@ -97,23 +97,23 @@ LABEL_8:
               v5->_defaultState = v21;
             }
 
-            if ([v4 PKBoolForKey:@"isTrustedChannel"])
+            if ([dictionaryCopy PKBoolForKey:@"isTrustedChannel"])
             {
               v5->_trustLevel = 1;
 LABEL_24:
-              v5->_codeLength = [v4 PKIntegerForKey:@"codeLength"];
-              v27 = [v4 PKArrayContaining:objc_opt_class() forKey:@"blockedSharingChannels"];
+              v5->_codeLength = [dictionaryCopy PKIntegerForKey:@"codeLength"];
+              v27 = [dictionaryCopy PKArrayContaining:objc_opt_class() forKey:@"blockedSharingChannels"];
               blockedSharingChannels = v5->_blockedSharingChannels;
               v5->_blockedSharingChannels = v27;
 
-              v29 = [v4 PKArrayContaining:objc_opt_class() forKey:@"allowedSharingChannels"];
+              v29 = [dictionaryCopy PKArrayContaining:objc_opt_class() forKey:@"allowedSharingChannels"];
               allowedSharingChannels = v5->_allowedSharingChannels;
               v5->_allowedSharingChannels = v29;
 
               goto LABEL_25;
             }
 
-            v23 = [v4 PKStringForKey:@"trustLevel"];
+            v23 = [dictionaryCopy PKStringForKey:@"trustLevel"];
             v24 = v23;
             if (v23 != @"trusted")
             {
@@ -156,10 +156,10 @@ LABEL_23:
     goto LABEL_8;
   }
 
-  v22 = 0;
+  selfCopy = 0;
 LABEL_26:
 
-  return v22;
+  return selfCopy;
 }
 
 - (id)description

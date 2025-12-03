@@ -1,26 +1,26 @@
 @interface FAFamilySetupOrganizerViewController
-- (FAFamilySetupOrganizerViewController)initWithAccount:(id)a3 store:(id)a4;
+- (FAFamilySetupOrganizerViewController)initWithAccount:(id)account store:(id)store;
 - (FAFamilySetupPageDelegate)delegate;
 - (id)_createCancelButton;
 - (id)instructions;
 - (id)pageTitle;
 - (id)titleForContinuebutton;
-- (void)_cancelButtonWasTapped:(id)a3;
-- (void)continueButtonWasTapped:(id)a3;
+- (void)_cancelButtonWasTapped:(id)tapped;
+- (void)continueButtonWasTapped:(id)tapped;
 - (void)viewDidLoad;
 @end
 
 @implementation FAFamilySetupOrganizerViewController
 
-- (FAFamilySetupOrganizerViewController)initWithAccount:(id)a3 store:(id)a4
+- (FAFamilySetupOrganizerViewController)initWithAccount:(id)account store:(id)store
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v6 aa_grandSlamAccountForiCloudAccount:v7];
+  storeCopy = store;
+  accountCopy = account;
+  v8 = [storeCopy aa_grandSlamAccountForiCloudAccount:accountCopy];
   v9 = objc_alloc(MEMORY[0x277CEC808]);
-  v10 = [v9 initWithAccountStore:v6 grandSlamAccount:v8 appTokenID:*MEMORY[0x277CEC6F0]];
+  v10 = [v9 initWithAccountStore:storeCopy grandSlamAccount:v8 appTokenID:*MEMORY[0x277CEC6F0]];
 
-  v11 = [(FAConfirmIdentityViewController *)self initWithAppleAccount:v7 grandSlamSigner:v10];
+  v11 = [(FAConfirmIdentityViewController *)self initWithAppleAccount:accountCopy grandSlamSigner:v10];
   return v11;
 }
 
@@ -29,9 +29,9 @@
   v5.receiver = self;
   v5.super_class = FAFamilySetupOrganizerViewController;
   [(FAFamilySetupOrganizerViewController *)&v5 viewDidLoad];
-  v3 = [(FAFamilySetupOrganizerViewController *)self navigationItem];
-  v4 = [(FAFamilySetupOrganizerViewController *)self _createCancelButton];
-  [v3 setRightBarButtonItem:v4];
+  navigationItem = [(FAFamilySetupOrganizerViewController *)self navigationItem];
+  _createCancelButton = [(FAFamilySetupOrganizerViewController *)self _createCancelButton];
+  [navigationItem setRightBarButtonItem:_createCancelButton];
 }
 
 - (id)pageTitle
@@ -65,17 +65,17 @@
   return v2;
 }
 
-- (void)_cancelButtonWasTapped:(id)a3
+- (void)_cancelButtonWasTapped:(id)tapped
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained familySetupPage:self didCompleteWithSuccess:0];
 }
 
-- (void)continueButtonWasTapped:(id)a3
+- (void)continueButtonWasTapped:(id)tapped
 {
   v5.receiver = self;
   v5.super_class = FAFamilySetupOrganizerViewController;
-  [(FAConfirmIdentityViewController *)&v5 continueButtonWasTapped:a3];
+  [(FAConfirmIdentityViewController *)&v5 continueButtonWasTapped:tapped];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained familySetupPage:self didCompleteWithSuccess:1];
 }

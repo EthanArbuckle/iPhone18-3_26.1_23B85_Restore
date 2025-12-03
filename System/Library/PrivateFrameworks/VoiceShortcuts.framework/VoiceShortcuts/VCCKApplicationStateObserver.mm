@@ -1,5 +1,5 @@
 @interface VCCKApplicationStateObserver
-- (VCCKApplicationStateObserver)initWithBundleIdentifier:(id)a3;
+- (VCCKApplicationStateObserver)initWithBundleIdentifier:(id)identifier;
 - (void)dealloc;
 @end
 
@@ -13,13 +13,13 @@
   [(VCCKApplicationStateObserver *)&v3 dealloc];
 }
 
-- (VCCKApplicationStateObserver)initWithBundleIdentifier:(id)a3
+- (VCCKApplicationStateObserver)initWithBundleIdentifier:(id)identifier
 {
-  v5 = a3;
-  if (!v5)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
-    v21 = [MEMORY[0x277CCA890] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"VCCKApplicationStateObserver.m" lineNumber:56 description:{@"Invalid parameter not satisfying: %@", @"bundleIdentifier"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"VCCKApplicationStateObserver.m" lineNumber:56 description:{@"Invalid parameter not satisfying: %@", @"bundleIdentifier"}];
   }
 
   v26.receiver = self;
@@ -27,35 +27,35 @@
   v6 = [(VCCKApplicationStateObserver *)&v26 init];
   if (v6)
   {
-    v7 = [v5 copy];
+    v7 = [identifierCopy copy];
     bundleIdentifier = v6->_bundleIdentifier;
     v6->_bundleIdentifier = v7;
 
     atomic_store(0, &v6->_atomicApplicationVisible);
-    v9 = [MEMORY[0x277D0AD20] configurationForDefaultMainDisplayMonitor];
+    configurationForDefaultMainDisplayMonitor = [MEMORY[0x277D0AD20] configurationForDefaultMainDisplayMonitor];
     objc_initWeak(&location, v6);
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
     v22[2] = __57__VCCKApplicationStateObserver_initWithBundleIdentifier___block_invoke;
     v22[3] = &unk_2788FE5B8;
     objc_copyWeak(&v24, &location);
-    v10 = v5;
+    v10 = identifierCopy;
     v23 = v10;
-    [v9 setTransitionHandler:v22];
-    v11 = [MEMORY[0x277D0AD08] monitorWithConfiguration:v9];
+    [configurationForDefaultMainDisplayMonitor setTransitionHandler:v22];
+    v11 = [MEMORY[0x277D0AD08] monitorWithConfiguration:configurationForDefaultMainDisplayMonitor];
     layoutMonitor = v6->_layoutMonitor;
     v6->_layoutMonitor = v11;
 
-    v13 = [(FBSDisplayLayoutMonitor *)v6->_layoutMonitor currentLayout];
+    currentLayout = [(FBSDisplayLayoutMonitor *)v6->_layoutMonitor currentLayout];
     v14 = v10;
-    v15 = [v13 elements];
+    elements = [currentLayout elements];
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = 3221225472;
     v27[2] = __VCApplicationPresentInLayout_block_invoke;
     v27[3] = &unk_2788FE5E0;
     v16 = v14;
     v28 = v16;
-    v17 = [v15 if_firstObjectPassingTest:v27];
+    v17 = [elements if_firstObjectPassingTest:v27];
     v18 = v17 != 0;
 
     [(VCCKApplicationStateObserver *)v6 setApplicationVisible:v18];

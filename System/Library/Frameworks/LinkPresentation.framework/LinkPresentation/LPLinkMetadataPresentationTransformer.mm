@@ -1,41 +1,41 @@
 @interface LPLinkMetadataPresentationTransformer
-- (BOOL)_allowsDominantBackgroundColorAsCaptionBackgroundForProperties:(id)a3;
-- (BOOL)_hasNonMicroblogQuotedTextForStyle:(int64_t)a3;
+- (BOOL)_allowsDominantBackgroundColorAsCaptionBackgroundForProperties:(id)properties;
+- (BOOL)_hasNonMicroblogQuotedTextForStyle:(int64_t)style;
 - (BOOL)_prefersIconAsImage;
-- (BOOL)_prefersImageAsIconWithStyle:(int64_t)a3;
-- (BOOL)_prefersLeadingIconWithStyle:(int64_t)a3;
+- (BOOL)_prefersImageAsIconWithStyle:(int64_t)style;
+- (BOOL)_prefersLeadingIconWithStyle:(int64_t)style;
 - (BOOL)hasMedia;
-- (BOOL)hasMediaWithProperties:(id)a3;
+- (BOOL)hasMediaWithProperties:(id)properties;
 - (BOOL)shouldUseAppClipPresentation;
 - (LPLinkMetadataPresentationTransformer)init;
 - (NSString)domainName;
 - (NSURL)canonicalURL;
 - (NSURL)originalURL;
 - (id)_lastResortIcon;
-- (id)_preferredBackgroundColorImageSourceForProperties:(id)a3;
+- (id)_preferredBackgroundColorImageSourceForProperties:(id)properties;
 - (id)arAsset;
-- (id)backgroundColorForStyle:(int64_t)a3;
-- (id)commonPresentationPropertiesForStyle:(int64_t)a3;
+- (id)backgroundColorForStyle:(int64_t)style;
+- (id)commonPresentationPropertiesForStyle:(int64_t)style;
 - (id)domainNameForIndicator;
-- (id)imageForStyle:(int64_t)a3 imageMetadata:(id)a4 icon:(id *)a5 alternateImages:(id *)a6;
-- (id)mainCaptionBarForStyle:(int64_t)a3;
+- (id)imageForStyle:(int64_t)style imageMetadata:(id)metadata icon:(id *)icon alternateImages:(id *)images;
+- (id)mainCaptionBarForStyle:(int64_t)style;
 - (id)presentationProperties;
-- (id)quotedTextForStyle:(int64_t)a3;
-- (id)quotedTextForStyleIgnoringAllowsQuotedText:(int64_t)a3;
-- (id)subtitleForStyle:(int64_t)a3;
-- (id)summaryForStyle:(int64_t)a3;
-- (id)titleForStyle:(int64_t)a3;
+- (id)quotedTextForStyle:(int64_t)style;
+- (id)quotedTextForStyleIgnoringAllowsQuotedText:(int64_t)text;
+- (id)subtitleForStyle:(int64_t)style;
+- (id)summaryForStyle:(int64_t)style;
+- (id)titleForStyle:(int64_t)style;
 - (id)unspecializedPresentationProperties;
-- (id)unspecializedPresentationPropertiesForStyle:(int64_t)a3;
-- (id)videoForStyle:(int64_t)a3;
+- (id)unspecializedPresentationPropertiesForStyle:(int64_t)style;
+- (id)videoForStyle:(int64_t)style;
 - (int64_t)rendererStyle;
-- (unint64_t)_rowConfigurationForStyle:(int64_t)a3;
+- (unint64_t)_rowConfigurationForStyle:(int64_t)style;
 - (unint64_t)effectiveSizeClass;
-- (void)_populateDominantBackgroundColorForPropertiesIfNeeded:(id)a3;
-- (void)_populateProperties:(id)a3 withPrimaryIcon:(id)a4 iconProperties:(id)a5 canBecomeImage:(BOOL)a6;
-- (void)_populateProperties:(id)a3 withPrimaryImage:(id)a4;
-- (void)_populatePropertiesForMediaOverlayIcon:(id)a3;
-- (void)_propagateDominantBackgroundColorToDependentPropertiesIfNeeded:(id)a3;
+- (void)_populateDominantBackgroundColorForPropertiesIfNeeded:(id)needed;
+- (void)_populateProperties:(id)properties withPrimaryIcon:(id)icon iconProperties:(id)iconProperties canBecomeImage:(BOOL)image;
+- (void)_populateProperties:(id)properties withPrimaryImage:(id)image;
+- (void)_populatePropertiesForMediaOverlayIcon:(id)icon;
+- (void)_propagateDominantBackgroundColorToDependentPropertiesIfNeeded:(id)needed;
 @end
 
 @implementation LPLinkMetadataPresentationTransformer
@@ -62,15 +62,15 @@
   URL = self->_URL;
   if (URL)
   {
-    v3 = URL;
+    originalURL = URL;
   }
 
   else
   {
-    v3 = [(LPLinkMetadata *)self->_metadata originalURL];
+    originalURL = [(LPLinkMetadata *)self->_metadata originalURL];
   }
 
-  return v3;
+  return originalURL;
 }
 
 - (NSURL)canonicalURL
@@ -79,67 +79,67 @@
   v4 = v3;
   if (v3)
   {
-    v5 = v3;
+    originalURL = v3;
   }
 
   else
   {
-    v5 = [(LPLinkMetadataPresentationTransformer *)self originalURL];
+    originalURL = [(LPLinkMetadataPresentationTransformer *)self originalURL];
   }
 
-  v6 = v5;
+  v6 = originalURL;
 
   return v6;
 }
 
 - (int64_t)rendererStyle
 {
-  v3 = [(LPLinkMetadataPresentationTransformer *)self canonicalURL];
-  v4 = [LPPresentationSpecializations searchQueryForURL:v3];
+  canonicalURL = [(LPLinkMetadataPresentationTransformer *)self canonicalURL];
+  v4 = [LPPresentationSpecializations searchQueryForURL:canonicalURL];
 
   if (v4)
   {
     return 4;
   }
 
-  v6 = [(LPLinkMetadata *)self->_metadata specialization];
-  if (v6)
+  specialization = [(LPLinkMetadata *)self->_metadata specialization];
+  if (specialization)
   {
   }
 
   else
   {
-    v7 = [(LPLinkMetadata *)self->_metadata title];
-    v8 = [v7 length];
+    title = [(LPLinkMetadata *)self->_metadata title];
+    v8 = [title length];
 
     if (v8)
     {
-      v9 = [(LPLinkMetadataPresentationTransformer *)self originalURL];
-      if ([LPPresentationSpecializations isAppleFitnessURL:v9])
+      originalURL = [(LPLinkMetadataPresentationTransformer *)self originalURL];
+      if ([LPPresentationSpecializations isAppleFitnessURL:originalURL])
       {
         v5 = 43;
       }
 
-      else if ([LPPresentationSpecializations isAppleHealthURL:v9])
+      else if ([LPPresentationSpecializations isAppleHealthURL:originalURL])
       {
         v5 = 52;
       }
 
-      else if ([LPPresentationSpecializations isAppleMusicClassicalURL:v9])
+      else if ([LPPresentationSpecializations isAppleMusicClassicalURL:originalURL])
       {
         v5 = 55;
       }
 
-      else if ([LPPresentationSpecializations isAppleBookSeriesURL:v9])
+      else if ([LPPresentationSpecializations isAppleBookSeriesURL:originalURL])
       {
         v5 = 57;
       }
 
       else
       {
-        if (![LPPresentationSpecializations isAppleGamesActivityURL:v9])
+        if (![LPPresentationSpecializations isAppleGamesActivityURL:originalURL])
         {
-          v15 = [LPPresentationSpecializations isAppleSportsURL:v9];
+          v15 = [LPPresentationSpecializations isAppleSportsURL:originalURL];
 
           if (v15)
           {
@@ -167,8 +167,8 @@ LABEL_5:
     return 15;
   }
 
-  v10 = [(LPLinkMetadataPresentationTransformer *)self shouldUseAppClipPresentation];
-  if ([LPPresentationSpecializations isMicroblogPost:self->_metadata]&& !v10)
+  shouldUseAppClipPresentation = [(LPLinkMetadataPresentationTransformer *)self shouldUseAppClipPresentation];
+  if ([LPPresentationSpecializations isMicroblogPost:self->_metadata]&& !shouldUseAppClipPresentation)
   {
     return 3;
   }
@@ -178,29 +178,29 @@ LABEL_5:
     return 0;
   }
 
-  v11 = [(LPLinkMetadata *)self->_metadata title];
-  if (v11 || ([(LPLinkMetadata *)self->_metadata siteName], (v11 = objc_claimAutoreleasedReturnValue()) != 0) || ([(LPLinkMetadata *)self->_metadata image], (v11 = objc_claimAutoreleasedReturnValue()) != 0) || ([(LPLinkMetadata *)self->_metadata video], (v11 = objc_claimAutoreleasedReturnValue()) != 0))
+  title2 = [(LPLinkMetadata *)self->_metadata title];
+  if (title2 || ([(LPLinkMetadata *)self->_metadata siteName], (title2 = objc_claimAutoreleasedReturnValue()) != 0) || ([(LPLinkMetadata *)self->_metadata image], (title2 = objc_claimAutoreleasedReturnValue()) != 0) || ([(LPLinkMetadata *)self->_metadata video], (title2 = objc_claimAutoreleasedReturnValue()) != 0))
   {
   }
 
   else
   {
-    v16 = [(LPLinkMetadata *)self->_metadata icon];
+    icon = [(LPLinkMetadata *)self->_metadata icon];
 
-    if (!v16)
+    if (!icon)
     {
       return 2;
     }
   }
 
-  v12 = [(LPLinkMetadata *)self->_metadata _hasMedia];
+  _hasMedia = [(LPLinkMetadata *)self->_metadata _hasMedia];
   v13 = 41;
-  if (!v10)
+  if (!shouldUseAppClipPresentation)
   {
     v13 = 0;
   }
 
-  if (v12)
+  if (_hasMedia)
   {
     return v13;
   }
@@ -211,40 +211,40 @@ LABEL_5:
   }
 }
 
-- (id)mainCaptionBarForStyle:(int64_t)a3
+- (id)mainCaptionBarForStyle:(int64_t)style
 {
   v5 = objc_alloc_init(LPCaptionBarPresentationProperties);
-  v6 = [(LPLinkMetadataPresentationTransformer *)self _rowConfigurationForStyle:a3];
+  v6 = [(LPLinkMetadataPresentationTransformer *)self _rowConfigurationForStyle:style];
   if (v6 > 1)
   {
     if (v6 == 2)
     {
       if ([(LPLinkMetadataPresentationTransformer *)self effectiveSizeClass]== 8)
       {
-        v23 = [(LPLinkMetadataPresentationTransformer *)self titleForStyle:a3];
+        v23 = [(LPLinkMetadataPresentationTransformer *)self titleForStyle:style];
         v24 = [(LPCaptionBarPresentationProperties *)v5 top];
-        v25 = [v24 leading];
-        [v25 setText:v23];
+        leading = [v24 leading];
+        [leading setText:v23];
 
-        v26 = [(LPLinkMetadataPresentationTransformer *)self quotedTextForStyleIgnoringAllowsQuotedText:a3];
+        v26 = [(LPLinkMetadataPresentationTransformer *)self quotedTextForStyleIgnoringAllowsQuotedText:style];
         v27 = v26;
         if (!v26)
         {
-          v27 = [(LPLinkMetadataPresentationTransformer *)self summaryForStyle:a3];
+          v27 = [(LPLinkMetadataPresentationTransformer *)self summaryForStyle:style];
         }
 
-        v28 = [(LPCaptionBarPresentationProperties *)v5 bottom];
-        v29 = [v28 leading];
-        [v29 setText:v27];
+        bottom = [(LPCaptionBarPresentationProperties *)v5 bottom];
+        leading2 = [bottom leading];
+        [leading2 setText:v27];
 
         if (!v26)
         {
         }
 
-        v10 = [(LPLinkMetadataPresentationTransformer *)self subtitleForStyle:a3];
-        v11 = [(LPCaptionBarPresentationProperties *)v5 belowBottom];
-        v12 = [v11 leading];
-        [v12 setText:v10];
+        v10 = [(LPLinkMetadataPresentationTransformer *)self subtitleForStyle:style];
+        belowBottom = [(LPCaptionBarPresentationProperties *)v5 belowBottom];
+        leading3 = [belowBottom leading];
+        [leading3 setText:v10];
         goto LABEL_8;
       }
     }
@@ -255,15 +255,15 @@ LABEL_5:
     }
 
 LABEL_7:
-    v7 = [(LPLinkMetadataPresentationTransformer *)self titleForStyle:a3];
+    v7 = [(LPLinkMetadataPresentationTransformer *)self titleForStyle:style];
     v8 = [(LPCaptionBarPresentationProperties *)v5 top];
-    v9 = [v8 leading];
-    [v9 setText:v7];
+    leading4 = [v8 leading];
+    [leading4 setText:v7];
 
-    v10 = [(LPLinkMetadataPresentationTransformer *)self subtitleForStyle:a3];
-    v11 = [(LPCaptionBarPresentationProperties *)v5 bottom];
-    v12 = [v11 leading];
-    [v12 setText:v10];
+    v10 = [(LPLinkMetadataPresentationTransformer *)self subtitleForStyle:style];
+    belowBottom = [(LPCaptionBarPresentationProperties *)v5 bottom];
+    leading3 = [belowBottom leading];
+    [leading3 setText:v10];
 LABEL_8:
 
 LABEL_9:
@@ -280,26 +280,26 @@ LABEL_9:
     goto LABEL_7;
   }
 
-  v18 = stylePrefersSubtitleForOneUpPresentation(a3);
+  v18 = stylePrefersSubtitleForOneUpPresentation(style);
   v19 = v18;
   if (v18 && ([(LPLinkMetadataPresentationTransformer *)self originalURL], (v10 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v20 = [(LPLinkMetadataPresentationTransformer *)self subtitleForStyle:a3];
+    title = [(LPLinkMetadataPresentationTransformer *)self subtitleForStyle:style];
     v21 = 0;
     v22 = 1;
   }
 
   else
   {
-    v20 = [(LPLinkMetadata *)self->_metadata title];
+    title = [(LPLinkMetadata *)self->_metadata title];
     v10 = 0;
     v22 = 0;
     v21 = 1;
   }
 
   v30 = [(LPCaptionBarPresentationProperties *)v5 top];
-  v31 = [v30 leading];
-  [v31 setText:v20];
+  leading5 = [v30 leading];
+  [leading5 setText:title];
 
   if (v21)
   {
@@ -331,17 +331,17 @@ LABEL_32:
   }
 
 LABEL_10:
-  if (a3 == 57)
+  if (style == 57)
   {
     v13 = LPLocalizedString(@" Books");
-    v14 = [(LPCaptionBarPresentationProperties *)v5 belowBottom];
-    v15 = [v14 leading];
-    [v15 setText:v13];
+    belowBottom2 = [(LPCaptionBarPresentationProperties *)v5 belowBottom];
+    leading6 = [belowBottom2 leading];
+    [leading6 setText:v13];
   }
 
   if (self->_allowsTapping && self->_allowsPlayback)
   {
-    if (a3 == 15 || ([(LPLinkMetadataPresentationTransformer *)self videoForStyle:a3], v16 = objc_claimAutoreleasedReturnValue(), v16, v16))
+    if (style == 15 || ([(LPLinkMetadataPresentationTransformer *)self videoForStyle:style], v16 = objc_claimAutoreleasedReturnValue(), v16, v16))
     {
       [(LPCaptionBarPresentationProperties *)v5 setTrailingAccessoryType:1];
       [(LPCaptionBarPresentationProperties *)v5 setShouldHighlightIndependently:1];
@@ -351,10 +351,10 @@ LABEL_10:
   return v5;
 }
 
-- (id)titleForStyle:(int64_t)a3
+- (id)titleForStyle:(int64_t)style
 {
-  v5 = [(LPLinkMetadataPresentationTransformer *)self canonicalURL];
-  v6 = [LPPresentationSpecializations searchQueryForURL:v5];
+  canonicalURL = [(LPLinkMetadataPresentationTransformer *)self canonicalURL];
+  v6 = [LPPresentationSpecializations searchQueryForURL:canonicalURL];
 
   if (v6)
   {
@@ -364,13 +364,13 @@ LABEL_3:
     goto LABEL_4;
   }
 
-  if (a3 != 3)
+  if (style != 3)
   {
     goto LABEL_14;
   }
 
-  v10 = [(LPLinkMetadataPresentationTransformer *)self canonicalURL];
-  v11 = [LPPresentationSpecializations isSinaWeiboURL:v10];
+  canonicalURL2 = [(LPLinkMetadataPresentationTransformer *)self canonicalURL];
+  v11 = [LPPresentationSpecializations isSinaWeiboURL:canonicalURL2];
 
   if (v11)
   {
@@ -378,16 +378,16 @@ LABEL_3:
     goto LABEL_4;
   }
 
-  v12 = [(LPLinkMetadataPresentationTransformer *)self canonicalURL];
-  v13 = [LPPresentationSpecializations isTweetURL:v12];
+  canonicalURL3 = [(LPLinkMetadataPresentationTransformer *)self canonicalURL];
+  v13 = [LPPresentationSpecializations isTweetURL:canonicalURL3];
 
   if (!v13 || (-[LPLinkMetadata title](self->_metadata, "title"), v14 = objc_claimAutoreleasedReturnValue(), v15 = [v14 rangeOfString:@" on Twitter" options:12], v17 = v16, v14, !v17) && (-[LPLinkMetadata title](self->_metadata, "title"), v18 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v18, "rangeOfString:options:", @" on X", 12), v20 = v19, v18, !v20))
   {
 LABEL_14:
-    v22 = [(LPLinkMetadata *)self->_metadata title];
+    title = [(LPLinkMetadata *)self->_metadata title];
 
     metadata = self->_metadata;
-    if (v22)
+    if (title)
     {
       [(LPLinkMetadata *)metadata title];
     }
@@ -400,8 +400,8 @@ LABEL_14:
     goto LABEL_3;
   }
 
-  v21 = [(LPLinkMetadata *)self->_metadata title];
-  v8 = [v21 substringToIndex:v15];
+  title2 = [(LPLinkMetadata *)self->_metadata title];
+  v8 = [title2 substringToIndex:v15];
 
 LABEL_4:
 
@@ -410,8 +410,8 @@ LABEL_4:
 
 - (NSString)domainName
 {
-  v2 = [(LPLinkMetadataPresentationTransformer *)self originalURL];
-  v3 = [v2 _lp_simplifiedStringForDisplayOnly:0];
+  originalURL = [(LPLinkMetadataPresentationTransformer *)self originalURL];
+  v3 = [originalURL _lp_simplifiedStringForDisplayOnly:0];
 
   [v3 _lp_setStringType:1];
 
@@ -420,43 +420,43 @@ LABEL_4:
 
 - (BOOL)shouldUseAppClipPresentation
 {
-  v3 = [(LPLinkMetadata *)self->_metadata associatedApplication];
-  v4 = [v3 bundleIdentifier];
+  associatedApplication = [(LPLinkMetadata *)self->_metadata associatedApplication];
+  bundleIdentifier = [associatedApplication bundleIdentifier];
 
-  return v4 && [(LPLinkMetadataPresentationTransformer *)self effectiveSizeClass]== 0;
+  return bundleIdentifier && [(LPLinkMetadataPresentationTransformer *)self effectiveSizeClass]== 0;
 }
 
-- (id)subtitleForStyle:(int64_t)a3
+- (id)subtitleForStyle:(int64_t)style
 {
-  v5 = [(LPLinkMetadataPresentationTransformer *)self originalURL];
-  v6 = v5;
-  if (!v5)
+  originalURL = [(LPLinkMetadataPresentationTransformer *)self originalURL];
+  v6 = originalURL;
+  if (!originalURL)
   {
-    v7 = [(LPLinkMetadata *)self->_metadata summary];
+    summary = [(LPLinkMetadata *)self->_metadata summary];
     goto LABEL_27;
   }
 
-  if (![v5 isFileURL])
+  if (![originalURL isFileURL])
   {
     if ([v6 _lp_isTelephoneURL])
     {
-      v7 = [v6 _lp_formattedTelephoneNumber];
+      summary = [v6 _lp_formattedTelephoneNumber];
       goto LABEL_27;
     }
 
-    if (a3 <= 54)
+    if (style <= 54)
     {
-      if (a3 == 41)
+      if (style == 41)
       {
-        v11 = [(LPLinkMetadataPresentationTransformer *)self metadata];
-        v12 = [v11 associatedApplication];
-        v13 = [v12 caption];
+        metadata = [(LPLinkMetadataPresentationTransformer *)self metadata];
+        associatedApplication = [metadata associatedApplication];
+        caption = [associatedApplication caption];
 
-        if (v13)
+        if (caption)
         {
-          v14 = [(LPLinkMetadataPresentationTransformer *)self metadata];
-          v15 = [v14 associatedApplication];
-          v16 = [v15 caption];
+          metadata2 = [(LPLinkMetadataPresentationTransformer *)self metadata];
+          associatedApplication2 = [metadata2 associatedApplication];
+          caption2 = [associatedApplication2 caption];
 
 LABEL_25:
           goto LABEL_28;
@@ -465,48 +465,48 @@ LABEL_25:
         goto LABEL_26;
       }
 
-      if (a3 != 43)
+      if (style != 43)
       {
-        if (a3 == 52)
+        if (style == 52)
         {
-          v8 = [(LPLinkMetadataPresentationTransformer *)self metadata];
-          v9 = [v8 summary];
+          metadata3 = [(LPLinkMetadataPresentationTransformer *)self metadata];
+          summary2 = [metadata3 summary];
 
-          if (v9)
+          if (summary2)
           {
             goto LABEL_24;
           }
         }
 
 LABEL_26:
-        v7 = [(LPLinkMetadataPresentationTransformer *)self domainName];
+        summary = [(LPLinkMetadataPresentationTransformer *)self domainName];
         goto LABEL_27;
       }
 
-      v17 = [(LPLinkMetadataPresentationTransformer *)self metadata];
-      v18 = [v17 summary];
+      metadata4 = [(LPLinkMetadataPresentationTransformer *)self metadata];
+      summary3 = [metadata4 summary];
 
-      if (!v18)
+      if (!summary3)
       {
         goto LABEL_26;
       }
 
 LABEL_24:
-      v14 = [(LPLinkMetadataPresentationTransformer *)self metadata];
-      v16 = [v14 summary];
+      metadata2 = [(LPLinkMetadataPresentationTransformer *)self metadata];
+      caption2 = [metadata2 summary];
       goto LABEL_25;
     }
 
-    switch(a3)
+    switch(style)
     {
       case '7':
         v10 = @" Music Classical";
         break;
       case '9':
-        v19 = [(LPLinkMetadataPresentationTransformer *)self metadata];
-        v20 = [v19 summary];
+        metadata5 = [(LPLinkMetadataPresentationTransformer *)self metadata];
+        summary4 = [metadata5 summary];
 
-        if (!v20)
+        if (!summary4)
         {
           goto LABEL_26;
         }
@@ -519,52 +519,52 @@ LABEL_24:
         goto LABEL_26;
     }
 
-    v7 = LPLocalizedString(v10);
+    summary = LPLocalizedString(v10);
     goto LABEL_27;
   }
 
-  v7 = [v6 lastPathComponent];
+  summary = [v6 lastPathComponent];
 LABEL_27:
-  v16 = v7;
+  caption2 = summary;
 LABEL_28:
 
-  return v16;
+  return caption2;
 }
 
-- (id)summaryForStyle:(int64_t)a3
+- (id)summaryForStyle:(int64_t)style
 {
-  v4 = [(LPLinkMetadataPresentationTransformer *)self originalURL];
-  if (v4 && (-[LPLinkMetadata summary](self->_metadata, "summary"), v5 = objc_claimAutoreleasedReturnValue(), -[LPLinkMetadata title](self->_metadata, "title"), v6 = objc_claimAutoreleasedReturnValue(), [v5 _lp_similarityToString:v6], v8 = v7, v6, v5, v8 <= 0.6))
+  originalURL = [(LPLinkMetadataPresentationTransformer *)self originalURL];
+  if (originalURL && (-[LPLinkMetadata summary](self->_metadata, "summary"), v5 = objc_claimAutoreleasedReturnValue(), -[LPLinkMetadata title](self->_metadata, "title"), v6 = objc_claimAutoreleasedReturnValue(), [v5 _lp_similarityToString:v6], v8 = v7, v6, v5, v8 <= 0.6))
   {
-    v9 = [(LPLinkMetadata *)self->_metadata summary];
+    summary = [(LPLinkMetadata *)self->_metadata summary];
   }
 
   else
   {
-    v9 = 0;
+    summary = 0;
   }
 
-  return v9;
+  return summary;
 }
 
 - (id)domainNameForIndicator
 {
-  v3 = [(LPLinkMetadataPresentationTransformer *)self originalURL];
-  v4 = v3;
-  if (v3 && ([v3 isFileURL] & 1) == 0 && (objc_msgSend(v4, "_lp_isTelephoneURL") & 1) == 0)
+  originalURL = [(LPLinkMetadataPresentationTransformer *)self originalURL];
+  v4 = originalURL;
+  if (originalURL && ([originalURL isFileURL] & 1) == 0 && (objc_msgSend(v4, "_lp_isTelephoneURL") & 1) == 0)
   {
-    v5 = [(LPLinkMetadataPresentationTransformer *)self metadata];
-    v6 = [v5 associatedApplication];
-    v7 = [v6 bundleIdentifier];
-    if (v7)
+    metadata = [(LPLinkMetadataPresentationTransformer *)self metadata];
+    associatedApplication = [metadata associatedApplication];
+    bundleIdentifier = [associatedApplication bundleIdentifier];
+    if (bundleIdentifier)
     {
-      v8 = [(LPLinkMetadataPresentationTransformer *)self metadata];
-      v9 = [v8 associatedApplication];
-      v10 = [v9 caption];
+      metadata2 = [(LPLinkMetadataPresentationTransformer *)self metadata];
+      associatedApplication2 = [metadata2 associatedApplication];
+      caption = [associatedApplication2 caption];
 
-      if (v10)
+      if (caption)
       {
-        v11 = [(LPLinkMetadataPresentationTransformer *)self domainName];
+        domainName = [(LPLinkMetadataPresentationTransformer *)self domainName];
         goto LABEL_9;
       }
     }
@@ -574,29 +574,29 @@ LABEL_28:
     }
   }
 
-  v11 = 0;
+  domainName = 0;
 LABEL_9:
 
-  return v11;
+  return domainName;
 }
 
-- (BOOL)_hasNonMicroblogQuotedTextForStyle:(int64_t)a3
+- (BOOL)_hasNonMicroblogQuotedTextForStyle:(int64_t)style
 {
-  if (!styleSupportsQuotedText(a3) || !sizeClassAllowsMedia([(LPLinkMetadataPresentationTransformer *)self effectiveSizeClass]))
+  if (!styleSupportsQuotedText(style) || !sizeClassAllowsMedia([(LPLinkMetadataPresentationTransformer *)self effectiveSizeClass]))
   {
     return 0;
   }
 
-  v4 = [(LPLinkMetadata *)self->_metadata selectedText];
-  v5 = [v4 length] != 0;
+  selectedText = [(LPLinkMetadata *)self->_metadata selectedText];
+  v5 = [selectedText length] != 0;
 
   return v5;
 }
 
-- (id)quotedTextForStyleIgnoringAllowsQuotedText:(int64_t)a3
+- (id)quotedTextForStyleIgnoringAllowsQuotedText:(int64_t)text
 {
-  v5 = [(LPLinkMetadata *)self->_metadata summary];
-  if ([(LPLinkMetadataPresentationTransformer *)self _shouldUseMicroblogQuotedTextForStyle:a3])
+  summary = [(LPLinkMetadata *)self->_metadata summary];
+  if ([(LPLinkMetadataPresentationTransformer *)self _shouldUseMicroblogQuotedTextForStyle:text])
   {
     v6 = [(LPLinkMetadataPresentationTransformer *)self URL];
     v7 = [LPPresentationSpecializations isTweetURL:v6];
@@ -604,28 +604,28 @@ LABEL_9:
     if (v7)
     {
       v8 = [MEMORY[0x1E696AE70] regularExpressionWithPattern:@"^[\\p{Quotation_Mark}](.*)[\\p{Quotation_Mark}]$" options:8 error:0];
-      v9 = [v8 firstMatchInString:v5 options:0 range:{0, objc_msgSend(v5, "length")}];
+      v9 = [v8 firstMatchInString:summary options:0 range:{0, objc_msgSend(summary, "length")}];
       if ([v9 numberOfRanges] == 2)
       {
         v10 = [v9 rangeAtIndex:1];
-        v12 = [v5 substringWithRange:{v10, v11}];
+        v12 = [summary substringWithRange:{v10, v11}];
 
-        v5 = v12;
+        summary = v12;
       }
     }
 
-    v5 = v5;
-    v13 = v5;
+    summary = summary;
+    v13 = summary;
   }
 
   else
   {
-    v14 = [(LPLinkMetadata *)self->_metadata selectedText];
-    v15 = [v14 _lp_stringByTrimmingWhitespace];
+    selectedText = [(LPLinkMetadata *)self->_metadata selectedText];
+    _lp_stringByTrimmingWhitespace = [selectedText _lp_stringByTrimmingWhitespace];
 
-    if ([v15 length])
+    if ([_lp_stringByTrimmingWhitespace length])
     {
-      v13 = v15;
+      v13 = _lp_stringByTrimmingWhitespace;
     }
 
     else
@@ -637,11 +637,11 @@ LABEL_9:
   return v13;
 }
 
-- (id)quotedTextForStyle:(int64_t)a3
+- (id)quotedTextForStyle:(int64_t)style
 {
-  if (styleSupportsQuotedText(a3) && sizeClassAllowsMedia([(LPLinkMetadataPresentationTransformer *)self effectiveSizeClass]))
+  if (styleSupportsQuotedText(style) && sizeClassAllowsMedia([(LPLinkMetadataPresentationTransformer *)self effectiveSizeClass]))
   {
-    v5 = [(LPLinkMetadataPresentationTransformer *)self quotedTextForStyleIgnoringAllowsQuotedText:a3];
+    v5 = [(LPLinkMetadataPresentationTransformer *)self quotedTextForStyleIgnoringAllowsQuotedText:style];
   }
 
   else
@@ -654,19 +654,19 @@ LABEL_9:
 
 - (id)_lastResortIcon
 {
-  v3 = [(LPLinkMetadata *)self->_metadata specialization];
-  if (v3)
+  specialization = [(LPLinkMetadata *)self->_metadata specialization];
+  if (specialization)
   {
-    v4 = v3;
-    v5 = [(LPLinkMetadata *)self->_metadata specialization];
-    v6 = [v5 conformsToProtocol:&unk_1F24961A8];
+    v4 = specialization;
+    specialization2 = [(LPLinkMetadata *)self->_metadata specialization];
+    v6 = [specialization2 conformsToProtocol:&unk_1F24961A8];
 
     if (v6)
     {
-      v7 = [(LPLinkMetadata *)self->_metadata specialization];
-      v8 = [v7 fallbackIconForTransformer:self];
+      specialization3 = [(LPLinkMetadata *)self->_metadata specialization];
+      v8 = [specialization3 fallbackIconForTransformer:self];
 
-      v9 = v8;
+      sourceContextIcon2 = v8;
       if (v8)
       {
         goto LABEL_27;
@@ -674,17 +674,17 @@ LABEL_9:
     }
   }
 
-  v10 = [(LPLinkMetadataPresentationTransformer *)self originalURL];
-  v11 = [v10 _lp_isHTTPFamilyURL];
+  originalURL = [(LPLinkMetadataPresentationTransformer *)self originalURL];
+  _lp_isHTTPFamilyURL = [originalURL _lp_isHTTPFamilyURL];
 
-  if (v11)
+  if (_lp_isHTTPFamilyURL)
   {
 LABEL_5:
-    v12 = [(LPLinkMetadataPresentationTransformer *)self sourceContextIcon];
-    v13 = v12;
-    if (v12)
+    sourceContextIcon = [(LPLinkMetadataPresentationTransformer *)self sourceContextIcon];
+    v13 = sourceContextIcon;
+    if (sourceContextIcon)
     {
-      v14 = v12;
+      v14 = sourceContextIcon;
     }
 
     else
@@ -692,25 +692,25 @@ LABEL_5:
       v14 = +[LPResources safariIcon];
     }
 
-    v9 = v14;
+    sourceContextIcon2 = v14;
 
     goto LABEL_27;
   }
 
-  v15 = [(LPLinkMetadataPresentationTransformer *)self originalURL];
-  v16 = [v15 isFileURL];
+  originalURL2 = [(LPLinkMetadataPresentationTransformer *)self originalURL];
+  isFileURL = [originalURL2 isFileURL];
 
-  if (v16)
+  if (isFileURL)
   {
     v17 = +[LPResources fileIcon];
   }
 
   else
   {
-    v18 = [(LPLinkMetadataPresentationTransformer *)self originalURL];
-    v19 = [v18 _lp_isTelephoneURL];
+    originalURL3 = [(LPLinkMetadataPresentationTransformer *)self originalURL];
+    _lp_isTelephoneURL = [originalURL3 _lp_isTelephoneURL];
 
-    if (!v19)
+    if (!_lp_isTelephoneURL)
     {
       goto LABEL_12;
     }
@@ -718,19 +718,19 @@ LABEL_5:
     v17 = +[LPResources telephoneIcon];
   }
 
-  v9 = v17;
+  sourceContextIcon2 = v17;
   if (v17)
   {
     goto LABEL_16;
   }
 
 LABEL_12:
-  v20 = [(LPLinkMetadataPresentationTransformer *)self originalURL];
-  if (v20 || ([(LPLinkMetadata *)self->_metadata specialization], (v20 = objc_claimAutoreleasedReturnValue()) != 0))
+  originalURL4 = [(LPLinkMetadataPresentationTransformer *)self originalURL];
+  if (originalURL4 || ([(LPLinkMetadata *)self->_metadata specialization], (originalURL4 = objc_claimAutoreleasedReturnValue()) != 0))
   {
 
 LABEL_15:
-    v9 = [(LPLinkMetadataPresentationTransformer *)self sourceContextIcon];
+    sourceContextIcon2 = [(LPLinkMetadataPresentationTransformer *)self sourceContextIcon];
     goto LABEL_16;
   }
 
@@ -739,20 +739,20 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  v9 = +[LPResources textIcon];
-  if (!v9)
+  sourceContextIcon2 = +[LPResources textIcon];
+  if (!sourceContextIcon2)
   {
     goto LABEL_15;
   }
 
 LABEL_16:
-  v21 = [(LPLinkMetadataPresentationTransformer *)self effectiveSizeClass];
-  if (v9)
+  effectiveSizeClass = [(LPLinkMetadataPresentationTransformer *)self effectiveSizeClass];
+  if (sourceContextIcon2)
   {
     goto LABEL_27;
   }
 
-  if (!sizeClassIsCardHeading(v21))
+  if (!sizeClassIsCardHeading(effectiveSizeClass))
   {
     goto LABEL_5;
   }
@@ -770,16 +770,16 @@ LABEL_16:
 
   if (v23 && ([MEMORY[0x1E696AAE8] mainBundle], v25 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v25, "bundleIdentifier"), v26 = objc_claimAutoreleasedReturnValue(), v27 = objc_msgSend(v26, "_lp_isEqualIgnoringCase:", v23), v26, v25, !v27))
   {
-    v28 = [objc_alloc(MEMORY[0x1E69A8A00]) initWithBundleIdentifier:v23];
+    applicationIcon = [objc_alloc(MEMORY[0x1E69A8A00]) initWithBundleIdentifier:v23];
   }
 
   else
   {
-    v28 = [MEMORY[0x1E69A8A00] applicationIcon];
+    applicationIcon = [MEMORY[0x1E69A8A00] applicationIcon];
   }
 
-  v30 = v28;
-  if (v28)
+  v30 = applicationIcon;
+  if (applicationIcon)
   {
     v31 = objc_alloc(MEMORY[0x1E69A8A30]);
     +[LPTheme largestIconSizeInPoints];
@@ -788,12 +788,12 @@ LABEL_16:
     v35 = [v31 initWithSize:v33 scale:{v34, scaleFactor}];
     [v35 setShouldApplyMask:0];
     v36 = [v30 prepareImageForDescriptor:v35];
-    v37 = [v36 CGImage];
-    if (v37)
+    cGImage = [v36 CGImage];
+    if (cGImage)
     {
       v38 = objc_alloc_init(LPImageProperties);
       [(LPImageProperties *)v38 setType:1];
-      v39 = [[LPImage alloc] _initWithCGImage:v37 properties:v38];
+      v39 = [[LPImage alloc] _initWithCGImage:cGImage properties:v38];
       v40 = iconForApplication_applicationIcon;
       iconForApplication_applicationIcon = v39;
 
@@ -812,7 +812,7 @@ LABEL_37:
 
 LABEL_39:
 
-  v9 = v30;
+  sourceContextIcon2 = v30;
   if (!v30)
   {
     goto LABEL_5;
@@ -820,31 +820,31 @@ LABEL_39:
 
 LABEL_27:
 
-  return v9;
+  return sourceContextIcon2;
 }
 
-- (id)imageForStyle:(int64_t)a3 imageMetadata:(id)a4 icon:(id *)a5 alternateImages:(id *)a6
+- (id)imageForStyle:(int64_t)style imageMetadata:(id)metadata icon:(id *)icon alternateImages:(id *)images
 {
   v51[1] = *MEMORY[0x1E69E9840];
-  v48 = a4;
-  v44 = [(LPLinkMetadataPresentationTransformer *)self isComplete];
-  v10 = [(LPLinkMetadataPresentationTransformer *)self effectiveSizeClass];
-  v47 = sizeClassAllowsIconWithPlaceholderImage(v10);
-  v43 = sizeClassRequiresLargeMedia(v10);
-  if (styleSupportsIcon(a3))
+  metadataCopy = metadata;
+  isComplete = [(LPLinkMetadataPresentationTransformer *)self isComplete];
+  effectiveSizeClass = [(LPLinkMetadataPresentationTransformer *)self effectiveSizeClass];
+  v47 = sizeClassAllowsIconWithPlaceholderImage(effectiveSizeClass);
+  v43 = sizeClassRequiresLargeMedia(effectiveSizeClass);
+  if (styleSupportsIcon(style))
   {
     v11 = 1;
   }
 
   else
   {
-    v11 = sizeClassPrefersIcon(v10);
+    v11 = sizeClassPrefersIcon(effectiveSizeClass);
   }
 
-  v46 = a5;
-  if (styleSupportsImage(a3))
+  iconCopy = icon;
+  if (styleSupportsImage(style))
   {
-    v12 = sizeClassPrefersIcon(v10) ^ 1;
+    v12 = sizeClassPrefersIcon(effectiveSizeClass) ^ 1;
   }
 
   else
@@ -856,14 +856,14 @@ LABEL_27:
   v49[1] = 3221225472;
   v49[2] = __90__LPLinkMetadataPresentationTransformer_imageForStyle_imageMetadata_icon_alternateImages___block_invoke;
   v49[3] = &unk_1E7A372D0;
-  v49[5] = a3;
-  v49[6] = v10;
+  v49[5] = style;
+  v49[6] = effectiveSizeClass;
   v49[4] = self;
   v45 = __90__LPLinkMetadataPresentationTransformer_imageForStyle_imageMetadata_icon_alternateImages___block_invoke(v49);
-  v13 = [(LPLinkMetadataPresentationTransformer *)self quotedTextForStyle:a3];
+  v13 = [(LPLinkMetadataPresentationTransformer *)self quotedTextForStyle:style];
   if (v13)
   {
-    v14 = v10 == 5;
+    v14 = effectiveSizeClass == 5;
   }
 
   else
@@ -873,46 +873,46 @@ LABEL_27:
 
   v15 = v14;
 
-  v16 = [(LPLinkMetadataPresentationTransformer *)self _hasNonMicroblogQuotedTextForStyle:a3];
+  v16 = [(LPLinkMetadataPresentationTransformer *)self _hasNonMicroblogQuotedTextForStyle:style];
   v17 = (v15 ^ 1) & v12;
   v18 = v16 | v11 | v15;
   if (((v18 | v17) & 1) == 0)
   {
-    v36 = 0;
+    _lastResortIcon = 0;
     goto LABEL_24;
   }
 
-  v19 = [(LPLinkMetadata *)self->_metadata icon];
-  v20 = imageOnlyIfViable(v19);
+  icon = [(LPLinkMetadata *)self->_metadata icon];
+  v20 = imageOnlyIfViable(icon);
 
-  v21 = [(LPLinkMetadata *)self->_metadata iconMetadata];
-  v22 = [v21 URL];
+  iconMetadata = [(LPLinkMetadata *)self->_metadata iconMetadata];
+  v22 = [iconMetadata URL];
 
   if (v22)
   {
     v23 = [LPImageRemoteURLRepresentation alloc];
-    v24 = [(LPLinkMetadata *)self->_metadata iconMetadata];
-    v25 = [v24 URL];
+    iconMetadata2 = [(LPLinkMetadata *)self->_metadata iconMetadata];
+    v25 = [iconMetadata2 URL];
     v26 = [(LPImageRemoteURLRepresentation *)v23 initWithScale:1 URL:v25];
     v51[0] = v26;
     v27 = [MEMORY[0x1E695DEC8] arrayWithObjects:v51 count:1];
     [v20 set_remoteURLsForEmailCompatibleOutput:v27];
   }
 
-  v28 = [(LPLinkMetadata *)self->_metadata image];
-  v29 = imageOnlyIfViable(v28);
+  image = [(LPLinkMetadata *)self->_metadata image];
+  v29 = imageOnlyIfViable(image);
 
-  if (a6)
+  if (images)
   {
-    *a6 = [(LPLinkMetadata *)self->_metadata alternateImages];
+    *images = [(LPLinkMetadata *)self->_metadata alternateImages];
   }
 
-  v30 = [v48 URL];
+  v30 = [metadataCopy URL];
 
   if (v30)
   {
     v31 = [LPImageRemoteURLRepresentation alloc];
-    v32 = [v48 URL];
+    v32 = [metadataCopy URL];
     v33 = [(LPImageRemoteURLRepresentation *)v31 initWithScale:1 URL:v32];
     v50 = v33;
     v34 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v50 count:1];
@@ -922,7 +922,7 @@ LABEL_27:
   if (v29 != 0 && (v45 || v16))
   {
 
-    if (!a6)
+    if (!images)
     {
       v35 = 0;
 LABEL_35:
@@ -932,13 +932,13 @@ LABEL_35:
 
 LABEL_34:
     v35 = 0;
-    *a6 = 0;
+    *images = 0;
     goto LABEL_35;
   }
 
   if (v29)
   {
-    v37 = [v29 _isLowResolutionAsImage];
+    _isLowResolutionAsImage = [v29 _isLowResolutionAsImage];
     if (v20)
     {
       v38 = 0;
@@ -946,10 +946,10 @@ LABEL_34:
 
     else
     {
-      v38 = v37;
+      v38 = _isLowResolutionAsImage;
     }
 
-    v39 = v38 & v44;
+    v39 = v38 & isComplete;
     if (v39)
     {
       v20 = v29;
@@ -961,7 +961,7 @@ LABEL_34:
       v35 = v29;
     }
 
-    if (a6 && (v39 & 1) != 0)
+    if (images && (v39 & 1) != 0)
     {
       goto LABEL_34;
     }
@@ -975,24 +975,24 @@ LABEL_34:
 LABEL_37:
   if (v17 & 1 | ((v18 & 1) == 0))
   {
-    v36 = v20;
+    _lastResortIcon = v20;
   }
 
   else
   {
-    if (v20 == 0 && v44 || v35 && [v20 _isLowResolutionAsIconWithScaleFactor:self->_scaleFactor])
+    if (v20 == 0 && isComplete || v35 && [v20 _isLowResolutionAsIconWithScaleFactor:self->_scaleFactor])
     {
-      v36 = v35;
+      _lastResortIcon = v35;
 
-      if (a6)
+      if (images)
       {
-        *a6 = 0;
+        *images = 0;
       }
     }
 
     else
     {
-      v36 = v20;
+      _lastResortIcon = v20;
     }
 
     v35 = 0;
@@ -1003,7 +1003,7 @@ LABEL_37:
     if ((v47 & (v43 && v35 == 0)) == 0)
     {
 
-      v36 = 0;
+      _lastResortIcon = 0;
       goto LABEL_49;
     }
 
@@ -1012,15 +1012,15 @@ LABEL_24:
   }
 
 LABEL_49:
-  if (!(v35 | v36))
+  if (!(v35 | _lastResortIcon))
   {
-    v36 = [(LPLinkMetadataPresentationTransformer *)self _lastResortIcon];
+    _lastResortIcon = [(LPLinkMetadataPresentationTransformer *)self _lastResortIcon];
   }
 
   if ((v18 | v47))
   {
-    v40 = v36;
-    *v46 = v36;
+    v40 = _lastResortIcon;
+    *iconCopy = _lastResortIcon;
   }
 
   if (v17)
@@ -1070,45 +1070,45 @@ BOOL __90__LPLinkMetadataPresentationTransformer_imageForStyle_imageMetadata_ico
   return result;
 }
 
-- (id)videoForStyle:(int64_t)a3
+- (id)videoForStyle:(int64_t)style
 {
-  if (styleSupportsVideo(a3) && sizeClassAllowsMedia([(LPLinkMetadataPresentationTransformer *)self effectiveSizeClass]))
+  if (styleSupportsVideo(style) && sizeClassAllowsMedia([(LPLinkMetadataPresentationTransformer *)self effectiveSizeClass]))
   {
-    v4 = [(LPLinkMetadata *)self->_metadata video];
+    video = [(LPLinkMetadata *)self->_metadata video];
   }
 
   else
   {
-    v4 = 0;
+    video = 0;
   }
 
-  return v4;
+  return video;
 }
 
 - (id)arAsset
 {
   if (canDisplayARAssets() && sizeClassAllowsMedia([(LPLinkMetadataPresentationTransformer *)self effectiveSizeClass]))
   {
-    v3 = [(LPLinkMetadata *)self->_metadata arAsset];
+    arAsset = [(LPLinkMetadata *)self->_metadata arAsset];
   }
 
   else
   {
-    v3 = 0;
+    arAsset = 0;
   }
 
-  return v3;
+  return arAsset;
 }
 
-- (id)backgroundColorForStyle:(int64_t)a3
+- (id)backgroundColorForStyle:(int64_t)style
 {
-  if (a3 != 3)
+  if (style != 3)
   {
     goto LABEL_6;
   }
 
-  v4 = [(LPLinkMetadataPresentationTransformer *)self canonicalURL];
-  v5 = [LPPresentationSpecializations isTweetURL:v4];
+  canonicalURL = [(LPLinkMetadataPresentationTransformer *)self canonicalURL];
+  v5 = [LPPresentationSpecializations isTweetURL:canonicalURL];
 
   if (v5)
   {
@@ -1116,8 +1116,8 @@ BOOL __90__LPLinkMetadataPresentationTransformer_imageForStyle_imageMetadata_ico
     goto LABEL_7;
   }
 
-  v7 = [(LPLinkMetadataPresentationTransformer *)self canonicalURL];
-  v8 = [LPPresentationSpecializations isSinaWeiboURL:v7];
+  canonicalURL2 = [(LPLinkMetadataPresentationTransformer *)self canonicalURL];
+  v8 = [LPPresentationSpecializations isSinaWeiboURL:canonicalURL2];
 
   if (v8)
   {
@@ -1135,11 +1135,11 @@ LABEL_7:
   return v6;
 }
 
-- (id)commonPresentationPropertiesForStyle:(int64_t)a3
+- (id)commonPresentationPropertiesForStyle:(int64_t)style
 {
   v5 = objc_alloc_init(LPWebLinkPresentationProperties);
   [(LPWebLinkPresentationProperties *)v5 setPreliminary:!self->_complete];
-  [(LPWebLinkPresentationProperties *)v5 setStyle:a3];
+  [(LPWebLinkPresentationProperties *)v5 setStyle:style];
   v6 = [(LPLinkMetadataPresentationTransformer *)self quotedTextForStyle:[(LPWebLinkPresentationProperties *)v5 style]];
   [(LPWebLinkPresentationProperties *)v5 setQuotedText:v6];
 
@@ -1148,64 +1148,64 @@ LABEL_7:
 
 - (id)unspecializedPresentationProperties
 {
-  v3 = [(LPLinkMetadataPresentationTransformer *)self rendererStyle];
+  rendererStyle = [(LPLinkMetadataPresentationTransformer *)self rendererStyle];
 
-  return [(LPLinkMetadataPresentationTransformer *)self unspecializedPresentationPropertiesForStyle:v3];
+  return [(LPLinkMetadataPresentationTransformer *)self unspecializedPresentationPropertiesForStyle:rendererStyle];
 }
 
-- (id)unspecializedPresentationPropertiesForStyle:(int64_t)a3
+- (id)unspecializedPresentationPropertiesForStyle:(int64_t)style
 {
   v5 = [(LPLinkMetadataPresentationTransformer *)self commonPresentationPropertiesForStyle:?];
-  v6 = [(LPLinkMetadataPresentationTransformer *)self mainCaptionBarForStyle:a3];
+  v6 = [(LPLinkMetadataPresentationTransformer *)self mainCaptionBarForStyle:style];
   [v5 setCaptionBar:v6];
 
-  v7 = [(LPLinkMetadataPresentationTransformer *)self backgroundColorForStyle:a3];
+  v7 = [(LPLinkMetadataPresentationTransformer *)self backgroundColorForStyle:style];
   [v5 setBackgroundColor:v7];
 
-  v8 = [(LPLinkMetadata *)self->_metadata imageMetadata];
+  imageMetadata = [(LPLinkMetadata *)self->_metadata imageMetadata];
   v37 = 0;
   v38 = 0;
-  v9 = [(LPLinkMetadataPresentationTransformer *)self imageForStyle:a3 imageMetadata:v8 icon:&v38 alternateImages:&v37];
+  v9 = [(LPLinkMetadataPresentationTransformer *)self imageForStyle:style imageMetadata:imageMetadata icon:&v38 alternateImages:&v37];
   v10 = v38;
   v11 = v37;
   [v5 setImage:v9];
 
-  v12 = [v5 image];
+  image = [v5 image];
 
-  if (v12)
+  if (image)
   {
     [v5 setAlternateImages:v11];
 
     v11 = 0;
   }
 
-  v13 = [(LPLinkMetadataPresentationTransformer *)self videoForStyle:a3];
+  v13 = [(LPLinkMetadataPresentationTransformer *)self videoForStyle:style];
   [v5 setVideo:v13];
 
-  v14 = [(LPLinkMetadataPresentationTransformer *)self audioForStyle:a3];
+  v14 = [(LPLinkMetadataPresentationTransformer *)self audioForStyle:style];
   [v5 setAudio:v14];
 
-  v15 = [(LPLinkMetadataPresentationTransformer *)self arAsset];
-  [v5 setArAsset:v15];
+  arAsset = [(LPLinkMetadataPresentationTransformer *)self arAsset];
+  [v5 setArAsset:arAsset];
 
-  v16 = [v5 audio];
+  audio = [v5 audio];
 
-  if (v16)
+  if (audio)
   {
-    v17 = [v5 audio];
-    v18 = [LPInlineMediaPlaybackInformation audioFilePlaybackInformationWithAudio:v17];
+    audio2 = [v5 audio];
+    v18 = [LPInlineMediaPlaybackInformation audioFilePlaybackInformationWithAudio:audio2];
 
     [v5 setInlinePlaybackInformation:v18];
   }
 
-  if ((styleSupportsStackedIcons(a3) & 1) == 0)
+  if ((styleSupportsStackedIcons(style) & 1) == 0)
   {
 
     v11 = 0;
   }
 
-  v19 = [v5 image];
-  if (v19 || ([v5 video], (v19 = objc_claimAutoreleasedReturnValue()) != 0) || (objc_msgSend(v5, "quotedText"), (v19 = objc_claimAutoreleasedReturnValue()) != 0) || (objc_msgSend(v5, "arAsset"), (v19 = objc_claimAutoreleasedReturnValue()) != 0))
+  image2 = [v5 image];
+  if (image2 || ([v5 video], (image2 = objc_claimAutoreleasedReturnValue()) != 0) || (objc_msgSend(v5, "quotedText"), (image2 = objc_claimAutoreleasedReturnValue()) != 0) || (objc_msgSend(v5, "arAsset"), (image2 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v20 = 0;
   }
@@ -1223,8 +1223,8 @@ LABEL_7:
       goto LABEL_13;
     }
 
-    v19 = +[LPResources safariIcon];
-    [v5 setImage:v19];
+    image2 = +[LPResources safariIcon];
+    [v5 setImage:image2];
     v20 = 1;
   }
 
@@ -1236,56 +1236,56 @@ LABEL_7:
 LABEL_13:
   if ((v20 & [v10 _isFallbackIcon] & 1) == 0)
   {
-    if ([(LPLinkMetadataPresentationTransformer *)self _prefersLeadingIconWithStyle:a3])
+    if ([(LPLinkMetadataPresentationTransformer *)self _prefersLeadingIconWithStyle:style])
     {
-      v21 = [v5 captionBar];
-      [v21 setLeadingIcon:v10];
+      captionBar = [v5 captionBar];
+      [captionBar setLeadingIcon:v10];
 
-      v22 = [v5 captionBar];
-      [v22 setAdditionalLeadingIcons:v11];
+      captionBar2 = [v5 captionBar];
+      [captionBar2 setAdditionalLeadingIcons:v11];
     }
 
     else
     {
-      v23 = [v5 captionBar];
-      [v23 setTrailingIcon:v10];
+      captionBar3 = [v5 captionBar];
+      [captionBar3 setTrailingIcon:v10];
 
-      v22 = [v5 captionBar];
-      [v22 setAdditionalTrailingIcons:v11];
+      captionBar2 = [v5 captionBar];
+      [captionBar2 setAdditionalTrailingIcons:v11];
     }
   }
 
 LABEL_18:
-  if (a3 == 41)
+  if (style == 41)
   {
-    v24 = [(LPLinkMetadata *)self->_metadata associatedApplication];
-    v25 = [v24 icon];
-    v26 = [v5 captionBar];
-    [v26 setLeadingIcon:v25];
+    associatedApplication = [(LPLinkMetadata *)self->_metadata associatedApplication];
+    icon = [associatedApplication icon];
+    captionBar4 = [v5 captionBar];
+    [captionBar4 setLeadingIcon:icon];
 
-    v27 = [v5 captionBar];
-    [v27 setShouldHighlightIndependently:1];
+    captionBar5 = [v5 captionBar];
+    [captionBar5 setShouldHighlightIndependently:1];
 
     if (self->_allowsTapping)
     {
-      v28 = [(LPLinkMetadata *)self->_metadata associatedApplication];
-      v29 = [v28 action];
+      associatedApplication2 = [(LPLinkMetadata *)self->_metadata associatedApplication];
+      action = [associatedApplication2 action];
 
-      if (v29)
+      if (action)
       {
-        v30 = [(LPLinkMetadata *)self->_metadata associatedApplication];
-        v31 = [v30 action];
-        v32 = [v5 captionBar];
-        [v32 setButtonCaption:v31];
+        associatedApplication3 = [(LPLinkMetadata *)self->_metadata associatedApplication];
+        action2 = [associatedApplication3 action];
+        captionBar6 = [v5 captionBar];
+        [captionBar6 setButtonCaption:action2];
       }
     }
 
-    v33 = [(LPLinkMetadataPresentationTransformer *)self domainNameForIndicator];
-    [v5 setDomainNameForIndicator:v33];
+    domainNameForIndicator = [(LPLinkMetadataPresentationTransformer *)self domainNameForIndicator];
+    [v5 setDomainNameForIndicator:domainNameForIndicator];
   }
 
   v34 = objc_alloc_init(LPIndeterminateProgressSpinnerPresentationProperties);
-  v35 = [(LPLinkMetadataPresentationTransformer *)self subtitleForStyle:a3];
+  v35 = [(LPLinkMetadataPresentationTransformer *)self subtitleForStyle:style];
   [(LPIndeterminateProgressSpinnerPresentationProperties *)v34 setText:v35];
 
   [v5 setProgressSpinner:v34];
@@ -1295,26 +1295,26 @@ LABEL_18:
 
 - (id)presentationProperties
 {
-  v4 = [(LPLinkMetadataPresentationTransformer *)self effectiveSizeClass];
-  v5 = [(LPLinkMetadata *)self->_metadata specialization];
-  if (v5)
+  effectiveSizeClass = [(LPLinkMetadataPresentationTransformer *)self effectiveSizeClass];
+  specialization = [(LPLinkMetadata *)self->_metadata specialization];
+  if (specialization)
   {
-    v6 = [(LPLinkMetadata *)self->_metadata specialization];
-    v2 = [v6 conformsToProtocol:&unk_1F2495708];
+    specialization2 = [(LPLinkMetadata *)self->_metadata specialization];
+    trailing2 = [specialization2 conformsToProtocol:&unk_1F2495708];
 
-    if (v2)
+    if (trailing2)
     {
-      v7 = [(LPLinkMetadata *)self->_metadata specialization];
-      v8 = [(LPLinkMetadataPresentationTransformer *)self originalURL];
-      if (v8 && ((-[LPLinkMetadataPresentationTransformer originalURL](self, "originalURL"), v2 = objc_claimAutoreleasedReturnValue(), v9 = [v7 canGeneratePresentationPropertiesForURL:v2], v4 == 2) ? (v10 = 1) : (v10 = v9), v2, v8, v10 != 1))
+      specialization3 = [(LPLinkMetadata *)self->_metadata specialization];
+      originalURL = [(LPLinkMetadataPresentationTransformer *)self originalURL];
+      if (originalURL && ((-[LPLinkMetadataPresentationTransformer originalURL](self, "originalURL"), trailing2 = objc_claimAutoreleasedReturnValue(), v9 = [specialization3 canGeneratePresentationPropertiesForURL:trailing2], effectiveSizeClass == 2) ? (v10 = 1) : (v10 = v9), trailing2, originalURL, v10 != 1))
       {
       }
 
       else
       {
-        v11 = [v7 presentationPropertiesForTransformer:self];
+        unspecializedPresentationProperties = [specialization3 presentationPropertiesForTransformer:self];
 
-        if (v11)
+        if (unspecializedPresentationProperties)
         {
           goto LABEL_12;
         }
@@ -1322,53 +1322,53 @@ LABEL_18:
     }
   }
 
-  v11 = [(LPLinkMetadataPresentationTransformer *)self unspecializedPresentationProperties];
+  unspecializedPresentationProperties = [(LPLinkMetadataPresentationTransformer *)self unspecializedPresentationProperties];
 LABEL_12:
   if ((sizeClassAllowsMedia([(LPLinkMetadataPresentationTransformer *)self effectiveSizeClass]) & 1) == 0)
   {
-    [v11 setImage:0];
-    [v11 setVideo:0];
+    [unspecializedPresentationProperties setImage:0];
+    [unspecializedPresentationProperties setVideo:0];
   }
 
   if (!self->_allowsPlayback)
   {
-    [v11 setInlinePlaybackInformation:0];
-    [v11 setVideo:0];
-    [v11 setAudio:0];
+    [unspecializedPresentationProperties setInlinePlaybackInformation:0];
+    [unspecializedPresentationProperties setVideo:0];
+    [unspecializedPresentationProperties setAudio:0];
   }
 
   if ((sizeClassAllowsMedia([(LPLinkMetadataPresentationTransformer *)self effectiveSizeClass]) & 1) == 0)
   {
-    [v11 setQuotedText:0];
+    [unspecializedPresentationProperties setQuotedText:0];
   }
 
-  if (!sizeClassAllowsInlinePlayback(-[LPLinkMetadataPresentationTransformer effectiveSizeClass](self, "effectiveSizeClass")) || ([v11 inlinePlaybackInformation], v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v12, "type"), v13 = canPlayInlineMediaType(), v12, (v13 & 1) == 0))
+  if (!sizeClassAllowsInlinePlayback(-[LPLinkMetadataPresentationTransformer effectiveSizeClass](self, "effectiveSizeClass")) || ([unspecializedPresentationProperties inlinePlaybackInformation], v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v12, "type"), v13 = canPlayInlineMediaType(), v12, (v13 & 1) == 0))
   {
-    [v11 setInlinePlaybackInformation:0];
+    [unspecializedPresentationProperties setInlinePlaybackInformation:0];
   }
 
-  v14 = -[LPLinkMetadataPresentationTransformer _rowConfigurationForStyle:](self, "_rowConfigurationForStyle:", [v11 style]);
+  v14 = -[LPLinkMetadataPresentationTransformer _rowConfigurationForStyle:](self, "_rowConfigurationForStyle:", [unspecializedPresentationProperties style]);
   if (v14 == 1)
   {
-    v32 = [v11 captionBar];
-    v33 = [v32 aboveTop];
-    v34 = [v33 leading];
-    [v34 setText:0];
+    captionBar = [unspecializedPresentationProperties captionBar];
+    aboveTop = [captionBar aboveTop];
+    leading = [aboveTop leading];
+    [leading setText:0];
 
-    v35 = [v11 captionBar];
-    v36 = [v35 aboveTop];
-    v37 = [v36 trailing];
-    [v37 setText:0];
+    captionBar2 = [unspecializedPresentationProperties captionBar];
+    aboveTop2 = [captionBar2 aboveTop];
+    trailing = [aboveTop2 trailing];
+    [trailing setText:0];
 
-    v38 = [v11 captionBar];
-    v39 = [v38 belowBottom];
-    v40 = [v39 leading];
-    [v40 setText:0];
+    captionBar3 = [unspecializedPresentationProperties captionBar];
+    belowBottom = [captionBar3 belowBottom];
+    leading2 = [belowBottom leading];
+    [leading2 setText:0];
 
-    v30 = [v11 captionBar];
-    v31 = [v30 belowBottom];
-    v2 = [v31 trailing];
-    [v2 setText:0];
+    captionBar4 = [unspecializedPresentationProperties captionBar];
+    belowBottom2 = [captionBar4 belowBottom];
+    trailing2 = [belowBottom2 trailing];
+    [trailing2 setText:0];
   }
 
   else
@@ -1378,137 +1378,137 @@ LABEL_12:
       goto LABEL_26;
     }
 
-    v15 = [v11 captionBar];
-    v16 = [v15 aboveTop];
-    v17 = [v16 leading];
-    [v17 setText:0];
+    captionBar5 = [unspecializedPresentationProperties captionBar];
+    aboveTop3 = [captionBar5 aboveTop];
+    leading3 = [aboveTop3 leading];
+    [leading3 setText:0];
 
-    v18 = [v11 captionBar];
-    v19 = [v18 aboveTop];
-    v20 = [v19 trailing];
-    [v20 setText:0];
+    captionBar6 = [unspecializedPresentationProperties captionBar];
+    aboveTop4 = [captionBar6 aboveTop];
+    trailing3 = [aboveTop4 trailing];
+    [trailing3 setText:0];
 
-    v21 = [v11 captionBar];
-    v22 = [v21 bottom];
-    v23 = [v22 leading];
-    [v23 setText:0];
+    captionBar7 = [unspecializedPresentationProperties captionBar];
+    bottom = [captionBar7 bottom];
+    leading4 = [bottom leading];
+    [leading4 setText:0];
 
-    v24 = [v11 captionBar];
-    v25 = [v24 bottom];
-    v26 = [v25 trailing];
-    [v26 setText:0];
+    captionBar8 = [unspecializedPresentationProperties captionBar];
+    bottom2 = [captionBar8 bottom];
+    trailing4 = [bottom2 trailing];
+    [trailing4 setText:0];
 
-    v27 = [v11 captionBar];
-    v28 = [v27 belowBottom];
-    v29 = [v28 leading];
-    [v29 setText:0];
+    captionBar9 = [unspecializedPresentationProperties captionBar];
+    belowBottom3 = [captionBar9 belowBottom];
+    leading5 = [belowBottom3 leading];
+    [leading5 setText:0];
 
-    v30 = [v11 captionBar];
-    v31 = [v30 belowBottom];
-    v2 = [v31 trailing];
-    [v2 setText:0];
+    captionBar4 = [unspecializedPresentationProperties captionBar];
+    belowBottom2 = [captionBar4 belowBottom];
+    trailing2 = [belowBottom2 trailing];
+    [trailing2 setText:0];
   }
 
 LABEL_26:
   if ([(LPLinkRendererSizeClassParameters *)self->_sizeClassParameters neverShowText])
   {
-    v41 = [v11 captionBar];
-    v42 = [v41 top];
-    v43 = [v42 leading];
-    [v43 setText:0];
+    captionBar10 = [unspecializedPresentationProperties captionBar];
+    v42 = [captionBar10 top];
+    leading6 = [v42 leading];
+    [leading6 setText:0];
 
-    v44 = [v11 captionBar];
-    v45 = [v44 top];
-    v46 = [v45 trailing];
-    [v46 setText:0];
+    captionBar11 = [unspecializedPresentationProperties captionBar];
+    v45 = [captionBar11 top];
+    trailing5 = [v45 trailing];
+    [trailing5 setText:0];
 
-    v47 = [v11 captionBar];
-    v48 = [v47 aboveTop];
-    v49 = [v48 leading];
-    [v49 setText:0];
+    captionBar12 = [unspecializedPresentationProperties captionBar];
+    aboveTop5 = [captionBar12 aboveTop];
+    leading7 = [aboveTop5 leading];
+    [leading7 setText:0];
 
-    v50 = [v11 captionBar];
-    v51 = [v50 aboveTop];
-    v52 = [v51 trailing];
-    [v52 setText:0];
+    captionBar13 = [unspecializedPresentationProperties captionBar];
+    aboveTop6 = [captionBar13 aboveTop];
+    trailing6 = [aboveTop6 trailing];
+    [trailing6 setText:0];
 
-    v53 = [v11 captionBar];
-    v54 = [v53 bottom];
-    v55 = [v54 leading];
-    [v55 setText:0];
+    captionBar14 = [unspecializedPresentationProperties captionBar];
+    bottom3 = [captionBar14 bottom];
+    leading8 = [bottom3 leading];
+    [leading8 setText:0];
 
-    v56 = [v11 captionBar];
-    v57 = [v56 bottom];
-    v58 = [v57 trailing];
-    [v58 setText:0];
+    captionBar15 = [unspecializedPresentationProperties captionBar];
+    bottom4 = [captionBar15 bottom];
+    trailing7 = [bottom4 trailing];
+    [trailing7 setText:0];
 
-    v59 = [v11 captionBar];
-    v60 = [v59 belowBottom];
-    v61 = [v60 leading];
-    [v61 setText:0];
+    captionBar16 = [unspecializedPresentationProperties captionBar];
+    belowBottom4 = [captionBar16 belowBottom];
+    leading9 = [belowBottom4 leading];
+    [leading9 setText:0];
 
-    v62 = [v11 captionBar];
-    v63 = [v62 belowBottom];
-    v2 = [v63 trailing];
-    [v2 setText:0];
+    captionBar17 = [unspecializedPresentationProperties captionBar];
+    belowBottom5 = [captionBar17 belowBottom];
+    trailing2 = [belowBottom5 trailing];
+    [trailing2 setText:0];
 
-    [v11 setQuotedText:0];
+    [unspecializedPresentationProperties setQuotedText:0];
   }
 
   if ([(LPLinkMetadataPresentationTransformer *)self effectiveSizeClass]== 2)
   {
-    v145 = [v11 captionBar];
-    v144 = [v145 aboveTop];
-    v64 = [v144 hasAnyContent];
-    v143 = [v11 captionBar];
-    v65 = [v143 top];
-    v66 = [v65 hasAnyContent];
-    v67 = [v11 captionBar];
-    v68 = [v67 bottom];
-    v69 = [v68 hasAnyContent];
-    v70 = [v11 captionBar];
-    v2 = [v70 belowBottom];
-    v71 = v66 + v64 + v69 + [v2 hasAnyContent];
+    captionBar18 = [unspecializedPresentationProperties captionBar];
+    aboveTop7 = [captionBar18 aboveTop];
+    hasAnyContent = [aboveTop7 hasAnyContent];
+    captionBar19 = [unspecializedPresentationProperties captionBar];
+    v65 = [captionBar19 top];
+    hasAnyContent2 = [v65 hasAnyContent];
+    captionBar20 = [unspecializedPresentationProperties captionBar];
+    bottom5 = [captionBar20 bottom];
+    hasAnyContent3 = [bottom5 hasAnyContent];
+    captionBar21 = [unspecializedPresentationProperties captionBar];
+    trailing2 = [captionBar21 belowBottom];
+    v71 = hasAnyContent2 + hasAnyContent + hasAnyContent3 + [trailing2 hasAnyContent];
 
     if (v71 == 1)
     {
-      v72 = [v11 captionBar];
-      [v72 applyToAllCaptions:&__block_literal_global_22];
+      captionBar22 = [unspecializedPresentationProperties captionBar];
+      [captionBar22 applyToAllCaptions:&__block_literal_global_22];
     }
   }
 
-  v73 = [v11 inlinePlaybackInformation];
-  if (v73)
+  inlinePlaybackInformation = [unspecializedPresentationProperties inlinePlaybackInformation];
+  if (inlinePlaybackInformation)
   {
     allowsPlayback = self->_allowsPlayback;
 
     if (allowsPlayback)
     {
-      v75 = [v11 captionBar];
-      [v75 setTrailingIcon:0];
+      captionBar23 = [unspecializedPresentationProperties captionBar];
+      [captionBar23 setTrailingIcon:0];
 
-      v76 = [v11 captionBar];
-      [v76 setAdditionalTrailingIcons:0];
+      captionBar24 = [unspecializedPresentationProperties captionBar];
+      [captionBar24 setAdditionalTrailingIcons:0];
     }
   }
 
-  v77 = [v11 captionBar];
-  v78 = [v77 button];
-  if (v78)
+  captionBar25 = [unspecializedPresentationProperties captionBar];
+  button = [captionBar25 button];
+  if (button)
   {
-    v2 = [v11 captionBar];
-    v79 = [v2 button];
-    v80 = [v79 type];
+    trailing2 = [unspecializedPresentationProperties captionBar];
+    button2 = [trailing2 button];
+    type = [button2 type];
 
-    if (v80 == 1)
+    if (type == 1)
     {
-      v81 = [v11 captionBar];
-      [v81 setTrailingIcon:0];
+      captionBar26 = [unspecializedPresentationProperties captionBar];
+      [captionBar26 setTrailingIcon:0];
 
-      v82 = [v11 captionBar];
-      [v82 setAdditionalTrailingIcons:0];
+      captionBar27 = [unspecializedPresentationProperties captionBar];
+      [captionBar27 setAdditionalTrailingIcons:0];
 
-      [v11 setInlinePlaybackInformation:0];
+      [unspecializedPresentationProperties setInlinePlaybackInformation:0];
     }
   }
 
@@ -1518,19 +1518,19 @@ LABEL_26:
 
   if (sizeClassSupportsIconHoisting([(LPLinkMetadataPresentationTransformer *)self effectiveSizeClass]))
   {
-    if (![(LPLinkMetadataPresentationTransformer *)self hasMediaWithProperties:v11])
+    if (![(LPLinkMetadataPresentationTransformer *)self hasMediaWithProperties:unspecializedPresentationProperties])
     {
-      v83 = [v11 captionBar];
-      v84 = [v83 leadingIcon];
-      v85 = v84;
-      if (!v84)
+      captionBar28 = [unspecializedPresentationProperties captionBar];
+      leadingIcon = [captionBar28 leadingIcon];
+      trailingIcon = leadingIcon;
+      if (!leadingIcon)
       {
-        v2 = [v11 captionBar];
-        v85 = [v2 trailingIcon];
+        trailing2 = [unspecializedPresentationProperties captionBar];
+        trailingIcon = [trailing2 trailingIcon];
       }
 
-      [v11 setImage:v85];
-      if (!v84)
+      [unspecializedPresentationProperties setImage:trailingIcon];
+      if (!leadingIcon)
       {
       }
 
@@ -1541,80 +1541,80 @@ LABEL_26:
       [(LPImagePresentationProperties *)v86 setFixedSize:v88, v89];
       [(LPImagePresentationProperties *)v86 setScalingMode:3];
       [(LPImagePresentationProperties *)v86 setFilter:3];
-      [v11 setImageProperties:v86];
+      [unspecializedPresentationProperties setImageProperties:v86];
     }
 
-    v90 = [v11 captionBar];
-    [v90 removeAllIcons];
+    captionBar29 = [unspecializedPresentationProperties captionBar];
+    [captionBar29 removeAllIcons];
   }
 
   if ([(LPLinkRendererSizeClassParameters *)self->_sizeClassParameters neverShowIcon])
   {
-    v91 = [v11 captionBar];
-    [v91 removeAllIcons];
+    captionBar30 = [unspecializedPresentationProperties captionBar];
+    [captionBar30 removeAllIcons];
 
-    v92 = [v11 mediaTopCaptionBar];
-    [v92 removeAllIcons];
+    mediaTopCaptionBar = [unspecializedPresentationProperties mediaTopCaptionBar];
+    [mediaTopCaptionBar removeAllIcons];
 
-    v93 = [v11 mediaBottomCaptionBar];
-    [v93 removeAllIcons];
+    mediaBottomCaptionBar = [unspecializedPresentationProperties mediaBottomCaptionBar];
+    [mediaBottomCaptionBar removeAllIcons];
   }
 
-  if (sizeClassRequiresLargeMedia([(LPLinkMetadataPresentationTransformer *)self effectiveSizeClass]) && ![(LPLinkMetadataPresentationTransformer *)self hasMediaWithProperties:v11])
+  if (sizeClassRequiresLargeMedia([(LPLinkMetadataPresentationTransformer *)self effectiveSizeClass]) && ![(LPLinkMetadataPresentationTransformer *)self hasMediaWithProperties:unspecializedPresentationProperties])
   {
-    v94 = [(LPLinkMetadataPresentationTransformer *)self _lastResortIcon];
-    [v11 setImage:v94];
+    _lastResortIcon = [(LPLinkMetadataPresentationTransformer *)self _lastResortIcon];
+    [unspecializedPresentationProperties setImage:_lastResortIcon];
   }
 
-  v95 = [(LPLinkMetadataPresentationTransformer *)self effectiveSizeClass];
-  [v11 style];
-  if (sizeClassRequiresLeadingIcon(v95))
+  effectiveSizeClass2 = [(LPLinkMetadataPresentationTransformer *)self effectiveSizeClass];
+  [unspecializedPresentationProperties style];
+  if (sizeClassRequiresLeadingIcon(effectiveSizeClass2))
   {
-    v96 = [v11 captionBar];
-    v97 = [v96 leadingIcon];
+    captionBar31 = [unspecializedPresentationProperties captionBar];
+    leadingIcon2 = [captionBar31 leadingIcon];
 
-    if (!v97)
+    if (!leadingIcon2)
     {
-      v98 = [(LPLinkMetadataPresentationTransformer *)self _lastResortIcon];
-      v99 = [v11 captionBar];
-      [v99 setLeadingIcon:v98];
+      _lastResortIcon2 = [(LPLinkMetadataPresentationTransformer *)self _lastResortIcon];
+      captionBar32 = [unspecializedPresentationProperties captionBar];
+      [captionBar32 setLeadingIcon:_lastResortIcon2];
     }
   }
 
-  if (sizeClassAllowsApplicationBadge(-[LPLinkMetadataPresentationTransformer effectiveSizeClass](self, "effectiveSizeClass")) || styleRequiresApplicationBadge([v11 style]))
+  if (sizeClassAllowsApplicationBadge(-[LPLinkMetadataPresentationTransformer effectiveSizeClass](self, "effectiveSizeClass")) || styleRequiresApplicationBadge([unspecializedPresentationProperties style]))
   {
-    v100 = [(LPLinkMetadata *)self->_metadata sourceApplication];
-    if (!v100)
+    sourceApplication = [(LPLinkMetadata *)self->_metadata sourceApplication];
+    if (!sourceApplication)
     {
-      v101 = [(LPLinkMetadata *)self->_metadata specialization];
-      if (v101 && (-[LPLinkMetadata specialization](self->_metadata, "specialization"), v102 = objc_claimAutoreleasedReturnValue(), v103 = [v102 conformsToProtocol:&unk_1F2495A60], v102, v101, v103))
+      specialization4 = [(LPLinkMetadata *)self->_metadata specialization];
+      if (specialization4 && (-[LPLinkMetadata specialization](self->_metadata, "specialization"), v102 = objc_claimAutoreleasedReturnValue(), v103 = [v102 conformsToProtocol:&unk_1F2495A60], v102, specialization4, v103))
       {
-        v104 = [(LPLinkMetadata *)self->_metadata specialization];
-        v100 = [v104 sourceApplicationMetadataForTransformer:self];
+        specialization5 = [(LPLinkMetadata *)self->_metadata specialization];
+        sourceApplication = [specialization5 sourceApplicationMetadataForTransformer:self];
       }
 
       else
       {
-        v100 = 0;
+        sourceApplication = 0;
       }
     }
 
-    v105 = [v11 captionBar];
-    v106 = [v105 leadingIcon];
-    if (v106)
+    captionBar33 = [unspecializedPresentationProperties captionBar];
+    leadingIcon3 = [captionBar33 leadingIcon];
+    if (leadingIcon3)
     {
-      v107 = [v100 icon];
+      icon = [sourceApplication icon];
 
-      if (!v107)
+      if (!icon)
       {
 LABEL_65:
 
         goto LABEL_66;
       }
 
-      v105 = [v100 icon];
-      v108 = [v11 captionBar];
-      [v108 setLeadingIconBadge:v105];
+      captionBar33 = [sourceApplication icon];
+      captionBar34 = [unspecializedPresentationProperties captionBar];
+      [captionBar34 setLeadingIconBadge:captionBar33];
     }
 
     goto LABEL_65;
@@ -1624,117 +1624,117 @@ LABEL_66:
   if ([(LPLinkRendererSizeClassParameters *)self->_sizeClassParameters onlyShowIcon])
   {
     v109 = objc_alloc_init(LPWebLinkPresentationProperties);
-    -[LPWebLinkPresentationProperties setPreliminary:](v109, "setPreliminary:", [v11 isPreliminary]);
-    -[LPWebLinkPresentationProperties setStyle:](v109, "setStyle:", [v11 style]);
+    -[LPWebLinkPresentationProperties setPreliminary:](v109, "setPreliminary:", [unspecializedPresentationProperties isPreliminary]);
+    -[LPWebLinkPresentationProperties setStyle:](v109, "setStyle:", [unspecializedPresentationProperties style]);
     v110 = objc_alloc_init(LPCaptionBarPresentationProperties);
     [(LPWebLinkPresentationProperties *)v109 setCaptionBar:v110];
 
-    v111 = [v11 captionBar];
-    v112 = [v111 leadingIcon];
+    captionBar35 = [unspecializedPresentationProperties captionBar];
+    leadingIcon4 = [captionBar35 leadingIcon];
 
-    if (v112)
+    if (leadingIcon4)
     {
-      v113 = [v11 captionBar];
-      v114 = [v113 leadingIcon];
-      v115 = [(LPWebLinkPresentationProperties *)v109 captionBar];
-      [v115 setLeadingIcon:v114];
+      captionBar36 = [unspecializedPresentationProperties captionBar];
+      leadingIcon5 = [captionBar36 leadingIcon];
+      captionBar37 = [(LPWebLinkPresentationProperties *)v109 captionBar];
+      [captionBar37 setLeadingIcon:leadingIcon5];
 
-      v116 = [v11 captionBar];
-      v117 = [v116 leadingIconProperties];
-      v118 = [(LPWebLinkPresentationProperties *)v109 captionBar];
-      [v118 setLeadingIconProperties:v117];
+      captionBar38 = [unspecializedPresentationProperties captionBar];
+      leadingIconProperties = [captionBar38 leadingIconProperties];
+      captionBar39 = [(LPWebLinkPresentationProperties *)v109 captionBar];
+      [captionBar39 setLeadingIconProperties:leadingIconProperties];
 
-      v119 = [v11 captionBar];
-      v120 = [v119 additionalLeadingIcons];
-      v121 = [(LPWebLinkPresentationProperties *)v109 captionBar];
-      [v121 setAdditionalLeadingIcons:v120];
+      captionBar40 = [unspecializedPresentationProperties captionBar];
+      additionalLeadingIcons = [captionBar40 additionalLeadingIcons];
+      captionBar41 = [(LPWebLinkPresentationProperties *)v109 captionBar];
+      [captionBar41 setAdditionalLeadingIcons:additionalLeadingIcons];
     }
 
     else
     {
-      v122 = [v11 captionBar];
-      v123 = [v122 trailingIcon];
+      captionBar42 = [unspecializedPresentationProperties captionBar];
+      trailingIcon2 = [captionBar42 trailingIcon];
 
-      if (!v123)
+      if (!trailingIcon2)
       {
 LABEL_72:
         v130 = v109;
 
-        v11 = v130;
+        unspecializedPresentationProperties = v130;
         goto LABEL_73;
       }
 
-      v124 = [v11 captionBar];
-      v125 = [v124 trailingIcon];
-      v126 = [(LPWebLinkPresentationProperties *)v109 captionBar];
-      [v126 setTrailingIcon:v125];
+      captionBar43 = [unspecializedPresentationProperties captionBar];
+      trailingIcon3 = [captionBar43 trailingIcon];
+      captionBar44 = [(LPWebLinkPresentationProperties *)v109 captionBar];
+      [captionBar44 setTrailingIcon:trailingIcon3];
 
-      v127 = [v11 captionBar];
-      v128 = [v127 trailingIconProperties];
-      v129 = [(LPWebLinkPresentationProperties *)v109 captionBar];
-      [v129 setTrailingIconProperties:v128];
+      captionBar45 = [unspecializedPresentationProperties captionBar];
+      trailingIconProperties = [captionBar45 trailingIconProperties];
+      captionBar46 = [(LPWebLinkPresentationProperties *)v109 captionBar];
+      [captionBar46 setTrailingIconProperties:trailingIconProperties];
 
-      v119 = [v11 captionBar];
-      v120 = [v119 additionalTrailingIcons];
-      v121 = [(LPWebLinkPresentationProperties *)v109 captionBar];
-      [v121 setAdditionalTrailingIcons:v120];
+      captionBar40 = [unspecializedPresentationProperties captionBar];
+      additionalLeadingIcons = [captionBar40 additionalTrailingIcons];
+      captionBar41 = [(LPWebLinkPresentationProperties *)v109 captionBar];
+      [captionBar41 setAdditionalTrailingIcons:additionalLeadingIcons];
     }
 
     goto LABEL_72;
   }
 
 LABEL_73:
-  if (styleUsesBlurBackgroundForCaptionBar([v11 style]))
+  if (styleUsesBlurBackgroundForCaptionBar([unspecializedPresentationProperties style]))
   {
-    v131 = [v11 image];
-    if (v131)
+    image = [unspecializedPresentationProperties image];
+    if (image)
     {
-      v132 = [v11 image];
-      v133 = [v132 _isNonFallbackSymbolImage];
+      image2 = [unspecializedPresentationProperties image];
+      _isNonFallbackSymbolImage = [image2 _isNonFallbackSymbolImage];
 
-      if ((v133 & 1) == 0)
+      if ((_isNonFallbackSymbolImage & 1) == 0)
       {
-        [(LPLinkMetadataPresentationTransformer *)self _populateDominantBackgroundColorForPropertiesIfNeeded:v11];
-        v134 = [v11 captionBar];
-        [v134 setUsesBlurredBackground:1];
+        [(LPLinkMetadataPresentationTransformer *)self _populateDominantBackgroundColorForPropertiesIfNeeded:unspecializedPresentationProperties];
+        captionBar47 = [unspecializedPresentationProperties captionBar];
+        [captionBar47 setUsesBlurredBackground:1];
 
-        v135 = [v11 image];
-        [v11 setBackgroundImage:v135];
+        image3 = [unspecializedPresentationProperties image];
+        [unspecializedPresentationProperties setBackgroundImage:image3];
 
-        v136 = [v11 image];
-        v137 = [v136 _darkInterfaceAlternativeImage];
+        image4 = [unspecializedPresentationProperties image];
+        _darkInterfaceAlternativeImage = [image4 _darkInterfaceAlternativeImage];
 
-        if (v137)
+        if (_darkInterfaceAlternativeImage)
         {
-          v138 = [v11 image];
-          v139 = [v138 _darkInterfaceAlternativeImage];
-          v140 = [v11 backgroundImage];
-          [v140 _setDarkInterfaceAlternativeImage:v139];
+          image5 = [unspecializedPresentationProperties image];
+          _darkInterfaceAlternativeImage2 = [image5 _darkInterfaceAlternativeImage];
+          backgroundImage = [unspecializedPresentationProperties backgroundImage];
+          [backgroundImage _setDarkInterfaceAlternativeImage:_darkInterfaceAlternativeImage2];
         }
       }
     }
   }
 
-  [v11 setAllowsDominantImageBackgroundColorAsCaptionBackground:{-[LPLinkMetadataPresentationTransformer _allowsDominantBackgroundColorAsCaptionBackgroundForProperties:](self, "_allowsDominantBackgroundColorAsCaptionBackgroundForProperties:", v11)}];
+  [unspecializedPresentationProperties setAllowsDominantImageBackgroundColorAsCaptionBackground:{-[LPLinkMetadataPresentationTransformer _allowsDominantBackgroundColorAsCaptionBackgroundForProperties:](self, "_allowsDominantBackgroundColorAsCaptionBackgroundForProperties:", unspecializedPresentationProperties)}];
   if (self->_needsDominantBackgroundColor)
   {
-    [(LPLinkMetadataPresentationTransformer *)self _populateDominantBackgroundColorForPropertiesIfNeeded:v11];
+    [(LPLinkMetadataPresentationTransformer *)self _populateDominantBackgroundColorForPropertiesIfNeeded:unspecializedPresentationProperties];
   }
 
-  [(LPLinkMetadataPresentationTransformer *)self _propagateDominantBackgroundColorToDependentPropertiesIfNeeded:v11];
+  [(LPLinkMetadataPresentationTransformer *)self _propagateDominantBackgroundColorToDependentPropertiesIfNeeded:unspecializedPresentationProperties];
   if (self->_mediaOverlayIcon)
   {
-    [(LPLinkMetadataPresentationTransformer *)self _populatePropertiesForMediaOverlayIcon:v11];
+    [(LPLinkMetadataPresentationTransformer *)self _populatePropertiesForMediaOverlayIcon:unspecializedPresentationProperties];
   }
 
   if ((sizeClassAllowsBackgroundColor([(LPLinkMetadataPresentationTransformer *)self effectiveSizeClass]) & 1) == 0)
   {
-    [v11 setBackgroundColor:0];
+    [unspecializedPresentationProperties setBackgroundColor:0];
   }
 
-  v141 = v11;
+  v141 = unspecializedPresentationProperties;
 
-  return v11;
+  return unspecializedPresentationProperties;
 }
 
 void __63__LPLinkMetadataPresentationTransformer_presentationProperties__block_invoke(uint64_t a1, void *a2)
@@ -1744,25 +1744,25 @@ void __63__LPLinkMetadataPresentationTransformer_presentationProperties__block_i
   [v3 setColor:v2];
 }
 
-- (BOOL)hasMediaWithProperties:(id)a3
+- (BOOL)hasMediaWithProperties:(id)properties
 {
-  v4 = a3;
-  v5 = [v4 video];
-  if (!v5)
+  propertiesCopy = properties;
+  video = [propertiesCopy video];
+  if (!video)
   {
-    v7 = [v4 image];
-    if (!v7 || ([v4 image], v3 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v3, "_isFallbackIcon")))
+    image = [propertiesCopy image];
+    if (!image || ([propertiesCopy image], v3 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v3, "_isFallbackIcon")))
     {
-      v8 = [v4 alternateImages];
-      if (![v8 count])
+      alternateImages = [propertiesCopy alternateImages];
+      if (![alternateImages count])
       {
-        v9 = [v4 arAsset];
-        if (!v9)
+        arAsset = [propertiesCopy arAsset];
+        if (!arAsset)
         {
-          v11 = [v4 quotedText];
-          v6 = v11 != 0;
+          quotedText = [propertiesCopy quotedText];
+          v6 = quotedText != 0;
 
-          if (!v7)
+          if (!image)
           {
             goto LABEL_11;
           }
@@ -1772,7 +1772,7 @@ void __63__LPLinkMetadataPresentationTransformer_presentationProperties__block_i
       }
 
       v6 = 1;
-      if (!v7)
+      if (!image)
       {
 LABEL_11:
 
@@ -1798,71 +1798,71 @@ LABEL_12:
 
 - (BOOL)hasMedia
 {
-  v2 = self;
-  v3 = [(LPLinkMetadataPresentationTransformer *)self presentationProperties];
-  LOBYTE(v2) = [(LPLinkMetadataPresentationTransformer *)v2 hasMediaWithProperties:v3];
+  selfCopy = self;
+  presentationProperties = [(LPLinkMetadataPresentationTransformer *)self presentationProperties];
+  LOBYTE(selfCopy) = [(LPLinkMetadataPresentationTransformer *)selfCopy hasMediaWithProperties:presentationProperties];
 
-  return v2;
+  return selfCopy;
 }
 
-- (id)_preferredBackgroundColorImageSourceForProperties:(id)a3
+- (id)_preferredBackgroundColorImageSourceForProperties:(id)properties
 {
-  v3 = a3;
-  v4 = [v3 image];
-  v5 = v4;
-  if (v4)
+  propertiesCopy = properties;
+  image = [propertiesCopy image];
+  v5 = image;
+  if (image)
   {
-    v6 = v4;
+    trailingIcon = image;
   }
 
   else
   {
-    v7 = [v3 captionBar];
-    v8 = [v7 leadingIcon];
-    v9 = v8;
-    if (v8)
+    captionBar = [propertiesCopy captionBar];
+    leadingIcon = [captionBar leadingIcon];
+    v9 = leadingIcon;
+    if (leadingIcon)
     {
-      v6 = v8;
+      trailingIcon = leadingIcon;
     }
 
     else
     {
-      v10 = [v3 captionBar];
-      v6 = [v10 trailingIcon];
+      captionBar2 = [propertiesCopy captionBar];
+      trailingIcon = [captionBar2 trailingIcon];
     }
   }
 
-  return v6;
+  return trailingIcon;
 }
 
-- (BOOL)_allowsDominantBackgroundColorAsCaptionBackgroundForProperties:(id)a3
+- (BOOL)_allowsDominantBackgroundColorAsCaptionBackgroundForProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   if (sizeClassUsesVisualRefresh([(LPLinkMetadataPresentationTransformer *)self effectiveSizeClass]))
   {
-    if (styleAllowsVisualRefresh([v4 style]))
+    if (styleAllowsVisualRefresh([propertiesCopy style]))
     {
-      if ((styleUsesBlurBackgroundForCaptionBar([v4 style]) & 1) == 0)
+      if ((styleUsesBlurBackgroundForCaptionBar([propertiesCopy style]) & 1) == 0)
       {
-        v5 = [v4 backgroundColor];
+        backgroundColor = [propertiesCopy backgroundColor];
 
-        if (!v5)
+        if (!backgroundColor)
         {
-          v8 = [(LPLinkMetadataPresentationTransformer *)self _preferredBackgroundColorImageSourceForProperties:v4];
+          v8 = [(LPLinkMetadataPresentationTransformer *)self _preferredBackgroundColorImageSourceForProperties:propertiesCopy];
           v9 = v8;
           if (v8)
           {
-            v10 = [v8 platformImage];
-            if ([v10 _lp_isSymbolImage])
+            platformImage = [v8 platformImage];
+            if ([platformImage _lp_isSymbolImage])
             {
             }
 
             else
             {
-              v11 = [v9 properties];
-              v12 = [v11 type];
+              properties = [v9 properties];
+              type = [properties type];
 
-              if (!v12)
+              if (!type)
               {
                 v6 = 1;
                 goto LABEL_12;
@@ -1885,29 +1885,29 @@ LABEL_6:
   return v6;
 }
 
-- (void)_populateDominantBackgroundColorForPropertiesIfNeeded:(id)a3
+- (void)_populateDominantBackgroundColorForPropertiesIfNeeded:(id)needed
 {
-  v4 = a3;
-  if (([v4 _hasComputedDominantImageBackgroundColor] & 1) == 0)
+  neededCopy = needed;
+  if (([neededCopy _hasComputedDominantImageBackgroundColor] & 1) == 0)
   {
-    [v4 _setHasComputedDominantImageBackgroundColor:1];
-    v5 = [(LPLinkMetadataPresentationTransformer *)self _preferredBackgroundColorImageSourceForProperties:v4];
+    [neededCopy _setHasComputedDominantImageBackgroundColor:1];
+    v5 = [(LPLinkMetadataPresentationTransformer *)self _preferredBackgroundColorImageSourceForProperties:neededCopy];
     if (v5)
     {
-      v6 = [v4 image];
-      v7 = [v6 _darkInterfaceAlternativeImage];
+      image = [neededCopy image];
+      _darkInterfaceAlternativeImage = [image _darkInterfaceAlternativeImage];
 
-      v8 = [v5 platformImage];
-      if ([v8 _lp_isSymbolImage])
+      platformImage = [v5 platformImage];
+      if ([platformImage _lp_isSymbolImage])
       {
       }
 
       else
       {
-        v9 = [v7 platformImage];
-        v10 = [v9 _lp_isSymbolImage];
+        platformImage2 = [_darkInterfaceAlternativeImage platformImage];
+        _lp_isSymbolImage = [platformImage2 _lp_isSymbolImage];
 
-        if ((v10 & 1) == 0)
+        if ((_lp_isSymbolImage & 1) == 0)
         {
           v23[0] = MEMORY[0x1E69E9820];
           v23[1] = 3221225472;
@@ -1919,7 +1919,7 @@ LABEL_6:
           v20[1] = 3221225472;
           v20[2] = __95__LPLinkMetadataPresentationTransformer__populateDominantBackgroundColorForPropertiesIfNeeded___block_invoke_2;
           v20[3] = &unk_1E7A37318;
-          v21 = v7;
+          v21 = _darkInterfaceAlternativeImage;
           v12 = v11;
           v22 = v12;
           v13 = __95__LPLinkMetadataPresentationTransformer__populateDominantBackgroundColorForPropertiesIfNeeded___block_invoke_2(v20);
@@ -1935,7 +1935,7 @@ LABEL_6:
             v18 = v12;
             v19 = &__block_literal_global_90;
             v15 = __95__LPLinkMetadataPresentationTransformer__populateDominantBackgroundColorForPropertiesIfNeeded___block_invoke_4(v16);
-            [v4 setDominantImageBackgroundColor:v15];
+            [neededCopy setDominantImageBackgroundColor:v15];
           }
         }
       }
@@ -2026,62 +2026,62 @@ id __95__LPLinkMetadataPresentationTransformer__populateDominantBackgroundColorF
   return v6;
 }
 
-- (void)_propagateDominantBackgroundColorToDependentPropertiesIfNeeded:(id)a3
+- (void)_propagateDominantBackgroundColorToDependentPropertiesIfNeeded:(id)needed
 {
-  v11 = a3;
-  if ([(LPLinkMetadataPresentationTransformer *)self _shouldUseDominantBackgroundColorAsCaptionBackgroundForProperties:v11])
+  neededCopy = needed;
+  if ([(LPLinkMetadataPresentationTransformer *)self _shouldUseDominantBackgroundColorAsCaptionBackgroundForProperties:neededCopy])
   {
-    [(LPLinkMetadataPresentationTransformer *)self _populateDominantBackgroundColorForPropertiesIfNeeded:v11];
-    v4 = [v11 captionBar];
-    v5 = [v4 playButton];
+    [(LPLinkMetadataPresentationTransformer *)self _populateDominantBackgroundColorForPropertiesIfNeeded:neededCopy];
+    captionBar = [neededCopy captionBar];
+    playButton = [captionBar playButton];
 
-    if (!v5)
+    if (!playButton)
     {
       v6 = objc_alloc_init(LPPlayButtonPresentationProperties);
-      v7 = [v11 captionBar];
-      [v7 setPlayButton:v6];
+      captionBar2 = [neededCopy captionBar];
+      [captionBar2 setPlayButton:v6];
     }
 
-    v8 = [v11 dominantImageBackgroundColor];
-    v9 = [v11 captionBar];
-    v10 = [v9 playButton];
-    [v10 setAccentColor:v8];
+    dominantImageBackgroundColor = [neededCopy dominantImageBackgroundColor];
+    captionBar3 = [neededCopy captionBar];
+    playButton2 = [captionBar3 playButton];
+    [playButton2 setAccentColor:dominantImageBackgroundColor];
   }
 }
 
-- (void)_populatePropertiesForMediaOverlayIcon:(id)a3
+- (void)_populatePropertiesForMediaOverlayIcon:(id)icon
 {
-  v10 = a3;
+  iconCopy = icon;
   [(LPLinkMetadataPresentationTransformer *)self _populateDominantBackgroundColorForPropertiesIfNeeded:?];
-  v4 = [v10 mediaBottomCaptionBar];
+  mediaBottomCaptionBar = [iconCopy mediaBottomCaptionBar];
 
-  if (!v4)
+  if (!mediaBottomCaptionBar)
   {
     v5 = objc_alloc_init(LPCaptionBarPresentationProperties);
-    [v10 setMediaBottomCaptionBar:v5];
+    [iconCopy setMediaBottomCaptionBar:v5];
   }
 
   v6 = objc_alloc_init(LPImagePresentationProperties);
   [(LPImagePresentationProperties *)v6 setFilter:1];
   [(LPImagePresentationProperties *)v6 setScalingMode:3];
   mediaOverlayIcon = self->_mediaOverlayIcon;
-  v8 = [v10 mediaBottomCaptionBar];
-  [v8 setTrailingIcon:mediaOverlayIcon];
+  mediaBottomCaptionBar2 = [iconCopy mediaBottomCaptionBar];
+  [mediaBottomCaptionBar2 setTrailingIcon:mediaOverlayIcon];
 
-  v9 = [v10 mediaBottomCaptionBar];
-  [v9 setTrailingIconProperties:v6];
+  mediaBottomCaptionBar3 = [iconCopy mediaBottomCaptionBar];
+  [mediaBottomCaptionBar3 setTrailingIconProperties:v6];
 }
 
-- (unint64_t)_rowConfigurationForStyle:(int64_t)a3
+- (unint64_t)_rowConfigurationForStyle:(int64_t)style
 {
-  v5 = [(LPLinkMetadataPresentationTransformer *)self effectiveSizeClass];
-  v6 = rowConfigurationForSizeClass(v5);
-  if (v5 == 12 && ![(LPLinkRendererSizeClassParameters *)self->_sizeClassParameters alignButtonWithCaptionTextLeadingEdge]&& self->_hasButton)
+  effectiveSizeClass = [(LPLinkMetadataPresentationTransformer *)self effectiveSizeClass];
+  v6 = rowConfigurationForSizeClass(effectiveSizeClass);
+  if (effectiveSizeClass == 12 && ![(LPLinkRendererSizeClassParameters *)self->_sizeClassParameters alignButtonWithCaptionTextLeadingEdge]&& self->_hasButton)
   {
     v6 = 2;
   }
 
-  result = maximumRowConfigurationForStyle(a3);
+  result = maximumRowConfigurationForStyle(style);
   if (v6 < result)
   {
     return v6;
@@ -2092,12 +2092,12 @@ id __95__LPLinkMetadataPresentationTransformer__populateDominantBackgroundColorF
 
 - (BOOL)_prefersIconAsImage
 {
-  v2 = [(LPLinkMetadataPresentationTransformer *)self effectiveSizeClass];
+  effectiveSizeClass = [(LPLinkMetadataPresentationTransformer *)self effectiveSizeClass];
 
-  return sizeClassRequiresLargeMedia(v2);
+  return sizeClassRequiresLargeMedia(effectiveSizeClass);
 }
 
-- (BOOL)_prefersImageAsIconWithStyle:(int64_t)a3
+- (BOOL)_prefersImageAsIconWithStyle:(int64_t)style
 {
   if (sizeClassRequiresLargeMedia([(LPLinkMetadataPresentationTransformer *)self effectiveSizeClass]))
   {
@@ -2109,83 +2109,83 @@ id __95__LPLinkMetadataPresentationTransformer__populateDominantBackgroundColorF
     return 1;
   }
 
-  return stylePrefersImageAsIcon(a3);
+  return stylePrefersImageAsIcon(style);
 }
 
-- (BOOL)_prefersLeadingIconWithStyle:(int64_t)a3
+- (BOOL)_prefersLeadingIconWithStyle:(int64_t)style
 {
   if (sizeClassRequiresTrailingIcon([(LPLinkMetadataPresentationTransformer *)self effectiveSizeClass]))
   {
     return 0;
   }
 
-  if (stylePrefersLeadingIcon(a3))
+  if (stylePrefersLeadingIcon(style))
   {
     return 1;
   }
 
-  v6 = [(LPLinkMetadataPresentationTransformer *)self effectiveSizeClass];
+  effectiveSizeClass = [(LPLinkMetadataPresentationTransformer *)self effectiveSizeClass];
 
-  return sizeClassPrefersLeadingIcon(v6);
+  return sizeClassPrefersLeadingIcon(effectiveSizeClass);
 }
 
-- (void)_populateProperties:(id)a3 withPrimaryImage:(id)a4
+- (void)_populateProperties:(id)properties withPrimaryImage:(id)image
 {
-  v8 = a3;
-  v6 = a4;
-  if (-[LPLinkMetadataPresentationTransformer _prefersImageAsIconWithStyle:](self, "_prefersImageAsIconWithStyle:", [v8 style]))
+  propertiesCopy = properties;
+  imageCopy = image;
+  if (-[LPLinkMetadataPresentationTransformer _prefersImageAsIconWithStyle:](self, "_prefersImageAsIconWithStyle:", [propertiesCopy style]))
   {
-    if (-[LPLinkMetadataPresentationTransformer _prefersLeadingIconWithStyle:](self, "_prefersLeadingIconWithStyle:", [v8 style]))
+    if (-[LPLinkMetadataPresentationTransformer _prefersLeadingIconWithStyle:](self, "_prefersLeadingIconWithStyle:", [propertiesCopy style]))
     {
-      v7 = [v8 captionBar];
-      [v7 setLeadingIcon:v6];
+      captionBar = [propertiesCopy captionBar];
+      [captionBar setLeadingIcon:imageCopy];
     }
 
     else
     {
-      v7 = [v8 captionBar];
-      [v7 setTrailingIcon:v6];
+      captionBar = [propertiesCopy captionBar];
+      [captionBar setTrailingIcon:imageCopy];
     }
   }
 
   else
   {
-    [v8 setImage:v6];
+    [propertiesCopy setImage:imageCopy];
   }
 }
 
-- (void)_populateProperties:(id)a3 withPrimaryIcon:(id)a4 iconProperties:(id)a5 canBecomeImage:(BOOL)a6
+- (void)_populateProperties:(id)properties withPrimaryIcon:(id)icon iconProperties:(id)iconProperties canBecomeImage:(BOOL)image
 {
-  v6 = a6;
-  v15 = a3;
-  v10 = a4;
-  v11 = a5;
-  if ([(LPLinkMetadataPresentationTransformer *)self _prefersIconAsImage]&& v6)
+  imageCopy = image;
+  propertiesCopy = properties;
+  iconCopy = icon;
+  iconPropertiesCopy = iconProperties;
+  if ([(LPLinkMetadataPresentationTransformer *)self _prefersIconAsImage]&& imageCopy)
   {
-    [v15 setImage:v10];
-    [v15 setImageProperties:v11];
+    [propertiesCopy setImage:iconCopy];
+    [propertiesCopy setImageProperties:iconPropertiesCopy];
   }
 
   else
   {
-    if (-[LPLinkMetadataPresentationTransformer _prefersLeadingIconWithStyle:](self, "_prefersLeadingIconWithStyle:", [v15 style]))
+    if (-[LPLinkMetadataPresentationTransformer _prefersLeadingIconWithStyle:](self, "_prefersLeadingIconWithStyle:", [propertiesCopy style]))
     {
-      v12 = [v15 captionBar];
-      [v12 setLeadingIcon:v10];
+      captionBar = [propertiesCopy captionBar];
+      [captionBar setLeadingIcon:iconCopy];
 
-      [v15 setImageProperties:v11];
-      v13 = [v15 captionBar];
-      [v13 setLeadingIconProperties:v11];
+      [propertiesCopy setImageProperties:iconPropertiesCopy];
+      captionBar2 = [propertiesCopy captionBar];
+      [captionBar2 setLeadingIconProperties:iconPropertiesCopy];
     }
 
     else
     {
-      v14 = [v15 captionBar];
-      [v14 setTrailingIcon:v10];
+      captionBar3 = [propertiesCopy captionBar];
+      [captionBar3 setTrailingIcon:iconCopy];
 
-      [v15 setImageProperties:v11];
-      v13 = [v15 captionBar];
-      [v13 setTrailingIconProperties:v11];
+      [propertiesCopy setImageProperties:iconPropertiesCopy];
+      captionBar2 = [propertiesCopy captionBar];
+      [captionBar2 setTrailingIconProperties:iconPropertiesCopy];
     }
   }
 }
@@ -2199,9 +2199,9 @@ id __95__LPLinkMetadataPresentationTransformer__populateDominantBackgroundColorF
     {
       self->_effectiveSizeClass = 0;
       self->_hasComputedEffectiveSizeClass = 1;
-      v4 = [(LPLinkMetadataPresentationTransformer *)self hasMedia];
+      hasMedia = [(LPLinkMetadataPresentationTransformer *)self hasMedia];
       preferredSizeClass = 8;
-      if (v4)
+      if (hasMedia)
       {
         preferredSizeClass = 0;
       }

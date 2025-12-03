@@ -1,25 +1,25 @@
 @interface PLPropertyIndexMapping
-+ (BOOL)includesToManyRelationship:(id)a3 entity:(id)a4;
++ (BOOL)includesToManyRelationship:(id)relationship entity:(id)entity;
 + (PLPropertyIndexMapping)defaultMapping;
-+ (id)attributeNamesForIndexValues:(unint64_t)a3 entity:(id)a4;
-+ (id)relationshipNamesForIndexValues:(unint64_t)a3 entity:(id)a4;
-+ (unint64_t)indexValueForAttributeNames:(id)a3 entity:(id)a4;
-+ (unint64_t)indexValueForRelationshipNames:(id)a3 entity:(id)a4;
-+ (void)recordChangedKeys:(id)a3 forObjectID:(id)a4 inAttributesByOID:(id)a5 relationshipsByOID:(id)a6;
-+ (void)recordChangedProperties:(id)a3 forObjectID:(id)a4 inAttributesByOID:(id)a5 relationshipsByOID:(id)a6;
-- ($61A80719B04F7407D3E47539F1B23CAA)_indexValueForPropertyNames:(id)a3 entityName:(id)a4 indexesByPropertyNamesByEntityNames:(id)a5;
-- (BOOL)dumpToDirectory:(id)a3 error:(id *)a4;
-- (BOOL)includesToManyRelationship:(id)a3 entity:(id)a4;
-- (BOOL)includesTransientAttributes:(id)a3 entity:(id)a4;
++ (id)attributeNamesForIndexValues:(unint64_t)values entity:(id)entity;
++ (id)relationshipNamesForIndexValues:(unint64_t)values entity:(id)entity;
++ (unint64_t)indexValueForAttributeNames:(id)names entity:(id)entity;
++ (unint64_t)indexValueForRelationshipNames:(id)names entity:(id)entity;
++ (void)recordChangedKeys:(id)keys forObjectID:(id)d inAttributesByOID:(id)iD relationshipsByOID:(id)oID;
++ (void)recordChangedProperties:(id)properties forObjectID:(id)d inAttributesByOID:(id)iD relationshipsByOID:(id)oID;
+- ($61A80719B04F7407D3E47539F1B23CAA)_indexValueForPropertyNames:(id)names entityName:(id)name indexesByPropertyNamesByEntityNames:(id)entityNames;
+- (BOOL)dumpToDirectory:(id)directory error:(id *)error;
+- (BOOL)includesToManyRelationship:(id)relationship entity:(id)entity;
+- (BOOL)includesTransientAttributes:(id)attributes entity:(id)entity;
 - (PLPropertyIndexMapping)init;
-- (PLPropertyIndexMapping)initWithManagedObjectModel:(id)a3;
-- (id)_dumpDictionary:(id)a3 toDir:(id)a4 withName:(id)a5;
-- (id)_processEntityByName:(id)a3 obj:(id)a4;
-- (id)_processSubEntityByName:(id)a3 entity:(id)a4 withEntityData:(id)a5;
-- (id)_propertyNamesForIndexValues:(id)a3 entity:(id)a4 propertyNamesByIndexByEntityNames:(id)a5;
-- (void)recordChangedKeys:(id)a3 forObjectID:(id)a4 inAttributesByOID:(id)a5 relationshipsByOID:(id)a6;
-- (void)recordChangedProperties:(id)a3 forObjectID:(id)a4 inAttributesByOID:(id)a5 relationshipsByOID:(id)a6;
-- (void)updatedIndexesForChangedKeys:(id)a3 entityName:(id)a4 withAttributes:(id)a5 relationships:(id)a6 updateBlock:(id)a7;
+- (PLPropertyIndexMapping)initWithManagedObjectModel:(id)model;
+- (id)_dumpDictionary:(id)dictionary toDir:(id)dir withName:(id)name;
+- (id)_processEntityByName:(id)name obj:(id)obj;
+- (id)_processSubEntityByName:(id)name entity:(id)entity withEntityData:(id)data;
+- (id)_propertyNamesForIndexValues:(id)values entity:(id)entity propertyNamesByIndexByEntityNames:(id)names;
+- (void)recordChangedKeys:(id)keys forObjectID:(id)d inAttributesByOID:(id)iD relationshipsByOID:(id)oID;
+- (void)recordChangedProperties:(id)properties forObjectID:(id)d inAttributesByOID:(id)iD relationshipsByOID:(id)oID;
+- (void)updatedIndexesForChangedKeys:(id)keys entityName:(id)name withAttributes:(id)attributes relationships:(id)relationships updateBlock:(id)block;
 @end
 
 @implementation PLPropertyIndexMapping
@@ -32,23 +32,23 @@
   return v2;
 }
 
-- (id)_dumpDictionary:(id)a3 toDir:(id)a4 withName:(id)a5
+- (id)_dumpDictionary:(id)dictionary toDir:(id)dir withName:(id)name
 {
   v24 = *MEMORY[0x1E69E9840];
-  v7 = a5;
-  v8 = a3;
-  v9 = [a4 URLByAppendingPathComponent:v7];
+  nameCopy = name;
+  dictionaryCopy = dictionary;
+  v9 = [dir URLByAppendingPathComponent:nameCopy];
   v10 = [v9 URLByAppendingPathExtension:@"txt"];
-  v11 = [v8 _pl_prettyDescription];
+  _pl_prettyDescription = [dictionaryCopy _pl_prettyDescription];
 
   v19 = 0;
-  v12 = [v11 writeToURL:v10 atomically:0 encoding:4 error:&v19];
+  v12 = [_pl_prettyDescription writeToURL:v10 atomically:0 encoding:4 error:&v19];
   v13 = v19;
   if (v12)
   {
     v14 = MEMORY[0x1E69BF2D0];
-    v15 = [MEMORY[0x1E695DFB0] null];
-    v16 = [v14 successWithResult:v15];
+    null = [MEMORY[0x1E695DFB0] null];
+    v16 = [v14 successWithResult:null];
   }
 
   else
@@ -57,7 +57,7 @@
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v21 = v7;
+      v21 = nameCopy;
       v22 = 2112;
       v23 = v13;
       _os_log_impl(&dword_19BF1F000, v17, OS_LOG_TYPE_ERROR, "Unable to dump text for %@: %@", buf, 0x16u);
@@ -69,118 +69,118 @@
   return v16;
 }
 
-- (BOOL)dumpToDirectory:(id)a3 error:(id *)a4
+- (BOOL)dumpToDirectory:(id)directory error:(id *)error
 {
-  v6 = a3;
+  directoryCopy = directory;
   v7 = MEMORY[0x1E69BF2D0];
-  v8 = [MEMORY[0x1E695DFB0] null];
-  v9 = [v7 successWithResult:v8];
+  null = [MEMORY[0x1E695DFB0] null];
+  v9 = [v7 successWithResult:null];
 
   if ([v9 isSuccess])
   {
-    v10 = [(PLPropertyIndexMapping *)self _dumpDictionary:self->_indexesByAttributeNamesByEntityNames toDir:v6 withName:@"indexesByAttributeNamesByEntityNames"];
+    v10 = [(PLPropertyIndexMapping *)self _dumpDictionary:self->_indexesByAttributeNamesByEntityNames toDir:directoryCopy withName:@"indexesByAttributeNamesByEntityNames"];
 
     v9 = v10;
   }
 
   if ([v9 isSuccess])
   {
-    v11 = [(PLPropertyIndexMapping *)self _dumpDictionary:self->_attributeNamesByIndexByEntityNames toDir:v6 withName:@"attributeNamesByIndexByEntityNames"];
+    v11 = [(PLPropertyIndexMapping *)self _dumpDictionary:self->_attributeNamesByIndexByEntityNames toDir:directoryCopy withName:@"attributeNamesByIndexByEntityNames"];
 
     v9 = v11;
   }
 
   if ([v9 isSuccess])
   {
-    v12 = [(PLPropertyIndexMapping *)self _dumpDictionary:self->_transientAttributeNamesByEntityNames toDir:v6 withName:@"transientAttributeNamesByEntityNames"];
+    v12 = [(PLPropertyIndexMapping *)self _dumpDictionary:self->_transientAttributeNamesByEntityNames toDir:directoryCopy withName:@"transientAttributeNamesByEntityNames"];
 
     v9 = v12;
   }
 
   if ([v9 isSuccess])
   {
-    v13 = [(PLPropertyIndexMapping *)self _dumpDictionary:self->_indexesByRelationshipNamesByEntityNames toDir:v6 withName:@"indexesByRelationshipNamesByEntityNames"];
+    v13 = [(PLPropertyIndexMapping *)self _dumpDictionary:self->_indexesByRelationshipNamesByEntityNames toDir:directoryCopy withName:@"indexesByRelationshipNamesByEntityNames"];
 
     v9 = v13;
   }
 
   if ([v9 isSuccess])
   {
-    v14 = [(PLPropertyIndexMapping *)self _dumpDictionary:self->_relationshipNamesByIndexByEntityNames toDir:v6 withName:@"relationshipNamesByIndexByEntityNames"];
+    v14 = [(PLPropertyIndexMapping *)self _dumpDictionary:self->_relationshipNamesByIndexByEntityNames toDir:directoryCopy withName:@"relationshipNamesByIndexByEntityNames"];
 
     v9 = v14;
   }
 
   if ([v9 isSuccess])
   {
-    v15 = [(PLPropertyIndexMapping *)self _dumpDictionary:self->_toManyRelationshipNamesByEntityNames toDir:v6 withName:@"toManyRelationshipNamesByEntityNames"];
+    v15 = [(PLPropertyIndexMapping *)self _dumpDictionary:self->_toManyRelationshipNamesByEntityNames toDir:directoryCopy withName:@"toManyRelationshipNamesByEntityNames"];
 
     v9 = v15;
   }
 
-  v16 = [v9 resultWithError:a4];
+  v16 = [v9 resultWithError:error];
   v17 = v16 != 0;
 
   return v17;
 }
 
-- (void)updatedIndexesForChangedKeys:(id)a3 entityName:(id)a4 withAttributes:(id)a5 relationships:(id)a6 updateBlock:(id)a7
+- (void)updatedIndexesForChangedKeys:(id)keys entityName:(id)name withAttributes:(id)attributes relationships:(id)relationships updateBlock:(id)block
 {
-  v19 = a3;
-  v12 = a4;
-  v13 = a7;
-  v14 = [(PLPropertyIndexMapping *)self indexValueForAttributeNames:v19 entity:v12]| a5.var0;
-  v15 = [(PLPropertyIndexMapping *)self indexValueForRelationshipNames:v19 entity:v12]| a6.var0;
-  if (v14 | v15 || (-[NSDictionary objectForKeyedSubscript:](self->_transientAttributeNamesByEntityNames, "objectForKeyedSubscript:", v12), v16 = objc_claimAutoreleasedReturnValue(), [MEMORY[0x1E695DFD8] setWithArray:v19], v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v16, "intersectsSet:", v17), v17, v16, v18))
+  keysCopy = keys;
+  nameCopy = name;
+  blockCopy = block;
+  v14 = [(PLPropertyIndexMapping *)self indexValueForAttributeNames:keysCopy entity:nameCopy]| attributes.var0;
+  v15 = [(PLPropertyIndexMapping *)self indexValueForRelationshipNames:keysCopy entity:nameCopy]| relationships.var0;
+  if (v14 | v15 || (-[NSDictionary objectForKeyedSubscript:](self->_transientAttributeNamesByEntityNames, "objectForKeyedSubscript:", nameCopy), v16 = objc_claimAutoreleasedReturnValue(), [MEMORY[0x1E695DFD8] setWithArray:keysCopy], v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v16, "intersectsSet:", v17), v17, v16, v18))
   {
-    v13[2](v13, v14, v15);
+    blockCopy[2](blockCopy, v14, v15);
   }
 }
 
-- (void)recordChangedKeys:(id)a3 forObjectID:(id)a4 inAttributesByOID:(id)a5 relationshipsByOID:(id)a6
+- (void)recordChangedKeys:(id)keys forObjectID:(id)d inAttributesByOID:(id)iD relationshipsByOID:(id)oID
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = a3;
-  v14 = [v10 entity];
-  v15 = [v14 name];
+  dCopy = d;
+  iDCopy = iD;
+  oIDCopy = oID;
+  keysCopy = keys;
+  entity = [dCopy entity];
+  name = [entity name];
 
-  v16 = [v11 objectForKeyedSubscript:v10];
+  v16 = [iDCopy objectForKeyedSubscript:dCopy];
   v17 = v16;
   if (v16)
   {
-    v18 = [v16 unsignedLongLongValue];
+    unsignedLongLongValue = [v16 unsignedLongLongValue];
   }
 
   else
   {
-    v18 = 0;
+    unsignedLongLongValue = 0;
   }
 
-  v19 = [v12 objectForKeyedSubscript:v10];
+  v19 = [oIDCopy objectForKeyedSubscript:dCopy];
   v20 = v19;
   if (v19)
   {
-    v21 = [v19 unsignedLongLongValue];
+    unsignedLongLongValue2 = [v19 unsignedLongLongValue];
   }
 
   else
   {
-    v21 = 0;
+    unsignedLongLongValue2 = 0;
   }
 
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __93__PLPropertyIndexMapping_recordChangedKeys_forObjectID_inAttributesByOID_relationshipsByOID___block_invoke;
   v25[3] = &unk_1E756D618;
-  v26 = v11;
-  v27 = v10;
-  v28 = v12;
-  v22 = v12;
-  v23 = v10;
-  v24 = v11;
-  [(PLPropertyIndexMapping *)self updatedIndexesForChangedKeys:v13 entityName:v15 withAttributes:v18 relationships:v21 updateBlock:v25];
+  v26 = iDCopy;
+  v27 = dCopy;
+  v28 = oIDCopy;
+  v22 = oIDCopy;
+  v23 = dCopy;
+  v24 = iDCopy;
+  [(PLPropertyIndexMapping *)self updatedIndexesForChangedKeys:keysCopy entityName:name withAttributes:unsignedLongLongValue relationships:unsignedLongLongValue2 updateBlock:v25];
 }
 
 void __93__PLPropertyIndexMapping_recordChangedKeys_forObjectID_inAttributesByOID_relationshipsByOID___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3)
@@ -192,57 +192,57 @@ void __93__PLPropertyIndexMapping_recordChangedKeys_forObjectID_inAttributesByOI
   [*(a1 + 48) setObject:v6 forKeyedSubscript:*(a1 + 40)];
 }
 
-- (void)recordChangedProperties:(id)a3 forObjectID:(id)a4 inAttributesByOID:(id)a5 relationshipsByOID:(id)a6
+- (void)recordChangedProperties:(id)properties forObjectID:(id)d inAttributesByOID:(id)iD relationshipsByOID:(id)oID
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v14 = [a3 allObjects];
-  v13 = [v14 _pl_map:&__block_literal_global_56];
-  [(PLPropertyIndexMapping *)self recordChangedKeys:v13 forObjectID:v12 inAttributesByOID:v11 relationshipsByOID:v10];
+  oIDCopy = oID;
+  iDCopy = iD;
+  dCopy = d;
+  allObjects = [properties allObjects];
+  v13 = [allObjects _pl_map:&__block_literal_global_56];
+  [(PLPropertyIndexMapping *)self recordChangedKeys:v13 forObjectID:dCopy inAttributesByOID:iDCopy relationshipsByOID:oIDCopy];
 }
 
-- (BOOL)includesTransientAttributes:(id)a3 entity:(id)a4
+- (BOOL)includesTransientAttributes:(id)attributes entity:(id)entity
 {
   transientAttributeNamesByEntityNames = self->_transientAttributeNamesByEntityNames;
-  v6 = a3;
-  v7 = [(NSDictionary *)transientAttributeNamesByEntityNames objectForKeyedSubscript:a4];
-  v8 = [MEMORY[0x1E695DFD8] setWithArray:v6];
+  attributesCopy = attributes;
+  v7 = [(NSDictionary *)transientAttributeNamesByEntityNames objectForKeyedSubscript:entity];
+  v8 = [MEMORY[0x1E695DFD8] setWithArray:attributesCopy];
 
-  LOBYTE(v6) = [v7 intersectsSet:v8];
-  return v6;
+  LOBYTE(attributesCopy) = [v7 intersectsSet:v8];
+  return attributesCopy;
 }
 
-- (BOOL)includesToManyRelationship:(id)a3 entity:(id)a4
+- (BOOL)includesToManyRelationship:(id)relationship entity:(id)entity
 {
   toManyRelationshipNamesByEntityNames = self->_toManyRelationshipNamesByEntityNames;
-  v6 = a3;
-  v7 = [(NSDictionary *)toManyRelationshipNamesByEntityNames objectForKeyedSubscript:a4];
-  LOBYTE(toManyRelationshipNamesByEntityNames) = [v7 intersectsSet:v6];
+  relationshipCopy = relationship;
+  v7 = [(NSDictionary *)toManyRelationshipNamesByEntityNames objectForKeyedSubscript:entity];
+  LOBYTE(toManyRelationshipNamesByEntityNames) = [v7 intersectsSet:relationshipCopy];
 
   return toManyRelationshipNamesByEntityNames;
 }
 
-- (id)_propertyNamesForIndexValues:(id)a3 entity:(id)a4 propertyNamesByIndexByEntityNames:(id)a5
+- (id)_propertyNamesForIndexValues:(id)values entity:(id)entity propertyNamesByIndexByEntityNames:(id)names
 {
-  v6 = [a5 objectForKeyedSubscript:a4];
-  if (a3.var0)
+  v6 = [names objectForKeyedSubscript:entity];
+  if (values.var0)
   {
-    v7 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     if ([v6 count])
     {
       v8 = 0;
       do
       {
         PLPropertyIndexSetValidateIndex(v8);
-        if ((a3.var0 >> v8))
+        if ((values.var0 >> v8))
         {
           v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v8];
           v10 = [v6 objectForKeyedSubscript:v9];
 
           if (v10)
           {
-            [v7 addObject:v10];
+            [array addObject:v10];
           }
         }
 
@@ -255,22 +255,22 @@ void __93__PLPropertyIndexMapping_recordChangedKeys_forObjectID_inAttributesByOI
 
   else
   {
-    v7 = 0;
+    array = 0;
   }
 
-  return v7;
+  return array;
 }
 
-- ($61A80719B04F7407D3E47539F1B23CAA)_indexValueForPropertyNames:(id)a3 entityName:(id)a4 indexesByPropertyNamesByEntityNames:(id)a5
+- ($61A80719B04F7407D3E47539F1B23CAA)_indexValueForPropertyNames:(id)names entityName:(id)name indexesByPropertyNamesByEntityNames:(id)entityNames
 {
   v25 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = [a5 objectForKeyedSubscript:a4];
+  namesCopy = names;
+  v8 = [entityNames objectForKeyedSubscript:name];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v9 = v7;
+  v9 = namesCopy;
   v10 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v10)
   {
@@ -290,9 +290,9 @@ void __93__PLPropertyIndexMapping_recordChangedKeys_forObjectID_inAttributesByOI
         v16 = v15;
         if (v15)
         {
-          v17 = [v15 unsignedIntegerValue];
-          v18 = v17;
-          PLPropertyIndexSetValidateIndex(v17);
+          unsignedIntegerValue = [v15 unsignedIntegerValue];
+          v18 = unsignedIntegerValue;
+          PLPropertyIndexSetValidateIndex(unsignedIntegerValue);
           v12.var0 |= 1 << v18;
         }
       }
@@ -311,69 +311,69 @@ void __93__PLPropertyIndexMapping_recordChangedKeys_forObjectID_inAttributesByOI
   return v12;
 }
 
-- (id)_processSubEntityByName:(id)a3 entity:(id)a4 withEntityData:(id)a5
+- (id)_processSubEntityByName:(id)name entity:(id)entity withEntityData:(id)data
 {
   v97 = *MEMORY[0x1E69E9840];
-  v69 = a3;
-  v67 = a4;
-  v8 = a5;
-  v49 = v8;
-  if (v8)
+  nameCopy = name;
+  entityCopy = entity;
+  dataCopy = data;
+  v49 = dataCopy;
+  if (dataCopy)
   {
-    v9 = v8;
+    dictionary = dataCopy;
   }
 
   else
   {
-    v9 = [MEMORY[0x1E695DF90] dictionary];
-    v10 = [MEMORY[0x1E695DF90] dictionary];
-    [v9 setObject:v10 forKey:@"indexByAttr"];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+    [dictionary setObject:dictionary2 forKey:@"indexByAttr"];
 
-    v11 = [MEMORY[0x1E695DF90] dictionary];
-    [v9 setObject:v11 forKey:@"attrByIndex"];
+    dictionary3 = [MEMORY[0x1E695DF90] dictionary];
+    [dictionary setObject:dictionary3 forKey:@"attrByIndex"];
 
-    v12 = [MEMORY[0x1E695DF90] dictionary];
-    [v9 setObject:v12 forKey:@"indexByRelation"];
+    dictionary4 = [MEMORY[0x1E695DF90] dictionary];
+    [dictionary setObject:dictionary4 forKey:@"indexByRelation"];
 
-    v13 = [MEMORY[0x1E695DF90] dictionary];
-    [v9 setObject:v13 forKey:@"relationByIndex"];
+    dictionary5 = [MEMORY[0x1E695DF90] dictionary];
+    [dictionary setObject:dictionary5 forKey:@"relationByIndex"];
 
-    v14 = [MEMORY[0x1E695DF90] dictionary];
-    v15 = [MEMORY[0x1E695DF90] dictionary];
-    [v14 setObject:v15 forKey:@"indexByAttrByEntity"];
+    dictionary6 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary7 = [MEMORY[0x1E695DF90] dictionary];
+    [dictionary6 setObject:dictionary7 forKey:@"indexByAttrByEntity"];
 
-    v16 = [MEMORY[0x1E695DF90] dictionary];
-    [v14 setObject:v16 forKey:@"attrByIndexByEntity"];
+    dictionary8 = [MEMORY[0x1E695DF90] dictionary];
+    [dictionary6 setObject:dictionary8 forKey:@"attrByIndexByEntity"];
 
-    v17 = [MEMORY[0x1E695DF90] dictionary];
-    [v14 setObject:v17 forKey:@"transientAttrByEntity"];
+    dictionary9 = [MEMORY[0x1E695DF90] dictionary];
+    [dictionary6 setObject:dictionary9 forKey:@"transientAttrByEntity"];
 
-    v18 = [MEMORY[0x1E695DF90] dictionary];
-    [v14 setObject:v18 forKey:@"indexByRelationByEntity"];
+    dictionary10 = [MEMORY[0x1E695DF90] dictionary];
+    [dictionary6 setObject:dictionary10 forKey:@"indexByRelationByEntity"];
 
-    v19 = [MEMORY[0x1E695DF90] dictionary];
-    [v14 setObject:v19 forKey:@"relationByIndexByEntity"];
+    dictionary11 = [MEMORY[0x1E695DF90] dictionary];
+    [dictionary6 setObject:dictionary11 forKey:@"relationByIndexByEntity"];
 
-    v20 = [MEMORY[0x1E695DF90] dictionary];
-    [v14 setObject:v20 forKey:@"toManyRelationsByEntity"];
+    dictionary12 = [MEMORY[0x1E695DF90] dictionary];
+    [dictionary6 setObject:dictionary12 forKey:@"toManyRelationsByEntity"];
 
-    [v9 setObject:v14 forKey:@"resultDictionary"];
+    [dictionary setObject:dictionary6 forKey:@"resultDictionary"];
   }
 
-  v63 = [v9 objectForKey:@"indexByAttr"];
-  v55 = [v9 objectForKey:@"attrByIndex"];
-  v62 = [v9 objectForKey:@"indexByRelation"];
-  v52 = [v9 objectForKey:@"relationByIndex"];
-  v70 = [v9 objectForKey:@"resultDictionary"];
+  v63 = [dictionary objectForKey:@"indexByAttr"];
+  v55 = [dictionary objectForKey:@"attrByIndex"];
+  v62 = [dictionary objectForKey:@"indexByRelation"];
+  v52 = [dictionary objectForKey:@"relationByIndex"];
+  v70 = [dictionary objectForKey:@"resultDictionary"];
   v54 = [v70 objectForKey:@"indexByAttrByEntity"];
   v53 = [v70 objectForKey:@"attrByIndexByEntity"];
   v60 = [v70 objectForKey:@"transientAttrByEntity"];
   v51 = [v70 objectForKey:@"indexByRelationByEntity"];
   v50 = [v70 objectForKey:@"relationByIndexByEntity"];
   v58 = [v70 objectForKey:@"toManyRelationsByEntity"];
-  v68 = [v67 attributesByName];
-  v21 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v68, "count")}];
-  v22 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(v68, "count")}];
+  attributesByName = [entityCopy attributesByName];
+  v21 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(attributesByName, "count")}];
+  v22 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(attributesByName, "count")}];
   v93[0] = MEMORY[0x1E69E9820];
   v93[1] = 3221225472;
   v93[2] = __72__PLPropertyIndexMapping__processSubEntityByName_entity_withEntityData___block_invoke;
@@ -382,12 +382,12 @@ void __93__PLPropertyIndexMapping_recordChangedKeys_forObjectID_inAttributesByOI
   v94 = v59;
   v61 = v21;
   v95 = v61;
-  [v68 enumerateKeysAndObjectsUsingBlock:v93];
+  [attributesByName enumerateKeysAndObjectsUsingBlock:v93];
   v66 = [v61 sortedArrayUsingSelector:sel_compare_];
   if ([v66 count] >= 0x41)
   {
-    v47 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v47 handleFailureInMethod:a2 object:self file:@"PLPropertyIndexMapping.m" lineNumber:203 description:{@"%@ (%lu) has too many attributes to treat as a single bitfield", v69, objc_msgSend(v66, "count")}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLPropertyIndexMapping.m" lineNumber:203 description:{@"%@ (%lu) has too many attributes to treat as a single bitfield", nameCopy, objc_msgSend(v66, "count")}];
   }
 
   if ([v66 count])
@@ -406,35 +406,35 @@ void __93__PLPropertyIndexMapping_recordChangedKeys_forObjectID_inAttributesByOI
     v24 = v55;
     v87 = v24;
     [v66 enumerateObjectsUsingBlock:v85];
-    [v54 setObject:v23 forKey:v69];
-    [v53 setObject:v24 forKey:v69];
+    [v54 setObject:v23 forKey:nameCopy];
+    [v53 setObject:v24 forKey:nameCopy];
 
     _Block_object_dispose(&v89, 8);
   }
 
   v25 = [v59 copy];
-  [v60 setObject:v25 forKey:v69];
+  [v60 setObject:v25 forKey:nameCopy];
 
-  v64 = [v67 relationshipsByName];
-  v26 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(v64, "count")}];
-  v27 = [MEMORY[0x1E695DF70] array];
+  relationshipsByName = [entityCopy relationshipsByName];
+  v26 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(relationshipsByName, "count")}];
+  array = [MEMORY[0x1E695DF70] array];
   v82[0] = MEMORY[0x1E69E9820];
   v82[1] = 3221225472;
   v82[2] = __72__PLPropertyIndexMapping__processSubEntityByName_entity_withEntityData___block_invoke_3;
   v82[3] = &unk_1E75754F0;
-  v56 = v27;
+  v56 = array;
   v83 = v56;
   v57 = v26;
   v84 = v57;
-  [v64 enumerateKeysAndObjectsUsingBlock:v82];
+  [relationshipsByName enumerateKeysAndObjectsUsingBlock:v82];
   v28 = [v57 copy];
-  [v58 setObject:v28 forKey:v69];
+  [v58 setObject:v28 forKey:nameCopy];
 
   v65 = [v56 sortedArrayUsingSelector:sel_compare_];
   if ([v65 count] >= 0x41)
   {
-    v48 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v48 handleFailureInMethod:a2 object:self file:@"PLPropertyIndexMapping.m" lineNumber:241 description:{@"%@ (%lu) has too many relationships to treat as a single bitfield", v69, objc_msgSend(v65, "count")}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLPropertyIndexMapping.m" lineNumber:241 description:{@"%@ (%lu) has too many relationships to treat as a single bitfield", nameCopy, objc_msgSend(v65, "count")}];
   }
 
   if ([v65 count])
@@ -453,13 +453,13 @@ void __93__PLPropertyIndexMapping_recordChangedKeys_forObjectID_inAttributesByOI
     v30 = v52;
     v80 = v30;
     [v65 enumerateObjectsUsingBlock:v78];
-    [v51 setObject:v29 forKey:v69];
-    [v50 setObject:v30 forKey:v69];
+    [v51 setObject:v29 forKey:nameCopy];
+    [v50 setObject:v30 forKey:nameCopy];
 
     _Block_object_dispose(&v89, 8);
   }
 
-  obj = [v67 subentities];
+  obj = [entityCopy subentities];
   v76 = 0u;
   v77 = 0u;
   v74 = 0u;
@@ -478,28 +478,28 @@ void __93__PLPropertyIndexMapping_recordChangedKeys_forObjectID_inAttributesByOI
         }
 
         v33 = *(*(&v74 + 1) + 8 * i);
-        v34 = [MEMORY[0x1E695DF90] dictionary];
-        v35 = [v9 objectForKey:@"indexByAttr"];
+        dictionary13 = [MEMORY[0x1E695DF90] dictionary];
+        v35 = [dictionary objectForKey:@"indexByAttr"];
         v36 = [v35 mutableCopy];
-        [v34 setObject:v36 forKey:@"indexByAttr"];
+        [dictionary13 setObject:v36 forKey:@"indexByAttr"];
 
-        v37 = [v9 objectForKey:@"attrByIndex"];
+        v37 = [dictionary objectForKey:@"attrByIndex"];
         v38 = [v37 mutableCopy];
-        [v34 setObject:v38 forKey:@"attrByIndex"];
+        [dictionary13 setObject:v38 forKey:@"attrByIndex"];
 
-        v39 = [v9 objectForKey:@"indexByRelation"];
+        v39 = [dictionary objectForKey:@"indexByRelation"];
         v40 = [v39 mutableCopy];
-        [v34 setObject:v40 forKey:@"indexByRelation"];
+        [dictionary13 setObject:v40 forKey:@"indexByRelation"];
 
-        v41 = [v9 objectForKey:@"relationByIndex"];
+        v41 = [dictionary objectForKey:@"relationByIndex"];
         v42 = [v41 mutableCopy];
-        [v34 setObject:v42 forKey:@"relationByIndex"];
+        [dictionary13 setObject:v42 forKey:@"relationByIndex"];
 
-        v43 = [v9 objectForKey:@"resultDictionary"];
-        [v34 setObject:v43 forKey:@"resultDictionary"];
+        v43 = [dictionary objectForKey:@"resultDictionary"];
+        [dictionary13 setObject:v43 forKey:@"resultDictionary"];
 
-        v44 = [v33 name];
-        v45 = [(PLPropertyIndexMapping *)self _processSubEntityByName:v44 entity:v33 withEntityData:v34];
+        name = [v33 name];
+        v45 = [(PLPropertyIndexMapping *)self _processSubEntityByName:name entity:v33 withEntityData:dictionary13];
       }
 
       v31 = [obj countByEnumeratingWithState:&v74 objects:v96 count:16];
@@ -508,7 +508,7 @@ void __93__PLPropertyIndexMapping_recordChangedKeys_forObjectID_inAttributesByOI
     while (v31);
   }
 
-  return v9;
+  return dictionary;
 }
 
 void __72__PLPropertyIndexMapping__processSubEntityByName_entity_withEntityData___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -597,47 +597,47 @@ void __72__PLPropertyIndexMapping__processSubEntityByName_entity_withEntityData_
   }
 }
 
-- (id)_processEntityByName:(id)a3 obj:(id)a4
+- (id)_processEntityByName:(id)name obj:(id)obj
 {
-  v5 = a4;
-  v6 = [v5 superentity];
-  v7 = v5;
+  objCopy = obj;
+  superentity = [objCopy superentity];
+  v7 = objCopy;
   v8 = v7;
   v9 = v7;
-  if (v6)
+  if (superentity)
   {
     v10 = v7;
     do
     {
-      v9 = v6;
+      v9 = superentity;
 
-      v6 = [v9 superentity];
+      superentity = [v9 superentity];
 
       v10 = v9;
     }
 
-    while (v6);
+    while (superentity);
   }
 
-  v11 = [v9 name];
-  v12 = [(PLPropertyIndexMapping *)self _processSubEntityByName:v11 entity:v9 withEntityData:0];
+  name = [v9 name];
+  v12 = [(PLPropertyIndexMapping *)self _processSubEntityByName:name entity:v9 withEntityData:0];
 
   v13 = [v12 objectForKey:@"resultDictionary"];
 
   return v13;
 }
 
-- (PLPropertyIndexMapping)initWithManagedObjectModel:(id)a3
+- (PLPropertyIndexMapping)initWithManagedObjectModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   v44.receiver = self;
   v44.super_class = PLPropertyIndexMapping;
   v5 = [(PLPropertyIndexMapping *)&v44 init];
   if (v5)
   {
-    v35 = [v4 entitiesByName];
-    v6 = [v35 count];
-    v34 = v4;
+    entitiesByName = [modelCopy entitiesByName];
+    v6 = [entitiesByName count];
+    v34 = modelCopy;
     v7 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:v6];
     v8 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:v6];
     v9 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:v6];
@@ -662,7 +662,7 @@ void __72__PLPropertyIndexMapping__processSubEntityByName_entity_withEntityData_
     v42 = v18;
     v19 = v12;
     v43 = v19;
-    [v35 enumerateKeysAndObjectsUsingBlock:v36];
+    [entitiesByName enumerateKeysAndObjectsUsingBlock:v36];
     indexesByAttributeNamesByEntityNames = v14->_indexesByAttributeNamesByEntityNames;
     v14->_indexesByAttributeNamesByEntityNames = v13;
     v33 = v13;
@@ -688,7 +688,7 @@ void __72__PLPropertyIndexMapping__processSubEntityByName_entity_withEntityData_
     v30 = v19;
 
     v31 = v14;
-    v4 = v34;
+    modelCopy = v34;
   }
 
   return v5;
@@ -741,70 +741,70 @@ void __53__PLPropertyIndexMapping_initWithManagedObjectModel___block_invoke(uint
   return v4;
 }
 
-+ (void)recordChangedProperties:(id)a3 forObjectID:(id)a4 inAttributesByOID:(id)a5 relationshipsByOID:(id)a6
++ (void)recordChangedProperties:(id)properties forObjectID:(id)d inAttributesByOID:(id)iD relationshipsByOID:(id)oID
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  oIDCopy = oID;
+  iDCopy = iD;
+  dCopy = d;
+  propertiesCopy = properties;
   v13 = +[PLPropertyIndexMapping defaultMapping];
-  [v13 recordChangedProperties:v12 forObjectID:v11 inAttributesByOID:v10 relationshipsByOID:v9];
+  [v13 recordChangedProperties:propertiesCopy forObjectID:dCopy inAttributesByOID:iDCopy relationshipsByOID:oIDCopy];
 }
 
-+ (void)recordChangedKeys:(id)a3 forObjectID:(id)a4 inAttributesByOID:(id)a5 relationshipsByOID:(id)a6
++ (void)recordChangedKeys:(id)keys forObjectID:(id)d inAttributesByOID:(id)iD relationshipsByOID:(id)oID
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  oIDCopy = oID;
+  iDCopy = iD;
+  dCopy = d;
+  keysCopy = keys;
   v13 = +[PLPropertyIndexMapping defaultMapping];
-  [v13 recordChangedKeys:v12 forObjectID:v11 inAttributesByOID:v10 relationshipsByOID:v9];
+  [v13 recordChangedKeys:keysCopy forObjectID:dCopy inAttributesByOID:iDCopy relationshipsByOID:oIDCopy];
 }
 
-+ (BOOL)includesToManyRelationship:(id)a3 entity:(id)a4
++ (BOOL)includesToManyRelationship:(id)relationship entity:(id)entity
 {
-  v5 = a4;
-  v6 = a3;
+  entityCopy = entity;
+  relationshipCopy = relationship;
   v7 = +[PLPropertyIndexMapping defaultMapping];
-  v8 = [v7 includesToManyRelationship:v6 entity:v5];
+  v8 = [v7 includesToManyRelationship:relationshipCopy entity:entityCopy];
 
   return v8;
 }
 
-+ (id)relationshipNamesForIndexValues:(unint64_t)a3 entity:(id)a4
++ (id)relationshipNamesForIndexValues:(unint64_t)values entity:(id)entity
 {
-  v5 = a4;
+  entityCopy = entity;
   v6 = +[PLPropertyIndexMapping defaultMapping];
-  v7 = [v6 relationshipNamesForIndexValues:a3 entity:v5];
+  v7 = [v6 relationshipNamesForIndexValues:values entity:entityCopy];
 
   return v7;
 }
 
-+ (unint64_t)indexValueForRelationshipNames:(id)a3 entity:(id)a4
++ (unint64_t)indexValueForRelationshipNames:(id)names entity:(id)entity
 {
-  v5 = a4;
-  v6 = a3;
+  entityCopy = entity;
+  namesCopy = names;
   v7 = +[PLPropertyIndexMapping defaultMapping];
-  v8 = [v7 indexValueForRelationshipNames:v6 entity:v5];
+  v8 = [v7 indexValueForRelationshipNames:namesCopy entity:entityCopy];
 
   return v8;
 }
 
-+ (id)attributeNamesForIndexValues:(unint64_t)a3 entity:(id)a4
++ (id)attributeNamesForIndexValues:(unint64_t)values entity:(id)entity
 {
-  v5 = a4;
+  entityCopy = entity;
   v6 = +[PLPropertyIndexMapping defaultMapping];
-  v7 = [v6 attributeNamesForIndexValues:a3 entity:v5];
+  v7 = [v6 attributeNamesForIndexValues:values entity:entityCopy];
 
   return v7;
 }
 
-+ (unint64_t)indexValueForAttributeNames:(id)a3 entity:(id)a4
++ (unint64_t)indexValueForAttributeNames:(id)names entity:(id)entity
 {
-  v5 = a4;
-  v6 = a3;
+  entityCopy = entity;
+  namesCopy = names;
   v7 = +[PLPropertyIndexMapping defaultMapping];
-  v8 = [v7 indexValueForAttributeNames:v6 entity:v5];
+  v8 = [v7 indexValueForAttributeNames:namesCopy entity:entityCopy];
 
   return v8;
 }

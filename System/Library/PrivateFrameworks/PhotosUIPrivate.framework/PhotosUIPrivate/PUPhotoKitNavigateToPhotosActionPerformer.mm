@@ -6,17 +6,17 @@
 
 - (void)performUserInteractionTask
 {
-  v3 = [(PUAssetActionPerformer *)self assets];
-  v4 = [v3 lastObject];
+  assets = [(PUAssetActionPerformer *)self assets];
+  lastObject = [assets lastObject];
 
   objc_initWeak(&location, self);
-  v5 = [MEMORY[0x1E69DC668] sharedApplication];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __71__PUPhotoKitNavigateToPhotosActionPerformer_performUserInteractionTask__block_invoke;
   v6[3] = &unk_1E7B7FA30;
   objc_copyWeak(&v7, &location);
-  [v5 px_navigateToMomentsViewRevealingAsset:v4 completionHandler:v6];
+  [mEMORY[0x1E69DC668] px_navigateToMomentsViewRevealingAsset:lastObject completionHandler:v6];
 
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);

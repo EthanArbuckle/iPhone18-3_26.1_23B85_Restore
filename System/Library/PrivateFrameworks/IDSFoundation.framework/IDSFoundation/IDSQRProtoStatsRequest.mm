@@ -1,22 +1,22 @@
 @interface IDSQRProtoStatsRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasP2pConnection:(BOOL)a3;
-- (void)setHasReceivedPackets:(BOOL)a3;
-- (void)setHasSentPackets:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasP2pConnection:(BOOL)connection;
+- (void)setHasReceivedPackets:(BOOL)packets;
+- (void)setHasSentPackets:(BOOL)packets;
+- (void)writeTo:(id)to;
 @end
 
 @implementation IDSQRProtoStatsRequest
 
-- (void)setHasSentPackets:(BOOL)a3
+- (void)setHasSentPackets:(BOOL)packets
 {
-  if (a3)
+  if (packets)
   {
     v3 = 4;
   }
@@ -29,9 +29,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasReceivedPackets:(BOOL)a3
+- (void)setHasReceivedPackets:(BOOL)packets
 {
-  if (a3)
+  if (packets)
   {
     v3 = 2;
   }
@@ -44,9 +44,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasP2pConnection:(BOOL)a3
+- (void)setHasP2pConnection:(BOOL)connection
 {
-  if (a3)
+  if (connection)
   {
     v3 = 8;
   }
@@ -65,23 +65,23 @@
   v8.receiver = self;
   v8.super_class = IDSQRProtoStatsRequest;
   v4 = [(IDSQRProtoStatsRequest *)&v8 description];
-  v5 = [(IDSQRProtoStatsRequest *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(IDSQRProtoStatsRequest *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_clientTimestampNtp];
-  [v3 setObject:v4 forKey:@"client_timestamp_ntp"];
+  [dictionary setObject:v4 forKey:@"client_timestamp_ntp"];
 
   has = self->_has;
   if (has)
   {
     v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_clientLatencyMs];
-    [v3 setObject:v8 forKey:@"client_latency_ms"];
+    [dictionary setObject:v8 forKey:@"client_latency_ms"];
 
     has = self->_has;
     if ((has & 4) == 0)
@@ -102,7 +102,7 @@ LABEL_3:
   }
 
   v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_sentPackets];
-  [v3 setObject:v9 forKey:@"sent_packets"];
+  [dictionary setObject:v9 forKey:@"sent_packets"];
 
   has = self->_has;
   if ((has & 2) == 0)
@@ -118,23 +118,23 @@ LABEL_4:
 
 LABEL_11:
   v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_receivedPackets];
-  [v3 setObject:v10 forKey:@"received_packets"];
+  [dictionary setObject:v10 forKey:@"received_packets"];
 
   if ((*&self->_has & 8) != 0)
   {
 LABEL_5:
     v6 = [MEMORY[0x1E696AD98] numberWithBool:self->_p2pConnection];
-    [v3 setObject:v6 forKey:@"p2p_connection"];
+    [dictionary setObject:v6 forKey:@"p2p_connection"];
   }
 
 LABEL_6:
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   PBDataWriterWriteUint32Field();
   has = self->_has;
   if (has)
@@ -182,15 +182,15 @@ LABEL_5:
 LABEL_6:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v4[3] = self->_clientTimestampNtp;
+  toCopy = to;
+  toCopy[3] = self->_clientTimestampNtp;
   has = self->_has;
   if (has)
   {
-    v4[2] = self->_clientLatencyMs;
-    *(v4 + 28) |= 1u;
+    toCopy[2] = self->_clientLatencyMs;
+    *(toCopy + 28) |= 1u;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -209,8 +209,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[5] = self->_sentPackets;
-  *(v4 + 28) |= 4u;
+  toCopy[5] = self->_sentPackets;
+  *(toCopy + 28) |= 4u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -224,21 +224,21 @@ LABEL_4:
   }
 
 LABEL_11:
-  v4[4] = self->_receivedPackets;
-  *(v4 + 28) |= 2u;
+  toCopy[4] = self->_receivedPackets;
+  *(toCopy + 28) |= 2u;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_5:
-    *(v4 + 24) = self->_p2pConnection;
-    *(v4 + 28) |= 8u;
+    *(toCopy + 24) = self->_p2pConnection;
+    *(toCopy + 28) |= 8u;
   }
 
 LABEL_6:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(result + 3) = self->_clientTimestampNtp;
   has = self->_has;
   if (has)
@@ -291,57 +291,57 @@ LABEL_5:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()] || self->_clientTimestampNtp != *(v4 + 3))
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()] || self->_clientTimestampNtp != *(equalCopy + 3))
   {
     goto LABEL_20;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 28) & 1) == 0 || self->_clientLatencyMs != *(v4 + 2))
+    if ((*(equalCopy + 28) & 1) == 0 || self->_clientLatencyMs != *(equalCopy + 2))
     {
       goto LABEL_20;
     }
   }
 
-  else if (*(v4 + 28))
+  else if (*(equalCopy + 28))
   {
     goto LABEL_20;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 28) & 4) == 0 || self->_sentPackets != *(v4 + 5))
+    if ((*(equalCopy + 28) & 4) == 0 || self->_sentPackets != *(equalCopy + 5))
     {
       goto LABEL_20;
     }
   }
 
-  else if ((*(v4 + 28) & 4) != 0)
+  else if ((*(equalCopy + 28) & 4) != 0)
   {
     goto LABEL_20;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 28) & 2) == 0 || self->_receivedPackets != *(v4 + 4))
+    if ((*(equalCopy + 28) & 2) == 0 || self->_receivedPackets != *(equalCopy + 4))
     {
       goto LABEL_20;
     }
   }
 
-  else if ((*(v4 + 28) & 2) != 0)
+  else if ((*(equalCopy + 28) & 2) != 0)
   {
     goto LABEL_20;
   }
 
-  v5 = (*(v4 + 28) & 8) == 0;
+  v5 = (*(equalCopy + 28) & 8) == 0;
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 28) & 8) == 0)
+    if ((*(equalCopy + 28) & 8) == 0)
     {
 LABEL_20:
       v5 = 0;
@@ -350,13 +350,13 @@ LABEL_20:
 
     if (self->_p2pConnection)
     {
-      if ((*(v4 + 24) & 1) == 0)
+      if ((*(equalCopy + 24) & 1) == 0)
       {
         goto LABEL_20;
       }
     }
 
-    else if (*(v4 + 24))
+    else if (*(equalCopy + 24))
     {
       goto LABEL_20;
     }
@@ -415,16 +415,16 @@ LABEL_9:
   return v2 ^ v3 ^ v4 ^ v5 ^ (2654435761 * self->_clientTimestampNtp);
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  self->_clientTimestampNtp = *(v4 + 3);
-  v5 = *(v4 + 28);
+  fromCopy = from;
+  self->_clientTimestampNtp = *(fromCopy + 3);
+  v5 = *(fromCopy + 28);
   if (v5)
   {
-    self->_clientLatencyMs = *(v4 + 2);
+    self->_clientLatencyMs = *(fromCopy + 2);
     *&self->_has |= 1u;
-    v5 = *(v4 + 28);
+    v5 = *(fromCopy + 28);
     if ((v5 & 4) == 0)
     {
 LABEL_3:
@@ -437,14 +437,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 28) & 4) == 0)
+  else if ((*(fromCopy + 28) & 4) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_sentPackets = *(v4 + 5);
+  self->_sentPackets = *(fromCopy + 5);
   *&self->_has |= 4u;
-  v5 = *(v4 + 28);
+  v5 = *(fromCopy + 28);
   if ((v5 & 2) == 0)
   {
 LABEL_4:
@@ -457,12 +457,12 @@ LABEL_4:
   }
 
 LABEL_11:
-  self->_receivedPackets = *(v4 + 4);
+  self->_receivedPackets = *(fromCopy + 4);
   *&self->_has |= 2u;
-  if ((*(v4 + 28) & 8) != 0)
+  if ((*(fromCopy + 28) & 8) != 0)
   {
 LABEL_5:
-    self->_p2pConnection = *(v4 + 24);
+    self->_p2pConnection = *(fromCopy + 24);
     *&self->_has |= 8u;
   }
 

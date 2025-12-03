@@ -7,18 +7,18 @@
 
 - (void)performUserInteractionTask
 {
-  v3 = [(PXPhotosGridActionPerformer *)self viewModel];
-  v4 = [v3 libraryFilterState];
+  viewModel = [(PXPhotosGridActionPerformer *)self viewModel];
+  libraryFilterState = [viewModel libraryFilterState];
 
-  [v4 setViewMode:0];
-  [(PXPhotosGridToggleFilterActionPerformer *)self updateToLibraryFilterStateAndFinishTask:v4];
+  [libraryFilterState setViewMode:0];
+  [(PXPhotosGridToggleFilterActionPerformer *)self updateToLibraryFilterStateAndFinishTask:libraryFilterState];
 }
 
 - (int64_t)menuElementState
 {
-  v2 = [(PXPhotosGridActionPerformer *)self viewModel];
-  v3 = [v2 libraryFilterState];
-  v4 = [v3 isLibraryFilterActive:0];
+  viewModel = [(PXPhotosGridActionPerformer *)self viewModel];
+  libraryFilterState = [viewModel libraryFilterState];
+  v4 = [libraryFilterState isLibraryFilterActive:0];
 
   return v4;
 }

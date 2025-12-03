@@ -1,33 +1,33 @@
 @interface SPProtoAudioFileQueuePlayerSetItems
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (id)sockPuppetMessage;
-- (void)addPlayerItemIdentifiers:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addPlayerItemIdentifiers:(id)identifiers;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SPProtoAudioFileQueuePlayerSetItems
 
-- (void)addPlayerItemIdentifiers:(id)a3
+- (void)addPlayerItemIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   playerItemIdentifiers = self->_playerItemIdentifiers;
-  v8 = v4;
+  v8 = identifiersCopy;
   if (!playerItemIdentifiers)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_playerItemIdentifiers;
     self->_playerItemIdentifiers = v6;
 
-    v4 = v8;
+    identifiersCopy = v8;
     playerItemIdentifiers = self->_playerItemIdentifiers;
   }
 
-  [(NSMutableArray *)playerItemIdentifiers addObject:v4];
+  [(NSMutableArray *)playerItemIdentifiers addObject:identifiersCopy];
 }
 
 - (id)description
@@ -36,20 +36,20 @@
   v8.receiver = self;
   v8.super_class = SPProtoAudioFileQueuePlayerSetItems;
   v4 = [(SPProtoAudioFileQueuePlayerSetItems *)&v8 description];
-  v5 = [(SPProtoAudioFileQueuePlayerSetItems *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SPProtoAudioFileQueuePlayerSetItems *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   identifier = self->_identifier;
   if (identifier)
   {
-    [v3 setObject:identifier forKey:@"identifier"];
+    [dictionary setObject:identifier forKey:@"identifier"];
   }
 
   playerItemIdentifiers = self->_playerItemIdentifiers;
@@ -61,10 +61,10 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   identifier = self->_identifier;
   PBDataWriterWriteStringField();
   v15 = 0u;
@@ -102,31 +102,31 @@
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
-  [v8 setIdentifier:self->_identifier];
+  toCopy = to;
+  [toCopy setIdentifier:self->_identifier];
   if ([(SPProtoAudioFileQueuePlayerSetItems *)self playerItemIdentifiersCount])
   {
-    [v8 clearPlayerItemIdentifiers];
-    v4 = [(SPProtoAudioFileQueuePlayerSetItems *)self playerItemIdentifiersCount];
-    if (v4)
+    [toCopy clearPlayerItemIdentifiers];
+    playerItemIdentifiersCount = [(SPProtoAudioFileQueuePlayerSetItems *)self playerItemIdentifiersCount];
+    if (playerItemIdentifiersCount)
     {
-      v5 = v4;
+      v5 = playerItemIdentifiersCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(SPProtoAudioFileQueuePlayerSetItems *)self playerItemIdentifiersAtIndex:i];
-        [v8 addPlayerItemIdentifiers:v7];
+        [toCopy addPlayerItemIdentifiers:v7];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_identifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_identifier copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
@@ -150,7 +150,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v16 + 1) + 8 * v12) copyWithZone:{a3, v16}];
+        v13 = [*(*(&v16 + 1) + 8 * v12) copyWithZone:{zone, v16}];
         [v5 addPlayerItemIdentifiers:v13];
 
         ++v12;
@@ -167,13 +167,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((identifier = self->_identifier, !(identifier | v4[1])) || -[NSString isEqual:](identifier, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((identifier = self->_identifier, !(identifier | equalCopy[1])) || -[NSString isEqual:](identifier, "isEqual:")))
   {
     playerItemIdentifiers = self->_playerItemIdentifiers;
-    if (playerItemIdentifiers | v4[2])
+    if (playerItemIdentifiers | equalCopy[2])
     {
       v7 = [(NSMutableArray *)playerItemIdentifiers isEqual:?];
     }
@@ -192,11 +192,11 @@
   return v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (*(v4 + 1))
+  fromCopy = from;
+  if (*(fromCopy + 1))
   {
     [(SPProtoAudioFileQueuePlayerSetItems *)self setIdentifier:?];
   }
@@ -205,7 +205,7 @@
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = *(v4 + 2);
+  v5 = *(fromCopy + 2);
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
@@ -236,9 +236,9 @@
 {
   v3 = objc_alloc_init(SPProtoAudioFileQueuePlayer);
   [(SPProtoAudioFileQueuePlayer *)v3 setUpsertWithItems:self];
-  v4 = [(SPProtoAudioFileQueuePlayer *)v3 sockPuppetMessage];
+  sockPuppetMessage = [(SPProtoAudioFileQueuePlayer *)v3 sockPuppetMessage];
 
-  return v4;
+  return sockPuppetMessage;
 }
 
 @end

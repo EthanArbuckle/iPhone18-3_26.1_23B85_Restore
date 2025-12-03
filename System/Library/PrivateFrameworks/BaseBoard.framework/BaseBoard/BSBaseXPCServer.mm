@@ -1,14 +1,14 @@
 @interface BSBaseXPCServer
-- (BSBaseXPCServer)initWithServiceName:(id)a3 onQueue:(id)a4;
+- (BSBaseXPCServer)initWithServiceName:(id)name onQueue:(id)queue;
 - (id)_clients;
 - (id)_connection;
 - (id)_copyEndpoint;
-- (id)_getStringFromMessage:(id)a3 key:(char *)a4;
-- (id)_queue_clientForConnection:(id)a3;
-- (id)queue_newClientForConnection:(id)a3;
+- (id)_getStringFromMessage:(id)message key:(char *)key;
+- (id)_queue_clientForConnection:(id)connection;
+- (id)queue_newClientForConnection:(id)connection;
 - (void)_invalidate;
-- (void)_sendMessageReply:(id)a3 messagePacker:(id)a4;
-- (void)_sendReplyForMessage:(id)a3 messagePacker:(id)a4;
+- (void)_sendMessageReply:(id)reply messagePacker:(id)packer;
+- (void)_sendReplyForMessage:(id)message messagePacker:(id)packer;
 - (void)dealloc;
 - (void)registerServerSuspended;
 - (void)resumeServer;
@@ -17,7 +17,7 @@
 
 @implementation BSBaseXPCServer
 
-- (BSBaseXPCServer)initWithServiceName:(id)a3 onQueue:(id)a4
+- (BSBaseXPCServer)initWithServiceName:(id)name onQueue:(id)queue
 {
   v10.receiver = self;
   v10.super_class = BSBaseXPCServer;
@@ -26,12 +26,12 @@
   if (v6)
   {
     v6->_notifyToken = -1;
-    v8 = [a3 copy];
+    v8 = [name copy];
     v7->_serviceName = v8;
-    if (a4)
+    if (queue)
     {
-      v7->_queue = a4;
-      dispatch_retain(a4);
+      v7->_queue = queue;
+      dispatch_retain(queue);
     }
 
     else
@@ -292,7 +292,7 @@ void __40__BSBaseXPCServer__addClientConnection___block_invoke(uint64_t a1, void
   objc_autoreleasePoolPop(v4);
 }
 
-- (id)_queue_clientForConnection:(id)a3
+- (id)_queue_clientForConnection:(id)connection
 {
   v16 = *MEMORY[0x1E69E9840];
   v11 = 0u;
@@ -318,7 +318,7 @@ LABEL_3:
     }
 
     v9 = *(*(&v11 + 1) + 8 * v8);
-    if ([v9 connection] == a3)
+    if ([v9 connection] == connection)
     {
       return v9;
     }
@@ -336,18 +336,18 @@ LABEL_3:
   }
 }
 
-- (id)queue_newClientForConnection:(id)a3
+- (id)queue_newClientForConnection:(id)connection
 {
-  v3 = [(objc_class *)[(BSBaseXPCServer *)self queue_classForNewClientConnection:?] wrapperWithConnection:a3];
+  v3 = [(objc_class *)[(BSBaseXPCServer *)self queue_classForNewClientConnection:?] wrapperWithConnection:connection];
 
   return v3;
 }
 
-- (void)_sendMessageReply:(id)a3 messagePacker:(id)a4
+- (void)_sendMessageReply:(id)reply messagePacker:(id)packer
 {
-  if (a4)
+  if (packer)
   {
-    if (!a3)
+    if (!reply)
     {
       return;
     }
@@ -356,33 +356,33 @@ LABEL_3:
   else
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
-    if (!a3)
+    if (!reply)
     {
       return;
     }
   }
 
-  (*(a4 + 2))(a4, a3);
-  remote_connection = xpc_dictionary_get_remote_connection(a3);
+  (*(packer + 2))(packer, reply);
+  remote_connection = xpc_dictionary_get_remote_connection(reply);
 
-  xpc_connection_send_message(remote_connection, a3);
+  xpc_connection_send_message(remote_connection, reply);
 }
 
-- (void)_sendReplyForMessage:(id)a3 messagePacker:(id)a4
+- (void)_sendReplyForMessage:(id)message messagePacker:(id)packer
 {
-  reply = xpc_dictionary_create_reply(a3);
+  reply = xpc_dictionary_create_reply(message);
   if (reply)
   {
     v7 = reply;
-    [(BSBaseXPCServer *)self _sendMessageReply:reply messagePacker:a4];
+    [(BSBaseXPCServer *)self _sendMessageReply:reply messagePacker:packer];
 
     xpc_release(v7);
   }
 }
 
-- (id)_getStringFromMessage:(id)a3 key:(char *)a4
+- (id)_getStringFromMessage:(id)message key:(char *)key
 {
-  result = xpc_dictionary_get_string(a3, a4);
+  result = xpc_dictionary_get_string(message, key);
   if (result)
   {
     v5 = result;

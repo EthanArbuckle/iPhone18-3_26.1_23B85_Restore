@@ -1,17 +1,17 @@
 @interface CHDData
-+ (CHDData)dataWithDataPointCount:(unint64_t)a3 resources:(id)a4;
-+ (CHDData)dataWithResources:(id)a3;
++ (CHDData)dataWithDataPointCount:(unint64_t)count resources:(id)resources;
++ (CHDData)dataWithResources:(id)resources;
 - (CGPoint)minMaxValues;
-- (CHDData)initWithDataPointCount:(unint64_t)a3 resources:(id)a4;
-- (CHDData)initWithResources:(id)a3;
+- (CHDData)initWithDataPointCount:(unint64_t)count resources:(id)resources;
+- (CHDData)initWithResources:(id)resources;
 - (id)contentFormat;
 - (id)description;
-- (id)firstValueContentFormatWithWorkbook:(id)a3;
+- (id)firstValueContentFormatWithWorkbook:(id)workbook;
 - (unint64_t)averageDataPointDecimalCount;
 - (unint64_t)countOfCellsBeingReferenced;
 - (unint64_t)dataValueIndexCount;
-- (void)setContentFormat:(id)a3;
-- (void)setFormula:(id)a3 chart:(id)a4;
+- (void)setContentFormat:(id)format;
+- (void)setFormula:(id)formula chart:(id)chart;
 @end
 
 @implementation CHDData
@@ -19,8 +19,8 @@
 - (id)contentFormat
 {
   WeakRetained = objc_loadWeakRetained(&self->mResources);
-  v4 = [WeakRetained contentFormats];
-  v5 = [v4 objectWithKey:self->mContentFormatId];
+  contentFormats = [WeakRetained contentFormats];
+  v5 = [contentFormats objectWithKey:self->mContentFormatId];
 
   return v5;
 }
@@ -40,9 +40,9 @@
 
 - (unint64_t)countOfCellsBeingReferenced
 {
-  v3 = [(CHDFormula *)self->mFormula references];
+  references = [(CHDFormula *)self->mFormula references];
 
-  if (v3)
+  if (references)
   {
     mFormula = self->mFormula;
 
@@ -56,16 +56,16 @@
   }
 }
 
-- (CHDData)initWithResources:(id)a3
+- (CHDData)initWithResources:(id)resources
 {
-  v4 = a3;
+  resourcesCopy = resources;
   v10.receiver = self;
   v10.super_class = CHDData;
   v5 = [(CHDData *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->mResources, v4);
+    objc_storeWeak(&v5->mResources, resourcesCopy);
     v7 = objc_alloc_init(CHDDataValuesCollection);
     mDataValues = v6->mDataValues;
     v6->mDataValues = v7;
@@ -76,17 +76,17 @@
   return v6;
 }
 
-- (CHDData)initWithDataPointCount:(unint64_t)a3 resources:(id)a4
+- (CHDData)initWithDataPointCount:(unint64_t)count resources:(id)resources
 {
-  v6 = a4;
+  resourcesCopy = resources;
   v12.receiver = self;
   v12.super_class = CHDData;
   v7 = [(CHDData *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->mResources, v6);
-    v9 = [[CHDDataValuesCollection alloc] initWithDataPointCount:a3];
+    objc_storeWeak(&v7->mResources, resourcesCopy);
+    v9 = [[CHDDataValuesCollection alloc] initWithDataPointCount:count];
     mDataValues = v8->mDataValues;
     v8->mDataValues = v9;
 
@@ -96,18 +96,18 @@
   return v8;
 }
 
-+ (CHDData)dataWithResources:(id)a3
++ (CHDData)dataWithResources:(id)resources
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithResources:v3];
+  resourcesCopy = resources;
+  v4 = [objc_alloc(objc_opt_class()) initWithResources:resourcesCopy];
 
   return v4;
 }
 
-+ (CHDData)dataWithDataPointCount:(unint64_t)a3 resources:(id)a4
++ (CHDData)dataWithDataPointCount:(unint64_t)count resources:(id)resources
 {
-  v5 = a4;
-  v6 = [objc_alloc(objc_opt_class()) initWithDataPointCount:a3 resources:v5];
+  resourcesCopy = resources;
+  v6 = [objc_alloc(objc_opt_class()) initWithDataPointCount:count resources:resourcesCopy];
 
   return v6;
 }
@@ -205,16 +205,16 @@ LABEL_15:
         if (CsLeReadSInt32(&v8->value) == 2)
         {
           v10 = [MEMORY[0x277CCABB0] numberWithDouble:EDValue::numberValue(&v9->value)];
-          v11 = [v10 stringValue];
+          stringValue = [v10 stringValue];
 
-          v12 = [v11 rangeOfString:@"."];
+          v12 = [stringValue rangeOfString:@"."];
           if (v12 != 0x7FFFFFFFFFFFFFFFLL)
           {
-            v13 = [v11 length];
+            v13 = [stringValue length];
             v14 = v13 + ~v12;
             if (v14 >= 0xF)
             {
-              v15 = [v11 substringWithRange:{0, objc_msgSend(v11, "length") - 1}];
+              v15 = [stringValue substringWithRange:{0, objc_msgSend(stringValue, "length") - 1}];
 
               if ([v15 hasSuffix:@"0"])
               {
@@ -239,7 +239,7 @@ LABEL_15:
                 }
               }
 
-              v11 = v15;
+              stringValue = v15;
             }
 
             v5 += v14;
@@ -264,57 +264,57 @@ LABEL_15:
   return result;
 }
 
-- (void)setFormula:(id)a3 chart:(id)a4
+- (void)setFormula:(id)formula chart:(id)chart
 {
-  v11 = a3;
-  v7 = a4;
+  formulaCopy = formula;
+  chartCopy = chart;
   mFormula = self->mFormula;
   p_mFormula = &self->mFormula;
-  if (mFormula != v11)
+  if (mFormula != formulaCopy)
   {
-    objc_storeStrong(p_mFormula, a3);
+    objc_storeStrong(p_mFormula, formula);
     if (*p_mFormula)
     {
-      v10 = [v7 processors];
-      [v10 markObject:v11 processor:objc_opt_class()];
+      processors = [chartCopy processors];
+      [processors markObject:formulaCopy processor:objc_opt_class()];
     }
   }
 }
 
-- (void)setContentFormat:(id)a3
+- (void)setContentFormat:(id)format
 {
-  v8 = a3;
-  v4 = [v8 formatId];
-  if (v4 == -1)
+  formatCopy = format;
+  formatId = [formatCopy formatId];
+  if (formatId == -1)
   {
     WeakRetained = objc_loadWeakRetained(&self->mResources);
-    v6 = [WeakRetained contentFormats];
+    contentFormats = [WeakRetained contentFormats];
 
-    v7 = [v6 objectAtIndex:{objc_msgSend(v6, "addOrEquivalentObject:", v8)}];
+    v7 = [contentFormats objectAtIndex:{objc_msgSend(contentFormats, "addOrEquivalentObject:", formatCopy)}];
     self->mContentFormatId = [v7 formatId];
   }
 
   else
   {
-    self->mContentFormatId = v4;
+    self->mContentFormatId = formatId;
   }
 }
 
-- (id)firstValueContentFormatWithWorkbook:(id)a3
+- (id)firstValueContentFormatWithWorkbook:(id)workbook
 {
-  v4 = a3;
+  workbookCopy = workbook;
   mFormula = self->mFormula;
   if (mFormula)
   {
-    v6 = [(CHDFormula *)mFormula references];
+    references = [(CHDFormula *)mFormula references];
 
-    if (v6)
+    if (references)
     {
-      v7 = [(CHDFormula *)self->mFormula references];
-      v8 = [EDReferenceIterator referenceIteratorWithReferenceArray:v7 workbook:v4];
+      references2 = [(CHDFormula *)self->mFormula references];
+      v8 = [EDReferenceIterator referenceIteratorWithReferenceArray:references2 workbook:workbookCopy];
 
-      v9 = [v8 nextCell];
-      if (!v9)
+      nextCell = [v8 nextCell];
+      if (!nextCell)
       {
 LABEL_9:
 
@@ -322,8 +322,8 @@ LABEL_9:
       }
 
       WeakRetained = objc_loadWeakRetained(&self->mResources);
-      v11 = styleForEDCell(v9, WeakRetained);
-      v9 = [v11 contentFormat];
+      v11 = styleForEDCell(nextCell, WeakRetained);
+      nextCell = [v11 contentFormat];
 
 LABEL_8:
       goto LABEL_9;
@@ -332,22 +332,22 @@ LABEL_8:
 
   if ([(CHDDataValuesCollection *)self->mDataValues count])
   {
-    v9 = [(CHDDataValuesCollection *)self->mDataValues dataPointAtIndex:0];
-    if (!v9)
+    nextCell = [(CHDDataValuesCollection *)self->mDataValues dataPointAtIndex:0];
+    if (!nextCell)
     {
       goto LABEL_11;
     }
 
     v8 = objc_loadWeakRetained(&self->mResources);
     WeakRetained = [v8 contentFormats];
-    v9 = [(EDResources *)WeakRetained objectWithKey:v9->contentFormatId];
+    nextCell = [(EDResources *)WeakRetained objectWithKey:nextCell->contentFormatId];
     goto LABEL_8;
   }
 
-  v9 = 0;
+  nextCell = 0;
 LABEL_11:
 
-  return v9;
+  return nextCell;
 }
 
 - (id)description

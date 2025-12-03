@@ -1,7 +1,7 @@
 @interface AssertionServiceClient
-- (BOOL)invalidate:(id)a3 error:(id *)a4;
+- (BOOL)invalidate:(id)invalidate error:(id *)error;
 - (_TtC11SessionCore22AssertionServiceClient)init;
-- (void)didInvalidate:(id)a3;
+- (void)didInvalidate:(id)invalidate;
 @end
 
 @implementation AssertionServiceClient
@@ -13,10 +13,10 @@
   return result;
 }
 
-- (BOOL)invalidate:(id)a3 error:(id *)a4
+- (BOOL)invalidate:(id)invalidate error:(id *)error
 {
-  v5 = a3;
-  v6 = self;
+  invalidateCopy = invalidate;
+  selfCopy = self;
   v7 = sub_22D0141EC();
   v9 = v8;
 
@@ -25,15 +25,15 @@
   return 1;
 }
 
-- (void)didInvalidate:(id)a3
+- (void)didInvalidate:(id)invalidate
 {
   v5 = sub_22D0154AC();
   v6 = *(v5 - 8);
   v7 = *(v6 + 64);
   MEMORY[0x28223BE20](v5, v8);
   v10 = &v17 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v11 = a3;
-  v12 = self;
+  invalidateCopy = invalidate;
+  selfCopy = self;
   v13 = sub_22D0141EC();
   v15 = v14;
 

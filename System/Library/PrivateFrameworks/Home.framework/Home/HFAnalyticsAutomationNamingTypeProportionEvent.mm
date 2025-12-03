@@ -1,15 +1,15 @@
 @interface HFAnalyticsAutomationNamingTypeProportionEvent
-- (HFAnalyticsAutomationNamingTypeProportionEvent)initWithData:(id)a3;
+- (HFAnalyticsAutomationNamingTypeProportionEvent)initWithData:(id)data;
 - (id)payload;
 @end
 
 @implementation HFAnalyticsAutomationNamingTypeProportionEvent
 
-- (HFAnalyticsAutomationNamingTypeProportionEvent)initWithData:(id)a3
+- (HFAnalyticsAutomationNamingTypeProportionEvent)initWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   objc_opt_class();
-  v5 = [v4 objectForKeyedSubscript:@"percentUsingConfiguredNameKey"];
+  v5 = [dataCopy objectForKeyedSubscript:@"percentUsingConfiguredNameKey"];
 
   if (objc_opt_isKindOfClass())
   {
@@ -39,11 +39,11 @@
 {
   v7.receiver = self;
   v7.super_class = HFAnalyticsAutomationNamingTypeProportionEvent;
-  v3 = [(HFAnalyticsEvent *)&v7 payload];
-  v4 = [v3 mutableCopy];
+  payload = [(HFAnalyticsEvent *)&v7 payload];
+  v4 = [payload mutableCopy];
 
-  v5 = [(HFAnalyticsAutomationNamingTypeProportionEvent *)self percentUsingConfiguredName];
-  [v4 na_safeSetObject:v5 forKey:@"percentType0"];
+  percentUsingConfiguredName = [(HFAnalyticsAutomationNamingTypeProportionEvent *)self percentUsingConfiguredName];
+  [v4 na_safeSetObject:percentUsingConfiguredName forKey:@"percentType0"];
 
   return v4;
 }

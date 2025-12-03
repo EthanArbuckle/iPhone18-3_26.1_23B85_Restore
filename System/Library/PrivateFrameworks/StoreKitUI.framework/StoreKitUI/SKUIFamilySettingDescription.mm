@@ -1,16 +1,16 @@
 @interface SKUIFamilySettingDescription
-- (SKUIFamilySettingDescription)initWithViewElement:(id)a3 parent:(id)a4;
+- (SKUIFamilySettingDescription)initWithViewElement:(id)element parent:(id)parent;
 - (void)_updateViewState;
-- (void)_updateWithViewState:(int64_t)a3;
-- (void)handleSelectionOnCompletion:(id)a3;
+- (void)_updateWithViewState:(int64_t)state;
+- (void)handleSelectionOnCompletion:(id)completion;
 @end
 
 @implementation SKUIFamilySettingDescription
 
-- (SKUIFamilySettingDescription)initWithViewElement:(id)a3 parent:(id)a4
+- (SKUIFamilySettingDescription)initWithViewElement:(id)element parent:(id)parent
 {
-  v6 = a3;
-  v7 = a4;
+  elementCopy = element;
+  parentCopy = parent;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIFamilySettingDescription initWithViewElement:parent:];
@@ -18,7 +18,7 @@
 
   v11.receiver = self;
   v11.super_class = SKUIFamilySettingDescription;
-  v8 = [(SKUISettingDescription *)&v11 initWithViewElement:v6 parent:v7];
+  v8 = [(SKUISettingDescription *)&v11 initWithViewElement:elementCopy parent:parentCopy];
   v9 = v8;
   if (v8)
   {
@@ -29,9 +29,9 @@
   return v9;
 }
 
-- (void)handleSelectionOnCompletion:(id)a3
+- (void)handleSelectionOnCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = self->_viewState + 1;
   if (v5 > 3)
   {
@@ -44,14 +44,14 @@
   }
 
   v7 = [objc_alloc(MEMORY[0x277CBEAC0]) initWithObjectsAndKeys:{v6, @"state", 0}];
-  v8 = [(SKUISettingDescription *)self viewElement];
+  viewElement = [(SKUISettingDescription *)self viewElement];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __60__SKUIFamilySettingDescription_handleSelectionOnCompletion___block_invoke;
   v10[3] = &unk_2781FA448;
-  v11 = v4;
-  v9 = v4;
-  [v8 dispatchEventOfType:2 canBubble:1 isCancelable:1 extraInfo:v7 completionBlock:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [viewElement dispatchEventOfType:2 canBubble:1 isCancelable:1 extraInfo:v7 completionBlock:v10];
 }
 
 - (void)_updateViewState
@@ -95,14 +95,14 @@ void __48__SKUIFamilySettingDescription__updateViewState__block_invoke_2(uint64_
   [WeakRetained _updateWithViewState:*(a1 + 40)];
 }
 
-- (void)_updateWithViewState:(int64_t)a3
+- (void)_updateWithViewState:(int64_t)state
 {
-  self->_viewState = a3;
-  if ((a3 - 1) >= 3)
+  self->_viewState = state;
+  if ((state - 1) >= 3)
   {
-    if (a3)
+    if (state)
     {
-      if (a3 == -1 && ![(SKUISettingDescription *)self _isHidden])
+      if (state == -1 && ![(SKUISettingDescription *)self _isHidden])
       {
 
         [(SKUISettingDescription *)self _hideSetting];

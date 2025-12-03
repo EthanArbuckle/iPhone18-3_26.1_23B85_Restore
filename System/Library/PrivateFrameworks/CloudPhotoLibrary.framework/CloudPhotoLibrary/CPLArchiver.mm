@@ -1,78 +1,78 @@
 @interface CPLArchiver
-+ (id)_displayableArrayForArray:(id)a3;
-+ (id)_displayableObjectForObject:(id)a3;
-+ (id)archivedDataWithRootObject:(id)a3;
-+ (id)archivedDataWithRootObject:(id)a3 usingBlock:(id)a4;
-+ (id)archivedPropertyListWithRootObject:(id)a3;
-+ (id)archivedPropertyListWithRootObject:(id)a3 usingBlock:(id)a4;
-+ (id)displayableDictionaryForDictionary:(id)a3;
-+ (id)displayablePropertyListWithRootObject:(id)a3;
-+ (id)fullDescriptionForObject:(id)a3;
-+ (id)unarchiveObjectWithData:(id)a3 ofClass:(Class)a4;
-+ (id)unarchivedObjectWithPropertyList:(id)a3 ofClass:(Class)a4;
++ (id)_displayableArrayForArray:(id)array;
++ (id)_displayableObjectForObject:(id)object;
++ (id)archivedDataWithRootObject:(id)object;
++ (id)archivedDataWithRootObject:(id)object usingBlock:(id)block;
++ (id)archivedPropertyListWithRootObject:(id)object;
++ (id)archivedPropertyListWithRootObject:(id)object usingBlock:(id)block;
++ (id)displayableDictionaryForDictionary:(id)dictionary;
++ (id)displayablePropertyListWithRootObject:(id)object;
++ (id)fullDescriptionForObject:(id)object;
++ (id)unarchiveObjectWithData:(id)data ofClass:(Class)class;
++ (id)unarchivedObjectWithPropertyList:(id)list ofClass:(Class)class;
 + (void)_initializeSmallKeyMapping;
-- (BOOL)containsValueForKey:(id)a3;
-- (BOOL)decodeBoolForKey:(id)a3;
-- (CGPoint)decodePointForKey:(id)a3;
-- (CGRect)decodeRectForKey:(id)a3;
-- (CGSize)decodeSizeForKey:(id)a3;
-- (CPLArchiver)initWithArchive:(id)a3 rootClass:(Class)a4;
-- (CPLArchiver)initWithRootObject:(id)a3 forDisplay:(BOOL)a4;
-- (CPLArchiver)initWithRootObject:(id)a3 forDisplay:(BOOL)a4 block:(id)a5;
+- (BOOL)containsValueForKey:(id)key;
+- (BOOL)decodeBoolForKey:(id)key;
+- (CGPoint)decodePointForKey:(id)key;
+- (CGRect)decodeRectForKey:(id)key;
+- (CGSize)decodeSizeForKey:(id)key;
+- (CPLArchiver)initWithArchive:(id)archive rootClass:(Class)class;
+- (CPLArchiver)initWithRootObject:(id)object forDisplay:(BOOL)display;
+- (CPLArchiver)initWithRootObject:(id)object forDisplay:(BOOL)display block:(id)block;
 - (IMP)_createContext;
 - (NSString)archiverContext;
-- (_BYTE)_encodeKey:(_BYTE *)a1;
-- (const)decodeBytesForKey:(id)a3 returnedLength:(unint64_t *)a4;
-- (double)decodeDoubleForKey:(id)a3;
-- (float)decodeFloatForKey:(id)a3;
-- (id)_decodeKey:(uint64_t)a3 class:(void *)a4 inDictionary:;
+- (_BYTE)_encodeKey:(_BYTE *)key;
+- (const)decodeBytesForKey:(id)key returnedLength:(unint64_t *)length;
+- (double)decodeDoubleForKey:(id)key;
+- (float)decodeFloatForKey:(id)key;
+- (id)_decodeKey:(uint64_t)key class:(void *)class inDictionary:;
 - (id)decodeObject;
-- (id)decodeObjectForKey:(id)a3;
-- (id)decodeObjectOfClass:(Class)a3 forKey:(id)a4;
-- (id)decodeObjectOfClasses:(id)a3 forKey:(id)a4;
+- (id)decodeObjectForKey:(id)key;
+- (id)decodeObjectOfClass:(Class)class forKey:(id)key;
+- (id)decodeObjectOfClasses:(id)classes forKey:(id)key;
 - (id)decodePropertyList;
-- (id)decodePropertyListForKey:(id)a3;
-- (int)decodeInt32ForKey:(id)a3;
-- (int)decodeIntForKey:(id)a3;
-- (int64_t)decodeInt64ForKey:(id)a3;
-- (int64_t)decodeIntegerForKey:(id)a3;
-- (void)decodeArrayOfObjCType:(const char *)a3 count:(unint64_t)a4 at:(void *)a5;
-- (void)decodeBytesWithReturnedLength:(unint64_t *)a3;
-- (void)decodeValuesOfObjCTypes:(const char *)a3;
-- (void)encodeArrayOfObjCType:(const char *)a3 count:(unint64_t)a4 at:(const void *)a5;
-- (void)encodeBool:(BOOL)a3 forKey:(id)a4;
-- (void)encodeBycopyObject:(id)a3;
-- (void)encodeByrefObject:(id)a3;
-- (void)encodeBytes:(const char *)a3 length:(unint64_t)a4 forKey:(id)a5;
-- (void)encodeBytes:(const void *)a3 length:(unint64_t)a4;
-- (void)encodeConditionalObject:(id)a3;
-- (void)encodeConditionalObject:(id)a3 forKey:(id)a4;
-- (void)encodeDouble:(double)a3 forKey:(id)a4;
-- (void)encodeFloat:(float)a3 forKey:(id)a4;
-- (void)encodeInt64:(int64_t)a3 forKey:(id)a4;
-- (void)encodeInteger:(int64_t)a3 forKey:(id)a4;
-- (void)encodeObject:(id)a3;
-- (void)encodeObject:(id)a3 forKey:(id)a4;
-- (void)encodePoint:(CGPoint)a3 forKey:(id)a4;
-- (void)encodePropertyList:(id)a3;
-- (void)encodeRect:(CGRect)a3 forKey:(id)a4;
-- (void)encodeRootObject:(id)a3;
-- (void)encodeSize:(CGSize)a3 forKey:(id)a4;
-- (void)encodeValuesOfObjCTypes:(const char *)a3;
+- (id)decodePropertyListForKey:(id)key;
+- (int)decodeInt32ForKey:(id)key;
+- (int)decodeIntForKey:(id)key;
+- (int64_t)decodeInt64ForKey:(id)key;
+- (int64_t)decodeIntegerForKey:(id)key;
+- (void)decodeArrayOfObjCType:(const char *)type count:(unint64_t)count at:(void *)at;
+- (void)decodeBytesWithReturnedLength:(unint64_t *)length;
+- (void)decodeValuesOfObjCTypes:(const char *)types;
+- (void)encodeArrayOfObjCType:(const char *)type count:(unint64_t)count at:(const void *)at;
+- (void)encodeBool:(BOOL)bool forKey:(id)key;
+- (void)encodeBycopyObject:(id)object;
+- (void)encodeByrefObject:(id)object;
+- (void)encodeBytes:(const char *)bytes length:(unint64_t)length forKey:(id)key;
+- (void)encodeBytes:(const void *)bytes length:(unint64_t)length;
+- (void)encodeConditionalObject:(id)object;
+- (void)encodeConditionalObject:(id)object forKey:(id)key;
+- (void)encodeDouble:(double)double forKey:(id)key;
+- (void)encodeFloat:(float)float forKey:(id)key;
+- (void)encodeInt64:(int64_t)int64 forKey:(id)key;
+- (void)encodeInteger:(int64_t)integer forKey:(id)key;
+- (void)encodeObject:(id)object;
+- (void)encodeObject:(id)object forKey:(id)key;
+- (void)encodePoint:(CGPoint)point forKey:(id)key;
+- (void)encodePropertyList:(id)list;
+- (void)encodeRect:(CGRect)rect forKey:(id)key;
+- (void)encodeRootObject:(id)object;
+- (void)encodeSize:(CGSize)size forKey:(id)key;
+- (void)encodeValuesOfObjCTypes:(const char *)types;
 @end
 
 @implementation CPLArchiver
 
-- (CGRect)decodeRectForKey:(id)a3
+- (CGRect)decodeRectForKey:(id)key
 {
   v54 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  keyCopy = key;
   if (_smallKeyOnce != -1)
   {
     dispatch_once(&_smallKeyOnce, &__block_literal_global_1801);
   }
 
-  v6 = [_keyToSmallKeyMapping objectForKey:v5];
+  v6 = [_keyToSmallKeyMapping objectForKey:keyCopy];
   archiveCursor = self->_archiveCursor;
   if (v6)
   {
@@ -85,7 +85,7 @@
 
     else
     {
-      v10 = [self->_archiveCursor objectForKeyedSubscript:v5];
+      v10 = [self->_archiveCursor objectForKeyedSubscript:keyCopy];
     }
 
     v11 = v10;
@@ -93,7 +93,7 @@
 
   else
   {
-    v11 = [archiveCursor objectForKeyedSubscript:v5];
+    v11 = [archiveCursor objectForKeyedSubscript:keyCopy];
   }
 
   if (self->_archiveCursor)
@@ -106,13 +106,13 @@
         v30 = __CPLGenericOSLogDomain();
         if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
         {
-          v31 = [(CPLArchiver *)self archiverContext];
+          archiverContext = [(CPLArchiver *)self archiverContext];
           v32 = NSStringFromSelector(a2);
           v33 = self->_archiveCursor;
           v34 = objc_opt_class();
           v35 = self->_archiveCursor;
           *buf = 138413058;
-          v47 = v31;
+          v47 = archiverContext;
           v48 = 2112;
           v49 = v32;
           v50 = 2112;
@@ -170,16 +170,16 @@
   return result;
 }
 
-- (CGSize)decodeSizeForKey:(id)a3
+- (CGSize)decodeSizeForKey:(id)key
 {
   v46 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  keyCopy = key;
   if (_smallKeyOnce != -1)
   {
     dispatch_once(&_smallKeyOnce, &__block_literal_global_1799);
   }
 
-  v6 = [_keyToSmallKeyMapping objectForKey:v5];
+  v6 = [_keyToSmallKeyMapping objectForKey:keyCopy];
   archiveCursor = self->_archiveCursor;
   if (v6)
   {
@@ -192,7 +192,7 @@
 
     else
     {
-      v10 = [self->_archiveCursor objectForKeyedSubscript:v5];
+      v10 = [self->_archiveCursor objectForKeyedSubscript:keyCopy];
     }
 
     v11 = v10;
@@ -200,7 +200,7 @@
 
   else
   {
-    v11 = [archiveCursor objectForKeyedSubscript:v5];
+    v11 = [archiveCursor objectForKeyedSubscript:keyCopy];
   }
 
   if (self->_archiveCursor)
@@ -213,13 +213,13 @@
         v22 = __CPLGenericOSLogDomain();
         if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
         {
-          v23 = [(CPLArchiver *)self archiverContext];
+          archiverContext = [(CPLArchiver *)self archiverContext];
           v24 = NSStringFromSelector(a2);
           v25 = self->_archiveCursor;
           v26 = objc_opt_class();
           v27 = self->_archiveCursor;
           *buf = 138413058;
-          v39 = v23;
+          v39 = archiverContext;
           v40 = 2112;
           v41 = v24;
           v42 = 2112;
@@ -263,16 +263,16 @@
   return result;
 }
 
-- (CGPoint)decodePointForKey:(id)a3
+- (CGPoint)decodePointForKey:(id)key
 {
   v46 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  keyCopy = key;
   if (_smallKeyOnce != -1)
   {
     dispatch_once(&_smallKeyOnce, &__block_literal_global_1794);
   }
 
-  v6 = [_keyToSmallKeyMapping objectForKey:v5];
+  v6 = [_keyToSmallKeyMapping objectForKey:keyCopy];
   archiveCursor = self->_archiveCursor;
   if (v6)
   {
@@ -285,7 +285,7 @@
 
     else
     {
-      v10 = [self->_archiveCursor objectForKeyedSubscript:v5];
+      v10 = [self->_archiveCursor objectForKeyedSubscript:keyCopy];
     }
 
     v11 = v10;
@@ -293,7 +293,7 @@
 
   else
   {
-    v11 = [archiveCursor objectForKeyedSubscript:v5];
+    v11 = [archiveCursor objectForKeyedSubscript:keyCopy];
   }
 
   if (self->_archiveCursor)
@@ -306,13 +306,13 @@
         v22 = __CPLGenericOSLogDomain();
         if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
         {
-          v23 = [(CPLArchiver *)self archiverContext];
+          archiverContext = [(CPLArchiver *)self archiverContext];
           v24 = NSStringFromSelector(a2);
           v25 = self->_archiveCursor;
           v26 = objc_opt_class();
           v27 = self->_archiveCursor;
           *buf = 138413058;
-          v39 = v23;
+          v39 = archiverContext;
           v40 = 2112;
           v41 = v24;
           v42 = 2112;
@@ -356,18 +356,18 @@
   return result;
 }
 
-- (void)encodeRect:(CGRect)a3 forKey:(id)a4
+- (void)encodeRect:(CGRect)rect forKey:(id)key
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v25[4] = *MEMORY[0x1E69E9840];
-  v9 = a4;
-  v10 = v9;
+  keyCopy = key;
+  v10 = keyCopy;
   if (self->_forDisplay)
   {
-    v11 = v9;
+    v11 = keyCopy;
 LABEL_10:
     archiveCursor = self->_archiveCursor;
     v26.origin.x = x;
@@ -433,16 +433,16 @@ LABEL_11:
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)encodeSize:(CGSize)a3 forKey:(id)a4
+- (void)encodeSize:(CGSize)size forKey:(id)key
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v21[2] = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = v7;
+  keyCopy = key;
+  v8 = keyCopy;
   if (self->_forDisplay)
   {
-    v9 = v7;
+    v9 = keyCopy;
 LABEL_10:
     archiveCursor = self->_archiveCursor;
     v22.width = width;
@@ -498,16 +498,16 @@ LABEL_11:
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)encodePoint:(CGPoint)a3 forKey:(id)a4
+- (void)encodePoint:(CGPoint)point forKey:(id)key
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v21[2] = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = v7;
+  keyCopy = key;
+  v8 = keyCopy;
   if (self->_forDisplay)
   {
-    v9 = v7;
+    v9 = keyCopy;
 LABEL_10:
     archiveCursor = self->_archiveCursor;
     v22.x = x;
@@ -563,16 +563,16 @@ LABEL_11:
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (id)decodePropertyListForKey:(id)a3
+- (id)decodePropertyListForKey:(id)key
 {
   v32 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  keyCopy = key;
   if (_smallKeyOnce != -1)
   {
     dispatch_once(&_smallKeyOnce, &__block_literal_global_1774);
   }
 
-  v6 = [_keyToSmallKeyMapping objectForKey:v5];
+  v6 = [_keyToSmallKeyMapping objectForKey:keyCopy];
   archiveCursor = self->_archiveCursor;
   if (v6)
   {
@@ -585,35 +585,35 @@ LABEL_11:
 
     else
     {
-      [self->_archiveCursor objectForKeyedSubscript:v5];
+      [self->_archiveCursor objectForKeyedSubscript:keyCopy];
       objc_claimAutoreleasedReturnValue();
     }
   }
 
   else
   {
-    [archiveCursor objectForKeyedSubscript:v5];
+    [archiveCursor objectForKeyedSubscript:keyCopy];
     objc_claimAutoreleasedReturnValue();
   }
 
-  (self->_pushContext)(self->_context, sel_addObject_, v5);
+  (self->_pushContext)(self->_context, sel_addObject_, keyCopy);
   if ((_CPLSilentLogging & 1) == 0)
   {
     v11 = __CPLGenericOSLogDomain();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      v12 = [(CPLArchiver *)self archiverContext];
+      archiverContext = [(CPLArchiver *)self archiverContext];
       v13 = objc_opt_class();
       v14 = v13;
       v15 = NSStringFromSelector(a2);
       *buf = 138413058;
-      v25 = v12;
+      v25 = archiverContext;
       v26 = 2112;
       v27 = v13;
       v28 = 2112;
       v29 = v15;
       v30 = 2112;
-      v31 = v5;
+      v31 = keyCopy;
       _os_log_impl(&dword_1DC05A000, v11, OS_LOG_TYPE_ERROR, "%@: %@ does not support %@ (key: %@)", buf, 0x2Au);
     }
   }
@@ -624,17 +624,17 @@ LABEL_11:
   _CPLArchiverFailure(self, @"%@ does not support %@ (key: %@)", v17, v18, v19, v20, v21, v22, v16);
 }
 
-- (id)decodeObjectOfClasses:(id)a3 forKey:(id)a4
+- (id)decodeObjectOfClasses:(id)classes forKey:(id)key
 {
   v78 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  classesCopy = classes;
+  keyCopy = key;
   if (_smallKeyOnce != -1)
   {
     dispatch_once(&_smallKeyOnce, &__block_literal_global_1766);
   }
 
-  v9 = [_keyToSmallKeyMapping objectForKey:v8];
+  v9 = [_keyToSmallKeyMapping objectForKey:keyCopy];
   archiveCursor = self->_archiveCursor;
   if (v9)
   {
@@ -647,7 +647,7 @@ LABEL_11:
 
     else
     {
-      v13 = [self->_archiveCursor objectForKeyedSubscript:v8];
+      v13 = [self->_archiveCursor objectForKeyedSubscript:keyCopy];
     }
 
     v14 = v13;
@@ -655,13 +655,13 @@ LABEL_11:
 
   else
   {
-    v14 = [archiveCursor objectForKeyedSubscript:v8];
+    v14 = [archiveCursor objectForKeyedSubscript:keyCopy];
   }
 
-  if ([v7 count] == 1)
+  if ([classesCopy count] == 1)
   {
-    v15 = [v7 anyObject];
-    v16 = [(CPLArchiver *)self decodeObjectOfClass:v15 forKey:v8];
+    anyObject = [classesCopy anyObject];
+    v16 = [(CPLArchiver *)self decodeObjectOfClass:anyObject forKey:keyCopy];
   }
 
   else
@@ -669,24 +669,24 @@ LABEL_11:
     v17 = v14;
     if (v17)
     {
-      if (([v7 containsObject:objc_opt_class()] & 1) == 0 && !objc_msgSend(v7, "containsObject:", objc_opt_class()))
+      if (([classesCopy containsObject:objc_opt_class()] & 1) == 0 && !objc_msgSend(classesCopy, "containsObject:", objc_opt_class()))
       {
         v45 = self->_archiveCursor;
         v46 = self->_archiveCursor;
         self->_archiveCursor = 0;
 
-        (self->_pushContext)(self->_context, sel_addObject_, v8);
+        (self->_pushContext)(self->_context, sel_addObject_, keyCopy);
         if ((_CPLSilentLogging & 1) == 0)
         {
           v47 = __CPLGenericOSLogDomain();
           if (os_log_type_enabled(v47, OS_LOG_TYPE_ERROR))
           {
-            v48 = [(CPLArchiver *)self archiverContext];
+            archiverContext = [(CPLArchiver *)self archiverContext];
             v49 = NSStringFromSelector(a2);
             *buf = 138412802;
-            v73 = v48;
+            v73 = archiverContext;
             v74 = 2112;
-            v75 = v7;
+            v75 = classesCopy;
             v76 = 2112;
             v77 = v49;
             _os_log_impl(&dword_1DC05A000, v47, OS_LOG_TYPE_ERROR, "%@: %@ is not supported for %@", buf, 0x20u);
@@ -695,7 +695,7 @@ LABEL_11:
 
         NSStringFromSelector(a2);
         objc_claimAutoreleasedReturnValue();
-        _CPLArchiverFailure(self, @"%@ is not supported for %@", v50, v51, v52, v53, v54, v55, v7);
+        _CPLArchiverFailure(self, @"%@ is not supported for %@", v50, v51, v52, v53, v54, v55, classesCopy);
       }
 
       v60 = v17;
@@ -709,9 +709,9 @@ LABEL_11:
           v36 = __CPLGenericOSLogDomain();
           if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
           {
-            v37 = [(CPLArchiver *)self archiverContext];
+            archiverContext2 = [(CPLArchiver *)self archiverContext];
             *buf = 138412802;
-            v73 = v37;
+            v73 = archiverContext2;
             v74 = 2112;
             v75 = objc_opt_class();
             v76 = 2112;
@@ -730,13 +730,13 @@ LABEL_11:
       v19 = self->_archiveCursor;
       self->_archiveCursor = 0;
 
-      (self->_pushContext)(self->_context, sel_addObject_, v8);
+      (self->_pushContext)(self->_context, sel_addObject_, keyCopy);
       v68 = 0u;
       v69 = 0u;
       v66 = 0u;
       v67 = 0u;
-      v59 = v7;
-      v20 = v7;
+      v59 = classesCopy;
+      v20 = classesCopy;
       v21 = [v20 countByEnumeratingWithState:&v66 objects:v71 count:16];
       if (v21)
       {
@@ -824,7 +824,7 @@ LABEL_17:
       self->_archiveCursor = v57;
 
       v14 = v58;
-      v7 = v59;
+      classesCopy = v59;
       v17 = v60;
     }
 
@@ -839,15 +839,15 @@ LABEL_17:
   return v16;
 }
 
-- (id)decodeObjectOfClass:(Class)a3 forKey:(id)a4
+- (id)decodeObjectOfClass:(Class)class forKey:(id)key
 {
-  v6 = a4;
+  keyCopy = key;
   if (_smallKeyOnce != -1)
   {
     dispatch_once(&_smallKeyOnce, &__block_literal_global_1764);
   }
 
-  v7 = [_keyToSmallKeyMapping objectForKey:v6];
+  v7 = [_keyToSmallKeyMapping objectForKey:keyCopy];
   archiveCursor = self->_archiveCursor;
   if (v7)
   {
@@ -860,7 +860,7 @@ LABEL_17:
 
     else
     {
-      v11 = [self->_archiveCursor objectForKeyedSubscript:v6];
+      v11 = [self->_archiveCursor objectForKeyedSubscript:keyCopy];
     }
 
     v12 = v11;
@@ -868,7 +868,7 @@ LABEL_17:
 
   else
   {
-    v12 = [archiveCursor objectForKeyedSubscript:v6];
+    v12 = [archiveCursor objectForKeyedSubscript:keyCopy];
   }
 
   v13 = v12;
@@ -876,9 +876,9 @@ LABEL_17:
   {
     v14 = self->_archiveCursor;
     objc_storeStrong(&self->_archiveCursor, v12);
-    (self->_pushContext)(self->_context, sel_addObject_, v6);
-    (self->_pushContext)(self->_context, sel_addObject_, a3);
-    v15 = [[a3 alloc] initWithCPLArchiver:self];
+    (self->_pushContext)(self->_context, sel_addObject_, keyCopy);
+    (self->_pushContext)(self->_context, sel_addObject_, class);
+    v15 = [[class alloc] initWithCPLArchiver:self];
     (self->_popContext)(self->_context, sel_removeLastObject);
     (self->_popContext)(self->_context, sel_removeLastObject);
     v16 = self->_archiveCursor;
@@ -893,15 +893,15 @@ LABEL_17:
   return v15;
 }
 
-- (int64_t)decodeIntegerForKey:(id)a3
+- (int64_t)decodeIntegerForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   if (_smallKeyOnce != -1)
   {
     dispatch_once(&_smallKeyOnce, &__block_literal_global_1762);
   }
 
-  v5 = [_keyToSmallKeyMapping objectForKey:v4];
+  v5 = [_keyToSmallKeyMapping objectForKey:keyCopy];
   archiveCursor = self->_archiveCursor;
   if (v5)
   {
@@ -914,7 +914,7 @@ LABEL_17:
 
     else
     {
-      v9 = [self->_archiveCursor objectForKeyedSubscript:v4];
+      v9 = [self->_archiveCursor objectForKeyedSubscript:keyCopy];
     }
 
     v10 = v9;
@@ -922,20 +922,20 @@ LABEL_17:
 
   else
   {
-    v10 = [archiveCursor objectForKeyedSubscript:v4];
+    v10 = [archiveCursor objectForKeyedSubscript:keyCopy];
   }
 
-  v11 = [v10 integerValue];
-  return v11;
+  integerValue = [v10 integerValue];
+  return integerValue;
 }
 
-- (void)encodeInteger:(int64_t)a3 forKey:(id)a4
+- (void)encodeInteger:(int64_t)integer forKey:(id)key
 {
-  v6 = a4;
-  v7 = v6;
+  keyCopy = key;
+  v7 = keyCopy;
   if (!self->_forDisplay)
   {
-    v13 = v6;
+    v13 = keyCopy;
     if (_smallKeyOnce != -1)
     {
       dispatch_once(&_smallKeyOnce, &__block_literal_global_1760);
@@ -958,27 +958,27 @@ LABEL_17:
     v7 = v10;
   }
 
-  if (a3)
+  if (integer)
   {
     archiveCursor = self->_archiveCursor;
     v14 = v7;
-    v12 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+    v12 = [MEMORY[0x1E696AD98] numberWithInteger:integer];
     [archiveCursor setObject:v12 forKey:v14];
   }
 
   MEMORY[0x1EEE66C30]();
 }
 
-- (const)decodeBytesForKey:(id)a3 returnedLength:(unint64_t *)a4
+- (const)decodeBytesForKey:(id)key returnedLength:(unint64_t *)length
 {
   v33 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  keyCopy = key;
   if (_smallKeyOnce != -1)
   {
     dispatch_once(&_smallKeyOnce, &__block_literal_global_1758);
   }
 
-  v7 = [_keyToSmallKeyMapping objectForKey:v6];
+  v7 = [_keyToSmallKeyMapping objectForKey:keyCopy];
   archiveCursor = self->_archiveCursor;
   if (v7)
   {
@@ -991,35 +991,35 @@ LABEL_17:
 
     else
     {
-      [self->_archiveCursor objectForKeyedSubscript:v6];
+      [self->_archiveCursor objectForKeyedSubscript:keyCopy];
       objc_claimAutoreleasedReturnValue();
     }
   }
 
   else
   {
-    [archiveCursor objectForKeyedSubscript:v6];
+    [archiveCursor objectForKeyedSubscript:keyCopy];
     objc_claimAutoreleasedReturnValue();
   }
 
-  (self->_pushContext)(self->_context, sel_addObject_, v6);
+  (self->_pushContext)(self->_context, sel_addObject_, keyCopy);
   if ((_CPLSilentLogging & 1) == 0)
   {
     v12 = __CPLGenericOSLogDomain();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      v13 = [(CPLArchiver *)self archiverContext];
+      archiverContext = [(CPLArchiver *)self archiverContext];
       v14 = objc_opt_class();
       v15 = v14;
       v16 = NSStringFromSelector(a2);
       *buf = 138413058;
-      v26 = v13;
+      v26 = archiverContext;
       v27 = 2112;
       v28 = v14;
       v29 = 2112;
       v30 = v16;
       v31 = 2112;
-      v32 = v6;
+      v32 = keyCopy;
       _os_log_impl(&dword_1DC05A000, v12, OS_LOG_TYPE_ERROR, "%@: %@ does not support %@ (key: %@)", buf, 0x2Au);
     }
   }
@@ -1030,15 +1030,15 @@ LABEL_17:
   _CPLArchiverFailure(self, @"%@ does not support %@ (key: %@)", v18, v19, v20, v21, v22, v23, v17);
 }
 
-- (double)decodeDoubleForKey:(id)a3
+- (double)decodeDoubleForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   if (_smallKeyOnce != -1)
   {
     dispatch_once(&_smallKeyOnce, &__block_literal_global_1756);
   }
 
-  v5 = [_keyToSmallKeyMapping objectForKey:v4];
+  v5 = [_keyToSmallKeyMapping objectForKey:keyCopy];
   archiveCursor = self->_archiveCursor;
   if (v5)
   {
@@ -1051,7 +1051,7 @@ LABEL_17:
 
     else
     {
-      v9 = [self->_archiveCursor objectForKeyedSubscript:v4];
+      v9 = [self->_archiveCursor objectForKeyedSubscript:keyCopy];
     }
 
     v10 = v9;
@@ -1059,7 +1059,7 @@ LABEL_17:
 
   else
   {
-    v10 = [archiveCursor objectForKeyedSubscript:v4];
+    v10 = [archiveCursor objectForKeyedSubscript:keyCopy];
   }
 
   [v10 doubleValue];
@@ -1068,15 +1068,15 @@ LABEL_17:
   return v12;
 }
 
-- (float)decodeFloatForKey:(id)a3
+- (float)decodeFloatForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   if (_smallKeyOnce != -1)
   {
     dispatch_once(&_smallKeyOnce, &__block_literal_global_1754);
   }
 
-  v5 = [_keyToSmallKeyMapping objectForKey:v4];
+  v5 = [_keyToSmallKeyMapping objectForKey:keyCopy];
   archiveCursor = self->_archiveCursor;
   if (v5)
   {
@@ -1089,7 +1089,7 @@ LABEL_17:
 
     else
     {
-      v9 = [self->_archiveCursor objectForKeyedSubscript:v4];
+      v9 = [self->_archiveCursor objectForKeyedSubscript:keyCopy];
     }
 
     v10 = v9;
@@ -1097,7 +1097,7 @@ LABEL_17:
 
   else
   {
-    v10 = [archiveCursor objectForKeyedSubscript:v4];
+    v10 = [archiveCursor objectForKeyedSubscript:keyCopy];
   }
 
   [v10 floatValue];
@@ -1106,15 +1106,15 @@ LABEL_17:
   return v12;
 }
 
-- (int64_t)decodeInt64ForKey:(id)a3
+- (int64_t)decodeInt64ForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   if (_smallKeyOnce != -1)
   {
     dispatch_once(&_smallKeyOnce, &__block_literal_global_1752);
   }
 
-  v5 = [_keyToSmallKeyMapping objectForKey:v4];
+  v5 = [_keyToSmallKeyMapping objectForKey:keyCopy];
   archiveCursor = self->_archiveCursor;
   if (v5)
   {
@@ -1127,7 +1127,7 @@ LABEL_17:
 
     else
     {
-      v9 = [self->_archiveCursor objectForKeyedSubscript:v4];
+      v9 = [self->_archiveCursor objectForKeyedSubscript:keyCopy];
     }
 
     v10 = v9;
@@ -1135,22 +1135,22 @@ LABEL_17:
 
   else
   {
-    v10 = [archiveCursor objectForKeyedSubscript:v4];
+    v10 = [archiveCursor objectForKeyedSubscript:keyCopy];
   }
 
-  v11 = [v10 longLongValue];
-  return v11;
+  longLongValue = [v10 longLongValue];
+  return longLongValue;
 }
 
-- (int)decodeInt32ForKey:(id)a3
+- (int)decodeInt32ForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   if (_smallKeyOnce != -1)
   {
     dispatch_once(&_smallKeyOnce, &__block_literal_global_1750);
   }
 
-  v5 = [_keyToSmallKeyMapping objectForKey:v4];
+  v5 = [_keyToSmallKeyMapping objectForKey:keyCopy];
   archiveCursor = self->_archiveCursor;
   if (v5)
   {
@@ -1163,7 +1163,7 @@ LABEL_17:
 
     else
     {
-      v9 = [self->_archiveCursor objectForKeyedSubscript:v4];
+      v9 = [self->_archiveCursor objectForKeyedSubscript:keyCopy];
     }
 
     v10 = v9;
@@ -1171,22 +1171,22 @@ LABEL_17:
 
   else
   {
-    v10 = [archiveCursor objectForKeyedSubscript:v4];
+    v10 = [archiveCursor objectForKeyedSubscript:keyCopy];
   }
 
-  v11 = [v10 intValue];
-  return v11;
+  intValue = [v10 intValue];
+  return intValue;
 }
 
-- (int)decodeIntForKey:(id)a3
+- (int)decodeIntForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   if (_smallKeyOnce != -1)
   {
     dispatch_once(&_smallKeyOnce, &__block_literal_global_1748);
   }
 
-  v5 = [_keyToSmallKeyMapping objectForKey:v4];
+  v5 = [_keyToSmallKeyMapping objectForKey:keyCopy];
   archiveCursor = self->_archiveCursor;
   if (v5)
   {
@@ -1199,7 +1199,7 @@ LABEL_17:
 
     else
     {
-      v9 = [self->_archiveCursor objectForKeyedSubscript:v4];
+      v9 = [self->_archiveCursor objectForKeyedSubscript:keyCopy];
     }
 
     v10 = v9;
@@ -1207,22 +1207,22 @@ LABEL_17:
 
   else
   {
-    v10 = [archiveCursor objectForKeyedSubscript:v4];
+    v10 = [archiveCursor objectForKeyedSubscript:keyCopy];
   }
 
-  v11 = [v10 intValue];
-  return v11;
+  intValue = [v10 intValue];
+  return intValue;
 }
 
-- (BOOL)decodeBoolForKey:(id)a3
+- (BOOL)decodeBoolForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   if (_smallKeyOnce != -1)
   {
     dispatch_once(&_smallKeyOnce, &__block_literal_global_1746);
   }
 
-  v5 = [_keyToSmallKeyMapping objectForKey:v4];
+  v5 = [_keyToSmallKeyMapping objectForKey:keyCopy];
   archiveCursor = self->_archiveCursor;
   if (v5)
   {
@@ -1235,7 +1235,7 @@ LABEL_17:
 
     else
     {
-      v9 = [self->_archiveCursor objectForKeyedSubscript:v4];
+      v9 = [self->_archiveCursor objectForKeyedSubscript:keyCopy];
     }
 
     v10 = v9;
@@ -1243,23 +1243,23 @@ LABEL_17:
 
   else
   {
-    v10 = [archiveCursor objectForKeyedSubscript:v4];
+    v10 = [archiveCursor objectForKeyedSubscript:keyCopy];
   }
 
-  v11 = [v10 BOOLValue];
-  return v11;
+  bOOLValue = [v10 BOOLValue];
+  return bOOLValue;
 }
 
-- (id)decodeObjectForKey:(id)a3
+- (id)decodeObjectForKey:(id)key
 {
   v32 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  keyCopy = key;
   if (_smallKeyOnce != -1)
   {
     dispatch_once(&_smallKeyOnce, &__block_literal_global_1744);
   }
 
-  v6 = [_keyToSmallKeyMapping objectForKey:v5];
+  v6 = [_keyToSmallKeyMapping objectForKey:keyCopy];
   archiveCursor = self->_archiveCursor;
   if (v6)
   {
@@ -1272,35 +1272,35 @@ LABEL_17:
 
     else
     {
-      [self->_archiveCursor objectForKeyedSubscript:v5];
+      [self->_archiveCursor objectForKeyedSubscript:keyCopy];
       objc_claimAutoreleasedReturnValue();
     }
   }
 
   else
   {
-    [archiveCursor objectForKeyedSubscript:v5];
+    [archiveCursor objectForKeyedSubscript:keyCopy];
     objc_claimAutoreleasedReturnValue();
   }
 
-  (self->_pushContext)(self->_context, sel_addObject_, v5);
+  (self->_pushContext)(self->_context, sel_addObject_, keyCopy);
   if ((_CPLSilentLogging & 1) == 0)
   {
     v11 = __CPLGenericOSLogDomain();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      v12 = [(CPLArchiver *)self archiverContext];
+      archiverContext = [(CPLArchiver *)self archiverContext];
       v13 = objc_opt_class();
       v14 = v13;
       v15 = NSStringFromSelector(a2);
       *buf = 138413058;
-      v25 = v12;
+      v25 = archiverContext;
       v26 = 2112;
       v27 = v13;
       v28 = 2112;
       v29 = v15;
       v30 = 2112;
-      v31 = v5;
+      v31 = keyCopy;
       _os_log_impl(&dword_1DC05A000, v11, OS_LOG_TYPE_ERROR, "%@: %@ does not support %@ (key: %@)", buf, 0x2Au);
     }
   }
@@ -1311,18 +1311,18 @@ LABEL_17:
   _CPLArchiverFailure(self, @"%@ does not support %@ (key: %@)", v17, v18, v19, v20, v21, v22, v16);
 }
 
-- (BOOL)containsValueForKey:(id)a3
+- (BOOL)containsValueForKey:(id)key
 {
-  v3 = [self->_archiveCursor objectForKeyedSubscript:a3];
+  v3 = [self->_archiveCursor objectForKeyedSubscript:key];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (void)encodeBytes:(const char *)a3 length:(unint64_t)a4 forKey:(id)a5
+- (void)encodeBytes:(const char *)bytes length:(unint64_t)length forKey:(id)key
 {
   v32 = *MEMORY[0x1E69E9840];
-  v7 = a5;
+  keyCopy = key;
   if (!self->_forDisplay)
   {
     if (_smallKeyOnce != -1)
@@ -1330,7 +1330,7 @@ LABEL_17:
       dispatch_once(&_smallKeyOnce, &__block_literal_global_1742);
     }
 
-    v8 = [_keyToSmallKeyMapping objectForKey:v7];
+    v8 = [_keyToSmallKeyMapping objectForKey:keyCopy];
     v9 = v8;
     if (v8)
     {
@@ -1339,32 +1339,32 @@ LABEL_17:
 
     else
     {
-      v10 = v7;
+      v10 = keyCopy;
     }
 
     v11 = v10;
 
-    v7 = v11;
+    keyCopy = v11;
   }
 
-  (self->_pushContext)(self->_context, sel_addObject_, v7);
+  (self->_pushContext)(self->_context, sel_addObject_, keyCopy);
   if ((_CPLSilentLogging & 1) == 0)
   {
     v12 = __CPLGenericOSLogDomain();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      v13 = [(CPLArchiver *)self archiverContext];
+      archiverContext = [(CPLArchiver *)self archiverContext];
       v14 = objc_opt_class();
       v15 = v14;
       v16 = NSStringFromSelector(a2);
       *buf = 138413058;
-      v25 = v13;
+      v25 = archiverContext;
       v26 = 2112;
       v27 = v14;
       v28 = 2112;
       v29 = v16;
       v30 = 2112;
-      v31 = v7;
+      v31 = keyCopy;
       _os_log_impl(&dword_1DC05A000, v12, OS_LOG_TYPE_ERROR, "%@: %@ does not support %@ (key: %@)", buf, 0x2Au);
     }
   }
@@ -1375,13 +1375,13 @@ LABEL_17:
   _CPLArchiverFailure(self, @"%@ does not support %@ (key: %@)", v18, v19, v20, v21, v22, v23, v17);
 }
 
-- (void)encodeDouble:(double)a3 forKey:(id)a4
+- (void)encodeDouble:(double)double forKey:(id)key
 {
-  v6 = a4;
-  v7 = v6;
+  keyCopy = key;
+  v7 = keyCopy;
   if (!self->_forDisplay)
   {
-    v13 = v6;
+    v13 = keyCopy;
     if (_smallKeyOnce != -1)
     {
       dispatch_once(&_smallKeyOnce, &__block_literal_global_1740);
@@ -1403,24 +1403,24 @@ LABEL_17:
     v7 = v10;
   }
 
-  if (a3 != 0.0)
+  if (double != 0.0)
   {
     archiveCursor = self->_archiveCursor;
     v14 = v7;
-    v12 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+    v12 = [MEMORY[0x1E696AD98] numberWithDouble:double];
     [archiveCursor setObject:v12 forKey:v14];
   }
 
   MEMORY[0x1EEE66BE0]();
 }
 
-- (void)encodeFloat:(float)a3 forKey:(id)a4
+- (void)encodeFloat:(float)float forKey:(id)key
 {
-  v6 = a4;
-  v8 = v6;
+  keyCopy = key;
+  v8 = keyCopy;
   if (!self->_forDisplay)
   {
-    v14 = v6;
+    v14 = keyCopy;
     if (_smallKeyOnce != -1)
     {
       dispatch_once(&_smallKeyOnce, &__block_literal_global_1738);
@@ -1442,10 +1442,10 @@ LABEL_17:
     v8 = v11;
   }
 
-  if (a3 != 0.0)
+  if (float != 0.0)
   {
     archiveCursor = self->_archiveCursor;
-    *&v7 = a3;
+    *&v7 = float;
     v15 = v8;
     v13 = [MEMORY[0x1E696AD98] numberWithFloat:v7];
     [archiveCursor setObject:v13 forKey:v15];
@@ -1454,13 +1454,13 @@ LABEL_17:
   MEMORY[0x1EEE66BE0]();
 }
 
-- (void)encodeInt64:(int64_t)a3 forKey:(id)a4
+- (void)encodeInt64:(int64_t)int64 forKey:(id)key
 {
-  v6 = a4;
-  v7 = v6;
+  keyCopy = key;
+  v7 = keyCopy;
   if (!self->_forDisplay)
   {
-    v13 = v6;
+    v13 = keyCopy;
     if (_smallKeyOnce != -1)
     {
       dispatch_once(&_smallKeyOnce, &__block_literal_global_1736);
@@ -1483,25 +1483,25 @@ LABEL_17:
     v7 = v10;
   }
 
-  if (a3)
+  if (int64)
   {
     archiveCursor = self->_archiveCursor;
     v14 = v7;
-    v12 = [MEMORY[0x1E696AD98] numberWithLongLong:a3];
+    v12 = [MEMORY[0x1E696AD98] numberWithLongLong:int64];
     [archiveCursor setObject:v12 forKey:v14];
   }
 
   MEMORY[0x1EEE66C30]();
 }
 
-- (void)encodeBool:(BOOL)a3 forKey:(id)a4
+- (void)encodeBool:(BOOL)bool forKey:(id)key
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = v6;
+  boolCopy = bool;
+  keyCopy = key;
+  v7 = keyCopy;
   if (!self->_forDisplay)
   {
-    v13 = v6;
+    v13 = keyCopy;
     if (_smallKeyOnce != -1)
     {
       dispatch_once(&_smallKeyOnce, &__block_literal_global_1729);
@@ -1523,7 +1523,7 @@ LABEL_17:
     v7 = v10;
   }
 
-  if (v4)
+  if (boolCopy)
   {
     archiveCursor = self->_archiveCursor;
     v14 = v7;
@@ -1534,11 +1534,11 @@ LABEL_17:
   MEMORY[0x1EEE66BE0]();
 }
 
-- (void)encodeConditionalObject:(id)a3 forKey:(id)a4
+- (void)encodeConditionalObject:(id)object forKey:(id)key
 {
   v33 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  objectCopy = object;
+  keyCopy = key;
   if (!self->_forDisplay)
   {
     if (_smallKeyOnce != -1)
@@ -1546,7 +1546,7 @@ LABEL_17:
       dispatch_once(&_smallKeyOnce, &__block_literal_global_1724);
     }
 
-    v9 = [_keyToSmallKeyMapping objectForKey:v8];
+    v9 = [_keyToSmallKeyMapping objectForKey:keyCopy];
     v10 = v9;
     if (v9)
     {
@@ -1555,32 +1555,32 @@ LABEL_17:
 
     else
     {
-      v11 = v8;
+      v11 = keyCopy;
     }
 
     v12 = v11;
 
-    v8 = v12;
+    keyCopy = v12;
   }
 
-  (self->_pushContext)(self->_context, sel_addObject_, v8);
+  (self->_pushContext)(self->_context, sel_addObject_, keyCopy);
   if ((_CPLSilentLogging & 1) == 0)
   {
     v13 = __CPLGenericOSLogDomain();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      v14 = [(CPLArchiver *)self archiverContext];
+      archiverContext = [(CPLArchiver *)self archiverContext];
       v15 = objc_opt_class();
       v16 = v15;
       v17 = NSStringFromSelector(a2);
       *buf = 138413058;
-      v26 = v14;
+      v26 = archiverContext;
       v27 = 2112;
       v28 = v15;
       v29 = 2112;
       v30 = v17;
       v31 = 2112;
-      v32 = v8;
+      v32 = keyCopy;
       _os_log_impl(&dword_1DC05A000, v13, OS_LOG_TYPE_ERROR, "%@: %@ does not support %@ (key: %@)", buf, 0x2Au);
     }
   }
@@ -1591,10 +1591,10 @@ LABEL_17:
   _CPLArchiverFailure(self, @"%@ does not support %@ (key: %@)", v19, v20, v21, v22, v23, v24, v18);
 }
 
-- (void)encodeObject:(id)a3 forKey:(id)a4
+- (void)encodeObject:(id)object forKey:(id)key
 {
-  v13 = a3;
-  v6 = a4;
+  objectCopy = object;
+  keyCopy = key;
   if (!self->_forDisplay)
   {
     if (_smallKeyOnce != -1)
@@ -1602,7 +1602,7 @@ LABEL_17:
       dispatch_once(&_smallKeyOnce, &__block_literal_global_1722);
     }
 
-    v7 = [_keyToSmallKeyMapping objectForKey:v6];
+    v7 = [_keyToSmallKeyMapping objectForKey:keyCopy];
     v8 = v7;
     if (v7)
     {
@@ -1611,22 +1611,22 @@ LABEL_17:
 
     else
     {
-      v9 = v6;
+      v9 = keyCopy;
     }
 
     v10 = v9;
 
-    v6 = v10;
+    keyCopy = v10;
   }
 
-  (self->_pushContext)(self->_context, sel_addObject_, v6);
-  v11 = [v13 replacementObjectForCoder:self];
+  (self->_pushContext)(self->_context, sel_addObject_, keyCopy);
+  v11 = [objectCopy replacementObjectForCoder:self];
   v12 = [v11 plistArchiveWithCPLArchiver:self];
 
   (self->_popContext)(self->_context, sel_removeLastObject);
   if (v12)
   {
-    [self->_archiveCursor setObject:v12 forKey:v6];
+    [self->_archiveCursor setObject:v12 forKey:keyCopy];
   }
 }
 
@@ -1638,12 +1638,12 @@ LABEL_17:
     v4 = __CPLGenericOSLogDomain();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
     {
-      v5 = [(CPLArchiver *)self archiverContext];
+      archiverContext = [(CPLArchiver *)self archiverContext];
       v6 = objc_opt_class();
       v7 = v6;
       v8 = NSStringFromSelector(a2);
       *buf = 138412802;
-      v18 = v5;
+      v18 = archiverContext;
       v19 = 2112;
       v20 = v6;
       v21 = 2112;
@@ -1658,21 +1658,21 @@ LABEL_17:
   _CPLArchiverFailure(self, @"%@ does not support %@", v10, v11, v12, v13, v14, v15, v9);
 }
 
-- (void)encodePropertyList:(id)a3
+- (void)encodePropertyList:(id)list
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  listCopy = list;
   if ((_CPLSilentLogging & 1) == 0)
   {
     v6 = __CPLGenericOSLogDomain();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      v7 = [(CPLArchiver *)self archiverContext];
+      archiverContext = [(CPLArchiver *)self archiverContext];
       v8 = objc_opt_class();
       v9 = v8;
       v10 = NSStringFromSelector(a2);
       *buf = 138412802;
-      v19 = v7;
+      v19 = archiverContext;
       v20 = 2112;
       v21 = v8;
       v22 = 2112;
@@ -1687,7 +1687,7 @@ LABEL_17:
   _CPLArchiverFailure(self, @"%@ does not support %@", v12, v13, v14, v15, v16, v17, v11);
 }
 
-- (void)decodeBytesWithReturnedLength:(unint64_t *)a3
+- (void)decodeBytesWithReturnedLength:(unint64_t *)length
 {
   v24 = *MEMORY[0x1E69E9840];
   if ((_CPLSilentLogging & 1) == 0)
@@ -1695,12 +1695,12 @@ LABEL_17:
     v5 = __CPLGenericOSLogDomain();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
-      v6 = [(CPLArchiver *)self archiverContext];
+      archiverContext = [(CPLArchiver *)self archiverContext];
       v7 = objc_opt_class();
       v8 = v7;
       v9 = NSStringFromSelector(a2);
       *buf = 138412802;
-      v19 = v6;
+      v19 = archiverContext;
       v20 = 2112;
       v21 = v7;
       v22 = 2112;
@@ -1715,7 +1715,7 @@ LABEL_17:
   _CPLArchiverFailure(self, @"%@ does not support %@", v11, v12, v13, v14, v15, v16, v10);
 }
 
-- (void)decodeArrayOfObjCType:(const char *)a3 count:(unint64_t)a4 at:(void *)a5
+- (void)decodeArrayOfObjCType:(const char *)type count:(unint64_t)count at:(void *)at
 {
   v25 = *MEMORY[0x1E69E9840];
   if ((_CPLSilentLogging & 1) == 0)
@@ -1723,12 +1723,12 @@ LABEL_17:
     v7 = __CPLGenericOSLogDomain();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      v8 = [(CPLArchiver *)self archiverContext];
+      archiverContext = [(CPLArchiver *)self archiverContext];
       v9 = objc_opt_class();
       v10 = v9;
       v11 = NSStringFromSelector(a2);
       *buf = 138412802;
-      v20 = v8;
+      v20 = archiverContext;
       v21 = 2112;
       v22 = v9;
       v23 = 2112;
@@ -1743,7 +1743,7 @@ LABEL_17:
   _CPLArchiverFailure(self, @"%@ does not support %@", v13, v14, v15, v16, v17, v18, v12);
 }
 
-- (void)decodeValuesOfObjCTypes:(const char *)a3
+- (void)decodeValuesOfObjCTypes:(const char *)types
 {
   v23 = *MEMORY[0x1E69E9840];
   if ((_CPLSilentLogging & 1) == 0)
@@ -1751,12 +1751,12 @@ LABEL_17:
     v5 = __CPLGenericOSLogDomain();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
-      v6 = [(CPLArchiver *)self archiverContext];
+      archiverContext = [(CPLArchiver *)self archiverContext];
       v7 = objc_opt_class();
       v8 = v7;
       v9 = NSStringFromSelector(a2);
       *buf = 138412802;
-      v18 = v6;
+      v18 = archiverContext;
       v19 = 2112;
       v20 = v7;
       v21 = 2112;
@@ -1779,12 +1779,12 @@ LABEL_17:
     v4 = __CPLGenericOSLogDomain();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
     {
-      v5 = [(CPLArchiver *)self archiverContext];
+      archiverContext = [(CPLArchiver *)self archiverContext];
       v6 = objc_opt_class();
       v7 = v6;
       v8 = NSStringFromSelector(a2);
       *buf = 138412802;
-      v18 = v5;
+      v18 = archiverContext;
       v19 = 2112;
       v20 = v6;
       v21 = 2112;
@@ -1799,7 +1799,7 @@ LABEL_17:
   _CPLArchiverFailure(self, @"%@ does not support %@", v10, v11, v12, v13, v14, v15, v9);
 }
 
-- (void)encodeBytes:(const void *)a3 length:(unint64_t)a4
+- (void)encodeBytes:(const void *)bytes length:(unint64_t)length
 {
   v24 = *MEMORY[0x1E69E9840];
   if ((_CPLSilentLogging & 1) == 0)
@@ -1807,12 +1807,12 @@ LABEL_17:
     v6 = __CPLGenericOSLogDomain();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      v7 = [(CPLArchiver *)self archiverContext];
+      archiverContext = [(CPLArchiver *)self archiverContext];
       v8 = objc_opt_class();
       v9 = v8;
       v10 = NSStringFromSelector(a2);
       *buf = 138412802;
-      v19 = v7;
+      v19 = archiverContext;
       v20 = 2112;
       v21 = v8;
       v22 = 2112;
@@ -1827,7 +1827,7 @@ LABEL_17:
   _CPLArchiverFailure(self, @"%@ does not support %@", v12, v13, v14, v15, v16, v17, v11);
 }
 
-- (void)encodeArrayOfObjCType:(const char *)a3 count:(unint64_t)a4 at:(const void *)a5
+- (void)encodeArrayOfObjCType:(const char *)type count:(unint64_t)count at:(const void *)at
 {
   v25 = *MEMORY[0x1E69E9840];
   if ((_CPLSilentLogging & 1) == 0)
@@ -1835,12 +1835,12 @@ LABEL_17:
     v7 = __CPLGenericOSLogDomain();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      v8 = [(CPLArchiver *)self archiverContext];
+      archiverContext = [(CPLArchiver *)self archiverContext];
       v9 = objc_opt_class();
       v10 = v9;
       v11 = NSStringFromSelector(a2);
       *buf = 138412802;
-      v20 = v8;
+      v20 = archiverContext;
       v21 = 2112;
       v22 = v9;
       v23 = 2112;
@@ -1855,7 +1855,7 @@ LABEL_17:
   _CPLArchiverFailure(self, @"%@ does not support %@", v13, v14, v15, v16, v17, v18, v12);
 }
 
-- (void)encodeValuesOfObjCTypes:(const char *)a3
+- (void)encodeValuesOfObjCTypes:(const char *)types
 {
   v23 = *MEMORY[0x1E69E9840];
   if ((_CPLSilentLogging & 1) == 0)
@@ -1863,12 +1863,12 @@ LABEL_17:
     v5 = __CPLGenericOSLogDomain();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
-      v6 = [(CPLArchiver *)self archiverContext];
+      archiverContext = [(CPLArchiver *)self archiverContext];
       v7 = objc_opt_class();
       v8 = v7;
       v9 = NSStringFromSelector(a2);
       *buf = 138412802;
-      v18 = v6;
+      v18 = archiverContext;
       v19 = 2112;
       v20 = v7;
       v21 = 2112;
@@ -1883,21 +1883,21 @@ LABEL_17:
   _CPLArchiverFailure(self, @"%@ does not support %@", v11, v12, v13, v14, v15, v16, v10);
 }
 
-- (void)encodeConditionalObject:(id)a3
+- (void)encodeConditionalObject:(id)object
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  objectCopy = object;
   if ((_CPLSilentLogging & 1) == 0)
   {
     v6 = __CPLGenericOSLogDomain();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      v7 = [(CPLArchiver *)self archiverContext];
+      archiverContext = [(CPLArchiver *)self archiverContext];
       v8 = objc_opt_class();
       v9 = v8;
       v10 = NSStringFromSelector(a2);
       *buf = 138412802;
-      v19 = v7;
+      v19 = archiverContext;
       v20 = 2112;
       v21 = v8;
       v22 = 2112;
@@ -1912,21 +1912,21 @@ LABEL_17:
   _CPLArchiverFailure(self, @"%@ does not support %@", v12, v13, v14, v15, v16, v17, v11);
 }
 
-- (void)encodeByrefObject:(id)a3
+- (void)encodeByrefObject:(id)object
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  objectCopy = object;
   if ((_CPLSilentLogging & 1) == 0)
   {
     v6 = __CPLGenericOSLogDomain();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      v7 = [(CPLArchiver *)self archiverContext];
+      archiverContext = [(CPLArchiver *)self archiverContext];
       v8 = objc_opt_class();
       v9 = v8;
       v10 = NSStringFromSelector(a2);
       *buf = 138412802;
-      v19 = v7;
+      v19 = archiverContext;
       v20 = 2112;
       v21 = v8;
       v22 = 2112;
@@ -1941,21 +1941,21 @@ LABEL_17:
   _CPLArchiverFailure(self, @"%@ does not support %@", v12, v13, v14, v15, v16, v17, v11);
 }
 
-- (void)encodeBycopyObject:(id)a3
+- (void)encodeBycopyObject:(id)object
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  objectCopy = object;
   if ((_CPLSilentLogging & 1) == 0)
   {
     v6 = __CPLGenericOSLogDomain();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      v7 = [(CPLArchiver *)self archiverContext];
+      archiverContext = [(CPLArchiver *)self archiverContext];
       v8 = objc_opt_class();
       v9 = v8;
       v10 = NSStringFromSelector(a2);
       *buf = 138412802;
-      v19 = v7;
+      v19 = archiverContext;
       v20 = 2112;
       v21 = v8;
       v22 = 2112;
@@ -1970,21 +1970,21 @@ LABEL_17:
   _CPLArchiverFailure(self, @"%@ does not support %@", v12, v13, v14, v15, v16, v17, v11);
 }
 
-- (void)encodeRootObject:(id)a3
+- (void)encodeRootObject:(id)object
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  objectCopy = object;
   if ((_CPLSilentLogging & 1) == 0)
   {
     v6 = __CPLGenericOSLogDomain();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      v7 = [(CPLArchiver *)self archiverContext];
+      archiverContext = [(CPLArchiver *)self archiverContext];
       v8 = objc_opt_class();
       v9 = v8;
       v10 = NSStringFromSelector(a2);
       *buf = 138412802;
-      v19 = v7;
+      v19 = archiverContext;
       v20 = 2112;
       v21 = v8;
       v22 = 2112;
@@ -1999,21 +1999,21 @@ LABEL_17:
   _CPLArchiverFailure(self, @"%@ does not support %@", v12, v13, v14, v15, v16, v17, v11);
 }
 
-- (void)encodeObject:(id)a3
+- (void)encodeObject:(id)object
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  objectCopy = object;
   if ((_CPLSilentLogging & 1) == 0)
   {
     v6 = __CPLGenericOSLogDomain();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      v7 = [(CPLArchiver *)self archiverContext];
+      archiverContext = [(CPLArchiver *)self archiverContext];
       v8 = objc_opt_class();
       v9 = v8;
       v10 = NSStringFromSelector(a2);
       *buf = 138412802;
-      v19 = v7;
+      v19 = archiverContext;
       v20 = 2112;
       v21 = v8;
       v22 = 2112;
@@ -2045,18 +2045,18 @@ LABEL_17:
   return v3;
 }
 
-- (CPLArchiver)initWithArchive:(id)a3 rootClass:(Class)a4
+- (CPLArchiver)initWithArchive:(id)archive rootClass:(Class)class
 {
   v29 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = [v7 objectForKey:@"c"];
+  archiveCopy = archive;
+  v8 = [archiveCopy objectForKey:@"c"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     if (_CPLSilentLogging)
     {
 LABEL_19:
-      v19 = 0;
+      selfCopy = 0;
       goto LABEL_20;
     }
 
@@ -2073,7 +2073,7 @@ LABEL_10:
     goto LABEL_19;
   }
 
-  v9 = [(objc_class *)a4 classForStoredClassName:v8 forCPLArchiver:self];
+  v9 = [(objc_class *)class classForStoredClassName:v8 forCPLArchiver:self];
   if (!v9)
   {
     if (_CPLSilentLogging)
@@ -2087,7 +2087,7 @@ LABEL_10:
       *buf = 138412546;
       v26 = v8;
       v27 = 2112;
-      v28 = a4;
+      classCopy2 = class;
       _os_log_impl(&dword_1DC05A000, v20, OS_LOG_TYPE_ERROR, "Can't find a proper class from '%@' according to %@", buf, 0x16u);
     }
 
@@ -2095,7 +2095,7 @@ LABEL_10:
   }
 
   v10 = v9;
-  if (([(objc_class *)v9 isSubclassOfClass:a4]& 1) == 0)
+  if (([(objc_class *)v9 isSubclassOfClass:class]& 1) == 0)
   {
     if ((_CPLSilentLogging & 1) == 0)
     {
@@ -2105,7 +2105,7 @@ LABEL_10:
         *buf = 138412546;
         v26 = v10;
         v27 = 2112;
-        v28 = a4;
+        classCopy2 = class;
         _os_log_impl(&dword_1DC05A000, v21, OS_LOG_TYPE_ERROR, "Invalid class for archive: %@. Expected subclass of %@", buf, 0x16u);
       }
     }
@@ -2119,11 +2119,11 @@ LABEL_10:
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_archive, a3);
+    objc_storeStrong(&v11->_archive, archive);
     v12->_unarchiving = 1;
     [(CPLArchiver *)v12 _createContext];
     v13 = v12->_archiveCursor;
-    v14 = [v7 objectForKey:@"p"];
+    v14 = [archiveCopy objectForKey:@"p"];
     archiveCursor = v12->_archiveCursor;
     v12->_archiveCursor = v14;
 
@@ -2138,42 +2138,42 @@ LABEL_10:
   }
 
   self = v12;
-  v19 = self;
+  selfCopy = self;
 LABEL_20:
 
   v22 = *MEMORY[0x1E69E9840];
-  return v19;
+  return selfCopy;
 }
 
 - (IMP)_createContext
 {
   v2 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:10];
-  v3 = a1[4];
-  a1[4] = v2;
+  v3 = self[4];
+  self[4] = v2;
 
-  v4 = a1[4];
+  v4 = self[4];
   v5 = objc_opt_class();
-  a1[5] = class_getMethodImplementation(v5, sel_addObject_);
-  v6 = a1[4];
+  self[5] = class_getMethodImplementation(v5, sel_addObject_);
+  v6 = self[4];
   v7 = objc_opt_class();
   result = class_getMethodImplementation(v7, sel_removeLastObject);
-  a1[6] = result;
+  self[6] = result;
   return result;
 }
 
-- (CPLArchiver)initWithRootObject:(id)a3 forDisplay:(BOOL)a4 block:(id)a5
+- (CPLArchiver)initWithRootObject:(id)object forDisplay:(BOOL)display block:(id)block
 {
   v26[2] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a5;
+  objectCopy = object;
+  blockCopy = block;
   v24.receiver = self;
   v24.super_class = CPLArchiver;
   v11 = [(CPLArchiver *)&v24 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_rootObject, a3);
-    v12->_forDisplay = a4;
+    objc_storeStrong(&v11->_rootObject, object);
+    v12->_forDisplay = display;
     [(CPLArchiver *)v12 _createContext];
     v13 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v14 = v12->_archiveCursor;
@@ -2181,8 +2181,8 @@ LABEL_20:
     v12->_archiveCursor = v13;
     v16 = v13;
 
-    (v12->_pushContext)(v12->_context, sel_addObject_, v9);
-    (v10)[2](v10, v12);
+    (v12->_pushContext)(v12->_context, sel_addObject_, objectCopy);
+    (blockCopy)[2](blockCopy, v12);
     (v12->_popContext)(v12->_context, sel_removeLastObject);
     v17 = v12->_archiveCursor;
     v12->_archiveCursor = v14;
@@ -2202,18 +2202,18 @@ LABEL_20:
   return v12;
 }
 
-- (CPLArchiver)initWithRootObject:(id)a3 forDisplay:(BOOL)a4
+- (CPLArchiver)initWithRootObject:(id)object forDisplay:(BOOL)display
 {
   v18[2] = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  objectCopy = object;
   v16.receiver = self;
   v16.super_class = CPLArchiver;
   v8 = [(CPLArchiver *)&v16 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_rootObject, a3);
-    v9->_forDisplay = a4;
+    objc_storeStrong(&v8->_rootObject, object);
+    v9->_forDisplay = display;
     [(CPLArchiver *)v9 _createContext];
     v10 = [v9->_rootObject plistArchiveWithCPLArchiver:v9];
     if (v10)
@@ -2233,14 +2233,14 @@ LABEL_20:
   return v9;
 }
 
-+ (id)displayableDictionaryForDictionary:(id)a3
++ (id)displayableDictionaryForDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __50__CPLArchiver_displayableDictionaryForDictionary___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_smallKeyOnce != -1)
   {
     dispatch_once(&_smallKeyOnce, block);
@@ -2262,8 +2262,8 @@ LABEL_20:
   v8[2] = __50__CPLArchiver_displayableDictionaryForDictionary___block_invoke_1705;
   v8[3] = &unk_1E861C220;
   v10 = &v12;
-  v11 = a1;
-  v5 = v4;
+  selfCopy = self;
+  v5 = dictionaryCopy;
   v9 = v5;
   [v5 enumerateKeysAndObjectsUsingBlock:v8];
   v6 = v13[5];
@@ -2335,13 +2335,13 @@ void __50__CPLArchiver_displayableDictionaryForDictionary___block_invoke_2()
   v5 = v3;
 }
 
-+ (id)_displayableObjectForObject:(id)a3
++ (id)_displayableObjectForObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [a1 displayableDictionaryForDictionary:v4];
+    v5 = [self displayableDictionaryForDictionary:objectCopy];
 LABEL_5:
     v6 = v5;
     if (v5)
@@ -2351,7 +2351,7 @@ LABEL_5:
 
     else
     {
-      v7 = v4;
+      v7 = objectCopy;
     }
 
     v8 = v7;
@@ -2362,26 +2362,26 @@ LABEL_5:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [a1 _displayableArrayForArray:v4];
+    v5 = [self _displayableArrayForArray:objectCopy];
     goto LABEL_5;
   }
 
-  v8 = v4;
+  v8 = objectCopy;
 LABEL_10:
 
   return v8;
 }
 
-+ (id)_displayableArrayForArray:(id)a3
++ (id)_displayableArrayForArray:(id)array
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v4, "count")}];
+  arrayCopy = array;
+  v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(arrayCopy, "count")}];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v4;
+  v6 = arrayCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -2396,7 +2396,7 @@ LABEL_10:
           objc_enumerationMutation(v6);
         }
 
-        v11 = [a1 _displayableObjectForObject:{*(*(&v14 + 1) + 8 * i), v14}];
+        v11 = [self _displayableObjectForObject:{*(*(&v14 + 1) + 8 * i), v14}];
         [v5 addObject:v11];
       }
 
@@ -2411,14 +2411,14 @@ LABEL_10:
   return v5;
 }
 
-+ (id)unarchiveObjectWithData:(id)a3 ofClass:(Class)a4
++ (id)unarchiveObjectWithData:(id)data ofClass:(Class)class
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (v6)
+  dataCopy = data;
+  if (dataCopy)
   {
     v17 = 0;
-    v7 = [MEMORY[0x1E696AE40] propertyListWithData:v6 options:0 format:0 error:&v17];
+    v7 = [MEMORY[0x1E696AE40] propertyListWithData:dataCopy options:0 format:0 error:&v17];
     v8 = v17;
     if (v7)
     {
@@ -2442,7 +2442,7 @@ LABEL_10:
         _CPLStoreFailure(v16);
       }
 
-      v9 = [a1 unarchivedObjectWithPropertyList:v7 ofClass:a4];
+      v9 = [self unarchivedObjectWithPropertyList:v7 ofClass:class];
     }
 
     else
@@ -2453,7 +2453,7 @@ LABEL_10:
         if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412290;
-          v19 = v6;
+          v19 = dataCopy;
           _os_log_impl(&dword_1DC05A000, v10, OS_LOG_TYPE_ERROR, "Can't unarchive %@", buf, 0xCu);
         }
       }
@@ -2472,43 +2472,43 @@ LABEL_10:
   return v9;
 }
 
-+ (id)fullDescriptionForObject:(id)a3
++ (id)fullDescriptionForObject:(id)object
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithRootObject:v4 forDisplay:1];
+  objectCopy = object;
+  v5 = [[self alloc] initWithRootObject:objectCopy forDisplay:1];
 
-  v6 = [v5 archivedPropertyList];
-  v7 = [v6 objectForKey:@"p"];
+  archivedPropertyList = [v5 archivedPropertyList];
+  v7 = [archivedPropertyList objectForKey:@"p"];
   v8 = [v7 description];
 
   return v8;
 }
 
-+ (id)displayablePropertyListWithRootObject:(id)a3
++ (id)displayablePropertyListWithRootObject:(id)object
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithRootObject:v4 forDisplay:1];
+  objectCopy = object;
+  v5 = [[self alloc] initWithRootObject:objectCopy forDisplay:1];
 
-  v6 = [v5 archivedPropertyList];
+  archivedPropertyList = [v5 archivedPropertyList];
 
-  return v6;
+  return archivedPropertyList;
 }
 
-+ (id)unarchivedObjectWithPropertyList:(id)a3 ofClass:(Class)a4
++ (id)unarchivedObjectWithPropertyList:(id)list ofClass:(Class)class
 {
-  v6 = a3;
-  v7 = [[a1 alloc] initWithArchive:v6 rootClass:a4];
+  listCopy = list;
+  v7 = [[self alloc] initWithArchive:listCopy rootClass:class];
 
-  v8 = [v7 rootObject];
+  rootObject = [v7 rootObject];
 
-  return v8;
+  return rootObject;
 }
 
-+ (id)archivedDataWithRootObject:(id)a3 usingBlock:(id)a4
++ (id)archivedDataWithRootObject:(id)object usingBlock:(id)block
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [a1 archivedPropertyListWithRootObject:v6 usingBlock:a4];
+  objectCopy = object;
+  v7 = [self archivedPropertyListWithRootObject:objectCopy usingBlock:block];
   if (v7)
   {
     v13 = 0;
@@ -2520,7 +2520,7 @@ LABEL_10:
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v15 = v6;
+        v15 = objectCopy;
         v16 = 2112;
         v17 = v9;
         _os_log_impl(&dword_1DC05A000, v10, OS_LOG_TYPE_ERROR, "Can't encode %@: %@", buf, 0x16u);
@@ -2538,32 +2538,32 @@ LABEL_10:
   return v8;
 }
 
-+ (id)archivedPropertyListWithRootObject:(id)a3 usingBlock:(id)a4
++ (id)archivedPropertyListWithRootObject:(id)object usingBlock:(id)block
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithRootObject:v7 forDisplay:0 block:v6];
+  blockCopy = block;
+  objectCopy = object;
+  v8 = [[self alloc] initWithRootObject:objectCopy forDisplay:0 block:blockCopy];
 
-  v9 = [v8 archivedPropertyList];
+  archivedPropertyList = [v8 archivedPropertyList];
 
-  return v9;
+  return archivedPropertyList;
 }
 
-+ (id)archivedPropertyListWithRootObject:(id)a3
++ (id)archivedPropertyListWithRootObject:(id)object
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithRootObject:v4 forDisplay:0];
+  objectCopy = object;
+  v5 = [[self alloc] initWithRootObject:objectCopy forDisplay:0];
 
-  v6 = [v5 archivedPropertyList];
+  archivedPropertyList = [v5 archivedPropertyList];
 
-  return v6;
+  return archivedPropertyList;
 }
 
-+ (id)archivedDataWithRootObject:(id)a3
++ (id)archivedDataWithRootObject:(id)object
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [a1 archivedPropertyListWithRootObject:v4];
+  objectCopy = object;
+  v5 = [self archivedPropertyListWithRootObject:objectCopy];
   if (v5)
   {
     v11 = 0;
@@ -2575,7 +2575,7 @@ LABEL_10:
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v13 = v4;
+        v13 = objectCopy;
         v14 = 2112;
         v15 = v7;
         _os_log_impl(&dword_1DC05A000, v8, OS_LOG_TYPE_ERROR, "Can't encode %@: %@", buf, 0x16u);
@@ -2599,11 +2599,11 @@ LABEL_10:
   _keyToSmallKeyMapping = &unk_1F57EF928;
 }
 
-- (id)_decodeKey:(uint64_t)a3 class:(void *)a4 inDictionary:
+- (id)_decodeKey:(uint64_t)key class:(void *)class inDictionary:
 {
   v6 = a2;
-  v7 = a4;
-  if (a1)
+  classCopy = class;
+  if (self)
   {
     if (_smallKeyOnce != -1)
     {
@@ -2613,7 +2613,7 @@ LABEL_10:
     v8 = [_keyToSmallKeyMapping objectForKey:v6];
     if (v8)
     {
-      v9 = [v7 objectForKeyedSubscript:v8];
+      v9 = [classCopy objectForKeyedSubscript:v8];
       v10 = v9;
       if (v9)
       {
@@ -2622,7 +2622,7 @@ LABEL_10:
 
       else
       {
-        v11 = [v7 objectForKeyedSubscript:v6];
+        v11 = [classCopy objectForKeyedSubscript:v6];
       }
 
       v12 = v11;
@@ -2630,7 +2630,7 @@ LABEL_10:
 
     else
     {
-      v12 = [v7 objectForKeyedSubscript:v6];
+      v12 = [classCopy objectForKeyedSubscript:v6];
     }
 
     if (objc_opt_isKindOfClass())
@@ -2652,12 +2652,12 @@ LABEL_10:
   return v13;
 }
 
-- (_BYTE)_encodeKey:(_BYTE *)a1
+- (_BYTE)_encodeKey:(_BYTE *)key
 {
   v3 = a2;
-  if (a1)
+  if (key)
   {
-    if ((a1[57] & 1) == 0)
+    if ((key[57] & 1) == 0)
     {
       if (_smallKeyOnce != -1)
       {
@@ -2682,10 +2682,10 @@ LABEL_10:
     }
 
     v3 = v3;
-    a1 = v3;
+    key = v3;
   }
 
-  return a1;
+  return key;
 }
 
 @end

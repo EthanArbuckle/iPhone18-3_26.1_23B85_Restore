@@ -1,21 +1,21 @@
 @interface AVTAvatarToLiveTransition
-- (AVTAvatarToLiveTransition)initWithModel:(id)a3 animated:(BOOL)a4 setupHandler:(id)a5 completionHandler:(id)a6 logger:(id)a7;
+- (AVTAvatarToLiveTransition)initWithModel:(id)model animated:(BOOL)animated setupHandler:(id)handler completionHandler:(id)completionHandler logger:(id)logger;
 - (void)performTransition;
 @end
 
 @implementation AVTAvatarToLiveTransition
 
-- (AVTAvatarToLiveTransition)initWithModel:(id)a3 animated:(BOOL)a4 setupHandler:(id)a5 completionHandler:(id)a6 logger:(id)a7
+- (AVTAvatarToLiveTransition)initWithModel:(id)model animated:(BOOL)animated setupHandler:(id)handler completionHandler:(id)completionHandler logger:(id)logger
 {
-  v10 = a4;
-  v13 = a3;
+  animatedCopy = animated;
+  modelCopy = model;
   v17.receiver = self;
   v17.super_class = AVTAvatarToLiveTransition;
-  v14 = [(AVTTransition *)&v17 initWithModel:v13 animated:v10 setupHandler:a5 completionHandler:a6 logger:a7];
+  v14 = [(AVTTransition *)&v17 initWithModel:modelCopy animated:animatedCopy setupHandler:handler completionHandler:completionHandler logger:logger];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_avatarTransitionModel, a3);
+    objc_storeStrong(&v14->_avatarTransitionModel, model);
   }
 
   return v15;
@@ -23,52 +23,52 @@
 
 - (void)performTransition
 {
-  v3 = [(AVTTransition *)self logger];
+  logger = [(AVTTransition *)self logger];
   v4 = [(AVTTransition *)self description];
-  [v3 logPerformTransition:v4];
+  [logger logPerformTransition:v4];
 
-  v5 = [(AVTAvatarToLiveTransition *)self avatarTransitionModel];
-  v6 = [v5 liveView];
+  avatarTransitionModel = [(AVTAvatarToLiveTransition *)self avatarTransitionModel];
+  liveView = [avatarTransitionModel liveView];
 
-  v7 = [v6 avatar];
+  avatar = [liveView avatar];
 
-  if (!v7)
+  if (!avatar)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"Can't perform transition without an AVTView with an avatar"];
   }
 
-  v8 = [(AVTAvatarToLiveTransition *)self avatarTransitionModel];
-  [v8 transitionLiveViewToFront];
+  avatarTransitionModel2 = [(AVTAvatarToLiveTransition *)self avatarTransitionModel];
+  [avatarTransitionModel2 transitionLiveViewToFront];
 
-  v9 = [(AVTAvatarToLiveTransition *)self avatarTransitionModel];
-  [v9 applyFullAlpha];
+  avatarTransitionModel3 = [(AVTAvatarToLiveTransition *)self avatarTransitionModel];
+  [avatarTransitionModel3 applyFullAlpha];
 
   if ([(AVTTransition *)self animated])
   {
-    v10 = [(AVTTransition *)self logger];
+    logger2 = [(AVTTransition *)self logger];
     v11 = [(AVTTransition *)self description];
-    [v10 logTransition:v11 state:-[AVTTransition state](self reachedStage:{"state"), 1}];
+    [logger2 logTransition:v11 state:-[AVTTransition state](self reachedStage:{"state"), 1}];
 
     if ([(AVTTransition *)self state]== 1)
     {
-      v12 = [(AVTTransition *)self logger];
+      logger3 = [(AVTTransition *)self logger];
       v13 = [(AVTTransition *)self description];
-      [v12 logToLivePoseTransitionBegins:v13];
+      [logger3 logToLivePoseTransitionBegins:v13];
 
       v15[0] = MEMORY[0x1E69E9820];
       v15[1] = 3221225472;
       v15[2] = __46__AVTAvatarToLiveTransition_performTransition__block_invoke;
       v15[3] = &unk_1E7F3A9B8;
       v15[4] = self;
-      [v6 transitionToFaceTrackingWithDuration:v15 completionHandler:0.25];
+      [liveView transitionToFaceTrackingWithDuration:v15 completionHandler:0.25];
     }
   }
 
   else
   {
-    [v6 transitionToFaceTrackingWithDuration:0 completionHandler:0.0];
-    v14 = [(AVTTransition *)self completionHandler];
-    v14[2](v14, 1);
+    [liveView transitionToFaceTrackingWithDuration:0 completionHandler:0.0];
+    completionHandler = [(AVTTransition *)self completionHandler];
+    completionHandler[2](completionHandler, 1);
   }
 }
 

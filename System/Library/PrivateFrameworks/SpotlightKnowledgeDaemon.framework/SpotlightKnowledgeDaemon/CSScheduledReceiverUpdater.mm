@@ -1,8 +1,8 @@
 @interface CSScheduledReceiverUpdater
-- (BOOL)handleDeletion:(id)a3 turboEnabled:(BOOL)a4 completionHandler:(id)a5 cancelBlock:(id)a6;
-- (BOOL)handleDonation:(id)a3 turboEnabled:(BOOL)a4 completionHandler:(id)a5 cancelBlock:(id)a6;
-- (BOOL)shouldHandleJournalItem:(id)a3 bundleID:(id)a4;
-- (CSScheduledReceiverUpdater)initWithSpotlightReceiverConfig:(id)a3;
+- (BOOL)handleDeletion:(id)deletion turboEnabled:(BOOL)enabled completionHandler:(id)handler cancelBlock:(id)block;
+- (BOOL)handleDonation:(id)donation turboEnabled:(BOOL)enabled completionHandler:(id)handler cancelBlock:(id)block;
+- (BOOL)shouldHandleJournalItem:(id)item bundleID:(id)d;
+- (CSScheduledReceiverUpdater)initWithSpotlightReceiverConfig:(id)config;
 - (id)description;
 - (id)excludeBundleIDs;
 - (id)includeBundleIDs;
@@ -12,55 +12,55 @@
 
 @implementation CSScheduledReceiverUpdater
 
-- (CSScheduledReceiverUpdater)initWithSpotlightReceiverConfig:(id)a3
+- (CSScheduledReceiverUpdater)initWithSpotlightReceiverConfig:(id)config
 {
-  v5 = a3;
+  configCopy = config;
   v45.receiver = self;
   v45.super_class = CSScheduledReceiverUpdater;
   v6 = [(CSScheduledReceiverUpdater *)&v45 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_config, a3);
+    objc_storeStrong(&v6->_config, config);
     v8 = objc_alloc_init(CSEventListenerConfig);
     taskConfig = v7->_taskConfig;
     v7->_taskConfig = v8;
 
     v10 = MEMORY[0x277CCACA8];
-    v11 = [v5 client];
-    v12 = [v5 name];
-    v13 = [v5 priority];
-    v14 = [v10 stringWithFormat:@"receiver-%ld-%@-%@", v11, v12, v13];
+    client = [configCopy client];
+    name = [configCopy name];
+    priority = [configCopy priority];
+    v14 = [v10 stringWithFormat:@"receiver-%ld-%@-%@", client, name, priority];
     [(CSEventListenerConfig *)v7->_taskConfig setName:v14];
 
     v15 = MEMORY[0x277CCACA8];
-    v16 = [(CSEventListenerConfig *)v7->_taskConfig name];
-    v17 = [v15 stringWithFormat:@"com.apple.spotlightknowledge.task.%@", v16];
+    name2 = [(CSEventListenerConfig *)v7->_taskConfig name];
+    v17 = [v15 stringWithFormat:@"com.apple.spotlightknowledge.task.%@", name2];
     [(CSEventListenerConfig *)v7->_taskConfig setTaskIdentifier:v17];
 
-    -[CSEventListenerConfig setRequirePriorityItems:](v7->_taskConfig, "setRequirePriorityItems:", [v5 requirePriorityItems]);
-    -[CSEventListenerConfig setRequireBacklogItems:](v7->_taskConfig, "setRequireBacklogItems:", [v5 requireBacklogItems]);
-    -[CSEventListenerConfig setSupportsDeletedItems:](v7->_taskConfig, "setSupportsDeletedItems:", [v5 includeDeletedItems]);
-    v18 = [v5 bundleIDs];
-    [(CSEventListenerConfig *)v7->_taskConfig setIncludeBundleIDs:v18];
+    -[CSEventListenerConfig setRequirePriorityItems:](v7->_taskConfig, "setRequirePriorityItems:", [configCopy requirePriorityItems]);
+    -[CSEventListenerConfig setRequireBacklogItems:](v7->_taskConfig, "setRequireBacklogItems:", [configCopy requireBacklogItems]);
+    -[CSEventListenerConfig setSupportsDeletedItems:](v7->_taskConfig, "setSupportsDeletedItems:", [configCopy includeDeletedItems]);
+    bundleIDs = [configCopy bundleIDs];
+    [(CSEventListenerConfig *)v7->_taskConfig setIncludeBundleIDs:bundleIDs];
 
-    v19 = [v5 disableBundleIDs];
-    [(CSEventListenerConfig *)v7->_taskConfig setExcludeBundleIDs:v19];
+    disableBundleIDs = [configCopy disableBundleIDs];
+    [(CSEventListenerConfig *)v7->_taskConfig setExcludeBundleIDs:disableBundleIDs];
 
-    v20 = [v5 contentTypes];
-    [(CSEventListenerConfig *)v7->_taskConfig setIncludeContentTypes:v20];
+    contentTypes = [configCopy contentTypes];
+    [(CSEventListenerConfig *)v7->_taskConfig setIncludeContentTypes:contentTypes];
 
-    v21 = [v5 disableContentTypes];
-    [(CSEventListenerConfig *)v7->_taskConfig setExcludeContentTypes:v21];
+    disableContentTypes = [configCopy disableContentTypes];
+    [(CSEventListenerConfig *)v7->_taskConfig setExcludeContentTypes:disableContentTypes];
 
-    v22 = [v5 requiredAttributes];
-    [(CSEventListenerConfig *)v7->_taskConfig setRequiredAttributes:v22];
+    requiredAttributes = [configCopy requiredAttributes];
+    [(CSEventListenerConfig *)v7->_taskConfig setRequiredAttributes:requiredAttributes];
 
     v23 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    v24 = [v5 priority];
-    LOBYTE(v12) = [v24 isEqualToString:@"immediate"];
+    priority2 = [configCopy priority];
+    LOBYTE(name) = [priority2 isEqualToString:@"immediate"];
 
-    if (v12)
+    if (name)
     {
       v25 = 20;
     }
@@ -69,27 +69,27 @@
     {
       v26 = MEMORY[0x277CBEC38];
       [v23 setValue:MEMORY[0x277CBEC38] forKey:@"resourceIntensive"];
-      v27 = [v5 priority];
-      [v23 setValue:v27 forKey:@"priority"];
+      priority3 = [configCopy priority];
+      [v23 setValue:priority3 forKey:@"priority"];
 
       [v23 setValue:v26 forKey:@"requiresUserInactivity"];
       [v23 setValue:v26 forKey:@"requiresExternalPower"];
-      v28 = [v5 priority];
-      LODWORD(v27) = [v28 isEqualToString:@"urgent"];
+      priority4 = [configCopy priority];
+      LODWORD(priority3) = [priority4 isEqualToString:@"urgent"];
 
-      if (v27)
+      if (priority3)
       {
         v29 = MEMORY[0x277CBEC28];
         [v23 setValue:MEMORY[0x277CBEC28] forKey:@"requiresUserInactivity"];
         [v23 setValue:v29 forKey:@"requiresExternalPower"];
       }
 
-      v30 = [v5 processes];
+      processes = [configCopy processes];
 
-      if (v30)
+      if (processes)
       {
-        v31 = [v5 processes];
-        [v23 setValue:v31 forKey:@"involvedProcesses"];
+        processes2 = [configCopy processes];
+        [v23 setValue:processes2 forKey:@"involvedProcesses"];
       }
 
       v25 = 64;
@@ -98,18 +98,18 @@
     [(CSEventListenerConfig *)v7->_taskConfig setEventFlags:v25];
     [(CSEventListenerConfig *)v7->_taskConfig setTaskOptions:v23];
     v32 = MEMORY[0x277CCACA8];
-    v33 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v5, "client")}];
-    v34 = [v5 name];
-    v35 = [v32 stringWithFormat:@"com.apple.spotlightknowledge.receiver.work.%@.%@", v33, v34];
+    v33 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(configCopy, "client")}];
+    name3 = [configCopy name];
+    v35 = [v32 stringWithFormat:@"com.apple.spotlightknowledge.receiver.work.%@.%@", v33, name3];
 
     v36 = dispatch_queue_create([v35 UTF8String], 0);
     workQueue = v7->_workQueue;
     v7->_workQueue = v36;
 
     v38 = MEMORY[0x277CCACA8];
-    v39 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v5, "client")}];
-    v40 = [v5 name];
-    v41 = [v38 stringWithFormat:@"com.apple.spotlightknowledge.receiver.timer.%@.%@", v39, v40];
+    v39 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(configCopy, "client")}];
+    name4 = [configCopy name];
+    v41 = [v38 stringWithFormat:@"com.apple.spotlightknowledge.receiver.timer.%@.%@", v39, name4];
 
     v42 = dispatch_queue_create([v41 UTF8String], 0);
     timerQueue = v7->_timerQueue;
@@ -123,60 +123,60 @@
 {
   v3 = objc_alloc(MEMORY[0x277CCACA8]);
   v4 = objc_opt_class();
-  v5 = [(CSScheduledReceiverUpdater *)self taskName];
-  v6 = [v3 initWithFormat:@"<%@:%p; %@>", v4, self, v5];
+  taskName = [(CSScheduledReceiverUpdater *)self taskName];
+  v6 = [v3 initWithFormat:@"<%@:%p; %@>", v4, self, taskName];
 
   return v6;
 }
 
 - (id)taskName
 {
-  v2 = [(CSScheduledReceiverUpdater *)self taskConfig];
-  v3 = [v2 name];
+  taskConfig = [(CSScheduledReceiverUpdater *)self taskConfig];
+  name = [taskConfig name];
 
-  return v3;
+  return name;
 }
 
 - (unint64_t)eventFlags
 {
-  v2 = [(CSScheduledReceiverUpdater *)self taskConfig];
-  v3 = [v2 eventFlags];
+  taskConfig = [(CSScheduledReceiverUpdater *)self taskConfig];
+  eventFlags = [taskConfig eventFlags];
 
-  return v3;
+  return eventFlags;
 }
 
 - (id)includeBundleIDs
 {
-  v2 = [(CSScheduledReceiverUpdater *)self taskConfig];
-  v3 = [v2 includeBundleIDs];
+  taskConfig = [(CSScheduledReceiverUpdater *)self taskConfig];
+  includeBundleIDs = [taskConfig includeBundleIDs];
 
-  return v3;
+  return includeBundleIDs;
 }
 
 - (id)excludeBundleIDs
 {
-  v2 = [(CSScheduledReceiverUpdater *)self taskConfig];
-  v3 = [v2 excludeBundleIDs];
+  taskConfig = [(CSScheduledReceiverUpdater *)self taskConfig];
+  excludeBundleIDs = [taskConfig excludeBundleIDs];
 
-  return v3;
+  return excludeBundleIDs;
 }
 
-- (BOOL)shouldHandleJournalItem:(id)a3 bundleID:(id)a4
+- (BOOL)shouldHandleJournalItem:(id)item bundleID:(id)d
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CSScheduledReceiverUpdater *)self taskConfig];
-  if (![v6 isUserActivity])
+  itemCopy = item;
+  dCopy = d;
+  taskConfig = [(CSScheduledReceiverUpdater *)self taskConfig];
+  if (![itemCopy isUserActivity])
   {
-    if (!v7 || ([v8 supportsBundleID:v7] & 1) == 0)
+    if (!dCopy || ([taskConfig supportsBundleID:dCopy] & 1) == 0)
     {
       if (SKGLogGetCurrentLoggingLevel() >= 6)
       {
-        v9 = SKGLogScheduledReceiverInit();
-        if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
+        requiredAttributes = SKGLogScheduledReceiverInit();
+        if (os_log_type_enabled(requiredAttributes, OS_LOG_TYPE_DEBUG))
         {
-          [(CSScheduledReceiverUpdater *)self shouldHandleJournalItem:v7 bundleID:v9];
+          [(CSScheduledReceiverUpdater *)self shouldHandleJournalItem:dCopy bundleID:requiredAttributes];
         }
 
         goto LABEL_40;
@@ -185,15 +185,15 @@
       goto LABEL_12;
     }
 
-    v10 = [v8 includeContentTypes];
-    if ([v10 count])
+    includeContentTypes = [taskConfig includeContentTypes];
+    if ([includeContentTypes count])
     {
     }
 
     else
     {
-      v12 = [v8 excludeContentTypes];
-      v13 = [v12 count];
+      excludeContentTypes = [taskConfig excludeContentTypes];
+      v13 = [excludeContentTypes count];
 
       if (!v13)
       {
@@ -202,21 +202,21 @@
     }
 
     memset(buf, 0, 24);
-    [(CSEventDonationJournalItem *)v6 attrDictObj];
+    [(CSEventDonationJournalItem *)itemCopy attrDictObj];
     if (_MDPlistDictionaryGetPlistObjectForKey())
     {
       v14 = *MEMORY[0x277CBECE8];
       v25 = *buf;
       v26 = *&buf[16];
-      v9 = _MDPlistContainerCopyObject();
-      if (v9 && ([v8 supportsContentType:v9] & 1) == 0)
+      requiredAttributes = _MDPlistContainerCopyObject();
+      if (requiredAttributes && ([taskConfig supportsContentType:requiredAttributes] & 1) == 0)
       {
         if (SKGLogGetCurrentLoggingLevel() >= 6)
         {
           v15 = SKGLogScheduledReceiverInit();
           if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
           {
-            [(CSScheduledReceiverUpdater *)self shouldHandleJournalItem:v9 bundleID:v15];
+            [(CSScheduledReceiverUpdater *)self shouldHandleJournalItem:requiredAttributes bundleID:v15];
           }
 
 LABEL_39:
@@ -230,21 +230,21 @@ LABEL_39:
 
     else
     {
-      v9 = 0;
+      requiredAttributes = 0;
     }
 
 LABEL_22:
-    if ([v8 requirePriorityItems])
+    if ([taskConfig requirePriorityItems])
     {
-      v9 = [v6 attributesForKeys:&unk_2846E8010 bundleID:v7];
-      if (([v9 recordIsCurrent:v9 toCalendarUnit:16 maxOffset:1 checkFuture:1 dateKeys:&unk_2846E8010]& 1) == 0)
+      requiredAttributes = [itemCopy attributesForKeys:&unk_2846E8010 bundleID:dCopy];
+      if (([requiredAttributes recordIsCurrent:requiredAttributes toCalendarUnit:16 maxOffset:1 checkFuture:1 dateKeys:&unk_2846E8010]& 1) == 0)
       {
         if (SKGLogGetCurrentLoggingLevel() >= 6)
         {
           v15 = SKGLogScheduledReceiverInit();
           if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
           {
-            [(CSScheduledReceiverUpdater *)self shouldHandleJournalItem:v7 bundleID:v15];
+            [(CSScheduledReceiverUpdater *)self shouldHandleJournalItem:dCopy bundleID:v15];
           }
 
           goto LABEL_39;
@@ -258,13 +258,13 @@ LABEL_40:
 
     else
     {
-      if (![v8 requireBacklogItems])
+      if (![taskConfig requireBacklogItems])
       {
 LABEL_33:
-        v16 = [(CSScheduledReceiverUpdater *)self taskConfig];
-        v9 = [v16 requiredAttributes];
+        taskConfig2 = [(CSScheduledReceiverUpdater *)self taskConfig];
+        requiredAttributes = [taskConfig2 requiredAttributes];
 
-        if (!-[NSObject count](v9, "count") || ([v6 containsAnyInAttributes:v9] & 1) != 0)
+        if (!-[NSObject count](requiredAttributes, "count") || ([itemCopy containsAnyInAttributes:requiredAttributes] & 1) != 0)
         {
           v11 = 1;
 LABEL_41:
@@ -277,18 +277,18 @@ LABEL_41:
           v15 = SKGLogScheduledReceiverInit();
           if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
           {
-            v19 = [(CSScheduledReceiverUpdater *)self taskConfig];
-            v20 = [v19 name];
-            v21 = [v20 UTF8String];
-            v22 = [v6 isUpdate];
-            v23 = [v9 componentsJoinedByString:@", "];
-            v24 = [v23 UTF8String];
+            taskConfig3 = [(CSScheduledReceiverUpdater *)self taskConfig];
+            name = [taskConfig3 name];
+            uTF8String = [name UTF8String];
+            isUpdate = [itemCopy isUpdate];
+            v23 = [requiredAttributes componentsJoinedByString:@", "];
+            uTF8String2 = [v23 UTF8String];
             *buf = 136315650;
-            *&buf[4] = v21;
+            *&buf[4] = uTF8String;
             *&buf[12] = 1024;
-            *&buf[14] = v22;
+            *&buf[14] = isUpdate;
             *&buf[18] = 2080;
-            *&buf[20] = v24;
+            *&buf[20] = uTF8String2;
             _os_log_debug_impl(&dword_231B25000, v15, OS_LOG_TYPE_DEBUG, "### RECEIVER ignoring item for '%s', isUpdate: %d (required: <%s>)", buf, 0x1Cu);
           }
 
@@ -298,15 +298,15 @@ LABEL_41:
         goto LABEL_40;
       }
 
-      v9 = [v6 attributesForKeys:&unk_2846E8010 bundleID:v7];
-      if ([v9 recordIsCurrent:v9 toCalendarUnit:16 maxOffset:1 checkFuture:1 dateKeys:&unk_2846E8010])
+      requiredAttributes = [itemCopy attributesForKeys:&unk_2846E8010 bundleID:dCopy];
+      if ([requiredAttributes recordIsCurrent:requiredAttributes toCalendarUnit:16 maxOffset:1 checkFuture:1 dateKeys:&unk_2846E8010])
       {
         if (SKGLogGetCurrentLoggingLevel() >= 6)
         {
           v15 = SKGLogScheduledReceiverInit();
           if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
           {
-            [(CSScheduledReceiverUpdater *)self shouldHandleJournalItem:v7 bundleID:v15];
+            [(CSScheduledReceiverUpdater *)self shouldHandleJournalItem:dCopy bundleID:v15];
           }
 
           goto LABEL_39;
@@ -321,10 +321,10 @@ LABEL_41:
 
   if (SKGLogGetCurrentLoggingLevel() >= 6)
   {
-    v9 = SKGLogScheduledReceiverInit();
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
+    requiredAttributes = SKGLogScheduledReceiverInit();
+    if (os_log_type_enabled(requiredAttributes, OS_LOG_TYPE_DEBUG))
     {
-      [(CSScheduledReceiverUpdater *)self shouldHandleJournalItem:v7 bundleID:v9];
+      [(CSScheduledReceiverUpdater *)self shouldHandleJournalItem:dCopy bundleID:requiredAttributes];
     }
 
     goto LABEL_40;
@@ -338,21 +338,21 @@ LABEL_42:
   return v11;
 }
 
-- (BOOL)handleDonation:(id)a3 turboEnabled:(BOOL)a4 completionHandler:(id)a5 cancelBlock:(id)a6
+- (BOOL)handleDonation:(id)donation turboEnabled:(BOOL)enabled completionHandler:(id)handler cancelBlock:(id)block
 {
   v123 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v72 = a5;
-  v73 = a6;
+  donationCopy = donation;
+  handlerCopy = handler;
+  blockCopy = block;
   if (SKGLogGetCurrentLoggingLevel() >= 4)
   {
     v11 = SKGLogScheduledReceiverInit();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      *&buf[4] = v10;
+      *&buf[4] = donationCopy;
       *&buf[12] = 2080;
-      *&buf[14] = [(CSEventListenerManager *)v10 journalMap];
+      *&buf[14] = [(CSEventListenerManager *)donationCopy journalMap];
       _os_log_impl(&dword_231B25000, v11, OS_LOG_TYPE_DEFAULT, "**** handleDonation for %@ / %s", buf, 0x16u);
     }
   }
@@ -370,27 +370,27 @@ LABEL_42:
     _os_signpost_emit_with_name_impl(&dword_231B25000, v14, OS_SIGNPOST_INTERVAL_BEGIN, spid, "CSScheduledReceiverUpdaterHandleDonation", "", buf, 2u);
   }
 
-  v15 = [objc_alloc(MEMORY[0x277CCACA8]) initWithCString:-[CSEventListenerManager journalMap](v10) encoding:4];
+  v15 = [objc_alloc(MEMORY[0x277CCACA8]) initWithCString:-[CSEventListenerManager journalMap](donationCopy) encoding:4];
   v16 = objc_alloc(MEMORY[0x277CCACA8]);
-  v17 = [(CSEventListenerDonation *)v10 protectionClass];
-  v69 = [v16 initWithString:v17];
+  protectionClass = [(CSEventListenerDonation *)donationCopy protectionClass];
+  v69 = [v16 initWithString:protectionClass];
 
   v18 = objc_alloc(MEMORY[0x277CCACA8]);
-  v19 = [MEMORY[0x277CCACA8] stringWithUTF8String:-[CSEventListenerManager journalQueue](v10)];
+  v19 = [MEMORY[0x277CCACA8] stringWithUTF8String:-[CSEventListenerManager journalQueue](donationCopy)];
   v68 = [v18 initWithString:v19];
 
-  v20 = [MEMORY[0x277D657A0] sharedContext];
-  v21 = [v20 enableReceiverDebugging];
+  mEMORY[0x277D657A0] = [MEMORY[0x277D657A0] sharedContext];
+  enableReceiverDebugging = [mEMORY[0x277D657A0] enableReceiverDebugging];
 
-  v74 = [(CSScheduledReceiverUpdater *)self receiverConfig];
+  receiverConfig = [(CSScheduledReceiverUpdater *)self receiverConfig];
   if (v15)
   {
-    v22 = [v74 bundleIDs];
-    v23 = [v22 count];
+    bundleIDs = [receiverConfig bundleIDs];
+    v23 = [bundleIDs count];
     if (v23)
     {
-      v6 = [v74 bundleIDs];
-      if (([v6 containsObject:v15] & 1) == 0)
+      bundleIDs2 = [receiverConfig bundleIDs];
+      if (([bundleIDs2 containsObject:v15] & 1) == 0)
       {
 
 LABEL_20:
@@ -411,17 +411,17 @@ LABEL_20:
           _os_signpost_emit_with_name_impl(&dword_231B25000, v30, OS_SIGNPOST_INTERVAL_END, spid, "CSScheduledReceiverUpdaterHandleDonation", "", buf, 2u);
         }
 
-        (*(v72 + 2))(v72, 0, 0, 0);
+        (*(handlerCopy + 2))(handlerCopy, 0, 0, 0);
         goto LABEL_58;
       }
     }
 
-    v24 = [v74 disableBundleIDs];
-    if ([v24 count])
+    disableBundleIDs = [receiverConfig disableBundleIDs];
+    if ([disableBundleIDs count])
     {
       v25 = v23 == 0;
-      v26 = [v74 disableBundleIDs];
-      v27 = [v26 containsObject:v15];
+      disableBundleIDs2 = [receiverConfig disableBundleIDs];
+      v27 = [disableBundleIDs2 containsObject:v15];
 
       if (v25)
       {
@@ -451,15 +451,15 @@ LABEL_20:
     }
   }
 
-  v31 = [v74 name];
-  v32 = [MEMORY[0x277CC33D0] sharedListener];
-  v63 = [v32 onBattery];
+  name = [receiverConfig name];
+  mEMORY[0x277CC33D0] = [MEMORY[0x277CC33D0] sharedListener];
+  onBattery = [mEMORY[0x277CC33D0] onBattery];
 
   v33 = +[CSEventFeedback receiverFeedback];
-  [v33 setIndexType:-[CSEventListenerManager folderFd](v10)];
+  [v33 setIndexType:-[CSEventListenerManager folderFd](donationCopy)];
   [v33 setBundleID:v15];
   [v33 start];
-  if (a4)
+  if (enabled)
   {
     v64 = 0;
   }
@@ -472,9 +472,9 @@ LABEL_20:
     v110[1] = 3221225472;
     v110[2] = __88__CSScheduledReceiverUpdater_handleDonation_turboEnabled_completionHandler_cancelBlock___block_invoke;
     v110[3] = &unk_27893D6D8;
-    v112 = v73;
+    v112 = blockCopy;
     v110[4] = self;
-    v111 = v10;
+    v111 = donationCopy;
     v64 = [(SKGTimer *)v34 initWithTimeIntervalSinceNow:timerQueue tolerance:v110 queue:5.0 block:2.0];
     v61 = &v112;
     v62 = &v111;
@@ -506,15 +506,15 @@ LABEL_20:
   v91[4] = self;
   v15 = v15;
   v92 = v15;
-  v97 = v21;
-  v36 = v10;
+  v97 = enableReceiverDebugging;
+  v36 = donationCopy;
   v93 = v36;
   v95 = &v104;
   v37 = v33;
   v94 = v37;
   v96 = &v98;
   [v36 iterateItems:v91];
-  if (!v73[2]())
+  if (!blockCopy[2]())
   {
     if ([v105[5] count])
     {
@@ -522,9 +522,9 @@ LABEL_20:
       [v45 indexSearchableItems:v105[5] completionHandler:&__block_literal_global_9];
     }
 
-    v46 = [(CSEventListenerManager *)v36 indexType];
-    v47 = [(CSEmbeddingsUpdater *)v36 activityJournal];
-    v48 = [(CSEmbeddingsUpdater *)v36 defaults];
+    indexType = [(CSEventListenerManager *)v36 indexType];
+    activityJournal = [(CSEmbeddingsUpdater *)v36 activityJournal];
+    defaults = [(CSEmbeddingsUpdater *)v36 defaults];
     v49 = v99[5];
     if (v49)
     {
@@ -541,19 +541,19 @@ LABEL_20:
         v76 = v36;
         v86 = v50;
         v51 = v65;
-        v89 = v46;
+        v89 = indexType;
         v77 = v51;
-        v87 = v47;
-        v88 = v48;
+        v87 = activityJournal;
+        v88 = defaults;
         v78 = v15;
         v79 = v69;
         v80 = v68;
         v84 = &v98;
-        v81 = v74;
+        v81 = receiverConfig;
         v85 = buf;
         v82 = v37;
-        v83 = v31;
-        v90 = v63;
+        v83 = name;
+        v90 = onBattery;
         dispatch_group_async(v51, queue, block);
         v52 = dispatch_time(0, 600000000000);
         if (dispatch_group_wait(v51, v52))
@@ -598,7 +598,7 @@ LABEL_51:
     }
 
     [v37 end];
-    (*(v72 + 2))(v72, v50, 0, v55);
+    (*(handlerCopy + 2))(handlerCopy, v50, 0, v55);
 
     goto LABEL_55;
   }
@@ -608,31 +608,31 @@ LABEL_51:
     v38 = SKGLogScheduledReceiverInit();
     if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
     {
-      v39 = [(CSScheduledReceiverUpdater *)self taskConfig];
-      v40 = [v39 name];
-      v41 = v40;
-      v42 = [v40 UTF8String];
-      v43 = [(CSEventListenerDonation *)v36 indexTypeName];
-      v44 = [(CSEventListenerManager *)v36 totalJournalSize];
+      taskConfig = [(CSScheduledReceiverUpdater *)self taskConfig];
+      name2 = [taskConfig name];
+      v41 = name2;
+      uTF8String = [name2 UTF8String];
+      indexTypeName = [(CSEventListenerDonation *)v36 indexTypeName];
+      totalJournalSize = [(CSEventListenerManager *)v36 totalJournalSize];
       *v113 = 136315650;
-      v114 = v42;
+      v114 = uTF8String;
       v115 = 2080;
-      v116 = v43;
+      v116 = indexTypeName;
       v117 = 2048;
-      v118 = v44;
+      v118 = totalJournalSize;
       _os_log_impl(&dword_231B25000, v38, OS_LOG_TYPE_DEFAULT, "### cancelling %s due to expiration request while processing type='%s' sn:'%llu'", v113, 0x20u);
     }
   }
 
   [v37 end];
-  (*(v72 + 2))(v72, 0, 0, 0);
+  (*(handlerCopy + 2))(handlerCopy, 0, 0, 0);
 LABEL_55:
 
   _Block_object_dispose(&v98, 8);
   _Block_object_dispose(&v104, 8);
 
   _Block_object_dispose(buf, 8);
-  if (!a4)
+  if (!enabled)
   {
   }
 
@@ -855,53 +855,53 @@ void __88__CSScheduledReceiverUpdater_handleDonation_turboEnabled_completionHand
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)handleDeletion:(id)a3 turboEnabled:(BOOL)a4 completionHandler:(id)a5 cancelBlock:(id)a6
+- (BOOL)handleDeletion:(id)deletion turboEnabled:(BOOL)enabled completionHandler:(id)handler cancelBlock:(id)block
 {
   v47 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
+  deletionCopy = deletion;
+  handlerCopy = handler;
+  blockCopy = block;
   if (SKGLogGetCurrentLoggingLevel() >= 5)
   {
     v12 = SKGLogScheduledReceiverInit();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      *&buf[4] = v9;
+      *&buf[4] = deletionCopy;
       _os_log_impl(&dword_231B25000, v12, OS_LOG_TYPE_INFO, "**** handleDeletion for %@", buf, 0xCu);
     }
   }
 
-  v35 = [(CSScheduledReceiverUpdater *)self taskConfig];
-  if ([v35 supportsDeletedItems])
+  taskConfig = [(CSScheduledReceiverUpdater *)self taskConfig];
+  if ([taskConfig supportsDeletedItems])
   {
     if (SKGLogGetCurrentLoggingLevel() >= 4)
     {
       v13 = SKGLogScheduledReceiverInit();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
-        v14 = [(CSEventListenerDonation *)v9 indexTypeName];
-        v15 = [(CSEventListenerManager *)v9 totalJournalSize];
+        indexTypeName = [(CSEventListenerDonation *)deletionCopy indexTypeName];
+        totalJournalSize = [(CSEventListenerManager *)deletionCopy totalJournalSize];
         *buf = 138412802;
         *&buf[4] = self;
         *&buf[12] = 2080;
-        *&buf[14] = v14;
+        *&buf[14] = indexTypeName;
         *&buf[22] = 2048;
-        v44 = v15;
+        v44 = totalJournalSize;
         _os_log_impl(&dword_231B25000, v13, OS_LOG_TYPE_DEFAULT, "### deletion %@ %s sn:%llu", buf, 0x20u);
       }
     }
 
-    v16 = [(CSScheduledReceiverUpdater *)self receiverConfig];
+    receiverConfig = [(CSScheduledReceiverUpdater *)self receiverConfig];
     v17 = objc_alloc(MEMORY[0x277CCACA8]);
-    v18 = [MEMORY[0x277CCACA8] stringWithUTF8String:-[CSEventListenerManager journalQueue](v9)];
+    v18 = [MEMORY[0x277CCACA8] stringWithUTF8String:-[CSEventListenerManager journalQueue](deletionCopy)];
     v19 = [v17 initWithString:v18];
 
     v20 = objc_alloc(MEMORY[0x277CCACA8]);
-    v21 = [(CSEventListenerDonation *)v9 protectionClass];
-    v22 = [v20 initWithString:v21];
+    protectionClass = [(CSEventListenerDonation *)deletionCopy protectionClass];
+    v22 = [v20 initWithString:protectionClass];
 
-    v23 = v11;
+    v23 = blockCopy;
     *buf = 0;
     *&buf[8] = buf;
     *&buf[16] = 0x3032000000;
@@ -916,19 +916,19 @@ void __88__CSScheduledReceiverUpdater_handleDonation_turboEnabled_completionHand
     block[3] = &unk_27893D7C0;
     v26 = v24;
     v37 = v26;
-    v38 = v9;
+    v38 = deletionCopy;
     v27 = v22;
     v39 = v27;
     v28 = v19;
     v40 = v28;
-    v29 = v16;
+    v29 = receiverConfig;
     v41 = v29;
     v42 = buf;
     dispatch_group_async(v26, workQueue, block);
     v30 = dispatch_time(0, 180000000000);
     if (dispatch_group_wait(v26, v30))
     {
-      v11 = v23;
+      blockCopy = v23;
       if (SKGLogGetCurrentLoggingLevel() >= 2)
       {
         v31 = SKGLogScheduledReceiverInit();
@@ -944,7 +944,7 @@ void __88__CSScheduledReceiverUpdater_handleDonation_turboEnabled_completionHand
     else
     {
       v32 = *(*&buf[8] + 40);
-      v11 = v23;
+      blockCopy = v23;
     }
 
     _Block_object_dispose(buf, 8);
@@ -955,7 +955,7 @@ void __88__CSScheduledReceiverUpdater_handleDonation_turboEnabled_completionHand
     v32 = 0;
   }
 
-  (*(v10 + 2))(v10, 0, 0, v32);
+  (*(handlerCopy + 2))(handlerCopy, 0, 0, v32);
 
   v33 = *MEMORY[0x277D85DE8];
   return 1;

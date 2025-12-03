@@ -1,6 +1,6 @@
 @interface BradycardiaFeatureStatusAvailability
 - (void)heartRhythmAvailabilityDidUpdate;
-- (void)wristDetectionSettingManagerDidObserveWristDetectChange:(id)a3;
+- (void)wristDetectionSettingManagerDidObserveWristDetectChange:(id)change;
 @end
 
 @implementation BradycardiaFeatureStatusAvailability
@@ -22,7 +22,7 @@
   sub_29D700CF0(v10);
 }
 
-- (void)wristDetectionSettingManagerDidObserveWristDetectChange:(id)a3
+- (void)wristDetectionSettingManagerDidObserveWristDetectChange:(id)change
 {
   sub_29D6D278C(0);
   v4 = *(*(v3 - 8) + 64);

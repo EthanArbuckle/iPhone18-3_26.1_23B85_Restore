@@ -1,38 +1,38 @@
 @interface HFCameraImageGenerator
-- (HFCameraImageGenerator)initWithDelegate:(id)a3;
+- (HFCameraImageGenerator)initWithDelegate:(id)delegate;
 - (HFCameraImageGeneratorDelegate)delegate;
-- (void)generateImagesFromAsset:(id)a3 forOffsets:(id)a4 atSize:(CGSize)a5 withKey:(id)a6;
+- (void)generateImagesFromAsset:(id)asset forOffsets:(id)offsets atSize:(CGSize)size withKey:(id)key;
 @end
 
 @implementation HFCameraImageGenerator
 
-- (HFCameraImageGenerator)initWithDelegate:(id)a3
+- (HFCameraImageGenerator)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = HFCameraImageGenerator;
   v5 = [(HFCameraImageGenerator *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v6->_imagesExpected = 0;
   }
 
   return v6;
 }
 
-- (void)generateImagesFromAsset:(id)a3 forOffsets:(id)a4 atSize:(CGSize)a5 withKey:(id)a6
+- (void)generateImagesFromAsset:(id)asset forOffsets:(id)offsets atSize:(CGSize)size withKey:(id)key
 {
-  height = a5.height;
-  width = a5.width;
+  height = size.height;
+  width = size.width;
   v35 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v24 = a6;
+  assetCopy = asset;
+  offsetsCopy = offsets;
+  keyCopy = key;
   [(HFCameraImageGenerator *)self setKey:?];
-  v23 = v11;
-  v13 = [MEMORY[0x277CE6408] assetImageGeneratorWithAsset:v11];
+  v23 = assetCopy;
+  v13 = [MEMORY[0x277CE6408] assetImageGeneratorWithAsset:assetCopy];
   v33 = **&MEMORY[0x277CC08F0];
   v25 = *&v33.value;
   epoch = v33.epoch;
@@ -41,13 +41,13 @@
   v33.epoch = epoch;
   [v13 setRequestedTimeToleranceAfter:&v33];
   [v13 setMaximumSize:{width, height}];
-  -[HFCameraImageGenerator setImagesExpected:](self, "setImagesExpected:", [v12 count]);
+  -[HFCameraImageGenerator setImagesExpected:](self, "setImagesExpected:", [offsetsCopy count]);
   v15 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v31 = 0u;
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v16 = v12;
+  v16 = offsetsCopy;
   v17 = [v16 countByEnumeratingWithState:&v29 objects:v34 count:16];
   if (v17)
   {

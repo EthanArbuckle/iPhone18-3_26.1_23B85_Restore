@@ -1,9 +1,9 @@
 @interface HDDistinctByKeyPathsIterator
-- (BOOL)advanceWithError:(id *)a3;
-- (BOOL)restoreIteratorStateFromData:(id)a3 error:(id *)a4;
+- (BOOL)advanceWithError:(id *)error;
+- (BOOL)restoreIteratorStateFromData:(id)data error:(id *)error;
 - (HDDistinctByKeyPathsIterator)init;
-- (HDDistinctByKeyPathsIterator)initWithSourceIterator:(id)a3 keyPaths:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (HDDistinctByKeyPathsIterator)initWithSourceIterator:(id)iterator keyPaths:(id)paths;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)iteratorStateData;
 @end
 
@@ -19,14 +19,14 @@
   return 0;
 }
 
-- (HDDistinctByKeyPathsIterator)initWithSourceIterator:(id)a3 keyPaths:(id)a4
+- (HDDistinctByKeyPathsIterator)initWithSourceIterator:(id)iterator keyPaths:(id)paths
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (v8)
+  iteratorCopy = iterator;
+  pathsCopy = paths;
+  v10 = pathsCopy;
+  if (iteratorCopy)
   {
-    if (v9)
+    if (pathsCopy)
     {
       goto LABEL_3;
     }
@@ -34,8 +34,8 @@
 
   else
   {
-    v18 = [MEMORY[0x277CCA890] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"HDDistinctByKeyPathsIterator.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"sourceIterator"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDDistinctByKeyPathsIterator.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"sourceIterator"}];
 
     if (v10)
     {
@@ -43,8 +43,8 @@
     }
   }
 
-  v19 = [MEMORY[0x277CCA890] currentHandler];
-  [v19 handleFailureInMethod:a2 object:self file:@"HDDistinctByKeyPathsIterator.m" lineNumber:31 description:{@"Invalid parameter not satisfying: %@", @"keyPaths"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"HDDistinctByKeyPathsIterator.m" lineNumber:31 description:{@"Invalid parameter not satisfying: %@", @"keyPaths"}];
 
 LABEL_3:
   v20.receiver = self;
@@ -53,7 +53,7 @@ LABEL_3:
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_sourceIterator, a3);
+    objc_storeStrong(&v11->_sourceIterator, iterator);
     v13 = [v10 copy];
     keyPaths = v12->_keyPaths;
     v12->_keyPaths = v13;
@@ -66,11 +66,11 @@ LABEL_3:
   return v12;
 }
 
-- (BOOL)advanceWithError:(id *)a3
+- (BOOL)advanceWithError:(id *)error
 {
   v24 = *MEMORY[0x277D85DE8];
   v5 = [(NSArray *)self->_keyPaths count];
-  v6 = [(HDSampleIterator *)self->_sourceIterator advanceWithError:a3];
+  v6 = [(HDSampleIterator *)self->_sourceIterator advanceWithError:error];
   v7 = (v5 == 0) & v6;
   if (v5 && (v6 & 1) != 0)
   {
@@ -97,8 +97,8 @@ LABEL_3:
             }
 
             v14 = *(*(&v19 + 1) + 8 * i);
-            v15 = [(HDSampleIterator *)self->_sourceIterator sample];
-            v16 = [v15 uniqueIdentifierForDistinctByKeyPath:v14 error:a3];
+            sample = [(HDSampleIterator *)self->_sourceIterator sample];
+            v16 = [sample uniqueIdentifierForDistinctByKeyPath:v14 error:error];
 
             if (!v16)
             {
@@ -126,7 +126,7 @@ LABEL_3:
       }
 
       v7 = 0;
-      if (([(HDSampleIterator *)self->_sourceIterator advanceWithError:a3]& 1) == 0)
+      if (([(HDSampleIterator *)self->_sourceIterator advanceWithError:error]& 1) == 0)
       {
         goto LABEL_16;
       }
@@ -142,10 +142,10 @@ LABEL_16:
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [HDDistinctByKeyPathsIterator allocWithZone:?];
-  v6 = [(HDSampleIterator *)self->_sourceIterator copyWithZone:a3];
+  v6 = [(HDSampleIterator *)self->_sourceIterator copyWithZone:zone];
   v7 = [(HDDistinctByKeyPathsIterator *)v5 initWithSourceIterator:v6 keyPaths:self->_keyPaths];
 
   v8 = [(NSMutableSet *)self->_seenValues mutableCopy];
@@ -155,19 +155,19 @@ LABEL_16:
   return v7;
 }
 
-- (BOOL)restoreIteratorStateFromData:(id)a3 error:(id *)a4
+- (BOOL)restoreIteratorStateFromData:(id)data error:(id *)error
 {
   v22[4] = *MEMORY[0x277D85DE8];
   v6 = MEMORY[0x277CCAAC8];
-  v7 = a3;
-  v8 = [[v6 alloc] initForReadingFromData:v7 error:a4];
+  dataCopy = data;
+  v8 = [[v6 alloc] initForReadingFromData:dataCopy error:error];
 
   if (v8)
   {
     v9 = [v8 decodeObjectOfClass:objc_opt_class() forKey:@"SourceIteratorState"];
     if (v9)
     {
-      if ([(HDSampleIterator *)self->_sourceIterator restoreIteratorStateFromData:v9 error:a4])
+      if ([(HDSampleIterator *)self->_sourceIterator restoreIteratorStateFromData:v9 error:error])
       {
         v10 = MEMORY[0x277CBEB98];
         v22[0] = objc_opt_class();
@@ -191,10 +191,10 @@ LABEL_16:
           seenValues = [v8 error];
           if (seenValues)
           {
-            if (a4)
+            if (error)
             {
               v19 = seenValues;
-              *a4 = seenValues;
+              *error = seenValues;
             }
 
             else
@@ -210,13 +210,13 @@ LABEL_16:
 
     else
     {
-      v17 = [v8 error];
-      if (v17)
+      error = [v8 error];
+      if (error)
       {
-        if (a4)
+        if (error)
         {
-          v18 = v17;
-          *a4 = v17;
+          v18 = error;
+          *error = error;
         }
 
         else
@@ -242,13 +242,13 @@ LABEL_20:
 - (id)iteratorStateData
 {
   v3 = [objc_alloc(MEMORY[0x277CCAAB0]) initRequiringSecureCoding:1];
-  v4 = [(HDSampleIterator *)self->_sourceIterator iteratorStateData];
-  [v3 encodeObject:v4 forKey:@"SourceIteratorState"];
+  iteratorStateData = [(HDSampleIterator *)self->_sourceIterator iteratorStateData];
+  [v3 encodeObject:iteratorStateData forKey:@"SourceIteratorState"];
 
   [v3 encodeObject:self->_seenValues forKey:@"SeenValues"];
-  v5 = [v3 encodedData];
+  encodedData = [v3 encodedData];
 
-  return v5;
+  return encodedData;
 }
 
 @end

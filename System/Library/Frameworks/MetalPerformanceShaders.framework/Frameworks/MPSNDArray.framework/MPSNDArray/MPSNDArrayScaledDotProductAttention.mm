@@ -1,20 +1,20 @@
 @interface MPSNDArrayScaledDotProductAttention
-- (MPSNDArrayScaledDotProductAttention)initWithDevice:(id)a3 kernelType:(int)a4 sourceCount:(unint64_t)a5;
-- (id)workloadStatisticsForSourceArrays:(id)a3 destArrays:(id)a4 kernel:(id)a5 kernelDAGObject:(id)a6 sourceState:(id)a7;
-- (int64_t)createFallbackKernels:(id)a3;
+- (MPSNDArrayScaledDotProductAttention)initWithDevice:(id)device kernelType:(int)type sourceCount:(unint64_t)count;
+- (id)workloadStatisticsForSourceArrays:(id)arrays destArrays:(id)destArrays kernel:(id)kernel kernelDAGObject:(id)object sourceState:(id)state;
+- (int64_t)createFallbackKernels:(id)kernels;
 - (void)dealloc;
 @end
 
 @implementation MPSNDArrayScaledDotProductAttention
 
-- (int64_t)createFallbackKernels:(id)a3
+- (int64_t)createFallbackKernels:(id)kernels
 {
   if (!self->_createdFallbackKernels)
   {
-    self->_QKTMatmulKernel = [[MPSNDArrayMatrixMultiplication alloc] initWithDevice:a3 sourceCount:2];
-    self->_softmaxKernel = [[MPSNDArrayStitchedReductionSoftmax alloc] initWithDevice:a3 axis:0];
-    self->_finalMatmulKernel = [[MPSNDArrayMatrixMultiplication alloc] initWithDevice:a3 sourceCount:2];
-    self->_softMaxMatMulKernel = [[MPSNDArrayMatrixMultiplication alloc] initWithDevice:a3 sourceCount:2];
+    self->_QKTMatmulKernel = [[MPSNDArrayMatrixMultiplication alloc] initWithDevice:kernels sourceCount:2];
+    self->_softmaxKernel = [[MPSNDArrayStitchedReductionSoftmax alloc] initWithDevice:kernels axis:0];
+    self->_finalMatmulKernel = [[MPSNDArrayMatrixMultiplication alloc] initWithDevice:kernels sourceCount:2];
+    self->_softMaxMatMulKernel = [[MPSNDArrayMatrixMultiplication alloc] initWithDevice:kernels sourceCount:2];
     v5 = objc_alloc_init(MPSNDArrayNormFusionDescriptor);
     [(MPSNDArrayNormFusionDescriptor *)v5 setIsLeftFused:1];
     [(MPSNDArrayNormFusionDescriptor *)v5 setNormFusionType:1];
@@ -25,20 +25,20 @@
   return 0;
 }
 
-- (MPSNDArrayScaledDotProductAttention)initWithDevice:(id)a3 kernelType:(int)a4 sourceCount:(unint64_t)a5
+- (MPSNDArrayScaledDotProductAttention)initWithDevice:(id)device kernelType:(int)type sourceCount:(unint64_t)count
 {
   v10.receiver = self;
   v10.super_class = MPSNDArrayScaledDotProductAttention;
-  result = [(MPSNDArrayMultiaryKernel *)&v10 initWithDevice:a3 sourceCount:a5];
+  result = [(MPSNDArrayMultiaryKernel *)&v10 initWithDevice:device sourceCount:count];
   if (result)
   {
     result->super._encode = EncodeSDPA;
-    result->_kernelType = a4;
+    result->_kernelType = type;
     result->_alpha = 0.0;
     result->_layout = 0;
     result->_createdFallbackKernels = 0;
     v8 = result;
-    v9 = [[MPSNDArrayIdentity alloc] initWithDevice:a3];
+    v9 = [[MPSNDArrayIdentity alloc] initWithDevice:device];
     result = v8;
     v8->_identity = v9;
   }
@@ -46,12 +46,12 @@
   return result;
 }
 
-- (id)workloadStatisticsForSourceArrays:(id)a3 destArrays:(id)a4 kernel:(id)a5 kernelDAGObject:(id)a6 sourceState:(id)a7
+- (id)workloadStatisticsForSourceArrays:(id)arrays destArrays:(id)destArrays kernel:(id)kernel kernelDAGObject:(id)object sourceState:(id)state
 {
   v67.receiver = self;
   v67.super_class = MPSNDArrayScaledDotProductAttention;
-  v10 = [(MPSNDArrayMultiaryBase *)&v67 workloadStatisticsForSourceArrays:a3 destArrays:a4 sourceState:a7, a6];
-  if ([a5 layout] == 1)
+  object = [(MPSNDArrayMultiaryBase *)&v67 workloadStatisticsForSourceArrays:arrays destArrays:destArrays sourceState:state, object];
+  if ([kernel layout] == 1)
   {
     v11 = 1;
   }
@@ -61,7 +61,7 @@
     v11 = 2;
   }
 
-  if ([a5 layout] == 1)
+  if ([kernel layout] == 1)
   {
     v12 = 2;
   }
@@ -71,8 +71,8 @@
     v12 = 1;
   }
 
-  v13 = [a3 objectAtIndexedSubscript:0];
-  v14 = [a3 objectAtIndexedSubscript:1];
+  v13 = [arrays objectAtIndexedSubscript:0];
+  v14 = [arrays objectAtIndexedSubscript:1];
   v15 = *MEMORY[0x277CD7410];
   v16 = *(v13 + v15);
   v17 = *(v13 + v15 + 16);
@@ -105,48 +105,48 @@
   v56 = v22;
   v57 = v21;
   v26 = MEMORY[0x277CD73C8];
-  v58 = a4;
+  destArraysCopy = destArrays;
   v27 = (v25 * v24 * v23 * v22 * (2 * v21 + 10));
-  if ((*(a4 + *MEMORY[0x277CD73C8]) & 0xFFF8) == 0x20)
+  if ((*(destArrays + *MEMORY[0x277CD73C8]) & 0xFFF8) == 0x20)
   {
-    [v10 setFloat32Ops:v27];
-    [v10 setFloat16Ops:0.0];
+    [object setFloat32Ops:v27];
+    [object setFloat16Ops:0.0];
   }
 
   else
   {
-    [v10 setFloat16Ops:v27];
-    [v10 setFloat32Ops:0.0];
+    [object setFloat16Ops:v27];
+    [object setFloat32Ops:0.0];
   }
 
-  [v10 float32Ops];
+  [object float32Ops];
   v29 = v28;
-  [v10 float16Ops];
+  [object float16Ops];
   v31 = v29 + v30;
-  [v10 deviceMemoryBytesRead];
+  [object deviceMemoryBytesRead];
   v33 = v32;
-  [v10 deviceMemoryBytesWrite];
+  [object deviceMemoryBytesWrite];
   v35 = v31 / (v33 + v34);
-  v36 = *([a3 objectAtIndexedSubscript:0] + *v26);
+  v36 = *([arrays objectAtIndexedSubscript:0] + *v26);
   v37 = MPSGetDataTypeName();
-  v38 = *([a3 objectAtIndexedSubscript:1] + *v26);
+  v38 = *([arrays objectAtIndexedSubscript:1] + *v26);
   v39 = MPSGetDataTypeName();
-  v40 = *([a3 objectAtIndexedSubscript:2] + *v26);
+  v40 = *([arrays objectAtIndexedSubscript:2] + *v26);
   v41 = MPSGetDataTypeName();
-  v42 = *([a3 objectAtIndexedSubscript:3] + *v26);
+  v42 = *([arrays objectAtIndexedSubscript:3] + *v26);
   v43 = MPSGetDataTypeName();
-  v44 = *&v58[*v26];
+  v44 = *&destArraysCopy[*v26];
   v45 = MPSGetDataTypeName();
-  MPSKernel_LogInfo(a5, v46, "SDPA: Batches=%lu, PromptSize=%lu, Contexts=%lu, Heads=%lu, Features=%lu, Q Datatype: %s, K Datatype: %s, V Datatype: %s, Mask Datatype: %s, Dest Datatype: %s\t", v25, v23, v56, v24, v57, v37, v39, v41, v43, v45);
-  [v10 float16Ops];
+  MPSKernel_LogInfo(kernel, v46, "SDPA: Batches=%lu, PromptSize=%lu, Contexts=%lu, Heads=%lu, Features=%lu, Q Datatype: %s, K Datatype: %s, V Datatype: %s, Mask Datatype: %s, Dest Datatype: %s\t", v25, v23, v56, v24, v57, v37, v39, v41, v43, v45);
+  [object float16Ops];
   v48 = v47;
-  [v10 float32Ops];
+  [object float32Ops];
   v50 = v49;
-  [v10 deviceMemoryBytesRead];
+  [object deviceMemoryBytesRead];
   v52 = v51;
-  [v10 deviceMemoryBytesWrite];
-  MPSKernel_LogInfo(a5, v53, "SDPA: f16Ops=%f, f32Ops=%f, BytesRead=%f, BytesWritten=%f, OpsPerByte=%f\n", v48, v50, v52, v54, v35);
-  return v10;
+  [object deviceMemoryBytesWrite];
+  MPSKernel_LogInfo(kernel, v53, "SDPA: f16Ops=%f, f32Ops=%f, BytesRead=%f, BytesWritten=%f, OpsPerByte=%f\n", v48, v50, v52, v54, v35);
+  return object;
 }
 
 - (void)dealloc

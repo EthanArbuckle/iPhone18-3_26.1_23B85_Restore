@@ -2,11 +2,11 @@
 - (MSDPairedDeviceProxy)init;
 - (NSString)lastSeenDate;
 - (void)bootstrap;
-- (void)handleDeviceDidBeginPairingNotification:(id)a3;
-- (void)handleDeviceDidBeginUnpairingNotification:(id)a3;
-- (void)handleDeviceDidPairNotification:(id)a3;
-- (void)handleDeviceDidUnpairNotification:(id)a3;
-- (void)savePairedDeviceLastSeenDate:(id)a3;
+- (void)handleDeviceDidBeginPairingNotification:(id)notification;
+- (void)handleDeviceDidBeginUnpairingNotification:(id)notification;
+- (void)handleDeviceDidPairNotification:(id)notification;
+- (void)handleDeviceDidUnpairNotification:(id)notification;
+- (void)savePairedDeviceLastSeenDate:(id)date;
 - (void)updatePairedDeviceInfo;
 @end
 
@@ -24,23 +24,23 @@
 
     v4 = +[NSNotificationCenter defaultCenter];
     v5 = NRPairedDeviceRegistryRemoteUnpairingDidBeginNotification;
-    v6 = [(MSDPairedDeviceProxy *)v2 deviceRegistry];
-    [v4 addObserver:v2 selector:"handleDeviceDidBeginUnpairingNotification:" name:v5 object:v6];
+    deviceRegistry = [(MSDPairedDeviceProxy *)v2 deviceRegistry];
+    [v4 addObserver:v2 selector:"handleDeviceDidBeginUnpairingNotification:" name:v5 object:deviceRegistry];
 
     v7 = +[NSNotificationCenter defaultCenter];
     v8 = NRPairedDeviceRegistryDeviceDidUnpairNotification;
-    v9 = [(MSDPairedDeviceProxy *)v2 deviceRegistry];
-    [v7 addObserver:v2 selector:"handleDeviceDidUnpairNotification:" name:v8 object:v9];
+    deviceRegistry2 = [(MSDPairedDeviceProxy *)v2 deviceRegistry];
+    [v7 addObserver:v2 selector:"handleDeviceDidUnpairNotification:" name:v8 object:deviceRegistry2];
 
     v10 = +[NSNotificationCenter defaultCenter];
     v11 = NRPairedDeviceRegistryDeviceDidBeginPairingNotification;
-    v12 = [(MSDPairedDeviceProxy *)v2 deviceRegistry];
-    [v10 addObserver:v2 selector:"handleDeviceDidBeginPairingNotification:" name:v11 object:v12];
+    deviceRegistry3 = [(MSDPairedDeviceProxy *)v2 deviceRegistry];
+    [v10 addObserver:v2 selector:"handleDeviceDidBeginPairingNotification:" name:v11 object:deviceRegistry3];
 
     v13 = +[NSNotificationCenter defaultCenter];
     v14 = NRPairedDeviceRegistryDeviceDidPairNotification;
-    v15 = [(MSDPairedDeviceProxy *)v2 deviceRegistry];
-    [v13 addObserver:v2 selector:"handleDeviceDidPairNotification:" name:v14 object:v15];
+    deviceRegistry4 = [(MSDPairedDeviceProxy *)v2 deviceRegistry];
+    [v13 addObserver:v2 selector:"handleDeviceDidPairNotification:" name:v14 object:deviceRegistry4];
 
     [(MSDPairedDeviceProxy *)v2 updatePairedDeviceInfo];
   }
@@ -64,17 +64,17 @@
 {
   obj = self;
   objc_sync_enter(obj);
-  v2 = [(MSDPairedDeviceProxy *)obj deviceRegistry];
-  v3 = [v2 getActivePairedDevice];
-  [(MSDPairedDeviceProxy *)obj setDevice:v3];
+  deviceRegistry = [(MSDPairedDeviceProxy *)obj deviceRegistry];
+  getActivePairedDevice = [deviceRegistry getActivePairedDevice];
+  [(MSDPairedDeviceProxy *)obj setDevice:getActivePairedDevice];
 
-  v4 = [(MSDPairedDeviceProxy *)obj device];
+  device = [(MSDPairedDeviceProxy *)obj device];
 
-  if (v4)
+  if (device)
   {
     [(MSDPairedDeviceProxy *)obj setPaired:1];
-    v5 = [(MSDPairedDeviceProxy *)obj device];
-    v6 = [v5 valueForProperty:NRDevicePropertyUDID];
+    device2 = [(MSDPairedDeviceProxy *)obj device];
+    v6 = [device2 valueForProperty:NRDevicePropertyUDID];
     [(MSDPairedDeviceProxy *)obj setUdid:v6];
 
     [(MSDPairedDeviceProxy *)obj setReachable:1];
@@ -91,7 +91,7 @@
   objc_sync_exit(obj);
 }
 
-- (void)handleDeviceDidBeginPairingNotification:(id)a3
+- (void)handleDeviceDidBeginPairingNotification:(id)notification
 {
   v3 = sub_100063A54();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -105,7 +105,7 @@
   [v4 updateStage:30];
 }
 
-- (void)handleDeviceDidPairNotification:(id)a3
+- (void)handleDeviceDidPairNotification:(id)notification
 {
   v4 = sub_100063A54();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -120,7 +120,7 @@
   [v5 sendImmediateDeviceInfoPing];
 }
 
-- (void)handleDeviceDidBeginUnpairingNotification:(id)a3
+- (void)handleDeviceDidBeginUnpairingNotification:(id)notification
 {
   v3 = sub_100063A54();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -134,7 +134,7 @@
   [v4 updateStage:31];
 }
 
-- (void)handleDeviceDidUnpairNotification:(id)a3
+- (void)handleDeviceDidUnpairNotification:(id)notification
 {
   v4 = sub_100063A54();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -160,14 +160,14 @@
   return v3;
 }
 
-- (void)savePairedDeviceLastSeenDate:(id)a3
+- (void)savePairedDeviceLastSeenDate:(id)date
 {
-  v5 = a3;
+  dateCopy = date;
   v3 = +[MSDPreferencesFile sharedInstance];
   v4 = v3;
-  if (v5)
+  if (dateCopy)
   {
-    [v3 setObject:v5 forKey:@"PairedDeviceLastSeenDate"];
+    [v3 setObject:dateCopy forKey:@"PairedDeviceLastSeenDate"];
   }
 
   else

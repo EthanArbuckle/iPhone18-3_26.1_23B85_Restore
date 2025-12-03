@@ -1,41 +1,41 @@
 @interface MsdosDirEntryData
 - (MsdosDirEntryData)init;
-- (MsdosDirEntryData)initWithData:(id)a3;
+- (MsdosDirEntryData)initWithData:(id)data;
 - (char)getName;
-- (id)setBsdFlags:(unsigned int)a3;
+- (id)setBsdFlags:(unsigned int)flags;
 - (int64_t)type;
-- (unint64_t)calcFirstEntryOffsetInVolume:(id)a3;
+- (unint64_t)calcFirstEntryOffsetInVolume:(id)volume;
 - (unint64_t)getSize;
 - (unsigned)bsdFlags;
 - (unsigned)getAttrFlags;
-- (unsigned)getFirstCluster:(id)a3;
-- (void)getAccessTime:(timespec *)a3;
-- (void)getBirthTime:(timespec *)a3;
-- (void)getChangeTime:(timespec *)a3;
-- (void)getModifyTime:(timespec *)a3;
-- (void)setAccessTime:(timespec *)a3;
+- (unsigned)getFirstCluster:(id)cluster;
+- (void)getAccessTime:(timespec *)time;
+- (void)getBirthTime:(timespec *)time;
+- (void)getChangeTime:(timespec *)time;
+- (void)getModifyTime:(timespec *)time;
+- (void)setAccessTime:(timespec *)time;
 - (void)setArchiveBit;
-- (void)setAttrFlags:(unsigned __int8)a3;
-- (void)setBirthTime:(timespec *)a3;
-- (void)setChangeTime:(timespec *)a3;
-- (void)setFirstCluster:(unsigned int)a3 fileSystemInfo:(id)a4;
-- (void)setLowerCaseFlags:(unsigned __int8)a3;
-- (void)setModifyTime:(timespec *)a3;
-- (void)setName:(char *)a3;
-- (void)setSize:(unint64_t)a3;
+- (void)setAttrFlags:(unsigned __int8)flags;
+- (void)setBirthTime:(timespec *)time;
+- (void)setChangeTime:(timespec *)time;
+- (void)setFirstCluster:(unsigned int)cluster fileSystemInfo:(id)info;
+- (void)setLowerCaseFlags:(unsigned __int8)flags;
+- (void)setModifyTime:(timespec *)time;
+- (void)setName:(char *)name;
+- (void)setSize:(unint64_t)size;
 @end
 
 @implementation MsdosDirEntryData
 
-- (MsdosDirEntryData)initWithData:(id)a3
+- (MsdosDirEntryData)initWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v8.receiver = self;
   v8.super_class = MsdosDirEntryData;
   v5 = [(MsdosDirEntryData *)&v8 init];
   if (v5)
   {
-    v6 = [NSMutableData dataWithData:v4];
+    v6 = [NSMutableData dataWithData:dataCopy];
     [(DirEntryData *)v5 setData:v6];
   }
 
@@ -56,21 +56,21 @@
   return v2;
 }
 
-- (unint64_t)calcFirstEntryOffsetInVolume:(id)a3
+- (unint64_t)calcFirstEntryOffsetInVolume:(id)volume
 {
-  v4 = a3;
-  v5 = [(MsdosDirEntryData *)self dosDirEntryDirBlockNum];
-  v6 = [v4 dirBlockSize];
+  volumeCopy = volume;
+  dosDirEntryDirBlockNum = [(MsdosDirEntryData *)self dosDirEntryDirBlockNum];
+  dirBlockSize = [volumeCopy dirBlockSize];
 
-  return [(MsdosDirEntryData *)self dosDirEntryOffsetInDirBlock]+ v6 * v5;
+  return [(MsdosDirEntryData *)self dosDirEntryOffsetInDirBlock]+ dirBlockSize * dosDirEntryDirBlockNum;
 }
 
 - (int64_t)type
 {
-  v2 = [(DirEntryData *)self data];
-  v3 = [v2 bytes];
+  data = [(DirEntryData *)self data];
+  bytes = [data bytes];
 
-  if ((v3[11] & 0x10) != 0)
+  if ((bytes[11] & 0x10) != 0)
   {
     return 2;
   }
@@ -83,10 +83,10 @@
 
 - (unsigned)bsdFlags
 {
-  v2 = [(DirEntryData *)self data];
-  v3 = [v2 bytes];
+  data = [(DirEntryData *)self data];
+  bytes = [data bytes];
 
-  v4 = v3[11];
+  v4 = bytes[11];
   if ((v4 & 0x11111111) == 1)
   {
     v5 = (((v4 & 0x30) == 0) << 16) | 2;
@@ -100,13 +100,13 @@
   return v5 & 0xFFFF7FFF | (((v4 >> 1) & 1) << 15);
 }
 
-- (id)setBsdFlags:(unsigned int)a3
+- (id)setBsdFlags:(unsigned int)flags
 {
-  v5 = [(DirEntryData *)self data];
-  v6 = [v5 bytes];
+  data = [(DirEntryData *)self data];
+  bytes = [data bytes];
 
-  v7 = [(MsdosDirEntryData *)self type];
-  if ((a3 & 0xFFFC7FFD) != 0)
+  type = [(MsdosDirEntryData *)self type];
+  if ((flags & 0xFFFC7FFD) != 0)
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
     {
@@ -118,9 +118,9 @@
 
   else
   {
-    v9 = v6[11] & 0xFD | (2 * ((a3 >> 15) & 1));
-    v6[11] = v6[11] & 0xFD | (2 * ((a3 & 0x8000) != 0));
-    if (v7 == 2)
+    v9 = bytes[11] & 0xFD | (2 * ((flags >> 15) & 1));
+    bytes[11] = bytes[11] & 0xFD | (2 * ((flags & 0x8000) != 0));
+    if (type == 2)
     {
       v8 = 0;
     }
@@ -128,13 +128,13 @@
     else
     {
       v10 = v9 & 0xFE;
-      if ((a3 & 0x20002) != 0)
+      if ((flags & 0x20002) != 0)
       {
         ++v10;
       }
 
       v8 = 0;
-      if ((a3 & 0x10000) != 0)
+      if ((flags & 0x10000) != 0)
       {
         v11 = v10 & 0xDF;
       }
@@ -144,187 +144,187 @@
         v11 = v10 | 0x20;
       }
 
-      v6[11] = v11;
+      bytes[11] = v11;
     }
   }
 
   return v8;
 }
 
-- (void)getAccessTime:(timespec *)a3
+- (void)getAccessTime:(timespec *)time
 {
-  v4 = [(DirEntryData *)self data];
-  v5 = [v4 bytes];
+  data = [(DirEntryData *)self data];
+  bytes = [data bytes];
 
-  v6 = v5[9];
+  v6 = bytes[9];
 
-  msdosfs_dos2unixtime(v6, 0, 0, a3);
+  msdosfs_dos2unixtime(v6, 0, 0, time);
 }
 
-- (void)setAccessTime:(timespec *)a3
+- (void)setAccessTime:(timespec *)time
 {
-  v4 = [(DirEntryData *)self data];
-  v5 = [v4 mutableBytes];
+  data = [(DirEntryData *)self data];
+  mutableBytes = [data mutableBytes];
 
-  msdosfs_unix2dostime(&a3->tv_sec, v5 + 9, 0, 0);
+  msdosfs_unix2dostime(&time->tv_sec, mutableBytes + 9, 0, 0);
 }
 
-- (void)getModifyTime:(timespec *)a3
+- (void)getModifyTime:(timespec *)time
 {
-  v4 = [(DirEntryData *)self data];
-  v5 = [v4 bytes];
+  data = [(DirEntryData *)self data];
+  bytes = [data bytes];
 
-  v6 = v5[12];
-  v7 = v5[11];
+  v6 = bytes[12];
+  v7 = bytes[11];
 
-  msdosfs_dos2unixtime(v6, v7, 0, a3);
+  msdosfs_dos2unixtime(v6, v7, 0, time);
 }
 
-- (void)setModifyTime:(timespec *)a3
+- (void)setModifyTime:(timespec *)time
 {
-  v4 = [(DirEntryData *)self data];
-  v5 = [v4 mutableBytes];
+  data = [(DirEntryData *)self data];
+  mutableBytes = [data mutableBytes];
 
-  msdosfs_unix2dostime(&a3->tv_sec, v5 + 12, v5 + 11, 0);
+  msdosfs_unix2dostime(&time->tv_sec, mutableBytes + 12, mutableBytes + 11, 0);
 }
 
-- (void)getChangeTime:(timespec *)a3
+- (void)getChangeTime:(timespec *)time
 {
-  v4 = [(DirEntryData *)self data];
-  v5 = [v4 bytes];
+  data = [(DirEntryData *)self data];
+  bytes = [data bytes];
 
-  v6 = v5[12];
-  v7 = v5[11];
+  v6 = bytes[12];
+  v7 = bytes[11];
 
-  msdosfs_dos2unixtime(v6, v7, 0, a3);
+  msdosfs_dos2unixtime(v6, v7, 0, time);
 }
 
-- (void)setChangeTime:(timespec *)a3
+- (void)setChangeTime:(timespec *)time
 {
-  v4 = [(DirEntryData *)self data];
-  v5 = [v4 mutableBytes];
+  data = [(DirEntryData *)self data];
+  mutableBytes = [data mutableBytes];
 
-  msdosfs_unix2dostime(&a3->tv_sec, v5 + 12, v5 + 11, 0);
+  msdosfs_unix2dostime(&time->tv_sec, mutableBytes + 12, mutableBytes + 11, 0);
 }
 
-- (void)getBirthTime:(timespec *)a3
+- (void)getBirthTime:(timespec *)time
 {
-  v4 = [(DirEntryData *)self data];
-  v5 = [v4 bytes];
+  data = [(DirEntryData *)self data];
+  bytes = [data bytes];
 
-  v6 = v5[8];
-  v7 = v5[7];
+  v6 = bytes[8];
+  v7 = bytes[7];
 
-  msdosfs_dos2unixtime(v6, v7, 0, a3);
+  msdosfs_dos2unixtime(v6, v7, 0, time);
 }
 
-- (void)setBirthTime:(timespec *)a3
+- (void)setBirthTime:(timespec *)time
 {
-  v4 = [(DirEntryData *)self data];
-  v5 = [v4 mutableBytes];
+  data = [(DirEntryData *)self data];
+  mutableBytes = [data mutableBytes];
 
-  msdosfs_unix2dostime(&a3->tv_sec, v5 + 8, v5 + 7, v5 + 13);
+  msdosfs_unix2dostime(&time->tv_sec, mutableBytes + 8, mutableBytes + 7, mutableBytes + 13);
 }
 
-- (unsigned)getFirstCluster:(id)a3
+- (unsigned)getFirstCluster:(id)cluster
 {
-  v4 = a3;
-  v5 = [(DirEntryData *)self data];
-  v6 = [v5 bytes];
+  clusterCopy = cluster;
+  data = [(DirEntryData *)self data];
+  bytes = [data bytes];
 
-  v7 = v6[13];
-  v8 = [v4 type];
+  v7 = bytes[13];
+  type = [clusterCopy type];
 
-  if (v8 == 2)
+  if (type == 2)
   {
-    v7 |= v6[10] << 16;
+    v7 |= bytes[10] << 16;
   }
 
   return v7;
 }
 
-- (void)setFirstCluster:(unsigned int)a3 fileSystemInfo:(id)a4
+- (void)setFirstCluster:(unsigned int)cluster fileSystemInfo:(id)info
 {
-  v6 = a4;
-  v7 = [(DirEntryData *)self data];
-  v8 = [v7 mutableBytes];
+  infoCopy = info;
+  data = [(DirEntryData *)self data];
+  mutableBytes = [data mutableBytes];
 
-  v8[13] = a3;
-  LODWORD(v7) = [v6 type];
+  mutableBytes[13] = cluster;
+  LODWORD(data) = [infoCopy type];
 
-  if (v7 == 2)
+  if (data == 2)
   {
-    v8[10] = HIWORD(a3);
+    mutableBytes[10] = HIWORD(cluster);
   }
 }
 
 - (char)getName
 {
-  v2 = [(DirEntryData *)self data];
-  v3 = [v2 mutableBytes];
+  data = [(DirEntryData *)self data];
+  mutableBytes = [data mutableBytes];
 
-  return v3;
+  return mutableBytes;
 }
 
-- (void)setName:(char *)a3
+- (void)setName:(char *)name
 {
-  v4 = [(DirEntryData *)self data];
-  v5 = [v4 mutableBytes];
+  data = [(DirEntryData *)self data];
+  mutableBytes = [data mutableBytes];
 
-  v6 = *a3;
-  *(v5 + 7) = *(a3 + 7);
-  *v5 = v6;
+  v6 = *name;
+  *(mutableBytes + 7) = *(name + 7);
+  *mutableBytes = v6;
 }
 
 - (unint64_t)getSize
 {
-  v2 = [(DirEntryData *)self data];
-  v3 = [v2 bytes];
+  data = [(DirEntryData *)self data];
+  bytes = [data bytes];
 
-  return v3[7];
+  return bytes[7];
 }
 
-- (void)setSize:(unint64_t)a3
+- (void)setSize:(unint64_t)size
 {
-  v3 = a3;
-  v4 = [(DirEntryData *)self data];
-  v5 = [v4 mutableBytes];
+  sizeCopy = size;
+  data = [(DirEntryData *)self data];
+  mutableBytes = [data mutableBytes];
 
-  v5[7] = v3;
+  mutableBytes[7] = sizeCopy;
 }
 
-- (void)setLowerCaseFlags:(unsigned __int8)a3
+- (void)setLowerCaseFlags:(unsigned __int8)flags
 {
-  v4 = [(DirEntryData *)self data];
-  v5 = [v4 mutableBytes];
+  data = [(DirEntryData *)self data];
+  mutableBytes = [data mutableBytes];
 
-  v5[12] = a3;
+  mutableBytes[12] = flags;
 }
 
-- (void)setAttrFlags:(unsigned __int8)a3
+- (void)setAttrFlags:(unsigned __int8)flags
 {
-  v4 = [(DirEntryData *)self data];
-  v5 = [v4 mutableBytes];
+  data = [(DirEntryData *)self data];
+  mutableBytes = [data mutableBytes];
 
-  v5[11] = a3;
+  mutableBytes[11] = flags;
 }
 
 - (unsigned)getAttrFlags
 {
-  v2 = [(DirEntryData *)self data];
-  v3 = [v2 mutableBytes];
+  data = [(DirEntryData *)self data];
+  mutableBytes = [data mutableBytes];
 
-  return v3[11];
+  return mutableBytes[11];
 }
 
 - (void)setArchiveBit
 {
-  v3 = [(DirEntryData *)self data];
-  v4 = [v3 mutableBytes];
+  data = [(DirEntryData *)self data];
+  mutableBytes = [data mutableBytes];
 
   if ([(MsdosDirEntryData *)self type]!= 2)
   {
-    v4[11] |= 0x20u;
+    mutableBytes[11] |= 0x20u;
   }
 }
 

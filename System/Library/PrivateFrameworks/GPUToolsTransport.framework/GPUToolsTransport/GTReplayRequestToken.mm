@@ -1,12 +1,12 @@
 @interface GTReplayRequestToken
-- (GTReplayRequestToken)initWithService:(id)a3 andTokenId:(unint64_t)a4;
+- (GTReplayRequestToken)initWithService:(id)service andTokenId:(unint64_t)id;
 @end
 
 @implementation GTReplayRequestToken
 
-- (GTReplayRequestToken)initWithService:(id)a3 andTokenId:(unint64_t)a4
+- (GTReplayRequestToken)initWithService:(id)service andTokenId:(unint64_t)id
 {
-  v7 = a3;
+  serviceCopy = service;
   v13.receiver = self;
   v13.super_class = GTReplayRequestToken;
   v8 = [(GTReplayRequestToken *)&v13 init];
@@ -16,8 +16,8 @@
     finished = v8->_finished;
     v8->_finished = v9;
 
-    v8->_tokenId = a4;
-    objc_storeStrong(&v8->_replayer, a3);
+    v8->_tokenId = id;
+    objc_storeStrong(&v8->_replayer, service);
     v11 = v8;
   }
 

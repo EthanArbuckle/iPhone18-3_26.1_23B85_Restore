@@ -1,18 +1,18 @@
 @interface SUUIStackViewItemView
-- (void)drawRect:(CGRect)a3;
-- (void)setBorderColor:(id)a3;
-- (void)setImage:(id)a3;
-- (void)setShouldFlipImageHorizontal:(BOOL)a3;
-- (void)setShouldFlipImageVertical:(BOOL)a3;
+- (void)drawRect:(CGRect)rect;
+- (void)setBorderColor:(id)color;
+- (void)setImage:(id)image;
+- (void)setShouldFlipImageHorizontal:(BOOL)horizontal;
+- (void)setShouldFlipImageVertical:(BOOL)vertical;
 @end
 
 @implementation SUUIStackViewItemView
 
-- (void)setBorderColor:(id)a3
+- (void)setBorderColor:(id)color
 {
-  if (self->_borderColor != a3)
+  if (self->_borderColor != color)
   {
-    v4 = [a3 copy];
+    v4 = [color copy];
     borderColor = self->_borderColor;
     self->_borderColor = v4;
 
@@ -20,39 +20,39 @@
   }
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v5 = a3;
-  if (self->_image != v5)
+  imageCopy = image;
+  if (self->_image != imageCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_image, a3);
+    v6 = imageCopy;
+    objc_storeStrong(&self->_image, image);
     [(SUUIStackViewItemView *)self setNeedsDisplay];
-    v5 = v6;
+    imageCopy = v6;
   }
 }
 
-- (void)setShouldFlipImageHorizontal:(BOOL)a3
+- (void)setShouldFlipImageHorizontal:(BOOL)horizontal
 {
-  if (self->_shouldFlipImageHorizontal != a3)
+  if (self->_shouldFlipImageHorizontal != horizontal)
   {
-    self->_shouldFlipImageHorizontal = a3;
-    [(SUUIStackViewItemView *)self setNeedsDisplay];
-  }
-}
-
-- (void)setShouldFlipImageVertical:(BOOL)a3
-{
-  if (self->_shouldFlipImageVertical != a3)
-  {
-    self->_shouldFlipImageVertical = a3;
+    self->_shouldFlipImageHorizontal = horizontal;
     [(SUUIStackViewItemView *)self setNeedsDisplay];
   }
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)setShouldFlipImageVertical:(BOOL)vertical
 {
-  [(SUUIStackViewItemView *)self bounds:a3.origin.x];
+  if (self->_shouldFlipImageVertical != vertical)
+  {
+    self->_shouldFlipImageVertical = vertical;
+    [(SUUIStackViewItemView *)self setNeedsDisplay];
+  }
+}
+
+- (void)drawRect:(CGRect)rect
+{
+  [(SUUIStackViewItemView *)self bounds:rect.origin.x];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -101,8 +101,8 @@
     v18 = *&drawRect__borderWidth;
     if (*&drawRect__borderWidth == 0.0)
     {
-      v19 = [MEMORY[0x277D759A0] mainScreen];
-      [v19 scale];
+      mainScreen = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen scale];
       *&drawRect__borderWidth = 1.0 / v20;
 
       borderColor = self->_borderColor;

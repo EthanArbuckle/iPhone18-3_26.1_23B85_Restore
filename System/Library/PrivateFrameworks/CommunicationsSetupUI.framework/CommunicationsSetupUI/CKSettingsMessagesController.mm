@@ -1,9 +1,9 @@
 @interface CKSettingsMessagesController
-+ (BOOL)currentMessageAutoKeepForType:(int)a3;
++ (BOOL)currentMessageAutoKeepForType:(int)type;
 + (BOOL)shouldShowFirstPartyExtension;
 + (IMSyncedSettingsManaging)syncedSettingsManager;
 + (id)getDefaultExtension;
-+ (id)removeFirstPartyExtensionFromArrayIfNecessary:(id)a3;
++ (id)removeFirstPartyExtensionFromArrayIfNecessary:(id)necessary;
 - (AUSystemSettingsSpecifiersProvider)systemSettingsSpecifierProvider;
 - (BOOL)_allAccountsAreDeactivated;
 - (BOOL)_imageForkedFromMeCard;
@@ -16,13 +16,13 @@
 - (BOOL)_isRegistrationInProgress;
 - (BOOL)_isSMSDevice;
 - (BOOL)_meCardSharingEnabled;
-- (BOOL)_registrationFailures:(id)a3 areAllOfKind:(int64_t)a4;
-- (BOOL)_registrationFailures:(id)a3 containsFailure:(int64_t)a4;
+- (BOOL)_registrationFailures:(id)failures areAllOfKind:(int64_t)kind;
+- (BOOL)_registrationFailures:(id)failures containsFailure:(int64_t)failure;
 - (BOOL)_sharedWithYouEnabled;
 - (BOOL)_shouldShowNotificationsFromUnknownSenders;
 - (BOOL)_shouldShowSatelliteDemoModeButton;
-- (BOOL)_shouldShowTextMessageFilterForSpecifier:(id)a3;
-- (BOOL)authenticationController:(id)a3 shouldContinueWithAuthenticationResults:(id)a4 error:(id)a5 forContext:(id)a6;
+- (BOOL)_shouldShowTextMessageFilterForSpecifier:(id)specifier;
+- (BOOL)authenticationController:(id)controller shouldContinueWithAuthenticationResults:(id)results error:(id)error forContext:(id)context;
 - (BOOL)currentRegionWantsOnlineSafetyLink;
 - (BOOL)hasPhoneNumber;
 - (BOOL)hasiMessageFilteringExtensions;
@@ -58,106 +58,106 @@
 - (id)_safetyURLForCurrentRegion;
 - (id)_sharedWithYouViewController;
 - (id)_smsRelayDevicesController;
-- (id)_switchFooterText:(unint64_t *)a3;
+- (id)_switchFooterText:(unint64_t *)text;
 - (id)_syncManager;
 - (id)_textMessageFilteringViewController;
-- (id)areJunkFilteringReceiptsEnabled:(id)a3;
-- (id)areReadReceiptsEnabled:(id)a3;
+- (id)areJunkFilteringReceiptsEnabled:(id)enabled;
+- (id)areReadReceiptsEnabled:(id)enabled;
 - (id)checkInLocationHistorySettingsSpecifierIdentifiers;
-- (id)controllerForSpecifier:(id)a3;
-- (id)getAccountSummaryForSpecifier:(id)a3;
-- (id)getAudioMessageAutoKeep:(id)a3;
-- (id)getCheckInLocationHistorySetting:(id)a3;
+- (id)controllerForSpecifier:(id)specifier;
+- (id)getAccountSummaryForSpecifier:(id)specifier;
+- (id)getAudioMessageAutoKeep:(id)keep;
+- (id)getCheckInLocationHistorySetting:(id)setting;
 - (id)getMMSDictionary;
-- (id)getMessagesInICloudEnabledSpecifier:(id)a3;
+- (id)getMessagesInICloudEnabledSpecifier:(id)specifier;
 - (id)getNameAndPhotoSharingFooterText;
-- (id)getNameAndPhotoSharingSpecifierSummary:(id)a3;
-- (id)getNotificationsUnknownSendersForSpecifier:(id)a3;
-- (id)getPreviewTranscodingEnabled:(id)a3;
-- (id)getRaiseToListenEnabled:(id)a3;
-- (id)getSMSRelayDevicesSummary:(id)a3;
-- (id)getSharedWithYouForSpecifier:(id)a3;
-- (id)getTextMessageFilterForSpecifier:(id)a3;
+- (id)getNameAndPhotoSharingSpecifierSummary:(id)summary;
+- (id)getNotificationsUnknownSendersForSpecifier:(id)specifier;
+- (id)getPreviewTranscodingEnabled:(id)enabled;
+- (id)getRaiseToListenEnabled:(id)enabled;
+- (id)getSMSRelayDevicesSummary:(id)summary;
+- (id)getSharedWithYouForSpecifier:(id)specifier;
+- (id)getTextMessageFilterForSpecifier:(id)specifier;
 - (id)iMessageAppsIdentifiers;
 - (id)inboxSummarySettingsSpecifierIdentifiers;
-- (id)isConversationListFilteringEnabled:(id)a3;
-- (id)isDeliveryReportsEnabled:(id)a3;
-- (id)isInboxSummarizationEnabled:(id)a3;
-- (id)isMMSEnabled:(id)a3;
-- (id)isMadridEnabled:(id)a3;
-- (id)isSiriToneNotificationEnabled:(id)a3;
+- (id)isConversationListFilteringEnabled:(id)enabled;
+- (id)isDeliveryReportsEnabled:(id)enabled;
+- (id)isInboxSummarizationEnabled:(id)enabled;
+- (id)isMMSEnabled:(id)enabled;
+- (id)isMadridEnabled:(id)enabled;
+- (id)isSiriToneNotificationEnabled:(id)enabled;
 - (id)isTranscriptBackgroundsEnabledViaSyncedSettings;
 - (id)madridEnabledSpecifierIdentifiers;
-- (id)madridSigninButtonTextForSpecifier:(id)a3;
+- (id)madridSigninButtonTextForSpecifier:(id)specifier;
 - (id)messagesFilteringSpecifierIdentifiers;
 - (id)nameAndPhotoSharingSpecifiers;
 - (id)newDNDGlobalConfigurationService;
 - (id)onlineSafetyRegionCodesURLMapping;
 - (id)onlineSafetySettingsSpecifierIdentifiers;
-- (id)photoBackgroundAutomaticScrollDockingEnabled:(id)a3;
+- (id)photoBackgroundAutomaticScrollDockingEnabled:(id)enabled;
 - (id)sharedWithYouSettingsSpecifierIdentifiers;
 - (id)specifiers;
 - (id)suppressedConversationBackgroundSpecifierIdentifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)willSendGroupMMS:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)willSendGroupMMS:(id)s;
 - (int64_t)_debugFailureReason;
 - (unint64_t)_meCardSharingAudience;
 - (void)_clearMessagesAppExtensionSalt;
 - (void)_isMessagesTheDefaultMessagingApp;
-- (void)_openPhoneNumberActivationLearnMorePage:(id)a3;
+- (void)_openPhoneNumberActivationLearnMorePage:(id)page;
 - (void)_setupAccountHandlers;
 - (void)_setupAccountHandlersForDisabling;
-- (void)_setupTextMessageGroupSpecifiers:(id)a3 wantsTextMessageBasicGroup:(BOOL)a4;
-- (void)_showMadridSetupIfNecessary:(BOOL)a3;
-- (void)_showPrivacySheetForiMessageFaceTime:(id)a3;
+- (void)_setupTextMessageGroupSpecifiers:(id)specifiers wantsTextMessageBasicGroup:(BOOL)group;
+- (void)_showMadridSetupIfNecessary:(BOOL)necessary;
+- (void)_showPrivacySheetForiMessageFaceTime:(id)time;
 - (void)_showSetupMeCardAlert;
 - (void)_showSignInController;
 - (void)_startListeningForProfileChanges;
 - (void)_stopListeningForProfileChanges;
 - (void)_updateSwitchDelayed;
-- (void)_updateUIWithError:(id)a3;
+- (void)_updateUIWithError:(id)error;
 - (void)applicationDidResume;
 - (void)applicationWillSuspend;
-- (void)configureCheckInSpecifiers:(id)a3;
+- (void)configureCheckInSpecifiers:(id)specifiers;
 - (void)dealloc;
-- (void)emitNavigationEvent:(id)a3 deepLinkURL:(id)a4;
+- (void)emitNavigationEvent:(id)event deepLinkURL:(id)l;
 - (void)endMatchingExtensions;
 - (void)findSpamExtensions;
-- (void)firstRunControllerDidFinish:(id)a3 finished:(BOOL)a4;
-- (void)messageFilteringTapped:(id)a3;
-- (void)nameAndPhotoSharingForSpecifier:(id)a3;
+- (void)firstRunControllerDidFinish:(id)finish finished:(BOOL)finished;
+- (void)messageFilteringTapped:(id)tapped;
+- (void)nameAndPhotoSharingForSpecifier:(id)specifier;
 - (void)notifyDNDFocusStatusAuthorizationChanged;
 - (void)notifyThatConversationFilteringChanged;
-- (void)onboardingControllerDidFinish:(id)a3;
+- (void)onboardingControllerDidFinish:(id)finish;
 - (void)openOnlineSafetyURL;
-- (void)photoBackgroundAutomaticScrollDockingEnabled:(id)a3 specifier:(id)a4;
+- (void)photoBackgroundAutomaticScrollDockingEnabled:(id)enabled specifier:(id)specifier;
 - (void)presentCheckInPrivacySplashController;
-- (void)satelliteDemoModeTappedWithSpecifier:(id)a3;
-- (void)setAudioMessageAutoKeep:(id)a3 specifier:(id)a4;
-- (void)setConversationBackgroundsEnabled:(id)a3 specifier:(id)a4;
-- (void)setConversationListFilteringEnabled:(id)a3 specifier:(id)a4;
-- (void)setDeliveryReportsEnabled:(id)a3 specifier:(id)a4;
-- (void)setInboxSummarizationEnabled:(id)a3 specifier:(id)a4;
-- (void)setJunkFilteringReceiptsEnabled:(id)a3 specifier:(id)a4;
-- (void)setKeepMessages:(id)a3 specifier:(id)a4;
-- (void)setMMSEnabled:(id)a3 specifier:(id)a4;
-- (void)setMadridEnabled:(id)a3 specifier:(id)a4;
-- (void)setPreviewTranscodingEnabled:(id)a3 specifier:(id)a4;
-- (void)setRaiseToListenEnabled:(id)a3 specifier:(id)a4;
-- (void)setReadReceiptsEnabled:(id)a3 specifier:(id)a4;
-- (void)setSiriToneNotificationEnabled:(id)a3 specifier:(id)a4;
-- (void)sharingSettingsViewController:(id)a3 didSelectSharingAudience:(unint64_t)a4;
-- (void)sharingSettingsViewController:(id)a3 didUpdateWithSharingResult:(id)a4;
-- (void)showCKVSettings:(id)a3;
-- (void)showMeCardViewControllerWithNickname:(id)a3;
-- (void)showMessagesInICloudSettings:(id)a3;
+- (void)satelliteDemoModeTappedWithSpecifier:(id)specifier;
+- (void)setAudioMessageAutoKeep:(id)keep specifier:(id)specifier;
+- (void)setConversationBackgroundsEnabled:(id)enabled specifier:(id)specifier;
+- (void)setConversationListFilteringEnabled:(id)enabled specifier:(id)specifier;
+- (void)setDeliveryReportsEnabled:(id)enabled specifier:(id)specifier;
+- (void)setInboxSummarizationEnabled:(id)enabled specifier:(id)specifier;
+- (void)setJunkFilteringReceiptsEnabled:(id)enabled specifier:(id)specifier;
+- (void)setKeepMessages:(id)messages specifier:(id)specifier;
+- (void)setMMSEnabled:(id)enabled specifier:(id)specifier;
+- (void)setMadridEnabled:(id)enabled specifier:(id)specifier;
+- (void)setPreviewTranscodingEnabled:(id)enabled specifier:(id)specifier;
+- (void)setRaiseToListenEnabled:(id)enabled specifier:(id)specifier;
+- (void)setReadReceiptsEnabled:(id)enabled specifier:(id)specifier;
+- (void)setSiriToneNotificationEnabled:(id)enabled specifier:(id)specifier;
+- (void)sharingSettingsViewController:(id)controller didSelectSharingAudience:(unint64_t)audience;
+- (void)sharingSettingsViewController:(id)controller didUpdateWithSharingResult:(id)result;
+- (void)showCKVSettings:(id)settings;
+- (void)showMeCardViewControllerWithNickname:(id)nickname;
+- (void)showMessagesInICloudSettings:(id)settings;
 - (void)showMultiplePhoneNumbersAlertForNicknames;
 - (void)showNicknameOnboardingController;
 - (void)showNicknameOnboardingOrEditFlowController;
 - (void)showiCloudNotSignedInAlertForNicknames;
 - (void)systemApplicationDidEnterBackground;
 - (void)systemApplicationWillEnterForeground;
-- (void)systemPolicyForApp:(id)a3 didUpdateForSystemPolicyOptions:(unint64_t)a4 withValue:(id)a5;
+- (void)systemPolicyForApp:(id)app didUpdateForSystemPolicyOptions:(unint64_t)options withValue:(id)value;
 @end
 
 @implementation CKSettingsMessagesController
@@ -184,8 +184,8 @@
   v2 = [(CKSettingsMessagesController *)&v26 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 addObserver:v2 selector:sel_newCarrierNotification name:@"PSNewCarrierNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_newCarrierNotification name:@"PSNewCarrierNotification" object:0];
 
     if (!v2->_filteringController)
     {
@@ -197,17 +197,17 @@
     v6 = [CNFRegController controllerForServiceType:1];
     [(CNFRegListController *)v2 setRegController:v6];
 
-    v7 = [(CNFRegListController *)v2 regController];
-    [v7 connect:1];
+    regController = [(CNFRegListController *)v2 regController];
+    [regController connect:1];
 
     [(CKSettingsMessagesController *)v2 _startListeningForProfileChanges];
     v8 = objc_alloc_init(CKSettingsiMessageAppManager);
     [(CKSettingsMessagesController *)v2 setIMessageAppManager:v8];
 
-    v9 = [MEMORY[0x277D75418] currentDevice];
-    v10 = [v9 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v10 == 1)
+    if (userInterfaceIdiom == 1)
     {
       [CNFRegWizardController setGlobalAppearanceStyle:2];
       [CNFRegWizardController setSupportsAutoRotation:1];
@@ -229,11 +229,11 @@
 
     CFNotificationCenterAddObserver(DarwinNotifyCenter, v2, _reloadSpecifiersFromNotification, *MEMORY[0x277D18CC0], v2, CFNotificationSuspensionBehaviorDeliverImmediately);
     CFNotificationCenterAddObserver(DarwinNotifyCenter, v2, _reloadSpecifiersFromNotification, @"CKSettingsiMessageAppManagerInstalledAppsDidChange", v2, CFNotificationSuspensionBehaviorDeliverImmediately);
-    v15 = [MEMORY[0x277D18D68] sharedInstance];
-    [v15 addListenerID:@"CKSettingsMessagesController" capabilities:(*MEMORY[0x277D19360] | *MEMORY[0x277D19350]) | *MEMORY[0x277D19378]];
+    mEMORY[0x277D18D68] = [MEMORY[0x277D18D68] sharedInstance];
+    [mEMORY[0x277D18D68] addListenerID:@"CKSettingsMessagesController" capabilities:(*MEMORY[0x277D19360] | *MEMORY[0x277D19350]) | *MEMORY[0x277D19378]];
 
-    v16 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v16 addObserver:v2 selector:sel__nicknameSettingsDidChange_ name:*MEMORY[0x277D1A3A8] object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v2 selector:sel__nicknameSettingsDidChange_ name:*MEMORY[0x277D1A3A8] object:0];
 
     v17 = objc_alloc_init(CKLazuliEnablementManager);
     [(CKSettingsMessagesController *)v2 setLazuliEnablementManager:v17];
@@ -241,20 +241,20 @@
     v18 = objc_alloc_init(CKSharedSettingsHelper);
     [(CKSettingsMessagesController *)v2 setSharedSettingsHelper:v18];
 
-    v19 = [MEMORY[0x277D18D48] sharedInstance];
+    mEMORY[0x277D18D48] = [MEMORY[0x277D18D48] sharedInstance];
     v20 = objc_opt_respondsToSelector();
 
     if (v20)
     {
-      v21 = [MEMORY[0x277D75128] sharedApplication];
-      v22 = [v21 applicationState] == 0;
+      mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+      v22 = [mEMORY[0x277D75128] applicationState] == 0;
 
-      v23 = [MEMORY[0x277D18D48] sharedInstance];
-      [v23 startMonitorWithOffer:v22];
+      mEMORY[0x277D18D48]2 = [MEMORY[0x277D18D48] sharedInstance];
+      [mEMORY[0x277D18D48]2 startMonitorWithOffer:v22];
     }
 
-    v24 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v24 addObserver:v2 selector:sel__lazuliDisabledByProfileDidChange name:@"CNFLazuliDisabledByProfileChangedNotification" object:0];
+    defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter3 addObserver:v2 selector:sel__lazuliDisabledByProfileDidChange name:@"CNFLazuliDisabledByProfileChangedNotification" object:0];
   }
 
   return v2;
@@ -284,8 +284,8 @@
 
   [MEMORY[0x277D82BB8] cancelPreviousPerformRequestsWithTarget:self];
   [(CKSettingsMessagesController *)self _stopListeningForProfileChanges];
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterRemoveObserver(DarwinNotifyCenter, self, @"com.apple.MobileSMS.ReadReceiptsEnabled.changed", 0);
@@ -362,18 +362,18 @@ void __46__CKSettingsMessagesController_viewDidAppear___block_invoke(uint64_t a1
   [v1 reloadSpecifier:v2];
 }
 
-- (void)emitNavigationEvent:(id)a3 deepLinkURL:(id)a4
+- (void)emitNavigationEvent:(id)event deepLinkURL:(id)l
 {
   v6 = MEMORY[0x277CCAEB8];
-  v7 = a4;
-  v8 = a3;
+  lCopy = l;
+  eventCopy = event;
   v9 = [v6 alloc];
-  v10 = [MEMORY[0x277CBEAF8] currentLocale];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
   v11 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-  v12 = [v11 bundleURL];
-  v13 = [v9 initWithKey:@"Messages" table:0 locale:v10 bundleURL:v12];
+  bundleURL = [v11 bundleURL];
+  v13 = [v9 initWithKey:@"Messages" table:0 locale:currentLocale bundleURL:bundleURL];
 
-  [(CKSettingsMessagesController *)self pe_emitNavigationEventForApplicationSettingsWithApplicationBundleIdentifier:@"com.apple.MobileSMS" title:v13 localizedNavigationComponents:v8 deepLink:v7];
+  [(CKSettingsMessagesController *)self pe_emitNavigationEventForApplicationSettingsWithApplicationBundleIdentifier:@"com.apple.MobileSMS" title:v13 localizedNavigationComponents:eventCopy deepLink:lCopy];
 }
 
 - (void)applicationWillSuspend
@@ -401,10 +401,10 @@ void __46__CKSettingsMessagesController_viewDidAppear___block_invoke(uint64_t a1
   v5.super_class = CKSettingsMessagesController;
   [(CNFRegListController *)&v5 systemApplicationWillEnterForeground];
   [(CKSettingsMessagesController *)self _setupAccountHandlers];
-  v3 = [(CNFRegListController *)self regController];
-  v4 = [v3 isConnected];
+  regController = [(CNFRegListController *)self regController];
+  isConnected = [regController isConnected];
 
-  if (v4)
+  if (isConnected)
   {
     [(CKSettingsMessagesController *)self reloadSpecifiers];
   }
@@ -418,18 +418,18 @@ void __46__CKSettingsMessagesController_viewDidAppear___block_invoke(uint64_t a1
   [(CNFRegListController *)self removeAllHandlers];
 }
 
-- (void)_showPrivacySheetForiMessageFaceTime:(id)a3
+- (void)_showPrivacySheetForiMessageFaceTime:(id)time
 {
   v4 = [MEMORY[0x277D37678] presenterForPrivacySplashWithIdentifier:*MEMORY[0x277D376F8]];
   [v4 setPresentingViewController:self];
   [v4 present];
 }
 
-- (void)_openPhoneNumberActivationLearnMorePage:(id)a3
+- (void)_openPhoneNumberActivationLearnMorePage:(id)page
 {
-  v10 = [MEMORY[0x277D07DF0] sharedInstance];
+  mEMORY[0x277D07DF0] = [MEMORY[0x277D07DF0] sharedInstance];
   v3 = CNFStringKeyForProduct(@"phone-number-activation-learn-more");
-  v4 = [v10 objectForKey:v3];
+  v4 = [mEMORY[0x277D07DF0] objectForKey:v3];
   if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v5 = v4;
@@ -447,25 +447,25 @@ void __46__CKSettingsMessagesController_viewDidAppear___block_invoke(uint64_t a1
   [v8 openURL:v9 withCompletionHandler:0];
 }
 
-- (void)systemPolicyForApp:(id)a3 didUpdateForSystemPolicyOptions:(unint64_t)a4 withValue:(id)a5
+- (void)systemPolicyForApp:(id)app didUpdateForSystemPolicyOptions:(unint64_t)options withValue:(id)value
 {
   v16 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  appCopy = app;
+  valueCopy = value;
   if (IMOSLoggingEnabled())
   {
     v10 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       v12 = 134218242;
-      v13 = a4;
+      optionsCopy = options;
       v14 = 2112;
-      v15 = v9;
+      v15 = valueCopy;
       _os_log_impl(&dword_243BE5000, v10, OS_LOG_TYPE_INFO, "System policy %ld did update with value: %@", &v12, 0x16u);
     }
   }
 
-  if ((a4 & 0x400000000) != 0)
+  if ((options & 0x400000000) != 0)
   {
     [(CKSettingsMessagesController *)self notifyDNDFocusStatusAuthorizationChanged];
   }
@@ -485,10 +485,10 @@ void __46__CKSettingsMessagesController_viewDidAppear___block_invoke(uint64_t a1
     }
   }
 
-  v4 = [(CKSettingsMessagesController *)self newDNDGlobalConfigurationService];
+  newDNDGlobalConfigurationService = [(CKSettingsMessagesController *)self newDNDGlobalConfigurationService];
   if (objc_opt_respondsToSelector())
   {
-    [v4 didChangeFocusStatusSharingSettingForApplicationIdentifier:@"com.apple.MobileSMS"];
+    [newDNDGlobalConfigurationService didChangeFocusStatusSharingSettingForApplicationIdentifier:@"com.apple.MobileSMS"];
   }
 
   else
@@ -554,9 +554,9 @@ void __46__CKSettingsMessagesController_viewDidAppear___block_invoke(uint64_t a1
   v5 = [(CKSettingsMessagesController *)self loadSpecifiersFromPlistName:@"Messages" target:self];
   v6 = [v4 initWithArray:v5];
 
-  v7 = [(CKSettingsMessagesController *)self systemSettingsSpecifierProvider];
-  v8 = [v7 specifiers];
-  v9 = [v8 mutableCopy];
+  systemSettingsSpecifierProvider = [(CKSettingsMessagesController *)self systemSettingsSpecifierProvider];
+  specifiers = [systemSettingsSpecifierProvider specifiers];
+  v9 = [specifiers mutableCopy];
 
   v122 = v9;
   if (v9)
@@ -576,8 +576,8 @@ void __46__CKSettingsMessagesController_viewDidAppear___block_invoke(uint64_t a1
   }
 
   CFPreferencesSynchronize(@"com.apple.MobileSMS", *MEMORY[0x277CBF040], *MEMORY[0x277CBF010]);
-  v14 = [MEMORY[0x277D07DB0] sharedInstance];
-  v121 = [v14 accountModificationRestricted];
+  mEMORY[0x277D07DB0] = [MEMORY[0x277D07DB0] sharedInstance];
+  accountModificationRestricted = [mEMORY[0x277D07DB0] accountModificationRestricted];
 
   if ([(CKSettingsMessagesController *)self shouldShowMadridSwitch])
   {
@@ -642,48 +642,48 @@ void __46__CKSettingsMessagesController_viewDidAppear___block_invoke(uint64_t a1
     }
 
     v37 = [v6 specifierForID:@"MADRID_ENABLED_SWITCH"];
-    v38 = [MEMORY[0x277CCABB0] numberWithBool:v121 ^ 1u];
+    v38 = [MEMORY[0x277CCABB0] numberWithBool:accountModificationRestricted ^ 1u];
     [v37 setProperty:v38 forKey:*MEMORY[0x277D3FF38]];
   }
 
   else
   {
-    v27 = [(CKSettingsMessagesController *)self madridSwitchSpecifierIdentifiers];
-    _removeSpecifiersWithIdentifiers(v6, v27);
+    madridSwitchSpecifierIdentifiers = [(CKSettingsMessagesController *)self madridSwitchSpecifierIdentifiers];
+    _removeSpecifiersWithIdentifiers(v6, madridSwitchSpecifierIdentifiers);
   }
 
   if (![(CKSettingsMessagesController *)self shouldShowDeliveryReceipts])
   {
-    v39 = [(CKSettingsMessagesController *)self deliveryReceiptSpecifierIdentifiers];
-    _removeSpecifiersWithIdentifiers(v6, v39);
+    deliveryReceiptSpecifierIdentifiers = [(CKSettingsMessagesController *)self deliveryReceiptSpecifierIdentifiers];
+    _removeSpecifiersWithIdentifiers(v6, deliveryReceiptSpecifierIdentifiers);
   }
 
   if (![(CKSettingsMessagesController *)self shouldShowReadReceipts])
   {
-    v40 = [(CKSettingsMessagesController *)self readReceiptSpecifierIdentifiers];
-    _removeSpecifiersWithIdentifiers(v6, v40);
+    readReceiptSpecifierIdentifiers = [(CKSettingsMessagesController *)self readReceiptSpecifierIdentifiers];
+    _removeSpecifiersWithIdentifiers(v6, readReceiptSpecifierIdentifiers);
   }
 
-  v41 = [(CKSettingsMessagesController *)self suppressedConversationBackgroundSpecifierIdentifiers];
-  _removeSpecifiersWithIdentifiers(v6, v41);
+  suppressedConversationBackgroundSpecifierIdentifiers = [(CKSettingsMessagesController *)self suppressedConversationBackgroundSpecifierIdentifiers];
+  _removeSpecifiersWithIdentifiers(v6, suppressedConversationBackgroundSpecifierIdentifiers);
 
   if (![(CKSettingsMessagesController *)self shouldShowContactPhotoSettings])
   {
-    v42 = [(CKSettingsMessagesController *)self contactPhotoSettingsSpecifierIdentifiers];
-    _removeSpecifiersWithIdentifiers(v6, v42);
+    contactPhotoSettingsSpecifierIdentifiers = [(CKSettingsMessagesController *)self contactPhotoSettingsSpecifierIdentifiers];
+    _removeSpecifiersWithIdentifiers(v6, contactPhotoSettingsSpecifierIdentifiers);
   }
 
   if ([(CKSettingsMessagesController *)self shouldShowMadridAccounts])
   {
-    v43 = [v6 specifierForID:@"MADRID_ACCOUNTS_BUTTON"];
-    v44 = [MEMORY[0x277CCABB0] numberWithBool:v121 ^ 1u];
-    [v43 setProperty:v44 forKey:*MEMORY[0x277D3FF38]];
+    madridEnabledSpecifierIdentifiers = [v6 specifierForID:@"MADRID_ACCOUNTS_BUTTON"];
+    v44 = [MEMORY[0x277CCABB0] numberWithBool:accountModificationRestricted ^ 1u];
+    [madridEnabledSpecifierIdentifiers setProperty:v44 forKey:*MEMORY[0x277D3FF38]];
   }
 
   else
   {
-    v43 = [(CKSettingsMessagesController *)self madridEnabledSpecifierIdentifiers];
-    _removeSpecifiersWithIdentifiers(v6, v43);
+    madridEnabledSpecifierIdentifiers = [(CKSettingsMessagesController *)self madridEnabledSpecifierIdentifiers];
+    _removeSpecifiersWithIdentifiers(v6, madridEnabledSpecifierIdentifiers);
   }
 
   if (![(CKSettingsMessagesController *)self shouldShowUpdateAppleID])
@@ -708,11 +708,11 @@ LABEL_27:
   v47 = [MEMORY[0x277CBEA60] arrayWithObjects:&v133 count:1];
   _removeSpecifiersWithIdentifiers(v6, v47);
 
-  v48 = [(CKSettingsMessagesController *)self shouldShowCharacterCount];
-  if (!v48)
+  shouldShowCharacterCount = [(CKSettingsMessagesController *)self shouldShowCharacterCount];
+  if (!shouldShowCharacterCount)
   {
-    v49 = [(CKSettingsMessagesController *)self characterCountSpecifierIdentifiers];
-    _removeSpecifiersWithIdentifiers(v6, v49);
+    characterCountSpecifierIdentifiers = [(CKSettingsMessagesController *)self characterCountSpecifierIdentifiers];
+    _removeSpecifiersWithIdentifiers(v6, characterCountSpecifierIdentifiers);
   }
 
   if ([(CKSettingsMessagesController *)self shouldShowBlocklistSettings])
@@ -736,15 +736,15 @@ LABEL_27:
       [v6 insertObject:v54 atIndex:v56];
     }
 
-    v48 = 1;
+    shouldShowCharacterCount = 1;
   }
 
   if ([(CKSettingsMessagesController *)self shouldShowSendAsSMS])
   {
-    v57 = [(CKSettingsMessagesController *)self lazuliEnablementManager];
-    v58 = [v57 isRCSSupportedForAnyActiveSubscription];
+    lazuliEnablementManager = [(CKSettingsMessagesController *)self lazuliEnablementManager];
+    isRCSSupportedForAnyActiveSubscription = [lazuliEnablementManager isRCSSupportedForAnyActiveSubscription];
 
-    if (v58)
+    if (isRCSSupportedForAnyActiveSubscription)
     {
       [v6 specifierForID:@"PRE_LAZULI_SEND_AS_SMS_GROUP"];
     }
@@ -753,51 +753,51 @@ LABEL_27:
     {
       [v6 specifierForID:@"SEND_AS_SMS_GROUP"];
     }
-    v59 = ;
-    [v6 removeObject:v59];
+    sendAsSMSIdentifiers = ;
+    [v6 removeObject:sendAsSMSIdentifiers];
   }
 
   else
   {
-    v59 = [(CKSettingsMessagesController *)self sendAsSMSIdentifiers];
-    _removeSpecifiersWithIdentifiers(v6, v59);
+    sendAsSMSIdentifiers = [(CKSettingsMessagesController *)self sendAsSMSIdentifiers];
+    _removeSpecifiersWithIdentifiers(v6, sendAsSMSIdentifiers);
   }
 
   if (![(CKSettingsMessagesController *)self shouldShowiMessageApps])
   {
-    v60 = [(CKSettingsMessagesController *)self iMessageAppsIdentifiers];
-    _removeSpecifiersWithIdentifiers(v6, v60);
+    iMessageAppsIdentifiers = [(CKSettingsMessagesController *)self iMessageAppsIdentifiers];
+    _removeSpecifiersWithIdentifiers(v6, iMessageAppsIdentifiers);
   }
 
   if ([(CKSettingsMessagesController *)self shouldShowAudioMessageSettings])
   {
     if ([(CKSettingsMessagesController *)self shouldShowRaiseToListenSwitch])
     {
-      v61 = MessagesSettingsLocalizedString(@"RAISE_TO_LISTEN_DESCRIPTION");
+      raiseToListenSpecifierIdentifiers = MessagesSettingsLocalizedString(@"RAISE_TO_LISTEN_DESCRIPTION");
       v62 = [v6 specifierForID:@"AUDIO_MESSAGES_GROUP"];
-      [v62 setProperty:v61 forKey:*MEMORY[0x277D3FF88]];
+      [v62 setProperty:raiseToListenSpecifierIdentifiers forKey:*MEMORY[0x277D3FF88]];
     }
 
     else
     {
-      v61 = [(CKSettingsMessagesController *)self raiseToListenSpecifierIdentifiers];
-      _removeSpecifiersWithIdentifiers(v6, v61);
+      raiseToListenSpecifierIdentifiers = [(CKSettingsMessagesController *)self raiseToListenSpecifierIdentifiers];
+      _removeSpecifiersWithIdentifiers(v6, raiseToListenSpecifierIdentifiers);
     }
   }
 
   else
   {
-    v61 = [(CKSettingsMessagesController *)self audioMessageSettingsSpecifierIdentifiers];
-    _removeSpecifiersWithIdentifiers(v6, v61);
+    raiseToListenSpecifierIdentifiers = [(CKSettingsMessagesController *)self audioMessageSettingsSpecifierIdentifiers];
+    _removeSpecifiersWithIdentifiers(v6, raiseToListenSpecifierIdentifiers);
   }
 
-  v63 = [MEMORY[0x277D1A9B8] sharedFeatureFlags];
-  v64 = [v63 isIntroductionsEnabled];
+  mEMORY[0x277D1A9B8] = [MEMORY[0x277D1A9B8] sharedFeatureFlags];
+  isIntroductionsEnabled = [mEMORY[0x277D1A9B8] isIntroductionsEnabled];
 
-  if (v64)
+  if (isIntroductionsEnabled)
   {
-    v65 = [(CKSettingsMessagesController *)self iMessageFilteringSpecifierIdentifiers];
-    _removeSpecifiersWithIdentifiers(v6, v65);
+    iMessageFilteringSpecifierIdentifiers = [(CKSettingsMessagesController *)self iMessageFilteringSpecifierIdentifiers];
+    _removeSpecifiersWithIdentifiers(v6, iMessageFilteringSpecifierIdentifiers);
 
     v132[0] = @"MADRID_FILTER_GROUP";
     v132[1] = @"SPAM_FILTERING";
@@ -819,8 +819,8 @@ LABEL_27:
       _removeSpecifiersWithIdentifiers(v6, v72);
     }
 
-    v73 = [v6 specifierForID:@"TEXT_MESSAGE_FILTERING"];
-    if (![(CKSettingsMessagesController *)self _shouldShowTextMessageFilterForSpecifier:v73])
+    filterUnkownSendersSpecifierIdentifiers = [v6 specifierForID:@"TEXT_MESSAGE_FILTERING"];
+    if (![(CKSettingsMessagesController *)self _shouldShowTextMessageFilterForSpecifier:filterUnkownSendersSpecifierIdentifiers])
     {
       v130 = @"TEXT_MESSAGE_FILTERING";
       v74 = [MEMORY[0x277CBEA60] arrayWithObjects:&v130 count:1];
@@ -836,11 +836,11 @@ LABEL_27:
 
   else
   {
-    v77 = [(CKSettingsMessagesController *)self messagesFilteringSpecifierIdentifiers];
-    _removeSpecifiersWithIdentifiers(v6, v77);
+    messagesFilteringSpecifierIdentifiers = [(CKSettingsMessagesController *)self messagesFilteringSpecifierIdentifiers];
+    _removeSpecifiersWithIdentifiers(v6, messagesFilteringSpecifierIdentifiers);
 
-    v78 = [(CKFilteringListController *)self->_filteringController extensionIDArray];
-    v79 = [(CKSettingsMessagesController *)self hasTextMessageFilteringExtensions:v78];
+    extensionIDArray = [(CKFilteringListController *)self->_filteringController extensionIDArray];
+    v79 = [(CKSettingsMessagesController *)self hasTextMessageFilteringExtensions:extensionIDArray];
 
     v80 = [v6 specifierForID:@"MADRID_FILTER_GROUP"];
     v67 = v80;
@@ -860,40 +860,40 @@ LABEL_27:
     v81 = ;
     _removeSpecifiersWithIdentifiers(v6, v81);
 
-    v73 = [(CKSettingsMessagesController *)self filterUnkownSendersSpecifierIdentifiers];
-    _removeSpecifiersWithIdentifiers(v6, v73);
+    filterUnkownSendersSpecifierIdentifiers = [(CKSettingsMessagesController *)self filterUnkownSendersSpecifierIdentifiers];
+    _removeSpecifiersWithIdentifiers(v6, filterUnkownSendersSpecifierIdentifiers);
   }
 
   if (![(CKSettingsMessagesController *)self shouldShowJunkConversationsRow])
   {
-    v83 = [(CKSettingsMessagesController *)self junkConversationsRowIdentifier];
-    _removeSpecifiersWithIdentifiers(v6, v83);
+    junkConversationsRowIdentifier = [(CKSettingsMessagesController *)self junkConversationsRowIdentifier];
+    _removeSpecifiersWithIdentifiers(v6, junkConversationsRowIdentifier);
   }
 
   if (![(CKSettingsMessagesController *)self shouldShowJunkFilteringReceipts])
   {
     v84 = [v6 specifierForID:@"JUNK_FILTERING_RECEIPTS_GROUP"];
     [v84 setProperty:0 forKey:*MEMORY[0x277D3FF88]];
-    v85 = [(CKSettingsMessagesController *)self junkFilterReceiptsRowIdentifier];
-    _removeSpecifiersWithIdentifiers(v6, v85);
+    junkFilterReceiptsRowIdentifier = [(CKSettingsMessagesController *)self junkFilterReceiptsRowIdentifier];
+    _removeSpecifiersWithIdentifiers(v6, junkFilterReceiptsRowIdentifier);
   }
 
   if (![(CKSettingsMessagesController *)self shouldShowSiriSettings])
   {
-    v86 = [(CKSettingsMessagesController *)self siriSettingsIdentifiers];
-    _removeSpecifiersWithIdentifiers(v6, v86);
+    siriSettingsIdentifiers = [(CKSettingsMessagesController *)self siriSettingsIdentifiers];
+    _removeSpecifiersWithIdentifiers(v6, siriSettingsIdentifiers);
   }
 
   if (![(CKSettingsMessagesController *)self shouldShowSMSRelaySettings])
   {
-    v87 = [(CKSettingsMessagesController *)self smsRelaySettingsSpecifierIdentifiers];
-    _removeSpecifiersWithIdentifiers(v6, v87);
+    smsRelaySettingsSpecifierIdentifiers = [(CKSettingsMessagesController *)self smsRelaySettingsSpecifierIdentifiers];
+    _removeSpecifiersWithIdentifiers(v6, smsRelaySettingsSpecifierIdentifiers);
   }
 
   if (![(CKSettingsMessagesController *)self shouldShowGenericSettings])
   {
-    v88 = [(CKSettingsMessagesController *)self genericSettingsSpecifierIdentifiers];
-    _removeSpecifiersWithIdentifiers(v6, v88);
+    genericSettingsSpecifierIdentifiers = [(CKSettingsMessagesController *)self genericSettingsSpecifierIdentifiers];
+    _removeSpecifiersWithIdentifiers(v6, genericSettingsSpecifierIdentifiers);
   }
 
   if ([(CKSettingsMessagesController *)self shouldShowMadridSignin])
@@ -911,73 +911,73 @@ LABEL_27:
       v92 = @"FACETIME_ACCOUNT_INFO_UNAVAILABLE";
     }
 
-    v93 = [v90 localizedStringForKey:v92 value:&stru_2856D3978 table:v91];
+    madridSigninSpecifiers = [v90 localizedStringForKey:v92 value:&stru_2856D3978 table:v91];
 
     v94 = [v6 specifierForID:@"MADRID_SIGNIN_BUTTON"];
-    v95 = [MEMORY[0x277CCABB0] numberWithBool:v121 ^ 1u];
+    v95 = [MEMORY[0x277CCABB0] numberWithBool:accountModificationRestricted ^ 1u];
     [v94 setProperty:v95 forKey:*MEMORY[0x277D3FF38]];
 
-    [v94 setProperty:v93 forKey:*MEMORY[0x277D40170]];
-    [v94 setName:v93];
+    [v94 setProperty:madridSigninSpecifiers forKey:*MEMORY[0x277D40170]];
+    [v94 setName:madridSigninSpecifiers];
   }
 
   else
   {
-    v93 = [(CKSettingsMessagesController *)self madridSigninSpecifiers];
-    _removeSpecifiersWithIdentifiers(v6, v93);
+    madridSigninSpecifiers = [(CKSettingsMessagesController *)self madridSigninSpecifiers];
+    _removeSpecifiersWithIdentifiers(v6, madridSigninSpecifiers);
   }
 
-  v96 = [(CKSettingsMessagesController *)self shouldShowNicknames];
+  shouldShowNicknames = [(CKSettingsMessagesController *)self shouldShowNicknames];
   v97 = [v6 specifierForID:@"NAME_AND_PHOTO_SHARING_GROUP"];
   v98 = v97;
-  if (v96)
+  if (shouldShowNicknames)
   {
-    v99 = [(CKSettingsMessagesController *)self getNameAndPhotoSharingFooterText];
+    getNameAndPhotoSharingFooterText = [(CKSettingsMessagesController *)self getNameAndPhotoSharingFooterText];
     v100 = *MEMORY[0x277D3FF88];
-    [v98 setProperty:v99 forKey:*MEMORY[0x277D3FF88]];
+    [v98 setProperty:getNameAndPhotoSharingFooterText forKey:*MEMORY[0x277D3FF88]];
   }
 
   else
   {
     v100 = *MEMORY[0x277D3FF88];
     [v97 setProperty:0 forKey:*MEMORY[0x277D3FF88]];
-    v99 = [(CKSettingsMessagesController *)self nameAndPhotoSharingSpecifiers];
-    _removeSpecifiersWithIdentifiers(v6, v99);
+    getNameAndPhotoSharingFooterText = [(CKSettingsMessagesController *)self nameAndPhotoSharingSpecifiers];
+    _removeSpecifiersWithIdentifiers(v6, getNameAndPhotoSharingFooterText);
   }
 
-  v101 = [MEMORY[0x277D1A908] sharedInstance];
-  v102 = [v101 ctSubscriptionInfo];
-  [(CKSettingsMessagesController *)self setCtSubscriptionInfo:v102];
+  mEMORY[0x277D1A908] = [MEMORY[0x277D1A908] sharedInstance];
+  ctSubscriptionInfo = [mEMORY[0x277D1A908] ctSubscriptionInfo];
+  [(CKSettingsMessagesController *)self setCtSubscriptionInfo:ctSubscriptionInfo];
 
   if (IMOSLoggingEnabled())
   {
     v103 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v103, OS_LOG_TYPE_INFO))
     {
-      v104 = [(CKSettingsMessagesController *)self ctSubscriptionInfo];
+      ctSubscriptionInfo2 = [(CKSettingsMessagesController *)self ctSubscriptionInfo];
       *buf = 138412290;
-      *&buf[4] = v104;
+      *&buf[4] = ctSubscriptionInfo2;
       _os_log_impl(&dword_243BE5000, v103, OS_LOG_TYPE_INFO, "Sub info %@", buf, 0xCu);
     }
   }
 
-  [(CKSettingsMessagesController *)self _setupTextMessageGroupSpecifiers:v6 wantsTextMessageBasicGroup:v48];
+  [(CKSettingsMessagesController *)self _setupTextMessageGroupSpecifiers:v6 wantsTextMessageBasicGroup:shouldShowCharacterCount];
   if (![(CKSettingsMessagesController *)self shouldShowSharedWithYouSettings])
   {
-    v105 = [(CKSettingsMessagesController *)self sharedWithYouSettingsSpecifierIdentifiers];
-    _removeSpecifiersWithIdentifiers(v6, v105);
+    sharedWithYouSettingsSpecifierIdentifiers = [(CKSettingsMessagesController *)self sharedWithYouSettingsSpecifierIdentifiers];
+    _removeSpecifiersWithIdentifiers(v6, sharedWithYouSettingsSpecifierIdentifiers);
   }
 
   if (![(CKSettingsMessagesController *)self shouldShowOnlineSafetyLink])
   {
-    v106 = [(CKSettingsMessagesController *)self onlineSafetySettingsSpecifierIdentifiers];
-    _removeSpecifiersWithIdentifiers(v6, v106);
+    onlineSafetySettingsSpecifierIdentifiers = [(CKSettingsMessagesController *)self onlineSafetySettingsSpecifierIdentifiers];
+    _removeSpecifiersWithIdentifiers(v6, onlineSafetySettingsSpecifierIdentifiers);
   }
 
   if (![(CKSettingsMessagesController *)self shouldShowInboxSummarySettings])
   {
-    v107 = [(CKSettingsMessagesController *)self inboxSummarySettingsSpecifierIdentifiers];
-    _removeSpecifiersWithIdentifiers(v6, v107);
+    inboxSummarySettingsSpecifierIdentifiers = [(CKSettingsMessagesController *)self inboxSummarySettingsSpecifierIdentifiers];
+    _removeSpecifiersWithIdentifiers(v6, inboxSummarySettingsSpecifierIdentifiers);
   }
 
   if ([(CKSettingsMessagesController *)self _isSMSDevice]|| [(CKSettingsMessagesController *)self _isMadridAccountOperational])
@@ -992,8 +992,8 @@ LABEL_27:
     v127 = 0u;
     v124 = 0u;
     v125 = 0u;
-    v110 = [(CKSettingsMessagesController *)self madridSwitchSpecifierIdentifiers];
-    v111 = [v110 countByEnumeratingWithState:&v124 objects:v128 count:16];
+    madridSwitchSpecifierIdentifiers2 = [(CKSettingsMessagesController *)self madridSwitchSpecifierIdentifiers];
+    v111 = [madridSwitchSpecifierIdentifiers2 countByEnumeratingWithState:&v124 objects:v128 count:16];
     if (v111)
     {
       v112 = *v125;
@@ -1003,7 +1003,7 @@ LABEL_27:
         {
           if (*v125 != v112)
           {
-            objc_enumerationMutation(v110);
+            objc_enumerationMutation(madridSwitchSpecifierIdentifiers2);
           }
 
           v114 = [v6 specifierForID:*(*(&v124 + 1) + 8 * i)];
@@ -1013,7 +1013,7 @@ LABEL_27:
           }
         }
 
-        v111 = [v110 countByEnumeratingWithState:&v124 objects:v128 count:16];
+        v111 = [madridSwitchSpecifierIdentifiers2 countByEnumeratingWithState:&v124 objects:v128 count:16];
       }
 
       while (v111);
@@ -1029,8 +1029,8 @@ LABEL_27:
 
   else
   {
-    v115 = [(CKSettingsMessagesController *)self checkInLocationHistorySettingsSpecifierIdentifiers];
-    _removeSpecifiersWithIdentifiers(v108, v115);
+    checkInLocationHistorySettingsSpecifierIdentifiers = [(CKSettingsMessagesController *)self checkInLocationHistorySettingsSpecifierIdentifiers];
+    _removeSpecifiersWithIdentifiers(v108, checkInLocationHistorySettingsSpecifierIdentifiers);
   }
 
   if ([(CKSettingsMessagesController *)self _shouldShowSatelliteDemoModeButton])
@@ -1041,15 +1041,15 @@ LABEL_27:
       v116 = @"TRY_DEMO_MODE_FOOTER_DESCRIPTION";
     }
 
-    v117 = MessagesSettingsLocalizedString(v116);
+    _satelliteDemoModeSpecifierIdentifiers = MessagesSettingsLocalizedString(v116);
     v118 = [v108 specifierForID:@"SATELLITE_MESSAGING_TITLE_ID"];
-    [v118 setProperty:v117 forKey:v100];
+    [v118 setProperty:_satelliteDemoModeSpecifierIdentifiers forKey:v100];
   }
 
   else
   {
-    v117 = [(CKSettingsMessagesController *)self _satelliteDemoModeSpecifierIdentifiers];
-    _removeSpecifiersWithIdentifiers(v108, v117);
+    _satelliteDemoModeSpecifierIdentifiers = [(CKSettingsMessagesController *)self _satelliteDemoModeSpecifierIdentifiers];
+    _removeSpecifiersWithIdentifiers(v108, _satelliteDemoModeSpecifierIdentifiers);
   }
 
   objc_storeStrong((&self->super.super.super.super.super.super.isa + v123), v108);
@@ -1060,20 +1060,20 @@ LABEL_109:
   return v3;
 }
 
-- (void)_setupTextMessageGroupSpecifiers:(id)a3 wantsTextMessageBasicGroup:(BOOL)a4
+- (void)_setupTextMessageGroupSpecifiers:(id)specifiers wantsTextMessageBasicGroup:(BOOL)group
 {
-  v56 = a4;
+  groupCopy = group;
   v85 = *MEMORY[0x277D85DE8];
-  v59 = a3;
-  v61 = self;
-  v63 = [(IMCTXPCServiceSubscriptionInfo *)self->_ctSubscriptionInfo __im_subscriptionsWithMMSSupport];
-  v5 = [MEMORY[0x277CBEB18] array];
-  v6 = v61;
-  ctSubscriptionInfo = v61->_ctSubscriptionInfo;
+  specifiersCopy = specifiers;
+  selfCopy = self;
+  __im_subscriptionsWithMMSSupport = [(IMCTXPCServiceSubscriptionInfo *)self->_ctSubscriptionInfo __im_subscriptionsWithMMSSupport];
+  array = [MEMORY[0x277CBEB18] array];
+  v6 = selfCopy;
+  ctSubscriptionInfo = selfCopy->_ctSubscriptionInfo;
   if (objc_opt_respondsToSelector())
   {
-    v8 = [(IMCTXPCServiceSubscriptionInfo *)v61->_ctSubscriptionInfo __im_subscriptionsWithRCSSupport];
-    v66 = [v8 mutableCopy];
+    __im_subscriptionsWithRCSSupport = [(IMCTXPCServiceSubscriptionInfo *)selfCopy->_ctSubscriptionInfo __im_subscriptionsWithRCSSupport];
+    v66 = [__im_subscriptionsWithRCSSupport mutableCopy];
 
     if (IMOSLoggingEnabled())
     {
@@ -1087,20 +1087,20 @@ LABEL_109:
       }
     }
 
-    v6 = v61;
+    v6 = selfCopy;
   }
 
   else
   {
-    v66 = v5;
+    v66 = array;
   }
 
   v73 = 0u;
   v74 = 0u;
   v71 = 0u;
   v72 = 0u;
-  v11 = [(IMCTXPCServiceSubscriptionInfo *)v6->_ctSubscriptionInfo subscriptions];
-  v12 = [v11 countByEnumeratingWithState:&v71 objects:v84 count:16];
+  subscriptions = [(IMCTXPCServiceSubscriptionInfo *)v6->_ctSubscriptionInfo subscriptions];
+  v12 = [subscriptions countByEnumeratingWithState:&v71 objects:v84 count:16];
   if (v12)
   {
     v13 = *v72;
@@ -1110,14 +1110,14 @@ LABEL_109:
       {
         if (*v72 != v13)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(subscriptions);
         }
 
         v15 = *(*(&v71 + 1) + 8 * i);
         if (([v66 containsObject:v15] & 1) == 0)
         {
-          v16 = [(CKSettingsMessagesController *)v61 lazuliEnablementManager];
-          v17 = [v16 isRCSDisabledByProfileForSubscriptionContext:v15];
+          lazuliEnablementManager = [(CKSettingsMessagesController *)selfCopy lazuliEnablementManager];
+          v17 = [lazuliEnablementManager isRCSDisabledByProfileForSubscriptionContext:v15];
 
           if (v17)
           {
@@ -1127,9 +1127,9 @@ LABEL_109:
               v18 = OSLogHandleForIMFoundationCategory();
               if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
               {
-                v19 = [v15 label];
+                label = [v15 label];
                 *buf = 138412290;
-                v76 = v19;
+                v76 = label;
                 _os_log_impl(&dword_243BE5000, v18, OS_LOG_TYPE_INFO, "subscriptionsWithRCSSupport found %@ disabled", buf, 0xCu);
               }
             }
@@ -1137,16 +1137,16 @@ LABEL_109:
         }
       }
 
-      v12 = [v11 countByEnumeratingWithState:&v71 objects:v84 count:16];
+      v12 = [subscriptions countByEnumeratingWithState:&v71 objects:v84 count:16];
     }
 
     while (v12);
   }
 
-  v58 = [(CKSettingsMessagesController *)v61 _isMessagesTheDefaultMessagingApp];
-  if (v58)
+  _isMessagesTheDefaultMessagingApp = [(CKSettingsMessagesController *)selfCopy _isMessagesTheDefaultMessagingApp];
+  if (_isMessagesTheDefaultMessagingApp)
   {
-    v57 = [v63 count];
+    v57 = [__im_subscriptionsWithMMSSupport count];
   }
 
   else
@@ -1159,7 +1159,7 @@ LABEL_109:
   v70 = 0u;
   v67 = 0u;
   v68 = 0u;
-  obj = v63;
+  obj = __im_subscriptionsWithMMSSupport;
   v20 = [obj countByEnumeratingWithState:&v67 objects:v83 count:16];
   if (v20)
   {
@@ -1176,19 +1176,19 @@ LABEL_109:
         }
 
         v23 = *(*(&v67 + 1) + 8 * j);
-        v24 = [MEMORY[0x277D1A908] sharedInstance];
-        v25 = [v24 copyCarrierBundleValueForSubscriptionContext:v23 keyHierarchy:&unk_2856EB940 defaultValue:MEMORY[0x277CBEC28] valueIfError:MEMORY[0x277CBEC28]];
-        v26 = [v25 BOOLValue];
+        mEMORY[0x277D1A908] = [MEMORY[0x277D1A908] sharedInstance];
+        v25 = [mEMORY[0x277D1A908] copyCarrierBundleValueForSubscriptionContext:v23 keyHierarchy:&unk_2856EB940 defaultValue:MEMORY[0x277CBEC28] valueIfError:MEMORY[0x277CBEC28]];
+        bOOLValue = [v25 BOOLValue];
 
         v27 = MEMORY[0x277D1A8F8];
-        v28 = [v23 phoneNumber];
-        v29 = [v23 labelID];
-        v30 = [v27 IMUniqueIdentifierForPhoneNumber:v28 simID:v29];
+        phoneNumber = [v23 phoneNumber];
+        labelID = [v23 labelID];
+        v30 = [v27 IMUniqueIdentifierForPhoneNumber:phoneNumber simID:labelID];
 
         v31 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", @"MMSEnabled-", v30];
-        v32 = [v23 phoneNumber];
-        v33 = [v23 labelID];
-        [CKSettingsMMSHelper mmsDefaultEnabledForPhoneNumber:v32 simID:v33];
+        phoneNumber2 = [v23 phoneNumber];
+        labelID2 = [v23 labelID];
+        [CKSettingsMMSHelper mmsDefaultEnabledForPhoneNumber:phoneNumber2 simID:labelID2];
 
         if (IMGetDomainBoolForKeyWithDefaultValue())
         {
@@ -1196,7 +1196,7 @@ LABEL_109:
           ++v65;
         }
 
-        v21 |= v26;
+        v21 |= bOOLValue;
       }
 
       v20 = [obj countByEnumeratingWithState:&v67 objects:v83 count:16];
@@ -1233,7 +1233,7 @@ LABEL_109:
   }
 
   v39 = [v66 count];
-  v40 = !v58;
+  v40 = !_isMessagesTheDefaultMessagingApp;
   if (!v39)
   {
     v40 = 1;
@@ -1241,34 +1241,34 @@ LABEL_109:
 
   if (v40)
   {
-    v41 = [v59 specifierForID:@"RCS_MESSAGING_CELL"];
-    [v59 removeObject:v41];
+    rcsMessagingController = [specifiersCopy specifierForID:@"RCS_MESSAGING_CELL"];
+    [specifiersCopy removeObject:rcsMessagingController];
   }
 
   else
   {
-    v41 = [(CKSettingsMessagesController *)v61 rcsMessagingController];
-    [v41 setCtSubscriptions:v66];
+    rcsMessagingController = [(CKSettingsMessagesController *)selfCopy rcsMessagingController];
+    [rcsMessagingController setCtSubscriptions:v66];
   }
 
-  v42 = v57 == 1 && v58;
-  v43 = [v59 specifierForID:@"MMS_MESSAGING"];
+  v42 = v57 == 1 && _isMessagesTheDefaultMessagingApp;
+  v43 = [specifiersCopy specifierForID:@"MMS_MESSAGING"];
   if (v42)
   {
     v44 = [obj objectAtIndexedSubscript:0];
     v45 = MEMORY[0x277D1A8F8];
-    v46 = [v44 phoneNumber];
-    v47 = [v44 labelID];
-    v48 = [v45 IMUniqueIdentifierForPhoneNumber:v46 simID:v47];
+    phoneNumber3 = [v44 phoneNumber];
+    labelID3 = [v44 labelID];
+    v48 = [v45 IMUniqueIdentifierForPhoneNumber:phoneNumber3 simID:labelID3];
 
     [v43 setProperty:v48 forKey:@"subscriptionIdentifier"];
   }
 
   else
   {
-    [v59 removeObject:v43];
+    [specifiersCopy removeObject:v43];
 
-    v49 = !v58;
+    v49 = !_isMessagesTheDefaultMessagingApp;
     if (v57 != 2)
     {
       v49 = 1;
@@ -1276,23 +1276,23 @@ LABEL_109:
 
     if ((v49 & 1) == 0)
     {
-      v50 = [(CKSettingsMessagesController *)v61 mmsMessagingController];
-      [v50 setCtSubscriptions:obj];
+      mmsMessagingController = [(CKSettingsMessagesController *)selfCopy mmsMessagingController];
+      [mmsMessagingController setCtSubscriptions:obj];
       goto LABEL_54;
     }
   }
 
-  v50 = [v59 specifierForID:@"MMS_MESSAGING_CELL"];
-  [v59 removeObject:v50];
+  mmsMessagingController = [specifiersCopy specifierForID:@"MMS_MESSAGING_CELL"];
+  [specifiersCopy removeObject:mmsMessagingController];
 LABEL_54:
 
-  if (![(CKSettingsMessagesController *)v61 _isMadridAccountOperational]&& (!v58 || v65 == 0))
+  if (![(CKSettingsMessagesController *)selfCopy _isMadridAccountOperational]&& (!_isMessagesTheDefaultMessagingApp || v65 == 0))
   {
-    v51 = [v59 specifierForID:@"SHOW_SUBJECT_FIELD_SWITCH"];
-    [v59 removeObject:v51];
+    v51 = [specifiersCopy specifierForID:@"SHOW_SUBJECT_FIELD_SWITCH"];
+    [specifiersCopy removeObject:v51];
   }
 
-  if (v58 && v56)
+  if (_isMessagesTheDefaultMessagingApp && groupCopy)
   {
     if (v57)
     {
@@ -1310,17 +1310,17 @@ LABEL_54:
     }
   }
 
-  v52 = [v59 specifierForID:@"MMS_BASIC_GROUP"];
-  [v59 removeObject:v52];
+  v52 = [specifiersCopy specifierForID:@"MMS_BASIC_GROUP"];
+  [specifiersCopy removeObject:v52];
 
   if (((v57 != 0) & v21) == 0)
   {
 LABEL_62:
-    v53 = [v59 specifierForID:@"MMS_EMAIL_GROUP"];
-    [v59 removeObject:v53];
+    v53 = [specifiersCopy specifierForID:@"MMS_EMAIL_GROUP"];
+    [specifiersCopy removeObject:v53];
 
-    v54 = [v59 specifierForID:@"MMS_EMAIL_CELL"];
-    [v59 removeObject:v54];
+    v54 = [specifiersCopy specifierForID:@"MMS_EMAIL_CELL"];
+    [specifiersCopy removeObject:v54];
   }
 
 LABEL_63:
@@ -1328,16 +1328,16 @@ LABEL_63:
   v55 = *MEMORY[0x277D85DE8];
 }
 
-- (id)isDeliveryReportsEnabled:(id)a3
+- (id)isDeliveryReportsEnabled:(id)enabled
 {
   v8 = 0;
-  v3 = [MEMORY[0x277CC36C0] sharedMessageCenter];
-  v4 = [v3 isDeliveryReportsEnabled:&v8];
+  mEMORY[0x277CC36C0] = [MEMORY[0x277CC36C0] sharedMessageCenter];
+  v4 = [mEMORY[0x277CC36C0] isDeliveryReportsEnabled:&v8];
 
   if (v4 == 2)
   {
-    v5 = [MEMORY[0x277CC36C0] sharedMessageCenter];
-    [v5 isDeliveryReportsEnabled:&v8];
+    mEMORY[0x277CC36C0]2 = [MEMORY[0x277CC36C0] sharedMessageCenter];
+    [mEMORY[0x277CC36C0]2 isDeliveryReportsEnabled:&v8];
   }
 
   v6 = [MEMORY[0x277CCABB0] numberWithBool:v8];
@@ -1345,23 +1345,23 @@ LABEL_63:
   return v6;
 }
 
-- (void)setDeliveryReportsEnabled:(id)a3 specifier:(id)a4
+- (void)setDeliveryReportsEnabled:(id)enabled specifier:(id)specifier
 {
   v5 = MEMORY[0x277CC36C0];
-  v6 = a3;
-  v7 = [v5 sharedMessageCenter];
-  v8 = [v6 BOOLValue];
+  enabledCopy = enabled;
+  sharedMessageCenter = [v5 sharedMessageCenter];
+  bOOLValue = [enabledCopy BOOLValue];
 
-  [v7 setDeliveryReportsEnabled:v8];
+  [sharedMessageCenter setDeliveryReportsEnabled:bOOLValue];
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterPostNotification(DarwinNotifyCenter, @"com.apple.MobileSMS.EnableDeliveryReports.changed", 0, 0, 1u);
 
   [(CKSettingsMessagesController *)self reloadSpecifiers];
 }
 
-- (void)satelliteDemoModeTappedWithSpecifier:(id)a3
+- (void)satelliteDemoModeTappedWithSpecifier:(id)specifier
 {
-  v3 = a3;
+  specifierCopy = specifier;
   if (IMOSLoggingEnabled())
   {
     v4 = OSLogHandleForIMFoundationCategory();
@@ -1412,8 +1412,8 @@ LABEL_5:
 
 - (BOOL)_shouldShowSatelliteDemoModeButton
 {
-  v2 = [MEMORY[0x277D18D48] sharedInstance];
-  v3 = [v2 getState];
+  mEMORY[0x277D18D48] = [MEMORY[0x277D18D48] sharedInstance];
+  getState = [mEMORY[0x277D18D48] getState];
 
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
@@ -1426,7 +1426,7 @@ LABEL_5:
     goto LABEL_12;
   }
 
-  if (([v3 isDemoAllowedForService:16] & 1) == 0 && (objc_msgSend(v3, "isDemoAllowedForService:", 32) & 1) == 0)
+  if (([getState isDemoAllowedForService:16] & 1) == 0 && (objc_msgSend(getState, "isDemoAllowedForService:", 32) & 1) == 0)
   {
     goto LABEL_13;
   }
@@ -1446,7 +1446,7 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if (([v3 isPermittedAtCurrentLocation:16] & 1) == 0 && (objc_msgSend(v3, "isPermittedAtCurrentLocation:", 32) & 1) == 0)
+  if (([getState isPermittedAtCurrentLocation:16] & 1) == 0 && (objc_msgSend(getState, "isPermittedAtCurrentLocation:", 32) & 1) == 0)
   {
     goto LABEL_13;
   }
@@ -1459,34 +1459,34 @@ LABEL_14:
 
 - (id)getMMSDictionary
 {
-  v2 = [MEMORY[0x277D1A908] sharedInstance];
-  v3 = [v2 ctSubscriptionInfo];
-  v4 = [v3 subscriptions];
-  v5 = [v4 firstObject];
+  mEMORY[0x277D1A908] = [MEMORY[0x277D1A908] sharedInstance];
+  ctSubscriptionInfo = [mEMORY[0x277D1A908] ctSubscriptionInfo];
+  subscriptions = [ctSubscriptionInfo subscriptions];
+  firstObject = [subscriptions firstObject];
 
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:{@"MMS", 0}];
-  v7 = [MEMORY[0x277D1A908] sharedInstance];
-  v8 = [v7 copyCarrierBundleValueForSubscriptionContext:v5 keyHierarchy:v6 defaultValue:0 valueIfError:0];
+  mEMORY[0x277D1A908]2 = [MEMORY[0x277D1A908] sharedInstance];
+  v8 = [mEMORY[0x277D1A908]2 copyCarrierBundleValueForSubscriptionContext:firstObject keyHierarchy:v6 defaultValue:0 valueIfError:0];
 
   return v8;
 }
 
-- (id)isMMSEnabled:(id)a3
+- (id)isMMSEnabled:(id)enabled
 {
   v34 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  enabledCopy = enabled;
   CFPreferencesSynchronize(@"com.apple.MobileSMS", *MEMORY[0x277CBF040], *MEMORY[0x277CBF010]);
   if (IMSharedHelperDeviceHasMultipleActiveSubscriptions())
   {
-    v4 = [MEMORY[0x277D1A908] sharedInstance];
-    v5 = [v4 ctSubscriptionInfo];
-    v6 = [v5 subscriptions];
-    v7 = [v6 firstObject];
+    mEMORY[0x277D1A908] = [MEMORY[0x277D1A908] sharedInstance];
+    ctSubscriptionInfo = [mEMORY[0x277D1A908] ctSubscriptionInfo];
+    subscriptions = [ctSubscriptionInfo subscriptions];
+    firstObject = [subscriptions firstObject];
 
     v8 = MEMORY[0x277D1A8F8];
-    v9 = [v7 phoneNumber];
-    v10 = [v7 labelID];
-    v11 = [v8 IMUniqueIdentifierForPhoneNumber:v9 simID:v10];
+    phoneNumber = [firstObject phoneNumber];
+    labelID = [firstObject labelID];
+    v11 = [v8 IMUniqueIdentifierForPhoneNumber:phoneNumber simID:labelID];
 
     v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", @"MMSEnabled-", v11];
   }
@@ -1498,20 +1498,20 @@ LABEL_14:
   }
 
   keyExistsAndHasValidFormat = 0;
-  v13 = [MEMORY[0x277D07DB0] sharedInstance];
-  v14 = [v13 supportsMMS];
+  mEMORY[0x277D07DB0] = [MEMORY[0x277D07DB0] sharedInstance];
+  supportsMMS = [mEMORY[0x277D07DB0] supportsMMS];
 
   v15 = CFPreferencesGetAppBooleanValue(v12, @"com.apple.MobileSMS", &keyExistsAndHasValidFormat) != 0;
   if (!keyExistsAndHasValidFormat)
   {
-    v16 = [MEMORY[0x277D1A908] sharedInstance];
-    v17 = [v16 ctSubscriptionInfo];
-    v18 = [v17 subscriptions];
-    v19 = [v18 firstObject];
+    mEMORY[0x277D1A908]2 = [MEMORY[0x277D1A908] sharedInstance];
+    ctSubscriptionInfo2 = [mEMORY[0x277D1A908]2 ctSubscriptionInfo];
+    subscriptions2 = [ctSubscriptionInfo2 subscriptions];
+    firstObject2 = [subscriptions2 firstObject];
 
-    v20 = [v19 phoneNumber];
-    v21 = [v19 labelID];
-    v15 = [CKSettingsMMSHelper mmsDefaultEnabledForPhoneNumber:v20 simID:v21];
+    phoneNumber2 = [firstObject2 phoneNumber];
+    labelID2 = [firstObject2 labelID];
+    v15 = [CKSettingsMMSHelper mmsDefaultEnabledForPhoneNumber:phoneNumber2 simID:labelID2];
   }
 
   if (IMOSLoggingEnabled())
@@ -1523,7 +1523,7 @@ LABEL_14:
       *buf = 138412802;
       v29 = v11;
       v30 = 2112;
-      if ((v14 & v15) != 0)
+      if ((supportsMMS & v15) != 0)
       {
         v23 = @"YES";
       }
@@ -1535,29 +1535,29 @@ LABEL_14:
     }
   }
 
-  v24 = [MEMORY[0x277CCABB0] numberWithBool:v14 & v15];
+  v24 = [MEMORY[0x277CCABB0] numberWithBool:supportsMMS & v15];
 
   v25 = *MEMORY[0x277D85DE8];
 
   return v24;
 }
 
-- (void)setMMSEnabled:(id)a3 specifier:(id)a4
+- (void)setMMSEnabled:(id)enabled specifier:(id)specifier
 {
   v33 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  enabledCopy = enabled;
+  specifierCopy = specifier;
   if (IMSharedHelperDeviceHasMultipleActiveSubscriptions())
   {
-    v8 = [MEMORY[0x277D1A908] sharedInstance];
-    v9 = [v8 ctSubscriptionInfo];
-    v10 = [v9 subscriptions];
-    v11 = [v10 firstObject];
+    mEMORY[0x277D1A908] = [MEMORY[0x277D1A908] sharedInstance];
+    ctSubscriptionInfo = [mEMORY[0x277D1A908] ctSubscriptionInfo];
+    subscriptions = [ctSubscriptionInfo subscriptions];
+    firstObject = [subscriptions firstObject];
 
     v12 = MEMORY[0x277D1A8F8];
-    v13 = [v11 phoneNumber];
-    v14 = [v11 labelID];
-    v15 = [v12 IMUniqueIdentifierForPhoneNumber:v13 simID:v14];
+    phoneNumber = [firstObject phoneNumber];
+    labelID = [firstObject labelID];
+    v15 = [v12 IMUniqueIdentifierForPhoneNumber:phoneNumber simID:labelID];
 
     v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", @"MMSEnabled-", v15];
   }
@@ -1568,18 +1568,18 @@ LABEL_14:
     v16 = @"MMSEnabled";
   }
 
-  CFPreferencesSetAppValue(v16, v6, @"com.apple.MobileSMS");
+  CFPreferencesSetAppValue(v16, enabledCopy, @"com.apple.MobileSMS");
   if (IMOSLoggingEnabled())
   {
     v17 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
-      v18 = [v6 BOOLValue];
+      bOOLValue = [enabledCopy BOOLValue];
       v19 = @"NO";
       *buf = 138412802;
       v28 = v15;
       v29 = 2112;
-      if (v18)
+      if (bOOLValue)
       {
         v19 = @"YES";
       }
@@ -1591,19 +1591,19 @@ LABEL_14:
     }
   }
 
-  if (([v6 BOOLValue] & 1) == 0 && !-[CKSettingsMessagesController _isMadridAccountOperational](self, "_isMadridAccountOperational"))
+  if (([enabledCopy BOOLValue] & 1) == 0 && !-[CKSettingsMessagesController _isMadridAccountOperational](self, "_isMadridAccountOperational"))
   {
     if (IMOSLoggingEnabled())
     {
       v20 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
       {
-        v21 = [v6 BOOLValue];
+        bOOLValue2 = [enabledCopy BOOLValue];
         *buf = 138412802;
         v28 = v15;
         v29 = 2112;
         v30 = @"MMSShowSubject";
-        if (v21)
+        if (bOOLValue2)
         {
           v22 = @"YES";
         }
@@ -1619,65 +1619,65 @@ LABEL_14:
       }
     }
 
-    CFPreferencesSetAppValue(@"MMSShowSubject", v6, @"com.apple.MobileSMS");
+    CFPreferencesSetAppValue(@"MMSShowSubject", enabledCopy, @"com.apple.MobileSMS");
   }
 
   CFPreferencesSynchronize(@"com.apple.MobileSMS", *MEMORY[0x277CBF040], *MEMORY[0x277CBF010]);
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterPostNotification(DarwinNotifyCenter, @"com.apple.MobileSMS.MMSEnabled.changed", 0, 0, 1u);
   [(CKSettingsMessagesController *)self reloadSpecifiers];
-  v24 = [(CKSettingsMessagesController *)self _syncManager];
+  _syncManager = [(CKSettingsMessagesController *)self _syncManager];
   v25 = [MEMORY[0x277CBEB98] setWithObject:@"MMSEnabled"];
-  [v24 synchronizeUserDefaultsDomain:@"com.apple.MobileSMS" keys:v25];
+  [_syncManager synchronizeUserDefaultsDomain:@"com.apple.MobileSMS" keys:v25];
 
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (id)willSendGroupMMS:(id)a3
+- (id)willSendGroupMMS:(id)s
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  sCopy = s;
   CFPreferencesSynchronize(@"com.apple.MobileSMS", *MEMORY[0x277CBF040], *MEMORY[0x277CBF010]);
   if (IMSharedHelperDeviceHasMultipleSubscriptions())
   {
-    v5 = [MEMORY[0x277D1A908] sharedInstance];
-    v6 = [v5 ctSubscriptionInfo];
-    v7 = [v6 subscriptions];
-    v8 = [v7 firstObject];
+    mEMORY[0x277D1A908] = [MEMORY[0x277D1A908] sharedInstance];
+    ctSubscriptionInfo = [mEMORY[0x277D1A908] ctSubscriptionInfo];
+    subscriptions = [ctSubscriptionInfo subscriptions];
+    firstObject = [subscriptions firstObject];
 
     v9 = MEMORY[0x277D1A8F8];
-    v10 = [v8 phoneNumber];
-    v11 = [v8 labelID];
-    v12 = [v9 IMUniqueIdentifierForPhoneNumber:v10 simID:v11];
+    phoneNumber = [firstObject phoneNumber];
+    labelID = [firstObject labelID];
+    v12 = [v9 IMUniqueIdentifierForPhoneNumber:phoneNumber simID:labelID];
 
-    v13 = 0;
+    getMMSDictionary = 0;
   }
 
   else
   {
-    v13 = [(CKSettingsMessagesController *)self getMMSDictionary];
-    v8 = 0;
+    getMMSDictionary = [(CKSettingsMessagesController *)self getMMSDictionary];
+    firstObject = 0;
     v12 = 0;
   }
 
   if (IMSharedHelperDeviceHasMultipleSubscriptions())
   {
-    v14 = [MEMORY[0x277D1A908] sharedInstance];
-    v15 = [v14 copyCarrierBundleValueForSubscriptionContext:v8 keyHierarchy:&unk_2856EB958 defaultValue:MEMORY[0x277CBEC28] valueIfError:MEMORY[0x277CBEC28]];
-    v16 = [v15 BOOLValue];
+    mEMORY[0x277D1A908]2 = [MEMORY[0x277D1A908] sharedInstance];
+    v15 = [mEMORY[0x277D1A908]2 copyCarrierBundleValueForSubscriptionContext:firstObject keyHierarchy:&unk_2856EB958 defaultValue:MEMORY[0x277CBEC28] valueIfError:MEMORY[0x277CBEC28]];
+    bOOLValue = [v15 BOOLValue];
   }
 
   else
   {
-    v16 = [v13 objectForKey:@"GroupModeEnabled"];
+    bOOLValue = [getMMSDictionary objectForKey:@"GroupModeEnabled"];
 
-    if (!v16)
+    if (!bOOLValue)
     {
       goto LABEL_9;
     }
 
-    v14 = [v13 objectForKey:@"GroupModeEnabled"];
-    v16 = [v14 BOOLValue];
+    mEMORY[0x277D1A908]2 = [getMMSDictionary objectForKey:@"GroupModeEnabled"];
+    bOOLValue = [mEMORY[0x277D1A908]2 BOOLValue];
   }
 
 LABEL_9:
@@ -1687,7 +1687,7 @@ LABEL_9:
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
       v18 = @"NO";
-      if (v16)
+      if (bOOLValue)
       {
         v18 = @"YES";
       }
@@ -1700,38 +1700,38 @@ LABEL_9:
     }
   }
 
-  v19 = [MEMORY[0x277CCABB0] numberWithBool:v16];
+  v19 = [MEMORY[0x277CCABB0] numberWithBool:bOOLValue];
 
   v20 = *MEMORY[0x277D85DE8];
 
   return v19;
 }
 
-- (id)getRaiseToListenEnabled:(id)a3
+- (id)getRaiseToListenEnabled:(id)enabled
 {
   CFPreferencesSynchronize(@"com.apple.MobileSMS", *MEMORY[0x277CBF040], *MEMORY[0x277CBF010]);
   keyExistsAndHasValidFormat = 0;
-  v4 = CFPreferencesGetAppBooleanValue(@"RaiseToListenEnabled", @"com.apple.MobileSMS", &keyExistsAndHasValidFormat) != 0;
+  _isRaiseGestureSupported = CFPreferencesGetAppBooleanValue(@"RaiseToListenEnabled", @"com.apple.MobileSMS", &keyExistsAndHasValidFormat) != 0;
   if (!keyExistsAndHasValidFormat)
   {
-    v4 = [(CKSettingsMessagesController *)self _isRaiseGestureSupported];
+    _isRaiseGestureSupported = [(CKSettingsMessagesController *)self _isRaiseGestureSupported];
   }
 
-  v5 = [MEMORY[0x277CCABB0] numberWithBool:v4];
+  v5 = [MEMORY[0x277CCABB0] numberWithBool:_isRaiseGestureSupported];
 
   return v5;
 }
 
-- (void)setRaiseToListenEnabled:(id)a3 specifier:(id)a4
+- (void)setRaiseToListenEnabled:(id)enabled specifier:(id)specifier
 {
-  CFPreferencesSetAppValue(@"RaiseToListenEnabled", a3, @"com.apple.MobileSMS");
+  CFPreferencesSetAppValue(@"RaiseToListenEnabled", enabled, @"com.apple.MobileSMS");
   CFPreferencesSynchronize(@"com.apple.MobileSMS", *MEMORY[0x277CBF040], *MEMORY[0x277CBF010]);
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
 
   CFNotificationCenterPostNotification(DarwinNotifyCenter, @"com.apple.MobileSMS.RaiseToListenEnabled.changed", 0, 0, 1u);
 }
 
-+ (BOOL)currentMessageAutoKeepForType:(int)a3
++ (BOOL)currentMessageAutoKeepForType:(int)type
 {
   keyExistsAndHasValidFormat = 0;
   if (CFPreferencesGetAppBooleanValue(@"AutomaticallySaveAudioMessagesEnabled", @"com.apple.imessage", &keyExistsAndHasValidFormat))
@@ -1747,7 +1747,7 @@ LABEL_9:
   return !v3;
 }
 
-- (id)getAudioMessageAutoKeep:(id)a3
+- (id)getAudioMessageAutoKeep:(id)keep
 {
   CFPreferencesSynchronize(@"com.apple.imessage", *MEMORY[0x277CBF040], *MEMORY[0x277CBF010]);
   v3 = MEMORY[0x277CCABB0];
@@ -1756,9 +1756,9 @@ LABEL_9:
   return [v3 numberWithUnsignedInt:v4];
 }
 
-- (void)setAudioMessageAutoKeep:(id)a3 specifier:(id)a4
+- (void)setAudioMessageAutoKeep:(id)keep specifier:(id)specifier
 {
-  if ([a3 integerValue])
+  if ([keep integerValue])
   {
     v5 = MEMORY[0x277CBEC38];
   }
@@ -1770,9 +1770,9 @@ LABEL_9:
 
   CFPreferencesSetAppValue(@"AutomaticallySaveAudioMessagesEnabled", v5, @"com.apple.imessage");
   CFPreferencesSynchronize(@"com.apple.imessage", *MEMORY[0x277CBF040], *MEMORY[0x277CBF010]);
-  v7 = [(CKSettingsMessagesController *)self _syncManager];
+  _syncManager = [(CKSettingsMessagesController *)self _syncManager];
   v6 = [MEMORY[0x277CBEB98] setWithObject:@"AutomaticallySaveAudioMessagesEnabled"];
-  [v7 synchronizeUserDefaultsDomain:@"com.apple.imessage" keys:v6];
+  [_syncManager synchronizeUserDefaultsDomain:@"com.apple.imessage" keys:v6];
 }
 
 - (id)_syncManager
@@ -1788,10 +1788,10 @@ LABEL_9:
 
 - (BOOL)_isSMSDevice
 {
-  v2 = [MEMORY[0x277D07DB0] sharedInstance];
-  v3 = [v2 supportsSMS];
+  mEMORY[0x277D07DB0] = [MEMORY[0x277D07DB0] sharedInstance];
+  supportsSMS = [mEMORY[0x277D07DB0] supportsSMS];
 
-  return v3;
+  return supportsSMS;
 }
 
 - (BOOL)_isMessagesTheDefaultMessagingApp
@@ -1801,39 +1801,39 @@ LABEL_9:
     return 1;
   }
 
-  v2 = [MEMORY[0x277D19268] sharedInstance];
-  v3 = [v2 isInternalInstall];
+  mEMORY[0x277D19268] = [MEMORY[0x277D19268] sharedInstance];
+  isInternalInstall = [mEMORY[0x277D19268] isInternalInstall];
 
-  if (!v3)
+  if (!isInternalInstall)
   {
     goto LABEL_7;
   }
 
-  v4 = [MEMORY[0x277D1A990] sharedInstance];
-  v5 = [v4 getBoolFromDomain:@"com.apple.MobileSMS" forKey:@"Force.MessageIsNotDefaultApp"];
+  mEMORY[0x277D1A990] = [MEMORY[0x277D1A990] sharedInstance];
+  v5 = [mEMORY[0x277D1A990] getBoolFromDomain:@"com.apple.MobileSMS" forKey:@"Force.MessageIsNotDefaultApp"];
 
   if ((v5 & 1) == 0)
   {
-    v6 = [MEMORY[0x277D1A990] sharedInstance];
-    v7 = [v6 getBoolFromDomain:@"com.apple.MobileSMS" forKey:@"Force.MessageIsDefaultApp"];
+    mEMORY[0x277D1A990]2 = [MEMORY[0x277D1A990] sharedInstance];
+    v7 = [mEMORY[0x277D1A990]2 getBoolFromDomain:@"com.apple.MobileSMS" forKey:@"Force.MessageIsDefaultApp"];
 
     if (!v7)
     {
 LABEL_7:
-      v9 = [MEMORY[0x277CC1E80] defaultWorkspace];
-      v10 = v9;
-      if (v9)
+      defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+      v10 = defaultWorkspace;
+      if (defaultWorkspace)
       {
-        if ([v9 canChangeDefaultAppForCategory:10])
+        if ([defaultWorkspace canChangeDefaultAppForCategory:10])
         {
           v19 = 0;
           v11 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:@"com.apple.MobileSMS" allowPlaceholder:0 error:&v19];
           v12 = v19;
           if (v11)
           {
-            v13 = [MEMORY[0x277CC1E80] defaultWorkspace];
+            defaultWorkspace2 = [MEMORY[0x277CC1E80] defaultWorkspace];
             v18 = v12;
-            v14 = [v13 defaultApplicationForCategory:10 error:&v18];
+            v14 = [defaultWorkspace2 defaultApplicationForCategory:10 error:&v18];
             v15 = v18;
 
             v8 = [v14 isEqual:v11];
@@ -1877,18 +1877,18 @@ LABEL_20:
 
 - (BOOL)_isMadridAccountOperational
 {
-  v3 = [(CNFRegListController *)self regController];
-  if ([v3 isServiceSupported])
+  regController = [(CNFRegListController *)self regController];
+  if ([regController isServiceSupported])
   {
-    v4 = [(CNFRegListController *)self regController];
-    v5 = [v4 isServiceEnabled];
+    regController2 = [(CNFRegListController *)self regController];
+    isServiceEnabled = [regController2 isServiceEnabled];
 
-    if (v5)
+    if (isServiceEnabled)
     {
-      v6 = [(CNFRegListController *)self regController];
-      v7 = [v6 accountState];
+      regController3 = [(CNFRegListController *)self regController];
+      accountState = [regController3 accountState];
 
-      return (v7 & 0x60000000) == 0x40000000;
+      return (accountState & 0x60000000) == 0x40000000;
     }
   }
 
@@ -1901,48 +1901,48 @@ LABEL_20:
 
 - (BOOL)_isMadridSwitchOn
 {
-  v3 = [(CNFRegListController *)self regController];
-  if ([v3 isServiceEnabled])
+  regController = [(CNFRegListController *)self regController];
+  if ([regController isServiceEnabled])
   {
-    v4 = 1;
+    isAccountKeyCDPSyncingOrWaitingForUser = 1;
   }
 
   else
   {
-    v5 = [(CNFRegListController *)self regController];
-    v4 = [v5 isAccountKeyCDPSyncingOrWaitingForUser];
+    regController2 = [(CNFRegListController *)self regController];
+    isAccountKeyCDPSyncingOrWaitingForUser = [regController2 isAccountKeyCDPSyncingOrWaitingForUser];
   }
 
-  return v4;
+  return isAccountKeyCDPSyncingOrWaitingForUser;
 }
 
 - (BOOL)shouldShowMadridSwitch
 {
-  v2 = [(CNFRegListController *)self regController];
-  v3 = [v2 isServiceSupported];
+  regController = [(CNFRegListController *)self regController];
+  isServiceSupported = [regController isServiceSupported];
 
-  return v3;
+  return isServiceSupported;
 }
 
-- (id)isMadridEnabled:(id)a3
+- (id)isMadridEnabled:(id)enabled
 {
   v3 = MEMORY[0x277CCABB0];
-  v4 = [(CKSettingsMessagesController *)self _isMadridSwitchOn];
+  _isMadridSwitchOn = [(CKSettingsMessagesController *)self _isMadridSwitchOn];
 
-  return [v3 numberWithBool:v4];
+  return [v3 numberWithBool:_isMadridSwitchOn];
 }
 
-- (void)setMadridEnabled:(id)a3 specifier:(id)a4
+- (void)setMadridEnabled:(id)enabled specifier:(id)specifier
 {
   v42 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  enabledCopy = enabled;
+  specifierCopy = specifier;
   v8 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v6 intValue];
+    intValue = [enabledCopy intValue];
     v10 = @"YES";
-    if (!v9)
+    if (!intValue)
     {
       v10 = @"NO";
     }
@@ -1954,9 +1954,9 @@ LABEL_20:
 
   if (os_log_shim_legacy_logging_enabled() && IMShouldLog())
   {
-    v11 = [v6 intValue];
+    intValue2 = [enabledCopy intValue];
     v12 = @"YES";
-    if (!v11)
+    if (!intValue2)
     {
       v12 = @"NO";
     }
@@ -1965,13 +1965,13 @@ LABEL_20:
     IMLogString();
   }
 
-  v13 = [v6 BOOLValue];
-  if (!v13 || ![(CNFRegListController *)self _showWiFiAlertIfNecessary])
+  bOOLValue = [enabledCopy BOOLValue];
+  if (!bOOLValue || ![(CNFRegListController *)self _showWiFiAlertIfNecessary])
   {
     [(CKSettingsMessagesController *)self _clearMessagesAppExtensionSalt];
-    v15 = [(CNFRegListController *)self regController];
+    regController = [(CNFRegListController *)self regController];
     IMSetUserLoginIntent();
-    if (!v13)
+    if (!bOOLValue)
     {
       v18 = OSLogHandleForIDSCategory();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -1986,29 +1986,29 @@ LABEL_20:
       }
 
       [(CKSettingsMessagesController *)self _setupAccountHandlersForDisabling];
-      [v15 deactivateAccounts];
+      [regController deactivateAccounts];
       goto LABEL_32;
     }
 
     [(CKSettingsMessagesController *)self _setupAccountHandlers];
-    v16 = [v15 accounts];
+    accounts = [regController accounts];
     v17 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v41 = v16;
+      v41 = accounts;
       _os_log_impl(&dword_243BE5000, v17, OS_LOG_TYPE_DEFAULT, "Attempting to enable iMessage for accounts %@", buf, 0xCu);
     }
 
     if (os_log_shim_legacy_logging_enabled() && IMShouldLog())
     {
-      v38 = v16;
+      v38 = accounts;
       IMLogString();
     }
 
-    if (v16 && [(__CFString *)v16 count])
+    if (accounts && [(__CFString *)accounts count])
     {
-      [v15 activateAccounts];
+      [regController activateAccounts];
 
 LABEL_32:
       [(CKSettingsMessagesController *)self notifyThatConversationFilteringChanged];
@@ -2018,8 +2018,8 @@ LABEL_46:
       goto LABEL_47;
     }
 
-    v19 = [(CNFRegListController *)self regController];
-    if ([v19 isConnected])
+    regController2 = [(CNFRegListController *)self regController];
+    if ([regController2 isConnected])
     {
       if (![(CKSettingsMessagesController *)self _isSMSDevice])
       {
@@ -2029,10 +2029,10 @@ LABEL_44:
         goto LABEL_45;
       }
 
-      v20 = [MEMORY[0x277D18998] sharedInstance];
-      v21 = [v20 supportsIdentification];
+      mEMORY[0x277D18998] = [MEMORY[0x277D18998] sharedInstance];
+      supportsIdentification = [mEMORY[0x277D18998] supportsIdentification];
 
-      if ((v21 & 1) == 0)
+      if ((supportsIdentification & 1) == 0)
       {
         goto LABEL_44;
       }
@@ -2042,38 +2042,38 @@ LABEL_44:
     {
     }
 
-    v22 = [(CNFRegListController *)self regController];
-    if ([v22 serviceSupportsDeviceAliasEnablement])
+    regController3 = [(CNFRegListController *)self regController];
+    if ([regController3 serviceSupportsDeviceAliasEnablement])
     {
-      v23 = [(CNFRegListController *)self regController];
-      v24 = [v23 usableDeviceAliases];
-      v25 = [v24 count] == 0;
+      regController4 = [(CNFRegListController *)self regController];
+      usableDeviceAliases = [regController4 usableDeviceAliases];
+      v25 = [usableDeviceAliases count] == 0;
 
       if (!v25)
       {
         v39 = [[CNFRegController alloc] initWithServiceType:1];
         [(CNFRegController *)v39 connect:1];
         v26 = [(CNFRegListController *)[CNFRegSettingsController alloc] initWithRegController:v39];
-        v27 = [(CKSettingsMessagesController *)self rootController];
-        [(CNFRegSettingsController *)v26 setRootController:v27];
+        rootController = [(CKSettingsMessagesController *)self rootController];
+        [(CNFRegSettingsController *)v26 setRootController:rootController];
 
         [(CNFRegSettingsController *)v26 setParentController:self];
-        v28 = [(CKSettingsMessagesController *)self specifier];
-        [(CNFRegListController *)v26 setSpecifier:v28];
+        specifier = [(CKSettingsMessagesController *)self specifier];
+        [(CNFRegListController *)v26 setSpecifier:specifier];
 
         [(CNFRegSettingsController *)v26 setShowEnableSwitch:0];
         v29 = [objc_alloc(MEMORY[0x277D757A0]) initWithRootViewController:v26];
         v30 = +[CNFRegAppearanceController globalAppearanceController];
-        v31 = [v30 navigationBarStyle];
-        v32 = [v29 navigationBar];
-        [v32 setBarStyle:v31];
+        navigationBarStyle = [v30 navigationBarStyle];
+        navigationBar = [v29 navigationBar];
+        [navigationBar setBarStyle:navigationBarStyle];
 
-        v33 = [v30 navigationBarIsTranslucent];
-        v34 = [v29 navigationBar];
-        [v34 setTranslucent:v33];
+        navigationBarIsTranslucent = [v30 navigationBarIsTranslucent];
+        navigationBar2 = [v29 navigationBar];
+        [navigationBar2 setTranslucent:navigationBarIsTranslucent];
 
-        v35 = [(CNFRegListController *)self regController];
-        [v35 connect:1];
+        regController5 = [(CNFRegListController *)self regController];
+        [regController5 connect:1];
 
         [(CKSettingsMessagesController *)self presentModalViewController:v29 withTransition:3];
         [(CKSettingsMessagesController *)self reloadSpecifiers];
@@ -2091,7 +2091,7 @@ LABEL_45:
     goto LABEL_45;
   }
 
-  [(CKSettingsMessagesController *)self reloadSpecifier:v7];
+  [(CKSettingsMessagesController *)self reloadSpecifier:specifierCopy];
   v14 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
@@ -2112,14 +2112,14 @@ LABEL_47:
 - (BOOL)_isRegistrationInProgress
 {
   v18 = *MEMORY[0x277D85DE8];
-  v2 = [(CNFRegListController *)self regController];
-  v3 = [v2 activeAccounts];
+  regController = [(CNFRegListController *)self regController];
+  activeAccounts = [regController activeAccounts];
 
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = v3;
+  v4 = activeAccounts;
   v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
@@ -2158,17 +2158,17 @@ LABEL_47:
 - (id)_failedAccounts
 {
   v18 = *MEMORY[0x277D85DE8];
-  v2 = [(CNFRegListController *)self regController];
-  v3 = [v2 failedAccounts];
+  regController = [(CNFRegListController *)self regController];
+  failedAccounts = [regController failedAccounts];
 
-  if ([v3 count])
+  if ([failedAccounts count])
   {
     v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v5 = v3;
+    v5 = failedAccounts;
     v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v6)
     {
@@ -2212,16 +2212,16 @@ LABEL_47:
   v26[1] = *MEMORY[0x277D85DE8];
   if (![(CKSettingsMessagesController *)self _isIDSDelayRegistrationEnabled]|| (v3 = [(CKSettingsMessagesController *)self _debugFailureReason], v3 == -1))
   {
-    v7 = [(CKSettingsMessagesController *)self _failedAccounts];
-    if ([v7 count])
+    _failedAccounts = [(CKSettingsMessagesController *)self _failedAccounts];
+    if ([_failedAccounts count])
     {
       v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
       v17 = 0u;
       v18 = 0u;
       v19 = 0u;
       v20 = 0u;
-      v7 = v7;
-      v9 = [v7 countByEnumeratingWithState:&v17 objects:v25 count:16];
+      _failedAccounts = _failedAccounts;
+      v9 = [_failedAccounts countByEnumeratingWithState:&v17 objects:v25 count:16];
       if (v9)
       {
         v10 = *v18;
@@ -2231,7 +2231,7 @@ LABEL_47:
           {
             if (*v18 != v10)
             {
-              objc_enumerationMutation(v7);
+              objc_enumerationMutation(_failedAccounts);
             }
 
             v12 = *(*(&v17 + 1) + 8 * i);
@@ -2243,7 +2243,7 @@ LABEL_47:
             }
           }
 
-          v9 = [v7 countByEnumeratingWithState:&v17 objects:v25 count:16];
+          v9 = [_failedAccounts countByEnumeratingWithState:&v17 objects:v25 count:16];
         }
 
         while (v9);
@@ -2255,7 +2255,7 @@ LABEL_47:
         if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
         {
           *buf = 138412546;
-          v22 = v7;
+          v22 = _failedAccounts;
           v23 = 2112;
           v24 = v8;
           _os_log_impl(&dword_243BE5000, v14, OS_LOG_TYPE_INFO, "Failed accounts: %@ with registration failures: %@", buf, 0x16u);
@@ -2284,8 +2284,8 @@ LABEL_47:
       }
     }
 
-    v7 = [MEMORY[0x277CCABB0] numberWithInteger:v4];
-    v26[0] = v7;
+    _failedAccounts = [MEMORY[0x277CCABB0] numberWithInteger:v4];
+    v26[0] = _failedAccounts;
     v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v26 count:1];
   }
 
@@ -2294,27 +2294,27 @@ LABEL_47:
   return v8;
 }
 
-- (BOOL)_registrationFailures:(id)a3 containsFailure:(int64_t)a4
+- (BOOL)_registrationFailures:(id)failures containsFailure:(int64_t)failure
 {
   v5 = MEMORY[0x277CCABB0];
-  v6 = a3;
-  v7 = [v5 numberWithInteger:a4];
-  LOBYTE(v5) = [v6 containsObject:v7];
+  failuresCopy = failures;
+  v7 = [v5 numberWithInteger:failure];
+  LOBYTE(v5) = [failuresCopy containsObject:v7];
 
   return v5;
 }
 
-- (BOOL)_registrationFailures:(id)a3 areAllOfKind:(int64_t)a4
+- (BOOL)_registrationFailures:(id)failures areAllOfKind:(int64_t)kind
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if ([v5 count])
+  failuresCopy = failures;
+  if ([failuresCopy count])
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v6 = v5;
+    v6 = failuresCopy;
     v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v7)
     {
@@ -2329,7 +2329,7 @@ LABEL_47:
             objc_enumerationMutation(v6);
           }
 
-          if ([*(*(&v14 + 1) + 8 * i) intValue] != a4)
+          if ([*(*(&v14 + 1) + 8 * i) intValue] != kind)
           {
             v11 = 0;
             goto LABEL_12;
@@ -2359,7 +2359,7 @@ LABEL_12:
   return v11;
 }
 
-- (id)_switchFooterText:(unint64_t *)a3
+- (id)_switchFooterText:(unint64_t *)text
 {
   v5 = CommunicationsSetupUIBundle();
   v6 = CNFRegStringTableName();
@@ -2367,10 +2367,10 @@ LABEL_12:
 
   if (MGGetBoolAnswer())
   {
-    v8 = [MEMORY[0x277D07DB0] sharedInstance];
-    v9 = [v8 supportsSMSIdentification];
+    mEMORY[0x277D07DB0] = [MEMORY[0x277D07DB0] sharedInstance];
+    supportsSMSIdentification = [mEMORY[0x277D07DB0] supportsSMSIdentification];
 
-    if (v9)
+    if (supportsSMSIdentification)
     {
       v10 = CommunicationsSetupUIBundle();
       v11 = CNFRegStringTableName();
@@ -2380,16 +2380,16 @@ LABEL_12:
     }
   }
 
-  v13 = [(CKSettingsMessagesController *)self _isRegistrationInProgress];
-  v14 = [(CKSettingsMessagesController *)self _registrationFailures];
-  v15 = v14;
-  if (v13)
+  _isRegistrationInProgress = [(CKSettingsMessagesController *)self _isRegistrationInProgress];
+  _registrationFailures = [(CKSettingsMessagesController *)self _registrationFailures];
+  v15 = _registrationFailures;
+  if (_isRegistrationInProgress)
   {
     v16 = CommunicationsSetupUIBundle();
     v17 = CNFRegStringTableName();
     v18 = [v16 localizedStringForKey:@"FACETIME_SWITCH_STATUS_IN_PROGRESS" value:&stru_2856D3978 table:v17];
 
-    if (!a3)
+    if (!text)
     {
       goto LABEL_20;
     }
@@ -2398,7 +2398,7 @@ LABEL_12:
     goto LABEL_19;
   }
 
-  if ([v14 count])
+  if ([_registrationFailures count])
   {
     if ([(CKSettingsMessagesController *)self _registrationFailures:v15 containsFailure:28])
     {
@@ -2434,7 +2434,7 @@ LABEL_12:
 
     v18 = [v21 localizedStringForKey:v23 value:&stru_2856D3978 table:v22];
 
-    if (!a3)
+    if (!text)
     {
       goto LABEL_20;
     }
@@ -2443,12 +2443,12 @@ LABEL_12:
     goto LABEL_19;
   }
 
-  if (a3)
+  if (text)
   {
     v19 = 1;
     v18 = v7;
 LABEL_19:
-    *a3 = v19;
+    *text = v19;
     goto LABEL_20;
   }
 
@@ -2467,14 +2467,14 @@ LABEL_20:
 
 - (BOOL)shouldShowCharacterCount
 {
-  v3 = [(CKSettingsMessagesController *)self _isSMSDevice];
-  if (v3)
+  _isSMSDevice = [(CKSettingsMessagesController *)self _isSMSDevice];
+  if (_isSMSDevice)
   {
 
-    LOBYTE(v3) = [(CKSettingsMessagesController *)self _isMessagesTheDefaultMessagingApp];
+    LOBYTE(_isSMSDevice) = [(CKSettingsMessagesController *)self _isMessagesTheDefaultMessagingApp];
   }
 
-  return v3;
+  return _isSMSDevice;
 }
 
 - (BOOL)shouldShowBlocklistSettings
@@ -2609,23 +2609,23 @@ uint64_t __50__CKSettingsMessagesController_findSpamExtensions__block_invoke_2(u
   return v9;
 }
 
-+ (id)removeFirstPartyExtensionFromArrayIfNecessary:(id)a3
++ (id)removeFirstPartyExtensionFromArrayIfNecessary:(id)necessary
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([a1 shouldShowFirstPartyExtension])
+  necessaryCopy = necessary;
+  if ([self shouldShowFirstPartyExtension])
   {
-    v5 = v4;
+    v5 = necessaryCopy;
   }
 
   else
   {
-    v5 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v4, "count")}];
+    v5 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(necessaryCopy, "count")}];
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v6 = v4;
+    v6 = necessaryCopy;
     v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v7)
     {
@@ -2641,8 +2641,8 @@ uint64_t __50__CKSettingsMessagesController_findSpamExtensions__block_invoke_2(u
           }
 
           v11 = *(*(&v16 + 1) + 8 * i);
-          v12 = [v11 identifier];
-          v13 = [v12 isEqualToString:@"com.apple.smsFilter.extension"];
+          identifier = [v11 identifier];
+          v13 = [identifier isEqualToString:@"com.apple.smsFilter.extension"];
 
           if ((v13 & 1) == 0)
           {
@@ -2662,12 +2662,12 @@ uint64_t __50__CKSettingsMessagesController_findSpamExtensions__block_invoke_2(u
   return v5;
 }
 
-- (void)messageFilteringTapped:(id)a3
+- (void)messageFilteringTapped:(id)tapped
 {
-  [(CKFilteringListController *)self->_filteringController setSpecifier:a3];
+  [(CKFilteringListController *)self->_filteringController setSpecifier:tapped];
   filteringController = self->_filteringController;
-  v5 = [(CKSettingsMessagesController *)self rootController];
-  [(CKFilteringListController *)filteringController setRootController:v5];
+  rootController = [(CKSettingsMessagesController *)self rootController];
+  [(CKFilteringListController *)filteringController setRootController:rootController];
 
   self->_showingChildViewController = 1;
   [(CKFilteringListController *)self->_filteringController setShowingParentViewController:1];
@@ -2676,9 +2676,9 @@ uint64_t __50__CKSettingsMessagesController_findSpamExtensions__block_invoke_2(u
   [(CKSettingsMessagesController *)self showController:v6 animate:1];
 }
 
-- (id)getTextMessageFilterForSpecifier:(id)a3
+- (id)getTextMessageFilterForSpecifier:(id)specifier
 {
-  v3 = MEMORY[0x245D4CF30](@"com.apple.MobileSMS", @"spamFiltrationExtensionID", a3);
+  v3 = MEMORY[0x245D4CF30](@"com.apple.MobileSMS", @"spamFiltrationExtensionID", specifier);
   if ([v3 isEqualToString:@"com.apple.smsFilter.extension"])
   {
     v4 = MessagesSettingsLocalizedString(@"SPAM_EXTENSION_FIRST_PARTY_ENABLED");
@@ -2707,8 +2707,8 @@ uint64_t __50__CKSettingsMessagesController_findSpamExtensions__block_invoke_2(u
 {
   [(CKFilteringListController *)self->_filteringController setParentController:self];
   filteringController = self->_filteringController;
-  v4 = [(CKSettingsMessagesController *)self rootController];
-  [(CKFilteringListController *)filteringController setRootController:v4];
+  rootController = [(CKSettingsMessagesController *)self rootController];
+  [(CKFilteringListController *)filteringController setRootController:rootController];
 
   v5 = self->_filteringController;
 
@@ -2729,7 +2729,7 @@ uint64_t __50__CKSettingsMessagesController_findSpamExtensions__block_invoke_2(u
   return v2;
 }
 
-- (id)getNotificationsUnknownSendersForSpecifier:(id)a3
+- (id)getNotificationsUnknownSendersForSpecifier:(id)specifier
 {
   v3 = +[CKSettingsMessagesController syncedSettingsManager];
   v4 = [v3 settingValueForKey:5];
@@ -2836,11 +2836,11 @@ uint64_t __50__CKSettingsMessagesController_findSpamExtensions__block_invoke_2(u
 
 - (BOOL)hasiMessageFilteringExtensions
 {
-  v2 = [(CKFilteringListController *)self->_filteringController extensionIDArray];
-  v3 = v2;
-  if (v2)
+  extensionIDArray = [(CKFilteringListController *)self->_filteringController extensionIDArray];
+  v3 = extensionIDArray;
+  if (extensionIDArray)
   {
-    v4 = [v2 count] != 0;
+    v4 = [extensionIDArray count] != 0;
   }
 
   else
@@ -2851,12 +2851,12 @@ uint64_t __50__CKSettingsMessagesController_findSpamExtensions__block_invoke_2(u
   return v4;
 }
 
-- (id)isConversationListFilteringEnabled:(id)a3
+- (id)isConversationListFilteringEnabled:(id)enabled
 {
-  v3 = [MEMORY[0x277D1A9B8] sharedFeatureFlags];
-  v4 = [v3 isIntroductionsEnabled];
+  mEMORY[0x277D1A9B8] = [MEMORY[0x277D1A9B8] sharedFeatureFlags];
+  isIntroductionsEnabled = [mEMORY[0x277D1A9B8] isIntroductionsEnabled];
 
-  if (v4)
+  if (isIntroductionsEnabled)
   {
     v5 = [_syncedSettingsManager_0 settingValueForKey:4];
     if ([v5 BOOLValue])
@@ -2886,15 +2886,15 @@ uint64_t __50__CKSettingsMessagesController_findSpamExtensions__block_invoke_2(u
   return v5;
 }
 
-- (void)setConversationListFilteringEnabled:(id)a3 specifier:(id)a4
+- (void)setConversationListFilteringEnabled:(id)enabled specifier:(id)specifier
 {
-  v9 = a3;
-  v5 = [MEMORY[0x277D1A9B8] sharedFeatureFlags];
-  v6 = [v5 isIntroductionsEnabled];
+  enabledCopy = enabled;
+  mEMORY[0x277D1A9B8] = [MEMORY[0x277D1A9B8] sharedFeatureFlags];
+  isIntroductionsEnabled = [mEMORY[0x277D1A9B8] isIntroductionsEnabled];
 
-  if (v6)
+  if (isIntroductionsEnabled)
   {
-    if (([v9 BOOLValue] & 1) == 0)
+    if (([enabledCopy BOOLValue] & 1) == 0)
     {
       [(CKFilteringListController *)self->_filteringController disableSpamFiltering];
     }
@@ -2916,8 +2916,8 @@ uint64_t __50__CKSettingsMessagesController_findSpamExtensions__block_invoke_2(u
     }
   }
 
-  v8 = [(CKSettingsMessagesController *)self sharedSettingsHelper];
-  [v8 setConversationListFilteringEnabled:{objc_msgSend(v9, "BOOLValue")}];
+  sharedSettingsHelper = [(CKSettingsMessagesController *)self sharedSettingsHelper];
+  [sharedSettingsHelper setConversationListFilteringEnabled:{objc_msgSend(enabledCopy, "BOOLValue")}];
 }
 
 - (BOOL)shouldShowJunkConversationsRow
@@ -2934,8 +2934,8 @@ uint64_t __50__CKSettingsMessagesController_findSpamExtensions__block_invoke_2(u
 
 + (BOOL)shouldShowFirstPartyExtension
 {
-  v2 = [a1 getDefaultExtension];
-  v3 = [v2 isEqualToString:@"com.apple.smsFilter.extension"];
+  getDefaultExtension = [self getDefaultExtension];
+  v3 = [getDefaultExtension isEqualToString:@"com.apple.smsFilter.extension"];
 
   if (v3)
   {
@@ -2955,9 +2955,9 @@ uint64_t __50__CKSettingsMessagesController_findSpamExtensions__block_invoke_2(u
   return v4;
 }
 
-- (BOOL)_shouldShowTextMessageFilterForSpecifier:(id)a3
+- (BOOL)_shouldShowTextMessageFilterForSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   if ([(CKSettingsMessagesController *)self _isMessagesTheDefaultMessagingApp]&& ([(CKFilteringListController *)self->_filteringController extensionIDArray], v5 = objc_claimAutoreleasedReturnValue(), v6 = [(CKSettingsMessagesController *)self hasTextMessageFilteringExtensions:v5], v5, v6))
   {
     v7 = [(CKSettingsMessagesController *)self isConversationListFilteringEnabled:0];
@@ -2974,7 +2974,7 @@ uint64_t __50__CKSettingsMessagesController_findSpamExtensions__block_invoke_2(u
       v10 = MEMORY[0x277CBEC38];
     }
 
-    [v4 setProperty:v10 forKey:*MEMORY[0x277D3FF38]];
+    [specifierCopy setProperty:v10 forKey:*MEMORY[0x277D3FF38]];
     v11 = 1;
   }
 
@@ -2990,18 +2990,18 @@ uint64_t __50__CKSettingsMessagesController_findSpamExtensions__block_invoke_2(u
 {
   v3 = objc_alloc_init(CKNotificationsUnknownSendersController);
   [(CKNotificationsUnknownSendersController *)v3 setParentController:self];
-  v4 = [(CKSettingsMessagesController *)self rootController];
-  [(CKNotificationsUnknownSendersController *)v3 setRootController:v4];
+  rootController = [(CKSettingsMessagesController *)self rootController];
+  [(CKNotificationsUnknownSendersController *)v3 setRootController:rootController];
 
   return v3;
 }
 
 - (BOOL)_shouldShowNotificationsFromUnknownSenders
 {
-  v3 = [MEMORY[0x277D1A9B8] sharedFeatureFlags];
-  v4 = [v3 isIntroductionsEnabled];
+  mEMORY[0x277D1A9B8] = [MEMORY[0x277D1A9B8] sharedFeatureFlags];
+  isIntroductionsEnabled = [mEMORY[0x277D1A9B8] isIntroductionsEnabled];
 
-  if (!v4)
+  if (!isIntroductionsEnabled)
   {
     return 0;
   }
@@ -3022,7 +3022,7 @@ uint64_t __50__CKSettingsMessagesController_findSpamExtensions__block_invoke_2(u
   return 0;
 }
 
-- (id)isSiriToneNotificationEnabled:(id)a3
+- (id)isSiriToneNotificationEnabled:(id)enabled
 {
   v3 = MEMORY[0x277CCABB0];
   v4 = IMGetDomainBoolForKey() ^ 1;
@@ -3030,25 +3030,25 @@ uint64_t __50__CKSettingsMessagesController_findSpamExtensions__block_invoke_2(u
   return [v3 numberWithInt:v4];
 }
 
-- (void)setSiriToneNotificationEnabled:(id)a3 specifier:(id)a4
+- (void)setSiriToneNotificationEnabled:(id)enabled specifier:(id)specifier
 {
-  [a3 BOOLValue];
+  [enabled BOOLValue];
 
   IMSetDomainBoolForKey();
 }
 
 - (BOOL)shouldShowContactPhotoSettings
 {
-  v2 = [MEMORY[0x277D75418] currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v3 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     return 1;
   }
 
-  v5 = [MEMORY[0x277D759A0] mainScreen];
-  [v5 _referenceBounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen _referenceBounds];
   v7 = v6;
 
   return v7 > 320.0;
@@ -3057,15 +3057,15 @@ uint64_t __50__CKSettingsMessagesController_findSpamExtensions__block_invoke_2(u
 - (id)suppressedConversationBackgroundSpecifierIdentifiers
 {
   v14[3] = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277D1A9B8] sharedFeatureFlags];
-  v4 = [v3 isTranscriptBackgroundsEnabled];
+  mEMORY[0x277D1A9B8] = [MEMORY[0x277D1A9B8] sharedFeatureFlags];
+  isTranscriptBackgroundsEnabled = [mEMORY[0x277D1A9B8] isTranscriptBackgroundsEnabled];
 
-  if (v4)
+  if (isTranscriptBackgroundsEnabled)
   {
-    v5 = [(CKSettingsMessagesController *)self isTranscriptBackgroundsEnabledViaSyncedSettings];
-    v6 = [v5 BOOLValue];
+    isTranscriptBackgroundsEnabledViaSyncedSettings = [(CKSettingsMessagesController *)self isTranscriptBackgroundsEnabledViaSyncedSettings];
+    bOOLValue = [isTranscriptBackgroundsEnabledViaSyncedSettings BOOLValue];
 
-    if (v6)
+    if (bOOLValue)
     {
       v7 = MEMORY[0x277CBEBF8];
       goto LABEL_7;
@@ -3102,18 +3102,18 @@ LABEL_7:
   return v3;
 }
 
-- (void)setConversationBackgroundsEnabled:(id)a3 specifier:(id)a4
+- (void)setConversationBackgroundsEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = a3;
+  enabledCopy = enabled;
   v5 = +[CKSettingsMessagesController syncedSettingsManager];
-  [v5 setSettingValue:v4 forKey:9];
+  [v5 setSettingValue:enabledCopy forKey:9];
 
-  LODWORD(v5) = [v4 BOOLValue];
-  v6 = [MEMORY[0x277CBEBD0] messagesAppDomain];
-  v7 = [v6 BOOLForKey:@"MessagesBackgroundsEverEnabled"];
+  LODWORD(v5) = [enabledCopy BOOLValue];
+  messagesAppDomain = [MEMORY[0x277CBEBD0] messagesAppDomain];
+  v7 = [messagesAppDomain BOOLForKey:@"MessagesBackgroundsEverEnabled"];
   if (v5 && (v7 & 1) == 0)
   {
-    [v6 setBool:1 forKey:@"MessagesBackgroundsEverEnabled"];
+    [messagesAppDomain setBool:1 forKey:@"MessagesBackgroundsEverEnabled"];
   }
 
   AnalyticsSendEventLazy();
@@ -3148,7 +3148,7 @@ id __76__CKSettingsMessagesController_setConversationBackgroundsEnabled_specifie
   return v6;
 }
 
-- (id)photoBackgroundAutomaticScrollDockingEnabled:(id)a3
+- (id)photoBackgroundAutomaticScrollDockingEnabled:(id)enabled
 {
   v3 = +[CKSettingsMessagesController syncedSettingsManager];
   v4 = [v3 settingValueForKey:10];
@@ -3156,11 +3156,11 @@ id __76__CKSettingsMessagesController_setConversationBackgroundsEnabled_specifie
   return v4;
 }
 
-- (void)photoBackgroundAutomaticScrollDockingEnabled:(id)a3 specifier:(id)a4
+- (void)photoBackgroundAutomaticScrollDockingEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = a3;
+  enabledCopy = enabled;
   v5 = +[CKSettingsMessagesController syncedSettingsManager];
-  [v5 setSettingValue:v4 forKey:10];
+  [v5 setSettingValue:enabledCopy forKey:10];
 }
 
 - (id)nameAndPhotoSharingSpecifiers
@@ -3206,27 +3206,27 @@ id __76__CKSettingsMessagesController_setConversationBackgroundsEnabled_specifie
   v13 = [v11 actionWithTitle:v12 style:0 handler:0];
 
   [v15 addAction:v13];
-  v14 = [(CKSettingsMessagesController *)self navigationController];
-  [v14 presentViewController:v15 animated:1 completion:0];
+  navigationController = [(CKSettingsMessagesController *)self navigationController];
+  [navigationController presentViewController:v15 animated:1 completion:0];
 }
 
 - (BOOL)currentRegionWantsOnlineSafetyLink
 {
   v12 = *MEMORY[0x277D85DE8];
-  v2 = [(CKSettingsMessagesController *)self onlineSafetyRegionCodesURLMapping];
-  v3 = [v2 allKeys];
+  onlineSafetyRegionCodesURLMapping = [(CKSettingsMessagesController *)self onlineSafetyRegionCodesURLMapping];
+  allKeys = [onlineSafetyRegionCodesURLMapping allKeys];
 
-  v4 = [MEMORY[0x277CBEAF8] currentLocale];
-  v5 = [v4 regionCode];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  regionCode = [currentLocale regionCode];
 
-  v6 = [v3 containsObject:v5];
+  v6 = [allKeys containsObject:regionCode];
   if (v6 && IMOSLoggingEnabled())
   {
     v7 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       v10 = 138412290;
-      v11 = v5;
+      v11 = regionCode;
       _os_log_impl(&dword_243BE5000, v7, OS_LOG_TYPE_INFO, "Region: %@ wanted to show the online safety link", &v10, 0xCu);
     }
   }
@@ -3257,20 +3257,20 @@ id __76__CKSettingsMessagesController_setConversationBackgroundsEnabled_specifie
   v9 = [v7 actionWithTitle:v8 style:0 handler:0];
 
   [v6 addAction:v9];
-  v10 = [(CKSettingsMessagesController *)self navigationController];
-  [v10 presentViewController:v6 animated:1 completion:0];
+  navigationController = [(CKSettingsMessagesController *)self navigationController];
+  [navigationController presentViewController:v6 animated:1 completion:0];
 }
 
-- (void)nameAndPhotoSharingForSpecifier:(id)a3
+- (void)nameAndPhotoSharingForSpecifier:(id)specifier
 {
-  v4 = [MEMORY[0x277D1AA48] sharedInstance];
+  mEMORY[0x277D1AA48] = [MEMORY[0x277D1AA48] sharedInstance];
   if ((objc_opt_respondsToSelector() & 1) != 0 && ![MEMORY[0x277D18DA8] performSelector:sel_iCloudSignedInToUseNicknames withObject:0])
   {
     [(CKSettingsMessagesController *)self showiCloudNotSignedInAlertForNicknames];
     goto LABEL_19;
   }
 
-  v5 = [MEMORY[0x277D1A9B8] sharedFeatureFlags];
+  mEMORY[0x277D1A9B8] = [MEMORY[0x277D1A9B8] sharedFeatureFlags];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     v7 = objc_opt_respondsToSelector();
@@ -3288,12 +3288,12 @@ LABEL_9:
 
     [(CKSettingsMessagesController *)self showMultiplePhoneNumbersAlertForNicknames];
 LABEL_19:
-    [v4 setSharingEnabled:0];
+    [mEMORY[0x277D1AA48] setSharingEnabled:0];
     goto LABEL_20;
   }
 
-  v6 = [MEMORY[0x277D1A9B8] sharedFeatureFlags];
-  if (![v6 isAllowMultiplePhoneNumbersSNaPEnabled])
+  mEMORY[0x277D1A9B8]2 = [MEMORY[0x277D1A9B8] sharedFeatureFlags];
+  if (![mEMORY[0x277D1A9B8]2 isAllowMultiplePhoneNumbersSNaPEnabled])
   {
     v8 = objc_opt_respondsToSelector();
 
@@ -3306,11 +3306,11 @@ LABEL_19:
   }
 
 LABEL_11:
-  v9 = [MEMORY[0x277D75418] currentDevice];
-  if ([v9 userInterfaceIdiom])
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  if ([currentDevice userInterfaceIdiom])
   {
-    v10 = [MEMORY[0x277D75418] currentDevice];
-    v11 = [v10 userInterfaceIdiom] == 1;
+    currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+    v11 = [currentDevice2 userInterfaceIdiom] == 1;
   }
 
   else
@@ -3331,14 +3331,14 @@ LABEL_11:
     v17[3] = &unk_278DE8D70;
     v17[4] = self;
     v12 = MEMORY[0x245D4D850](v17);
-    v13 = [MEMORY[0x277D18DA8] sharedInstance];
+    mEMORY[0x277D18DA8] = [MEMORY[0x277D18DA8] sharedInstance];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __64__CKSettingsMessagesController_nameAndPhotoSharingForSpecifier___block_invoke_3;
     v15[3] = &unk_278DE8DC0;
     v16 = v12;
     v14 = v12;
-    [v13 fetchPersonalNicknameWithCompletion:v15];
+    [mEMORY[0x277D18DA8] fetchPersonalNicknameWithCompletion:v15];
   }
 
 LABEL_20:
@@ -3395,11 +3395,11 @@ void __64__CKSettingsMessagesController_nameAndPhotoSharingForSpecifier___block_
     v4 = objc_alloc_init(v3);
     [(CKSettingsMessagesController *)self setOnboardingController:v4];
 
-    v5 = [(CKSettingsMessagesController *)self onboardingController];
-    [v5 setDelegate:self];
+    onboardingController = [(CKSettingsMessagesController *)self onboardingController];
+    [onboardingController setDelegate:self];
 
-    v6 = [(CKSettingsMessagesController *)self onboardingController];
-    [v6 presentNicknameSharingSetupFlow];
+    onboardingController2 = [(CKSettingsMessagesController *)self onboardingController];
+    [onboardingController2 presentNicknameSharingSetupFlow];
   }
 }
 
@@ -3411,48 +3411,48 @@ void __64__CKSettingsMessagesController_nameAndPhotoSharingForSpecifier___block_
     v4 = objc_alloc_init(v3);
     [(CKSettingsMessagesController *)self setOnboardingController:v4];
 
-    v5 = [(CKSettingsMessagesController *)self onboardingController];
-    [v5 setDelegate:self];
+    onboardingController = [(CKSettingsMessagesController *)self onboardingController];
+    [onboardingController setDelegate:self];
 
-    v6 = [(CKSettingsMessagesController *)self onboardingController];
+    onboardingController2 = [(CKSettingsMessagesController *)self onboardingController];
     v7 = objc_opt_respondsToSelector();
 
     if (v7)
     {
-      v8 = [(CKSettingsMessagesController *)self onboardingController];
-      [v8 performSelector:sel_presentNicknameOnboardingOrEditFlow];
+      onboardingController3 = [(CKSettingsMessagesController *)self onboardingController];
+      [onboardingController3 performSelector:sel_presentNicknameOnboardingOrEditFlow];
     }
   }
 }
 
-- (void)onboardingControllerDidFinish:(id)a3
+- (void)onboardingControllerDidFinish:(id)finish
 {
   [(CKSettingsMessagesController *)self setOnboardingController:0];
 
   [(CKSettingsMessagesController *)self reloadSpecifiers];
 }
 
-- (void)showMeCardViewControllerWithNickname:(id)a3
+- (void)showMeCardViewControllerWithNickname:(id)nickname
 {
-  v18 = a3;
+  nicknameCopy = nickname;
   if (objc_opt_class())
   {
-    v4 = [MEMORY[0x277D1A968] sharedInstance];
-    v5 = [MEMORY[0x277D1A968] keysForNicknameHandling];
-    v6 = [v4 fetchMeContactWithKeys:v5];
+    mEMORY[0x277D1A968] = [MEMORY[0x277D1A968] sharedInstance];
+    keysForNicknameHandling = [MEMORY[0x277D1A968] keysForNicknameHandling];
+    v6 = [mEMORY[0x277D1A968] fetchMeContactWithKeys:keysForNicknameHandling];
 
-    v7 = [CKSettingsMeCardSharingNameProvider nameProviderForNickname:v18];
-    v8 = [MEMORY[0x277D1A968] sharedInstance];
-    v9 = [v8 getContactStore];
+    v7 = [CKSettingsMeCardSharingNameProvider nameProviderForNickname:nicknameCopy];
+    mEMORY[0x277D1A968]2 = [MEMORY[0x277D1A968] sharedInstance];
+    getContactStore = [mEMORY[0x277D1A968]2 getContactStore];
 
-    v10 = [(CKSettingsMessagesController *)self _meCardSharingEnabled];
-    v11 = [(CKSettingsMessagesController *)self _meCardSharingAudience];
+    _meCardSharingEnabled = [(CKSettingsMessagesController *)self _meCardSharingEnabled];
+    _meCardSharingAudience = [(CKSettingsMessagesController *)self _meCardSharingAudience];
     if ([(CKSettingsMessagesController *)self _imageForkedFromMeCard])
     {
       v12 = [CKSettingsMeCardSharingNicknameAvatarProvider alloc];
-      v13 = [v18 avatar];
-      v14 = [v13 imageData];
-      v15 = [(CKSettingsMeCardSharingNicknameAvatarProvider *)v12 initWithImageData:v14];
+      avatar = [nicknameCopy avatar];
+      imageData = [avatar imageData];
+      v15 = [(CKSettingsMeCardSharingNicknameAvatarProvider *)v12 initWithImageData:imageData];
     }
 
     else
@@ -3460,14 +3460,14 @@ void __64__CKSettingsMessagesController_nameAndPhotoSharingForSpecifier___block_
       v15 = [objc_alloc(MEMORY[0x277CBDC60]) initWithContact:v6];
     }
 
-    v16 = [objc_alloc(MEMORY[0x277CBDC68]) initWithContactStore:v9 contact:v6 avatarProvider:v15 nameProvider:v7 sharingEnabled:v10 selectedSharingAudience:v11];
+    v16 = [objc_alloc(MEMORY[0x277CBDC68]) initWithContactStore:getContactStore contact:v6 avatarProvider:v15 nameProvider:v7 sharingEnabled:_meCardSharingEnabled selectedSharingAudience:_meCardSharingAudience];
     [v16 setDelegate:self];
-    v17 = [(CKSettingsMessagesController *)self navigationController];
-    [v17 pushViewController:v16 animated:1];
+    navigationController = [(CKSettingsMessagesController *)self navigationController];
+    [navigationController pushViewController:v16 animated:1];
   }
 }
 
-- (id)getNameAndPhotoSharingSpecifierSummary:(id)a3
+- (id)getNameAndPhotoSharingSpecifierSummary:(id)summary
 {
   if (![(CKSettingsMessagesController *)self _meCardSharingEnabled])
   {
@@ -3481,10 +3481,10 @@ void __64__CKSettingsMessagesController_nameAndPhotoSharingForSpecifier___block_
     goto LABEL_7;
   }
 
-  v5 = [(CKSettingsMessagesController *)self _meCardSharingAudience];
-  if (v5 <= 2)
+  _meCardSharingAudience = [(CKSettingsMessagesController *)self _meCardSharingAudience];
+  if (_meCardSharingAudience <= 2)
   {
-    v6 = off_278DE8DE0[v5];
+    v6 = off_278DE8DE0[_meCardSharingAudience];
 LABEL_6:
     v4 = MessagesSettingsLocalizedString(v6);
     goto LABEL_7;
@@ -3508,14 +3508,14 @@ LABEL_9:
 
   if (objc_opt_class())
   {
-    v3 = [(CKSettingsMessagesController *)self _meCardSharingAudience];
+    _meCardSharingAudience = [(CKSettingsMessagesController *)self _meCardSharingAudience];
     v4 = @"NAME_AND_PHOTO_SHARING_EVERYONE_FOOTER";
-    if (v3 == 1)
+    if (_meCardSharingAudience == 1)
     {
       v4 = @"NAME_AND_PHOTO_SHARING_CONTACTS_ONLY_FOOTER";
     }
 
-    if (v3 == 2)
+    if (_meCardSharingAudience == 2)
     {
       v5 = @"NAME_AND_PHOTO_SHARING_ALWAYS_ASK_FOOTER";
     }
@@ -3636,7 +3636,7 @@ LABEL_10:
   return _os_feature_enabled_impl();
 }
 
-- (id)getSharedWithYouForSpecifier:(id)a3
+- (id)getSharedWithYouForSpecifier:(id)specifier
 {
   v4 = MessagesSettingsLocalizedString(@"GENERAL_ON");
   v5 = MessagesSettingsLocalizedString(@"GENERAL_OFF");
@@ -3662,8 +3662,8 @@ LABEL_10:
     return 0;
   }
 
-  v3 = [MEMORY[0x277D1A990] sharedInstance];
-  v4 = [v3 getBoolFromDomain:@"com.apple.SocialLayer" forKey:@"SharedWithYouEnabled"];
+  mEMORY[0x277D1A990] = [MEMORY[0x277D1A990] sharedInstance];
+  v4 = [mEMORY[0x277D1A990] getBoolFromDomain:@"com.apple.SocialLayer" forKey:@"SharedWithYouEnabled"];
 
   return v4;
 }
@@ -3672,8 +3672,8 @@ LABEL_10:
 {
   v3 = objc_alloc_init(CKSettingsSharedWithYouController);
   [(CKSettingsSharedWithYouController *)v3 setParentController:self];
-  v4 = [(CKSettingsMessagesController *)self rootController];
-  [(CKSettingsSharedWithYouController *)v3 setRootController:v4];
+  rootController = [(CKSettingsMessagesController *)self rootController];
+  [(CKSettingsSharedWithYouController *)v3 setRootController:rootController];
 
   return v3;
 }
@@ -3691,7 +3691,7 @@ LABEL_10:
 
 - (BOOL)shouldShowInboxSummarySettings
 {
-  v2 = [MEMORY[0x277D1A9B8] sharedFeatureFlags];
+  mEMORY[0x277D1A9B8] = [MEMORY[0x277D1A9B8] sharedFeatureFlags];
   v3 = objc_opt_respondsToSelector();
 
   if ((v3 & 1) == 0)
@@ -3699,43 +3699,43 @@ LABEL_10:
     return 0;
   }
 
-  v4 = [MEMORY[0x277D1A9B8] sharedFeatureFlags];
-  v5 = [v4 generativeModelsAvailable];
+  mEMORY[0x277D1A9B8]2 = [MEMORY[0x277D1A9B8] sharedFeatureFlags];
+  generativeModelsAvailable = [mEMORY[0x277D1A9B8]2 generativeModelsAvailable];
 
-  return v5;
+  return generativeModelsAvailable;
 }
 
-- (id)isInboxSummarizationEnabled:(id)a3
+- (id)isInboxSummarizationEnabled:(id)enabled
 {
-  v3 = [MEMORY[0x277D1A9B8] sharedFeatureFlags];
+  mEMORY[0x277D1A9B8] = [MEMORY[0x277D1A9B8] sharedFeatureFlags];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [MEMORY[0x277D1A9B8] sharedFeatureFlags];
-    v6 = [v5 summarizationUserPreferenceEnabled];
+    mEMORY[0x277D1A9B8]2 = [MEMORY[0x277D1A9B8] sharedFeatureFlags];
+    summarizationUserPreferenceEnabled = [mEMORY[0x277D1A9B8]2 summarizationUserPreferenceEnabled];
   }
 
   else
   {
-    v6 = 1;
+    summarizationUserPreferenceEnabled = 1;
   }
 
   v7 = MEMORY[0x277CCABB0];
 
-  return [v7 numberWithBool:v6];
+  return [v7 numberWithBool:summarizationUserPreferenceEnabled];
 }
 
-- (void)setInboxSummarizationEnabled:(id)a3 specifier:(id)a4
+- (void)setInboxSummarizationEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
-  v5 = [MEMORY[0x277D1A9B8] sharedFeatureFlags];
+  bOOLValue = [enabled BOOLValue];
+  mEMORY[0x277D1A9B8] = [MEMORY[0x277D1A9B8] sharedFeatureFlags];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [MEMORY[0x277D1A9B8] sharedFeatureFlags];
-    [v7 setSummarizationUserPreferenceEnabled:v4];
+    mEMORY[0x277D1A9B8]2 = [MEMORY[0x277D1A9B8] sharedFeatureFlags];
+    [mEMORY[0x277D1A9B8]2 setSummarizationUserPreferenceEnabled:bOOLValue];
   }
 }
 
@@ -3820,7 +3820,7 @@ LABEL_21:
   return v2;
 }
 
-- (id)getCheckInLocationHistorySetting:(id)a3
+- (id)getCheckInLocationHistorySetting:(id)setting
 {
   v3 = MessagesSettingsLocalizedString(@"CHECK_IN_LOCATION_HISTORY_ENABLED");
   v4 = MessagesSettingsLocalizedString(@"CHECK_IN_LOCATION_HISTORY_DISABLED");
@@ -3842,8 +3842,8 @@ LABEL_21:
 - (BOOL)isCheckInAllowedInRegion
 {
   v24 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277D443A8] currentEstimates];
-  if ([v2 count] || (objc_msgSend(MEMORY[0x277D443A8], "lastKnownEstimates"), v3 = objc_claimAutoreleasedReturnValue(), v2, v2 = v3, objc_msgSend(v3, "count")))
+  currentEstimates = [MEMORY[0x277D443A8] currentEstimates];
+  if ([currentEstimates count] || (objc_msgSend(MEMORY[0x277D443A8], "lastKnownEstimates"), v3 = objc_claimAutoreleasedReturnValue(), currentEstimates, currentEstimates = v3, objc_msgSend(v3, "count")))
   {
     if (IMOSLoggingEnabled())
     {
@@ -3851,7 +3851,7 @@ LABEL_21:
       if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v23 = v2;
+        v23 = currentEstimates;
         _os_log_impl(&dword_243BE5000, v4, OS_LOG_TYPE_INFO, "Current regulatory domain: %@", buf, 0xCu);
       }
     }
@@ -3860,8 +3860,8 @@ LABEL_21:
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v2 = v2;
-    v5 = [v2 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    currentEstimates = currentEstimates;
+    v5 = [currentEstimates countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v5)
     {
       v6 = *v18;
@@ -3871,15 +3871,15 @@ LABEL_21:
         {
           if (*v18 != v6)
           {
-            objc_enumerationMutation(v2);
+            objc_enumerationMutation(currentEstimates);
           }
 
           v8 = *(*(&v17 + 1) + 8 * i);
           v9 = objc_autoreleasePoolPush();
           if ((_os_feature_enabled_impl() & 1) == 0)
           {
-            v10 = [v8 countryCode];
-            v11 = [v10 isEqualToString:@"KR"];
+            countryCode = [v8 countryCode];
+            v11 = [countryCode isEqualToString:@"KR"];
 
             if (v11)
             {
@@ -3903,7 +3903,7 @@ LABEL_21:
           objc_autoreleasePoolPop(v9);
         }
 
-        v5 = [v2 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v5 = [currentEstimates countByEnumeratingWithState:&v17 objects:v21 count:16];
         if (v5)
         {
           continue;
@@ -3927,7 +3927,7 @@ LABEL_22:
     }
 
     v12 = 1;
-    v2 = v3;
+    currentEstimates = v3;
   }
 
   else
@@ -3939,23 +3939,23 @@ LABEL_22:
   return v12;
 }
 
-- (void)configureCheckInSpecifiers:(id)a3
+- (void)configureCheckInSpecifiers:(id)specifiers
 {
   v4 = MEMORY[0x277D37670];
-  v5 = a3;
+  specifiersCopy = specifiers;
   v17 = [v4 linkWithBundleIdentifier:@"com.apple.onboarding.checkin"];
-  v6 = [v17 flow];
-  v7 = [v6 localizedButtonTitle];
+  flow = [v17 flow];
+  localizedButtonTitle = [flow localizedButtonTitle];
 
   v8 = MessagesSettingsLocalizedString(@"CHECK_IN_LOCATION_HISTORY_FOOTER");
-  v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ %@", v8, v7];
-  v10 = [v5 specifierForID:@"CHECK_IN_LOCATION_HISTORY_SECTION_ID"];
+  v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ %@", v8, localizedButtonTitle];
+  v10 = [specifiersCopy specifierForID:@"CHECK_IN_LOCATION_HISTORY_SECTION_ID"];
   v11 = objc_opt_class();
   v12 = NSStringFromClass(v11);
   [v10 setProperty:v12 forKey:*MEMORY[0x277D3FF48]];
 
   [v10 setProperty:v9 forKey:*MEMORY[0x277D3FF70]];
-  v19.location = [v9 rangeOfString:v7];
+  v19.location = [v9 rangeOfString:localizedButtonTitle];
   v13 = NSStringFromRange(v19);
   [v10 setProperty:v13 forKey:*MEMORY[0x277D3FF58]];
 
@@ -3965,7 +3965,7 @@ LABEL_22:
   v15 = NSStringFromSelector(sel_presentCheckInPrivacySplashController);
   [v10 setProperty:v15 forKey:*MEMORY[0x277D3FF50]];
 
-  v16 = [v5 specifierForID:@"CHECK_IN_LOCATION_HISTORY_ID"];
+  v16 = [specifiersCopy specifierForID:@"CHECK_IN_LOCATION_HISTORY_ID"];
 
   [v16 setProperty:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277D3FD80]];
 }
@@ -3977,30 +3977,30 @@ LABEL_22:
   [v3 present];
 }
 
-- (void)sharingSettingsViewController:(id)a3 didSelectSharingAudience:(unint64_t)a4
+- (void)sharingSettingsViewController:(id)controller didSelectSharingAudience:(unint64_t)audience
 {
-  CFPreferencesSetAppValue(@"MeCardSharingAudience", [MEMORY[0x277CCABB0] numberWithInteger:a4], @"com.apple.messages.nicknames");
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 postNotificationName:*MEMORY[0x277D1A3A8] object:0];
+  CFPreferencesSetAppValue(@"MeCardSharingAudience", [MEMORY[0x277CCABB0] numberWithInteger:audience], @"com.apple.messages.nicknames");
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:*MEMORY[0x277D1A3A8] object:0];
 }
 
-- (void)sharingSettingsViewController:(id)a3 didUpdateWithSharingResult:(id)a4
+- (void)sharingSettingsViewController:(id)controller didUpdateWithSharingResult:(id)result
 {
   v4 = MEMORY[0x277D18DA8];
-  v5 = a4;
-  v6 = [v4 sharedInstance];
-  [v6 updatePersonalNicknameIfNecessaryWithMeCardSharingResult:v5];
+  resultCopy = result;
+  sharedInstance = [v4 sharedInstance];
+  [sharedInstance updatePersonalNicknameIfNecessaryWithMeCardSharingResult:resultCopy];
 }
 
 - (id)_messagesForBusinessViewController
 {
   v3 = objc_alloc_init(CKSettingsMessagesForBusinessViewController);
-  v4 = [(CKSettingsMessagesController *)self lazuliEnablementManager];
-  [(CKSettingsMessagesForBusinessViewController *)v3 setLazuliEnablementManager:v4];
+  lazuliEnablementManager = [(CKSettingsMessagesController *)self lazuliEnablementManager];
+  [(CKSettingsMessagesForBusinessViewController *)v3 setLazuliEnablementManager:lazuliEnablementManager];
 
   [(CKSettingsMessagesForBusinessViewController *)v3 setParentController:self];
-  v5 = [(CKSettingsMessagesController *)self rootController];
-  [(CKSettingsMessagesForBusinessViewController *)v3 setRootController:v5];
+  rootController = [(CKSettingsMessagesController *)self rootController];
+  [(CKSettingsMessagesForBusinessViewController *)v3 setRootController:rootController];
 
   return v3;
 }
@@ -4008,15 +4008,15 @@ LABEL_22:
 - (BOOL)shouldShowSMSRelaySettings
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277D07DB0] sharedInstance];
-  v4 = [v3 supportsSMS];
+  mEMORY[0x277D07DB0] = [MEMORY[0x277D07DB0] sharedInstance];
+  supportsSMS = [mEMORY[0x277D07DB0] supportsSMS];
 
-  v5 = [(CKSettingsMessagesController *)self _isMessagesTheDefaultMessagingApp];
-  v6 = [(CKSettingsMessagesController *)self hasPhoneNumber];
+  _isMessagesTheDefaultMessagingApp = [(CKSettingsMessagesController *)self _isMessagesTheDefaultMessagingApp];
+  hasPhoneNumber = [(CKSettingsMessagesController *)self hasPhoneNumber];
   v7 = +[CKSettingSMSRelayController shouldShowSMSRelaySettings];
-  v8 = [MEMORY[0x277D18D28] sharedInstance];
-  v9 = [MEMORY[0x277D18DE0] iMessageService];
-  v10 = [v8 activeAccountsForService:v9];
+  mEMORY[0x277D18D28] = [MEMORY[0x277D18D28] sharedInstance];
+  iMessageService = [MEMORY[0x277D18DE0] iMessageService];
+  v10 = [mEMORY[0x277D18D28] activeAccountsForService:iMessageService];
 
   v20 = 0u;
   v21 = 0u;
@@ -4055,9 +4055,9 @@ LABEL_22:
 
 LABEL_11:
 
-  v15 = [(CKSettingsMessagesController *)self _isMadridAccountOperational];
+  _isMadridAccountOperational = [(CKSettingsMessagesController *)self _isMadridAccountOperational];
   v16 = *MEMORY[0x277D85DE8];
-  return v12 & v15 & v6 & v5 & v7 & v4;
+  return v12 & _isMadridAccountOperational & hasPhoneNumber & _isMessagesTheDefaultMessagingApp & v7 & supportsSMS;
 }
 
 - (BOOL)hasPhoneNumber
@@ -4072,8 +4072,8 @@ LABEL_11:
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = [v4 subscriptions];
-  v7 = [v6 countByEnumeratingWithState:&v17 objects:v22 count:16];
+  subscriptions = [v4 subscriptions];
+  v7 = [subscriptions countByEnumeratingWithState:&v17 objects:v22 count:16];
   if (v7)
   {
     v8 = *v18;
@@ -4083,16 +4083,16 @@ LABEL_11:
       {
         if (*v18 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(subscriptions);
         }
 
         v10 = *(*(&v17 + 1) + 8 * i);
-        v11 = [v10 labelID];
-        if (v11)
+        labelID = [v10 labelID];
+        if (labelID)
         {
-          v12 = v11;
-          v13 = [v10 phoneNumber];
-          v14 = [v13 length];
+          v12 = labelID;
+          phoneNumber = [v10 phoneNumber];
+          v14 = [phoneNumber length];
 
           if (v14)
           {
@@ -4102,7 +4102,7 @@ LABEL_11:
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v17 objects:v22 count:16];
+      v7 = [subscriptions countByEnumeratingWithState:&v17 objects:v22 count:16];
       if (v7)
       {
         continue;
@@ -4125,13 +4125,13 @@ LABEL_12:
     return 1;
   }
 
-  v4 = [(CKSettingsMessagesController *)self lazuliEnablementManager];
-  v5 = [v4 isRCSEnabledForAnyActiveSubscription];
+  lazuliEnablementManager = [(CKSettingsMessagesController *)self lazuliEnablementManager];
+  isRCSEnabledForAnyActiveSubscription = [lazuliEnablementManager isRCSEnabledForAnyActiveSubscription];
 
-  return v5;
+  return isRCSEnabledForAnyActiveSubscription;
 }
 
-- (id)areReadReceiptsEnabled:(id)a3
+- (id)areReadReceiptsEnabled:(id)enabled
 {
   CFPreferencesSynchronize(@"com.apple.madrid", *MEMORY[0x277CBF040], *MEMORY[0x277CBF010]);
   keyExistsAndHasValidFormat = 0;
@@ -4151,13 +4151,13 @@ LABEL_12:
   return v5;
 }
 
-- (void)setReadReceiptsEnabled:(id)a3 specifier:(id)a4
+- (void)setReadReceiptsEnabled:(id)enabled specifier:(id)specifier
 {
-  v5 = a3;
-  v7 = [(CKSettingsMessagesController *)self sharedSettingsHelper];
-  v6 = [v5 BOOLValue];
+  enabledCopy = enabled;
+  sharedSettingsHelper = [(CKSettingsMessagesController *)self sharedSettingsHelper];
+  bOOLValue = [enabledCopy BOOLValue];
 
-  [v7 setReadReceiptsEnabled:v6];
+  [sharedSettingsHelper setReadReceiptsEnabled:bOOLValue];
 }
 
 - (BOOL)shouldShowJunkFilteringReceipts
@@ -4172,7 +4172,7 @@ LABEL_12:
   return v2;
 }
 
-- (id)areJunkFilteringReceiptsEnabled:(id)a3
+- (id)areJunkFilteringReceiptsEnabled:(id)enabled
 {
   CFPreferencesSynchronize(@"com.apple.madrid", *MEMORY[0x277CBF040], *MEMORY[0x277CBF010]);
   keyExistsAndHasValidFormat = 0;
@@ -4192,9 +4192,9 @@ LABEL_12:
   return v5;
 }
 
-- (void)setJunkFilteringReceiptsEnabled:(id)a3 specifier:(id)a4
+- (void)setJunkFilteringReceiptsEnabled:(id)enabled specifier:(id)specifier
 {
-  v5 = a3;
+  enabledCopy = enabled;
   v6 = MEMORY[0x245D4CF30](@"com.apple.madrid", @"JunkFilteringReceiptsVersionID");
   v11 = v6;
   if (v6)
@@ -4208,7 +4208,7 @@ LABEL_12:
   }
 
   CFPreferencesSetAppValue(@"JunkFilteringReceiptsVersionID", [MEMORY[0x277CCABB0] numberWithInteger:v7], @"com.apple.madrid");
-  CFPreferencesSetAppValue(@"JunkFilteringReceiptsEnabled", v5, @"com.apple.madrid");
+  CFPreferencesSetAppValue(@"JunkFilteringReceiptsEnabled", enabledCopy, @"com.apple.madrid");
 
   CFPreferencesSynchronize(@"com.apple.madrid", *MEMORY[0x277CBF040], *MEMORY[0x277CBF010]);
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
@@ -4216,26 +4216,26 @@ LABEL_12:
   notify_post("com.apple.MobileSMS.JunkFilteringReceiptsEnabled.shouldUpdateDevices");
   if (PSIsNanoMirroringDomain())
   {
-    v9 = [(CKSettingsMessagesController *)self _syncManager];
+    _syncManager = [(CKSettingsMessagesController *)self _syncManager];
     v10 = [MEMORY[0x277CBEB98] setWithObject:@"JunkFilteringReceiptsEnabled"];
-    [v9 synchronizeUserDefaultsDomain:@"com.apple.madrid" keys:v10];
+    [_syncManager synchronizeUserDefaultsDomain:@"com.apple.madrid" keys:v10];
   }
 }
 
 - (BOOL)shouldShowiMessageApps
 {
-  v3 = [MEMORY[0x277D1A9B8] sharedFeatureFlags];
-  v4 = [v3 isSendMenuEnabled];
+  mEMORY[0x277D1A9B8] = [MEMORY[0x277D1A9B8] sharedFeatureFlags];
+  isSendMenuEnabled = [mEMORY[0x277D1A9B8] isSendMenuEnabled];
 
-  if (!v4)
+  if (!isSendMenuEnabled)
   {
     return 0;
   }
 
-  v5 = [(CKSettingsMessagesController *)self iMessageAppManager];
-  v6 = [v5 haveDeletableApps];
+  iMessageAppManager = [(CKSettingsMessagesController *)self iMessageAppManager];
+  haveDeletableApps = [iMessageAppManager haveDeletableApps];
 
-  return v6;
+  return haveDeletableApps;
 }
 
 - (id)iMessageAppsIdentifiers
@@ -4251,11 +4251,11 @@ LABEL_12:
 
 - (id)_iMessageAppsViewController
 {
-  v3 = [(CKSettingsMessagesController *)self iMessageAppManager];
-  v4 = [[CKSettingsiMessageAppsViewController alloc] initWithAppManager:v3];
+  iMessageAppManager = [(CKSettingsMessagesController *)self iMessageAppManager];
+  v4 = [[CKSettingsiMessageAppsViewController alloc] initWithAppManager:iMessageAppManager];
   [(CKSettingsiMessageAppsViewController *)v4 setParentController:self];
-  v5 = [(CKSettingsMessagesController *)self rootController];
-  [(CKSettingsiMessageAppsViewController *)v4 setRootController:v5];
+  rootController = [(CKSettingsMessagesController *)self rootController];
+  [(CKSettingsiMessageAppsViewController *)v4 setRootController:rootController];
 
   return v4;
 }
@@ -4270,14 +4270,14 @@ LABEL_12:
   return [(CKSettingsMessagesController *)self _isMadridAccountOperational];
 }
 
-- (void)showMessagesInICloudSettings:(id)a3
+- (void)showMessagesInICloudSettings:(id)settings
 {
   v4 = [MEMORY[0x277CBEBC0] URLWithString:@"settings-navigation://com.apple.Settings.AppleAccount/ICLOUD_SERVICE/com.apple.Dataclass.Messages"];
-  v3 = [MEMORY[0x277CC1E80] defaultWorkspace];
-  [v3 openSensitiveURL:v4 withOptions:0];
+  defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+  [defaultWorkspace openSensitiveURL:v4 withOptions:0];
 }
 
-- (id)getMessagesInICloudEnabledSpecifier:(id)a3
+- (id)getMessagesInICloudEnabledSpecifier:(id)specifier
 {
   v4 = MessagesSettingsLocalizedString(@"GENERAL_ON");
   v5 = MessagesSettingsLocalizedString(@"GENERAL_OFF");
@@ -4298,23 +4298,23 @@ LABEL_12:
 
 - (BOOL)_isMessagesInICloudEnabled
 {
-  v2 = [MEMORY[0x277D1A990] sharedInstance];
-  v3 = [v2 getBoolFromDomain:@"com.apple.madrid" forKey:@"CloudKitSyncingEnabled"];
+  mEMORY[0x277D1A990] = [MEMORY[0x277D1A990] sharedInstance];
+  v3 = [mEMORY[0x277D1A990] getBoolFromDomain:@"com.apple.madrid" forKey:@"CloudKitSyncingEnabled"];
 
   return v3;
 }
 
 - (void)openOnlineSafetyURL
 {
-  v3 = [(CKSettingsMessagesController *)self _safetyURLForCurrentRegion];
-  if (v3)
+  _safetyURLForCurrentRegion = [(CKSettingsMessagesController *)self _safetyURLForCurrentRegion];
+  if (_safetyURLForCurrentRegion)
   {
-    v6 = v3;
-    v4 = [(CKSettingsMessagesController *)self safariImportWorkaround];
-    v5 = [v4 safariViewControllerForURL:v6];
+    v6 = _safetyURLForCurrentRegion;
+    safariImportWorkaround = [(CKSettingsMessagesController *)self safariImportWorkaround];
+    v5 = [safariImportWorkaround safariViewControllerForURL:v6];
 
     [(CKSettingsMessagesController *)self presentViewController:v5 animated:1 completion:0];
-    v3 = v6;
+    _safetyURLForCurrentRegion = v6;
   }
 }
 
@@ -4336,11 +4336,11 @@ LABEL_12:
 
 - (id)_safetyURLForCurrentRegion
 {
-  v2 = [(CKSettingsMessagesController *)self onlineSafetyRegionCodesURLMapping];
-  v3 = [MEMORY[0x277CBEAF8] currentLocale];
-  v4 = [v3 regionCode];
+  onlineSafetyRegionCodesURLMapping = [(CKSettingsMessagesController *)self onlineSafetyRegionCodesURLMapping];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  regionCode = [currentLocale regionCode];
 
-  v5 = [v2 objectForKeyedSubscript:v4];
+  v5 = [onlineSafetyRegionCodesURLMapping objectForKeyedSubscript:regionCode];
   v6 = v5;
   if (v5)
   {
@@ -4374,12 +4374,12 @@ LABEL_12:
 
 - (BOOL)shouldShowMadridAccounts
 {
-  v3 = [(CNFRegListController *)self regController];
-  if ([v3 serviceSupportsDeviceAliasEnablement])
+  regController = [(CNFRegListController *)self regController];
+  if ([regController serviceSupportsDeviceAliasEnablement])
   {
-    v4 = [(CNFRegListController *)self regController];
-    v5 = [v4 usableDeviceAliases];
-    v6 = [v5 count] != 0;
+    regController2 = [(CNFRegListController *)self regController];
+    usableDeviceAliases = [regController2 usableDeviceAliases];
+    v6 = [usableDeviceAliases count] != 0;
   }
 
   else
@@ -4410,41 +4410,41 @@ LABEL_12:
   return v2;
 }
 
-- (id)getAccountSummaryForSpecifier:(id)a3
+- (id)getAccountSummaryForSpecifier:(id)specifier
 {
   v6 = 0;
-  v3 = [(CNFRegListController *)self regController];
-  v4 = [v3 aliasSummaryString:&v6];
+  regController = [(CNFRegListController *)self regController];
+  v4 = [regController aliasSummaryString:&v6];
 
   return v4;
 }
 
 - (BOOL)shouldShowUpdateAppleID
 {
-  v3 = [(CKSettingsMessagesController *)self shouldShowMadridSwitch];
-  if (v3)
+  shouldShowMadridSwitch = [(CKSettingsMessagesController *)self shouldShowMadridSwitch];
+  if (shouldShowMadridSwitch)
   {
 
-    LOBYTE(v3) = [(CKSettingsMessagesController *)self _isAppleIDUpdateNeeded];
+    LOBYTE(shouldShowMadridSwitch) = [(CKSettingsMessagesController *)self _isAppleIDUpdateNeeded];
   }
 
-  return v3;
+  return shouldShowMadridSwitch;
 }
 
-- (void)showCKVSettings:(id)a3
+- (void)showCKVSettings:(id)settings
 {
   v4 = [MEMORY[0x277CBEBC0] URLWithString:@"settings-navigation://com.apple.Settings.AppleAccount/TRANSPARENCY"];
-  v3 = [MEMORY[0x277CC1E80] defaultWorkspace];
-  [v3 openSensitiveURL:v4 withOptions:0];
+  defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+  [defaultWorkspace openSensitiveURL:v4 withOptions:0];
 }
 
 - (BOOL)_isAppleIDUpdateNeeded
 {
-  v2 = self;
-  v3 = [(CKSettingsMessagesController *)self _registrationFailures];
-  LOBYTE(v2) = [(CKSettingsMessagesController *)v2 _registrationFailures:v3 containsFailure:28];
+  selfCopy = self;
+  _registrationFailures = [(CKSettingsMessagesController *)self _registrationFailures];
+  LOBYTE(selfCopy) = [(CKSettingsMessagesController *)selfCopy _registrationFailures:_registrationFailures containsFailure:28];
 
-  return v2;
+  return selfCopy;
 }
 
 - (int64_t)_debugFailureReason
@@ -4475,20 +4475,20 @@ LABEL_12:
   v18 = *MEMORY[0x277D85DE8];
   if (![(CKSettingsMessagesController *)self _isMadridAccountOperational])
   {
-    v3 = [(CKSettingsMessagesController *)self _isMadridSwitchOn];
-    if (!v3)
+    _isMadridSwitchOn = [(CKSettingsMessagesController *)self _isMadridSwitchOn];
+    if (!_isMadridSwitchOn)
     {
       goto LABEL_17;
     }
 
-    v4 = [(CNFRegListController *)self regController];
-    v5 = [v4 accountsWithFilter:49156];
+    regController = [(CNFRegListController *)self regController];
+    v5 = [regController accountsWithFilter:49156];
 
     if (![v5 count])
     {
 LABEL_16:
 
-      LOBYTE(v3) = ![(CKSettingsMessagesController *)self shouldShowMadridAccounts];
+      LOBYTE(_isMadridSwitchOn) = ![(CKSettingsMessagesController *)self shouldShowMadridAccounts];
       goto LABEL_17;
     }
 
@@ -4530,13 +4530,13 @@ LABEL_16:
     }
   }
 
-  LOBYTE(v3) = 0;
+  LOBYTE(_isMadridSwitchOn) = 0;
 LABEL_17:
   v11 = *MEMORY[0x277D85DE8];
-  return v3;
+  return _isMadridSwitchOn;
 }
 
-- (id)madridSigninButtonTextForSpecifier:(id)a3
+- (id)madridSigninButtonTextForSpecifier:(id)specifier
 {
   v3 = _os_feature_enabled_impl();
   v4 = CommunicationsSetupUIBundle();
@@ -4556,7 +4556,7 @@ LABEL_17:
   return v7;
 }
 
-- (id)getPreviewTranscodingEnabled:(id)a3
+- (id)getPreviewTranscodingEnabled:(id)enabled
 {
   CFPreferencesSynchronize(@"com.apple.imessage", *MEMORY[0x277CBF040], *MEMORY[0x277CBF010]);
   keyExistsAndHasValidFormat = 0;
@@ -4576,9 +4576,9 @@ LABEL_17:
   return v5;
 }
 
-- (void)setPreviewTranscodingEnabled:(id)a3 specifier:(id)a4
+- (void)setPreviewTranscodingEnabled:(id)enabled specifier:(id)specifier
 {
-  CFPreferencesSetAppValue(@"PreviewTranscodingEnabled", a3, @"com.apple.imessage");
+  CFPreferencesSetAppValue(@"PreviewTranscodingEnabled", enabled, @"com.apple.imessage");
   CFPreferencesSetAppValue(@"PreviewTranscodingSelectedByUser", *MEMORY[0x277CBED28], @"com.apple.imessage");
   v4 = *MEMORY[0x277CBF040];
   v5 = *MEMORY[0x277CBF010];
@@ -4586,7 +4586,7 @@ LABEL_17:
   CFPreferencesSynchronize(@"com.apple.imessage", v4, v5);
 }
 
-- (id)getSMSRelayDevicesSummary:(id)a3
+- (id)getSMSRelayDevicesSummary:(id)summary
 {
   v3 = +[CKSettingSMSRelayController numberOfActiveDevices];
   v4 = v3;
@@ -4609,9 +4609,9 @@ LABEL_17:
   return v4;
 }
 
-- (void)setKeepMessages:(id)a3 specifier:(id)a4
+- (void)setKeepMessages:(id)messages specifier:(id)specifier
 {
-  v4 = a3;
+  messagesCopy = messages;
   v5 = MEMORY[0x245D4CF30](@"com.apple.MobileSMS", @"KeepMessagesVersionID");
   v8 = v5;
   if (v5)
@@ -4625,7 +4625,7 @@ LABEL_17:
   }
 
   CFPreferencesSetAppValue(@"KeepMessagesVersionID", [MEMORY[0x277CCABB0] numberWithInteger:v6], @"com.apple.MobileSMS");
-  CFPreferencesSetAppValue(@"KeepMessageForDays", v4, @"com.apple.MobileSMS");
+  CFPreferencesSetAppValue(@"KeepMessageForDays", messagesCopy, @"com.apple.MobileSMS");
 
   CFPreferencesSynchronize(@"com.apple.MobileSMS", *MEMORY[0x277CBF040], *MEMORY[0x277CBF010]);
   notify_post("com.apple.MobileSMS.KeepMessages.shouldUpdateDevices");
@@ -4633,17 +4633,17 @@ LABEL_17:
   CFNotificationCenterPostNotification(DarwinNotifyCenter, @"com.apple.MobileSMS.KeepMessages.changed", 0, 0, 1u);
 }
 
-- (BOOL)authenticationController:(id)a3 shouldContinueWithAuthenticationResults:(id)a4 error:(id)a5 forContext:(id)a6
+- (BOOL)authenticationController:(id)controller shouldContinueWithAuthenticationResults:(id)results error:(id)error forContext:(id)context
 {
   v43 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!v12)
+  controllerCopy = controller;
+  resultsCopy = results;
+  errorCopy = error;
+  contextCopy = context;
+  if (!errorCopy)
   {
-    v17 = [v11 objectForKey:*MEMORY[0x277CEFFD8]];
-    v18 = [v11 objectForKey:*MEMORY[0x277CEFFC8]];
+    v17 = [resultsCopy objectForKey:*MEMORY[0x277CEFFD8]];
+    v18 = [resultsCopy objectForKey:*MEMORY[0x277CEFFC8]];
     v19 = v18;
     v16 = 0;
     *&buf = 0;
@@ -4677,17 +4677,17 @@ LABEL_17:
       IMLogString();
     }
 
-    v22 = [(CNFRegListController *)self regController];
-    v23 = [v22 serviceType];
+    regController = [(CNFRegListController *)self regController];
+    serviceType = [regController serviceType];
 
-    if (v23)
+    if (serviceType)
     {
-      if (v23 == 1)
+      if (serviceType == 1)
       {
-        v24 = [MEMORY[0x277D18DE0] iMessageService];
+        iMessageService = [MEMORY[0x277D18DE0] iMessageService];
 LABEL_27:
-        v25 = v24;
-        if (v24)
+        v25 = iMessageService;
+        if (iMessageService)
         {
           v34 = dispatch_semaphore_create(0);
           v26 = OSLogHandleForIDSCategory();
@@ -4704,8 +4704,8 @@ LABEL_27:
           }
 
           v27 = [CNFAccountRegistrar alloc];
-          v28 = [(CNFRegListController *)self regController];
-          v29 = -[CNFAccountRegistrar initWithServiceType:presentationViewController:](v27, "initWithServiceType:presentationViewController:", [v28 serviceType], self);
+          regController2 = [(CNFRegListController *)self regController];
+          v29 = -[CNFAccountRegistrar initWithServiceType:presentationViewController:](v27, "initWithServiceType:presentationViewController:", [regController2 serviceType], self);
 
           v35[0] = MEMORY[0x277D85DD0];
           v35[1] = 3221225472;
@@ -4742,13 +4742,13 @@ LABEL_34:
         goto LABEL_39;
       }
 
-      if (v23 != 2)
+      if (serviceType != 2)
       {
         goto LABEL_34;
       }
     }
 
-    v24 = [MEMORY[0x277D18DE0] facetimeService];
+    iMessageService = [MEMORY[0x277D18DE0] facetimeService];
     goto LABEL_27;
   }
 
@@ -4756,7 +4756,7 @@ LABEL_34:
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v12;
+    *(&buf + 4) = errorCopy;
     _os_log_impl(&dword_243BE5000, v14, OS_LOG_TYPE_DEFAULT, "AuthKit had an error authenticating: %@", &buf, 0xCu);
   }
 
@@ -4847,10 +4847,10 @@ void __114__CKSettingsMessagesController_authenticationController_shouldContinue
   [v3 setReason:v8];
 
   [v3 setShouldForceInteractiveAuth:1];
-  v9 = [(CNFRegListController *)self regController];
-  v10 = [v9 serviceType];
+  regController = [(CNFRegListController *)self regController];
+  serviceType = [regController serviceType];
 
-  if (v10 == 1)
+  if (serviceType == 1)
   {
     v11 = 4;
   }
@@ -4868,12 +4868,12 @@ void __114__CKSettingsMessagesController_authenticationController_shouldContinue
   }
 
   v13 = objc_alloc_init(CUTWeakLinkClass());
-  v14 = [v13 aa_primaryAppleAccount];
-  v15 = [v14 username];
-  if ([v15 length])
+  aa_primaryAppleAccount = [v13 aa_primaryAppleAccount];
+  username = [aa_primaryAppleAccount username];
+  if ([username length])
   {
-    [v3 setUsername:v15];
-    [v3 setReason:v15];
+    [v3 setUsername:username];
+    [v3 setReason:username];
     [v3 setShouldForceInteractiveAuth:0];
   }
 
@@ -4918,21 +4918,21 @@ void __53__CKSettingsMessagesController__showSignInController__block_invoke(uint
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_showMadridSetupIfNecessary:(BOOL)a3
+- (void)_showMadridSetupIfNecessary:(BOOL)necessary
 {
-  v3 = a3;
+  necessaryCopy = necessary;
   v30 = *MEMORY[0x277D85DE8];
-  if (![(CKSettingsMessagesController *)self _isSMSDevice]|| v3)
+  if (![(CKSettingsMessagesController *)self _isSMSDevice]|| necessaryCopy)
   {
-    v5 = [(CNFRegListController *)self regController];
-    v6 = [v5 accounts];
+    regController = [(CNFRegListController *)self regController];
+    accounts = [regController accounts];
 
-    v7 = [v6 count];
+    v7 = [accounts count];
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v8 = v6;
+    v8 = accounts;
     v9 = [v8 countByEnumeratingWithState:&v25 objects:v29 count:16];
     if (v9)
     {
@@ -4952,9 +4952,9 @@ void __53__CKSettingsMessagesController__showSignInController__block_invoke(uint
           }
 
           v16 = *(*(&v25 + 1) + 8 * i);
-          v17 = [v16 isActive];
-          v11 |= v17 ^ 1;
-          v13 |= v17;
+          isActive = [v16 isActive];
+          v11 |= isActive ^ 1;
+          v13 |= isActive;
           if (([v16 registrationStatus] + 1) <= 1)
           {
             v12 = 1;
@@ -4979,28 +4979,28 @@ void __53__CKSettingsMessagesController__showSignInController__block_invoke(uint
     v20 = v19;
     if (v7 && (v11 & 1) != 0 && (v18 & 1) != 0)
     {
-      if (!v3)
+      if (!necessaryCopy)
       {
         goto LABEL_22;
       }
     }
 
-    else if (![(CNFRegWizardController *)v19 shouldShowFirstRunController]&& !v3)
+    else if (![(CNFRegWizardController *)v19 shouldShowFirstRunController]&& !necessaryCopy)
     {
       goto LABEL_22;
     }
 
     [(PSSetupController *)v20 setParentController:self];
-    v21 = [(CKSettingsMessagesController *)self rootController];
-    [(PSRootController *)v20 setRootController:v21];
+    rootController = [(CKSettingsMessagesController *)self rootController];
+    [(PSRootController *)v20 setRootController:rootController];
 
     [(CNFRegWizardController *)v20 setCanStartNested:0];
     [(CNFRegWizardController *)v20 setCanShowSplashScreen:0];
     [(CNFRegWizardController *)v20 setCanShowDisabledScreen:0];
     [(CNFRegWizardController *)v20 setAllowCancel:1];
     [(CNFRegWizardController *)v20 setHideLearnMoreButton:1];
-    v22 = [MEMORY[0x277D75418] currentDevice];
-    -[CNFRegWizardController setShowSplashOnSignin:](v20, "setShowSplashOnSignin:", [v22 userInterfaceIdiom] == 1);
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    -[CNFRegWizardController setShowSplashOnSignin:](v20, "setShowSplashOnSignin:", [currentDevice userInterfaceIdiom] == 1);
 
     [(CNFRegWizardController *)v20 setFirstRunDelegate:self];
     [(CKSettingsMessagesController *)self showController:v20 animate:1];
@@ -5011,33 +5011,33 @@ LABEL_22:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)firstRunControllerDidFinish:(id)a3 finished:(BOOL)a4
+- (void)firstRunControllerDidFinish:(id)finish finished:(BOOL)finished
 {
-  v4 = a4;
-  v7 = a3;
-  if (v4)
+  finishedCopy = finished;
+  finishCopy = finish;
+  if (finishedCopy)
   {
-    v6 = [(CNFRegListController *)self regController];
-    [v6 setServiceEnabled:1];
+    regController = [(CNFRegListController *)self regController];
+    [regController setServiceEnabled:1];
   }
 
   [(CKSettingsMessagesController *)self reloadSpecifiers];
-  [v7 dismiss];
+  [finishCopy dismiss];
 }
 
-- (void)_updateUIWithError:(id)a3
+- (void)_updateUIWithError:(id)error
 {
-  v17 = a3;
+  errorCopy = error;
   if (![(CKSettingsMessagesController *)self _isMadridAccountOperational])
   {
-    v4 = [(CKSettingsMessagesController *)self _failedAccounts];
-    v5 = [v4 count];
-    if (v17)
+    _failedAccounts = [(CKSettingsMessagesController *)self _failedAccounts];
+    v5 = [_failedAccounts count];
+    if (errorCopy)
     {
       if (v5)
       {
-        v6 = [(CNFRegListController *)self regController];
-        v7 = [v6 shouldShowAlertForError:v17];
+        regController = [(CNFRegListController *)self regController];
+        v7 = [regController shouldShowAlertForError:errorCopy];
 
         if (v7)
         {
@@ -5046,12 +5046,12 @@ LABEL_22:
           v9 = CNFRegStringTableName();
           v10 = [v8 localizedStringForKey:@"FACETIME_ACTIVATION_ERROR_TITLE" value:&stru_2856D3978 table:v9];
 
-          v11 = [v17 localizedDescription];
+          localizedDescription = [errorCopy localizedDescription];
           v12 = CommunicationsSetupUIBundle();
           v13 = CNFRegStringTableName();
           v14 = [v12 localizedStringForKey:@"FACETIME_ALERT_OK" value:&stru_2856D3978 table:v13];
 
-          v15 = [MEMORY[0x277D75110] alertControllerWithTitle:v10 message:v11 preferredStyle:1];
+          v15 = [MEMORY[0x277D75110] alertControllerWithTitle:v10 message:localizedDescription preferredStyle:1];
           v16 = [MEMORY[0x277D750F8] actionWithTitle:v14 style:0 handler:0];
           [v15 addAction:v16];
 
@@ -5069,55 +5069,55 @@ LABEL_22:
   v12.receiver = self;
   v12.super_class = CKSettingsMessagesController;
   [(CNFRegListController *)&v12 _setupEventHandlers];
-  v3 = [(CNFRegListController *)self regController];
+  regController = [(CNFRegListController *)self regController];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __53__CKSettingsMessagesController__setupAccountHandlers__block_invoke;
   v11[3] = &unk_278DE7E08;
   v11[4] = self;
-  [v3 setResetBlock:v11];
+  [regController setResetBlock:v11];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __53__CKSettingsMessagesController__setupAccountHandlers__block_invoke_2;
   v10[3] = &unk_278DE8580;
   v10[4] = self;
-  [v3 setAccountAddedBlock:v10];
+  [regController setAccountAddedBlock:v10];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __53__CKSettingsMessagesController__setupAccountHandlers__block_invoke_3;
   v9[3] = &unk_278DE8580;
   v9[4] = self;
-  [v3 setAccountRemovedBlock:v9];
+  [regController setAccountRemovedBlock:v9];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __53__CKSettingsMessagesController__setupAccountHandlers__block_invoke_4;
   v8[3] = &unk_278DE8580;
   v8[4] = self;
-  [v3 setAccountActivationChangedBlock:v8];
+  [regController setAccountActivationChangedBlock:v8];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __53__CKSettingsMessagesController__setupAccountHandlers__block_invoke_5;
   v7[3] = &unk_278DE85A8;
   v7[4] = self;
-  [v3 setAccountRegistrationBlock:v7];
+  [regController setAccountRegistrationBlock:v7];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __53__CKSettingsMessagesController__setupAccountHandlers__block_invoke_6;
   v6[3] = &unk_278DE85F8;
   v6[4] = self;
-  [v3 setAliasStatusChangedBlock:v6];
+  [regController setAliasStatusChangedBlock:v6];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __53__CKSettingsMessagesController__setupAccountHandlers__block_invoke_7;
   v5[3] = &unk_278DE85D0;
   v5[4] = self;
-  [v3 setAliasAddedBlock:v5];
+  [regController setAliasAddedBlock:v5];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __53__CKSettingsMessagesController__setupAccountHandlers__block_invoke_8;
   v4[3] = &unk_278DE85D0;
   v4[4] = self;
-  [v3 setAliasRemovedBlock:v4];
+  [regController setAliasRemovedBlock:v4];
 }
 
 - (BOOL)_allAccountsAreDeactivated
@@ -5127,10 +5127,10 @@ LABEL_22:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v2 = [(CNFRegListController *)self regController];
-  v3 = [v2 accounts];
+  regController = [(CNFRegListController *)self regController];
+  accounts = [regController accounts];
 
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v4 = [accounts countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -5141,7 +5141,7 @@ LABEL_22:
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(accounts);
         }
 
         v8 = *(*(&v12 + 1) + 8 * i);
@@ -5152,7 +5152,7 @@ LABEL_22:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [accounts countByEnumeratingWithState:&v12 objects:v16 count:16];
       v9 = 1;
       if (v5)
       {
@@ -5179,7 +5179,7 @@ LABEL_13:
   v6.receiver = self;
   v6.super_class = CKSettingsMessagesController;
   [(CNFRegListController *)&v6 _setupEventHandlers];
-  v3 = [(CNFRegListController *)self regController];
+  regController = [(CNFRegListController *)self regController];
   if ([(CKSettingsMessagesController *)self _allAccountsAreDeactivated])
   {
     [(CKSettingsMessagesController *)self _setupAccountHandlers];
@@ -5193,13 +5193,13 @@ LABEL_13:
     v5[2] = __65__CKSettingsMessagesController__setupAccountHandlersForDisabling__block_invoke;
     v5[3] = &unk_278DE8580;
     v5[4] = self;
-    [v3 setAccountActivationChangedBlock:v5];
+    [regController setAccountActivationChangedBlock:v5];
     v4[0] = MEMORY[0x277D85DD0];
     v4[1] = 3221225472;
     v4[2] = __65__CKSettingsMessagesController__setupAccountHandlersForDisabling__block_invoke_2;
     v4[3] = &unk_278DE85A8;
     v4[4] = self;
-    [v3 setAccountRegistrationBlock:v4];
+    [regController setAccountRegistrationBlock:v4];
   }
 }
 
@@ -5235,14 +5235,14 @@ uint64_t __65__CKSettingsMessagesController__setupAccountHandlersForDisabling__b
 
 - (void)_clearMessagesAppExtensionSalt
 {
-  v2 = [MEMORY[0x277CCAA00] defaultManager];
-  v3 = [v2 fileExistsAtPath:@"/var/mobile/Library/SMS/PluginMetaDataCache"];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v3 = [defaultManager fileExistsAtPath:@"/var/mobile/Library/SMS/PluginMetaDataCache"];
 
   if (v3)
   {
-    v4 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
     v7 = 0;
-    [v4 removeItemAtPath:@"/var/mobile/Library/SMS/PluginMetaDataCache" error:&v7];
+    [defaultManager2 removeItemAtPath:@"/var/mobile/Library/SMS/PluginMetaDataCache" error:&v7];
     v5 = v7;
 
     if (!v5)
@@ -5256,15 +5256,15 @@ uint64_t __65__CKSettingsMessagesController__setupAccountHandlersForDisabling__b
 - (id)_madridSettingsController
 {
   v3 = [CNFRegSettingsController alloc];
-  v4 = [(CNFRegListController *)self regController];
-  v5 = [(CNFRegListController *)v3 initWithRegController:v4];
+  regController = [(CNFRegListController *)self regController];
+  v5 = [(CNFRegListController *)v3 initWithRegController:regController];
 
-  v6 = [(CKSettingsMessagesController *)self rootController];
-  [(CNFRegSettingsController *)v5 setRootController:v6];
+  rootController = [(CKSettingsMessagesController *)self rootController];
+  [(CNFRegSettingsController *)v5 setRootController:rootController];
 
   [(CNFRegSettingsController *)v5 setParentController:self];
-  v7 = [(CKSettingsMessagesController *)self specifier];
-  [(CNFRegListController *)v5 setSpecifier:v7];
+  specifier = [(CKSettingsMessagesController *)self specifier];
+  [(CNFRegListController *)v5 setSpecifier:specifier];
 
   [(CNFRegSettingsController *)v5 setShowEnableSwitch:0];
 
@@ -5275,8 +5275,8 @@ uint64_t __65__CKSettingsMessagesController__setupAccountHandlersForDisabling__b
 {
   v3 = objc_alloc_init(CKSettingSMSRelayController);
   [(CKSettingSMSRelayController *)v3 setParentController:self];
-  v4 = [(CKSettingsMessagesController *)self rootController];
-  [(CKSettingSMSRelayController *)v3 setRootController:v4];
+  rootController = [(CKSettingsMessagesController *)self rootController];
+  [(CKSettingSMSRelayController *)v3 setRootController:rootController];
 
   return v3;
 }
@@ -5289,12 +5289,12 @@ uint64_t __65__CKSettingsMessagesController__setupAccountHandlersForDisabling__b
     v4 = objc_alloc_init(CKRCSController);
     [(CKRCSController *)v4 setMultiSimHeaderKey:@"RCS_MESSAGING_HEADER"];
     [(CKRCSController *)v4 setControllerTitle:@"RCS_MESSAGING"];
-    v5 = [(CKSettingsMessagesController *)self lazuliEnablementManager];
-    [(CKRCSController *)v4 setLazuliEnablementManager:v5];
+    lazuliEnablementManager = [(CKSettingsMessagesController *)self lazuliEnablementManager];
+    [(CKRCSController *)v4 setLazuliEnablementManager:lazuliEnablementManager];
 
     [(CKRCSController *)v4 setParentController:self];
-    v6 = [(CKSettingsMessagesController *)self rootController];
-    [(CKRCSController *)v4 setRootController:v6];
+    rootController = [(CKSettingsMessagesController *)self rootController];
+    [(CKRCSController *)v4 setRootController:rootController];
 
     v7 = self->_rcsMessagingController;
     self->_rcsMessagingController = v4;
@@ -5315,8 +5315,8 @@ uint64_t __65__CKSettingsMessagesController__setupAccountHandlersForDisabling__b
     [(CKMultipleCTSubscriptionsController *)v4 setDefaultsKey:@"MMSEnabled-"];
     [(CKMultipleCTSubscriptionsController *)v4 setControllerTitle:@"MMS_MESSAGING"];
     [(CKMMSMultipleCTSubscriptionsController *)v4 setParentController:self];
-    v5 = [(CKSettingsMessagesController *)self rootController];
-    [(CKMMSMultipleCTSubscriptionsController *)v4 setRootController:v5];
+    rootController = [(CKSettingsMessagesController *)self rootController];
+    [(CKMMSMultipleCTSubscriptionsController *)v4 setRootController:rootController];
 
     v6 = self->_mmsMessagingController;
     self->_mmsMessagingController = &v4->super;
@@ -5342,117 +5342,117 @@ uint64_t __65__CKSettingsMessagesController__setupAccountHandlersForDisabling__b
   return blackholeConversationListViewController;
 }
 
-- (id)controllerForSpecifier:(id)a3
+- (id)controllerForSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  specifierCopy = specifier;
+  v5 = specifierCopy;
+  if (!specifierCopy)
   {
     goto LABEL_24;
   }
 
-  v6 = [v4 identifier];
-  v7 = [v6 isEqualToString:@"MADRID_ACCOUNTS_BUTTON"];
+  identifier = [specifierCopy identifier];
+  v7 = [identifier isEqualToString:@"MADRID_ACCOUNTS_BUTTON"];
 
   if (v7)
   {
-    v8 = [(CNFRegListController *)self regController];
-    [v8 connect:1];
+    regController = [(CNFRegListController *)self regController];
+    [regController connect:1];
 
-    v9 = [(CKSettingsMessagesController *)self _madridSettingsController];
+    _madridSettingsController = [(CKSettingsMessagesController *)self _madridSettingsController];
   }
 
   else
   {
-    v10 = [v5 identifier];
-    v11 = [v10 isEqualToString:@"SMS_RELAY_DEVICES"];
+    identifier2 = [v5 identifier];
+    v11 = [identifier2 isEqualToString:@"SMS_RELAY_DEVICES"];
 
     if (v11)
     {
-      v9 = [(CKSettingsMessagesController *)self _smsRelayDevicesController];
+      _madridSettingsController = [(CKSettingsMessagesController *)self _smsRelayDevicesController];
     }
 
     else
     {
-      v12 = [v5 identifier];
-      v13 = [v12 isEqualToString:@"RCS_MESSAGING_CELL"];
+      identifier3 = [v5 identifier];
+      v13 = [identifier3 isEqualToString:@"RCS_MESSAGING_CELL"];
 
       if (v13)
       {
-        v9 = [(CKSettingsMessagesController *)self rcsMessagingController];
+        _madridSettingsController = [(CKSettingsMessagesController *)self rcsMessagingController];
       }
 
       else
       {
-        v14 = [v5 identifier];
-        v15 = [v14 isEqualToString:@"MMS_MESSAGING_CELL"];
+        identifier4 = [v5 identifier];
+        v15 = [identifier4 isEqualToString:@"MMS_MESSAGING_CELL"];
 
         if (v15)
         {
-          v9 = [(CKSettingsMessagesController *)self mmsMessagingController];
+          _madridSettingsController = [(CKSettingsMessagesController *)self mmsMessagingController];
         }
 
         else
         {
-          v16 = [v5 identifier];
-          v17 = [v16 isEqualToString:@"JUNK_CONVERSATIONS_BUTTON"];
+          identifier5 = [v5 identifier];
+          v17 = [identifier5 isEqualToString:@"JUNK_CONVERSATIONS_BUTTON"];
 
           if (v17)
           {
-            v9 = [(CKSettingsMessagesController *)self blackholeConversationListViewController];
+            _madridSettingsController = [(CKSettingsMessagesController *)self blackholeConversationListViewController];
           }
 
           else
           {
-            v18 = [v5 identifier];
-            v19 = [v18 isEqualToString:@"SHARED_WITH_YOU_BUTTON"];
+            identifier6 = [v5 identifier];
+            v19 = [identifier6 isEqualToString:@"SHARED_WITH_YOU_BUTTON"];
 
             if (v19)
             {
-              v9 = [(CKSettingsMessagesController *)self _sharedWithYouViewController];
+              _madridSettingsController = [(CKSettingsMessagesController *)self _sharedWithYouViewController];
             }
 
             else
             {
-              v20 = [v5 identifier];
-              v21 = [v20 isEqualToString:@"IMESSAGE_APPS_BUTTON"];
+              identifier7 = [v5 identifier];
+              v21 = [identifier7 isEqualToString:@"IMESSAGE_APPS_BUTTON"];
 
               if (v21)
               {
-                v9 = [(CKSettingsMessagesController *)self _iMessageAppsViewController];
+                _madridSettingsController = [(CKSettingsMessagesController *)self _iMessageAppsViewController];
               }
 
               else
               {
-                v22 = [v5 identifier];
-                v23 = [v22 isEqualToString:@"BUSINESS_CHAT_BUTTON"];
+                identifier8 = [v5 identifier];
+                v23 = [identifier8 isEqualToString:@"BUSINESS_CHAT_BUTTON"];
 
                 if (v23)
                 {
-                  v9 = [(CKSettingsMessagesController *)self _messagesForBusinessViewController];
+                  _madridSettingsController = [(CKSettingsMessagesController *)self _messagesForBusinessViewController];
                 }
 
                 else
                 {
-                  v24 = [v5 identifier];
-                  v25 = [v24 isEqualToString:@"TEXT_MESSAGE_FILTERING"];
+                  identifier9 = [v5 identifier];
+                  v25 = [identifier9 isEqualToString:@"TEXT_MESSAGE_FILTERING"];
 
                   if (v25)
                   {
-                    v9 = [(CKSettingsMessagesController *)self _textMessageFilteringViewController];
+                    _madridSettingsController = [(CKSettingsMessagesController *)self _textMessageFilteringViewController];
                   }
 
                   else
                   {
-                    v26 = [v5 identifier];
-                    v27 = [v26 isEqualToString:@"NOTIFICATIONS_UNKNOWN_SENDERS_BUTTON"];
+                    identifier10 = [v5 identifier];
+                    v27 = [identifier10 isEqualToString:@"NOTIFICATIONS_UNKNOWN_SENDERS_BUTTON"];
 
                     if (!v27)
                     {
                       goto LABEL_24;
                     }
 
-                    v9 = [(CKSettingsMessagesController *)self _notificationsUnknownSendersViewController];
+                    _madridSettingsController = [(CKSettingsMessagesController *)self _notificationsUnknownSendersViewController];
                   }
                 }
               }
@@ -5463,8 +5463,8 @@ uint64_t __65__CKSettingsMessagesController__setupAccountHandlersForDisabling__b
     }
   }
 
-  v28 = v9;
-  if (v9)
+  v28 = _madridSettingsController;
+  if (_madridSettingsController)
   {
     self->_showingChildViewController = 1;
     goto LABEL_25;
@@ -5479,19 +5479,19 @@ LABEL_25:
   return v28;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v13.receiver = self;
   v13.super_class = CKSettingsMessagesController;
-  v6 = a4;
-  v7 = [(CKSettingsMessagesController *)&v13 tableView:a3 cellForRowAtIndexPath:v6];
-  v8 = [(CKSettingsMessagesController *)self indexForIndexPath:v6, v13.receiver, v13.super_class];
+  pathCopy = path;
+  v7 = [(CKSettingsMessagesController *)&v13 tableView:view cellForRowAtIndexPath:pathCopy];
+  v8 = [(CKSettingsMessagesController *)self indexForIndexPath:pathCopy, v13.receiver, v13.super_class];
 
   if (v8 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v9 = [*(&self->super.super.super.super.super.super.isa + *MEMORY[0x277D3FC48]) objectAtIndex:v8];
-    v10 = [v9 identifier];
-    v11 = [v10 isEqualToString:@"MADRID_SIGNIN_BUTTON"];
+    identifier = [v9 identifier];
+    v11 = [identifier isEqualToString:@"MADRID_SIGNIN_BUTTON"];
 
     if (v11)
     {
@@ -5519,7 +5519,7 @@ void __69__CKSettingsMessagesController_satelliteDemoModeTappedWithSpecifier___b
   v3 = 138412546;
   v4 = @"com.apple.MobileSMS";
   v5 = 2112;
-  v6 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_243BE5000, a2, OS_LOG_TYPE_ERROR, "Can't find application record for domain %@, error %@", &v3, 0x16u);
   v2 = *MEMORY[0x277D85DE8];
 }

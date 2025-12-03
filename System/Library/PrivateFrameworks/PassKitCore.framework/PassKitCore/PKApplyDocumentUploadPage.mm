@@ -1,22 +1,22 @@
 @interface PKApplyDocumentUploadPage
-- (PKApplyDocumentUploadPage)initWithJSONObject:(id)a3;
+- (PKApplyDocumentUploadPage)initWithJSONObject:(id)object;
 @end
 
 @implementation PKApplyDocumentUploadPage
 
-- (PKApplyDocumentUploadPage)initWithJSONObject:(id)a3
+- (PKApplyDocumentUploadPage)initWithJSONObject:(id)object
 {
   v55 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  objectCopy = object;
   v51.receiver = self;
   v51.super_class = PKApplyDocumentUploadPage;
-  v5 = [(PKDynamicProvisioningPageContent *)&v51 initWithDictonary:v4];
+  v5 = [(PKDynamicProvisioningPageContent *)&v51 initWithDictonary:objectCopy];
   v6 = v5;
   if (v5)
   {
     v34 = v5;
-    v35 = v4;
-    v7 = [v4 PKArrayContaining:objc_opt_class() forKey:@"acceptableDocuments"];
+    v35 = objectCopy;
+    v7 = [objectCopy PKArrayContaining:objc_opt_class() forKey:@"acceptableDocuments"];
     v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v47 = 0u;
     v48 = 0u;
@@ -89,7 +89,7 @@
     v40 = 0u;
     v41 = 0u;
     v42 = 0u;
-    v4 = v35;
+    objectCopy = v35;
     v23 = [v35 PKArrayContaining:objc_opt_class() forKey:@"imageCaptureEncryptionCertificates"];
     v24 = [v23 countByEnumeratingWithState:&v39 objects:v52 count:16];
     if (v24)

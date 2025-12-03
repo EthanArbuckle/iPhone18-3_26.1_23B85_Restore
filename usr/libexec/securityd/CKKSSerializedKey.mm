@@ -1,36 +1,36 @@
 @interface CKKSSerializedKey
-- (BOOL)isEqual:(id)a3;
-- (BOOL)readFrom:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)readFrom:(id)from;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CKKSSerializedKey
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (v4[3])
+  fromCopy = from;
+  if (fromCopy[3])
   {
     [(CKKSSerializedKey *)self setUuid:?];
   }
 
-  if (v4[4])
+  if (fromCopy[4])
   {
     [(CKKSSerializedKey *)self setZoneName:?];
   }
 
-  if (v4[2])
+  if (fromCopy[2])
   {
     [(CKKSSerializedKey *)self setKeyclass:?];
   }
 
-  if (v4[1])
+  if (fromCopy[1])
   {
     [(CKKSSerializedKey *)self setKey:?];
   }
@@ -44,13 +44,13 @@
   return v4 ^ v5 ^ [(NSData *)self->_key hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((uuid = self->_uuid, !(uuid | v4[3])) || -[NSString isEqual:](uuid, "isEqual:")) && ((zoneName = self->_zoneName, !(zoneName | v4[4])) || -[NSString isEqual:](zoneName, "isEqual:")) && ((keyclass = self->_keyclass, !(keyclass | v4[2])) || -[NSString isEqual:](keyclass, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((uuid = self->_uuid, !(uuid | equalCopy[3])) || -[NSString isEqual:](uuid, "isEqual:")) && ((zoneName = self->_zoneName, !(zoneName | equalCopy[4])) || -[NSString isEqual:](zoneName, "isEqual:")) && ((keyclass = self->_keyclass, !(keyclass | equalCopy[2])) || -[NSString isEqual:](keyclass, "isEqual:")))
   {
     key = self->_key;
-    if (key | v4[1])
+    if (key | equalCopy[1])
     {
       v9 = [(NSData *)key isEqual:?];
     }
@@ -69,42 +69,42 @@
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_uuid copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_uuid copyWithZone:zone];
   v7 = v5[3];
   v5[3] = v6;
 
-  v8 = [(NSString *)self->_zoneName copyWithZone:a3];
+  v8 = [(NSString *)self->_zoneName copyWithZone:zone];
   v9 = v5[4];
   v5[4] = v8;
 
-  v10 = [(NSString *)self->_keyclass copyWithZone:a3];
+  v10 = [(NSString *)self->_keyclass copyWithZone:zone];
   v11 = v5[2];
   v5[2] = v10;
 
-  v12 = [(NSData *)self->_key copyWithZone:a3];
+  v12 = [(NSData *)self->_key copyWithZone:zone];
   v13 = v5[1];
   v5[1] = v12;
 
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   uuid = self->_uuid;
-  v5 = a3;
-  [v5 setUuid:uuid];
-  [v5 setZoneName:self->_zoneName];
-  [v5 setKeyclass:self->_keyclass];
-  [v5 setKey:self->_key];
+  toCopy = to;
+  [toCopy setUuid:uuid];
+  [toCopy setZoneName:self->_zoneName];
+  [toCopy setKeyclass:self->_keyclass];
+  [toCopy setKey:self->_key];
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   uuid = self->_uuid;
-  v8 = a3;
+  toCopy = to;
   PBDataWriterWriteStringField();
   zoneName = self->_zoneName;
   PBDataWriterWriteStringField();
@@ -114,16 +114,16 @@
   PBDataWriterWriteDataField();
 }
 
-- (BOOL)readFrom:(id)a3
+- (BOOL)readFrom:(id)from
 {
-  v5 = [a3 position];
-  if (v5 < [a3 length])
+  position = [from position];
+  if (position < [from length])
   {
     do
     {
-      if ([a3 hasError])
+      if ([from hasError])
       {
-        return [a3 hasError] ^ 1;
+        return [from hasError] ^ 1;
       }
 
       v6 = 0;
@@ -132,18 +132,18 @@
       while (1)
       {
         v21 = 0;
-        v9 = [a3 position] + 1;
-        if (v9 >= [a3 position] && (v10 = objc_msgSend(a3, "position") + 1, v10 <= objc_msgSend(a3, "length")))
+        v9 = [from position] + 1;
+        if (v9 >= [from position] && (v10 = objc_msgSend(from, "position") + 1, v10 <= objc_msgSend(from, "length")))
         {
-          v11 = [a3 data];
-          [v11 getBytes:&v21 range:{objc_msgSend(a3, "position"), 1}];
+          data = [from data];
+          [data getBytes:&v21 range:{objc_msgSend(from, "position"), 1}];
 
-          [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+          [from setPosition:{objc_msgSend(from, "position") + 1}];
         }
 
         else
         {
-          [a3 _setError];
+          [from _setError];
         }
 
         v8 |= (v21 & 0x7F) << v6;
@@ -160,11 +160,11 @@
         }
       }
 
-      v13 = [a3 hasError] ? 0 : v8;
+      v13 = [from hasError] ? 0 : v8;
 LABEL_15:
-      if (([a3 hasError] & 1) != 0 || (v13 & 7) == 4)
+      if (([from hasError] & 1) != 0 || (v13 & 7) == 4)
       {
-        return [a3 hasError] ^ 1;
+        return [from hasError] ^ 1;
       }
 
       v14 = v13 >> 3;
@@ -213,13 +213,13 @@ LABEL_28:
       }
 
 LABEL_29:
-      v19 = [a3 position];
+      position2 = [from position];
     }
 
-    while (v19 < [a3 length]);
+    while (position2 < [from length]);
   }
 
-  return [a3 hasError] ^ 1;
+  return [from hasError] ^ 1;
 }
 
 - (id)dictionaryRepresentation
@@ -258,8 +258,8 @@ LABEL_29:
   v7.receiver = self;
   v7.super_class = CKKSSerializedKey;
   v3 = [(CKKSSerializedKey *)&v7 description];
-  v4 = [(CKKSSerializedKey *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(CKKSSerializedKey *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }

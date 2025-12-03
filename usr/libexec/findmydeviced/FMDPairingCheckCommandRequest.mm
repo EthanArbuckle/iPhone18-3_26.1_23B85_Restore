@@ -1,5 +1,5 @@
 @interface FMDPairingCheckCommandRequest
-- (FMDPairingCheckCommandRequest)initWithAccount:(id)a3 pairingCheckRequestInfo:(id)a4;
+- (FMDPairingCheckCommandRequest)initWithAccount:(id)account pairingCheckRequestInfo:(id)info;
 - (id)requestBody;
 - (id)requestHeaders;
 - (id)requestUrl;
@@ -7,20 +7,20 @@
 
 @implementation FMDPairingCheckCommandRequest
 
-- (FMDPairingCheckCommandRequest)initWithAccount:(id)a3 pairingCheckRequestInfo:(id)a4
+- (FMDPairingCheckCommandRequest)initWithAccount:(id)account pairingCheckRequestInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
+  accountCopy = account;
+  infoCopy = info;
   v15.receiver = self;
   v15.super_class = FMDPairingCheckCommandRequest;
   v8 = [(FMDRequest *)&v15 initWithAccount:0];
   if (v8)
   {
-    if (v6)
+    if (accountCopy)
     {
-      v9 = [v6 accessoryPairingURL];
+      accessoryPairingURL = [accountCopy accessoryPairingURL];
       baseURL = v8->_baseURL;
-      v8->_baseURL = v9;
+      v8->_baseURL = accessoryPairingURL;
     }
 
     else
@@ -40,7 +40,7 @@
     }
 
 LABEL_6:
-    objc_storeStrong(&v8->_pairingCheckRequestInfo, a4);
+    objc_storeStrong(&v8->_pairingCheckRequestInfo, info);
   }
 
   return v8;
@@ -50,15 +50,15 @@ LABEL_6:
 {
   v4.receiver = self;
   v4.super_class = FMDPairingCheckCommandRequest;
-  v2 = [(FMDRequest *)&v4 requestHeaders];
+  requestHeaders = [(FMDRequest *)&v4 requestHeaders];
 
-  return v2;
+  return requestHeaders;
 }
 
 - (id)requestUrl
 {
-  v2 = [(FMDPairingCheckCommandRequest *)self baseURL];
-  v3 = [NSString stringWithFormat:@"%@/type5/pairingCheckCommand", v2];
+  baseURL = [(FMDPairingCheckCommandRequest *)self baseURL];
+  v3 = [NSString stringWithFormat:@"%@/type5/pairingCheckCommand", baseURL];
 
   v4 = [NSURL URLWithString:v3];
 
@@ -69,24 +69,24 @@ LABEL_6:
 {
   v13.receiver = self;
   v13.super_class = FMDPairingCheckCommandRequest;
-  v3 = [(FMDRequest *)&v13 requestBody];
-  v4 = [(FMDPairingCheckCommandRequest *)self pairingCheckRequestInfo];
-  v5 = [v4 pairingCheckToken];
-  [v3 fm_safelyMapKey:@"pairingCheckToken" toObject:v5];
+  requestBody = [(FMDRequest *)&v13 requestBody];
+  pairingCheckRequestInfo = [(FMDPairingCheckCommandRequest *)self pairingCheckRequestInfo];
+  pairingCheckToken = [pairingCheckRequestInfo pairingCheckToken];
+  [requestBody fm_safelyMapKey:@"pairingCheckToken" toObject:pairingCheckToken];
 
-  v6 = [(FMDPairingCheckCommandRequest *)self pairingCheckRequestInfo];
-  v7 = [v6 authNonce];
-  [v3 fm_safelyMapKey:@"authNonce" toObject:v7];
+  pairingCheckRequestInfo2 = [(FMDPairingCheckCommandRequest *)self pairingCheckRequestInfo];
+  authNonce = [pairingCheckRequestInfo2 authNonce];
+  [requestBody fm_safelyMapKey:@"authNonce" toObject:authNonce];
 
-  v8 = [(FMDPairingCheckCommandRequest *)self pairingCheckRequestInfo];
-  v9 = [v8 accessoryType];
-  [v3 fm_safelyMapKey:@"accessoryType" toObject:v9];
+  pairingCheckRequestInfo3 = [(FMDPairingCheckCommandRequest *)self pairingCheckRequestInfo];
+  accessoryType = [pairingCheckRequestInfo3 accessoryType];
+  [requestBody fm_safelyMapKey:@"accessoryType" toObject:accessoryType];
 
-  v10 = [(FMDPairingCheckCommandRequest *)self pairingCheckRequestInfo];
-  v11 = [v10 eraseKeyType];
-  [v3 fm_safelyMapKey:@"eraseKeyType" toObject:v11];
+  pairingCheckRequestInfo4 = [(FMDPairingCheckCommandRequest *)self pairingCheckRequestInfo];
+  eraseKeyType = [pairingCheckRequestInfo4 eraseKeyType];
+  [requestBody fm_safelyMapKey:@"eraseKeyType" toObject:eraseKeyType];
 
-  return v3;
+  return requestBody;
 }
 
 @end

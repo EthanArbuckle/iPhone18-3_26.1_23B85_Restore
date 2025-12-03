@@ -1,17 +1,17 @@
 @interface SKUIStackView
 - (CGPoint)_centerInPerspectiveTargetViewCoordinates;
 - (CGSize)_levelInsetSize;
-- (CGSize)_normalizedDistanceFromVanishingPointForCenter:(CGPoint)a3 perspectiveTargetView:(id)a4;
-- (CGSize)_sizeOfItemAtIndex:(double)a3;
-- (SKUIStackView)initWithStackViewStyle:(int64_t)a3;
-- (UIOffset)_relativeOffsetForMinimumRelativeOffset:(UIOffset)a3 maximumRelativeOffset:(UIOffset)a4 normalizedDistanceFromVanishingPoint:(CGSize)a5;
-- (UIOffset)_relativeOffsetOfItemAtIndex:(int64_t)a3 withCenter:(CGPoint)a4;
+- (CGSize)_normalizedDistanceFromVanishingPointForCenter:(CGPoint)center perspectiveTargetView:(id)view;
+- (CGSize)_sizeOfItemAtIndex:(double)index;
+- (SKUIStackView)initWithStackViewStyle:(int64_t)style;
+- (UIOffset)_relativeOffsetForMinimumRelativeOffset:(UIOffset)offset maximumRelativeOffset:(UIOffset)relativeOffset normalizedDistanceFromVanishingPoint:(CGSize)point;
+- (UIOffset)_relativeOffsetOfItemAtIndex:(int64_t)index withCenter:(CGPoint)center;
 - (id)_initSKUIStackView;
 - (int64_t)_stackDepth;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)performCompressionAnimationWithCompletionHandler:(id)a3;
-- (void)setImage:(id)a3;
+- (void)performCompressionAnimationWithCompletionHandler:(id)handler;
+- (void)setImage:(id)image;
 @end
 
 @implementation SKUIStackView
@@ -30,18 +30,18 @@
   return v3;
 }
 
-- (SKUIStackView)initWithStackViewStyle:(int64_t)a3
+- (SKUIStackView)initWithStackViewStyle:(int64_t)style
 {
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIStackView initWithStackViewStyle:];
   }
 
-  v5 = [(SKUIStackView *)self _initSKUIStackView];
-  v6 = v5;
-  if (v5)
+  _initSKUIStackView = [(SKUIStackView *)self _initSKUIStackView];
+  v6 = _initSKUIStackView;
+  if (_initSKUIStackView)
   {
-    v5->_stackViewStyle = a3;
+    _initSKUIStackView->_stackViewStyle = style;
     v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
     stackViews = v6->_stackViews;
     v6->_stackViews = v7;
@@ -81,12 +81,12 @@
   return v6;
 }
 
-- (void)performCompressionAnimationWithCompletionHandler:(id)a3
+- (void)performCompressionAnimationWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(SKUIStackView *)self superview];
+  handlerCopy = handler;
+  superview = [(SKUIStackView *)self superview];
   [(SKUIStackView *)self center];
-  [v5 convertPoint:0 toView:?];
+  [superview convertPoint:0 toView:?];
   v7 = v6;
   v9 = v8;
 
@@ -98,8 +98,8 @@
   v14 = v7;
   v15 = v9;
   v12[4] = self;
-  v13 = v4;
-  v11 = v4;
+  v13 = handlerCopy;
+  v11 = handlerCopy;
   [(NSMutableArray *)stackViews enumerateObjectsUsingBlock:v12];
 }
 
@@ -201,10 +201,10 @@ void __66__SKUIStackView_performCompressionAnimationWithCompletionHandler___bloc
   [v22 addAnimation:v32 forKey:@"SKUIStackViewAnimationKey"];
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  imageCopy = image;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -225,7 +225,7 @@ void __66__SKUIStackView_performCompressionAnimationWithCompletionHandler___bloc
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v10 + 1) + 8 * v9++) setImage:{v4, v10}];
+        [*(*(&v10 + 1) + 8 * v9++) setImage:{imageCopy, v10}];
       }
 
       while (v7 != v9);
@@ -241,9 +241,9 @@ void __66__SKUIStackView_performCompressionAnimationWithCompletionHandler___bloc
   v5.receiver = self;
   v5.super_class = SKUIStackView;
   [(SKUIStackView *)&v5 didMoveToWindow];
-  v3 = [(SKUIStackView *)self window];
+  window = [(SKUIStackView *)self window];
   window = self->_window;
-  self->_window = v3;
+  self->_window = window;
 }
 
 - (void)layoutSubviews
@@ -347,13 +347,13 @@ void __31__SKUIStackView_layoutSubviews__block_invoke(uint64_t a1, void *a2, uni
   return result;
 }
 
-- (CGSize)_normalizedDistanceFromVanishingPointForCenter:(CGPoint)a3 perspectiveTargetView:(id)a4
+- (CGSize)_normalizedDistanceFromVanishingPointForCenter:(CGPoint)center perspectiveTargetView:(id)view
 {
-  if (a4)
+  if (view)
   {
-    y = a3.y;
-    x = a3.x;
-    [a4 bounds];
+    y = center.y;
+    x = center.x;
+    [view bounds];
     v6 = v15.origin.x;
     v7 = v15.origin.y;
     width = v15.size.width;
@@ -379,38 +379,38 @@ void __31__SKUIStackView_layoutSubviews__block_invoke(uint64_t a1, void *a2, uni
   return result;
 }
 
-- (UIOffset)_relativeOffsetForMinimumRelativeOffset:(UIOffset)a3 maximumRelativeOffset:(UIOffset)a4 normalizedDistanceFromVanishingPoint:(CGSize)a5
+- (UIOffset)_relativeOffsetForMinimumRelativeOffset:(UIOffset)offset maximumRelativeOffset:(UIOffset)relativeOffset normalizedDistanceFromVanishingPoint:(CGSize)point
 {
-  v5 = a3.horizontal + (fabs(a3.horizontal) + fabs(a4.horizontal)) * (a5.width * 0.5 + 0.5);
-  v6 = a3.vertical + (fabs(a3.vertical) + fabs(a4.vertical)) * (a5.height * 0.5 + 0.5);
+  v5 = offset.horizontal + (fabs(offset.horizontal) + fabs(relativeOffset.horizontal)) * (point.width * 0.5 + 0.5);
+  v6 = offset.vertical + (fabs(offset.vertical) + fabs(relativeOffset.vertical)) * (point.height * 0.5 + 0.5);
   result.vertical = v6;
   result.horizontal = v5;
   return result;
 }
 
-- (UIOffset)_relativeOffsetOfItemAtIndex:(int64_t)a3 withCenter:(CGPoint)a4
+- (UIOffset)_relativeOffsetOfItemAtIndex:(int64_t)index withCenter:(CGPoint)center
 {
-  y = a4.y;
-  x = a4.x;
+  y = center.y;
+  x = center.x;
   [(SKUIStackView *)self _levelInsetSize];
-  v9 = (v8 + v8) * a3;
-  v11 = (v10 + v10) * a3;
+  v9 = (v8 + v8) * index;
+  v11 = (v10 + v10) * index;
   [(SKUIStackView *)self _normalizedDistanceFromVanishingPointForCenter:self->_window perspectiveTargetView:x, y];
 
-  [(SKUIStackView *)self _relativeOffsetForMinimumRelativeOffset:-(3 * a3) - v9 * 0.5 maximumRelativeOffset:-(3 * a3) - v11 * 0.5 normalizedDistanceFromVanishingPoint:v9 * 0.5 + (3 * a3), v11 * 0.5 + (3 * a3), v12, v13];
+  [(SKUIStackView *)self _relativeOffsetForMinimumRelativeOffset:-(3 * index) - v9 * 0.5 maximumRelativeOffset:-(3 * index) - v11 * 0.5 normalizedDistanceFromVanishingPoint:v9 * 0.5 + (3 * index), v11 * 0.5 + (3 * index), v12, v13];
   result.vertical = v15;
   result.horizontal = v14;
   return result;
 }
 
-- (CGSize)_sizeOfItemAtIndex:(double)a3
+- (CGSize)_sizeOfItemAtIndex:(double)index
 {
   [(SKUIStackView *)self bounds];
   v6 = v5;
   v8 = v7;
   [(SKUIStackView *)self _levelInsetSize];
-  v11 = v6 - (v9 + v9) * a3;
-  v12 = v8 - (v10 + v10) * a3;
+  v11 = v6 - (v9 + v9) * index;
+  v12 = v8 - (v10 + v10) * index;
   result.height = v12;
   result.width = v11;
   return result;

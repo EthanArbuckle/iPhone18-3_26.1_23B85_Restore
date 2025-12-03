@@ -1,26 +1,26 @@
 @interface MTLToolsRasterizationRateMap
 - ($7DEDF3842AEFB7F1E6DF5AF62E424A02)parameterBufferSizeAndAlign;
-- ($94F468A8D4C62B317260615823C2B210)mapPhysicalToScreenCoordinates:(id)a3 forLayer:(unint64_t)a4;
-- ($94F468A8D4C62B317260615823C2B210)mapScreenToPhysicalCoordinates:(id)a3 forLayer:(unint64_t)a4;
+- ($94F468A8D4C62B317260615823C2B210)mapPhysicalToScreenCoordinates:(id)coordinates forLayer:(unint64_t)layer;
+- ($94F468A8D4C62B317260615823C2B210)mapScreenToPhysicalCoordinates:(id)coordinates forLayer:(unint64_t)layer;
 - ($F99D9A4FB75BC57F3386B8DC8EE08D7A)physicalGranularity;
-- ($F99D9A4FB75BC57F3386B8DC8EE08D7A)physicalSizeForLayer:(SEL)a3;
+- ($F99D9A4FB75BC57F3386B8DC8EE08D7A)physicalSizeForLayer:(SEL)layer;
 - ($F99D9A4FB75BC57F3386B8DC8EE08D7A)screenSize;
 - (NSString)label;
 - (float)minFactor;
-- (id)formattedDescription:(unint64_t)a3;
+- (id)formattedDescription:(unint64_t)description;
 - (unint64_t)layerCount;
 - (unint64_t)mutability;
-- (void)copyParameterDataToBuffer:(id)a3 offset:(unint64_t)a4;
-- (void)resetUsingDescriptor:(id)a3;
+- (void)copyParameterDataToBuffer:(id)buffer offset:(unint64_t)offset;
+- (void)resetUsingDescriptor:(id)descriptor;
 @end
 
 @implementation MTLToolsRasterizationRateMap
 
 - (NSString)label
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 label];
+  return [baseObject label];
 }
 
 - ($F99D9A4FB75BC57F3386B8DC8EE08D7A)screenSize
@@ -63,22 +63,22 @@
 
 - (unint64_t)layerCount
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 layerCount];
+  return [baseObject layerCount];
 }
 
 - ($7DEDF3842AEFB7F1E6DF5AF62E424A02)parameterBufferSizeAndAlign
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  v3 = [v2 parameterBufferSizeAndAlign];
+  parameterBufferSizeAndAlign = [baseObject parameterBufferSizeAndAlign];
   result.var1 = v4;
-  result.var0 = v3;
+  result.var0 = parameterBufferSizeAndAlign;
   return result;
 }
 
-- ($F99D9A4FB75BC57F3386B8DC8EE08D7A)physicalSizeForLayer:(SEL)a3
+- ($F99D9A4FB75BC57F3386B8DC8EE08D7A)physicalSizeForLayer:(SEL)layer
 {
   result = [(MTLToolsObject *)self baseObject];
   if (result)
@@ -97,29 +97,29 @@
   return result;
 }
 
-- ($94F468A8D4C62B317260615823C2B210)mapScreenToPhysicalCoordinates:(id)a3 forLayer:(unint64_t)a4
+- ($94F468A8D4C62B317260615823C2B210)mapScreenToPhysicalCoordinates:(id)coordinates forLayer:(unint64_t)layer
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
-  v7 = [(MTLToolsObject *)self baseObject];
+  var1 = coordinates.var1;
+  var0 = coordinates.var0;
+  baseObject = [(MTLToolsObject *)self baseObject];
   *&v8 = var0;
   *&v9 = var1;
 
-  [v7 mapScreenToPhysicalCoordinates:a4 forLayer:{v8, v9}];
+  [baseObject mapScreenToPhysicalCoordinates:layer forLayer:{v8, v9}];
   result.var1 = v11;
   result.var0 = v10;
   return result;
 }
 
-- ($94F468A8D4C62B317260615823C2B210)mapPhysicalToScreenCoordinates:(id)a3 forLayer:(unint64_t)a4
+- ($94F468A8D4C62B317260615823C2B210)mapPhysicalToScreenCoordinates:(id)coordinates forLayer:(unint64_t)layer
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
-  v7 = [(MTLToolsObject *)self baseObject];
+  var1 = coordinates.var1;
+  var0 = coordinates.var0;
+  baseObject = [(MTLToolsObject *)self baseObject];
   *&v8 = var0;
   *&v9 = var1;
 
-  [v7 mapPhysicalToScreenCoordinates:a4 forLayer:{v8, v9}];
+  [baseObject mapPhysicalToScreenCoordinates:layer forLayer:{v8, v9}];
   result.var1 = v11;
   result.var0 = v10;
   return result;
@@ -127,39 +127,39 @@
 
 - (float)minFactor
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v2 minFactor];
+  [baseObject minFactor];
   return result;
 }
 
 - (unint64_t)mutability
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 mutability];
+  return [baseObject mutability];
 }
 
-- (void)copyParameterDataToBuffer:(id)a3 offset:(unint64_t)a4
+- (void)copyParameterDataToBuffer:(id)buffer offset:(unint64_t)offset
 {
-  v6 = [a3 baseObject];
-  v7 = [(MTLToolsObject *)self baseObject];
+  baseObject = [buffer baseObject];
+  baseObject2 = [(MTLToolsObject *)self baseObject];
 
-  [v7 copyParameterDataToBuffer:v6 offset:a4];
+  [baseObject2 copyParameterDataToBuffer:baseObject offset:offset];
 }
 
-- (void)resetUsingDescriptor:(id)a3
+- (void)resetUsingDescriptor:(id)descriptor
 {
-  v4 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v4 resetUsingDescriptor:a3];
+  [baseObject resetUsingDescriptor:descriptor];
 }
 
-- (id)formattedDescription:(unint64_t)a3
+- (id)formattedDescription:(unint64_t)description
 {
-  v4 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v4 formattedDescription:a3];
+  return [baseObject formattedDescription:description];
 }
 
 @end

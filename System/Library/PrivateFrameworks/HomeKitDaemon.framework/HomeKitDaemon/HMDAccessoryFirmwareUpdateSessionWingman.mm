@@ -1,15 +1,15 @@
 @interface HMDAccessoryFirmwareUpdateSessionWingman
-- (id)newSchedulerWithAccessory:(id)a3 firmwareUpdateSession:(id)a4 workQueue:(id)a5;
+- (id)newSchedulerWithAccessory:(id)accessory firmwareUpdateSession:(id)session workQueue:(id)queue;
 @end
 
 @implementation HMDAccessoryFirmwareUpdateSessionWingman
 
-- (id)newSchedulerWithAccessory:(id)a3 firmwareUpdateSession:(id)a4 workQueue:(id)a5
+- (id)newSchedulerWithAccessory:(id)accessory firmwareUpdateSession:(id)session workQueue:(id)queue
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[HMDAccessoryFirmwareUpdateScheduler alloc] initWithAccessory:v9 firmwareUpdateSession:v8 workQueue:v7];
+  queueCopy = queue;
+  sessionCopy = session;
+  accessoryCopy = accessory;
+  v10 = [[HMDAccessoryFirmwareUpdateScheduler alloc] initWithAccessory:accessoryCopy firmwareUpdateSession:sessionCopy workQueue:queueCopy];
 
   return v10;
 }

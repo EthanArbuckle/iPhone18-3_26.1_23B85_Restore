@@ -1,24 +1,24 @@
 @interface ShareImageAssetActivityItemProvider
-- (id)activityViewController:(id)a3 dataTypeIdentifierForActivityType:(id)a4;
-- (id)activityViewController:(id)a3 itemForActivityType:(id)a4;
-- (id)activityViewControllerLinkMetadata:(id)a3;
-- (id)activityViewControllerOperation:(id)a3;
-- (id)activityViewControllerPlaceholderItem:(id)a3;
+- (id)activityViewController:(id)controller dataTypeIdentifierForActivityType:(id)type;
+- (id)activityViewController:(id)controller itemForActivityType:(id)type;
+- (id)activityViewControllerLinkMetadata:(id)metadata;
+- (id)activityViewControllerOperation:(id)operation;
+- (id)activityViewControllerPlaceholderItem:(id)item;
 @end
 
 @implementation ShareImageAssetActivityItemProvider
 
-- (id)activityViewControllerLinkMetadata:(id)a3
+- (id)activityViewControllerLinkMetadata:(id)metadata
 {
   v3 = sub_216945A30();
 
   return v3;
 }
 
-- (id)activityViewControllerPlaceholderItem:(id)a3
+- (id)activityViewControllerPlaceholderItem:(id)item
 {
-  v4 = a3;
-  v5 = self;
+  itemCopy = item;
+  selfCopy = self;
   sub_216945A94(v8);
 
   __swift_project_boxed_opaque_existential_1(v8, v8[3]);
@@ -28,7 +28,7 @@
   return v6;
 }
 
-- (id)activityViewController:(id)a3 itemForActivityType:(id)a4
+- (id)activityViewController:(id)controller itemForActivityType:(id)type
 {
   sub_216945BB0(v12);
   v4 = v13;
@@ -52,11 +52,11 @@
   return v10;
 }
 
-- (id)activityViewController:(id)a3 dataTypeIdentifierForActivityType:(id)a4
+- (id)activityViewController:(id)controller dataTypeIdentifierForActivityType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  controllerCopy = controller;
+  typeCopy = type;
+  selfCopy = self;
   sub_216945D60();
 
   v9 = sub_21700E4D4();
@@ -64,11 +64,11 @@
   return v9;
 }
 
-- (id)activityViewControllerOperation:(id)a3
+- (id)activityViewControllerOperation:(id)operation
 {
-  v5 = a3;
-  v6 = self;
-  v7 = sub_216945EB8(a3);
+  operationCopy = operation;
+  selfCopy = self;
+  v7 = sub_216945EB8(operation);
 
   return v7;
 }

@@ -1,9 +1,9 @@
 @interface CKSearchTokenFilter
-+ (id)_conditionalForHandles:(id)a3 usingKey:(id)a4;
-+ (id)conversationTokensFromTokenFilters:(id)a3;
-+ (id)queryStringForMessageTypeSearch:(id)a3;
++ (id)_conditionalForHandles:(id)handles usingKey:(id)key;
++ (id)conversationTokensFromTokenFilters:(id)filters;
++ (id)queryStringForMessageTypeSearch:(id)search;
 - (CKConversation)conversation;
-- (CKSearchTokenFilter)initWithContentType:(unint64_t)a3 filterOptions:(unint64_t)a4 itemIdentifier:(id)a5 tokenAddresses:(id)a6;
+- (CKSearchTokenFilter)initWithContentType:(unint64_t)type filterOptions:(unint64_t)options itemIdentifier:(id)identifier tokenAddresses:(id)addresses;
 - (NSString)queryStringForConversationSearch;
 - (NSString)queryStringForDateTypeSearch;
 - (NSString)queryStringForMessageTypeSearch;
@@ -11,20 +11,20 @@
 
 @implementation CKSearchTokenFilter
 
-- (CKSearchTokenFilter)initWithContentType:(unint64_t)a3 filterOptions:(unint64_t)a4 itemIdentifier:(id)a5 tokenAddresses:(id)a6
+- (CKSearchTokenFilter)initWithContentType:(unint64_t)type filterOptions:(unint64_t)options itemIdentifier:(id)identifier tokenAddresses:(id)addresses
 {
-  v10 = a5;
-  v11 = a6;
+  identifierCopy = identifier;
+  addressesCopy = addresses;
   v15.receiver = self;
   v15.super_class = CKSearchTokenFilter;
   v12 = [(CKSearchTokenFilter *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    [(CKSearchTokenFilter *)v12 setContentType:a3];
-    [(CKSearchTokenFilter *)v13 setFilterOptions:a4];
-    [(CKSearchTokenFilter *)v13 setItemIdentifier:v10];
-    [(CKSearchTokenFilter *)v13 setTokenAddresses:v11];
+    [(CKSearchTokenFilter *)v12 setContentType:type];
+    [(CKSearchTokenFilter *)v13 setFilterOptions:options];
+    [(CKSearchTokenFilter *)v13 setItemIdentifier:identifierCopy];
+    [(CKSearchTokenFilter *)v13 setTokenAddresses:addressesCopy];
   }
 
   return v13;
@@ -36,20 +36,20 @@
   queryStringForConversationSearch = self->_queryStringForConversationSearch;
   if (!queryStringForConversationSearch)
   {
-    v4 = [MEMORY[0x1E695DF70] array];
-    v5 = [(CKSearchTokenFilter *)self itemIdentifier];
-    v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ == %@", *MEMORY[0x1E6963BA8], v5];
-    [v4 addObject:v6];
+    array = [MEMORY[0x1E695DF70] array];
+    itemIdentifier = [(CKSearchTokenFilter *)self itemIdentifier];
+    v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ == %@", *MEMORY[0x1E6963BA8], itemIdentifier];
+    [array addObject:v6];
 
     if (![(CKSearchTokenFilter *)self hasFilterOption:2])
     {
-      v17 = v5;
+      v17 = itemIdentifier;
       v20 = 0u;
       v21 = 0u;
       v18 = 0u;
       v19 = 0u;
-      v7 = [(CKSearchTokenFilter *)self tokenAddresses];
-      v8 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      tokenAddresses = [(CKSearchTokenFilter *)self tokenAddresses];
+      v8 = [tokenAddresses countByEnumeratingWithState:&v18 objects:v22 count:16];
       if (v8)
       {
         v9 = v8;
@@ -62,26 +62,26 @@
           {
             if (*v19 != v10)
             {
-              objc_enumerationMutation(v7);
+              objc_enumerationMutation(tokenAddresses);
             }
 
             v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ == *%@", v11, *(*(&v18 + 1) + 8 * v12)];
-            [v4 addObject:v13];
+            [array addObject:v13];
 
             ++v12;
           }
 
           while (v9 != v12);
-          v9 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
+          v9 = [tokenAddresses countByEnumeratingWithState:&v18 objects:v22 count:16];
         }
 
         while (v9);
       }
 
-      v5 = v17;
+      itemIdentifier = v17;
     }
 
-    v14 = [CKSpotlightQueryUtilities queryStringFromSubqueries:v4 combineOperator:0];
+    v14 = [CKSpotlightQueryUtilities queryStringFromSubqueries:array combineOperator:0];
     v15 = self->_queryStringForConversationSearch;
     self->_queryStringForConversationSearch = v14;
 
@@ -91,24 +91,24 @@
   return queryStringForConversationSearch;
 }
 
-+ (id)queryStringForMessageTypeSearch:(id)a3
++ (id)queryStringForMessageTypeSearch:(id)search
 {
-  v3 = a3;
-  if ([v3 count] == 1)
+  searchCopy = search;
+  if ([searchCopy count] == 1)
   {
-    v4 = [v3 firstObject];
-    v5 = [v4 queryStringForMessageTypeSearch];
+    firstObject = [searchCopy firstObject];
+    queryStringForMessageTypeSearch = [firstObject queryStringForMessageTypeSearch];
   }
 
   else
   {
-    v4 = [v3 __imArrayByFilteringWithBlock:&__block_literal_global_294];
-    v6 = [v3 arrayByExcludingObjectsInArray:v4];
+    firstObject = [searchCopy __imArrayByFilteringWithBlock:&__block_literal_global_294];
+    v6 = [searchCopy arrayByExcludingObjectsInArray:firstObject];
     v7 = [v6 __imArrayByApplyingBlock:&__block_literal_global_429_1];
     v8 = [MEMORY[0x1E69A5BD0] me];
-    v9 = [v8 cnContact];
+    cnContact = [v8 cnContact];
 
-    v10 = [CKSpotlightQueryUtilities tokenAddressesForFilteringWithContact:v9];
+    v10 = [CKSpotlightQueryUtilities tokenAddressesForFilteringWithContact:cnContact];
     if ([v10 count])
     {
       v11 = [v7 arrayByAddingObject:v10];
@@ -135,13 +135,13 @@
     v14[2] = __55__CKSearchTokenFilter_queryStringForMessageTypeSearch___block_invoke_3;
     v14[3] = &unk_1E72F8758;
     v14[4] = &v18;
-    [v4 enumerateObjectsUsingBlock:v14];
-    v5 = v19[5];
+    [firstObject enumerateObjectsUsingBlock:v14];
+    queryStringForMessageTypeSearch = v19[5];
 
     _Block_object_dispose(&v18, 8);
   }
 
-  return v5;
+  return queryStringForMessageTypeSearch;
 }
 
 uint64_t __55__CKSearchTokenFilter_queryStringForMessageTypeSearch___block_invoke(uint64_t a1, void *a2)
@@ -220,13 +220,13 @@ void __55__CKSearchTokenFilter_queryStringForMessageTypeSearch___block_invoke_3(
   queryStringForMessageTypeSearch = self->_queryStringForMessageTypeSearch;
   if (!queryStringForMessageTypeSearch)
   {
-    v4 = [(CKSearchTokenFilter *)self conversation];
-    v5 = [v4 isGroupConversation];
+    conversation = [(CKSearchTokenFilter *)self conversation];
+    isGroupConversation = [conversation isGroupConversation];
 
-    if (v5)
+    if (isGroupConversation)
     {
-      v6 = [(CKSearchTokenFilter *)self itemIdentifier];
-      v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(%@ == \"%@\"", *MEMORY[0x1E6963F88], v6, *MEMORY[0x1E6963BA8], v6];
+      itemIdentifier = [(CKSearchTokenFilter *)self itemIdentifier];
+      v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(%@ == \"%@\"", *MEMORY[0x1E6963F88], itemIdentifier, *MEMORY[0x1E6963BA8], itemIdentifier];
       v8 = self->_queryStringForMessageTypeSearch;
       self->_queryStringForMessageTypeSearch = v7;
       v9 = v7;
@@ -236,8 +236,8 @@ void __55__CKSearchTokenFilter_queryStringForMessageTypeSearch___block_invoke_3(
     }
 
     v11 = [(CKSearchTokenFilter *)self hasFilterOption:2];
-    v12 = [(CKSearchTokenFilter *)self tokenAddresses];
-    v13 = [CKSearchTokenFilter _conditionalForHandles:v12 usingKey:*MEMORY[0x1E6963CE8]];
+    tokenAddresses = [(CKSearchTokenFilter *)self tokenAddresses];
+    v13 = [CKSearchTokenFilter _conditionalForHandles:tokenAddresses usingKey:*MEMORY[0x1E6963CE8]];
 
     if (v11)
     {
@@ -248,13 +248,13 @@ void __55__CKSearchTokenFilter_queryStringForMessageTypeSearch___block_invoke_3(
     else
     {
       v16 = [MEMORY[0x1E69A5BD0] me];
-      v17 = [v16 cnContact];
+      cnContact = [v16 cnContact];
 
-      v29 = v17;
-      v28 = [CKSpotlightQueryUtilities tokenAddressesForFilteringWithContact:v17];
+      v29 = cnContact;
+      v28 = [CKSpotlightQueryUtilities tokenAddressesForFilteringWithContact:cnContact];
       v18 = [CKSearchTokenFilter _conditionalForHandles:"_conditionalForHandles:usingKey:" usingKey:?];
-      v19 = [(CKSearchTokenFilter *)self tokenAddresses];
-      v20 = [CKSearchTokenFilter _conditionalForHandles:v19 usingKey:*MEMORY[0x1E69649E0]];
+      tokenAddresses2 = [(CKSearchTokenFilter *)self tokenAddresses];
+      v20 = [CKSearchTokenFilter _conditionalForHandles:tokenAddresses2 usingKey:*MEMORY[0x1E69649E0]];
 
       v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ == %@", *MEMORY[0x1E69644C8], MEMORY[0x1E695E110]];
       if (v18)
@@ -267,8 +267,8 @@ void __55__CKSearchTokenFilter_queryStringForMessageTypeSearch___block_invoke_3(
         [MEMORY[0x1E696AEC0] stringWithFormat:@"(%@) && (%@)", v20, v21, v27];
       }
       v22 = ;
-      v23 = [(CKSearchTokenFilter *)self tokenAddresses];
-      v24 = [CKSearchTokenFilter _conditionalForHandles:v23 usingKey:@"com_apple_mobilesms_mentionedAddresses"];
+      tokenAddresses3 = [(CKSearchTokenFilter *)self tokenAddresses];
+      v24 = [CKSearchTokenFilter _conditionalForHandles:tokenAddresses3 usingKey:@"com_apple_mobilesms_mentionedAddresses"];
 
       v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(%@) || (%@) || (%@)", v13, v22, v24];
 
@@ -330,17 +330,17 @@ LABEL_12:
   return queryStringForDateTypeSearch;
 }
 
-+ (id)_conditionalForHandles:(id)a3 usingKey:(id)a4
++ (id)_conditionalForHandles:(id)handles usingKey:(id)key
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E695DF70] array];
+  handlesCopy = handles;
+  keyCopy = key;
+  array = [MEMORY[0x1E695DF70] array];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v8 = v5;
+  v8 = handlesCopy;
   v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v9)
   {
@@ -355,8 +355,8 @@ LABEL_12:
           objc_enumerationMutation(v8);
         }
 
-        v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ == *%@", v6, *(*(&v16 + 1) + 8 * i), v16];
-        [v7 addObject:v13];
+        v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ == *%@", keyCopy, *(*(&v16 + 1) + 8 * i), v16];
+        [array addObject:v13];
       }
 
       v10 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -365,23 +365,23 @@ LABEL_12:
     while (v10);
   }
 
-  v14 = [CKSpotlightQueryUtilities queryStringFromSubqueries:v7 combineOperator:0];
+  v14 = [CKSpotlightQueryUtilities queryStringFromSubqueries:array combineOperator:0];
 
   return v14;
 }
 
-+ (id)conversationTokensFromTokenFilters:(id)a3
++ (id)conversationTokensFromTokenFilters:(id)filters
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([v3 count])
+  filtersCopy = filters;
+  if ([filtersCopy count])
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v5 = v3;
+    v5 = filtersCopy;
     v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v6)
     {
@@ -399,7 +399,7 @@ LABEL_12:
           v10 = *(*(&v13 + 1) + 8 * i);
           if (![v10 contentType])
           {
-            [v4 addObject:v10];
+            [array addObject:v10];
           }
         }
 
@@ -409,12 +409,12 @@ LABEL_12:
       while (v7);
     }
 
-    v11 = [v4 copy];
+    v11 = [array copy];
   }
 
   else
   {
-    v11 = v3;
+    v11 = filtersCopy;
   }
 
   return v11;

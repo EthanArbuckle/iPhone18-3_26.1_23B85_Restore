@@ -1,36 +1,36 @@
 @interface CNSafeChangeHistoryEventVisitorWrapper
-- (CNSafeChangeHistoryEventVisitorWrapper)initWithChangeHistoryEventVisitor:(id)a3;
+- (CNSafeChangeHistoryEventVisitorWrapper)initWithChangeHistoryEventVisitor:(id)visitor;
 - (NSString)description;
-- (void)visitAddContactEvent:(id)a3;
-- (void)visitAddGroupEvent:(id)a3;
-- (void)visitAddMemberToGroupEvent:(id)a3;
-- (void)visitAddSubgroupToGroupEvent:(id)a3;
-- (void)visitDeleteContactEvent:(id)a3;
-- (void)visitDeleteGroupEvent:(id)a3;
-- (void)visitDifferentMeCardEvent:(id)a3;
-- (void)visitDropEverythingEvent:(id)a3;
-- (void)visitLinkContactsEvent:(id)a3;
-- (void)visitPreferredContactForImageEvent:(id)a3;
-- (void)visitPreferredContactForNameEvent:(id)a3;
-- (void)visitRemoveMemberFromGroupEvent:(id)a3;
-- (void)visitRemoveSubgroupFromGroupEvent:(id)a3;
-- (void)visitUnlinkContactEvent:(id)a3;
-- (void)visitUpdateContactEvent:(id)a3;
-- (void)visitUpdateGroupEvent:(id)a3;
+- (void)visitAddContactEvent:(id)event;
+- (void)visitAddGroupEvent:(id)event;
+- (void)visitAddMemberToGroupEvent:(id)event;
+- (void)visitAddSubgroupToGroupEvent:(id)event;
+- (void)visitDeleteContactEvent:(id)event;
+- (void)visitDeleteGroupEvent:(id)event;
+- (void)visitDifferentMeCardEvent:(id)event;
+- (void)visitDropEverythingEvent:(id)event;
+- (void)visitLinkContactsEvent:(id)event;
+- (void)visitPreferredContactForImageEvent:(id)event;
+- (void)visitPreferredContactForNameEvent:(id)event;
+- (void)visitRemoveMemberFromGroupEvent:(id)event;
+- (void)visitRemoveSubgroupFromGroupEvent:(id)event;
+- (void)visitUnlinkContactEvent:(id)event;
+- (void)visitUpdateContactEvent:(id)event;
+- (void)visitUpdateGroupEvent:(id)event;
 @end
 
 @implementation CNSafeChangeHistoryEventVisitorWrapper
 
-- (CNSafeChangeHistoryEventVisitorWrapper)initWithChangeHistoryEventVisitor:(id)a3
+- (CNSafeChangeHistoryEventVisitorWrapper)initWithChangeHistoryEventVisitor:(id)visitor
 {
-  v5 = a3;
+  visitorCopy = visitor;
   v10.receiver = self;
   v10.super_class = CNSafeChangeHistoryEventVisitorWrapper;
   v6 = [(CNSafeChangeHistoryEventVisitorWrapper *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_visitor, a3);
+    objc_storeStrong(&v6->_visitor, visitor);
     v8 = v7;
   }
 
@@ -40,155 +40,155 @@
 - (NSString)description
 {
   v3 = [MEMORY[0x1E69966B0] descriptionBuilderWithObject:self];
-  v4 = [(CNSafeChangeHistoryEventVisitorWrapper *)self visitor];
-  v5 = [v3 appendName:@"visitor" object:v4];
+  visitor = [(CNSafeChangeHistoryEventVisitorWrapper *)self visitor];
+  v5 = [v3 appendName:@"visitor" object:visitor];
 
-  v6 = [v3 build];
+  build = [v3 build];
 
-  return v6;
+  return build;
 }
 
-- (void)visitDropEverythingEvent:(id)a3
+- (void)visitDropEverythingEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   if (objc_opt_respondsToSelector())
   {
-    [(CNChangeHistoryEventVisitor *)self->_visitor visitDropEverythingEvent:v4];
+    [(CNChangeHistoryEventVisitor *)self->_visitor visitDropEverythingEvent:eventCopy];
   }
 }
 
-- (void)visitAddContactEvent:(id)a3
+- (void)visitAddContactEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   if (objc_opt_respondsToSelector())
   {
-    [(CNChangeHistoryEventVisitor *)self->_visitor visitAddContactEvent:v4];
+    [(CNChangeHistoryEventVisitor *)self->_visitor visitAddContactEvent:eventCopy];
   }
 }
 
-- (void)visitUpdateContactEvent:(id)a3
+- (void)visitUpdateContactEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   if (objc_opt_respondsToSelector())
   {
-    [(CNChangeHistoryEventVisitor *)self->_visitor visitUpdateContactEvent:v4];
+    [(CNChangeHistoryEventVisitor *)self->_visitor visitUpdateContactEvent:eventCopy];
   }
 }
 
-- (void)visitDeleteContactEvent:(id)a3
+- (void)visitDeleteContactEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   if (objc_opt_respondsToSelector())
   {
-    [(CNChangeHistoryEventVisitor *)self->_visitor visitDeleteContactEvent:v4];
+    [(CNChangeHistoryEventVisitor *)self->_visitor visitDeleteContactEvent:eventCopy];
   }
 }
 
-- (void)visitAddGroupEvent:(id)a3
+- (void)visitAddGroupEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   if (objc_opt_respondsToSelector())
   {
-    [(CNChangeHistoryEventVisitor *)self->_visitor visitAddGroupEvent:v4];
+    [(CNChangeHistoryEventVisitor *)self->_visitor visitAddGroupEvent:eventCopy];
   }
 }
 
-- (void)visitUpdateGroupEvent:(id)a3
+- (void)visitUpdateGroupEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   if (objc_opt_respondsToSelector())
   {
-    [(CNChangeHistoryEventVisitor *)self->_visitor visitUpdateGroupEvent:v4];
+    [(CNChangeHistoryEventVisitor *)self->_visitor visitUpdateGroupEvent:eventCopy];
   }
 }
 
-- (void)visitDeleteGroupEvent:(id)a3
+- (void)visitDeleteGroupEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   if (objc_opt_respondsToSelector())
   {
-    [(CNChangeHistoryEventVisitor *)self->_visitor visitDeleteGroupEvent:v4];
+    [(CNChangeHistoryEventVisitor *)self->_visitor visitDeleteGroupEvent:eventCopy];
   }
 }
 
-- (void)visitAddMemberToGroupEvent:(id)a3
+- (void)visitAddMemberToGroupEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   if (objc_opt_respondsToSelector())
   {
-    [(CNChangeHistoryEventVisitor *)self->_visitor visitAddMemberToGroupEvent:v4];
+    [(CNChangeHistoryEventVisitor *)self->_visitor visitAddMemberToGroupEvent:eventCopy];
   }
 }
 
-- (void)visitRemoveMemberFromGroupEvent:(id)a3
+- (void)visitRemoveMemberFromGroupEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   if (objc_opt_respondsToSelector())
   {
-    [(CNChangeHistoryEventVisitor *)self->_visitor visitRemoveMemberFromGroupEvent:v4];
+    [(CNChangeHistoryEventVisitor *)self->_visitor visitRemoveMemberFromGroupEvent:eventCopy];
   }
 }
 
-- (void)visitAddSubgroupToGroupEvent:(id)a3
+- (void)visitAddSubgroupToGroupEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   if (objc_opt_respondsToSelector())
   {
-    [(CNChangeHistoryEventVisitor *)self->_visitor visitAddSubgroupToGroupEvent:v4];
+    [(CNChangeHistoryEventVisitor *)self->_visitor visitAddSubgroupToGroupEvent:eventCopy];
   }
 }
 
-- (void)visitRemoveSubgroupFromGroupEvent:(id)a3
+- (void)visitRemoveSubgroupFromGroupEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   if (objc_opt_respondsToSelector())
   {
-    [(CNChangeHistoryEventVisitor *)self->_visitor visitRemoveSubgroupFromGroupEvent:v4];
+    [(CNChangeHistoryEventVisitor *)self->_visitor visitRemoveSubgroupFromGroupEvent:eventCopy];
   }
 }
 
-- (void)visitDifferentMeCardEvent:(id)a3
+- (void)visitDifferentMeCardEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   if (objc_opt_respondsToSelector())
   {
-    [(CNChangeHistoryEventVisitor *)self->_visitor visitDifferentMeCardEvent:v4];
+    [(CNChangeHistoryEventVisitor *)self->_visitor visitDifferentMeCardEvent:eventCopy];
   }
 }
 
-- (void)visitLinkContactsEvent:(id)a3
+- (void)visitLinkContactsEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   if (objc_opt_respondsToSelector())
   {
-    [(CNChangeHistoryEventVisitor *)self->_visitor visitLinkContactsEvent:v4];
+    [(CNChangeHistoryEventVisitor *)self->_visitor visitLinkContactsEvent:eventCopy];
   }
 }
 
-- (void)visitUnlinkContactEvent:(id)a3
+- (void)visitUnlinkContactEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   if (objc_opt_respondsToSelector())
   {
-    [(CNChangeHistoryEventVisitor *)self->_visitor visitUnlinkContactEvent:v4];
+    [(CNChangeHistoryEventVisitor *)self->_visitor visitUnlinkContactEvent:eventCopy];
   }
 }
 
-- (void)visitPreferredContactForNameEvent:(id)a3
+- (void)visitPreferredContactForNameEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   if (objc_opt_respondsToSelector())
   {
-    [(CNChangeHistoryEventVisitor *)self->_visitor visitPreferredContactForNameEvent:v4];
+    [(CNChangeHistoryEventVisitor *)self->_visitor visitPreferredContactForNameEvent:eventCopy];
   }
 }
 
-- (void)visitPreferredContactForImageEvent:(id)a3
+- (void)visitPreferredContactForImageEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   if (objc_opt_respondsToSelector())
   {
-    [(CNChangeHistoryEventVisitor *)self->_visitor visitPreferredContactForImageEvent:v4];
+    [(CNChangeHistoryEventVisitor *)self->_visitor visitPreferredContactForImageEvent:eventCopy];
   }
 }
 

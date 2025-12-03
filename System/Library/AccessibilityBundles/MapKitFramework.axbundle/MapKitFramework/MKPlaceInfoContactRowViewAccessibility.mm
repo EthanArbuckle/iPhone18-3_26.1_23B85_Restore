@@ -1,42 +1,42 @@
 @interface MKPlaceInfoContactRowViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
 @end
 
 @implementation MKPlaceInfoContactRowViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MKPlaceInfoContactRowView" hasInstanceVariable:@"_titleLabel" withType:"MKVibrantLabel"];
-  [v3 validateClass:@"MKVibrantLabel" hasInstanceVariable:@"_label" withType:"UILabel"];
-  [v3 validateClass:@"MKPlaceInfoContactRowView" hasInstanceVariable:@"_valueLabel" withType:"_MKUILabel"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MKPlaceInfoContactRowView" hasInstanceVariable:@"_titleLabel" withType:"MKVibrantLabel"];
+  [validationsCopy validateClass:@"MKVibrantLabel" hasInstanceVariable:@"_label" withType:"UILabel"];
+  [validationsCopy validateClass:@"MKPlaceInfoContactRowView" hasInstanceVariable:@"_valueLabel" withType:"_MKUILabel"];
 }
 
 - (id)accessibilityLabel
 {
   v3 = [(MKPlaceInfoContactRowViewAccessibility *)self safeValueForKey:@"_titleLabel"];
-  v4 = [v3 accessibilityLabel];
+  accessibilityLabel = [v3 accessibilityLabel];
 
-  if (![v4 length])
+  if (![accessibilityLabel length])
   {
     v5 = [(MKPlaceInfoContactRowViewAccessibility *)self safeValueForKey:@"_titleLabel"];
     v6 = [v5 safeValueForKey:@"_label"];
-    v7 = [v6 accessibilityLabel];
+    accessibilityLabel2 = [v6 accessibilityLabel];
 
-    v4 = v7;
+    accessibilityLabel = accessibilityLabel2;
   }
 
-  return v4;
+  return accessibilityLabel;
 }
 
 - (id)accessibilityValue
 {
   v2 = [(MKPlaceInfoContactRowViewAccessibility *)self safeValueForKey:@"_valueLabel"];
-  v3 = [v2 accessibilityLabel];
+  accessibilityLabel = [v2 accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 @end

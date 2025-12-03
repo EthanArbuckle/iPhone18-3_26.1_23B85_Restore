@@ -1,22 +1,22 @@
 @interface PDDPAdminRequestDetails
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsApprovalStatus:(id)a3;
-- (int)StringAsRequestStatus:(id)a3;
-- (int)StringAsType:(id)a3;
+- (int)StringAsApprovalStatus:(id)status;
+- (int)StringAsRequestStatus:(id)status;
+- (int)StringAsType:(id)type;
 - (int)approvalStatus;
 - (int)requestStatus;
 - (int)type;
 - (unint64_t)hash;
-- (void)addAdminRequestAccountIds:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasOptions:(BOOL)a3;
-- (void)setHasRequestStatus:(BOOL)a3;
-- (void)setHasType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addAdminRequestAccountIds:(id)ids;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasOptions:(BOOL)options;
+- (void)setHasRequestStatus:(BOOL)status;
+- (void)setHasType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PDDPAdminRequestDetails
@@ -34,9 +34,9 @@
   }
 }
 
-- (void)setHasType:(BOOL)a3
+- (void)setHasType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 8;
   }
@@ -49,35 +49,35 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (int)StringAsType:(id)a3
+- (int)StringAsType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN_REQUEST_TYPE"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"UNKNOWN_REQUEST_TYPE"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"REQUEST_EMAIL_VERIFICATION"])
+  else if ([typeCopy isEqualToString:@"REQUEST_EMAIL_VERIFICATION"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"CREATE_MAID_ACCOUNT"])
+  else if ([typeCopy isEqualToString:@"CREATE_MAID_ACCOUNT"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"RESET_PASSWORD"])
+  else if ([typeCopy isEqualToString:@"RESET_PASSWORD"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"RESET_VERIFICATION_CODE"])
+  else if ([typeCopy isEqualToString:@"RESET_VERIFICATION_CODE"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"RESEND_ACCOUNT_CREDENTIALS"])
+  else if ([typeCopy isEqualToString:@"RESEND_ACCOUNT_CREDENTIALS"])
   {
     v4 = 5;
   }
@@ -103,9 +103,9 @@
   }
 }
 
-- (void)setHasRequestStatus:(BOOL)a3
+- (void)setHasRequestStatus:(BOOL)status
 {
-  if (a3)
+  if (status)
   {
     v3 = 4;
   }
@@ -118,30 +118,30 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (int)StringAsRequestStatus:(id)a3
+- (int)StringAsRequestStatus:(id)status
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN_REQUEST_STATUS"])
+  statusCopy = status;
+  if ([statusCopy isEqualToString:@"UNKNOWN_REQUEST_STATUS"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"STATUS_NEW"])
+  else if ([statusCopy isEqualToString:@"STATUS_NEW"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"STATUS_ISSUED"])
+  else if ([statusCopy isEqualToString:@"STATUS_ISSUED"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"STATUS_COMPLETED"])
+  else if ([statusCopy isEqualToString:@"STATUS_COMPLETED"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"STATUS_FAILED"])
+  else if ([statusCopy isEqualToString:@"STATUS_FAILED"])
   {
     v4 = 4;
   }
@@ -167,35 +167,35 @@
   }
 }
 
-- (int)StringAsApprovalStatus:(id)a3
+- (int)StringAsApprovalStatus:(id)status
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN_REQUEST_APPROVAL"])
+  statusCopy = status;
+  if ([statusCopy isEqualToString:@"UNKNOWN_REQUEST_APPROVAL"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"APPROVAL_NONE"])
+  else if ([statusCopy isEqualToString:@"APPROVAL_NONE"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"APPROVAL_PENDING"])
+  else if ([statusCopy isEqualToString:@"APPROVAL_PENDING"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"APPROVAL_APPROVED"])
+  else if ([statusCopy isEqualToString:@"APPROVAL_APPROVED"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"APPROVAL_DECLINED"])
+  else if ([statusCopy isEqualToString:@"APPROVAL_DECLINED"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"APPROVAL_APPROVED_CREDENTIAL_EMAIL_NOT_ALLOWED"])
+  else if ([statusCopy isEqualToString:@"APPROVAL_APPROVED_CREDENTIAL_EMAIL_NOT_ALLOWED"])
   {
     v4 = 5;
   }
@@ -208,9 +208,9 @@
   return v4;
 }
 
-- (void)setHasOptions:(BOOL)a3
+- (void)setHasOptions:(BOOL)options
 {
-  if (a3)
+  if (options)
   {
     v3 = 2;
   }
@@ -223,22 +223,22 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)addAdminRequestAccountIds:(id)a3
+- (void)addAdminRequestAccountIds:(id)ids
 {
-  v4 = a3;
+  idsCopy = ids;
   adminRequestAccountIds = self->_adminRequestAccountIds;
-  v8 = v4;
+  v8 = idsCopy;
   if (!adminRequestAccountIds)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_adminRequestAccountIds;
     self->_adminRequestAccountIds = v6;
 
-    v4 = v8;
+    idsCopy = v8;
     adminRequestAccountIds = self->_adminRequestAccountIds;
   }
 
-  [(NSMutableArray *)adminRequestAccountIds addObject:v4];
+  [(NSMutableArray *)adminRequestAccountIds addObject:idsCopy];
 }
 
 - (id)description
@@ -246,8 +246,8 @@
   v7.receiver = self;
   v7.super_class = PDDPAdminRequestDetails;
   v3 = [(PDDPAdminRequestDetails *)&v7 description];
-  v4 = [(PDDPAdminRequestDetails *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(PDDPAdminRequestDetails *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -271,29 +271,29 @@
   dateCreated = self->_dateCreated;
   if (dateCreated)
   {
-    v8 = [(PDDPDate *)dateCreated dictionaryRepresentation];
-    [v4 setObject:v8 forKey:@"date_created"];
+    dictionaryRepresentation = [(PDDPDate *)dateCreated dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"date_created"];
   }
 
   dateLastModified = self->_dateLastModified;
   if (dateLastModified)
   {
-    v10 = [(PDDPDate *)dateLastModified dictionaryRepresentation];
-    [v4 setObject:v10 forKey:@"date_last_modified"];
+    dictionaryRepresentation2 = [(PDDPDate *)dateLastModified dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation2 forKey:@"date_last_modified"];
   }
 
   dateCompleted = self->_dateCompleted;
   if (dateCompleted)
   {
-    v12 = [(PDDPDate *)dateCompleted dictionaryRepresentation];
-    [v4 setObject:v12 forKey:@"date_completed"];
+    dictionaryRepresentation3 = [(PDDPDate *)dateCompleted dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation3 forKey:@"date_completed"];
   }
 
   status = self->_status;
   if (status)
   {
-    v14 = [(PDDPStatus *)status dictionaryRepresentation];
-    [v4 setObject:v14 forKey:@"status"];
+    dictionaryRepresentation4 = [(PDDPStatus *)status dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation4 forKey:@"status"];
   }
 
   has = self->_has;
@@ -364,8 +364,8 @@ LABEL_29:
   requestor = self->_requestor;
   if (requestor)
   {
-    v23 = [(PDDPAdminRequestRequestor *)requestor dictionaryRepresentation];
-    [v4 setObject:v23 forKey:@"requestor"];
+    dictionaryRepresentation5 = [(PDDPAdminRequestRequestor *)requestor dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation5 forKey:@"requestor"];
   }
 
   if ((*&self->_has & 2) != 0)
@@ -395,9 +395,9 @@ LABEL_29:
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_adminRequestId)
   {
     PBDataWriterWriteStringField();
@@ -512,51 +512,51 @@ LABEL_17:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v10 = v4;
+  toCopy = to;
+  v10 = toCopy;
   if (self->_adminRequestId)
   {
-    [v4 setAdminRequestId:?];
-    v4 = v10;
+    [toCopy setAdminRequestId:?];
+    toCopy = v10;
   }
 
   if (self->_orgId)
   {
     [v10 setOrgId:?];
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_dateCreated)
   {
     [v10 setDateCreated:?];
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_dateLastModified)
   {
     [v10 setDateLastModified:?];
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_dateCompleted)
   {
     [v10 setDateCompleted:?];
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_status)
   {
     [v10 setStatus:?];
-    v4 = v10;
+    toCopy = v10;
   }
 
   has = self->_has;
   if ((has & 8) != 0)
   {
-    *(v4 + 28) = self->_type;
-    *(v4 + 116) |= 8u;
+    *(toCopy + 28) = self->_type;
+    *(toCopy + 116) |= 8u;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -575,26 +575,26 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  *(v4 + 22) = self->_requestStatus;
-  *(v4 + 116) |= 4u;
+  *(toCopy + 22) = self->_requestStatus;
+  *(toCopy + 116) |= 4u;
   if (*&self->_has)
   {
 LABEL_16:
-    *(v4 + 8) = self->_approvalStatus;
-    *(v4 + 116) |= 1u;
+    *(toCopy + 8) = self->_approvalStatus;
+    *(toCopy + 116) |= 1u;
   }
 
 LABEL_17:
   if (self->_requestor)
   {
     [v10 setRequestor:?];
-    v4 = v10;
+    toCopy = v10;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    *(v4 + 18) = self->_options;
-    *(v4 + 116) |= 2u;
+    *(toCopy + 18) = self->_options;
+    *(toCopy + 116) |= 2u;
   }
 
   if (self->_bundleIdentifier)
@@ -605,10 +605,10 @@ LABEL_17:
   if ([(PDDPAdminRequestDetails *)self adminRequestAccountIdsCount])
   {
     [v10 clearAdminRequestAccountIds];
-    v6 = [(PDDPAdminRequestDetails *)self adminRequestAccountIdsCount];
-    if (v6)
+    adminRequestAccountIdsCount = [(PDDPAdminRequestDetails *)self adminRequestAccountIdsCount];
+    if (adminRequestAccountIdsCount)
     {
-      v7 = v6;
+      v7 = adminRequestAccountIdsCount;
       for (i = 0; i != v7; ++i)
       {
         v9 = [(PDDPAdminRequestDetails *)self adminRequestAccountIdsAtIndex:i];
@@ -623,30 +623,30 @@ LABEL_17:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_adminRequestId copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_adminRequestId copyWithZone:zone];
   v7 = v5[3];
   v5[3] = v6;
 
-  v8 = [(NSString *)self->_orgId copyWithZone:a3];
+  v8 = [(NSString *)self->_orgId copyWithZone:zone];
   v9 = v5[10];
   v5[10] = v8;
 
-  v10 = [(PDDPDate *)self->_dateCreated copyWithZone:a3];
+  v10 = [(PDDPDate *)self->_dateCreated copyWithZone:zone];
   v11 = v5[7];
   v5[7] = v10;
 
-  v12 = [(PDDPDate *)self->_dateLastModified copyWithZone:a3];
+  v12 = [(PDDPDate *)self->_dateLastModified copyWithZone:zone];
   v13 = v5[8];
   v5[8] = v12;
 
-  v14 = [(PDDPDate *)self->_dateCompleted copyWithZone:a3];
+  v14 = [(PDDPDate *)self->_dateCompleted copyWithZone:zone];
   v15 = v5[6];
   v5[6] = v14;
 
-  v16 = [(PDDPStatus *)self->_status copyWithZone:a3];
+  v16 = [(PDDPStatus *)self->_status copyWithZone:zone];
   v17 = v5[13];
   v5[13] = v16;
 
@@ -683,7 +683,7 @@ LABEL_4:
   }
 
 LABEL_5:
-  v19 = [(PDDPAdminRequestRequestor *)self->_requestor copyWithZone:a3];
+  v19 = [(PDDPAdminRequestRequestor *)self->_requestor copyWithZone:zone];
   v20 = v5[12];
   v5[12] = v19;
 
@@ -693,7 +693,7 @@ LABEL_5:
     *(v5 + 116) |= 2u;
   }
 
-  v21 = [(NSString *)self->_bundleIdentifier copyWithZone:a3];
+  v21 = [(NSString *)self->_bundleIdentifier copyWithZone:zone];
   v22 = v5[5];
   v5[5] = v21;
 
@@ -716,7 +716,7 @@ LABEL_5:
           objc_enumerationMutation(v23);
         }
 
-        v28 = [*(*(&v32 + 1) + 8 * i) copyWithZone:{a3, v32}];
+        v28 = [*(*(&v32 + 1) + 8 * i) copyWithZone:{zone, v32}];
         [v5 addAdminRequestAccountIds:v28];
       }
 
@@ -726,23 +726,23 @@ LABEL_5:
     while (v25);
   }
 
-  v29 = [(NSString *)self->_adminNote copyWithZone:a3];
+  v29 = [(NSString *)self->_adminNote copyWithZone:zone];
   v30 = v5[1];
   v5[1] = v29;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_43;
   }
 
   adminRequestId = self->_adminRequestId;
-  if (adminRequestId | *(v4 + 3))
+  if (adminRequestId | *(equalCopy + 3))
   {
     if (![(NSString *)adminRequestId isEqual:?])
     {
@@ -751,7 +751,7 @@ LABEL_5:
   }
 
   orgId = self->_orgId;
-  if (orgId | *(v4 + 10))
+  if (orgId | *(equalCopy + 10))
   {
     if (![(NSString *)orgId isEqual:?])
     {
@@ -760,7 +760,7 @@ LABEL_5:
   }
 
   dateCreated = self->_dateCreated;
-  if (dateCreated | *(v4 + 7))
+  if (dateCreated | *(equalCopy + 7))
   {
     if (![(PDDPDate *)dateCreated isEqual:?])
     {
@@ -769,7 +769,7 @@ LABEL_5:
   }
 
   dateLastModified = self->_dateLastModified;
-  if (dateLastModified | *(v4 + 8))
+  if (dateLastModified | *(equalCopy + 8))
   {
     if (![(PDDPDate *)dateLastModified isEqual:?])
     {
@@ -778,7 +778,7 @@ LABEL_5:
   }
 
   dateCompleted = self->_dateCompleted;
-  if (dateCompleted | *(v4 + 6))
+  if (dateCompleted | *(equalCopy + 6))
   {
     if (![(PDDPDate *)dateCompleted isEqual:?])
     {
@@ -787,7 +787,7 @@ LABEL_5:
   }
 
   status = self->_status;
-  if (status | *(v4 + 13))
+  if (status | *(equalCopy + 13))
   {
     if (![(PDDPStatus *)status isEqual:?])
     {
@@ -796,48 +796,48 @@ LABEL_5:
   }
 
   has = self->_has;
-  v12 = *(v4 + 116);
+  v12 = *(equalCopy + 116);
   if ((has & 8) != 0)
   {
-    if ((*(v4 + 116) & 8) == 0 || self->_type != *(v4 + 28))
+    if ((*(equalCopy + 116) & 8) == 0 || self->_type != *(equalCopy + 28))
     {
       goto LABEL_43;
     }
   }
 
-  else if ((*(v4 + 116) & 8) != 0)
+  else if ((*(equalCopy + 116) & 8) != 0)
   {
     goto LABEL_43;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 116) & 4) == 0 || self->_requestStatus != *(v4 + 22))
+    if ((*(equalCopy + 116) & 4) == 0 || self->_requestStatus != *(equalCopy + 22))
     {
       goto LABEL_43;
     }
   }
 
-  else if ((*(v4 + 116) & 4) != 0)
+  else if ((*(equalCopy + 116) & 4) != 0)
   {
     goto LABEL_43;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 116) & 1) == 0 || self->_approvalStatus != *(v4 + 8))
+    if ((*(equalCopy + 116) & 1) == 0 || self->_approvalStatus != *(equalCopy + 8))
     {
       goto LABEL_43;
     }
   }
 
-  else if (*(v4 + 116))
+  else if (*(equalCopy + 116))
   {
     goto LABEL_43;
   }
 
   requestor = self->_requestor;
-  if (requestor | *(v4 + 12))
+  if (requestor | *(equalCopy + 12))
   {
     if (![(PDDPAdminRequestRequestor *)requestor isEqual:?])
     {
@@ -847,12 +847,12 @@ LABEL_43:
     }
 
     has = self->_has;
-    v12 = *(v4 + 116);
+    v12 = *(equalCopy + 116);
   }
 
   if ((has & 2) != 0)
   {
-    if ((v12 & 2) == 0 || self->_options != *(v4 + 18))
+    if ((v12 & 2) == 0 || self->_options != *(equalCopy + 18))
     {
       goto LABEL_43;
     }
@@ -864,13 +864,13 @@ LABEL_43:
   }
 
   bundleIdentifier = self->_bundleIdentifier;
-  if (bundleIdentifier | *(v4 + 5) && ![(NSString *)bundleIdentifier isEqual:?])
+  if (bundleIdentifier | *(equalCopy + 5) && ![(NSString *)bundleIdentifier isEqual:?])
   {
     goto LABEL_43;
   }
 
   adminRequestAccountIds = self->_adminRequestAccountIds;
-  if (adminRequestAccountIds | *(v4 + 2))
+  if (adminRequestAccountIds | *(equalCopy + 2))
   {
     if (![(NSMutableArray *)adminRequestAccountIds isEqual:?])
     {
@@ -879,7 +879,7 @@ LABEL_43:
   }
 
   adminNote = self->_adminNote;
-  if (adminNote | *(v4 + 1))
+  if (adminNote | *(equalCopy + 1))
   {
     v17 = [(NSString *)adminNote isEqual:?];
   }
@@ -954,21 +954,21 @@ LABEL_8:
   return v13 ^ [(NSString *)self->_adminNote hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 3))
+  fromCopy = from;
+  if (*(fromCopy + 3))
   {
     [(PDDPAdminRequestDetails *)self setAdminRequestId:?];
   }
 
-  if (*(v4 + 10))
+  if (*(fromCopy + 10))
   {
     [(PDDPAdminRequestDetails *)self setOrgId:?];
   }
 
   dateCreated = self->_dateCreated;
-  v6 = *(v4 + 7);
+  v6 = *(fromCopy + 7);
   if (dateCreated)
   {
     if (v6)
@@ -983,7 +983,7 @@ LABEL_8:
   }
 
   dateLastModified = self->_dateLastModified;
-  v8 = *(v4 + 8);
+  v8 = *(fromCopy + 8);
   if (dateLastModified)
   {
     if (v8)
@@ -998,7 +998,7 @@ LABEL_8:
   }
 
   dateCompleted = self->_dateCompleted;
-  v10 = *(v4 + 6);
+  v10 = *(fromCopy + 6);
   if (dateCompleted)
   {
     if (v10)
@@ -1013,7 +1013,7 @@ LABEL_8:
   }
 
   status = self->_status;
-  v12 = *(v4 + 13);
+  v12 = *(fromCopy + 13);
   if (status)
   {
     if (v12)
@@ -1027,12 +1027,12 @@ LABEL_8:
     [(PDDPAdminRequestDetails *)self setStatus:?];
   }
 
-  v13 = *(v4 + 116);
+  v13 = *(fromCopy + 116);
   if ((v13 & 8) != 0)
   {
-    self->_type = *(v4 + 28);
+    self->_type = *(fromCopy + 28);
     *&self->_has |= 8u;
-    v13 = *(v4 + 116);
+    v13 = *(fromCopy + 116);
     if ((v13 & 4) == 0)
     {
 LABEL_27:
@@ -1045,23 +1045,23 @@ LABEL_27:
     }
   }
 
-  else if ((*(v4 + 116) & 4) == 0)
+  else if ((*(fromCopy + 116) & 4) == 0)
   {
     goto LABEL_27;
   }
 
-  self->_requestStatus = *(v4 + 22);
+  self->_requestStatus = *(fromCopy + 22);
   *&self->_has |= 4u;
-  if (*(v4 + 116))
+  if (*(fromCopy + 116))
   {
 LABEL_28:
-    self->_approvalStatus = *(v4 + 8);
+    self->_approvalStatus = *(fromCopy + 8);
     *&self->_has |= 1u;
   }
 
 LABEL_29:
   requestor = self->_requestor;
-  v15 = *(v4 + 12);
+  v15 = *(fromCopy + 12);
   if (requestor)
   {
     if (v15)
@@ -1075,13 +1075,13 @@ LABEL_29:
     [(PDDPAdminRequestDetails *)self setRequestor:?];
   }
 
-  if ((*(v4 + 116) & 2) != 0)
+  if ((*(fromCopy + 116) & 2) != 0)
   {
-    self->_options = *(v4 + 18);
+    self->_options = *(fromCopy + 18);
     *&self->_has |= 2u;
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(PDDPAdminRequestDetails *)self setBundleIdentifier:?];
   }
@@ -1090,7 +1090,7 @@ LABEL_29:
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v16 = *(v4 + 2);
+  v16 = *(fromCopy + 2);
   v17 = [v16 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v17)
   {
@@ -1114,7 +1114,7 @@ LABEL_29:
     while (v18);
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(PDDPAdminRequestDetails *)self setAdminNote:?];
   }

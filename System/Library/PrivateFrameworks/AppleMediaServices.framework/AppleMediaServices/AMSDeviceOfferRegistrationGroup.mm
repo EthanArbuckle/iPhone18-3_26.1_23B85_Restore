@@ -1,35 +1,35 @@
 @interface AMSDeviceOfferRegistrationGroup
-- (AMSDeviceOfferRegistrationGroup)initWithDatabaseEntry:(id)a3;
-- (BOOL)_serialsMatchSerialsFromGroup:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToRegistrationGroup:(id)a3;
-- (BOOL)isModifiedVersionOfGroup:(id)a3;
+- (AMSDeviceOfferRegistrationGroup)initWithDatabaseEntry:(id)entry;
+- (BOOL)_serialsMatchSerialsFromGroup:(id)group;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToRegistrationGroup:(id)group;
+- (BOOL)isModifiedVersionOfGroup:(id)group;
 - (NSString)description;
-- (id)_initWithRegistrationItems:(id)a3 validationOptions:(unint64_t)a4;
+- (id)_initWithRegistrationItems:(id)items validationOptions:(unint64_t)options;
 - (id)serializeToDictionary;
 - (unint64_t)hash;
 @end
 
 @implementation AMSDeviceOfferRegistrationGroup
 
-- (AMSDeviceOfferRegistrationGroup)initWithDatabaseEntry:(id)a3
+- (AMSDeviceOfferRegistrationGroup)initWithDatabaseEntry:(id)entry
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"registrationItems"];
+  entryCopy = entry;
+  v5 = [entryCopy objectForKeyedSubscript:@"registrationItems"];
   v6 = [v5 ams_mapWithTransform:&__block_literal_global_42];
-  v7 = [v4 objectForKeyedSubscript:@"validationOptions"];
+  v7 = [entryCopy objectForKeyedSubscript:@"validationOptions"];
 
   if (v7)
   {
-    v8 = [v7 unsignedIntegerValue];
+    unsignedIntegerValue = [v7 unsignedIntegerValue];
   }
 
   else
   {
-    v8 = 0;
+    unsignedIntegerValue = 0;
   }
 
-  v9 = [(AMSDeviceOfferRegistrationGroup *)self _initWithRegistrationItems:v6 validationOptions:v8];
+  v9 = [(AMSDeviceOfferRegistrationGroup *)self _initWithRegistrationItems:v6 validationOptions:unsignedIntegerValue];
 
   return v9;
 }
@@ -42,17 +42,17 @@ AMSDeviceOfferRegistrationItem *__57__AMSDeviceOfferRegistrationGroup_initWithDa
   return v3;
 }
 
-- (id)_initWithRegistrationItems:(id)a3 validationOptions:(unint64_t)a4
+- (id)_initWithRegistrationItems:(id)items validationOptions:(unint64_t)options
 {
-  v7 = a3;
+  itemsCopy = items;
   v11.receiver = self;
   v11.super_class = AMSDeviceOfferRegistrationGroup;
   v8 = [(AMSDeviceOfferRegistrationGroup *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_registrationItems, a3);
-    v9->_validationOptions = a4;
+    objc_storeStrong(&v8->_registrationItems, items);
+    v9->_validationOptions = options;
   }
 
   return v9;
@@ -61,8 +61,8 @@ AMSDeviceOfferRegistrationItem *__57__AMSDeviceOfferRegistrationGroup_initWithDa
 - (NSString)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(AMSDeviceOfferRegistrationGroup *)self registrationItems];
-  v5 = [v3 stringWithFormat:@"{items:%@ validationOptions:%lu}", v4, -[AMSDeviceOfferRegistrationGroup validationOptions](self, "validationOptions")];
+  registrationItems = [(AMSDeviceOfferRegistrationGroup *)self registrationItems];
+  v5 = [v3 stringWithFormat:@"{items:%@ validationOptions:%lu}", registrationItems, -[AMSDeviceOfferRegistrationGroup validationOptions](self, "validationOptions")];
 
   return v5;
 }
@@ -70,8 +70,8 @@ AMSDeviceOfferRegistrationItem *__57__AMSDeviceOfferRegistrationGroup_initWithDa
 - (id)serializeToDictionary
 {
   v3 = objc_opt_new();
-  v4 = [(AMSDeviceOfferRegistrationGroup *)self registrationItems];
-  v5 = [v4 ams_mapWithTransform:&__block_literal_global_12_0];
+  registrationItems = [(AMSDeviceOfferRegistrationGroup *)self registrationItems];
+  v5 = [registrationItems ams_mapWithTransform:&__block_literal_global_12_0];
   [v3 setObject:v5 forKeyedSubscript:@"registrationItems"];
 
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[AMSDeviceOfferRegistrationGroup validationOptions](self, "validationOptions")}];
@@ -85,13 +85,13 @@ AMSDeviceOfferRegistrationItem *__57__AMSDeviceOfferRegistrationGroup_initWithDa
 - (unint64_t)hash
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = [(AMSDeviceOfferRegistrationGroup *)self validationOptions];
+  validationOptions = [(AMSDeviceOfferRegistrationGroup *)self validationOptions];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [(AMSDeviceOfferRegistrationGroup *)self registrationItems];
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  registrationItems = [(AMSDeviceOfferRegistrationGroup *)self registrationItems];
+  v5 = [registrationItems countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -103,26 +103,26 @@ AMSDeviceOfferRegistrationItem *__57__AMSDeviceOfferRegistrationGroup_initWithDa
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(registrationItems);
         }
 
-        v3 ^= [*(*(&v10 + 1) + 8 * v8++) hash];
+        validationOptions ^= [*(*(&v10 + 1) + 8 * v8++) hash];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [registrationItems countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
   }
 
-  return v3;
+  return validationOptions;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -130,24 +130,24 @@ AMSDeviceOfferRegistrationItem *__57__AMSDeviceOfferRegistrationGroup_initWithDa
   else
   {
     v5 = objc_opt_class();
-    v6 = v5 == objc_opt_class() && [(AMSDeviceOfferRegistrationGroup *)self isEqualToRegistrationGroup:v4];
+    v6 = v5 == objc_opt_class() && [(AMSDeviceOfferRegistrationGroup *)self isEqualToRegistrationGroup:equalCopy];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToRegistrationGroup:(id)a3
+- (BOOL)isEqualToRegistrationGroup:(id)group
 {
-  v4 = a3;
-  v5 = [(AMSDeviceOfferRegistrationGroup *)self validationOptions];
-  if (v5 == [v4 validationOptions])
+  groupCopy = group;
+  validationOptions = [(AMSDeviceOfferRegistrationGroup *)self validationOptions];
+  if (validationOptions == [groupCopy validationOptions])
   {
     v6 = MEMORY[0x1E695DFD8];
-    v7 = [(AMSDeviceOfferRegistrationGroup *)self registrationItems];
-    v8 = [v6 setWithArray:v7];
+    registrationItems = [(AMSDeviceOfferRegistrationGroup *)self registrationItems];
+    v8 = [v6 setWithArray:registrationItems];
     v9 = MEMORY[0x1E695DFD8];
-    v10 = [v4 registrationItems];
-    v11 = [v9 setWithArray:v10];
+    registrationItems2 = [groupCopy registrationItems];
+    v11 = [v9 setWithArray:registrationItems2];
     v12 = [v8 isEqualToSet:v11];
   }
 
@@ -159,12 +159,12 @@ AMSDeviceOfferRegistrationItem *__57__AMSDeviceOfferRegistrationGroup_initWithDa
   return v12;
 }
 
-- (BOOL)isModifiedVersionOfGroup:(id)a3
+- (BOOL)isModifiedVersionOfGroup:(id)group
 {
-  v4 = a3;
-  if ([(AMSDeviceOfferRegistrationGroup *)self _serialsMatchSerialsFromGroup:v4])
+  groupCopy = group;
+  if ([(AMSDeviceOfferRegistrationGroup *)self _serialsMatchSerialsFromGroup:groupCopy])
   {
-    v5 = ![(AMSDeviceOfferRegistrationGroup *)self isEqual:v4];
+    v5 = ![(AMSDeviceOfferRegistrationGroup *)self isEqual:groupCopy];
   }
 
   else
@@ -175,18 +175,18 @@ AMSDeviceOfferRegistrationItem *__57__AMSDeviceOfferRegistrationGroup_initWithDa
   return v5;
 }
 
-- (BOOL)_serialsMatchSerialsFromGroup:(id)a3
+- (BOOL)_serialsMatchSerialsFromGroup:(id)group
 {
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
-  v6 = [(AMSDeviceOfferRegistrationGroup *)self registrationItems];
-  v7 = [v6 ams_mapWithTransform:&__block_literal_global_17];
+  groupCopy = group;
+  registrationItems = [(AMSDeviceOfferRegistrationGroup *)self registrationItems];
+  v7 = [registrationItems ams_mapWithTransform:&__block_literal_global_17];
   v8 = [v4 setWithArray:v7];
 
   v9 = MEMORY[0x1E695DFD8];
-  v10 = [v5 registrationItems];
+  registrationItems2 = [groupCopy registrationItems];
 
-  v11 = [v10 ams_mapWithTransform:&__block_literal_global_19];
+  v11 = [registrationItems2 ams_mapWithTransform:&__block_literal_global_19];
   v12 = [v9 setWithArray:v11];
 
   LOBYTE(v11) = [v8 isEqualToSet:v12];

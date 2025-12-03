@@ -3,20 +3,20 @@
 - (NSError)availabilityError;
 - (NSString)localizedAttemptRecoveryFromErrorMessage;
 - (NSString)name;
-- (WFAccessResource)initWithDefinition:(id)a3 enableDistributedNotifications:(BOOL)a4;
+- (WFAccessResource)initWithDefinition:(id)definition enableDistributedNotifications:(BOOL)notifications;
 - (WFImage)icon;
 - (WFWorkflow)workflow;
-- (id)localizedErrorReasonForStatus:(unint64_t)a3;
-- (id)localizedErrorRecoveryOptionsForStatus:(unint64_t)a3;
-- (id)localizedImportErrorReasonForStatus:(unint64_t)a3;
+- (id)localizedErrorReasonForStatus:(unint64_t)status;
+- (id)localizedErrorRecoveryOptionsForStatus:(unint64_t)status;
+- (id)localizedImportErrorReasonForStatus:(unint64_t)status;
 - (id)localizedProtectedResourceDescription;
-- (void)attemptRecoveryFromError:(id)a3 optionIndex:(unint64_t)a4 userInterface:(id)a5 completionHandler:(id)a6;
-- (void)attemptRecoveryFromErrorWithOptionIndex:(unint64_t)a3 userInterface:(id)a4 completionHandler:(id)a5;
+- (void)attemptRecoveryFromError:(id)error optionIndex:(unint64_t)index userInterface:(id)interface completionHandler:(id)handler;
+- (void)attemptRecoveryFromErrorWithOptionIndex:(unint64_t)index userInterface:(id)interface completionHandler:(id)handler;
 - (void)dealloc;
-- (void)makeAvailableWithRemoteInterface:(id)a3 completionHandler:(id)a4;
-- (void)makeAvailableWithUserInterface:(id)a3 completionHandler:(id)a4;
+- (void)makeAvailableWithRemoteInterface:(id)interface completionHandler:(id)handler;
+- (void)makeAvailableWithUserInterface:(id)interface completionHandler:(id)handler;
 - (void)refreshAvailability;
-- (void)setWorkflow:(id)a3;
+- (void)setWorkflow:(id)workflow;
 @end
 
 @implementation WFAccessResource
@@ -40,25 +40,25 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = WFLocalizedString(@"Please open Settings > Privacy & Security and grant Shortcuts access to %@.");
-  v5 = [(WFAccessResource *)self localizedProtectedResourceDescription];
-  v6 = [v3 localizedStringWithFormat:v4, v5];
+  localizedProtectedResourceDescription = [(WFAccessResource *)self localizedProtectedResourceDescription];
+  v6 = [v3 localizedStringWithFormat:v4, localizedProtectedResourceDescription];
 
   return v6;
 }
 
-- (void)attemptRecoveryFromError:(id)a3 optionIndex:(unint64_t)a4 userInterface:(id)a5 completionHandler:(id)a6
+- (void)attemptRecoveryFromError:(id)error optionIndex:(unint64_t)index userInterface:(id)interface completionHandler:(id)handler
 {
-  v14 = a3;
-  v10 = a5;
-  v11 = a6;
-  v12 = [v14 domain];
-  if ([v12 isEqualToString:@"ResourceErrorDomain"])
+  errorCopy = error;
+  interfaceCopy = interface;
+  handlerCopy = handler;
+  domain = [errorCopy domain];
+  if ([domain isEqualToString:@"ResourceErrorDomain"])
   {
-    v13 = [v14 code];
+    code = [errorCopy code];
 
-    if (!v13)
+    if (!code)
     {
-      [(WFAccessResource *)self attemptRecoveryFromErrorWithOptionIndex:a4 userInterface:v10 completionHandler:v11];
+      [(WFAccessResource *)self attemptRecoveryFromErrorWithOptionIndex:index userInterface:interfaceCopy completionHandler:handlerCopy];
       goto LABEL_7;
     }
   }
@@ -67,9 +67,9 @@
   {
   }
 
-  if (v11)
+  if (handlerCopy)
   {
-    (*(v11 + 2))(v11, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 
 LABEL_7:
@@ -78,15 +78,15 @@ LABEL_7:
 - (NSError)availabilityError
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v3 = [(WFAccessResource *)self status];
-  if (v3 == 4)
+  status = [(WFAccessResource *)self status];
+  if (status == 4)
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = v3;
+    v5 = status;
     v13 = *MEMORY[0x1E6997138];
     v14[0] = self;
     v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:&v13 count:1];
@@ -118,12 +118,12 @@ LABEL_7:
   return v4;
 }
 
-- (id)localizedErrorRecoveryOptionsForStatus:(unint64_t)a3
+- (id)localizedErrorRecoveryOptionsForStatus:(unint64_t)status
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  if ((a3 & 0xFFFFFFFFFFFFFFFDLL) != 0)
+  if ((status & 0xFFFFFFFFFFFFFFFDLL) != 0)
   {
-    if (a3 == 3)
+    if (status == 3)
     {
       v3 = @"Update Privacy Settings";
     }
@@ -148,17 +148,17 @@ LABEL_7:
   return v5;
 }
 
-- (id)localizedImportErrorReasonForStatus:(unint64_t)a3
+- (id)localizedImportErrorReasonForStatus:(unint64_t)status
 {
-  v4 = [(WFAccessResource *)self localizedProtectedResourceDescription];
+  localizedProtectedResourceDescription = [(WFAccessResource *)self localizedProtectedResourceDescription];
   v5 = MEMORY[0x1E696AEC0];
   v6 = @"In order to answer this question, Shortcuts needs access to %@.";
-  if (a3 == 2)
+  if (status == 2)
   {
     v6 = @"Device restrictions prevent this shortcut from accessing %@.";
   }
 
-  if (a3)
+  if (status)
   {
     v7 = v6;
   }
@@ -169,22 +169,22 @@ LABEL_7:
   }
 
   v8 = WFLocalizedString(v7);
-  v9 = [v5 localizedStringWithFormat:v8, v4];
+  v9 = [v5 localizedStringWithFormat:v8, localizedProtectedResourceDescription];
 
   return v9;
 }
 
-- (id)localizedErrorReasonForStatus:(unint64_t)a3
+- (id)localizedErrorReasonForStatus:(unint64_t)status
 {
-  v4 = [(WFAccessResource *)self localizedProtectedResourceDescription];
+  localizedProtectedResourceDescription = [(WFAccessResource *)self localizedProtectedResourceDescription];
   v5 = MEMORY[0x1E696AEC0];
   v6 = @"Shortcuts does not have access to %@.";
-  if (a3 == 2)
+  if (status == 2)
   {
     v6 = @"Device restrictions prevent Shortcuts from accessing %@.";
   }
 
-  if (a3)
+  if (status)
   {
     v7 = v6;
   }
@@ -195,44 +195,44 @@ LABEL_7:
   }
 
   v8 = WFLocalizedString(v7);
-  v9 = [v5 localizedStringWithFormat:v8, v4];
+  v9 = [v5 localizedStringWithFormat:v8, localizedProtectedResourceDescription];
 
   return v9;
 }
 
-- (void)attemptRecoveryFromErrorWithOptionIndex:(unint64_t)a3 userInterface:(id)a4 completionHandler:(id)a5
+- (void)attemptRecoveryFromErrorWithOptionIndex:(unint64_t)index userInterface:(id)interface completionHandler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [(WFAccessResource *)self status];
-  if (v9 == 1)
+  interfaceCopy = interface;
+  handlerCopy = handler;
+  status = [(WFAccessResource *)self status];
+  if (status == 1)
   {
-    [(WFAccessResource *)self makeAvailableWithUserInterface:v7 completionHandler:v8];
+    [(WFAccessResource *)self makeAvailableWithUserInterface:interfaceCopy completionHandler:handlerCopy];
   }
 
-  else if (v9 == 3)
+  else if (status == 3)
   {
-    v8[2](v8, 1, 0);
+    handlerCopy[2](handlerCopy, 1, 0);
     v10 = MEMORY[0x1E695DFF8];
     v11 = MEMORY[0x1E696AEC0];
-    v12 = [MEMORY[0x1E696AAE8] mainBundle];
-    v13 = [v12 bundleIdentifier];
-    v14 = [v11 stringWithFormat:@"app-prefs:%@", v13];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
+    v14 = [v11 stringWithFormat:@"app-prefs:%@", bundleIdentifier];
     v15 = [v10 URLWithString:v14];
 
-    v16 = [MEMORY[0x1E6996CA8] sharedContext];
+    mEMORY[0x1E6996CA8] = [MEMORY[0x1E6996CA8] sharedContext];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __92__WFAccessResource_attemptRecoveryFromErrorWithOptionIndex_userInterface_completionHandler___block_invoke;
     v17[3] = &unk_1E837C698;
     v17[4] = self;
-    v18 = v7;
-    [v16 openURL:v15 userInterface:v18 completionHandler:v17];
+    v18 = interfaceCopy;
+    [mEMORY[0x1E6996CA8] openURL:v15 userInterface:v18 completionHandler:v17];
   }
 
   else
   {
-    v8[2](v8, 0, 0);
+    handlerCopy[2](handlerCopy, 0, 0);
   }
 }
 
@@ -254,22 +254,22 @@ void __92__WFAccessResource_attemptRecoveryFromErrorWithOptionIndex_userInterfac
   }
 }
 
-- (void)makeAvailableWithRemoteInterface:(id)a3 completionHandler:(id)a4
+- (void)makeAvailableWithRemoteInterface:(id)interface completionHandler:(id)handler
 {
   v5 = MEMORY[0x1E696ABC0];
-  v6 = a4;
-  v7 = [v5 wfUnsupportedUserInterfaceError];
-  (*(a4 + 2))(v6, 0, v7);
+  handlerCopy = handler;
+  wfUnsupportedUserInterfaceError = [v5 wfUnsupportedUserInterfaceError];
+  (*(handler + 2))(handlerCopy, 0, wfUnsupportedUserInterfaceError);
 }
 
-- (void)makeAvailableWithUserInterface:(id)a3 completionHandler:(id)a4
+- (void)makeAvailableWithUserInterface:(id)interface completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [objc_opt_class() userInterfaceXPCInterface];
-  v9 = [objc_opt_class() userInterfaceClasses];
-  v10 = v9;
-  if (v8 && [v9 count] && (objc_opt_respondsToSelector() & 1) != 0)
+  interfaceCopy = interface;
+  handlerCopy = handler;
+  userInterfaceXPCInterface = [objc_opt_class() userInterfaceXPCInterface];
+  userInterfaceClasses = [objc_opt_class() userInterfaceClasses];
+  v10 = userInterfaceClasses;
+  if (userInterfaceXPCInterface && [userInterfaceClasses count] && (objc_opt_respondsToSelector() & 1) != 0)
   {
     v11 = objc_opt_class();
     v12 = NSStringFromClass(v11);
@@ -277,15 +277,15 @@ void __92__WFAccessResource_attemptRecoveryFromErrorWithOptionIndex_userInterfac
     v13[1] = 3221225472;
     v13[2] = __69__WFAccessResource_makeAvailableWithUserInterface_completionHandler___block_invoke;
     v13[3] = &unk_1E837C670;
-    v15 = v7;
+    v15 = handlerCopy;
     v13[4] = self;
-    v14 = v6;
+    v14 = interfaceCopy;
     [v14 requestActionInterfacePresentationForActionClassName:v12 classNamesByType:v10 completionHandler:v13];
   }
 
   else
   {
-    (*(v7 + 2))(v7, 1, 0);
+    (*(handlerCopy + 2))(handlerCopy, 1, 0);
   }
 }
 
@@ -338,8 +338,8 @@ void __69__WFAccessResource_makeAvailableWithUserInterface_completionHandler___b
 
   else
   {
-    v3 = [(WFAccessResource *)self availabilityError];
-    [(WFResource *)self updateAvailability:0 withError:v3];
+    availabilityError = [(WFAccessResource *)self availabilityError];
+    [(WFResource *)self updateAvailability:0 withError:availabilityError];
   }
 }
 
@@ -377,86 +377,86 @@ void __56__WFAccessResource_refreshAvailabilityWithNotification___block_invoke_3
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setWorkflow:(id)a3
+- (void)setWorkflow:(id)workflow
 {
-  objc_storeWeak(&self->_workflow, a3);
+  objc_storeWeak(&self->_workflow, workflow);
 
   [(WFResource *)self invalidateAvailability];
 }
 
 - (id)localizedProtectedResourceDescription
 {
-  v3 = [MEMORY[0x1E69E0BE0] defaultContext];
-  v4 = [(WFAccessResource *)self localizedProtectedResourceDescriptionWithContext:v3];
+  defaultContext = [MEMORY[0x1E69E0BE0] defaultContext];
+  v4 = [(WFAccessResource *)self localizedProtectedResourceDescriptionWithContext:defaultContext];
 
   if (v4)
   {
-    v5 = v4;
+    name = v4;
   }
 
   else
   {
-    v5 = [(WFAccessResource *)self name];
+    name = [(WFAccessResource *)self name];
   }
 
-  v6 = v5;
+  v6 = name;
 
   return v6;
 }
 
 - (WFImage)icon
 {
-  v3 = [(WFAccessResource *)self associatedAppIdentifier];
+  associatedAppIdentifier = [(WFAccessResource *)self associatedAppIdentifier];
 
-  if (v3)
+  if (associatedAppIdentifier)
   {
     v4 = +[WFInterchangeAppRegistry sharedRegistry];
-    v5 = [(WFAccessResource *)self associatedAppIdentifier];
-    v6 = [v4 appWithIdentifier:v5];
-    v7 = [v6 icon];
+    associatedAppIdentifier2 = [(WFAccessResource *)self associatedAppIdentifier];
+    v6 = [v4 appWithIdentifier:associatedAppIdentifier2];
+    icon = [v6 icon];
   }
 
   else
   {
-    v7 = 0;
+    icon = 0;
   }
 
-  return v7;
+  return icon;
 }
 
 - (NSString)name
 {
-  v3 = [(WFAccessResource *)self associatedAppIdentifier];
+  associatedAppIdentifier = [(WFAccessResource *)self associatedAppIdentifier];
 
-  if (v3)
+  if (associatedAppIdentifier)
   {
     v4 = +[WFInterchangeAppRegistry sharedRegistry];
-    v5 = [(WFAccessResource *)self associatedAppIdentifier];
-    v6 = [v4 appWithIdentifier:v5];
-    v7 = [v6 localizedName];
+    associatedAppIdentifier2 = [(WFAccessResource *)self associatedAppIdentifier];
+    v6 = [v4 appWithIdentifier:associatedAppIdentifier2];
+    localizedName = [v6 localizedName];
   }
 
   else
   {
-    v7 = 0;
+    localizedName = 0;
   }
 
-  return v7;
+  return localizedName;
 }
 
-- (WFAccessResource)initWithDefinition:(id)a3 enableDistributedNotifications:(BOOL)a4
+- (WFAccessResource)initWithDefinition:(id)definition enableDistributedNotifications:(BOOL)notifications
 {
-  v4 = a4;
+  notificationsCopy = notifications;
   v23[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  definitionCopy = definition;
   v22.receiver = self;
   v22.super_class = WFAccessResource;
-  v7 = [(WFResource *)&v22 initWithDefinition:v6];
+  v7 = [(WFResource *)&v22 initWithDefinition:definitionCopy];
   v8 = v7;
   if (v7)
   {
     v7->_token = -1;
-    if (v4)
+    if (notificationsCopy)
     {
       objc_initWeak(&location, v7);
       v23[0] = @"WFAccessResourceAvailabilityChangedNotification";
@@ -468,14 +468,14 @@ void __56__WFAccessResource_refreshAvailabilityWithNotification___block_invoke_3
       v12 = [v11 componentsJoinedByString:@"."];
 
       v13 = v12;
-      v14 = [v12 UTF8String];
+      uTF8String = [v12 UTF8String];
       v15 = MEMORY[0x1E69E96A0];
       handler[0] = MEMORY[0x1E69E9820];
       handler[1] = 3221225472;
       handler[2] = __70__WFAccessResource_initWithDefinition_enableDistributedNotifications___block_invoke;
       handler[3] = &unk_1E837C5F8;
       objc_copyWeak(&v20, &location);
-      notify_register_dispatch(v14, &v8->_token, MEMORY[0x1E69E96A0], handler);
+      notify_register_dispatch(uTF8String, &v8->_token, MEMORY[0x1E69E96A0], handler);
 
       objc_destroyWeak(&v20);
       objc_destroyWeak(&location);
@@ -496,10 +496,10 @@ void __70__WFAccessResource_initWithDefinition_enableDistributedNotifications___
 
 + (id)userInterfaceXPCInterface
 {
-  v2 = [a1 userInterfaceProtocol];
-  if (v2)
+  userInterfaceProtocol = [self userInterfaceProtocol];
+  if (userInterfaceProtocol)
   {
-    v3 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:v2];
+    v3 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:userInterfaceProtocol];
   }
 
   else

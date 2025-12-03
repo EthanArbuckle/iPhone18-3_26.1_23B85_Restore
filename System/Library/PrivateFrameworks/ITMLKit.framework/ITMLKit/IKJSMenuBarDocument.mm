@@ -1,32 +1,32 @@
 @interface IKJSMenuBarDocument
 - (IKJSMenuBarDocumentAppBridge)appBridge;
-- (id)_entityUniqueIdentifierForObject:(id)a3;
-- (id)getDocument:(id)a3;
+- (id)_entityUniqueIdentifierForObject:(id)object;
+- (id)getDocument:(id)document;
 - (id)getSelectedItem;
-- (void)setDocument:(id)a3 :(id)a4 :(id)a5;
-- (void)setSelectedItem:(id)a3 :(id)a4;
+- (void)setDocument:(id)document :(id)a4 :(id)a5;
+- (void)setSelectedItem:(id)item :(id)a4;
 @end
 
 @implementation IKJSMenuBarDocument
 
-- (id)getDocument:(id)a3
+- (id)getDocument:(id)document
 {
-  v4 = [(IKJSMenuBarDocument *)self _entityUniqueIdentifierForObject:a3];
+  v4 = [(IKJSMenuBarDocument *)self _entityUniqueIdentifierForObject:document];
   WeakRetained = objc_loadWeakRetained(&self->_appBridge);
   v6 = [WeakRetained jsMenuBarDocument:self documentForEntityUniqueIdentifier:v4];
 
-  v7 = [v6 jsDocument];
+  jsDocument = [v6 jsDocument];
 
-  return v7;
+  return jsDocument;
 }
 
-- (void)setDocument:(id)a3 :(id)a4 :(id)a5
+- (void)setDocument:(id)document :(id)a4 :(id)a5
 {
   v14 = a4;
   v8 = a5;
-  v9 = a3;
-  v10 = [(IKJSObject *)self appContext];
-  v11 = [[IKAppDocument alloc] initWithAppContext:v10 document:v9 owner:self];
+  documentCopy = document;
+  appContext = [(IKJSObject *)self appContext];
+  v11 = [[IKAppDocument alloc] initWithAppContext:appContext document:documentCopy owner:self];
 
   if (v11)
   {
@@ -44,21 +44,21 @@
   return v4;
 }
 
-- (void)setSelectedItem:(id)a3 :(id)a4
+- (void)setSelectedItem:(id)item :(id)a4
 {
   v6 = a4;
-  v8 = [(IKJSMenuBarDocument *)self _entityUniqueIdentifierForObject:a3];
+  v8 = [(IKJSMenuBarDocument *)self _entityUniqueIdentifierForObject:item];
   WeakRetained = objc_loadWeakRetained(&self->_appBridge);
   [WeakRetained jsMenuBarDocument:self setSelectedEntityUniqueIdentifier:v8 withOptions:v6];
 }
 
-- (id)_entityUniqueIdentifierForObject:(id)a3
+- (id)_entityUniqueIdentifierForObject:(id)object
 {
-  v3 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 getAttribute:@"itmlID"];
+    entityUniqueIdentifier = [objectCopy getAttribute:@"itmlID"];
   }
 
   else
@@ -66,17 +66,17 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [v3 entityValueProvider];
-      v4 = [v5 entityUniqueIdentifier];
+      entityValueProvider = [objectCopy entityValueProvider];
+      entityUniqueIdentifier = [entityValueProvider entityUniqueIdentifier];
     }
 
     else
     {
-      v4 = 0;
+      entityUniqueIdentifier = 0;
     }
   }
 
-  return v4;
+  return entityUniqueIdentifier;
 }
 
 - (IKJSMenuBarDocumentAppBridge)appBridge

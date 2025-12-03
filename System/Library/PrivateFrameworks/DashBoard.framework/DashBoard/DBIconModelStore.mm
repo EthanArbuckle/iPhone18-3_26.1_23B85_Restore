@@ -1,27 +1,27 @@
 @interface DBIconModelStore
-- (BOOL)saveCurrentIconState:(id)a3 error:(id *)a4;
-- (BOOL)saveDesiredIconState:(id)a3 error:(id *)a4;
-- (DBIconModelStore)initWithVehicleId:(id)a3;
-- (id)_iconListsByFlatteningPages:(id)a3;
-- (id)loadCurrentIconState:(id *)a3;
+- (BOOL)saveCurrentIconState:(id)state error:(id *)error;
+- (BOOL)saveDesiredIconState:(id)state error:(id *)error;
+- (DBIconModelStore)initWithVehicleId:(id)id;
+- (id)_iconListsByFlatteningPages:(id)pages;
+- (id)loadCurrentIconState:(id *)state;
 @end
 
 @implementation DBIconModelStore
 
-- (DBIconModelStore)initWithVehicleId:(id)a3
+- (DBIconModelStore)initWithVehicleId:(id)id
 {
   v4 = MEMORY[0x277CCAA00];
-  v5 = a3;
-  v6 = [v4 defaultManager];
-  v7 = [v6 URLsForDirectory:5 inDomains:1];
-  v8 = [v7 firstObject];
+  idCopy = id;
+  defaultManager = [v4 defaultManager];
+  v7 = [defaultManager URLsForDirectory:5 inDomains:1];
+  firstObject = [v7 firstObject];
 
-  v9 = [v8 URLByAppendingPathComponent:@"SpringBoard" isDirectory:1];
-  v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-CarDisplayIconState.plist", v5];
-  v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-CarDisplayDesiredIconState.plist", v5];
+  v9 = [firstObject URLByAppendingPathComponent:@"SpringBoard" isDirectory:1];
+  idCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-CarDisplayIconState.plist", idCopy];
+  idCopy2 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-CarDisplayDesiredIconState.plist", idCopy];
 
-  v12 = [v9 URLByAppendingPathComponent:v10];
-  v13 = [v9 URLByAppendingPathComponent:v11];
+  v12 = [v9 URLByAppendingPathComponent:idCopy];
+  v13 = [v9 URLByAppendingPathComponent:idCopy2];
   v16.receiver = self;
   v16.super_class = DBIconModelStore;
   v14 = [(SBIconModelPropertyListFileStore *)&v16 initWithIconStateURL:v12 desiredIconStateURL:v13];
@@ -29,11 +29,11 @@
   return v14;
 }
 
-- (id)loadCurrentIconState:(id *)a3
+- (id)loadCurrentIconState:(id *)state
 {
   v11.receiver = self;
   v11.super_class = DBIconModelStore;
-  v4 = [(SBIconModelPropertyListFileStore *)&v11 loadCurrentIconState:a3];
+  v4 = [(SBIconModelPropertyListFileStore *)&v11 loadCurrentIconState:state];
   if (v4)
   {
     v5 = v4;
@@ -53,61 +53,61 @@
   return v9;
 }
 
-- (BOOL)saveCurrentIconState:(id)a3 error:(id *)a4
+- (BOOL)saveCurrentIconState:(id)state error:(id *)error
 {
   v6 = MEMORY[0x277CBEB38];
-  v7 = a3;
-  v8 = [v6 dictionaryWithDictionary:v7];
-  v9 = [v7 objectForKeyedSubscript:@"iconLists"];
+  stateCopy = state;
+  v8 = [v6 dictionaryWithDictionary:stateCopy];
+  v9 = [stateCopy objectForKeyedSubscript:@"iconLists"];
 
   v10 = [(DBIconModelStore *)self _iconListsByFlatteningPages:v9];
   [v8 setObject:v10 forKeyedSubscript:@"iconLists"];
 
   v12.receiver = self;
   v12.super_class = DBIconModelStore;
-  LOBYTE(a4) = [(SBIconModelPropertyListFileStore *)&v12 saveCurrentIconState:v8 error:a4];
+  LOBYTE(error) = [(SBIconModelPropertyListFileStore *)&v12 saveCurrentIconState:v8 error:error];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)saveDesiredIconState:(id)a3 error:(id *)a4
+- (BOOL)saveDesiredIconState:(id)state error:(id *)error
 {
   v6 = MEMORY[0x277CBEB38];
-  v7 = a3;
-  v8 = [v6 dictionaryWithDictionary:v7];
-  v9 = [v7 objectForKeyedSubscript:@"iconLists"];
+  stateCopy = state;
+  v8 = [v6 dictionaryWithDictionary:stateCopy];
+  v9 = [stateCopy objectForKeyedSubscript:@"iconLists"];
 
   v10 = [(DBIconModelStore *)self _iconListsByFlatteningPages:v9];
   [v8 setObject:v10 forKeyedSubscript:@"iconLists"];
 
   v12.receiver = self;
   v12.super_class = DBIconModelStore;
-  LOBYTE(a4) = [(SBIconModelPropertyListFileStore *)&v12 saveDesiredIconState:v8 error:a4];
+  LOBYTE(error) = [(SBIconModelPropertyListFileStore *)&v12 saveDesiredIconState:v8 error:error];
 
-  return a4;
+  return error;
 }
 
-- (id)_iconListsByFlatteningPages:(id)a3
+- (id)_iconListsByFlatteningPages:(id)pages
 {
   v34 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 lastObject];
+  pagesCopy = pages;
+  lastObject = [pagesCopy lastObject];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v6 = v3;
+    v6 = pagesCopy;
   }
 
   else
   {
-    v7 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v8 = v3;
+    v8 = pagesCopy;
     v9 = [v8 countByEnumeratingWithState:&v25 objects:v33 count:16];
     if (v9)
     {
@@ -142,7 +142,7 @@
                   objc_enumerationMutation(v14);
                 }
 
-                [v7 addObject:*(*(&v21 + 1) + 8 * j)];
+                [array addObject:*(*(&v21 + 1) + 8 * j)];
               }
 
               v16 = [v14 countByEnumeratingWithState:&v21 objects:v32 count:16];
@@ -162,11 +162,11 @@
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v31 = v7;
+      v31 = array;
       _os_log_impl(&dword_248146000, v19, OS_LOG_TYPE_DEFAULT, "Flattened pages to %@", buf, 0xCu);
     }
 
-    v29 = v7;
+    v29 = array;
     v6 = [MEMORY[0x277CBEA60] arrayWithObjects:&v29 count:1];
   }
 

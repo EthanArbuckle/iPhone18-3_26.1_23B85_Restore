@@ -1,12 +1,12 @@
 @interface GAXSBSystemNotesInteractionManagerOverride
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 @end
 
 @implementation GAXSBSystemNotesInteractionManagerOverride
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
+  beginCopy = begin;
   v5 = +[GAXSpringboard sharedInstance];
   if (([v5 isActive] & 1) != 0 || objc_msgSend(v5, "isInWorkspace"))
   {
@@ -24,7 +24,7 @@
   {
     v9.receiver = self;
     v9.super_class = GAXSBSystemNotesInteractionManagerOverride;
-    v7 = [(GAXSBSystemNotesInteractionManagerOverride *)&v9 gestureRecognizerShouldBegin:v4];
+    v7 = [(GAXSBSystemNotesInteractionManagerOverride *)&v9 gestureRecognizerShouldBegin:beginCopy];
   }
 
   return v7;

@@ -1,15 +1,15 @@
 @interface SCDAFFeedbackService
 + (id)sharedService;
-- (SCDAFFeedbackService)initWithServiceImpl:(id)a3 globals:(id)a4;
+- (SCDAFFeedbackService)initWithServiceImpl:(id)impl globals:(id)globals;
 - (SCDAFFeedbackServiceDelegate)delegate;
 - (id)_init;
-- (int64_t)_actionFromSCDAFFeedbackAction:(int64_t)a3;
-- (int64_t)_scdaFeedbackActionFrom:(int64_t)a3;
+- (int64_t)_actionFromSCDAFFeedbackAction:(int64_t)action;
+- (int64_t)_scdaFeedbackActionFrom:(int64_t)from;
 - (void)handleAssistantDismissed;
-- (void)handleNotificationAction:(int64_t)a3;
-- (void)handleNotificationSCDAFAction:(int64_t)a3;
-- (void)handleReceivedArbitrationParticipation:(id)a3;
-- (void)setLocalDeviceAssistantIdentifier:(id)a3;
+- (void)handleNotificationAction:(int64_t)action;
+- (void)handleNotificationSCDAFAction:(int64_t)action;
+- (void)handleReceivedArbitrationParticipation:(id)participation;
+- (void)setLocalDeviceAssistantIdentifier:(id)identifier;
 @end
 
 @implementation SCDAFFeedbackService
@@ -21,83 +21,83 @@
   return WeakRetained;
 }
 
-- (int64_t)_actionFromSCDAFFeedbackAction:(int64_t)a3
+- (int64_t)_actionFromSCDAFFeedbackAction:(int64_t)action
 {
-  if (a3 == 1)
+  if (action == 1)
   {
     return 2;
   }
 
   else
   {
-    return a3 == 2;
+    return action == 2;
   }
 }
 
-- (int64_t)_scdaFeedbackActionFrom:(int64_t)a3
+- (int64_t)_scdaFeedbackActionFrom:(int64_t)from
 {
-  if (a3 == 2)
+  if (from == 2)
   {
     return 1;
   }
 
   else
   {
-    return 2 * (a3 == 1);
+    return 2 * (from == 1);
   }
 }
 
-- (void)handleNotificationAction:(int64_t)a3
+- (void)handleNotificationAction:(int64_t)action
 {
   v5 = +[_TtC34SiriCrossDeviceArbitrationFeedback11GlobalsImpl shared];
-  v6 = [v5 isInternalInstall];
+  isInternalInstall = [v5 isInternalInstall];
 
-  if (v6 && [(SCDAFFeedbackService *)self isUserFeedbackFeatureEnabled])
+  if (isInternalInstall && [(SCDAFFeedbackService *)self isUserFeedbackFeatureEnabled])
   {
-    v7 = [(SCDAFFeedbackService *)self _scdaFeedbackActionFrom:a3];
-    v8 = [(SCDAFFeedbackService *)self delegate];
-    [v8 handleUserFeedbackAction:v7];
+    v7 = [(SCDAFFeedbackService *)self _scdaFeedbackActionFrom:action];
+    delegate = [(SCDAFFeedbackService *)self delegate];
+    [delegate handleUserFeedbackAction:v7];
   }
 }
 
-- (void)handleNotificationSCDAFAction:(int64_t)a3
+- (void)handleNotificationSCDAFAction:(int64_t)action
 {
   if ([(SCDAFFeedbackService *)self isUserFeedbackFeatureEnabled])
   {
-    v5 = [(SCDAFFeedbackService *)self _actionFromSCDAFFeedbackAction:a3];
+    v5 = [(SCDAFFeedbackService *)self _actionFromSCDAFFeedbackAction:action];
 
     [(SCDAFFeedbackService *)self handleNotificationAction:v5];
   }
 }
 
-- (SCDAFFeedbackService)initWithServiceImpl:(id)a3 globals:(id)a4
+- (SCDAFFeedbackService)initWithServiceImpl:(id)impl globals:(id)globals
 {
-  v7 = a3;
-  v8 = a4;
+  implCopy = impl;
+  globalsCopy = globals;
   v12.receiver = self;
   v12.super_class = SCDAFFeedbackService;
   v9 = [(SCDAFFeedbackService *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_feedbackService, a3);
+    objc_storeStrong(&v9->_feedbackService, impl);
     [(FeedbackServiceImpl *)v10->_feedbackService setDelegate:v10];
-    if ([v8 conformsToProtocol:&unk_2878426E8])
+    if ([globalsCopy conformsToProtocol:&unk_2878426E8])
     {
-      objc_storeStrong(&v10->_globals, a4);
+      objc_storeStrong(&v10->_globals, globals);
     }
   }
 
   return v10;
 }
 
-- (void)setLocalDeviceAssistantIdentifier:(id)a3
+- (void)setLocalDeviceAssistantIdentifier:(id)identifier
 {
-  v5 = a3;
-  objc_storeStrong(&self->_localDeviceAssistantIdentifier, a3);
+  identifierCopy = identifier;
+  objc_storeStrong(&self->_localDeviceAssistantIdentifier, identifier);
   if ([(SCDAFFeedbackService *)self isUserFeedbackFeatureEnabled])
   {
-    [(Globals *)self->_globals setLocalDeviceAssistantIdentifier:v5];
+    [(Globals *)self->_globals setLocalDeviceAssistantIdentifier:identifierCopy];
   }
 }
 
@@ -105,18 +105,18 @@
 {
   if ([(SCDAFFeedbackService *)self isUserFeedbackFeatureEnabled])
   {
-    v3 = [(SCDAFFeedbackService *)self feedbackService];
-    [v3 handleAssistantDismissed];
+    feedbackService = [(SCDAFFeedbackService *)self feedbackService];
+    [feedbackService handleAssistantDismissed];
   }
 }
 
-- (void)handleReceivedArbitrationParticipation:(id)a3
+- (void)handleReceivedArbitrationParticipation:(id)participation
 {
-  v5 = a3;
+  participationCopy = participation;
   if ([(SCDAFFeedbackService *)self isUserFeedbackFeatureEnabled])
   {
-    v4 = [(SCDAFFeedbackService *)self feedbackService];
-    [v4 add:v5];
+    feedbackService = [(SCDAFFeedbackService *)self feedbackService];
+    [feedbackService add:participationCopy];
   }
 }
 
@@ -146,7 +146,7 @@
   block[1] = 3221225472;
   block[2] = __37__SCDAFFeedbackService_sharedService__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedService_onceToken != -1)
   {
     dispatch_once(&sharedService_onceToken, block);

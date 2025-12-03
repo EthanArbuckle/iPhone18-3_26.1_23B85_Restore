@@ -1,22 +1,22 @@
 @interface PKApplicationAuthorizationHandle
-+ (id)createForRequest:(id)a3;
++ (id)createForRequest:(id)request;
 - (BOOL)isInvalidated;
-- (void)_invalidateFromSource:(void *)a3 withCompletion:;
+- (void)_invalidateFromSource:(void *)source withCompletion:;
 - (void)_resolveInvalidation;
 - (void)dealloc;
-- (void)detachWithReply:(id)a3;
-- (void)displayForPresentationTarget:(id)a3 withAction:(id)a4 completion:(id)a5;
-- (void)performActionWithReply:(id)a3;
+- (void)detachWithReply:(id)reply;
+- (void)displayForPresentationTarget:(id)target withAction:(id)action completion:(id)completion;
+- (void)performActionWithReply:(id)reply;
 @end
 
 @implementation PKApplicationAuthorizationHandle
 
-+ (id)createForRequest:(id)a3
++ (id)createForRequest:(id)request
 {
   v47 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  requestCopy = request;
   v5 = [PKApplicationAuthorizationHandle alloc];
-  v6 = v4;
+  v6 = requestCopy;
   v7 = v6;
   if (!v5)
   {
@@ -40,7 +40,7 @@ LABEL_9:
   }
 
   v5 = v8;
-  objc_storeStrong(v8 + 1, a3);
+  objc_storeStrong(v8 + 1, request);
   v5->_lock._os_unfair_lock_opaque = 0;
   v9 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithMachServiceName:@"com.apple.wallet.application-authorization" options:0];
   connection = v5->_connection;
@@ -53,17 +53,17 @@ LABEL_12:
     v22 = PKLogFacilityTypeGetObject(0);
     if (os_log_type_enabled(v22, OS_LOG_TYPE_FAULT))
     {
-      v28 = [v7 type];
+      type = [v7 type];
       LODWORD(v42) = 134217984;
-      *(&v42 + 4) = v28;
+      *(&v42 + 4) = type;
       _os_log_fault_impl(&dword_1AD337000, v22, OS_LOG_TYPE_FAULT, "PKApplicationAuthorizationHandle: failed to create handle for %ld - no connection.", &v42, 0xCu);
     }
 
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
-      v27 = [v7 type];
+      type2 = [v7 type];
       LODWORD(v42) = 134217984;
-      *(&v42 + 4) = v27;
+      *(&v42 + 4) = type2;
       _os_log_impl(&dword_1AD337000, v22, OS_LOG_TYPE_DEFAULT, "PKApplicationAuthorizationHandle: failed to create handle for %ld - no connection.", &v42, 0xCu);
     }
 
@@ -104,12 +104,12 @@ LABEL_12:
   v23 = PKLogFacilityTypeGetObject(0);
   if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
   {
-    v24 = [v7 type];
+    type3 = [v7 type];
     v25 = v5->_connection;
     *buf = 134218496;
     v37 = v21;
     v38 = 2048;
-    v39 = v24;
+    v39 = type3;
     v40 = 2048;
     v41 = v25;
     _os_log_impl(&dword_1AD337000, v23, OS_LOG_TYPE_DEFAULT, "PKApplicationAuthorizationHandle (%p): created handle for %ld with connection %p.", buf, 0x20u);
@@ -141,36 +141,36 @@ void __53__PKApplicationAuthorizationHandle__initWithRequest___block_invoke(uint
   [(PKApplicationAuthorizationHandle *)*(a1 + 32) _invalidateFromSource:0 withCompletion:?];
 }
 
-- (void)_invalidateFromSource:(void *)a3 withCompletion:
+- (void)_invalidateFromSource:(void *)source withCompletion:
 {
-  v5 = a3;
-  if (!a1)
+  sourceCopy = source;
+  if (!self)
   {
     goto LABEL_20;
   }
 
-  os_unfair_lock_lock((a1 + 16));
-  v6 = *(a1 + 64);
+  os_unfair_lock_lock((self + 16));
+  v6 = *(self + 64);
   if (v6)
   {
     v7 = v6;
-    v8 = *(a1 + 64);
-    *(a1 + 64) = 0;
+    v8 = *(self + 64);
+    *(self + 64) = 0;
 
-    v9 = _Block_copy(*(a1 + 48));
-    v10 = *(a1 + 48);
-    *(a1 + 48) = 0;
+    v9 = _Block_copy(*(self + 48));
+    v10 = *(self + 48);
+    *(self + 48) = 0;
 
-    v11 = *(a1 + 40);
-    *(a1 + 40) = 0;
+    v11 = *(self + 40);
+    *(self + 40) = 0;
 
     v12 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v13 = *(a1 + 24);
-    *(a1 + 24) = v12;
+    v13 = *(self + 24);
+    *(self + 24) = v12;
 
     if (v9)
     {
-      v14 = *(a1 + 24);
+      v14 = *(self + 24);
       aBlock[0] = MEMORY[0x1E69E9820];
       aBlock[1] = 3221225472;
       aBlock[2] = __73__PKApplicationAuthorizationHandle__invalidateFromSource_withCompletion___block_invoke;
@@ -180,10 +180,10 @@ void __53__PKApplicationAuthorizationHandle__initWithRequest___block_invoke(uint
       [v14 addObject:v15];
     }
 
-    if (v5)
+    if (sourceCopy)
     {
-      v16 = *(a1 + 24);
-      v17 = _Block_copy(v5);
+      v16 = *(self + 24);
+      v17 = _Block_copy(sourceCopy);
       [v16 addObject:v17];
     }
 
@@ -224,35 +224,35 @@ void __53__PKApplicationAuthorizationHandle__initWithRequest___block_invoke(uint
   else
   {
     v20 = 0;
-    if (!v5)
+    if (!sourceCopy)
     {
       goto LABEL_15;
     }
 
-    v21 = *(a1 + 24);
+    v21 = *(self + 24);
     if (!v21)
     {
       goto LABEL_15;
     }
 
-    v22 = _Block_copy(v5);
+    v22 = _Block_copy(sourceCopy);
     [v21 addObject:v22];
 
     v20 = 0;
   }
 
-  v5 = 0;
+  sourceCopy = 0;
 LABEL_15:
-  os_unfair_lock_unlock((a1 + 16));
-  v27 = a1;
-  if (v5)
+  os_unfair_lock_unlock((self + 16));
+  selfCopy = self;
+  if (sourceCopy)
   {
-    (*(v5 + 2))(v5, v27);
+    (*(sourceCopy + 2))(sourceCopy, selfCopy);
   }
 
   if (v20)
   {
-    v20[2](v20, v27);
+    v20[2](v20, selfCopy);
   }
 
 LABEL_20:
@@ -322,14 +322,14 @@ void __73__PKApplicationAuthorizationHandle__invalidateFromSource_withCompletion
 - (void)_resolveInvalidation
 {
   v14 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_lock((a1 + 16));
-    v2 = [*(a1 + 24) copy];
-    v3 = *(a1 + 24);
-    *(a1 + 24) = 0;
+    os_unfair_lock_lock((self + 16));
+    v2 = [*(self + 24) copy];
+    v3 = *(self + 24);
+    *(self + 24) = 0;
 
-    os_unfair_lock_unlock((a1 + 16));
+    os_unfair_lock_unlock((self + 16));
     v11 = 0u;
     v12 = 0u;
     v9 = 0u;
@@ -410,13 +410,13 @@ void __73__PKApplicationAuthorizationHandle__invalidateFromSource_withCompletion
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)displayForPresentationTarget:(id)a3 withAction:(id)a4 completion:(id)a5
+- (void)displayForPresentationTarget:(id)target withAction:(id)action completion:(id)completion
 {
   v30 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8 || !v9 || (v11 = v10) == 0 || (os_unfair_lock_lock(&self->_lock), self->_started))
+  targetCopy = target;
+  actionCopy = action;
+  completionCopy = completion;
+  if (!targetCopy || !actionCopy || (v11 = completionCopy) == 0 || (os_unfair_lock_lock(&self->_lock), self->_started))
   {
     __break(1u);
   }
@@ -425,14 +425,14 @@ void __73__PKApplicationAuthorizationHandle__invalidateFromSource_withCompletion
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v29 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1AD337000, v12, OS_LOG_TYPE_DEFAULT, "PKApplicationAuthorizationHandle (%p): starting...", buf, 0xCu);
   }
 
   self->_started = 1;
   if (self->_connection)
   {
-    v13 = _Block_copy(v9);
+    v13 = _Block_copy(actionCopy);
     action = self->_action;
     self->_action = v13;
 
@@ -452,8 +452,8 @@ void __73__PKApplicationAuthorizationHandle__invalidateFromSource_withCompletion
     aBlock[2] = __87__PKApplicationAuthorizationHandle_displayForPresentationTarget_withAction_completion___block_invoke_12;
     aBlock[3] = &unk_1E79C4E00;
     v24 = v18;
-    v25 = self;
-    v26 = v8;
+    selfCopy2 = self;
+    v26 = targetCopy;
     v19 = v18;
     v20 = _Block_copy(aBlock);
   }
@@ -537,9 +537,9 @@ uint64_t __87__PKApplicationAuthorizationHandle_displayForPresentationTarget_wit
   return result;
 }
 
-- (void)performActionWithReply:(id)a3
+- (void)performActionWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   os_unfair_lock_lock(&self->_lock);
   if (!self->_connection)
   {
@@ -548,7 +548,7 @@ uint64_t __87__PKApplicationAuthorizationHandle_displayForPresentationTarget_wit
     v12[2] = __59__PKApplicationAuthorizationHandle_performActionWithReply___block_invoke_19;
     v12[3] = &unk_1E79C4A40;
     v12[4] = self;
-    v13 = v4;
+    v13 = replyCopy;
     v9 = _Block_copy(v12);
     v10 = v13;
 LABEL_8:
@@ -563,7 +563,7 @@ LABEL_8:
     v14[2] = __59__PKApplicationAuthorizationHandle_performActionWithReply___block_invoke_18;
     v14[3] = &unk_1E79C4A40;
     v14[4] = self;
-    v15 = v4;
+    v15 = replyCopy;
     v9 = _Block_copy(v14);
     v10 = v15;
     goto LABEL_8;
@@ -577,7 +577,7 @@ LABEL_8:
     v16[2] = __59__PKApplicationAuthorizationHandle_performActionWithReply___block_invoke_17;
     v16[3] = &unk_1E79C4A40;
     v16[4] = self;
-    v17 = v4;
+    v17 = replyCopy;
     v9 = _Block_copy(v16);
     v10 = v17;
     goto LABEL_8;
@@ -593,7 +593,7 @@ LABEL_8:
   aBlock[3] = &unk_1E79E25E8;
   aBlock[4] = self;
   v19 = v6;
-  v20 = v4;
+  v20 = replyCopy;
   v8 = v6;
   v9 = _Block_copy(aBlock);
 
@@ -712,20 +712,20 @@ uint64_t __59__PKApplicationAuthorizationHandle_performActionWithReply___block_i
   return (*(*(a1 + 40) + 16))();
 }
 
-- (void)detachWithReply:(id)a3
+- (void)detachWithReply:(id)reply
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  replyCopy = reply;
   v5 = PKLogFacilityTypeGetObject(5uLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = 134217984;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1AD337000, v5, OS_LOG_TYPE_INFO, "PKApplicationAuthorizationHandle (%p): received remote detach.", &v6, 0xCu);
   }
 
   atomic_exchange(&self->_detached._Value, 1u);
-  v4[2](v4);
+  replyCopy[2](replyCopy);
   [(PKApplicationAuthorizationHandle *)self invalidateWithCompletion:0];
 }
 

@@ -1,22 +1,22 @@
 @interface AVCAudioPowerSpectrumBin
-- (AVCAudioPowerSpectrumBin)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (AVCAudioPowerSpectrumBin)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AVCAudioPowerSpectrumBin
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   *&v3 = self->_minFrequency;
-  [a3 encodeFloat:@"minFrequency" forKey:v3];
+  [coder encodeFloat:@"minFrequency" forKey:v3];
   *&v6 = self->_maxFrequency;
-  [a3 encodeFloat:@"maxFrequency" forKey:v6];
+  [coder encodeFloat:@"maxFrequency" forKey:v6];
   *&v7 = self->_powerLevel;
 
-  [a3 encodeFloat:@"powerLevel" forKey:v7];
+  [coder encodeFloat:@"powerLevel" forKey:v7];
 }
 
-- (AVCAudioPowerSpectrumBin)initWithCoder:(id)a3
+- (AVCAudioPowerSpectrumBin)initWithCoder:(id)coder
 {
   v10 = *MEMORY[0x1E69E9840];
   v9.receiver = self;
@@ -24,11 +24,11 @@
   v4 = [(AVCAudioPowerSpectrumBin *)&v9 init];
   if (v4)
   {
-    [a3 decodeFloatForKey:@"minFrequency"];
+    [coder decodeFloatForKey:@"minFrequency"];
     v4->_minFrequency = v5;
-    [a3 decodeFloatForKey:@"maxFrequency"];
+    [coder decodeFloatForKey:@"maxFrequency"];
     v4->_maxFrequency = v6;
-    [a3 decodeFloatForKey:@"powerLevel"];
+    [coder decodeFloatForKey:@"powerLevel"];
     v4->_powerLevel = v7;
   }
 

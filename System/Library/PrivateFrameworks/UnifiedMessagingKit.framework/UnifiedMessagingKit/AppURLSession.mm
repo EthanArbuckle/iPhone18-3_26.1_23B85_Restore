@@ -1,14 +1,14 @@
 @interface AppURLSession
-- (_TtC25UnifiedMessagingKitJSCore13AppURLSession)initWithConfiguration:(id)a3 delegate:(id)a4 delegateQueue:(id)a5;
+- (_TtC25UnifiedMessagingKitJSCore13AppURLSession)initWithConfiguration:(id)configuration delegate:(id)delegate delegateQueue:(id)queue;
 @end
 
 @implementation AppURLSession
 
-- (_TtC25UnifiedMessagingKitJSCore13AppURLSession)initWithConfiguration:(id)a3 delegate:(id)a4 delegateQueue:(id)a5
+- (_TtC25UnifiedMessagingKitJSCore13AppURLSession)initWithConfiguration:(id)configuration delegate:(id)delegate delegateQueue:(id)queue
 {
-  v6 = a3;
+  configurationCopy = configuration;
   swift_unknownObjectRetain();
-  v7 = a5;
+  queueCopy = queue;
   sub_270560A84();
 }
 

@@ -1,9 +1,9 @@
 @interface CARTemplateUIHostInstrumentClusterViewController
-+ (id)_stringForClusterSetting:(unint64_t)a3;
++ (id)_stringForClusterSetting:(unint64_t)setting;
 - (BOOL)_addGuidanceCardViewController;
 - (BOOL)_addNavigationViewController;
 - (BOOL)_addViewControllerForMapView;
-- (CARTemplateUIHostInstrumentClusterViewController)initWithWindowScene:(id)a3 templateInstance:(id)a4 bundleIdentifier:(id)a5;
+- (CARTemplateUIHostInstrumentClusterViewController)initWithWindowScene:(id)scene templateInstance:(id)instance bundleIdentifier:(id)identifier;
 - (FBScene)scene;
 - (id)_clusterWindow;
 - (id)_lastZoomDirectionString;
@@ -14,43 +14,43 @@
 - (void)_removeNavigationViewController;
 - (void)_removeViewControllerForMapView;
 - (void)_updateSettingsText;
-- (void)clusterWindow:(id)a3 didChangeCompassSetting:(unint64_t)a4;
-- (void)clusterWindow:(id)a3 didChangeETASetting:(unint64_t)a4;
-- (void)clusterWindow:(id)a3 didChangeItemType:(unint64_t)a4;
-- (void)clusterWindow:(id)a3 didChangeLayoutJustification:(unint64_t)a4;
-- (void)clusterWindow:(id)a3 didChangeSpeedLimitSetting:(unint64_t)a4;
-- (void)clusterWindow:(id)a3 didZoomInDirection:(int64_t)a4;
+- (void)clusterWindow:(id)window didChangeCompassSetting:(unint64_t)setting;
+- (void)clusterWindow:(id)window didChangeETASetting:(unint64_t)setting;
+- (void)clusterWindow:(id)window didChangeItemType:(unint64_t)type;
+- (void)clusterWindow:(id)window didChangeLayoutJustification:(unint64_t)justification;
+- (void)clusterWindow:(id)window didChangeSpeedLimitSetting:(unint64_t)setting;
+- (void)clusterWindow:(id)window didZoomInDirection:(int64_t)direction;
 - (void)invalidate;
-- (void)setScene:(id)a3;
-- (void)templateInstanceDidFinishClusterSetup:(id)a3;
+- (void)setScene:(id)scene;
+- (void)templateInstanceDidFinishClusterSetup:(id)setup;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
 
 @implementation CARTemplateUIHostInstrumentClusterViewController
 
-- (CARTemplateUIHostInstrumentClusterViewController)initWithWindowScene:(id)a3 templateInstance:(id)a4 bundleIdentifier:(id)a5
+- (CARTemplateUIHostInstrumentClusterViewController)initWithWindowScene:(id)scene templateInstance:(id)instance bundleIdentifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sceneCopy = scene;
+  instanceCopy = instance;
+  identifierCopy = identifier;
   v20.receiver = self;
   v20.super_class = CARTemplateUIHostInstrumentClusterViewController;
   v11 = [(CARTemplateUIHostInstrumentClusterViewController *)&v20 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_templateInstance, a4);
+    objc_storeStrong(&v11->_templateInstance, instance);
     [(CPSTemplateInstance *)v12->_templateInstance setClusterSetupDelegate:v12];
-    v13 = [v10 copy];
+    v13 = [identifierCopy copy];
     bundleIdentifier = v12->_bundleIdentifier;
     v12->_bundleIdentifier = v13;
 
-    v15 = [v8 _FBSScene];
-    v16 = [v15 settings];
-    v17 = [v16 displayConfiguration];
+    _FBSScene = [sceneCopy _FBSScene];
+    settings = [_FBSScene settings];
+    displayConfiguration = [settings displayConfiguration];
     displayConfiguration = v12->_displayConfiguration;
-    v12->_displayConfiguration = v17;
+    v12->_displayConfiguration = displayConfiguration;
   }
 
   return v12;
@@ -59,8 +59,8 @@
 - (void)invalidate
 {
   [(CARTemplateUIHostInstrumentClusterViewController *)self setInvalidated:1];
-  v3 = [(CARTemplateUIHostInstrumentClusterViewController *)self sceneViewController];
-  [v3 invalidate];
+  sceneViewController = [(CARTemplateUIHostInstrumentClusterViewController *)self sceneViewController];
+  [sceneViewController invalidate];
 }
 
 - (void)viewDidLoad
@@ -74,11 +74,11 @@
 - (void)_handleSceneSettings
 {
   objc_opt_class();
-  v3 = [(CARTemplateUIHostInstrumentClusterViewController *)self view];
-  v4 = [v3 window];
-  if (v4 && (objc_opt_isKindOfClass() & 1) != 0)
+  view = [(CARTemplateUIHostInstrumentClusterViewController *)self view];
+  window = [view window];
+  if (window && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v5 = v4;
+    v5 = window;
   }
 
   else
@@ -88,8 +88,8 @@
 
   if (v5)
   {
-    v6 = [(CARTemplateUIHostInstrumentClusterViewController *)self itemType];
-    if (v6 != [v5 itemType])
+    itemType = [(CARTemplateUIHostInstrumentClusterViewController *)self itemType];
+    if (itemType != [v5 itemType])
     {
       v7 = sub_100001280(7uLL);
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -101,8 +101,8 @@
       -[CARTemplateUIHostInstrumentClusterViewController clusterWindow:didChangeItemType:](self, "clusterWindow:didChangeItemType:", v5, [v5 itemType]);
     }
 
-    v8 = [(CARTemplateUIHostInstrumentClusterViewController *)self showETASetting];
-    if (v8 != [v5 etaSetting])
+    showETASetting = [(CARTemplateUIHostInstrumentClusterViewController *)self showETASetting];
+    if (showETASetting != [v5 etaSetting])
     {
       v9 = sub_100001280(7uLL);
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -114,8 +114,8 @@
       -[CARTemplateUIHostInstrumentClusterViewController clusterWindow:didChangeETASetting:](self, "clusterWindow:didChangeETASetting:", v5, [v5 etaSetting]);
     }
 
-    v10 = [(CARTemplateUIHostInstrumentClusterViewController *)self showCompassSetting];
-    if (v10 != [v5 compassSetting])
+    showCompassSetting = [(CARTemplateUIHostInstrumentClusterViewController *)self showCompassSetting];
+    if (showCompassSetting != [v5 compassSetting])
     {
       v11 = sub_100001280(7uLL);
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -127,8 +127,8 @@
       -[CARTemplateUIHostInstrumentClusterViewController clusterWindow:didChangeCompassSetting:](self, "clusterWindow:didChangeCompassSetting:", v5, [v5 compassSetting]);
     }
 
-    v12 = [(CARTemplateUIHostInstrumentClusterViewController *)self showSpeedLimitSetting];
-    if (v12 != [v5 speedLimitSetting])
+    showSpeedLimitSetting = [(CARTemplateUIHostInstrumentClusterViewController *)self showSpeedLimitSetting];
+    if (showSpeedLimitSetting != [v5 speedLimitSetting])
     {
       v13 = sub_100001280(7uLL);
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -140,8 +140,8 @@
       -[CARTemplateUIHostInstrumentClusterViewController clusterWindow:didChangeSpeedLimitSetting:](self, "clusterWindow:didChangeSpeedLimitSetting:", v5, [v5 speedLimitSetting]);
     }
 
-    v14 = [(CARTemplateUIHostInstrumentClusterViewController *)self layoutJustification];
-    if (v14 != [v5 layoutJustification])
+    layoutJustification = [(CARTemplateUIHostInstrumentClusterViewController *)self layoutJustification];
+    if (layoutJustification != [v5 layoutJustification])
     {
       v15 = sub_100001280(7uLL);
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -155,54 +155,54 @@
   }
 }
 
-- (void)setScene:(id)a3
+- (void)setScene:(id)scene
 {
-  v4 = a3;
-  v5 = [(CARTemplateUIHostInstrumentClusterViewController *)self sceneViewController];
-  [v5 setScene:v4];
+  sceneCopy = scene;
+  sceneViewController = [(CARTemplateUIHostInstrumentClusterViewController *)self sceneViewController];
+  [sceneViewController setScene:sceneCopy];
 }
 
 - (FBScene)scene
 {
-  v2 = [(CARTemplateUIHostInstrumentClusterViewController *)self sceneViewController];
-  v3 = [v2 scene];
+  sceneViewController = [(CARTemplateUIHostInstrumentClusterViewController *)self sceneViewController];
+  scene = [sceneViewController scene];
 
-  return v3;
+  return scene;
 }
 
 - (void)_addChildSceneViewController
 {
-  v3 = [(CARTemplateUIHostInstrumentClusterViewController *)self sceneViewController];
+  sceneViewController = [(CARTemplateUIHostInstrumentClusterViewController *)self sceneViewController];
 
-  if (!v3)
+  if (!sceneViewController)
   {
     v4 = [CARTemplateUIInstrumentClusterSceneViewController alloc];
-    v5 = [(CARTemplateUIHostInstrumentClusterViewController *)self view];
-    v6 = [v5 window];
-    v7 = [v6 windowScene];
-    v8 = [(CARTemplateUIHostInstrumentClusterViewController *)self templateInstance];
-    v9 = [(CARTemplateUIHostInstrumentClusterViewController *)self bundleIdentifier];
-    v10 = [(CARTemplateUISceneViewController *)v4 initWithWindowScene:v7 templateInstance:v8 bundleIdentifier:v9];
+    view = [(CARTemplateUIHostInstrumentClusterViewController *)self view];
+    window = [view window];
+    windowScene = [window windowScene];
+    templateInstance = [(CARTemplateUIHostInstrumentClusterViewController *)self templateInstance];
+    bundleIdentifier = [(CARTemplateUIHostInstrumentClusterViewController *)self bundleIdentifier];
+    v10 = [(CARTemplateUISceneViewController *)v4 initWithWindowScene:windowScene templateInstance:templateInstance bundleIdentifier:bundleIdentifier];
 
     [(CARTemplateUIHostInstrumentClusterViewController *)self setSceneViewController:v10];
-    v11 = [(CARTemplateUIHostInstrumentClusterViewController *)self view];
+    view2 = [(CARTemplateUIHostInstrumentClusterViewController *)self view];
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_100006F50;
     v13[3] = &unk_10001C5F0;
     v14 = v10;
-    v15 = self;
+    selfCopy = self;
     v12 = v10;
-    [(CARTemplateUIHostInstrumentClusterViewController *)self bs_addChildViewController:v12 withSuperview:v11 animated:0 transitionBlock:v13];
+    [(CARTemplateUIHostInstrumentClusterViewController *)self bs_addChildViewController:v12 withSuperview:view2 animated:0 transitionBlock:v13];
   }
 }
 
 - (BOOL)_addViewControllerForMapView
 {
-  v3 = [(CARTemplateUIHostInstrumentClusterViewController *)self templateInstance];
-  v4 = [v3 instrumentClusterMapETAViewController];
+  templateInstance = [(CARTemplateUIHostInstrumentClusterViewController *)self templateInstance];
+  instrumentClusterMapETAViewController = [templateInstance instrumentClusterMapETAViewController];
 
-  if (self->_mapViewETATray || (self->_sceneViewController ? (v5 = v4 == 0) : (v5 = 1), v5))
+  if (self->_mapViewETATray || (self->_sceneViewController ? (v5 = instrumentClusterMapETAViewController == 0) : (v5 = 1), v5))
   {
     v6 = 0;
   }
@@ -216,15 +216,15 @@
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Adding template content for Map type", buf, 2u);
     }
 
-    [(CARTemplateUIHostInstrumentClusterViewController *)self setMapViewETATray:v4];
-    v10 = [(CARTemplateUIHostInstrumentClusterViewController *)self view];
+    [(CARTemplateUIHostInstrumentClusterViewController *)self setMapViewETATray:instrumentClusterMapETAViewController];
+    view = [(CARTemplateUIHostInstrumentClusterViewController *)self view];
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_100007414;
     v11[3] = &unk_10001C5F0;
-    v12 = v4;
-    v13 = self;
-    [(CARTemplateUIHostInstrumentClusterViewController *)self bs_addChildViewController:v12 withSuperview:v10 animated:0 transitionBlock:v11];
+    v12 = instrumentClusterMapETAViewController;
+    selfCopy = self;
+    [(CARTemplateUIHostInstrumentClusterViewController *)self bs_addChildViewController:v12 withSuperview:view animated:0 transitionBlock:v11];
 
     v6 = 1;
   }
@@ -234,12 +234,12 @@
 
 - (void)_removeViewControllerForMapView
 {
-  v3 = [(CARTemplateUIHostInstrumentClusterViewController *)self mapViewETATray];
+  mapViewETATray = [(CARTemplateUIHostInstrumentClusterViewController *)self mapViewETATray];
 
-  if (v3)
+  if (mapViewETATray)
   {
-    v4 = [(CARTemplateUIHostInstrumentClusterViewController *)self mapViewETATray];
-    [(CARTemplateUIHostInstrumentClusterViewController *)self bs_removeChildViewController:v4];
+    mapViewETATray2 = [(CARTemplateUIHostInstrumentClusterViewController *)self mapViewETATray];
+    [(CARTemplateUIHostInstrumentClusterViewController *)self bs_removeChildViewController:mapViewETATray2];
 
     [(CARTemplateUIHostInstrumentClusterViewController *)self setMapViewETATray:0];
   }
@@ -247,9 +247,9 @@
 
 - (BOOL)_addGuidanceCardViewController
 {
-  v3 = [(CARTemplateUIHostInstrumentClusterViewController *)self guidanceCardViewController];
+  guidanceCardViewController = [(CARTemplateUIHostInstrumentClusterViewController *)self guidanceCardViewController];
 
-  if (!v3)
+  if (!guidanceCardViewController)
   {
     v4 = sub_100001280(7uLL);
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -258,32 +258,32 @@
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Adding template content for Turn Card type", buf, 2u);
     }
 
-    v5 = [(CARTemplateUIHostInstrumentClusterViewController *)self templateInstance];
-    v6 = [(CARTemplateUIHostInstrumentClusterViewController *)self displayConfiguration];
-    v7 = [v6 hardwareIdentifier];
-    v8 = [v5 instrumentClusterViewControllerForDisplayIdentifier:v7];
+    templateInstance = [(CARTemplateUIHostInstrumentClusterViewController *)self templateInstance];
+    displayConfiguration = [(CARTemplateUIHostInstrumentClusterViewController *)self displayConfiguration];
+    hardwareIdentifier = [displayConfiguration hardwareIdentifier];
+    v8 = [templateInstance instrumentClusterViewControllerForDisplayIdentifier:hardwareIdentifier];
 
     [(CARTemplateUIHostInstrumentClusterViewController *)self setGuidanceCardViewController:v8];
-    v9 = [(CARTemplateUIHostInstrumentClusterViewController *)self view];
+    view = [(CARTemplateUIHostInstrumentClusterViewController *)self view];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_100007848;
     v12[3] = &unk_10001C5F0;
     v13 = v8;
-    v14 = self;
+    selfCopy = self;
     v10 = v8;
-    [(CARTemplateUIHostInstrumentClusterViewController *)self bs_addChildViewController:v10 withSuperview:v9 animated:0 transitionBlock:v12];
+    [(CARTemplateUIHostInstrumentClusterViewController *)self bs_addChildViewController:v10 withSuperview:view animated:0 transitionBlock:v12];
   }
 
-  return v3 == 0;
+  return guidanceCardViewController == 0;
 }
 
 - (BOOL)_addNavigationViewController
 {
-  v3 = [(CARTemplateUIHostInstrumentClusterViewController *)self templateInstance];
-  v4 = [v3 instrumentClusterCardViewController];
+  templateInstance = [(CARTemplateUIHostInstrumentClusterViewController *)self templateInstance];
+  instrumentClusterCardViewController = [templateInstance instrumentClusterCardViewController];
 
-  if (self->_navigationViewController || (self->_sceneViewController ? (v5 = v4 == 0) : (v5 = 1), v5))
+  if (self->_navigationViewController || (self->_sceneViewController ? (v5 = instrumentClusterCardViewController == 0) : (v5 = 1), v5))
   {
     v6 = 0;
   }
@@ -297,15 +297,15 @@
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Adding template content for Navigation App type", buf, 2u);
     }
 
-    [(CARTemplateUIHostInstrumentClusterViewController *)self setNavigationViewController:v4];
-    v10 = [(CARTemplateUIHostInstrumentClusterViewController *)self view];
+    [(CARTemplateUIHostInstrumentClusterViewController *)self setNavigationViewController:instrumentClusterCardViewController];
+    view = [(CARTemplateUIHostInstrumentClusterViewController *)self view];
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_100007BE4;
     v11[3] = &unk_10001C5F0;
-    v12 = v4;
-    v13 = self;
-    [(CARTemplateUIHostInstrumentClusterViewController *)self bs_addChildViewController:v12 withSuperview:v10 animated:0 transitionBlock:v11];
+    v12 = instrumentClusterCardViewController;
+    selfCopy = self;
+    [(CARTemplateUIHostInstrumentClusterViewController *)self bs_addChildViewController:v12 withSuperview:view animated:0 transitionBlock:v11];
 
     v6 = 1;
   }
@@ -315,12 +315,12 @@
 
 - (void)_removeNavigationViewController
 {
-  v3 = [(CARTemplateUIHostInstrumentClusterViewController *)self navigationViewController];
+  navigationViewController = [(CARTemplateUIHostInstrumentClusterViewController *)self navigationViewController];
 
-  if (v3)
+  if (navigationViewController)
   {
-    v4 = [(CARTemplateUIHostInstrumentClusterViewController *)self navigationViewController];
-    [(CARTemplateUIHostInstrumentClusterViewController *)self bs_removeChildViewController:v4];
+    navigationViewController2 = [(CARTemplateUIHostInstrumentClusterViewController *)self navigationViewController];
+    [(CARTemplateUIHostInstrumentClusterViewController *)self bs_removeChildViewController:navigationViewController2];
 
     [(CARTemplateUIHostInstrumentClusterViewController *)self setNavigationViewController:0];
   }
@@ -328,12 +328,12 @@
 
 - (void)_removeGuidanceCardViewController
 {
-  v3 = [(CARTemplateUIHostInstrumentClusterViewController *)self guidanceCardViewController];
+  guidanceCardViewController = [(CARTemplateUIHostInstrumentClusterViewController *)self guidanceCardViewController];
 
-  if (v3)
+  if (guidanceCardViewController)
   {
-    v4 = [(CARTemplateUIHostInstrumentClusterViewController *)self guidanceCardViewController];
-    [(CARTemplateUIHostInstrumentClusterViewController *)self bs_removeChildViewController:v4];
+    guidanceCardViewController2 = [(CARTemplateUIHostInstrumentClusterViewController *)self guidanceCardViewController];
+    [(CARTemplateUIHostInstrumentClusterViewController *)self bs_removeChildViewController:guidanceCardViewController2];
 
     [(CARTemplateUIHostInstrumentClusterViewController *)self setGuidanceCardViewController:0];
   }
@@ -341,12 +341,12 @@
 
 - (void)_removeChildSceneViewController
 {
-  v3 = [(CARTemplateUIHostInstrumentClusterViewController *)self sceneViewController];
+  sceneViewController = [(CARTemplateUIHostInstrumentClusterViewController *)self sceneViewController];
 
-  if (v3)
+  if (sceneViewController)
   {
-    v4 = [(CARTemplateUIHostInstrumentClusterViewController *)self sceneViewController];
-    [(CARTemplateUIHostInstrumentClusterViewController *)self bs_removeChildViewController:v4];
+    sceneViewController2 = [(CARTemplateUIHostInstrumentClusterViewController *)self sceneViewController];
+    [(CARTemplateUIHostInstrumentClusterViewController *)self bs_removeChildViewController:sceneViewController2];
 
     [(CARTemplateUIHostInstrumentClusterViewController *)self setSceneViewController:0];
   }
@@ -365,11 +365,11 @@
 - (id)_clusterWindow
 {
   objc_opt_class();
-  v3 = [(CARTemplateUIHostInstrumentClusterViewController *)self view];
-  v4 = [v3 window];
-  if (v4 && (objc_opt_isKindOfClass() & 1) != 0)
+  view = [(CARTemplateUIHostInstrumentClusterViewController *)self view];
+  window = [view window];
+  if (window && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v5 = v4;
+    v5 = window;
   }
 
   else
@@ -382,43 +382,43 @@
 
 - (void)_updateSettingsText
 {
-  v10 = [(CARTemplateUIHostInstrumentClusterViewController *)self _clusterWindow];
-  v3 = [objc_opt_class() _stringForClusterSetting:{objc_msgSend(v10, "etaSetting")}];
-  v4 = [objc_opt_class() _stringForClusterSetting:{objc_msgSend(v10, "compassSetting")}];
-  v5 = [objc_opt_class() _stringForClusterSetting:{objc_msgSend(v10, "speedLimitSetting")}];
-  v6 = [(CARTemplateUIHostInstrumentClusterViewController *)self _lastZoomDirectionString];
-  v7 = [NSString stringWithFormat:@"Settings: showsETA: %@ showsCompass: %@; showsSpeedLimit: %@; last zoom direction: %@ count: %lu", v3, v4, v5, v6, [(CARTemplateUIHostInstrumentClusterViewController *)self zoomCount]];;
+  _clusterWindow = [(CARTemplateUIHostInstrumentClusterViewController *)self _clusterWindow];
+  v3 = [objc_opt_class() _stringForClusterSetting:{objc_msgSend(_clusterWindow, "etaSetting")}];
+  v4 = [objc_opt_class() _stringForClusterSetting:{objc_msgSend(_clusterWindow, "compassSetting")}];
+  v5 = [objc_opt_class() _stringForClusterSetting:{objc_msgSend(_clusterWindow, "speedLimitSetting")}];
+  _lastZoomDirectionString = [(CARTemplateUIHostInstrumentClusterViewController *)self _lastZoomDirectionString];
+  v7 = [NSString stringWithFormat:@"Settings: showsETA: %@ showsCompass: %@; showsSpeedLimit: %@; last zoom direction: %@ count: %lu", v3, v4, v5, _lastZoomDirectionString, [(CARTemplateUIHostInstrumentClusterViewController *)self zoomCount]];;
 
-  v8 = [(CARTemplateUIHostInstrumentClusterViewController *)self settingsLabel];
-  [v8 setText:v7];
+  settingsLabel = [(CARTemplateUIHostInstrumentClusterViewController *)self settingsLabel];
+  [settingsLabel setText:v7];
 
-  v9 = [(CARTemplateUIHostInstrumentClusterViewController *)self settingsLabel];
-  [v9 sizeToFit];
+  settingsLabel2 = [(CARTemplateUIHostInstrumentClusterViewController *)self settingsLabel];
+  [settingsLabel2 sizeToFit];
 }
 
-+ (id)_stringForClusterSetting:(unint64_t)a3
++ (id)_stringForClusterSetting:(unint64_t)setting
 {
-  if (a3 - 1 > 2)
+  if (setting - 1 > 2)
   {
     return @"unspecified";
   }
 
   else
   {
-    return *(&off_10001C630 + a3 - 1);
+    return *(&off_10001C630 + setting - 1);
   }
 }
 
 - (id)_lastZoomDirectionString
 {
-  v2 = [(CARTemplateUIHostInstrumentClusterViewController *)self lastZoomDirection];
+  lastZoomDirection = [(CARTemplateUIHostInstrumentClusterViewController *)self lastZoomDirection];
   v3 = @"None";
-  if (v2 == 2)
+  if (lastZoomDirection == 2)
   {
     v3 = @"Out";
   }
 
-  if (v2 == 1)
+  if (lastZoomDirection == 1)
   {
     return @"In";
   }
@@ -429,40 +429,40 @@
   }
 }
 
-- (void)clusterWindow:(id)a3 didZoomInDirection:(int64_t)a4
+- (void)clusterWindow:(id)window didZoomInDirection:(int64_t)direction
 {
-  v11 = a3;
-  if (self->_lastZoomDirection == a4)
+  windowCopy = window;
+  if (self->_lastZoomDirection == direction)
   {
     v6 = [(CARTemplateUIHostInstrumentClusterViewController *)self zoomCount]+ 1;
   }
 
   else
   {
-    self->_lastZoomDirection = a4;
+    self->_lastZoomDirection = direction;
     v6 = 1;
   }
 
   [(CARTemplateUIHostInstrumentClusterViewController *)self setZoomCount:v6];
   [(CARTemplateUIHostInstrumentClusterViewController *)self _updateSettingsText];
-  v7 = [(CARTemplateUIHostInstrumentClusterViewController *)self scene];
+  scene = [(CARTemplateUIHostInstrumentClusterViewController *)self scene];
 
-  if (v7)
+  if (scene)
   {
-    v8 = [[CRSUIClusterZoomAction alloc] initWithZoomDirection:a4];
-    v9 = [(CARTemplateUIHostInstrumentClusterViewController *)self scene];
+    v8 = [[CRSUIClusterZoomAction alloc] initWithZoomDirection:direction];
+    scene2 = [(CARTemplateUIHostInstrumentClusterViewController *)self scene];
     v10 = [NSSet setWithObject:v8];
-    [v9 sendActions:v10];
+    [scene2 sendActions:v10];
   }
 }
 
-- (void)clusterWindow:(id)a3 didChangeETASetting:(unint64_t)a4
+- (void)clusterWindow:(id)window didChangeETASetting:(unint64_t)setting
 {
   v6 = sub_100001280(7uLL);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = [NSNumber numberWithUnsignedInteger:[(CARTemplateUIHostInstrumentClusterViewController *)self showETASetting]];
-    v8 = [NSNumber numberWithUnsignedInteger:a4];
+    v8 = [NSNumber numberWithUnsignedInteger:setting];
     v15 = 138412546;
     v16 = v7;
     v17 = 2112;
@@ -470,50 +470,50 @@
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "clusterWindow:didChangeETASetting from: %@ to: %@", &v15, 0x16u);
   }
 
-  v9 = [(CARTemplateUIHostInstrumentClusterViewController *)self mapViewETATray];
-  if (v9)
+  mapViewETATray = [(CARTemplateUIHostInstrumentClusterViewController *)self mapViewETATray];
+  if (mapViewETATray)
   {
 
 LABEL_6:
-    [(CARTemplateUIHostInstrumentClusterViewController *)self setShowETASetting:a4];
+    [(CARTemplateUIHostInstrumentClusterViewController *)self setShowETASetting:setting];
     [(CARTemplateUIHostInstrumentClusterViewController *)self _updateSettingsText];
-    v11 = [(CARTemplateUIHostInstrumentClusterViewController *)self mapViewETATray];
-    [v11 setShowETA:{-[CARTemplateUIHostInstrumentClusterViewController showETASetting](self, "showETASetting") == 1}];
+    mapViewETATray2 = [(CARTemplateUIHostInstrumentClusterViewController *)self mapViewETATray];
+    [mapViewETATray2 setShowETA:{-[CARTemplateUIHostInstrumentClusterViewController showETASetting](self, "showETASetting") == 1}];
 
-    v12 = [(CARTemplateUIHostInstrumentClusterViewController *)self navigationViewController];
-    [v12 setShowETA:[(CARTemplateUIHostInstrumentClusterViewController *)self showETASetting]== 1];
+    navigationViewController = [(CARTemplateUIHostInstrumentClusterViewController *)self navigationViewController];
+    [navigationViewController setShowETA:[(CARTemplateUIHostInstrumentClusterViewController *)self showETASetting]== 1];
     goto LABEL_7;
   }
 
-  v10 = [(CARTemplateUIHostInstrumentClusterViewController *)self navigationViewController];
+  navigationViewController2 = [(CARTemplateUIHostInstrumentClusterViewController *)self navigationViewController];
 
-  if (v10)
+  if (navigationViewController2)
   {
     goto LABEL_6;
   }
 
-  v12 = sub_100001280(7uLL);
-  if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+  navigationViewController = sub_100001280(7uLL);
+  if (os_log_type_enabled(navigationViewController, OS_LOG_TYPE_DEFAULT))
   {
     v13 = [NSNumber numberWithUnsignedInteger:[(CARTemplateUIHostInstrumentClusterViewController *)self showETASetting]];
-    v14 = [NSNumber numberWithUnsignedInteger:a4];
+    v14 = [NSNumber numberWithUnsignedInteger:setting];
     v15 = 138412546;
     v16 = v13;
     v17 = 2112;
     v18 = v14;
-    _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "clusterWindow:didChangeETASetting from: %@ to: %@ - UNABLE TO HANDLE", &v15, 0x16u);
+    _os_log_impl(&_mh_execute_header, navigationViewController, OS_LOG_TYPE_DEFAULT, "clusterWindow:didChangeETASetting from: %@ to: %@ - UNABLE TO HANDLE", &v15, 0x16u);
   }
 
 LABEL_7:
 }
 
-- (void)clusterWindow:(id)a3 didChangeCompassSetting:(unint64_t)a4
+- (void)clusterWindow:(id)window didChangeCompassSetting:(unint64_t)setting
 {
   v6 = sub_100001280(7uLL);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = [NSNumber numberWithUnsignedInteger:[(CARTemplateUIHostInstrumentClusterViewController *)self showCompassSetting]];
-    v8 = [NSNumber numberWithUnsignedInteger:a4];
+    v8 = [NSNumber numberWithUnsignedInteger:setting];
     *buf = 138412546;
     v12 = v7;
     v13 = 2112;
@@ -521,24 +521,24 @@ LABEL_7:
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "clusterWindow:didChangeCompassSetting from: %@ to: %@", buf, 0x16u);
   }
 
-  [(CARTemplateUIHostInstrumentClusterViewController *)self setShowCompassSetting:a4];
+  [(CARTemplateUIHostInstrumentClusterViewController *)self setShowCompassSetting:setting];
   [(CARTemplateUIHostInstrumentClusterViewController *)self _updateSettingsText];
-  v9 = [(CARTemplateUIHostInstrumentClusterViewController *)self scene];
+  scene = [(CARTemplateUIHostInstrumentClusterViewController *)self scene];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100008708;
   v10[3] = &unk_10001C610;
-  v10[4] = a4;
-  [v9 updateClusterSceneSettingsWithBlock:v10];
+  v10[4] = setting;
+  [scene updateClusterSceneSettingsWithBlock:v10];
 }
 
-- (void)clusterWindow:(id)a3 didChangeSpeedLimitSetting:(unint64_t)a4
+- (void)clusterWindow:(id)window didChangeSpeedLimitSetting:(unint64_t)setting
 {
   v6 = sub_100001280(7uLL);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = [NSNumber numberWithUnsignedInteger:[(CARTemplateUIHostInstrumentClusterViewController *)self showSpeedLimitSetting]];
-    v8 = [NSNumber numberWithUnsignedInteger:a4];
+    v8 = [NSNumber numberWithUnsignedInteger:setting];
     *buf = 138412546;
     v12 = v7;
     v13 = 2112;
@@ -546,21 +546,21 @@ LABEL_7:
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "clusterWindow:didChangeSpeedLimitSetting from: %@ to: %@", buf, 0x16u);
   }
 
-  [(CARTemplateUIHostInstrumentClusterViewController *)self setShowSpeedLimitSetting:a4];
+  [(CARTemplateUIHostInstrumentClusterViewController *)self setShowSpeedLimitSetting:setting];
   [(CARTemplateUIHostInstrumentClusterViewController *)self _updateSettingsText];
-  v9 = [(CARTemplateUIHostInstrumentClusterViewController *)self scene];
+  scene = [(CARTemplateUIHostInstrumentClusterViewController *)self scene];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100008894;
   v10[3] = &unk_10001C610;
-  v10[4] = a4;
-  [v9 updateClusterSceneSettingsWithBlock:v10];
+  v10[4] = setting;
+  [scene updateClusterSceneSettingsWithBlock:v10];
 }
 
-- (void)clusterWindow:(id)a3 didChangeItemType:(unint64_t)a4
+- (void)clusterWindow:(id)window didChangeItemType:(unint64_t)type
 {
-  v6 = a3;
-  if (a4 == 1)
+  windowCopy = window;
+  if (type == 1)
   {
     [(CARTemplateUIHostInstrumentClusterViewController *)self _removeNavigationViewController];
     [(CARTemplateUIHostInstrumentClusterViewController *)self _removeGuidanceCardViewController];
@@ -570,7 +570,7 @@ LABEL_7:
     }
   }
 
-  else if (a4 == 3)
+  else if (type == 3)
   {
     [(CARTemplateUIHostInstrumentClusterViewController *)self _removeGuidanceCardViewController];
     [(CARTemplateUIHostInstrumentClusterViewController *)self _removeViewControllerForMapView];
@@ -580,19 +580,19 @@ LABEL_7:
     }
   }
 
-  else if (a4 != 2 || ([(CARTemplateUIHostInstrumentClusterViewController *)self _removeNavigationViewController], [(CARTemplateUIHostInstrumentClusterViewController *)self _removeViewControllerForMapView], ![(CARTemplateUIHostInstrumentClusterViewController *)self _addGuidanceCardViewController]))
+  else if (type != 2 || ([(CARTemplateUIHostInstrumentClusterViewController *)self _removeNavigationViewController], [(CARTemplateUIHostInstrumentClusterViewController *)self _removeViewControllerForMapView], ![(CARTemplateUIHostInstrumentClusterViewController *)self _addGuidanceCardViewController]))
   {
 LABEL_11:
-    v10 = sub_100001280(7uLL);
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+    scene = sub_100001280(7uLL);
+    if (os_log_type_enabled(scene, OS_LOG_TYPE_DEFAULT))
     {
       v11 = [NSNumber numberWithUnsignedInteger:[(CARTemplateUIHostInstrumentClusterViewController *)self itemType]];
-      v12 = [NSNumber numberWithUnsignedInteger:a4];
+      v12 = [NSNumber numberWithUnsignedInteger:type];
       *buf = 138412546;
       v15 = v11;
       v16 = 2112;
       v17 = v12;
-      _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "clusterWindow:didChangeItemType from: %@ to: %@ - UNABLE TO HANDLE", buf, 0x16u);
+      _os_log_impl(&_mh_execute_header, scene, OS_LOG_TYPE_DEFAULT, "clusterWindow:didChangeItemType from: %@ to: %@ - UNABLE TO HANDLE", buf, 0x16u);
     }
 
     goto LABEL_13;
@@ -602,7 +602,7 @@ LABEL_11:
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = [NSNumber numberWithUnsignedInteger:[(CARTemplateUIHostInstrumentClusterViewController *)self itemType]];
-    v9 = [NSNumber numberWithUnsignedInteger:a4];
+    v9 = [NSNumber numberWithUnsignedInteger:type];
     *buf = 138412546;
     v15 = v8;
     v16 = 2112;
@@ -610,78 +610,78 @@ LABEL_11:
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "clusterWindow:didChangeItemType from: %@ to: %@", buf, 0x16u);
   }
 
-  [(CARTemplateUIHostInstrumentClusterViewController *)self setItemType:a4];
-  v10 = [(CARTemplateUIHostInstrumentClusterViewController *)self scene];
+  [(CARTemplateUIHostInstrumentClusterViewController *)self setItemType:type];
+  scene = [(CARTemplateUIHostInstrumentClusterViewController *)self scene];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100008B34;
   v13[3] = &unk_10001C610;
-  v13[4] = a4;
-  [v10 updateClusterSceneSettingsWithBlock:v13];
+  v13[4] = type;
+  [scene updateClusterSceneSettingsWithBlock:v13];
 LABEL_13:
 }
 
-- (void)clusterWindow:(id)a3 didChangeLayoutJustification:(unint64_t)a4
+- (void)clusterWindow:(id)window didChangeLayoutJustification:(unint64_t)justification
 {
-  v6 = [(CARTemplateUIHostInstrumentClusterViewController *)self navigationViewController];
+  navigationViewController = [(CARTemplateUIHostInstrumentClusterViewController *)self navigationViewController];
 
-  v7 = sub_100001280(7uLL);
-  v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
-  if (v6)
+  scene = sub_100001280(7uLL);
+  v8 = os_log_type_enabled(scene, OS_LOG_TYPE_DEFAULT);
+  if (navigationViewController)
   {
     if (v8)
     {
       v9 = [NSNumber numberWithUnsignedInteger:[(CARTemplateUIHostInstrumentClusterViewController *)self layoutJustification]];
-      v10 = [NSNumber numberWithUnsignedInteger:a4];
+      v10 = [NSNumber numberWithUnsignedInteger:justification];
       *buf = 138412546;
       v18 = v9;
       v19 = 2112;
       v20 = v10;
-      _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "clusterWindow:didChangeLayoutJustification from: %@ to: %@", buf, 0x16u);
+      _os_log_impl(&_mh_execute_header, scene, OS_LOG_TYPE_DEFAULT, "clusterWindow:didChangeLayoutJustification from: %@ to: %@", buf, 0x16u);
     }
 
-    [(CARTemplateUIHostInstrumentClusterViewController *)self setLayoutJustification:a4];
-    v11 = [(CARTemplateUIHostInstrumentClusterViewController *)self navigationViewController];
-    v12 = v11;
-    if (a4 - 1 >= 3)
+    [(CARTemplateUIHostInstrumentClusterViewController *)self setLayoutJustification:justification];
+    navigationViewController2 = [(CARTemplateUIHostInstrumentClusterViewController *)self navigationViewController];
+    v12 = navigationViewController2;
+    if (justification - 1 >= 3)
     {
-      v13 = 0;
+      justificationCopy = 0;
     }
 
     else
     {
-      v13 = a4;
+      justificationCopy = justification;
     }
 
-    [v11 setLayoutOverride:v13];
+    [navigationViewController2 setLayoutOverride:justificationCopy];
 
-    v7 = [(CARTemplateUIHostInstrumentClusterViewController *)self scene];
+    scene = [(CARTemplateUIHostInstrumentClusterViewController *)self scene];
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v16[2] = sub_100008D78;
     v16[3] = &unk_10001C610;
-    v16[4] = a4;
-    [v7 updateClusterSceneSettingsWithBlock:v16];
+    v16[4] = justification;
+    [scene updateClusterSceneSettingsWithBlock:v16];
   }
 
   else if (v8)
   {
     v14 = [NSNumber numberWithUnsignedInteger:[(CARTemplateUIHostInstrumentClusterViewController *)self layoutJustification]];
-    v15 = [NSNumber numberWithUnsignedInteger:a4];
+    v15 = [NSNumber numberWithUnsignedInteger:justification];
     *buf = 138412546;
     v18 = v14;
     v19 = 2112;
     v20 = v15;
-    _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "clusterWindow:didChangeLayoutJustification from: %@ to: %@ - UNABLE TO HANDLE", buf, 0x16u);
+    _os_log_impl(&_mh_execute_header, scene, OS_LOG_TYPE_DEFAULT, "clusterWindow:didChangeLayoutJustification from: %@ to: %@ - UNABLE TO HANDLE", buf, 0x16u);
   }
 }
 
-- (void)templateInstanceDidFinishClusterSetup:(id)a3
+- (void)templateInstanceDidFinishClusterSetup:(id)setup
 {
-  v4 = a3;
-  v5 = [(CARTemplateUIHostInstrumentClusterViewController *)self templateInstance];
+  setupCopy = setup;
+  templateInstance = [(CARTemplateUIHostInstrumentClusterViewController *)self templateInstance];
 
-  if (v5 == v4)
+  if (templateInstance == setupCopy)
   {
     v6 = sub_100001280(7uLL);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))

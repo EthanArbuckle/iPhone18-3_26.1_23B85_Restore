@@ -1,13 +1,13 @@
 @interface CKDFetchArchivedRecordsOperation
-- (CKDFetchArchivedRecordsOperation)initWithOperationInfo:(id)a3 container:(id)a4;
-- (id)_createAndConfigureURLRequestForZoneIDs:(id)a3 optionsByZoneID:(id)a4;
-- (id)_optionsForZonesWithPendingChangesAfterRequest:(id)a3;
+- (CKDFetchArchivedRecordsOperation)initWithOperationInfo:(id)info container:(id)container;
+- (id)_createAndConfigureURLRequestForZoneIDs:(id)ds optionsByZoneID:(id)d;
+- (id)_optionsForZonesWithPendingChangesAfterRequest:(id)request;
 - (id)activityCreate;
-- (void)_finishOnCallbackQueueWithError:(id)a3;
-- (void)_noteAttributesChangedForZone:(id)a3;
-- (void)_noteChangedRecordWithID:(id)a3 record:(id)a4 error:(id)a5;
-- (void)_noteCompletedURLRequest:(id)a3 withSchedulerInfo:(id)a4;
-- (void)_noteDeletedRecordWithID:(id)a3 recordType:(id)a4;
+- (void)_finishOnCallbackQueueWithError:(id)error;
+- (void)_noteAttributesChangedForZone:(id)zone;
+- (void)_noteChangedRecordWithID:(id)d record:(id)record error:(id)error;
+- (void)_noteCompletedURLRequest:(id)request withSchedulerInfo:(id)info;
+- (void)_noteDeletedRecordWithID:(id)d recordType:(id)type;
 - (void)_noteOperationBeginning;
 - (void)_noteOperationEnding;
 - (void)_noteOperationFinishedBlockEnd;
@@ -15,28 +15,28 @@
 
 @implementation CKDFetchArchivedRecordsOperation
 
-- (CKDFetchArchivedRecordsOperation)initWithOperationInfo:(id)a3 container:(id)a4
+- (CKDFetchArchivedRecordsOperation)initWithOperationInfo:(id)info container:(id)container
 {
-  v6 = a4;
-  v7 = a3;
+  containerCopy = container;
+  infoCopy = info;
   v8 = objc_opt_new();
-  objc_msgSend_takeValuesFrom_(v8, v9, v7);
-  v12 = objc_msgSend_recordZoneIDs(v7, v10, v11);
+  objc_msgSend_takeValuesFrom_(v8, v9, infoCopy);
+  v12 = objc_msgSend_recordZoneIDs(infoCopy, v10, v11);
   objc_msgSend_setRecordZoneIDs_(v8, v13, v12);
 
-  v16 = objc_msgSend_configurationsByRecordZoneID(v7, v14, v15);
+  v16 = objc_msgSend_configurationsByRecordZoneID(infoCopy, v14, v15);
   objc_msgSend_setConfigurationsByRecordZoneID_(v8, v17, v16);
 
-  AssetContents = objc_msgSend_shouldFetchAssetContents(v7, v18, v19);
+  AssetContents = objc_msgSend_shouldFetchAssetContents(infoCopy, v18, v19);
   objc_msgSend_setShouldFetchAssetContents_(v8, v21, AssetContents);
-  AllChanges = objc_msgSend_fetchAllChanges(v7, v22, v23);
+  AllChanges = objc_msgSend_fetchAllChanges(infoCopy, v22, v23);
   objc_msgSend_setFetchAllChanges_(v8, v25, AllChanges);
-  v28 = objc_msgSend_assetTransferOptionsByRecordTypeAndKey(v7, v26, v27);
+  v28 = objc_msgSend_assetTransferOptionsByRecordTypeAndKey(infoCopy, v26, v27);
 
   objc_msgSend_setAssetTransferOptionsByRecordTypeAndKey_(v8, v29, v28);
   v32.receiver = self;
   v32.super_class = CKDFetchArchivedRecordsOperation;
-  v30 = [(CKDFetchBatchedRecordsOperation *)&v32 initWithOperationInfo:v8 container:v6];
+  v30 = [(CKDFetchBatchedRecordsOperation *)&v32 initWithOperationInfo:v8 container:containerCopy];
 
   return v30;
 }
@@ -48,11 +48,11 @@
   return v2;
 }
 
-- (void)_noteCompletedURLRequest:(id)a3 withSchedulerInfo:(id)a4
+- (void)_noteCompletedURLRequest:(id)request withSchedulerInfo:(id)info
 {
   v83 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v66 = a4;
+  requestCopy = request;
+  infoCopy = info;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -60,7 +60,7 @@
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v63, v64, a2, self, @"CKDFetchArchivedRecordsOperation.m", 49, &stru_28385ED00);
   }
 
-  v10 = v7;
+  v10 = requestCopy;
   v13 = objc_msgSend_recordZoneIDs(v10, v11, v12);
   v65 = objc_msgSend_resultsByRecordZoneID(v10, v14, v15);
   v67 = v10;
@@ -129,8 +129,8 @@
   v51 = objc_msgSend_fetchRecordsGroup(self, v49, v50);
   dispatch_group_enter(v51);
 
-  v54 = objc_msgSend_perRequestCallbackGroup(v66, v52, v53);
-  v57 = objc_msgSend_perRequestCallbackQueue(v66, v55, v56);
+  v54 = objc_msgSend_perRequestCallbackGroup(infoCopy, v52, v53);
+  v57 = objc_msgSend_perRequestCallbackQueue(infoCopy, v55, v56);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_2251D70AC;
@@ -139,8 +139,8 @@
   v70 = obj;
   v71 = v65;
   v72 = v18;
-  v73 = v66;
-  v58 = v66;
+  v73 = infoCopy;
+  v58 = infoCopy;
   v59 = v18;
   v60 = v65;
   v61 = obj;
@@ -149,35 +149,35 @@
   v62 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_noteChangedRecordWithID:(id)a3 record:(id)a4 error:(id)a5
+- (void)_noteChangedRecordWithID:(id)d record:(id)record error:(id)error
 {
-  v16 = a3;
-  v8 = a4;
-  v9 = a5;
+  dCopy = d;
+  recordCopy = record;
+  errorCopy = error;
   v12 = objc_msgSend_recordFetchedBlock(self, v10, v11);
 
   if (v12)
   {
     v15 = objc_msgSend_recordFetchedBlock(self, v13, v14);
-    (v15)[2](v15, v16, v8, v9);
+    (v15)[2](v15, dCopy, recordCopy, errorCopy);
   }
 }
 
-- (void)_noteDeletedRecordWithID:(id)a3 recordType:(id)a4
+- (void)_noteDeletedRecordWithID:(id)d recordType:(id)type
 {
-  v7 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], a2, a3, a4);
+  v7 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], a2, d, type);
   objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v7, v6, a2, self, @"CKDFetchArchivedRecordsOperation.m", 102, @"Not expected to get here");
 }
 
-- (void)_noteAttributesChangedForZone:(id)a3
+- (void)_noteAttributesChangedForZone:(id)zone
 {
-  v6 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], a2, a3);
+  v6 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], a2, zone);
   objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v6, v5, a2, self, @"CKDFetchArchivedRecordsOperation.m", 106, @"Not expected to get here");
 }
 
-- (id)_optionsForZonesWithPendingChangesAfterRequest:(id)a3
+- (id)_optionsForZonesWithPendingChangesAfterRequest:(id)request
 {
-  v5 = a3;
+  requestCopy = request;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -185,7 +185,7 @@
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v22, v23, a2, self, @"CKDFetchArchivedRecordsOperation.m", 110, &stru_28385ED00);
   }
 
-  v8 = v5;
+  v8 = requestCopy;
   v9 = objc_opt_new();
   v12 = objc_msgSend_zoneErrorsByZoneID(v8, v10, v11);
   v15 = objc_msgSend_resultsByRecordZoneID(v8, v13, v14);
@@ -206,11 +206,11 @@
   return v16;
 }
 
-- (id)_createAndConfigureURLRequestForZoneIDs:(id)a3 optionsByZoneID:(id)a4
+- (id)_createAndConfigureURLRequestForZoneIDs:(id)ds optionsByZoneID:(id)d
 {
   v47 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  dCopy = d;
   if (*MEMORY[0x277CBC880] != -1)
   {
     dispatch_once(MEMORY[0x277CBC880], *MEMORY[0x277CBC878]);
@@ -221,14 +221,14 @@
   {
     v9 = v8;
     *buf = 134218242;
-    v44 = objc_msgSend_count(v6, v10, v11);
+    v44 = objc_msgSend_count(dsCopy, v10, v11);
     v45 = 2112;
-    v46 = v7;
+    v46 = dCopy;
     _os_log_impl(&dword_22506F000, v9, OS_LOG_TYPE_INFO, "Fetching archived records from the server for %lu zones with options:\n%@", buf, 0x16u);
   }
 
   v12 = [CKDFetchArchivedRecordsURLRequest alloc];
-  v14 = objc_msgSend_initWithOperation_recordZoneIDs_configurationsByRecordZoneID_(v12, v13, self, v6, v7);
+  v14 = objc_msgSend_initWithOperation_recordZoneIDs_configurationsByRecordZoneID_(v12, v13, self, dsCopy, dCopy);
   v17 = objc_msgSend_desiredAssetKeys(self, v15, v16);
   v20 = objc_msgSend_count(v17, v18, v19);
 
@@ -293,13 +293,13 @@
   kdebug_trace();
 }
 
-- (void)_finishOnCallbackQueueWithError:(id)a3
+- (void)_finishOnCallbackQueueWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   objc_msgSend_setRecordFetchedBlock_(self, v5, 0);
   v6.receiver = self;
   v6.super_class = CKDFetchArchivedRecordsOperation;
-  [(CKDFetchBatchedRecordsOperation *)&v6 _finishOnCallbackQueueWithError:v4];
+  [(CKDFetchBatchedRecordsOperation *)&v6 _finishOnCallbackQueueWithError:errorCopy];
 }
 
 @end

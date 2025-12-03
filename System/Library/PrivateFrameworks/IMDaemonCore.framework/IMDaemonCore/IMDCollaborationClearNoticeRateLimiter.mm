@@ -1,24 +1,24 @@
 @interface IMDCollaborationClearNoticeRateLimiter
-- (BOOL)shouldSendWithNotice:(id)a3;
-- (void)didSendWithNotice:(id)a3;
+- (BOOL)shouldSendWithNotice:(id)notice;
+- (void)didSendWithNotice:(id)notice;
 @end
 
 @implementation IMDCollaborationClearNoticeRateLimiter
 
-- (BOOL)shouldSendWithNotice:(id)a3
+- (BOOL)shouldSendWithNotice:(id)notice
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = sub_22B715844(v4);
+  noticeCopy = notice;
+  selfCopy = self;
+  LOBYTE(self) = sub_22B715844(noticeCopy);
 
   return self & 1;
 }
 
-- (void)didSendWithNotice:(id)a3
+- (void)didSendWithNotice:(id)notice
 {
-  v4 = a3;
-  v5 = self;
-  sub_22B716384(v4);
+  noticeCopy = notice;
+  selfCopy = self;
+  sub_22B716384(noticeCopy);
 }
 
 @end

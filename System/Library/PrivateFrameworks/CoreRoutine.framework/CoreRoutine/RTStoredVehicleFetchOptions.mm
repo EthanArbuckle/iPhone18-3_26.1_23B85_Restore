@@ -1,19 +1,19 @@
 @interface RTStoredVehicleFetchOptions
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToFetchOptions:(id)a3;
-- (RTStoredVehicleFetchOptions)initWithCoder:(id)a3;
-- (RTStoredVehicleFetchOptions)initWithDateInterval:(id)a3 limit:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToFetchOptions:(id)options;
+- (RTStoredVehicleFetchOptions)initWithCoder:(id)coder;
+- (RTStoredVehicleFetchOptions)initWithDateInterval:(id)interval limit:(id)limit;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RTStoredVehicleFetchOptions
 
-- (RTStoredVehicleFetchOptions)initWithDateInterval:(id)a3 limit:(id)a4
+- (RTStoredVehicleFetchOptions)initWithDateInterval:(id)interval limit:(id)limit
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v8 && ![v8 unsignedIntegerValue])
+  intervalCopy = interval;
+  limitCopy = limit;
+  v9 = limitCopy;
+  if (limitCopy && ![limitCopy unsignedIntegerValue])
   {
     v13 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -22,7 +22,7 @@
       _os_log_error_impl(&dword_1BF1C4000, v13, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: !limit || (limit && limit.unsignedIntegerValue > 0)", buf, 2u);
     }
 
-    v12 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -33,46 +33,46 @@
     p_isa = &v10->super.isa;
     if (v10)
     {
-      objc_storeStrong(&v10->_dateInterval, a3);
-      objc_storeStrong(p_isa + 2, a4);
+      objc_storeStrong(&v10->_dateInterval, interval);
+      objc_storeStrong(p_isa + 2, limit);
     }
 
     self = p_isa;
-    v12 = self;
+    selfCopy = self;
   }
 
-  return v12;
+  return selfCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(RTStoredVehicleFetchOptions *)self isEqualToFetchOptions:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(RTStoredVehicleFetchOptions *)self isEqualToFetchOptions:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToFetchOptions:(id)a3
+- (BOOL)isEqualToFetchOptions:(id)options
 {
-  v5 = a3;
-  v6 = v5;
+  optionsCopy = options;
+  v6 = optionsCopy;
   dateInterval = self->_dateInterval;
   if (dateInterval)
   {
     goto LABEL_2;
   }
 
-  v3 = [v5 dateInterval];
-  if (!v3)
+  dateInterval = [optionsCopy dateInterval];
+  if (!dateInterval)
   {
     v12 = 1;
     goto LABEL_11;
@@ -81,13 +81,13 @@
   if (self->_dateInterval)
   {
 LABEL_2:
-    v8 = [v6 dateInterval];
-    if (v8)
+    dateInterval2 = [v6 dateInterval];
+    if (dateInterval2)
     {
-      v9 = v8;
+      v9 = dateInterval2;
       v10 = self->_dateInterval;
-      v11 = [v6 dateInterval];
-      v12 = [(NSDateInterval *)v10 isEqualToDateInterval:v11];
+      dateInterval3 = [v6 dateInterval];
+      v12 = [(NSDateInterval *)v10 isEqualToDateInterval:dateInterval3];
 
       if (dateInterval)
       {
@@ -119,8 +119,8 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v3 = [v6 limit];
-  if (!v3)
+  dateInterval = [v6 limit];
+  if (!dateInterval)
   {
     v18 = 1;
     goto LABEL_22;
@@ -135,13 +135,13 @@ LABEL_22:
   }
 
 LABEL_13:
-  v14 = [v6 limit];
-  if (v14)
+  limit = [v6 limit];
+  if (limit)
   {
-    v15 = v14;
+    v15 = limit;
     v16 = self->_limit;
-    v17 = [v6 limit];
-    v18 = [(NSNumber *)v16 isEqualToNumber:v17];
+    limit2 = [v6 limit];
+    v18 = [(NSNumber *)v16 isEqualToNumber:limit2];
 
     if (!limit)
     {
@@ -163,19 +163,19 @@ LABEL_23:
   return v12 & v18;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   dateInterval = self->_dateInterval;
-  v5 = a3;
-  [v5 encodeObject:dateInterval forKey:@"dateInterval"];
-  [v5 encodeObject:self->_limit forKey:@"limit"];
+  coderCopy = coder;
+  [coderCopy encodeObject:dateInterval forKey:@"dateInterval"];
+  [coderCopy encodeObject:self->_limit forKey:@"limit"];
 }
 
-- (RTStoredVehicleFetchOptions)initWithCoder:(id)a3
+- (RTStoredVehicleFetchOptions)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dateInterval"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"limit"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dateInterval"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"limit"];
 
   v7 = [(RTStoredVehicleFetchOptions *)self initWithDateInterval:v5 limit:v6];
   return v7;

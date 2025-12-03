@@ -1,19 +1,19 @@
 @interface MIOTestPattern
-+ (id)colorBarsForYCbCrMatrix:(const __CFString *)a3 amplitude:(double)a4 area:(CGRect)a5 error:(id *)a6;
-+ (id)matrixCoefficientsForYCbCrMatrix:(const __CFString *)a3 error:(id *)a4;
++ (id)colorBarsForYCbCrMatrix:(const __CFString *)matrix amplitude:(double)amplitude area:(CGRect)area error:(id *)error;
++ (id)matrixCoefficientsForYCbCrMatrix:(const __CFString *)matrix error:(id *)error;
 - (CGRect)area;
-- (MIOTestPattern)initWithName:(id)a3 area:(CGRect)a4 parameters:(id)a5;
+- (MIOTestPattern)initWithName:(id)name area:(CGRect)area parameters:(id)parameters;
 @end
 
 @implementation MIOTestPattern
 
-+ (id)matrixCoefficientsForYCbCrMatrix:(const __CFString *)a3 error:(id *)a4
++ (id)matrixCoefficientsForYCbCrMatrix:(const __CFString *)matrix error:(id *)error
 {
   v15[2] = *MEMORY[0x277D85DE8];
   v12 = 0.0;
   v13 = 0.0;
-  v6 = matrix_coefficients_from_string(a3, &v13, &v12);
-  if (a4)
+  v6 = matrix_coefficients_from_string(matrix, &v13, &v12);
+  if (error)
   {
     v7 = v6;
   }
@@ -26,9 +26,9 @@
   if (v7)
   {
     v14[0] = @"kR";
-    v8 = [MEMORY[0x277CCABB0] numberWithDouble:v13];
+    matrix = [MEMORY[0x277CCABB0] numberWithDouble:v13];
     v14[1] = @"kB";
-    v15[0] = v8;
+    v15[0] = matrix;
     v9 = [MEMORY[0x277CCABB0] numberWithDouble:v12];
     v15[1] = v9;
     v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:v14 count:2];
@@ -36,72 +36,72 @@
 
   else
   {
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"kR, kB not supported for '%@'.", a3];
-    [MEMORY[0x277CCA9B8] writerErrorWithMessage:v8 code:33];
-    *a4 = v10 = 0;
+    matrix = [MEMORY[0x277CCACA8] stringWithFormat:@"kR, kB not supported for '%@'.", matrix];
+    [MEMORY[0x277CCA9B8] writerErrorWithMessage:matrix code:33];
+    *error = v10 = 0;
   }
 
   return v10;
 }
 
-+ (id)colorBarsForYCbCrMatrix:(const __CFString *)a3 amplitude:(double)a4 area:(CGRect)a5 error:(id *)a6
++ (id)colorBarsForYCbCrMatrix:(const __CFString *)matrix amplitude:(double)amplitude area:(CGRect)area error:(id *)error
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
+  height = area.size.height;
+  width = area.size.width;
+  y = area.origin.y;
+  x = area.origin.x;
   v19 = 0.0;
   v20 = 0.0;
-  v13 = matrix_coefficients_from_string(a3, &v20, &v19);
-  if (!a6 || (v13 & 1) != 0)
+  v13 = matrix_coefficients_from_string(matrix, &v20, &v19);
+  if (!error || (v13 & 1) != 0)
   {
-    v16 = [MIOTestPattern matrixCoefficientsForYCbCrMatrix:a3 error:a6];
-    v14 = [v16 mutableCopy];
+    v16 = [MIOTestPattern matrixCoefficientsForYCbCrMatrix:matrix error:error];
+    matrix = [v16 mutableCopy];
 
-    if (v14)
+    if (matrix)
     {
-      v17 = [MEMORY[0x277CCABB0] numberWithDouble:a4];
-      [v14 setObject:v17 forKey:@"amplitude"];
+      v17 = [MEMORY[0x277CCABB0] numberWithDouble:amplitude];
+      [matrix setObject:v17 forKey:@"amplitude"];
 
-      v15 = [[MIOTestPattern alloc] initWithName:@"ColorBars" area:v14 parameters:x, y, width, height];
+      height = [[MIOTestPattern alloc] initWithName:@"ColorBars" area:matrix parameters:x, y, width, height];
     }
 
     else
     {
-      v15 = 0;
+      height = 0;
     }
   }
 
   else
   {
-    v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"kR, kB not supported for '%@'.", a3];
-    [MEMORY[0x277CCA9B8] writerErrorWithMessage:v14 code:33];
-    *a6 = v15 = 0;
+    matrix = [MEMORY[0x277CCACA8] stringWithFormat:@"kR, kB not supported for '%@'.", matrix];
+    [MEMORY[0x277CCA9B8] writerErrorWithMessage:matrix code:33];
+    *error = height = 0;
   }
 
-  return v15;
+  return height;
 }
 
-- (MIOTestPattern)initWithName:(id)a3 area:(CGRect)a4 parameters:(id)a5
+- (MIOTestPattern)initWithName:(id)name area:(CGRect)area parameters:(id)parameters
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v12 = a3;
-  v13 = a5;
+  height = area.size.height;
+  width = area.size.width;
+  y = area.origin.y;
+  x = area.origin.x;
+  nameCopy = name;
+  parametersCopy = parameters;
   v19.receiver = self;
   v19.super_class = MIOTestPattern;
   v14 = [(MIOTestPattern *)&v19 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_name, a3);
+    objc_storeStrong(&v14->_name, name);
     v15->_area.origin.x = x;
     v15->_area.origin.y = y;
     v15->_area.size.width = width;
     v15->_area.size.height = height;
-    v16 = [v13 copy];
+    v16 = [parametersCopy copy];
     parameters = v15->_parameters;
     v15->_parameters = v16;
   }

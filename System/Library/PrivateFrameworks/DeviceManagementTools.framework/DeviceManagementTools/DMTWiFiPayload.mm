@@ -1,37 +1,37 @@
 @interface DMTWiFiPayload
-- (DMTWiFiPayload)initWithDictionary:(id)a3 error:(id *)a4;
+- (DMTWiFiPayload)initWithDictionary:(id)dictionary error:(id *)error;
 @end
 
 @implementation DMTWiFiPayload
 
-- (DMTWiFiPayload)initWithDictionary:(id)a3 error:(id *)a4
+- (DMTWiFiPayload)initWithDictionary:(id)dictionary error:(id *)error
 {
   v52 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  dictionaryCopy = dictionary;
   v49.receiver = self;
   v49.super_class = DMTWiFiPayload;
-  v7 = [(DMTConfigurationPrimitive *)&v49 initWithDictionary:v6 error:a4];
+  v7 = [(DMTConfigurationPrimitive *)&v49 initWithDictionary:dictionaryCopy error:error];
   if (v7)
   {
-    v7->_autoJoin = DMTValidateProfileBoolean(v6, @"AutoJoin", 1, 1, a4);
-    v8 = DMTValidateProfileString(v6, @"EncryptionType", 1, a4);
+    v7->_autoJoin = DMTValidateProfileBoolean(dictionaryCopy, @"AutoJoin", 1, 1, error);
+    v8 = DMTValidateProfileString(dictionaryCopy, @"EncryptionType", 1, error);
     encryptionType = v7->_encryptionType;
     v7->_encryptionType = v8;
 
-    v10 = DMTValidateProfileString(v6, @"SSID_STR", 1, a4);
+    v10 = DMTValidateProfileString(dictionaryCopy, @"SSID_STR", 1, error);
     ssid = v7->_ssid;
     v7->_ssid = v10;
 
-    v12 = DMTValidateProfileDictionary(v6, @"EAPClientConfiguration", 1, a4);
+    v12 = DMTValidateProfileDictionary(dictionaryCopy, @"EAPClientConfiguration", 1, error);
     eapClientConfiguration = v7->_eapClientConfiguration;
     v7->_eapClientConfiguration = v12;
 
-    if (!*a4)
+    if (!*error)
     {
       v17 = v7->_eapClientConfiguration;
       if (v17)
       {
-        v18 = DMTValidateProfileArray(v17, @"AcceptEAPTypes", 0, a4);
+        v18 = DMTValidateProfileArray(v17, @"AcceptEAPTypes", 0, error);
         acceptEAPTypes = v7->_acceptEAPTypes;
         v7->_acceptEAPTypes = v18;
 
@@ -73,7 +73,7 @@
                 }
               }
 
-              *a4 = DMTErrorWithCodeAndUserInfo(71, &unk_285B5BED8);
+              *error = DMTErrorWithCodeAndUserInfo(71, &unk_285B5BED8);
 
               goto LABEL_3;
             }
@@ -88,11 +88,11 @@
           }
         }
 
-        v29 = DMTValidateProfileArray(v7->_eapClientConfiguration, @"PayloadCertificateAnchorUUID", 1, a4);
+        v29 = DMTValidateProfileArray(v7->_eapClientConfiguration, @"PayloadCertificateAnchorUUID", 1, error);
         certificateAnchorUUID = v7->_certificateAnchorUUID;
         v7->_certificateAnchorUUID = v29;
 
-        if (*a4)
+        if (*error)
         {
           goto LABEL_3;
         }
@@ -129,7 +129,7 @@
                 }
               }
 
-              *a4 = DMTErrorWithCodeAndUserInfo(71, &unk_285B5BF00);
+              *error = DMTErrorWithCodeAndUserInfo(71, &unk_285B5BF00);
 
               goto LABEL_3;
             }

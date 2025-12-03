@@ -1,49 +1,49 @@
 @interface EKEventAttendeesEditViewController
 - (BOOL)editItemShouldBeAskedForInjectableViewController;
-- (BOOL)validateEmailWithString:(id)a3;
-- (EKEventAttendeesEditViewController)initWithFrame:(CGRect)a3 event:(id)a4 overriddenEventStartDate:(id)a5 overriddenEventEndDate:(id)a6;
+- (BOOL)validateEmailWithString:(id)string;
+- (EKEventAttendeesEditViewController)initWithFrame:(CGRect)frame event:(id)event overriddenEventStartDate:(id)date overriddenEventEndDate:(id)endDate;
 - (NSArray)attendees;
-- (id)_attendeeFromRecipient:(id)a3;
-- (id)_createAttendeeFromRecipient:(id)a3;
-- (id)_createRecipientFromAttendee:(id)a3;
+- (id)_attendeeFromRecipient:(id)recipient;
+- (id)_createAttendeeFromRecipient:(id)recipient;
+- (id)_createRecipientFromAttendee:(id)attendee;
 - (id)_firstInvalidRecipientAddress;
-- (id)_recipientFromAttendee:(id)a3;
-- (void)setAttendees:(id)a3;
-- (void)validateAllowingAlert:(BOOL)a3 callback:(id)a4;
+- (id)_recipientFromAttendee:(id)attendee;
+- (void)setAttendees:(id)attendees;
+- (void)validateAllowingAlert:(BOOL)alert callback:(id)callback;
 - (void)viewDidLoad;
 @end
 
 @implementation EKEventAttendeesEditViewController
 
-- (EKEventAttendeesEditViewController)initWithFrame:(CGRect)a3 event:(id)a4 overriddenEventStartDate:(id)a5 overriddenEventEndDate:(id)a6
+- (EKEventAttendeesEditViewController)initWithFrame:(CGRect)frame event:(id)event overriddenEventStartDate:(id)date overriddenEventEndDate:(id)endDate
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  eventCopy = event;
+  dateCopy = date;
+  endDateCopy = endDate;
   v28.receiver = self;
   v28.super_class = EKEventAttendeesEditViewController;
-  v17 = [(EKEditItemViewController *)&v28 initWithFrame:x, y, width, height];
-  v18 = v17;
-  if (v17)
+  height = [(EKEditItemViewController *)&v28 initWithFrame:x, y, width, height];
+  v18 = height;
+  if (height)
   {
-    objc_storeStrong(&v17->_event, a4);
-    v19 = [[EKEventAttendeePicker alloc] initWithFrame:v14 event:0 calendar:v15 overriddenEventStartDate:v16 overriddenEventEndDate:x, y, width, height];
+    objc_storeStrong(&height->_event, event);
+    height2 = [[EKEventAttendeePicker alloc] initWithFrame:eventCopy event:0 calendar:dateCopy overriddenEventStartDate:endDateCopy overriddenEventEndDate:x, y, width, height];
     picker = v18->_picker;
-    v18->_picker = v19;
+    v18->_picker = height2;
 
     if (![(EKEventAttendeesEditViewController *)v18 disableShowingButtons])
     {
       v21 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:1 target:v18 action:sel__cancelTapped_];
-      v22 = [(EKEventAttendeesEditViewController *)v18 navigationItem];
-      [v22 setLeftBarButtonItem:v21];
+      navigationItem = [(EKEventAttendeesEditViewController *)v18 navigationItem];
+      [navigationItem setLeftBarButtonItem:v21];
 
       v23 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:0 target:v18 action:sel__doneTapped_];
-      v24 = [(EKEventAttendeesEditViewController *)v18 navigationItem];
-      [v24 setRightBarButtonItem:v23];
+      navigationItem2 = [(EKEventAttendeesEditViewController *)v18 navigationItem];
+      [navigationItem2 setRightBarButtonItem:v23];
     }
 
     [(EKEventAttendeesEditViewController *)v18 addChildViewController:v18->_picker];
@@ -61,15 +61,15 @@
   v15.receiver = self;
   v15.super_class = EKEventAttendeesEditViewController;
   [(EKEditItemViewController *)&v15 viewDidLoad];
-  v3 = [(EKEventAttendeesEditViewController *)self view];
-  v4 = [(EKEventAttendeePicker *)self->_picker view];
-  [v3 addSubview:v4];
+  view = [(EKEventAttendeesEditViewController *)self view];
+  view2 = [(EKEventAttendeePicker *)self->_picker view];
+  [view addSubview:view2];
 
-  v5 = [(EKEventAttendeePicker *)self->_picker view];
-  [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
+  view3 = [(EKEventAttendeePicker *)self->_picker view];
+  [view3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v6 = [(EKEventAttendeePicker *)self->_picker view];
-  v7 = _NSDictionaryOfVariableBindings(&cfstr_Pickerview.isa, v6, 0);
+  view4 = [(EKEventAttendeePicker *)self->_picker view];
+  v7 = _NSDictionaryOfVariableBindings(&cfstr_Pickerview.isa, view4, 0);
   v8 = MEMORY[0x1E696ACD8];
   v9 = MEMORY[0x1E695E0F8];
   v10 = [MEMORY[0x1E696ACD8] constraintsWithVisualFormat:@"H:|[pickerView]|" options:0 metrics:MEMORY[0x1E695E0F8] views:v7];
@@ -89,19 +89,19 @@
   }
 }
 
-- (BOOL)validateEmailWithString:(id)a3
+- (BOOL)validateEmailWithString:(id)string
 {
   v3 = MEMORY[0x1E696AE18];
-  v4 = a3;
+  stringCopy = string;
   v5 = [v3 predicateWithFormat:@"SELF MATCHES %@", @"[A-Z0-9a-z._%+'-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2, 64}"];
-  v6 = [v5 evaluateWithObject:v4];
+  v6 = [v5 evaluateWithObject:stringCopy];
 
   return v6;
 }
 
 - (id)_firstInvalidRecipientAddress
 {
-  v2 = self;
+  selfCopy = self;
   v27 = *MEMORY[0x1E69E9840];
   [(EKEventAttendeePicker *)self->_picker recipients];
   v22 = 0u;
@@ -133,24 +133,24 @@
 
         else
         {
-          v11 = [v9 uncommentedAddress];
-          v10 = ![(EKEventAttendeesEditViewController *)v2 validateEmailWithString:v11];
+          uncommentedAddress = [v9 uncommentedAddress];
+          v10 = ![(EKEventAttendeesEditViewController *)selfCopy validateEmailWithString:uncommentedAddress];
         }
 
         if ([v9 kind] == 1)
         {
-          v12 = [*(&v2->super.super.super.super.isa + *(v7 + 3336)) calendar];
-          v13 = [v12 constraints];
-          if ([v13 supportsPhoneNumbers])
+          calendar = [*(&selfCopy->super.super.super.super.isa + *(v7 + 3336)) calendar];
+          constraints = [calendar constraints];
+          if ([constraints supportsPhoneNumbers])
           {
             [v9 normalizedAddress];
             v14 = v6;
-            v15 = v2;
+            v15 = selfCopy;
             v17 = v16 = v3;
             v18 = [v17 cal_isPhoneNumber] ^ 1;
 
             v3 = v16;
-            v2 = v15;
+            selfCopy = v15;
             v6 = v14;
             v7 = 0x1EC764000;
           }
@@ -170,7 +170,7 @@
 
         if ((v10 | v18))
         {
-          v19 = [v9 uncommentedAddress];
+          uncommentedAddress2 = [v9 uncommentedAddress];
           goto LABEL_20;
         }
 
@@ -188,24 +188,24 @@
     }
   }
 
-  v19 = 0;
+  uncommentedAddress2 = 0;
 LABEL_20:
 
-  return v19;
+  return uncommentedAddress2;
 }
 
-- (void)validateAllowingAlert:(BOOL)a3 callback:(id)a4
+- (void)validateAllowingAlert:(BOOL)alert callback:(id)callback
 {
-  v4 = a3;
-  v6 = a4;
+  alertCopy = alert;
+  callbackCopy = callback;
   [(EKEventAttendeePicker *)self->_picker commitRemainingText];
-  v7 = [(EKEventAttendeesEditViewController *)self _firstInvalidRecipientAddress];
-  v8 = [(EKEvent *)self->_event calendar];
-  v9 = [v8 maxAttendees];
+  _firstInvalidRecipientAddress = [(EKEventAttendeesEditViewController *)self _firstInvalidRecipientAddress];
+  calendar = [(EKEvent *)self->_event calendar];
+  maxAttendees = [calendar maxAttendees];
 
-  if (v9 < 1)
+  if (maxAttendees < 1)
   {
-    if (!v7)
+    if (!_firstInvalidRecipientAddress)
     {
       goto LABEL_10;
     }
@@ -213,26 +213,26 @@ LABEL_20:
 
   else
   {
-    v10 = [(EKEventAttendeePicker *)self->_picker recipients];
-    v11 = [v10 count];
+    recipients = [(EKEventAttendeePicker *)self->_picker recipients];
+    v11 = [recipients count];
 
-    if (!v7)
+    if (!_firstInvalidRecipientAddress)
     {
-      if (v11 + 1 > v9)
+      if (v11 + 1 > maxAttendees)
       {
-        if (v4)
+        if (alertCopy)
         {
           v45 = MEMORY[0x1E69DC650];
           v47 = EventKitUIBundle();
           v44 = [v47 localizedStringForKey:@"Too Many Invitees" value:&stru_1F4EF6790 table:0];
           v12 = MEMORY[0x1E696AEC0];
           EventKitUIBundle();
-          v13 = v48 = v4;
+          v13 = v48 = alertCopy;
           v14 = [v13 localizedStringForKey:@"This event has %ld invitees but this account only supports %ld invitees. The server will not accept events with too many invitees. Do you want to continue editing the invitees or attempt to save the event anyway?" value:&stru_1F4EF6790 table:0];
-          v15 = [(EKEventAttendeePicker *)self->_picker recipients];
-          v16 = [v15 count] + 1;
-          v17 = [(EKEvent *)self->_event calendar];
-          v18 = [v12 localizedStringWithFormat:v14, v16, objc_msgSend(v17, "maxAttendees")];
+          recipients2 = [(EKEventAttendeePicker *)self->_picker recipients];
+          v16 = [recipients2 count] + 1;
+          calendar2 = [(EKEvent *)self->_event calendar];
+          v18 = [v12 localizedStringWithFormat:v14, v16, objc_msgSend(calendar2, "maxAttendees")];
           v46 = [v45 alertControllerWithTitle:v44 message:v18 preferredStyle:1];
 
           v19 = MEMORY[0x1E69DC648];
@@ -242,7 +242,7 @@ LABEL_20:
           v52[1] = 3221225472;
           v52[2] = __69__EKEventAttendeesEditViewController_validateAllowingAlert_callback___block_invoke;
           v52[3] = &unk_1E84409B8;
-          v22 = v6;
+          v22 = callbackCopy;
           v53 = v22;
           v54 = v48;
           v23 = [v19 actionWithTitle:v21 style:1 handler:v52];
@@ -264,8 +264,8 @@ LABEL_20:
           goto LABEL_12;
         }
 
-        v41 = v6[2];
-        v43 = v6;
+        v41 = callbackCopy[2];
+        v43 = callbackCopy;
         v42 = 1;
 LABEL_11:
         v41(v43, v42, 1);
@@ -273,26 +273,26 @@ LABEL_11:
       }
 
 LABEL_10:
-      v41 = v6[2];
-      v42 = !v4;
-      v43 = v6;
+      v41 = callbackCopy[2];
+      v42 = !alertCopy;
+      v43 = callbackCopy;
       goto LABEL_11;
     }
   }
 
-  if (v4)
+  if (alertCopy)
   {
     v28 = MEMORY[0x1E69DC650];
     v29 = EventKitUIBundle();
     v30 = [v29 localizedStringForKey:@"Cannot Send Invitation" value:&stru_1F4EF6790 table:0];
-    v31 = v4;
+    v31 = alertCopy;
     v32 = MEMORY[0x1E696AEC0];
     v33 = EventKitUIBundle();
     v34 = [v33 localizedStringForKey:@"“%@” does not appear to be a valid email address." value:&stru_1F4EF6790 table:0];
-    v35 = [v32 localizedStringWithFormat:v34, v7];
+    v35 = [v32 localizedStringWithFormat:v34, _firstInvalidRecipientAddress];
     v36 = [v28 alertControllerWithTitle:v30 message:v35 preferredStyle:1];
 
-    v4 = v31;
+    alertCopy = v31;
     v37 = MEMORY[0x1E69DC648];
     v38 = EventKitUIBundle();
     v39 = [v38 localizedStringForKey:@"OK" value:&stru_1F4EF6790 table:0];
@@ -302,33 +302,33 @@ LABEL_10:
     [(EKEventAttendeesEditViewController *)self presentViewController:v36 animated:1 completion:0];
   }
 
-  (v6[2])(v6, !v4, 0);
+  (callbackCopy[2])(callbackCopy, !alertCopy, 0);
 LABEL_12:
 }
 
-- (id)_attendeeFromRecipient:(id)a3
+- (id)_attendeeFromRecipient:(id)recipient
 {
-  v4 = a3;
-  v5 = objc_getAssociatedObject(v4, &kEKUI_CNComposeReciepentParticipantKey);
-  if (!v5)
+  recipientCopy = recipient;
+  address = objc_getAssociatedObject(recipientCopy, &kEKUI_CNComposeReciepentParticipantKey);
+  if (!address)
   {
-    v5 = [v4 address];
+    address = [recipientCopy address];
 
-    if (v5)
+    if (address)
     {
-      v5 = [(EKEventAttendeesEditViewController *)self _createAttendeeFromRecipient:v4];
+      address = [(EKEventAttendeesEditViewController *)self _createAttendeeFromRecipient:recipientCopy];
     }
   }
 
-  v6 = [(EKEvent *)self->_event calendar];
-  v7 = [v6 ownerIdentityAddress];
+  calendar = [(EKEvent *)self->_event calendar];
+  ownerIdentityAddress = [calendar ownerIdentityAddress];
 
-  v8 = [v5 URL];
+  v8 = [address URL];
   v9 = v8;
-  if (v8 && v7)
+  if (v8 && ownerIdentityAddress)
   {
-    v10 = [v5 URL];
-    v11 = [v10 CDVIsEqualToURL:v7];
+    v10 = [address URL];
+    v11 = [v10 CDVIsEqualToURL:ownerIdentityAddress];
 
     if (v11)
     {
@@ -341,35 +341,35 @@ LABEL_12:
   {
   }
 
-  v12 = v5;
+  v12 = address;
 LABEL_10:
 
   return v12;
 }
 
-- (id)_createAttendeeFromRecipient:(id)a3
+- (id)_createAttendeeFromRecipient:(id)recipient
 {
-  v3 = a3;
-  v4 = [v3 displayString];
-  v5 = [v4 length];
+  recipientCopy = recipient;
+  displayString = [recipientCopy displayString];
+  v5 = [displayString length];
 
   if (v5)
   {
-    [v3 displayString];
+    [recipientCopy displayString];
   }
 
   else
   {
-    [v3 compositeName];
+    [recipientCopy compositeName];
   }
   v6 = ;
-  if ([v3 kind] == 4)
+  if ([recipientCopy kind] == 4)
   {
     v7 = MEMORY[0x1E6966968];
     v8 = MEMORY[0x1E695DFF8];
-    v9 = [v3 normalizedAddress];
-    v10 = [v8 URLWithString:v9];
-    v11 = [v7 attendeeWithName:v6 url:v10];
+    normalizedAddress = [recipientCopy normalizedAddress];
+    normalizedAddress2 = [v8 URLWithString:normalizedAddress];
+    v11 = [v7 attendeeWithName:v6 url:normalizedAddress2];
 LABEL_9:
     v13 = v11;
 
@@ -377,20 +377,20 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if (![v3 kind])
+  if (![recipientCopy kind])
   {
     v14 = MEMORY[0x1E6966968];
-    v9 = [v3 address];
-    v13 = [v14 attendeeWithName:v6 emailAddress:v9];
+    normalizedAddress = [recipientCopy address];
+    v13 = [v14 attendeeWithName:v6 emailAddress:normalizedAddress];
     goto LABEL_11;
   }
 
-  if ([v3 kind] == 1)
+  if ([recipientCopy kind] == 1)
   {
     v12 = MEMORY[0x1E6966968];
-    v9 = IdentityNameFromRecipient(v3);
-    v10 = [v3 normalizedAddress];
-    v11 = [v12 attendeeWithName:v9 phoneNumber:v10];
+    normalizedAddress = IdentityNameFromRecipient(recipientCopy);
+    normalizedAddress2 = [recipientCopy normalizedAddress];
+    v11 = [v12 attendeeWithName:normalizedAddress phoneNumber:normalizedAddress2];
     goto LABEL_9;
   }
 
@@ -400,13 +400,13 @@ LABEL_12:
   return v13;
 }
 
-- (id)_recipientFromAttendee:(id)a3
+- (id)_recipientFromAttendee:(id)attendee
 {
-  if (a3)
+  if (attendee)
   {
-    v4 = a3;
-    v5 = [(EKEventAttendeesEditViewController *)self _createRecipientFromAttendee:v4];
-    objc_setAssociatedObject(v5, &kEKUI_CNComposeReciepentParticipantKey, v4, 0x301);
+    attendeeCopy = attendee;
+    v5 = [(EKEventAttendeesEditViewController *)self _createRecipientFromAttendee:attendeeCopy];
+    objc_setAssociatedObject(v5, &kEKUI_CNComposeReciepentParticipantKey, attendeeCopy, 0x301);
   }
 
   else
@@ -417,85 +417,85 @@ LABEL_12:
   return v5;
 }
 
-- (id)_createRecipientFromAttendee:(id)a3
+- (id)_createRecipientFromAttendee:(id)attendee
 {
-  v3 = a3;
-  v4 = [v3 contactPredicate];
-  v5 = [MEMORY[0x1E6992F50] defaultProvider];
-  v6 = [getCNComposeRecipientClass() descriptorsForRequiredKeysForContact];
-  v7 = [v5 unifiedContactsMatchingPredicate:v4 keysToFetch:v6];
+  attendeeCopy = attendee;
+  contactPredicate = [attendeeCopy contactPredicate];
+  defaultProvider = [MEMORY[0x1E6992F50] defaultProvider];
+  descriptorsForRequiredKeysForContact = [getCNComposeRecipientClass() descriptorsForRequiredKeysForContact];
+  v7 = [defaultProvider unifiedContactsMatchingPredicate:contactPredicate keysToFetch:descriptorsForRequiredKeysForContact];
 
-  v8 = [v7 firstObject];
-  v9 = [v3 emailAddress];
+  firstObject = [v7 firstObject];
+  emailAddress = [attendeeCopy emailAddress];
 
-  if (v9)
+  if (emailAddress)
   {
     v10 = objc_alloc(getCNComposeRecipientClass());
-    v11 = [v3 emailAddress];
+    emailAddress2 = [attendeeCopy emailAddress];
     v12 = v10;
-    v13 = v8;
-    v14 = v11;
+    v13 = firstObject;
+    v14 = emailAddress2;
     v15 = 0;
 LABEL_5:
     v18 = [v12 initWithContact:v13 address:v14 kind:v15];
     goto LABEL_6;
   }
 
-  v16 = [v3 phoneNumber];
+  phoneNumber = [attendeeCopy phoneNumber];
 
-  if (v16)
+  if (phoneNumber)
   {
     v17 = objc_alloc(getCNComposeRecipientClass());
-    v11 = [v3 phoneNumber];
+    emailAddress2 = [attendeeCopy phoneNumber];
     v12 = v17;
-    v13 = v8;
-    v14 = v11;
+    v13 = firstObject;
+    v14 = emailAddress2;
     v15 = 1;
     goto LABEL_5;
   }
 
-  v21 = [v3 URL];
-  v22 = [v21 cal_hasSchemeMailto];
+  v21 = [attendeeCopy URL];
+  cal_hasSchemeMailto = [v21 cal_hasSchemeMailto];
 
-  if (v22)
+  if (cal_hasSchemeMailto)
   {
     v23 = objc_alloc(getCNComposeRecipientClass());
-    v11 = [v3 URL];
-    v24 = [v11 resourceSpecifier];
+    emailAddress2 = [attendeeCopy URL];
+    resourceSpecifier = [emailAddress2 resourceSpecifier];
 LABEL_16:
-    v28 = v24;
+    resourceSpecifier2 = resourceSpecifier;
     v29 = v23;
-    v30 = v8;
-    v31 = v28;
+    v30 = firstObject;
+    v31 = resourceSpecifier2;
     v32 = 0;
     goto LABEL_17;
   }
 
-  v25 = [v3 URL];
-  v26 = [v25 cal_hasSchemeTel];
+  v25 = [attendeeCopy URL];
+  cal_hasSchemeTel = [v25 cal_hasSchemeTel];
 
   v23 = objc_alloc(getCNComposeRecipientClass());
-  v27 = [v3 URL];
-  v11 = v27;
-  if (!v26)
+  v27 = [attendeeCopy URL];
+  emailAddress2 = v27;
+  if (!cal_hasSchemeTel)
   {
-    v24 = [v27 absoluteString];
+    resourceSpecifier = [v27 absoluteString];
     goto LABEL_16;
   }
 
-  v28 = [v27 resourceSpecifier];
+  resourceSpecifier2 = [v27 resourceSpecifier];
   v29 = v23;
-  v30 = v8;
-  v31 = v28;
+  v30 = firstObject;
+  v31 = resourceSpecifier2;
   v32 = 1;
 LABEL_17:
   v18 = [v29 initWithContact:v30 address:v31 kind:v32];
 
 LABEL_6:
-  if (v8)
+  if (firstObject)
   {
-    v19 = [v8 CalDisplayName];
-    [v18 setDisplayString:v19];
+    calDisplayName = [firstObject CalDisplayName];
+    [v18 setDisplayString:calDisplayName];
   }
 
   return v18;
@@ -504,13 +504,13 @@ LABEL_6:
 - (NSArray)attendees
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [(EKEventAttendeePicker *)self->_picker recipients];
-  v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v3, "count")}];
+  recipients = [(EKEventAttendeePicker *)self->_picker recipients];
+  v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(recipients, "count")}];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = v3;
+  v5 = recipients;
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -541,17 +541,17 @@ LABEL_6:
   return v4;
 }
 
-- (void)setAttendees:(id)a3
+- (void)setAttendees:(id)attendees
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v4, "count")}];
+  attendeesCopy = attendees;
+  v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(attendeesCopy, "count")}];
   v6 = objc_opt_new();
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v7 = v4;
+  v7 = attendeesCopy;
   v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v8)
   {
@@ -631,8 +631,8 @@ uint64_t __51__EKEventAttendeesEditViewController_setAttendees___block_invoke(ui
     return 0;
   }
 
-  v3 = [(EKEventAttendeePicker *)self->_picker recipients];
-  v2 = [v3 count] != 0;
+  recipients = [(EKEventAttendeePicker *)self->_picker recipients];
+  v2 = [recipients count] != 0;
 
   return v2;
 }

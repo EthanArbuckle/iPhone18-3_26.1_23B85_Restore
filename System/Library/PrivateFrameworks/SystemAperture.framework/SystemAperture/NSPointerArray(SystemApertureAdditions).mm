@@ -7,16 +7,16 @@
 
 - (uint64_t)sa_compact
 {
-  v2 = [a1 count];
+  v2 = [self count];
   v3 = 0;
   if (v2)
   {
     v4 = v2 - 1;
     do
     {
-      if (![a1 pointerAtIndex:v4])
+      if (![self pointerAtIndex:v4])
       {
-        [a1 removePointerAtIndex:v4];
+        [self removePointerAtIndex:v4];
         v3 = 1;
       }
 
@@ -31,12 +31,12 @@
 
 - (uint64_t)sa_lastPointer
 {
-  [a1 sa_compact];
-  result = [a1 count];
+  [self sa_compact];
+  result = [self count];
   if (result)
   {
 
-    return [a1 pointerAtIndex:result - 1];
+    return [self pointerAtIndex:result - 1];
   }
 
   return result;

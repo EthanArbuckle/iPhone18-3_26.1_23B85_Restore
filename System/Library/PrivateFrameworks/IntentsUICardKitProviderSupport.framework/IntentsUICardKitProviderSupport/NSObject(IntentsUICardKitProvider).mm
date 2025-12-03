@@ -20,13 +20,13 @@
 - (uint64_t)inuickp_intrinsicInteractiveBehavior
 {
   v25 = *MEMORY[0x277D85DE8];
-  if ([a1 conformsToProtocol:&unk_286786768])
+  if ([self conformsToProtocol:&unk_286786768])
   {
-    v2 = [objc_opt_class() inuickp_interactiveBehaviorPrecedenceOrder];
-    v18 = [v2 count];
+    inuickp_interactiveBehaviorPrecedenceOrder = [objc_opt_class() inuickp_interactiveBehaviorPrecedenceOrder];
+    v18 = [inuickp_interactiveBehaviorPrecedenceOrder count];
     v3 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:0];
-    v19 = v2;
-    v4 = [v2 indexOfObject:v3];
+    v19 = inuickp_interactiveBehaviorPrecedenceOrder;
+    v4 = [inuickp_interactiveBehaviorPrecedenceOrder indexOfObject:v3];
 
     v5 = 0;
     if (objc_opt_respondsToSelector())
@@ -35,8 +35,8 @@
       v23 = 0u;
       v20 = 0u;
       v21 = 0u;
-      v6 = [a1 actionCommands];
-      v7 = [v6 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      actionCommands = [self actionCommands];
+      v7 = [actionCommands countByEnumeratingWithState:&v20 objects:v24 count:16];
       if (v7)
       {
         v8 = v7;
@@ -49,26 +49,26 @@
           {
             if (*v21 != v10)
             {
-              objc_enumerationMutation(v6);
+              objc_enumerationMutation(actionCommands);
             }
 
             v12 = *(*(&v20 + 1) + 8 * i);
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v13 = [v12 inuickp_intrinsicInteractiveBehavior];
-              v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v13];
+              inuickp_intrinsicInteractiveBehavior = [v12 inuickp_intrinsicInteractiveBehavior];
+              v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:inuickp_intrinsicInteractiveBehavior];
               v15 = v18 - [v19 indexOfObject:v14];
 
               if (v15 > v9)
               {
                 v9 = v15;
-                v5 = v13;
+                v5 = inuickp_intrinsicInteractiveBehavior;
               }
             }
           }
 
-          v8 = [v6 countByEnumeratingWithState:&v20 objects:v24 count:16];
+          v8 = [actionCommands countByEnumeratingWithState:&v20 objects:v24 count:16];
         }
 
         while (v8);

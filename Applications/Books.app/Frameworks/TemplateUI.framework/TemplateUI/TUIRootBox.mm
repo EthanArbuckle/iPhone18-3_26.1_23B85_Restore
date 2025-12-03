@@ -1,10 +1,10 @@
 @interface TUIRootBox
-+ (TUIRootBox)rootBoxWithContentModel:(id)a3;
++ (TUIRootBox)rootBoxWithContentModel:(id)model;
 - (TUIModelLayoutable)contentModel;
 - (TUIRootBox)init;
 - (id)contentModels;
 - (id)navBarModels;
-- (id)validateInstantiationWithContext:(id)a3 transactionGroup:(id)a4 layout:(id)a5;
+- (id)validateInstantiationWithContext:(id)context transactionGroup:(id)group layout:(id)layout;
 - (void)onContainedModelsChanged;
 @end
 
@@ -112,19 +112,19 @@
   contentModel = self->_contentModel;
   if (!contentModel)
   {
-    v4 = [(TUIRootBox *)self contentModels];
-    if ([v4 count] == &dword_0 + 1)
+    contentModels = [(TUIRootBox *)self contentModels];
+    if ([contentModels count] == &dword_0 + 1)
     {
-      v5 = [v4 firstObject];
+      firstObject = [contentModels firstObject];
     }
 
     else
     {
-      v5 = 0;
+      firstObject = 0;
     }
 
     v6 = self->_contentModel;
-    self->_contentModel = v5;
+    self->_contentModel = firstObject;
 
     contentModel = self->_contentModel;
   }
@@ -138,11 +138,11 @@
   self->_contentModel = 0;
 }
 
-+ (TUIRootBox)rootBoxWithContentModel:(id)a3
++ (TUIRootBox)rootBoxWithContentModel:(id)model
 {
-  v3 = a3;
+  modelCopy = model;
   v4 = objc_alloc_init(TUIRootBox);
-  v7 = v3;
+  v7 = modelCopy;
   v5 = [NSArray arrayWithObjects:&v7 count:1];
 
   [(TUIContainerBox *)v4 updateModelChildren:v5];
@@ -150,12 +150,12 @@
   return v4;
 }
 
-- (id)validateInstantiationWithContext:(id)a3 transactionGroup:(id)a4 layout:(id)a5
+- (id)validateInstantiationWithContext:(id)context transactionGroup:(id)group layout:(id)layout
 {
-  v6 = a3;
+  contextCopy = context;
   v7 = objc_alloc_init(TUIBoxBuilder);
-  *&self->_flags = [v6 updateWithEntry:self->_entry withBuilder:v7 environmentContainer:self];
-  v8 = [(TUIBoxBuilder *)v7 finalizeModelsWithParent:self box:self context:v6];
+  *&self->_flags = [contextCopy updateWithEntry:self->_entry withBuilder:v7 environmentContainer:self];
+  v8 = [(TUIBoxBuilder *)v7 finalizeModelsWithParent:self box:self context:contextCopy];
 
   return self;
 }

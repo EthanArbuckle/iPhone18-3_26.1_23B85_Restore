@@ -1,82 +1,82 @@
 @interface IRSessionAnalytics
 - (BOOL)_isSessionOngoing;
-- (IRSessionAnalytics)initWithQueue:(id)a3 service:(id)a4;
-- (void)_handleBannerEvent:(id)a3 withCandidate:(id)a4 WithMiLoPrediction:(id)a5 systemState:(id)a6;
-- (void)_handleNonBannerEvent:(id)a3 forCandidate:(id)a4 forceStopSession:(BOOL)a5;
+- (IRSessionAnalytics)initWithQueue:(id)queue service:(id)service;
+- (void)_handleBannerEvent:(id)event withCandidate:(id)candidate WithMiLoPrediction:(id)prediction systemState:(id)state;
+- (void)_handleNonBannerEvent:(id)event forCandidate:(id)candidate forceStopSession:(BOOL)session;
 - (void)_handleSessionTimeout;
 - (void)_invalidate;
-- (void)_stopSessionAndSendCA:(unint64_t)a3;
-- (void)contextChangedWithReason:(id)a3 systemState:(id)a4;
-- (void)event:(id)a3 forCandidate:(id)a4 miloPrediction:(id)a5 systemState:(id)a6;
+- (void)_stopSessionAndSendCA:(unint64_t)a;
+- (void)contextChangedWithReason:(id)reason systemState:(id)state;
+- (void)event:(id)event forCandidate:(id)candidate miloPrediction:(id)prediction systemState:(id)state;
 @end
 
 @implementation IRSessionAnalytics
 
 - (BOOL)_isSessionOngoing
 {
-  v2 = [(IRSessionAnalytics *)self timer];
-  v3 = v2 != 0;
+  timer = [(IRSessionAnalytics *)self timer];
+  v3 = timer != 0;
 
   return v3;
 }
 
-- (IRSessionAnalytics)initWithQueue:(id)a3 service:(id)a4
+- (IRSessionAnalytics)initWithQueue:(id)queue service:(id)service
 {
-  v6 = a3;
-  v7 = a4;
+  queueCopy = queue;
+  serviceCopy = service;
   v11.receiver = self;
   v11.super_class = IRSessionAnalytics;
   v8 = [(IRSessionAnalytics *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(IRSessionAnalytics *)v8 setQueue:v6];
-    [(IRSessionAnalytics *)v9 setService:v7];
+    [(IRSessionAnalytics *)v8 setQueue:queueCopy];
+    [(IRSessionAnalytics *)v9 setService:serviceCopy];
   }
 
   return v9;
 }
 
-- (void)event:(id)a3 forCandidate:(id)a4 miloPrediction:(id)a5 systemState:(id)a6
+- (void)event:(id)event forCandidate:(id)candidate miloPrediction:(id)prediction systemState:(id)state
 {
-  v14 = a5;
-  v10 = a6;
-  v11 = a4;
-  v12 = a3;
-  v13 = [(IRSessionAnalytics *)self queue];
-  dispatch_assert_queue_V2(v13);
+  predictionCopy = prediction;
+  stateCopy = state;
+  candidateCopy = candidate;
+  eventCopy = event;
+  queue = [(IRSessionAnalytics *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  if ([v12 isBannerEvent])
+  if ([eventCopy isBannerEvent])
   {
-    [(IRSessionAnalytics *)self _handleBannerEvent:v12 withCandidate:v11 WithMiLoPrediction:v14 systemState:v10];
+    [(IRSessionAnalytics *)self _handleBannerEvent:eventCopy withCandidate:candidateCopy WithMiLoPrediction:predictionCopy systemState:stateCopy];
   }
 
   else
   {
-    [(IRSessionAnalytics *)self _handleNonBannerEvent:v12 forCandidate:v11 forceStopSession:0];
+    [(IRSessionAnalytics *)self _handleNonBannerEvent:eventCopy forCandidate:candidateCopy forceStopSession:0];
   }
 }
 
-- (void)contextChangedWithReason:(id)a3 systemState:(id)a4
+- (void)contextChangedWithReason:(id)reason systemState:(id)state
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [(IRSessionAnalytics *)self queue];
-  dispatch_assert_queue_V2(v7);
+  reasonCopy = reason;
+  stateCopy = state;
+  queue = [(IRSessionAnalytics *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  if ((([v8 isEqual:@"Output device"] & 1) != 0 || objc_msgSend(v8, "isEqual:", @"Predicted output device")) && -[IRSessionAnalytics _isSessionOngoing](self, "_isSessionOngoing") && objc_msgSend(v6, "isHeadphonesRoutedOrPredicted"))
+  if ((([reasonCopy isEqual:@"Output device"] & 1) != 0 || objc_msgSend(reasonCopy, "isEqual:", @"Predicted output device")) && -[IRSessionAnalytics _isSessionOngoing](self, "_isSessionOngoing") && objc_msgSend(stateCopy, "isHeadphonesRoutedOrPredicted"))
   {
     [(IRSessionAnalytics *)self _stopSessionAndSendCA:3];
   }
 }
 
-- (void)_handleBannerEvent:(id)a3 withCandidate:(id)a4 WithMiLoPrediction:(id)a5 systemState:(id)a6
+- (void)_handleBannerEvent:(id)event withCandidate:(id)candidate WithMiLoPrediction:(id)prediction systemState:(id)state
 {
   v45 = *MEMORY[0x277D85DE8];
-  v30 = a3;
-  v10 = a4;
-  v29 = a5;
-  v11 = a6;
+  eventCopy = event;
+  candidateCopy = candidate;
+  predictionCopy = prediction;
+  stateCopy = state;
   if ([(IRSessionAnalytics *)self _isSessionOngoing])
   {
     [(IRSessionAnalytics *)self _stopSessionAndSendCA:6];
@@ -87,11 +87,11 @@
   if (os_log_type_enabled(*MEMORY[0x277D21260], OS_LOG_TYPE_INFO))
   {
     v14 = v13;
-    [v30 eventType];
+    [eventCopy eventType];
     v15 = IRMediaEventTypeToString();
-    v16 = [v10 candidateIdentifier];
-    v17 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v29, "canUse")}];
-    v18 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v11, "isHeadphonesRoutedOrPredicted")}];
+    candidateIdentifier = [candidateCopy candidateIdentifier];
+    v17 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(predictionCopy, "canUse")}];
+    v18 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(stateCopy, "isHeadphonesRoutedOrPredicted")}];
     *buf = 136316418;
     v34 = "#session-analytics, ";
     v35 = 2112;
@@ -99,7 +99,7 @@
     v37 = 2112;
     v38 = v15;
     v39 = 2112;
-    v40 = v16;
+    v40 = candidateIdentifier;
     v41 = 2112;
     v42 = v17;
     v43 = 2112;
@@ -107,10 +107,10 @@
     _os_log_impl(&dword_25543D000, v14, OS_LOG_TYPE_INFO, "%s[%@], Starting with eventType: %@, candidateIdentifier: %@, miloCanUse: %@, isHeadphonesRoutedOrPredicted: %@", buf, 0x3Eu);
   }
 
-  [(IRSessionAnalytics *)self setBannerEvent:v30];
-  [(IRSessionAnalytics *)self setBannerCandidate:v10];
-  [(IRSessionAnalytics *)self setBannerMiLoPrediction:v29];
-  if ([v11 isHeadphonesRoutedOrPredicted] || !v10 || (objc_msgSend(v10, "candidateIdentifier"), v19 = objc_claimAutoreleasedReturnValue(), v20 = v19 == 0, v19, v20))
+  [(IRSessionAnalytics *)self setBannerEvent:eventCopy];
+  [(IRSessionAnalytics *)self setBannerCandidate:candidateCopy];
+  [(IRSessionAnalytics *)self setBannerMiLoPrediction:predictionCopy];
+  if ([stateCopy isHeadphonesRoutedOrPredicted] || !candidateCopy || (objc_msgSend(candidateCopy, "candidateIdentifier"), v19 = objc_claimAutoreleasedReturnValue(), v20 = v19 == 0, v19, v20))
   {
     [(IRSessionAnalytics *)self _stopSessionAndSendCA:7];
   }
@@ -120,16 +120,16 @@
     objc_initWeak(buf, self);
     v21 = [IRTimer alloc];
     v22 = +[IRPreferences shared];
-    v23 = [v22 coreAnalyticsSessionPeriodInSeconds];
-    [v23 doubleValue];
+    coreAnalyticsSessionPeriodInSeconds = [v22 coreAnalyticsSessionPeriodInSeconds];
+    [coreAnalyticsSessionPeriodInSeconds doubleValue];
     v25 = v24;
-    v26 = [(IRSessionAnalytics *)self queue];
+    queue = [(IRSessionAnalytics *)self queue];
     v31[0] = MEMORY[0x277D85DD0];
     v31[1] = 3221225472;
     v31[2] = __86__IRSessionAnalytics__handleBannerEvent_withCandidate_WithMiLoPrediction_systemState___block_invoke;
     v31[3] = &unk_2797E0C18;
     objc_copyWeak(&v32, buf);
-    v27 = [(IRTimer *)v21 initWithInterval:0 repeats:v26 queue:v31 block:v25];
+    v27 = [(IRTimer *)v21 initWithInterval:0 repeats:queue queue:v31 block:v25];
     [(IRSessionAnalytics *)self setTimer:v27];
 
     objc_destroyWeak(&v32);
@@ -150,30 +150,30 @@ void __86__IRSessionAnalytics__handleBannerEvent_withCandidate_WithMiLoPredictio
   }
 }
 
-- (void)_handleNonBannerEvent:(id)a3 forCandidate:(id)a4 forceStopSession:(BOOL)a5
+- (void)_handleNonBannerEvent:(id)event forCandidate:(id)candidate forceStopSession:(BOOL)session
 {
-  v22 = a3;
-  v8 = a4;
+  eventCopy = event;
+  candidateCopy = candidate;
   if ([(IRSessionAnalytics *)self _isSessionOngoing])
   {
     v9 = [IREventDO eventDOWithMediaType:5];
-    v10 = [v22 isEqual:v9];
+    v10 = [eventCopy isEqual:v9];
 
     v11 = [IREventDO eventDOWithMediaType:0];
-    v12 = [v22 isEqual:v11];
+    v12 = [eventCopy isEqual:v11];
 
     if ((v10 & 1) != 0 || v12)
     {
-      [(IRSessionAnalytics *)self setChosenCandidate:v8];
-      if (!v10 || a5)
+      [(IRSessionAnalytics *)self setChosenCandidate:candidateCopy];
+      if (!v10 || session)
       {
-        v13 = [(IRSessionAnalytics *)self bannerCandidate];
-        v14 = [v13 candidateIdentifier];
-        v15 = [(IRSessionAnalytics *)self chosenCandidate];
-        v16 = [v15 candidateIdentifier];
-        v17 = [v14 isEqual:v16];
+        bannerCandidate = [(IRSessionAnalytics *)self bannerCandidate];
+        candidateIdentifier = [bannerCandidate candidateIdentifier];
+        chosenCandidate = [(IRSessionAnalytics *)self chosenCandidate];
+        candidateIdentifier2 = [chosenCandidate candidateIdentifier];
+        v17 = [candidateIdentifier isEqual:candidateIdentifier2];
 
-        if (!v8)
+        if (!candidateCopy)
         {
           goto LABEL_16;
         }
@@ -191,9 +191,9 @@ void __86__IRSessionAnalytics__handleBannerEvent_withCandidate_WithMiLoPredictio
         }
 
         v20 = v10 ? v18 : v19;
-        v21 = [v8 candidateIdentifier];
+        candidateIdentifier3 = [candidateCopy candidateIdentifier];
 
-        if (!v21)
+        if (!candidateIdentifier3)
         {
 LABEL_16:
           v20 = 7;
@@ -204,7 +204,7 @@ LABEL_16:
 
       else
       {
-        [(IRSessionAnalytics *)self setPlaybackStartEvent:v22];
+        [(IRSessionAnalytics *)self setPlaybackStartEvent:eventCopy];
       }
     }
   }
@@ -212,13 +212,13 @@ LABEL_16:
 
 - (void)_handleSessionTimeout
 {
-  v3 = [(IRSessionAnalytics *)self playbackStartEvent];
+  playbackStartEvent = [(IRSessionAnalytics *)self playbackStartEvent];
 
-  if (v3)
+  if (playbackStartEvent)
   {
-    v5 = [(IRSessionAnalytics *)self playbackStartEvent];
-    v4 = [(IRSessionAnalytics *)self chosenCandidate];
-    [(IRSessionAnalytics *)self _handleNonBannerEvent:v5 forCandidate:v4 forceStopSession:1];
+    playbackStartEvent2 = [(IRSessionAnalytics *)self playbackStartEvent];
+    chosenCandidate = [(IRSessionAnalytics *)self chosenCandidate];
+    [(IRSessionAnalytics *)self _handleNonBannerEvent:playbackStartEvent2 forCandidate:chosenCandidate forceStopSession:1];
   }
 
   else
@@ -228,7 +228,7 @@ LABEL_16:
   }
 }
 
-- (void)_stopSessionAndSendCA:(unint64_t)a3
+- (void)_stopSessionAndSendCA:(unint64_t)a
 {
   v66 = *MEMORY[0x277D85DE8];
   v5 = dispatch_get_specific(*MEMORY[0x277D21308]);
@@ -237,18 +237,18 @@ LABEL_16:
   if (os_log_type_enabled(*MEMORY[0x277D21260], OS_LOG_TYPE_INFO))
   {
     log = v6;
-    v48 = [(IRSessionAnalytics *)self bannerEvent];
-    [v48 eventType];
+    bannerEvent = [(IRSessionAnalytics *)self bannerEvent];
+    [bannerEvent eventType];
     IRMediaEventTypeToString();
-    v44 = v50 = a3;
-    v8 = [(IRSessionAnalytics *)self bannerCandidate];
-    v9 = [v8 candidateIdentifier];
-    v10 = [(IRSessionAnalytics *)self chosenCandidate];
-    v11 = [v10 candidateIdentifier];
+    v44 = v50 = a;
+    bannerCandidate = [(IRSessionAnalytics *)self bannerCandidate];
+    candidateIdentifier = [bannerCandidate candidateIdentifier];
+    chosenCandidate = [(IRSessionAnalytics *)self chosenCandidate];
+    candidateIdentifier2 = [chosenCandidate candidateIdentifier];
     v12 = IRSessionAnalyticsMetricPostBannerInteractionToString(v50);
     v13 = MEMORY[0x277CCABB0];
-    v14 = [(IRSessionAnalytics *)self bannerEvent];
-    v15 = [v13 numberWithBool:{objc_msgSend(v14, "isOutsideApp")}];
+    bannerEvent2 = [(IRSessionAnalytics *)self bannerEvent];
+    v15 = [v13 numberWithBool:{objc_msgSend(bannerEvent2, "isOutsideApp")}];
     *buf = 136316674;
     v53 = "#session-analytics, ";
     v54 = 2112;
@@ -256,9 +256,9 @@ LABEL_16:
     v56 = 2112;
     v57 = v44;
     v58 = 2112;
-    v59 = v9;
+    v59 = candidateIdentifier;
     v60 = 2112;
-    v61 = v11;
+    v61 = candidateIdentifier2;
     v62 = 2112;
     v63 = v12;
     v64 = 2112;
@@ -266,42 +266,42 @@ LABEL_16:
     _os_log_impl(&dword_25543D000, log, OS_LOG_TYPE_INFO, "%s[%@], Stopping with eventType: %@, bannerCandidateIdentifier: %@, chosenCandidateIdentifier: %@, postBannerInteraction: %@, isOutsideApp: %@", buf, 0x48u);
 
     v7 = 0x277CCA000uLL;
-    a3 = v50;
+    a = v50;
   }
 
   v16 = [IRSessionAnalyticsMetric alloc];
   loga = [(IRSessionAnalytics *)self service];
-  v51 = [loga clientIdentifier];
+  clientIdentifier = [loga clientIdentifier];
   v17 = *(v7 + 2992);
   v18 = v7;
-  v45 = [(IRSessionAnalytics *)self bannerEvent];
-  v43 = [v45 bundleID];
-  v49 = [v17 numberWithInteger:{+[IRAnalyticsUtilities getRedactedBundleID:](IRAnalyticsUtilities, "getRedactedBundleID:", v43)}];
+  bannerEvent3 = [(IRSessionAnalytics *)self bannerEvent];
+  bundleID = [bannerEvent3 bundleID];
+  v49 = [v17 numberWithInteger:{+[IRAnalyticsUtilities getRedactedBundleID:](IRAnalyticsUtilities, "getRedactedBundleID:", bundleID)}];
   v19 = *(v7 + 2992);
-  v42 = [(IRSessionAnalytics *)self bannerEvent];
-  v38 = [v19 numberWithUnsignedInteger:{IRSessionAnalyticsMetricEventTypeFromEvent(objc_msgSend(v42, "eventType"))}];
+  bannerEvent4 = [(IRSessionAnalytics *)self bannerEvent];
+  v38 = [v19 numberWithUnsignedInteger:{IRSessionAnalyticsMetricEventTypeFromEvent(objc_msgSend(bannerEvent4, "eventType"))}];
   v20 = *(v7 + 2992);
-  v41 = [(IRSessionAnalytics *)self bannerMiLoPrediction];
-  v21 = [v20 numberWithBool:{objc_msgSend(v41, "canUse")}];
-  v40 = [(IRSessionAnalytics *)self bannerCandidate];
-  v35 = [IRAnalyticsUtilities candidateTypeForCandidate:v40];
-  v39 = [(IRSessionAnalytics *)self bannerCandidate];
-  v34 = [IRAnalyticsUtilities candidateModelTypeForCandidate:v39];
-  v36 = [(IRSessionAnalytics *)self chosenCandidate];
-  v22 = [IRAnalyticsUtilities candidateTypeForCandidate:v36];
-  v23 = [(IRSessionAnalytics *)self chosenCandidate];
-  v24 = [IRAnalyticsUtilities candidateModelTypeForCandidate:v23];
-  v25 = [*(v7 + 2992) numberWithUnsignedInteger:a3];
+  bannerMiLoPrediction = [(IRSessionAnalytics *)self bannerMiLoPrediction];
+  v21 = [v20 numberWithBool:{objc_msgSend(bannerMiLoPrediction, "canUse")}];
+  bannerCandidate2 = [(IRSessionAnalytics *)self bannerCandidate];
+  v35 = [IRAnalyticsUtilities candidateTypeForCandidate:bannerCandidate2];
+  bannerCandidate3 = [(IRSessionAnalytics *)self bannerCandidate];
+  v34 = [IRAnalyticsUtilities candidateModelTypeForCandidate:bannerCandidate3];
+  chosenCandidate2 = [(IRSessionAnalytics *)self chosenCandidate];
+  v22 = [IRAnalyticsUtilities candidateTypeForCandidate:chosenCandidate2];
+  chosenCandidate3 = [(IRSessionAnalytics *)self chosenCandidate];
+  v24 = [IRAnalyticsUtilities candidateModelTypeForCandidate:chosenCandidate3];
+  v25 = [*(v7 + 2992) numberWithUnsignedInteger:a];
   v26 = *(v18 + 2992);
-  v27 = [(IRSessionAnalytics *)self bannerEvent];
-  v28 = [v26 numberWithBool:{objc_msgSend(v27, "isOutsideApp")}];
-  v37 = [(IRSessionAnalyticsMetric *)v16 initWithClientIdentifier:v51 internalAppName:v49 eventType:v38 miloAvailable:v21 bannerCandidateType:v35 bannerCandidateModelType:v34 chosenCandidateType:v22 chosenCandidateModelType:v24 postBannerInteraction:v25 isOutsideApp:v28];
+  bannerEvent5 = [(IRSessionAnalytics *)self bannerEvent];
+  v28 = [v26 numberWithBool:{objc_msgSend(bannerEvent5, "isOutsideApp")}];
+  v37 = [(IRSessionAnalyticsMetric *)v16 initWithClientIdentifier:clientIdentifier internalAppName:v49 eventType:v38 miloAvailable:v21 bannerCandidateType:v35 bannerCandidateModelType:v34 chosenCandidateType:v22 chosenCandidateModelType:v24 postBannerInteraction:v25 isOutsideApp:v28];
 
-  v29 = [(IRSessionAnalyticsMetric *)v37 name];
-  v30 = [(IRSessionAnalytics *)self service];
-  v31 = [v30 clientIdentifier];
-  v32 = [(IRSessionAnalyticsMetric *)v37 dictionaryRepresentation];
-  [IRAnalyticsManager sendEventLazyForEventIdentifier:v29 clientIdentifier:v31 analytics:v32];
+  name = [(IRSessionAnalyticsMetric *)v37 name];
+  service = [(IRSessionAnalytics *)self service];
+  clientIdentifier2 = [service clientIdentifier];
+  dictionaryRepresentation = [(IRSessionAnalyticsMetric *)v37 dictionaryRepresentation];
+  [IRAnalyticsManager sendEventLazyForEventIdentifier:name clientIdentifier:clientIdentifier2 analytics:dictionaryRepresentation];
 
   [(IRSessionAnalytics *)self _invalidate];
   v33 = *MEMORY[0x277D85DE8];
@@ -309,8 +309,8 @@ LABEL_16:
 
 - (void)_invalidate
 {
-  v3 = [(IRSessionAnalytics *)self timer];
-  [v3 invalidate];
+  timer = [(IRSessionAnalytics *)self timer];
+  [timer invalidate];
 
   [(IRSessionAnalytics *)self setTimer:0];
   [(IRSessionAnalytics *)self setBannerEvent:0];

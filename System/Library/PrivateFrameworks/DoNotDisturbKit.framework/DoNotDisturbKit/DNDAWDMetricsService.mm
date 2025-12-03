@@ -1,10 +1,10 @@
 @interface DNDAWDMetricsService
-- (DNDAWDMetricsService)initWithClientIdentifier:(id)a3;
+- (DNDAWDMetricsService)initWithClientIdentifier:(id)identifier;
 - (unint64_t)_queue_currentAWDMetricState;
 - (void)_queue_postAWDMetric;
-- (void)handleTransitionToUILocked:(BOOL)a3;
+- (void)handleTransitionToUILocked:(BOOL)locked;
 - (void)resume;
-- (void)stateService:(id)a3 didReceiveDoNotDisturbStateUpdate:(id)a4;
+- (void)stateService:(id)service didReceiveDoNotDisturbStateUpdate:(id)update;
 @end
 
 @implementation DNDAWDMetricsService
@@ -14,16 +14,16 @@
   dispatch_assert_queue_V2(self->_queue);
   if (self->_currentState && self->_lockState)
   {
-    v3 = [(DNDAWDMetricsService *)self _queue_currentAWDMetricState];
+    _queue_currentAWDMetricState = [(DNDAWDMetricsService *)self _queue_currentAWDMetricState];
 
-    MEMORY[0x2821E3D68](1441795, v3);
+    MEMORY[0x2821E3D68](1441795, _queue_currentAWDMetricState);
   }
 }
 
 - (unint64_t)_queue_currentAWDMetricState
 {
-  v3 = [(DNDState *)self->_currentState suppressionState];
-  if (v3 == 2)
+  suppressionState = [(DNDState *)self->_currentState suppressionState];
+  if (suppressionState == 2)
   {
     if (self->_lockState == 1)
     {
@@ -36,7 +36,7 @@
     }
   }
 
-  else if (v3 == 1)
+  else if (suppressionState == 1)
   {
     return 2;
   }
@@ -47,9 +47,9 @@
   }
 }
 
-- (DNDAWDMetricsService)initWithClientIdentifier:(id)a3
+- (DNDAWDMetricsService)initWithClientIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v12.receiver = self;
   v12.super_class = DNDAWDMetricsService;
   v5 = [(DNDAWDMetricsService *)&v12 init];
@@ -60,7 +60,7 @@
     queue = v5->_queue;
     v5->_queue = v7;
 
-    v9 = [MEMORY[0x277D05AB0] serviceForClientIdentifier:v4];
+    v9 = [MEMORY[0x277D05AB0] serviceForClientIdentifier:identifierCopy];
     notificationsStateService = v5->_notificationsStateService;
     v5->_notificationsStateService = v9;
 
@@ -92,7 +92,7 @@ uint64_t __30__DNDAWDMetricsService_resume__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)handleTransitionToUILocked:(BOOL)a3
+- (void)handleTransitionToUILocked:(BOOL)locked
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -100,7 +100,7 @@ uint64_t __30__DNDAWDMetricsService_resume__block_invoke(uint64_t a1)
   v4[2] = __51__DNDAWDMetricsService_handleTransitionToUILocked___block_invoke;
   v4[3] = &unk_278F88600;
   v4[4] = self;
-  v5 = a3;
+  lockedCopy = locked;
   dispatch_async(queue, v4);
 }
 
@@ -116,17 +116,17 @@ uint64_t __51__DNDAWDMetricsService_handleTransitionToUILocked___block_invoke(ui
   return [*(a1 + 32) _queue_postAWDMetric];
 }
 
-- (void)stateService:(id)a3 didReceiveDoNotDisturbStateUpdate:(id)a4
+- (void)stateService:(id)service didReceiveDoNotDisturbStateUpdate:(id)update
 {
-  v5 = a4;
+  updateCopy = update;
   queue = self->_queue;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __71__DNDAWDMetricsService_stateService_didReceiveDoNotDisturbStateUpdate___block_invoke;
   v8[3] = &unk_278F88500;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = updateCopy;
+  v7 = updateCopy;
   dispatch_async(queue, v8);
 }
 

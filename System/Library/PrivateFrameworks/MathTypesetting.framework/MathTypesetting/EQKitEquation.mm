@@ -1,20 +1,20 @@
 @interface EQKitEquation
-+ (id)equationSourceFromXMLMetadata:(id)a3;
-+ (id)equationWithData:(id)a3 format:(unint64_t)a4 environment:(id)a5 error:(id *)a6;
-+ (id)equationWithString:(id)a3 format:(unint64_t)a4 environment:(id)a5 error:(id *)a6;
-+ (id)equationWithString:(id)a3 format:(unint64_t)a4 error:(id *)a5;
-+ (id)equationWithXMLDoc:(_xmlDoc *)a3 node:(_xmlNode *)a4 environment:(id)a5 error:(id *)a6;
-+ (id)xmlMetadataFromEquationSource:(id)a3;
-+ (unint64_t)formatFromData:(id)a3;
-+ (unint64_t)formatFromString:(id)a3;
-- (EQKitEquation)initWithRoot:(id)a3 source:(id)a4;
++ (id)equationSourceFromXMLMetadata:(id)metadata;
++ (id)equationWithData:(id)data format:(unint64_t)format environment:(id)environment error:(id *)error;
++ (id)equationWithString:(id)string format:(unint64_t)format environment:(id)environment error:(id *)error;
++ (id)equationWithString:(id)string format:(unint64_t)format error:(id *)error;
++ (id)equationWithXMLDoc:(_xmlDoc *)doc node:(_xmlNode *)node environment:(id)environment error:(id *)error;
++ (id)xmlMetadataFromEquationSource:(id)source;
++ (unint64_t)formatFromData:(id)data;
++ (unint64_t)formatFromString:(id)string;
+- (EQKitEquation)initWithRoot:(id)root source:(id)source;
 - (id)description;
 - (void)dealloc;
 @end
 
 @implementation EQKitEquation
 
-- (EQKitEquation)initWithRoot:(id)a3 source:(id)a4
+- (EQKitEquation)initWithRoot:(id)root source:(id)source
 {
   v9.receiver = self;
   v9.super_class = EQKitEquation;
@@ -22,10 +22,10 @@
   v7 = v6;
   if (v6)
   {
-    if (a3)
+    if (root)
     {
-      v6->mRoot = a3;
-      v7->mSource = a4;
+      v6->mRoot = root;
+      v7->mSource = source;
     }
 
     else
@@ -38,18 +38,18 @@
   return v7;
 }
 
-+ (unint64_t)formatFromData:(id)a3
++ (unint64_t)formatFromData:(id)data
 {
-  v4 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:a3 encoding:4];
-  v5 = [a1 formatFromString:v4];
+  v4 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:data encoding:4];
+  v5 = [self formatFromString:v4];
 
   return v5;
 }
 
-+ (unint64_t)formatFromString:(id)a3
++ (unint64_t)formatFromString:(id)string
 {
   v29 = *MEMORY[0x277D85DE8];
-  if ([a3 hasPrefix:@"$$"])
+  if ([string hasPrefix:@"$$"])
   {
     return 2;
   }
@@ -62,7 +62,7 @@
   }
 
   v8 = _laTeXPatterns();
-  v9 = [a3 stringByTrimmingCharactersInSet:{objc_msgSend(MEMORY[0x277CCA900], "whitespaceAndNewlineCharacterSet")}];
+  v9 = [string stringByTrimmingCharactersInSet:{objc_msgSend(MEMORY[0x277CCA900], "whitespaceAndNewlineCharacterSet")}];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
@@ -142,42 +142,42 @@ LABEL_8:
   }
 }
 
-+ (id)equationWithData:(id)a3 format:(unint64_t)a4 environment:(id)a5 error:(id *)a6
++ (id)equationWithData:(id)data format:(unint64_t)format environment:(id)environment error:(id *)error
 {
-  if (a4 == 2)
+  if (format == 2)
   {
-    if (a3)
+    if (data)
     {
-      _convertLaTeXStringToMathML(a5, [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:objc_msgSend(a3 length:"bytes") encoding:{objc_msgSend(a3, "length"), 4}], a6);
+      _convertLaTeXStringToMathML(environment, [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:objc_msgSend(data length:"bytes") encoding:{objc_msgSend(data, "length"), 4}], error);
     }
 
     return 0;
   }
 
-  if (a4 != 1)
+  if (format != 1)
   {
-    if (!a4 && a6 && !*a6)
+    if (!format && error && !*error)
     {
       v9 = MEMORY[0x277CCA9B8];
       v10 = MEMORY[0x277CBEAC0];
       v11 = [objc_msgSend(MEMORY[0x277CCA8D8] "mainBundle")];
-      v12 = 0;
-      *a6 = [v9 errorWithDomain:@"EQKitErrorDomain" code:0 userInfo:{objc_msgSend(v10, "dictionaryWithObjectsAndKeys:", v11, *MEMORY[0x277CCA450], 0)}];
-      return v12;
+      parse = 0;
+      *error = [v9 errorWithDomain:@"EQKitErrorDomain" code:0 userInfo:{objc_msgSend(v10, "dictionaryWithObjectsAndKeys:", v11, *MEMORY[0x277CCA450], 0)}];
+      return parse;
     }
 
     return 0;
   }
 
-  v13 = a3;
-  if (!v13)
+  dataCopy = data;
+  if (!dataCopy)
   {
     return 0;
   }
 
   if (xmlSAXVersion(&hdlr, 2))
   {
-    v12 = 0;
+    parse = 0;
   }
 
   else
@@ -186,132 +186,132 @@ LABEL_8:
     v14 = xmlSubstituteEntitiesDefault(1);
     ExternalEntityLoader = xmlGetExternalEntityLoader();
     xmlSetExternalEntityLoader(NoExternalEntityLoader);
-    v16 = xmlSAXParseMemory(&hdlr, [v13 bytes], objc_msgSend(v13, "length"), 0);
+    v16 = xmlSAXParseMemory(&hdlr, [dataCopy bytes], objc_msgSend(dataCopy, "length"), 0);
     xmlSetExternalEntityLoader(ExternalEntityLoader);
     xmlSubstituteEntitiesDefault(v14);
-    v12 = 0;
-    if (a5 && v16)
+    parse = 0;
+    if (environment && v16)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v17 = a5;
+        environmentCopy = environment;
       }
 
       else
       {
-        v17 = 0;
+        environmentCopy = 0;
       }
 
-      v18 = [[EQKitMathMLParser alloc] initWithDocument:v16 node:0 source:v13 attribution:a3 environment:v17];
-      v12 = [(EQKitMathMLParser *)v18 parse];
-      if (a6 && !*a6)
+      v18 = [[EQKitMathMLParser alloc] initWithDocument:v16 node:0 source:dataCopy attribution:data environment:environmentCopy];
+      parse = [(EQKitMathMLParser *)v18 parse];
+      if (error && !*error)
       {
-        *a6 = [(EQKitMathMLParser *)v18 error];
+        *error = [(EQKitMathMLParser *)v18 error];
       }
 
       xmlFreeDoc(v16);
     }
   }
 
-  if (a6 && !v12)
+  if (error && !parse)
   {
-    if (!*a6)
+    if (!*error)
     {
       v19 = MEMORY[0x277CCA9B8];
       v20 = MEMORY[0x277CBEAC0];
       v21 = [objc_msgSend(MEMORY[0x277CCA8D8] "mainBundle")];
-      *a6 = [v19 errorWithDomain:@"EQKitErrorDomain" code:0 userInfo:{objc_msgSend(v20, "dictionaryWithObjectsAndKeys:", v21, *MEMORY[0x277CCA450], 0)}];
+      *error = [v19 errorWithDomain:@"EQKitErrorDomain" code:0 userInfo:{objc_msgSend(v20, "dictionaryWithObjectsAndKeys:", v21, *MEMORY[0x277CCA450], 0)}];
     }
 
     return 0;
   }
 
-  if (v12)
+  if (parse)
   {
-    v12[3] = a5;
+    parse[3] = environment;
   }
 
-  return v12;
+  return parse;
 }
 
-+ (id)equationWithString:(id)a3 format:(unint64_t)a4 environment:(id)a5 error:(id *)a6
++ (id)equationWithString:(id)string format:(unint64_t)format environment:(id)environment error:(id *)error
 {
-  v10 = [a3 UTF8String];
-  if (v10)
+  uTF8String = [string UTF8String];
+  if (uTF8String)
   {
-    v11 = [MEMORY[0x277CBEA90] dataWithBytes:v10 length:strlen(v10)];
+    v11 = [MEMORY[0x277CBEA90] dataWithBytes:uTF8String length:strlen(uTF8String)];
 
-    return [a1 equationWithData:v11 format:a4 environment:a5 error:a6];
+    return [self equationWithData:v11 format:format environment:environment error:error];
   }
 
   else
   {
-    if (a6)
+    if (error)
     {
-      *a6 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA050] code:2048 userInfo:0];
+      *error = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA050] code:2048 userInfo:0];
     }
 
     return 0;
   }
 }
 
-+ (id)equationWithString:(id)a3 format:(unint64_t)a4 error:(id *)a5
++ (id)equationWithString:(id)string format:(unint64_t)format error:(id *)error
 {
-  v8 = [a3 UTF8String];
-  if (v8)
+  uTF8String = [string UTF8String];
+  if (uTF8String)
   {
-    v9 = [MEMORY[0x277CBEA90] dataWithBytes:v8 length:strlen(v8)];
+    v9 = [MEMORY[0x277CBEA90] dataWithBytes:uTF8String length:strlen(uTF8String)];
     v10 = +[EQKitEnvironment defaultEnvironment];
 
-    return [a1 equationWithData:v9 format:a4 environment:v10 error:a5];
+    return [self equationWithData:v9 format:format environment:v10 error:error];
   }
 
   else
   {
-    if (a5)
+    if (error)
     {
-      *a5 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA050] code:2048 userInfo:0];
+      *error = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA050] code:2048 userInfo:0];
     }
 
     return 0;
   }
 }
 
-+ (id)equationWithXMLDoc:(_xmlDoc *)a3 node:(_xmlNode *)a4 environment:(id)a5 error:(id *)a6
++ (id)equationWithXMLDoc:(_xmlDoc *)doc node:(_xmlNode *)node environment:(id)environment error:(id *)error
 {
-  v6 = 0;
-  if (a3 && a4)
+  parse = 0;
+  if (doc && node)
   {
     v11 = [EQKitMathMLParser alloc];
     v12 = objc_opt_class();
-    v13 = [(EQKitMathMLParser *)v11 initWithDocument:a3 node:a4 source:0 attribution:0 environment:EQKitUtilDynamicCast(v12, a5)];
-    v6 = [(EQKitMathMLParser *)v13 parse];
-    if (a6)
+    v13 = [(EQKitMathMLParser *)v11 initWithDocument:doc node:node source:0 attribution:0 environment:EQKitUtilDynamicCast(v12, environment)];
+    parse = [(EQKitMathMLParser *)v13 parse];
+    if (error)
     {
-      *a6 = [(EQKitMathMLParser *)v13 error];
+      *error = [(EQKitMathMLParser *)v13 error];
     }
   }
 
-  return v6;
+  return parse;
 }
 
-+ (id)xmlMetadataFromEquationSource:(id)a3
++ (id)xmlMetadataFromEquationSource:(id)source
 {
-  v4 = [MEMORY[0x277CBEB28] data];
+  data = [MEMORY[0x277CBEB28] data];
   v5 = xmlNewDoc("1.0");
   v6 = xmlNewNode(0, "root");
   xmlDocSetRootElement(v5, v6);
   v7 = xmlNewChild(v6, 0, "com.apple.iwork", 0);
   xmlNewProp(v7, "version", "1.0");
   v8 = xmlNewChild(v7, 0, "equation", 0);
-  v9 = [a3 dataUsingEncoding:4];
+  v9 = [source dataUsingEncoding:4];
   v10 = xmlNewCDataBlock(v5, [v9 bytes], objc_msgSend(v9, "length"));
   xmlAddChild(v8, v10);
   if (v5)
   {
     v11 = xmlKeepBlanksDefault(0);
-    IO = xmlOutputBufferCreateIO(sfaxmlNSMutableDataWriteCallback, 0, v4, 0);
+    IO = xmlOutputBufferCreateIO(sfaxmlNSMutableDataWriteCallback, 0, data, 0);
     if (IO)
     {
       xmlSaveFormatFileTo(IO, v5, 0, 1);
@@ -321,10 +321,10 @@ LABEL_8:
   }
 
   xmlFreeDoc(v5);
-  return v4;
+  return data;
 }
 
-+ (id)equationSourceFromXMLMetadata:(id)a3
++ (id)equationSourceFromXMLMetadata:(id)metadata
 {
   if (xmlSAXVersion(&v15, 2))
   {
@@ -334,7 +334,7 @@ LABEL_8:
   v5 = xmlSubstituteEntitiesDefault(1);
   ExternalEntityLoader = xmlGetExternalEntityLoader();
   xmlSetExternalEntityLoader(NoExternalEntityLoader);
-  v7 = xmlSAXParseMemory(&v15, [a3 bytes], objc_msgSend(a3, "length"), 0);
+  v7 = xmlSAXParseMemory(&v15, [metadata bytes], objc_msgSend(metadata, "length"), 0);
   xmlSetExternalEntityLoader(ExternalEntityLoader);
   xmlSubstituteEntitiesDefault(v5);
   if (!v7)

@@ -1,45 +1,45 @@
 @interface HMDUserComingHomeCoreRoutineTracker
 + (id)logCategory;
 + (void)initialize;
-- (BOOL)_shouldProcessPredictedContextLocation:(id)a3;
-- (BOOL)_validateRangeForProcessingSeenPredictedContextLocations:(id)a3;
-- (BOOL)canStartComingHome:(id)a3;
-- (BOOL)canStayInComingHome:(id)a3;
-- (BOOL)locationContextHasValidStateEnd:(id)a3;
+- (BOOL)_shouldProcessPredictedContextLocation:(id)location;
+- (BOOL)_validateRangeForProcessingSeenPredictedContextLocations:(id)locations;
+- (BOOL)canStartComingHome:(id)home;
+- (BOOL)canStayInComingHome:(id)home;
+- (BOOL)locationContextHasValidStateEnd:(id)end;
 - (HMDUserActivityType6ListenerDelegate)delegate;
 - (HMDUserActivityType6StateEvent)currentStateEvent;
-- (HMDUserComingHomeCoreRoutineTracker)initWithDataSource:(id)a3 locationManager:(id)a4;
+- (HMDUserComingHomeCoreRoutineTracker)initWithDataSource:(id)source locationManager:(id)manager;
 - (NSDate)changedTimestamp;
 - (NSDate)stateEnd;
-- (double)probabilityToStart:(id)a3;
-- (double)probabilityToStop:(id)a3;
+- (double)probabilityToStart:(id)start;
+- (double)probabilityToStop:(id)stop;
 - (double)standardProbabilityToStart;
-- (id)_calculateEstimatedEntryDateForPredictedContextLocation:(id)a3;
-- (id)_preprocessPredictedContextLocations:(id)a3;
-- (id)_seenPredictedContextLocationsContains:(id)a3 forInsert:(BOOL)a4;
+- (id)_calculateEstimatedEntryDateForPredictedContextLocation:(id)location;
+- (id)_preprocessPredictedContextLocations:(id)locations;
+- (id)_seenPredictedContextLocationsContains:(id)contains forInsert:(BOOL)insert;
 - (unint64_t)lastReason;
 - (unint64_t)state;
 - (void)_auditSeenPredictedContextLocations;
 - (void)_lookUpCurrentHomeLocationOfInterest;
-- (void)_processPredictedContextResult:(id)a3;
+- (void)_processPredictedContextResult:(id)result;
 - (void)_processPredictedContextResults;
 - (void)_registerForNotifications;
 - (void)_reprocessLastPredictedContextResults;
-- (void)_seenPredictedContextLocationsAddContext:(id)a3;
-- (void)_startOrUpdateComingHomeTrackingWithStateEnd:(id)a3;
+- (void)_seenPredictedContextLocationsAddContext:(id)context;
+- (void)_startOrUpdateComingHomeTrackingWithStateEnd:(id)end;
 - (void)_stateUpdated;
-- (void)_stopComingHomeTracking:(unint64_t)a3;
-- (void)configureWithDelegate:(id)a3;
-- (void)handleDidArriveNotification:(id)a3;
-- (void)handleDidLeaveNotification:(id)a3;
-- (void)handleLocationAuthorizationChange:(int64_t)a3;
-- (void)handleLocationChangedNotification:(id)a3;
+- (void)_stopComingHomeTracking:(unint64_t)tracking;
+- (void)configureWithDelegate:(id)delegate;
+- (void)handleDidArriveNotification:(id)notification;
+- (void)handleDidLeaveNotification:(id)notification;
+- (void)handleLocationAuthorizationChange:(int64_t)change;
+- (void)handleLocationChangedNotification:(id)notification;
 - (void)processPredictedContextResults;
-- (void)setChangedTimestamp:(id)a3;
-- (void)setLastReason:(unint64_t)a3;
-- (void)setState:(unint64_t)a3;
-- (void)setStateEnd:(id)a3;
-- (void)updatePredictedContextResult:(id)a3 error:(id)a4;
+- (void)setChangedTimestamp:(id)timestamp;
+- (void)setLastReason:(unint64_t)reason;
+- (void)setState:(unint64_t)state;
+- (void)setStateEnd:(id)end;
+- (void)updatePredictedContextResult:(id)result error:(id)error;
 @end
 
 @implementation HMDUserComingHomeCoreRoutineTracker
@@ -51,13 +51,13 @@
   return WeakRetained;
 }
 
-- (void)updatePredictedContextResult:(id)a3 error:(id)a4
+- (void)updatePredictedContextResult:(id)result error:(id)error
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  resultCopy = result;
+  errorCopy = error;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -65,24 +65,24 @@
     *buf = 138543874;
     v18 = v11;
     v19 = 2112;
-    v20 = v6;
+    v20 = resultCopy;
     v21 = 2112;
-    v22 = v7;
+    v22 = errorCopy;
     _os_log_impl(&dword_229538000, v10, OS_LOG_TYPE_INFO, "%{public}@Detected NPLOI update predicted context %@ with error %@", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v8);
-  if (!v7)
+  if (!errorCopy)
   {
-    v12 = [(HMDUserComingHomeCoreRoutineTracker *)v9 dataSource];
-    v13 = [v12 queue];
+    dataSource = [(HMDUserComingHomeCoreRoutineTracker *)selfCopy dataSource];
+    queue = [dataSource queue];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __74__HMDUserComingHomeCoreRoutineTracker_updatePredictedContextResult_error___block_invoke;
     v15[3] = &unk_27868A750;
-    v15[4] = v9;
-    v16 = v6;
-    dispatch_async(v13, v15);
+    v15[4] = selfCopy;
+    v16 = resultCopy;
+    dispatch_async(queue, v15);
   }
 
   v14 = *MEMORY[0x277D85DE8];
@@ -124,58 +124,58 @@ void __74__HMDUserComingHomeCoreRoutineTracker_updatePredictedContextResult_erro
 - (void)_lookUpCurrentHomeLocationOfInterest
 {
   v45 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDUserComingHomeCoreRoutineTracker *)self dataSource];
-  v4 = [v3 queue];
-  dispatch_assert_queue_V2(v4);
+  dataSource = [(HMDUserComingHomeCoreRoutineTracker *)self dataSource];
+  queue = [dataSource queue];
+  dispatch_assert_queue_V2(queue);
 
-  v5 = [(HMDUserComingHomeCoreRoutineTracker *)self dataSource];
-  v6 = [v5 home];
-  v7 = [v6 homeLocationHandler];
-  v8 = [v7 location];
+  dataSource2 = [(HMDUserComingHomeCoreRoutineTracker *)self dataSource];
+  home = [dataSource2 home];
+  homeLocationHandler = [home homeLocationHandler];
+  location = [homeLocationHandler location];
 
-  if (v8)
+  if (location)
   {
-    v9 = [(HMDUserComingHomeCoreRoutineTracker *)self predictedContextResultsToProcess];
-    v10 = [v9 count];
+    predictedContextResultsToProcess = [(HMDUserComingHomeCoreRoutineTracker *)self predictedContextResultsToProcess];
+    v10 = [predictedContextResultsToProcess count];
 
     if (!v10 || [(HMDUserComingHomeCoreRoutineTracker *)self isLookUpLocationOfInterestInProgress])
     {
       goto LABEL_14;
     }
 
-    v11 = [(HMDUserComingHomeCoreRoutineTracker *)self currentHomeLocationOfInterest];
+    currentHomeLocationOfInterest = [(HMDUserComingHomeCoreRoutineTracker *)self currentHomeLocationOfInterest];
 
-    if (!v11)
+    if (!currentHomeLocationOfInterest)
     {
       goto LABEL_8;
     }
 
-    v12 = [(HMDUserComingHomeCoreRoutineTracker *)self currentHomeLocationOfInterestTimestamp];
+    currentHomeLocationOfInterestTimestamp = [(HMDUserComingHomeCoreRoutineTracker *)self currentHomeLocationOfInterestTimestamp];
 
-    if (!v12)
+    if (!currentHomeLocationOfInterestTimestamp)
     {
       goto LABEL_8;
     }
 
-    v13 = [MEMORY[0x277D0F8D0] sharedPreferences];
-    v14 = [v13 preferenceForKey:@"maximumIntervalToHoldLOILookup"];
-    v15 = [v14 numberValue];
-    [v15 doubleValue];
+    mEMORY[0x277D0F8D0] = [MEMORY[0x277D0F8D0] sharedPreferences];
+    v14 = [mEMORY[0x277D0F8D0] preferenceForKey:@"maximumIntervalToHoldLOILookup"];
+    numberValue = [v14 numberValue];
+    [numberValue doubleValue];
     v17 = v16;
 
-    v18 = [(HMDUserComingHomeCoreRoutineTracker *)self currentHomeLocationOfInterestTimestamp];
-    v19 = [v18 dateByAddingTimeInterval:v17];
+    currentHomeLocationOfInterestTimestamp2 = [(HMDUserComingHomeCoreRoutineTracker *)self currentHomeLocationOfInterestTimestamp];
+    v19 = [currentHomeLocationOfInterestTimestamp2 dateByAddingTimeInterval:v17];
 
-    v20 = [(HMDUserComingHomeCoreRoutineTracker *)self dataSource];
-    v21 = [v20 currentDate];
+    dataSource3 = [(HMDUserComingHomeCoreRoutineTracker *)self dataSource];
+    currentDate = [dataSource3 currentDate];
 
-    if ([v19 compare:v21] == 1)
+    if ([v19 compare:currentDate] == 1)
     {
 
 LABEL_8:
       [(HMDUserComingHomeCoreRoutineTracker *)self setIsLookUpLocationOfInterestInProgress:1];
       v22 = objc_autoreleasePoolPush();
-      v23 = self;
+      selfCopy = self;
       v24 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
       {
@@ -183,20 +183,20 @@ LABEL_8:
         *buf = 138543618;
         v42 = v25;
         v43 = 2112;
-        v44 = v8;
+        v44 = location;
         _os_log_impl(&dword_229538000, v24, OS_LOG_TYPE_INFO, "%{public}@Looking up the current location of interest for %@", buf, 0x16u);
       }
 
       objc_autoreleasePoolPop(v22);
-      objc_initWeak(buf, v23);
-      v26 = [(HMDUserComingHomeCoreRoutineTracker *)v23 locationManager];
+      objc_initWeak(buf, selfCopy);
+      locationManager = [(HMDUserComingHomeCoreRoutineTracker *)selfCopy locationManager];
       v38[0] = MEMORY[0x277D85DD0];
       v38[1] = 3221225472;
       v38[2] = __75__HMDUserComingHomeCoreRoutineTracker__lookUpCurrentHomeLocationOfInterest__block_invoke;
       v38[3] = &unk_27867BF60;
       objc_copyWeak(&v40, buf);
-      v39 = v8;
-      [v26 fetchLocationOfInterestAtLocation:v39 withCompletion:v38];
+      v39 = location;
+      [locationManager fetchLocationOfInterestAtLocation:v39 withCompletion:v38];
 
       objc_destroyWeak(&v40);
       objc_destroyWeak(buf);
@@ -204,27 +204,27 @@ LABEL_8:
     }
 
     v33 = objc_autoreleasePoolPush();
-    v34 = self;
+    selfCopy2 = self;
     v35 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v35, OS_LOG_TYPE_INFO))
     {
       v36 = HMFGetLogIdentifier();
-      v37 = [(HMDUserComingHomeCoreRoutineTracker *)v34 currentHomeLocationOfInterest];
+      currentHomeLocationOfInterest2 = [(HMDUserComingHomeCoreRoutineTracker *)selfCopy2 currentHomeLocationOfInterest];
       *buf = 138543618;
       v42 = v36;
       v43 = 2112;
-      v44 = v37;
+      v44 = currentHomeLocationOfInterest2;
       _os_log_impl(&dword_229538000, v35, OS_LOG_TYPE_INFO, "%{public}@Using current location of interest %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v33);
-    [(HMDUserComingHomeCoreRoutineTracker *)v34 _processPredictedContextResults];
+    [(HMDUserComingHomeCoreRoutineTracker *)selfCopy2 _processPredictedContextResults];
   }
 
   else
   {
     v27 = objc_autoreleasePoolPush();
-    v28 = self;
+    selfCopy3 = self;
     v29 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
     {
@@ -235,11 +235,11 @@ LABEL_8:
     }
 
     objc_autoreleasePoolPop(v27);
-    [(HMDUserComingHomeCoreRoutineTracker *)v28 setCurrentHomeLocationOfInterest:0];
-    v31 = [(HMDUserComingHomeCoreRoutineTracker *)v28 predictedContextResultsToProcess];
-    [v31 removeAllObjects];
+    [(HMDUserComingHomeCoreRoutineTracker *)selfCopy3 setCurrentHomeLocationOfInterest:0];
+    predictedContextResultsToProcess2 = [(HMDUserComingHomeCoreRoutineTracker *)selfCopy3 predictedContextResultsToProcess];
+    [predictedContextResultsToProcess2 removeAllObjects];
 
-    [(HMDUserComingHomeCoreRoutineTracker *)v28 _stopComingHomeTracking:11];
+    [(HMDUserComingHomeCoreRoutineTracker *)selfCopy3 _stopComingHomeTracking:11];
   }
 
 LABEL_14:
@@ -328,9 +328,9 @@ void __75__HMDUserComingHomeCoreRoutineTracker__lookUpCurrentHomeLocationOfInter
 - (void)_processPredictedContextResults
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDUserComingHomeCoreRoutineTracker *)self dataSource];
-  v4 = [v3 queue];
-  dispatch_assert_queue_V2(v4);
+  dataSource = [(HMDUserComingHomeCoreRoutineTracker *)self dataSource];
+  queue = [dataSource queue];
+  dispatch_assert_queue_V2(queue);
 
   if ([(HMDUserComingHomeCoreRoutineTracker *)self isLookUpLocationOfInterestInProgress])
   {
@@ -339,16 +339,16 @@ LABEL_11:
     return;
   }
 
-  v5 = [(HMDUserComingHomeCoreRoutineTracker *)self currentHomeLocationOfInterest];
+  currentHomeLocationOfInterest = [(HMDUserComingHomeCoreRoutineTracker *)self currentHomeLocationOfInterest];
 
-  if (v5)
+  if (currentHomeLocationOfInterest)
   {
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v6 = [(HMDUserComingHomeCoreRoutineTracker *)self predictedContextResultsToProcess];
-    v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    predictedContextResultsToProcess = [(HMDUserComingHomeCoreRoutineTracker *)self predictedContextResultsToProcess];
+    v7 = [predictedContextResultsToProcess countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v7)
     {
       v8 = v7;
@@ -359,27 +359,27 @@ LABEL_11:
         {
           if (*v17 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(predictedContextResultsToProcess);
           }
 
-          v11 = [*(*(&v16 + 1) + 8 * i) result];
-          [(HMDUserComingHomeCoreRoutineTracker *)self _processPredictedContextResult:v11];
+          result = [*(*(&v16 + 1) + 8 * i) result];
+          [(HMDUserComingHomeCoreRoutineTracker *)self _processPredictedContextResult:result];
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v8 = [predictedContextResultsToProcess countByEnumeratingWithState:&v16 objects:v20 count:16];
       }
 
       while (v8);
     }
 
-    v12 = [(HMDUserComingHomeCoreRoutineTracker *)self predictedContextResultsToProcess];
-    [v12 removeAllObjects];
+    predictedContextResultsToProcess2 = [(HMDUserComingHomeCoreRoutineTracker *)self predictedContextResultsToProcess];
+    [predictedContextResultsToProcess2 removeAllObjects];
 
     goto LABEL_11;
   }
 
-  v14 = [(HMDUserComingHomeCoreRoutineTracker *)self predictedContextResultsToProcess];
-  [v14 removeAllObjects];
+  predictedContextResultsToProcess3 = [(HMDUserComingHomeCoreRoutineTracker *)self predictedContextResultsToProcess];
+  [predictedContextResultsToProcess3 removeAllObjects];
 
   v15 = *MEMORY[0x277D85DE8];
 
@@ -389,47 +389,47 @@ LABEL_11:
 - (void)_reprocessLastPredictedContextResults
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDUserComingHomeCoreRoutineTracker *)self dataSource];
-  v4 = [v3 queue];
-  dispatch_assert_queue_V2(v4);
+  dataSource = [(HMDUserComingHomeCoreRoutineTracker *)self dataSource];
+  queue = [dataSource queue];
+  dispatch_assert_queue_V2(queue);
 
-  v5 = [(HMDUserComingHomeCoreRoutineTracker *)self lastPredictedContextResult];
+  lastPredictedContextResult = [(HMDUserComingHomeCoreRoutineTracker *)self lastPredictedContextResult];
 
-  if (v5)
+  if (lastPredictedContextResult)
   {
-    v6 = [(HMDUserComingHomeCoreRoutineTracker *)self predictedContextResultsToProcess];
-    v7 = [v6 count];
+    predictedContextResultsToProcess = [(HMDUserComingHomeCoreRoutineTracker *)self predictedContextResultsToProcess];
+    v7 = [predictedContextResultsToProcess count];
 
     if (!v7)
     {
       v8 = objc_autoreleasePoolPush();
-      v9 = self;
+      selfCopy = self;
       v10 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
       {
         v11 = HMFGetLogIdentifier();
-        v12 = [(HMDUserComingHomeCoreRoutineTracker *)v9 lastPredictedContextResult];
+        lastPredictedContextResult2 = [(HMDUserComingHomeCoreRoutineTracker *)selfCopy lastPredictedContextResult];
         v20 = 138543618;
         v21 = v11;
         v22 = 2112;
-        v23 = v12;
+        v23 = lastPredictedContextResult2;
         _os_log_impl(&dword_229538000, v10, OS_LOG_TYPE_INFO, "%{public}@Reprocessing predicted context result to process: %@", &v20, 0x16u);
       }
 
       objc_autoreleasePoolPop(v8);
       v13 = [HMDRTPredictedContextResultTuple alloc];
-      v14 = [(HMDUserComingHomeCoreRoutineTracker *)v9 lastPredictedContextResult];
-      v15 = [(HMDRTPredictedContextResultTuple *)v13 initWithPredictedContextResult:v14];
+      lastPredictedContextResult3 = [(HMDUserComingHomeCoreRoutineTracker *)selfCopy lastPredictedContextResult];
+      v15 = [(HMDRTPredictedContextResultTuple *)v13 initWithPredictedContextResult:lastPredictedContextResult3];
 
-      v16 = [(HMDUserComingHomeCoreRoutineTracker *)v9 predictedContextResultsToProcess];
-      [v16 addObject:v15];
+      predictedContextResultsToProcess2 = [(HMDUserComingHomeCoreRoutineTracker *)selfCopy predictedContextResultsToProcess];
+      [predictedContextResultsToProcess2 addObject:v15];
 
-      v17 = [(HMDUserComingHomeCoreRoutineTracker *)v9 predictedContextResultsToProcess];
-      v18 = [v17 count];
+      predictedContextResultsToProcess3 = [(HMDUserComingHomeCoreRoutineTracker *)selfCopy predictedContextResultsToProcess];
+      v18 = [predictedContextResultsToProcess3 count];
 
       if (v18 == 1)
       {
-        [(HMDUserComingHomeCoreRoutineTracker *)v9 _lookUpCurrentHomeLocationOfInterest];
+        [(HMDUserComingHomeCoreRoutineTracker *)selfCopy _lookUpCurrentHomeLocationOfInterest];
       }
     }
   }
@@ -437,16 +437,16 @@ LABEL_11:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_processPredictedContextResult:(id)a3
+- (void)_processPredictedContextResult:(id)result
 {
   v70 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDUserComingHomeCoreRoutineTracker *)self dataSource];
-  v6 = [v5 queue];
-  dispatch_assert_queue_V2(v6);
+  resultCopy = result;
+  dataSource = [(HMDUserComingHomeCoreRoutineTracker *)self dataSource];
+  queue = [dataSource queue];
+  dispatch_assert_queue_V2(queue);
 
   v7 = objc_autoreleasePoolPush();
-  v8 = self;
+  selfCopy = self;
   v9 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
@@ -454,31 +454,31 @@ LABEL_11:
     *buf = 138543618;
     v65 = v10;
     v66 = 2112;
-    v67 = v4;
+    v67 = resultCopy;
     _os_log_impl(&dword_229538000, v9, OS_LOG_TYPE_INFO, "%{public}@Processing predicted context result: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v7);
-  [(HMDUserComingHomeCoreRoutineTracker *)v8 setLastPredictedContextResult:v4];
-  if (v4)
+  [(HMDUserComingHomeCoreRoutineTracker *)selfCopy setLastPredictedContextResult:resultCopy];
+  if (resultCopy)
   {
-    v58 = v4;
-    v11 = [v4 nextStepPredictedContextsWithFilterMask:1];
-    v12 = [(HMDUserComingHomeCoreRoutineTracker *)v8 _preprocessPredictedContextLocations:v11];
+    v58 = resultCopy;
+    v11 = [resultCopy nextStepPredictedContextsWithFilterMask:1];
+    v12 = [(HMDUserComingHomeCoreRoutineTracker *)selfCopy _preprocessPredictedContextLocations:v11];
 
     v13 = objc_autoreleasePoolPush();
-    v14 = v8;
+    v14 = selfCopy;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
       v16 = HMFGetLogIdentifier();
-      v17 = [(HMDUserComingHomeCoreRoutineTracker *)v14 dataSource];
-      v18 = [v17 home];
-      v19 = [v18 uuid];
+      dataSource2 = [(HMDUserComingHomeCoreRoutineTracker *)v14 dataSource];
+      home = [dataSource2 home];
+      uuid = [home uuid];
       *buf = 138543874;
       v65 = v16;
       v66 = 2112;
-      v67 = v19;
+      v67 = uuid;
       v68 = 2112;
       v69 = v12;
       _os_log_impl(&dword_229538000, v15, OS_LOG_TYPE_INFO, "%{public}@Home %@ processing contexts: %@", buf, 0x20u);
@@ -495,7 +495,7 @@ LABEL_11:
     {
       v22 = v21;
       v23 = *v60;
-      v57 = v8;
+      v57 = selfCopy;
       while (2)
       {
         for (i = 0; i != v22; ++i)
@@ -523,7 +523,7 @@ LABEL_11:
 
             objc_autoreleasePoolPop(v31);
             v30 = v25;
-            v8 = v57;
+            selfCopy = v57;
             goto LABEL_25;
           }
 
@@ -545,7 +545,7 @@ LABEL_11:
 
         v22 = [v20 countByEnumeratingWithState:&v59 objects:v63 count:16];
         v30 = 0;
-        v8 = v57;
+        selfCopy = v57;
         if (v22)
         {
           continue;
@@ -562,13 +562,13 @@ LABEL_11:
 
 LABEL_25:
 
-    v4 = v58;
+    resultCopy = v58;
   }
 
   else
   {
     v35 = objc_autoreleasePoolPush();
-    v36 = v8;
+    v36 = selfCopy;
     v37 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v37, OS_LOG_TYPE_INFO))
     {
@@ -582,25 +582,25 @@ LABEL_25:
     v30 = 0;
   }
 
-  v39 = [(HMDUserComingHomeCoreRoutineTracker *)v8 _calculateEstimatedEntryDateForPredictedContextLocation:v30];
+  v39 = [(HMDUserComingHomeCoreRoutineTracker *)selfCopy _calculateEstimatedEntryDateForPredictedContextLocation:v30];
   v40 = v39;
-  if (v30 && v39 && ([(HMDUserComingHomeCoreRoutineTracker *)v8 canStartComingHome:v30]|| [(HMDUserComingHomeCoreRoutineTracker *)v8 canStayInComingHome:v30]))
+  if (v30 && v39 && ([(HMDUserComingHomeCoreRoutineTracker *)selfCopy canStartComingHome:v30]|| [(HMDUserComingHomeCoreRoutineTracker *)selfCopy canStayInComingHome:v30]))
   {
-    [(HMDUserComingHomeCoreRoutineTracker *)v8 _startOrUpdateComingHomeTrackingWithStateEnd:v40];
+    [(HMDUserComingHomeCoreRoutineTracker *)selfCopy _startOrUpdateComingHomeTrackingWithStateEnd:v40];
   }
 
   else
   {
-    if ([(HMDUserComingHomeCoreRoutineTracker *)v8 state]== 2)
+    if ([(HMDUserComingHomeCoreRoutineTracker *)selfCopy state]== 2)
     {
-      v41 = [(HMDUserComingHomeCoreRoutineTracker *)v8 dataSource];
-      v42 = [v41 currentDate];
+      dataSource3 = [(HMDUserComingHomeCoreRoutineTracker *)selfCopy dataSource];
+      currentDate = [dataSource3 currentDate];
 
-      v43 = [(HMDUserComingHomeCoreRoutineTracker *)v8 changedTimestamp];
-      if (v43)
+      changedTimestamp = [(HMDUserComingHomeCoreRoutineTracker *)selfCopy changedTimestamp];
+      if (changedTimestamp)
       {
-        v44 = [(HMDUserComingHomeCoreRoutineTracker *)v8 changedTimestamp];
-        [v42 timeIntervalSinceDate:v44];
+        changedTimestamp2 = [(HMDUserComingHomeCoreRoutineTracker *)selfCopy changedTimestamp];
+        [currentDate timeIntervalSinceDate:changedTimestamp2];
         v46 = v45;
       }
 
@@ -609,17 +609,17 @@ LABEL_25:
         v46 = 0;
       }
 
-      v47 = [(HMDUserComingHomeCoreRoutineTracker *)v8 stateEnd];
-      if (v47)
+      stateEnd = [(HMDUserComingHomeCoreRoutineTracker *)selfCopy stateEnd];
+      if (stateEnd)
       {
-        [(HMDUserComingHomeCoreRoutineTracker *)v8 stateEnd];
-        v48 = v8;
-        v50 = v49 = v4;
-        [v50 timeIntervalSinceDate:v42];
+        [(HMDUserComingHomeCoreRoutineTracker *)selfCopy stateEnd];
+        v48 = selfCopy;
+        v50 = v49 = resultCopy;
+        [v50 timeIntervalSinceDate:currentDate];
         v52 = v51;
 
-        v4 = v49;
-        v8 = v48;
+        resultCopy = v49;
+        selfCopy = v48;
       }
 
       else
@@ -628,30 +628,30 @@ LABEL_25:
       }
 
       v53 = [[HMDUserActivityStateType6DetectorTransitionLogEvent alloc] initWithTrackerType:3 reason:2 timeInEvent:v46 secondaryOffset:v52];
-      v54 = [(HMDUserComingHomeCoreRoutineTracker *)v8 dataSource];
-      v55 = [v54 logEventSubmitter];
-      [v55 submitLogEvent:v53];
+      dataSource4 = [(HMDUserComingHomeCoreRoutineTracker *)selfCopy dataSource];
+      logEventSubmitter = [dataSource4 logEventSubmitter];
+      [logEventSubmitter submitLogEvent:v53];
     }
 
-    [(HMDUserComingHomeCoreRoutineTracker *)v8 _stopComingHomeTracking:11];
+    [(HMDUserComingHomeCoreRoutineTracker *)selfCopy _stopComingHomeTracking:11];
   }
 
   v56 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_preprocessPredictedContextLocations:(id)a3
+- (id)_preprocessPredictedContextLocations:(id)locations
 {
   v61 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDUserComingHomeCoreRoutineTracker *)self dataSource];
-  v6 = [v5 queue];
-  dispatch_assert_queue_V2(v6);
+  locationsCopy = locations;
+  dataSource = [(HMDUserComingHomeCoreRoutineTracker *)self dataSource];
+  queue = [dataSource queue];
+  dispatch_assert_queue_V2(queue);
 
   [(HMDUserComingHomeCoreRoutineTracker *)self _auditSeenPredictedContextLocations];
-  v50 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v4, "count")}];
-  v49 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  v50 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(locationsCopy, "count")}];
+  v49 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(locationsCopy, "count")}];
   v7 = objc_autoreleasePoolPush();
-  v8 = self;
+  selfCopy = self;
   v9 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
@@ -659,7 +659,7 @@ LABEL_25:
     *buf = 138543618;
     v58 = v10;
     v59 = 2112;
-    v60 = v4;
+    v60 = locationsCopy;
     _os_log_impl(&dword_229538000, v9, OS_LOG_TYPE_DEBUG, "%{public}@Preprocessing predicted contexts: %@", buf, 0x16u);
   }
 
@@ -668,7 +668,7 @@ LABEL_25:
   v55 = 0u;
   v52 = 0u;
   v53 = 0u;
-  obj = v4;
+  obj = locationsCopy;
   v11 = [obj countByEnumeratingWithState:&v52 objects:v56 count:16];
   if (v11)
   {
@@ -700,7 +700,7 @@ LABEL_25:
         if (!v17)
         {
           v22 = objc_autoreleasePoolPush();
-          v23 = v8;
+          v23 = selfCopy;
           v24 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
           {
@@ -719,12 +719,12 @@ LABEL_31:
           goto LABEL_32;
         }
 
-        v18 = [v17 locationOfInterest];
-        v19 = [(HMDUserComingHomeCoreRoutineTracker *)v8 currentHomeLocationOfInterest];
-        v20 = v19;
-        if (v18)
+        locationOfInterest = [v17 locationOfInterest];
+        currentHomeLocationOfInterest = [(HMDUserComingHomeCoreRoutineTracker *)selfCopy currentHomeLocationOfInterest];
+        v20 = currentHomeLocationOfInterest;
+        if (locationOfInterest)
         {
-          v21 = v19 == 0;
+          v21 = currentHomeLocationOfInterest == 0;
         }
 
         else
@@ -737,7 +737,7 @@ LABEL_31:
 
 LABEL_27:
           v22 = objc_autoreleasePoolPush();
-          v34 = v8;
+          v34 = selfCopy;
           v35 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v35, OS_LOG_TYPE_DEBUG))
           {
@@ -752,8 +752,8 @@ LABEL_27:
           goto LABEL_30;
         }
 
-        v26 = [v18 identifier];
-        v27 = [v20 identifier];
+        identifier = [locationOfInterest identifier];
+        identifier2 = [v20 identifier];
         v28 = HMFEqualObjects();
 
         if ((v28 & 1) == 0)
@@ -764,7 +764,7 @@ LABEL_27:
         if (isNavigation(v17))
         {
           v29 = objc_autoreleasePoolPush();
-          v30 = v8;
+          v30 = selfCopy;
           v31 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
           {
@@ -783,11 +783,11 @@ LABEL_26:
           goto LABEL_32;
         }
 
-        if (![(HMDUserComingHomeCoreRoutineTracker *)v8 _validateRangeForProcessingSeenPredictedContextLocations:v17])
+        if (![(HMDUserComingHomeCoreRoutineTracker *)selfCopy _validateRangeForProcessingSeenPredictedContextLocations:v17])
         {
-          v38 = [(HMDUserComingHomeCoreRoutineTracker *)v8 _shouldProcessPredictedContextLocation:v17];
+          v38 = [(HMDUserComingHomeCoreRoutineTracker *)selfCopy _shouldProcessPredictedContextLocation:v17];
           v39 = objc_autoreleasePoolPush();
-          v40 = v8;
+          v40 = selfCopy;
           v41 = HMFGetOSLogHandle();
           v42 = os_log_type_enabled(v41, OS_LOG_TYPE_INFO);
           if (v38)
@@ -821,7 +821,7 @@ LABEL_26:
           goto LABEL_31;
         }
 
-        [(HMDUserComingHomeCoreRoutineTracker *)v8 _seenPredictedContextLocationsAddContext:v17];
+        [(HMDUserComingHomeCoreRoutineTracker *)selfCopy _seenPredictedContextLocationsAddContext:v17];
 LABEL_32:
 
         ++v14;
@@ -843,26 +843,26 @@ LABEL_32:
   return v46;
 }
 
-- (BOOL)_shouldProcessPredictedContextLocation:(id)a3
+- (BOOL)_shouldProcessPredictedContextLocation:(id)location
 {
-  v4 = a3;
-  v5 = [(HMDUserComingHomeCoreRoutineTracker *)self dataSource];
-  v6 = [v5 queue];
-  dispatch_assert_queue_V2(v6);
+  locationCopy = location;
+  dataSource = [(HMDUserComingHomeCoreRoutineTracker *)self dataSource];
+  queue = [dataSource queue];
+  dispatch_assert_queue_V2(queue);
 
-  v7 = [MEMORY[0x277D0F8D0] sharedPreferences];
-  v8 = [v7 preferenceForKey:@"detectorMaximumIntervalForStateEnd"];
-  v9 = [v8 numberValue];
-  [v9 doubleValue];
+  mEMORY[0x277D0F8D0] = [MEMORY[0x277D0F8D0] sharedPreferences];
+  v8 = [mEMORY[0x277D0F8D0] preferenceForKey:@"detectorMaximumIntervalForStateEnd"];
+  numberValue = [v8 numberValue];
+  [numberValue doubleValue];
   v11 = v10;
 
-  v12 = [(HMDUserComingHomeCoreRoutineTracker *)self _calculateEstimatedEntryDateForPredictedContextLocation:v4];
+  v12 = [(HMDUserComingHomeCoreRoutineTracker *)self _calculateEstimatedEntryDateForPredictedContextLocation:locationCopy];
   if (v12)
   {
     v13 = [MEMORY[0x277CBEAA8] dateWithTimeInterval:v12 sinceDate:-v11];
-    v14 = [(HMDUserComingHomeCoreRoutineTracker *)self dataSource];
-    v15 = [v14 currentDate];
-    v16 = [v15 compare:v13];
+    dataSource2 = [(HMDUserComingHomeCoreRoutineTracker *)self dataSource];
+    currentDate = [dataSource2 currentDate];
+    v16 = [currentDate compare:v13];
 
     if (v16 == -1)
     {
@@ -871,22 +871,22 @@ LABEL_32:
 
     else
     {
-      v17 = [(HMDUserComingHomeCoreRoutineTracker *)self _seenPredictedContextLocationsContains:v4 forInsert:0];
+      v17 = [(HMDUserComingHomeCoreRoutineTracker *)self _seenPredictedContextLocationsContains:locationCopy forInsert:0];
       if (v17)
       {
-        v18 = [v4 dateInterval];
-        v19 = [v18 startDate];
-        v20 = [v19 date];
-        v21 = [v17 dateInterval];
-        v22 = [v21 startDate];
-        v23 = [v22 date];
-        [v20 timeIntervalSinceDate:v23];
+        dateInterval = [locationCopy dateInterval];
+        startDate = [dateInterval startDate];
+        date = [startDate date];
+        dateInterval2 = [v17 dateInterval];
+        startDate2 = [dateInterval2 startDate];
+        date2 = [startDate2 date];
+        [date timeIntervalSinceDate:date2];
         v25 = v24;
 
-        v26 = [MEMORY[0x277D0F8D0] sharedPreferences];
-        v27 = [v26 preferenceForKey:@"predictedLocationContextMatchStartEndDateDelta"];
-        v28 = [v27 numberValue];
-        [v28 doubleValue];
+        mEMORY[0x277D0F8D0]2 = [MEMORY[0x277D0F8D0] sharedPreferences];
+        v27 = [mEMORY[0x277D0F8D0]2 preferenceForKey:@"predictedLocationContextMatchStartEndDateDelta"];
+        numberValue2 = [v27 numberValue];
+        [numberValue2 doubleValue];
         v30 = v29;
 
         v31 = vabdd_f64(v25, v30) >= 2.22044605e-16 && v25 <= v30;
@@ -907,46 +907,46 @@ LABEL_32:
   return v31;
 }
 
-- (BOOL)_validateRangeForProcessingSeenPredictedContextLocations:(id)a3
+- (BOOL)_validateRangeForProcessingSeenPredictedContextLocations:(id)locations
 {
-  v4 = a3;
-  v5 = [(HMDUserComingHomeCoreRoutineTracker *)self dataSource];
-  v6 = [v5 queue];
-  dispatch_assert_queue_V2(v6);
+  locationsCopy = locations;
+  dataSource = [(HMDUserComingHomeCoreRoutineTracker *)self dataSource];
+  queue = [dataSource queue];
+  dispatch_assert_queue_V2(queue);
 
-  v7 = [MEMORY[0x277D0F8D0] sharedPreferences];
-  v8 = [v7 preferenceForKey:@"minimumIntervalForValidSeenPrediction"];
-  v9 = [v8 numberValue];
-  [v9 doubleValue];
+  mEMORY[0x277D0F8D0] = [MEMORY[0x277D0F8D0] sharedPreferences];
+  v8 = [mEMORY[0x277D0F8D0] preferenceForKey:@"minimumIntervalForValidSeenPrediction"];
+  numberValue = [v8 numberValue];
+  [numberValue doubleValue];
   v11 = v10;
 
   v12 = MEMORY[0x277CBEAA8];
-  v13 = [v4 dateInterval];
+  dateInterval = [locationsCopy dateInterval];
 
-  v14 = [v13 startDate];
-  v15 = [v14 date];
-  v16 = [v12 dateWithTimeInterval:v15 sinceDate:-v11];
+  startDate = [dateInterval startDate];
+  date = [startDate date];
+  v16 = [v12 dateWithTimeInterval:date sinceDate:-v11];
 
-  v17 = [(HMDUserComingHomeCoreRoutineTracker *)self dataSource];
-  v18 = [v17 currentDate];
-  LOBYTE(v13) = [v18 compare:v16] != 1;
+  dataSource2 = [(HMDUserComingHomeCoreRoutineTracker *)self dataSource];
+  currentDate = [dataSource2 currentDate];
+  LOBYTE(dateInterval) = [currentDate compare:v16] != 1;
 
-  return v13;
+  return dateInterval;
 }
 
-- (void)_seenPredictedContextLocationsAddContext:(id)a3
+- (void)_seenPredictedContextLocationsAddContext:(id)context
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDUserComingHomeCoreRoutineTracker *)self dataSource];
-  v6 = [v5 queue];
-  dispatch_assert_queue_V2(v6);
+  contextCopy = context;
+  dataSource = [(HMDUserComingHomeCoreRoutineTracker *)self dataSource];
+  queue = [dataSource queue];
+  dispatch_assert_queue_V2(queue);
 
-  v7 = [(HMDUserComingHomeCoreRoutineTracker *)self _seenPredictedContextLocationsContains:v4 forInsert:1];
+  v7 = [(HMDUserComingHomeCoreRoutineTracker *)self _seenPredictedContextLocationsContains:contextCopy forInsert:1];
   if (!v7)
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
@@ -954,26 +954,26 @@ LABEL_32:
       v14 = 138543618;
       v15 = v11;
       v16 = 2112;
-      v17 = v4;
+      v17 = contextCopy;
       _os_log_impl(&dword_229538000, v10, OS_LOG_TYPE_INFO, "%{public}@Adding new context location to seen contexts: %@", &v14, 0x16u);
     }
 
     objc_autoreleasePoolPop(v8);
-    v12 = [(HMDUserComingHomeCoreRoutineTracker *)v9 seenPredictedContextLocations];
-    [v12 addObject:v4];
+    seenPredictedContextLocations = [(HMDUserComingHomeCoreRoutineTracker *)selfCopy seenPredictedContextLocations];
+    [seenPredictedContextLocations addObject:contextCopy];
   }
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_seenPredictedContextLocationsContains:(id)a3 forInsert:(BOOL)a4
+- (id)_seenPredictedContextLocationsContains:(id)contains forInsert:(BOOL)insert
 {
-  v74 = a4;
+  insertCopy = insert;
   v87 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [(HMDUserComingHomeCoreRoutineTracker *)self dataSource];
-  v7 = [v6 queue];
-  dispatch_assert_queue_V2(v7);
+  containsCopy = contains;
+  dataSource = [(HMDUserComingHomeCoreRoutineTracker *)self dataSource];
+  queue = [dataSource queue];
+  dispatch_assert_queue_V2(queue);
 
   v78 = 0u;
   v79 = 0u;
@@ -983,9 +983,9 @@ LABEL_32:
   v75 = [obj countByEnumeratingWithState:&v76 objects:v86 count:16];
   if (v75)
   {
-    v64 = self;
+    selfCopy = self;
     v73 = *v77;
-    v71 = v5;
+    v71 = containsCopy;
 LABEL_3:
     v8 = 0;
     while (1)
@@ -996,25 +996,25 @@ LABEL_3:
       }
 
       v9 = *(*(&v76 + 1) + 8 * v8);
-      v10 = v5;
-      v11 = [v10 dateInterval];
-      v12 = [v11 startDate];
-      v13 = [v12 date];
-      v14 = [v9 dateInterval];
-      v15 = [v14 startDate];
-      v16 = [v15 date];
-      [v13 timeIntervalSinceDate:v16];
+      v10 = containsCopy;
+      dateInterval = [v10 dateInterval];
+      startDate = [dateInterval startDate];
+      date = [startDate date];
+      dateInterval2 = [v9 dateInterval];
+      startDate2 = [dateInterval2 startDate];
+      date2 = [startDate2 date];
+      [date timeIntervalSinceDate:date2];
       v18 = v17;
 
-      v19 = [MEMORY[0x277D0F8D0] sharedPreferences];
-      v20 = [v19 preferenceForKey:@"predictedLocationContextMatchStartEndDateDelta"];
-      v21 = [v20 numberValue];
-      [v21 doubleValue];
+      mEMORY[0x277D0F8D0] = [MEMORY[0x277D0F8D0] sharedPreferences];
+      v20 = [mEMORY[0x277D0F8D0] preferenceForKey:@"predictedLocationContextMatchStartEndDateDelta"];
+      numberValue = [v20 numberValue];
+      [numberValue doubleValue];
       v23 = v22;
 
       v24 = fabs(v18);
       v25 = vabdd_f64(v24, v23);
-      if (v74)
+      if (insertCopy)
       {
         if (v24 > v23 || v25 < 2.22044605e-16)
         {
@@ -1029,59 +1029,59 @@ LABEL_3:
           goto LABEL_17;
         }
 
-        v28 = [v9 dateInterval];
-        v29 = [v28 startDate];
-        v30 = [v29 date];
-        v31 = [v10 dateInterval];
-        v32 = [v31 startDate];
-        v33 = [v32 date];
-        v34 = [v30 compare:v33];
+        dateInterval3 = [v9 dateInterval];
+        startDate3 = [dateInterval3 startDate];
+        date3 = [startDate3 date];
+        dateInterval4 = [v10 dateInterval];
+        startDate4 = [dateInterval4 startDate];
+        date4 = [startDate4 date];
+        v34 = [date3 compare:date4];
 
         v35 = v34 == 1;
-        v5 = v71;
+        containsCopy = v71;
         if (v35)
         {
           goto LABEL_17;
         }
       }
 
-      v36 = [v10 dateInterval];
-      v37 = [v36 endDate];
-      v38 = [v37 date];
-      v39 = [v9 dateInterval];
-      v40 = [v39 endDate];
-      v41 = [v40 date];
-      [v38 timeIntervalSinceDate:v41];
+      dateInterval5 = [v10 dateInterval];
+      endDate = [dateInterval5 endDate];
+      date5 = [endDate date];
+      dateInterval6 = [v9 dateInterval];
+      endDate2 = [dateInterval6 endDate];
+      date6 = [endDate2 date];
+      [date5 timeIntervalSinceDate:date6];
       v43 = v42;
 
-      v5 = v71;
+      containsCopy = v71;
       v44 = fabs(v43);
       if (v44 <= v23 && vabdd_f64(v44, v23) >= 2.22044605e-16)
       {
-        v45 = [v9 dateInterval];
-        v46 = [v45 startDate];
-        v47 = [v46 date];
-        v48 = [v10 dateInterval];
-        v49 = [v48 endDate];
-        v50 = [v49 date];
-        if ([v47 compare:v50] != 1)
+        dateInterval7 = [v9 dateInterval];
+        startDate5 = [dateInterval7 startDate];
+        date7 = [startDate5 date];
+        dateInterval8 = [v10 dateInterval];
+        endDate3 = [dateInterval8 endDate];
+        date8 = [endDate3 date];
+        if ([date7 compare:date8] != 1)
         {
-          v66 = [v10 dateInterval];
-          v65 = [v66 startDate];
-          v51 = [v65 date];
+          dateInterval9 = [v10 dateInterval];
+          startDate6 = [dateInterval9 startDate];
+          date9 = [startDate6 date];
           [v9 dateInterval];
-          v52 = v69 = v47;
+          v52 = v69 = date7;
           [v52 endDate];
-          v53 = v68 = v46;
+          v53 = v68 = startDate5;
           [v53 date];
-          v54 = v67 = v45;
-          v70 = [v51 compare:v54];
+          v54 = v67 = dateInterval7;
+          v70 = [date9 compare:v54];
 
-          v5 = v71;
+          containsCopy = v71;
           if (v70 != 1)
           {
             v57 = objc_autoreleasePoolPush();
-            v58 = v64;
+            v58 = selfCopy;
             v59 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v59, OS_LOG_TYPE_DEBUG))
             {
@@ -1097,7 +1097,7 @@ LABEL_3:
 
             objc_autoreleasePoolPop(v57);
             v56 = v9;
-            v5 = v71;
+            containsCopy = v71;
             goto LABEL_32;
           }
 
@@ -1133,24 +1133,24 @@ LABEL_32:
 - (void)_auditSeenPredictedContextLocations
 {
   v44 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDUserComingHomeCoreRoutineTracker *)self dataSource];
-  v4 = [v3 queue];
-  dispatch_assert_queue_V2(v4);
+  dataSource = [(HMDUserComingHomeCoreRoutineTracker *)self dataSource];
+  queue = [dataSource queue];
+  dispatch_assert_queue_V2(queue);
 
-  v5 = [(HMDUserComingHomeCoreRoutineTracker *)self dataSource];
-  v34 = [v5 currentDate];
+  dataSource2 = [(HMDUserComingHomeCoreRoutineTracker *)self dataSource];
+  currentDate = [dataSource2 currentDate];
 
   v6 = MEMORY[0x277CBEB18];
-  v7 = [(HMDUserComingHomeCoreRoutineTracker *)self seenPredictedContextLocations];
-  v31 = [v6 arrayWithCapacity:{objc_msgSend(v7, "count")}];
+  seenPredictedContextLocations = [(HMDUserComingHomeCoreRoutineTracker *)self seenPredictedContextLocations];
+  v31 = [v6 arrayWithCapacity:{objc_msgSend(seenPredictedContextLocations, "count")}];
 
   v37 = 0u;
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v30 = self;
-  v8 = [(HMDUserComingHomeCoreRoutineTracker *)self seenPredictedContextLocations];
-  v9 = [v8 countByEnumeratingWithState:&v35 objects:v43 count:16];
+  selfCopy = self;
+  seenPredictedContextLocations2 = [(HMDUserComingHomeCoreRoutineTracker *)self seenPredictedContextLocations];
+  v9 = [seenPredictedContextLocations2 countByEnumeratingWithState:&v35 objects:v43 count:16];
   if (v9)
   {
     v11 = v9;
@@ -1158,7 +1158,7 @@ LABEL_32:
     v33 = *v36;
     *&v10 = 138543618;
     v28 = v10;
-    obj = v8;
+    obj = seenPredictedContextLocations2;
     do
     {
       for (i = 0; i != v11; ++i)
@@ -1170,16 +1170,16 @@ LABEL_32:
 
         v13 = *(*(&v35 + 1) + 8 * i);
         v14 = MEMORY[0x277CBEAA8];
-        v15 = [v13 dateInterval];
-        v16 = [v15 endDate];
-        [v16 confidenceInterval];
+        dateInterval = [v13 dateInterval];
+        endDate = [dateInterval endDate];
+        [endDate confidenceInterval];
         v18 = v17;
-        v19 = [v13 dateInterval];
-        v20 = [v19 endDate];
-        v21 = [v20 date];
-        v22 = [v14 dateWithTimeInterval:v21 sinceDate:v18];
+        dateInterval2 = [v13 dateInterval];
+        endDate2 = [dateInterval2 endDate];
+        date = [endDate2 date];
+        v22 = [v14 dateWithTimeInterval:date sinceDate:v18];
 
-        if ([v22 compare:v34] == 1)
+        if ([v22 compare:currentDate] == 1)
         {
           [v31 addObject:v13];
         }
@@ -1187,7 +1187,7 @@ LABEL_32:
         else
         {
           v23 = objc_autoreleasePoolPush();
-          v24 = v30;
+          v24 = selfCopy;
           v25 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
           {
@@ -1211,7 +1211,7 @@ LABEL_32:
 
     if (v29)
     {
-      [(HMDUserComingHomeCoreRoutineTracker *)v30 setSeenPredictedContextLocations:v31];
+      [(HMDUserComingHomeCoreRoutineTracker *)selfCopy setSeenPredictedContextLocations:v31];
     }
   }
 
@@ -1224,28 +1224,28 @@ LABEL_32:
 
 - (void)processPredictedContextResults
 {
-  v3 = [(HMDUserComingHomeCoreRoutineTracker *)self dataSource];
-  v4 = [v3 queue];
+  dataSource = [(HMDUserComingHomeCoreRoutineTracker *)self dataSource];
+  queue = [dataSource queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __69__HMDUserComingHomeCoreRoutineTracker_processPredictedContextResults__block_invoke;
   block[3] = &unk_27868A728;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(queue, block);
 }
 
-- (BOOL)canStayInComingHome:(id)a3
+- (BOOL)canStayInComingHome:(id)home
 {
-  v4 = a3;
-  v5 = [(HMDUserComingHomeCoreRoutineTracker *)self dataSource];
-  v6 = [v5 queue];
-  dispatch_assert_queue_V2(v6);
+  homeCopy = home;
+  dataSource = [(HMDUserComingHomeCoreRoutineTracker *)self dataSource];
+  queue = [dataSource queue];
+  dispatch_assert_queue_V2(queue);
 
-  if ([(HMDUserComingHomeCoreRoutineTracker *)self state]== 2 && [(HMDUserComingHomeCoreRoutineTracker *)self locationContextHasValidStateEnd:v4])
+  if ([(HMDUserComingHomeCoreRoutineTracker *)self state]== 2 && [(HMDUserComingHomeCoreRoutineTracker *)self locationContextHasValidStateEnd:homeCopy])
   {
-    [v4 probability];
+    [homeCopy probability];
     v8 = v7;
-    [(HMDUserComingHomeCoreRoutineTracker *)self probabilityToStop:v4];
+    [(HMDUserComingHomeCoreRoutineTracker *)self probabilityToStop:homeCopy];
     v10 = v8 > v9 || vabdd_f64(v8, v9) < 2.22044605e-16;
   }
 
@@ -1257,79 +1257,79 @@ LABEL_32:
   return v10;
 }
 
-- (BOOL)canStartComingHome:(id)a3
+- (BOOL)canStartComingHome:(id)home
 {
-  v4 = a3;
-  v5 = [(HMDUserComingHomeCoreRoutineTracker *)self dataSource];
-  v6 = [v5 queue];
-  dispatch_assert_queue_V2(v6);
+  homeCopy = home;
+  dataSource = [(HMDUserComingHomeCoreRoutineTracker *)self dataSource];
+  queue = [dataSource queue];
+  dispatch_assert_queue_V2(queue);
 
-  if ([(HMDUserComingHomeCoreRoutineTracker *)self state]== 2 || ![(HMDUserComingHomeCoreRoutineTracker *)self locationContextHasValidStateEnd:v4])
+  if ([(HMDUserComingHomeCoreRoutineTracker *)self state]== 2 || ![(HMDUserComingHomeCoreRoutineTracker *)self locationContextHasValidStateEnd:homeCopy])
   {
     v10 = 0;
   }
 
   else
   {
-    [v4 probability];
+    [homeCopy probability];
     v8 = v7;
-    [(HMDUserComingHomeCoreRoutineTracker *)self probabilityToStart:v4];
+    [(HMDUserComingHomeCoreRoutineTracker *)self probabilityToStart:homeCopy];
     v10 = v8 > v9 || vabdd_f64(v8, v9) < 2.22044605e-16;
   }
 
   return v10;
 }
 
-- (BOOL)locationContextHasValidStateEnd:(id)a3
+- (BOOL)locationContextHasValidStateEnd:(id)end
 {
-  v4 = a3;
-  v5 = [(HMDUserComingHomeCoreRoutineTracker *)self dataSource];
-  v6 = [v5 queue];
-  dispatch_assert_queue_V2(v6);
+  endCopy = end;
+  dataSource = [(HMDUserComingHomeCoreRoutineTracker *)self dataSource];
+  queue = [dataSource queue];
+  dispatch_assert_queue_V2(queue);
 
-  v7 = [(HMDUserComingHomeCoreRoutineTracker *)self lastHomeEntryDate];
-  if (!v7 || (v8 = v7, [(HMDUserComingHomeCoreRoutineTracker *)self lastHomeExitDate], v9 = objc_claimAutoreleasedReturnValue(), v9, v8, v9))
+  lastHomeEntryDate = [(HMDUserComingHomeCoreRoutineTracker *)self lastHomeEntryDate];
+  if (!lastHomeEntryDate || (v8 = lastHomeEntryDate, [(HMDUserComingHomeCoreRoutineTracker *)self lastHomeExitDate], dataSource2 = objc_claimAutoreleasedReturnValue(), dataSource2, v8, dataSource2))
   {
-    v10 = [(HMDUserComingHomeCoreRoutineTracker *)self _calculateEstimatedEntryDateForPredictedContextLocation:v4];
+    v10 = [(HMDUserComingHomeCoreRoutineTracker *)self _calculateEstimatedEntryDateForPredictedContextLocation:endCopy];
     if (v10)
     {
-      v9 = [(HMDUserComingHomeCoreRoutineTracker *)self dataSource];
-      v11 = [v9 currentDate];
-      [v10 timeIntervalSinceDate:v11];
+      dataSource2 = [(HMDUserComingHomeCoreRoutineTracker *)self dataSource];
+      currentDate = [dataSource2 currentDate];
+      [v10 timeIntervalSinceDate:currentDate];
       v13 = v12;
 
-      LOBYTE(v9) = 0;
+      LOBYTE(dataSource2) = 0;
       if (v13 < 0.0 || fabs(v13) < 2.22044605e-16)
       {
         goto LABEL_13;
       }
 
-      v14 = [(HMDUserComingHomeCoreRoutineTracker *)self lastHomeEntryDate];
-      if (v14)
+      lastHomeEntryDate2 = [(HMDUserComingHomeCoreRoutineTracker *)self lastHomeEntryDate];
+      if (lastHomeEntryDate2)
       {
 
 LABEL_8:
-        LOBYTE(v9) = 1;
+        LOBYTE(dataSource2) = 1;
 LABEL_13:
 
         goto LABEL_14;
       }
 
-      v15 = [(HMDUserComingHomeCoreRoutineTracker *)self lastHomeExitDate];
+      lastHomeExitDate = [(HMDUserComingHomeCoreRoutineTracker *)self lastHomeExitDate];
 
-      if (!v15)
+      if (!lastHomeExitDate)
       {
         goto LABEL_8;
       }
 
-      v16 = [MEMORY[0x277D0F8D0] sharedPreferences];
-      v17 = [v16 preferenceForKey:@"minimumDurationToStateEndWhenLeavingHome"];
-      v18 = [v17 numberValue];
-      [v18 doubleValue];
+      mEMORY[0x277D0F8D0] = [MEMORY[0x277D0F8D0] sharedPreferences];
+      v17 = [mEMORY[0x277D0F8D0] preferenceForKey:@"minimumDurationToStateEndWhenLeavingHome"];
+      numberValue = [v17 numberValue];
+      [numberValue doubleValue];
       v20 = v19;
 
-      v21 = [(HMDUserComingHomeCoreRoutineTracker *)self lastHomeExitDate];
-      [v10 timeIntervalSinceDate:v21];
+      lastHomeExitDate2 = [(HMDUserComingHomeCoreRoutineTracker *)self lastHomeExitDate];
+      [v10 timeIntervalSinceDate:lastHomeExitDate2];
       v23 = v22;
 
       if (v23 >= v20 || vabdd_f64(v23, v20) < 2.22044605e-16)
@@ -1338,32 +1338,32 @@ LABEL_13:
       }
     }
 
-    LOBYTE(v9) = 0;
+    LOBYTE(dataSource2) = 0;
     goto LABEL_13;
   }
 
 LABEL_14:
 
-  return v9;
+  return dataSource2;
 }
 
-- (void)_stopComingHomeTracking:(unint64_t)a3
+- (void)_stopComingHomeTracking:(unint64_t)tracking
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = [(HMDUserComingHomeCoreRoutineTracker *)self dataSource];
-  v6 = [v5 queue];
-  dispatch_assert_queue_V2(v6);
+  dataSource = [(HMDUserComingHomeCoreRoutineTracker *)self dataSource];
+  queue = [dataSource queue];
+  dispatch_assert_queue_V2(queue);
 
-  v7 = [(HMDUserComingHomeCoreRoutineTracker *)self locationManager];
-  LODWORD(v6) = [v7 isNPLOIMonitoringAllowed];
+  locationManager = [(HMDUserComingHomeCoreRoutineTracker *)self locationManager];
+  LODWORD(queue) = [locationManager isNPLOIMonitoringAllowed];
 
-  v8 = [(HMDUserComingHomeCoreRoutineTracker *)self state];
-  if (v6)
+  state = [(HMDUserComingHomeCoreRoutineTracker *)self state];
+  if (queue)
   {
-    if (v8 != 3)
+    if (state != 3)
     {
       v9 = objc_autoreleasePoolPush();
-      v10 = self;
+      selfCopy = self;
       v11 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
       {
@@ -1381,15 +1381,15 @@ LABEL_9:
       [(HMDUserComingHomeCoreRoutineTracker *)self setStateEnd:0];
       [(HMDUserComingHomeCoreRoutineTracker *)self setOriginalStateEnd:0];
       [(HMDUserComingHomeCoreRoutineTracker *)self setChangedTimestamp:0];
-      [(HMDUserComingHomeCoreRoutineTracker *)self setLastReason:a3];
+      [(HMDUserComingHomeCoreRoutineTracker *)self setLastReason:tracking];
       [(HMDUserComingHomeCoreRoutineTracker *)self _stateUpdated];
     }
   }
 
-  else if (v8 != 1)
+  else if (state != 1)
   {
     v9 = objc_autoreleasePoolPush();
-    v14 = self;
+    selfCopy2 = self;
     v11 = HMFGetOSLogHandle();
     v13 = 1;
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
@@ -1407,82 +1407,82 @@ LABEL_9:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_startOrUpdateComingHomeTrackingWithStateEnd:(id)a3
+- (void)_startOrUpdateComingHomeTrackingWithStateEnd:(id)end
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDUserComingHomeCoreRoutineTracker *)self dataSource];
-  v6 = [v5 queue];
-  dispatch_assert_queue_V2(v6);
+  endCopy = end;
+  dataSource = [(HMDUserComingHomeCoreRoutineTracker *)self dataSource];
+  queue = [dataSource queue];
+  dispatch_assert_queue_V2(queue);
 
   if ([(HMDUserComingHomeCoreRoutineTracker *)self state]!= 2)
   {
     [(HMDUserComingHomeCoreRoutineTracker *)self setState:2];
-    [(HMDUserComingHomeCoreRoutineTracker *)self setStateEnd:v4];
-    [(HMDUserComingHomeCoreRoutineTracker *)self setOriginalStateEnd:v4];
+    [(HMDUserComingHomeCoreRoutineTracker *)self setStateEnd:endCopy];
+    [(HMDUserComingHomeCoreRoutineTracker *)self setOriginalStateEnd:endCopy];
     [(HMDUserComingHomeCoreRoutineTracker *)self setLastReason:11];
-    v12 = [(HMDUserComingHomeCoreRoutineTracker *)self dataSource];
-    v13 = [v12 currentDate];
-    [(HMDUserComingHomeCoreRoutineTracker *)self setChangedTimestamp:v13];
+    dataSource2 = [(HMDUserComingHomeCoreRoutineTracker *)self dataSource];
+    currentDate = [dataSource2 currentDate];
+    [(HMDUserComingHomeCoreRoutineTracker *)self setChangedTimestamp:currentDate];
 
 LABEL_12:
     v24 = objc_autoreleasePoolPush();
-    v25 = self;
+    selfCopy = self;
     v26 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
     {
       v27 = HMFGetLogIdentifier();
-      v28 = [(HMDUserComingHomeCoreRoutineTracker *)v25 stateEnd];
+      stateEnd = [(HMDUserComingHomeCoreRoutineTracker *)selfCopy stateEnd];
       v35 = 138543618;
       v36 = v27;
       v37 = 2112;
-      v38 = v28;
+      v38 = stateEnd;
       _os_log_impl(&dword_229538000, v26, OS_LOG_TYPE_INFO, "%{public}@Setting Coming Home with ETA: %@", &v35, 0x16u);
     }
 
     objc_autoreleasePoolPop(v24);
-    [(HMDUserComingHomeCoreRoutineTracker *)v25 _stateUpdated];
+    [(HMDUserComingHomeCoreRoutineTracker *)selfCopy _stateUpdated];
     goto LABEL_15;
   }
 
-  v7 = [(HMDUserComingHomeCoreRoutineTracker *)self stateEnd];
-  [v7 timeIntervalSinceDate:v4];
+  stateEnd2 = [(HMDUserComingHomeCoreRoutineTracker *)self stateEnd];
+  [stateEnd2 timeIntervalSinceDate:endCopy];
   v9 = v8;
 
-  v10 = [(HMDUserComingHomeCoreRoutineTracker *)self stateEnd];
-  if (!v10)
+  stateEnd3 = [(HMDUserComingHomeCoreRoutineTracker *)self stateEnd];
+  if (!stateEnd3)
   {
 LABEL_7:
     v15 = objc_autoreleasePoolPush();
-    v16 = self;
+    selfCopy2 = self;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
       v18 = HMFGetLogIdentifier();
-      v19 = [(HMDUserComingHomeCoreRoutineTracker *)v16 stateEnd];
+      stateEnd4 = [(HMDUserComingHomeCoreRoutineTracker *)selfCopy2 stateEnd];
       v35 = 138543874;
       v36 = v18;
       v37 = 2112;
-      v38 = v4;
+      v38 = endCopy;
       v39 = 2112;
-      v40 = v19;
+      v40 = stateEnd4;
       _os_log_impl(&dword_229538000, v17, OS_LOG_TYPE_INFO, "%{public}@Updating Coming Home with ETA: %@, Previous ETA: %@", &v35, 0x20u);
     }
 
     objc_autoreleasePoolPop(v15);
-    [(HMDUserComingHomeCoreRoutineTracker *)v16 setStateEnd:v4];
-    v20 = [(HMDUserComingHomeCoreRoutineTracker *)v16 originalStateEnd];
+    [(HMDUserComingHomeCoreRoutineTracker *)selfCopy2 setStateEnd:endCopy];
+    originalStateEnd = [(HMDUserComingHomeCoreRoutineTracker *)selfCopy2 originalStateEnd];
 
-    if (!v20)
+    if (!originalStateEnd)
     {
-      [(HMDUserComingHomeCoreRoutineTracker *)v16 setOriginalStateEnd:v4];
+      [(HMDUserComingHomeCoreRoutineTracker *)selfCopy2 setOriginalStateEnd:endCopy];
     }
 
-    [(HMDUserComingHomeCoreRoutineTracker *)v16 setLastReason:11];
+    [(HMDUserComingHomeCoreRoutineTracker *)selfCopy2 setLastReason:11];
     v21 = [[HMDUserActivityStateType6DetectorTransitionLogEvent alloc] initWithTrackerType:3 reason:5];
-    v22 = [(HMDUserComingHomeCoreRoutineTracker *)v16 dataSource];
-    v23 = [v22 logEventSubmitter];
-    [v23 submitLogEvent:v21];
+    dataSource3 = [(HMDUserComingHomeCoreRoutineTracker *)selfCopy2 dataSource];
+    logEventSubmitter = [dataSource3 logEventSubmitter];
+    [logEventSubmitter submitLogEvent:v21];
 
     goto LABEL_12;
   }
@@ -1502,18 +1502,18 @@ LABEL_7:
   }
 
   v30 = objc_autoreleasePoolPush();
-  v31 = self;
+  selfCopy3 = self;
   v32 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v32, OS_LOG_TYPE_INFO))
   {
     v33 = HMFGetLogIdentifier();
-    v34 = [(HMDUserComingHomeCoreRoutineTracker *)v31 stateEnd];
+    stateEnd5 = [(HMDUserComingHomeCoreRoutineTracker *)selfCopy3 stateEnd];
     v35 = 138543874;
     v36 = v33;
     v37 = 2112;
-    v38 = v4;
+    v38 = endCopy;
     v39 = 2112;
-    v40 = v34;
+    v40 = stateEnd5;
     _os_log_impl(&dword_229538000, v32, OS_LOG_TYPE_INFO, "%{public}@Not updating Coming Home with new ETA: %@, Previous ETA: %@", &v35, 0x20u);
   }
 
@@ -1523,43 +1523,43 @@ LABEL_15:
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_calculateEstimatedEntryDateForPredictedContextLocation:(id)a3
+- (id)_calculateEstimatedEntryDateForPredictedContextLocation:(id)location
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDUserComingHomeCoreRoutineTracker *)self dataSource];
-  v6 = [v5 queue];
-  dispatch_assert_queue_V2(v6);
+  locationCopy = location;
+  dataSource = [(HMDUserComingHomeCoreRoutineTracker *)self dataSource];
+  queue = [dataSource queue];
+  dispatch_assert_queue_V2(queue);
 
-  if (v4)
+  if (locationCopy)
   {
-    v7 = [v4 dateInterval];
-    v8 = [v7 startDate];
-    v9 = [v8 date];
+    dateInterval = [locationCopy dateInterval];
+    startDate = [dateInterval startDate];
+    date = [startDate date];
 
-    if (v9)
+    if (date)
     {
       [(HMDUserComingHomeCoreRoutineTracker *)self standardProbabilityToStart];
       v11 = v10;
-      v12 = [v4 dateInterval];
-      v13 = [v12 startDate];
-      [v13 confidenceInterval];
+      dateInterval2 = [locationCopy dateInterval];
+      startDate2 = [dateInterval2 startDate];
+      [startDate2 confidenceInterval];
       v15 = v14;
 
-      [v4 probability];
+      [locationCopy probability];
       if (v16 > v11 || vabdd_f64(v16, v11) < 2.22044605e-16)
       {
-        [v4 probability];
+        [locationCopy probability];
         v15 = v15 * ((v11 + v11) / v17 + -1.0);
       }
 
-      v18 = [MEMORY[0x277CBEAA8] dateWithTimeInterval:v9 sinceDate:v15];
+      v18 = [MEMORY[0x277CBEAA8] dateWithTimeInterval:date sinceDate:v15];
     }
 
     else
     {
       v19 = objc_autoreleasePoolPush();
-      v20 = self;
+      selfCopy = self;
       v21 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
       {
@@ -1567,7 +1567,7 @@ LABEL_15:
         v25 = 138543618;
         v26 = v22;
         v27 = 2112;
-        v28 = v4;
+        v28 = locationCopy;
         _os_log_impl(&dword_229538000, v21, OS_LOG_TYPE_INFO, "%{public}@Cannot calculate ETA because the current prediction does not have a startDate: %@", &v25, 0x16u);
       }
 
@@ -1586,16 +1586,16 @@ LABEL_15:
   return v18;
 }
 
-- (void)handleDidLeaveNotification:(id)a3
+- (void)handleDidLeaveNotification:(id)notification
 {
-  v4 = [(HMDUserComingHomeCoreRoutineTracker *)self dataSource];
-  v5 = [v4 queue];
+  dataSource = [(HMDUserComingHomeCoreRoutineTracker *)self dataSource];
+  queue = [dataSource queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __66__HMDUserComingHomeCoreRoutineTracker_handleDidLeaveNotification___block_invoke;
   block[3] = &unk_27868A728;
   block[4] = self;
-  dispatch_async(v5, block);
+  dispatch_async(queue, block);
 }
 
 uint64_t __66__HMDUserComingHomeCoreRoutineTracker_handleDidLeaveNotification___block_invoke(uint64_t a1)
@@ -1623,16 +1623,16 @@ uint64_t __66__HMDUserComingHomeCoreRoutineTracker_handleDidLeaveNotification___
   return result;
 }
 
-- (void)handleDidArriveNotification:(id)a3
+- (void)handleDidArriveNotification:(id)notification
 {
-  v4 = [(HMDUserComingHomeCoreRoutineTracker *)self dataSource];
-  v5 = [v4 queue];
+  dataSource = [(HMDUserComingHomeCoreRoutineTracker *)self dataSource];
+  queue = [dataSource queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __67__HMDUserComingHomeCoreRoutineTracker_handleDidArriveNotification___block_invoke;
   block[3] = &unk_27868A728;
   block[4] = self;
-  dispatch_async(v5, block);
+  dispatch_async(queue, block);
 }
 
 void __67__HMDUserComingHomeCoreRoutineTracker_handleDidArriveNotification___block_invoke(uint64_t a1)
@@ -1702,16 +1702,16 @@ void __67__HMDUserComingHomeCoreRoutineTracker_handleDidArriveNotification___blo
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleLocationChangedNotification:(id)a3
+- (void)handleLocationChangedNotification:(id)notification
 {
-  v4 = [(HMDUserComingHomeCoreRoutineTracker *)self dataSource];
-  v5 = [v4 queue];
+  dataSource = [(HMDUserComingHomeCoreRoutineTracker *)self dataSource];
+  queue = [dataSource queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __73__HMDUserComingHomeCoreRoutineTracker_handleLocationChangedNotification___block_invoke;
   block[3] = &unk_27868A728;
   block[4] = self;
-  dispatch_async(v5, block);
+  dispatch_async(queue, block);
 }
 
 void __73__HMDUserComingHomeCoreRoutineTracker_handleLocationChangedNotification___block_invoke(uint64_t a1)
@@ -1727,17 +1727,17 @@ void __73__HMDUserComingHomeCoreRoutineTracker_handleLocationChangedNotification
   [v7 registerForNPLOIMonitoring:v2 forLocation:v6];
 }
 
-- (void)handleLocationAuthorizationChange:(int64_t)a3
+- (void)handleLocationAuthorizationChange:(int64_t)change
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = [(HMDUserComingHomeCoreRoutineTracker *)self dataSource];
-  v6 = [v5 queue];
-  dispatch_assert_queue_V2(v6);
+  dataSource = [(HMDUserComingHomeCoreRoutineTracker *)self dataSource];
+  queue = [dataSource queue];
+  dispatch_assert_queue_V2(queue);
 
-  if ([(HMDUserComingHomeCoreRoutineTracker *)self locationAuthorization]!= a3)
+  if ([(HMDUserComingHomeCoreRoutineTracker *)self locationAuthorization]!= change)
   {
     v7 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
@@ -1751,23 +1751,23 @@ void __73__HMDUserComingHomeCoreRoutineTracker_handleLocationChangedNotification
     }
 
     objc_autoreleasePoolPop(v7);
-    [(HMDUserComingHomeCoreRoutineTracker *)v8 setLocationAuthorization:a3];
-    if (a3 == 1)
+    [(HMDUserComingHomeCoreRoutineTracker *)selfCopy setLocationAuthorization:change];
+    if (change == 1)
     {
-      v13 = [(HMDUserComingHomeCoreRoutineTracker *)v8 locationManager];
-      v14 = [(HMDUserComingHomeCoreRoutineTracker *)v8 dataSource];
-      v15 = [v14 home];
-      v16 = [v15 homeLocationHandler];
-      v17 = [v16 location];
-      [v13 registerForNPLOIMonitoring:v8 forLocation:v17];
+      locationManager = [(HMDUserComingHomeCoreRoutineTracker *)selfCopy locationManager];
+      dataSource2 = [(HMDUserComingHomeCoreRoutineTracker *)selfCopy dataSource];
+      home = [dataSource2 home];
+      homeLocationHandler = [home homeLocationHandler];
+      location = [homeLocationHandler location];
+      [locationManager registerForNPLOIMonitoring:selfCopy forLocation:location];
     }
 
-    else if (a3 == 2)
+    else if (change == 2)
     {
-      v12 = [(HMDUserComingHomeCoreRoutineTracker *)v8 locationManager];
-      [v12 unregisterForNPLOIMonitoring:v8];
+      locationManager2 = [(HMDUserComingHomeCoreRoutineTracker *)selfCopy locationManager];
+      [locationManager2 unregisterForNPLOIMonitoring:selfCopy];
 
-      [(HMDUserComingHomeCoreRoutineTracker *)v8 _stopComingHomeTracking:4];
+      [(HMDUserComingHomeCoreRoutineTracker *)selfCopy _stopComingHomeTracking:4];
     }
   }
 
@@ -1776,42 +1776,42 @@ void __73__HMDUserComingHomeCoreRoutineTracker_handleLocationChangedNotification
 
 - (void)_registerForNotifications
 {
-  v3 = [(HMDUserComingHomeCoreRoutineTracker *)self dataSource];
-  v4 = [v3 queue];
-  dispatch_assert_queue_V2(v4);
+  dataSource = [(HMDUserComingHomeCoreRoutineTracker *)self dataSource];
+  queue = [dataSource queue];
+  dispatch_assert_queue_V2(queue);
 
-  v5 = [(HMDUserComingHomeCoreRoutineTracker *)self dataSource];
-  v13 = [v5 home];
+  dataSource2 = [(HMDUserComingHomeCoreRoutineTracker *)self dataSource];
+  home = [dataSource2 home];
 
-  if (v13)
+  if (home)
   {
-    v6 = [(HMDUserComingHomeCoreRoutineTracker *)self dataSource];
-    v7 = [v6 notificationCenter];
-    v8 = [v13 homeLocationHandler];
-    [v7 addObserver:self selector:sel_handleLocationChangedNotification_ name:@"HMDLocationForHomeChanged" object:v8];
+    dataSource3 = [(HMDUserComingHomeCoreRoutineTracker *)self dataSource];
+    notificationCenter = [dataSource3 notificationCenter];
+    homeLocationHandler = [home homeLocationHandler];
+    [notificationCenter addObserver:self selector:sel_handleLocationChangedNotification_ name:@"HMDLocationForHomeChanged" object:homeLocationHandler];
 
-    v9 = [(HMDUserComingHomeCoreRoutineTracker *)self dataSource];
-    v10 = [v9 notificationCenter];
-    [v10 addObserver:self selector:sel_handleDidArriveNotification_ name:@"HMDHomeDidArriveHomeNotificationKey" object:v13];
+    dataSource4 = [(HMDUserComingHomeCoreRoutineTracker *)self dataSource];
+    notificationCenter2 = [dataSource4 notificationCenter];
+    [notificationCenter2 addObserver:self selector:sel_handleDidArriveNotification_ name:@"HMDHomeDidArriveHomeNotificationKey" object:home];
 
-    v11 = [(HMDUserComingHomeCoreRoutineTracker *)self dataSource];
-    v12 = [v11 notificationCenter];
-    [v12 addObserver:self selector:sel_handleDidLeaveNotification_ name:@"HMDHomeDidLeaveHomeNotificationKey" object:v13];
+    dataSource5 = [(HMDUserComingHomeCoreRoutineTracker *)self dataSource];
+    notificationCenter3 = [dataSource5 notificationCenter];
+    [notificationCenter3 addObserver:self selector:sel_handleDidLeaveNotification_ name:@"HMDHomeDidLeaveHomeNotificationKey" object:home];
   }
 }
 
 - (void)_stateUpdated
 {
-  v3 = [(HMDUserComingHomeCoreRoutineTracker *)self dataSource];
-  v4 = [v3 queue];
-  dispatch_assert_queue_V2(v4);
+  dataSource = [(HMDUserComingHomeCoreRoutineTracker *)self dataSource];
+  queue = [dataSource queue];
+  dispatch_assert_queue_V2(queue);
 
-  v5 = [(HMDUserComingHomeCoreRoutineTracker *)self delegate];
-  if (v5)
+  delegate = [(HMDUserComingHomeCoreRoutineTracker *)self delegate];
+  if (delegate)
   {
-    v6 = v5;
-    [v5 stateUpdated];
-    v5 = v6;
+    v6 = delegate;
+    [delegate stateUpdated];
+    delegate = v6;
   }
 }
 
@@ -1824,11 +1824,11 @@ void __73__HMDUserComingHomeCoreRoutineTracker_handleLocationChangedNotification
   return v3;
 }
 
-- (double)probabilityToStop:(id)a3
+- (double)probabilityToStop:(id)stop
 {
-  v3 = isNavigation(a3);
-  v4 = [MEMORY[0x277D0F8D0] sharedPreferences];
-  v5 = v4;
+  v3 = isNavigation(stop);
+  mEMORY[0x277D0F8D0] = [MEMORY[0x277D0F8D0] sharedPreferences];
+  v5 = mEMORY[0x277D0F8D0];
   if (v3)
   {
     v6 = @"comingHomeProbabilityToStopNavigation";
@@ -1839,22 +1839,22 @@ void __73__HMDUserComingHomeCoreRoutineTracker_handleLocationChangedNotification
     v6 = @"comingHomeProbabilityToStop";
   }
 
-  v7 = [v4 preferenceForKey:v6];
-  v8 = [v7 numberValue];
-  [v8 doubleValue];
+  v7 = [mEMORY[0x277D0F8D0] preferenceForKey:v6];
+  numberValue = [v7 numberValue];
+  [numberValue doubleValue];
   v10 = v9;
 
   return v10;
 }
 
-- (double)probabilityToStart:(id)a3
+- (double)probabilityToStart:(id)start
 {
-  if (isNavigation(a3))
+  if (isNavigation(start))
   {
-    v4 = [MEMORY[0x277D0F8D0] sharedPreferences];
-    v5 = [v4 preferenceForKey:@"comingHomeHomeProbabilityToStartNavigation"];
-    v6 = [v5 numberValue];
-    [v6 doubleValue];
+    mEMORY[0x277D0F8D0] = [MEMORY[0x277D0F8D0] sharedPreferences];
+    v5 = [mEMORY[0x277D0F8D0] preferenceForKey:@"comingHomeHomeProbabilityToStartNavigation"];
+    numberValue = [v5 numberValue];
+    [numberValue doubleValue];
     v8 = v7;
 
     return v8;
@@ -1871,19 +1871,19 @@ void __73__HMDUserComingHomeCoreRoutineTracker_handleLocationChangedNotification
 
 - (double)standardProbabilityToStart
 {
-  v2 = [MEMORY[0x277D0F8D0] sharedPreferences];
-  v3 = [v2 preferenceForKey:@"comingHomeHomeProbabilityToStart"];
-  v4 = [v3 numberValue];
-  [v4 doubleValue];
+  mEMORY[0x277D0F8D0] = [MEMORY[0x277D0F8D0] sharedPreferences];
+  v3 = [mEMORY[0x277D0F8D0] preferenceForKey:@"comingHomeHomeProbabilityToStart"];
+  numberValue = [v3 numberValue];
+  [numberValue doubleValue];
   v6 = v5;
 
   return v6;
 }
 
-- (void)setLastReason:(unint64_t)a3
+- (void)setLastReason:(unint64_t)reason
 {
   os_unfair_lock_lock_with_options();
-  self->_lastReason = a3;
+  self->_lastReason = reason;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -1896,12 +1896,12 @@ void __73__HMDUserComingHomeCoreRoutineTracker_handleLocationChangedNotification
   return lastReason;
 }
 
-- (void)setChangedTimestamp:(id)a3
+- (void)setChangedTimestamp:(id)timestamp
 {
-  v4 = a3;
+  timestampCopy = timestamp;
   os_unfair_lock_lock_with_options();
   changedTimestamp = self->_changedTimestamp;
-  self->_changedTimestamp = v4;
+  self->_changedTimestamp = timestampCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -1915,12 +1915,12 @@ void __73__HMDUserComingHomeCoreRoutineTracker_handleLocationChangedNotification
   return v3;
 }
 
-- (void)setStateEnd:(id)a3
+- (void)setStateEnd:(id)end
 {
-  v4 = a3;
+  endCopy = end;
   os_unfair_lock_lock_with_options();
   stateEnd = self->_stateEnd;
-  self->_stateEnd = v4;
+  self->_stateEnd = endCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -1934,10 +1934,10 @@ void __73__HMDUserComingHomeCoreRoutineTracker_handleLocationChangedNotification
   return v3;
 }
 
-- (void)setState:(unint64_t)a3
+- (void)setState:(unint64_t)state
 {
   os_unfair_lock_lock_with_options();
-  self->_state = a3;
+  self->_state = state;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -1950,23 +1950,23 @@ void __73__HMDUserComingHomeCoreRoutineTracker_handleLocationChangedNotification
   return state;
 }
 
-- (void)configureWithDelegate:(id)a3
+- (void)configureWithDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(HMDUserComingHomeCoreRoutineTracker *)self dataSource];
-  v6 = [v5 queue];
-  dispatch_assert_queue_V2(v6);
+  delegateCopy = delegate;
+  dataSource = [(HMDUserComingHomeCoreRoutineTracker *)self dataSource];
+  queue = [dataSource queue];
+  dispatch_assert_queue_V2(queue);
 
-  objc_storeWeak(&self->_delegate, v4);
+  objc_storeWeak(&self->_delegate, delegateCopy);
   [(HMDUserComingHomeCoreRoutineTracker *)self _registerForNotifications];
-  v7 = [(HMDUserComingHomeCoreRoutineTracker *)self locationManager];
-  -[HMDUserComingHomeCoreRoutineTracker handleLocationAuthorizationChange:](self, "handleLocationAuthorizationChange:", [v7 locationAuthorized]);
+  locationManager = [(HMDUserComingHomeCoreRoutineTracker *)self locationManager];
+  -[HMDUserComingHomeCoreRoutineTracker handleLocationAuthorizationChange:](self, "handleLocationAuthorizationChange:", [locationManager locationAuthorized]);
 }
 
-- (HMDUserComingHomeCoreRoutineTracker)initWithDataSource:(id)a3 locationManager:(id)a4
+- (HMDUserComingHomeCoreRoutineTracker)initWithDataSource:(id)source locationManager:(id)manager
 {
-  v7 = a3;
-  v8 = a4;
+  sourceCopy = source;
+  managerCopy = manager;
   v16.receiver = self;
   v16.super_class = HMDUserComingHomeCoreRoutineTracker;
   v9 = [(HMDUserComingHomeCoreRoutineTracker *)&v16 init];
@@ -1974,18 +1974,18 @@ void __73__HMDUserComingHomeCoreRoutineTracker_handleLocationChangedNotification
   if (v9)
   {
     v9->_lock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v9->_dataSource, a3);
-    objc_storeStrong(&v10->_locationManager, a4);
+    objc_storeStrong(&v9->_dataSource, source);
+    objc_storeStrong(&v10->_locationManager, manager);
     v10->_locationAuthorization = 0;
-    v11 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     predictedContextResultsToProcess = v10->_predictedContextResultsToProcess;
-    v10->_predictedContextResultsToProcess = v11;
+    v10->_predictedContextResultsToProcess = array;
 
     v10->_state = 1;
     v10->_lastReason = 0;
-    v13 = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
     seenPredictedContextLocations = v10->_seenPredictedContextLocations;
-    v10->_seenPredictedContextLocations = v13;
+    v10->_seenPredictedContextLocations = array2;
   }
 
   return v10;

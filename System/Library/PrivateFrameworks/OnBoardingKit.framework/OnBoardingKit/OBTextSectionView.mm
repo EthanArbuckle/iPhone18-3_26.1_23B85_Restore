@@ -1,16 +1,16 @@
 @interface OBTextSectionView
-- (OBTextSectionView)initWithHeader:(id)a3 content:(id)a4;
+- (OBTextSectionView)initWithHeader:(id)header content:(id)content;
 - (id)_contentFont;
 - (id)_headerFont;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation OBTextSectionView
 
-- (OBTextSectionView)initWithHeader:(id)a3 content:(id)a4
+- (OBTextSectionView)initWithHeader:(id)header content:(id)content
 {
-  v6 = a3;
-  v7 = a4;
+  headerCopy = header;
+  contentCopy = content;
   v33.receiver = self;
   v33.super_class = OBTextSectionView;
   v8 = [(OBTextSectionView *)&v33 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
@@ -19,69 +19,69 @@
   {
     [(OBTextSectionView *)v8 setAxis:1];
     [(OBTextSectionView *)v9 setAlignment:1];
-    if ([v6 length])
+    if ([headerCopy length])
     {
       v10 = objc_alloc_init(MEMORY[0x1E69DCC10]);
       [(OBTextSectionView *)v9 setHeaderLabel:v10];
 
-      v11 = [(OBTextSectionView *)v9 headerLabel];
-      [v11 setTranslatesAutoresizingMaskIntoConstraints:0];
+      headerLabel = [(OBTextSectionView *)v9 headerLabel];
+      [headerLabel setTranslatesAutoresizingMaskIntoConstraints:0];
 
-      v12 = [(OBTextSectionView *)v9 headerLabel];
-      [v12 setText:v6];
+      headerLabel2 = [(OBTextSectionView *)v9 headerLabel];
+      [headerLabel2 setText:headerCopy];
 
-      v13 = [(OBTextSectionView *)v9 headerLabel];
-      [v13 setTextAlignment:4];
+      headerLabel3 = [(OBTextSectionView *)v9 headerLabel];
+      [headerLabel3 setTextAlignment:4];
 
-      v14 = [MEMORY[0x1E69DC888] labelColor];
-      v15 = [(OBTextSectionView *)v9 headerLabel];
-      [v15 setTextColor:v14];
+      labelColor = [MEMORY[0x1E69DC888] labelColor];
+      headerLabel4 = [(OBTextSectionView *)v9 headerLabel];
+      [headerLabel4 setTextColor:labelColor];
 
-      v16 = [(OBTextSectionView *)v9 _headerFont];
-      v17 = [(OBTextSectionView *)v9 headerLabel];
-      [v17 setFont:v16];
+      _headerFont = [(OBTextSectionView *)v9 _headerFont];
+      headerLabel5 = [(OBTextSectionView *)v9 headerLabel];
+      [headerLabel5 setFont:_headerFont];
 
-      v18 = [(OBTextSectionView *)v9 headerLabel];
-      [v18 setNumberOfLines:0];
+      headerLabel6 = [(OBTextSectionView *)v9 headerLabel];
+      [headerLabel6 setNumberOfLines:0];
 
-      v19 = [(OBTextSectionView *)v9 headerLabel];
-      [(OBTextSectionView *)v9 addArrangedSubview:v19];
+      headerLabel7 = [(OBTextSectionView *)v9 headerLabel];
+      [(OBTextSectionView *)v9 addArrangedSubview:headerLabel7];
     }
 
-    if ([v7 length])
+    if ([contentCopy length])
     {
       v20 = objc_alloc_init(MEMORY[0x1E69DCC10]);
       [(OBTextSectionView *)v9 setContentLabel:v20];
 
-      v21 = [(OBTextSectionView *)v9 contentLabel];
-      [v21 setTranslatesAutoresizingMaskIntoConstraints:0];
+      contentLabel = [(OBTextSectionView *)v9 contentLabel];
+      [contentLabel setTranslatesAutoresizingMaskIntoConstraints:0];
 
-      v22 = [(OBTextSectionView *)v9 contentLabel];
-      [v22 setText:v7];
+      contentLabel2 = [(OBTextSectionView *)v9 contentLabel];
+      [contentLabel2 setText:contentCopy];
 
-      v23 = [(OBTextSectionView *)v9 contentLabel];
-      [v23 setTextAlignment:4];
+      contentLabel3 = [(OBTextSectionView *)v9 contentLabel];
+      [contentLabel3 setTextAlignment:4];
 
-      v24 = [MEMORY[0x1E69DC888] labelColor];
-      v25 = [(OBTextSectionView *)v9 contentLabel];
-      [v25 setTextColor:v24];
+      labelColor2 = [MEMORY[0x1E69DC888] labelColor];
+      contentLabel4 = [(OBTextSectionView *)v9 contentLabel];
+      [contentLabel4 setTextColor:labelColor2];
 
-      v26 = [(OBTextSectionView *)v9 _contentFont];
-      v27 = [(OBTextSectionView *)v9 contentLabel];
-      [v27 setFont:v26];
+      _contentFont = [(OBTextSectionView *)v9 _contentFont];
+      contentLabel5 = [(OBTextSectionView *)v9 contentLabel];
+      [contentLabel5 setFont:_contentFont];
 
-      v28 = [(OBTextSectionView *)v9 contentLabel];
-      [v28 setNumberOfLines:0];
+      contentLabel6 = [(OBTextSectionView *)v9 contentLabel];
+      [contentLabel6 setNumberOfLines:0];
 
-      v29 = [(OBTextSectionView *)v9 contentLabel];
-      [(OBTextSectionView *)v9 addArrangedSubview:v29];
+      contentLabel7 = [(OBTextSectionView *)v9 contentLabel];
+      [(OBTextSectionView *)v9 addArrangedSubview:contentLabel7];
 
-      v30 = [(OBTextSectionView *)v9 headerLabel];
+      headerLabel8 = [(OBTextSectionView *)v9 headerLabel];
 
-      if (v30)
+      if (headerLabel8)
       {
-        v31 = [(OBTextSectionView *)v9 headerLabel];
-        [(OBTextSectionView *)v9 setCustomSpacing:v31 afterView:6.0];
+        headerLabel9 = [(OBTextSectionView *)v9 headerLabel];
+        [(OBTextSectionView *)v9 setCustomSpacing:headerLabel9 afterView:6.0];
       }
     }
   }
@@ -89,18 +89,18 @@
   return v9;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v8.receiver = self;
   v8.super_class = OBTextSectionView;
-  [(OBTextSectionView *)&v8 traitCollectionDidChange:a3];
-  v4 = [(OBTextSectionView *)self _headerFont];
-  v5 = [(OBTextSectionView *)self headerLabel];
-  [v5 setFont:v4];
+  [(OBTextSectionView *)&v8 traitCollectionDidChange:change];
+  _headerFont = [(OBTextSectionView *)self _headerFont];
+  headerLabel = [(OBTextSectionView *)self headerLabel];
+  [headerLabel setFont:_headerFont];
 
-  v6 = [(OBTextSectionView *)self _contentFont];
-  v7 = [(OBTextSectionView *)self contentLabel];
-  [v7 setFont:v6];
+  _contentFont = [(OBTextSectionView *)self _contentFont];
+  contentLabel = [(OBTextSectionView *)self contentLabel];
+  [contentLabel setFont:_contentFont];
 }
 
 - (id)_headerFont

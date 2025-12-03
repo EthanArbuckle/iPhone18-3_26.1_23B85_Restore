@@ -1,20 +1,20 @@
 @interface OrgApacheLuceneStoreBufferedIndexInput
-+ (int)bufferSizeWithOrgApacheLuceneStoreIOContext:(id)a3;
++ (int)bufferSizeWithOrgApacheLuceneStoreIOContext:(id)context;
 - (char)readByte;
-- (char)readByteWithLong:(int64_t)a3;
+- (char)readByteWithLong:(int64_t)long;
 - (id)clone;
 - (id)refill;
-- (int)flushBufferWithOrgApacheLuceneStoreIndexOutput:(id)a3 withLong:(int64_t)a4;
+- (int)flushBufferWithOrgApacheLuceneStoreIndexOutput:(id)output withLong:(int64_t)long;
 - (int)readInt;
-- (int)readIntWithLong:(int64_t)a3;
+- (int)readIntWithLong:(int64_t)long;
 - (int)readVInt;
 - (int64_t)readLong;
-- (int64_t)readLongWithLong:(int64_t)a3;
+- (int64_t)readLongWithLong:(int64_t)long;
 - (int64_t)readVLong;
 - (signed)readShort;
-- (signed)readShortWithLong:(int64_t)a3;
+- (signed)readShortWithLong:(int64_t)long;
 - (void)dealloc;
-- (void)seekWithLong:(int64_t)a3;
+- (void)seekWithLong:(int64_t)long;
 @end
 
 @implementation OrgApacheLuceneStoreBufferedIndexInput
@@ -45,11 +45,11 @@
 
 - (id)refill
 {
-  v2 = *(a1 + 40) + *(a1 + 52);
-  v3 = v2 + *(a1 + 32);
-  if (v3 > [a1 length])
+  v2 = *(self + 40) + *(self + 52);
+  v3 = v2 + *(self + 32);
+  if (v3 > [self length])
   {
-    LODWORD(v3) = [a1 length];
+    LODWORD(v3) = [self length];
   }
 
   v11 = (v3 - v2);
@@ -60,18 +60,18 @@
     objc_exception_throw(v15);
   }
 
-  v12 = *(a1 + 24);
+  v12 = *(self + 24);
   if (!v12)
   {
-    [a1 newBufferWithByteArray:{+[IOSByteArray arrayWithLength:](IOSByteArray, "arrayWithLength:", *(a1 + 32))}];
-    [a1 seekInternalWithLong:*(a1 + 40)];
-    v12 = *(a1 + 24);
+    [self newBufferWithByteArray:{+[IOSByteArray arrayWithLength:](IOSByteArray, "arrayWithLength:", *(self + 32))}];
+    [self seekInternalWithLong:*(self + 40)];
+    v12 = *(self + 24);
   }
 
-  result = [a1 readInternalWithByteArray:v12 withInt:0 withInt:v11];
-  *(a1 + 48) = v11;
-  *(a1 + 40) = v2;
-  *(a1 + 52) = 0;
+  result = [self readInternalWithByteArray:v12 withInt:0 withInt:v11];
+  *(self + 48) = v11;
+  *(self + 40) = v2;
+  *(self + 52) = 0;
   return result;
 }
 
@@ -494,12 +494,12 @@
   return result;
 }
 
-- (char)readByteWithLong:(int64_t)a3
+- (char)readByteWithLong:(int64_t)long
 {
-  v4 = a3 - self->bufferStart_;
+  v4 = long - self->bufferStart_;
   if (v4 < 0 || v4 >= self->bufferLength_)
   {
-    self->bufferStart_ = a3;
+    self->bufferStart_ = long;
     self->bufferPosition_ = 0;
     self->bufferLength_ = 0;
     [(OrgApacheLuceneStoreBufferedIndexInput *)self seekInternalWithLong:?];
@@ -522,12 +522,12 @@
   return *(&buffer->super.size_ + v4 + 4);
 }
 
-- (signed)readShortWithLong:(int64_t)a3
+- (signed)readShortWithLong:(int64_t)long
 {
-  v4 = a3 - self->bufferStart_;
+  v4 = long - self->bufferStart_;
   if (v4 < 0 || v4 >= self->bufferLength_ - 1)
   {
-    self->bufferStart_ = a3;
+    self->bufferStart_ = long;
     self->bufferPosition_ = 0;
     self->bufferLength_ = 0;
     [(OrgApacheLuceneStoreBufferedIndexInput *)self seekInternalWithLong:?];
@@ -556,12 +556,12 @@
   return *(&self->buffer_->super.size_ + v4 + 5) | (v7 << 8);
 }
 
-- (int)readIntWithLong:(int64_t)a3
+- (int)readIntWithLong:(int64_t)long
 {
-  v4 = a3 - self->bufferStart_;
+  v4 = long - self->bufferStart_;
   if (v4 < 0 || v4 >= self->bufferLength_ - 3)
   {
-    self->bufferStart_ = a3;
+    self->bufferStart_ = long;
     self->bufferPosition_ = 0;
     self->bufferLength_ = 0;
     [(OrgApacheLuceneStoreBufferedIndexInput *)self seekInternalWithLong:?];
@@ -603,12 +603,12 @@
   return (*(&buffer->super.size_ + v4 + 4) << 24) | (*(&v7->super.size_ + v4 + 5) << 16) | (*(&v7->super.size_ + (v9 >> 32) + 4) << 8) | *(&v7->super.size_ + v10 + 4);
 }
 
-- (int64_t)readLongWithLong:(int64_t)a3
+- (int64_t)readLongWithLong:(int64_t)long
 {
-  v4 = a3 - self->bufferStart_;
+  v4 = long - self->bufferStart_;
   if (v4 < 0 || v4 >= self->bufferLength_ - 7)
   {
-    self->bufferStart_ = a3;
+    self->bufferStart_ = long;
     self->bufferPosition_ = 0;
     self->bufferLength_ = 0;
     [(OrgApacheLuceneStoreBufferedIndexInput *)self seekInternalWithLong:?];
@@ -682,12 +682,12 @@
   return (v17 << 24) | (v19 << 16) | (v21 << 8) | *(&v9->super.size_ + v22 + 4) | (((v8 << 24) | (v10 << 16) | (v13 << 8) | v15) << 32);
 }
 
-- (void)seekWithLong:(int64_t)a3
+- (void)seekWithLong:(int64_t)long
 {
   bufferStart = self->bufferStart_;
-  if (a3 < bufferStart || bufferStart + self->bufferLength_ <= a3)
+  if (long < bufferStart || bufferStart + self->bufferLength_ <= long)
   {
-    self->bufferStart_ = a3;
+    self->bufferStart_ = long;
     self->bufferPosition_ = 0;
     self->bufferLength_ = 0;
     [(OrgApacheLuceneStoreBufferedIndexInput *)self seekInternalWithLong:?];
@@ -695,7 +695,7 @@
 
   else
   {
-    self->bufferPosition_ = a3 - bufferStart;
+    self->bufferPosition_ = long - bufferStart;
   }
 }
 
@@ -703,9 +703,9 @@
 {
   v5.receiver = self;
   v5.super_class = OrgApacheLuceneStoreBufferedIndexInput;
-  v3 = [(OrgApacheLuceneStoreIndexInput *)&v5 clone];
+  clone = [(OrgApacheLuceneStoreIndexInput *)&v5 clone];
   objc_opt_class();
-  if (!v3)
+  if (!clone)
   {
     JreThrowNullPointerException();
   }
@@ -715,47 +715,47 @@
     JreThrowClassCastException();
   }
 
-  JreStrongAssign(v3 + 3, 0);
-  *(v3 + 12) = 0;
-  *(v3 + 13) = 0;
-  v3[5] = (self->bufferStart_ + self->bufferPosition_);
-  return v3;
+  JreStrongAssign(clone + 3, 0);
+  *(clone + 12) = 0;
+  *(clone + 13) = 0;
+  clone[5] = (self->bufferStart_ + self->bufferPosition_);
+  return clone;
 }
 
-- (int)flushBufferWithOrgApacheLuceneStoreIndexOutput:(id)a3 withLong:(int64_t)a4
+- (int)flushBufferWithOrgApacheLuceneStoreIndexOutput:(id)output withLong:(int64_t)long
 {
-  if (self->bufferLength_ - self->bufferPosition_ <= a4)
+  if (self->bufferLength_ - self->bufferPosition_ <= long)
   {
-    v4 = self->bufferLength_ - self->bufferPosition_;
+    longCopy = self->bufferLength_ - self->bufferPosition_;
   }
 
   else
   {
-    v4 = a4;
+    longCopy = long;
   }
 
-  if (v4 >= 1)
+  if (longCopy >= 1)
   {
-    if (!a3)
+    if (!output)
     {
       JreThrowNullPointerException();
     }
 
-    [a3 writeBytesWithByteArray:self->buffer_ withInt:? withInt:?];
-    self->bufferPosition_ += v4;
+    [output writeBytesWithByteArray:self->buffer_ withInt:? withInt:?];
+    self->bufferPosition_ += longCopy;
   }
 
-  return v4;
+  return longCopy;
 }
 
-+ (int)bufferSizeWithOrgApacheLuceneStoreIOContext:(id)a3
++ (int)bufferSizeWithOrgApacheLuceneStoreIOContext:(id)context
 {
-  if (!a3)
+  if (!context)
   {
     JreThrowNullPointerException();
   }
 
-  if ([*(a3 + 1) ordinal])
+  if ([*(context + 1) ordinal])
   {
     return 1024;
   }

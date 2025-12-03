@@ -1,9 +1,9 @@
 @interface SBSceneWatchdogProvider
 + (id)defaultSceneWatchdogProvider;
 + (id)disabledSceneWatchdogProvider;
-- (id)_scaleProvisions:(id)a3 byFactor:(double)a4;
-- (id)initAsDisabled:(BOOL)a3;
-- (id)watchdogPolicyForProcess:(id)a3 eventContext:(id)a4;
+- (id)_scaleProvisions:(id)provisions byFactor:(double)factor;
+- (id)initAsDisabled:(BOOL)disabled;
+- (id)watchdogPolicyForProcess:(id)process eventContext:(id)context;
 @end
 
 @implementation SBSceneWatchdogProvider
@@ -20,16 +20,16 @@
   return v3;
 }
 
-- (id)initAsDisabled:(BOOL)a3
+- (id)initAsDisabled:(BOOL)disabled
 {
-  v3 = a3;
+  disabledCopy = disabled;
   v14[1] = *MEMORY[0x277D85DE8];
   v13.receiver = self;
   v13.super_class = SBSceneWatchdogProvider;
   v4 = [(SBSceneWatchdogProvider *)&v13 init];
   if (v4)
   {
-    if (v3)
+    if (disabledCopy)
     {
       v5 = [MEMORY[0x277D0AD88] provisionWithResourceType:1 timeInterval:600.0];
       v6 = MEMORY[0x277D0AD98];
@@ -40,9 +40,9 @@
       v4->_explicitPolicy = v8;
     }
 
-    v10 = [MEMORY[0x277D0AA78] defaultPolicy];
+    defaultPolicy = [MEMORY[0x277D0AA78] defaultPolicy];
     defaultProcessWatchdogProvider = v4->_defaultProcessWatchdogProvider;
-    v4->_defaultProcessWatchdogProvider = v10;
+    v4->_defaultProcessWatchdogProvider = defaultPolicy;
   }
 
   return v4;
@@ -74,7 +74,7 @@ void __56__SBSceneWatchdogProvider_disabledSceneWatchdogProvider__block_invoke()
   disabledSceneWatchdogProvider___instance = v0;
 }
 
-- (id)watchdogPolicyForProcess:(id)a3 eventContext:(id)a4
+- (id)watchdogPolicyForProcess:(id)process eventContext:(id)context
 {
   explicitPolicy = self->_explicitPolicy;
   if (explicitPolicy)
@@ -85,13 +85,13 @@ void __56__SBSceneWatchdogProvider_disabledSceneWatchdogProvider__block_invoke()
   else
   {
     defaultProcessWatchdogProvider = self->_defaultProcessWatchdogProvider;
-    v9 = a4;
-    v10 = [(FBApplicationProcessWatchdogPolicy *)defaultProcessWatchdogProvider watchdogPolicyForProcess:a3 eventContext:v9];
-    v11 = [v9 sceneTransitionContext];
+    contextCopy = context;
+    v10 = [(FBApplicationProcessWatchdogPolicy *)defaultProcessWatchdogProvider watchdogPolicyForProcess:process eventContext:contextCopy];
+    sceneTransitionContext = [contextCopy sceneTransitionContext];
 
-    if (v11)
+    if (sceneTransitionContext)
     {
-      [v11 watchdogScaleFactor];
+      [sceneTransitionContext watchdogScaleFactor];
       v13 = v12;
     }
 
@@ -107,28 +107,28 @@ void __56__SBSceneWatchdogProvider_disabledSceneWatchdogProvider__block_invoke()
 
     else
     {
-      v14 = [v10 provisions];
-      v15 = [(SBSceneWatchdogProvider *)self _scaleProvisions:v14 byFactor:v13];
+      provisions = [v10 provisions];
+      v15 = [(SBSceneWatchdogProvider *)self _scaleProvisions:provisions byFactor:v13];
 
       v16 = MEMORY[0x277D0AD98];
-      v17 = [v10 name];
-      v5 = [v16 policyWithName:v17 forProvisions:v15];
+      name = [v10 name];
+      v5 = [v16 policyWithName:name forProvisions:v15];
     }
   }
 
   return v5;
 }
 
-- (id)_scaleProvisions:(id)a3 byFactor:(double)a4
+- (id)_scaleProvisions:(id)provisions byFactor:(double)factor
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
+  provisionsCopy = provisions;
+  array = [MEMORY[0x277CBEB18] array];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v6 = v4;
+  v6 = provisionsCopy;
   v7 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v7)
   {
@@ -173,12 +173,12 @@ void __56__SBSceneWatchdogProvider_disabledSceneWatchdogProvider__block_invoke()
             v13 = v11;
           }
 
-          [v5 addObject:v13];
+          [array addObject:v13];
         }
 
         else
         {
-          [v5 addObject:v11];
+          [array addObject:v11];
         }
       }
 
@@ -188,7 +188,7 @@ void __56__SBSceneWatchdogProvider_disabledSceneWatchdogProvider__block_invoke()
     while (v8);
   }
 
-  return v5;
+  return array;
 }
 
 @end

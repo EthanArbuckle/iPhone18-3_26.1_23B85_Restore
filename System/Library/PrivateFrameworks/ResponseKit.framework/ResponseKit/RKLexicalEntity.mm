@@ -9,19 +9,19 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(RKLexicalEntity *)self string];
-  v5 = [(RKLexicalEntity *)self language];
-  v6 = [(RKLexicalEntity *)self partOfSpeech];
-  v7 = [(RKLexicalEntity *)self lemma];
-  if (v7)
+  string = [(RKLexicalEntity *)self string];
+  language = [(RKLexicalEntity *)self language];
+  partOfSpeech = [(RKLexicalEntity *)self partOfSpeech];
+  lemma = [(RKLexicalEntity *)self lemma];
+  if (lemma)
   {
-    v8 = [(RKLexicalEntity *)self lemma];
-    v9 = [v3 stringWithFormat:@"%@{%@, %@, %@}", v4, v5, v6, v8];
+    lemma2 = [(RKLexicalEntity *)self lemma];
+    v9 = [v3 stringWithFormat:@"%@{%@, %@, %@}", string, language, partOfSpeech, lemma2];
   }
 
   else
   {
-    v9 = [v3 stringWithFormat:@"%@{%@, %@, %@}", v4, v5, v6, &stru_2874A9C90];
+    v9 = [v3 stringWithFormat:@"%@{%@, %@, %@}", string, language, partOfSpeech, &stru_2874A9C90];
   }
 
   return v9;
@@ -29,22 +29,22 @@
 
 - (NSString)word
 {
-  v3 = [(RKLexicalEntity *)self internalWord];
+  internalWord = [(RKLexicalEntity *)self internalWord];
 
-  if (!v3)
+  if (!internalWord)
   {
-    v4 = [(RKLexicalEntity *)self lemma];
-    if (v4)
+    lemma = [(RKLexicalEntity *)self lemma];
+    if (lemma)
     {
-      v5 = [(RKLexicalEntity *)self lemma];
-      [(RKLexicalEntity *)self setInternalWord:v5];
+      lemma2 = [(RKLexicalEntity *)self lemma];
+      [(RKLexicalEntity *)self setInternalWord:lemma2];
     }
 
     else
     {
-      v5 = [(RKLexicalEntity *)self string];
-      v6 = [v5 lowercaseString];
-      [(RKLexicalEntity *)self setInternalWord:v6];
+      lemma2 = [(RKLexicalEntity *)self string];
+      lowercaseString = [lemma2 lowercaseString];
+      [(RKLexicalEntity *)self setInternalWord:lowercaseString];
     }
   }
 

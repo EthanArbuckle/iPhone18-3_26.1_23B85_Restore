@@ -1,20 +1,20 @@
 @interface SBUIAnimationPropertyAnimator
 - (BOOL)isReversed;
-- (SBUIAnimationPropertyAnimator)initWithPropertyAnimator:(id)a3 duration:(double)a4;
-- (SBUIAnimationPropertyAnimator)initWithPropertyAnimatorGenerator:(id)a3;
-- (double)transitionDuration:(id)a3;
-- (void)_executeGenerator:(id)a3;
-- (void)addCompletion:(id)a3;
-- (void)animateTransition:(id)a3;
+- (SBUIAnimationPropertyAnimator)initWithPropertyAnimator:(id)animator duration:(double)duration;
+- (SBUIAnimationPropertyAnimator)initWithPropertyAnimatorGenerator:(id)generator;
+- (double)transitionDuration:(id)duration;
+- (void)_executeGenerator:(id)generator;
+- (void)addCompletion:(id)completion;
+- (void)animateTransition:(id)transition;
 - (void)reverseAnimation;
 @end
 
 @implementation SBUIAnimationPropertyAnimator
 
-- (SBUIAnimationPropertyAnimator)initWithPropertyAnimatorGenerator:(id)a3
+- (SBUIAnimationPropertyAnimator)initWithPropertyAnimatorGenerator:(id)generator
 {
-  v5 = a3;
-  if (!v5)
+  generatorCopy = generator;
+  if (!generatorCopy)
   {
     [(SBUIAnimationPropertyAnimator *)a2 initWithPropertyAnimatorGenerator:?];
   }
@@ -24,7 +24,7 @@
   v6 = [(SBUIAnimationPropertyAnimator *)&v10 init];
   if (v6)
   {
-    v7 = [v5 copy];
+    v7 = [generatorCopy copy];
     generator = v6->_generator;
     v6->_generator = v7;
   }
@@ -32,10 +32,10 @@
   return v6;
 }
 
-- (SBUIAnimationPropertyAnimator)initWithPropertyAnimator:(id)a3 duration:(double)a4
+- (SBUIAnimationPropertyAnimator)initWithPropertyAnimator:(id)animator duration:(double)duration
 {
-  v8 = a3;
-  if (!v8)
+  animatorCopy = animator;
+  if (!animatorCopy)
   {
     [SBUIAnimationPropertyAnimator initWithPropertyAnimator:a2 duration:self];
   }
@@ -46,8 +46,8 @@
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_propertyAnimator, a3);
-    v10->_duration = a4;
+    objc_storeStrong(&v9->_propertyAnimator, animator);
+    v10->_duration = duration;
   }
 
   return v10;
@@ -55,28 +55,28 @@
 
 - (BOOL)isReversed
 {
-  v2 = [(SBUIAnimationPropertyAnimator *)self propertyAnimator];
-  v3 = [v2 isReversed];
+  propertyAnimator = [(SBUIAnimationPropertyAnimator *)self propertyAnimator];
+  isReversed = [propertyAnimator isReversed];
 
-  return v3;
+  return isReversed;
 }
 
 - (void)reverseAnimation
 {
   ++self->_reverseCount;
-  v3 = [(SBUIAnimationPropertyAnimator *)self propertyAnimator];
-  [v3 setReversed:{-[SBUIAnimationPropertyAnimator isReversed](self, "isReversed") ^ 1}];
+  propertyAnimator = [(SBUIAnimationPropertyAnimator *)self propertyAnimator];
+  [propertyAnimator setReversed:{-[SBUIAnimationPropertyAnimator isReversed](self, "isReversed") ^ 1}];
 }
 
-- (void)addCompletion:(id)a3
+- (void)addCompletion:(id)completion
 {
-  v9 = a3;
-  v4 = [(SBUIAnimationPropertyAnimator *)self propertyAnimator];
+  completionCopy = completion;
+  propertyAnimator = [(SBUIAnimationPropertyAnimator *)self propertyAnimator];
 
-  if (v4)
+  if (propertyAnimator)
   {
-    v5 = [(SBUIAnimationPropertyAnimator *)self propertyAnimator];
-    [v5 addCompletion:v9];
+    propertyAnimator2 = [(SBUIAnimationPropertyAnimator *)self propertyAnimator];
+    [propertyAnimator2 addCompletion:completionCopy];
   }
 
   else
@@ -91,19 +91,19 @@
       completionBlocks = self->_completionBlocks;
     }
 
-    v5 = [v9 copy];
-    [(NSMutableArray *)completionBlocks addObject:v5];
+    propertyAnimator2 = [completionCopy copy];
+    [(NSMutableArray *)completionBlocks addObject:propertyAnimator2];
   }
 }
 
-- (double)transitionDuration:(id)a3
+- (double)transitionDuration:(id)duration
 {
-  v4 = a3;
-  v5 = [(SBUIAnimationPropertyAnimator *)self generator];
+  durationCopy = duration;
+  generator = [(SBUIAnimationPropertyAnimator *)self generator];
 
-  if (v5)
+  if (generator)
   {
-    [(SBUIAnimationPropertyAnimator *)self _executeGenerator:v4];
+    [(SBUIAnimationPropertyAnimator *)self _executeGenerator:durationCopy];
   }
 
   [(SBUIAnimationPropertyAnimator *)self duration];
@@ -112,32 +112,32 @@
   return v7;
 }
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
-  v6 = a3;
-  v4 = [(SBUIAnimationPropertyAnimator *)self generator];
+  transitionCopy = transition;
+  generator = [(SBUIAnimationPropertyAnimator *)self generator];
 
-  if (v4)
+  if (generator)
   {
-    [(SBUIAnimationPropertyAnimator *)self _executeGenerator:v6];
+    [(SBUIAnimationPropertyAnimator *)self _executeGenerator:transitionCopy];
   }
 
-  [(SBUIAnimationPropertyAnimator *)self prepareToRunAnimation:v6];
-  v5 = [(SBUIAnimationPropertyAnimator *)self propertyAnimator];
-  [v5 startAnimation];
+  [(SBUIAnimationPropertyAnimator *)self prepareToRunAnimation:transitionCopy];
+  propertyAnimator = [(SBUIAnimationPropertyAnimator *)self propertyAnimator];
+  [propertyAnimator startAnimation];
 
   self->_wasStarted = 1;
 }
 
-- (void)_executeGenerator:(id)a3
+- (void)_executeGenerator:(id)generator
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  generatorCopy = generator;
   p_propertyAnimator = &self->_propertyAnimator;
   if (!self->_propertyAnimator)
   {
-    v7 = [(SBUIAnimationPropertyAnimator *)self generator];
-    v8 = (v7)[2](v7, v5);
+    generator = [(SBUIAnimationPropertyAnimator *)self generator];
+    v8 = (generator)[2](generator, generatorCopy);
     propertyAnimator = self->_propertyAnimator;
     self->_propertyAnimator = v8;
 

@@ -1,6 +1,6 @@
 @interface __SwiftValue
-+ (id)allocWithZone:(_NSZone *)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)allocWithZone:(_NSZone *)zone;
+- (BOOL)isEqual:(id)equal;
 - (id)_swiftTypeName;
 - (id)debugDescription;
 - (id)description;
@@ -10,7 +10,7 @@
 
 @implementation __SwiftValue
 
-+ (id)allocWithZone:(_NSZone *)a3
++ (id)allocWithZone:(_NSZone *)zone
 {
   qword_1EA79DC90 = "__SwiftValue cannot be instantiated";
   __break(1u);
@@ -27,23 +27,23 @@
   self;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
 
-  if (a3)
+  if (equal)
   {
     if (qword_1ED4265F8 != -1)
     {
-      v13 = a3;
+      equalCopy = equal;
       swift::bridgeAnythingToSwiftValueObject(self);
-      a3 = v13;
+      equal = equalCopy;
     }
 
-    v4 = a3;
+    equalCopy2 = equal;
     if (objc_opt_isKindOfClass())
     {
       HashableConformance = SwiftValueHeader::getHashableConformance(&self[1]);
@@ -54,9 +54,9 @@
         if (HashableBaseType)
         {
           v8 = HashableBaseType;
-          if (HashableBaseType == SwiftValueHeader::getHashableBaseType(v4 + 1))
+          if (HashableBaseType == SwiftValueHeader::getHashableBaseType(equalCopy2 + 1))
           {
-            LOBYTE(EquatableConformance) = _swift_stdlib_Hashable_isEqual_indirect(self + (((*(*(self[1].super.isa - 1) + 80) & 0xF8) + 39) & ~(*(*(self[1].super.isa - 1) + 80) & 0xF8) & 0x1F8), v4 + (((*(*(v4[1] - 8) + 80) & 0xF8) + 39) & ~(*(*(v4[1] - 8) + 80) & 0xF8) & 0x1F8), v8, v6);
+            LOBYTE(EquatableConformance) = _swift_stdlib_Hashable_isEqual_indirect(self + (((*(*(self[1].super.isa - 1) + 80) & 0xF8) + 39) & ~(*(*(self[1].super.isa - 1) + 80) & 0xF8) & 0x1F8), equalCopy2 + (((*(*(equalCopy2[1] - 8) + 80) & 0xF8) + 39) & ~(*(*(equalCopy2[1] - 8) + 80) & 0xF8) & 0x1F8), v8, v6);
             return EquatableConformance & 1;
           }
         }
@@ -76,9 +76,9 @@
       }
 
       v11 = EquatableConformance;
-      if (EquatableConformance == SwiftValueHeader::getEquatableBaseType(v4 + 1))
+      if (EquatableConformance == SwiftValueHeader::getEquatableBaseType(equalCopy2 + 1))
       {
-        LOBYTE(EquatableConformance) = _swift_stdlib_Equatable_isEqual_indirect(self + (((*(*(self[1].super.isa - 1) + 80) & 0xF8) + 39) & ~(*(*(self[1].super.isa - 1) + 80) & 0xF8) & 0x1F8), v4 + (((*(*(v4[1] - 8) + 80) & 0xF8) + 39) & ~(*(*(v4[1] - 8) + 80) & 0xF8) & 0x1F8), v11, v10);
+        LOBYTE(EquatableConformance) = _swift_stdlib_Equatable_isEqual_indirect(self + (((*(*(self[1].super.isa - 1) + 80) & 0xF8) + 39) & ~(*(*(self[1].super.isa - 1) + 80) & 0xF8) & 0x1F8), equalCopy2 + (((*(*(equalCopy2[1] - 8) + 80) & 0xF8) + 39) & ~(*(*(equalCopy2[1] - 8) + 80) & 0xF8) & 0x1F8), v11, v10);
         return EquatableConformance & 1;
       }
     }
@@ -92,22 +92,22 @@
 
 - (unint64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
   HashableConformance = SwiftValueHeader::getHashableConformance(&self[1]);
   if (HashableConformance)
   {
     v4 = HashableConformance;
-    isa = v2[1].super.isa;
-    v6 = v2 + (((*(*(isa - 8) + 80) & 0xF8) + 39) & ~(*(*(isa - 8) + 80) & 0xF8) & 0x1F8);
+    isa = selfCopy[1].super.isa;
+    v6 = selfCopy + (((*(*(isa - 8) + 80) & 0xF8) + 39) & ~(*(*(isa - 8) + 80) & 0xF8) & 0x1F8);
 
     return _swift_stdlib_Hashable_hashValue_indirect(v6, isa, v4);
   }
 
   else
   {
-    if (SwiftValueHeader::getEquatableConformance(&v2[1]))
+    if (SwiftValueHeader::getEquatableConformance(&selfCopy[1]))
     {
-      v12 = v2[1].super.isa;
+      v12 = selfCopy[1].super.isa;
       os_unfair_lock_lock(&[__SwiftValue hash]::warnedLock);
       if (qword_1EA79EBC0 != -1)
       {
@@ -124,7 +124,7 @@
       return 1;
     }
 
-    return v2;
+    return selfCopy;
   }
 }
 

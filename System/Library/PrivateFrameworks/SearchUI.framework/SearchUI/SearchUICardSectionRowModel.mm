@@ -1,6 +1,6 @@
 @interface SearchUICardSectionRowModel
-- (BOOL)anyCardSectionsAreTappable:(id)a3;
-- (BOOL)anyCardSectionsHaveNextCards:(id)a3;
+- (BOOL)anyCardSectionsAreTappable:(id)tappable;
+- (BOOL)anyCardSectionsHaveNextCards:(id)cards;
 - (BOOL)fillsBackgroundWithContent;
 - (BOOL)hasLeadingImage;
 - (BOOL)isDraggable;
@@ -11,12 +11,12 @@
 - (BOOL)supportsCustomUserReportRequestAfforance;
 - (CGSize)minimumLayoutSize;
 - (Class)cardSectionViewClass;
-- (SearchUICardSectionRowModel)initWithResult:(id)a3 cardSection:(id)a4 isInline:(BOOL)a5 queryId:(unint64_t)a6 itemIdentifier:(id)a7;
+- (SearchUICardSectionRowModel)initWithResult:(id)result cardSection:(id)section isInline:(BOOL)inline queryId:(unint64_t)id itemIdentifier:(id)identifier;
 - (id)accessibilityIdentifier;
 - (id)backgroundColor;
 - (id)backgroundImage;
 - (id)contactIdentifiers;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dragSubtitle;
 - (id)dragText;
@@ -39,10 +39,10 @@
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v3 = [(SearchUIRowModel *)self cardSection];
-  v4 = [v3 punchoutOptions];
+  cardSection = [(SearchUIRowModel *)self cardSection];
+  punchoutOptions = [cardSection punchoutOptions];
 
-  v5 = [v4 countByEnumeratingWithState:&v18 objects:v23 count:16];
+  v5 = [punchoutOptions countByEnumeratingWithState:&v18 objects:v23 count:16];
   if (v5)
   {
     v6 = v5;
@@ -53,22 +53,22 @@
       {
         if (*v19 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(punchoutOptions);
         }
 
-        v9 = [*(*(&v18 + 1) + 8 * i) urls];
-        v10 = [v9 count];
+        urls = [*(*(&v18 + 1) + 8 * i) urls];
+        v10 = [urls count];
 
         if (v10)
         {
 
-          v11 = [(SearchUIRowModel *)self cardSection];
-          v13 = [v11 punchoutOptions];
+          cardSection2 = [(SearchUIRowModel *)self cardSection];
+          punchoutOptions2 = [cardSection2 punchoutOptions];
           goto LABEL_16;
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v18 objects:v23 count:16];
+      v6 = [punchoutOptions countByEnumeratingWithState:&v18 objects:v23 count:16];
       if (v6)
       {
         continue;
@@ -78,110 +78,110 @@
     }
   }
 
-  v11 = [(SearchUIRowModel *)self identifyingResult];
-  v12 = [SearchUIUtilities cardSectionsForRenderingResult:v11];
+  cardSection2 = [(SearchUIRowModel *)self identifyingResult];
+  v12 = [SearchUIUtilities cardSectionsForRenderingResult:cardSection2];
   if ([(SearchUICardSectionRowModel *)self anyCardSectionsAreTappable:v12])
   {
 
 LABEL_14:
-    v15 = [(SearchUICardSectionRowModel *)self fallbackCardSectionForCompactResult];
-    v16 = [v15 punchoutOptions];
+    fallbackCardSectionForCompactResult = [(SearchUICardSectionRowModel *)self fallbackCardSectionForCompactResult];
+    punchoutOptions3 = [fallbackCardSectionForCompactResult punchoutOptions];
     goto LABEL_15;
   }
 
-  v14 = [v11 punchout];
+  punchout = [cardSection2 punchout];
 
-  if (!v14)
+  if (!punchout)
   {
     goto LABEL_14;
   }
 
-  v15 = [v11 punchout];
-  v22 = v15;
-  v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v22 count:1];
+  fallbackCardSectionForCompactResult = [cardSection2 punchout];
+  v22 = fallbackCardSectionForCompactResult;
+  punchoutOptions3 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v22 count:1];
 LABEL_15:
-  v13 = v16;
+  punchoutOptions2 = punchoutOptions3;
 
 LABEL_16:
 
-  return v13;
+  return punchoutOptions2;
 }
 
 - (id)nextCard
 {
-  v3 = [(SearchUIRowModel *)self cardSection];
-  v4 = [v3 command];
+  cardSection = [(SearchUIRowModel *)self cardSection];
+  command = [cardSection command];
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && ([v4 card], (v5 = objc_claimAutoreleasedReturnValue()) != 0) || (objc_msgSend(v3, "nextCard"), (v5 = objc_claimAutoreleasedReturnValue()) != 0))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && ([command card], (v5 = objc_claimAutoreleasedReturnValue()) != 0) || (objc_msgSend(cardSection, "nextCard"), (v5 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v6 = v5;
+    nextCard = v5;
     goto LABEL_10;
   }
 
-  v7 = [(SearchUIRowModel *)self cardSection];
-  v8 = [v7 punchoutOptions];
-  if ([v8 count])
+  cardSection2 = [(SearchUIRowModel *)self cardSection];
+  punchoutOptions = [cardSection2 punchoutOptions];
+  if ([punchoutOptions count])
   {
 
 LABEL_9:
-    v14 = [(SearchUICardSectionRowModel *)self fallbackCardSectionForCompactResult];
-    v6 = [v14 nextCard];
+    fallbackCardSectionForCompactResult = [(SearchUICardSectionRowModel *)self fallbackCardSectionForCompactResult];
+    nextCard = [fallbackCardSectionForCompactResult nextCard];
 
     goto LABEL_10;
   }
 
-  v9 = [(SearchUIRowModel *)self identifyingResult];
-  v10 = [v9 inlineCard];
-  v11 = [v10 cardSections];
-  v12 = [(SearchUICardSectionRowModel *)self anyCardSectionsHaveNextCards:v11];
+  identifyingResult = [(SearchUIRowModel *)self identifyingResult];
+  inlineCard = [identifyingResult inlineCard];
+  cardSections = [inlineCard cardSections];
+  v12 = [(SearchUICardSectionRowModel *)self anyCardSectionsHaveNextCards:cardSections];
 
   if (v12)
   {
     goto LABEL_9;
   }
 
-  v13 = [(SearchUIRowModel *)self identifyingResult];
-  v6 = [v13 card];
+  identifyingResult2 = [(SearchUIRowModel *)self identifyingResult];
+  nextCard = [identifyingResult2 card];
 
-  if (!v6)
+  if (!nextCard)
   {
     goto LABEL_9;
   }
 
 LABEL_10:
 
-  return v6;
+  return nextCard;
 }
 
 - (id)fallbackCardSectionForCompactResult
 {
-  v3 = [(SearchUIRowModel *)self identifyingResult];
-  v4 = [v3 inlineCard];
-  v5 = [v4 cardSections];
+  identifyingResult = [(SearchUIRowModel *)self identifyingResult];
+  inlineCard = [identifyingResult inlineCard];
+  cardSections = [inlineCard cardSections];
 
-  v6 = [(SearchUIRowModel *)self identifyingResult];
-  if ([v6 usesCompactDisplay] && objc_msgSend(v5, "count") == 1)
+  identifyingResult2 = [(SearchUIRowModel *)self identifyingResult];
+  if ([identifyingResult2 usesCompactDisplay] && objc_msgSend(cardSections, "count") == 1)
   {
-    v7 = [v5 firstObject];
+    firstObject = [cardSections firstObject];
   }
 
   else
   {
-    v7 = 0;
+    firstObject = 0;
   }
 
-  return v7;
+  return firstObject;
 }
 
 - (id)reuseIdentifier
 {
-  v3 = [(SearchUICardSectionRowModel *)self cardReuseIdentifier];
+  cardReuseIdentifier = [(SearchUICardSectionRowModel *)self cardReuseIdentifier];
 
-  if (!v3)
+  if (!cardReuseIdentifier)
   {
-    v4 = [(SearchUICardSectionRowModel *)self cardSectionViewClass];
-    v5 = [(SearchUIRowModel *)self cardSection];
-    v6 = [(objc_class *)v4 supportsRecyclingForCardSection:v5];
+    cardSectionViewClass = [(SearchUICardSectionRowModel *)self cardSectionViewClass];
+    cardSection = [(SearchUIRowModel *)self cardSection];
+    v6 = [(objc_class *)cardSectionViewClass supportsRecyclingForCardSection:cardSection];
 
     if (!reuseIdentifier_cardSectionReuseDict)
     {
@@ -190,7 +190,7 @@ LABEL_10:
       reuseIdentifier_cardSectionReuseDict = v7;
     }
 
-    if (v4)
+    if (cardSectionViewClass)
     {
       v9 = v6;
     }
@@ -202,50 +202,50 @@ LABEL_10:
 
     if (v9 == 1)
     {
-      v10 = [reuseIdentifier_cardSectionReuseDict objectForKeyedSubscript:v4];
+      v10 = [reuseIdentifier_cardSectionReuseDict objectForKeyedSubscript:cardSectionViewClass];
       if (!v10)
       {
-        v10 = NSStringFromClass(v4);
-        [reuseIdentifier_cardSectionReuseDict setObject:v10 forKeyedSubscript:v4];
+        v10 = NSStringFromClass(cardSectionViewClass);
+        [reuseIdentifier_cardSectionReuseDict setObject:v10 forKeyedSubscript:cardSectionViewClass];
       }
 
       v11 = MEMORY[0x1E696AEC0];
       v16.receiver = self;
       v16.super_class = SearchUICardSectionRowModel;
-      v12 = [(SearchUIRowModel *)&v16 reuseIdentifier];
-      v13 = [v11 stringWithFormat:@"%@-%@", v12, v10];
+      reuseIdentifier = [(SearchUIRowModel *)&v16 reuseIdentifier];
+      v13 = [v11 stringWithFormat:@"%@-%@", reuseIdentifier, v10];
       [(SearchUICardSectionRowModel *)self setCardReuseIdentifier:v13];
     }
   }
 
-  v14 = [(SearchUICardSectionRowModel *)self cardReuseIdentifier];
+  cardReuseIdentifier2 = [(SearchUICardSectionRowModel *)self cardReuseIdentifier];
 
-  return v14;
+  return cardReuseIdentifier2;
 }
 
 - (Class)cardSectionViewClass
 {
-  v3 = [(SearchUIRowModel *)self cardSection];
-  v4 = [SearchUICardSectionCreator viewClassForCardSection:v3 horizontal:[(SearchUICardSectionRowModel *)self isHorizontalInLayout]];
+  cardSection = [(SearchUIRowModel *)self cardSection];
+  v4 = [SearchUICardSectionCreator viewClassForCardSection:cardSection horizontal:[(SearchUICardSectionRowModel *)self isHorizontalInLayout]];
 
   return v4;
 }
 
 - (id)accessibilityIdentifier
 {
-  v3 = [(SearchUIRowModel *)self cardSection];
-  v4 = [(SearchUIRowModel *)self identifyingResult];
-  if (([v4 usesCompactDisplay] & 1) == 0)
+  cardSection = [(SearchUIRowModel *)self cardSection];
+  identifyingResult = [(SearchUIRowModel *)self identifyingResult];
+  if (([identifyingResult usesCompactDisplay] & 1) == 0)
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) == 0 || ([v3 shouldUseCompactDisplay] & 1) == 0)
+    if ((objc_opt_isKindOfClass() & 1) == 0 || ([cardSection shouldUseCompactDisplay] & 1) == 0)
     {
 
 LABEL_7:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v9 = @"PersonEntityHeaderCell";
+        accessibilityIdentifier = @"PersonEntityHeaderCell";
       }
 
       else
@@ -253,7 +253,7 @@ LABEL_7:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v9 = @"EntityInfoCell";
+          accessibilityIdentifier = @"EntityInfoCell";
         }
 
         else
@@ -261,15 +261,15 @@ LABEL_7:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v9 = @"ImageCell";
+            accessibilityIdentifier = @"ImageCell";
           }
 
           else
           {
             objc_opt_class();
-            if ((objc_opt_isKindOfClass() & 1) != 0 && ([v3 punchoutOptions], v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "firstObject"), v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "urls"), v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "count"), v12, v11, v10, v13))
+            if ((objc_opt_isKindOfClass() & 1) != 0 && ([cardSection punchoutOptions], v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "firstObject"), v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "urls"), v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "count"), v12, v11, v10, v13))
             {
-              v9 = @"WebPunchOutCell";
+              accessibilityIdentifier = @"WebPunchOutCell";
             }
 
             else
@@ -277,7 +277,7 @@ LABEL_7:
               objc_opt_class();
               if (objc_opt_isKindOfClass())
               {
-                v9 = @"MapViewCell";
+                accessibilityIdentifier = @"MapViewCell";
               }
 
               else
@@ -285,14 +285,14 @@ LABEL_7:
                 objc_opt_class();
                 if (objc_opt_isKindOfClass())
                 {
-                  v9 = @"HeroCardCell";
+                  accessibilityIdentifier = @"HeroCardCell";
                 }
 
                 else
                 {
                   v15.receiver = self;
                   v15.super_class = SearchUICardSectionRowModel;
-                  v9 = [(SearchUIRowModel *)&v15 accessibilityIdentifier];
+                  accessibilityIdentifier = [(SearchUIRowModel *)&v15 accessibilityIdentifier];
                 }
               }
             }
@@ -304,41 +304,41 @@ LABEL_7:
     }
   }
 
-  v5 = [(SearchUICardSectionRowModel *)self punchouts];
-  v6 = [v5 firstObject];
-  v7 = [v6 urls];
-  v8 = [v7 count];
+  punchouts = [(SearchUICardSectionRowModel *)self punchouts];
+  firstObject = [punchouts firstObject];
+  urls = [firstObject urls];
+  v8 = [urls count];
 
   if (!v8)
   {
     goto LABEL_7;
   }
 
-  v9 = @"CompactPunchoutTopHitCell";
+  accessibilityIdentifier = @"CompactPunchoutTopHitCell";
 LABEL_21:
 
-  return v9;
+  return accessibilityIdentifier;
 }
 
 - (BOOL)fillsBackgroundWithContent
 {
-  v3 = [(SearchUICardSectionRowModel *)self cardSectionViewClass];
+  cardSectionViewClass = [(SearchUICardSectionRowModel *)self cardSectionViewClass];
 
-  return [(objc_class *)v3 fillsBackgroundWithContentForRowModel:self];
+  return [(objc_class *)cardSectionViewClass fillsBackgroundWithContentForRowModel:self];
 }
 
 - (int)separatorStyle
 {
-  v3 = [(SearchUIRowModel *)self cardSection];
-  v4 = [v3 separatorStyle];
+  cardSection = [(SearchUIRowModel *)self cardSection];
+  separatorStyle = [cardSection separatorStyle];
 
-  v5 = [(SearchUICardSectionRowModel *)self cardSectionViewClass];
-  if (v4 || !v5)
+  cardSectionViewClass = [(SearchUICardSectionRowModel *)self cardSectionViewClass];
+  if (separatorStyle || !cardSectionViewClass)
   {
-    return v4;
+    return separatorStyle;
   }
 
-  return [(objc_class *)v5 defaultSeparatorStyleForRowModel:self];
+  return [(objc_class *)cardSectionViewClass defaultSeparatorStyleForRowModel:self];
 }
 
 - (CGSize)minimumLayoutSize
@@ -352,24 +352,24 @@ LABEL_21:
 
 - (id)backgroundImage
 {
-  v3 = [(SearchUIRowModel *)self identifyingResult];
-  v4 = [SearchUIUtilities cardForRenderingResult:v3];
+  identifyingResult = [(SearchUIRowModel *)self identifyingResult];
+  v4 = [SearchUIUtilities cardForRenderingResult:identifyingResult];
 
-  v5 = [v4 cardSections];
-  if ([v5 count] == 1)
+  cardSections = [v4 cardSections];
+  if ([cardSections count] == 1)
   {
-    v6 = [v4 backgroundImage];
+    backgroundImage = [v4 backgroundImage];
   }
 
   else
   {
-    v6 = 0;
+    backgroundImage = 0;
   }
 
-  v7 = [(SearchUICardSectionRowModel *)self backgroundColor];
-  if (v7)
+  backgroundColor = [(SearchUICardSectionRowModel *)self backgroundColor];
+  if (backgroundColor)
   {
-    v8 = v6;
+    v8 = backgroundImage;
   }
 
   else
@@ -382,16 +382,16 @@ LABEL_21:
   return v8;
 }
 
-- (SearchUICardSectionRowModel)initWithResult:(id)a3 cardSection:(id)a4 isInline:(BOOL)a5 queryId:(unint64_t)a6 itemIdentifier:(id)a7
+- (SearchUICardSectionRowModel)initWithResult:(id)result cardSection:(id)section isInline:(BOOL)inline queryId:(unint64_t)id itemIdentifier:(id)identifier
 {
-  v7 = a5;
+  inlineCopy = inline;
   v11.receiver = self;
   v11.super_class = SearchUICardSectionRowModel;
-  v8 = [(SearchUIRowModel *)&v11 initWithResult:a3 cardSection:a4 queryId:a6 itemIdentifier:a7];
+  v8 = [(SearchUIRowModel *)&v11 initWithResult:result cardSection:section queryId:id itemIdentifier:identifier];
   v9 = v8;
   if (v8)
   {
-    [(SearchUICardSectionRowModel *)v8 setIsInline:v7];
+    [(SearchUICardSectionRowModel *)v8 setIsInline:inlineCopy];
   }
 
   return v9;
@@ -405,15 +405,15 @@ LABEL_21:
   return v2;
 }
 
-- (BOOL)anyCardSectionsAreTappable:(id)a3
+- (BOOL)anyCardSectionsAreTappable:(id)tappable
 {
   v21 = *MEMORY[0x1E69E9840];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  tappableCopy = tappable;
+  v5 = [tappableCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v5)
   {
     v6 = v5;
@@ -424,12 +424,12 @@ LABEL_21:
       {
         if (*v17 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(tappableCopy);
         }
 
         v9 = *(*(&v16 + 1) + 8 * i);
-        v10 = [v9 punchoutOptions];
-        if ([v10 count])
+        punchoutOptions = [v9 punchoutOptions];
+        if ([punchoutOptions count])
         {
 
 LABEL_14:
@@ -437,9 +437,9 @@ LABEL_14:
           goto LABEL_15;
         }
 
-        v11 = [v9 command];
+        command = [v9 command];
 
-        if (v11)
+        if (command)
         {
           goto LABEL_14;
         }
@@ -447,8 +447,8 @@ LABEL_14:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v12 = [v9 cardSections];
-          v13 = [(SearchUICardSectionRowModel *)self anyCardSectionsAreTappable:v12];
+          cardSections = [v9 cardSections];
+          v13 = [(SearchUICardSectionRowModel *)self anyCardSectionsAreTappable:cardSections];
 
           if (v13)
           {
@@ -457,7 +457,7 @@ LABEL_14:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v6 = [tappableCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v6)
       {
         continue;
@@ -467,21 +467,21 @@ LABEL_14:
     }
   }
 
-  v14 = [(SearchUICardSectionRowModel *)self anyCardSectionsHaveNextCards:v4];
+  v14 = [(SearchUICardSectionRowModel *)self anyCardSectionsHaveNextCards:tappableCopy];
 LABEL_15:
 
   return v14;
 }
 
-- (BOOL)anyCardSectionsHaveNextCards:(id)a3
+- (BOOL)anyCardSectionsHaveNextCards:(id)cards
 {
   v14 = *MEMORY[0x1E69E9840];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  cardsCopy = cards;
+  v4 = [cardsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = *v10;
@@ -491,19 +491,19 @@ LABEL_15:
       {
         if (*v10 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(cardsCopy);
         }
 
-        v7 = [*(*(&v9 + 1) + 8 * i) nextCard];
+        nextCard = [*(*(&v9 + 1) + 8 * i) nextCard];
 
-        if (v7)
+        if (nextCard)
         {
           LOBYTE(v4) = 1;
           goto LABEL_11;
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [cardsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
       if (v4)
       {
         continue;
@@ -520,34 +520,34 @@ LABEL_11:
 
 - (BOOL)isFocusable
 {
-  v3 = [(SearchUIRowModel *)self cardSection];
+  cardSection = [(SearchUIRowModel *)self cardSection];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = 0;
+    isFocusable = 0;
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = SearchUICardSectionRowModel;
-    v4 = [(SearchUIRowModel *)&v6 isFocusable];
+    isFocusable = [(SearchUIRowModel *)&v6 isFocusable];
   }
 
-  return v4;
+  return isFocusable;
 }
 
 - (BOOL)isQuerySuggestion
 {
-  v2 = [(SearchUIRowModel *)self cardSection];
+  cardSection = [(SearchUIRowModel *)self cardSection];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
-    v4 = [v3 suggestionType];
-    if (v4)
+    command = cardSection;
+    suggestionType = [command suggestionType];
+    if (suggestionType)
     {
-      v5 = v4;
+      v5 = suggestionType;
 
       if (v5 == 1)
       {
@@ -557,15 +557,15 @@ LABEL_11:
 
     else
     {
-      v6 = [v3 thumbnail];
-      if (!v6)
+      thumbnail = [command thumbnail];
+      if (!thumbnail)
       {
         goto LABEL_8;
       }
     }
   }
 
-  v3 = [v2 command];
+  command = [cardSection command];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -584,13 +584,13 @@ LABEL_11:
 
 - (BOOL)isTappable
 {
-  v3 = [(SearchUIRowModel *)self identifyingResult];
-  v4 = [SearchUIUtilities cardForRenderingResult:v3];
-  v5 = [(SearchUICardSectionRowModel *)self nextCard];
-  if (!v5 && ![(SearchUICardSectionRowModel *)self isQuerySuggestion])
+  identifyingResult = [(SearchUIRowModel *)self identifyingResult];
+  v4 = [SearchUIUtilities cardForRenderingResult:identifyingResult];
+  nextCard = [(SearchUICardSectionRowModel *)self nextCard];
+  if (!nextCard && ![(SearchUICardSectionRowModel *)self isQuerySuggestion])
   {
-    v8 = [(SearchUICardSectionRowModel *)self punchouts];
-    if ([v8 count])
+    punchouts = [(SearchUICardSectionRowModel *)self punchouts];
+    if ([punchouts count])
     {
       v6 = 1;
 LABEL_30:
@@ -598,8 +598,8 @@ LABEL_30:
       goto LABEL_4;
     }
 
-    v9 = [v3 userActivityRequiredString];
-    if ([v9 length])
+    userActivityRequiredString = [identifyingResult userActivityRequiredString];
+    if ([userActivityRequiredString length])
     {
       v6 = 1;
 LABEL_29:
@@ -607,8 +607,8 @@ LABEL_29:
       goto LABEL_30;
     }
 
-    v10 = [v3 applicationBundleIdentifier];
-    if (v10)
+    applicationBundleIdentifier = [identifyingResult applicationBundleIdentifier];
+    if (applicationBundleIdentifier)
     {
       v6 = 1;
 LABEL_28:
@@ -616,21 +616,21 @@ LABEL_28:
       goto LABEL_29;
     }
 
-    v11 = [v4 intentMessageName];
-    if (v11 && ([v4 intentMessageData], (v12 = objc_claimAutoreleasedReturnValue()) != 0))
+    intentMessageName = [v4 intentMessageName];
+    if (intentMessageName && ([v4 intentMessageData], (v12 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v6 = 1;
     }
 
     else
     {
-      v13 = [(SearchUIRowModel *)self cardSection];
-      v14 = [v13 userReportRequest];
-      if (v14 && ![(SearchUICardSectionRowModel *)self supportsCustomUserReportRequestAfforance])
+      cardSection = [(SearchUIRowModel *)self cardSection];
+      userReportRequest = [cardSection userReportRequest];
+      if (userReportRequest && ![(SearchUICardSectionRowModel *)self supportsCustomUserReportRequestAfforance])
       {
 
         v6 = 1;
-        if (!v11)
+        if (!intentMessageName)
         {
           goto LABEL_27;
         }
@@ -638,31 +638,31 @@ LABEL_28:
 
       else
       {
-        v20 = v13;
-        v19 = [(SearchUIRowModel *)self cardSection];
-        v15 = [v19 commands];
-        if ([v15 count])
+        v20 = cardSection;
+        cardSection2 = [(SearchUIRowModel *)self cardSection];
+        commands = [cardSection2 commands];
+        if ([commands count])
         {
           v6 = 1;
         }
 
         else
         {
-          v18 = [v3 identifier];
-          if ([v18 hasPrefix:@"com.apple.other"])
+          identifier = [identifyingResult identifier];
+          if ([identifier hasPrefix:@"com.apple.other"])
           {
             v6 = 1;
           }
 
           else
           {
-            v17 = [(SearchUIRowModel *)self cardSection];
-            v16 = [v17 command];
-            v6 = v16 != 0;
+            cardSection3 = [(SearchUIRowModel *)self cardSection];
+            command = [cardSection3 command];
+            v6 = command != 0;
           }
         }
 
-        if (!v11)
+        if (!intentMessageName)
         {
           goto LABEL_27;
         }
@@ -690,17 +690,17 @@ LABEL_4:
 
   else
   {
-    v4 = [(SearchUIRowModel *)self identifyingResult];
-    if ([SearchUIUtilities resultIsSiriAction:v4])
+    identifyingResult = [(SearchUIRowModel *)self identifyingResult];
+    if ([SearchUIUtilities resultIsSiriAction:identifyingResult])
     {
       LOBYTE(v3) = 0;
     }
 
     else
     {
-      v5 = [(SearchUIRowModel *)self identifyingResult];
-      v6 = [v5 sectionBundleIdentifier];
-      v3 = [v6 hasSuffix:@"search-through"] ^ 1;
+      identifyingResult2 = [(SearchUIRowModel *)self identifyingResult];
+      sectionBundleIdentifier = [identifyingResult2 sectionBundleIdentifier];
+      v3 = [sectionBundleIdentifier hasSuffix:@"search-through"] ^ 1;
     }
   }
 
@@ -709,36 +709,36 @@ LABEL_4:
 
 - (id)dragTitle
 {
-  v3 = [(SearchUICardSectionRowModel *)self cardSectionViewClass];
-  v4 = [(SearchUIRowModel *)self cardSection];
-  v5 = [(objc_class *)v3 dragTitleForCardSection:v4];
+  cardSectionViewClass = [(SearchUICardSectionRowModel *)self cardSectionViewClass];
+  cardSection = [(SearchUIRowModel *)self cardSection];
+  v5 = [(objc_class *)cardSectionViewClass dragTitleForCardSection:cardSection];
 
   return v5;
 }
 
 - (id)dragSubtitle
 {
-  v3 = [(SearchUICardSectionRowModel *)self dragURL];
-  v4 = [v3 host];
+  dragURL = [(SearchUICardSectionRowModel *)self dragURL];
+  host = [dragURL host];
 
-  if (!v4)
+  if (!host)
   {
-    v5 = [(SearchUICardSectionRowModel *)self cardSectionViewClass];
-    v6 = [(SearchUIRowModel *)self cardSection];
-    v4 = [(objc_class *)v5 dragSubtitleForCardSection:v6];
+    cardSectionViewClass = [(SearchUICardSectionRowModel *)self cardSectionViewClass];
+    cardSection = [(SearchUIRowModel *)self cardSection];
+    host = [(objc_class *)cardSectionViewClass dragSubtitleForCardSection:cardSection];
   }
 
-  return v4;
+  return host;
 }
 
 - (id)dragText
 {
   v3 = objc_opt_new();
-  v4 = [(SearchUICardSectionRowModel *)self dragTitle];
-  v5 = [(SearchUICardSectionRowModel *)self dragSubtitle];
-  if ([v4 length])
+  dragTitle = [(SearchUICardSectionRowModel *)self dragTitle];
+  dragSubtitle = [(SearchUICardSectionRowModel *)self dragSubtitle];
+  if ([dragTitle length])
   {
-    [v3 appendString:v4];
+    [v3 appendString:dragTitle];
   }
 
   if ([v3 length])
@@ -746,9 +746,9 @@ LABEL_4:
     [v3 appendString:@"\n"];
   }
 
-  if ([v5 length])
+  if ([dragSubtitle length])
   {
-    [v3 appendString:v5];
+    [v3 appendString:dragSubtitle];
   }
 
   return v3;
@@ -756,88 +756,88 @@ LABEL_4:
 
 - (id)dragURL
 {
-  v3 = [(SearchUICardSectionRowModel *)self punchouts];
-  v4 = [v3 firstObject];
-  v5 = [v4 preferredOpenableURL];
-  v6 = v5;
-  if (v5)
+  punchouts = [(SearchUICardSectionRowModel *)self punchouts];
+  firstObject = [punchouts firstObject];
+  preferredOpenableURL = [firstObject preferredOpenableURL];
+  v6 = preferredOpenableURL;
+  if (preferredOpenableURL)
   {
-    v7 = v5;
+    preferredOpenableURL2 = preferredOpenableURL;
   }
 
   else
   {
-    v8 = [(SearchUIRowModel *)self identifyingResult];
-    v9 = [v8 punchout];
-    v7 = [v9 preferredOpenableURL];
+    identifyingResult = [(SearchUIRowModel *)self identifyingResult];
+    punchout = [identifyingResult punchout];
+    preferredOpenableURL2 = [punchout preferredOpenableURL];
   }
 
-  return v7;
+  return preferredOpenableURL2;
 }
 
 - (BOOL)hasLeadingImage
 {
-  v3 = [(SearchUICardSectionRowModel *)self cardSectionViewClass];
-  v4 = [(SearchUIRowModel *)self cardSection];
-  LOBYTE(v3) = [(objc_class *)v3 hasLeadingImageForCardSection:v4];
+  cardSectionViewClass = [(SearchUICardSectionRowModel *)self cardSectionViewClass];
+  cardSection = [(SearchUIRowModel *)self cardSection];
+  LOBYTE(cardSectionViewClass) = [(objc_class *)cardSectionViewClass hasLeadingImageForCardSection:cardSection];
 
-  return v3;
+  return cardSectionViewClass;
 }
 
 - (BOOL)prefersNoSeparatorAbove
 {
-  v3 = [(SearchUICardSectionRowModel *)self cardSectionViewClass];
+  cardSectionViewClass = [(SearchUICardSectionRowModel *)self cardSectionViewClass];
 
-  return [(objc_class *)v3 prefersNoSeparatorAboveRowModel:self];
+  return [(objc_class *)cardSectionViewClass prefersNoSeparatorAboveRowModel:self];
 }
 
 - (BOOL)supportsCustomUserReportRequestAfforance
 {
-  v2 = [(SearchUICardSectionRowModel *)self cardSectionViewClass];
+  cardSectionViewClass = [(SearchUICardSectionRowModel *)self cardSectionViewClass];
 
-  return [(objc_class *)v2 supportsCustomUserReportRequestAfforance];
+  return [(objc_class *)cardSectionViewClass supportsCustomUserReportRequestAfforance];
 }
 
 - (id)backgroundColor
 {
   if ([(SearchUIRowModel *)self allowBackgroundColor])
   {
-    v3 = [(SearchUIRowModel *)self identifyingResult];
-    v4 = [SearchUIUtilities cardForRenderingResult:v3];
+    identifyingResult = [(SearchUIRowModel *)self identifyingResult];
+    v4 = [SearchUIUtilities cardForRenderingResult:identifyingResult];
 
-    v5 = [v4 cardSections];
-    if ([v5 count] == 1)
+    cardSections = [v4 cardSections];
+    if ([cardSections count] == 1)
     {
-      v6 = [v4 backgroundColor];
+      backgroundColor = [v4 backgroundColor];
     }
 
     else
     {
-      v6 = 0;
+      backgroundColor = 0;
     }
 
     v12.receiver = self;
     v12.super_class = SearchUICardSectionRowModel;
-    v8 = [(SearchUIRowModel *)&v12 backgroundColor];
-    v9 = v8;
-    if (v8 || (v9 = v6) != 0)
+    backgroundColor2 = [(SearchUIRowModel *)&v12 backgroundColor];
+    v9 = backgroundColor2;
+    if (backgroundColor2 || (v9 = backgroundColor) != 0)
     {
-      v7 = v9;
+      backgroundColor3 = v9;
     }
 
     else
     {
-      v11 = [(SearchUIRowModel *)self cardSection];
-      v7 = [v11 backgroundColor];
+      cardSection = [(SearchUIRowModel *)self cardSection];
+      backgroundColor3 = [cardSection backgroundColor];
     }
   }
 
   else
   {
-    v7 = 0;
+    backgroundColor3 = 0;
   }
 
-  return v7;
+  return backgroundColor3;
 }
 
 - (id)description
@@ -848,23 +848,23 @@ LABEL_4:
   v4 = [(SearchUICardSectionRowModel *)&v10 description];
   v5 = [v3 stringWithString:v4];
 
-  v6 = [(SearchUIRowModel *)self cardSection];
+  cardSection = [(SearchUIRowModel *)self cardSection];
 
-  if (v6)
+  if (cardSection)
   {
-    v7 = [(SearchUIRowModel *)self cardSection];
-    v8 = [v7 description];
+    cardSection2 = [(SearchUIRowModel *)self cardSection];
+    v8 = [cardSection2 description];
     [v5 appendString:v8];
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = SearchUICardSectionRowModel;
-  v4 = [(SearchUIRowModel *)&v6 copyWithZone:a3];
+  v4 = [(SearchUIRowModel *)&v6 copyWithZone:zone];
   [v4 setIsInline:{-[SearchUICardSectionRowModel isInline](self, "isInline")}];
   [v4 setIsHorizontalInLayout:{-[SearchUICardSectionRowModel isHorizontalInLayout](self, "isHorizontalInLayout")}];
   return v4;
@@ -873,20 +873,20 @@ LABEL_4:
 - (id)contactIdentifiers
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v3 = [(SearchUIRowModel *)self cardSection];
+  cardSection = [(SearchUIRowModel *)self cardSection];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(SearchUIRowModel *)self cardSection];
-    v6 = [v5 person];
+    cardSection2 = [(SearchUIRowModel *)self cardSection];
+    person = [cardSection2 person];
 
-    v7 = [v6 contactIdentifier];
-    if (v7)
+    contactIdentifier = [person contactIdentifier];
+    if (contactIdentifier)
     {
-      v8 = [v6 contactIdentifier];
-      v11[0] = v8;
+      contactIdentifier2 = [person contactIdentifier];
+      v11[0] = contactIdentifier2;
       v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
     }
 

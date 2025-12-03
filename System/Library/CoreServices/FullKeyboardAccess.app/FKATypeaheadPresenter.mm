@@ -1,30 +1,30 @@
 @interface FKATypeaheadPresenter
-- (FKATypeaheadPresenter)initWithContainingView:(id)a3;
+- (FKATypeaheadPresenter)initWithContainingView:(id)view;
 - (void)dismissFloatingView;
 - (void)presentTypeaheadView;
 @end
 
 @implementation FKATypeaheadPresenter
 
-- (FKATypeaheadPresenter)initWithContainingView:(id)a3
+- (FKATypeaheadPresenter)initWithContainingView:(id)view
 {
   v4.receiver = self;
   v4.super_class = FKATypeaheadPresenter;
-  return [(FKATypeaheadPresenter *)&v4 initWithContainingView:a3 alignedToEdge:4 withinSafeArea:0];
+  return [(FKATypeaheadPresenter *)&v4 initWithContainingView:view alignedToEdge:4 withinSafeArea:0];
 }
 
 - (void)presentTypeaheadView
 {
-  v3 = [(FKATypeaheadPresenter *)self typeaheadView];
+  typeaheadView = [(FKATypeaheadPresenter *)self typeaheadView];
 
-  if (!v3)
+  if (!typeaheadView)
   {
     v4 = objc_alloc_init(FKATypeaheadView);
     [(FKATypeaheadPresenter *)self setTypeaheadView:v4];
   }
 
-  v5 = [(FKATypeaheadPresenter *)self typeaheadView];
-  [(FKATypeaheadPresenter *)self presentFloatingView:v5 withDuration:0.0];
+  typeaheadView2 = [(FKATypeaheadPresenter *)self typeaheadView];
+  [(FKATypeaheadPresenter *)self presentFloatingView:typeaheadView2 withDuration:0.0];
 }
 
 - (void)dismissFloatingView

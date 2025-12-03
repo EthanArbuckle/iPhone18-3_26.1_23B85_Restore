@@ -1,14 +1,14 @@
 @interface ComAppleProactiveLuceneScoreInterceptWeight
 - (float)getValueForNormalization;
-- (id)scorerWithOrgApacheLuceneIndexLeafReaderContext:(id)a3;
+- (id)scorerWithOrgApacheLuceneIndexLeafReaderContext:(id)context;
 - (void)dealloc;
-- (void)extractTermsWithJavaUtilSet:(id)a3;
-- (void)normalizeWithFloat:(float)a3 withFloat:(float)a4;
+- (void)extractTermsWithJavaUtilSet:(id)set;
+- (void)normalizeWithFloat:(float)float withFloat:(float)withFloat;
 @end
 
 @implementation ComAppleProactiveLuceneScoreInterceptWeight
 
-- (void)extractTermsWithJavaUtilSet:(id)a3
+- (void)extractTermsWithJavaUtilSet:(id)set
 {
   weight = self->weight_;
   if (!weight)
@@ -16,7 +16,7 @@
     JreThrowNullPointerException();
   }
 
-  [(OrgApacheLuceneSearchWeight *)weight extractTermsWithJavaUtilSet:a3];
+  [(OrgApacheLuceneSearchWeight *)weight extractTermsWithJavaUtilSet:set];
 }
 
 - (float)getValueForNormalization
@@ -31,7 +31,7 @@
   return result;
 }
 
-- (void)normalizeWithFloat:(float)a3 withFloat:(float)a4
+- (void)normalizeWithFloat:(float)float withFloat:(float)withFloat
 {
   weight = self->weight_;
   if (!weight)
@@ -42,7 +42,7 @@
   [OrgApacheLuceneSearchWeight normalizeWithFloat:"normalizeWithFloat:withFloat:" withFloat:?];
 }
 
-- (id)scorerWithOrgApacheLuceneIndexLeafReaderContext:(id)a3
+- (id)scorerWithOrgApacheLuceneIndexLeafReaderContext:(id)context
 {
   weight = self->weight_;
   if (!weight)
@@ -70,7 +70,7 @@ LABEL_9:
 
   v8 = self->weight_;
   v9 = [ComAppleProactiveLuceneScoreInterceptWeight__1 alloc];
-  sub_1000494CC(&v9->super.super.super.super.isa, self, a3, v6, v6, v8);
+  sub_1000494CC(&v9->super.super.super.super.isa, self, context, v6, v6, v8);
 
   return v9;
 }

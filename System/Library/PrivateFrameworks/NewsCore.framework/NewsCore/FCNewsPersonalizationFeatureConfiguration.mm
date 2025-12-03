@@ -1,22 +1,22 @@
 @interface FCNewsPersonalizationFeatureConfiguration
-- (FCNewsPersonalizationFeatureConfiguration)initWithDictionary:(id)a3;
+- (FCNewsPersonalizationFeatureConfiguration)initWithDictionary:(id)dictionary;
 - (id)description;
 @end
 
 @implementation FCNewsPersonalizationFeatureConfiguration
 
-- (FCNewsPersonalizationFeatureConfiguration)initWithDictionary:(id)a3
+- (FCNewsPersonalizationFeatureConfiguration)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v7.receiver = self;
   v7.super_class = FCNewsPersonalizationFeatureConfiguration;
   v5 = [(FCNewsPersonalizationFeatureConfiguration *)&v7 init];
   if (v5)
   {
-    v5->_articleLengthMediumThreshold = FCAppConfigurationPositiveIntegerValue(v4, @"articleLengthMediumThreshold", +[FCNewsPersonalizationFeatureConfiguration defaultArticleLengthMediumThreshold]);
-    v5->_articleLengthLongThreshold = FCAppConfigurationPositiveIntegerValue(v4, @"articleLengthLongThreshold", +[FCNewsPersonalizationFeatureConfiguration defaultArticleLengthLongThreshold]);
-    v5->_publisherTopicPairPublisherEventCountThreshold = FCAppConfigurationPositiveIntegerValue(v4, @"publisherTopicPairPublisherEventCountThreshold", +[FCNewsPersonalizationFeatureConfiguration defaultPublisherTopicPairPublisherEventCountThreshold]);
-    v5->_publisherTopicPairTopicEventCountThreshold = FCAppConfigurationPositiveIntegerValue(v4, @"publisherTopicPairTopicEventCountThreshold", +[FCNewsPersonalizationFeatureConfiguration defaultPublisherTopicPairTopicEventCountThreshold]);
+    v5->_articleLengthMediumThreshold = FCAppConfigurationPositiveIntegerValue(dictionaryCopy, @"articleLengthMediumThreshold", +[FCNewsPersonalizationFeatureConfiguration defaultArticleLengthMediumThreshold]);
+    v5->_articleLengthLongThreshold = FCAppConfigurationPositiveIntegerValue(dictionaryCopy, @"articleLengthLongThreshold", +[FCNewsPersonalizationFeatureConfiguration defaultArticleLengthLongThreshold]);
+    v5->_publisherTopicPairPublisherEventCountThreshold = FCAppConfigurationPositiveIntegerValue(dictionaryCopy, @"publisherTopicPairPublisherEventCountThreshold", +[FCNewsPersonalizationFeatureConfiguration defaultPublisherTopicPairPublisherEventCountThreshold]);
+    v5->_publisherTopicPairTopicEventCountThreshold = FCAppConfigurationPositiveIntegerValue(dictionaryCopy, @"publisherTopicPairTopicEventCountThreshold", +[FCNewsPersonalizationFeatureConfiguration defaultPublisherTopicPairTopicEventCountThreshold]);
   }
 
   return v5;

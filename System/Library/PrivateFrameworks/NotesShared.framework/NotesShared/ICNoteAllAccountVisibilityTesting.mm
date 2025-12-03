@@ -1,6 +1,6 @@
 @interface ICNoteAllAccountVisibilityTesting
 + (id)sharedInstance;
-- (BOOL)supportsVisibilityTestingType:(int64_t)a3;
+- (BOOL)supportsVisibilityTestingType:(int64_t)type;
 @end
 
 @implementation ICNoteAllAccountVisibilityTesting
@@ -24,14 +24,14 @@ void __51__ICNoteAllAccountVisibilityTesting_sharedInstance__block_invoke()
   sharedInstance_instance = v0;
 }
 
-- (BOOL)supportsVisibilityTestingType:(int64_t)a3
+- (BOOL)supportsVisibilityTestingType:(int64_t)type
 {
-  if (!a3)
+  if (!type)
   {
     [MEMORY[0x277D36198] handleFailedAssertWithCondition:"visibilityTestingType != ICNoteVisibilityTestingTypeInvalid" functionName:"-[ICNoteAllAccountVisibilityTesting supportsVisibilityTestingType:]" simulateCrash:1 showAlert:0 format:@"Invalid visibilityTestingType"];
   }
 
-  return a3 != 0;
+  return type != 0;
 }
 
 @end

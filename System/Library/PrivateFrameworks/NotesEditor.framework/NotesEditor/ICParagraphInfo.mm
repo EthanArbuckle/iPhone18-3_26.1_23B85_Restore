@@ -9,18 +9,18 @@
 
 - (unsigned)style
 {
-  v2 = [(ICParagraphInfo *)self paragraphStyle];
-  v3 = [v2 style];
+  paragraphStyle = [(ICParagraphInfo *)self paragraphStyle];
+  style = [paragraphStyle style];
 
-  return v3;
+  return style;
 }
 
 - (unint64_t)indent
 {
-  v2 = [(ICParagraphInfo *)self paragraphStyle];
-  v3 = [v2 indent];
+  paragraphStyle = [(ICParagraphInfo *)self paragraphStyle];
+  indent = [paragraphStyle indent];
 
-  return v3;
+  return indent;
 }
 
 - (_NSRange)characterRange

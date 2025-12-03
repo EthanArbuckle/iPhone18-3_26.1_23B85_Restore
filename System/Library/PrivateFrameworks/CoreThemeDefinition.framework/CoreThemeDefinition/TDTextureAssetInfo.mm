@@ -1,12 +1,12 @@
 @interface TDTextureAssetInfo
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)dealloc;
 @end
 
 @implementation TDTextureAssetInfo
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[TDTextureAssetInfo allocWithZone:?]];
   [(TDTextureAssetInfo *)v4 setFileURL:[(TDTextureAssetInfo *)self fileURL]];

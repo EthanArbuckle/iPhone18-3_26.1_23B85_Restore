@@ -1,7 +1,7 @@
 @interface JavaNioChannelsDatagramChannel
 + (id)open;
-- (int64_t)readWithJavaNioByteBufferArray:(id)a3;
-- (int64_t)writeWithJavaNioByteBufferArray:(id)a3;
+- (int64_t)readWithJavaNioByteBufferArray:(id)array;
+- (int64_t)writeWithJavaNioByteBufferArray:(id)array;
 @end
 
 @implementation JavaNioChannelsDatagramChannel
@@ -17,28 +17,28 @@
   return [v2 openDatagramChannel];
 }
 
-- (int64_t)readWithJavaNioByteBufferArray:(id)a3
+- (int64_t)readWithJavaNioByteBufferArray:(id)array
 {
   objc_sync_enter(self);
-  if (!a3)
+  if (!array)
   {
     JreThrowNullPointerException();
   }
 
-  v5 = [(JavaNioChannelsDatagramChannel *)self readWithJavaNioByteBufferArray:a3 withInt:0 withInt:*(a3 + 2)];
+  v5 = [(JavaNioChannelsDatagramChannel *)self readWithJavaNioByteBufferArray:array withInt:0 withInt:*(array + 2)];
   objc_sync_exit(self);
   return v5;
 }
 
-- (int64_t)writeWithJavaNioByteBufferArray:(id)a3
+- (int64_t)writeWithJavaNioByteBufferArray:(id)array
 {
   objc_sync_enter(self);
-  if (!a3)
+  if (!array)
   {
     JreThrowNullPointerException();
   }
 
-  v5 = [(JavaNioChannelsDatagramChannel *)self writeWithJavaNioByteBufferArray:a3 withInt:0 withInt:*(a3 + 2)];
+  v5 = [(JavaNioChannelsDatagramChannel *)self writeWithJavaNioByteBufferArray:array withInt:0 withInt:*(array + 2)];
   objc_sync_exit(self);
   return v5;
 }

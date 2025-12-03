@@ -1,31 +1,31 @@
 @interface AnalyticsAgent
-+ (id)_awdSymptomsDiagnosticIncidentReportMetricForDiagnosticCase:(id)a3;
-+ (id)_awdSymptomsDiagnosticNotificationTokenMetricForTokenString:(id)a3;
++ (id)_awdSymptomsDiagnosticIncidentReportMetricForDiagnosticCase:(id)case;
++ (id)_awdSymptomsDiagnosticNotificationTokenMetricForTokenString:(id)string;
 + (id)sharedInstance;
-+ (int)awdDampeningType:(signed __int16)a3;
-+ (int)awdHandledResult:(signed __int16)a3;
-+ (void)updateAWDReport:(id)a3 withEvents:(id)a4;
-- (AnalyticsAgent)initWithSymptomsAWDConnection:(id)a3 queue:(id)a4;
-- (void)_handleQuery:(unsigned int)a3;
-- (void)_postMetric:(id)a3 metricIdentifier:(unsigned int)a4;
-- (void)apnsPostNotificationToken:(id)a3;
-- (void)postDiagnosticIncidentReportForCase:(id)a3;
++ (int)awdDampeningType:(signed __int16)type;
++ (int)awdHandledResult:(signed __int16)result;
++ (void)updateAWDReport:(id)report withEvents:(id)events;
+- (AnalyticsAgent)initWithSymptomsAWDConnection:(id)connection queue:(id)queue;
+- (void)_handleQuery:(unsigned int)query;
+- (void)_postMetric:(id)metric metricIdentifier:(unsigned int)identifier;
+- (void)apnsPostNotificationToken:(id)token;
+- (void)postDiagnosticIncidentReportForCase:(id)case;
 @end
 
 @implementation AnalyticsAgent
 
-- (AnalyticsAgent)initWithSymptomsAWDConnection:(id)a3 queue:(id)a4
+- (AnalyticsAgent)initWithSymptomsAWDConnection:(id)connection queue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
+  connectionCopy = connection;
+  queueCopy = queue;
   v17.receiver = self;
   v17.super_class = AnalyticsAgent;
   v9 = [(AnalyticsAgent *)&v17 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_symptomsAWDConnection, a3);
-    objc_storeStrong(&v10->_queue, a4);
+    objc_storeStrong(&v9->_symptomsAWDConnection, connection);
+    objc_storeStrong(&v10->_queue, queue);
     [(AnalyticsAgent *)v10 _registerAWDQueriableMetric:3145742];
     symptomsAWDConnection = v10->_symptomsAWDConnection;
     v15[0] = MEMORY[0x277D85DD0];
@@ -150,19 +150,19 @@ void __46__AnalyticsAgent__registerAWDQueriableMetric___block_invoke(uint64_t a1
   dispatch_async(v4, v5);
 }
 
-- (void)_postMetric:(id)a3 metricIdentifier:(unsigned int)a4
+- (void)_postMetric:(id)metric metricIdentifier:(unsigned int)identifier
 {
-  v6 = a3;
-  v7 = [(AnalyticsAgent *)self queue];
+  metricCopy = metric;
+  queue = [(AnalyticsAgent *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __47__AnalyticsAgent__postMetric_metricIdentifier___block_invoke;
   block[3] = &unk_278CF0E48;
-  v11 = a4;
+  identifierCopy = identifier;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
-  dispatch_async(v7, block);
+  v10 = metricCopy;
+  v8 = metricCopy;
+  dispatch_async(queue, block);
 }
 
 void __47__AnalyticsAgent__postMetric_metricIdentifier___block_invoke(uint64_t a1)
@@ -223,18 +223,18 @@ LABEL_11:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleQuery:(unsigned int)a3
+- (void)_handleQuery:(unsigned int)query
 {
   v8 = *MEMORY[0x277D85DE8];
   v4 = analyticsLogHandle();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     v7[0] = 67109120;
-    v7[1] = a3;
+    v7[1] = query;
     _os_log_impl(&dword_241804000, v4, OS_LOG_TYPE_INFO, "Received queriable metric request for metric ID %ul", v7, 8u);
   }
 
-  if (a3 == 3145742)
+  if (query == 3145742)
   {
     v5 = analyticsLogHandle();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -247,76 +247,76 @@ LABEL_11:
   v6 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)_awdSymptomsDiagnosticNotificationTokenMetricForTokenString:(id)a3
++ (id)_awdSymptomsDiagnosticNotificationTokenMetricForTokenString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v4 = objc_alloc_init(AWDSymptomsDiagnosticNotificationToken);
-  [(AWDSymptomsDiagnosticNotificationToken *)v4 setNotificationToken:v3];
+  [(AWDSymptomsDiagnosticNotificationToken *)v4 setNotificationToken:stringCopy];
 
   return v4;
 }
 
-+ (id)_awdSymptomsDiagnosticIncidentReportMetricForDiagnosticCase:(id)a3
++ (id)_awdSymptomsDiagnosticIncidentReportMetricForDiagnosticCase:(id)case
 {
   v64 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  caseCopy = case;
   v5 = objc_alloc_init(AWDSymptomsDiagnosticIncidentReport);
-  [v4 caseOpenedTime];
+  [caseCopy caseOpenedTime];
   [(AWDSymptomsDiagnosticIncidentReport *)v5 setTimestamp:(v6 * 1000.0)];
   [(AWDSymptomsDiagnosticIncidentReport *)v5 setVersion:2];
-  -[AWDSymptomsDiagnosticIncidentReport setHandledResult:](v5, "setHandledResult:", +[AnalyticsAgent awdHandledResult:](AnalyticsAgent, "awdHandledResult:", [v4 dampeningType]));
-  v7 = +[AnalyticsAgent awdDampeningType:](AnalyticsAgent, "awdDampeningType:", [v4 dampeningType]);
+  -[AWDSymptomsDiagnosticIncidentReport setHandledResult:](v5, "setHandledResult:", +[AnalyticsAgent awdHandledResult:](AnalyticsAgent, "awdHandledResult:", [caseCopy dampeningType]));
+  v7 = +[AnalyticsAgent awdDampeningType:](AnalyticsAgent, "awdDampeningType:", [caseCopy dampeningType]);
   if (v7 >= 1)
   {
     [(AWDSymptomsDiagnosticIncidentReport *)v5 setDampeningType:v7];
   }
 
-  [v4 caseClosedTime];
+  [caseCopy caseClosedTime];
   v9 = v8;
-  [v4 caseOpenedTime];
+  [caseCopy caseOpenedTime];
   if (v9 > v10)
   {
-    [v4 caseClosedTime];
+    [caseCopy caseClosedTime];
     v12 = v11;
-    [v4 caseOpenedTime];
+    [caseCopy caseOpenedTime];
     [(AWDSymptomsDiagnosticIncidentReport *)v5 setDuration:(v13 * -1000.0 + v12 * 1000.0)];
   }
 
-  v14 = [v4 caseId];
+  caseId = [caseCopy caseId];
 
-  if (v14)
+  if (caseId)
   {
-    v15 = [v4 caseId];
-    v16 = [v15 UUIDString];
-    [(AWDSymptomsDiagnosticIncidentReport *)v5 setIdentifier:v16];
+    caseId2 = [caseCopy caseId];
+    uUIDString = [caseId2 UUIDString];
+    [(AWDSymptomsDiagnosticIncidentReport *)v5 setIdentifier:uUIDString];
   }
 
-  v17 = [v4 signature];
-  v18 = [v17 objectForKeyedSubscript:@"groupID"];
+  signature = [caseCopy signature];
+  v18 = [signature objectForKeyedSubscript:@"groupID"];
 
   if ([v18 length])
   {
     [(AWDSymptomsDiagnosticIncidentReport *)v5 setGroupIdentifier:v18];
   }
 
-  v19 = [v4 signature];
-  v20 = [v19 objectForKeyedSubscript:@"domain"];
+  signature2 = [caseCopy signature];
+  v20 = [signature2 objectForKeyedSubscript:@"domain"];
 
   if ([v20 length])
   {
     [(AWDSymptomsDiagnosticIncidentReport *)v5 setDomain:v20];
   }
 
-  v21 = [v4 signature];
-  v22 = [v21 objectForKeyedSubscript:@"type"];
+  signature3 = [caseCopy signature];
+  v22 = [signature3 objectForKeyedSubscript:@"type"];
 
   if ([v22 length])
   {
     [(AWDSymptomsDiagnosticIncidentReport *)v5 setType:v22];
   }
 
-  v23 = [v4 signature];
-  v24 = [v23 objectForKeyedSubscript:@"subtype"];
+  signature4 = [caseCopy signature];
+  v24 = [signature4 objectForKeyedSubscript:@"subtype"];
 
   if ([v24 length])
   {
@@ -324,8 +324,8 @@ LABEL_11:
   }
 
   v58 = v22;
-  v25 = [v4 signature];
-  v26 = [v25 objectForKeyedSubscript:@"additional"];
+  signature5 = [caseCopy signature];
+  v26 = [signature5 objectForKeyedSubscript:@"additional"];
 
   if ([v26 length])
   {
@@ -334,16 +334,16 @@ LABEL_11:
 
   v56 = v26;
   v57 = v24;
-  v27 = [v4 signature];
-  v28 = [v27 objectForKeyedSubscript:@"detected"];
+  signature6 = [caseCopy signature];
+  v28 = [signature6 objectForKeyedSubscript:@"detected"];
   if (v28)
   {
   }
 
   else
   {
-    v29 = [v4 signature];
-    v30 = [v29 objectForKeyedSubscript:@"bundleID"];
+    signature7 = [caseCopy signature];
+    v30 = [signature7 objectForKeyedSubscript:@"bundleID"];
 
     if (!v30)
     {
@@ -351,13 +351,13 @@ LABEL_11:
     }
   }
 
-  v31 = [v4 signature];
-  v32 = [v31 objectForKeyedSubscript:@"bundleID"];
+  signature8 = [caseCopy signature];
+  v32 = [signature8 objectForKeyedSubscript:@"bundleID"];
 
   if (![v32 length])
   {
-    v33 = [v4 signature];
-    v34 = [v33 objectForKeyedSubscript:@"detected"];
+    signature9 = [caseCopy signature];
+    v34 = [signature9 objectForKeyedSubscript:@"detected"];
 
     v32 = v34;
   }
@@ -368,28 +368,28 @@ LABEL_11:
   }
 
 LABEL_25:
-  v35 = [v4 signature];
-  v36 = [v35 objectForKeyedSubscript:@"effective"];
+  signature10 = [caseCopy signature];
+  v36 = [signature10 objectForKeyedSubscript:@"effective"];
 
   if ([v36 length])
   {
     [(AWDSymptomsDiagnosticIncidentReport *)v5 setEffectiveName:v36];
   }
 
-  v37 = [v4 signature];
-  v38 = [v37 objectForKeyedSubscript:@"related"];
+  signature11 = [caseCopy signature];
+  v38 = [signature11 objectForKeyedSubscript:@"related"];
 
   if (v38)
   {
-    v39 = [v4 signature];
-    v40 = [v39 objectForKeyedSubscript:@"related"];
+    signature12 = [caseCopy signature];
+    v40 = [signature12 objectForKeyedSubscript:@"related"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v53 = v20;
       v54 = v18;
-      v55 = a1;
+      selfCopy = self;
       v41 = v40;
       v59 = 0u;
       v60 = 0u;
@@ -423,7 +423,7 @@ LABEL_25:
         while (v43);
       }
 
-      a1 = v55;
+      self = selfCopy;
       v20 = v53;
     }
 
@@ -441,13 +441,13 @@ LABEL_25:
     }
   }
 
-  v48 = [v4 events];
-  v49 = [v48 count];
+  events = [caseCopy events];
+  v49 = [events count];
 
   if (v49)
   {
-    v50 = [v4 events];
-    [a1 updateAWDReport:v5 withEvents:v50];
+    events2 = [caseCopy events];
+    [self updateAWDReport:v5 withEvents:events2];
   }
 
   v51 = *MEMORY[0x277D85DE8];
@@ -455,9 +455,9 @@ LABEL_25:
   return v5;
 }
 
-+ (int)awdHandledResult:(signed __int16)a3
++ (int)awdHandledResult:(signed __int16)result
 {
-  if (a3 == -1)
+  if (result == -1)
   {
     v3 = 4;
   }
@@ -467,7 +467,7 @@ LABEL_25:
     v3 = 2;
   }
 
-  if (a3)
+  if (result)
   {
     return v3;
   }
@@ -478,17 +478,17 @@ LABEL_25:
   }
 }
 
-+ (int)awdDampeningType:(signed __int16)a3
++ (int)awdDampeningType:(signed __int16)type
 {
   v8 = *MEMORY[0x277D85DE8];
-  if ((a3 + 2) >= 7)
+  if ((type + 2) >= 7)
   {
-    v4 = a3;
+    typeCopy = type;
     v5 = analyticsLogHandle();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
       v7[0] = 67109120;
-      v7[1] = v4;
+      v7[1] = typeCopy;
       _os_log_impl(&dword_241804000, v5, OS_LOG_TYPE_ERROR, "Found unexpected dampening type %d", v7, 8u);
     }
 
@@ -497,29 +497,29 @@ LABEL_25:
 
   else
   {
-    result = dword_24188AD28[(a3 + 2)];
+    result = dword_24188AD28[(type + 2)];
   }
 
   v6 = *MEMORY[0x277D85DE8];
   return result;
 }
 
-+ (void)updateAWDReport:(id)a3 withEvents:(id)a4
++ (void)updateAWDReport:(id)report withEvents:(id)events
 {
   v47 = *MEMORY[0x277D85DE8];
-  v36 = a3;
-  v5 = a4;
+  reportCopy = report;
+  eventsCopy = events;
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v40 objects:v46 count:16];
+  v6 = [eventsCopy countByEnumeratingWithState:&v40 objects:v46 count:16];
   if (v6)
   {
     v7 = v6;
     v8 = *v41;
     v9 = 0x277CBE000uLL;
-    v37 = v5;
+    v37 = eventsCopy;
     v38 = *v41;
     do
     {
@@ -529,7 +529,7 @@ LABEL_25:
       {
         if (*v41 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(eventsCopy);
         }
 
         v11 = *(*(&v40 + 1) + 8 * v10);
@@ -669,7 +669,7 @@ LABEL_40:
                     v45 = v29;
                     _os_log_impl(&dword_241804000, v28, OS_LOG_TYPE_DEBUG, "  state: %@", buf, 0xCu);
 
-                    v5 = v37;
+                    eventsCopy = v37;
                   }
                 }
 
@@ -683,7 +683,7 @@ LABEL_40:
                     v45 = v31;
                     _os_log_impl(&dword_241804000, v30, OS_LOG_TYPE_DEBUG, "  status: %@", buf, 0xCu);
 
-                    v5 = v37;
+                    eventsCopy = v37;
                   }
                 }
 
@@ -696,9 +696,9 @@ LABEL_40:
                     _os_log_impl(&dword_241804000, v32, OS_LOG_TYPE_INFO, " Adding event to AWD incident report.", buf, 2u);
                   }
 
-                  [v36 addIncidentEvents:v23];
-                  [v36 addTimestampsIncidentEvents:(v22 * 1000.0)];
-                  v5 = v37;
+                  [reportCopy addIncidentEvents:v23];
+                  [reportCopy addTimestampsIncidentEvents:(v22 * 1000.0)];
+                  eventsCopy = v37;
                 }
               }
             }
@@ -713,7 +713,7 @@ LABEL_40:
       }
 
       while (v7 != v10);
-      v34 = [v5 countByEnumeratingWithState:&v40 objects:v46 count:16];
+      v34 = [eventsCopy countByEnumeratingWithState:&v40 objects:v46 count:16];
       v7 = v34;
     }
 
@@ -723,37 +723,37 @@ LABEL_40:
   v35 = *MEMORY[0x277D85DE8];
 }
 
-- (void)apnsPostNotificationToken:(id)a3
+- (void)apnsPostNotificationToken:(id)token
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  tokenCopy = token;
   v5 = analyticsLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v8 = 138412290;
-    v9 = v4;
+    v9 = tokenCopy;
     _os_log_impl(&dword_241804000, v5, OS_LOG_TYPE_INFO, "Creating AWDSymptomsDiagnosticNotificationToken metric with token string %@", &v8, 0xCu);
   }
 
-  v6 = [AnalyticsAgent _awdSymptomsDiagnosticNotificationTokenMetricForTokenString:v4];
+  v6 = [AnalyticsAgent _awdSymptomsDiagnosticNotificationTokenMetricForTokenString:tokenCopy];
   [(AnalyticsAgent *)self _postMetric:v6 metricIdentifier:3145742];
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)postDiagnosticIncidentReportForCase:(id)a3
+- (void)postDiagnosticIncidentReportForCase:(id)case
 {
   v10 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  caseCopy = case;
   v4 = analyticsLogHandle();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     v8 = 138412290;
-    v9 = v3;
+    v9 = caseCopy;
     _os_log_impl(&dword_241804000, v4, OS_LOG_TYPE_INFO, "Creating AWDSymptomsDiagnosticIncidentReport for diagnostic case: %@", &v8, 0xCu);
   }
 
-  v5 = [AnalyticsAgent _awdSymptomsDiagnosticIncidentReportMetricForDiagnosticCase:v3];
+  v5 = [AnalyticsAgent _awdSymptomsDiagnosticIncidentReportMetricForDiagnosticCase:caseCopy];
   v6 = +[AnalyticsAgent sharedInstance];
   [v6 _postMetric:v5 metricIdentifier:3145739];
 

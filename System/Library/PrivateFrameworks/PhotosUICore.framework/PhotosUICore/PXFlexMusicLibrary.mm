@@ -1,46 +1,46 @@
 @interface PXFlexMusicLibrary
 + (PXFlexMusicLibrary)sharedLibrary;
-+ (id)_audioMixInputParametersForMixParameters:(id)a3 audioTrack:(id)a4 sampleRate:(int)a5;
-+ (id)_mixParametersForAudioMixInputParameters:(id)a3 sampleRate:(int)a4;
-+ (id)coalesceAudioMixInputParametersA:(id)a3 withAudioMixInputParametersB:(id)a4 audioTrack:(id)a5;
-+ (void)purgeLocalFlexDataWithCompletion:(id)a3;
-- (BOOL)hasLocalResourceForAsset:(id)a3 resourceType:(int64_t)a4;
++ (id)_audioMixInputParametersForMixParameters:(id)parameters audioTrack:(id)track sampleRate:(int)rate;
++ (id)_mixParametersForAudioMixInputParameters:(id)parameters sampleRate:(int)rate;
++ (id)coalesceAudioMixInputParametersA:(id)a withAudioMixInputParametersB:(id)b audioTrack:(id)track;
++ (void)purgeLocalFlexDataWithCompletion:(id)completion;
+- (BOOL)hasLocalResourceForAsset:(id)asset resourceType:(int64_t)type;
 - (PXFlexMusicLibrary)init;
-- (double)downloadProgressForAsset:(id)a3 resourceType:(int64_t)a4;
-- (id)_fetchAssetsWithOptions:(id)a3;
-- (id)_queue_cueSourceFromRendition:(id)a3;
-- (id)_queue_downloadableAssetForAsset:(id)a3 resourceType:(int64_t)a4;
-- (id)_queue_fetchAssetsWithOptions:(id)a3;
-- (id)_queue_flexMusicAssetWithSong:(id)a3;
-- (id)_queue_renditionForSongID:(id)a3 preferredDuration:(id *)a4;
-- (id)cuesForAsset:(id)a3;
+- (double)downloadProgressForAsset:(id)asset resourceType:(int64_t)type;
+- (id)_fetchAssetsWithOptions:(id)options;
+- (id)_queue_cueSourceFromRendition:(id)rendition;
+- (id)_queue_downloadableAssetForAsset:(id)asset resourceType:(int64_t)type;
+- (id)_queue_fetchAssetsWithOptions:(id)options;
+- (id)_queue_flexMusicAssetWithSong:(id)song;
+- (id)_queue_renditionForSongID:(id)d preferredDuration:(id *)duration;
+- (id)cuesForAsset:(id)asset;
 - (id)fetchAllAssets;
-- (id)fetchAssetsWithIdentifiers:(id)a3;
-- (id)fetchLocalAssetForMood:(unint64_t)a3;
+- (id)fetchAssetsWithIdentifiers:(id)identifiers;
+- (id)fetchLocalAssetForMood:(unint64_t)mood;
 - (id)fetchSortedAssetsGroupedByMood;
-- (id)localURLForAsset:(id)a3 resourceType:(int64_t)a4;
-- (id)playableAssetForAsset:(id)a3 preferredDuration:(id *)a4 audioMix:(id *)a5 peakValue:(double *)a6 loudness:(double *)a7;
-- (id)requestAssetsWithIdentifiers:(id)a3 resultHandler:(id)a4;
-- (void)_handleDownloadProgressChangedNotification:(id)a3;
-- (void)_handleSongAssetsChangedNotification:(id)a3;
-- (void)cancelDownloadForAsset:(id)a3 resourceType:(int64_t)a4;
+- (id)localURLForAsset:(id)asset resourceType:(int64_t)type;
+- (id)playableAssetForAsset:(id)asset preferredDuration:(id *)duration audioMix:(id *)mix peakValue:(double *)value loudness:(double *)loudness;
+- (id)requestAssetsWithIdentifiers:(id)identifiers resultHandler:(id)handler;
+- (void)_handleDownloadProgressChangedNotification:(id)notification;
+- (void)_handleSongAssetsChangedNotification:(id)notification;
+- (void)cancelDownloadForAsset:(id)asset resourceType:(int64_t)type;
 - (void)dealloc;
-- (void)requestDownloadForAsset:(id)a3 resourceType:(int64_t)a4;
+- (void)requestDownloadForAsset:(id)asset resourceType:(int64_t)type;
 @end
 
 @implementation PXFlexMusicLibrary
 
-- (id)_queue_renditionForSongID:(id)a3 preferredDuration:(id *)a4
+- (id)_queue_renditionForSongID:(id)d preferredDuration:(id *)duration
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = [(FMSongLibrary *)self->_queue_library fetchSongWithUID:a3];
+  v5 = [(FMSongLibrary *)self->_queue_library fetchSongWithUID:d];
   v6 = v5;
-  var0 = a4->var0;
-  var2 = a4->var2;
-  var1 = a4->var1;
+  var0 = duration->var0;
+  var2 = duration->var2;
+  var1 = duration->var1;
   if (var2)
   {
-    var3 = a4->var3;
+    var3 = duration->var3;
   }
 
   else
@@ -73,16 +73,16 @@
   return v9;
 }
 
-- (id)_queue_flexMusicAssetWithSong:(id)a3
+- (id)_queue_flexMusicAssetWithSong:(id)song
 {
-  v3 = a3;
+  songCopy = song;
   v4 = [PXFlexMusicAsset alloc];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __52__PXFlexMusicLibrary__queue_flexMusicAssetWithSong___block_invoke;
   v8[3] = &unk_1E77459C0;
-  v9 = v3;
-  v5 = v3;
+  v9 = songCopy;
+  v5 = songCopy;
   v6 = [(PXFlexMusicAsset *)v4 initWithConfiguration:v8];
 
   return v6;
@@ -224,7 +224,7 @@ void __52__PXFlexMusicLibrary__queue_flexMusicAssetWithSong___block_invoke(uint6
   [v3 setTargetDuration:&v36];
 }
 
-- (void)_handleSongAssetsChangedNotification:(id)a3
+- (void)_handleSongAssetsChangedNotification:(id)notification
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
@@ -234,7 +234,7 @@ void __52__PXFlexMusicLibrary__queue_flexMusicAssetWithSong___block_invoke(uint6
   [(PXFlexMusicLibrary *)self performChanges:v3];
 }
 
-- (void)_handleDownloadProgressChangedNotification:(id)a3
+- (void)_handleDownloadProgressChangedNotification:(id)notification
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
@@ -244,24 +244,24 @@ void __52__PXFlexMusicLibrary__queue_flexMusicAssetWithSong___block_invoke(uint6
   [(PXFlexMusicLibrary *)self performChanges:v3];
 }
 
-- (id)_queue_downloadableAssetForAsset:(id)a3 resourceType:(int64_t)a4
+- (id)_queue_downloadableAssetForAsset:(id)asset resourceType:(int64_t)type
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  assetCopy = asset;
   queue_library = self->_queue_library;
-  v8 = [v6 identifier];
-  v9 = [(FMSongLibrary *)queue_library fetchSongWithUID:v8];
+  identifier = [assetCopy identifier];
+  v9 = [(FMSongLibrary *)queue_library fetchSongWithUID:identifier];
 
   if (v9)
   {
-    if (a4 == 2)
+    if (type == 2)
     {
       v10 = MEMORY[0x1E699F678];
     }
 
     else
     {
-      if (a4 != 1)
+      if (type != 1)
       {
         v13 = 0;
         goto LABEL_11;
@@ -281,7 +281,7 @@ LABEL_11:
   if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
   {
     v15 = 138412290;
-    v16 = v6;
+    v16 = assetCopy;
     _os_log_impl(&dword_1A3C1C000, v11, OS_LOG_TYPE_ERROR, "Unable to find resource for asset %@ because FlexMusic song cannot be fetched.", &v15, 0xCu);
   }
 
@@ -291,13 +291,13 @@ LABEL_12:
   return v12;
 }
 
-- (id)_queue_fetchAssetsWithOptions:(id)a3
+- (id)_queue_fetchAssetsWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   queue_library = self->_queue_library;
-  if (v4)
+  if (optionsCopy)
   {
-    v6 = [(FMSongLibrary *)self->_queue_library fetchSongsWithOptions:v4];
+    v6 = [(FMSongLibrary *)self->_queue_library fetchSongsWithOptions:optionsCopy];
   }
 
   else
@@ -306,10 +306,10 @@ LABEL_12:
     v6 = [(FMSongLibrary *)queue_library fetchSongsWithOptions:v7];
   }
 
-  v8 = [v4 sortDescriptors];
-  if (v8)
+  sortDescriptors = [optionsCopy sortDescriptors];
+  if (sortDescriptors)
   {
-    [v6 sortedArrayUsingDescriptors:v8];
+    [v6 sortedArrayUsingDescriptors:sortDescriptors];
     objc_claimAutoreleasedReturnValue();
   }
 
@@ -342,9 +342,9 @@ LABEL_6:
   return v7;
 }
 
-- (id)_fetchAssetsWithOptions:(id)a3
+- (id)_fetchAssetsWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -356,10 +356,10 @@ LABEL_6:
   block[1] = 3221225472;
   block[2] = __46__PXFlexMusicLibrary__fetchAssetsWithOptions___block_invoke;
   block[3] = &unk_1E7746448;
-  v10 = v4;
+  v10 = optionsCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = optionsCopy;
   dispatch_sync(queue, block);
   v7 = v13[5];
 
@@ -376,14 +376,14 @@ void __46__PXFlexMusicLibrary__fetchAssetsWithOptions___block_invoke(uint64_t a1
   *(v3 + 40) = v2;
 }
 
-- (id)_queue_cueSourceFromRendition:(id)a3
+- (id)_queue_cueSourceFromRendition:(id)rendition
 {
   v3 = *MEMORY[0x1E699F6C0];
-  v4 = a3;
-  v5 = [v4 timedMetadataItemsWithIdentifier:v3];
-  v6 = [v4 timedMetadataItemsWithIdentifier:*MEMORY[0x1E699F6B8]];
-  v7 = [v4 timedMetadataItemsWithIdentifier:*MEMORY[0x1E699F6D0]];
-  v8 = [v4 timedMetadataItemsWithIdentifier:*MEMORY[0x1E699F6C8]];
+  renditionCopy = rendition;
+  v5 = [renditionCopy timedMetadataItemsWithIdentifier:v3];
+  v6 = [renditionCopy timedMetadataItemsWithIdentifier:*MEMORY[0x1E699F6B8]];
+  v7 = [renditionCopy timedMetadataItemsWithIdentifier:*MEMORY[0x1E699F6D0]];
+  v8 = [renditionCopy timedMetadataItemsWithIdentifier:*MEMORY[0x1E699F6C8]];
 
   v9 = [v5 count];
   v10 = [PXConcreteAudioCueSource alloc];
@@ -467,9 +467,9 @@ double __52__PXFlexMusicLibrary__queue_cueSourceFromRendition___block_invoke_2(u
   return result;
 }
 
-- (id)playableAssetForAsset:(id)a3 preferredDuration:(id *)a4 audioMix:(id *)a5 peakValue:(double *)a6 loudness:(double *)a7
+- (id)playableAssetForAsset:(id)asset preferredDuration:(id *)duration audioMix:(id *)mix peakValue:(double *)value loudness:(double *)loudness
 {
-  v11 = a3;
+  assetCopy = asset;
   v12 = PLAudioPlaybackGetLog();
   v13 = os_signpost_id_make_with_pointer(v12, self);
   if (v13 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
@@ -508,28 +508,28 @@ double __52__PXFlexMusicLibrary__queue_cueSourceFromRendition___block_invoke_2(u
   block[2] = __90__PXFlexMusicLibrary_playableAssetForAsset_preferredDuration_audioMix_peakValue_loudness___block_invoke;
   block[3] = &unk_1E7745920;
   block[4] = self;
-  v16 = v11;
-  v30 = *&a4->var0;
-  var3 = a4->var3;
+  v16 = assetCopy;
+  v30 = *&duration->var0;
+  var3 = duration->var3;
   v25 = v16;
   v26 = &v36;
   v27 = &v32;
   v28 = buf;
   v29 = &v40;
   dispatch_sync(queue, block);
-  if (a5)
+  if (mix)
   {
-    *a5 = v41[5];
+    *mix = v41[5];
   }
 
-  if (a6)
+  if (value)
   {
-    *a6 = v37[3];
+    *value = v37[3];
   }
 
-  if (a7)
+  if (loudness)
   {
-    *a7 = v33[3];
+    *loudness = v33[3];
   }
 
   v17 = PLAudioPlaybackGetLog();
@@ -575,9 +575,9 @@ void __90__PXFlexMusicLibrary_playableAssetForAsset_preferredDuration_audioMix_p
   *(v8 + 40) = v7;
 }
 
-- (id)localURLForAsset:(id)a3 resourceType:(int64_t)a4
+- (id)localURLForAsset:(id)asset resourceType:(int64_t)type
 {
-  v6 = a3;
+  assetCopy = asset;
   v7 = PLAudioPlaybackGetLog();
   v8 = os_signpost_id_make_with_pointer(v7, self);
   if (v8 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
@@ -602,9 +602,9 @@ void __90__PXFlexMusicLibrary_playableAssetForAsset_preferredDuration_audioMix_p
   block[2] = __52__PXFlexMusicLibrary_localURLForAsset_resourceType___block_invoke;
   block[3] = &unk_1E77458F8;
   block[4] = self;
-  v11 = v6;
+  v11 = assetCopy;
   v20 = buf;
-  v21 = a4;
+  typeCopy = type;
   v19 = v11;
   dispatch_sync(queue, block);
   v12 = PLAudioPlaybackGetLog();
@@ -634,9 +634,9 @@ void __52__PXFlexMusicLibrary_localURLForAsset_resourceType___block_invoke(uint6
   *(v3 + 40) = v2;
 }
 
-- (double)downloadProgressForAsset:(id)a3 resourceType:(int64_t)a4
+- (double)downloadProgressForAsset:(id)asset resourceType:(int64_t)type
 {
-  v6 = a3;
+  assetCopy = asset;
   v7 = PLAudioPlaybackGetLog();
   v8 = os_signpost_id_make_with_pointer(v7, self);
   if (v8 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
@@ -659,9 +659,9 @@ void __52__PXFlexMusicLibrary_localURLForAsset_resourceType___block_invoke(uint6
   block[2] = __60__PXFlexMusicLibrary_downloadProgressForAsset_resourceType___block_invoke;
   block[3] = &unk_1E77458F8;
   block[4] = self;
-  v11 = v6;
+  v11 = assetCopy;
   v20 = buf;
-  v21 = a4;
+  typeCopy = type;
   v19 = v11;
   dispatch_sync(queue, block);
   v12 = PLAudioPlaybackGetLog();
@@ -689,18 +689,18 @@ void __60__PXFlexMusicLibrary_downloadProgressForAsset_resourceType___block_invo
   *(*(*(a1 + 48) + 8) + 24) = v2;
 }
 
-- (void)cancelDownloadForAsset:(id)a3 resourceType:(int64_t)a4
+- (void)cancelDownloadForAsset:(id)asset resourceType:(int64_t)type
 {
-  v6 = a3;
+  assetCopy = asset;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __58__PXFlexMusicLibrary_cancelDownloadForAsset_resourceType___block_invoke;
   block[3] = &unk_1E7749FF8;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = assetCopy;
+  typeCopy = type;
+  v8 = assetCopy;
   dispatch_async(queue, block);
 }
 
@@ -714,18 +714,18 @@ void __58__PXFlexMusicLibrary_cancelDownloadForAsset_resourceType___block_invoke
   }
 }
 
-- (void)requestDownloadForAsset:(id)a3 resourceType:(int64_t)a4
+- (void)requestDownloadForAsset:(id)asset resourceType:(int64_t)type
 {
-  v6 = a3;
+  assetCopy = asset;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __59__PXFlexMusicLibrary_requestDownloadForAsset_resourceType___block_invoke;
   block[3] = &unk_1E7749FF8;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = assetCopy;
+  typeCopy = type;
+  v8 = assetCopy;
   dispatch_async(queue, block);
 }
 
@@ -747,9 +747,9 @@ void __59__PXFlexMusicLibrary_requestDownloadForAsset_resourceType___block_invok
   }
 }
 
-- (BOOL)hasLocalResourceForAsset:(id)a3 resourceType:(int64_t)a4
+- (BOOL)hasLocalResourceForAsset:(id)asset resourceType:(int64_t)type
 {
-  v6 = a3;
+  assetCopy = asset;
   v7 = PLAudioPlaybackGetLog();
   v8 = os_signpost_id_make_with_pointer(v7, self);
   if (v8 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
@@ -772,9 +772,9 @@ void __59__PXFlexMusicLibrary_requestDownloadForAsset_resourceType___block_invok
   block[2] = __60__PXFlexMusicLibrary_hasLocalResourceForAsset_resourceType___block_invoke;
   block[3] = &unk_1E77458F8;
   block[4] = self;
-  v11 = v6;
+  v11 = assetCopy;
   v20 = buf;
-  v21 = a4;
+  typeCopy = type;
   v19 = v11;
   dispatch_sync(queue, block);
   v12 = PLAudioPlaybackGetLog();
@@ -801,9 +801,9 @@ void __60__PXFlexMusicLibrary_hasLocalResourceForAsset_resourceType___block_invo
   *(*(*(a1 + 48) + 8) + 24) = [v2 localURLExists];
 }
 
-- (id)cuesForAsset:(id)a3
+- (id)cuesForAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -828,7 +828,7 @@ void __60__PXFlexMusicLibrary_hasLocalResourceForAsset_resourceType___block_invo
   block[2] = __35__PXFlexMusicLibrary_cuesForAsset___block_invoke;
   block[3] = &unk_1E7746448;
   block[4] = self;
-  v9 = v4;
+  v9 = assetCopy;
   v16 = v9;
   v17 = &v19;
   dispatch_sync(queue, block);
@@ -1002,7 +1002,7 @@ void __52__PXFlexMusicLibrary_fetchSortedAssetsGroupedByMood__block_invoke(uint6
   }
 }
 
-- (id)fetchLocalAssetForMood:(unint64_t)a3
+- (id)fetchLocalAssetForMood:(unint64_t)mood
 {
   v28 = *MEMORY[0x1E69E9840];
   v5 = PLAudioPlaybackGetLog();
@@ -1018,23 +1018,23 @@ void __52__PXFlexMusicLibrary_fetchSortedAssetsGroupedByMood__block_invoke(uint6
   }
 
   v8 = 0;
-  if (a3 > 31)
+  if (mood > 31)
   {
-    if (a3 > 255)
+    if (mood > 255)
     {
-      if (a3 == 256)
+      if (mood == 256)
       {
         v8 = @"Party";
         goto LABEL_30;
       }
 
-      if (a3 == 512)
+      if (mood == 512)
       {
         v8 = @"Action";
         goto LABEL_30;
       }
 
-      if (a3 != 1023)
+      if (mood != 1023)
       {
         goto LABEL_30;
       }
@@ -1042,7 +1042,7 @@ void __52__PXFlexMusicLibrary_fetchSortedAssetsGroupedByMood__block_invoke(uint6
       goto LABEL_22;
     }
 
-    switch(a3)
+    switch(mood)
     {
       case 0x20uLL:
         v8 = @"Happy";
@@ -1058,16 +1058,16 @@ void __52__PXFlexMusicLibrary_fetchSortedAssetsGroupedByMood__block_invoke(uint6
 
   else
   {
-    if (a3 <= 3)
+    if (mood <= 3)
     {
-      if (a3)
+      if (mood)
       {
-        if (a3 == 1)
+        if (mood == 1)
         {
           v8 = @"Ethereal";
         }
 
-        else if (a3 == 2)
+        else if (mood == 2)
         {
           v8 = @"Sentimental";
         }
@@ -1080,7 +1080,7 @@ LABEL_22:
       goto LABEL_30;
     }
 
-    switch(a3)
+    switch(mood)
     {
       case 4uLL:
         v8 = @"Gentle";
@@ -1134,10 +1134,10 @@ LABEL_30:
   return v19;
 }
 
-- (id)requestAssetsWithIdentifiers:(id)a3 resultHandler:(id)a4
+- (id)requestAssetsWithIdentifiers:(id)identifiers resultHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identifiersCopy = identifiers;
+  handlerCopy = handler;
   v8 = [MEMORY[0x1E696AE38] progressWithTotalUnitCount:1];
   v9 = PLAudioPlaybackGetLog();
   v10 = os_signpost_id_make_with_pointer(v9, self);
@@ -1156,13 +1156,13 @@ LABEL_30:
   v19[1] = 3221225472;
   v19[2] = __65__PXFlexMusicLibrary_requestAssetsWithIdentifiers_resultHandler___block_invoke;
   v19[3] = &unk_1E774BDB0;
-  v20 = v6;
-  v21 = self;
+  v20 = identifiersCopy;
+  selfCopy = self;
   v13 = v8;
   v22 = v13;
-  v23 = v7;
-  v14 = v7;
-  v15 = v6;
+  v23 = handlerCopy;
+  v14 = handlerCopy;
+  v15 = identifiersCopy;
   dispatch_async(queue, v19);
   v16 = v23;
   v17 = v13;
@@ -1205,10 +1205,10 @@ void __65__PXFlexMusicLibrary_requestAssetsWithIdentifiers_resultHandler___block
   (*(*(a1 + 56) + 16))();
 }
 
-- (id)fetchAssetsWithIdentifiers:(id)a3
+- (id)fetchAssetsWithIdentifiers:(id)identifiers
 {
   v27[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifiersCopy = identifiers;
   v5 = PLAudioPlaybackGetLog();
   v6 = os_signpost_id_make_with_pointer(v5, self);
   if (v6 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
@@ -1222,9 +1222,9 @@ void __65__PXFlexMusicLibrary_requestAssetsWithIdentifiers_resultHandler___block
   }
 
   v8 = +[PXAudioSettings sharedInstance];
-  v9 = [v8 flexSimulateAssetFetchFailure];
+  flexSimulateAssetFetchFailure = [v8 flexSimulateAssetFetchFailure];
 
-  if (v9)
+  if (flexSimulateAssetFetchFailure)
   {
     v16 = PXAudioAssetFetchResultWithArray(MEMORY[0x1E695E0F0]);
   }
@@ -1232,24 +1232,24 @@ void __65__PXFlexMusicLibrary_requestAssetsWithIdentifiers_resultHandler___block
   else
   {
     v10 = objc_alloc_init(MEMORY[0x1E699F6D8]);
-    v11 = [MEMORY[0x1E696AE18] predicateWithFormat:@"uid in %@", v4];
-    [v10 setPredicate:v11];
+    identifiersCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"uid in %@", identifiersCopy];
+    [v10 setPredicate:identifiersCopy];
 
-    if ([v4 count] >= 2)
+    if ([identifiersCopy count] >= 2)
     {
       v12 = MEMORY[0x1E696AEB0];
       v21 = MEMORY[0x1E69E9820];
       v22 = 3221225472;
       v23 = __49__PXFlexMusicLibrary_fetchAssetsWithIdentifiers___block_invoke;
       v24 = &unk_1E77458D0;
-      v25 = v4;
+      v25 = identifiersCopy;
       v13 = [v12 sortDescriptorWithKey:@"uid" ascending:1 comparator:&v21];
       v27[0] = v13;
       v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v27 count:1];
       [v10 setSortDescriptors:v14];
     }
 
-    v15 = [MEMORY[0x1E696AE18] predicateWithFormat:@"uid in %@", v4, v21, v22, v23, v24];
+    v15 = [MEMORY[0x1E696AE18] predicateWithFormat:@"uid in %@", identifiersCopy, v21, v22, v23, v24];
     [v10 setPredicate:v15];
 
     v16 = [(PXFlexMusicLibrary *)self _fetchAssetsWithOptions:v10];
@@ -1303,9 +1303,9 @@ uint64_t __49__PXFlexMusicLibrary_fetchAssetsWithIdentifiers___block_invoke(uint
   }
 
   v6 = +[PXAudioSettings sharedInstance];
-  v7 = [v6 flexSimulateAssetFetchFailure];
+  flexSimulateAssetFetchFailure = [v6 flexSimulateAssetFetchFailure];
 
-  if (v7)
+  if (flexSimulateAssetFetchFailure)
   {
     PXAudioAssetFetchResultWithArray(MEMORY[0x1E695E0F0]);
   }
@@ -1332,8 +1332,8 @@ uint64_t __49__PXFlexMusicLibrary_fetchAssetsWithIdentifiers___block_invoke(uint
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = PXFlexMusicLibrary;
@@ -1353,12 +1353,12 @@ uint64_t __49__PXFlexMusicLibrary_fetchAssetsWithIdentifiers___block_invoke(uint
   return 0;
 }
 
-+ (id)_audioMixInputParametersForMixParameters:(id)a3 audioTrack:(id)a4 sampleRate:(int)a5
++ (id)_audioMixInputParametersForMixParameters:(id)parameters audioTrack:(id)track sampleRate:(int)rate
 {
-  v7 = a3;
-  v8 = [MEMORY[0x1E6988040] audioMixInputParametersWithTrack:a4];
-  v9 = [v7 volumeKeyFrames];
-  v10 = [v9 count];
+  parametersCopy = parameters;
+  v8 = [MEMORY[0x1E6988040] audioMixInputParametersWithTrack:track];
+  volumeKeyFrames = [parametersCopy volumeKeyFrames];
+  v10 = [volumeKeyFrames count];
   v11 = v10 - 1;
   if (v10 >= 1)
   {
@@ -1366,14 +1366,14 @@ uint64_t __49__PXFlexMusicLibrary_fetchAssetsWithIdentifiers___block_invoke(uint
     v13 = 0;
     do
     {
-      v14 = [v9 objectAtIndexedSubscript:v13];
+      v14 = [volumeKeyFrames objectAtIndexedSubscript:v13];
       v15 = v13 + 1;
-      if (v13 < v11 && ([v9 objectAtIndexedSubscript:v13 + 1], (v16 = objc_claimAutoreleasedReturnValue()) != 0))
+      if (v13 < v11 && ([volumeKeyFrames objectAtIndexedSubscript:v13 + 1], (v16 = objc_claimAutoreleasedReturnValue()) != 0))
       {
         v17 = v16;
         memset(&v28, 0, sizeof(v28));
-        CMTimeMake(&v26.start, [v14 sampleTime], a5);
-        CMTimeMake(&duration, [v17 sampleTime] - objc_msgSend(v14, "sampleTime"), a5);
+        CMTimeMake(&v26.start, [v14 sampleTime], rate);
+        CMTimeMake(&duration, [v17 sampleTime] - objc_msgSend(v14, "sampleTime"), rate);
         CMTimeRangeMake(&v28, &v26.start, &duration);
         [v14 value];
         v19 = v18;
@@ -1387,7 +1387,7 @@ uint64_t __49__PXFlexMusicLibrary_fetchAssetsWithIdentifiers___block_invoke(uint
       {
         [v14 value];
         v23 = v22;
-        CMTimeMake(&v28.start, [v14 sampleTime], a5);
+        CMTimeMake(&v28.start, [v14 sampleTime], rate);
         LODWORD(v24) = v23;
         [v8 setVolume:&v28 atTime:v24];
       }
@@ -1401,9 +1401,9 @@ uint64_t __49__PXFlexMusicLibrary_fetchAssetsWithIdentifiers___block_invoke(uint
   return v8;
 }
 
-+ (id)_mixParametersForAudioMixInputParameters:(id)a3 sampleRate:(int)a4
++ (id)_mixParametersForAudioMixInputParameters:(id)parameters sampleRate:(int)rate
 {
-  v5 = a3;
+  parametersCopy = parameters;
   v6 = objc_alloc_init(MEMORY[0x1E699F6E8]);
   v23 = **&MEMORY[0x1E6960CC0];
   v7 = *(MEMORY[0x1E6960CA8] + 16);
@@ -1417,10 +1417,10 @@ uint64_t __49__PXFlexMusicLibrary_fetchAssetsWithIdentifiers___block_invoke(uint
     while (1)
     {
       v18 = v23;
-      v8 = [v5 getVolumeRampForTime:&v18 startVolume:&v20 endVolume:&v19 timeRange:&v21];
+      v8 = [parametersCopy getVolumeRampForTime:&v18 startVolume:&v20 endVolume:&v19 timeRange:&v21];
       memset(&v18, 0, sizeof(v18));
       time = v23;
-      CMTimeConvertScale(&v18, &time, a4, kCMTimeRoundingMethod_RoundHalfAwayFromZero);
+      CMTimeConvertScale(&v18, &time, rate, kCMTimeRoundingMethod_RoundHalfAwayFromZero);
       time = v23;
       *&v16.value = v21;
       v16.epoch = *v22;
@@ -1468,25 +1468,25 @@ LABEL_11:
   return v6;
 }
 
-+ (id)coalesceAudioMixInputParametersA:(id)a3 withAudioMixInputParametersB:(id)a4 audioTrack:(id)a5
++ (id)coalesceAudioMixInputParametersA:(id)a withAudioMixInputParametersB:(id)b audioTrack:(id)track
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v8 naturalTimeScale];
-  v12 = [a1 _mixParametersForAudioMixInputParameters:v10 sampleRate:v11];
+  trackCopy = track;
+  bCopy = b;
+  aCopy = a;
+  naturalTimeScale = [trackCopy naturalTimeScale];
+  v12 = [self _mixParametersForAudioMixInputParameters:aCopy sampleRate:naturalTimeScale];
 
-  v13 = [a1 _mixParametersForAudioMixInputParameters:v9 sampleRate:v11];
+  v13 = [self _mixParametersForAudioMixInputParameters:bCopy sampleRate:naturalTimeScale];
 
   v14 = [MEMORY[0x1E699F700] coalesceMixParamsA:v12 withMixParamsB:v13];
-  v15 = [a1 _audioMixInputParametersForMixParameters:v14 audioTrack:v8 sampleRate:v11];
+  v15 = [self _audioMixInputParametersForMixParameters:v14 audioTrack:trackCopy sampleRate:naturalTimeScale];
 
   return v15;
 }
 
-+ (void)purgeLocalFlexDataWithCompletion:(id)a3
++ (void)purgeLocalFlexDataWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = PLAudioPlaybackGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -1499,9 +1499,9 @@ LABEL_11:
   v8[1] = 3221225472;
   v8[2] = __55__PXFlexMusicLibrary_purgeLocalFlexDataWithCompletion___block_invoke;
   v8[3] = &unk_1E7747E18;
-  v9 = v4;
-  v10 = a1;
-  v7 = v4;
+  v9 = completionCopy;
+  selfCopy = self;
+  v7 = completionCopy;
   dispatch_async(v6, v8);
 }
 

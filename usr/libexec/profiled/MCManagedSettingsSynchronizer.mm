@@ -19,8 +19,8 @@
 
 - (void)synchronize
 {
-  v3 = self;
-  v2 = [(MCManagedSettingsSynchronizer *)v3 adapter];
+  selfCopy = self;
+  adapter = [(MCManagedSettingsSynchronizer *)selfCopy adapter];
   sub_1000B1ACC();
 }
 

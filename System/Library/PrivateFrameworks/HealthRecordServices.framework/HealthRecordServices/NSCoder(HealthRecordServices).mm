@@ -7,14 +7,14 @@
 
 - (void)hrs_failWithCocoaValueNotFoundError
 {
-  v2 = [MEMORY[0x277CCA9B8] hrs_cocoaValueNotFoundError];
-  [a1 failWithError:v2];
+  hrs_cocoaValueNotFoundError = [MEMORY[0x277CCA9B8] hrs_cocoaValueNotFoundError];
+  [self failWithError:hrs_cocoaValueNotFoundError];
 }
 
 - (void)hrs_failWithCocoaInvalidValueError
 {
-  v2 = [MEMORY[0x277CCA9B8] hrs_cocoaInvalidValueError];
-  [a1 failWithError:v2];
+  hrs_cocoaInvalidValueError = [MEMORY[0x277CCA9B8] hrs_cocoaInvalidValueError];
+  [self failWithError:hrs_cocoaInvalidValueError];
 }
 
 @end

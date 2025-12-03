@@ -1,21 +1,21 @@
 @interface CUKeychainItem
-- (BOOL)_updateWithAttributesDictionary:(id)a3 flags:(unsigned int)a4 error:(id *)a5;
-- (BOOL)isEqualToKeychainItem:(id)a3 flags:(unsigned int)a4;
-- (id)_attributesDictionaryWithFlags:(unsigned int)a3 error:(id *)a4;
-- (id)descriptionWithLevel:(int)a3;
-- (void)_mergeItem:(id)a3;
+- (BOOL)_updateWithAttributesDictionary:(id)dictionary flags:(unsigned int)flags error:(id *)error;
+- (BOOL)isEqualToKeychainItem:(id)item flags:(unsigned int)flags;
+- (id)_attributesDictionaryWithFlags:(unsigned int)flags error:(id *)error;
+- (id)descriptionWithLevel:(int)level;
+- (void)_mergeItem:(id)item;
 @end
 
 @implementation CUKeychainItem
 
-- (BOOL)_updateWithAttributesDictionary:(id)a3 flags:(unsigned int)a4 error:(id *)a5
+- (BOOL)_updateWithAttributesDictionary:(id)dictionary flags:(unsigned int)flags error:(id *)error
 {
-  v6 = a4;
+  flagsCopy = flags;
   v99[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  dictionaryCopy = dictionary;
   v9 = *MEMORY[0x1E697ABD0];
   TypeID = CFStringGetTypeID();
-  v11 = CFDictionaryGetTypedValue(v8, v9, TypeID, 0);
+  v11 = CFDictionaryGetTypedValue(dictionaryCopy, v9, TypeID, 0);
   if (v11)
   {
     objc_storeStrong(&self->_accessGroup, v11);
@@ -23,7 +23,7 @@
 
   v12 = *MEMORY[0x1E697ABD8];
   v13 = CFStringGetTypeID();
-  v14 = CFDictionaryGetTypedValue(v8, v12, v13, 0);
+  v14 = CFDictionaryGetTypedValue(dictionaryCopy, v12, v13, 0);
   v15 = v14;
   if (v14)
   {
@@ -61,9 +61,9 @@
     {
       if (([v15 isEqual:*MEMORY[0x1E697AC08]] & 1) == 0)
       {
-        if (a5)
+        if (error)
         {
-          *a5 = NSErrorWithOSStatusF(4294960561, "Unsupported kSecAttrAccessible (%@)", v17, v18, v19, v20, v21, v22, v15);
+          *error = NSErrorWithOSStatusF(4294960561, "Unsupported kSecAttrAccessible (%@)", v17, v18, v19, v20, v21, v22, v15);
         }
 
         goto LABEL_69;
@@ -77,7 +77,7 @@
 
   v23 = *MEMORY[0x1E697ACD0];
   v24 = CFDateGetTypeID();
-  v25 = CFDictionaryGetTypedValue(v8, v23, v24, 0);
+  v25 = CFDictionaryGetTypedValue(dictionaryCopy, v23, v24, 0);
   if (v25)
   {
     objc_storeStrong(&self->_dateCreated, v25);
@@ -85,7 +85,7 @@
 
   v26 = *MEMORY[0x1E697ADD0];
   v27 = CFDateGetTypeID();
-  v28 = CFDictionaryGetTypedValue(v8, v26, v27, 0);
+  v28 = CFDictionaryGetTypedValue(dictionaryCopy, v26, v27, 0);
   if (v28)
   {
     objc_storeStrong(&self->_dateModified, v28);
@@ -93,16 +93,16 @@
 
   v29 = *MEMORY[0x1E697AC30];
   v30 = CFStringGetTypeID();
-  v31 = CFDictionaryGetTypedValue(v8, v29, v30, 0);
+  v31 = CFDictionaryGetTypedValue(dictionaryCopy, v29, v30, 0);
   if (v31)
   {
     objc_storeStrong(&self->_identifier, v31);
   }
 
-  self->_invisible = CFDictionaryGetInt64(v8, *MEMORY[0x1E697AD00], 0) != 0;
+  self->_invisible = CFDictionaryGetInt64(dictionaryCopy, *MEMORY[0x1E697AD00], 0) != 0;
   v32 = *MEMORY[0x1E697ACF0];
   v33 = CFDataGetTypeID();
-  v34 = CFDictionaryGetTypedValue(v8, v32, v33, 0);
+  v34 = CFDictionaryGetTypedValue(dictionaryCopy, v32, v33, 0);
   v15 = v34;
   if (v34 && [v34 length])
   {
@@ -110,9 +110,9 @@
     v41 = OPACKDecodeData(v15, 8u, &v89);
     if (!v41)
     {
-      if ((v6 & 4) == 0)
+      if ((flagsCopy & 4) == 0)
       {
-        if (a5)
+        if (error)
         {
           if (v89)
           {
@@ -127,7 +127,7 @@
           v43 = "Decode metadata failed";
 LABEL_54:
           NSErrorWithOSStatusF(v42, v43, v35, v36, v37, v38, v39, v40, v88);
-          *a5 = v41 = 0;
+          *error = v41 = 0;
           goto LABEL_68;
         }
 
@@ -142,9 +142,9 @@ LABEL_54:
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if ((v6 & 4) == 0)
+      if ((flagsCopy & 4) == 0)
       {
-        if (!a5)
+        if (!error)
         {
 LABEL_68:
 
@@ -156,7 +156,7 @@ LABEL_69:
         v44 = objc_opt_class();
         v45 = NSStringFromClass(v44);
         NSErrorWithOSStatusF(4294960540, "Decoded metadata non-dictionary (%@)", v46, v47, v48, v49, v50, v51, v45);
-        *a5 = LABEL_67:;
+        *error = LABEL_67:;
 
         goto LABEL_68;
       }
@@ -174,7 +174,7 @@ LABEL_69:
 
   v54 = *MEMORY[0x1E697ADC8];
   v55 = CFStringGetTypeID();
-  v56 = CFDictionaryGetTypedValue(v8, v54, v55, 0);
+  v56 = CFDictionaryGetTypedValue(dictionaryCopy, v54, v55, 0);
   if (v56)
   {
     objc_storeStrong(&self->_name, v56);
@@ -182,7 +182,7 @@ LABEL_69:
 
   v57 = *MEMORY[0x1E697B3C8];
   v58 = CFDataGetTypeID();
-  v59 = CFDictionaryGetTypedValue(v8, v57, v58, 0);
+  v59 = CFDictionaryGetTypedValue(dictionaryCopy, v57, v58, 0);
   if (v59)
   {
     objc_storeStrong(&self->_persistentRef, v59);
@@ -190,7 +190,7 @@ LABEL_69:
 
   v60 = *MEMORY[0x1E697B3C0];
   v61 = CFDataGetTypeID();
-  v62 = CFDictionaryGetTypedValue(v8, v60, v61, 0);
+  v62 = CFDictionaryGetTypedValue(dictionaryCopy, v60, v61, 0);
   v15 = v62;
   if (v62 && [v62 length])
   {
@@ -202,9 +202,9 @@ LABEL_63:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if ((v6 & 4) == 0)
+        if ((flagsCopy & 4) == 0)
         {
-          if (!a5)
+          if (!error)
           {
             goto LABEL_68;
           }
@@ -228,9 +228,9 @@ LABEL_63:
       goto LABEL_72;
     }
 
-    if ((v6 & 4) == 0)
+    if ((flagsCopy & 4) == 0)
     {
-      if (a5)
+      if (error)
       {
         if (v89)
         {
@@ -254,7 +254,7 @@ LABEL_59:
     v63 = [MEMORY[0x1E696AE40] propertyListWithData:v15 options:0 format:0 error:0];
     if (v63 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      if ((v6 & 0x10) != 0)
+      if ((flagsCopy & 0x10) != 0)
       {
         v67 = v63;
         goto LABEL_62;
@@ -287,7 +287,7 @@ LABEL_72:
 
   v78 = *MEMORY[0x1E697AE88];
   v79 = CFStringGetTypeID();
-  v80 = CFDictionaryGetTypedValue(v8, v78, v79, 0);
+  v80 = CFDictionaryGetTypedValue(dictionaryCopy, v78, v79, 0);
   if (v80)
   {
     objc_storeStrong(&self->_type, v80);
@@ -295,7 +295,7 @@ LABEL_72:
 
   v81 = *MEMORY[0x1E697ACE0];
   v82 = CFStringGetTypeID();
-  v83 = CFDictionaryGetTypedValue(v8, v81, v82, 0);
+  v83 = CFDictionaryGetTypedValue(dictionaryCopy, v81, v82, 0);
   if (v83)
   {
     objc_storeStrong(&self->_userDescription, v83);
@@ -303,7 +303,7 @@ LABEL_72:
 
   v84 = *MEMORY[0x1E697AEA8];
   v85 = CFStringGetTypeID();
-  v86 = CFDictionaryGetTypedValue(v8, v84, v85, 0);
+  v86 = CFDictionaryGetTypedValue(dictionaryCopy, v84, v85, 0);
   if (v86)
   {
     objc_storeStrong(&self->_viewHint, v86);
@@ -315,31 +315,31 @@ LABEL_79:
   return v75;
 }
 
-- (void)_mergeItem:(id)a3
+- (void)_mergeItem:(id)item
 {
   v41 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 accessGroup];
-  if (v5)
+  itemCopy = item;
+  accessGroup = [itemCopy accessGroup];
+  if (accessGroup)
   {
-    objc_storeStrong(&self->_accessGroup, v5);
+    objc_storeStrong(&self->_accessGroup, accessGroup);
   }
 
-  v6 = [v4 accessibleType];
-  if (v6)
+  accessibleType = [itemCopy accessibleType];
+  if (accessibleType)
   {
-    self->_accessibleType = v6;
+    self->_accessibleType = accessibleType;
   }
 
-  v7 = [v4 identifier];
-  if (v7)
+  identifier = [itemCopy identifier];
+  if (identifier)
   {
-    objc_storeStrong(&self->_identifier, v7);
+    objc_storeStrong(&self->_identifier, identifier);
   }
 
-  self->_invisible = [v4 invisible];
-  v8 = [v4 metadata];
-  if (v8)
+  self->_invisible = [itemCopy invisible];
+  metadata = [itemCopy metadata];
+  if (metadata)
   {
     v9 = [(NSDictionary *)self->_metadata mutableCopy];
     v10 = v9;
@@ -355,21 +355,21 @@ LABEL_79:
 
     v12 = v11;
 
-    [v12 addEntriesFromDictionary:v8];
+    [v12 addEntriesFromDictionary:metadata];
     v13 = [v12 copy];
     metadata = self->_metadata;
     self->_metadata = v13;
   }
 
-  v15 = [v4 removedMetadata];
-  if (v15)
+  removedMetadata = [itemCopy removedMetadata];
+  if (removedMetadata)
   {
     v16 = [(NSDictionary *)self->_metadata mutableCopy];
     v36 = 0u;
     v37 = 0u;
     v38 = 0u;
     v39 = 0u;
-    v17 = v15;
+    v17 = removedMetadata;
     v18 = [v17 countByEnumeratingWithState:&v36 objects:v40 count:16];
     if (v18)
     {
@@ -398,14 +398,14 @@ LABEL_79:
     self->_metadata = v22;
   }
 
-  v24 = [v4 name];
-  if (v24)
+  name = [itemCopy name];
+  if (name)
   {
-    objc_storeStrong(&self->_name, v24);
+    objc_storeStrong(&self->_name, name);
   }
 
-  v25 = [v4 secrets];
-  if (v25)
+  secrets = [itemCopy secrets];
+  if (secrets)
   {
     v26 = [(NSDictionary *)self->_secrets mutableCopy];
     v27 = v26;
@@ -421,42 +421,42 @@ LABEL_79:
 
     v29 = v28;
 
-    [v29 addEntriesFromDictionary:v25];
+    [v29 addEntriesFromDictionary:secrets];
     v30 = [v29 copy];
     secrets = self->_secrets;
     self->_secrets = v30;
   }
 
-  v32 = [v4 syncType];
-  if (v32)
+  syncType = [itemCopy syncType];
+  if (syncType)
   {
-    self->_syncType = v32;
+    self->_syncType = syncType;
   }
 
-  v33 = [v4 type];
-  if (v33)
+  type = [itemCopy type];
+  if (type)
   {
-    objc_storeStrong(&self->_type, v33);
+    objc_storeStrong(&self->_type, type);
   }
 
-  v34 = [v4 userDescription];
-  if (v34)
+  userDescription = [itemCopy userDescription];
+  if (userDescription)
   {
-    objc_storeStrong(&self->_userDescription, v34);
+    objc_storeStrong(&self->_userDescription, userDescription);
   }
 
-  v35 = [v4 viewHint];
-  if (v35)
+  viewHint = [itemCopy viewHint];
+  if (viewHint)
   {
-    objc_storeStrong(&self->_viewHint, v35);
+    objc_storeStrong(&self->_viewHint, viewHint);
   }
 }
 
-- (id)_attributesDictionaryWithFlags:(unsigned int)a3 error:(id *)a4
+- (id)_attributesDictionaryWithFlags:(unsigned int)flags error:(id *)error
 {
   v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v14 = v7;
-  if ((a3 & 0x80000) == 0)
+  if ((flags & 0x80000) == 0)
   {
     accessGroup = self->_accessGroup;
     if (accessGroup)
@@ -524,7 +524,7 @@ LABEL_79:
 LABEL_20:
       [v14 setObject:*v16 forKeyedSubscript:*MEMORY[0x1E697ABD8]];
 LABEL_21:
-      if ((a3 & 0x80000) == 0)
+      if ((flags & 0x80000) == 0)
       {
         [v14 setObject:*MEMORY[0x1E697B008] forKeyedSubscript:*MEMORY[0x1E697AFF8]];
       }
@@ -548,7 +548,7 @@ LABEL_21:
         DataMutable = OPACKEncoderCreateDataMutable(v18, 8u, &v57);
         if (!DataMutable)
         {
-          if (a4)
+          if (error)
           {
             if (v57)
             {
@@ -560,7 +560,7 @@ LABEL_21:
               v48 = 4294960596;
             }
 
-            *a4 = NSErrorWithOSStatusF(v48, "Encode metadata failed", v21, v22, v23, v24, v25, v26, v55);
+            *error = NSErrorWithOSStatusF(v48, "Encode metadata failed", v21, v22, v23, v24, v25, v26, v55);
           }
 
           v49 = 0;
@@ -591,7 +591,7 @@ LABEL_21:
         v38 = OPACKEncoderCreateDataMutable(v30, 8u, &v56);
         if (!v38)
         {
-          if (a4)
+          if (error)
           {
             if (v56)
             {
@@ -603,7 +603,7 @@ LABEL_21:
               v50 = 4294960596;
             }
 
-            *a4 = NSErrorWithOSStatusF(v50, "Encode secrets failed", v39, v40, v41, v42, v43, v44, v55);
+            *error = NSErrorWithOSStatusF(v50, "Encode secrets failed", v39, v40, v41, v42, v43, v44, v55);
           }
 
           goto LABEL_53;
@@ -613,7 +613,7 @@ LABEL_21:
         [v14 setObject:v38 forKeyedSubscript:*MEMORY[0x1E697B3C0]];
       }
 
-      if ((a3 & 0x80000) != 0)
+      if ((flags & 0x80000) != 0)
       {
         goto LABEL_63;
       }
@@ -647,7 +647,7 @@ LABEL_21:
 LABEL_62:
           [v14 setObject:*v47 forKeyedSubscript:*MEMORY[0x1E697AEB0]];
 LABEL_63:
-          if ((a3 & 0x20) != 0)
+          if ((flags & 0x20) != 0)
           {
             [v14 setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E697B3A8]];
           }
@@ -664,7 +664,7 @@ LABEL_63:
             [v14 setObject:userDescription forKeyedSubscript:*MEMORY[0x1E697ACE0]];
           }
 
-          if ((a3 & 0x80000) == 0)
+          if ((flags & 0x80000) == 0)
           {
             viewHint = self->_viewHint;
             if (viewHint)
@@ -673,13 +673,13 @@ LABEL_63:
             }
           }
 
-          if ((a3 & 0x40000) != 0)
+          if ((flags & 0x40000) != 0)
           {
             [v14 setObject:*MEMORY[0x1E697B268] forKeyedSubscript:*MEMORY[0x1E697B260]];
-            if ((a3 & 8) == 0)
+            if ((flags & 8) == 0)
             {
 LABEL_74:
-              if ((a3 & 0x10000) == 0)
+              if ((flags & 0x10000) == 0)
               {
                 goto LABEL_75;
               }
@@ -688,16 +688,16 @@ LABEL_74:
             }
           }
 
-          else if ((a3 & 8) == 0)
+          else if ((flags & 8) == 0)
           {
             goto LABEL_74;
           }
 
           [v14 setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E697B320]];
-          if ((a3 & 0x10000) == 0)
+          if ((flags & 0x10000) == 0)
           {
 LABEL_75:
-            if ((a3 & 0x20000) == 0)
+            if ((flags & 0x20000) == 0)
             {
 LABEL_77:
               v49 = v14;
@@ -711,7 +711,7 @@ LABEL_76:
 
 LABEL_85:
           [v14 setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E697B310]];
-          if ((a3 & 0x20000) == 0)
+          if ((flags & 0x20000) == 0)
           {
             goto LABEL_77;
           }
@@ -720,10 +720,10 @@ LABEL_85:
         }
       }
 
-      if (a4)
+      if (error)
       {
         NSErrorWithOSStatusF(4294960591, "Unknown SyncType (%d)", v31, v32, v33, v34, v35, v36, self->_syncType);
-        *a4 = v49 = 0;
+        *error = v49 = 0;
         goto LABEL_78;
       }
 
@@ -736,10 +736,10 @@ LABEL_79:
     }
   }
 
-  if (a4)
+  if (error)
   {
     NSErrorWithOSStatusF(4294960591, "Unknown AccessibleType (%d)", accessGroup, v9, v10, v11, v12, v13, self->_accessibleType);
-    *a4 = v49 = 0;
+    *error = v49 = 0;
   }
 
   else
@@ -752,14 +752,14 @@ LABEL_80:
   return v49;
 }
 
-- (BOOL)isEqualToKeychainItem:(id)a3 flags:(unsigned int)a4
+- (BOOL)isEqualToKeychainItem:(id)item flags:(unsigned int)flags
 {
-  v4 = a4;
-  v6 = a3;
+  flagsCopy = flags;
+  itemCopy = item;
   identifier = self->_identifier;
-  v8 = [v6 identifier];
+  identifier = [itemCopy identifier];
   v9 = identifier;
-  v10 = v8;
+  v10 = identifier;
   v11 = v10;
   if (v9 == v10)
   {
@@ -781,12 +781,12 @@ LABEL_80:
   }
 
   invisible = self->_invisible;
-  if (invisible == [v6 invisible])
+  if (invisible == [itemCopy invisible])
   {
     type = self->_type;
-    v15 = [v6 type];
+    type = [itemCopy type];
     v9 = type;
-    v16 = v15;
+    v16 = type;
     v11 = v16;
     if (v9 == v16)
     {
@@ -808,9 +808,9 @@ LABEL_80:
     }
 
     name = self->_name;
-    v19 = [v6 name];
+    name = [itemCopy name];
     v9 = name;
-    v20 = v19;
+    v20 = name;
     v11 = v20;
     if (v9 == v20)
     {
@@ -832,9 +832,9 @@ LABEL_80:
     }
 
     metadata = self->_metadata;
-    v23 = [v6 metadata];
+    metadata = [itemCopy metadata];
     v9 = metadata;
-    v24 = v23;
+    v24 = metadata;
     v11 = v24;
     if (v9 == v24)
     {
@@ -856,9 +856,9 @@ LABEL_80:
     }
 
     userDescription = self->_userDescription;
-    v27 = [v6 userDescription];
+    userDescription = [itemCopy userDescription];
     v9 = userDescription;
-    v28 = v27;
+    v28 = userDescription;
     v11 = v28;
     if (v9 == v28)
     {
@@ -879,16 +879,16 @@ LABEL_80:
       }
     }
 
-    if ((v4 & 1) == 0)
+    if ((flagsCopy & 1) == 0)
     {
       v30 = 1;
       goto LABEL_34;
     }
 
     secrets = self->_secrets;
-    v32 = [v6 secrets];
+    secrets = [itemCopy secrets];
     v9 = secrets;
-    v33 = v32;
+    v33 = secrets;
     v11 = v33;
     if (v9 == v33)
     {
@@ -916,12 +916,12 @@ LABEL_34:
   return v30 & 1;
 }
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
-  if ((a3 & 0x8000000) != 0)
+  if ((level & 0x8000000) != 0)
   {
     v10 = 0;
-    if ((a3 & 0x800000) != 0)
+    if ((level & 0x800000) != 0)
     {
       goto LABEL_3;
     }
@@ -930,21 +930,21 @@ LABEL_34:
   else
   {
     v150 = 0;
-    NSAppendPrintF(&v150, "CUKeychainItem ", *&a3, v3, v4, v5, v6, v7, v128);
+    NSAppendPrintF(&v150, "CUKeychainItem ", *&level, v3, v4, v5, v6, v7, v128);
     v10 = v150;
-    if ((a3 & 0x800000) != 0)
+    if ((level & 0x800000) != 0)
     {
 LABEL_3:
       v149 = v10;
       v11 = &v149;
-      NSAppendPrintF(&v149, "ID '%@'", *&a3, v3, v4, v5, v6, v7, self->_identifier);
+      NSAppendPrintF(&v149, "ID '%@'", *&level, v3, v4, v5, v6, v7, self->_identifier);
       goto LABEL_6;
     }
   }
 
   v148 = v10;
   v11 = &v148;
-  NSAppendPrintF(&v148, "ID '%{mask}'", *&a3, v3, v4, v5, v6, v7, self->_identifier);
+  NSAppendPrintF(&v148, "ID '%{mask}'", *&level, v3, v4, v5, v6, v7, self->_identifier);
 LABEL_6:
   v12 = *v11;
 
@@ -963,7 +963,7 @@ LABEL_6:
   v29 = v22;
   if (v22)
   {
-    if ((a3 & 0x800000) != 0)
+    if ((level & 0x800000) != 0)
     {
       v146 = v12;
       v30 = &v146;
@@ -982,8 +982,8 @@ LABEL_6:
     v12 = v31;
   }
 
-  v38 = a3;
-  if (a3 < 0x1Fu)
+  levelCopy = level;
+  if (level < 0x1Fu)
   {
     dateCreated = self->_dateCreated;
     if (dateCreated)
@@ -1016,7 +1016,7 @@ LABEL_6:
     goto LABEL_27;
   }
 
-  if (a3 < 0x29u)
+  if (level < 0x29u)
   {
     v57 = 16;
 LABEL_27:
@@ -1049,7 +1049,7 @@ LABEL_27:
       goto LABEL_36;
     }
 
-    if ((a3 & 0x800000) != 0)
+    if ((level & 0x800000) != 0)
     {
       v140 = v12;
       v80 = &v140;
@@ -1120,7 +1120,7 @@ LABEL_37:
     v12 = v125;
   }
 
-  if (v38 < 0x15)
+  if (levelCopy < 0x15)
   {
     v134 = v12;
     NSAppendPrintF(&v134, "\n", v32, v33, v34, v35, v36, v37, v129);

@@ -27,10 +27,10 @@
 {
   v5.receiver = self;
   v5.super_class = VideosDetailHeaderViewAccessibility;
-  v3 = [(VideosDetailHeaderViewAccessibility *)&v5 playButton];
+  playButton = [(VideosDetailHeaderViewAccessibility *)&v5 playButton];
   [(VideosDetailHeaderViewAccessibility *)self _axApplyPlayButtonLabel];
 
-  return v3;
+  return playButton;
 }
 
 @end

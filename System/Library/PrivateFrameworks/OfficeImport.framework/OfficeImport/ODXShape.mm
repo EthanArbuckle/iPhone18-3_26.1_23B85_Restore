@@ -1,30 +1,30 @@
 @interface ODXShape
-+ (void)readAdjustmentListNode:(_xmlNode *)a3 toShape:(id)a4 state:(id)a5;
-+ (void)readNode:(_xmlNode *)a3 toShape:(id)a4 state:(id)a5;
-+ (void)readTypeFromNode:(_xmlNode *)a3 toShape:(id)a4;
++ (void)readAdjustmentListNode:(_xmlNode *)node toShape:(id)shape state:(id)state;
++ (void)readNode:(_xmlNode *)node toShape:(id)shape state:(id)state;
++ (void)readTypeFromNode:(_xmlNode *)node toShape:(id)shape;
 @end
 
 @implementation ODXShape
 
-+ (void)readNode:(_xmlNode *)a3 toShape:(id)a4 state:(id)a5
++ (void)readNode:(_xmlNode *)node toShape:(id)shape state:(id)state
 {
-  v12 = a4;
-  v8 = a5;
-  [a1 readTypeFromNode:a3 toShape:v12];
-  v9 = OCXFirstChild(a3);
-  v10 = [v8 ODXDiagramNamespace];
-  HasName = CXNodeHasName(v9, v10, "adjLst");
+  shapeCopy = shape;
+  stateCopy = state;
+  [self readTypeFromNode:node toShape:shapeCopy];
+  v9 = OCXFirstChild(node);
+  oDXDiagramNamespace = [stateCopy ODXDiagramNamespace];
+  HasName = CXNodeHasName(v9, oDXDiagramNamespace, "adjLst");
 
   if (HasName)
   {
-    [a1 readAdjustmentListNode:v9 toShape:v12 state:v8];
+    [self readAdjustmentListNode:v9 toShape:shapeCopy state:stateCopy];
   }
 }
 
-+ (void)readTypeFromNode:(_xmlNode *)a3 toShape:(id)a4
++ (void)readTypeFromNode:(_xmlNode *)node toShape:(id)shape
 {
-  v9 = a4;
-  v5 = CXDefaultStringAttribute(a3, CXNoNamespace, "type", 0);
+  shapeCopy = shape;
+  v5 = CXDefaultStringAttribute(node, CXNoNamespace, "type", 0);
   v6 = v5;
   if (v5 && ([v5 isEqualToString:@"none"] & 1) == 0)
   {
@@ -41,7 +41,7 @@
         [MEMORY[0x277CBEAD8] raise:@"ODXException" format:@"Invalid layout shape type."];
       }
 
-      [v9 setPresetType:v8];
+      [shapeCopy setPresetType:v8];
       v7 = 2;
     }
   }
@@ -51,18 +51,18 @@
     v7 = 0;
   }
 
-  [v9 setType:v7];
+  [shapeCopy setType:v7];
 }
 
-+ (void)readAdjustmentListNode:(_xmlNode *)a3 toShape:(id)a4 state:(id)a5
++ (void)readAdjustmentListNode:(_xmlNode *)node toShape:(id)shape state:(id)state
 {
-  v12 = a4;
-  v7 = a5;
-  v8 = OCXFirstChild(a3);
+  shapeCopy = shape;
+  stateCopy = state;
+  v8 = OCXFirstChild(node);
   while (1)
   {
-    v9 = [v7 ODXDiagramNamespace];
-    HasName = CXNodeHasName(v8, v9, "adj");
+    oDXDiagramNamespace = [stateCopy ODXDiagramNamespace];
+    HasName = CXNodeHasName(v8, oDXDiagramNamespace, "adj");
 
     if (!HasName)
     {
@@ -70,7 +70,7 @@
     }
 
     v11 = objc_alloc_init(ODDShapeAdjustment);
-    [v12 addAdjustment:v11];
+    [shapeCopy addAdjustment:v11];
     if (CXRequiredUnsignedLongAttribute(v8, CXNoNamespace, "idx"))
     {
       [(ODDShapeAdjustment *)v11 setIndex:?];

@@ -1,6 +1,6 @@
 @interface SSRTriggerPhraseDetectorQuasar
-- (SSRTriggerPhraseDetectorQuasar)initWithLocale:(id)a3 configPath:(id)a4 resourcePath:(id)a5;
-- (id)analyzeWavData:(id)a3 numSamples:(unint64_t)a4;
+- (SSRTriggerPhraseDetectorQuasar)initWithLocale:(id)locale configPath:(id)path resourcePath:(id)resourcePath;
+- (id)analyzeWavData:(id)data numSamples:(unint64_t)samples;
 - (id)endAudio;
 - (void)reset;
 @end
@@ -10,20 +10,20 @@
 - (id)endAudio
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v2 = [(_EARSyncSpeechRecognizer *)self->_syncRecognizer resultsWithEndedAudio];
-  v3 = [v2 firstObject];
-  v4 = v3;
-  if (v3)
+  resultsWithEndedAudio = [(_EARSyncSpeechRecognizer *)self->_syncRecognizer resultsWithEndedAudio];
+  firstObject = [resultsWithEndedAudio firstObject];
+  v4 = firstObject;
+  if (firstObject)
   {
-    v5 = [v3 tokens];
-    v6 = [v5 count];
+    tokens = [firstObject tokens];
+    v6 = [tokens count];
 
     if (v6)
     {
       v13 = @"best_score";
       v7 = MEMORY[0x277CCABB0];
-      v8 = [v4 tokens];
-      v9 = [v8 objectAtIndexedSubscript:0];
+      tokens2 = [v4 tokens];
+      v9 = [tokens2 objectAtIndexedSubscript:0];
       [v9 confidence];
       v10 = [v7 numberWithDouble:?];
       v14[0] = v10;
@@ -41,24 +41,24 @@
   return v6;
 }
 
-- (id)analyzeWavData:(id)a3 numSamples:(unint64_t)a4
+- (id)analyzeWavData:(id)data numSamples:(unint64_t)samples
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(_EARSyncSpeechRecognizer *)self->_syncRecognizer resultsWithAddedAudio:v6 numberOfSamples:a4 taskName:&stru_283923FC0];
-  v8 = [v7 firstObject];
-  v9 = v8;
-  if (v8)
+  dataCopy = data;
+  v7 = [(_EARSyncSpeechRecognizer *)self->_syncRecognizer resultsWithAddedAudio:dataCopy numberOfSamples:samples taskName:&stru_283923FC0];
+  firstObject = [v7 firstObject];
+  v9 = firstObject;
+  if (firstObject)
   {
-    v10 = [v8 tokens];
-    v11 = [v10 count];
+    tokens = [firstObject tokens];
+    v11 = [tokens count];
 
     if (v11)
     {
       v18 = @"best_score";
       v12 = MEMORY[0x277CCABB0];
-      v13 = [v9 tokens];
-      v14 = [v13 objectAtIndexedSubscript:0];
+      tokens2 = [v9 tokens];
+      v14 = [tokens2 objectAtIndexedSubscript:0];
       [v14 confidence];
       v15 = [v12 numberWithDouble:?];
       v19[0] = v15;
@@ -93,20 +93,20 @@
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (SSRTriggerPhraseDetectorQuasar)initWithLocale:(id)a3 configPath:(id)a4 resourcePath:(id)a5
+- (SSRTriggerPhraseDetectorQuasar)initWithLocale:(id)locale configPath:(id)path resourcePath:(id)resourcePath
 {
   v20 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  localeCopy = locale;
+  pathCopy = path;
+  resourcePathCopy = resourcePath;
   v19.receiver = self;
   v19.super_class = SSRTriggerPhraseDetectorQuasar;
   v12 = [(SSRTriggerPhraseDetectorQuasar *)&v19 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_locale, a3);
-    v14 = [objc_alloc(MEMORY[0x277D07280]) initWithConfiguration:v10];
+    objc_storeStrong(&v12->_locale, locale);
+    v14 = [objc_alloc(MEMORY[0x277D07280]) initWithConfiguration:pathCopy];
     syncRecognizer = v13->_syncRecognizer;
     v13->_syncRecognizer = v14;
   }

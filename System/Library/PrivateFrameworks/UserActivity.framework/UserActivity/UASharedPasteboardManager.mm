@@ -2,29 +2,29 @@
 + (BOOL)dontConnectToServer;
 + (id)sharedManager;
 + (void)initialize;
-- (BOOL)addData:(id)a3 toItemAtIndex:(unint64_t)a4 generation:(unint64_t)a5;
+- (BOOL)addData:(id)data toItemAtIndex:(unint64_t)index generation:(unint64_t)generation;
 - (BOOL)isRemotePasteboardAvailable;
 - (BOOL)requestPasteboardFetchReturnEarly;
-- (BOOL)typeIsDisallowedForReceiving:(id)a3;
-- (BOOL)typeIsDisallowedForSending:(id)a3;
+- (BOOL)typeIsDisallowedForReceiving:(id)receiving;
+- (BOOL)typeIsDisallowedForSending:(id)sending;
 - (UASharedPasteboardManager)init;
 - (id)fetchRemoteName;
-- (id)serializeFileType:(id)a3 intoInfo:(id)a4 withFile:(id)a5 intoDir:(id)a6;
-- (id)serializeItem:(id)a3 intoInfo:(id)a4 withFile:(id)a5 intoDir:(id)a6;
-- (id)serializeType:(id)a3 intoInfo:(id)a4 withFile:(id)a5;
+- (id)serializeFileType:(id)type intoInfo:(id)info withFile:(id)file intoDir:(id)dir;
+- (id)serializeItem:(id)item intoInfo:(id)info withFile:(id)file intoDir:(id)dir;
+- (id)serializeType:(id)type intoInfo:(id)info withFile:(id)file;
 - (void)clearLocalPasteboardInformation;
 - (void)dealloc;
 - (void)doClearLocalPasteboardInfo;
-- (void)fetchPasteboardStatus:(id)a3;
-- (void)pickupLocalChanges:(id)a3 iterNumber:(int64_t)a4 cloneDir:(id)a5 completionHandler:(id)a6;
-- (void)requestRemotePasteboardDataForProcess:(int)a3 withCompletion:(id)a4;
-- (void)requestRemotePasteboardTypesForProcess:(int)a3 withCompletion:(id)a4;
-- (void)sendUpdateToServer:(id)a3;
+- (void)fetchPasteboardStatus:(id)status;
+- (void)pickupLocalChanges:(id)changes iterNumber:(int64_t)number cloneDir:(id)dir completionHandler:(id)handler;
+- (void)requestRemotePasteboardDataForProcess:(int)process withCompletion:(id)completion;
+- (void)requestRemotePasteboardTypesForProcess:(int)process withCompletion:(id)completion;
+- (void)sendUpdateToServer:(id)server;
 - (void)startPreventingPasteboardSharing;
 - (void)stopPreventingPasteboardSharing;
-- (void)tellClientDebuggingEnabled:(BOOL)a3 logFileHandle:(id)a4;
-- (void)writeLocalPasteboardToFile:(id)a3 itemDir:(id)a4 extension:(id)a5 withCompletion:(id)a6;
-- (void)writeLocalPasteboardToFile:(id)a3 itemDir:(id)a4 withCompletion:(id)a5;
+- (void)tellClientDebuggingEnabled:(BOOL)enabled logFileHandle:(id)handle;
+- (void)writeLocalPasteboardToFile:(id)file itemDir:(id)dir extension:(id)extension withCompletion:(id)completion;
+- (void)writeLocalPasteboardToFile:(id)file itemDir:(id)dir withCompletion:(id)completion;
 @end
 
 @implementation UASharedPasteboardManager
@@ -104,15 +104,15 @@ void __42__UASharedPasteboardManager_sharedManager__block_invoke()
       [(UASharedPasteboardManager *)v2 setConnection:v11];
 
       v12 = _UAGetSharedPasteboardManagerProtocolInterface();
-      v13 = [(UASharedPasteboardManager *)v2 connection];
-      [v13 setRemoteObjectInterface:v12];
+      connection = [(UASharedPasteboardManager *)v2 connection];
+      [connection setRemoteObjectInterface:v12];
 
-      v14 = [(UASharedPasteboardManager *)v2 connection];
-      [v14 setExportedObject:v2];
+      connection2 = [(UASharedPasteboardManager *)v2 connection];
+      [connection2 setExportedObject:v2];
 
       v15 = _UAGetSharedPasteboardManagerResponseProtocolInterface();
-      v16 = [(UASharedPasteboardManager *)v2 connection];
-      [v16 setExportedInterface:v15];
+      connection3 = [(UASharedPasteboardManager *)v2 connection];
+      [connection3 setExportedInterface:v15];
 
       v27[0] = 0;
       v27[1] = v27;
@@ -121,25 +121,25 @@ void __42__UASharedPasteboardManager_sharedManager__block_invoke()
       v27[4] = __Block_byref_object_dispose__1;
       v17 = v2;
       v28 = v17;
-      v18 = [(UASharedPasteboardManager *)v17 connection];
-      [v18 setInterruptionHandler:&__block_literal_global_87];
+      connection4 = [(UASharedPasteboardManager *)v17 connection];
+      [connection4 setInterruptionHandler:&__block_literal_global_87];
 
       v26[0] = MEMORY[0x277D85DD0];
       v26[1] = 3221225472;
       v26[2] = __33__UASharedPasteboardManager_init__block_invoke_91;
       v26[3] = &unk_2785C3FF8;
       v26[4] = v27;
-      v19 = [(UASharedPasteboardManager *)v17 connection];
-      [v19 setInvalidationHandler:v26];
+      connection5 = [(UASharedPasteboardManager *)v17 connection];
+      [connection5 setInvalidationHandler:v26];
 
-      v20 = [(UASharedPasteboardManager *)v17 connection];
-      [v20 resume];
+      connection6 = [(UASharedPasteboardManager *)v17 connection];
+      [connection6 resume];
 
       _Block_object_dispose(v27, 8);
     }
 
-    v21 = [MEMORY[0x277CCAD78] UUID];
-    [(UASharedPasteboardManager *)v2 setControllSyncObject:v21];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    [(UASharedPasteboardManager *)v2 setControllSyncObject:uUID];
 
     [(UASharedPasteboardManager *)v2 setUpdateScheduled:0];
     block[0] = MEMORY[0x277D85DD0];
@@ -290,11 +290,11 @@ void __33__UASharedPasteboardManager_init__block_invoke_95(uint64_t a1)
 
 - (void)dealloc
 {
-  v3 = [(UASharedPasteboardManager *)self connection];
-  [v3 invalidate];
+  connection = [(UASharedPasteboardManager *)self connection];
+  [connection invalidate];
 
-  v4 = [(UASharedPasteboardManager *)self controllConnection];
-  [v4 invalidate];
+  controllConnection = [(UASharedPasteboardManager *)self controllConnection];
+  [controllConnection invalidate];
 
   v5.receiver = self;
   v5.super_class = UASharedPasteboardManager;
@@ -304,8 +304,8 @@ void __33__UASharedPasteboardManager_init__block_invoke_95(uint64_t a1)
 - (void)startPreventingPasteboardSharing
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = [(UASharedPasteboardManager *)self controllSyncObject];
-  objc_sync_enter(v3);
+  controllSyncObject = [(UASharedPasteboardManager *)self controllSyncObject];
+  objc_sync_enter(controllSyncObject);
   [(UASharedPasteboardManager *)self setDisableCount:[(UASharedPasteboardManager *)self disableCount]+ 1];
   v4 = _uaGetLogForCategory(@"pasteboard-client");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -315,8 +315,8 @@ void __33__UASharedPasteboardManager_init__block_invoke_95(uint64_t a1)
     _os_log_impl(&dword_226A4E000, v4, OS_LOG_TYPE_DEFAULT, "Calling in to disable UC, count: %d", &buf, 8u);
   }
 
-  v5 = [(UASharedPasteboardManager *)self controllConnection];
-  v6 = v5 == 0;
+  controllConnection = [(UASharedPasteboardManager *)self controllConnection];
+  v6 = controllConnection == 0;
 
   if (v6)
   {
@@ -327,16 +327,16 @@ void __33__UASharedPasteboardManager_init__block_invoke_95(uint64_t a1)
     [(UASharedPasteboardManager *)self setControllConnection:v9];
 
     v10 = _UAGetSharedPasteboardControllProtocolInterface();
-    v11 = [(UASharedPasteboardManager *)self controllConnection];
-    [v11 setRemoteObjectInterface:v10];
+    controllConnection2 = [(UASharedPasteboardManager *)self controllConnection];
+    [controllConnection2 setRemoteObjectInterface:v10];
 
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __61__UASharedPasteboardManager_startPreventingPasteboardSharing__block_invoke;
     v19[3] = &unk_2785C4020;
     objc_copyWeak(&v20, &buf);
-    v12 = [(UASharedPasteboardManager *)self controllConnection];
-    [v12 setInvalidationHandler:v19];
+    controllConnection3 = [(UASharedPasteboardManager *)self controllConnection];
+    [controllConnection3 setInvalidationHandler:v19];
 
     v13 = _uaGetLogForCategory(@"pasteboard-client");
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
@@ -345,18 +345,18 @@ void __33__UASharedPasteboardManager_init__block_invoke_95(uint64_t a1)
       _os_log_impl(&dword_226A4E000, v13, OS_LOG_TYPE_INFO, "Resuming connection", v18, 2u);
     }
 
-    v14 = [(UASharedPasteboardManager *)self controllConnection];
-    [v14 resume];
+    controllConnection4 = [(UASharedPasteboardManager *)self controllConnection];
+    [controllConnection4 resume];
 
-    v15 = [(UASharedPasteboardManager *)self controllConnection];
-    v16 = [v15 remoteObjectProxy];
-    [v16 startConnection:getpid()];
+    controllConnection5 = [(UASharedPasteboardManager *)self controllConnection];
+    remoteObjectProxy = [controllConnection5 remoteObjectProxy];
+    [remoteObjectProxy startConnection:getpid()];
 
     objc_destroyWeak(&v20);
     objc_destroyWeak(&buf);
   }
 
-  objc_sync_exit(v3);
+  objc_sync_exit(controllSyncObject);
 
   v17 = *MEMORY[0x277D85DE8];
 }
@@ -377,8 +377,8 @@ void __61__UASharedPasteboardManager_startPreventingPasteboardSharing__block_inv
 - (void)stopPreventingPasteboardSharing
 {
   v9 = *MEMORY[0x277D85DE8];
-  v3 = [(UASharedPasteboardManager *)self controllSyncObject];
-  objc_sync_enter(v3);
+  controllSyncObject = [(UASharedPasteboardManager *)self controllSyncObject];
+  objc_sync_enter(controllSyncObject);
   v4 = _uaGetLogForCategory(@"pasteboard-client");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -399,26 +399,26 @@ void __61__UASharedPasteboardManager_startPreventingPasteboardSharing__block_inv
         _os_log_impl(&dword_226A4E000, v5, OS_LOG_TYPE_DEFAULT, "Invalidating connection, count is 0", v8, 2u);
       }
 
-      v6 = [(UASharedPasteboardManager *)self controllConnection];
-      [v6 invalidate];
+      controllConnection = [(UASharedPasteboardManager *)self controllConnection];
+      [controllConnection invalidate];
 
       [(UASharedPasteboardManager *)self setControllConnection:0];
     }
   }
 
-  objc_sync_exit(v3);
+  objc_sync_exit(controllSyncObject);
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)typeIsDisallowedForSending:(id)a3
+- (BOOL)typeIsDisallowedForSending:(id)sending
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  sendingCopy = sending;
+  if (sendingCopy)
   {
-    v5 = [(UASharedPasteboardManager *)self disallowedTypesForSending];
-    v6 = [v5 containsObject:v4];
+    disallowedTypesForSending = [(UASharedPasteboardManager *)self disallowedTypesForSending];
+    v6 = [disallowedTypesForSending containsObject:sendingCopy];
 
     if (v6)
     {
@@ -431,8 +431,8 @@ void __61__UASharedPasteboardManager_startPreventingPasteboardSharing__block_inv
       v21 = 0u;
       v18 = 0u;
       v19 = 0u;
-      v8 = [(UASharedPasteboardManager *)self disallowedTypesForSending];
-      v7 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      disallowedTypesForSending2 = [(UASharedPasteboardManager *)self disallowedTypesForSending];
+      v7 = [disallowedTypesForSending2 countByEnumeratingWithState:&v18 objects:v22 count:16];
       if (v7)
       {
         v9 = *v19;
@@ -442,11 +442,11 @@ void __61__UASharedPasteboardManager_startPreventingPasteboardSharing__block_inv
           {
             if (*v19 != v9)
             {
-              objc_enumerationMutation(v8);
+              objc_enumerationMutation(disallowedTypesForSending2);
             }
 
             v11 = *(*(&v18 + 1) + 8 * i);
-            v12 = [MEMORY[0x277CE1CB8] typeWithIdentifier:v4];
+            v12 = [MEMORY[0x277CE1CB8] typeWithIdentifier:sendingCopy];
             v13 = [MEMORY[0x277CE1CB8] typeWithIdentifier:v11];
             v14 = v13;
             if (v12)
@@ -467,7 +467,7 @@ void __61__UASharedPasteboardManager_startPreventingPasteboardSharing__block_inv
             }
           }
 
-          v7 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+          v7 = [disallowedTypesForSending2 countByEnumeratingWithState:&v18 objects:v22 count:16];
           if (v7)
           {
             continue;
@@ -490,14 +490,14 @@ LABEL_19:
   return v7;
 }
 
-- (BOOL)typeIsDisallowedForReceiving:(id)a3
+- (BOOL)typeIsDisallowedForReceiving:(id)receiving
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  receivingCopy = receiving;
+  if (receivingCopy)
   {
-    v5 = [(UASharedPasteboardManager *)self disallowedTypesForReceiving];
-    v6 = [v5 containsObject:v4];
+    disallowedTypesForReceiving = [(UASharedPasteboardManager *)self disallowedTypesForReceiving];
+    v6 = [disallowedTypesForReceiving containsObject:receivingCopy];
 
     if (v6)
     {
@@ -510,8 +510,8 @@ LABEL_19:
       v21 = 0u;
       v18 = 0u;
       v19 = 0u;
-      v8 = [(UASharedPasteboardManager *)self disallowedTypesForReceiving];
-      v7 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      disallowedTypesForReceiving2 = [(UASharedPasteboardManager *)self disallowedTypesForReceiving];
+      v7 = [disallowedTypesForReceiving2 countByEnumeratingWithState:&v18 objects:v22 count:16];
       if (v7)
       {
         v9 = *v19;
@@ -521,11 +521,11 @@ LABEL_19:
           {
             if (*v19 != v9)
             {
-              objc_enumerationMutation(v8);
+              objc_enumerationMutation(disallowedTypesForReceiving2);
             }
 
             v11 = *(*(&v18 + 1) + 8 * i);
-            v12 = [MEMORY[0x277CE1CB8] typeWithIdentifier:v4];
+            v12 = [MEMORY[0x277CE1CB8] typeWithIdentifier:receivingCopy];
             v13 = [MEMORY[0x277CE1CB8] typeWithIdentifier:v11];
             v14 = v13;
             if (v12)
@@ -546,7 +546,7 @@ LABEL_19:
             }
           }
 
-          v7 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+          v7 = [disallowedTypesForReceiving2 countByEnumeratingWithState:&v18 objects:v22 count:16];
           if (v7)
           {
             continue;
@@ -569,18 +569,18 @@ LABEL_19:
   return v7;
 }
 
-- (BOOL)addData:(id)a3 toItemAtIndex:(unint64_t)a4 generation:(unint64_t)a5
+- (BOOL)addData:(id)data toItemAtIndex:(unint64_t)index generation:(unint64_t)generation
 {
   v43 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  dataCopy = data;
   v9 = _uaGetLogForCategory(@"pasteboard-client");
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
-    v10 = [v8 type];
-    v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
-    v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a5];
+    type = [dataCopy type];
+    v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:index];
+    v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:generation];
     *buf = 138412802;
-    v38 = v10;
+    v38 = type;
     v39 = 2112;
     v40 = v11;
     v41 = 2112;
@@ -588,20 +588,20 @@ LABEL_19:
     _os_log_impl(&dword_226A4E000, v9, OS_LOG_TYPE_DEBUG, "Adding type: %@ to item: %@ in generation: %@", buf, 0x20u);
   }
 
-  v13 = [(UASharedPasteboardManager *)self currentGeneration];
-  objc_sync_enter(v13);
-  v14 = [v8 type];
-  v15 = [(UASharedPasteboardManager *)self typeIsDisallowedForSending:v14];
+  currentGeneration = [(UASharedPasteboardManager *)self currentGeneration];
+  objc_sync_enter(currentGeneration);
+  type2 = [dataCopy type];
+  v15 = [(UASharedPasteboardManager *)self typeIsDisallowedForSending:type2];
 
   if (v15)
   {
-    v16 = _uaGetLogForCategory(@"pasteboard-client");
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+    currentGeneration5 = _uaGetLogForCategory(@"pasteboard-client");
+    if (os_log_type_enabled(currentGeneration5, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [v8 type];
+      type3 = [dataCopy type];
       *buf = 138543362;
-      v38 = v17;
-      _os_log_impl(&dword_226A4E000, v16, OS_LOG_TYPE_DEFAULT, "Ignoring disallowed type: %{public}@", buf, 0xCu);
+      v38 = type3;
+      _os_log_impl(&dword_226A4E000, currentGeneration5, OS_LOG_TYPE_DEFAULT, "Ignoring disallowed type: %{public}@", buf, 0xCu);
     }
 
 LABEL_9:
@@ -609,64 +609,64 @@ LABEL_9:
     goto LABEL_13;
   }
 
-  v18 = [(UASharedPasteboardManager *)self currentGeneration];
-  v19 = [v18 generation] > a5;
+  currentGeneration2 = [(UASharedPasteboardManager *)self currentGeneration];
+  v19 = [currentGeneration2 generation] > generation;
 
   if (v19)
   {
-    v16 = _uaGetLogForCategory(@"pasteboard-client");
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+    currentGeneration5 = _uaGetLogForCategory(@"pasteboard-client");
+    if (os_log_type_enabled(currentGeneration5, OS_LOG_TYPE_ERROR))
     {
-      v20 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a5];
+      v20 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:generation];
       v21 = MEMORY[0x277CCABB0];
-      v22 = [(UASharedPasteboardManager *)self currentGeneration];
-      v23 = [v21 numberWithUnsignedInteger:{objc_msgSend(v22, "generation")}];
+      currentGeneration3 = [(UASharedPasteboardManager *)self currentGeneration];
+      v23 = [v21 numberWithUnsignedInteger:{objc_msgSend(currentGeneration3, "generation")}];
       *buf = 138543618;
       v38 = v20;
       v39 = 2114;
       v40 = v23;
-      _os_log_impl(&dword_226A4E000, v16, OS_LOG_TYPE_ERROR, "Ignoring item, new generation (%{public}@) is older than current generation (%{public}@)", buf, 0x16u);
+      _os_log_impl(&dword_226A4E000, currentGeneration5, OS_LOG_TYPE_ERROR, "Ignoring item, new generation (%{public}@) is older than current generation (%{public}@)", buf, 0x16u);
     }
 
     goto LABEL_9;
   }
 
-  v25 = [(UASharedPasteboardManager *)self currentGeneration];
-  v26 = [v25 generation] == a5;
+  currentGeneration4 = [(UASharedPasteboardManager *)self currentGeneration];
+  v26 = [currentGeneration4 generation] == generation;
 
   if (!v26)
   {
-    v27 = [[UAPasteboardGeneration alloc] initWithGeneration:a5];
+    v27 = [[UAPasteboardGeneration alloc] initWithGeneration:generation];
     [(UASharedPasteboardManager *)self setCurrentGeneration:v27];
   }
 
-  v16 = [(UASharedPasteboardManager *)self currentGeneration];
-  v24 = [v16 addType:v8 toItemAtIndex:a4];
+  currentGeneration5 = [(UASharedPasteboardManager *)self currentGeneration];
+  v24 = [currentGeneration5 addType:dataCopy toItemAtIndex:index];
 LABEL_13:
 
   [(UASharedPasteboardManager *)self setCurrentGenerationHasUpdates:([(UASharedPasteboardManager *)self currentGenerationHasUpdates]| v24) & 1];
-  objc_sync_exit(v13);
+  objc_sync_exit(currentGeneration);
 
-  v28 = self;
-  objc_sync_enter(v28);
-  if (![(UASharedPasteboardManager *)v28 updateScheduled]&& (v24 & 1) != 0)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (![(UASharedPasteboardManager *)selfCopy updateScheduled]&& (v24 & 1) != 0)
   {
-    v29 = [(UASharedPasteboardManager *)v28 currentGeneration];
-    [(UASharedPasteboardManager *)v28 sendUpdateToServer:v29];
-    [(UASharedPasteboardManager *)v28 setUpdateScheduled:1];
+    currentGeneration6 = [(UASharedPasteboardManager *)selfCopy currentGeneration];
+    [(UASharedPasteboardManager *)selfCopy sendUpdateToServer:currentGeneration6];
+    [(UASharedPasteboardManager *)selfCopy setUpdateScheduled:1];
     v30 = dispatch_time(0, 50000000);
     v31 = dispatch_get_global_queue(25, 0);
     v35[0] = MEMORY[0x277D85DD0];
     v35[1] = 3221225472;
     v35[2] = __62__UASharedPasteboardManager_addData_toItemAtIndex_generation___block_invoke;
     v35[3] = &unk_2785C4070;
-    v35[4] = v28;
-    v36 = v29;
-    v32 = v29;
+    v35[4] = selfCopy;
+    v36 = currentGeneration6;
+    v32 = currentGeneration6;
     dispatch_after(v30, v31, v35);
   }
 
-  objc_sync_exit(v28);
+  objc_sync_exit(selfCopy);
 
   v33 = *MEMORY[0x277D85DE8];
   return v24;
@@ -681,21 +681,21 @@ void __62__UASharedPasteboardManager_addData_toItemAtIndex_generation___block_in
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)sendUpdateToServer:(id)a3
+- (void)sendUpdateToServer:(id)server
 {
   v74 = *MEMORY[0x277D85DE8];
-  v45 = a3;
-  v3 = [v45 items];
-  v4 = [v3 copy];
+  serverCopy = server;
+  items = [serverCopy items];
+  v4 = [items copy];
 
-  v44 = [v45 generation];
-  v51 = [v45 getTypePaths];
+  generation = [serverCopy generation];
+  getTypePaths = [serverCopy getTypePaths];
   v5 = _uaGetLogForCategory(@"pasteboard-client");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v45 allTypes];
+    allTypes = [serverCopy allTypes];
     *buf = 138412290;
-    v69 = v6;
+    v69 = allTypes;
     _os_log_impl(&dword_226A4E000, v5, OS_LOG_TYPE_DEFAULT, "Sending pasteboard update to server: %@", buf, 0xCu);
   }
 
@@ -727,41 +727,41 @@ void __62__UASharedPasteboardManager_addData_toItemAtIndex_generation___block_in
         v11 = v9;
         objc_sync_enter(v11);
         v54 = v11;
-        v12 = [v11 types];
-        v53 = [v12 count];
+        types = [v11 types];
+        v53 = [types count];
 
         objc_sync_exit(v54);
         if (v53)
         {
           for (i = 0; i != v53; ++i)
           {
-            v13 = [v54 types];
-            v56 = [v13 objectAtIndexedSubscript:i];
+            types2 = [v54 types];
+            v56 = [types2 objectAtIndexedSubscript:i];
 
             v14 = objc_alloc_init(UASharedPasteboardTypeInfo);
             if ([v56 conformsToProtocol:&unk_283A69178])
             {
-              v15 = v56;
-              v16 = [v15 uuid];
-              [(UASharedPasteboardTypeInfo *)v14 setUuid:v16];
+              uuid4 = v56;
+              uuid = [uuid4 uuid];
+              [(UASharedPasteboardTypeInfo *)v14 setUuid:uuid];
 
-              if ([v15 preferFileRep])
+              if ([uuid4 preferFileRep])
               {
                 [(UASharedPasteboardTypeInfo *)v14 setType:@"public.file-url"];
               }
 
               else
               {
-                v21 = [v15 type];
-                [(UASharedPasteboardTypeInfo *)v14 setType:v21];
+                type = [uuid4 type];
+                [(UASharedPasteboardTypeInfo *)v14 setType:type];
               }
 
-              v22 = [v15 uuid];
-              v23 = [v51 objectForKeyedSubscript:v22];
+              uuid2 = [uuid4 uuid];
+              v23 = [getTypePaths objectForKeyedSubscript:uuid2];
               [(UASharedPasteboardTypeInfo *)v14 setTypeHint:v23];
 
-              v20 = [(UASharedPasteboardTypeInfo *)v14 typeHint];
-              if (v20)
+              typeHint = [(UASharedPasteboardTypeInfo *)v14 typeHint];
+              if (typeHint)
               {
                 goto LABEL_17;
               }
@@ -778,23 +778,23 @@ void __62__UASharedPasteboardManager_addData_toItemAtIndex_generation___block_in
                 _os_log_impl(&dword_226A4E000, v38, OS_LOG_TYPE_DEFAULT, "TypeHint nil, trying to get filename", buf, 2u);
               }
 
-              v19 = [v15 getFileName];
+              getFileName = [uuid4 getFileName];
             }
 
             else
             {
-              v17 = [v56 type];
-              [(UASharedPasteboardTypeInfo *)v14 setType:v17];
+              type2 = [v56 type];
+              [(UASharedPasteboardTypeInfo *)v14 setType:type2];
 
-              v18 = [v56 uuid];
-              [(UASharedPasteboardTypeInfo *)v14 setUuid:v18];
+              uuid3 = [v56 uuid];
+              [(UASharedPasteboardTypeInfo *)v14 setUuid:uuid3];
 
-              v15 = [v56 uuid];
-              v19 = [v51 objectForKeyedSubscript:v15];
+              uuid4 = [v56 uuid];
+              getFileName = [getTypePaths objectForKeyedSubscript:uuid4];
             }
 
-            v20 = v19;
-            [(UASharedPasteboardTypeInfo *)v14 setTypeHint:v19];
+            typeHint = getFileName;
+            [(UASharedPasteboardTypeInfo *)v14 setTypeHint:getFileName];
 LABEL_17:
 
 LABEL_18:
@@ -802,16 +802,16 @@ LABEL_18:
             v25 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v24];
             [(UASharedPasteboardTypeInfo *)v14 setIndex:v25];
 
-            v26 = [(UASharedPasteboardTypeInfo *)v14 type];
-            [v10 setObject:v14 forKey:v26];
+            type3 = [(UASharedPasteboardTypeInfo *)v14 type];
+            [v10 setObject:v14 forKey:type3];
 
             v62 = 0u;
             v63 = 0u;
             v60 = 0u;
             v61 = 0u;
-            v27 = [(UASharedPasteboardManager *)self typeAliases];
-            v28 = [v56 type];
-            v29 = [v27 objectForKeyedSubscript:v28];
+            typeAliases = [(UASharedPasteboardManager *)self typeAliases];
+            type4 = [v56 type];
+            v29 = [typeAliases objectForKeyedSubscript:type4];
 
             v30 = [v29 countByEnumeratingWithState:&v60 objects:v72 count:16];
             if (v30)
@@ -830,11 +830,11 @@ LABEL_18:
                   v34 = _uaGetLogForCategory(@"pasteboard-client");
                   if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
                   {
-                    v35 = [v56 type];
+                    type5 = [v56 type];
                     *buf = 138412546;
                     v69 = v33;
                     v70 = 2112;
-                    v71 = v35;
+                    v71 = type5;
                     _os_log_impl(&dword_226A4E000, v34, OS_LOG_TYPE_DEFAULT, "[Local Pasteboard] Adding alias: %@ for type: %@", buf, 0x16u);
                   }
 
@@ -870,16 +870,16 @@ LABEL_18:
 
   v40 = objc_alloc_init(UASharedPasteboardInfo);
   [(UASharedPasteboardInfo *)v40 setItems:v48];
-  v41 = [(UASharedPasteboardManager *)self serverQ];
+  serverQ = [(UASharedPasteboardManager *)self serverQ];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __48__UASharedPasteboardManager_sendUpdateToServer___block_invoke;
   block[3] = &unk_2785C4098;
   block[4] = self;
   v58 = v40;
-  v59 = v44;
+  v59 = generation;
   v42 = v40;
-  dispatch_async(v41, block);
+  dispatch_async(serverQ, block);
 
   v43 = *MEMORY[0x277D85DE8];
 }
@@ -926,40 +926,40 @@ void __48__UASharedPasteboardManager_sendUpdateToServer___block_invoke_2()
   [(UASharedPasteboardManager *)self doClearLocalPasteboardInfo];
 }
 
-- (void)writeLocalPasteboardToFile:(id)a3 itemDir:(id)a4 extension:(id)a5 withCompletion:(id)a6
+- (void)writeLocalPasteboardToFile:(id)file itemDir:(id)dir extension:(id)extension withCompletion:(id)completion
 {
   v26 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  if (a5)
+  fileCopy = file;
+  dirCopy = dir;
+  completionCopy = completion;
+  if (extension)
   {
-    v13 = a5;
+    extensionCopy = extension;
     v14 = _uaGetLogForCategory(@"pasteboard-client");
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
       *buf = 138543362;
-      v25 = v11;
+      v25 = dirCopy;
       _os_log_impl(&dword_226A4E000, v14, OS_LOG_TYPE_INFO, "Consuming extension to gain access to %{public}@", buf, 0xCu);
     }
 
     v15 = objc_alloc(MEMORY[0x277CCACA8]);
-    v16 = [v13 bytes];
-    v17 = [v13 length];
+    bytes = [extensionCopy bytes];
+    v17 = [extensionCopy length];
 
-    v18 = [v15 initWithBytes:v16 length:v17 encoding:4];
+    v18 = [v15 initWithBytes:bytes length:v17 encoding:4];
     [v18 cStringUsingEncoding:4];
-    a5 = sandbox_extension_consume();
+    extension = sandbox_extension_consume();
   }
 
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __89__UASharedPasteboardManager_writeLocalPasteboardToFile_itemDir_extension_withCompletion___block_invoke;
   v21[3] = &unk_2785C40C0;
-  v22 = v12;
-  v23 = a5;
-  v19 = v12;
-  [(UASharedPasteboardManager *)self writeLocalPasteboardToFile:v10 itemDir:v11 withCompletion:v21];
+  v22 = completionCopy;
+  extensionCopy2 = extension;
+  v19 = completionCopy;
+  [(UASharedPasteboardManager *)self writeLocalPasteboardToFile:fileCopy itemDir:dirCopy withCompletion:v21];
 
   v20 = *MEMORY[0x277D85DE8];
 }
@@ -979,23 +979,23 @@ void __89__UASharedPasteboardManager_writeLocalPasteboardToFile_itemDir_extensio
   }
 }
 
-- (void)writeLocalPasteboardToFile:(id)a3 itemDir:(id)a4 withCompletion:(id)a5
+- (void)writeLocalPasteboardToFile:(id)file itemDir:(id)dir withCompletion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  fileCopy = file;
+  dirCopy = dir;
+  completionCopy = completion;
   v11 = dispatch_get_global_queue(25, 0);
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __79__UASharedPasteboardManager_writeLocalPasteboardToFile_itemDir_withCompletion___block_invoke;
   v15[3] = &unk_2785C40E8;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = fileCopy;
+  v17 = dirCopy;
+  v18 = completionCopy;
+  v12 = completionCopy;
+  v13 = dirCopy;
+  v14 = fileCopy;
   dispatch_async(v11, v15);
 }
 
@@ -1121,31 +1121,31 @@ void __79__UASharedPasteboardManager_writeLocalPasteboardToFile_itemDir_withComp
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)pickupLocalChanges:(id)a3 iterNumber:(int64_t)a4 cloneDir:(id)a5 completionHandler:(id)a6
+- (void)pickupLocalChanges:(id)changes iterNumber:(int64_t)number cloneDir:(id)dir completionHandler:(id)handler
 {
-  v53 = a4;
+  numberCopy = number;
   v89 = *MEMORY[0x277D85DE8];
-  v66 = a3;
-  v59 = a5;
-  v55 = a6;
+  changesCopy = changes;
+  dirCopy = dir;
+  handlerCopy = handler;
   v8 = _uaGetLogForCategory(@"pasteboard-client");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     *buf = 134217984;
-    v84 = v53;
+    v84 = numberCopy;
     _os_log_impl(&dword_226A4E000, v8, OS_LOG_TYPE_INFO, "[Local Pasteboard] Checking for pasteboard updates count: %ld", buf, 0xCu);
   }
 
-  v9 = [(UASharedPasteboardManager *)self currentGeneration];
-  objc_sync_enter(v9);
+  currentGeneration = [(UASharedPasteboardManager *)self currentGeneration];
+  objc_sync_enter(currentGeneration);
   if ([(UASharedPasteboardManager *)self currentGenerationHasUpdates])
   {
     [(UASharedPasteboardManager *)self setCurrentGenerationHasUpdates:0];
-    v10 = [(UASharedPasteboardManager *)self currentGeneration];
-    v11 = [v10 items];
-    v56 = [v11 copy];
+    currentGeneration2 = [(UASharedPasteboardManager *)self currentGeneration];
+    items = [currentGeneration2 items];
+    v56 = [items copy];
 
-    objc_sync_exit(v9);
+    objc_sync_exit(currentGeneration);
     v12 = _uaGetLogForCategory(@"pasteboard-client");
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
@@ -1161,13 +1161,13 @@ void __79__UASharedPasteboardManager_writeLocalPasteboardToFile_itemDir_withComp
       while (!v13)
       {
         v58 = [v56 objectAtIndexedSubscript:v60];
-        v14 = [v66 items];
-        v15 = [v14 count] > v60;
+        items2 = [changesCopy items];
+        v15 = [items2 count] > v60;
 
         if (v15)
         {
-          v16 = [v66 items];
-          v68 = [v16 objectAtIndexedSubscript:v60];
+          items3 = [changesCopy items];
+          v68 = [items3 objectAtIndexedSubscript:v60];
 
           v81 = 0u;
           v82 = 0u;
@@ -1191,46 +1191,46 @@ LABEL_12:
 
               v67 = v17;
               v69 = *(*(&v79 + 1) + 8 * v17);
-              v19 = [(UASharedPasteboardItemInfo *)v68 types];
-              v20 = [v19 allKeys];
-              v21 = [v69 type];
-              v22 = [v20 containsObject:v21];
+              types = [(UASharedPasteboardItemInfo *)v68 types];
+              allKeys = [types allKeys];
+              type = [v69 type];
+              v22 = [allKeys containsObject:type];
 
               if ((v22 & 1) == 0)
               {
                 v23 = objc_alloc_init(UASharedPasteboardTypeInfo);
                 if ([v69 conformsToProtocol:&unk_283A69178] && objc_msgSend(v69, "preferFileRep"))
                 {
-                  v24 = [v66 dataFile];
-                  v63 = [(UASharedPasteboardManager *)self serializeFileType:v69 intoInfo:v23 withFile:v24 intoDir:v59];
+                  dataFile = [changesCopy dataFile];
+                  v63 = [(UASharedPasteboardManager *)self serializeFileType:v69 intoInfo:v23 withFile:dataFile intoDir:dirCopy];
                 }
 
                 else
                 {
-                  v24 = [v66 dataFile];
-                  v63 = [(UASharedPasteboardManager *)self serializeType:v69 intoInfo:v23 withFile:v24];
+                  dataFile = [changesCopy dataFile];
+                  v63 = [(UASharedPasteboardManager *)self serializeType:v69 intoInfo:v23 withFile:dataFile];
                 }
 
-                v25 = [v66 dataFile];
-                [v25 synchronizeFile];
+                dataFile2 = [changesCopy dataFile];
+                [dataFile2 synchronizeFile];
 
-                v26 = [(UASharedPasteboardItemInfo *)v68 types];
-                v27 = [v26 mutableCopy];
+                types2 = [(UASharedPasteboardItemInfo *)v68 types];
+                v27 = [types2 mutableCopy];
 
                 v28 = [v27 count];
                 v29 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v28];
                 [(UASharedPasteboardTypeInfo *)v23 setIndex:v29];
 
-                v30 = [v69 type];
-                [v27 setObject:v23 forKey:v30];
+                type2 = [v69 type];
+                [v27 setObject:v23 forKey:type2];
 
                 v77 = 0u;
                 v78 = 0u;
                 v75 = 0u;
                 v76 = 0u;
-                v31 = [(UASharedPasteboardManager *)self typeAliases];
-                v32 = [(UASharedPasteboardTypeInfo *)v23 type];
-                v33 = [v31 objectForKeyedSubscript:v32];
+                typeAliases = [(UASharedPasteboardManager *)self typeAliases];
+                type3 = [(UASharedPasteboardTypeInfo *)v23 type];
+                v33 = [typeAliases objectForKeyedSubscript:type3];
 
                 v34 = [v33 countByEnumeratingWithState:&v75 objects:v87 count:16];
                 if (v34)
@@ -1249,11 +1249,11 @@ LABEL_12:
                       v38 = _uaGetLogForCategory(@"pasteboard-client");
                       if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
                       {
-                        v39 = [v69 type];
+                        type4 = [v69 type];
                         *buf = 138412546;
                         v84 = v37;
                         v85 = 2112;
-                        v86 = v39;
+                        v86 = type4;
                         _os_log_impl(&dword_226A4E000, v38, OS_LOG_TYPE_DEFAULT, "[Local Pasteboard] Adding alias: %@ for type: %@", buf, 0x16u);
                       }
 
@@ -1302,12 +1302,12 @@ LABEL_32:
         else
         {
           v68 = objc_alloc_init(UASharedPasteboardItemInfo);
-          v42 = [v66 dataFile];
-          v63 = [(UASharedPasteboardManager *)self serializeItem:v58 intoInfo:v68 withFile:v42 intoDir:v59];
+          dataFile3 = [changesCopy dataFile];
+          v63 = [(UASharedPasteboardManager *)self serializeItem:v58 intoInfo:v68 withFile:dataFile3 intoDir:dirCopy];
 
-          obj = [v66 items];
+          obj = [changesCopy items];
           v43 = [obj arrayByAddingObject:v68];
-          [v66 setItems:v43];
+          [changesCopy setItems:v43];
         }
 
         v44 = [v56 count];
@@ -1325,22 +1325,22 @@ LABEL_32:
       }
 
       v45 = v13;
-      v55[2](v55, 0);
+      handlerCopy[2](handlerCopy, 0);
     }
 
     else
     {
 LABEL_41:
-      v48 = [v66 dataFile];
-      if ([v48 offsetInFile] >> 31)
+      dataFile4 = [changesCopy dataFile];
+      if ([dataFile4 offsetInFile] >> 31)
       {
-        [v66 setDataSize:0];
+        [changesCopy setDataSize:0];
       }
 
       else
       {
-        v49 = [v66 dataFile];
-        [v66 setDataSize:{objc_msgSend(v49, "offsetInFile")}];
+        dataFile5 = [changesCopy dataFile];
+        [changesCopy setDataSize:{objc_msgSend(dataFile5, "offsetInFile")}];
       }
 
       v50 = _uaGetLogForCategory(@"pasteboard-client");
@@ -1356,33 +1356,33 @@ LABEL_41:
       block[2] = __86__UASharedPasteboardManager_pickupLocalChanges_iterNumber_cloneDir_completionHandler___block_invoke;
       block[3] = &unk_2785C4110;
       block[4] = self;
-      v71 = v66;
+      v71 = changesCopy;
       v74 = v54;
-      v72 = v59;
-      v73 = v55;
+      v72 = dirCopy;
+      v73 = handlerCopy;
       dispatch_async(v51, block);
     }
   }
 
   else
   {
-    objc_sync_exit(v9);
+    objc_sync_exit(currentGeneration);
 
     v46 = _uaGetLogForCategory(@"pasteboard-client");
     if (os_log_type_enabled(v46, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v84 = v66;
+      v84 = changesCopy;
       _os_log_impl(&dword_226A4E000, v46, OS_LOG_TYPE_DEFAULT, "[Local Pasteboard] No updates, sending pasteboard info to server: %@", buf, 0xCu);
     }
 
-    (v55[2])(v55, v66, 0);
-    v47 = [(UASharedPasteboardManager *)self localPasteboardWasFetched];
+    (handlerCopy[2])(handlerCopy, changesCopy, 0);
+    localPasteboardWasFetched = [(UASharedPasteboardManager *)self localPasteboardWasFetched];
 
-    if (v47)
+    if (localPasteboardWasFetched)
     {
-      v57 = [(UASharedPasteboardManager *)self localPasteboardWasFetched];
-      v57[2]();
+      localPasteboardWasFetched2 = [(UASharedPasteboardManager *)self localPasteboardWasFetched];
+      localPasteboardWasFetched2[2]();
     }
   }
 
@@ -1397,27 +1397,27 @@ void __86__UASharedPasteboardManager_pickupLocalChanges_iterNumber_cloneDir_comp
   objc_autoreleasePoolPop(v2);
 }
 
-- (id)serializeItem:(id)a3 intoInfo:(id)a4 withFile:(id)a5 intoDir:(id)a6
+- (id)serializeItem:(id)item intoInfo:(id)info withFile:(id)file intoDir:(id)dir
 {
   v53 = *MEMORY[0x277D85DE8];
-  v41 = a3;
-  v36 = a4;
-  v38 = a5;
-  v37 = a6;
+  itemCopy = item;
+  infoCopy = info;
+  fileCopy = file;
+  dirCopy = dir;
   v9 = _uaGetLogForCategory(@"pasteboard-client");
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
-    v10 = [v41 types];
+    types = [itemCopy types];
     *buf = 138412546;
-    v50 = v41;
+    v50 = itemCopy;
     v51 = 2112;
-    v52 = v10;
+    v52 = types;
     _os_log_impl(&dword_226A4E000, v9, OS_LOG_TYPE_INFO, "[Local Pasteboard] Serializing item: %@ with types: %@", buf, 0x16u);
   }
 
   v11 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v12 = [v41 types];
-  v13 = [v12 count] == 0;
+  types2 = [itemCopy types];
+  v13 = [types2 count] == 0;
 
   if (v13)
   {
@@ -1429,34 +1429,34 @@ void __86__UASharedPasteboardManager_pickupLocalChanges_iterNumber_cloneDir_comp
     v42 = 0;
     do
     {
-      v14 = [v41 types];
-      v43 = [v14 objectAtIndexedSubscript:v42];
+      types3 = [itemCopy types];
+      v43 = [types3 objectAtIndexedSubscript:v42];
 
       v15 = objc_alloc_init(UASharedPasteboardTypeInfo);
       if ([v43 conformsToProtocol:&unk_283A69178] && objc_msgSend(v43, "preferFileRep"))
       {
-        v39 = [(UASharedPasteboardManager *)self serializeFileType:v43 intoInfo:v15 withFile:v38 intoDir:v37];
+        v39 = [(UASharedPasteboardManager *)self serializeFileType:v43 intoInfo:v15 withFile:fileCopy intoDir:dirCopy];
       }
 
       else
       {
-        v39 = [(UASharedPasteboardManager *)self serializeType:v43 intoInfo:v15 withFile:v38];
+        v39 = [(UASharedPasteboardManager *)self serializeType:v43 intoInfo:v15 withFile:fileCopy];
       }
 
       v16 = [v11 count];
       v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v16];
       [(UASharedPasteboardTypeInfo *)v15 setIndex:v17];
 
-      v18 = [(UASharedPasteboardTypeInfo *)v15 type];
-      [v11 setObject:v15 forKey:v18];
+      type = [(UASharedPasteboardTypeInfo *)v15 type];
+      [v11 setObject:v15 forKey:type];
 
       v46 = 0u;
       v47 = 0u;
       v44 = 0u;
       v45 = 0u;
-      v19 = [(UASharedPasteboardManager *)self typeAliases];
-      v20 = [(UASharedPasteboardTypeInfo *)v15 type];
-      v21 = [v19 objectForKeyedSubscript:v20];
+      typeAliases = [(UASharedPasteboardManager *)self typeAliases];
+      type2 = [(UASharedPasteboardTypeInfo *)v15 type];
+      v21 = [typeAliases objectForKeyedSubscript:type2];
 
       v22 = [v21 countByEnumeratingWithState:&v44 objects:v48 count:16];
       if (v22)
@@ -1475,11 +1475,11 @@ void __86__UASharedPasteboardManager_pickupLocalChanges_iterNumber_cloneDir_comp
             v26 = _uaGetLogForCategory(@"pasteboard-client");
             if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
             {
-              v27 = [v43 type];
+              type3 = [v43 type];
               *buf = 138412546;
               v50 = v25;
               v51 = 2112;
-              v52 = v27;
+              v52 = type3;
               _os_log_impl(&dword_226A4E000, v26, OS_LOG_TYPE_DEFAULT, "[Local Pasteboard] Adding alias: %@ for type: %@", buf, 0x16u);
             }
 
@@ -1497,8 +1497,8 @@ void __86__UASharedPasteboardManager_pickupLocalChanges_iterNumber_cloneDir_comp
         while (v22);
       }
 
-      v30 = [v41 types];
-      v31 = [v30 count] > ++v42;
+      types4 = [itemCopy types];
+      v31 = [types4 count] > ++v42;
 
       v32 = v39;
       if (v39)
@@ -1515,21 +1515,21 @@ void __86__UASharedPasteboardManager_pickupLocalChanges_iterNumber_cloneDir_comp
     while (v33);
   }
 
-  [v38 synchronizeFile];
-  [v36 setTypes:v11];
+  [fileCopy synchronizeFile];
+  [infoCopy setTypes:v11];
 
   v34 = *MEMORY[0x277D85DE8];
 
   return v32;
 }
 
-- (id)serializeFileType:(id)a3 intoInfo:(id)a4 withFile:(id)a5 intoDir:(id)a6
+- (id)serializeFileType:(id)type intoInfo:(id)info withFile:(id)file intoDir:(id)dir
 {
   v48 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  typeCopy = type;
+  infoCopy = info;
+  fileCopy = file;
+  dirCopy = dir;
   v13 = dispatch_group_create();
   v38 = 0;
   v39 = &v38;
@@ -1537,26 +1537,26 @@ void __86__UASharedPasteboardManager_pickupLocalChanges_iterNumber_cloneDir_comp
   v41 = __Block_byref_object_copy__1;
   v42 = __Block_byref_object_dispose__1;
   v43 = 0;
-  [v10 setType:@"public.file-url"];
-  v14 = [v9 uuid];
-  [v10 setUuid:v14];
+  [infoCopy setType:@"public.file-url"];
+  uuid = [typeCopy uuid];
+  [infoCopy setUuid:uuid];
 
-  [v10 setPreferFileRep:1];
+  [infoCopy setPreferFileRep:1];
   if (objc_opt_respondsToSelector())
   {
-    v15 = [v9 getFileName];
-    [v10 setTypeHint:v15];
+    getFileName = [typeCopy getFileName];
+    [infoCopy setTypeHint:getFileName];
   }
 
   v16 = _uaGetLogForCategory(@"pasteboard-client");
   if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
   {
-    v17 = [v9 uuid];
-    v18 = [v9 type];
+    uuid2 = [typeCopy uuid];
+    type = [typeCopy type];
     *buf = 138412546;
-    v45 = v17;
+    v45 = uuid2;
     v46 = 2112;
-    v47 = v18;
+    v47 = type;
     _os_log_impl(&dword_226A4E000, v16, OS_LOG_TYPE_INFO, "[Local Pasteboard] Serializing type as file: %@-%@", buf, 0x16u);
   }
 
@@ -1564,7 +1564,7 @@ void __86__UASharedPasteboardManager_pickupLocalChanges_iterNumber_cloneDir_comp
   if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v45 = v12;
+    v45 = dirCopy;
     _os_log_impl(&dword_226A4E000, v19, OS_LOG_TYPE_INFO, "[Local Pasteboard] Clone Dir: %@", buf, 0xCu);
   }
 
@@ -1580,14 +1580,14 @@ void __86__UASharedPasteboardManager_pickupLocalChanges_iterNumber_cloneDir_comp
   v31[1] = 3221225472;
   v31[2] = __73__UASharedPasteboardManager_serializeFileType_intoInfo_withFile_intoDir___block_invoke;
   v31[3] = &unk_2785C4138;
-  v21 = v9;
+  v21 = typeCopy;
   v32 = v21;
   v37 = &v38;
-  v22 = v12;
+  v22 = dirCopy;
   v33 = v22;
-  v23 = v10;
+  v23 = infoCopy;
   v34 = v23;
-  v24 = v11;
+  v24 = fileCopy;
   v35 = v24;
   v25 = v13;
   v36 = v25;
@@ -1794,12 +1794,12 @@ LABEL_31:
   v49 = *MEMORY[0x277D85DE8];
 }
 
-- (id)serializeType:(id)a3 intoInfo:(id)a4 withFile:(id)a5
+- (id)serializeType:(id)type intoInfo:(id)info withFile:(id)file
 {
   v43 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  typeCopy = type;
+  infoCopy = info;
+  fileCopy = file;
   v11 = dispatch_group_create();
   v33 = 0;
   v34 = &v33;
@@ -1807,21 +1807,21 @@ LABEL_31:
   v36 = __Block_byref_object_copy__1;
   v37 = __Block_byref_object_dispose__1;
   v38 = 0;
-  v12 = [v8 type];
-  [v9 setType:v12];
+  type = [typeCopy type];
+  [infoCopy setType:type];
 
-  v13 = [v8 uuid];
-  [v9 setUuid:v13];
+  uuid = [typeCopy uuid];
+  [infoCopy setUuid:uuid];
 
   v14 = _uaGetLogForCategory(@"pasteboard-client");
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
-    v15 = [v8 uuid];
-    v16 = [v8 type];
+    uuid2 = [typeCopy uuid];
+    type2 = [typeCopy type];
     *buf = 138412546;
-    v40 = v15;
+    v40 = uuid2;
     v41 = 2112;
-    v42 = v16;
+    v42 = type2;
     _os_log_impl(&dword_226A4E000, v14, OS_LOG_TYPE_INFO, "[Local Pasteboard] Serializing type: %@-%@", buf, 0x16u);
   }
 
@@ -1838,12 +1838,12 @@ LABEL_31:
   v27[2] = __61__UASharedPasteboardManager_serializeType_intoInfo_withFile___block_invoke;
   v27[3] = &unk_2785C4188;
   v27[4] = self;
-  v18 = v8;
+  v18 = typeCopy;
   v28 = v18;
   v32 = &v33;
-  v19 = v9;
+  v19 = infoCopy;
   v29 = v19;
-  v20 = v10;
+  v20 = fileCopy;
   v30 = v20;
   v21 = v11;
   v31 = v21;
@@ -2304,19 +2304,19 @@ intptr_t __56__UASharedPasteboardManager_isRemotePasteboardAvailable__block_invo
   return result;
 }
 
-- (void)requestRemotePasteboardTypesForProcess:(int)a3 withCompletion:(id)a4
+- (void)requestRemotePasteboardTypesForProcess:(int)process withCompletion:(id)completion
 {
-  v6 = a4;
-  v7 = [(UASharedPasteboardManager *)self serverQ];
+  completionCopy = completion;
+  serverQ = [(UASharedPasteboardManager *)self serverQ];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __83__UASharedPasteboardManager_requestRemotePasteboardTypesForProcess_withCompletion___block_invoke;
   block[3] = &unk_2785C4228;
   block[4] = self;
-  v10 = v6;
-  v11 = a3;
-  v8 = v6;
-  dispatch_async(v7, block);
+  v10 = completionCopy;
+  processCopy = process;
+  v8 = completionCopy;
+  dispatch_async(serverQ, block);
 }
 
 void __83__UASharedPasteboardManager_requestRemotePasteboardTypesForProcess_withCompletion___block_invoke(uint64_t a1)
@@ -2538,19 +2538,19 @@ uint64_t __83__UASharedPasteboardManager_requestRemotePasteboardTypesForProcess_
   return v13;
 }
 
-- (void)requestRemotePasteboardDataForProcess:(int)a3 withCompletion:(id)a4
+- (void)requestRemotePasteboardDataForProcess:(int)process withCompletion:(id)completion
 {
-  v6 = a4;
-  v7 = [(UASharedPasteboardManager *)self serverQ];
+  completionCopy = completion;
+  serverQ = [(UASharedPasteboardManager *)self serverQ];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __82__UASharedPasteboardManager_requestRemotePasteboardDataForProcess_withCompletion___block_invoke;
   block[3] = &unk_2785C4228;
   block[4] = self;
-  v10 = v6;
-  v11 = a3;
-  v8 = v6;
-  dispatch_async(v7, block);
+  v10 = completionCopy;
+  processCopy = process;
+  v8 = completionCopy;
+  dispatch_async(serverQ, block);
 }
 
 void __82__UASharedPasteboardManager_requestRemotePasteboardDataForProcess_withCompletion___block_invoke(uint64_t a1)
@@ -2946,17 +2946,17 @@ void __62__UASharedPasteboardManager_requestPasteboardFetchReturnEarly__block_in
 
 - (void)doClearLocalPasteboardInfo
 {
-  v3 = [(UASharedPasteboardManager *)self connection];
-  v2 = [v3 remoteObjectProxy];
-  [v2 clearLocalPasteboardInformation];
+  connection = [(UASharedPasteboardManager *)self connection];
+  remoteObjectProxy = [connection remoteObjectProxy];
+  [remoteObjectProxy clearLocalPasteboardInformation];
 }
 
-- (void)fetchPasteboardStatus:(id)a3
+- (void)fetchPasteboardStatus:(id)status
 {
-  v4 = a3;
-  v6 = [(UASharedPasteboardManager *)self connection];
-  v5 = [v6 remoteObjectProxy];
-  [v5 fetchRemotePasteboardStatus:v4];
+  statusCopy = status;
+  connection = [(UASharedPasteboardManager *)self connection];
+  remoteObjectProxy = [connection remoteObjectProxy];
+  [remoteObjectProxy fetchRemotePasteboardStatus:statusCopy];
 }
 
 - (id)fetchRemoteName
@@ -2974,8 +2974,8 @@ void __62__UASharedPasteboardManager_requestPasteboardFetchReturnEarly__block_in
     _os_log_impl(&dword_226A4E000, v3, OS_LOG_TYPE_DEFAULT, "[Local Pasteboard] Requesting remote device name from server", buf, 2u);
   }
 
-  v4 = [(UASharedPasteboardManager *)self connection];
-  v5 = [v4 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_219];
+  connection = [(UASharedPasteboardManager *)self connection];
+  v5 = [connection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_219];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __44__UASharedPasteboardManager_fetchRemoteName__block_invoke_220;
@@ -3023,15 +3023,15 @@ void __44__UASharedPasteboardManager_fetchRemoteName__block_invoke_220(uint64_t 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)tellClientDebuggingEnabled:(BOOL)a3 logFileHandle:(id)a4
+- (void)tellClientDebuggingEnabled:(BOOL)enabled logFileHandle:(id)handle
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a4;
+  handleCopy = handle;
   v5 = _uaGetLogForCategory(@"pasteboard-client");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = handleCopy;
     _os_log_impl(&dword_226A4E000, v5, OS_LOG_TYPE_DEBUG, "Received debug update from server: %@", &v7, 0xCu);
   }
 

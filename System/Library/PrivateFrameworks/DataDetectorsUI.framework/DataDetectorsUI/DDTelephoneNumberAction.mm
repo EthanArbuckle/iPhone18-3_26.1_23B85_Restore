@@ -1,29 +1,29 @@
 @interface DDTelephoneNumberAction
-- (DDTelephoneNumberAction)initWithURL:(id)a3 result:(__DDResult *)a4 context:(id)a5;
+- (DDTelephoneNumberAction)initWithURL:(id)l result:(__DDResult *)result context:(id)context;
 - (id)compactTitle;
-- (id)contactAndLabelForPhoneNumber:(id *)a3;
-- (id)contactsMatchingPhoneNumber:(void *)a3 inContactStore:;
-- (id)labelToUseForEmail:(void *)a3 ofContact:;
-- (id)labelToUseForPhoneNumber:(void *)a3 ofContact:;
+- (id)contactAndLabelForPhoneNumber:(id *)number;
+- (id)contactsMatchingPhoneNumber:(void *)number inContactStore:;
+- (id)labelToUseForEmail:(void *)email ofContact:;
+- (id)labelToUseForPhoneNumber:(void *)number ofContact:;
 @end
 
 @implementation DDTelephoneNumberAction
 
-- (DDTelephoneNumberAction)initWithURL:(id)a3 result:(__DDResult *)a4 context:(id)a5
+- (DDTelephoneNumberAction)initWithURL:(id)l result:(__DDResult *)result context:(id)context
 {
-  v8 = a3;
-  v9 = a5;
+  lCopy = l;
+  contextCopy = context;
   v39.receiver = self;
   v39.super_class = DDTelephoneNumberAction;
-  v10 = [(DDAction *)&v39 initWithURL:v8 result:a4 context:v9];
+  v10 = [(DDAction *)&v39 initWithURL:lCopy result:result context:contextCopy];
   if (v10)
   {
-    if (v8)
+    if (lCopy)
     {
-      v11 = [(__CFString *)v8 scheme];
-      v12 = [v11 lowercaseString];
+      scheme = [(__CFString *)lCopy scheme];
+      lowercaseString = [scheme lowercaseString];
 
-      if (([v12 isEqualToString:@"sms"] & 1) != 0 || (objc_msgSend(v12, "isEqualToString:", @"messages") & 1) != 0 || (objc_msgSend(v12, "isEqualToString:", @"sip") & 1) != 0 || (objc_msgSend(v12, "isEqualToString:", @"tel") & 1) != 0 || (objc_msgSend(v12, "isEqualToString:", @"telephony") & 1) != 0 || objc_msgSend(v12, "isEqualToString:", @"telephonyprompt"))
+      if (([lowercaseString isEqualToString:@"sms"] & 1) != 0 || (objc_msgSend(lowercaseString, "isEqualToString:", @"messages") & 1) != 0 || (objc_msgSend(lowercaseString, "isEqualToString:", @"sip") & 1) != 0 || (objc_msgSend(lowercaseString, "isEqualToString:", @"tel") & 1) != 0 || (objc_msgSend(lowercaseString, "isEqualToString:", @"telephony") & 1) != 0 || objc_msgSend(lowercaseString, "isEqualToString:", @"telephonyprompt"))
       {
         url = v10->super._url;
         v37 = 0;
@@ -49,7 +49,7 @@
         v24 = v16;
       }
 
-      else if ([v12 isEqualToString:@"mailto"])
+      else if ([lowercaseString isEqualToString:@"mailto"])
       {
         v30 = dd_emailFromMailtoScheme(v10->super._url);
         v20 = v10->_phoneNumber;
@@ -58,15 +58,15 @@
 
       else
       {
-        v20 = [objc_alloc(MEMORY[0x277D6EED0]) initWithURL:v8];
-        v31 = [(NSString *)v20 handle];
-        v32 = [v31 value];
+        v20 = [objc_alloc(MEMORY[0x277D6EED0]) initWithURL:lCopy];
+        handle = [(NSString *)v20 handle];
+        value = [handle value];
         v33 = v10->_phoneNumber;
-        v10->_phoneNumber = v32;
+        v10->_phoneNumber = value;
 
         if (!v10->_phoneNumber)
         {
-          v34 = dd_phoneNumberFromTelScheme(v8);
+          v34 = dd_phoneNumberFromTelScheme(lCopy);
           v35 = v10->_phoneNumber;
           v10->_phoneNumber = v34;
         }
@@ -82,14 +82,14 @@
       goto LABEL_15;
     }
 
-    if (!a4)
+    if (!result)
     {
-      v27 = [v9 objectForKeyedSubscript:@"ContactValue"];
+      v27 = [contextCopy objectForKeyedSubscript:@"ContactValue"];
 
       if (v27)
       {
-        v28 = [v9 objectForKeyedSubscript:@"ContactValue"];
-        v12 = v10->_phoneNumber;
+        v28 = [contextCopy objectForKeyedSubscript:@"ContactValue"];
+        lowercaseString = v10->_phoneNumber;
         v10->_phoneNumber = v28;
 LABEL_15:
       }
@@ -128,7 +128,7 @@ LABEL_11:
     {
       v9.receiver = self;
       v9.super_class = DDTelephoneNumberAction;
-      v4 = [(DDAction *)&v9 compactTitle];
+      compactTitle = [(DDAction *)&v9 compactTitle];
       goto LABEL_4;
     }
 
@@ -136,19 +136,19 @@ LABEL_11:
     phoneNumber = self->_phoneNumber;
     if (!v8)
     {
-      v4 = TUFormattedPhoneNumber();
+      compactTitle = TUFormattedPhoneNumber();
       goto LABEL_4;
     }
 
 LABEL_3:
-    v4 = phoneNumber;
+    compactTitle = phoneNumber;
 LABEL_4:
-    v5 = v4;
+    dd_formattedPhoneNumber = compactTitle;
     goto LABEL_5;
   }
 
-  v5 = [(NSURL *)url dd_formattedPhoneNumber];
-  if (![v5 length])
+  dd_formattedPhoneNumber = [(NSURL *)url dd_formattedPhoneNumber];
+  if (![dd_formattedPhoneNumber length])
   {
 
     goto LABEL_11;
@@ -157,7 +157,7 @@ LABEL_4:
 LABEL_5:
   _Block_object_dispose(&v11, 8);
 
-  return v5;
+  return dd_formattedPhoneNumber;
 }
 
 void __39__DDTelephoneNumberAction_compactTitle__block_invoke(uint64_t a1)
@@ -184,7 +184,7 @@ void __39__DDTelephoneNumberAction_compactTitle__block_invoke(uint64_t a1)
   }
 }
 
-- (id)contactAndLabelForPhoneNumber:(id *)a3
+- (id)contactAndLabelForPhoneNumber:(id *)number
 {
   v34[3] = *MEMORY[0x277D85DE8];
   if ([MEMORY[0x277CBDAB8] authorizationStatusForEntityType:0] == 3)
@@ -266,7 +266,7 @@ LABEL_21:
     if (v8)
     {
 LABEL_6:
-      v9 = v8;
+      dd_formattedPhoneNumber = v8;
       v10 = DDMakeContactStore();
       if (v10)
       {
@@ -281,18 +281,18 @@ LABEL_22:
     {
       v22 = v21;
       v23 = [MEMORY[0x277CBEBC0] URLWithString:v21];
-      v24 = [v23 scheme];
-      v25 = [v24 lowercaseString];
-      v26 = [v25 isEqualToString:@"tel"];
+      scheme = [v23 scheme];
+      lowercaseString = [scheme lowercaseString];
+      v26 = [lowercaseString isEqualToString:@"tel"];
 
       if (v26)
       {
-        v9 = [(NSURL *)v23 dd_formattedPhoneNumber];
+        dd_formattedPhoneNumber = [(NSURL *)v23 dd_formattedPhoneNumber];
       }
 
       else
       {
-        v9 = 0;
+        dd_formattedPhoneNumber = 0;
       }
 
       CFRelease(v22);
@@ -302,7 +302,7 @@ LABEL_22:
       {
 LABEL_34:
         v29 = v10;
-        v30 = [(DDTelephoneNumberAction *)self contactsMatchingPhoneNumber:v9 inContactStore:v10];
+        v30 = [(DDTelephoneNumberAction *)self contactsMatchingPhoneNumber:dd_formattedPhoneNumber inContactStore:v10];
         if ([v30 count] != 1)
         {
           v11 = 0;
@@ -310,11 +310,11 @@ LABEL_34:
         }
 
         v11 = [v30 objectAtIndexedSubscript:0];
-        if (a3)
+        if (number)
         {
-          if ([v9 containsString:@"@"])
+          if ([dd_formattedPhoneNumber containsString:@"@"])
           {
-            v32 = [(DDTelephoneNumberAction *)self labelToUseForEmail:v9 ofContact:v11];
+            v32 = [(DDTelephoneNumberAction *)self labelToUseForEmail:dd_formattedPhoneNumber ofContact:v11];
             if (!v32)
             {
               goto LABEL_42;
@@ -323,9 +323,9 @@ LABEL_34:
             goto LABEL_40;
           }
 
-          if (v9)
+          if (dd_formattedPhoneNumber)
           {
-            v31 = [MEMORY[0x277CBDB70] phoneNumberWithStringValue:v9];
+            v31 = [MEMORY[0x277CBDB70] phoneNumberWithStringValue:dd_formattedPhoneNumber];
             if (!v31)
             {
 
@@ -341,7 +341,7 @@ LABEL_34:
             }
 
 LABEL_40:
-            *a3 = [MEMORY[0x277CBDB20] localizedStringForLabel:v32];
+            *number = [MEMORY[0x277CBDB20] localizedStringForLabel:v32];
           }
         }
 
@@ -354,7 +354,7 @@ LABEL_42:
 
     else
     {
-      v9 = 0;
+      dd_formattedPhoneNumber = 0;
       v10 = DDMakeContactStore();
       if (v10)
       {
@@ -381,16 +381,16 @@ LABEL_29:
   return v11;
 }
 
-- (id)contactsMatchingPhoneNumber:(void *)a3 inContactStore:
+- (id)contactsMatchingPhoneNumber:(void *)number inContactStore:
 {
   v21[4] = *MEMORY[0x277D85DE8];
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  numberCopy = number;
+  if (self)
   {
     isDeviceLocked = dd_isDeviceLocked();
-    a1 = 0;
-    if (v6)
+    self = 0;
+    if (numberCopy)
     {
       if ((isDeviceLocked & 1) == 0)
       {
@@ -418,12 +418,12 @@ LABEL_29:
             v21[3] = *MEMORY[0x277CBCFC0];
             v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:4];
 
-            a1 = [v6 unifiedContactsMatchingPredicate:v8 keysToFetch:v13 error:0];
+            self = [numberCopy unifiedContactsMatchingPredicate:v8 keysToFetch:v13 error:0];
           }
 
           else
           {
-            a1 = 0;
+            self = 0;
           }
 
           if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
@@ -435,7 +435,7 @@ LABEL_29:
 
         else
         {
-          a1 = 0;
+          self = 0;
         }
       }
     }
@@ -443,19 +443,19 @@ LABEL_29:
 
   v14 = *MEMORY[0x277D85DE8];
 
-  return a1;
+  return self;
 }
 
-- (id)labelToUseForPhoneNumber:(void *)a3 ofContact:
+- (id)labelToUseForPhoneNumber:(void *)number ofContact:
 {
   v15 = *MEMORY[0x277D85DE8];
   v5 = a2;
-  if (a1)
+  if (self)
   {
-    v6 = [a3 phoneNumbers];
+    phoneNumbers = [number phoneNumbers];
     OUTLINED_FUNCTION_0_4();
-    a1 = [v7 countByEnumeratingWithState:0 objects:? count:?];
-    if (a1)
+    self = [v7 countByEnumeratingWithState:0 objects:? count:?];
+    if (self)
     {
       v8 = MEMORY[0];
       while (2)
@@ -465,26 +465,26 @@ LABEL_29:
         {
           if (MEMORY[0] != v8)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(phoneNumbers);
           }
 
           v10 = *(8 * v9);
-          v11 = [v10 value];
-          v12 = [v11 isLikePhoneNumber:v5];
+          value = [v10 value];
+          v12 = [value isLikePhoneNumber:v5];
 
           if (v12)
           {
-            a1 = [v10 label];
+            self = [v10 label];
             goto LABEL_12;
           }
 
           v9 = v9 + 1;
         }
 
-        while (a1 != v9);
+        while (self != v9);
         OUTLINED_FUNCTION_0_4();
-        a1 = [v6 countByEnumeratingWithState:? objects:? count:?];
-        if (a1)
+        self = [phoneNumbers countByEnumeratingWithState:? objects:? count:?];
+        if (self)
         {
           continue;
         }
@@ -498,28 +498,28 @@ LABEL_12:
 
   v13 = *MEMORY[0x277D85DE8];
 
-  return a1;
+  return self;
 }
 
-- (id)labelToUseForEmail:(void *)a3 ofContact:
+- (id)labelToUseForEmail:(void *)email ofContact:
 {
   v19 = *MEMORY[0x277D85DE8];
   v5 = a2;
-  v6 = a3;
-  if (a1 && [v5 length])
+  emailCopy = email;
+  if (self && [v5 length])
   {
-    v7 = [v6 emailAddresses];
-    v8 = [v5 lowercaseString];
+    emailAddresses = [emailCopy emailAddresses];
+    lowercaseString = [v5 lowercaseString];
 
-    v9 = v7;
+    v9 = emailAddresses;
     OUTLINED_FUNCTION_0_4();
-    v11 = [v10 countByEnumeratingWithState:0 objects:? count:?];
-    if (v11)
+    label = [v10 countByEnumeratingWithState:0 objects:? count:?];
+    if (label)
     {
       v12 = MEMORY[0];
       while (2)
       {
-        for (i = 0; i != v11; i = i + 1)
+        for (i = 0; i != label; i = i + 1)
         {
           if (MEMORY[0] != v12)
           {
@@ -527,20 +527,20 @@ LABEL_12:
           }
 
           v14 = *(8 * i);
-          v15 = [v14 value];
-          v16 = [v15 lowercaseString];
+          value = [v14 value];
+          lowercaseString2 = [value lowercaseString];
 
-          if ([v16 length] && (objc_msgSend(v8, "isEqualToString:", v16) & 1) != 0)
+          if ([lowercaseString2 length] && (objc_msgSend(lowercaseString, "isEqualToString:", lowercaseString2) & 1) != 0)
           {
-            v11 = [v14 label];
+            label = [v14 label];
 
             goto LABEL_15;
           }
         }
 
         OUTLINED_FUNCTION_0_4();
-        v11 = [v9 countByEnumeratingWithState:? objects:? count:?];
-        if (v11)
+        label = [v9 countByEnumeratingWithState:? objects:? count:?];
+        if (label)
         {
           continue;
         }
@@ -554,13 +554,13 @@ LABEL_15:
 
   else
   {
-    v11 = 0;
-    v8 = v5;
+    label = 0;
+    lowercaseString = v5;
   }
 
   v17 = *MEMORY[0x277D85DE8];
 
-  return v11;
+  return label;
 }
 
 - (void)contactAndLabelForPhoneNumber:.cold.2()

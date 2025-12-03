@@ -4,7 +4,7 @@
 - (NSString)payloadID;
 - (_TtC18ActivityUIServices20ActivitySceneMetrics)metrics;
 - (_TtC18ActivityUIServices23ActivitySceneDescriptor)init;
-- (_TtC18ActivityUIServices23ActivitySceneDescriptor)initWithActivitySceneType:(int64_t)a3 activityDescriptor:(id)a4 metricsRequest:(id)a5 payloadID:(id)a6;
+- (_TtC18ActivityUIServices23ActivitySceneDescriptor)initWithActivitySceneType:(int64_t)type activityDescriptor:(id)descriptor metricsRequest:(id)request payloadID:(id)d;
 @end
 
 @implementation ActivitySceneDescriptor
@@ -69,7 +69,7 @@
   return v5;
 }
 
-- (_TtC18ActivityUIServices23ActivitySceneDescriptor)initWithActivitySceneType:(int64_t)a3 activityDescriptor:(id)a4 metricsRequest:(id)a5 payloadID:(id)a6
+- (_TtC18ActivityUIServices23ActivitySceneDescriptor)initWithActivitySceneType:(int64_t)type activityDescriptor:(id)descriptor metricsRequest:(id)request payloadID:(id)d
 {
   v10 = sub_18E65F4C0();
   v11 = *(v10 - 8);
@@ -78,9 +78,9 @@
   v14 = &v25 - ((v13 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_18E64CDEC(&qword_1ED764FA8, MEMORY[0x1E6959B98]);
   sub_18E65F670();
-  if (a6)
+  if (d)
   {
-    a6 = sub_18E65F900();
+    d = sub_18E65F900();
     v16 = v15;
   }
 
@@ -89,18 +89,18 @@
     v16 = 0;
   }
 
-  v17 = a5;
+  requestCopy = request;
   v18 = _s18ActivityUIServices0A16InstanceIdentityV10identifierSSvg_0();
   v19 = (self + OBJC_IVAR____TtC18ActivityUIServices23ActivitySceneDescriptor_activityIdentifier);
   *v19 = v18;
   v19[1] = v20;
-  *(self + OBJC_IVAR____TtC18ActivityUIServices23ActivitySceneDescriptor_activitySceneType) = a3;
+  *(self + OBJC_IVAR____TtC18ActivityUIServices23ActivitySceneDescriptor_activitySceneType) = type;
   sub_18E64CDEC(&unk_1EAC894E0, MEMORY[0x1E6959B98]);
   *(self + OBJC_IVAR____TtC18ActivityUIServices23ActivitySceneDescriptor_activityDescriptorData) = sub_18E65FD10();
   (*(v11 + 16))(self + OBJC_IVAR____TtC18ActivityUIServices23ActivitySceneDescriptor_activityDescriptor, v14, v10);
-  *(self + OBJC_IVAR____TtC18ActivityUIServices23ActivitySceneDescriptor_metricsRequest) = v17;
+  *(self + OBJC_IVAR____TtC18ActivityUIServices23ActivitySceneDescriptor_metricsRequest) = requestCopy;
   v21 = (self + OBJC_IVAR____TtC18ActivityUIServices23ActivitySceneDescriptor_payloadID);
-  *v21 = a6;
+  *v21 = d;
   v21[1] = v16;
   v22 = type metadata accessor for ActivitySceneDescriptor();
   v25.receiver = self;

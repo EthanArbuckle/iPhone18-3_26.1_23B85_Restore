@@ -1,82 +1,82 @@
 @interface SiriCoreNetworkingAnalytics
-+ (id)debugNetworkInterfacesFromSiriCoreConnectionMetrics:(id)a3;
-+ (id)debugSessionConnectionNetworkFromSiriCoreConnectionMetrics:(id)a3;
-+ (id)endpointFromDictionary:(id)a3;
-+ (id)endpointsFromArray:(id)a3;
-+ (id)establishmentResolutionFromArray:(id)a3;
-+ (id)handShakeProtocolFromArray:(id)a3;
-+ (id)networkInterfacesFromDictionary:(id)a3;
-+ (id)pathInterfacesFromArray:(id)a3;
-+ (id)pingInfoFromSiriCoreConnectionMetrics:(id)a3;
-+ (id)proxyConfigurationFromDictionary:(id)a3;
-+ (id)sessionConnectionFailedError:(id)a3 connectionMode:(id)a4 sessionType:(id)a5 sessionState:(id)a6 dormant:(BOOL)a7 analysisInfo:(id)a8;
-+ (id)sessionConnectionNetworkFromSiriCoreConnectionMetrics:(id)a3;
-+ (id)sessionConnectionQualityFromSiriCoreConnectionMetrics:(id)a3;
++ (id)debugNetworkInterfacesFromSiriCoreConnectionMetrics:(id)metrics;
++ (id)debugSessionConnectionNetworkFromSiriCoreConnectionMetrics:(id)metrics;
++ (id)endpointFromDictionary:(id)dictionary;
++ (id)endpointsFromArray:(id)array;
++ (id)establishmentResolutionFromArray:(id)array;
++ (id)handShakeProtocolFromArray:(id)array;
++ (id)networkInterfacesFromDictionary:(id)dictionary;
++ (id)pathInterfacesFromArray:(id)array;
++ (id)pingInfoFromSiriCoreConnectionMetrics:(id)metrics;
++ (id)proxyConfigurationFromDictionary:(id)dictionary;
++ (id)sessionConnectionFailedError:(id)error connectionMode:(id)mode sessionType:(id)type sessionState:(id)state dormant:(BOOL)dormant analysisInfo:(id)info;
++ (id)sessionConnectionNetworkFromSiriCoreConnectionMetrics:(id)metrics;
++ (id)sessionConnectionQualityFromSiriCoreConnectionMetrics:(id)metrics;
 + (id)sharedSiriCoreNetworkingAnalytics;
-+ (int)connectionMethodFromString:(id)a3;
-+ (int)connectionModeFromString:(id)a3;
-+ (int)connectionTypeFromString:(id)a3;
-+ (int)endpointTypeFromNumber:(id)a3;
-+ (int)handshakeProtocolFromString:(id)a3;
-+ (int)pathStatusFromNumber:(id)a3;
-+ (int)pathTypeFromNumber:(id)a3;
-+ (int)phyModeFromString:(id)a3;
-+ (int)providerFromString:(id)a3;
-+ (int)qualityFromString:(id)a3;
-+ (int)sessionStateFromString:(id)a3;
-+ (int)sessionTypeFromString:(id)a3;
-+ (int)tlsFromString:(id)a3;
++ (int)connectionMethodFromString:(id)string;
++ (int)connectionModeFromString:(id)string;
++ (int)connectionTypeFromString:(id)string;
++ (int)endpointTypeFromNumber:(id)number;
++ (int)handshakeProtocolFromString:(id)string;
++ (int)pathStatusFromNumber:(id)number;
++ (int)pathTypeFromNumber:(id)number;
++ (int)phyModeFromString:(id)string;
++ (int)providerFromString:(id)string;
++ (int)qualityFromString:(id)string;
++ (int)sessionStateFromString:(id)string;
++ (int)sessionTypeFromString:(id)string;
++ (int)tlsFromString:(id)string;
 - (BOOL)emitLogDebug;
 - (BOOL)isNetIdAvailable;
 - (SiriCoreNetworkingAnalytics)init;
 - (id)_init;
 - (id)orchestratorRequestId;
 - (unsigned)getSequenceNumber;
-- (void)_emitAllCachedMessagesFor:(id)a3;
+- (void)_emitAllCachedMessagesFor:(id)for;
 - (void)increaseSequenceNumber;
-- (void)logDebugNetworkConnectionStatePreparationSnapshotCaptured:(id)a3;
-- (void)logDebugNetworkConnectionStateReadySnapshotCaptured:(id)a3;
-- (void)logDebugSessionConnectionSnapshotCaptured:(id)a3;
-- (void)logNetworkConnectionStatePreparationSnapshotCaptured:(id)a3;
-- (void)logNetworkConnectionStateReadySnapshotCaptured:(id)a3;
-- (void)logPeerConnectionFailed:(id)a3;
+- (void)logDebugNetworkConnectionStatePreparationSnapshotCaptured:(id)captured;
+- (void)logDebugNetworkConnectionStateReadySnapshotCaptured:(id)captured;
+- (void)logDebugSessionConnectionSnapshotCaptured:(id)captured;
+- (void)logNetworkConnectionStatePreparationSnapshotCaptured:(id)captured;
+- (void)logNetworkConnectionStateReadySnapshotCaptured:(id)captured;
+- (void)logPeerConnectionFailed:(id)failed;
 - (void)logRequestLinkBetweenOrchestratorAndNetworkComponent;
-- (void)logSessionConnectionFailed:(id)a3;
-- (void)logSessionConnectionHttpHeaderCreated:(id)a3;
-- (void)logSessionConnectionSnapshotCaptured:(id)a3;
+- (void)logSessionConnectionFailed:(id)failed;
+- (void)logSessionConnectionHttpHeaderCreated:(id)created;
+- (void)logSessionConnectionSnapshotCaptured:(id)captured;
 - (void)reset;
 - (void)resetNetId;
 - (void)resetSequenceNumber;
-- (void)setConnectionProvider:(id)a3;
-- (void)setIsConnectionActive:(BOOL)a3;
-- (void)setNetId:(id)a3;
-- (void)setNetIdAvailable:(BOOL)a3;
-- (void)setNetworkConnectionId:(id)a3;
-- (void)setOrchestratorRequestId:(id)a3;
+- (void)setConnectionProvider:(id)provider;
+- (void)setIsConnectionActive:(BOOL)active;
+- (void)setNetId:(id)id;
+- (void)setNetIdAvailable:(BOOL)available;
+- (void)setNetworkConnectionId:(id)id;
+- (void)setOrchestratorRequestId:(id)id;
 @end
 
 @implementation SiriCoreNetworkingAnalytics
 
-+ (id)sessionConnectionFailedError:(id)a3 connectionMode:(id)a4 sessionType:(id)a5 sessionState:(id)a6 dormant:(BOOL)a7 analysisInfo:(id)a8
++ (id)sessionConnectionFailedError:(id)error connectionMode:(id)mode sessionType:(id)type sessionState:(id)state dormant:(BOOL)dormant analysisInfo:(id)info
 {
-  v40 = a7;
-  v13 = a3;
+  dormantCopy = dormant;
+  errorCopy = error;
   v14 = MEMORY[0x277D58C10];
-  v15 = a8;
-  v39 = a6;
-  v38 = a5;
-  v16 = a4;
+  infoCopy = info;
+  stateCopy = state;
+  typeCopy = type;
+  modeCopy = mode;
   v17 = objc_alloc_init(v14);
-  if (v13)
+  if (errorCopy)
   {
     v18 = objc_alloc_init(MEMORY[0x277D58BC8]);
-    v19 = [v13 domain];
-    [v18 setDomain:v19];
+    domain = [errorCopy domain];
+    [v18 setDomain:domain];
 
-    v20 = [v13 description];
+    v20 = [errorCopy description];
     [v18 setDescription:v20];
 
-    [v18 setErrorCode:{objc_msgSend(v13, "code")}];
+    [v18 setErrorCode:{objc_msgSend(errorCopy, "code")}];
   }
 
   else
@@ -84,18 +84,18 @@
     v18 = 0;
   }
 
-  v21 = [v13 userInfo];
+  userInfo = [errorCopy userInfo];
   v22 = *MEMORY[0x277CCA7E8];
-  v23 = [v21 objectForKey:*MEMORY[0x277CCA7E8]];
+  v23 = [userInfo objectForKey:*MEMORY[0x277CCA7E8]];
 
   if (v23)
   {
-    v24 = [v13 userInfo];
-    v25 = [v24 objectForKey:v22];
+    userInfo2 = [errorCopy userInfo];
+    v25 = [userInfo2 objectForKey:v22];
 
     v23 = objc_alloc_init(MEMORY[0x277D58BC8]);
-    v26 = [v25 domain];
-    [v23 setDomain:v26];
+    domain2 = [v25 domain];
+    [v23 setDomain:domain2];
 
     v27 = [v25 description];
     [v23 setDescription:v27];
@@ -103,94 +103,94 @@
     [v23 setErrorCode:{objc_msgSend(v25, "code")}];
   }
 
-  v28 = [v15 connectionType];
-  v29 = SiriCoreConnectionTechnologyGetDescription([v28 technology]);
+  connectionType = [infoCopy connectionType];
+  v29 = SiriCoreConnectionTechnologyGetDescription([connectionType technology]);
 
-  v30 = [v15 sendBufferSize];
-  [v30 doubleValue];
+  sendBufferSize = [infoCopy sendBufferSize];
+  [sendBufferSize doubleValue];
   v32 = v31;
 
-  [v17 setConnectionType:{objc_msgSend(a1, "connectionTypeFromString:", v29)}];
-  v33 = [a1 connectionModeFromString:v16];
+  [v17 setConnectionType:{objc_msgSend(self, "connectionTypeFromString:", v29)}];
+  v33 = [self connectionModeFromString:modeCopy];
 
   [v17 setConnectionMode:v33];
-  v34 = [a1 sessionTypeFromString:v38];
+  v34 = [self sessionTypeFromString:typeCopy];
 
   [v17 setSessionType:v34];
-  v35 = [a1 sessionStateFromString:v39];
+  v35 = [self sessionStateFromString:stateCopy];
 
   [v17 setNetworkSessionState:v35];
-  [v17 setIsWwanPreferred:{objc_msgSend(v15, "wwanPreferred")}];
-  [v17 setIsDormant:v40];
+  [v17 setIsWwanPreferred:{objc_msgSend(infoCopy, "wwanPreferred")}];
+  [v17 setIsDormant:dormantCopy];
   [v17 setSendBufferSize:v32];
-  v36 = [v15 policyId];
+  policyId = [infoCopy policyId];
 
-  [v17 setPolicyId:v36];
+  [v17 setPolicyId:policyId];
   [v17 setError:v18];
   [v17 setUnderlyingError:v23];
 
   return v17;
 }
 
-+ (int)sessionStateFromString:(id)a3
++ (int)sessionStateFromString:(id)string
 {
-  v3 = [a3 lowercaseString];
-  if ([v3 isEqualToString:@"initial"])
+  lowercaseString = [string lowercaseString];
+  if ([lowercaseString isEqualToString:@"initial"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"waiting"])
+  else if ([lowercaseString isEqualToString:@"waiting"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"retrywaiting"])
+  else if ([lowercaseString isEqualToString:@"retrywaiting"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"connectionstarted"])
+  else if ([lowercaseString isEqualToString:@"connectionstarted"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"connectionopened"])
+  else if ([lowercaseString isEqualToString:@"connectionopened"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"openeddormant"])
+  else if ([lowercaseString isEqualToString:@"openeddormant"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"authenticating"])
+  else if ([lowercaseString isEqualToString:@"authenticating"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"holding"])
+  else if ([lowercaseString isEqualToString:@"holding"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"createassistant"])
+  else if ([lowercaseString isEqualToString:@"createassistant"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"loadassistant"])
+  else if ([lowercaseString isEqualToString:@"loadassistant"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"destroyassistant"])
+  else if ([lowercaseString isEqualToString:@"destroyassistant"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"active"])
+  else if ([lowercaseString isEqualToString:@"active"])
   {
     v4 = 12;
   }
@@ -203,25 +203,25 @@
   return v4;
 }
 
-+ (int)sessionTypeFromString:(id)a3
++ (int)sessionTypeFromString:(id)string
 {
-  v3 = [a3 lowercaseString];
-  if ([v3 isEqualToString:@"local"])
+  lowercaseString = [string lowercaseString];
+  if ([lowercaseString isEqualToString:@"local"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"remote"])
+  else if ([lowercaseString isEqualToString:@"remote"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"remotelimited"])
+  else if ([lowercaseString isEqualToString:@"remotelimited"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"remotefull"])
+  else if ([lowercaseString isEqualToString:@"remotefull"])
   {
     v4 = 4;
   }
@@ -234,15 +234,15 @@
   return v4;
 }
 
-+ (int)connectionModeFromString:(id)a3
++ (int)connectionModeFromString:(id)string
 {
-  v3 = [a3 lowercaseString];
-  if ([v3 isEqualToString:@"assistant"])
+  lowercaseString = [string lowercaseString];
+  if ([lowercaseString isEqualToString:@"assistant"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"assistantanddictation"])
+  else if ([lowercaseString isEqualToString:@"assistantanddictation"])
   {
     v4 = 2;
   }
@@ -255,10 +255,10 @@
   return v4;
 }
 
-+ (int)providerFromString:(id)a3
++ (int)providerFromString:(id)string
 {
-  v3 = [a3 lowercaseString];
-  if ([v3 isEqualToString:@"adpeerconnectionprovider"])
+  lowercaseString = [string lowercaseString];
+  if ([lowercaseString isEqualToString:@"adpeerconnectionprovider"])
   {
     v4 = 1;
   }
@@ -267,8 +267,8 @@
   {
     v5 = objc_opt_class();
     v6 = NSStringFromClass(v5);
-    v7 = [v6 lowercaseString];
-    v8 = [v3 isEqualToString:v7];
+    lowercaseString2 = [v6 lowercaseString];
+    v8 = [lowercaseString isEqualToString:lowercaseString2];
 
     if (v8)
     {
@@ -279,8 +279,8 @@
     {
       v9 = objc_opt_class();
       v10 = NSStringFromClass(v9);
-      v11 = [v10 lowercaseString];
-      v12 = [v3 isEqualToString:v11];
+      lowercaseString3 = [v10 lowercaseString];
+      v12 = [lowercaseString isEqualToString:lowercaseString3];
 
       if (v12)
       {
@@ -297,9 +297,9 @@
   return v4;
 }
 
-+ (id)sessionConnectionQualityFromSiriCoreConnectionMetrics:(id)a3
++ (id)sessionConnectionQualityFromSiriCoreConnectionMetrics:(id)metrics
 {
-  v4 = a3;
+  metricsCopy = metrics;
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
@@ -316,17 +316,17 @@
   v10 = &v9;
   v11 = 0x2020000000;
   v12 = 0;
-  v5 = [v4 symptomsBasedNetworkQuality];
+  symptomsBasedNetworkQuality = [metricsCopy symptomsBasedNetworkQuality];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __112__SiriCoreNetworkingAnalytics_SessionConnectionSnapshot__sessionConnectionQualityFromSiriCoreConnectionMetrics___block_invoke;
   v8[3] = &unk_279BD5C68;
   v8[7] = &v9;
-  v8[8] = a1;
+  v8[8] = self;
   v8[4] = &v21;
   v8[5] = &v17;
   v8[6] = &v13;
-  [v5 enumerateKeysAndObjectsUsingBlock:v8];
+  [symptomsBasedNetworkQuality enumerateKeysAndObjectsUsingBlock:v8];
 
   v6 = objc_alloc_init(MEMORY[0x277D58BB0]);
   [v6 setSymptomsCellularHistorical:*(v18 + 6)];
@@ -374,63 +374,63 @@ void __112__SiriCoreNetworkingAnalytics_SessionConnectionSnapshot__sessionConnec
 LABEL_10:
 }
 
-+ (int)qualityFromString:(id)a3
++ (int)qualityFromString:(id)string
 {
-  v3 = [a3 lowercaseString];
-  if ([v3 isEqualToString:@"bad"])
+  lowercaseString = [string lowercaseString];
+  if ([lowercaseString isEqualToString:@"bad"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"good"])
+  else if ([lowercaseString isEqualToString:@"good"])
   {
     v4 = 2;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"unavailable"];
+    v4 = [lowercaseString isEqualToString:@"unavailable"];
   }
 
   return v4;
 }
 
-+ (id)pingInfoFromSiriCoreConnectionMetrics:(id)a3
++ (id)pingInfoFromSiriCoreConnectionMetrics:(id)metrics
 {
   v3 = MEMORY[0x277D58BA8];
-  v4 = a3;
+  metricsCopy = metrics;
   v5 = objc_alloc_init(v3);
-  v6 = [v4 pingCount];
-  [v6 doubleValue];
+  pingCount = [metricsCopy pingCount];
+  [pingCount doubleValue];
   [v5 setPingCount:v7];
 
-  v8 = [v4 meanPing];
-  [v8 doubleValue];
+  meanPing = [metricsCopy meanPing];
+  [meanPing doubleValue];
   [v5 setMeanPingInMs:v9 * 1000.0];
 
-  v10 = [v4 unacknowledgedPingCount];
+  unacknowledgedPingCount = [metricsCopy unacknowledgedPingCount];
 
-  [v10 doubleValue];
+  [unacknowledgedPingCount doubleValue];
   [v5 setUnacknowledgedPingCount:v11];
 
   return v5;
 }
 
-+ (id)debugNetworkInterfacesFromSiriCoreConnectionMetrics:(id)a3
++ (id)debugNetworkInterfacesFromSiriCoreConnectionMetrics:(id)metrics
 {
-  v4 = a3;
+  metricsCopy = metrics;
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v6 = [v4 tcpInfoMetricsByInterfaceName];
+  tcpInfoMetricsByInterfaceName = [metricsCopy tcpInfoMetricsByInterfaceName];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __110__SiriCoreNetworkingAnalytics_SessionConnectionSnapshot__debugNetworkInterfacesFromSiriCoreConnectionMetrics___block_invoke;
   v12[3] = &unk_279BD5C40;
-  v13 = v4;
-  v15 = a1;
+  v13 = metricsCopy;
+  selfCopy = self;
   v7 = v5;
   v14 = v7;
-  v8 = v4;
-  [v6 enumerateKeysAndObjectsUsingBlock:v12];
+  v8 = metricsCopy;
+  [tcpInfoMetricsByInterfaceName enumerateKeysAndObjectsUsingBlock:v12];
 
   v9 = v14;
   v10 = v7;
@@ -554,74 +554,74 @@ void __110__SiriCoreNetworkingAnalytics_SessionConnectionSnapshot__debugNetworkI
   }
 }
 
-+ (id)debugSessionConnectionNetworkFromSiriCoreConnectionMetrics:(id)a3
++ (id)debugSessionConnectionNetworkFromSiriCoreConnectionMetrics:(id)metrics
 {
   v4 = MEMORY[0x277D58BA0];
-  v5 = a3;
+  metricsCopy = metrics;
   v6 = objc_alloc_init(v4);
-  v7 = [v5 wifiPhyMode];
-  [v6 setWiFiPhyMode:{objc_msgSend(a1, "phyModeFromString:", v7)}];
+  wifiPhyMode = [metricsCopy wifiPhyMode];
+  [v6 setWiFiPhyMode:{objc_msgSend(self, "phyModeFromString:", wifiPhyMode)}];
 
-  v8 = [v5 signalStrengthBars];
-  [v8 doubleValue];
+  signalStrengthBars = [metricsCopy signalStrengthBars];
+  [signalStrengthBars doubleValue];
   [v6 setSignalStrengthBars:?];
 
-  v9 = [v5 timeUntilOpen];
-  [v9 doubleValue];
+  timeUntilOpen = [metricsCopy timeUntilOpen];
+  [timeUntilOpen doubleValue];
   [v6 setOpenTimeInMs:v10 * 1000.0];
 
-  v11 = [v5 connectedSubflowCount];
+  connectedSubflowCount = [metricsCopy connectedSubflowCount];
 
-  [v11 doubleValue];
+  [connectedSubflowCount doubleValue];
   [v6 setConnectedSubflowCount:v12];
 
   return v6;
 }
 
-+ (int)phyModeFromString:(id)a3
++ (int)phyModeFromString:(id)string
 {
-  v3 = [a3 lowercaseString];
-  if ([v3 isEqualToString:@"802.11a"])
+  lowercaseString = [string lowercaseString];
+  if ([lowercaseString isEqualToString:@"802.11a"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"802.11b"])
+  else if ([lowercaseString isEqualToString:@"802.11b"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"802.11g"])
+  else if ([lowercaseString isEqualToString:@"802.11g"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"802.11n"])
+  else if ([lowercaseString isEqualToString:@"802.11n"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"802.11ac"])
+  else if ([lowercaseString isEqualToString:@"802.11ac"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"802.11ax"])
+  else if ([lowercaseString isEqualToString:@"802.11ax"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"802.11aj"])
+  else if ([lowercaseString isEqualToString:@"802.11aj"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"802.11ah"])
+  else if ([lowercaseString isEqualToString:@"802.11ah"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"802.11ad"])
+  else if ([lowercaseString isEqualToString:@"802.11ad"])
   {
     v4 = 9;
   }
@@ -634,16 +634,16 @@ void __110__SiriCoreNetworkingAnalytics_SessionConnectionSnapshot__debugNetworkI
   return v4;
 }
 
-+ (id)sessionConnectionNetworkFromSiriCoreConnectionMetrics:(id)a3
++ (id)sessionConnectionNetworkFromSiriCoreConnectionMetrics:(id)metrics
 {
   v4 = MEMORY[0x277D58C20];
-  v5 = a3;
+  metricsCopy = metrics;
   v6 = objc_alloc_init(v4);
-  v7 = [v5 carrierName];
-  v8 = v7;
-  if (v7)
+  carrierName = [metricsCopy carrierName];
+  v8 = carrierName;
+  if (carrierName)
   {
-    v9 = v7;
+    v9 = carrierName;
   }
 
   else
@@ -653,14 +653,14 @@ void __110__SiriCoreNetworkingAnalytics_SessionConnectionSnapshot__debugNetworkI
 
   [v6 setCarrierName:v9];
 
-  v10 = [v5 connectionMethod];
-  [v6 setConnectionMethod:{objc_msgSend(a1, "connectionMethodFromString:", v10)}];
+  connectionMethod = [metricsCopy connectionMethod];
+  [v6 setConnectionMethod:{objc_msgSend(self, "connectionMethodFromString:", connectionMethod)}];
 
-  v11 = [v5 primarySubflowInterfaceName];
-  v12 = v11;
-  if (v11)
+  primarySubflowInterfaceName = [metricsCopy primarySubflowInterfaceName];
+  v12 = primarySubflowInterfaceName;
+  if (primarySubflowInterfaceName)
   {
-    v13 = v11;
+    v13 = primarySubflowInterfaceName;
   }
 
   else
@@ -670,42 +670,42 @@ void __110__SiriCoreNetworkingAnalytics_SessionConnectionSnapshot__debugNetworkI
 
   [v6 setPrimarySubflowInterfaceName:v13];
 
-  v14 = [v5 isCaptive];
-  [v6 setIsCaptive:{objc_msgSend(v14, "BOOLValue")}];
+  isCaptive = [metricsCopy isCaptive];
+  [v6 setIsCaptive:{objc_msgSend(isCaptive, "BOOLValue")}];
 
-  v15 = [v5 rssi];
-  [v15 doubleValue];
+  rssi = [metricsCopy rssi];
+  [rssi doubleValue];
   [v6 setRssi:?];
 
-  v16 = [v5 snr];
+  v16 = [metricsCopy snr];
   [v16 doubleValue];
   [v6 setSnr:?];
 
-  v17 = [v5 cca];
+  v17 = [metricsCopy cca];
   [v17 doubleValue];
   [v6 setClearChannelAssessmentScore:?];
 
-  v18 = [v5 attemptCount];
-  [v18 doubleValue];
+  attemptCount = [metricsCopy attemptCount];
+  [attemptCount doubleValue];
   [v6 setAttempCount:v19];
 
-  v20 = [v5 timeUntilFirstByteRead];
-  [v20 doubleValue];
+  timeUntilFirstByteRead = [metricsCopy timeUntilFirstByteRead];
+  [timeUntilFirstByteRead doubleValue];
   [v6 setFirstByteTime:(v21 * 1000.0)];
 
-  v22 = [v5 connectionStartTimeToDNSResolutionTimeMsec];
-  [v22 doubleValue];
+  connectionStartTimeToDNSResolutionTimeMsec = [metricsCopy connectionStartTimeToDNSResolutionTimeMsec];
+  [connectionStartTimeToDNSResolutionTimeMsec doubleValue];
   [v6 setStartToDNSResolution:v23];
 
-  v24 = [v5 dnsResolutionTime];
-  [v24 doubleValue];
+  dnsResolutionTime = [metricsCopy dnsResolutionTime];
+  [dnsResolutionTime doubleValue];
   [v6 setDnsResolutionTime:v25];
 
-  v26 = [v5 tlsVersion];
-  v27 = v26;
-  if (v26)
+  tlsVersion = [metricsCopy tlsVersion];
+  v27 = tlsVersion;
+  if (tlsVersion)
   {
-    v28 = v26;
+    v28 = tlsVersion;
   }
 
   else
@@ -713,41 +713,41 @@ void __110__SiriCoreNetworkingAnalytics_SessionConnectionSnapshot__debugNetworkI
     v28 = &stru_28782DDB0;
   }
 
-  [v6 setTlsVersion:{objc_msgSend(a1, "tlsFromString:", v28)}];
+  [v6 setTlsVersion:{objc_msgSend(self, "tlsFromString:", v28)}];
 
-  v29 = [v5 tlsHandshakeTimeMsec];
-  [v29 doubleValue];
+  tlsHandshakeTimeMsec = [metricsCopy tlsHandshakeTimeMsec];
+  [tlsHandshakeTimeMsec doubleValue];
   [v6 setTlsHandshakeTime:v30];
 
-  v31 = [v5 connectionEstablishmentTimeMsec];
-  [v31 doubleValue];
+  connectionEstablishmentTimeMsec = [metricsCopy connectionEstablishmentTimeMsec];
+  [connectionEstablishmentTimeMsec doubleValue];
   [v6 setConnectionEstablishmentTime:v32];
 
-  v33 = [v5 connectionStartTimeToConnectionEstablishmentTimeMsec];
-  [v33 doubleValue];
+  connectionStartTimeToConnectionEstablishmentTimeMsec = [metricsCopy connectionStartTimeToConnectionEstablishmentTimeMsec];
+  [connectionStartTimeToConnectionEstablishmentTimeMsec doubleValue];
   [v6 setConnectionStartToEstablishmentTime:v34];
 
-  v35 = [v5 connectionStartTimeToTLSHandshakeTimeMsec];
+  connectionStartTimeToTLSHandshakeTimeMsec = [metricsCopy connectionStartTimeToTLSHandshakeTimeMsec];
 
-  [v35 doubleValue];
+  [connectionStartTimeToTLSHandshakeTimeMsec doubleValue];
   [v6 setConnectionStartToTLSHandshake:v36];
 
   return v6;
 }
 
-+ (id)networkInterfacesFromDictionary:(id)a3
++ (id)networkInterfacesFromDictionary:(id)dictionary
 {
   v4 = MEMORY[0x277CBEB18];
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v6 = objc_alloc_init(v4);
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __90__SiriCoreNetworkingAnalytics_SessionConnectionSnapshot__networkInterfacesFromDictionary___block_invoke;
   v9[3] = &unk_279BD5BF0;
-  v11 = a1;
+  selfCopy = self;
   v7 = v6;
   v10 = v7;
-  [v5 enumerateKeysAndObjectsUsingBlock:v9];
+  [dictionaryCopy enumerateKeysAndObjectsUsingBlock:v9];
 
   return v7;
 }
@@ -779,115 +779,115 @@ void __90__SiriCoreNetworkingAnalytics_SessionConnectionSnapshot__networkInterfa
   }
 }
 
-+ (int)connectionTypeFromString:(id)a3
++ (int)connectionTypeFromString:(id)string
 {
-  v3 = [a3 lowercaseString];
-  if ([v3 containsString:@"wi-fi"])
+  lowercaseString = [string lowercaseString];
+  if ([lowercaseString containsString:@"wi-fi"])
   {
     v4 = 1;
   }
 
-  else if ([v3 containsString:@"wwan"])
+  else if ([lowercaseString containsString:@"wwan"])
   {
     v4 = 2;
   }
 
-  else if ([v3 containsString:@"utran"])
+  else if ([lowercaseString containsString:@"utran"])
   {
     v4 = 3;
   }
 
-  else if ([v3 containsString:@"2g cdma1x"])
+  else if ([lowercaseString containsString:@"2g cdma1x"])
   {
     v4 = 4;
   }
 
-  else if ([v3 containsString:@"lte"])
+  else if ([lowercaseString containsString:@"lte"])
   {
     v4 = 5;
   }
 
-  else if ([v3 containsString:@"2g gprs"])
+  else if ([lowercaseString containsString:@"2g gprs"])
   {
     v4 = 6;
   }
 
-  else if ([v3 containsString:@"2g edge"])
+  else if ([lowercaseString containsString:@"2g edge"])
   {
     v4 = 7;
   }
 
-  else if ([v3 containsString:@"3g wcdma"])
+  else if ([lowercaseString containsString:@"3g wcdma"])
   {
     v4 = 8;
   }
 
-  else if ([v3 containsString:@"3g hsdpa"])
+  else if ([lowercaseString containsString:@"3g hsdpa"])
   {
     v4 = 9;
   }
 
-  else if ([v3 containsString:@"3g evdorev0"])
+  else if ([lowercaseString containsString:@"3g evdorev0"])
   {
     v4 = 10;
   }
 
-  else if ([v3 containsString:@"3g evdoreva"])
+  else if ([lowercaseString containsString:@"3g evdoreva"])
   {
     v4 = 11;
   }
 
-  else if ([v3 containsString:@"cdma evdorevb"])
+  else if ([lowercaseString containsString:@"cdma evdorevb"])
   {
     v4 = 12;
   }
 
-  else if ([v3 containsString:@"hrpd"])
+  else if ([lowercaseString containsString:@"hrpd"])
   {
     v4 = 13;
   }
 
-  else if ([v3 isEqualToString:@"mptcp"])
+  else if ([lowercaseString isEqualToString:@"mptcp"])
   {
     v4 = 14;
   }
 
-  else if ([v3 containsString:@"lednelly"])
+  else if ([lowercaseString containsString:@"lednelly"])
   {
     v4 = 15;
   }
 
-  else if ([v3 containsString:@"ids"])
+  else if ([lowercaseString containsString:@"ids"])
   {
     v4 = 16;
   }
 
-  else if ([v3 containsString:@"pop"])
+  else if ([lowercaseString containsString:@"pop"])
   {
     v4 = 17;
   }
 
-  else if ([v3 containsString:@"florence"])
+  else if ([lowercaseString containsString:@"florence"])
   {
     v4 = 18;
   }
 
-  else if ([v3 containsString:@"local"])
+  else if ([lowercaseString containsString:@"local"])
   {
     v4 = 19;
   }
 
-  else if ([v3 isEqualToString:@"nwmptcp"])
+  else if ([lowercaseString isEqualToString:@"nwmptcp"])
   {
     v4 = 20;
   }
 
-  else if ([v3 isEqualToString:@"5g nrnsa"])
+  else if ([lowercaseString isEqualToString:@"5g nrnsa"])
   {
     v4 = 21;
   }
 
-  else if ([v3 isEqualToString:@"5g nr"])
+  else if ([lowercaseString isEqualToString:@"5g nr"])
   {
     v4 = 22;
   }
@@ -900,40 +900,40 @@ void __90__SiriCoreNetworkingAnalytics_SessionConnectionSnapshot__networkInterfa
   return v4;
 }
 
-+ (int)connectionMethodFromString:(id)a3
++ (int)connectionMethodFromString:(id)string
 {
-  v3 = [a3 lowercaseString];
-  if ([v3 containsString:@"peer"])
+  lowercaseString = [string lowercaseString];
+  if ([lowercaseString containsString:@"peer"])
   {
     v4 = 1;
   }
 
-  else if ([v3 containsString:@"tuscany"])
+  else if ([lowercaseString containsString:@"tuscany"])
   {
     v4 = 2;
   }
 
-  else if ([v3 containsString:@"florence"])
+  else if ([lowercaseString containsString:@"florence"])
   {
     v4 = 3;
   }
 
-  else if ([v3 containsString:@"mptcp_policybanned"])
+  else if ([lowercaseString containsString:@"mptcp_policybanned"])
   {
     v4 = 4;
   }
 
-  else if ([v3 containsString:@"tcp_policybanned"])
+  else if ([lowercaseString containsString:@"tcp_policybanned"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"mptcp"])
+  else if ([lowercaseString isEqualToString:@"mptcp"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"tcp"])
+  else if ([lowercaseString isEqualToString:@"tcp"])
   {
     v4 = 7;
   }
@@ -946,52 +946,52 @@ void __90__SiriCoreNetworkingAnalytics_SessionConnectionSnapshot__networkInterfa
   return v4;
 }
 
-+ (int)tlsFromString:(id)a3
++ (int)tlsFromString:(id)string
 {
-  v3 = [a3 lowercaseString];
-  if ([v3 isEqualToString:@"tls14"])
+  lowercaseString = [string lowercaseString];
+  if ([lowercaseString isEqualToString:@"tls14"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"tls13"])
+  else if ([lowercaseString isEqualToString:@"tls13"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"tls12"])
+  else if ([lowercaseString isEqualToString:@"tls12"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"tls11"])
+  else if ([lowercaseString isEqualToString:@"tls11"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"tls10"])
+  else if ([lowercaseString isEqualToString:@"tls10"])
   {
     v4 = 2;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"ssl30"];
+    v4 = [lowercaseString isEqualToString:@"ssl30"];
   }
 
   return v4;
 }
 
-+ (id)handShakeProtocolFromArray:(id)a3
++ (id)handShakeProtocolFromArray:(id)array
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  arrayCopy = array;
   v23 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  obj = v4;
+  obj = arrayCopy;
   v5 = [obj countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v5)
   {
@@ -1024,7 +1024,7 @@ void __90__SiriCoreNetworkingAnalytics_SessionConnectionSnapshot__networkInterfa
             v13 = &stru_28782DDB0;
           }
 
-          [v11 setProtocol:{objc_msgSend(a1, "handshakeProtocolFromString:", v13)}];
+          [v11 setProtocol:{objc_msgSend(self, "handshakeProtocolFromString:", v13)}];
           if (v12)
           {
           }
@@ -1070,20 +1070,20 @@ void __90__SiriCoreNetworkingAnalytics_SessionConnectionSnapshot__networkInterfa
   return v23;
 }
 
-+ (int)handshakeProtocolFromString:(id)a3
++ (int)handshakeProtocolFromString:(id)string
 {
-  v3 = [a3 lowercaseString];
-  if ([v3 containsString:@"tcp"])
+  lowercaseString = [string lowercaseString];
+  if ([lowercaseString containsString:@"tcp"])
   {
     v4 = 1;
   }
 
-  else if ([v3 containsString:@"tls"])
+  else if ([lowercaseString containsString:@"tls"])
   {
     v4 = 2;
   }
 
-  else if ([v3 containsString:@"http"])
+  else if ([lowercaseString containsString:@"http"])
   {
     v4 = 3;
   }
@@ -1096,14 +1096,14 @@ void __90__SiriCoreNetworkingAnalytics_SessionConnectionSnapshot__networkInterfa
   return v4;
 }
 
-+ (id)proxyConfigurationFromDictionary:(id)a3
++ (id)proxyConfigurationFromDictionary:(id)dictionary
 {
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v4 = objc_alloc_init(MEMORY[0x277D58C08]);
-  v5 = [v3 objectForKey:@"proxyConfigured"];
+  v5 = [dictionaryCopy objectForKey:@"proxyConfigured"];
   if (v5)
   {
-    v6 = [v3 objectForKey:@"proxyConfigured"];
+    v6 = [dictionaryCopy objectForKey:@"proxyConfigured"];
     [v4 setIsProxyConfigured:{objc_msgSend(v6, "BOOLValue")}];
   }
 
@@ -1112,10 +1112,10 @@ void __90__SiriCoreNetworkingAnalytics_SessionConnectionSnapshot__networkInterfa
     [v4 setIsProxyConfigured:0];
   }
 
-  v7 = [v3 objectForKey:@"usingConfiguredProxy"];
+  v7 = [dictionaryCopy objectForKey:@"usingConfiguredProxy"];
   if (v7)
   {
-    v8 = [v3 objectForKey:@"usingConfiguredProxy"];
+    v8 = [dictionaryCopy objectForKey:@"usingConfiguredProxy"];
     [v4 setUsingConfiguredProxy:{objc_msgSend(v8, "BOOLValue")}];
   }
 
@@ -1127,16 +1127,16 @@ void __90__SiriCoreNetworkingAnalytics_SessionConnectionSnapshot__networkInterfa
   return v4;
 }
 
-+ (id)establishmentResolutionFromArray:(id)a3
++ (id)establishmentResolutionFromArray:(id)array
 {
   v38 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  arrayCopy = array;
   v30 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  obj = v5;
+  obj = arrayCopy;
   v6 = [obj countByEnumeratingWithState:&v33 objects:v37 count:16];
   if (v6)
   {
@@ -1195,7 +1195,7 @@ void __90__SiriCoreNetworkingAnalytics_SessionConnectionSnapshot__networkInterfa
             v20 = &unk_287838270;
           }
 
-          v21 = [a1 endpointFromDictionary:v20];
+          v21 = [self endpointFromDictionary:v20];
           [v12 setSuccessfulEndpoint:v21];
 
           if (v19)
@@ -1214,7 +1214,7 @@ void __90__SiriCoreNetworkingAnalytics_SessionConnectionSnapshot__networkInterfa
             v23 = &unk_287838270;
           }
 
-          v24 = [a1 endpointFromDictionary:v23];
+          v24 = [self endpointFromDictionary:v23];
           [v12 setPreferredEndpoint:v24];
 
           if (v22)
@@ -1249,25 +1249,25 @@ void __90__SiriCoreNetworkingAnalytics_SessionConnectionSnapshot__networkInterfa
   return v30;
 }
 
-+ (int)pathStatusFromNumber:(id)a3
++ (int)pathStatusFromNumber:(id)number
 {
-  v3 = a3;
-  if ([v3 isEqualToNumber:&unk_287838270])
+  numberCopy = number;
+  if ([numberCopy isEqualToNumber:&unk_287838270])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToNumber:&unk_287838288])
+  else if ([numberCopy isEqualToNumber:&unk_287838288])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToNumber:&unk_2878382A0])
+  else if ([numberCopy isEqualToNumber:&unk_2878382A0])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToNumber:&unk_2878382B8])
+  else if ([numberCopy isEqualToNumber:&unk_2878382B8])
   {
     v4 = 4;
   }
@@ -1280,16 +1280,16 @@ void __90__SiriCoreNetworkingAnalytics_SessionConnectionSnapshot__networkInterfa
   return v4;
 }
 
-+ (id)pathInterfacesFromArray:(id)a3
++ (id)pathInterfacesFromArray:(id)array
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  arrayCopy = array;
   v22 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  obj = v4;
+  obj = arrayCopy;
   v5 = [obj countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v5)
   {
@@ -1322,7 +1322,7 @@ void __90__SiriCoreNetworkingAnalytics_SessionConnectionSnapshot__networkInterfa
             v13 = &unk_287838270;
           }
 
-          [v11 setType:{objc_msgSend(a1, "pathTypeFromNumber:", v13)}];
+          [v11 setType:{objc_msgSend(self, "pathTypeFromNumber:", v13)}];
           if (v12)
           {
           }
@@ -1367,30 +1367,30 @@ void __90__SiriCoreNetworkingAnalytics_SessionConnectionSnapshot__networkInterfa
   return v22;
 }
 
-+ (int)pathTypeFromNumber:(id)a3
++ (int)pathTypeFromNumber:(id)number
 {
-  v3 = a3;
-  if ([v3 isEqualToNumber:&unk_287838270])
+  numberCopy = number;
+  if ([numberCopy isEqualToNumber:&unk_287838270])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToNumber:&unk_287838288])
+  else if ([numberCopy isEqualToNumber:&unk_287838288])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToNumber:&unk_2878382A0])
+  else if ([numberCopy isEqualToNumber:&unk_2878382A0])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToNumber:&unk_2878382B8])
+  else if ([numberCopy isEqualToNumber:&unk_2878382B8])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToNumber:&unk_2878382D0])
+  else if ([numberCopy isEqualToNumber:&unk_2878382D0])
   {
     v4 = 4;
   }
@@ -1403,16 +1403,16 @@ void __90__SiriCoreNetworkingAnalytics_SessionConnectionSnapshot__networkInterfa
   return v4;
 }
 
-+ (id)endpointsFromArray:(id)a3
++ (id)endpointsFromArray:(id)array
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  arrayCopy = array;
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = v4;
+  v6 = arrayCopy;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -1431,7 +1431,7 @@ void __90__SiriCoreNetworkingAnalytics_SessionConnectionSnapshot__networkInterfa
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v12 = [a1 endpointFromDictionary:{v11, v15}];
+          v12 = [self endpointFromDictionary:{v11, v15}];
           [v5 addObject:v12];
         }
       }
@@ -1447,14 +1447,14 @@ void __90__SiriCoreNetworkingAnalytics_SessionConnectionSnapshot__networkInterfa
   return v5;
 }
 
-+ (id)endpointFromDictionary:(id)a3
++ (id)endpointFromDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = objc_alloc_init(MEMORY[0x277D58BC0]);
-  v6 = [v4 objectForKey:@"type"];
+  v6 = [dictionaryCopy objectForKey:@"type"];
   if (v6)
   {
-    v7 = [v4 objectForKey:@"type"];
+    v7 = [dictionaryCopy objectForKey:@"type"];
   }
 
   else
@@ -1462,15 +1462,15 @@ void __90__SiriCoreNetworkingAnalytics_SessionConnectionSnapshot__networkInterfa
     v7 = &unk_287838270;
   }
 
-  [v5 setType:{objc_msgSend(a1, "endpointTypeFromNumber:", v7)}];
+  [v5 setType:{objc_msgSend(self, "endpointTypeFromNumber:", v7)}];
   if (v6)
   {
   }
 
-  v8 = [v4 objectForKey:@"port"];
+  v8 = [dictionaryCopy objectForKey:@"port"];
   if (v8)
   {
-    v9 = [v4 objectForKey:@"port"];
+    v9 = [dictionaryCopy objectForKey:@"port"];
     [v9 doubleValue];
     [v5 setPort:v10];
   }
@@ -1483,30 +1483,30 @@ void __90__SiriCoreNetworkingAnalytics_SessionConnectionSnapshot__networkInterfa
   return v5;
 }
 
-+ (int)endpointTypeFromNumber:(id)a3
++ (int)endpointTypeFromNumber:(id)number
 {
-  v3 = a3;
-  if ([v3 isEqualToNumber:&unk_287838270])
+  numberCopy = number;
+  if ([numberCopy isEqualToNumber:&unk_287838270])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToNumber:&unk_287838288])
+  else if ([numberCopy isEqualToNumber:&unk_287838288])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToNumber:&unk_2878382A0])
+  else if ([numberCopy isEqualToNumber:&unk_2878382A0])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToNumber:&unk_2878382B8])
+  else if ([numberCopy isEqualToNumber:&unk_2878382B8])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToNumber:&unk_2878382D0])
+  else if ([numberCopy isEqualToNumber:&unk_2878382D0])
   {
     v4 = 5;
   }
@@ -1519,9 +1519,9 @@ void __90__SiriCoreNetworkingAnalytics_SessionConnectionSnapshot__networkInterfa
   return v4;
 }
 
-- (void)logPeerConnectionFailed:(id)a3
+- (void)logPeerConnectionFailed:(id)failed
 {
-  v4 = a3;
+  failedCopy = failed;
   v5 = mach_absolute_time();
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -1529,9 +1529,9 @@ void __90__SiriCoreNetworkingAnalytics_SessionConnectionSnapshot__networkInterfa
   block[2] = __55__SiriCoreNetworkingAnalytics_logPeerConnectionFailed___block_invoke;
   block[3] = &unk_279BD60A8;
   block[4] = self;
-  v9 = v4;
+  v9 = failedCopy;
   v10 = v5;
-  v7 = v4;
+  v7 = failedCopy;
   dispatch_async(queue, block);
 }
 
@@ -1629,9 +1629,9 @@ LABEL_15:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logSessionConnectionFailed:(id)a3
+- (void)logSessionConnectionFailed:(id)failed
 {
-  v4 = a3;
+  failedCopy = failed;
   v5 = mach_absolute_time();
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -1639,9 +1639,9 @@ LABEL_15:
   block[2] = __58__SiriCoreNetworkingAnalytics_logSessionConnectionFailed___block_invoke;
   block[3] = &unk_279BD60A8;
   block[4] = self;
-  v9 = v4;
+  v9 = failedCopy;
   v10 = v5;
-  v7 = v4;
+  v7 = failedCopy;
   dispatch_async(queue, block);
 }
 
@@ -1739,9 +1739,9 @@ LABEL_15:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logDebugSessionConnectionSnapshotCaptured:(id)a3
+- (void)logDebugSessionConnectionSnapshotCaptured:(id)captured
 {
-  v4 = a3;
+  capturedCopy = captured;
   if ([(SiriCoreNetworkingAnalytics *)self emitLogDebug])
   {
     v5 = mach_absolute_time();
@@ -1751,7 +1751,7 @@ LABEL_15:
     block[2] = __73__SiriCoreNetworkingAnalytics_logDebugSessionConnectionSnapshotCaptured___block_invoke;
     block[3] = &unk_279BD60A8;
     block[4] = self;
-    v8 = v4;
+    v8 = capturedCopy;
     v9 = v5;
     dispatch_async(queue, block);
   }
@@ -1853,9 +1853,9 @@ LABEL_7:
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logSessionConnectionSnapshotCaptured:(id)a3
+- (void)logSessionConnectionSnapshotCaptured:(id)captured
 {
-  v4 = a3;
+  capturedCopy = captured;
   v5 = mach_absolute_time();
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -1863,9 +1863,9 @@ LABEL_7:
   block[2] = __68__SiriCoreNetworkingAnalytics_logSessionConnectionSnapshotCaptured___block_invoke;
   block[3] = &unk_279BD60A8;
   block[4] = self;
-  v9 = v4;
+  v9 = capturedCopy;
   v10 = v5;
-  v7 = v4;
+  v7 = capturedCopy;
   dispatch_async(queue, block);
 }
 
@@ -1965,9 +1965,9 @@ LABEL_7:
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logDebugNetworkConnectionStateReadySnapshotCaptured:(id)a3
+- (void)logDebugNetworkConnectionStateReadySnapshotCaptured:(id)captured
 {
-  v4 = a3;
+  capturedCopy = captured;
   if ([(SiriCoreNetworkingAnalytics *)self emitLogDebug])
   {
     v5 = mach_absolute_time();
@@ -1977,7 +1977,7 @@ LABEL_7:
     block[2] = __83__SiriCoreNetworkingAnalytics_logDebugNetworkConnectionStateReadySnapshotCaptured___block_invoke;
     block[3] = &unk_279BD60A8;
     block[4] = self;
-    v8 = v4;
+    v8 = capturedCopy;
     v9 = v5;
     dispatch_async(queue, block);
   }
@@ -2077,9 +2077,9 @@ LABEL_15:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logNetworkConnectionStateReadySnapshotCaptured:(id)a3
+- (void)logNetworkConnectionStateReadySnapshotCaptured:(id)captured
 {
-  v4 = a3;
+  capturedCopy = captured;
   v5 = mach_absolute_time();
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -2087,9 +2087,9 @@ LABEL_15:
   block[2] = __78__SiriCoreNetworkingAnalytics_logNetworkConnectionStateReadySnapshotCaptured___block_invoke;
   block[3] = &unk_279BD60A8;
   block[4] = self;
-  v9 = v4;
+  v9 = capturedCopy;
   v10 = v5;
-  v7 = v4;
+  v7 = capturedCopy;
   dispatch_async(queue, block);
 }
 
@@ -2187,9 +2187,9 @@ LABEL_15:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logDebugNetworkConnectionStatePreparationSnapshotCaptured:(id)a3
+- (void)logDebugNetworkConnectionStatePreparationSnapshotCaptured:(id)captured
 {
-  v4 = a3;
+  capturedCopy = captured;
   if ([(SiriCoreNetworkingAnalytics *)self emitLogDebug])
   {
     v5 = mach_absolute_time();
@@ -2199,7 +2199,7 @@ LABEL_15:
     block[2] = __89__SiriCoreNetworkingAnalytics_logDebugNetworkConnectionStatePreparationSnapshotCaptured___block_invoke;
     block[3] = &unk_279BD60A8;
     block[4] = self;
-    v8 = v4;
+    v8 = capturedCopy;
     v9 = v5;
     dispatch_async(queue, block);
   }
@@ -2299,9 +2299,9 @@ LABEL_15:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logNetworkConnectionStatePreparationSnapshotCaptured:(id)a3
+- (void)logNetworkConnectionStatePreparationSnapshotCaptured:(id)captured
 {
-  v4 = a3;
+  capturedCopy = captured;
   v5 = mach_absolute_time();
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -2309,9 +2309,9 @@ LABEL_15:
   block[2] = __84__SiriCoreNetworkingAnalytics_logNetworkConnectionStatePreparationSnapshotCaptured___block_invoke;
   block[3] = &unk_279BD60A8;
   block[4] = self;
-  v9 = v4;
+  v9 = capturedCopy;
   v10 = v5;
-  v7 = v4;
+  v7 = capturedCopy;
   dispatch_async(queue, block);
 }
 
@@ -2409,9 +2409,9 @@ LABEL_15:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logSessionConnectionHttpHeaderCreated:(id)a3
+- (void)logSessionConnectionHttpHeaderCreated:(id)created
 {
-  v4 = a3;
+  createdCopy = created;
   v5 = mach_absolute_time();
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -2419,9 +2419,9 @@ LABEL_15:
   block[2] = __69__SiriCoreNetworkingAnalytics_logSessionConnectionHttpHeaderCreated___block_invoke;
   block[3] = &unk_279BD60A8;
   block[4] = self;
-  v9 = v4;
+  v9 = createdCopy;
   v10 = v5;
-  v7 = v4;
+  v7 = createdCopy;
   dispatch_async(queue, block);
 }
 
@@ -2640,7 +2640,7 @@ LABEL_18:
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_emitAllCachedMessagesFor:(id)a3
+- (void)_emitAllCachedMessagesFor:(id)for
 {
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -2969,17 +2969,17 @@ uint64_t __57__SiriCoreNetworkingAnalytics__emitAllCachedMessagesFor___block_inv
   return v3;
 }
 
-- (void)setOrchestratorRequestId:(id)a3
+- (void)setOrchestratorRequestId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __56__SiriCoreNetworkingAnalytics_setOrchestratorRequestId___block_invoke;
   v7[3] = &unk_279BD6540;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = idCopy;
+  v6 = idCopy;
   dispatch_async(queue, v7);
 }
 
@@ -3091,7 +3091,7 @@ void __47__SiriCoreNetworkingAnalytics_isNetIdAvailable__block_invoke(uint64_t a
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setNetIdAvailable:(BOOL)a3
+- (void)setNetIdAvailable:(BOOL)available
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -3099,7 +3099,7 @@ void __47__SiriCoreNetworkingAnalytics_isNetIdAvailable__block_invoke(uint64_t a
   v4[2] = __49__SiriCoreNetworkingAnalytics_setNetIdAvailable___block_invoke;
   v4[3] = &unk_279BD6080;
   v4[4] = self;
-  v5 = a3;
+  availableCopy = available;
   dispatch_async(queue, v4);
 }
 
@@ -3130,7 +3130,7 @@ void __49__SiriCoreNetworkingAnalytics_setNetIdAvailable___block_invoke(uint64_t
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setIsConnectionActive:(BOOL)a3
+- (void)setIsConnectionActive:(BOOL)active
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -3138,7 +3138,7 @@ void __49__SiriCoreNetworkingAnalytics_setNetIdAvailable___block_invoke(uint64_t
   v4[2] = __53__SiriCoreNetworkingAnalytics_setIsConnectionActive___block_invoke;
   v4[3] = &unk_279BD6080;
   v4[4] = self;
-  v5 = a3;
+  activeCopy = active;
   dispatch_async(queue, v4);
 }
 
@@ -3161,17 +3161,17 @@ void __49__SiriCoreNetworkingAnalytics_setNetIdAvailable___block_invoke(uint64_t
   return v3;
 }
 
-- (void)setConnectionProvider:(id)a3
+- (void)setConnectionProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __53__SiriCoreNetworkingAnalytics_setConnectionProvider___block_invoke;
   v7[3] = &unk_279BD6540;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = providerCopy;
+  v6 = providerCopy;
   dispatch_async(queue, v7);
 }
 
@@ -3193,17 +3193,17 @@ void __53__SiriCoreNetworkingAnalytics_setConnectionProvider___block_invoke(uint
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setNetworkConnectionId:(id)a3
+- (void)setNetworkConnectionId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __54__SiriCoreNetworkingAnalytics_setNetworkConnectionId___block_invoke;
   v7[3] = &unk_279BD6540;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = idCopy;
+  v6 = idCopy;
   dispatch_async(queue, v7);
 }
 
@@ -3225,17 +3225,17 @@ void __54__SiriCoreNetworkingAnalytics_setNetworkConnectionId___block_invoke(uin
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setNetId:(id)a3
+- (void)setNetId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __40__SiriCoreNetworkingAnalytics_setNetId___block_invoke;
   v7[3] = &unk_279BD6540;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = idCopy;
+  v6 = idCopy;
   dispatch_async(queue, v7);
 }
 
@@ -3359,8 +3359,8 @@ void __41__SiriCoreNetworkingAnalytics_resetNetId__block_invoke(uint64_t a1)
 
 - (SiriCoreNetworkingAnalytics)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"SiriCoreNetworkingAnalytics.m" lineNumber:55 description:{@"%s is marked as NS_UNAVAILABLE. Use the designated initializer instead.", "-[SiriCoreNetworkingAnalytics init]"}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SiriCoreNetworkingAnalytics.m" lineNumber:55 description:{@"%s is marked as NS_UNAVAILABLE. Use the designated initializer instead.", "-[SiriCoreNetworkingAnalytics init]"}];
 
   return 0;
 }

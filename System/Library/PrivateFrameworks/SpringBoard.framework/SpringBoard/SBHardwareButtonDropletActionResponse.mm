@@ -1,27 +1,27 @@
 @interface SBHardwareButtonDropletActionResponse
-- (SBHardwareButtonDropletActionResponse)initWithPreludeToken:(id)a3 zoomUpToken:(id)a4 appLayout:(id)a5 action:(unint64_t)a6;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
+- (SBHardwareButtonDropletActionResponse)initWithPreludeToken:(id)token zoomUpToken:(id)upToken appLayout:(id)layout action:(unint64_t)action;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
 @end
 
 @implementation SBHardwareButtonDropletActionResponse
 
-- (SBHardwareButtonDropletActionResponse)initWithPreludeToken:(id)a3 zoomUpToken:(id)a4 appLayout:(id)a5 action:(unint64_t)a6
+- (SBHardwareButtonDropletActionResponse)initWithPreludeToken:(id)token zoomUpToken:(id)upToken appLayout:(id)layout action:(unint64_t)action
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
+  tokenCopy = token;
+  upTokenCopy = upToken;
+  layoutCopy = layout;
   v18.receiver = self;
   v18.super_class = SBHardwareButtonDropletActionResponse;
   v15 = [(SBChainableModifierEventResponse *)&v18 init];
   if (v15)
   {
-    if (a6 != 1)
+    if (action != 1)
     {
-      if (!a6)
+      if (!action)
       {
-        if (v12)
+        if (tokenCopy)
         {
-          if (!v14)
+          if (!layoutCopy)
           {
 LABEL_6:
             v16 = 34;
@@ -33,7 +33,7 @@ LABEL_15:
         else
         {
           [SBHardwareButtonDropletActionResponse initWithPreludeToken:a2 zoomUpToken:v15 appLayout:? action:?];
-          if (!v14)
+          if (!layoutCopy)
           {
             goto LABEL_6;
           }
@@ -41,16 +41,16 @@ LABEL_15:
       }
 
 LABEL_9:
-      v15->_action = a6;
-      objc_storeStrong(&v15->_preludeToken, a3);
-      objc_storeStrong(&v15->_zoomUpToken, a4);
-      objc_storeStrong(&v15->_appLayout, a5);
+      v15->_action = action;
+      objc_storeStrong(&v15->_preludeToken, token);
+      objc_storeStrong(&v15->_zoomUpToken, upToken);
+      objc_storeStrong(&v15->_appLayout, layout);
       goto LABEL_10;
     }
 
-    if (v12 | v13)
+    if (tokenCopy | upTokenCopy)
     {
-      if (v14)
+      if (layoutCopy)
       {
         goto LABEL_9;
       }
@@ -59,7 +59,7 @@ LABEL_9:
     else
     {
       [SBHardwareButtonDropletActionResponse initWithPreludeToken:a2 zoomUpToken:v15 appLayout:? action:?];
-      if (v14)
+      if (layoutCopy)
       {
         goto LABEL_9;
       }
@@ -74,11 +74,11 @@ LABEL_10:
   return v15;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v10.receiver = self;
   v10.super_class = SBHardwareButtonDropletActionResponse;
-  v4 = [(SBChainableModifierEventResponse *)&v10 descriptionBuilderWithMultilinePrefix:a3];
+  v4 = [(SBChainableModifierEventResponse *)&v10 descriptionBuilderWithMultilinePrefix:prefix];
   v5 = [v4 appendObject:self->_preludeToken withName:@"preludeToken"];
   v6 = [v4 appendObject:self->_zoomUpToken withName:@"zoomUpToken"];
   v7 = [v4 appendObject:self->_appLayout withName:@"appLayout"];

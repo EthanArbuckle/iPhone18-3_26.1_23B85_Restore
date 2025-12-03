@@ -1,15 +1,15 @@
 @interface IDSNWPathUtils
 + (id)sharedInstance;
-- (BOOL)filterVirtualInterfaces:(char *)a3;
-- (BOOL)isSlicedCellularInterface:(id)a3 forSession:(id)a4;
-- (BOOL)isVoWiFiInterface:(char *)a3;
+- (BOOL)filterVirtualInterfaces:(char *)interfaces;
+- (BOOL)isSlicedCellularInterface:(id)interface forSession:(id)session;
+- (BOOL)isVoWiFiInterface:(char *)interface;
 - (IDSNWPathUtils)init;
-- (id)_updateSlicedInterfaceName:(id)a3;
+- (id)_updateSlicedInterfaceName:(id)name;
 - (id)getDefaultPath;
-- (void)bringUpSlicedInterface:(id)a3 forServiceIdentifier:(id)a4 forSession:(id)a5;
+- (void)bringUpSlicedInterface:(id)interface forServiceIdentifier:(id)identifier forSession:(id)session;
 - (void)dealloc;
-- (void)setSliceInterfaceBitMask:(unint64_t)a3 forSession:(id)a4;
-- (void)takeDownSlicedInterfaceForSession:(id)a3;
+- (void)setSliceInterfaceBitMask:(unint64_t)mask forSession:(id)session;
+- (void)takeDownSlicedInterfaceForSession:(id)session;
 @end
 
 @implementation IDSNWPathUtils
@@ -45,12 +45,12 @@
   v2 = objc_alloc_init(MEMORY[0x1E6977E40]);
   [v2 prohibitInterfaceSubtype:5001];
   v3 = [objc_alloc(MEMORY[0x1E6977E50]) initWithEndpoint:0 parameters:v2];
-  v4 = [v3 path];
+  path = [v3 path];
 
-  return v4;
+  return path;
 }
 
-- (BOOL)filterVirtualInterfaces:(char *)a3
+- (BOOL)filterVirtualInterfaces:(char *)interfaces
 {
   v3 = MEMORY[0x1AC564230](self, a2);
   v4 = nw_interface_create_with_name();
@@ -71,7 +71,7 @@
   return v7;
 }
 
-- (BOOL)isVoWiFiInterface:(char *)a3
+- (BOOL)isVoWiFiInterface:(char *)interface
 {
   v3 = MEMORY[0x1AC564230](self, a2);
   v4 = nw_interface_create_with_name();
@@ -89,12 +89,12 @@
   return v9;
 }
 
-- (void)bringUpSlicedInterface:(id)a3 forServiceIdentifier:(id)a4 forSession:(id)a5
+- (void)bringUpSlicedInterface:(id)interface forServiceIdentifier:(id)identifier forSession:(id)session
 {
   v24 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  if ([a4 isEqualToString:@"com.apple.private.alloy.facetime.multi"])
+  interfaceCopy = interface;
+  sessionCopy = session;
+  if ([identifier isEqualToString:@"com.apple.private.alloy.facetime.multi"])
   {
     v10 = MEMORY[0x1AC564230]();
     nw_parameters_set_account_id();
@@ -109,14 +109,14 @@
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v21 = v9;
+        v21 = sessionCopy;
         v22 = 2048;
         v23 = evaluator_for_endpoint;
         _os_log_impl(&dword_1A7AD9000, v12, OS_LOG_TYPE_DEFAULT, "Bringing Up Sliced Cellular Interface for Session: %@ with evaluator: %p!", buf, 0x16u);
       }
 
-      v13 = v9;
-      v14 = v8;
+      v13 = sessionCopy;
+      v14 = interfaceCopy;
       nw_path_evaluator_set_update_handler();
       nw_path_evaluator_start();
       if (!self->_sessionIDToSlicingPathEvaluator)
@@ -138,10 +138,10 @@
   }
 }
 
-- (void)takeDownSlicedInterfaceForSession:(id)a3
+- (void)takeDownSlicedInterfaceForSession:(id)session
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  sessionCopy = session;
   sessionIDToSlicingPathEvaluator = self->_sessionIDToSlicingPathEvaluator;
   if (!sessionIDToSlicingPathEvaluator)
   {
@@ -152,21 +152,21 @@
     sessionIDToSlicingPathEvaluator = self->_sessionIDToSlicingPathEvaluator;
   }
 
-  v8 = [(NSMutableDictionary *)sessionIDToSlicingPathEvaluator objectForKeyedSubscript:v4];
+  v8 = [(NSMutableDictionary *)sessionIDToSlicingPathEvaluator objectForKeyedSubscript:sessionCopy];
   if (v8)
   {
     v9 = +[IDSFoundationLog NWPathUtils];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 138412546;
-      v14 = v4;
+      v14 = sessionCopy;
       v15 = 2048;
       v16 = v8;
       _os_log_impl(&dword_1A7AD9000, v9, OS_LOG_TYPE_DEFAULT, "Taking Down Sliced Cellular Interface for Session: %@ with evaluator: %p!", &v13, 0x16u);
     }
 
     nw_path_evaluator_cancel();
-    [(NSMutableDictionary *)self->_sessionIDToSlicingPathEvaluator setObject:0 forKeyedSubscript:v4];
+    [(NSMutableDictionary *)self->_sessionIDToSlicingPathEvaluator setObject:0 forKeyedSubscript:sessionCopy];
   }
 
   sessionIDToSlicingBitMask = self->_sessionIDToSlicingBitMask;
@@ -179,20 +179,20 @@
     sessionIDToSlicingBitMask = self->_sessionIDToSlicingBitMask;
   }
 
-  [(NSMutableDictionary *)sessionIDToSlicingBitMask setObject:0 forKeyedSubscript:v4];
+  [(NSMutableDictionary *)sessionIDToSlicingBitMask setObject:0 forKeyedSubscript:sessionCopy];
 }
 
-- (id)_updateSlicedInterfaceName:(id)a3
+- (id)_updateSlicedInterfaceName:(id)name
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  nameCopy = name;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = sub_1A7BE91F8;
   v17 = sub_1A7BE9208;
   v18 = 0;
-  if (nw_path_get_status(v3) == nw_path_status_satisfied)
+  if (nw_path_get_status(nameCopy) == nw_path_status_satisfied)
   {
     v4 = +[IDSFoundationLog NWPathUtils];
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -206,10 +206,10 @@
     enumerate_block[2] = sub_1A7BE9210;
     enumerate_block[3] = &unk_1E77E16A8;
     enumerate_block[4] = &v13;
-    nw_path_enumerate_interfaces(v3, enumerate_block);
+    nw_path_enumerate_interfaces(nameCopy, enumerate_block);
   }
 
-  else if (nw_path_get_status(v3) == nw_path_status_satisfiable)
+  else if (nw_path_get_status(nameCopy) == nw_path_status_satisfiable)
   {
     v5 = nw_path_copy_inactive_agent_uuids();
     count = xpc_array_get_count(v5);
@@ -237,9 +237,9 @@
   return v10;
 }
 
-- (void)setSliceInterfaceBitMask:(unint64_t)a3 forSession:(id)a4
+- (void)setSliceInterfaceBitMask:(unint64_t)mask forSession:(id)session
 {
-  v6 = a4;
+  sessionCopy = session;
   if (!self->_sessionIDToSlicingBitMask)
   {
     Mutable = CFDictionaryCreateMutable(0, 0, MEMORY[0x1E695E9D8], MEMORY[0x1E695E9E8]);
@@ -247,33 +247,33 @@
     self->_sessionIDToSlicingBitMask = Mutable;
   }
 
-  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a3];
+  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:mask];
   if (v9)
   {
-    CFDictionarySetValue(self->_sessionIDToSlicingBitMask, v6, v9);
+    CFDictionarySetValue(self->_sessionIDToSlicingBitMask, sessionCopy, v9);
   }
 
   else if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
-    sub_1A7E1A410(v6);
+    sub_1A7E1A410(sessionCopy);
   }
 }
 
-- (BOOL)isSlicedCellularInterface:(id)a3 forSession:(id)a4
+- (BOOL)isSlicedCellularInterface:(id)interface forSession:(id)session
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  interfaceCopy = interface;
+  sessionCopy = session;
+  if (interfaceCopy)
   {
     v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v20 = v7;
-    v9 = [(NSMutableDictionary *)self->_sessionIDToSlicingBitMask objectForKeyedSubscript:v7];
-    v10 = [v9 unsignedLongLongValue];
+    v20 = sessionCopy;
+    v9 = [(NSMutableDictionary *)self->_sessionIDToSlicingBitMask objectForKeyedSubscript:sessionCopy];
+    unsignedLongLongValue = [v9 unsignedLongLongValue];
 
     for (i = 0; i != 64; ++i)
     {
-      if ((v10 >> i))
+      if ((unsignedLongLongValue >> i))
       {
         v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%llu", @"pdp_ip", i];
         v13 = v12;
@@ -310,7 +310,7 @@
             objc_enumerationMutation(v15);
           }
 
-          if ([v6 isEqualToString:*(*(&v21 + 1) + 8 * j)])
+          if ([interfaceCopy isEqualToString:*(*(&v21 + 1) + 8 * j)])
           {
             LOBYTE(v16) = 1;
             goto LABEL_21;
@@ -329,7 +329,7 @@
 
 LABEL_21:
 
-    v7 = v20;
+    sessionCopy = v20;
   }
 
   else

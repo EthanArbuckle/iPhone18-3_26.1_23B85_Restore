@@ -1,7 +1,7 @@
 @interface _PSFeedback
-+ (id)feedbackForAction:(id)a3 delay:(double)a4 context:(id)a5 suggestions:(id)a6 numberOfVisibleSuggestions:(float)a7 sessionIdentifier:(id)a8;
-- (_PSFeedback)initWithAction:(id)a3 delay:(double)a4 context:(id)a5 suggestions:(id)a6 numberOfVisibleSuggestions:(float)a7 sessionIdentifier:(id)a8 isAirDropEvent:(BOOL)a9 wasAirDropShown:(BOOL)a10;
-- (id)feedbackPayloadShowFamily:(id)a3;
++ (id)feedbackForAction:(id)action delay:(double)delay context:(id)context suggestions:(id)suggestions numberOfVisibleSuggestions:(float)visibleSuggestions sessionIdentifier:(id)identifier;
+- (_PSFeedback)initWithAction:(id)action delay:(double)delay context:(id)context suggestions:(id)suggestions numberOfVisibleSuggestions:(float)visibleSuggestions sessionIdentifier:(id)identifier isAirDropEvent:(BOOL)event wasAirDropShown:(BOOL)self0;
+- (id)feedbackPayloadShowFamily:(id)family;
 - (id)getTrialID;
 - (int)shareSheetFeedbackEngagementType;
 - (unint64_t)indexOfEngagedSuggestion;
@@ -10,42 +10,42 @@
 
 @implementation _PSFeedback
 
-+ (id)feedbackForAction:(id)a3 delay:(double)a4 context:(id)a5 suggestions:(id)a6 numberOfVisibleSuggestions:(float)a7 sessionIdentifier:(id)a8
++ (id)feedbackForAction:(id)action delay:(double)delay context:(id)context suggestions:(id)suggestions numberOfVisibleSuggestions:(float)visibleSuggestions sessionIdentifier:(id)identifier
 {
-  v14 = a8;
-  v15 = a6;
-  v16 = a5;
-  v17 = a3;
-  v18 = [a1 alloc];
-  *&v19 = a7;
-  v20 = [v18 initWithAction:v17 delay:v16 context:v15 suggestions:v14 numberOfVisibleSuggestions:0 sessionIdentifier:0 isAirDropEvent:a4 wasAirDropShown:v19];
+  identifierCopy = identifier;
+  suggestionsCopy = suggestions;
+  contextCopy = context;
+  actionCopy = action;
+  v18 = [self alloc];
+  *&v19 = visibleSuggestions;
+  v20 = [v18 initWithAction:actionCopy delay:contextCopy context:suggestionsCopy suggestions:identifierCopy numberOfVisibleSuggestions:0 sessionIdentifier:0 isAirDropEvent:delay wasAirDropShown:v19];
 
   return v20;
 }
 
-- (_PSFeedback)initWithAction:(id)a3 delay:(double)a4 context:(id)a5 suggestions:(id)a6 numberOfVisibleSuggestions:(float)a7 sessionIdentifier:(id)a8 isAirDropEvent:(BOOL)a9 wasAirDropShown:(BOOL)a10
+- (_PSFeedback)initWithAction:(id)action delay:(double)delay context:(id)context suggestions:(id)suggestions numberOfVisibleSuggestions:(float)visibleSuggestions sessionIdentifier:(id)identifier isAirDropEvent:(BOOL)event wasAirDropShown:(BOOL)self0
 {
-  v19 = a3;
-  v20 = a5;
-  v21 = a6;
-  v22 = a8;
+  actionCopy = action;
+  contextCopy = context;
+  suggestionsCopy = suggestions;
+  identifierCopy = identifier;
   v28.receiver = self;
   v28.super_class = _PSFeedback;
   v23 = [(_PSFeedback *)&v28 init];
   v24 = v23;
   if (v23)
   {
-    objc_storeStrong(&v23->_action, a3);
-    v24->_delay = a4;
-    objc_storeStrong(&v24->_context, a5);
-    objc_storeStrong(&v24->_suggestions, a6);
-    v24->_numberOfVisibleSuggestions = a7;
-    v25 = [v22 copy];
+    objc_storeStrong(&v23->_action, action);
+    v24->_delay = delay;
+    objc_storeStrong(&v24->_context, context);
+    objc_storeStrong(&v24->_suggestions, suggestions);
+    v24->_numberOfVisibleSuggestions = visibleSuggestions;
+    v25 = [identifierCopy copy];
     sessionIdentifier = v24->_sessionIdentifier;
     v24->_sessionIdentifier = v25;
 
-    v24->_isAirDropEvent = a9;
-    v24->_wasAirDropShown = a10;
+    v24->_isAirDropEvent = event;
+    v24->_wasAirDropShown = shown;
   }
 
   return v24;
@@ -53,14 +53,14 @@
 
 - (id)getTrialID
 {
-  v3 = [(_PSFeedback *)self suggestions];
-  v4 = [v3 count];
+  suggestions = [(_PSFeedback *)self suggestions];
+  v4 = [suggestions count];
 
   if (v4)
   {
-    v5 = [(_PSFeedback *)self suggestions];
-    v6 = [v5 objectAtIndex:0];
-    v7 = [v6 trialID];
+    suggestions2 = [(_PSFeedback *)self suggestions];
+    v6 = [suggestions2 objectAtIndex:0];
+    trialID = [v6 trialID];
   }
 
   else
@@ -71,21 +71,21 @@
       [(_PSFeedback *)v8 getTrialID];
     }
 
-    v7 = @"default";
+    trialID = @"default";
   }
 
-  return v7;
+  return trialID;
 }
 
 - (unint64_t)indexOfEngagedSuggestion
 {
-  v3 = [(_PSFeedback *)self action];
-  v4 = [v3 suggestion];
+  action = [(_PSFeedback *)self action];
+  suggestion = [action suggestion];
 
-  if (v4)
+  if (suggestion)
   {
-    v5 = [(_PSFeedback *)self suggestions];
-    v6 = [v5 indexOfObject:v4];
+    suggestions = [(_PSFeedback *)self suggestions];
+    v6 = [suggestions indexOfObject:suggestion];
   }
 
   else
@@ -96,39 +96,39 @@
   return v6;
 }
 
-- (id)feedbackPayloadShowFamily:(id)a3
+- (id)feedbackPayloadShowFamily:(id)family
 {
-  v35 = a3;
-  v4 = [(_PSFeedback *)self context];
-  v5 = [v4 timedOut];
+  familyCopy = family;
+  context = [(_PSFeedback *)self context];
+  timedOut = [context timedOut];
   v6 = @"Model";
-  if (v5)
+  if (timedOut)
   {
     v6 = @"Cached Suggestions";
   }
 
   v7 = v6;
 
-  v8 = [(_PSFeedback *)self action];
-  v9 = [v8 suggestion];
-  if (!v9)
+  action = [(_PSFeedback *)self action];
+  suggestion = [action suggestion];
+  if (!suggestion)
   {
     goto LABEL_6;
   }
 
-  v10 = v9;
-  v11 = [(_PSFeedback *)self action];
-  v12 = [v11 suggestion];
-  v13 = [v12 reasonType];
-  v14 = [v13 containsString:@"Heuristics"];
+  v10 = suggestion;
+  action2 = [(_PSFeedback *)self action];
+  suggestion2 = [action2 suggestion];
+  reasonType = [suggestion2 reasonType];
+  v14 = [reasonType containsString:@"Heuristics"];
 
   if (v14)
   {
-    v8 = [(_PSFeedback *)self action];
-    v15 = [v8 suggestion];
-    v16 = [v15 reason];
+    action = [(_PSFeedback *)self action];
+    suggestion3 = [action suggestion];
+    reason = [suggestion3 reason];
 
-    v7 = v16;
+    v7 = reason;
 LABEL_6:
     v37 = v7;
 
@@ -138,41 +138,41 @@ LABEL_6:
   v37 = v7;
 LABEL_8:
   v36 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[_PSFeedback indexOfEngagedSuggestion](self, "indexOfEngagedSuggestion")}];
-  v34 = [(_PSFeedback *)self context];
-  v30 = [v34 reasonType];
-  v33 = [(_PSFeedback *)self context];
-  v29 = [v33 bundleID];
-  v32 = [(_PSFeedback *)self action];
-  v28 = [v32 transportBundleID];
+  context2 = [(_PSFeedback *)self context];
+  reasonType2 = [context2 reasonType];
+  context3 = [(_PSFeedback *)self context];
+  bundleID = [context3 bundleID];
+  action3 = [(_PSFeedback *)self action];
+  transportBundleID = [action3 transportBundleID];
   v17 = MEMORY[0x1E696AD98];
-  v31 = [(_PSFeedback *)self suggestions];
-  v26 = [v17 numberWithUnsignedInteger:{objc_msgSend(v31, "count")}];
-  v18 = [(_PSFeedback *)self sessionIdentifier];
+  suggestions = [(_PSFeedback *)self suggestions];
+  v26 = [v17 numberWithUnsignedInteger:{objc_msgSend(suggestions, "count")}];
+  sessionIdentifier = [(_PSFeedback *)self sessionIdentifier];
   v19 = MEMORY[0x1E696AD98];
   [(_PSFeedback *)self delay];
   v20 = [v19 numberWithDouble:?];
   v21 = [MEMORY[0x1E696AD98] numberWithBool:{-[_PSFeedback dryRun](self, "dryRun")}];
-  v22 = [(_PSFeedback *)self action];
-  v23 = [v22 type];
-  v24 = [(_PSFeedback *)self getTrialID];
-  v27 = [_PSFeedbackUtils feedbackPayloadWithIndex:v36 reasonType:v30 reason:v37 sourceBundleId:v29 transportBundleId:v28 numberOfVisibleSuggestions:v26 sessionId:v18 delay:v20 testEvent:v21 iCloudFamilyInvocation:v35 engagementType:v23 trialID:v24];
+  action4 = [(_PSFeedback *)self action];
+  type = [action4 type];
+  getTrialID = [(_PSFeedback *)self getTrialID];
+  v27 = [_PSFeedbackUtils feedbackPayloadWithIndex:v36 reasonType:reasonType2 reason:v37 sourceBundleId:bundleID transportBundleId:transportBundleID numberOfVisibleSuggestions:v26 sessionId:sessionIdentifier delay:v20 testEvent:v21 iCloudFamilyInvocation:familyCopy engagementType:type trialID:getTrialID];
 
   return v27;
 }
 
 - (int)shareSheetFeedbackEngagementType
 {
-  v2 = [(_PSFeedback *)self action];
-  v3 = [v2 type];
+  action = [(_PSFeedback *)self action];
+  type = [action type];
 
-  if (v3 > 4)
+  if (type > 4)
   {
     return 0;
   }
 
   else
   {
-    return dword_1B5FCA998[v3];
+    return dword_1B5FCA998[type];
   }
 }
 
@@ -180,7 +180,7 @@ LABEL_8:
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_1B5ED1000, a2, OS_LOG_TYPE_ERROR, "Error serializing share sheet attachments: %@", &v3, 0xCu);
   v2 = *MEMORY[0x1E69E9840];
 }

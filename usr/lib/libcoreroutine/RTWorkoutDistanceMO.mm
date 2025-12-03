@@ -1,16 +1,16 @@
 @interface RTWorkoutDistanceMO
-+ (id)managedObjectWithFirstWorkout:(id)a3 secondWorkout:(id)a4 distanceMetric:(int64_t)a5 workoutActivityType:(int64_t)a6 areBothWorkoutsDecimated:(BOOL)a7 distance:(double)a8 isVisited:(BOOL)a9 date:(id)a10 inManagedObjectContext:(id)a11;
-+ (id)managedObjectWithWorkoutDistance:(id)a3 inManagedObjectContext:(id)a4;
++ (id)managedObjectWithFirstWorkout:(id)workout secondWorkout:(id)secondWorkout distanceMetric:(int64_t)metric workoutActivityType:(int64_t)type areBothWorkoutsDecimated:(BOOL)decimated distance:(double)distance isVisited:(BOOL)visited date:(id)self0 inManagedObjectContext:(id)self1;
++ (id)managedObjectWithWorkoutDistance:(id)distance inManagedObjectContext:(id)context;
 @end
 
 @implementation RTWorkoutDistanceMO
 
-+ (id)managedObjectWithWorkoutDistance:(id)a3 inManagedObjectContext:(id)a4
++ (id)managedObjectWithWorkoutDistance:(id)distance inManagedObjectContext:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (!v5)
+  distanceCopy = distance;
+  contextCopy = context;
+  v7 = contextCopy;
+  if (!distanceCopy)
   {
     v18 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -26,18 +26,18 @@ LABEL_12:
     goto LABEL_7;
   }
 
-  if (v6)
+  if (contextCopy)
   {
-    v8 = [v5 firstWorkout];
-    v9 = [v5 secondWorkout];
-    v10 = [v5 distanceMetric];
-    v11 = [v5 workoutActivityType];
-    v12 = [v5 areBothWorkoutsDecimated];
-    [v5 distance];
+    firstWorkout = [distanceCopy firstWorkout];
+    secondWorkout = [distanceCopy secondWorkout];
+    distanceMetric = [distanceCopy distanceMetric];
+    workoutActivityType = [distanceCopy workoutActivityType];
+    areBothWorkoutsDecimated = [distanceCopy areBothWorkoutsDecimated];
+    [distanceCopy distance];
     v14 = v13;
-    v15 = [v5 isVisited];
-    v16 = [v5 date];
-    v17 = [RTWorkoutDistanceMO managedObjectWithFirstWorkout:v8 secondWorkout:v9 distanceMetric:v10 workoutActivityType:v11 areBothWorkoutsDecimated:v12 distance:v15 isVisited:v14 date:v16 inManagedObjectContext:v7];
+    isVisited = [distanceCopy isVisited];
+    date = [distanceCopy date];
+    v17 = [RTWorkoutDistanceMO managedObjectWithFirstWorkout:firstWorkout secondWorkout:secondWorkout distanceMetric:distanceMetric workoutActivityType:workoutActivityType areBothWorkoutsDecimated:areBothWorkoutsDecimated distance:isVisited isVisited:v14 date:date inManagedObjectContext:v7];
 
     goto LABEL_8;
   }
@@ -59,14 +59,14 @@ LABEL_8:
   return v17;
 }
 
-+ (id)managedObjectWithFirstWorkout:(id)a3 secondWorkout:(id)a4 distanceMetric:(int64_t)a5 workoutActivityType:(int64_t)a6 areBothWorkoutsDecimated:(BOOL)a7 distance:(double)a8 isVisited:(BOOL)a9 date:(id)a10 inManagedObjectContext:(id)a11
++ (id)managedObjectWithFirstWorkout:(id)workout secondWorkout:(id)secondWorkout distanceMetric:(int64_t)metric workoutActivityType:(int64_t)type areBothWorkoutsDecimated:(BOOL)decimated distance:(double)distance isVisited:(BOOL)visited date:(id)self0 inManagedObjectContext:(id)self1
 {
-  v17 = a3;
-  v18 = a4;
-  v19 = a10;
-  v20 = a11;
-  v21 = v20;
-  if (v20)
+  workoutCopy = workout;
+  secondWorkoutCopy = secondWorkout;
+  dateCopy = date;
+  contextCopy = context;
+  v21 = contextCopy;
+  if (contextCopy)
   {
     v35 = 0;
     v36 = &v35;
@@ -79,15 +79,15 @@ LABEL_8:
     v24[2] = __174__RTWorkoutDistanceMO_managedObjectWithFirstWorkout_secondWorkout_distanceMetric_workoutActivityType_areBothWorkoutsDecimated_distance_isVisited_date_inManagedObjectContext___block_invoke;
     v24[3] = &unk_2788D2128;
     v29 = &v35;
-    v25 = v20;
-    v26 = v17;
-    v27 = v18;
-    v30 = a5;
-    v31 = a6;
-    v33 = a7;
-    v32 = a8;
-    v34 = a9;
-    v28 = v19;
+    v25 = contextCopy;
+    v26 = workoutCopy;
+    v27 = secondWorkoutCopy;
+    metricCopy = metric;
+    typeCopy = type;
+    decimatedCopy = decimated;
+    distanceCopy = distance;
+    visitedCopy = visited;
+    v28 = dateCopy;
     [v25 performBlockAndWait:v24];
     v22 = v36[5];
 

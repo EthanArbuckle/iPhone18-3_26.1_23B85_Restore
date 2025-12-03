@@ -7,38 +7,38 @@
 
 - (id)supportedNumericCharacterSet
 {
-  v2 = [a1 hasSupportedPlateNumerics];
+  hasSupportedPlateNumerics = [self hasSupportedPlateNumerics];
   v3 = MEMORY[0x1E696AB08];
-  if (v2)
+  if (hasSupportedPlateNumerics)
   {
-    v4 = [a1 supportedPlateNumerics];
-    v5 = [v3 characterSetWithCharactersInString:v4];
+    supportedPlateNumerics = [self supportedPlateNumerics];
+    decimalDigitCharacterSet = [v3 characterSetWithCharactersInString:supportedPlateNumerics];
   }
 
   else
   {
-    v5 = [MEMORY[0x1E696AB08] decimalDigitCharacterSet];
+    decimalDigitCharacterSet = [MEMORY[0x1E696AB08] decimalDigitCharacterSet];
   }
 
-  return v5;
+  return decimalDigitCharacterSet;
 }
 
 - (id)supportedAlphabeticCharacterSet
 {
-  v2 = [a1 hasSupportedPlateAlphabetLetters];
+  hasSupportedPlateAlphabetLetters = [self hasSupportedPlateAlphabetLetters];
   v3 = MEMORY[0x1E696AB08];
-  if (v2)
+  if (hasSupportedPlateAlphabetLetters)
   {
-    v4 = [a1 supportedPlateAlphabetLetters];
-    v5 = [v3 characterSetWithCharactersInString:v4];
+    supportedPlateAlphabetLetters = [self supportedPlateAlphabetLetters];
+    letterCharacterSet = [v3 characterSetWithCharactersInString:supportedPlateAlphabetLetters];
   }
 
   else
   {
-    v5 = [MEMORY[0x1E696AB08] letterCharacterSet];
+    letterCharacterSet = [MEMORY[0x1E696AB08] letterCharacterSet];
   }
 
-  return v5;
+  return letterCharacterSet;
 }
 
 @end

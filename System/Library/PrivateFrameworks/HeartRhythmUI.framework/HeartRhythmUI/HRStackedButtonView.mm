@@ -1,10 +1,10 @@
 @interface HRStackedButtonView
-+ (double)_buttonSpacingForValue:(double)a3;
-+ (double)_footerTextSpacingForValue:(double)a3;
++ (double)_buttonSpacingForValue:(double)value;
++ (double)_footerTextSpacingForValue:(double)value;
 + (id)_footerTextBoldFont;
 + (id)_footerTextFont;
-+ (id)buddyStackedButtonViewWithTitles:(id)a3 footerText:(id)a4 boldFooterText:(id)a5 footerTextAlignment:(int64_t)a6 delegate:(id)a7;
-- (HRStackedButtonView)initWithButtonTitles:(id)a3 styles:(id)a4 footerText:(id)a5 boldFooterText:(id)a6 footerTextAlignment:(int64_t)a7 delegate:(id)a8;
++ (id)buddyStackedButtonViewWithTitles:(id)titles footerText:(id)text boldFooterText:(id)footerText footerTextAlignment:(int64_t)alignment delegate:(id)delegate;
+- (HRStackedButtonView)initWithButtonTitles:(id)titles styles:(id)styles footerText:(id)text boldFooterText:(id)footerText footerTextAlignment:(int64_t)alignment delegate:(id)delegate;
 - (HRStackedButtonViewDelegate)delegate;
 - (id)_attributedFooterText;
 - (id)_createButtons;
@@ -17,48 +17,48 @@
 - (void)_setUpFooterText;
 - (void)_updateBottomConstraint;
 - (void)_updateForCurrentSizeCategory;
-- (void)actionButtonTapped:(id)a3;
-- (void)alignBlurViewHorizontalConstraintsWithView:(id)a3;
-- (void)setBlurHidden:(BOOL)a3;
-- (void)setFixedBottomButtonSpacing:(BOOL)a3;
-- (void)setLastButtonMode:(int64_t)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)actionButtonTapped:(id)tapped;
+- (void)alignBlurViewHorizontalConstraintsWithView:(id)view;
+- (void)setBlurHidden:(BOOL)hidden;
+- (void)setFixedBottomButtonSpacing:(BOOL)spacing;
+- (void)setLastButtonMode:(int64_t)mode;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation HRStackedButtonView
 
-- (HRStackedButtonView)initWithButtonTitles:(id)a3 styles:(id)a4 footerText:(id)a5 boldFooterText:(id)a6 footerTextAlignment:(int64_t)a7 delegate:(id)a8
+- (HRStackedButtonView)initWithButtonTitles:(id)titles styles:(id)styles footerText:(id)text boldFooterText:(id)footerText footerTextAlignment:(int64_t)alignment delegate:(id)delegate
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a8;
+  titlesCopy = titles;
+  stylesCopy = styles;
+  textCopy = text;
+  footerTextCopy = footerText;
+  delegateCopy = delegate;
   v23.receiver = self;
   v23.super_class = HRStackedButtonView;
   v19 = [(HRStackedButtonView *)&v23 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_titles, a3);
-    objc_storeStrong(&v20->_styles, a4);
-    objc_storeStrong(&v20->_footerText, a5);
-    objc_storeStrong(&v20->_boldFooterText, a6);
-    v20->_footerTextAlignment = a7;
-    objc_storeWeak(&v20->_delegate, v18);
+    objc_storeStrong(&v19->_titles, titles);
+    objc_storeStrong(&v20->_styles, styles);
+    objc_storeStrong(&v20->_footerText, text);
+    objc_storeStrong(&v20->_boldFooterText, footerText);
+    v20->_footerTextAlignment = alignment;
+    objc_storeWeak(&v20->_delegate, delegateCopy);
     [(HRStackedButtonView *)v20 _setUpButtons];
   }
 
   return v20;
 }
 
-+ (id)buddyStackedButtonViewWithTitles:(id)a3 footerText:(id)a4 boldFooterText:(id)a5 footerTextAlignment:(int64_t)a6 delegate:(id)a7
++ (id)buddyStackedButtonViewWithTitles:(id)titles footerText:(id)text boldFooterText:(id)footerText footerTextAlignment:(int64_t)alignment delegate:(id)delegate
 {
   v11 = MEMORY[0x277CBEB18];
-  v12 = a7;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
+  delegateCopy = delegate;
+  footerTextCopy = footerText;
+  textCopy = text;
+  titlesCopy = titles;
   v16 = objc_alloc_init(v11);
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
@@ -66,8 +66,8 @@
   v20[3] = &unk_2796FBA80;
   v21 = v16;
   v17 = v16;
-  [v15 enumerateObjectsUsingBlock:v20];
-  v18 = [objc_alloc(objc_opt_class()) initWithButtonTitles:v15 styles:v17 footerText:v14 boldFooterText:v13 footerTextAlignment:a6 delegate:v12];
+  [titlesCopy enumerateObjectsUsingBlock:v20];
+  v18 = [objc_alloc(objc_opt_class()) initWithButtonTitles:titlesCopy styles:v17 footerText:textCopy boldFooterText:footerTextCopy footerTextAlignment:alignment delegate:delegateCopy];
 
   return v18;
 }
@@ -88,28 +88,28 @@ uint64_t __111__HRStackedButtonView_buddyStackedButtonViewWithTitles_footerText_
   return [v3 addObject:v4];
 }
 
-- (void)setLastButtonMode:(int64_t)a3
+- (void)setLastButtonMode:(int64_t)mode
 {
-  if (self->_lastButtonMode != a3)
+  if (self->_lastButtonMode != mode)
   {
-    self->_lastButtonMode = a3;
+    self->_lastButtonMode = mode;
     [(HRStackedButtonView *)self _updateBottomConstraint];
   }
 }
 
-- (void)setFixedBottomButtonSpacing:(BOOL)a3
+- (void)setFixedBottomButtonSpacing:(BOOL)spacing
 {
-  if (self->_fixedBottomButtonSpacing != a3)
+  if (self->_fixedBottomButtonSpacing != spacing)
   {
-    self->_fixedBottomButtonSpacing = a3;
+    self->_fixedBottomButtonSpacing = spacing;
     [(HRStackedButtonView *)self _updateBottomConstraint];
   }
 }
 
-- (void)setBlurHidden:(BOOL)a3
+- (void)setBlurHidden:(BOOL)hidden
 {
-  self->_blurHidden = a3;
-  if (a3)
+  self->_blurHidden = hidden;
+  if (hidden)
   {
     [MEMORY[0x277D75348] systemBackgroundColor];
   }
@@ -122,68 +122,68 @@ uint64_t __111__HRStackedButtonView_buddyStackedButtonViewWithTitles_footerText_
   [(HRStackedButtonView *)self setBackgroundColor:v4];
 }
 
-- (void)alignBlurViewHorizontalConstraintsWithView:(id)a3
+- (void)alignBlurViewHorizontalConstraintsWithView:(id)view
 {
   v24[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HRStackedButtonView *)self backgroundBlurViewLeadingConstraint];
+  viewCopy = view;
+  backgroundBlurViewLeadingConstraint = [(HRStackedButtonView *)self backgroundBlurViewLeadingConstraint];
 
-  if (v5)
+  if (backgroundBlurViewLeadingConstraint)
   {
     v6 = MEMORY[0x277CCAAD0];
-    v7 = [(HRStackedButtonView *)self backgroundBlurViewLeadingConstraint];
-    v24[0] = v7;
+    backgroundBlurViewLeadingConstraint2 = [(HRStackedButtonView *)self backgroundBlurViewLeadingConstraint];
+    v24[0] = backgroundBlurViewLeadingConstraint2;
     v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v24 count:1];
     [v6 deactivateConstraints:v8];
 
     [(HRStackedButtonView *)self setBackgroundBlurViewLeadingConstraint:0];
   }
 
-  v9 = [(HRStackedButtonView *)self backgroundBlurViewTrailingConstraint];
+  backgroundBlurViewTrailingConstraint = [(HRStackedButtonView *)self backgroundBlurViewTrailingConstraint];
 
-  if (v9)
+  if (backgroundBlurViewTrailingConstraint)
   {
     v10 = MEMORY[0x277CCAAD0];
-    v11 = [(HRStackedButtonView *)self backgroundBlurViewTrailingConstraint];
-    v23 = v11;
+    backgroundBlurViewTrailingConstraint2 = [(HRStackedButtonView *)self backgroundBlurViewTrailingConstraint];
+    v23 = backgroundBlurViewTrailingConstraint2;
     v12 = [MEMORY[0x277CBEA60] arrayWithObjects:&v23 count:1];
     [v10 deactivateConstraints:v12];
 
     [(HRStackedButtonView *)self setBackgroundBlurViewTrailingConstraint:0];
   }
 
-  v13 = [(HRStackedButtonView *)self backgroundBlurView];
-  v14 = [v13 leadingAnchor];
-  v15 = [v4 leadingAnchor];
-  v16 = [v14 constraintEqualToAnchor:v15];
+  backgroundBlurView = [(HRStackedButtonView *)self backgroundBlurView];
+  leadingAnchor = [backgroundBlurView leadingAnchor];
+  leadingAnchor2 = [viewCopy leadingAnchor];
+  v16 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [(HRStackedButtonView *)self setBackgroundBlurViewLeadingConstraint:v16];
 
-  v17 = [(HRStackedButtonView *)self backgroundBlurView];
-  v18 = [v17 trailingAnchor];
-  v19 = [v4 trailingAnchor];
+  backgroundBlurView2 = [(HRStackedButtonView *)self backgroundBlurView];
+  trailingAnchor = [backgroundBlurView2 trailingAnchor];
+  trailingAnchor2 = [viewCopy trailingAnchor];
 
-  v20 = [v18 constraintEqualToAnchor:v19];
+  v20 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [(HRStackedButtonView *)self setBackgroundBlurViewTrailingConstraint:v20];
 
-  v21 = [(HRStackedButtonView *)self backgroundBlurViewLeadingConstraint];
-  [v21 setActive:1];
+  backgroundBlurViewLeadingConstraint3 = [(HRStackedButtonView *)self backgroundBlurViewLeadingConstraint];
+  [backgroundBlurViewLeadingConstraint3 setActive:1];
 
-  v22 = [(HRStackedButtonView *)self backgroundBlurViewTrailingConstraint];
-  [v22 setActive:1];
+  backgroundBlurViewTrailingConstraint3 = [(HRStackedButtonView *)self backgroundBlurViewTrailingConstraint];
+  [backgroundBlurViewTrailingConstraint3 setActive:1];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v9.receiver = self;
   v9.super_class = HRStackedButtonView;
-  [(HRStackedButtonView *)&v9 traitCollectionDidChange:v4];
-  if (v4)
+  [(HRStackedButtonView *)&v9 traitCollectionDidChange:changeCopy];
+  if (changeCopy)
   {
-    v5 = [(HRStackedButtonView *)self traitCollection];
-    v6 = [v5 preferredContentSizeCategory];
-    v7 = [v4 preferredContentSizeCategory];
-    v8 = [v6 isEqualToString:v7];
+    traitCollection = [(HRStackedButtonView *)self traitCollection];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+    preferredContentSizeCategory2 = [changeCopy preferredContentSizeCategory];
+    v8 = [preferredContentSizeCategory isEqualToString:preferredContentSizeCategory2];
 
     if ((v8 & 1) == 0)
     {
@@ -192,19 +192,19 @@ uint64_t __111__HRStackedButtonView_buddyStackedButtonViewWithTitles_footerText_
   }
 }
 
-- (void)actionButtonTapped:(id)a3
+- (void)actionButtonTapped:(id)tapped
 {
-  v4 = a3;
-  v6 = [(HRStackedButtonView *)self delegate];
-  v5 = [v4 tag];
+  tappedCopy = tapped;
+  delegate = [(HRStackedButtonView *)self delegate];
+  v5 = [tappedCopy tag];
 
-  [v6 stackedButtonView:self didTapButtonAtIndex:v5];
+  [delegate stackedButtonView:self didTapButtonAtIndex:v5];
 }
 
 - (void)_setUpButtons
 {
-  v3 = [(HRStackedButtonView *)self _createButtons];
-  [(HRStackedButtonView *)self setButtons:v3];
+  _createButtons = [(HRStackedButtonView *)self _createButtons];
+  [(HRStackedButtonView *)self setButtons:_createButtons];
 
   [(HRStackedButtonView *)self _setUpFooterText];
   [(HRStackedButtonView *)self _assignConstraintsForButtons];
@@ -219,34 +219,34 @@ uint64_t __111__HRStackedButtonView_buddyStackedButtonViewWithTitles_footerText_
   [(HRStackedButtonView *)self setBackgroundBlurEffect:v3];
 
   v4 = objc_alloc(MEMORY[0x277D75D68]);
-  v5 = [(HRStackedButtonView *)self backgroundBlurEffect];
-  v6 = [v4 initWithEffect:v5];
+  backgroundBlurEffect = [(HRStackedButtonView *)self backgroundBlurEffect];
+  v6 = [v4 initWithEffect:backgroundBlurEffect];
   [(HRStackedButtonView *)self setBackgroundBlurView:v6];
 
-  v7 = [(HRStackedButtonView *)self backgroundBlurView];
-  [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
+  backgroundBlurView = [(HRStackedButtonView *)self backgroundBlurView];
+  [backgroundBlurView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v8 = [(HRStackedButtonView *)self backgroundBlurView];
-  [(HRStackedButtonView *)self addSubview:v8];
+  backgroundBlurView2 = [(HRStackedButtonView *)self backgroundBlurView];
+  [(HRStackedButtonView *)self addSubview:backgroundBlurView2];
 
-  v9 = [(HRStackedButtonView *)self backgroundBlurView];
-  [v9 hk_alignVerticalConstraintsWithView:self margin:0.0];
+  backgroundBlurView3 = [(HRStackedButtonView *)self backgroundBlurView];
+  [backgroundBlurView3 hk_alignVerticalConstraintsWithView:self margin:0.0];
 
   [(HRStackedButtonView *)self setBlurHidden:0];
 }
 
 - (id)_createButtons
 {
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [(HRStackedButtonView *)self titles];
+  array = [MEMORY[0x277CBEB18] array];
+  titles = [(HRStackedButtonView *)self titles];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __37__HRStackedButtonView__createButtons__block_invoke;
   v9[3] = &unk_2796FBAA8;
   v9[4] = self;
-  v5 = v3;
+  v5 = array;
   v10 = v5;
-  [v4 enumerateObjectsUsingBlock:v9];
+  [titles enumerateObjectsUsingBlock:v9];
 
   v6 = v10;
   v7 = v5;
@@ -307,54 +307,54 @@ LABEL_9:
 
 - (void)_setUpFooterText
 {
-  v3 = [(HRStackedButtonView *)self footerText];
+  footerText = [(HRStackedButtonView *)self footerText];
 
-  if (v3)
+  if (footerText)
   {
     v4 = objc_alloc_init(MEMORY[0x277D756B8]);
     [(HRStackedButtonView *)self setFooterTextLabel:v4];
 
-    v5 = [(HRStackedButtonView *)self _attributedFooterText];
-    v6 = [(HRStackedButtonView *)self footerTextLabel];
-    [v6 setAttributedText:v5];
+    _attributedFooterText = [(HRStackedButtonView *)self _attributedFooterText];
+    footerTextLabel = [(HRStackedButtonView *)self footerTextLabel];
+    [footerTextLabel setAttributedText:_attributedFooterText];
 
-    v7 = [(HRStackedButtonView *)self footerTextLabel];
-    [v7 setAdjustsFontForContentSizeCategory:1];
+    footerTextLabel2 = [(HRStackedButtonView *)self footerTextLabel];
+    [footerTextLabel2 setAdjustsFontForContentSizeCategory:1];
 
-    v8 = [(HRStackedButtonView *)self footerTextLabel];
-    [v8 setNumberOfLines:0];
+    footerTextLabel3 = [(HRStackedButtonView *)self footerTextLabel];
+    [footerTextLabel3 setNumberOfLines:0];
 
-    v9 = [(HRStackedButtonView *)self footerTextLabel];
-    [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
+    footerTextLabel4 = [(HRStackedButtonView *)self footerTextLabel];
+    [footerTextLabel4 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v10 = [(HRStackedButtonView *)self footerTextAlignment];
-    v11 = [(HRStackedButtonView *)self footerTextLabel];
-    [v11 setTextAlignment:v10];
+    footerTextAlignment = [(HRStackedButtonView *)self footerTextAlignment];
+    footerTextLabel5 = [(HRStackedButtonView *)self footerTextLabel];
+    [footerTextLabel5 setTextAlignment:footerTextAlignment];
 
-    v12 = [(HRStackedButtonView *)self footerTextLabel];
-    [(HRStackedButtonView *)self addSubview:v12];
+    footerTextLabel6 = [(HRStackedButtonView *)self footerTextLabel];
+    [(HRStackedButtonView *)self addSubview:footerTextLabel6];
 
-    v13 = [(HRStackedButtonView *)self footerTextLabel];
-    [v13 hk_alignHorizontalConstraintsWithView:self margin:0.0];
+    footerTextLabel7 = [(HRStackedButtonView *)self footerTextLabel];
+    [footerTextLabel7 hk_alignHorizontalConstraintsWithView:self margin:0.0];
 
     [objc_opt_class() _footerTextSpacingForValue:30.0];
     [(HRStackedButtonView *)self setFirstTopConstant:?];
-    v14 = [(HRStackedButtonView *)self footerTextLabel];
-    v15 = [v14 firstBaselineAnchor];
-    v16 = [(HRStackedButtonView *)self topAnchor];
+    footerTextLabel8 = [(HRStackedButtonView *)self footerTextLabel];
+    firstBaselineAnchor = [footerTextLabel8 firstBaselineAnchor];
+    topAnchor = [(HRStackedButtonView *)self topAnchor];
     [(HRStackedButtonView *)self firstTopConstant];
-    v17 = [v15 constraintEqualToAnchor:v16 constant:?];
+    v17 = [firstBaselineAnchor constraintEqualToAnchor:topAnchor constant:?];
     [v17 setActive:1];
 
-    v20 = [(HRStackedButtonView *)self footerTextLabel];
-    v18 = [v20 lastBaselineAnchor];
-    [(HRStackedButtonView *)self setFirstTopAnchor:v18];
+    footerTextLabel9 = [(HRStackedButtonView *)self footerTextLabel];
+    lastBaselineAnchor = [footerTextLabel9 lastBaselineAnchor];
+    [(HRStackedButtonView *)self setFirstTopAnchor:lastBaselineAnchor];
   }
 
   else
   {
-    v19 = [(HRStackedButtonView *)self topAnchor];
-    [(HRStackedButtonView *)self setFirstTopAnchor:v19];
+    topAnchor2 = [(HRStackedButtonView *)self topAnchor];
+    [(HRStackedButtonView *)self setFirstTopAnchor:topAnchor2];
 
     [(HRStackedButtonView *)self setFirstTopConstant:0.0];
   }
@@ -362,13 +362,13 @@ LABEL_9:
 
 - (void)_assignConstraintsForButtons
 {
-  v3 = [(HRStackedButtonView *)self buttons];
+  buttons = [(HRStackedButtonView *)self buttons];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __51__HRStackedButtonView__assignConstraintsForButtons__block_invoke;
   v4[3] = &unk_2796FBAD0;
   v4[4] = self;
-  [v3 enumerateObjectsUsingBlock:v4];
+  [buttons enumerateObjectsUsingBlock:v4];
 }
 
 void __51__HRStackedButtonView__assignConstraintsForButtons__block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -474,58 +474,58 @@ LABEL_24:
 
 - (void)_createViewBottomConstraint
 {
-  v3 = [(HRStackedButtonView *)self styles];
-  v4 = [v3 lastObject];
-  v5 = [v4 integerValue];
+  styles = [(HRStackedButtonView *)self styles];
+  lastObject = [styles lastObject];
+  integerValue = [lastObject integerValue];
 
-  if ((v5 - 1) >= 2)
+  if ((integerValue - 1) >= 2)
   {
-    if (v5)
+    if (integerValue)
     {
       goto LABEL_6;
     }
 
-    v6 = [(HRStackedButtonView *)self bottomAnchor];
-    v7 = [(HRStackedButtonView *)self buttons];
-    v8 = [v7 lastObject];
-    v9 = [v8 lastBaselineAnchor];
+    bottomAnchor = [(HRStackedButtonView *)self bottomAnchor];
+    buttons = [(HRStackedButtonView *)self buttons];
+    lastObject2 = [buttons lastObject];
+    lastBaselineAnchor = [lastObject2 lastBaselineAnchor];
   }
 
   else
   {
-    v6 = [(HRStackedButtonView *)self bottomAnchor];
-    v7 = [(HRStackedButtonView *)self buttons];
-    v8 = [v7 lastObject];
-    v9 = [v8 bottomAnchor];
+    bottomAnchor = [(HRStackedButtonView *)self bottomAnchor];
+    buttons = [(HRStackedButtonView *)self buttons];
+    lastObject2 = [buttons lastObject];
+    lastBaselineAnchor = [lastObject2 bottomAnchor];
   }
 
-  v10 = v9;
-  v11 = [v6 constraintEqualToAnchor:v9];
+  v10 = lastBaselineAnchor;
+  v11 = [bottomAnchor constraintEqualToAnchor:lastBaselineAnchor];
   [(HRStackedButtonView *)self setBottomConstraint:v11];
 
 LABEL_6:
-  v12 = [(HRStackedButtonView *)self bottomConstraint];
-  [v12 setActive:1];
+  bottomConstraint = [(HRStackedButtonView *)self bottomConstraint];
+  [bottomConstraint setActive:1];
 }
 
 - (void)_updateBottomConstraint
 {
-  v3 = [(HRStackedButtonView *)self styles];
-  v4 = [v3 lastObject];
-  v5 = [v4 integerValue];
+  styles = [(HRStackedButtonView *)self styles];
+  lastObject = [styles lastObject];
+  integerValue = [lastObject integerValue];
 
   if ([(HRStackedButtonView *)self lastButtonMode]== 1)
   {
-    v6 = [(HRStackedButtonView *)self titles];
-    [v6 count];
+    titles = [(HRStackedButtonView *)self titles];
+    [titles count];
   }
 
-  if (v5 == 2)
+  if (integerValue == 2)
   {
     goto LABEL_9;
   }
 
-  if (v5 == 1)
+  if (integerValue == 1)
   {
     [(HRStackedButtonView *)self lastButtonMode];
 LABEL_9:
@@ -533,7 +533,7 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (v5)
+  if (integerValue)
   {
     v7 = 0.0;
   }
@@ -550,19 +550,19 @@ LABEL_10:
     v7 = v8;
   }
 
-  v9 = [(HRStackedButtonView *)self bottomConstraint];
-  [v9 setConstant:v7];
+  bottomConstraint = [(HRStackedButtonView *)self bottomConstraint];
+  [bottomConstraint setConstant:v7];
 }
 
 - (void)_updateForCurrentSizeCategory
 {
-  v3 = [(HRStackedButtonView *)self footerText];
+  footerText = [(HRStackedButtonView *)self footerText];
 
-  if (v3)
+  if (footerText)
   {
-    v4 = [(HRStackedButtonView *)self _attributedFooterText];
-    v5 = [(HRStackedButtonView *)self footerTextLabel];
-    [v5 setAttributedText:v4];
+    _attributedFooterText = [(HRStackedButtonView *)self _attributedFooterText];
+    footerTextLabel = [(HRStackedButtonView *)self footerTextLabel];
+    [footerTextLabel setAttributedText:_attributedFooterText];
 
     [(HRStackedButtonView *)self setNeedsLayout];
   }
@@ -571,38 +571,38 @@ LABEL_10:
 - (id)_attributedFooterText
 {
   v3 = MEMORY[0x277CCAB48];
-  v4 = [(HRStackedButtonView *)self footerText];
+  footerText = [(HRStackedButtonView *)self footerText];
   v5 = *MEMORY[0x277D769D0];
-  v6 = [MEMORY[0x277D75348] secondaryLabelColor];
-  v7 = [(HRStackedButtonView *)self boldFooterText];
-  v8 = [v3 hrui_attributedStringForText:v4 style:v5 color:v6 boldText:v7];
+  secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+  boldFooterText = [(HRStackedButtonView *)self boldFooterText];
+  v8 = [v3 hrui_attributedStringForText:footerText style:v5 color:secondaryLabelColor boldText:boldFooterText];
 
   return v8;
 }
 
 - (id)firstBaselineAnchor
 {
-  v2 = [(HRStackedButtonView *)self buttons];
-  v3 = [v2 firstObject];
-  v4 = [v3 firstBaselineAnchor];
+  buttons = [(HRStackedButtonView *)self buttons];
+  firstObject = [buttons firstObject];
+  firstBaselineAnchor = [firstObject firstBaselineAnchor];
 
-  return v4;
+  return firstBaselineAnchor;
 }
 
 - (id)lastBaselineAnchor
 {
-  v2 = [(HRStackedButtonView *)self buttons];
-  v3 = [v2 lastObject];
-  v4 = [v3 lastBaselineAnchor];
+  buttons = [(HRStackedButtonView *)self buttons];
+  lastObject = [buttons lastObject];
+  lastBaselineAnchor = [lastObject lastBaselineAnchor];
 
-  return v4;
+  return lastBaselineAnchor;
 }
 
 + (id)_footerTextFont
 {
   v2 = MEMORY[0x277D74300];
-  v3 = [objc_opt_class() _footerFontTextStyle];
-  v4 = [v2 preferredFontForTextStyle:v3];
+  _footerFontTextStyle = [objc_opt_class() _footerFontTextStyle];
+  v4 = [v2 preferredFontForTextStyle:_footerFontTextStyle];
 
   return v4;
 }
@@ -610,25 +610,25 @@ LABEL_10:
 + (id)_footerTextBoldFont
 {
   v2 = MEMORY[0x277D74300];
-  v3 = [objc_opt_class() _footerFontTextStyle];
-  v4 = [v2 hk_preferredFontForTextStyle:v3 symbolicTraits:2];
+  _footerFontTextStyle = [objc_opt_class() _footerFontTextStyle];
+  v4 = [v2 hk_preferredFontForTextStyle:_footerFontTextStyle symbolicTraits:2];
 
   return v4;
 }
 
-+ (double)_footerTextSpacingForValue:(double)a3
++ (double)_footerTextSpacingForValue:(double)value
 {
-  v4 = [objc_opt_class() _footerTextFont];
-  [v4 _scaledValueForValue:a3];
+  _footerTextFont = [objc_opt_class() _footerTextFont];
+  [_footerTextFont _scaledValueForValue:value];
   v6 = v5;
 
   return v6;
 }
 
-+ (double)_buttonSpacingForValue:(double)a3
++ (double)_buttonSpacingForValue:(double)value
 {
   v4 = [MEMORY[0x277D74300] hk_preferredFontForTextStyle:*MEMORY[0x277D76918] symbolicTraits:0x8000];
-  [v4 _scaledValueForValue:a3];
+  [v4 _scaledValueForValue:value];
   v6 = v5;
 
   return v6;

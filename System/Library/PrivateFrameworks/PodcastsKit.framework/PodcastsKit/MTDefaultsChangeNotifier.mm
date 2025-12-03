@@ -1,24 +1,24 @@
 @interface MTDefaultsChangeNotifier
-- (MTDefaultsChangeNotifier)initWithProperties:(id)a3 defaults:(id)a4;
+- (MTDefaultsChangeNotifier)initWithProperties:(id)properties defaults:(id)defaults;
 - (void)_defaultsChanged;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)start;
 - (void)stop;
 @end
 
 @implementation MTDefaultsChangeNotifier
 
-- (MTDefaultsChangeNotifier)initWithProperties:(id)a3 defaults:(id)a4
+- (MTDefaultsChangeNotifier)initWithProperties:(id)properties defaults:(id)defaults
 {
-  v7 = a4;
+  defaultsCopy = defaults;
   v11.receiver = self;
   v11.super_class = MTDefaultsChangeNotifier;
-  v8 = [(MTDictionaryDiff *)&v11 initWithProperties:a3];
+  v8 = [(MTDictionaryDiff *)&v11 initWithProperties:properties];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_defaults, a4);
+    objc_storeStrong(&v8->_defaults, defaults);
   }
 
   return v9;
@@ -41,8 +41,8 @@
     v12 = 0u;
     v9 = 0u;
     v10 = 0u;
-    v3 = [(MTDictionaryDiff *)self properties];
-    v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+    properties = [(MTDictionaryDiff *)self properties];
+    v4 = [properties countByEnumeratingWithState:&v9 objects:v13 count:16];
     if (v4)
     {
       v5 = v4;
@@ -54,14 +54,14 @@
         {
           if (*v10 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(properties);
           }
 
           [(NSUserDefaults *)self->_defaults addObserver:self forKeyPath:*(*(&v9 + 1) + 8 * v7++) options:0 context:self];
         }
 
         while (v5 != v7);
-        v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+        v5 = [properties countByEnumeratingWithState:&v9 objects:v13 count:16];
       }
 
       while (v5);
@@ -83,8 +83,8 @@
     v12 = 0u;
     v9 = 0u;
     v10 = 0u;
-    v3 = [(MTDictionaryDiff *)self properties];
-    v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+    properties = [(MTDictionaryDiff *)self properties];
+    v4 = [properties countByEnumeratingWithState:&v9 objects:v13 count:16];
     if (v4)
     {
       v5 = v4;
@@ -96,14 +96,14 @@
         {
           if (*v10 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(properties);
           }
 
           [(NSUserDefaults *)self->_defaults removeObserver:self forKeyPath:*(*(&v9 + 1) + 8 * v7++) context:self];
         }
 
         while (v5 != v7);
-        v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+        v5 = [properties countByEnumeratingWithState:&v9 objects:v13 count:16];
       }
 
       while (v5);
@@ -115,24 +115,24 @@
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (a6 == self)
+  if (context == self)
   {
-    [(MTDefaultsChangeNotifier *)self _defaultsChanged:a3];
+    [(MTDefaultsChangeNotifier *)self _defaultsChanged:path];
   }
 }
 
 - (void)_defaultsChanged
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSUserDefaults *)v2->_defaults dictionaryRepresentation];
-  v4.receiver = v2;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  dictionaryRepresentation = [(NSUserDefaults *)selfCopy->_defaults dictionaryRepresentation];
+  v4.receiver = selfCopy;
   v4.super_class = MTDefaultsChangeNotifier;
-  [(MTDictionaryDiff *)&v4 setDictionary:v3];
+  [(MTDictionaryDiff *)&v4 setDictionary:dictionaryRepresentation];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 @end

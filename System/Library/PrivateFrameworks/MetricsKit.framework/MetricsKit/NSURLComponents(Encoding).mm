@@ -8,7 +8,7 @@
 {
   v26 = *MEMORY[0x277D85DE8];
   v4 = a3;
-  v20 = [[a1 alloc] initWithString:&stru_286A3A510];
+  v20 = [[self alloc] initWithString:&stru_286A3A510];
   v5 = objc_opt_new();
   v21 = 0u;
   v22 = 0u;
@@ -46,11 +46,11 @@
   }
 
   [v20 setQueryItems:v5];
-  v17 = [v20 percentEncodedQuery];
+  percentEncodedQuery = [v20 percentEncodedQuery];
 
   v18 = *MEMORY[0x277D85DE8];
 
-  return v17;
+  return percentEncodedQuery;
 }
 
 @end

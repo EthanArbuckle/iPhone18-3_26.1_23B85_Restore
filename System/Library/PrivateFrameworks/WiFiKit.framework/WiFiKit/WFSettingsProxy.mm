@@ -2,9 +2,9 @@
 + (id)defaultProxyConfiguration;
 + (id)offConfig;
 - (NSString)description;
-- (WFSettingsProxy)initWithAutoConfigureURL:(id)a3;
-- (WFSettingsProxy)initWithDictionary:(id)a3;
-- (WFSettingsProxy)initWithManualServer:(id)a3 port:(id)a4 username:(id)a5 password:(id)a6;
+- (WFSettingsProxy)initWithAutoConfigureURL:(id)l;
+- (WFSettingsProxy)initWithDictionary:(id)dictionary;
+- (WFSettingsProxy)initWithManualServer:(id)server port:(id)port username:(id)username password:(id)password;
 - (id)initDefaultConfig;
 @end
 
@@ -12,23 +12,23 @@
 
 + (id)offConfig
 {
-  v2 = [[WFSettingsProxy alloc] initDefaultConfig];
+  initDefaultConfig = [[WFSettingsProxy alloc] initDefaultConfig];
 
-  return v2;
+  return initDefaultConfig;
 }
 
-- (WFSettingsProxy)initWithDictionary:(id)a3
+- (WFSettingsProxy)initWithDictionary:(id)dictionary
 {
-  v5 = a3;
-  if (!v5)
+  dictionaryCopy = dictionary;
+  if (!dictionaryCopy)
   {
     v12 = 0;
-    v24 = self;
+    selfCopy = self;
     self = 0;
     goto LABEL_13;
   }
 
-  objc_storeStrong(&self->_items, a3);
+  objc_storeStrong(&self->_items, dictionary);
   items = self->_items;
   v7 = +[WFSettingsProxy defaultProxyConfiguration];
   LOBYTE(items) = [(NSDictionary *)items isEqualToDictionary:v7];
@@ -51,7 +51,7 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v13 = [v12 stringValue];
+    stringValue = [v12 stringValue];
   }
 
   else
@@ -62,11 +62,11 @@
       goto LABEL_9;
     }
 
-    v13 = v12;
+    stringValue = v12;
   }
 
   port = self->_port;
-  self->_port = v13;
+  self->_port = stringValue;
 
 LABEL_9:
   v15 = [(NSDictionary *)self->_items objectForKey:@"HTTPProxyUsername"];
@@ -91,8 +91,8 @@ LABEL_9:
 
   if (v23)
   {
-    v24 = [(NSDictionary *)self->_items objectForKey:v22];
-    self->_autoDiscoveryEnabled = [v24 BOOLValue];
+    selfCopy = [(NSDictionary *)self->_items objectForKey:v22];
+    self->_autoDiscoveryEnabled = [selfCopy BOOLValue];
 LABEL_13:
   }
 
@@ -101,49 +101,49 @@ LABEL_13:
 
 - (NSString)description
 {
-  v3 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  [v3 appendFormat:@"%@- ", v5];
+  [string appendFormat:@"%@- ", v5];
 
-  v6 = [(WFSettingsProxy *)self server];
-  [v3 appendFormat:@"Server: %@ ", v6];
+  server = [(WFSettingsProxy *)self server];
+  [string appendFormat:@"Server: %@ ", server];
 
-  v7 = [(WFSettingsProxy *)self port];
-  [v3 appendFormat:@" Port: %@ ", v7];
+  port = [(WFSettingsProxy *)self port];
+  [string appendFormat:@" Port: %@ ", port];
 
   if ([(WFSettingsProxy *)self authenticated])
   {
-    v8 = [(WFSettingsProxy *)self username];
-    [v3 appendFormat:@" Username: %@ ", v8];
+    username = [(WFSettingsProxy *)self username];
+    [string appendFormat:@" Username: %@ ", username];
 
-    v9 = [(WFSettingsProxy *)self password];
-    v10 = [v9 length];
+    password = [(WFSettingsProxy *)self password];
+    v10 = [password length];
     v11 = @"<not nil>";
     if (!v10)
     {
       v11 = @"<nil>";
     }
 
-    [v3 appendFormat:@" Password: %@", v11];
+    [string appendFormat:@" Password: %@", v11];
   }
 
   else
   {
-    v12 = [(WFSettingsProxy *)self autoConfigureURL];
+    autoConfigureURL = [(WFSettingsProxy *)self autoConfigureURL];
 
-    if (!v12)
+    if (!autoConfigureURL)
     {
       goto LABEL_8;
     }
 
-    v9 = [(WFSettingsProxy *)self autoConfigureURL];
-    [v3 appendFormat:@" AutoConfigureURL: %@", v9];
+    password = [(WFSettingsProxy *)self autoConfigureURL];
+    [string appendFormat:@" AutoConfigureURL: %@", password];
   }
 
 LABEL_8:
 
-  return v3;
+  return string;
 }
 
 + (id)defaultProxyConfiguration
@@ -160,12 +160,12 @@ LABEL_8:
   return v3;
 }
 
-- (WFSettingsProxy)initWithManualServer:(id)a3 port:(id)a4 username:(id)a5 password:(id)a6
+- (WFSettingsProxy)initWithManualServer:(id)server port:(id)port username:(id)username password:(id)password
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v26 = a6;
+  serverCopy = server;
+  portCopy = port;
+  usernameCopy = username;
+  passwordCopy = password;
   v27.receiver = self;
   v27.super_class = WFSettingsProxy;
   v14 = [(WFSettingsProxy *)&v27 init];
@@ -178,24 +178,24 @@ LABEL_8:
   v16 = [OUTLINED_FUNCTION_0_10() dictionaryWithDictionary:?];
 
   v14->_customProxy = 1;
-  objc_storeStrong(&v14->_server, a3);
-  if (v11)
+  objc_storeStrong(&v14->_server, server);
+  if (serverCopy)
   {
-    [(NSDictionary *)v16 setObject:v11 forKey:*MEMORY[0x277CE17C8]];
-    [(NSDictionary *)v16 setObject:v11 forKey:*MEMORY[0x277CE17E0]];
+    [(NSDictionary *)v16 setObject:serverCopy forKey:*MEMORY[0x277CE17C8]];
+    [(NSDictionary *)v16 setObject:serverCopy forKey:*MEMORY[0x277CE17E0]];
   }
 
-  objc_storeStrong(&v14->_port, a4);
-  if (v12)
+  objc_storeStrong(&v14->_port, port);
+  if (portCopy)
   {
-    v17 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v12, "integerValue")}];
+    v17 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(portCopy, "integerValue")}];
     v18 = *MEMORY[0x277CE17C0];
     [OUTLINED_FUNCTION_0_10() setObject:? forKey:?];
     v19 = *MEMORY[0x277CE17D8];
     [OUTLINED_FUNCTION_0_10() setObject:? forKey:?];
   }
 
-  if ([v13 length])
+  if ([usernameCopy length])
   {
     v14->_authenticated = 1;
 LABEL_9:
@@ -203,7 +203,7 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v20 = [v26 length];
+  v20 = [passwordCopy length];
   v14->_authenticated = v20 != 0;
   if (v20)
   {
@@ -211,17 +211,17 @@ LABEL_9:
   }
 
 LABEL_10:
-  objc_storeStrong(&v14->_username, a5);
-  if (v13)
+  objc_storeStrong(&v14->_username, username);
+  if (usernameCopy)
   {
-    [(NSDictionary *)v16 setObject:v13 forKey:@"HTTPProxyUsername"];
+    [(NSDictionary *)v16 setObject:usernameCopy forKey:@"HTTPProxyUsername"];
   }
 
   v21 = *MEMORY[0x277CE17B8];
   [OUTLINED_FUNCTION_0_10() setObject:? forKey:?];
   v22 = *MEMORY[0x277CE17D0];
   [OUTLINED_FUNCTION_0_10() setObject:? forKey:?];
-  objc_storeStrong(&v14->_password, a6);
+  objc_storeStrong(&v14->_password, password);
   items = v14->_items;
   v14->_items = v16;
   v24 = v16;
@@ -230,9 +230,9 @@ LABEL_13:
   return v14;
 }
 
-- (WFSettingsProxy)initWithAutoConfigureURL:(id)a3
+- (WFSettingsProxy)initWithAutoConfigureURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v15.receiver = self;
   v15.super_class = WFSettingsProxy;
   v6 = [(WFSettingsProxy *)&v15 init];
@@ -243,10 +243,10 @@ LABEL_13:
     v9 = [v7 dictionaryWithDictionary:v8];
 
     v6->_customProxy = 1;
-    objc_storeStrong(&v6->_autoConfigureURL, a3);
-    if (v5)
+    objc_storeStrong(&v6->_autoConfigureURL, l);
+    if (lCopy)
     {
-      v10 = v5;
+      v10 = lCopy;
     }
 
     else
@@ -255,7 +255,7 @@ LABEL_13:
     }
 
     v11 = MEMORY[0x277CE17F8];
-    if (v5)
+    if (lCopy)
     {
       v11 = MEMORY[0x277CE17F0];
     }

@@ -1,27 +1,27 @@
 @interface PSESchemaPSEClientEventMetadata
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (PSESchemaPSEClientEventMetadata)initWithDictionary:(id)a3;
-- (PSESchemaPSEClientEventMetadata)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (PSESchemaPSEClientEventMetadata)initWithDictionary:(id)dictionary;
+- (PSESchemaPSEClientEventMetadata)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasTriggerOrigin:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasTriggerOrigin:(BOOL)origin;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PSESchemaPSEClientEventMetadata
 
-- (PSESchemaPSEClientEventMetadata)initWithDictionary:(id)a3
+- (PSESchemaPSEClientEventMetadata)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v18.receiver = self;
   v18.super_class = PSESchemaPSEClientEventMetadata;
   v5 = [(PSESchemaPSEClientEventMetadata *)&v18 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"uiSessionId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"uiSessionId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -29,7 +29,7 @@
       [(PSESchemaPSEClientEventMetadata *)v5 setUiSessionId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"originalLastRequestId"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"originalLastRequestId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -37,14 +37,14 @@
       [(PSESchemaPSEClientEventMetadata *)v5 setOriginalLastRequestId:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"siriEngagementTaskSuccess"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"siriEngagementTaskSuccess"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PSESchemaPSEClientEventMetadata setSiriEngagementTaskSuccess:](v5, "setSiriEngagementTaskSuccess:", [v10 intValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"taskId"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"taskId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -52,7 +52,7 @@
       [(PSESchemaPSEClientEventMetadata *)v5 setTaskId:v12];
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"pseId"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"pseId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -60,7 +60,7 @@
       [(PSESchemaPSEClientEventMetadata *)v5 setPseId:v14];
     }
 
-    v15 = [v4 objectForKeyedSubscript:@"triggerOrigin"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"triggerOrigin"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -73,30 +73,30 @@
   return v5;
 }
 
-- (PSESchemaPSEClientEventMetadata)initWithJSON:(id)a3
+- (PSESchemaPSEClientEventMetadata)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PSESchemaPSEClientEventMetadata *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(PSESchemaPSEClientEventMetadata *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(PSESchemaPSEClientEventMetadata *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -109,36 +109,36 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_originalLastRequestId)
   {
-    v4 = [(PSESchemaPSEClientEventMetadata *)self originalLastRequestId];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    originalLastRequestId = [(PSESchemaPSEClientEventMetadata *)self originalLastRequestId];
+    dictionaryRepresentation = [originalLastRequestId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"originalLastRequestId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"originalLastRequestId"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"originalLastRequestId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"originalLastRequestId"];
     }
   }
 
   if (self->_pseId)
   {
-    v7 = [(PSESchemaPSEClientEventMetadata *)self pseId];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    pseId = [(PSESchemaPSEClientEventMetadata *)self pseId];
+    dictionaryRepresentation2 = [pseId dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"pseId"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"pseId"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"pseId"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"pseId"];
     }
   }
 
@@ -155,22 +155,22 @@
       v11 = off_1E78E13A0[v10];
     }
 
-    [v3 setObject:v11 forKeyedSubscript:@"siriEngagementTaskSuccess"];
+    [dictionary setObject:v11 forKeyedSubscript:@"siriEngagementTaskSuccess"];
   }
 
   if (self->_taskId)
   {
-    v12 = [(PSESchemaPSEClientEventMetadata *)self taskId];
-    v13 = [v12 dictionaryRepresentation];
-    if (v13)
+    taskId = [(PSESchemaPSEClientEventMetadata *)self taskId];
+    dictionaryRepresentation3 = [taskId dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v13 forKeyedSubscript:@"taskId"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"taskId"];
     }
 
     else
     {
-      v14 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v14 forKeyedSubscript:@"taskId"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"taskId"];
     }
   }
 
@@ -187,28 +187,28 @@
       v16 = off_1E78E13C0[v15];
     }
 
-    [v3 setObject:v16 forKeyedSubscript:@"triggerOrigin"];
+    [dictionary setObject:v16 forKeyedSubscript:@"triggerOrigin"];
   }
 
   if (self->_uiSessionId)
   {
-    v17 = [(PSESchemaPSEClientEventMetadata *)self uiSessionId];
-    v18 = [v17 dictionaryRepresentation];
-    if (v18)
+    uiSessionId = [(PSESchemaPSEClientEventMetadata *)self uiSessionId];
+    dictionaryRepresentation4 = [uiSessionId dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v18 forKeyedSubscript:@"uiSessionId"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"uiSessionId"];
     }
 
     else
     {
-      v19 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v19 forKeyedSubscript:@"uiSessionId"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"uiSessionId"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -240,28 +240,28 @@
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_25;
   }
 
-  v5 = [(PSESchemaPSEClientEventMetadata *)self uiSessionId];
-  v6 = [v4 uiSessionId];
-  if ((v5 != 0) == (v6 == 0))
+  uiSessionId = [(PSESchemaPSEClientEventMetadata *)self uiSessionId];
+  uiSessionId2 = [equalCopy uiSessionId];
+  if ((uiSessionId != 0) == (uiSessionId2 == 0))
   {
     goto LABEL_24;
   }
 
-  v7 = [(PSESchemaPSEClientEventMetadata *)self uiSessionId];
-  if (v7)
+  uiSessionId3 = [(PSESchemaPSEClientEventMetadata *)self uiSessionId];
+  if (uiSessionId3)
   {
-    v8 = v7;
-    v9 = [(PSESchemaPSEClientEventMetadata *)self uiSessionId];
-    v10 = [v4 uiSessionId];
-    v11 = [v9 isEqual:v10];
+    v8 = uiSessionId3;
+    uiSessionId4 = [(PSESchemaPSEClientEventMetadata *)self uiSessionId];
+    uiSessionId5 = [equalCopy uiSessionId];
+    v11 = [uiSessionId4 isEqual:uiSessionId5];
 
     if (!v11)
     {
@@ -273,20 +273,20 @@
   {
   }
 
-  v5 = [(PSESchemaPSEClientEventMetadata *)self originalLastRequestId];
-  v6 = [v4 originalLastRequestId];
-  if ((v5 != 0) == (v6 == 0))
+  uiSessionId = [(PSESchemaPSEClientEventMetadata *)self originalLastRequestId];
+  uiSessionId2 = [equalCopy originalLastRequestId];
+  if ((uiSessionId != 0) == (uiSessionId2 == 0))
   {
     goto LABEL_24;
   }
 
-  v12 = [(PSESchemaPSEClientEventMetadata *)self originalLastRequestId];
-  if (v12)
+  originalLastRequestId = [(PSESchemaPSEClientEventMetadata *)self originalLastRequestId];
+  if (originalLastRequestId)
   {
-    v13 = v12;
-    v14 = [(PSESchemaPSEClientEventMetadata *)self originalLastRequestId];
-    v15 = [v4 originalLastRequestId];
-    v16 = [v14 isEqual:v15];
+    v13 = originalLastRequestId;
+    originalLastRequestId2 = [(PSESchemaPSEClientEventMetadata *)self originalLastRequestId];
+    originalLastRequestId3 = [equalCopy originalLastRequestId];
+    v16 = [originalLastRequestId2 isEqual:originalLastRequestId3];
 
     if (!v16)
     {
@@ -298,7 +298,7 @@
   {
   }
 
-  if ((*&self->_has & 1) != (v4[52] & 1))
+  if ((*&self->_has & 1) != (equalCopy[52] & 1))
   {
     goto LABEL_25;
   }
@@ -306,26 +306,26 @@
   if (*&self->_has)
   {
     siriEngagementTaskSuccess = self->_siriEngagementTaskSuccess;
-    if (siriEngagementTaskSuccess != [v4 siriEngagementTaskSuccess])
+    if (siriEngagementTaskSuccess != [equalCopy siriEngagementTaskSuccess])
     {
       goto LABEL_25;
     }
   }
 
-  v5 = [(PSESchemaPSEClientEventMetadata *)self taskId];
-  v6 = [v4 taskId];
-  if ((v5 != 0) == (v6 == 0))
+  uiSessionId = [(PSESchemaPSEClientEventMetadata *)self taskId];
+  uiSessionId2 = [equalCopy taskId];
+  if ((uiSessionId != 0) == (uiSessionId2 == 0))
   {
     goto LABEL_24;
   }
 
-  v18 = [(PSESchemaPSEClientEventMetadata *)self taskId];
-  if (v18)
+  taskId = [(PSESchemaPSEClientEventMetadata *)self taskId];
+  if (taskId)
   {
-    v19 = v18;
-    v20 = [(PSESchemaPSEClientEventMetadata *)self taskId];
-    v21 = [v4 taskId];
-    v22 = [v20 isEqual:v21];
+    v19 = taskId;
+    taskId2 = [(PSESchemaPSEClientEventMetadata *)self taskId];
+    taskId3 = [equalCopy taskId];
+    v22 = [taskId2 isEqual:taskId3];
 
     if (!v22)
     {
@@ -337,22 +337,22 @@
   {
   }
 
-  v5 = [(PSESchemaPSEClientEventMetadata *)self pseId];
-  v6 = [v4 pseId];
-  if ((v5 != 0) == (v6 == 0))
+  uiSessionId = [(PSESchemaPSEClientEventMetadata *)self pseId];
+  uiSessionId2 = [equalCopy pseId];
+  if ((uiSessionId != 0) == (uiSessionId2 == 0))
   {
 LABEL_24:
 
     goto LABEL_25;
   }
 
-  v23 = [(PSESchemaPSEClientEventMetadata *)self pseId];
-  if (v23)
+  pseId = [(PSESchemaPSEClientEventMetadata *)self pseId];
+  if (pseId)
   {
-    v24 = v23;
-    v25 = [(PSESchemaPSEClientEventMetadata *)self pseId];
-    v26 = [v4 pseId];
-    v27 = [v25 isEqual:v26];
+    v24 = pseId;
+    pseId2 = [(PSESchemaPSEClientEventMetadata *)self pseId];
+    pseId3 = [equalCopy pseId];
+    v27 = [pseId2 isEqual:pseId3];
 
     if (!v27)
     {
@@ -365,9 +365,9 @@ LABEL_24:
   }
 
   v30 = (*&self->_has >> 1) & 1;
-  if (v30 == ((v4[52] >> 1) & 1))
+  if (v30 == ((equalCopy[52] >> 1) & 1))
   {
-    if (!v30 || (triggerOrigin = self->_triggerOrigin, triggerOrigin == [v4 triggerOrigin]))
+    if (!v30 || (triggerOrigin = self->_triggerOrigin, triggerOrigin == [equalCopy triggerOrigin]))
     {
       v28 = 1;
       goto LABEL_26;
@@ -381,22 +381,22 @@ LABEL_26:
   return v28;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v12 = a3;
-  v4 = [(PSESchemaPSEClientEventMetadata *)self uiSessionId];
+  toCopy = to;
+  uiSessionId = [(PSESchemaPSEClientEventMetadata *)self uiSessionId];
 
-  if (v4)
+  if (uiSessionId)
   {
-    v5 = [(PSESchemaPSEClientEventMetadata *)self uiSessionId];
+    uiSessionId2 = [(PSESchemaPSEClientEventMetadata *)self uiSessionId];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(PSESchemaPSEClientEventMetadata *)self originalLastRequestId];
+  originalLastRequestId = [(PSESchemaPSEClientEventMetadata *)self originalLastRequestId];
 
-  if (v6)
+  if (originalLastRequestId)
   {
-    v7 = [(PSESchemaPSEClientEventMetadata *)self originalLastRequestId];
+    originalLastRequestId2 = [(PSESchemaPSEClientEventMetadata *)self originalLastRequestId];
     PBDataWriterWriteSubmessage();
   }
 
@@ -405,19 +405,19 @@ LABEL_26:
     PBDataWriterWriteInt32Field();
   }
 
-  v8 = [(PSESchemaPSEClientEventMetadata *)self taskId];
+  taskId = [(PSESchemaPSEClientEventMetadata *)self taskId];
 
-  if (v8)
+  if (taskId)
   {
-    v9 = [(PSESchemaPSEClientEventMetadata *)self taskId];
+    taskId2 = [(PSESchemaPSEClientEventMetadata *)self taskId];
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(PSESchemaPSEClientEventMetadata *)self pseId];
+  pseId = [(PSESchemaPSEClientEventMetadata *)self pseId];
 
-  if (v10)
+  if (pseId)
   {
-    v11 = [(PSESchemaPSEClientEventMetadata *)self pseId];
+    pseId2 = [(PSESchemaPSEClientEventMetadata *)self pseId];
     PBDataWriterWriteSubmessage();
   }
 
@@ -427,9 +427,9 @@ LABEL_26:
   }
 }
 
-- (void)setHasTriggerOrigin:(BOOL)a3
+- (void)setHasTriggerOrigin:(BOOL)origin
 {
-  if (a3)
+  if (origin)
   {
     v3 = 2;
   }
@@ -442,44 +442,44 @@ LABEL_26:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v19.receiver = self;
   v19.super_class = PSESchemaPSEClientEventMetadata;
-  v5 = [(SISchemaInstrumentationMessage *)&v19 applySensitiveConditionsPolicy:v4];
-  v6 = [(PSESchemaPSEClientEventMetadata *)self uiSessionId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v19 applySensitiveConditionsPolicy:policyCopy];
+  uiSessionId = [(PSESchemaPSEClientEventMetadata *)self uiSessionId];
+  v7 = [uiSessionId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(PSESchemaPSEClientEventMetadata *)self deleteUiSessionId];
   }
 
-  v9 = [(PSESchemaPSEClientEventMetadata *)self originalLastRequestId];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  originalLastRequestId = [(PSESchemaPSEClientEventMetadata *)self originalLastRequestId];
+  v10 = [originalLastRequestId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(PSESchemaPSEClientEventMetadata *)self deleteOriginalLastRequestId];
   }
 
-  v12 = [(PSESchemaPSEClientEventMetadata *)self taskId];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  taskId = [(PSESchemaPSEClientEventMetadata *)self taskId];
+  v13 = [taskId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(PSESchemaPSEClientEventMetadata *)self deleteTaskId];
   }
 
-  v15 = [(PSESchemaPSEClientEventMetadata *)self pseId];
-  v16 = [v15 applySensitiveConditionsPolicy:v4];
-  v17 = [v16 suppressMessage];
+  pseId = [(PSESchemaPSEClientEventMetadata *)self pseId];
+  v16 = [pseId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage4 = [v16 suppressMessage];
 
-  if (v17)
+  if (suppressMessage4)
   {
     [(PSESchemaPSEClientEventMetadata *)self deletePseId];
   }

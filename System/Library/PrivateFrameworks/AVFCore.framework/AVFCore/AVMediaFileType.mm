@@ -1,11 +1,11 @@
 @interface AVMediaFileType
-+ (__CFString)figFileTypeProfileFromAVFileTypeProfile:(id)a3;
-+ (id)_mediaFileTypeWithFileTypeIdentifier:(id)a3 exceptionReason:(id *)a4;
++ (__CFString)figFileTypeProfileFromAVFileTypeProfile:(id)profile;
++ (id)_mediaFileTypeWithFileTypeIdentifier:(id)identifier exceptionReason:(id *)reason;
 + (id)allFileTypeIdentifiers;
 + (void)initialize;
-- (AVMediaFileType)initWithFileTypeIdentifier:(id)a3 exceptionReason:(id *)a4;
-- (BOOL)supportsFormat:(opaqueCMFormatDescription *)a3;
-- (BOOL)supportsOutputSettings:(id)a3 reason:(id *)a4;
+- (AVMediaFileType)initWithFileTypeIdentifier:(id)identifier exceptionReason:(id *)reason;
+- (BOOL)supportsFormat:(opaqueCMFormatDescription *)format;
+- (BOOL)supportsOutputSettings:(id)settings reason:(id *)reason;
 - (BOOL)supportsSampleReferences;
 - (NSSet)supportedMediaTypes;
 - (NSString)defaultFileExtension;
@@ -18,7 +18,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = objc_alloc(MEMORY[0x1E695DF20]);
     sFigFileFormatsForUTIs = [v2 initWithObjectsAndKeys:{@"com.apple.quicktime-movie", *MEMORY[0x1E6971B70], @"com.apple.quicktime-audio", *MEMORY[0x1E6971B68], @"public.mpeg-4", *MEMORY[0x1E6971B38], @"public.3gpp", *MEMORY[0x1E6971BA0], @"com.apple.m4v-video", *MEMORY[0x1E6971B98], @"com.apple.m4a-audio", *MEMORY[0x1E6971B50], @"com.apple.immersive-video", *MEMORY[0x1E6971B58], @"com.apple.coreaudio-format", *MEMORY[0x1E6971B80], @"com.microsoft.waveform-audio", *MEMORY[0x1E6971B40], @"public.aiff-audio", *MEMORY[0x1E6971B40], @"public.aifc-audio", *MEMORY[0x1E6971B48], @"org.3gpp.adaptive-multi-rate-audio", *MEMORY[0x1E6971B90], @"com.apple.itunes-timed-text", *MEMORY[0x1E6971B78], @"com.scenarist.closed-caption", *MEMORY[0x1E6971B88], @"org.w3.webvtt", 0}];
@@ -28,25 +28,25 @@
 + (id)allFileTypeIdentifiers
 {
   v2 = MEMORY[0x1E695DFD8];
-  v3 = [sFigFileFormatsForUTIs allKeys];
+  allKeys = [sFigFileFormatsForUTIs allKeys];
 
-  return [v2 setWithArray:v3];
+  return [v2 setWithArray:allKeys];
 }
 
-+ (id)_mediaFileTypeWithFileTypeIdentifier:(id)a3 exceptionReason:(id *)a4
++ (id)_mediaFileTypeWithFileTypeIdentifier:(id)identifier exceptionReason:(id *)reason
 {
-  v4 = [objc_alloc(objc_opt_class()) initWithFileTypeIdentifier:a3 exceptionReason:a4];
+  v4 = [objc_alloc(objc_opt_class()) initWithFileTypeIdentifier:identifier exceptionReason:reason];
 
   return v4;
 }
 
-- (AVMediaFileType)initWithFileTypeIdentifier:(id)a3 exceptionReason:(id *)a4
+- (AVMediaFileType)initWithFileTypeIdentifier:(id)identifier exceptionReason:(id *)reason
 {
   v20.receiver = self;
   v20.super_class = AVMediaFileType;
   v7 = [(AVMediaFileType *)&v20 init];
   v8 = v7;
-  if (!a3)
+  if (!identifier)
   {
     v13 = v7;
     v19 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector(v8 userInfo:{a2, @"invalid parameter not satisfying: %s", v14, v15, v16, v17, v18, "UTI != nil"), 0}];
@@ -55,14 +55,14 @@
 
   if (v7)
   {
-    v7->_uti = [a3 copyWithZone:{-[AVMediaFileType zone](v7, "zone")}];
-    v9 = [objc_opt_class() allFileTypeIdentifiers];
-    if ([v9 containsObject:v8->_uti])
+    v7->_uti = [identifier copyWithZone:{-[AVMediaFileType zone](v7, "zone")}];
+    allFileTypeIdentifiers = [objc_opt_class() allFileTypeIdentifiers];
+    if ([allFileTypeIdentifiers containsObject:v8->_uti])
     {
       v10 = objc_alloc_init(AVDispatchOnce);
       v11 = 0;
       v8->_supportsSampleReferencesOnce = v10;
-      if (!a4)
+      if (!reason)
       {
         return v8;
       }
@@ -71,9 +71,9 @@
     else
     {
 
-      v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid file type UTI.  Available file types are: %@", objc_msgSend(objc_msgSend(v9, "allObjects"), "componentsJoinedByString:", @", ")];
+      v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid file type UTI.  Available file types are: %@", objc_msgSend(objc_msgSend(allFileTypeIdentifiers, "allObjects"), "componentsJoinedByString:", @", ")];
       v8 = 0;
-      if (!a4)
+      if (!reason)
       {
         return v8;
       }
@@ -83,10 +83,10 @@
   }
 
   v11 = 0;
-  if (a4)
+  if (reason)
   {
 LABEL_7:
-    *a4 = v11;
+    *reason = v11;
   }
 
   return v8;
@@ -215,16 +215,16 @@ uint64_t __43__AVMediaFileType_supportsSampleReferences__block_invoke(uint64_t a
   return [v2 objectForKey:v3];
 }
 
-- (BOOL)supportsOutputSettings:(id)a3 reason:(id *)a4
+- (BOOL)supportsOutputSettings:(id)settings reason:(id *)reason
 {
   v6 = [AVMediaFileOutputSettingsValidator mediaFileOutputSettingsValidatorForFileType:self];
 
-  return [a3 validateUsingOutputSettingsValidator:v6 reason:a4];
+  return [settings validateUsingOutputSettingsValidator:v6 reason:reason];
 }
 
-- (BOOL)supportsFormat:(opaqueCMFormatDescription *)a3
+- (BOOL)supportsFormat:(opaqueCMFormatDescription *)format
 {
-  if (!a3)
+  if (!format)
   {
     v17 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"invalid parameter not satisfying: %s", v3, v4, v5, v6, v7, "formatDesc != NULL"), 0}];
     objc_exception_throw(v17);
@@ -240,14 +240,14 @@ uint64_t __43__AVMediaFileType_supportsSampleReferences__block_invoke(uint64_t a
   {
     if ([(NSString *)v10 isEqualToString:@"com.apple.m4v-video"])
     {
-      MediaType = CMFormatDescriptionGetMediaType(a3);
-      LOBYTE(v11) = 1;
+      MediaType = CMFormatDescriptionGetMediaType(format);
+      LOBYTE(figFormatReaderFileFormat) = 1;
       if (MediaType <= 1936684397)
       {
 LABEL_24:
         if (MediaType == 1668047728)
         {
-          return v11;
+          return figFormatReaderFileFormat;
         }
 
         goto LABEL_25;
@@ -257,7 +257,7 @@ LABEL_24:
       {
         if (MediaType == 1952807028)
         {
-          return v11;
+          return figFormatReaderFileFormat;
         }
 
         if (MediaType != 1936684398)
@@ -265,13 +265,13 @@ LABEL_24:
           goto LABEL_81;
         }
 
-        MediaSubType = CMFormatDescriptionGetMediaSubType(a3);
-        LOBYTE(v11) = 1;
+        MediaSubType = CMFormatDescriptionGetMediaSubType(format);
+        LOBYTE(figFormatReaderFileFormat) = 1;
         if (MediaSubType > 1700998450)
         {
           if (MediaSubType == 1700998451)
           {
-            return v11;
+            return figFormatReaderFileFormat;
           }
 
           v14 = 1970495843;
@@ -281,7 +281,7 @@ LABEL_24:
         {
           if (MediaSubType == 1633772320)
           {
-            return v11;
+            return figFormatReaderFileFormat;
           }
 
           v14 = 1633889587;
@@ -290,13 +290,13 @@ LABEL_24:
         goto LABEL_80;
       }
 
-      MediaSubType = CMFormatDescriptionGetMediaSubType(a3);
-      LOBYTE(v11) = 1;
+      MediaSubType = CMFormatDescriptionGetMediaSubType(format);
+      LOBYTE(figFormatReaderFileFormat) = 1;
       if (MediaSubType <= 1752589104)
       {
         if (MediaSubType == 1635148593)
         {
-          return v11;
+          return figFormatReaderFileFormat;
         }
 
         v14 = 1685481521;
@@ -306,7 +306,7 @@ LABEL_24:
 LABEL_66:
       if (MediaSubType == 1752589105)
       {
-        return v11;
+        return figFormatReaderFileFormat;
       }
 
       v14 = 1785750887;
@@ -315,22 +315,22 @@ LABEL_66:
 
     if ([(NSString *)v10 isEqualToString:@"com.apple.m4a-audio"])
     {
-      MediaType = CMFormatDescriptionGetMediaType(a3);
-      LOBYTE(v11) = 1;
+      MediaType = CMFormatDescriptionGetMediaType(format);
+      LOBYTE(figFormatReaderFileFormat) = 1;
       if (MediaType <= 1936684397)
       {
         if (MediaType == 1668047728)
         {
-          return v11;
+          return figFormatReaderFileFormat;
         }
 
         if (MediaType == 1751216244)
         {
-          MediaSubType = CMFormatDescriptionGetMediaSubType(a3);
-          LOBYTE(v11) = 1;
+          MediaSubType = CMFormatDescriptionGetMediaSubType(format);
+          LOBYTE(figFormatReaderFileFormat) = 1;
           if (MediaSubType == 1634230640 || MediaSubType == 1634230642)
           {
-            return v11;
+            return figFormatReaderFileFormat;
           }
 
           v14 = 1651866234;
@@ -338,28 +338,28 @@ LABEL_66:
         }
 
 LABEL_25:
-        if (MediaType != 1935832172 || CMFormatDescriptionGetMediaSubType(a3) != 1954034535)
+        if (MediaType != 1935832172 || CMFormatDescriptionGetMediaSubType(format) != 1954034535)
         {
 LABEL_81:
-          v11 = [(AVMediaFileType *)self figFormatReaderFileFormat];
-          if (v11)
+          figFormatReaderFileFormat = [(AVMediaFileType *)self figFormatReaderFileFormat];
+          if (figFormatReaderFileFormat)
           {
-            LOBYTE(v11) = FigRemakerCanFileTypeSupportFormatDescription() != 0;
+            LOBYTE(figFormatReaderFileFormat) = FigRemakerCanFileTypeSupportFormatDescription() != 0;
           }
 
-          return v11;
+          return figFormatReaderFileFormat;
         }
 
 LABEL_3:
-        LOBYTE(v11) = 1;
-        return v11;
+        LOBYTE(figFormatReaderFileFormat) = 1;
+        return figFormatReaderFileFormat;
       }
 
       if (MediaType != 1986618469)
       {
         if (MediaType == 1952807028)
         {
-          return v11;
+          return figFormatReaderFileFormat;
         }
 
         if (MediaType != 1936684398)
@@ -367,29 +367,29 @@ LABEL_3:
           goto LABEL_81;
         }
 
-        MediaSubType = CMFormatDescriptionGetMediaSubType(a3);
-        LOBYTE(v11) = 1;
+        MediaSubType = CMFormatDescriptionGetMediaSubType(format);
+        LOBYTE(figFormatReaderFileFormat) = 1;
         if (MediaSubType == 1633772320)
         {
-          return v11;
+          return figFormatReaderFileFormat;
         }
 
         v15 = 1633889587;
 LABEL_76:
         if (MediaSubType == v15)
         {
-          return v11;
+          return figFormatReaderFileFormat;
         }
 
         v14 = 1700998451;
         goto LABEL_80;
       }
 
-      MediaSubType = CMFormatDescriptionGetMediaSubType(a3);
-      LOBYTE(v11) = 1;
+      MediaSubType = CMFormatDescriptionGetMediaSubType(format);
+      LOBYTE(figFormatReaderFileFormat) = 1;
       if (MediaSubType == 1635148593)
       {
-        return v11;
+        return figFormatReaderFileFormat;
       }
 
       goto LABEL_66;
@@ -403,18 +403,18 @@ LABEL_76:
     if ([(NSString *)v10 isEqualToString:@"com.apple.itunes-timed-text"])
     {
 LABEL_37:
-      LOBYTE(v11) = 0;
-      return v11;
+      LOBYTE(figFormatReaderFileFormat) = 0;
+      return figFormatReaderFileFormat;
     }
 
     if ([(NSString *)v10 isEqualToString:@"com.scenarist.closed-caption"])
     {
-      if (CMFormatDescriptionGetMediaType(a3) != 1668047728)
+      if (CMFormatDescriptionGetMediaType(format) != 1668047728)
       {
         goto LABEL_37;
       }
 
-      LODWORD(v11) = CMFormatDescriptionGetMediaSubType(a3);
+      LODWORD(figFormatReaderFileFormat) = CMFormatDescriptionGetMediaSubType(format);
       v16 = 1664495672;
     }
 
@@ -425,21 +425,21 @@ LABEL_37:
         goto LABEL_81;
       }
 
-      if (CMFormatDescriptionGetMediaType(a3) != 1952807028)
+      if (CMFormatDescriptionGetMediaType(format) != 1952807028)
       {
         goto LABEL_37;
       }
 
-      LODWORD(v11) = CMFormatDescriptionGetMediaSubType(a3);
+      LODWORD(figFormatReaderFileFormat) = CMFormatDescriptionGetMediaSubType(format);
       v16 = 2004251764;
     }
 
-    LOBYTE(v11) = v11 == v16;
-    return v11;
+    LOBYTE(figFormatReaderFileFormat) = figFormatReaderFileFormat == v16;
+    return figFormatReaderFileFormat;
   }
 
-  MediaType = CMFormatDescriptionGetMediaType(a3);
-  LOBYTE(v11) = 1;
+  MediaType = CMFormatDescriptionGetMediaType(format);
+  LOBYTE(figFormatReaderFileFormat) = 1;
   if (MediaType <= 1936684397)
   {
     goto LABEL_24;
@@ -447,13 +447,13 @@ LABEL_37:
 
   if (MediaType == 1986618469)
   {
-    MediaSubType = CMFormatDescriptionGetMediaSubType(a3);
-    LOBYTE(v11) = 1;
+    MediaSubType = CMFormatDescriptionGetMediaSubType(format);
+    LOBYTE(figFormatReaderFileFormat) = 1;
     if (MediaSubType > 1785750886)
     {
       if (MediaSubType == 1785750887)
       {
-        return v11;
+        return figFormatReaderFileFormat;
       }
 
       v14 = 1836070006;
@@ -463,7 +463,7 @@ LABEL_37:
     {
       if (MediaSubType == 1635148593)
       {
-        return v11;
+        return figFormatReaderFileFormat;
       }
 
       v14 = 1752589105;
@@ -474,7 +474,7 @@ LABEL_37:
 
   if (MediaType == 1952807028)
   {
-    return v11;
+    return figFormatReaderFileFormat;
   }
 
   if (MediaType != 1936684398)
@@ -482,8 +482,8 @@ LABEL_37:
     goto LABEL_81;
   }
 
-  MediaSubType = CMFormatDescriptionGetMediaSubType(a3);
-  LOBYTE(v11) = 1;
+  MediaSubType = CMFormatDescriptionGetMediaSubType(format);
+  LOBYTE(figFormatReaderFileFormat) = 1;
   if (MediaSubType > 1667326831)
   {
     if (MediaSubType > 1902207847)
@@ -492,7 +492,7 @@ LABEL_37:
       {
         if (MediaSubType == 1902207848)
         {
-          return v11;
+          return figFormatReaderFileFormat;
         }
 
         v14 = 1902207856;
@@ -502,7 +502,7 @@ LABEL_37:
       {
         if (MediaSubType == 1970495843 || MediaSubType == 2053202792)
         {
-          return v11;
+          return figFormatReaderFileFormat;
         }
 
         v14 = 2053202800;
@@ -515,7 +515,7 @@ LABEL_37:
     {
       if (MediaSubType == 1885430115 || MediaSubType == 1885430632)
       {
-        return v11;
+        return figFormatReaderFileFormat;
       }
 
       v14 = 1885430640;
@@ -530,7 +530,7 @@ LABEL_37:
   {
     if (MediaSubType == 1633889587 || MediaSubType == 1634492771)
     {
-      return v11;
+      return figFormatReaderFileFormat;
     }
 
     v14 = 1667326824;
@@ -543,23 +543,23 @@ LABEL_37:
 LABEL_80:
     if (MediaSubType == v14)
     {
-      return v11;
+      return figFormatReaderFileFormat;
     }
 
     goto LABEL_81;
   }
 
-  return v11;
+  return figFormatReaderFileFormat;
 }
 
-+ (__CFString)figFileTypeProfileFromAVFileTypeProfile:(id)a3
++ (__CFString)figFileTypeProfileFromAVFileTypeProfile:(id)profile
 {
-  if ([a3 isEqual:@"MPEG4AppleHLS"])
+  if ([profile isEqual:@"MPEG4AppleHLS"])
   {
     return *MEMORY[0x1E69719F8];
   }
 
-  if ([a3 isEqual:@"MPEG4CMAFCompliant"])
+  if ([profile isEqual:@"MPEG4CMAFCompliant"])
   {
     return *MEMORY[0x1E6971A00];
   }

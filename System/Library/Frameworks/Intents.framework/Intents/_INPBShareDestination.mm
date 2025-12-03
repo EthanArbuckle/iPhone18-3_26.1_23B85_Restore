@@ -1,41 +1,41 @@
 @interface _INPBShareDestination
-- (BOOL)isEqual:(id)a3;
-- (_INPBShareDestination)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBShareDestination)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (int)StringAsDeviceType:(id)a3;
+- (int)StringAsDeviceType:(id)type;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setDeviceType:(int)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setDeviceType:(int)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBShareDestination
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(_INPBShareDestination *)self contact];
-  v5 = [v4 dictionaryRepresentation];
-  [v3 setObject:v5 forKeyedSubscript:@"contact"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  contact = [(_INPBShareDestination *)self contact];
+  dictionaryRepresentation = [contact dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"contact"];
 
   if ([(_INPBShareDestination *)self hasDeviceType])
   {
-    v6 = [(_INPBShareDestination *)self deviceType];
-    if (v6 >= 0xC)
+    deviceType = [(_INPBShareDestination *)self deviceType];
+    if (deviceType >= 0xC)
     {
-      v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v6];
+      v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", deviceType];
     }
 
     else
     {
-      v7 = off_1E7282958[v6];
+      v7 = off_1E7282958[deviceType];
     }
 
-    [v3 setObject:v7 forKeyedSubscript:@"deviceType"];
+    [dictionary setObject:v7 forKeyedSubscript:@"deviceType"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -54,26 +54,26 @@
   return v4 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_9;
   }
 
-  v5 = [(_INPBShareDestination *)self contact];
-  v6 = [v4 contact];
-  v7 = v6;
-  if ((v5 != 0) != (v6 == 0))
+  contact = [(_INPBShareDestination *)self contact];
+  contact2 = [equalCopy contact];
+  v7 = contact2;
+  if ((contact != 0) != (contact2 == 0))
   {
-    v8 = [(_INPBShareDestination *)self contact];
-    if (v8)
+    contact3 = [(_INPBShareDestination *)self contact];
+    if (contact3)
     {
-      v9 = v8;
-      v10 = [(_INPBShareDestination *)self contact];
-      v11 = [v4 contact];
-      v12 = [v10 isEqual:v11];
+      v9 = contact3;
+      contact4 = [(_INPBShareDestination *)self contact];
+      contact5 = [equalCopy contact];
+      v12 = [contact4 isEqual:contact5];
 
       if (!v12)
       {
@@ -85,10 +85,10 @@
     {
     }
 
-    v13 = [(_INPBShareDestination *)self hasDeviceType];
-    if (v13 == [v4 hasDeviceType])
+    hasDeviceType = [(_INPBShareDestination *)self hasDeviceType];
+    if (hasDeviceType == [equalCopy hasDeviceType])
     {
-      if (!-[_INPBShareDestination hasDeviceType](self, "hasDeviceType") || ![v4 hasDeviceType] || (deviceType = self->_deviceType, deviceType == objc_msgSend(v4, "deviceType")))
+      if (!-[_INPBShareDestination hasDeviceType](self, "hasDeviceType") || ![equalCopy hasDeviceType] || (deviceType = self->_deviceType, deviceType == objc_msgSend(equalCopy, "deviceType")))
       {
         v14 = 1;
         goto LABEL_10;
@@ -107,10 +107,10 @@ LABEL_10:
   return v14;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBShareDestination allocWithZone:](_INPBShareDestination init];
-  v6 = [(_INPBContact *)self->_contact copyWithZone:a3];
+  v6 = [(_INPBContact *)self->_contact copyWithZone:zone];
   [(_INPBShareDestination *)v5 setContact:v6];
 
   if ([(_INPBShareDestination *)self hasDeviceType])
@@ -121,38 +121,38 @@ LABEL_10:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBShareDestination *)self data];
+  coderCopy = coder;
+  data = [(_INPBShareDestination *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBShareDestination)initWithCoder:(id)a3
+- (_INPBShareDestination)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBShareDestination *)self initWithData:v6];
+    self = [(_INPBShareDestination *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v7 = a3;
-  v4 = [(_INPBShareDestination *)self contact];
+  toCopy = to;
+  contact = [(_INPBShareDestination *)self contact];
 
-  if (v4)
+  if (contact)
   {
-    v5 = [(_INPBShareDestination *)self contact];
+    contact2 = [(_INPBShareDestination *)self contact];
     PBDataWriterWriteSubmessage();
   }
 
@@ -163,65 +163,65 @@ LABEL_10:
   }
 }
 
-- (int)StringAsDeviceType:(id)a3
+- (int)StringAsDeviceType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"APPLE_TV"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"APPLE_TV"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"APPLE_WATCH"])
+  else if ([typeCopy isEqualToString:@"APPLE_WATCH"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"IPHONE"])
+  else if ([typeCopy isEqualToString:@"IPHONE"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"IPAD"])
+  else if ([typeCopy isEqualToString:@"IPAD"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"IPOD"])
+  else if ([typeCopy isEqualToString:@"IPOD"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"IMAC"])
+  else if ([typeCopy isEqualToString:@"IMAC"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"MAC"])
+  else if ([typeCopy isEqualToString:@"MAC"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"MACBOOK"])
+  else if ([typeCopy isEqualToString:@"MACBOOK"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"MACBOOK_AIR"])
+  else if ([typeCopy isEqualToString:@"MACBOOK_AIR"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"MACBOOK_PRO"])
+  else if ([typeCopy isEqualToString:@"MACBOOK_PRO"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"MAC_MINI"])
+  else if ([typeCopy isEqualToString:@"MAC_MINI"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"MAC_PRO"])
+  else if ([typeCopy isEqualToString:@"MAC_PRO"])
   {
     v4 = 11;
   }
@@ -234,10 +234,10 @@ LABEL_10:
   return v4;
 }
 
-- (void)setDeviceType:(int)a3
+- (void)setDeviceType:(int)type
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (type == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xFE;
   }
@@ -245,7 +245,7 @@ LABEL_10:
   else
   {
     *&self->_has = has | 1;
-    self->_deviceType = a3;
+    self->_deviceType = type;
   }
 }
 

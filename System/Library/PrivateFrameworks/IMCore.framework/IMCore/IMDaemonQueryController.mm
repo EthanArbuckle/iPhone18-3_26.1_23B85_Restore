@@ -1,9 +1,9 @@
 @interface IMDaemonQueryController
 - (IMDaemonController)daemonController;
-- (IMDaemonQueryController)initWithDaemonController:(id)a3;
-- (void)_daemonDisconnected:(id)a3;
+- (IMDaemonQueryController)initWithDaemonController:(id)controller;
+- (void)_daemonDisconnected:(id)disconnected;
 - (void)_validateOutstandingQueries;
-- (void)performQueryWithKey:(id)a3 expectsSynchronousResult:(BOOL)a4 block:(id)a5 completionHandler:(id)a6;
+- (void)performQueryWithKey:(id)key expectsSynchronousResult:(BOOL)result block:(id)block completionHandler:(id)handler;
 @end
 
 @implementation IMDaemonQueryController
@@ -84,9 +84,9 @@
   v29 = *MEMORY[0x1E69E9840];
 }
 
-- (IMDaemonQueryController)initWithDaemonController:(id)a3
+- (IMDaemonQueryController)initWithDaemonController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v13.receiver = self;
   v13.super_class = IMDaemonQueryController;
   v5 = [(IMDaemonQueryController *)&v13 init];
@@ -96,7 +96,7 @@
     queries = v5->_queries;
     v5->_queries = v6;
 
-    objc_storeWeak(&v5->_daemonController, v4);
+    objc_storeWeak(&v5->_daemonController, controllerCopy);
     v10 = objc_msgSend_defaultCenter(MEMORY[0x1E696AD88], v8, v9);
     objc_msgSend_addObserver_selector_name_object_(v10, v11, v5, sel__daemonDisconnected_, @"__kIMDaemonDidDisconnectNotification", 0);
   }
@@ -104,21 +104,21 @@
   return v5;
 }
 
-- (void)performQueryWithKey:(id)a3 expectsSynchronousResult:(BOOL)a4 block:(id)a5 completionHandler:(id)a6
+- (void)performQueryWithKey:(id)key expectsSynchronousResult:(BOOL)result block:(id)block completionHandler:(id)handler
 {
-  v8 = a4;
+  resultCopy = result;
   v53 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  keyCopy = key;
+  blockCopy = block;
+  handlerCopy = handler;
   objc_msgSend__validateOutstandingQueries(self, v13, v14);
-  if (v11)
+  if (blockCopy)
   {
-    v17 = objc_msgSend_length(v10, v15, v16);
+    v17 = objc_msgSend_length(keyCopy, v15, v16);
     v18 = @"anonymous";
     if (v17)
     {
-      v18 = v10;
+      v18 = keyCopy;
     }
 
     v19 = v18;
@@ -132,7 +132,7 @@
       if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
       {
         v27 = @"NO";
-        if (v8)
+        if (resultCopy)
         {
           v28 = @"YES";
         }
@@ -146,7 +146,7 @@
         v48 = v25;
         v50 = v28;
         v49 = 2112;
-        if (v12)
+        if (handlerCopy)
         {
           v27 = @"YES";
         }
@@ -158,12 +158,12 @@
     }
 
     v29 = [IMDaemonQuery alloc];
-    v31 = objc_msgSend_initWithID_key_completionHandler_(v29, v30, v25, v19, v12);
+    v31 = objc_msgSend_initWithID_key_completionHandler_(v29, v30, v25, v19, handlerCopy);
     v34 = objc_msgSend_queries(self, v32, v33);
     objc_msgSend_setObject_forKey_(v34, v35, v31, v25);
 
-    v11[2](v11, v25);
-    if (v8)
+    blockCopy[2](blockCopy, v25);
+    if (resultCopy)
     {
       v38 = objc_msgSend_queries(self, v36, v37);
       v40 = objc_msgSend_objectForKeyedSubscript_(v38, v39, v25);
@@ -191,9 +191,9 @@
   v46 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_daemonDisconnected:(id)a3
+- (void)_daemonDisconnected:(id)disconnected
 {
-  v4 = a3;
+  disconnectedCopy = disconnected;
   if (IMOSLoggingEnabled())
   {
     v7 = OSLogHandleForIMFoundationCategory();

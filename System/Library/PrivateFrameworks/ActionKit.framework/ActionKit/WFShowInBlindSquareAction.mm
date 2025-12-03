@@ -1,57 +1,57 @@
 @interface WFShowInBlindSquareAction
-- (id)smartPromptWithContentDescription:(id)a3 contentDestination:(id)a4 workflowName:(id)a5;
-- (void)runAsynchronouslyWithInput:(id)a3;
-- (void)showLocation:(id)a3 named:(id)a4 address:(id)a5 phoneNumber:(id)a6;
-- (void)showMapItem:(id)a3 named:(id)a4;
-- (void)showPlacemark:(id)a3 named:(id)a4 phoneNumber:(id)a5;
+- (id)smartPromptWithContentDescription:(id)description contentDestination:(id)destination workflowName:(id)name;
+- (void)runAsynchronouslyWithInput:(id)input;
+- (void)showLocation:(id)location named:(id)named address:(id)address phoneNumber:(id)number;
+- (void)showMapItem:(id)item named:(id)named;
+- (void)showPlacemark:(id)placemark named:(id)named phoneNumber:(id)number;
 @end
 
 @implementation WFShowInBlindSquareAction
 
-- (id)smartPromptWithContentDescription:(id)a3 contentDestination:(id)a4 workflowName:(id)a5
+- (id)smartPromptWithContentDescription:(id)description contentDestination:(id)destination workflowName:(id)name
 {
-  v6 = a3;
+  descriptionCopy = description;
   v7 = MEMORY[0x277CCACA8];
-  v8 = a5;
-  if (v6)
+  nameCopy = name;
+  if (descriptionCopy)
   {
     v9 = WFLocalizedString(@"Allow “%1$@” to show %2$@ in BlindSquare?");
-    [v7 localizedStringWithFormat:v9, v8, v6];
+    [v7 localizedStringWithFormat:v9, nameCopy, descriptionCopy];
   }
 
   else
   {
     v9 = WFLocalizedString(@"Allow “%1$@” to show content in BlindSquare?");
-    [v7 localizedStringWithFormat:v9, v8, v12];
+    [v7 localizedStringWithFormat:v9, nameCopy, v12];
   }
   v10 = ;
 
   return v10;
 }
 
-- (void)showLocation:(id)a3 named:(id)a4 address:(id)a5 phoneNumber:(id)a6
+- (void)showLocation:(id)location named:(id)named address:(id)address phoneNumber:(id)number
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  numberCopy = number;
+  addressCopy = address;
+  namedCopy = named;
+  locationCopy = location;
   v14 = [(WFShowInBlindSquareAction *)self parameterValueForKey:@"WFBlindSquareSimulation" ofClass:objc_opt_class()];
-  v15 = [v14 BOOLValue];
+  bOOLValue = [v14 BOOLValue];
   v16 = @"open";
-  if (v15)
+  if (bOOLValue)
   {
     v16 = @"simulate";
   }
 
   v17 = v16;
 
-  [v13 coordinate];
+  [locationCopy coordinate];
   v19 = v18;
   v21 = v20;
 
   v22 = [MEMORY[0x277CCACA8] stringWithFormat:@"%f", v19];
   v23 = [MEMORY[0x277CCACA8] stringWithFormat:@"%f", v21];
-  v24 = [objc_alloc(MEMORY[0x277CBEAC0]) initWithObjectsAndKeys:{v17, @"action", v22, @"lat", v23, @"lon", v12, @"name", v11, @"address", v10, @"phoneNumber", 0}];
+  v24 = [objc_alloc(MEMORY[0x277CBEAC0]) initWithObjectsAndKeys:{v17, @"action", v22, @"lat", v23, @"lon", namedCopy, @"name", addressCopy, @"address", numberCopy, @"phoneNumber", 0}];
 
   v25 = MEMORY[0x277CBEBC0];
   v26 = MEMORY[0x277CCACA8];
@@ -59,46 +59,46 @@
   v28 = [v26 stringWithFormat:@"blindsquare://api/place?%@", v27];
   v29 = [v25 URLWithString:v28];
 
-  v30 = [MEMORY[0x277CFC248] sharedContext];
-  v31 = [(WFShowInBlindSquareAction *)self appDescriptor];
-  v32 = [v31 bundleIdentifier];
-  v33 = [(WFShowInBlindSquareAction *)self userInterface];
+  mEMORY[0x277CFC248] = [MEMORY[0x277CFC248] sharedContext];
+  appDescriptor = [(WFShowInBlindSquareAction *)self appDescriptor];
+  bundleIdentifier = [appDescriptor bundleIdentifier];
+  userInterface = [(WFShowInBlindSquareAction *)self userInterface];
   v34[0] = MEMORY[0x277D85DD0];
   v34[1] = 3221225472;
   v34[2] = __68__WFShowInBlindSquareAction_showLocation_named_address_phoneNumber___block_invoke;
   v34[3] = &unk_278C1F530;
   v34[4] = self;
-  [v30 openURL:v29 withBundleIdentifier:v32 userInterface:v33 completionHandler:v34];
+  [mEMORY[0x277CFC248] openURL:v29 withBundleIdentifier:bundleIdentifier userInterface:userInterface completionHandler:v34];
 }
 
-- (void)showPlacemark:(id)a3 named:(id)a4 phoneNumber:(id)a5
+- (void)showPlacemark:(id)placemark named:(id)named phoneNumber:(id)number
 {
   v8 = MEMORY[0x277CFC528];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [v8 streetAddressWithPlacemark:v11 label:0];
-  v14 = [v12 addressString];
+  numberCopy = number;
+  namedCopy = named;
+  placemarkCopy = placemark;
+  v12 = [v8 streetAddressWithPlacemark:placemarkCopy label:0];
+  addressString = [v12 addressString];
 
-  v13 = [v11 location];
+  location = [placemarkCopy location];
 
-  [(WFShowInBlindSquareAction *)self showLocation:v13 named:v10 address:v14 phoneNumber:v9];
+  [(WFShowInBlindSquareAction *)self showLocation:location named:namedCopy address:addressString phoneNumber:numberCopy];
 }
 
-- (void)showMapItem:(id)a3 named:(id)a4
+- (void)showMapItem:(id)item named:(id)named
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [v7 placemark];
-  v8 = [v7 phoneNumber];
+  namedCopy = named;
+  itemCopy = item;
+  placemark = [itemCopy placemark];
+  phoneNumber = [itemCopy phoneNumber];
 
-  [(WFShowInBlindSquareAction *)self showPlacemark:v9 named:v6 phoneNumber:v8];
+  [(WFShowInBlindSquareAction *)self showPlacemark:placemark named:namedCopy phoneNumber:phoneNumber];
 }
 
-- (void)runAsynchronouslyWithInput:(id)a3
+- (void)runAsynchronouslyWithInput:(id)input
 {
   v8[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  inputCopy = input;
   v8[0] = objc_opt_class();
   v8[1] = objc_opt_class();
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:2];
@@ -107,7 +107,7 @@
   v7[2] = __56__WFShowInBlindSquareAction_runAsynchronouslyWithInput___block_invoke;
   v7[3] = &unk_278C211D0;
   v7[4] = self;
-  [v4 generateCollectionByCoercingToItemClasses:v5 completionHandler:v7];
+  [inputCopy generateCollectionByCoercingToItemClasses:v5 completionHandler:v7];
 
   v6 = *MEMORY[0x277D85DE8];
 }

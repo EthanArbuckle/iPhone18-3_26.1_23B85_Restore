@@ -1,15 +1,15 @@
 @interface HKTieredDecimalPrecisionRule
 - (id)numberFormatter;
-- (int64_t)decimalPrecisionForValue:(double)a3;
+- (int64_t)decimalPrecisionForValue:(double)value;
 @end
 
 @implementation HKTieredDecimalPrecisionRule
 
-- (int64_t)decimalPrecisionForValue:(double)a3
+- (int64_t)decimalPrecisionForValue:(double)value
 {
-  if (a3 >= 1.0)
+  if (value >= 1.0)
   {
-    return a3 < 100.0;
+    return value < 100.0;
   }
 
   else

@@ -1,29 +1,29 @@
 @interface SBCrossfadeIconZoomAnimator
 - (CGPoint)_zoomedIconCenter;
 - (CGRect)_zoomedFrame;
-- (SBCrossfadeIconZoomAnimator)initWithFolderController:(id)a3 crossfadeView:(id)a4 icon:(id)a5;
-- (double)_appSnapshotCornerRadiusForFraction:(double)a3;
+- (SBCrossfadeIconZoomAnimator)initWithFolderController:(id)controller crossfadeView:(id)view icon:(id)icon;
+- (double)_appSnapshotCornerRadiusForFraction:(double)fraction;
 - (unint64_t)_numberOfSignificantAnimations;
 - (void)_cleanupAnimation;
 - (void)_cleanupZoom;
 - (void)_delayedForRotation;
-- (void)_performAnimationToFraction:(double)a3 withCentralAnimationSettings:(id)a4 delay:(double)a5 alreadyAnimating:(BOOL)a6 sharedCompletion:(id)a7;
+- (void)_performAnimationToFraction:(double)fraction withCentralAnimationSettings:(id)settings delay:(double)delay alreadyAnimating:(BOOL)animating sharedCompletion:(id)completion;
 - (void)_prepareAnimation;
-- (void)_setAnimationFraction:(double)a3;
+- (void)_setAnimationFraction:(double)fraction;
 @end
 
 @implementation SBCrossfadeIconZoomAnimator
 
-- (SBCrossfadeIconZoomAnimator)initWithFolderController:(id)a3 crossfadeView:(id)a4 icon:(id)a5
+- (SBCrossfadeIconZoomAnimator)initWithFolderController:(id)controller crossfadeView:(id)view icon:(id)icon
 {
-  v9 = a4;
+  viewCopy = view;
   v13.receiver = self;
   v13.super_class = SBCrossfadeIconZoomAnimator;
-  v10 = [(SBScaleIconZoomAnimator *)&v13 initWithAnimationContainer:a3 targetIcon:a5];
+  v10 = [(SBScaleIconZoomAnimator *)&v13 initWithAnimationContainer:controller targetIcon:icon];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_crossfadeView, a4);
+    objc_storeStrong(&v10->_crossfadeView, view);
     [(SBCrossfadeIconZoomAnimator *)v11 _assertCrossfadeViewSizeIfNecessary];
     if ([(SBIconAnimator *)v11 _isDelayedForRotation])
     {
@@ -37,9 +37,9 @@
 - (void)_delayedForRotation
 {
   [(UIView *)self->_crossfadeView setHidden:1];
-  v4 = [(SBIconAnimator *)self animationContainer];
-  v3 = [v4 animationWindow];
-  [v3 addSubview:self->_crossfadeView];
+  animationContainer = [(SBIconAnimator *)self animationContainer];
+  animationWindow = [animationContainer animationWindow];
+  [animationWindow addSubview:self->_crossfadeView];
 }
 
 - (void)_prepareAnimation
@@ -57,8 +57,8 @@
   [(SBCrossfadeIconZoomAnimator *)self _zoomedFrame];
   v10 = v9;
   v12 = v11;
-  v13 = [(SBScaleIconZoomAnimator *)self targetIconView];
-  [v13 iconImageVisibleSize];
+  targetIconView = [(SBScaleIconZoomAnimator *)self targetIconView];
+  [targetIconView iconImageVisibleSize];
   v15 = v14;
   v17 = v16;
 
@@ -76,7 +76,7 @@
     v20 = (v6 + v19 * -0.5) / (v12 - v19);
   }
 
-  v22 = [(SBScaleIconZoomAnimator *)self targetIconView];
+  targetIconView2 = [(SBScaleIconZoomAnimator *)self targetIconView];
   if ([(SBCrossfadeIconZoomAnimator *)self performsTrueCrossfade])
   {
     v23 = 3;
@@ -87,25 +87,25 @@
     v23 = 1;
   }
 
-  [v22 prepareToCrossfadeImageWithView:self->_crossfadeView anchorPoint:v23 options:{v21, v20}];
+  [targetIconView2 prepareToCrossfadeImageWithView:self->_crossfadeView anchorPoint:v23 options:{v21, v20}];
 }
 
-- (void)_setAnimationFraction:(double)a3
+- (void)_setAnimationFraction:(double)fraction
 {
   v6.receiver = self;
   v6.super_class = SBCrossfadeIconZoomAnimator;
   [(SBScaleIconZoomAnimator *)&v6 _setAnimationFraction:?];
-  v5 = [(SBScaleIconZoomAnimator *)self targetIconView];
-  [v5 setCrossfadeFraction:a3];
-  [(SBCrossfadeIconZoomAnimator *)self _appSnapshotCornerRadiusForFraction:a3];
-  [v5 setCrossfadeCornerRadius:?];
-  [v5 setMorphFraction:a3];
+  targetIconView = [(SBScaleIconZoomAnimator *)self targetIconView];
+  [targetIconView setCrossfadeFraction:fraction];
+  [(SBCrossfadeIconZoomAnimator *)self _appSnapshotCornerRadiusForFraction:fraction];
+  [targetIconView setCrossfadeCornerRadius:?];
+  [targetIconView setMorphFraction:fraction];
 }
 
 - (void)_cleanupZoom
 {
-  v3 = [(SBScaleIconZoomAnimator *)self targetIcon];
-  v4 = [(SBIconZoomAnimator *)self iconViewForIcon:v3];
+  targetIcon = [(SBScaleIconZoomAnimator *)self targetIcon];
+  v4 = [(SBIconZoomAnimator *)self iconViewForIcon:targetIcon];
 
   [v4 setIconImageAlpha:0.0];
   v5.receiver = self;
@@ -115,13 +115,13 @@
 
 - (void)_cleanupAnimation
 {
-  v3 = [(SBScaleIconZoomAnimator *)self targetIcon];
-  v4 = [(SBIconZoomAnimator *)self iconViewForIcon:v3];
+  targetIcon = [(SBScaleIconZoomAnimator *)self targetIcon];
+  v4 = [(SBIconZoomAnimator *)self iconViewForIcon:targetIcon];
 
   [v4 setIconImageAlpha:1.0];
   [v4 cleanupAfterCrossfade];
-  v5 = [(SBScaleIconZoomAnimator *)self targetIcon];
-  v6 = [(SBIconZoomAnimator *)self iconViewForIcon:v5];
+  targetIcon2 = [(SBScaleIconZoomAnimator *)self targetIcon];
+  v6 = [(SBIconZoomAnimator *)self iconViewForIcon:targetIcon2];
   [v6 setHidden:0];
 
   v7.receiver = self;
@@ -136,32 +136,32 @@
   return [(SBScaleIconZoomAnimator *)&v3 _numberOfSignificantAnimations]+ 2;
 }
 
-- (void)_performAnimationToFraction:(double)a3 withCentralAnimationSettings:(id)a4 delay:(double)a5 alreadyAnimating:(BOOL)a6 sharedCompletion:(id)a7
+- (void)_performAnimationToFraction:(double)fraction withCentralAnimationSettings:(id)settings delay:(double)delay alreadyAnimating:(BOOL)animating sharedCompletion:(id)completion
 {
-  v7 = a6;
-  v12 = a7;
+  animatingCopy = animating;
+  completionCopy = completion;
   v40.receiver = self;
   v40.super_class = SBCrossfadeIconZoomAnimator;
-  [(SBScaleIconZoomAnimator *)&v40 _performAnimationToFraction:a4 withCentralAnimationSettings:v7 delay:v12 alreadyAnimating:a3 sharedCompletion:a5];
+  [(SBScaleIconZoomAnimator *)&v40 _performAnimationToFraction:settings withCentralAnimationSettings:animatingCopy delay:completionCopy alreadyAnimating:fraction sharedCompletion:delay];
   if (BSFloatIsZero())
   {
-    v13 = [(SBIconAnimator *)self backgroundDarkeningView];
+    backgroundDarkeningView = [(SBIconAnimator *)self backgroundDarkeningView];
     v14 = MEMORY[0x1E69DD250];
     v38[0] = MEMORY[0x1E69E9820];
     v38[1] = 3221225472;
     v38[2] = __128__SBCrossfadeIconZoomAnimator__performAnimationToFraction_withCentralAnimationSettings_delay_alreadyAnimating_sharedCompletion___block_invoke;
     v38[3] = &unk_1E8088C90;
-    v39 = v13;
-    v15 = v13;
-    [v14 animateWithDuration:0 delay:v38 options:0 animations:0.25 completion:a5];
+    v39 = backgroundDarkeningView;
+    v15 = backgroundDarkeningView;
+    [v14 animateWithDuration:0 delay:v38 options:0 animations:0.25 completion:delay];
   }
 
   if ((BSFloatIsZero() & 1) != 0 || BSFloatIsOne())
   {
-    v34 = v12;
-    v16 = [(SBIconAnimator *)self settings];
-    v17 = v16;
-    if (v7)
+    v34 = completionCopy;
+    settings = [(SBIconAnimator *)self settings];
+    v17 = settings;
+    if (animatingCopy)
     {
       v18 = 6;
     }
@@ -171,19 +171,19 @@
       v18 = 2;
     }
 
-    v19 = [v16 crossfadeSettings];
-    v20 = [v19 BSAnimationSettings];
-    v21 = [v20 mutableCopy];
+    crossfadeSettings = [settings crossfadeSettings];
+    bSAnimationSettings = [crossfadeSettings BSAnimationSettings];
+    v21 = [bSAnimationSettings mutableCopy];
 
-    v22 = [v17 appSnapshotCornerRadiusSettings];
-    v23 = [v22 BSAnimationSettings];
-    v24 = [v23 mutableCopy];
+    appSnapshotCornerRadiusSettings = [v17 appSnapshotCornerRadiusSettings];
+    bSAnimationSettings2 = [appSnapshotCornerRadiusSettings BSAnimationSettings];
+    v24 = [bSAnimationSettings2 mutableCopy];
 
-    v25 = [v17 effectiveMorphAnimationSettings];
-    v26 = [v25 BSAnimationSettings];
-    v27 = [v26 mutableCopy];
+    effectiveMorphAnimationSettings = [v17 effectiveMorphAnimationSettings];
+    bSAnimationSettings3 = [effectiveMorphAnimationSettings BSAnimationSettings];
+    v27 = [bSAnimationSettings3 mutableCopy];
 
-    if (v7)
+    if (animatingCopy)
     {
       [v21 setDelay:0.0];
       [v24 setDelay:0.0];
@@ -195,7 +195,7 @@
     v33 = v24;
     v29 = [MEMORY[0x1E698E7D0] factoryWithSettings:v24];
     v30 = [MEMORY[0x1E698E7D0] factoryWithSettings:v27];
-    if (!v7 || BSFloatIsZero())
+    if (!animatingCopy || BSFloatIsZero())
     {
       [v28 setAllowsAdditiveAnimations:1];
       [v29 setAllowsAdditiveAnimations:1];
@@ -207,18 +207,18 @@
     v37[2] = __128__SBCrossfadeIconZoomAnimator__performAnimationToFraction_withCentralAnimationSettings_delay_alreadyAnimating_sharedCompletion___block_invoke_2;
     v37[3] = &unk_1E8088CB8;
     v37[4] = self;
-    *&v37[5] = a3;
+    *&v37[5] = fraction;
     v31 = v18;
     v32 = v18;
-    v12 = v34;
-    [MEMORY[0x1E698E7D0] animateWithFactory:v28 additionalDelay:v32 options:v37 actions:v34 completion:a5];
+    completionCopy = v34;
+    [MEMORY[0x1E698E7D0] animateWithFactory:v28 additionalDelay:v32 options:v37 actions:v34 completion:delay];
     v36[0] = MEMORY[0x1E69E9820];
     v36[1] = 3221225472;
     v36[2] = __128__SBCrossfadeIconZoomAnimator__performAnimationToFraction_withCentralAnimationSettings_delay_alreadyAnimating_sharedCompletion___block_invoke_3;
     v36[3] = &unk_1E8088CB8;
     v36[4] = self;
-    *&v36[5] = a3;
-    [MEMORY[0x1E698E7D0] animateWithFactory:v30 additionalDelay:v31 options:v36 actions:v34 completion:a5];
+    *&v36[5] = fraction;
+    [MEMORY[0x1E698E7D0] animateWithFactory:v30 additionalDelay:v31 options:v36 actions:v34 completion:delay];
   }
 }
 
@@ -250,7 +250,7 @@ void __128__SBCrossfadeIconZoomAnimator__performAnimationToFraction_withCentralA
 
 - (CGPoint)_zoomedIconCenter
 {
-  v3 = [(SBScaleIconZoomAnimator *)self targetIconView];
+  targetIconView = [(SBScaleIconZoomAnimator *)self targetIconView];
   [(SBScaleIconZoomAnimator *)self zoomScale];
   v5 = v4;
   [(SBCrossfadeIconZoomAnimator *)self _zoomedFrame];
@@ -258,15 +258,15 @@ void __128__SBCrossfadeIconZoomAnimator__performAnimationToFraction_withCentralA
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  [v3 iconImageCenter];
+  [targetIconView iconImageCenter];
   v15 = v14;
   v17 = v16;
-  v18 = [(SBIconAnimator *)self referenceView];
-  [v3 convertPoint:v18 toView:{v15, v17}];
+  referenceView = [(SBIconAnimator *)self referenceView];
+  [targetIconView convertPoint:referenceView toView:{v15, v17}];
   v20 = v19;
   v22 = v21;
 
-  [v3 iconImageVisibleSize];
+  [targetIconView iconImageVisibleSize];
   v24 = v5 * v23;
   v37 = v5 * v25;
   v39.origin.x = v7;
@@ -337,11 +337,11 @@ void __128__SBCrossfadeIconZoomAnimator__performAnimationToFraction_withCentralA
   return result;
 }
 
-- (double)_appSnapshotCornerRadiusForFraction:(double)a3
+- (double)_appSnapshotCornerRadiusForFraction:(double)fraction
 {
-  v4 = [(SBScaleIconZoomAnimator *)self targetIconView];
-  [v4 iconImageInfo];
-  v6 = (1.0 - a3) * v5;
+  targetIconView = [(SBScaleIconZoomAnimator *)self targetIconView];
+  [targetIconView iconImageInfo];
+  v6 = (1.0 - fraction) * v5;
 
   return v6;
 }

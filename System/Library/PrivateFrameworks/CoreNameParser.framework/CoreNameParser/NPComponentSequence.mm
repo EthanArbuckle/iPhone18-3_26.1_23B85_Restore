@@ -1,55 +1,55 @@
 @interface NPComponentSequence
-- (BOOL)isEqualToComponentSequence:(id)a3;
-- (NPComponentSequence)initWithObservationSequence:(id)a3 hiddenSequence:(id)a4 oovIndices:(id)a5 emissionModelScore:(double)a6 stateModelScore:(double)a7 boost:(double)a8;
+- (BOOL)isEqualToComponentSequence:(id)sequence;
+- (NPComponentSequence)initWithObservationSequence:(id)sequence hiddenSequence:(id)hiddenSequence oovIndices:(id)indices emissionModelScore:(double)score stateModelScore:(double)modelScore boost:(double)boost;
 - (id)description;
 - (id)oovTokens;
-- (void)setValue:(id)a3 atSequenceIndex:(unint64_t)a4;
+- (void)setValue:(id)value atSequenceIndex:(unint64_t)index;
 @end
 
 @implementation NPComponentSequence
 
-- (NPComponentSequence)initWithObservationSequence:(id)a3 hiddenSequence:(id)a4 oovIndices:(id)a5 emissionModelScore:(double)a6 stateModelScore:(double)a7 boost:(double)a8
+- (NPComponentSequence)initWithObservationSequence:(id)sequence hiddenSequence:(id)hiddenSequence oovIndices:(id)indices emissionModelScore:(double)score stateModelScore:(double)modelScore boost:(double)boost
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
+  sequenceCopy = sequence;
+  hiddenSequenceCopy = hiddenSequence;
+  indicesCopy = indices;
   v22.receiver = self;
   v22.super_class = NPComponentSequence;
   v17 = [(NPComponentSequence *)&v22 init];
   if (v17)
   {
-    v18 = [v14 copy];
+    v18 = [sequenceCopy copy];
     [(NPComponentSequence *)v17 setObservation:v18];
 
-    v19 = [v15 copy];
+    v19 = [hiddenSequenceCopy copy];
     [(NPComponentSequence *)v17 setSequence:v19];
 
-    v20 = [v16 copy];
+    v20 = [indicesCopy copy];
     [(NPComponentSequence *)v17 setOovIndices:v20];
 
-    [(NPComponentSequence *)v17 setEmissionModelScore:a6];
-    [(NPComponentSequence *)v17 setStateModelScore:a7];
-    [(NPComponentSequence *)v17 setScore:floor((a6 + a7 + a8) * 1000000.0) / 1000000.0];
+    [(NPComponentSequence *)v17 setEmissionModelScore:score];
+    [(NPComponentSequence *)v17 setStateModelScore:modelScore];
+    [(NPComponentSequence *)v17 setScore:floor((score + modelScore + boost) * 1000000.0) / 1000000.0];
   }
 
   return v17;
 }
 
-- (BOOL)isEqualToComponentSequence:(id)a3
+- (BOOL)isEqualToComponentSequence:(id)sequence
 {
-  v4 = a3;
+  sequenceCopy = sequence;
   [(NPComponentSequence *)self score];
   v6 = v5;
-  [v4 score];
+  [sequenceCopy score];
   if (v6 == v7)
   {
-    v8 = [(NPComponentSequence *)self sequence];
-    v9 = [v4 sequence];
-    if ([v8 isEqualToArray:v9])
+    sequence = [(NPComponentSequence *)self sequence];
+    sequence2 = [sequenceCopy sequence];
+    if ([sequence isEqualToArray:sequence2])
     {
-      v10 = [(NPComponentSequence *)self oovIndices];
-      v11 = [v4 oovIndices];
-      v12 = [v10 isEqualToArray:v11];
+      oovIndices = [(NPComponentSequence *)self oovIndices];
+      oovIndices2 = [sequenceCopy oovIndices];
+      v12 = [oovIndices isEqualToArray:oovIndices2];
     }
 
     else
@@ -69,36 +69,36 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(NPComponentSequence *)self sequence];
-  v5 = [(NPComponentSequence *)self observation];
-  v6 = [(NPComponentSequence *)self oovTokens];
+  sequence = [(NPComponentSequence *)self sequence];
+  observation = [(NPComponentSequence *)self observation];
+  oovTokens = [(NPComponentSequence *)self oovTokens];
   [(NPComponentSequence *)self emissionModelScore];
   v8 = v7;
   [(NPComponentSequence *)self stateModelScore];
   v10 = v9;
   [(NPComponentSequence *)self score];
-  v12 = [v3 stringWithFormat:@"<sequence = %@, observations = %@, oovTokens = %@, emission = %f, state = %f, score = %f>", v4, v5, v6, v8, v10, v11];
-  v13 = [MEMORY[0x277CCA900] newlineCharacterSet];
-  v14 = [v12 componentsSeparatedByCharactersInSet:v13];
+  v12 = [v3 stringWithFormat:@"<sequence = %@, observations = %@, oovTokens = %@, emission = %f, state = %f, score = %f>", sequence, observation, oovTokens, v8, v10, v11];
+  newlineCharacterSet = [MEMORY[0x277CCA900] newlineCharacterSet];
+  v14 = [v12 componentsSeparatedByCharactersInSet:newlineCharacterSet];
   v15 = [v14 componentsJoinedByString:&stru_2858DACA8];
   v16 = _NPCollapseWhitespaceAndStrip(v15);
 
   return v16;
 }
 
-- (void)setValue:(id)a3 atSequenceIndex:(unint64_t)a4
+- (void)setValue:(id)value atSequenceIndex:(unint64_t)index
 {
-  v11 = a3;
-  v6 = [(NPComponentSequence *)self sequence];
-  v7 = [v6 count];
+  valueCopy = value;
+  sequence = [(NPComponentSequence *)self sequence];
+  v7 = [sequence count];
 
-  if (v7 > a4)
+  if (v7 > index)
   {
     v8 = MEMORY[0x277CBEB18];
-    v9 = [(NPComponentSequence *)self sequence];
-    v10 = [v8 arrayWithArray:v9];
+    sequence2 = [(NPComponentSequence *)self sequence];
+    v10 = [v8 arrayWithArray:sequence2];
 
-    [v10 setObject:v11 atIndexedSubscript:a4];
+    [v10 setObject:valueCopy atIndexedSubscript:index];
     [(NPComponentSequence *)self setSequence:v10];
   }
 }
@@ -107,15 +107,15 @@
 {
   v21 = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277CBEB18]);
-  v4 = [(NPComponentSequence *)self oovIndices];
-  v5 = [v3 initWithCapacity:{objc_msgSend(v4, "count")}];
+  oovIndices = [(NPComponentSequence *)self oovIndices];
+  v5 = [v3 initWithCapacity:{objc_msgSend(oovIndices, "count")}];
 
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [(NPComponentSequence *)self oovIndices];
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  oovIndices2 = [(NPComponentSequence *)self oovIndices];
+  v7 = [oovIndices2 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = v7;
@@ -126,16 +126,16 @@
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(oovIndices2);
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
-        v12 = [(NPComponentSequence *)self observation];
-        v13 = [v12 objectAtIndexedSubscript:{objc_msgSend(v11, "integerValue")}];
+        observation = [(NPComponentSequence *)self observation];
+        v13 = [observation objectAtIndexedSubscript:{objc_msgSend(v11, "integerValue")}];
         [v5 addObject:v13];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v8 = [oovIndices2 countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v8);

@@ -1,12 +1,12 @@
 @interface GTReplayResponseStream
-- (GTReplayResponseStream)initWithCoder:(id)a3;
-- (GTReplayResponseStream)initWithState:(unsigned int)a3;
-- (void)encodeWithCoder:(id)a3;
+- (GTReplayResponseStream)initWithCoder:(id)coder;
+- (GTReplayResponseStream)initWithState:(unsigned int)state;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation GTReplayResponseStream
 
-- (GTReplayResponseStream)initWithState:(unsigned int)a3
+- (GTReplayResponseStream)initWithState:(unsigned int)state
 {
   v8.receiver = self;
   v8.super_class = GTReplayResponseStream;
@@ -14,35 +14,35 @@
   v5 = v4;
   if (v4)
   {
-    v4->_state = a3;
+    v4->_state = state;
     v6 = v4;
   }
 
   return v5;
 }
 
-- (GTReplayResponseStream)initWithCoder:(id)a3
+- (GTReplayResponseStream)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = GTReplayResponseStream;
-  v5 = [(GTReplayResponse *)&v8 initWithCoder:v4];
+  v5 = [(GTReplayResponse *)&v8 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_state = [v4 decodeInt32ForKey:@"state"];
+    v5->_state = [coderCopy decodeInt32ForKey:@"state"];
     v6 = v5;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = GTReplayResponseStream;
-  v4 = a3;
-  [(GTReplayResponse *)&v5 encodeWithCoder:v4];
-  [v4 encodeInt32:self->_state forKey:{@"state", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(GTReplayResponse *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInt32:self->_state forKey:{@"state", v5.receiver, v5.super_class}];
 }
 
 @end

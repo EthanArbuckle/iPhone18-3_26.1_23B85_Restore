@@ -1,16 +1,16 @@
 @interface _PKEducationalMessageView
 - (BOOL)isConfigured;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_PKEducationalMessageView)initWithCoder:(id)a3;
-- (_PKEducationalMessageView)initWithFrame:(CGRect)a3;
-- (void)configureWith:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_PKEducationalMessageView)initWithCoder:(id)coder;
+- (_PKEducationalMessageView)initWithFrame:(CGRect)frame;
+- (void)configureWith:(id)with;
 - (void)handleAction;
 - (void)layoutSubviews;
 @end
 
 @implementation _PKEducationalMessageView
 
-- (_PKEducationalMessageView)initWithCoder:(id)a3
+- (_PKEducationalMessageView)initWithCoder:(id)coder
 {
   v3 = (&self->super.super.super.isa + OBJC_IVAR____PKEducationalMessageView_actionHandler);
   *v3 = 0;
@@ -22,16 +22,16 @@
   return result;
 }
 
-- (void)configureWith:(id)a3
+- (void)configureWith:(id)with
 {
-  v5 = a3;
-  v6 = self;
-  sub_1BD416E04(a3);
+  withCopy = with;
+  selfCopy = self;
+  sub_1BD416E04(with);
 }
 
 - (BOOL)isConfigured
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1BD417738();
 
   return v3 & 1;
@@ -42,7 +42,7 @@
   v2 = *(&self->super.super.super.isa + OBJC_IVAR____PKEducationalMessageView_actionHandler);
   if (v2)
   {
-    v3 = self;
+    selfCopy = self;
     v4 = sub_1BD0D44B8(v2);
     v2(v4);
 
@@ -50,10 +50,10 @@
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  v4 = self;
+  width = fits.width;
+  selfCopy = self;
   v5 = sub_1BD417958(1, width);
   v7 = v6;
 
@@ -74,7 +74,7 @@
   sub_1BD417958(0, v3);
 }
 
-- (_PKEducationalMessageView)initWithFrame:(CGRect)a3
+- (_PKEducationalMessageView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

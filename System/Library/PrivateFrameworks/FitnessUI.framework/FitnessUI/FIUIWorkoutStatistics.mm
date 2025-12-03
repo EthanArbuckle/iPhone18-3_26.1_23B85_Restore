@@ -1,26 +1,26 @@
 @interface FIUIWorkoutStatistics
-- (FIUIWorkoutStatistics)initWithWorkouts:(id)a3;
-- (id)formattedActiveEnergyBurnWithFormattingManager:(id)a3;
-- (id)formattedAverageActiveEnergyBurnWithFormattingManager:(id)a3;
-- (id)formattedAverageWorkoutDurationWithFormattingManager:(id)a3;
-- (id)formattedDistanceWithFormattingManager:(id)a3 distanceType:(unint64_t)a4 amountType:(unint64_t)a5;
-- (id)formattedPaceWithFormattingManager:(id)a3 distanceType:(unint64_t)a4;
-- (id)formattedTotalActiveEnergyBurnWithFormattingManager:(id)a3;
-- (id)formattedTotalWorkoutDurationWithFormattingManager:(id)a3;
-- (id)formattedWorkoutDurationWithFormattingManager:(id)a3;
+- (FIUIWorkoutStatistics)initWithWorkouts:(id)workouts;
+- (id)formattedActiveEnergyBurnWithFormattingManager:(id)manager;
+- (id)formattedAverageActiveEnergyBurnWithFormattingManager:(id)manager;
+- (id)formattedAverageWorkoutDurationWithFormattingManager:(id)manager;
+- (id)formattedDistanceWithFormattingManager:(id)manager distanceType:(unint64_t)type amountType:(unint64_t)amountType;
+- (id)formattedPaceWithFormattingManager:(id)manager distanceType:(unint64_t)type;
+- (id)formattedTotalActiveEnergyBurnWithFormattingManager:(id)manager;
+- (id)formattedTotalWorkoutDurationWithFormattingManager:(id)manager;
+- (id)formattedWorkoutDurationWithFormattingManager:(id)manager;
 @end
 
 @implementation FIUIWorkoutStatistics
 
-- (FIUIWorkoutStatistics)initWithWorkouts:(id)a3
+- (FIUIWorkoutStatistics)initWithWorkouts:(id)workouts
 {
-  v4 = a3;
+  workoutsCopy = workouts;
   v9.receiver = self;
   v9.super_class = FIUIWorkoutStatistics;
   v5 = [(FIUIWorkoutStatistics *)&v9 init];
   if (v5)
   {
-    v6 = [objc_alloc(MEMORY[0x1E699CA08]) initWithWorkouts:v4];
+    v6 = [objc_alloc(MEMORY[0x1E699CA08]) initWithWorkouts:workoutsCopy];
     workoutStatistics = v5->_workoutStatistics;
     v5->_workoutStatistics = v6;
   }
@@ -28,74 +28,74 @@
   return v5;
 }
 
-- (id)formattedWorkoutDurationWithFormattingManager:(id)a3
+- (id)formattedWorkoutDurationWithFormattingManager:(id)manager
 {
   workoutStatistics = self->_workoutStatistics;
-  v4 = [a3 formattingManager];
-  v5 = [(FIWorkoutStatistics *)workoutStatistics formattedWorkoutDurationWithFormattingManager:v4];
+  formattingManager = [manager formattingManager];
+  v5 = [(FIWorkoutStatistics *)workoutStatistics formattedWorkoutDurationWithFormattingManager:formattingManager];
 
   return v5;
 }
 
-- (id)formattedActiveEnergyBurnWithFormattingManager:(id)a3
+- (id)formattedActiveEnergyBurnWithFormattingManager:(id)manager
 {
   workoutStatistics = self->_workoutStatistics;
-  v4 = [a3 formattingManager];
-  v5 = [(FIWorkoutStatistics *)workoutStatistics formattedActiveEnergyBurnWithFormattingManager:v4];
+  formattingManager = [manager formattingManager];
+  v5 = [(FIWorkoutStatistics *)workoutStatistics formattedActiveEnergyBurnWithFormattingManager:formattingManager];
 
   return v5;
 }
 
-- (id)formattedPaceWithFormattingManager:(id)a3 distanceType:(unint64_t)a4
+- (id)formattedPaceWithFormattingManager:(id)manager distanceType:(unint64_t)type
 {
   workoutStatistics = self->_workoutStatistics;
-  v6 = [a3 formattingManager];
-  v7 = [(FIWorkoutStatistics *)workoutStatistics formattedPaceWithFormattingManager:v6 distanceType:a4];
+  formattingManager = [manager formattingManager];
+  v7 = [(FIWorkoutStatistics *)workoutStatistics formattedPaceWithFormattingManager:formattingManager distanceType:type];
 
   return v7;
 }
 
-- (id)formattedTotalWorkoutDurationWithFormattingManager:(id)a3
+- (id)formattedTotalWorkoutDurationWithFormattingManager:(id)manager
 {
   workoutStatistics = self->_workoutStatistics;
-  v4 = [a3 formattingManager];
-  v5 = [(FIWorkoutStatistics *)workoutStatistics formattedTotalWorkoutDurationWithFormattingManager:v4];
+  formattingManager = [manager formattingManager];
+  v5 = [(FIWorkoutStatistics *)workoutStatistics formattedTotalWorkoutDurationWithFormattingManager:formattingManager];
 
   return v5;
 }
 
-- (id)formattedAverageWorkoutDurationWithFormattingManager:(id)a3
+- (id)formattedAverageWorkoutDurationWithFormattingManager:(id)manager
 {
   workoutStatistics = self->_workoutStatistics;
-  v4 = [a3 formattingManager];
-  v5 = [(FIWorkoutStatistics *)workoutStatistics formattedAverageWorkoutDurationWithFormattingManager:v4];
+  formattingManager = [manager formattingManager];
+  v5 = [(FIWorkoutStatistics *)workoutStatistics formattedAverageWorkoutDurationWithFormattingManager:formattingManager];
 
   return v5;
 }
 
-- (id)formattedTotalActiveEnergyBurnWithFormattingManager:(id)a3
+- (id)formattedTotalActiveEnergyBurnWithFormattingManager:(id)manager
 {
   workoutStatistics = self->_workoutStatistics;
-  v4 = [a3 formattingManager];
-  v5 = [(FIWorkoutStatistics *)workoutStatistics formattedTotalActiveEnergyBurnWithFormattingManager:v4];
+  formattingManager = [manager formattingManager];
+  v5 = [(FIWorkoutStatistics *)workoutStatistics formattedTotalActiveEnergyBurnWithFormattingManager:formattingManager];
 
   return v5;
 }
 
-- (id)formattedAverageActiveEnergyBurnWithFormattingManager:(id)a3
+- (id)formattedAverageActiveEnergyBurnWithFormattingManager:(id)manager
 {
   workoutStatistics = self->_workoutStatistics;
-  v4 = [a3 formattingManager];
-  v5 = [(FIWorkoutStatistics *)workoutStatistics formattedAverageActiveEnergyBurnWithFormattingManager:v4];
+  formattingManager = [manager formattingManager];
+  v5 = [(FIWorkoutStatistics *)workoutStatistics formattedAverageActiveEnergyBurnWithFormattingManager:formattingManager];
 
   return v5;
 }
 
-- (id)formattedDistanceWithFormattingManager:(id)a3 distanceType:(unint64_t)a4 amountType:(unint64_t)a5
+- (id)formattedDistanceWithFormattingManager:(id)manager distanceType:(unint64_t)type amountType:(unint64_t)amountType
 {
   workoutStatistics = self->_workoutStatistics;
-  v8 = [a3 formattingManager];
-  v9 = [(FIWorkoutStatistics *)workoutStatistics formattedDistanceWithFormattingManager:v8 distanceType:a4 amountType:a5];
+  formattingManager = [manager formattingManager];
+  v9 = [(FIWorkoutStatistics *)workoutStatistics formattedDistanceWithFormattingManager:formattingManager distanceType:type amountType:amountType];
 
   return v9;
 }

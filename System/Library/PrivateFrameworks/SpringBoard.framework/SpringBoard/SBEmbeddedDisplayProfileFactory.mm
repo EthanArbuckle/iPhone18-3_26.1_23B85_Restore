@@ -1,9 +1,9 @@
 @interface SBEmbeddedDisplayProfileFactory
-- (BOOL)displayProfile:(id)a3 shouldConnectToDisplay:(id)a4;
+- (BOOL)displayProfile:(id)profile shouldConnectToDisplay:(id)display;
 - (id)createProfile;
-- (id)displayProfile:(id)a3 rootSceneWindowForDisplayConfiguration:(id)a4;
-- (id)initWithDelegate:(id *)a1;
-- (void)displayProfile:(id)a3 modifyInitialSceneParameters:(id)a4;
+- (id)displayProfile:(id)profile rootSceneWindowForDisplayConfiguration:(id)configuration;
+- (id)initWithDelegate:(id *)delegate;
+- (void)displayProfile:(id)profile modifyInitialSceneParameters:(id)parameters;
 @end
 
 @implementation SBEmbeddedDisplayProfileFactory
@@ -16,56 +16,56 @@ void __48__SBEmbeddedDisplayProfileFactory_createProfile__block_invoke(uint64_t 
   [v3 setPriorityLevel:v2 sceneSpecification:v4];
 }
 
-- (BOOL)displayProfile:(id)a3 shouldConnectToDisplay:(id)a4
+- (BOOL)displayProfile:(id)profile shouldConnectToDisplay:(id)display
 {
-  v4 = [a4 identity];
-  v5 = [v4 isMainRootDisplay];
+  identity = [display identity];
+  isMainRootDisplay = [identity isMainRootDisplay];
 
-  return v5;
+  return isMainRootDisplay;
 }
 
-- (id)displayProfile:(id)a3 rootSceneWindowForDisplayConfiguration:(id)a4
+- (id)displayProfile:(id)profile rootSceneWindowForDisplayConfiguration:(id)configuration
 {
-  v4 = [SBMainDisplayRootWindowScenePresentationBinder sharedInstance:a3];
-  v5 = [v4 rootWindow];
+  v4 = [SBMainDisplayRootWindowScenePresentationBinder sharedInstance:profile];
+  rootWindow = [v4 rootWindow];
 
-  return v5;
+  return rootWindow;
 }
 
-- (void)displayProfile:(id)a3 modifyInitialSceneParameters:(id)a4
+- (void)displayProfile:(id)profile modifyInitialSceneParameters:(id)parameters
 {
-  v5 = a4;
+  parametersCopy = parameters;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained embeddedFactory:self modifyInitialSceneParameters:v5];
+  [WeakRetained embeddedFactory:self modifyInitialSceneParameters:parametersCopy];
 }
 
-- (id)initWithDelegate:(id *)a1
+- (id)initWithDelegate:(id *)delegate
 {
   v3 = a2;
-  if (a1)
+  if (delegate)
   {
-    v6.receiver = a1;
+    v6.receiver = delegate;
     v6.super_class = SBEmbeddedDisplayProfileFactory;
     v4 = objc_msgSendSuper2(&v6, sel_init);
-    a1 = v4;
+    delegate = v4;
     if (v4)
     {
       objc_storeWeak(v4 + 1, v3);
     }
   }
 
-  return a1;
+  return delegate;
 }
 
 - (id)createProfile
 {
-  if (a1)
+  if (self)
   {
-    a1 = [MEMORY[0x277D54F98] sceneHostingProfileWithDelegate:a1 builder:&__block_literal_global_399];
+    self = [MEMORY[0x277D54F98] sceneHostingProfileWithDelegate:self builder:&__block_literal_global_399];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 @end

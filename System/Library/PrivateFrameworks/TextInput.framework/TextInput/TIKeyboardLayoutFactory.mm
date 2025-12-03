@@ -2,51 +2,51 @@
 + (id)layoutsFileName;
 + (id)sharedKeyboardFactory;
 - (TIKeyboardLayoutFactory)init;
-- (id)keyboardPrefixForWidth:(double)a3 andEdge:(BOOL)a4;
-- (id)keyboardWithName:(id)a3 inCache:(id)a4;
+- (id)keyboardPrefixForWidth:(double)width andEdge:(BOOL)edge;
+- (id)keyboardWithName:(id)name inCache:(id)cache;
 @end
 
 @implementation TIKeyboardLayoutFactory
 
-- (id)keyboardPrefixForWidth:(double)a3 andEdge:(BOOL)a4
+- (id)keyboardPrefixForWidth:(double)width andEdge:(BOOL)edge
 {
-  v4 = a4;
+  edgeCopy = edge;
   v6 = dlsym(-[TIKeyboardLayoutFactory layoutsLibraryHandle](self, "layoutsLibraryHandle"), [@"UIKBGetKeyboardPrefixForWidthAndEdge" UTF8String]);
   if (v6)
   {
-    v6 = v6(v4, a3);
+    v6 = v6(edgeCopy, width);
   }
 
   return v6;
 }
 
-- (id)keyboardWithName:(id)a3 inCache:(id)a4
+- (id)keyboardWithName:(id)name inCache:(id)cache
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  nameCopy = name;
+  cacheCopy = cache;
+  internalCache2 = cacheCopy;
+  if (nameCopy)
   {
-    if (!v7)
+    if (!cacheCopy)
     {
-      v9 = [(TIKeyboardLayoutFactory *)self internalCache];
+      internalCache = [(TIKeyboardLayoutFactory *)self internalCache];
 
-      if (!v9)
+      if (!internalCache)
       {
         v10 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:100];
         [(TIKeyboardLayoutFactory *)self setInternalCache:v10];
       }
 
-      v8 = [(TIKeyboardLayoutFactory *)self internalCache];
+      internalCache2 = [(TIKeyboardLayoutFactory *)self internalCache];
     }
 
-    v11 = [v6 stringByReplacingOccurrencesOfString:@"-" withString:@"_"];
+    v11 = [nameCopy stringByReplacingOccurrencesOfString:@"-" withString:@"_"];
     v12 = [@"UIKBBuildTreeNamed_" stringByAppendingString:v11];
 
     v13 = dlsym(-[TIKeyboardLayoutFactory layoutsLibraryHandle](self, "layoutsLibraryHandle"), [v12 UTF8String]);
     if (v13)
     {
-      v14 = v13(v8);
+      v14 = v13(internalCache2);
     }
 
     else

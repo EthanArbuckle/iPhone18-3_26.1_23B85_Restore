@@ -1,23 +1,23 @@
 @interface SGFoundInSuggestionPresenter
 - (NSArray)realtimeSuggestions;
 - (SGFoundInSuggestionPresenter)init;
-- (id)formatMixedCategoriesTitle:(id)a3;
-- (void)_loadSuggestionsForTheFirstTime:(BOOL)a3;
-- (void)_loadedRealtimeSuggestions:(id)a3 fromHostApp:(int64_t)a4 fromExtractionSource:(int)a5;
-- (void)_setNeedsToReloadSuggestionsAfter:(double)a3;
-- (void)addSuggestionsFromSearchableItems:(id)a3 existingSuggestions:(id)a4 mailService:(id)a5 messageService:(id)a6 options:(unint64_t)a7 filter:(id)a8;
-- (void)addSuggestionsFromSearchableItems:(id)a3 existingSuggestions:(id)a4 options:(unint64_t)a5 filter:(id)a6;
-- (void)addSuggestionsFromSearchableItems:(id)a3 options:(unint64_t)a4 filter:(id)a5;
+- (id)formatMixedCategoriesTitle:(id)title;
+- (void)_loadSuggestionsForTheFirstTime:(BOOL)time;
+- (void)_loadedRealtimeSuggestions:(id)suggestions fromHostApp:(int64_t)app fromExtractionSource:(int)source;
+- (void)_setNeedsToReloadSuggestionsAfter:(double)after;
+- (void)addSuggestionsFromSearchableItems:(id)items existingSuggestions:(id)suggestions mailService:(id)service messageService:(id)messageService options:(unint64_t)options filter:(id)filter;
+- (void)addSuggestionsFromSearchableItems:(id)items existingSuggestions:(id)suggestions options:(unint64_t)options filter:(id)filter;
+- (void)addSuggestionsFromSearchableItems:(id)items options:(unint64_t)options filter:(id)filter;
 - (void)dealloc;
-- (void)setMailService:(id)a3 messageService:(id)a4;
-- (void)setRealtimeSuggestions:(id)a3 fromHostApp:(int64_t)a4 fromExtractionSource:(int)a5;
+- (void)setMailService:(id)service messageService:(id)messageService;
+- (void)setRealtimeSuggestions:(id)suggestions fromHostApp:(int64_t)app fromExtractionSource:(int)source;
 @end
 
 @implementation SGFoundInSuggestionPresenter
 
-- (id)formatMixedCategoriesTitle:(id)a3
+- (id)formatMixedCategoriesTitle:(id)title
 {
-  v3 = a3;
+  titleCopy = title;
   v4 = objc_autoreleasePoolPush();
   v5 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.CoreSuggestionsUI"];
   v6 = [v5 localizedStringForKey:@"SuggestionsBannerMultipleSuggestionsTitleFormat" value:&stru_1F3012140 table:0];
@@ -27,18 +27,18 @@
   return v6;
 }
 
-- (void)_loadedRealtimeSuggestions:(id)a3 fromHostApp:(int64_t)a4 fromExtractionSource:(int)a5
+- (void)_loadedRealtimeSuggestions:(id)suggestions fromHostApp:(int64_t)app fromExtractionSource:(int)source
 {
-  v8 = a3;
+  suggestionsCopy = suggestions;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __92__SGFoundInSuggestionPresenter__loadedRealtimeSuggestions_fromHostApp_fromExtractionSource___block_invoke;
   v10[3] = &unk_1E7CD9428;
   v10[4] = self;
-  v11 = v8;
-  v12 = a4;
-  v13 = a5;
-  v9 = v8;
+  v11 = suggestionsCopy;
+  appCopy = app;
+  sourceCopy = source;
+  v9 = suggestionsCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v10);
 }
 
@@ -111,25 +111,25 @@ void __92__SGFoundInSuggestionPresenter__loadedRealtimeSuggestions_fromHostApp_f
   [WeakRetained _setNeedsToReloadSuggestionsAfter:1.0];
 }
 
-- (void)_loadSuggestionsForTheFirstTime:(BOOL)a3
+- (void)_loadSuggestionsForTheFirstTime:(BOOL)time
 {
-  v3 = a3;
+  timeCopy = time;
   self->_loadScheduled = 0;
-  v5 = [(NSArray *)self->_searchableItems firstObject];
-  v6 = [v5 attributeSet];
-  v7 = [v6 emailHeaders];
-  v8 = [v7 count];
+  firstObject = [(NSArray *)self->_searchableItems firstObject];
+  attributeSet = [firstObject attributeSet];
+  emailHeaders = [attributeSet emailHeaders];
+  v8 = [emailHeaders count];
 
-  v9 = [v5 bundleID];
-  v10 = v9;
+  bundleID = [firstObject bundleID];
+  v10 = bundleID;
   if (v8)
   {
 
     if (!v10)
     {
-      v11 = [MEMORY[0x1E696AAE8] mainBundle];
-      v12 = [v11 bundleIdentifier];
-      [v5 setBundleID:v12];
+      mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+      bundleIdentifier = [mainBundle bundleIdentifier];
+      [firstObject setBundleID:bundleIdentifier];
     }
 
     v48 = 0;
@@ -168,10 +168,10 @@ void __92__SGFoundInSuggestionPresenter__loadedRealtimeSuggestions_fromHostApp_f
       v31[1] = 3221225472;
       v31[2] = __64__SGFoundInSuggestionPresenter__loadSuggestionsForTheFirstTime___block_invoke_2;
       v31[3] = &unk_1E7CD94F0;
-      v33 = self;
+      selfCopy = self;
       v34 = &v48;
-      v32 = v5;
-      [v16 suggestionsFrom:v32 persistResults:v3 completionHandler:v31];
+      v32 = firstObject;
+      [v16 suggestionsFrom:v32 persistResults:timeCopy completionHandler:v31];
       v17 = v15 | 1;
     }
 
@@ -186,7 +186,7 @@ void __92__SGFoundInSuggestionPresenter__loadedRealtimeSuggestions_fromHostApp_f
     v30[2] = __64__SGFoundInSuggestionPresenter__loadSuggestionsForTheFirstTime___block_invoke_71;
     v30[3] = &unk_1E7CD9518;
     v30[4] = self;
-    [v19 suggestionsFromSearchableItem:v5 options:v17 processingType:0 withCompletion:v30];
+    [v19 suggestionsFromSearchableItem:firstObject options:v17 processingType:0 withCompletion:v30];
     objc_initWeak(&location, self);
     v20 = v37[5];
     v27[0] = MEMORY[0x1E69E9820];
@@ -194,7 +194,7 @@ void __92__SGFoundInSuggestionPresenter__loadedRealtimeSuggestions_fromHostApp_f
     v27[2] = __64__SGFoundInSuggestionPresenter__loadSuggestionsForTheFirstTime___block_invoke_72;
     v27[3] = &unk_1E7CD9540;
     objc_copyWeak(&v28, &location);
-    [v20 suggestionsFrom:v5 completionHandler:v27];
+    [v20 suggestionsFrom:firstObject completionHandler:v27];
     objc_destroyWeak(&v28);
     objc_destroyWeak(&location);
     _Block_object_dispose(&v36, 8);
@@ -203,7 +203,7 @@ void __92__SGFoundInSuggestionPresenter__loadedRealtimeSuggestions_fromHostApp_f
     goto LABEL_10;
   }
 
-  v18 = [@"com.apple.MobileSMS" caseInsensitiveCompare:v9];
+  v18 = [@"com.apple.MobileSMS" caseInsensitiveCompare:bundleID];
 
   if (!v18)
   {
@@ -460,14 +460,14 @@ void __64__SGFoundInSuggestionPresenter__loadSuggestionsForTheFirstTime___block_
   [*(a1 + 40) _loadedRealtimeSuggestions:*(a1 + 32) fromHostApp:0 fromExtractionSource:1];
 }
 
-- (void)_setNeedsToReloadSuggestionsAfter:(double)a3
+- (void)_setNeedsToReloadSuggestionsAfter:(double)after
 {
   v5 = serialQueue();
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __66__SGFoundInSuggestionPresenter__setNeedsToReloadSuggestionsAfter___block_invoke;
   v6[3] = &unk_1E7CD9478;
-  *&v6[5] = a3;
+  *&v6[5] = after;
   v6[4] = self;
   dispatch_async(v5, v6);
 }
@@ -507,26 +507,26 @@ _BYTE *__66__SGFoundInSuggestionPresenter__setNeedsToReloadSuggestionsAfter___bl
   return result;
 }
 
-- (void)addSuggestionsFromSearchableItems:(id)a3 existingSuggestions:(id)a4 mailService:(id)a5 messageService:(id)a6 options:(unint64_t)a7 filter:(id)a8
+- (void)addSuggestionsFromSearchableItems:(id)items existingSuggestions:(id)suggestions mailService:(id)service messageService:(id)messageService options:(unint64_t)options filter:(id)filter
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a8;
-  if ([v14 count])
+  itemsCopy = items;
+  suggestionsCopy = suggestions;
+  serviceCopy = service;
+  messageServiceCopy = messageService;
+  filterCopy = filter;
+  if ([itemsCopy count])
   {
-    [(SGFoundInSuggestionPresenter *)self setMailService:v16 messageService:v17];
+    [(SGFoundInSuggestionPresenter *)self setMailService:serviceCopy messageService:messageServiceCopy];
     v19 = serialQueue();
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __128__SGFoundInSuggestionPresenter_addSuggestionsFromSearchableItems_existingSuggestions_mailService_messageService_options_filter___block_invoke;
     block[3] = &unk_1E7CD9450;
     block[4] = self;
-    v21 = v14;
-    v24 = a7;
-    v23 = v18;
-    v22 = v15;
+    v21 = itemsCopy;
+    optionsCopy = options;
+    v23 = filterCopy;
+    v22 = suggestionsCopy;
     dispatch_async(v19, block);
   }
 }
@@ -559,24 +559,24 @@ uint64_t __128__SGFoundInSuggestionPresenter_addSuggestionsFromSearchableItems_e
   return [v11 _loadSuggestionsForTheFirstTime:1];
 }
 
-- (void)addSuggestionsFromSearchableItems:(id)a3 existingSuggestions:(id)a4 options:(unint64_t)a5 filter:(id)a6
+- (void)addSuggestionsFromSearchableItems:(id)items existingSuggestions:(id)suggestions options:(unint64_t)options filter:(id)filter
 {
-  v12 = a3;
-  v10 = a4;
-  v11 = a6;
-  if ([v12 count])
+  itemsCopy = items;
+  suggestionsCopy = suggestions;
+  filterCopy = filter;
+  if ([itemsCopy count])
   {
-    [(SGFoundInSuggestionPresenter *)self addSuggestionsFromSearchableItems:v12 existingSuggestions:v10 mailService:0 messageService:0 options:a5 filter:v11];
+    [(SGFoundInSuggestionPresenter *)self addSuggestionsFromSearchableItems:itemsCopy existingSuggestions:suggestionsCopy mailService:0 messageService:0 options:options filter:filterCopy];
   }
 }
 
-- (void)addSuggestionsFromSearchableItems:(id)a3 options:(unint64_t)a4 filter:(id)a5
+- (void)addSuggestionsFromSearchableItems:(id)items options:(unint64_t)options filter:(id)filter
 {
-  v9 = a3;
-  v8 = a5;
-  if ([v9 count])
+  itemsCopy = items;
+  filterCopy = filter;
+  if ([itemsCopy count])
   {
-    [(SGFoundInSuggestionPresenter *)self addSuggestionsFromSearchableItems:v9 existingSuggestions:0 mailService:0 messageService:0 options:a4 filter:v8];
+    [(SGFoundInSuggestionPresenter *)self addSuggestionsFromSearchableItems:itemsCopy existingSuggestions:0 mailService:0 messageService:0 options:options filter:filterCopy];
   }
 }
 
@@ -587,7 +587,7 @@ uint64_t __128__SGFoundInSuggestionPresenter_addSuggestionsFromSearchableItems_e
   v8 = 3221225472;
   v9 = __51__SGFoundInSuggestionPresenter_realtimeSuggestions__block_invoke;
   v10 = &unk_1E7CD9668;
-  v11 = self;
+  selfCopy = self;
   v12 = v3;
   v4 = v3;
   runOnMainThreadSync(&v7);
@@ -636,18 +636,18 @@ void __51__SGFoundInSuggestionPresenter_realtimeSuggestions__block_invoke(uint64
   }
 }
 
-- (void)setRealtimeSuggestions:(id)a3 fromHostApp:(int64_t)a4 fromExtractionSource:(int)a5
+- (void)setRealtimeSuggestions:(id)suggestions fromHostApp:(int64_t)app fromExtractionSource:(int)source
 {
-  v8 = a3;
+  suggestionsCopy = suggestions;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __88__SGFoundInSuggestionPresenter_setRealtimeSuggestions_fromHostApp_fromExtractionSource___block_invoke;
   v10[3] = &unk_1E7CD9428;
-  v11 = v8;
-  v12 = a4;
+  v11 = suggestionsCopy;
+  appCopy = app;
   v10[4] = self;
-  v13 = a5;
-  v9 = v8;
+  sourceCopy = source;
+  v9 = suggestionsCopy;
   runOnMainThread(v10);
 }
 
@@ -958,31 +958,31 @@ LABEL_16:
 LABEL_17:
 }
 
-- (void)setMailService:(id)a3 messageService:(id)a4
+- (void)setMailService:(id)service messageService:(id)messageService
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  serviceCopy = service;
+  messageServiceCopy = messageService;
+  v8 = messageServiceCopy;
+  if (serviceCopy)
   {
     lock = self->_lock;
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __62__SGFoundInSuggestionPresenter_setMailService_messageService___block_invoke;
     v15[3] = &unk_1E7CD93B8;
-    v16 = v6;
+    v16 = serviceCopy;
     [(_PASLock *)lock runWithLockAcquired:v15];
     v10 = v16;
   }
 
-  else if (v7)
+  else if (messageServiceCopy)
   {
     v11 = self->_lock;
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __62__SGFoundInSuggestionPresenter_setMailService_messageService___block_invoke_2;
     v13[3] = &unk_1E7CD93B8;
-    v14 = v7;
+    v14 = messageServiceCopy;
     [(_PASLock *)v11 runWithLockAcquired:v13];
     v10 = v14;
   }
@@ -1002,8 +1002,8 @@ LABEL_17:
 {
   if (self->_contactStoreObserverToken)
   {
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v3 removeObserver:self->_contactStoreObserverToken];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter removeObserver:self->_contactStoreObserverToken];
   }
 
   v4.receiver = self;
@@ -1026,8 +1026,8 @@ LABEL_17:
     lock = v3->_lock;
     v3->_lock = v5;
 
-    v7 = [MEMORY[0x1E696ABB0] defaultCenter];
-    [v7 addObserver:v3 selector:sel__reloadSuggestionsForNotification_ name:@"com.apple.coresuggestions.SGDissectOrderSuggestion" object:0];
+    defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel__reloadSuggestionsForNotification_ name:@"com.apple.coresuggestions.SGDissectOrderSuggestion" object:0];
   }
 
   return v3;

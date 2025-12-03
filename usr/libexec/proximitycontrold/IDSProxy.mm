@@ -1,7 +1,7 @@
 @interface IDSProxy
 - (_TtC17proximitycontrold8IDSProxy)init;
-- (void)service:(id)a3 activeAccountsChanged:(id)a4;
-- (void)service:(id)a3 devicesChanged:(id)a4;
+- (void)service:(id)service activeAccountsChanged:(id)changed;
+- (void)service:(id)service devicesChanged:(id)changed;
 @end
 
 @implementation IDSProxy
@@ -33,9 +33,9 @@
   return [(IDSProxy *)&v13 init];
 }
 
-- (void)service:(id)a3 activeAccountsChanged:(id)a4
+- (void)service:(id)service activeAccountsChanged:(id)changed
 {
-  if (a4)
+  if (changed)
   {
     v6 = static Set._unconditionallyBridgeFromObjectiveC(_:)();
   }
@@ -45,14 +45,14 @@
     v6 = 0;
   }
 
-  v7 = a3;
-  v8 = self;
+  serviceCopy = service;
+  selfCopy = self;
   sub_10017ABB4(v6);
 }
 
-- (void)service:(id)a3 devicesChanged:(id)a4
+- (void)service:(id)service devicesChanged:(id)changed
 {
-  if (a4)
+  if (changed)
   {
     v6 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   }
@@ -62,8 +62,8 @@
     v6 = 0;
   }
 
-  v7 = a3;
-  v8 = self;
+  serviceCopy = service;
+  selfCopy = self;
   sub_10017AE1C(v6);
 }
 

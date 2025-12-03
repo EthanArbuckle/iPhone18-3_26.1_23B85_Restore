@@ -1,18 +1,18 @@
 @interface MSDHFileMetadataRestore
 - (BOOL)_gatherDeviceDemoUserAccountInfo;
-- (BOOL)restoreAttributesUnder:(id)a3 fromManifestData:(id)a4;
-- (MSDHFileMetadataRestore)initWithManifestUID:(id)a3 deviceUID:(id)a4;
-- (id)_updateFile:(id)a3 withAttributes:(id)a4;
-- (id)_updateFileAttributes:(id)a3;
-- (id)_updateFileAttributesFromManifestData:(id)a3;
+- (BOOL)restoreAttributesUnder:(id)under fromManifestData:(id)data;
+- (MSDHFileMetadataRestore)initWithManifestUID:(id)d deviceUID:(id)iD;
+- (id)_updateFile:(id)file withAttributes:(id)attributes;
+- (id)_updateFileAttributes:(id)attributes;
+- (id)_updateFileAttributesFromManifestData:(id)data;
 @end
 
 @implementation MSDHFileMetadataRestore
 
-- (BOOL)restoreAttributesUnder:(id)a3 fromManifestData:(id)a4
+- (BOOL)restoreAttributesUnder:(id)under fromManifestData:(id)data
 {
-  v6 = a3;
-  v7 = a4;
+  underCopy = under;
+  dataCopy = data;
   v8 = objc_autoreleasePoolPush();
   v29 = 0;
   v30 = &v29;
@@ -24,36 +24,36 @@
     *buf = 136315394;
     v34 = "[MSDHFileMetadataRestore restoreAttributesUnder:fromManifestData:]";
     v35 = 2114;
-    v36 = v6;
+    v36 = underCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%s: Restoring file attributes under: %{public}@", buf, 0x16u);
   }
 
-  v10 = [(MSDHFileMetadataRestore *)self userHomePath];
-  v11 = [v6 stringByAppendingPathComponent:v10];
+  userHomePath = [(MSDHFileMetadataRestore *)self userHomePath];
+  v11 = [underCopy stringByAppendingPathComponent:userHomePath];
 
-  v12 = [(MSDHFileMetadataRestore *)self pathsToSkip];
-  v13 = [v11 lowercaseString];
-  [v12 addObject:v13];
+  pathsToSkip = [(MSDHFileMetadataRestore *)self pathsToSkip];
+  lowercaseString = [v11 lowercaseString];
+  [pathsToSkip addObject:lowercaseString];
 
   v14 = [MSDManifest alloc];
-  v15 = [(MSDHFileMetadataRestore *)self userHomePath];
-  v16 = [(MSDManifest *)v14 initWithDictionary:v7 andUserHomePath:v15];
+  userHomePath2 = [(MSDHFileMetadataRestore *)self userHomePath];
+  v16 = [(MSDManifest *)v14 initWithDictionary:dataCopy andUserHomePath:userHomePath2];
 
   if (v16)
   {
-    v17 = [(MSDManifest *)v16 pathSet];
-    v18 = [v17 allObjects];
+    pathSet = [(MSDManifest *)v16 pathSet];
+    allObjects = [pathSet allObjects];
 
-    v19 = [v18 count];
+    v19 = [allObjects count];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100017B60;
     block[3] = &unk_100051000;
     v28 = &v29;
-    v24 = v18;
+    v24 = allObjects;
     v25 = v16;
-    v26 = v6;
-    v27 = self;
+    v26 = underCopy;
+    selfCopy = self;
     dispatch_apply(v19, 0, block);
     v20 = *(v30 + 24);
 
@@ -80,8 +80,8 @@
 - (BOOL)_gatherDeviceDemoUserAccountInfo
 {
   *__error() = 0;
-  v3 = [(MSDHFileMetadataRestore *)self deviceUID];
-  v4 = getpwuid([v3 unsignedIntValue]);
+  deviceUID = [(MSDHFileMetadataRestore *)self deviceUID];
+  v4 = getpwuid([deviceUID unsignedIntValue]);
 
   if (v4)
   {
@@ -98,8 +98,8 @@
       v9 = [[NSString alloc] initWithUTF8String:v6->gr_name];
       [(MSDHFileMetadataRestore *)self setDeviceGroupName:v9];
 
-      v10 = [(MSDHFileMetadataRestore *)self deviceUserName];
-      v11 = NSHomeDirectoryForUser(v10);
+      deviceUserName = [(MSDHFileMetadataRestore *)self deviceUserName];
+      v11 = NSHomeDirectoryForUser(deviceUserName);
       [(MSDHFileMetadataRestore *)self setUserHomePath:v11];
 
       return 1;
@@ -116,15 +116,15 @@
   return 0;
 }
 
-- (id)_updateFileAttributesFromManifestData:(id)a3
+- (id)_updateFileAttributesFromManifestData:(id)data
 {
-  v3 = a3;
-  v22 = [NSMutableDictionary dictionaryWithDictionary:v3];
+  dataCopy = data;
+  v22 = [NSMutableDictionary dictionaryWithDictionary:dataCopy];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  obj = v3;
+  obj = dataCopy;
   v23 = [obj countByEnumeratingWithState:&v26 objects:v30 count:16];
   v4 = 0;
   v5 = 0;
@@ -198,17 +198,17 @@ LABEL_11:
   return v17;
 }
 
-- (id)_updateFile:(id)a3 withAttributes:(id)a4
+- (id)_updateFile:(id)file withAttributes:(id)attributes
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 objectForKey:NSFileOwnerAccountID];
-  v9 = [(MSDHFileMetadataRestore *)self manifestUID];
-  v10 = [v8 isEqualToNumber:v9];
+  fileCopy = file;
+  attributesCopy = attributes;
+  v8 = [attributesCopy objectForKey:NSFileOwnerAccountID];
+  manifestUID = [(MSDHFileMetadataRestore *)self manifestUID];
+  v10 = [v8 isEqualToNumber:manifestUID];
 
   if (v10)
   {
-    v11 = [(MSDHFileMetadataRestore *)self _updateFileAttributes:v7];
+    v11 = [(MSDHFileMetadataRestore *)self _updateFileAttributes:attributesCopy];
   }
 
   else
@@ -216,10 +216,10 @@ LABEL_11:
     v12 = sub_100021268();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
-      sub_10002EDCC(v6, v8, v12);
+      sub_10002EDCC(fileCopy, v8, v12);
     }
 
-    v11 = v7;
+    v11 = attributesCopy;
   }
 
   v13 = v11;
@@ -227,32 +227,32 @@ LABEL_11:
   return v13;
 }
 
-- (id)_updateFileAttributes:(id)a3
+- (id)_updateFileAttributes:(id)attributes
 {
-  v4 = [NSMutableDictionary dictionaryWithDictionary:a3];
-  v5 = [(MSDHFileMetadataRestore *)self deviceUserName];
-  [v4 setObject:v5 forKey:NSFileOwnerAccountName];
+  v4 = [NSMutableDictionary dictionaryWithDictionary:attributes];
+  deviceUserName = [(MSDHFileMetadataRestore *)self deviceUserName];
+  [v4 setObject:deviceUserName forKey:NSFileOwnerAccountName];
 
-  v6 = [(MSDHFileMetadataRestore *)self deviceGID];
-  [v4 setObject:v6 forKey:NSFileGroupOwnerAccountID];
+  deviceGID = [(MSDHFileMetadataRestore *)self deviceGID];
+  [v4 setObject:deviceGID forKey:NSFileGroupOwnerAccountID];
 
-  v7 = [(MSDHFileMetadataRestore *)self deviceGroupName];
-  [v4 setObject:v7 forKey:NSFileGroupOwnerAccountName];
+  deviceGroupName = [(MSDHFileMetadataRestore *)self deviceGroupName];
+  [v4 setObject:deviceGroupName forKey:NSFileGroupOwnerAccountName];
 
-  v8 = [(MSDHFileMetadataRestore *)self deviceUID];
-  [v4 setObject:v8 forKey:NSFileOwnerAccountID];
+  deviceUID = [(MSDHFileMetadataRestore *)self deviceUID];
+  [v4 setObject:deviceUID forKey:NSFileOwnerAccountID];
 
   return v4;
 }
 
-- (MSDHFileMetadataRestore)initWithManifestUID:(id)a3 deviceUID:(id)a4
+- (MSDHFileMetadataRestore)initWithManifestUID:(id)d deviceUID:(id)iD
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v12.receiver = self;
   v12.super_class = MSDHFileMetadataRestore;
   v8 = [(MSDHFileMetadataRestore *)&v12 init];
-  if (v8 && (v9 = objc_alloc_init(NSMutableSet), [(MSDHFileMetadataRestore *)v8 setPathsToSkip:v9], v9, [(MSDHFileMetadataRestore *)v8 setManifestUID:v6], [(MSDHFileMetadataRestore *)v8 setDeviceUID:v7], [(MSDHFileMetadataRestore *)v8 _gatherDeviceDemoUserAccountInfo]))
+  if (v8 && (v9 = objc_alloc_init(NSMutableSet), [(MSDHFileMetadataRestore *)v8 setPathsToSkip:v9], v9, [(MSDHFileMetadataRestore *)v8 setManifestUID:dCopy], [(MSDHFileMetadataRestore *)v8 setDeviceUID:iDCopy], [(MSDHFileMetadataRestore *)v8 _gatherDeviceDemoUserAccountInfo]))
   {
     v10 = v8;
   }

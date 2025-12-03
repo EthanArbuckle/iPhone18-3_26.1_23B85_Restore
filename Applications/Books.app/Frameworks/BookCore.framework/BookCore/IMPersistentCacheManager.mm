@@ -1,11 +1,11 @@
 @interface IMPersistentCacheManager
 + (id)sharedInstance;
 - (IMPersistentCacheManager)init;
-- (id)cacheForPath:(id)a3 maxSize:(unint64_t)a4;
-- (void)_cleanCachesInPath:(id)a3;
-- (void)addCleanupExclusionPath:(id)a3;
-- (void)cleanUpCacheFilesInPath:(id)a3 withExtension:(id)a4;
-- (void)purgeFromCache:(id)a3;
+- (id)cacheForPath:(id)path maxSize:(unint64_t)size;
+- (void)_cleanCachesInPath:(id)path;
+- (void)addCleanupExclusionPath:(id)path;
+- (void)cleanUpCacheFilesInPath:(id)path withExtension:(id)extension;
+- (void)purgeFromCache:(id)cache;
 @end
 
 @implementation IMPersistentCacheManager
@@ -41,7 +41,7 @@
   block[1] = 3221225472;
   block[2] = sub_C62B4;
   block[3] = &unk_2C7CA8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_342860 != -1)
   {
     dispatch_once(&qword_342860, block);
@@ -52,18 +52,18 @@
   return v2;
 }
 
-- (void)_cleanCachesInPath:(id)a3
+- (void)_cleanCachesInPath:(id)path
 {
-  v4 = a3;
-  v6 = [v4 stringByDeletingLastPathComponent];
-  v5 = [v4 pathExtension];
+  pathCopy = path;
+  stringByDeletingLastPathComponent = [pathCopy stringByDeletingLastPathComponent];
+  pathExtension = [pathCopy pathExtension];
 
-  [(IMPersistentCacheManager *)self cleanUpCacheFilesInPath:v6 withExtension:v5];
+  [(IMPersistentCacheManager *)self cleanUpCacheFilesInPath:stringByDeletingLastPathComponent withExtension:pathExtension];
 }
 
-- (id)cacheForPath:(id)a3 maxSize:(unint64_t)a4
+- (id)cacheForPath:(id)path maxSize:(unint64_t)size
 {
-  v6 = a3;
+  pathCopy = path;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -76,10 +76,10 @@
   v11[2] = sub_C64A0;
   v11[3] = &unk_2CC9F0;
   v11[4] = self;
-  v12 = v6;
+  v12 = pathCopy;
   v13 = &v15;
-  v14 = a4;
-  v8 = v6;
+  sizeCopy = size;
+  v8 = pathCopy;
   dispatch_sync(accessQueue, v11);
   v9 = v16[5];
 
@@ -88,48 +88,48 @@
   return v9;
 }
 
-- (void)purgeFromCache:(id)a3
+- (void)purgeFromCache:(id)cache
 {
-  v4 = a3;
+  cacheCopy = cache;
   accessQueue = self->_accessQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_C65EC;
   v7[3] = &unk_2C7BE8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = cacheCopy;
+  v6 = cacheCopy;
   dispatch_sync(accessQueue, v7);
 }
 
-- (void)addCleanupExclusionPath:(id)a3
+- (void)addCleanupExclusionPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   accessQueue = self->_accessQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_C66E4;
   v7[3] = &unk_2C7BE8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = pathCopy;
+  v6 = pathCopy;
   dispatch_sync(accessQueue, v7);
 }
 
-- (void)cleanUpCacheFilesInPath:(id)a3 withExtension:(id)a4
+- (void)cleanUpCacheFilesInPath:(id)path withExtension:(id)extension
 {
-  v6 = a3;
-  v7 = a4;
+  pathCopy = path;
+  extensionCopy = extension;
   accessQueue = self->_accessQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_C680C;
   block[3] = &unk_2C89F8;
-  v12 = v6;
-  v13 = v7;
-  v14 = self;
-  v9 = v7;
-  v10 = v6;
+  v12 = pathCopy;
+  v13 = extensionCopy;
+  selfCopy = self;
+  v9 = extensionCopy;
+  v10 = pathCopy;
   dispatch_sync(accessQueue, block);
 }
 

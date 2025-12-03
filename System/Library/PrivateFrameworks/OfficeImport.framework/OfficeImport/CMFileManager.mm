@@ -1,40 +1,40 @@
 @interface CMFileManager
-+ (id)canonicalUrlPrefix:(id)a3;
-+ (id)getUrlProtocol:(id)a3;
-+ (id)uniqueFileName:(id)a3;
-+ (unint64_t)getFileTypeFromPath:(id)a3;
-+ (unint64_t)getFileTypeFromUTI:(id)a3;
++ (id)canonicalUrlPrefix:(id)prefix;
++ (id)getUrlProtocol:(id)protocol;
++ (id)uniqueFileName:(id)name;
++ (unint64_t)getFileTypeFromPath:(id)path;
++ (unint64_t)getFileTypeFromUTI:(id)i;
 @end
 
 @implementation CMFileManager
 
-+ (id)uniqueFileName:(id)a3
++ (id)uniqueFileName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v4 = CFUUIDCreate(0);
   v5 = CFUUIDCreateString(0, v4);
   CFRelease(v4);
-  v6 = [(__CFString *)v5 stringByAppendingFormat:@".%@", v3];
+  nameCopy = [(__CFString *)v5 stringByAppendingFormat:@".%@", nameCopy];
 
-  return v6;
+  return nameCopy;
 }
 
-+ (unint64_t)getFileTypeFromPath:(id)a3
++ (unint64_t)getFileTypeFromPath:(id)path
 {
-  v3 = [a3 pathExtension];
-  if ([v3 caseInsensitiveCompare:@"doc"] && objc_msgSend(v3, "caseInsensitiveCompare:", @"dot"))
+  pathExtension = [path pathExtension];
+  if ([pathExtension caseInsensitiveCompare:@"doc"] && objc_msgSend(pathExtension, "caseInsensitiveCompare:", @"dot"))
   {
-    if ([v3 caseInsensitiveCompare:@"docx"] && objc_msgSend(v3, "caseInsensitiveCompare:", @"dotx") && objc_msgSend(v3, "caseInsensitiveCompare:", @"docm") && objc_msgSend(v3, "caseInsensitiveCompare:", @"dotm"))
+    if ([pathExtension caseInsensitiveCompare:@"docx"] && objc_msgSend(pathExtension, "caseInsensitiveCompare:", @"dotx") && objc_msgSend(pathExtension, "caseInsensitiveCompare:", @"docm") && objc_msgSend(pathExtension, "caseInsensitiveCompare:", @"dotm"))
     {
-      if ([v3 caseInsensitiveCompare:@"xls"] && objc_msgSend(v3, "caseInsensitiveCompare:", @"xlt") && objc_msgSend(v3, "caseInsensitiveCompare:", @"xla"))
+      if ([pathExtension caseInsensitiveCompare:@"xls"] && objc_msgSend(pathExtension, "caseInsensitiveCompare:", @"xlt") && objc_msgSend(pathExtension, "caseInsensitiveCompare:", @"xla"))
       {
-        if ([v3 caseInsensitiveCompare:@"xlsx"] && objc_msgSend(v3, "caseInsensitiveCompare:", @"xltx") && objc_msgSend(v3, "caseInsensitiveCompare:", @"xlsm") && objc_msgSend(v3, "caseInsensitiveCompare:", @"xltm"))
+        if ([pathExtension caseInsensitiveCompare:@"xlsx"] && objc_msgSend(pathExtension, "caseInsensitiveCompare:", @"xltx") && objc_msgSend(pathExtension, "caseInsensitiveCompare:", @"xlsm") && objc_msgSend(pathExtension, "caseInsensitiveCompare:", @"xltm"))
         {
-          if ([v3 caseInsensitiveCompare:@"ppt"] && objc_msgSend(v3, "caseInsensitiveCompare:", @"pot") && objc_msgSend(v3, "caseInsensitiveCompare:", @"pps"))
+          if ([pathExtension caseInsensitiveCompare:@"ppt"] && objc_msgSend(pathExtension, "caseInsensitiveCompare:", @"pot") && objc_msgSend(pathExtension, "caseInsensitiveCompare:", @"pps"))
           {
-            if ([v3 caseInsensitiveCompare:@"pptx"] && objc_msgSend(v3, "caseInsensitiveCompare:", @"pptm") && objc_msgSend(v3, "caseInsensitiveCompare:", @"potx") && objc_msgSend(v3, "caseInsensitiveCompare:", @"potm") && objc_msgSend(v3, "caseInsensitiveCompare:", @"ppsx") && objc_msgSend(v3, "caseInsensitiveCompare:", @"ppsm"))
+            if ([pathExtension caseInsensitiveCompare:@"pptx"] && objc_msgSend(pathExtension, "caseInsensitiveCompare:", @"pptm") && objc_msgSend(pathExtension, "caseInsensitiveCompare:", @"potx") && objc_msgSend(pathExtension, "caseInsensitiveCompare:", @"potm") && objc_msgSend(pathExtension, "caseInsensitiveCompare:", @"ppsx") && objc_msgSend(pathExtension, "caseInsensitiveCompare:", @"ppsm"))
             {
-              if ([v3 caseInsensitiveCompare:@"csv"])
+              if ([pathExtension caseInsensitiveCompare:@"csv"])
               {
                 v4 = 0;
               }
@@ -83,9 +83,9 @@
   return v4;
 }
 
-+ (unint64_t)getFileTypeFromUTI:(id)a3
++ (unint64_t)getFileTypeFromUTI:(id)i
 {
-  v3 = [MEMORY[0x277CE1CB8] typeWithIdentifier:a3];
+  v3 = [MEMORY[0x277CE1CB8] typeWithIdentifier:i];
   if (qword_27FC699D0 != -1)
   {
     dispatch_once(&qword_27FC699D0, &__block_literal_global_106);
@@ -297,17 +297,17 @@ void __36__CMFileManager_getFileTypeFromUTI___block_invoke()
   qword_27FC699C8 = v56;
 }
 
-+ (id)canonicalUrlPrefix:(id)a3
++ (id)canonicalUrlPrefix:(id)prefix
 {
-  v3 = a3;
-  if (![v3 length] || (v4 = objc_msgSend(v3, "characterAtIndex:", objc_msgSend(v3, "length") - 1), v4 == 47) || v4 == 58)
+  prefixCopy = prefix;
+  if (![prefixCopy length] || (v4 = objc_msgSend(prefixCopy, "characterAtIndex:", objc_msgSend(prefixCopy, "length") - 1), v4 == 47) || v4 == 58)
   {
-    v5 = v3;
+    v5 = prefixCopy;
   }
 
   else
   {
-    v5 = [v3 stringByAppendingString:@"/"];
+    v5 = [prefixCopy stringByAppendingString:@"/"];
   }
 
   v6 = v5;
@@ -315,13 +315,13 @@ void __36__CMFileManager_getFileTypeFromUTI___block_invoke()
   return v6;
 }
 
-+ (id)getUrlProtocol:(id)a3
++ (id)getUrlProtocol:(id)protocol
 {
-  v3 = a3;
-  v4 = [v3 rangeOfString:@":"];
+  protocolCopy = protocol;
+  v4 = [protocolCopy rangeOfString:@":"];
   if (v5)
   {
-    v6 = [v3 substringToIndex:v4 + 1];
+    v6 = [protocolCopy substringToIndex:v4 + 1];
   }
 
   else

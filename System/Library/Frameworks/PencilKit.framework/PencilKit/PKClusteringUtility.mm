@@ -1,26 +1,26 @@
 @interface PKClusteringUtility
 + (CGRect)constrainRect:(CGRect)result;
-+ (double)arrayAverage:(id)a3;
-+ (double)estimatedWordDistanceForStrokes:(id)a3 lineHeight:(double)a4;
-+ (id)_clusteredStrokesWithInitialStrokes:(id)a3 selectionType:(int64_t)a4 visibleStrokes:(id)a5 approximateLineHeight:(double)a6 approximateLineCenter:(double)a7;
-+ (id)_geometricBasedStrokeClusteringFromPoint:(CGPoint)a3 visibleStrokes:(id)a4 selectionType:(int64_t)a5 inputType:(int64_t)a6;
-+ (id)horizontalDistanceBetweenStrokes:(id)a3 lineHeight:(double)a4;
-+ (id)kMeansCluster:(int)a3 values:(id)a4 clusterError:(double)a5 maxIterations:(int)a6;
-+ (void)_fetchIntersectedStrokesForGeometricBasedStrokeClusteringBetweenPoint:(CGPoint)a3 otherPoint:(CGPoint)a4 visibleStrokes:(id)a5 completion:(id)a6;
++ (double)arrayAverage:(id)average;
++ (double)estimatedWordDistanceForStrokes:(id)strokes lineHeight:(double)height;
++ (id)_clusteredStrokesWithInitialStrokes:(id)strokes selectionType:(int64_t)type visibleStrokes:(id)visibleStrokes approximateLineHeight:(double)height approximateLineCenter:(double)center;
++ (id)_geometricBasedStrokeClusteringFromPoint:(CGPoint)point visibleStrokes:(id)strokes selectionType:(int64_t)type inputType:(int64_t)inputType;
++ (id)horizontalDistanceBetweenStrokes:(id)strokes lineHeight:(double)height;
++ (id)kMeansCluster:(int)cluster values:(id)values clusterError:(double)error maxIterations:(int)iterations;
++ (void)_fetchIntersectedStrokesForGeometricBasedStrokeClusteringBetweenPoint:(CGPoint)point otherPoint:(CGPoint)otherPoint visibleStrokes:(id)strokes completion:(id)completion;
 @end
 
 @implementation PKClusteringUtility
 
-+ (id)horizontalDistanceBetweenStrokes:(id)a3 lineHeight:(double)a4
++ (id)horizontalDistanceBetweenStrokes:(id)strokes lineHeight:(double)height
 {
   v52 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v40 = [MEMORY[0x1E695DF70] array];
+  strokesCopy = strokes;
+  array = [MEMORY[0x1E695DF70] array];
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v6 = v5;
+  v6 = strokesCopy;
   v7 = [v6 countByEnumeratingWithState:&v46 objects:v51 count:16];
   if (v7)
   {
@@ -67,7 +67,7 @@
               [v11 _bounds];
               MidY = CGRectGetMidY(v54);
               [v19 _bounds];
-              if (vabdd_f64(CGRectGetMidY(v55), MidY) < a4)
+              if (vabdd_f64(CGRectGetMidY(v55), MidY) < height)
               {
                 [v19 _bounds];
                 MidX = CGRectGetMidX(v56);
@@ -107,14 +107,14 @@
         if (v17 != 1.79769313e308)
         {
           v37 = [MEMORY[0x1E696AD98] numberWithDouble:v17];
-          [v40 addObject:v37];
+          [array addObject:v37];
         }
 
         v38 = v41;
         if (v41 != 1.79769313e308)
         {
           v14 = [MEMORY[0x1E696AD98] numberWithDouble:v41];
-          [v40 addObject:v14];
+          [array addObject:v14];
 LABEL_26:
 
           continue;
@@ -127,12 +127,12 @@ LABEL_26:
     while (v8);
   }
 
-  return v40;
+  return array;
 }
 
-+ (double)estimatedWordDistanceForStrokes:(id)a3 lineHeight:(double)a4
++ (double)estimatedWordDistanceForStrokes:(id)strokes lineHeight:(double)height
 {
-  v4 = [PKClusteringUtility horizontalDistanceBetweenStrokes:a3 lineHeight:a4];
+  v4 = [PKClusteringUtility horizontalDistanceBetweenStrokes:strokes lineHeight:height];
   v5 = 7.0;
   if ([v4 count] >= 2)
   {
@@ -153,47 +153,47 @@ LABEL_26:
   return v5;
 }
 
-+ (id)kMeansCluster:(int)a3 values:(id)a4 clusterError:(double)a5 maxIterations:(int)a6
++ (id)kMeansCluster:(int)cluster values:(id)values clusterError:(double)error maxIterations:(int)iterations
 {
   v58 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  if ([v8 count] >= a3)
+  valuesCopy = values;
+  if ([valuesCopy count] >= cluster)
   {
-    v10 = [MEMORY[0x1E695DF70] array];
-    v9 = [MEMORY[0x1E695DF70] array];
-    v11 = a3;
-    v52 = a3;
-    if (a3 >= 1)
+    array = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
+    clusterCopy = cluster;
+    clusterCopy2 = cluster;
+    if (cluster >= 1)
     {
       v12 = 0;
       do
       {
-        v13 = [MEMORY[0x1E695DF70] array];
-        [v10 addObject:v13];
+        array3 = [MEMORY[0x1E695DF70] array];
+        [array addObject:array3];
 
-        v14 = [v8 objectAtIndexedSubscript:v12];
-        [v9 setObject:v14 atIndexedSubscript:v12];
+        v14 = [valuesCopy objectAtIndexedSubscript:v12];
+        [array2 setObject:v14 atIndexedSubscript:v12];
 
         ++v12;
       }
 
-      while (a3 != v12);
+      while (cluster != v12);
     }
 
     v50 = 0;
     v15 = 0x1E696A000uLL;
-    v47 = v10;
-    v48 = v8;
-    v16 = v10;
+    v47 = array;
+    v48 = valuesCopy;
+    v16 = array;
     while (1)
     {
       v55 = 0u;
       v56 = 0u;
       v53 = 0u;
       v54 = 0u;
-      obj = v8;
+      obj = valuesCopy;
       v17 = [obj countByEnumeratingWithState:&v53 objects:v57 count:16];
-      v18 = v52;
+      v18 = clusterCopy2;
       if (v17)
       {
         v19 = v17;
@@ -222,7 +222,7 @@ LABEL_26:
               {
                 [v22 floatValue];
                 v27 = v26;
-                v28 = [v9 objectAtIndexedSubscript:v23];
+                v28 = [array2 objectAtIndexedSubscript:v23];
                 [v28 floatValue];
                 v30 = vabds_f32(v27, v29);
 
@@ -235,9 +235,9 @@ LABEL_26:
                 ++v23;
               }
 
-              while (v11 != v23);
+              while (clusterCopy != v23);
               v31 = v24;
-              v18 = v52;
+              v18 = clusterCopy2;
               v15 = 0x1E696A000;
             }
 
@@ -254,7 +254,7 @@ LABEL_26:
       if (v18 < 1)
       {
         v16 = v47;
-        v8 = v48;
+        valuesCopy = v48;
         goto LABEL_30;
       }
 
@@ -267,64 +267,64 @@ LABEL_26:
         [PKClusteringUtility arrayAverage:v36];
         v38 = v37;
 
-        v39 = [v9 objectAtIndexedSubscript:v34];
+        v39 = [array2 objectAtIndexedSubscript:v34];
         [v39 floatValue];
-        v41 = vabdd_f64(v38, v40) < a5;
+        v41 = vabdd_f64(v38, v40) < error;
 
         v35 |= v41;
         v42 = [*(v33 + 3480) numberWithDouble:v38];
-        [v9 replaceObjectAtIndex:v34 withObject:v42];
+        [array2 replaceObjectAtIndex:v34 withObject:v42];
 
         ++v34;
       }
 
-      while (v11 != v34);
-      if ((v35 & (v50 < a6)) == 0)
+      while (clusterCopy != v34);
+      if ((v35 & (v50 < iterations)) == 0)
       {
         break;
       }
 
-      v43 = [MEMORY[0x1E695DF70] array];
+      array4 = [MEMORY[0x1E695DF70] array];
 
-      v44 = v52;
+      v44 = clusterCopy2;
       do
       {
-        v45 = [MEMORY[0x1E695DF70] array];
-        [v43 addObject:v45];
+        array5 = [MEMORY[0x1E695DF70] array];
+        [array4 addObject:array5];
 
         --v44;
       }
 
       while (v44);
       ++v50;
-      v16 = v43;
-      v8 = v48;
+      v16 = array4;
+      valuesCopy = v48;
       v15 = 0x1E696A000;
     }
 
-    v8 = v48;
+    valuesCopy = v48;
 LABEL_30:
   }
 
   else
   {
-    v9 = 0;
+    array2 = 0;
   }
 
-  return v9;
+  return array2;
 }
 
-+ (double)arrayAverage:(id)a3
++ (double)arrayAverage:(id)average
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([v3 count])
+  averageCopy = average;
+  if ([averageCopy count])
   {
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v4 = v3;
+    v4 = averageCopy;
     v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v5)
     {
@@ -375,16 +375,16 @@ LABEL_30:
   return result;
 }
 
-+ (void)_fetchIntersectedStrokesForGeometricBasedStrokeClusteringBetweenPoint:(CGPoint)a3 otherPoint:(CGPoint)a4 visibleStrokes:(id)a5 completion:(id)a6
++ (void)_fetchIntersectedStrokesForGeometricBasedStrokeClusteringBetweenPoint:(CGPoint)point otherPoint:(CGPoint)otherPoint visibleStrokes:(id)strokes completion:(id)completion
 {
-  y = a4.y;
-  x = a4.x;
-  v9 = a3.y;
-  v10 = a3.x;
+  y = otherPoint.y;
+  x = otherPoint.x;
+  v9 = point.y;
+  v10 = point.x;
   v134 = *MEMORY[0x1E69E9840];
-  v11 = a5;
-  v12 = a6;
-  v107 = [MEMORY[0x1E695DFA0] orderedSet];
+  strokesCopy = strokes;
+  completionCopy = completion;
+  orderedSet = [MEMORY[0x1E695DFA0] orderedSet];
   if (v9 >= y)
   {
     v13 = y;
@@ -433,7 +433,7 @@ LABEL_30:
   v106 = v16;
   v128 = 0uLL;
   v129 = 0uLL;
-  v17 = v11;
+  v17 = strokesCopy;
   v18 = [v17 countByEnumeratingWithState:&v126 objects:v133 count:16];
   if (v18)
   {
@@ -486,7 +486,7 @@ LABEL_30:
     v26 = *v127;
     v27 = 1.79769313e308;
     v28 = 1.79769313e308;
-    v29 = v107;
+    v29 = orderedSet;
     do
     {
       for (i = 0; i != v19; ++i)
@@ -537,16 +537,16 @@ LABEL_30:
   {
     v20 = 0;
     v21 = 0;
-    v29 = v107;
+    v29 = orderedSet;
   }
 
   if (!(v21 | v20))
   {
-    v12[2](v12, v29);
+    completionCopy[2](completionCopy, v29);
     goto LABEL_81;
   }
 
-  v102 = v12;
+  v102 = completionCopy;
   if (v21 || !v20)
   {
     v43 = v105;
@@ -631,8 +631,8 @@ LABEL_46:
   v66 = v29;
   v67 = v53;
   [v66 minusOrderedSet:v53];
-  v68 = [MEMORY[0x1E695DFA0] orderedSet];
-  v69 = [MEMORY[0x1E695DFA0] orderedSet];
+  orderedSet2 = [MEMORY[0x1E695DFA0] orderedSet];
+  orderedSet3 = [MEMORY[0x1E695DFA0] orderedSet];
   v118 = 0u;
   v119 = 0u;
   v120 = 0u;
@@ -656,7 +656,7 @@ LABEL_46:
         [v75 _bounds];
         if (v76 > v43)
         {
-          [v68 addObject:v75];
+          [orderedSet2 addObject:v75];
         }
       }
 
@@ -689,7 +689,7 @@ LABEL_46:
         [v82 _bounds];
         if (v83 < v42)
         {
-          [v69 addObject:v82];
+          [orderedSet3 addObject:v82];
         }
       }
 
@@ -699,12 +699,12 @@ LABEL_46:
     while (v79);
   }
 
-  [PKDrawing _boundingBoxForStrokes:v68];
+  [PKDrawing _boundingBoxForStrokes:orderedSet2];
   v85 = v84;
   v87 = v86;
   v89 = v88;
   v91 = v90;
-  [PKDrawing _boundingBoxForStrokes:v69];
+  [PKDrawing _boundingBoxForStrokes:orderedSet3];
   v93 = v92;
   v95 = v94;
   v97 = v96;
@@ -730,46 +730,46 @@ LABEL_46:
   v144.size.height = v99;
   if (vabdd_f64(v100, CGRectGetMidY(v144)) >= v91)
   {
-    v29 = v107;
-    [v107 unionOrderedSet:v68];
-    v101 = v69;
-    v12 = v102;
+    v29 = orderedSet;
+    [orderedSet unionOrderedSet:orderedSet2];
+    v101 = orderedSet3;
+    completionCopy = v102;
   }
 
   else
   {
-    [v68 intersectOrderedSet:v69];
-    v101 = v68;
-    v12 = v102;
-    v29 = v107;
+    [orderedSet2 intersectOrderedSet:orderedSet3];
+    v101 = orderedSet2;
+    completionCopy = v102;
+    v29 = orderedSet;
   }
 
   [v29 unionOrderedSet:v101];
-  v12[2](v12, v29);
+  completionCopy[2](completionCopy, v29);
 
   v17 = v113;
 LABEL_81:
 }
 
-+ (id)_geometricBasedStrokeClusteringFromPoint:(CGPoint)a3 visibleStrokes:(id)a4 selectionType:(int64_t)a5 inputType:(int64_t)a6
++ (id)_geometricBasedStrokeClusteringFromPoint:(CGPoint)point visibleStrokes:(id)strokes selectionType:(int64_t)type inputType:(int64_t)inputType
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v50 = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v11 = [MEMORY[0x1E695DFA0] orderedSet];
+  strokesCopy = strokes;
+  orderedSet = [MEMORY[0x1E695DFA0] orderedSet];
   v12 = [MEMORY[0x1E695DFA8] set];
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v13 = v10;
+  v13 = strokesCopy;
   v14 = [v13 countByEnumeratingWithState:&v44 objects:v49 count:16];
   if (v14)
   {
     v15 = v14;
     v16 = *v45;
-    if (a6)
+    if (inputType)
     {
       v17 = 10.0;
     }
@@ -793,17 +793,17 @@ LABEL_81:
         v21 = *(*(&v44 + 1) + 8 * i);
         if ([v21 intersectsPoint:x boundsOutset:y minimumStrokeThreshold:{v17, v17}])
         {
-          [v11 addObject:v21];
+          [orderedSet addObject:v21];
           [v21 _bounds];
           v19 = v19 + v22;
           [v21 _bounds];
           v18 = v18 + CGRectGetMidY(v52);
-          v23 = [v21 _groupID];
+          _groupID = [v21 _groupID];
 
-          if (v23)
+          if (_groupID)
           {
-            v24 = [v21 _groupID];
-            [v12 addObject:v24];
+            _groupID2 = [v21 _groupID];
+            [v12 addObject:_groupID2];
           }
         }
       }
@@ -823,7 +823,7 @@ LABEL_81:
   if ([v12 count])
   {
     v38 = v13;
-    v39 = a5;
+    typeCopy = type;
     v42 = 0u;
     v43 = 0u;
     v40 = 0u;
@@ -844,16 +844,16 @@ LABEL_81:
           }
 
           v30 = *(*(&v40 + 1) + 8 * j);
-          v31 = [v30 _groupID];
-          if (v31)
+          _groupID3 = [v30 _groupID];
+          if (_groupID3)
           {
-            v32 = v31;
-            v33 = [v30 _groupID];
-            v34 = [v12 containsObject:v33];
+            v32 = _groupID3;
+            _groupID4 = [v30 _groupID];
+            v34 = [v12 containsObject:_groupID4];
 
             if (v34)
             {
-              [v11 addObject:v30];
+              [orderedSet addObject:v30];
             }
           }
         }
@@ -865,17 +865,17 @@ LABEL_81:
     }
 
     v13 = v38;
-    a5 = v39;
+    type = typeCopy;
   }
 
-  if ([v11 count])
+  if ([orderedSet count])
   {
-    v35 = +[PKClusteringUtility _clusteredStrokesWithInitialStrokes:selectionType:visibleStrokes:approximateLineHeight:approximateLineCenter:](PKClusteringUtility, "_clusteredStrokesWithInitialStrokes:selectionType:visibleStrokes:approximateLineHeight:approximateLineCenter:", v11, a5, v13, v19 / [v11 count], v18 / objc_msgSend(v11, "count"));
+    v35 = +[PKClusteringUtility _clusteredStrokesWithInitialStrokes:selectionType:visibleStrokes:approximateLineHeight:approximateLineCenter:](PKClusteringUtility, "_clusteredStrokesWithInitialStrokes:selectionType:visibleStrokes:approximateLineHeight:approximateLineCenter:", orderedSet, type, v13, v19 / [orderedSet count], v18 / objc_msgSend(orderedSet, "count"));
   }
 
   else
   {
-    v35 = v11;
+    v35 = orderedSet;
   }
 
   v36 = v35;
@@ -883,40 +883,40 @@ LABEL_81:
   return v36;
 }
 
-+ (id)_clusteredStrokesWithInitialStrokes:(id)a3 selectionType:(int64_t)a4 visibleStrokes:(id)a5 approximateLineHeight:(double)a6 approximateLineCenter:(double)a7
++ (id)_clusteredStrokesWithInitialStrokes:(id)strokes selectionType:(int64_t)type visibleStrokes:(id)visibleStrokes approximateLineHeight:(double)height approximateLineCenter:(double)center
 {
   v85 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a5;
-  v67 = [MEMORY[0x1E695DFA0] orderedSetWithOrderedSet:v12];
-  if (a4 != 1)
+  strokesCopy = strokes;
+  visibleStrokesCopy = visibleStrokes;
+  v67 = [MEMORY[0x1E695DFA0] orderedSetWithOrderedSet:strokesCopy];
+  if (type != 1)
   {
-    [PKClusteringUtility estimatedWordDistanceForStrokes:v13 lineHeight:a6];
+    [PKClusteringUtility estimatedWordDistanceForStrokes:visibleStrokesCopy lineHeight:height];
     v15 = 3.0;
-    v66 = v12;
-    if (a4 == 3)
+    v66 = strokesCopy;
+    if (type == 3)
     {
       v16 = -50.0;
     }
 
-    else if (a4 == 2)
+    else if (type == 2)
     {
       v16 = -v14;
     }
 
     else
     {
-      if ((a4 & 0xFFFFFFFFFFFFFFFELL) == 4)
+      if ((type & 0xFFFFFFFFFFFFFFFELL) == 4)
       {
-        a6 = a6 + a6;
+        height = height + height;
       }
 
       else
       {
-        a6 = 0.0;
+        height = 0.0;
       }
 
-      if ((a4 & 0xFFFFFFFFFFFFFFFELL) == 4)
+      if ((type & 0xFFFFFFFFFFFFFFFELL) == 4)
       {
         v15 = -10.0;
       }
@@ -926,7 +926,7 @@ LABEL_81:
         v15 = *(MEMORY[0x1E695EFF8] + 8);
       }
 
-      if ((a4 & 0xFFFFFFFFFFFFFFFELL) == 4)
+      if ((type & 0xFFFFFFFFFFFFFFFELL) == 4)
       {
         v16 = -50.0;
       }
@@ -937,11 +937,11 @@ LABEL_81:
       }
     }
 
-    v65 = a4;
-    v68 = v13;
+    typeCopy = type;
+    v68 = visibleStrokesCopy;
     while (1)
     {
-      v17 = [MEMORY[0x1E695DFA0] orderedSet];
+      orderedSet = [MEMORY[0x1E695DFA0] orderedSet];
       v78 = 0u;
       v79 = 0u;
       v80 = 0u;
@@ -967,7 +967,7 @@ LABEL_81:
             v75 = 0u;
             v76 = 0u;
             v77 = 0u;
-            v21 = v13;
+            v21 = visibleStrokesCopy;
             v22 = [v21 countByEnumeratingWithState:&v74 objects:v83 count:16];
             if (v22)
             {
@@ -993,7 +993,7 @@ LABEL_81:
                     v32 = v31;
                     v34 = v33;
                     [v26 _bounds];
-                    [a1 constrainRect:?];
+                    [self constrainRect:?];
                     v93.origin.x = v35;
                     v93.origin.y = v36;
                     v93.size.width = v37;
@@ -1004,10 +1004,10 @@ LABEL_81:
                     v89.size.height = v34;
                     v39 = CGRectIntersectsRect(v89, v93);
                     [v26 _bounds];
-                    v40 = vabdd_f64(a7, CGRectGetMidY(v90));
-                    if (v39 && v40 < a6)
+                    v40 = vabdd_f64(center, CGRectGetMidY(v90));
+                    if (v39 && v40 < height)
                     {
-                      [v17 addObject:{v26, v40}];
+                      [orderedSet addObject:{v26, v40}];
                     }
                   }
                 }
@@ -1019,7 +1019,7 @@ LABEL_81:
             }
 
             v19 = recta[0] + 1;
-            v13 = v68;
+            visibleStrokesCopy = v68;
           }
 
           while (recta[0] + 1 != v70);
@@ -1029,18 +1029,18 @@ LABEL_81:
         while (v70);
       }
 
-      if (![v17 count])
+      if (![orderedSet count])
       {
         break;
       }
 
-      v42 = [v17 array];
-      [v18 addObjectsFromArray:v42];
+      array = [orderedSet array];
+      [v18 addObjectsFromArray:array];
     }
 
-    if (v65 == 5)
+    if (typeCopy == 5)
     {
-      [v18 addObjectsFromArray:v13];
+      [v18 addObjectsFromArray:visibleStrokesCopy];
     }
 
     [PKDrawing _boundingBoxForStrokes:v18];
@@ -1051,7 +1051,7 @@ LABEL_81:
     memset(&recta[1], 0, 32);
     v72 = 0u;
     v73 = 0u;
-    v50 = v13;
+    v50 = visibleStrokesCopy;
     v51 = [v50 countByEnumeratingWithState:&recta[1] objects:v82 count:16];
     if (v51)
     {
@@ -1093,7 +1093,7 @@ LABEL_81:
       while (v52);
     }
 
-    v12 = v66;
+    strokesCopy = v66;
   }
 
   return v67;

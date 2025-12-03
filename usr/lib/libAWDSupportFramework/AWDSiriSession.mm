@@ -1,16 +1,16 @@
 @interface AWDSiriSession
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addSiriRequest:(id)a3;
-- (void)copyTo:(id)a3;
+- (void)addSiriRequest:(id)request;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasSessionStartTimestamp:(BOOL)a3;
-- (void)setHasTimestamp:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasSessionStartTimestamp:(BOOL)timestamp;
+- (void)setHasTimestamp:(BOOL)timestamp;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDSiriSession
@@ -25,9 +25,9 @@
   [(AWDSiriSession *)&v3 dealloc];
 }
 
-- (void)setHasTimestamp:(BOOL)a3
+- (void)setHasTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 4;
   }
@@ -40,9 +40,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasSessionStartTimestamp:(BOOL)a3
+- (void)setHasSessionStartTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 2;
   }
@@ -55,7 +55,7 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)addSiriRequest:(id)a3
+- (void)addSiriRequest:(id)request
 {
   siriRequests = self->_siriRequests;
   if (!siriRequests)
@@ -64,7 +64,7 @@
     self->_siriRequests = siriRequests;
   }
 
-  [(NSMutableArray *)siriRequests addObject:a3];
+  [(NSMutableArray *)siriRequests addObject:request];
 }
 
 - (id)description
@@ -77,11 +77,11 @@
 - (id)dictionaryRepresentation
 {
   v20 = *MEMORY[0x29EDCA608];
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if ((has & 4) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -100,24 +100,24 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_sessionStartTimestamp), @"sessionStartTimestamp"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_sessionStartTimestamp), @"sessionStartTimestamp"}];
   if (*&self->_has)
   {
 LABEL_4:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_sessionEndTimestamp), @"sessionEndTimestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_sessionEndTimestamp), @"sessionEndTimestamp"}];
   }
 
 LABEL_5:
   companionModel = self->_companionModel;
   if (companionModel)
   {
-    [v3 setObject:companionModel forKey:@"companionModel"];
+    [dictionary setObject:companionModel forKey:@"companionModel"];
   }
 
   companionOS = self->_companionOS;
   if (companionOS)
   {
-    [v3 setObject:companionOS forKey:@"companionOS"];
+    [dictionary setObject:companionOS forKey:@"companionOS"];
   }
 
   if ([(NSMutableArray *)self->_siriRequests count])
@@ -151,14 +151,14 @@ LABEL_5:
       while (v10);
     }
 
-    [v3 setObject:v7 forKey:@"siriRequest"];
+    [dictionary setObject:v7 forKey:@"siriRequest"];
   }
 
   v13 = *MEMORY[0x29EDCA608];
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v20 = *MEMORY[0x29EDCA608];
   has = self->_has;
@@ -236,13 +236,13 @@ LABEL_5:
   v12 = *MEMORY[0x29EDCA608];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if ((has & 4) != 0)
   {
-    *(a3 + 3) = self->_timestamp;
-    *(a3 + 56) |= 4u;
+    *(to + 3) = self->_timestamp;
+    *(to + 56) |= 4u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -261,45 +261,45 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(a3 + 2) = self->_sessionStartTimestamp;
-  *(a3 + 56) |= 2u;
+  *(to + 2) = self->_sessionStartTimestamp;
+  *(to + 56) |= 2u;
   if (*&self->_has)
   {
 LABEL_4:
-    *(a3 + 1) = self->_sessionEndTimestamp;
-    *(a3 + 56) |= 1u;
+    *(to + 1) = self->_sessionEndTimestamp;
+    *(to + 56) |= 1u;
   }
 
 LABEL_5:
   if (self->_companionModel)
   {
-    [a3 setCompanionModel:?];
+    [to setCompanionModel:?];
   }
 
   if (self->_companionOS)
   {
-    [a3 setCompanionOS:?];
+    [to setCompanionOS:?];
   }
 
   if ([(AWDSiriSession *)self siriRequestsCount])
   {
-    [a3 clearSiriRequests];
-    v6 = [(AWDSiriSession *)self siriRequestsCount];
-    if (v6)
+    [to clearSiriRequests];
+    siriRequestsCount = [(AWDSiriSession *)self siriRequestsCount];
+    if (siriRequestsCount)
     {
-      v7 = v6;
+      v7 = siriRequestsCount;
       for (i = 0; i != v7; ++i)
       {
-        [a3 addSiriRequest:{-[AWDSiriSession siriRequestAtIndex:](self, "siriRequestAtIndex:", i)}];
+        [to addSiriRequest:{-[AWDSiriSession siriRequestAtIndex:](self, "siriRequestAtIndex:", i)}];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v21 = *MEMORY[0x29EDCA608];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 4) != 0)
@@ -335,8 +335,8 @@ LABEL_4:
 
 LABEL_5:
 
-  *(v6 + 32) = [(NSString *)self->_companionModel copyWithZone:a3];
-  *(v6 + 40) = [(NSString *)self->_companionOS copyWithZone:a3];
+  *(v6 + 32) = [(NSString *)self->_companionModel copyWithZone:zone];
+  *(v6 + 40) = [(NSString *)self->_companionOS copyWithZone:zone];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -356,7 +356,7 @@ LABEL_5:
           objc_enumerationMutation(siriRequests);
         }
 
-        v13 = [*(*(&v16 + 1) + 8 * i) copyWithZone:a3];
+        v13 = [*(*(&v16 + 1) + 8 * i) copyWithZone:zone];
         [v6 addSiriRequest:v13];
       }
 
@@ -370,21 +370,21 @@ LABEL_5:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
-    v6 = *(a3 + 56);
+    v6 = *(equal + 56);
     if ((*&self->_has & 4) != 0)
     {
-      if ((*(a3 + 56) & 4) == 0 || self->_timestamp != *(a3 + 3))
+      if ((*(equal + 56) & 4) == 0 || self->_timestamp != *(equal + 3))
       {
         goto LABEL_23;
       }
     }
 
-    else if ((*(a3 + 56) & 4) != 0)
+    else if ((*(equal + 56) & 4) != 0)
     {
 LABEL_23:
       LOBYTE(v5) = 0;
@@ -393,38 +393,38 @@ LABEL_23:
 
     if ((*&self->_has & 2) != 0)
     {
-      if ((*(a3 + 56) & 2) == 0 || self->_sessionStartTimestamp != *(a3 + 2))
+      if ((*(equal + 56) & 2) == 0 || self->_sessionStartTimestamp != *(equal + 2))
       {
         goto LABEL_23;
       }
     }
 
-    else if ((*(a3 + 56) & 2) != 0)
+    else if ((*(equal + 56) & 2) != 0)
     {
       goto LABEL_23;
     }
 
     if (*&self->_has)
     {
-      if ((*(a3 + 56) & 1) == 0 || self->_sessionEndTimestamp != *(a3 + 1))
+      if ((*(equal + 56) & 1) == 0 || self->_sessionEndTimestamp != *(equal + 1))
       {
         goto LABEL_23;
       }
     }
 
-    else if (*(a3 + 56))
+    else if (*(equal + 56))
     {
       goto LABEL_23;
     }
 
     companionModel = self->_companionModel;
-    if (!(companionModel | *(a3 + 4)) || (v5 = [(NSString *)companionModel isEqual:?]) != 0)
+    if (!(companionModel | *(equal + 4)) || (v5 = [(NSString *)companionModel isEqual:?]) != 0)
     {
       companionOS = self->_companionOS;
-      if (!(companionOS | *(a3 + 5)) || (v5 = [(NSString *)companionOS isEqual:?]) != 0)
+      if (!(companionOS | *(equal + 5)) || (v5 = [(NSString *)companionOS isEqual:?]) != 0)
       {
         siriRequests = self->_siriRequests;
-        if (siriRequests | *(a3 + 6))
+        if (siriRequests | *(equal + 6))
         {
 
           LOBYTE(v5) = [(NSMutableArray *)siriRequests isEqual:?];
@@ -484,15 +484,15 @@ LABEL_8:
   return v6 ^ v7 ^ [(NSMutableArray *)self->_siriRequests hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v17 = *MEMORY[0x29EDCA608];
-  v5 = *(a3 + 56);
+  v5 = *(from + 56);
   if ((v5 & 4) != 0)
   {
-    self->_timestamp = *(a3 + 3);
+    self->_timestamp = *(from + 3);
     *&self->_has |= 4u;
-    v5 = *(a3 + 56);
+    v5 = *(from + 56);
     if ((v5 & 2) == 0)
     {
 LABEL_3:
@@ -505,27 +505,27 @@ LABEL_3:
     }
   }
 
-  else if ((*(a3 + 56) & 2) == 0)
+  else if ((*(from + 56) & 2) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_sessionStartTimestamp = *(a3 + 2);
+  self->_sessionStartTimestamp = *(from + 2);
   *&self->_has |= 2u;
-  if (*(a3 + 56))
+  if (*(from + 56))
   {
 LABEL_4:
-    self->_sessionEndTimestamp = *(a3 + 1);
+    self->_sessionEndTimestamp = *(from + 1);
     *&self->_has |= 1u;
   }
 
 LABEL_5:
-  if (*(a3 + 4))
+  if (*(from + 4))
   {
     [(AWDSiriSession *)self setCompanionModel:?];
   }
 
-  if (*(a3 + 5))
+  if (*(from + 5))
   {
     [(AWDSiriSession *)self setCompanionOS:?];
   }
@@ -534,7 +534,7 @@ LABEL_5:
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = *(a3 + 6);
+  v6 = *(from + 6);
   v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {

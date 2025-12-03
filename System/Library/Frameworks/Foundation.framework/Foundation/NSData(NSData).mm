@@ -62,7 +62,7 @@
 + (id)_alloc
 {
   v3 = *MEMORY[0x1E69E9840];
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___NSData_0;
   return objc_msgSendSuper2(&v2, sel_allocWithZone_, 0);
 }
@@ -72,15 +72,15 @@
   v17 = *MEMORY[0x1E69E9840];
   if (dyld_program_sdk_at_least())
   {
-    v2 = [a1 length];
-    v3 = [a1 bytes];
+    v2 = [self length];
+    bytes = [self bytes];
     v4 = [objc_allocWithZone(NSMutableString) initWithCapacity:512];
     [v4 appendFormat:@"{length = %lu, bytes = 0x", v2];
     if (v2 < 0x19)
     {
       for (; v2; --v2)
       {
-        v8 = *v3++;
+        v8 = *bytes++;
         v7 = v8;
         v9 = (v8 >> 4) | 0x30;
         v10 = (v8 >> 4) + 87;
@@ -111,7 +111,7 @@
       do
       {
         v5 += 4;
-        append4Bytes(v4, &v3[v5]);
+        append4Bytes(v4, &bytes[v5]);
       }
 
       while (v5 < 0xC);
@@ -119,7 +119,7 @@
       v6 = v2 - 8;
       do
       {
-        append4Bytes(v4, &v3[v6]);
+        append4Bytes(v4, &bytes[v6]);
         v6 += 4;
       }
 
@@ -133,7 +133,7 @@
   else
   {
 
-    return [a1 debugDescription];
+    return [self debugDescription];
   }
 }
 
@@ -141,18 +141,18 @@
 {
   if (*MEMORY[0x1E695E100])
   {
-    (*MEMORY[0x1E695E100])(a1, v1, *MEMORY[0x1E695E0D0]);
+    (*MEMORY[0x1E695E100])(self, v1, *MEMORY[0x1E695E0D0]);
   }
 
-  [a1 length];
-  [a1 bytes];
+  [self length];
+  [self bytes];
 
   return CFHashBytes();
 }
 
 + (id)data
 {
-  v1 = [objc_allocWithZone(a1) initWithBytes:0 length:0];
+  v1 = [objc_allocWithZone(self) initWithBytes:0 length:0];
 
   return v1;
 }
@@ -162,11 +162,11 @@
   v26 = *MEMORY[0x1E69E9840];
   if (*MEMORY[0x1E695E100])
   {
-    (*MEMORY[0x1E695E100])(a1, v1, *MEMORY[0x1E695E0D0]);
+    (*MEMORY[0x1E695E100])(self, v1, *MEMORY[0x1E695E0D0]);
   }
 
-  v3 = [a1 length];
-  v4 = [a1 bytes];
+  v3 = [self length];
+  bytes = [self bytes];
   v5 = v3 << (v3 >= 0);
   v6 = v3 >> 2;
   v7 = __CFADD__(v5, v3 >> 2);
@@ -207,7 +207,7 @@ LABEL_17:
         }
 
         --v3;
-        v17 = *v4++;
+        v17 = *bytes++;
         v16 = v17;
         v18 = (v17 >> 4) | 0x30;
         v19 = (v17 >> 4) + 87;
@@ -261,8 +261,8 @@ LABEL_24:
       }
 
       v3 -= 4;
-      append4Bytes(v12, v4);
-      v4 += 4;
+      append4Bytes(v12, bytes);
+      bytes += 4;
       if (v3 <= 4)
       {
         goto LABEL_17;
@@ -277,32 +277,32 @@ LABEL_24:
 {
   if (*MEMORY[0x1E695E100])
   {
-    (*MEMORY[0x1E695E100])(a1, v2, *MEMORY[0x1E695E0D0]);
+    (*MEMORY[0x1E695E100])(self, v2, *MEMORY[0x1E695E0D0]);
   }
 
   v5 = NSClassFromString(@"NSData");
-  NSRequestConcreteImplementation(a1, a2, v5);
+  NSRequestConcreteImplementation(self, a2, v5);
 }
 
 - (void)bytes
 {
   if (*MEMORY[0x1E695E100])
   {
-    (*MEMORY[0x1E695E100])(a1, v2, *MEMORY[0x1E695E0D0]);
+    (*MEMORY[0x1E695E100])(self, v2, *MEMORY[0x1E695E0D0]);
   }
 
   v5 = NSClassFromString(@"NSData");
-  NSRequestConcreteImplementation(a1, a2, v5);
+  NSRequestConcreteImplementation(self, a2, v5);
 }
 
 - (id)_asciiDescription
 {
-  v2 = [a1 length];
+  v2 = [self length];
   v3 = objc_opt_new();
-  v4 = [a1 bytes];
+  bytes = [self bytes];
   if (v2)
   {
-    v5 = v4;
+    v5 = bytes;
     v6 = 0;
     v7 = 69;
     do
@@ -340,10 +340,10 @@ LABEL_24:
 {
   if (*MEMORY[0x1E695E100])
   {
-    (*MEMORY[0x1E695E100])(a1, v3, *MEMORY[0x1E695E0D0]);
+    (*MEMORY[0x1E695E100])(self, v3, *MEMORY[0x1E695E0D0]);
   }
 
-  if (a3 == a1)
+  if (a3 == self)
   {
     return 1;
   }
@@ -357,7 +357,7 @@ LABEL_24:
   if (result)
   {
 
-    return [a1 isEqualToData:a3];
+    return [self isEqualToData:a3];
   }
 
   return result;
@@ -367,14 +367,14 @@ LABEL_24:
 {
   if (*MEMORY[0x1E695E100])
   {
-    (*MEMORY[0x1E695E100])(a1, v1, *MEMORY[0x1E695E0D0]);
+    (*MEMORY[0x1E695E100])(self, v1, *MEMORY[0x1E695E0D0]);
   }
 
   v3 = objc_allocWithZone(MEMORY[0x1E695DEF0]);
-  v4 = [a1 bytes];
-  v5 = [a1 length];
+  bytes = [self bytes];
+  v5 = [self length];
 
-  return [v3 initWithBytes:v4 length:v5 copy:1 freeWhenDone:0 bytesAreVM:0];
+  return [v3 initWithBytes:bytes length:v5 copy:1 freeWhenDone:0 bytesAreVM:0];
 }
 
 - (uint64_t)mutableCopyWithZone:()NSData
@@ -382,10 +382,10 @@ LABEL_24:
   v7[5] = *MEMORY[0x1E69E9840];
   if (*MEMORY[0x1E695E100])
   {
-    (*MEMORY[0x1E695E100])(a1, v1, *MEMORY[0x1E695E0D0]);
+    (*MEMORY[0x1E695E100])(self, v1, *MEMORY[0x1E695E0D0]);
   }
 
-  v3 = [a1 length];
+  v3 = [self length];
   v4 = [objc_alloc(MEMORY[0x1E695DF88]) initWithCapacity:v3];
   v5 = v4;
   if (v4)
@@ -395,7 +395,7 @@ LABEL_24:
     v7[2] = __38__NSData_NSData__mutableCopyWithZone___block_invoke;
     v7[3] = &unk_1E69F2A48;
     v7[4] = v4;
-    [a1 enumerateByteRangesUsingBlock:v7];
+    [self enumerateByteRangesUsingBlock:v7];
   }
 
   return v5;
@@ -405,7 +405,7 @@ LABEL_24:
 {
   if (*MEMORY[0x1E695E100])
   {
-    (*MEMORY[0x1E695E100])(a1, v3, *MEMORY[0x1E695E0D0]);
+    (*MEMORY[0x1E695E100])(self, v3, *MEMORY[0x1E695E0D0]);
   }
 
   if ([a3 allowsKeyedCoding])
@@ -413,22 +413,22 @@ LABEL_24:
     if (object_getClass(a3) == NSKeyedArchiver)
     {
 
-      return [a3 _encodePropertyList:a1 forKey:@"NS.data"];
+      return [a3 _encodePropertyList:self forKey:@"NS.data"];
     }
 
     else
     {
-      v6 = [a1 bytes];
-      v7 = [a1 length];
+      bytes = [self bytes];
+      v7 = [self length];
 
-      return [a3 encodeBytes:v6 length:v7 forKey:@"NS.bytes"];
+      return [a3 encodeBytes:bytes length:v7 forKey:@"NS.bytes"];
     }
   }
 
   else
   {
 
-    return [a3 encodeDataObject:a1];
+    return [a3 encodeDataObject:self];
   }
 }
 
@@ -451,7 +451,7 @@ LABEL_24:
         v14[2] = __32__NSData_NSData__initWithCoder___block_invoke;
         v14[3] = &unk_1E69F2A70;
         v14[4] = v6;
-        return [a1 initWithBytes:bytes_ptr length:length copy:0 deallocator:v14];
+        return [self initWithBytes:bytes_ptr length:length copy:0 deallocator:v14];
       }
 
       goto LABEL_16;
@@ -468,7 +468,7 @@ LABEL_16:
         return 0;
       }
 
-      return [a1 initWithData:v11];
+      return [self initWithData:v11];
     }
 
     else
@@ -483,7 +483,7 @@ LABEL_16:
 
       else
       {
-        return [a1 initWithBytes:v12 length:v13];
+        return [self initWithBytes:v12 length:v13];
       }
     }
   }
@@ -491,22 +491,22 @@ LABEL_16:
   else
   {
 
-    v10 = [a3 decodeDataObject];
+    decodeDataObject = [a3 decodeDataObject];
 
-    return v10;
+    return decodeDataObject;
   }
 }
 
 - (dispatch_data_t)replacementObjectForCoder:()NSData
 {
-  if ((objc_opt_isKindOfClass() & 1) == 0 || ![a1 _canReplaceWithDispatchDataForXPCCoder])
+  if ((objc_opt_isKindOfClass() & 1) == 0 || ![self _canReplaceWithDispatchDataForXPCCoder])
   {
-    return a1;
+    return self;
   }
 
-  v2 = [a1 length];
+  v2 = [self length];
   v3 = NSAllocateMemoryPages(v2);
-  [a1 getBytes:v3 length:v2];
+  [self getBytes:v3 length:v2];
   v4 = dispatch_data_create(v3, v2, 0, *MEMORY[0x1E69E9660]);
 
   return v4;
@@ -516,11 +516,11 @@ LABEL_16:
 {
   if (*MEMORY[0x1E695E100])
   {
-    (*MEMORY[0x1E695E100])(a1, v3, *MEMORY[0x1E695E0D0]);
+    (*MEMORY[0x1E695E100])(self, v3, *MEMORY[0x1E695E0D0]);
   }
 
-  v6 = [a1 bytes];
-  v7 = [a1 length];
+  bytes = [self bytes];
+  v7 = [self length];
   if (v7 < 0x80000)
   {
 LABEL_7:
@@ -533,14 +533,14 @@ LABEL_7:
   }
 
   v8 = MEMORY[0x1E69E9AC8];
-  if (((*MEMORY[0x1E69E9AC8] - 1) & (v6 | a3)) == 0)
+  if (((*MEMORY[0x1E69E9AC8] - 1) & (bytes | a3)) == 0)
   {
     malloc_default_zone();
     if (!malloc_zone_claimed_address())
     {
       v9 = v7 & -*v8;
-      NSCopyMemoryPages(v6, a3, v9);
-      v6 += v9;
+      NSCopyMemoryPages(bytes, a3, v9);
+      bytes += v9;
       a3 += v9;
       v7 -= v9;
       goto LABEL_7;
@@ -549,24 +549,24 @@ LABEL_7:
 
 LABEL_8:
 
-  memmove(a3, v6, v7);
+  memmove(a3, bytes, v7);
 }
 
 - (void)getBytes:()NSData length:
 {
   if (*MEMORY[0x1E695E100])
   {
-    (*MEMORY[0x1E695E100])(a1, v4, *MEMORY[0x1E695E0D0]);
+    (*MEMORY[0x1E695E100])(self, v4, *MEMORY[0x1E695E0D0]);
   }
 
-  v8 = [a1 length];
+  v8 = [self length];
   if (v8 < a4)
   {
     a4 = v8;
   }
 
-  v9 = [a1 bytes];
-  v10 = v9;
+  bytes = [self bytes];
+  v10 = bytes;
   if (a4 < 0x80000)
   {
 LABEL_9:
@@ -579,7 +579,7 @@ LABEL_9:
   }
 
   v11 = MEMORY[0x1E69E9AC8];
-  if (((*MEMORY[0x1E69E9AC8] - 1) & (v9 | a3)) == 0)
+  if (((*MEMORY[0x1E69E9AC8] - 1) & (bytes | a3)) == 0)
   {
     malloc_default_zone();
     if (!malloc_zone_claimed_address())
@@ -603,11 +603,11 @@ LABEL_10:
   v8 = *MEMORY[0x1E69E9840];
   if (*MEMORY[0x1E695E100])
   {
-    (*MEMORY[0x1E695E100])(a1, v3, *MEMORY[0x1E695E0D0]);
+    (*MEMORY[0x1E695E100])(self, v3, *MEMORY[0x1E695E0D0]);
   }
 
   v7 = 0;
-  return (*(a3 + 16))(a3, [a1 bytes], 0, objc_msgSend(a1, "length"), &v7);
+  return (*(a3 + 16))(a3, [self bytes], 0, objc_msgSend(self, "length"), &v7);
 }
 
 - (void)getBytes:()NSData range:
@@ -615,7 +615,7 @@ LABEL_10:
   v6 = a5;
   if (*MEMORY[0x1E695E100])
   {
-    (*MEMORY[0x1E695E100])(a1, v5, *MEMORY[0x1E695E0D0]);
+    (*MEMORY[0x1E695E100])(self, v5, *MEMORY[0x1E695E0D0]);
     if (!v6)
     {
       return;
@@ -627,7 +627,7 @@ LABEL_10:
     return;
   }
 
-  v11 = [a1 length];
+  v11 = [self length];
   if (!_CFExecutableLinkedOnOrAfter())
   {
     if (v11 > a4)
@@ -642,7 +642,7 @@ LABEL_10:
 
     v20 = a4;
     v21 = v11;
-    v19 = _NSMethodExceptionProem(a1, a2);
+    v19 = _NSMethodExceptionProem(self, a2);
     v13 = @"%@: location %lu exceeds data length %lu";
 LABEL_22:
     v18 = [NSString stringWithFormat:v13, v19, v20, v21];
@@ -651,7 +651,7 @@ LABEL_22:
 
   if (__CFADD__(v6, a4))
   {
-    v17 = _NSMethodExceptionProem(a1, a2);
+    v17 = _NSMethodExceptionProem(self, a2);
     v24.location = a4;
     v24.length = v6;
     v19 = v17;
@@ -662,7 +662,7 @@ LABEL_22:
 
   if (a4 + v6 > v11)
   {
-    v12 = _NSMethodExceptionProem(a1, a2);
+    v12 = _NSMethodExceptionProem(self, a2);
     v23.location = a4;
     v23.length = v6;
     v20 = NSStringFromRange(v23);
@@ -673,7 +673,7 @@ LABEL_22:
   }
 
 LABEL_10:
-  v14 = [a1 bytes] + a4;
+  v14 = [self bytes] + a4;
   if (v6 < 0x80000)
   {
     goto LABEL_14;
@@ -706,7 +706,7 @@ LABEL_14:
   v10 = *MEMORY[0x1E69E9840];
   if (*MEMORY[0x1E695E100])
   {
-    (*MEMORY[0x1E695E100])(a1, v1, *MEMORY[0x1E695E0D0]);
+    (*MEMORY[0x1E695E100])(self, v1, *MEMORY[0x1E695E0D0]);
   }
 
   v6 = 0;
@@ -717,9 +717,9 @@ LABEL_14:
   v5[1] = 3221225472;
   v5[2] = __28__NSData_NSData___isCompact__block_invoke;
   v5[3] = &unk_1E69F2A98;
-  v5[4] = a1;
+  v5[4] = self;
   v5[5] = &v6;
-  [a1 enumerateByteRangesUsingBlock:v5];
+  [self enumerateByteRangesUsingBlock:v5];
   v3 = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
   return v3;
@@ -727,11 +727,11 @@ LABEL_14:
 
 - (uint64_t)isEqualToData:()NSData
 {
-  v5 = a1;
+  selfCopy = self;
   v26 = *MEMORY[0x1E69E9840];
   if (*MEMORY[0x1E695E100])
   {
-    (*MEMORY[0x1E695E100])(a1, v3, *MEMORY[0x1E695E0D0]);
+    (*MEMORY[0x1E695E100])(self, v3, *MEMORY[0x1E695E0D0]);
     if (!a3)
     {
       goto LABEL_24;
@@ -743,13 +743,13 @@ LABEL_14:
     goto LABEL_24;
   }
 
-  if (a3 == v5)
+  if (a3 == selfCopy)
   {
     v7 = 1;
     return v7 & 1;
   }
 
-  v6 = [v5 length];
+  v6 = [selfCopy length];
   if (v6 != [a3 length])
   {
 LABEL_24:
@@ -764,25 +764,25 @@ LABEL_24:
     v23 = &v22;
     v24 = 0x2020000000;
     v25 = 1;
-    if ([v5 _isCompact])
+    if ([selfCopy _isCompact])
     {
-      v8 = [v5 bytes];
+      bytes = [selfCopy bytes];
     }
 
     else
     {
-      v8 = 0;
+      bytes = 0;
     }
 
     if ([a3 _isCompact])
     {
-      v9 = [a3 bytes];
-      v10 = v9;
-      v11 = v8 != 0;
-      v12 = v9 != 0;
-      if (v8 && v9)
+      bytes2 = [a3 bytes];
+      v10 = bytes2;
+      v11 = bytes != 0;
+      v12 = bytes2 != 0;
+      if (bytes && bytes2)
       {
-        v7 = memcmp(v8, v9, v6) == 0;
+        v7 = memcmp(bytes, bytes2, v6) == 0;
         *(v23 + 24) = v7;
 LABEL_22:
         _Block_object_dispose(&v22, 8);
@@ -794,7 +794,7 @@ LABEL_22:
     {
       v12 = 0;
       v10 = 0;
-      v11 = v8 != 0;
+      v11 = bytes != 0;
     }
 
     if (v11 || v12)
@@ -805,10 +805,10 @@ LABEL_22:
       v20[4] = &unk_1E69F2AC0;
       if (v11)
       {
-        v5 = a3;
+        selfCopy = a3;
       }
 
-      v21[1] = v8;
+      v21[1] = bytes;
       v21[2] = v10;
       v13 = v21;
     }
@@ -824,7 +824,7 @@ LABEL_22:
     }
 
     *v13 = &v22;
-    [v5 enumerateByteRangesUsingBlock:{v15, v16, v17, v18, v19}];
+    [selfCopy enumerateByteRangesUsingBlock:{v15, v16, v17, v18, v19}];
     v7 = *(v23 + 24);
     goto LABEL_22;
   }
@@ -836,15 +836,15 @@ LABEL_22:
 {
   if (*MEMORY[0x1E695E100])
   {
-    (*MEMORY[0x1E695E100])(a1, v4, *MEMORY[0x1E695E0D0]);
+    (*MEMORY[0x1E695E100])(self, v4, *MEMORY[0x1E695E0D0]);
   }
 
-  v9 = [a1 length];
+  v9 = [self length];
   if (a4)
   {
     if (__CFADD__(a4, a3))
     {
-      v15 = _NSMethodExceptionProem(a1, a2);
+      v15 = _NSMethodExceptionProem(self, a2);
       v21.location = a3;
       v21.length = a4;
       v16 = [NSString stringWithFormat:@"%@: range %@ causes integer overflow", v15, NSStringFromRange(v21), v19];
@@ -856,27 +856,27 @@ LABEL_22:
       {
         if (a3 || a4 != v9)
         {
-          if (a4 >= 0x40 && (objc_opt_class() != NSConcreteData || [a1 _copyWillRetain]) && (objc_opt_class() == NSConcreteData || (v13 = objc_opt_class(), v13 == objc_opt_class()) || (v14 = objc_opt_class(), v14 == objc_opt_class()) || a4 >> 15))
+          if (a4 >= 0x40 && (objc_opt_class() != NSConcreteData || [self _copyWillRetain]) && (objc_opt_class() == NSConcreteData || (v13 = objc_opt_class(), v13 == objc_opt_class()) || (v14 = objc_opt_class(), v14 == objc_opt_class()) || a4 >> 15))
           {
-            v10 = [objc_allocWithZone(NSSubrangeData) initWithData:a1 range:{a3, a4}];
+            v10 = [objc_allocWithZone(NSSubrangeData) initWithData:self range:{a3, a4}];
           }
 
           else
           {
-            v10 = [objc_allocWithZone(MEMORY[0x1E695DEF0]) initWithBytes:objc_msgSend(a1 length:{"bytes") + a3, a4}];
+            v10 = [objc_allocWithZone(MEMORY[0x1E695DEF0]) initWithBytes:objc_msgSend(self length:{"bytes") + a3, a4}];
           }
         }
 
         else
         {
-          v10 = [a1 copyWithZone:0];
+          v10 = [self copyWithZone:0];
         }
 
         return v10;
       }
 
       v17 = v9;
-      v18 = _NSMethodExceptionProem(a1, a2);
+      v18 = _NSMethodExceptionProem(self, a2);
       v22.location = a3;
       v22.length = a4;
       v16 = [NSString stringWithFormat:@"%@: range %@ exceeds data length %lu", v18, NSStringFromRange(v22), v17];
@@ -900,11 +900,11 @@ LABEL_22:
     }
 
 LABEL_12:
-    v13 = [NSString stringWithFormat:@"%@: nil file argument", _NSMethodExceptionProem(a1, a2)];
+    v13 = [NSString stringWithFormat:@"%@: nil file argument", _NSMethodExceptionProem(self, a2)];
     goto LABEL_14;
   }
 
-  (*MEMORY[0x1E695E100])(a1, v5, *MEMORY[0x1E695E0D0]);
+  (*MEMORY[0x1E695E100])(self, v5, *MEMORY[0x1E695E0D0]);
   if (!a3)
   {
     goto LABEL_12;
@@ -913,7 +913,7 @@ LABEL_12:
 LABEL_3:
   if ((~a4 & 3) == 0)
   {
-    v13 = [NSString stringWithFormat:@"%@: NSDataWritingWithoutOverwriting is not supported with NSDataWritingAtomic", _NSMethodExceptionProem(a1, a2)];
+    v13 = [NSString stringWithFormat:@"%@: NSDataWritingWithoutOverwriting is not supported with NSDataWritingAtomic", _NSMethodExceptionProem(self, a2)];
 LABEL_14:
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:v13 userInfo:0]);
   }
@@ -921,14 +921,14 @@ LABEL_14:
   if (_NSIsNSURL())
   {
 
-    return [(objc_class *)a1 writeToURL:a3 options:a4 error:a5];
+    return [(objc_class *)self writeToURL:a3 options:a4 error:a5];
   }
 
   else
   {
     v12 = MEMORY[0x1E695DEF0];
 
-    return [v12 _writeDataToPath:a3 data:a1 options:a4 reportProgress:1 error:a5];
+    return [v12 _writeDataToPath:a3 data:self options:a4 reportProgress:1 error:a5];
   }
 }
 
@@ -942,11 +942,11 @@ LABEL_14:
     }
 
 LABEL_16:
-    v14 = [NSString stringWithFormat:@"%@: nil URL argument", _NSMethodExceptionProem(a1, a2)];
+    v14 = [NSString stringWithFormat:@"%@: nil URL argument", _NSMethodExceptionProem(self, a2)];
     goto LABEL_18;
   }
 
-  (*MEMORY[0x1E695E100])(a1, v5, *MEMORY[0x1E695E0D0]);
+  (*MEMORY[0x1E695E100])(self, v5, *MEMORY[0x1E695E0D0]);
   if (!a3)
   {
     goto LABEL_16;
@@ -955,7 +955,7 @@ LABEL_16:
 LABEL_3:
   if ((~a4 & 3) == 0)
   {
-    v14 = [NSString stringWithFormat:@"%@: NSDataWritingWithoutOverwriting is not supported with NSDataWritingAtomic", _NSMethodExceptionProem(a1, a2)];
+    v14 = [NSString stringWithFormat:@"%@: NSDataWritingWithoutOverwriting is not supported with NSDataWritingAtomic", _NSMethodExceptionProem(self, a2)];
 LABEL_18:
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:v14 userInfo:0]);
   }
@@ -972,8 +972,8 @@ LABEL_13:
     return 0;
   }
 
-  v11 = [a3 _securePath];
-  if (!v11)
+  _securePath = [a3 _securePath];
+  if (!_securePath)
   {
     if (a5)
     {
@@ -984,37 +984,37 @@ LABEL_13:
     return 0;
   }
 
-  return [(objc_class *)a1 writeToFile:v11 options:a4 error:a5];
+  return [(objc_class *)self writeToFile:_securePath options:a4 error:a5];
 }
 
 - (uint64_t)writeToFile:()NSData atomically:error:
 {
   if (*MEMORY[0x1E695E100])
   {
-    (*MEMORY[0x1E695E100])(a1, v5, *MEMORY[0x1E695E0D0]);
+    (*MEMORY[0x1E695E100])(self, v5, *MEMORY[0x1E695E0D0]);
   }
 
-  return [a1 writeToFile:a3 options:a4 error:a5];
+  return [self writeToFile:a3 options:a4 error:a5];
 }
 
 - (uint64_t)writeToFile:()NSData atomically:
 {
   if (*MEMORY[0x1E695E100])
   {
-    (*MEMORY[0x1E695E100])(a1, v4, *MEMORY[0x1E695E0D0]);
+    (*MEMORY[0x1E695E100])(self, v4, *MEMORY[0x1E695E0D0]);
   }
 
   if (_NSIsNSURL())
   {
 
-    return [a1 writeToURL:a3 atomically:a4];
+    return [self writeToURL:a3 atomically:a4];
   }
 
   else
   {
     v9 = MEMORY[0x1E695DEF0];
 
-    return [v9 _writeDataToPath:a3 data:a1 options:a4 reportProgress:1 error:0];
+    return [v9 _writeDataToPath:a3 data:self options:a4 reportProgress:1 error:0];
   }
 }
 
@@ -1022,7 +1022,7 @@ LABEL_13:
 {
   if (*MEMORY[0x1E695E100])
   {
-    (*MEMORY[0x1E695E100])(a1, v4, *MEMORY[0x1E695E0D0]);
+    (*MEMORY[0x1E695E100])(self, v4, *MEMORY[0x1E695E0D0]);
   }
 
   if (![a3 isFileURL])
@@ -1030,87 +1030,87 @@ LABEL_13:
     return 0;
   }
 
-  v8 = [a3 _securePath];
-  if (!v8)
+  _securePath = [a3 _securePath];
+  if (!_securePath)
   {
     return 0;
   }
 
-  return [a1 writeToFile:v8 atomically:a4];
+  return [self writeToFile:_securePath atomically:a4];
 }
 
 + (__objc2_class)allocWithZone:()NSData
 {
-  if (MEMORY[0x1E695DEF0] == a1)
+  if (MEMORY[0x1E695DEF0] == self)
   {
     return &___placeholderData;
   }
 
   else
   {
-    return NSAllocateObject(a1, 0, a3);
+    return NSAllocateObject(self, 0, a3);
   }
 }
 
 + (id)dataWithBytes:()NSData length:
 {
-  v4 = [objc_allocWithZone(a1) initWithBytes:a3 length:a4];
+  v4 = [objc_allocWithZone(self) initWithBytes:a3 length:a4];
 
   return v4;
 }
 
 + (id)dataWithBytesNoCopy:()NSData length:
 {
-  v4 = [objc_allocWithZone(a1) initWithBytesNoCopy:a3 length:a4];
+  v4 = [objc_allocWithZone(self) initWithBytesNoCopy:a3 length:a4];
 
   return v4;
 }
 
 + (id)dataWithBytesNoCopy:()NSData length:freeWhenDone:
 {
-  v5 = [objc_allocWithZone(a1) initWithBytesNoCopy:a3 length:a4 freeWhenDone:a5];
+  v5 = [objc_allocWithZone(self) initWithBytesNoCopy:a3 length:a4 freeWhenDone:a5];
 
   return v5;
 }
 
 + (id)dataWithContentsOfFile:()NSData
 {
-  v3 = [objc_allocWithZone(a1) initWithContentsOfFile:a3];
+  v3 = [objc_allocWithZone(self) initWithContentsOfFile:a3];
 
   return v3;
 }
 
 + (id)dataWithContentsOfURL:()NSData
 {
-  v3 = [objc_allocWithZone(a1) initWithContentsOfURL:a3];
+  v3 = [objc_allocWithZone(self) initWithContentsOfURL:a3];
 
   return v3;
 }
 
 + (id)dataWithContentsOfMappedFile:()NSData
 {
-  v3 = [objc_allocWithZone(a1) initWithContentsOfMappedFile:a3];
+  v3 = [objc_allocWithZone(self) initWithContentsOfMappedFile:a3];
 
   return v3;
 }
 
 + (id)dataWithContentsOfFile:()NSData options:error:
 {
-  v5 = [objc_allocWithZone(a1) initWithContentsOfFile:a3 options:a4 error:a5];
+  v5 = [objc_allocWithZone(self) initWithContentsOfFile:a3 options:a4 error:a5];
 
   return v5;
 }
 
 + (id)dataWithContentsOfURL:()NSData options:error:
 {
-  v5 = [objc_allocWithZone(a1) initWithContentsOfURL:a3 options:a4 error:a5];
+  v5 = [objc_allocWithZone(self) initWithContentsOfURL:a3 options:a4 error:a5];
 
   return v5;
 }
 
 + (id)dataWithContentsOfURL:()NSData options:maxLength:error:
 {
-  v6 = [objc_allocWithZone(a1) initWithContentsOfURL:a3 options:a4 maxLength:a5 error:a6];
+  v6 = [objc_allocWithZone(self) initWithContentsOfURL:a3 options:a4 maxLength:a5 error:a6];
 
   return v6;
 }
@@ -1123,16 +1123,16 @@ LABEL_13:
   }
 
   v5 = MEMORY[0x1E695DF88];
-  if (MEMORY[0x1E695DEF0] == a1 && _CFExecutableLinkedOnOrAfter())
+  if (MEMORY[0x1E695DEF0] == self && _CFExecutableLinkedOnOrAfter())
   {
     v6 = [a3 copyWithZone:0];
     goto LABEL_8;
   }
 
-  if (v5 != a1)
+  if (v5 != self)
   {
 LABEL_4:
-    v6 = [objc_allocWithZone(a1) initWithBytes:objc_msgSend(a3 length:{"bytes"), objc_msgSend(a3, "length")}];
+    v6 = [objc_allocWithZone(self) initWithBytes:objc_msgSend(a3 length:{"bytes"), objc_msgSend(a3, "length")}];
     goto LABEL_8;
   }
 
@@ -1173,7 +1173,7 @@ LABEL_8:
       dispatch_once(&initWithBytes_length_copy_freeWhenDone_bytesAreVM__warnOnce, &__block_literal_global_77);
     }
 
-    return [a1 initWithBytes:v20 length:a4 copy:a5 freeWhenDone:0 bytesAreVM:{0, *&v21.dli_fname, *&v21.dli_sname}];
+    return [self initWithBytes:v20 length:a4 copy:a5 freeWhenDone:0 bytesAreVM:{0, *&v21.dli_fname, *&v21.dli_sname}];
   }
 
   else
@@ -1195,7 +1195,7 @@ LABEL_10:
       v17 = 0;
     }
 
-    return [a1 initWithBytes:a3 length:a4 copy:a5 deallocator:{v17, *&v21.dli_fname, *&v21.dli_sname}];
+    return [self initWithBytes:a3 length:a4 copy:a5 deallocator:{v17, *&v21.dli_fname, *&v21.dli_sname}];
   }
 }
 
@@ -1207,10 +1207,10 @@ LABEL_10:
   {
     if (v8)
     {
-      [+[NSAssertionHandler currentHandler](NSAssertionHandler handleFailureInMethod:"handleFailureInMethod:object:file:lineNumber:description:" object:a2 file:a1 lineNumber:@"NSData.m" description:940, @"Data should not have been mapped"];
+      [+[NSAssertionHandler currentHandler](NSAssertionHandler handleFailureInMethod:"handleFailureInMethod:object:file:lineNumber:description:" object:a2 file:self lineNumber:@"NSData.m" description:940, @"Data should not have been mapped"];
     }
 
-    return [a1 initWithBytes:v10[0] length:v9 copy:0 freeWhenDone:1 bytesAreVM:0];
+    return [self initWithBytes:v10[0] length:v9 copy:0 freeWhenDone:1 bytesAreVM:0];
   }
 
   else
@@ -1225,7 +1225,7 @@ LABEL_10:
   v20[1] = *MEMORY[0x1E69E9840];
   if (!a3)
   {
-    v16 = [NSString stringWithFormat:@"%@: nil file argument", _NSMethodExceptionProem(a1, a2)];
+    v16 = [NSString stringWithFormat:@"%@: nil file argument", _NSMethodExceptionProem(self, a2)];
 
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:v16 userInfo:0]);
   }
@@ -1246,7 +1246,7 @@ LABEL_10:
       v13 = &__block_literal_global_6;
     }
 
-    result = [(objc_class *)a1 initWithBytes:v20[0] length:v19 copy:0 deallocator:v13];
+    result = [(objc_class *)self initWithBytes:v20[0] length:v19 copy:0 deallocator:v13];
     if (a6)
     {
       if (!result)
@@ -1272,7 +1272,7 @@ LABEL_10:
   v18[1] = *MEMORY[0x1E69E9840];
   if (!a3)
   {
-    v17 = [NSString stringWithFormat:@"%@: nil URL argument", _NSMethodExceptionProem(a1, a2)];
+    v17 = [NSString stringWithFormat:@"%@: nil URL argument", _NSMethodExceptionProem(self, a2)];
 
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:v17 userInfo:0]);
   }
@@ -1313,7 +1313,7 @@ LABEL_19:
       goto LABEL_11;
     }
 
-    v15 = [(objc_class *)a1 initWithData:v14];
+    v15 = [(objc_class *)self initWithData:v14];
     if (!a6)
     {
       return v15;
@@ -1322,8 +1322,8 @@ LABEL_19:
     goto LABEL_15;
   }
 
-  v11 = [a3 _securePath];
-  if (!v11)
+  _securePath = [a3 _securePath];
+  if (!_securePath)
   {
 
     if (!a6)
@@ -1336,7 +1336,7 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  return [(objc_class *)a1 initWithContentsOfFile:v11 options:a4 maxLength:a5 error:a6];
+  return [(objc_class *)self initWithContentsOfFile:_securePath options:a4 maxLength:a5 error:a6];
 }
 
 - (uint64_t)initWithContentsOfURL:()NSData
@@ -1367,18 +1367,18 @@ LABEL_19:
       goto LABEL_11;
     }
 
-    return [a1 initWithData:v8];
+    return [self initWithData:v8];
   }
 
-  v5 = [a3 _securePath];
-  if (!v5)
+  _securePath = [a3 _securePath];
+  if (!_securePath)
   {
 LABEL_11:
 
     return 0;
   }
 
-  return [a1 initWithContentsOfFile:v5];
+  return [self initWithContentsOfFile:_securePath];
 }
 
 - (uint64_t)initWithContentsOfMappedFile:()NSData
@@ -1400,7 +1400,7 @@ LABEL_11:
       v4 = &__block_literal_global_6;
     }
 
-    return [a1 initWithBytes:v9[0] length:v8 copy:0 deallocator:v4];
+    return [self initWithBytes:v9[0] length:v8 copy:0 deallocator:v4];
   }
 
   else
@@ -1416,21 +1416,21 @@ LABEL_11:
   if (v5)
   {
     v6 = v5;
-    v7 = [a3 bytes];
-    v8 = a1;
+    bytes = [a3 bytes];
+    selfCopy2 = self;
     v9 = v6;
     v10 = 1;
   }
 
   else
   {
-    v8 = a1;
-    v7 = 0;
+    selfCopy2 = self;
+    bytes = 0;
     v9 = 0;
     v10 = 0;
   }
 
-  return [v8 initWithBytes:v7 length:v9 copy:v10 freeWhenDone:0 bytesAreVM:0];
+  return [selfCopy2 initWithBytes:bytes length:v9 copy:v10 freeWhenDone:0 bytesAreVM:0];
 }
 
 + (uint64_t)_newZeroingDataWithBytes:()NSData length:
@@ -1458,23 +1458,23 @@ LABEL_11:
     }
 
 LABEL_16:
-    v21 = [NSString stringWithFormat:@"%@: nil data argument", _NSMethodExceptionProem(a1, a2)];
+    v21 = [NSString stringWithFormat:@"%@: nil data argument", _NSMethodExceptionProem(self, a2)];
     v22 = MEMORY[0x1E695DF30];
     v23 = MEMORY[0x1E695D940];
     goto LABEL_22;
   }
 
-  (*MEMORY[0x1E695E100])(a1, v6, *MEMORY[0x1E695E0D0]);
+  (*MEMORY[0x1E695E100])(self, v6, *MEMORY[0x1E695E0D0]);
   if (!a3)
   {
     goto LABEL_16;
   }
 
 LABEL_3:
-  v13 = [(objc_class *)a1 length];
+  v13 = [(objc_class *)self length];
   if (__CFADD__(a6, a5))
   {
-    v24 = _NSMethodExceptionProem(a1, a2);
+    v24 = _NSMethodExceptionProem(self, a2);
     v30.location = a5;
     v30.length = a6;
     v25 = [NSString stringWithFormat:@"%@: range %@ causes integer overflow", v24, NSStringFromRange(v30)];
@@ -1489,7 +1489,7 @@ LABEL_22:
   if (a5 + a6 > v13)
   {
     v26 = v13;
-    v27 = _NSMethodExceptionProem(a1, a2);
+    v27 = _NSMethodExceptionProem(self, a2);
     v28 = v27;
     if (a6)
     {
@@ -1506,8 +1506,8 @@ LABEL_22:
     goto LABEL_21;
   }
 
-  v14 = [(objc_class *)a1 _isCompact];
-  if (v14)
+  _isCompact = [(objc_class *)self _isCompact];
+  if (_isCompact)
   {
     result = _CFDataFindBytes();
     if (result == -1)
@@ -1518,7 +1518,7 @@ LABEL_22:
 
   else
   {
-    MEMORY[0x1EEE9AC00](v14);
+    MEMORY[0x1EEE9AC00](_isCompact);
     v17 = v29 - v16;
     v18 = v29 - v16;
     if (a6 >= 0x101)
@@ -1526,7 +1526,7 @@ LABEL_22:
       v18 = malloc_type_malloc(a6, 0x100004077774924uLL);
     }
 
-    [(objc_class *)a1 getBytes:v18 range:a5, a6];
+    [(objc_class *)self getBytes:v18 range:a5, a6];
     v19 = [(NSData *)[NSConcreteData alloc] initWithBytesNoCopy:v18 length:a6 freeWhenDone:v18 != v17];
     v20 = [(NSData *)v19 rangeOfData:a3 options:a4 range:0, a6];
 
@@ -1785,7 +1785,7 @@ LABEL_56:
     v11 = malloc_type_zone_malloc(v10, v9, 0xCEBFB2E4uLL);
     if (!v11)
     {
-      v28 = [NSString stringWithFormat:@"%@: unable to allocate memory for length (%lu)", _NSMethodExceptionProem(a1, a2), v9];
+      v28 = [NSString stringWithFormat:@"%@: unable to allocate memory for length (%lu)", _NSMethodExceptionProem(self, a2), v9];
 
       objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695DA18] reason:v28 userInfo:0]);
     }
@@ -1829,7 +1829,7 @@ LABEL_56:
         }
 
         while (v23 != v22);
-        v13 = [(objc_class *)a1 _decodeBase64EncodedCharacterBuffer:v21 length:v15 options:v30 buffer:v12 bufferLength:v9 state:v33 + 4];
+        v13 = [(objc_class *)self _decodeBase64EncodedCharacterBuffer:v21 length:v15 options:v30 buffer:v12 bufferLength:v9 state:v33 + 4];
         v14 += v15;
       }
 
@@ -1845,7 +1845,7 @@ LABEL_56:
       v31[6] = v30;
       v31[7] = v12;
       v31[8] = v9;
-      v31[4] = a1;
+      v31[4] = self;
       v31[5] = &v32;
       [a3 enumerateByteRangesUsingBlock:v31];
     }
@@ -1864,26 +1864,26 @@ LABEL_56:
       v26 = v33;
     }
 
-    v27 = [(objc_class *)a1 initWithBytes:v12 length:v26[5] copy:0 freeWhenDone:1 bytesAreVM:0];
+    v27 = [(objc_class *)self initWithBytes:v12 length:v26[5] copy:0 freeWhenDone:1 bytesAreVM:0];
 LABEL_27:
     _Block_object_dispose(&v32, 8);
     return v27;
   }
 
-  return [(objc_class *)a1 initWithBytes:0 length:0];
+  return [(objc_class *)self initWithBytes:0 length:0];
 }
 
 - (NSString)_base64EncodingAsString:()NSData withOptions:
 {
   v43 = *MEMORY[0x1E69E9840];
-  if ([a1 length])
+  if ([self length])
   {
-    v8 = [a1 length];
+    v8 = [self length];
     v9 = 4 * (v8 / 3) + 4 * (v8 != 3 * (v8 / 3));
     if (v9 < v8)
     {
 LABEL_17:
-      v14 = [NSString stringWithFormat:@"%@: data is too large to encode", _NSMethodExceptionProem(a1, a2)];
+      v14 = [NSString stringWithFormat:@"%@: data is too large to encode", _NSMethodExceptionProem(self, a2)];
       v15 = MEMORY[0x1E695DF30];
       v16 = MEMORY[0x1E695DA20];
       goto LABEL_33;
@@ -1932,7 +1932,7 @@ LABEL_19:
     v17 = malloc_type_malloc(v9, 0x100004077774924uLL);
     if (!v17)
     {
-      v14 = [NSString stringWithFormat:@"%@: unable to allocate memory for length (%lu)", _NSMethodExceptionProem(a1, a2), v9];
+      v14 = [NSString stringWithFormat:@"%@: unable to allocate memory for length (%lu)", _NSMethodExceptionProem(self, a2), v9];
       v15 = MEMORY[0x1E695DF30];
       v16 = MEMORY[0x1E695DA18];
 LABEL_33:
@@ -1967,7 +1967,7 @@ LABEL_33:
     v29[10] = v17;
     v29[6] = &v35;
     v29[7] = &v31;
-    [a1 enumerateByteRangesUsingBlock:v29];
+    [self enumerateByteRangesUsingBlock:v29];
     v19 = v40[3] % 3uLL;
     if (v19 == 1)
     {
@@ -2031,66 +2031,66 @@ LABEL_25:
 {
   if (!a3)
   {
-    v6 = [NSString stringWithFormat:@"%@: nil string argument", _NSMethodExceptionProem(a1, a2)];
+    v6 = [NSString stringWithFormat:@"%@: nil string argument", _NSMethodExceptionProem(self, a2)];
 
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:v6 userInfo:0]);
   }
 
-  return [objc_class _initWithBase64EncodedObject:a1 options:"_initWithBase64EncodedObject:options:"];
+  return [objc_class _initWithBase64EncodedObject:self options:"_initWithBase64EncodedObject:options:"];
 }
 
 - (uint64_t)base64EncodedStringWithOptions:()NSData
 {
   if (*MEMORY[0x1E695E100])
   {
-    (*MEMORY[0x1E695E100])(a1, v3, *MEMORY[0x1E695E0D0]);
+    (*MEMORY[0x1E695E100])(self, v3, *MEMORY[0x1E695E0D0]);
   }
 
-  return [a1 _base64EncodingAsString:1 withOptions:a3];
+  return [self _base64EncodingAsString:1 withOptions:a3];
 }
 
 - (uint64_t)initWithBase64EncodedData:()NSData options:
 {
   if (!a3)
   {
-    v6 = [NSString stringWithFormat:@"%@: nil data argument", _NSMethodExceptionProem(a1, a2)];
+    v6 = [NSString stringWithFormat:@"%@: nil data argument", _NSMethodExceptionProem(self, a2)];
 
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:v6 userInfo:0]);
   }
 
-  return [objc_class _initWithBase64EncodedObject:a1 options:"_initWithBase64EncodedObject:options:"];
+  return [objc_class _initWithBase64EncodedObject:self options:"_initWithBase64EncodedObject:options:"];
 }
 
 - (uint64_t)base64EncodedDataWithOptions:()NSData
 {
   if (*MEMORY[0x1E695E100])
   {
-    (*MEMORY[0x1E695E100])(a1, v3, *MEMORY[0x1E695E0D0]);
+    (*MEMORY[0x1E695E100])(self, v3, *MEMORY[0x1E695E0D0]);
   }
 
-  return [a1 _base64EncodingAsString:0 withOptions:a3];
+  return [self _base64EncodingAsString:0 withOptions:a3];
 }
 
 - (uint64_t)initWithBase64Encoding:()NSData
 {
   if (!a3)
   {
-    v6 = [NSString stringWithFormat:@"%@: nil string argument", _NSMethodExceptionProem(a1, a2)];
+    v6 = [NSString stringWithFormat:@"%@: nil string argument", _NSMethodExceptionProem(self, a2)];
 
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:v6 userInfo:0]);
   }
 
-  return [objc_class _initWithBase64EncodedObject:a1 options:"_initWithBase64EncodedObject:options:"];
+  return [objc_class _initWithBase64EncodedObject:self options:"_initWithBase64EncodedObject:options:"];
 }
 
 - (uint64_t)base64Encoding
 {
   if (*MEMORY[0x1E695E100])
   {
-    (*MEMORY[0x1E695E100])(a1, v1, *MEMORY[0x1E695E0D0]);
+    (*MEMORY[0x1E695E100])(self, v1, *MEMORY[0x1E695E0D0]);
   }
 
-  return [a1 _base64EncodingAsString:1 withOptions:0];
+  return [self _base64EncodingAsString:1 withOptions:0];
 }
 
 @end

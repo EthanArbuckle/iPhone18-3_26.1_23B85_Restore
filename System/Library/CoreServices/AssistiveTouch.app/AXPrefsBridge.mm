@@ -1,20 +1,20 @@
 @interface AXPrefsBridge
-+ (void)voiceSelectionForLanguageCode:(NSString *)a3 completionHandler:(id)a4;
++ (void)voiceSelectionForLanguageCode:(NSString *)code completionHandler:(id)handler;
 - (_TtC15assistivetouchd13AXPrefsBridge)init;
 @end
 
 @implementation AXPrefsBridge
 
-+ (void)voiceSelectionForLanguageCode:(NSString *)a3 completionHandler:(id)a4
++ (void)voiceSelectionForLanguageCode:(NSString *)code completionHandler:(id)handler
 {
   v7 = sub_1000F40B0(&qword_100217A40);
   __chkstk_darwin(v7 - 8);
   v9 = &v16 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = code;
   v11[3] = v10;
-  v11[4] = a1;
+  v11[4] = self;
   v12 = type metadata accessor for TaskPriority();
   (*(*(v12 - 8) + 56))(v9, 1, 1, v12);
   v13 = swift_allocObject();
@@ -27,7 +27,7 @@
   v14[3] = 0;
   v14[4] = &unk_1001BF968;
   v14[5] = v13;
-  v15 = a3;
+  codeCopy = code;
   sub_10011E80C(0, 0, v9, &unk_1001BF978, v14);
 }
 

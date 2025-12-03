@@ -1,12 +1,12 @@
 @interface HMDHomeModel
-+ (id)cd_getHomeFromUUID:(id)a3;
++ (id)cd_getHomeFromUUID:(id)d;
 + (id)properties;
 - (HMDHomeNFCReaderKey)nfcReaderKey;
 - (HMDNaturalLightingContext)naturalLightingContext;
-- (id)cd_generateValueForModelObjectFromManagedObject:(id)a3 modelObjectField:(id)a4 modelFieldInfo:(id)a5;
-- (id)cd_generateValueForProperty:(id)a3 managedObjectField:(id)a4 context:(id)a5;
-- (void)setNaturalLightingContext:(id)a3;
-- (void)setNfcReaderKey:(id)a3;
+- (id)cd_generateValueForModelObjectFromManagedObject:(id)object modelObjectField:(id)field modelFieldInfo:(id)info;
+- (id)cd_generateValueForProperty:(id)property managedObjectField:(id)field context:(id)context;
+- (void)setNaturalLightingContext:(id)context;
+- (void)setNfcReaderKey:(id)key;
 @end
 
 @implementation HMDHomeModel
@@ -198,11 +198,11 @@ void __26__HMDHomeModel_properties__block_invoke()
 - (HMDHomeNFCReaderKey)nfcReaderKey
 {
   v19 = *MEMORY[0x277D85DE8];
-  v2 = [(HMDHomeModel *)self hh2EncodedNfcReaderKey];
-  if (v2)
+  hh2EncodedNfcReaderKey = [(HMDHomeModel *)self hh2EncodedNfcReaderKey];
+  if (hh2EncodedNfcReaderKey)
   {
     v12 = 0;
-    v3 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_opt_class() fromData:v2 error:&v12];
+    v3 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_opt_class() fromData:hh2EncodedNfcReaderKey error:&v12];
     v4 = v12;
     v5 = v4;
     if (v3)
@@ -225,7 +225,7 @@ void __26__HMDHomeModel_properties__block_invoke()
         *buf = 138543874;
         v14 = v9;
         v15 = 2112;
-        v16 = v2;
+        v16 = hh2EncodedNfcReaderKey;
         v17 = 2112;
         v18 = v5;
         _os_log_impl(&dword_229538000, v8, OS_LOG_TYPE_ERROR, "%{public}@Failed to decode nfc reader key set on model %@:%@", buf, 0x20u);
@@ -245,12 +245,12 @@ void __26__HMDHomeModel_properties__block_invoke()
   return v3;
 }
 
-- (void)setNfcReaderKey:(id)a3
+- (void)setNfcReaderKey:(id)key
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  keyCopy = key;
   v12 = 0;
-  v5 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v4 requiringSecureCoding:1 error:&v12];
+  v5 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:keyCopy requiringSecureCoding:1 error:&v12];
   v6 = v12;
   if (v5)
   {
@@ -260,7 +260,7 @@ void __26__HMDHomeModel_properties__block_invoke()
   else
   {
     v7 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
@@ -268,7 +268,7 @@ void __26__HMDHomeModel_properties__block_invoke()
       *buf = 138543874;
       v14 = v10;
       v15 = 2112;
-      v16 = v4;
+      v16 = keyCopy;
       v17 = 2112;
       v18 = v6;
       _os_log_impl(&dword_229538000, v9, OS_LOG_TYPE_ERROR, "%{public}@Failed to set encoded nfc reader key on model %@:%@", buf, 0x20u);
@@ -283,11 +283,11 @@ void __26__HMDHomeModel_properties__block_invoke()
 - (HMDNaturalLightingContext)naturalLightingContext
 {
   v17 = *MEMORY[0x277D85DE8];
-  v2 = [(HMDHomeModel *)self encodedNaturalLightingContext];
-  if (v2)
+  encodedNaturalLightingContext = [(HMDHomeModel *)self encodedNaturalLightingContext];
+  if (encodedNaturalLightingContext)
   {
     v10 = 0;
-    v3 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_opt_class() fromData:v2 error:&v10];
+    v3 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_opt_class() fromData:encodedNaturalLightingContext error:&v10];
     v4 = v10;
     if (!v3)
     {
@@ -299,7 +299,7 @@ void __26__HMDHomeModel_properties__block_invoke()
         *buf = 138543874;
         v12 = v7;
         v13 = 2112;
-        v14 = v2;
+        v14 = encodedNaturalLightingContext;
         v15 = 2112;
         v16 = v4;
         _os_log_impl(&dword_229538000, v6, OS_LOG_TYPE_ERROR, "%{public}@Failed to decode natural lighting context set on home model %@:%@", buf, 0x20u);
@@ -319,12 +319,12 @@ void __26__HMDHomeModel_properties__block_invoke()
   return v3;
 }
 
-- (void)setNaturalLightingContext:(id)a3
+- (void)setNaturalLightingContext:(id)context
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contextCopy = context;
   v11 = 0;
-  v5 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v4 requiringSecureCoding:1 error:&v11];
+  v5 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:contextCopy requiringSecureCoding:1 error:&v11];
   v6 = v11;
   if (v5)
   {
@@ -341,7 +341,7 @@ void __26__HMDHomeModel_properties__block_invoke()
       *buf = 138543874;
       v13 = v9;
       v14 = 2112;
-      v15 = v4;
+      v15 = contextCopy;
       v16 = 2112;
       v17 = v6;
       _os_log_impl(&dword_229538000, v8, OS_LOG_TYPE_ERROR, "%{public}@Failed to set encoded natural lighting context on the home model %@:%@", buf, 0x20u);
@@ -353,33 +353,33 @@ void __26__HMDHomeModel_properties__block_invoke()
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (id)cd_generateValueForProperty:(id)a3 managedObjectField:(id)a4 context:(id)a5
+- (id)cd_generateValueForProperty:(id)property managedObjectField:(id)field context:(id)context
 {
   v63 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v9 isEqualToString:@"owner"])
+  propertyCopy = property;
+  fieldCopy = field;
+  contextCopy = context;
+  if ([fieldCopy isEqualToString:@"owner"])
   {
     if ([(HMDBackingStoreModelObject *)self propertyWasSet:@"ownerUUID"])
     {
       v11 = objc_alloc(MEMORY[0x277CCAD78]);
-      v12 = [(HMDHomeModel *)self ownerUUID];
-      v13 = [v11 initWithUUIDString:v12];
+      ownerUUID = [(HMDHomeModel *)self ownerUUID];
+      dictionary = [v11 initWithUUIDString:ownerUUID];
 
-      if (v13)
+      if (dictionary)
       {
         v56 = 0;
-        v14 = [HMDBackingStore cdlsFetchManagedObjectWithUUID:v13 ofModelType:objc_opt_class() error:&v56];
+        defaultRoom = [HMDBackingStore cdlsFetchManagedObjectWithUUID:dictionary ofModelType:objc_opt_class() error:&v56];
         v15 = v56;
-        v16 = v15;
-        if (v14 && !v15)
+        managedObject = v15;
+        if (defaultRoom && !v15)
         {
           goto LABEL_23;
         }
 
         v17 = objc_autoreleasePoolPush();
-        v18 = self;
+        selfCopy2 = self;
         v19 = HMFGetOSLogHandle();
         if (!os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
         {
@@ -396,9 +396,9 @@ LABEL_28:
         *buf = 138543874;
         v58 = v20;
         v59 = 2112;
-        v60 = v13;
+        v60 = dictionary;
         v61 = 2112;
-        v62 = v16;
+        v62 = managedObject;
         v21 = "%{public}@Unable to find NSManagedObject for home owner with UUID %@: %@";
 LABEL_16:
         _os_log_impl(&dword_229538000, v19, OS_LOG_TYPE_ERROR, v21, buf, 0x20u);
@@ -412,31 +412,31 @@ LABEL_16:
     goto LABEL_45;
   }
 
-  if ([v9 isEqualToString:@"primaryResident"])
+  if ([fieldCopy isEqualToString:@"primaryResident"])
   {
     if ([(HMDBackingStoreModelObject *)self propertyWasSet:@"primaryResidentUUID"])
     {
-      v22 = [(HMDHomeModel *)self primaryResidentUUID];
+      primaryResidentUUID = [(HMDHomeModel *)self primaryResidentUUID];
 
-      if (v22)
+      if (primaryResidentUUID)
       {
         v23 = objc_alloc(MEMORY[0x277CCAD78]);
-        v24 = [(HMDHomeModel *)self primaryResidentUUID];
-        v13 = [v23 initWithUUIDString:v24];
+        primaryResidentUUID2 = [(HMDHomeModel *)self primaryResidentUUID];
+        dictionary = [v23 initWithUUIDString:primaryResidentUUID2];
 
-        if (v13)
+        if (dictionary)
         {
           v55 = 0;
-          v14 = [HMDBackingStore cdlsFetchManagedObjectWithUUID:v13 ofModelType:objc_opt_class() error:&v55];
+          defaultRoom = [HMDBackingStore cdlsFetchManagedObjectWithUUID:dictionary ofModelType:objc_opt_class() error:&v55];
           v25 = v55;
-          v16 = v25;
-          if (v14 && !v25)
+          managedObject = v25;
+          if (defaultRoom && !v25)
           {
             goto LABEL_23;
           }
 
           v17 = objc_autoreleasePoolPush();
-          v18 = self;
+          selfCopy2 = self;
           v19 = HMFGetOSLogHandle();
           if (!os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
           {
@@ -447,45 +447,45 @@ LABEL_16:
           *buf = 138543874;
           v58 = v20;
           v59 = 2112;
-          v60 = v13;
+          v60 = dictionary;
           v61 = 2112;
-          v62 = v16;
+          v62 = managedObject;
           v21 = "%{public}@Unable to find NSManagedObject for resident device with UUID %@: %@";
           goto LABEL_16;
         }
 
 LABEL_27:
-        v14 = 0;
+        defaultRoom = 0;
         goto LABEL_28;
       }
 
-      v32 = [MEMORY[0x277CBEB68] null];
+      null = [MEMORY[0x277CBEB68] null];
       goto LABEL_36;
     }
 
     goto LABEL_45;
   }
 
-  if ([v9 isEqualToString:@"defaultRoom"])
+  if ([fieldCopy isEqualToString:@"defaultRoom"])
   {
     if ([(HMDBackingStoreModelObject *)self propertyWasSet:@"defaultRoomUUID"])
     {
-      v13 = v10;
+      dictionary = contextCopy;
       if (self)
       {
-        v16 = [(HMDBackingStoreModelObject *)self managedObject];
-        v14 = [v16 defaultRoom];
-        if (!v14)
+        managedObject = [(HMDBackingStoreModelObject *)self managedObject];
+        defaultRoom = [managedObject defaultRoom];
+        if (!defaultRoom)
         {
           v26 = objc_alloc(MEMORY[0x277CCAD78]);
-          v27 = [(HMDHomeModel *)self defaultRoomUUID];
-          v28 = [v26 initWithUUIDString:v27];
+          defaultRoomUUID = [(HMDHomeModel *)self defaultRoomUUID];
+          v28 = [v26 initWithUUIDString:defaultRoomUUID];
 
-          v14 = [[_MKFRoom alloc] initWithContext:v13];
-          [(_MKFRoom *)v14 setModelID:v28];
-          [(_MKFRoom *)v14 setHome:v16];
-          [v16 addRooms_Object:v14];
-          [v16 setDefaultRoom:v14];
+          defaultRoom = [[_MKFRoom alloc] initWithContext:dictionary];
+          [(_MKFRoom *)defaultRoom setModelID:v28];
+          [(_MKFRoom *)defaultRoom setHome:managedObject];
+          [managedObject addRooms_Object:defaultRoom];
+          [managedObject setDefaultRoom:defaultRoom];
         }
 
         goto LABEL_23;
@@ -497,20 +497,20 @@ LABEL_27:
     goto LABEL_45;
   }
 
-  if ([v9 isEqualToString:@"naturalLightingContext"])
+  if ([fieldCopy isEqualToString:@"naturalLightingContext"])
   {
     if (![(HMDBackingStoreModelObject *)self propertyWasSet:@"encodedNaturalLightingContext"])
     {
       goto LABEL_45;
     }
 
-    v29 = [(HMDHomeModel *)self naturalLightingContext];
+    naturalLightingContext = [(HMDHomeModel *)self naturalLightingContext];
     goto LABEL_32;
   }
 
-  if (![v9 isEqualToString:@"nfcReaderKey"])
+  if (![fieldCopy isEqualToString:@"nfcReaderKey"])
   {
-    if (([v9 isEqualToString:@"location"] & 1) != 0 || (objc_msgSend(v9, "isEqualToString:", @"locationUpdateTimeStamp") & 1) != 0 || objc_msgSend(v9, "isEqualToString:", @"locationSource"))
+    if (([fieldCopy isEqualToString:@"location"] & 1) != 0 || (objc_msgSend(fieldCopy, "isEqualToString:", @"locationUpdateTimeStamp") & 1) != 0 || objc_msgSend(fieldCopy, "isEqualToString:", @"locationSource"))
     {
       if (![(HMDBackingStoreModelObject *)self propertyWasSet:@"homeLocationData"])
       {
@@ -519,15 +519,15 @@ LABEL_27:
 
       v33 = objc_autoreleasePoolPush();
       v34 = objc_alloc(MEMORY[0x277CCAAC8]);
-      v35 = [(HMDHomeModel *)self homeLocationData];
+      homeLocationData = [(HMDHomeModel *)self homeLocationData];
       v54 = 0;
-      v36 = [v34 initForReadingFromData:v35 error:&v54];
+      v36 = [v34 initForReadingFromData:homeLocationData error:&v54];
       v37 = v54;
 
       if (v37)
       {
         v38 = objc_autoreleasePoolPush();
-        v39 = self;
+        selfCopy3 = self;
         v40 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
         {
@@ -548,7 +548,7 @@ LABEL_27:
       if (!v44)
       {
         v46 = objc_autoreleasePoolPush();
-        v47 = self;
+        selfCopy4 = self;
         v48 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v48, OS_LOG_TYPE_ERROR))
         {
@@ -559,97 +559,97 @@ LABEL_27:
         }
 
         objc_autoreleasePoolPop(v46);
-        v14 = 0;
+        defaultRoom = 0;
         goto LABEL_60;
       }
 
-      if ([v9 isEqualToString:@"location"])
+      if ([fieldCopy isEqualToString:@"location"])
       {
-        v45 = [v44 location];
+        location = [v44 location];
 LABEL_59:
-        v14 = v45;
+        defaultRoom = location;
 LABEL_60:
 
         objc_autoreleasePoolPop(v33);
         goto LABEL_46;
       }
 
-      if ([v9 isEqualToString:@"locationUpdateTimeStamp"])
+      if ([fieldCopy isEqualToString:@"locationUpdateTimeStamp"])
       {
-        v45 = [v44 locationUpdateTimestamp];
+        location = [v44 locationUpdateTimestamp];
         goto LABEL_59;
       }
 
-      if ([v9 isEqualToString:@"locationSource"])
+      if ([fieldCopy isEqualToString:@"locationSource"])
       {
-        v45 = [v44 locationSource];
+        location = [v44 locationSource];
         goto LABEL_59;
       }
 
       objc_autoreleasePoolPop(v33);
     }
 
-    if ([v9 isEqualToString:@"matterKeyValueStore"])
+    if ([fieldCopy isEqualToString:@"matterKeyValueStore"])
     {
       if ([(HMDBackingStoreModelObject *)self propertyWasSet:@"chipFabricID"]|| [(HMDBackingStoreModelObject *)self propertyWasSet:@"chipFabricIndex"]|| [(HMDBackingStoreModelObject *)self propertyWasSet:@"chipKeyValueStore"])
       {
-        v13 = [MEMORY[0x277CBEB38] dictionary];
-        v50 = [(HMDHomeModel *)self chipFabricID];
-        [v13 setObject:v50 forKeyedSubscript:@"HMDHMMKVS.fabricID"];
+        dictionary = [MEMORY[0x277CBEB38] dictionary];
+        chipFabricID = [(HMDHomeModel *)self chipFabricID];
+        [dictionary setObject:chipFabricID forKeyedSubscript:@"HMDHMMKVS.fabricID"];
 
-        v51 = [(HMDHomeModel *)self chipFabricIndex];
-        [v13 setObject:v51 forKeyedSubscript:@"HMDHMMKVS.fabricIndex"];
+        chipFabricIndex = [(HMDHomeModel *)self chipFabricIndex];
+        [dictionary setObject:chipFabricIndex forKeyedSubscript:@"HMDHMMKVS.fabricIndex"];
 
-        v52 = [(HMDHomeModel *)self chipKeyValueStore];
-        [v13 addEntriesFromDictionary:v52];
+        chipKeyValueStore = [(HMDHomeModel *)self chipKeyValueStore];
+        [dictionary addEntriesFromDictionary:chipKeyValueStore];
 
-        v14 = [v13 copy];
+        defaultRoom = [dictionary copy];
         goto LABEL_28;
       }
 
       goto LABEL_45;
     }
 
-    if ([v9 isEqualToString:@"didOnboardMemory"])
+    if ([fieldCopy isEqualToString:@"didOnboardMemory"])
     {
       if (![(HMDBackingStoreModelObject *)self propertyWasSet:@"didOnboardEventLog"])
       {
         goto LABEL_45;
       }
 
-      v29 = [(HMDHomeModel *)self didOnboardEventLog];
+      naturalLightingContext = [(HMDHomeModel *)self didOnboardEventLog];
     }
 
-    else if ([v9 isEqualToString:@"memoryEnabled"])
+    else if ([fieldCopy isEqualToString:@"memoryEnabled"])
     {
       if (![(HMDBackingStoreModelObject *)self propertyWasSet:@"eventLogHomeSettingEnabled"])
       {
         goto LABEL_45;
       }
 
-      v29 = [(HMDHomeModel *)self eventLogHomeSettingEnabled];
+      naturalLightingContext = [(HMDHomeModel *)self eventLogHomeSettingEnabled];
     }
 
     else
     {
-      if (![v9 isEqualToString:@"memoryDuration"])
+      if (![fieldCopy isEqualToString:@"memoryDuration"])
       {
         v53.receiver = self;
         v53.super_class = HMDHomeModel;
-        v32 = [(HMDBackingStoreModelObject *)&v53 cd_generateValueForProperty:v8 managedObjectField:v9 context:v10];
+        null = [(HMDBackingStoreModelObject *)&v53 cd_generateValueForProperty:propertyCopy managedObjectField:fieldCopy context:contextCopy];
 LABEL_36:
-        v14 = v32;
+        defaultRoom = null;
         goto LABEL_46;
       }
 
       if (![(HMDBackingStoreModelObject *)self propertyWasSet:@"eventLogDuration"])
       {
 LABEL_45:
-        v14 = 0;
+        defaultRoom = 0;
         goto LABEL_46;
       }
 
-      v29 = [(HMDHomeModel *)self eventLogDuration];
+      naturalLightingContext = [(HMDHomeModel *)self eventLogDuration];
     }
 
     goto LABEL_32;
@@ -660,48 +660,48 @@ LABEL_45:
     goto LABEL_45;
   }
 
-  v29 = [(HMDHomeModel *)self nfcReaderKey];
+  naturalLightingContext = [(HMDHomeModel *)self nfcReaderKey];
 LABEL_32:
-  v30 = v29;
+  v30 = naturalLightingContext;
   v31 = *MEMORY[0x277CBEEE8];
-  if (v29)
+  if (naturalLightingContext)
   {
-    v31 = v29;
+    v31 = naturalLightingContext;
   }
 
-  v14 = v31;
+  defaultRoom = v31;
 
 LABEL_46:
   v42 = *MEMORY[0x277D85DE8];
 
-  return v14;
+  return defaultRoom;
 }
 
-- (id)cd_generateValueForModelObjectFromManagedObject:(id)a3 modelObjectField:(id)a4 modelFieldInfo:(id)a5
+- (id)cd_generateValueForModelObjectFromManagedObject:(id)object modelObjectField:(id)field modelFieldInfo:(id)info
 {
   v56 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v9 isEqualToString:@"residentSyncClientDidSync"])
+  objectCopy = object;
+  fieldCopy = field;
+  infoCopy = info;
+  if ([fieldCopy isEqualToString:@"residentSyncClientDidSync"])
   {
-    v11 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v8, "residentSyncClientDidSync")}];
+    v11 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(objectCopy, "residentSyncClientDidSync")}];
 LABEL_3:
     v12 = v11;
     goto LABEL_22;
   }
 
-  if ([v9 isEqualToString:@"ownerName"])
+  if ([fieldCopy isEqualToString:@"ownerName"])
   {
-    v13 = [v8 owner];
-    v14 = [v13 pairingIdentity];
-    v15 = [v14 identifier];
+    owner = [objectCopy owner];
+    pairingIdentity = [owner pairingIdentity];
+    identifier = [pairingIdentity identifier];
 LABEL_16:
-    v19 = v15;
+    publicKey = identifier;
     v20 = *MEMORY[0x277CBEEE8];
-    if (v15)
+    if (identifier)
     {
-      v20 = v15;
+      v20 = identifier;
     }
 
     v12 = v20;
@@ -713,50 +713,50 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  if ([v9 isEqualToString:@"ownerUserID"])
+  if ([fieldCopy isEqualToString:@"ownerUserID"])
   {
-    v13 = [v8 owner];
-    v16 = [v13 userID];
+    owner = [objectCopy owner];
+    userID = [owner userID];
 LABEL_8:
-    v14 = v16;
+    pairingIdentity = userID;
     v17 = *MEMORY[0x277CBEEE8];
-    if (v16)
+    if (userID)
     {
-      v17 = v16;
+      v17 = userID;
     }
 
     v12 = v17;
     goto LABEL_20;
   }
 
-  if ([v9 isEqualToString:@"ownerUUID"])
+  if ([fieldCopy isEqualToString:@"ownerUUID"])
   {
-    v18 = [v8 owner];
+    owner2 = [objectCopy owner];
 LABEL_15:
-    v13 = v18;
-    v14 = [v18 modelID];
-    v15 = [v14 UUIDString];
+    owner = owner2;
+    pairingIdentity = [owner2 modelID];
+    identifier = [pairingIdentity UUIDString];
     goto LABEL_16;
   }
 
-  if ([v9 isEqualToString:@"primaryResidentUUID"])
+  if ([fieldCopy isEqualToString:@"primaryResidentUUID"])
   {
-    v18 = [v8 primaryResident];
+    owner2 = [objectCopy primaryResident];
     goto LABEL_15;
   }
 
-  if ([v9 isEqualToString:@"encodedNaturalLightingContext"])
+  if ([fieldCopy isEqualToString:@"encodedNaturalLightingContext"])
   {
-    v13 = [v8 naturalLightingContext];
-    if (v13)
+    owner = [objectCopy naturalLightingContext];
+    if (owner)
     {
       v51 = 0;
-      v23 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v13 requiringSecureCoding:1 error:&v51];
+      v23 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:owner requiringSecureCoding:1 error:&v51];
       v24 = v51;
       if (!v23)
       {
         v25 = objc_autoreleasePoolPush();
-        v26 = self;
+        selfCopy2 = self;
         v27 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
         {
@@ -779,24 +779,24 @@ LABEL_35:
     }
 
 LABEL_40:
-    v31 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
 LABEL_41:
-    v12 = v31;
+    v12 = null;
     goto LABEL_21;
   }
 
-  if ([v9 isEqualToString:@"hh2EncodedNfcReaderKey"])
+  if ([fieldCopy isEqualToString:@"hh2EncodedNfcReaderKey"])
   {
-    v13 = [v8 nfcReaderKey];
-    if (v13)
+    owner = [objectCopy nfcReaderKey];
+    if (owner)
     {
       v50 = 0;
-      v23 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v13 requiringSecureCoding:1 error:&v50];
+      v23 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:owner requiringSecureCoding:1 error:&v50];
       v24 = v50;
       if (!v23)
       {
         v25 = objc_autoreleasePoolPush();
-        v26 = self;
+        selfCopy2 = self;
         v27 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
         {
@@ -829,23 +829,23 @@ LABEL_37:
     goto LABEL_40;
   }
 
-  if ([v9 isEqualToString:@"defaultRoomUUID"])
+  if ([fieldCopy isEqualToString:@"defaultRoomUUID"])
   {
-    v18 = [v8 defaultRoom];
+    owner2 = [objectCopy defaultRoom];
     goto LABEL_15;
   }
 
-  if ([v9 isEqualToString:@"ownerPublicKey"])
+  if ([fieldCopy isEqualToString:@"ownerPublicKey"])
   {
-    v13 = [v8 owner];
-    v14 = [v13 pairingIdentity];
-    v19 = [v14 publicKey];
-    v32 = [v19 data];
-    v33 = v32;
+    owner = [objectCopy owner];
+    pairingIdentity = [owner pairingIdentity];
+    publicKey = [pairingIdentity publicKey];
+    data = [publicKey data];
+    v33 = data;
     v34 = *MEMORY[0x277CBEEE8];
-    if (v32)
+    if (data)
     {
-      v34 = v32;
+      v34 = data;
     }
 
     v12 = v34;
@@ -853,85 +853,85 @@ LABEL_37:
     goto LABEL_19;
   }
 
-  if (![v9 isEqualToString:@"homeLocationData"])
+  if (![fieldCopy isEqualToString:@"homeLocationData"])
   {
-    if ([v9 isEqualToString:@"chipFabricID"])
+    if ([fieldCopy isEqualToString:@"chipFabricID"])
     {
-      v45 = [v8 matterKeyValueStore];
-      v13 = v45;
+      matterKeyValueStore = [objectCopy matterKeyValueStore];
+      owner = matterKeyValueStore;
       v46 = @"HMDHMMKVS.fabricID";
     }
 
     else
     {
-      if (![v9 isEqualToString:@"chipFabricIndex"])
+      if (![fieldCopy isEqualToString:@"chipFabricIndex"])
       {
-        if ([v9 isEqualToString:@"chipKeyValueStore"])
+        if ([fieldCopy isEqualToString:@"chipKeyValueStore"])
         {
-          v47 = [v8 matterKeyValueStore];
+          matterKeyValueStore2 = [objectCopy matterKeyValueStore];
         }
 
-        else if ([v9 isEqualToString:@"didOnboardEventLog"])
+        else if ([fieldCopy isEqualToString:@"didOnboardEventLog"])
         {
-          v47 = [v8 didOnboardEventLog];
+          matterKeyValueStore2 = [objectCopy didOnboardEventLog];
         }
 
-        else if ([v9 isEqualToString:@"eventLogHomeSettingEnabled"])
+        else if ([fieldCopy isEqualToString:@"eventLogHomeSettingEnabled"])
         {
-          v47 = [v8 eventLogEnabled];
+          matterKeyValueStore2 = [objectCopy eventLogEnabled];
         }
 
         else
         {
-          if (![v9 isEqualToString:@"eventLogDuration"])
+          if (![fieldCopy isEqualToString:@"eventLogDuration"])
           {
             v49.receiver = self;
             v49.super_class = HMDHomeModel;
-            v11 = [(HMDBackingStoreModelObject *)&v49 cd_generateValueForModelObjectFromManagedObject:v8 modelObjectField:v9 modelFieldInfo:v10];
+            v11 = [(HMDBackingStoreModelObject *)&v49 cd_generateValueForModelObjectFromManagedObject:objectCopy modelObjectField:fieldCopy modelFieldInfo:infoCopy];
             goto LABEL_3;
           }
 
-          v47 = [v8 eventLogDuration];
+          matterKeyValueStore2 = [objectCopy eventLogDuration];
         }
 
-        v13 = v47;
+        owner = matterKeyValueStore2;
         v48 = *MEMORY[0x277CBEEE8];
-        if (v47)
+        if (matterKeyValueStore2)
         {
-          v48 = v47;
+          v48 = matterKeyValueStore2;
         }
 
-        v31 = v48;
+        null = v48;
         goto LABEL_41;
       }
 
-      v45 = [v8 matterKeyValueStore];
-      v13 = v45;
+      matterKeyValueStore = [objectCopy matterKeyValueStore];
+      owner = matterKeyValueStore;
       v46 = @"HMDHMMKVS.fabricIndex";
     }
 
-    v16 = [v45 objectForKeyedSubscript:v46];
+    userID = [matterKeyValueStore objectForKeyedSubscript:v46];
     goto LABEL_8;
   }
 
-  v35 = [v8 location];
-  if (!v35)
+  location = [objectCopy location];
+  if (!location)
   {
     goto LABEL_61;
   }
 
-  v36 = v35;
-  v37 = [v8 locationUpdateTimeStamp];
-  if (!v37)
+  v36 = location;
+  locationUpdateTimeStamp = [objectCopy locationUpdateTimeStamp];
+  if (!locationUpdateTimeStamp)
   {
 
     goto LABEL_61;
   }
 
-  v38 = v37;
-  v39 = [v8 locationSource];
+  v38 = locationUpdateTimeStamp;
+  locationSource = [objectCopy locationSource];
 
-  if (!v39)
+  if (!locationSource)
   {
 LABEL_61:
     v11 = *MEMORY[0x277CBEEE8];
@@ -939,10 +939,10 @@ LABEL_61:
   }
 
   v40 = [HMDHomeLocationData alloc];
-  v41 = [v8 location];
-  v42 = [v8 locationUpdateTimeStamp];
-  v43 = [v8 locationSource];
-  v44 = [(HMDHomeLocationData *)v40 initWithLocation:v41 locationUpdateTimestamp:v42 locationSource:v43];
+  location2 = [objectCopy location];
+  locationUpdateTimeStamp2 = [objectCopy locationUpdateTimeStamp];
+  locationSource2 = [objectCopy locationSource];
+  v44 = [(HMDHomeLocationData *)v40 initWithLocation:location2 locationUpdateTimestamp:locationUpdateTimeStamp2 locationSource:locationSource2];
 
   v12 = encodeRootObject();
 
@@ -952,18 +952,18 @@ LABEL_22:
   return v12;
 }
 
-+ (id)cd_getHomeFromUUID:(id)a3
++ (id)cd_getHomeFromUUID:(id)d
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  dCopy = d;
+  if (!dCopy)
   {
     _HMFPreconditionFailure();
   }
 
-  v5 = v4;
+  v5 = dCopy;
   v17 = 0;
-  v6 = [HMDBackingStore cdlsFetchManagedObjectWithUUID:v4 ofManagedObjectType:objc_opt_class() error:&v17];
+  v6 = [HMDBackingStore cdlsFetchManagedObjectWithUUID:dCopy ofManagedObjectType:objc_opt_class() error:&v17];
   v7 = v17;
   v8 = v7;
   if (v6)
@@ -984,7 +984,7 @@ LABEL_22:
   else
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = a1;
+    selfCopy = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {

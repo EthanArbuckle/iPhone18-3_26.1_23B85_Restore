@@ -2,8 +2,8 @@
 + (NSDictionary)characteristicNameByType;
 + (NSDictionary)characteristicTypeByName;
 + (NSSet)stateCaptureValues;
-+ (id)characteristicNameFor:(id)a3;
-+ (id)characteristicNameForType:(id)a3;
++ (id)characteristicNameFor:(id)for;
++ (id)characteristicNameForType:(id)type;
 @end
 
 @implementation CAFCharacteristicTypes
@@ -1337,24 +1337,24 @@ void __44__CAFCharacteristicTypes_stateCaptureValues__block_invoke()
   v4 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)characteristicNameForType:(id)a3
++ (id)characteristicNameForType:(id)type
 {
-  v4 = a3;
-  v5 = [a1 characteristicNameByType];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  typeCopy = type;
+  characteristicNameByType = [self characteristicNameByType];
+  v6 = [characteristicNameByType objectForKeyedSubscript:typeCopy];
 
   if (!v6)
   {
-    v6 = v4;
+    v6 = typeCopy;
   }
 
   return v6;
 }
 
-+ (id)characteristicNameFor:(id)a3
++ (id)characteristicNameFor:(id)for
 {
-  v4 = [a1 characteristicTypeFor:a3];
-  v5 = [a1 characteristicNameForType:v4];
+  v4 = [self characteristicTypeFor:for];
+  v5 = [self characteristicNameForType:v4];
 
   return v5;
 }

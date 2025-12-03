@@ -1,14 +1,14 @@
 @interface VNPersonSegmentationGeneratorInstanceBased4People
 + (NSArray)outputConfidenceBlobNames;
 + (NSArray)outputMaskBlobNames;
-+ (id)_inferenceDescriptorForModelConfiguredWithOptions:(uint64_t)a1 error:(void *)a2;
-+ (id)espressoModelInputImageDimensionsBlobNameForConfigurationOptions:(id)a3;
-+ (id)espressoModelPathForConfigurationOptions:(id)a3 error:(id *)a4;
++ (id)_inferenceDescriptorForModelConfiguredWithOptions:(uint64_t)options error:(void *)error;
++ (id)espressoModelInputImageDimensionsBlobNameForConfigurationOptions:(id)options;
++ (id)espressoModelPathForConfigurationOptions:(id)options error:(id *)error;
 + (id)inputImageBlobName;
 + (id)outputMaskBlobNameToRequestKey;
-+ (unsigned)networkRequiredInputImagePixelFormatForConfigurationOptions:(id)a3;
-- (BOOL)bindOutputConfidenceBuffersAndReturnError:(id *)a3;
-- (BOOL)validateMaskForBlobName:(id)a3 options:(id)a4 maskConfidence:(float *)a5 maskAcceptable:(BOOL *)a6 error:(id *)a7;
++ (unsigned)networkRequiredInputImagePixelFormatForConfigurationOptions:(id)options;
+- (BOOL)bindOutputConfidenceBuffersAndReturnError:(id *)error;
+- (BOOL)validateMaskForBlobName:(id)name options:(id)options maskConfidence:(float *)confidence maskAcceptable:(BOOL *)acceptable error:(id *)error;
 - (id).cxx_construct;
 @end
 
@@ -17,7 +17,7 @@
 + (NSArray)outputConfidenceBlobNames
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [VNPersonSegmentationGeneratorInstanceBased4People _inferenceDescriptorForModelConfiguredWithOptions:a1 error:0];
+  v2 = [VNPersonSegmentationGeneratorInstanceBased4People _inferenceDescriptorForModelConfiguredWithOptions:self error:0];
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
   [v2 personInstanceMaskConfidencesOutput];
   v13 = 0u;
@@ -37,8 +37,8 @@
           objc_enumerationMutation(v4);
         }
 
-        v8 = [*(*(&v11 + 1) + 8 * i) name];
-        [v3 addObject:v8];
+        name = [*(*(&v11 + 1) + 8 * i) name];
+        [v3 addObject:name];
       }
 
       v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
@@ -52,7 +52,7 @@
   return v9;
 }
 
-+ (id)_inferenceDescriptorForModelConfiguredWithOptions:(uint64_t)a1 error:(void *)a2
++ (id)_inferenceDescriptorForModelConfiguredWithOptions:(uint64_t)options error:(void *)error
 {
   objc_opt_self();
   v7 = 0;
@@ -77,9 +77,9 @@
     v4 = +[VNPersonSegmentationGeneratorInstanceBased4People _inferenceDescriptorForModelConfiguredWithOptions:error:]::descriptor;
   }
 
-  else if (a2)
+  else if (error)
   {
-    *a2 = v8[5];
+    *error = v8[5];
   }
 
   _Block_object_dispose(&v7, 8);
@@ -100,14 +100,14 @@ void __109__VNPersonSegmentationGeneratorInstanceBased4People__inferenceDescript
 + (id)outputMaskBlobNameToRequestKey
 {
   v18 = *MEMORY[0x1E69E9840];
-  v2 = [a1 outputMaskBlobNames];
-  v3 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v2, "count")}];
+  outputMaskBlobNames = [self outputMaskBlobNames];
+  v3 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(outputMaskBlobNames, "count")}];
   v4 = objc_opt_class();
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = v2;
+  v5 = outputMaskBlobNames;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -140,7 +140,7 @@ void __109__VNPersonSegmentationGeneratorInstanceBased4People__inferenceDescript
 + (NSArray)outputMaskBlobNames
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [VNPersonSegmentationGeneratorInstanceBased4People _inferenceDescriptorForModelConfiguredWithOptions:a1 error:0];
+  v2 = [VNPersonSegmentationGeneratorInstanceBased4People _inferenceDescriptorForModelConfiguredWithOptions:self error:0];
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
   [v2 personInstanceMasksOutput];
   v13 = 0u;
@@ -160,8 +160,8 @@ void __109__VNPersonSegmentationGeneratorInstanceBased4People__inferenceDescript
           objc_enumerationMutation(v4);
         }
 
-        v8 = [*(*(&v11 + 1) + 8 * i) name];
-        [v3 addObject:v8];
+        name = [*(*(&v11 + 1) + 8 * i) name];
+        [v3 addObject:name];
       }
 
       v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
@@ -177,51 +177,51 @@ void __109__VNPersonSegmentationGeneratorInstanceBased4People__inferenceDescript
 
 + (id)inputImageBlobName
 {
-  v2 = [VNPersonSegmentationGeneratorInstanceBased4People _inferenceDescriptorForModelConfiguredWithOptions:a1 error:0];
+  v2 = [VNPersonSegmentationGeneratorInstanceBased4People _inferenceDescriptorForModelConfiguredWithOptions:self error:0];
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 allInputNames];
-    v5 = [v4 firstObject];
+    allInputNames = [v2 allInputNames];
+    firstObject = [allInputNames firstObject];
   }
 
   else
   {
-    v5 = 0;
+    firstObject = 0;
   }
 
-  return v5;
+  return firstObject;
 }
 
-+ (id)espressoModelInputImageDimensionsBlobNameForConfigurationOptions:(id)a3
++ (id)espressoModelInputImageDimensionsBlobNameForConfigurationOptions:(id)options
 {
-  v3 = [VNPersonSegmentationGeneratorInstanceBased4People _inferenceDescriptorForModelConfiguredWithOptions:a1 error:0];
-  v4 = [v3 onlyInputImage];
-  v5 = [v4 name];
+  v3 = [VNPersonSegmentationGeneratorInstanceBased4People _inferenceDescriptorForModelConfiguredWithOptions:self error:0];
+  onlyInputImage = [v3 onlyInputImage];
+  name = [onlyInputImage name];
 
-  return v5;
+  return name;
 }
 
-+ (unsigned)networkRequiredInputImagePixelFormatForConfigurationOptions:(id)a3
++ (unsigned)networkRequiredInputImagePixelFormatForConfigurationOptions:(id)options
 {
-  v3 = [VNPersonSegmentationGeneratorInstanceBased4People _inferenceDescriptorForModelConfiguredWithOptions:a1 error:0];
-  v4 = [v3 onlyInputImage];
-  v5 = [v4 pixelFormatType];
+  v3 = [VNPersonSegmentationGeneratorInstanceBased4People _inferenceDescriptorForModelConfiguredWithOptions:self error:0];
+  onlyInputImage = [v3 onlyInputImage];
+  pixelFormatType = [onlyInputImage pixelFormatType];
 
-  return v5;
+  return pixelFormatType;
 }
 
-+ (id)espressoModelPathForConfigurationOptions:(id)a3 error:(id *)a4
++ (id)espressoModelPathForConfigurationOptions:(id)options error:(id *)error
 {
-  v6 = a3;
-  v7 = [VNValidationUtilities computeDeviceForKey:@"VNDetectorInternalOption_ModelComputeDevice" inOptions:v6 error:a4];
+  optionsCopy = options;
+  v7 = [VNValidationUtilities computeDeviceForKey:@"VNDetectorInternalOption_ModelComputeDevice" inOptions:optionsCopy error:error];
   if (v7)
   {
-    v8 = [VNPersonSegmentationGeneratorInstanceBased4People _inferenceDescriptorForModelConfiguredWithOptions:a1 error:a4];
+    v8 = [VNPersonSegmentationGeneratorInstanceBased4People _inferenceDescriptorForModelConfiguredWithOptions:self error:error];
     v9 = v8;
     if (v8)
     {
-      v10 = [v8 modelPathForComputeDevice:v7 error:a4];
+      v10 = [v8 modelPathForComputeDevice:v7 error:error];
     }
 
     else
@@ -246,11 +246,11 @@ void __109__VNPersonSegmentationGeneratorInstanceBased4People__inferenceDescript
   return self;
 }
 
-- (BOOL)bindOutputConfidenceBuffersAndReturnError:(id *)a3
+- (BOOL)bindOutputConfidenceBuffersAndReturnError:(id *)error
 {
-  v5 = [objc_opt_class() outputConfidenceBlobNames];
-  +[VNError VNAssert:log:](VNError, "VNAssert:log:", [v5 count] == 1, @"VNSegmentationGenerator - internal error in number confidence buffer names");
-  [v5 firstObject];
+  outputConfidenceBlobNames = [objc_opt_class() outputConfidenceBlobNames];
+  +[VNError VNAssert:log:](VNError, "VNAssert:log:", [outputConfidenceBlobNames count] == 1, @"VNSegmentationGenerator - internal error in number confidence buffer names");
+  [outputConfidenceBlobNames firstObject];
   v20 = 0;
   v19 = 0u;
   v18 = 0u;
@@ -265,17 +265,17 @@ void __109__VNPersonSegmentationGeneratorInstanceBased4People__inferenceDescript
   v9 = v6;
   v7 = std::__hash_table<std::__hash_value_type<NSString * {__strong},espresso_buffer_t>,std::__unordered_map_hasher<NSString * {__strong},std::__hash_value_type<NSString * {__strong},espresso_buffer_t>,std::hash<NSString * {__strong}>,std::equal_to<NSString * {__strong}>,true>,std::__unordered_map_equal<NSString * {__strong},std::__hash_value_type<NSString * {__strong},espresso_buffer_t>,std::equal_to<NSString * {__strong}>,std::hash<NSString * {__strong}>,true>,std::allocator<std::__hash_value_type<NSString * {__strong},espresso_buffer_t>>>::__emplace_unique_key_args<NSString * {__strong},std::pair<NSString * {__strong},espresso_buffer_t>>(&self->_espressoConfidencesOutputBuffer.__table_.__bucket_list_.__ptr_, &v9);
 
-  LOBYTE(a3) = [(VNEspressoModelFileBasedDetector *)self bindBuffer:v7 + 3 toNetworkOutputBlobName:v7[2] error:a3];
-  return a3;
+  LOBYTE(error) = [(VNEspressoModelFileBasedDetector *)self bindBuffer:v7 + 3 toNetworkOutputBlobName:v7[2] error:error];
+  return error;
 }
 
-- (BOOL)validateMaskForBlobName:(id)a3 options:(id)a4 maskConfidence:(float *)a5 maskAcceptable:(BOOL *)a6 error:(id *)a7
+- (BOOL)validateMaskForBlobName:(id)name options:(id)options maskConfidence:(float *)confidence maskAcceptable:(BOOL *)acceptable error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  if (a5)
+  nameCopy = name;
+  optionsCopy = options;
+  if (confidence)
   {
-    v14 = a6 == 0;
+    v14 = acceptable == 0;
   }
 
   else
@@ -284,9 +284,9 @@ void __109__VNPersonSegmentationGeneratorInstanceBased4People__inferenceDescript
   }
 
   v15 = !v14;
-  v32 = v13;
-  [VNError VNAssert:v15 log:@"One or more of output parameters is/are NULL", v12];
-  v16 = v12;
+  v32 = optionsCopy;
+  [VNError VNAssert:v15 log:@"One or more of output parameters is/are NULL", nameCopy];
+  v16 = nameCopy;
   v17 = v16;
   if (!self)
   {
@@ -294,18 +294,18 @@ void __109__VNPersonSegmentationGeneratorInstanceBased4People__inferenceDescript
     goto LABEL_9;
   }
 
-  v31 = a7;
+  errorCopy = error;
   [VNError VNAssert:self->_espressoConfidencesOutputBuffer.__table_.__size_ == 1 log:@"VNSegmentationGenerator - internal error in number confidence buffers"];
   v18 = *(self->_espressoConfidencesOutputBuffer.__table_.__first_node_.__next_ + 3);
   v19 = objc_alloc_init(MEMORY[0x1E696ADA0]);
   [v19 setNumberStyle:1];
   v20 = [v17 componentsSeparatedByString:@":"];
-  v21 = [v20 firstObject];
+  firstObject = [v20 firstObject];
 
-  v22 = [v21 componentsSeparatedByString:@"_"];
-  v23 = [v22 lastObject];
+  v22 = [firstObject componentsSeparatedByString:@"_"];
+  lastObject = [v22 lastObject];
 
-  v24 = [v19 numberFromString:v23];
+  v24 = [v19 numberFromString:lastObject];
   v25 = [v24 unsignedIntegerValue] - 1;
 
   [VNError VNAssert:v25 < 4 log:@"VNSegmentationGenerator - internal error calculating confidence index"];
@@ -314,7 +314,7 @@ void __109__VNPersonSegmentationGeneratorInstanceBased4People__inferenceDescript
   if (v26 < 0.5)
   {
 LABEL_9:
-    *a6 = 0;
+    *acceptable = 0;
     v27 = 1;
     v28 = v32;
     goto LABEL_15;
@@ -322,12 +322,12 @@ LABEL_9:
 
   v33 = 0.0;
   v28 = v32;
-  v27 = [VNValidationUtilities getFloatValue:&v33 forKey:@"VNSegmentationGeneratorProcessOption_MinimumConfidence" inOptions:v32 withDefaultValue:v31 error:0.0];
+  v27 = [VNValidationUtilities getFloatValue:&v33 forKey:@"VNSegmentationGeneratorProcessOption_MinimumConfidence" inOptions:v32 withDefaultValue:errorCopy error:0.0];
   if (v27)
   {
     if (v26 >= v33)
     {
-      *a5 = v26;
+      *confidence = v26;
       v29 = 1;
     }
 
@@ -336,7 +336,7 @@ LABEL_9:
       v29 = 0;
     }
 
-    *a6 = v29;
+    *acceptable = v29;
   }
 
 LABEL_15:

@@ -1,29 +1,29 @@
 @interface HDStaticSyncImportTask
-- (HDStaticSyncImportTask)initWithProfile:(id)a3 options:(unint64_t)a4 storeIdentifier:(id)a5 URL:(id)a6;
-- (id)runWithCompletion:(id)a3;
+- (HDStaticSyncImportTask)initWithProfile:(id)profile options:(unint64_t)options storeIdentifier:(id)identifier URL:(id)l;
+- (id)runWithCompletion:(id)completion;
 @end
 
 @implementation HDStaticSyncImportTask
 
-- (HDStaticSyncImportTask)initWithProfile:(id)a3 options:(unint64_t)a4 storeIdentifier:(id)a5 URL:(id)a6
+- (HDStaticSyncImportTask)initWithProfile:(id)profile options:(unint64_t)options storeIdentifier:(id)identifier URL:(id)l
 {
-  v11 = a6;
+  lCopy = l;
   v15.receiver = self;
   v15.super_class = HDStaticSyncImportTask;
-  v12 = [(HDStaticSyncTask *)&v15 initWithProfile:a3 options:a4 storeIdentifier:a5];
+  v12 = [(HDStaticSyncTask *)&v15 initWithProfile:profile options:options storeIdentifier:identifier];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_importDirectoryURL, a6);
+    objc_storeStrong(&v12->_importDirectoryURL, l);
   }
 
   return v13;
 }
 
-- (id)runWithCompletion:(id)a3
+- (id)runWithCompletion:(id)completion
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = [MEMORY[0x277CCAC48] discreteProgressWithTotalUnitCount:1000];
   _HKInitializeLogging();
   v6 = *MEMORY[0x277CCC328];
@@ -45,7 +45,7 @@
     v10 = v6;
     v11 = HKStaticSyncOptionsToString();
     *buf = 138544130;
-    v23 = self;
+    selfCopy = self;
     v24 = 2080;
     v25 = "[HDStaticSyncImportTask runWithCompletion:]";
     v26 = 2114;
@@ -70,10 +70,10 @@
   block[2] = __44__HDStaticSyncImportTask_runWithCompletion___block_invoke;
   block[3] = &unk_278616D18;
   block[4] = self;
-  v21 = v4;
+  v21 = completionCopy;
   v13 = v5;
   v20 = v13;
-  v14 = v4;
+  v14 = completionCopy;
   dispatch_async(queue, block);
   v15 = v20;
   v16 = v13;

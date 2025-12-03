@@ -6,9 +6,9 @@
 - (void)enableDNS;
 - (void)engage;
 - (void)modifySimulation;
-- (void)setDownlinkPacketLossRate:(float)a3;
-- (void)setInterfaceName:(id)a3;
-- (void)setUplinkPacketLossRate:(float)a3;
+- (void)setDownlinkPacketLossRate:(float)rate;
+- (void)setInterfaceName:(id)name;
+- (void)setUplinkPacketLossRate:(float)rate;
 @end
 
 @implementation NLCRunner
@@ -19,7 +19,7 @@
   block[1] = 3221225472;
   block[2] = __27__NLCRunner_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_pred_29 != -1)
   {
     dispatch_once(&sharedInstance_pred_29, block);
@@ -66,13 +66,13 @@ uint64_t __27__NLCRunner_sharedInstance__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setInterfaceName:(id)a3
+- (void)setInterfaceName:(id)name
 {
   p_interfaceName = &self->_interfaceName;
-  v10 = a3;
-  if (*p_interfaceName != v10)
+  nameCopy = name;
+  if (*p_interfaceName != nameCopy)
   {
-    objc_storeStrong(&self->_interfaceName, a3);
+    objc_storeStrong(&self->_interfaceName, name);
     if (*p_interfaceName)
     {
       v6 = [(NSString *)*p_interfaceName cStringUsingEncoding:1];
@@ -102,17 +102,17 @@ uint64_t __27__NLCRunner_sharedInstance__block_invoke(uint64_t a1)
   }
 }
 
-- (void)setUplinkPacketLossRate:(float)a3
+- (void)setUplinkPacketLossRate:(float)rate
 {
   self->theCommand.nlc_conditions[1].flags |= 5u;
-  self->theCommand.nlc_conditions[1].uplink_config.plr = a3 / 100.0;
+  self->theCommand.nlc_conditions[1].uplink_config.plr = rate / 100.0;
   [(NLCRunner *)self modifySimulation];
 }
 
-- (void)setDownlinkPacketLossRate:(float)a3
+- (void)setDownlinkPacketLossRate:(float)rate
 {
   self->theCommand.nlc_conditions[1].flags |= 9u;
-  self->theCommand.nlc_conditions[1].downlink_config.plr = a3 / 100.0;
+  self->theCommand.nlc_conditions[1].downlink_config.plr = rate / 100.0;
   [(NLCRunner *)self modifySimulation];
 }
 

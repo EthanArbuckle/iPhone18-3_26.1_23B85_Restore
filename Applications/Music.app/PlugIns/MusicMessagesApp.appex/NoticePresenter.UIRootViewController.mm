@@ -1,6 +1,6 @@
 @interface NoticePresenter.UIRootViewController
-- (_TtCC11MusicCoreUI15NoticePresenterP33_D8FBFBA4851A241D976DAD2E389878C120UIRootViewController)initWithCoder:(id)a3;
-- (_TtCC11MusicCoreUI15NoticePresenterP33_D8FBFBA4851A241D976DAD2E389878C120UIRootViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtCC11MusicCoreUI15NoticePresenterP33_D8FBFBA4851A241D976DAD2E389878C120UIRootViewController)initWithCoder:(id)coder;
+- (_TtCC11MusicCoreUI15NoticePresenterP33_D8FBFBA4851A241D976DAD2E389878C120UIRootViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)loadView;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
@@ -8,7 +8,7 @@
 
 @implementation NoticePresenter.UIRootViewController
 
-- (_TtCC11MusicCoreUI15NoticePresenterP33_D8FBFBA4851A241D976DAD2E389878C120UIRootViewController)initWithCoder:(id)a3
+- (_TtCC11MusicCoreUI15NoticePresenterP33_D8FBFBA4851A241D976DAD2E389878C120UIRootViewController)initWithCoder:(id)coder
 {
   result = sub_1004DECCC();
   __break(1u);
@@ -19,29 +19,29 @@
 {
   type metadata accessor for PassthroughView();
   v3 = objc_allocWithZone(swift_getObjCClassFromMetadata());
-  v8 = self;
+  selfCopy = self;
   v4 = [v3 init];
   v5 = objc_opt_self();
   v6 = v4;
-  v7 = [v5 clearColor];
-  [v6 setBackgroundColor:v7];
+  clearColor = [v5 clearColor];
+  [v6 setBackgroundColor:clearColor];
 
-  [(NoticePresenter.UIRootViewController *)v8 setView:v6];
+  [(NoticePresenter.UIRootViewController *)selfCopy setView:v6];
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_10032013C();
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_100320350();
 }
 
-- (_TtCC11MusicCoreUI15NoticePresenterP33_D8FBFBA4851A241D976DAD2E389878C120UIRootViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtCC11MusicCoreUI15NoticePresenterP33_D8FBFBA4851A241D976DAD2E389878C120UIRootViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

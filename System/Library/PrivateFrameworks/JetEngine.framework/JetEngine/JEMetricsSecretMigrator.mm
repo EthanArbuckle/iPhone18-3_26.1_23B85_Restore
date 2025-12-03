@@ -1,23 +1,23 @@
 @interface JEMetricsSecretMigrator
-+ (void)migrateSecretIfNecessaryAndReturnSecretValueWithNamespace:(NSString *)a3 topic:(NSString *)a4 secretKey:(AMSMetricsIdentifierKey *)a5 configuration:(NSDictionary *)a6 completionHandler:(id)a7;
++ (void)migrateSecretIfNecessaryAndReturnSecretValueWithNamespace:(NSString *)namespace topic:(NSString *)topic secretKey:(AMSMetricsIdentifierKey *)key configuration:(NSDictionary *)configuration completionHandler:(id)handler;
 - (_TtC9JetEngine23JEMetricsSecretMigrator)init;
 @end
 
 @implementation JEMetricsSecretMigrator
 
-+ (void)migrateSecretIfNecessaryAndReturnSecretValueWithNamespace:(NSString *)a3 topic:(NSString *)a4 secretKey:(AMSMetricsIdentifierKey *)a5 configuration:(NSDictionary *)a6 completionHandler:(id)a7
++ (void)migrateSecretIfNecessaryAndReturnSecretValueWithNamespace:(NSString *)namespace topic:(NSString *)topic secretKey:(AMSMetricsIdentifierKey *)key configuration:(NSDictionary *)configuration completionHandler:(id)handler
 {
   v13 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EB4384A0);
   MEMORY[0x1EEE9AC00](v13 - 8);
   v15 = &v25 - v14;
-  v16 = _Block_copy(a7);
+  v16 = _Block_copy(handler);
   v17 = swift_allocObject();
-  v17[2] = a3;
-  v17[3] = a4;
-  v17[4] = a5;
-  v17[5] = a6;
+  v17[2] = namespace;
+  v17[3] = topic;
+  v17[4] = key;
+  v17[5] = configuration;
   v17[6] = v16;
-  v17[7] = a1;
+  v17[7] = self;
   v18 = sub_1AB460BE4();
   (*(*(v18 - 8) + 56))(v15, 1, 1, v18);
   v19 = swift_allocObject();
@@ -30,10 +30,10 @@
   v20[3] = 0;
   v20[4] = &unk_1AB4E3820;
   v20[5] = v19;
-  v21 = a3;
-  v22 = a4;
-  v23 = a5;
-  v24 = a6;
+  namespaceCopy = namespace;
+  topicCopy = topic;
+  keyCopy = key;
+  configurationCopy = configuration;
   sub_1AB39BBA8(0, 0, v15, &unk_1AB4EB960, v20);
 }
 

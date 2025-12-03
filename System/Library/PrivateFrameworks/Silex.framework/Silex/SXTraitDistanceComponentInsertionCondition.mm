@@ -1,25 +1,25 @@
 @interface SXTraitDistanceComponentInsertionCondition
-- (BOOL)validateMarker:(id)a3 componentTraits:(unint64_t)a4 layoutProvider:(id)a5;
-- (SXTraitDistanceComponentInsertionCondition)initWithTrait:(unint64_t)a3 otherTrait:(unint64_t)a4 distance:(_SXConvertibleValue)a5;
+- (BOOL)validateMarker:(id)marker componentTraits:(unint64_t)traits layoutProvider:(id)provider;
+- (SXTraitDistanceComponentInsertionCondition)initWithTrait:(unint64_t)trait otherTrait:(unint64_t)otherTrait distance:(_SXConvertibleValue)distance;
 - (_SXConvertibleValue)distance;
-- (void)insertedComponent:(id)a3 approximateLocation:(CGPoint)a4;
-- (void)inspectTraitAreasForComponents:(id)a3 layoutProvider:(id)a4 DOMObjectProvider:(id)a5;
-- (void)prepareWithComponents:(id)a3 layoutProvider:(id)a4 DOMObjectProvider:(id)a5;
+- (void)insertedComponent:(id)component approximateLocation:(CGPoint)location;
+- (void)inspectTraitAreasForComponents:(id)components layoutProvider:(id)provider DOMObjectProvider:(id)objectProvider;
+- (void)prepareWithComponents:(id)components layoutProvider:(id)provider DOMObjectProvider:(id)objectProvider;
 @end
 
 @implementation SXTraitDistanceComponentInsertionCondition
 
-- (SXTraitDistanceComponentInsertionCondition)initWithTrait:(unint64_t)a3 otherTrait:(unint64_t)a4 distance:(_SXConvertibleValue)a5
+- (SXTraitDistanceComponentInsertionCondition)initWithTrait:(unint64_t)trait otherTrait:(unint64_t)otherTrait distance:(_SXConvertibleValue)distance
 {
-  unit = a5.unit;
-  value = a5.value;
+  unit = distance.unit;
+  value = distance.value;
   v10.receiver = self;
   v10.super_class = SXTraitDistanceComponentInsertionCondition;
   result = [(SXTraitDistanceComponentInsertionCondition *)&v10 init];
   if (result)
   {
-    result->_componentTrait = a3;
-    result->_otherComponentTrait = a4;
+    result->_componentTrait = trait;
+    result->_otherComponentTrait = otherTrait;
     result->_distance.value = value;
     result->_distance.unit = unit;
   }
@@ -27,56 +27,56 @@
   return result;
 }
 
-- (void)prepareWithComponents:(id)a3 layoutProvider:(id)a4 DOMObjectProvider:(id)a5
+- (void)prepareWithComponents:(id)components layoutProvider:(id)provider DOMObjectProvider:(id)objectProvider
 {
   v8 = MEMORY[0x1E696AD50];
-  v9 = a5;
-  v10 = a4;
-  v15 = a3;
-  v11 = [v8 indexSet];
+  objectProviderCopy = objectProvider;
+  providerCopy = provider;
+  componentsCopy = components;
+  indexSet = [v8 indexSet];
   traitAreas = self->_traitAreas;
-  self->_traitAreas = v11;
+  self->_traitAreas = indexSet;
 
-  v13 = [MEMORY[0x1E696AD50] indexSet];
+  indexSet2 = [MEMORY[0x1E696AD50] indexSet];
   otherTraitAreas = self->_otherTraitAreas;
-  self->_otherTraitAreas = v13;
+  self->_otherTraitAreas = indexSet2;
 
-  [(SXTraitDistanceComponentInsertionCondition *)self inspectTraitAreasForComponents:v15 layoutProvider:v10 DOMObjectProvider:v9];
+  [(SXTraitDistanceComponentInsertionCondition *)self inspectTraitAreasForComponents:componentsCopy layoutProvider:providerCopy DOMObjectProvider:objectProviderCopy];
 }
 
-- (void)insertedComponent:(id)a3 approximateLocation:(CGPoint)a4
+- (void)insertedComponent:(id)component approximateLocation:(CGPoint)location
 {
-  y = a4.y;
-  v10 = a3;
-  v6 = [v10 traits];
-  if (([(SXTraitDistanceComponentInsertionCondition *)self componentTrait]& v6) != 0)
+  y = location.y;
+  componentCopy = component;
+  traits = [componentCopy traits];
+  if (([(SXTraitDistanceComponentInsertionCondition *)self componentTrait]& traits) != 0)
   {
-    v7 = [(SXTraitDistanceComponentInsertionCondition *)self traitAreas];
-    [v7 addIndex:y];
+    traitAreas = [(SXTraitDistanceComponentInsertionCondition *)self traitAreas];
+    [traitAreas addIndex:y];
   }
 
-  v8 = [v10 traits];
-  if (([(SXTraitDistanceComponentInsertionCondition *)self otherComponentTrait]& v8) != 0)
+  traits2 = [componentCopy traits];
+  if (([(SXTraitDistanceComponentInsertionCondition *)self otherComponentTrait]& traits2) != 0)
   {
-    v9 = [(SXTraitDistanceComponentInsertionCondition *)self otherTraitAreas];
-    [v9 addIndex:y];
+    otherTraitAreas = [(SXTraitDistanceComponentInsertionCondition *)self otherTraitAreas];
+    [otherTraitAreas addIndex:y];
   }
 }
 
-- (BOOL)validateMarker:(id)a3 componentTraits:(unint64_t)a4 layoutProvider:(id)a5
+- (BOOL)validateMarker:(id)marker componentTraits:(unint64_t)traits layoutProvider:(id)provider
 {
-  v8 = a3;
-  v9 = [a5 unitConverterForMarker:v8];
-  v10 = [(SXTraitDistanceComponentInsertionCondition *)self distance];
-  [v9 convertValueToPoints:{v10, v11}];
+  markerCopy = marker;
+  v9 = [provider unitConverterForMarker:markerCopy];
+  distance = [(SXTraitDistanceComponentInsertionCondition *)self distance];
+  [v9 convertValueToPoints:{distance, v11}];
   v13 = v12;
-  [v8 approximateLocation];
+  [markerCopy approximateLocation];
   v15 = v14;
 
   v20 = 0;
-  if ((-[SXTraitDistanceComponentInsertionCondition otherComponentTrait](self, "otherComponentTrait") & a4) == 0 || (-[SXTraitDistanceComponentInsertionCondition traitAreas](self, "traitAreas"), v16 = objc_claimAutoreleasedReturnValue(), v17 = [v16 intersectsIndexesInRange:{(v15 - v13), (v13 + v13)}], v16, (v17 & 1) == 0))
+  if ((-[SXTraitDistanceComponentInsertionCondition otherComponentTrait](self, "otherComponentTrait") & traits) == 0 || (-[SXTraitDistanceComponentInsertionCondition traitAreas](self, "traitAreas"), v16 = objc_claimAutoreleasedReturnValue(), v17 = [v16 intersectsIndexesInRange:{(v15 - v13), (v13 + v13)}], v16, (v17 & 1) == 0))
   {
-    if ((-[SXTraitDistanceComponentInsertionCondition componentTrait](self, "componentTrait") & a4) == 0 || (-[SXTraitDistanceComponentInsertionCondition otherTraitAreas](self, "otherTraitAreas"), v18 = objc_claimAutoreleasedReturnValue(), v19 = [v18 intersectsIndexesInRange:{(v15 - v13), (v13 + v13)}], v18, (v19 & 1) == 0))
+    if ((-[SXTraitDistanceComponentInsertionCondition componentTrait](self, "componentTrait") & traits) == 0 || (-[SXTraitDistanceComponentInsertionCondition otherTraitAreas](self, "otherTraitAreas"), v18 = objc_claimAutoreleasedReturnValue(), v19 = [v18 intersectsIndexesInRange:{(v15 - v13), (v13 + v13)}], v18, (v19 & 1) == 0))
     {
       v20 = 1;
     }
@@ -85,18 +85,18 @@
   return v20;
 }
 
-- (void)inspectTraitAreasForComponents:(id)a3 layoutProvider:(id)a4 DOMObjectProvider:(id)a5
+- (void)inspectTraitAreasForComponents:(id)components layoutProvider:(id)provider DOMObjectProvider:(id)objectProvider
 {
   v47 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  componentsCopy = components;
+  providerCopy = provider;
+  objectProviderCopy = objectProvider;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
-  obj = v8;
-  v11 = [v8 countByEnumeratingWithState:&v42 objects:v46 count:16];
+  obj = componentsCopy;
+  v11 = [componentsCopy countByEnumeratingWithState:&v42 objects:v46 count:16];
   if (v11)
   {
     v12 = v11;
@@ -112,16 +112,16 @@
         }
 
         v14 = *(*(&v42 + 1) + 8 * v13);
-        v15 = [[SXComponentTraitsProvider alloc] initWithDOMObjectProvider:v10];
+        v15 = [[SXComponentTraitsProvider alloc] initWithDOMObjectProvider:objectProviderCopy];
         v16 = [(SXComponentTraitsProvider *)v15 traitsForComponent:v14];
         if (([(SXTraitDistanceComponentInsertionCondition *)self componentTrait]& v16) != 0)
         {
-          [v9 frameForComponent:v14];
+          [providerCopy frameForComponent:v14];
           v18 = v17;
           v20 = v19;
           v22 = v21;
           v24 = v23;
-          v25 = [(SXTraitDistanceComponentInsertionCondition *)self traitAreas];
+          traitAreas = [(SXTraitDistanceComponentInsertionCondition *)self traitAreas];
           v48.origin.x = v18;
           v48.origin.y = v20;
           v48.size.width = v22;
@@ -137,17 +137,17 @@
             Height = 1.0;
           }
 
-          [v25 addIndexesInRange:{MinY, Height}];
+          [traitAreas addIndexesInRange:{MinY, Height}];
         }
 
         if (([(SXTraitDistanceComponentInsertionCondition *)self otherComponentTrait]& v16) != 0)
         {
-          [v9 frameForComponent:v14];
+          [providerCopy frameForComponent:v14];
           v29 = v28;
           v31 = v30;
           v33 = v32;
           v35 = v34;
-          v36 = [(SXTraitDistanceComponentInsertionCondition *)self otherTraitAreas];
+          otherTraitAreas = [(SXTraitDistanceComponentInsertionCondition *)self otherTraitAreas];
           v50.origin.x = v29;
           v50.origin.y = v31;
           v50.size.width = v33;
@@ -163,14 +163,14 @@
             v38 = 1.0;
           }
 
-          [v36 addIndexesInRange:{v37, v38}];
+          [otherTraitAreas addIndexesInRange:{v37, v38}];
         }
 
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v39 = [v14 components];
-          [(SXTraitDistanceComponentInsertionCondition *)self inspectTraitAreasForComponents:v39 layoutProvider:v9 DOMObjectProvider:v10];
+          components = [v14 components];
+          [(SXTraitDistanceComponentInsertionCondition *)self inspectTraitAreasForComponents:components layoutProvider:providerCopy DOMObjectProvider:objectProviderCopy];
         }
 
         ++v13;

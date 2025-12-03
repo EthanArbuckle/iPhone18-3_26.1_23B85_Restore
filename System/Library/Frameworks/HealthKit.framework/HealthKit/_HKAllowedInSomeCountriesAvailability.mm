@@ -1,33 +1,33 @@
 @interface _HKAllowedInSomeCountriesAvailability
-- (_HKAllowedInSomeCountriesAvailability)initWithAllowedCountries:(id)a3;
-- (unint64_t)ineligibilityReasonsForOnboardingCountryCode:(id)a3;
+- (_HKAllowedInSomeCountriesAvailability)initWithAllowedCountries:(id)countries;
+- (unint64_t)ineligibilityReasonsForOnboardingCountryCode:(id)code;
 @end
 
 @implementation _HKAllowedInSomeCountriesAvailability
 
-- (unint64_t)ineligibilityReasonsForOnboardingCountryCode:(id)a3
+- (unint64_t)ineligibilityReasonsForOnboardingCountryCode:(id)code
 {
-  v5 = a3;
-  v6 = [(HKRegionAvailability *)self allowedCountries];
+  codeCopy = code;
+  allowedCountries = [(HKRegionAvailability *)self allowedCountries];
 
-  if (!v6)
+  if (!allowedCountries)
   {
     [(_HKAllowedInSomeCountriesAvailability *)a2 ineligibilityReasonsForOnboardingCountryCode:?];
   }
 
-  v7 = [(HKRegionAvailability *)self allowedCountries];
-  v8 = [v7 ineligibilityReasonsForOnboardingCountryCode:v5];
+  allowedCountries2 = [(HKRegionAvailability *)self allowedCountries];
+  v8 = [allowedCountries2 ineligibilityReasonsForOnboardingCountryCode:codeCopy];
 
-  return v8 | (v5 == 0);
+  return v8 | (codeCopy == 0);
 }
 
-- (_HKAllowedInSomeCountriesAvailability)initWithAllowedCountries:(id)a3
+- (_HKAllowedInSomeCountriesAvailability)initWithAllowedCountries:(id)countries
 {
   v4 = MEMORY[0x1E696AEC0];
-  v5 = a3;
-  v6 = [v5 version];
-  v7 = [v4 stringWithFormat:@"allowedInSomeCountries_%@", v6];
-  v8 = [(HKRegionAvailability *)self _initWithCategory:v7 version:v5 allowedCountries:?];
+  countriesCopy = countries;
+  version = [countriesCopy version];
+  v7 = [v4 stringWithFormat:@"allowedInSomeCountries_%@", version];
+  v8 = [(HKRegionAvailability *)self _initWithCategory:v7 version:countriesCopy allowedCountries:?];
 
   return v8;
 }

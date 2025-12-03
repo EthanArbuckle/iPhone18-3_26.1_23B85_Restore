@@ -1,9 +1,9 @@
 @interface _TSF_TSDUserFilteredClock
-+ (id)iokitMatchingDictionaryForClockIdentifier:(unint64_t)a3;
-- (BOOL)addTimestampWithMachAbsolute:(unint64_t)a3 andDomainTime:(unint64_t)a4 error:(id *)a5;
++ (id)iokitMatchingDictionaryForClockIdentifier:(unint64_t)identifier;
+- (BOOL)addTimestampWithMachAbsolute:(unint64_t)absolute andDomainTime:(unint64_t)time error:(id *)error;
 - (BOOL)isAdaptive;
-- (BOOL)resetFilterToNominal:(BOOL)a3 error:(id *)a4;
-- (BOOL)resetSyncServiceWithError:(id *)a3;
+- (BOOL)resetFilterToNominal:(BOOL)nominal error:(id *)error;
+- (BOOL)resetSyncServiceWithError:(id *)error;
 - (unint64_t)nominalDomainInterval;
 - (unint64_t)nominalMachInterval;
 - (unsigned)filterShift;
@@ -11,14 +11,14 @@
 
 @implementation _TSF_TSDUserFilteredClock
 
-+ (id)iokitMatchingDictionaryForClockIdentifier:(unint64_t)a3
++ (id)iokitMatchingDictionaryForClockIdentifier:(unint64_t)identifier
 {
   v11[2] = *MEMORY[0x277D85DE8];
   v10[0] = @"IOProviderClass";
   v10[1] = @"IOPropertyMatch";
   v11[0] = @"IOTimeSyncUserFilteredService";
   v8 = @"ClockIdentifier";
-  v3 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a3];
+  v3 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:identifier];
   v9 = v3;
   v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v9 forKeys:&v8 count:1];
   v11[1] = v4;
@@ -29,14 +29,14 @@
   return v5;
 }
 
-- (BOOL)addTimestampWithMachAbsolute:(unint64_t)a3 andDomainTime:(unint64_t)a4 error:(id *)a5
+- (BOOL)addTimestampWithMachAbsolute:(unint64_t)absolute andDomainTime:(unint64_t)time error:(id *)error
 {
   v11[2] = *MEMORY[0x277D85DE8];
   v10 = 0;
-  v11[0] = a3;
-  v11[1] = a4;
-  v6 = [(_TSF_TSDKernelClock *)self connection];
-  v7 = [v6 callMethodWithSelector:18 scalarInputs:v11 scalarInputCount:2 scalarOutputs:0 scalarOutputCount:&v10 error:a5];
+  v11[0] = absolute;
+  v11[1] = time;
+  connection = [(_TSF_TSDKernelClock *)self connection];
+  v7 = [connection callMethodWithSelector:18 scalarInputs:v11 scalarInputCount:2 scalarOutputs:0 scalarOutputCount:&v10 error:error];
 
   if ((v7 & 1) == 0)
   {
@@ -47,11 +47,11 @@
   return v7;
 }
 
-- (BOOL)resetSyncServiceWithError:(id *)a3
+- (BOOL)resetSyncServiceWithError:(id *)error
 {
   v7 = 0;
-  v4 = [(_TSF_TSDKernelClock *)self connection];
-  v5 = [v4 callMethodWithSelector:19 scalarInputs:0 scalarInputCount:0 scalarOutputs:0 scalarOutputCount:&v7 error:a3];
+  connection = [(_TSF_TSDKernelClock *)self connection];
+  v5 = [connection callMethodWithSelector:19 scalarInputs:0 scalarInputCount:0 scalarOutputs:0 scalarOutputCount:&v7 error:error];
 
   if ((v5 & 1) == 0)
   {
@@ -61,13 +61,13 @@
   return v5;
 }
 
-- (BOOL)resetFilterToNominal:(BOOL)a3 error:(id *)a4
+- (BOOL)resetFilterToNominal:(BOOL)nominal error:(id *)error
 {
   v10[1] = *MEMORY[0x277D85DE8];
-  v10[0] = a3;
+  v10[0] = nominal;
   v9 = 0;
-  v5 = [(_TSF_TSDKernelClock *)self connection];
-  v6 = [v5 callMethodWithSelector:20 scalarInputs:v10 scalarInputCount:1 scalarOutputs:0 scalarOutputCount:&v9 error:a4];
+  connection = [(_TSF_TSDKernelClock *)self connection];
+  v6 = [connection callMethodWithSelector:20 scalarInputs:v10 scalarInputCount:1 scalarOutputs:0 scalarOutputCount:&v9 error:error];
 
   if ((v6 & 1) == 0)
   {
@@ -80,74 +80,74 @@
 
 - (unint64_t)nominalMachInterval
 {
-  v2 = [(_TSF_TSDKernelClock *)self service];
-  v3 = [v2 iodPropertyForKey:@"NominalMachInterval"];
+  service = [(_TSF_TSDKernelClock *)self service];
+  v3 = [service iodPropertyForKey:@"NominalMachInterval"];
 
   if (v3)
   {
-    v4 = [v3 unsignedLongLongValue];
+    unsignedLongLongValue = [v3 unsignedLongLongValue];
   }
 
   else
   {
-    v4 = 0;
+    unsignedLongLongValue = 0;
   }
 
-  return v4;
+  return unsignedLongLongValue;
 }
 
 - (unint64_t)nominalDomainInterval
 {
-  v2 = [(_TSF_TSDKernelClock *)self service];
-  v3 = [v2 iodPropertyForKey:@"NominalDomainInterval"];
+  service = [(_TSF_TSDKernelClock *)self service];
+  v3 = [service iodPropertyForKey:@"NominalDomainInterval"];
 
   if (v3)
   {
-    v4 = [v3 unsignedLongLongValue];
+    unsignedLongLongValue = [v3 unsignedLongLongValue];
   }
 
   else
   {
-    v4 = 0;
+    unsignedLongLongValue = 0;
   }
 
-  return v4;
+  return unsignedLongLongValue;
 }
 
 - (unsigned)filterShift
 {
-  v2 = [(_TSF_TSDKernelClock *)self service];
-  v3 = [v2 iodPropertyForKey:@"FilterShift"];
+  service = [(_TSF_TSDKernelClock *)self service];
+  v3 = [service iodPropertyForKey:@"FilterShift"];
 
   if (v3)
   {
-    v4 = [v3 unsignedCharValue];
+    unsignedCharValue = [v3 unsignedCharValue];
   }
 
   else
   {
-    v4 = 0;
+    unsignedCharValue = 0;
   }
 
-  return v4;
+  return unsignedCharValue;
 }
 
 - (BOOL)isAdaptive
 {
-  v2 = [(_TSF_TSDKernelClock *)self service];
-  v3 = [v2 iodPropertyForKey:@"Adaptive"];
+  service = [(_TSF_TSDKernelClock *)self service];
+  v3 = [service iodPropertyForKey:@"Adaptive"];
 
   if (v3)
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (void)addTimestampWithMachAbsolute:andDomainTime:error:.cold.1()

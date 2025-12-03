@@ -1,13 +1,13 @@
 @interface ICLocalStoreAccountProperties
-- (BOOL)isEqual:(id)a3;
-- (ICLocalStoreAccountProperties)initWithCoder:(id)a3;
-- (ICLocalStoreAccountProperties)initWithPropertyListRepresentation:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (ICLocalStoreAccountProperties)initWithCoder:(id)coder;
+- (ICLocalStoreAccountProperties)initWithPropertyListRepresentation:(id)representation;
 - (NSDictionary)propertyListRepresentation;
 - (NSString)storefrontIdentifier;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)_copyLocalStoreAccountPropertiesToOtherInstance:(id)a3 withZone:(_NSZone *)a4;
+- (void)_copyLocalStoreAccountPropertiesToOtherInstance:(id)instance withZone:(_NSZone *)zone;
 @end
 
 @implementation ICLocalStoreAccountProperties
@@ -25,33 +25,33 @@
   }
 }
 
-- (void)_copyLocalStoreAccountPropertiesToOtherInstance:(id)a3 withZone:(_NSZone *)a4
+- (void)_copyLocalStoreAccountPropertiesToOtherInstance:(id)instance withZone:(_NSZone *)zone
 {
   storefrontIdentifier = self->_storefrontIdentifier;
-  v6 = a3;
-  v7 = [(NSString *)storefrontIdentifier copyWithZone:a4];
-  v8 = v6[1];
-  v6[1] = v7;
+  instanceCopy = instance;
+  v7 = [(NSString *)storefrontIdentifier copyWithZone:zone];
+  v8 = instanceCopy[1];
+  instanceCopy[1] = v7;
 }
 
 - (NSDictionary)propertyListRepresentation
 {
   v6[1] = *MEMORY[0x1E69E9840];
   v5 = @"storefrontIdentifier";
-  v2 = [(ICLocalStoreAccountProperties *)self storefrontIdentifier];
-  v6[0] = v2;
+  storefrontIdentifier = [(ICLocalStoreAccountProperties *)self storefrontIdentifier];
+  v6[0] = storefrontIdentifier;
   v3 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v6 forKeys:&v5 count:1];
 
   return v3;
 }
 
-- (ICLocalStoreAccountProperties)initWithPropertyListRepresentation:(id)a3
+- (ICLocalStoreAccountProperties)initWithPropertyListRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v5 = [(ICLocalStoreAccountProperties *)self init];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"storefrontIdentifier"];
+    v6 = [representationCopy objectForKey:@"storefrontIdentifier"];
     if (_NSIsNSString())
     {
       v7 = [v6 copy];
@@ -63,15 +63,15 @@
   return v5;
 }
 
-- (ICLocalStoreAccountProperties)initWithCoder:(id)a3
+- (ICLocalStoreAccountProperties)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = ICLocalStoreAccountProperties;
   v5 = [(ICLocalStoreAccountProperties *)&v10 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"storefrontID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"storefrontID"];
     v7 = [v6 copy];
     storefrontIdentifier = v5->_storefrontIdentifier;
     v5->_storefrontIdentifier = v7;
@@ -80,29 +80,29 @@
   return v5;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v5 = [+[ICMutableLocalStoreAccountProperties allocWithZone:](ICMutableLocalStoreAccountProperties init];
   if (v5)
   {
-    [(ICLocalStoreAccountProperties *)self _copyLocalStoreAccountPropertiesToOtherInstance:v5 withZone:a3];
+    [(ICLocalStoreAccountProperties *)self _copyLocalStoreAccountPropertiesToOtherInstance:v5 withZone:zone];
   }
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
 
-  else if ([(ICLocalStoreAccountProperties *)v4 isMemberOfClass:objc_opt_class()])
+  else if ([(ICLocalStoreAccountProperties *)equalCopy isMemberOfClass:objc_opt_class()])
   {
     storefrontIdentifier = self->_storefrontIdentifier;
-    v6 = v4->_storefrontIdentifier;
+    v6 = equalCopy->_storefrontIdentifier;
     v7 = storefrontIdentifier;
     v8 = v7;
     if (v7 == v6)

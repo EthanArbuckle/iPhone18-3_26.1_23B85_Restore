@@ -1,20 +1,20 @@
 @interface VKCVisualSearchResultItemViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (id)automationElements;
 @end
 
 @implementation VKCVisualSearchResultItemViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"VKCVisualSearchResultItemView" hasInstanceMethod:@"_symbolNameForItem" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"VKCVisualSearchResultItemView" hasInstanceMethod:@"visualSearchResultItem" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"VKCVisualSearchResultItem" hasInstanceMethod:@"resultItem" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MADVIVisualSearchGatingResultItem" hasInstanceMethod:@"domains" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MADVIVisualSearchGatingDomainInfo" hasInstanceMethod:@"domain" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"VKCVisualSearchResultItemView" hasInstanceMethod:@"lookupButton" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"VKCVisualSearchResultItemView" hasInstanceMethod:@"_symbolNameForItem" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"VKCVisualSearchResultItemView" hasInstanceMethod:@"visualSearchResultItem" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"VKCVisualSearchResultItem" hasInstanceMethod:@"resultItem" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MADVIVisualSearchGatingResultItem" hasInstanceMethod:@"domains" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MADVIVisualSearchGatingDomainInfo" hasInstanceMethod:@"domain" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"VKCVisualSearchResultItemView" hasInstanceMethod:@"lookupButton" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
@@ -25,8 +25,8 @@
 
   if ([v5 count])
   {
-    v6 = [v5 firstObject];
-    v7 = [v6 safeStringForKey:@"domain"];
+    firstObject = [v5 firstObject];
+    v7 = [firstObject safeStringForKey:@"domain"];
   }
 
   else
@@ -41,17 +41,17 @@
 
 - (id)automationElements
 {
-  v3 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   v4 = [(VKCVisualSearchResultItemViewAccessibility *)self safeValueForKey:@"lookupButton"];
   v5 = __UIAccessibilitySafeClass();
-  v6 = [v5 isHidden];
+  isHidden = [v5 isHidden];
 
-  if ((v6 & 1) == 0)
+  if ((isHidden & 1) == 0)
   {
-    [v3 axSafelyAddObject:v4];
+    [array axSafelyAddObject:v4];
   }
 
-  return v3;
+  return array;
 }
 
 @end

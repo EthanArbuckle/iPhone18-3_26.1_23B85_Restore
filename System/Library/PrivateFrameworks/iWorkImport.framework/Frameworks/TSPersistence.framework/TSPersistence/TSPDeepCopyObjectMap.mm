@@ -1,15 +1,15 @@
 @interface TSPDeepCopyObjectMap
-- (id)deepCopyForObject:(id)a3;
-- (id)objectForDeepCopy:(id)a3;
-- (void)didReadObjects:(id)a3;
-- (void)didWriteObjects:(id)a3;
+- (id)deepCopyForObject:(id)object;
+- (id)objectForDeepCopy:(id)copy;
+- (void)didReadObjects:(id)objects;
+- (void)didWriteObjects:(id)objects;
 @end
 
 @implementation TSPDeepCopyObjectMap
 
-- (void)didWriteObjects:(id)a3
+- (void)didWriteObjects:(id)objects
 {
-  v5 = a3;
+  objectsCopy = objects;
   if (self->_archivedObjects || self->_deepCopyIdentifierToOriginalObject)
   {
     v6 = MEMORY[0x277D81150];
@@ -21,12 +21,12 @@
   }
 
   archivedObjects = self->_archivedObjects;
-  self->_archivedObjects = v5;
+  self->_archivedObjects = objectsCopy;
 }
 
-- (void)didReadObjects:(id)a3
+- (void)didReadObjects:(id)objects
 {
-  v5 = a3;
+  objectsCopy = objects;
   if (self->_originalIdentifierToDeepCopyObject)
   {
     v6 = MEMORY[0x277D81150];
@@ -38,22 +38,22 @@
   }
 
   originalIdentifierToDeepCopyObject = self->_originalIdentifierToDeepCopyObject;
-  self->_originalIdentifierToDeepCopyObject = v5;
+  self->_originalIdentifierToDeepCopyObject = objectsCopy;
 }
 
-- (id)deepCopyForObject:(id)a3
+- (id)deepCopyForObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   originalIdentifierToDeepCopyObject = self->_originalIdentifierToDeepCopyObject;
-  v8 = objc_msgSend_tsp_identifier(v4, v6, v7);
+  v8 = objc_msgSend_tsp_identifier(objectCopy, v6, v7);
   v10 = objc_msgSend_tsp_objectForIdentifier_(originalIdentifierToDeepCopyObject, v9, v8);
 
   return v10;
 }
 
-- (id)objectForDeepCopy:(id)a3
+- (id)objectForDeepCopy:(id)copy
 {
-  v6 = a3;
+  copyCopy = copy;
   deepCopyIdentifierToOriginalObject = self->_deepCopyIdentifierToOriginalObject;
   if (!deepCopyIdentifierToOriginalObject)
   {
@@ -84,7 +84,7 @@
     }
   }
 
-  v16 = objc_msgSend_tsp_identifier(v6, v4, v5);
+  v16 = objc_msgSend_tsp_identifier(copyCopy, v4, v5);
   v18 = objc_msgSend_tsp_objectForIdentifier_(deepCopyIdentifierToOriginalObject, v17, v16);
 
   return v18;

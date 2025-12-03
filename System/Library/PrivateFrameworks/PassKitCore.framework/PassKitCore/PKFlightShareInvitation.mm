@@ -1,48 +1,48 @@
 @interface PKFlightShareInvitation
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToFlightShareInvitation:(id)a3;
-- (PKFlightShareInvitation)initWithCoder:(id)a3;
-- (PKFlightShareInvitation)initWithFlight:(id)a3 passUniqueIdentifier:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToFlightShareInvitation:(id)invitation;
+- (PKFlightShareInvitation)initWithCoder:(id)coder;
+- (PKFlightShareInvitation)initWithFlight:(id)flight passUniqueIdentifier:(id)identifier;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKFlightShareInvitation
 
-- (PKFlightShareInvitation)initWithFlight:(id)a3 passUniqueIdentifier:(id)a4
+- (PKFlightShareInvitation)initWithFlight:(id)flight passUniqueIdentifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
+  flightCopy = flight;
+  identifierCopy = identifier;
   v12.receiver = self;
   v12.super_class = PKFlightShareInvitation;
   v9 = [(PKFlightShareInvitation *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_flight, a3);
-    objc_storeStrong(&v10->_passUniqueIdentifier, a4);
+    objc_storeStrong(&v9->_flight, flight);
+    objc_storeStrong(&v10->_passUniqueIdentifier, identifier);
   }
 
   return v10;
 }
 
-- (PKFlightShareInvitation)initWithCoder:(id)a3
+- (PKFlightShareInvitation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = PKFlightShareInvitation;
   v5 = [(PKFlightShareInvitation *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"flight"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"flight"];
     flight = v5->_flight;
     v5->_flight = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"passUniqueIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"passUniqueIdentifier"];
     passUniqueIdentifier = v5->_passUniqueIdentifier;
     v5->_passUniqueIdentifier = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"placeholderImageData"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"placeholderImageData"];
     placeholderImageData = v5->_placeholderImageData;
     v5->_placeholderImageData = v10;
   }
@@ -50,22 +50,22 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   flight = self->_flight;
-  v5 = a3;
-  [v5 encodeObject:flight forKey:@"flight"];
-  [v5 encodeObject:self->_passUniqueIdentifier forKey:@"passUniqueIdentifier"];
-  [v5 encodeObject:self->_placeholderImageData forKey:@"placeholderImageData"];
+  coderCopy = coder;
+  [coderCopy encodeObject:flight forKey:@"flight"];
+  [coderCopy encodeObject:self->_passUniqueIdentifier forKey:@"passUniqueIdentifier"];
+  [coderCopy encodeObject:self->_placeholderImageData forKey:@"placeholderImageData"];
 }
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = v3;
+  array = [MEMORY[0x1E695DF70] array];
+  v4 = array;
   if (self->_flight)
   {
-    [v3 addObject:?];
+    [array addObject:?];
   }
 
   if (self->_passUniqueIdentifier)
@@ -83,33 +83,33 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKFlightShareInvitation *)self isEqualToFlightShareInvitation:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKFlightShareInvitation *)self isEqualToFlightShareInvitation:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToFlightShareInvitation:(id)a3
+- (BOOL)isEqualToFlightShareInvitation:(id)invitation
 {
-  v4 = a3;
-  if (!v4)
+  invitationCopy = invitation;
+  if (!invitationCopy)
   {
     goto LABEL_17;
   }
 
   flight = self->_flight;
-  v6 = v4[2];
+  v6 = invitationCopy[2];
   if (flight)
   {
     v7 = v6 == 0;
@@ -134,7 +134,7 @@
   }
 
   passUniqueIdentifier = self->_passUniqueIdentifier;
-  v9 = v4[1];
+  v9 = invitationCopy[1];
   if (!passUniqueIdentifier || !v9)
   {
     if (passUniqueIdentifier == v9)
@@ -154,7 +154,7 @@ LABEL_17:
 
 LABEL_13:
   placeholderImageData = self->_placeholderImageData;
-  v11 = v4[3];
+  v11 = invitationCopy[3];
   if (placeholderImageData && v11)
   {
     v12 = [(NSData *)placeholderImageData isEqual:?];

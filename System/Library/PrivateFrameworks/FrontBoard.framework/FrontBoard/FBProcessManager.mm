@@ -1,53 +1,53 @@
 @interface FBProcessManager
-+ (id)_sharedInstanceCreateIfNeeded:(BOOL)a3;
++ (id)_sharedInstanceCreateIfNeeded:(BOOL)needed;
 - (FBApplicationProcess)systemApplicationProcess;
 - (FBProcessManager)init;
 - (NSString)description;
-- (id)_bootstrapProcessWithExecutionContext:(id)a3 synchronously:(BOOL)a4 error:(id *)a5;
-- (id)_bootstrapProcessWithHandle:(id)a3 synchronously:(BOOL)a4 error:(id *)a5;
-- (id)_reallyRegisterProcessForHandle:(id)a3;
+- (id)_bootstrapProcessWithExecutionContext:(id)context synchronously:(BOOL)synchronously error:(id *)error;
+- (id)_bootstrapProcessWithHandle:(id)handle synchronously:(BOOL)synchronously error:(id *)error;
+- (id)_reallyRegisterProcessForHandle:(id)handle;
 - (id)allApplicationProcesses;
 - (id)allProcesses;
-- (id)applicationProcessesForBundleIdentifier:(id)a3;
+- (id)applicationProcessesForBundleIdentifier:(id)identifier;
 - (id)incomingWorkspaceEndpoint;
-- (id)legacySceneManagerCreatingIfNecessary:(BOOL)a3;
-- (id)processForIdentity:(id)a3;
-- (id)processForVersionedPID:(int64_t)a3;
-- (id)processesForBundleIdentifier:(id)a3;
-- (id)registerProcessForAuditToken:(id *)a3;
-- (id)registerProcessForHandle:(id)a3;
+- (id)legacySceneManagerCreatingIfNecessary:(BOOL)necessary;
+- (id)processForIdentity:(id)identity;
+- (id)processForVersionedPID:(int64_t)d;
+- (id)processesForBundleIdentifier:(id)identifier;
+- (id)registerProcessForAuditToken:(id *)token;
+- (id)registerProcessForHandle:(id)handle;
 - (id)syncLocalSceneClientProvider;
-- (id)watchdogPolicyForProcess:(id)a3 eventContext:(id)a4;
-- (void)_bootstrap_consumeLock_addProcess:(id)a3;
-- (void)_bootstrap_consumeLock_addProcess:(id)a3 synchronously:(BOOL)a4;
-- (void)_initWithWorkspaceDomain:(void *)a1;
+- (id)watchdogPolicyForProcess:(id)process eventContext:(id)context;
+- (void)_bootstrap_consumeLock_addProcess:(id)process;
+- (void)_bootstrap_consumeLock_addProcess:(id)process synchronously:(BOOL)synchronously;
+- (void)_initWithWorkspaceDomain:(void *)domain;
 - (void)_noteShellInitializationComplete;
-- (void)_notifyObserversUsingBlock:(id)a3 completion:(id)a4;
-- (void)_removeProcess:(id)a3;
-- (void)addObserver:(id)a3;
+- (void)_notifyObserversUsingBlock:(id)block completion:(id)completion;
+- (void)_removeProcess:(id)process;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
-- (void)domain:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5;
-- (void)launchProcessWithContext:(id)a3;
-- (void)noteProcessAssertionStateDidChange:(id)a3;
-- (void)removeObserver:(id)a3;
+- (void)domain:(id)domain didReceiveConnection:(id)connection withContext:(id)context;
+- (void)launchProcessWithContext:(id)context;
+- (void)noteProcessAssertionStateDidChange:(id)change;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation FBProcessManager
 
 - (id)incomingWorkspaceEndpoint
 {
-  v2 = [(FBWorkspaceEventDispatcher *)self->_eventDispatcher domain];
-  v3 = [(FBWorkspaceDomain *)v2 endpointPromise];
-  v4 = [(FBWorkspaceEndpointPromise *)v3 endpoint];
+  domain = [(FBWorkspaceEventDispatcher *)self->_eventDispatcher domain];
+  endpointPromise = [(FBWorkspaceDomain *)domain endpointPromise];
+  endpoint = [(FBWorkspaceEndpointPromise *)endpointPromise endpoint];
 
-  return v4;
+  return endpoint;
 }
 
 - (id)allProcesses
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(NSMutableDictionary *)self->_lock_processesByPID allValues];
-  v4 = [v3 copy];
+  allValues = [(NSMutableDictionary *)self->_lock_processesByPID allValues];
+  v4 = [allValues copy];
 
   os_unfair_lock_unlock(&self->_lock);
   if (v4)
@@ -80,15 +80,15 @@
   return v3;
 }
 
-+ (id)_sharedInstanceCreateIfNeeded:(BOOL)a3
++ (id)_sharedInstanceCreateIfNeeded:(BOOL)needed
 {
-  if (a3)
+  if (needed)
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __50__FBProcessManager__sharedInstanceCreateIfNeeded___block_invoke;
     block[3] = &__block_descriptor_40_e5_v8__0l;
-    block[4] = a1;
+    block[4] = self;
     if (_sharedInstanceCreateIfNeeded__onceToken != -1)
     {
       dispatch_once(&_sharedInstanceCreateIfNeeded__onceToken, block);
@@ -128,11 +128,11 @@ void __50__FBProcessManager__sharedInstanceCreateIfNeeded___block_invoke(uint64_
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_initWithWorkspaceDomain:(void *)a1
+- (void)_initWithWorkspaceDomain:(void *)domain
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (domain)
   {
     v5 = v3;
     if (!v5)
@@ -144,84 +144,84 @@ void __50__FBProcessManager__sharedInstanceCreateIfNeeded___block_invoke(uint64_
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      [(FBProcessManager *)v6 _initWithWorkspaceDomain:a1];
+      [(FBProcessManager *)v6 _initWithWorkspaceDomain:domain];
     }
 
-    v64.receiver = a1;
+    v64.receiver = domain;
     v64.super_class = FBProcessManager;
-    a1 = objc_msgSendSuper2(&v64, sel_init);
-    if (a1)
+    domain = objc_msgSendSuper2(&v64, sel_init);
+    if (domain)
     {
       v7 = [[FBWorkspaceEventDispatcher alloc] _initWithDomain:v6];
-      v8 = a1[1];
-      a1[1] = v7;
+      v8 = domain[1];
+      domain[1] = v7;
 
-      v9 = [MEMORY[0x1E698E698] concurrent];
+      concurrent = [MEMORY[0x1E698E698] concurrent];
       v10 = BSDispatchQueueCreate();
-      v11 = a1[5];
-      a1[5] = v10;
+      v11 = domain[5];
+      domain[5] = v10;
 
-      v12 = [MEMORY[0x1E698E698] serial];
-      v13 = [v12 serviceClass:33];
+      serial = [MEMORY[0x1E698E698] serial];
+      v13 = [serial serviceClass:33];
       v14 = BSDispatchQueueCreate();
-      v15 = a1[6];
-      a1[6] = v14;
+      v15 = domain[6];
+      domain[6] = v14;
 
-      *(a1 + 28) = 0;
-      v16 = [MEMORY[0x1E695DF90] dictionary];
-      v17 = a1[15];
-      a1[15] = v16;
+      *(domain + 28) = 0;
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
+      v17 = domain[15];
+      domain[15] = dictionary;
 
-      v18 = [MEMORY[0x1E695DF90] dictionary];
-      v19 = a1[16];
-      a1[16] = v18;
+      dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+      v19 = domain[16];
+      domain[16] = dictionary2;
 
-      v20 = [MEMORY[0x1E695DF90] dictionary];
-      v21 = a1[17];
-      a1[17] = v20;
+      dictionary3 = [MEMORY[0x1E695DF90] dictionary];
+      v21 = domain[17];
+      domain[17] = dictionary3;
 
       v22 = [objc_alloc(MEMORY[0x1E696AC70]) initWithOptions:517 capacity:1];
-      v23 = a1[18];
-      a1[18] = v22;
+      v23 = domain[18];
+      domain[18] = v22;
 
-      *(a1 + 18) = 0;
+      *(domain + 18) = 0;
       v24 = [MEMORY[0x1E695DFA8] set];
-      v25 = a1[10];
-      a1[10] = v24;
+      v25 = domain[10];
+      domain[10] = v24;
 
       v26 = [MEMORY[0x1E695DFA8] set];
-      v27 = a1[11];
-      a1[11] = v26;
+      v27 = domain[11];
+      domain[11] = v26;
 
       v28 = +[FBApplicationProcessWatchdogPolicy defaultPolicy];
-      v29 = a1[13];
-      a1[13] = v28;
+      v29 = domain[13];
+      domain[13] = v28;
 
-      v30 = [MEMORY[0x1E69C75D0] currentProcess];
-      if (!v30)
+      currentProcess = [MEMORY[0x1E69C75D0] currentProcess];
+      if (!currentProcess)
       {
         [FBProcessManager _initWithWorkspaceDomain:?];
       }
 
-      v31 = v30;
-      v32 = [v30 identity];
-      if (!v32)
+      v31 = currentProcess;
+      identity = [currentProcess identity];
+      if (!identity)
       {
         [(FBProcessManager *)v31 _initWithWorkspaceDomain:?];
       }
 
-      v33 = v32;
+      v33 = identity;
       v34 = objc_opt_class();
       if (!v34)
       {
         [(FBProcessManager *)v31 _initWithWorkspaceDomain:?];
       }
 
-      v35 = [[v34 alloc] _initWithProcessManager:a1 identity:v33 handle:v31 executionContext:0];
-      v36 = a1[3];
-      a1[3] = v35;
+      v35 = [[v34 alloc] _initWithProcessManager:domain identity:v33 handle:v31 executionContext:0];
+      v36 = domain[3];
+      domain[3] = v35;
 
-      v37 = a1[3];
+      v37 = domain[3];
       if (!v37)
       {
         [FBProcessManager _initWithWorkspaceDomain:?];
@@ -231,25 +231,25 @@ void __50__FBProcessManager__sharedInstanceCreateIfNeeded___block_invoke(uint64_
       v62[1] = 3221225472;
       v62[2] = __45__FBProcessManager__initWithWorkspaceDomain___block_invoke;
       v62[3] = &unk_1E783CF80;
-      v38 = a1;
-      v63 = v38;
+      domainCopy = domain;
+      v63 = domainCopy;
       [v37 bootstrapLock:v62];
-      v39 = a1[15];
-      v40 = a1[3];
+      v39 = domain[15];
+      v40 = domain[3];
       v41 = [MEMORY[0x1E696AD98] numberWithInt:getpid()];
       [v39 setObject:v40 forKey:v41];
 
-      v42 = a1[16];
-      v43 = a1[3];
+      v42 = domain[16];
+      v43 = domain[3];
       v44 = [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(v43, "versionedPID")}];
       [v42 setObject:v43 forKey:v44];
 
-      v45 = a1[17];
-      v46 = [MEMORY[0x1E695DF70] arrayWithObject:a1[3]];
-      v47 = [a1[3] identity];
-      [v45 setObject:v46 forKey:v47];
+      v45 = domain[17];
+      v46 = [MEMORY[0x1E695DF70] arrayWithObject:domain[3]];
+      identity2 = [domain[3] identity];
+      [v45 setObject:v46 forKey:identity2];
 
-      objc_initWeak(&location, v38);
+      objc_initWeak(&location, domainCopy);
       v48 = MEMORY[0x1E69C75F8];
       v58[0] = MEMORY[0x1E69E9820];
       v58[1] = 3221225472;
@@ -259,36 +259,36 @@ void __50__FBProcessManager__sharedInstanceCreateIfNeeded___block_invoke(uint64_
       v59 = v49;
       objc_copyWeak(&v60, &location);
       v50 = [v48 monitorWithConfiguration:v58];
-      v51 = v38[7];
-      v38[7] = v50;
+      v51 = domainCopy[7];
+      domainCopy[7] = v50;
 
-      v52 = [(FBWorkspaceEventDispatcher *)a1[1] domain];
-      v53 = [(FBWorkspaceEventDispatcher *)v52 domain];
-      LOBYTE(v46) = [v53 _isSharedInstance];
+      domain = [(FBWorkspaceEventDispatcher *)domain[1] domain];
+      v52Domain = [(FBWorkspaceEventDispatcher *)domain domain];
+      LOBYTE(v46) = [v52Domain _isSharedInstance];
 
       if (v46)
       {
-        v54 = @"FBProcessManager-sharedInstance";
+        domainCopy = @"FBProcessManager-sharedInstance";
       }
 
       else
       {
-        v54 = [MEMORY[0x1E696AEC0] stringWithFormat:@"FBProcessManager-%p", v38];
+        domainCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"FBProcessManager-%p", domainCopy];
       }
 
-      a1 = v38;
+      domain = domainCopy;
       v55 = BSLogAddStateCaptureBlockForUserRequestsOnlyWithTitle();
-      v56 = a1[8];
-      a1[8] = v55;
+      v56 = domain[8];
+      domain[8] = v55;
 
-      [(FBWorkspaceDomain *)v49 setIndirectConnectionDelegate:a1];
+      [(FBWorkspaceDomain *)v49 setIndirectConnectionDelegate:domain];
       objc_destroyWeak(&v60);
 
       objc_destroyWeak(&location);
     }
   }
 
-  return a1;
+  return domain;
 }
 
 - (FBProcessManager)init
@@ -304,7 +304,7 @@ void __50__FBProcessManager__sharedInstanceCreateIfNeeded___block_invoke(uint64_
     v11 = 2114;
     v12 = v7;
     v13 = 2048;
-    v14 = self;
+    selfCopy = self;
     v15 = 2114;
     v16 = @"FBProcessManager.m";
     v17 = 1024;
@@ -370,7 +370,7 @@ void __45__FBProcessManager__initWithWorkspaceDomain___block_invoke_3(uint64_t a
   v2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"must call _invalidateWithCompletion: before dealloc"];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
-    NSStringFromSelector(a1);
+    NSStringFromSelector(self);
     objc_claimAutoreleasedReturnValue();
     v3 = OUTLINED_FUNCTION_12();
     v4 = NSStringFromClass(v3);
@@ -383,33 +383,33 @@ void __45__FBProcessManager__initWithWorkspaceDomain___block_invoke_3(uint64_t a
   __break(0);
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_lock);
-  if (![(NSHashTable *)self->_lock_observers containsObject:v4])
+  if (![(NSHashTable *)self->_lock_observers containsObject:observerCopy])
   {
-    [(NSHashTable *)self->_lock_observers addObject:v4];
+    [(NSHashTable *)self->_lock_observers addObject:observerCopy];
   }
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_lock);
-  if ([(NSHashTable *)self->_lock_observers containsObject:v4])
+  if ([(NSHashTable *)self->_lock_observers containsObject:observerCopy])
   {
-    [(NSHashTable *)self->_lock_observers removeObject:v4];
+    [(NSHashTable *)self->_lock_observers removeObject:observerCopy];
   }
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (id)processForVersionedPID:(int64_t)a3
+- (id)processForVersionedPID:(int64_t)d
 {
-  if (a3 == -1)
+  if (d == -1)
   {
     v7 = 0;
   }
@@ -418,13 +418,13 @@ void __45__FBProcessManager__initWithWorkspaceDomain___block_invoke_3(uint64_t a
   {
     os_unfair_lock_lock(&self->_lock);
     lock_processesByVersionedPID = self->_lock_processesByVersionedPID;
-    v6 = [MEMORY[0x1E696AD98] numberWithLongLong:a3];
+    v6 = [MEMORY[0x1E696AD98] numberWithLongLong:d];
     v7 = [(NSMutableDictionary *)lock_processesByVersionedPID objectForKey:v6];
 
     if (!v7)
     {
       lock_processesByPID = self->_lock_processesByPID;
-      v9 = [MEMORY[0x1E696AD98] numberWithInt:a3];
+      v9 = [MEMORY[0x1E696AD98] numberWithInt:d];
       v7 = [(NSMutableDictionary *)lock_processesByPID objectForKey:v9];
 
       if (v7)
@@ -443,29 +443,29 @@ void __45__FBProcessManager__initWithWorkspaceDomain___block_invoke_3(uint64_t a
   return v7;
 }
 
-- (id)processForIdentity:(id)a3
+- (id)processForIdentity:(id)identity
 {
-  v4 = a3;
+  identityCopy = identity;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(NSMutableDictionary *)self->_lock_processesByIdentity objectForKey:v4];
+  v5 = [(NSMutableDictionary *)self->_lock_processesByIdentity objectForKey:identityCopy];
 
-  v6 = [v5 lastObject];
+  lastObject = [v5 lastObject];
 
   os_unfair_lock_unlock(&self->_lock);
 
-  return v6;
+  return lastObject;
 }
 
 - (NSString)description
 {
-  v3 = [(FBProcessManager *)self allProcesses];
-  v4 = [v3 sortedArrayUsingComparator:&__block_literal_global_89];
+  allProcesses = [(FBProcessManager *)self allProcesses];
+  v4 = [allProcesses sortedArrayUsingComparator:&__block_literal_global_89];
 
   v5 = [MEMORY[0x1E698E680] builderWithObject:self];
   [v5 appendArraySection:v4 withName:@"processes" skipIfEmpty:0];
-  v6 = [v5 build];
+  build = [v5 build];
 
-  return v6;
+  return build;
 }
 
 uint64_t __31__FBProcessManager_description__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -489,13 +489,13 @@ uint64_t __31__FBProcessManager_description__block_invoke(uint64_t a1, void *a2,
 {
   v17 = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->_lock);
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(NSMutableDictionary *)self->_lock_processesByPID objectEnumerator];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  objectEnumerator = [(NSMutableDictionary *)self->_lock_processesByPID objectEnumerator];
+  v5 = [objectEnumerator countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -506,17 +506,17 @@ uint64_t __31__FBProcessManager_description__block_invoke(uint64_t a1, void *a2,
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
         if ([v9 isApplicationProcess])
         {
-          [v3 addObject:v9];
+          [array addObject:v9];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [objectEnumerator countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -525,20 +525,20 @@ uint64_t __31__FBProcessManager_description__block_invoke(uint64_t a1, void *a2,
   os_unfair_lock_unlock(&self->_lock);
   v10 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return array;
 }
 
-- (id)processesForBundleIdentifier:(id)a3
+- (id)processesForBundleIdentifier:(id)identifier
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
+  identifierCopy = identifier;
+  array = [MEMORY[0x1E695DF70] array];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = [(FBProcessManager *)self allProcesses];
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  allProcesses = [(FBProcessManager *)self allProcesses];
+  v7 = [allProcesses countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = v7;
@@ -549,20 +549,20 @@ uint64_t __31__FBProcessManager_description__block_invoke(uint64_t a1, void *a2,
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allProcesses);
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
-        v12 = [v11 bundleIdentifier];
-        v13 = [v12 isEqualToString:v4];
+        bundleIdentifier = [v11 bundleIdentifier];
+        v13 = [bundleIdentifier isEqualToString:identifierCopy];
 
         if (v13)
         {
-          [v5 addObject:v11];
+          [array addObject:v11];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v8 = [allProcesses countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v8);
@@ -570,20 +570,20 @@ uint64_t __31__FBProcessManager_description__block_invoke(uint64_t a1, void *a2,
 
   v14 = *MEMORY[0x1E69E9840];
 
-  return v5;
+  return array;
 }
 
-- (id)applicationProcessesForBundleIdentifier:(id)a3
+- (id)applicationProcessesForBundleIdentifier:(id)identifier
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
+  identifierCopy = identifier;
+  array = [MEMORY[0x1E695DF70] array];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = [(FBProcessManager *)self allProcesses];
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  allProcesses = [(FBProcessManager *)self allProcesses];
+  v7 = [allProcesses countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = v7;
@@ -594,23 +594,23 @@ uint64_t __31__FBProcessManager_description__block_invoke(uint64_t a1, void *a2,
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allProcesses);
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
         if ([v11 isApplicationProcess])
         {
-          v12 = [v11 bundleIdentifier];
-          v13 = [v12 isEqualToString:v4];
+          bundleIdentifier = [v11 bundleIdentifier];
+          v13 = [bundleIdentifier isEqualToString:identifierCopy];
 
           if (v13)
           {
-            [v5 addObject:v11];
+            [array addObject:v11];
           }
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v8 = [allProcesses countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v8);
@@ -618,13 +618,13 @@ uint64_t __31__FBProcessManager_description__block_invoke(uint64_t a1, void *a2,
 
   v14 = *MEMORY[0x1E69E9840];
 
-  return v5;
+  return array;
 }
 
-- (id)registerProcessForAuditToken:(id *)a3
+- (id)registerProcessForAuditToken:(id *)token
 {
-  v6 = *&a3->var0[4];
-  v28 = *a3->var0;
+  v6 = *&token->var0[4];
+  v28 = *token->var0;
   v29 = v6;
   v7 = BSVersionedPIDForAuditToken();
   if (v7 == -1)
@@ -646,8 +646,8 @@ uint64_t __31__FBProcessManager_description__block_invoke(uint64_t a1, void *a2,
   if (v10)
   {
     v27 = 0;
-    v12 = *&a3->var0[4];
-    v28 = *a3->var0;
+    v12 = *&token->var0[4];
+    v28 = *token->var0;
     v29 = v12;
     v13 = [MEMORY[0x1E69C75D0] handleForAuditToken:&v28 error:&v27];
     v14 = v27;
@@ -753,13 +753,13 @@ LABEL_25:
   return v9;
 }
 
-- (id)registerProcessForHandle:(id)a3
+- (id)registerProcessForHandle:(id)handle
 {
-  v4 = [a3 auditToken];
-  v5 = v4;
-  if (v4)
+  auditToken = [handle auditToken];
+  v5 = auditToken;
+  if (auditToken)
   {
-    [v4 realToken];
+    [auditToken realToken];
   }
 
   else
@@ -772,17 +772,17 @@ LABEL_25:
   return v6;
 }
 
-- (void)launchProcessWithContext:(id)a3
+- (void)launchProcessWithContext:(id)context
 {
-  v5 = a3;
-  v6 = [v5 identity];
+  contextCopy = context;
+  identity = [contextCopy identity];
 
-  if (!v6)
+  if (!identity)
   {
     [FBProcessManager launchProcessWithContext:a2];
   }
 
-  v7 = [v5 copy];
+  v7 = [contextCopy copy];
 
   bootstrapQueue = self->_bootstrapQueue;
   v11 = v7;
@@ -791,9 +791,9 @@ LABEL_25:
   dispatch_async(bootstrapQueue, v10);
 }
 
-- (id)legacySceneManagerCreatingIfNecessary:(BOOL)a3
+- (id)legacySceneManagerCreatingIfNecessary:(BOOL)necessary
 {
-  v3 = a3;
+  necessaryCopy = necessary;
   os_unfair_lock_lock(&self->_lock);
   v5 = self->_lock_legacySceneManager;
   os_unfair_lock_unlock(&self->_lock);
@@ -804,7 +804,7 @@ LABEL_25:
 
   else
   {
-    v6 = !v3;
+    v6 = !necessaryCopy;
   }
 
   if (!v6)
@@ -844,9 +844,9 @@ LABEL_25:
   if (!lock_syncLocalSceneClientProvider)
   {
     v4 = [FBLocalSynchronousSceneClientProvider alloc];
-    v5 = [(FBWorkspaceEventDispatcher *)self->_eventDispatcher domain];
-    v6 = [(FBWorkspaceEventDispatcher *)v5 domain];
-    v7 = [(FBLocalSynchronousSceneClientProvider *)&v4->super.isa _initWithWorkspaceCoupler:v6 currentProcess:self->_currentProcess eventDispatcher:self->_eventDispatcher];
+    domain = [(FBWorkspaceEventDispatcher *)self->_eventDispatcher domain];
+    v5Domain = [(FBWorkspaceEventDispatcher *)domain domain];
+    v7 = [(FBLocalSynchronousSceneClientProvider *)&v4->super.isa _initWithWorkspaceCoupler:v5Domain currentProcess:self->_currentProcess eventDispatcher:self->_eventDispatcher];
     v8 = self->_lock_syncLocalSceneClientProvider;
     self->_lock_syncLocalSceneClientProvider = v7;
 
@@ -917,24 +917,24 @@ void __52__FBProcessManager__noteShellInitializationComplete__block_invoke(uint6
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (id)watchdogPolicyForProcess:(id)a3 eventContext:(id)a4
+- (id)watchdogPolicyForProcess:(id)process eventContext:(id)context
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(FBProcessManager *)self defaultWatchdogPolicy];
-  v9 = [v8 watchdogPolicyForProcess:v7 eventContext:v6];
+  contextCopy = context;
+  processCopy = process;
+  defaultWatchdogPolicy = [(FBProcessManager *)self defaultWatchdogPolicy];
+  v9 = [defaultWatchdogPolicy watchdogPolicyForProcess:processCopy eventContext:contextCopy];
 
   return v9;
 }
 
-- (void)noteProcessAssertionStateDidChange:(id)a3
+- (void)noteProcessAssertionStateDidChange:(id)change
 {
   v54 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [(FBWorkspaceEventDispatcher *)self->_eventDispatcher domain];
-  v7 = [(FBWorkspaceDomain *)v6 selfAssertRuntime];
+  changeCopy = change;
+  domain = [(FBWorkspaceEventDispatcher *)self->_eventDispatcher domain];
+  selfAssertRuntime = [(FBWorkspaceDomain *)domain selfAssertRuntime];
 
-  if (!v7)
+  if (!selfAssertRuntime)
   {
     goto LABEL_25;
   }
@@ -944,8 +944,8 @@ void __52__FBProcessManager__noteShellInitializationComplete__block_invoke(uint6
   v49 = 0u;
   v47 = 0u;
   v46 = 0u;
-  v9 = [(FBProcessManager *)self allProcesses];
-  v10 = [v9 countByEnumeratingWithState:&v46 objects:v53 count:16];
+  allProcesses = [(FBProcessManager *)self allProcesses];
+  v10 = [allProcesses countByEnumeratingWithState:&v46 objects:v53 count:16];
   if (v10)
   {
     v11 = v10;
@@ -957,14 +957,14 @@ void __52__FBProcessManager__noteShellInitializationComplete__block_invoke(uint6
       {
         if (*v47 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(allProcesses);
         }
 
         v8 = FBWorkspaceStateCombine(v8, [*(*(&v46 + 1) + 8 * v13++) workspaceState]);
       }
 
       while (v11 != v13);
-      v11 = [v9 countByEnumeratingWithState:&v46 objects:v53 count:16];
+      v11 = [allProcesses countByEnumeratingWithState:&v46 objects:v53 count:16];
     }
 
     while (v11);
@@ -1003,8 +1003,8 @@ void __52__FBProcessManager__noteShellInitializationComplete__block_invoke(uint6
 
   os_unfair_lock_unlock(&self->_bootstrapLock);
   v41 = v8;
-  v19 = [(FBWorkspaceEventDispatcher *)self->_eventDispatcher domain];
-  v20 = [(FBWorkspaceDomain *)v19 selfAssertionAttributesForWorkspaceState:?];
+  domain2 = [(FBWorkspaceEventDispatcher *)self->_eventDispatcher domain];
+  v20 = [(FBWorkspaceDomain *)domain2 selfAssertionAttributesForWorkspaceState:?];
 
   os_unfair_lock_lock(&self->_lock);
   lock_assertion = self->_lock_assertion;
@@ -1018,8 +1018,8 @@ void __52__FBProcessManager__noteShellInitializationComplete__block_invoke(uint6
     goto LABEL_20;
   }
 
-  v22 = [(RBSAssertion *)lock_assertion fb_workspaceState];
-  if (FBWorkspaceStateEqual(v41, v22))
+  fb_workspaceState = [(RBSAssertion *)lock_assertion fb_workspaceState];
+  if (FBWorkspaceStateEqual(v41, fb_workspaceState))
   {
 LABEL_20:
     v23 = 0;
@@ -1041,10 +1041,10 @@ LABEL_20:
 
   if (v20)
   {
-    v29 = self;
+    selfCopy = self;
     v30 = objc_alloc(MEMORY[0x1E69C7548]);
-    v31 = [MEMORY[0x1E69C7640] currentProcess];
-    v24 = [v30 initWithExplanation:@"FBWorkspace Self-Assert" target:v31 attributes:v20];
+    currentProcess = [MEMORY[0x1E69C7640] currentProcess];
+    v24 = [v30 initWithExplanation:@"FBWorkspace Self-Assert" target:currentProcess attributes:v20];
     v32 = self->_lock_assertion;
     self->_lock_assertion = v24;
 
@@ -1054,8 +1054,8 @@ LABEL_20:
     v39[1] = 3221225472;
     v39[2] = __55__FBProcessManager_noteProcessAssertionStateDidChange___block_invoke;
     v39[3] = &unk_1E783D040;
-    v40 = v29;
-    v34 = v29;
+    v40 = selfCopy;
+    v34 = selfCopy;
     [(RBSAssertion *)v33 setInvalidationHandler:v39];
 
     os_unfair_lock_unlock(&self->_lock);
@@ -1128,15 +1128,15 @@ void __55__FBProcessManager_noteProcessAssertionStateDidChange___block_invoke(ui
   }
 }
 
-- (void)domain:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5
+- (void)domain:(id)domain didReceiveConnection:(id)connection withContext:(id)context
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [v6 remoteToken];
-  v8 = v7;
-  if (v7)
+  connectionCopy = connection;
+  remoteToken = [connectionCopy remoteToken];
+  v8 = remoteToken;
+  if (remoteToken)
   {
-    [v7 realToken];
+    [remoteToken realToken];
   }
 
   else
@@ -1148,22 +1148,22 @@ void __55__FBProcessManager_noteProcessAssertionStateDidChange___block_invoke(ui
   v10 = v9;
   if (v9)
   {
-    v11 = [v9 workspace];
+    workspace = [v9 workspace];
     v12 = FBLogProcessWorkspace();
     v13 = v12;
-    if (v11)
+    if (workspace)
     {
       if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
       {
-        v14 = [v10 workspace];
+        workspace2 = [v10 workspace];
         LODWORD(v17[0]) = 134218242;
-        *(v17 + 4) = v14;
+        *(v17 + 4) = workspace2;
         WORD6(v17[0]) = 2114;
         *(v17 + 14) = v10;
         _os_log_impl(&dword_1A89DD000, v13, OS_LOG_TYPE_INFO, "FBWorkspaceDomain: Assigning new workspace connection to workspace (%p) owned by process: %{public}@", v17, 0x16u);
       }
 
-      [(FBWorkspace *)v11 _setIncomingConnection:v6];
+      [(FBWorkspace *)workspace _setIncomingConnection:connectionCopy];
     }
 
     else
@@ -1173,7 +1173,7 @@ void __55__FBProcessManager_noteProcessAssertionStateDidChange___block_invoke(ui
         [FBProcessManager domain:didReceiveConnection:withContext:];
       }
 
-      [v6 invalidate];
+      [connectionCopy invalidate];
     }
   }
 
@@ -1185,16 +1185,16 @@ void __55__FBProcessManager_noteProcessAssertionStateDidChange___block_invoke(ui
       [FBProcessManager domain:didReceiveConnection:withContext:];
     }
 
-    [v6 invalidate];
+    [connectionCopy invalidate];
   }
 
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_reallyRegisterProcessForHandle:(id)a3
+- (id)_reallyRegisterProcessForHandle:(id)handle
 {
-  v5 = a3;
-  if (v5)
+  handleCopy = handle;
+  if (handleCopy)
   {
     NSClassFromString(&cfstr_Rbsprocesshand_1.isa);
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -1202,12 +1202,12 @@ void __55__FBProcessManager_noteProcessAssertionStateDidChange___block_invoke(ui
       [FBProcessManager _reallyRegisterProcessForHandle:a2];
     }
 
-    v6 = [v5 identity];
-    v7 = [v6 hostIdentifier];
-    v8 = v7;
-    if (v7)
+    identity = [handleCopy identity];
+    hostIdentifier = [identity hostIdentifier];
+    v8 = hostIdentifier;
+    if (hostIdentifier)
     {
-      v9 = -[FBProcessManager processForPID:](self, "processForPID:", [v7 pid]);
+      v9 = -[FBProcessManager processForPID:](self, "processForPID:", [hostIdentifier pid]);
 
       if (!v9)
       {
@@ -1226,7 +1226,7 @@ void __55__FBProcessManager_noteProcessAssertionStateDidChange___block_invoke(ui
       }
     }
 
-    v10 = [(FBProcessManager *)self _bootstrapProcessWithHandle:v5 synchronously:1 error:0];
+    v10 = [(FBProcessManager *)self _bootstrapProcessWithHandle:handleCopy synchronously:1 error:0];
   }
 
   else
@@ -1237,24 +1237,24 @@ void __55__FBProcessManager_noteProcessAssertionStateDidChange___block_invoke(ui
   return v10;
 }
 
-- (id)_bootstrapProcessWithExecutionContext:(id)a3 synchronously:(BOOL)a4 error:(id *)a5
+- (id)_bootstrapProcessWithExecutionContext:(id)context synchronously:(BOOL)synchronously error:(id *)error
 {
-  v6 = a4;
+  synchronouslyCopy = synchronously;
   v61 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  if (!v9)
+  contextCopy = context;
+  if (!contextCopy)
   {
     [FBProcessManager _bootstrapProcessWithExecutionContext:a2 synchronously:? error:?];
   }
 
-  v10 = v9;
-  v11 = [v9 copy];
+  v10 = contextCopy;
+  v11 = [contextCopy copy];
 
-  v12 = [v11 completion];
+  completion = [v11 completion];
   [v11 setCompletion:0];
-  v13 = [v11 identity];
-  v14 = v13;
-  if (!v13 || ![v13 supportsLaunchingDirectly])
+  identity = [v11 identity];
+  v14 = identity;
+  if (!identity || ![identity supportsLaunchingDirectly])
   {
     v20 = MEMORY[0x1E696ABC0];
     v48[0] = MEMORY[0x1E69E9820];
@@ -1293,9 +1293,9 @@ void __55__FBProcessManager_noteProcessAssertionStateDidChange___block_invoke(ui
     goto LABEL_9;
   }
 
-  v39 = v6;
-  v40 = a5;
-  v41 = self;
+  v39 = synchronouslyCopy;
+  errorCopy = error;
+  selfCopy = self;
   v56 = 0u;
   v57 = 0u;
   v54 = 0u;
@@ -1316,8 +1316,8 @@ LABEL_27:
       }
 
       v33 = *(*(&v54 + 1) + 8 * v32);
-      v34 = [v33 identity];
-      v35 = [v34 isEqual:v14];
+      identity2 = [v33 identity];
+      v35 = [identity2 isEqual:v14];
 
       if (v35)
       {
@@ -1351,17 +1351,17 @@ LABEL_27:
     v53 = v14;
     v19 = [v36 bs_errorWithDomain:@"FBProcessManager" code:2 configuration:v52];
 
-    a5 = v40;
-    self = v41;
+    error = errorCopy;
+    self = selfCopy;
     goto LABEL_41;
   }
 
 LABEL_33:
 
 LABEL_36:
-  a5 = v40;
-  self = v41;
-  if (v41->_bootstrapLock_invalidated)
+  error = errorCopy;
+  self = selfCopy;
+  if (selfCopy->_bootstrapLock_invalidated)
   {
     v37 = [MEMORY[0x1E696ABC0] bs_errorWithDomain:@"FBProcessManager" code:3 configuration:&__block_literal_global_135];
   }
@@ -1379,7 +1379,7 @@ LABEL_36:
     }
 
     v17 = [objc_alloc(objc_msgSend(v14 "fb_processClass"))];
-    [(NSMutableSet *)v41->_bootstrap_pendingProcesses addObject:v17];
+    [(NSMutableSet *)selfCopy->_bootstrap_pendingProcesses addObject:v17];
     v19 = 0;
     v37 = 0;
     if (v17)
@@ -1390,11 +1390,11 @@ LABEL_41:
     }
   }
 
-  os_unfair_lock_unlock(&v41->_bootstrapLock);
+  os_unfair_lock_unlock(&selfCopy->_bootstrapLock);
   v17 = 0;
   v19 = v37;
 LABEL_9:
-  if (v12)
+  if (completion)
   {
     if (!v17)
     {
@@ -1403,7 +1403,7 @@ LABEL_9:
       block[1] = 3221225472;
       block[2] = __78__FBProcessManager__bootstrapProcessWithExecutionContext_synchronously_error___block_invoke_6;
       block[3] = &unk_1E783C368;
-      v44 = v12;
+      v44 = completion;
       v24 = v19;
       v43 = v24;
       dispatch_async(v23, block);
@@ -1420,7 +1420,7 @@ LABEL_9:
     v45[1] = 3221225472;
     v45[2] = __78__FBProcessManager__bootstrapProcessWithExecutionContext_synchronously_error___block_invoke_5;
     v45[3] = &unk_1E783D068;
-    v47 = v12;
+    v47 = completion;
     v46 = v19;
     [v17 _executeBlockAfterBootstrap:v45];
   }
@@ -1445,19 +1445,19 @@ LABEL_17:
   v21 = FBLogProcess();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
   {
-    v22 = [v19 localizedFailureReason];
+    localizedFailureReason = [v19 localizedFailureReason];
     *buf = 138543362;
-    *v59 = v22;
+    *v59 = localizedFailureReason;
     _os_log_impl(&dword_1A89DD000, v21, OS_LOG_TYPE_DEFAULT, "Did not create a new process: %{public}@", buf, 0xCu);
   }
 
 LABEL_19:
 
 LABEL_20:
-  if (a5)
+  if (error)
   {
     v25 = v19;
-    *a5 = v19;
+    *error = v19;
   }
 
   os_unfair_lock_assert_not_owner(&self->_bootstrapLock);
@@ -1509,18 +1509,18 @@ uint64_t __78__FBProcessManager__bootstrapProcessWithExecutionContext_synchronou
   return (*(*(a1 + 40) + 16))(*(a1 + 40), a2, a3);
 }
 
-- (id)_bootstrapProcessWithHandle:(id)a3 synchronously:(BOOL)a4 error:(id *)a5
+- (id)_bootstrapProcessWithHandle:(id)handle synchronously:(BOOL)synchronously error:(id *)error
 {
-  v6 = a4;
+  synchronouslyCopy = synchronously;
   v60 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  if (!v9)
+  handleCopy = handle;
+  if (!handleCopy)
   {
     [FBProcessManager _bootstrapProcessWithHandle:a2 synchronously:? error:?];
   }
 
-  v10 = v9;
-  [v9 auditToken];
+  v10 = handleCopy;
+  [handleCopy auditToken];
   v11 = BSVersionedPIDForAuditToken();
   if (v11 != -1)
   {
@@ -1553,14 +1553,14 @@ uint64_t __78__FBProcessManager__bootstrapProcessWithExecutionContext_synchronou
       v19 = [v17 errorWithDomain:@"FBProcessManager" code:2 userInfo:v18];
 
       os_unfair_lock_unlock(&self->_bootstrapLock);
-      if (!a5)
+      if (!error)
       {
         goto LABEL_10;
       }
 
 LABEL_9:
       v20 = v19;
-      *a5 = v19;
+      *error = v19;
 LABEL_10:
       os_unfair_lock_assert_not_owner(&self->_bootstrapLock);
 LABEL_15:
@@ -1568,10 +1568,10 @@ LABEL_15:
       goto LABEL_16;
     }
 
-    v43 = v6;
-    v44 = a5;
-    v45 = [v10 identity];
-    if (!v45)
+    v43 = synchronouslyCopy;
+    errorCopy = error;
+    identity = [v10 identity];
+    if (!identity)
     {
       [FBProcessManager _bootstrapProcessWithHandle:v10 synchronously:a2 error:?];
     }
@@ -1596,16 +1596,16 @@ LABEL_22:
         }
 
         v30 = *(*(&v47 + 1) + 8 * v29);
-        v31 = [v30 versionedPID];
-        if (v12 == v31)
+        versionedPID = [v30 versionedPID];
+        if (v12 == versionedPID)
         {
           break;
         }
 
-        if (v31 == -1)
+        if (versionedPID == -1)
         {
-          v32 = [v30 identity];
-          v33 = [v45 isEqual:v32];
+          identity2 = [v30 identity];
+          v33 = [identity isEqual:identity2];
 
           if (v33)
           {
@@ -1633,7 +1633,7 @@ LABEL_22:
       }
 
       v34 = FBLogProcess();
-      a5 = v44;
+      error = errorCopy;
       if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
@@ -1653,7 +1653,7 @@ LABEL_22:
 LABEL_30:
 
 LABEL_35:
-    a5 = v44;
+    error = errorCopy;
     if (self->_bootstrapLock_invalidated)
     {
       v37 = [MEMORY[0x1E696ABC0] bs_errorWithDomain:@"FBProcessManager" code:3 configuration:&__block_literal_global_166];
@@ -1671,7 +1671,7 @@ LABEL_35:
         _os_log_impl(&dword_1A89DD000, v38, OS_LOG_TYPE_DEFAULT, "Creating process (sync=%{BOOL}u) for handle: %{public}@", buf, 0x12u);
       }
 
-      v15 = [objc_alloc(objc_msgSend(v45 "fb_processClass"))];
+      v15 = [objc_alloc(objc_msgSend(identity "fb_processClass"))];
       [(NSMutableSet *)self->_bootstrap_pendingProcesses addObject:v15];
       v19 = 0;
       v37 = 0;
@@ -1702,7 +1702,7 @@ LABEL_41:
 
 LABEL_47:
 
-        if (!a5)
+        if (!error)
         {
           goto LABEL_10;
         }
@@ -1723,14 +1723,14 @@ LABEL_47:
     [FBProcessManager _bootstrapProcessWithHandle:synchronously:error:];
   }
 
-  if (a5)
+  if (error)
   {
     v22 = MEMORY[0x1E696ABC0];
     v56 = *MEMORY[0x1E696A588];
     v57 = @"Specified process is not valid.";
     v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v57 forKeys:&v56 count:1];
     [v22 errorWithDomain:@"FBProcessManager" code:1 userInfo:v19];
-    *a5 = v15 = 0;
+    *error = v15 = 0;
     goto LABEL_15;
   }
 
@@ -1750,18 +1750,18 @@ void __68__FBProcessManager__bootstrapProcessWithHandle_synchronously_error___bl
   [v2 setCodeDescription:@"invalidated"];
 }
 
-- (void)_bootstrap_consumeLock_addProcess:(id)a3 synchronously:(BOOL)a4
+- (void)_bootstrap_consumeLock_addProcess:(id)process synchronously:(BOOL)synchronously
 {
-  v4 = a4;
-  v7 = a3;
-  if (!v7)
+  synchronouslyCopy = synchronously;
+  processCopy = process;
+  if (!processCopy)
   {
     [FBProcessManager _bootstrap_consumeLock_addProcess:a2 synchronously:?];
   }
 
-  v8 = v7;
+  v8 = processCopy;
   os_unfair_lock_assert_owner(&self->_bootstrapLock);
-  if (v4)
+  if (synchronouslyCopy)
   {
     [(FBProcessManager *)self _bootstrap_consumeLock_addProcess:v8];
   }
@@ -1788,15 +1788,15 @@ uint64_t __68__FBProcessManager__bootstrap_consumeLock_addProcess_synchronously_
   return [v2 _bootstrap_consumeLock_addProcess:v3 synchronously:1];
 }
 
-- (void)_bootstrap_consumeLock_addProcess:(id)a3
+- (void)_bootstrap_consumeLock_addProcess:(id)process
 {
-  v5 = a3;
-  if (!v5)
+  processCopy = process;
+  if (!processCopy)
   {
     [FBProcessManager _bootstrap_consumeLock_addProcess:a2];
   }
 
-  v6 = v5;
+  v6 = processCopy;
   os_unfair_lock_assert_owner(&self->_bootstrapLock);
   if ([(NSMutableSet *)self->_bootstrap_bootstrappingProcesses containsObject:v6])
   {
@@ -1984,17 +1984,17 @@ void __54__FBProcessManager__bootstrap_consumeLock_addProcess___block_invoke_2(u
   }
 }
 
-- (void)_removeProcess:(id)a3
+- (void)_removeProcess:(id)process
 {
   v31 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  processCopy = process;
+  if (!processCopy)
   {
     [FBProcessManager _removeProcess:a2];
   }
 
-  v6 = v5;
-  [v5 bootstrapLock:&__block_literal_global_182];
+  v6 = processCopy;
+  [processCopy bootstrapLock:&__block_literal_global_182];
   v7 = FBLogProcess();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -2005,18 +2005,18 @@ void __54__FBProcessManager__bootstrap_consumeLock_addProcess___block_invoke_2(u
 
   os_unfair_lock_lock(&self->_bootstrapLock);
   os_unfair_lock_lock(&self->_lock);
-  v8 = [v6 identity];
-  if (v8)
+  identity = [v6 identity];
+  if (identity)
   {
     lock_processesByIdentity = self->_lock_processesByIdentity;
-    v10 = [v6 identity];
-    v11 = [(NSMutableDictionary *)lock_processesByIdentity objectForKey:v10];
+    identity2 = [v6 identity];
+    v11 = [(NSMutableDictionary *)lock_processesByIdentity objectForKey:identity2];
 
     if ([v11 containsObject:v6])
     {
       if ([v11 count] == 1)
       {
-        [(NSMutableDictionary *)self->_lock_processesByIdentity removeObjectForKey:v8];
+        [(NSMutableDictionary *)self->_lock_processesByIdentity removeObjectForKey:identity];
       }
 
       else
@@ -2036,34 +2036,34 @@ void __54__FBProcessManager__bootstrap_consumeLock_addProcess___block_invoke_2(u
 
   if (self->_bootstrapLock_invalidated || ([(FBWorkspaceEventDispatcher *)self->_eventDispatcher domain], v15 = objc_claimAutoreleasedReturnValue(), v16 = [(FBWorkspaceDomain *)v15 monitorAllSuspendableProcesses], v15, (v16 & 1) != 0))
   {
-    v17 = 0;
+    allObjects = 0;
   }
 
   else
   {
-    v18 = [v6 processPredicate];
-    if (v18 && [(NSMutableSet *)self->_bootstrap_processPredicates containsObject:v18])
+    processPredicate = [v6 processPredicate];
+    if (processPredicate && [(NSMutableSet *)self->_bootstrap_processPredicates containsObject:processPredicate])
     {
-      [(NSMutableSet *)self->_bootstrap_processPredicates removeObject:v18];
-      v17 = [(NSMutableSet *)self->_bootstrap_processPredicates allObjects];
+      [(NSMutableSet *)self->_bootstrap_processPredicates removeObject:processPredicate];
+      allObjects = [(NSMutableSet *)self->_bootstrap_processPredicates allObjects];
     }
 
     else
     {
-      v17 = 0;
+      allObjects = 0;
     }
   }
 
-  v19 = [v6 versionedPID];
-  if (v19 != -1)
+  versionedPID = [v6 versionedPID];
+  if (versionedPID != -1)
   {
     lock_processesByVersionedPID = self->_lock_processesByVersionedPID;
-    v21 = [MEMORY[0x1E696AD98] numberWithLongLong:v19];
+    v21 = [MEMORY[0x1E696AD98] numberWithLongLong:versionedPID];
     [(NSMutableDictionary *)lock_processesByVersionedPID removeObjectForKey:v21];
   }
 
   os_unfair_lock_unlock(&self->_lock);
-  if (v17)
+  if (allObjects)
   {
     os_unfair_lock_lock(&self->_bootstrapPredicatesLock);
     os_unfair_lock_unlock(&self->_bootstrapLock);
@@ -2072,7 +2072,7 @@ void __54__FBProcessManager__bootstrap_consumeLock_addProcess___block_invoke_2(u
     v27[1] = 3221225472;
     v27[2] = __35__FBProcessManager__removeProcess___block_invoke_183;
     v27[3] = &unk_1E783D0B8;
-    v28 = v17;
+    v28 = allObjects;
     [(RBSProcessMonitor *)processMonitor updateConfiguration:v27];
     os_unfair_lock_unlock(&self->_bootstrapPredicatesLock);
   }
@@ -2094,20 +2094,20 @@ void __54__FBProcessManager__bootstrap_consumeLock_addProcess___block_invoke_2(u
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_notifyObserversUsingBlock:(id)a3 completion:(id)a4
+- (void)_notifyObserversUsingBlock:(id)block completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  blockCopy = block;
+  completionCopy = completion;
   callOutQueue = self->_callOutQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __58__FBProcessManager__notifyObserversUsingBlock_completion___block_invoke;
   block[3] = &unk_1E783D128;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = blockCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = blockCopy;
   dispatch_async(callOutQueue, block);
 }
 

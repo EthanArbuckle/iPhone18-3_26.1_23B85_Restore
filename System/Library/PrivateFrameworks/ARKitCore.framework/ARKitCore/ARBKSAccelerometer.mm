@@ -4,7 +4,7 @@
 - (id)initPrivate;
 - (int64_t)currentOrientation;
 - (void)dealloc;
-- (void)setPassive:(BOOL)a3;
+- (void)setPassive:(BOOL)passive;
 @end
 
 @implementation ARBKSAccelerometer
@@ -87,7 +87,7 @@ void __47__ARBKSAccelerometer_sharedAccelerometerHandle__block_invoke()
     *buf = 138543618;
     v8 = v5;
     v9 = 2048;
-    v10 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C241C000, v3, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: dealloc", buf, 0x16u);
   }
 
@@ -98,8 +98,8 @@ void __47__ARBKSAccelerometer_sharedAccelerometerHandle__block_invoke()
 
 - (int64_t)currentOrientation
 {
-  v3 = [(ARBKSAccelerometer *)self rawOrientation];
-  if ((v3 - 1) > 3)
+  rawOrientation = [(ARBKSAccelerometer *)self rawOrientation];
+  if ((rawOrientation - 1) > 3)
   {
     kdebug_trace();
     return self->_lastValidDeviceOrientation;
@@ -107,26 +107,26 @@ void __47__ARBKSAccelerometer_sharedAccelerometerHandle__block_invoke()
 
   else
   {
-    v4 = v3;
-    self->_lastValidDeviceOrientation = v3;
+    v4 = rawOrientation;
+    self->_lastValidDeviceOrientation = rawOrientation;
     kdebug_trace();
   }
 
   return v4;
 }
 
-- (void)setPassive:(BOOL)a3
+- (void)setPassive:(BOOL)passive
 {
-  v3 = a3;
-  self->_passive = a3;
-  if (!a3)
+  passiveCopy = passive;
+  self->_passive = passive;
+  if (!passive)
   {
     [(ARBKSAccelerometer *)self _pollRawOrientation];
   }
 
   accelerometer = self->_accelerometer;
 
-  [(BKSAccelerometer *)accelerometer setPassiveOrientationEvents:v3];
+  [(BKSAccelerometer *)accelerometer setPassiveOrientationEvents:passiveCopy];
 }
 
 @end

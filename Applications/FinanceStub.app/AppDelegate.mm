@@ -1,12 +1,12 @@
 @interface AppDelegate
-- (BOOL)application:(id)a3 continueUserActivity:(id)a4 restorationHandler:(id)a5;
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4;
+- (BOOL)application:(id)application continueUserActivity:(id)activity restorationHandler:(id)handler;
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options;
 - (_TtC11FinanceStub11AppDelegate)init;
 @end
 
 @implementation AppDelegate
 
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -19,7 +19,7 @@
   return 1;
 }
 
-- (BOOL)application:(id)a3 continueUserActivity:(id)a4 restorationHandler:(id)a5
+- (BOOL)application:(id)application continueUserActivity:(id)activity restorationHandler:(id)handler
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -29,11 +29,11 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v9 = _Block_copy(a5);
-  v10 = a3;
-  v11 = a4;
-  v12 = self;
-  v13 = sub_100005F80(v11);
+  v9 = _Block_copy(handler);
+  applicationCopy = application;
+  activityCopy = activity;
+  selfCopy = self;
+  v13 = sub_100005F80(activityCopy);
   _Block_release(v9);
 
   return v13 & 1;

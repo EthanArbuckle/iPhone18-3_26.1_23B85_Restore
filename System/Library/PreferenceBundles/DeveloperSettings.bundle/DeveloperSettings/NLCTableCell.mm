@@ -1,18 +1,18 @@
 @interface NLCTableCell
-- (NLCTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
+- (NLCTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
 - (void)layoutSubviews;
-- (void)setAlert:(id)a3;
-- (void)setChecked:(BOOL)a3;
-- (void)setSubtitle:(id)a3;
+- (void)setAlert:(id)alert;
+- (void)setChecked:(BOOL)checked;
+- (void)setSubtitle:(id)subtitle;
 @end
 
 @implementation NLCTableCell
 
-- (NLCTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (NLCTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
   v12.receiver = self;
   v12.super_class = NLCTableCell;
-  v5 = [(NLCTableCell *)&v12 initWithStyle:3 reuseIdentifier:a4 specifier:a5];
+  v5 = [(NLCTableCell *)&v12 initWithStyle:3 reuseIdentifier:identifier specifier:specifier];
   v6 = v5;
   if (v5)
   {
@@ -30,13 +30,13 @@
   return v6;
 }
 
-- (void)setChecked:(BOOL)a3
+- (void)setChecked:(BOOL)checked
 {
   v4 = OBJC_IVAR___PSTableCell__checked;
-  if (self->PSTableCell_opaque[OBJC_IVAR___PSTableCell__checked] != a3)
+  if (self->PSTableCell_opaque[OBJC_IVAR___PSTableCell__checked] != checked)
   {
-    self->PSTableCell_opaque[OBJC_IVAR___PSTableCell__checked] = a3;
-    v5 = [(NLCTableCell *)self titleLabel];
+    self->PSTableCell_opaque[OBJC_IVAR___PSTableCell__checked] = checked;
+    titleLabel = [(NLCTableCell *)self titleLabel];
     if (self->PSTableCell_opaque[v4])
     {
       +[UIColor tableCellBlueTextColor];
@@ -47,9 +47,9 @@
       +[UIColor blackColor];
     }
     v6 = ;
-    [v5 setColor:v6];
+    [titleLabel setColor:v6];
 
-    v7 = [(NLCTableCell *)self detailTextLabel];
+    detailTextLabel = [(NLCTableCell *)self detailTextLabel];
     if (self->PSTableCell_opaque[v4])
     {
       +[UIColor tableCellBlueTextColor];
@@ -60,7 +60,7 @@
       +[UIColor lightGrayColor];
     }
     v8 = ;
-    [v7 setColor:v8];
+    [detailTextLabel setColor:v8];
   }
 
   v9 = qword_49E68;
@@ -92,26 +92,26 @@
   [(NLCTableCell *)self setIcon:v16];
 }
 
-- (void)setSubtitle:(id)a3
+- (void)setSubtitle:(id)subtitle
 {
-  v5 = a3;
-  if (v5 && ![(NSString *)self->_subtitle isEqualToString:v5])
+  subtitleCopy = subtitle;
+  if (subtitleCopy && ![(NSString *)self->_subtitle isEqualToString:subtitleCopy])
   {
-    objc_storeStrong(&self->_subtitle, a3);
+    objc_storeStrong(&self->_subtitle, subtitle);
     [(NLCTableCell *)self setNeedsLayout];
   }
 
   _objc_release_x1();
 }
 
-- (void)setAlert:(id)a3
+- (void)setAlert:(id)alert
 {
-  v4 = a3;
+  alertCopy = alert;
   alert = self->_alert;
-  v7 = v4;
-  if (v4)
+  v7 = alertCopy;
+  if (alertCopy)
   {
-    if ([(NSString *)alert isEqualToString:v4])
+    if ([(NSString *)alert isEqualToString:alertCopy])
     {
       goto LABEL_6;
     }
@@ -138,10 +138,10 @@ LABEL_6:
   [(NLCTableCell *)&v29 layoutSubviews];
   v28.receiver = self;
   v28.super_class = NLCTableCell;
-  v3 = [(NLCTableCell *)&v28 titleLabel];
-  [v3 setAdjustsFontSizeToFitWidth:1];
+  titleLabel = [(NLCTableCell *)&v28 titleLabel];
+  [titleLabel setAdjustsFontSizeToFitWidth:1];
   v4 = UISystemFontBoldForSize();
-  [v3 setFont:v4];
+  [titleLabel setFont:v4];
 
   [(NSMutableString *)self->_detailText setString:&stru_3E0D8];
   subtitle = self->_subtitle;
@@ -175,19 +175,19 @@ LABEL_11:
   {
     v27.receiver = self;
     v27.super_class = NLCTableCell;
-    v9 = [(NLCTableCell *)&v27 detailTextLabel];
-    [v9 setText:self->_detailText];
+    detailTextLabel = [(NLCTableCell *)&v27 detailTextLabel];
+    [detailTextLabel setText:self->_detailText];
     v26.receiver = self;
     v26.super_class = NLCTableCell;
-    v10 = [(NLCTableCell *)&v26 detailTextLabel];
-    [v10 frame];
+    detailTextLabel2 = [(NLCTableCell *)&v26 detailTextLabel];
+    [detailTextLabel2 frame];
     v12 = v11;
     v14 = v13;
     v16 = v15;
     v18 = v17;
 
-    v19 = [(NLCTableCell *)self contentView];
-    [v19 size];
+    contentView = [(NLCTableCell *)self contentView];
+    [contentView size];
     v21 = v20 + -30.0;
 
     if ([(NLCTableCell *)self _shouldReverseLayoutDirection])
@@ -197,8 +197,8 @@ LABEL_11:
 
     v25.receiver = self;
     v25.super_class = NLCTableCell;
-    v22 = [(NLCTableCell *)&v25 detailTextLabel];
-    [v22 setFrame:{v12, v14, v21, v18}];
+    detailTextLabel3 = [(NLCTableCell *)&v25 detailTextLabel];
+    [detailTextLabel3 setFrame:{v12, v14, v21, v18}];
 
     if (v8)
     {
@@ -220,7 +220,7 @@ LABEL_11:
     }
 
     v24 = v23;
-    [v9 setColor:v23];
+    [detailTextLabel setColor:v23];
   }
 }
 

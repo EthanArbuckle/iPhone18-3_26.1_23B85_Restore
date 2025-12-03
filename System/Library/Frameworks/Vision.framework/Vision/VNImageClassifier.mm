@@ -1,35 +1,35 @@
 @interface VNImageClassifier
-+ (BOOL)_dumpIntermediatesFullImage:(id)a3 imageURL:(id)a4 requiredImageSource:(const __CVBuffer *)a5 imageProcessingType:(int)a6 error:(id *)a7;
-+ (BOOL)_dumpIntermediatesTiles:(id)a3 imageURL:(id)a4 requiredImageSource:(const __CVBuffer *)a5 imageProcessingType:(int)a6 allocatedTileCount:(unsigned int)a7 imageTiles:(const void *)a8 bytesPerPixel:(int)a9 numTiles:(unsigned int)a10 scaleFactor:(float)a11 augmentationMode:(unsigned int)a12 scalingImage:(BOOL)a13 error:(id *)a14;
-+ (BOOL)computeImageCropWithImage:(id)a3 regionOfInterest:(CGRect)a4 usingDescriptorProcessor:(ImageDescriptorProcessorAbstract *)a5 scalingImage:(BOOL)a6 options:(id)a7 pixelBuffer:(__CVBuffer *)a8 error:(id *)a9;
-+ (BOOL)computeImageDescriptorsWithImage:(id)a3 pixelBuffer:(const __CVBuffer *)a4 regionOfInterest:(CGRect)a5 usingDescriptorProcessor:(ImageDescriptorProcessorAbstract *)a6 tileCount:(int)a7 augmentationMode:(unsigned int)a8 resultantDescriptorBuffer:(void *)a9 options:(id)a10 metalContext:(id)a11 canceller:(id)a12 tileColumns:(unint64_t *)a13 tileRows:(unint64_t *)a14 error:(id *)a15;
-+ (BOOL)computeLabelsAndConfidence:(void *)a3 usingDescriptorBuffer:(void *)a4 populateLabelsAndConfidence:(void *)a5 options:(id)a6 metalContext:(id)a7 error:(id *)a8;
-+ (id)classifyImageHierarchicallyWithDescriptors:(const void *)a3 usingImageClassifier:(void *)a4 hierarchicalClassifier:(ImageClassifier_HierarchicalModel *)a5 minimumClassificationConfidence:(float)a6 minimumClassificationConfidenceRatio:(float)a7 maximumLeafLabels:(unint64_t)a8 maximumHierarchicalLabels:(unint64_t)a9 options:(id)a10 metalContext:(id)a11 error:(id *)a12;
-+ (id)classifyImageWithDescriptors:(const void *)a3 usingImageClassifier:(void *)a4 andMinConfidenceForClassification:(float)a5 options:(id)a6 metalContext:(id)a7 error:(id *)a8;
++ (BOOL)_dumpIntermediatesFullImage:(id)image imageURL:(id)l requiredImageSource:(const __CVBuffer *)source imageProcessingType:(int)type error:(id *)error;
++ (BOOL)_dumpIntermediatesTiles:(id)tiles imageURL:(id)l requiredImageSource:(const __CVBuffer *)source imageProcessingType:(int)type allocatedTileCount:(unsigned int)count imageTiles:(const void *)imageTiles bytesPerPixel:(int)pixel numTiles:(unsigned int)self0 scaleFactor:(float)self1 augmentationMode:(unsigned int)self2 scalingImage:(BOOL)self3 error:(id *)self4;
++ (BOOL)computeImageCropWithImage:(id)image regionOfInterest:(CGRect)interest usingDescriptorProcessor:(ImageDescriptorProcessorAbstract *)processor scalingImage:(BOOL)scalingImage options:(id)options pixelBuffer:(__CVBuffer *)buffer error:(id *)error;
++ (BOOL)computeImageDescriptorsWithImage:(id)image pixelBuffer:(const __CVBuffer *)buffer regionOfInterest:(CGRect)interest usingDescriptorProcessor:(ImageDescriptorProcessorAbstract *)processor tileCount:(int)count augmentationMode:(unsigned int)mode resultantDescriptorBuffer:(void *)descriptorBuffer options:(id)self0 metalContext:(id)self1 canceller:(id)self2 tileColumns:(unint64_t *)self3 tileRows:(unint64_t *)self4 error:(id *)self5;
++ (BOOL)computeLabelsAndConfidence:(void *)confidence usingDescriptorBuffer:(void *)buffer populateLabelsAndConfidence:(void *)andConfidence options:(id)options metalContext:(id)context error:(id *)error;
++ (id)classifyImageHierarchicallyWithDescriptors:(const void *)descriptors usingImageClassifier:(void *)classifier hierarchicalClassifier:(ImageClassifier_HierarchicalModel *)hierarchicalClassifier minimumClassificationConfidence:(float)confidence minimumClassificationConfidenceRatio:(float)ratio maximumLeafLabels:(unint64_t)labels maximumHierarchicalLabels:(unint64_t)hierarchicalLabels options:(id)self0 metalContext:(id)self1 error:(id *)self2;
++ (id)classifyImageWithDescriptors:(const void *)descriptors usingImageClassifier:(void *)classifier andMinConfidenceForClassification:(float)classification options:(id)options metalContext:(id)context error:(id *)error;
 @end
 
 @implementation VNImageClassifier
 
-+ (BOOL)_dumpIntermediatesTiles:(id)a3 imageURL:(id)a4 requiredImageSource:(const __CVBuffer *)a5 imageProcessingType:(int)a6 allocatedTileCount:(unsigned int)a7 imageTiles:(const void *)a8 bytesPerPixel:(int)a9 numTiles:(unsigned int)a10 scaleFactor:(float)a11 augmentationMode:(unsigned int)a12 scalingImage:(BOOL)a13 error:(id *)a14
++ (BOOL)_dumpIntermediatesTiles:(id)tiles imageURL:(id)l requiredImageSource:(const __CVBuffer *)source imageProcessingType:(int)type allocatedTileCount:(unsigned int)count imageTiles:(const void *)imageTiles bytesPerPixel:(int)pixel numTiles:(unsigned int)self0 scaleFactor:(float)self1 augmentationMode:(unsigned int)self2 scalingImage:(BOOL)self3 error:(id *)self4
 {
-  v18 = a3;
-  v64 = a4;
-  v65 = [v18 objectForKeyedSubscript:@"VNImageClassifierProcessingOption_DebugIntermediatesDumpPath"];
-  v19 = [v18 objectForKeyedSubscript:@"VNImageClassifierProcessingOption_DebugInfo"];
+  tilesCopy = tiles;
+  lCopy = l;
+  v65 = [tilesCopy objectForKeyedSubscript:@"VNImageClassifierProcessingOption_DebugIntermediatesDumpPath"];
+  v19 = [tilesCopy objectForKeyedSubscript:@"VNImageClassifierProcessingOption_DebugInfo"];
   v20 = v19;
   v21 = 1;
-  if (a5 && v65)
+  if (source && v65)
   {
     v63 = v19;
     if (v19)
     {
-      v22 = [v64 path];
-      v24 = v22;
-      if (v22)
+      path = [lCopy path];
+      v24 = path;
+      if (path)
       {
-        v25 = [v22 lastPathComponent];
+        lastPathComponent = [path lastPathComponent];
 
-        v26 = v25;
+        v26 = lastPathComponent;
       }
 
       else
@@ -37,14 +37,14 @@
         v26 = @"<binary-data>";
       }
 
-      *&v23 = a11;
+      *&v23 = factor;
       v27 = [MEMORY[0x1E696AD98] numberWithFloat:v23];
       [v63 setObject:v27 forKey:@"scalingFactor"];
 
-      v28 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:a12];
+      v28 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:mode];
       [v63 setObject:v28 forKey:@"augmentationMode"];
 
-      v29 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:a10];
+      v29 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:numTiles];
       [v63 setObject:v29 forKey:@"numTiles"];
 
       [v63 setObject:v26 forKey:@"imageID"];
@@ -52,71 +52,71 @@
     }
 
     v30 = [v65 stringByAppendingString:@"/"];
-    v62 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
     v31 = [MEMORY[0x1E695DFF8] fileURLWithPath:v30];
-    v32 = [v62 createDirectoryAtURL:v31 withIntermediateDirectories:1 attributes:0 error:a14];
+    v32 = [defaultManager createDirectoryAtURL:v31 withIntermediateDirectories:1 attributes:0 error:error];
 
     v59 = v32;
     if (v32)
     {
       v57 = v30;
-      v58 = [v64 path];
+      path2 = [lCopy path];
       ++image_name_offset;
       v33 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:?];
-      v60 = [v33 stringValue];
+      stringValue = [v33 stringValue];
 
-      if (v58)
+      if (path2)
       {
-        v34 = [v58 lastPathComponent];
-        v35 = [v34 stringByDeletingPathExtension];
+        lastPathComponent2 = [path2 lastPathComponent];
+        stringByDeletingPathExtension = [lastPathComponent2 stringByDeletingPathExtension];
 
-        v36 = v35;
+        v36 = stringByDeletingPathExtension;
       }
 
       else
       {
-        v36 = v60;
+        v36 = stringValue;
       }
 
       v61 = v36;
       v37 = [v30 stringByAppendingString:?];
       v38 = [v37 stringByAppendingString:@"_tile_"];
 
-      if (a7)
+      if (count)
       {
         v39 = 0;
-        v40 = a7;
+        countCopy = count;
         do
         {
           v41 = objc_autoreleasePoolPush();
           v42 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v39];
-          v43 = [v42 stringValue];
-          v44 = [v38 stringByAppendingString:v43];
+          stringValue2 = [v42 stringValue];
+          v44 = [v38 stringByAppendingString:stringValue2];
 
           v45 = [v44 stringByAppendingString:@".png"];
-          v46 = [v45 UTF8String];
-          v47 = (*a8 + 32 * v39);
+          uTF8String = [v45 UTF8String];
+          v47 = (*imageTiles + 32 * v39);
           *v68 = *v47;
           *__n = v47[1];
-          PixelFormatType = CVPixelBufferGetPixelFormatType(a5);
-          saveVImage(v46, v68, PixelFormatType);
+          PixelFormatType = CVPixelBufferGetPixelFormatType(source);
+          saveVImage(uTF8String, v68, PixelFormatType);
 
-          v49 = *a8 + 32 * v39;
+          v49 = *imageTiles + 32 * v39;
           v68[1] = *(v49 + 8);
           __n[0] = *(v49 + 16);
-          __n[1] = __n[0] * a9;
+          __n[1] = __n[0] * pixel;
           v50 = malloc_type_calloc(__n[1] * v68[1], 1uLL, 0x816A1B8uLL);
           v68[0] = v50;
           if (v68[1])
           {
             v51 = 0;
-            v52 = *(*a8 + 32 * v39);
+            v52 = *(*imageTiles + 32 * v39);
             v53 = __n[1];
             do
             {
               memcpy(v50, v52, v53);
               ++v51;
-              v52 += *(*a8 + 32 * v39 + 24);
+              v52 += *(*imageTiles + 32 * v39 + 24);
               v53 = __n[1];
               v50 += __n[1];
             }
@@ -125,14 +125,14 @@
           }
 
           v54 = [v44 stringByAppendingString:@".vdump"];
-          ImageProcessing_save([v54 UTF8String], v68, a6);
+          ImageProcessing_save([v54 UTF8String], v68, type);
 
           free(v68[0]);
           objc_autoreleasePoolPop(v41);
           ++v39;
         }
 
-        while (v39 != v40);
+        while (v39 != countCopy);
       }
 
       v30 = v57;
@@ -150,61 +150,61 @@
   return v21;
 }
 
-+ (BOOL)_dumpIntermediatesFullImage:(id)a3 imageURL:(id)a4 requiredImageSource:(const __CVBuffer *)a5 imageProcessingType:(int)a6 error:(id *)a7
++ (BOOL)_dumpIntermediatesFullImage:(id)image imageURL:(id)l requiredImageSource:(const __CVBuffer *)source imageProcessingType:(int)type error:(id *)error
 {
-  v11 = a4;
-  v12 = [a3 objectForKeyedSubscript:@"VNImageClassifierProcessingOption_DebugIntermediatesDumpPath"];
+  lCopy = l;
+  v12 = [image objectForKeyedSubscript:@"VNImageClassifierProcessingOption_DebugIntermediatesDumpPath"];
   v13 = v12;
   v14 = 1;
-  if (a5 && v12)
+  if (source && v12)
   {
     v15 = [v12 stringByAppendingString:@"/"];
-    v16 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
     v17 = [MEMORY[0x1E695DFF8] fileURLWithPath:v15];
-    v14 = [v16 createDirectoryAtURL:v17 withIntermediateDirectories:1 attributes:0 error:a7];
+    v14 = [defaultManager createDirectoryAtURL:v17 withIntermediateDirectories:1 attributes:0 error:error];
 
     if (v14)
     {
       ++image_name_offset;
-      v28 = v16;
+      v28 = defaultManager;
       v18 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:?];
-      v19 = [v18 stringValue];
+      stringValue = [v18 stringValue];
 
-      if (v11)
+      if (lCopy)
       {
-        v20 = [v11 lastPathComponent];
-        v21 = [v20 stringByDeletingPathExtension];
+        lastPathComponent = [lCopy lastPathComponent];
+        stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
 
-        v19 = v21;
+        stringValue = stringByDeletingPathExtension;
       }
 
-      v27 = v19;
-      v22 = [v15 stringByAppendingString:v19];
+      v27 = stringValue;
+      v22 = [v15 stringByAppendingString:stringValue];
       v23 = objc_autoreleasePoolPush();
       v24 = [v22 stringByAppendingString:@"_source_scaled.png"];
-      saveCVPixelBuffer([v24 UTF8String], a5);
-      CVPixelBufferLockBaseAddress(a5, 1uLL);
-      v29[0] = CVPixelBufferGetBaseAddress(a5);
-      v29[1] = CVPixelBufferGetHeight(a5);
-      v29[2] = CVPixelBufferGetWidth(a5);
-      v29[3] = CVPixelBufferGetBytesPerRow(a5);
+      saveCVPixelBuffer([v24 UTF8String], source);
+      CVPixelBufferLockBaseAddress(source, 1uLL);
+      v29[0] = CVPixelBufferGetBaseAddress(source);
+      v29[1] = CVPixelBufferGetHeight(source);
+      v29[2] = CVPixelBufferGetWidth(source);
+      v29[3] = CVPixelBufferGetBytesPerRow(source);
       v25 = [v22 stringByAppendingString:@"_source_scaled.vdump"];
-      ImageProcessing_save([v25 UTF8String], v29, a6);
-      CVPixelBufferUnlockBaseAddress(a5, 1uLL);
+      ImageProcessing_save([v25 UTF8String], v29, type);
+      CVPixelBufferUnlockBaseAddress(source, 1uLL);
       NSLog(&cfstr_VnImageClassif.isa, v15);
 
       objc_autoreleasePoolPop(v23);
-      v16 = v28;
+      defaultManager = v28;
     }
   }
 
   return v14;
 }
 
-+ (id)classifyImageHierarchicallyWithDescriptors:(const void *)a3 usingImageClassifier:(void *)a4 hierarchicalClassifier:(ImageClassifier_HierarchicalModel *)a5 minimumClassificationConfidence:(float)a6 minimumClassificationConfidenceRatio:(float)a7 maximumLeafLabels:(unint64_t)a8 maximumHierarchicalLabels:(unint64_t)a9 options:(id)a10 metalContext:(id)a11 error:(id *)a12
++ (id)classifyImageHierarchicallyWithDescriptors:(const void *)descriptors usingImageClassifier:(void *)classifier hierarchicalClassifier:(ImageClassifier_HierarchicalModel *)hierarchicalClassifier minimumClassificationConfidence:(float)confidence minimumClassificationConfidenceRatio:(float)ratio maximumLeafLabels:(unint64_t)labels maximumHierarchicalLabels:(unint64_t)hierarchicalLabels options:(id)self0 metalContext:(id)self1 error:(id *)self2
 {
-  v18 = a10;
-  v19 = [VNValidationUtilities originatingRequestSpecifierInOptions:v18 error:a12];
+  optionsCopy = options;
+  v19 = [VNValidationUtilities originatingRequestSpecifierInOptions:optionsCopy error:error];
   if (v19)
   {
     v53 = 0;
@@ -225,14 +225,14 @@
     __p = 0u;
     v51 = 0u;
     v52 = 1065353216;
-    v20 = [v18 objectForKeyedSubscript:@"VNDetectorOption_PreferBackgroundProcessing"];
-    v21 = [v20 BOOLValue];
+    v20 = [optionsCopy objectForKeyedSubscript:@"VNDetectorOption_PreferBackgroundProcessing"];
+    bOOLValue = [v20 BOOLValue];
 
     v48 = 1;
-    if ([VNValidationUtilities getMTLGPUPriority:&v48 forKey:@"VNDetectorOption_MetalContextPriority" inOptions:v18 withDefaultValue:1 error:a12]&& (!a8 || (aBlock[0] = MEMORY[0x1E69E9820], aBlock[1] = 3221225472, aBlock[2] = __248__VNImageClassifier_classifyImageHierarchicallyWithDescriptors_usingImageClassifier_hierarchicalClassifier_minimumClassificationConfidence_minimumClassificationConfidenceRatio_maximumLeafLabels_maximumHierarchicalLabels_options_metalContext_error___block_invoke, aBlock[3] = &unk_1E77B4920, v47 = v21, aBlock[6] = a4, aBlock[7] = v48, v45 = a7, v46 = a6, aBlock[8] = a8, aBlock[9] = a3, aBlock[4] = &v53, aBlock[5] = v49, v22 = _Block_copy(aBlock), v23 = VNExecuteBlock(v22, a12), v22, v23)))
+    if ([VNValidationUtilities getMTLGPUPriority:&v48 forKey:@"VNDetectorOption_MetalContextPriority" inOptions:optionsCopy withDefaultValue:1 error:error]&& (!labels || (aBlock[0] = MEMORY[0x1E69E9820], aBlock[1] = 3221225472, aBlock[2] = __248__VNImageClassifier_classifyImageHierarchicallyWithDescriptors_usingImageClassifier_hierarchicalClassifier_minimumClassificationConfidence_minimumClassificationConfidenceRatio_maximumLeafLabels_maximumHierarchicalLabels_options_metalContext_error___block_invoke, aBlock[3] = &unk_1E77B4920, v47 = bOOLValue, aBlock[6] = classifier, aBlock[7] = v48, v45 = ratio, v46 = confidence, aBlock[8] = labels, aBlock[9] = descriptors, aBlock[4] = &v53, aBlock[5] = v49, v22 = _Block_copy(aBlock), v23 = VNExecuteBlock(v22, error), v22, v23)))
     {
       v24 = [MEMORY[0x1E695DF70] arrayWithCapacity:v54[9]];
-      v25 = [v18 objectForKeyedSubscript:@"VNImageClassifierProcessingOption_DebugInfo"];
+      v25 = [optionsCopy objectForKeyedSubscript:@"VNImageClassifierProcessingOption_DebugInfo"];
       v34[0] = MEMORY[0x1E69E9820];
       v34[1] = 3221225472;
       v34[2] = __248__VNImageClassifier_classifyImageHierarchicallyWithDescriptors_usingImageClassifier_hierarchicalClassifier_minimumClassificationConfidence_minimumClassificationConfidenceRatio_maximumLeafLabels_maximumHierarchicalLabels_options_metalContext_error___block_invoke_2;
@@ -242,14 +242,14 @@
       v26 = v24;
       v36 = v26;
       v37 = v25;
-      v40 = a9;
-      v41 = a5;
+      hierarchicalLabelsCopy = hierarchicalLabels;
+      hierarchicalClassifierCopy = hierarchicalClassifier;
       v39 = v49;
-      v42 = a6;
-      v43 = a7;
+      confidenceCopy = confidence;
+      ratioCopy = ratio;
       v27 = v25;
       v28 = _Block_copy(v34);
-      if (VNExecuteBlock(v28, a12))
+      if (VNExecuteBlock(v28, error))
       {
         v29 = v26;
       }
@@ -493,11 +493,11 @@ uint64_t __248__VNImageClassifier_classifyImageHierarchicallyWithDescriptors_usi
   return 1;
 }
 
-+ (id)classifyImageWithDescriptors:(const void *)a3 usingImageClassifier:(void *)a4 andMinConfidenceForClassification:(float)a5 options:(id)a6 metalContext:(id)a7 error:(id *)a8
++ (id)classifyImageWithDescriptors:(const void *)descriptors usingImageClassifier:(void *)classifier andMinConfidenceForClassification:(float)classification options:(id)options metalContext:(id)context error:(id *)error
 {
-  v13 = a6;
-  v14 = a7;
-  v15 = [VNValidationUtilities originatingRequestSpecifierInOptions:v13 error:a8];
+  optionsCopy = options;
+  contextCopy = context;
+  v15 = [VNValidationUtilities originatingRequestSpecifierInOptions:optionsCopy error:error];
   if (v15)
   {
     v46 = 0;
@@ -509,28 +509,28 @@ uint64_t __248__VNImageClassifier_classifyImageHierarchicallyWithDescriptors_usi
     __p = 0u;
     v53 = 0u;
     v54 = 1065353216;
-    v16 = [v13 objectForKeyedSubscript:@"VNDetectorOption_PreferBackgroundProcessing"];
-    v17 = [v16 BOOLValue];
+    v16 = [optionsCopy objectForKeyedSubscript:@"VNDetectorOption_PreferBackgroundProcessing"];
+    bOOLValue = [v16 BOOLValue];
 
     v45 = 1;
-    if ([VNValidationUtilities getMTLGPUPriority:&v45 forKey:@"VNDetectorOption_MetalContextPriority" inOptions:v13 withDefaultValue:1 error:a8])
+    if ([VNValidationUtilities getMTLGPUPriority:&v45 forKey:@"VNDetectorOption_MetalContextPriority" inOptions:optionsCopy withDefaultValue:1 error:error])
     {
       aBlock[0] = MEMORY[0x1E69E9820];
       aBlock[1] = 3221225472;
       aBlock[2] = __132__VNImageClassifier_classifyImageWithDescriptors_usingImageClassifier_andMinConfidenceForClassification_options_metalContext_error___block_invoke;
       aBlock[3] = &unk_1E77B48F8;
-      v44 = v17;
+      v44 = bOOLValue;
       aBlock[4] = &v46;
-      aBlock[5] = a4;
+      aBlock[5] = classifier;
       aBlock[6] = v45;
-      aBlock[7] = a3;
+      aBlock[7] = descriptors;
       v18 = _Block_copy(aBlock);
-      if (VNExecuteBlock(v18, a8))
+      if (VNExecuteBlock(v18, error))
       {
         v39 = v18;
-        v40 = v14;
-        ImageClassifier_getLabelsAuto(&v41, v47[8], a5, 0.1);
-        v19 = [v13 objectForKeyedSubscript:@"VNImageClassifierProcessingOption_DebugInfo"];
+        v40 = contextCopy;
+        ImageClassifier_getLabelsAuto(&v41, v47[8], classification, 0.1);
+        v19 = [optionsCopy objectForKeyedSubscript:@"VNImageClassifierProcessingOption_DebugInfo"];
         if (v19)
         {
           v20 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -550,7 +550,7 @@ uint64_t __248__VNImageClassifier_classifyImageHierarchicallyWithDescriptors_usi
           }
 
           [v19 setObject:v20 forKey:@"labelsAndConfidence"];
-          *&v27 = a5;
+          *&v27 = classification;
           v28 = [MEMORY[0x1E696AD98] numberWithFloat:v27];
           [v19 setObject:v28 forKey:@"MinConfidenceForClassificationRaw"];
         }
@@ -579,7 +579,7 @@ uint64_t __248__VNImageClassifier_classifyImageHierarchicallyWithDescriptors_usi
         v55 = &v41;
         std::vector<std::pair<std::string,float>>::__destroy_vector::operator()[abi:ne200100](&v55);
         v18 = v39;
-        v14 = v40;
+        contextCopy = v40;
       }
 
       else
@@ -627,26 +627,26 @@ uint64_t __132__VNImageClassifier_classifyImageWithDescriptors_usingImageClassif
   return 1;
 }
 
-+ (BOOL)computeLabelsAndConfidence:(void *)a3 usingDescriptorBuffer:(void *)a4 populateLabelsAndConfidence:(void *)a5 options:(id)a6 metalContext:(id)a7 error:(id *)a8
++ (BOOL)computeLabelsAndConfidence:(void *)confidence usingDescriptorBuffer:(void *)buffer populateLabelsAndConfidence:(void *)andConfidence options:(id)options metalContext:(id)context error:(id *)error
 {
-  v12 = a6;
-  v13 = [v12 objectForKeyedSubscript:@"VNDetectorOption_PreferBackgroundProcessing"];
-  v14 = [v13 BOOLValue];
+  optionsCopy = options;
+  v13 = [optionsCopy objectForKeyedSubscript:@"VNDetectorOption_PreferBackgroundProcessing"];
+  bOOLValue = [v13 BOOLValue];
 
   v20 = 1;
-  if ([VNValidationUtilities getMTLGPUPriority:&v20 forKey:@"VNDetectorOption_MetalContextPriority" inOptions:v12 withDefaultValue:1 error:a8])
+  if ([VNValidationUtilities getMTLGPUPriority:&v20 forKey:@"VNDetectorOption_MetalContextPriority" inOptions:optionsCopy withDefaultValue:1 error:error])
   {
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __125__VNImageClassifier_computeLabelsAndConfidence_usingDescriptorBuffer_populateLabelsAndConfidence_options_metalContext_error___block_invoke;
     v18[3] = &__block_descriptor_65_e9_B16__0__8l;
-    v19 = v14;
-    v18[4] = a3;
+    v19 = bOOLValue;
+    v18[4] = confidence;
     v18[5] = v20;
-    v18[6] = a5;
-    v18[7] = a4;
+    v18[6] = andConfidence;
+    v18[7] = buffer;
     v15 = _Block_copy(v18);
-    v16 = VNExecuteBlock(v15, a8);
+    v16 = VNExecuteBlock(v15, error);
   }
 
   else
@@ -697,11 +697,11 @@ uint64_t __125__VNImageClassifier_computeLabelsAndConfidence_usingDescriptorBuff
   return 1;
 }
 
-+ (BOOL)computeImageDescriptorsWithImage:(id)a3 pixelBuffer:(const __CVBuffer *)a4 regionOfInterest:(CGRect)a5 usingDescriptorProcessor:(ImageDescriptorProcessorAbstract *)a6 tileCount:(int)a7 augmentationMode:(unsigned int)a8 resultantDescriptorBuffer:(void *)a9 options:(id)a10 metalContext:(id)a11 canceller:(id)a12 tileColumns:(unint64_t *)a13 tileRows:(unint64_t *)a14 error:(id *)a15
++ (BOOL)computeImageDescriptorsWithImage:(id)image pixelBuffer:(const __CVBuffer *)buffer regionOfInterest:(CGRect)interest usingDescriptorProcessor:(ImageDescriptorProcessorAbstract *)processor tileCount:(int)count augmentationMode:(unsigned int)mode resultantDescriptorBuffer:(void *)descriptorBuffer options:(id)self0 metalContext:(id)self1 canceller:(id)self2 tileColumns:(unint64_t *)self3 tileRows:(unint64_t *)self4 error:(id *)self5
 {
-  v20 = a3;
-  v21 = a10;
-  v22 = a12;
+  imageCopy = image;
+  optionsCopy = options;
+  cancellerCopy = canceller;
   v49 = 0;
   v50 = &v49;
   v51 = 0x2020000000;
@@ -714,24 +714,24 @@ uint64_t __125__VNImageClassifier_computeLabelsAndConfidence_usingDescriptorBuff
   aBlock[1] = 3221225472;
   aBlock[2] = __219__VNImageClassifier_computeImageDescriptorsWithImage_pixelBuffer_regionOfInterest_usingDescriptorProcessor_tileCount_augmentationMode_resultantDescriptorBuffer_options_metalContext_canceller_tileColumns_tileRows_error___block_invoke;
   aBlock[3] = &unk_1E77B48B0;
-  v37 = a4;
-  v23 = v21;
-  v43 = a7;
+  bufferCopy = buffer;
+  v23 = optionsCopy;
+  countCopy = count;
   v32 = v23;
   v35 = &v49;
   v36 = &v45;
-  v38 = a6;
-  v24 = v22;
-  v44 = a8;
+  processorCopy = processor;
+  v24 = cancellerCopy;
+  modeCopy = mode;
   v33 = v24;
-  v39 = a9;
-  v40 = a1;
-  v25 = v20;
+  descriptorBufferCopy = descriptorBuffer;
+  selfCopy = self;
+  v25 = imageCopy;
   v34 = v25;
-  v41 = a13;
-  v42 = a14;
+  columnsCopy = columns;
+  rowsCopy = rows;
   v26 = _Block_copy(aBlock);
-  v27 = VNExecuteBlock(v26, a15);
+  v27 = VNExecuteBlock(v26, error);
   if (*(v46 + 6))
   {
     v28 = 0;
@@ -1103,25 +1103,25 @@ BOOL __219__VNImageClassifier_computeImageDescriptorsWithImage_pixelBuffer_regio
   return v8 == 128;
 }
 
-+ (BOOL)computeImageCropWithImage:(id)a3 regionOfInterest:(CGRect)a4 usingDescriptorProcessor:(ImageDescriptorProcessorAbstract *)a5 scalingImage:(BOOL)a6 options:(id)a7 pixelBuffer:(__CVBuffer *)a8 error:(id *)a9
++ (BOOL)computeImageCropWithImage:(id)image regionOfInterest:(CGRect)interest usingDescriptorProcessor:(ImageDescriptorProcessorAbstract *)processor scalingImage:(BOOL)scalingImage options:(id)options pixelBuffer:(__CVBuffer *)buffer error:(id *)error
 {
-  v51 = a6;
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v18 = a3;
-  v19 = a7;
-  v20 = [v18 width];
-  v21 = [v18 height];
-  v22 = (*(a5->var0 + 19))(a5);
+  scalingImageCopy = scalingImage;
+  height = interest.size.height;
+  width = interest.size.width;
+  y = interest.origin.y;
+  x = interest.origin.x;
+  imageCopy = image;
+  optionsCopy = options;
+  width = [imageCopy width];
+  height = [imageCopy height];
+  v22 = (*(processor->var0 + 19))(processor);
   v24 = v23;
-  v25 = v20;
-  v26 = v21;
-  v27 = v20;
+  v25 = width;
+  v26 = height;
+  v27 = width;
   v52.origin.x = x * v27;
   v52.size.width = width * v27;
-  v28 = v21;
+  v28 = height;
   v52.origin.y = y * v28;
   v52.size.height = height * v28;
   v53 = CGRectIntegral(v52);
@@ -1129,14 +1129,14 @@ BOOL __219__VNImageClassifier_computeImageDescriptorsWithImage_pixelBuffer_regio
   v30 = v53.origin.y;
   v31 = v53.size.width;
   v32 = v53.size.height;
-  if (v51)
+  if (scalingImageCopy)
   {
     v33 = ((v22 + v24) >> 1);
-    if (v20 <= v21)
+    if (width <= height)
     {
       v36 = v53.size.width;
       v35 = v33 / v36;
-      v26 = vcvtps_u32_f32((v33 / v36) * v21);
+      v26 = vcvtps_u32_f32((v33 / v36) * height);
       v25 = (v22 + v24) >> 1;
     }
 
@@ -1144,7 +1144,7 @@ BOOL __219__VNImageClassifier_computeImageDescriptorsWithImage_pixelBuffer_regio
     {
       v34 = v53.size.height;
       v35 = v33 / v34;
-      v25 = vcvtps_u32_f32((v33 / v34) * v20);
+      v25 = vcvtps_u32_f32((v33 / v34) * width);
       v26 = (v22 + v24) >> 1;
     }
   }
@@ -1154,7 +1154,7 @@ BOOL __219__VNImageClassifier_computeImageDescriptorsWithImage_pixelBuffer_regio
     v35 = 1.0;
   }
 
-  v37 = (*(a5->var0 + 17))(a5);
+  v37 = (*(processor->var0 + 17))(processor);
   if (v37 == 1)
   {
     v38 = 1;
@@ -1175,22 +1175,22 @@ BOOL __219__VNImageClassifier_computeImageDescriptorsWithImage_pixelBuffer_regio
     v39 = 1111970369;
   }
 
-  v40 = [v18 croppedBufferWithWidth:v25 height:v26 format:v39 cropRect:v19 options:a9 error:{v29, v30, v31, v32, a1}];
-  *a8 = v40;
-  if (v40 && ([v18 fileURL], v41 = objc_claimAutoreleasedReturnValue(), v42 = objc_msgSend(v50, "_dumpIntermediatesFullImage:imageURL:requiredImageSource:imageProcessingType:error:", v19, v41, *a8, v38, a9), v41, (v42 & 1) != 0))
+  v40 = [imageCopy croppedBufferWithWidth:v25 height:v26 format:v39 cropRect:optionsCopy options:error error:{v29, v30, v31, v32, self}];
+  *buffer = v40;
+  if (v40 && ([imageCopy fileURL], v41 = objc_claimAutoreleasedReturnValue(), v42 = objc_msgSend(v50, "_dumpIntermediatesFullImage:imageURL:requiredImageSource:imageProcessingType:error:", optionsCopy, v41, *buffer, v38, error), v41, (v42 & 1) != 0))
   {
     v43 = [MEMORY[0x1E696AD98] numberWithInt:v38];
-    [v19 setObject:v43 forKeyedSubscript:@"VNImageClassifierProcessingOption_ImageProcessingType"];
+    [optionsCopy setObject:v43 forKeyedSubscript:@"VNImageClassifierProcessingOption_ImageProcessingType"];
 
     v44 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:(v22 + v24) >> 1];
-    [v19 setObject:v44 forKeyedSubscript:@"VNImageClassifierProcessingOption_AveragedSideLength"];
+    [optionsCopy setObject:v44 forKeyedSubscript:@"VNImageClassifierProcessingOption_AveragedSideLength"];
 
-    v45 = [MEMORY[0x1E696AD98] numberWithBool:v51];
-    [v19 setObject:v45 forKeyedSubscript:@"VNImageClassifierProcessingOption_ScaleImage"];
+    v45 = [MEMORY[0x1E696AD98] numberWithBool:scalingImageCopy];
+    [optionsCopy setObject:v45 forKeyedSubscript:@"VNImageClassifierProcessingOption_ScaleImage"];
 
     *&v46 = v35;
     v47 = [MEMORY[0x1E696AD98] numberWithFloat:v46];
-    [v19 setObject:v47 forKeyedSubscript:@"VNImageClassifierProcessingOption_ScaleFactor"];
+    [optionsCopy setObject:v47 forKeyedSubscript:@"VNImageClassifierProcessingOption_ScaleFactor"];
 
     v48 = 1;
   }

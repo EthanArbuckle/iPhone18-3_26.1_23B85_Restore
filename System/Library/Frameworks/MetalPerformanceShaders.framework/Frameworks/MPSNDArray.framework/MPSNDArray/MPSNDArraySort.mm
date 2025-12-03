@@ -1,11 +1,11 @@
 @interface MPSNDArraySort
-- (MPSNDArraySort)initWithDevice:(id)a3 axis:(unint64_t)a4 descending:(BOOL)a5;
+- (MPSNDArraySort)initWithDevice:(id)device axis:(unint64_t)axis descending:(BOOL)descending;
 - (void)dealloc;
 @end
 
 @implementation MPSNDArraySort
 
-- (MPSNDArraySort)initWithDevice:(id)a3 axis:(unint64_t)a4 descending:(BOOL)a5
+- (MPSNDArraySort)initWithDevice:(id)device axis:(unint64_t)axis descending:(BOOL)descending
 {
   v11.receiver = self;
   v11.super_class = MPSNDArraySort;
@@ -13,10 +13,10 @@
   if (result)
   {
     result->super.super._encode = EncodeSort;
-    result->_axis = a4;
-    result->_descending = a5;
+    result->_axis = axis;
+    result->_descending = descending;
     v9 = result;
-    v10 = [[MPSNDArrayScan alloc] initWithDevice:a3 axis:a4 operation:0 exclusive:1 reverse:0];
+    v10 = [[MPSNDArrayScan alloc] initWithDevice:device axis:axis operation:0 exclusive:1 reverse:0];
     result = v9;
     v9->_scanKernel = v10;
   }

@@ -1,25 +1,25 @@
 @interface CSUImageCaptioningDecoderE5
-- (BOOL)loadBridge:(id *)a3;
-- (BOOL)loadDecoder:(id *)a3;
-- (BOOL)loadResources:(id *)a3;
-- (CSUImageCaptioningDecoderE5)initWithConfiguration:(id)a3;
-- (id)computeDecodedCaptionsForFeatures:(id)a3 withDecodingMethod:(int64_t)a4 runDecoderOnly:(BOOL)a5 error:(id *)a6;
-- (id)getBridgeLayerOutput:(id)a3 error:(id *)a4;
-- (id)getCaptionsAfterGreedyDecodingOnEncodedFeatures:(id *)a3;
-- (id)postProcessResults:(id)a3 error:(id *)a4;
+- (BOOL)loadBridge:(id *)bridge;
+- (BOOL)loadDecoder:(id *)decoder;
+- (BOOL)loadResources:(id *)resources;
+- (CSUImageCaptioningDecoderE5)initWithConfiguration:(id)configuration;
+- (id)computeDecodedCaptionsForFeatures:(id)features withDecodingMethod:(int64_t)method runDecoderOnly:(BOOL)only error:(id *)error;
+- (id)getBridgeLayerOutput:(id)output error:(id *)error;
+- (id)getCaptionsAfterGreedyDecodingOnEncodedFeatures:(id *)features;
+- (id)postProcessResults:(id)results error:(id *)error;
 @end
 
 @implementation CSUImageCaptioningDecoderE5
 
-- (CSUImageCaptioningDecoderE5)initWithConfiguration:(id)a3
+- (CSUImageCaptioningDecoderE5)initWithConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v13.receiver = self;
   v13.super_class = CSUImageCaptioningDecoderE5;
   v10 = [(CSUImageCaptioningDecoderE5 *)&v13 init];
-  if (v10 && objc_msgSend_runtimeEngine(v5, v6, v7, v8, v9) == 2)
+  if (v10 && objc_msgSend_runtimeEngine(configurationCopy, v6, v7, v8, v9) == 2)
   {
-    objc_storeStrong(&v10->_configuration, a3);
+    objc_storeStrong(&v10->_configuration, configuration);
     v11 = v10;
   }
 
@@ -31,10 +31,10 @@
   return v11;
 }
 
-- (BOOL)loadBridge:(id *)a3
+- (BOOL)loadBridge:(id *)bridge
 {
   v52 = *MEMORY[0x1E69E9840];
-  v7 = objc_msgSend_bridgeNetworkPath(self->_configuration, a2, a3, v3, v4);
+  v7 = objc_msgSend_bridgeNetworkPath(self->_configuration, a2, bridge, v3, v4);
 
   if (!v7 || self->_bridgeE5Net)
   {
@@ -63,7 +63,7 @@
   v36 = objc_msgSend_espressoExecutionEngine(self->_configuration, v26, v27, v28, v29) ? 3 : 0;
   v37 = [CSUCoreMLInference alloc];
   v42 = objc_msgSend_bridgeNetworkPath(self->_configuration, v38, v39, v40, v41);
-  v44 = objc_msgSend_initWithCompiledModelFromUri_useComputeUnit_usePrecompiledE5Bundle_error_(v37, v43, v42, v36, IsPrecompiled, a3);
+  v44 = objc_msgSend_initWithCompiledModelFromUri_useComputeUnit_usePrecompiledE5Bundle_error_(v37, v43, v42, v36, IsPrecompiled, bridge);
   bridgeE5Net = self->_bridgeE5Net;
   p_bridgeE5Net = &self->_bridgeE5Net;
   *p_bridgeE5Net = v44;
@@ -84,7 +84,7 @@ LABEL_11:
   return result;
 }
 
-- (BOOL)loadDecoder:(id *)a3
+- (BOOL)loadDecoder:(id *)decoder
 {
   v78 = *MEMORY[0x1E69E9840];
   if (self->_decoderE5Net)
@@ -93,7 +93,7 @@ LABEL_11:
     v5 = *MEMORY[0x1E69E9840];
   }
 
-  else if (objc_msgSend_loadPostProcUtilsWithBeamWidth_error_(self, a2, 3, a3, v3))
+  else if (objc_msgSend_loadPostProcUtilsWithBeamWidth_error_(self, a2, 3, decoder, v3))
   {
     IsPrecompiled = objc_msgSend_decoderIsPrecompiled(self->_configuration, v8, v9, v10, v11);
     v17 = objc_msgSend_decoderNetworkPath(self->_configuration, v13, v14, v15, v16);
@@ -126,7 +126,7 @@ LABEL_11:
 
     v35 = [CSUCoreMLInference alloc];
     v40 = objc_msgSend_decoderNetworkPath(self->_configuration, v36, v37, v38, v39);
-    v42 = objc_msgSend_initWithCompiledModelFromUri_useComputeUnit_usePrecompiledE5Bundle_error_(v35, v41, v40, v34, IsPrecompiled, a3);
+    v42 = objc_msgSend_initWithCompiledModelFromUri_useComputeUnit_usePrecompiledE5Bundle_error_(v35, v41, v40, v34, IsPrecompiled, decoder);
     decoderE5Net = self->_decoderE5Net;
     self->_decoderE5Net = v42;
 
@@ -136,7 +136,7 @@ LABEL_11:
     {
       v45 = objc_alloc(MEMORY[0x1E695FED0]);
       v50 = objc_msgSend_decoderInputSeqShape(self->_configuration, v46, v47, v48, v49);
-      v52 = objc_msgSend_initWithShape_dataType_error_(v45, v51, v50, 65568, a3);
+      v52 = objc_msgSend_initWithShape_dataType_error_(v45, v51, v50, 65568, decoder);
       inputTokensE5 = self->_inputTokensE5;
       self->_inputTokensE5 = v52;
 
@@ -168,11 +168,11 @@ LABEL_11:
   return result;
 }
 
-- (BOOL)loadResources:(id *)a3
+- (BOOL)loadResources:(id *)resources
 {
   if (!self->_decoderE5Net)
   {
-    Decoder = objc_msgSend_loadDecoder_(self, a2, a3, v3, v4);
+    Decoder = objc_msgSend_loadDecoder_(self, a2, resources, v3, v4);
     v18 = objc_msgSend_bridgeNetworkPath(self->_configuration, v14, v15, v16, v17);
 
     if (v18)
@@ -184,7 +184,7 @@ LABEL_11:
   }
 
   Decoder = 1;
-  v8 = objc_msgSend_bridgeNetworkPath(self->_configuration, a2, a3, v3, v4);
+  v8 = objc_msgSend_bridgeNetworkPath(self->_configuration, a2, resources, v3, v4);
 
   if (!v8)
   {
@@ -197,17 +197,17 @@ LABEL_3:
   if (!bridgeE5Net && ((Decoder ^ 1) & 1) == 0)
   {
 
-    return objc_msgSend_loadBridge_(self, v9, a3, v10, v11);
+    return objc_msgSend_loadBridge_(self, v9, resources, v10, v11);
   }
 
   return result;
 }
 
-- (id)getBridgeLayerOutput:(id)a3 error:(id *)a4
+- (id)getBridgeLayerOutput:(id)output error:(id *)error
 {
   v36[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if ((objc_msgSend_loadBridge_(self, v7, a4, v8, v9) & 1) == 0)
+  outputCopy = output;
+  if ((objc_msgSend_loadBridge_(self, v7, error, v8, v9) & 1) == 0)
   {
     v32 = 0;
     goto LABEL_12;
@@ -216,9 +216,9 @@ LABEL_3:
   bridgeE5Net = self->_bridgeE5Net;
   v15 = objc_msgSend_inputEncodedFeaturesTensorNameOfBridge(self->_configuration, v10, v11, v12, v13);
   v35 = v15;
-  v36[0] = v6;
+  v36[0] = outputCopy;
   v17 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x1E695DF20], v16, v36, &v35, 1);
-  LOBYTE(bridgeE5Net) = objc_msgSend_setInputFeatures_error_(bridgeE5Net, v18, v17, a4, v19);
+  LOBYTE(bridgeE5Net) = objc_msgSend_setInputFeatures_error_(bridgeE5Net, v18, v17, error, v19);
 
   if ((bridgeE5Net & 1) == 0)
   {
@@ -231,7 +231,7 @@ LABEL_3:
     goto LABEL_10;
   }
 
-  if ((objc_msgSend_predict_(self->_bridgeE5Net, v20, a4, v21, v22) & 1) == 0)
+  if ((objc_msgSend_predict_(self->_bridgeE5Net, v20, error, v21, v22) & 1) == 0)
   {
     v28 = sub_1AC090E50();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
@@ -255,19 +255,19 @@ LABEL_12:
   return v32;
 }
 
-- (id)computeDecodedCaptionsForFeatures:(id)a3 withDecodingMethod:(int64_t)a4 runDecoderOnly:(BOOL)a5 error:(id *)a6
+- (id)computeDecodedCaptionsForFeatures:(id)features withDecodingMethod:(int64_t)method runDecoderOnly:(BOOL)only error:(id *)error
 {
-  v10 = a3;
-  if ((objc_msgSend_loadResources_(self, v11, a6, v12, v13) & 1) == 0)
+  featuresCopy = features;
+  if ((objc_msgSend_loadResources_(self, v11, error, v12, v13) & 1) == 0)
   {
     goto LABEL_14;
   }
 
   configuration = self->_configuration;
-  if (!self->_bridgeE5Net || a5)
+  if (!self->_bridgeE5Net || only)
   {
     v40 = objc_msgSend_decoderEmbeddingShape(configuration, v14, v15, v16, v17);
-    v43 = objc_msgSend_reshapeMLMultiArray_toShape_(CSUMLMultiArrayUtilities, v41, v10, v40, v42);
+    v43 = objc_msgSend_reshapeMLMultiArray_toShape_(CSUMLMultiArrayUtilities, v41, featuresCopy, v40, v42);
     encodedFeaturesBufferE5 = self->_encodedFeaturesBufferE5;
     self->_encodedFeaturesBufferE5 = v43;
 
@@ -276,12 +276,12 @@ LABEL_12:
       goto LABEL_8;
     }
 
-    if (a6)
+    if (error)
     {
       objc_msgSend_errorWithCode_message_(CSUError, v37, 12, @"Incorrect shape to run Captioner", v39);
-      *a6 = v45 = 0;
+      *error = v45 = 0;
 LABEL_15:
-      v22 = v10;
+      v22 = featuresCopy;
       goto LABEL_16;
     }
 
@@ -291,11 +291,11 @@ LABEL_14:
   }
 
   v19 = objc_msgSend_bridgeInputShape(configuration, v14, v15, v16, v17);
-  v22 = objc_msgSend_reshapeMLMultiArray_toShape_(CSUMLMultiArrayUtilities, v20, v10, v19, v21);
+  v22 = objc_msgSend_reshapeMLMultiArray_toShape_(CSUMLMultiArrayUtilities, v20, featuresCopy, v19, v21);
 
   if (v22)
   {
-    v25 = objc_msgSend_getBridgeLayerOutput_error_(self, v23, v22, a6, v24);
+    v25 = objc_msgSend_getBridgeLayerOutput_error_(self, v23, v22, error, v24);
     v26 = self->_encodedFeaturesBufferE5;
     self->_encodedFeaturesBufferE5 = v25;
 
@@ -307,16 +307,16 @@ LABEL_14:
       v36 = self->_encodedFeaturesBufferE5;
       self->_encodedFeaturesBufferE5 = v35;
 
-      v10 = v22;
+      featuresCopy = v22;
 LABEL_8:
-      if (a4)
+      if (method)
       {
-        objc_msgSend_getCaptionsAfterBeamSearchDecodingOnEncodedFeatures_(self, v37, a6, v38, v39);
+        objc_msgSend_getCaptionsAfterBeamSearchDecodingOnEncodedFeatures_(self, v37, error, v38, v39);
       }
 
       else
       {
-        objc_msgSend_getCaptionsAfterGreedyDecodingOnEncodedFeatures_(self, v37, a6, v38, v39);
+        objc_msgSend_getCaptionsAfterGreedyDecodingOnEncodedFeatures_(self, v37, error, v38, v39);
       }
       v45 = ;
       goto LABEL_15;
@@ -331,11 +331,11 @@ LABEL_8:
     v45 = 0;
   }
 
-  else if (a6)
+  else if (error)
   {
     objc_msgSend_errorWithCode_message_(CSUError, v23, 12, @"Incorrect shape to run bridge model of Captioner", v24);
     v22 = 0;
-    *a6 = v45 = 0;
+    *error = v45 = 0;
   }
 
   else
@@ -349,10 +349,10 @@ LABEL_16:
   return v45;
 }
 
-- (id)getCaptionsAfterGreedyDecodingOnEncodedFeatures:(id *)a3
+- (id)getCaptionsAfterGreedyDecodingOnEncodedFeatures:(id *)features
 {
   v127[2] = *MEMORY[0x1E69E9840];
-  v112 = objc_msgSend_maxSeqLen(self->_configuration, a2, a3, v3, v4);
+  v112 = objc_msgSend_maxSeqLen(self->_configuration, a2, features, v3, v4);
   if (!v112)
   {
     v113 = 0;
@@ -383,11 +383,11 @@ LABEL_14:
     v126[1] = v17;
     v127[1] = self->_inputTokensE5;
     v19 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x1E695DF20], v18, v127, v126, 2);
-    v22 = objc_msgSend_setInputFeatures_error_(decoderE5Net, v20, v19, a3, v21);
+    v22 = objc_msgSend_setInputFeatures_error_(decoderE5Net, v20, v19, features, v21);
 
     if (v22)
     {
-      if (objc_msgSend_predict_(self->_decoderE5Net, v23, a3, v24, v25))
+      if (objc_msgSend_predict_(self->_decoderE5Net, v23, features, v24, v25))
       {
         v30 = self->_decoderE5Net;
         v31 = objc_msgSend_outputWordProbsTensorName(self->_configuration, v26, v27, v28, v29);
@@ -464,7 +464,7 @@ LABEL_14:
     }
     v105 = ;
     v106 = v105;
-    *a3 = v105;
+    *features = v105;
     objc_msgSend_logInternalError_(CSUError, v107, v105, v108, v109);
   }
 
@@ -476,16 +476,16 @@ LABEL_19:
   return v101;
 }
 
-- (id)postProcessResults:(id)a3 error:(id *)a4
+- (id)postProcessResults:(id)results error:(id *)error
 {
-  v6 = a3;
+  resultsCopy = results;
   v11 = objc_msgSend_postProcessingHandler(self->_procUtils, v7, v8, v9, v10);
 
   if (v11)
   {
     v16 = objc_msgSend_postProcessingHandler(self->_procUtils, v12, v13, v14, v15);
     v21 = objc_msgSend_genderOptionForBeamSearch(self->_procUtils, v17, v18, v19, v20);
-    v23 = objc_msgSend_postProcessResults_genderOption_error_(v16, v22, v6, v21, a4);
+    v23 = objc_msgSend_postProcessResults_genderOption_error_(v16, v22, resultsCopy, v21, error);
   }
 
   else
@@ -496,7 +496,7 @@ LABEL_19:
       sub_1AC11FBB8();
     }
 
-    v23 = v6;
+    v23 = resultsCopy;
   }
 
   return v23;

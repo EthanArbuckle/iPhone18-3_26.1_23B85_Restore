@@ -13,8 +13,8 @@
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = a1;
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  selfCopy = self;
+  v7 = [selfCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = *v15;
@@ -24,14 +24,14 @@
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(selfCopy);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
         if (objc_opt_isKindOfClass())
         {
-          v11 = [v10 uniqueIdentifier];
-          v12 = [v4 isEqualToString:v11];
+          uniqueIdentifier = [v10 uniqueIdentifier];
+          v12 = [v4 isEqualToString:uniqueIdentifier];
 
           if (v12)
           {
@@ -41,7 +41,7 @@
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [selfCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v7)
       {
         continue;

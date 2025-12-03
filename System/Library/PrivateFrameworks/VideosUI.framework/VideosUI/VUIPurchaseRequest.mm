@@ -1,32 +1,32 @@
 @interface VUIPurchaseRequest
-+ (int64_t)getPurchaseTypeFromActionRef:(id)a3;
-- (VUIPurchaseRequest)initWithBuyParams:(id)a3 ofPurchaseType:(int64_t)a4;
++ (int64_t)getPurchaseTypeFromActionRef:(id)ref;
+- (VUIPurchaseRequest)initWithBuyParams:(id)params ofPurchaseType:(int64_t)type;
 - (void)_createPurchaseRequest;
-- (void)_recordErrorLog:(id)a3;
-- (void)enqueueWithCompletion:(id)a3;
-- (void)handleRequestCompletionWithResult:(id)a3 andError:(id)a4;
+- (void)_recordErrorLog:(id)log;
+- (void)enqueueWithCompletion:(id)completion;
+- (void)handleRequestCompletionWithResult:(id)result andError:(id)error;
 @end
 
 @implementation VUIPurchaseRequest
 
-- (VUIPurchaseRequest)initWithBuyParams:(id)a3 ofPurchaseType:(int64_t)a4
+- (VUIPurchaseRequest)initWithBuyParams:(id)params ofPurchaseType:(int64_t)type
 {
   v22 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  paramsCopy = params;
   v17.receiver = self;
   v17.super_class = VUIPurchaseRequest;
   v8 = [(VUIPurchaseRequest *)&v17 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_buyParamsString, a3);
+    objc_storeStrong(&v8->_buyParamsString, params);
     v10 = VUIDefaultLogObject();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218242;
-      v19 = a4;
+      typeCopy = type;
       v20 = 2112;
-      v21 = v7;
+      v21 = paramsCopy;
       _os_log_impl(&dword_1E323F000, v10, OS_LOG_TYPE_DEFAULT, "VUIPurchaseRequest - new request type: %ld, %@", buf, 0x16u);
     }
 
@@ -54,8 +54,8 @@
   self->_purchase = v3;
 
   v5 = self->_purchase;
-  v6 = [MEMORY[0x1E69D5920] activeAccount];
-  [(AMSPurchase *)v5 setAccount:v6];
+  activeAccount = [MEMORY[0x1E69D5920] activeAccount];
+  [(AMSPurchase *)v5 setAccount:activeAccount];
 
   [(AMSPurchase *)self->_purchase setRequiresAccount:1];
   [(AMSPurchase *)self->_purchase setUserInitiated:1];
@@ -66,11 +66,11 @@
   [(AMSPurchase *)v7 setPerformanceMetricsOverlay:v8];
 }
 
-- (void)enqueueWithCompletion:(id)a3
+- (void)enqueueWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = +[VUIPurchaser sharedInstance];
-  [(VUIPurchaseRequest *)self setCompletionHandler:v4];
+  [(VUIPurchaseRequest *)self setCompletionHandler:completionCopy];
 
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
@@ -87,18 +87,18 @@ void __44__VUIPurchaseRequest_enqueueWithCompletion___block_invoke(uint64_t a1, 
   [*(a1 + 32) handleRequestCompletionWithResult:v6 andError:v5];
 }
 
-- (void)handleRequestCompletionWithResult:(id)a3 andError:(id)a4
+- (void)handleRequestCompletionWithResult:(id)result andError:(id)error
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  resultCopy = result;
+  errorCopy = error;
   v8 = VUIDefaultLogObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v19 = v6;
+    v19 = resultCopy;
     v20 = 2112;
-    v21 = v7;
+    v21 = errorCopy;
     _os_log_impl(&dword_1E323F000, v8, OS_LOG_TYPE_DEFAULT, "VUIPurchaseRequest - Purchase completed: %@, %@", buf, 0x16u);
   }
 
@@ -108,9 +108,9 @@ void __44__VUIPurchaseRequest_enqueueWithCompletion___block_invoke(uint64_t a1, 
   v13 = __65__VUIPurchaseRequest_handleRequestCompletionWithResult_andError___block_invoke;
   v14 = &unk_1E872D9B8;
   objc_copyWeak(&v17, buf);
-  v9 = v6;
+  v9 = resultCopy;
   v15 = v9;
-  v10 = v7;
+  v10 = errorCopy;
   v16 = v10;
   v11 = v12;
   if ([MEMORY[0x1E696AF00] isMainThread])
@@ -139,19 +139,19 @@ void __65__VUIPurchaseRequest_handleRequestCompletionWithResult_andError___block
   }
 }
 
-+ (int64_t)getPurchaseTypeFromActionRef:(id)a3
++ (int64_t)getPurchaseTypeFromActionRef:(id)ref
 {
   v3 = getPurchaseTypeFromActionRef__onceToken;
-  v4 = a3;
+  refCopy = ref;
   if (v3 != -1)
   {
     +[VUIPurchaseRequest getPurchaseTypeFromActionRef:];
   }
 
-  v5 = [getPurchaseTypeFromActionRef__sCommerceActionRefToPurchaseType objectForKeyedSubscript:v4];
+  v5 = [getPurchaseTypeFromActionRef__sCommerceActionRefToPurchaseType objectForKeyedSubscript:refCopy];
 
-  v6 = [v5 intValue];
-  return v6;
+  intValue = [v5 intValue];
+  return intValue;
 }
 
 void __51__VUIPurchaseRequest_getPurchaseTypeFromActionRef___block_invoke()
@@ -178,19 +178,19 @@ void __51__VUIPurchaseRequest_getPurchaseTypeFromActionRef___block_invoke()
   getPurchaseTypeFromActionRef__sCommerceActionRefToPurchaseType = v0;
 }
 
-- (void)_recordErrorLog:(id)a3
+- (void)_recordErrorLog:(id)log
 {
   v27[4] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (log)
   {
     v4 = MEMORY[0x1E696AEC0];
     type = self->_type;
-    v6 = a3;
-    v7 = [v4 stringWithFormat:@"%@ - %ld", @"commerce transaction failure", type];
-    v8 = v7;
-    if (v7)
+    logCopy = log;
+    type = [v4 stringWithFormat:@"%@ - %ld", @"commerce transaction failure", type];
+    v8 = type;
+    if (type)
     {
-      v9 = v7;
+      v9 = type;
     }
 
     else
@@ -201,7 +201,7 @@ void __51__VUIPurchaseRequest_getPurchaseTypeFromActionRef___block_invoke()
     v27[0] = v9;
     v26[0] = @"message";
     v26[1] = @"errorCode";
-    v10 = [MEMORY[0x1E696AD98] numberWithLong:{objc_msgSend(v6, "code")}];
+    v10 = [MEMORY[0x1E696AD98] numberWithLong:{objc_msgSend(logCopy, "code")}];
     v11 = v10;
     if (v10)
     {
@@ -215,11 +215,11 @@ void __51__VUIPurchaseRequest_getPurchaseTypeFromActionRef___block_invoke()
 
     v27[1] = v12;
     v26[2] = @"errorDomain";
-    v13 = [v6 domain];
-    v14 = v13;
-    if (v13)
+    domain = [logCopy domain];
+    v14 = domain;
+    if (domain)
     {
-      v15 = v13;
+      v15 = domain;
     }
 
     else
@@ -238,9 +238,9 @@ void __51__VUIPurchaseRequest_getPurchaseTypeFromActionRef___block_invoke()
     v27[3] = enhancedBuyParamsString;
     v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v27 forKeys:v26 count:4];
 
-    v18 = [v6 userInfo];
+    userInfo = [logCopy userInfo];
 
-    v19 = [v18 objectForKeyedSubscript:@"AMSServerErrorCode"];
+    v19 = [userInfo objectForKeyedSubscript:@"AMSServerErrorCode"];
 
     if (v19)
     {

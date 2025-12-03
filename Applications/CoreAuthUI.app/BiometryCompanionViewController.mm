@@ -1,25 +1,25 @@
 @interface BiometryCompanionViewController
-- (_TtC10CoreAuthUI31BiometryCompanionViewController)initWithCoder:(id)a3;
-- (_TtC10CoreAuthUI31BiometryCompanionViewController)initWithInternalInfo:(id)a3 mechanism:(id)a4 backoffCounter:(id)a5 remoteUIHost:(id)a6 allowsLandscape:(BOOL)a7;
-- (_TtC10CoreAuthUI31BiometryCompanionViewController)initWithInternalInfo:(id)a3 parent:(id)a4;
-- (_TtC10CoreAuthUI31BiometryCompanionViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (_TtC10CoreAuthUI31BiometryCompanionViewController)initWithRequestID:(id)a3 endpoint:(id)a4;
-- (_TtC10CoreAuthUI31BiometryCompanionViewController)initWithRequestID:(id)a3 endpoint:(id)a4 remoteAlertPresentationMode:(int64_t)a5;
-- (void)dismissChildWithCompletionHandler:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (_TtC10CoreAuthUI31BiometryCompanionViewController)initWithCoder:(id)coder;
+- (_TtC10CoreAuthUI31BiometryCompanionViewController)initWithInternalInfo:(id)info mechanism:(id)mechanism backoffCounter:(id)counter remoteUIHost:(id)host allowsLandscape:(BOOL)landscape;
+- (_TtC10CoreAuthUI31BiometryCompanionViewController)initWithInternalInfo:(id)info parent:(id)parent;
+- (_TtC10CoreAuthUI31BiometryCompanionViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (_TtC10CoreAuthUI31BiometryCompanionViewController)initWithRequestID:(id)d endpoint:(id)endpoint;
+- (_TtC10CoreAuthUI31BiometryCompanionViewController)initWithRequestID:(id)d endpoint:(id)endpoint remoteAlertPresentationMode:(int64_t)mode;
+- (void)dismissChildWithCompletionHandler:(id)handler;
+- (void)viewDidAppear:(BOOL)appear;
 @end
 
 @implementation BiometryCompanionViewController
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_10004DB30(a3);
+  selfCopy = self;
+  sub_10004DB30(appear);
 }
 
-- (void)dismissChildWithCompletionHandler:(id)a3
+- (void)dismissChildWithCompletionHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = v4;
@@ -34,44 +34,44 @@
     v6 = 0;
   }
 
-  v8 = self;
+  selfCopy = self;
   sub_10004E034(v7, v6);
   sub_10002AA04(v7);
 }
 
-- (_TtC10CoreAuthUI31BiometryCompanionViewController)initWithRequestID:(id)a3 endpoint:(id)a4
+- (_TtC10CoreAuthUI31BiometryCompanionViewController)initWithRequestID:(id)d endpoint:(id)endpoint
 {
   ObjectType = swift_getObjectType();
-  v8 = a3;
-  v9 = a4;
+  dCopy = d;
+  endpointCopy = endpoint;
   v10 = *sub_10004FFDC();
   sub_10004FFF4();
   *&self->super.SBUIRemoteAlertServiceViewController_opaque[OBJC_IVAR____TtC10CoreAuthUI31BiometryCompanionViewController_biometryType] = 0;
   v13.receiver = self;
   v13.super_class = ObjectType;
-  v11 = [(TransitionViewController *)&v13 initWithRequestID:v8 endpoint:v9];
+  v11 = [(TransitionViewController *)&v13 initWithRequestID:dCopy endpoint:endpointCopy];
 
   return v11;
 }
 
-- (_TtC10CoreAuthUI31BiometryCompanionViewController)initWithRequestID:(id)a3 endpoint:(id)a4 remoteAlertPresentationMode:(int64_t)a5
+- (_TtC10CoreAuthUI31BiometryCompanionViewController)initWithRequestID:(id)d endpoint:(id)endpoint remoteAlertPresentationMode:(int64_t)mode
 {
   ObjectType = swift_getObjectType();
-  v10 = a3;
-  v11 = a4;
+  dCopy = d;
+  endpointCopy = endpoint;
   v12 = *sub_10004FFDC();
   sub_10004FFF4();
   *&self->super.SBUIRemoteAlertServiceViewController_opaque[OBJC_IVAR____TtC10CoreAuthUI31BiometryCompanionViewController_biometryType] = 0;
   v15.receiver = self;
   v15.super_class = ObjectType;
-  v13 = [(TransitionViewController *)&v15 initWithRequestID:v10 endpoint:v11 remoteAlertPresentationMode:a5];
+  v13 = [(TransitionViewController *)&v15 initWithRequestID:dCopy endpoint:endpointCopy remoteAlertPresentationMode:mode];
 
   return v13;
 }
 
-- (_TtC10CoreAuthUI31BiometryCompanionViewController)initWithInternalInfo:(id)a3 mechanism:(id)a4 backoffCounter:(id)a5 remoteUIHost:(id)a6 allowsLandscape:(BOOL)a7
+- (_TtC10CoreAuthUI31BiometryCompanionViewController)initWithInternalInfo:(id)info mechanism:(id)mechanism backoffCounter:(id)counter remoteUIHost:(id)host allowsLandscape:(BOOL)landscape
 {
-  v16 = a7;
+  landscapeCopy = landscape;
   ObjectType = swift_getObjectType();
   static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
   swift_unknownObjectRetain();
@@ -84,7 +84,7 @@
 
   v17.receiver = self;
   v17.super_class = ObjectType;
-  v14 = [(TransitionViewController *)&v17 initWithInternalInfo:isa mechanism:a4 backoffCounter:a5 remoteUIHost:a6 allowsLandscape:v16];
+  v14 = [(TransitionViewController *)&v17 initWithInternalInfo:isa mechanism:mechanism backoffCounter:counter remoteUIHost:host allowsLandscape:landscapeCopy];
 
   swift_unknownObjectRelease();
   swift_unknownObjectRelease();
@@ -92,20 +92,20 @@
   return v14;
 }
 
-- (_TtC10CoreAuthUI31BiometryCompanionViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC10CoreAuthUI31BiometryCompanionViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   ObjectType = swift_getObjectType();
-  if (a3)
+  if (name)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
-    a3 = v8;
+    name = v8;
   }
 
-  v9 = a4;
+  bundleCopy = bundle;
   v10 = *sub_10004FFDC();
   sub_10004FFF4();
   *&self->super.SBUIRemoteAlertServiceViewController_opaque[OBJC_IVAR____TtC10CoreAuthUI31BiometryCompanionViewController_biometryType] = 0;
-  if (a3)
+  if (name)
   {
     v11 = String._bridgeToObjectiveC()();
   }
@@ -117,21 +117,21 @@
 
   v14.receiver = self;
   v14.super_class = ObjectType;
-  v12 = [(BiometryCompanionViewController *)&v14 initWithNibName:v11 bundle:v9];
+  v12 = [(BiometryCompanionViewController *)&v14 initWithNibName:v11 bundle:bundleCopy];
 
   return v12;
 }
 
-- (_TtC10CoreAuthUI31BiometryCompanionViewController)initWithCoder:(id)a3
+- (_TtC10CoreAuthUI31BiometryCompanionViewController)initWithCoder:(id)coder
 {
   ObjectType = swift_getObjectType();
-  v6 = a3;
+  coderCopy = coder;
   v7 = *sub_10004FFDC();
   sub_10004FFF4();
   *&self->super.SBUIRemoteAlertServiceViewController_opaque[OBJC_IVAR____TtC10CoreAuthUI31BiometryCompanionViewController_biometryType] = 0;
   v10.receiver = self;
   v10.super_class = ObjectType;
-  v8 = [(BiometryCompanionViewController *)&v10 initWithCoder:v6];
+  v8 = [(BiometryCompanionViewController *)&v10 initWithCoder:coderCopy];
 
   if (v8)
   {
@@ -140,7 +140,7 @@
   return v8;
 }
 
-- (_TtC10CoreAuthUI31BiometryCompanionViewController)initWithInternalInfo:(id)a3 parent:(id)a4
+- (_TtC10CoreAuthUI31BiometryCompanionViewController)initWithInternalInfo:(id)info parent:(id)parent
 {
   ObjectType = swift_getObjectType();
   static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();

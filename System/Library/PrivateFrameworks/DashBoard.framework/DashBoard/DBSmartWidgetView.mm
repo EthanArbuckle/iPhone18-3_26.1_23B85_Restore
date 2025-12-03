@@ -1,50 +1,50 @@
 @interface DBSmartWidgetView
-+ (id)viewWithPrediction:(id)a3 predictedSize:(CGSize)a4;
++ (id)viewWithPrediction:(id)prediction predictedSize:(CGSize)size;
 - (DBSmartWidgetEngine)engine;
-- (DBSmartWidgetView)initWithFrame:(CGRect)a3;
+- (DBSmartWidgetView)initWithFrame:(CGRect)frame;
 - (id)linearFocusItems;
 - (void)_updateViews;
-- (void)predictionDidUpdate:(id)a3;
-- (void)preparePrediction:(id)a3 withPredictedSize:(CGSize)a4 completion:(id)a5;
-- (void)setPrediction:(id)a3;
+- (void)predictionDidUpdate:(id)update;
+- (void)preparePrediction:(id)prediction withPredictedSize:(CGSize)size completion:(id)completion;
+- (void)setPrediction:(id)prediction;
 @end
 
 @implementation DBSmartWidgetView
 
-+ (id)viewWithPrediction:(id)a3 predictedSize:(CGSize)a4
++ (id)viewWithPrediction:(id)prediction predictedSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v6 = a3;
+  height = size.height;
+  width = size.width;
+  predictionCopy = prediction;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
     v8 = [DBSmartWidgetLiveActivityView alloc];
-    v9 = [(DBSmartWidgetLiveActivityView *)v8 initWithFrame:*MEMORY[0x277CBF3A0] predictedSize:*(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24), width, height];
+    height = [(DBSmartWidgetLiveActivityView *)v8 initWithFrame:*MEMORY[0x277CBF3A0] predictedSize:*(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24), width, height];
   }
 
   else
   {
     v10 = [DBSmartWidgetRangeBasedView alloc];
-    v9 = [(DBSmartWidgetRangeBasedView *)v10 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
+    height = [(DBSmartWidgetRangeBasedView *)v10 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   }
 
-  return v9;
+  return height;
 }
 
-- (DBSmartWidgetView)initWithFrame:(CGRect)a3
+- (DBSmartWidgetView)initWithFrame:(CGRect)frame
 {
   v75[12] = *MEMORY[0x277D85DE8];
   v73.receiver = self;
   v73.super_class = DBSmartWidgetView;
-  v3 = [(DBSmartWidgetView *)&v73 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(DBSmartWidgetView *)&v73 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(DBSmartWidgetView *)v3 layer];
-    [v5 setAllowsGroupBlending:0];
+    layer = [(DBSmartWidgetView *)v3 layer];
+    [layer setAllowsGroupBlending:0];
 
     v6 = objc_alloc(MEMORY[0x277D756B8]);
     v7 = *MEMORY[0x277CBF3A0];
@@ -56,15 +56,15 @@
     v4->_scoreDetailsDebugLabel = v11;
 
     [(UILabel *)v4->_scoreDetailsDebugLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-    v13 = [MEMORY[0x277D75348] systemRedColor];
-    [(UILabel *)v4->_scoreDetailsDebugLabel setTextColor:v13];
+    systemRedColor = [MEMORY[0x277D75348] systemRedColor];
+    [(UILabel *)v4->_scoreDetailsDebugLabel setTextColor:systemRedColor];
 
     v14 = [MEMORY[0x277D74300] boldSystemFontOfSize:5.0];
     [(UILabel *)v4->_scoreDetailsDebugLabel setFont:v14];
 
     [(UILabel *)v4->_scoreDetailsDebugLabel setNumberOfLines:0];
-    v15 = [MEMORY[0x277D75348] _carSystemQuaternaryColor];
-    [(UILabel *)v4->_scoreDetailsDebugLabel setBackgroundColor:v15];
+    _carSystemQuaternaryColor = [MEMORY[0x277D75348] _carSystemQuaternaryColor];
+    [(UILabel *)v4->_scoreDetailsDebugLabel setBackgroundColor:_carSystemQuaternaryColor];
 
     [(DBSmartWidgetView *)v4 addSubview:v4->_scoreDetailsDebugLabel];
     v16 = [objc_alloc(MEMORY[0x277D756B8]) initWithFrame:{v7, v8, v9, v10}];
@@ -72,16 +72,16 @@
     v4->_scoreDebugLabel = v16;
 
     [(UILabel *)v4->_scoreDebugLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-    v18 = [MEMORY[0x277D75348] systemRedColor];
-    [(UILabel *)v4->_scoreDebugLabel setTextColor:v18];
+    systemRedColor2 = [MEMORY[0x277D75348] systemRedColor];
+    [(UILabel *)v4->_scoreDebugLabel setTextColor:systemRedColor2];
 
     v19 = [MEMORY[0x277D74300] boldSystemFontOfSize:10.0];
     [(UILabel *)v4->_scoreDebugLabel setFont:v19];
 
     [(UILabel *)v4->_scoreDebugLabel setNumberOfLines:1];
     [(UILabel *)v4->_scoreDebugLabel setTextAlignment:2];
-    v20 = [MEMORY[0x277D75348] _carSystemQuaternaryColor];
-    [(UILabel *)v4->_scoreDebugLabel setBackgroundColor:v20];
+    _carSystemQuaternaryColor2 = [MEMORY[0x277D75348] _carSystemQuaternaryColor];
+    [(UILabel *)v4->_scoreDebugLabel setBackgroundColor:_carSystemQuaternaryColor2];
 
     [(DBSmartWidgetView *)v4 addSubview:v4->_scoreDebugLabel];
     v21 = [objc_alloc(MEMORY[0x277D756B8]) initWithFrame:{v7, v8, v9, v10}];
@@ -89,16 +89,16 @@
     v4->_nextRefreshDebugLabel = v21;
 
     [(UILabel *)v4->_nextRefreshDebugLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-    v23 = [MEMORY[0x277D75348] systemRedColor];
-    [(UILabel *)v4->_nextRefreshDebugLabel setTextColor:v23];
+    systemRedColor3 = [MEMORY[0x277D75348] systemRedColor];
+    [(UILabel *)v4->_nextRefreshDebugLabel setTextColor:systemRedColor3];
 
     v24 = [MEMORY[0x277D74300] boldSystemFontOfSize:8.0];
     [(UILabel *)v4->_nextRefreshDebugLabel setFont:v24];
 
     [(UILabel *)v4->_nextRefreshDebugLabel setNumberOfLines:1];
     [(UILabel *)v4->_nextRefreshDebugLabel setTextAlignment:2];
-    v25 = [MEMORY[0x277D75348] _carSystemQuaternaryColor];
-    [(UILabel *)v4->_nextRefreshDebugLabel setBackgroundColor:v25];
+    _carSystemQuaternaryColor3 = [MEMORY[0x277D75348] _carSystemQuaternaryColor];
+    [(UILabel *)v4->_nextRefreshDebugLabel setBackgroundColor:_carSystemQuaternaryColor3];
 
     [(DBSmartWidgetView *)v4 addSubview:v4->_nextRefreshDebugLabel];
     v26 = [objc_alloc(MEMORY[0x277D756B8]) initWithFrame:{v7, v8, v9, v10}];
@@ -106,64 +106,64 @@
     v4->_validRangesDebugLabel = v26;
 
     [(UILabel *)v4->_validRangesDebugLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-    v28 = [MEMORY[0x277D75348] systemRedColor];
-    [(UILabel *)v4->_validRangesDebugLabel setTextColor:v28];
+    systemRedColor4 = [MEMORY[0x277D75348] systemRedColor];
+    [(UILabel *)v4->_validRangesDebugLabel setTextColor:systemRedColor4];
 
     v29 = [MEMORY[0x277D74300] boldSystemFontOfSize:8.0];
     [(UILabel *)v4->_validRangesDebugLabel setFont:v29];
 
     [(UILabel *)v4->_validRangesDebugLabel setNumberOfLines:0];
-    v30 = [MEMORY[0x277D75348] _carSystemQuaternaryColor];
-    [(UILabel *)v4->_validRangesDebugLabel setBackgroundColor:v30];
+    _carSystemQuaternaryColor4 = [MEMORY[0x277D75348] _carSystemQuaternaryColor];
+    [(UILabel *)v4->_validRangesDebugLabel setBackgroundColor:_carSystemQuaternaryColor4];
 
     [(DBSmartWidgetView *)v4 addSubview:v4->_validRangesDebugLabel];
     v60 = MEMORY[0x277CCAAD0];
-    v72 = [(UILabel *)v4->_validRangesDebugLabel leadingAnchor];
-    v71 = [(DBSmartWidgetView *)v4 leadingAnchor];
-    v70 = [v72 constraintEqualToAnchor:v71 constant:5.0];
+    leadingAnchor = [(UILabel *)v4->_validRangesDebugLabel leadingAnchor];
+    leadingAnchor2 = [(DBSmartWidgetView *)v4 leadingAnchor];
+    v70 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:5.0];
     v75[0] = v70;
-    v69 = [(UILabel *)v4->_validRangesDebugLabel trailingAnchor];
-    v68 = [(UILabel *)v4->_nextRefreshDebugLabel leadingAnchor];
-    v67 = [v69 constraintEqualToAnchor:v68 constant:-5.0];
+    trailingAnchor = [(UILabel *)v4->_validRangesDebugLabel trailingAnchor];
+    leadingAnchor3 = [(UILabel *)v4->_nextRefreshDebugLabel leadingAnchor];
+    v67 = [trailingAnchor constraintEqualToAnchor:leadingAnchor3 constant:-5.0];
     v75[1] = v67;
-    v66 = [(UILabel *)v4->_validRangesDebugLabel topAnchor];
-    v65 = [(DBSmartWidgetView *)v4 topAnchor];
-    v64 = [v66 constraintEqualToAnchor:v65 constant:5.0];
+    topAnchor = [(UILabel *)v4->_validRangesDebugLabel topAnchor];
+    topAnchor2 = [(DBSmartWidgetView *)v4 topAnchor];
+    v64 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:5.0];
     v75[2] = v64;
-    v63 = [(UILabel *)v4->_nextRefreshDebugLabel trailingAnchor];
-    v62 = [(DBSmartWidgetView *)v4 trailingAnchor];
-    v61 = [v63 constraintEqualToAnchor:v62 constant:-5.0];
+    trailingAnchor2 = [(UILabel *)v4->_nextRefreshDebugLabel trailingAnchor];
+    trailingAnchor3 = [(DBSmartWidgetView *)v4 trailingAnchor];
+    v61 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3 constant:-5.0];
     v75[3] = v61;
-    v59 = [(UILabel *)v4->_nextRefreshDebugLabel topAnchor];
-    v58 = [(DBSmartWidgetView *)v4 topAnchor];
-    v57 = [v59 constraintEqualToAnchor:v58 constant:5.0];
+    topAnchor3 = [(UILabel *)v4->_nextRefreshDebugLabel topAnchor];
+    topAnchor4 = [(DBSmartWidgetView *)v4 topAnchor];
+    v57 = [topAnchor3 constraintEqualToAnchor:topAnchor4 constant:5.0];
     v75[4] = v57;
-    v56 = [(UILabel *)v4->_nextRefreshDebugLabel widthAnchor];
-    v55 = [v56 constraintEqualToConstant:75.0];
+    widthAnchor = [(UILabel *)v4->_nextRefreshDebugLabel widthAnchor];
+    v55 = [widthAnchor constraintEqualToConstant:75.0];
     v75[5] = v55;
-    v54 = [(UILabel *)v4->_scoreDebugLabel leadingAnchor];
-    v53 = [(UILabel *)v4->_nextRefreshDebugLabel leadingAnchor];
-    v52 = [v54 constraintEqualToAnchor:v53];
+    leadingAnchor4 = [(UILabel *)v4->_scoreDebugLabel leadingAnchor];
+    leadingAnchor5 = [(UILabel *)v4->_nextRefreshDebugLabel leadingAnchor];
+    v52 = [leadingAnchor4 constraintEqualToAnchor:leadingAnchor5];
     v75[6] = v52;
-    v51 = [(UILabel *)v4->_scoreDebugLabel trailingAnchor];
-    v50 = [(UILabel *)v4->_nextRefreshDebugLabel trailingAnchor];
-    v49 = [v51 constraintEqualToAnchor:v50];
+    trailingAnchor4 = [(UILabel *)v4->_scoreDebugLabel trailingAnchor];
+    trailingAnchor5 = [(UILabel *)v4->_nextRefreshDebugLabel trailingAnchor];
+    v49 = [trailingAnchor4 constraintEqualToAnchor:trailingAnchor5];
     v75[7] = v49;
-    v48 = [(UILabel *)v4->_scoreDebugLabel topAnchor];
-    v47 = [(UILabel *)v4->_nextRefreshDebugLabel bottomAnchor];
-    v46 = [v48 constraintEqualToAnchor:v47 constant:5.0];
+    topAnchor5 = [(UILabel *)v4->_scoreDebugLabel topAnchor];
+    bottomAnchor = [(UILabel *)v4->_nextRefreshDebugLabel bottomAnchor];
+    v46 = [topAnchor5 constraintEqualToAnchor:bottomAnchor constant:5.0];
     v75[8] = v46;
-    v45 = [(UILabel *)v4->_scoreDetailsDebugLabel leadingAnchor];
-    v31 = [(DBSmartWidgetView *)v4 leadingAnchor];
-    v32 = [v45 constraintEqualToAnchor:v31 constant:5.0];
+    leadingAnchor6 = [(UILabel *)v4->_scoreDetailsDebugLabel leadingAnchor];
+    leadingAnchor7 = [(DBSmartWidgetView *)v4 leadingAnchor];
+    v32 = [leadingAnchor6 constraintEqualToAnchor:leadingAnchor7 constant:5.0];
     v75[9] = v32;
-    v33 = [(UILabel *)v4->_scoreDetailsDebugLabel trailingAnchor];
-    v34 = [(DBSmartWidgetView *)v4 trailingAnchor];
-    v35 = [v33 constraintEqualToAnchor:v34 constant:-5.0];
+    trailingAnchor6 = [(UILabel *)v4->_scoreDetailsDebugLabel trailingAnchor];
+    trailingAnchor7 = [(DBSmartWidgetView *)v4 trailingAnchor];
+    v35 = [trailingAnchor6 constraintEqualToAnchor:trailingAnchor7 constant:-5.0];
     v75[10] = v35;
-    v36 = [(UILabel *)v4->_scoreDetailsDebugLabel bottomAnchor];
-    v37 = [(DBSmartWidgetView *)v4 bottomAnchor];
-    v38 = [v36 constraintEqualToAnchor:v37 constant:-5.0];
+    bottomAnchor2 = [(UILabel *)v4->_scoreDetailsDebugLabel bottomAnchor];
+    bottomAnchor3 = [(DBSmartWidgetView *)v4 bottomAnchor];
+    v38 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3 constant:-5.0];
     v75[11] = v38;
     v39 = [MEMORY[0x277CBEA60] arrayWithObjects:v75 count:12];
     [v60 activateConstraints:v39];
@@ -179,27 +179,27 @@
   return v4;
 }
 
-- (void)preparePrediction:(id)a3 withPredictedSize:(CGSize)a4 completion:(id)a5
+- (void)preparePrediction:(id)prediction withPredictedSize:(CGSize)size completion:(id)completion
 {
-  if (a5)
+  if (completion)
   {
-    (*(a5 + 2))(a5, 0, a4, *&a4.height);
+    (*(completion + 2))(completion, 0, size, *&size.height);
   }
 }
 
-- (void)setPrediction:(id)a3
+- (void)setPrediction:(id)prediction
 {
-  v4 = a3;
+  predictionCopy = prediction;
   v5 = DBLogForCategory(9uLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    [(DBSmartWidgetView *)self setPrediction:v4, v5];
+    [(DBSmartWidgetView *)self setPrediction:predictionCopy, v5];
   }
 
   [(DBSmartWidgetPrediction *)self->_prediction removeObserver:self];
   prediction = self->_prediction;
-  self->_prediction = v4;
-  v7 = v4;
+  self->_prediction = predictionCopy;
+  v7 = predictionCopy;
 
   [(DBSmartWidgetView *)self _updateViews];
   [(DBSmartWidgetPrediction *)self->_prediction addObserver:self];
@@ -207,67 +207,67 @@
 
 - (void)_updateViews
 {
-  v3 = [MEMORY[0x277CF89D0] smartWidgetDebugShowScore];
-  v4 = [v3 valueBool];
+  smartWidgetDebugShowScore = [MEMORY[0x277CF89D0] smartWidgetDebugShowScore];
+  valueBool = [smartWidgetDebugShowScore valueBool];
 
-  v5 = v4 ^ 1u;
-  v6 = [(DBSmartWidgetView *)self scoreDetailsDebugLabel];
-  [v6 setHidden:v5];
+  v5 = valueBool ^ 1u;
+  scoreDetailsDebugLabel = [(DBSmartWidgetView *)self scoreDetailsDebugLabel];
+  [scoreDetailsDebugLabel setHidden:v5];
 
-  v7 = [(DBSmartWidgetView *)self nextRefreshDebugLabel];
-  [v7 setHidden:v5];
+  nextRefreshDebugLabel = [(DBSmartWidgetView *)self nextRefreshDebugLabel];
+  [nextRefreshDebugLabel setHidden:v5];
 
-  v8 = [(DBSmartWidgetView *)self validRangesDebugLabel];
-  [v8 setHidden:v5];
+  validRangesDebugLabel = [(DBSmartWidgetView *)self validRangesDebugLabel];
+  [validRangesDebugLabel setHidden:v5];
 
   if (v5)
   {
-    v28 = [(DBSmartWidgetView *)self scoreDetailsDebugLabel];
-    [v28 setText:&stru_285A57218];
+    scoreDetailsDebugLabel2 = [(DBSmartWidgetView *)self scoreDetailsDebugLabel];
+    [scoreDetailsDebugLabel2 setText:&stru_285A57218];
 
-    v29 = [(DBSmartWidgetView *)self nextRefreshDebugLabel];
-    [v29 setText:&stru_285A57218];
+    nextRefreshDebugLabel2 = [(DBSmartWidgetView *)self nextRefreshDebugLabel];
+    [nextRefreshDebugLabel2 setText:&stru_285A57218];
 
-    v30 = [(DBSmartWidgetView *)self validRangesDebugLabel];
-    [v30 setText:&stru_285A57218];
+    validRangesDebugLabel2 = [(DBSmartWidgetView *)self validRangesDebugLabel];
+    [validRangesDebugLabel2 setText:&stru_285A57218];
   }
 
   else
   {
     v9 = MEMORY[0x277CCACA8];
-    v10 = [(DBSmartWidgetView *)self prediction];
-    v11 = [v10 score];
-    v12 = [(DBSmartWidgetView *)self prediction];
-    v13 = [v9 stringWithFormat:@"%ld(%ld)", v11, objc_msgSend(v12, "tieBreakScore")];
-    v14 = [(DBSmartWidgetView *)self scoreDebugLabel];
-    [v14 setText:v13];
+    prediction = [(DBSmartWidgetView *)self prediction];
+    score = [prediction score];
+    prediction2 = [(DBSmartWidgetView *)self prediction];
+    v13 = [v9 stringWithFormat:@"%ld(%ld)", score, objc_msgSend(prediction2, "tieBreakScore")];
+    scoreDebugLabel = [(DBSmartWidgetView *)self scoreDebugLabel];
+    [scoreDebugLabel setText:v13];
 
-    v15 = [(DBSmartWidgetView *)self prediction];
-    v16 = [v15 debugScoreText];
-    v17 = [(DBSmartWidgetView *)self scoreDetailsDebugLabel];
-    [v17 setText:v16];
+    prediction3 = [(DBSmartWidgetView *)self prediction];
+    debugScoreText = [prediction3 debugScoreText];
+    scoreDetailsDebugLabel3 = [(DBSmartWidgetView *)self scoreDetailsDebugLabel];
+    [scoreDetailsDebugLabel3 setText:debugScoreText];
 
-    v18 = [(DBSmartWidgetView *)self engine];
-    v19 = [v18 nextRefresh];
-    v20 = [DBDateFormatter formattedTimeStamp:v19];
-    v21 = [(DBSmartWidgetView *)self nextRefreshDebugLabel];
-    [v21 setText:v20];
+    engine = [(DBSmartWidgetView *)self engine];
+    nextRefresh = [engine nextRefresh];
+    v20 = [DBDateFormatter formattedTimeStamp:nextRefresh];
+    nextRefreshDebugLabel3 = [(DBSmartWidgetView *)self nextRefreshDebugLabel];
+    [nextRefreshDebugLabel3 setText:v20];
 
-    v22 = [(DBSmartWidgetView *)self prediction];
-    v23 = [v22 debugValidRangesText];
-    v24 = [(DBSmartWidgetView *)self validRangesDebugLabel];
-    [v24 setText:v23];
+    prediction4 = [(DBSmartWidgetView *)self prediction];
+    debugValidRangesText = [prediction4 debugValidRangesText];
+    validRangesDebugLabel3 = [(DBSmartWidgetView *)self validRangesDebugLabel];
+    [validRangesDebugLabel3 setText:debugValidRangesText];
 
-    v25 = [(DBSmartWidgetView *)self scoreDetailsDebugLabel];
-    [(DBSmartWidgetView *)self bringSubviewToFront:v25];
+    scoreDetailsDebugLabel4 = [(DBSmartWidgetView *)self scoreDetailsDebugLabel];
+    [(DBSmartWidgetView *)self bringSubviewToFront:scoreDetailsDebugLabel4];
 
-    v26 = [(DBSmartWidgetView *)self scoreDebugLabel];
-    [(DBSmartWidgetView *)self bringSubviewToFront:v26];
+    scoreDebugLabel2 = [(DBSmartWidgetView *)self scoreDebugLabel];
+    [(DBSmartWidgetView *)self bringSubviewToFront:scoreDebugLabel2];
 
-    v27 = [(DBSmartWidgetView *)self nextRefreshDebugLabel];
-    [(DBSmartWidgetView *)self bringSubviewToFront:v27];
+    nextRefreshDebugLabel4 = [(DBSmartWidgetView *)self nextRefreshDebugLabel];
+    [(DBSmartWidgetView *)self bringSubviewToFront:nextRefreshDebugLabel4];
 
-    v30 = [(DBSmartWidgetView *)self validRangesDebugLabel];
+    validRangesDebugLabel2 = [(DBSmartWidgetView *)self validRangesDebugLabel];
     [(DBSmartWidgetView *)self bringSubviewToFront:?];
   }
 }
@@ -281,13 +281,13 @@
   return v2;
 }
 
-- (void)predictionDidUpdate:(id)a3
+- (void)predictionDidUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   v5 = DBLogForCategory(9uLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    [(DBSmartWidgetView *)v4 predictionDidUpdate:v5];
+    [(DBSmartWidgetView *)updateCopy predictionDidUpdate:v5];
   }
 
   [(DBSmartWidgetView *)self _updateViews];

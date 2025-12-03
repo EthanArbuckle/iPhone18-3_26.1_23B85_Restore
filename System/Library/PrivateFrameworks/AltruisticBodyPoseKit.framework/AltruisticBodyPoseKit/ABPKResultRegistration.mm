@@ -2,24 +2,24 @@
 - (CGSize)imageSize;
 - (__n128)cameraFromBodyPose;
 - (__n128)intrinsics;
-- (__n128)setCameraFromBodyPose:(__n128)a3;
-- (__n128)setIntrinsics:(__n128)a3;
+- (__n128)setCameraFromBodyPose:(__n128)pose;
+- (__n128)setIntrinsics:(__n128)intrinsics;
 @end
 
 @implementation ABPKResultRegistration
 
 - (__n128)intrinsics
 {
-  result = *(a1 + 80);
-  v2 = *(a1 + 96);
-  v3 = *(a1 + 112);
+  result = *(self + 80);
+  v2 = *(self + 96);
+  v3 = *(self + 112);
   return result;
 }
 
-- (__n128)setIntrinsics:(__n128)a3
+- (__n128)setIntrinsics:(__n128)intrinsics
 {
   result[5] = a2;
-  result[6] = a3;
+  result[6] = intrinsics;
   result[7] = a4;
   return result;
 }
@@ -35,17 +35,17 @@
 
 - (__n128)cameraFromBodyPose
 {
-  result = *(a1 + 128);
-  v2 = *(a1 + 144);
-  v3 = *(a1 + 160);
-  v4 = *(a1 + 176);
+  result = *(self + 128);
+  v2 = *(self + 144);
+  v3 = *(self + 160);
+  v4 = *(self + 176);
   return result;
 }
 
-- (__n128)setCameraFromBodyPose:(__n128)a3
+- (__n128)setCameraFromBodyPose:(__n128)pose
 {
   result[8] = a2;
-  result[9] = a3;
+  result[9] = pose;
   result[10] = a4;
   result[11] = a5;
   return result;

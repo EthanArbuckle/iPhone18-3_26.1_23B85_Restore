@@ -1,7 +1,7 @@
 @interface SBAppRepairTransaction
-- (SBAppRepairTransaction)initWithApplicationInfos:(id)a3;
+- (SBAppRepairTransaction)initWithApplicationInfos:(id)infos;
 - (void)_begin;
-- (void)_completeRequest:(id)a3 success:(BOOL)a4 error:(id)a5;
+- (void)_completeRequest:(id)request success:(BOOL)success error:(id)error;
 - (void)_didComplete;
 - (void)_evaluateCompletion;
 - (void)_startAppRepairs;
@@ -10,13 +10,13 @@
 
 @implementation SBAppRepairTransaction
 
-- (SBAppRepairTransaction)initWithApplicationInfos:(id)a3
+- (SBAppRepairTransaction)initWithApplicationInfos:(id)infos
 {
-  v4 = a3;
+  infosCopy = infos;
   v5 = [(SBTransaction *)self init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [infosCopy copy];
     appInfos = v5->_appInfos;
     v5->_appInfos = v6;
 
@@ -25,8 +25,8 @@
     v5->_repairRequests = v8;
 
     v10 = objc_alloc(MEMORY[0x277D6BB90]);
-    v11 = [SBApp systemStatusServer];
-    v12 = [v10 initWithServerHandle:v11];
+    systemStatusServer = [SBApp systemStatusServer];
+    v12 = [v10 initWithServerHandle:systemStatusServer];
     telephonyDomain = v5->_telephonyDomain;
     v5->_telephonyDomain = v12;
   }
@@ -46,11 +46,11 @@
 {
   [SBApp noteKeybagRefetchTransactionIsActive:1];
   v3 = +[SBTelephonyManager sharedTelephonyManager];
-  v4 = [(STTelephonyStatusDomain *)self->_telephonyDomain data];
-  v5 = [v4 primarySIMInfo];
-  v6 = [v5 dataNetworkType];
+  data = [(STTelephonyStatusDomain *)self->_telephonyDomain data];
+  primarySIMInfo = [data primarySIMInfo];
+  dataNetworkType = [primarySIMInfo dataNetworkType];
 
-  if (v6 || ([v3 hasNonCellularNetworkConnection] & 1) != 0)
+  if (dataNetworkType || ([v3 hasNonCellularNetworkConnection] & 1) != 0)
   {
     [(SBAppRepairTransaction *)self _startAppRepairs];
   }
@@ -84,15 +84,15 @@
   [(SBAppRepairTransaction *)self evaluateMilestone:@"appRepair" withEvaluator:v2];
 }
 
-- (void)_completeRequest:(id)a3 success:(BOOL)a4 error:(id)a5
+- (void)_completeRequest:(id)request success:(BOOL)success error:(id)error
 {
-  v8 = a3;
-  if (!a4)
+  requestCopy = request;
+  if (!success)
   {
-    [(SBAppRepairTransaction *)self _failWithReason:@"appRepairFailed" description:@"refetch request failed" precipitatingError:a5];
+    [(SBAppRepairTransaction *)self _failWithReason:@"appRepairFailed" description:@"refetch request failed" precipitatingError:error];
   }
 
-  [(NSMutableSet *)self->_repairRequests removeObject:v8];
+  [(NSMutableSet *)self->_repairRequests removeObject:requestCopy];
   [(SBAppRepairTransaction *)self _evaluateCompletion];
 }
 
@@ -119,12 +119,12 @@
         }
 
         v8 = *(*(&v28 + 1) + 8 * i);
-        v9 = [v8 purchaserDSID];
-        if (v9)
+        purchaserDSID = [v8 purchaserDSID];
+        if (purchaserDSID)
         {
           v10 = objc_alloc(MEMORY[0x277CEC478]);
-          v11 = [v8 bundleIdentifier];
-          v12 = [v10 initWithBundleID:v11 accountIdentifier:v9 claimStyle:{objc_msgSend(v8, "type") == 2}];
+          bundleIdentifier = [v8 bundleIdentifier];
+          v12 = [v10 initWithBundleID:bundleIdentifier accountIdentifier:purchaserDSID claimStyle:{objc_msgSend(v8, "type") == 2}];
 
           [v12 setExitReason:16];
           if (v12)
@@ -172,19 +172,19 @@
         v18 = *(*(&v24 + 1) + 8 * j);
         if ([(SBAppRepairTransaction *)self isAuditHistoryEnabled])
         {
-          v19 = [v18 bundleID];
-          v20 = [v18 accountDSID];
-          [(SBAppRepairTransaction *)self _addAuditHistoryItem:@"Running app repair request %p for %@ (%@).", v18, v19, v20];
+          bundleID = [v18 bundleID];
+          accountDSID = [v18 accountDSID];
+          [(SBAppRepairTransaction *)self _addAuditHistoryItem:@"Running app repair request %p for %@ (%@).", v18, bundleID, accountDSID];
         }
 
-        v21 = [MEMORY[0x277CEC480] defaultService];
+        defaultService = [MEMORY[0x277CEC480] defaultService];
         v23[0] = MEMORY[0x277D85DD0];
         v23[1] = 3221225472;
         v23[2] = __42__SBAppRepairTransaction__startAppRepairs__block_invoke;
         v23[3] = &unk_2783A9D60;
         v23[4] = self;
         v23[5] = v18;
-        [v21 repairAppWithOptions:v18 replyHandler:v23];
+        [defaultService repairAppWithOptions:v18 replyHandler:v23];
       }
 
       v15 = [(NSMutableSet *)obj countByEnumeratingWithState:&v24 objects:v32 count:16];

@@ -1,24 +1,24 @@
 @interface SharedCalendarEmailUpdateRequest
-- (SharedCalendarEmailUpdateRequest)initWithAccount:(id)a3 accountStore:(id)a4 sharedCalendarEmail:(BOOL)a5;
+- (SharedCalendarEmailUpdateRequest)initWithAccount:(id)account accountStore:(id)store sharedCalendarEmail:(BOOL)email;
 - (id)bodyDictionary;
 - (id)urlString;
-- (void)performRequestWithCallback:(id)a3;
+- (void)performRequestWithCallback:(id)callback;
 @end
 
 @implementation SharedCalendarEmailUpdateRequest
 
-- (SharedCalendarEmailUpdateRequest)initWithAccount:(id)a3 accountStore:(id)a4 sharedCalendarEmail:(BOOL)a5
+- (SharedCalendarEmailUpdateRequest)initWithAccount:(id)account accountStore:(id)store sharedCalendarEmail:(BOOL)email
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(SharedCalendarEmailUpdateRequest *)self urlString];
+  storeCopy = store;
+  accountCopy = account;
+  urlString = [(SharedCalendarEmailUpdateRequest *)self urlString];
   v13.receiver = self;
   v13.super_class = SharedCalendarEmailUpdateRequest;
-  v11 = [(CalendarBaseRequest *)&v13 initWithURLString:v10 accountStore:v8 appleAccount:v9 httpRequestType:@"POST" requestBody:0 httpHeader:0];
+  v11 = [(CalendarBaseRequest *)&v13 initWithURLString:urlString accountStore:storeCopy appleAccount:accountCopy httpRequestType:@"POST" requestBody:0 httpHeader:0];
 
   if (v11)
   {
-    v11->_sharedCalendarEmailUpdateFlag = a5;
+    v11->_sharedCalendarEmailUpdateFlag = email;
   }
 
   return v11;
@@ -26,14 +26,14 @@
 
 - (id)urlString
 {
-  v3 = [(CalendarBaseRequest *)self iCloudAppleAccount];
-  v4 = [v3 propertiesForDataclass:@"com.apple.Dataclass.Calendars"];
+  iCloudAppleAccount = [(CalendarBaseRequest *)self iCloudAppleAccount];
+  v4 = [iCloudAppleAccount propertiesForDataclass:@"com.apple.Dataclass.Calendars"];
   v5 = [v4 objectForKeyedSubscript:@"sharedCalendar"];
 
   if (!v5)
   {
-    v6 = [(CalendarBaseRequest *)self iCloudAppleAccount];
-    v7 = [v6 propertiesForDataclass:@"com.apple.Dataclass.Calendars"];
+    iCloudAppleAccount2 = [(CalendarBaseRequest *)self iCloudAppleAccount];
+    v7 = [iCloudAppleAccount2 propertiesForDataclass:@"com.apple.Dataclass.Calendars"];
     v8 = [v7 objectForKeyedSubscript:@"url"];
 
     v5 = [NSString stringWithFormat:@"%@/api/settings/sharedcalendar", v8];
@@ -49,14 +49,14 @@
   return v5;
 }
 
-- (void)performRequestWithCallback:(id)a3
+- (void)performRequestWithCallback:(id)callback
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_6034;
   v5[3] = &unk_147A8;
-  v6 = a3;
-  v4 = v6;
+  callbackCopy = callback;
+  v4 = callbackCopy;
   [(CalendarBaseRequest *)self performRequestWithHandler:v5];
 }
 

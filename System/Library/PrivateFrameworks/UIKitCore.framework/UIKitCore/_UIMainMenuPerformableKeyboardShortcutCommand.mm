@@ -1,60 +1,60 @@
 @interface _UIMainMenuPerformableKeyboardShortcutCommand
-- (BOOL)isEqual:(id)a3;
-- (_UIMainMenuPerformableKeyboardShortcutCommand)initWithCoder:(id)a3;
-- (id)_initWithCommand:(id)a3 state:(id)a4 categoryMenuIdentifier:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (_UIMainMenuPerformableKeyboardShortcutCommand)initWithCoder:(id)coder;
+- (id)_initWithCommand:(id)command state:(id)state categoryMenuIdentifier:(id)identifier;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _UIMainMenuPerformableKeyboardShortcutCommand
 
-- (id)_initWithCommand:(id)a3 state:(id)a4 categoryMenuIdentifier:(id)a5
+- (id)_initWithCommand:(id)command state:(id)state categoryMenuIdentifier:(id)identifier
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  commandCopy = command;
+  stateCopy = state;
+  identifierCopy = identifier;
   v15.receiver = self;
   v15.super_class = _UIMainMenuPerformableKeyboardShortcutCommand;
   v12 = [(_UIMainMenuPerformableKeyboardShortcutCommand *)&v15 init];
   p_isa = &v12->super.isa;
   if (v12)
   {
-    objc_storeStrong(&v12->_command, a3);
-    objc_storeStrong(p_isa + 2, a4);
-    objc_storeStrong(p_isa + 3, a5);
+    objc_storeStrong(&v12->_command, command);
+    objc_storeStrong(p_isa + 2, state);
+    objc_storeStrong(p_isa + 3, identifier);
   }
 
   return p_isa;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   command = self->_command;
-  v5 = a3;
-  [v5 encodeObject:command forKey:@"Command"];
-  [v5 encodeObject:self->_state forKey:@"State"];
-  [v5 encodeObject:self->_categoryMenuIdentifier forKey:@"CategoryMenuIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:command forKey:@"Command"];
+  [coderCopy encodeObject:self->_state forKey:@"State"];
+  [coderCopy encodeObject:self->_categoryMenuIdentifier forKey:@"CategoryMenuIdentifier"];
 }
 
-- (_UIMainMenuPerformableKeyboardShortcutCommand)initWithCoder:(id)a3
+- (_UIMainMenuPerformableKeyboardShortcutCommand)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(_UIMainMenuPerformableKeyboardShortcutCommand *)self init];
   if (v5)
   {
     v6 = objc_opt_self();
-    v7 = [v4 decodeObjectOfClass:v6 forKey:@"Command"];
+    v7 = [coderCopy decodeObjectOfClass:v6 forKey:@"Command"];
     command = v5->_command;
     v5->_command = v7;
 
     v9 = objc_opt_self();
-    v10 = [v4 decodeObjectOfClass:v9 forKey:@"State"];
+    v10 = [coderCopy decodeObjectOfClass:v9 forKey:@"State"];
     state = v5->_state;
     v5->_state = v10;
 
     v12 = objc_opt_self();
-    v13 = [v4 decodeObjectOfClass:v12 forKey:@"CategoryMenuIdentifier"];
+    v13 = [coderCopy decodeObjectOfClass:v12 forKey:@"CategoryMenuIdentifier"];
     categoryMenuIdentifier = v5->_categoryMenuIdentifier;
     v5->_categoryMenuIdentifier = v13;
   }
@@ -62,10 +62,10 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     LOBYTE(v12) = 1;
   }
@@ -77,7 +77,7 @@
 
     if (isKindOfClass)
     {
-      v7 = v4;
+      v7 = equalCopy;
       command = v7->_command;
       v9 = self->_command;
       v10 = command;
@@ -172,9 +172,9 @@ LABEL_24:
   v4 = [v3 appendObject:self->_command withName:@"command"];
   v5 = [v3 appendObject:self->_state withName:@"state"];
   v6 = [v3 appendObject:self->_categoryMenuIdentifier withName:@"categoryMenuIdentifier"];
-  v7 = [v3 build];
+  build = [v3 build];
 
-  return v7;
+  return build;
 }
 
 @end

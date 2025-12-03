@@ -9,10 +9,10 @@
 + (id)nu_safeColorForIdentifier:()NUAdditions
 {
   v4 = a3;
-  v5 = [a1 arrayOfColors];
+  arrayOfColors = [self arrayOfColors];
   v6 = [v4 hash];
 
-  v7 = [v5 objectAtIndex:{v6 % objc_msgSend(v5, "count")}];
+  v7 = [arrayOfColors objectAtIndex:{v6 % objc_msgSend(arrayOfColors, "count")}];
 
   return v7;
 }
@@ -20,18 +20,18 @@
 + (id)arrayOfColors
 {
   v27[8] = *MEMORY[0x277D85DE8];
-  v17 = [MEMORY[0x277D75348] systemBlueColor];
-  v18 = [MEMORY[0x277D75348] systemPurpleColor];
+  systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
+  systemPurpleColor = [MEMORY[0x277D75348] systemPurpleColor];
   v25 = 0.0;
   v26 = 0.0;
   v23 = 0.0;
   v24 = 0.0;
-  [v18 getRed:&v26 green:&v25 blue:&v24 alpha:&v23];
+  [systemPurpleColor getRed:&v26 green:&v25 blue:&v24 alpha:&v23];
   v21 = 0.0;
   v22 = 0.0;
   v19 = 0.0;
   v20 = 0.0;
-  [v17 getRed:&v22 green:&v21 blue:&v20 alpha:&v19];
+  [systemBlueColor getRed:&v22 green:&v21 blue:&v20 alpha:&v19];
   v16 = [MEMORY[0x277D75348] colorWithRed:1.0 green:0.678431373 blue:0.0 alpha:1.0];
   v27[0] = v16;
   v15 = [MEMORY[0x277D75348] colorWithRed:0.992156863 green:0.466666667 blue:0.156862745 alpha:1.0];

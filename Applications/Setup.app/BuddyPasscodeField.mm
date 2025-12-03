@@ -1,26 +1,26 @@
 @interface BuddyPasscodeField
 - (BOOL)becomeFirstResponder;
 - (BOOL)hasText;
-- (BuddyPasscodeField)initWithNumberOfEntryFields:(unint64_t)a3;
+- (BuddyPasscodeField)initWithNumberOfEntryFields:(unint64_t)fields;
 - (BuddyPasscodeFieldDelegate)delegate;
 - (NSString)stringValue;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
 - (int64_t)keyboardType;
-- (void)_passcodeFieldTapped:(id)a3;
+- (void)_passcodeFieldTapped:(id)tapped;
 - (void)_updateDots;
 - (void)deleteBackward;
-- (void)insertText:(id)a3;
-- (void)layoutDotsToFitInsideRect:(CGRect)a3;
-- (void)setStringValue:(id)a3;
+- (void)insertText:(id)text;
+- (void)layoutDotsToFitInsideRect:(CGRect)rect;
+- (void)setStringValue:(id)value;
 @end
 
 @implementation BuddyPasscodeField
 
-- (BuddyPasscodeField)initWithNumberOfEntryFields:(unint64_t)a3
+- (BuddyPasscodeField)initWithNumberOfEntryFields:(unint64_t)fields
 {
   v22 = a2;
-  v21 = a3;
+  fieldsCopy = fields;
   location = 0;
   v20.receiver = self;
   v20.super_class = BuddyPasscodeField;
@@ -32,21 +32,21 @@
     v4 = *(location + 4);
     *(location + 4) = v3;
 
-    *(location + 3) = v21;
+    *(location + 3) = fieldsCopy;
     *(location + 8) = 1;
     obj = objc_alloc_init(NSMutableArray);
-    for (i = 0; i < v21; ++i)
+    for (i = 0; i < fieldsCopy; ++i)
     {
       v17 = objc_alloc_init(BuddyPasscodeFieldDot);
       [v17 setTranslatesAutoresizingMaskIntoConstraints:0];
-      v5 = [v17 heightAnchor];
+      heightAnchor = [v17 heightAnchor];
       [v17 intrinsicContentSize];
-      v7 = [v5 constraintEqualToConstant:v6];
+      v7 = [heightAnchor constraintEqualToConstant:v6];
       [v7 setActive:1];
 
-      v8 = [v17 widthAnchor];
+      widthAnchor = [v17 widthAnchor];
       [v17 intrinsicContentSize];
-      v11 = [v8 constraintEqualToConstant:{v9, *&v9, v10}];
+      v11 = [widthAnchor constraintEqualToConstant:{v9, *&v9, v10}];
       [v11 setActive:1];
 
       [obj addObject:v17];
@@ -80,62 +80,62 @@
   return v3;
 }
 
-- (void)setStringValue:(id)a3
+- (void)setStringValue:(id)value
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyPasscodeField *)v12 value];
-  [(NSMutableString *)v3 setString:location[0]];
+  objc_storeStrong(location, value);
+  value = [(BuddyPasscodeField *)selfCopy value];
+  [(NSMutableString *)value setString:location[0]];
 
-  [(BuddyPasscodeField *)v12 _updateDots];
-  v4 = [(BuddyPasscodeField *)v12 value];
-  v5 = [(NSMutableString *)v4 length];
-  v6 = [(BuddyPasscodeField *)v12 numberOfEntryFields];
+  [(BuddyPasscodeField *)selfCopy _updateDots];
+  value2 = [(BuddyPasscodeField *)selfCopy value];
+  v5 = [(NSMutableString *)value2 length];
+  numberOfEntryFields = [(BuddyPasscodeField *)selfCopy numberOfEntryFields];
 
-  if (v5 == v6)
+  if (v5 == numberOfEntryFields)
   {
-    v7 = [(BuddyPasscodeField *)v12 delegate];
-    v8 = v12;
-    v9 = [(BuddyPasscodeField *)v12 value];
-    v10 = [(NSMutableString *)v9 copy];
-    [(BuddyPasscodeFieldDelegate *)v7 passcodeField:v8 enteredPasscode:v10];
+    delegate = [(BuddyPasscodeField *)selfCopy delegate];
+    v8 = selfCopy;
+    value3 = [(BuddyPasscodeField *)selfCopy value];
+    v10 = [(NSMutableString *)value3 copy];
+    [(BuddyPasscodeFieldDelegate *)delegate passcodeField:v8 enteredPasscode:v10];
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (void)layoutDotsToFitInsideRect:(CGRect)a3
+- (void)layoutDotsToFitInsideRect:(CGRect)rect
 {
-  v20 = a3;
-  v19 = self;
+  rectCopy = rect;
+  selfCopy = self;
   location[1] = a2;
-  v3 = [(BuddyPasscodeField *)self dotViews];
-  v4 = [(NSArray *)v3 count];
+  dotViews = [(BuddyPasscodeField *)self dotViews];
+  v4 = [(NSArray *)dotViews count];
 
   if (v4)
   {
-    [(BuddyPasscodeField *)v19 setSpacing:28.0];
-    [(BuddyPasscodeField *)v19 layoutIfNeeded];
-    v5 = [(BuddyPasscodeField *)v19 dotViews];
-    location[0] = [(NSArray *)v5 lastObject];
+    [(BuddyPasscodeField *)selfCopy setSpacing:28.0];
+    [(BuddyPasscodeField *)selfCopy layoutIfNeeded];
+    dotViews2 = [(BuddyPasscodeField *)selfCopy dotViews];
+    location[0] = [(NSArray *)dotViews2 lastObject];
 
     [location[0] frame];
     v7 = v6;
     [location[0] intrinsicContentSize];
-    if (v7 + v8 > v20.size.width)
+    if (v7 + v8 > rectCopy.size.width)
     {
-      v9 = [(BuddyPasscodeField *)v19 numberOfEntryFields];
-      v10 = [(BuddyPasscodeField *)v19 dotViews];
-      v11 = [(NSArray *)v10 firstObject];
-      [v11 intrinsicContentSize];
+      numberOfEntryFields = [(BuddyPasscodeField *)selfCopy numberOfEntryFields];
+      dotViews3 = [(BuddyPasscodeField *)selfCopy dotViews];
+      firstObject = [(NSArray *)dotViews3 firstObject];
+      [firstObject intrinsicContentSize];
       v16 = v12;
       v17 = v13;
-      v14 = v9 * v12;
+      v14 = numberOfEntryFields * v12;
 
-      v15 = [(BuddyPasscodeField *)v19 numberOfEntryFields];
-      [(BuddyPasscodeField *)v19 setSpacing:(v20.size.width - v14) / (v15 - 1), (v20.size.width - v14) / (v15 - 1), v15 - 1, *&v16, v17];
+      numberOfEntryFields2 = [(BuddyPasscodeField *)selfCopy numberOfEntryFields];
+      [(BuddyPasscodeField *)selfCopy setSpacing:(rectCopy.size.width - v14) / (numberOfEntryFields2 - 1), (rectCopy.size.width - v14) / (numberOfEntryFields2 - 1), numberOfEntryFields2 - 1, *&v16, v17];
     }
 
     objc_storeStrong(location, 0);
@@ -154,40 +154,40 @@
 {
   v2 = +[NSBundle mainBundle];
   v3 = [(NSBundle *)v2 localizedStringForKey:@"PASSCODE_VALUES" value:&stru_10032F900 table:@"Localizable"];
-  v4 = [(BuddyPasscodeField *)self value];
-  v5 = [NSString localizedStringWithFormat:v3, [(NSMutableString *)v4 length], [(BuddyPasscodeField *)self numberOfEntryFields]];
+  value = [(BuddyPasscodeField *)self value];
+  v5 = [NSString localizedStringWithFormat:v3, [(NSMutableString *)value length], [(BuddyPasscodeField *)self numberOfEntryFields]];
 
   return v5;
 }
 
-- (void)_passcodeFieldTapped:(id)a3
+- (void)_passcodeFieldTapped:(id)tapped
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(BuddyPasscodeField *)v4 becomeFirstResponder];
+  objc_storeStrong(location, tapped);
+  [(BuddyPasscodeField *)selfCopy becomeFirstResponder];
   objc_storeStrong(location, 0);
 }
 
 - (void)_updateDots
 {
-  v10 = self;
+  selfCopy = self;
   v9 = a2;
   for (i = 0; ; ++i)
   {
     v2 = i;
-    if (v2 >= [(BuddyPasscodeField *)v10 numberOfEntryFields])
+    if (v2 >= [(BuddyPasscodeField *)selfCopy numberOfEntryFields])
     {
       break;
     }
 
-    v3 = [(BuddyPasscodeField *)v10 dotViews];
-    v7 = [(NSArray *)v3 objectAtIndex:i];
+    dotViews = [(BuddyPasscodeField *)selfCopy dotViews];
+    v7 = [(NSArray *)dotViews objectAtIndex:i];
 
     v4 = i;
-    v5 = [(BuddyPasscodeField *)v10 stringValue];
-    v6 = v4 < [(NSString *)v5 length];
+    stringValue = [(BuddyPasscodeField *)selfCopy stringValue];
+    v6 = v4 < [(NSString *)stringValue length];
     [v7 setFilled:v6];
 
     objc_storeStrong(&v7, 0);
@@ -196,26 +196,26 @@
 
 - (BOOL)becomeFirstResponder
 {
-  v7 = self;
+  selfCopy = self;
   v6 = a2;
   v4.receiver = self;
   v4.super_class = BuddyPasscodeField;
-  v5 = [(BuddyPasscodeField *)&v4 becomeFirstResponder];
-  if (v5)
+  becomeFirstResponder = [(BuddyPasscodeField *)&v4 becomeFirstResponder];
+  if (becomeFirstResponder)
   {
     v2 = +[UIKeyboard activeKeyboard];
     [v2 setReturnKeyEnabled:0];
   }
 
-  return v5 & 1;
+  return becomeFirstResponder & 1;
 }
 
 - (int64_t)keyboardType
 {
   v2 = +[UIDevice currentDevice];
-  v3 = [(UIDevice *)v2 userInterfaceIdiom];
+  userInterfaceIdiom = [(UIDevice *)v2 userInterfaceIdiom];
 
-  if (v3 == 1)
+  if (userInterfaceIdiom == 1)
   {
     return 11;
   }
@@ -234,20 +234,20 @@
   return v3;
 }
 
-- (void)insertText:(id)a3
+- (void)insertText:(id)text
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, text);
   v13 = 0;
   v3 = 1;
-  if ([(BuddyPasscodeField *)v16 isEnabled])
+  if ([(BuddyPasscodeField *)selfCopy isEnabled])
   {
-    v14 = [(BuddyPasscodeField *)v16 stringValue];
+    stringValue = [(BuddyPasscodeField *)selfCopy stringValue];
     v13 = 1;
-    v4 = [(NSString *)v14 length];
-    v3 = v4 == [(BuddyPasscodeField *)v16 numberOfEntryFields];
+    v4 = [(NSString *)stringValue length];
+    v3 = v4 == [(BuddyPasscodeField *)selfCopy numberOfEntryFields];
   }
 
   if (v13)
@@ -258,21 +258,21 @@
   {
     if ([location[0] length])
     {
-      v5 = [(BuddyPasscodeField *)v16 value];
-      [(NSMutableString *)v5 appendString:location[0]];
+      value = [(BuddyPasscodeField *)selfCopy value];
+      [(NSMutableString *)value appendString:location[0]];
 
-      [(BuddyPasscodeField *)v16 _updateDots];
-      v6 = [(BuddyPasscodeField *)v16 stringValue];
-      v7 = [(NSString *)v6 length];
-      v8 = [(BuddyPasscodeField *)v16 numberOfEntryFields];
+      [(BuddyPasscodeField *)selfCopy _updateDots];
+      stringValue2 = [(BuddyPasscodeField *)selfCopy stringValue];
+      v7 = [(NSString *)stringValue2 length];
+      numberOfEntryFields = [(BuddyPasscodeField *)selfCopy numberOfEntryFields];
 
-      if (v7 == v8)
+      if (v7 == numberOfEntryFields)
       {
-        v9 = [(BuddyPasscodeField *)v16 delegate];
-        v10 = v16;
-        v11 = [(BuddyPasscodeField *)v16 value];
-        v12 = [(NSMutableString *)v11 copy];
-        [(BuddyPasscodeFieldDelegate *)v9 passcodeField:v10 enteredPasscode:v12];
+        delegate = [(BuddyPasscodeField *)selfCopy delegate];
+        v10 = selfCopy;
+        value2 = [(BuddyPasscodeField *)selfCopy value];
+        v12 = [(NSMutableString *)value2 copy];
+        [(BuddyPasscodeFieldDelegate *)delegate passcodeField:v10 enteredPasscode:v12];
       }
     }
   }
@@ -282,15 +282,15 @@
 
 - (void)deleteBackward
 {
-  v2 = [(BuddyPasscodeField *)self stringValue];
-  v3 = [(NSString *)v2 length];
+  stringValue = [(BuddyPasscodeField *)self stringValue];
+  v3 = [(NSString *)stringValue length];
 
   if (v3)
   {
-    v4 = [(BuddyPasscodeField *)self value];
-    v5 = [(BuddyPasscodeField *)self stringValue];
-    v7 = [(NSString *)v5 length]- 1;
-    [(NSMutableString *)v4 deleteCharactersInRange:v7, 1, v7, 1];
+    value = [(BuddyPasscodeField *)self value];
+    stringValue2 = [(BuddyPasscodeField *)self stringValue];
+    v7 = [(NSString *)stringValue2 length]- 1;
+    [(NSMutableString *)value deleteCharactersInRange:v7, 1, v7, 1];
 
     [(BuddyPasscodeField *)self _updateDots];
   }

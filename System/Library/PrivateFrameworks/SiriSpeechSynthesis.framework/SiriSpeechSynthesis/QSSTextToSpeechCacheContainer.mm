@@ -1,7 +1,7 @@
 @interface QSSTextToSpeechCacheContainer
 - (NSArray)cache_object;
-- (Offset<siri::speech::schema_fb::TextToSpeechCacheContainer>)addObjectToBuffer:(void *)a3;
-- (QSSTextToSpeechCacheContainer)initWithFlatbuffData:(id)a3 root:(const TextToSpeechCacheContainer *)a4 verify:(BOOL)a5;
+- (Offset<siri::speech::schema_fb::TextToSpeechCacheContainer>)addObjectToBuffer:(void *)buffer;
+- (QSSTextToSpeechCacheContainer)initWithFlatbuffData:(id)data root:(const TextToSpeechCacheContainer *)root verify:(BOOL)verify;
 - (QSSTextToSpeechCacheMetaInfo)cache_meta_info;
 - (id)flatbuffData;
 @end
@@ -37,14 +37,14 @@ flatbuffers::DetachedBuffer *__45__QSSTextToSpeechCacheContainer_flatbuffData__b
   return result;
 }
 
-- (Offset<siri::speech::schema_fb::TextToSpeechCacheContainer>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::schema_fb::TextToSpeechCacheContainer>)addObjectToBuffer:(void *)buffer
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = [(QSSTextToSpeechCacheContainer *)self cache_meta_info];
-  v6 = [v5 addObjectToBuffer:a3];
+  cache_meta_info = [(QSSTextToSpeechCacheContainer *)self cache_meta_info];
+  v6 = [cache_meta_info addObjectToBuffer:buffer];
 
-  v7 = [(QSSTextToSpeechCacheContainer *)self cache_object];
-  v8 = [v7 count];
+  cache_object = [(QSSTextToSpeechCacheContainer *)self cache_object];
+  v8 = [cache_object count];
   if (v8)
   {
     if (!(v8 >> 62))
@@ -65,40 +65,40 @@ flatbuffers::DetachedBuffer *__45__QSSTextToSpeechCacheContainer_flatbuffData__b
   {
     *v21;
     *v21;
-    [**(&v20 + 1) addObjectToBuffer:a3];
+    [**(&v20 + 1) addObjectToBuffer:buffer];
     std::__allocate_at_least[abi:ne200100]<std::allocator<flatbuffers::Offset<siri::speech::schema_fb::RecognitionToken>>>(1uLL);
   }
 
-  flatbuffers::FlatBufferBuilder::StartVector(a3, 0, 4uLL);
-  v9 = flatbuffers::FlatBufferBuilder::EndVector(a3, 0);
-  flatbuffers::FlatBufferBuilder::NotNested(a3);
-  *(a3 + 70) = 1;
-  v10 = *(a3 + 8);
-  v11 = *(a3 + 12);
-  v12 = *(a3 + 10);
+  flatbuffers::FlatBufferBuilder::StartVector(buffer, 0, 4uLL);
+  v9 = flatbuffers::FlatBufferBuilder::EndVector(buffer, 0);
+  flatbuffers::FlatBufferBuilder::NotNested(buffer);
+  *(buffer + 70) = 1;
+  v10 = *(buffer + 8);
+  v11 = *(buffer + 12);
+  v12 = *(buffer + 10);
   if (v18)
   {
-    v13 = flatbuffers::FlatBufferBuilder::ReferTo(a3, v18);
-    flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(a3, 4, v13);
+    v13 = flatbuffers::FlatBufferBuilder::ReferTo(buffer, v18);
+    flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(buffer, 4, v13);
   }
 
   if (v9)
   {
-    v14 = flatbuffers::FlatBufferBuilder::ReferTo(a3, v9);
-    flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(a3, 6, v14);
+    v14 = flatbuffers::FlatBufferBuilder::ReferTo(buffer, v9);
+    flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(buffer, 6, v14);
   }
 
-  v15.var0 = flatbuffers::FlatBufferBuilder::EndTable(a3, v10 - v11 + v12);
+  v15.var0 = flatbuffers::FlatBufferBuilder::EndTable(buffer, v10 - v11 + v12);
   v16 = *MEMORY[0x277D85DE8];
   return v15;
 }
 
 - (NSArray)cache_object
 {
-  v3 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"cache_object"];
-  if (!v3)
+  array = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"cache_object"];
+  if (!array)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     root = self->_root;
     v5 = &root[-*root->var0];
     if (*v5->var0 >= 7u)
@@ -115,7 +115,7 @@ flatbuffers::DetachedBuffer *__45__QSSTextToSpeechCacheContainer_flatbuffData__b
           do
           {
             v11 = [[QSSTextToSpeechCacheObject alloc] initWithFlatbuffData:self->_data root:&v10[*v10->var0] verify:0];
-            [v3 addObject:v11];
+            [array addObject:v11];
 
             v10 += 4;
             v9 -= 4;
@@ -126,10 +126,10 @@ flatbuffers::DetachedBuffer *__45__QSSTextToSpeechCacheContainer_flatbuffData__b
       }
     }
 
-    [(NSMutableDictionary *)self->_storage setObject:v3 forKeyedSubscript:@"cache_object"];
+    [(NSMutableDictionary *)self->_storage setObject:array forKeyedSubscript:@"cache_object"];
   }
 
-  return v3;
+  return array;
 }
 
 - (QSSTextToSpeechCacheMetaInfo)cache_meta_info
@@ -157,10 +157,10 @@ flatbuffers::DetachedBuffer *__45__QSSTextToSpeechCacheContainer_flatbuffData__b
   return v3;
 }
 
-- (QSSTextToSpeechCacheContainer)initWithFlatbuffData:(id)a3 root:(const TextToSpeechCacheContainer *)a4 verify:(BOOL)a5
+- (QSSTextToSpeechCacheContainer)initWithFlatbuffData:(id)data root:(const TextToSpeechCacheContainer *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v36.receiver = self;
   v36.super_class = QSSTextToSpeechCacheContainer;
   v10 = [(QSSTextToSpeechCacheContainer *)&v36 init];
@@ -170,35 +170,35 @@ flatbuffers::DetachedBuffer *__45__QSSTextToSpeechCacheContainer_flatbuffData__b
     goto LABEL_29;
   }
 
-  if (!v9 || ![v9 length])
+  if (!dataCopy || ![dataCopy length])
   {
     goto LABEL_30;
   }
 
-  objc_storeStrong(&v10->_data, a3);
-  if (!a4)
+  objc_storeStrong(&v10->_data, data);
+  if (!root)
   {
-    v12 = [(NSData *)v10->_data bytes];
-    a4 = v12 + *v12;
+    bytes = [(NSData *)v10->_data bytes];
+    root = bytes + *bytes;
   }
 
-  v10->_root = a4;
-  if (!v5)
+  v10->_root = root;
+  if (!verifyCopy)
   {
     goto LABEL_28;
   }
 
-  v13 = [(NSData *)v10->_data bytes];
+  bytes2 = [(NSData *)v10->_data bytes];
   v14 = [(NSData *)v10->_data length];
   root = v10->_root;
-  if (root < v13 || root > v13 + v14)
+  if (root < bytes2 || root > bytes2 + v14)
   {
     goto LABEL_30;
   }
 
-  v17 = [(NSData *)v10->_data bytes];
+  bytes3 = [(NSData *)v10->_data bytes];
   v18 = [(NSData *)v10->_data length];
-  v31 = v17;
+  v31 = bytes3;
   v32 = v18;
   v33 = xmmword_26914CD70;
   v34 = 0;
@@ -290,9 +290,9 @@ LABEL_30:
   }
 
 LABEL_28:
-  v27 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   storage = v11->_storage;
-  v11->_storage = v27;
+  v11->_storage = dictionary;
 
 LABEL_29:
   v29 = v11;

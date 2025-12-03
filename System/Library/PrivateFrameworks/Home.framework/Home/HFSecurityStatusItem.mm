@@ -1,34 +1,34 @@
 @interface HFSecurityStatusItem
-+ (BOOL)_currentState:(int64_t)a3 matchesTargetState:(int64_t)a4;
-+ (id)_shortDescriptionForSecuritySystemState:(int64_t)a3;
-- (id)_subclass_updateWithOptions:(id)a3;
-- (id)iconDescriptorForRepresentedHomeKitObjects:(id)a3;
++ (BOOL)_currentState:(int64_t)state matchesTargetState:(int64_t)targetState;
++ (id)_shortDescriptionForSecuritySystemState:(int64_t)state;
+- (id)_subclass_updateWithOptions:(id)options;
+- (id)iconDescriptorForRepresentedHomeKitObjects:(id)objects;
 @end
 
 @implementation HFSecurityStatusItem
 
-- (id)iconDescriptorForRepresentedHomeKitObjects:(id)a3
+- (id)iconDescriptorForRepresentedHomeKitObjects:(id)objects
 {
-  v3 = [MEMORY[0x277D755D0] configurationWithPointSize:{a3, 24.0}];
+  v3 = [MEMORY[0x277D755D0] configurationWithPointSize:{objects, 24.0}];
   v4 = [[HFImageIconDescriptor alloc] initWithSystemImageNamed:@"light.beacon.min.fill" configuration:v3];
 
   return v4;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
   v18[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  optionsCopy = options;
   v5 = *MEMORY[0x277CD0ED8];
   v6 = [objc_opt_class() characteristicTypesForServiceType:v5 includingAssociatedTypes:1];
   v18[0] = v5;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:1];
-  v8 = [v6 allObjects];
-  v9 = [(HFStatusItem *)self filteredServicesOfTypes:v7 containingCharacteristicTypes:v8];
+  allObjects = [v6 allObjects];
+  v9 = [(HFStatusItem *)self filteredServicesOfTypes:v7 containingCharacteristicTypes:allObjects];
 
   objc_initWeak(&location, self);
-  v10 = [(HFStatusItem *)self valueSource];
-  v11 = [v10 readValuesForCharacteristicTypes:v6 inServices:v9];
+  valueSource = [(HFStatusItem *)self valueSource];
+  v11 = [valueSource readValuesForCharacteristicTypes:v6 inServices:v9];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __52__HFSecurityStatusItem__subclass_updateWithOptions___block_invoke;
@@ -287,43 +287,43 @@ LABEL_18:
 LABEL_19:
 }
 
-+ (id)_shortDescriptionForSecuritySystemState:(int64_t)a3
++ (id)_shortDescriptionForSecuritySystemState:(int64_t)state
 {
-  if (a3 <= 4)
+  if (state <= 4)
   {
-    a1 = _HFLocalizedStringWithDefaultValue(off_277DF9228[a3], off_277DF9228[a3], 1);
+    self = _HFLocalizedStringWithDefaultValue(off_277DF9228[state], off_277DF9228[state], 1);
   }
 
-  return a1;
+  return self;
 }
 
-+ (BOOL)_currentState:(int64_t)a3 matchesTargetState:(int64_t)a4
++ (BOOL)_currentState:(int64_t)state matchesTargetState:(int64_t)targetState
 {
-  v4 = a3 == 2;
-  v5 = a3 == 3;
-  if (a4 != 3)
+  v4 = state == 2;
+  v5 = state == 3;
+  if (targetState != 3)
   {
     v5 = 0;
   }
 
-  if (a4 != 2)
+  if (targetState != 2)
   {
     v4 = v5;
   }
 
-  v6 = a3 == 0;
-  v7 = a3 == 1;
-  if (a4 != 1)
+  v6 = state == 0;
+  v7 = state == 1;
+  if (targetState != 1)
   {
     v7 = 0;
   }
 
-  if (a4)
+  if (targetState)
   {
     v6 = v7;
   }
 
-  if (a4 <= 1)
+  if (targetState <= 1)
   {
     return v6;
   }

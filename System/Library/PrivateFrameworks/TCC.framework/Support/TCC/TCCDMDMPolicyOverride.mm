@@ -4,7 +4,7 @@
 - (void)parsePlist;
 - (void)resetDatabaseFlagsForRecordsRemovedFromPreviousPolicy;
 - (void)updateDatabase;
-- (void)updateDatabaseForPolicyAuthorizationRecord:(id)a3 service:(id)a4;
+- (void)updateDatabaseForPolicyAuthorizationRecord:(id)record service:(id)service;
 @end
 
 @implementation TCCDMDMPolicyOverride
@@ -16,8 +16,8 @@
   v2 = [(TCCDPolicyOverride *)&v11 init];
   if (v2)
   {
-    v3 = [objc_opt_class() MDMOverridesFilePath];
-    v4 = [TCCDPolicyOverride useString:v3 orReadFromDefaults:@"sitePolicyOverridePath"];
+    mDMOverridesFilePath = [objc_opt_class() MDMOverridesFilePath];
+    v4 = [TCCDPolicyOverride useString:mDMOverridesFilePath orReadFromDefaults:@"sitePolicyOverridePath"];
     [(TCCDPolicyOverride *)v2 setPlistFilePath:v4];
 
     v5 = dispatch_get_global_queue(0, 0);
@@ -34,14 +34,14 @@
   return v2;
 }
 
-- (void)updateDatabaseForPolicyAuthorizationRecord:(id)a3 service:(id)a4
+- (void)updateDatabaseForPolicyAuthorizationRecord:(id)record service:(id)service
 {
-  v5 = a3;
-  v29 = a4;
-  v6 = [v5 objectForKeyedSubscript:@"Authorization"];
-  v7 = [v5 objectForKeyedSubscript:@"Identifier"];
-  v8 = [v5 objectForKeyedSubscript:@"IdentifierType"];
-  v9 = [v5 objectForKeyedSubscript:@"CodeRequirementData"];
+  recordCopy = record;
+  serviceCopy = service;
+  v6 = [recordCopy objectForKeyedSubscript:@"Authorization"];
+  v7 = [recordCopy objectForKeyedSubscript:@"Identifier"];
+  v8 = [recordCopy objectForKeyedSubscript:@"IdentifierType"];
+  v9 = [recordCopy objectForKeyedSubscript:@"CodeRequirementData"];
   if ([v8 isEqualToString:@"bundleID"])
   {
     v10 = v6;
@@ -68,7 +68,7 @@ LABEL_5:
     v42[1] = 3221225472;
     v42[2] = sub_10005AD00;
     v42[3] = &unk_1000A6C30;
-    v13 = v29;
+    v13 = serviceCopy;
     v43 = v13;
     v14 = v7;
     v44 = v14;
@@ -86,9 +86,9 @@ LABEL_5:
       v15 = +[TCCDPolicyOverride logHandle];
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
-        v26 = [v13 name];
+        name = [v13 name];
         *buf = 138543874;
-        v55 = v26;
+        v55 = name;
         v56 = 2114;
         v57 = v14;
         v58 = 2048;
@@ -122,9 +122,9 @@ LABEL_5:
         v22 = +[TCCDPolicyOverride logHandle];
         if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
         {
-          v28 = [v20 name];
+          name2 = [v20 name];
           *buf = 138543874;
-          v55 = v28;
+          v55 = name2;
           v56 = 2114;
           v57 = v21;
           v58 = 2048;
@@ -165,9 +165,9 @@ LABEL_29:
           v25 = +[TCCDPolicyOverride logHandle];
           if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
           {
-            v27 = [v23 name];
+            name3 = [v23 name];
             *buf = 138543874;
-            v55 = v27;
+            v55 = name3;
             v56 = 2114;
             v57 = v24;
             v58 = 2048;
@@ -233,8 +233,8 @@ LABEL_17:
         }
 
         v4 = *(*(&v23 + 1) + 8 * v3);
-        v5 = [(TCCDPolicyOverride *)self policyAccessByIdentifier];
-        v6 = [v5 objectForKeyedSubscript:v4];
+        policyAccessByIdentifier = [(TCCDPolicyOverride *)self policyAccessByIdentifier];
+        v6 = [policyAccessByIdentifier objectForKeyedSubscript:v4];
 
         v21 = 0u;
         v22 = 0u;
@@ -312,11 +312,11 @@ LABEL_17:
   v4 = +[TCCDPolicyOverride logHandle];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
-    v5 = [(TCCDPolicyOverride *)self plistDictionary];
-    if (v5)
+    plistDictionary = [(TCCDPolicyOverride *)self plistDictionary];
+    if (plistDictionary)
     {
-      v2 = [(TCCDPolicyOverride *)self plistDictionary];
-      v6 = [v2 count];
+      plistDictionary2 = [(TCCDPolicyOverride *)self plistDictionary];
+      v6 = [plistDictionary2 count];
     }
 
     else
@@ -325,32 +325,32 @@ LABEL_17:
     }
 
     v14 = 138412546;
-    v15 = self;
+    selfCopy = self;
     v16 = 2048;
     v17 = v6;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "Override: %@ MDM Plist with %ld entries.", &v14, 0x16u);
-    if (v5)
+    if (plistDictionary)
     {
     }
   }
 
-  v7 = [(TCCDPolicyOverride *)self policyAccessByIdentifier];
-  [v7 removeAllObjects];
+  policyAccessByIdentifier = [(TCCDPolicyOverride *)self policyAccessByIdentifier];
+  [policyAccessByIdentifier removeAllObjects];
 
-  v8 = [(TCCDPolicyOverride *)self plistDictionary];
+  plistDictionary3 = [(TCCDPolicyOverride *)self plistDictionary];
 
-  if (v8)
+  if (plistDictionary3)
   {
-    v9 = [(TCCDPolicyOverride *)self policyAccessByIdentifier];
-    v10 = [(TCCDPolicyOverride *)self plistDictionary];
-    [v9 addEntriesFromDictionary:v10];
+    policyAccessByIdentifier2 = [(TCCDPolicyOverride *)self policyAccessByIdentifier];
+    plistDictionary4 = [(TCCDPolicyOverride *)self plistDictionary];
+    [policyAccessByIdentifier2 addEntriesFromDictionary:plistDictionary4];
   }
 
   v11 = +[TCCDPlatform currentPlatform];
-  v12 = [v11 server];
-  v13 = [v12 macos_isSystemServer];
+  server = [v11 server];
+  macos_isSystemServer = [server macos_isSystemServer];
 
-  if (v13)
+  if (macos_isSystemServer)
   {
     [(TCCDMDMPolicyOverride *)self updateDatabase];
   }

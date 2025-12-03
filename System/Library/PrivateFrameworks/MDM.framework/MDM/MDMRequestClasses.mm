@@ -1,19 +1,19 @@
 @interface MDMRequestClasses
-+ (Class)classForRequestType:(id)a3;
++ (Class)classForRequestType:(id)type;
 @end
 
 @implementation MDMRequestClasses
 
-+ (Class)classForRequestType:(id)a3
++ (Class)classForRequestType:(id)type
 {
   v3 = classForRequestType__onceToken;
-  v4 = a3;
+  typeCopy = type;
   if (v3 != -1)
   {
     +[MDMRequestClasses classForRequestType:];
   }
 
-  v5 = [classForRequestType__requestClassByRequestType objectForKeyedSubscript:v4];
+  v5 = [classForRequestType__requestClassByRequestType objectForKeyedSubscript:typeCopy];
 
   return v5;
 }

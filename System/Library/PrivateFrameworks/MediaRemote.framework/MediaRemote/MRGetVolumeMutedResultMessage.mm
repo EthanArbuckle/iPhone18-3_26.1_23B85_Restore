@@ -6,10 +6,10 @@
 
 - (BOOL)isMuted
 {
-  v2 = [(MRProtocolMessage *)self underlyingCodableMessage];
-  v3 = [v2 isMuted];
+  underlyingCodableMessage = [(MRProtocolMessage *)self underlyingCodableMessage];
+  isMuted = [underlyingCodableMessage isMuted];
 
-  return v3;
+  return isMuted;
 }
 
 @end

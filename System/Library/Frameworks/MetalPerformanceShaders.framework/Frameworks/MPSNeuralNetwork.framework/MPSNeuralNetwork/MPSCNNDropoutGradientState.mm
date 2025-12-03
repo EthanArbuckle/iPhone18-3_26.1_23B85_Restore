@@ -2,7 +2,7 @@
 - (MPSCNNDropoutGradientState)init;
 - (NSData)maskData;
 - (void)dealloc;
-- (void)synchronizeOnCommandBuffer:(id)a3;
+- (void)synchronizeOnCommandBuffer:(id)buffer;
 @end
 
 @implementation MPSCNNDropoutGradientState
@@ -21,11 +21,11 @@
   [(MPSNNGradientState *)&v3 dealloc];
 }
 
-- (void)synchronizeOnCommandBuffer:(id)a3
+- (void)synchronizeOnCommandBuffer:(id)buffer
 {
   v3.receiver = self;
   v3.super_class = MPSCNNDropoutGradientState;
-  [(MPSState *)&v3 synchronizeOnCommandBuffer:a3];
+  [(MPSState *)&v3 synchronizeOnCommandBuffer:buffer];
 }
 
 - (NSData)maskData

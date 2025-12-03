@@ -1,28 +1,28 @@
 @interface _UIStatusBarAnimation
-+ (_UIStatusBarAnimation)animationWithBlock:(id)a3;
-+ (void)_addAnimations:(id)a3 toDispatchGroup:(id)a4;
-+ (void)_addAnimations:(id)a3 toPreparingAnimations:(id)a4 exclusiveAnimations:(id)a5 visitedDisplayItemIdentifiers:(id)a6;
++ (_UIStatusBarAnimation)animationWithBlock:(id)block;
++ (void)_addAnimations:(id)animations toDispatchGroup:(id)group;
++ (void)_addAnimations:(id)animations toPreparingAnimations:(id)preparingAnimations exclusiveAnimations:(id)exclusiveAnimations visitedDisplayItemIdentifiers:(id)identifiers;
 + (void)initialize;
-+ (void)prepareAnimations:(id)a3 forStatusBar:(id)a4;
++ (void)prepareAnimations:(id)animations forStatusBar:(id)bar;
 - (NSSet)effectiveDelayedItemIdentifiers;
 - (_UIStatusBarAnimation)parentAnimation;
-- (id)_dependentItemIdentifiersEnabledOnly:(BOOL)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_dependentItemIdentifiersEnabledOnly:(BOOL)only;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)_prepareForStatusBar:(id)a3 preparingAnimations:(id)a4 exclusiveAnimations:(id)a5;
-- (void)addCompletionHandler:(id)a3;
-- (void)addSubAnimation:(id)a3 forDisplayItemWithIdentifier:(id)a4;
-- (void)addTimeout:(double)a3 withHandler:(id)a4;
-- (void)addTotalCompletionHandler:(id)a3;
+- (void)_prepareForStatusBar:(id)bar preparingAnimations:(id)animations exclusiveAnimations:(id)exclusiveAnimations;
+- (void)addCompletionHandler:(id)handler;
+- (void)addSubAnimation:(id)animation forDisplayItemWithIdentifier:(id)identifier;
+- (void)addTimeout:(double)timeout withHandler:(id)handler;
+- (void)addTotalCompletionHandler:(id)handler;
 - (void)cancel;
-- (void)performForStatusBar:(id)a3;
+- (void)performForStatusBar:(id)bar;
 @end
 
 @implementation _UIStatusBarAnimation
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = [MEMORY[0x1E695DFA8] set];
     v3 = _statusBarRunningAnimations;
@@ -30,11 +30,11 @@
   }
 }
 
-+ (_UIStatusBarAnimation)animationWithBlock:(id)a3
++ (_UIStatusBarAnimation)animationWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = objc_alloc_init(a1);
-  [v5 setAnimationBlock:v4];
+  blockCopy = block;
+  v5 = objc_alloc_init(self);
+  [v5 setAnimationBlock:blockCopy];
 
   v6 = [MEMORY[0x1E695DFD8] set];
   [v5 setDelayedItemIdentifiers:v6];
@@ -45,7 +45,7 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   v5 = _Block_copy(self->_animationBlock);
@@ -89,73 +89,73 @@
   return v4;
 }
 
-- (void)addCompletionHandler:(id)a3
+- (void)addCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   completionHandlers = self->_completionHandlers;
-  aBlock = v4;
+  aBlock = handlerCopy;
   if (!completionHandlers)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_completionHandlers;
-    self->_completionHandlers = v6;
+    self->_completionHandlers = array;
 
-    v4 = aBlock;
+    handlerCopy = aBlock;
     completionHandlers = self->_completionHandlers;
   }
 
-  v8 = _Block_copy(v4);
+  v8 = _Block_copy(handlerCopy);
   [(NSMutableArray *)completionHandlers addObject:v8];
 }
 
-- (void)addTotalCompletionHandler:(id)a3
+- (void)addTotalCompletionHandler:(id)handler
 {
   v7[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = dispatch_group_create();
   v7[0] = self;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v7 count:1];
   [_UIStatusBarAnimation _addAnimations:v6 toDispatchGroup:v5];
 
-  dispatch_group_notify(v5, MEMORY[0x1E69E96A0], v4);
+  dispatch_group_notify(v5, MEMORY[0x1E69E96A0], handlerCopy);
 }
 
-+ (void)prepareAnimations:(id)a3 forStatusBar:(id)a4
++ (void)prepareAnimations:(id)animations forStatusBar:(id)bar
 {
-  v6 = a4;
+  barCopy = bar;
   v7 = MEMORY[0x1E695DF90];
-  v8 = a3;
-  v9 = [v7 dictionary];
-  v10 = [MEMORY[0x1E695DF90] dictionary];
+  animationsCopy = animations;
+  dictionary = [v7 dictionary];
+  dictionary2 = [MEMORY[0x1E695DF90] dictionary];
   v11 = [MEMORY[0x1E695DFD8] set];
-  [a1 _addAnimations:v8 toPreparingAnimations:v9 exclusiveAnimations:v10 visitedDisplayItemIdentifiers:v11];
+  [self _addAnimations:animationsCopy toPreparingAnimations:dictionary exclusiveAnimations:dictionary2 visitedDisplayItemIdentifiers:v11];
 
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __56___UIStatusBarAnimation_prepareAnimations_forStatusBar___block_invoke;
   v15[3] = &unk_1E7121CE8;
-  v16 = v6;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v6;
+  v16 = barCopy;
+  v17 = dictionary;
+  v18 = dictionary2;
+  v12 = dictionary2;
+  v13 = dictionary;
+  v14 = barCopy;
   [v13 enumerateKeysAndObjectsUsingBlock:v15];
 }
 
-+ (void)_addAnimations:(id)a3 toPreparingAnimations:(id)a4 exclusiveAnimations:(id)a5 visitedDisplayItemIdentifiers:(id)a6
++ (void)_addAnimations:(id)animations toPreparingAnimations:(id)preparingAnimations exclusiveAnimations:(id)exclusiveAnimations visitedDisplayItemIdentifiers:(id)identifiers
 {
   v39 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  animationsCopy = animations;
+  preparingAnimationsCopy = preparingAnimations;
+  exclusiveAnimationsCopy = exclusiveAnimations;
+  identifiersCopy = identifiers;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  obj = v9;
-  v13 = [v9 countByEnumeratingWithState:&v34 objects:v38 count:16];
+  obj = animationsCopy;
+  v13 = [animationsCopy countByEnumeratingWithState:&v34 objects:v38 count:16];
   if (v13)
   {
     v14 = v13;
@@ -170,57 +170,57 @@
         }
 
         v16 = *(*(&v34 + 1) + 8 * i);
-        v17 = [v16 displayItemIdentifier];
-        v18 = v17;
-        if (v17)
+        displayItemIdentifier = [v16 displayItemIdentifier];
+        v18 = displayItemIdentifier;
+        if (displayItemIdentifier)
         {
-          v19 = v17;
+          null = displayItemIdentifier;
         }
 
         else
         {
-          v19 = [MEMORY[0x1E695DFB0] null];
+          null = [MEMORY[0x1E695DFB0] null];
         }
 
-        v20 = v19;
+        v20 = null;
 
-        v21 = [v16 displayItemIdentifier];
-        if (v21)
+        displayItemIdentifier2 = [v16 displayItemIdentifier];
+        if (displayItemIdentifier2)
         {
-          v22 = v21;
-          v23 = [v12 containsObject:v20];
+          v22 = displayItemIdentifier2;
+          v23 = [identifiersCopy containsObject:v20];
 
           if (v23)
           {
-            v29 = [MEMORY[0x1E696AAA8] currentHandler];
-            [v29 handleFailureInMethod:a2 object:a1 file:@"_UIStatusBarAnimation.m" lineNumber:115 description:{@"Several animations are targeting the same display item with identifier %@ in the same tree", v20}];
+            currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+            [currentHandler handleFailureInMethod:a2 object:self file:@"_UIStatusBarAnimation.m" lineNumber:115 description:{@"Several animations are targeting the same display item with identifier %@ in the same tree", v20}];
           }
         }
 
-        v24 = [v10 objectForKeyedSubscript:v20];
+        v24 = [preparingAnimationsCopy objectForKeyedSubscript:v20];
         if (!v24)
         {
           v24 = [MEMORY[0x1E695DFA8] set];
-          [v10 setObject:v24 forKeyedSubscript:v20];
+          [preparingAnimationsCopy setObject:v24 forKeyedSubscript:v20];
         }
 
         [v24 addObject:v16];
-        v25 = [v16 exclusivityGroupIdentifier];
-        if (v25)
+        exclusivityGroupIdentifier = [v16 exclusivityGroupIdentifier];
+        if (exclusivityGroupIdentifier)
         {
-          v26 = [v11 objectForKeyedSubscript:v25];
+          v26 = [exclusiveAnimationsCopy objectForKeyedSubscript:exclusivityGroupIdentifier];
           if (!v26)
           {
             v26 = [MEMORY[0x1E695DFA8] set];
-            [v11 setObject:v26 forKeyedSubscript:v25];
+            [exclusiveAnimationsCopy setObject:v26 forKeyedSubscript:exclusivityGroupIdentifier];
           }
 
           [v26 addObject:v16];
         }
 
-        v27 = [v16 subAnimations];
-        v28 = [v12 setByAddingObject:v20];
-        [a1 _addAnimations:v27 toPreparingAnimations:v10 exclusiveAnimations:v11 visitedDisplayItemIdentifiers:v28];
+        subAnimations = [v16 subAnimations];
+        v28 = [identifiersCopy setByAddingObject:v20];
+        [self _addAnimations:subAnimations toPreparingAnimations:preparingAnimationsCopy exclusiveAnimations:exclusiveAnimationsCopy visitedDisplayItemIdentifiers:v28];
       }
 
       v14 = [obj countByEnumeratingWithState:&v34 objects:v38 count:16];
@@ -230,24 +230,24 @@
   }
 }
 
-- (void)_prepareForStatusBar:(id)a3 preparingAnimations:(id)a4 exclusiveAnimations:(id)a5
+- (void)_prepareForStatusBar:(id)bar preparingAnimations:(id)animations exclusiveAnimations:(id)exclusiveAnimations
 {
   v43 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  barCopy = bar;
+  animationsCopy = animations;
+  exclusiveAnimationsCopy = exclusiveAnimations;
   if (!self->_displayItemIdentifier)
   {
     v12 = 0;
     goto LABEL_15;
   }
 
-  v11 = [v9 objectForKeyedSubscript:?];
+  v11 = [animationsCopy objectForKeyedSubscript:?];
   v12 = v11;
   if (!v11)
   {
 LABEL_15:
-    if (self->_exclusivityGroupIdentifier && ([v10 objectForKeyedSubscript:?], (v19 = objc_claimAutoreleasedReturnValue()) != 0))
+    if (self->_exclusivityGroupIdentifier && ([exclusiveAnimationsCopy objectForKeyedSubscript:?], (v19 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v35 = 0u;
       v36 = 0u;
@@ -271,10 +271,10 @@ LABEL_15:
             v24 = *(*(&v33 + 1) + 8 * i);
             if ([v24 priority] > self->_priority)
             {
-              [v24 _prepareForStatusBar:v8 preparingAnimations:v9 exclusiveAnimations:v10];
+              [v24 _prepareForStatusBar:barCopy preparingAnimations:animationsCopy exclusiveAnimations:exclusiveAnimationsCopy];
               if ([v24 isEnabled])
               {
-                v30 = v13;
+                displayItem = v13;
                 goto LABEL_41;
               }
             }
@@ -301,12 +301,12 @@ LABEL_15:
     if (WeakRetained)
     {
       v26 = objc_loadWeakRetained(&self->_parentAnimation);
-      [v26 _prepareForStatusBar:v8 preparingAnimations:v9 exclusiveAnimations:v10];
+      [v26 _prepareForStatusBar:barCopy preparingAnimations:animationsCopy exclusiveAnimations:exclusiveAnimationsCopy];
 
       v27 = objc_loadWeakRetained(&self->_parentAnimation);
-      v28 = [v27 isEnabled];
+      isEnabled = [v27 isEnabled];
 
-      if (!v28)
+      if (!isEnabled)
       {
         goto LABEL_42;
       }
@@ -314,8 +314,8 @@ LABEL_15:
 
     if (self->_displayItemIdentifier)
     {
-      v29 = [v8 stateForDisplayItemWithIdentifier:?];
-      v30 = [v29 displayItem];
+      v29 = [barCopy stateForDisplayItemWithIdentifier:?];
+      displayItem = [v29 displayItem];
       self->_enabled = [v29 prepareAnimation:self];
       p_enabled = &self->_enabled;
 
@@ -327,13 +327,13 @@ LABEL_15:
 
     else
     {
-      v30 = 0;
+      displayItem = 0;
       self->_enabled = 1;
       p_enabled = &self->_enabled;
     }
 
     prepareBlock = self->_prepareBlock;
-    if (prepareBlock && (prepareBlock[2](prepareBlock, self, v30) & 1) == 0)
+    if (prepareBlock && (prepareBlock[2](prepareBlock, self, displayItem) & 1) == 0)
     {
       [(_UIStatusBarAnimation *)self cancel];
     }
@@ -375,7 +375,7 @@ LABEL_6:
         v18 = *(*(&v37 + 1) + 8 * v17);
         if ([v18 priority] > self->_priority)
         {
-          [v18 _prepareForStatusBar:v8 preparingAnimations:v9 exclusiveAnimations:v10];
+          [v18 _prepareForStatusBar:barCopy preparingAnimations:animationsCopy exclusiveAnimations:exclusiveAnimationsCopy];
           if ([v18 isEnabled])
           {
             goto LABEL_42;
@@ -401,16 +401,16 @@ LABEL_6:
 LABEL_43:
 }
 
-+ (void)_addAnimations:(id)a3 toDispatchGroup:(id)a4
++ (void)_addAnimations:(id)animations toDispatchGroup:(id)group
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  animationsCopy = animations;
+  groupCopy = group;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v8 = [animationsCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v8)
   {
     v9 = v8;
@@ -421,52 +421,52 @@ LABEL_43:
       {
         if (*v17 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(animationsCopy);
         }
 
         v12 = *(*(&v16 + 1) + 8 * i);
         if ([v12 isEnabled])
         {
-          dispatch_group_enter(v7);
+          dispatch_group_enter(groupCopy);
           v14[0] = MEMORY[0x1E69E9820];
           v14[1] = 3221225472;
           v14[2] = __56___UIStatusBarAnimation__addAnimations_toDispatchGroup___block_invoke;
           v14[3] = &unk_1E70F5DB8;
-          v15 = v7;
+          v15 = groupCopy;
           [v12 addCompletionHandler:v14];
         }
 
-        v13 = [v12 subAnimations];
-        [a1 _addAnimations:v13 toDispatchGroup:v7];
+        subAnimations = [v12 subAnimations];
+        [self _addAnimations:subAnimations toDispatchGroup:groupCopy];
       }
 
-      v9 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v9 = [animationsCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v9);
   }
 }
 
-- (void)performForStatusBar:(id)a3
+- (void)performForStatusBar:(id)bar
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  barCopy = bar;
   if (self->_enabled)
   {
     v32 = 0;
     v33 = &v32;
     v34 = 0x2020000000;
     v35 = 0x7FFFFFFFFFFFFFFFLL;
-    v5 = [(_UIStatusBarAnimation *)self subAnimations];
+    subAnimations = [(_UIStatusBarAnimation *)self subAnimations];
     v6 = _UIStatusBarGetPriorityComparator();
-    v7 = [v5 sortedArrayUsingComparator:v6];
+    v7 = [subAnimations sortedArrayUsingComparator:v6];
 
     v29[0] = MEMORY[0x1E69E9820];
     v29[1] = 3221225472;
     v29[2] = __45___UIStatusBarAnimation_performForStatusBar___block_invoke;
     v29[3] = &unk_1E7121D10;
     v29[4] = self;
-    v8 = v4;
+    v8 = barCopy;
     v30 = v8;
     v31 = &v32;
     [v7 enumerateObjectsUsingBlock:v29];
@@ -544,12 +544,12 @@ LABEL_43:
   }
 }
 
-- (void)addTimeout:(double)a3 withHandler:(id)a4
+- (void)addTimeout:(double)timeout withHandler:(id)handler
 {
   if (self->_timeout == 0.0)
   {
-    self->_timeout = a3;
-    [(_UIStatusBarAnimation *)self setTimeoutBlock:a4];
+    self->_timeout = timeout;
+    [(_UIStatusBarAnimation *)self setTimeoutBlock:handler];
   }
 }
 
@@ -593,8 +593,8 @@ LABEL_43:
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v8 = [(_UIStatusBarAnimation *)self subAnimations];
-    v9 = [v8 countByEnumeratingWithState:&v13 objects:v21 count:16];
+    subAnimations = [(_UIStatusBarAnimation *)self subAnimations];
+    v9 = [subAnimations countByEnumeratingWithState:&v13 objects:v21 count:16];
     if (v9)
     {
       v10 = v9;
@@ -606,14 +606,14 @@ LABEL_43:
         {
           if (*v14 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(subAnimations);
           }
 
           [*(*(&v13 + 1) + 8 * v12++) cancel];
         }
 
         while (v10 != v12);
-        v10 = [v8 countByEnumeratingWithState:&v13 objects:v21 count:16];
+        v10 = [subAnimations countByEnumeratingWithState:&v13 objects:v21 count:16];
       }
 
       while (v10);
@@ -621,21 +621,21 @@ LABEL_43:
   }
 }
 
-- (void)addSubAnimation:(id)a3 forDisplayItemWithIdentifier:(id)a4
+- (void)addSubAnimation:(id)animation forDisplayItemWithIdentifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v8 && self->_displayItemIdentifier == v8)
+  animationCopy = animation;
+  identifierCopy = identifier;
+  v9 = identifierCopy;
+  if (identifierCopy && self->_displayItemIdentifier == identifierCopy)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"_UIStatusBarAnimation.m" lineNumber:343 description:@"Can't add a sub-animation for the same display item"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIStatusBarAnimation.m" lineNumber:343 description:@"Can't add a sub-animation for the same display item"];
   }
 
   if (self->_enabled)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"_UIStatusBarAnimation.m" lineNumber:344 description:@"Sub-animations can't be added during prepare"];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"_UIStatusBarAnimation.m" lineNumber:344 description:@"Sub-animations can't be added during prepare"];
   }
 
   if (!self->_subAnimations)
@@ -645,7 +645,7 @@ LABEL_43:
     self->_subAnimations = v10;
   }
 
-  v14 = [v7 copy];
+  v14 = [animationCopy copy];
 
   [v14 setDisplayItemIdentifier:v9];
   [v14 setParentAnimation:self];
@@ -657,15 +657,15 @@ LABEL_43:
   v31 = *MEMORY[0x1E69E9840];
   if (self->_enabled)
   {
-    v3 = [(_UIStatusBarAnimation *)self delayedItemIdentifiers];
-    v4 = [v3 mutableCopy];
+    delayedItemIdentifiers = [(_UIStatusBarAnimation *)self delayedItemIdentifiers];
+    v4 = [delayedItemIdentifiers mutableCopy];
 
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v5 = [(_UIStatusBarAnimation *)self delayedDisplayItemPlacements];
-    v6 = [v5 countByEnumeratingWithState:&v25 objects:v30 count:16];
+    delayedDisplayItemPlacements = [(_UIStatusBarAnimation *)self delayedDisplayItemPlacements];
+    v6 = [delayedDisplayItemPlacements countByEnumeratingWithState:&v25 objects:v30 count:16];
     if (v6)
     {
       v7 = v6;
@@ -676,15 +676,15 @@ LABEL_43:
         {
           if (*v26 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(delayedDisplayItemPlacements);
           }
 
-          v10 = [*(*(&v25 + 1) + 8 * i) identifier];
-          v11 = [_UIStatusBarItem itemIdentifierForDisplayItemIdentifier:v10];
+          identifier = [*(*(&v25 + 1) + 8 * i) identifier];
+          v11 = [_UIStatusBarItem itemIdentifierForDisplayItemIdentifier:identifier];
           [v4 addObject:v11];
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v25 objects:v30 count:16];
+        v7 = [delayedDisplayItemPlacements countByEnumeratingWithState:&v25 objects:v30 count:16];
       }
 
       while (v7);
@@ -701,8 +701,8 @@ LABEL_43:
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v14 = [(_UIStatusBarAnimation *)self subAnimations];
-    v15 = [v14 countByEnumeratingWithState:&v21 objects:v29 count:16];
+    subAnimations = [(_UIStatusBarAnimation *)self subAnimations];
+    v15 = [subAnimations countByEnumeratingWithState:&v21 objects:v29 count:16];
     if (v15)
     {
       v16 = v15;
@@ -713,14 +713,14 @@ LABEL_43:
         {
           if (*v22 != v17)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(subAnimations);
           }
 
-          v19 = [*(*(&v21 + 1) + 8 * j) effectiveDelayedItemIdentifiers];
-          [v4 unionSet:v19];
+          effectiveDelayedItemIdentifiers = [*(*(&v21 + 1) + 8 * j) effectiveDelayedItemIdentifiers];
+          [v4 unionSet:effectiveDelayedItemIdentifiers];
         }
 
-        v16 = [v14 countByEnumeratingWithState:&v21 objects:v29 count:16];
+        v16 = [subAnimations countByEnumeratingWithState:&v21 objects:v29 count:16];
       }
 
       while (v16);
@@ -735,11 +735,11 @@ LABEL_43:
   return v4;
 }
 
-- (id)_dependentItemIdentifiersEnabledOnly:(BOOL)a3
+- (id)_dependentItemIdentifiersEnabledOnly:(BOOL)only
 {
-  v3 = a3;
+  onlyCopy = only;
   v19 = *MEMORY[0x1E69E9840];
-  if (a3 && !self->_enabled)
+  if (only && !self->_enabled)
   {
     v5 = [MEMORY[0x1E695DFD8] set];
   }
@@ -757,8 +757,8 @@ LABEL_43:
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v7 = [(_UIStatusBarAnimation *)self subAnimations];
-    v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    subAnimations = [(_UIStatusBarAnimation *)self subAnimations];
+    v8 = [subAnimations countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v8)
     {
       v9 = v8;
@@ -769,14 +769,14 @@ LABEL_43:
         {
           if (*v15 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(subAnimations);
           }
 
-          v12 = [*(*(&v14 + 1) + 8 * i) _dependentItemIdentifiersEnabledOnly:v3];
+          v12 = [*(*(&v14 + 1) + 8 * i) _dependentItemIdentifiersEnabledOnly:onlyCopy];
           [v5 unionSet:v12];
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v9 = [subAnimations countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v9);

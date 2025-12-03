@@ -3,29 +3,29 @@
 - (CGRect)frame;
 - (NSArray)preferredFocusEnvironments;
 - (NSString)description;
-- (_UIFocusGuideImpl)initWithDelegate:(id)a3;
+- (_UIFocusGuideImpl)initWithDelegate:(id)delegate;
 - (id)_preferredFocusRegionCoordinateSpace;
-- (id)focusGuideRegion:(id)a3 preferredFocusEnvironmentsForMovementRequest:(id)a4;
-- (void)_searchForFocusRegionsInContext:(id)a3;
-- (void)_setAutomaticallyPreferOwningItem:(BOOL)a3;
-- (void)_setDidSetPreferredFocusedEnvironments:(BOOL)a3;
-- (void)_setFocusPriorityRequired:(BOOL)a3;
-- (void)_setIgnoresSpeedBumpEdges:(BOOL)a3;
-- (void)_setIsUnclippable:(BOOL)a3;
-- (void)_setIsUnoccludable:(BOOL)a3;
-- (void)focusGuideRegion:(id)a3 willParticipateAsDestinationRegionInFocusUpdate:(id)a4;
-- (void)setPreferredFocusEnvironments:(id)a3;
+- (id)focusGuideRegion:(id)region preferredFocusEnvironmentsForMovementRequest:(id)request;
+- (void)_searchForFocusRegionsInContext:(id)context;
+- (void)_setAutomaticallyPreferOwningItem:(BOOL)item;
+- (void)_setDidSetPreferredFocusedEnvironments:(BOOL)environments;
+- (void)_setFocusPriorityRequired:(BOOL)required;
+- (void)_setIgnoresSpeedBumpEdges:(BOOL)edges;
+- (void)_setIsUnclippable:(BOOL)unclippable;
+- (void)_setIsUnoccludable:(BOOL)unoccludable;
+- (void)focusGuideRegion:(id)region willParticipateAsDestinationRegionInFocusUpdate:(id)update;
+- (void)setPreferredFocusEnvironments:(id)environments;
 @end
 
 @implementation _UIFocusGuideImpl
 
-- (_UIFocusGuideImpl)initWithDelegate:(id)a3
+- (_UIFocusGuideImpl)initWithDelegate:(id)delegate
 {
-  v5 = a3;
-  if (!v5)
+  delegateCopy = delegate;
+  if (!delegateCopy)
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"_UIFocusGuideImpl.m" lineNumber:49 description:{@"Invalid parameter not satisfying: %@", @"delegate != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIFocusGuideImpl.m" lineNumber:49 description:{@"Invalid parameter not satisfying: %@", @"delegate != nil"}];
   }
 
   v11.receiver = self;
@@ -35,7 +35,7 @@
   if (v6)
   {
     *&v6->_flags |= 0x41u;
-    v6->_delegate = v5;
+    v6->_delegate = delegateCopy;
     if (objc_opt_respondsToSelector())
     {
       v8 = 0x80;
@@ -52,9 +52,9 @@
   return v7;
 }
 
-- (void)_setIsUnoccludable:(BOOL)a3
+- (void)_setIsUnoccludable:(BOOL)unoccludable
 {
-  if (a3)
+  if (unoccludable)
   {
     v3 = 2;
   }
@@ -67,9 +67,9 @@
   *&self->_flags = *&self->_flags & 0xFD | v3;
 }
 
-- (void)_setIsUnclippable:(BOOL)a3
+- (void)_setIsUnclippable:(BOOL)unclippable
 {
-  if (a3)
+  if (unclippable)
   {
     v3 = 4;
   }
@@ -82,9 +82,9 @@
   *&self->_flags = *&self->_flags & 0xFB | v3;
 }
 
-- (void)_setFocusPriorityRequired:(BOOL)a3
+- (void)_setFocusPriorityRequired:(BOOL)required
 {
-  if (a3)
+  if (required)
   {
     v3 = 8;
   }
@@ -97,9 +97,9 @@
   *&self->_flags = *&self->_flags & 0xF7 | v3;
 }
 
-- (void)_setIgnoresSpeedBumpEdges:(BOOL)a3
+- (void)_setIgnoresSpeedBumpEdges:(BOOL)edges
 {
-  if (a3)
+  if (edges)
   {
     v3 = 16;
   }
@@ -112,9 +112,9 @@
   *&self->_flags = *&self->_flags & 0xEF | v3;
 }
 
-- (void)_setAutomaticallyPreferOwningItem:(BOOL)a3
+- (void)_setAutomaticallyPreferOwningItem:(BOOL)item
 {
-  if (a3)
+  if (item)
   {
     v3 = 64;
   }
@@ -127,9 +127,9 @@
   *&self->_flags = *&self->_flags & 0xBF | v3;
 }
 
-- (void)_setDidSetPreferredFocusedEnvironments:(BOOL)a3
+- (void)_setDidSetPreferredFocusedEnvironments:(BOOL)environments
 {
-  if (a3)
+  if (environments)
   {
     v3 = 32;
   }
@@ -156,12 +156,12 @@
     {
       if ((*&self->_flags & 0x20) == 0)
       {
-        v4 = [(_UIFocusGuideImpl *)self owningItem];
+        owningItem = [(_UIFocusGuideImpl *)self owningItem];
 
-        if (v4)
+        if (owningItem)
         {
-          v5 = [(_UIFocusGuideImpl *)self owningItem];
-          v8[0] = v5;
+          owningItem2 = [(_UIFocusGuideImpl *)self owningItem];
+          v8[0] = owningItem2;
           v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:1];
 
           goto LABEL_10;
@@ -182,13 +182,13 @@ LABEL_10:
   return v6;
 }
 
-- (void)setPreferredFocusEnvironments:(id)a3
+- (void)setPreferredFocusEnvironments:(id)environments
 {
-  v4 = a3;
-  if (!v4 || self->_preferredFocusEnvironments != v4)
+  environmentsCopy = environments;
+  if (!environmentsCopy || self->_preferredFocusEnvironments != environmentsCopy)
   {
-    v8 = v4;
-    v5 = [(NSArray *)v4 copy];
+    v8 = environmentsCopy;
+    v5 = [(NSArray *)environmentsCopy copy];
     v6 = v5;
     if (v5)
     {
@@ -202,7 +202,7 @@ LABEL_10:
 
     objc_storeStrong(&self->_preferredFocusEnvironments, v7);
 
-    v4 = v8;
+    environmentsCopy = v8;
   }
 
   *&self->_flags |= 0x20u;
@@ -225,11 +225,11 @@ LABEL_10:
     return 0;
   }
 
-  v3 = [(_UIFocusGuideImpl *)self owningItem];
-  if (v3)
+  owningItem = [(_UIFocusGuideImpl *)self owningItem];
+  if (owningItem)
   {
-    v4 = [(_UIFocusGuideImpl *)self preferredFocusEnvironments];
-    v5 = [v4 count] != 0;
+    preferredFocusEnvironments = [(_UIFocusGuideImpl *)self preferredFocusEnvironments];
+    v5 = [preferredFocusEnvironments count] != 0;
   }
 
   else
@@ -242,32 +242,32 @@ LABEL_10:
 
 - (id)_preferredFocusRegionCoordinateSpace
 {
-  v2 = [(_UIFocusGuideImpl *)self owningItem];
-  v3 = [v2 focusItemContainer];
-  v4 = [v3 coordinateSpace];
+  owningItem = [(_UIFocusGuideImpl *)self owningItem];
+  focusItemContainer = [owningItem focusItemContainer];
+  coordinateSpace = [focusItemContainer coordinateSpace];
 
-  return v4;
+  return coordinateSpace;
 }
 
-- (void)_searchForFocusRegionsInContext:(id)a3
+- (void)_searchForFocusRegionsInContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = [_UIFocusGuideRegion alloc];
   [(_UIFocusGuideImpl *)self frame];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  v14 = [(_UIFocusGuideImpl *)self owningItem];
-  v15 = [v14 focusItemContainer];
-  v16 = [v15 coordinateSpace];
-  v19 = [(_UIFocusGuideRegion *)v5 initWithFrame:v16 coordinateSpace:v7, v9, v11, v13];
+  owningItem = [(_UIFocusGuideImpl *)self owningItem];
+  focusItemContainer = [owningItem focusItemContainer];
+  coordinateSpace = [focusItemContainer coordinateSpace];
+  v19 = [(_UIFocusGuideRegion *)v5 initWithFrame:coordinateSpace coordinateSpace:v7, v9, v11, v13];
 
   [(_UIFocusGuideRegion *)v19 setDelegate:self];
   [(_UIFocusGuideRegion *)v19 _setIsUnoccludable:[(_UIFocusGuideImpl *)self _isUnoccludable]];
-  v17 = [(_UIFocusGuideImpl *)self _focusPriorityRequired];
+  _focusPriorityRequired = [(_UIFocusGuideImpl *)self _focusPriorityRequired];
   LODWORD(v18) = 1140457472;
-  if (v17)
+  if (_focusPriorityRequired)
   {
     *&v18 = 1000.0;
   }
@@ -275,40 +275,40 @@ LABEL_10:
   [(_UIFocusGuideRegion *)v19 _setFocusPriority:v18];
   [(_UIFocusGuideRegion *)v19 _setIgnoresSpeedBumpEdges:[(_UIFocusGuideImpl *)self _ignoresSpeedBumpEdges]];
   [(_UIFocusGuideRegion *)v19 _setIsUnclippable:[(_UIFocusGuideImpl *)self _isUnclippable]];
-  [v4 addRegion:v19];
+  [contextCopy addRegion:v19];
 }
 
-- (id)focusGuideRegion:(id)a3 preferredFocusEnvironmentsForMovementRequest:(id)a4
+- (id)focusGuideRegion:(id)region preferredFocusEnvironmentsForMovementRequest:(id)request
 {
   if ((*&self->_flags & 0x80000000) != 0)
   {
-    v6 = [a4 movementInfo];
-    v7 = [v6 heading];
+    movementInfo = [request movementInfo];
+    heading = [movementInfo heading];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [v6 originatingHeading];
+      heading = [movementInfo originatingHeading];
     }
 
-    v5 = [(_UIFocusGuideImplDelegate *)self->_delegate focusGuide:self preferredEnvironmentsForHeading:v7];
+    v5 = [(_UIFocusGuideImplDelegate *)self->_delegate focusGuide:self preferredEnvironmentsForHeading:heading];
   }
 
   else
   {
-    v5 = [(_UIFocusGuideImpl *)self preferredFocusEnvironments:a3];
+    v5 = [(_UIFocusGuideImpl *)self preferredFocusEnvironments:region];
   }
 
   return v5;
 }
 
-- (void)focusGuideRegion:(id)a3 willParticipateAsDestinationRegionInFocusUpdate:(id)a4
+- (void)focusGuideRegion:(id)region willParticipateAsDestinationRegionInFocusUpdate:(id)update
 {
-  v6 = a4;
-  v5 = [v6 _focusedGuideImpl];
+  updateCopy = update;
+  _focusedGuideImpl = [updateCopy _focusedGuideImpl];
 
-  if (!v5)
+  if (!_focusedGuideImpl)
   {
-    [v6 _setFocusedGuideImpl:self];
+    [updateCopy _setFocusedGuideImpl:self];
   }
 }
 
@@ -318,9 +318,9 @@ LABEL_10:
   v9.receiver = self;
   v9.super_class = _UIFocusGuideImpl;
   v4 = [(_UIFocusGuideImpl *)&v9 description];
-  v5 = [(_UIFocusGuideImpl *)self isEnabled];
+  isEnabled = [(_UIFocusGuideImpl *)self isEnabled];
   v6 = @"NO";
-  if (v5)
+  if (isEnabled)
   {
     v6 = @"YES";
   }

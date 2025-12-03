@@ -6,7 +6,7 @@
 
 - (void)didTrigger
 {
-  v2 = self;
+  selfCopy = self;
   sub_23BACA778();
 }
 

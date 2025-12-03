@@ -1,5 +1,5 @@
 @interface _MTLPipelineCache
-- (_MTLPipelineCache)initWithFilePath:(id)a3 readOnly:(BOOL)a4 deviceInfo:(const MTLTargetDeviceArch *)a5;
+- (_MTLPipelineCache)initWithFilePath:(id)path readOnly:(BOOL)only deviceInfo:(const MTLTargetDeviceArch *)info;
 - (void)dealloc;
 @end
 
@@ -19,18 +19,18 @@
   [(_MTLPipelineCache *)&v4 dealloc];
 }
 
-- (_MTLPipelineCache)initWithFilePath:(id)a3 readOnly:(BOOL)a4 deviceInfo:(const MTLTargetDeviceArch *)a5
+- (_MTLPipelineCache)initWithFilePath:(id)path readOnly:(BOOL)only deviceInfo:(const MTLTargetDeviceArch *)info
 {
   v11.receiver = self;
   v11.super_class = _MTLPipelineCache;
   v8 = [(_MTLPipelineCache *)&v11 init];
   v8->_compilerCache = 0;
-  v8->_writable = !a4;
+  v8->_writable = !only;
   v8->_disableRunTimeCompilation = 0;
-  if (a3)
+  if (path)
   {
-    var1 = a5->var1;
-    [a3 UTF8String];
+    var1 = info->var1;
+    [path UTF8String];
     MTLCompilerCache::createPipelineDataCache();
   }
 

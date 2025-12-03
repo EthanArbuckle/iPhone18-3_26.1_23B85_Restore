@@ -1,22 +1,22 @@
 @interface TSDImageProvider
-+ (id)allocWithZone:(_NSZone *)a3;
++ (id)allocWithZone:(_NSZone *)zone;
 - (BOOL)isValid;
 - (CGSize)naturalSize;
-- (TSDImageProvider)initWithImageData:(id)a3;
+- (TSDImageProvider)initWithImageData:(id)data;
 - (TSDImageProvider)retain;
 - (void)dealloc;
-- (void)drawImageInContext:(CGContext *)a3 rect:(CGRect)a4;
+- (void)drawImageInContext:(CGContext *)context rect:(CGRect)rect;
 - (void)i_flushIfNoOneUsing;
 - (void)release;
 @end
 
 @implementation TSDImageProvider
 
-+ (id)allocWithZone:(_NSZone *)a3
++ (id)allocWithZone:(_NSZone *)zone
 {
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = &OBJC_METACLASS___TSDImageProvider;
-  result = objc_msgSendSuper2(&v4, sel_allocWithZone_, a3);
+  result = objc_msgSendSuper2(&v4, sel_allocWithZone_, zone);
   if (result)
   {
     atomic_store(1u, result + 8);
@@ -25,9 +25,9 @@
   return result;
 }
 
-- (TSDImageProvider)initWithImageData:(id)a3
+- (TSDImageProvider)initWithImageData:(id)data
 {
-  if (!a3)
+  if (!data)
   {
     v5 = MEMORY[0x277D81150];
     v6 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSDImageProvider initWithImageData:]");
@@ -41,9 +41,9 @@
   v12 = [(TSDImageProvider *)&v21 init];
   if (v12)
   {
-    v12->mImageData = a3;
+    v12->mImageData = data;
     v13 = objc_alloc(MEMORY[0x277D81370]);
-    v16 = objc_msgSend_context(a3, v14, v15);
+    v16 = objc_msgSend_context(data, v14, v15);
     v12->mObjectContextReference = objc_msgSend_initWithObject_(v13, v17, v16);
     objc_msgSend_i_commonInit(v12, v18, v19);
   }
@@ -82,10 +82,10 @@
   return 1;
 }
 
-- (void)drawImageInContext:(CGContext *)a3 rect:(CGRect)a4
+- (void)drawImageInContext:(CGContext *)context rect:(CGRect)rect
 {
   v4 = MEMORY[0x277D81150];
-  v5 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSDImageProvider drawImageInContext:rect:]", a4.origin.x, a4.origin.y, a4.size.width, a4.size.height);
+  v5 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSDImageProvider drawImageInContext:rect:]", rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
   v7 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/drawables/TSDImageProvider.m");
   objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v4, v8, v5, v7, 96, 0, "subclasses of TSDImageProvider must implement -drawImageInContext:rect:");
   v11 = MEMORY[0x277D81150];

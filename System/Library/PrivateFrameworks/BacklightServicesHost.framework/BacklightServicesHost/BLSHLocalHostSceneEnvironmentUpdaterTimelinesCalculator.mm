@@ -1,17 +1,17 @@
 @interface BLSHLocalHostSceneEnvironmentUpdaterTimelinesCalculator
-- (id)initWithDateInterval:(void *)a3 previousPresentationDate:(void *)a4 localHostEnvironment:(void *)a5 subHostedHostEnvironments:(char)a6 shouldReset:(void *)a7 osTimerProvider:;
-- (void)calculateWithCompletion:(id)a3;
+- (id)initWithDateInterval:(void *)interval previousPresentationDate:(void *)date localHostEnvironment:(void *)environment subHostedHostEnvironments:(char)environments shouldReset:(void *)reset osTimerProvider:;
+- (void)calculateWithCompletion:(id)completion;
 - (void)callCompletionIfDone;
 - (void)lock_completeAllTimelineEntries;
-- (void)requestDatesOperation:(id)a3 didTimeoutPendingEnvironments:(id)a4;
-- (void)requestDatesOperation:(id)a3 environment:(id)a4 didProvideSpecifiers:(id)a5 forPresentationInterval:(id)a6 isComplete:(BOOL)a7;
+- (void)requestDatesOperation:(id)operation didTimeoutPendingEnvironments:(id)environments;
+- (void)requestDatesOperation:(id)operation environment:(id)environment didProvideSpecifiers:(id)specifiers forPresentationInterval:(id)interval isComplete:(BOOL)complete;
 @end
 
 @implementation BLSHLocalHostSceneEnvironmentUpdaterTimelinesCalculator
 
-- (void)calculateWithCompletion:(id)a3
+- (void)calculateWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   os_unfair_lock_lock(&self->_lock);
   v6 = [MEMORY[0x277CBEB58] set];
   lock_timelines = self->_lock_timelines;
@@ -22,7 +22,7 @@
     [BLSHLocalHostSceneEnvironmentUpdaterTimelinesCalculator calculateWithCompletion:a2];
   }
 
-  v8 = MEMORY[0x223D70730](v5);
+  v8 = MEMORY[0x223D70730](completionCopy);
   lock_completion = self->_lock_completion;
   self->_lock_completion = v8;
 
@@ -33,7 +33,7 @@
   }
 
   os_unfair_lock_unlock(&self->_lock);
-  v11 = [(BLSBacklightSceneEnvironment *)self->_localHostEnvironment delegate];
+  delegate = [(BLSBacklightSceneEnvironment *)self->_localHostEnvironment delegate];
   localHostEnvironment = self->_localHostEnvironment;
   dateInterval = self->_dateInterval;
   v20[0] = MEMORY[0x277D85DD0];
@@ -41,7 +41,7 @@
   v20[2] = __83__BLSHLocalHostSceneEnvironmentUpdaterTimelinesCalculator_calculateWithCompletion___block_invoke;
   v20[3] = &unk_278420568;
   v20[4] = self;
-  [v11 environment:localHostEnvironment timelinesForDateInterval:dateInterval previousSpecifier:0 completion:v20];
+  [delegate environment:localHostEnvironment timelinesForDateInterval:dateInterval previousSpecifier:0 completion:v20];
 
   if (v10)
   {
@@ -100,7 +100,7 @@ id __83__BLSHLocalHostSceneEnvironmentUpdaterTimelinesCalculator_calculateWithCo
   os_unfair_lock_lock(&self->_lock);
   if (__PAIR64__(self->_lock_localHostEnvTimelinesComplete, self->_lock_requestDatesOperationComplete) == 0x100000001)
   {
-    v3 = [(NSMutableSet *)self->_lock_timelines allObjects];
+    allObjects = [(NSMutableSet *)self->_lock_timelines allObjects];
     v6 = MEMORY[0x223D70730](self->_lock_completion);
     [(BLSHEngineRequestDatesOperation *)self->_lock_requestDatesOperation invalidate];
     lock_requestDatesOperation = self->_lock_requestDatesOperation;
@@ -110,7 +110,7 @@ id __83__BLSHLocalHostSceneEnvironmentUpdaterTimelinesCalculator_calculateWithCo
     self->_lock_completion = 0;
 
     os_unfair_lock_unlock(&self->_lock);
-    v6[2](v6, self, v3);
+    v6[2](v6, self, allObjects);
   }
 
   else
@@ -158,12 +158,12 @@ id __83__BLSHLocalHostSceneEnvironmentUpdaterTimelinesCalculator_calculateWithCo
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)requestDatesOperation:(id)a3 environment:(id)a4 didProvideSpecifiers:(id)a5 forPresentationInterval:(id)a6 isComplete:(BOOL)a7
+- (void)requestDatesOperation:(id)operation environment:(id)environment didProvideSpecifiers:(id)specifiers forPresentationInterval:(id)interval isComplete:(BOOL)complete
 {
-  v7 = a7;
-  v10 = a4;
-  v19 = [a5 bs_map:&__block_literal_global_22];
-  v11 = BLSHSubhostedEnvironmentIdentifierForEnvironment(v10);
+  completeCopy = complete;
+  environmentCopy = environment;
+  v19 = [specifiers bs_map:&__block_literal_global_22];
+  v11 = BLSHSubhostedEnvironmentIdentifierForEnvironment(environmentCopy);
 
   os_unfair_lock_lock(&self->_lock);
   v12 = [(NSMutableDictionary *)self->_lock_incompleteTimelineEntriesForDateInterval objectForKey:v11];
@@ -184,15 +184,15 @@ id __83__BLSHLocalHostSceneEnvironmentUpdaterTimelinesCalculator_calculateWithCo
   v20 = v15;
   if (!lock_incompleteTimelineEntriesForDateInterval)
   {
-    v17 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v18 = self->_lock_incompleteTimelineEntriesForDateInterval;
-    self->_lock_incompleteTimelineEntriesForDateInterval = v17;
+    self->_lock_incompleteTimelineEntriesForDateInterval = dictionary;
 
     lock_incompleteTimelineEntriesForDateInterval = self->_lock_incompleteTimelineEntriesForDateInterval;
   }
 
   [NSMutableDictionary setObject:"setObject:forKey:" forKey:?];
-  if (v7)
+  if (completeCopy)
   {
     self->_lock_requestDatesOperationComplete = 1;
     [(BLSHLocalHostSceneEnvironmentUpdaterTimelinesCalculator *)self lock_completeAllTimelineEntries];
@@ -218,9 +218,9 @@ id __149__BLSHLocalHostSceneEnvironmentUpdaterTimelinesCalculator_requestDatesOp
   return v6;
 }
 
-- (void)requestDatesOperation:(id)a3 didTimeoutPendingEnvironments:(id)a4
+- (void)requestDatesOperation:(id)operation didTimeoutPendingEnvironments:(id)environments
 {
-  if ([a3 isComplete])
+  if ([operation isComplete])
   {
     os_unfair_lock_lock(&self->_lock);
     self->_lock_requestDatesOperationComplete = 1;
@@ -231,41 +231,41 @@ id __149__BLSHLocalHostSceneEnvironmentUpdaterTimelinesCalculator_requestDatesOp
   }
 }
 
-- (id)initWithDateInterval:(void *)a3 previousPresentationDate:(void *)a4 localHostEnvironment:(void *)a5 subHostedHostEnvironments:(char)a6 shouldReset:(void *)a7 osTimerProvider:
+- (id)initWithDateInterval:(void *)interval previousPresentationDate:(void *)date localHostEnvironment:(void *)environment subHostedHostEnvironments:(char)environments shouldReset:(void *)reset osTimerProvider:
 {
   v13 = a2;
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a7;
-  if (a1)
+  intervalCopy = interval;
+  dateCopy = date;
+  environmentCopy = environment;
+  resetCopy = reset;
+  if (self)
   {
-    v26.receiver = a1;
+    v26.receiver = self;
     v26.super_class = BLSHLocalHostSceneEnvironmentUpdaterTimelinesCalculator;
     v18 = objc_msgSendSuper2(&v26, sel_init);
-    a1 = v18;
+    self = v18;
     if (v18)
     {
       *(v18 + 2) = 0;
       v19 = [v13 copy];
-      v20 = a1[6];
-      a1[6] = v19;
+      v20 = self[6];
+      self[6] = v19;
 
-      v21 = [v14 copy];
-      v22 = a1[7];
-      a1[7] = v21;
+      v21 = [intervalCopy copy];
+      v22 = self[7];
+      self[7] = v21;
 
-      objc_storeStrong(a1 + 8, a4);
-      v23 = [v16 copy];
-      v24 = a1[9];
-      a1[9] = v23;
+      objc_storeStrong(self + 8, date);
+      v23 = [environmentCopy copy];
+      v24 = self[9];
+      self[9] = v23;
 
-      *(a1 + 88) = a6;
-      objc_storeStrong(a1 + 10, a7);
+      *(self + 88) = environments;
+      objc_storeStrong(self + 10, reset);
     }
   }
 
-  return a1;
+  return self;
 }
 
 - (void)calculateWithCompletion:(const char *)a1 .cold.1(const char *a1)

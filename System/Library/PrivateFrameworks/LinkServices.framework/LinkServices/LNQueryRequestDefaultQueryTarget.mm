@@ -1,31 +1,31 @@
 @interface LNQueryRequestDefaultQueryTarget
-- (BOOL)isEqual:(id)a3;
-- (LNQueryRequestDefaultQueryTarget)initWithCoder:(id)a3;
-- (LNQueryRequestDefaultQueryTarget)initWithEntityMetadata:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (LNQueryRequestDefaultQueryTarget)initWithCoder:(id)coder;
+- (LNQueryRequestDefaultQueryTarget)initWithEntityMetadata:(id)metadata;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNQueryRequestDefaultQueryTarget
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
 
   else
   {
-    v6 = v4;
+    v6 = equalCopy;
     if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v7 = [(LNQueryRequestDefaultQueryTarget *)self entityMetadata];
-      v8 = [(LNQueryRequestDefaultQueryTarget *)v6 entityMetadata];
-      v9 = v7;
-      v10 = v8;
+      entityMetadata = [(LNQueryRequestDefaultQueryTarget *)self entityMetadata];
+      entityMetadata2 = [(LNQueryRequestDefaultQueryTarget *)v6 entityMetadata];
+      v9 = entityMetadata;
+      v10 = entityMetadata2;
       v11 = v10;
       if (v9 == v10)
       {
@@ -51,41 +51,41 @@
   return v12;
 }
 
-- (LNQueryRequestDefaultQueryTarget)initWithCoder:(id)a3
+- (LNQueryRequestDefaultQueryTarget)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"entityMetadata"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"entityMetadata"];
 
   v6 = [(LNQueryRequestDefaultQueryTarget *)self initWithEntityMetadata:v5];
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(LNQueryRequestDefaultQueryTarget *)self entityMetadata];
-  [v4 encodeObject:v5 forKey:@"entityMetadata"];
+  coderCopy = coder;
+  entityMetadata = [(LNQueryRequestDefaultQueryTarget *)self entityMetadata];
+  [coderCopy encodeObject:entityMetadata forKey:@"entityMetadata"];
 }
 
 - (id)description
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [(LNEntityMetadata *)self->_entityMetadata identifier];
-  v4 = [v2 stringWithFormat:@"Entity <%@>", v3];
+  identifier = [(LNEntityMetadata *)self->_entityMetadata identifier];
+  v4 = [v2 stringWithFormat:@"Entity <%@>", identifier];
 
   return v4;
 }
 
-- (LNQueryRequestDefaultQueryTarget)initWithEntityMetadata:(id)a3
+- (LNQueryRequestDefaultQueryTarget)initWithEntityMetadata:(id)metadata
 {
-  v5 = a3;
+  metadataCopy = metadata;
   v10.receiver = self;
   v10.super_class = LNQueryRequestDefaultQueryTarget;
-  v6 = [(LNQueryRequestTargetBase *)&v10 _init];
-  v7 = v6;
-  if (v6)
+  _init = [(LNQueryRequestTargetBase *)&v10 _init];
+  v7 = _init;
+  if (_init)
   {
-    objc_storeStrong(v6 + 1, a3);
+    objc_storeStrong(_init + 1, metadata);
     v8 = v7;
   }
 

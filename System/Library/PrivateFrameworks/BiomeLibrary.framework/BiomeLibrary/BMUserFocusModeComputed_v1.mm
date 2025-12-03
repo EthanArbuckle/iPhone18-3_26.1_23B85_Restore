@@ -8,10 +8,10 @@
 {
   v4.receiver = self;
   v4.super_class = BMUserFocusModeComputed_v1;
-  v2 = [(BMUserFocusModeComputed *)&v4 semanticType];
-  if (v2 < 0xA)
+  semanticType = [(BMUserFocusModeComputed *)&v4 semanticType];
+  if (semanticType < 0xA)
   {
-    return v2 + 1;
+    return semanticType + 1;
   }
 
   else

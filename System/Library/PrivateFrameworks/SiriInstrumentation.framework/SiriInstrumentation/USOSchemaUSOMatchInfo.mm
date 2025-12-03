@@ -1,43 +1,43 @@
 @interface USOSchemaUSOMatchInfo
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (USOSchemaUSOMatchInfo)initWithDictionary:(id)a3;
-- (USOSchemaUSOMatchInfo)initWithJSON:(id)a3;
+- (USOSchemaUSOMatchInfo)initWithDictionary:(id)dictionary;
+- (USOSchemaUSOMatchInfo)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (int)matchedAliasTypesAtIndex:(unint64_t)a3;
+- (int)matchedAliasTypesAtIndex:(unint64_t)index;
 - (unint64_t)hash;
-- (void)addMatchedAliasTypes:(int)a3;
-- (void)setHasEditDistance:(BOOL)a3;
-- (void)setHasMatchScore:(BOOL)a3;
-- (void)setHasMatchedAliasCount:(BOOL)a3;
-- (void)setHasMatchedStopWordCount:(BOOL)a3;
-- (void)setHasMatchedTokenCount:(BOOL)a3;
-- (void)setHasMaxAliasCount:(BOOL)a3;
-- (void)setHasMaxStopWordCount:(BOOL)a3;
-- (void)setHasMaxTokenCount:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addMatchedAliasTypes:(int)types;
+- (void)setHasEditDistance:(BOOL)distance;
+- (void)setHasMatchScore:(BOOL)score;
+- (void)setHasMatchedAliasCount:(BOOL)count;
+- (void)setHasMatchedStopWordCount:(BOOL)count;
+- (void)setHasMatchedTokenCount:(BOOL)count;
+- (void)setHasMaxAliasCount:(BOOL)count;
+- (void)setHasMaxStopWordCount:(BOOL)count;
+- (void)setHasMaxTokenCount:(BOOL)count;
+- (void)writeTo:(id)to;
 @end
 
 @implementation USOSchemaUSOMatchInfo
 
-- (USOSchemaUSOMatchInfo)initWithDictionary:(id)a3
+- (USOSchemaUSOMatchInfo)initWithDictionary:(id)dictionary
 {
   v38 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v36.receiver = self;
   v36.super_class = USOSchemaUSOMatchInfo;
   v5 = [(USOSchemaUSOMatchInfo *)&v36 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"matchSignalBitset"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"matchSignalBitset"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[USOSchemaUSOMatchInfo setMatchSignalBitset:](v5, "setMatchSignalBitset:", [v6 unsignedIntValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"matchScore"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"matchScore"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -45,35 +45,35 @@
       [(USOSchemaUSOMatchInfo *)v5 setMatchScore:?];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"maxTokenCount"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"maxTokenCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[USOSchemaUSOMatchInfo setMaxTokenCount:](v5, "setMaxTokenCount:", [v8 unsignedIntValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"matchedTokenCount"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"matchedTokenCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[USOSchemaUSOMatchInfo setMatchedTokenCount:](v5, "setMatchedTokenCount:", [v9 unsignedIntValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"maxStopWordCount"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"maxStopWordCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[USOSchemaUSOMatchInfo setMaxStopWordCount:](v5, "setMaxStopWordCount:", [v10 unsignedIntValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"matchedStopWordCount"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"matchedStopWordCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[USOSchemaUSOMatchInfo setMatchedStopWordCount:](v5, "setMatchedStopWordCount:", [v11 unsignedIntValue]);
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"editDistance"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"editDistance"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -81,7 +81,7 @@
     }
 
     v31 = v11;
-    v13 = [v4 objectForKeyedSubscript:@"maxAliasCount"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"maxAliasCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -90,14 +90,14 @@
 
     v29 = v13;
     v30 = v12;
-    v14 = [v4 objectForKeyedSubscript:@"matchedAliasCount"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"matchedAliasCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[USOSchemaUSOMatchInfo setMatchedAliasCount:](v5, "setMatchedAliasCount:", [v14 unsignedIntValue]);
     }
 
-    v15 = [v4 objectForKeyedSubscript:@"matchedAliasTypes"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"matchedAliasTypes"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -156,30 +156,30 @@
   return v5;
 }
 
-- (USOSchemaUSOMatchInfo)initWithJSON:(id)a3
+- (USOSchemaUSOMatchInfo)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(USOSchemaUSOMatchInfo *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(USOSchemaUSOMatchInfo *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(USOSchemaUSOMatchInfo *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -192,12 +192,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 0x40) != 0)
   {
     v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[USOSchemaUSOMatchInfo editDistance](self, "editDistance")}];
-    [v3 setObject:v11 forKeyedSubscript:@"editDistance"];
+    [dictionary setObject:v11 forKeyedSubscript:@"editDistance"];
 
     has = self->_has;
     if ((has & 2) == 0)
@@ -220,7 +220,7 @@ LABEL_3:
   v12 = MEMORY[0x1E696AD98];
   [(USOSchemaUSOMatchInfo *)self matchScore];
   v13 = [v12 numberWithFloat:?];
-  [v3 setObject:v13 forKeyedSubscript:@"matchScore"];
+  [dictionary setObject:v13 forKeyedSubscript:@"matchScore"];
 
   has = self->_has;
   if ((has & 1) == 0)
@@ -236,28 +236,28 @@ LABEL_4:
 
 LABEL_19:
   v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[USOSchemaUSOMatchInfo matchSignalBitset](self, "matchSignalBitset")}];
-  [v3 setObject:v14 forKeyedSubscript:@"matchSignalBitset"];
+  [dictionary setObject:v14 forKeyedSubscript:@"matchSignalBitset"];
 
   if ((*&self->_has & 0x100) != 0)
   {
 LABEL_5:
     v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[USOSchemaUSOMatchInfo matchedAliasCount](self, "matchedAliasCount")}];
-    [v3 setObject:v5 forKeyedSubscript:@"matchedAliasCount"];
+    [dictionary setObject:v5 forKeyedSubscript:@"matchedAliasCount"];
   }
 
 LABEL_6:
   if ([(NSArray *)self->_matchedAliasTypes count])
   {
-    v6 = [(USOSchemaUSOMatchInfo *)self matchedAliasTypes];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"matchedAliasTypes"];
+    matchedAliasTypes = [(USOSchemaUSOMatchInfo *)self matchedAliasTypes];
+    v7 = [matchedAliasTypes copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"matchedAliasTypes"];
   }
 
   v8 = self->_has;
   if ((v8 & 0x20) != 0)
   {
     v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[USOSchemaUSOMatchInfo matchedStopWordCount](self, "matchedStopWordCount")}];
-    [v3 setObject:v15 forKeyedSubscript:@"matchedStopWordCount"];
+    [dictionary setObject:v15 forKeyedSubscript:@"matchedStopWordCount"];
 
     v8 = self->_has;
     if ((v8 & 8) == 0)
@@ -278,7 +278,7 @@ LABEL_10:
   }
 
   v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[USOSchemaUSOMatchInfo matchedTokenCount](self, "matchedTokenCount")}];
-  [v3 setObject:v16 forKeyedSubscript:@"matchedTokenCount"];
+  [dictionary setObject:v16 forKeyedSubscript:@"matchedTokenCount"];
 
   v8 = self->_has;
   if ((v8 & 0x80) == 0)
@@ -294,7 +294,7 @@ LABEL_11:
 
 LABEL_23:
   v17 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[USOSchemaUSOMatchInfo maxAliasCount](self, "maxAliasCount")}];
-  [v3 setObject:v17 forKeyedSubscript:@"maxAliasCount"];
+  [dictionary setObject:v17 forKeyedSubscript:@"maxAliasCount"];
 
   v8 = self->_has;
   if ((v8 & 0x10) == 0)
@@ -310,19 +310,19 @@ LABEL_12:
 
 LABEL_24:
   v18 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[USOSchemaUSOMatchInfo maxStopWordCount](self, "maxStopWordCount")}];
-  [v3 setObject:v18 forKeyedSubscript:@"maxStopWordCount"];
+  [dictionary setObject:v18 forKeyedSubscript:@"maxStopWordCount"];
 
   if ((*&self->_has & 4) != 0)
   {
 LABEL_13:
     v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[USOSchemaUSOMatchInfo maxTokenCount](self, "maxTokenCount")}];
-    [v3 setObject:v9 forKeyedSubscript:@"maxTokenCount"];
+    [dictionary setObject:v9 forKeyedSubscript:@"maxTokenCount"];
   }
 
 LABEL_14:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -473,16 +473,16 @@ LABEL_17:
   return v14 ^ v9 ^ v15 ^ v16 ^ v17 ^ v18 ^ v19 ^ v20 ^ v21 ^ [(NSArray *)self->_matchedAliasTypes hash:v3];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_42;
   }
 
   has = self->_has;
-  v6 = v4[28];
+  v6 = equalCopy[28];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_42;
@@ -491,13 +491,13 @@ LABEL_17:
   if (*&has)
   {
     matchSignalBitset = self->_matchSignalBitset;
-    if (matchSignalBitset != [v4 matchSignalBitset])
+    if (matchSignalBitset != [equalCopy matchSignalBitset])
     {
       goto LABEL_42;
     }
 
     has = self->_has;
-    v6 = v4[28];
+    v6 = equalCopy[28];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -506,14 +506,14 @@ LABEL_17:
     if (v8)
     {
       matchScore = self->_matchScore;
-      [v4 matchScore];
+      [equalCopy matchScore];
       if (matchScore != v10)
       {
         goto LABEL_42;
       }
 
       has = self->_has;
-      v6 = v4[28];
+      v6 = equalCopy[28];
     }
 
     v11 = (*&has >> 2) & 1;
@@ -522,13 +522,13 @@ LABEL_17:
       if (v11)
       {
         maxTokenCount = self->_maxTokenCount;
-        if (maxTokenCount != [v4 maxTokenCount])
+        if (maxTokenCount != [equalCopy maxTokenCount])
         {
           goto LABEL_42;
         }
 
         has = self->_has;
-        v6 = v4[28];
+        v6 = equalCopy[28];
       }
 
       v13 = (*&has >> 3) & 1;
@@ -537,13 +537,13 @@ LABEL_17:
         if (v13)
         {
           matchedTokenCount = self->_matchedTokenCount;
-          if (matchedTokenCount != [v4 matchedTokenCount])
+          if (matchedTokenCount != [equalCopy matchedTokenCount])
           {
             goto LABEL_42;
           }
 
           has = self->_has;
-          v6 = v4[28];
+          v6 = equalCopy[28];
         }
 
         v15 = (*&has >> 4) & 1;
@@ -552,13 +552,13 @@ LABEL_17:
           if (v15)
           {
             maxStopWordCount = self->_maxStopWordCount;
-            if (maxStopWordCount != [v4 maxStopWordCount])
+            if (maxStopWordCount != [equalCopy maxStopWordCount])
             {
               goto LABEL_42;
             }
 
             has = self->_has;
-            v6 = v4[28];
+            v6 = equalCopy[28];
           }
 
           v17 = (*&has >> 5) & 1;
@@ -567,13 +567,13 @@ LABEL_17:
             if (v17)
             {
               matchedStopWordCount = self->_matchedStopWordCount;
-              if (matchedStopWordCount != [v4 matchedStopWordCount])
+              if (matchedStopWordCount != [equalCopy matchedStopWordCount])
               {
                 goto LABEL_42;
               }
 
               has = self->_has;
-              v6 = v4[28];
+              v6 = equalCopy[28];
             }
 
             v19 = (*&has >> 6) & 1;
@@ -582,13 +582,13 @@ LABEL_17:
               if (v19)
               {
                 editDistance = self->_editDistance;
-                if (editDistance != [v4 editDistance])
+                if (editDistance != [equalCopy editDistance])
                 {
                   goto LABEL_42;
                 }
 
                 has = self->_has;
-                v6 = v4[28];
+                v6 = equalCopy[28];
               }
 
               v21 = (*&has >> 7) & 1;
@@ -597,27 +597,27 @@ LABEL_17:
                 if (v21)
                 {
                   maxAliasCount = self->_maxAliasCount;
-                  if (maxAliasCount != [v4 maxAliasCount])
+                  if (maxAliasCount != [equalCopy maxAliasCount])
                   {
                     goto LABEL_42;
                   }
 
                   has = self->_has;
-                  v6 = v4[28];
+                  v6 = equalCopy[28];
                 }
 
                 v23 = (*&has >> 8) & 1;
                 if (v23 == ((v6 >> 8) & 1))
                 {
-                  if (!v23 || (matchedAliasCount = self->_matchedAliasCount, matchedAliasCount == [v4 matchedAliasCount]))
+                  if (!v23 || (matchedAliasCount = self->_matchedAliasCount, matchedAliasCount == [equalCopy matchedAliasCount]))
                   {
-                    v25 = [(USOSchemaUSOMatchInfo *)self matchedAliasTypes];
-                    v26 = [v4 matchedAliasTypes];
-                    v27 = v26;
-                    if ((v25 != 0) != (v26 == 0))
+                    matchedAliasTypes = [(USOSchemaUSOMatchInfo *)self matchedAliasTypes];
+                    matchedAliasTypes2 = [equalCopy matchedAliasTypes];
+                    v27 = matchedAliasTypes2;
+                    if ((matchedAliasTypes != 0) != (matchedAliasTypes2 == 0))
                     {
-                      v28 = [(USOSchemaUSOMatchInfo *)self matchedAliasTypes];
-                      if (!v28)
+                      matchedAliasTypes3 = [(USOSchemaUSOMatchInfo *)self matchedAliasTypes];
+                      if (!matchedAliasTypes3)
                       {
 
 LABEL_45:
@@ -625,10 +625,10 @@ LABEL_45:
                         goto LABEL_43;
                       }
 
-                      v29 = v28;
-                      v30 = [(USOSchemaUSOMatchInfo *)self matchedAliasTypes];
-                      v31 = [v4 matchedAliasTypes];
-                      v32 = [v30 isEqual:v31];
+                      v29 = matchedAliasTypes3;
+                      matchedAliasTypes4 = [(USOSchemaUSOMatchInfo *)self matchedAliasTypes];
+                      matchedAliasTypes5 = [equalCopy matchedAliasTypes];
+                      v32 = [matchedAliasTypes4 isEqual:matchedAliasTypes5];
 
                       if (v32)
                       {
@@ -656,10 +656,10 @@ LABEL_43:
   return v33;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -807,23 +807,23 @@ LABEL_11:
   }
 }
 
-- (int)matchedAliasTypesAtIndex:(unint64_t)a3
+- (int)matchedAliasTypesAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_matchedAliasTypes objectAtIndexedSubscript:a3];
-  v4 = [v3 intValue];
+  v3 = [(NSArray *)self->_matchedAliasTypes objectAtIndexedSubscript:index];
+  intValue = [v3 intValue];
 
-  return v4;
+  return intValue;
 }
 
-- (void)addMatchedAliasTypes:(int)a3
+- (void)addMatchedAliasTypes:(int)types
 {
-  v3 = *&a3;
+  v3 = *&types;
   matchedAliasTypes = self->_matchedAliasTypes;
   if (!matchedAliasTypes)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_matchedAliasTypes;
-    self->_matchedAliasTypes = v6;
+    self->_matchedAliasTypes = array;
 
     matchedAliasTypes = self->_matchedAliasTypes;
   }
@@ -832,9 +832,9 @@ LABEL_11:
   [(NSArray *)matchedAliasTypes addObject:v8];
 }
 
-- (void)setHasMatchedAliasCount:(BOOL)a3
+- (void)setHasMatchedAliasCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 256;
   }
@@ -847,9 +847,9 @@ LABEL_11:
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasMaxAliasCount:(BOOL)a3
+- (void)setHasMaxAliasCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 128;
   }
@@ -862,9 +862,9 @@ LABEL_11:
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasEditDistance:(BOOL)a3
+- (void)setHasEditDistance:(BOOL)distance
 {
-  if (a3)
+  if (distance)
   {
     v3 = 64;
   }
@@ -877,9 +877,9 @@ LABEL_11:
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasMatchedStopWordCount:(BOOL)a3
+- (void)setHasMatchedStopWordCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 32;
   }
@@ -892,9 +892,9 @@ LABEL_11:
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasMaxStopWordCount:(BOOL)a3
+- (void)setHasMaxStopWordCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 16;
   }
@@ -907,9 +907,9 @@ LABEL_11:
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasMatchedTokenCount:(BOOL)a3
+- (void)setHasMatchedTokenCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 8;
   }
@@ -922,9 +922,9 @@ LABEL_11:
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasMaxTokenCount:(BOOL)a3
+- (void)setHasMaxTokenCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 4;
   }
@@ -937,9 +937,9 @@ LABEL_11:
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasMatchScore:(BOOL)a3
+- (void)setHasMatchScore:(BOOL)score
 {
-  if (a3)
+  if (score)
   {
     v3 = 2;
   }

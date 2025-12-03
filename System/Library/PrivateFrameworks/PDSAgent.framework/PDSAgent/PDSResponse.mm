@@ -1,14 +1,14 @@
 @interface PDSResponse
-- (PDSResponse)initWithStatus:(int64_t)a3 statusByUser:(id)a4 ttl:(int64_t)a5;
+- (PDSResponse)initWithStatus:(int64_t)status statusByUser:(id)user ttl:(int64_t)ttl;
 - (id)description;
 @end
 
 @implementation PDSResponse
 
-- (PDSResponse)initWithStatus:(int64_t)a3 statusByUser:(id)a4 ttl:(int64_t)a5
+- (PDSResponse)initWithStatus:(int64_t)status statusByUser:(id)user ttl:(int64_t)ttl
 {
-  v10 = a4;
-  if (!v10)
+  userCopy = user;
+  if (!userCopy)
   {
     [PDSResponse initWithStatus:a2 statusByUser:self ttl:?];
   }
@@ -19,9 +19,9 @@
   v12 = v11;
   if (v11)
   {
-    v11->_status = a3;
-    objc_storeStrong(&v11->_statusByUser, a4);
-    v12->_ttl = a5;
+    v11->_status = status;
+    objc_storeStrong(&v11->_statusByUser, user);
+    v12->_ttl = ttl;
   }
 
   return v12;
@@ -31,9 +31,9 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(PDSResponse *)self status];
-  v6 = [(PDSResponse *)self statusByUser];
-  v7 = [v3 stringWithFormat:@"<%@: %p status = %d; statusByUser = %@>", v4, self, v5, v6];;
+  status = [(PDSResponse *)self status];
+  statusByUser = [(PDSResponse *)self statusByUser];
+  v7 = [v3 stringWithFormat:@"<%@: %p status = %d; statusByUser = %@>", v4, self, status, statusByUser];;
 
   return v7;
 }

@@ -1,27 +1,27 @@
 @interface UIExpandedBarItemsTableViewController
 - (CGSize)preferredContentSize;
-- (UIExpandedBarItemsTableViewController)initWithBarButtonGroup:(id)a3;
-- (id)_displayTitleForBarButtonItem:(id)a3;
+- (UIExpandedBarItemsTableViewController)initWithBarButtonGroup:(id)group;
+- (id)_displayTitleForBarButtonItem:(id)item;
 - (id)_visibleItems;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (unint64_t)_numberOfItems;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation UIExpandedBarItemsTableViewController
 
-- (UIExpandedBarItemsTableViewController)initWithBarButtonGroup:(id)a3
+- (UIExpandedBarItemsTableViewController)initWithBarButtonGroup:(id)group
 {
-  v5 = a3;
+  groupCopy = group;
   v9.receiver = self;
   v9.super_class = UIExpandedBarItemsTableViewController;
   v6 = [(UITableViewController *)&v9 initWithStyle:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_barButtonGroup, a3);
+    objc_storeStrong(&v6->_barButtonGroup, group);
   }
 
   return v7;
@@ -32,78 +32,78 @@
   v5.receiver = self;
   v5.super_class = UIExpandedBarItemsTableViewController;
   [(UIViewController *)&v5 viewDidLoad];
-  v3 = [(UITableViewController *)self tableView];
-  [v3 setAlwaysBounceVertical:0];
+  tableView = [(UITableViewController *)self tableView];
+  [tableView setAlwaysBounceVertical:0];
 
-  v4 = [(UITableViewController *)self tableView];
-  [v4 registerClass:objc_opt_class() forCellReuseIdentifier:@"baritemcell"];
+  tableView2 = [(UITableViewController *)self tableView];
+  [tableView2 registerClass:objc_opt_class() forCellReuseIdentifier:@"baritemcell"];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = UIExpandedBarItemsTableViewController;
-  [(UITableViewController *)&v5 viewWillAppear:a3];
-  v4 = [(UIExpandedBarItemsTableViewController *)self barButtonGroup];
-  [v4 _validateAllItems];
+  [(UITableViewController *)&v5 viewWillAppear:appear];
+  barButtonGroup = [(UIExpandedBarItemsTableViewController *)self barButtonGroup];
+  [barButtonGroup _validateAllItems];
 }
 
 - (id)_visibleItems
 {
-  v2 = [(UIBarButtonItemGroup *)self->_barButtonGroup barButtonItems];
+  barButtonItems = [(UIBarButtonItemGroup *)self->_barButtonGroup barButtonItems];
   v3 = [MEMORY[0x1E696AE18] predicateWithFormat:@"hidden == NO"];
-  v4 = [v2 filteredArrayUsingPredicate:v3];
+  v4 = [barButtonItems filteredArrayUsingPredicate:v3];
 
   return v4;
 }
 
 - (unint64_t)_numberOfItems
 {
-  v2 = [(UIExpandedBarItemsTableViewController *)self _visibleItems];
-  v3 = [v2 count];
+  _visibleItems = [(UIExpandedBarItemsTableViewController *)self _visibleItems];
+  v3 = [_visibleItems count];
 
   return v3;
 }
 
-- (id)_displayTitleForBarButtonItem:(id)a3
+- (id)_displayTitleForBarButtonItem:(id)item
 {
-  v3 = a3;
-  v4 = [v3 title];
+  itemCopy = item;
+  title = [itemCopy title];
 
-  if (v4)
+  if (title)
   {
-    v5 = [v3 title];
+    title2 = [itemCopy title];
 LABEL_3:
-    v6 = v5;
+    v6 = title2;
     goto LABEL_7;
   }
 
-  v7 = [v3 possibleTitles];
-  v8 = [v7 count];
+  possibleTitles = [itemCopy possibleTitles];
+  v8 = [possibleTitles count];
 
   if (v8)
   {
-    v9 = [v3 possibleTitles];
-    v10 = [v9 anyObject];
+    possibleTitles2 = [itemCopy possibleTitles];
+    anyObject = [possibleTitles2 anyObject];
 LABEL_6:
-    v6 = v10;
+    v6 = anyObject;
 
     goto LABEL_7;
   }
 
-  v12 = [v3 accessibilityLabel];
+  accessibilityLabel = [itemCopy accessibilityLabel];
 
-  if (v12)
+  if (accessibilityLabel)
   {
-    v5 = [v3 accessibilityLabel];
+    title2 = [itemCopy accessibilityLabel];
     goto LABEL_3;
   }
 
   if (os_variant_has_internal_diagnostics())
   {
     v13 = MEMORY[0x1E696AEC0];
-    v9 = NSStringFromSelector([v3 action]);
-    v10 = [v13 stringWithFormat:@"NEEDS TITLE: %@", v9];
+    possibleTitles2 = NSStringFromSelector([itemCopy action]);
+    anyObject = [v13 stringWithFormat:@"NEEDS TITLE: %@", possibleTitles2];
     goto LABEL_6;
   }
 
@@ -121,8 +121,8 @@ LABEL_7:
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v4 = [(UIBarButtonItemGroup *)self->_barButtonGroup barButtonItems];
-  v5 = [v4 countByEnumeratingWithState:&v22 objects:v28 count:16];
+  barButtonItems = [(UIBarButtonItemGroup *)self->_barButtonGroup barButtonItems];
+  v5 = [barButtonItems countByEnumeratingWithState:&v22 objects:v28 count:16];
   if (v5)
   {
     v6 = v5;
@@ -135,7 +135,7 @@ LABEL_7:
       {
         if (*v23 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(barButtonItems);
         }
 
         v11 = [(UIExpandedBarItemsTableViewController *)self _displayTitleForBarButtonItem:*(*(&v22 + 1) + 8 * i)];
@@ -151,7 +151,7 @@ LABEL_7:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v22 objects:v28 count:16];
+      v6 = [barButtonItems countByEnumeratingWithState:&v22 objects:v28 count:16];
     }
 
     while (v6);
@@ -163,46 +163,46 @@ LABEL_7:
   }
 
   v15 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-  v16 = [v15 keyboardWindow];
+  keyboardWindow = [v15 keyboardWindow];
 
-  if (v16)
+  if (keyboardWindow)
   {
-    [v16 bounds];
+    [keyboardWindow bounds];
     if (v9 > v17)
     {
-      [v16 bounds];
+      [keyboardWindow bounds];
       v9 = v18;
     }
   }
 
-  v19 = [(UIExpandedBarItemsTableViewController *)self _numberOfItems];
+  _numberOfItems = [(UIExpandedBarItemsTableViewController *)self _numberOfItems];
 
-  v20 = v19 * 55.0;
+  v20 = _numberOfItems * 55.0;
   v21 = v9;
   result.height = v20;
   result.width = v21;
   return result;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"baritemcell" forIndexPath:v6];
-  v8 = [(UIExpandedBarItemsTableViewController *)self _visibleItems];
-  v9 = [v6 row];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"baritemcell" forIndexPath:pathCopy];
+  _visibleItems = [(UIExpandedBarItemsTableViewController *)self _visibleItems];
+  v9 = [pathCopy row];
 
-  v10 = [v8 objectAtIndex:v9];
+  v10 = [_visibleItems objectAtIndex:v9];
 
   v11 = [(UIExpandedBarItemsTableViewController *)self _displayTitleForBarButtonItem:v10];
-  v12 = [v7 textLabel];
-  [v12 setText:v11];
+  textLabel = [v7 textLabel];
+  [textLabel setText:v11];
 
-  v13 = [v10 image];
-  v14 = [v7 imageView];
-  [v14 setImage:v13];
+  image = [v10 image];
+  imageView = [v7 imageView];
+  [imageView setImage:image];
 
-  v15 = [v10 isEnabled];
-  if (v15)
+  isEnabled = [v10 isEnabled];
+  if (isEnabled)
   {
     v16 = 3;
   }
@@ -212,7 +212,7 @@ LABEL_7:
     v16 = 0;
   }
 
-  if (v15)
+  if (isEnabled)
   {
     v17 = 1.0;
   }
@@ -223,19 +223,19 @@ LABEL_7:
   }
 
   [v7 setSelectionStyle:v16];
-  v18 = [v7 contentView];
-  [v18 setAlpha:v17];
+  contentView = [v7 contentView];
+  [contentView setAlpha:v17];
 
   return v7;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(UIExpandedBarItemsTableViewController *)self _visibleItems];
-  v7 = [v5 row];
+  pathCopy = path;
+  _visibleItems = [(UIExpandedBarItemsTableViewController *)self _visibleItems];
+  v7 = [pathCopy row];
 
-  v8 = [v6 objectAtIndex:v7];
+  v8 = [_visibleItems objectAtIndex:v7];
 
   v14 = MEMORY[0x1E69E9820];
   v15 = 3221225472;
@@ -243,13 +243,13 @@ LABEL_7:
   v17 = &unk_1E70F35B8;
   v9 = v8;
   v18 = v9;
-  v19 = self;
+  selfCopy = self;
   v10 = _Block_copy(&v14);
-  v11 = [v9 buttonGroup];
-  v12 = [v11 _sendActionsBeforeDismiss];
+  buttonGroup = [v9 buttonGroup];
+  _sendActionsBeforeDismiss = [buttonGroup _sendActionsBeforeDismiss];
 
   v13 = v10;
-  if (v12)
+  if (_sendActionsBeforeDismiss)
   {
     v10[2](v10);
     v13 = 0;

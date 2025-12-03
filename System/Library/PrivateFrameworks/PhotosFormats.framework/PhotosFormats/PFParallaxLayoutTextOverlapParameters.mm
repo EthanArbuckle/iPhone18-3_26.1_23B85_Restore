@@ -2,7 +2,7 @@
 + (PFParallaxLayoutTextOverlapParameters)standardAlphabeticTextParameters;
 + (PFParallaxLayoutTextOverlapParameters)standardNumericTextParameters;
 + (PFParallaxLayoutTextOverlapParameters)systemParameters;
-- (double)maxTopOverlapForTopRect:(CGRect)a3 isInteractive:(BOOL)a4;
+- (double)maxTopOverlapForTopRect:(CGRect)rect isInteractive:(BOOL)interactive;
 @end
 
 @implementation PFParallaxLayoutTextOverlapParameters
@@ -14,7 +14,7 @@
   return v2;
 }
 
-- (double)maxTopOverlapForTopRect:(CGRect)a3 isInteractive:(BOOL)a4
+- (double)maxTopOverlapForTopRect:(CGRect)rect isInteractive:(BOOL)interactive
 {
   v4 = _PFAssertFailHandler();
   +[(PFParallaxLayoutTextOverlapParameters *)v4];

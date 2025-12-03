@@ -1,23 +1,23 @@
 @interface MAPushChannel
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToPushChannelId:(id)a3;
-- (MAPushChannel)initWithCoder:(id)a3;
-- (MAPushChannel)initWithIdentifier:(id)a3;
-- (MAPushChannel)initWithPopulationType:(int64_t)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToPushChannelId:(id)id;
+- (MAPushChannel)initWithCoder:(id)coder;
+- (MAPushChannel)initWithIdentifier:(id)identifier;
+- (MAPushChannel)initWithPopulationType:(int64_t)type;
 - (id)channelIDForPopulationType;
 - (id)description;
 - (id)humanReadableChannelName;
 - (id)populationTypeString;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MAPushChannel
 
-- (MAPushChannel)initWithIdentifier:(id)a3
+- (MAPushChannel)initWithIdentifier:(id)identifier
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  identifierCopy = identifier;
   v13.receiver = self;
   v13.super_class = MAPushChannel;
   v6 = [(MAPushChannel *)&v13 init];
@@ -27,15 +27,15 @@
     goto LABEL_6;
   }
 
-  objc_storeStrong(&v6->_identifier, a3);
+  objc_storeStrong(&v6->_identifier, identifier);
   v7->_populationType = 0;
-  if (v5)
+  if (identifierCopy)
   {
-    if (([v5 isEqualToString:&stru_1F0C1B388] & 1) == 0)
+    if (([identifierCopy isEqualToString:&stru_1F0C1B388] & 1) == 0)
     {
-      v8 = [v5 base64String];
-      objc_storeStrong(&v7->_base64ChannelId, a3);
-      if (v8)
+      base64String = [identifierCopy base64String];
+      objc_storeStrong(&v7->_base64ChannelId, identifier);
+      if (base64String)
       {
 
 LABEL_6:
@@ -49,7 +49,7 @@ LABEL_6:
   if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
   {
     *buf = 138543362;
-    v15 = v5;
+    v15 = identifierCopy;
     _os_log_impl(&dword_197AD5000, v10, OS_LOG_TYPE_ERROR, "[WARNING] Channel ID is nil for identifier %{public}@", buf, 0xCu);
   }
 
@@ -60,7 +60,7 @@ LABEL_10:
   return v9;
 }
 
-- (MAPushChannel)initWithPopulationType:(int64_t)a3
+- (MAPushChannel)initWithPopulationType:(int64_t)type
 {
   v18 = *MEMORY[0x1E69E9840];
   v15.receiver = self;
@@ -72,15 +72,15 @@ LABEL_10:
     goto LABEL_4;
   }
 
-  v4->_populationType = a3;
-  v6 = [(MAPushChannel *)v4 channelIDForPopulationType];
+  v4->_populationType = type;
+  channelIDForPopulationType = [(MAPushChannel *)v4 channelIDForPopulationType];
   v7 = p_isa[1];
-  p_isa[1] = v6;
+  p_isa[1] = channelIDForPopulationType;
 
-  v8 = [p_isa[1] base64String];
-  if (v8)
+  base64String = [p_isa[1] base64String];
+  if (base64String)
   {
-    v9 = v8;
+    v9 = base64String;
     objc_storeStrong(p_isa + 3, p_isa[1]);
 
 LABEL_4:
@@ -107,26 +107,26 @@ LABEL_8:
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(MAPushChannel *)self identifier];
-  v5 = [(MAPushChannel *)self base64ChannelId];
-  v6 = [(MAPushChannel *)self populationType];
-  v7 = [(MAPushChannel *)self humanReadableChannelName];
-  v8 = [v3 stringWithFormat:@"<MAPushChannelId | identifier:%@ base64String:%@ populationType:%li name: %@>", v4, v5, v6, v7];
+  identifier = [(MAPushChannel *)self identifier];
+  base64ChannelId = [(MAPushChannel *)self base64ChannelId];
+  populationType = [(MAPushChannel *)self populationType];
+  humanReadableChannelName = [(MAPushChannel *)self humanReadableChannelName];
+  v8 = [v3 stringWithFormat:@"<MAPushChannelId | identifier:%@ base64String:%@ populationType:%li name: %@>", identifier, base64ChannelId, populationType, humanReadableChannelName];
 
   return v8;
 }
 
 - (id)humanReadableChannelName
 {
-  v2 = [(MAPushChannel *)self populationType];
-  if ((v2 - 1) > 4)
+  populationType = [(MAPushChannel *)self populationType];
+  if ((populationType - 1) > 4)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_1E74C96F8[v2 - 1];
+    return off_1E74C96F8[populationType - 1];
   }
 }
 
@@ -137,7 +137,7 @@ LABEL_8:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 134217984;
-    v10 = [(MAPushChannel *)self populationType];
+    populationType = [(MAPushChannel *)self populationType];
     _os_log_impl(&dword_197AD5000, v3, OS_LOG_TYPE_DEFAULT, "Channel population type: %li", &v9, 0xCu);
   }
 
@@ -161,7 +161,7 @@ LABEL_8:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138543362;
-      v10 = v5;
+      populationType = v5;
       _os_log_impl(&dword_197AD5000, v6, OS_LOG_TYPE_DEFAULT, "Channel Population ID: %{public}@", &v9, 0xCu);
     }
   }
@@ -170,83 +170,83 @@ LABEL_8:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(MAPushChannel *)self isEqualToPushChannelId:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(MAPushChannel *)self isEqualToPushChannelId:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToPushChannelId:(id)a3
+- (BOOL)isEqualToPushChannelId:(id)id
 {
-  v4 = [a3 base64ChannelId];
-  v5 = [(MAPushChannel *)self base64ChannelId];
-  v6 = [v4 isEqual:v5];
+  base64ChannelId = [id base64ChannelId];
+  base64ChannelId2 = [(MAPushChannel *)self base64ChannelId];
+  v6 = [base64ChannelId isEqual:base64ChannelId2];
 
   return v6;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(MAPushChannel *)self base64ChannelId];
-  v3 = [v2 hash];
+  base64ChannelId = [(MAPushChannel *)self base64ChannelId];
+  v3 = [base64ChannelId hash];
 
   return v3;
 }
 
 - (id)populationTypeString
 {
-  v2 = [(MAPushChannel *)self populationType];
-  if ((v2 - 1) > 4)
+  populationType = [(MAPushChannel *)self populationType];
+  if ((populationType - 1) > 4)
   {
     return @"MAPushPopulationTypeUnknown";
   }
 
   else
   {
-    return off_1E74C9748[v2 - 1];
+    return off_1E74C9748[populationType - 1];
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(MAPushChannel *)self identifier];
-  [v4 encodeObject:v5 forKey:@"Identifier"];
+  coderCopy = coder;
+  identifier = [(MAPushChannel *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"Identifier"];
 
   v6 = [MEMORY[0x1E696AD98] numberWithInteger:{-[MAPushChannel populationType](self, "populationType")}];
-  [v4 encodeObject:v6 forKey:@"PopulationType"];
+  [coderCopy encodeObject:v6 forKey:@"PopulationType"];
 
-  v7 = [(MAPushChannel *)self base64ChannelId];
-  [v4 encodeObject:v7 forKey:@"Base64ID"];
+  base64ChannelId = [(MAPushChannel *)self base64ChannelId];
+  [coderCopy encodeObject:base64ChannelId forKey:@"Base64ID"];
 }
 
-- (MAPushChannel)initWithCoder:(id)a3
+- (MAPushChannel)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = MAPushChannel;
   v5 = [(MAPushChannel *)&v12 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PopulationType"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PopulationType"];
     v5->_populationType = [v8 integerValue];
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Base64ID"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Base64ID"];
     base64ChannelId = v5->_base64ChannelId;
     v5->_base64ChannelId = v9;
   }

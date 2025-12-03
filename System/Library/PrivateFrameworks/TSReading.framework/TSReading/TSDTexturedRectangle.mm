@@ -1,68 +1,68 @@
 @interface TSDTexturedRectangle
-+ (id)setupMetalShaderForContext:(id)a3;
++ (id)setupMetalShaderForContext:(id)context;
 - (BOOL)hasLiveTexturedRectangleSource;
 - (BOOL)isBackgroundTexture;
 - (CALayer)parentLayer;
 - (CATransform3D)transformFromAttributes;
 - (CGColorSpace)p_colorSpace;
 - (CGImage)image;
-- (CGImage)p_newImageAndBufferWithAngle:(double)a3 scale:(double)a4 offset:(CGPoint)a5;
+- (CGImage)p_newImageAndBufferWithAngle:(double)angle scale:(double)scale offset:(CGPoint)offset;
 - (CGPoint)offset;
 - (CGPoint)originalPosition;
-- (CGRect)boundingRectForStage:(int64_t)a3 isBuildIn:(BOOL)a4;
+- (CGRect)boundingRectForStage:(int64_t)stage isBuildIn:(BOOL)in;
 - (CGRect)contentRect;
 - (CGRect)frame;
 - (CGRect)frameOnCanvas;
-- (CGSize)p_textureSizeWithDevice:(id)a3 maxSize:(CGSize)a4;
+- (CGSize)p_textureSizeWithDevice:(id)device maxSize:(CGSize)size;
 - (CGSize)size;
 - (TSDTextureSet)parent;
-- (TSDTexturedRectangle)initWithCGImage:(CGImage *)a3;
-- (TSDTexturedRectangle)initWithLayer:(id)a3;
-- (TSDTexturedRectangle)initWithSize:(CGSize)a3 image:(CGImage *)a4;
-- (TSDTexturedRectangle)initWithSize:(CGSize)a3 offset:(CGPoint)a4 renderBlock:(id)a5;
+- (TSDTexturedRectangle)initWithCGImage:(CGImage *)image;
+- (TSDTexturedRectangle)initWithLayer:(id)layer;
+- (TSDTexturedRectangle)initWithSize:(CGSize)size image:(CGImage *)image;
+- (TSDTexturedRectangle)initWithSize:(CGSize)size offset:(CGPoint)offset renderBlock:(id)block;
 - (_NSRange)textRange;
-- (char)p_setupTextureDataWithSize:(CGSize)a3 isBGRA:(BOOL)a4;
+- (char)p_setupTextureDataWithSize:(CGSize)size isBGRA:(BOOL)a;
 - (double)singleTextureOpacity;
 - (float)opacityFromAttributes;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)metalTextureWithContext:(id)a3;
-- (id)p_allocateMetalTextureForDevice:(id)a3;
-- (id)p_allocateMetalTextureForDevice:(id)a3 renderTarget:(BOOL)a4 writable:(BOOL)a5 private:(BOOL)a6 maxSize:(CGSize)a7;
-- (id)p_latestTextureNotAfterLayerTime:(double)a3;
-- (void)adjustAnchorRelativeToParentsCenterOfRotation:(CGPoint)a3 isMagicMove:(BOOL)a4;
-- (void)bakeLayerWithAngle:(double)a3 scale:(double)a4;
+- (id)metalTextureWithContext:(id)context;
+- (id)p_allocateMetalTextureForDevice:(id)device;
+- (id)p_allocateMetalTextureForDevice:(id)device renderTarget:(BOOL)target writable:(BOOL)writable private:(BOOL)private maxSize:(CGSize)size;
+- (id)p_latestTextureNotAfterLayerTime:(double)time;
+- (void)adjustAnchorRelativeToParentsCenterOfRotation:(CGPoint)rotation isMagicMove:(BOOL)move;
+- (void)bakeLayerWithAngle:(double)angle scale:(double)scale;
 - (void)dealloc;
-- (void)drawFrameAtLayerTime:(double)a3 context:(id)a4;
+- (void)drawFrameAtLayerTime:(double)time context:(id)context;
 - (void)releaseSingleTexture;
-- (void)renderIntoContext:(CGContext *)a3;
+- (void)renderIntoContext:(CGContext *)context;
 - (void)renderLayerContentsIfNeeded;
 - (void)resetAnchorPoint;
 - (void)resetToSourceImage;
-- (void)setLiveTexturedRectangleSource:(id)a3;
-- (void)setLiveTexturedRectangleSourceProxy:(id)a3;
-- (void)setOffset:(CGPoint)a3;
-- (void)setTextureType:(int)a3;
-- (void)setupMetalTextureForDevice:(id)a3;
-- (void)setupSingleTextureAndGenerateMipMaps:(BOOL)a3;
+- (void)setLiveTexturedRectangleSource:(id)source;
+- (void)setLiveTexturedRectangleSourceProxy:(id)proxy;
+- (void)setOffset:(CGPoint)offset;
+- (void)setTextureType:(int)type;
+- (void)setupMetalTextureForDevice:(id)device;
+- (void)setupSingleTextureAndGenerateMipMaps:(BOOL)maps;
 - (void)teardown;
 @end
 
 @implementation TSDTexturedRectangle
 
-- (TSDTexturedRectangle)initWithSize:(CGSize)a3 offset:(CGPoint)a4 renderBlock:(id)a5
+- (TSDTexturedRectangle)initWithSize:(CGSize)size offset:(CGPoint)offset renderBlock:(id)block
 {
-  y = a4.y;
-  x = a4.x;
-  height = a3.height;
-  width = a3.width;
-  v10 = a5;
+  y = offset.y;
+  x = offset.x;
+  height = size.height;
+  width = size.width;
+  blockCopy = block;
   v21.receiver = self;
   v21.super_class = TSDTexturedRectangle;
   v11 = [(TSDTexturedRectangle *)&v21 init];
   if (v11)
   {
-    v12 = [v10 copy];
+    v12 = [blockCopy copy];
     v13 = *(v11 + 16);
     *(v11 + 16) = v12;
 
@@ -92,9 +92,9 @@
   return v11;
 }
 
-- (TSDTexturedRectangle)initWithLayer:(id)a3
+- (TSDTexturedRectangle)initWithLayer:(id)layer
 {
-  v5 = a3;
+  layerCopy = layer;
   v25.receiver = self;
   v25.super_class = TSDTexturedRectangle;
   v6 = [(TSDTexturedRectangle *)&v25 init];
@@ -104,16 +104,16 @@
     mRenderBlock = v6->mRenderBlock;
     v6->mRenderBlock = 0;
 
-    [v5 frame];
+    [layerCopy frame];
     v7->mSize.width = v9;
     v7->mSize.height = v10;
-    [v5 frame];
+    [layerCopy frame];
     v7->mOffset.x = v11;
     v7->mOffset.y = v12;
-    [v5 position];
+    [layerCopy position];
     v7->mOriginalPosition.x = v13;
     v7->mOriginalPosition.y = v14;
-    [v5 frame];
+    [layerCopy frame];
     v7->mOriginalFrame.origin.x = v15;
     v7->mOriginalFrame.origin.y = v16;
     v7->mOriginalFrame.size.width = v17;
@@ -122,7 +122,7 @@
     v7->mContentRect.origin.y = 0.0;
     v7->mContentRect.size = v7->mSize;
     v7->mTextureOpacity = 1.0;
-    objc_storeStrong(&v7->mLayer, a3);
+    objc_storeStrong(&v7->mLayer, layer);
     mLayer = v7->mLayer;
     v20 = [MEMORY[0x277CCABB0] numberWithBool:1];
     [(CALayer *)mLayer setValue:v20 forKey:@"kTSDTextureLayerKeyHasContents"];
@@ -137,27 +137,27 @@
   return v7;
 }
 
-- (TSDTexturedRectangle)initWithSize:(CGSize)a3 image:(CGImage *)a4
+- (TSDTexturedRectangle)initWithSize:(CGSize)size image:(CGImage *)image
 {
-  height = a3.height;
-  width = a3.width;
-  result = [(TSDTexturedRectangle *)self initWithCGImage:a4];
+  height = size.height;
+  width = size.width;
+  result = [(TSDTexturedRectangle *)self initWithCGImage:image];
   result->mSize.width = width;
   result->mSize.height = height;
   return result;
 }
 
-- (TSDTexturedRectangle)initWithCGImage:(CGImage *)a3
+- (TSDTexturedRectangle)initWithCGImage:(CGImage *)image
 {
   v27.receiver = self;
   v27.super_class = TSDTexturedRectangle;
   v4 = [(TSDTexturedRectangle *)&v27 init];
   if (v4)
   {
-    *(v4 + 17) = CGImageRetain(a3);
+    *(v4 + 17) = CGImageRetain(image);
     *(v4 + 20) = 0x3FF0000000000000;
-    *(v4 + 5) = CGImageGetWidth(a3);
-    Height = CGImageGetHeight(a3);
+    *(v4 + 5) = CGImageGetWidth(image);
+    Height = CGImageGetHeight(image);
     *(v4 + 6) = Height;
     *(v4 + 8) = *MEMORY[0x277CBF348];
     v6 = *(v4 + 5);
@@ -170,9 +170,9 @@
     v8 = *(v4 + 15);
     *(v4 + 15) = v7;
 
-    [*(v4 + 15) setContents:a3];
-    Width = CGImageGetWidth(a3);
-    [*(v4 + 15) setBounds:{0.0, 0.0, Width, CGImageGetHeight(a3)}];
+    [*(v4 + 15) setContents:image];
+    Width = CGImageGetWidth(image);
+    [*(v4 + 15) setBounds:{0.0, 0.0, Width, CGImageGetHeight(image)}];
     __asm { FMOV            V1.2D, #0.5 }
 
     [*(v4 + 15) setPosition:{vmulq_f64(*(v4 + 40), _Q1)}];
@@ -230,24 +230,24 @@
 
 - (id)description
 {
-  v3 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   v4 = TSDStringFromTextureType([(TSDTexturedRectangle *)self textureType]);
-  [v3 appendFormat:@"textureType:%@", v4];
+  [string appendFormat:@"textureType:%@", v4];
 
   [(TSDTexturedRectangle *)self frame];
   v5 = NSStringFromCGRect(v12);
-  [v3 appendFormat:@" frame:%@", v5];
+  [string appendFormat:@" frame:%@", v5];
 
   v6 = MEMORY[0x277CCACA8];
   v10.receiver = self;
   v10.super_class = TSDTexturedRectangle;
   v7 = [(TSDTexturedRectangle *)&v10 description];
-  v8 = [v6 stringWithFormat:@"%@: {%@}", v7, v3];
+  v8 = [v6 stringWithFormat:@"%@: {%@}", v7, string];
 
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   if (self->mRenderBlock)
   {
@@ -258,10 +258,10 @@
   {
     if (!self->mSourceImage)
     {
-      v10 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDTexturedRectangle copyWithZone:]"];
       v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDTexturedRectangle.m"];
-      [v10 handleFailureInFunction:v11 file:v12 lineNumber:259 description:@"Trying to make a copy from a texture with no content"];
+      [currentHandler handleFailureInFunction:v11 file:v12 lineNumber:259 description:@"Trying to make a copy from a texture with no content"];
 
       v6 = 0;
       goto LABEL_6;
@@ -274,12 +274,12 @@
 LABEL_6:
   [(TSDTexturedRectangle *)v6 setOffset:self->mOffset.x, self->mOffset.y];
   [(TSDTexturedRectangle *)v6 setTextureType:self->mTextureType];
-  v7 = [(NSMutableDictionary *)self->mAttributes copyWithZone:a3];
+  v7 = [(NSMutableDictionary *)self->mAttributes copyWithZone:zone];
   [(TSDTexturedRectangle *)v6 setAttributes:v7];
 
   [(TSDTexturedRectangle *)v6 setTextureOpacity:self->mTextureOpacity];
   [(TSDTexturedRectangle *)v6 setContentRect:self->mContentRect.origin.x, self->mContentRect.origin.y, self->mContentRect.size.width, self->mContentRect.size.height];
-  v8 = [(NSMutableArray *)self->mTags copyWithZone:a3];
+  v8 = [(NSMutableArray *)self->mTags copyWithZone:zone];
   [(TSDTexturedRectangle *)v6 setTags:v8];
 
   [(TSDTexturedRectangle *)v6 setText:self->_text];
@@ -335,9 +335,9 @@ LABEL_6:
   return result;
 }
 
-- (void)setOffset:(CGPoint)a3
+- (void)setOffset:(CGPoint)offset
 {
-  self->mOffset = a3;
+  self->mOffset = offset;
   [(CALayer *)self->mLayer setFrame:?];
   [(CALayer *)self->mLayer position];
   self->mOriginalPosition.x = v4;
@@ -366,23 +366,23 @@ LABEL_6:
   return result;
 }
 
-- (void)adjustAnchorRelativeToParentsCenterOfRotation:(CGPoint)a3 isMagicMove:(BOOL)a4
+- (void)adjustAnchorRelativeToParentsCenterOfRotation:(CGPoint)rotation isMagicMove:(BOOL)move
 {
-  v4 = a4;
-  if (!a4 || (self->mTextureType & 0xFFFFFFFE) != 2)
+  moveCopy = move;
+  if (!move || (self->mTextureType & 0xFFFFFFFE) != 2)
   {
-    x = a3.x;
-    y = a3.y;
+    x = rotation.x;
+    y = rotation.y;
     width = self->mOriginalFrame.size.width;
     height = self->mOriginalFrame.size.height;
     v8 = TSDCenterOfRect(self->mOriginalFrame.origin.x, self->mOriginalFrame.origin.y, width, height);
     v9 = TSDSubtractPoints(x, y, v8);
     [(CALayer *)self->mLayer setAnchorPoint:v9 / width + 0.5, v10 / height + 0.5];
     [(CALayer *)self->mLayer setPosition:x, y];
-    if (v4 && [(TSDTexturedRectangle *)self textureType]!= 9)
+    if (moveCopy && [(TSDTexturedRectangle *)self textureType]!= 9)
     {
-      v11 = [(CALayer *)self->mLayer superlayer];
-      [v11 bounds];
+      superlayer = [(CALayer *)self->mLayer superlayer];
+      [superlayer bounds];
       v16 = TSDCenterOfRect(v12, v13, v14, v15);
       v18 = v17;
 
@@ -395,8 +395,8 @@ LABEL_6:
       ty = v32.ty;
       v25 = *&v32.c;
       v27 = *&v32.a;
-      v22 = [(TSDTexturedRectangle *)self parent];
-      [v22 textureAngle];
+      parent = [(TSDTexturedRectangle *)self parent];
+      [parent textureAngle];
       *&v31.a = v27;
       *&v31.c = v25;
       v31.tx = tx;
@@ -430,11 +430,11 @@ LABEL_6:
   [(CALayer *)mLayer setPosition:v4, v6];
 }
 
-- (void)setTextureType:(int)a3
+- (void)setTextureType:(int)type
 {
-  if (self->mTextureType != a3)
+  if (self->mTextureType != type)
   {
-    self->mTextureType = a3;
+    self->mTextureType = type;
     v5 = TSDStringFromTextureType([(TSDTexturedRectangle *)self textureType]);
     [(CALayer *)self->mLayer setName:v5];
   }
@@ -442,35 +442,35 @@ LABEL_6:
 
 - (CGColorSpace)p_colorSpace
 {
-  v3 = TSUDeviceRGBColorSpace();
+  colorSpace2 = TSUDeviceRGBColorSpace();
   result = self->mColorSpace;
   if (!result)
   {
     WeakRetained = objc_loadWeakRetained(&self->mParent);
-    v6 = [WeakRetained colorSpace];
+    colorSpace = [WeakRetained colorSpace];
 
-    if (v6)
+    if (colorSpace)
     {
       v7 = objc_loadWeakRetained(&self->mParent);
-      v3 = [v7 colorSpace];
+      colorSpace2 = [v7 colorSpace];
     }
 
-    return v3;
+    return colorSpace2;
   }
 
   return result;
 }
 
-- (CGImage)p_newImageAndBufferWithAngle:(double)a3 scale:(double)a4 offset:(CGPoint)a5
+- (CGImage)p_newImageAndBufferWithAngle:(double)angle scale:(double)scale offset:(CGPoint)offset
 {
-  y = a5.y;
-  x = a5.x;
+  y = offset.y;
+  x = offset.x;
   v10 = CGBitmapContextCreate(0, self->mSize.width, self->mSize.height, 8uLL, 4 * self->mSize.width, [(TSDTexturedRectangle *)self p_colorSpace], 1u);
   TSDSetCGContextInfo(v10, 0, 0, 0, 0, 1.0);
   CGContextTranslateCTM(v10, 0.0, self->mSize.height);
   CGContextScaleCTM(v10, 1.0, -1.0);
   CGContextTranslateCTM(v10, x, y);
-  if (a3 != 0.0 || a4 != 1.0)
+  if (angle != 0.0 || scale != 1.0)
   {
     v34 = *(MEMORY[0x277CBF2C0] + 16);
     *&v39.a = *MEMORY[0x277CBF2C0];
@@ -490,10 +490,10 @@ LABEL_6:
     CGAffineTransformTranslate(&transform, &v37, v15, v16);
     v39 = transform;
     v37 = transform;
-    CGAffineTransformScale(&transform, &v37, a4, a4);
+    CGAffineTransformScale(&transform, &v37, scale, scale);
     v39 = transform;
     v37 = transform;
-    CGAffineTransformRotate(&transform, &v37, a3);
+    CGAffineTransformRotate(&transform, &v37, angle);
     v39 = transform;
     [(CALayer *)self->mLayer anchorPoint];
     v18 = v17;
@@ -530,10 +530,10 @@ LABEL_6:
 
     else
     {
-      v28 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v29 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDTexturedRectangle p_newImageAndBufferWithAngle:scale:offset:]"];
       v30 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDTexturedRectangle.m"];
-      [v28 handleFailureInFunction:v29 file:v30 lineNumber:423 description:@"Nothing to render from."];
+      [currentHandler handleFailureInFunction:v29 file:v30 lineNumber:423 description:@"Nothing to render from."];
     }
   }
 
@@ -557,20 +557,20 @@ LABEL_6:
 
 - (void)renderLayerContentsIfNeeded
 {
-  v3 = [(CALayer *)self->mLayer contents];
+  contents = [(CALayer *)self->mLayer contents];
 
-  if (v3)
+  if (contents)
   {
     if (self->mBakedImage)
     {
-      v4 = [(CALayer *)self->mLayer contents];
-      if (v4 == self->mBakedImage)
+      contents2 = [(CALayer *)self->mLayer contents];
+      if (contents2 == self->mBakedImage)
       {
-        v13 = v4;
-        v11 = [(CALayer *)self->mLayer superlayer];
-        v12 = [v11 superlayer];
+        v13 = contents2;
+        superlayer = [(CALayer *)self->mLayer superlayer];
+        v11Superlayer = [superlayer superlayer];
 
-        if (!v12)
+        if (!v11Superlayer)
         {
 
           [(TSDTexturedRectangle *)self resetToSourceImage];
@@ -587,10 +587,10 @@ LABEL_6:
   {
     if (!self->mRenderBlock && !self->mSourceImage)
     {
-      v5 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDTexturedRectangle renderLayerContentsIfNeeded]"];
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDTexturedRectangle.m"];
-      [v5 handleFailureInFunction:v6 file:v7 lineNumber:455 description:@"Nothing to render from"];
+      [currentHandler handleFailureInFunction:v6 file:v7 lineNumber:455 description:@"Nothing to render from"];
     }
 
     mSourceImage = self->mSourceImage;
@@ -609,14 +609,14 @@ LABEL_6:
   }
 }
 
-- (void)setupSingleTextureAndGenerateMipMaps:(BOOL)a3
+- (void)setupSingleTextureAndGenerateMipMaps:(BOOL)maps
 {
-  if (!self->mSingleTextureName || a3 && !self->mSingleTextureContainsMipmaps)
+  if (!self->mSingleTextureName || maps && !self->mSingleTextureContainsMipmaps)
   {
     [(TSDTexturedRectangle *)self releaseSingleTexture];
     width = self->mSize.width;
     height = self->mSize.height;
-    v6 = [(TSDTexturedRectangle *)self image];
+    image = [(TSDTexturedRectangle *)self image];
     v7 = malloc_type_malloc(4 * width * height, 0x100004077774924uLL);
     v8 = CGBitmapContextCreate(v7, width, height, 8uLL, 4 * width, [(TSDTexturedRectangle *)self p_colorSpace], 1u);
     TSDSetCGContextInfo(v8, 0, 0, 0, 0, 1.0);
@@ -628,17 +628,17 @@ LABEL_6:
     v17.origin.y = 0.0;
     v17.size.height = v9;
     CGContextClearRect(v8, v17);
-    if (v6)
+    if (image)
     {
-      v10 = CGImageGetHeight(v6);
+      v10 = CGImageGetHeight(image);
       CGContextTranslateCTM(v8, 0.0, v10);
       CGContextScaleCTM(v8, 1.0, -1.0);
-      v11 = CGImageGetWidth(v6);
-      v18.size.height = CGImageGetHeight(v6);
+      v11 = CGImageGetWidth(image);
+      v18.size.height = CGImageGetHeight(image);
       v18.origin.x = 0.0;
       v18.origin.y = 0.0;
       v18.size.width = v11;
-      CGContextDrawImage(v8, v18, v6);
+      CGContextDrawImage(v8, v18, image);
     }
 
     else
@@ -651,10 +651,10 @@ LABEL_6:
 
       else
       {
-        v13 = [MEMORY[0x277D6C290] currentHandler];
+        currentHandler = [MEMORY[0x277D6C290] currentHandler];
         v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDTexturedRectangle setupSingleTextureAndGenerateMipMaps:]"];
         v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDTexturedRectangle.m"];
-        [v13 handleFailureInFunction:v14 file:v15 lineNumber:501 description:@"Nothing to render from"];
+        [currentHandler handleFailureInFunction:v14 file:v15 lineNumber:501 description:@"Nothing to render from"];
       }
     }
 
@@ -674,17 +674,17 @@ LABEL_6:
 
 - (double)singleTextureOpacity
 {
-  v3 = [(TSDTexturedRectangle *)self layer];
-  [v3 opacity];
+  layer = [(TSDTexturedRectangle *)self layer];
+  [layer opacity];
   v5 = v4;
 
-  v6 = [(TSDTexturedRectangle *)self parent];
+  parent = [(TSDTexturedRectangle *)self parent];
 
-  if (v6)
+  if (parent)
   {
-    v7 = [(TSDTexturedRectangle *)self parent];
-    v8 = [v7 layer];
-    [v8 opacity];
+    parent2 = [(TSDTexturedRectangle *)self parent];
+    layer2 = [parent2 layer];
+    [layer2 opacity];
     v5 = v5 * v9;
   }
 
@@ -708,10 +708,10 @@ LABEL_6:
   mLayer = self->mLayer;
   if (!mLayer)
   {
-    v6 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDTexturedRectangle image]"];
     v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDTexturedRectangle.m"];
-    [v6 handleFailureInFunction:v7 file:v8 lineNumber:573 description:@"Can't make an image from this TSDTexturedRectangle!"];
+    [currentHandler handleFailureInFunction:v7 file:v8 lineNumber:573 description:@"Can't make an image from this TSDTexturedRectangle!"];
 
     return 0;
   }
@@ -719,7 +719,7 @@ LABEL_6:
   return [(CALayer *)mLayer newRasterizedImageRef];
 }
 
-- (void)bakeLayerWithAngle:(double)a3 scale:(double)a4
+- (void)bakeLayerWithAngle:(double)angle scale:(double)scale
 {
   mLayer = self->mLayer;
   if (mLayer)
@@ -729,17 +729,17 @@ LABEL_6:
     v10.n128_u64[0] = *&self->mOriginalFrame.size.width;
     v11.n128_u64[0] = *&self->mOriginalFrame.size.height;
     [(CALayer *)self->mLayer setBounds:TSDRectWithOriginAndSize(v8, v9, *(MEMORY[0x277CBF348] + 8), v10, v11)];
-    v12 = [(CALayer *)self->mLayer superlayer];
-    [v12 frame];
+    superlayer = [(CALayer *)self->mLayer superlayer];
+    [superlayer frame];
     v14 = v13;
     v16 = v15;
     [(CALayer *)self->mLayer frame];
     v18 = TSDAddPoints(v14, v16, v17);
     v20 = v19;
 
-    v21 = [(CALayer *)self->mLayer frame];
+    frame = [(CALayer *)self->mLayer frame];
     v22.n128_f64[0] = v18;
-    v48.origin.x = TSDRectWithOriginAndSize(v21, v22, v20, v23, v24);
+    v48.origin.x = TSDRectWithOriginAndSize(frame, v22, v20, v23, v24);
     x = v48.origin.x;
     y = v48.origin.y;
     v49 = CGRectIntegral(v48);
@@ -747,8 +747,8 @@ LABEL_6:
     v28 = v49.origin.y;
     self->mSize.width = v49.size.width;
     self->mSize.height = v49.size.height;
-    v29 = [(CALayer *)self->mLayer superlayer];
-    [v29 frame];
+    superlayer2 = [(CALayer *)self->mLayer superlayer];
+    [superlayer2 frame];
     self->mOffset.x = TSDSubtractPoints(v27, v28, v30);
     self->mOffset.y = v31;
 
@@ -759,21 +759,21 @@ LABEL_6:
     }
 
     v33 = TSDSubtractPoints(x, y, v27);
-    v35 = [(TSDTexturedRectangle *)self p_newImageAndBufferWithAngle:a3 scale:a4 offset:v33, v34];
+    v35 = [(TSDTexturedRectangle *)self p_newImageAndBufferWithAngle:angle scale:scale offset:v33, v34];
     self->mBakedImage = v35;
     [(CALayer *)self->mLayer setContents:v35];
-    if (a3 != 0.0)
+    if (angle != 0.0)
     {
       [(CALayer *)self->mLayer setValue:&unk_287DDDFF0 forKeyPath:@"transform.rotation.z"];
     }
 
-    if (a4 != 1.0)
+    if (scale != 1.0)
     {
       [(CALayer *)self->mLayer setValue:&unk_287DDE000 forKeyPath:@"transform.scale.xy"];
     }
 
     v36 = self->mLayer;
-    v37 = [MEMORY[0x277CCABB0] numberWithDouble:a4];
+    v37 = [MEMORY[0x277CCABB0] numberWithDouble:scale];
     [(CALayer *)v36 setValue:v37 forKey:@"kTSDTextureLayerKeyBakedScale"];
 
     v38 = self->mLayer;
@@ -797,15 +797,15 @@ LABEL_6:
   }
 }
 
-- (void)renderIntoContext:(CGContext *)a3
+- (void)renderIntoContext:(CGContext *)context
 {
   if (![(CALayer *)self->mLayer isHidden])
   {
-    CGContextSaveGState(a3);
+    CGContextSaveGState(context);
     [(CALayer *)self->mLayer position];
     v6 = v5;
     [(CALayer *)self->mLayer position];
-    CGContextTranslateCTM(a3, v6, v7);
+    CGContextTranslateCTM(context, v6, v7);
     mLayer = self->mLayer;
     if (mLayer)
     {
@@ -830,7 +830,7 @@ LABEL_6:
         memset(&v25, 0, 48);
       }
 
-      CGContextConcatCTM(a3, &v25);
+      CGContextConcatCTM(context, &v25);
     }
 
     [(CALayer *)self->mLayer bounds:*&v25.m11];
@@ -840,18 +840,18 @@ LABEL_6:
     [(CALayer *)self->mLayer bounds];
     v15 = v14;
     [(CALayer *)self->mLayer anchorPoint];
-    CGContextTranslateCTM(a3, v13, -(v15 * v16));
+    CGContextTranslateCTM(context, v13, -(v15 * v16));
     mTextureOpacity = self->mTextureOpacity;
     if (mTextureOpacity != 1.0)
     {
-      CGContextSetAlpha(a3, mTextureOpacity);
-      CGContextBeginTransparencyLayer(a3, 0);
+      CGContextSetAlpha(context, mTextureOpacity);
+      CGContextBeginTransparencyLayer(context, 0);
     }
 
     mRenderBlock = self->mRenderBlock;
     if (mRenderBlock)
     {
-      mRenderBlock[2](mRenderBlock, a3);
+      mRenderBlock[2](mRenderBlock, context);
     }
 
     else
@@ -860,63 +860,63 @@ LABEL_6:
       if (mSourceImage)
       {
         Height = CGImageGetHeight(mSourceImage);
-        CGContextTranslateCTM(a3, 0.0, Height);
-        CGContextScaleCTM(a3, 1.0, -1.0);
+        CGContextTranslateCTM(context, 0.0, Height);
+        CGContextScaleCTM(context, 1.0, -1.0);
         Width = CGImageGetWidth(self->mSourceImage);
         v26.size.height = CGImageGetHeight(self->mSourceImage);
         v26.origin.x = 0.0;
         v26.origin.y = 0.0;
         v26.size.width = Width;
-        CGContextDrawImage(a3, v26, self->mSourceImage);
+        CGContextDrawImage(context, v26, self->mSourceImage);
       }
 
       else
       {
-        v22 = [MEMORY[0x277D6C290] currentHandler];
+        currentHandler = [MEMORY[0x277D6C290] currentHandler];
         v23 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDTexturedRectangle renderIntoContext:]"];
         v24 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDTexturedRectangle.m"];
-        [v22 handleFailureInFunction:v23 file:v24 lineNumber:639 description:@"Nothing to render from."];
+        [currentHandler handleFailureInFunction:v23 file:v24 lineNumber:639 description:@"Nothing to render from."];
       }
     }
 
     if (self->mTextureOpacity != 1.0)
     {
-      CGContextEndTransparencyLayer(a3);
+      CGContextEndTransparencyLayer(context);
     }
 
-    CGContextRestoreGState(a3);
+    CGContextRestoreGState(context);
   }
 }
 
 - (BOOL)isBackgroundTexture
 {
-  v3 = [(TSDTexturedRectangle *)self parent];
+  parent = [(TSDTexturedRectangle *)self parent];
 
-  if (!v3)
+  if (!parent)
   {
     return 0;
   }
 
-  v4 = [(TSDTexturedRectangle *)self parent];
-  v5 = [v4 isBackgroundTexture:self];
+  parent2 = [(TSDTexturedRectangle *)self parent];
+  v5 = [parent2 isBackgroundTexture:self];
 
   return v5;
 }
 
-- (CGRect)boundingRectForStage:(int64_t)a3 isBuildIn:(BOOL)a4
+- (CGRect)boundingRectForStage:(int64_t)stage isBuildIn:(BOOL)in
 {
-  v4 = a4;
+  inCopy = in;
   [(TSDTexturedRectangle *)self frame];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  v15 = [(TSDTexturedRectangle *)self parent];
+  parent = [(TSDTexturedRectangle *)self parent];
 
-  if (v15)
+  if (parent)
   {
-    v16 = [(TSDTexturedRectangle *)self parent];
-    [v16 boundingRectForStage:a3 isBuildIn:v4];
+    parent2 = [(TSDTexturedRectangle *)self parent];
+    [parent2 boundingRectForStage:stage isBuildIn:inCopy];
     v8 = v17;
     v10 = v18;
     v12 = v19;
@@ -936,20 +936,20 @@ LABEL_6:
 
 - (CALayer)parentLayer
 {
-  v3 = [(TSDTexturedRectangle *)self parent];
+  parent = [(TSDTexturedRectangle *)self parent];
 
-  if (v3)
+  if (parent)
   {
-    v4 = [(TSDTexturedRectangle *)self parent];
-    v5 = [v4 layer];
+    parent2 = [(TSDTexturedRectangle *)self parent];
+    layer = [parent2 layer];
   }
 
   else
   {
-    v5 = 0;
+    layer = 0;
   }
 
-  return v5;
+  return layer;
 }
 
 - (CGRect)frameOnCanvas
@@ -958,17 +958,17 @@ LABEL_6:
   y = self->mFrameOnCanvas.origin.y;
   width = self->mFrameOnCanvas.size.width;
   height = self->mFrameOnCanvas.size.height;
-  v7 = [(TSDTexturedRectangle *)self parent];
+  parent = [(TSDTexturedRectangle *)self parent];
 
-  if (v7)
+  if (parent)
   {
     [(TSDTexturedRectangle *)self frame];
     v9 = v8;
-    v10 = [(TSDTexturedRectangle *)self parent];
-    [v10 frame];
+    parent2 = [(TSDTexturedRectangle *)self parent];
+    [parent2 frame];
     x = v9 + v11;
-    v12 = [(TSDTexturedRectangle *)self parent];
-    [v12 frame];
+    parent3 = [(TSDTexturedRectangle *)self parent];
+    [parent3 frame];
     v14 = v13;
     [(TSDTexturedRectangle *)self frame];
     y = v14 + CGRectGetMaxY(v24);
@@ -1002,23 +1002,23 @@ LABEL_6:
   return result;
 }
 
-- (char)p_setupTextureDataWithSize:(CGSize)a3 isBGRA:(BOOL)a4
+- (char)p_setupTextureDataWithSize:(CGSize)size isBGRA:(BOOL)a
 {
-  v4 = a4;
-  height = a3.height;
-  width = a3.width;
+  aCopy = a;
+  height = size.height;
+  width = size.width;
   mBakedImage = self->mBakedImage;
   if (!mBakedImage)
   {
     mBakedImage = self->mSourceImage;
   }
 
-  v9 = a3.width;
+  v9 = size.width;
   v11 = self->mSize.width;
   v10 = self->mSize.height;
-  v12 = [(TSDTexturedRectangle *)self p_colorSpace];
+  p_colorSpace = [(TSDTexturedRectangle *)self p_colorSpace];
   v13 = TSUP3ColorSpace();
-  if (v12 == v13)
+  if (p_colorSpace == v13)
   {
     v17 = CGColorSpaceCreateWithName(*MEMORY[0x277CBF430]);
     v14 = 8 * v9;
@@ -1029,7 +1029,7 @@ LABEL_6:
   else
   {
     v14 = 4 * v9;
-    if (v4)
+    if (aCopy)
     {
       v15 = 8194;
     }
@@ -1040,7 +1040,7 @@ LABEL_6:
     }
 
     v16 = 8;
-    v17 = v12;
+    v17 = p_colorSpace;
   }
 
   v18 = height;
@@ -1066,7 +1066,7 @@ LABEL_6:
   data = malloc_type_malloc(v14 * v18, 0x100004077774924uLL);
   if ([(TSDTexturedRectangle *)self textureType]== 7 && mBakedImage)
   {
-    if (v12 == v13)
+    if (p_colorSpace == v13)
     {
       CGColorSpaceRelease(v17);
     }
@@ -1078,7 +1078,7 @@ LABEL_6:
   else
   {
     v24 = CGBitmapContextCreate(data, v9, v18, v16, v14, v17, v15);
-    if (v12 == v13)
+    if (p_colorSpace == v13)
     {
       CGColorSpaceRelease(v17);
     }
@@ -1117,10 +1117,10 @@ LABEL_6:
 
     else
     {
-      v27 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v28 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDTexturedRectangle p_setupTextureDataWithSize:isBGRA:]"];
       v29 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDTexturedRectangle.m"];
-      [v27 handleFailureInFunction:v28 file:v29 lineNumber:757 description:{@"%p - Nothing to render from", self}];
+      [currentHandler handleFailureInFunction:v28 file:v29 lineNumber:757 description:{@"%p - Nothing to render from", self}];
     }
   }
 
@@ -1134,14 +1134,14 @@ LABEL_6:
   return data;
 }
 
-- (id)p_allocateMetalTextureForDevice:(id)a3
+- (id)p_allocateMetalTextureForDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v5 = +[TSDCapabilities currentCapabilities];
-  [v5 maximumMetalTextureSizeForDevice:v4];
+  [v5 maximumMetalTextureSizeForDevice:deviceCopy];
 
-  v6 = [(TSDTexturedRectangle *)self p_colorSpace];
-  if (v6 == TSUP3ColorSpace())
+  p_colorSpace = [(TSDTexturedRectangle *)self p_colorSpace];
+  if (p_colorSpace == TSUP3ColorSpace())
   {
     v7 = 115;
   }
@@ -1153,74 +1153,74 @@ LABEL_6:
 
   TSUShrinkSizeToFitInSize();
   v10 = [MEMORY[0x277CD7058] texture2DDescriptorWithPixelFormat:v7 width:v9 height:v8 mipmapped:0];
-  v11 = [v4 newTextureWithDescriptor:v10];
+  v11 = [deviceCopy newTextureWithDescriptor:v10];
 
   return v11;
 }
 
-- (void)setupMetalTextureForDevice:(id)a3
+- (void)setupMetalTextureForDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   if (!self->_metalTexture)
   {
-    v5 = [(TSDTexturedRectangle *)self p_allocateMetalTextureForDevice:v4];
+    v5 = [(TSDTexturedRectangle *)self p_allocateMetalTextureForDevice:deviceCopy];
     metalTexture = self->_metalTexture;
     self->_metalTexture = v5;
 
-    v7 = [(MTLTexture *)self->_metalTexture width];
-    v8 = [(MTLTexture *)self->_metalTexture height];
-    v9 = [(MTLTexture *)self->_metalTexture pixelFormat];
+    width = [(MTLTexture *)self->_metalTexture width];
+    height = [(MTLTexture *)self->_metalTexture height];
+    pixelFormat = [(MTLTexture *)self->_metalTexture pixelFormat];
     v10 = 2;
-    if (v9 == 115)
+    if (pixelFormat == 115)
     {
       v10 = 3;
     }
 
-    v11 = v7 << v10;
-    v12 = [(TSDTexturedRectangle *)self p_setupTextureDataWithSize:1 isBGRA:v7, v8];
+    v11 = width << v10;
+    v12 = [(TSDTexturedRectangle *)self p_setupTextureDataWithSize:1 isBGRA:width, height];
     memset(v17, 0, 24);
     v13 = self->_metalTexture;
-    v17[3] = v7;
-    v17[4] = v8;
+    v17[3] = width;
+    v17[4] = height;
     v17[5] = 1;
     [(MTLTexture *)v13 replaceRegion:v17 mipmapLevel:0 withBytes:v12 bytesPerRow:v11];
     if ([(MTLTexture *)self->_metalTexture mipmapLevelCount]>= 2)
     {
-      v14 = [v4 newCommandQueue];
-      v15 = [v14 commandBuffer];
-      v16 = [v15 blitCommandEncoder];
-      [v16 generateMipmapsForTexture:self->_metalTexture];
-      [v16 endEncoding];
-      [v15 commit];
+      newCommandQueue = [deviceCopy newCommandQueue];
+      commandBuffer = [newCommandQueue commandBuffer];
+      blitCommandEncoder = [commandBuffer blitCommandEncoder];
+      [blitCommandEncoder generateMipmapsForTexture:self->_metalTexture];
+      [blitCommandEncoder endEncoding];
+      [commandBuffer commit];
     }
 
     free(v12);
   }
 }
 
-+ (id)setupMetalShaderForContext:(id)a3
++ (id)setupMetalShaderForContext:(id)context
 {
-  v3 = a3;
-  if (!v3)
+  contextCopy = context;
+  if (!contextCopy)
   {
-    v4 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[TSDTexturedRectangle setupMetalShaderForContext:]"];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDTexturedRectangle.m"];
-    [v4 handleFailureInFunction:v5 file:v6 lineNumber:846 description:{@"invalid nil value for '%s'", "context"}];
+    [currentHandler handleFailureInFunction:v5 file:v6 lineNumber:846 description:{@"invalid nil value for '%s'", "context"}];
   }
 
-  v7 = [v3 device];
+  device = [contextCopy device];
 
-  if (!v7)
+  if (!device)
   {
-    v8 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
     v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[TSDTexturedRectangle setupMetalShaderForContext:]"];
     v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDTexturedRectangle.m"];
-    [v8 handleFailureInFunction:v9 file:v10 lineNumber:847 description:{@"invalid nil value for '%s'", "context.device"}];
+    [currentHandler2 handleFailureInFunction:v9 file:v10 lineNumber:847 description:{@"invalid nil value for '%s'", "context.device"}];
   }
 
   v11 = objc_alloc_init(MEMORY[0x277CD6F68]);
-  [v11 setPixelFormat:objc_msgSend(v3, "pixelFormat")];
+  [v11 setPixelFormat:objc_msgSend(contextCopy, "pixelFormat")];
   [v11 setBlendingEnabled:1];
   [v11 setRgbBlendOperation:0];
   [v11 setAlphaBlendOperation:0];
@@ -1229,26 +1229,26 @@ LABEL_6:
   [v11 setDestinationAlphaBlendFactor:5];
   [v11 setDestinationRGBBlendFactor:5];
   v12 = [TSDMetalShader alloc];
-  v13 = [v3 device];
-  v14 = [(TSDMetalShader *)v12 initDefaultTextureAndOpacityShaderWithDevice:v13 colorAttachment:v11];
+  device2 = [contextCopy device];
+  v14 = [(TSDMetalShader *)v12 initDefaultTextureAndOpacityShaderWithDevice:device2 colorAttachment:v11];
 
   return v14;
 }
 
-- (void)drawFrameAtLayerTime:(double)a3 context:(id)a4
+- (void)drawFrameAtLayerTime:(double)time context:(id)context
 {
-  v5 = a4;
-  if (!v5)
+  contextCopy = context;
+  if (!contextCopy)
   {
-    v6 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDTexturedRectangle drawFrameAtLayerTime:context:]"];
     v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDTexturedRectangle.m"];
-    [v6 handleFailureInFunction:v7 file:v8 lineNumber:867 description:{@"invalid nil value for '%s'", "context"}];
+    [currentHandler handleFailureInFunction:v7 file:v8 lineNumber:867 description:{@"invalid nil value for '%s'", "context"}];
   }
 
   [(TSDTexturedRectangle *)self frameOnCanvas];
   v10 = v9;
-  [v5 layerSize];
+  [contextCopy layerSize];
   v12 = v11;
   [(TSDTexturedRectangle *)self frameOnCanvas];
   v14 = v12 - v13;
@@ -1258,30 +1258,30 @@ LABEL_6:
   v18 = v17;
   [(TSDTexturedRectangle *)self frameOnCanvas];
   v20 = v19;
-  v21 = [v5 device];
-  v22 = [TSDGPUDataBuffer newDataBufferWithVertexRect:v21 textureRect:v10 device:v16, v18, v20, *MEMORY[0x277D6C3C8], *(MEMORY[0x277D6C3C8] + 8), *(MEMORY[0x277D6C3C8] + 16), *(MEMORY[0x277D6C3C8] + 24)];
+  device = [contextCopy device];
+  v22 = [TSDGPUDataBuffer newDataBufferWithVertexRect:device textureRect:v10 device:v16, v18, v20, *MEMORY[0x277D6C3C8], *(MEMORY[0x277D6C3C8] + 8), *(MEMORY[0x277D6C3C8] + 16), *(MEMORY[0x277D6C3C8] + 24)];
 
-  [v5 layerSize];
+  [contextCopy layerSize];
   v24 = v23;
   v26 = v25;
-  v27 = [v5 shader];
+  shader = [contextCopy shader];
 
-  if (!v27)
+  if (!shader)
   {
-    v28 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
     v29 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDTexturedRectangle drawFrameAtLayerTime:context:]"];
     v30 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDTexturedRectangle.m"];
-    [v28 handleFailureInFunction:v29 file:v30 lineNumber:874 description:{@"invalid nil value for '%s'", "context.shader"}];
+    [currentHandler2 handleFailureInFunction:v29 file:v30 lineNumber:874 description:{@"invalid nil value for '%s'", "context.shader"}];
   }
 
-  v31 = [v5 renderEncoder];
+  renderEncoder = [contextCopy renderEncoder];
 
-  if (!v31)
+  if (!renderEncoder)
   {
-    v32 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler3 = [MEMORY[0x277D6C290] currentHandler];
     v33 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDTexturedRectangle drawFrameAtLayerTime:context:]"];
     v34 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDTexturedRectangle.m"];
-    [v32 handleFailureInFunction:v33 file:v34 lineNumber:875 description:{@"invalid nil value for '%s'", "context.renderEncoder"}];
+    [currentHandler3 handleFailureInFunction:v33 file:v34 lineNumber:875 description:{@"invalid nil value for '%s'", "context.renderEncoder"}];
   }
 
   v49 = 0u;
@@ -1300,40 +1300,40 @@ LABEL_6:
   [(TSDTexturedRectangle *)self singleTextureOpacity];
   *&v35 = v35;
   v42 = LODWORD(v35);
-  v36 = [v5 renderEncoder];
-  v37 = [(TSDTexturedRectangle *)self metalTexture];
-  [v36 setFragmentTexture:v37 atIndex:0];
+  renderEncoder2 = [contextCopy renderEncoder];
+  metalTexture = [(TSDTexturedRectangle *)self metalTexture];
+  [renderEncoder2 setFragmentTexture:metalTexture atIndex:0];
 
-  v38 = [v5 shader];
-  v39 = [v5 renderEncoder];
-  [v38 setPipelineStateWithEncoder:v39 vertexBytes:v51 fragmentBytes:&v42];
+  shader2 = [contextCopy shader];
+  renderEncoder3 = [contextCopy renderEncoder];
+  [shader2 setPipelineStateWithEncoder:renderEncoder3 vertexBytes:v51 fragmentBytes:&v42];
 
-  v40 = [v5 renderEncoder];
-  v41 = [v5 shader];
-  [v22 drawWithEncoder:v40 atIndex:{objc_msgSend(v41, "bufferIndex")}];
+  renderEncoder4 = [contextCopy renderEncoder];
+  shader3 = [contextCopy shader];
+  [v22 drawWithEncoder:renderEncoder4 atIndex:{objc_msgSend(shader3, "bufferIndex")}];
 }
 
-- (id)metalTextureWithContext:(id)a3
+- (id)metalTextureWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   WeakRetained = objc_loadWeakRetained(&self->_liveTexturedRectangleSourceProxy);
 
   if (WeakRetained)
   {
     v6 = objc_loadWeakRetained(&self->_liveTexturedRectangleSourceProxy);
-    v7 = [v6 metalTextureWithContext:v4];
+    metalTexture = [v6 metalTextureWithContext:contextCopy];
 
     goto LABEL_3;
   }
 
   if (!self->_liveTexturedRectangleSource)
   {
-    v7 = [(TSDTexturedRectangle *)self metalTexture];
+    metalTexture = [(TSDTexturedRectangle *)self metalTexture];
     goto LABEL_3;
   }
 
   shouldUseDisplayLinkPresentationTime = self->_shouldUseDisplayLinkPresentationTime;
-  [v4 timingInfo];
+  [contextCopy timingInfo];
   if (shouldUseDisplayLinkPresentationTime)
   {
     v12 = v10;
@@ -1344,29 +1344,29 @@ LABEL_6:
     v12 = v11;
   }
 
-  v13 = self;
-  objc_sync_enter(v13);
-  if (!v13->_liveMetalTexturePool)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_liveMetalTexturePool)
   {
-    v13->_liveMetalTexturePoolIndex = -1;
+    selfCopy->_liveMetalTexturePoolIndex = -1;
     v14 = dispatch_semaphore_create(3);
-    liveMetalTexturesSemaphore = v13->_liveMetalTexturesSemaphore;
-    v13->_liveMetalTexturesSemaphore = v14;
+    liveMetalTexturesSemaphore = selfCopy->_liveMetalTexturesSemaphore;
+    selfCopy->_liveMetalTexturesSemaphore = v14;
 
     v16 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:3];
-    liveMetalTextureToTimestamp = v13->_liveMetalTextureToTimestamp;
-    v13->_liveMetalTextureToTimestamp = v16;
+    liveMetalTextureToTimestamp = selfCopy->_liveMetalTextureToTimestamp;
+    selfCopy->_liveMetalTextureToTimestamp = v16;
 
     v18 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:3];
-    liveMetalTimestampToTexture = v13->_liveMetalTimestampToTexture;
-    v13->_liveMetalTimestampToTexture = v18;
+    liveMetalTimestampToTexture = selfCopy->_liveMetalTimestampToTexture;
+    selfCopy->_liveMetalTimestampToTexture = v18;
 
     v20 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:3];
-    liveMetalTexturePool = v13->_liveMetalTexturePool;
-    v13->_liveMetalTexturePool = v20;
+    liveMetalTexturePool = selfCopy->_liveMetalTexturePool;
+    selfCopy->_liveMetalTexturePool = v20;
   }
 
-  v22 = v13->_liveMetalTimestampToTexture;
+  v22 = selfCopy->_liveMetalTimestampToTexture;
   v23 = [MEMORY[0x277CCABB0] numberWithDouble:v12];
   v24 = [(NSMutableDictionary *)v22 objectForKey:v23];
 
@@ -1374,39 +1374,39 @@ LABEL_6:
   {
     v25 = v24;
 LABEL_29:
-    v7 = v25;
+    metalTexture = v25;
     LODWORD(v33) = 0;
     goto LABEL_30;
   }
 
   if (objc_opt_respondsToSelector() & 1) != 0 && ([(TSDLiveTexturedRectangleSource *)self->_liveTexturedRectangleSource requiresOffscreenPass]& 1) == 0 && (objc_opt_respondsToSelector())
   {
-    v25 = [(TSDLiveTexturedRectangleSource *)self->_liveTexturedRectangleSource metalTextureWithContext:v4];
+    v25 = [(TSDLiveTexturedRectangleSource *)self->_liveTexturedRectangleSource metalTextureWithContext:contextCopy];
     goto LABEL_29;
   }
 
-  if (([(TSDLiveTexturedRectangleSource *)self->_liveTexturedRectangleSource shouldDrawToMetalTextureWithContext:v4]& 1) == 0)
+  if (([(TSDLiveTexturedRectangleSource *)self->_liveTexturedRectangleSource shouldDrawToMetalTextureWithContext:contextCopy]& 1) == 0)
   {
-    v25 = [(TSDTexturedRectangle *)v13 p_latestTextureNotAfterLayerTime:v12];
+    v25 = [(TSDTexturedRectangle *)selfCopy p_latestTextureNotAfterLayerTime:v12];
     goto LABEL_29;
   }
 
-  if ([(NSMutableArray *)v13->_liveMetalTexturePool count]> 2)
+  if ([(NSMutableArray *)selfCopy->_liveMetalTexturePool count]> 2)
   {
 LABEL_23:
-    if (!v13->_liveTextureSourceShader)
+    if (!selfCopy->_liveTextureSourceShader)
     {
-      if (!v4)
+      if (!contextCopy)
       {
-        v34 = [MEMORY[0x277D6C290] currentHandler];
+        currentHandler = [MEMORY[0x277D6C290] currentHandler];
         v35 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDTexturedRectangle metalTextureWithContext:]"];
         v36 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDTexturedRectangle.m"];
-        [v34 handleFailureInFunction:v35 file:v36 lineNumber:949 description:{@"invalid nil value for '%s'", "callingMetalContext"}];
+        [currentHandler handleFailureInFunction:v35 file:v36 lineNumber:949 description:{@"invalid nil value for '%s'", "callingMetalContext"}];
       }
 
       v37 = objc_alloc_init(MEMORY[0x277CD6F68]);
-      v38 = [(NSMutableArray *)v13->_liveMetalTexturePool firstObject];
-      [v37 setPixelFormat:objc_msgSend(v38, "pixelFormat")];
+      firstObject = [(NSMutableArray *)selfCopy->_liveMetalTexturePool firstObject];
+      [v37 setPixelFormat:objc_msgSend(firstObject, "pixelFormat")];
 
       [v37 setBlendingEnabled:1];
       [v37 setRgbBlendOperation:0];
@@ -1416,129 +1416,129 @@ LABEL_23:
       [v37 setDestinationAlphaBlendFactor:5];
       [v37 setDestinationRGBBlendFactor:5];
       v39 = [TSDMetalShader alloc];
-      v40 = [v4 device];
-      v41 = [(TSDMetalShader *)v39 initDefaultTextureAndOpacityShaderWithDevice:v40 colorAttachment:v37];
-      liveTextureSourceShader = v13->_liveTextureSourceShader;
-      v13->_liveTextureSourceShader = v41;
+      device = [contextCopy device];
+      v41 = [(TSDMetalShader *)v39 initDefaultTextureAndOpacityShaderWithDevice:device colorAttachment:v37];
+      liveTextureSourceShader = selfCopy->_liveTextureSourceShader;
+      selfCopy->_liveTextureSourceShader = v41;
     }
 
-    v7 = 0;
+    metalTexture = 0;
     LODWORD(v33) = 1;
     goto LABEL_30;
   }
 
   v26 = +[TSDCapabilities currentCapabilities];
-  v27 = [v4 device];
-  [v26 maximumMetalTextureSizeForDevice:v27];
+  device2 = [contextCopy device];
+  [v26 maximumMetalTextureSizeForDevice:device2];
   v29 = v28;
   v31 = v30;
 
-  v32 = [v4 device];
-  v33 = [(TSDTexturedRectangle *)v13 p_allocateMetalTextureForDevice:v32 renderTarget:1 writable:0 private:1 maxSize:v29, v31];
+  device3 = [contextCopy device];
+  v33 = [(TSDTexturedRectangle *)selfCopy p_allocateMetalTextureForDevice:device3 renderTarget:1 writable:0 private:1 maxSize:v29, v31];
 
   if (v33)
   {
-    [(NSMutableArray *)v13->_liveMetalTexturePool addObject:v33];
+    [(NSMutableArray *)selfCopy->_liveMetalTexturePool addObject:v33];
 
     goto LABEL_23;
   }
 
-  v7 = 0;
+  metalTexture = 0;
 LABEL_30:
 
-  objc_sync_exit(v13);
+  objc_sync_exit(selfCopy);
   if (v33)
   {
-    dispatch_semaphore_wait(v13->_liveMetalTexturesSemaphore, 0xFFFFFFFFFFFFFFFFLL);
-    v43 = v13->_liveMetalTexturePool;
-    v13->_liveMetalTexturePoolIndex = (v13->_liveMetalTexturePoolIndex + 1) % 3;
-    v7 = [(NSMutableArray *)v43 objectAtIndexedSubscript:?];
-    v44 = [MEMORY[0x277CCAE60] valueWithNonretainedObject:v7];
-    v45 = [MEMORY[0x277CD6F50] renderPassDescriptor];
-    v46 = [v45 colorAttachments];
-    v47 = [v46 objectAtIndexedSubscript:0];
-    [v47 setTexture:v7];
+    dispatch_semaphore_wait(selfCopy->_liveMetalTexturesSemaphore, 0xFFFFFFFFFFFFFFFFLL);
+    v43 = selfCopy->_liveMetalTexturePool;
+    selfCopy->_liveMetalTexturePoolIndex = (selfCopy->_liveMetalTexturePoolIndex + 1) % 3;
+    metalTexture = [(NSMutableArray *)v43 objectAtIndexedSubscript:?];
+    v44 = [MEMORY[0x277CCAE60] valueWithNonretainedObject:metalTexture];
+    renderPassDescriptor = [MEMORY[0x277CD6F50] renderPassDescriptor];
+    colorAttachments = [renderPassDescriptor colorAttachments];
+    v47 = [colorAttachments objectAtIndexedSubscript:0];
+    [v47 setTexture:metalTexture];
 
-    v48 = [v45 colorAttachments];
-    v49 = [v48 objectAtIndexedSubscript:0];
+    colorAttachments2 = [renderPassDescriptor colorAttachments];
+    v49 = [colorAttachments2 objectAtIndexedSubscript:0];
     [v49 setLoadAction:2];
 
-    v50 = [v45 colorAttachments];
-    v51 = [v50 objectAtIndexedSubscript:0];
+    colorAttachments3 = [renderPassDescriptor colorAttachments];
+    v51 = [colorAttachments3 objectAtIndexedSubscript:0];
     [v51 setStoreAction:1];
 
-    v52 = [v45 colorAttachments];
-    v53 = [v52 objectAtIndexedSubscript:0];
+    colorAttachments4 = [renderPassDescriptor colorAttachments];
+    v53 = [colorAttachments4 objectAtIndexedSubscript:0];
     [v53 setClearColor:{0.0, 0.0, 0.0, 0.0}];
 
-    v54 = [v4 copy];
-    v55 = [(NSMutableArray *)v13->_liveMetalTexturePool firstObject];
-    [v54 setPixelFormat:objc_msgSend(v55, "pixelFormat")];
+    v54 = [contextCopy copy];
+    firstObject2 = [(NSMutableArray *)selfCopy->_liveMetalTexturePool firstObject];
+    [v54 setPixelFormat:objc_msgSend(firstObject2, "pixelFormat")];
 
-    v56 = [(TSDTexturedRectangle *)v13 metalTexture];
-    v57 = [v56 width];
-    v58 = [(TSDTexturedRectangle *)v13 metalTexture];
-    [v54 setLayerSize:{v57, objc_msgSend(v58, "height")}];
+    metalTexture2 = [(TSDTexturedRectangle *)selfCopy metalTexture];
+    width = [metalTexture2 width];
+    metalTexture3 = [(TSDTexturedRectangle *)selfCopy metalTexture];
+    [v54 setLayerSize:{width, objc_msgSend(metalTexture3, "height")}];
 
-    [v54 setShader:v13->_liveTextureSourceShader];
-    [v54 setCurrentBuffer:v13->_liveMetalTexturePoolIndex];
-    v59 = [v54 commandQueue];
-    v60 = [v59 commandBuffer];
+    [v54 setShader:selfCopy->_liveTextureSourceShader];
+    [v54 setCurrentBuffer:selfCopy->_liveMetalTexturePoolIndex];
+    commandQueue = [v54 commandQueue];
+    commandBuffer = [commandQueue commandBuffer];
 
-    v77 = v60;
-    [v54 setCommandBuffer:v60];
-    v61 = [v54 commandBuffer];
+    v77 = commandBuffer;
+    [v54 setCommandBuffer:commandBuffer];
+    commandBuffer2 = [v54 commandBuffer];
 
-    if (!v61)
+    if (!commandBuffer2)
     {
-      v62 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
       [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDTexturedRectangle metalTextureWithContext:]"];
-      v76 = v45;
+      v76 = renderPassDescriptor;
       v64 = v63 = v44;
       v65 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDTexturedRectangle.m"];
-      [v62 handleFailureInFunction:v64 file:v65 lineNumber:991 description:{@"invalid nil value for '%s'", "context.commandBuffer"}];
+      [currentHandler2 handleFailureInFunction:v64 file:v65 lineNumber:991 description:{@"invalid nil value for '%s'", "context.commandBuffer"}];
 
       v44 = v63;
-      v45 = v76;
+      renderPassDescriptor = v76;
     }
 
-    [v54 setPassDescriptor:v45];
-    v66 = [v54 commandBuffer];
-    v67 = [v54 passDescriptor];
-    v68 = [v66 renderCommandEncoderWithDescriptor:v67];
+    [v54 setPassDescriptor:renderPassDescriptor];
+    commandBuffer3 = [v54 commandBuffer];
+    passDescriptor = [v54 passDescriptor];
+    v68 = [commandBuffer3 renderCommandEncoderWithDescriptor:passDescriptor];
 
     [v54 setRenderEncoder:v68];
-    v69 = v13;
+    v69 = selfCopy;
     objc_sync_enter(v69);
     v70 = [v69[30] objectForKey:v44];
     if (v70)
     {
       [v69[30] removeObjectForKey:v44];
-      [(NSMutableDictionary *)v13->_liveMetalTimestampToTexture removeObjectForKey:v70];
+      [(NSMutableDictionary *)selfCopy->_liveMetalTimestampToTexture removeObjectForKey:v70];
     }
 
     objc_sync_exit(v69);
     [(TSDLiveTexturedRectangleSource *)self->_liveTexturedRectangleSource drawToMetalTextureWithContext:v54];
-    v71 = [v54 renderEncoder];
-    [v71 endEncoding];
+    renderEncoder = [v54 renderEncoder];
+    [renderEncoder endEncoding];
 
-    objc_initWeak(&location, v13->_liveMetalTexturesSemaphore);
-    v72 = [v54 commandBuffer];
+    objc_initWeak(&location, selfCopy->_liveMetalTexturesSemaphore);
+    commandBuffer4 = [v54 commandBuffer];
     v78[0] = MEMORY[0x277D85DD0];
     v78[1] = 3221225472;
     v78[2] = __48__TSDTexturedRectangle_metalTextureWithContext___block_invoke;
     v78[3] = &unk_279D48C30;
     objc_copyWeak(&v79, &location);
-    [v72 addCompletedHandler:v78];
+    [commandBuffer4 addCompletedHandler:v78];
 
-    v73 = [v54 commandBuffer];
-    [v73 commit];
+    commandBuffer5 = [v54 commandBuffer];
+    [commandBuffer5 commit];
 
     v74 = v69;
     objc_sync_enter(v74);
     v75 = [MEMORY[0x277CCABB0] numberWithDouble:v12];
     [v69[30] setObject:v75 forKey:v44];
-    [(NSMutableDictionary *)v13->_liveMetalTimestampToTexture setObject:v7 forKey:v75];
+    [(NSMutableDictionary *)selfCopy->_liveMetalTimestampToTexture setObject:metalTexture forKey:v75];
 
     objc_sync_exit(v74);
     objc_destroyWeak(&v79);
@@ -1547,7 +1547,7 @@ LABEL_30:
 
 LABEL_3:
 
-  return v7;
+  return metalTexture;
 }
 
 void __48__TSDTexturedRectangle_metalTextureWithContext___block_invoke(uint64_t a1)
@@ -1556,7 +1556,7 @@ void __48__TSDTexturedRectangle_metalTextureWithContext___block_invoke(uint64_t 
   dispatch_semaphore_signal(WeakRetained);
 }
 
-- (CGSize)p_textureSizeWithDevice:(id)a3 maxSize:(CGSize)a4
+- (CGSize)p_textureSizeWithDevice:(id)device maxSize:(CGSize)size
 {
   [(CALayer *)self->mLayer contentsRect];
   if (v5 != 0.0)
@@ -1586,15 +1586,15 @@ void __48__TSDTexturedRectangle_metalTextureWithContext___block_invoke(uint64_t 
   return result;
 }
 
-- (id)p_allocateMetalTextureForDevice:(id)a3 renderTarget:(BOOL)a4 writable:(BOOL)a5 private:(BOOL)a6 maxSize:(CGSize)a7
+- (id)p_allocateMetalTextureForDevice:(id)device renderTarget:(BOOL)target writable:(BOOL)writable private:(BOOL)private maxSize:(CGSize)size
 {
-  height = a7.height;
-  width = a7.width;
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v13 = a3;
-  [(TSDTexturedRectangle *)self p_textureSizeWithDevice:v13 maxSize:width, height];
+  height = size.height;
+  width = size.width;
+  privateCopy = private;
+  writableCopy = writable;
+  targetCopy = target;
+  deviceCopy = device;
+  [(TSDTexturedRectangle *)self p_textureSizeWithDevice:deviceCopy maxSize:width, height];
   v15 = v14;
   v17 = v16;
   if (v14)
@@ -1613,21 +1613,21 @@ void __48__TSDTexturedRectangle_metalTextureWithContext___block_invoke(uint64_t 
     goto LABEL_21;
   }
 
-  v20 = [(TSDTexturedRectangle *)self p_colorSpace];
+  p_colorSpace = [(TSDTexturedRectangle *)self p_colorSpace];
   v21 = TSUP3ColorSpace();
   v22 = 70;
-  if (v11)
+  if (targetCopy)
   {
     v22 = 80;
   }
 
   v23 = 115;
-  if (v11)
+  if (targetCopy)
   {
     v23 = 552;
   }
 
-  if (v20 == v21)
+  if (p_colorSpace == v21)
   {
     v24 = v23;
   }
@@ -1639,16 +1639,16 @@ void __48__TSDTexturedRectangle_metalTextureWithContext___block_invoke(uint64_t 
 
   v25 = [MEMORY[0x277CD7058] texture2DDescriptorWithPixelFormat:v24 width:v15 height:v17 mipmapped:self->mShouldGenerateMipmap];
   v26 = v25;
-  if (!v11)
+  if (!targetCopy)
   {
-    if (!v10)
+    if (!writableCopy)
     {
       goto LABEL_16;
     }
 
 LABEL_25:
     [v26 setUsage:{objc_msgSend(v26, "usage") | 2}];
-    if (!v9)
+    if (!privateCopy)
     {
       goto LABEL_18;
     }
@@ -1657,13 +1657,13 @@ LABEL_25:
   }
 
   [v25 setUsage:5];
-  if (v10)
+  if (writableCopy)
   {
     goto LABEL_25;
   }
 
 LABEL_16:
-  if (v9)
+  if (privateCopy)
   {
 LABEL_17:
     [v26 setResourceOptions:32];
@@ -1671,7 +1671,7 @@ LABEL_17:
   }
 
 LABEL_18:
-  v19 = [v13 newTextureWithDescriptor:v26];
+  v19 = [deviceCopy newTextureWithDescriptor:v26];
 
   if (v19 && [v19 width])
   {
@@ -1683,32 +1683,32 @@ LABEL_21:
   return v19;
 }
 
-- (id)p_latestTextureNotAfterLayerTime:(double)a3
+- (id)p_latestTextureNotAfterLayerTime:(double)time
 {
   v30 = *MEMORY[0x277D85DE8];
   if (![(NSMutableArray *)self->_liveMetalTexturePool count])
   {
-    v10 = [(TSDTexturedRectangle *)self metalTexture];
+    metalTexture = [(TSDTexturedRectangle *)self metalTexture];
     goto LABEL_22;
   }
 
-  v5 = [(NSMutableDictionary *)self->_liveMetalTimestampToTexture allKeys];
-  v6 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+  allKeys = [(NSMutableDictionary *)self->_liveMetalTimestampToTexture allKeys];
+  v6 = [MEMORY[0x277CCABB0] numberWithDouble:time];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v7 = v5;
+  v7 = allKeys;
   v8 = [v7 countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (!v8)
   {
-    v10 = 0;
+    metalTexture = 0;
     v11 = 0;
     goto LABEL_21;
   }
 
   v9 = v8;
-  v10 = 0;
+  metalTexture = 0;
   v11 = 0;
   v12 = *v26;
   do
@@ -1721,9 +1721,9 @@ LABEL_21:
       }
 
       v14 = *(*(&v25 + 1) + 8 * i);
-      if (!v10)
+      if (!metalTexture)
       {
-        v10 = [(NSMutableDictionary *)self->_liveMetalTimestampToTexture objectForKey:*(*(&v25 + 1) + 8 * i), v25];
+        metalTexture = [(NSMutableDictionary *)self->_liveMetalTimestampToTexture objectForKey:*(*(&v25 + 1) + 8 * i), v25];
         v23 = v14;
         goto LABEL_15;
       }
@@ -1740,7 +1740,7 @@ LABEL_21:
         v23 = v14;
 
         [(NSMutableDictionary *)self->_liveMetalTimestampToTexture objectForKey:v23];
-        v10 = v11 = v10;
+        metalTexture = v11 = metalTexture;
 LABEL_15:
 
         v11 = v23;
@@ -1756,26 +1756,26 @@ LABEL_21:
 
 LABEL_22:
 
-  return v10;
+  return metalTexture;
 }
 
-- (void)setLiveTexturedRectangleSource:(id)a3
+- (void)setLiveTexturedRectangleSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   objc_storeWeak(&self->_liveTexturedRectangleSourceProxy, 0);
   liveTexturedRectangleSource = self->_liveTexturedRectangleSource;
-  self->_liveTexturedRectangleSource = v4;
+  self->_liveTexturedRectangleSource = sourceCopy;
 }
 
-- (void)setLiveTexturedRectangleSourceProxy:(id)a3
+- (void)setLiveTexturedRectangleSourceProxy:(id)proxy
 {
-  obj = a3;
+  obj = proxy;
   if (self->_liveTexturedRectangleSource)
   {
-    v4 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDTexturedRectangle setLiveTexturedRectangleSourceProxy:]"];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDTexturedRectangle.m"];
-    [v4 handleFailureInFunction:v5 file:v6 lineNumber:1165 description:{@"expected nil value for '%s'", "_liveTexturedRectangleSource"}];
+    [currentHandler handleFailureInFunction:v5 file:v6 lineNumber:1165 description:{@"expected nil value for '%s'", "_liveTexturedRectangleSource"}];
   }
 
   objc_storeWeak(&self->_liveTexturedRectangleSourceProxy, obj);

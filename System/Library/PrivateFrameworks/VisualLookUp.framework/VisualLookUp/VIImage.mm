@@ -1,22 +1,22 @@
 @interface VIImage
-+ (VIImage)imageWithPixelBuffer:(__CVBuffer *)a3 orientation:(unsigned int)a4;
-- (BOOL)isEqual:(id)a3;
++ (VIImage)imageWithPixelBuffer:(__CVBuffer *)buffer orientation:(unsigned int)orientation;
+- (BOOL)isEqual:(id)equal;
 - (CGSize)imageSize;
-- (VIImage)initWithPixelBuffer:(__CVBuffer *)a3 orientation:(unsigned int)a4;
+- (VIImage)initWithPixelBuffer:(__CVBuffer *)buffer orientation:(unsigned int)orientation;
 - (void)dealloc;
 @end
 
 @implementation VIImage
 
-- (VIImage)initWithPixelBuffer:(__CVBuffer *)a3 orientation:(unsigned int)a4
+- (VIImage)initWithPixelBuffer:(__CVBuffer *)buffer orientation:(unsigned int)orientation
 {
   v8.receiver = self;
   v8.super_class = VIImage;
   v6 = [(VIImage *)&v8 init];
   if (v6)
   {
-    v6->_pixelBuffer = CVPixelBufferRetain(a3);
-    v6->_orientation = a4;
+    v6->_pixelBuffer = CVPixelBufferRetain(buffer);
+    v6->_orientation = orientation;
   }
 
   return v6;
@@ -30,9 +30,9 @@
   [(VIImage *)&v3 dealloc];
 }
 
-+ (VIImage)imageWithPixelBuffer:(__CVBuffer *)a3 orientation:(unsigned int)a4
++ (VIImage)imageWithPixelBuffer:(__CVBuffer *)buffer orientation:(unsigned int)orientation
 {
-  v4 = [objc_alloc(objc_opt_class()) initWithPixelBuffer:a3 orientation:*&a4];
+  v4 = [objc_alloc(objc_opt_class()) initWithPixelBuffer:buffer orientation:*&orientation];
 
   return v4;
 }
@@ -47,10 +47,10 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
@@ -60,7 +60,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else

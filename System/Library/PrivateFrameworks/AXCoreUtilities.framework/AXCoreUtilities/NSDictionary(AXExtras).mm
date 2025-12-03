@@ -7,13 +7,13 @@
 - (id)ax_deepMutableCopy
 {
   v18 = *MEMORY[0x1E69E9840];
-  v1 = [a1 mutableCopy];
+  v1 = [self mutableCopy];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v2 = [v1 allKeys];
-  v3 = [v2 copy];
+  allKeys = [v1 allKeys];
+  v3 = [allKeys copy];
 
   v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)

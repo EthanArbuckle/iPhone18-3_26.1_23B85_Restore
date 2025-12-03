@@ -1,38 +1,38 @@
 @interface NTKFireWaterColorEditOption
-+ (id)_localizedNameForValue:(unint64_t)a3 forDevice:(id)a4;
-+ (id)_snapshotKeyForValue:(unint64_t)a3 forDevice:(id)a4;
++ (id)_localizedNameForValue:(unint64_t)value forDevice:(id)device;
++ (id)_snapshotKeyForValue:(unint64_t)value forDevice:(id)device;
 - (id)_valueToFaceBundleStringDict;
 @end
 
 @implementation NTKFireWaterColorEditOption
 
-+ (id)_snapshotKeyForValue:(unint64_t)a3 forDevice:(id)a4
++ (id)_snapshotKeyForValue:(unint64_t)value forDevice:(id)device
 {
-  if (a3 > 2)
+  if (value > 2)
   {
     return 0;
   }
 
   else
   {
-    return *(&off_8238 + a3);
+    return *(&off_8238 + value);
   }
 }
 
-+ (id)_localizedNameForValue:(unint64_t)a3 forDevice:(id)a4
++ (id)_localizedNameForValue:(unint64_t)value forDevice:(id)device
 {
-  v6 = a4;
-  if (a3 >= 3)
+  deviceCopy = device;
+  if (value >= 3)
   {
-    v12.receiver = a1;
+    v12.receiver = self;
     v12.super_class = &OBJC_METACLASS___NTKFireWaterColorEditOption;
-    v10 = objc_msgSendSuper2(&v12, "_localizedNameForValue:forDevice:", a3, v6);
+    v10 = objc_msgSendSuper2(&v12, "_localizedNameForValue:forDevice:", value, deviceCopy);
     v8 = @"FireWater";
   }
 
   else
   {
-    v7 = *(&off_8250 + a3);
+    v7 = *(&off_8250 + value);
     v8 = [@"FireWater" stringByAppendingString:@"-Companion"];
     v9 = [v7 stringByAppendingString:@"_COMPANION"];
     v10 = [NTKFireWaterFaceBundle localizedStringForKey:v9 table:v8 comment:@"Color"];

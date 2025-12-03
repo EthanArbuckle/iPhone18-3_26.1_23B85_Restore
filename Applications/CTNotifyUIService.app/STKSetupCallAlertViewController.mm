@@ -1,16 +1,16 @@
 @interface STKSetupCallAlertViewController
-- (BOOL)validateAction:(id)a3;
+- (BOOL)validateAction:(id)action;
 - (id)alertText;
 - (id)newBottomBar;
-- (void)dial:(id)a3;
-- (void)dismiss:(id)a3;
+- (void)dial:(id)dial;
+- (void)dismiss:(id)dismiss;
 @end
 
 @implementation STKSetupCallAlertViewController
 
-- (BOOL)validateAction:(id)a3
+- (BOOL)validateAction:(id)action
 {
-  v3 = a3;
+  actionCopy = action;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -23,8 +23,8 @@
   [v3 frame];
   v5 = v4;
   v7 = v6;
-  v8 = [(STKSetupCallAlertViewController *)self view];
-  [v8 bounds];
+  view = [(STKSetupCallAlertViewController *)self view];
+  [view bounds];
   v10 = v9;
   [v3 bounds];
   v12 = v10 - v11;
@@ -62,24 +62,24 @@
   return v3;
 }
 
-- (void)dismiss:(id)a3
+- (void)dismiss:(id)dismiss
 {
-  v4 = [(STKBaseAlertViewController *)self sessionAction];
-  [v4 sendResponse:3];
+  sessionAction = [(STKBaseAlertViewController *)self sessionAction];
+  [sessionAction sendResponse:3];
 
   [(STKTextAlertViewController *)self dismiss];
 }
 
-- (void)dial:(id)a3
+- (void)dial:(id)dial
 {
-  v4 = [(STKBaseAlertViewController *)self sessionAction];
-  v5 = [v4 sessionData];
-  v7 = [v5 phoneNumber];
+  sessionAction = [(STKBaseAlertViewController *)self sessionAction];
+  sessionData = [sessionAction sessionData];
+  phoneNumber = [sessionData phoneNumber];
 
-  if (v7)
+  if (phoneNumber)
   {
-    v6 = [(STKBaseAlertViewController *)self sessionAction];
-    [v6 sendResponse:0];
+    sessionAction2 = [(STKBaseAlertViewController *)self sessionAction];
+    [sessionAction2 sendResponse:0];
   }
 
   [(STKTextAlertViewController *)self dismiss];
@@ -89,22 +89,22 @@
 {
   v28.receiver = self;
   v28.super_class = STKSetupCallAlertViewController;
-  v3 = [(STKTextAlertViewController *)&v28 alertText];
-  if (!v3)
+  alertText = [(STKTextAlertViewController *)&v28 alertText];
+  if (!alertText)
   {
     v4 = +[TUCallCenter sharedInstance];
-    v5 = [v4 currentCalls];
-    v6 = [v5 count];
+    currentCalls = [v4 currentCalls];
+    v6 = [currentCalls count];
 
     if (v6)
     {
-      v7 = [(STKBaseAlertViewController *)self sessionAction];
-      v8 = [v7 sessionData];
-      v9 = [v8 isHighPriority];
+      sessionAction = [(STKBaseAlertViewController *)self sessionAction];
+      sessionData = [sessionAction sessionData];
+      isHighPriority = [sessionData isHighPriority];
 
       v10 = [NSBundle bundleWithIdentifier:@"com.apple.CTNotifyUIService"];
       v11 = v10;
-      if (v9)
+      if (isHighPriority)
       {
         v12 = @"SIMTK_HIGH_PRIORITY_CALL_ALERT";
       }
@@ -122,46 +122,46 @@
       v12 = @"SIMTK_CALL_ALERT";
     }
 
-    v3 = [v10 localizedStringForKey:v12 value:&stru_100018670 table:@"SIMToolkitUI"];
+    alertText = [v10 localizedStringForKey:v12 value:&stru_100018670 table:@"SIMToolkitUI"];
   }
 
-  v13 = [(STKBaseAlertViewController *)self sessionAction];
-  v14 = [v13 sessionData];
-  v15 = [v14 simLabel];
+  sessionAction2 = [(STKBaseAlertViewController *)self sessionAction];
+  sessionData2 = [sessionAction2 sessionData];
+  simLabel = [sessionData2 simLabel];
 
-  if (v15)
+  if (simLabel)
   {
-    v16 = [(STKBaseAlertViewController *)self sessionAction];
-    v17 = [v16 sessionData];
-    v18 = [v17 simLabel];
-    v19 = v18;
+    sessionAction3 = [(STKBaseAlertViewController *)self sessionAction];
+    sessionData3 = [sessionAction3 sessionData];
+    simLabel2 = [sessionData3 simLabel];
+    v19 = simLabel2;
     v20 = &stru_100018670;
-    if (v3)
+    if (alertText)
     {
-      v20 = v3;
+      v20 = alertText;
     }
 
-    v21 = [NSString stringWithFormat:@"(%@) %@", v18, v20];
+    v21 = [NSString stringWithFormat:@"(%@) %@", simLabel2, v20];
   }
 
   else
   {
     v22 = &stru_100018670;
-    if (v3)
+    if (alertText)
     {
-      v22 = v3;
+      v22 = alertText;
     }
 
     v21 = [NSString stringWithFormat:@"%@", v22];
   }
 
-  v23 = [(STKBaseAlertViewController *)self sessionAction];
-  v24 = [v23 sessionData];
-  v25 = [v24 phoneNumber];
+  sessionAction4 = [(STKBaseAlertViewController *)self sessionAction];
+  sessionData4 = [sessionAction4 sessionData];
+  phoneNumber = [sessionData4 phoneNumber];
 
-  if (v25)
+  if (phoneNumber)
   {
-    v26 = [v21 stringByAppendingFormat:@"\n%@", v25];
+    v26 = [v21 stringByAppendingFormat:@"\n%@", phoneNumber];
 
     v21 = v26;
   }

@@ -8,8 +8,8 @@
 
 - (uint64_t)pb_activeVariant
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 objectForSetting:303000];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings objectForSetting:303000];
 
   v3 = objc_opt_class();
   v4 = v2;
@@ -33,14 +33,14 @@
 
   v6 = v5;
 
-  v7 = [v6 integerValue];
-  return v7;
+  integerValue = [v6 integerValue];
+  return integerValue;
 }
 
 - (uint64_t)pb_significantEventsCounter
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 objectForSetting:20489];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings objectForSetting:20489];
 
   v3 = objc_opt_class();
   v4 = v2;
@@ -64,14 +64,14 @@
 
   v6 = v5;
 
-  v7 = [v6 unsignedIntegerValue];
-  return v7;
+  unsignedIntegerValue = [v6 unsignedIntegerValue];
+  return unsignedIntegerValue;
 }
 
 - (uint64_t)pb_animationSuspended
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 BOOLForSetting:303001];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings BOOLForSetting:303001];
 
   return v2;
 }

@@ -10,21 +10,21 @@
   v13 = a3;
   v14 = a4;
   v15 = a5;
-  v16 = [v13 calendar];
-  v17 = [v16 type];
+  calendar = [v13 calendar];
+  type = [calendar type];
 
   v18 = EKWeakLinkClass();
   v19 = EKWeakLinkClass();
-  if (v17 == 4 && (v20 = v19, [v18 authorizationStatusForEntityType:0] == 3))
+  if (type == 4 && (v20 = v19, [v18 authorizationStatusForEntityType:0] == 3))
   {
     v21 = EKWeakLinkClass();
     v22 = objc_alloc_init(v20);
     v23 = [objc_msgSend(v18 "alloc")];
-    v24 = [v13 birthdayContactIdentifier];
-    v25 = [v21 descriptorForRequiredKeys];
-    v37[0] = v25;
+    birthdayContactIdentifier = [v13 birthdayContactIdentifier];
+    descriptorForRequiredKeys = [v21 descriptorForRequiredKeys];
+    v37[0] = descriptorForRequiredKeys;
     v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:v37 count:1];
-    v27 = [v23 unifiedContactWithIdentifier:v24 keysToFetch:v26 error:0];
+    v27 = [v23 unifiedContactWithIdentifier:birthdayContactIdentifier keysToFetch:v26 error:0];
 
     v28 = [v21 viewControllerForContact:v27];
     [(EKEventViewController *)v28 setContactStore:v23];

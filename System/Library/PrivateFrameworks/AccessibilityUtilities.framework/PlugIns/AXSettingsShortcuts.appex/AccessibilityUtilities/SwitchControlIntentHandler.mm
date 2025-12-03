@@ -1,25 +1,25 @@
 @interface SwitchControlIntentHandler
-- (void)handleToggleSwitchControl:(id)a3 completion:(id)a4;
-- (void)resolveOperationForToggleSwitchControl:(id)a3 withCompletion:(id)a4;
-- (void)resolveStateForToggleSwitchControl:(id)a3 withCompletion:(id)a4;
+- (void)handleToggleSwitchControl:(id)control completion:(id)completion;
+- (void)resolveOperationForToggleSwitchControl:(id)control withCompletion:(id)completion;
+- (void)resolveStateForToggleSwitchControl:(id)control withCompletion:(id)completion;
 @end
 
 @implementation SwitchControlIntentHandler
 
-- (void)handleToggleSwitchControl:(id)a3 completion:(id)a4
+- (void)handleToggleSwitchControl:(id)control completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 operation] != 1 || objc_msgSend(v5, "state"))
+  controlCopy = control;
+  completionCopy = completion;
+  if ([controlCopy operation] != 1 || objc_msgSend(controlCopy, "state"))
   {
-    if ([v5 operation] == 2)
+    if ([controlCopy operation] == 2)
     {
       v7 = _AXSAssistiveTouchScannerEnabled() == 0;
     }
 
     else
     {
-      v7 = [v5 state] == 1;
+      v7 = [controlCopy state] == 1;
     }
 
     v8 = v7;
@@ -56,9 +56,9 @@ LABEL_19:
 
     else
     {
-      v14 = [v12 assistiveTouchScannerAddedTripleClickAutomatically];
+      assistiveTouchScannerAddedTripleClickAutomatically = [v12 assistiveTouchScannerAddedTripleClickAutomatically];
 
-      if (v14)
+      if (assistiveTouchScannerAddedTripleClickAutomatically)
       {
         if ([(AXToggleSwitchControlIntentResponse *)v11 containsObject:&off_100018BD0])
         {
@@ -72,7 +72,7 @@ LABEL_19:
     }
 
     v17 = [[AXToggleSwitchControlIntentResponse alloc] initWithCode:4 userActivity:0];
-    v6[2](v6, v17);
+    completionCopy[2](completionCopy, v17);
 
     goto LABEL_21;
   }
@@ -80,26 +80,26 @@ LABEL_19:
   v18 = AXLogSiriShortcuts();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
   {
-    sub_10000D80C(v5, v18);
+    sub_10000D80C(controlCopy, v18);
   }
 
   v11 = [[AXToggleSwitchControlIntentResponse alloc] initWithCode:5 userActivity:0];
-  v6[2](v6, v11);
+  completionCopy[2](completionCopy, v11);
 LABEL_21:
 }
 
-- (void)resolveOperationForToggleSwitchControl:(id)a3 withCompletion:(id)a4
+- (void)resolveOperationForToggleSwitchControl:(id)control withCompletion:(id)completion
 {
-  v6 = a4;
-  v7 = +[AXOperationResolutionResult successWithResolvedOperation:](AXOperationResolutionResult, "successWithResolvedOperation:", [a3 operation]);
-  (*(a4 + 2))(v6, v7);
+  completionCopy = completion;
+  v7 = +[AXOperationResolutionResult successWithResolvedOperation:](AXOperationResolutionResult, "successWithResolvedOperation:", [control operation]);
+  (*(completion + 2))(completionCopy, v7);
 }
 
-- (void)resolveStateForToggleSwitchControl:(id)a3 withCompletion:(id)a4
+- (void)resolveStateForToggleSwitchControl:(id)control withCompletion:(id)completion
 {
-  v6 = a4;
-  v7 = +[AXStateResolutionResult successWithResolvedState:](AXStateResolutionResult, "successWithResolvedState:", [a3 state]);
-  (*(a4 + 2))(v6, v7);
+  completionCopy = completion;
+  v7 = +[AXStateResolutionResult successWithResolvedState:](AXStateResolutionResult, "successWithResolvedState:", [control state]);
+  (*(completion + 2))(completionCopy, v7);
 }
 
 @end

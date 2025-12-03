@@ -5,7 +5,7 @@
 - (double)attitude;
 - (double)deviceMotionUpdateInterval;
 - (double)initWithCoefficient:(double *)result;
-- (double)initWithCoefficient:(double)a3 threshold:;
+- (double)initWithCoefficient:(double)coefficient threshold:;
 - (double)pitch;
 - (double)roll;
 - (double)x;
@@ -49,16 +49,16 @@
 
 - (void)startDeviceMotionUpdates
 {
-  if (a1)
+  if (self)
   {
-    if (([(WKBokehMotionManager *)a1 startDeviceMotionUpdates]& 1) != 0)
+    if (([(WKBokehMotionManager *)self startDeviceMotionUpdates]& 1) != 0)
     {
       v2 = location;
       v3 = objc_alloc_init(MEMORY[0x1E696ADC8]);
       [v3 setMaxConcurrentOperationCount:1];
-      objc_initWeak(&location, a1);
+      objc_initWeak(&location, self);
       v4 = *v2;
-      v5 = a1[13];
+      v5 = self[13];
       v6[0] = MEMORY[0x1E69E9820];
       v6[1] = 3221225472;
       v6[2] = __48__WKBokehMotionManager_startDeviceMotionUpdates__block_invoke;
@@ -123,15 +123,15 @@ void __48__WKBokehMotionManager_startDeviceMotionUpdates__block_invoke(uint64_t 
 
 - (void)startDeviceAccelerometerUpdates
 {
-  if (a1)
+  if (self)
   {
-    [(WKBokehMotionManager *)a1 _createFilters];
-    [(WKBokehMotionManager *)a1 createMotionManager];
-    [a1[14] setAccelerometerUpdateInterval:0.0166666667];
+    [(WKBokehMotionManager *)self _createFilters];
+    [(WKBokehMotionManager *)self createMotionManager];
+    [self[14] setAccelerometerUpdateInterval:0.0166666667];
     v2 = objc_alloc_init(MEMORY[0x1E696ADC8]);
     [v2 setMaxConcurrentOperationCount:1];
-    objc_initWeak(&location, a1);
-    v3 = a1[14];
+    objc_initWeak(&location, self);
+    v3 = self[14];
     v4[0] = MEMORY[0x1E69E9820];
     v4[1] = 3221225472;
     v4[2] = __55__WKBokehMotionManager_startDeviceAccelerometerUpdates__block_invoke;
@@ -178,7 +178,7 @@ void __55__WKBokehMotionManager_startDeviceAccelerometerUpdates__block_invoke(ui
   return result;
 }
 
-- (double)initWithCoefficient:(double)a3 threshold:
+- (double)initWithCoefficient:(double)coefficient threshold:
 {
   if (result)
   {
@@ -189,7 +189,7 @@ void __55__WKBokehMotionManager_startDeviceAccelerometerUpdates__block_invoke(ui
     {
       result = OUTLINED_FUNCTION_1_1(result);
       result[11] = a2;
-      result[12] = a3;
+      result[12] = coefficient;
     }
   }
 
@@ -198,13 +198,13 @@ void __55__WKBokehMotionManager_startDeviceAccelerometerUpdates__block_invoke(ui
 
 - (double)accelerometerUpdateInterval
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  [(WKBokehMotionManager *)a1 createMotionManager];
-  v2 = *(a1 + 112);
+  [(WKBokehMotionManager *)self createMotionManager];
+  v2 = *(self + 112);
 
   [v2 accelerometerUpdateInterval];
   return result;
@@ -244,13 +244,13 @@ void __55__WKBokehMotionManager_startDeviceAccelerometerUpdates__block_invoke(ui
 
 - (double)deviceMotionUpdateInterval
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  [(WKBokehMotionManager *)a1 createMotionManager];
-  v2 = *(a1 + 112);
+  [(WKBokehMotionManager *)self createMotionManager];
+  v2 = *(self + 112);
 
   [v2 deviceMotionUpdateInterval];
   return result;
@@ -272,9 +272,9 @@ void __55__WKBokehMotionManager_startDeviceAccelerometerUpdates__block_invoke(ui
 
 - (double)x
 {
-  if (a1)
+  if (self)
   {
-    return *(a1 + 8);
+    return *(self + 8);
   }
 
   else
@@ -285,9 +285,9 @@ void __55__WKBokehMotionManager_startDeviceAccelerometerUpdates__block_invoke(ui
 
 - (double)z
 {
-  if (a1)
+  if (self)
   {
-    return *(a1 + 24);
+    return *(self + 24);
   }
 
   else
@@ -298,56 +298,56 @@ void __55__WKBokehMotionManager_startDeviceAccelerometerUpdates__block_invoke(ui
 
 - (id)motionFilterX
 {
-  if (a1)
+  if (self)
   {
-    a1 = a1[16];
+    self = self[16];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (id)motionFilterY
 {
-  if (a1)
+  if (self)
   {
-    a1 = a1[17];
+    self = self[17];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (id)motionFilterZ
 {
-  if (a1)
+  if (self)
   {
-    a1 = a1[18];
+    self = self[18];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (double)attitude
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  result = *(a1 + 32);
-  v2 = *(a1 + 40);
-  v3 = *(a1 + 48);
-  v4 = *(a1 + 56);
+  result = *(self + 32);
+  v2 = *(self + 40);
+  v3 = *(self + 48);
+  v4 = *(self + 56);
   return result;
 }
 
 - (double)roll
 {
-  if (a1)
+  if (self)
   {
-    return *(a1 + 64);
+    return *(self + 64);
   }
 
   else
@@ -358,9 +358,9 @@ void __55__WKBokehMotionManager_startDeviceAccelerometerUpdates__block_invoke(ui
 
 - (double)pitch
 {
-  if (a1)
+  if (self)
   {
-    return *(a1 + 72);
+    return *(self + 72);
   }
 
   else
@@ -371,9 +371,9 @@ void __55__WKBokehMotionManager_startDeviceAccelerometerUpdates__block_invoke(ui
 
 - (double)yaw
 {
-  if (a1)
+  if (self)
   {
-    return *(a1 + 80);
+    return *(self + 80);
   }
 
   else
@@ -398,94 +398,94 @@ void __55__WKBokehMotionManager_startDeviceAccelerometerUpdates__block_invoke(ui
 
 - (BOOL)zeroMovementSinceLastFrame
 {
-  if (!a1 || ![(WKBokehInfiniteImpulseResponseFilter *)a1[16] zeroGradient]|| ![(WKBokehInfiniteImpulseResponseFilter *)a1[17] zeroGradient])
+  if (!self || ![(WKBokehInfiniteImpulseResponseFilter *)self[16] zeroGradient]|| ![(WKBokehInfiniteImpulseResponseFilter *)self[17] zeroGradient])
   {
     return 0;
   }
 
-  v2 = a1[18];
+  v2 = self[18];
 
   return [(WKBokehInfiniteImpulseResponseFilter *)v2 zeroGradient];
 }
 
 - (void)_createFilters
 {
-  if (a1)
+  if (self)
   {
-    if (!*(a1 + 128))
+    if (!*(self + 128))
     {
       v2 = OUTLINED_FUNCTION_0_4();
       v3 = [WKBokehInfiniteImpulseResponseFilter lowpassInertiaFilterWithCoefficient:v2];
-      v4 = *(a1 + 128);
-      *(a1 + 128) = v3;
+      v4 = *(self + 128);
+      *(self + 128) = v3;
 
       v5 = OUTLINED_FUNCTION_0_4();
       v6 = [WKBokehInfiniteImpulseResponseFilter lowpassInertiaFilterWithCoefficient:v5];
-      v7 = *(a1 + 136);
-      *(a1 + 136) = v6;
+      v7 = *(self + 136);
+      *(self + 136) = v6;
 
       v8 = OUTLINED_FUNCTION_0_4();
       v9 = [WKBokehInfiniteImpulseResponseFilter lowpassInertiaFilterWithCoefficient:v8];
-      v10 = *(a1 + 144);
-      *(a1 + 144) = v9;
+      v10 = *(self + 144);
+      *(self + 144) = v9;
 
       v11 = OUTLINED_FUNCTION_0_4();
       v12 = [WKBokehInfiniteImpulseResponseFilter lowpassInertiaFilterWithCoefficient:v11];
-      v13 = *(a1 + 152);
-      *(a1 + 152) = v12;
+      v13 = *(self + 152);
+      *(self + 152) = v12;
 
       v14 = OUTLINED_FUNCTION_0_4();
       v15 = [WKBokehInfiniteImpulseResponseFilter lowpassInertiaFilterWithCoefficient:v14];
-      v16 = *(a1 + 160);
-      *(a1 + 160) = v15;
+      v16 = *(self + 160);
+      *(self + 160) = v15;
 
       v17 = OUTLINED_FUNCTION_0_4();
       v18 = [WKBokehInfiniteImpulseResponseFilter lowpassInertiaFilterWithCoefficient:v17];
-      v19 = *(a1 + 168);
-      *(a1 + 168) = v18;
+      v19 = *(self + 168);
+      *(self + 168) = v18;
 
       v20 = OUTLINED_FUNCTION_0_4();
       v21 = [WKBokehInfiniteImpulseResponseFilter lowpassInertiaFilterWithCoefficient:v20];
-      v22 = *(a1 + 176);
-      *(a1 + 176) = v21;
+      v22 = *(self + 176);
+      *(self + 176) = v21;
 
       v23 = OUTLINED_FUNCTION_0_4();
       v24 = [WKBokehInfiniteImpulseResponseFilter lowpassInertiaFilterWithCoefficient:v23];
-      v25 = *(a1 + 184);
-      *(a1 + 184) = v24;
+      v25 = *(self + 184);
+      *(self + 184) = v24;
 
       v26 = OUTLINED_FUNCTION_0_4();
       v27 = [WKBokehInfiniteImpulseResponseFilter lowpassInertiaFilterWithCoefficient:v26];
-      v28 = *(a1 + 192);
-      *(a1 + 192) = v27;
+      v28 = *(self + 192);
+      *(self + 192) = v27;
 
       v29 = OUTLINED_FUNCTION_0_4();
       v30 = [WKBokehInfiniteImpulseResponseFilter lowpassInertiaFilterWithCoefficient:v29];
-      v31 = *(a1 + 200);
-      *(a1 + 200) = v30;
+      v31 = *(self + 200);
+      *(self + 200) = v30;
 
       v32 = 3;
       do
       {
-        [(WKBokehInfiniteImpulseResponseFilter *)*(a1 + 176) filterWithInput:?];
+        [(WKBokehInfiniteImpulseResponseFilter *)*(self + 176) filterWithInput:?];
         --v32;
       }
 
       while (v32);
-      v33 = *(a1 + 96);
+      v33 = *(self + 96);
       if (v33 > 0.0)
       {
-        [(WKBokehInfiniteImpulseResponseFilter *)*(a1 + 128) setZeroGradientThreshold:v33];
-        [(WKBokehInfiniteImpulseResponseFilter *)*(a1 + 136) setZeroGradientThreshold:?];
-        [(WKBokehInfiniteImpulseResponseFilter *)*(a1 + 144) setZeroGradientThreshold:?];
-        [(WKBokehInfiniteImpulseResponseFilter *)*(a1 + 152) setZeroGradientThreshold:?];
-        [(WKBokehInfiniteImpulseResponseFilter *)*(a1 + 160) setZeroGradientThreshold:?];
-        [(WKBokehInfiniteImpulseResponseFilter *)*(a1 + 168) setZeroGradientThreshold:?];
-        [(WKBokehInfiniteImpulseResponseFilter *)*(a1 + 176) setZeroGradientThreshold:?];
-        [(WKBokehInfiniteImpulseResponseFilter *)*(a1 + 184) setZeroGradientThreshold:?];
-        [(WKBokehInfiniteImpulseResponseFilter *)*(a1 + 192) setZeroGradientThreshold:?];
-        v34 = *(a1 + 96);
-        v35 = *(a1 + 200);
+        [(WKBokehInfiniteImpulseResponseFilter *)*(self + 128) setZeroGradientThreshold:v33];
+        [(WKBokehInfiniteImpulseResponseFilter *)*(self + 136) setZeroGradientThreshold:?];
+        [(WKBokehInfiniteImpulseResponseFilter *)*(self + 144) setZeroGradientThreshold:?];
+        [(WKBokehInfiniteImpulseResponseFilter *)*(self + 152) setZeroGradientThreshold:?];
+        [(WKBokehInfiniteImpulseResponseFilter *)*(self + 160) setZeroGradientThreshold:?];
+        [(WKBokehInfiniteImpulseResponseFilter *)*(self + 168) setZeroGradientThreshold:?];
+        [(WKBokehInfiniteImpulseResponseFilter *)*(self + 176) setZeroGradientThreshold:?];
+        [(WKBokehInfiniteImpulseResponseFilter *)*(self + 184) setZeroGradientThreshold:?];
+        [(WKBokehInfiniteImpulseResponseFilter *)*(self + 192) setZeroGradientThreshold:?];
+        v34 = *(self + 96);
+        v35 = *(self + 200);
 
         [(WKBokehInfiniteImpulseResponseFilter *)v35 setZeroGradientThreshold:v34];
       }
@@ -539,17 +539,17 @@ void __55__WKBokehMotionManager_startDeviceAccelerometerUpdates__block_invoke(ui
 
 - (uint64_t)startDeviceMotionUpdates
 {
-  [(WKBokehMotionManager *)a1 _createFilters];
-  [(WKBokehMotionManager *)a1 createMotionManager];
-  *a2 = a1 + 112;
-  [*(a1 + 112) setDeviceMotionUpdateInterval:0.0166666667];
-  if (*(a1 + 120) != 1)
+  [(WKBokehMotionManager *)self _createFilters];
+  [(WKBokehMotionManager *)self createMotionManager];
+  *a2 = self + 112;
+  [*(self + 112) setDeviceMotionUpdateInterval:0.0166666667];
+  if (*(self + 120) != 1)
   {
     return 1;
   }
 
   result = 0;
-  *(a1 + 120) = 0;
+  *(self + 120) = 0;
   return result;
 }
 

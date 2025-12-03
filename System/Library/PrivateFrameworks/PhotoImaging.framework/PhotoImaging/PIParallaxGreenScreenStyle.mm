@@ -1,21 +1,21 @@
 @interface PIParallaxGreenScreenStyle
-+ (id)styleWithColorAnalysis:(id)a3;
-+ (id)styleWithParameters:(id)a3 colorSuggestions:(id)a4;
-- (BOOL)configureForCategory:(id)a3;
-- (PIParallaxGreenScreenStyle)initWithColor:(id)a3 clockColor:(id)a4 colorSuggestions:(id)a5;
++ (id)styleWithColorAnalysis:(id)analysis;
++ (id)styleWithParameters:(id)parameters colorSuggestions:(id)suggestions;
+- (BOOL)configureForCategory:(id)category;
+- (PIParallaxGreenScreenStyle)initWithColor:(id)color clockColor:(id)clockColor colorSuggestions:(id)suggestions;
 - (id)parameters;
 @end
 
 @implementation PIParallaxGreenScreenStyle
 
-- (BOOL)configureForCategory:(id)a3
+- (BOOL)configureForCategory:(id)category
 {
-  v4 = [(PIParallaxStyle *)self colorSuggestionForCategory:a3];
+  v4 = [(PIParallaxStyle *)self colorSuggestionForCategory:category];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 primaryColor];
-    [(PIParallaxGreenScreenStyle *)self setColor:v6];
+    primaryColor = [v4 primaryColor];
+    [(PIParallaxGreenScreenStyle *)self setColor:primaryColor];
   }
 
   return v5 != 0;
@@ -25,23 +25,23 @@
 {
   v8[2] = *MEMORY[0x1E69E9840];
   v7[0] = *MEMORY[0x1E69C0B48];
-  v3 = [(PIParallaxStyle *)self clockColor];
-  v8[0] = v3;
+  clockColor = [(PIParallaxStyle *)self clockColor];
+  v8[0] = clockColor;
   v7[1] = *MEMORY[0x1E69C0B60];
-  v4 = [(PIParallaxGreenScreenStyle *)self color];
-  v8[1] = v4;
+  color = [(PIParallaxGreenScreenStyle *)self color];
+  v8[1] = color;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v8 forKeys:v7 count:2];
 
   return v5;
 }
 
-- (PIParallaxGreenScreenStyle)initWithColor:(id)a3 clockColor:(id)a4 colorSuggestions:(id)a5
+- (PIParallaxGreenScreenStyle)initWithColor:(id)color clockColor:(id)clockColor colorSuggestions:(id)suggestions
 {
   v33 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8)
+  colorCopy = color;
+  clockColorCopy = clockColor;
+  suggestionsCopy = suggestions;
+  if (!colorCopy)
   {
     v15 = NUAssertLogger_4208();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -63,8 +63,8 @@
         v23 = dispatch_get_specific(*v17);
         v24 = MEMORY[0x1E696AF00];
         v25 = v23;
-        v26 = [v24 callStackSymbols];
-        v27 = [v26 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v24 callStackSymbols];
+        v27 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v30 = v23;
         v31 = 2114;
@@ -75,8 +75,8 @@
 
     else if (v20)
     {
-      v21 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v22 = [v21 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v22 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v30 = v22;
       _os_log_error_impl(&dword_1C7694000, v19, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -85,57 +85,57 @@
     _NUAssertFailHandler();
   }
 
-  v11 = v10;
+  v11 = suggestionsCopy;
   v28.receiver = self;
   v28.super_class = PIParallaxGreenScreenStyle;
-  v12 = [(PIParallaxStyle *)&v28 initWithClockColor:v9 colorSuggestions:v10];
+  v12 = [(PIParallaxStyle *)&v28 initWithClockColor:clockColorCopy colorSuggestions:suggestionsCopy];
   color = v12->_color;
-  v12->_color = v8;
+  v12->_color = colorCopy;
 
   return v12;
 }
 
-+ (id)styleWithParameters:(id)a3 colorSuggestions:(id)a4
++ (id)styleWithParameters:(id)parameters colorSuggestions:(id)suggestions
 {
   v6 = *MEMORY[0x1E69C0B60];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v8 objectForKeyedSubscript:v6];
-  v10 = [v8 objectForKeyedSubscript:*MEMORY[0x1E69C0B48]];
+  suggestionsCopy = suggestions;
+  parametersCopy = parameters;
+  v9 = [parametersCopy objectForKeyedSubscript:v6];
+  v10 = [parametersCopy objectForKeyedSubscript:*MEMORY[0x1E69C0B48]];
 
   if (v10)
   {
-    v11 = v10;
+    whiteColor = v10;
   }
 
   else
   {
-    v11 = [MEMORY[0x1E69C0750] whiteColor];
+    whiteColor = [MEMORY[0x1E69C0750] whiteColor];
   }
 
-  v12 = v11;
+  v12 = whiteColor;
 
-  v13 = [[a1 alloc] initWithColor:v9 clockColor:v12 colorSuggestions:v7];
+  v13 = [[self alloc] initWithColor:v9 clockColor:v12 colorSuggestions:suggestionsCopy];
 
   return v13;
 }
 
-+ (id)styleWithColorAnalysis:(id)a3
++ (id)styleWithColorAnalysis:(id)analysis
 {
-  v4 = a3;
-  v5 = [[PIParallaxColorSuggester alloc] initWithColorAnalysis:v4];
-  v6 = [v4 backgroundColors];
+  analysisCopy = analysis;
+  v5 = [[PIParallaxColorSuggester alloc] initWithColorAnalysis:analysisCopy];
+  backgroundColors = [analysisCopy backgroundColors];
 
   v7 = +[PIParallaxColorPalette greenScreenMutedPalette];
-  v8 = [(PIParallaxColorSuggester *)v5 suggestedColorsForColors:v6 fromColorPalette:v7];
+  v8 = [(PIParallaxColorSuggester *)v5 suggestedColorsForColors:backgroundColors fromColorPalette:v7];
 
   v9 = PFMap();
-  v10 = [v9 firstObject];
-  v11 = [v10 primaryColor];
+  firstObject = [v9 firstObject];
+  primaryColor = [firstObject primaryColor];
 
-  v12 = [a1 alloc];
-  v13 = [MEMORY[0x1E69C0750] whiteColor];
-  v14 = [v12 initWithColor:v11 clockColor:v13 colorSuggestions:v9];
+  v12 = [self alloc];
+  whiteColor = [MEMORY[0x1E69C0750] whiteColor];
+  v14 = [v12 initWithColor:primaryColor clockColor:whiteColor colorSuggestions:v9];
 
   return v14;
 }

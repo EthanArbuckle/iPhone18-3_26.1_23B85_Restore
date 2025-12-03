@@ -1,15 +1,15 @@
 @interface _UICellAccessoryConfigurationInsert
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation _UICellAccessoryConfigurationInsert
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = _UICellAccessoryConfigurationInsert;
-  v4 = [(_UICellAccessoryConfiguration *)&v8 copyWithZone:a3];
+  v4 = [(_UICellAccessoryConfiguration *)&v8 copyWithZone:zone];
   if (v4)
   {
     v5 = [self->_actionHandler copy];
@@ -20,14 +20,14 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v7.receiver = self;
   v7.super_class = _UICellAccessoryConfigurationInsert;
-  if ([(_UICellAccessoryConfiguration *)&v7 isEqual:v4])
+  if ([(_UICellAccessoryConfiguration *)&v7 isEqual:equalCopy])
   {
-    v5 = self->_actionHandler == v4[4];
+    v5 = self->_actionHandler == equalCopy[4];
   }
 
   else

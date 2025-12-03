@@ -1,9 +1,9 @@
 @interface VCPImageFaceDetector
 + (id)faceDetector;
-- (BOOL)isDuplicate:(CGRect)a3 withRect:(CGRect)a4;
-- (int)aggregateTileResults:(id)a3 tileRect:(CGRect)a4 imageSize:(CGSize)a5 landscape:(BOOL)a6 results:(id)a7;
-- (int)analyzePixelBuffer:(__CVBuffer *)a3 flags:(unint64_t *)a4 results:(id *)a5 cancel:(id)a6;
-- (int)faceDetection:(__CVBuffer *)a3 faces:(id)a4 cancel:(id)a5;
+- (BOOL)isDuplicate:(CGRect)duplicate withRect:(CGRect)rect;
+- (int)aggregateTileResults:(id)results tileRect:(CGRect)rect imageSize:(CGSize)size landscape:(BOOL)landscape results:(id)a7;
+- (int)analyzePixelBuffer:(__CVBuffer *)buffer flags:(unint64_t *)flags results:(id *)results cancel:(id)cancel;
+- (int)faceDetection:(__CVBuffer *)detection faces:(id)faces cancel:(id)cancel;
 @end
 
 @implementation VCPImageFaceDetector
@@ -15,47 +15,47 @@
   return v2;
 }
 
-- (int)faceDetection:(__CVBuffer *)a3 faces:(id)a4 cancel:(id)a5
+- (int)faceDetection:(__CVBuffer *)detection faces:(id)faces cancel:(id)cancel
 {
   v57[1] = *MEMORY[0x1E69E9840];
-  v50 = a4;
-  v51 = a5;
+  facesCopy = faces;
+  cancelCopy = cancel;
   context = objc_autoreleasePoolPush();
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
-  v52 = [MEMORY[0x1E695DF70] array];
-  v49 = [MEMORY[0x1E695DF70] array];
+  Width = CVPixelBufferGetWidth(detection);
+  Height = CVPixelBufferGetHeight(detection);
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   v9 = objc_autoreleasePoolPush();
   v10 = objc_alloc(MEMORY[0x1E69845B8]);
-  v11 = [v10 initWithCVPixelBuffer:a3 options:MEMORY[0x1E695E0F8]];
+  v11 = [v10 initWithCVPixelBuffer:detection options:MEMORY[0x1E695E0F8]];
   if (v11)
   {
     v12 = objc_alloc_init(MEMORY[0x1E69844D0]);
     v13 = v12;
     if (v12 && ([v12 setPreferBackgroundProcessing:1], objc_msgSend(v13, "setRevision:", 2), v57[0] = v13, objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v57, 1), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v11, "performRequests:error:", v14, 0), v14, (v15 & 1) != 0))
     {
-      v16 = [v13 results];
-      v17 = v16 == 0;
+      results = [v13 results];
+      v17 = results == 0;
 
       if (!v17)
       {
-        v18 = [v13 results];
-        [v52 addObjectsFromArray:v18];
+        results2 = [v13 results];
+        [array addObjectsFromArray:results2];
       }
 
       if (+[VCPImageFaceDetector isLivePhotoKeyFrameEnabled])
       {
         v19 = objc_alloc_init(MEMORY[0x1E69844B0]);
         v20 = v19;
-        if (v19 && ([v19 setRevision:1], objc_msgSend(v20, "setInputFaceObservations:", v52), v56 = v20, objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", &v56, 1), v21 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend(v11, "performRequests:error:", v21, 0), v21, (v22 & 1) != 0))
+        if (v19 && ([v19 setRevision:1], objc_msgSend(v20, "setInputFaceObservations:", array), v56 = v20, objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", &v56, 1), v21 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend(v11, "performRequests:error:", v21, 0), v21, (v22 & 1) != 0))
         {
-          v23 = [v20 results];
-          v24 = v23 == 0;
+          results3 = [v20 results];
+          v24 = results3 == 0;
 
           if (!v24)
           {
-            v25 = [v20 results];
-            [v49 addObjectsFromArray:v25];
+            results4 = [v20 results];
+            [array2 addObjectsFromArray:results4];
           }
 
           v47 = 0;
@@ -106,14 +106,14 @@
       v36 = Height;
       while (1)
       {
-        if ([v52 count] <= v33)
+        if ([array count] <= v33)
         {
           v32 = v47;
           goto LABEL_35;
         }
 
-        v37 = [v52 objectAtIndexedSubscript:v33];
-        if (v51[2]())
+        v37 = [array objectAtIndexedSubscript:v33];
+        if (cancelCopy[2]())
         {
           break;
         }
@@ -131,21 +131,21 @@
         v40 = v59.size.width;
         v41 = v59.size.height;
         v54 = 0;
-        v32 = [v27 detectSmileForFace:a3 inBuffer:&v54 smile:?];
+        v32 = [v27 detectSmileForFace:detection inBuffer:&v54 smile:?];
         if (v32)
         {
           goto LABEL_34;
         }
 
         v55.a = 0.0;
-        v32 = [v28 detectPoseForFace:a3 inBuffer:&v55 yaw:{x, y, v40, v41}];
+        v32 = [v28 detectPoseForFace:detection inBuffer:&v55 yaw:{x, y, v40, v41}];
         if (v32)
         {
           goto LABEL_34;
         }
 
         v53 = 0;
-        v32 = [(VCPCNNGazeAnalysis *)v31 detectEyeOpennessForFace:a3 inBuffer:&v53 eyeOpenness:x, y, v40, v41];
+        v32 = [(VCPCNNGazeAnalysis *)v31 detectEyeOpennessForFace:detection inBuffer:&v53 eyeOpenness:x, y, v40, v41];
         if (v32)
         {
           goto LABEL_34;
@@ -161,13 +161,13 @@
         [(VCPFace *)v42 setFaceQuality:v43];
         if (+[VCPImageFaceDetector isLivePhotoKeyFrameEnabled])
         {
-          v44 = [v49 objectAtIndexedSubscript:v33];
-          v45 = [v44 faceCaptureQuality];
-          [v45 floatValue];
+          v44 = [array2 objectAtIndexedSubscript:v33];
+          faceCaptureQuality = [v44 faceCaptureQuality];
+          [faceCaptureQuality floatValue];
           [(VCPFace *)v42 setFaceQuality:?];
         }
 
-        [v50 addObject:v42];
+        [facesCopy addObject:v42];
 
         ++v33;
       }
@@ -188,17 +188,17 @@ LABEL_35:
   return v32;
 }
 
-- (BOOL)isDuplicate:(CGRect)a3 withRect:(CGRect)a4
+- (BOOL)isDuplicate:(CGRect)duplicate withRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3.size.height;
-  v9 = a3.size.width;
-  v10 = a3.origin.y;
-  v11 = a3.origin.x;
-  v12 = CGRectIntersectsRect(a3, a4);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v8 = duplicate.size.height;
+  v9 = duplicate.size.width;
+  v10 = duplicate.origin.y;
+  v11 = duplicate.origin.x;
+  v12 = CGRectIntersectsRect(duplicate, rect);
   if (v12)
   {
     v13 = v9 * v8;
@@ -242,21 +242,21 @@ LABEL_35:
   return v12;
 }
 
-- (int)aggregateTileResults:(id)a3 tileRect:(CGRect)a4 imageSize:(CGSize)a5 landscape:(BOOL)a6 results:(id)a7
+- (int)aggregateTileResults:(id)results tileRect:(CGRect)rect imageSize:(CGSize)size landscape:(BOOL)landscape results:(id)a7
 {
-  y = a4.origin.y;
-  x = a4.origin.x;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v53 = *MEMORY[0x1E69E9840];
-  v40 = a3;
+  resultsCopy = results;
   v42 = a7;
-  v11 = [MEMORY[0x1E695DF70] array];
-  if (v11)
+  array = [MEMORY[0x1E695DF70] array];
+  if (array)
   {
     v49 = 0u;
     v50 = 0u;
     v47 = 0u;
     v48 = 0u;
-    obj = v40;
+    obj = resultsCopy;
     v12 = [obj countByEnumeratingWithState:&v47 objects:v52 count:16];
     if (v12)
     {
@@ -305,7 +305,7 @@ LABEL_35:
                 [v15 bounds];
                 if ([(VCPImageFaceDetector *)self isDuplicate:v27 withRect:v29, v31, v33, v34, v35, v36, v37])
                 {
-                  [v11 addObject:v15];
+                  [array addObject:v15];
                 }
               }
 
@@ -325,7 +325,7 @@ LABEL_35:
     if (obj && [obj count])
     {
       [v42 addObjectsFromArray:obj];
-      [v42 removeObjectsInArray:v11];
+      [v42 removeObjectsInArray:array];
     }
 
     v38 = 0;
@@ -339,15 +339,15 @@ LABEL_35:
   return v38;
 }
 
-- (int)analyzePixelBuffer:(__CVBuffer *)a3 flags:(unint64_t *)a4 results:(id *)a5 cancel:(id)a6
+- (int)analyzePixelBuffer:(__CVBuffer *)buffer flags:(unint64_t *)flags results:(id *)results cancel:(id)cancel
 {
   v75 = *MEMORY[0x1E69E9840];
-  v47 = a5;
-  v49 = a6;
-  *v47 = 0;
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
-  v50 = [MEMORY[0x1E695DF70] array];
+  resultsCopy = results;
+  cancelCopy = cancel;
+  *resultsCopy = 0;
+  Width = CVPixelBufferGetWidth(buffer);
+  Height = CVPixelBufferGetHeight(buffer);
+  array = [MEMORY[0x1E695DF70] array];
   if (Height >= Width)
   {
     v10 = Width;
@@ -370,26 +370,26 @@ LABEL_35:
 
   if ((v11 / v10) <= 2.0)
   {
-    v12 = [(VCPImageFaceDetector *)self faceDetection:a3 faces:v50 cancel:v49];
+    v12 = [(VCPImageFaceDetector *)self faceDetection:buffer faces:array cancel:cancelCopy];
   }
 
   else
   {
-    v12 = [(VCPImageAnalyzer *)self analyzePixelBufferInTiles:a3 results:v50 cancel:v49];
+    v12 = [(VCPImageAnalyzer *)self analyzePixelBufferInTiles:buffer results:array cancel:cancelCopy];
   }
 
   v13 = v12;
   if (!v12)
   {
-    v14 = CVPixelBufferGetWidth(a3);
-    v15 = CVPixelBufferGetHeight(a3);
+    v14 = CVPixelBufferGetWidth(buffer);
+    v15 = CVPixelBufferGetHeight(buffer);
     v63 = 0uLL;
-    v53 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v61 = 0u;
     v62 = 0u;
     v59 = 0u;
     v60 = 0u;
-    obj = v50;
+    obj = array;
     v16 = [obj countByEnumeratingWithState:&v59 objects:v74 count:16];
     if (v16)
     {
@@ -412,7 +412,7 @@ LABEL_35:
 
           v23 = *(*(&v59 + 1) + 8 * v22);
           memset(&v58, 0, sizeof(v58));
-          [v23 faceBounds:v19 height:{v20, v47}];
+          [v23 faceBounds:v19 height:{v20, resultsCopy}];
           v58 = v76;
           v57.a = 1.0;
           *&v57.b = v63;
@@ -513,9 +513,9 @@ LABEL_35:
           v39 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v71 forKeys:v70 count:4];
           v73[1] = v39;
           v40 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v73 forKeys:v72 count:2];
-          [v53 addObject:v40];
+          [array2 addObject:v40];
 
-          *a4 |= v27;
+          *flags |= v27;
           ++v22;
           v19 = v25;
           v20 = v26;
@@ -533,7 +533,7 @@ LABEL_35:
       v21 = 0.0;
     }
 
-    v41 = [MEMORY[0x1E695DF70] array];
+    array3 = [MEMORY[0x1E695DF70] array];
     if ([obj count])
     {
       v42 = MediaAnalysisShotType(v21);
@@ -544,16 +544,16 @@ LABEL_35:
       v44 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v67 forKeys:&v66 count:1];
       v69 = v44;
       v45 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v69 forKeys:&v68 count:1];
-      [v41 addObject:v45];
+      [array3 addObject:v45];
     }
 
     if ([obj count])
     {
-      *a4 |= 0x20uLL;
+      *flags |= 0x20uLL;
       v64[0] = @"FaceResults";
       v64[1] = @"ShotTypeResults";
-      v65[0] = v53;
-      v65[1] = v41;
+      v65[0] = array2;
+      v65[1] = array3;
       *v48 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v65 forKeys:v64 count:2];
     }
 

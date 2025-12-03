@@ -1,7 +1,7 @@
 @interface HFServiceIconSet
 + (id)placeholderIconSet;
-+ (id)setWithDefaultIcon:(id)a3 alternateIcons:(id)a4;
-+ (id)setWithImageIdentifier:(id)a3;
++ (id)setWithDefaultIcon:(id)icon alternateIcons:(id)icons;
++ (id)setWithImageIdentifier:(id)identifier;
 @end
 
 @implementation HFServiceIconSet
@@ -9,33 +9,33 @@
 + (id)placeholderIconSet
 {
   v3 = [[HFImageIconDescriptor alloc] initWithImageIdentifier:@"HFImageIconIdentifierGeneric"];
-  v4 = [a1 setWithDefaultIcon:v3];
+  v4 = [self setWithDefaultIcon:v3];
 
   return v4;
 }
 
-+ (id)setWithImageIdentifier:(id)a3
++ (id)setWithImageIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [[HFImageIconDescriptor alloc] initWithImageIdentifier:v4];
+  identifierCopy = identifier;
+  v5 = [[HFImageIconDescriptor alloc] initWithImageIdentifier:identifierCopy];
 
-  v6 = [a1 setWithDefaultIcon:v5];
+  v6 = [self setWithDefaultIcon:v5];
 
   return v6;
 }
 
-+ (id)setWithDefaultIcon:(id)a3 alternateIcons:(id)a4
++ (id)setWithDefaultIcon:(id)icon alternateIcons:(id)icons
 {
-  v5 = a3;
-  v6 = a4;
+  iconCopy = icon;
+  iconsCopy = icons;
   v7 = objc_opt_new();
   v8 = v7[2];
-  v7[2] = v5;
-  v9 = v5;
+  v7[2] = iconCopy;
+  v9 = iconCopy;
 
-  if (v6)
+  if (iconsCopy)
   {
-    v10 = v6;
+    v10 = iconsCopy;
   }
 
   else

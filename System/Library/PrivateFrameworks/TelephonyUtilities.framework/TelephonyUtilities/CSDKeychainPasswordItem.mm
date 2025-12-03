@@ -1,14 +1,14 @@
 @interface CSDKeychainPasswordItem
 + (NSString)accessGroupName;
 + (NSString)serviceName;
-- (BOOL)saveData:(id)a3 error:(id *)a4;
-- (BOOL)savePassword:(id)a3 error:(id *)a4;
-- (CSDKeychainPasswordItem)initWithService:(id)a3 account:(id)a4 accessGroup:(id)a5;
+- (BOOL)saveData:(id)data error:(id *)error;
+- (BOOL)savePassword:(id)password error:(id *)error;
+- (CSDKeychainPasswordItem)initWithService:(id)service account:(id)account accessGroup:(id)group;
 - (NSString)account;
 - (NSString)description;
-- (id)readDataAndReturnError:(id *)a3;
-- (id)readPasswordAndReturnError:(id *)a3;
-- (void)setAccount:(id)a3;
+- (id)readDataAndReturnError:(id *)error;
+- (id)readPasswordAndReturnError:(id *)error;
+- (void)setAccount:(id)account;
 @end
 
 @implementation CSDKeychainPasswordItem
@@ -35,15 +35,15 @@
   return v2;
 }
 
-- (void)setAccount:(id)a3
+- (void)setAccount:(id)account
 {
   v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   sub_100459BB0(v4, v6);
 }
 
-- (CSDKeychainPasswordItem)initWithService:(id)a3 account:(id)a4 accessGroup:(id)a5
+- (CSDKeychainPasswordItem)initWithService:(id)service account:(id)account accessGroup:(id)group
 {
   v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v7 = v6;
@@ -53,9 +53,9 @@
   return sub_100459BCC(v5, v7, v8, v10, v11, v12);
 }
 
-- (id)readPasswordAndReturnError:(id *)a3
+- (id)readPasswordAndReturnError:(id *)error
 {
-  v3 = self;
+  selfCopy = self;
   sub_100459CEC();
 
   v4 = String._bridgeToObjectiveC()();
@@ -63,18 +63,18 @@
   return v4;
 }
 
-- (BOOL)savePassword:(id)a3 error:(id *)a4
+- (BOOL)savePassword:(id)password error:(id *)error
 {
   static String._unconditionallyBridgeFromObjectiveC(_:)();
-  v5 = self;
+  selfCopy = self;
   sub_10045A090();
 
   return 1;
 }
 
-- (id)readDataAndReturnError:(id *)a3
+- (id)readDataAndReturnError:(id *)error
 {
-  v3 = self;
+  selfCopy = self;
   v4 = sub_100459DF8();
   v6 = v5;
 
@@ -84,10 +84,10 @@
   return v7.super.isa;
 }
 
-- (BOOL)saveData:(id)a3 error:(id *)a4
+- (BOOL)saveData:(id)data error:(id *)error
 {
-  v5 = a3;
-  v6 = self;
+  dataCopy = data;
+  selfCopy = self;
   v7 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v9 = v8;
 
@@ -98,7 +98,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_10045A8A0();
 
   v3 = String._bridgeToObjectiveC()();

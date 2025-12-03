@@ -1,24 +1,24 @@
 @interface KTStaticKeyPeer
-+ (id)stripIMPrefix:(id)a3;
-- (KTStaticKeyPeer)initWithCoder:(id)a3;
-- (KTStaticKeyPeer)initWithPeer:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setOtherNamesForPeer:(id)a3;
++ (id)stripIMPrefix:(id)prefix;
+- (KTStaticKeyPeer)initWithCoder:(id)coder;
+- (KTStaticKeyPeer)initWithPeer:(id)peer;
+- (void)encodeWithCoder:(id)coder;
+- (void)setOtherNamesForPeer:(id)peer;
 @end
 
 @implementation KTStaticKeyPeer
 
-+ (id)stripIMPrefix:(id)a3
++ (id)stripIMPrefix:(id)prefix
 {
-  v3 = a3;
-  if ([v3 hasPrefix:@"im://"])
+  prefixCopy = prefix;
+  if ([prefixCopy hasPrefix:@"im://"])
   {
-    v4 = [v3 substringFromIndex:{objc_msgSend(@"im://", "length")}];
+    v4 = [prefixCopy substringFromIndex:{objc_msgSend(@"im://", "length")}];
   }
 
   else
   {
-    v4 = v3;
+    v4 = prefixCopy;
   }
 
   v5 = v4;
@@ -26,15 +26,15 @@
   return v5;
 }
 
-- (KTStaticKeyPeer)initWithPeer:(id)a3
+- (KTStaticKeyPeer)initWithPeer:(id)peer
 {
-  v4 = a3;
+  peerCopy = peer;
   v10.receiver = self;
   v10.super_class = KTStaticKeyPeer;
   v5 = [(KTStaticKeyPeer *)&v10 init];
   if (v5)
   {
-    v6 = [objc_opt_class() stripIMPrefix:v4];
+    v6 = [objc_opt_class() stripIMPrefix:peerCopy];
     [(KTStaticKeyPeer *)v5 setPeer:v6];
 
     v7 = [MEMORY[0x1E695DFD8] set];
@@ -46,41 +46,41 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v9 = a3;
-  v4 = [(KTStaticKeyPeer *)self peer];
-  [v9 encodeObject:v4 forKey:@"peer"];
+  coderCopy = coder;
+  peer = [(KTStaticKeyPeer *)self peer];
+  [coderCopy encodeObject:peer forKey:@"peer"];
 
-  v5 = [(KTStaticKeyPeer *)self otherNamesForPeer];
-  v6 = [v5 allObjects];
-  [v9 encodeObject:v6 forKey:@"otherNames"];
+  otherNamesForPeer = [(KTStaticKeyPeer *)self otherNamesForPeer];
+  allObjects = [otherNamesForPeer allObjects];
+  [coderCopy encodeObject:allObjects forKey:@"otherNames"];
 
-  v7 = [(KTStaticKeyPeer *)self lastUsedAddressOfMe];
+  lastUsedAddressOfMe = [(KTStaticKeyPeer *)self lastUsedAddressOfMe];
 
-  if (v7)
+  if (lastUsedAddressOfMe)
   {
-    v8 = [(KTStaticKeyPeer *)self lastUsedAddressOfMe];
-    [v9 encodeObject:v8 forKey:@"lastUsed"];
+    lastUsedAddressOfMe2 = [(KTStaticKeyPeer *)self lastUsedAddressOfMe];
+    [coderCopy encodeObject:lastUsedAddressOfMe2 forKey:@"lastUsed"];
   }
 }
 
-- (KTStaticKeyPeer)initWithCoder:(id)a3
+- (KTStaticKeyPeer)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = KTStaticKeyPeer;
   v5 = [(KTStaticKeyPeer *)&v13 init];
-  if (v5 && ([v4 decodeObjectOfClass:objc_opt_class() forKey:@"peer"], v6 = objc_claimAutoreleasedReturnValue(), -[KTStaticKeyPeer setPeer:](v5, "setPeer:", v6), v6, -[KTStaticKeyPeer peer](v5, "peer"), v7 = objc_claimAutoreleasedReturnValue(), v7, v7))
+  if (v5 && ([coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"peer"], v6 = objc_claimAutoreleasedReturnValue(), -[KTStaticKeyPeer setPeer:](v5, "setPeer:", v6), v6, -[KTStaticKeyPeer peer](v5, "peer"), v7 = objc_claimAutoreleasedReturnValue(), v7, v7))
   {
-    v8 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"otherNames"];
+    v8 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"otherNames"];
     if (v8)
     {
       v9 = [MEMORY[0x1E695DFD8] setWithArray:v8];
       [(KTStaticKeyPeer *)v5 setOtherNamesForPeer:v9];
     }
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastUsed"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastUsed"];
     [(KTStaticKeyPeer *)v5 setLastUsedAddressOfMe:v10];
 
     v11 = v5;
@@ -94,16 +94,16 @@
   return v11;
 }
 
-- (void)setOtherNamesForPeer:(id)a3
+- (void)setOtherNamesForPeer:(id)peer
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  peerCopy = peer;
   v5 = [MEMORY[0x1E695DFA8] set];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v4;
+  v6 = peerCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {

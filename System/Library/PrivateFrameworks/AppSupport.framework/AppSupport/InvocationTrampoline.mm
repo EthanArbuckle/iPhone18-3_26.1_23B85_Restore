@@ -1,9 +1,9 @@
 @interface InvocationTrampoline
-- (BOOL)respondsToSelector:(SEL)a3;
-- (id)methodSignatureForSelector:(SEL)a3;
+- (BOOL)respondsToSelector:(SEL)selector;
+- (id)methodSignatureForSelector:(SEL)selector;
 - (void)dealloc;
-- (void)forwardInvocation:(id)a3;
-- (void)performInvocation:(id)a3;
+- (void)forwardInvocation:(id)invocation;
+- (void)performInvocation:(id)invocation;
 @end
 
 @implementation InvocationTrampoline
@@ -16,26 +16,26 @@
   [(InvocationTrampoline *)&v3 dealloc];
 }
 
-- (void)performInvocation:(id)a3
+- (void)performInvocation:(id)invocation
 {
   v5 = objc_alloc_init(MEMORY[0x1E696AAC8]);
-  [a3 invokeWithTarget:{-[InvocationTrampoline target](self, "target")}];
+  [invocation invokeWithTarget:{-[InvocationTrampoline target](self, "target")}];
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
-  v4 = self;
+  selfCopy = self;
   v6.receiver = self;
   v6.super_class = InvocationTrampoline;
   if (![(InvocationTrampoline *)&v6 respondsToSelector:?])
   {
-    v4 = [(InvocationTrampoline *)v4 target];
+    selfCopy = [(InvocationTrampoline *)selfCopy target];
   }
 
-  return [(InvocationTrampoline *)v4 methodSignatureForSelector:a3];
+  return [(InvocationTrampoline *)selfCopy methodSignatureForSelector:selector];
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
   v6.receiver = self;
   v6.super_class = InvocationTrampoline;
@@ -53,11 +53,11 @@
   return v4 & 1;
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
-  v4 = [(InvocationTrampoline *)self target];
+  target = [(InvocationTrampoline *)self target];
 
-  [a3 invokeWithTarget:v4];
+  [invocation invokeWithTarget:target];
 }
 
 @end

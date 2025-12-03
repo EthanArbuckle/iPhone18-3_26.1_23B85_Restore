@@ -1,38 +1,38 @@
 @interface SDCoreSpotlightDiagnosticClient
-+ (id)defaultClientWithBundleID:(id)a3 protectionClass:(id)a4;
-+ (id)privateClientWithBundleID:(id)a3 protectionClass:(id)a4;
-- (SDCoreSpotlightDiagnosticClient)initWithBundleID:(id)a3 protectionClass:(id)a4 path:(id)a5 private:(BOOL)a6 managed:(BOOL)a7;
++ (id)defaultClientWithBundleID:(id)d protectionClass:(id)class;
++ (id)privateClientWithBundleID:(id)d protectionClass:(id)class;
+- (SDCoreSpotlightDiagnosticClient)initWithBundleID:(id)d protectionClass:(id)class path:(id)path private:(BOOL)private managed:(BOOL)managed;
 - (id)debugDescription;
-- (void)getStatus:(BOOL)a3 protectionClasses:(id)a4 queue:(id)a5 completionHandler:(id)a6;
+- (void)getStatus:(BOOL)status protectionClasses:(id)classes queue:(id)queue completionHandler:(id)handler;
 - (void)setActiveUser;
 @end
 
 @implementation SDCoreSpotlightDiagnosticClient
 
-- (SDCoreSpotlightDiagnosticClient)initWithBundleID:(id)a3 protectionClass:(id)a4 path:(id)a5 private:(BOOL)a6 managed:(BOOL)a7
+- (SDCoreSpotlightDiagnosticClient)initWithBundleID:(id)d protectionClass:(id)class path:(id)path private:(BOOL)private managed:(BOOL)managed
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
+  dCopy = d;
+  classCopy = class;
+  pathCopy = path;
   v29.receiver = self;
   v29.super_class = SDCoreSpotlightDiagnosticClient;
   v15 = [(SDCoreSpotlightDiagnosticClient *)&v29 init];
   if (v15)
   {
-    v16 = [v12 copy];
+    v16 = [dCopy copy];
     bundleID = v15->_bundleID;
     v15->_bundleID = v16;
 
-    v18 = [v13 copy];
+    v18 = [classCopy copy];
     protectionClass = v15->_protectionClass;
     v15->_protectionClass = v18;
 
-    v20 = [v14 copy];
+    v20 = [pathCopy copy];
     path = v15->_path;
     v15->_path = v20;
 
-    v15->_private = a6;
-    v15->_managed = a7;
+    v15->_private = private;
+    v15->_managed = managed;
     if (v15->_private)
     {
       v22 = objc_alloc(MEMORY[0x29EDB94D0]);
@@ -57,20 +57,20 @@
   return v15;
 }
 
-+ (id)defaultClientWithBundleID:(id)a3 protectionClass:(id)a4
++ (id)defaultClientWithBundleID:(id)d protectionClass:(id)class
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[SDCoreSpotlightDiagnosticClient alloc] initWithBundleID:v6 protectionClass:v5 path:0 private:0 managed:0];
+  classCopy = class;
+  dCopy = d;
+  v7 = [[SDCoreSpotlightDiagnosticClient alloc] initWithBundleID:dCopy protectionClass:classCopy path:0 private:0 managed:0];
 
   return v7;
 }
 
-+ (id)privateClientWithBundleID:(id)a3 protectionClass:(id)a4
++ (id)privateClientWithBundleID:(id)d protectionClass:(id)class
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[SDCoreSpotlightDiagnosticClient alloc] initWithBundleID:v6 protectionClass:v5 path:0 private:1 managed:0];
+  classCopy = class;
+  dCopy = d;
+  v7 = [[SDCoreSpotlightDiagnosticClient alloc] initWithBundleID:dCopy protectionClass:classCopy path:0 private:1 managed:0];
 
   return v7;
 }
@@ -95,26 +95,26 @@
   return v6;
 }
 
-- (void)getStatus:(BOOL)a3 protectionClasses:(id)a4 queue:(id)a5 completionHandler:(id)a6
+- (void)getStatus:(BOOL)status protectionClasses:(id)classes queue:(id)queue completionHandler:(id)handler
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  classesCopy = classes;
+  queueCopy = queue;
+  handlerCopy = handler;
   if (SDIsAppleInternalInstall())
   {
     v16[0] = MEMORY[0x29EDCA5F8];
     v16[1] = 3221225472;
     v16[2] = __87__SDCoreSpotlightDiagnosticClient_getStatus_protectionClasses_queue_completionHandler___block_invoke;
     v16[3] = &unk_29F385850;
-    v20 = a3;
-    v17 = v10;
-    v18 = self;
-    v19 = v12;
+    statusCopy = status;
+    v17 = classesCopy;
+    selfCopy = self;
+    v19 = handlerCopy;
     v13 = MEMORY[0x29EDAC780](v16);
     v14 = v13;
-    if (v11)
+    if (queueCopy)
     {
-      dispatch_async(v11, v13);
+      dispatch_async(queueCopy, v13);
     }
 
     else
@@ -126,9 +126,9 @@
   else
   {
     v15 = SDError(-5006, @"CoreSpotlight status command");
-    if (v12)
+    if (handlerCopy)
     {
-      (*(v12 + 2))(v12, 0, v15);
+      (*(handlerCopy + 2))(handlerCopy, 0, v15);
     }
   }
 }

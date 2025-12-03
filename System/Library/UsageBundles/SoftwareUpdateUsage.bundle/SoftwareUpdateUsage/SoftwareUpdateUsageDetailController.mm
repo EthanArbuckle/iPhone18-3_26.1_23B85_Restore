@@ -28,11 +28,11 @@
   +[ICQUsageDetailHeader usageDetailHeaderHeight];
   v12 = [v10 initWithFrame:{0.0, 0.0, 0.0, v11}];
   [v12 setLabelTextAndIconWithSpecifier:*&self->PSUsageBundleDetailController_opaque[v3]];
-  v13 = [*&self->PSUsageBundleDetailController_opaque[v3] name];
-  [v12 setName:v13];
+  name = [*&self->PSUsageBundleDetailController_opaque[v3] name];
+  [v12 setName:name];
 
-  v14 = [(SoftwareUpdateUsageDetailController *)self table];
-  [v14 setTableHeaderView:v12];
+  table = [(SoftwareUpdateUsageDetailController *)self table];
+  [table setTableHeaderView:v12];
 }
 
 - (id)specifiers
@@ -57,10 +57,10 @@
     *&self->PSUsageBundleDetailController_opaque[v3] = v4;
   }
 
-  v11 = [(SoftwareUpdateUsageDetailController *)self navigationItem];
+  navigationItem = [(SoftwareUpdateUsageDetailController *)self navigationItem];
   v12 = [NSBundle bundleForClass:objc_opt_class()];
   v13 = [v12 localizedStringForKey:@"SOFTWARE_UPDATE" value:&stru_4298 table:@"SoftwareUpdateUsageBundle"];
-  [v11 setTitle:v13];
+  [navigationItem setTitle:v13];
 
   v14 = *&self->PSUsageBundleDetailController_opaque[v3];
 
@@ -92,12 +92,12 @@
 
 - (void)deleteSoftwareUpdate
 {
-  v3 = [(SoftwareUpdateUsageDetailController *)self view];
-  [v3 setUserInteractionEnabled:0];
+  view = [(SoftwareUpdateUsageDetailController *)self view];
+  [view setUserInteractionEnabled:0];
 
   v4 = +[PSNavBarSpinnerManager sharedSpinnerManager];
-  v5 = [(SoftwareUpdateUsageDetailController *)self navigationItem];
-  [v4 startAnimatingInNavItem:v5 forIdentifier:@"softwareUpdateDeletion"];
+  navigationItem = [(SoftwareUpdateUsageDetailController *)self navigationItem];
+  [v4 startAnimatingInNavItem:navigationItem forIdentifier:@"softwareUpdateDeletion"];
 
   v8 = 0;
   v9 = &v8;

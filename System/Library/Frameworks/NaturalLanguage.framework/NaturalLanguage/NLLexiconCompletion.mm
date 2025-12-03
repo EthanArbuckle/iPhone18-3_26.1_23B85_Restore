@@ -1,18 +1,18 @@
 @interface NLLexiconCompletion
-- (NLLexiconCompletion)initWithTokenID:(unsigned int)a3 score:(double)a4;
+- (NLLexiconCompletion)initWithTokenID:(unsigned int)d score:(double)score;
 @end
 
 @implementation NLLexiconCompletion
 
-- (NLLexiconCompletion)initWithTokenID:(unsigned int)a3 score:(double)a4
+- (NLLexiconCompletion)initWithTokenID:(unsigned int)d score:(double)score
 {
   v7.receiver = self;
   v7.super_class = NLLexiconCompletion;
   result = [(NLLexiconCompletion *)&v7 init];
   if (result)
   {
-    result->_tokenID = a3;
-    result->_score = a4;
+    result->_tokenID = d;
+    result->_score = score;
   }
 
   return result;

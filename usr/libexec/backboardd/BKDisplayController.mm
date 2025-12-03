@@ -1,14 +1,14 @@
 @interface BKDisplayController
 + (BKDisplayController)sharedInstance;
-- ($446564691F179F0A09753BCCEB4D3730)transformLayerPropertiesForDisplay:(SEL)a3 displayInterfaceOrientation:(id)a4;
-- ($F7CACAAF0F09BFB3533BE937C26B5F66)geometryForDisplay:(SEL)a3;
+- ($446564691F179F0A09753BCCEB4D3730)transformLayerPropertiesForDisplay:(SEL)display displayInterfaceOrientation:(id)orientation;
+- ($F7CACAAF0F09BFB3533BE937C26B5F66)geometryForDisplay:(SEL)display;
 - (BKDisplayController)init;
-- (BOOL)contextIDAtCAScreenLocation:(CGPoint)a3 displayUUID:(id)a4 options:(id)a5 securityAnalysis:(id *)a6 results:(id *)a7;
-- (BOOL)displayIsBlanked:(id)a3;
-- (CGPoint)convertReferenceLocation:(CGPoint)a3 toCAScreenLocationForDisplayUUID:(id)a4;
-- (id)addDisplayBlankingObserver:(id)a3;
-- (void)applySceneHostSettingsToHostingChain:(id)a3;
-- (void)setSceneHostSettings:(id)a3;
+- (BOOL)contextIDAtCAScreenLocation:(CGPoint)location displayUUID:(id)d options:(id)options securityAnalysis:(id *)analysis results:(id *)results;
+- (BOOL)displayIsBlanked:(id)blanked;
+- (CGPoint)convertReferenceLocation:(CGPoint)location toCAScreenLocationForDisplayUUID:(id)d;
+- (id)addDisplayBlankingObserver:(id)observer;
+- (void)applySceneHostSettingsToHostingChain:(id)chain;
+- (void)setSceneHostSettings:(id)settings;
 @end
 
 @implementation BKDisplayController
@@ -25,7 +25,7 @@
   return v3;
 }
 
-- ($446564691F179F0A09753BCCEB4D3730)transformLayerPropertiesForDisplay:(SEL)a3 displayInterfaceOrientation:(id)a4
+- ($446564691F179F0A09753BCCEB4D3730)transformLayerPropertiesForDisplay:(SEL)display displayInterfaceOrientation:(id)orientation
 {
   v16 = *&CGAffineTransformIdentity.a;
   v17 = *&CGAffineTransformIdentity.c;
@@ -35,7 +35,7 @@
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  result = [(BKDisplayController *)self geometryForDisplay:a4];
+  result = [(BKDisplayController *)self geometryForDisplay:orientation];
   v10 = 0u;
   v12 = v16;
   v11 = v17;
@@ -86,7 +86,7 @@ LABEL_8:
   return result;
 }
 
-- ($F7CACAAF0F09BFB3533BE937C26B5F66)geometryForDisplay:(SEL)a3
+- ($F7CACAAF0F09BFB3533BE937C26B5F66)geometryForDisplay:(SEL)display
 {
   retstr->var3.size = 0u;
   *&retstr->var1 = 0u;
@@ -97,8 +97,8 @@ LABEL_8:
   p_height = &retstr->var0.height;
   p_var2 = &retstr->var2;
   v9 = a4;
-  v10 = [v9 uniqueId];
-  v11 = sub_10000717C(v10);
+  uniqueId = [v9 uniqueId];
+  v11 = sub_10000717C(uniqueId);
 
   if (v11)
   {
@@ -123,17 +123,17 @@ LABEL_8:
   return result;
 }
 
-- (void)applySceneHostSettingsToHostingChain:(id)a3
+- (void)applySceneHostSettingsToHostingChain:(id)chain
 {
-  v4 = a3;
+  chainCopy = chain;
   os_unfair_lock_lock(&self->_lock);
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v18 = v4;
-  v5 = [v4 reverseObjectEnumerator];
-  v6 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  v18 = chainCopy;
+  reverseObjectEnumerator = [chainCopy reverseObjectEnumerator];
+  v6 = [reverseObjectEnumerator countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v6)
   {
     v7 = v6;
@@ -146,7 +146,7 @@ LABEL_8:
       {
         if (*v20 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         v11 = *(*(&v19 + 1) + 8 * v10);
@@ -180,7 +180,7 @@ LABEL_8:
       }
 
       while (v7 != v10);
-      v17 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v17 = [reverseObjectEnumerator countByEnumeratingWithState:&v19 objects:v23 count:16];
       v7 = v17;
     }
 
@@ -195,64 +195,64 @@ LABEL_8:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setSceneHostSettings:(id)a3
+- (void)setSceneHostSettings:(id)settings
 {
-  v4 = a3;
+  settingsCopy = settings;
   os_unfair_lock_lock(&self->_lock);
   v5 = BKLogTouchEvents();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     v8 = 138543362;
-    v9 = v4;
+    v9 = settingsCopy;
     _os_log_debug_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "setSceneHostSettings: %{public}@", &v8, 0xCu);
   }
 
-  v6 = [v4 mutableCopy];
+  v6 = [settingsCopy mutableCopy];
   lock_sceneHostSettingsByContextID = self->_lock_sceneHostSettingsByContextID;
   self->_lock_sceneHostSettingsByContextID = v6;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (CGPoint)convertReferenceLocation:(CGPoint)a3 toCAScreenLocationForDisplayUUID:(id)a4
+- (CGPoint)convertReferenceLocation:(CGPoint)location toCAScreenLocationForDisplayUUID:(id)d
 {
-  sub_100007C3C(a4);
+  sub_100007C3C(d);
   result.y = v5;
   result.x = v4;
   return result;
 }
 
-- (BOOL)contextIDAtCAScreenLocation:(CGPoint)a3 displayUUID:(id)a4 options:(id)a5 securityAnalysis:(id *)a6 results:(id *)a7
+- (BOOL)contextIDAtCAScreenLocation:(CGPoint)location displayUUID:(id)d options:(id)options securityAnalysis:(id *)analysis results:(id *)results
 {
-  y = a3.y;
-  x = a3.x;
-  v13 = a4;
-  *&a7->var0 = 0u;
-  *&a7->var3 = 0u;
-  *&a7->var5.m11 = 0u;
-  *&a7->var5.m13 = 0u;
-  *&a7->var5.m21 = 0u;
-  *&a7->var5.m23 = 0u;
-  *&a7->var5.m31 = 0u;
-  *&a7->var5.m33 = 0u;
-  *&a7->var5.m41 = 0u;
-  *&a7->var5.m43 = 0u;
-  *&a7->var6.m11 = 0u;
-  *&a7->var6.m13 = 0u;
-  *&a7->var6.m21 = 0u;
-  *&a7->var6.m23 = 0u;
-  *&a7->var6.m31 = 0u;
-  *&a7->var6.m33 = 0u;
-  *&a7->var6.m41 = 0u;
-  *&a7->var6.m43 = 0u;
-  *&a7->var7 = 0u;
-  if (a6)
+  y = location.y;
+  x = location.x;
+  dCopy = d;
+  *&results->var0 = 0u;
+  *&results->var3 = 0u;
+  *&results->var5.m11 = 0u;
+  *&results->var5.m13 = 0u;
+  *&results->var5.m21 = 0u;
+  *&results->var5.m23 = 0u;
+  *&results->var5.m31 = 0u;
+  *&results->var5.m33 = 0u;
+  *&results->var5.m41 = 0u;
+  *&results->var5.m43 = 0u;
+  *&results->var6.m11 = 0u;
+  *&results->var6.m13 = 0u;
+  *&results->var6.m21 = 0u;
+  *&results->var6.m23 = 0u;
+  *&results->var6.m31 = 0u;
+  *&results->var6.m33 = 0u;
+  *&results->var6.m41 = 0u;
+  *&results->var6.m43 = 0u;
+  *&results->var7 = 0u;
+  if (analysis)
   {
-    *a6 = 0;
+    *analysis = 0;
   }
 
-  v14 = a5;
-  v15 = v13;
+  optionsCopy = options;
+  v15 = dCopy;
   if (self)
   {
     v16 = +[CAWindowServer serverIfRunning];
@@ -269,7 +269,7 @@ LABEL_8:
     self = ;
   }
 
-  v18 = [(BKDisplayController *)self hitTestAtPosition:v14 options:x, y];
+  v18 = [(BKDisplayController *)self hitTestAtPosition:optionsCopy options:x, y];
 
   if (!v18)
   {
@@ -277,19 +277,19 @@ LABEL_8:
   }
 
   v19 = [v18 objectForKeyedSubscript:kCAWindowServerHitTestContextId];
-  a7->var0 = [v19 unsignedIntValue];
+  results->var0 = [v19 unsignedIntValue];
 
   v20 = [v18 objectForKeyedSubscript:kCAWindowServerHitTestSlotId];
-  a7->var1 = [v20 unsignedIntValue];
+  results->var1 = [v20 unsignedIntValue];
 
-  a7->var2 = sub_100008F00(a7->var0);
-  if (a6)
+  results->var2 = sub_100008F00(results->var0);
+  if (analysis)
   {
     v84 = 0;
     v21 = [BKSWindowServerHitTestSecurityAnalysis securityAnalysisFromCAHitTestDictionary:v18 errorString:&v84];
     v22 = v84;
     v23 = v21;
-    *a6 = v21;
+    *analysis = v21;
     if (v22)
     {
       v24 = BKLogTouchEvents();
@@ -302,7 +302,7 @@ LABEL_8:
     }
   }
 
-  if (a7->var1)
+  if (results->var1)
   {
     v25 = [v18 objectForKeyedSubscript:kCAWindowServerHitTestDetectedOcclusion];
     v26 = objc_opt_class();
@@ -327,9 +327,9 @@ LABEL_8:
 
     v29 = v28;
 
-    v30 = [v29 BOOLValue];
-    a7->var7 = v30;
-    a7->var3 = 0;
+    bOOLValue = [v29 BOOLValue];
+    results->var7 = bOOLValue;
+    results->var3 = 0;
     v31 = [v18 objectForKeyedSubscript:kCAWindowServerHitTestCumulativeOpacity];
     v32 = objc_opt_class();
     v33 = v31;
@@ -356,8 +356,8 @@ LABEL_8:
     if (v35)
     {
       [v35 floatValue];
-      a7->var4 = v36;
-      a7->var3 |= 2uLL;
+      results->var4 = v36;
+      results->var3 |= 2uLL;
     }
 
     v83 = v35;
@@ -388,18 +388,18 @@ LABEL_8:
     {
       [v41 CATransform3DValue];
       v42 = v90;
-      *&a7->var5.m31 = v89;
-      *&a7->var5.m33 = v42;
+      *&results->var5.m31 = v89;
+      *&results->var5.m33 = v42;
       v43 = v92;
-      *&a7->var5.m41 = v91;
-      *&a7->var5.m43 = v43;
+      *&results->var5.m41 = v91;
+      *&results->var5.m43 = v43;
       v44 = v86;
-      *&a7->var5.m11 = *buf;
-      *&a7->var5.m13 = v44;
+      *&results->var5.m11 = *buf;
+      *&results->var5.m13 = v44;
       v45 = v88;
-      *&a7->var5.m21 = v87;
-      *&a7->var5.m23 = v45;
-      a7->var3 |= 0x10uLL;
+      *&results->var5.m21 = v87;
+      *&results->var5.m23 = v45;
+      results->var3 |= 0x10uLL;
     }
 
     v82 = v41;
@@ -430,18 +430,18 @@ LABEL_8:
     {
       [v50 CATransform3DValue];
       v51 = v90;
-      *&a7->var6.m31 = v89;
-      *&a7->var6.m33 = v51;
+      *&results->var6.m31 = v89;
+      *&results->var6.m33 = v51;
       v52 = v92;
-      *&a7->var6.m41 = v91;
-      *&a7->var6.m43 = v52;
+      *&results->var6.m41 = v91;
+      *&results->var6.m43 = v52;
       v53 = v86;
-      *&a7->var6.m11 = *buf;
-      *&a7->var6.m13 = v53;
+      *&results->var6.m11 = *buf;
+      *&results->var6.m13 = v53;
       v54 = v88;
-      *&a7->var6.m21 = v87;
-      *&a7->var6.m23 = v54;
-      a7->var3 |= 0x20uLL;
+      *&results->var6.m21 = v87;
+      *&results->var6.m23 = v54;
+      results->var3 |= 0x20uLL;
     }
 
     v55 = [v18 objectForKeyedSubscript:{@"hitTestInsecureFiltered", v50}];
@@ -469,8 +469,8 @@ LABEL_8:
 
     if (v59)
     {
-      a7->var8 = [v59 BOOLValue];
-      a7->var3 |= 4uLL;
+      results->var8 = [v59 BOOLValue];
+      results->var3 |= 4uLL;
     }
 
     v60 = [v18 objectForKeyedSubscript:kCAWindowServerHitTestLayerBackgroundAverage];
@@ -499,7 +499,7 @@ LABEL_8:
     v65 = [v18 objectForKeyedSubscript:kCAWindowServerHitTestLayerBackgroundStandardDeviation];
     v66 = objc_opt_class();
     v67 = v65;
-    v68 = self;
+    selfCopy = self;
     if (v66)
     {
       if (objc_opt_isKindOfClass())
@@ -546,18 +546,18 @@ LABEL_8:
     if (v64 && v70 && v75)
     {
       [v64 floatValue];
-      a7->var9 = v76;
+      results->var9 = v76;
       [v70 floatValue];
-      a7->var10 = v77;
+      results->var10 = v77;
       [v75 floatValue];
-      a7->var11 = v78;
-      a7->var3 |= 8uLL;
+      results->var11 = v78;
+      results->var3 |= 8uLL;
     }
 
-    self = v68;
+    self = selfCopy;
   }
 
-  if (a7->var0 && a7->var2 + 1 > 1)
+  if (results->var0 && results->var2 + 1 > 1)
   {
     v79 = 1;
   }
@@ -566,15 +566,15 @@ LABEL_8:
   {
 LABEL_71:
     v79 = 0;
-    a7->var0 = 0;
+    results->var0 = 0;
   }
 
   return v79;
 }
 
-- (id)addDisplayBlankingObserver:(id)a3
+- (id)addDisplayBlankingObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   observerAssertion = self->_observerAssertion;
   if (!observerAssertion)
   {
@@ -586,17 +586,17 @@ LABEL_71:
   }
 
   v8 = [objc_opt_class() description];
-  v9 = [(BSCompoundAssertion *)observerAssertion acquireForReason:v8 withContext:v4];
+  v9 = [(BSCompoundAssertion *)observerAssertion acquireForReason:v8 withContext:observerCopy];
 
   return v9;
 }
 
-- (BOOL)displayIsBlanked:(id)a3
+- (BOOL)displayIsBlanked:(id)blanked
 {
-  v3 = sub_100007D54(a3, "BKDisplayIsDisplayBlanked");
-  v4 = [v3 isBlanked];
+  v3 = sub_100007D54(blanked, "BKDisplayIsDisplayBlanked");
+  isBlanked = [v3 isBlanked];
 
-  return v4;
+  return isBlanked;
 }
 
 - (BKDisplayController)init

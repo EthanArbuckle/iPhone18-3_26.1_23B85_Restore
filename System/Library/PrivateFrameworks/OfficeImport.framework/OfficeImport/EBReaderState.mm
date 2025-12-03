@@ -1,10 +1,10 @@
 @interface EBReaderState
-- (EBReaderState)initWithXlReader:(void *)a3 cancelDelegate:(id)a4;
+- (EBReaderState)initWithXlReader:(void *)reader cancelDelegate:(id)delegate;
 - (id)columnWidthConvertor;
 - (void)dealloc;
 - (void)pauseReading;
 - (void)readGlobalXlObjects;
-- (void)reportWarning:(id)a3;
+- (void)reportWarning:(id)warning;
 - (void)resumeReading;
 @end
 
@@ -40,10 +40,10 @@
     self->mColumnWidthConvertor = v4;
 
     v6 = self->mColumnWidthConvertor;
-    v7 = [(EDResources *)self->super.mResources styles];
-    v8 = [v7 defaultWorkbookStyle];
-    v9 = [v8 font];
-    [(ECColumnWidthConvertor *)v6 setupWithEDFont:v9 state:0];
+    styles = [(EDResources *)self->super.mResources styles];
+    defaultWorkbookStyle = [styles defaultWorkbookStyle];
+    font = [defaultWorkbookStyle font];
+    [(ECColumnWidthConvertor *)v6 setupWithEDFont:font state:0];
 
     mColumnWidthConvertor = self->mColumnWidthConvertor;
   }
@@ -72,15 +72,15 @@
   [(EBState *)&v5 dealloc];
 }
 
-- (EBReaderState)initWithXlReader:(void *)a3 cancelDelegate:(id)a4
+- (EBReaderState)initWithXlReader:(void *)reader cancelDelegate:(id)delegate
 {
-  v6 = a4;
+  delegateCopy = delegate;
   v9.receiver = self;
   v9.super_class = EBReaderState;
-  v7 = [(EBState *)&v9 initWithCancelDelegate:v6];
+  v7 = [(EBState *)&v9 initWithCancelDelegate:delegateCopy];
   if (v7)
   {
-    v7->mXlReader = a3;
+    v7->mXlReader = reader;
     v7->mXlSheetInfoTable = 0;
     operator new();
   }
@@ -88,11 +88,11 @@
   return 0;
 }
 
-- (void)reportWarning:(id)a3
+- (void)reportWarning:(id)warning
 {
-  v5 = a3;
-  v4 = [(EDWorkbook *)self->super.mWorkbook warnings];
-  [v4 addWarning:v5];
+  warningCopy = warning;
+  warnings = [(EDWorkbook *)self->super.mWorkbook warnings];
+  [warnings addWarning:warningCopy];
 }
 
 @end

@@ -1,18 +1,18 @@
 @interface MIOOutputSettingsFactory
-+ (id)outputSettingsWithConfig:(id)a3 formatDescription:(opaqueCMFormatDescription *)a4 defaultFrameRate:(double)a5 preferEncoderConfig:(BOOL)a6 enableAVEHighPerformanceProfile:(BOOL)a7;
++ (id)outputSettingsWithConfig:(id)config formatDescription:(opaqueCMFormatDescription *)description defaultFrameRate:(double)rate preferEncoderConfig:(BOOL)encoderConfig enableAVEHighPerformanceProfile:(BOOL)profile;
 @end
 
 @implementation MIOOutputSettingsFactory
 
-+ (id)outputSettingsWithConfig:(id)a3 formatDescription:(opaqueCMFormatDescription *)a4 defaultFrameRate:(double)a5 preferEncoderConfig:(BOOL)a6 enableAVEHighPerformanceProfile:(BOOL)a7
++ (id)outputSettingsWithConfig:(id)config formatDescription:(opaqueCMFormatDescription *)description defaultFrameRate:(double)rate preferEncoderConfig:(BOOL)encoderConfig enableAVEHighPerformanceProfile:(BOOL)profile
 {
-  v7 = a7;
-  v8 = a6;
-  v11 = a3;
-  v12 = [v11 objectForKey:@"StreamEncoderType"];
-  v13 = [v12 intValue];
+  profileCopy = profile;
+  encoderConfigCopy = encoderConfig;
+  configCopy = config;
+  v12 = [configCopy objectForKey:@"StreamEncoderType"];
+  intValue = [v12 intValue];
 
-  if ([MIOMiscStreamOutputSettings supportsEncoderType:v13])
+  if ([MIOMiscStreamOutputSettings supportsEncoderType:intValue])
   {
     if (+[MIOLog debugEnabled])
     {
@@ -33,7 +33,7 @@ LABEL_29:
     goto LABEL_30;
   }
 
-  if ([MIOProResStreamOutputSettings supportsEncoderType:v13])
+  if ([MIOProResStreamOutputSettings supportsEncoderType:intValue])
   {
     if (+[MIOLog debugEnabled])
     {
@@ -50,11 +50,11 @@ LABEL_29:
 
     v15 = off_279847370;
 LABEL_30:
-    v16 = [(__objc2_class *)*v15 outputSettingsWithConfig:v11 formatDescription:a4 defaultFrameRate:v8 preferEncoderConfig:v7 enableAVEHighPerformanceProfile:a5];
+    v16 = [(__objc2_class *)*v15 outputSettingsWithConfig:configCopy formatDescription:description defaultFrameRate:encoderConfigCopy preferEncoderConfig:profileCopy enableAVEHighPerformanceProfile:rate];
     goto LABEL_31;
   }
 
-  if ([MIOSlimStreamOutputSettings supportsEncoderType:v13])
+  if ([MIOSlimStreamOutputSettings supportsEncoderType:intValue])
   {
     if (+[MIOLog debugEnabled])
     {
@@ -73,7 +73,7 @@ LABEL_30:
     goto LABEL_30;
   }
 
-  if ([MIOYzipStreamOutputSettings supportsEncoderType:v13])
+  if ([MIOYzipStreamOutputSettings supportsEncoderType:intValue])
   {
     if (!+[MIOLog debugEnabled])
     {
@@ -92,7 +92,7 @@ LABEL_30:
     goto LABEL_29;
   }
 
-  if ([MIOJPEGStreamOutputSettings supportsEncoderType:v13])
+  if ([MIOJPEGStreamOutputSettings supportsEncoderType:intValue])
   {
     if (!+[MIOLog debugEnabled])
     {
@@ -111,19 +111,19 @@ LABEL_30:
     goto LABEL_29;
   }
 
-  if ([MIOH264StreamOutputSettings supportsEncoderType:v13])
+  if ([MIOH264StreamOutputSettings supportsEncoderType:intValue])
   {
     v15 = off_279847310;
     goto LABEL_30;
   }
 
-  if ([MIOHEVCAlphaStreamOutputSettings supportsEncoderType:v13])
+  if ([MIOHEVCAlphaStreamOutputSettings supportsEncoderType:intValue])
   {
     v15 = off_279847318;
     goto LABEL_30;
   }
 
-  if ([MIOHEVCStreamOutputSettings supportsEncoderType:v13])
+  if ([MIOHEVCStreamOutputSettings supportsEncoderType:intValue])
   {
     v15 = off_279847320;
     goto LABEL_30;

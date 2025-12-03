@@ -1,35 +1,35 @@
 @interface PKAppletSubcredentialSharingInvitation
-+ (id)invitationFromShare:(id)a3 entitlement:(id)a4 withCredential:(id)a5 pass:(id)a6;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToInvitation:(id)a3;
-- (BOOL)isSameInvitationAsInvitation:(id)a3;
++ (id)invitationFromShare:(id)share entitlement:(id)entitlement withCredential:(id)credential pass:(id)pass;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToInvitation:(id)invitation;
+- (BOOL)isSameInvitationAsInvitation:(id)invitation;
 - (BOOL)isThirdPartyCrossPlatformInvitation;
 - (NSString)manufacturerIdentifier;
-- (PKAppletSubcredentialSharingInvitation)initWithCoder:(id)a3;
-- (PKAppletSubcredentialSharingInvitation)initWithCrossPlatformInvitation:(id)a3;
-- (PKAppletSubcredentialSharingInvitation)initWithIdentifier:(id)a3 sharingSessionIdentifier:(id)a4 originatorIDSHandle:(id)a5 invitationData:(id)a6;
-- (PKAppletSubcredentialSharingInvitation)initWithPartnerIdentifier:(id)a3 brandIdentifier:(id)a4 pairedReaderIdentifier:(id)a5 recipientName:(id)a6 entitlement:(unint64_t)a7 supportedRadioTechnologies:(unint64_t)a8;
+- (PKAppletSubcredentialSharingInvitation)initWithCoder:(id)coder;
+- (PKAppletSubcredentialSharingInvitation)initWithCrossPlatformInvitation:(id)invitation;
+- (PKAppletSubcredentialSharingInvitation)initWithIdentifier:(id)identifier sharingSessionIdentifier:(id)sessionIdentifier originatorIDSHandle:(id)handle invitationData:(id)data;
+- (PKAppletSubcredentialSharingInvitation)initWithPartnerIdentifier:(id)identifier brandIdentifier:(id)brandIdentifier pairedReaderIdentifier:(id)readerIdentifier recipientName:(id)name entitlement:(unint64_t)entitlement supportedRadioTechnologies:(unint64_t)technologies;
 - (id)addCarKeyPassConfiguration;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dataRepresentation;
 - (id)description;
 - (id)invitationRequestRepresentation;
 - (id)sharingConfigurationRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKAppletSubcredentialSharingInvitation
 
-- (PKAppletSubcredentialSharingInvitation)initWithPartnerIdentifier:(id)a3 brandIdentifier:(id)a4 pairedReaderIdentifier:(id)a5 recipientName:(id)a6 entitlement:(unint64_t)a7 supportedRadioTechnologies:(unint64_t)a8
+- (PKAppletSubcredentialSharingInvitation)initWithPartnerIdentifier:(id)identifier brandIdentifier:(id)brandIdentifier pairedReaderIdentifier:(id)readerIdentifier recipientName:(id)name entitlement:(unint64_t)entitlement supportedRadioTechnologies:(unint64_t)technologies
 {
   v30 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = v17;
-  if (v14 && v16 && v17)
+  identifierCopy = identifier;
+  brandIdentifierCopy = brandIdentifier;
+  readerIdentifierCopy = readerIdentifier;
+  nameCopy = name;
+  v18 = nameCopy;
+  if (identifierCopy && readerIdentifierCopy && nameCopy)
   {
     v27.receiver = self;
     v27.super_class = PKAppletSubcredentialSharingInvitation;
@@ -37,17 +37,17 @@
     v20 = v19;
     if (v19)
     {
-      objc_storeStrong(&v19->_partnerIdentifier, a3);
-      objc_storeStrong(&v20->_brandIdentifier, a4);
-      objc_storeStrong(&v20->_pairedReaderIdentifier, a5);
-      objc_storeStrong(&v20->_recipientName, a6);
-      v20->_entitlement = a7;
-      v20->_supportedRadioTechnologies = a8;
+      objc_storeStrong(&v19->_partnerIdentifier, identifier);
+      objc_storeStrong(&v20->_brandIdentifier, brandIdentifier);
+      objc_storeStrong(&v20->_pairedReaderIdentifier, readerIdentifier);
+      objc_storeStrong(&v20->_recipientName, name);
+      v20->_entitlement = entitlement;
+      v20->_supportedRadioTechnologies = technologies;
       v20->_type = 0;
     }
 
     self = v20;
-    v21 = self;
+    selfCopy = self;
   }
 
   else
@@ -61,20 +61,20 @@
       _os_log_impl(&dword_1AD337000, v22, OS_LOG_TYPE_DEFAULT, "Invalid parameters in %@", buf, 0xCu);
     }
 
-    v21 = 0;
+    selfCopy = 0;
   }
 
-  return v21;
+  return selfCopy;
 }
 
-- (PKAppletSubcredentialSharingInvitation)initWithIdentifier:(id)a3 sharingSessionIdentifier:(id)a4 originatorIDSHandle:(id)a5 invitationData:(id)a6
+- (PKAppletSubcredentialSharingInvitation)initWithIdentifier:(id)identifier sharingSessionIdentifier:(id)sessionIdentifier originatorIDSHandle:(id)handle invitationData:(id)data
 {
   v43 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  if (!v12)
+  identifierCopy = identifier;
+  sessionIdentifierCopy = sessionIdentifier;
+  handleCopy = handle;
+  dataCopy = data;
+  if (!identifierCopy)
   {
     v16 = PKLogFacilityTypeGetObject(0x17uLL);
     if (os_log_type_enabled(&v16->super.super, OS_LOG_TYPE_DEFAULT))
@@ -88,11 +88,11 @@
     }
 
 LABEL_27:
-    v38 = 0;
+    selfCopy = 0;
     goto LABEL_28;
   }
 
-  v16 = [[PKProtobufAppletSubcredentialSharingInvitation alloc] initWithData:v15];
+  v16 = [[PKProtobufAppletSubcredentialSharingInvitation alloc] initWithData:dataCopy];
   if (!v16)
   {
     goto LABEL_27;
@@ -104,32 +104,32 @@ LABEL_27:
   self = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_sharingSessionIdentifier, a4);
-    objc_storeStrong(&self->_originatorIDSHandle, a5);
+    objc_storeStrong(&v17->_sharingSessionIdentifier, sessionIdentifier);
+    objc_storeStrong(&self->_originatorIDSHandle, handle);
     [(PKProtobufAppletSubcredentialSharingInvitation *)v16 version];
-    objc_storeStrong(&self->_identifier, a3);
-    v18 = [(PKProtobufAppletSubcredentialSharingInvitation *)v16 partnerIdentifier];
+    objc_storeStrong(&self->_identifier, identifier);
+    partnerIdentifier = [(PKProtobufAppletSubcredentialSharingInvitation *)v16 partnerIdentifier];
     partnerIdentifier = self->_partnerIdentifier;
-    self->_partnerIdentifier = v18;
+    self->_partnerIdentifier = partnerIdentifier;
 
-    v20 = [(PKProtobufAppletSubcredentialSharingInvitation *)v16 brandIdentifier];
+    brandIdentifier = [(PKProtobufAppletSubcredentialSharingInvitation *)v16 brandIdentifier];
     brandIdentifier = self->_brandIdentifier;
-    self->_brandIdentifier = v20;
+    self->_brandIdentifier = brandIdentifier;
 
-    v22 = [(PKProtobufAppletSubcredentialSharingInvitation *)v16 pairedReaderIdentifier];
+    pairedReaderIdentifier = [(PKProtobufAppletSubcredentialSharingInvitation *)v16 pairedReaderIdentifier];
     pairedReaderIdentifier = self->_pairedReaderIdentifier;
-    self->_pairedReaderIdentifier = v22;
+    self->_pairedReaderIdentifier = pairedReaderIdentifier;
 
-    v24 = [(PKProtobufAppletSubcredentialSharingInvitation *)v16 recipientName];
+    recipientName = [(PKProtobufAppletSubcredentialSharingInvitation *)v16 recipientName];
     recipientName = self->_recipientName;
-    self->_recipientName = v24;
+    self->_recipientName = recipientName;
 
     if ([(PKProtobufAppletSubcredentialSharingInvitation *)v16 hasSharingSessionIdentifier])
     {
-      v26 = [(PKProtobufAppletSubcredentialSharingInvitation *)v16 sharingSessionIdentifier];
-      if ([v26 length] == 16)
+      sharingSessionIdentifier = [(PKProtobufAppletSubcredentialSharingInvitation *)v16 sharingSessionIdentifier];
+      if ([sharingSessionIdentifier length] == 16)
       {
-        v27 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDBytes:{objc_msgSend(v26, "bytes")}];
+        v27 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDBytes:{objc_msgSend(sharingSessionIdentifier, "bytes")}];
         sharingSessionIdentifier = self->_sharingSessionIdentifier;
         self->_sharingSessionIdentifier = v27;
       }
@@ -147,25 +147,25 @@ LABEL_27:
 
     self->_entitlement = [(PKProtobufAppletSubcredentialSharingInvitation *)v16 entitlement];
     self->_forWatch = [(PKProtobufAppletSubcredentialSharingInvitation *)v16 deviceType]== 1;
-    v30 = [(PKProtobufAppletSubcredentialSharingInvitation *)v16 issuer];
+    issuer = [(PKProtobufAppletSubcredentialSharingInvitation *)v16 issuer];
     issuer = self->_issuer;
-    self->_issuer = v30;
+    self->_issuer = issuer;
 
-    v32 = [(PKProtobufAppletSubcredentialSharingInvitation *)v16 deviceModel];
+    deviceModel = [(PKProtobufAppletSubcredentialSharingInvitation *)v16 deviceModel];
     deviceModel = self->_deviceModel;
-    self->_deviceModel = v32;
+    self->_deviceModel = deviceModel;
 
     if ([(PKProtobufAppletSubcredentialSharingInvitation *)v16 supportedRadioTechnologies])
     {
-      v34 = [(PKProtobufAppletSubcredentialSharingInvitation *)v16 supportedRadioTechnologies];
+      supportedRadioTechnologies = [(PKProtobufAppletSubcredentialSharingInvitation *)v16 supportedRadioTechnologies];
     }
 
     else
     {
-      v34 = 1;
+      supportedRadioTechnologies = 1;
     }
 
-    self->_supportedRadioTechnologies = v34;
+    self->_supportedRadioTechnologies = supportedRadioTechnologies;
     if (self->_partnerIdentifier && self->_pairedReaderIdentifier && self->_issuer && self->_deviceModel)
     {
       self->_type = 0;
@@ -191,24 +191,24 @@ LABEL_26:
 
 LABEL_22:
   self = self;
-  v38 = self;
+  selfCopy = self;
 LABEL_28:
 
-  return v38;
+  return selfCopy;
 }
 
-+ (id)invitationFromShare:(id)a3 entitlement:(id)a4 withCredential:(id)a5 pass:(id)a6
++ (id)invitationFromShare:(id)share entitlement:(id)entitlement withCredential:(id)credential pass:(id)pass
 {
   v42 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [v12 partnerIdentifier];
-  v15 = [v12 pairedReaderIdentifier];
-  v16 = [v10 recipientNickname];
-  v17 = v16;
-  if (!v14)
+  shareCopy = share;
+  entitlementCopy = entitlement;
+  credentialCopy = credential;
+  passCopy = pass;
+  partnerIdentifier = [credentialCopy partnerIdentifier];
+  pairedReaderIdentifier = [credentialCopy pairedReaderIdentifier];
+  recipientNickname = [shareCopy recipientNickname];
+  v17 = recipientNickname;
+  if (!partnerIdentifier)
   {
     v33 = PKLogFacilityTypeGetObject(0x17uLL);
     if (!os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
@@ -217,14 +217,14 @@ LABEL_28:
     }
 
     *buf = 138412290;
-    v41 = v10;
+    v41 = shareCopy;
     v34 = "Invalid state of credential (%@) to create invitation from: missing partnerIdentifier";
 LABEL_19:
     _os_log_impl(&dword_1AD337000, v33, OS_LOG_TYPE_DEFAULT, v34, buf, 0xCu);
     goto LABEL_20;
   }
 
-  if (!v15)
+  if (!pairedReaderIdentifier)
   {
     v33 = PKLogFacilityTypeGetObject(0x17uLL);
     if (!os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
@@ -233,12 +233,12 @@ LABEL_19:
     }
 
     *buf = 138412290;
-    v41 = v10;
+    v41 = shareCopy;
     v34 = "Invalid state of credential (%@) to create invitation from: missing pairedReaderIdentifier";
     goto LABEL_19;
   }
 
-  if (!v16)
+  if (!recipientNickname)
   {
     v33 = PKLogFacilityTypeGetObject(0x17uLL);
     if (!os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
@@ -247,18 +247,18 @@ LABEL_19:
     }
 
     *buf = 138412290;
-    v41 = v10;
+    v41 = shareCopy;
     v34 = "Invalid state of shared credential (%@) to create invitation from: missing recipientName";
     goto LABEL_19;
   }
 
-  if (!v11)
+  if (!entitlementCopy)
   {
     v33 = PKLogFacilityTypeGetObject(0x17uLL);
     if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v41 = v10;
+      v41 = shareCopy;
       v34 = "Invalid state of shared credential (%@) to create invitation from: missing entitlement";
       goto LABEL_19;
     }
@@ -269,23 +269,23 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  v18 = [a1 alloc];
-  v19 = [v12 brandIdentifier];
-  v39 = v11;
-  v20 = [v11 value];
-  v21 = [v18 initWithPartnerIdentifier:v14 brandIdentifier:v19 pairedReaderIdentifier:v15 recipientName:v17 entitlement:objc_msgSend(v20 supportedRadioTechnologies:{"unsignedIntegerValue"), objc_msgSend(v12, "supportedRadioTechnologies")}];
+  v18 = [self alloc];
+  brandIdentifier = [credentialCopy brandIdentifier];
+  v39 = entitlementCopy;
+  value = [entitlementCopy value];
+  v21 = [v18 initWithPartnerIdentifier:partnerIdentifier brandIdentifier:brandIdentifier pairedReaderIdentifier:pairedReaderIdentifier recipientName:v17 entitlement:objc_msgSend(value supportedRadioTechnologies:{"unsignedIntegerValue"), objc_msgSend(credentialCopy, "supportedRadioTechnologies")}];
 
-  v22 = [v10 uuidIdentifier];
-  [v21 setSharingSessionIdentifier:v22];
+  uuidIdentifier = [shareCopy uuidIdentifier];
+  [v21 setSharingSessionIdentifier:uuidIdentifier];
 
-  v23 = [v13 organizationName];
-  v24 = [v13 localizedDescription];
-  v25 = v24;
-  if (v24)
+  organizationName = [passCopy organizationName];
+  localizedDescription = [passCopy localizedDescription];
+  v25 = localizedDescription;
+  if (localizedDescription)
   {
-    v26 = [v24 length];
-    v27 = [v23 length];
-    v28 = v23;
+    v26 = [localizedDescription length];
+    v27 = [organizationName length];
+    v28 = organizationName;
     if (v26 > v27 + 1)
     {
       v29 = v27;
@@ -293,8 +293,8 @@ LABEL_20:
       v38 = v28;
       if ([v25 hasPrefix:?])
       {
-        v30 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-        v31 = [v30 characterIsMember:{objc_msgSend(v25, "characterAtIndex:", v29)}];
+        whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+        v31 = [whitespaceCharacterSet characterIsMember:{objc_msgSend(v25, "characterAtIndex:", v29)}];
 
         if (v31)
         {
@@ -304,25 +304,25 @@ LABEL_20:
         }
       }
 
-      v23 = v38;
+      organizationName = v38;
     }
   }
 
-  v36 = [v13 organizationName];
-  [v21 setIssuer:v36];
+  organizationName2 = [passCopy organizationName];
+  [v21 setIssuer:organizationName2];
 
   [v21 setDeviceModel:v25];
   v21[13] = 0;
 
-  v11 = v39;
+  entitlementCopy = v39;
 LABEL_21:
 
   return v21;
 }
 
-- (PKAppletSubcredentialSharingInvitation)initWithCrossPlatformInvitation:(id)a3
+- (PKAppletSubcredentialSharingInvitation)initWithCrossPlatformInvitation:(id)invitation
 {
-  v5 = a3;
+  invitationCopy = invitation;
   v24.receiver = self;
   v24.super_class = PKAppletSubcredentialSharingInvitation;
   v6 = [(PKAppletSubcredentialSharingInvitation *)&v24 init];
@@ -330,40 +330,40 @@ LABEL_21:
   if (v6)
   {
     v6->_type = 1;
-    v8 = [v5 shareIdentifier];
+    shareIdentifier = [invitationCopy shareIdentifier];
     identifier = v7->_identifier;
-    v7->_identifier = v8;
+    v7->_identifier = shareIdentifier;
 
-    v10 = [v5 vehicleModel];
+    vehicleModel = [invitationCopy vehicleModel];
     deviceModel = v7->_deviceModel;
-    v7->_deviceModel = v10;
+    v7->_deviceModel = vehicleModel;
 
-    v12 = [v5 vehicleIssuer];
+    vehicleIssuer = [invitationCopy vehicleIssuer];
     issuer = v7->_issuer;
-    v7->_issuer = v12;
+    v7->_issuer = vehicleIssuer;
 
-    v7->_supportedRadioTechnologies = [v5 radioTechnology];
-    v14 = [v5 readerIdentifier];
+    v7->_supportedRadioTechnologies = [invitationCopy radioTechnology];
+    readerIdentifier = [invitationCopy readerIdentifier];
     pairedReaderIdentifier = v7->_pairedReaderIdentifier;
-    v7->_pairedReaderIdentifier = v14;
+    v7->_pairedReaderIdentifier = readerIdentifier;
 
-    v16 = [v5 brandIdentifier];
+    brandIdentifier = [invitationCopy brandIdentifier];
     brandIdentifier = v7->_brandIdentifier;
-    v7->_brandIdentifier = v16;
+    v7->_brandIdentifier = brandIdentifier;
 
-    v18 = [v5 partnerIdentifier];
+    partnerIdentifier = [invitationCopy partnerIdentifier];
     partnerIdentifier = v7->_partnerIdentifier;
-    v7->_partnerIdentifier = v18;
+    v7->_partnerIdentifier = partnerIdentifier;
 
-    v20 = [v5 shareSessionIdentifier];
-    if (v20)
+    shareSessionIdentifier = [invitationCopy shareSessionIdentifier];
+    if (shareSessionIdentifier)
     {
-      v21 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:v20];
+      v21 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:shareSessionIdentifier];
       sharingSessionIdentifier = v7->_sharingSessionIdentifier;
       v7->_sharingSessionIdentifier = v21;
     }
 
-    objc_storeStrong(&v7->_originalInvitationMessage, a3);
+    objc_storeStrong(&v7->_originalInvitationMessage, invitation);
   }
 
   return v7;
@@ -376,8 +376,8 @@ LABEL_21:
     return 0;
   }
 
-  v2 = [(PKSharingCarKeyInvitation *)self->_originalInvitationMessage proprietaryData];
-  v3 = v2 == 0;
+  proprietaryData = [(PKSharingCarKeyInvitation *)self->_originalInvitationMessage proprietaryData];
+  v3 = proprietaryData == 0;
 
   return v3;
 }
@@ -439,9 +439,9 @@ LABEL_21:
     [(PKProtobufAppletSubcredentialSharingInvitation *)v3 setSupportedRadioTechnologies:?];
   }
 
-  v6 = [(PKProtobufAppletSubcredentialSharingInvitation *)v3 data];
+  data = [(PKProtobufAppletSubcredentialSharingInvitation *)v3 data];
 
-  return v6;
+  return data;
 }
 
 - (id)sharingConfigurationRepresentation
@@ -459,8 +459,8 @@ LABEL_21:
   v4 = objc_alloc(MEMORY[0x1E699A130]);
   entitlement = self->_entitlement;
   recipientName = self->_recipientName;
-  v7 = [(PKAppletSubcredentialSharingInvitation *)self dataRepresentation];
-  v8 = [v4 initWithProfile:entitlement displayName:recipientName metaData:v7 targetDeviceType:v3];
+  dataRepresentation = [(PKAppletSubcredentialSharingInvitation *)self dataRepresentation];
+  v8 = [v4 initWithProfile:entitlement displayName:recipientName metaData:dataRepresentation targetDeviceType:v3];
 
   return v8;
 }
@@ -504,21 +504,21 @@ LABEL_10:
   return v2;
 }
 
-- (BOOL)isSameInvitationAsInvitation:(id)a3
+- (BOOL)isSameInvitationAsInvitation:(id)invitation
 {
-  v4 = a3;
-  v5 = v4;
+  invitationCopy = invitation;
+  v5 = invitationCopy;
   identifier = self->_identifier;
   if (identifier)
   {
-    v7 = [v4 identifier];
-    LOBYTE(v8) = [(NSString *)identifier isEqualToString:v7];
+    identifier = [invitationCopy identifier];
+    LOBYTE(v8) = [(NSString *)identifier isEqualToString:identifier];
   }
 
   else
   {
     pairedReaderIdentifier = self->_pairedReaderIdentifier;
-    if (pairedReaderIdentifier && ([v4 pairedReaderIdentifier], v10 = objc_claimAutoreleasedReturnValue(), v11 = -[NSString isEqualToString:](pairedReaderIdentifier, "isEqualToString:", v10), v10, !v11))
+    if (pairedReaderIdentifier && ([invitationCopy pairedReaderIdentifier], v10 = objc_claimAutoreleasedReturnValue(), v11 = -[NSString isEqualToString:](pairedReaderIdentifier, "isEqualToString:", v10), v10, !v11))
     {
       LOBYTE(v8) = 0;
     }
@@ -541,8 +541,8 @@ LABEL_10:
   v3 = objc_alloc_init(PKAddCarKeyPassConfiguration);
   [(PKAddCarKeyPassConfiguration *)v3 setSupportedRadioTechnologies:self->_supportedRadioTechnologies];
   v4 = self->_brandIdentifier;
-  v5 = [(PKAppletSubcredentialSharingInvitation *)self manufacturerIdentifier];
-  v6 = v5;
+  manufacturerIdentifier = [(PKAppletSubcredentialSharingInvitation *)self manufacturerIdentifier];
+  v6 = manufacturerIdentifier;
   if (v4)
   {
     v7 = v4;
@@ -550,7 +550,7 @@ LABEL_10:
 
   else
   {
-    v7 = v5;
+    v7 = manufacturerIdentifier;
   }
 
   [(PKAddSecureElementPassConfiguration *)v3 setIssuerIdentifier:v7];
@@ -560,37 +560,37 @@ LABEL_10:
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKAppletSubcredentialSharingInvitation *)self isEqualToInvitation:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKAppletSubcredentialSharingInvitation *)self isEqualToInvitation:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToInvitation:(id)a3
+- (BOOL)isEqualToInvitation:(id)invitation
 {
-  v4 = a3;
-  v5 = [(PKAppletSubcredentialSharingInvitation *)self identifier];
-  v6 = [v4 identifier];
+  invitationCopy = invitation;
+  identifier = [(PKAppletSubcredentialSharingInvitation *)self identifier];
+  identifier2 = [invitationCopy identifier];
 
-  if (v5 && v6)
+  if (identifier && identifier2)
   {
-    v7 = [v5 isEqual:v6];
+    v7 = [identifier isEqual:identifier2];
   }
 
   else
   {
-    v7 = v5 == v6;
+    v7 = identifier == identifier2;
   }
 
   return v7;
@@ -598,8 +598,8 @@ LABEL_10:
 
 - (unint64_t)hash
 {
-  v2 = [(PKAppletSubcredentialSharingInvitation *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(PKAppletSubcredentialSharingInvitation *)self identifier];
+  v3 = [identifier hash];
 
   return v3 + 527;
 }
@@ -611,8 +611,8 @@ LABEL_10:
   v5 = NSStringFromClass(v4);
   v6 = [v3 stringWithFormat:@"<%@: %p ", v5, self];;
 
-  v7 = [(PKAppletSubcredentialSharingInvitation *)self identifier];
-  [v6 appendFormat:@"identifier: '%@'; ", v7];
+  identifier = [(PKAppletSubcredentialSharingInvitation *)self identifier];
+  [v6 appendFormat:@"identifier: '%@'; ", identifier];
 
   [v6 appendFormat:@"partner ID: '%@'; ", self->_partnerIdentifier];
   [v6 appendFormat:@"brand ID: '%@'; ", self->_brandIdentifier];
@@ -630,78 +630,78 @@ LABEL_10:
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"identifier"];
-  [v5 encodeObject:self->_partnerIdentifier forKey:@"partnerIdentifier"];
-  [v5 encodeObject:self->_brandIdentifier forKey:@"brandIdentifier"];
-  [v5 encodeObject:self->_pairedReaderIdentifier forKey:@"pairedReaderIdentifier"];
-  [v5 encodeObject:self->_recipientName forKey:@"recipientName"];
-  [v5 encodeObject:self->_sharingSessionIdentifier forKey:@"sharingSessionIdentifier"];
-  [v5 encodeInteger:self->_entitlement forKey:@"entitlement"];
-  [v5 encodeInteger:self->_forWatch forKey:@"forWatch"];
-  [v5 encodeObject:self->_issuer forKey:@"issuer"];
-  [v5 encodeObject:self->_deviceModel forKey:@"deviceModel"];
-  [v5 encodeObject:self->_originatorIDSHandle forKey:@"originatorIDSHandle"];
-  [v5 encodeInteger:self->_supportedRadioTechnologies forKey:@"supportedRadioTechnologies"];
-  [v5 encodeInteger:self->_type forKey:@"type"];
-  [v5 encodeObject:self->_originalInvitationMessage forKey:@"invitationMessageIdentifier"];
-  [v5 encodeObject:self->_activationCode forKey:@"activationCode"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_partnerIdentifier forKey:@"partnerIdentifier"];
+  [coderCopy encodeObject:self->_brandIdentifier forKey:@"brandIdentifier"];
+  [coderCopy encodeObject:self->_pairedReaderIdentifier forKey:@"pairedReaderIdentifier"];
+  [coderCopy encodeObject:self->_recipientName forKey:@"recipientName"];
+  [coderCopy encodeObject:self->_sharingSessionIdentifier forKey:@"sharingSessionIdentifier"];
+  [coderCopy encodeInteger:self->_entitlement forKey:@"entitlement"];
+  [coderCopy encodeInteger:self->_forWatch forKey:@"forWatch"];
+  [coderCopy encodeObject:self->_issuer forKey:@"issuer"];
+  [coderCopy encodeObject:self->_deviceModel forKey:@"deviceModel"];
+  [coderCopy encodeObject:self->_originatorIDSHandle forKey:@"originatorIDSHandle"];
+  [coderCopy encodeInteger:self->_supportedRadioTechnologies forKey:@"supportedRadioTechnologies"];
+  [coderCopy encodeInteger:self->_type forKey:@"type"];
+  [coderCopy encodeObject:self->_originalInvitationMessage forKey:@"invitationMessageIdentifier"];
+  [coderCopy encodeObject:self->_activationCode forKey:@"activationCode"];
 }
 
-- (PKAppletSubcredentialSharingInvitation)initWithCoder:(id)a3
+- (PKAppletSubcredentialSharingInvitation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(PKAppletSubcredentialSharingInvitation *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"partnerIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"partnerIdentifier"];
     partnerIdentifier = v5->_partnerIdentifier;
     v5->_partnerIdentifier = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"brandIdentifier"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"brandIdentifier"];
     brandIdentifier = v5->_brandIdentifier;
     v5->_brandIdentifier = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pairedReaderIdentifier"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pairedReaderIdentifier"];
     pairedReaderIdentifier = v5->_pairedReaderIdentifier;
     v5->_pairedReaderIdentifier = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"recipientName"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"recipientName"];
     recipientName = v5->_recipientName;
     v5->_recipientName = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sharingSessionIdentifier"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sharingSessionIdentifier"];
     sharingSessionIdentifier = v5->_sharingSessionIdentifier;
     v5->_sharingSessionIdentifier = v16;
 
-    v5->_entitlement = [v4 decodeIntegerForKey:@"entitlement"];
-    v5->_forWatch = [v4 decodeIntegerForKey:@"forWatch"] != 0;
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"issuer"];
+    v5->_entitlement = [coderCopy decodeIntegerForKey:@"entitlement"];
+    v5->_forWatch = [coderCopy decodeIntegerForKey:@"forWatch"] != 0;
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"issuer"];
     issuer = v5->_issuer;
     v5->_issuer = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"deviceModel"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"deviceModel"];
     deviceModel = v5->_deviceModel;
     v5->_deviceModel = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"originatorIDSHandle"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"originatorIDSHandle"];
     originatorIDSHandle = v5->_originatorIDSHandle;
     v5->_originatorIDSHandle = v22;
 
-    v5->_supportedRadioTechnologies = [v4 decodeIntegerForKey:@"supportedRadioTechnologies"];
-    v5->_type = [v4 decodeIntegerForKey:@"type"];
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"invitationMessageIdentifier"];
+    v5->_supportedRadioTechnologies = [coderCopy decodeIntegerForKey:@"supportedRadioTechnologies"];
+    v5->_type = [coderCopy decodeIntegerForKey:@"type"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"invitationMessageIdentifier"];
     originalInvitationMessage = v5->_originalInvitationMessage;
     v5->_originalInvitationMessage = v24;
 
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"activationCode"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"activationCode"];
     activationCode = v5->_activationCode;
     v5->_activationCode = v26;
   }
@@ -709,7 +709,7 @@ LABEL_10:
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   [v4 setIdentifier:self->_identifier];

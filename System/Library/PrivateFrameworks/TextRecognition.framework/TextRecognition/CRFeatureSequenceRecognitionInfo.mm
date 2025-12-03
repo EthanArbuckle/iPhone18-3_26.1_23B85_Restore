@@ -1,5 +1,5 @@
 @interface CRFeatureSequenceRecognitionInfo
-+ (id)infoForRegion:(double)a3 scale:(double)a4 bounds:(double)a5 featureImageSize:(double)a6 rotatedROI:(double)a7;
++ (id)infoForRegion:(double)region scale:(double)scale bounds:(double)bounds featureImageSize:(double)size rotatedROI:(double)i;
 - (double)bounds;
 - (double)featureImageSize;
 - (double)orientationConfidence;
@@ -14,7 +14,7 @@
 
 @implementation CRFeatureSequenceRecognitionInfo
 
-+ (id)infoForRegion:(double)a3 scale:(double)a4 bounds:(double)a5 featureImageSize:(double)a6 rotatedROI:(double)a7
++ (id)infoForRegion:(double)region scale:(double)scale bounds:(double)bounds featureImageSize:(double)size rotatedROI:(double)i
 {
   v27 = a9;
   objc_opt_self();
@@ -24,19 +24,19 @@
   {
     objc_storeStrong((v28 + 16), a9);
 
-    *(v29 + 8) = a1;
+    *(v29 + 8) = self;
     src = a2;
-    v36 = a3;
-    v37 = a4;
-    v38 = a5;
+    iCopy = region;
+    scaleCopy = scale;
+    boundsCopy = bounds;
     objc_copyStruct((v29 + 104), &src, 32, 1, 0);
-    src = a6;
-    v36 = a7;
+    src = size;
+    iCopy = i;
     objc_copyStruct((v29 + 88), &src, 16, 1, 0);
     src = a11;
-    v36 = a12;
-    v37 = a13;
-    v38 = a14;
+    iCopy = a12;
+    scaleCopy = a13;
+    boundsCopy = a14;
     objc_copyStruct((v29 + 136), &src, 32, 1, 0);
     *(v29 + 24) = 0;
     objc_setProperty_atomic(v29, v30, 0, 40);
@@ -55,34 +55,34 @@
 
 - (double)bounds
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  objc_copyStruct(&v2, (a1 + 104), 32, 1, 0);
+  objc_copyStruct(&v2, (self + 104), 32, 1, 0);
   return v2;
 }
 
 - (double)featureImageSize
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  objc_copyStruct(&v2, (a1 + 88), 16, 1, 0);
+  objc_copyStruct(&v2, (self + 88), 16, 1, 0);
   return v2;
 }
 
 - (double)rotatedROI
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  objc_copyStruct(&v2, (a1 + 136), 32, 1, 0);
+  objc_copyStruct(&v2, (self + 136), 32, 1, 0);
   return v2;
 }
 
@@ -98,9 +98,9 @@
 
 - (double)orientationConfidence
 {
-  if (a1)
+  if (self)
   {
-    return *(a1 + 32);
+    return *(self + 32);
   }
 
   else

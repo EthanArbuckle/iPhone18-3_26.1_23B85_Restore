@@ -1,24 +1,24 @@
 @interface ATXHeroAppBlendingUpdater
 + (id)clientModelForHeroAppPredictions;
 + (id)clientModelSpecForHeroAppPredictions;
-+ (id)nonBlacklistedPredictionsFrom:(id)a3;
-+ (void)updateBlendingLayerWithHeroAppPredictions:(id)a3 currentLocation:(id)a4;
++ (id)nonBlacklistedPredictionsFrom:(id)from;
++ (void)updateBlendingLayerWithHeroAppPredictions:(id)predictions currentLocation:(id)location;
 @end
 
 @implementation ATXHeroAppBlendingUpdater
 
-+ (void)updateBlendingLayerWithHeroAppPredictions:(id)a3 currentLocation:(id)a4
++ (void)updateBlendingLayerWithHeroAppPredictions:(id)predictions currentLocation:(id)location
 {
-  v6 = a4;
-  v7 = [a1 nonBlacklistedPredictionsFrom:a3];
-  v8 = [a1 clientModelSpecForHeroAppPredictions];
-  v9 = [ATXProactiveSuggestionBuilder proactiveSuggestionsForAppsWithHeroAppPredictions:v7 clientModelSpec:v8];
-  v10 = [a1 clientModelForHeroAppPredictions];
-  if (v6)
+  locationCopy = location;
+  v7 = [self nonBlacklistedPredictionsFrom:predictions];
+  clientModelSpecForHeroAppPredictions = [self clientModelSpecForHeroAppPredictions];
+  v9 = [ATXProactiveSuggestionBuilder proactiveSuggestionsForAppsWithHeroAppPredictions:v7 clientModelSpec:clientModelSpecForHeroAppPredictions];
+  clientModelForHeroAppPredictions = [self clientModelForHeroAppPredictions];
+  if (locationCopy)
   {
     v11 = objc_autoreleasePoolPush();
     v15 = 0;
-    v12 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v6 requiringSecureCoding:1 error:&v15];
+    v12 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:locationCopy requiringSecureCoding:1 error:&v15];
     v13 = v15;
     objc_autoreleasePoolPop(v11);
     if (v13)
@@ -36,7 +36,7 @@
     v12 = 0;
   }
 
-  [v10 updateSuggestions:v9 feedbackMetadata:v12];
+  [clientModelForHeroAppPredictions updateSuggestions:v9 feedbackMetadata:v12];
   [ATXHeroSpotlightPOIBlendingUpdater updateBlendingLayerWithHeroAppPredictions:v7];
 }
 
@@ -48,19 +48,19 @@
   return v3;
 }
 
-+ (id)nonBlacklistedPredictionsFrom:(id)a3
++ (id)nonBlacklistedPredictionsFrom:(id)from
 {
-  v3 = a3;
+  fromCopy = from;
   v4 = +[ATXAppPredictionBlacklist sharedInstance];
-  v5 = [v4 disabledBundleIds];
+  disabledBundleIds = [v4 disabledBundleIds];
 
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __59__ATXHeroAppBlendingUpdater_nonBlacklistedPredictionsFrom___block_invoke;
   v9[3] = &unk_278598D10;
-  v10 = v5;
-  v6 = v5;
-  v7 = [v3 _pas_filteredArrayWithTest:v9];
+  v10 = disabledBundleIds;
+  v6 = disabledBundleIds;
+  v7 = [fromCopy _pas_filteredArrayWithTest:v9];
 
   return v7;
 }
@@ -94,8 +94,8 @@ uint64_t __59__ATXHeroAppBlendingUpdater_nonBlacklistedPredictionsFrom___block_i
   v2 = [MEMORY[0x277D42070] clientModelIdFromClientModelType:23];
   v3 = objc_alloc(MEMORY[0x277D42070]);
   v4 = +[ATXClientModelSuggestionReceiver sharedInstance];
-  v5 = [v4 blendingLayerServer];
-  v6 = [v3 initWithClientModelId:v2 blendingLayerServer:v5];
+  blendingLayerServer = [v4 blendingLayerServer];
+  v6 = [v3 initWithClientModelId:v2 blendingLayerServer:blendingLayerServer];
 
   return v6;
 }

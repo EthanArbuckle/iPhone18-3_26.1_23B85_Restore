@@ -1,21 +1,21 @@
 @interface PXDemoViewWidget
 - (BOOL)hasContentForCurrentInput;
-- (CGRect)_contentViewFrameForSize:(CGSize)a3;
+- (CGRect)_contentViewFrameForSize:(CGSize)size;
 - (CGSize)_contentSize;
 - (NSString)localizedDisclosureTitle;
 - (PXDemoViewWidget)init;
 - (PXWidgetDelegate)widgetDelegate;
 - (UIView)contentView;
-- (double)preferredContentHeightForWidth:(double)a3;
-- (void)_handleLongPressGestureRecognizer:(id)a3;
-- (void)_handleTapGestureRecognizer:(id)a3;
+- (double)preferredContentHeightForWidth:(double)width;
+- (void)_handleLongPressGestureRecognizer:(id)recognizer;
+- (void)_handleTapGestureRecognizer:(id)recognizer;
 - (void)_loadViews;
-- (void)_setAnimationCount:(int64_t)a3;
-- (void)_setContentViewAnchoringType:(int64_t)a3;
-- (void)_setDidLoadContent:(BOOL)a3;
+- (void)_setAnimationCount:(int64_t)count;
+- (void)_setContentViewAnchoringType:(int64_t)type;
+- (void)_setDidLoadContent:(BOOL)content;
 - (void)_updateContentViewColor;
-- (void)contentViewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
-- (void)setSpec:(id)a3;
+- (void)contentViewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)setSpec:(id)spec;
 - (void)userDidSelectDisclosureControl;
 @end
 
@@ -49,14 +49,14 @@
 
   self->_height = self->_height + v4;
   [(PXDemoViewWidget *)self _setContentViewAnchoringType:1];
-  v5 = [(PXDemoViewWidget *)self widgetDelegate];
+  widgetDelegate = [(PXDemoViewWidget *)self widgetDelegate];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __50__PXDemoViewWidget_userDidSelectDisclosureControl__block_invoke;
   v7[3] = &unk_1E774C620;
-  v8 = v5;
-  v9 = self;
-  v6 = v5;
+  v8 = widgetDelegate;
+  selfCopy = self;
+  v6 = widgetDelegate;
   [v6 widget:self animateChanges:v7 withAnimationOptions:0];
 }
 
@@ -82,11 +82,11 @@ uint64_t __50__PXDemoViewWidget_userDidSelectDisclosureControl__block_invoke(uin
   }
 }
 
-- (void)contentViewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)contentViewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
   [(PXDemoViewWidget *)self _contentViewFrameForSize:width, height];
   v9 = v8;
   v11 = v10;
@@ -107,7 +107,7 @@ uint64_t __50__PXDemoViewWidget_userDidSelectDisclosureControl__block_invoke(uin
   v16[2] = __78__PXDemoViewWidget_contentViewWillTransitionToSize_withTransitionCoordinator___block_invoke_2;
   v16[3] = &unk_1E774C648;
   v16[4] = self;
-  [v7 animateAlongsideTransition:v17 completion:v16];
+  [coordinatorCopy animateAlongsideTransition:v17 completion:v16];
 }
 
 void __78__PXDemoViewWidget_contentViewWillTransitionToSize_withTransitionCoordinator___block_invoke(uint64_t a1)
@@ -131,10 +131,10 @@ uint64_t __78__PXDemoViewWidget_contentViewWillTransitionToSize_withTransitionCo
   return [(PXDemoViewWidget *)self _containerView];
 }
 
-- (double)preferredContentHeightForWidth:(double)a3
+- (double)preferredContentHeightForWidth:(double)width
 {
-  v4 = [(PXDemoViewWidget *)self spec];
-  [v4 contentGuideInsets];
+  spec = [(PXDemoViewWidget *)self spec];
+  [spec contentGuideInsets];
   v6 = v5;
   v8 = v7;
 
@@ -144,50 +144,50 @@ uint64_t __78__PXDemoViewWidget_contentViewWillTransitionToSize_withTransitionCo
 - (BOOL)hasContentForCurrentInput
 {
   v2 = +[PXPhotosDetailsSettings sharedInstance];
-  v3 = [v2 showDemoViewWidget];
+  showDemoViewWidget = [v2 showDemoViewWidget];
 
-  return v3;
+  return showDemoViewWidget;
 }
 
-- (void)setSpec:(id)a3
+- (void)setSpec:(id)spec
 {
-  v5 = a3;
-  if (self->_spec != v5)
+  specCopy = spec;
+  if (self->_spec != specCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_spec, a3);
-    v6 = [(PXDemoViewWidget *)self widgetDelegate];
-    [v6 widgetPreferredContentHeightForWidthDidChange:self];
+    v7 = specCopy;
+    objc_storeStrong(&self->_spec, spec);
+    widgetDelegate = [(PXDemoViewWidget *)self widgetDelegate];
+    [widgetDelegate widgetPreferredContentHeightForWidthDidChange:self];
 
-    v5 = v7;
+    specCopy = v7;
   }
 }
 
-- (void)_setAnimationCount:(int64_t)a3
+- (void)_setAnimationCount:(int64_t)count
 {
-  if (self->__animationCount != a3)
+  if (self->__animationCount != count)
   {
-    self->__animationCount = a3;
+    self->__animationCount = count;
     [(PXDemoViewWidget *)self _updateContentViewColor];
   }
 }
 
-- (void)_setDidLoadContent:(BOOL)a3
+- (void)_setDidLoadContent:(BOOL)content
 {
-  if (self->__didLoadContent != a3)
+  if (self->__didLoadContent != content)
   {
-    self->__didLoadContent = a3;
+    self->__didLoadContent = content;
     [(PXDemoViewWidget *)self _updateContentViewColor];
   }
 }
 
-- (void)_setContentViewAnchoringType:(int64_t)a3
+- (void)_setContentViewAnchoringType:(int64_t)type
 {
-  if (self->_contentViewAnchoringType != a3)
+  if (self->_contentViewAnchoringType != type)
   {
-    self->_contentViewAnchoringType = a3;
-    v5 = [(PXDemoViewWidget *)self widgetDelegate];
-    [v5 widgetInvalidateContentViewAnchoringType:self];
+    self->_contentViewAnchoringType = type;
+    widgetDelegate = [(PXDemoViewWidget *)self widgetDelegate];
+    [widgetDelegate widgetInvalidateContentViewAnchoringType:self];
   }
 }
 
@@ -204,47 +204,47 @@ uint64_t __78__PXDemoViewWidget_contentViewWillTransitionToSize_withTransitionCo
     {
       [MEMORY[0x1E69DC888] purpleColor];
     }
-    v3 = ;
+    yellowColor = ;
   }
 
   else
   {
-    v3 = [MEMORY[0x1E69DC888] yellowColor];
+    yellowColor = [MEMORY[0x1E69DC888] yellowColor];
   }
 
-  v5 = v3;
-  v4 = [(PXDemoViewWidget *)self _contentView];
-  [v4 setBackgroundColor:v5];
+  v5 = yellowColor;
+  _contentView = [(PXDemoViewWidget *)self _contentView];
+  [_contentView setBackgroundColor:v5];
 }
 
-- (CGRect)_contentViewFrameForSize:(CGSize)a3
+- (CGRect)_contentViewFrameForSize:(CGSize)size
 {
-  v4 = [(PXDemoViewWidget *)self spec];
-  [v4 contentGuideInsets];
+  spec = [(PXDemoViewWidget *)self spec];
+  [spec contentGuideInsets];
 
-  v5 = [(PXDemoViewWidget *)self _containerView];
-  [v5 bounds];
+  _containerView = [(PXDemoViewWidget *)self _containerView];
+  [_containerView bounds];
 
   PXEdgeInsetsInsetRect();
 }
 
-- (void)_handleLongPressGestureRecognizer:(id)a3
+- (void)_handleLongPressGestureRecognizer:(id)recognizer
 {
-  if ([a3 state] == 3)
+  if ([recognizer state] == 3)
   {
     self->_isExpanded ^= 1u;
-    v4 = [(PXDemoViewWidget *)self widgetDelegate];
-    [v4 widgetLocalizedDisclosureTitleDidChange:self];
+    widgetDelegate = [(PXDemoViewWidget *)self widgetDelegate];
+    [widgetDelegate widgetLocalizedDisclosureTitleDidChange:self];
   }
 }
 
-- (void)_handleTapGestureRecognizer:(id)a3
+- (void)_handleTapGestureRecognizer:(id)recognizer
 {
-  if ([a3 state] == 3)
+  if ([recognizer state] == 3)
   {
     v5 = objc_alloc_init(PXDemoViewWidgetUIViewController);
-    v4 = [(PXDemoViewWidget *)self widgetDelegate];
-    [v4 widget:self transitionToViewController:v5 withTransitionType:1];
+    widgetDelegate = [(PXDemoViewWidget *)self widgetDelegate];
+    [widgetDelegate widget:self transitionToViewController:v5 withTransitionType:1];
   }
 }
 

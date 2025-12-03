@@ -2,9 +2,9 @@
 + (id)cloudConfigSkipKey;
 - (BFFFlowItemDelegate)delegate;
 - (BuddyWelcomeController)init;
-- (id)createLinkButtonWithTitle:(id)a3 action:(SEL)a4;
-- (void)addBoldButton:(id)a3 action:(SEL)a4;
-- (void)addLinkButton:(id)a3 action:(SEL)a4;
+- (id)createLinkButtonWithTitle:(id)title action:(SEL)action;
+- (void)addBoldButton:(id)button action:(SEL)action;
+- (void)addLinkButton:(id)button action:(SEL)action;
 @end
 
 @implementation BuddyWelcomeController
@@ -16,49 +16,49 @@
   return location[1];
 }
 
-- (id)createLinkButtonWithTitle:(id)a3 action:(SEL)a4
+- (id)createLinkButtonWithTitle:(id)title action:(SEL)action
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v7[1] = a4;
+  objc_storeStrong(location, title);
+  v7[1] = action;
   v7[0] = +[OBLinkTrayButton linkButton];
   [v7[0] setTitle:location[0] forState:0];
-  [v7[0] addTarget:v9 action:a4 forControlEvents:64];
+  [v7[0] addTarget:selfCopy action:action forControlEvents:64];
   v5 = v7[0];
   objc_storeStrong(v7, 0);
   objc_storeStrong(location, 0);
   return v5;
 }
 
-- (void)addLinkButton:(id)a3 action:(SEL)a4
+- (void)addLinkButton:(id)button action:(SEL)action
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v6[1] = a4;
-  v6[0] = [(BuddyWelcomeController *)v8 createLinkButtonWithTitle:location[0] action:a4];
-  v5 = [(BuddyWelcomeController *)v8 buttonTray];
-  [v5 addButton:v6[0]];
+  objc_storeStrong(location, button);
+  v6[1] = action;
+  v6[0] = [(BuddyWelcomeController *)selfCopy createLinkButtonWithTitle:location[0] action:action];
+  buttonTray = [(BuddyWelcomeController *)selfCopy buttonTray];
+  [buttonTray addButton:v6[0]];
 
   objc_storeStrong(v6, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)addBoldButton:(id)a3 action:(SEL)a4
+- (void)addBoldButton:(id)button action:(SEL)action
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v6[1] = a4;
+  objc_storeStrong(location, button);
+  v6[1] = action;
   v6[0] = +[OBBoldTrayButton boldButton];
   [v6[0] setTitle:location[0] forState:0];
-  [v6[0] addTarget:v8 action:a4 forControlEvents:64];
-  v5 = [(BuddyWelcomeController *)v8 buttonTray];
-  [v5 addButton:v6[0]];
+  [v6[0] addTarget:selfCopy action:action forControlEvents:64];
+  buttonTray = [(BuddyWelcomeController *)selfCopy buttonTray];
+  [buttonTray addButton:v6[0]];
 
   objc_storeStrong(v6, 0);
   objc_storeStrong(location, 0);
@@ -66,7 +66,7 @@
 
 + (id)cloudConfigSkipKey
 {
-  v7 = a1;
+  selfCopy = self;
   aSelector = a2;
   oslog = _BYLoggingFacility();
   v4 = OS_LOG_TYPE_FAULT;

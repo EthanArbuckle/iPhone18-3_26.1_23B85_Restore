@@ -1,29 +1,29 @@
 @interface DBSDisplayNameLabel
 - (CGSize)intrinsicContentSize;
-- (DBSDisplayNameLabel)initWithFrame:(CGRect)a3;
+- (DBSDisplayNameLabel)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)textMargins;
-- (void)drawTextInRect:(CGRect)a3;
+- (void)drawTextInRect:(CGRect)rect;
 @end
 
 @implementation DBSDisplayNameLabel
 
-- (DBSDisplayNameLabel)initWithFrame:(CGRect)a3
+- (DBSDisplayNameLabel)initWithFrame:(CGRect)frame
 {
   v14.receiver = self;
   v14.super_class = DBSDisplayNameLabel;
-  v3 = [(DBSDisplayNameLabel *)&v14 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(DBSDisplayNameLabel *)&v14 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     [(DBSDisplayNameLabel *)v3 setTextMargins:3.0, 10.0, 3.0, 10.0];
-    v5 = [(DBSDisplayNameLabel *)v4 layer];
-    [v5 setMasksToBounds:1];
+    layer = [(DBSDisplayNameLabel *)v4 layer];
+    [layer setMasksToBounds:1];
 
     v6 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.4];
     [(DBSDisplayNameLabel *)v4 setBackgroundColor:v6];
 
-    v7 = [MEMORY[0x277D75348] whiteColor];
-    [(DBSDisplayNameLabel *)v4 setTextColor:v7];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [(DBSDisplayNameLabel *)v4 setTextColor:whiteColor];
 
     v8 = MEMORY[0x277D74300];
     [MEMORY[0x277D74300] systemFontSize];
@@ -32,8 +32,8 @@
 
     [(DBSDisplayNameLabel *)v4 intrinsicContentSize];
     v11 = v10 * 0.5;
-    v12 = [(DBSDisplayNameLabel *)v4 layer];
-    [v12 setCornerRadius:v11];
+    layer2 = [(DBSDisplayNameLabel *)v4 layer];
+    [layer2 setCornerRadius:v11];
   }
 
   return v4;
@@ -41,9 +41,9 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v3 = [(DBSDisplayNameLabel *)self text];
+  text = [(DBSDisplayNameLabel *)self text];
 
-  if (!v3)
+  if (!text)
   {
     [(DBSDisplayNameLabel *)self setText:@"Sizing"];
   }
@@ -53,7 +53,7 @@
   [(DBSDisplayNameLabel *)&v17 intrinsicContentSize];
   v5 = v4;
   v7 = v6;
-  if (!v3)
+  if (!text)
   {
     [(DBSDisplayNameLabel *)self setText:0];
   }
@@ -72,12 +72,12 @@
   return result;
 }
 
-- (void)drawTextInRect:(CGRect)a3
+- (void)drawTextInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   [(DBSDisplayNameLabel *)self textMargins];
   v12.receiver = self;
   v12.super_class = DBSDisplayNameLabel;

@@ -1,13 +1,13 @@
 @interface PXTitleEditor
 - (PXTitleEditor)init;
 - (id)createAlertController;
-- (void)_handleSuccess:(BOOL)a3;
+- (void)_handleSuccess:(BOOL)success;
 - (void)_updateConfirmAction;
 - (void)_updateExposedProperties;
-- (void)presentFromViewController:(id)a3;
-- (void)setConfirmAction:(id)a3;
-- (void)setSubtitle:(id)a3;
-- (void)setSubtitlePlaceholder:(id)a3;
+- (void)presentFromViewController:(id)controller;
+- (void)setConfirmAction:(id)action;
+- (void)setSubtitle:(id)subtitle;
+- (void)setSubtitlePlaceholder:(id)placeholder;
 @end
 
 @implementation PXTitleEditor
@@ -15,11 +15,11 @@
 - (void)_updateConfirmAction
 {
   [(PXTitleEditor *)self _updateExposedProperties];
-  v3 = [(PXTitleEditor *)self validation];
-  v6 = v3;
-  if (v3)
+  validation = [(PXTitleEditor *)self validation];
+  v6 = validation;
+  if (validation)
   {
-    v4 = (*(v3 + 16))(v3, self);
+    v4 = (*(validation + 16))(validation, self);
   }
 
   else
@@ -27,15 +27,15 @@
     v4 = 1;
   }
 
-  v5 = [(PXTitleEditor *)self confirmAction];
-  [v5 setEnabled:v4];
+  confirmAction = [(PXTitleEditor *)self confirmAction];
+  [confirmAction setEnabled:v4];
 }
 
 - (id)createAlertController
 {
   v3 = MEMORY[0x1E69DC650];
-  v4 = [(PXTitleEditor *)self message];
-  v5 = [v3 alertControllerWithTitle:v4 message:0 preferredStyle:1];
+  message = [(PXTitleEditor *)self message];
+  v5 = [v3 alertControllerWithTitle:message message:0 preferredStyle:1];
 
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -63,24 +63,24 @@
   }
 
   v8 = MEMORY[0x1E69DC648];
-  v9 = [(PXTitleEditor *)self confirmButtonTitle];
+  confirmButtonTitle = [(PXTitleEditor *)self confirmButtonTitle];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __38__PXTitleEditor_createAlertController__block_invoke_4;
   v16[3] = &unk_1E7749600;
   v16[4] = self;
-  v10 = [v8 actionWithTitle:v9 style:0 handler:v16];
+  v10 = [v8 actionWithTitle:confirmButtonTitle style:0 handler:v16];
 
   [v5 addAction:v10];
   [(PXTitleEditor *)self setConfirmAction:v10];
   v11 = MEMORY[0x1E69DC648];
-  v12 = [(PXTitleEditor *)self cancelButtonTitle];
+  cancelButtonTitle = [(PXTitleEditor *)self cancelButtonTitle];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __38__PXTitleEditor_createAlertController__block_invoke_5;
   v15[3] = &unk_1E7749600;
   v15[4] = self;
-  v13 = [v11 actionWithTitle:v12 style:1 handler:v15];
+  v13 = [v11 actionWithTitle:cancelButtonTitle style:1 handler:v15];
   [v5 addAction:v13];
 
   return v5;
@@ -127,56 +127,56 @@ void __38__PXTitleEditor_createAlertController__block_invoke_3(uint64_t a1, void
   [*(a1 + 32) setSubtitleTextField:v7];
 }
 
-- (void)presentFromViewController:(id)a3
+- (void)presentFromViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [(PXTitleEditor *)self createAlertController];
-  [v4 presentViewController:v5 animated:1 completion:0];
+  controllerCopy = controller;
+  createAlertController = [(PXTitleEditor *)self createAlertController];
+  [controllerCopy presentViewController:createAlertController animated:1 completion:0];
 }
 
-- (void)setConfirmAction:(id)a3
+- (void)setConfirmAction:(id)action
 {
-  v5 = a3;
-  if (self->_confirmAction != v5)
+  actionCopy = action;
+  if (self->_confirmAction != actionCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_confirmAction, a3);
+    v6 = actionCopy;
+    objc_storeStrong(&self->_confirmAction, action);
     [(PXTitleEditor *)self _invalidateConfirmAction];
-    v5 = v6;
+    actionCopy = v6;
   }
 }
 
-- (void)_handleSuccess:(BOOL)a3
+- (void)_handleSuccess:(BOOL)success
 {
-  v3 = a3;
+  successCopy = success;
   [(PXTitleEditor *)self _updateExposedProperties];
-  v5 = [(PXTitleEditor *)self completionHandler];
-  v5[2](v5, self, v3);
+  completionHandler = [(PXTitleEditor *)self completionHandler];
+  completionHandler[2](completionHandler, self, successCopy);
 }
 
 - (void)_updateExposedProperties
 {
-  v3 = [(PXTitleEditor *)self titleTextField];
-  v4 = [v3 text];
-  [(PXTitleEditor *)self setTitle:v4];
+  titleTextField = [(PXTitleEditor *)self titleTextField];
+  text = [titleTextField text];
+  [(PXTitleEditor *)self setTitle:text];
 
-  v6 = [(PXTitleEditor *)self subtitleTextField];
-  v5 = [v6 text];
-  [(PXTitleEditor *)self setSubtitle:v5];
+  subtitleTextField = [(PXTitleEditor *)self subtitleTextField];
+  text2 = [subtitleTextField text];
+  [(PXTitleEditor *)self setSubtitle:text2];
 }
 
-- (void)setSubtitlePlaceholder:(id)a3
+- (void)setSubtitlePlaceholder:(id)placeholder
 {
-  v4 = [a3 copy];
+  v4 = [placeholder copy];
   subtitlePlaceholder = self->_subtitlePlaceholder;
   self->_subtitlePlaceholder = v4;
 
   [(PXTitleEditor *)self setIncludesSubtitle:1];
 }
 
-- (void)setSubtitle:(id)a3
+- (void)setSubtitle:(id)subtitle
 {
-  v4 = [a3 copy];
+  v4 = [subtitle copy];
   subtitle = self->_subtitle;
   self->_subtitle = v4;
 

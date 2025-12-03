@@ -1,329 +1,329 @@
 @interface CPSNameViewController
-- (CPSNameViewController)initWithEntity:(id)a3;
+- (CPSNameViewController)initWithEntity:(id)entity;
 - (void)resetLayoutConstraints;
 - (void)setupLayoutConstraints;
 - (void)setupViews;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateViewConstraints;
 - (void)updateViews;
-- (void)updateWithEntity:(id)a3;
+- (void)updateWithEntity:(id)entity;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation CPSNameViewController
 
-- (CPSNameViewController)initWithEntity:(id)a3
+- (CPSNameViewController)initWithEntity:(id)entity
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v12;
-  v12 = 0;
+  objc_storeStrong(location, entity);
+  v3 = selfCopy;
+  selfCopy = 0;
   v10.receiver = v3;
   v10.super_class = CPSNameViewController;
   v9 = [(CPSNameViewController *)&v10 initWithNibName:0 bundle:?];
-  v12 = v9;
-  objc_storeStrong(&v12, v9);
+  selfCopy = v9;
+  objc_storeStrong(&selfCopy, v9);
   if (v9)
   {
-    objc_storeStrong(&v12->_entity, location[0]);
+    objc_storeStrong(&selfCopy->_entity, location[0]);
     v4 = objc_alloc_init(CPSNameStackView);
-    stackView = v12->_stackView;
-    v12->_stackView = v4;
+    stackView = selfCopy->_stackView;
+    selfCopy->_stackView = v4;
     MEMORY[0x277D82BD8](stackView);
-    [(CPSNameStackView *)v12->_stackView setContentCompressionResistancePriority:0 forAxis:?];
+    [(CPSNameStackView *)selfCopy->_stackView setContentCompressionResistancePriority:0 forAxis:?];
     LODWORD(v6) = 1144750080;
-    [(CPSNameStackView *)v12->_stackView setContentCompressionResistancePriority:1 forAxis:v6];
+    [(CPSNameStackView *)selfCopy->_stackView setContentCompressionResistancePriority:1 forAxis:v6];
   }
 
-  v8 = MEMORY[0x277D82BE0](v12);
+  v8 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v12, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v8;
 }
 
-- (void)updateWithEntity:(id)a3
+- (void)updateWithEntity:(id)entity
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(CPSNameViewController *)v4 setEntity:location[0]];
-  [(CPSNameViewController *)v4 updateViews];
-  [(CPSNameViewController *)v4 resetLayoutConstraints];
+  objc_storeStrong(location, entity);
+  [(CPSNameViewController *)selfCopy setEntity:location[0]];
+  [(CPSNameViewController *)selfCopy updateViews];
+  [(CPSNameViewController *)selfCopy resetLayoutConstraints];
   objc_storeStrong(location, 0);
 }
 
 - (void)viewDidLoad
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   v2.receiver = self;
   v2.super_class = CPSNameViewController;
   [(CPSNameViewController *)&v2 viewDidLoad];
-  [(CPSNameViewController *)v4 setupViews];
-  [(CPSNameViewController *)v4 updateViews];
+  [(CPSNameViewController *)selfCopy setupViews];
+  [(CPSNameViewController *)selfCopy updateViews];
 }
 
 - (void)setupViews
 {
   v60[1] = *MEMORY[0x277D85DE8];
-  v52 = self;
+  selfCopy = self;
   v51[1] = a2;
-  v16 = [(CPSNameViewController *)self stackView];
-  [(CPSNameStackView *)v16 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v17 = [(CPSNameViewController *)v52 stackView];
-  [(CPSNameStackView *)v17 setAlignment:?];
-  v18 = [(CPSNameViewController *)v52 stackView];
-  [(CPSNameStackView *)v18 setDistribution:3];
-  v19 = [(CPSNameViewController *)v52 stackView];
-  [(CPSNameStackView *)v19 setAxis:1];
-  v20 = [(CPSNameViewController *)v52 stackView];
-  [(CPSNameStackView *)v20 setBaselineRelativeArrangement:1];
-  v21 = [(CPSNameViewController *)v52 stackView];
-  [(CPSNameStackView *)v21 setSpacing:20.0];
-  v22 = [(CPSNameViewController *)v52 stackView];
-  v2 = insertNewLabelToStackView(v22);
-  primaryLabel = v52->_primaryLabel;
-  v52->_primaryLabel = v2;
+  stackView = [(CPSNameViewController *)self stackView];
+  [(CPSNameStackView *)stackView setTranslatesAutoresizingMaskIntoConstraints:0];
+  stackView2 = [(CPSNameViewController *)selfCopy stackView];
+  [(CPSNameStackView *)stackView2 setAlignment:?];
+  stackView3 = [(CPSNameViewController *)selfCopy stackView];
+  [(CPSNameStackView *)stackView3 setDistribution:3];
+  stackView4 = [(CPSNameViewController *)selfCopy stackView];
+  [(CPSNameStackView *)stackView4 setAxis:1];
+  stackView5 = [(CPSNameViewController *)selfCopy stackView];
+  [(CPSNameStackView *)stackView5 setBaselineRelativeArrangement:1];
+  stackView6 = [(CPSNameViewController *)selfCopy stackView];
+  [(CPSNameStackView *)stackView6 setSpacing:20.0];
+  stackView7 = [(CPSNameViewController *)selfCopy stackView];
+  v2 = insertNewLabelToStackView(stackView7);
+  primaryLabel = selfCopy->_primaryLabel;
+  selfCopy->_primaryLabel = v2;
   MEMORY[0x277D82BD8](primaryLabel);
-  v23 = [(CPSNameViewController *)v52 stackView];
-  v4 = insertNewLabelToStackView(v23);
-  secondaryLabel = v52->_secondaryLabel;
-  v52->_secondaryLabel = v4;
+  stackView8 = [(CPSNameViewController *)selfCopy stackView];
+  v4 = insertNewLabelToStackView(stackView8);
+  secondaryLabel = selfCopy->_secondaryLabel;
+  selfCopy->_secondaryLabel = v4;
   MEMORY[0x277D82BD8](secondaryLabel);
-  v24 = [(CPSNameViewController *)v52 stackView];
-  v6 = insertNewLabelToStackView(v24);
-  tertiaryLabel = v52->_tertiaryLabel;
-  v52->_tertiaryLabel = v6;
+  stackView9 = [(CPSNameViewController *)selfCopy stackView];
+  v6 = insertNewLabelToStackView(stackView9);
+  tertiaryLabel = selfCopy->_tertiaryLabel;
+  selfCopy->_tertiaryLabel = v6;
   MEMORY[0x277D82BD8](tertiaryLabel);
-  MEMORY[0x277D82BD8](v24);
+  MEMORY[0x277D82BD8](stackView9);
   v51[0] = MEMORY[0x277D82BE0](*MEMORY[0x277D76A20]);
   v50 = MEMORY[0x277D82BE0](*MEMORY[0x277D76938]);
   v26 = MEMORY[0x277D74300];
   v25 = v51[0];
-  v28 = [(CPSNameViewController *)v52 traitCollection];
+  traitCollection = [(CPSNameViewController *)selfCopy traitCollection];
   v27 = [v26 preferredFontForTextStyle:v25 compatibleWithTraitCollection:?];
-  v49 = [v27 fontDescriptor];
+  fontDescriptor = [v27 fontDescriptor];
   MEMORY[0x277D82BD8](v27);
-  MEMORY[0x277D82BD8](v28);
+  MEMORY[0x277D82BD8](traitCollection);
   v37 = MEMORY[0x277D74430];
   v59 = *MEMORY[0x277D74430];
   v29 = [MEMORY[0x277CCABB0] numberWithDouble:*MEMORY[0x277D743F8]];
   v60[0] = v29;
   v48 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v60 forKeys:&v59 count:1];
   *&v8 = MEMORY[0x277D82BD8](v29).n128_u64[0];
-  v30 = v49;
+  v30 = fontDescriptor;
   v39 = MEMORY[0x277D74380];
   v57 = *MEMORY[0x277D74380];
   v58 = v48;
   v31 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v58 forKeys:&v57 count:{1, v8}];
   v9 = [v30 fontDescriptorByAddingAttributes:?];
-  v10 = v49;
-  v49 = v9;
+  v10 = fontDescriptor;
+  fontDescriptor = v9;
   MEMORY[0x277D82BD8](v10);
   MEMORY[0x277D82BD8](v31);
-  v32 = [MEMORY[0x277D74300] fontWithDescriptor:v49 size:?];
-  [(UILabel *)v52->_primaryLabel setFont:?];
+  v32 = [MEMORY[0x277D74300] fontWithDescriptor:fontDescriptor size:?];
+  [(UILabel *)selfCopy->_primaryLabel setFont:?];
   *&v11 = MEMORY[0x277D82BD8](v32).n128_u64[0];
   v34 = MEMORY[0x277D74300];
   v33 = v50;
-  v36 = [(CPSNameViewController *)v52 traitCollection];
+  traitCollection2 = [(CPSNameViewController *)selfCopy traitCollection];
   v35 = [v34 preferredFontForTextStyle:v33 compatibleWithTraitCollection:?];
-  v47 = [v35 fontDescriptor];
+  fontDescriptor2 = [v35 fontDescriptor];
   MEMORY[0x277D82BD8](v35);
-  MEMORY[0x277D82BD8](v36);
+  MEMORY[0x277D82BD8](traitCollection2);
   v55 = *v37;
   v38 = [MEMORY[0x277CCABB0] numberWithDouble:*MEMORY[0x277D74418]];
   v56 = v38;
   v46 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v56 forKeys:&v55 count:1];
   *&v12 = MEMORY[0x277D82BD8](v38).n128_u64[0];
-  v40 = v47;
+  v40 = fontDescriptor2;
   v53 = *v39;
   v54 = v46;
   v41 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v54 forKeys:&v53 count:{1, v12}];
   v13 = [v40 fontDescriptorByAddingAttributes:?];
-  v14 = v47;
-  v47 = v13;
+  v14 = fontDescriptor2;
+  fontDescriptor2 = v13;
   MEMORY[0x277D82BD8](v14);
   MEMORY[0x277D82BD8](v41);
-  v42 = [MEMORY[0x277D74300] fontWithDescriptor:v47 size:0.0];
-  [(UILabel *)v52->_secondaryLabel setFont:?];
+  v42 = [MEMORY[0x277D74300] fontWithDescriptor:fontDescriptor2 size:0.0];
+  [(UILabel *)selfCopy->_secondaryLabel setFont:?];
   MEMORY[0x277D82BD8](v42);
-  v43 = [MEMORY[0x277D74300] fontWithDescriptor:v47 size:0.0];
-  [(UILabel *)v52->_tertiaryLabel setFont:?];
+  v43 = [MEMORY[0x277D74300] fontWithDescriptor:fontDescriptor2 size:0.0];
+  [(UILabel *)selfCopy->_tertiaryLabel setFont:?];
   *&v15 = MEMORY[0x277D82BD8](v43).n128_u64[0];
-  [(UILabel *)v52->_primaryLabel setAccessibilityIdentifier:@"CPNamePrimaryLabel", v15];
-  [(UILabel *)v52->_secondaryLabel setAccessibilityIdentifier:@"CPNameSecondaryLabel"];
-  [(UILabel *)v52->_tertiaryLabel setAccessibilityIdentifier:@"CPNameTertiaryLabel"];
-  v45 = [(CPSNameViewController *)v52 view];
-  v44 = [(CPSNameViewController *)v52 stackView];
-  [v45 addSubview:?];
-  MEMORY[0x277D82BD8](v44);
-  MEMORY[0x277D82BD8](v45);
+  [(UILabel *)selfCopy->_primaryLabel setAccessibilityIdentifier:@"CPNamePrimaryLabel", v15];
+  [(UILabel *)selfCopy->_secondaryLabel setAccessibilityIdentifier:@"CPNameSecondaryLabel"];
+  [(UILabel *)selfCopy->_tertiaryLabel setAccessibilityIdentifier:@"CPNameTertiaryLabel"];
+  view = [(CPSNameViewController *)selfCopy view];
+  stackView10 = [(CPSNameViewController *)selfCopy stackView];
+  [view addSubview:?];
+  MEMORY[0x277D82BD8](stackView10);
+  MEMORY[0x277D82BD8](view);
   objc_storeStrong(&v46, 0);
-  objc_storeStrong(&v47, 0);
+  objc_storeStrong(&fontDescriptor2, 0);
   objc_storeStrong(&v48, 0);
-  objc_storeStrong(&v49, 0);
+  objc_storeStrong(&fontDescriptor, 0);
   objc_storeStrong(&v50, 0);
   objc_storeStrong(v51, 0);
 }
 
 - (void)updateViews
 {
-  v20 = self;
+  selfCopy = self;
   v19[1] = a2;
-  v13 = [(CPSNameViewController *)self entity];
-  v19[0] = [(CPEntityNameProviding *)v13 name];
-  v14 = [(CPSNameViewController *)v20 entity];
-  v18 = [(CPEntityNameProviding *)v14 subtitle];
-  v15 = [(CPSNameViewController *)v20 entity];
-  location = [(CPEntityNameProviding *)v15 informativeText];
-  v16 = [(CPSNameViewController *)v20 primaryLabel];
-  v2 = MEMORY[0x277D82BD8](v16).n128_u64[0];
-  if (v16)
+  entity = [(CPSNameViewController *)self entity];
+  v19[0] = [(CPEntityNameProviding *)entity name];
+  entity2 = [(CPSNameViewController *)selfCopy entity];
+  subtitle = [(CPEntityNameProviding *)entity2 subtitle];
+  entity3 = [(CPSNameViewController *)selfCopy entity];
+  location = [(CPEntityNameProviding *)entity3 informativeText];
+  primaryLabel = [(CPSNameViewController *)selfCopy primaryLabel];
+  v2 = MEMORY[0x277D82BD8](primaryLabel).n128_u64[0];
+  if (primaryLabel)
   {
-    v11 = [(CPSNameViewController *)v20 primaryLabel];
-    [(UILabel *)v11 setText:v19[0]];
-    v12 = [(CPSNameViewController *)v20 primaryLabel];
-    [(UILabel *)v12 sizeToFit];
-    v2 = MEMORY[0x277D82BD8](v12).n128_u64[0];
+    primaryLabel2 = [(CPSNameViewController *)selfCopy primaryLabel];
+    [(UILabel *)primaryLabel2 setText:v19[0]];
+    primaryLabel3 = [(CPSNameViewController *)selfCopy primaryLabel];
+    [(UILabel *)primaryLabel3 sizeToFit];
+    v2 = MEMORY[0x277D82BD8](primaryLabel3).n128_u64[0];
   }
 
-  v10 = [(CPSNameViewController *)v20 secondaryLabel];
-  v3 = MEMORY[0x277D82BD8](v10).n128_u64[0];
-  if (v10)
+  secondaryLabel = [(CPSNameViewController *)selfCopy secondaryLabel];
+  v3 = MEMORY[0x277D82BD8](secondaryLabel).n128_u64[0];
+  if (secondaryLabel)
   {
-    v8 = [(CPSNameViewController *)v20 secondaryLabel];
-    [(UILabel *)v8 setText:v18];
-    v9 = [(CPSNameViewController *)v20 secondaryLabel];
-    [(UILabel *)v9 sizeToFit];
-    v3 = MEMORY[0x277D82BD8](v9).n128_u64[0];
+    secondaryLabel2 = [(CPSNameViewController *)selfCopy secondaryLabel];
+    [(UILabel *)secondaryLabel2 setText:subtitle];
+    secondaryLabel3 = [(CPSNameViewController *)selfCopy secondaryLabel];
+    [(UILabel *)secondaryLabel3 sizeToFit];
+    v3 = MEMORY[0x277D82BD8](secondaryLabel3).n128_u64[0];
   }
 
-  v7 = [(CPSNameViewController *)v20 tertiaryLabel];
-  *&v4 = MEMORY[0x277D82BD8](v7).n128_u64[0];
-  if (v7)
+  tertiaryLabel = [(CPSNameViewController *)selfCopy tertiaryLabel];
+  *&v4 = MEMORY[0x277D82BD8](tertiaryLabel).n128_u64[0];
+  if (tertiaryLabel)
   {
-    v5 = [(CPSNameViewController *)v20 tertiaryLabel];
-    [(UILabel *)v5 setText:location];
-    v6 = [(CPSNameViewController *)v20 tertiaryLabel];
-    [(UILabel *)v6 sizeToFit];
-    MEMORY[0x277D82BD8](v6);
+    tertiaryLabel2 = [(CPSNameViewController *)selfCopy tertiaryLabel];
+    [(UILabel *)tertiaryLabel2 setText:location];
+    tertiaryLabel3 = [(CPSNameViewController *)selfCopy tertiaryLabel];
+    [(UILabel *)tertiaryLabel3 sizeToFit];
+    MEMORY[0x277D82BD8](tertiaryLabel3);
   }
 
   objc_storeStrong(&location, 0);
-  objc_storeStrong(&v18, 0);
+  objc_storeStrong(&subtitle, 0);
   objc_storeStrong(v19, 0);
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3.receiver = v5;
+  objc_storeStrong(location, change);
+  v3.receiver = selfCopy;
   v3.super_class = CPSNameViewController;
   [(CPSNameViewController *)&v3 traitCollectionDidChange:location[0]];
-  [(CPSNameViewController *)v5 resetLayoutConstraints];
+  [(CPSNameViewController *)selfCopy resetLayoutConstraints];
   objc_storeStrong(location, 0);
 }
 
 - (void)resetLayoutConstraints
 {
-  v6 = [(CPSNameViewController *)self layoutConstraints];
-  v7 = [(NSArray *)v6 count];
-  *&v2 = MEMORY[0x277D82BD8](v6).n128_u64[0];
+  layoutConstraints = [(CPSNameViewController *)self layoutConstraints];
+  v7 = [(NSArray *)layoutConstraints count];
+  *&v2 = MEMORY[0x277D82BD8](layoutConstraints).n128_u64[0];
   if (v7)
   {
     v3 = MEMORY[0x277CCAAD0];
-    v4 = [(CPSNameViewController *)self layoutConstraints];
+    layoutConstraints2 = [(CPSNameViewController *)self layoutConstraints];
     [v3 deactivateConstraints:?];
-    [(CPSNameViewController *)self setLayoutConstraints:0, MEMORY[0x277D82BD8](v4).n128_f64[0]];
-    v5 = [(CPSNameViewController *)self view];
-    [v5 setNeedsUpdateConstraints];
-    MEMORY[0x277D82BD8](v5);
+    [(CPSNameViewController *)self setLayoutConstraints:0, MEMORY[0x277D82BD8](layoutConstraints2).n128_f64[0]];
+    view = [(CPSNameViewController *)self view];
+    [view setNeedsUpdateConstraints];
+    MEMORY[0x277D82BD8](view);
   }
 }
 
 - (void)updateViewConstraints
 {
-  v7 = self;
+  selfCopy = self;
   v6 = a2;
   v5.receiver = self;
   v5.super_class = CPSNameViewController;
   [(CPSNameViewController *)&v5 updateViewConstraints];
-  v3 = [(CPSNameViewController *)v7 layoutConstraints];
-  v4 = [(NSArray *)v3 count];
-  *&v2 = MEMORY[0x277D82BD8](v3).n128_u64[0];
+  layoutConstraints = [(CPSNameViewController *)selfCopy layoutConstraints];
+  v4 = [(NSArray *)layoutConstraints count];
+  *&v2 = MEMORY[0x277D82BD8](layoutConstraints).n128_u64[0];
   if (!v4)
   {
-    [(CPSNameViewController *)v7 setupLayoutConstraints];
+    [(CPSNameViewController *)selfCopy setupLayoutConstraints];
   }
 }
 
 - (void)setupLayoutConstraints
 {
   v30[4] = *MEMORY[0x277D85DE8];
-  v29 = self;
+  selfCopy = self;
   v28[1] = a2;
   v28[0] = objc_opt_new();
-  v23 = [(CPSNameViewController *)v29 view];
-  v22 = [v23 leadingAnchor];
-  v21 = [(CPSNameViewController *)v29 stackView];
-  v20 = [(CPSNameStackView *)v21 leadingAnchor];
-  v19 = [v22 constraintEqualToAnchor:?];
+  view = [(CPSNameViewController *)selfCopy view];
+  leadingAnchor = [view leadingAnchor];
+  stackView = [(CPSNameViewController *)selfCopy stackView];
+  leadingAnchor2 = [(CPSNameStackView *)stackView leadingAnchor];
+  v19 = [leadingAnchor constraintEqualToAnchor:?];
   v30[0] = v19;
-  v18 = [(CPSNameViewController *)v29 view];
-  v17 = [v18 topAnchor];
-  v16 = [(CPSNameViewController *)v29 stackView];
-  v15 = [(CPSNameStackView *)v16 topAnchor];
-  v14 = [v17 constraintEqualToAnchor:?];
+  view2 = [(CPSNameViewController *)selfCopy view];
+  topAnchor = [view2 topAnchor];
+  stackView2 = [(CPSNameViewController *)selfCopy stackView];
+  topAnchor2 = [(CPSNameStackView *)stackView2 topAnchor];
+  v14 = [topAnchor constraintEqualToAnchor:?];
   v30[1] = v14;
-  v13 = [(CPSNameViewController *)v29 view];
-  v12 = [v13 trailingAnchor];
-  v11 = [(CPSNameViewController *)v29 stackView];
-  v10 = [(CPSNameStackView *)v11 trailingAnchor];
-  v9 = [v12 constraintEqualToAnchor:?];
+  view3 = [(CPSNameViewController *)selfCopy view];
+  trailingAnchor = [view3 trailingAnchor];
+  stackView3 = [(CPSNameViewController *)selfCopy stackView];
+  trailingAnchor2 = [(CPSNameStackView *)stackView3 trailingAnchor];
+  v9 = [trailingAnchor constraintEqualToAnchor:?];
   v30[2] = v9;
-  v8 = [(CPSNameViewController *)v29 view];
-  v7 = [v8 bottomAnchor];
-  v6 = [(CPSNameViewController *)v29 stackView];
-  v5 = [(CPSNameStackView *)v6 bottomAnchor];
-  v4 = [v7 constraintEqualToAnchor:?];
+  view4 = [(CPSNameViewController *)selfCopy view];
+  bottomAnchor = [view4 bottomAnchor];
+  stackView4 = [(CPSNameViewController *)selfCopy stackView];
+  bottomAnchor2 = [(CPSNameStackView *)stackView4 bottomAnchor];
+  v4 = [bottomAnchor constraintEqualToAnchor:?];
   v30[3] = v4;
   v27 = [MEMORY[0x277CBEA60] arrayWithObjects:v30 count:4];
   MEMORY[0x277D82BD8](v4);
-  MEMORY[0x277D82BD8](v5);
-  MEMORY[0x277D82BD8](v6);
-  MEMORY[0x277D82BD8](v7);
-  MEMORY[0x277D82BD8](v8);
+  MEMORY[0x277D82BD8](bottomAnchor2);
+  MEMORY[0x277D82BD8](stackView4);
+  MEMORY[0x277D82BD8](bottomAnchor);
+  MEMORY[0x277D82BD8](view4);
   MEMORY[0x277D82BD8](v9);
-  MEMORY[0x277D82BD8](v10);
-  MEMORY[0x277D82BD8](v11);
-  MEMORY[0x277D82BD8](v12);
-  MEMORY[0x277D82BD8](v13);
+  MEMORY[0x277D82BD8](trailingAnchor2);
+  MEMORY[0x277D82BD8](stackView3);
+  MEMORY[0x277D82BD8](trailingAnchor);
+  MEMORY[0x277D82BD8](view3);
   MEMORY[0x277D82BD8](v14);
-  MEMORY[0x277D82BD8](v15);
-  MEMORY[0x277D82BD8](v16);
-  MEMORY[0x277D82BD8](v17);
-  MEMORY[0x277D82BD8](v18);
+  MEMORY[0x277D82BD8](topAnchor2);
+  MEMORY[0x277D82BD8](stackView2);
+  MEMORY[0x277D82BD8](topAnchor);
+  MEMORY[0x277D82BD8](view2);
   MEMORY[0x277D82BD8](v19);
-  MEMORY[0x277D82BD8](v20);
-  MEMORY[0x277D82BD8](v21);
-  MEMORY[0x277D82BD8](v22);
-  *&v2 = MEMORY[0x277D82BD8](v23).n128_u64[0];
+  MEMORY[0x277D82BD8](leadingAnchor2);
+  MEMORY[0x277D82BD8](stackView);
+  MEMORY[0x277D82BD8](leadingAnchor);
+  *&v2 = MEMORY[0x277D82BD8](view).n128_u64[0];
   [v28[0] addObjectsFromArray:{v27, v2}];
   v24 = [v28[0] copy];
-  [(CPSNameViewController *)v29 setLayoutConstraints:?];
+  [(CPSNameViewController *)selfCopy setLayoutConstraints:?];
   *&v3 = MEMORY[0x277D82BD8](v24).n128_u64[0];
   v25 = MEMORY[0x277CCAAD0];
-  v26 = [(CPSNameViewController *)v29 layoutConstraints];
+  layoutConstraints = [(CPSNameViewController *)selfCopy layoutConstraints];
   [v25 activateConstraints:?];
-  MEMORY[0x277D82BD8](v26);
+  MEMORY[0x277D82BD8](layoutConstraints);
   objc_storeStrong(&v27, 0);
   objc_storeStrong(v28, 0);
 }
@@ -331,16 +331,16 @@
 - (void)viewWillLayoutSubviews
 {
   v26 = *MEMORY[0x277D85DE8];
-  v24 = self;
+  selfCopy = self;
   v23 = a2;
   v22.receiver = self;
   v22.super_class = CPSNameViewController;
   [(CPSNameViewController *)&v22 viewWillLayoutSubviews];
   Width = 0.0;
   memset(__b, 0, sizeof(__b));
-  v16 = [(CPSNameViewController *)v24 stackView];
-  obj = [(CPSNameStackView *)v16 arrangedSubviews];
-  v18 = [obj countByEnumeratingWithState:__b objects:v25 count:{16, MEMORY[0x277D82BD8](v16).n128_f64[0]}];
+  stackView = [(CPSNameViewController *)selfCopy stackView];
+  obj = [(CPSNameStackView *)stackView arrangedSubviews];
+  v18 = [obj countByEnumeratingWithState:__b objects:v25 count:{16, MEMORY[0x277D82BD8](stackView).n128_f64[0]}];
   if (v18)
   {
     v13 = *__b[2];
@@ -378,8 +378,8 @@
 
   MEMORY[0x277D82BD8](obj);
   v9 = Width;
-  v8 = [(CPSNameViewController *)v24 stackView];
-  [(CPSNameStackView *)v8 fittingWidth];
+  stackView2 = [(CPSNameViewController *)selfCopy stackView];
+  [(CPSNameStackView *)stackView2 fittingWidth];
   v3 = (v9 - v2);
   if (v3 <= 0)
   {
@@ -387,16 +387,16 @@
   }
 
   v10 = v3;
-  MEMORY[0x277D82BD8](v8);
+  MEMORY[0x277D82BD8](stackView2);
   if (v10 > 20.0)
   {
     v5 = Width + 20.0;
-    v6 = [(CPSNameViewController *)v24 stackView];
-    [(CPSNameStackView *)v6 setFittingWidth:v5];
-    *&v4 = MEMORY[0x277D82BD8](v6).n128_u64[0];
-    v7 = [(CPSNameViewController *)v24 stackView];
-    [(CPSNameStackView *)v7 invalidateIntrinsicContentSize];
-    MEMORY[0x277D82BD8](v7);
+    stackView3 = [(CPSNameViewController *)selfCopy stackView];
+    [(CPSNameStackView *)stackView3 setFittingWidth:v5];
+    *&v4 = MEMORY[0x277D82BD8](stackView3).n128_u64[0];
+    stackView4 = [(CPSNameViewController *)selfCopy stackView];
+    [(CPSNameStackView *)stackView4 invalidateIntrinsicContentSize];
+    MEMORY[0x277D82BD8](stackView4);
   }
 }
 

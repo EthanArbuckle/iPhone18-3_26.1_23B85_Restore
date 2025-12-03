@@ -1,16 +1,16 @@
 @interface ArtworkSmartTransition.Renderer
 - (_TtCO5Music22ArtworkSmartTransition8Renderer)init;
-- (void)drawInMTKView:(id)a3;
+- (void)drawInMTKView:(id)view;
 - (void)mtkView:drawableSizeWillChange:;
 @end
 
 @implementation ArtworkSmartTransition.Renderer
 
-- (void)drawInMTKView:(id)a3
+- (void)drawInMTKView:(id)view
 {
-  v4 = a3;
-  v5 = self;
-  sub_100172D54(v4);
+  viewCopy = view;
+  selfCopy = self;
+  sub_100172D54(viewCopy);
 }
 
 - (_TtCO5Music22ArtworkSmartTransition8Renderer)init

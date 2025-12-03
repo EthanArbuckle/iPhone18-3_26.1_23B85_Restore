@@ -1,24 +1,24 @@
 @interface CRKOrderedOneToManyKVOAccumulator
-- (BOOL)_integrateChange:(id)a3 toArray:(id)a4;
-- (CRKOrderedOneToManyKVOAccumulator)initWithObject:(id)a3 keyPath:(id)a4;
+- (BOOL)_integrateChange:(id)change toArray:(id)array;
+- (CRKOrderedOneToManyKVOAccumulator)initWithObject:(id)object keyPath:(id)path;
 - (CRKOrderedOneToManyKVOAccumulatorDelegate)delegate;
 - (NSObject)observedObject;
-- (id)_resultsToArriveAtArray:(id)a3;
-- (unint64_t)_prestateIndexForImmediateIndex:(unint64_t)a3;
+- (id)_resultsToArriveAtArray:(id)array;
+- (unint64_t)_prestateIndexForImmediateIndex:(unint64_t)index;
 - (void)_drain;
 - (void)_reset;
-- (void)_validateArrayChangeToFinalCount:(int64_t)a3 accumulatedResults:(id)a4;
+- (void)_validateArrayChangeToFinalCount:(int64_t)count accumulatedResults:(id)results;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setDelegate:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation CRKOrderedOneToManyKVOAccumulator
 
-- (CRKOrderedOneToManyKVOAccumulator)initWithObject:(id)a3 keyPath:(id)a4
+- (CRKOrderedOneToManyKVOAccumulator)initWithObject:(id)object keyPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  objectCopy = object;
+  pathCopy = path;
   v20.receiver = self;
   v20.super_class = CRKOrderedOneToManyKVOAccumulator;
   v8 = [(CRKOrderedOneToManyKVOAccumulator *)&v20 init];
@@ -40,12 +40,12 @@
     mOriginalIndexOfMovedObject = v8->mOriginalIndexOfMovedObject;
     v8->mOriginalIndexOfMovedObject = v15;
 
-    [v6 addObserver:v8 forKeyPath:v7 options:11 context:@"CRKOrderedOneToManyKVOAccumulatorObservationContext"];
-    v17 = [v7 copy];
+    [objectCopy addObserver:v8 forKeyPath:pathCopy options:11 context:@"CRKOrderedOneToManyKVOAccumulatorObservationContext"];
+    v17 = [pathCopy copy];
     observedKeyPath = v8->_observedKeyPath;
     v8->_observedKeyPath = v17;
 
-    objc_storeWeak(&v8->_observedObject, v6);
+    objc_storeWeak(&v8->_observedObject, objectCopy);
   }
 
   return v8;
@@ -53,18 +53,18 @@
 
 - (void)dealloc
 {
-  v3 = [(CRKOrderedOneToManyKVOAccumulator *)self observedObject];
-  v4 = [(CRKOrderedOneToManyKVOAccumulator *)self observedKeyPath];
-  [v3 removeObserver:self forKeyPath:v4 context:@"CRKOrderedOneToManyKVOAccumulatorObservationContext"];
+  observedObject = [(CRKOrderedOneToManyKVOAccumulator *)self observedObject];
+  observedKeyPath = [(CRKOrderedOneToManyKVOAccumulator *)self observedKeyPath];
+  [observedObject removeObserver:self forKeyPath:observedKeyPath context:@"CRKOrderedOneToManyKVOAccumulatorObservationContext"];
 
   v5.receiver = self;
   v5.super_class = CRKOrderedOneToManyKVOAccumulator;
   [(CRKOrderedOneToManyKVOAccumulator *)&v5 dealloc];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   v5 = obj;
@@ -76,14 +76,14 @@
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  if (a6 == @"CRKOrderedOneToManyKVOAccumulatorObservationContext")
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (context == @"CRKOrderedOneToManyKVOAccumulatorObservationContext")
   {
-    v14 = [v12 valueForKey:v11];
+    v14 = [objectCopy valueForKey:pathCopy];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -99,10 +99,10 @@
 
     if (!v16)
     {
-      [CRKOrderedOneToManyKVOAccumulator observeValueForKeyPath:v12 ofObject:v11 change:a2 context:self];
+      [CRKOrderedOneToManyKVOAccumulator observeValueForKeyPath:objectCopy ofObject:pathCopy change:a2 context:self];
     }
 
-    if ([(CRKOrderedOneToManyKVOAccumulator *)self _integrateChange:v13 toArray:v16])
+    if ([(CRKOrderedOneToManyKVOAccumulator *)self _integrateChange:changeCopy toArray:v16])
     {
       self->mInitialArrayCount = [v16 count];
       objc_initWeak(&location, self);
@@ -122,7 +122,7 @@
   {
     v21.receiver = self;
     v21.super_class = CRKOrderedOneToManyKVOAccumulator;
-    [(CRKOrderedOneToManyKVOAccumulator *)&v21 observeValueForKeyPath:v11 ofObject:v12 change:v13 context:a6];
+    [(CRKOrderedOneToManyKVOAccumulator *)&v21 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
@@ -132,13 +132,13 @@ void __84__CRKOrderedOneToManyKVOAccumulator_observeValueForKeyPath_ofObject_cha
   [WeakRetained _drain];
 }
 
-- (BOOL)_integrateChange:(id)a3 toArray:(id)a4
+- (BOOL)_integrateChange:(id)change toArray:(id)array
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 objectForKeyedSubscript:*MEMORY[0x277CCA2F8]];
+  changeCopy = change;
+  arrayCopy = array;
+  v9 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA2F8]];
 
-  v10 = [(CRKOrderedOneToManyKVOAccumulator *)self hasChanges];
+  hasChanges = [(CRKOrderedOneToManyKVOAccumulator *)self hasChanges];
   if (!self->mObservedShadow)
   {
     if (!v9)
@@ -146,11 +146,11 @@ void __84__CRKOrderedOneToManyKVOAccumulator_observeValueForKeyPath_ofObject_cha
       [CRKOrderedOneToManyKVOAccumulator _integrateChange:a2 toArray:self];
     }
 
-    v11 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v8, "count")}];
+    v11 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(arrayCopy, "count")}];
     mObservedShadow = self->mObservedShadow;
     self->mObservedShadow = v11;
 
-    if ([v8 count])
+    if ([arrayCopy count])
     {
       v13 = 0;
       do
@@ -162,23 +162,23 @@ void __84__CRKOrderedOneToManyKVOAccumulator_observeValueForKeyPath_ofObject_cha
         ++v13;
       }
 
-      while (v13 < [v8 count]);
+      while (v13 < [arrayCopy count]);
     }
   }
 
   if (!v9)
   {
-    v16 = [v7 objectForKeyedSubscript:*MEMORY[0x277CCA2E8]];
-    v17 = [v16 unsignedIntegerValue];
+    v16 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA2E8]];
+    unsignedIntegerValue = [v16 unsignedIntegerValue];
 
-    v18 = [v7 objectForKeyedSubscript:*MEMORY[0x277CCA2E0]];
-    v19 = [v7 objectForKeyedSubscript:*MEMORY[0x277CCA300]];
-    v20 = [v7 objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
+    v18 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA2E0]];
+    v19 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA300]];
+    v20 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
     v21 = v20;
-    v34 = v10;
-    if (v17 > 2)
+    v34 = hasChanges;
+    if (unsignedIntegerValue > 2)
     {
-      if (v17 == 3)
+      if (unsignedIntegerValue == 3)
       {
         v43 = 0;
         v44 = &v43;
@@ -188,7 +188,7 @@ void __84__CRKOrderedOneToManyKVOAccumulator_observeValueForKeyPath_ofObject_cha
         v35[1] = 3221225472;
         v35[2] = __62__CRKOrderedOneToManyKVOAccumulator__integrateChange_toArray___block_invoke_20;
         v35[3] = &unk_278DC1898;
-        v37 = self;
+        selfCopy = self;
         v38 = &v43;
         v36 = v19;
         [v18 enumerateIndexesUsingBlock:v35];
@@ -197,19 +197,19 @@ void __84__CRKOrderedOneToManyKVOAccumulator_observeValueForKeyPath_ofObject_cha
         goto LABEL_29;
       }
 
-      if (v17 == 4)
+      if (unsignedIntegerValue == 4)
       {
         [(CRKPointerSet *)self->mReplacementObjects addObjectsFromArray:v20];
 LABEL_30:
 
-        v10 = v34;
+        hasChanges = v34;
         goto LABEL_31;
       }
     }
 
     else
     {
-      if (v17 == 1)
+      if (unsignedIntegerValue == 1)
       {
         if ([v19 count])
         {
@@ -263,7 +263,7 @@ LABEL_30:
         goto LABEL_30;
       }
 
-      if (v17 == 2)
+      if (unsignedIntegerValue == 2)
       {
         v43 = 0;
         v44 = &v43;
@@ -273,7 +273,7 @@ LABEL_30:
         v39[1] = 3221225472;
         v39[2] = __62__CRKOrderedOneToManyKVOAccumulator__integrateChange_toArray___block_invoke;
         v39[3] = &unk_278DC1898;
-        v41 = self;
+        selfCopy2 = self;
         v42 = &v43;
         v40 = v20;
         [v18 enumerateIndexesUsingBlock:v39];
@@ -285,16 +285,16 @@ LABEL_29:
       }
     }
 
-    v23 = [MEMORY[0x277CCA890] currentHandler];
-    v24 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v17];
-    [v23 handleFailureInMethod:a2 object:self file:@"CRKOrderedOneToManyKVOAccumulator.m" lineNumber:212 description:{@"unexpected change kind: %@", v24}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    v24 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:unsignedIntegerValue];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"CRKOrderedOneToManyKVOAccumulator.m" lineNumber:212 description:{@"unexpected change kind: %@", v24}];
 
     goto LABEL_30;
   }
 
 LABEL_31:
 
-  return !v10;
+  return !hasChanges;
 }
 
 void __62__CRKOrderedOneToManyKVOAccumulator__integrateChange_toArray___block_invoke(uint64_t a1, uint64_t a2)
@@ -349,37 +349,37 @@ LABEL_6:
   ++*(*(*(a1 + 48) + 8) + 24);
 }
 
-- (void)_validateArrayChangeToFinalCount:(int64_t)a3 accumulatedResults:(id)a4
+- (void)_validateArrayChangeToFinalCount:(int64_t)count accumulatedResults:(id)results
 {
-  v7 = a4;
+  resultsCopy = results;
   mInitialArrayCount = self->mInitialArrayCount;
-  v20 = v7;
-  v9 = [v7 netCountChange] + mInitialArrayCount;
-  if (v9 != a3)
+  v20 = resultsCopy;
+  v9 = [resultsCopy netCountChange] + mInitialArrayCount;
+  if (v9 != count)
   {
-    v19 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v10 = [MEMORY[0x277CCABB0] numberWithInteger:v9];
     v11 = [MEMORY[0x277CCABB0] numberWithInteger:self->mInitialArrayCount];
     v12 = MEMORY[0x277CCABB0];
-    v13 = [v20 insertions];
-    v14 = [v12 numberWithUnsignedInteger:{objc_msgSend(v13, "count")}];
+    insertions = [v20 insertions];
+    v14 = [v12 numberWithUnsignedInteger:{objc_msgSend(insertions, "count")}];
     v15 = MEMORY[0x277CCABB0];
-    v16 = [v20 deletions];
-    v17 = [v15 numberWithUnsignedInteger:{objc_msgSend(v16, "count")}];
-    v18 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
-    [v19 handleFailureInMethod:a2 object:self file:@"CRKOrderedOneToManyKVOAccumulator.m" lineNumber:220 description:{@"Expected final array to have %@ elements (%@ original elements + %@ insertions - %@ deletions), but it has %@ elements", v10, v11, v14, v17, v18}];
+    deletions = [v20 deletions];
+    v17 = [v15 numberWithUnsignedInteger:{objc_msgSend(deletions, "count")}];
+    v18 = [MEMORY[0x277CCABB0] numberWithInteger:count];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"CRKOrderedOneToManyKVOAccumulator.m" lineNumber:220 description:{@"Expected final array to have %@ elements (%@ original elements + %@ insertions - %@ deletions), but it has %@ elements", v10, v11, v14, v17, v18}];
   }
 }
 
 - (void)_drain
 {
-  v3 = [(CRKOrderedOneToManyKVOAccumulator *)self delegate];
-  if (v3)
+  delegate = [(CRKOrderedOneToManyKVOAccumulator *)self delegate];
+  if (delegate)
   {
-    v11 = v3;
-    v4 = [(CRKOrderedOneToManyKVOAccumulator *)self observedObject];
-    v5 = [(CRKOrderedOneToManyKVOAccumulator *)self observedKeyPath];
-    v6 = [v4 valueForKeyPath:v5];
+    v11 = delegate;
+    observedObject = [(CRKOrderedOneToManyKVOAccumulator *)self observedObject];
+    observedKeyPath = [(CRKOrderedOneToManyKVOAccumulator *)self observedKeyPath];
+    v6 = [observedObject valueForKeyPath:observedKeyPath];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -415,7 +415,7 @@ LABEL_6:
       }
     }
 
-    v3 = v11;
+    delegate = v11;
   }
 }
 
@@ -429,18 +429,18 @@ LABEL_6:
   self->mObservedShadow = 0;
 }
 
-- (id)_resultsToArriveAtArray:(id)a3
+- (id)_resultsToArriveAtArray:(id)array
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  arrayCopy = array;
   v5 = objc_opt_new();
   v6 = objc_opt_new();
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v7 = [(NSMapTable *)self->mIndexForDeletedObject objectEnumerator];
-  v8 = [v7 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  objectEnumerator = [(NSMapTable *)self->mIndexForDeletedObject objectEnumerator];
+  v8 = [objectEnumerator countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v8)
   {
     v9 = v8;
@@ -451,13 +451,13 @@ LABEL_6:
       {
         if (*v23 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         [v6 addIndex:{objc_msgSend(*(*(&v22 + 1) + 8 * i), "unsignedIntegerValue")}];
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v9 = [objectEnumerator countByEnumeratingWithState:&v22 objects:v26 count:16];
     }
 
     while (v9);
@@ -468,12 +468,12 @@ LABEL_6:
   v12 = objc_opt_new();
   v13 = objc_opt_new();
   v21 = objc_opt_new();
-  if ([v4 count])
+  if ([arrayCopy count])
   {
     v14 = 0;
     do
     {
-      v15 = [v4 objectAtIndexedSubscript:v14];
+      v15 = [arrayCopy objectAtIndexedSubscript:v14];
       if ([(CRKPointerSet *)self->mInsertedObjects containsObject:v15])
       {
         [v12 addIndex:v14];
@@ -490,8 +490,8 @@ LABEL_6:
         v17 = objc_opt_new();
         [v17 setSourceIndex:{objc_msgSend(v16, "integerValue")}];
         [v17 setDestinationIndex:v14];
-        v18 = [v17 sourceIndex];
-        if (v18 != [v17 destinationIndex])
+        sourceIndex = [v17 sourceIndex];
+        if (sourceIndex != [v17 destinationIndex])
         {
           [v21 addObject:v17];
         }
@@ -500,7 +500,7 @@ LABEL_6:
       ++v14;
     }
 
-    while (v14 < [v4 count]);
+    while (v14 < [arrayCopy count]);
   }
 
   [v20 setInsertions:v12];
@@ -510,17 +510,17 @@ LABEL_6:
   return v20;
 }
 
-- (unint64_t)_prestateIndexForImmediateIndex:(unint64_t)a3
+- (unint64_t)_prestateIndexForImmediateIndex:(unint64_t)index
 {
-  if ([(NSMutableArray *)self->mObservedShadow count]<= a3)
+  if ([(NSMutableArray *)self->mObservedShadow count]<= index)
   {
     [(CRKOrderedOneToManyKVOAccumulator *)a2 _prestateIndexForImmediateIndex:?];
   }
 
-  v6 = [(NSMutableArray *)self->mObservedShadow objectAtIndexedSubscript:a3];
-  v7 = [v6 unsignedIntegerValue];
+  v6 = [(NSMutableArray *)self->mObservedShadow objectAtIndexedSubscript:index];
+  unsignedIntegerValue = [v6 unsignedIntegerValue];
 
-  return v7;
+  return unsignedIntegerValue;
 }
 
 - (CRKOrderedOneToManyKVOAccumulatorDelegate)delegate

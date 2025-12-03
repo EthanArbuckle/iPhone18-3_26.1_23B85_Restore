@@ -10,12 +10,12 @@
 
 - (uint64_t)sf_asColumnAlignment
 {
-  if ([a1 isEqualToString:@"left"])
+  if ([self isEqualToString:@"left"])
   {
     return 0;
   }
 
-  if ([a1 isEqualToString:@"right"])
+  if ([self isEqualToString:@"right"])
   {
     return 2;
   }
@@ -25,27 +25,27 @@
 
 - (uint64_t)sf_asImageAlignment
 {
-  if ([a1 isEqualToString:@"left"])
+  if ([self isEqualToString:@"left"])
   {
     return 0;
   }
 
-  if ([a1 isEqualToString:@"top"])
+  if ([self isEqualToString:@"top"])
   {
     return 1;
   }
 
-  if ([a1 isEqualToString:@"bottom"])
+  if ([self isEqualToString:@"bottom"])
   {
     return 2;
   }
 
-  if ([a1 isEqualToString:@"right"])
+  if ([self isEqualToString:@"right"])
   {
     return 3;
   }
 
-  if ([a1 isEqualToString:@"center"])
+  if ([self isEqualToString:@"center"])
   {
     return 4;
   }
@@ -55,27 +55,27 @@
 
 - (uint64_t)sf_asButtonAlignment
 {
-  if ([a1 isEqualToString:@"left"])
+  if ([self isEqualToString:@"left"])
   {
     return 1;
   }
 
-  if ([a1 isEqualToString:@"top"])
+  if ([self isEqualToString:@"top"])
   {
     return 2;
   }
 
-  if ([a1 isEqualToString:@"bottom"])
+  if ([self isEqualToString:@"bottom"])
   {
     return 3;
   }
 
-  if ([a1 isEqualToString:@"right"])
+  if ([self isEqualToString:@"right"])
   {
     return 4;
   }
 
-  if ([a1 isEqualToString:@"center"])
+  if ([self isEqualToString:@"center"])
   {
     return 5;
   }
@@ -85,17 +85,17 @@
 
 - (uint64_t)sf_asTextAlignment
 {
-  if ([a1 isEqualToString:@"left"])
+  if ([self isEqualToString:@"left"])
   {
     return 0;
   }
 
-  if ([a1 isEqualToString:@"center"])
+  if ([self isEqualToString:@"center"])
   {
     return 1;
   }
 
-  if ([a1 isEqualToString:@"right"])
+  if ([self isEqualToString:@"right"])
   {
     return 2;
   }
@@ -105,17 +105,17 @@
 
 - (uint64_t)sf_asResultPlacement
 {
-  if ([a1 isEqualToString:@"top"])
+  if ([self isEqualToString:@"top"])
   {
     return 1;
   }
 
-  if ([a1 isEqualToString:@"bottom"])
+  if ([self isEqualToString:@"bottom"])
   {
     return 2;
   }
 
-  if ([a1 isEqualToString:@"tophit"])
+  if ([self isEqualToString:@"tophit"])
   {
     return 3;
   }

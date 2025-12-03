@@ -1,51 +1,51 @@
 @interface CKDAssetID
-- (BOOL)isEqual:(id)a3;
-- (CKDAssetID)initWithRecordID:(id)a3 fileSignature:(id)a4 referenceSignature:(id)a5 size:(id)a6;
+- (BOOL)isEqual:(id)equal;
+- (CKDAssetID)initWithRecordID:(id)d fileSignature:(id)signature referenceSignature:(id)referenceSignature size:(id)size;
 - (id)CKPropertiesDescription;
 - (unint64_t)hash;
 @end
 
 @implementation CKDAssetID
 
-- (CKDAssetID)initWithRecordID:(id)a3 fileSignature:(id)a4 referenceSignature:(id)a5 size:(id)a6
+- (CKDAssetID)initWithRecordID:(id)d fileSignature:(id)signature referenceSignature:(id)referenceSignature size:(id)size
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  signatureCopy = signature;
+  referenceSignatureCopy = referenceSignature;
+  sizeCopy = size;
   v28.receiver = self;
   v28.super_class = CKDAssetID;
   v16 = [(CKDAssetID *)&v28 init];
   if (v16)
   {
-    v17 = objc_msgSend_copy(v10, v14, v15);
+    v17 = objc_msgSend_copy(dCopy, v14, v15);
     recordID = v16->_recordID;
     v16->_recordID = v17;
 
-    v21 = objc_msgSend_copy(v11, v19, v20);
+    v21 = objc_msgSend_copy(signatureCopy, v19, v20);
     fileSignature = v16->_fileSignature;
     v16->_fileSignature = v21;
 
-    v25 = objc_msgSend_copy(v12, v23, v24);
+    v25 = objc_msgSend_copy(referenceSignatureCopy, v23, v24);
     referenceSignature = v16->_referenceSignature;
     v16->_referenceSignature = v25;
 
-    objc_storeStrong(&v16->_size, a6);
+    objc_storeStrong(&v16->_size, size);
   }
 
   return v16;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     isEqualToNumber = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
     v9 = objc_msgSend_recordID(self, v7, v8);

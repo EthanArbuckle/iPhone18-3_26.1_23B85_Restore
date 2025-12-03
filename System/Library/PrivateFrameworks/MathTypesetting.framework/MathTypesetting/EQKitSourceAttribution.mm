@@ -1,22 +1,22 @@
 @interface EQKitSourceAttribution
-- (BOOL)isEqual:(id)a3;
-- (EQKitSourceAttribution)initWithSource:(id)a3 range:(_NSRange)a4;
+- (BOOL)isEqual:(id)equal;
+- (EQKitSourceAttribution)initWithSource:(id)source range:(_NSRange)range;
 - (_NSRange)range;
 - (void)dealloc;
 @end
 
 @implementation EQKitSourceAttribution
 
-- (EQKitSourceAttribution)initWithSource:(id)a3 range:(_NSRange)a4
+- (EQKitSourceAttribution)initWithSource:(id)source range:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v9.receiver = self;
   v9.super_class = EQKitSourceAttribution;
   v7 = [(EQKitSourceAttribution *)&v9 init];
   if (v7)
   {
-    v7->mSource = [a3 copy];
+    v7->mSource = [source copy];
     v7->mRange.location = location;
     v7->mRange.length = length;
   }
@@ -31,24 +31,24 @@
   [(EQKitSourceAttribution *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     LOBYTE(v5) = 1;
   }
 
   else
   {
-    v5 = [a3 isMemberOfClass:objc_opt_class()];
+    v5 = [equal isMemberOfClass:objc_opt_class()];
     if (v5)
     {
-      if (self->mRange.location == [a3 range] && self->mRange.length == v6)
+      if (self->mRange.location == [equal range] && self->mRange.length == v6)
       {
         mSource = self->mSource;
-        v8 = [a3 source];
+        source = [equal source];
 
-        LOBYTE(v5) = [(NSString *)mSource isEqualToString:v8];
+        LOBYTE(v5) = [(NSString *)mSource isEqualToString:source];
       }
 
       else

@@ -6,8 +6,8 @@
 
 - (id)description
 {
-  v3 = [(FigCaptureConnectionConfiguration *)self underlyingDeviceType];
-  if (v3 == [(FigCaptureSourceConfiguration *)[(FigCaptureConnectionConfiguration *)self sourceConfiguration] sourceDeviceType])
+  underlyingDeviceType = [(FigCaptureConnectionConfiguration *)self underlyingDeviceType];
+  if (underlyingDeviceType == [(FigCaptureSourceConfiguration *)[(FigCaptureConnectionConfiguration *)self sourceConfiguration] sourceDeviceType])
   {
     v4 = &stru_1F216A3D0;
   }

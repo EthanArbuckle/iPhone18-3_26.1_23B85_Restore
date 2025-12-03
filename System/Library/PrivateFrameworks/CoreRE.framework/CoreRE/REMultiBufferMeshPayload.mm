@@ -1,55 +1,55 @@
 @interface REMultiBufferMeshPayload
 - (FixedInlineArray<unsigned)payloadBufferSizes;
-- (MeshPayloadBuffers)meshPayloadBuffersWithDevice:(SEL)a3;
-- (REMultiBufferMeshPayload)initWithCoder:(id)a3;
-- (REMultiBufferMeshPayload)initWithPayload:(id)a3 privatePayload:(id)a4 parts:(id)a5 models:(id)a6 instances:(id)a7 skeletons:(id)a8 isLimitedRenderAsset:(BOOL)a9;
+- (MeshPayloadBuffers)meshPayloadBuffersWithDevice:(SEL)device;
+- (REMultiBufferMeshPayload)initWithCoder:(id)coder;
+- (REMultiBufferMeshPayload)initWithPayload:(id)payload privatePayload:(id)privatePayload parts:(id)parts models:(id)models instances:(id)instances skeletons:(id)skeletons isLimitedRenderAsset:(BOOL)asset;
 - (unint64_t)estimatePayloadContainerOverheadSize;
 - (unint64_t)totalPayloadSize;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation REMultiBufferMeshPayload
 
-- (REMultiBufferMeshPayload)initWithCoder:(id)a3
+- (REMultiBufferMeshPayload)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v42.receiver = self;
     v42.super_class = REMultiBufferMeshPayload;
-    self = [(RESharedResourcePayload *)&v42 initWithCoder:v4];
+    self = [(RESharedResourcePayload *)&v42 initWithCoder:coderCopy];
     if (self)
     {
       v6 = MEMORY[0x1E695DFD8];
       v7 = objc_opt_class();
       v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-      v9 = [v4 decodeObjectOfClasses:v8 forKey:@"parts"];
+      v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"parts"];
       parts = self->_parts;
       self->_parts = v9;
 
       v11 = MEMORY[0x1E695DFD8];
       v12 = objc_opt_class();
       v13 = [v11 setWithObjects:{v12, objc_opt_class(), 0}];
-      v14 = [v4 decodeObjectOfClasses:v13 forKey:@"models"];
+      v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"models"];
       models = self->_models;
       self->_models = v14;
 
       v16 = MEMORY[0x1E695DFD8];
       v17 = objc_opt_class();
       v18 = [v16 setWithObjects:{v17, objc_opt_class(), 0}];
-      v19 = [v4 decodeObjectOfClasses:v18 forKey:@"instances"];
+      v19 = [coderCopy decodeObjectOfClasses:v18 forKey:@"instances"];
       instances = self->_instances;
       self->_instances = v19;
 
       v21 = MEMORY[0x1E695DFD8];
       v22 = objc_opt_class();
       v23 = [v21 setWithObjects:{v22, objc_opt_class(), 0}];
-      v24 = [v4 decodeObjectOfClasses:v23 forKey:@"skeletons"];
+      v24 = [coderCopy decodeObjectOfClasses:v23 forKey:@"skeletons"];
       skeletons = self->_skeletons;
       self->_skeletons = v24;
 
-      v26 = [v4 decodeXPCObjectOfType:MEMORY[0x1E69E9E80] forKey:@"private"];
+      v26 = [coderCopy decodeXPCObjectOfType:MEMORY[0x1E69E9E80] forKey:@"private"];
       if (v26)
       {
         v27 = DRMemoryResourceCreateFromXPC();
@@ -63,7 +63,7 @@
       privatePayload = self->_privatePayload;
       self->_privatePayload = v27;
 
-      v30 = [v4 decodeXPCObjectOfType:MEMORY[0x1E69E9E80] forKey:@"shared"];
+      v30 = [coderCopy decodeXPCObjectOfType:MEMORY[0x1E69E9E80] forKey:@"shared"];
       if (v30)
       {
         v31 = DRMemoryResourceCreateFromXPC();
@@ -77,9 +77,9 @@
       sharedPayload = self->_sharedPayload;
       self->_sharedPayload = v31;
 
-      self->_isLimitedRenderAsset = [v4 decodeBoolForKey:@"isLimitedRenderAsset"];
+      self->_isLimitedRenderAsset = [coderCopy decodeBoolForKey:@"isLimitedRenderAsset"];
         v28 = {;
-        [v4 failWithError:v28];
+        [coderCopy failWithError:v28];
         goto LABEL_22;
       }
 
@@ -87,7 +87,7 @@
       {
         if ((DRMemoryResourceIsPrivateToProcess() & 1) == 0)
           v28 = {;
-          [v4 failWithError:v28];
+          [coderCopy failWithError:v28];
           goto LABEL_22;
         }
 
@@ -104,59 +104,59 @@
         v41 = DRMemoryResourceGetLength();
         {
           v28 = LABEL_20:;
-          [v4 failWithError:v28];
+          [coderCopy failWithError:v28];
           goto LABEL_22;
         }
       }
     }
 
     self = self;
-    v38 = self;
+    selfCopy = self;
     goto LABEL_23;
   }
   v28 = ;
-  [v4 failWithError:v28];
+  [coderCopy failWithError:v28];
 LABEL_22:
 
-  v38 = 0;
+  selfCopy = 0;
 LABEL_23:
 
-  return v38;
+  return selfCopy;
 }
 
-- (REMultiBufferMeshPayload)initWithPayload:(id)a3 privatePayload:(id)a4 parts:(id)a5 models:(id)a6 instances:(id)a7 skeletons:(id)a8 isLimitedRenderAsset:(BOOL)a9
+- (REMultiBufferMeshPayload)initWithPayload:(id)payload privatePayload:(id)privatePayload parts:(id)parts models:(id)models instances:(id)instances skeletons:(id)skeletons isLimitedRenderAsset:(BOOL)asset
 {
-  v33 = a3;
-  v32 = a4;
-  v36 = a5;
-  v35 = a6;
-  v16 = a7;
-  v34 = a8;
+  payloadCopy = payload;
+  privatePayloadCopy = privatePayload;
+  partsCopy = parts;
+  modelsCopy = models;
+  instancesCopy = instances;
+  skeletonsCopy = skeletons;
   v38.receiver = self;
   v38.super_class = REMultiBufferMeshPayload;
   v17 = [(RESharedResourcePayload *)&v38 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_privatePayload, a4);
-    objc_storeStrong(&v18->_sharedPayload, a3);
-    v19 = [v36 copy];
+    objc_storeStrong(&v17->_privatePayload, privatePayload);
+    objc_storeStrong(&v18->_sharedPayload, payload);
+    v19 = [partsCopy copy];
     parts = v18->_parts;
     v18->_parts = v19;
 
-    v21 = [v35 copy];
+    v21 = [modelsCopy copy];
     models = v18->_models;
     v18->_models = v21;
 
-    v23 = [v16 copy];
+    v23 = [instancesCopy copy];
     instances = v18->_instances;
     v18->_instances = v23;
 
-    v25 = [v34 copy];
+    v25 = [skeletonsCopy copy];
     skeletons = v18->_skeletons;
     v18->_skeletons = v25;
 
-    v18->_isLimitedRenderAsset = a9;
+    v18->_isLimitedRenderAsset = asset;
     privatePayload = v18->_privatePayload;
     if (privatePayload)
     {
@@ -212,9 +212,9 @@ LABEL_18:
   return v30;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   if (isKindOfClass)
@@ -222,20 +222,20 @@ LABEL_18:
     if (self->_privatePayload)
     {
       v6 = DRMemoryResourceCopyToXPC();
-      [v4 encodeXPCObject:v6 forKey:@"private"];
+      [coderCopy encodeXPCObject:v6 forKey:@"private"];
     }
 
     if (self->_sharedPayload)
     {
       v7 = DRMemoryResourceCopyToXPC();
-      [v4 encodeXPCObject:v7 forKey:@"shared"];
+      [coderCopy encodeXPCObject:v7 forKey:@"shared"];
     }
 
-    [v4 encodeObject:self->_parts forKey:@"parts"];
-    [v4 encodeObject:self->_models forKey:@"models"];
-    [v4 encodeObject:self->_instances forKey:@"instances"];
-    [v4 encodeObject:self->_skeletons forKey:@"skeletons"];
-    [v4 encodeBool:self->_isLimitedRenderAsset forKey:@"isLimitedRenderAsset"];
+    [coderCopy encodeObject:self->_parts forKey:@"parts"];
+    [coderCopy encodeObject:self->_models forKey:@"models"];
+    [coderCopy encodeObject:self->_instances forKey:@"instances"];
+    [coderCopy encodeObject:self->_skeletons forKey:@"skeletons"];
+    [coderCopy encodeBool:self->_isLimitedRenderAsset forKey:@"isLimitedRenderAsset"];
   }
 
   else
@@ -249,7 +249,7 @@ LABEL_18:
   }
 }
 
-- (MeshPayloadBuffers)meshPayloadBuffersWithDevice:(SEL)a3
+- (MeshPayloadBuffers)meshPayloadBuffersWithDevice:(SEL)device
 {
   v6 = a4;
   {
@@ -514,7 +514,7 @@ LABEL_59:
   v60 = *MEMORY[0x1E69E9840];
   v3 = objc_opt_class();
   InstanceSize = class_getInstanceSize(v3);
-  v4 = self;
+  selfCopy = self;
   v5 = objc_opt_class();
   v39 = class_getInstanceSize(v5);
   v6 = objc_opt_class();
@@ -523,24 +523,24 @@ LABEL_59:
   v9 = class_getInstanceSize(v8);
   v10 = objc_opt_class();
   v11 = class_getInstanceSize(v10);
-  v12 = [(REMultiBufferMeshPayload *)v4 parts];
-  v13 = [v12 count];
+  parts = [(REMultiBufferMeshPayload *)selfCopy parts];
+  v13 = [parts count];
 
-  v14 = [(REMultiBufferMeshPayload *)v4 models];
-  v15 = [v14 count];
+  models = [(REMultiBufferMeshPayload *)selfCopy models];
+  v15 = [models count];
 
-  v16 = [(REMultiBufferMeshPayload *)v4 instances];
-  v17 = [v16 count];
+  instances = [(REMultiBufferMeshPayload *)selfCopy instances];
+  v17 = [instances count];
 
-  v18 = [(REMultiBufferMeshPayload *)v4 skeletons];
-  v19 = [v18 count];
+  skeletons = [(REMultiBufferMeshPayload *)selfCopy skeletons];
+  v19 = [skeletons count];
 
   v54 = 0u;
   v55 = 0u;
   v52 = 0u;
   v53 = 0u;
-  v20 = [(REMultiBufferMeshPayload *)v4 parts];
-  v21 = [v20 countByEnumeratingWithState:&v52 objects:v59 count:16];
+  parts2 = [(REMultiBufferMeshPayload *)selfCopy parts];
+  v21 = [parts2 countByEnumeratingWithState:&v52 objects:v59 count:16];
   v22 = v7 + v39 + v9 + v11 + 8 * (v15 + v13 + v17) + 8 * v19;
   if (v21)
   {
@@ -552,14 +552,14 @@ LABEL_59:
       {
         if (*v53 != v23)
         {
-          objc_enumerationMutation(v20);
+          objc_enumerationMutation(parts2);
         }
 
         v22 += [*(*(&v52 + 1) + 8 * v24++) estimateContainerSize];
       }
 
       while (v21 != v24);
-      v21 = [v20 countByEnumeratingWithState:&v52 objects:v59 count:16];
+      v21 = [parts2 countByEnumeratingWithState:&v52 objects:v59 count:16];
     }
 
     while (v21);
@@ -569,8 +569,8 @@ LABEL_59:
   v51 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v25 = [(REMultiBufferMeshPayload *)v4 models];
-  v26 = [v25 countByEnumeratingWithState:&v48 objects:v58 count:16];
+  models2 = [(REMultiBufferMeshPayload *)selfCopy models];
+  v26 = [models2 countByEnumeratingWithState:&v48 objects:v58 count:16];
   if (v26)
   {
     v27 = *v49;
@@ -581,14 +581,14 @@ LABEL_59:
       {
         if (*v49 != v27)
         {
-          objc_enumerationMutation(v25);
+          objc_enumerationMutation(models2);
         }
 
         v22 += [*(*(&v48 + 1) + 8 * v28++) estimateContainerSize];
       }
 
       while (v26 != v28);
-      v26 = [v25 countByEnumeratingWithState:&v48 objects:v58 count:16];
+      v26 = [models2 countByEnumeratingWithState:&v48 objects:v58 count:16];
     }
 
     while (v26);
@@ -598,8 +598,8 @@ LABEL_59:
   v47 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v29 = [(REMultiBufferMeshPayload *)v4 instances];
-  v30 = [v29 countByEnumeratingWithState:&v44 objects:v57 count:16];
+  instances2 = [(REMultiBufferMeshPayload *)selfCopy instances];
+  v30 = [instances2 countByEnumeratingWithState:&v44 objects:v57 count:16];
   if (v30)
   {
     v31 = *v45;
@@ -610,14 +610,14 @@ LABEL_59:
       {
         if (*v45 != v31)
         {
-          objc_enumerationMutation(v29);
+          objc_enumerationMutation(instances2);
         }
 
         v22 += [*(*(&v44 + 1) + 8 * v32++) estimateContainerSize];
       }
 
       while (v30 != v32);
-      v30 = [v29 countByEnumeratingWithState:&v44 objects:v57 count:16];
+      v30 = [instances2 countByEnumeratingWithState:&v44 objects:v57 count:16];
     }
 
     while (v30);
@@ -627,8 +627,8 @@ LABEL_59:
   v43 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v33 = [(REMultiBufferMeshPayload *)v4 skeletons];
-  v34 = [v33 countByEnumeratingWithState:&v40 objects:v56 count:16];
+  skeletons2 = [(REMultiBufferMeshPayload *)selfCopy skeletons];
+  v34 = [skeletons2 countByEnumeratingWithState:&v40 objects:v56 count:16];
   if (v34)
   {
     v35 = *v41;
@@ -639,14 +639,14 @@ LABEL_59:
       {
         if (*v41 != v35)
         {
-          objc_enumerationMutation(v33);
+          objc_enumerationMutation(skeletons2);
         }
 
         v22 += [*(*(&v40 + 1) + 8 * v36++) estimateContainerSize];
       }
 
       while (v34 != v36);
-      v34 = [v33 countByEnumeratingWithState:&v40 objects:v56 count:16];
+      v34 = [skeletons2 countByEnumeratingWithState:&v40 objects:v56 count:16];
     }
 
     while (v34);

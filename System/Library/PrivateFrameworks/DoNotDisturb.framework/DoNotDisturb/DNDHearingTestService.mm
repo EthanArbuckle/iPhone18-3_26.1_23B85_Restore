@@ -1,13 +1,13 @@
 @interface DNDHearingTestService
-+ (id)serviceForClientIdentifier:(id)a3;
-- (id)_initWithClientIdentifier:(id)a3;
++ (id)serviceForClientIdentifier:(id)identifier;
+- (id)_initWithClientIdentifier:(id)identifier;
 @end
 
 @implementation DNDHearingTestService
 
-+ (id)serviceForClientIdentifier:(id)a3
++ (id)serviceForClientIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   if (serviceForClientIdentifier__onceToken_6 != -1)
   {
     +[DNDHearingTestService serviceForClientIdentifier:];
@@ -24,10 +24,10 @@
   block[1] = 3221225472;
   block[2] = __52__DNDHearingTestService_serviceForClientIdentifier___block_invoke_2;
   block[3] = &unk_27843A080;
-  v10 = v4;
+  v10 = identifierCopy;
   v11 = &v13;
-  v12 = a1;
-  v6 = v4;
+  selfCopy = self;
+  v6 = identifierCopy;
   dispatch_sync(v5, block);
   v7 = v14[5];
 
@@ -81,15 +81,15 @@ void __54__DNDHearingTestService_setHearingTestIsActive_error___block_invoke(uin
   *(v6 + 40) = v5;
 }
 
-- (id)_initWithClientIdentifier:(id)a3
+- (id)_initWithClientIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v12.receiver = self;
   v12.super_class = DNDHearingTestService;
   v5 = [(DNDHearingTestService *)&v12 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     clientIdentifier = v5->_clientIdentifier;
     v5->_clientIdentifier = v6;
 

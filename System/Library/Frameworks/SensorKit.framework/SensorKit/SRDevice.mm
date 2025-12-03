@@ -1,32 +1,32 @@
 @interface SRDevice
 + (SRDevice)currentDevice;
-- (BOOL)isEqual:(id)a3;
-- (SRDevice)initWithCoder:(id)a3;
-- (SRDevice)initWithDeviceDetails:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (SRDevice)initWithCoder:(id)coder;
+- (SRDevice)initWithDeviceDetails:(id)details;
 - (id)description;
 - (id)sr_dictionaryRepresentation;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SRDevice
 
-- (SRDevice)initWithDeviceDetails:(id)a3
+- (SRDevice)initWithDeviceDetails:(id)details
 {
   v6.receiver = self;
   v6.super_class = SRDevice;
   v4 = [(SRDevice *)&v6 init];
   if (v4)
   {
-    v4->_name = [a3 objectForKeyedSubscript:0x1F48BF380];
-    v4->_model = [a3 objectForKeyedSubscript:0x1F48BF320];
-    v4->_systemName = [a3 objectForKeyedSubscript:0x1F48BF340];
-    v4->_systemVersion = [a3 objectForKeyedSubscript:0x1F48BF360];
-    v4->_buildVersion = [a3 objectForKeyedSubscript:0x1F48BF3A0];
-    v4->_deviceIdentifier = [a3 objectForKeyedSubscript:0x1F48BF300];
-    v4->_internalProductType = [a3 objectForKeyedSubscript:0x1F48BF3E0];
-    v4->_deviceEnclosureMaterial = [objc_msgSend(a3 objectForKeyedSubscript:{0x1F48BF400), "integerValue"}];
+    v4->_name = [details objectForKeyedSubscript:0x1F48BF380];
+    v4->_model = [details objectForKeyedSubscript:0x1F48BF320];
+    v4->_systemName = [details objectForKeyedSubscript:0x1F48BF340];
+    v4->_systemVersion = [details objectForKeyedSubscript:0x1F48BF360];
+    v4->_buildVersion = [details objectForKeyedSubscript:0x1F48BF3A0];
+    v4->_deviceIdentifier = [details objectForKeyedSubscript:0x1F48BF300];
+    v4->_internalProductType = [details objectForKeyedSubscript:0x1F48BF3E0];
+    v4->_deviceEnclosureMaterial = [objc_msgSend(details objectForKeyedSubscript:{0x1F48BF400), "integerValue"}];
   }
 
   return v4;
@@ -97,12 +97,12 @@ SRDevice *__25__SRDevice_currentDevice__block_invoke()
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
-    LOBYTE(v5) = 1;
-    return v5;
+    LOBYTE(deviceIdentifier) = 1;
+    return deviceIdentifier;
   }
 
   objc_opt_class();
@@ -113,7 +113,7 @@ SRDevice *__25__SRDevice_currentDevice__block_invoke()
 
   if (!self->_deviceIdentifier)
   {
-    if (![a3 deviceIdentifier])
+    if (![equal deviceIdentifier])
     {
       if (!self->_deviceIdentifier)
       {
@@ -124,15 +124,15 @@ SRDevice *__25__SRDevice_currentDevice__block_invoke()
     }
 
 LABEL_9:
-    LOBYTE(v5) = 0;
-    return v5;
+    LOBYTE(deviceIdentifier) = 0;
+    return deviceIdentifier;
   }
 
 LABEL_4:
-  v5 = [a3 deviceIdentifier];
-  if (!v5)
+  deviceIdentifier = [equal deviceIdentifier];
+  if (!deviceIdentifier)
   {
-    return v5;
+    return deviceIdentifier;
   }
 
   deviceIdentifier = self->_deviceIdentifier;
@@ -142,36 +142,36 @@ LABEL_4:
   }
 
 LABEL_12:
-  if ([a3 deviceIdentifier])
+  if ([equal deviceIdentifier])
   {
     deviceIdentifier = self->_deviceIdentifier;
 LABEL_14:
-    v7 = [a3 deviceIdentifier];
+    deviceIdentifier2 = [equal deviceIdentifier];
 
-    LOBYTE(v5) = [(NSString *)deviceIdentifier isEqualToString:v7];
-    return v5;
+    LOBYTE(deviceIdentifier) = [(NSString *)deviceIdentifier isEqualToString:deviceIdentifier2];
+    return deviceIdentifier;
   }
 
-  LODWORD(v5) = -[NSString isEqualToString:](self->_name, "isEqualToString:", [a3 name]);
-  if (v5)
+  LODWORD(deviceIdentifier) = -[NSString isEqualToString:](self->_name, "isEqualToString:", [equal name]);
+  if (deviceIdentifier)
   {
-    LODWORD(v5) = -[NSString isEqualToString:](self->_model, "isEqualToString:", [a3 model]);
-    if (v5)
+    LODWORD(deviceIdentifier) = -[NSString isEqualToString:](self->_model, "isEqualToString:", [equal model]);
+    if (deviceIdentifier)
     {
-      LODWORD(v5) = -[NSString isEqualToString:](self->_systemName, "isEqualToString:", [a3 systemName]);
-      if (v5)
+      LODWORD(deviceIdentifier) = -[NSString isEqualToString:](self->_systemName, "isEqualToString:", [equal systemName]);
+      if (deviceIdentifier)
       {
-        LODWORD(v5) = -[NSString isEqualToString:](self->_systemVersion, "isEqualToString:", [a3 systemVersion]);
-        if (v5)
+        LODWORD(deviceIdentifier) = -[NSString isEqualToString:](self->_systemVersion, "isEqualToString:", [equal systemVersion]);
+        if (deviceIdentifier)
         {
-          LODWORD(v5) = -[NSString isEqualToString:](self->_buildVersion, "isEqualToString:", [a3 buildVersion]);
-          if (v5)
+          LODWORD(deviceIdentifier) = -[NSString isEqualToString:](self->_buildVersion, "isEqualToString:", [equal buildVersion]);
+          if (deviceIdentifier)
           {
-            LODWORD(v5) = -[NSString isEqualToString:](self->_internalProductType, "isEqualToString:", [a3 productType]);
-            if (v5)
+            LODWORD(deviceIdentifier) = -[NSString isEqualToString:](self->_internalProductType, "isEqualToString:", [equal productType]);
+            if (deviceIdentifier)
             {
               deviceEnclosureMaterial = self->_deviceEnclosureMaterial;
-              LOBYTE(v5) = deviceEnclosureMaterial == [a3 deviceEnclosureMaterial];
+              LOBYTE(deviceIdentifier) = deviceEnclosureMaterial == [equal deviceEnclosureMaterial];
             }
           }
         }
@@ -179,7 +179,7 @@ LABEL_14:
     }
   }
 
-  return v5;
+  return deviceIdentifier;
 }
 
 - (unint64_t)hash
@@ -210,31 +210,31 @@ LABEL_14:
   return [v3 stringWithFormat:@"%@: %@, %@, %@ %@", NSStringFromClass(v4), self->_name, self->_model, self->_systemName, self->_systemVersion];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeObject:self->_name forKey:0x1F48BF380];
-  [a3 encodeObject:self->_model forKey:0x1F48BF320];
-  [a3 encodeObject:self->_systemName forKey:0x1F48BF340];
-  [a3 encodeObject:self->_systemVersion forKey:0x1F48BF360];
-  [a3 encodeObject:self->_buildVersion forKey:0x1F48BF3A0];
-  [a3 encodeObject:self->_deviceIdentifier forKey:0x1F48BF300];
-  [a3 encodeObject:self->_internalProductType forKey:0x1F48BF3E0];
+  [coder encodeObject:self->_name forKey:0x1F48BF380];
+  [coder encodeObject:self->_model forKey:0x1F48BF320];
+  [coder encodeObject:self->_systemName forKey:0x1F48BF340];
+  [coder encodeObject:self->_systemVersion forKey:0x1F48BF360];
+  [coder encodeObject:self->_buildVersion forKey:0x1F48BF3A0];
+  [coder encodeObject:self->_deviceIdentifier forKey:0x1F48BF300];
+  [coder encodeObject:self->_internalProductType forKey:0x1F48BF3E0];
   deviceEnclosureMaterial = self->_deviceEnclosureMaterial;
 
-  [a3 encodeInteger:deviceEnclosureMaterial forKey:0x1F48BF400];
+  [coder encodeInteger:deviceEnclosureMaterial forKey:0x1F48BF400];
 }
 
-- (SRDevice)initWithCoder:(id)a3
+- (SRDevice)initWithCoder:(id)coder
 {
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  [v5 setObject:objc_msgSend(a3 forKeyedSubscript:{"decodeObjectOfClass:forKey:", objc_opt_class(), 0x1F48BF380), 0x1F48BF380}];
-  [v5 setObject:objc_msgSend(a3 forKeyedSubscript:{"decodeObjectOfClass:forKey:", objc_opt_class(), 0x1F48BF320), 0x1F48BF320}];
-  [v5 setObject:objc_msgSend(a3 forKeyedSubscript:{"decodeObjectOfClass:forKey:", objc_opt_class(), 0x1F48BF340), 0x1F48BF340}];
-  [v5 setObject:objc_msgSend(a3 forKeyedSubscript:{"decodeObjectOfClass:forKey:", objc_opt_class(), 0x1F48BF360), 0x1F48BF360}];
-  [v5 setObject:objc_msgSend(a3 forKeyedSubscript:{"decodeObjectOfClass:forKey:", objc_opt_class(), 0x1F48BF3A0), 0x1F48BF3A0}];
-  [v5 setObject:objc_msgSend(a3 forKeyedSubscript:{"decodeObjectOfClass:forKey:", objc_opt_class(), 0x1F48BF300), 0x1F48BF300}];
-  [v5 setObject:objc_msgSend(a3 forKeyedSubscript:{"decodeObjectOfClass:forKey:", objc_opt_class(), 0x1F48BF3E0), 0x1F48BF3E0}];
-  [v5 setObject:objc_msgSend(objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInteger:", objc_msgSend(a3, "decodeIntegerForKey:", 0x1F48BF400)), "stringValue"), 0x1F48BF400}];
+  [v5 setObject:objc_msgSend(coder forKeyedSubscript:{"decodeObjectOfClass:forKey:", objc_opt_class(), 0x1F48BF380), 0x1F48BF380}];
+  [v5 setObject:objc_msgSend(coder forKeyedSubscript:{"decodeObjectOfClass:forKey:", objc_opt_class(), 0x1F48BF320), 0x1F48BF320}];
+  [v5 setObject:objc_msgSend(coder forKeyedSubscript:{"decodeObjectOfClass:forKey:", objc_opt_class(), 0x1F48BF340), 0x1F48BF340}];
+  [v5 setObject:objc_msgSend(coder forKeyedSubscript:{"decodeObjectOfClass:forKey:", objc_opt_class(), 0x1F48BF360), 0x1F48BF360}];
+  [v5 setObject:objc_msgSend(coder forKeyedSubscript:{"decodeObjectOfClass:forKey:", objc_opt_class(), 0x1F48BF3A0), 0x1F48BF3A0}];
+  [v5 setObject:objc_msgSend(coder forKeyedSubscript:{"decodeObjectOfClass:forKey:", objc_opt_class(), 0x1F48BF300), 0x1F48BF300}];
+  [v5 setObject:objc_msgSend(coder forKeyedSubscript:{"decodeObjectOfClass:forKey:", objc_opt_class(), 0x1F48BF3E0), 0x1F48BF3E0}];
+  [v5 setObject:objc_msgSend(objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInteger:", objc_msgSend(coder, "decodeIntegerForKey:", 0x1F48BF400)), "stringValue"), 0x1F48BF400}];
   v6 = [(SRDevice *)self initWithDeviceDetails:v5];
 
   return v6;

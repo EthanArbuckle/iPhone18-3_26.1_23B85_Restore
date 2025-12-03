@@ -3,26 +3,26 @@
 - (GKTurnBasedInviteViewControllerDelegate)delegate;
 - (int64_t)automatchParticipantStatus;
 - (void)cancel;
-- (void)cleanupStateForCancelOrErrorWithHandler:(id)a3;
-- (void)createGameWithPlayersToInvite:(id)a3 forSharing:(BOOL)a4 handler:(id)a5;
+- (void)cleanupStateForCancelOrErrorWithHandler:(id)handler;
+- (void)createGameWithPlayersToInvite:(id)invite forSharing:(BOOL)sharing handler:(id)handler;
 - (void)didClickCancelForServiceUnavailableAlert;
 - (void)didInviteContactPlayers;
-- (void)finishWithError:(id)a3;
-- (void)finishWithMatchID:(id)a3;
-- (void)handleNewParticipantCount:(int64_t)a3;
+- (void)finishWithError:(id)error;
+- (void)finishWithMatchID:(id)d;
+- (void)handleNewParticipantCount:(int64_t)count;
 - (void)inviteFriendsButtonPressed;
-- (void)invitePlayers:(id)a3;
+- (void)invitePlayers:(id)players;
 - (void)playNow;
-- (void)removeCurrentMatchAndSetFlagIfNotLoaded:(BOOL)a3 withHandler:(id)a4;
-- (void)sendInvitesToContactPlayers:(id)a3 legacyPlayers:(id)a4 source:(unint64_t)a5 completion:(id)a6;
-- (void)setInvitesFailedWithError:(id)a3;
-- (void)setMode:(int64_t)a3;
+- (void)removeCurrentMatchAndSetFlagIfNotLoaded:(BOOL)loaded withHandler:(id)handler;
+- (void)sendInvitesToContactPlayers:(id)players legacyPlayers:(id)legacyPlayers source:(unint64_t)source completion:(id)completion;
+- (void)setInvitesFailedWithError:(id)error;
+- (void)setMode:(int64_t)mode;
 - (void)startGameButtonPressed;
 - (void)updateStartGameButtonTitle;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation GKTurnBasedInviteViewController
@@ -32,44 +32,44 @@
   v4.receiver = self;
   v4.super_class = GKTurnBasedInviteViewController;
   [(GKMultiplayerViewController *)&v4 viewDidLoad];
-  v3 = [(GKMultiplayerViewController *)self multiplayerDataSource];
-  [v3 setAutomatchAddedToMinInHeader:1];
+  multiplayerDataSource = [(GKMultiplayerViewController *)self multiplayerDataSource];
+  [multiplayerDataSource setAutomatchAddedToMinInHeader:1];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = GKTurnBasedInviteViewController;
-  [(GKMultiplayerViewController *)&v6 viewWillAppear:a3];
-  v4 = [MEMORY[0x277D0BFA8] reporter];
-  v5 = [(GKTurnBasedInviteViewController *)self pageId];
-  [v4 recordPageWithID:v5 pageContext:@"turnBasedGame" pageType:@"multiplayer"];
+  [(GKMultiplayerViewController *)&v6 viewWillAppear:appear];
+  reporter = [MEMORY[0x277D0BFA8] reporter];
+  pageId = [(GKTurnBasedInviteViewController *)self pageId];
+  [reporter recordPageWithID:pageId pageContext:@"turnBasedGame" pageType:@"multiplayer"];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = GKTurnBasedInviteViewController;
-  [(GKMultiplayerViewController *)&v6 viewDidAppear:a3];
-  v4 = [(GKMultiplayerViewController *)self originalMatchRequest];
-  v5 = [v4 validateForTurnBased];
+  [(GKMultiplayerViewController *)&v6 viewDidAppear:appear];
+  originalMatchRequest = [(GKMultiplayerViewController *)self originalMatchRequest];
+  validateForTurnBased = [originalMatchRequest validateForTurnBased];
 
-  if (v5)
+  if (validateForTurnBased)
   {
-    [(GKTurnBasedInviteViewController *)self finishWithError:v5];
+    [(GKTurnBasedInviteViewController *)self finishWithError:validateForTurnBased];
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v7.receiver = self;
   v7.super_class = GKTurnBasedInviteViewController;
-  [(GKCollectionViewController *)&v7 viewWillDisappear:a3];
+  [(GKCollectionViewController *)&v7 viewWillDisappear:disappear];
   if (![(GKTurnBasedInviteViewController *)self mode])
   {
-    v4 = [(GKTurnBasedInviteViewController *)self navigationController];
-    v5 = [v4 viewControllers];
-    v6 = [v5 containsObject:self];
+    navigationController = [(GKTurnBasedInviteViewController *)self navigationController];
+    viewControllers = [navigationController viewControllers];
+    v6 = [viewControllers containsObject:self];
 
     if ((v6 & 1) == 0)
     {
@@ -78,14 +78,14 @@
   }
 }
 
-- (void)cleanupStateForCancelOrErrorWithHandler:(id)a3
+- (void)cleanupStateForCancelOrErrorWithHandler:(id)handler
 {
   v4 = MEMORY[0x277CCAB98];
-  v6 = a3;
-  v5 = [v4 defaultCenter];
-  [v5 removeObserver:self];
+  handlerCopy = handler;
+  defaultCenter = [v4 defaultCenter];
+  [defaultCenter removeObserver:self];
 
-  [(GKTurnBasedInviteViewController *)self removeCurrentMatchAndSetFlagIfNotLoaded:1 withHandler:v6];
+  [(GKTurnBasedInviteViewController *)self removeCurrentMatchAndSetFlagIfNotLoaded:1 withHandler:handlerCopy];
 }
 
 - (void)cancel
@@ -104,23 +104,23 @@ void __41__GKTurnBasedInviteViewController_cancel__block_invoke(uint64_t a1)
   [v2 turnBasedInviteViewControllerWasCancelled:*(a1 + 32)];
 }
 
-- (void)finishWithMatchID:(id)a3
+- (void)finishWithMatchID:(id)d
 {
-  v4 = a3;
-  v5 = [(GKTurnBasedInviteViewController *)self delegate];
-  [v5 turnBasedInviteViewController:self didCreateMatchID:v4];
+  dCopy = d;
+  delegate = [(GKTurnBasedInviteViewController *)self delegate];
+  [delegate turnBasedInviteViewController:self didCreateMatchID:dCopy];
 }
 
-- (void)finishWithError:(id)a3
+- (void)finishWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __51__GKTurnBasedInviteViewController_finishWithError___block_invoke;
   v6[3] = &unk_279669E48;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = errorCopy;
+  v5 = errorCopy;
   [(GKTurnBasedInviteViewController *)self cleanupStateForCancelOrErrorWithHandler:v6];
 }
 
@@ -132,27 +132,27 @@ void __51__GKTurnBasedInviteViewController_finishWithError___block_invoke(uint64
 
 - (void)didClickCancelForServiceUnavailableAlert
 {
-  v3 = [(GKTurnBasedInviteViewController *)self delegate];
+  delegate = [(GKTurnBasedInviteViewController *)self delegate];
 
-  if (v3)
+  if (delegate)
   {
-    v4 = [(GKTurnBasedInviteViewController *)self delegate];
-    [v4 turnBasedInviteViewControllerWasCancelled:self];
+    delegate2 = [(GKTurnBasedInviteViewController *)self delegate];
+    [delegate2 turnBasedInviteViewControllerWasCancelled:self];
   }
 }
 
-- (void)setMode:(int64_t)a3
+- (void)setMode:(int64_t)mode
 {
-  if (self->_mode != a3)
+  if (self->_mode != mode)
   {
-    self->_mode = a3;
-    if (a3 == 1 || a3 == 2)
+    self->_mode = mode;
+    if (mode == 1 || mode == 2)
     {
       [(GKMultiplayerViewController *)self setAddButtonEnabled:0];
-      v5 = [(GKMultiplayerViewController *)self multiplayerDataSource];
-      [v5 setRemovingEnabled:0];
+      multiplayerDataSource = [(GKMultiplayerViewController *)self multiplayerDataSource];
+      [multiplayerDataSource setRemovingEnabled:0];
 
-      v6 = GKGameCenterUIFrameworkBundle();
+      multiplayerDataSource2 = GKGameCenterUIFrameworkBundle();
       v13 = GKGetLocalizedStringFromTableInBundle();
       v7 = 0;
     }
@@ -161,39 +161,39 @@ void __51__GKTurnBasedInviteViewController_finishWithError___block_invoke(uint64
     {
       v7 = 1;
       [(GKMultiplayerViewController *)self setAddButtonEnabled:1];
-      v6 = [(GKMultiplayerViewController *)self multiplayerDataSource];
-      [v6 setRemovingEnabled:1];
+      multiplayerDataSource2 = [(GKMultiplayerViewController *)self multiplayerDataSource];
+      [multiplayerDataSource2 setRemovingEnabled:1];
       v13 = 0;
     }
 
-    v8 = [(GKTurnBasedInviteViewController *)self navigationItem];
-    v9 = [v8 leftBarButtonItem];
-    [v9 setEnabled:v7];
+    navigationItem = [(GKTurnBasedInviteViewController *)self navigationItem];
+    leftBarButtonItem = [navigationItem leftBarButtonItem];
+    [leftBarButtonItem setEnabled:v7];
 
-    v10 = [(GKMultiplayerViewController *)self footerView];
-    [v10 setFooterStatusString:v13];
+    footerView = [(GKMultiplayerViewController *)self footerView];
+    [footerView setFooterStatusString:v13];
 
-    v11 = [(GKMultiplayerViewController *)self footerView];
-    [v11 setStartGameButtonEnabled:v7];
+    footerView2 = [(GKMultiplayerViewController *)self footerView];
+    [footerView2 setStartGameButtonEnabled:v7];
 
     [(GKTurnBasedInviteViewController *)self updateStartGameButtonTitle];
-    v12 = [(GKMultiplayerViewController *)self multiplayerDataSource];
-    [v12 didChangeMode];
+    multiplayerDataSource3 = [(GKMultiplayerViewController *)self multiplayerDataSource];
+    [multiplayerDataSource3 didChangeMode];
   }
 }
 
-- (void)handleNewParticipantCount:(int64_t)a3
+- (void)handleNewParticipantCount:(int64_t)count
 {
   v9.receiver = self;
   v9.super_class = GKTurnBasedInviteViewController;
   [(GKMultiplayerViewController *)&v9 handleNewParticipantCount:?];
-  v5 = [(GKMultiplayerViewController *)self matchRequest];
-  [v5 setMaxPlayers:a3];
+  matchRequest = [(GKMultiplayerViewController *)self matchRequest];
+  [matchRequest setMaxPlayers:count];
 
-  v6 = [(GKMultiplayerViewController *)self matchRequest];
-  v7 = [v6 maxPlayers];
-  v8 = [(GKMultiplayerViewController *)self matchRequest];
-  [v8 setDefaultNumberOfPlayers:v7];
+  matchRequest2 = [(GKMultiplayerViewController *)self matchRequest];
+  maxPlayers = [matchRequest2 maxPlayers];
+  matchRequest3 = [(GKMultiplayerViewController *)self matchRequest];
+  [matchRequest3 setDefaultNumberOfPlayers:maxPlayers];
 }
 
 - (int64_t)automatchParticipantStatus
@@ -218,8 +218,8 @@ void __51__GKTurnBasedInviteViewController_finishWithError___block_invoke(uint64
 
     if (v5)
     {
-      v4 = [(GKMultiplayerViewController *)self footerView];
-      [v4 setPrimaryButtonTitle:v5];
+      footerView = [(GKMultiplayerViewController *)self footerView];
+      [footerView setPrimaryButtonTitle:v5];
     }
   }
 }
@@ -243,108 +243,108 @@ void __51__GKTurnBasedInviteViewController_finishWithError___block_invoke(uint64
     _os_log_impl(&dword_24DE53000, v6, OS_LOG_TYPE_INFO, "TBGame - startGameButtonPressed, self.mode = %@", &v11, 0xCu);
   }
 
-  v8 = [(GKMultiplayerViewController *)self multiplayerDataSource];
-  [v8 recordButtonClickAction:@"play" targetId:@"startGame"];
+  multiplayerDataSource = [(GKMultiplayerViewController *)self multiplayerDataSource];
+  [multiplayerDataSource recordButtonClickAction:@"play" targetId:@"startGame"];
 
-  v9 = [(GKTurnBasedInviteViewController *)self mode];
-  if (v9 == 1)
+  mode = [(GKTurnBasedInviteViewController *)self mode];
+  if (mode == 1)
   {
     [(GKTurnBasedInviteViewController *)self performActionsForButtonCancelCurrentMatching];
   }
 
-  else if (!v9)
+  else if (!mode)
   {
     [(GKMultiplayerViewController *)self performActionsForButtonStartGame];
-    v10 = [(GKMultiplayerViewController *)self footerView];
-    [v10 setStartGameButtonEnabled:0];
+    footerView = [(GKMultiplayerViewController *)self footerView];
+    [footerView setStartGameButtonEnabled:0];
   }
 }
 
 - (void)inviteFriendsButtonPressed
 {
-  v3 = [MEMORY[0x277D0BFA8] reporter];
-  v4 = [(GKTurnBasedInviteViewController *)self pageId];
-  [v3 recordClickWithAction:@"navigate" targetId:@"inviteFriends" targetType:@"button" pageId:v4 pageType:@"multiplayer"];
+  reporter = [MEMORY[0x277D0BFA8] reporter];
+  pageId = [(GKTurnBasedInviteViewController *)self pageId];
+  [reporter recordClickWithAction:@"navigate" targetId:@"inviteFriends" targetType:@"button" pageId:pageId pageType:@"multiplayer"];
 
   v5.receiver = self;
   v5.super_class = GKTurnBasedInviteViewController;
   [(GKMultiplayerViewController *)&v5 inviteFriendsButtonPressed];
 }
 
-- (void)createGameWithPlayersToInvite:(id)a3 forSharing:(BOOL)a4 handler:(id)a5
+- (void)createGameWithPlayersToInvite:(id)invite forSharing:(BOOL)sharing handler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  inviteCopy = invite;
+  handlerCopy = handler;
   v34[0] = MEMORY[0x277D85DD0];
   v34[1] = 3221225472;
   v34[2] = __84__GKTurnBasedInviteViewController_createGameWithPlayersToInvite_forSharing_handler___block_invoke;
   v34[3] = &unk_2796699A8;
   v34[4] = self;
   [MEMORY[0x277D0BFD0] named:@"TBGame - createGameWithPlayersToInvite" execute:v34];
-  v10 = [(GKMultiplayerViewController *)self matchRequest];
-  v11 = [v10 copy];
+  matchRequest = [(GKMultiplayerViewController *)self matchRequest];
+  v11 = [matchRequest copy];
 
-  if (a4)
+  if (sharing)
   {
-    v12 = [v11 internal];
-    [v12 setPreloadedMatch:1];
+    internal = [v11 internal];
+    [internal setPreloadedMatch:1];
   }
 
   else
   {
     [(GKTurnBasedInviteViewController *)self setMode:2];
-    v12 = [(GKMultiplayerViewController *)self multiplayerDataSource];
-    v13 = [(GKMultiplayerViewController *)self multiplayerDataSource];
-    v14 = [v13 currentPlayers];
-    [v12 setStatus:7 forPlayers:v14 complete:0];
+    internal = [(GKMultiplayerViewController *)self multiplayerDataSource];
+    multiplayerDataSource = [(GKMultiplayerViewController *)self multiplayerDataSource];
+    currentPlayers = [multiplayerDataSource currentPlayers];
+    [internal setStatus:7 forPlayers:currentPlayers complete:0];
   }
 
-  v15 = [(GKMultiplayerViewController *)self multiplayerDataSource];
-  v16 = [v15 guestPlayers];
+  multiplayerDataSource2 = [(GKMultiplayerViewController *)self multiplayerDataSource];
+  guestPlayers = [multiplayerDataSource2 guestPlayers];
 
-  if ([v16 count])
+  if ([guestPlayers count])
   {
-    v17 = [v16 arrayByAddingObjectsFromArray:v8];
+    v17 = [guestPlayers arrayByAddingObjectsFromArray:inviteCopy];
     [v11 setRecipients:v17];
   }
 
   else
   {
-    [v11 setRecipients:v8];
+    [v11 setRecipients:inviteCopy];
   }
 
-  v18 = [(GKMultiplayerViewController *)self multiplayerDataSource];
-  v19 = [v18 playerRange];
+  multiplayerDataSource3 = [(GKMultiplayerViewController *)self multiplayerDataSource];
+  playerRange = [multiplayerDataSource3 playerRange];
   v21 = v20;
 
-  [v11 setMinPlayers:v19 + v21];
-  if (!a4)
+  [v11 setMinPlayers:playerRange + v21];
+  if (!sharing)
   {
     [v11 setMaxPlayers:{objc_msgSend(v11, "minPlayers")}];
   }
 
-  v22 = [MEMORY[0x277D0C1D8] shared];
-  [v22 setRecentNumberOfPlayers:{objc_msgSend(v11, "maxPlayers")}];
+  mEMORY[0x277D0C1D8] = [MEMORY[0x277D0C1D8] shared];
+  [mEMORY[0x277D0C1D8] setRecentNumberOfPlayers:{objc_msgSend(v11, "maxPlayers")}];
 
-  v23 = [MEMORY[0x277D0C1D8] shared];
-  v24 = [v11 maxPlayers];
-  v25 = [(GKMultiplayerViewController *)self game];
-  v26 = [v25 bundleIdentifier];
-  [v23 setRecentNumberOfPlayers:v24 forBundleID:v26];
+  mEMORY[0x277D0C1D8]2 = [MEMORY[0x277D0C1D8] shared];
+  maxPlayers = [v11 maxPlayers];
+  game = [(GKMultiplayerViewController *)self game];
+  bundleIdentifier = [game bundleIdentifier];
+  [mEMORY[0x277D0C1D8]2 setRecentNumberOfPlayers:maxPlayers forBundleID:bundleIdentifier];
 
   [v11 setDefaultNumberOfPlayers:0];
-  v27 = [MEMORY[0x277D0C010] proxyForLocalPlayer];
-  v28 = [v27 turnBasedService];
-  v29 = [v11 internal];
+  proxyForLocalPlayer = [MEMORY[0x277D0C010] proxyForLocalPlayer];
+  turnBasedService = [proxyForLocalPlayer turnBasedService];
+  internal2 = [v11 internal];
   inviteMessageDictionary = self->_inviteMessageDictionary;
   v32[0] = MEMORY[0x277D85DD0];
   v32[1] = 3221225472;
   v32[2] = __84__GKTurnBasedInviteViewController_createGameWithPlayersToInvite_forSharing_handler___block_invoke_86;
   v32[3] = &unk_27966CCC0;
   v32[4] = self;
-  v33 = v9;
-  v31 = v9;
-  [v28 createTurnBasedGameForMatchRequest:v29 individualMessages:inviteMessageDictionary handler:v32];
+  v33 = handlerCopy;
+  v31 = handlerCopy;
+  [turnBasedService createTurnBasedGameForMatchRequest:internal2 individualMessages:inviteMessageDictionary handler:v32];
 }
 
 void __84__GKTurnBasedInviteViewController_createGameWithPlayersToInvite_forSharing_handler___block_invoke(uint64_t a1)
@@ -417,12 +417,12 @@ uint64_t __84__GKTurnBasedInviteViewController_createGameWithPlayersToInvite_for
   return MEMORY[0x2821F96F8](v5, v6);
 }
 
-- (void)setInvitesFailedWithError:(id)a3
+- (void)setInvitesFailedWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   [(GKTurnBasedInviteViewController *)self setMode:0];
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKey:*MEMORY[0x277D0BF98]];
+  userInfo = [errorCopy userInfo];
+  v6 = [userInfo objectForKey:*MEMORY[0x277D0BF98]];
 
   if ([v6 intValue] == 5068)
   {
@@ -442,9 +442,9 @@ uint64_t __84__GKTurnBasedInviteViewController_createGameWithPlayersToInvite_for
 
   else
   {
-    v12 = [v6 intValue];
+    intValue = [v6 intValue];
     v13 = GKGameCenterUIFrameworkBundle();
-    if (v12 != 5094)
+    if (intValue != 5094)
     {
       v8 = GKGetLocalizedStringFromTableInBundle();
 
@@ -455,8 +455,8 @@ uint64_t __84__GKTurnBasedInviteViewController_createGameWithPlayersToInvite_for
       v20[1] = 3221225472;
       v20[2] = __61__GKTurnBasedInviteViewController_setInvitesFailedWithError___block_invoke_3;
       v20[3] = &unk_279669E48;
-      v21 = v4;
-      v22 = self;
+      v21 = errorCopy;
+      selfCopy = self;
       v15 = _Block_copy(v20);
 
       goto LABEL_7;
@@ -530,12 +530,12 @@ void __61__GKTurnBasedInviteViewController_setInvitesFailedWithError___block_inv
   [(GKTurnBasedInviteViewController *)self createGameWithPlayersToInvite:0 forSharing:0 handler:0];
 }
 
-- (void)sendInvitesToContactPlayers:(id)a3 legacyPlayers:(id)a4 source:(unint64_t)a5 completion:(id)a6
+- (void)sendInvitesToContactPlayers:(id)players legacyPlayers:(id)legacyPlayers source:(unint64_t)source completion:(id)completion
 {
   v33 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  playersCopy = players;
+  legacyPlayersCopy = legacyPlayers;
+  completionCopy = completion;
   if (!*MEMORY[0x277D0C2A0])
   {
     v13 = GKOSLoggers();
@@ -545,9 +545,9 @@ void __61__GKTurnBasedInviteViewController_setInvitesFailedWithError___block_inv
   if (os_log_type_enabled(*MEMORY[0x277D0C2B0], OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v30 = v10;
+    v30 = playersCopy;
     v31 = 2112;
-    v32 = v11;
+    v32 = legacyPlayersCopy;
     _os_log_impl(&dword_24DE53000, v14, OS_LOG_TYPE_INFO, "TBGame - sendInvitesToContactPlayers, contactPlayers = %@, legacyPlayers = %@", buf, 0x16u);
   }
 
@@ -566,13 +566,13 @@ void __61__GKTurnBasedInviteViewController_setInvitesFailedWithError___block_inv
   v21[3] = &unk_27966CD60;
   v21[4] = self;
   v22 = v16;
-  v23 = v10;
-  v24 = v11;
-  v25 = v12;
-  v26 = a5;
-  v17 = v12;
-  v18 = v11;
-  v19 = v10;
+  v23 = playersCopy;
+  v24 = legacyPlayersCopy;
+  v25 = completionCopy;
+  sourceCopy = source;
+  v17 = completionCopy;
+  v18 = legacyPlayersCopy;
+  v19 = playersCopy;
   v20 = v16;
   [v20 notifyOnMainQueueWithBlock:v21];
 }
@@ -795,39 +795,39 @@ LABEL_13:
 
 - (void)didInviteContactPlayers
 {
-  v4 = [(GKTurnBasedInviteViewController *)self match];
-  v3 = [v4 matchID];
-  [(GKTurnBasedInviteViewController *)self finishWithMatchID:v3];
+  match = [(GKTurnBasedInviteViewController *)self match];
+  matchID = [match matchID];
+  [(GKTurnBasedInviteViewController *)self finishWithMatchID:matchID];
 }
 
-- (void)removeCurrentMatchAndSetFlagIfNotLoaded:(BOOL)a3 withHandler:(id)a4
+- (void)removeCurrentMatchAndSetFlagIfNotLoaded:(BOOL)loaded withHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v7 = [MEMORY[0x277D0C020] dispatchGroupWithName:@"removeCurrentMatchGroup"];
-  v8 = [(GKTurnBasedInviteViewController *)self match];
-  v9 = v8;
-  if (v8)
+  match = [(GKTurnBasedInviteViewController *)self match];
+  v9 = match;
+  if (match)
   {
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __87__GKTurnBasedInviteViewController_removeCurrentMatchAndSetFlagIfNotLoaded_withHandler___block_invoke;
     v13[3] = &unk_279669A20;
-    v14 = v8;
-    v15 = self;
+    v14 = match;
+    selfCopy = self;
     [v7 perform:v13];
   }
 
   else
   {
-    self->_deletePreloadedMatch = a3;
+    self->_deletePreloadedMatch = loaded;
   }
 
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __87__GKTurnBasedInviteViewController_removeCurrentMatchAndSetFlagIfNotLoaded_withHandler___block_invoke_4;
   v11[3] = &unk_27966A4A8;
-  v12 = v6;
-  v10 = v6;
+  v12 = handlerCopy;
+  v10 = handlerCopy;
   [v7 notifyOnMainQueueWithBlock:v11];
 }
 
@@ -887,10 +887,10 @@ uint64_t __87__GKTurnBasedInviteViewController_removeCurrentMatchAndSetFlagIfNot
   return result;
 }
 
-- (void)invitePlayers:(id)a3
+- (void)invitePlayers:(id)players
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  playersCopy = players;
   if (!*MEMORY[0x277D0C2A0])
   {
     v5 = GKOSLoggers();
@@ -900,14 +900,14 @@ uint64_t __87__GKTurnBasedInviteViewController_removeCurrentMatchAndSetFlagIfNot
   if (os_log_type_enabled(*MEMORY[0x277D0C2B0], OS_LOG_TYPE_INFO))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = playersCopy;
     _os_log_impl(&dword_24DE53000, v6, OS_LOG_TYPE_INFO, "TBGame - invitePlayers, players = %@", &v7, 0xCu);
   }
 
-  if ([v4 count])
+  if ([playersCopy count])
   {
     [(GKTurnBasedInviteViewController *)self removeCurrentMatchAndSetFlagIfNotLoaded:1 withHandler:0];
-    [(GKTurnBasedInviteViewController *)self createGameWithPlayersToInvite:v4 forSharing:0 handler:0];
+    [(GKTurnBasedInviteViewController *)self createGameWithPlayersToInvite:playersCopy forSharing:0 handler:0];
   }
 
   else

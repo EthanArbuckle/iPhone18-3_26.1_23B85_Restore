@@ -9,22 +9,22 @@
 - (id)generateMetadataJSONAssetHandleWithAssetManager:()FCAdditions
 {
   v4 = a3;
-  if ([a1 hasMetadataURL])
+  if ([self hasMetadataURL])
   {
-    v5 = [a1 metadataURL];
-    v6 = [a1 base];
-    v7 = [v6 cacheLifetimeHint];
-    if (v7 == 2)
+    metadataURL = [self metadataURL];
+    base = [self base];
+    cacheLifetimeHint = [base cacheLifetimeHint];
+    if (cacheLifetimeHint == 2)
     {
       v8 = 2;
     }
 
     else
     {
-      v8 = v7 == 1;
+      v8 = cacheLifetimeHint == 1;
     }
 
-    v9 = [v4 assetHandleForCKAssetURLString:v5 lifetimeHint:v8];
+    v9 = [v4 assetHandleForCKAssetURLString:metadataURL lifetimeHint:v8];
   }
 
   else
@@ -38,22 +38,22 @@
 - (id)generateCoverImageAssetHandleWithAssetManager:()FCAdditions
 {
   v4 = a3;
-  if ([a1 hasCoverImageURL])
+  if ([self hasCoverImageURL])
   {
-    v5 = [a1 coverImageURL];
-    v6 = [a1 base];
-    v7 = [v6 cacheLifetimeHint];
-    if (v7 == 2)
+    coverImageURL = [self coverImageURL];
+    base = [self base];
+    cacheLifetimeHint = [base cacheLifetimeHint];
+    if (cacheLifetimeHint == 2)
     {
       v8 = 2;
     }
 
     else
     {
-      v8 = v7 == 1;
+      v8 = cacheLifetimeHint == 1;
     }
 
-    v9 = [v4 assetHandleForCKAssetURLString:v5 lifetimeHint:v8];
+    v9 = [v4 assetHandleForCKAssetURLString:coverImageURL lifetimeHint:v8];
   }
 
   else
@@ -68,9 +68,9 @@
 {
   v4 = a3;
   v5 = +[FCRestrictions sharedInstance];
-  v6 = [a1 allowedStorefrontIDs];
-  v7 = [a1 blockedStorefrontIDs];
-  v8 = [v5 isContentAllowedInStorefrontID:v4 withAllowedStorefrontIDs:v6 blockedStorefrontIDs:v7];
+  allowedStorefrontIDs = [self allowedStorefrontIDs];
+  blockedStorefrontIDs = [self blockedStorefrontIDs];
+  v8 = [v5 isContentAllowedInStorefrontID:v4 withAllowedStorefrontIDs:allowedStorefrontIDs blockedStorefrontIDs:blockedStorefrontIDs];
 
   return v8;
 }

@@ -1,25 +1,25 @@
 @interface LBAttendingStatesServiceClient
-- (LBAttendingStatesServiceClient)initWithDelegate:(id)a3;
+- (LBAttendingStatesServiceClient)initWithDelegate:(id)delegate;
 - (LBAttendingStatesServiceDelegate)delegate;
 - (id)_connection;
 - (id)_newConnection;
 - (id)_service;
 - (void)_invalidate;
 - (void)dealloc;
-- (void)directActionJarvisAnnounceMessageTriggerWithDeviceId:(id)a3;
+- (void)directActionJarvisAnnounceMessageTriggerWithDeviceId:(id)id;
 - (void)dismissAttending;
 - (void)invalidate;
-- (void)localAttendingStartedWithRootRequestId:(id)a3;
+- (void)localAttendingStartedWithRootRequestId:(id)id;
 - (void)localAttendingStopped;
-- (void)localAttendingStoppedUnexpectedlyWithError:(id)a3;
-- (void)localAttendingWillStartWithRootRequestId:(id)a3;
+- (void)localAttendingStoppedUnexpectedlyWithError:(id)error;
+- (void)localAttendingWillStartWithRootRequestId:(id)id;
 - (void)requestDismissed;
 - (void)siriDidPrompt;
-- (void)siriDidPromptWithRootRequestId:(id)a3;
+- (void)siriDidPromptWithRootRequestId:(id)id;
 - (void)siriPromptWillStart;
-- (void)siriPromptWillStartWithRootRequestId:(id)a3;
-- (void)speechRecognizerReadyForNewTurnWithSpeechStartDetectedAtHostTime:(unint64_t)a3 audioRecordType:(int64_t)a4 audioRecordDeviceId:(id)a5;
-- (void)speechStartDetectedWithHostTime:(unint64_t)a3 audioRecordType:(int64_t)a4 audioRecordDeviceId:(id)a5;
+- (void)siriPromptWillStartWithRootRequestId:(id)id;
+- (void)speechRecognizerReadyForNewTurnWithSpeechStartDetectedAtHostTime:(unint64_t)time audioRecordType:(int64_t)type audioRecordDeviceId:(id)id;
+- (void)speechStartDetectedWithHostTime:(unint64_t)time audioRecordType:(int64_t)type audioRecordDeviceId:(id)id;
 - (void)startUpdateStates;
 @end
 
@@ -55,10 +55,10 @@ void __51__LBAttendingStatesServiceClient_startUpdateStates__block_invoke(uint64
 
 - (id)_service
 {
-  v2 = [(LBAttendingStatesServiceClient *)self _connection];
-  v3 = [v2 remoteObjectProxy];
+  _connection = [(LBAttendingStatesServiceClient *)self _connection];
+  remoteObjectProxy = [_connection remoteObjectProxy];
 
-  return v3;
+  return remoteObjectProxy;
 }
 
 - (id)_connection
@@ -68,10 +68,10 @@ void __51__LBAttendingStatesServiceClient_startUpdateStates__block_invoke(uint64
   xpcConnection = self->_xpcConnection;
   if (!xpcConnection)
   {
-    v4 = [MEMORY[0x277CCAD78] UUID];
-    v5 = [v4 UUIDString];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
     xpcConnectionUUIDString = self->_xpcConnectionUUIDString;
-    self->_xpcConnectionUUIDString = v5;
+    self->_xpcConnectionUUIDString = uUIDString;
 
     v7 = LBLogContextFacilityLocalSRBridge;
     if (os_log_type_enabled(LBLogContextFacilityLocalSRBridge, OS_LOG_TYPE_DEFAULT))
@@ -84,9 +84,9 @@ void __51__LBAttendingStatesServiceClient_startUpdateStates__block_invoke(uint64
       _os_log_impl(&dword_256130000, v7, OS_LOG_TYPE_DEFAULT, "%s Creating new xpc connection %{public}@...", buf, 0x16u);
     }
 
-    v9 = [(LBAttendingStatesServiceClient *)self _newConnection];
+    _newConnection = [(LBAttendingStatesServiceClient *)self _newConnection];
     v10 = self->_xpcConnection;
-    self->_xpcConnection = v9;
+    self->_xpcConnection = _newConnection;
 
     objc_initWeak(buf, self);
     v11 = self->_xpcConnectionUUIDString;
@@ -356,10 +356,10 @@ LABEL_10:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)speechRecognizerReadyForNewTurnWithSpeechStartDetectedAtHostTime:(unint64_t)a3 audioRecordType:(int64_t)a4 audioRecordDeviceId:(id)a5
+- (void)speechRecognizerReadyForNewTurnWithSpeechStartDetectedAtHostTime:(unint64_t)time audioRecordType:(int64_t)type audioRecordDeviceId:(id)id
 {
   v22 = *MEMORY[0x277D85DE8];
-  v8 = a5;
+  idCopy = id;
   dispatch_assert_queue_V2(self->_queue);
   v9 = LBLogContextFacilityLocalSRBridge;
   if (os_log_type_enabled(LBLogContextFacilityLocalSRBridge, OS_LOG_TYPE_DEFAULT))
@@ -367,11 +367,11 @@ LABEL_10:
     v14 = 136315906;
     v15 = "[LBAttendingStatesServiceClient speechRecognizerReadyForNewTurnWithSpeechStartDetectedAtHostTime:audioRecordType:audioRecordDeviceId:]";
     v16 = 2048;
-    v17 = a3;
+    timeCopy = time;
     v18 = 2048;
-    v19 = a4;
+    typeCopy = type;
     v20 = 2114;
-    v21 = v8;
+    v21 = idCopy;
     _os_log_impl(&dword_256130000, v9, OS_LOG_TYPE_DEFAULT, "%s hostTime : %llu, audioRecordType : %lld, deviceId : %{public}@", &v14, 0x2Au);
   }
 
@@ -381,16 +381,16 @@ LABEL_10:
   if (v11)
   {
     v12 = objc_loadWeakRetained(&self->_delegate);
-    [v12 speechRecognizerReadyForNewTurnWithSpeechStartDetectedAtHostTime:a3 audioRecordType:a4 audioRecordDeviceId:v8];
+    [v12 speechRecognizerReadyForNewTurnWithSpeechStartDetectedAtHostTime:time audioRecordType:type audioRecordDeviceId:idCopy];
   }
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)speechStartDetectedWithHostTime:(unint64_t)a3 audioRecordType:(int64_t)a4 audioRecordDeviceId:(id)a5
+- (void)speechStartDetectedWithHostTime:(unint64_t)time audioRecordType:(int64_t)type audioRecordDeviceId:(id)id
 {
   v22 = *MEMORY[0x277D85DE8];
-  v8 = a5;
+  idCopy = id;
   dispatch_assert_queue_V2(self->_queue);
   v9 = LBLogContextFacilityLocalSRBridge;
   if (os_log_type_enabled(LBLogContextFacilityLocalSRBridge, OS_LOG_TYPE_DEFAULT))
@@ -398,11 +398,11 @@ LABEL_10:
     v14 = 136315906;
     v15 = "[LBAttendingStatesServiceClient speechStartDetectedWithHostTime:audioRecordType:audioRecordDeviceId:]";
     v16 = 2048;
-    v17 = a3;
+    timeCopy = time;
     v18 = 2048;
-    v19 = a4;
+    typeCopy = type;
     v20 = 2114;
-    v21 = v8;
+    v21 = idCopy;
     _os_log_impl(&dword_256130000, v9, OS_LOG_TYPE_DEFAULT, "%s hostTime : %llu, audioRecordType : %lld, deviceId : %{public}@", &v14, 0x2Au);
   }
 
@@ -412,7 +412,7 @@ LABEL_10:
   if (v11)
   {
     v12 = objc_loadWeakRetained(&self->_delegate);
-    [v12 speechStartDetectedWithHostTime:a3 audioRecordType:a4 audioRecordDeviceId:v8];
+    [v12 speechStartDetectedWithHostTime:time audioRecordType:type audioRecordDeviceId:idCopy];
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -434,11 +434,11 @@ LABEL_10:
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)localAttendingStoppedUnexpectedlyWithError:(id)a3
+- (void)localAttendingStoppedUnexpectedlyWithError:(id)error
 {
   v11 = *MEMORY[0x277D85DE8];
   queue = self->_queue;
-  v5 = a3;
+  errorCopy = error;
   dispatch_assert_queue_V2(queue);
   v6 = LBLogContextFacilityLocalSRBridge;
   if (os_log_type_enabled(LBLogContextFacilityLocalSRBridge, OS_LOG_TYPE_DEFAULT))
@@ -449,15 +449,15 @@ LABEL_10:
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained localAttendingStoppedUnexpectedlyWithError:v5];
+  [WeakRetained localAttendingStoppedUnexpectedlyWithError:errorCopy];
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)localAttendingStartedWithRootRequestId:(id)a3
+- (void)localAttendingStartedWithRootRequestId:(id)id
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  idCopy = id;
   dispatch_assert_queue_V2(self->_queue);
   v5 = LBLogContextFacilityLocalSRBridge;
   if (os_log_type_enabled(LBLogContextFacilityLocalSRBridge, OS_LOG_TYPE_DEFAULT))
@@ -465,7 +465,7 @@ LABEL_10:
     v10 = 136315394;
     v11 = "[LBAttendingStatesServiceClient localAttendingStartedWithRootRequestId:]";
     v12 = 2112;
-    v13 = v4;
+    v13 = idCopy;
     _os_log_impl(&dword_256130000, v5, OS_LOG_TYPE_DEFAULT, "%s %@", &v10, 0x16u);
   }
 
@@ -476,16 +476,16 @@ LABEL_10:
   if (v7)
   {
     v8 = objc_loadWeakRetained(&self->_delegate);
-    [v8 localAttendingStartedWithRootRequestId:v4];
+    [v8 localAttendingStartedWithRootRequestId:idCopy];
   }
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)localAttendingWillStartWithRootRequestId:(id)a3
+- (void)localAttendingWillStartWithRootRequestId:(id)id
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  idCopy = id;
   dispatch_assert_queue_V2(self->_queue);
   v5 = LBLogContextFacilityLocalSRBridge;
   if (os_log_type_enabled(LBLogContextFacilityLocalSRBridge, OS_LOG_TYPE_DEFAULT))
@@ -493,7 +493,7 @@ LABEL_10:
     v10 = 136315394;
     v11 = "[LBAttendingStatesServiceClient localAttendingWillStartWithRootRequestId:]";
     v12 = 2112;
-    v13 = v4;
+    v13 = idCopy;
     _os_log_impl(&dword_256130000, v5, OS_LOG_TYPE_DEFAULT, "%s %@", &v10, 0x16u);
   }
 
@@ -503,7 +503,7 @@ LABEL_10:
   if (v7)
   {
     v8 = objc_loadWeakRetained(&self->_delegate);
-    [v8 localAttendingWillStartWithRootRequestId:v4];
+    [v8 localAttendingWillStartWithRootRequestId:idCopy];
   }
 
   v9 = *MEMORY[0x277D85DE8];
@@ -565,17 +565,17 @@ void __50__LBAttendingStatesServiceClient_dismissAttending__block_invoke(uint64_
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)directActionJarvisAnnounceMessageTriggerWithDeviceId:(id)a3
+- (void)directActionJarvisAnnounceMessageTriggerWithDeviceId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __87__LBAttendingStatesServiceClient_directActionJarvisAnnounceMessageTriggerWithDeviceId___block_invoke;
   v7[3] = &unk_2798238E8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = idCopy;
+  v6 = idCopy;
   dispatch_async(queue, v7);
 }
 
@@ -596,17 +596,17 @@ void __87__LBAttendingStatesServiceClient_directActionJarvisAnnounceMessageTrigg
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)siriDidPromptWithRootRequestId:(id)a3
+- (void)siriDidPromptWithRootRequestId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __65__LBAttendingStatesServiceClient_siriDidPromptWithRootRequestId___block_invoke;
   v7[3] = &unk_2798238E8;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = idCopy;
+  selfCopy = self;
+  v6 = idCopy;
   dispatch_async(queue, v7);
 }
 
@@ -630,17 +630,17 @@ void __65__LBAttendingStatesServiceClient_siriDidPromptWithRootRequestId___block
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)siriPromptWillStartWithRootRequestId:(id)a3
+- (void)siriPromptWillStartWithRootRequestId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __71__LBAttendingStatesServiceClient_siriPromptWillStartWithRootRequestId___block_invoke;
   v7[3] = &unk_2798238E8;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = idCopy;
+  selfCopy = self;
+  v6 = idCopy;
   dispatch_async(queue, v7);
 }
 
@@ -698,10 +698,10 @@ void __53__LBAttendingStatesServiceClient_siriPromptWillStart__block_invoke(uint
   [v1 siriPromptWillStart];
 }
 
-- (LBAttendingStatesServiceClient)initWithDelegate:(id)a3
+- (LBAttendingStatesServiceClient)initWithDelegate:(id)delegate
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  delegateCopy = delegate;
   v12.receiver = self;
   v12.super_class = LBAttendingStatesServiceClient;
   v5 = [(LBAttendingStatesServiceClient *)&v12 init];
@@ -717,7 +717,7 @@ void __53__LBAttendingStatesServiceClient_siriPromptWillStart__block_invoke(uint
     queue = v5->_queue;
     v5->_queue = v7;
 
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
   }
 
   v9 = LBLogContextFacilityLocalSRBridge;

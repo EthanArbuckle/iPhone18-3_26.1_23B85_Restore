@@ -1,8 +1,8 @@
 @interface PHSearchQueryMatchDetails
-+ (id)lookupIdentifiersForPersonUUIDs:(id)a3;
-+ (id)lookupIdentifiersForSceneIdentifiersAndTypesTuple:(id)a3;
-+ (id)queryMatchDetailsForSearchResults:(id)a3 queryText:(id)a4 queryEmbedding:(id)a5 matchedPersonUUIDs:(id)a6 matchedScenes:(id)a7 queryId:(int)a8;
-- (PHSearchQueryMatchDetails)initWithQueryText:(id)a3 queryEmbedding:(id)a4 personUUIDS:(id)a5 sceneIdentifiers:(id)a6 audioIdentifiers:(id)a7 humanActionIdentifiers:(id)a8 ocrAssetUUIDS:(id)a9;
++ (id)lookupIdentifiersForPersonUUIDs:(id)ds;
++ (id)lookupIdentifiersForSceneIdentifiersAndTypesTuple:(id)tuple;
++ (id)queryMatchDetailsForSearchResults:(id)results queryText:(id)text queryEmbedding:(id)embedding matchedPersonUUIDs:(id)ds matchedScenes:(id)scenes queryId:(int)id;
+- (PHSearchQueryMatchDetails)initWithQueryText:(id)text queryEmbedding:(id)embedding personUUIDS:(id)s sceneIdentifiers:(id)identifiers audioIdentifiers:(id)audioIdentifiers humanActionIdentifiers:(id)actionIdentifiers ocrAssetUUIDS:(id)dS;
 - (id)description;
 - (id)jsonDictionary;
 - (id)redactedJSONDictionary;
@@ -15,30 +15,30 @@
   v17[6] = *MEMORY[0x1E69E9840];
   v3 = objc_alloc(MEMORY[0x1E695DF90]);
   v16[0] = @"queryEmbedding";
-  v4 = [(PHSearchQueryMatchDetails *)self queryEmbedding];
+  queryEmbedding = [(PHSearchQueryMatchDetails *)self queryEmbedding];
   v5 = PLSearchJSONForCSEmbedding();
-  v6 = v5;
+  null = v5;
   if (!v5)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v17[0] = v6;
+  v17[0] = null;
   v16[1] = @"sceneIdentifiers";
-  v7 = [(PHSearchQueryMatchDetails *)self sceneIdentifiers];
-  v17[1] = v7;
+  sceneIdentifiers = [(PHSearchQueryMatchDetails *)self sceneIdentifiers];
+  v17[1] = sceneIdentifiers;
   v16[2] = @"personUUIDS";
-  v8 = [(PHSearchQueryMatchDetails *)self personUUIDS];
-  v17[2] = v8;
+  personUUIDS = [(PHSearchQueryMatchDetails *)self personUUIDS];
+  v17[2] = personUUIDS;
   v16[3] = @"ocrAssetUUIDs";
-  v9 = [(PHSearchQueryMatchDetails *)self ocrAssetUUIDs];
-  v17[3] = v9;
+  ocrAssetUUIDs = [(PHSearchQueryMatchDetails *)self ocrAssetUUIDs];
+  v17[3] = ocrAssetUUIDs;
   v16[4] = @"humanActionIdentifiers";
-  v10 = [(PHSearchQueryMatchDetails *)self humanActionIdentifiers];
-  v17[4] = v10;
+  humanActionIdentifiers = [(PHSearchQueryMatchDetails *)self humanActionIdentifiers];
+  v17[4] = humanActionIdentifiers;
   v16[5] = @"audioIdentifiers";
-  v11 = [(PHSearchQueryMatchDetails *)self audioIdentifiers];
-  v17[5] = v11;
+  audioIdentifiers = [(PHSearchQueryMatchDetails *)self audioIdentifiers];
+  v17[5] = audioIdentifiers;
   v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:v16 count:6];
   v13 = [v3 initWithDictionary:v12];
 
@@ -56,34 +56,34 @@
   v19[7] = *MEMORY[0x1E69E9840];
   v3 = objc_alloc(MEMORY[0x1E695DF90]);
   v18[0] = @"queryText";
-  v17 = [(PHSearchQueryMatchDetails *)self queryText];
-  v16 = [v17 string];
-  v19[0] = v16;
+  queryText = [(PHSearchQueryMatchDetails *)self queryText];
+  string = [queryText string];
+  v19[0] = string;
   v18[1] = @"queryEmbedding";
-  v4 = [(PHSearchQueryMatchDetails *)self queryEmbedding];
+  queryEmbedding = [(PHSearchQueryMatchDetails *)self queryEmbedding];
   v5 = PLSearchJSONForCSEmbedding();
-  v6 = v5;
+  null = v5;
   if (!v5)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v19[1] = v6;
+  v19[1] = null;
   v18[2] = @"sceneIdentifiers";
-  v7 = [(PHSearchQueryMatchDetails *)self sceneIdentifiers];
-  v19[2] = v7;
+  sceneIdentifiers = [(PHSearchQueryMatchDetails *)self sceneIdentifiers];
+  v19[2] = sceneIdentifiers;
   v18[3] = @"personUUIDS";
-  v8 = [(PHSearchQueryMatchDetails *)self personUUIDS];
-  v19[3] = v8;
+  personUUIDS = [(PHSearchQueryMatchDetails *)self personUUIDS];
+  v19[3] = personUUIDS;
   v18[4] = @"ocrAssetUUIDs";
-  v9 = [(PHSearchQueryMatchDetails *)self ocrAssetUUIDs];
-  v19[4] = v9;
+  ocrAssetUUIDs = [(PHSearchQueryMatchDetails *)self ocrAssetUUIDs];
+  v19[4] = ocrAssetUUIDs;
   v18[5] = @"humanActionIdentifiers";
-  v10 = [(PHSearchQueryMatchDetails *)self humanActionIdentifiers];
-  v19[5] = v10;
+  humanActionIdentifiers = [(PHSearchQueryMatchDetails *)self humanActionIdentifiers];
+  v19[5] = humanActionIdentifiers;
   v18[6] = @"audioIdentifiers";
-  v11 = [(PHSearchQueryMatchDetails *)self audioIdentifiers];
-  v19[6] = v11;
+  audioIdentifiers = [(PHSearchQueryMatchDetails *)self audioIdentifiers];
+  v19[6] = audioIdentifiers;
   v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v19 forKeys:v18 count:7];
   v13 = [v3 initWithDictionary:v12];
 
@@ -98,36 +98,36 @@
 
 - (id)description
 {
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  [v3 appendFormat:@"%@:%p\n", v5, self];
+  [string appendFormat:@"%@:%p\n", v5, self];
 
-  v6 = [(NSAttributedString *)self->_queryText string];
-  [v3 appendFormat:@"queryText: '%@'\n", v6];
+  string2 = [(NSAttributedString *)self->_queryText string];
+  [string appendFormat:@"queryText: '%@'\n", string2];
 
-  [v3 appendFormat:@"queryEmbedding: %@\n", self->_queryEmbedding];
-  [v3 appendFormat:@"sceneIdentifiers: %@\n", self->_sceneIdentifiers];
-  [v3 appendFormat:@"personUUIDS: %@\n", self->_personUUIDS];
-  [v3 appendFormat:@"ocrAssetUUIDs: %@\n", self->_ocrAssetUUIDs];
-  [v3 appendFormat:@"humanAction: %@\n", self->_humanActionIdentifiers];
-  [v3 appendFormat:@"audio: %@\n", self->_audioIdentifiers];
+  [string appendFormat:@"queryEmbedding: %@\n", self->_queryEmbedding];
+  [string appendFormat:@"sceneIdentifiers: %@\n", self->_sceneIdentifiers];
+  [string appendFormat:@"personUUIDS: %@\n", self->_personUUIDS];
+  [string appendFormat:@"ocrAssetUUIDs: %@\n", self->_ocrAssetUUIDs];
+  [string appendFormat:@"humanAction: %@\n", self->_humanActionIdentifiers];
+  [string appendFormat:@"audio: %@\n", self->_audioIdentifiers];
 
-  return v3;
+  return string;
 }
 
-- (PHSearchQueryMatchDetails)initWithQueryText:(id)a3 queryEmbedding:(id)a4 personUUIDS:(id)a5 sceneIdentifiers:(id)a6 audioIdentifiers:(id)a7 humanActionIdentifiers:(id)a8 ocrAssetUUIDS:(id)a9
+- (PHSearchQueryMatchDetails)initWithQueryText:(id)text queryEmbedding:(id)embedding personUUIDS:(id)s sceneIdentifiers:(id)identifiers audioIdentifiers:(id)audioIdentifiers humanActionIdentifiers:(id)actionIdentifiers ocrAssetUUIDS:(id)dS
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v22 = a9;
-  if (v16)
+  textCopy = text;
+  embeddingCopy = embedding;
+  sCopy = s;
+  identifiersCopy = identifiers;
+  audioIdentifiersCopy = audioIdentifiers;
+  actionIdentifiersCopy = actionIdentifiers;
+  dSCopy = dS;
+  if (textCopy)
   {
-    if (v18)
+    if (sCopy)
     {
       goto LABEL_3;
     }
@@ -135,13 +135,13 @@
 
   else
   {
-    v41 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v41 handleFailureInMethod:a2 object:self file:@"PHSearchQueryMatchDetails.m" lineNumber:143 description:{@"Invalid parameter not satisfying: %@", @"queryText"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHSearchQueryMatchDetails.m" lineNumber:143 description:{@"Invalid parameter not satisfying: %@", @"queryText"}];
 
-    if (v18)
+    if (sCopy)
     {
 LABEL_3:
-      if (v19)
+      if (identifiersCopy)
       {
         goto LABEL_4;
       }
@@ -150,13 +150,13 @@ LABEL_3:
     }
   }
 
-  v42 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v42 handleFailureInMethod:a2 object:self file:@"PHSearchQueryMatchDetails.m" lineNumber:144 description:{@"Invalid parameter not satisfying: %@", @"personUUIDS"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PHSearchQueryMatchDetails.m" lineNumber:144 description:{@"Invalid parameter not satisfying: %@", @"personUUIDS"}];
 
-  if (v19)
+  if (identifiersCopy)
   {
 LABEL_4:
-    if (v20)
+    if (audioIdentifiersCopy)
     {
       goto LABEL_5;
     }
@@ -165,22 +165,22 @@ LABEL_4:
   }
 
 LABEL_12:
-  v43 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v43 handleFailureInMethod:a2 object:self file:@"PHSearchQueryMatchDetails.m" lineNumber:145 description:{@"Invalid parameter not satisfying: %@", @"sceneIdentifiers"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"PHSearchQueryMatchDetails.m" lineNumber:145 description:{@"Invalid parameter not satisfying: %@", @"sceneIdentifiers"}];
 
-  if (v20)
+  if (audioIdentifiersCopy)
   {
 LABEL_5:
-    if (v21)
+    if (actionIdentifiersCopy)
     {
       goto LABEL_6;
     }
 
 LABEL_14:
-    v45 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v45 handleFailureInMethod:a2 object:self file:@"PHSearchQueryMatchDetails.m" lineNumber:147 description:{@"Invalid parameter not satisfying: %@", @"humanActionIdentifiers"}];
+    currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler4 handleFailureInMethod:a2 object:self file:@"PHSearchQueryMatchDetails.m" lineNumber:147 description:{@"Invalid parameter not satisfying: %@", @"humanActionIdentifiers"}];
 
-    if (v22)
+    if (dSCopy)
     {
       goto LABEL_7;
     }
@@ -189,23 +189,23 @@ LABEL_14:
   }
 
 LABEL_13:
-  v44 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v44 handleFailureInMethod:a2 object:self file:@"PHSearchQueryMatchDetails.m" lineNumber:146 description:{@"Invalid parameter not satisfying: %@", @"audioIdentifiers"}];
+  currentHandler5 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler5 handleFailureInMethod:a2 object:self file:@"PHSearchQueryMatchDetails.m" lineNumber:146 description:{@"Invalid parameter not satisfying: %@", @"audioIdentifiers"}];
 
-  if (!v21)
+  if (!actionIdentifiersCopy)
   {
     goto LABEL_14;
   }
 
 LABEL_6:
-  if (v22)
+  if (dSCopy)
   {
     goto LABEL_7;
   }
 
 LABEL_15:
-  v46 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v46 handleFailureInMethod:a2 object:self file:@"PHSearchQueryMatchDetails.m" lineNumber:148 description:{@"Invalid parameter not satisfying: %@", @"ocrAssetUUIDs"}];
+  currentHandler6 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler6 handleFailureInMethod:a2 object:self file:@"PHSearchQueryMatchDetails.m" lineNumber:148 description:{@"Invalid parameter not satisfying: %@", @"ocrAssetUUIDs"}];
 
 LABEL_7:
   v47.receiver = self;
@@ -213,70 +213,70 @@ LABEL_7:
   v23 = [(PHSearchQueryMatchDetails *)&v47 init];
   if (v23)
   {
-    v24 = [v16 copy];
+    v24 = [textCopy copy];
     queryText = v23->_queryText;
     v23->_queryText = v24;
 
-    objc_storeStrong(&v23->_queryEmbedding, a4);
-    v26 = [v19 copy];
+    objc_storeStrong(&v23->_queryEmbedding, embedding);
+    v26 = [identifiersCopy copy];
     sceneIdentifiers = v23->_sceneIdentifiers;
     v23->_sceneIdentifiers = v26;
 
-    v28 = [v20 copy];
+    v28 = [audioIdentifiersCopy copy];
     audioIdentifiers = v23->_audioIdentifiers;
     v23->_audioIdentifiers = v28;
 
-    v30 = [v21 copy];
+    v30 = [actionIdentifiersCopy copy];
     humanActionIdentifiers = v23->_humanActionIdentifiers;
     v23->_humanActionIdentifiers = v30;
 
-    v32 = [v18 copy];
+    v32 = [sCopy copy];
     personUUIDS = v23->_personUUIDS;
     v23->_personUUIDS = v32;
 
-    v34 = [v22 copy];
+    v34 = [dSCopy copy];
     ocrAssetUUIDs = v23->_ocrAssetUUIDs;
     v23->_ocrAssetUUIDs = v34;
 
     v36 = [MEMORY[0x1E696AC90] indexSetWithIndex:6];
-    v37 = [PHSearchUtility queryTokensFromQueryText:v16 limitToSuggestionCategories:v36];
+    v37 = [PHSearchUtility queryTokensFromQueryText:textCopy limitToSuggestionCategories:v36];
     ocrQueryTokens = v23->_ocrQueryTokens;
     v23->_ocrQueryTokens = v37;
 
-    v39 = [PHSearchUtility queryTokensFromQueryText:v16 limitToSuggestionCategories:0];
+    v39 = [PHSearchUtility queryTokensFromQueryText:textCopy limitToSuggestionCategories:0];
     v23->_countOfQueryTerms = [v39 count];
   }
 
   return v23;
 }
 
-+ (id)queryMatchDetailsForSearchResults:(id)a3 queryText:(id)a4 queryEmbedding:(id)a5 matchedPersonUUIDs:(id)a6 matchedScenes:(id)a7 queryId:(int)a8
++ (id)queryMatchDetailsForSearchResults:(id)results queryText:(id)text queryEmbedding:(id)embedding matchedPersonUUIDs:(id)ds matchedScenes:(id)scenes queryId:(int)id
 {
   v76 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v59 = a5;
-  v58 = a6;
-  v16 = a7;
-  v57 = v15;
-  if (!v15)
+  resultsCopy = results;
+  textCopy = text;
+  embeddingCopy = embedding;
+  dsCopy = ds;
+  scenesCopy = scenes;
+  v57 = textCopy;
+  if (!textCopy)
   {
-    v51 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v51 handleFailureInMethod:a2 object:a1 file:@"PHSearchQueryMatchDetails.m" lineNumber:80 description:{@"Invalid parameter not satisfying: %@", @"queryText"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHSearchQueryMatchDetails.m" lineNumber:80 description:{@"Invalid parameter not satisfying: %@", @"queryText"}];
 
-    if (v14)
+    if (resultsCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_49:
-    v52 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v52 handleFailureInMethod:a2 object:a1 file:@"PHSearchQueryMatchDetails.m" lineNumber:81 description:{@"Invalid parameter not satisfying: %@", @"searchResults"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PHSearchQueryMatchDetails.m" lineNumber:81 description:{@"Invalid parameter not satisfying: %@", @"searchResults"}];
 
     goto LABEL_3;
   }
 
-  if (!v14)
+  if (!resultsCopy)
   {
     goto LABEL_49;
   }
@@ -304,7 +304,7 @@ LABEL_3:
   v71 = 0u;
   v68 = 0u;
   v69 = 0u;
-  v21 = v14;
+  v21 = resultsCopy;
   v22 = [v21 countByEnumeratingWithState:&v68 objects:v75 count:16];
   if (v22)
   {
@@ -321,8 +321,8 @@ LABEL_3:
         v25 = *(*(&v68 + 1) + 8 * i);
         if ([v25 type] == 1 && objc_msgSend(v25, "hasOCRTextMatch"))
         {
-          v26 = [v25 uuid];
-          [v63 addObject:v26];
+          uuid = [v25 uuid];
+          [v63 addObject:uuid];
         }
       }
 
@@ -336,7 +336,7 @@ LABEL_3:
   v67 = 0u;
   v64 = 0u;
   v65 = 0u;
-  v27 = v16;
+  v27 = scenesCopy;
   v28 = [v27 countByEnumeratingWithState:&v64 objects:v74 count:16];
   if (v28)
   {
@@ -355,23 +355,23 @@ LABEL_3:
         {
           v32 = [v31 objectAtIndexedSubscript:0];
           v33 = [v31 objectAtIndexedSubscript:1];
-          v34 = [v33 unsignedIntegerValue];
+          unsignedIntegerValue = [v33 unsignedIntegerValue];
 
-          if (v34 <= 3)
+          if (unsignedIntegerValue <= 3)
           {
             v36 = v62;
-            if (v34 == 1)
+            if (unsignedIntegerValue == 1)
             {
               goto LABEL_34;
             }
 
             v36 = v61;
-            if (v34 == 2)
+            if (unsignedIntegerValue == 2)
             {
               goto LABEL_34;
             }
 
-            if (v34 == 3)
+            if (unsignedIntegerValue == 3)
             {
               v36 = v60;
 LABEL_34:
@@ -380,7 +380,7 @@ LABEL_34:
             }
           }
 
-          else if ((v34 - 6) < 3 || v34 == 4)
+          else if ((unsignedIntegerValue - 6) < 3 || unsignedIntegerValue == 4)
           {
             goto LABEL_38;
           }
@@ -389,7 +389,7 @@ LABEL_34:
           if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
           {
             *buf = 134218242;
-            *v73 = v34;
+            *v73 = unsignedIntegerValue;
             *&v73[8] = 2112;
             *&v73[10] = v31;
             _os_log_impl(&dword_19C86F000, v37, OS_LOG_TYPE_ERROR, "Invalid scene type %tu, while resolving match details. sceneIdentifierAndType: %@", buf, 0x16u);
@@ -417,12 +417,12 @@ LABEL_38:
   }
 
   v38 = [PHSearchQueryMatchDetails alloc];
-  v39 = [v58 allObjects];
-  v40 = [v62 allObjects];
-  v41 = [v60 allObjects];
-  v42 = [v61 allObjects];
-  v43 = [v63 allObjects];
-  v44 = [(PHSearchQueryMatchDetails *)v38 initWithQueryText:v57 queryEmbedding:v59 personUUIDS:v39 sceneIdentifiers:v40 audioIdentifiers:v41 humanActionIdentifiers:v42 ocrAssetUUIDS:v43];
+  allObjects = [dsCopy allObjects];
+  allObjects2 = [v62 allObjects];
+  allObjects3 = [v60 allObjects];
+  allObjects4 = [v61 allObjects];
+  allObjects5 = [v63 allObjects];
+  v44 = [(PHSearchQueryMatchDetails *)v38 initWithQueryText:v57 queryEmbedding:embeddingCopy personUUIDS:allObjects sceneIdentifiers:allObjects2 audioIdentifiers:allObjects3 humanActionIdentifiers:allObjects4 ocrAssetUUIDS:allObjects5];
 
   v45 = v56;
   v46 = v45;
@@ -431,8 +431,8 @@ LABEL_38:
     v47 = [v21 count];
     v48 = @"YES";
     *buf = 67109634;
-    *v73 = a8;
-    if (!v59)
+    *v73 = id;
+    if (!embeddingCopy)
     {
       v48 = @"NO";
     }
@@ -448,16 +448,16 @@ LABEL_38:
   return v44;
 }
 
-+ (id)lookupIdentifiersForSceneIdentifiersAndTypesTuple:(id)a3
++ (id)lookupIdentifiersForSceneIdentifiersAndTypesTuple:(id)tuple
 {
   v30 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  tupleCopy = tuple;
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v5 = v3;
+  v5 = tupleCopy;
   v6 = [v5 countByEnumeratingWithState:&v21 objects:v29 count:16];
   if (v6)
   {
@@ -479,19 +479,19 @@ LABEL_38:
         {
           v12 = [v11 objectAtIndexedSubscript:0];
           v13 = [v11 objectAtIndexedSubscript:1];
-          v14 = [v13 unsignedIntegerValue];
+          unsignedIntegerValue = [v13 unsignedIntegerValue];
 
-          if (v14 > 3)
+          if (unsignedIntegerValue > 3)
           {
             v15 = 0;
-            if ((v14 - 6) >= 3 && v14 != 4)
+            if ((unsignedIntegerValue - 6) >= 3 && unsignedIntegerValue != 4)
             {
 LABEL_19:
               v18 = PLSearchBackendResultProcessingGetLog();
               if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
               {
                 *buf = v20;
-                v26 = v14;
+                v26 = unsignedIntegerValue;
                 v27 = 2112;
                 v28 = v11;
                 _os_log_impl(&dword_19C86F000, v18, OS_LOG_TYPE_ERROR, "Invalid scene type %tu, while resolving match details. sceneIdentifierAndType: %@", buf, 0x16u);
@@ -509,7 +509,7 @@ LABEL_24:
             goto LABEL_27;
           }
 
-          switch(v14)
+          switch(unsignedIntegerValue)
           {
             case 1:
 LABEL_18:
@@ -550,16 +550,16 @@ LABEL_27:
   return v4;
 }
 
-+ (id)lookupIdentifiersForPersonUUIDs:(id)a3
++ (id)lookupIdentifiersForPersonUUIDs:(id)ds
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  dsCopy = ds;
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v3;
+  v5 = dsCopy;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {

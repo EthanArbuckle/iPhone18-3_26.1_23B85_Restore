@@ -1,16 +1,16 @@
 @interface SHHapticSpatialTrackValidator
-+ (BOOL)isValidSpatialTrackInformation:(id)a3;
++ (BOOL)isValidSpatialTrackInformation:(id)information;
 @end
 
 @implementation SHHapticSpatialTrackValidator
 
-+ (BOOL)isValidSpatialTrackInformation:(id)a3
++ (BOOL)isValidSpatialTrackInformation:(id)information
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  informationCopy = information;
+  v4 = informationCopy;
+  if (informationCopy)
   {
-    if ([v3 matchesStereo])
+    if ([informationCopy matchesStereo])
     {
       v5 = 1;
     }
@@ -34,12 +34,12 @@
         v8 = @"NO";
       }
 
-      v9 = [v4 matchesStereo];
+      matchesStereo = [v4 matchesStereo];
       [v4 timeDrift];
       v12 = 138412802;
       v13 = v8;
       v14 = 1024;
-      v15 = v9;
+      v15 = matchesStereo;
       v16 = 2048;
       v17 = v10;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Spatial track info is valid? %@, Matches stereo: %d, time drift %f", &v12, 0x1Cu);

@@ -21,18 +21,18 @@
     *a5 = 0;
   }
 
-  v9 = [a1 length];
-  v10 = [a1 bytes];
-  v11 = memchr(v10, 58, v9);
+  v9 = [self length];
+  bytes = [self bytes];
+  v11 = memchr(bytes, 58, v9);
   result = 0;
-  if (!v10[v9 - 1] && v11)
+  if (!bytes[v9 - 1] && v11)
   {
     if (a3)
     {
-      *a3 = atoll(v10);
+      *a3 = atoll(bytes);
     }
 
-    result = memchr((v11 + 1), 58, &v10[v9 + ~v11]);
+    result = memchr((v11 + 1), 58, &bytes[v9 + ~v11]);
     if (result)
     {
       v13 = result;

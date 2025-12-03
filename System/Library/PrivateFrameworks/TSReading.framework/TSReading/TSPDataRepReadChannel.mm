@@ -1,15 +1,15 @@
 @interface TSPDataRepReadChannel
-- (TSPDataRepReadChannel)initWithRepresentation:(id)a3;
+- (TSPDataRepReadChannel)initWithRepresentation:(id)representation;
 - (void)close;
 - (void)dealloc;
-- (void)readWithQueue:(id)a3 handler:(id)a4;
+- (void)readWithQueue:(id)queue handler:(id)handler;
 @end
 
 @implementation TSPDataRepReadChannel
 
-- (TSPDataRepReadChannel)initWithRepresentation:(id)a3
+- (TSPDataRepReadChannel)initWithRepresentation:(id)representation
 {
-  v5 = a3;
+  representationCopy = representation;
   v19.receiver = self;
   v19.super_class = TSPDataRepReadChannel;
   v6 = [(TSPDataRepReadChannel *)&v19 init];
@@ -21,26 +21,26 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  objc_storeStrong(&v6->_representation, a3);
-  v8 = [(SFUDataRepresentation *)v7->_representation inputStream];
+  objc_storeStrong(&v6->_representation, representation);
+  inputStream = [(SFUDataRepresentation *)v7->_representation inputStream];
   inputStream = v7->_inputStream;
-  v7->_inputStream = v8;
+  v7->_inputStream = inputStream;
 
   if (([(SFUInputStream *)v7->_inputStream canSeek]& 1) == 0)
   {
     [(SFUInputStream *)v7->_inputStream close];
-    v10 = [(SFUDataRepresentation *)v7->_representation bufferedInputStream];
+    bufferedInputStream = [(SFUDataRepresentation *)v7->_representation bufferedInputStream];
     v11 = v7->_inputStream;
-    v7->_inputStream = v10;
+    v7->_inputStream = bufferedInputStream;
 
     if (!v7->_inputStream)
     {
       if ([(SFUDataRepresentation *)v7->_representation encodedLength])
       {
-        v15 = [MEMORY[0x277D6C290] currentHandler];
+        currentHandler = [MEMORY[0x277D6C290] currentHandler];
         v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSPDataRepReadChannel initWithRepresentation:]"];
         v17 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/persistence/src/TSPDataRepReadChannel.mm"];
-        [v15 handleFailureInFunction:v16 file:v17 lineNumber:35 description:@"Could not create the buffered input stream."];
+        [currentHandler handleFailureInFunction:v16 file:v17 lineNumber:35 description:@"Could not create the buffered input stream."];
       }
 
       goto LABEL_7;
@@ -65,16 +65,16 @@ LABEL_8:
   [(TSPDataRepReadChannel *)&v3 dealloc];
 }
 
-- (void)readWithQueue:(id)a3 handler:(id)a4
+- (void)readWithQueue:(id)queue handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  queueCopy = queue;
+  handlerCopy = handler;
   if (!self->_representation)
   {
-    v8 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSPDataRepReadChannel readWithQueue:handler:]"];
     v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/persistence/src/TSPDataRepReadChannel.mm"];
-    [v8 handleFailureInFunction:v9 file:v10 lineNumber:52 description:@"Stream is closed"];
+    [currentHandler handleFailureInFunction:v9 file:v10 lineNumber:52 description:@"Stream is closed"];
   }
 
   readQueue = self->_readQueue;
@@ -83,10 +83,10 @@ LABEL_8:
   block[2] = __47__TSPDataRepReadChannel_readWithQueue_handler___block_invoke;
   block[3] = &unk_279D47248;
   block[4] = self;
-  v15 = v6;
-  v16 = v7;
-  v12 = v7;
-  v13 = v6;
+  v15 = queueCopy;
+  v16 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = queueCopy;
   dispatch_async(readQueue, block);
 }
 

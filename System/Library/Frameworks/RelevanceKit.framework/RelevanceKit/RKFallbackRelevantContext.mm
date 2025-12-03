@@ -1,5 +1,5 @@
 @interface RKFallbackRelevantContext
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (RKFallbackRelevantContext)init;
 @end
 
@@ -12,16 +12,16 @@
   return [(RKRelevantContext *)&v3 _init];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     isKindOfClass = 1;
   }
 
   else
   {
-    v3 = a3;
+    equalCopy = equal;
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
   }

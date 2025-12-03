@@ -1,11 +1,11 @@
 @interface PlaceholderCollectionViewCell
-- (_TtC8AppStore29PlaceholderCollectionViewCell)initWithCoder:(id)a3;
+- (_TtC8AppStore29PlaceholderCollectionViewCell)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
 @implementation PlaceholderCollectionViewCell
 
-- (_TtC8AppStore29PlaceholderCollectionViewCell)initWithCoder:(id)a3
+- (_TtC8AppStore29PlaceholderCollectionViewCell)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC8AppStore29PlaceholderCollectionViewCell_itemLayoutContext;
   v5 = type metadata accessor for ItemLayoutContext();
@@ -24,7 +24,7 @@
   v2 = v13.receiver;
   [(PlaceholderCollectionViewCell *)&v13 layoutSubviews];
   v3 = *&v2[OBJC_IVAR____TtC8AppStore29PlaceholderCollectionViewCell_placeholderView];
-  v4 = [v2 contentView];
+  contentView = [v2 contentView];
   sub_100028004();
   LayoutMarginsAware<>.layoutFrame.getter();
   v6 = v5;

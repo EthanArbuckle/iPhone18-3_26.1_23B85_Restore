@@ -19,8 +19,8 @@
   v7 = +[WFWeatherConditions calendar];
   v8 = [v7 components:64 fromDate:v6 toDate:v5 options:0];
 
-  v9 = [v8 minute];
-  return v9;
+  minute = [v8 minute];
+  return minute;
 }
 
 + (id)wf_weatherConditionsClosestToDate:()WFPrivateAdditions inArray:
@@ -108,7 +108,7 @@
   v7 = a3;
   v8 = a4;
   v9 = a5;
-  v18 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -132,7 +132,7 @@
         v16 = [v15 objectForKeyedSubscript:@"WFWeatherForecastDateComponent"];
         if ([MEMORY[0x277CBEAA8] wf_isDate:v7 inSameDayWithDate:v16 inCalendar:v8])
         {
-          [v18 addObject:v15];
+          [array addObject:v15];
         }
       }
 
@@ -142,7 +142,7 @@
     while (v12);
   }
 
-  return v18;
+  return array;
 }
 
 @end

@@ -32,17 +32,4 @@
   return result;
 }
 
-{
-  result = lazy protocol witness table cache variable for type [Int : AnyCRValue] and conformance <> [A : B];
-  if (!lazy protocol witness table cache variable for type [Int : AnyCRValue] and conformance <> [A : B])
-  {
-    __swift_instantiateConcreteTypeFromMangledNameAbstractV2(&_sSDySi9Coherence10AnyCRValueVGMd);
-    lazy protocol witness table accessor for type UUID and conformance UUID(&lazy protocol witness table cache variable for type AnyCRValue and conformance AnyCRValue, MEMORY[0x1E6995030]);
-    result = swift_getWitnessTable();
-    atomic_store(result, &lazy protocol witness table cache variable for type [Int : AnyCRValue] and conformance <> [A : B]);
-  }
-
-  return result;
-}
-
 @end

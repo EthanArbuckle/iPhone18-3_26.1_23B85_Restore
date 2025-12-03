@@ -2,12 +2,12 @@
 - (NSString)tokenId;
 - (NSString)unlockTokenId;
 - (POUserConfiguration)init;
-- (POUserConfiguration)initWithCoder:(id)a3;
-- (POUserConfiguration)initWithData:(id)a3;
-- (__SecKey)sepKeyWithContext:(id)a3;
+- (POUserConfiguration)initWithCoder:(id)coder;
+- (POUserConfiguration)initWithData:(id)data;
+- (__SecKey)sepKeyWithContext:(id)context;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
-- (void)setSepKey:(__SecKey *)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setSepKey:(__SecKey *)key;
 @end
 
 @implementation POUserConfiguration
@@ -27,17 +27,17 @@
   return v3;
 }
 
-- (__SecKey)sepKeyWithContext:(id)a3
+- (__SecKey)sepKeyWithContext:(id)context
 {
-  result = [POSecKeyHelper keyForData:self->__sepKeyData context:a3];
+  result = [POSecKeyHelper keyForData:self->__sepKeyData context:context];
   self->_sepKey = result;
   return result;
 }
 
-- (void)setSepKey:(__SecKey *)a3
+- (void)setSepKey:(__SecKey *)key
 {
-  self->_sepKey = a3;
-  if (a3)
+  self->_sepKey = key;
+  if (key)
   {
     v4 = [POSecKeyHelper dataForKey:?];
     sepKeyData = self->__sepKeyData;
@@ -49,13 +49,13 @@
 
 - (NSString)tokenId
 {
-  v3 = [(POUserConfiguration *)self userDecryptionKeyHash];
+  userDecryptionKeyHash = [(POUserConfiguration *)self userDecryptionKeyHash];
 
-  if (v3)
+  if (userDecryptionKeyHash)
   {
     v4 = MEMORY[0x277CCACA8];
-    v5 = [(POUserConfiguration *)self userDecryptionKeyHash];
-    v6 = [POTokenHelper dataToHex:v5];
+    userDecryptionKeyHash2 = [(POUserConfiguration *)self userDecryptionKeyHash];
+    v6 = [POTokenHelper dataToHex:userDecryptionKeyHash2];
     v7 = [v4 stringWithFormat:@"com.apple.platformsso:%@", v6];
   }
 
@@ -69,13 +69,13 @@
 
 - (NSString)unlockTokenId
 {
-  v3 = [(POUserConfiguration *)self userUnlockHash];
+  userUnlockHash = [(POUserConfiguration *)self userUnlockHash];
 
-  if (v3)
+  if (userUnlockHash)
   {
     v4 = MEMORY[0x277CCACA8];
-    v5 = [(POUserConfiguration *)self userUnlockHash];
-    v6 = [POTokenHelper dataToHex:v5];
+    userUnlockHash2 = [(POUserConfiguration *)self userUnlockHash];
+    v6 = [POTokenHelper dataToHex:userUnlockHash2];
     v7 = [v4 stringWithFormat:@"com.apple.platformsso:%@", v6];
   }
 
@@ -99,9 +99,9 @@ id __52__POUserConfiguration_dataRepresentationForDisplay___block_invoke(uint64_
   return v1;
 }
 
-- (POUserConfiguration)initWithData:(id)a3
+- (POUserConfiguration)initWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = [(POUserConfiguration *)self init];
   if (!v5)
   {
@@ -113,7 +113,7 @@ LABEL_49:
   v6 = objc_alloc_init(MEMORY[0x277CCAA68]);
   [v6 setFormatOptions:1907];
   v154 = 0;
-  v7 = [MEMORY[0x277CCAAA0] JSONObjectWithData:v4 options:16 error:&v154];
+  v7 = [MEMORY[0x277CCAAA0] JSONObjectWithData:dataCopy options:16 error:&v154];
   v8 = v154;
   if (!v8)
   {
@@ -473,23 +473,23 @@ void __36__POUserConfiguration_initWithData___block_invoke_157(uint64_t a1, void
   return v5;
 }
 
-- (POUserConfiguration)initWithCoder:(id)a3
+- (POUserConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
   v6 = NSStringFromSelector(sel_dataRepresentation);
-  v7 = [v4 decodeObjectOfClass:v5 forKey:v6];
+  v7 = [coderCopy decodeObjectOfClass:v5 forKey:v6];
 
   v8 = [(POUserConfiguration *)self initWithData:v7];
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(POUserConfiguration *)self dataRepresentation];
+  coderCopy = coder;
+  dataRepresentation = [(POUserConfiguration *)self dataRepresentation];
   v5 = NSStringFromSelector(sel_dataRepresentation);
-  [v4 encodeObject:v6 forKey:v5];
+  [coderCopy encodeObject:dataRepresentation forKey:v5];
 }
 
 @end

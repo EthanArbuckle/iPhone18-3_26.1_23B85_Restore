@@ -1,39 +1,39 @@
 @interface _DKSyncPeerStatusTracker
-+ (_DKSyncPeerStatusTracker)peerStatusTrackerWithContext:(id)a3;
++ (_DKSyncPeerStatusTracker)peerStatusTrackerWithContext:(id)context;
 + (_DKSyncPeerStatusTracker)sharedInstance;
-+ (id)stringForTransports:(int64_t)a3;
++ (id)stringForTransports:(int64_t)transports;
 + (id)syncPeerTransportsStrings;
 - (BOOL)isSingleDevice;
 - (_DKKnowledgeStorage)storage;
-- (_DKSyncPeerStatusTracker)initWithContext:(id)a3;
+- (_DKSyncPeerStatusTracker)initWithContext:(id)context;
 - (id)_observerBlocks;
-- (id)addStatusChangeObserverWithBlock:(id)a3;
+- (id)addStatusChangeObserverWithBlock:(id)block;
 - (id)allPeers;
 - (id)description;
-- (id)existingPeerWithIDSDeviceIdentifier:(id)a3;
-- (id)existingPeerWithSourceDeviceID:(id)a3;
-- (id)lastSuccessfulActivityDateOnTransport:(int64_t)a3 forPeer:(id)a4;
-- (id)peerWithCompanionLinkDevice:(id)a3;
-- (id)peerWithIDSDeviceIdentifier:(id)a3;
-- (id)peerWithZoneName:(id)a3 sourceDeviceID:(id)a4;
-- (id)peersWithActiveTransports:(int64_t)a3;
+- (id)existingPeerWithIDSDeviceIdentifier:(id)identifier;
+- (id)existingPeerWithSourceDeviceID:(id)d;
+- (id)lastSuccessfulActivityDateOnTransport:(int64_t)transport forPeer:(id)peer;
+- (id)peerWithCompanionLinkDevice:(id)device;
+- (id)peerWithIDSDeviceIdentifier:(id)identifier;
+- (id)peerWithZoneName:(id)name sourceDeviceID:(id)d;
+- (id)peersWithActiveTransports:(int64_t)transports;
 - (id)peersWithAnyActiveTransports;
 - (id)pseudoPeerForSyncTransportCloudUp;
-- (int64_t)activeTransportsForPeer:(id)a3;
+- (int64_t)activeTransportsForPeer:(id)peer;
 - (unint64_t)foreignPeersCount;
 - (void)_loadPeers;
-- (void)_modifyActiveTransportInPeer:(void *)a3 withNewTransportsBlock:;
-- (void)_peerInfoForPeer:(void *)a1;
-- (void)addActiveTransports:(int64_t)a3 toPeer:(id)a4;
+- (void)_modifyActiveTransportInPeer:(void *)peer withNewTransportsBlock:;
+- (void)_peerInfoForPeer:(void *)peer;
+- (void)addActiveTransports:(int64_t)transports toPeer:(id)peer;
 - (void)debugLogPeers;
 - (void)postCloudDeviceCountChangedNotification;
-- (void)registerNewPeer:(id *)a1;
-- (void)removeActiveTransports:(int64_t)a3 fromPeer:(id)a4;
-- (void)removePeer:(id)a3;
-- (void)removeStatusChangeObserver:(id)a3;
-- (void)setLastSeenDate:(id)a3 onPeer:(id)a4;
-- (void)setLastSuccessfulActivityDate:(id)a3 onTransport:(int64_t)a4 forPeer:(id)a5;
-- (void)setSourceDeviceID:(id)a3 version:(id)a4 peer:(id)a5;
+- (void)registerNewPeer:(id *)peer;
+- (void)removeActiveTransports:(int64_t)transports fromPeer:(id)peer;
+- (void)removePeer:(id)peer;
+- (void)removeStatusChangeObserver:(id)observer;
+- (void)setLastSeenDate:(id)date onPeer:(id)peer;
+- (void)setLastSuccessfulActivityDate:(id)date onTransport:(int64_t)transport forPeer:(id)peer;
+- (void)setSourceDeviceID:(id)d version:(id)version peer:(id)peer;
 @end
 
 @implementation _DKSyncPeerStatusTracker
@@ -44,7 +44,7 @@
   block[1] = 3221225472;
   block[2] = __42___DKSyncPeerStatusTracker_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_initialized_7 != -1)
   {
     dispatch_once(&sharedInstance_initialized_7, block);
@@ -58,13 +58,13 @@
 - (void)debugLogPeers
 {
   v133 = *MEMORY[0x1E69E9840];
-  v105 = self;
-  objc_sync_enter(v105);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v2 = +[_CDLogging syncChannel];
   if (os_log_type_enabled(v2, OS_LOG_TYPE_DEBUG))
   {
     v68 = [objc_opt_class() description];
-    v69 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[NSMutableDictionary count](v105->_peerInfos, "count")}];
+    v69 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[NSMutableDictionary count](selfCopy->_peerInfos, "count")}];
     *buf = 138543618;
     v122 = v68;
     v123 = 2112;
@@ -72,12 +72,12 @@
     _os_log_debug_impl(&dword_191750000, v2, OS_LOG_TYPE_DEBUG, "%{public}@: Tracking %@ peers", buf, 0x16u);
   }
 
-  v3 = [(_DKSyncPeerStatusTracker *)v105 pseudoPeerForSyncTransportCloudUp];
-  v79 = v3;
-  if (v3)
+  pseudoPeerForSyncTransportCloudUp = [(_DKSyncPeerStatusTracker *)selfCopy pseudoPeerForSyncTransportCloudUp];
+  v79 = pseudoPeerForSyncTransportCloudUp;
+  if (pseudoPeerForSyncTransportCloudUp)
   {
-    v4 = [v3 uuid];
-    v78 = [(NSMutableDictionary *)v105->_peerInfos objectForKeyedSubscript:v4];
+    uuid = [pseudoPeerForSyncTransportCloudUp uuid];
+    v78 = [(NSMutableDictionary *)selfCopy->_peerInfos objectForKeyedSubscript:uuid];
     v5 = +[_CDLogging syncChannel];
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
@@ -93,9 +93,9 @@
         v72 = &stru_1F05B9908;
       }
 
-      v73 = [v79 identifier];
-      v74 = [v79 model];
-      if (v74)
+      identifier = [v79 identifier];
+      model = [v79 model];
+      if (model)
       {
         v76 = MEMORY[0x1E696AEC0];
         obj = [v79 model];
@@ -115,13 +115,13 @@
       v125 = 2114;
       v126 = v72;
       v127 = 2114;
-      v128 = v73;
+      v128 = identifier;
       v129 = 2114;
       v130 = v75;
       v131 = 2112;
       v132 = v77;
       _os_log_debug_impl(&dword_191750000, v5, OS_LOG_TYPE_DEBUG, "%{public}@: %@: %{public}@peer %{public}@%{public}@: %@", buf, 0x3Eu);
-      if (v74)
+      if (model)
       {
       }
 
@@ -142,7 +142,7 @@
 
   v6 = objc_opt_new();
   v98 = objc_opt_new();
-  [(NSMutableDictionary *)v105->_peerInfos keysSortedByValueUsingComparator:&__block_literal_global_142];
+  [(NSMutableDictionary *)selfCopy->_peerInfos keysSortedByValueUsingComparator:&__block_literal_global_142];
   v116 = 0u;
   v117 = 0u;
   v114 = 0u;
@@ -161,7 +161,7 @@
           objc_enumerationMutation(obja);
         }
 
-        v10 = [(NSMutableDictionary *)v105->_peerInfos objectForKeyedSubscript:*(*(&v114 + 1) + 8 * v9)];
+        v10 = [(NSMutableDictionary *)selfCopy->_peerInfos objectForKeyedSubscript:*(*(&v114 + 1) + 8 * v9)];
         v11 = v10;
         if (v10)
         {
@@ -176,13 +176,13 @@
         v13 = v12;
         if (([v13 me] & 1) == 0)
         {
-          v14 = [v13 sourceDeviceID];
+          sourceDeviceID = [v13 sourceDeviceID];
 
-          if (v14)
+          if (sourceDeviceID)
           {
-            v15 = [v13 lastSeenDate];
-            v16 = v15;
-            if (v15 && ([v15 timeIntervalSinceNow], v17 >= -2678400.0))
+            lastSeenDate = [v13 lastSeenDate];
+            v16 = lastSeenDate;
+            if (lastSeenDate && ([lastSeenDate timeIntervalSinceNow], v17 >= -2678400.0))
             {
               v18 = +[_CDLogging syncChannel];
               if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
@@ -200,8 +200,8 @@
                   v19 = 0;
                 }
 
-                v87 = v19;
-                v20 = [(__CFString *)v87 me];
+                model5 = v19;
+                v20 = [(__CFString *)model5 me];
                 v21 = &stru_1F05B9908;
                 if (v20)
                 {
@@ -220,7 +220,7 @@
                 }
 
                 v84 = v22;
-                v89 = [v84 identifier];
+                identifier2 = [v84 identifier];
                 if (v11)
                 {
                   v23 = v11[2];
@@ -232,9 +232,9 @@
                 }
 
                 v83 = v23;
-                v101 = [v83 model];
-                v88 = &stru_1F05B9908;
-                if (v101)
+                model2 = [v83 model];
+                model7 = &stru_1F05B9908;
+                if (model2)
                 {
                   if (v11)
                   {
@@ -248,9 +248,9 @@
 
                   v25 = MEMORY[0x1E696AEC0];
                   v80 = v24;
-                  v82 = [v80 model];
-                  v81 = [v25 stringWithFormat:@" (%@)", v82];
-                  v88 = v81;
+                  model3 = [v80 model];
+                  v81 = [v25 stringWithFormat:@" (%@)", model3];
+                  model7 = v81;
                 }
 
                 v26 = [v11 debugDescription];
@@ -261,13 +261,13 @@
                 v125 = 2114;
                 v126 = v86;
                 v127 = 2114;
-                v128 = v89;
+                v128 = identifier2;
                 v129 = 2114;
-                v130 = v88;
+                v130 = model7;
                 v131 = 2112;
                 v132 = v26;
                 _os_log_debug_impl(&dword_191750000, v18, OS_LOG_TYPE_DEBUG, "%{public}@: %@: %{public}@peer %{public}@%{public}@: %@", buf, 0x3Eu);
-                if (v101)
+                if (model2)
                 {
                 }
               }
@@ -340,7 +340,7 @@
             v35 = @"pseudo ";
           }
 
-          v88 = v35;
+          model7 = v35;
           if (v31)
           {
             v36 = v31[2];
@@ -352,7 +352,7 @@
           }
 
           v37 = v36;
-          v38 = [v37 identifier];
+          identifier3 = [v37 identifier];
           if (v31)
           {
             v39 = v31[2];
@@ -364,9 +364,9 @@
           }
 
           v40 = v39;
-          v41 = [v40 model];
+          model4 = [v40 model];
           v42 = &stru_1F05B9908;
-          if (v41)
+          if (model4)
           {
             if (v31)
             {
@@ -380,8 +380,8 @@
 
             v44 = MEMORY[0x1E696AEC0];
             v84 = v43;
-            v87 = [v84 model];
-            v86 = [v44 stringWithFormat:@" (%@)", v87];
+            model5 = [v84 model];
+            v86 = [v44 stringWithFormat:@" (%@)", model5];
             v42 = v86;
           }
 
@@ -391,15 +391,15 @@
           v123 = 2112;
           v124 = v93;
           v125 = 2114;
-          v126 = v88;
+          v126 = model7;
           v127 = 2114;
-          v128 = v38;
+          v128 = identifier3;
           v129 = 2114;
           v130 = v42;
           v131 = 2112;
           v132 = v45;
           _os_log_debug_impl(&dword_191750000, v32, OS_LOG_TYPE_DEBUG, "%{public}@: %@: obsolete %{public}@peer %{public}@%{public}@: %@", buf, 0x3Eu);
-          if (v41)
+          if (model4)
           {
           }
         }
@@ -472,7 +472,7 @@
           }
 
           v57 = v56;
-          v58 = [v57 identifier];
+          identifier4 = [v57 identifier];
           if (v51)
           {
             v59 = v51[2];
@@ -484,9 +484,9 @@
           }
 
           v60 = v59;
-          v61 = [v60 model];
+          model6 = [v60 model];
           v62 = &stru_1F05B9908;
-          if (v61)
+          if (model6)
           {
             if (v51)
             {
@@ -500,9 +500,9 @@
 
             v64 = MEMORY[0x1E696AEC0];
             v86 = v63;
-            v88 = [(__CFString *)v86 model];
-            v87 = [v64 stringWithFormat:@" (%@)", v88];
-            v62 = v87;
+            model7 = [(__CFString *)v86 model];
+            model5 = [v64 stringWithFormat:@" (%@)", model7];
+            v62 = model5;
           }
 
           v65 = [v51 debugDescription];
@@ -513,14 +513,14 @@
           v125 = 2114;
           v126 = v91;
           v127 = 2114;
-          v128 = v58;
+          v128 = identifier4;
           v129 = 2114;
           v130 = v62;
           v131 = 2112;
           v132 = v65;
           _os_log_debug_impl(&dword_191750000, v52, OS_LOG_TYPE_DEBUG, "%{public}@: %@: incomplete %{public}@peer %{public}@%{public}@: %@", buf, 0x3Eu);
           v47 = v85;
-          if (v61)
+          if (model6)
           {
           }
         }
@@ -536,7 +536,7 @@
     while (v66);
   }
 
-  objc_sync_exit(v105);
+  objc_sync_exit(selfCopy);
   v67 = *MEMORY[0x1E69E9840];
 }
 
@@ -546,13 +546,13 @@
   v3 = self->_pseudoPeer;
   if (!v3)
   {
-    v4 = self;
-    objc_sync_enter(v4);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v5 = v4->_peerInfos;
+    v5 = selfCopy->_peerInfos;
     v3 = [(NSMutableDictionary *)v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v3)
     {
@@ -567,7 +567,7 @@
             objc_enumerationMutation(v5);
           }
 
-          v8 = [(NSMutableDictionary *)v4->_peerInfos objectForKeyedSubscript:*(*(&v17 + 1) + 8 * v7)];
+          v8 = [(NSMutableDictionary *)selfCopy->_peerInfos objectForKeyedSubscript:*(*(&v17 + 1) + 8 * v7)];
           v9 = v8;
           if (v8)
           {
@@ -617,7 +617,7 @@
 LABEL_18:
 
     objc_storeStrong(&self->_pseudoPeer, v3);
-    objc_sync_exit(v4);
+    objc_sync_exit(selfCopy);
   }
 
   v15 = *MEMORY[0x1E69E9840];
@@ -625,12 +625,12 @@ LABEL_18:
   return v3;
 }
 
-+ (_DKSyncPeerStatusTracker)peerStatusTrackerWithContext:(id)a3
++ (_DKSyncPeerStatusTracker)peerStatusTrackerWithContext:(id)context
 {
-  v3 = [_DKSyncContextObjectFactory objectFactoryForClass:a1 context:a3];
-  v4 = [v3 instance];
+  v3 = [_DKSyncContextObjectFactory objectFactoryForClass:self context:context];
+  instance = [v3 instance];
 
-  return v4;
+  return instance;
 }
 
 + (id)syncPeerTransportsStrings
@@ -646,16 +646,16 @@ LABEL_18:
   return v0;
 }
 
-- (_DKSyncPeerStatusTracker)initWithContext:(id)a3
+- (_DKSyncPeerStatusTracker)initWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v14.receiver = self;
   v14.super_class = _DKSyncPeerStatusTracker;
-  v5 = [(_DKSyncContextObject *)&v14 initWithContext:v4];
+  v5 = [(_DKSyncContextObject *)&v14 initWithContext:contextCopy];
   if (v5)
   {
-    v6 = [v4 storage];
-    objc_storeWeak(&v5->_storage, v6);
+    storage = [contextCopy storage];
+    objc_storeWeak(&v5->_storage, storage);
 
     v7 = objc_opt_new();
     peerInfos = v5->_peerInfos;
@@ -679,13 +679,13 @@ LABEL_18:
 {
   v16 = *MEMORY[0x1E69E9840];
   v5 = [objc_opt_class() description];
-  v6 = [a2 domain];
+  domain = [a2 domain];
   v8 = 138544130;
   v9 = v5;
   v10 = 2114;
-  v11 = v6;
+  v11 = domain;
   v12 = 2048;
-  v13 = [a2 code];
+  code = [a2 code];
   v14 = 2112;
   v15 = a2;
   _os_log_error_impl(&dword_191750000, a3, OS_LOG_TYPE_ERROR, "%{public}@: Failed to load peers: %{public}@:%lld (%@)", &v8, 0x2Au);
@@ -693,16 +693,16 @@ LABEL_18:
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setSourceDeviceID:(id)a3 version:(id)a4 peer:(id)a5
+- (void)setSourceDeviceID:(id)d version:(id)version peer:(id)peer
 {
   v85 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  versionCopy = version;
+  peerCopy = peer;
   v11 = +[_DKSyncSerializer underlyingQueue];
   dispatch_assert_queue_V2(v11);
 
-  if (!v8)
+  if (!dCopy)
   {
     v18 = +[_CDLogging syncChannel];
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -713,25 +713,25 @@ LABEL_18:
     goto LABEL_8;
   }
 
-  v12 = [v10 sourceDeviceID];
-  v13 = [v8 isEqualToString:v12];
+  sourceDeviceID = [peerCopy sourceDeviceID];
+  v13 = [dCopy isEqualToString:sourceDeviceID];
 
-  v14 = [v10 version];
-  v15 = v14;
-  if (v9)
+  version = [peerCopy version];
+  v15 = version;
+  if (versionCopy)
   {
-    v16 = [v9 isEqualToString:v14];
+    v16 = [versionCopy isEqualToString:version];
 
     if ((v13 & v16 & 1) == 0)
     {
-      v17 = v10;
+      v17 = peerCopy;
       if ((v16 & 1) == 0)
       {
-        [v17 setVersion:v9];
+        [v17 setVersion:versionCopy];
       }
 
 LABEL_15:
-      v18 = v10;
+      v18 = peerCopy;
       if (v13)
       {
         goto LABEL_49;
@@ -742,7 +742,7 @@ LABEL_15:
       {
         v23 = [objc_opt_class() description];
         v24 = &stru_1F05B9908;
-        if ([v10 me])
+        if ([peerCopy me])
         {
           v25 = @"pseudo ";
         }
@@ -752,13 +752,13 @@ LABEL_15:
           v25 = &stru_1F05B9908;
         }
 
-        v26 = [v10 identifier];
-        v27 = [v10 model];
-        if (v27)
+        identifier = [peerCopy identifier];
+        model = [peerCopy model];
+        if (model)
         {
           v28 = MEMORY[0x1E696AEC0];
-          v68 = [v10 model];
-          v24 = [v28 stringWithFormat:@" (%@)", v68];
+          model2 = [peerCopy model];
+          v24 = [v28 stringWithFormat:@" (%@)", model2];
         }
 
         *buf = 138544642;
@@ -766,47 +766,47 @@ LABEL_15:
         v73 = 2114;
         v74 = v25;
         v75 = 2114;
-        v76 = v26;
+        v76 = identifier;
         v77 = 2114;
         v78 = v24;
         v79 = 2114;
-        v80 = v8;
+        v80 = dCopy;
         v81 = 2114;
-        v82 = v9;
+        v82 = versionCopy;
         _os_log_debug_impl(&dword_191750000, v22, OS_LOG_TYPE_DEBUG, "%{public}@: Setting %{public}@peer %{public}@%{public}@ source device id to %{public}@ version %{public}@", buf, 0x3Eu);
-        if (v27)
+        if (model)
         {
         }
       }
 
-      v29 = [(_DKSyncPeerStatusTracker *)self existingPeerWithSourceDeviceID:v8];
-      [v10 setSourceDeviceID:v8];
-      v30 = [(_DKSyncPeerStatusTracker *)self storage];
-      v31 = [v30 deviceUUID];
-      v32 = [v31 UUIDString];
+      v29 = [(_DKSyncPeerStatusTracker *)self existingPeerWithSourceDeviceID:dCopy];
+      [peerCopy setSourceDeviceID:dCopy];
+      storage = [(_DKSyncPeerStatusTracker *)self storage];
+      deviceUUID = [storage deviceUUID];
+      uUIDString = [deviceUUID UUIDString];
 
-      if ([v32 isEqualToString:v8])
+      if ([uUIDString isEqualToString:dCopy])
       {
-        [v10 setMe:1];
+        [peerCopy setMe:1];
         v33 = +[_CDLogging syncChannel];
         if (os_log_type_enabled(v33, OS_LOG_TYPE_DEBUG))
         {
-          [_DKSyncPeerStatusTracker setSourceDeviceID:v10 version:? peer:?];
+          [_DKSyncPeerStatusTracker setSourceDeviceID:peerCopy version:? peer:?];
         }
       }
 
-      v18 = v10;
-      if (!v29 || (v18 = v10, v29 == v10))
+      v18 = peerCopy;
+      if (!v29 || (v18 = peerCopy, v29 == peerCopy))
       {
 LABEL_48:
 
 LABEL_49:
-        v48 = [(_DKSyncPeerStatusTracker *)self storage];
+        storage2 = [(_DKSyncPeerStatusTracker *)self storage];
         v70 = 0;
-        [v48 saveSyncPeer:v18 error:&v70];
+        [storage2 saveSyncPeer:v18 error:&v70];
         v49 = v70;
 
-        if (v18 == v10)
+        if (v18 == peerCopy)
         {
           if (!v49)
           {
@@ -830,36 +830,36 @@ LABEL_8:
             }
 
             v65 = v53;
-            v67 = [v18 identifier];
-            v54 = [v18 model];
-            if (v54)
+            identifier2 = [v18 identifier];
+            model3 = [v18 model];
+            if (model3)
             {
               v58 = MEMORY[0x1E696AEC0];
-              v64 = [v18 model];
-              v52 = [v58 stringWithFormat:@" (%@)", v64];
+              model4 = [v18 model];
+              v52 = [v58 stringWithFormat:@" (%@)", model4];
             }
 
-            v59 = [v49 domain];
-            v60 = [v49 code];
+            domain = [v49 domain];
+            code = [v49 code];
             *buf = 138544898;
             v72 = v69;
             v73 = 2114;
             v74 = v65;
             v75 = 2114;
-            v76 = v67;
+            v76 = identifier2;
             v77 = 2114;
             v78 = v52;
             v79 = 2114;
-            v80 = v59;
+            v80 = domain;
             v81 = 2048;
-            v82 = v60;
+            v82 = code;
             v83 = 2112;
             v84 = v49;
             v61 = "%{public}@: Failed to save %{public}@peer %{public}@%{public}@: %{public}@:%lld (%@)";
 LABEL_68:
             _os_log_error_impl(&dword_191750000, v50, OS_LOG_TYPE_ERROR, v61, buf, 0x48u);
 
-            if (v54)
+            if (model3)
             {
             }
           }
@@ -891,29 +891,29 @@ LABEL_68:
             }
 
             v66 = v57;
-            v67 = [v18 identifier];
-            v54 = [v18 model];
-            if (v54)
+            identifier2 = [v18 identifier];
+            model3 = [v18 model];
+            if (model3)
             {
               v62 = MEMORY[0x1E696AEC0];
-              v64 = [v18 model];
-              v52 = [v62 stringWithFormat:@" (%@)", v64];
+              model4 = [v18 model];
+              v52 = [v62 stringWithFormat:@" (%@)", model4];
             }
 
-            v59 = [v49 domain];
-            v63 = [v49 code];
+            domain = [v49 domain];
+            code2 = [v49 code];
             *buf = 138544898;
             v72 = v69;
             v73 = 2114;
             v74 = v66;
             v75 = 2114;
-            v76 = v67;
+            v76 = identifier2;
             v77 = 2114;
             v78 = v52;
             v79 = 2114;
-            v80 = v59;
+            v80 = domain;
             v81 = 2048;
-            v82 = v63;
+            v82 = code2;
             v83 = 2112;
             v84 = v49;
             v61 = "%{public}@: Failed to save de-duplicated %{public}@peer %{public}@%{public}@: %{public}@:%lld (%@)";
@@ -926,83 +926,83 @@ LABEL_71:
         goto LABEL_72;
       }
 
-      v34 = [v29 idsDeviceIdentifier];
-      if (!v34)
+      idsDeviceIdentifier = [v29 idsDeviceIdentifier];
+      if (!idsDeviceIdentifier)
       {
-        v35 = [v10 idsDeviceIdentifier];
+        idsDeviceIdentifier2 = [peerCopy idsDeviceIdentifier];
 
-        if (!v35)
+        if (!idsDeviceIdentifier2)
         {
           goto LABEL_35;
         }
 
-        v34 = [v10 idsDeviceIdentifier];
-        [v29 setIdsDeviceIdentifier:v34];
+        idsDeviceIdentifier = [peerCopy idsDeviceIdentifier];
+        [v29 setIdsDeviceIdentifier:idsDeviceIdentifier];
       }
 
 LABEL_35:
-      v36 = [v29 sourceDeviceID];
-      if (!v36)
+      sourceDeviceID2 = [v29 sourceDeviceID];
+      if (!sourceDeviceID2)
       {
-        v37 = [v10 sourceDeviceID];
+        sourceDeviceID3 = [peerCopy sourceDeviceID];
 
-        if (!v37)
+        if (!sourceDeviceID3)
         {
           goto LABEL_39;
         }
 
-        v36 = [v10 sourceDeviceID];
-        [v29 setSourceDeviceID:v36];
+        sourceDeviceID2 = [peerCopy sourceDeviceID];
+        [v29 setSourceDeviceID:sourceDeviceID2];
       }
 
 LABEL_39:
-      v38 = [v29 version];
-      if (!v38)
+      version2 = [v29 version];
+      if (!version2)
       {
-        v39 = [v10 version];
+        version3 = [peerCopy version];
 
-        if (!v39)
+        if (!version3)
         {
           goto LABEL_43;
         }
 
-        v38 = [v10 version];
-        [v29 setVersion:v38];
+        version2 = [peerCopy version];
+        [v29 setVersion:version2];
       }
 
 LABEL_43:
-      v40 = [v29 zoneName];
-      if (!v40)
+      zoneName = [v29 zoneName];
+      if (!zoneName)
       {
-        v41 = [v10 zoneName];
+        zoneName2 = [peerCopy zoneName];
 
-        if (!v41)
+        if (!zoneName2)
         {
 LABEL_47:
-          [(_DKSyncPeerStatusTracker *)self addActiveTransports:[(_DKSyncPeerStatusTracker *)self activeTransportsForPeer:v10] toPeer:v29];
-          v42 = [v29 idsDeviceIdentifier];
-          [v10 setIdsDeviceIdentifier:v42];
+          [(_DKSyncPeerStatusTracker *)self addActiveTransports:[(_DKSyncPeerStatusTracker *)self activeTransportsForPeer:peerCopy] toPeer:v29];
+          idsDeviceIdentifier3 = [v29 idsDeviceIdentifier];
+          [peerCopy setIdsDeviceIdentifier:idsDeviceIdentifier3];
 
-          v43 = [v29 sourceDeviceID];
-          [v10 setSourceDeviceID:v43];
+          sourceDeviceID4 = [v29 sourceDeviceID];
+          [peerCopy setSourceDeviceID:sourceDeviceID4];
 
-          v44 = [v29 version];
-          [v10 setVersion:v44];
+          version4 = [v29 version];
+          [peerCopy setVersion:version4];
 
-          v45 = [v29 zoneName];
-          [v10 setZoneName:v45];
+          zoneName3 = [v29 zoneName];
+          [peerCopy setZoneName:zoneName3];
 
-          [(_DKSyncPeerStatusTracker *)self addActiveTransports:[(_DKSyncPeerStatusTracker *)self activeTransportsForPeer:v29] toPeer:v10];
+          [(_DKSyncPeerStatusTracker *)self addActiveTransports:[(_DKSyncPeerStatusTracker *)self activeTransportsForPeer:v29] toPeer:peerCopy];
           peerInfos = self->_peerInfos;
-          v47 = [v10 uuid];
-          [(NSMutableDictionary *)peerInfos setObject:0 forKeyedSubscript:v47];
+          uuid = [peerCopy uuid];
+          [(NSMutableDictionary *)peerInfos setObject:0 forKeyedSubscript:uuid];
 
           v18 = v29;
           goto LABEL_48;
         }
 
-        v40 = [v10 zoneName];
-        [v29 setZoneName:v40];
+        zoneName = [peerCopy zoneName];
+        [v29 setZoneName:zoneName];
       }
 
       goto LABEL_47;
@@ -1024,7 +1024,7 @@ LABEL_47:
 
     if ((v19 & 1) == 0)
     {
-      v21 = v10;
+      v21 = peerCopy;
       goto LABEL_15;
     }
   }
@@ -1034,25 +1034,25 @@ LABEL_13:
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (id)peerWithCompanionLinkDevice:(id)a3
+- (id)peerWithCompanionLinkDevice:(id)device
 {
-  v4 = [a3 idsDeviceIdentifier];
-  v5 = [(_DKSyncPeerStatusTracker *)self peerWithIDSDeviceIdentifier:v4];
+  idsDeviceIdentifier = [device idsDeviceIdentifier];
+  v5 = [(_DKSyncPeerStatusTracker *)self peerWithIDSDeviceIdentifier:idsDeviceIdentifier];
 
   return v5;
 }
 
-- (id)peerWithIDSDeviceIdentifier:(id)a3
+- (id)peerWithIDSDeviceIdentifier:(id)identifier
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  identifierCopy = identifier;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  obj = v5->_peerInfos;
+  obj = selfCopy->_peerInfos;
   v6 = [(NSMutableDictionary *)obj countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v6)
   {
@@ -1067,7 +1067,7 @@ LABEL_13:
           objc_enumerationMutation(obj);
         }
 
-        v9 = [(NSMutableDictionary *)v5->_peerInfos objectForKeyedSubscript:*(*(&v19 + 1) + 8 * v8)];
+        v9 = [(NSMutableDictionary *)selfCopy->_peerInfos objectForKeyedSubscript:*(*(&v19 + 1) + 8 * v8)];
         v10 = v9;
         if (v9)
         {
@@ -1080,8 +1080,8 @@ LABEL_13:
         }
 
         v12 = v11;
-        v13 = [(_DKSyncPeer *)v12 idsDeviceIdentifier];
-        v14 = [v4 isEqualToString:v13];
+        idsDeviceIdentifier = [(_DKSyncPeer *)v12 idsDeviceIdentifier];
+        v14 = [identifierCopy isEqualToString:idsDeviceIdentifier];
 
         if (v14)
         {
@@ -1110,38 +1110,38 @@ LABEL_13:
   }
 
 LABEL_15:
-  v12 = [[_DKSyncPeer alloc] initWithIDSDeviceIdentifier:v4];
-  [(_DKSyncPeerStatusTracker *)&v5->super.super.isa registerNewPeer:v12];
+  v12 = [[_DKSyncPeer alloc] initWithIDSDeviceIdentifier:identifierCopy];
+  [(_DKSyncPeerStatusTracker *)&selfCopy->super.super.isa registerNewPeer:v12];
 LABEL_16:
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   v16 = *MEMORY[0x1E69E9840];
 
   return v12;
 }
 
-- (id)peerWithZoneName:(id)a3 sourceDeviceID:(id)a4
+- (id)peerWithZoneName:(id)name sourceDeviceID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  objc_sync_enter(v8);
-  v9 = [(_DKSyncPeerStatusTracker *)v8 existingPeerWithSourceDeviceID:v7];
+  nameCopy = name;
+  dCopy = d;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v9 = [(_DKSyncPeerStatusTracker *)selfCopy existingPeerWithSourceDeviceID:dCopy];
   v10 = v9;
   if (v9)
   {
-    if (v6)
+    if (nameCopy)
     {
-      v11 = [v9 zoneName];
+      zoneName = [v9 zoneName];
 
-      if (!v11)
+      if (!zoneName)
       {
-        [v10 setZoneName:v6];
-        if (v7)
+        [v10 setZoneName:nameCopy];
+        if (dCopy)
         {
-          v12 = [(_DKSyncPeerStatusTracker *)v8 storage];
+          storage = [(_DKSyncPeerStatusTracker *)selfCopy storage];
           v14 = 0;
-          [v12 saveSyncPeer:v10 error:&v14];
+          [storage saveSyncPeer:v10 error:&v14];
         }
       }
     }
@@ -1150,27 +1150,27 @@ LABEL_16:
   else
   {
     v10 = objc_opt_new();
-    [v10 setZoneName:v6];
-    [v10 setSourceDeviceID:v7];
-    [(_DKSyncPeerStatusTracker *)&v8->super.super.isa registerNewPeer:v10];
+    [v10 setZoneName:nameCopy];
+    [v10 setSourceDeviceID:dCopy];
+    [(_DKSyncPeerStatusTracker *)&selfCopy->super.super.isa registerNewPeer:v10];
   }
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
 
   return v10;
 }
 
-- (id)existingPeerWithSourceDeviceID:(id)a3
+- (id)existingPeerWithSourceDeviceID:(id)d
 {
   v28 = *MEMORY[0x1E69E9840];
-  v21 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
+  dCopy = d;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  obj = v4->_peerInfos;
+  obj = selfCopy->_peerInfos;
   v5 = [(NSMutableDictionary *)obj countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v5)
   {
@@ -1185,7 +1185,7 @@ LABEL_16:
           objc_enumerationMutation(obj);
         }
 
-        v8 = [(NSMutableDictionary *)v4->_peerInfos objectForKeyedSubscript:*(*(&v22 + 1) + 8 * v7)];
+        v8 = [(NSMutableDictionary *)selfCopy->_peerInfos objectForKeyedSubscript:*(*(&v22 + 1) + 8 * v7)];
         v9 = v8;
         if (v8)
         {
@@ -1198,11 +1198,11 @@ LABEL_16:
         }
 
         v11 = v10;
-        v12 = [v11 sourceDeviceID];
-        if (v12)
+        sourceDeviceID = [v11 sourceDeviceID];
+        if (sourceDeviceID)
         {
-          v13 = [v11 sourceDeviceID];
-          v14 = [v21 isEqualToString:v13];
+          sourceDeviceID2 = [v11 sourceDeviceID];
+          v14 = [dCopy isEqualToString:sourceDeviceID2];
 
           if (v14)
           {
@@ -1236,29 +1236,29 @@ LABEL_16:
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
   {
     v17 = [objc_opt_class() description];
-    [(_DKSyncPeerStatusTracker *)v17 existingPeerWithSourceDeviceID:v21, v26];
+    [(_DKSyncPeerStatusTracker *)v17 existingPeerWithSourceDeviceID:dCopy, v26];
   }
 
   v11 = 0;
 LABEL_19:
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
   v18 = *MEMORY[0x1E69E9840];
 
   return v11;
 }
 
-- (id)existingPeerWithIDSDeviceIdentifier:(id)a3
+- (id)existingPeerWithIDSDeviceIdentifier:(id)identifier
 {
   v28 = *MEMORY[0x1E69E9840];
-  v21 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
+  identifierCopy = identifier;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  obj = v4->_peerInfos;
+  obj = selfCopy->_peerInfos;
   v5 = [(NSMutableDictionary *)obj countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v5)
   {
@@ -1273,7 +1273,7 @@ LABEL_19:
           objc_enumerationMutation(obj);
         }
 
-        v8 = [(NSMutableDictionary *)v4->_peerInfos objectForKeyedSubscript:*(*(&v22 + 1) + 8 * v7)];
+        v8 = [(NSMutableDictionary *)selfCopy->_peerInfos objectForKeyedSubscript:*(*(&v22 + 1) + 8 * v7)];
         v9 = v8;
         if (v8)
         {
@@ -1286,11 +1286,11 @@ LABEL_19:
         }
 
         v11 = v10;
-        v12 = [v11 idsDeviceIdentifier];
-        if (v12)
+        idsDeviceIdentifier = [v11 idsDeviceIdentifier];
+        if (idsDeviceIdentifier)
         {
-          v13 = [v11 idsDeviceIdentifier];
-          v14 = [v21 isEqualToString:v13];
+          idsDeviceIdentifier2 = [v11 idsDeviceIdentifier];
+          v14 = [identifierCopy isEqualToString:idsDeviceIdentifier2];
 
           if (v14)
           {
@@ -1324,12 +1324,12 @@ LABEL_16:
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
   {
     v17 = [objc_opt_class() description];
-    [(_DKSyncPeerStatusTracker *)v17 existingPeerWithIDSDeviceIdentifier:v21, v26];
+    [(_DKSyncPeerStatusTracker *)v17 existingPeerWithIDSDeviceIdentifier:identifierCopy, v26];
   }
 
   v11 = 0;
 LABEL_19:
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
   v18 = *MEMORY[0x1E69E9840];
 
@@ -1340,13 +1340,13 @@ LABEL_19:
 {
   v22 = *MEMORY[0x1E69E9840];
   v3 = objc_opt_new();
-  v4 = self;
-  objc_sync_enter(v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = v4->_peerInfos;
+  v5 = selfCopy->_peerInfos;
   v6 = [(NSMutableDictionary *)v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v6)
   {
@@ -1361,7 +1361,7 @@ LABEL_19:
           objc_enumerationMutation(v5);
         }
 
-        v9 = [(NSMutableDictionary *)v4->_peerInfos objectForKeyedSubscript:*(*(&v17 + 1) + 8 * v8), v17];
+        v9 = [(NSMutableDictionary *)selfCopy->_peerInfos objectForKeyedSubscript:*(*(&v17 + 1) + 8 * v8), v17];
         v10 = v9;
         if (v9)
         {
@@ -1387,7 +1387,7 @@ LABEL_19:
     while (v13);
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
   v14 = [v3 copy];
 
   v15 = *MEMORY[0x1E69E9840];
@@ -1399,13 +1399,13 @@ LABEL_19:
 {
   v20 = *MEMORY[0x1E69E9840];
   v3 = objc_opt_new();
-  v4 = self;
-  objc_sync_enter(v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = v4->_peerInfos;
+  v5 = selfCopy->_peerInfos;
   v6 = [(NSMutableDictionary *)v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
@@ -1419,7 +1419,7 @@ LABEL_19:
           objc_enumerationMutation(v5);
         }
 
-        v9 = [(NSMutableDictionary *)v4->_peerInfos objectForKeyedSubscript:*(*(&v15 + 1) + 8 * i), v15];
+        v9 = [(NSMutableDictionary *)selfCopy->_peerInfos objectForKeyedSubscript:*(*(&v15 + 1) + 8 * i), v15];
         v10 = v9;
         if (v9 && *(v9 + 24))
         {
@@ -1434,7 +1434,7 @@ LABEL_19:
     while (v6);
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
   v12 = [v3 copy];
 
   v13 = *MEMORY[0x1E69E9840];
@@ -1442,17 +1442,17 @@ LABEL_19:
   return v12;
 }
 
-- (id)peersWithActiveTransports:(int64_t)a3
+- (id)peersWithActiveTransports:(int64_t)transports
 {
   v22 = *MEMORY[0x1E69E9840];
   v5 = objc_opt_new();
-  v6 = self;
-  objc_sync_enter(v6);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v7 = v6->_peerInfos;
+  v7 = selfCopy->_peerInfos;
   v8 = [(NSMutableDictionary *)v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v8)
   {
@@ -1466,9 +1466,9 @@ LABEL_19:
           objc_enumerationMutation(v7);
         }
 
-        v11 = [(NSMutableDictionary *)v6->_peerInfos objectForKeyedSubscript:*(*(&v17 + 1) + 8 * i), v17];
+        v11 = [(NSMutableDictionary *)selfCopy->_peerInfos objectForKeyedSubscript:*(*(&v17 + 1) + 8 * i), v17];
         v12 = v11;
-        if (v11 && (*(v11 + 24) & a3) != 0)
+        if (v11 && (*(v11 + 24) & transports) != 0)
         {
           v13 = *(v11 + 16);
           [v5 addObject:v13];
@@ -1481,7 +1481,7 @@ LABEL_19:
     while (v8);
   }
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
   v14 = [v5 copy];
 
   v15 = *MEMORY[0x1E69E9840];
@@ -1492,14 +1492,14 @@ LABEL_19:
 - (unint64_t)foreignPeersCount
 {
   v40 = *MEMORY[0x1E69E9840];
-  v34 = [(_DKSyncPeerStatusTracker *)self pseudoPeerForSyncTransportCloudUp];
-  v3 = self;
-  objc_sync_enter(v3);
+  pseudoPeerForSyncTransportCloudUp = [(_DKSyncPeerStatusTracker *)self pseudoPeerForSyncTransportCloudUp];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  obj = v3->_peerInfos;
+  obj = selfCopy->_peerInfos;
   v4 = [(NSMutableDictionary *)obj countByEnumeratingWithState:&v35 objects:v39 count:16];
   if (v4)
   {
@@ -1515,7 +1515,7 @@ LABEL_19:
           objc_enumerationMutation(obj);
         }
 
-        v6 = [(NSMutableDictionary *)v3->_peerInfos objectForKeyedSubscript:*(*(&v35 + 1) + 8 * v5)];
+        v6 = [(NSMutableDictionary *)selfCopy->_peerInfos objectForKeyedSubscript:*(*(&v35 + 1) + 8 * v5)];
         v7 = v6;
         if (v6)
         {
@@ -1529,45 +1529,45 @@ LABEL_19:
 
         v9 = v8;
         v10 = v9;
-        if (v9 != v34)
+        if (v9 != pseudoPeerForSyncTransportCloudUp)
         {
-          v11 = [v9 sourceDeviceID];
-          v12 = v11 == 0;
+          sourceDeviceID = [v9 sourceDeviceID];
+          v12 = sourceDeviceID == 0;
 
           if (!v12)
           {
-            v13 = [v10 lastSeenDate];
-            v14 = v13;
-            if (v13)
+            lastSeenDate = [v10 lastSeenDate];
+            v14 = lastSeenDate;
+            if (lastSeenDate)
             {
-              [v13 timeIntervalSinceNow];
+              [lastSeenDate timeIntervalSinceNow];
               v16 = v15 < -2678400.0;
             }
 
             else
             {
-              firstForeignPeersCountDate = v3->_firstForeignPeersCountDate;
+              firstForeignPeersCountDate = selfCopy->_firstForeignPeersCountDate;
               if (!firstForeignPeersCountDate)
               {
-                v18 = [(_DKSyncPeerStatusTracker *)v3 storage];
+                storage = [(_DKSyncPeerStatusTracker *)selfCopy storage];
                 v19 = objc_opt_class();
                 v20 = NSStringFromClass(v19);
-                v21 = [v18 keyValueStoreForDomain:v20];
+                v21 = [storage keyValueStoreForDomain:v20];
 
                 v22 = [v21 dateForKey:@"FirstForeignPeersCountDate"];
-                v23 = v3->_firstForeignPeersCountDate;
-                v3->_firstForeignPeersCountDate = v22;
+                v23 = selfCopy->_firstForeignPeersCountDate;
+                selfCopy->_firstForeignPeersCountDate = v22;
 
-                if (!v3->_firstForeignPeersCountDate)
+                if (!selfCopy->_firstForeignPeersCountDate)
                 {
-                  v24 = [MEMORY[0x1E695DF00] date];
-                  v25 = v3->_firstForeignPeersCountDate;
-                  v3->_firstForeignPeersCountDate = v24;
+                  date = [MEMORY[0x1E695DF00] date];
+                  v25 = selfCopy->_firstForeignPeersCountDate;
+                  selfCopy->_firstForeignPeersCountDate = date;
 
-                  [v21 setDate:v3->_firstForeignPeersCountDate forKey:@"FirstForeignPeersCountDate"];
+                  [v21 setDate:selfCopy->_firstForeignPeersCountDate forKey:@"FirstForeignPeersCountDate"];
                 }
 
-                firstForeignPeersCountDate = v3->_firstForeignPeersCountDate;
+                firstForeignPeersCountDate = selfCopy->_firstForeignPeersCountDate;
               }
 
               [(NSDate *)firstForeignPeersCountDate timeIntervalSinceNow];
@@ -1596,25 +1596,25 @@ LABEL_19:
     v32 = 0;
   }
 
-  objc_sync_exit(v3);
+  objc_sync_exit(selfCopy);
   v29 = *MEMORY[0x1E69E9840];
   return v32;
 }
 
 - (BOOL)isSingleDevice
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if ([(NSMutableDictionary *)v2->_peerInfos count])
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([(NSMutableDictionary *)selfCopy->_peerInfos count])
   {
-    if ([(NSMutableDictionary *)v2->_peerInfos count]== 1)
+    if ([(NSMutableDictionary *)selfCopy->_peerInfos count]== 1)
     {
-      v3 = [(NSMutableDictionary *)v2->_peerInfos allValues];
-      v4 = [v3 firstObject];
+      allValues = [(NSMutableDictionary *)selfCopy->_peerInfos allValues];
+      firstObject = [allValues firstObject];
 
-      if (v4)
+      if (firstObject)
       {
-        v5 = v4[2];
+        v5 = firstObject[2];
       }
 
       else
@@ -1628,7 +1628,7 @@ LABEL_19:
 
     else
     {
-      v7 = [(_DKSyncPeerStatusTracker *)v2 foreignPeersCount]== 0;
+      v7 = [(_DKSyncPeerStatusTracker *)selfCopy foreignPeersCount]== 0;
     }
   }
 
@@ -1637,25 +1637,25 @@ LABEL_19:
     v7 = 1;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }
 
-- (void)_peerInfoForPeer:(void *)a1
+- (void)_peerInfoForPeer:(void *)peer
 {
   v28 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (peer)
   {
-    v4 = a1;
-    objc_sync_enter(v4);
+    peerCopy = peer;
+    objc_sync_enter(peerCopy);
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v22 = v4;
-    obj = v4[2];
+    v22 = peerCopy;
+    obj = peerCopy[2];
     v5 = [obj countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v5)
     {
@@ -1699,9 +1699,9 @@ LABEL_19:
           }
 
           v13 = v12;
-          v14 = [v13 identifier];
-          v15 = [v3 identifier];
-          v16 = [v14 isEqualToString:v15];
+          identifier = [v13 identifier];
+          identifier2 = [v3 identifier];
+          v16 = [identifier isEqualToString:identifier2];
 
           if (v16)
           {
@@ -1740,12 +1740,12 @@ LABEL_20:
   return v9;
 }
 
-- (int64_t)activeTransportsForPeer:(id)a3
+- (int64_t)activeTransportsForPeer:(id)peer
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(_DKSyncPeerStatusTracker *)v5 _peerInfoForPeer:v4];
+  peerCopy = peer;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(_DKSyncPeerStatusTracker *)selfCopy _peerInfoForPeer:peerCopy];
   if (v6)
   {
     v7 = v6[3];
@@ -1756,31 +1756,31 @@ LABEL_20:
     v7 = 0;
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
   return v7;
 }
 
-- (void)_modifyActiveTransportInPeer:(void *)a3 withNewTransportsBlock:
+- (void)_modifyActiveTransportInPeer:(void *)peer withNewTransportsBlock:
 {
   v37 = *MEMORY[0x1E69E9840];
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  peerCopy = peer;
+  if (self)
   {
     v7 = +[_DKSyncSerializer underlyingQueue];
     dispatch_assert_queue_V2(v7);
 
-    v8 = a1;
-    objc_sync_enter(v8);
-    v9 = [(_DKSyncPeerStatusTracker *)v8 _peerInfoForPeer:v5];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v9 = [(_DKSyncPeerStatusTracker *)selfCopy _peerInfoForPeer:v5];
     v10 = v9;
     if (v9)
     {
       v11 = *(v9 + 24);
-      v12 = v6[2](v6, v11);
+      v12 = peerCopy[2](peerCopy, v11);
       if (v11 == v12)
       {
-        v13 = 0;
+        _observerBlocks = 0;
       }
 
       else
@@ -1791,41 +1791,41 @@ LABEL_20:
         if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
         {
           v22 = [objc_opt_class() description];
-          v23 = [(_DKSyncPeerInfo *)v10 transportsString];
+          transportsString = [(_DKSyncPeerInfo *)v10 transportsString];
           *buf = 138544130;
           v30 = v22;
           v31 = 2112;
           v32 = v14;
           v33 = 2112;
-          v34 = v23;
+          v34 = transportsString;
           v35 = 2112;
           v36 = v5;
           _os_log_debug_impl(&dword_191750000, v15, OS_LOG_TYPE_DEBUG, "%{public}@: Changing transports from %@ to %@ for peer: %@", buf, 0x2Au);
         }
 
-        v13 = [(_DKSyncPeerStatusTracker *)v8 _observerBlocks];
+        _observerBlocks = [(_DKSyncPeerStatusTracker *)selfCopy _observerBlocks];
       }
     }
 
     else
     {
-      v13 = 0;
+      _observerBlocks = 0;
     }
 
-    objc_sync_exit(v8);
-    if ([v13 count])
+    objc_sync_exit(selfCopy);
+    if ([_observerBlocks count])
     {
       v16 = +[_CDLogging syncChannel];
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
       {
-        [(_DKSyncPeerStatusTracker *)v8 _modifyActiveTransportInPeer:v13 withNewTransportsBlock:v16];
+        [(_DKSyncPeerStatusTracker *)selfCopy _modifyActiveTransportInPeer:_observerBlocks withNewTransportsBlock:v16];
       }
 
       v26 = 0u;
       v27 = 0u;
       v24 = 0u;
       v25 = 0u;
-      v17 = v13;
+      v17 = _observerBlocks;
       v18 = [v17 countByEnumeratingWithState:&v24 objects:v28 count:16];
       if (v18)
       {
@@ -1856,16 +1856,16 @@ LABEL_20:
 - (id)_observerBlocks
 {
   v18 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v2 = objc_opt_new();
-    v3 = a1;
-    objc_sync_enter(v3);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v4 = v3[4];
+    v4 = selfCopy[4];
     v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v5)
     {
@@ -1896,7 +1896,7 @@ LABEL_20:
       while (v5);
     }
 
-    objc_sync_exit(v3);
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -1909,46 +1909,46 @@ LABEL_20:
   return v2;
 }
 
-- (void)addActiveTransports:(int64_t)a3 toPeer:(id)a4
+- (void)addActiveTransports:(int64_t)transports toPeer:(id)peer
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __55___DKSyncPeerStatusTracker_addActiveTransports_toPeer___block_invoke;
   v4[3] = &__block_descriptor_40_e8_q16__0q8l;
-  v4[4] = a3;
-  [(_DKSyncPeerStatusTracker *)self _modifyActiveTransportInPeer:a4 withNewTransportsBlock:v4];
+  v4[4] = transports;
+  [(_DKSyncPeerStatusTracker *)self _modifyActiveTransportInPeer:peer withNewTransportsBlock:v4];
 }
 
-- (void)removeActiveTransports:(int64_t)a3 fromPeer:(id)a4
+- (void)removeActiveTransports:(int64_t)transports fromPeer:(id)peer
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __60___DKSyncPeerStatusTracker_removeActiveTransports_fromPeer___block_invoke;
   v4[3] = &__block_descriptor_40_e8_q16__0q8l;
-  v4[4] = a3;
-  [(_DKSyncPeerStatusTracker *)self _modifyActiveTransportInPeer:a4 withNewTransportsBlock:v4];
+  v4[4] = transports;
+  [(_DKSyncPeerStatusTracker *)self _modifyActiveTransportInPeer:peer withNewTransportsBlock:v4];
 }
 
-- (void)setLastSeenDate:(id)a3 onPeer:(id)a4
+- (void)setLastSeenDate:(id)date onPeer:(id)peer
 {
   v41 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (([v7 me] & 1) == 0)
+  dateCopy = date;
+  peerCopy = peer;
+  if (([peerCopy me] & 1) == 0)
   {
     v8 = +[_CDLogging syncChannel];
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
       v27 = [objc_opt_class() description];
-      v26 = [(NSDate *)v6 dk_localtimeString];
-      v13 = [v7 lastSeenDate];
-      if (v13)
+      dk_localtimeString = [(NSDate *)dateCopy dk_localtimeString];
+      lastSeenDate = [peerCopy lastSeenDate];
+      if (lastSeenDate)
       {
         v14 = MEMORY[0x1E696AD98];
-        [v6 timeIntervalSinceReferenceDate];
+        [dateCopy timeIntervalSinceReferenceDate];
         v16 = v15;
-        v24 = [v7 lastSeenDate];
-        [v24 timeIntervalSinceReferenceDate];
+        lastSeenDate2 = [peerCopy lastSeenDate];
+        [lastSeenDate2 timeIntervalSinceReferenceDate];
         v25 = [v14 numberWithInt:(v16 - v17)];
       }
 
@@ -1958,7 +1958,7 @@ LABEL_20:
       }
 
       v18 = &stru_1F05B9908;
-      if ([v7 me])
+      if ([peerCopy me])
       {
         v19 = @"pseudo ";
       }
@@ -1968,41 +1968,41 @@ LABEL_20:
         v19 = &stru_1F05B9908;
       }
 
-      v20 = [v7 identifier];
-      v21 = [v7 model];
-      if (v21)
+      identifier = [peerCopy identifier];
+      model = [peerCopy model];
+      if (model)
       {
         v22 = MEMORY[0x1E696AEC0];
-        v23 = [v7 model];
-        v18 = [v22 stringWithFormat:@" (%@)", v23];
+        model2 = [peerCopy model];
+        v18 = [v22 stringWithFormat:@" (%@)", model2];
       }
 
       *buf = 138544642;
       v30 = v27;
       v31 = 2114;
-      v32 = v26;
+      v32 = dk_localtimeString;
       v33 = 2114;
       v34 = v25;
       v35 = 2114;
       v36 = v19;
       v37 = 2114;
-      v38 = v20;
+      v38 = identifier;
       v39 = 2114;
       v40 = v18;
       _os_log_debug_impl(&dword_191750000, v8, OS_LOG_TYPE_DEBUG, "%{public}@: Updating last seen date to %{public}@ (delta %{public}@) on %{public}@peer %{public}@%{public}@", buf, 0x3Eu);
-      if (v21)
+      if (model)
       {
       }
 
-      if (v13)
+      if (lastSeenDate)
       {
       }
     }
 
-    [v7 setLastSeenDate:v6];
-    v9 = [(_DKSyncPeerStatusTracker *)self storage];
+    [peerCopy setLastSeenDate:dateCopy];
+    storage = [(_DKSyncPeerStatusTracker *)self storage];
     v28 = 0;
-    [v9 saveSyncPeer:v7 error:&v28];
+    [storage saveSyncPeer:peerCopy error:&v28];
     v10 = v28;
 
     if (v10)
@@ -2010,7 +2010,7 @@ LABEL_20:
       v11 = +[_CDLogging syncChannel];
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
-        [(_DKSyncPeerStatusTracker *)self setLastSeenDate:v7 onPeer:v11];
+        [(_DKSyncPeerStatusTracker *)self setLastSeenDate:peerCopy onPeer:v11];
       }
     }
   }
@@ -2018,63 +2018,63 @@ LABEL_20:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (id)lastSuccessfulActivityDateOnTransport:(int64_t)a3 forPeer:(id)a4
+- (id)lastSuccessfulActivityDateOnTransport:(int64_t)transport forPeer:(id)peer
 {
   v6 = MEMORY[0x1E696AEC0];
-  v7 = [a4 uuid];
-  v8 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  v9 = [v6 stringWithFormat:@"%@ %@", v7, v8];
+  uuid = [peer uuid];
+  v8 = [MEMORY[0x1E696AD98] numberWithInteger:transport];
+  v9 = [v6 stringWithFormat:@"%@ %@", uuid, v8];
 
   v10 = [(NSMutableDictionary *)self->_lastSuccessfulActivityDates objectForKeyedSubscript:v9];
 
   return v10;
 }
 
-- (void)setLastSuccessfulActivityDate:(id)a3 onTransport:(int64_t)a4 forPeer:(id)a5
+- (void)setLastSuccessfulActivityDate:(id)date onTransport:(int64_t)transport forPeer:(id)peer
 {
   v8 = MEMORY[0x1E696AEC0];
-  v9 = a3;
-  v10 = [a5 uuid];
-  v11 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
-  v12 = [v8 stringWithFormat:@"%@ %@", v10, v11];
+  dateCopy = date;
+  uuid = [peer uuid];
+  v11 = [MEMORY[0x1E696AD98] numberWithInteger:transport];
+  v12 = [v8 stringWithFormat:@"%@ %@", uuid, v11];
 
-  [(NSMutableDictionary *)self->_lastSuccessfulActivityDates setObject:v9 forKeyedSubscript:v12];
+  [(NSMutableDictionary *)self->_lastSuccessfulActivityDates setObject:dateCopy forKeyedSubscript:v12];
 }
 
-- (id)addStatusChangeObserverWithBlock:(id)a3
+- (id)addStatusChangeObserverWithBlock:(id)block
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  blockCopy = block;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v6 = objc_opt_new();
   v8 = v6;
   if (v6)
   {
-    objc_setProperty_nonatomic_copy(v6, v7, v4, 8);
+    objc_setProperty_nonatomic_copy(v6, v7, blockCopy, 8);
   }
 
-  [(NSMutableArray *)v5->_observers addObject:v8];
+  [(NSMutableArray *)selfCopy->_observers addObject:v8];
   v9 = +[_CDLogging syncChannel];
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
     v10 = [objc_opt_class() description];
-    [(_DKSyncPeerStatusTracker *)v10 addStatusChangeObserverWithBlock:v4];
+    [(_DKSyncPeerStatusTracker *)v10 addStatusChangeObserverWithBlock:blockCopy];
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
   v11 = *MEMORY[0x1E69E9840];
 
   return v8;
 }
 
-- (void)removeStatusChangeObserver:(id)a3
+- (void)removeStatusChangeObserver:(id)observer
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [(NSMutableArray *)v4->_observers removeObject:v5];
-  objc_sync_exit(v4);
+  observerCopy = observer;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSMutableArray *)selfCopy->_observers removeObject:observerCopy];
+  objc_sync_exit(selfCopy);
 }
 
 - (_DKKnowledgeStorage)storage
@@ -2102,10 +2102,10 @@ LABEL_20:
   return v6;
 }
 
-+ (id)stringForTransports:(int64_t)a3
++ (id)stringForTransports:(int64_t)transports
 {
   v4 = +[_DKSyncPeerStatusTracker syncPeerTransportsStrings];
-  v5 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v5 = [MEMORY[0x1E696AD98] numberWithInteger:transports];
   v6 = [v4 objectForKeyedSubscript:v5];
 
   return v6;
@@ -2114,44 +2114,44 @@ LABEL_20:
 - (void)postCloudDeviceCountChangedNotification
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v2 = [*(a1 + 16) count];
+    v2 = [*(self + 16) count];
     v3 = +[_CDObservationCenter sharedInstance];
     v7 = @"count";
     v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v2];
     v8[0] = v4;
     v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v8 forKeys:&v7 count:1];
-    [v3 postNotificationName:@"_DKCloudDeviceCountChangedNotification" userInfo:v5 sender:a1];
+    [v3 postNotificationName:@"_DKCloudDeviceCountChangedNotification" userInfo:v5 sender:self];
   }
 
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)registerNewPeer:(id *)a1
+- (void)registerNewPeer:(id *)peer
 {
   v30 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (peer)
   {
-    v4 = [MEMORY[0x1E696AFB0] UUID];
-    [v3 setUuid:v4];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    [v3 setUuid:uUID];
     v5 = objc_opt_new();
-    [(_DKPredictionTimeline *)v5 setStartDate:v4];
+    [(_DKPredictionTimeline *)v5 setStartDate:uUID];
     [(_DKSyncWindow *)v5 setStartDate:v3];
-    [a1[2] setObject:v5 forKeyedSubscript:v4];
-    v6 = [v3 sourceDeviceID];
+    [peer[2] setObject:v5 forKeyedSubscript:uUID];
+    sourceDeviceID = [v3 sourceDeviceID];
 
-    if (v6)
+    if (sourceDeviceID)
     {
-      v7 = [a1 storage];
-      v8 = [v7 deviceUUID];
-      v9 = [v8 UUIDString];
+      storage = [peer storage];
+      deviceUUID = [storage deviceUUID];
+      uUIDString = [deviceUUID UUIDString];
 
-      v10 = [v3 sourceDeviceID];
-      LODWORD(v8) = [v9 isEqualToString:v10];
+      sourceDeviceID2 = [v3 sourceDeviceID];
+      LODWORD(deviceUUID) = [uUIDString isEqualToString:sourceDeviceID2];
 
-      if (v8)
+      if (deviceUUID)
       {
         v11 = +[_CDLogging syncChannel];
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -2168,13 +2168,13 @@ LABEL_20:
             v13 = &stru_1F05B9908;
           }
 
-          v14 = [v3 identifier];
-          v15 = [v3 model];
-          if (v15)
+          identifier = [v3 identifier];
+          model = [v3 model];
+          if (model)
           {
             v16 = MEMORY[0x1E696AEC0];
-            v19 = [v3 model];
-            v12 = [v16 stringWithFormat:@" (%@)", v19];
+            model2 = [v3 model];
+            v12 = [v16 stringWithFormat:@" (%@)", model2];
           }
 
           *buf = 138544130;
@@ -2182,11 +2182,11 @@ LABEL_20:
           v24 = 2114;
           v25 = v13;
           v26 = 2114;
-          v27 = v14;
+          v27 = identifier;
           v28 = 2114;
           v29 = v12;
           _os_log_debug_impl(&dword_191750000, v11, OS_LOG_TYPE_DEBUG, "%{public}@: Upgrading peer to %{public}@peer %{public}@%{public}@ while creating new one", buf, 0x2Au);
-          if (v15)
+          if (model)
           {
           }
         }
@@ -2194,33 +2194,33 @@ LABEL_20:
         [v3 setMe:1];
       }
 
-      v17 = [a1 storage];
+      storage2 = [peer storage];
       v21 = 0;
-      [v17 saveSyncPeer:v3 error:&v21];
+      [storage2 saveSyncPeer:v3 error:&v21];
     }
 
-    [(_DKSyncPeerStatusTracker *)a1 postCloudDeviceCountChangedNotification];
+    [(_DKSyncPeerStatusTracker *)peer postCloudDeviceCountChangedNotification];
   }
 
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removePeer:(id)a3
+- (void)removePeer:(id)peer
 {
-  v4 = a3;
+  peerCopy = peer;
   pseudoPeer = self->_pseudoPeer;
-  v9 = v4;
-  if (pseudoPeer == v4)
+  v9 = peerCopy;
+  if (pseudoPeer == peerCopy)
   {
     self->_pseudoPeer = 0;
   }
 
-  v6 = [(_DKSyncPeerStatusTracker *)self storage];
-  [v6 removeSyncPeer:v9];
+  storage = [(_DKSyncPeerStatusTracker *)self storage];
+  [storage removeSyncPeer:v9];
 
   peerInfos = self->_peerInfos;
-  v8 = [(_DKSyncPeer *)v9 uuid];
-  [(NSMutableDictionary *)peerInfos setObject:0 forKeyedSubscript:v8];
+  uuid = [(_DKSyncPeer *)v9 uuid];
+  [(NSMutableDictionary *)peerInfos setObject:0 forKeyedSubscript:uuid];
 
   [(_DKSyncPeerStatusTracker *)self postCloudDeviceCountChangedNotification];
 }

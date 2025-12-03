@@ -1,21 +1,21 @@
 @interface JFXImageMTKView
-+ (id)buildRenderPipelineWithLabel:(id)a3 vertexFunction:(id)a4 fragmentFunction:(id)a5 device:(id)a6 view:(id)a7 error:(id *)a8;
-+ (id)buildSamplerStateWithDevice:(id)a3 addressMode:(unint64_t)a4 filter:(unint64_t)a5;
-- (JFXImageMTKView)initWithCoder:(id)a3;
-- (JFXImageMTKView)initWithFrame:(CGRect)a3 device:(id)a4;
++ (id)buildRenderPipelineWithLabel:(id)label vertexFunction:(id)function fragmentFunction:(id)fragmentFunction device:(id)device view:(id)view error:(id *)error;
++ (id)buildSamplerStateWithDevice:(id)device addressMode:(unint64_t)mode filter:(unint64_t)filter;
+- (JFXImageMTKView)initWithCoder:(id)coder;
+- (JFXImageMTKView)initWithFrame:(CGRect)frame device:(id)device;
 - (void)JFXImageMTKView_commonInit;
 - (void)cleanupTextureCache;
 - (void)cleanupTextures;
-- (void)configureRenderPipelineForColorAttachments:(void *)a3;
+- (void)configureRenderPipelineForColorAttachments:(void *)attachments;
 - (void)dealloc;
-- (void)drawRect:(CGRect)a3;
+- (void)drawRect:(CGRect)rect;
 - (void)layoutSubviews;
-- (void)setContentMode:(int64_t)a3;
-- (void)setEnableDebugDrawing:(BOOL)a3;
-- (void)setFlipX:(BOOL)a3;
-- (void)setFlipY:(BOOL)a3;
-- (void)setJtImage:(id)a3;
-- (void)setRenderingType:(int64_t)a3;
+- (void)setContentMode:(int64_t)mode;
+- (void)setEnableDebugDrawing:(BOOL)drawing;
+- (void)setFlipX:(BOOL)x;
+- (void)setFlipY:(BOOL)y;
+- (void)setJtImage:(id)image;
+- (void)setRenderingType:(int64_t)type;
 - (void)setupTextureCache;
 - (void)updateDebugDrawing;
 - (void)updateTexture;
@@ -37,8 +37,8 @@
 {
   [(MTKView *)self setEnableSetNeedsDisplay:1];
   [(JFXImageMTKView *)self setUserInteractionEnabled:0];
-  v3 = [MEMORY[0x277D75348] clearColor];
-  [(JFXImageMTKView *)self setBackgroundColor:v3];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [(JFXImageMTKView *)self setBackgroundColor:clearColor];
 
   [(MTKView *)self setColorPixelFormat:80];
   [(MTKView *)self setClearColor:0.0, 0.0, 0.0, 0.0];
@@ -48,28 +48,28 @@
   self->_textureSize = *MEMORY[0x277CBF3A8];
   self->_needsUpdateVertices = 1;
   self->_needsUpdateTexture = 1;
-  v6 = [MEMORY[0x277CCA8D8] jfxBundle];
-  v7 = [(MTKView *)self device];
+  jfxBundle = [MEMORY[0x277CCA8D8] jfxBundle];
+  device = [(MTKView *)self device];
   v21 = 0;
-  v8 = [v7 newDefaultLibraryWithBundle:v6 error:&v21];
+  v8 = [device newDefaultLibraryWithBundle:jfxBundle error:&v21];
   v9 = v21;
   library = self->_library;
   self->_library = v8;
 
-  v11 = [(MTKView *)self device];
-  v12 = [v11 newCommandQueue];
+  device2 = [(MTKView *)self device];
+  newCommandQueue = [device2 newCommandQueue];
   commandQueue = self->_commandQueue;
-  self->_commandQueue = v12;
+  self->_commandQueue = newCommandQueue;
 
   v14 = objc_alloc(MEMORY[0x277CD71F0]);
-  v15 = [(MTKView *)self device];
-  v16 = [v14 initWithDevice:v15];
+  device3 = [(MTKView *)self device];
+  v16 = [v14 initWithDevice:device3];
   textureLoader = self->_textureLoader;
   self->_textureLoader = v16;
 
   [(JFXImageMTKView *)self setupTextureCache];
-  v18 = [(MTKView *)self device];
-  v19 = [JFXImageMTKView buildSamplerStateWithDevice:v18 addressMode:0 filter:1];
+  device4 = [(MTKView *)self device];
+  v19 = [JFXImageMTKView buildSamplerStateWithDevice:device4 addressMode:0 filter:1];
   sampler = self->_sampler;
   self->_sampler = v19;
 
@@ -95,11 +95,11 @@ void __45__JFXImageMTKView_JFXImageMTKView_commonInit__block_invoke()
   }
 }
 
-- (JFXImageMTKView)initWithFrame:(CGRect)a3 device:(id)a4
+- (JFXImageMTKView)initWithFrame:(CGRect)frame device:(id)device
 {
   v7.receiver = self;
   v7.super_class = JFXImageMTKView;
-  v4 = [(MTKView *)&v7 initWithFrame:a4 device:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v4 = [(MTKView *)&v7 initWithFrame:device device:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v5 = v4;
   if (v4)
   {
@@ -109,11 +109,11 @@ void __45__JFXImageMTKView_JFXImageMTKView_commonInit__block_invoke()
   return v5;
 }
 
-- (JFXImageMTKView)initWithCoder:(id)a3
+- (JFXImageMTKView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = JFXImageMTKView;
-  v3 = [(MTKView *)&v6 initWithCoder:a3];
+  v3 = [(MTKView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -183,35 +183,35 @@ void __45__JFXImageMTKView_JFXImageMTKView_commonInit__block_invoke()
 - (void)setupTextureCache
 {
   v3 = *MEMORY[0x277CBECE8];
-  v4 = [(MTKView *)self device];
-  CVMetalTextureCacheCreate(v3, 0, v4, 0, &self->_textureCache);
+  device = [(MTKView *)self device];
+  CVMetalTextureCacheCreate(v3, 0, device, 0, &self->_textureCache);
 }
 
 - (void)updateTexture
 {
   self->_needsUpdateTexture = 0;
   [(JFXImageMTKView *)self cleanupTextures];
-  v3 = [self->_renderingType pvImageBuffer];
-  v4 = [v3 cvPixelBuffer];
+  pvImageBuffer = [self->_renderingType pvImageBuffer];
+  cvPixelBuffer = [pvImageBuffer cvPixelBuffer];
 
-  if (v4)
+  if (cvPixelBuffer)
   {
-    Width = CVPixelBufferGetWidth(v4);
-    Height = CVPixelBufferGetHeight(v4);
+    Width = CVPixelBufferGetWidth(cvPixelBuffer);
+    Height = CVPixelBufferGetHeight(cvPixelBuffer);
     self->_textureSize.width = Width;
     self->_textureSize.height = Height;
-    v7 = CVBufferCopyAttachment(v4, *MEMORY[0x277CC4D10], 0);
+    v7 = CVBufferCopyAttachment(cvPixelBuffer, *MEMORY[0x277CC4D10], 0);
     [(JFXImageMTKView *)self configureRenderPipelineForColorAttachments:v7];
     v8 = *MEMORY[0x277CBECE8];
     textureCache = self->_textureCache;
     if (v7)
     {
-      CVMetalTextureCacheCreateTextureFromImage(v8, textureCache, v4, 0, MTLPixelFormatR8Unorm, Width, Height, 0, &self->_texture_YUV_Luma);
+      CVMetalTextureCacheCreateTextureFromImage(v8, textureCache, cvPixelBuffer, 0, MTLPixelFormatR8Unorm, Width, Height, 0, &self->_texture_YUV_Luma);
       v10 = CVMetalTextureGetTexture(self->_texture_YUV_Luma);
       mtlTexture_YUV_Luma = self->_mtlTexture_YUV_Luma;
       self->_mtlTexture_YUV_Luma = v10;
 
-      CVMetalTextureCacheCreateTextureFromImage(v8, self->_textureCache, v4, 0, MTLPixelFormatRG8Unorm, Width >> 1, Height >> 1, 1uLL, &self->_texture_YUV_Chroma);
+      CVMetalTextureCacheCreateTextureFromImage(v8, self->_textureCache, cvPixelBuffer, 0, MTLPixelFormatRG8Unorm, Width >> 1, Height >> 1, 1uLL, &self->_texture_YUV_Chroma);
       v12 = CVMetalTextureGetTexture(self->_texture_YUV_Chroma);
       mtlTexture_YUV_Chroma = self->_mtlTexture_YUV_Chroma;
       self->_mtlTexture_YUV_Chroma = v12;
@@ -221,7 +221,7 @@ void __45__JFXImageMTKView_JFXImageMTKView_commonInit__block_invoke()
 
     else
     {
-      CVMetalTextureCacheCreateTextureFromImage(v8, textureCache, v4, 0, MTLPixelFormatBGRA8Unorm, Width, Height, 0, &self->_texture_RGBA);
+      CVMetalTextureCacheCreateTextureFromImage(v8, textureCache, cvPixelBuffer, 0, MTLPixelFormatBGRA8Unorm, Width, Height, 0, &self->_texture_RGBA);
       self->_mtlTexture_RGBA = CVMetalTextureGetTexture(self->_texture_RGBA);
 
       MEMORY[0x2821F96F8]();
@@ -245,11 +245,11 @@ void __45__JFXImageMTKView_JFXImageMTKView_commonInit__block_invoke()
   }
 }
 
-- (void)configureRenderPipelineForColorAttachments:(void *)a3
+- (void)configureRenderPipelineForColorAttachments:(void *)attachments
 {
-  if (self->_pixelBufferColorAttachments != a3)
+  if (self->_pixelBufferColorAttachments != attachments)
   {
-    self->_pixelBufferColorAttachments = a3;
+    self->_pixelBufferColorAttachments = attachments;
     renderPipelineState = self->_renderPipelineState;
     self->_renderPipelineState = 0;
   }
@@ -258,18 +258,18 @@ void __45__JFXImageMTKView_JFXImageMTKView_commonInit__block_invoke()
   {
     v6 = [(MTLLibrary *)self->_library newFunctionWithName:@"JFX_vertex_Pos2Tex2_transform"];
     v7 = 1;
-    if (*MEMORY[0x277CC4D20] != a3)
+    if (*MEMORY[0x277CC4D20] != attachments)
     {
       v7 = 2;
     }
 
     v8 = @"JFX_fragment_YUV709_Pos4Tex2_texture2D";
-    if (*MEMORY[0x277CC4D20] == a3)
+    if (*MEMORY[0x277CC4D20] == attachments)
     {
       v8 = @"JFX_fragment_YUV601_Pos4Tex2_texture2D";
     }
 
-    if (a3)
+    if (attachments)
     {
       v9 = v7;
     }
@@ -279,7 +279,7 @@ void __45__JFXImageMTKView_JFXImageMTKView_commonInit__block_invoke()
       v9 = 0;
     }
 
-    if (a3)
+    if (attachments)
     {
       v10 = v8;
     }
@@ -291,9 +291,9 @@ void __45__JFXImageMTKView_JFXImageMTKView_commonInit__block_invoke()
 
     [(JFXImageMTKView *)self setRenderingType:v9];
     v11 = [(MTLLibrary *)self->_library newFunctionWithName:v10];
-    v12 = [(MTKView *)self device];
+    device = [(MTKView *)self device];
     v16 = 0;
-    v13 = [JFXImageMTKView buildRenderPipelineWithLabel:@"JFXImageMTKView Pipeline" vertexFunction:v6 fragmentFunction:v11 device:v12 view:self error:&v16];
+    v13 = [JFXImageMTKView buildRenderPipelineWithLabel:@"JFXImageMTKView Pipeline" vertexFunction:v6 fragmentFunction:v11 device:device view:self error:&v16];
     v14 = v16;
     v15 = self->_renderPipelineState;
     self->_renderPipelineState = v13;
@@ -305,13 +305,13 @@ void __45__JFXImageMTKView_JFXImageMTKView_commonInit__block_invoke()
   }
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   v4 = objc_autoreleasePoolPush();
   v5 = +[CFXApplicationState sharedInstance];
-  v6 = [v5 applicationState];
+  applicationState = [v5 applicationState];
 
-  if (v6 != 2)
+  if (applicationState != 2)
   {
     if (!self->_needsUpdateTexture || ([(JFXImageMTKView *)self updateTexture], !self->_needsUpdateTexture))
     {
@@ -319,11 +319,11 @@ void __45__JFXImageMTKView_JFXImageMTKView_commonInit__block_invoke()
       {
         if (self->_renderPipelineState && self[1].super.super.super.super.isa != -1 && (self->_texture_RGBA || self->_texture_YUV_Luma && self->_texture_YUV_Chroma) && (self->_textureSize.width != *MEMORY[0x277CBF3A8] || self->_textureSize.height != *(MEMORY[0x277CBF3A8] + 8)))
         {
-          v8 = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
-          v9 = [(MTKView *)self currentRenderPassDescriptor];
-          if (v9)
+          commandBuffer = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
+          currentRenderPassDescriptor = [(MTKView *)self currentRenderPassDescriptor];
+          if (currentRenderPassDescriptor)
           {
-            v10 = [v8 renderCommandEncoderWithDescriptor:v9];
+            v10 = [commandBuffer renderCommandEncoderWithDescriptor:currentRenderPassDescriptor];
             [v10 setLabel:@"JFXImageMTKView Encoder"];
             [v10 pushDebugGroup:@"JFXImageMTKView"];
             [v10 setRenderPipelineState:self->_renderPipelineState];
@@ -373,14 +373,14 @@ void __45__JFXImageMTKView_JFXImageMTKView_commonInit__block_invoke()
             [v10 drawPrimitives:4 vertexStart:0 vertexCount:4];
             [v10 popDebugGroup];
             [v10 endEncoding];
-            v20 = [(MTKView *)self currentDrawable];
-            if (v20)
+            currentDrawable = [(MTKView *)self currentDrawable];
+            if (currentDrawable)
             {
-              [v8 presentDrawable:v20];
+              [commandBuffer presentDrawable:currentDrawable];
             }
           }
 
-          [v8 commit];
+          [commandBuffer commit];
         }
       }
     }
@@ -389,73 +389,73 @@ void __45__JFXImageMTKView_JFXImageMTKView_commonInit__block_invoke()
   objc_autoreleasePoolPop(v4);
 }
 
-- (void)setJtImage:(id)a3
+- (void)setJtImage:(id)image
 {
-  v5 = a3;
-  if (self->_renderingType != v5)
+  imageCopy = image;
+  if (self->_renderingType != imageCopy)
   {
-    v8 = v5;
-    objc_storeStrong(&self->_renderingType, a3);
+    v8 = imageCopy;
+    objc_storeStrong(&self->_renderingType, image);
     renderingType = self->_renderingType;
     if (renderingType)
     {
-      v7 = [renderingType pvImageBuffer];
-      [v7 canCreateCVPixelBuffer];
+      pvImageBuffer = [renderingType pvImageBuffer];
+      [pvImageBuffer canCreateCVPixelBuffer];
     }
 
     self->_needsUpdateTexture = 1;
     self->_needsUpdateVertices = 1;
     [(JFXImageMTKView *)self updateDebugDrawing];
     [(JFXImageMTKView *)self setNeedsDisplay];
-    v5 = v8;
+    imageCopy = v8;
   }
 }
 
-- (void)setRenderingType:(int64_t)a3
+- (void)setRenderingType:(int64_t)type
 {
-  if (self[1].super.super.super.super.isa != a3)
+  if (self[1].super.super.super.super.isa != type)
   {
-    self[1].super.super.super.super.isa = a3;
+    self[1].super.super.super.super.isa = type;
     [(JFXImageMTKView *)self updateDebugDrawing];
   }
 }
 
-- (void)setFlipX:(BOOL)a3
+- (void)setFlipX:(BOOL)x
 {
-  if (LOBYTE(self->_jtImage) != a3)
+  if (LOBYTE(self->_jtImage) != x)
   {
-    LOBYTE(self->_jtImage) = a3;
+    LOBYTE(self->_jtImage) = x;
     [(JFXImageMTKView *)self setNeedsDisplay];
   }
 }
 
-- (void)setFlipY:(BOOL)a3
+- (void)setFlipY:(BOOL)y
 {
-  if (BYTE1(self->_jtImage) != a3)
+  if (BYTE1(self->_jtImage) != y)
   {
-    BYTE1(self->_jtImage) = a3;
+    BYTE1(self->_jtImage) = y;
     [(JFXImageMTKView *)self setNeedsDisplay];
   }
 }
 
-- (void)setContentMode:(int64_t)a3
+- (void)setContentMode:(int64_t)mode
 {
-  v5 = [(JFXImageMTKView *)self contentMode];
-  if (a3 != 3 && v5 != a3)
+  contentMode = [(JFXImageMTKView *)self contentMode];
+  if (mode != 3 && contentMode != mode)
   {
     v6.receiver = self;
     v6.super_class = JFXImageMTKView;
-    [(JFXImageMTKView *)&v6 setContentMode:a3];
+    [(JFXImageMTKView *)&v6 setContentMode:mode];
     self->_needsUpdateVertices = 1;
     [(JFXImageMTKView *)self setNeedsDisplay];
   }
 }
 
-- (void)setEnableDebugDrawing:(BOOL)a3
+- (void)setEnableDebugDrawing:(BOOL)drawing
 {
-  if (BYTE2(self->_jtImage) != a3)
+  if (BYTE2(self->_jtImage) != drawing)
   {
-    BYTE2(self->_jtImage) = a3;
+    BYTE2(self->_jtImage) = drawing;
     [(JFXImageMTKView *)self updateDebugDrawing];
   }
 }
@@ -466,52 +466,52 @@ void __45__JFXImageMTKView_JFXImageMTKView_commonInit__block_invoke()
   if (BYTE2(self->_jtImage) == 1)
   {
     v4 = [JFXImageView colorFromRenderingType:self[1].super.super.super.super.isa];
-    v5 = [v4 CGColor];
-    v6 = [(JFXImageMTKView *)self layer];
-    [v6 setBorderColor:v5];
+    cGColor = [v4 CGColor];
+    layer = [(JFXImageMTKView *)self layer];
+    [layer setBorderColor:cGColor];
 
     v3 = 4.0;
   }
 
-  v7 = [(JFXImageMTKView *)self layer];
-  [v7 setBorderWidth:v3];
+  layer2 = [(JFXImageMTKView *)self layer];
+  [layer2 setBorderWidth:v3];
 }
 
-+ (id)buildRenderPipelineWithLabel:(id)a3 vertexFunction:(id)a4 fragmentFunction:(id)a5 device:(id)a6 view:(id)a7 error:(id *)a8
++ (id)buildRenderPipelineWithLabel:(id)label vertexFunction:(id)function fragmentFunction:(id)fragmentFunction device:(id)device view:(id)view error:(id *)error
 {
-  v13 = a7;
-  v14 = a6;
-  v15 = a5;
-  v16 = a4;
-  v17 = a3;
+  viewCopy = view;
+  deviceCopy = device;
+  fragmentFunctionCopy = fragmentFunction;
+  functionCopy = function;
+  labelCopy = label;
   v18 = objc_opt_new();
-  [v18 setLabel:v17];
+  [v18 setLabel:labelCopy];
 
-  [v18 setRasterSampleCount:{objc_msgSend(v13, "sampleCount")}];
-  [v18 setVertexFunction:v16];
+  [v18 setRasterSampleCount:{objc_msgSend(viewCopy, "sampleCount")}];
+  [v18 setVertexFunction:functionCopy];
 
-  [v18 setFragmentFunction:v15];
-  v19 = [v13 colorPixelFormat];
-  v20 = [v18 colorAttachments];
-  v21 = [v20 objectAtIndexedSubscript:0];
-  [v21 setPixelFormat:v19];
+  [v18 setFragmentFunction:fragmentFunctionCopy];
+  colorPixelFormat = [viewCopy colorPixelFormat];
+  colorAttachments = [v18 colorAttachments];
+  v21 = [colorAttachments objectAtIndexedSubscript:0];
+  [v21 setPixelFormat:colorPixelFormat];
 
-  v22 = [v13 depthStencilPixelFormat];
-  [v18 setDepthAttachmentPixelFormat:v22];
-  v23 = [v14 newRenderPipelineStateWithDescriptor:v18 error:a8];
+  depthStencilPixelFormat = [viewCopy depthStencilPixelFormat];
+  [v18 setDepthAttachmentPixelFormat:depthStencilPixelFormat];
+  v23 = [deviceCopy newRenderPipelineStateWithDescriptor:v18 error:error];
 
   return v23;
 }
 
-+ (id)buildSamplerStateWithDevice:(id)a3 addressMode:(unint64_t)a4 filter:(unint64_t)a5
++ (id)buildSamplerStateWithDevice:(id)device addressMode:(unint64_t)mode filter:(unint64_t)filter
 {
-  v7 = a3;
+  deviceCopy = device;
   v8 = objc_opt_new();
-  [v8 setSAddressMode:a4];
-  [v8 setTAddressMode:a4];
-  [v8 setMinFilter:a5];
-  [v8 setMagFilter:a5];
-  v9 = [v7 newSamplerStateWithDescriptor:v8];
+  [v8 setSAddressMode:mode];
+  [v8 setTAddressMode:mode];
+  [v8 setMinFilter:filter];
+  [v8 setMagFilter:filter];
+  v9 = [deviceCopy newSamplerStateWithDescriptor:v8];
 
   return v9;
 }

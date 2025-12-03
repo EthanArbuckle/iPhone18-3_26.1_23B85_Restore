@@ -1,13 +1,13 @@
 @interface CRKIDSAccountsEvaluator
-- (CRKIDSAccountsEvaluator)initWithIDSLocalPrimitives:(id)a3;
-- (void)beginObservingAccounts:(id)a3;
+- (CRKIDSAccountsEvaluator)initWithIDSLocalPrimitives:(id)primitives;
+- (void)beginObservingAccounts:(id)accounts;
 - (void)beginObservingKnownAccountChanges;
 - (void)dealloc;
-- (void)endObservingAccounts:(id)a3;
+- (void)endObservingAccounts:(id)accounts;
 - (void)endObservingKnownAccountChanges;
 - (void)knownAccountsDidChange;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)observedAccountDidChange:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)observedAccountDidChange:(id)change;
 - (void)updateState;
 @end
 
@@ -16,24 +16,24 @@
 - (void)dealloc
 {
   [(CRKIDSAccountsEvaluator *)self endObservingKnownAccountChanges];
-  v3 = [(CRKIDSAccountsEvaluator *)self observedAccounts];
-  [(CRKIDSAccountsEvaluator *)self endObservingAccounts:v3];
+  observedAccounts = [(CRKIDSAccountsEvaluator *)self observedAccounts];
+  [(CRKIDSAccountsEvaluator *)self endObservingAccounts:observedAccounts];
 
   v4.receiver = self;
   v4.super_class = CRKIDSAccountsEvaluator;
   [(CRKIDSAccountsEvaluator *)&v4 dealloc];
 }
 
-- (CRKIDSAccountsEvaluator)initWithIDSLocalPrimitives:(id)a3
+- (CRKIDSAccountsEvaluator)initWithIDSLocalPrimitives:(id)primitives
 {
-  v5 = a3;
+  primitivesCopy = primitives;
   v10.receiver = self;
   v10.super_class = CRKIDSAccountsEvaluator;
   v6 = [(CRKIDSAccountsEvaluator *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_IDSLocalPrimitives, a3);
+    objc_storeStrong(&v6->_IDSLocalPrimitives, primitives);
     observedAccounts = v7->_observedAccounts;
     v7->_observedAccounts = MEMORY[0x277CBEBF8];
 
@@ -46,12 +46,12 @@
 
 - (void)knownAccountsDidChange
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
-  v4 = NSStringFromSelector(a1);
-  [v5 handleFailureInMethod:a1 object:a2 file:@"CRKIDSAccountsEvaluator.m" lineNumber:62 description:{@"%@ must be called from the main thread", v4}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  v4 = NSStringFromSelector(self);
+  [currentHandler handleFailureInMethod:self object:a2 file:@"CRKIDSAccountsEvaluator.m" lineNumber:62 description:{@"%@ must be called from the main thread", v4}];
 }
 
-- (void)observedAccountDidChange:(id)a3
+- (void)observedAccountDidChange:(id)change
 {
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
@@ -63,25 +63,25 @@
 
 - (void)beginObservingKnownAccountChanges
 {
-  v3 = [(CRKIDSAccountsEvaluator *)self IDSLocalPrimitives];
-  [v3 addObserver:self forKeyPath:@"accounts" options:0 context:@"CRKIDSAccountsEvaluatorContext"];
+  iDSLocalPrimitives = [(CRKIDSAccountsEvaluator *)self IDSLocalPrimitives];
+  [iDSLocalPrimitives addObserver:self forKeyPath:@"accounts" options:0 context:@"CRKIDSAccountsEvaluatorContext"];
 }
 
 - (void)endObservingKnownAccountChanges
 {
-  v3 = [(CRKIDSAccountsEvaluator *)self IDSLocalPrimitives];
-  [v3 removeObserver:self forKeyPath:@"accounts" context:@"CRKIDSAccountsEvaluatorContext"];
+  iDSLocalPrimitives = [(CRKIDSAccountsEvaluator *)self IDSLocalPrimitives];
+  [iDSLocalPrimitives removeObserver:self forKeyPath:@"accounts" context:@"CRKIDSAccountsEvaluatorContext"];
 }
 
-- (void)beginObservingAccounts:(id)a3
+- (void)beginObservingAccounts:(id)accounts
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  accountsCopy = accounts;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [accountsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -93,29 +93,29 @@
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(accountsCopy);
         }
 
         [*(*(&v9 + 1) + 8 * v8++) addObserver:self forKeyPath:@"active" options:0 context:@"CRKIDSAccountsEvaluatorContext"];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [accountsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)endObservingAccounts:(id)a3
+- (void)endObservingAccounts:(id)accounts
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  accountsCopy = accounts;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [accountsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -127,27 +127,27 @@
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(accountsCopy);
         }
 
         [*(*(&v9 + 1) + 8 * v8++) removeObserver:self forKeyPath:@"active" context:@"CRKIDSAccountsEvaluatorContext"];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [accountsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = v10;
-  if (a6 == @"CRKIDSAccountsEvaluatorContext")
+  pathCopy = path;
+  v11 = pathCopy;
+  if (context == @"CRKIDSAccountsEvaluatorContext")
   {
-    if ([v10 isEqualToString:@"accounts"])
+    if ([pathCopy isEqualToString:@"accounts"])
     {
       [(CRKIDSAccountsEvaluator *)self knownAccountsDidChange];
     }
@@ -162,21 +162,21 @@
   {
     v12.receiver = self;
     v12.super_class = CRKIDSAccountsEvaluator;
-    [(CRKIDSAccountsEvaluator *)&v12 observeValueForKeyPath:v10 ofObject:a4 change:a5 context:a6];
+    [(CRKIDSAccountsEvaluator *)&v12 observeValueForKeyPath:pathCopy ofObject:object change:change context:context];
   }
 }
 
 - (void)updateState
 {
-  v3 = [(CRKIDSAccountsEvaluator *)self IDSLocalPrimitives];
-  v4 = [v3 accounts];
-  v8 = [CRKIDSAccountsState stateForAccounts:v4];
+  iDSLocalPrimitives = [(CRKIDSAccountsEvaluator *)self IDSLocalPrimitives];
+  accounts = [iDSLocalPrimitives accounts];
+  v8 = [CRKIDSAccountsState stateForAccounts:accounts];
 
-  v5 = [(CRKIDSAccountsEvaluator *)self state];
-  if (v5 | v8)
+  state = [(CRKIDSAccountsEvaluator *)self state];
+  if (state | v8)
   {
-    v6 = [(CRKIDSAccountsEvaluator *)self state];
-    v7 = [v6 isEqual:v8];
+    state2 = [(CRKIDSAccountsEvaluator *)self state];
+    v7 = [state2 isEqual:v8];
 
     if ((v7 & 1) == 0)
     {

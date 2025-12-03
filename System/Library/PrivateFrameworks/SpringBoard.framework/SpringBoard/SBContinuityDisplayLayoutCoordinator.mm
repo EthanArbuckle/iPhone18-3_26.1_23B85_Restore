@@ -1,6 +1,6 @@
 @interface SBContinuityDisplayLayoutCoordinator
-- (SBContinuityDisplayLayoutCoordinator)initWithRootPublisher:(id)a3;
-- (id)activateForPublisher:(id)a3;
+- (SBContinuityDisplayLayoutCoordinator)initWithRootPublisher:(id)publisher;
+- (id)activateForPublisher:(id)publisher;
 - (void)dealloc;
 - (void)invalidate;
 - (void)start;
@@ -8,22 +8,22 @@
 
 @implementation SBContinuityDisplayLayoutCoordinator
 
-- (SBContinuityDisplayLayoutCoordinator)initWithRootPublisher:(id)a3
+- (SBContinuityDisplayLayoutCoordinator)initWithRootPublisher:(id)publisher
 {
-  v6 = a3;
-  if (!v6)
+  publisherCopy = publisher;
+  if (!publisherCopy)
   {
     [SBContinuityDisplayLayoutCoordinator initWithRootPublisher:a2];
   }
 
-  v7 = v6;
+  v7 = publisherCopy;
   v11.receiver = self;
   v11.super_class = SBContinuityDisplayLayoutCoordinator;
   v8 = [(SBContinuityDisplayLayoutCoordinator *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_rootPublisher, a3);
+    objc_storeStrong(&v8->_rootPublisher, publisher);
   }
 
   return v9;
@@ -38,7 +38,7 @@
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
     OUTLINED_FUNCTION_0_0();
-    OUTLINED_FUNCTION_3(&dword_21ED4E000, MEMORY[0x277D86220], v8, "failure in %{public}@ of <%{public}@:%p> (%{public}@:%i) : %{public}@", v9, v10, v11, v12, a1, a2, v15);
+    OUTLINED_FUNCTION_3(&dword_21ED4E000, MEMORY[0x277D86220], v8, "failure in %{public}@ of <%{public}@:%p> (%{public}@:%i) : %{public}@", v9, v10, v11, v12, self, a2, v15);
   }
 
   [v4 UTF8String];
@@ -68,15 +68,15 @@
   self->_suppression = 0;
 }
 
-- (id)activateForPublisher:(id)a3
+- (id)activateForPublisher:(id)publisher
 {
-  v5 = a3;
-  if (!v5)
+  publisherCopy = publisher;
+  if (!publisherCopy)
   {
     [SBContinuityDisplayLayoutCoordinator activateForPublisher:a2];
   }
 
-  v6 = v5;
+  v6 = publisherCopy;
   BSDispatchQueueAssertMain();
   if (self->_currentPublisher)
   {

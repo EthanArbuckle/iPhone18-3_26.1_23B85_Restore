@@ -1,16 +1,16 @@
 @interface ReadableWidthContainer
-- (_TtC17SequoiaTranslator22ReadableWidthContainer)initWithCoder:(id)a3;
-- (_TtC17SequoiaTranslator22ReadableWidthContainer)initWithFrame:(CGRect)a3;
+- (_TtC17SequoiaTranslator22ReadableWidthContainer)initWithCoder:(id)coder;
+- (_TtC17SequoiaTranslator22ReadableWidthContainer)initWithFrame:(CGRect)frame;
 @end
 
 @implementation ReadableWidthContainer
 
-- (_TtC17SequoiaTranslator22ReadableWidthContainer)initWithFrame:(CGRect)a3
+- (_TtC17SequoiaTranslator22ReadableWidthContainer)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC17SequoiaTranslator22ReadableWidthContainer_wrappedView) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC17SequoiaTranslator22ReadableWidthContainer_readableWidthEnabled) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC17SequoiaTranslator22ReadableWidthContainer_sizingConstraints) = _swiftEmptyArrayStorage;
@@ -19,7 +19,7 @@
   return [(ReadableWidthContainer *)&v8 initWithFrame:x, y, width, height];
 }
 
-- (_TtC17SequoiaTranslator22ReadableWidthContainer)initWithCoder:(id)a3
+- (_TtC17SequoiaTranslator22ReadableWidthContainer)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC17SequoiaTranslator22ReadableWidthContainer_wrappedView) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC17SequoiaTranslator22ReadableWidthContainer_readableWidthEnabled) = 0;

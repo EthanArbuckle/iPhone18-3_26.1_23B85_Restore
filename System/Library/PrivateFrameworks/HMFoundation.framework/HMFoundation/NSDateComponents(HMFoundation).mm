@@ -17,42 +17,42 @@
 - (id)hmf_localTimeDescription
 {
   v2 = [MEMORY[0x277CCAB68] stringWithFormat:@"<"];
-  if ([a1 second] != 0x7FFFFFFFFFFFFFFFLL)
+  if ([self second] != 0x7FFFFFFFFFFFFFFFLL)
   {
     v3 = MEMORY[0x277CCACA8];
-    v4 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(a1, "second")}];
+    v4 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(self, "second")}];
     v5 = [v3 stringWithFormat:@"%@ s, ", v4];
     [v2 appendString:v5];
   }
 
-  if ([a1 minute] != 0x7FFFFFFFFFFFFFFFLL)
+  if ([self minute] != 0x7FFFFFFFFFFFFFFFLL)
   {
     v6 = MEMORY[0x277CCACA8];
-    v7 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(a1, "minute")}];
+    v7 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(self, "minute")}];
     v8 = [v6 stringWithFormat:@"%@ m, ", v7];
     [v2 appendString:v8];
   }
 
-  if ([a1 hour] != 0x7FFFFFFFFFFFFFFFLL)
+  if ([self hour] != 0x7FFFFFFFFFFFFFFFLL)
   {
     v9 = MEMORY[0x277CCACA8];
-    v10 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(a1, "hour")}];
+    v10 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(self, "hour")}];
     v11 = [v9 stringWithFormat:@"%@ h, ", v10];
     [v2 appendString:v11];
   }
 
-  if ([a1 day] != 0x7FFFFFFFFFFFFFFFLL)
+  if ([self day] != 0x7FFFFFFFFFFFFFFFLL)
   {
     v12 = MEMORY[0x277CCACA8];
-    v13 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(a1, "day")}];
+    v13 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(self, "day")}];
     v14 = [v12 stringWithFormat:@"%@ d, ", v13];
     [v2 appendString:v14];
   }
 
-  if ([a1 month] != 0x7FFFFFFFFFFFFFFFLL)
+  if ([self month] != 0x7FFFFFFFFFFFFFFFLL)
   {
     v15 = MEMORY[0x277CCACA8];
-    v16 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(a1, "month")}];
+    v16 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(self, "month")}];
     v17 = [v15 stringWithFormat:@"%@ mo, ", v16];
     [v2 appendString:v17];
   }

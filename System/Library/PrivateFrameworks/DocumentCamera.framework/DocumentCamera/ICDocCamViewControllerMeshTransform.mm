@@ -1,31 +1,31 @@
 @interface ICDocCamViewControllerMeshTransform
-- (CGRect)frameForImageInImageViewFrame:(CGRect)a3;
+- (CGRect)frameForImageInImageViewFrame:(CGRect)frame;
 - (CGRect)imageViewFrame;
 - (CGRect)previewViewFrame;
 - (CGSize)imageSize;
-- (ICDocCamViewControllerMeshTransform)initWithImage:(id)a3 backgroundImage:(id)a4 imageViewFrame:(CGRect)a5 view:(id)a6 imageQuad:(id)a7 previewView:(id)a8 previewBounds:(CGRect)a9 scrimView:(id)a10;
-- (id)imageMeshTransformWithImageQuad:(id)a3 imageViewFrame:(CGRect)a4 previewBounds:(CGRect)a5 finalTransform:(BOOL)a6;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
+- (ICDocCamViewControllerMeshTransform)initWithImage:(id)image backgroundImage:(id)backgroundImage imageViewFrame:(CGRect)frame view:(id)view imageQuad:(id)quad previewView:(id)previewView previewBounds:(CGRect)bounds scrimView:(id)self0;
+- (id)imageMeshTransformWithImageQuad:(id)quad imageViewFrame:(CGRect)frame previewBounds:(CGRect)bounds finalTransform:(BOOL)transform;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
 - (void)hide;
-- (void)startWithCompletionBlock:(id)a3;
+- (void)startWithCompletionBlock:(id)block;
 @end
 
 @implementation ICDocCamViewControllerMeshTransform
 
-- (ICDocCamViewControllerMeshTransform)initWithImage:(id)a3 backgroundImage:(id)a4 imageViewFrame:(CGRect)a5 view:(id)a6 imageQuad:(id)a7 previewView:(id)a8 previewBounds:(CGRect)a9 scrimView:(id)a10
+- (ICDocCamViewControllerMeshTransform)initWithImage:(id)image backgroundImage:(id)backgroundImage imageViewFrame:(CGRect)frame view:(id)view imageQuad:(id)quad previewView:(id)previewView previewBounds:(CGRect)bounds scrimView:(id)self0
 {
-  height = a9.size.height;
-  width = a9.size.width;
-  y = a9.origin.y;
-  x = a9.origin.x;
-  v17 = a5.size.height;
-  v18 = a5.size.width;
-  v19 = a5.origin.y;
-  v20 = a5.origin.x;
-  v22 = a3;
-  v23 = a6;
-  v24 = a7;
-  v25 = a10;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  v17 = frame.size.height;
+  v18 = frame.size.width;
+  v19 = frame.origin.y;
+  v20 = frame.origin.x;
+  imageCopy = image;
+  viewCopy = view;
+  quadCopy = quad;
+  scrimViewCopy = scrimView;
   v44.receiver = self;
   v44.super_class = ICDocCamViewControllerMeshTransform;
   v26 = [(ICDocCamViewControllerMeshTransform *)&v44 init];
@@ -33,52 +33,52 @@
   if (v26)
   {
     [(ICDocCamViewControllerMeshTransform *)v26 setImageViewFrame:v20, v19, v18, v17];
-    [(ICDocCamViewControllerMeshTransform *)v27 setImageQuad:v24];
+    [(ICDocCamViewControllerMeshTransform *)v27 setImageQuad:quadCopy];
     [(ICDocCamViewControllerMeshTransform *)v27 setPreviewViewFrame:x, y, width, height];
     v28 = objc_alloc(MEMORY[0x277D755E8]);
-    [v23 bounds];
+    [viewCopy bounds];
     v29 = [v28 initWithFrame:?];
     [(ICDocCamViewControllerMeshTransform *)v27 setAnimationImageView:v29];
 
-    v30 = [(ICDocCamViewControllerMeshTransform *)v27 animationImageView];
-    [v30 setContentMode:0];
+    animationImageView = [(ICDocCamViewControllerMeshTransform *)v27 animationImageView];
+    [animationImageView setContentMode:0];
 
-    v31 = [(ICDocCamViewControllerMeshTransform *)v27 animationImageView];
-    v32 = [v31 layer];
+    animationImageView2 = [(ICDocCamViewControllerMeshTransform *)v27 animationImageView];
+    layer = [animationImageView2 layer];
     LODWORD(v33) = 1.0;
-    [v32 setOpacity:v33];
+    [layer setOpacity:v33];
 
-    v34 = [(ICDocCamViewControllerMeshTransform *)v27 animationImageView];
-    [v34 setImage:v22];
+    animationImageView3 = [(ICDocCamViewControllerMeshTransform *)v27 animationImageView];
+    [animationImageView3 setImage:imageCopy];
 
-    v35 = [(ICDocCamViewControllerMeshTransform *)v27 animationImageView];
-    [v35 setHidden:0];
+    animationImageView4 = [(ICDocCamViewControllerMeshTransform *)v27 animationImageView];
+    [animationImageView4 setHidden:0];
 
-    [(ICDocCamViewControllerMeshTransform *)v27 setScrimView:v25];
+    [(ICDocCamViewControllerMeshTransform *)v27 setScrimView:scrimViewCopy];
     v36 = [MEMORY[0x277D75348] colorWithRed:0.0 green:0.0 blue:0.0 alpha:1.0];
-    v37 = [(ICDocCamViewControllerMeshTransform *)v27 scrimView];
-    [v37 setBackgroundColor:v36];
+    scrimView = [(ICDocCamViewControllerMeshTransform *)v27 scrimView];
+    [scrimView setBackgroundColor:v36];
 
-    v38 = [(ICDocCamViewControllerMeshTransform *)v27 scrimView];
-    v39 = [v38 layer];
-    [v39 setOpacity:0.0];
+    scrimView2 = [(ICDocCamViewControllerMeshTransform *)v27 scrimView];
+    layer2 = [scrimView2 layer];
+    [layer2 setOpacity:0.0];
 
-    v40 = [(ICDocCamViewControllerMeshTransform *)v27 scrimView];
-    [v40 setHidden:0];
+    scrimView3 = [(ICDocCamViewControllerMeshTransform *)v27 scrimView];
+    [scrimView3 setHidden:0];
 
-    v41 = [(ICDocCamViewControllerMeshTransform *)v27 animationImageView];
-    v42 = [(ICDocCamViewControllerMeshTransform *)v27 scrimView];
-    [v23 insertSubview:v41 aboveSubview:v42];
+    animationImageView5 = [(ICDocCamViewControllerMeshTransform *)v27 animationImageView];
+    scrimView4 = [(ICDocCamViewControllerMeshTransform *)v27 scrimView];
+    [viewCopy insertSubview:animationImageView5 aboveSubview:scrimView4];
   }
 
   return v27;
 }
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
-  v5 = [(ICDocCamViewControllerMeshTransform *)self scrimView:a3];
-  v6 = [v5 layer];
-  [v6 removeAllAnimations];
+  v5 = [(ICDocCamViewControllerMeshTransform *)self scrimView:stop];
+  layer = [v5 layer];
+  [layer removeAllAnimations];
 
   v20 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"opacity"];
   [v20 setDuration:0.32];
@@ -97,23 +97,23 @@
 
   [v20 setFillMode:*MEMORY[0x277CDA230]];
   [v20 setRemovedOnCompletion:0];
-  v14 = [(ICDocCamViewControllerMeshTransform *)self scrimView];
-  v15 = [v14 layer];
-  [v15 addAnimation:v20 forKey:@"three"];
+  scrimView = [(ICDocCamViewControllerMeshTransform *)self scrimView];
+  layer2 = [scrimView layer];
+  [layer2 addAnimation:v20 forKey:@"three"];
 
   [MEMORY[0x277CD9FF0] begin];
   [MEMORY[0x277CD9FF0] setDisableActions:1];
-  v16 = [(ICDocCamViewControllerMeshTransform *)self scrimView];
-  v17 = [v16 layer];
-  [v17 setOpacity:0.0];
+  scrimView2 = [(ICDocCamViewControllerMeshTransform *)self scrimView];
+  layer3 = [scrimView2 layer];
+  [layer3 setOpacity:0.0];
 
   [MEMORY[0x277CD9FF0] commit];
-  v18 = [(ICDocCamViewControllerMeshTransform *)self imageMeshAnimationCompletionBlock];
+  imageMeshAnimationCompletionBlock = [(ICDocCamViewControllerMeshTransform *)self imageMeshAnimationCompletionBlock];
 
-  if (v18)
+  if (imageMeshAnimationCompletionBlock)
   {
-    v19 = [(ICDocCamViewControllerMeshTransform *)self imageMeshAnimationCompletionBlock];
-    v19[2]();
+    imageMeshAnimationCompletionBlock2 = [(ICDocCamViewControllerMeshTransform *)self imageMeshAnimationCompletionBlock];
+    imageMeshAnimationCompletionBlock2[2]();
 
     [(ICDocCamViewControllerMeshTransform *)self setImageMeshAnimationCompletionBlock:0];
   }
@@ -121,28 +121,28 @@
 
 - (void)hide
 {
-  v3 = [(ICDocCamViewControllerMeshTransform *)self animationImageView];
-  [v3 removeFromSuperview];
+  animationImageView = [(ICDocCamViewControllerMeshTransform *)self animationImageView];
+  [animationImageView removeFromSuperview];
 
-  v4 = [(ICDocCamViewControllerMeshTransform *)self animationImageView];
-  [v4 setHidden:1];
+  animationImageView2 = [(ICDocCamViewControllerMeshTransform *)self animationImageView];
+  [animationImageView2 setHidden:1];
 
-  v5 = [(ICDocCamViewControllerMeshTransform *)self animationImageView];
-  [v5 setImage:0];
+  animationImageView3 = [(ICDocCamViewControllerMeshTransform *)self animationImageView];
+  [animationImageView3 setImage:0];
 
   [(ICDocCamViewControllerMeshTransform *)self setAnimationImageView:0];
 }
 
-- (CGRect)frameForImageInImageViewFrame:(CGRect)a3
+- (CGRect)frameForImageInImageViewFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v7 = MEMORY[0x277D755B8];
-  v8 = [(ICDocCamViewControllerMeshTransform *)self animationImageView];
-  v9 = [v8 image];
-  [v9 size];
+  animationImageView = [(ICDocCamViewControllerMeshTransform *)self animationImageView];
+  image = [animationImageView image];
+  [image size];
   [v7 dc_aspectFitImageFrameForViewWithFrame:x imageSize:{y, width, height, v10, v11}];
   v13 = v12;
   v15 = v14;
@@ -160,25 +160,25 @@
   return result;
 }
 
-- (void)startWithCompletionBlock:(id)a3
+- (void)startWithCompletionBlock:(id)block
 {
   v35[2] = *MEMORY[0x277D85DE8];
-  [(ICDocCamViewControllerMeshTransform *)self setImageMeshAnimationCompletionBlock:a3];
-  v4 = [MEMORY[0x277CD9E00] animation];
-  [v4 setDelegate:self];
-  [v4 setDuration:0.8];
-  [v4 setAnimations:MEMORY[0x277CBEBF8]];
+  [(ICDocCamViewControllerMeshTransform *)self setImageMeshAnimationCompletionBlock:block];
+  animation = [MEMORY[0x277CD9E00] animation];
+  [animation setDelegate:self];
+  [animation setDuration:0.8];
+  [animation setAnimations:MEMORY[0x277CBEBF8]];
   v5 = *MEMORY[0x277CDA230];
-  [v4 setFillMode:*MEMORY[0x277CDA230]];
+  [animation setFillMode:*MEMORY[0x277CDA230]];
   v6 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"meshTransform"];
   [(ICDocCamViewControllerMeshTransform *)self previewViewFrame];
-  v7 = [(ICDocCamViewControllerMeshTransform *)self imageQuad];
+  imageQuad = [(ICDocCamViewControllerMeshTransform *)self imageQuad];
   [(ICDocCamViewControllerMeshTransform *)self imageViewFrame];
-  v8 = [ICDocCamViewControllerMeshTransform imageMeshTransformWithImageQuad:"imageMeshTransformWithImageQuad:imageViewFrame:previewBounds:finalTransform:" imageViewFrame:v7 previewBounds:0 finalTransform:?];
+  v8 = [ICDocCamViewControllerMeshTransform imageMeshTransformWithImageQuad:"imageMeshTransformWithImageQuad:imageViewFrame:previewBounds:finalTransform:" imageViewFrame:imageQuad previewBounds:0 finalTransform:?];
   [v6 setFromValue:v8];
 
   [(ICDocCamViewControllerMeshTransform *)self imageViewFrame];
-  v9 = [ICDocCamViewControllerMeshTransform imageMeshTransformWithImageQuad:"imageMeshTransformWithImageQuad:imageViewFrame:previewBounds:finalTransform:" imageViewFrame:v7 previewBounds:1 finalTransform:?];
+  v9 = [ICDocCamViewControllerMeshTransform imageMeshTransformWithImageQuad:"imageMeshTransformWithImageQuad:imageViewFrame:previewBounds:finalTransform:" imageViewFrame:imageQuad previewBounds:1 finalTransform:?];
   [v6 setToValue:v9];
 
   [v6 setDuration:0.45];
@@ -200,11 +200,11 @@
   v35[0] = v6;
   v35[1] = v14;
   v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v35 count:2];
-  [v4 setAnimations:v16];
+  [animation setAnimations:v16];
 
-  v17 = [(ICDocCamViewControllerMeshTransform *)self animationImageView];
-  v18 = [v17 layer];
-  [v18 addAnimation:v4 forKey:@"one"];
+  animationImageView = [(ICDocCamViewControllerMeshTransform *)self animationImageView];
+  layer = [animationImageView layer];
+  [layer addAnimation:animation forKey:@"one"];
 
   v19 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"opacity"];
   [v19 setDuration:0.32];
@@ -223,39 +223,39 @@
 
   [v19 setFillMode:v5];
   [v19 setRemovedOnCompletion:0];
-  v27 = [(ICDocCamViewControllerMeshTransform *)self scrimView];
-  v28 = [v27 layer];
-  [v28 addAnimation:v19 forKey:@"two"];
+  scrimView = [(ICDocCamViewControllerMeshTransform *)self scrimView];
+  layer2 = [scrimView layer];
+  [layer2 addAnimation:v19 forKey:@"two"];
 
   [MEMORY[0x277CD9FF0] begin];
   [MEMORY[0x277CD9FF0] setDisableActions:1];
-  v29 = [v6 toValue];
-  v30 = [(ICDocCamViewControllerMeshTransform *)self animationImageView];
-  v31 = [v30 layer];
-  [v31 setMeshTransform:v29];
+  toValue = [v6 toValue];
+  animationImageView2 = [(ICDocCamViewControllerMeshTransform *)self animationImageView];
+  layer3 = [animationImageView2 layer];
+  [layer3 setMeshTransform:toValue];
 
   [MEMORY[0x277CD9FF0] commit];
-  v32 = [(ICDocCamViewControllerMeshTransform *)self scrimView];
-  v33 = [v32 layer];
+  scrimView2 = [(ICDocCamViewControllerMeshTransform *)self scrimView];
+  layer4 = [scrimView2 layer];
   LODWORD(v34) = 1045220557;
-  [v33 setOpacity:v34];
+  [layer4 setOpacity:v34];
 }
 
-- (id)imageMeshTransformWithImageQuad:(id)a3 imageViewFrame:(CGRect)a4 previewBounds:(CGRect)a5 finalTransform:(BOOL)a6
+- (id)imageMeshTransformWithImageQuad:(id)quad imageViewFrame:(CGRect)frame previewBounds:(CGRect)bounds finalTransform:(BOOL)transform
 {
-  v6 = a6;
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v11 = a4.size.height;
-  v12 = a4.size.width;
-  v13 = a4.origin.y;
-  v14 = a4.origin.x;
+  transformCopy = transform;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  v11 = frame.size.height;
+  v12 = frame.size.width;
+  v13 = frame.origin.y;
+  v14 = frame.origin.x;
   v101 = *MEMORY[0x277D85DE8];
-  v16 = a3;
-  v17 = [MEMORY[0x277CD9F18] meshTransform];
-  if (v6)
+  quadCopy = quad;
+  meshTransform = [MEMORY[0x277CD9F18] meshTransform];
+  if (transformCopy)
   {
     [(ICDocCamViewControllerMeshTransform *)self frameForImageInImageViewFrame:v14, v13, v12, v11];
     v19 = v18;
@@ -263,8 +263,8 @@
     v23 = v22;
     v25 = v24;
     v79 = v24;
-    v26 = [(ICDocCamViewControllerMeshTransform *)self animationImageView];
-    [v26 bounds];
+    animationImageView = [(ICDocCamViewControllerMeshTransform *)self animationImageView];
+    [animationImageView bounds];
     v28 = v27;
     v30 = v29;
     v81 = v29;
@@ -316,19 +316,19 @@
     v95 = v88;
     v96 = v40;
     v97 = 0.0;
-    [v17 addVertex:&v94];
+    [meshTransform addVertex:&v94];
     __asm { FMOV            V0.2D, #1.0 }
 
     v94 = _Q0;
     v95 = v86;
     v96 = v40;
     v97 = 0.0;
-    [v17 addVertex:&v94];
+    [meshTransform addVertex:&v94];
     v94 = xmmword_2492F7880;
     v95 = v86;
     v96 = v84;
     v97 = 0.0;
-    [v17 addVertex:&v94];
+    [meshTransform addVertex:&v94];
     v94 = 0uLL;
     v95 = v88;
     v96 = v84;
@@ -338,24 +338,24 @@
 
   else
   {
-    [v16 bottomLeft];
+    [quadCopy bottomLeft];
     v85 = v48;
     v87 = v47;
-    [v16 bottomRight];
+    [quadCopy bottomRight];
     v80 = v50;
     v82 = v49;
-    [v16 topRight];
+    [quadCopy topRight];
     v89 = x;
     v52 = v51;
     rect = width;
     v54 = v53;
-    [v16 topLeft];
+    [quadCopy topLeft];
     v55 = height;
     v57 = v56;
     v58 = y;
     v60 = v59;
-    v61 = [(ICDocCamViewControllerMeshTransform *)self animationImageView];
-    [v61 bounds];
+    animationImageView2 = [(ICDocCamViewControllerMeshTransform *)self animationImageView];
+    [animationImageView2 bounds];
     v63 = v62;
     v65 = v64;
 
@@ -392,19 +392,19 @@
     v91 = *&v94;
     v92 = 1.0 - *(&v94 + 1);
     v93 = 0;
-    [v17 addVertex:&v90];
+    [meshTransform addVertex:&v90];
     __asm { FMOV            V0.2D, #1.0 }
 
     v90 = _Q0;
     v91 = v71;
     v92 = v74;
     v93 = 0;
-    [v17 addVertex:&v90];
+    [meshTransform addVertex:&v90];
     v90 = xmmword_2492F7880;
     v91 = v72;
     v92 = v75;
     v93 = 0;
-    [v17 addVertex:&v90];
+    [meshTransform addVertex:&v90];
     v90 = 0uLL;
     v91 = v73;
     v92 = v76;
@@ -412,14 +412,14 @@
     v46 = &v90;
   }
 
-  [v17 addVertex:v46];
+  [meshTransform addVertex:v46];
   v95 = 0.0;
   v96 = 0.0;
   v94 = xmmword_2492F7890;
-  [v17 addFace:&v94];
-  [v17 setSubdivisionSteps:0];
+  [meshTransform addFace:&v94];
+  [meshTransform setSubdivisionSteps:0];
 
-  return v17;
+  return meshTransform;
 }
 
 - (CGRect)imageViewFrame

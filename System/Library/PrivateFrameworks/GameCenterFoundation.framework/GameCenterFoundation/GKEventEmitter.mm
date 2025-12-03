@@ -1,42 +1,42 @@
 @interface GKEventEmitter
-- (BOOL)listenerRegisteredForSelector:(SEL)a3;
-- (GKEventEmitter)initWithSupportedProtocols:(id)a3 shouldQueue:(BOOL)a4;
-- (id)invocationForProtocol:(id)a3 selector:(SEL)a4;
-- (id)methodSignatureForProtocol:(id)a3 selector:(SEL)a4;
-- (id)methodSignatureForSelector:(SEL)a3;
-- (void)dispatchQueuedEventsToListener:(id)a3;
-- (void)forwardInvocation:(id)a3;
-- (void)registerListener:(id)a3;
+- (BOOL)listenerRegisteredForSelector:(SEL)selector;
+- (GKEventEmitter)initWithSupportedProtocols:(id)protocols shouldQueue:(BOOL)queue;
+- (id)invocationForProtocol:(id)protocol selector:(SEL)selector;
+- (id)methodSignatureForProtocol:(id)protocol selector:(SEL)selector;
+- (id)methodSignatureForSelector:(SEL)selector;
+- (void)dispatchQueuedEventsToListener:(id)listener;
+- (void)forwardInvocation:(id)invocation;
+- (void)registerListener:(id)listener;
 @end
 
 @implementation GKEventEmitter
 
-- (GKEventEmitter)initWithSupportedProtocols:(id)a3 shouldQueue:(BOOL)a4
+- (GKEventEmitter)initWithSupportedProtocols:(id)protocols shouldQueue:(BOOL)queue
 {
-  v6 = a3;
+  protocolsCopy = protocols;
   v12.receiver = self;
   v12.super_class = GKEventEmitter;
   v7 = [(GKEventEmitter *)&v12 init];
   if (v7)
   {
-    v8 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
-    [(GKEventEmitter *)v7 setListeners:v8];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    [(GKEventEmitter *)v7 setListeners:weakObjectsHashTable];
 
-    v9 = [MEMORY[0x277CBEB18] arrayWithArray:v6];
+    v9 = [MEMORY[0x277CBEB18] arrayWithArray:protocolsCopy];
     [(GKEventEmitter *)v7 setSupportedProtocols:v9];
 
-    v10 = [MEMORY[0x277CBEB18] array];
-    [(GKEventEmitter *)v7 setQueuedEvents:v10];
+    array = [MEMORY[0x277CBEB18] array];
+    [(GKEventEmitter *)v7 setQueuedEvents:array];
 
-    v7->_shouldQueue = a4;
+    v7->_shouldQueue = queue;
   }
 
   return v7;
 }
 
-- (void)dispatchQueuedEventsToListener:(id)a3
+- (void)dispatchQueuedEventsToListener:(id)listener
 {
-  v8 = a3;
+  listenerCopy = listener;
   if ([(NSMutableArray *)self->_queuedEvents count])
   {
     v4 = [(NSMutableArray *)self->_queuedEvents objectAtIndex:0];
@@ -49,7 +49,7 @@
         [v5 selector];
         if (objc_opt_respondsToSelector())
         {
-          [v5 invokeWithTarget:v8];
+          [v5 invokeWithTarget:listenerCopy];
           [(NSMutableArray *)self->_queuedEvents removeObjectAtIndex:v6];
         }
 
@@ -77,11 +77,11 @@
 LABEL_11:
 }
 
-- (void)registerListener:(id)a3
+- (void)registerListener:(id)listener
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (![(NSHashTable *)self->_listeners containsObject:v4])
+  listenerCopy = listener;
+  if (![(NSHashTable *)self->_listeners containsObject:listenerCopy])
   {
     v13 = 0u;
     v14 = 0u;
@@ -102,10 +102,10 @@ LABEL_11:
             objc_enumerationMutation(v5);
           }
 
-          if ([v4 conformsToProtocol:{*(*(&v11 + 1) + 8 * i), v11}])
+          if ([listenerCopy conformsToProtocol:{*(*(&v11 + 1) + 8 * i), v11}])
           {
-            [(NSHashTable *)self->_listeners addObject:v4];
-            [(GKEventEmitter *)self dispatchQueuedEventsToListener:v4];
+            [(NSHashTable *)self->_listeners addObject:listenerCopy];
+            [(GKEventEmitter *)self dispatchQueuedEventsToListener:listenerCopy];
             goto LABEL_12;
           }
         }
@@ -126,12 +126,12 @@ LABEL_12:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (id)methodSignatureForProtocol:(id)a3 selector:(SEL)a4
+- (id)methodSignatureForProtocol:(id)protocol selector:(SEL)selector
 {
-  v5 = a3;
-  MethodDescription = protocol_getMethodDescription(v5, a4, 1, 1);
+  protocolCopy = protocol;
+  MethodDescription = protocol_getMethodDescription(protocolCopy, selector, 1, 1);
   types = MethodDescription.types;
-  if (MethodDescription.name || (v8 = protocol_getMethodDescription(v5, a4, 0, 1), types = v8.types, v8.name))
+  if (MethodDescription.name || (v8 = protocol_getMethodDescription(protocolCopy, selector, 0, 1), types = v8.types, v8.name))
   {
     v9 = [MEMORY[0x277CBEB08] signatureWithObjCTypes:types];
   }
@@ -144,16 +144,16 @@ LABEL_12:
   return v9;
 }
 
-- (id)invocationForProtocol:(id)a3 selector:(SEL)a4
+- (id)invocationForProtocol:(id)protocol selector:(SEL)selector
 {
-  v5 = [(GKEventEmitter *)self methodSignatureForProtocol:a3 selector:?];
+  v5 = [(GKEventEmitter *)self methodSignatureForProtocol:protocol selector:?];
   v6 = [MEMORY[0x277CBEAE8] invocationWithMethodSignature:v5];
-  [v6 setSelector:a4];
+  [v6 setSelector:selector];
 
   return v6;
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
   v20 = *MEMORY[0x277D85DE8];
   v18.receiver = self;
@@ -180,7 +180,7 @@ LABEL_12:
             objc_enumerationMutation(v6);
           }
 
-          v11 = [(GKEventEmitter *)self methodSignatureForProtocol:*(*(&v14 + 1) + 8 * i) selector:a3, v14];
+          v11 = [(GKEventEmitter *)self methodSignatureForProtocol:*(*(&v14 + 1) + 8 * i) selector:selector, v14];
           if (v11)
           {
             v5 = v11;
@@ -207,13 +207,13 @@ LABEL_12:
   return v5;
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  [v4 selector];
-  v5 = [(GKEventEmitter *)self listeners];
-  v6 = [v5 copy];
+  invocationCopy = invocation;
+  [invocationCopy selector];
+  listeners = [(GKEventEmitter *)self listeners];
+  v6 = [listeners copy];
 
   v17 = 0u;
   v18 = 0u;
@@ -227,8 +227,8 @@ LABEL_12:
 LABEL_13:
     if (self->_shouldQueue)
     {
-      [v4 retainArguments];
-      [(NSMutableArray *)self->_queuedEvents addObject:v4];
+      [invocationCopy retainArguments];
+      [(NSMutableArray *)self->_queuedEvents addObject:invocationCopy];
     }
 
     goto LABEL_15;
@@ -249,7 +249,7 @@ LABEL_13:
       v13 = *(*(&v15 + 1) + 8 * i);
       if (objc_opt_respondsToSelector())
       {
-        [v4 invokeWithTarget:{v13, v15}];
+        [invocationCopy invokeWithTarget:{v13, v15}];
         v10 = 1;
       }
     }
@@ -269,7 +269,7 @@ LABEL_15:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)listenerRegisteredForSelector:(SEL)a3
+- (BOOL)listenerRegisteredForSelector:(SEL)selector
 {
   v17 = *MEMORY[0x277D85DE8];
   v12 = 0u;

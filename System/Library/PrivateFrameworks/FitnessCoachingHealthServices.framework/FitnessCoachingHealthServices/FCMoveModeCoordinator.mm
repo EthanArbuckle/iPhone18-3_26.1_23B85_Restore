@@ -2,31 +2,31 @@
 - (BOOL)_queue_loadBirthDateComponents;
 - (BOOL)_queue_loadMoveModeChangeSample;
 - (BOOL)_queue_loadWheelchairUse;
-- (FCMoveModeCoordinator)initWithDateProvider:(id)a3 profile:(id)a4 serviceQueue:(id)a5;
+- (FCMoveModeCoordinator)initWithDateProvider:(id)provider profile:(id)profile serviceQueue:(id)queue;
 - (FCMoveModeCoordinatorDelegate)delegate;
 - (double)_delay;
-- (id)_birthdayForAge:(int64_t)a3;
-- (id)_dateByAddingNumberOfWeeks:(int64_t)a3 toDate:(id)a4;
-- (id)_dateForKey:(id)a3;
-- (id)_nextActivityMoveModeStartDateForNotificationType:(int64_t)a3;
-- (id)_tuesdayAfterDate:(id)a3;
-- (id)_tuesdayBeforeDate:(id)a3;
+- (id)_birthdayForAge:(int64_t)age;
+- (id)_dateByAddingNumberOfWeeks:(int64_t)weeks toDate:(id)date;
+- (id)_dateForKey:(id)key;
+- (id)_nextActivityMoveModeStartDateForNotificationType:(int64_t)type;
+- (id)_tuesdayAfterDate:(id)date;
+- (id)_tuesdayBeforeDate:(id)date;
 - (id)keyValueDomain;
-- (int64_t)_nextActivityMoveModeForNotificationType:(int64_t)a3;
+- (int64_t)_nextActivityMoveModeForNotificationType:(int64_t)type;
 - (int64_t)_queue_determineActivityMoveModeNotificationType;
 - (void)_queue_loadBirthDateComponents;
 - (void)_queue_loadMoveModeChangeSample;
 - (void)_queue_loadWheelchairUse;
 - (void)_queue_scheduleNotificationIfNeeded;
-- (void)_saveMoveModeChangeSampleForActivityMoveMode:(int64_t)a3 date:(id)a4;
-- (void)_setDate:(id)a3 forKey:(id)a4;
+- (void)_saveMoveModeChangeSampleForActivityMoveMode:(int64_t)mode date:(id)date;
+- (void)_setDate:(id)date forKey:(id)key;
 - (void)_significantTimeChangeOccurred;
 - (void)_userCharacteristicsDidChange;
-- (void)database:(id)a3 protectedDataDidBecomeAvailable:(BOOL)a4;
+- (void)database:(id)database protectedDataDidBecomeAvailable:(BOOL)available;
 - (void)dealloc;
-- (void)notificationPosted:(id)a3 error:(id)a4;
-- (void)profileDidBecomeReady:(id)a3;
-- (void)samplesAdded:(id)a3 anchor:(id)a4;
+- (void)notificationPosted:(id)posted error:(id)error;
+- (void)profileDidBecomeReady:(id)ready;
+- (void)samplesAdded:(id)added anchor:(id)anchor;
 @end
 
 @implementation FCMoveModeCoordinator
@@ -35,16 +35,16 @@
 {
   v18 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(self->_serviceQueue);
-  v3 = [(FCMoveModeCoordinator *)self _queue_loadBirthDateComponents];
-  v4 = [(FCMoveModeCoordinator *)self _queue_loadMoveModeChangeSample];
-  v5 = [(FCMoveModeCoordinator *)self _queue_loadWheelchairUse];
-  if (v3 && v4 && v5)
+  _queue_loadBirthDateComponents = [(FCMoveModeCoordinator *)self _queue_loadBirthDateComponents];
+  _queue_loadMoveModeChangeSample = [(FCMoveModeCoordinator *)self _queue_loadMoveModeChangeSample];
+  _queue_loadWheelchairUse = [(FCMoveModeCoordinator *)self _queue_loadWheelchairUse];
+  if (_queue_loadBirthDateComponents && _queue_loadMoveModeChangeSample && _queue_loadWheelchairUse)
   {
-    v6 = [(FCMoveModeCoordinator *)self _queue_determineActivityMoveModeNotificationType];
-    if (v6)
+    _queue_determineActivityMoveModeNotificationType = [(FCMoveModeCoordinator *)self _queue_determineActivityMoveModeNotificationType];
+    if (_queue_determineActivityMoveModeNotificationType)
     {
-      v7 = v6;
-      v8 = [(FCMoveModeCoordinator *)self _nextActivityMoveModeForNotificationType:v6];
+      v7 = _queue_determineActivityMoveModeNotificationType;
+      v8 = [(FCMoveModeCoordinator *)self _nextActivityMoveModeForNotificationType:_queue_determineActivityMoveModeNotificationType];
       v9 = [(FCMoveModeCoordinator *)self _nextActivityMoveModeStartDateForNotificationType:v7];
       [(FCMoveModeCoordinator *)self _delay];
       v11 = [objc_alloc(MEMORY[0x277D09CC8]) initWithNotificationType:v7 nextActivityMoveMode:v8 nextActivityMoveModeStartDate:v9 delay:v10];
@@ -86,9 +86,9 @@
 
   v4 = [MEMORY[0x277CCD720] characteristicTypeForIdentifier:*MEMORY[0x277CCBB18]];
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v6 = [WeakRetained userCharacteristicsManager];
+  userCharacteristicsManager = [WeakRetained userCharacteristicsManager];
   v11 = 0;
-  v7 = [v6 userCharacteristicForType:v4 error:&v11];
+  v7 = [userCharacteristicsManager userCharacteristicForType:v4 error:&v11];
   v8 = v11;
 
   v3 = v7 != 0;
@@ -122,13 +122,13 @@
 - (BOOL)_queue_loadMoveModeChangeSample
 {
   v23[1] = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCD720] activityMoveModeChangeType];
-  v4 = [(FCCDateProvider *)self->_dateProvider coachingDate];
+  activityMoveModeChangeType = [MEMORY[0x277CCD720] activityMoveModeChangeType];
+  coachingDate = [(FCCDateProvider *)self->_dateProvider coachingDate];
   v5 = HDSampleEntityPredicateForStartDate();
 
   v6 = MEMORY[0x277D10810];
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v8 = [v6 entityEnumeratorWithType:v3 profile:WeakRetained];
+  v8 = [v6 entityEnumeratorWithType:activityMoveModeChangeType profile:WeakRetained];
 
   v9 = [MEMORY[0x277D10B68] orderingTermWithProperty:*MEMORY[0x277D104B0] entityClass:objc_opt_class() ascending:0];
   v23[0] = v9;
@@ -175,9 +175,9 @@
 {
   v3 = [MEMORY[0x277CCD720] characteristicTypeForIdentifier:*MEMORY[0x277CCBB28]];
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v5 = [WeakRetained userCharacteristicsManager];
+  userCharacteristicsManager = [WeakRetained userCharacteristicsManager];
   v10 = 0;
-  v6 = [v5 userCharacteristicForType:v3 error:&v10];
+  v6 = [userCharacteristicsManager userCharacteristicForType:v3 error:&v10];
   v7 = v10;
 
   if (v7)
@@ -191,10 +191,10 @@
 
   else
   {
-    v8 = [v6 integerValue];
-    if (v8 >= 2)
+    integerValue = [v6 integerValue];
+    if (integerValue >= 2)
     {
-      if (v8 == 2)
+      if (integerValue == 2)
       {
         self->_isWheelchairUser = 1;
       }
@@ -209,82 +209,82 @@
   return v7 == 0;
 }
 
-- (FCMoveModeCoordinator)initWithDateProvider:(id)a3 profile:(id)a4 serviceQueue:(id)a5
+- (FCMoveModeCoordinator)initWithDateProvider:(id)provider profile:(id)profile serviceQueue:(id)queue
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  providerCopy = provider;
+  profileCopy = profile;
+  queueCopy = queue;
   v23.receiver = self;
   v23.super_class = FCMoveModeCoordinator;
   v12 = [(FCMoveModeCoordinator *)&v23 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_dateProvider, a3);
-    objc_storeWeak(&v13->_profile, v10);
-    objc_storeStrong(&v13->_serviceQueue, a5);
+    objc_storeStrong(&v12->_dateProvider, provider);
+    objc_storeWeak(&v13->_profile, profileCopy);
+    objc_storeStrong(&v13->_serviceQueue, queue);
     WeakRetained = objc_loadWeakRetained(&v13->_profile);
-    v15 = [WeakRetained database];
-    [v15 addProtectedDataObserver:v13 queue:v13->_serviceQueue];
+    database = [WeakRetained database];
+    [database addProtectedDataObserver:v13 queue:v13->_serviceQueue];
 
     v16 = objc_loadWeakRetained(&v13->_profile);
     [v16 registerProfileReadyObserver:v13 queue:v13->_serviceQueue];
 
-    v17 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v17 addObserver:v13 selector:sel__userCharacteristicsDidChange name:*MEMORY[0x277D104E8] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v13 selector:sel__userCharacteristicsDidChange name:*MEMORY[0x277D104E8] object:0];
 
-    v18 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v18 addObserver:v13 selector:sel__significantTimeChangeOccurred name:*MEMORY[0x277CBE580] object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v13 selector:sel__significantTimeChangeOccurred name:*MEMORY[0x277CBE580] object:0];
 
     v19 = objc_loadWeakRetained(&v13->_profile);
-    v20 = [v19 dataManager];
-    v21 = [MEMORY[0x277CCD720] activityMoveModeChangeType];
-    [v20 addObserver:v13 forDataType:v21];
+    dataManager = [v19 dataManager];
+    activityMoveModeChangeType = [MEMORY[0x277CCD720] activityMoveModeChangeType];
+    [dataManager addObserver:v13 forDataType:activityMoveModeChangeType];
   }
 
   return v13;
 }
 
-- (void)notificationPosted:(id)a3 error:(id)a4
+- (void)notificationPosted:(id)posted error:(id)error
 {
-  v5 = a3;
-  v6 = [(FCCDateProvider *)self->_dateProvider coachingDate];
-  v7 = [v5 notificationType];
-  if (v7 > 2)
+  postedCopy = posted;
+  coachingDate = [(FCCDateProvider *)self->_dateProvider coachingDate];
+  notificationType = [postedCopy notificationType];
+  if (notificationType > 2)
   {
-    if ((v7 - 4) < 2)
+    if ((notificationType - 4) < 2)
     {
-      [(FCMoveModeCoordinator *)self _setLastModeChangeNotificationDate:v6];
+      [(FCMoveModeCoordinator *)self _setLastModeChangeNotificationDate:coachingDate];
     }
 
-    else if (v7 == 3)
+    else if (notificationType == 3)
     {
-      [(FCMoveModeCoordinator *)self _setLastGraduationNotificationDate:v6];
-      v10 = [v5 nextActivityMoveMode];
-      v11 = [v5 nextActivityMoveModeStartDate];
-      [(FCMoveModeCoordinator *)self _saveMoveModeChangeSampleForActivityMoveMode:v10 date:v11];
+      [(FCMoveModeCoordinator *)self _setLastGraduationNotificationDate:coachingDate];
+      nextActivityMoveMode = [postedCopy nextActivityMoveMode];
+      nextActivityMoveModeStartDate = [postedCopy nextActivityMoveModeStartDate];
+      [(FCMoveModeCoordinator *)self _saveMoveModeChangeSampleForActivityMoveMode:nextActivityMoveMode date:nextActivityMoveModeStartDate];
     }
 
-    else if (v7 == 6)
+    else if (notificationType == 6)
     {
-      v8 = [v5 nextActivityMoveMode];
-      v9 = [v5 nextActivityMoveModeStartDate];
-      [(FCMoveModeCoordinator *)self _saveMoveModeChangeSampleForActivityMoveMode:v8 date:v9];
+      nextActivityMoveMode2 = [postedCopy nextActivityMoveMode];
+      nextActivityMoveModeStartDate2 = [postedCopy nextActivityMoveModeStartDate];
+      [(FCMoveModeCoordinator *)self _saveMoveModeChangeSampleForActivityMoveMode:nextActivityMoveMode2 date:nextActivityMoveModeStartDate2];
 
-      [(FCMoveModeCoordinator *)self _setLastWheelchairModeChangeNotificationDate:v6];
+      [(FCMoveModeCoordinator *)self _setLastWheelchairModeChangeNotificationDate:coachingDate];
     }
   }
 
-  else if (v7)
+  else if (notificationType)
   {
-    if (v7 == 1)
+    if (notificationType == 1)
     {
-      [(FCMoveModeCoordinator *)self _setUpgradeToMoveTimeNotificationDate:v6];
+      [(FCMoveModeCoordinator *)self _setUpgradeToMoveTimeNotificationDate:coachingDate];
     }
 
-    else if (v7 == 2)
+    else if (notificationType == 2)
     {
-      [(FCMoveModeCoordinator *)self _setLastGraduationNotificationDate:v6];
+      [(FCMoveModeCoordinator *)self _setLastGraduationNotificationDate:coachingDate];
     }
   }
 
@@ -301,25 +301,25 @@
 - (void)dealloc
 {
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v4 = [WeakRetained database];
-  [v4 removeProtectedDataObserver:self];
+  database = [WeakRetained database];
+  [database removeProtectedDataObserver:self];
 
   v5 = objc_loadWeakRetained(&self->_profile);
-  v6 = [v5 dataManager];
-  v7 = [MEMORY[0x277CCD720] activityMoveModeChangeType];
-  [v6 removeObserver:self forDataType:v7];
+  dataManager = [v5 dataManager];
+  activityMoveModeChangeType = [MEMORY[0x277CCD720] activityMoveModeChangeType];
+  [dataManager removeObserver:self forDataType:activityMoveModeChangeType];
 
   v8.receiver = self;
   v8.super_class = FCMoveModeCoordinator;
   [(FCMoveModeCoordinator *)&v8 dealloc];
 }
 
-- (void)profileDidBecomeReady:(id)a3
+- (void)profileDidBecomeReady:(id)ready
 {
-  v4 = [a3 database];
-  v5 = [v4 isProtectedDataAvailable];
+  database = [ready database];
+  isProtectedDataAvailable = [database isProtectedDataAvailable];
 
-  if (v5)
+  if (isProtectedDataAvailable)
   {
     _HKInitializeLogging();
     v6 = *MEMORY[0x277CCC290];
@@ -333,7 +333,7 @@
   }
 }
 
-- (void)database:(id)a3 protectedDataDidBecomeAvailable:(BOOL)a4
+- (void)database:(id)database protectedDataDidBecomeAvailable:(BOOL)available
 {
   _HKInitializeLogging();
   v5 = *MEMORY[0x277CCC290];
@@ -346,7 +346,7 @@
   [(FCMoveModeCoordinator *)self _queue_scheduleNotificationIfNeeded];
 }
 
-- (void)samplesAdded:(id)a3 anchor:(id)a4
+- (void)samplesAdded:(id)added anchor:(id)anchor
 {
   _HKInitializeLogging();
   v5 = *MEMORY[0x277CCC290];
@@ -365,21 +365,21 @@
   dispatch_async(serviceQueue, block);
 }
 
-- (void)_saveMoveModeChangeSampleForActivityMoveMode:(int64_t)a3 date:(id)a4
+- (void)_saveMoveModeChangeSampleForActivityMoveMode:(int64_t)mode date:(id)date
 {
   v15[1] = *MEMORY[0x277D85DE8];
   dateProvider = self->_dateProvider;
-  v6 = a4;
-  v7 = [(FCCDateProvider *)dateProvider coachingCalendar];
-  v8 = [v7 hk_startOfDateByAddingDays:1 toDate:v6];
+  dateCopy = date;
+  coachingCalendar = [(FCCDateProvider *)dateProvider coachingCalendar];
+  v8 = [coachingCalendar hk_startOfDateByAddingDays:1 toDate:dateCopy];
 
-  v9 = [v7 components:*MEMORY[0x277CCE1D0] fromDate:v8];
+  v9 = [coachingCalendar components:*MEMORY[0x277CCE1D0] fromDate:v8];
   v10 = FIActivityMoveModeChangeSampleForDateComponents();
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v12 = [WeakRetained dataManager];
+  dataManager = [WeakRetained dataManager];
   v15[0] = v10;
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:1];
-  [v12 insertDataObjects:v13 error:0];
+  [dataManager insertDataObjects:v13 error:0];
 
   v14 = *MEMORY[0x277D85DE8];
 }
@@ -388,8 +388,8 @@
 {
   v50 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(self->_serviceQueue);
-  v3 = [(FCCDateProvider *)self->_dateProvider coachingDate];
-  v4 = [(FCCDateProvider *)self->_dateProvider coachingCalendar];
+  coachingDate = [(FCCDateProvider *)self->_dateProvider coachingDate];
+  coachingCalendar = [(FCCDateProvider *)self->_dateProvider coachingCalendar];
   birthDateComponents = self->_birthDateComponents;
   v6 = FIAgeInYearsForDateOfBirthComponentsWithCurrentDateAndCalendar();
   v7 = MEMORY[0x277CCC290];
@@ -415,17 +415,17 @@ LABEL_46:
   if (!mostRecentActivityMoveModeChangeSample)
   {
     v24 = 0;
-    v10 = 1;
+    value = 1;
     goto LABEL_31;
   }
 
-  v10 = [(HKCategorySample *)mostRecentActivityMoveModeChangeSample value];
-  v11 = [(HKCategorySample *)self->_mostRecentActivityMoveModeChangeSample startDate];
-  [v11 timeIntervalSinceReferenceDate];
+  value = [(HKCategorySample *)mostRecentActivityMoveModeChangeSample value];
+  startDate = [(HKCategorySample *)self->_mostRecentActivityMoveModeChangeSample startDate];
+  [startDate timeIntervalSinceReferenceDate];
 
   v12 = _HKActivityCacheDateComponentsFromCacheIndex();
-  v13 = [v4 dateFromComponents:v12];
-  v14 = [(FCMoveModeCoordinator *)self _lastModeChangeNotificationDate];
+  v13 = [coachingCalendar dateFromComponents:v12];
+  _lastModeChangeNotificationDate = [(FCMoveModeCoordinator *)self _lastModeChangeNotificationDate];
   _HKInitializeLogging();
   v15 = *v7;
   if (os_log_type_enabled(*v7, OS_LOG_TYPE_DEFAULT))
@@ -433,22 +433,22 @@ LABEL_46:
     v46 = 138543618;
     v47 = v13;
     v48 = 2114;
-    v49 = v14;
+    v49 = _lastModeChangeNotificationDate;
     _os_log_impl(&dword_24B55B000, v15, OS_LOG_TYPE_DEFAULT, "FCMoveModeCoordinator - mostRecentMoveModeChangeDate (%{public}@) lastChangeNotificationDate (%{public}@)", &v46, 0x16u);
   }
 
   [v13 timeIntervalSinceReferenceDate];
   v17 = v16;
-  [v14 timeIntervalSinceReferenceDate];
+  [_lastModeChangeNotificationDate timeIntervalSinceReferenceDate];
   if (v17 <= v18)
   {
 
-    if (v10 == 2)
+    if (value == 2)
     {
       if (self->_isWheelchairUser)
       {
-        v19 = [(FCMoveModeCoordinator *)self _lastWheelchairModeChangeNotificationDate];
-        if (!v19 || ![v4 isDateInToday:v19])
+        _lastWheelchairModeChangeNotificationDate = [(FCMoveModeCoordinator *)self _lastWheelchairModeChangeNotificationDate];
+        if (!_lastWheelchairModeChangeNotificationDate || ![coachingCalendar isDateInToday:_lastWheelchairModeChangeNotificationDate])
         {
           _HKInitializeLogging();
           v39 = *v7;
@@ -474,7 +474,7 @@ LABEL_77:
         }
 
         v46 = 138543362;
-        v47 = v19;
+        v47 = _lastWheelchairModeChangeNotificationDate;
         v21 = "FCMoveModeCoordinator - user switched to wheelchair mode but has already been notified about mode change (%{public}@)";
 LABEL_55:
         _os_log_impl(&dword_24B55B000, v20, OS_LOG_TYPE_DEFAULT, v21, &v46, 0xCu);
@@ -482,7 +482,7 @@ LABEL_55:
       }
 
       v24 = 1;
-      v10 = 2;
+      value = 2;
     }
 
     else
@@ -496,7 +496,7 @@ LABEL_31:
     if (os_log_type_enabled(*v7, OS_LOG_TYPE_DEFAULT))
     {
       v46 = 134218240;
-      v47 = v10;
+      v47 = value;
       v48 = 2048;
       v49 = v8;
       _os_log_impl(&dword_24B55B000, v30, OS_LOG_TYPE_DEFAULT, "FCMoveModeCoordinator - activityMoveModeForToday (%ld) ageInYears (%lu)", &v46, 0x16u);
@@ -512,7 +512,7 @@ LABEL_31:
       v31 = 0;
     }
 
-    if ((v8 <= *MEMORY[0x277D095F0] || v10 == 2) && v31 == 0)
+    if ((v8 <= *MEMORY[0x277D095F0] || value == 2) && v31 == 0)
     {
       if (v8 == 17 || v8 == 13)
       {
@@ -524,8 +524,8 @@ LABEL_31:
           _os_log_impl(&dword_24B55B000, v34, OS_LOG_TYPE_DEFAULT, "FCMoveModeCoordinator - user is in activity move mode graduation year", &v46, 2u);
         }
 
-        v19 = [(FCMoveModeCoordinator *)self _lastGraduationNotificationDate];
-        if (!v19 || ![v4 hk_isDate:v19 withinNumberOfCalendarDays:366 ofDate:v3])
+        _lastWheelchairModeChangeNotificationDate = [(FCMoveModeCoordinator *)self _lastGraduationNotificationDate];
+        if (!_lastWheelchairModeChangeNotificationDate || ![coachingCalendar hk_isDate:_lastWheelchairModeChangeNotificationDate withinNumberOfCalendarDays:366 ofDate:coachingDate])
         {
           if (v8 == 17)
           {
@@ -554,7 +554,7 @@ LABEL_31:
             _os_log_impl(&dword_24B55B000, v40, OS_LOG_TYPE_DEFAULT, "FCMoveModeCoordinator - expected notificationDate (%{public}@)", &v46, 0xCu);
           }
 
-          if (v36 && [v3 hk_isBeforeDate:v36])
+          if (v36 && [coachingDate hk_isBeforeDate:v36])
           {
             _HKInitializeLogging();
             v41 = *v7;
@@ -591,18 +591,18 @@ LABEL_31:
         }
 
         v46 = 138543362;
-        v47 = v19;
+        v47 = _lastWheelchairModeChangeNotificationDate;
         v21 = "FCMoveModeCoordinator - user has already been notified for move mode for this graduation year (%{public}@)";
         goto LABEL_55;
       }
 
       if (v8 <= *MEMORY[0x277D095F0] && !self->_isWheelchairUser)
       {
-        v19 = [(FCMoveModeCoordinator *)self _upgradeToMoveTimeNotificationDate];
+        _lastWheelchairModeChangeNotificationDate = [(FCMoveModeCoordinator *)self _upgradeToMoveTimeNotificationDate];
         _HKInitializeLogging();
         v20 = *v7;
         v45 = os_log_type_enabled(*v7, OS_LOG_TYPE_DEFAULT);
-        if (!v19)
+        if (!_lastWheelchairModeChangeNotificationDate)
         {
           if (v45)
           {
@@ -620,7 +620,7 @@ LABEL_31:
         }
 
         v46 = 138543362;
-        v47 = v19;
+        v47 = _lastWheelchairModeChangeNotificationDate;
         v21 = "FCMoveModeCoordinator - user is an upgrade to move time user but has already been notified (%{public}@)";
         goto LABEL_55;
       }
@@ -649,7 +649,7 @@ LABEL_31:
     goto LABEL_46;
   }
 
-  v26 = v8 > 0x11 && v10 == 1;
+  v26 = v8 > 0x11 && value == 1;
   _HKInitializeLogging();
   v27 = *v7;
   if (os_log_type_enabled(*v7, OS_LOG_TYPE_DEFAULT))
@@ -680,24 +680,24 @@ LABEL_78:
   return v29;
 }
 
-- (int64_t)_nextActivityMoveModeForNotificationType:(int64_t)a3
+- (int64_t)_nextActivityMoveModeForNotificationType:(int64_t)type
 {
-  if (a3 > 6)
+  if (type > 6)
   {
     goto LABEL_10;
   }
 
-  if (((1 << a3) & 0x6C) != 0)
+  if (((1 << type) & 0x6C) != 0)
   {
     return 1;
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
     return 2;
   }
 
-  if (a3 == 4)
+  if (type == 4)
   {
     mostRecentActivityMoveModeChangeSample = self->_mostRecentActivityMoveModeChangeSample;
     if (!mostRecentActivityMoveModeChangeSample)
@@ -711,7 +711,7 @@ LABEL_78:
   else
   {
 LABEL_10:
-    if (a3)
+    if (type)
     {
       _HKInitializeLogging();
       if (os_log_type_enabled(*MEMORY[0x277CCC290], OS_LOG_TYPE_FAULT))
@@ -733,36 +733,36 @@ LABEL_10:
   }
 }
 
-- (id)_nextActivityMoveModeStartDateForNotificationType:(int64_t)a3
+- (id)_nextActivityMoveModeStartDateForNotificationType:(int64_t)type
 {
-  if (a3 > 6)
+  if (type > 6)
   {
     goto LABEL_7;
   }
 
-  if (((1 << a3) & 0x36) != 0)
+  if (((1 << type) & 0x36) != 0)
   {
 LABEL_3:
     v3 = 0;
     goto LABEL_14;
   }
 
-  if (a3 == 3)
+  if (type == 3)
   {
-    v5 = [(FCMoveModeCoordinator *)self _birthdayForAge:18];
-    v6 = [(FCCDateProvider *)self->_dateProvider coachingCalendar];
-    v7 = [(FCCDateProvider *)self->_dateProvider coachingDate];
-    v8 = [v6 startOfDayForDate:v5];
-    v9 = [v6 hk_startOfDateByAddingDays:1 toDate:v7];
+    coachingCalendar2 = [(FCMoveModeCoordinator *)self _birthdayForAge:18];
+    coachingCalendar = [(FCCDateProvider *)self->_dateProvider coachingCalendar];
+    coachingDate = [(FCCDateProvider *)self->_dateProvider coachingDate];
+    v8 = [coachingCalendar startOfDayForDate:coachingCalendar2];
+    v9 = [coachingCalendar hk_startOfDateByAddingDays:1 toDate:coachingDate];
     v3 = [v8 laterDate:v9];
 
     goto LABEL_13;
   }
 
-  if (a3 != 6)
+  if (type != 6)
   {
 LABEL_7:
-    if (a3)
+    if (type)
     {
       _HKInitializeLogging();
       if (os_log_type_enabled(*MEMORY[0x277CCC290], OS_LOG_TYPE_FAULT))
@@ -783,9 +783,9 @@ LABEL_7:
     goto LABEL_3;
   }
 
-  v5 = [(FCCDateProvider *)self->_dateProvider coachingCalendar];
-  v6 = [(FCCDateProvider *)self->_dateProvider coachingDate];
-  v3 = [v5 hk_startOfDateByAddingDays:1 toDate:v6];
+  coachingCalendar2 = [(FCCDateProvider *)self->_dateProvider coachingCalendar];
+  coachingCalendar = [(FCCDateProvider *)self->_dateProvider coachingDate];
+  v3 = [coachingCalendar2 hk_startOfDateByAddingDays:1 toDate:coachingCalendar];
 LABEL_13:
 
 LABEL_14:
@@ -795,8 +795,8 @@ LABEL_14:
 
 - (double)_delay
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 objectForKey:@"FCMoveModeCoordinatorNotificationDelayOverrideKey"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults objectForKey:@"FCMoveModeCoordinatorNotificationDelayOverrideKey"];
 
   if (v3)
   {
@@ -861,16 +861,16 @@ uint64_t __54__FCMoveModeCoordinator__userCharacteristicsDidChange__block_invoke
   dispatch_async(serviceQueue, block);
 }
 
-- (id)_dateForKey:(id)a3
+- (id)_dateForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(FCMoveModeCoordinator *)self keyValueDomain];
+  keyCopy = key;
+  keyValueDomain = [(FCMoveModeCoordinator *)self keyValueDomain];
   v10 = 0;
-  v6 = [v5 dateForKey:v4 error:&v10];
+  v6 = [keyValueDomain dateForKey:keyCopy error:&v10];
   v7 = v10;
   if (v7)
   {
-    v8 = [MEMORY[0x277CBEAA8] distantPast];
+    distantPast = [MEMORY[0x277CBEAA8] distantPast];
 
     _HKInitializeLogging();
     if (os_log_type_enabled(*MEMORY[0x277CCC290], OS_LOG_TYPE_ERROR))
@@ -881,20 +881,20 @@ uint64_t __54__FCMoveModeCoordinator__userCharacteristicsDidChange__block_invoke
 
   else
   {
-    v8 = v6;
+    distantPast = v6;
   }
 
-  return v8;
+  return distantPast;
 }
 
-- (void)_setDate:(id)a3 forKey:(id)a4
+- (void)_setDate:(id)date forKey:(id)key
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(FCMoveModeCoordinator *)self keyValueDomain];
+  dateCopy = date;
+  keyCopy = key;
+  keyValueDomain = [(FCMoveModeCoordinator *)self keyValueDomain];
   v13 = 0;
-  [v8 setDate:v6 forKey:v7 error:&v13];
+  [keyValueDomain setDate:dateCopy forKey:keyCopy error:&v13];
   v9 = v13;
   _HKInitializeLogging();
   v10 = *MEMORY[0x277CCC290];
@@ -910,9 +910,9 @@ uint64_t __54__FCMoveModeCoordinator__userCharacteristicsDidChange__block_invoke
   else if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v15 = v7;
+    v15 = keyCopy;
     v16 = 2114;
-    v17 = v6;
+    v17 = dateCopy;
     _os_log_impl(&dword_24B55B000, v10, OS_LOG_TYPE_DEFAULT, "FCMoveModeCoordinator successfully saved data to key value domain for key %{public}@ date: %{public}@", buf, 0x16u);
   }
 
@@ -936,27 +936,27 @@ uint64_t __54__FCMoveModeCoordinator__userCharacteristicsDidChange__block_invoke
   return keyValueDomain;
 }
 
-- (id)_dateByAddingNumberOfWeeks:(int64_t)a3 toDate:(id)a4
+- (id)_dateByAddingNumberOfWeeks:(int64_t)weeks toDate:(id)date
 {
   v6 = MEMORY[0x277CBEAB8];
-  v7 = a4;
+  dateCopy = date;
   v8 = objc_alloc_init(v6);
-  v9 = [(FCCDateProvider *)self->_dateProvider coachingCalendar];
-  [v8 setCalendar:v9];
+  coachingCalendar = [(FCCDateProvider *)self->_dateProvider coachingCalendar];
+  [v8 setCalendar:coachingCalendar];
 
   [v8 setWeekOfMonth:1];
-  v10 = [v8 hk_dateByAddingInterval:a3 toDate:v7];
+  v10 = [v8 hk_dateByAddingInterval:weeks toDate:dateCopy];
 
   return v10;
 }
 
-- (id)_tuesdayBeforeDate:(id)a3
+- (id)_tuesdayBeforeDate:(id)date
 {
   dateProvider = self->_dateProvider;
-  v5 = a3;
-  v6 = [(FCCDateProvider *)dateProvider coachingCalendar];
-  v7 = [v6 hk_startOfWeekWithFirstWeekday:3 beforeDate:v5 addingWeeks:0];
-  v8 = [v6 isDate:v5 inSameDayAsDate:v7];
+  dateCopy = date;
+  coachingCalendar = [(FCCDateProvider *)dateProvider coachingCalendar];
+  v7 = [coachingCalendar hk_startOfWeekWithFirstWeekday:3 beforeDate:dateCopy addingWeeks:0];
+  v8 = [coachingCalendar isDate:dateCopy inSameDayAsDate:v7];
 
   if (v8)
   {
@@ -968,27 +968,27 @@ uint64_t __54__FCMoveModeCoordinator__userCharacteristicsDidChange__block_invoke
   return v7;
 }
 
-- (id)_tuesdayAfterDate:(id)a3
+- (id)_tuesdayAfterDate:(id)date
 {
   dateProvider = self->_dateProvider;
-  v5 = a3;
-  v6 = [(FCCDateProvider *)dateProvider coachingCalendar];
-  v7 = [v6 hk_startOfWeekWithFirstWeekday:3 beforeDate:v5 addingWeeks:0];
+  dateCopy = date;
+  coachingCalendar = [(FCCDateProvider *)dateProvider coachingCalendar];
+  v7 = [coachingCalendar hk_startOfWeekWithFirstWeekday:3 beforeDate:dateCopy addingWeeks:0];
 
   v8 = [(FCMoveModeCoordinator *)self _dateByAddingNumberOfWeeks:1 toDate:v7];
 
   return v8;
 }
 
-- (id)_birthdayForAge:(int64_t)a3
+- (id)_birthdayForAge:(int64_t)age
 {
   v5 = objc_alloc_init(MEMORY[0x277CBEAB8]);
-  v6 = [(FCCDateProvider *)self->_dateProvider coachingCalendar];
-  [v5 setCalendar:v6];
+  coachingCalendar = [(FCCDateProvider *)self->_dateProvider coachingCalendar];
+  [v5 setCalendar:coachingCalendar];
 
   [v5 setYear:1];
-  v7 = [(NSDateComponents *)self->_birthDateComponents date];
-  v8 = [v5 hk_dateByAddingInterval:a3 toDate:v7];
+  date = [(NSDateComponents *)self->_birthDateComponents date];
+  v8 = [v5 hk_dateByAddingInterval:age toDate:date];
 
   return v8;
 }

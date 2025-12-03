@@ -1,26 +1,26 @@
 @interface NDSpringBoard
 + (id)sharedSpringBoard;
-- (BOOL)application:(id)a3 hasAssertionWithName:(id)a4;
-- (BOOL)application:(id)a3 isHandlingBackgroundSessionWithIdentifier:(id)a4 withSessionUUID:(id)a5;
-- (BOOL)applicationBackgroundUpdatesEnabled:(id)a3;
-- (BOOL)applicationHasBackgroundTaskCompletion:(id)a3;
-- (BOOL)applicationIsForeground:(id)a3;
-- (BOOL)identifierIsForSpringBoardApplication:(id)a3;
-- (BOOL)isValidAssertion:(id)a3 withName:(id)a4;
-- (BOOL)wakeUpApp:(id)a3 forSession:(id)a4 withSessionUUID:(id)a5;
+- (BOOL)application:(id)application hasAssertionWithName:(id)name;
+- (BOOL)application:(id)application isHandlingBackgroundSessionWithIdentifier:(id)identifier withSessionUUID:(id)d;
+- (BOOL)applicationBackgroundUpdatesEnabled:(id)enabled;
+- (BOOL)applicationHasBackgroundTaskCompletion:(id)completion;
+- (BOOL)applicationIsForeground:(id)foreground;
+- (BOOL)identifierIsForSpringBoardApplication:(id)application;
+- (BOOL)isValidAssertion:(id)assertion withName:(id)name;
+- (BOOL)wakeUpApp:(id)app forSession:(id)session withSessionUUID:(id)d;
 - (NDSpringBoard)init;
-- (id)assertionNameForSessionUUID:(id)a3;
+- (id)assertionNameForSessionUUID:(id)d;
 - (id)getBackgroundSettingsAppList;
-- (void)_onqueue_releaseAssertionForBundleID:(id)a3 sessionID:(id)a4;
-- (void)addObserver:(id)a3 forApplication:(id)a4;
+- (void)_onqueue_releaseAssertionForBundleID:(id)d sessionID:(id)iD;
+- (void)addObserver:(id)observer forApplication:(id)application;
 - (void)dealloc;
 - (void)handleBackgroundSettingsChange;
-- (void)handleStateUpdate:(id)a3 forProcess:(id)a4;
+- (void)handleStateUpdate:(id)update forProcess:(id)process;
 - (void)monitoredBundleIDsUpdated;
-- (void)releaseAssertionForBundleID:(id)a3 sessionID:(id)a4;
-- (void)removeObserver:(id)a3 forApplication:(id)a4;
-- (void)startMonitoringBundleID:(id)a3;
-- (void)stopMonitoringBundleID:(id)a3;
+- (void)releaseAssertionForBundleID:(id)d sessionID:(id)iD;
+- (void)removeObserver:(id)observer forApplication:(id)application;
+- (void)startMonitoringBundleID:(id)d;
+- (void)stopMonitoringBundleID:(id)d;
 @end
 
 @implementation NDSpringBoard
@@ -59,37 +59,37 @@
   [(RBSProcessMonitor *)monitor updateConfiguration:v3];
 }
 
-- (BOOL)identifierIsForSpringBoardApplication:(id)a3
+- (BOOL)identifierIsForSpringBoardApplication:(id)application
 {
-  v3 = a3;
+  applicationCopy = application;
   v4 = +[Daemon sharedDaemon];
-  v5 = [v4 applicationIsInstalled:v3];
+  v5 = [v4 applicationIsInstalled:applicationCopy];
 
   return v5;
 }
 
-- (BOOL)wakeUpApp:(id)a3 forSession:(id)a4 withSessionUUID:(id)a5
+- (BOOL)wakeUpApp:(id)app forSession:(id)session withSessionUUID:(id)d
 {
-  v8 = a3;
-  v9 = a4;
-  v29 = a5;
+  appCopy = app;
+  sessionCopy = session;
+  dCopy = d;
   v10 = qword_1000EB210;
   if (os_log_type_enabled(qword_1000EB210, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
-    *&buf[4] = v8;
+    *&buf[4] = appCopy;
     *&buf[12] = 2114;
-    *&buf[14] = v29;
+    *&buf[14] = dCopy;
     *&buf[22] = 2112;
-    v48 = v9;
+    v48 = sessionCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Will request wake of app %{public}@ for NDSession <%{public}@> with identifier %@", buf, 0x20u);
   }
 
-  v11 = [NSDictionary dictionaryWithObject:v9 forKey:@"UIApplicationLaunchOptionsURLSessionKey", v29];
+  dCopy = [NSDictionary dictionaryWithObject:sessionCopy forKey:@"UIApplicationLaunchOptionsURLSessionKey", dCopy];
   v51[0] = FBSOpenApplicationOptionKeyActivateSuspended;
   v51[1] = FBSOpenApplicationOptionKeyPayloadOptions;
   v52[0] = &__kCFBooleanTrue;
-  v52[1] = v11;
+  v52[1] = dCopy;
   v12 = [NSDictionary dictionaryWithObjects:v52 forKeys:v51 count:2];
   v13 = dispatch_semaphore_create(0);
   *buf = 0;
@@ -105,7 +105,7 @@
   v39 = sub_100072F88;
   v40 = 0;
   v14 = +[FBSOpenApplicationService serviceWithDefaultShellEndpoint];
-  v15 = self;
+  selfCopy = self;
   v16 = [FBSOpenApplicationOptions optionsWithDictionary:v12];
   v31[0] = _NSConcreteStackBlock;
   v31[1] = 3221225472;
@@ -115,7 +115,7 @@
   v34 = &v35;
   v17 = v13;
   v32 = v17;
-  [v14 openApplication:v8 withOptions:v16 completion:v31];
+  [v14 openApplication:appCopy withOptions:v16 completion:v31];
 
   v18 = dispatch_time(0, 10000000000);
   v19 = dispatch_semaphore_wait(v17, v18);
@@ -129,7 +129,7 @@
     }
 
     *v41 = 138543874;
-    v42 = v8;
+    v42 = appCopy;
     v43 = 2112;
     v44 = v20;
     v45 = 1024;
@@ -142,7 +142,7 @@ LABEL_13:
     goto LABEL_5;
   }
 
-  v24 = -[NDSpringBoard takeAssertionForBundleID:sessionID:sessionUUID:pid:](v15, "takeAssertionForBundleID:sessionID:sessionUUID:pid:", v8, v9, v30, [v23 pid]);
+  v24 = -[NDSpringBoard takeAssertionForBundleID:sessionID:sessionUUID:pid:](selfCopy, "takeAssertionForBundleID:sessionID:sessionUUID:pid:", appCopy, sessionCopy, v30, [v23 pid]);
   v25 = qword_1000EB210;
   if ((v24 & 1) == 0)
   {
@@ -152,7 +152,7 @@ LABEL_13:
     }
 
     *v41 = 138543362;
-    v42 = v8;
+    v42 = appCopy;
     v26 = "Failed to take process assertion for %{public}@";
     v27 = v25;
     v28 = 12;
@@ -162,7 +162,7 @@ LABEL_13:
   if (os_log_type_enabled(qword_1000EB210, OS_LOG_TYPE_DEFAULT))
   {
     *v41 = 138543362;
-    v42 = v8;
+    v42 = appCopy;
     _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "Successfully woke application %{public}@ and took process assertion", v41, 0xCu);
   }
 
@@ -174,51 +174,51 @@ LABEL_5:
   return 1;
 }
 
-- (id)assertionNameForSessionUUID:(id)a3
+- (id)assertionNameForSessionUUID:(id)d
 {
-  v3 = [NSString stringWithFormat:@"com.apple.nsurlsessiond.handlesession %@", a3];
+  v3 = [NSString stringWithFormat:@"com.apple.nsurlsessiond.handlesession %@", d];
 
   return v3;
 }
 
-- (void)releaseAssertionForBundleID:(id)a3 sessionID:(id)a4
+- (void)releaseAssertionForBundleID:(id)d sessionID:(id)iD
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  iDCopy = iD;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10007355C;
   block[3] = &unk_1000D6130;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = dCopy;
+  v13 = iDCopy;
+  v9 = iDCopy;
+  v10 = dCopy;
   dispatch_async(queue, block);
 }
 
-- (void)_onqueue_releaseAssertionForBundleID:(id)a3 sessionID:(id)a4
+- (void)_onqueue_releaseAssertionForBundleID:(id)d sessionID:(id)iD
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  iDCopy = iD;
   os_unfair_lock_lock(&self->_assertion_lock);
-  v8 = [(NSMutableDictionary *)self->_assertions objectForKeyedSubscript:v6];
-  v9 = [v8 objectForKeyedSubscript:v7];
+  v8 = [(NSMutableDictionary *)self->_assertions objectForKeyedSubscript:dCopy];
+  v9 = [v8 objectForKeyedSubscript:iDCopy];
 
   if (v9)
   {
-    v10 = [(NSMutableDictionary *)self->_assertions objectForKeyedSubscript:v6];
-    [v10 removeObjectForKey:v7];
+    v10 = [(NSMutableDictionary *)self->_assertions objectForKeyedSubscript:dCopy];
+    [v10 removeObjectForKey:iDCopy];
 
     os_unfair_lock_unlock(&self->_assertion_lock);
     v11 = qword_1000EB210;
     if (os_log_type_enabled(qword_1000EB210, OS_LOG_TYPE_DEFAULT))
     {
       v12 = 138543618;
-      v13 = v6;
+      v13 = dCopy;
       v14 = 2112;
-      v15 = v7;
+      v15 = iDCopy;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Invalidating assertion for bundleID: %{public}@. sessionID: %@", &v12, 0x16u);
     }
 
@@ -231,44 +231,44 @@ LABEL_5:
   }
 }
 
-- (BOOL)applicationBackgroundUpdatesEnabled:(id)a3
+- (BOOL)applicationBackgroundUpdatesEnabled:(id)enabled
 {
-  v4 = a3;
+  enabledCopy = enabled;
   if (self->_backgroundUpdatesAllowed)
   {
-    v5 = [(NSMutableDictionary *)self->_observedBackgroundSettings objectForKeyedSubscript:v4];
-    v6 = [v5 BOOLValue];
+    v5 = [(NSMutableDictionary *)self->_observedBackgroundSettings objectForKeyedSubscript:enabledCopy];
+    bOOLValue = [v5 BOOLValue];
   }
 
   else
   {
-    v6 = 0;
+    bOOLValue = 0;
   }
 
-  return v6;
+  return bOOLValue;
 }
 
-- (BOOL)application:(id)a3 isHandlingBackgroundSessionWithIdentifier:(id)a4 withSessionUUID:(id)a5
+- (BOOL)application:(id)application isHandlingBackgroundSessionWithIdentifier:(id)identifier withSessionUUID:(id)d
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(NDSpringBoard *)self assertionNameForSessionUUID:v10];
+  applicationCopy = application;
+  identifierCopy = identifier;
+  dCopy = d;
+  v11 = [(NDSpringBoard *)self assertionNameForSessionUUID:dCopy];
   v12 = qword_1000EB210;
   if (os_log_type_enabled(qword_1000EB210, OS_LOG_TYPE_INFO))
   {
     v17 = 138412546;
     v18 = v11;
     v19 = 2114;
-    v20 = v8;
+    v20 = applicationCopy;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "looking for background session %@ for bundle id %{public}@", &v17, 0x16u);
   }
 
-  if (v9)
+  if (identifierCopy)
   {
     os_unfair_lock_lock(&self->_assertion_lock);
-    v13 = [(NSMutableDictionary *)self->_assertions objectForKeyedSubscript:v8];
-    v14 = [v13 objectForKeyedSubscript:v9];
+    v13 = [(NSMutableDictionary *)self->_assertions objectForKeyedSubscript:applicationCopy];
+    v14 = [v13 objectForKeyedSubscript:identifierCopy];
 
     os_unfair_lock_unlock(&self->_assertion_lock);
     if (v14)
@@ -284,34 +284,34 @@ LABEL_5:
 
   else
   {
-    v15 = [(NDSpringBoard *)self application:v8 hasAssertionWithName:v11];
+    v15 = [(NDSpringBoard *)self application:applicationCopy hasAssertionWithName:v11];
   }
 
   return v15;
 }
 
-- (BOOL)applicationHasBackgroundTaskCompletion:(id)a3
+- (BOOL)applicationHasBackgroundTaskCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = qword_1000EB210;
   if (os_log_type_enabled(qword_1000EB210, OS_LOG_TYPE_INFO))
   {
     *buf = 138543362;
-    v19 = v3;
+    v19 = completionCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "looking for background task completion for bundle id %{public}@", buf, 0xCu);
   }
 
-  v5 = [RBSProcessPredicate predicateMatchingBundleIdentifier:v3];
+  v5 = [RBSProcessPredicate predicateMatchingBundleIdentifier:completionCopy];
   v6 = [RBSProcessHandle handleForPredicate:v5 error:0];
 
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v7 = [v6 currentState];
-  v8 = [v7 assertions];
+  currentState = [v6 currentState];
+  assertions = [currentState assertions];
 
-  v9 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v9 = [assertions countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v9)
   {
     v10 = *v14;
@@ -321,7 +321,7 @@ LABEL_5:
       {
         if (*v14 != v10)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(assertions);
         }
 
         if ([*(*(&v13 + 1) + 8 * i) reason] == 4)
@@ -331,7 +331,7 @@ LABEL_5:
         }
       }
 
-      v9 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v9 = [assertions countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v9)
       {
         continue;
@@ -346,23 +346,23 @@ LABEL_13:
   return v9;
 }
 
-- (BOOL)application:(id)a3 hasAssertionWithName:(id)a4
+- (BOOL)application:(id)application hasAssertionWithName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  applicationCopy = application;
+  nameCopy = name;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
   v20 = 0;
   os_unfair_lock_lock(&self->_assertion_lock);
-  v8 = [(NSMutableDictionary *)self->_assertions objectForKeyedSubscript:v6];
+  v8 = [(NSMutableDictionary *)self->_assertions objectForKeyedSubscript:applicationCopy];
   os_unfair_lock_unlock(&self->_assertion_lock);
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_100073D58;
   v14[3] = &unk_1000D6180;
   v14[4] = self;
-  v9 = v7;
+  v9 = nameCopy;
   v15 = v9;
   v16 = &v17;
   [v8 enumerateKeysAndObjectsUsingBlock:v14];
@@ -384,7 +384,7 @@ LABEL_13:
     v23 = 2112;
     v24 = v9;
     v25 = 2114;
-    v26 = v6;
+    v26 = applicationCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "%s assertion with name %@ for bundle id %{public}@", buf, 0x20u);
   }
 
@@ -394,51 +394,51 @@ LABEL_13:
   return v12 & 1;
 }
 
-- (BOOL)isValidAssertion:(id)a3 withName:(id)a4
+- (BOOL)isValidAssertion:(id)assertion withName:(id)name
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = qword_1000EB210;
+  assertionCopy = assertion;
+  nameCopy = name;
+  explanation = qword_1000EB210;
   if (os_log_type_enabled(qword_1000EB210, OS_LOG_TYPE_DEBUG))
   {
     v10 = 138412290;
-    v11 = v5;
-    _os_log_debug_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "validating assertion %@", &v10, 0xCu);
-    if (!v6)
+    v11 = assertionCopy;
+    _os_log_debug_impl(&_mh_execute_header, explanation, OS_LOG_TYPE_DEBUG, "validating assertion %@", &v10, 0xCu);
+    if (!nameCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (!v6)
+  else if (!nameCopy)
   {
     goto LABEL_6;
   }
 
-  v7 = [v5 explanation];
-  if (![v7 isEqualToString:v6])
+  explanation = [assertionCopy explanation];
+  if (![explanation isEqualToString:nameCopy])
   {
-    v8 = 0;
+    isValid = 0;
 LABEL_7:
 
     goto LABEL_8;
   }
 
 LABEL_6:
-  v8 = [v5 isValid];
-  if (v6)
+  isValid = [assertionCopy isValid];
+  if (nameCopy)
   {
     goto LABEL_7;
   }
 
 LABEL_8:
 
-  return v8;
+  return isValid;
 }
 
-- (BOOL)applicationIsForeground:(id)a3
+- (BOOL)applicationIsForeground:(id)foreground
 {
-  v4 = a3;
+  foregroundCopy = foreground;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -452,7 +452,7 @@ LABEL_8:
   block[3] = &unk_1000D6158;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
+  v6 = foregroundCopy;
   v9 = v6;
   dispatch_sync(queue, block);
   LOBYTE(queue) = [v12[5] BOOLValue];
@@ -461,82 +461,82 @@ LABEL_8:
   return queue;
 }
 
-- (void)stopMonitoringBundleID:(id)a3
+- (void)stopMonitoringBundleID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100074214;
   v7[3] = &unk_1000D6420;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dCopy;
+  v6 = dCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)startMonitoringBundleID:(id)a3
+- (void)startMonitoringBundleID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000743CC;
   v7[3] = &unk_1000D6420;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dCopy;
+  v6 = dCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)removeObserver:(id)a3 forApplication:(id)a4
+- (void)removeObserver:(id)observer forApplication:(id)application
 {
-  v6 = a3;
-  v7 = a4;
+  observerCopy = observer;
+  applicationCopy = application;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100074630;
   block[3] = &unk_1000D6130;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = applicationCopy;
+  v13 = observerCopy;
+  v9 = observerCopy;
+  v10 = applicationCopy;
   dispatch_async(queue, block);
 }
 
-- (void)addObserver:(id)a3 forApplication:(id)a4
+- (void)addObserver:(id)observer forApplication:(id)application
 {
-  v6 = a3;
-  v7 = a4;
+  observerCopy = observer;
+  applicationCopy = application;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10007481C;
   block[3] = &unk_1000D6130;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = applicationCopy;
+  v13 = observerCopy;
+  v9 = observerCopy;
+  v10 = applicationCopy;
   dispatch_async(queue, block);
 }
 
-- (void)handleStateUpdate:(id)a3 forProcess:(id)a4
+- (void)handleStateUpdate:(id)update forProcess:(id)process
 {
-  v6 = a3;
-  v7 = a4;
+  updateCopy = update;
+  processCopy = process;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100074A50;
   block[3] = &unk_1000D6130;
-  v12 = v7;
-  v13 = v6;
-  v14 = self;
-  v9 = v6;
-  v10 = v7;
+  v12 = processCopy;
+  v13 = updateCopy;
+  selfCopy = self;
+  v9 = updateCopy;
+  v10 = processCopy;
   dispatch_async(queue, block);
 }
 

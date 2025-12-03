@@ -16,7 +16,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
+  selfCopy = self;
   sub_251371E40();
 }
 
@@ -35,18 +35,18 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v8 = self;
-  v9 = [(BalanceOnboardingIntroViewController *)v8 navigationController];
-  if (v9)
+  selfCopy = self;
+  navigationController = [(BalanceOnboardingIntroViewController *)selfCopy navigationController];
+  if (navigationController)
   {
-    v10 = v9;
+    v10 = navigationController;
     type metadata accessor for BalanceOnboardingNavigationController();
     if (swift_dynamicCastClass())
     {
       sub_25137F11C();
 
       (*(v4 + 104))(v7, *MEMORY[0x277D0FE30], v3);
-      sub_2513808E0(v8, v7);
+      sub_2513808E0(selfCopy, v7);
 
       (*(v4 + 8))(v7, v3);
 
@@ -68,14 +68,14 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v5 = self;
-  v3 = [(BalanceOnboardingIntroViewController *)v5 navigationController];
-  if (!v3)
+  selfCopy = self;
+  navigationController = [(BalanceOnboardingIntroViewController *)selfCopy navigationController];
+  if (!navigationController)
   {
     goto LABEL_9;
   }
 
-  v4 = v3;
+  v4 = navigationController;
   type metadata accessor for BalanceOnboardingNavigationController();
   if (!swift_dynamicCastClass())
   {

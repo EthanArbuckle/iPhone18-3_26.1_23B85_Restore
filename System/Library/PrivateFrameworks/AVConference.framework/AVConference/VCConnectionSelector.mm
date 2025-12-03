@@ -1,23 +1,23 @@
 @interface VCConnectionSelector
 - ($21C794F2A23EEFF9903A5FA3949B7063)serverLinks;
-- (BOOL)isPrimaryConnectionSameAsConnection:(id)a3;
-- (BOOL)selectPrimaryAndSecondaryWithConnection:(id)a3 isEndToEnd:(BOOL)a4;
-- (VCConnectionSelector)initWithMultiwayEnabled:(BOOL)a3;
-- (id)connectionForGroupType:(unsigned __int8)a3 isPrimary:(BOOL)a4;
+- (BOOL)isPrimaryConnectionSameAsConnection:(id)connection;
+- (BOOL)selectPrimaryAndSecondaryWithConnection:(id)connection isEndToEnd:(BOOL)end;
+- (VCConnectionSelector)initWithMultiwayEnabled:(BOOL)enabled;
+- (id)connectionForGroupType:(unsigned __int8)type isPrimary:(BOOL)primary;
 - (void)dealloc;
-- (void)selectConnectionForGroupType:(unsigned __int8)a3 fromConnectionArray:(id)a4 asPrimary:(BOOL)a5;
-- (void)updateConnectionSelectionPolicy:(id *)a3;
-- (void)updateConnectionSelectionPolicyWithPreferRelayOverP2P:(BOOL)a3 preferNonVPN:(BOOL)a4 preferE2E:(BOOL)a5;
-- (void)updatePrimaryWithConnection:(id)a3;
-- (void)updateSecondaryWithConnection:(id)a3;
-- (void)updateSelectedConnectionsForGroupType:(unsigned __int8)a3 connectionAdded:(id)a4;
-- (void)updateSelectedConnectionsForGroupType:(unsigned __int8)a3 connectionRemoved:(id)a4 connectionArray:(id)a5;
-- (void)useConnectionAsPrimary:(id)a3;
+- (void)selectConnectionForGroupType:(unsigned __int8)type fromConnectionArray:(id)array asPrimary:(BOOL)primary;
+- (void)updateConnectionSelectionPolicy:(id *)policy;
+- (void)updateConnectionSelectionPolicyWithPreferRelayOverP2P:(BOOL)p preferNonVPN:(BOOL)n preferE2E:(BOOL)e;
+- (void)updatePrimaryWithConnection:(id)connection;
+- (void)updateSecondaryWithConnection:(id)connection;
+- (void)updateSelectedConnectionsForGroupType:(unsigned __int8)type connectionAdded:(id)added;
+- (void)updateSelectedConnectionsForGroupType:(unsigned __int8)type connectionRemoved:(id)removed connectionArray:(id)array;
+- (void)useConnectionAsPrimary:(id)primary;
 @end
 
 @implementation VCConnectionSelector
 
-- (VCConnectionSelector)initWithMultiwayEnabled:(BOOL)a3
+- (VCConnectionSelector)initWithMultiwayEnabled:(BOOL)enabled
 {
   v8 = *MEMORY[0x1E69E9840];
   v7.receiver = self;
@@ -26,7 +26,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_isMultiwaySession = a3;
+    v4->_isMultiwaySession = enabled;
     v4->_linkPreferenceOrder = objc_alloc_init(MEMORY[0x1E695DEC8]);
     v5->_canUseP2PLinks = 1;
   }
@@ -43,7 +43,7 @@
   [(VCConnectionSelector *)&v3 dealloc];
 }
 
-- (void)updatePrimaryWithConnection:(id)a3
+- (void)updatePrimaryWithConnection:(id)connection
 {
   if (self && (primaryConnection = self->_primaryConnection) != 0)
   {
@@ -80,7 +80,7 @@ LABEL_11:
   {
     if ([(VCConnectionSelector *)self secondaryConnection])
     {
-      IsEndToEndLink = VCConnection_IsEndToEndLink(a3);
+      IsEndToEndLink = VCConnection_IsEndToEndLink(connection);
       if (IsEndToEndLink != VCConnection_IsEndToEndLink([(VCConnectionSelector *)self secondaryConnection]))
       {
         [(VCConnectionSelector *)self setSecondaryConnection:0];
@@ -88,31 +88,31 @@ LABEL_11:
     }
   }
 
-  VCConnection_SetPriority(a3, 2);
+  VCConnection_SetPriority(connection, 2);
 
-  [(VCConnectionSelector *)self useConnectionAsPrimary:a3];
+  [(VCConnectionSelector *)self useConnectionAsPrimary:connection];
 }
 
-- (void)updateSecondaryWithConnection:(id)a3
+- (void)updateSecondaryWithConnection:(id)connection
 {
   VCConnection_SetPriority([(VCConnectionSelector *)self secondaryConnection], -1);
-  VCConnection_SetPriority(a3, 0);
+  VCConnection_SetPriority(connection, 0);
 
-  [(VCConnectionSelector *)self setSecondaryConnection:a3];
+  [(VCConnectionSelector *)self setSecondaryConnection:connection];
 }
 
-- (BOOL)selectPrimaryAndSecondaryWithConnection:(id)a3 isEndToEnd:(BOOL)a4
+- (BOOL)selectPrimaryAndSecondaryWithConnection:(id)connection isEndToEnd:(BOOL)end
 {
   v21 = *MEMORY[0x1E69E9840];
   if (self && (primaryConnection = self->_primaryConnection) != 0)
   {
     v8 = CFRetain(primaryConnection);
-    if (a4)
+    if (end)
     {
 LABEL_10:
-      if ([a3 compare:v8 isPrimary:1 selectionPolicy:&self->_connectionSelectionPolicy] == 1)
+      if ([connection compare:v8 isPrimary:1 selectionPolicy:&self->_connectionSelectionPolicy] == 1)
       {
-        [(VCConnectionSelector *)self updatePrimaryWithConnection:a3];
+        [(VCConnectionSelector *)self updatePrimaryWithConnection:connection];
         goto LABEL_12;
       }
 
@@ -136,9 +136,9 @@ LABEL_10:
         }
       }
 
-      else if ([a3 compare:-[VCConnectionSelector secondaryConnection](self isPrimary:"secondaryConnection") selectionPolicy:{0, &self->_connectionSelectionPolicy}] == 1)
+      else if ([connection compare:-[VCConnectionSelector secondaryConnection](self isPrimary:"secondaryConnection") selectionPolicy:{0, &self->_connectionSelectionPolicy}] == 1)
       {
-        [(VCConnectionSelector *)self updateSecondaryWithConnection:a3];
+        [(VCConnectionSelector *)self updateSecondaryWithConnection:connection];
 LABEL_12:
         v12 = 1;
         if (!v8)
@@ -156,13 +156,13 @@ LABEL_12:
   else
   {
     v8 = 0;
-    if (a4)
+    if (end)
     {
       goto LABEL_10;
     }
   }
 
-  if (![(VCConnectionSelector *)self isPrimaryConnectionSameAsConnection:a3])
+  if (![(VCConnectionSelector *)self isPrimaryConnectionSameAsConnection:connection])
   {
     goto LABEL_10;
   }
@@ -196,21 +196,21 @@ LABEL_22:
   return v12;
 }
 
-- (void)useConnectionAsPrimary:(id)a3
+- (void)useConnectionAsPrimary:(id)primary
 {
-  VCConnectionSelector_SetPrimaryConnection(self, a3);
+  VCConnectionSelector_SetPrimaryConnection(self, primary);
 
-  [(VCConnectionSelector *)self setLastPrimaryConnectionInUse:a3];
+  [(VCConnectionSelector *)self setLastPrimaryConnectionInUse:primary];
 }
 
-- (void)updateConnectionSelectionPolicyWithPreferRelayOverP2P:(BOOL)a3 preferNonVPN:(BOOL)a4 preferE2E:(BOOL)a5
+- (void)updateConnectionSelectionPolicyWithPreferRelayOverP2P:(BOOL)p preferNonVPN:(BOOL)n preferE2E:(BOOL)e
 {
   v29 = *MEMORY[0x1E69E9840];
-  self->_connectionSelectionPolicy.preferRelayOverP2P = a3;
+  self->_connectionSelectionPolicy.preferRelayOverP2P = p;
   self->_connectionSelectionPolicy.preferIPv6OverIPv4 = 0;
-  self->_connectionSelectionPolicy.preferNonVPN = a4;
+  self->_connectionSelectionPolicy.preferNonVPN = n;
   self->_connectionSelectionPolicy.e2eCriteriaEnabled = self->_isMultiwaySession;
-  self->_connectionSelectionPolicy.preferE2E = a5;
+  self->_connectionSelectionPolicy.preferE2E = e;
   if (VRTraceGetErrorLogLevelForModule() >= 6)
   {
     v6 = VRTraceErrorLogLevelToCSTR();
@@ -243,12 +243,12 @@ LABEL_22:
   }
 }
 
-- (void)updateConnectionSelectionPolicy:(id *)a3
+- (void)updateConnectionSelectionPolicy:(id *)policy
 {
   v30 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (policy)
   {
-    self->_connectionSelectionPolicy = *a3;
+    self->_connectionSelectionPolicy = *policy;
     if (VRTraceGetErrorLogLevelForModule() >= 6)
     {
       v4 = VRTraceErrorLogLevelToCSTR();
@@ -290,18 +290,18 @@ LABEL_22:
   }
 }
 
-- (void)updateSelectedConnectionsForGroupType:(unsigned __int8)a3 connectionAdded:(id)a4
+- (void)updateSelectedConnectionsForGroupType:(unsigned __int8)type connectionAdded:(id)added
 {
-  v5 = a3;
+  typeCopy = type;
   v30 = *MEMORY[0x1E69E9840];
   v7 = 48;
-  if (!a3)
+  if (!type)
   {
     v7 = 32;
   }
 
   v8 = (&self->super.isa + v7);
-  if ([a4 compare:*(&self->super.isa + v7) isPrimary:1 selectionPolicy:&self->_connectionSelectionPolicy] == 1)
+  if ([added compare:*(&self->super.isa + v7) isPrimary:1 selectionPolicy:&self->_connectionSelectionPolicy] == 1)
   {
     if ([*v8 compare:v8[1] isPrimary:0 selectionPolicy:&self->_connectionSelectionPolicy] == 1)
     {
@@ -333,13 +333,13 @@ LABEL_22:
           v26 = 2080;
           v27 = v12;
           v28 = 1024;
-          v29 = v5;
+          v29 = typeCopy;
           _os_log_impl(&dword_1DB56E000, v10, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d HandoverReport: Updated secondary connection to: %s for group: %d", &v20, 0x2Cu);
         }
       }
     }
 
-    *v8 = a4;
+    *v8 = added;
     if (VRTraceGetErrorLogLevelForModule() >= 7)
     {
       v17 = VRTraceErrorLogLevelToCSTR();
@@ -365,7 +365,7 @@ LABEL_22:
         v26 = 2080;
         v27 = v18;
         v28 = 1024;
-        v29 = v5;
+        v29 = typeCopy;
         v19 = " [%s] %s:%d HandoverReport: Updated primary connection to: %s for group: %d";
 LABEL_24:
         _os_log_impl(&dword_1DB56E000, v14, OS_LOG_TYPE_DEFAULT, v19, &v20, 0x2Cu);
@@ -373,10 +373,10 @@ LABEL_24:
     }
   }
 
-  else if ([a4 compare:v8[1] isPrimary:0 selectionPolicy:&self->_connectionSelectionPolicy] == 1)
+  else if ([added compare:v8[1] isPrimary:0 selectionPolicy:&self->_connectionSelectionPolicy] == 1)
   {
 
-    v8[1] = a4;
+    v8[1] = added;
     if (VRTraceGetErrorLogLevelForModule() >= 7)
     {
       v13 = VRTraceErrorLogLevelToCSTR();
@@ -403,7 +403,7 @@ LABEL_24:
         v26 = 2080;
         v27 = v16;
         v28 = 1024;
-        v29 = v5;
+        v29 = typeCopy;
         v19 = " [%s] %s:%d HandoverReport: Updated secondary connection to: %s for group: %d";
         goto LABEL_24;
       }
@@ -411,22 +411,22 @@ LABEL_24:
   }
 }
 
-- (void)updateSelectedConnectionsForGroupType:(unsigned __int8)a3 connectionRemoved:(id)a4 connectionArray:(id)a5
+- (void)updateSelectedConnectionsForGroupType:(unsigned __int8)type connectionRemoved:(id)removed connectionArray:(id)array
 {
-  v7 = a3;
+  typeCopy = type;
   v28 = *MEMORY[0x1E69E9840];
   v9 = 48;
-  if (!a3)
+  if (!type)
   {
     v9 = 32;
   }
 
   v10 = (&self->super.isa + v9);
-  if (VCConnection_Equal(a4, *(&self->super.isa + v9)))
+  if (VCConnection_Equal(removed, *(&self->super.isa + v9)))
   {
 
     *v10 = 0;
-    [(VCConnectionSelector *)self selectConnectionForGroupType:v7 fromConnectionArray:a5 asPrimary:1];
+    [(VCConnectionSelector *)self selectConnectionForGroupType:typeCopy fromConnectionArray:array asPrimary:1];
     if (VRTraceGetErrorLogLevelForModule() >= 7)
     {
       v11 = VRTraceErrorLogLevelToCSTR();
@@ -452,7 +452,7 @@ LABEL_24:
         v24 = 2080;
         v25 = v13;
         v26 = 1024;
-        v27 = v7;
+        v27 = typeCopy;
         v17 = " [%s] %s:%d HandoverReport: Updated primary connection to: %s for group: %d";
 LABEL_17:
         _os_log_impl(&dword_1DB56E000, v12, OS_LOG_TYPE_DEFAULT, v17, &v18, 0x2Cu);
@@ -460,11 +460,11 @@ LABEL_17:
     }
   }
 
-  else if (VCConnection_Equal(a4, v10[1]))
+  else if (VCConnection_Equal(removed, v10[1]))
   {
 
     v10[1] = 0;
-    [(VCConnectionSelector *)self selectConnectionForGroupType:v7 fromConnectionArray:a5 asPrimary:0];
+    [(VCConnectionSelector *)self selectConnectionForGroupType:typeCopy fromConnectionArray:array asPrimary:0];
     if (VRTraceGetErrorLogLevelForModule() >= 7)
     {
       v14 = VRTraceErrorLogLevelToCSTR();
@@ -491,7 +491,7 @@ LABEL_17:
         v24 = 2080;
         v25 = v16;
         v26 = 1024;
-        v27 = v7;
+        v27 = typeCopy;
         v17 = " [%s] %s:%d HandoverReport: Updated secondary connection to: %s for group: %d";
         goto LABEL_17;
       }
@@ -499,12 +499,12 @@ LABEL_17:
   }
 }
 
-- (void)selectConnectionForGroupType:(unsigned __int8)a3 fromConnectionArray:(id)a4 asPrimary:(BOOL)a5
+- (void)selectConnectionForGroupType:(unsigned __int8)type fromConnectionArray:(id)array asPrimary:(BOOL)primary
 {
-  v5 = a5;
+  primaryCopy = primary;
   v25 = *MEMORY[0x1E69E9840];
   v8 = 48;
-  if (!a3)
+  if (!type)
   {
     v8 = 32;
   }
@@ -512,7 +512,7 @@ LABEL_17:
   v9 = (&self->super.isa + v8);
   v10 = (&self->_primaryConnection + v8);
   v19 = v10;
-  if (a5)
+  if (primary)
   {
     v10 = v9;
   }
@@ -522,7 +522,7 @@ LABEL_17:
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v12 = [a4 countByEnumeratingWithState:&v21 objects:v20 count:16];
+  v12 = [array countByEnumeratingWithState:&v21 objects:v20 count:16];
   if (v12)
   {
     v13 = v12;
@@ -533,14 +533,14 @@ LABEL_17:
       {
         if (*v22 != v14)
         {
-          objc_enumerationMutation(a4);
+          objc_enumerationMutation(array);
         }
 
         v16 = *(*(&v21 + 1) + 8 * i);
-        if ((VCConnection_IsEndToEndLink(v16) & 1) == 0 && [v16 compare:v11 isPrimary:v5 selectionPolicy:&self->_connectionSelectionPolicy] == 1)
+        if ((VCConnection_IsEndToEndLink(v16) & 1) == 0 && [v16 compare:v11 isPrimary:primaryCopy selectionPolicy:&self->_connectionSelectionPolicy] == 1)
         {
           v17 = *v9;
-          if (v5)
+          if (primaryCopy)
           {
             v18 = v9;
           }
@@ -560,24 +560,24 @@ LABEL_17:
         }
       }
 
-      v13 = [a4 countByEnumeratingWithState:&v21 objects:v20 count:16];
+      v13 = [array countByEnumeratingWithState:&v21 objects:v20 count:16];
     }
 
     while (v13);
   }
 }
 
-- (id)connectionForGroupType:(unsigned __int8)a3 isPrimary:(BOOL)a4
+- (id)connectionForGroupType:(unsigned __int8)type isPrimary:(BOOL)primary
 {
   v4 = 48;
-  if (!a3)
+  if (!type)
   {
     v4 = 32;
   }
 
   v5 = self + v4;
   v6 = 8;
-  if (a4)
+  if (primary)
   {
     v6 = 0;
   }
@@ -587,14 +587,14 @@ LABEL_17:
   return v7;
 }
 
-- (BOOL)isPrimaryConnectionSameAsConnection:(id)a3
+- (BOOL)isPrimaryConnectionSameAsConnection:(id)connection
 {
   v10 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (connection)
   {
     if (self && (primaryConnection = self->_primaryConnection) != 0 && (v6 = CFRetain(primaryConnection)) != 0)
     {
-      [(VCConnectionSelector *)v6 isPrimaryConnectionSameAsConnection:a3, &v7];
+      [(VCConnectionSelector *)v6 isPrimaryConnectionSameAsConnection:connection, &v7];
       return v7;
     }
 

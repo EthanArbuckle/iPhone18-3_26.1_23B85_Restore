@@ -1,5 +1,5 @@
 @interface HMMMRegistrationOptions
-- (HMMMRegistrationOptions)initWithUserRestriction:(int64_t)a3;
+- (HMMMRegistrationOptions)initWithUserRestriction:(int64_t)restriction;
 - (id)attributeDescriptions;
 @end
 
@@ -9,15 +9,15 @@
 {
   v10[1] = *MEMORY[0x1E69E9840];
   v3 = objc_alloc(MEMORY[0x1E69A29C8]);
-  v4 = [(HMMMRegistrationOptions *)self userRestriction];
-  if (v4 > 2)
+  userRestriction = [(HMMMRegistrationOptions *)self userRestriction];
+  if (userRestriction > 2)
   {
     v5 = @"Unknown";
   }
 
   else
   {
-    v5 = off_1E7548980[v4];
+    v5 = off_1E7548980[userRestriction];
   }
 
   v6 = [v3 initWithName:@"UserRestriction" value:v5];
@@ -29,14 +29,14 @@
   return v7;
 }
 
-- (HMMMRegistrationOptions)initWithUserRestriction:(int64_t)a3
+- (HMMMRegistrationOptions)initWithUserRestriction:(int64_t)restriction
 {
   v5.receiver = self;
   v5.super_class = HMMMRegistrationOptions;
   result = [(HMMMRegistrationOptions *)&v5 init];
   if (result)
   {
-    result->_userRestriction = a3;
+    result->_userRestriction = restriction;
   }
 
   return result;

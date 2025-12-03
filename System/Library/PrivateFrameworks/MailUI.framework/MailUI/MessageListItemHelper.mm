@@ -1,13 +1,13 @@
 @interface MessageListItemHelper
-- (BOOL)_isItemAfterItemIDSelected:(id)a3 snapshot:(id)a4;
-- (BOOL)_isItemBeforeItemIDSelected:(id)a3 snapshot:(id)a4;
-- (BOOL)_isItemIDSelected:(id)a3;
-- (BOOL)_isNextItemLastExpandedItemID:(id)a3 snapshot:(id)a4;
-- (MessageListItemHelper)initWithDelegate:(id)a3;
+- (BOOL)_isItemAfterItemIDSelected:(id)selected snapshot:(id)snapshot;
+- (BOOL)_isItemBeforeItemIDSelected:(id)selected snapshot:(id)snapshot;
+- (BOOL)_isItemIDSelected:(id)selected;
+- (BOOL)_isNextItemLastExpandedItemID:(id)d snapshot:(id)snapshot;
+- (MessageListItemHelper)initWithDelegate:(id)delegate;
 - (MessageListItemHelperDelegate)delegate;
-- (id)itemIDAfterItemID:(id)a3 snapshot:(id)a4;
-- (id)itemIDBeforeItemID:(id)a3 snapshot:(id)a4;
-- (int64_t)cellGroupingForItemID:(id)a3 snapshot:(id)a4 isThreaded:(BOOL)a5;
+- (id)itemIDAfterItemID:(id)d snapshot:(id)snapshot;
+- (id)itemIDBeforeItemID:(id)d snapshot:(id)snapshot;
+- (int64_t)cellGroupingForItemID:(id)d snapshot:(id)snapshot isThreaded:(BOOL)threaded;
 @end
 
 @implementation MessageListItemHelper
@@ -19,35 +19,35 @@
   return WeakRetained;
 }
 
-- (MessageListItemHelper)initWithDelegate:(id)a3
+- (MessageListItemHelper)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = MessageListItemHelper;
   v5 = [(MessageListItemHelper *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
   }
 
   return v6;
 }
 
-- (int64_t)cellGroupingForItemID:(id)a3 snapshot:(id)a4 isThreaded:(BOOL)a5
+- (int64_t)cellGroupingForItemID:(id)d snapshot:(id)snapshot isThreaded:(BOOL)threaded
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  if (v8)
+  threadedCopy = threaded;
+  dCopy = d;
+  snapshotCopy = snapshot;
+  if (dCopy)
   {
-    v10 = [(MessageListItemHelper *)self delegate];
-    v11 = v10;
-    if (v5)
+    delegate = [(MessageListItemHelper *)self delegate];
+    v11 = delegate;
+    if (threadedCopy)
     {
-      v12 = [v10 messageListItemHelper:self isItemIDExpandedThread:v8] ^ 1;
-      v5 = [v11 messageListItemHelper:self anyExpandedThreadContainsItemID:v8];
-      v13 = [(MessageListItemHelper *)self _isNextItemLastExpandedItemID:v8 snapshot:v9]& v5 ^ 1;
+      v12 = [delegate messageListItemHelper:self isItemIDExpandedThread:dCopy] ^ 1;
+      threadedCopy = [v11 messageListItemHelper:self anyExpandedThreadContainsItemID:dCopy];
+      v13 = [(MessageListItemHelper *)self _isNextItemLastExpandedItemID:dCopy snapshot:snapshotCopy]& threadedCopy ^ 1;
     }
 
     else
@@ -56,16 +56,16 @@
       LOBYTE(v13) = 1;
     }
 
-    v15 = [(MessageListItemHelper *)self _isItemBeforeItemIDSelected:v8 snapshot:v9];
-    v16 = [(MessageListItemHelper *)self _isItemAfterItemIDSelected:v8 snapshot:v9];
-    v17 = [(MessageListItemHelper *)self _isItemIDSelected:v8];
+    v15 = [(MessageListItemHelper *)self _isItemBeforeItemIDSelected:dCopy snapshot:snapshotCopy];
+    v16 = [(MessageListItemHelper *)self _isItemAfterItemIDSelected:dCopy snapshot:snapshotCopy];
+    v17 = [(MessageListItemHelper *)self _isItemIDSelected:dCopy];
     if ((v12 & 1) != 0 || v15 && v17)
     {
       v18 = !v17;
       v19 = !v16;
       v20 = v15 || !v17 || !v16;
-      v21 = v20 | v5;
-      if (v5)
+      v21 = v20 | threadedCopy;
+      if (threadedCopy)
       {
         v22 = v13;
       }
@@ -132,34 +132,34 @@
   return v14;
 }
 
-- (BOOL)_isItemBeforeItemIDSelected:(id)a3 snapshot:(id)a4
+- (BOOL)_isItemBeforeItemIDSelected:(id)selected snapshot:(id)snapshot
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MessageListItemHelper *)self itemIDBeforeItemID:v6 snapshot:v7];
-  v13 = v8 && ([v8 isEqual:v6] & 1) == 0 && (objc_msgSend(v7, "itemIdentifiers"), v10 = v9 = v8;
+  selectedCopy = selected;
+  snapshotCopy = snapshot;
+  v8 = [(MessageListItemHelper *)self itemIDBeforeItemID:selectedCopy snapshot:snapshotCopy];
+  v13 = v8 && ([v8 isEqual:selectedCopy] & 1) == 0 && (objc_msgSend(snapshotCopy, "itemIdentifiers"), v10 = v9 = v8;
 
   return v13;
 }
 
-- (BOOL)_isItemAfterItemIDSelected:(id)a3 snapshot:(id)a4
+- (BOOL)_isItemAfterItemIDSelected:(id)selected snapshot:(id)snapshot
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MessageListItemHelper *)self itemIDAfterItemID:v6 snapshot:v7];
-  v13 = v8 && ([v8 isEqual:v6] & 1) == 0 && (objc_msgSend(v7, "itemIdentifiers"), v10 = v9 = v8;
+  selectedCopy = selected;
+  snapshotCopy = snapshot;
+  v8 = [(MessageListItemHelper *)self itemIDAfterItemID:selectedCopy snapshot:snapshotCopy];
+  v13 = v8 && ([v8 isEqual:selectedCopy] & 1) == 0 && (objc_msgSend(snapshotCopy, "itemIdentifiers"), v10 = v9 = v8;
 
   return v13;
 }
 
-- (BOOL)_isItemIDSelected:(id)a3
+- (BOOL)_isItemIDSelected:(id)selected
 {
-  v4 = a3;
-  v5 = [(MessageListItemHelper *)self delegate];
-  v6 = v5;
-  if (v5)
+  selectedCopy = selected;
+  delegate = [(MessageListItemHelper *)self delegate];
+  v6 = delegate;
+  if (delegate)
   {
-    v7 = [v5 messageListItemHelper:self isItemIDSelected:v4];
+    v7 = [delegate messageListItemHelper:self isItemIDSelected:selectedCopy];
   }
 
   else
@@ -170,11 +170,11 @@
   return v7;
 }
 
-- (id)itemIDAfterItemID:(id)a3 snapshot:(id)a4
+- (id)itemIDAfterItemID:(id)d snapshot:(id)snapshot
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 indexOfItemIdentifier:v5];
+  dCopy = d;
+  snapshotCopy = snapshot;
+  v7 = [snapshotCopy indexOfItemIdentifier:dCopy];
   if (v7 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v8 = 0;
@@ -183,15 +183,15 @@
   else
   {
     v9 = v7 + 1;
-    v10 = [v6 itemIdentifiers];
-    if (v9 >= [v10 count])
+    itemIdentifiers = [snapshotCopy itemIdentifiers];
+    if (v9 >= [itemIdentifiers count])
     {
-      v11 = v5;
+      v11 = dCopy;
     }
 
     else
     {
-      v11 = [v10 objectAtIndexedSubscript:v9];
+      v11 = [itemIdentifiers objectAtIndexedSubscript:v9];
     }
 
     v8 = v11;
@@ -200,11 +200,11 @@
   return v8;
 }
 
-- (id)itemIDBeforeItemID:(id)a3 snapshot:(id)a4
+- (id)itemIDBeforeItemID:(id)d snapshot:(id)snapshot
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 indexOfItemIdentifier:v5];
+  dCopy = d;
+  snapshotCopy = snapshot;
+  v7 = [snapshotCopy indexOfItemIdentifier:dCopy];
   if (v7 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v8 = 0;
@@ -213,11 +213,11 @@
   else if (v7)
   {
     v9 = v7 - 1;
-    v10 = [v6 itemIdentifiers];
-    v11 = [v10 objectAtIndexedSubscript:v9];
+    itemIdentifiers = [snapshotCopy itemIdentifiers];
+    v11 = [itemIdentifiers objectAtIndexedSubscript:v9];
 
-    v12 = [v6 sectionIdentifierForSectionContainingItemIdentifier:v5];
-    v13 = [v6 sectionIdentifierForSectionContainingItemIdentifier:v11];
+    v12 = [snapshotCopy sectionIdentifierForSectionContainingItemIdentifier:dCopy];
+    v13 = [snapshotCopy sectionIdentifierForSectionContainingItemIdentifier:v11];
     if (EFObjectsAreEqual())
     {
       v14 = v11;
@@ -225,7 +225,7 @@
 
     else
     {
-      v14 = v5;
+      v14 = dCopy;
     }
 
     v8 = v14;
@@ -233,28 +233,28 @@
 
   else
   {
-    v8 = v5;
+    v8 = dCopy;
   }
 
   return v8;
 }
 
-- (BOOL)_isNextItemLastExpandedItemID:(id)a3 snapshot:(id)a4
+- (BOOL)_isNextItemLastExpandedItemID:(id)d snapshot:(id)snapshot
 {
-  v6 = a3;
-  v7 = [(MessageListItemHelper *)self itemIDAfterItemID:v6 snapshot:a4];
+  dCopy = d;
+  v7 = [(MessageListItemHelper *)self itemIDAfterItemID:dCopy snapshot:snapshot];
   v8 = v7;
   if (v7)
   {
-    if (v7 == v6)
+    if (v7 == dCopy)
     {
       v11 = 1;
     }
 
     else
     {
-      v9 = [(MessageListItemHelper *)self delegate];
-      v10 = [v9 messageListItemHelper:self anyExpandedThreadContainsItemID:v8];
+      delegate = [(MessageListItemHelper *)self delegate];
+      v10 = [delegate messageListItemHelper:self anyExpandedThreadContainsItemID:v8];
 
       v11 = v10 ^ 1;
     }

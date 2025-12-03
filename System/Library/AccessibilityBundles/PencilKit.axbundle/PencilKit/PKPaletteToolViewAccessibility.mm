@@ -1,5 +1,5 @@
 @interface PKPaletteToolViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_axToolPicker;
 - (id)accessibilityHint;
 - (id)accessibilityLabel;
@@ -9,14 +9,14 @@
 
 @implementation PKPaletteToolViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PKPaletteView" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PKToolPicker" hasInstanceMethod:@"isRulerActive" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"PKPaletteToolView" hasInstanceMethod:@"toolIdentifier" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"UIControl" hasInstanceMethod:@"isSelected" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"PKPaletteToolView" isKindOfClass:@"UIControl"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PKPaletteView" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PKToolPicker" hasInstanceMethod:@"isRulerActive" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"PKPaletteToolView" hasInstanceMethod:@"toolIdentifier" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"UIControl" hasInstanceMethod:@"isSelected" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"PKPaletteToolView" isKindOfClass:@"UIControl"];
 }
 
 - (id)_axToolPicker
@@ -31,7 +31,7 @@
 {
   v10.receiver = self;
   v10.super_class = PKPaletteToolViewAccessibility;
-  v3 = [(PKPaletteToolViewAccessibility *)&v10 accessibilityLabel];
+  accessibilityLabel = [(PKPaletteToolViewAccessibility *)&v10 accessibilityLabel];
   v4 = [(PKPaletteToolViewAccessibility *)self safeStringForKey:@"toolIdentifier"];
   v5 = accessibilityNameForInkIdentifier(v4);
   v6 = v5;
@@ -42,7 +42,7 @@
 
   else
   {
-    v7 = v3;
+    v7 = accessibilityLabel;
   }
 
   v8 = v7;
@@ -55,7 +55,7 @@
   v3 = [(PKPaletteToolViewAccessibility *)self safeStringForKey:@"toolIdentifier"];
   v9.receiver = self;
   v9.super_class = PKPaletteToolViewAccessibility;
-  v4 = [(PKPaletteToolViewAccessibility *)&v9 accessibilityTraits];
+  accessibilityTraits = [(PKPaletteToolViewAccessibility *)&v9 accessibilityTraits];
   if ([v3 isEqualToString:*MEMORY[0x29EDBB9F0]])
   {
     v5 = ~*MEMORY[0x29EDC7FC0];
@@ -66,7 +66,7 @@
     v5 = -1;
   }
 
-  v6 = v5 & v4;
+  v6 = v5 & accessibilityTraits;
   v7 = *MEMORY[0x29EDC7F70];
 
   return v6 | v7;
@@ -77,16 +77,16 @@
   v3 = [(PKPaletteToolViewAccessibility *)self safeStringForKey:@"toolIdentifier"];
   if ([v3 isEqualToString:*MEMORY[0x29EDBB9B0]])
   {
-    v4 = 0;
+    accessibilityValue = 0;
   }
 
   else if ([v3 isEqualToString:*MEMORY[0x29EDBB9F0]])
   {
-    v5 = [(PKPaletteToolViewAccessibility *)self _axToolPicker];
-    v6 = v5;
-    if (v5)
+    _axToolPicker = [(PKPaletteToolViewAccessibility *)self _axToolPicker];
+    v6 = _axToolPicker;
+    if (_axToolPicker)
     {
-      if ([v5 safeBoolForKey:@"isRulerActive"])
+      if ([_axToolPicker safeBoolForKey:@"isRulerActive"])
       {
         v7 = @"ruler.active";
       }
@@ -96,12 +96,12 @@
         v7 = @"ruler.inactive";
       }
 
-      v4 = accessibilityPencilKitLocalizedString(v7);
+      accessibilityValue = accessibilityPencilKitLocalizedString(v7);
     }
 
     else
     {
-      v4 = 0;
+      accessibilityValue = 0;
     }
   }
 
@@ -109,10 +109,10 @@
   {
     v9.receiver = self;
     v9.super_class = PKPaletteToolViewAccessibility;
-    v4 = [(PKPaletteToolViewAccessibility *)&v9 accessibilityValue];
+    accessibilityValue = [(PKPaletteToolViewAccessibility *)&v9 accessibilityValue];
   }
 
-  return v4;
+  return accessibilityValue;
 }
 
 - (id)accessibilityHint

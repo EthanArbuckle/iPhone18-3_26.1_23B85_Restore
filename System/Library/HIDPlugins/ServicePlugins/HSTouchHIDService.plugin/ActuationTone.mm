@@ -1,22 +1,22 @@
 @interface ActuationTone
-+ (id)stringFromToneType:(unint64_t)a3;
-+ (unint64_t)toneTypeFromString:(id)a3;
-- (ActuationTone)initWithDictionary:(id)a3;
++ (id)stringFromToneType:(unint64_t)type;
++ (unint64_t)toneTypeFromString:(id)string;
+- (ActuationTone)initWithDictionary:(id)dictionary;
 - (NSDictionary)dictionary;
 @end
 
 @implementation ActuationTone
 
-+ (unint64_t)toneTypeFromString:(id)a3
++ (unint64_t)toneTypeFromString:(id)string
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  stringCopy = string;
+  v4 = stringCopy;
+  if (!stringCopy)
   {
     goto LABEL_8;
   }
 
-  if (([v3 isEqualToString:@"Sine"] & 1) == 0)
+  if (([stringCopy isEqualToString:@"Sine"] & 1) == 0)
   {
     if ([v4 isEqualToString:@"Square"])
     {
@@ -41,32 +41,32 @@ LABEL_9:
   return v5;
 }
 
-+ (id)stringFromToneType:(unint64_t)a3
++ (id)stringFromToneType:(unint64_t)type
 {
-  if (a3 - 1 > 2)
+  if (type - 1 > 2)
   {
     return @"None";
   }
 
   else
   {
-    return off_109130[a3 - 1];
+    return off_109130[type - 1];
   }
 }
 
-- (ActuationTone)initWithDictionary:(id)a3
+- (ActuationTone)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v18.receiver = self;
   v18.super_class = ActuationTone;
   v5 = [(ActuationTone *)&v18 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"Type"];
-    v7 = [v4 objectForKeyedSubscript:@"Amplitude"];
-    v8 = [v4 objectForKeyedSubscript:@"DurationMS"];
-    v9 = [v4 objectForKeyedSubscript:@"DelayMS"];
-    v10 = [v4 objectForKeyedSubscript:@"FrequencykHz"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"Type"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"Amplitude"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"DurationMS"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"DelayMS"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"FrequencykHz"];
     v11 = v10;
     if (!v6 || !v8 || !v7 || !v9 || !v10)
     {

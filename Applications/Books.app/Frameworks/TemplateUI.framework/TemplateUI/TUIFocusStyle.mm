@@ -1,14 +1,14 @@
 @interface TUIFocusStyle
 + (id)defaultFocusStyle;
-- (CGRect)erasableBoundsWithBounds:(CGRect)a3;
-- (TUIFocusStyle)focusStyleWithColor:(id)a3;
-- (TUIFocusStyle)focusStyleWithContinuousCurve:(BOOL)a3;
-- (TUIFocusStyle)focusStyleWithCornerRadius:(double)a3;
-- (TUIFocusStyle)focusStyleWithEffect:(int64_t)a3;
-- (TUIFocusStyle)focusStyleWithGroupIdentifier:(id)a3;
-- (TUIFocusStyle)focusStyleWithInsets:(UIEdgeInsets)a3;
+- (CGRect)erasableBoundsWithBounds:(CGRect)bounds;
+- (TUIFocusStyle)focusStyleWithColor:(id)color;
+- (TUIFocusStyle)focusStyleWithContinuousCurve:(BOOL)curve;
+- (TUIFocusStyle)focusStyleWithCornerRadius:(double)radius;
+- (TUIFocusStyle)focusStyleWithEffect:(int64_t)effect;
+- (TUIFocusStyle)focusStyleWithGroupIdentifier:(id)identifier;
+- (TUIFocusStyle)focusStyleWithInsets:(UIEdgeInsets)insets;
 - (TUIFocusStyle)init;
-- (TUIFocusStyle)initWithOther:(id)a3;
+- (TUIFocusStyle)initWithOther:(id)other;
 - (UIEdgeInsets)insets;
 @end
 
@@ -16,7 +16,7 @@
 
 + (id)defaultFocusStyle
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
@@ -45,129 +45,129 @@
   return v3;
 }
 
-- (TUIFocusStyle)initWithOther:(id)a3
+- (TUIFocusStyle)initWithOther:(id)other
 {
-  v4 = a3;
+  otherCopy = other;
   v9.receiver = self;
   v9.super_class = TUIFocusStyle;
   v5 = [(TUIFocusStyle *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    v5->_effect = *(v4 + 2);
-    v7 = *(v4 + 4);
-    *&v5->_insets.top = *(v4 + 3);
+    v5->_effect = *(otherCopy + 2);
+    v7 = *(otherCopy + 4);
+    *&v5->_insets.top = *(otherCopy + 3);
     *&v5->_insets.bottom = v7;
-    v5->_cornerRadius = *(v4 + 3);
-    v5->_continuousCurve = *(v4 + 8);
-    objc_storeStrong(&v5->_color, *(v4 + 4));
-    objc_storeStrong(&v6->_groupIdentifier, *(v4 + 5));
+    v5->_cornerRadius = *(otherCopy + 3);
+    v5->_continuousCurve = *(otherCopy + 8);
+    objc_storeStrong(&v5->_color, *(otherCopy + 4));
+    objc_storeStrong(&v6->_groupIdentifier, *(otherCopy + 5));
   }
 
   return v6;
 }
 
-- (TUIFocusStyle)focusStyleWithEffect:(int64_t)a3
+- (TUIFocusStyle)focusStyleWithEffect:(int64_t)effect
 {
-  v4 = self;
-  if (v4->_effect != a3)
+  selfCopy = self;
+  if (selfCopy->_effect != effect)
   {
-    v5 = [[TUIFocusStyle alloc] initWithOther:v4];
+    v5 = [[TUIFocusStyle alloc] initWithOther:selfCopy];
 
-    v5->_effect = a3;
-    v4 = v5;
+    v5->_effect = effect;
+    selfCopy = v5;
   }
 
-  return v4;
+  return selfCopy;
 }
 
-- (TUIFocusStyle)focusStyleWithInsets:(UIEdgeInsets)a3
+- (TUIFocusStyle)focusStyleWithInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
-  left = a3.left;
-  bottom = a3.bottom;
-  top = a3.top;
-  v3 = self;
+  right = insets.right;
+  left = insets.left;
+  bottom = insets.bottom;
+  top = insets.top;
+  selfCopy = self;
   v4.f64[0] = top;
   v4.f64[1] = left;
   v5.f64[0] = bottom;
   v5.f64[1] = right;
-  if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&v3->_insets.top, v4), vceqq_f64(*&v3->_insets.bottom, v5)))) & 1) == 0)
+  if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&selfCopy->_insets.top, v4), vceqq_f64(*&selfCopy->_insets.bottom, v5)))) & 1) == 0)
   {
-    v6 = [[TUIFocusStyle alloc] initWithOther:v3];
+    v6 = [[TUIFocusStyle alloc] initWithOther:selfCopy];
 
     v6->_insets.top = top;
     v6->_insets.left = left;
-    v3 = v6;
+    selfCopy = v6;
     v6->_insets.bottom = bottom;
     v6->_insets.right = right;
   }
 
-  return v3;
+  return selfCopy;
 }
 
-- (TUIFocusStyle)focusStyleWithCornerRadius:(double)a3
+- (TUIFocusStyle)focusStyleWithCornerRadius:(double)radius
 {
-  v4 = self;
-  if (v4->_cornerRadius != a3)
+  selfCopy = self;
+  if (selfCopy->_cornerRadius != radius)
   {
-    v5 = [[TUIFocusStyle alloc] initWithOther:v4];
+    v5 = [[TUIFocusStyle alloc] initWithOther:selfCopy];
 
-    v5->_cornerRadius = a3;
-    v4 = v5;
+    v5->_cornerRadius = radius;
+    selfCopy = v5;
   }
 
-  return v4;
+  return selfCopy;
 }
 
-- (TUIFocusStyle)focusStyleWithContinuousCurve:(BOOL)a3
+- (TUIFocusStyle)focusStyleWithContinuousCurve:(BOOL)curve
 {
-  v3 = a3;
-  v4 = self;
-  if (v4->_continuousCurve != v3)
+  curveCopy = curve;
+  selfCopy = self;
+  if (selfCopy->_continuousCurve != curveCopy)
   {
-    v5 = [[TUIFocusStyle alloc] initWithOther:v4];
+    v5 = [[TUIFocusStyle alloc] initWithOther:selfCopy];
 
-    v5->_continuousCurve = v3;
-    v4 = v5;
+    v5->_continuousCurve = curveCopy;
+    selfCopy = v5;
   }
 
-  return v4;
+  return selfCopy;
 }
 
-- (TUIFocusStyle)focusStyleWithColor:(id)a3
+- (TUIFocusStyle)focusStyleWithColor:(id)color
 {
-  v5 = a3;
-  v6 = self;
-  color = v6->_color;
-  if (color != v5 && ([(UIColor *)color isEqual:v5]& 1) == 0)
+  colorCopy = color;
+  selfCopy = self;
+  color = selfCopy->_color;
+  if (color != colorCopy && ([(UIColor *)color isEqual:colorCopy]& 1) == 0)
   {
-    v8 = [[TUIFocusStyle alloc] initWithOther:v6];
+    v8 = [[TUIFocusStyle alloc] initWithOther:selfCopy];
 
-    objc_storeStrong(&v8->_color, a3);
-    v6 = v8;
+    objc_storeStrong(&v8->_color, color);
+    selfCopy = v8;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (TUIFocusStyle)focusStyleWithGroupIdentifier:(id)a3
+- (TUIFocusStyle)focusStyleWithGroupIdentifier:(id)identifier
 {
-  v5 = a3;
-  v6 = self;
-  groupIdentifier = v6->_groupIdentifier;
-  if (groupIdentifier != v5 && ![(NSString *)groupIdentifier isEqualToString:v5])
+  identifierCopy = identifier;
+  selfCopy = self;
+  groupIdentifier = selfCopy->_groupIdentifier;
+  if (groupIdentifier != identifierCopy && ![(NSString *)groupIdentifier isEqualToString:identifierCopy])
   {
-    v8 = [[TUIFocusStyle alloc] initWithOther:v6];
+    v8 = [[TUIFocusStyle alloc] initWithOther:selfCopy];
 
-    objc_storeStrong(&v8->_groupIdentifier, a3);
-    v6 = v8;
+    objc_storeStrong(&v8->_groupIdentifier, identifier);
+    selfCopy = v8;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (CGRect)erasableBoundsWithBounds:(CGRect)a3
+- (CGRect)erasableBoundsWithBounds:(CGRect)bounds
 {
   effect = self->_effect;
   p_insets = &UIEdgeInsetsZero;
@@ -213,10 +213,10 @@ LABEL_9:
   }
 
 LABEL_10:
-  v9.origin.x = a3.origin.x + *p_left;
-  v9.origin.y = a3.origin.y + p_insets->top;
-  v9.size.width = a3.size.width - (*p_right + *p_left);
-  v9.size.height = a3.size.height - (*p_bottom + p_insets->top);
+  v9.origin.x = bounds.origin.x + *p_left;
+  v9.origin.y = bounds.origin.y + p_insets->top;
+  v9.size.width = bounds.size.width - (*p_right + *p_left);
+  v9.size.height = bounds.size.height - (*p_bottom + p_insets->top);
   return CGRectInset(v9, v8, v8);
 }
 

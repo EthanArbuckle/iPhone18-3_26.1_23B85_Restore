@@ -1,34 +1,34 @@
 @interface ICDevice
 - (BOOL)isRemote;
-- (BOOL)updateProperties:(id)a3;
-- (ICDevice)initWithDictionary:(id)a3;
+- (BOOL)updateProperties:(id)properties;
+- (ICDevice)initWithDictionary:(id)dictionary;
 - (NSArray)capabilities;
 - (NSString)autolaunchApplicationPath;
 - (id)delegate;
 - (id)description;
 - (id)deviceDelegate;
-- (id)valueForUndefinedKey:(id)a3;
-- (void)addCapability:(id)a3;
-- (void)cleanupDeviceWithErrorCode:(id)a3 completionBlock:(id)a4;
-- (void)imageCaptureEventNotification:(id)a3 completion:(id)a4;
-- (void)notifyObservers:(id)a3;
+- (id)valueForUndefinedKey:(id)key;
+- (void)addCapability:(id)capability;
+- (void)cleanupDeviceWithErrorCode:(id)code completionBlock:(id)block;
+- (void)imageCaptureEventNotification:(id)notification completion:(id)completion;
+- (void)notifyObservers:(id)observers;
 - (void)removeCapabilities;
-- (void)removeCapability:(id)a3;
+- (void)removeCapability:(id)capability;
 - (void)requestEject;
 - (void)requestEjectWithCompletion:(void *)completion;
 - (void)setAutolaunchApplicationPath:(NSString *)autolaunchApplicationPath;
 - (void)setDelegate:(id)delegate;
-- (void)setIconPath:(id)a3;
-- (void)setSessionState:(int64_t)a3;
-- (void)updateCapabilities:(id)a3;
+- (void)setIconPath:(id)path;
+- (void)setSessionState:(int64_t)state;
+- (void)updateCapabilities:(id)capabilities;
 @end
 
 @implementation ICDevice
 
-- (ICDevice)initWithDictionary:(id)a3
+- (ICDevice)initWithDictionary:(id)dictionary
 {
   v52 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v47.receiver = self;
   v47.super_class = ICDevice;
   v5 = [(ICDevice *)&v47 init];
@@ -40,15 +40,15 @@
     userData = v6->_userData;
     v6->_userData = v7;
 
-    v9 = [v4 objectForKeyedSubscript:@"ICADeviceBrowserDeviceRefKey"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"ICADeviceBrowserDeviceRefKey"];
     deviceRef = v6->_deviceRef;
     v6->_deviceRef = v9;
 
-    v11 = [v4 objectForKeyedSubscript:@"ICAConnectionIDKey"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"ICAConnectionIDKey"];
     connectionID = v6->_connectionID;
     v6->_connectionID = v11;
 
-    v13 = [v4 objectForKeyedSubscript:@"objectID"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"objectID"];
     deviceID = v6->_deviceID;
     v6->_deviceID = v13;
 
@@ -56,7 +56,7 @@
     procID = v6->_procID;
     v6->_procID = v15;
 
-    v17 = [v4 objectForKeyedSubscript:@"productKind"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"productKind"];
     productKind = v6->_productKind;
     v6->_productKind = v17;
 
@@ -64,7 +64,7 @@
     deviceCapabilities = v6->_deviceCapabilities;
     v6->_deviceCapabilities = v19;
 
-    v21 = [v4 objectForKeyedSubscript:@"name"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"name"];
     name = v6->_name;
     v6->_name = v21;
 
@@ -72,7 +72,7 @@
     v6->_canCancelSoftwareInstallation = 1;
     if (![(ICDevice *)v6 isRemote]&& ([(ICDevice *)v6 type]& 1) != 0)
     {
-      v23 = [v4 objectForKeyedSubscript:@"capa"];
+      v23 = [dictionaryCopy objectForKeyedSubscript:@"capa"];
     }
 
     else
@@ -81,19 +81,19 @@
     }
 
     [(ICDevice *)v6 updateCapabilities:v23];
-    v24 = [v4 objectForKeyedSubscript:@"UUIDString"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"UUIDString"];
     UUIDString = v6->_UUIDString;
     v6->_UUIDString = v24;
 
-    v26 = [v4 objectForKeyedSubscript:@"persistentIDString"];
+    v26 = [dictionaryCopy objectForKeyedSubscript:@"persistentIDString"];
     persistentIDString = v6->_persistentIDString;
     v6->_persistentIDString = v26;
 
-    v28 = [v4 objectForKeyedSubscript:@"ICADeviceSerialNumberString"];
+    v28 = [dictionaryCopy objectForKeyedSubscript:@"ICADeviceSerialNumberString"];
     serialNumberString = v6->_serialNumberString;
     v6->_serialNumberString = v28;
 
-    v30 = [v4 objectForKeyedSubscript:@"ICAAutoLaunchedDevice"];
+    v30 = [dictionaryCopy objectForKeyedSubscript:@"ICAAutoLaunchedDevice"];
 
     if (v30)
     {
@@ -115,19 +115,19 @@
     }
 
     v35 = MEMORY[0x1E696AEC0];
-    v36 = [(ICDevice *)v6 deviceRef];
-    v37 = [v36 intValue];
-    v38 = [(ICDevice *)v6 persistentIDString];
-    v39 = [v35 stringWithFormat:@" +++ Creating [0x%x]:%@", v37, v38];
+    deviceRef = [(ICDevice *)v6 deviceRef];
+    intValue = [deviceRef intValue];
+    persistentIDString = [(ICDevice *)v6 persistentIDString];
+    v39 = [v35 stringWithFormat:@" +++ Creating [0x%x]:%@", intValue, persistentIDString];
 
     v40 = *MEMORY[0x1E69A8B08];
     if (os_log_type_enabled(*MEMORY[0x1E69A8B08], OS_LOG_TYPE_DEFAULT))
     {
       v41 = v33;
       v42 = v40;
-      v43 = [(__CFString *)v33 UTF8String];
+      uTF8String = [(__CFString *)v33 UTF8String];
       *buf = 136446466;
-      v49 = v43;
+      v49 = uTF8String;
       v50 = 2114;
       v51 = v39;
       _os_log_impl(&dword_1C6F19000, v42, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -140,11 +140,11 @@
   return v6;
 }
 
-- (BOOL)updateProperties:(id)a3
+- (BOOL)updateProperties:(id)properties
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
-  v6 = [v4 objectForKeyedSubscript:@"deviceIconPath"];
+  propertiesCopy = properties;
+  array = [MEMORY[0x1E695DF70] array];
+  v6 = [propertiesCopy objectForKeyedSubscript:@"deviceIconPath"];
   if (v6)
   {
     iconPath = self->_iconPath;
@@ -164,12 +164,12 @@
     self->_iconPath = v9;
 
     [(ICDevice *)self setIcon:0];
-    [v5 addObject:@"icon"];
-    [v5 addObject:@"iconPath"];
+    [array addObject:@"icon"];
+    [array addObject:@"iconPath"];
   }
 
 LABEL_6:
-  v11 = [v4 objectForKeyedSubscript:@"systemSymbolName"];
+  v11 = [propertiesCopy objectForKeyedSubscript:@"systemSymbolName"];
   if (v11)
   {
     systemSymbolName = self->_systemSymbolName;
@@ -180,8 +180,8 @@ LABEL_10:
       v15 = self->_systemSymbolName;
       self->_systemSymbolName = v14;
 
-      [v5 addObject:@"icon"];
-      [v5 addObject:@"systemSymbolName"];
+      [array addObject:@"icon"];
+      [array addObject:@"systemSymbolName"];
       goto LABEL_11;
     }
 
@@ -197,7 +197,7 @@ LABEL_10:
 LABEL_11:
   if (![(ICDevice *)self isRemote]&& ([(ICDevice *)self type]& 1) != 0)
   {
-    v16 = [v4 objectForKeyedSubscript:@"capa"];
+    v16 = [propertiesCopy objectForKeyedSubscript:@"capa"];
   }
 
   else
@@ -206,7 +206,7 @@ LABEL_11:
   }
 
   [(ICDevice *)self updateCapabilities:v16];
-  v17 = [v4 objectForKeyedSubscript:@"ICADeviceSerialNumberString"];
+  v17 = [propertiesCopy objectForKeyedSubscript:@"ICADeviceSerialNumberString"];
   if (v17)
   {
     serialNumberString = self->_serialNumberString;
@@ -216,11 +216,11 @@ LABEL_11:
       v20 = self->_serialNumberString;
       self->_serialNumberString = v19;
 
-      [v5 addObject:@"serialNumberString"];
+      [array addObject:@"serialNumberString"];
     }
   }
 
-  v21 = [v4 objectForKeyedSubscript:@"UUIDString"];
+  v21 = [propertiesCopy objectForKeyedSubscript:@"UUIDString"];
   if (v21)
   {
     UUIDString = self->_UUIDString;
@@ -230,11 +230,11 @@ LABEL_11:
       v24 = self->_UUIDString;
       self->_UUIDString = v23;
 
-      [v5 addObject:@"UUIDString"];
+      [array addObject:@"UUIDString"];
     }
   }
 
-  v25 = [v4 objectForKeyedSubscript:@"persistentIDString"];
+  v25 = [propertiesCopy objectForKeyedSubscript:@"persistentIDString"];
   if (v25)
   {
     persistentIDString = self->_persistentIDString;
@@ -244,25 +244,25 @@ LABEL_11:
       v28 = self->_persistentIDString;
       self->_persistentIDString = v27;
 
-      [v5 addObject:@"persistentIDString"];
+      [array addObject:@"persistentIDString"];
     }
   }
 
-  v29 = [v5 count] != 0;
+  v29 = [array count] != 0;
 
   return v29;
 }
 
-- (void)notifyObservers:(id)a3
+- (void)notifyObservers:(id)observers
 {
-  v4 = a3;
+  observersCopy = observers;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __28__ICDevice_notifyObservers___block_invoke;
   v6[3] = &unk_1E829C870;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = observersCopy;
+  selfCopy = self;
+  v5 = observersCopy;
   ICPerformBlockOnMainThread(v6);
 }
 
@@ -302,12 +302,12 @@ void __28__ICDevice_notifyObservers___block_invoke(uint64_t a1)
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setSessionState:(int64_t)a3
+- (void)setSessionState:(int64_t)state
 {
-  if (self->_sessionState != a3)
+  if (self->_sessionState != state)
   {
-    self->_sessionState = a3;
-    if (a3)
+    self->_sessionState = state;
+    if (state)
     {
       [(ICDevice *)self willChangeValueForKey:@"hasOpenSession"];
 
@@ -316,128 +316,128 @@ void __28__ICDevice_notifyObservers___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setIconPath:(id)a3
+- (void)setIconPath:(id)path
 {
-  v8 = a3;
-  v4 = [(ICDevice *)self iconPath];
+  pathCopy = path;
+  iconPath = [(ICDevice *)self iconPath];
 
-  if (v4)
+  if (iconPath)
   {
     iconPath = self->_iconPath;
     self->_iconPath = 0;
   }
 
-  v6 = [v8 copy];
+  v6 = [pathCopy copy];
   v7 = self->_iconPath;
   self->_iconPath = v6;
 }
 
 - (BOOL)isRemote
 {
-  v2 = [(ICDevice *)self transportType];
-  v3 = [v2 isEqualToString:@"ICTransportTypeTCPIP"];
+  transportType = [(ICDevice *)self transportType];
+  v3 = [transportType isEqualToString:@"ICTransportTypeTCPIP"];
 
   return v3;
 }
 
 - (id)description
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  [v3 setObject:objc_opt_class() forKeyedSubscript:@"class"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:objc_opt_class() forKeyedSubscript:@"class"];
   v4 = MEMORY[0x1E696AEC0];
-  v5 = [(ICDevice *)self delegate];
-  v6 = [v4 stringWithFormat:@"<%p>", v5];
-  [v3 setObject:v6 forKeyedSubscript:@"delegate"];
+  delegate = [(ICDevice *)self delegate];
+  v6 = [v4 stringWithFormat:@"<%p>", delegate];
+  [dictionary setObject:v6 forKeyedSubscript:@"delegate"];
 
   v7 = MEMORY[0x1E696AEC0];
-  v8 = [(ICDevice *)self deviceRef];
-  v9 = [v7 stringWithFormat:@"0x%08x", objc_msgSend(v8, "unsignedIntValue")];
-  [v3 setObject:v9 forKeyedSubscript:@"deviceRef"];
+  deviceRef = [(ICDevice *)self deviceRef];
+  v9 = [v7 stringWithFormat:@"0x%08x", objc_msgSend(deviceRef, "unsignedIntValue")];
+  [dictionary setObject:v9 forKeyedSubscript:@"deviceRef"];
 
   v10 = MEMORY[0x1E696AEC0];
-  v11 = [(ICDevice *)self connectionID];
-  v12 = [v10 stringWithFormat:@"0x%08x", objc_msgSend(v11, "unsignedIntValue")];
-  [v3 setObject:v12 forKeyedSubscript:@"connectionID"];
+  connectionID = [(ICDevice *)self connectionID];
+  v12 = [v10 stringWithFormat:@"0x%08x", objc_msgSend(connectionID, "unsignedIntValue")];
+  [dictionary setObject:v12 forKeyedSubscript:@"connectionID"];
 
   v13 = MEMORY[0x1E696AEC0];
-  v14 = [(ICDevice *)self deviceID];
-  v15 = [v13 stringWithFormat:@"0x%08x", objc_msgSend(v14, "unsignedIntValue")];
-  [v3 setObject:v15 forKeyedSubscript:@"deviceID"];
+  deviceID = [(ICDevice *)self deviceID];
+  v15 = [v13 stringWithFormat:@"0x%08x", objc_msgSend(deviceID, "unsignedIntValue")];
+  [dictionary setObject:v15 forKeyedSubscript:@"deviceID"];
 
   v16 = MEMORY[0x1E696AEC0];
-  v17 = [(ICDevice *)self name];
-  v18 = [v16 stringWithFormat:@"%@", v17];
-  [v3 setObject:v18 forKeyedSubscript:@"name"];
+  name = [(ICDevice *)self name];
+  v18 = [v16 stringWithFormat:@"%@", name];
+  [dictionary setObject:v18 forKeyedSubscript:@"name"];
 
   v19 = MEMORY[0x1E696AEC0];
-  v20 = [(ICDevice *)self locationDescription];
-  v21 = [v19 stringWithFormat:@"%@", v20];
-  [v3 setObject:v21 forKeyedSubscript:@"locationDescription"];
+  locationDescription = [(ICDevice *)self locationDescription];
+  v21 = [v19 stringWithFormat:@"%@", locationDescription];
+  [dictionary setObject:v21 forKeyedSubscript:@"locationDescription"];
 
   v22 = MEMORY[0x1E696AEC0];
-  v23 = [(ICDevice *)self iconPath];
-  v24 = [v22 stringWithFormat:@"%@", v23];
-  [v3 setObject:v24 forKeyedSubscript:@"iconPath"];
+  iconPath = [(ICDevice *)self iconPath];
+  v24 = [v22 stringWithFormat:@"%@", iconPath];
+  [dictionary setObject:v24 forKeyedSubscript:@"iconPath"];
 
   v25 = [MEMORY[0x1E696AEC0] stringWithFormat:@"0x%08lx", -[ICDevice type](self, "type")];
-  [v3 setObject:v25 forKeyedSubscript:@"type"];
+  [dictionary setObject:v25 forKeyedSubscript:@"type"];
 
   v26 = MEMORY[0x1E696AEC0];
-  v27 = [(ICDevice *)self UUIDString];
-  v28 = [v26 stringWithFormat:@"%@", v27];
-  [v3 setObject:v28 forKeyedSubscript:@"UUIDString"];
+  uUIDString = [(ICDevice *)self UUIDString];
+  v28 = [v26 stringWithFormat:@"%@", uUIDString];
+  [dictionary setObject:v28 forKeyedSubscript:@"UUIDString"];
 
   v29 = MEMORY[0x1E696AEC0];
-  v30 = [(ICDevice *)self persistentIDString];
-  v31 = [v29 stringWithFormat:@"%@", v30];
-  [v3 setObject:v31 forKeyedSubscript:@"persistentIDString"];
+  persistentIDString = [(ICDevice *)self persistentIDString];
+  v31 = [v29 stringWithFormat:@"%@", persistentIDString];
+  [dictionary setObject:v31 forKeyedSubscript:@"persistentIDString"];
 
-  v32 = [(ICDevice *)self capabilities];
-  v33 = [v32 count];
+  capabilities = [(ICDevice *)self capabilities];
+  v33 = [capabilities count];
 
   if (v33)
   {
-    v34 = [(ICDevice *)self capabilities];
-    [v3 setObject:v34 forKeyedSubscript:@"capabilities"];
+    capabilities2 = [(ICDevice *)self capabilities];
+    [dictionary setObject:capabilities2 forKeyedSubscript:@"capabilities"];
   }
 
   v35 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s", "NO"];
-  [v3 setObject:v35 forKeyedSubscript:@"shared"];
+  [dictionary setObject:v35 forKeyedSubscript:@"shared"];
 
   v36 = MEMORY[0x1E696AEC0];
-  v37 = [(ICDevice *)self transportType];
-  v38 = [v36 stringWithFormat:@"%@", v37];
-  [v3 setObject:v38 forKeyedSubscript:@"transportType"];
+  transportType = [(ICDevice *)self transportType];
+  v38 = [v36 stringWithFormat:@"%@", transportType];
+  [dictionary setObject:v38 forKeyedSubscript:@"transportType"];
 
-  v39 = [(ICDevice *)self transportType];
+  transportType2 = [(ICDevice *)self transportType];
 
-  if (v39 == @"ICTransportTypeUSB")
+  if (transportType2 == @"ICTransportTypeUSB")
   {
     v41 = [MEMORY[0x1E696AEC0] stringWithFormat:@"0x%08x", -[ICDevice usbLocationID](self, "usbLocationID")];
-    [v3 setObject:v41 forKeyedSubscript:@"usbLocationID"];
+    [dictionary setObject:v41 forKeyedSubscript:@"usbLocationID"];
 
     v42 = [MEMORY[0x1E696AEC0] stringWithFormat:@"0x%04x", -[ICDevice usbProductID](self, "usbProductID")];
-    [v3 setObject:v42 forKeyedSubscript:@"usbProductID"];
+    [dictionary setObject:v42 forKeyedSubscript:@"usbProductID"];
 
     v43 = [MEMORY[0x1E696AEC0] stringWithFormat:@"0x%04x", -[ICDevice usbVendorID](self, "usbVendorID")];
-    [v3 setObject:v43 forKeyedSubscript:@"usbVendorID"];
+    [dictionary setObject:v43 forKeyedSubscript:@"usbVendorID"];
 
     v44 = [MEMORY[0x1E696AEC0] stringWithFormat:@"0x%02x", -[ICDevice usbIntefaceClass](self, "usbIntefaceClass")];
-    [v3 setObject:v44 forKeyedSubscript:@"usbIntefaceClass"];
+    [dictionary setObject:v44 forKeyedSubscript:@"usbIntefaceClass"];
 
     v45 = [MEMORY[0x1E696AEC0] stringWithFormat:@"0x%02x", -[ICDevice usbInterfaceSubClass](self, "usbInterfaceSubClass")];
-    [v3 setObject:v45 forKeyedSubscript:@"usbInterfaceSubClass"];
+    [dictionary setObject:v45 forKeyedSubscript:@"usbInterfaceSubClass"];
 
-    v40 = [MEMORY[0x1E696AEC0] stringWithFormat:@"0x%02x", -[ICDevice usbInterfaceProtocol](self, "usbInterfaceProtocol")];
-    [v3 setObject:v40 forKeyedSubscript:@"usbInterfaceProtocol"];
+    transportType3 = [MEMORY[0x1E696AEC0] stringWithFormat:@"0x%02x", -[ICDevice usbInterfaceProtocol](self, "usbInterfaceProtocol")];
+    [dictionary setObject:transportType3 forKeyedSubscript:@"usbInterfaceProtocol"];
   }
 
   else
   {
-    v40 = [(ICDevice *)self transportType];
+    transportType3 = [(ICDevice *)self transportType];
   }
 
-  v46 = [v3 description];
+  v46 = [dictionary description];
 
   return v46;
 }
@@ -469,7 +469,7 @@ void __28__ICDevice_notifyObservers___block_invoke(uint64_t a1)
     v12 = v7;
     v13 = v11;
     *buf = 136446466;
-    v16 = [(__CFString *)v7 UTF8String];
+    uTF8String = [(__CFString *)v7 UTF8String];
     v17 = 2114;
     v18 = v10;
     _os_log_impl(&dword_1C6F19000, v13, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -536,15 +536,15 @@ void __39__ICDevice_requestEjectWithCompletion___block_invoke(uint64_t a1)
 - (NSArray)capabilities
 {
   v3 = MEMORY[0x1E695DF70];
-  v4 = [(ICDevice *)self deviceCapabilities];
-  v5 = [v4 allObjects];
-  v6 = [v3 arrayWithArray:v5];
+  deviceCapabilities = [(ICDevice *)self deviceCapabilities];
+  allObjects = [deviceCapabilities allObjects];
+  v6 = [v3 arrayWithArray:allObjects];
 
-  v7 = [(ICDevice *)self modulePath];
-  v8 = [v7 lastPathComponent];
-  v9 = [v8 stringByDeletingPathExtension];
+  modulePath = [(ICDevice *)self modulePath];
+  lastPathComponent = [modulePath lastPathComponent];
+  stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
 
-  if (([v9 isEqualToString:@"PTPCamera"] & 1) != 0 || objc_msgSend(v9, "isEqualToString:", @"PTPIPCamera"))
+  if (([stringByDeletingPathExtension isEqualToString:@"PTPCamera"] & 1) != 0 || objc_msgSend(stringByDeletingPathExtension, "isEqualToString:", @"PTPIPCamera"))
   {
     [v6 addObject:@"ICCameraDeviceCanAcceptPTPCommands"];
   }
@@ -552,16 +552,16 @@ void __39__ICDevice_requestEjectWithCompletion___block_invoke(uint64_t a1)
   return v6;
 }
 
-- (void)addCapability:(id)a3
+- (void)addCapability:(id)capability
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  capabilityCopy = capability;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v5 = [(ICDevice *)self capabilities];
-  v6 = [v5 copy];
+  capabilities = [(ICDevice *)self capabilities];
+  v6 = [capabilities copy];
 
   v7 = [v6 countByEnumeratingWithState:&v21 objects:v29 count:16];
   if (v7)
@@ -578,7 +578,7 @@ void __39__ICDevice_requestEjectWithCompletion___block_invoke(uint64_t a1)
           objc_enumerationMutation(v6);
         }
 
-        if ([*(*(&v21 + 1) + 8 * v10) isEqualToString:v4])
+        if ([*(*(&v21 + 1) + 8 * v10) isEqualToString:capabilityCopy])
         {
 
           goto LABEL_15;
@@ -606,22 +606,22 @@ void __39__ICDevice_requestEjectWithCompletion___block_invoke(uint64_t a1)
     v11 = [v12 stringByAppendingString:@".."];
   }
 
-  v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@", v4];
+  capabilityCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@", capabilityCopy];
   v14 = *MEMORY[0x1E69A8B08];
   if (os_log_type_enabled(*MEMORY[0x1E69A8B08], OS_LOG_TYPE_DEFAULT))
   {
     v15 = v11;
     v16 = v14;
-    v17 = [(__CFString *)v11 UTF8String];
+    uTF8String = [(__CFString *)v11 UTF8String];
     *buf = 136446466;
-    v26 = v17;
+    v26 = uTF8String;
     v27 = 2114;
-    v28 = v13;
+    v28 = capabilityCopy;
     _os_log_impl(&dword_1C6F19000, v16, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
   }
 
-  v18 = [(ICDevice *)self deviceCapabilities];
-  [v18 addObject:v4];
+  deviceCapabilities = [(ICDevice *)self deviceCapabilities];
+  [deviceCapabilities addObject:capabilityCopy];
 
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -654,16 +654,16 @@ void __26__ICDevice_addCapability___block_invoke(uint64_t a1)
   [*(a1 + 32) didChangeValueForKey:{@"capabilities", v5, v6, v7, v8}];
 }
 
-- (void)removeCapability:(id)a3
+- (void)removeCapability:(id)capability
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  capabilityCopy = capability;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [(ICDevice *)self capabilities];
-  v6 = [v5 copy];
+  capabilities = [(ICDevice *)self capabilities];
+  v6 = [capabilities copy];
 
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
@@ -680,10 +680,10 @@ void __26__ICDevice_addCapability___block_invoke(uint64_t a1)
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
-        if ([v11 isEqualToString:v4])
+        if ([v11 isEqualToString:capabilityCopy])
         {
-          v12 = [(ICDevice *)self deviceCapabilities];
-          [v12 removeObject:v11];
+          deviceCapabilities = [(ICDevice *)self deviceCapabilities];
+          [deviceCapabilities removeObject:v11];
 
           block[0] = MEMORY[0x1E69E9820];
           block[1] = 3221225472;
@@ -729,40 +729,40 @@ void __29__ICDevice_removeCapability___block_invoke(uint64_t a1)
   [*(a1 + 32) didChangeValueForKey:{@"capabilities", v5, v6, v7, v8}];
 }
 
-- (void)imageCaptureEventNotification:(id)a3 completion:(id)a4
+- (void)imageCaptureEventNotification:(id)notification completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 objectForKeyedSubscript:@"ICADeviceBrowserDeviceRefKey"];
-  v9 = [v8 unsignedIntValue];
-  v10 = [(ICDevice *)self deviceID];
-  v11 = [v10 unsignedIntValue];
+  notificationCopy = notification;
+  completionCopy = completion;
+  v8 = [notificationCopy objectForKeyedSubscript:@"ICADeviceBrowserDeviceRefKey"];
+  unsignedIntValue = [v8 unsignedIntValue];
+  deviceID = [(ICDevice *)self deviceID];
+  unsignedIntValue2 = [deviceID unsignedIntValue];
 
-  if (v9 == v11)
+  if (unsignedIntValue == unsignedIntValue2)
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __53__ICDevice_imageCaptureEventNotification_completion___block_invoke;
     block[3] = &unk_1E829CCA8;
     block[4] = self;
-    v14 = v6;
-    v15 = v7;
+    v14 = notificationCopy;
+    v15 = completionCopy;
     ICPerformBlockOnMainThread(block);
   }
 
   else
   {
     v12 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.ImageCaptureCore" code:-9922 userInfo:0];
-    (*(v7 + 2))(v7, v12);
+    (*(completionCopy + 2))(completionCopy, v12);
   }
 }
 
-- (void)updateCapabilities:(id)a3
+- (void)updateCapabilities:(id)capabilities
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 count])
+  capabilitiesCopy = capabilities;
+  v5 = capabilitiesCopy;
+  if (capabilitiesCopy && [capabilitiesCopy count])
   {
     v21 = 0u;
     v22 = 0u;
@@ -789,19 +789,19 @@ void __29__ICDevice_removeCapability___block_invoke(uint64_t a1)
         }
 
         v11 = *(*(&v19 + 1) + 8 * v10);
-        v12 = [v11 unsignedIntValue];
-        if (v12 > 1701471586)
+        unsignedIntValue = [v11 unsignedIntValue];
+        if (unsignedIntValue > 1701471586)
         {
-          if (v12 > 1819238755)
+          if (unsignedIntValue > 1819238755)
           {
-            if (v12 == 1819238756)
+            if (unsignedIntValue == 1819238756)
             {
               v13 = @"ICCameraDeviceCanReceiveFile";
             }
 
             else
             {
-              if (v12 != 1935895659)
+              if (unsignedIntValue != 1935895659)
               {
                 goto LABEL_30;
               }
@@ -813,12 +813,12 @@ void __29__ICDevice_removeCapability___block_invoke(uint64_t a1)
           else
           {
             v14 = @"ICDeviceCanEjectOrDisconnect";
-            if (v12 == 1701471587)
+            if (unsignedIntValue == 1701471587)
             {
               goto LABEL_28;
             }
 
-            if (v12 != 1751476582)
+            if (unsignedIntValue != 1751476582)
             {
 LABEL_30:
               v15 = [MEMORY[0x1E696AEC0] stringFromOSType:{objc_msgSend(v11, "unsignedIntValue")}];
@@ -829,16 +829,16 @@ LABEL_30:
           }
         }
 
-        else if (v12 > 1684368432)
+        else if (unsignedIntValue > 1684368432)
         {
-          if (v12 == 1684368433)
+          if (unsignedIntValue == 1684368433)
           {
             v13 = @"ICCameraDeviceCanDeleteOneFile";
           }
 
           else
           {
-            if (v12 != 1684368481)
+            if (unsignedIntValue != 1684368481)
             {
               goto LABEL_30;
             }
@@ -847,14 +847,14 @@ LABEL_30:
           }
         }
 
-        else if (v12 == 1667460658)
+        else if (unsignedIntValue == 1667460658)
         {
           v13 = @"ICCameraDeviceCanTakePictureUsingShutterReleaseOnCamera";
         }
 
         else
         {
-          if (v12 != 1667460713)
+          if (unsignedIntValue != 1667460713)
           {
             goto LABEL_30;
           }
@@ -897,33 +897,33 @@ LABEL_32:
   autolaunchApplicationPath = self->_autolaunchApplicationPath;
   if (autolaunchApplicationPath)
   {
-    v4 = [(NSString *)autolaunchApplicationPath stringByExpandingTildeInPath];
+    stringByExpandingTildeInPath = [(NSString *)autolaunchApplicationPath stringByExpandingTildeInPath];
   }
 
   else
   {
-    v4 = &stru_1F4691338;
+    stringByExpandingTildeInPath = &stru_1F4691338;
   }
 
-  return v4;
+  return stringByExpandingTildeInPath;
 }
 
-- (id)valueForUndefinedKey:(id)a3
+- (id)valueForUndefinedKey:(id)key
 {
-  if ([a3 isEqual:@"icon"])
+  if ([key isEqual:@"icon"])
   {
-    v4 = [(ICDevice *)self icon];
+    icon = [(ICDevice *)self icon];
   }
 
   else
   {
-    v4 = 0;
+    icon = 0;
   }
 
-  return v4;
+  return icon;
 }
 
-- (void)cleanupDeviceWithErrorCode:(id)a3 completionBlock:(id)a4
+- (void)cleanupDeviceWithErrorCode:(id)code completionBlock:(id)block
 {
   connectionID = self->_connectionID;
   self->_connectionID = 0;
@@ -932,8 +932,8 @@ LABEL_32:
 
 - (void)removeCapabilities
 {
-  v2 = [(ICDevice *)self deviceCapabilities];
-  [v2 removeAllObjects];
+  deviceCapabilities = [(ICDevice *)self deviceCapabilities];
+  [deviceCapabilities removeAllObjects];
 }
 
 - (void)setAutolaunchApplicationPath:(NSString *)autolaunchApplicationPath

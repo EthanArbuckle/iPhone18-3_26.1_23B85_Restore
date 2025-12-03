@@ -22,20 +22,20 @@
 
 + (id)frameworkUserSettings
 {
-  v2 = [MEMORY[0x1E696AAE8] mainBundle];
-  v3 = [v2 bundleIdentifier];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
 
-  if (v3 && [v3 isEqualToString:@"com.apple.siri.DialogEngine"])
+  if (bundleIdentifier && [bundleIdentifier isEqualToString:@"com.apple.siri.DialogEngine"])
   {
-    v4 = [MEMORY[0x1E695E000] standardUserDefaults];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
   }
 
   else
   {
-    v4 = [objc_alloc(MEMORY[0x1E695E000]) initWithSuiteName:@"com.apple.siri.DialogEngine"];
+    standardUserDefaults = [objc_alloc(MEMORY[0x1E695E000]) initWithSuiteName:@"com.apple.siri.DialogEngine"];
   }
 
-  v5 = v4;
+  v5 = standardUserDefaults;
 
   return v5;
 }

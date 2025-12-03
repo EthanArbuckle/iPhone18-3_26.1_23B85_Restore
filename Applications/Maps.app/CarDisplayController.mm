@@ -6,9 +6,9 @@
 + (unint64_t)maximumListLength;
 + (void)_updateCarIntegrationState;
 + (void)launchPerformanceSetup;
-- (BOOL)_shouldSendEvent:(id)a3 toCarDisplayWindow:(id)a4;
-- (BOOL)_validateTransitionFromState:(unint64_t)a3 toState:(unint64_t)a4;
-- (BOOL)activelyOnScreen:(id *)a3;
+- (BOOL)_shouldSendEvent:(id)event toCarDisplayWindow:(id)window;
+- (BOOL)_validateTransitionFromState:(unint64_t)state toState:(unint64_t)toState;
+- (BOOL)activelyOnScreen:(id *)screen;
 - (BOOL)isAnyCarSceneHostingDrivingNavigation;
 - (BOOL)isAnyCarSceneHostingNavigation;
 - (BOOL)isCarAppSceneHostingNavigation;
@@ -27,43 +27,43 @@
 - (double)_activationDelay;
 - (id)availableCarPlayScreen;
 - (id)contextsForCurrentAppState;
-- (id)presentInterruptionOfKind:(int64_t)a3 userInfo:(id)a4 completionHandler:(id)a5;
-- (id)processDirectionItem:(id)a3 userInfo:(id)a4;
-- (id)processSearchFieldItem:(id)a3 searchInfo:(id)a4 userInfo:(id)a5;
+- (id)presentInterruptionOfKind:(int64_t)kind userInfo:(id)info completionHandler:(id)handler;
+- (id)processDirectionItem:(id)item userInfo:(id)info;
+- (id)processSearchFieldItem:(id)item searchInfo:(id)info userInfo:(id)userInfo;
 - (int64_t)connectionType;
 - (int64_t)touchscreenFidelity;
 - (unint64_t)primaryInteractionModel;
 - (unint64_t)supportedInteractionModels;
-- (void)_carDisplayDidFinishLaunching:(id)a3;
-- (void)_carSessionControllerObserversDidChange:(id)a3;
+- (void)_carDisplayDidFinishLaunching:(id)launching;
+- (void)_carSessionControllerObserversDidChange:(id)change;
 - (void)_carSessionController_updateNavigationHostingState;
-- (void)_clearExistingTimeoutAssertionIfNeededAfterDelay:(double)a3;
+- (void)_clearExistingTimeoutAssertionIfNeededAfterDelay:(double)delay;
 - (void)_destroyChrome;
 - (void)_didBecomeActive;
 - (void)_didEnterBackground;
 - (void)_externalDeviceUpdated;
-- (void)_externalNavigationOwnershipUpdated:(id)a3;
-- (void)_geoServiceDidUpdateCountryConfiguration:(id)a3;
-- (void)_iOSBasedPlaceCardDidDismiss:(id)a3;
-- (void)_iOSBasedPlaceCardDidPresent:(id)a3;
-- (void)_idleTimeoutFired:(id)a3;
+- (void)_externalNavigationOwnershipUpdated:(id)updated;
+- (void)_geoServiceDidUpdateCountryConfiguration:(id)configuration;
+- (void)_iOSBasedPlaceCardDidDismiss:(id)dismiss;
+- (void)_iOSBasedPlaceCardDidPresent:(id)present;
+- (void)_idleTimeoutFired:(id)fired;
 - (void)_mapsCar_rebuildContextsForCurrentAppState;
-- (void)_mapsCar_scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
-- (void)_popIfTopModeIsInvalidAfterReconnection:(BOOL)a3;
+- (void)_mapsCar_scene:(id)car_scene willConnectToSession:(id)session options:(id)options;
+- (void)_popIfTopModeIsInvalidAfterReconnection:(BOOL)reconnection;
 - (void)_prepareChromeForFirstUse;
 - (void)_prepareNearby;
 - (void)_presentQueuedInterruptionIfNeeded;
-- (void)_reactivateChromeAfterDelay:(double)a3;
+- (void)_reactivateChromeAfterDelay:(double)delay;
 - (void)_registerCarInfoForGEOLogging;
-- (void)_removeQueuedInterruptionWithKey:(id)a3 animated:(BOOL)a4;
+- (void)_removeQueuedInterruptionWithKey:(id)key animated:(BOOL)animated;
 - (void)_repeatGuidanceForExternalDevice;
-- (void)_screenDidConnect:(id)a3;
-- (void)_screenDidDisconnect:(id)a3;
-- (void)_searchSessionWillStart:(id)a3;
+- (void)_screenDidConnect:(id)connect;
+- (void)_screenDidDisconnect:(id)disconnect;
+- (void)_searchSessionWillStart:(id)start;
 - (void)_sendMapsSuggestionsSignals;
-- (void)_setChromeSuppressed:(BOOL)a3;
+- (void)_setChromeSuppressed:(BOOL)suppressed;
 - (void)_setNeedsScreenUpdate;
-- (void)_setOverrideShouldSuppressChrome:(BOOL)a3 refreshScreenConnection:(BOOL)a4;
+- (void)_setOverrideShouldSuppressChrome:(BOOL)chrome refreshScreenConnection:(BOOL)connection;
 - (void)_setupCarPlayIfNeeded;
 - (void)_setupClusterSuggestionControllerIfNeeded;
 - (void)_startObservingSharedAppState;
@@ -78,34 +78,34 @@
 - (void)_willEnterForeground;
 - (void)_willResignActive;
 - (void)dealloc;
-- (void)detourToMapItem:(id)a3;
-- (void)detourToWaypoint:(id)a3 replacingWaypoint:(id)a4;
-- (void)didFinishLaunchingSuspendedWithOptions:(id)a3;
-- (void)generateAttachmentsForRadarDraft:(id)a3 withCompletion:(id)a4;
-- (void)observerDeliveryPolicyDidChange:(id)a3;
+- (void)detourToMapItem:(id)item;
+- (void)detourToWaypoint:(id)waypoint replacingWaypoint:(id)replacingWaypoint;
+- (void)didFinishLaunchingSuspendedWithOptions:(id)options;
+- (void)generateAttachmentsForRadarDraft:(id)draft withCompletion:(id)completion;
+- (void)observerDeliveryPolicyDidChange:(id)change;
 - (void)prepareCarPlay;
-- (void)processItem:(id)a3 userInfo:(id)a4;
-- (void)refreshedEVChargersReceieved:(id)a3;
+- (void)processItem:(id)item userInfo:(id)info;
+- (void)refreshedEVChargersReceieved:(id)receieved;
 - (void)runNewScreenRefreshTasksIfNeeded;
-- (void)sceneDidBecomeActive:(id)a3;
-- (void)sceneDidDisconnect:(id)a3;
-- (void)sceneDidEnterBackground:(id)a3;
-- (void)sceneWillEnterForeground:(id)a3;
-- (void)sceneWillResignActive:(id)a3;
-- (void)searchSessionDidChangeSearchFieldItem:(id)a3;
-- (void)searchSessionDidChangeSearchResults:(id)a3;
-- (void)searchSessionDidFail:(id)a3;
-- (void)searchSessionDidInvalidate:(id)a3 reason:(unint64_t)a4;
-- (void)searchSessionWillPerformSearch:(id)a3;
-- (void)session:(id)a3 didUpdateConfiguration:(id)a4;
-- (void)sessionDidConnect:(id)a3;
-- (void)sessionDidDisconnect:(id)a3;
-- (void)setMapsSuggestionsController:(id)a3;
-- (void)setScreen:(id)a3;
-- (void)setState:(unint64_t)a3;
-- (void)setWasConnectedToAnyCarScene:(BOOL)a3;
+- (void)sceneDidBecomeActive:(id)active;
+- (void)sceneDidDisconnect:(id)disconnect;
+- (void)sceneDidEnterBackground:(id)background;
+- (void)sceneWillEnterForeground:(id)foreground;
+- (void)sceneWillResignActive:(id)active;
+- (void)searchSessionDidChangeSearchFieldItem:(id)item;
+- (void)searchSessionDidChangeSearchResults:(id)results;
+- (void)searchSessionDidFail:(id)fail;
+- (void)searchSessionDidInvalidate:(id)invalidate reason:(unint64_t)reason;
+- (void)searchSessionWillPerformSearch:(id)search;
+- (void)session:(id)session didUpdateConfiguration:(id)configuration;
+- (void)sessionDidConnect:(id)connect;
+- (void)sessionDidDisconnect:(id)disconnect;
+- (void)setMapsSuggestionsController:(id)controller;
+- (void)setScreen:(id)screen;
+- (void)setState:(unint64_t)state;
+- (void)setWasConnectedToAnyCarScene:(BOOL)scene;
 - (void)updateForCurrentEnablingState;
-- (void)updateMapsSuggestionsSignalForMapType:(int)a3;
+- (void)updateMapsSuggestionsSignalForMapType:(int)type;
 @end
 
 @implementation CarDisplayController
@@ -116,7 +116,7 @@
   block[1] = 3221225472;
   block[2] = sub_10000676C;
   block[3] = &unk_1016611D0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10195F910 != -1)
   {
     dispatch_once(&qword_10195F910, block);
@@ -139,7 +139,7 @@
     return 0;
   }
 
-  return [a1 _isCarIntegrationSupported];
+  return [self _isCarIntegrationSupported];
 }
 
 + (BOOL)_isCarIntegrationSupported
@@ -147,7 +147,7 @@
   v2 = qword_10193CE88;
   if (qword_10193CE88 == -1)
   {
-    [a1 _updateCarIntegrationState];
+    [self _updateCarIntegrationState];
     v2 = qword_10193CE88;
   }
 
@@ -215,35 +215,35 @@
 
 - (void)updateForCurrentEnablingState
 {
-  v3 = [objc_opt_class() enablingState];
+  enablingState = [objc_opt_class() enablingState];
   v4 = sub_100006E1C();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
     v6 = 134217984;
-    v7 = v3;
+    v7 = enablingState;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEBUG, "Updating for current enabling state (state:%ld)", &v6, 0xCu);
   }
 
-  if (v3 >= 2)
+  if (enablingState >= 2)
   {
-    if (v3 == 2)
+    if (enablingState == 2)
     {
       [(CarDisplayController *)self _setOverrideShouldSuppressChrome:0 refreshScreenConnection:0];
       [(CarDisplayController *)self _tearDownCarPlayIfNeeded];
       goto LABEL_8;
     }
 
-    if (v3 != 3)
+    if (enablingState != 3)
     {
       return;
     }
   }
 
-  [(CarDisplayController *)self _setOverrideShouldSuppressChrome:v3 == 1 refreshScreenConnection:[(CarDisplayController *)self state]!= 0];
+  [(CarDisplayController *)self _setOverrideShouldSuppressChrome:enablingState == 1 refreshScreenConnection:[(CarDisplayController *)self state]!= 0];
   [(CarDisplayController *)self _setupCarPlayIfNeeded];
 LABEL_8:
-  v5 = [(CarDisplayController *)self delegate];
-  [v5 carDisplayControllerDidUpdateNavigationVisibility:self];
+  delegate = [(CarDisplayController *)self delegate];
+  [delegate carDisplayControllerDidUpdateNavigationVisibility:self];
 }
 
 + (int64_t)enablingState
@@ -253,27 +253,27 @@ LABEL_8:
 
   if (v3)
   {
-    v4 = [v3 integerValue];
+    integerValue = [v3 integerValue];
     v5 = sub_100006E1C();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
       v7 = 134217984;
-      v8 = v4;
+      v8 = integerValue;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "Overriding enablingState from defaults (state:%ld)", &v7, 0xCu);
     }
   }
 
   else if (+[CarDisplayController isCarPlayAvailable])
   {
-    v4 = 0;
+    integerValue = 0;
   }
 
   else
   {
-    v4 = 2;
+    integerValue = 2;
   }
 
-  return v4;
+  return integerValue;
 }
 
 - (void)_setupCarPlayIfNeeded
@@ -332,10 +332,10 @@ LABEL_8:
 
 - (void)_setupClusterSuggestionControllerIfNeeded
 {
-  v3 = [(CarDisplayController *)self carSessionStatus];
-  v4 = [v3 currentSession];
+  carSessionStatus = [(CarDisplayController *)self carSessionStatus];
+  currentSession = [carSessionStatus currentSession];
 
-  if (v4)
+  if (currentSession)
   {
     if (self->_clusterSuggestionController)
     {
@@ -374,42 +374,42 @@ LABEL_8:
 
 - (BOOL)isAnyCarSceneHostingNavigation
 {
-  v3 = [(CarDisplayController *)self isCurrentlyConnectedToAnyCarScene];
-  if (v3)
+  isCurrentlyConnectedToAnyCarScene = [(CarDisplayController *)self isCurrentlyConnectedToAnyCarScene];
+  if (isCurrentlyConnectedToAnyCarScene)
   {
-    v4 = [(CarDisplayController *)self platformController];
-    v5 = [v4 currentSession];
+    platformController = [(CarDisplayController *)self platformController];
+    currentSession = [platformController currentSession];
 
     objc_opt_class();
-    LOBYTE(v4) = objc_opt_isKindOfClass();
+    LOBYTE(platformController) = objc_opt_isKindOfClass();
 
-    LOBYTE(v3) = v4 & (v5 != 0);
+    LOBYTE(isCurrentlyConnectedToAnyCarScene) = platformController & (currentSession != 0);
   }
 
-  return v3;
+  return isCurrentlyConnectedToAnyCarScene;
 }
 
 - (BOOL)isCurrentlyConnectedToAnyCarScene
 {
   v3 = +[CarSessionController sharedInstance];
-  v4 = [v3 sessionObservers];
-  v5 = [v4 count];
+  sessionObservers = [v3 sessionObservers];
+  v5 = [sessionObservers count];
 
   return (v5 != 1 || [(CarDisplayController *)self state]!= 1) && v5 != 0;
 }
 
 - (BOOL)isAnyCarSceneHostingDrivingNavigation
 {
-  v3 = [(CarDisplayController *)self isAnyCarSceneHostingNavigation];
-  if (v3)
+  isAnyCarSceneHostingNavigation = [(CarDisplayController *)self isAnyCarSceneHostingNavigation];
+  if (isAnyCarSceneHostingNavigation)
   {
-    v4 = [(CarDisplayController *)self platformController];
-    v5 = [v4 currentSession];
+    platformController = [(CarDisplayController *)self platformController];
+    currentSession = [platformController currentSession];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
+      v6 = currentSession;
     }
 
     else
@@ -419,11 +419,11 @@ LABEL_8:
 
     v7 = v6;
 
-    v8 = [v7 currentTransportType];
-    LOBYTE(v3) = v8 == 1;
+    currentTransportType = [v7 currentTransportType];
+    LOBYTE(isAnyCarSceneHostingNavigation) = currentTransportType == 1;
   }
 
-  return v3;
+  return isAnyCarSceneHostingNavigation;
 }
 
 + (void)launchPerformanceSetup
@@ -436,9 +436,9 @@ LABEL_8:
 
 - (UITraitCollection)screenTraitCollection
 {
-  v3 = [(CarDisplayController *)self screen];
+  screen = [(CarDisplayController *)self screen];
 
-  if (v3)
+  if (screen)
   {
     [(CarDisplayController *)self screen];
   }
@@ -448,24 +448,24 @@ LABEL_8:
     +[UIScreen _carScreen];
   }
   v4 = ;
-  v5 = [v4 traitCollection];
+  traitCollection = [v4 traitCollection];
 
-  return v5;
+  return traitCollection;
 }
 
 - (BOOL)isCurrentlyConnectedToCarAppScene
 {
-  v2 = [(CarDisplayController *)self screen];
-  v3 = v2 != 0;
+  screen = [(CarDisplayController *)self screen];
+  v3 = screen != 0;
 
   return v3;
 }
 
 - (void)_willResignActive
 {
-  v3 = [(CarDisplayController *)self windowScene];
+  windowScene = [(CarDisplayController *)self windowScene];
 
-  if (v3)
+  if (windowScene)
   {
     v4 = sub_100006E1C();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -488,19 +488,19 @@ LABEL_8:
 
 - (BOOL)isCarAppSceneHostingNavigation
 {
-  v3 = [(CarDisplayController *)self isCurrentlyConnectedToCarAppScene];
-  if (v3)
+  isCurrentlyConnectedToCarAppScene = [(CarDisplayController *)self isCurrentlyConnectedToCarAppScene];
+  if (isCurrentlyConnectedToCarAppScene)
   {
-    v4 = [(CarDisplayController *)self platformController];
-    v5 = [v4 currentSession];
+    platformController = [(CarDisplayController *)self platformController];
+    currentSession = [platformController currentSession];
 
     objc_opt_class();
-    LOBYTE(v4) = objc_opt_isKindOfClass();
+    LOBYTE(platformController) = objc_opt_isKindOfClass();
 
-    LOBYTE(v3) = v4 & (v5 != 0);
+    LOBYTE(isCurrentlyConnectedToCarAppScene) = platformController & (currentSession != 0);
   }
 
-  return v3;
+  return isCurrentlyConnectedToCarAppScene;
 }
 
 - (CarRouteGeniusManager)routeGeniusManager
@@ -521,9 +521,9 @@ LABEL_8:
 + (unint64_t)maximumListLength
 {
   v2 = +[MapsExternalDevice sharedInstance];
-  v3 = [v2 limitLongLists];
+  limitLongLists = [v2 limitLongLists];
 
-  if (v3)
+  if (limitLongLists)
   {
     return 12;
   }
@@ -543,26 +543,26 @@ LABEL_8:
   return result;
 }
 
-- (void)generateAttachmentsForRadarDraft:(id)a3 withCompletion:(id)a4
+- (void)generateAttachmentsForRadarDraft:(id)draft withCompletion:(id)completion
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100FA5518;
   block[3] = &unk_1016605F8;
   block[4] = self;
-  v8 = a3;
-  v9 = a4;
-  v5 = v9;
-  v6 = v8;
+  draftCopy = draft;
+  completionCopy = completion;
+  v5 = completionCopy;
+  v6 = draftCopy;
   dispatch_async(&_dispatch_main_q, block);
 }
 
 - (void)_registerCarInfoForGEOLogging
 {
-  v2 = [(CarDisplayController *)self connectedCarMainScreenInfo];
+  connectedCarMainScreenInfo = [(CarDisplayController *)self connectedCarMainScreenInfo];
   v3 = sub_100006E1C();
   v4 = os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG);
-  if (v2)
+  if (connectedCarMainScreenInfo)
   {
     if (v4)
     {
@@ -583,18 +583,18 @@ LABEL_6:
   }
 
   v7 = +[GEOAPSharedStateData sharedData];
-  [v7 setCarPlayInfo:v2];
+  [v7 setCarPlayInfo:connectedCarMainScreenInfo];
 }
 
-- (void)_setOverrideShouldSuppressChrome:(BOOL)a3 refreshScreenConnection:(BOOL)a4
+- (void)_setOverrideShouldSuppressChrome:(BOOL)chrome refreshScreenConnection:(BOOL)connection
 {
-  v4 = a4;
-  v5 = a3;
+  connectionCopy = connection;
+  chromeCopy = chrome;
   v7 = sub_100006E1C();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     v8 = @"NO";
-    if (v5)
+    if (chromeCopy)
     {
       v8 = @"YES";
     }
@@ -605,25 +605,25 @@ LABEL_6:
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "%@", &v10, 0xCu);
   }
 
-  byte_10195F931 = v5;
-  if (v4)
+  byte_10195F931 = chromeCopy;
+  if (connectionCopy)
   {
     [(CarDisplayController *)self _setNeedsScreenUpdate];
   }
 }
 
-- (void)didFinishLaunchingSuspendedWithOptions:(id)a3
+- (void)didFinishLaunchingSuspendedWithOptions:(id)options
 {
   if ([(CarDisplayController *)self hasMapsSuggestionsController])
   {
     v4 = +[MapsExternalDevice sharedInstance];
-    v5 = [v4 needsFuel];
+    needsFuel = [v4 needsFuel];
 
     v6 = sub_100006E1C();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
       v7 = @"NO";
-      if (v5)
+      if (needsFuel)
       {
         v7 = @"YES";
       }
@@ -634,18 +634,18 @@ LABEL_6:
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEBUG, "launched suspended, needsFuel=%@", &v10, 0xCu);
     }
 
-    if (v5)
+    if (needsFuel)
     {
-      v9 = [(CarDisplayController *)self mapsSuggestionsController];
-      [v9 setHoldProcessAssertion:1];
+      mapsSuggestionsController = [(CarDisplayController *)self mapsSuggestionsController];
+      [mapsSuggestionsController setHoldProcessAssertion:1];
     }
   }
 }
 
-- (void)_removeQueuedInterruptionWithKey:(id)a3 animated:(BOOL)a4
+- (void)_removeQueuedInterruptionWithKey:(id)key animated:(BOOL)animated
 {
-  v5 = a3;
-  v6 = [(NSUUID *)self->_queuedInterruptionKey isEqual:v5];
+  keyCopy = key;
+  v6 = [(NSUUID *)self->_queuedInterruptionKey isEqual:keyCopy];
   queuedInterruptionDismissalBlock = sub_100006E1C();
   v8 = os_log_type_enabled(queuedInterruptionDismissalBlock, OS_LOG_TYPE_DEFAULT);
   if (v6)
@@ -653,7 +653,7 @@ LABEL_6:
     if (v8)
     {
       v14 = 138412290;
-      v15 = v5;
+      v15 = keyCopy;
       _os_log_impl(&_mh_execute_header, queuedInterruptionDismissalBlock, OS_LOG_TYPE_DEFAULT, "Will remove queued interruption (key:%@)", &v14, 0xCu);
     }
 
@@ -673,7 +673,7 @@ LABEL_6:
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
         v14 = 138412290;
-        v15 = v5;
+        v15 = keyCopy;
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Will fire interruption's dismissal block (key:%@)", &v14, 0xCu);
       }
 
@@ -695,7 +695,7 @@ LABEL_6:
     v14 = 138412546;
     v15 = v13;
     v16 = 2112;
-    v17 = v5;
+    v17 = keyCopy;
     _os_log_impl(&_mh_execute_header, queuedInterruptionDismissalBlock, OS_LOG_TYPE_DEFAULT, "Will not remove queued interruption, (current key:%@, passed key:%@)", &v14, 0x16u);
   }
 }
@@ -773,8 +773,8 @@ LABEL_12:
   v4 = v7;
   v22 = v4;
   v10 = objc_retainBlock(v21);
-  v11 = [(CarDisplayController *)self chromeViewController];
-  v12 = [v11 presentInterruptionOfKind:self->_queuedInterruptionKind userInfo:self->_queuedInterruptionUserInfo completionHandler:v10];
+  chromeViewController = [(CarDisplayController *)self chromeViewController];
+  v12 = [chromeViewController presentInterruptionOfKind:self->_queuedInterruptionKind userInfo:self->_queuedInterruptionUserInfo completionHandler:v10];
   v13 = [v12 copy];
   queuedInterruptionDismissalBlock = self->_queuedInterruptionDismissalBlock;
   self->_queuedInterruptionDismissalBlock = v13;
@@ -791,10 +791,10 @@ LABEL_12:
 LABEL_13:
 }
 
-- (id)presentInterruptionOfKind:(int64_t)a3 userInfo:(id)a4 completionHandler:(id)a5
+- (id)presentInterruptionOfKind:(int64_t)kind userInfo:(id)info completionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
+  infoCopy = info;
+  handlerCopy = handler;
   if ([(CarDisplayController *)self isCurrentlyConnectedToCarAppScene]&& [(CarDisplayController *)self isChromeAvailable])
   {
     v10 = sub_100006E1C();
@@ -804,21 +804,21 @@ LABEL_13:
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Will present interruption immediately in CarChromeViewController", buf, 2u);
     }
 
-    v11 = [(CarDisplayController *)self chromeViewController];
-    v12 = [v11 presentInterruptionOfKind:a3 userInfo:v8 completionHandler:v9];
+    chromeViewController = [(CarDisplayController *)self chromeViewController];
+    v12 = [chromeViewController presentInterruptionOfKind:kind userInfo:infoCopy completionHandler:handlerCopy];
   }
 
   else
   {
-    v13 = [v9 copy];
+    v13 = [handlerCopy copy];
     queuedInterruptionHandler = self->_queuedInterruptionHandler;
     self->_queuedInterruptionHandler = v13;
 
-    v15 = [v8 copy];
+    v15 = [infoCopy copy];
     queuedInterruptionUserInfo = self->_queuedInterruptionUserInfo;
     self->_queuedInterruptionUserInfo = v15;
 
-    self->_queuedInterruptionKind = a3;
+    self->_queuedInterruptionKind = kind;
     v17 = +[NSUUID UUID];
     objc_storeStrong(&self->_queuedInterruptionKey, v17);
     v18 = sub_100006E1C();
@@ -848,9 +848,9 @@ LABEL_13:
 
 - (void)_prepareNearby
 {
-  v2 = [(CarDisplayController *)self chromeViewController];
+  chromeViewController = [(CarDisplayController *)self chromeViewController];
 
-  if (!v2)
+  if (!chromeViewController)
   {
     v3 = sub_100006E1C();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -913,14 +913,14 @@ LABEL_13:
     v6 = +[NSNotificationCenter defaultCenter];
     [v6 addObserver:self selector:"_searchSessionWillStart:" name:@"SearchSessionWillStart" object:0];
 
-    v7 = [(CarDisplayController *)self guidanceObserver];
+    guidanceObserver = [(CarDisplayController *)self guidanceObserver];
   }
 }
 
-- (void)detourToWaypoint:(id)a3 replacingWaypoint:(id)a4
+- (void)detourToWaypoint:(id)waypoint replacingWaypoint:(id)replacingWaypoint
 {
-  v6 = a3;
-  v7 = a4;
+  waypointCopy = waypoint;
+  replacingWaypointCopy = replacingWaypoint;
   if ([(CarDisplayController *)self isCarAppSceneHostingNavigation])
   {
     v33[0] = _NSConcreteStackBlock;
@@ -931,41 +931,41 @@ LABEL_13:
     v8 = objc_retainBlock(v33);
     if (MapsFeature_IsEnabled_DrivingMultiWaypointRoutes())
     {
-      v9 = [(CarDisplayController *)self platformController];
-      v10 = [v9 currentNavigationSession];
-      v11 = [v10 waypointController];
+      platformController = [(CarDisplayController *)self platformController];
+      currentNavigationSession = [platformController currentNavigationSession];
+      waypointController = [currentNavigationSession waypointController];
 
-      if (v11)
+      if (waypointController)
       {
         v12 = sub_100006E1C();
         v13 = os_log_type_enabled(v12, OS_LOG_TYPE_INFO);
-        if (v7)
+        if (replacingWaypointCopy)
         {
           if (v13)
           {
-            v14 = [v7 name];
-            v15 = [v6 name];
+            name = [replacingWaypointCopy name];
+            name2 = [waypointCopy name];
             *buf = 138412546;
-            v35 = v14;
+            v35 = name;
             v36 = 2112;
-            v37 = v15;
+            v37 = name2;
             _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "[MPR] replacing waypoint %@ with %@", buf, 0x16u);
           }
 
-          [v11 replaceWaypoint:v7 with:v6];
+          [waypointController replaceWaypoint:replacingWaypointCopy with:waypointCopy];
         }
 
         else
         {
           if (v13)
           {
-            v30 = [v6 name];
+            name3 = [waypointCopy name];
             *buf = 138412290;
-            v35 = v30;
+            v35 = name3;
             _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "[MPR] inserting new waypoint %@", buf, 0xCu);
           }
 
-          [v11 insertWaypoint:v6];
+          [waypointController insertWaypoint:waypointCopy];
         }
       }
 
@@ -987,23 +987,23 @@ LABEL_13:
       v18 = sub_100006E1C();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
       {
-        v19 = [v6 name];
+        name4 = [waypointCopy name];
         *buf = 138412290;
-        v35 = v19;
+        v35 = name4;
         _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_INFO, "MPR is not enabled, will replace destination with %@", buf, 0xCu);
       }
 
       v20 = +[MNNavigationService sharedService];
-      [v20 updateDestination:v6];
+      [v20 updateDestination:waypointCopy];
 
-      v21 = [(CarDisplayController *)self platformController];
-      v11 = [v21 auxiliaryTasksManager];
+      platformController2 = [(CarDisplayController *)self platformController];
+      waypointController = [platformController2 auxiliaryTasksManager];
 
-      v22 = [v11 routePlanningSessionRouteLoadedNotifier];
-      v23 = [v22 currentRouteHistoryEntry];
+      routePlanningSessionRouteLoadedNotifier = [waypointController routePlanningSessionRouteLoadedNotifier];
+      currentRouteHistoryEntry = [routePlanningSessionRouteLoadedNotifier currentRouteHistoryEntry];
 
-      v24 = [v23 historyEntry];
-      v25 = v24 == 0;
+      historyEntry = [currentRouteHistoryEntry historyEntry];
+      v25 = historyEntry == 0;
 
       v26 = sub_100006E1C();
       v27 = v26;
@@ -1020,11 +1020,11 @@ LABEL_13:
       {
         if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
         {
-          v28 = [(CarDisplayController *)self mapsSuggestionsController];
+          mapsSuggestionsController = [(CarDisplayController *)self mapsSuggestionsController];
           *buf = 138412546;
-          v35 = v23;
+          v35 = currentRouteHistoryEntry;
           v36 = 2112;
-          v37 = v28;
+          v37 = mapsSuggestionsController;
           _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_INFO, "Will interrupt route with history entry: %@, hinting refresh on engine: %@.", buf, 0x16u);
         }
 
@@ -1034,7 +1034,7 @@ LABEL_13:
         v31[2] = sub_100FA7550;
         v31[3] = &unk_1016600B8;
         objc_copyWeak(&v32, buf);
-        [v23 setNavigationInterrupted:1 completion:v31];
+        [currentRouteHistoryEntry setNavigationInterrupted:1 completion:v31];
         objc_destroyWeak(&v32);
         objc_destroyWeak(buf);
       }
@@ -1048,40 +1048,40 @@ LABEL_13:
     v16 = sub_100006E1C();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
-      v17 = [v6 shortDescription];
+      shortDescription = [waypointCopy shortDescription];
       *buf = 138412290;
-      v35 = v17;
+      v35 = shortDescription;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_ERROR, "Dropping detour request to mapItem: %@", buf, 0xCu);
     }
   }
 }
 
-- (void)detourToMapItem:(id)a3
+- (void)detourToMapItem:(id)item
 {
-  v4 = a3;
-  v5 = [v4 _geoMapItem];
-  v16 = [GEOMapItemStorage mapItemStorageForGEOMapItem:v5];
+  itemCopy = item;
+  _geoMapItem = [itemCopy _geoMapItem];
+  v16 = [GEOMapItemStorage mapItemStorageForGEOMapItem:_geoMapItem];
 
   v6 = [[GEOComposedWaypoint alloc] initWithMapItem:v16];
   v7 = +[MNNavigationService sharedService];
-  v8 = [v7 arrivalInfo];
+  arrivalInfo = [v7 arrivalInfo];
 
   v9 = +[MNNavigationService sharedService];
-  v10 = [v9 route];
+  route = [v9 route];
 
-  v11 = [v10 legs];
-  v12 = [v11 objectAtIndex:{objc_msgSend(v8, "legIndex")}];
+  legs = [route legs];
+  v12 = [legs objectAtIndex:{objc_msgSend(arrivalInfo, "legIndex")}];
 
-  v13 = [v4 pointOfInterestCategory];
+  pointOfInterestCategory = [itemCopy pointOfInterestCategory];
 
-  if ([v13 isEqualToString:MKPointOfInterestCategoryEVCharger] && ((objc_msgSend(v8, "isInArrivalState") & 1) != 0 || (objc_msgSend(v8, "isInParkingState") & 1) != 0))
+  if ([pointOfInterestCategory isEqualToString:MKPointOfInterestCategoryEVCharger] && ((objc_msgSend(arrivalInfo, "isInArrivalState") & 1) != 0 || (objc_msgSend(arrivalInfo, "isInParkingState") & 1) != 0))
   {
-    v14 = [v12 chargingStationInfo];
+    chargingStationInfo = [v12 chargingStationInfo];
 
-    if (v14)
+    if (chargingStationInfo)
     {
-      v15 = [v8 destination];
-      [(CarDisplayController *)self detourToWaypoint:v6 replacingWaypoint:v15];
+      destination = [arrivalInfo destination];
+      [(CarDisplayController *)self detourToWaypoint:v6 replacingWaypoint:destination];
 
       goto LABEL_8;
     }
@@ -1098,11 +1098,11 @@ LABEL_8:
 - (void)_repeatGuidanceForExternalDevice
 {
   v2 = +[MNNavigationService sharedService];
-  v3 = [v2 isInNavigatingState];
+  isInNavigatingState = [v2 isInNavigatingState];
 
   v4 = sub_100006E1C();
   v5 = v4;
-  if (v3)
+  if (isInNavigatingState)
   {
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
@@ -1123,9 +1123,9 @@ LABEL_8:
 
 - (void)_updateIOHIDMonitoringAndNotification
 {
-  v3 = [(CarDisplayController *)self isAnyCarSceneHostingNavigation];
+  isAnyCarSceneHostingNavigation = [(CarDisplayController *)self isAnyCarSceneHostingNavigation];
   externalDeviceRepeatGuidanceObserver = self->_externalDeviceRepeatGuidanceObserver;
-  if (v3)
+  if (isAnyCarSceneHostingNavigation)
   {
     if (!externalDeviceRepeatGuidanceObserver)
     {
@@ -1177,12 +1177,12 @@ LABEL_8:
   }
 }
 
-- (id)processDirectionItem:(id)a3 userInfo:(id)a4
+- (id)processDirectionItem:(id)item userInfo:(id)info
 {
-  v6 = a3;
-  if (a4)
+  itemCopy = item;
+  if (info)
   {
-    v7 = [a4 mutableCopy];
+    v7 = [info mutableCopy];
   }
 
   else
@@ -1193,9 +1193,9 @@ LABEL_8:
   v8 = v7;
   [v7 setObject:&off_1016EAC28 forKeyedSubscript:@"DirectionsSessionInitiatorKey"];
   v9 = [v8 copy];
-  v10 = [(CarDisplayController *)self chromeViewController];
-  v11 = [v10 currentTraits];
-  v12 = sub_100D506E0(v6, v11, 0, v9);
+  chromeViewController = [(CarDisplayController *)self chromeViewController];
+  currentTraits = [chromeViewController currentTraits];
+  v12 = sub_100D506E0(itemCopy, currentTraits, 0, v9);
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -1230,27 +1230,27 @@ LABEL_8:
     }
   }
 
-  v13 = [(CarDisplayController *)self platformController];
-  v14 = [v13 currentSession];
+  platformController = [(CarDisplayController *)self platformController];
+  currentSession = [platformController currentSession];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    [v13 replaceCurrentSessionWithSession:v12];
+    [platformController replaceCurrentSessionWithSession:v12];
   }
 
   else
   {
-    [v13 pushSession:v12];
+    [platformController pushSession:v12];
   }
 
   return v12;
 }
 
-- (void)_iOSBasedPlaceCardDidDismiss:(id)a3
+- (void)_iOSBasedPlaceCardDidDismiss:(id)dismiss
 {
-  v4 = a3;
+  dismissCopy = dismiss;
   v5 = sub_100006E1C();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -1258,22 +1258,22 @@ LABEL_8:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Received notification of iOS place card dismissing", &v15, 2u);
   }
 
-  v6 = [v4 object];
+  object = [dismissCopy object];
 
-  if (v6 && ([v6 platformController], v7 = objc_claimAutoreleasedReturnValue(), -[CarDisplayController platformController](self, "platformController"), v8 = objc_claimAutoreleasedReturnValue(), v8, v7, v7 == v8))
+  if (object && ([object platformController], v7 = objc_claimAutoreleasedReturnValue(), -[CarDisplayController platformController](self, "platformController"), v8 = objc_claimAutoreleasedReturnValue(), v8, v7, v7 == v8))
   {
     v12 = sub_100006E1C();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
-      v13 = [v6 placeCardItem];
+      placeCardItem = [object placeCardItem];
       v15 = 138412290;
-      v16 = v13;
+      v16 = placeCardItem;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "Dismissing CarPlay place card to match iOS with place item %@", &v15, 0xCu);
     }
 
     v9 = +[CarChromeModeCoordinator sharedInstance];
-    v14 = [v6 placeCardItem];
-    [v9 endPlaceCardWithItem:v14];
+    placeCardItem2 = [object placeCardItem];
+    [v9 endPlaceCardWithItem:placeCardItem2];
   }
 
   else
@@ -1281,22 +1281,22 @@ LABEL_8:
     v9 = sub_100006E1C();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
-      v10 = [v6 platformController];
-      v11 = [(CarDisplayController *)self platformController];
+      platformController = [object platformController];
+      platformController2 = [(CarDisplayController *)self platformController];
       v15 = 138412802;
-      v16 = v6;
+      v16 = object;
       v17 = 2112;
-      v18 = v10;
+      v18 = platformController;
       v19 = 2112;
-      v20 = v11;
+      v20 = platformController2;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "Synchronization info is either nil or platform controllers are not the same %@, %@, %@", &v15, 0x20u);
     }
   }
 }
 
-- (void)_iOSBasedPlaceCardDidPresent:(id)a3
+- (void)_iOSBasedPlaceCardDidPresent:(id)present
 {
-  v4 = a3;
+  presentCopy = present;
   v5 = sub_100006E1C();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -1304,22 +1304,22 @@ LABEL_8:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Received notification of iOS place card presenting", &v15, 2u);
   }
 
-  v6 = [v4 object];
+  object = [presentCopy object];
 
-  if (v6 && ([v6 platformController], v7 = objc_claimAutoreleasedReturnValue(), -[CarDisplayController platformController](self, "platformController"), v8 = objc_claimAutoreleasedReturnValue(), v8, v7, v7 == v8))
+  if (object && ([object platformController], v7 = objc_claimAutoreleasedReturnValue(), -[CarDisplayController platformController](self, "platformController"), v8 = objc_claimAutoreleasedReturnValue(), v8, v7, v7 == v8))
   {
     v12 = sub_100006E1C();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
-      v13 = [v6 placeCardItem];
+      placeCardItem = [object placeCardItem];
       v15 = 138412290;
-      v16 = v13;
+      v16 = placeCardItem;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "Displaying CarPlay place card to match iOS with place item %@", &v15, 0xCu);
     }
 
     v9 = +[CarChromeModeCoordinator sharedInstance];
-    v14 = [v6 placeCardItem];
-    [v9 displayPlaceCardWithPlaceCardItem:v14 shouldNotify:0];
+    placeCardItem2 = [object placeCardItem];
+    [v9 displayPlaceCardWithPlaceCardItem:placeCardItem2 shouldNotify:0];
   }
 
   else
@@ -1327,26 +1327,26 @@ LABEL_8:
     v9 = sub_100006E1C();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
-      v10 = [v6 platformController];
-      v11 = [(CarDisplayController *)self platformController];
+      platformController = [object platformController];
+      platformController2 = [(CarDisplayController *)self platformController];
       v15 = 138412802;
-      v16 = v6;
+      v16 = object;
       v17 = 2112;
-      v18 = v10;
+      v18 = platformController;
       v19 = 2112;
-      v20 = v11;
+      v20 = platformController2;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "Synchronization info is either nil or platform controllers are not the same %@, %@, %@", &v15, 0x20u);
     }
   }
 }
 
-- (void)searchSessionDidInvalidate:(id)a3 reason:(unint64_t)a4
+- (void)searchSessionDidInvalidate:(id)invalidate reason:(unint64_t)reason
 {
-  v5 = a3;
+  invalidateCopy = invalidate;
   v6 = sub_100006E1C();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = v5;
+    v7 = invalidateCopy;
     if (!v7)
     {
       v12 = @"<nil>";
@@ -1376,17 +1376,17 @@ LABEL_10:
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%@", buf, 0xCu);
   }
 
-  if (self->_searchSession == v5)
+  if (self->_searchSession == invalidateCopy)
   {
-    if ([(SearchSession *)v5 origin]!= 1)
+    if ([(SearchSession *)invalidateCopy origin]!= 1)
     {
       v13 = +[MNNavigationService sharedService];
-      v14 = [v13 isInNavigatingState];
+      isInNavigatingState = [v13 isInNavigatingState];
 
-      if ((v14 & 1) == 0)
+      if ((isInNavigatingState & 1) == 0)
       {
         v15 = +[CarChromeModeCoordinator sharedInstance];
-        [v15 endSearchSession:v5];
+        [v15 endSearchSession:invalidateCopy];
       }
     }
 
@@ -1395,16 +1395,16 @@ LABEL_10:
   }
 }
 
-- (void)searchSessionDidFail:(id)a3
+- (void)searchSessionDidFail:(id)fail
 {
-  v4 = a3;
+  failCopy = fail;
   v5 = sub_100006E1C();
   if (!os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     goto LABEL_11;
   }
 
-  v6 = v4;
+  v6 = failCopy;
   if (!v6)
   {
     v11 = @"<nil>";
@@ -1430,61 +1430,61 @@ LABEL_8:
 
 LABEL_10:
   v12 = NSStringFromSelector(a2);
-  v13 = [v6 lastError];
+  lastError = [v6 lastError];
   *buf = 138412802;
   v22 = v11;
   v23 = 2112;
   v24 = v12;
   v25 = 2112;
-  v26 = v13;
+  v26 = lastError;
   _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@: %@ error=(%@)", buf, 0x20u);
 
 LABEL_11:
-  v14 = [v4 lastError];
-  v15 = [v14 domain];
+  lastError2 = [failCopy lastError];
+  domain = [lastError2 domain];
   v16 = GEOErrorDomain();
-  v17 = [v15 isEqualToString:v16];
+  v17 = [domain isEqualToString:v16];
 
   if (v17)
   {
     v18 = +[CarChromeModeCoordinator sharedInstance];
-    [v18 displaySearchSession:v4];
+    [v18 displaySearchSession:failCopy];
   }
 
   else
   {
     v18 = +[UIApplication sharedMapsDelegate];
-    v19 = [v4 lastError];
-    v20 = sub_100FA86E4(v19, 0);
+    lastError3 = [failCopy lastError];
+    v20 = sub_100FA86E4(lastError3, 0);
     [v18 interruptApplicationWithKind:3 userInfo:v20 completionHandler:0];
   }
 }
 
-- (void)refreshedEVChargersReceieved:(id)a3
+- (void)refreshedEVChargersReceieved:(id)receieved
 {
-  v4 = a3;
+  receievedCopy = receieved;
   v5 = sub_100006E1C();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = v4;
+    v10 = receievedCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Did receive the search results to update the ev charger information. Results: %@", &v9, 0xCu);
   }
 
   v6 = +[CarChromeModeCoordinator sharedInstance];
-  v7 = [(CarDisplayController *)self chromeViewController];
-  v8 = [v7 contexts];
-  [v6 refreshSessionWithEVResults:v4 contexts:v8];
+  chromeViewController = [(CarDisplayController *)self chromeViewController];
+  contexts = [chromeViewController contexts];
+  [v6 refreshSessionWithEVResults:receievedCopy contexts:contexts];
 }
 
-- (void)searchSessionDidChangeSearchResults:(id)a3
+- (void)searchSessionDidChangeSearchResults:(id)results
 {
-  v4 = a3;
-  v5 = [v4 currentResultsSearchInfo];
+  resultsCopy = results;
+  currentResultsSearchInfo = [resultsCopy currentResultsSearchInfo];
   v6 = sub_100006E1C();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = v4;
+    v7 = resultsCopy;
     if (!v7)
     {
       v12 = @"<nil>";
@@ -1510,27 +1510,27 @@ LABEL_8:
 
 LABEL_10:
     v13 = NSStringFromSelector(a2);
-    v14 = [v5 results];
+    results = [currentResultsSearchInfo results];
     *buf = 138412802;
     v17 = v12;
     v18 = 2112;
     v19 = v13;
     v20 = 2048;
-    v21 = [v14 count];
+    v21 = [results count];
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%@ %@ Did receive %lu search results", buf, 0x20u);
   }
 
   v15 = +[CarChromeModeCoordinator sharedInstance];
-  [v15 displaySearchSession:v4];
+  [v15 displaySearchSession:resultsCopy];
 }
 
-- (void)searchSessionWillPerformSearch:(id)a3
+- (void)searchSessionWillPerformSearch:(id)search
 {
-  v4 = a3;
+  searchCopy = search;
   v5 = sub_100006E1C();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = v4;
+    v6 = searchCopy;
     if (!v6)
     {
       v11 = @"<nil>";
@@ -1564,13 +1564,13 @@ LABEL_10:
   }
 }
 
-- (void)searchSessionDidChangeSearchFieldItem:(id)a3
+- (void)searchSessionDidChangeSearchFieldItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v5 = sub_100006E1C();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = v4;
+    v6 = itemCopy;
     if (!v6)
     {
       v11 = @"<nil>";
@@ -1604,11 +1604,11 @@ LABEL_10:
   }
 }
 
-- (void)_searchSessionWillStart:(id)a3
+- (void)_searchSessionWillStart:(id)start
 {
-  v4 = [a3 object];
-  v5 = v4;
-  if (v4 && self->_searchSession != v4 && [(SearchSession *)v4 origin]!= 1)
+  object = [start object];
+  v5 = object;
+  if (object && self->_searchSession != object && [(SearchSession *)object origin]!= 1)
   {
     v6 = sub_100006E1C();
     if (!os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -1648,13 +1648,13 @@ LABEL_10:
 LABEL_12:
 }
 
-- (id)processSearchFieldItem:(id)a3 searchInfo:(id)a4 userInfo:(id)a5
+- (id)processSearchFieldItem:(id)item searchInfo:(id)info userInfo:(id)userInfo
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  itemCopy = item;
+  infoCopy = info;
+  userInfoCopy = userInfo;
   searchSession = self->_searchSession;
-  if (!searchSession || -[SearchSession origin](searchSession, "origin") != 1 || ([v9 shouldPreserveResults] & 1) == 0)
+  if (!searchSession || -[SearchSession origin](searchSession, "origin") != 1 || ([infoCopy shouldPreserveResults] & 1) == 0)
   {
     [(SearchSession *)self->_searchSession unregisterObserver:self];
     [(SearchSession *)self->_searchSession invalidate];
@@ -1662,24 +1662,24 @@ LABEL_12:
     self->_searchSession = 0;
   }
 
-  if (v8)
+  if (itemCopy)
   {
     if (!self->_searchSession)
     {
       v13 = [SearchSession alloc];
-      v14 = [v10 objectForKeyedSubscript:@"LowFuel"];
+      v14 = [userInfoCopy objectForKeyedSubscript:@"LowFuel"];
       v15 = [(SearchSession *)v13 initWithOrigin:1 options:v14 != 0];
       v16 = self->_searchSession;
       self->_searchSession = v15;
 
       [(SearchSession *)self->_searchSession registerObserver:self];
-      v17 = [(CarDisplayController *)self chromeViewController];
-      v18 = [v17 currentTraits];
+      chromeViewController = [(CarDisplayController *)self chromeViewController];
+      currentTraits = [chromeViewController currentTraits];
 
       v19 = +[MNNavigationService sharedService];
-      v20 = [v19 isInNavigatingState];
+      isInNavigatingState = [v19 isInNavigatingState];
 
-      if (v20)
+      if (isInNavigatingState)
       {
         v21 = 2;
       }
@@ -1689,53 +1689,53 @@ LABEL_12:
         v21 = 0;
       }
 
-      [v18 setSearchOriginationType:v21];
-      v22 = [v10 objectForKeyedSubscript:@"SearchSessionIsSearchAlongRouteEVStationRequest"];
+      [currentTraits setSearchOriginationType:v21];
+      v22 = [userInfoCopy objectForKeyedSubscript:@"SearchSessionIsSearchAlongRouteEVStationRequest"];
 
       if (v22)
       {
-        [v18 setSearchOriginationType:3];
+        [currentTraits setSearchOriginationType:3];
         v23 = objc_alloc_init(GEOSearchImplicitFilterInfo);
         [v23 setSearchImplicitType:1];
-        v24 = [v10 objectForKeyedSubscript:@"SearchSessionSearchAlongRouteImplicitRequestMUID"];
+        v24 = [userInfoCopy objectForKeyedSubscript:@"SearchSessionSearchAlongRouteImplicitRequestMUID"];
         [v23 setSearchAlongRouteMuid:{objc_msgSend(v24, "unsignedLongLongValue")}];
 
-        [v18 setSearchImplicitFilterInfo:v23];
+        [currentTraits setSearchImplicitFilterInfo:v23];
       }
 
-      [v18 useOnlineToOfflineFailoverRequestModeIfAllowed];
-      [(SearchSession *)self->_searchSession setTraits:v18];
-      v25 = [v10 objectForKeyedSubscript:@"Source"];
+      [currentTraits useOnlineToOfflineFailoverRequestModeIfAllowed];
+      [(SearchSession *)self->_searchSession setTraits:currentTraits];
+      v25 = [userInfoCopy objectForKeyedSubscript:@"Source"];
       if (v25)
       {
-        v26 = [v10 objectForKeyedSubscript:@"Source"];
-        v27 = [v26 integerValue];
+        v26 = [userInfoCopy objectForKeyedSubscript:@"Source"];
+        integerValue = [v26 integerValue];
       }
 
       else
       {
-        v27 = 6;
+        integerValue = 6;
       }
 
-      [(SearchSession *)self->_searchSession setSource:v27];
-      v29 = [v10 objectForKeyedSubscript:@"CreateHistoryEntry"];
+      [(SearchSession *)self->_searchSession setSource:integerValue];
+      v29 = [userInfoCopy objectForKeyedSubscript:@"CreateHistoryEntry"];
       if (v29)
       {
-        v30 = [v10 objectForKeyedSubscript:@"CreateHistoryEntry"];
-        v31 = [v30 BOOLValue];
+        v30 = [userInfoCopy objectForKeyedSubscript:@"CreateHistoryEntry"];
+        bOOLValue = [v30 BOOLValue];
       }
 
       else
       {
-        v31 = 1;
+        bOOLValue = 1;
       }
 
-      [(SearchSession *)self->_searchSession setShouldCreateHistoryEntry:v31];
-      v32 = [v10 objectForKeyedSubscript:@"ShouldBroadcast"];
+      [(SearchSession *)self->_searchSession setShouldCreateHistoryEntry:bOOLValue];
+      v32 = [userInfoCopy objectForKeyedSubscript:@"ShouldBroadcast"];
 
       if (v32)
       {
-        v33 = [v10 objectForKeyedSubscript:@"ShouldBroadcast"];
+        v33 = [userInfoCopy objectForKeyedSubscript:@"ShouldBroadcast"];
         -[SearchSession setShouldBroadcast:](self->_searchSession, "setShouldBroadcast:", [v33 BOOLValue]);
       }
     }
@@ -1743,20 +1743,20 @@ LABEL_12:
     if (MapsFeature_IsEnabled_DrivingMultiWaypointRoutes())
     {
       v34 = +[MNNavigationService sharedService];
-      v35 = [v34 isInNavigatingState];
-      v36 = [(SearchSession *)self->_searchSession traits];
-      [v36 setNavigating:v35];
+      isInNavigatingState2 = [v34 isInNavigatingState];
+      traits = [(SearchSession *)self->_searchSession traits];
+      [traits setNavigating:isInNavigatingState2];
     }
 
     v37 = self->_searchSession;
-    if (v9)
+    if (infoCopy)
     {
-      [(SearchSession *)v37 restoreSearchForItem:v8 withResults:v9];
+      [(SearchSession *)v37 restoreSearchForItem:itemCopy withResults:infoCopy];
     }
 
     else
     {
-      [(SearchSession *)v37 startSearch:v8];
+      [(SearchSession *)v37 startSearch:itemCopy];
     }
 
     v28 = self->_searchSession;
@@ -1770,17 +1770,17 @@ LABEL_12:
   return v28;
 }
 
-- (void)processItem:(id)a3 userInfo:(id)a4
+- (void)processItem:(id)item userInfo:(id)info
 {
-  v18 = a3;
-  v5 = a4;
-  v6 = [SearchFieldItem searchFieldItemWithObject:v18];
+  itemCopy = item;
+  infoCopy = info;
+  v6 = [SearchFieldItem searchFieldItemWithObject:itemCopy];
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 completion];
+    completion = [v6 completion];
 
-    if (v8)
+    if (completion)
     {
       v9 = 12;
     }
@@ -1805,13 +1805,13 @@ LABEL_12:
       if (objc_opt_isKindOfClass())
       {
         [v11 setObject:&__kCFBooleanFalse forKeyedSubscript:@"CreateHistoryEntry"];
-        v12 = v18;
+        v12 = itemCopy;
         v13 = +[Recents sharedRecents];
         [v13 recordCoreRecentContact:v12];
       }
     }
 
-    v14 = [v5 objectForKeyedSubscript:@"userTypedSearchString"];
+    v14 = [infoCopy objectForKeyedSubscript:@"userTypedSearchString"];
     [v7 setUserTypedStringForRAP:v14];
 
     v15 = +[CarDisplayController sharedInstance];
@@ -1820,52 +1820,52 @@ LABEL_12:
   }
 }
 
-- (void)observerDeliveryPolicyDidChange:(id)a3
+- (void)observerDeliveryPolicyDidChange:(id)change
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100FA9DB0;
   v4[3] = &unk_101661A90;
   v4[4] = self;
-  v5 = a3;
-  v3 = v5;
+  changeCopy = change;
+  v3 = changeCopy;
   dispatch_async(&_dispatch_main_q, v4);
 }
 
-- (BOOL)_shouldSendEvent:(id)a3 toCarDisplayWindow:(id)a4
+- (BOOL)_shouldSendEvent:(id)event toCarDisplayWindow:(id)window
 {
-  v5 = a3;
-  v6 = [v5 type];
-  v7 = 1;
-  if (v6 > 5)
+  eventCopy = event;
+  type = [eventCopy type];
+  _shouldAllowKnobFocusMovement = 1;
+  if (type > 5)
   {
-    if (v6 != 6)
+    if (type != 6)
     {
-      if (v6 != 7 || ([v5 subtype] & 0xFFFFFFFFFFFFFFFELL) != 0xC8)
+      if (type != 7 || ([eventCopy subtype] & 0xFFFFFFFFFFFFFFFELL) != 0xC8)
       {
         goto LABEL_33;
       }
 
-      v16 = [(CarDisplayController *)self chromeViewController];
-      v7 = [v16 _shouldAllowKnobFocusMovement];
+      chromeViewController = [(CarDisplayController *)self chromeViewController];
+      _shouldAllowKnobFocusMovement = [chromeViewController _shouldAllowKnobFocusMovement];
     }
 
 LABEL_31:
-    v10 = [(CarDisplayController *)self chromeViewController];
-    [v10 interruptAutohideForIncidentalInteraction];
+    chromeViewController2 = [(CarDisplayController *)self chromeViewController];
+    [chromeViewController2 interruptAutohideForIncidentalInteraction];
 LABEL_32:
 
     goto LABEL_33;
   }
 
-  if (!v6)
+  if (!type)
   {
     v29 = 0u;
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v10 = [v5 allTouches];
-    v17 = [v10 countByEnumeratingWithState:&v27 objects:v32 count:16];
+    chromeViewController2 = [eventCopy allTouches];
+    v17 = [chromeViewController2 countByEnumeratingWithState:&v27 objects:v32 count:16];
     if (v17)
     {
       v18 = v17;
@@ -1876,20 +1876,20 @@ LABEL_32:
         {
           if (*v28 != v19)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(chromeViewController2);
           }
 
           if ([*(*(&v27 + 1) + 8 * i) type] == 1)
           {
 LABEL_30:
 
-            v7 = 1;
+            _shouldAllowKnobFocusMovement = 1;
             goto LABEL_31;
           }
         }
 
-        v18 = [v10 countByEnumeratingWithState:&v27 objects:v32 count:16];
-        v7 = 1;
+        v18 = [chromeViewController2 countByEnumeratingWithState:&v27 objects:v32 count:16];
+        _shouldAllowKnobFocusMovement = 1;
         if (v18)
         {
           continue;
@@ -1902,9 +1902,9 @@ LABEL_30:
     goto LABEL_32;
   }
 
-  if (v6 == 3)
+  if (type == 3)
   {
-    v8 = v5;
+    v8 = eventCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -1916,14 +1916,14 @@ LABEL_30:
       v9 = 0;
     }
 
-    v10 = v9;
+    chromeViewController2 = v9;
 
     v25 = 0u;
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v11 = [v10 allPresses];
-    v12 = [v11 countByEnumeratingWithState:&v23 objects:v31 count:16];
+    allPresses = [chromeViewController2 allPresses];
+    v12 = [allPresses countByEnumeratingWithState:&v23 objects:v31 count:16];
     if (v12)
     {
       v13 = v12;
@@ -1934,7 +1934,7 @@ LABEL_30:
         {
           if (*v24 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(allPresses);
           }
 
           if ([*(*(&v23 + 1) + 8 * j) type] == 4)
@@ -1944,7 +1944,7 @@ LABEL_30:
           }
         }
 
-        v13 = [v11 countByEnumeratingWithState:&v23 objects:v31 count:16];
+        v13 = [allPresses countByEnumeratingWithState:&v23 objects:v31 count:16];
         if (v13)
         {
           continue;
@@ -1954,67 +1954,67 @@ LABEL_30:
       }
     }
 
-    v7 = 1;
+    _shouldAllowKnobFocusMovement = 1;
     goto LABEL_32;
   }
 
 LABEL_33:
-  v21 = [(CarDisplayController *)self chromeViewController];
-  [v21 restartAutohideIdleTimerIfStarted];
+  chromeViewController3 = [(CarDisplayController *)self chromeViewController];
+  [chromeViewController3 restartAutohideIdleTimerIfStarted];
 
-  return v7;
+  return _shouldAllowKnobFocusMovement;
 }
 
 - (int64_t)connectionType
 {
   v2 = +[MapsExternalDevice sharedInstance];
-  v3 = [v2 connectionType];
+  connectionType = [v2 connectionType];
 
-  return v3;
+  return connectionType;
 }
 
 - (int64_t)touchscreenFidelity
 {
-  v2 = [(CarDisplayController *)self screen];
-  v3 = [v2 _capabilityForKey:_UIScreenCapabilityTouchLevelsKey];
-  v4 = [v3 integerValue];
+  screen = [(CarDisplayController *)self screen];
+  v3 = [screen _capabilityForKey:_UIScreenCapabilityTouchLevelsKey];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
 - (unint64_t)supportedInteractionModels
 {
-  v2 = [(CarDisplayController *)self screen];
-  v3 = [v2 traitCollection];
-  v4 = [v3 interactionModel];
+  screen = [(CarDisplayController *)self screen];
+  traitCollection = [screen traitCollection];
+  interactionModel = [traitCollection interactionModel];
 
-  return v4;
+  return interactionModel;
 }
 
 - (unint64_t)primaryInteractionModel
 {
-  v2 = [(CarDisplayController *)self screen];
-  v3 = [v2 traitCollection];
-  v4 = [v3 primaryInteractionModel];
+  screen = [(CarDisplayController *)self screen];
+  traitCollection = [screen traitCollection];
+  primaryInteractionModel = [traitCollection primaryInteractionModel];
 
-  return v4;
+  return primaryInteractionModel;
 }
 
-- (void)sceneDidDisconnect:(id)a3
+- (void)sceneDidDisconnect:(id)disconnect
 {
-  v4 = a3;
+  disconnectCopy = disconnect;
   [(CarDisplayController *)self setWindowScene:0];
-  v5 = [v4 screen];
+  screen = [disconnectCopy screen];
 
-  [(CarDisplayController *)self _screenDidDisconnect:v5];
+  [(CarDisplayController *)self _screenDidDisconnect:screen];
 }
 
-- (void)sceneDidEnterBackground:(id)a3
+- (void)sceneDidEnterBackground:(id)background
 {
-  v4 = a3;
-  v5 = [(CarDisplayController *)self windowScene];
+  backgroundCopy = background;
+  windowScene = [(CarDisplayController *)self windowScene];
 
-  if (v5 != v4)
+  if (windowScene != backgroundCopy)
   {
     v6 = sub_100006E1C();
     if (!os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -2024,7 +2024,7 @@ LABEL_13:
       goto LABEL_14;
     }
 
-    v7 = v4;
+    v7 = backgroundCopy;
     if (!v7)
     {
       v12 = @"<nil>";
@@ -2060,12 +2060,12 @@ LABEL_12:
 LABEL_14:
 }
 
-- (void)sceneWillResignActive:(id)a3
+- (void)sceneWillResignActive:(id)active
 {
-  v4 = a3;
-  v5 = [(CarDisplayController *)self windowScene];
+  activeCopy = active;
+  windowScene = [(CarDisplayController *)self windowScene];
 
-  if (v5 != v4)
+  if (windowScene != activeCopy)
   {
     v6 = sub_100006E1C();
     if (!os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -2075,7 +2075,7 @@ LABEL_13:
       goto LABEL_14;
     }
 
-    v7 = v4;
+    v7 = activeCopy;
     if (!v7)
     {
       v12 = @"<nil>";
@@ -2111,12 +2111,12 @@ LABEL_12:
 LABEL_14:
 }
 
-- (void)sceneDidBecomeActive:(id)a3
+- (void)sceneDidBecomeActive:(id)active
 {
-  v4 = a3;
-  v5 = [(CarDisplayController *)self windowScene];
+  activeCopy = active;
+  windowScene = [(CarDisplayController *)self windowScene];
 
-  if (v5 != v4)
+  if (windowScene != activeCopy)
   {
     v6 = sub_100006E1C();
     if (!os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -2126,7 +2126,7 @@ LABEL_13:
       goto LABEL_14;
     }
 
-    v7 = v4;
+    v7 = activeCopy;
     if (!v7)
     {
       v12 = @"<nil>";
@@ -2162,12 +2162,12 @@ LABEL_12:
 LABEL_14:
 }
 
-- (void)sceneWillEnterForeground:(id)a3
+- (void)sceneWillEnterForeground:(id)foreground
 {
-  v4 = a3;
-  v5 = [(CarDisplayController *)self windowScene];
+  foregroundCopy = foreground;
+  windowScene = [(CarDisplayController *)self windowScene];
 
-  if (v5 != v4)
+  if (windowScene != foregroundCopy)
   {
     v6 = sub_100006E1C();
     if (!os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -2177,7 +2177,7 @@ LABEL_13:
       goto LABEL_14;
     }
 
-    v7 = v4;
+    v7 = foregroundCopy;
     if (!v7)
     {
       v12 = @"<nil>";
@@ -2215,32 +2215,32 @@ LABEL_14:
 
 - (void)_mapsCar_rebuildContextsForCurrentAppState
 {
-  v3 = [(CarDisplayController *)self chromeViewController];
-  v4 = [(CarDisplayController *)self contextsForCurrentAppState];
-  [v3 setContexts:v4 animated:0 completion:0];
+  chromeViewController = [(CarDisplayController *)self chromeViewController];
+  contextsForCurrentAppState = [(CarDisplayController *)self contextsForCurrentAppState];
+  [chromeViewController setContexts:contextsForCurrentAppState animated:0 completion:0];
 
-  v5 = [(CarDisplayController *)self chromeViewController];
-  [v5 setNeedsUpdateComponent:@"accessories" animated:0];
+  chromeViewController2 = [(CarDisplayController *)self chromeViewController];
+  [chromeViewController2 setNeedsUpdateComponent:@"accessories" animated:0];
 }
 
-- (void)_mapsCar_scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)_mapsCar_scene:(id)car_scene willConnectToSession:(id)session options:(id)options
 {
-  v6 = a3;
-  [(CarDisplayController *)self setWindowScene:v6];
+  car_sceneCopy = car_scene;
+  [(CarDisplayController *)self setWindowScene:car_sceneCopy];
   [(CarDisplayController *)self prepareCarPlay];
   [(CarDisplayController *)self _prepareChromeForFirstUse];
-  v7 = [v6 screen];
+  screen = [car_sceneCopy screen];
 
-  [(CarDisplayController *)self _screenDidConnect:v7];
+  [(CarDisplayController *)self _screenDidConnect:screen];
 }
 
 - (void)_carSessionController_updateNavigationHostingState
 {
-  v3 = [(CarDisplayController *)self isAnyCarSceneHostingNavigation];
+  isAnyCarSceneHostingNavigation = [(CarDisplayController *)self isAnyCarSceneHostingNavigation];
   v4 = +[MapsExternalDevice sharedInstance];
-  if (v3 != [v4 carPlayIsNavigating])
+  if (isAnyCarSceneHostingNavigation != [v4 carPlayIsNavigating])
   {
-    [v4 setCarPlayIsNavigating:v3];
+    [v4 setCarPlayIsNavigating:isAnyCarSceneHostingNavigation];
     v5 = sub_100006E1C();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
@@ -2248,20 +2248,20 @@ LABEL_14:
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Notify delegate: didUpdateNavigationVisibility", v7, 2u);
     }
 
-    v6 = [(CarDisplayController *)self delegate];
-    [v6 carDisplayControllerDidUpdateNavigationVisibility:self];
+    delegate = [(CarDisplayController *)self delegate];
+    [delegate carDisplayControllerDidUpdateNavigationVisibility:self];
   }
 
   [(CarDisplayController *)self _updateIOHIDMonitoringAndNotification];
 }
 
-- (void)setWasConnectedToAnyCarScene:(BOOL)a3
+- (void)setWasConnectedToAnyCarScene:(BOOL)scene
 {
-  if (self->_wasConnectedToAnyCarScene != a3)
+  if (self->_wasConnectedToAnyCarScene != scene)
   {
-    self->_wasConnectedToAnyCarScene = a3;
-    v5 = [(CarDisplayController *)self delegate];
-    [v5 carDisplayControllerDidUpdateNavigationVisibility:self];
+    self->_wasConnectedToAnyCarScene = scene;
+    delegate = [(CarDisplayController *)self delegate];
+    [delegate carDisplayControllerDidUpdateNavigationVisibility:self];
   }
 }
 
@@ -2276,14 +2276,14 @@ LABEL_14:
 
       objc_storeWeak(&self->_screenUpdateOperation, 0);
       self->_updatingScreen = 1;
-      v4 = [(CarDisplayController *)self screen];
-      if ([(CarDisplayController *)self state]&& v4)
+      screen = [(CarDisplayController *)self screen];
+      if ([(CarDisplayController *)self state]&& screen)
       {
         if (!self->_window)
         {
           v5 = [CarDisplayWindow alloc];
-          v6 = [(CarDisplayController *)self windowScene];
-          v7 = [(CarDisplayWindow *)v5 initWithWindowScene:v6];
+          windowScene = [(CarDisplayController *)self windowScene];
+          v7 = [(CarDisplayWindow *)v5 initWithWindowScene:windowScene];
           window = self->_window;
           self->_window = v7;
 
@@ -2291,24 +2291,24 @@ LABEL_14:
         }
       }
 
-      else if (!v4)
+      else if (!screen)
       {
         goto LABEL_10;
       }
 
       if (self->_window)
       {
-        v9 = [(CarDisplayController *)self windowScene];
-        v10 = [v9 coordinateSpace];
-        [v10 bounds];
+        windowScene2 = [(CarDisplayController *)self windowScene];
+        coordinateSpace = [windowScene2 coordinateSpace];
+        [coordinateSpace bounds];
         [(CarDisplayWindow *)self->_window setFrame:?];
       }
 
 LABEL_10:
-      v11 = [(CarDisplayController *)self state];
-      if (v11 != 2)
+      state = [(CarDisplayController *)self state];
+      if (state != 2)
       {
-        if (v11 != 1)
+        if (state != 1)
         {
           [(CarDisplayWindow *)self->_window setHidden:1];
           [(CarDisplayWindow *)self->_window setRootViewController:0];
@@ -2328,7 +2328,7 @@ LABEL_53:
           _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Will show launch screen, in prepare state", buf, 2u);
         }
 
-        v13 = [(CarDisplayWindow *)self->_window rootViewController];
+        rootViewController = [(CarDisplayWindow *)self->_window rootViewController];
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
 
@@ -2340,25 +2340,25 @@ LABEL_53:
 
         [(CarDisplayWindow *)self->_window setHidden:0];
 LABEL_45:
-        v34 = [(CarDisplayController *)self carSessionStatus];
-        v35 = [v34 currentSession];
-        v36 = [v35 configuration];
+        carSessionStatus = [(CarDisplayController *)self carSessionStatus];
+        currentSession = [carSessionStatus currentSession];
+        configuration = [currentSession configuration];
 
-        v37 = [v36 _maps_primaryScreen];
-        [v37 pixelSize];
+        _maps_primaryScreen = [configuration _maps_primaryScreen];
+        [_maps_primaryScreen pixelSize];
         self->_screenSize.width = v38;
         self->_screenSize.height = v39;
         v40 = +[MNNavigationService sharedService];
-        v41 = [v40 isInNavigatingState];
+        isInNavigatingState = [v40 isInNavigatingState];
 
-        if (v41)
+        if (isInNavigatingState)
         {
-          v42 = [(CarDisplayController *)self isCurrentlyConnectedToCarAppScene];
+          isCurrentlyConnectedToCarAppScene = [(CarDisplayController *)self isCurrentlyConnectedToCarAppScene];
           v43 = +[MNNavigationService sharedService];
-          [v43 setIsConnectedToCarplay:v42];
+          [v43 setIsConnectedToCarplay:isCurrentlyConnectedToCarAppScene];
 
           v44 = +[NavigationFeedbackCollector sharedFeedbackCollector];
-          [v44 setIsConnectedToCarplay:v42];
+          [v44 setIsConnectedToCarplay:isCurrentlyConnectedToCarAppScene];
 
           [(CarDisplayController *)self _carSessionController_updateNavigationHostingState];
         }
@@ -2389,7 +2389,7 @@ LABEL_45:
         goto LABEL_53;
       }
 
-      if (!v4)
+      if (!screen)
       {
         [(CarDisplayController *)self _setChromeSuppressed:1];
         if (self->_window)
@@ -2411,10 +2411,10 @@ LABEL_45:
         goto LABEL_45;
       }
 
-      v16 = [(CarDisplayWindow *)self->_window rootViewController];
-      v17 = [(CarDisplayController *)self chromeViewController];
+      rootViewController2 = [(CarDisplayWindow *)self->_window rootViewController];
+      chromeViewController = [(CarDisplayController *)self chromeViewController];
 
-      if (v16 != v17)
+      if (rootViewController2 != chromeViewController)
       {
         v18 = sub_100006E1C();
         if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -2423,8 +2423,8 @@ LABEL_45:
           _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "Will attach CarChromeViewController to window and unsuppress it", buf, 2u);
         }
 
-        v19 = [(CarDisplayController *)self chromeViewController];
-        [(CarDisplayWindow *)self->_window setRootViewController:v19];
+        chromeViewController2 = [(CarDisplayController *)self chromeViewController];
+        [(CarDisplayWindow *)self->_window setRootViewController:chromeViewController2];
 
         [(CarDisplayWindow *)self->_window setHidden:0];
       }
@@ -2474,8 +2474,8 @@ LABEL_45:
           goto LABEL_44;
         }
 
-        v30 = [(CarDisplayController *)self chromeViewController];
-        chromeDeactivationToken = v30;
+        chromeViewController3 = [(CarDisplayController *)self chromeViewController];
+        chromeDeactivationToken = chromeViewController3;
         if (v21)
         {
           v31 = v21;
@@ -2486,7 +2486,7 @@ LABEL_45:
           v31 = @"(not actively on screen)");
         }
 
-        v32 = [v30 acquireChromeDeactivationTokenForReason:v31];
+        v32 = [chromeViewController3 acquireChromeDeactivationTokenForReason:v31];
         v33 = self->_chromeDeactivationToken;
         self->_chromeDeactivationToken = v32;
       }
@@ -2588,14 +2588,14 @@ LABEL_44:
   }
 }
 
-- (void)setMapsSuggestionsController:(id)a3
+- (void)setMapsSuggestionsController:(id)controller
 {
-  v5 = a3;
-  v6 = self;
-  objc_sync_enter(v6);
-  p_mapsSuggestionsController = &v6->_mapsSuggestionsController;
-  mapsSuggestionsController = v6->_mapsSuggestionsController;
-  if (mapsSuggestionsController != v5)
+  controllerCopy = controller;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  p_mapsSuggestionsController = &selfCopy->_mapsSuggestionsController;
+  mapsSuggestionsController = selfCopy->_mapsSuggestionsController;
+  if (mapsSuggestionsController != controllerCopy)
   {
     if (mapsSuggestionsController)
     {
@@ -2611,53 +2611,53 @@ LABEL_44:
       v12 = 138412546;
       v13 = v11;
       v14 = 2112;
-      v15 = v5;
+      v15 = controllerCopy;
     }
 
-    objc_storeStrong(&v6->_mapsSuggestionsController, a3);
-    [(CarDisplayController *)v6 _updateLowFuelSuggestionState];
+    objc_storeStrong(&selfCopy->_mapsSuggestionsController, controller);
+    [(CarDisplayController *)selfCopy _updateLowFuelSuggestionState];
   }
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
 }
 
 - (CarMapsSuggestionsController)mapsSuggestionsController
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  mapsSuggestionsController = v2->_mapsSuggestionsController;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  mapsSuggestionsController = selfCopy->_mapsSuggestionsController;
   if (!mapsSuggestionsController)
   {
     v4 = sub_100006E1C();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
       v9 = 134217984;
-      v10 = [(CarDisplayController *)v2 state];
+      state = [(CarDisplayController *)selfCopy state];
     }
 
     v5 = objc_opt_new();
-    v6 = v2->_mapsSuggestionsController;
-    v2->_mapsSuggestionsController = v5;
+    v6 = selfCopy->_mapsSuggestionsController;
+    selfCopy->_mapsSuggestionsController = v5;
 
-    mapsSuggestionsController = v2->_mapsSuggestionsController;
+    mapsSuggestionsController = selfCopy->_mapsSuggestionsController;
   }
 
   v7 = mapsSuggestionsController;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }
 
-- (BOOL)activelyOnScreen:(id *)a3
+- (BOOL)activelyOnScreen:(id *)screen
 {
   if (GEOConfigGetBOOL())
   {
     LOBYTE(BOOL) = 1;
-    if (a3)
+    if (screen)
     {
       v6 = @"deactivation has been overridden, will report we're actively on-screen";
 LABEL_14:
-      *a3 = v6;
+      *screen = v6;
     }
   }
 
@@ -2666,7 +2666,7 @@ LABEL_14:
     if ([objc_opt_class() enablingState] == 3)
     {
       LOBYTE(BOOL) = 0;
-      if (a3)
+      if (screen)
       {
         v6 = @"simulated no screen ownership";
         goto LABEL_14;
@@ -2676,9 +2676,9 @@ LABEL_14:
     else
     {
       v7 = +[MapsExternalDevice sharedInstance];
-      v8 = [v7 ownsScreen];
+      ownsScreen = [v7 ownsScreen];
 
-      if (v8)
+      if (ownsScreen)
       {
         BOOL = GEOConfigGetBOOL();
         v6 = @"device owns screen";
@@ -2687,7 +2687,7 @@ LABEL_14:
           v6 = @"device owns screen, but override default allows it";
         }
 
-        if (a3)
+        if (screen)
         {
           goto LABEL_14;
         }
@@ -2695,15 +2695,15 @@ LABEL_14:
 
       else
       {
-        v9 = [(CarDisplayController *)self isCarAppSceneHostingNavigation];
+        isCarAppSceneHostingNavigation = [(CarDisplayController *)self isCarAppSceneHostingNavigation];
         v6 = @"hosting navigation";
-        if (!v9)
+        if (!isCarAppSceneHostingNavigation)
         {
           v6 = 0;
         }
 
         LOBYTE(BOOL) = 1;
-        if (a3)
+        if (screen)
         {
           goto LABEL_14;
         }
@@ -2714,7 +2714,7 @@ LABEL_14:
   else
   {
     LOBYTE(BOOL) = 0;
-    if (a3)
+    if (screen)
     {
       v6 = @"no screen";
       goto LABEL_14;
@@ -2724,9 +2724,9 @@ LABEL_14:
   return BOOL;
 }
 
-- (void)setScreen:(id)a3
+- (void)setScreen:(id)screen
 {
-  v4 = a3;
+  screenCopy = screen;
   if ([(CarDisplayController *)self overrideShouldSuppressChrome])
   {
     v5 = sub_100006E1C();
@@ -2736,17 +2736,17 @@ LABEL_14:
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Overriding screen to nil", &v19, 2u);
     }
 
-    v4 = 0;
+    screenCopy = 0;
   }
 
   screen = self->_screen;
-  if (screen != v4)
+  if (screen != screenCopy)
   {
-    v7 = (v4 == 0) ^ (screen == 0);
-    objc_storeStrong(&self->_screen, v4);
+    v7 = (screenCopy == 0) ^ (screen == 0);
+    objc_storeStrong(&self->_screen, screenCopy);
     v8 = sub_100006E1C();
     v9 = os_log_type_enabled(v8, OS_LOG_TYPE_INFO);
-    if (v4)
+    if (screenCopy)
     {
       if (v9)
       {
@@ -2763,10 +2763,10 @@ LABEL_14:
         self->_HIDEventObserver = v10;
       }
 
-      v12 = [(UIScreen *)v4 displayConfiguration];
-      v13 = [v12 hardwareIdentifier];
+      displayConfiguration = [(UIScreen *)screenCopy displayConfiguration];
+      hardwareIdentifier = [displayConfiguration hardwareIdentifier];
 
-      v14 = [BKSHIDEventDisplay displayWithHardwareIdentifier:v13];
+      v14 = [BKSHIDEventDisplay displayWithHardwareIdentifier:hardwareIdentifier];
       [(BKSHIDEventDeliveryPolicyObserver *)self->_HIDEventObserver setDisplay:v14];
     }
 
@@ -2809,12 +2809,12 @@ LABEL_14:
   }
 }
 
-- (void)_screenDidDisconnect:(id)a3
+- (void)_screenDidDisconnect:(id)disconnect
 {
-  v4 = a3;
-  v5 = [(CarDisplayController *)self screen];
+  disconnectCopy = disconnect;
+  screen = [(CarDisplayController *)self screen];
 
-  if (v5 == v4)
+  if (screen == disconnectCopy)
   {
     v6 = sub_100006E1C();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -2827,12 +2827,12 @@ LABEL_14:
   }
 }
 
-- (void)_screenDidConnect:(id)a3
+- (void)_screenDidConnect:(id)connect
 {
-  v4 = a3;
-  v5 = [(CarDisplayController *)self screen];
+  connectCopy = connect;
+  screen = [(CarDisplayController *)self screen];
 
-  if (v5 != v4)
+  if (screen != connectCopy)
   {
     v6 = sub_100006E1C();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -2841,7 +2841,7 @@ LABEL_14:
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Notified of incoming CarPlay screen", v7, 2u);
     }
 
-    [(CarDisplayController *)self setScreen:v4];
+    [(CarDisplayController *)self setScreen:connectCopy];
   }
 }
 
@@ -2875,22 +2875,22 @@ LABEL_14:
 
 - (NSMapTable)connectedCarScreenInfos
 {
-  v2 = [(CarDisplayController *)self carSessionStatus];
-  v3 = [v2 connectedCarScreenInfos];
+  carSessionStatus = [(CarDisplayController *)self carSessionStatus];
+  connectedCarScreenInfos = [carSessionStatus connectedCarScreenInfos];
 
-  return v3;
+  return connectedCarScreenInfos;
 }
 
 - (GEOCarInfo)connectedCarMainScreenInfo
 {
   if ([(CarDisplayController *)self isCurrentlyConnectedToAnyCarScene])
   {
-    v3 = [(CarDisplayController *)self carSessionStatus];
-    v4 = [(CarDisplayController *)self carSessionStatus];
-    v5 = [v4 currentSession];
-    v6 = [v5 configuration];
-    v7 = [v6 _maps_primaryScreen];
-    v8 = [v3 carInfoForScreen:v7];
+    carSessionStatus = [(CarDisplayController *)self carSessionStatus];
+    carSessionStatus2 = [(CarDisplayController *)self carSessionStatus];
+    currentSession = [carSessionStatus2 currentSession];
+    configuration = [currentSession configuration];
+    _maps_primaryScreen = [configuration _maps_primaryScreen];
+    v8 = [carSessionStatus carInfoForScreen:_maps_primaryScreen];
   }
 
   else
@@ -2901,13 +2901,13 @@ LABEL_14:
   return v8;
 }
 
-- (void)_popIfTopModeIsInvalidAfterReconnection:(BOOL)a3
+- (void)_popIfTopModeIsInvalidAfterReconnection:(BOOL)reconnection
 {
   v3 = +[CarChromeModeCoordinator sharedInstance];
   [v3 cleanupForDisconnect];
 }
 
-- (void)_clearExistingTimeoutAssertionIfNeededAfterDelay:(double)a3
+- (void)_clearExistingTimeoutAssertionIfNeededAfterDelay:(double)delay
 {
   v5 = self->_idleTimeoutAssertion;
   v6 = sub_100006E1C();
@@ -2919,14 +2919,14 @@ LABEL_14:
       *buf = 134218240;
       v13 = v5;
       v14 = 2048;
-      v15 = a3;
+      delayCopy = delay;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Will invalidate idle timeout assertion %p after %#.1lfs", buf, 0x16u);
     }
 
     idleTimeoutAssertion = self->_idleTimeoutAssertion;
     self->_idleTimeoutAssertion = 0;
 
-    v9 = dispatch_time(0, (a3 * 1000000000.0));
+    v9 = dispatch_time(0, (delay * 1000000000.0));
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100FAD174;
@@ -2943,7 +2943,7 @@ LABEL_14:
   }
 }
 
-- (void)_idleTimeoutFired:(id)a3
+- (void)_idleTimeoutFired:(id)fired
 {
   v4 = sub_100006E1C();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -2956,9 +2956,9 @@ LABEL_14:
   idleTimeoutTimer = self->_idleTimeoutTimer;
   self->_idleTimeoutTimer = 0;
 
-  v6 = [(CarDisplayController *)self screen];
+  screen = [(CarDisplayController *)self screen];
 
-  if (v6)
+  if (screen)
   {
     v7 = sub_100006E1C();
     v8 = 1.0;
@@ -3067,10 +3067,10 @@ LABEL_14:
         idleTimeoutAssertion = self->_idleTimeoutAssertion;
         self->_idleTimeoutAssertion = v9;
 
-        v11 = [(BKSProcessAssertion *)self->_idleTimeoutAssertion acquire];
+        acquire = [(BKSProcessAssertion *)self->_idleTimeoutAssertion acquire];
         v12 = sub_100006E1C();
         v13 = v12;
-        if (v11)
+        if (acquire)
         {
           if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
           {
@@ -3118,10 +3118,10 @@ LABEL_14:
     goto LABEL_2;
   }
 
-  v6 = [(CarDisplayController *)self chromeViewController];
-  v7 = [v6 isSuppressed];
+  chromeViewController = [(CarDisplayController *)self chromeViewController];
+  isSuppressed = [chromeViewController isSuppressed];
 
-  if (v7)
+  if (isSuppressed)
   {
     if (self->_hasRunNewScreenRefreshTasks)
     {
@@ -3142,10 +3142,10 @@ LABEL_4:
       goto LABEL_5;
     }
 
-    v8 = [(CarDisplayController *)self chromeViewController];
-    v9 = [v8 isSuppressed];
+    chromeViewController2 = [(CarDisplayController *)self chromeViewController];
+    isSuppressed2 = [chromeViewController2 isSuppressed];
 
-    if (v9)
+    if (isSuppressed2)
     {
       v2 = sub_100006E1C();
       if (!os_log_type_enabled(v2, OS_LOG_TYPE_INFO))
@@ -3172,8 +3172,8 @@ LABEL_4:
     [(CarDisplayController *)self _prepareNearby];
     v11 = +[MSPSharedTripService sharedInstance];
     [(CarDisplayController *)self _registerCarInfoForGEOLogging];
-    v12 = [(CarDisplayController *)self mapsSuggestionsController];
-    [v12 setAllowLowFuelAlert:1];
+    mapsSuggestionsController = [(CarDisplayController *)self mapsSuggestionsController];
+    [mapsSuggestionsController setAllowLowFuelAlert:1];
 
     self->_hasRunNewScreenRefreshTasks = 1;
   }
@@ -3186,24 +3186,24 @@ LABEL_4:
   {
     v4 = +[MapsExternalDevice sharedInstance];
     v10 = 134218240;
-    v11 = [v4 hasEngineType];
+    hasEngineType = [v4 hasEngineType];
     v12 = 2048;
-    v13 = [(CarDisplayController *)self state];
+    state = [(CarDisplayController *)self state];
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[CarDisplayController] - Update low fuel suggestion state with Engine type availability: %ld, And state is: %ld", &v10, 0x16u);
   }
 
   v5 = +[MapsExternalDevice sharedInstance];
-  v6 = [v5 hasEngineType];
-  v7 = [(CarDisplayController *)self mapsSuggestionsController];
-  [v7 setMonitorLowFuel:v6];
+  hasEngineType2 = [v5 hasEngineType];
+  mapsSuggestionsController = [(CarDisplayController *)self mapsSuggestionsController];
+  [mapsSuggestionsController setMonitorLowFuel:hasEngineType2];
 
   v8 = +[MapsExternalDevice sharedInstance];
-  LOBYTE(v6) = [v8 needsFuel];
+  LOBYTE(hasEngineType2) = [v8 needsFuel];
 
-  if ((v6 & 1) == 0)
+  if ((hasEngineType2 & 1) == 0)
   {
-    v9 = [(CarDisplayController *)self mapsSuggestionsController];
-    [v9 setAllowLowFuelAlert:1];
+    mapsSuggestionsController2 = [(CarDisplayController *)self mapsSuggestionsController];
+    [mapsSuggestionsController2 setAllowLowFuelAlert:1];
   }
 }
 
@@ -3217,9 +3217,9 @@ LABEL_4:
   }
 
   v4 = +[MapsExternalDevice sharedInstance];
-  v5 = [v4 ownsScreen];
+  ownsScreen = [v4 ownsScreen];
 
-  if (v5)
+  if (ownsScreen)
   {
     [(CarDisplayController *)self _setNeedsScreenUpdate];
   }
@@ -3234,9 +3234,9 @@ LABEL_4:
 
 - (void)_didBecomeActive
 {
-  v3 = [(CarDisplayController *)self windowScene];
+  windowScene = [(CarDisplayController *)self windowScene];
 
-  if (v3)
+  if (windowScene)
   {
     v4 = sub_100006E1C();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -3259,9 +3259,9 @@ LABEL_4:
 
 - (void)_willEnterForeground
 {
-  v3 = [(CarDisplayController *)self windowScene];
+  windowScene = [(CarDisplayController *)self windowScene];
 
-  if (v3)
+  if (windowScene)
   {
     v4 = sub_100006E1C();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -3274,11 +3274,11 @@ LABEL_4:
     [GEOAPPortal captureUserAction:2196 target:0 value:0];
     if ([(CarDisplayController *)self state]== 2)
     {
-      v5 = [(CarDisplayController *)self backgroundAutoHideStateTrackingDate];
-      if (!v5 || (v6 = v5, -[CarDisplayController backgroundAutoHideStateTrackingDate](self, "backgroundAutoHideStateTrackingDate"), v7 = objc_claimAutoreleasedReturnValue(), [v7 timeIntervalSinceNow], v9 = fabs(v8), v7, v6, v9 > 480.0))
+      backgroundAutoHideStateTrackingDate = [(CarDisplayController *)self backgroundAutoHideStateTrackingDate];
+      if (!backgroundAutoHideStateTrackingDate || (v6 = backgroundAutoHideStateTrackingDate, -[CarDisplayController backgroundAutoHideStateTrackingDate](self, "backgroundAutoHideStateTrackingDate"), v7 = objc_claimAutoreleasedReturnValue(), [v7 timeIntervalSinceNow], v9 = fabs(v8), v7, v6, v9 > 480.0))
       {
-        v10 = [(CarDisplayController *)self chromeViewController];
-        [v10 interruptAutohideForIncidentalInteraction];
+        chromeViewController = [(CarDisplayController *)self chromeViewController];
+        [chromeViewController interruptAutohideForIncidentalInteraction];
       }
 
       [(CarDisplayController *)self setBackgroundAutoHideStateTrackingDate:0];
@@ -3290,9 +3290,9 @@ LABEL_4:
 
 - (void)_didEnterBackground
 {
-  v3 = [(CarDisplayController *)self windowScene];
+  windowScene = [(CarDisplayController *)self windowScene];
 
-  if (v3)
+  if (windowScene)
   {
     v4 = sub_100006E1C();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -3303,10 +3303,10 @@ LABEL_4:
 
     if ([(CarDisplayController *)self state]== 2)
     {
-      v5 = [(CarDisplayController *)self chromeViewController];
-      v6 = [v5 isAutohidingContentHiddenForCurrentContext];
+      chromeViewController = [(CarDisplayController *)self chromeViewController];
+      isAutohidingContentHiddenForCurrentContext = [chromeViewController isAutohidingContentHiddenForCurrentContext];
 
-      if (v6)
+      if (isAutohidingContentHiddenForCurrentContext)
       {
         v7 = +[NSDate date];
         [(CarDisplayController *)self setBackgroundAutoHideStateTrackingDate:v7];
@@ -3314,9 +3314,9 @@ LABEL_4:
         v8 = sub_100006E1C();
         if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
         {
-          v9 = [(CarDisplayController *)self backgroundAutoHideStateTrackingDate];
+          backgroundAutoHideStateTrackingDate = [(CarDisplayController *)self backgroundAutoHideStateTrackingDate];
           v11 = 138412290;
-          v12 = v9;
+          v12 = backgroundAutoHideStateTrackingDate;
           _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "Recorded background autohide state tracking date as %@", &v11, 0xCu);
         }
       }
@@ -3338,7 +3338,7 @@ LABEL_4:
   }
 }
 
-- (void)_carDisplayDidFinishLaunching:(id)a3
+- (void)_carDisplayDidFinishLaunching:(id)launching
 {
   if ([(CarDisplayController *)self state]== 1)
   {
@@ -3360,7 +3360,7 @@ LABEL_4:
   self->_clusterSuggestionController = 0;
 }
 
-- (void)_reactivateChromeAfterDelay:(double)a3
+- (void)_reactivateChromeAfterDelay:(double)delay
 {
   objc_initWeak(&location, self);
   v7[0] = _NSConcreteStackBlock;
@@ -3368,29 +3368,29 @@ LABEL_4:
   v7[2] = sub_100FAE1B8;
   v7[3] = &unk_10165FBC0;
   objc_copyWeak(v8, &location);
-  v8[1] = *&a3;
+  v8[1] = *&delay;
   v4 = objc_retainBlock(v7);
   v5 = sub_100006E1C();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134217984;
-    v11 = a3;
+    delayCopy = delay;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "Will reactivate chrome after %#.2lfs delay", buf, 0xCu);
   }
 
-  if (a3 == -1.0)
+  if (delay == -1.0)
   {
     dispatch_async(&_dispatch_main_q, v4);
   }
 
-  else if (a3 == 0.0)
+  else if (delay == 0.0)
   {
     (v4[2])(v4);
   }
 
   else
   {
-    v6 = dispatch_time(0, (a3 * 1000000000.0));
+    v6 = dispatch_time(0, (delay * 1000000000.0));
     dispatch_after(v6, &_dispatch_main_q, v4);
   }
 
@@ -3398,34 +3398,34 @@ LABEL_4:
   objc_destroyWeak(&location);
 }
 
-- (void)_setChromeSuppressed:(BOOL)a3
+- (void)_setChromeSuppressed:(BOOL)suppressed
 {
-  v3 = a3;
-  v5 = [(CarDisplayController *)self chromeViewController];
+  suppressedCopy = suppressed;
+  chromeViewController = [(CarDisplayController *)self chromeViewController];
 
-  if (v5)
+  if (chromeViewController)
   {
-    v6 = [(CarDisplayController *)self chromeViewController];
-    v7 = v6;
-    if (v3)
+    chromeViewController2 = [(CarDisplayController *)self chromeViewController];
+    v7 = chromeViewController2;
+    if (suppressedCopy)
     {
-      [v6 setSuppressed:1];
+      [chromeViewController2 setSuppressed:1];
 
       self->_isPreparingNavigation = 0;
     }
 
     else
     {
-      v11 = [v6 isSuppressed];
+      isSuppressed = [chromeViewController2 isSuppressed];
 
-      v12 = [(CarDisplayController *)self chromeViewController];
-      v15 = v12;
-      if (v11)
+      chromeViewController3 = [(CarDisplayController *)self chromeViewController];
+      v15 = chromeViewController3;
+      if (isSuppressed)
       {
-        [v12 loadViewIfNeeded];
+        [chromeViewController3 loadViewIfNeeded];
 
-        v13 = [(CarDisplayController *)self chromeViewController];
-        [v13 setSuppressed:0];
+        chromeViewController4 = [(CarDisplayController *)self chromeViewController];
+        [chromeViewController4 setSuppressed:0];
 
         v14 = sub_100006E1C();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
@@ -3440,7 +3440,7 @@ LABEL_4:
 
       else
       {
-        [v12 setSuppressed:0];
+        [chromeViewController3 setSuppressed:0];
       }
     }
   }
@@ -3451,7 +3451,7 @@ LABEL_4:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
       v9 = @"NO";
-      if (v3)
+      if (suppressedCopy)
       {
         v9 = @"YES";
       }
@@ -3474,11 +3474,11 @@ LABEL_4:
   }
 
   [(CarDisplayController *)self _stopObservingSharedAppState];
-  v4 = [(CarDisplayController *)self chromeViewController];
-  [v4 setContexts:&__NSArray0__struct];
+  chromeViewController = [(CarDisplayController *)self chromeViewController];
+  [chromeViewController setContexts:&__NSArray0__struct];
 
-  v5 = [(CarDisplayController *)self chromeViewController];
-  [v5 setSuppressed:1];
+  chromeViewController2 = [(CarDisplayController *)self chromeViewController];
+  [chromeViewController2 setSuppressed:1];
 
   chromeDeactivationToken = self->_chromeDeactivationToken;
   self->_chromeDeactivationToken = 0;
@@ -3491,16 +3491,16 @@ LABEL_4:
   v3 = objc_opt_new();
   v4 = [NSMutableArray arrayWithObject:v3];
   v5 = +[CarDisplayController sharedInstance];
-  v6 = [v5 platformController];
-  v7 = [v6 currentSession];
+  platformController = [v5 platformController];
+  currentSession = [platformController currentSession];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v8 = [CarRouteGeniusModeController alloc];
     v9 = +[CarRouteGeniusService sharedService];
-    v10 = [v9 suggestion];
-    v11 = [(CarRouteGeniusModeController *)v8 initWithSuggestion:v10];
+    suggestion = [v9 suggestion];
+    v11 = [(CarRouteGeniusModeController *)v8 initWithSuggestion:suggestion];
   }
 
   else
@@ -3508,7 +3508,7 @@ LABEL_4:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v12 = [[_TtC4Maps23CarRoutePlanningContext alloc] initWithRoutePlanningSession:v7];
+      v12 = [[_TtC4Maps23CarRoutePlanningContext alloc] initWithRoutePlanningSession:currentSession];
     }
 
     else
@@ -3519,7 +3519,7 @@ LABEL_4:
         goto LABEL_14;
       }
 
-      v13 = v7;
+      v13 = currentSession;
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -3533,9 +3533,9 @@ LABEL_4:
 
       v15 = v14;
 
-      v16 = [v15 isCarNavigationCompatible];
+      isCarNavigationCompatible = [v15 isCarNavigationCompatible];
       v17 = off_1015F6138;
-      if (!v16)
+      if (!isCarNavigationCompatible)
       {
         v17 = off_1015F6120;
       }
@@ -3559,8 +3559,8 @@ LABEL_14:
       if ([v19 count])
       {
         v40 = v18;
-        v41 = self;
-        v42 = v7;
+        selfCopy = self;
+        v42 = currentSession;
         v43 = v4;
         v44 = v3;
         v21 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v20 count]);
@@ -3634,8 +3634,8 @@ LABEL_34:
 
             v4 = v43;
             v3 = v44;
-            self = v41;
-            v7 = v42;
+            self = selfCopy;
+            currentSession = v42;
             v20 = v39;
             v18 = v40;
             goto LABEL_37;
@@ -3653,11 +3653,11 @@ LABEL_34:
 
 LABEL_37:
 
-    v36 = [(CarDisplayController *)self chromeViewController];
+    chromeViewController = [(CarDisplayController *)self chromeViewController];
     *buf = 138412546;
     v50 = v35;
     v51 = 2048;
-    v52 = v36;
+    v52 = chromeViewController;
     _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_INFO, "Recreating current app state with modes: %@ for chrome: %p", buf, 0x16u);
   }
 
@@ -3668,13 +3668,13 @@ LABEL_37:
 
 - (void)_prepareChromeForFirstUse
 {
-  v3 = [(CarDisplayController *)self chromeViewController];
+  chromeViewController = [(CarDisplayController *)self chromeViewController];
 
-  if (!v3)
+  if (!chromeViewController)
   {
     v4 = +[CarDisplayController sharedInstance];
-    v5 = [v4 platformController];
-    v6 = [v5 currentSession];
+    platformController = [v4 platformController];
+    currentSession = [platformController currentSession];
 
     v7 = sub_100006E1C();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -3683,13 +3683,13 @@ LABEL_37:
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "Instantiating and suppressing CarChromeViewController.", buf, 2u);
     }
 
-    v8 = [(CarDisplayController *)self windowScene];
-    v9 = [v8 delegate];
+    windowScene = [(CarDisplayController *)self windowScene];
+    delegate = [windowScene delegate];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v10 = v9;
+      v10 = delegate;
     }
 
     else
@@ -3729,37 +3729,37 @@ LABEL_37:
     }
 
     v12 = [CarChromeViewController alloc];
-    v13 = [v11 sceneType];
+    sceneType = [v11 sceneType];
 
-    v14 = [(CarChromeViewController *)v12 initWithCarSceneType:v13];
+    v14 = [(CarChromeViewController *)v12 initWithCarSceneType:sceneType];
     [(CarDisplayController *)self setChromeViewController:v14];
 
-    v15 = [(CarDisplayController *)self chromeViewController];
+    chromeViewController2 = [(CarDisplayController *)self chromeViewController];
     v39 = _NSConcreteStackBlock;
     v40 = 3221225472;
     v41 = sub_100FAEFDC;
     v42 = &unk_10165FB98;
-    v16 = v6;
+    v16 = currentSession;
     v43 = v16;
-    [v15 setFallbackContextCoordinationBlock:&v39];
+    [chromeViewController2 setFallbackContextCoordinationBlock:&v39];
 
     v17 = [(CarDisplayController *)self chromeViewController:v39];
     v18 = [v17 acquireChromeDeactivationTokenForReason:@"CarPlay preparing new chrome for first use"];
     chromeDeactivationToken = self->_chromeDeactivationToken;
     self->_chromeDeactivationToken = v18;
 
-    v20 = [(CarDisplayController *)self chromeViewController];
-    [v20 setSuppressed:1];
+    chromeViewController3 = [(CarDisplayController *)self chromeViewController];
+    [chromeViewController3 setSuppressed:1];
 
     v21 = +[NSUserDefaults standardUserDefaults];
     if ([v21 BOOLForKey:@"__internal_CarCardTestDebug"])
     {
       v22 = +[GEOPlatform sharedPlatform];
-      v23 = [v22 isInternalInstall];
+      isInternalInstall = [v22 isInternalInstall];
 
-      if (v23)
+      if (isInternalInstall)
       {
-        v24 = objc_alloc_init(CarCardTestModeController);
+        chromeViewController5 = objc_alloc_init(CarCardTestModeController);
         v25 = sub_100006E1C();
         if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
         {
@@ -3767,10 +3767,10 @@ LABEL_37:
           _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_INFO, "Will set CarCardTestModeController as root mode for new CarChromeViewController.", buf, 2u);
         }
 
-        v26 = [(CarDisplayController *)self chromeViewController];
-        v44 = v24;
+        chromeViewController4 = [(CarDisplayController *)self chromeViewController];
+        v44 = chromeViewController5;
         v27 = [NSArray arrayWithObjects:&v44 count:1];
-        [v26 setContexts:v27 animated:0 completion:0];
+        [chromeViewController4 setContexts:v27 animated:0 completion:0];
 
         goto LABEL_17;
       }
@@ -3787,27 +3787,27 @@ LABEL_37:
       _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_INFO, "Will set contextsForCurrentAppState as the new mode stack.", buf, 2u);
     }
 
-    v24 = [(CarDisplayController *)self chromeViewController];
-    v26 = [(CarDisplayController *)self contextsForCurrentAppState];
-    [(CarCardTestModeController *)v24 setContexts:v26 animated:0 completion:0];
+    chromeViewController5 = [(CarDisplayController *)self chromeViewController];
+    chromeViewController4 = [(CarDisplayController *)self contextsForCurrentAppState];
+    [(CarCardTestModeController *)chromeViewController5 setContexts:chromeViewController4 animated:0 completion:0];
 LABEL_17:
 
     v29 = +[CarChromeModeCoordinator sharedInstance];
-    v30 = [(CarDisplayController *)self chromeViewController];
-    [v29 addChromeViewController:v30];
+    chromeViewController6 = [(CarDisplayController *)self chromeViewController];
+    [v29 addChromeViewController:chromeViewController6];
 
     v31 = +[SearchSession currentSearchSession];
-    v32 = [(CarDisplayController *)self platformController];
-    v33 = [v32 currentSession];
-    if (v33 || !v31)
+    platformController2 = [(CarDisplayController *)self platformController];
+    currentSession2 = [platformController2 currentSession];
+    if (currentSession2 || !v31)
     {
     }
 
     else
     {
-      v34 = [v31 origin];
+      origin = [v31 origin];
 
-      if (v34 == 1)
+      if (origin == 1)
       {
 LABEL_25:
         [(CarDisplayController *)self _startObservingSharedAppState];
@@ -3824,8 +3824,8 @@ LABEL_25:
 
       objc_storeStrong(&self->_searchSession, v31);
       [(SearchSession *)self->_searchSession registerObserver:self];
-      v32 = +[CarChromeModeCoordinator sharedInstance];
-      [v32 displaySearchSession:v31];
+      platformController2 = +[CarChromeModeCoordinator sharedInstance];
+      [platformController2 displaySearchSession:v31];
     }
 
     goto LABEL_25;
@@ -3872,15 +3872,15 @@ LABEL_25:
   }
 }
 
-- (void)setState:(unint64_t)a3
+- (void)setState:(unint64_t)state
 {
   state = self->_state;
-  if (state != a3 && [(CarDisplayController *)self _validateTransitionFromState:state toState:a3])
+  if (state != state && [(CarDisplayController *)self _validateTransitionFromState:state toState:state])
   {
-    self->_state = a3;
-    if (a3)
+    self->_state = state;
+    if (state)
     {
-      if (a3 == 2)
+      if (state == 2)
       {
         v8 = sub_100006E1C();
         if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
@@ -3898,7 +3898,7 @@ LABEL_25:
         [(CarDisplayController *)self _setNeedsScreenUpdate];
       }
 
-      else if (a3 == 1)
+      else if (state == 1)
       {
         v6 = sub_100006E1C();
         if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -3907,7 +3907,7 @@ LABEL_25:
           _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Will prepare CarPlay", buf, 2u);
         }
 
-        v7 = [(CarDisplayController *)self guidanceObserver];
+        guidanceObserver = [(CarDisplayController *)self guidanceObserver];
       }
     }
 
@@ -3927,8 +3927,8 @@ LABEL_25:
       dateOfLastScreenUpdate = self->_dateOfLastScreenUpdate;
       self->_dateOfLastScreenUpdate = 0;
 
-      v13 = [(CarDisplayController *)self window];
-      [v13 setRootViewController:0];
+      window = [(CarDisplayController *)self window];
+      [window setRootViewController:0];
 
       [(CarDisplayController *)self setWindow:0];
       [(CarDisplayController *)self setScreen:0];
@@ -3936,14 +3936,14 @@ LABEL_25:
   }
 }
 
-- (BOOL)_validateTransitionFromState:(unint64_t)a3 toState:(unint64_t)a4
+- (BOOL)_validateTransitionFromState:(unint64_t)state toState:(unint64_t)toState
 {
-  if (a3 == a4 || a3 == 1 && (a4 & 0xFFFFFFFFFFFFFFFDLL) == 0 || a3 == 2 && a4 < 2)
+  if (state == toState || state == 1 && (toState & 0xFFFFFFFFFFFFFFFDLL) == 0 || state == 2 && toState < 2)
   {
     return 1;
   }
 
-  return !a3 && a4 == 1;
+  return !state && toState == 1;
 }
 
 - (BOOL)isChromeAvailable
@@ -3953,40 +3953,40 @@ LABEL_25:
     return 0;
   }
 
-  v3 = [(CarDisplayController *)self chromeViewController];
-  v4 = v3 != 0;
+  chromeViewController = [(CarDisplayController *)self chromeViewController];
+  v4 = chromeViewController != 0;
 
   return v4;
 }
 
-- (void)session:(id)a3 didUpdateConfiguration:(id)a4
+- (void)session:(id)session didUpdateConfiguration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  configurationCopy = configuration;
   v8 = sub_100006E1C();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v9 = 138412546;
-    v10 = v6;
+    v10 = sessionCopy;
     v11 = 2112;
-    v12 = v7;
+    v12 = configurationCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "carSession: %@, didUpdateConfiguration: %@", &v9, 0x16u);
   }
 
   [(CarDisplayController *)self _setupClusterSuggestionControllerIfNeeded];
 }
 
-- (void)sessionDidDisconnect:(id)a3
+- (void)sessionDidDisconnect:(id)disconnect
 {
-  v4 = a3;
+  disconnectCopy = disconnect;
   objc_initWeak(&location, self);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100FAF6F4;
   block[3] = &unk_101661340;
   objc_copyWeak(&v11, &location);
-  v10 = v4;
-  v5 = v4;
+  v10 = disconnectCopy;
+  v5 = disconnectCopy;
   dispatch_async(&_dispatch_main_q, block);
   signalPackQueue = self->_signalPackQueue;
   v7[0] = _NSConcreteStackBlock;
@@ -4001,17 +4001,17 @@ LABEL_25:
   objc_destroyWeak(&location);
 }
 
-- (void)sessionDidConnect:(id)a3
+- (void)sessionDidConnect:(id)connect
 {
-  v4 = a3;
+  connectCopy = connect;
   objc_initWeak(&location, self);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100FAFADC;
   block[3] = &unk_101661340;
   objc_copyWeak(&v11, &location);
-  v10 = v4;
-  v5 = v4;
+  v10 = connectCopy;
+  v5 = connectCopy;
   dispatch_async(&_dispatch_main_q, block);
   signalPackQueue = self->_signalPackQueue;
   v7[0] = _NSConcreteStackBlock;
@@ -4026,7 +4026,7 @@ LABEL_25:
   objc_destroyWeak(&location);
 }
 
-- (void)updateMapsSuggestionsSignalForMapType:(int)a3
+- (void)updateMapsSuggestionsSignalForMapType:(int)type
 {
   objc_initWeak(&location, self);
   signalPackQueue = self->_signalPackQueue;
@@ -4035,7 +4035,7 @@ LABEL_25:
   block[2] = sub_100FAFE40;
   block[3] = &unk_10165FB70;
   objc_copyWeak(&v7, &location);
-  v8 = a3;
+  typeCopy = type;
   dispatch_async(signalPackQueue, block);
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
@@ -4079,42 +4079,42 @@ LABEL_25:
     shouldOverrideMapTypeToStandard = self->_shouldOverrideMapTypeToStandard;
     if (lastMapTypeFromiOSChrome >= 5)
     {
-      v13 = [NSString stringWithFormat:@"(unknown: %i)", lastMapTypeFromiOSChrome];
+      lastMapTypeFromiOSChrome = [NSString stringWithFormat:@"(unknown: %i)", lastMapTypeFromiOSChrome];
     }
 
     else
     {
-      v13 = off_10165FE80[lastMapTypeFromiOSChrome];
+      lastMapTypeFromiOSChrome = off_10165FE80[lastMapTypeFromiOSChrome];
     }
 
     *buf = 67109378;
     v15 = shouldOverrideMapTypeToStandard;
     v16 = 2112;
-    v17 = v13;
+    v17 = lastMapTypeFromiOSChrome;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEBUG, "_shouldOverrideMapTypeToStandard: %d, sending: %@", buf, 0x12u);
   }
 }
 
-- (void)_carSessionControllerObserversDidChange:(id)a3
+- (void)_carSessionControllerObserversDidChange:(id)change
 {
-  v4 = [(CarDisplayController *)self isCurrentlyConnectedToAnyCarScene];
+  isCurrentlyConnectedToAnyCarScene = [(CarDisplayController *)self isCurrentlyConnectedToAnyCarScene];
 
-  [(CarDisplayController *)self setWasConnectedToAnyCarScene:v4];
+  [(CarDisplayController *)self setWasConnectedToAnyCarScene:isCurrentlyConnectedToAnyCarScene];
 }
 
-- (void)_externalNavigationOwnershipUpdated:(id)a3
+- (void)_externalNavigationOwnershipUpdated:(id)updated
 {
   v3 = +[MNNavigationService sharedService];
-  v4 = [v3 isInNavigatingState];
+  isInNavigatingState = [v3 isInNavigatingState];
 
   v5 = +[MapsExternalDevice sharedInstance];
-  v6 = [v5 externalAccessoryIsNavigating];
+  externalAccessoryIsNavigating = [v5 externalAccessoryIsNavigating];
 
   v7 = sub_100006E1C();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_INFO);
-  if (v6)
+  if (externalAccessoryIsNavigating)
   {
-    v9 = v4 == 0;
+    v9 = isInNavigatingState == 0;
   }
 
   else
@@ -4126,7 +4126,7 @@ LABEL_25:
   {
     if (v8)
     {
-      if (v6)
+      if (externalAccessoryIsNavigating)
       {
         v10 = @"YES";
       }
@@ -4137,7 +4137,7 @@ LABEL_25:
       }
 
       v11 = v10;
-      if (v4)
+      if (isInNavigatingState)
       {
         v12 = @"YES";
       }
@@ -4169,7 +4169,7 @@ LABEL_25:
   }
 }
 
-- (void)_geoServiceDidUpdateCountryConfiguration:(id)a3
+- (void)_geoServiceDidUpdateCountryConfiguration:(id)configuration
 {
   v3 = objc_opt_class();
 

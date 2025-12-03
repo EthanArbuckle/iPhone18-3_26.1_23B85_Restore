@@ -1,47 +1,47 @@
 @interface CKChatItemCachedSizeMetrics
 - (CGSize)size;
 - (CGSize)translationSecondaryTextSize;
-- (CKChatItemCachedSizeMetrics)initWithCoder:(id)a3;
+- (CKChatItemCachedSizeMetrics)initWithCoder:(id)coder;
 - (UIEdgeInsets)textAlignmentInsets;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CKChatItemCachedSizeMetrics
 
-- (CKChatItemCachedSizeMetrics)initWithCoder:(id)a3
+- (CKChatItemCachedSizeMetrics)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_alloc_init(CKChatItemCachedSizeMetrics);
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CGUID"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CGUID"];
   [(CKChatItemCachedSizeMetrics *)v5 setChatItemGUID:v6];
 
-  [v4 decodeCGSizeForKey:@"CAS"];
+  [coderCopy decodeCGSizeForKey:@"CAS"];
   [(CKChatItemCachedSizeMetrics *)v5 setSize:?];
-  [v4 decodeCGSizeForKey:@"ACAS"];
+  [coderCopy decodeCGSizeForKey:@"ACAS"];
   [(CKChatItemCachedSizeMetrics *)v5 setTranslationSecondaryTextSize:?];
-  [v4 decodeUIEdgeInsetsForKey:@"CITAI"];
+  [coderCopy decodeUIEdgeInsetsForKey:@"CITAI"];
   [(CKChatItemCachedSizeMetrics *)v5 setTextAlignmentInsets:?];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CILA"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CILA"];
 
   [(CKChatItemCachedSizeMetrics *)v5 setLastAccess:v7];
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(CKChatItemCachedSizeMetrics *)self chatItemGUID];
-  [v4 encodeObject:v5 forKey:@"CGUID"];
+  coderCopy = coder;
+  chatItemGUID = [(CKChatItemCachedSizeMetrics *)self chatItemGUID];
+  [coderCopy encodeObject:chatItemGUID forKey:@"CGUID"];
 
   [(CKChatItemCachedSizeMetrics *)self size];
-  [v4 encodeCGSize:@"CAS" forKey:?];
+  [coderCopy encodeCGSize:@"CAS" forKey:?];
   [(CKChatItemCachedSizeMetrics *)self translationSecondaryTextSize];
-  [v4 encodeCGSize:@"ACAS" forKey:?];
+  [coderCopy encodeCGSize:@"ACAS" forKey:?];
   [(CKChatItemCachedSizeMetrics *)self textAlignmentInsets];
-  [v4 encodeUIEdgeInsets:@"CITAI" forKey:?];
-  v6 = [(CKChatItemCachedSizeMetrics *)self lastAccess];
-  [v4 encodeObject:v6 forKey:@"CILA"];
+  [coderCopy encodeUIEdgeInsets:@"CITAI" forKey:?];
+  lastAccess = [(CKChatItemCachedSizeMetrics *)self lastAccess];
+  [coderCopy encodeObject:lastAccess forKey:@"CILA"];
 }
 
 - (id)description

@@ -1,8 +1,8 @@
 @interface AXVoiceOverTraitFeedbackController
-+ (id)descriptionForOption:(id)a3;
++ (id)descriptionForOption:(id)option;
 - (id)specifiers;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
 @end
 
 @implementation AXVoiceOverTraitFeedbackController
@@ -43,46 +43,46 @@
   return v4;
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v10 = a4;
+  cellCopy = cell;
   v5 = +[AXSettings sharedInstance];
-  v6 = [v5 voiceOverTraitFeedback];
+  voiceOverTraitFeedback = [v5 voiceOverTraitFeedback];
 
-  v7 = [v10 specifier];
-  v8 = [v7 propertyForKey:@"AXSVoiceOverTraitFeedback"];
-  v9 = [v8 integerValue] == v6;
+  specifier = [cellCopy specifier];
+  v8 = [specifier propertyForKey:@"AXSVoiceOverTraitFeedback"];
+  v9 = [v8 integerValue] == voiceOverTraitFeedback;
 
-  [v10 setChecked:v9];
+  [cellCopy setChecked:v9];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v11.receiver = self;
   v11.super_class = AXVoiceOverTraitFeedbackController;
-  v6 = a4;
-  [(AXVoiceOverTraitFeedbackController *)&v11 tableView:a3 didSelectRowAtIndexPath:v6];
-  v7 = [(AXVoiceOverTraitFeedbackController *)self specifierForIndexPath:v6, v11.receiver, v11.super_class];
+  pathCopy = path;
+  [(AXVoiceOverTraitFeedbackController *)&v11 tableView:view didSelectRowAtIndexPath:pathCopy];
+  v7 = [(AXVoiceOverTraitFeedbackController *)self specifierForIndexPath:pathCopy, v11.receiver, v11.super_class];
 
   v8 = [v7 propertyForKey:@"AXSVoiceOverTraitFeedback"];
-  v9 = [v8 integerValue];
+  integerValue = [v8 integerValue];
   v10 = +[AXSettings sharedInstance];
-  [v10 setVoiceOverTraitFeedback:v9];
+  [v10 setVoiceOverTraitFeedback:integerValue];
 
   [(AXVoiceOverTraitFeedbackController *)self beginUpdates];
   [(AXVoiceOverTraitFeedbackController *)self reloadSpecifiers];
   [(AXVoiceOverTraitFeedbackController *)self endUpdates];
 }
 
-+ (id)descriptionForOption:(id)a3
++ (id)descriptionForOption:(id)option
 {
-  if (a3)
+  if (option)
   {
-    v3 = [a3 integerValue];
+    integerValue = [option integerValue];
     v4 = objc_opt_new();
-    if (v3 <= 2)
+    if (integerValue <= 2)
     {
-      v5 = settingsLocString(off_2577D0[v3], @"VoiceOverSettings");
+      v5 = settingsLocString(off_2577D0[integerValue], @"VoiceOverSettings");
       [v4 addObject:v5];
     }
 

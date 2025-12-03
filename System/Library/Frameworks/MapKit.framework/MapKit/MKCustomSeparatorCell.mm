@@ -1,13 +1,13 @@
 @interface MKCustomSeparatorCell
 - (CGRect)_separatorFrame;
-- (MKCustomSeparatorCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (MKCustomSeparatorCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (double)leadingSeparatorInset;
 - (double)trailingSeparatorInset;
 - (void)_updateSeparatorInset;
-- (void)setLeadingSeparatorInset:(double)a3;
-- (void)setLeftSeparatorInset:(double)a3;
-- (void)setRightSeparatorInset:(double)a3;
-- (void)setTrailingSeparatorInset:(double)a3;
+- (void)setLeadingSeparatorInset:(double)inset;
+- (void)setLeftSeparatorInset:(double)inset;
+- (void)setRightSeparatorInset:(double)inset;
+- (void)setTrailingSeparatorInset:(double)inset;
 @end
 
 @implementation MKCustomSeparatorCell
@@ -29,18 +29,18 @@
   return result;
 }
 
-- (void)setTrailingSeparatorInset:(double)a3
+- (void)setTrailingSeparatorInset:(double)inset
 {
   if (MKApplicationLayoutDirectionIsRightToLeft())
   {
 
-    [(MKCustomSeparatorCell *)self setLeftSeparatorInset:a3];
+    [(MKCustomSeparatorCell *)self setLeftSeparatorInset:inset];
   }
 
   else
   {
 
-    [(MKCustomSeparatorCell *)self setRightSeparatorInset:a3];
+    [(MKCustomSeparatorCell *)self setRightSeparatorInset:inset];
   }
 }
 
@@ -61,35 +61,35 @@
   return result;
 }
 
-- (void)setLeadingSeparatorInset:(double)a3
+- (void)setLeadingSeparatorInset:(double)inset
 {
   if (MKApplicationLayoutDirectionIsRightToLeft())
   {
 
-    [(MKCustomSeparatorCell *)self setRightSeparatorInset:a3];
+    [(MKCustomSeparatorCell *)self setRightSeparatorInset:inset];
   }
 
   else
   {
 
-    [(MKCustomSeparatorCell *)self setLeftSeparatorInset:a3];
+    [(MKCustomSeparatorCell *)self setLeftSeparatorInset:inset];
   }
 }
 
-- (void)setRightSeparatorInset:(double)a3
+- (void)setRightSeparatorInset:(double)inset
 {
-  if (self->_rightSeparatorInset != a3)
+  if (self->_rightSeparatorInset != inset)
   {
-    self->_rightSeparatorInset = a3;
+    self->_rightSeparatorInset = inset;
     [(MKCustomSeparatorCell *)self _updateSeparatorInset];
   }
 }
 
-- (void)setLeftSeparatorInset:(double)a3
+- (void)setLeftSeparatorInset:(double)inset
 {
-  if (self->_leftSeparatorInset != a3)
+  if (self->_leftSeparatorInset != inset)
   {
-    self->_leftSeparatorInset = a3;
+    self->_leftSeparatorInset = inset;
     [(MKCustomSeparatorCell *)self _updateSeparatorInset];
   }
 }
@@ -140,11 +140,11 @@
   return result;
 }
 
-- (MKCustomSeparatorCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (MKCustomSeparatorCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = MKCustomSeparatorCell;
-  v4 = [(MKCustomSeparatorCell *)&v7 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(MKCustomSeparatorCell *)&v7 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {

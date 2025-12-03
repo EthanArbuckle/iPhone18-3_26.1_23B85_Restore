@@ -1,17 +1,17 @@
 @interface PCSKeyClient
-- (PCSKeyClient)initWithName:(id)a3 values:(id)a4 dsid:(id)a5;
-- (id)getValues:(id)a3;
-- (void)updateWithValues:(id)a3 dsid:(id)a4;
+- (PCSKeyClient)initWithName:(id)name values:(id)values dsid:(id)dsid;
+- (id)getValues:(id)values;
+- (void)updateWithValues:(id)values dsid:(id)dsid;
 @end
 
 @implementation PCSKeyClient
 
-- (PCSKeyClient)initWithName:(id)a3 values:(id)a4 dsid:(id)a5
+- (PCSKeyClient)initWithName:(id)name values:(id)values dsid:(id)dsid
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  nameCopy = name;
+  valuesCopy = values;
+  dsidCopy = dsid;
+  if (nameCopy)
   {
     v15.receiver = self;
     v15.super_class = PCSKeyClient;
@@ -19,10 +19,10 @@
     v12 = v11;
     if (v11)
     {
-      [(PCSKeyClient *)v11 setUuid:v8];
-      if (v9)
+      [(PCSKeyClient *)v11 setUuid:nameCopy];
+      if (valuesCopy)
       {
-        [(PCSKeyClient *)v12 updateWithValues:v9 dsid:v10];
+        [(PCSKeyClient *)v12 updateWithValues:valuesCopy dsid:dsidCopy];
       }
 
       else
@@ -32,57 +32,57 @@
     }
 
     self = v12;
-    v13 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v13 = 0;
+    selfCopy = 0;
   }
 
-  return v13;
+  return selfCopy;
 }
 
-- (void)updateWithValues:(id)a3 dsid:(id)a4
+- (void)updateWithValues:(id)values dsid:(id)dsid
 {
-  v22 = a3;
-  v6 = a4;
-  v7 = [v22 objectForKeyedSubscript:@"lastSeen"];
+  valuesCopy = values;
+  dsidCopy = dsid;
+  v7 = [valuesCopy objectForKeyedSubscript:@"lastSeen"];
   [(PCSKeyClient *)self setLastSeen:v7];
 
-  v8 = [v22 objectForKeyedSubscript:@"lastHash"];
+  v8 = [valuesCopy objectForKeyedSubscript:@"lastHash"];
   [(PCSKeyClient *)self setLastHash:v8];
 
-  v9 = [v22 objectForKeyedSubscript:@"name"];
+  v9 = [valuesCopy objectForKeyedSubscript:@"name"];
   [(PCSKeyClient *)self setName:v9];
 
-  v10 = [v22 objectForKeyedSubscript:@"lastSent"];
+  v10 = [valuesCopy objectForKeyedSubscript:@"lastSent"];
   [(PCSKeyClient *)self setLastSent:v10];
 
-  v11 = [v22 objectForKeyedSubscript:@"failures"];
+  v11 = [valuesCopy objectForKeyedSubscript:@"failures"];
   -[PCSKeyClient setFailures:](self, "setFailures:", [v11 intValue]);
 
-  v12 = [v22 objectForKeyedSubscript:@"numberHandshakes"];
+  v12 = [valuesCopy objectForKeyedSubscript:@"numberHandshakes"];
   -[PCSKeyClient setNumberHandshakes:](self, "setNumberHandshakes:", [v12 longValue]);
 
-  v13 = [v22 objectForKeyedSubscript:@"buildVersion"];
+  v13 = [valuesCopy objectForKeyedSubscript:@"buildVersion"];
   [(PCSKeyClient *)self setBuildVersion:v13];
 
-  v14 = [v22 objectForKeyedSubscript:@"firstSync"];
+  v14 = [valuesCopy objectForKeyedSubscript:@"firstSync"];
   [(PCSKeyClient *)self setFirstSync:v14];
 
-  v15 = [v22 objectForKeyedSubscript:@"protocol"];
+  v15 = [valuesCopy objectForKeyedSubscript:@"protocol"];
   -[PCSKeyClient setProtocolVersion:](self, "setProtocolVersion:", [v15 longValue]);
 
-  if (v6 && ([v22 objectForKeyedSubscript:@"dsid"], v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "isEqualToString:", v6), v16, v17))
+  if (dsidCopy && ([valuesCopy objectForKeyedSubscript:@"dsid"], v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "isEqualToString:", dsidCopy), v16, v17))
   {
-    v18 = [v22 objectForKeyedSubscript:@"iCDP2"];
+    v18 = [valuesCopy objectForKeyedSubscript:@"iCDP2"];
     -[PCSKeyClient setICDP:](self, "setICDP:", [v18 BOOLValue]);
 
-    v19 = [v22 objectForKeyedSubscript:@"circle2"];
+    v19 = [valuesCopy objectForKeyedSubscript:@"circle2"];
     -[PCSKeyClient setCircle:](self, "setCircle:", [v19 BOOLValue]);
 
-    v20 = [v22 objectForKeyedSubscript:@"firstSync"];
+    v20 = [valuesCopy objectForKeyedSubscript:@"firstSync"];
   }
 
   else
@@ -96,58 +96,58 @@
   [(PCSKeyClient *)self setFirstSync:v20];
 }
 
-- (id)getValues:(id)a3
+- (id)getValues:(id)values
 {
-  v4 = a3;
-  v5 = [(PCSKeyClient *)self uuid];
+  valuesCopy = values;
+  uuid = [(PCSKeyClient *)self uuid];
 
-  if (v5)
+  if (uuid)
   {
-    if (!v4)
+    if (!valuesCopy)
     {
-      v4 = &stru_100039CF8;
+      valuesCopy = &stru_100039CF8;
     }
 
-    v6 = [(PCSKeyClient *)self lastSeen];
+    lastSeen = [(PCSKeyClient *)self lastSeen];
 
-    if (!v6)
+    if (!lastSeen)
     {
       v7 = +[NSDate date];
       [(PCSKeyClient *)self setLastSeen:v7];
     }
 
-    v8 = [(PCSKeyClient *)self lastHash];
+    lastHash = [(PCSKeyClient *)self lastHash];
 
-    if (!v8)
+    if (!lastHash)
     {
       v9 = +[NSData data];
       [(PCSKeyClient *)self setLastHash:v9];
     }
 
-    v10 = [(PCSKeyClient *)self name];
+    name = [(PCSKeyClient *)self name];
 
-    if (!v10)
+    if (!name)
     {
-      v11 = [(PCSKeyClient *)self uuid];
-      [(PCSKeyClient *)self setName:v11];
+      uuid2 = [(PCSKeyClient *)self uuid];
+      [(PCSKeyClient *)self setName:uuid2];
     }
 
-    v12 = [(PCSKeyClient *)self buildVersion];
+    buildVersion = [(PCSKeyClient *)self buildVersion];
 
-    if (!v12)
+    if (!buildVersion)
     {
       [(PCSKeyClient *)self setBuildVersion:@"0"];
     }
 
     v30[0] = @"lastSeen";
-    v29 = [(PCSKeyClient *)self lastSeen];
-    v31[0] = v29;
+    lastSeen2 = [(PCSKeyClient *)self lastSeen];
+    v31[0] = lastSeen2;
     v30[1] = @"lastHash";
-    v28 = [(PCSKeyClient *)self lastHash];
-    v31[1] = v28;
+    lastHash2 = [(PCSKeyClient *)self lastHash];
+    v31[1] = lastHash2;
     v30[2] = @"name";
-    v27 = [(PCSKeyClient *)self name];
-    v31[2] = v27;
+    name2 = [(PCSKeyClient *)self name];
+    v31[2] = name2;
     v30[3] = @"failures";
     v13 = [NSNumber numberWithInt:[(PCSKeyClient *)self failures]];
     v31[3] = v13;
@@ -155,8 +155,8 @@
     v14 = [NSNumber numberWithLong:[(PCSKeyClient *)self numberHandshakes]];
     v31[4] = v14;
     v30[5] = @"buildVersion";
-    v15 = [(PCSKeyClient *)self buildVersion];
-    v31[5] = v15;
+    buildVersion2 = [(PCSKeyClient *)self buildVersion];
+    v31[5] = buildVersion2;
     v30[6] = @"protocol";
     v16 = [NSNumber numberWithLong:[(PCSKeyClient *)self protocolVersion]];
     v31[6] = v16;
@@ -167,24 +167,24 @@
     v18 = [NSNumber numberWithBool:[(PCSKeyClient *)self circle]];
     v30[9] = @"dsid";
     v31[8] = v18;
-    v31[9] = v4;
+    v31[9] = valuesCopy;
     v19 = [NSDictionary dictionaryWithObjects:v31 forKeys:v30 count:10];
     v20 = [v26 dictionaryWithDictionary:v19];
 
-    v21 = [(PCSKeyClient *)self lastSent];
+    lastSent = [(PCSKeyClient *)self lastSent];
 
-    if (v21)
+    if (lastSent)
     {
-      v22 = [(PCSKeyClient *)self lastSent];
-      [v20 setObject:v22 forKey:@"lastSent"];
+      lastSent2 = [(PCSKeyClient *)self lastSent];
+      [v20 setObject:lastSent2 forKey:@"lastSent"];
     }
 
-    v23 = [(PCSKeyClient *)self firstSync];
+    firstSync = [(PCSKeyClient *)self firstSync];
 
-    if (v23)
+    if (firstSync)
     {
-      v24 = [(PCSKeyClient *)self firstSync];
-      [v20 setObject:v24 forKey:@"firstSync"];
+      firstSync2 = [(PCSKeyClient *)self firstSync];
+      [v20 setObject:firstSync2 forKey:@"firstSync"];
     }
   }
 

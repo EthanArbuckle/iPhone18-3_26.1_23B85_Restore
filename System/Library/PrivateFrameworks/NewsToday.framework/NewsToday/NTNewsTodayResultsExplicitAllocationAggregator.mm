@@ -1,9 +1,9 @@
 @interface NTNewsTodayResultsExplicitAllocationAggregator
 - (NTNewsTodayResultsExplicitAllocationAggregator)init;
-- (NTNewsTodayResultsExplicitAllocationAggregator)initWithConfigurationManager:(id)a3 feedPersonalizer:(id)a4 filterDate:(id)a5;
-- (id)_itemsForSection:(id)a3 items:(id)a4 todayData:(id)a5 budgetInfo:(id)a6 previouslyChosenItems:(id)a7 priorClusterIDsInOtherSections:(id)a8 sectionItemsLimit:(unint64_t)a9 otherArticleIDs:(id)a10 remainingSlots:(double)a11 slotsUsed:(double *)a12 noMoreItemsToGive:(BOOL *)a13 noRoomForMoreItems:(BOOL *)a14 debugInspection:(id *)a15;
-- (id)_sectionFilterTransformationWithDescriptor:(id)a3 todayData:(id)a4 priorClusterIDsInOtherSections:(id)a5 priorClusterIDsInSection:(id)a6 otherArticleIDs:(id)a7;
-- (id)aggregateSections:(id)a3 itemsBySectionDescriptor:(id)a4 budgetInfo:(id)a5 todayData:(id)a6;
+- (NTNewsTodayResultsExplicitAllocationAggregator)initWithConfigurationManager:(id)manager feedPersonalizer:(id)personalizer filterDate:(id)date;
+- (id)_itemsForSection:(id)section items:(id)items todayData:(id)data budgetInfo:(id)info previouslyChosenItems:(id)chosenItems priorClusterIDsInOtherSections:(id)sections sectionItemsLimit:(unint64_t)limit otherArticleIDs:(id)self0 remainingSlots:(double)self1 slotsUsed:(double *)self2 noMoreItemsToGive:(BOOL *)self3 noRoomForMoreItems:(BOOL *)self4 debugInspection:(id *)self5;
+- (id)_sectionFilterTransformationWithDescriptor:(id)descriptor todayData:(id)data priorClusterIDsInOtherSections:(id)sections priorClusterIDsInSection:(id)section otherArticleIDs:(id)ds;
+- (id)aggregateSections:(id)sections itemsBySectionDescriptor:(id)descriptor budgetInfo:(id)info todayData:(id)data;
 @end
 
 @implementation NTNewsTodayResultsExplicitAllocationAggregator
@@ -34,21 +34,21 @@
   objc_exception_throw(v6);
 }
 
-- (NTNewsTodayResultsExplicitAllocationAggregator)initWithConfigurationManager:(id)a3 feedPersonalizer:(id)a4 filterDate:(id)a5
+- (NTNewsTodayResultsExplicitAllocationAggregator)initWithConfigurationManager:(id)manager feedPersonalizer:(id)personalizer filterDate:(id)date
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v9 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  managerCopy = manager;
+  personalizerCopy = personalizer;
+  dateCopy = date;
+  if (!managerCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTNewsTodayResultsExplicitAllocationAggregator initWithConfigurationManager:feedPersonalizer:filterDate:];
-    if (v11)
+    if (dateCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v11)
+  else if (dateCopy)
   {
     goto LABEL_6;
   }
@@ -65,9 +65,9 @@ LABEL_6:
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_configurationManager, a3);
-    objc_storeStrong(&v13->_feedPersonalizer, a4);
-    v14 = [v11 copy];
+    objc_storeStrong(&v12->_configurationManager, manager);
+    objc_storeStrong(&v13->_feedPersonalizer, personalizer);
+    v14 = [dateCopy copy];
     filterDate = v13->_filterDate;
     v13->_filterDate = v14;
   }
@@ -75,19 +75,19 @@ LABEL_6:
   return v13;
 }
 
-- (id)aggregateSections:(id)a3 itemsBySectionDescriptor:(id)a4 budgetInfo:(id)a5 todayData:(id)a6
+- (id)aggregateSections:(id)sections itemsBySectionDescriptor:(id)descriptor budgetInfo:(id)info todayData:(id)data
 {
   v51[2] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!v10 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  sectionsCopy = sections;
+  descriptorCopy = descriptor;
+  infoCopy = info;
+  dataCopy = data;
+  if (!sectionsCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTNewsTodayResultsExplicitAllocationAggregator aggregateSections:itemsBySectionDescriptor:budgetInfo:todayData:];
   }
 
-  if (!v11 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if (!descriptorCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTNewsTodayResultsExplicitAllocationAggregator aggregateSections:itemsBySectionDescriptor:budgetInfo:todayData:];
   }
@@ -95,14 +95,14 @@ LABEL_6:
   v49[0] = 0;
   v49[1] = v49;
   v49[2] = 0x2020000000;
-  [v12 slotsLimit];
+  [infoCopy slotsLimit];
   v49[3] = v14;
   v15 = objc_opt_new();
   v16 = objc_opt_new();
   v17 = objc_opt_new();
   v18 = objc_opt_new();
   v34 = objc_opt_new();
-  if ([v12 respectMinMaxLimit])
+  if ([infoCopy respectMinMaxLimit])
   {
     v51[0] = &__block_literal_global_6;
     v19 = v51;
@@ -122,10 +122,10 @@ LABEL_6:
   v36[1] = 3221225472;
   v36[2] = __114__NTNewsTodayResultsExplicitAllocationAggregator_aggregateSections_itemsBySectionDescriptor_budgetInfo_todayData___block_invoke_5;
   v36[3] = &unk_279983488;
-  v22 = v10;
+  v22 = sectionsCopy;
   v37 = v22;
   v48 = v49;
-  v23 = v11;
+  v23 = descriptorCopy;
   v38 = v23;
   v24 = v18;
   v39 = v24;
@@ -133,10 +133,10 @@ LABEL_6:
   v40 = v25;
   v26 = v16;
   v41 = v26;
-  v42 = self;
-  v27 = v13;
+  selfCopy = self;
+  v27 = dataCopy;
   v43 = v27;
-  v28 = v12;
+  v28 = infoCopy;
   v44 = v28;
   v29 = v15;
   v45 = v29;
@@ -343,41 +343,41 @@ uint64_t __114__NTNewsTodayResultsExplicitAllocationAggregator_aggregateSections
   return result;
 }
 
-- (id)_itemsForSection:(id)a3 items:(id)a4 todayData:(id)a5 budgetInfo:(id)a6 previouslyChosenItems:(id)a7 priorClusterIDsInOtherSections:(id)a8 sectionItemsLimit:(unint64_t)a9 otherArticleIDs:(id)a10 remainingSlots:(double)a11 slotsUsed:(double *)a12 noMoreItemsToGive:(BOOL *)a13 noRoomForMoreItems:(BOOL *)a14 debugInspection:(id *)a15
+- (id)_itemsForSection:(id)section items:(id)items todayData:(id)data budgetInfo:(id)info previouslyChosenItems:(id)chosenItems priorClusterIDsInOtherSections:(id)sections sectionItemsLimit:(unint64_t)limit otherArticleIDs:(id)self0 remainingSlots:(double)self1 slotsUsed:(double *)self2 noMoreItemsToGive:(BOOL *)self3 noRoomForMoreItems:(BOOL *)self4 debugInspection:(id *)self5
 {
   v78 = *MEMORY[0x277D85DE8];
-  v22 = a3;
-  v23 = a4;
-  v24 = a5;
-  v69 = a6;
-  v68 = a7;
-  v25 = a8;
-  v26 = v22;
-  v27 = v25;
-  v72 = a10;
-  if (!v22 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  sectionCopy = section;
+  itemsCopy = items;
+  dataCopy = data;
+  infoCopy = info;
+  chosenItemsCopy = chosenItems;
+  sectionsCopy = sections;
+  v26 = sectionCopy;
+  v27 = sectionsCopy;
+  dsCopy = ds;
+  if (!sectionCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTNewsTodayResultsExplicitAllocationAggregator _itemsForSection:items:todayData:budgetInfo:previouslyChosenItems:priorClusterIDsInOtherSections:sectionItemsLimit:otherArticleIDs:remainingSlots:slotsUsed:noMoreItemsToGive:noRoomForMoreItems:debugInspection:];
   }
 
-  v28 = v23;
-  if (!v23 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  v28 = itemsCopy;
+  if (!itemsCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTNewsTodayResultsExplicitAllocationAggregator _itemsForSection:items:todayData:budgetInfo:previouslyChosenItems:priorClusterIDsInOtherSections:sectionItemsLimit:otherArticleIDs:remainingSlots:slotsUsed:noMoreItemsToGive:noRoomForMoreItems:debugInspection:];
   }
 
-  v30 = v68;
-  v29 = v69;
-  if (!v69 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  v30 = chosenItemsCopy;
+  v29 = infoCopy;
+  if (!infoCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTNewsTodayResultsExplicitAllocationAggregator _itemsForSection:items:todayData:budgetInfo:previouslyChosenItems:priorClusterIDsInOtherSections:sectionItemsLimit:otherArticleIDs:remainingSlots:slotsUsed:noMoreItemsToGive:noRoomForMoreItems:debugInspection:];
-    if (v68)
+    if (chosenItemsCopy)
     {
       goto LABEL_12;
     }
   }
 
-  else if (v68)
+  else if (chosenItemsCopy)
   {
     goto LABEL_12;
   }
@@ -388,7 +388,7 @@ uint64_t __114__NTNewsTodayResultsExplicitAllocationAggregator_aggregateSections
   }
 
 LABEL_12:
-  if (!v72 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if (!dsCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTNewsTodayResultsExplicitAllocationAggregator _itemsForSection:items:todayData:budgetInfo:previouslyChosenItems:priorClusterIDsInOtherSections:sectionItemsLimit:otherArticleIDs:remainingSlots:slotsUsed:noMoreItemsToGive:noRoomForMoreItems:debugInspection:];
     if (v27)
@@ -408,21 +408,21 @@ LABEL_12:
   }
 
 LABEL_17:
-  if (!a9 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if (!limit && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTNewsTodayResultsExplicitAllocationAggregator _itemsForSection:items:todayData:budgetInfo:previouslyChosenItems:priorClusterIDsInOtherSections:sectionItemsLimit:otherArticleIDs:remainingSlots:slotsUsed:noMoreItemsToGive:noRoomForMoreItems:debugInspection:];
   }
 
-  if (a11 < 0.0 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if (slots < 0.0 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTNewsTodayResultsExplicitAllocationAggregator _itemsForSection:items:todayData:budgetInfo:previouslyChosenItems:priorClusterIDsInOtherSections:sectionItemsLimit:otherArticleIDs:remainingSlots:slotsUsed:noMoreItemsToGive:noRoomForMoreItems:debugInspection:];
-    if (a12)
+    if (used)
     {
       goto LABEL_25;
     }
   }
 
-  else if (a12)
+  else if (used)
   {
     goto LABEL_25;
   }
@@ -433,26 +433,26 @@ LABEL_17:
   }
 
 LABEL_25:
-  if (!a13 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if (!give && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTNewsTodayResultsExplicitAllocationAggregator _itemsForSection:items:todayData:budgetInfo:previouslyChosenItems:priorClusterIDsInOtherSections:sectionItemsLimit:otherArticleIDs:remainingSlots:slotsUsed:noMoreItemsToGive:noRoomForMoreItems:debugInspection:];
   }
 
-  if (!a14 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if (!moreItems && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTNewsTodayResultsExplicitAllocationAggregator _itemsForSection:items:todayData:budgetInfo:previouslyChosenItems:priorClusterIDsInOtherSections:sectionItemsLimit:otherArticleIDs:remainingSlots:slotsUsed:noMoreItemsToGive:noRoomForMoreItems:debugInspection:];
   }
 
-  v70 = [(NTNewsTodayResultsExplicitAllocationAggregator *)self feedPersonalizer];
+  feedPersonalizer = [(NTNewsTodayResultsExplicitAllocationAggregator *)self feedPersonalizer];
   v65 = [v26 incrementalSortTransformationWithFeedPersonalizer:?];
-  v31 = [v65 transformFeedItems:v23];
-  v32 = [v68 fc_setByTransformingWithBlock:&__block_literal_global_151];
-  v33 = self;
+  v31 = [v65 transformFeedItems:itemsCopy];
+  v32 = [chosenItemsCopy fc_setByTransformingWithBlock:&__block_literal_global_151];
+  selfCopy = self;
   v34 = v31;
   v66 = v27;
-  v67 = v24;
+  v67 = dataCopy;
   v64 = v32;
-  v35 = [NTNewsTodayResultsExplicitAllocationAggregator _sectionFilterTransformationWithDescriptor:v33 todayData:"_sectionFilterTransformationWithDescriptor:todayData:priorClusterIDsInOtherSections:priorClusterIDsInSection:otherArticleIDs:" priorClusterIDsInOtherSections:v26 priorClusterIDsInSection:v24 otherArticleIDs:v27];
+  v35 = [NTNewsTodayResultsExplicitAllocationAggregator _sectionFilterTransformationWithDescriptor:selfCopy todayData:"_sectionFilterTransformationWithDescriptor:todayData:priorClusterIDsInOtherSections:priorClusterIDsInSection:otherArticleIDs:" priorClusterIDsInOtherSections:v26 priorClusterIDsInSection:dataCopy otherArticleIDs:v27];
   v73 = [v35 transformFeedItems:v31];
   v36 = NTSharedLog();
   if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
@@ -464,52 +464,52 @@ LABEL_25:
     _os_log_impl(&dword_25BF21000, v36, OS_LOG_TYPE_DEFAULT, "Filtered feed items from %lu to %lu", buf, 0x16u);
   }
 
-  if ([v68 count])
+  if ([chosenItemsCopy count])
   {
-    v37 = [v69 sectionSlotCostInfo];
+    sectionSlotCostInfo = [infoCopy sectionSlotCostInfo];
     v38 = 0.0;
   }
 
   else
   {
-    v39 = [v26 name];
-    if (v39)
+    name = [v26 name];
+    if (name)
     {
-      v40 = [v69 allowSectionTitles];
+      allowSectionTitles = [infoCopy allowSectionTitles];
     }
 
     else
     {
-      v40 = 0;
+      allowSectionTitles = 0;
     }
 
-    v41 = [v69 sectionSlotCostInfo];
-    v37 = v41;
+    sectionSlotCostInfo2 = [infoCopy sectionSlotCostInfo];
+    sectionSlotCostInfo = sectionSlotCostInfo2;
     v42 = 0.0;
-    if (v40)
+    if (allowSectionTitles)
     {
-      [v41 sectionTitleSlotCost];
+      [sectionSlotCostInfo2 sectionTitleSlotCost];
       v42 = v43;
     }
 
-    [v37 sectionFooterSlotCost];
+    [sectionSlotCostInfo sectionFooterSlotCost];
     v38 = v42 + v44;
   }
 
-  v45 = a11 - v38;
-  [v37 headlineSlotCost];
-  v47 = v45 / v46;
-  if (v47 >= a9)
+  v45 = slots - v38;
+  [sectionSlotCostInfo headlineSlotCost];
+  limitCopy = v45 / v46;
+  if (limitCopy >= limit)
   {
-    v47 = a9;
+    limitCopy = limit;
   }
 
-  v48 = [v26 incrementalLimitTransformationWithFeedPersonalizer:v70 limit:v47 priorFeedItems:v68];
+  v48 = [v26 incrementalLimitTransformationWithFeedPersonalizer:feedPersonalizer limit:limitCopy priorFeedItems:chosenItemsCopy];
   v49 = [v48 transformFeedItems:v73];
   if ([v49 count])
   {
     v50 = [v49 count];
-    [v37 headlineSlotCost];
+    [sectionSlotCostInfo headlineSlotCost];
     v52 = v38 + v50 * v51;
   }
 
@@ -518,9 +518,9 @@ LABEL_25:
     v52 = 0.0;
   }
 
-  *a12 = v52;
-  *a14 = v45 <= 0.0;
-  *a13 = [v73 count] == 0;
+  *used = v52;
+  *moreItems = v45 <= 0.0;
+  *give = [v73 count] == 0;
   if (FCIsWidgetDebugInspectionEnabled())
   {
     [v49 fc_arrayByTransformingWithBlock:&__block_literal_global_155];
@@ -530,17 +530,17 @@ LABEL_25:
     v56 = v55 = v34;
     v57 = v28;
     v58 = [NTWidgetDebugInspectionSection alloc];
-    v59 = [v53 name];
+    name2 = [v53 name];
     v60 = v58;
     v28 = v57;
-    v30 = v68;
-    *v63 = [(NTWidgetDebugInspectionSection *)v60 initWithArticleIDs:v54 name:v59 sortedCandidates:v56];
+    v30 = chosenItemsCopy;
+    *v63 = [(NTWidgetDebugInspectionSection *)v60 initWithArticleIDs:v54 name:name2 sortedCandidates:v56];
 
     v34 = v55;
     v35 = v71;
 
     v26 = v53;
-    v29 = v69;
+    v29 = infoCopy;
   }
 
   v61 = *MEMORY[0x277D85DE8];
@@ -548,24 +548,24 @@ LABEL_25:
   return v49;
 }
 
-- (id)_sectionFilterTransformationWithDescriptor:(id)a3 todayData:(id)a4 priorClusterIDsInOtherSections:(id)a5 priorClusterIDsInSection:(id)a6 otherArticleIDs:(id)a7
+- (id)_sectionFilterTransformationWithDescriptor:(id)descriptor todayData:(id)data priorClusterIDsInOtherSections:(id)sections priorClusterIDsInSection:(id)section otherArticleIDs:(id)ds
 {
   v49 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v38 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  if (!v12 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  descriptorCopy = descriptor;
+  dataCopy = data;
+  sectionsCopy = sections;
+  sectionCopy = section;
+  dsCopy = ds;
+  if (!descriptorCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTNewsTodayResultsExplicitAllocationAggregator _sectionFilterTransformationWithDescriptor:todayData:priorClusterIDsInOtherSections:priorClusterIDsInSection:otherArticleIDs:];
-    if (v13)
+    if (sectionsCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v13)
+  else if (sectionsCopy)
   {
     goto LABEL_6;
   }
@@ -576,16 +576,16 @@ LABEL_25:
   }
 
 LABEL_6:
-  if (!v15 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if (!dsCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTNewsTodayResultsExplicitAllocationAggregator _sectionFilterTransformationWithDescriptor:todayData:priorClusterIDsInOtherSections:priorClusterIDsInSection:otherArticleIDs:];
-    if (v14)
+    if (sectionCopy)
     {
       goto LABEL_11;
     }
   }
 
-  else if (v14)
+  else if (sectionCopy)
   {
     goto LABEL_11;
   }
@@ -596,38 +596,38 @@ LABEL_6:
   }
 
 LABEL_11:
-  v16 = [v12 supplementalInterSectionFilterOptions];
-  v17 = [v12 supplementalIntraSectionFilterOptions];
+  supplementalInterSectionFilterOptions = [descriptorCopy supplementalInterSectionFilterOptions];
+  supplementalIntraSectionFilterOptions = [descriptorCopy supplementalIntraSectionFilterOptions];
   v18 = objc_opt_new();
-  v19 = [v12 supplementalIntraSectionFilterOptions];
-  if ((v16 & 4) != 0)
+  supplementalIntraSectionFilterOptions2 = [descriptorCopy supplementalIntraSectionFilterOptions];
+  if ((supplementalInterSectionFilterOptions & 4) != 0)
   {
-    [v18 unionSet:v13];
+    [v18 unionSet:sectionsCopy];
   }
 
-  if ((v17 & 4) != 0)
+  if ((supplementalIntraSectionFilterOptions & 4) != 0)
   {
-    v20 = v19 | 4;
-    [v18 unionSet:v14];
+    v20 = supplementalIntraSectionFilterOptions2 | 4;
+    [v18 unionSet:sectionCopy];
   }
 
   else
   {
-    v20 = v19 | 0x84;
+    v20 = supplementalIntraSectionFilterOptions2 | 0x84;
   }
 
-  v36 = v14;
-  v37 = v13;
+  v36 = sectionCopy;
+  v37 = sectionsCopy;
   v21 = NTSharedLog();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
   {
-    v22 = [v12 name];
+    name = [descriptorCopy name];
     FCFeedFilterOptionsToNSString();
     v24 = v23 = self;
-    v25 = NTTodaySectionReadArticlesFilterMethodToNSString([v12 readArticlesFilterMethod]);
-    v26 = NTTodaySectionSeenArticlesFilterMethodToNSString([v12 seenArticlesFilterMethod]);
+    v25 = NTTodaySectionReadArticlesFilterMethodToNSString([descriptorCopy readArticlesFilterMethod]);
+    v26 = NTTodaySectionSeenArticlesFilterMethodToNSString([descriptorCopy seenArticlesFilterMethod]);
     *buf = 138544386;
-    v40 = v22;
+    v40 = name;
     v41 = 2114;
     v42 = v24;
     v43 = 2114;
@@ -635,19 +635,19 @@ LABEL_11:
     v45 = 2114;
     v46 = v26;
     v47 = 2048;
-    v48 = [v12 seenArticlesMinimumTimeSinceFirstSeenToFilter];
+    seenArticlesMinimumTimeSinceFirstSeenToFilter = [descriptorCopy seenArticlesMinimumTimeSinceFirstSeenToFilter];
     _os_log_impl(&dword_25BF21000, v21, OS_LOG_TYPE_DEFAULT, "will apply filter transformation to section, name=%{public}@, supplementalOptions=%{public}@, readFilterMethod=%{public}@, seenFilterMethod=%{public}@, minimumTimeSinceFirstSeenToFilter=%lld", buf, 0x34u);
 
     self = v23;
   }
 
   v27 = [NTSectionFeedFilterTransformation alloc];
-  v28 = [(NTNewsTodayResultsExplicitAllocationAggregator *)self configurationManager];
-  v29 = [v12 readArticlesFilterMethod];
-  v30 = [v12 seenArticlesFilterMethod];
-  v31 = [v12 seenArticlesMinimumTimeSinceFirstSeenToFilter];
-  v32 = [(NTNewsTodayResultsExplicitAllocationAggregator *)self filterDate];
-  v33 = -[NTSectionFeedFilterTransformation initWithTodayData:configurationManager:readArticlesFilterMethod:seenArticlesFilterMethod:minimumTimeSinceFirstSeenToFilter:supplementalFeedFilterOptions:otherArticleIDs:otherClusterIDs:filterDate:paywalledArticlesMaxCount:](v27, "initWithTodayData:configurationManager:readArticlesFilterMethod:seenArticlesFilterMethod:minimumTimeSinceFirstSeenToFilter:supplementalFeedFilterOptions:otherArticleIDs:otherClusterIDs:filterDate:paywalledArticlesMaxCount:", v38, v28, v29, v30, v20, v15, v31, v18, v32, [v12 paywalledArticlesMaxCount]);
+  configurationManager = [(NTNewsTodayResultsExplicitAllocationAggregator *)self configurationManager];
+  readArticlesFilterMethod = [descriptorCopy readArticlesFilterMethod];
+  seenArticlesFilterMethod = [descriptorCopy seenArticlesFilterMethod];
+  seenArticlesMinimumTimeSinceFirstSeenToFilter2 = [descriptorCopy seenArticlesMinimumTimeSinceFirstSeenToFilter];
+  filterDate = [(NTNewsTodayResultsExplicitAllocationAggregator *)self filterDate];
+  v33 = -[NTSectionFeedFilterTransformation initWithTodayData:configurationManager:readArticlesFilterMethod:seenArticlesFilterMethod:minimumTimeSinceFirstSeenToFilter:supplementalFeedFilterOptions:otherArticleIDs:otherClusterIDs:filterDate:paywalledArticlesMaxCount:](v27, "initWithTodayData:configurationManager:readArticlesFilterMethod:seenArticlesFilterMethod:minimumTimeSinceFirstSeenToFilter:supplementalFeedFilterOptions:otherArticleIDs:otherClusterIDs:filterDate:paywalledArticlesMaxCount:", dataCopy, configurationManager, readArticlesFilterMethod, seenArticlesFilterMethod, v20, dsCopy, seenArticlesMinimumTimeSinceFirstSeenToFilter2, v18, filterDate, [descriptorCopy paywalledArticlesMaxCount]);
 
   v34 = *MEMORY[0x277D85DE8];
 

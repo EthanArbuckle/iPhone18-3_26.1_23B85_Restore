@@ -1,51 +1,51 @@
 @interface BKMLAudiobookHelper
-+ (BOOL)_audiobookIsStreamingFromURL:(id)a3;
-+ (id)_audiobookAlbumTitleFromURL:(id)a3;
-- (BKMLAudiobookHelper)initWithAssetUrl:(id)a3 options:(id)a4;
++ (BOOL)_audiobookIsStreamingFromURL:(id)l;
++ (id)_audiobookAlbumTitleFromURL:(id)l;
+- (BKMLAudiobookHelper)initWithAssetUrl:(id)url options:(id)options;
 - (BOOL)isStreaming;
 - (NSString)albumTitle;
 - (NSString)description;
 - (id)assetID;
 - (id)displayTitle;
-- (id)helperCoverImageOfSize:(CGSize)a3;
-- (id)helperMetadataForKey:(id)a3 needsCoordination:(BOOL)a4;
+- (id)helperCoverImageOfSize:(CGSize)size;
+- (id)helperMetadataForKey:(id)key needsCoordination:(BOOL)coordination;
 - (id)helperMinifiedController;
 - (id)sharedAnnotationProvider;
-- (void)helperViewControllerWithOptions:(id)a3 completion:(id)a4;
+- (void)helperViewControllerWithOptions:(id)options completion:(id)completion;
 @end
 
 @implementation BKMLAudiobookHelper
 
-- (BKMLAudiobookHelper)initWithAssetUrl:(id)a3 options:(id)a4
+- (BKMLAudiobookHelper)initWithAssetUrl:(id)url options:(id)options
 {
-  v7 = a3;
-  v8 = a4;
+  urlCopy = url;
+  optionsCopy = options;
   v12.receiver = self;
   v12.super_class = BKMLAudiobookHelper;
   v9 = [(BKMLAudiobookHelper *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_assetUrl, a3);
-    objc_storeStrong(&v10->_options, a4);
+    objc_storeStrong(&v9->_assetUrl, url);
+    objc_storeStrong(&v10->_options, options);
   }
 
   return v10;
 }
 
-+ (BOOL)_audiobookIsStreamingFromURL:(id)a3
++ (BOOL)_audiobookIsStreamingFromURL:(id)l
 {
-  v3 = [a3 bu_dictionaryForQueryItems];
-  v4 = [v3 objectForKeyedSubscript:@"isCloudItem"];
-  v5 = [v4 BOOLValue];
+  bu_dictionaryForQueryItems = [l bu_dictionaryForQueryItems];
+  v4 = [bu_dictionaryForQueryItems objectForKeyedSubscript:@"isCloudItem"];
+  bOOLValue = [v4 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
-+ (id)_audiobookAlbumTitleFromURL:(id)a3
++ (id)_audiobookAlbumTitleFromURL:(id)l
 {
-  v3 = [a3 bu_dictionaryForQueryItems];
-  v4 = [v3 objectForKeyedSubscript:@"albumTitle"];
+  bu_dictionaryForQueryItems = [l bu_dictionaryForQueryItems];
+  v4 = [bu_dictionaryForQueryItems objectForKeyedSubscript:@"albumTitle"];
 
   return v4;
 }
@@ -68,8 +68,8 @@
 
 - (id)assetID
 {
-  v2 = [(BKMLAudiobookHelper *)self options];
-  v3 = [v2 objectForKeyedSubscript:@"assetID"];
+  options = [(BKMLAudiobookHelper *)self options];
+  v3 = [options objectForKeyedSubscript:@"assetID"];
 
   return v3;
 }
@@ -89,18 +89,18 @@
   v4 = NSStringFromClass(v3);
   v5 = [(BKMLAudiobookHelper *)self helperMetadataForKey:AEHelperStringMetadataTitleKey needsCoordination:1];
   assetUrl = self->_assetUrl;
-  v7 = [(BKMLAudiobookHelper *)self assetID];
-  v8 = [NSString stringWithFormat:@"<%@: %p> [Title: %@] [URL: %@] [AssetID: %@]", v4, self, v5, assetUrl, v7];
+  assetID = [(BKMLAudiobookHelper *)self assetID];
+  v8 = [NSString stringWithFormat:@"<%@: %p> [Title: %@] [URL: %@] [AssetID: %@]", v4, self, v5, assetUrl, assetID];
 
   return v8;
 }
 
-- (id)helperCoverImageOfSize:(CGSize)a3
+- (id)helperCoverImageOfSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(BKMLAudiobookHelper *)self options];
-  v6 = [v5 objectForKey:AEHelperImageMetadataCoverBlockKey];
+  height = size.height;
+  width = size.width;
+  options = [(BKMLAudiobookHelper *)self options];
+  v6 = [options objectForKey:AEHelperImageMetadataCoverBlockKey];
 
   if (v6)
   {
@@ -121,9 +121,9 @@
   return v7;
 }
 
-- (void)helperViewControllerWithOptions:(id)a3 completion:(id)a4
+- (void)helperViewControllerWithOptions:(id)options completion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   v6 = +[BKAudiobookNowPlayingModuleFactory instantiate];
   v7 = v6;
   if (v6)
@@ -135,7 +135,7 @@
     v8 = v6;
     v15 = v8;
     v16 = 0;
-    v17 = v5;
+    v17 = completionCopy;
     v9 = objc_retainBlock(v14);
     v10 = +[BKAudiobookNowPlayingModuleFactory currentMiniPlayer];
     v11 = v10;
@@ -149,7 +149,7 @@
 
   else
   {
-    v12 = objc_retainBlock(v5);
+    v12 = objc_retainBlock(completionCopy);
     v13 = v12;
     if (v12)
     {
@@ -165,19 +165,19 @@
   return v2;
 }
 
-- (id)helperMetadataForKey:(id)a3 needsCoordination:(BOOL)a4
+- (id)helperMetadataForKey:(id)key needsCoordination:(BOOL)coordination
 {
-  if ([a3 isEqualToString:{AEHelperStringMetadataAssetIDKey, a4}])
+  if ([key isEqualToString:{AEHelperStringMetadataAssetIDKey, coordination}])
   {
-    v5 = [(BKMLAudiobookHelper *)self assetID];
+    assetID = [(BKMLAudiobookHelper *)self assetID];
   }
 
   else
   {
-    v5 = 0;
+    assetID = 0;
   }
 
-  return v5;
+  return assetID;
 }
 
 - (id)sharedAnnotationProvider
@@ -185,9 +185,9 @@
   v3 = +[AEPluginRegistry sharedInstance];
   v4 = [v3 pluginForURL:self->_assetUrl];
 
-  v5 = [v4 sharedAnnotationProvider];
+  sharedAnnotationProvider = [v4 sharedAnnotationProvider];
 
-  return v5;
+  return sharedAnnotationProvider;
 }
 
 @end

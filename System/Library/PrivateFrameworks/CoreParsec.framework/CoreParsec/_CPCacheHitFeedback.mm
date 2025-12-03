@@ -1,8 +1,8 @@
 @interface _CPCacheHitFeedback
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_CPCacheHitFeedback)init;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _CPCacheHitFeedback
@@ -15,34 +15,34 @@
   return v4 ^ v5 ^ [(NSString *)self->_uuid hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_14;
   }
 
   timestamp = self->_timestamp;
-  if (timestamp != [v4 timestamp])
+  if (timestamp != [equalCopy timestamp])
   {
     goto LABEL_14;
   }
 
-  v6 = [(_CPCacheHitFeedback *)self input];
-  v7 = [v4 input];
-  if ((v6 != 0) == (v7 == 0))
+  input = [(_CPCacheHitFeedback *)self input];
+  input2 = [equalCopy input];
+  if ((input != 0) == (input2 == 0))
   {
     goto LABEL_13;
   }
 
-  v8 = [(_CPCacheHitFeedback *)self input];
-  if (v8)
+  input3 = [(_CPCacheHitFeedback *)self input];
+  if (input3)
   {
-    v9 = v8;
-    v10 = [(_CPCacheHitFeedback *)self input];
-    v11 = [v4 input];
-    v12 = [v10 isEqual:v11];
+    v9 = input3;
+    input4 = [(_CPCacheHitFeedback *)self input];
+    input5 = [equalCopy input];
+    v12 = [input4 isEqual:input5];
 
     if (!v12)
     {
@@ -55,22 +55,22 @@
   }
 
   triggerEvent = self->_triggerEvent;
-  if (triggerEvent != [v4 triggerEvent])
+  if (triggerEvent != [equalCopy triggerEvent])
   {
     goto LABEL_14;
   }
 
-  v6 = [(_CPCacheHitFeedback *)self uuid];
-  v7 = [v4 uuid];
-  if ((v6 != 0) == (v7 == 0))
+  input = [(_CPCacheHitFeedback *)self uuid];
+  input2 = [equalCopy uuid];
+  if ((input != 0) == (input2 == 0))
   {
 LABEL_13:
 
     goto LABEL_14;
   }
 
-  v14 = [(_CPCacheHitFeedback *)self uuid];
-  if (!v14)
+  uuid = [(_CPCacheHitFeedback *)self uuid];
+  if (!uuid)
   {
 
 LABEL_17:
@@ -78,10 +78,10 @@ LABEL_17:
     goto LABEL_15;
   }
 
-  v15 = v14;
-  v16 = [(_CPCacheHitFeedback *)self uuid];
-  v17 = [v4 uuid];
-  v18 = [v16 isEqual:v17];
+  v15 = uuid;
+  uuid2 = [(_CPCacheHitFeedback *)self uuid];
+  uuid3 = [equalCopy uuid];
+  v18 = [uuid2 isEqual:uuid3];
 
   if (v18)
   {
@@ -95,18 +95,18 @@ LABEL_15:
   return v19;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v11 = a3;
+  toCopy = to;
   if ([(_CPCacheHitFeedback *)self timestamp])
   {
     timestamp = self->_timestamp;
     PBDataWriterWriteUint64Field();
   }
 
-  v5 = [(_CPCacheHitFeedback *)self input];
+  input = [(_CPCacheHitFeedback *)self input];
 
-  if (v5)
+  if (input)
   {
     input = self->_input;
     PBDataWriterWriteStringField();
@@ -118,14 +118,14 @@ LABEL_15:
     PBDataWriterWriteInt32Field();
   }
 
-  v8 = [(_CPCacheHitFeedback *)self uuid];
+  uuid = [(_CPCacheHitFeedback *)self uuid];
 
-  v9 = v11;
-  if (v8)
+  v9 = toCopy;
+  if (uuid)
   {
     uuid = self->_uuid;
     PBDataWriterWriteStringField();
-    v9 = v11;
+    v9 = toCopy;
   }
 }
 

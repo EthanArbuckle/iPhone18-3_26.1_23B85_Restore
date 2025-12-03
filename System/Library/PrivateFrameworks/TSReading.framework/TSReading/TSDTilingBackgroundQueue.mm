@@ -1,11 +1,11 @@
 @interface TSDTilingBackgroundQueue
 + (id)p_sharedLimitedQueue;
 - (TSDTilingBackgroundQueue)init;
-- (TSDTilingBackgroundQueue)initWithAccessController:(id)a3;
+- (TSDTilingBackgroundQueue)initWithAccessController:(id)controller;
 - (void)dealloc;
-- (void)drainAndPerformSync:(id)a3;
+- (void)drainAndPerformSync:(id)sync;
 - (void)p_readLock;
-- (void)performAsync:(id)a3;
+- (void)performAsync:(id)async;
 - (void)shutdown;
 @end
 
@@ -52,13 +52,13 @@ TSDTilingLimitedQueue *__48__TSDTilingBackgroundQueue_p_sharedLimitedQueue__bloc
 
 - (TSDTilingBackgroundQueue)init
 {
-  v2 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v3 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDTilingBackgroundQueue init]"];
-  [v2 handleFailureInFunction:v3 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDTilingLayer.m"), 1466, @"-initWithAccessController: is the designated initializer"}];
+  [currentHandler handleFailureInFunction:v3 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDTilingLayer.m"), 1466, @"-initWithAccessController: is the designated initializer"}];
   objc_exception_throw([MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:objc_msgSend(MEMORY[0x277CCACA8] userInfo:{"stringWithFormat:", @"%@: %s", @"-initWithAccessController: is the designated initializer", "-[TSDTilingBackgroundQueue init]"), 0}]);
 }
 
-- (TSDTilingBackgroundQueue)initWithAccessController:(id)a3
+- (TSDTilingBackgroundQueue)initWithAccessController:(id)controller
 {
   v6.receiver = self;
   v6.super_class = TSDTilingBackgroundQueue;
@@ -67,7 +67,7 @@ TSDTilingLimitedQueue *__48__TSDTilingBackgroundQueue_p_sharedLimitedQueue__bloc
   {
     v4->mCanEnqueueReaders = dispatch_semaphore_create(1);
     v4->mInFlightReaders = dispatch_group_create();
-    v4->mAccessController = a3;
+    v4->mAccessController = controller;
     v4->mReaderSpinLock._os_unfair_lock_opaque = 0;
     v4->mReadLockSignal = dispatch_semaphore_create(0);
   }
@@ -109,7 +109,7 @@ uint64_t __36__TSDTilingBackgroundQueue_shutdown__block_invoke(uint64_t a1)
   return [v2 drainAndPerformSync:&__block_literal_global_203];
 }
 
-- (void)performAsync:(id)a3
+- (void)performAsync:(id)async
 {
   dispatch_semaphore_wait(self->mCanEnqueueReaders, 0xFFFFFFFFFFFFFFFFLL);
   dispatch_group_enter(self->mInFlightReaders);
@@ -124,14 +124,14 @@ uint64_t __36__TSDTilingBackgroundQueue_shutdown__block_invoke(uint64_t a1)
 
   self->mReaderCount = mReaderCount + 1;
   os_unfair_lock_unlock(&self->mReaderSpinLock);
-  v6 = [objc_opt_class() p_sharedLimitedQueue];
+  p_sharedLimitedQueue = [objc_opt_class() p_sharedLimitedQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __41__TSDTilingBackgroundQueue_performAsync___block_invoke;
   v7[3] = &unk_279D48490;
   v7[4] = self;
-  v7[5] = a3;
-  [v6 performAsync:v7];
+  v7[5] = async;
+  [p_sharedLimitedQueue performAsync:v7];
 }
 
 void __41__TSDTilingBackgroundQueue_performAsync___block_invoke(uint64_t a1)
@@ -152,11 +152,11 @@ void __41__TSDTilingBackgroundQueue_performAsync___block_invoke(uint64_t a1)
   os_unfair_lock_unlock(v3);
 }
 
-- (void)drainAndPerformSync:(id)a3
+- (void)drainAndPerformSync:(id)sync
 {
   dispatch_semaphore_wait(self->mCanEnqueueReaders, 0xFFFFFFFFFFFFFFFFLL);
   dispatch_group_wait(self->mInFlightReaders, 0xFFFFFFFFFFFFFFFFLL);
-  (*(a3 + 2))(a3);
+  (*(sync + 2))(sync);
   mCanEnqueueReaders = self->mCanEnqueueReaders;
 
   dispatch_semaphore_signal(mCanEnqueueReaders);

@@ -1,7 +1,7 @@
 @interface BatteryUIController
 + (BOOL)isALSCurveHigherThanDefault;
-+ (void)showLearnMoreHelpKitWithTopicID:(id)a3 navigationController:(id)a4;
-- (BOOL)appQualifiers:(id)a3 containsQualifier:(int64_t)a4;
++ (void)showLearnMoreHelpKitWithTopicID:(id)d navigationController:(id)controller;
+- (BOOL)appQualifiers:(id)qualifiers containsQualifier:(int64_t)qualifier;
 - (BOOL)checkOnInitIfServiceBatteryRequired;
 - (BOOL)getIBLMState;
 - (BOOL)inDemoMode;
@@ -11,46 +11,46 @@
 - (BOOL)isSquished;
 - (BOOL)shouldAutoCycle;
 - (BOOL)shouldDisplayBugSignatures;
-- (BOOL)shouldEstimateCellHeightFor:(id)a3;
+- (BOOL)shouldEstimateCellHeightFor:(id)for;
 - (BOOL)showRootNodesInInternal;
 - (BOOL)showSaveDemoButtonInInternal;
 - (BatteryUIController)init;
 - (UIActivityIndicatorView)activityIndicator;
 - (double)getRequeryTimeThreshold;
-- (double)tableView:(id)a3 estimatedHeightForRowAtIndexPath:(id)a4;
+- (double)tableView:(id)view estimatedHeightForRowAtIndexPath:(id)path;
 - (id)_batteryGroupSpecifier;
 - (id)_signatureGroupSpecifier;
 - (id)_spinnerSpecifier;
 - (id)_spinnerSpecifierGroup;
 - (id)_suggestionGroupSpecifier;
-- (id)addSuggestionsNoHeaderToSpecifiers:(id)a3;
-- (id)addSuggestionsToSpecifiers:(id)a3;
-- (id)appEnergyValue:(id)a3;
-- (id)appFGBGValue:(id)a3;
-- (id)appQualifiers:(id)a3;
+- (id)addSuggestionsNoHeaderToSpecifiers:(id)specifiers;
+- (id)addSuggestionsToSpecifiers:(id)specifiers;
+- (id)appEnergyValue:(id)value;
+- (id)appFGBGValue:(id)value;
+- (id)appQualifiers:(id)qualifiers;
 - (id)batteryGraphSpecifier;
 - (id)batteryUIQueryRangeKey;
 - (id)batteryUsageGraphsSpecifier;
-- (id)caSuggestionsAndInsightsEventDictionaryForType:(id)a3 category:(id)a4 action:(id)a5;
-- (id)formatUsageStringInMin:(id)a3;
-- (id)formatUsageStringInMinOrHr:(id)a3;
-- (id)generateBatteryEntrySpecifiers:(id)a3;
-- (id)getActiveTime:(id)a3;
-- (id)getBackgroundActiveTime:(id)a3;
-- (id)getBatteryPercentageMode:(id)a3;
-- (id)getBatterySaverMode:(id)a3;
+- (id)caSuggestionsAndInsightsEventDictionaryForType:(id)type category:(id)category action:(id)action;
+- (id)formatUsageStringInMin:(id)min;
+- (id)formatUsageStringInMinOrHr:(id)hr;
+- (id)generateBatteryEntrySpecifiers:(id)specifiers;
+- (id)getActiveTime:(id)time;
+- (id)getBackgroundActiveTime:(id)time;
+- (id)getBatteryPercentageMode:(id)mode;
+- (id)getBatterySaverMode:(id)mode;
 - (id)getBatteryServiceSuggestion;
-- (id)getChargeCycles:(id)a3;
+- (id)getChargeCycles:(id)cycles;
 - (id)getChargingMode;
 - (id)getInitializedSuggestionHeaderCellSpecifier;
-- (id)getPowerModeString:(id)a3;
-- (id)getSuggestionObjectWithType:(int)a3;
-- (id)getTappedTimeDurationStringForTappedIndex:(int)a3 isUpperCase:(BOOL)a4 isFooterString:(BOOL)a5;
+- (id)getPowerModeString:(id)string;
+- (id)getSuggestionObjectWithType:(int)type;
+- (id)getTappedTimeDurationStringForTappedIndex:(int)index isUpperCase:(BOOL)case isFooterString:(BOOL)string;
 - (id)getTestValues;
-- (id)insightAndSuggestionTypes:(id)a3;
+- (id)insightAndSuggestionTypes:(id)types;
 - (id)internalUsageSpecifiers;
-- (id)screenLock:(id)a3;
-- (id)setChargingMode:(id)a3 specifier:(id)a4;
+- (id)screenLock:(id)lock;
+- (id)setChargingMode:(id)mode specifier:(id)specifier;
 - (id)setUpBatteryGraphSpecifiers;
 - (id)setUpBatteryHealthGroup;
 - (id)setUpBatteryHealthSpecifier;
@@ -71,61 +71,61 @@
 - (id)setUpUsageSpecifiers;
 - (id)setUpUsageSummarySpecifier;
 - (id)setUpUsageTimeValuesSpecifier;
-- (id)specifierForBatteryEntry:(id)a3;
+- (id)specifierForBatteryEntry:(id)entry;
 - (id)specifiers;
 - (int)BUI_MODE;
 - (int)getDeviceOrientationFromCurrentDevice;
-- (void)_lowPowerModeChangedNotification:(id)a3;
+- (void)_lowPowerModeChangedNotification:(id)notification;
 - (void)adjustTableBottomInset;
-- (void)alertView:(id)a3 clickedButtonAtIndex:(int64_t)a4;
+- (void)alertView:(id)view clickedButtonAtIndex:(int64_t)index;
 - (void)dataChanged;
 - (void)dealloc;
 - (void)determineBatteryBreakDownHeaderStringLength;
-- (void)didPushBatteryButton:(id)a3;
-- (void)didPushButton:(id)a3;
+- (void)didPushBatteryButton:(id)button;
+- (void)didPushButton:(id)button;
 - (void)didTapShowAllButton;
-- (void)didTappedBar:(id)a3;
-- (void)generateSignaturesEntrySpecifiers:(id)a3;
-- (void)generateSuggestionsEntryObjects:(id)a3;
-- (void)generateSuggestionsWithIssues:(id)a3;
-- (void)getDemoName:(id)a3;
-- (void)graphOnSelectAt:(id)a3;
+- (void)didTappedBar:(id)bar;
+- (void)generateSignaturesEntrySpecifiers:(id)specifiers;
+- (void)generateSuggestionsEntryObjects:(id)objects;
+- (void)generateSuggestionsWithIssues:(id)issues;
+- (void)getDemoName:(id)name;
+- (void)graphOnSelectAt:(id)at;
 - (void)handleApplicationWillEnterForeground;
 - (void)handleBiomeDonationForBUIVisit;
-- (void)handlePowerModeChanged:(id)a3;
+- (void)handlePowerModeChanged:(id)changed;
 - (void)hideActionCard;
-- (void)logInsightsAndSuggestions:(id)a3;
+- (void)logInsightsAndSuggestions:(id)suggestions;
 - (void)logToPowerlogRbattx;
 - (void)logToPowerlogRbattx0;
 - (void)logToPowerlogRbattxy;
 - (void)logViewDidLoadEvents;
-- (void)openChargingStatusInformationURL:(id)a3;
+- (void)openChargingStatusInformationURL:(id)l;
 - (void)provideFeedback;
 - (void)queryForBatteryBreakdown;
 - (void)rebuildList;
-- (void)reloadOtherTypeUI:(id)a3;
-- (void)reloadSpecifierID:(id)a3;
+- (void)reloadOtherTypeUI:(id)i;
+- (void)reloadSpecifierID:(id)d;
 - (void)reloadSpecifiers;
 - (void)reloadUI;
 - (void)removeSpinnerSpecifers;
-- (void)removeSuggestion:(id)a3;
+- (void)removeSuggestion:(id)suggestion;
 - (void)reportIssue;
-- (void)savePList:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
+- (void)savePList:(id)list;
+- (void)scrollViewDidScroll:(id)scroll;
 - (void)setAggdKeysForNoBreakdownOnTap;
-- (void)setAutolockTitlesAndValues:(id)a3;
-- (void)setBatterySaverMode:(id)a3 withSpecifier:(id)a4;
-- (void)setBatteryUIQueryRange:(id)a3 specifier:(id)a4;
-- (void)setScreenLock:(id)a3 specifier:(id)a4;
-- (void)setSpecifier:(id)a3;
-- (void)setUpBatteryUIDictionary:(id)a3;
+- (void)setAutolockTitlesAndValues:(id)values;
+- (void)setBatterySaverMode:(id)mode withSpecifier:(id)specifier;
+- (void)setBatteryUIQueryRange:(id)range specifier:(id)specifier;
+- (void)setScreenLock:(id)lock specifier:(id)specifier;
+- (void)setSpecifier:(id)specifier;
+- (void)setUpBatteryUIDictionary:(id)dictionary;
 - (void)showActionCardForLPM;
-- (void)showActionCardForType:(signed __int16)a3;
-- (void)showLearnMoreSafariWithURLString:(id)a3;
+- (void)showActionCardForType:(signed __int16)type;
+- (void)showLearnMoreSafariWithURLString:(id)string;
 - (void)startRepeatingTimer;
 - (void)stopRepeatingTimer;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateSuggestionsSpecifiers;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
@@ -133,25 +133,25 @@
 
 @implementation BatteryUIController
 
-+ (void)showLearnMoreHelpKitWithTopicID:(id)a3 navigationController:(id)a4
++ (void)showLearnMoreHelpKitWithTopicID:(id)d navigationController:(id)controller
 {
-  v5 = a3;
-  v6 = a4;
+  dCopy = d;
+  controllerCopy = controller;
   v7 = BUILogCommon();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412290;
-    v11 = v5;
+    v11 = dCopy;
     _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEFAULT, "MoreInfo URL string opened for topicID %@", &v10, 0xCu);
   }
 
   v8 = +[HLPHelpViewController helpViewController];
-  [v8 setSelectedHelpTopicID:v5];
+  [v8 setSelectedHelpTopicID:dCopy];
   [v8 setShowTopicViewOnLoad:1];
   [v8 setDisplayHelpTopicsOnly:1];
   v9 = [[UINavigationController alloc] initWithRootViewController:v8];
   [v9 setModalPresentationStyle:2];
-  [v6 presentViewController:v9 animated:1 completion:0];
+  [controllerCopy presentViewController:v9 animated:1 completion:0];
 }
 
 - (id)_suggestionGroupSpecifier
@@ -172,41 +172,41 @@
 
 - (id)getInitializedSuggestionHeaderCellSpecifier
 {
-  v3 = [(BatteryUIController *)self suggestionHeaderSpecifier];
+  suggestionHeaderSpecifier = [(BatteryUIController *)self suggestionHeaderSpecifier];
 
-  if (!v3)
+  if (!suggestionHeaderSpecifier)
   {
     v4 = [PSSpecifier preferenceSpecifierNamed:&stru_16CDB8 target:self set:0 get:0 detail:0 cell:-1 edit:0];
     [(BatteryUIController *)self setSuggestionHeaderSpecifier:v4];
 
-    v5 = [(BatteryUIController *)self suggestionHeaderSpecifier];
-    [v5 setProperty:objc_opt_class() forKey:PSCellClassKey];
+    suggestionHeaderSpecifier2 = [(BatteryUIController *)self suggestionHeaderSpecifier];
+    [suggestionHeaderSpecifier2 setProperty:objc_opt_class() forKey:PSCellClassKey];
 
-    v6 = [(BatteryUIController *)self suggestionHeaderSpecifier];
-    [v6 setProperty:&__kCFBooleanTrue forKey:PSEnabledKey];
+    suggestionHeaderSpecifier3 = [(BatteryUIController *)self suggestionHeaderSpecifier];
+    [suggestionHeaderSpecifier3 setProperty:&__kCFBooleanTrue forKey:PSEnabledKey];
 
-    v7 = [(BatteryUIController *)self suggestionHeaderSpecifier];
+    suggestionHeaderSpecifier4 = [(BatteryUIController *)self suggestionHeaderSpecifier];
     v8 = BatteryUILocalization(@"INSIGHTS_AND_SUGGESTIONS");
-    [v7 setProperty:v8 forKey:@"PLBatteryUISuggestionTitle"];
+    [suggestionHeaderSpecifier4 setProperty:v8 forKey:@"PLBatteryUISuggestionTitle"];
 
-    v9 = [(BatteryUIController *)self suggestionHeaderSpecifier];
+    suggestionHeaderSpecifier5 = [(BatteryUIController *)self suggestionHeaderSpecifier];
     v10 = BatteryUILocalization(@"SHOW_ALL");
-    [v9 setProperty:v10 forKey:@"PLBatteryUISuggestionShowAllText"];
+    [suggestionHeaderSpecifier5 setProperty:v10 forKey:@"PLBatteryUISuggestionShowAllText"];
 
-    v11 = [(BatteryUIController *)self suggestionHeaderSpecifier];
+    suggestionHeaderSpecifier6 = [(BatteryUIController *)self suggestionHeaderSpecifier];
     v12 = BatteryUILocalization(@"SHOW_LESS");
-    [v11 setProperty:v12 forKey:@"PLBatteryUISuggestionShowLessText"];
+    [suggestionHeaderSpecifier6 setProperty:v12 forKey:@"PLBatteryUISuggestionShowLessText"];
 
-    v13 = [(BatteryUIController *)self suggestionHeaderSpecifier];
+    suggestionHeaderSpecifier7 = [(BatteryUIController *)self suggestionHeaderSpecifier];
     v14 = [NSNumber numberWithBool:self->_showAll];
-    [v13 setProperty:v14 forKey:@"PLBatteryUISuggestionShowAll"];
+    [suggestionHeaderSpecifier7 setProperty:v14 forKey:@"PLBatteryUISuggestionShowAll"];
 
     v15 = [[WeakBatteryUIController alloc] initWithController:self];
-    v16 = [(BatteryUIController *)self suggestionHeaderSpecifier];
-    [v16 setProperty:v15 forKey:@"PLBatteryUISuggestionHeaderCellDelegateWrapperKey"];
+    suggestionHeaderSpecifier8 = [(BatteryUIController *)self suggestionHeaderSpecifier];
+    [suggestionHeaderSpecifier8 setProperty:v15 forKey:@"PLBatteryUISuggestionHeaderCellDelegateWrapperKey"];
 
-    v17 = [(BatteryUIController *)self suggestionHeaderSpecifier];
-    [v17 setIdentifier:@"SUGGESTION_HEADER"];
+    suggestionHeaderSpecifier9 = [(BatteryUIController *)self suggestionHeaderSpecifier];
+    [suggestionHeaderSpecifier9 setIdentifier:@"SUGGESTION_HEADER"];
   }
 
   return [(BatteryUIController *)self suggestionHeaderSpecifier];
@@ -215,16 +215,16 @@
 - (void)didTapShowAllButton
 {
   self->_showAll ^= 1u;
-  v3 = [(BatteryUIController *)self tableCellHeights];
-  if (v3)
+  tableCellHeights = [(BatteryUIController *)self tableCellHeights];
+  if (tableCellHeights)
   {
   }
 
   else
   {
-    v4 = [(BatteryUIController *)self tableCellHeightEstimated];
+    tableCellHeightEstimated = [(BatteryUIController *)self tableCellHeightEstimated];
 
-    if (!v4)
+    if (!tableCellHeightEstimated)
     {
       goto LABEL_5;
     }
@@ -237,14 +237,14 @@
   [(BatteryUIController *)self setTableCellHeightEstimated:v6];
 
 LABEL_5:
-  v7 = [(BatteryUIController *)self suggestionHeaderSpecifier];
+  suggestionHeaderSpecifier = [(BatteryUIController *)self suggestionHeaderSpecifier];
   v8 = [NSNumber numberWithBool:self->_showAll];
-  [v7 setProperty:v8 forKey:@"PLBatteryUISuggestionShowAll"];
+  [suggestionHeaderSpecifier setProperty:v8 forKey:@"PLBatteryUISuggestionShowAll"];
 
   [(BatteryUIController *)self reloadSpecifiers];
 }
 
-- (id)screenLock:(id)a3
+- (id)screenLock:(id)lock
 {
   v3 = +[MCProfileConnection sharedConnection];
   v4 = [v3 effectiveValueForSetting:MCFeatureAutoLockTime];
@@ -264,13 +264,13 @@ LABEL_5:
   return v6;
 }
 
-- (void)setScreenLock:(id)a3 specifier:(id)a4
+- (void)setScreenLock:(id)lock specifier:(id)specifier
 {
-  v8 = a3;
-  v4 = [v8 intValue];
+  lockCopy = lock;
+  intValue = [lockCopy intValue];
   v5 = +[MCProfileConnection sharedConnection];
   v6 = v5;
-  if (v4 == -1)
+  if (intValue == -1)
   {
     v7 = [NSNumber numberWithInt:0x7FFFFFFFLL];
     [v6 setValue:v7 forSetting:MCFeatureAutoLockTime];
@@ -278,13 +278,13 @@ LABEL_5:
 
   else
   {
-    [v5 setValue:v8 forSetting:MCFeatureAutoLockTime];
+    [v5 setValue:lockCopy forSetting:MCFeatureAutoLockTime];
   }
 }
 
-- (void)generateSuggestionsEntryObjects:(id)a3
+- (void)generateSuggestionsEntryObjects:(id)objects
 {
-  v4 = a3;
+  objectsCopy = objects;
   v5 = &OBJC_IVAR___PLBatteryUITimeUsageCell__bottomMarginConstraints;
   v6 = +[BatteryUIResourceClass get_log_handle_bui];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -295,18 +295,18 @@ LABEL_5:
   suggestionEntries = self->_suggestionEntries;
   self->_suggestionEntries = 0;
 
-  if (v4)
+  if (objectsCopy)
   {
     v8 = +[NSMutableArray array];
-    if ([v4 count])
+    if ([objectsCopy count])
     {
       v9 = 0;
       v30 = "screenLock:";
-      v31 = self;
-      v32 = v4;
+      selfCopy = self;
+      v32 = objectsCopy;
       do
       {
-        v10 = [v4 objectAtIndexedSubscript:{v9, v30}];
+        v10 = [objectsCopy objectAtIndexedSubscript:{v9, v30}];
         v11 = [v10 objectForKeyedSubscript:@"PLBatteryUISuggestionTypeKey"];
         v12 = v11;
         if (!v11)
@@ -315,25 +315,25 @@ LABEL_5:
         }
 
         v34 = v11;
-        v13 = [v11 intValue];
-        v14 = [v5 + 752 get_log_handle_bui];
-        if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
+        intValue = [v11 intValue];
+        get_log_handle_bui = [v5 + 752 get_log_handle_bui];
+        if (os_log_type_enabled(get_log_handle_bui, OS_LOG_TYPE_INFO))
         {
           *buf = 67109120;
-          v41 = v13;
-          _os_log_impl(&dword_0, v14, OS_LOG_TYPE_INFO, "Suggestion entry: %d", buf, 8u);
+          v41 = intValue;
+          _os_log_impl(&dword_0, get_log_handle_bui, OS_LOG_TYPE_INFO, "Suggestion entry: %d", buf, 8u);
         }
 
-        v15 = [(BatteryUIController *)self inDemoMode];
+        inDemoMode = [(BatteryUIController *)self inDemoMode];
         v12 = v34;
-        if (v15)
+        if (inDemoMode)
         {
           goto LABEL_31;
         }
 
-        if (v13 > 2)
+        if (intValue > 2)
         {
-          if (v13 == 7)
+          if (intValue == 7)
           {
             v37 = 0u;
             v38 = 0u;
@@ -371,8 +371,8 @@ LABEL_5:
               }
 
               while (v19);
-              self = v31;
-              v4 = v32;
+              self = selfCopy;
+              objectsCopy = v32;
               v5 = &OBJC_IVAR___PLBatteryUITimeUsageCell__bottomMarginConstraints;
               v9 = v33;
             }
@@ -380,7 +380,7 @@ LABEL_5:
 
           else
           {
-            v16 = [[BatteryUISuggestion alloc] initWithSuggestionType:v13 andData:v10];
+            v16 = [[BatteryUISuggestion alloc] initWithSuggestionType:intValue andData:v10];
             if (v16)
             {
               [v8 addObject:v16];
@@ -390,30 +390,30 @@ LABEL_5:
           goto LABEL_30;
         }
 
-        v16 = [[BatteryUILinkSuggestion alloc] initWithSuggestionType:v13 andData:v10];
+        v16 = [[BatteryUILinkSuggestion alloc] initWithSuggestionType:intValue andData:v10];
         if (v16)
         {
           [v8 addObject:v16];
-          if (v13 == 1)
+          if (intValue == 1)
           {
-            v27 = [(BatteryUISuggestion *)v16 getSuggestionHeaderSpecifier];
-            objc_storeWeak(&v27[OBJC_IVAR___PSSpecifier_target], self);
+            getSuggestionHeaderSpecifier = [(BatteryUISuggestion *)v16 getSuggestionHeaderSpecifier];
+            objc_storeWeak(&getSuggestionHeaderSpecifier[OBJC_IVAR___PSSpecifier_target], self);
 
-            v28 = [(BatteryUISuggestion *)v16 getSuggestionHeaderSpecifier];
-            *&v28[OBJC_IVAR___PSSpecifier_setter] = "setScreenLock:specifier:";
+            getSuggestionHeaderSpecifier2 = [(BatteryUISuggestion *)v16 getSuggestionHeaderSpecifier];
+            *&getSuggestionHeaderSpecifier2[OBJC_IVAR___PSSpecifier_setter] = "setScreenLock:specifier:";
 
-            v29 = [(BatteryUISuggestion *)v16 getSuggestionHeaderSpecifier];
-            *&v29[OBJC_IVAR___PSSpecifier_getter] = v30;
+            getSuggestionHeaderSpecifier3 = [(BatteryUISuggestion *)v16 getSuggestionHeaderSpecifier];
+            *&getSuggestionHeaderSpecifier3[OBJC_IVAR___PSSpecifier_getter] = v30;
 
-            v17 = [(BatteryUISuggestion *)v16 getSuggestionHeaderSpecifier];
-            [(BatteryUIController *)self setAutolockTitlesAndValues:v17];
+            getSuggestionHeaderSpecifier4 = [(BatteryUISuggestion *)v16 getSuggestionHeaderSpecifier];
+            [(BatteryUIController *)self setAutolockTitlesAndValues:getSuggestionHeaderSpecifier4];
             goto LABEL_29;
           }
 
-          if (!v13)
+          if (!intValue)
           {
-            v17 = [(BatteryUISuggestion *)v16 getSuggestionHeaderSpecifier];
-            [(BatteryUIController *)self lazyLoadBundle:v17];
+            getSuggestionHeaderSpecifier4 = [(BatteryUISuggestion *)v16 getSuggestionHeaderSpecifier];
+            [(BatteryUIController *)self lazyLoadBundle:getSuggestionHeaderSpecifier4];
 LABEL_29:
           }
         }
@@ -426,7 +426,7 @@ LABEL_31:
         ++v9;
       }
 
-      while ([v4 count] > v9);
+      while ([objectsCopy count] > v9);
     }
 
     if ([v8 count])
@@ -436,9 +436,9 @@ LABEL_31:
   }
 }
 
-- (void)setAutolockTitlesAndValues:(id)a3
+- (void)setAutolockTitlesAndValues:(id)values
 {
-  v57 = a3;
+  valuesCopy = values;
   v3 = [NSArray alloc];
   v4 = [NSNumber numberWithInt:30];
   v5 = [NSNumber numberWithInt:60];
@@ -510,11 +510,11 @@ LABEL_31:
           objc_enumerationMutation(v21);
         }
 
-        v28 = [*(*(&v65 + 1) + 8 * v27) intValue];
-        v29 = [v13 objectAtIndexedSubscript:v28];
+        intValue = [*(*(&v65 + 1) + 8 * v27) intValue];
+        v29 = [v13 objectAtIndexedSubscript:intValue];
         [v22 addObject:v29];
 
-        v30 = [v20 objectAtIndexedSubscript:v28];
+        v30 = [v20 objectAtIndexedSubscript:intValue];
         [v23 addObject:v30];
 
         v27 = v27 + 1;
@@ -536,8 +536,8 @@ LABEL_31:
     do
     {
       v33 = [v22 objectAtIndex:v32];
-      v34 = [v33 intValue];
-      if (v34 == -1)
+      intValue2 = [v33 intValue];
+      if (intValue2 == -1)
       {
         v36 = +[NSBundle mainBundle];
         v37 = [v23 objectAtIndex:v32];
@@ -546,7 +546,7 @@ LABEL_31:
 
       else
       {
-        v35 = v34;
+        v35 = intValue2;
         v36 = +[NSBundle mainBundle];
         v37 = [v23 objectAtIndex:v32];
         [v36 localizedStringForKey:v37 value:&stru_16CDB8 table:@"General"];
@@ -568,12 +568,12 @@ LABEL_31:
     while (v61 != v32);
   }
 
-  [v57 setValues:v22 titles:v59];
+  [valuesCopy setValues:v22 titles:v59];
 }
 
-- (void)generateSuggestionsWithIssues:(id)a3
+- (void)generateSuggestionsWithIssues:(id)issues
 {
-  v4 = a3;
+  issuesCopy = issues;
   v5 = +[BatteryUIResourceClass get_log_handle_bui];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -585,7 +585,7 @@ LABEL_31:
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v7 = v4;
+  v7 = issuesCopy;
   v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v8)
   {
@@ -630,9 +630,9 @@ LABEL_31:
   }
 }
 
-- (id)addSuggestionsToSpecifiers:(id)a3
+- (id)addSuggestionsToSpecifiers:(id)specifiers
 {
-  v4 = a3;
+  specifiersCopy = specifiers;
   [(BatteryUIController *)self updateSuggestionsSpecifiers];
   suggestionEntries = self->_suggestionEntries;
   if (suggestionEntries && [(NSMutableArray *)suggestionEntries count])
@@ -643,27 +643,27 @@ LABEL_31:
       v11 = [PSSpecifier preferenceSpecifierNamed:0 target:self set:0 get:0 detail:0 cell:0 edit:0];
       [(BatteryUIController *)self setSuggestionHeaderSpecifier:v11];
 
-      v12 = [(BatteryUIController *)self suggestionHeaderSpecifier];
-      [v12 setIdentifier:@"SUGGESTION_HEADER"];
+      suggestionHeaderSpecifier = [(BatteryUIController *)self suggestionHeaderSpecifier];
+      [suggestionHeaderSpecifier setIdentifier:@"SUGGESTION_HEADER"];
 
-      v8 = [(BatteryUIController *)self suggestionHeaderSpecifier];
+      suggestionHeaderSpecifier2 = [(BatteryUIController *)self suggestionHeaderSpecifier];
     }
 
     else
     {
-      v7 = [(BatteryUIController *)self _suggestionGroupSpecifier];
-      [v4 addObject:v7];
+      _suggestionGroupSpecifier = [(BatteryUIController *)self _suggestionGroupSpecifier];
+      [specifiersCopy addObject:_suggestionGroupSpecifier];
 
-      v8 = [(BatteryUIController *)self getInitializedSuggestionHeaderCellSpecifier];
+      suggestionHeaderSpecifier2 = [(BatteryUIController *)self getInitializedSuggestionHeaderCellSpecifier];
       v9 = [NSNumber numberWithUnsignedInteger:[(NSMutableArray *)self->_suggestionEntries count]];
-      [v8 setProperty:v9 forKey:@"PLBatteryUISuggestionInsightTotalCountKey"];
+      [suggestionHeaderSpecifier2 setProperty:v9 forKey:@"PLBatteryUISuggestionInsightTotalCountKey"];
 
       v10 = [NSNumber numberWithBool:self->_showAll];
-      [v8 setProperty:v10 forKey:@"PLBatteryUISuggestionShowAll"];
+      [suggestionHeaderSpecifier2 setProperty:v10 forKey:@"PLBatteryUISuggestionShowAll"];
     }
 
-    v24 = v8;
-    [v4 addObject:v8];
+    v24 = suggestionHeaderSpecifier2;
+    [specifiersCopy addObject:suggestionHeaderSpecifier2];
     if ([(NSMutableArray *)self->_suggestionEntries count])
     {
       v13 = 0;
@@ -692,14 +692,14 @@ LABEL_31:
           v20 = [(CGFloat *)v16 groupSpecifierWithID:v19];
 
           v6 = v17;
-          [v4 addObject:v20];
+          [specifiersCopy addObject:v20];
         }
 
-        v21 = [v14 getSuggestionHeaderSpecifier];
-        [v4 addObject:v21];
+        getSuggestionHeaderSpecifier = [v14 getSuggestionHeaderSpecifier];
+        [specifiersCopy addObject:getSuggestionHeaderSpecifier];
 
-        v22 = [v14 getSuggestionInfoSpecifier];
-        [v4 addObject:v22];
+        getSuggestionInfoSpecifier = [v14 getSuggestionInfoSpecifier];
+        [specifiersCopy addObject:getSuggestionInfoSpecifier];
 
         ++v13;
       }
@@ -708,12 +708,12 @@ LABEL_31:
     }
   }
 
-  return v4;
+  return specifiersCopy;
 }
 
-- (id)addSuggestionsNoHeaderToSpecifiers:(id)a3
+- (id)addSuggestionsNoHeaderToSpecifiers:(id)specifiers
 {
-  v4 = a3;
+  specifiersCopy = specifiers;
   [(BatteryUIController *)self updateSuggestionsSpecifiers];
   suggestionEntries = self->_suggestionEntries;
   if (suggestionEntries && [(NSMutableArray *)suggestionEntries count])
@@ -724,23 +724,23 @@ LABEL_31:
       v10 = [PSSpecifier preferenceSpecifierNamed:&stru_16CDB8 target:self set:0 get:0 detail:0 cell:0 edit:0];
       [(BatteryUIController *)self setSuggestionHeaderSpecifier:v10];
 
-      v11 = [(BatteryUIController *)self suggestionHeaderSpecifier];
-      [v11 setIdentifier:@"SUGGESTION_HEADER"];
+      suggestionHeaderSpecifier = [(BatteryUIController *)self suggestionHeaderSpecifier];
+      [suggestionHeaderSpecifier setIdentifier:@"SUGGESTION_HEADER"];
 
-      v24 = [(BatteryUIController *)self suggestionHeaderSpecifier];
+      suggestionHeaderSpecifier2 = [(BatteryUIController *)self suggestionHeaderSpecifier];
     }
 
     else
     {
-      v7 = [(BatteryUIController *)self getInitializedSuggestionHeaderCellSpecifier];
+      getInitializedSuggestionHeaderCellSpecifier = [(BatteryUIController *)self getInitializedSuggestionHeaderCellSpecifier];
       v8 = [NSNumber numberWithUnsignedInteger:[(NSMutableArray *)self->_suggestionEntries count]];
-      [v7 setProperty:v8 forKey:@"PLBatteryUISuggestionInsightTotalCountKey"];
+      [getInitializedSuggestionHeaderCellSpecifier setProperty:v8 forKey:@"PLBatteryUISuggestionInsightTotalCountKey"];
 
       v9 = [NSNumber numberWithBool:self->_showAll];
-      [v7 setProperty:v9 forKey:@"PLBatteryUISuggestionShowAll"];
+      [getInitializedSuggestionHeaderCellSpecifier setProperty:v9 forKey:@"PLBatteryUISuggestionShowAll"];
 
-      v24 = v7;
-      [v4 addObject:v7];
+      suggestionHeaderSpecifier2 = getInitializedSuggestionHeaderCellSpecifier;
+      [specifiersCopy addObject:getInitializedSuggestionHeaderCellSpecifier];
     }
 
     v12 = dispatch_get_global_queue(0, 0);
@@ -772,14 +772,14 @@ LABEL_31:
           v20 = [(CGFloat *)v16 groupSpecifierWithID:v19];
 
           v6 = v17;
-          [v4 addObject:v20];
+          [specifiersCopy addObject:v20];
         }
 
-        v21 = [v15 getSuggestionHeaderSpecifier];
-        [v4 addObject:v21];
+        getSuggestionHeaderSpecifier = [v15 getSuggestionHeaderSpecifier];
+        [specifiersCopy addObject:getSuggestionHeaderSpecifier];
 
-        v22 = [v15 getSuggestionInfoSpecifier];
-        [v4 addObject:v22];
+        getSuggestionInfoSpecifier = [v15 getSuggestionInfoSpecifier];
+        [specifiersCopy addObject:getSuggestionInfoSpecifier];
 
         ++v13;
       }
@@ -788,7 +788,7 @@ LABEL_31:
     }
   }
 
-  return v4;
+  return specifiersCopy;
 }
 
 + (BOOL)isALSCurveHigherThanDefault
@@ -839,9 +839,9 @@ LABEL_31:
   }
 
   v5 = [(BatteryUIController *)self screenLock:0];
-  v6 = [v5 intValue];
+  intValue = [v5 intValue];
 
-  if (v6 != -1)
+  if (intValue != -1)
   {
     v3 = 1;
     v7 = [(BatteryUIController *)self getSuggestionObjectWithType:1];
@@ -869,20 +869,20 @@ LABEL_31:
     if ([(NSMutableArray *)self->_suggestionEntries count])
     {
 LABEL_12:
-      v9 = [(BatteryUIController *)self suggestionHeaderSpecifier];
+      suggestionHeaderSpecifier = [(BatteryUIController *)self suggestionHeaderSpecifier];
 
-      if (v9)
+      if (suggestionHeaderSpecifier)
       {
-        v10 = [(BatteryUIController *)self suggestionHeaderSpecifier];
+        suggestionHeaderSpecifier2 = [(BatteryUIController *)self suggestionHeaderSpecifier];
         v11 = [NSNumber numberWithBool:self->_showAll];
-        [v10 setProperty:v11 forKey:@"PLBatteryUISuggestionShowAll"];
+        [suggestionHeaderSpecifier2 setProperty:v11 forKey:@"PLBatteryUISuggestionShowAll"];
 
-        v12 = [(BatteryUIController *)self suggestionHeaderSpecifier];
+        suggestionHeaderSpecifier3 = [(BatteryUIController *)self suggestionHeaderSpecifier];
         v13 = [NSNumber numberWithUnsignedInteger:[(NSMutableArray *)self->_suggestionEntries count]];
-        [v12 setProperty:v13 forKey:@"PLBatteryUISuggestionInsightTotalCountKey"];
+        [suggestionHeaderSpecifier3 setProperty:v13 forKey:@"PLBatteryUISuggestionInsightTotalCountKey"];
 
-        v14 = [(BatteryUIController *)self suggestionHeaderSpecifier];
-        v15 = [v14 propertyForKey:PSTableCellKey];
+        suggestionHeaderSpecifier4 = [(BatteryUIController *)self suggestionHeaderSpecifier];
+        v15 = [suggestionHeaderSpecifier4 propertyForKey:PSTableCellKey];
 
         if (v15)
         {
@@ -891,7 +891,7 @@ LABEL_12:
           v17[2] = sub_131E8;
           v17[3] = &unk_163EB8;
           v18 = v15;
-          v19 = self;
+          selfCopy = self;
           dispatch_async(&_dispatch_main_q, v17);
         }
       }
@@ -908,27 +908,27 @@ LABEL_12:
   [(BatteryUIController *)self removeSpecifierID:@"SUGGESTION_HEADER"];
 }
 
-- (void)removeSuggestion:(id)a3
+- (void)removeSuggestion:(id)suggestion
 {
-  if (a3)
+  if (suggestion)
   {
     suggestionEntries = self->_suggestionEntries;
-    v5 = a3;
-    [(NSMutableArray *)suggestionEntries removeObject:v5];
-    v6 = [v5 getSuggestionHeaderSpecifier];
-    [(BatteryUIController *)self removeSpecifier:v6 animated:1];
+    suggestionCopy = suggestion;
+    [(NSMutableArray *)suggestionEntries removeObject:suggestionCopy];
+    getSuggestionHeaderSpecifier = [suggestionCopy getSuggestionHeaderSpecifier];
+    [(BatteryUIController *)self removeSpecifier:getSuggestionHeaderSpecifier animated:1];
 
-    v7 = [v5 getSuggestionInfoSpecifier];
-    [(BatteryUIController *)self removeSpecifier:v7 animated:1];
+    getSuggestionInfoSpecifier = [suggestionCopy getSuggestionInfoSpecifier];
+    [(BatteryUIController *)self removeSpecifier:getSuggestionInfoSpecifier animated:1];
 
-    v9 = [v5 getSuggestionIdentifier];
+    getSuggestionIdentifier = [suggestionCopy getSuggestionIdentifier];
 
-    v8 = [v9 stringByAppendingString:@"_HEADER"];
+    v8 = [getSuggestionIdentifier stringByAppendingString:@"_HEADER"];
     [(BatteryUIController *)self removeSpecifierID:v8 animated:1];
   }
 }
 
-- (id)getSuggestionObjectWithType:(int)a3
+- (id)getSuggestionObjectWithType:(int)type
 {
   suggestionEntries = self->_suggestionEntries;
   if (suggestionEntries && [(NSMutableArray *)suggestionEntries count])
@@ -953,7 +953,7 @@ LABEL_12:
           }
 
           v11 = *(*(&v14 + 1) + 8 * i);
-          if ([v11 getSuggestionType] == a3)
+          if ([v11 getSuggestionType] == type)
           {
             v12 = v11;
             goto LABEL_14;
@@ -998,13 +998,13 @@ LABEL_14:
   return suggestionGroup;
 }
 
-- (void)generateSignaturesEntrySpecifiers:(id)a3
+- (void)generateSignaturesEntrySpecifiers:(id)specifiers
 {
-  v4 = a3;
+  specifiersCopy = specifiers;
   signatureEntries = self->_signatureEntries;
   self->_signatureEntries = 0;
 
-  if (v4)
+  if (specifiersCopy)
   {
     v6 = objc_opt_new();
     v7 = self->_signatureEntries;
@@ -1014,8 +1014,8 @@ LABEL_14:
     v37 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v28 = v4;
-    obj = v4;
+    v28 = specifiersCopy;
+    obj = specifiersCopy;
     v8 = [obj countByEnumeratingWithState:&v34 objects:v38 count:16];
     if (v8)
     {
@@ -1124,33 +1124,33 @@ LABEL_14:
       while (v9);
     }
 
-    v4 = v28;
+    specifiersCopy = v28;
   }
 }
 
-- (id)caSuggestionsAndInsightsEventDictionaryForType:(id)a3 category:(id)a4 action:(id)a5
+- (id)caSuggestionsAndInsightsEventDictionaryForType:(id)type category:(id)category action:(id)action
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  actionCopy = action;
+  categoryCopy = category;
+  typeCopy = type;
   v10 = objc_opt_new();
-  [v10 setObject:v9 forKeyedSubscript:@"type"];
+  [v10 setObject:typeCopy forKeyedSubscript:@"type"];
 
-  [v10 setObject:v8 forKeyedSubscript:@"category"];
-  [v10 setObject:v7 forKeyedSubscript:@"action"];
+  [v10 setObject:categoryCopy forKeyedSubscript:@"category"];
+  [v10 setObject:actionCopy forKeyedSubscript:@"action"];
 
   return v10;
 }
 
-- (id)insightAndSuggestionTypes:(id)a3
+- (id)insightAndSuggestionTypes:(id)types
 {
-  v3 = a3;
+  typesCopy = types;
   v4 = +[NSMutableArray array];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = typesCopy;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -1183,9 +1183,9 @@ LABEL_14:
   return v4;
 }
 
-- (void)logInsightsAndSuggestions:(id)a3
+- (void)logInsightsAndSuggestions:(id)suggestions
 {
-  v3 = [(BatteryUIController *)self insightAndSuggestionTypes:a3];
+  v3 = [(BatteryUIController *)self insightAndSuggestionTypes:suggestions];
   v4 = [v3 componentsJoinedByString:&stru_16CDB8];
   v5 = @"Insights";
   v6 = v4;
@@ -1193,13 +1193,13 @@ LABEL_14:
   PLLogRegisteredEvent();
 }
 
-- (void)reloadSpecifierID:(id)a3
+- (void)reloadSpecifierID:(id)d
 {
   v5.receiver = self;
   v5.super_class = BatteryUIController;
-  [(BatteryUIController *)&v5 reloadSpecifierID:a3];
-  v4 = [(BatteryUIController *)self view];
-  [v4 setNeedsLayout];
+  [(BatteryUIController *)&v5 reloadSpecifierID:d];
+  view = [(BatteryUIController *)self view];
+  [view setNeedsLayout];
 }
 
 - (void)reloadSpecifiers
@@ -1211,8 +1211,8 @@ LABEL_14:
     _os_log_impl(&dword_0, v3, OS_LOG_TYPE_INFO, "Reloading specifiers", buf, 2u);
   }
 
-  v4 = [(BatteryUIController *)self table];
-  [v4 contentOffset];
+  table = [(BatteryUIController *)self table];
+  [table contentOffset];
   self->contentOffsetBUI.x = v5;
   self->contentOffsetBUI.y = v6;
 
@@ -1231,8 +1231,8 @@ LABEL_14:
   v10.receiver = self;
   v10.super_class = BatteryUIController;
   [(BatteryUIController *)&v10 reloadSpecifiers];
-  v9 = [(BatteryUIController *)self view];
-  [v9 setNeedsLayout];
+  view = [(BatteryUIController *)self view];
+  [view setNeedsLayout];
 }
 
 - (void)viewDidLayoutSubviews
@@ -1272,15 +1272,15 @@ LABEL_14:
 
   if (self->contentOffsetBUI.y < 3.40282347e38)
   {
-    v8 = [(BatteryUIController *)self table];
-    [v8 contentOffset];
+    table = [(BatteryUIController *)self table];
+    [table contentOffset];
     v10 = v9;
     y = self->contentOffsetBUI.y;
 
     if (v10 < y)
     {
-      v12 = [(BatteryUIController *)self table];
-      [v12 setContentOffset:0 animated:{self->contentOffsetBUI.x, self->contentOffsetBUI.y}];
+      table2 = [(BatteryUIController *)self table];
+      [table2 setContentOffset:0 animated:{self->contentOffsetBUI.x, self->contentOffsetBUI.y}];
 
       [(BatteryUIController *)self adjustTableBottomInset];
     }
@@ -1293,7 +1293,7 @@ LABEL_14:
   }
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
   v4 = +[BatteryUIResourceClass get_log_handle_bui];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -1301,50 +1301,50 @@ LABEL_14:
     sub_113730(self);
   }
 
-  v5 = [(BatteryUIController *)self table];
-  [v5 contentInset];
+  table = [(BatteryUIController *)self table];
+  [table contentInset];
   v7 = v6;
-  v8 = [(BatteryUIController *)self table];
-  [v8 contentInset];
+  table2 = [(BatteryUIController *)self table];
+  [table2 contentInset];
   v10 = v9;
 
   if (v7 > v10)
   {
-    v11 = [(BatteryUIController *)self table];
-    [v11 contentInset];
+    table3 = [(BatteryUIController *)self table];
+    [table3 contentInset];
     v13 = v12;
-    v14 = [(BatteryUIController *)self table];
-    [v14 contentSize];
+    table4 = [(BatteryUIController *)self table];
+    [table4 contentSize];
     v16 = v13 + v15;
-    v17 = [(BatteryUIController *)self table];
-    [v17 contentInset];
+    table5 = [(BatteryUIController *)self table];
+    [table5 contentInset];
     v19 = v16 + v18;
-    v20 = [(BatteryUIController *)self view];
-    [v20 frame];
+    view = [(BatteryUIController *)self view];
+    [view frame];
     v22 = v21;
 
     if (v19 > v22)
     {
-      v23 = [(BatteryUIController *)self contentScrollView];
-      [v23 frame];
+      contentScrollView = [(BatteryUIController *)self contentScrollView];
+      [contentScrollView frame];
       v25 = v24;
-      v26 = [(BatteryUIController *)self table];
-      [v26 contentSize];
+      table6 = [(BatteryUIController *)self table];
+      [table6 contentSize];
       v28 = v27;
-      v29 = [(BatteryUIController *)self table];
-      [v29 contentOffset];
+      table7 = [(BatteryUIController *)self table];
+      [table7 contentOffset];
       v31 = v25 - (v28 - v30);
 
       if (v31 > 0.0)
       {
-        v32 = [(BatteryUIController *)self table];
-        [v32 contentInset];
+        table8 = [(BatteryUIController *)self table];
+        [table8 contentInset];
         v34 = v33;
 
         if (v31 < v34)
         {
-          v35 = [(BatteryUIController *)self table];
-          [v35 contentInset];
+          table9 = [(BatteryUIController *)self table];
+          [table9 contentInset];
           v37 = v36;
           v39 = v38;
           v41 = v40;
@@ -1355,34 +1355,34 @@ LABEL_14:
             sub_1137C4();
           }
 
-          v43 = [(BatteryUIController *)self table];
-          [v43 setContentInset:{v37, v39, v31, v41}];
+          table10 = [(BatteryUIController *)self table];
+          [table10 setContentInset:{v37, v39, v31, v41}];
         }
       }
     }
   }
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v17 = a4;
-  v7 = a5;
-  v8 = [(BatteryUIController *)self tableCellHeights];
-  if (v8)
+  cellCopy = cell;
+  pathCopy = path;
+  tableCellHeights = [(BatteryUIController *)self tableCellHeights];
+  if (tableCellHeights)
   {
-    v9 = v8;
-    v10 = [(BatteryUIController *)self tableCellHeightEstimated];
+    v9 = tableCellHeights;
+    tableCellHeightEstimated = [(BatteryUIController *)self tableCellHeightEstimated];
 
-    if (v10)
+    if (tableCellHeightEstimated)
     {
-      [v17 frame];
+      [cellCopy frame];
       v12 = [NSNumber numberWithDouble:v11];
-      v13 = [(BatteryUIController *)self tableCellHeights];
-      [v13 setObject:v12 forKeyedSubscript:v7];
+      tableCellHeights2 = [(BatteryUIController *)self tableCellHeights];
+      [tableCellHeights2 setObject:v12 forKeyedSubscript:pathCopy];
 
-      LODWORD(v12) = [(BatteryUIController *)self shouldEstimateCellHeightFor:v17];
-      v14 = [(BatteryUIController *)self tableCellHeightEstimated];
-      v15 = v14;
+      LODWORD(v12) = [(BatteryUIController *)self shouldEstimateCellHeightFor:cellCopy];
+      tableCellHeightEstimated2 = [(BatteryUIController *)self tableCellHeightEstimated];
+      v15 = tableCellHeightEstimated2;
       if (v12)
       {
         v16 = &__kCFBooleanTrue;
@@ -1393,26 +1393,26 @@ LABEL_14:
         v16 = &__kCFBooleanFalse;
       }
 
-      [v14 setObject:v16 forKeyedSubscript:v7];
+      [tableCellHeightEstimated2 setObject:v16 forKeyedSubscript:pathCopy];
     }
   }
 }
 
-- (double)tableView:(id)a3 estimatedHeightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view estimatedHeightForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BatteryUIController *)self tableCellHeights];
-  if (!v8 || (v9 = v8, [(BatteryUIController *)self tableCellHeightEstimated], v10 = objc_claimAutoreleasedReturnValue(), v10, v9, !v10))
+  viewCopy = view;
+  pathCopy = path;
+  tableCellHeights = [(BatteryUIController *)self tableCellHeights];
+  if (!tableCellHeights || (v9 = tableCellHeights, [(BatteryUIController *)self tableCellHeightEstimated], v10 = objc_claimAutoreleasedReturnValue(), v10, v9, !v10))
   {
-    [(BatteryUIController *)&v24 tableView:v6 estimatedHeightForRowAtIndexPath:v7, v23.receiver, v23.super_class, self, BatteryUIController];
+    [(BatteryUIController *)&v24 tableView:viewCopy estimatedHeightForRowAtIndexPath:pathCopy, v23.receiver, v23.super_class, self, BatteryUIController];
 LABEL_9:
     v20 = v21;
     goto LABEL_10;
   }
 
-  v11 = [(BatteryUIController *)self tableCellHeights];
-  v12 = [v11 objectForKeyedSubscript:v7];
+  tableCellHeights2 = [(BatteryUIController *)self tableCellHeights];
+  v12 = [tableCellHeights2 objectForKeyedSubscript:pathCopy];
   if (!v12)
   {
 
@@ -1420,19 +1420,19 @@ LABEL_9:
   }
 
   v13 = v12;
-  v14 = [(BatteryUIController *)self tableCellHeightEstimated];
-  v15 = [v14 objectForKeyedSubscript:v7];
-  v16 = [v15 BOOLValue];
+  tableCellHeightEstimated = [(BatteryUIController *)self tableCellHeightEstimated];
+  v15 = [tableCellHeightEstimated objectForKeyedSubscript:pathCopy];
+  bOOLValue = [v15 BOOLValue];
 
-  if (!v16)
+  if (!bOOLValue)
   {
 LABEL_8:
-    [(BatteryUIController *)&v23 tableView:v6 estimatedHeightForRowAtIndexPath:v7, self, BatteryUIController, v24.receiver, v24.super_class];
+    [(BatteryUIController *)&v23 tableView:viewCopy estimatedHeightForRowAtIndexPath:pathCopy, self, BatteryUIController, v24.receiver, v24.super_class];
     goto LABEL_9;
   }
 
-  v17 = [(BatteryUIController *)self tableCellHeights];
-  v18 = [v17 objectForKeyedSubscript:v7];
+  tableCellHeights3 = [(BatteryUIController *)self tableCellHeights];
+  v18 = [tableCellHeights3 objectForKeyedSubscript:pathCopy];
   [v18 doubleValue];
   v20 = v19;
 
@@ -1440,9 +1440,9 @@ LABEL_10:
   return v20;
 }
 
-- (BOOL)shouldEstimateCellHeightFor:(id)a3
+- (BOOL)shouldEstimateCellHeightFor:(id)for
 {
-  v3 = a3;
+  forCopy = for;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -1485,34 +1485,34 @@ LABEL_13:
 
 - (void)adjustTableBottomInset
 {
-  v3 = [(BatteryUIController *)self table];
-  [v3 contentSize];
+  table = [(BatteryUIController *)self table];
+  [table contentSize];
   v5 = v4;
-  v6 = [(BatteryUIController *)self table];
-  [v6 contentOffset];
+  table2 = [(BatteryUIController *)self table];
+  [table2 contentOffset];
   v8 = v5 - v7;
 
-  v9 = [(BatteryUIController *)self contentScrollView];
-  [v9 frame];
+  contentScrollView = [(BatteryUIController *)self contentScrollView];
+  [contentScrollView frame];
   v11 = v10 - v8;
 
-  v12 = [(BatteryUIController *)self table];
-  [v12 contentInset];
+  table3 = [(BatteryUIController *)self table];
+  [table3 contentInset];
   v14 = v13;
   v16 = v15;
   v18 = v17;
 
-  v19 = [(BatteryUIController *)self table];
-  [v19 contentInset];
+  table4 = [(BatteryUIController *)self table];
+  [table4 contentInset];
   v21 = v20;
 
   if (v11 < v21)
   {
-    v22 = [(BatteryUIController *)self table];
-    [v22 contentInset];
+    table5 = [(BatteryUIController *)self table];
+    [table5 contentInset];
     v24 = v23;
-    v25 = [(BatteryUIController *)self table];
-    [v25 contentInset];
+    table6 = [(BatteryUIController *)self table];
+    [table6 contentInset];
     v27 = v26;
 
     if (v24 <= v27)
@@ -1526,8 +1526,8 @@ LABEL_13:
     }
   }
 
-  v28 = [(BatteryUIController *)self table];
-  [v28 setContentInset:{v14, v16, v11, v18}];
+  table7 = [(BatteryUIController *)self table];
+  [table7 setContentInset:{v14, v16, v11, v18}];
 }
 
 - (id)_batteryGroupSpecifier
@@ -1552,16 +1552,16 @@ LABEL_13:
 
 - (id)setUpSpinnerSpecifiers
 {
-  v3 = [(BatteryUIController *)self _spinnerSpecifierGroup];
-  v4 = [(BatteryUIController *)self _spinnerSpecifier];
+  _spinnerSpecifierGroup = [(BatteryUIController *)self _spinnerSpecifierGroup];
+  _spinnerSpecifier = [(BatteryUIController *)self _spinnerSpecifier];
   v5 = +[BatteryUIResourceClass get_log_handle_bui];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     sub_113878();
   }
 
-  v8[0] = v3;
-  v8[1] = v4;
+  v8[0] = _spinnerSpecifierGroup;
+  v8[1] = _spinnerSpecifier;
   v6 = [NSArray arrayWithObjects:v8 count:2];
 
   return v6;
@@ -1624,8 +1624,8 @@ LABEL_13:
     self->_activityIndicator = v4;
 
     [(UIActivityIndicatorView *)self->_activityIndicator setSize:50.0, 50.0];
-    v6 = [(BatteryUIController *)self view];
-    [v6 center];
+    view = [(BatteryUIController *)self view];
+    [view center];
     [(UIActivityIndicatorView *)self->_activityIndicator setCenter:?];
 
     activityIndicator = self->_activityIndicator;
@@ -1641,8 +1641,8 @@ LABEL_13:
     v3 = +[BatteryUsageQueryModule sharedModule];
     if ([(BatteryUIController *)self inDemoMode])
     {
-      v4 = [(BatteryUIController *)self specifier];
-      v5 = [v4 propertyForKey:@"manualFIle"];
+      specifier = [(BatteryUIController *)self specifier];
+      v5 = [specifier propertyForKey:@"manualFIle"];
       [v3 setManualFileName:v5];
     }
 
@@ -1665,15 +1665,15 @@ LABEL_13:
 
     if ([(BatteryUIController *)self batteryUIType]== 2)
     {
-      v6 = [(BatteryUIController *)self BUI_MODE];
+      bUI_MODE = [(BatteryUIController *)self BUI_MODE];
     }
 
     else
     {
-      v6 = [(BatteryUIController *)self batteryUIQueryType];
+      bUI_MODE = [(BatteryUIController *)self batteryUIQueryType];
     }
 
-    [v3 setType:v6];
+    [v3 setType:bUI_MODE];
     [(BatteryUIController *)self setCurrentDictionary:0];
     [(BatteryUIController *)self setCurrentGraphDictionary:0];
     [(BatteryUIController *)self setCoalescedBreakdownDictionary:0];
@@ -1746,47 +1746,47 @@ LABEL_32:
       _os_log_impl(&dword_0, v13, OS_LOG_TYPE_INFO, "bui_backend_iOS feature flag is enabled. Using the new backend for UI information...", buf, 2u);
     }
 
-    v14 = [(BatteryUIController *)self backend];
-    [v14 resetQuery];
+    backend = [(BatteryUIController *)self backend];
+    [backend resetQuery];
 
-    v15 = [(BatteryUIController *)self backend];
-    v16 = [v15 endOfHour];
+    backend2 = [(BatteryUIController *)self backend];
+    endOfHour = [backend2 endOfHour];
 
-    v17 = [(BatteryUIController *)self backend];
-    v18 = [v17 endOfDay];
+    backend3 = [(BatteryUIController *)self backend];
+    endOfDay = [backend3 endOfDay];
 
-    v19 = [(BatteryUIController *)self backend];
-    v20 = [v19 addQueryType:3 withEndDate:v18 withRange:1 withBucketSize:1296000.0 isDynamicEnd:86400.0];
+    backend4 = [(BatteryUIController *)self backend];
+    v20 = [backend4 addQueryType:3 withEndDate:endOfDay withRange:1 withBucketSize:1296000.0 isDynamicEnd:86400.0];
 
-    v21 = [(BatteryUIController *)self backend];
-    v22 = [v21 addQueryType:105 withEndDate:v18 withRange:1 withBucketSize:691200.0 isDynamicEnd:86400.0];
+    backend5 = [(BatteryUIController *)self backend];
+    v22 = [backend5 addQueryType:105 withEndDate:endOfDay withRange:1 withBucketSize:691200.0 isDynamicEnd:86400.0];
 
-    v23 = [(BatteryUIController *)self backend];
-    v24 = [v23 addQueryType:105 withEndDate:v18 withRange:1296000.0 withBucketSize:86400.0];
+    backend6 = [(BatteryUIController *)self backend];
+    v24 = [backend6 addQueryType:105 withEndDate:endOfDay withRange:1296000.0 withBucketSize:86400.0];
 
-    v25 = [(BatteryUIController *)self backend];
-    v26 = [v25 addQueryType:4 withEndDate:v16 withRange:691200.0 withBucketSize:3600.0];
+    backend7 = [(BatteryUIController *)self backend];
+    v26 = [backend7 addQueryType:4 withEndDate:endOfHour withRange:691200.0 withBucketSize:3600.0];
 
-    v27 = [(BatteryUIController *)self backend];
-    v28 = [v27 addQueryType:7 withEndDate:v16 withRange:691200.0 withBucketSize:86400.0];
+    backend8 = [(BatteryUIController *)self backend];
+    v28 = [backend8 addQueryType:7 withEndDate:endOfHour withRange:691200.0 withBucketSize:86400.0];
 
-    v29 = [(BatteryUIController *)self backend];
-    v30 = [v29 addQueryType:13 withEndDate:v18 withRange:691200.0 withBucketSize:86400.0];
+    backend9 = [(BatteryUIController *)self backend];
+    v30 = [backend9 addQueryType:13 withEndDate:endOfDay withRange:691200.0 withBucketSize:86400.0];
 
-    v31 = [(BatteryUIController *)self backend];
-    v32 = [v31 addQueryType:8 withEndDate:v16 withRange:86400.0 withBucketSize:86400.0];
+    backend10 = [(BatteryUIController *)self backend];
+    v32 = [backend10 addQueryType:8 withEndDate:endOfHour withRange:86400.0 withBucketSize:86400.0];
 
-    v33 = [(BatteryUIController *)self backend];
-    v34 = [v33 addQueryType:9 withEndDate:v16 withRange:86400.0 withBucketSize:86400.0];
+    backend11 = [(BatteryUIController *)self backend];
+    v34 = [backend11 addQueryType:9 withEndDate:endOfHour withRange:86400.0 withBucketSize:86400.0];
 
-    v35 = [(BatteryUIController *)self backend];
-    v36 = [v35 addQueryType:10 withEndDate:v16 withRange:86400.0 withBucketSize:86400.0];
+    backend12 = [(BatteryUIController *)self backend];
+    v36 = [backend12 addQueryType:10 withEndDate:endOfHour withRange:86400.0 withBucketSize:86400.0];
 
-    v37 = [(BatteryUIController *)self backend];
-    v38 = [v37 addQueryType:11 withEndDate:v16 withRange:86400.0 withBucketSize:86400.0];
+    backend13 = [(BatteryUIController *)self backend];
+    v38 = [backend13 addQueryType:11 withEndDate:endOfHour withRange:86400.0 withBucketSize:86400.0];
 
-    v39 = [(BatteryUIController *)self backend];
-    v40 = [v39 addQueryType:14 withEndDate:v16 withRange:86400.0 withBucketSize:86400.0];
+    backend14 = [(BatteryUIController *)self backend];
+    v40 = [backend14 addQueryType:14 withEndDate:endOfHour withRange:86400.0 withBucketSize:86400.0];
 
     +[BatteryUIResourceClass containerPath];
     v41 = _CFPreferencesCopyValueWithContainer();
@@ -1812,23 +1812,23 @@ LABEL_32:
     else if (!v42)
     {
 LABEL_38:
-      v46 = [(BatteryUIController *)self backend];
-      [v3 queryBackend:v46 withCompletion:v12];
+      backend15 = [(BatteryUIController *)self backend];
+      [v3 queryBackend:backend15 withCompletion:v12];
 
 LABEL_31:
       goto LABEL_32;
     }
 
-    v44 = [(BatteryUIController *)self backend];
-    v45 = [v44 addQueryType:17 withEndDate:v18 withRange:86400.0 withBucketSize:86400.0];
+    backend16 = [(BatteryUIController *)self backend];
+    v45 = [backend16 addQueryType:17 withEndDate:endOfDay withRange:86400.0 withBucketSize:86400.0];
 
     goto LABEL_38;
   }
 }
 
-- (void)setUpBatteryUIDictionary:(id)a3
+- (void)setUpBatteryUIDictionary:(id)dictionary
 {
-  v4 = [a3 mutableCopy];
+  v4 = [dictionary mutableCopy];
   v5 = +[BatteryUIResourceClass get_log_handle_bui];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -2003,14 +2003,14 @@ LABEL_32:
     block[3] = &unk_163EB8;
     v35 = v4;
     v47 = v35;
-    v48 = self;
+    selfCopy = self;
     dispatch_async(&_dispatch_main_q, block);
     v43[0] = _NSConcreteStackBlock;
     v43[1] = 3221225472;
     v43[2] = sub_2D0CC;
     v43[3] = &unk_163EB8;
     v44 = v35;
-    v45 = self;
+    selfCopy2 = self;
     dispatch_async(&_dispatch_main_q, v43);
   }
 
@@ -2027,11 +2027,11 @@ LABEL_32:
   }
 }
 
-- (id)appEnergyValue:(id)a3
+- (id)appEnergyValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   batteryTotal = self->_batteryTotal;
-  v6 = [v4 propertyForKey:@"PLBatteryUIAppEnergyValueKey"];
+  v6 = [valueCopy propertyForKey:@"PLBatteryUIAppEnergyValueKey"];
   [v6 floatValue];
   if (batteryTotal <= 0.0)
   {
@@ -2064,20 +2064,20 @@ LABEL_32:
   return v12;
 }
 
-- (id)formatUsageStringInMin:(id)a3
+- (id)formatUsageStringInMin:(id)min
 {
-  v3 = a3;
-  [v3 floatValue];
-  if (v4 >= 60.0 || ([v3 floatValue], v5 <= 1.0))
+  minCopy = min;
+  [minCopy floatValue];
+  if (v4 >= 60.0 || ([minCopy floatValue], v5 <= 1.0))
   {
-    [v3 floatValue];
+    [minCopy floatValue];
     v6 = PSAbbreviatedFormattedTimeString();
     [NSString stringWithFormat:@"%@", v6];
   }
 
   else
   {
-    [v3 floatValue];
+    [minCopy floatValue];
     v6 = PSAbbreviatedFormattedTimeString();
     [NSString stringWithFormat:@"< %@", v6];
   }
@@ -2086,10 +2086,10 @@ LABEL_32:
   return v7;
 }
 
-- (id)formatUsageStringInMinOrHr:(id)a3
+- (id)formatUsageStringInMinOrHr:(id)hr
 {
-  v3 = a3;
-  [v3 doubleValue];
+  hrCopy = hr;
+  [hrCopy doubleValue];
   if (v4 >= 60.0)
   {
     v6 = objc_alloc_init(NSDateComponentsFormatter);
@@ -2097,7 +2097,7 @@ LABEL_32:
     [v6 setIncludesApproximationPhrase:0];
     [v6 setIncludesTimeRemainingPhrase:0];
     [v6 setAllowedUnits:96];
-    [v3 doubleValue];
+    [hrCopy doubleValue];
     v5 = [v6 stringFromTimeInterval:?];
   }
 
@@ -2137,14 +2137,14 @@ LABEL_32:
   return v2;
 }
 
-- (id)appFGBGValue:(id)a3
+- (id)appFGBGValue:(id)value
 {
-  v4 = a3;
-  v5 = [v4 propertyForKey:@"PLBatteryUIAppForegroundRuntimeKey"];
+  valueCopy = value;
+  v5 = [valueCopy propertyForKey:@"PLBatteryUIAppForegroundRuntimeKey"];
   [v5 floatValue];
   v6 = [NSNumber numberWithFloat:?];
 
-  v7 = [v4 propertyForKey:@"PLBatteryUIAppBackgroundRuntimeKey"];
+  v7 = [valueCopy propertyForKey:@"PLBatteryUIAppBackgroundRuntimeKey"];
 
   [v7 floatValue];
   v8 = [NSNumber numberWithFloat:?];
@@ -2201,18 +2201,18 @@ LABEL_32:
     }
 
     v14 = BatteryUILocalization(@"%@_BACKGROUND");
-    v15 = self;
+    selfCopy2 = self;
     v16 = v8;
   }
 
   else
   {
     v14 = BatteryUILocalization(@"%@_SCREEN");
-    v15 = self;
+    selfCopy2 = self;
     v16 = v6;
   }
 
-  v27 = [(BatteryUIController *)v15 formatUsageStringInMinOrHr:v16];
+  v27 = [(BatteryUIController *)selfCopy2 formatUsageStringInMinOrHr:v16];
   v28 = [PLBatteryUIUtilities replaceWithUnBreakableSpace:v27];
   v11 = [NSString stringWithFormat:v14, v28];
 
@@ -2242,24 +2242,24 @@ LABEL_19:
   return v11;
 }
 
-- (id)generateBatteryEntrySpecifiers:(id)a3
+- (id)generateBatteryEntrySpecifiers:(id)specifiers
 {
-  v4 = a3;
+  specifiersCopy = specifiers;
   v5 = +[BatteryUIResourceClass get_log_handle_bui];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     sub_113A78();
   }
 
-  if (!v4)
+  if (!specifiersCopy)
   {
     v9 = 0;
     goto LABEL_62;
   }
 
   v78 = +[NSMutableArray array];
-  v6 = [(BatteryUIController *)self batteryUIQueryRangeKey];
-  v7 = [v4 objectForKeyedSubscript:v6];
+  batteryUIQueryRangeKey = [(BatteryUIController *)self batteryUIQueryRangeKey];
+  v7 = [specifiersCopy objectForKeyedSubscript:batteryUIQueryRangeKey];
   v8 = [v7 objectForKeyedSubscript:@"PLBatteryUIErrorCodeKey"];
 
   if ([v8 integerValue] == &dword_0 + 1)
@@ -2276,8 +2276,8 @@ LABEL_19:
 
   if (self->_tappedIndex == -1)
   {
-    v12 = [(BatteryUIController *)self batteryUIQueryRangeKey];
-    v13 = [v4 objectForKeyedSubscript:v12];
+    batteryUIQueryRangeKey2 = [(BatteryUIController *)self batteryUIQueryRangeKey];
+    v13 = [specifiersCopy objectForKeyedSubscript:batteryUIQueryRangeKey2];
     v18 = [v13 objectForKeyedSubscript:@"PLBatteryUIAppArrayKey"];
   }
 
@@ -2293,12 +2293,12 @@ LABEL_19:
       v11 = @"PLBatteryUIQueryRangeDayTapKey";
     }
 
-    v12 = v11;
-    v13 = [v4 objectForKeyedSubscript:v12];
+    batteryUIQueryRangeKey2 = v11;
+    v13 = [specifiersCopy objectForKeyedSubscript:batteryUIQueryRangeKey2];
     tappedIndex = self->_tappedIndex;
     if ([v13 count] > tappedIndex)
     {
-      v15 = [v4 objectForKeyedSubscript:v12];
+      v15 = [specifiersCopy objectForKeyedSubscript:batteryUIQueryRangeKey2];
       v16 = [v15 objectAtIndexedSubscript:self->_tappedIndex];
       v17 = [v16 objectForKeyedSubscript:@"PLBatteryUIAppArrayKey"];
 
@@ -2321,7 +2321,7 @@ LABEL_18:
   }
 
   v73 = v8;
-  v74 = v4;
+  v74 = specifiersCopy;
   v75 = v17;
   if ((self->_batteryUIQueryType & 0xFFFFFFFE) == 2)
   {
@@ -2434,7 +2434,7 @@ LABEL_42:
   v49 = *v81;
   v50 = @"PLBatteryUIAppTypeKey";
   v51 = @"PLBatteryUIAppEnergyValueKey";
-  v77 = self;
+  selfCopy = self;
   do
   {
     for (i = 0; i != v48; i = i + 1)
@@ -2468,7 +2468,7 @@ LABEL_42:
           v46 = v61;
           v49 = v60;
           v48 = v59;
-          self = v77;
+          self = selfCopy;
 
           if (v66 < 60.0)
           {
@@ -2484,9 +2484,9 @@ LABEL_42:
       if (![(BatteryUIController *)self showRootNodesInInternal]|| ![(BatteryUIController *)self batteryUIType])
       {
         v67 = [v53 objectForKeyedSubscript:v50];
-        v68 = [v67 intValue];
+        intValue = [v67 intValue];
 
-        if (v68 == 5)
+        if (intValue == 5)
         {
           continue;
         }
@@ -2495,9 +2495,9 @@ LABEL_42:
       if (![(BatteryUIController *)self batteryUIType])
       {
         v69 = [v53 objectForKeyedSubscript:v50];
-        v70 = [v69 intValue];
+        intValue2 = [v69 intValue];
 
-        if (v70 == 2)
+        if (intValue2 == 2)
         {
           continue;
         }
@@ -2521,7 +2521,7 @@ LABEL_59:
   [v78 sortUsingComparator:v79];
   v9 = v78;
   v8 = v73;
-  v4 = v74;
+  specifiersCopy = v74;
   v17 = v75;
 LABEL_60:
 
@@ -2531,20 +2531,20 @@ LABEL_62:
   return v9;
 }
 
-- (BOOL)appQualifiers:(id)a3 containsQualifier:(int64_t)a4
+- (BOOL)appQualifiers:(id)qualifiers containsQualifier:(int64_t)qualifier
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5 && [v5 count] && objc_msgSend(v6, "count"))
+  qualifiersCopy = qualifiers;
+  v6 = qualifiersCopy;
+  if (qualifiersCopy && [qualifiersCopy count] && objc_msgSend(v6, "count"))
   {
     v7 = 0;
     do
     {
       v8 = [v6 objectAtIndexedSubscript:v7];
-      v9 = [v8 intValue];
+      intValue = [v8 intValue];
 
-      v10 = v9 == a4;
-      if (v9 == a4)
+      v10 = intValue == qualifier;
+      if (intValue == qualifier)
       {
         break;
       }
@@ -2563,9 +2563,9 @@ LABEL_62:
   return v10;
 }
 
-- (id)appQualifiers:(id)a3
+- (id)appQualifiers:(id)qualifiers
 {
-  v3 = a3;
+  qualifiersCopy = qualifiers;
   if (!+[BatteryUIResourceClass inDemoMode])
   {
     goto LABEL_7;
@@ -2577,13 +2577,13 @@ LABEL_62:
 LABEL_6:
 
 LABEL_7:
-    v4 = [v3 propertyForKey:@"PLBatteryUIAppQualifiersKey"];
+    v4 = [qualifiersCopy propertyForKey:@"PLBatteryUIAppQualifiersKey"];
     v6 = BatteryUIPrintQualifierString(v4);
     goto LABEL_8;
   }
 
-  v5 = [v3 name];
-  v6 = [v4 valueForKey:v5];
+  name = [qualifiersCopy name];
+  v6 = [v4 valueForKey:name];
 
   if (!v6 || ![v6 length])
   {
@@ -2596,9 +2596,9 @@ LABEL_8:
   return v6;
 }
 
-- (id)specifierForBatteryEntry:(id)a3
+- (id)specifierForBatteryEntry:(id)entry
 {
-  v4 = a3;
+  entryCopy = entry;
   if ([(BatteryUIController *)self batteryUIType]== 2)
   {
     v5 = 2;
@@ -2620,25 +2620,25 @@ LABEL_8:
   }
 
   v7 = [PSSpecifier preferenceSpecifierNamed:0 target:self set:0 get:0 detail:v6 cell:v5 edit:0];
-  v8 = [v4 objectForKeyedSubscript:@"PLBatteryUIAppEnergyValueKey"];
+  v8 = [entryCopy objectForKeyedSubscript:@"PLBatteryUIAppEnergyValueKey"];
   [v7 setProperty:v8 forKey:@"PLBatteryUIAppEnergyValueKey"];
 
-  v9 = [v4 objectForKeyedSubscript:@"PLBatteryUIAppForegroundRuntimeKey"];
+  v9 = [entryCopy objectForKeyedSubscript:@"PLBatteryUIAppForegroundRuntimeKey"];
   [v7 setProperty:v9 forKey:@"PLBatteryUIAppForegroundRuntimeKey"];
 
-  v10 = [v4 objectForKeyedSubscript:@"PLBatteryUIAppBackgroundRuntimeKey"];
+  v10 = [entryCopy objectForKeyedSubscript:@"PLBatteryUIAppBackgroundRuntimeKey"];
   [v7 setProperty:v10 forKey:@"PLBatteryUIAppBackgroundRuntimeKey"];
 
-  v11 = [v4 objectForKeyedSubscript:@"PLBatteryUIAppAlwaysOnRuntimeKey"];
+  v11 = [entryCopy objectForKeyedSubscript:@"PLBatteryUIAppAlwaysOnRuntimeKey"];
   [v7 setProperty:v11 forKey:@"PLBatteryUIAppAlwaysOnRuntimeKey"];
 
   v12 = [(BatteryUIController *)self appEnergyValue:v7];
   [v7 setProperty:v12 forKey:@"PLBatteryUIAppEnergyDisplayPercentKey"];
 
-  v13 = [v4 objectForKeyedSubscript:@"PLBatteryUIAppBundleIDKey"];
+  v13 = [entryCopy objectForKeyedSubscript:@"PLBatteryUIAppBundleIDKey"];
   v14 = [v13 isEqualToString:@"Flashlight"];
 
-  v15 = [v4 objectForKeyedSubscript:@"PLBatteryUIAppBundleIDKey"];
+  v15 = [entryCopy objectForKeyedSubscript:@"PLBatteryUIAppBundleIDKey"];
   v16 = [v15 isEqualToString:@"PowerOutAccessories"];
 
   if ((v14 & 1) == 0 && (v16 & 1) == 0)
@@ -2647,16 +2647,16 @@ LABEL_8:
     [v7 setProperty:v17 forKey:@"PLBatteryUIAppForegroundBackgroundRuntimeValueKey"];
   }
 
-  v18 = [v4 objectForKeyedSubscript:@"PLBatteryUIAppQualifiersKey"];
+  v18 = [entryCopy objectForKeyedSubscript:@"PLBatteryUIAppQualifiersKey"];
   [v7 setProperty:v18 forKey:@"PLBatteryUIAppQualifiersKey"];
 
-  v19 = [v4 objectForKeyedSubscript:@"PLBatteryUIAppTypeKey"];
+  v19 = [entryCopy objectForKeyedSubscript:@"PLBatteryUIAppTypeKey"];
   [v7 setProperty:v19 forKey:@"PLBatteryUIAppTypeKey"];
 
   v20 = [NSNumber numberWithUnsignedInt:self->_batteryUIType];
   [v7 setProperty:v20 forKey:@"PLBatteryUITypeKey"];
 
-  v21 = [v4 objectForKeyedSubscript:@"PLBatteryUIAppBundleIDKey"];
+  v21 = [entryCopy objectForKeyedSubscript:@"PLBatteryUIAppBundleIDKey"];
   [v7 setProperty:v21 forKey:PSIDKey];
 
   v22 = [NSNumber numberWithUnsignedInt:self->_iconDisplayType];
@@ -2671,7 +2671,7 @@ LABEL_8:
   [v7 setProperty:objc_opt_class() forKey:PSCellClassKey];
   [v7 setProperty:&__kCFBooleanTrue forKey:PSLazyIconLoading];
   [v7 setProperty:&__kCFBooleanTrue forKey:PSLazyIconDontUnload];
-  v25 = BatteryUIGetDisplayName(v4);
+  v25 = BatteryUIGetDisplayName(entryCopy);
   [v7 setName:v25];
 
   v26 = [(BatteryUIController *)self appQualifiers:v7];
@@ -2679,13 +2679,13 @@ LABEL_8:
 
   v27 = [[WeakBatteryUIController alloc] initWithController:self];
   [v7 setProperty:v27 forKey:@"PSSubtitleTileValueTableCellDelegateWrapperKey"];
-  [v7 setProperty:v4 forKey:@"APP_ENERGY_ENTRY"];
-  v28 = [v4 objectForKeyedSubscript:@"PLBatteryUIAppTypeKey"];
-  v29 = [v28 intValue];
+  [v7 setProperty:entryCopy forKey:@"APP_ENERGY_ENTRY"];
+  v28 = [entryCopy objectForKeyedSubscript:@"PLBatteryUIAppTypeKey"];
+  intValue = [v28 intValue];
 
-  if (v29 == 4)
+  if (intValue == 4)
   {
-    v37 = [v4 objectForKeyedSubscript:@"PLBatteryUIAppBundleIDKey"];
+    v37 = [entryCopy objectForKeyedSubscript:@"PLBatteryUIAppBundleIDKey"];
     v30 = [UIWebClip webClipWithIdentifier:v37];
 
     v38 = +[UIScreen mainScreen];
@@ -2697,11 +2697,11 @@ LABEL_23:
     goto LABEL_24;
   }
 
-  if (v29 != 1)
+  if (intValue != 1)
   {
-    if (!v29)
+    if (!intValue)
     {
-      v30 = [v4 objectForKeyedSubscript:@"PLBatteryUIAppBundleIDKey"];
+      v30 = [entryCopy objectForKeyedSubscript:@"PLBatteryUIAppBundleIDKey"];
       [v7 setObject:v30 forKeyedSubscript:PSLazyIconAppID];
       v31 = v7;
 LABEL_17:
@@ -2712,7 +2712,7 @@ LABEL_17:
     goto LABEL_25;
   }
 
-  v30 = [v4 objectForKeyedSubscript:@"PLBatteryUIAppBundleIDKey"];
+  v30 = [entryCopy objectForKeyedSubscript:@"PLBatteryUIAppBundleIDKey"];
   v32 = [PLBatteryUIUtilities iconUTTypeIdentifierForNonApp:v30];
   v33 = v32;
   if (v32)
@@ -2785,12 +2785,12 @@ LABEL_27:
   }
 }
 
-- (void)setBatteryUIQueryRange:(id)a3 specifier:(id)a4
+- (void)setBatteryUIQueryRange:(id)range specifier:(id)specifier
 {
-  v5 = a3;
-  if ([v5 intValue] != self->_batteryUIQueryRange)
+  rangeCopy = range;
+  if ([rangeCopy intValue] != self->_batteryUIQueryRange)
   {
-    self->_batteryUIQueryRange = [v5 integerValue];
+    self->_batteryUIQueryRange = [rangeCopy integerValue];
     self->_tappedIndex = -1;
     self->_batteryUIQueryRange;
     ADClientAddValueForScalarKey();
@@ -2809,16 +2809,16 @@ LABEL_27:
     [v6 setObject:v8 forKeyedSubscript:@"duration"];
     v9 = v7;
     AnalyticsSendEventLazy();
-    v10 = [(BatteryUIController *)self currentDictionary];
-    if (v10)
+    currentDictionary = [(BatteryUIController *)self currentDictionary];
+    if (currentDictionary)
     {
     }
 
     else
     {
-      v11 = [(BatteryUIController *)self coalescedBreakdownDictionary];
+      coalescedBreakdownDictionary = [(BatteryUIController *)self coalescedBreakdownDictionary];
 
-      if (!v11)
+      if (!coalescedBreakdownDictionary)
       {
 LABEL_9:
 
@@ -2841,27 +2841,27 @@ LABEL_10:
     sub_113B24();
   }
 
-  v4 = [(BatteryUIController *)self currentDictionary];
-  v5 = [(BatteryUIController *)self generateBatteryEntrySpecifiers:v4];
+  currentDictionary = [(BatteryUIController *)self currentDictionary];
+  v5 = [(BatteryUIController *)self generateBatteryEntrySpecifiers:currentDictionary];
   batteryEntries = self->_batteryEntries;
   self->_batteryEntries = v5;
 
   [(BatteryUIController *)self reloadSpecifiers];
 }
 
-- (void)setSpecifier:(id)a3
+- (void)setSpecifier:(id)specifier
 {
   v8.receiver = self;
   v8.super_class = BatteryUIController;
-  v4 = a3;
-  [(BatteryUIController *)&v8 setSpecifier:v4];
-  v5 = [v4 propertyForKey:{@"PLBatteryUITypeKey", v8.receiver, v8.super_class}];
+  specifierCopy = specifier;
+  [(BatteryUIController *)&v8 setSpecifier:specifierCopy];
+  v5 = [specifierCopy propertyForKey:{@"PLBatteryUITypeKey", v8.receiver, v8.super_class}];
 
   -[BatteryUIController setBatteryUIType:](self, "setBatteryUIType:", [v5 intValue]);
-  v6 = [(BatteryUIController *)self batteryUIType];
-  if (v6 - 2 >= 2)
+  batteryUIType = [(BatteryUIController *)self batteryUIType];
+  if (batteryUIType - 2 >= 2)
   {
-    if (v6 != 1)
+    if (batteryUIType != 1)
     {
       v7 = 0;
       goto LABEL_8;
@@ -2881,30 +2881,30 @@ LABEL_8:
   [(BatteryUIController *)self setBatteryUIQueryType:v7];
 }
 
-- (void)_lowPowerModeChangedNotification:(id)a3
+- (void)_lowPowerModeChangedNotification:(id)notification
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_2EF24;
   v5[3] = &unk_163EB8;
-  v6 = a3;
-  v7 = self;
-  v4 = v6;
+  notificationCopy = notification;
+  selfCopy = self;
+  v4 = notificationCopy;
   dispatch_async(&_dispatch_main_q, v5);
 }
 
 - (int)getDeviceOrientationFromCurrentDevice
 {
-  v2 = [(BatteryUIController *)self batteryUIDeviceOrientation];
+  batteryUIDeviceOrientation = [(BatteryUIController *)self batteryUIDeviceOrientation];
   v3 = +[UIDevice currentDevice];
-  v4 = [v3 orientation];
+  orientation = [v3 orientation];
 
-  if ((v4 - 1) <= 3)
+  if ((orientation - 1) <= 3)
   {
-    return dword_1245A0[(v4 - 1)];
+    return dword_1245A0[(orientation - 1)];
   }
 
-  return v2;
+  return batteryUIDeviceOrientation;
 }
 
 - (BOOL)checkOnInitIfServiceBatteryRequired
@@ -3250,12 +3250,12 @@ LABEL_37:
   if ((MGIsDeviceOneOfType() & 1) == 0 && ((+[PLModelingUtilities isiPhone](PLModelingUtilities, "isiPhone", &v8, 0, 0) & 1) != 0 || +[PLBatteryUIBackendModel shouldShowModifiedHealthController]))
   {
     v4 = +[NSMutableArray array];
-    v5 = [(BatteryUIController *)self setUpBatteryHealthSpecifier];
-    [v4 addObject:v5];
+    setUpBatteryHealthSpecifier = [(BatteryUIController *)self setUpBatteryHealthSpecifier];
+    [v4 addObject:setUpBatteryHealthSpecifier];
     if (+[PLBatteryUIBackendModel shouldShowChargingController])
     {
-      v6 = [(BatteryUIController *)self setUpChargingSpecifier];
-      [v4 addObject:v6];
+      setUpChargingSpecifier = [(BatteryUIController *)self setUpChargingSpecifier];
+      [v4 addObject:setUpChargingSpecifier];
     }
   }
 
@@ -3315,8 +3315,8 @@ LABEL_14:
   [v7 setAccessibilityIdentifier:@"BATTERY_HEALTH_TITLE"];
   [v7 setProperty:objc_opt_class() forKey:PSCellClassKey];
   [v7 setProperty:v6 forKey:@"PLBatteryUISecondaryTextSettableCellPrimaryTextKey"];
-  v8 = [(BatteryUIController *)self getBatteryServiceSuggestion];
-  [v7 setProperty:v8 forKey:@"PLBatteryUISecondaryTextSettableCellSecondaryTextKey"];
+  getBatteryServiceSuggestion = [(BatteryUIController *)self getBatteryServiceSuggestion];
+  [v7 setProperty:getBatteryServiceSuggestion forKey:@"PLBatteryUISecondaryTextSettableCellSecondaryTextKey"];
 
   return v7;
 }
@@ -3341,13 +3341,13 @@ LABEL_14:
   return v5;
 }
 
-- (id)getPowerModeString:(id)a3
+- (id)getPowerModeString:(id)string
 {
-  v4 = [(BatteryUIController *)self isBatterySaverModeEnabled];
-  v5 = [(BatteryUIController *)self getIBLMState];
-  if ((v4 & 1) != 0 || v5)
+  isBatterySaverModeEnabled = [(BatteryUIController *)self isBatterySaverModeEnabled];
+  getIBLMState = [(BatteryUIController *)self getIBLMState];
+  if ((isBatterySaverModeEnabled & 1) != 0 || getIBLMState)
   {
-    if (v4)
+    if (isBatterySaverModeEnabled)
     {
       v7 = @"LOW_POWER_MODE";
     }
@@ -3371,12 +3371,12 @@ LABEL_14:
 - (BOOL)getIBLMState
 {
   v2 = +[_OSIBLMState sharedInstance];
-  v3 = [v2 isIBLMCurrentlyEnabled];
+  isIBLMCurrentlyEnabled = [v2 isIBLMCurrentlyEnabled];
 
-  return v3;
+  return isIBLMCurrentlyEnabled;
 }
 
-- (void)handlePowerModeChanged:(id)a3
+- (void)handlePowerModeChanged:(id)changed
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -3396,14 +3396,14 @@ LABEL_14:
 
   if (+[PLBatteryUIBackendModel supportsChargingFixedLimit])
   {
-    v4 = [(BatteryUIController *)self chargingClient];
+    chargingClient = [(BatteryUIController *)self chargingClient];
     v16 = 0;
-    v5 = [v4 isMCLCurrentlyEnabled:&v16];
+    v5 = [chargingClient isMCLCurrentlyEnabled:&v16];
     v6 = v16;
 
-    v7 = [(BatteryUIController *)self chargingClient];
+    chargingClient2 = [(BatteryUIController *)self chargingClient];
     v15 = 0;
-    v8 = [v7 isSmartChargingCurrentlyEnabled:&v15];
+    v8 = [chargingClient2 isSmartChargingCurrentlyEnabled:&v15];
 
     v9 = +[BatteryUIResourceClass get_log_handle_bui];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -3464,9 +3464,9 @@ LABEL_14:
   return v12;
 }
 
-- (id)setChargingMode:(id)a3 specifier:(id)a4
+- (id)setChargingMode:(id)mode specifier:(id)specifier
 {
-  v5 = a3;
+  modeCopy = mode;
   v6 = +[BatteryUIResourceClass get_log_handle_bui];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
@@ -3475,9 +3475,9 @@ LABEL_14:
 
   if (+[PLBatteryUIBackendModel supportsChargingFixedLimit])
   {
-    if ([v5 intValue])
+    if ([modeCopy intValue])
     {
-      if ([v5 intValue] != 1)
+      if ([modeCopy intValue] != 1)
       {
         v10 = +[BatteryUIResourceClass get_log_handle_bui];
         if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -3488,14 +3488,14 @@ LABEL_14:
         goto LABEL_16;
       }
 
-      v7 = [(BatteryUIController *)self chargingClient];
+      chargingClient = [(BatteryUIController *)self chargingClient];
       v19 = 0;
-      [v7 disableDEoC:&v19];
+      [chargingClient disableDEoC:&v19];
       v8 = v19;
 
-      v9 = [(BatteryUIController *)self chargingClient];
+      chargingClient2 = [(BatteryUIController *)self chargingClient];
       v18 = v8;
-      [v9 enableMCL:&v18];
+      [chargingClient2 enableMCL:&v18];
       v10 = v18;
 
       [(BatteryUIController *)self setCurChargingMode:1];
@@ -3508,14 +3508,14 @@ LABEL_14:
 
     else
     {
-      v14 = [(BatteryUIController *)self chargingClient];
+      chargingClient3 = [(BatteryUIController *)self chargingClient];
       v21 = 0;
-      [v14 enableSmartCharging:&v21];
+      [chargingClient3 enableSmartCharging:&v21];
       v15 = v21;
 
-      v16 = [(BatteryUIController *)self chargingClient];
+      chargingClient4 = [(BatteryUIController *)self chargingClient];
       v20 = v15;
-      [v16 disableMCL:&v20];
+      [chargingClient4 disableMCL:&v20];
       v10 = v20;
 
       [(BatteryUIController *)self setCurChargingMode:0];
@@ -3636,18 +3636,18 @@ LABEL_17:
 
 - (id)setUpToggleForUsageTimeSpecifier
 {
-  v3 = [(BatteryUIController *)self currentDictionary];
-  v4 = [v3 objectForKeyedSubscript:@"PLBatteryUIDataDurationKey"];
+  currentDictionary = [(BatteryUIController *)self currentDictionary];
+  v4 = [currentDictionary objectForKeyedSubscript:@"PLBatteryUIDataDurationKey"];
   [v4 doubleValue];
   v6 = v5;
 
-  v7 = [(BatteryUIController *)self currentDictionary];
-  v8 = [v7 objectForKeyedSubscript:@"PLBatteryUIQueryRangeWeekKey"];
+  currentDictionary2 = [(BatteryUIController *)self currentDictionary];
+  v8 = [currentDictionary2 objectForKeyedSubscript:@"PLBatteryUIQueryRangeWeekKey"];
   v9 = [v8 objectForKeyedSubscript:@"PLBatteryUIForegroundTimeKey"];
   [v9 doubleValue];
   v11 = v10;
-  v12 = [(BatteryUIController *)self currentDictionary];
-  v13 = [v12 objectForKeyedSubscript:@"PLBatteryUIQueryRangeWeekKey"];
+  currentDictionary3 = [(BatteryUIController *)self currentDictionary];
+  v13 = [currentDictionary3 objectForKeyedSubscript:@"PLBatteryUIQueryRangeWeekKey"];
   v14 = [v13 objectForKeyedSubscript:@"PLBatteryUIBackgroundTimeKey"];
   [v14 doubleValue];
   v16 = v11 + v15;
@@ -3725,7 +3725,7 @@ LABEL_17:
   v28 = [NSNumber numberWithBool:[(BatteryUIController *)self clearGraph]];
   [v25 setProperty:v28 forKey:@"PLBatteryUIGraphClearGraphKey"];
 
-  v29 = [(BatteryUIController *)self view];
+  view = [(BatteryUIController *)self view];
   LODWORD(v28) = PSShouldInsetListView();
 
   v30 = [NSNumber numberWithBool:v28 ^ 1];
@@ -3736,27 +3736,27 @@ LABEL_17:
 
 - (id)setUpUsageTimeValuesSpecifier
 {
-  v2 = self;
+  selfCopy = self;
   v3 = [PSSpecifier preferenceSpecifierNamed:0 target:self set:0 get:0 detail:0 cell:-1 edit:0];
   [v3 setProperty:objc_opt_class() forKey:PSCellClassKey];
   v4 = &_s7SwiftUI24ButtonStyleConfigurationV9isPressedSbvg_ptr;
-  v5 = [NSNumber numberWithUnsignedInt:v2->_batteryUIQueryRange];
+  v5 = [NSNumber numberWithUnsignedInt:selfCopy->_batteryUIQueryRange];
   [v3 setProperty:v5 forKey:@"PLBatteryUIGraphQueryRangeKey"];
 
-  v6 = [NSNumber numberWithBool:v2->_batteryBreakDownNotAvailable];
+  v6 = [NSNumber numberWithBool:selfCopy->_batteryBreakDownNotAvailable];
   [v3 setProperty:v6 forKey:@"PLBatteryUIGraphBatteryBreakdownNotAvailableKey"];
 
-  if (!v2->_batteryUIQueryRange)
+  if (!selfCopy->_batteryUIQueryRange)
   {
-    tappedIndex = v2->_tappedIndex;
-    v23 = [(NSMutableDictionary *)v2->_currentGraphDictionary objectForKeyedSubscript:@"PLBatteryUIGraph24hrs"];
+    tappedIndex = selfCopy->_tappedIndex;
+    v23 = [(NSMutableDictionary *)selfCopy->_currentGraphDictionary objectForKeyedSubscript:@"PLBatteryUIGraph24hrs"];
     v24 = [v23 objectForKeyedSubscript:@"PLBatteryUIScreenOnTimeKey"];
     v25 = v24;
     if (tappedIndex == -1)
     {
       v58 = [v24 objectForKeyedSubscript:@"PLBatteryUIGraphTotal"];
 
-      v59 = [(NSMutableDictionary *)v2->_currentGraphDictionary objectForKeyedSubscript:@"PLBatteryUIGraph24hrs"];
+      v59 = [(NSMutableDictionary *)selfCopy->_currentGraphDictionary objectForKeyedSubscript:@"PLBatteryUIGraph24hrs"];
       v60 = [v59 objectForKeyedSubscript:@"PLBatteryUIScreenOffTimeKey"];
       v61 = [v60 objectForKeyedSubscript:@"PLBatteryUIGraphTotal"];
 
@@ -3776,12 +3776,12 @@ LABEL_17:
 
     v8 = [v24 objectForKeyedSubscript:@"PLBatteryUIGraphHourly"];
 
-    v26 = [(NSMutableDictionary *)v2->_currentGraphDictionary objectForKeyedSubscript:@"PLBatteryUIGraph24hrs"];
+    v26 = [(NSMutableDictionary *)selfCopy->_currentGraphDictionary objectForKeyedSubscript:@"PLBatteryUIGraph24hrs"];
     v27 = [v26 objectForKeyedSubscript:@"PLBatteryUIScreenOffTimeKey"];
     v28 = [v27 objectForKeyedSubscript:@"PLBatteryUIGraphHourly"];
 
-    v29 = v2->_tappedIndex;
-    if ((v29 & 0x80000000) != 0 || [v8 count] <= v29 || (v30 = v2->_tappedIndex, objc_msgSend(v28, "count") <= v30))
+    v29 = selfCopy->_tappedIndex;
+    if ((v29 & 0x80000000) != 0 || [v8 count] <= v29 || (v30 = selfCopy->_tappedIndex, objc_msgSend(v28, "count") <= v30))
     {
       [v3 setProperty:&off_173730 forKey:@"PLBatteryUIGraphScreenOnUsageTimeKey"];
       [v3 setProperty:&off_173730 forKey:@"PLBatteryUIGraphScreenOffUsageTimeKey"];
@@ -3789,11 +3789,11 @@ LABEL_17:
 
     else
     {
-      v31 = [v8 objectAtIndexedSubscript:v2->_tappedIndex];
+      v31 = [v8 objectAtIndexedSubscript:selfCopy->_tappedIndex];
       [v31 doubleValue];
       v33 = v32;
 
-      v34 = [v28 objectAtIndexedSubscript:v2->_tappedIndex];
+      v34 = [v28 objectAtIndexedSubscript:selfCopy->_tappedIndex];
       [v34 doubleValue];
       v36 = v35;
 
@@ -3809,9 +3809,9 @@ LABEL_17:
     goto LABEL_30;
   }
 
-  v7 = [(NSMutableDictionary *)v2->_currentGraphDictionary objectForKeyedSubscript:@"PLBatteryUIGraphDays"];
+  v7 = [(NSMutableDictionary *)selfCopy->_currentGraphDictionary objectForKeyedSubscript:@"PLBatteryUIGraphDays"];
   v8 = v7;
-  v9 = v2->_tappedIndex;
+  v9 = selfCopy->_tappedIndex;
   if (v9 == -1)
   {
     v77 = 0u;
@@ -3822,7 +3822,7 @@ LABEL_17:
     if (v40)
     {
       v41 = v40;
-      v73 = v2;
+      v73 = selfCopy;
       v74 = v3;
       v42 = *v76;
       v43 = 0.0;
@@ -3868,7 +3868,7 @@ LABEL_17:
         v44 = v44 / v43;
       }
 
-      v2 = v73;
+      selfCopy = v73;
       v3 = v74;
       v4 = &_s7SwiftUI24ButtonStyleConfigurationV9isPressedSbvg_ptr;
     }
@@ -3886,13 +3886,13 @@ LABEL_17:
 
   if ((v9 & 0x80000000) == 0 && [v7 count] > v9)
   {
-    v10 = [v8 objectAtIndexedSubscript:v2->_tappedIndex];
+    v10 = [v8 objectAtIndexedSubscript:selfCopy->_tappedIndex];
     v11 = [v10 objectForKeyedSubscript:@"PLBatteryUIScreenOnTimeKey"];
     v12 = [v11 objectForKeyedSubscript:@"PLBatteryUIGraphTotal"];
     [v12 doubleValue];
     v14 = v13;
 
-    v15 = [v8 objectAtIndexedSubscript:v2->_tappedIndex];
+    v15 = [v8 objectAtIndexedSubscript:selfCopy->_tappedIndex];
     v16 = [v15 objectForKeyedSubscript:@"PLBatteryUIScreenOffTimeKey"];
     v17 = [v16 objectForKeyedSubscript:@"PLBatteryUIGraphTotal"];
     [v17 doubleValue];
@@ -3917,10 +3917,10 @@ LABEL_30:
 LABEL_31:
 
 LABEL_32:
-  v70 = [[WeakBatteryUIController alloc] initWithController:v2];
+  v70 = [[WeakBatteryUIController alloc] initWithController:selfCopy];
   [v3 setProperty:v70 forKey:@"PLBatteryUIGraphTapDelegateWrapperKey"];
   [v3 setProperty:&__kCFBooleanTrue forKey:PSEnabledKey];
-  v71 = [v4[455] numberWithInt:v2->_tappedIndex];
+  v71 = [v4[455] numberWithInt:selfCopy->_tappedIndex];
   [v3 setProperty:v71 forKey:@"PLBatteryUIGraphTappedIndexKey"];
 
   return v3;
@@ -3956,18 +3956,18 @@ LABEL_32:
 {
   v3 = [PSSpecifier preferenceSpecifierNamed:0 target:self set:0 get:0 detail:0 cell:-1 edit:0];
   [v3 setProperty:objc_opt_class() forKey:PSCellClassKey];
-  v4 = [(BatteryUIController *)self currentLastChargeDictionary];
-  [v3 setProperty:v4 forKey:@"PLBatteryUILastChargeKey"];
+  currentLastChargeDictionary = [(BatteryUIController *)self currentLastChargeDictionary];
+  [v3 setProperty:currentLastChargeDictionary forKey:@"PLBatteryUILastChargeKey"];
 
   [v3 setIdentifier:@"LAST_CHARGE_CELL"];
   if (_os_feature_enabled_impl())
   {
-    v5 = [(BatteryUIController *)self currentPausedChargingDictionary];
-    [v3 setProperty:v5 forKey:@"PLBatteryUIPausedChargingKey"];
+    currentPausedChargingDictionary = [(BatteryUIController *)self currentPausedChargingDictionary];
+    [v3 setProperty:currentPausedChargingDictionary forKey:@"PLBatteryUIPausedChargingKey"];
 
-    v6 = [(BatteryUIController *)self chargingClient];
+    chargingClient = [(BatteryUIController *)self chargingClient];
     v12 = 0;
-    v7 = [v6 getMCLLimitWithError:&v12];
+    v7 = [chargingClient getMCLLimitWithError:&v12];
     v8 = v12;
 
     if (v8)
@@ -4012,19 +4012,19 @@ LABEL_10:
   return v3;
 }
 
-- (void)graphOnSelectAt:(id)a3
+- (void)graphOnSelectAt:(id)at
 {
-  if (a3)
+  if (at)
   {
-    v4 = [a3 intValue];
+    intValue = [at intValue];
   }
 
   else
   {
-    v4 = 0xFFFFFFFFLL;
+    intValue = 0xFFFFFFFFLL;
   }
 
-  v5 = [NSNumber numberWithInt:v4];
+  v5 = [NSNumber numberWithInt:intValue];
   [(BatteryUIController *)self didTappedBar:v5];
 }
 
@@ -4062,19 +4062,19 @@ LABEL_10:
 
   [(PLBUIChartViewController *)self->_chartViewController setMarginWithTop:16.0 bottom:v3];
   v8 = +[PSListController appearance];
-  v9 = [v8 foregroundColor];
+  foregroundColor = [v8 foregroundColor];
 
-  if (v9)
+  if (foregroundColor)
   {
-    [(PLBUIChartViewController *)self->_chartViewController setContainerBackgroundColor:v9];
+    [(PLBUIChartViewController *)self->_chartViewController setContainerBackgroundColor:foregroundColor];
   }
 
   [(PLBUIChartViewController *)self->_chartViewController endUpdate];
   v10 = [PSSpecifier preferenceSpecifierNamed:&stru_16CDB8 target:0 set:0 get:0 detail:0 cell:-1 edit:0];
   [v10 setProperty:objc_opt_class() forKey:PSCellClassKey];
   [v10 setProperty:self->_chartViewController forKey:@"PLBatteryUIGraphViewControllerKey"];
-  v11 = [(BatteryUIController *)self traitCollection];
-  [_TtC14BatteryUsageUI24PLBUIChartViewController graphHeightWithTraitCollection:v11];
+  traitCollection = [(BatteryUIController *)self traitCollection];
+  [_TtC14BatteryUsageUI24PLBUIChartViewController graphHeightWithTraitCollection:traitCollection];
   v13 = v12;
 
   v14 = [NSNumber numberWithDouble:v3 + v13 + 16.0];
@@ -4093,49 +4093,49 @@ LABEL_10:
 - (id)setUpBatteryGraphSpecifiers
 {
   v3 = +[NSMutableArray array];
-  v4 = [(BatteryUIController *)self setUpGraphGroupSpecifier];
-  [v3 addObject:v4];
+  setUpGraphGroupSpecifier = [(BatteryUIController *)self setUpGraphGroupSpecifier];
+  [v3 addObject:setUpGraphGroupSpecifier];
   if ((_os_feature_enabled_impl() & 1) == 0)
   {
-    v5 = [(BatteryUIController *)self setUpToggleForUsageTimeSpecifier];
-    if (v5)
+    setUpToggleForUsageTimeSpecifier = [(BatteryUIController *)self setUpToggleForUsageTimeSpecifier];
+    if (setUpToggleForUsageTimeSpecifier)
     {
-      [v3 addObject:v5];
+      [v3 addObject:setUpToggleForUsageTimeSpecifier];
     }
   }
 
   if (+[PLModelingUtilities shouldShowBatteryGraphs])
   {
-    v6 = [(BatteryUIController *)self currentLastChargeDictionary];
+    currentLastChargeDictionary = [(BatteryUIController *)self currentLastChargeDictionary];
 
-    if (v6)
+    if (currentLastChargeDictionary)
     {
-      v7 = [(BatteryUIController *)self setUpGraphLastChargeSpecifier];
-      if (v7 && !self->_chargingStatusViewCell)
+      setUpGraphLastChargeSpecifier = [(BatteryUIController *)self setUpGraphLastChargeSpecifier];
+      if (setUpGraphLastChargeSpecifier && !self->_chargingStatusViewCell)
       {
-        [v3 addObject:v7];
+        [v3 addObject:setUpGraphLastChargeSpecifier];
       }
     }
 
-    v8 = [(BatteryUIController *)self batteryUsageGraphsSpecifier];
-    [v3 addObject:v8];
+    batteryUsageGraphsSpecifier = [(BatteryUIController *)self batteryUsageGraphsSpecifier];
+    [v3 addObject:batteryUsageGraphsSpecifier];
   }
 
   if ((_os_feature_enabled_impl() & 1) == 0)
   {
-    v9 = [(BatteryUIController *)self setUpUsageTimeValuesSpecifier];
-    if (v9)
+    setUpUsageTimeValuesSpecifier = [(BatteryUIController *)self setUpUsageTimeValuesSpecifier];
+    if (setUpUsageTimeValuesSpecifier)
     {
-      [v3 addObject:v9];
+      [v3 addObject:setUpUsageTimeValuesSpecifier];
     }
   }
 
   if ((_os_feature_enabled_impl() & 1) == 0 && !self->_batteryBreakDownNotAvailable)
   {
-    v10 = [(BatteryUIController *)self setUpBatteryUsageHeaderSpecifier];
-    if (v10)
+    setUpBatteryUsageHeaderSpecifier = [(BatteryUIController *)self setUpBatteryUsageHeaderSpecifier];
+    if (setUpBatteryUsageHeaderSpecifier)
     {
-      [v3 addObject:v10];
+      [v3 addObject:setUpBatteryUsageHeaderSpecifier];
     }
   }
 
@@ -4145,10 +4145,10 @@ LABEL_10:
 - (id)setUpBatterySpecifersWithInsufficientData
 {
   v3 = +[NSMutableArray array];
-  v4 = [(BatteryUIController *)self _batteryGroupSpecifier];
-  v5 = [(BatteryUIController *)self setUpBatterySpecifierWithInsufficientDataWithoutGroup];
-  [v3 addObject:v4];
-  [v3 addObject:v5];
+  _batteryGroupSpecifier = [(BatteryUIController *)self _batteryGroupSpecifier];
+  setUpBatterySpecifierWithInsufficientDataWithoutGroup = [(BatteryUIController *)self setUpBatterySpecifierWithInsufficientDataWithoutGroup];
+  [v3 addObject:_batteryGroupSpecifier];
+  [v3 addObject:setUpBatterySpecifierWithInsufficientDataWithoutGroup];
 
   return v3;
 }
@@ -4183,15 +4183,15 @@ LABEL_10:
   return v3;
 }
 
-- (void)showLearnMoreSafariWithURLString:(id)a3
+- (void)showLearnMoreSafariWithURLString:(id)string
 {
-  v4 = a3;
-  v5 = [NSURL URLWithString:v4];
+  stringCopy = string;
+  v5 = [NSURL URLWithString:stringCopy];
   v6 = BUILogCommon();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412546;
-    v12 = v4;
+    v12 = stringCopy;
     v13 = 2112;
     v14 = v5;
     _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "MoreInfo URL string to open: %@, URL: %@", &v11, 0x16u);
@@ -4223,23 +4223,23 @@ LABEL_10:
   [(BatteryUIController *)self presentModalViewController:v7 withTransition:v10];
 }
 
-- (void)openChargingStatusInformationURL:(id)a3
+- (void)openChargingStatusInformationURL:(id)l
 {
   v4 = +[PLModelingUtilities isiPad];
-  v5 = [(BatteryUIController *)self stateProvider];
-  v6 = [v5 isExternallyConnected];
+  stateProvider = [(BatteryUIController *)self stateProvider];
+  isExternallyConnected = [stateProvider isExternallyConnected];
 
   if (v4)
   {
-    if (v6)
+    if (isExternallyConnected)
     {
-      v7 = [(BatteryUIController *)self stateProvider];
-      v8 = [v7 chargingState];
+      stateProvider2 = [(BatteryUIController *)self stateProvider];
+      chargingState = [stateProvider2 chargingState];
 
       AnalyticsSendEventLazy();
       v9 = objc_opt_class();
-      v10 = [(BatteryUIController *)self navigationController];
-      if (v8 == 3)
+      navigationController = [(BatteryUIController *)self navigationController];
+      if (chargingState == 3)
       {
         v11 = @"iPad68ee7aa1";
       }
@@ -4254,48 +4254,48 @@ LABEL_10:
     {
       AnalyticsSendEventLazy();
       v9 = objc_opt_class();
-      v10 = [(BatteryUIController *)self navigationController];
+      navigationController = [(BatteryUIController *)self navigationController];
       v11 = @"iPadcda46da7";
     }
 
     goto LABEL_21;
   }
 
-  if ((v6 & 1) == 0)
+  if ((isExternallyConnected & 1) == 0)
   {
     AnalyticsSendEventLazy();
     v9 = objc_opt_class();
-    v10 = [(BatteryUIController *)self navigationController];
+    navigationController = [(BatteryUIController *)self navigationController];
     v11 = @"iphd453d043a";
     goto LABEL_21;
   }
 
-  v12 = [(BatteryUIController *)self stateProvider];
-  v13 = [v12 chargingState];
+  stateProvider3 = [(BatteryUIController *)self stateProvider];
+  chargingState2 = [stateProvider3 chargingState];
 
-  if (v13 <= 7u)
+  if (chargingState2 <= 7u)
   {
-    switch(v13)
+    switch(chargingState2)
     {
       case 2u:
         AnalyticsSendEventLazy();
         v9 = objc_opt_class();
-        v10 = [(BatteryUIController *)self navigationController];
+        navigationController = [(BatteryUIController *)self navigationController];
         v11 = @"iph9202bbd07";
         goto LABEL_21;
       case 3u:
         AnalyticsSendEventLazy();
         v9 = objc_opt_class();
-        v10 = [(BatteryUIController *)self navigationController];
+        navigationController = [(BatteryUIController *)self navigationController];
         v11 = @"iph3006fbee4";
         goto LABEL_21;
       case 7u:
         AnalyticsSendEventLazy();
         v9 = objc_opt_class();
-        v10 = [(BatteryUIController *)self navigationController];
+        navigationController = [(BatteryUIController *)self navigationController];
         v11 = @"iphc49d61e92";
 LABEL_21:
-        v14 = v10;
+        v14 = navigationController;
         [v9 showLearnMoreHelpKitWithTopicID:v11 navigationController:?];
         goto LABEL_22;
     }
@@ -4303,24 +4303,24 @@ LABEL_21:
 LABEL_19:
     AnalyticsSendEventLazy();
     v9 = objc_opt_class();
-    v10 = [(BatteryUIController *)self navigationController];
+    navigationController = [(BatteryUIController *)self navigationController];
     v11 = @"iph63eecc618";
     goto LABEL_21;
   }
 
-  if (v13 == 10)
+  if (chargingState2 == 10)
   {
 LABEL_17:
     AnalyticsSendEventLazy();
     v9 = objc_opt_class();
-    v10 = [(BatteryUIController *)self navigationController];
+    navigationController = [(BatteryUIController *)self navigationController];
     v11 = @"iph0777c60aa";
     goto LABEL_21;
   }
 
-  if (v13 != 9)
+  if (chargingState2 != 9)
   {
-    if (v13 != 8)
+    if (chargingState2 != 8)
     {
       goto LABEL_19;
     }
@@ -4334,14 +4334,14 @@ LABEL_17:
 LABEL_22:
 }
 
-- (void)showActionCardForType:(signed __int16)a3
+- (void)showActionCardForType:(signed __int16)type
 {
-  v3 = a3;
+  typeCopy = type;
   v5 = BUILogCommon();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    v9 = v3;
+    v9 = typeCopy;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "showActionCardForType: %hd", buf, 8u);
   }
 
@@ -4350,7 +4350,7 @@ LABEL_22:
   v6[2] = sub_33268;
   v6[3] = &unk_164DB8;
   v6[4] = self;
-  v7 = v3;
+  v7 = typeCopy;
   dispatch_async(&_dispatch_main_q, v6);
 }
 
@@ -4454,9 +4454,9 @@ LABEL_22:
   {
     if ([(BatteryUIController *)self batteryUIType]!= 2)
     {
-      v6 = [(BatteryUIController *)self _suggestionEntries];
+      _suggestionEntries = [(BatteryUIController *)self _suggestionEntries];
 
-      if (v6)
+      if (_suggestionEntries)
       {
         v7 = [(BatteryUIController *)self addSuggestionsToSpecifiers:v3];
 
@@ -4464,10 +4464,10 @@ LABEL_22:
       }
     }
 
-    v8 = [(BatteryUIController *)self setUpBatteryHealthGroup];
-    if (v8)
+    setUpBatteryHealthGroup = [(BatteryUIController *)self setUpBatteryHealthGroup];
+    if (setUpBatteryHealthGroup)
     {
-      [v3 addObjectsFromArray:v8];
+      [v3 addObjectsFromArray:setUpBatteryHealthGroup];
     }
   }
 
@@ -4493,25 +4493,25 @@ LABEL_22:
     goto LABEL_16;
   }
 
-  v16 = [(BatteryUIController *)self currentDictionary];
-  v17 = [v16 objectForKeyedSubscript:@"PLBatteryUIQueryRangeWeekKey"];
-  v12 = [v17 objectForKeyedSubscript:@"PLBatteryUIAppArrayKey"];
+  currentDictionary = [(BatteryUIController *)self currentDictionary];
+  v17 = [currentDictionary objectForKeyedSubscript:@"PLBatteryUIQueryRangeWeekKey"];
+  setUpBatteryGraphSpecifiers = [v17 objectForKeyedSubscript:@"PLBatteryUIAppArrayKey"];
 
-  if (v12 && [v12 count])
+  if (setUpBatteryGraphSpecifiers && [setUpBatteryGraphSpecifiers count])
   {
 
 LABEL_16:
     [(BatteryUIController *)self determineBatteryBreakDownHeaderStringLength];
-    v12 = [(BatteryUIController *)self setUpBatteryGraphSpecifiers];
-    if (v12)
+    setUpBatteryGraphSpecifiers = [(BatteryUIController *)self setUpBatteryGraphSpecifiers];
+    if (setUpBatteryGraphSpecifiers)
     {
-      [v3 addObjectsFromArray:v12];
+      [v3 addObjectsFromArray:setUpBatteryGraphSpecifiers];
     }
 
     if ([(BatteryUIController *)self batteryUIType])
     {
-      v13 = [(BatteryUIController *)self setUpInternalSpecifiers];
-      [v3 addObjectsFromArray:v13];
+      setUpInternalSpecifiers = [(BatteryUIController *)self setUpInternalSpecifiers];
+      [v3 addObjectsFromArray:setUpInternalSpecifiers];
     }
 
     if ((_os_feature_enabled_impl() & 1) == 0)
@@ -4521,8 +4521,8 @@ LABEL_16:
 
     if ([(BatteryUIController *)self batteryUIType]== 2 || [(BatteryUIController *)self batteryUIType]== 1)
     {
-      v14 = [(BatteryUIController *)self setUpInternalAppSpecifiers];
-      [v3 addObjectsFromArray:v14];
+      setUpInternalAppSpecifiers = [(BatteryUIController *)self setUpInternalAppSpecifiers];
+      [v3 addObjectsFromArray:setUpInternalAppSpecifiers];
     }
 
     if (self->_isFirstTimeSettingUpBatterySpecifiers)
@@ -4547,41 +4547,41 @@ LABEL_16:
   [v4 setObject:&__kCFBooleanFalse forKeyedSubscript:@"data"];
   v21 = v4;
   AnalyticsSendEventLazy();
-  v19 = [(BatteryUIController *)self setUpBatterySpecifersWithInsufficientData];
-  [v3 addObjectsFromArray:v19];
+  setUpBatterySpecifersWithInsufficientData = [(BatteryUIController *)self setUpBatterySpecifersWithInsufficientData];
+  [v3 addObjectsFromArray:setUpBatterySpecifersWithInsufficientData];
 
 LABEL_28:
 
   return v3;
 }
 
-- (void)setBatterySaverMode:(id)a3 withSpecifier:(id)a4
+- (void)setBatterySaverMode:(id)mode withSpecifier:(id)specifier
 {
-  v4 = a3;
+  modeCopy = mode;
   v6 = +[_PMLowPowerMode sharedInstance];
-  v5 = [v4 intValue];
+  intValue = [modeCopy intValue];
 
-  [v6 setPowerMode:v5 != 0 fromSource:kPMLPMSourceSettings withCompletion:&stru_164DF8];
+  [v6 setPowerMode:intValue != 0 fromSource:kPMLPMSourceSettings withCompletion:&stru_164DF8];
 }
 
 - (BOOL)isBatterySaverModeEnabled
 {
   v2 = +[NSProcessInfo processInfo];
-  v3 = [v2 isLowPowerModeEnabled];
+  isLowPowerModeEnabled = [v2 isLowPowerModeEnabled];
 
-  return v3;
+  return isLowPowerModeEnabled;
 }
 
-- (id)getBatterySaverMode:(id)a3
+- (id)getBatterySaverMode:(id)mode
 {
-  v3 = [(BatteryUIController *)self isBatterySaverModeEnabled];
+  isBatterySaverModeEnabled = [(BatteryUIController *)self isBatterySaverModeEnabled];
 
-  return [NSNumber numberWithBool:v3];
+  return [NSNumber numberWithBool:isBatterySaverModeEnabled];
 }
 
-- (id)getBatteryPercentageMode:(id)a3
+- (id)getBatteryPercentageMode:(id)mode
 {
-  v3 = [(BatteryUIController *)self readPreferenceValue:a3];
+  v3 = [(BatteryUIController *)self readPreferenceValue:mode];
   v4 = +[BatteryUIResourceClass get_log_handle_bui];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
@@ -4593,15 +4593,15 @@ LABEL_28:
   return v5;
 }
 
-- (id)getTappedTimeDurationStringForTappedIndex:(int)a3 isUpperCase:(BOOL)a4 isFooterString:(BOOL)a5
+- (id)getTappedTimeDurationStringForTappedIndex:(int)index isUpperCase:(BOOL)case isFooterString:(BOOL)string
 {
-  if (a3 == -1)
+  if (index == -1)
   {
     v11 = &stru_16CDB8;
     goto LABEL_67;
   }
 
-  v5 = a5;
+  stringCopy = string;
   if (!self->_batteryUIQueryRange)
   {
     v9 = objc_alloc_init(NSDateFormatter);
@@ -4619,7 +4619,7 @@ LABEL_28:
     }
 
     [(NSDate *)v9 setLocalizedDateFormatFromTemplate:v13];
-    v14 = [(NSDate *)self->_endTime dateByAddingTimeInterval:(-3600 * (23 - a3))];
+    v14 = [(NSDate *)self->_endTime dateByAddingTimeInterval:(-3600 * (23 - index))];
     v15 = [v14 dateByAddingTimeInterval:-3600.0];
     v16 = [(NSDate *)v9 stringFromDate:v15];
     v17 = [(NSDate *)v9 stringFromDate:v14];
@@ -4628,7 +4628,7 @@ LABEL_28:
     v19 = [v17 stringByReplacingOccurrencesOfString:@" " withString:@" "];
 
     v20 = +[BatteryUIResourceClass inDemoMode];
-    if (v5)
+    if (stringCopy)
     {
       if (!v20)
       {
@@ -4657,7 +4657,7 @@ LABEL_28:
     {
 LABEL_34:
       v31 = v27;
-      v10 = [NSString stringWithFormat:v27, v18, v19];
+      localizedUppercaseString2 = [NSString stringWithFormat:v27, v18, v19];
 
 LABEL_64:
       goto LABEL_65;
@@ -4668,10 +4668,10 @@ LABEL_33:
     goto LABEL_34;
   }
 
-  v8 = a4;
-  if (a3 != 9)
+  caseCopy = case;
+  if (index != 9)
   {
-    v22 = 9 - a3;
+    v22 = 9 - index;
     v9 = self->_endTime;
     v14 = +[NSDate date];
     if ([PLBatteryUIUtilities isDateMidnight:self->_endTime]&& ![PLBatteryUIUtilities isDateMidnight:v14])
@@ -4682,7 +4682,7 @@ LABEL_33:
     }
 
     v15 = [(NSDate *)v9 dateByAddingTimeInterval:(-86400 * v22)];
-    if (!v5)
+    if (!stringCopy)
     {
       v24 = objc_alloc_init(NSDateFormatter);
       v28 = +[NSLocale currentLocale];
@@ -4690,12 +4690,12 @@ LABEL_33:
 
       [v24 setLocalizedDateFormatFromTemplate:@"EEEE"];
       v29 = [v24 stringFromDate:v15];
-      v10 = v29;
-      if (v8)
+      localizedUppercaseString2 = v29;
+      if (caseCopy)
       {
-        v30 = [(__CFString *)v29 localizedUppercaseString];
+        localizedUppercaseString = [(__CFString *)v29 localizedUppercaseString];
 
-        v10 = v30;
+        localizedUppercaseString2 = localizedUppercaseString;
       }
 
       goto LABEL_63;
@@ -4703,7 +4703,7 @@ LABEL_33:
 
     v24 = +[NSCalendar currentCalendar];
     v25 = [v24 component:512 fromDate:v15];
-    v10 = &stru_16CDB8;
+    localizedUppercaseString2 = &stru_16CDB8;
     if (v25 > 3)
     {
       if (v25 <= 5)
@@ -4812,7 +4812,7 @@ LABEL_52:
     if (v32)
     {
 LABEL_62:
-      v10 = v32;
+      localizedUppercaseString2 = v32;
       goto LABEL_63;
     }
 
@@ -4826,15 +4826,15 @@ LABEL_61:
     v9 = BatteryUILocalization(@"TODAY");
   }
 
-  if (!v8)
+  if (!caseCopy)
   {
     goto LABEL_66;
   }
 
-  v10 = [(NSDate *)v9 localizedUppercaseString];
+  localizedUppercaseString2 = [(NSDate *)v9 localizedUppercaseString];
 LABEL_65:
 
-  v9 = v10;
+  v9 = localizedUppercaseString2;
 LABEL_66:
   v11 = v9;
 LABEL_67:
@@ -4855,8 +4855,8 @@ LABEL_67:
   +[UIFont smallSystemFontSize];
   v5 = [UIFont systemFontOfSize:?];
   v41 = v4;
-  v6 = [v4 titleLabel];
-  [v6 setFont:v5];
+  titleLabel = [v4 titleLabel];
+  [titleLabel setFont:v5];
 
   if (!+[BatteryUIResourceClass inDemoMode](BatteryUIResourceClass, "inDemoMode") || (+[BatteryUIResourceClass containerPath], (v7 = _CFPreferencesCopyValueWithContainer()) == 0))
   {
@@ -4900,7 +4900,7 @@ LABEL_67:
   }
 
   v21 = 0;
-  v22 = self;
+  selfCopy2 = self;
   if (self->_batteryUIQueryRange)
   {
     v23 = 10;
@@ -4915,7 +4915,7 @@ LABEL_67:
   v25 = &OBJC_IVAR___PLBatteryUITimeUsageCell__bottomMarginConstraints;
   do
   {
-    v26 = [(BatteryUIController *)v22 getTappedTimeDurationStringForTappedIndex:v21 isUpperCase:1 isFooterString:0];
+    v26 = [(BatteryUIController *)selfCopy2 getTappedTimeDurationStringForTappedIndex:v21 isUpperCase:1 isFooterString:0];
     if (![v25 + 752 inDemoMode] || (objc_msgSend(v25 + 752, "containerPath"), (v27 = _CFPreferencesCopyValueWithContainer()) == 0))
     {
       v27 = BatteryUILocalization(@"BATTERY_USAGE_BY_APP_WITH_TIME");
@@ -4949,14 +4949,14 @@ LABEL_67:
     }
 
     v21 = (v21 + 1);
-    v22 = self;
+    selfCopy2 = self;
     v25 = &OBJC_IVAR___PLBatteryUITimeUsageCell__bottomMarginConstraints;
   }
 
   while (v23 != v21);
   v35 = v13 + v24 + 15.0 + 15.0;
-  v36 = [(BatteryUIController *)self view];
-  [v36 frame];
+  view = [(BatteryUIController *)self view];
+  [view frame];
   v38 = v37;
 
   if (v35 > v38)
@@ -4985,35 +4985,35 @@ LABEL_67:
   v7 = +[NSMutableArray array];
   if (self->_chargingStatusViewCell)
   {
-    v8 = [(BatteryUIController *)self setUpChargingStatusSpecifier];
-    [v7 addObject:v8];
-    v9 = [(BatteryUIController *)self stateProvider];
-    v10 = [v9 shouldShowOverrideCard];
+    setUpChargingStatusSpecifier = [(BatteryUIController *)self setUpChargingStatusSpecifier];
+    [v7 addObject:setUpChargingStatusSpecifier];
+    stateProvider = [(BatteryUIController *)self stateProvider];
+    shouldShowOverrideCard = [stateProvider shouldShowOverrideCard];
 
-    v11 = [(BatteryUIController *)self stateProvider];
-    v12 = v11;
-    if (v10)
+    stateProvider2 = [(BatteryUIController *)self stateProvider];
+    v12 = stateProvider2;
+    if (shouldShowOverrideCard)
     {
-      v13 = -[BatteryUIController setUpOverrideCardSpecifierWith:](self, "setUpOverrideCardSpecifierWith:", [v11 chargingState]);
+      setUpCardSpecifierForLPM = -[BatteryUIController setUpOverrideCardSpecifierWith:](self, "setUpOverrideCardSpecifierWith:", [stateProvider2 chargingState]);
 
-      if (v13)
+      if (setUpCardSpecifierForLPM)
       {
 LABEL_7:
-        [v7 addObject:v13];
+        [v7 addObject:setUpCardSpecifierForLPM];
       }
     }
 
     else
     {
-      v14 = [v11 shouldShowLowPowerModeCard];
+      shouldShowLowPowerModeCard = [stateProvider2 shouldShowLowPowerModeCard];
 
-      if (!v14)
+      if (!shouldShowLowPowerModeCard)
       {
         goto LABEL_12;
       }
 
-      v13 = [(BatteryUIController *)self setUpCardSpecifierForLPM];
-      if (v13)
+      setUpCardSpecifierForLPM = [(BatteryUIController *)self setUpCardSpecifierForLPM];
+      if (setUpCardSpecifierForLPM)
       {
         goto LABEL_7;
       }
@@ -5023,13 +5023,13 @@ LABEL_12:
   }
 
   v15 = +[UIDevice currentDevice];
-  v16 = [v15 sf_inRetailKioskMode];
+  sf_inRetailKioskMode = [v15 sf_inRetailKioskMode];
 
-  if ((_os_feature_enabled_impl() & 1) == 0 && ((v16 & 1) != 0 || (+[PLModelingUtilities isPercentageSupported](PLModelingUtilities, "isPercentageSupported") & 1) != 0 || +[PLModelingUtilities isLowPowerModeSupported]))
+  if ((_os_feature_enabled_impl() & 1) == 0 && ((sf_inRetailKioskMode & 1) != 0 || (+[PLModelingUtilities isPercentageSupported](PLModelingUtilities, "isPercentageSupported") & 1) != 0 || +[PLModelingUtilities isLowPowerModeSupported]))
   {
     v64 = [PSSpecifier groupSpecifierWithID:0];
     [v7 addObject:?];
-    if ((v16 & 1) != 0 || +[PLModelingUtilities isPercentageSupported])
+    if ((sf_inRetailKioskMode & 1) != 0 || +[PLModelingUtilities isPercentageSupported])
     {
       v18 = BatteryUILocalization(@"BATTERY_PERCENTAGE");
       v19 = [PSSpecifier preferenceSpecifierNamed:v18 target:self set:"setPreferenceValue:specifier:" get:"getBatteryPercentageMode:" detail:0 cell:6 edit:0];
@@ -5045,7 +5045,7 @@ LABEL_12:
       [v7 addObject:v19];
     }
 
-    if (v16 & 1 | ((+[PLModelingUtilities isLowPowerModeSupported]& 1) == 0))
+    if (sf_inRetailKioskMode & 1 | ((+[PLModelingUtilities isLowPowerModeSupported]& 1) == 0))
     {
       v3 = &OBJC_IVAR___PLBatteryUITimeUsageCell__bottomMarginConstraints;
       v17 = v64;
@@ -5086,7 +5086,7 @@ LABEL_12:
     v17 = 0;
   }
 
-  if (([(BatteryUIController *)self isEduMode]| v16))
+  if (([(BatteryUIController *)self isEduMode]| sf_inRetailKioskMode))
   {
     v26 = *&self->PSListController_opaque[v5];
     *&self->PSListController_opaque[v5] = v7;
@@ -5101,50 +5101,50 @@ LABEL_12:
     v29 = [PSSpecifier groupSpecifierWithName:@"Battery Level"];
     [v7 addObject:v29];
 
-    v30 = [(BatteryUIController *)self batteryGraphSpecifier];
-    [v7 addObject:v30];
+    batteryGraphSpecifier = [(BatteryUIController *)self batteryGraphSpecifier];
+    [v7 addObject:batteryGraphSpecifier];
   }
 
-  v31 = [(BatteryUIController *)self coalescedBreakdownDictionary];
+  coalescedBreakdownDictionary = [(BatteryUIController *)self coalescedBreakdownDictionary];
 
-  if (v31)
+  if (coalescedBreakdownDictionary)
   {
     if (self->_batteryBreakDownNotAvailable)
     {
       v32 = [PSSpecifier groupSpecifierWithName:0];
       [v7 addObject:v32];
-      v33 = [v3 + 752 get_log_handle_bui];
-      if (os_log_type_enabled(v33, OS_LOG_TYPE_INFO))
+      get_log_handle_bui = [v3 + 752 get_log_handle_bui];
+      if (os_log_type_enabled(get_log_handle_bui, OS_LOG_TYPE_INFO))
       {
         *buf = 0;
-        _os_log_impl(&dword_0, v33, OS_LOG_TYPE_INFO, "Battery breakdown not available at all.", buf, 2u);
+        _os_log_impl(&dword_0, get_log_handle_bui, OS_LOG_TYPE_INFO, "Battery breakdown not available at all.", buf, 2u);
       }
 
       v34 = objc_opt_new();
       ADClientAddValueForScalarKey();
       [v34 setObject:&__kCFBooleanFalse forKeyedSubscript:@"data"];
       v66 = v34;
-      v35 = v34;
+      setUpUsageSummarySpecifier = v34;
       AnalyticsSendEventLazy();
-      v36 = [(BatteryUIController *)self setUpBatterySpecifierWithInsufficientDataWithoutGroup];
-      [v7 addObject:v36];
+      setUpBatterySpecifierWithInsufficientDataWithoutGroup = [(BatteryUIController *)self setUpBatterySpecifierWithInsufficientDataWithoutGroup];
+      [v7 addObject:setUpBatterySpecifierWithInsufficientDataWithoutGroup];
     }
 
     else
     {
       if (!self->_usageSummaryViewTableViewController)
       {
-        v38 = [(BatteryUIController *)self _suggestionEntries];
+        _suggestionEntries = [(BatteryUIController *)self _suggestionEntries];
 
-        if (!v38)
+        if (!_suggestionEntries)
         {
           goto LABEL_45;
         }
       }
 
-      v39 = [(BatteryUIController *)self _suggestionEntries];
+      _suggestionEntries2 = [(BatteryUIController *)self _suggestionEntries];
 
-      if (v39)
+      if (_suggestionEntries2)
       {
         v40 = [(BatteryUIController *)self addSuggestionsToSpecifiers:v7];
 
@@ -5160,25 +5160,25 @@ LABEL_12:
       v32 = [PSSpecifier groupSpecifierWithID:@"DAILY_USAGE_GROUP" name:v41];
 
       [v7 addObject:v32];
-      v35 = [(BatteryUIController *)self setUpUsageSummarySpecifier];
-      [v7 addObject:v35];
+      setUpUsageSummarySpecifier = [(BatteryUIController *)self setUpUsageSummarySpecifier];
+      [v7 addObject:setUpUsageSummarySpecifier];
     }
 
 LABEL_45:
     if (self->_internalViewController)
     {
-      v42 = [(BatteryUIController *)self internalUsageSpecifiers];
-      if (v42)
+      internalUsageSpecifiers = [(BatteryUIController *)self internalUsageSpecifiers];
+      if (internalUsageSpecifiers)
       {
-        [v7 addObjectsFromArray:v42];
+        [v7 addObjectsFromArray:internalUsageSpecifiers];
       }
     }
 
     goto LABEL_49;
   }
 
-  v37 = [(BatteryUIController *)self setUpSpinnerSpecifiers];
-  [v7 addObjectsFromArray:v37];
+  setUpSpinnerSpecifiers = [(BatteryUIController *)self setUpSpinnerSpecifiers];
+  [v7 addObjectsFromArray:setUpSpinnerSpecifiers];
 
   [(BatteryUIController *)self queryForBatteryBreakdown];
 LABEL_49:
@@ -5186,10 +5186,10 @@ LABEL_49:
   {
     v43 = [PSSpecifier groupSpecifierWithID:@"BATTERY_HEALTH_ID"];
     [v7 addObject:v43];
-    v44 = [(BatteryUIController *)self setUpBatteryHealthGroup];
-    if (v44)
+    setUpBatteryHealthGroup = [(BatteryUIController *)self setUpBatteryHealthGroup];
+    if (setUpBatteryHealthGroup)
     {
-      [v7 addObjectsFromArray:v44];
+      [v7 addObjectsFromArray:setUpBatteryHealthGroup];
     }
 
     if ((+[PLModelingUtilities isPercentageSupported](PLModelingUtilities, "isPercentageSupported") & 1) != 0 || +[PLModelingUtilities isLowPowerModeSupported])
@@ -5197,12 +5197,12 @@ LABEL_49:
       if (+[_OSIBLMState isIBLMSupported](_OSIBLMState, "isIBLMSupported") && +[PLModelingUtilities isLowPowerModeSupported])
       {
         [(BatteryUIController *)self setUpPowerModeSpecifier];
-        v45 = v44;
+        v45 = setUpBatteryHealthGroup;
         v47 = v46 = v43;
         [v7 addObject:v47];
 
         v43 = v46;
-        v44 = v45;
+        setUpBatteryHealthGroup = v45;
       }
 
       if (+[PLModelingUtilities isPercentageSupported])
@@ -5240,9 +5240,9 @@ LABEL_49:
 
         [v7 addObject:v53];
         v55 = +[UIDevice currentDevice];
-        v56 = [v55 sf_inRetailKioskMode];
+        sf_inRetailKioskMode2 = [v55 sf_inRetailKioskMode];
 
-        if ((+[_OSIBLMState isIBLMSupported](_OSIBLMState, "isIBLMSupported") & 1) == 0 && !(v56 & 1 | ((+[PLModelingUtilities isLowPowerModeSupported]& 1) == 0)))
+        if ((+[_OSIBLMState isIBLMSupported](_OSIBLMState, "isIBLMSupported") & 1) == 0 && !(sf_inRetailKioskMode2 & 1 | ((+[PLModelingUtilities isLowPowerModeSupported]& 1) == 0)))
         {
           v57 = +[PLBatteryUIUtilities localizedLPMFooterString];
           [v63 setProperty:v57 forKey:PSFooterTextGroupKey];
@@ -5258,12 +5258,12 @@ LABEL_49:
   *&self->PSListController_opaque[v5] = v7;
   v59 = v7;
 
-  v60 = [v3 + 752 get_log_handle_bui];
+  get_log_handle_bui2 = [v3 + 752 get_log_handle_bui];
 
-  if (os_log_type_enabled(v60, OS_LOG_TYPE_INFO))
+  if (os_log_type_enabled(get_log_handle_bui2, OS_LOG_TYPE_INFO))
   {
     *buf = 0;
-    _os_log_impl(&dword_0, v60, OS_LOG_TYPE_INFO, "Specifiers created for batteryUI", buf, 2u);
+    _os_log_impl(&dword_0, get_log_handle_bui2, OS_LOG_TYPE_INFO, "Specifiers created for batteryUI", buf, 2u);
   }
 
   v6 = *&self->PSListController_opaque[v5];
@@ -5318,8 +5318,8 @@ LABEL_70:
     v4 = [NSBundle bundleForClass:objc_opt_class()];
     v5 = [UIImage imageNamed:@"radar.png" inBundle:v4];
     v6 = [v3 initWithImage:v5 style:0 target:self action:"reportIssue"];
-    v7 = [(BatteryUIController *)self navigationItem];
-    [v7 setRightBarButtonItem:v6];
+    navigationItem = [(BatteryUIController *)self navigationItem];
+    [navigationItem setRightBarButtonItem:v6];
   }
 
   if (_os_feature_enabled_impl() && +[PLModelingUtilities internalBuild])
@@ -5327,30 +5327,30 @@ LABEL_70:
     v8 = [UIBarButtonItem alloc];
     v9 = [UIImage systemImageNamed:@"ant"];
     v10 = [v8 initWithImage:v9 style:0 target:self action:"provideFeedback"];
-    v11 = [(BatteryUIController *)self navigationItem];
-    [v11 setRightBarButtonItem:v10];
+    navigationItem2 = [(BatteryUIController *)self navigationItem];
+    [navigationItem2 setRightBarButtonItem:v10];
   }
 
-  v12 = [(BatteryUIController *)self table];
+  table = [(BatteryUIController *)self table];
   v13 = objc_opt_class();
   v14 = +[SwiftUIContainerCell cellReuseIdentifier];
-  [v12 registerClass:v13 forCellReuseIdentifier:v14];
+  [table registerClass:v13 forCellReuseIdentifier:v14];
 
   [(BatteryUIController *)self logViewDidLoadEvents];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v8.receiver = self;
   v8.super_class = BatteryUIController;
-  v4 = a3;
-  [(BatteryUIController *)&v8 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(BatteryUIController *)&v8 traitCollectionDidChange:changeCopy];
   v5 = [(BatteryUIController *)self traitCollection:v8.receiver];
-  v6 = [v5 preferredContentSizeCategory];
-  v7 = [v4 preferredContentSizeCategory];
+  preferredContentSizeCategory = [v5 preferredContentSizeCategory];
+  preferredContentSizeCategory2 = [changeCopy preferredContentSizeCategory];
 
-  LOBYTE(v4) = [v6 isEqualToString:v7];
-  if ((v4 & 1) == 0)
+  LOBYTE(changeCopy) = [preferredContentSizeCategory isEqualToString:preferredContentSizeCategory2];
+  if ((changeCopy & 1) == 0)
   {
     [(BatteryUIController *)self setTableCellHeights:0];
     [(BatteryUIController *)self setTableCellHeightEstimated:0];
@@ -5362,19 +5362,19 @@ LABEL_70:
   v3 = +[BatteryUIResourceClass get_log_handle_bui];
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
-    v4 = [(BatteryUIController *)self lastBatteryBreakdownQueryTime];
+    lastBatteryBreakdownQueryTime = [(BatteryUIController *)self lastBatteryBreakdownQueryTime];
     v16 = 138412290;
-    v17 = *&v4;
+    v17 = *&lastBatteryBreakdownQueryTime;
     _os_log_impl(&dword_0, v3, OS_LOG_TYPE_INFO, "lastBatteryBreakdownQueryTime=%@", &v16, 0xCu);
   }
 
-  v5 = [(BatteryUIController *)self lastBatteryBreakdownQueryTime];
+  lastBatteryBreakdownQueryTime2 = [(BatteryUIController *)self lastBatteryBreakdownQueryTime];
 
-  if (v5)
+  if (lastBatteryBreakdownQueryTime2)
   {
     v6 = +[NSDate now];
-    v7 = [(BatteryUIController *)self lastBatteryBreakdownQueryTime];
-    [v6 timeIntervalSinceDate:v7];
+    lastBatteryBreakdownQueryTime3 = [(BatteryUIController *)self lastBatteryBreakdownQueryTime];
+    [v6 timeIntervalSinceDate:lastBatteryBreakdownQueryTime3];
     v9 = v8;
 
     [(BatteryUIController *)self getRequeryTimeThreshold];
@@ -5437,12 +5437,12 @@ LABEL_70:
 - (void)reportIssue
 {
   v3 = [BatteryUsageRadarComposeViewController alloc];
-  v4 = [(BatteryUIController *)self currentDictionary];
-  v5 = [(BatteryUsageRadarComposeViewController *)v3 initWithParentView:self andDictionary:v4];
+  currentDictionary = [(BatteryUIController *)self currentDictionary];
+  v5 = [(BatteryUsageRadarComposeViewController *)v3 initWithParentView:self andDictionary:currentDictionary];
   [(BatteryUIController *)self setRadarController:v5];
 
-  v6 = [(BatteryUIController *)self radarController];
-  [v6 showRadarComposeAlert];
+  radarController = [(BatteryUIController *)self radarController];
+  [radarController showRadarComposeAlert];
 }
 
 - (void)provideFeedback
@@ -5469,17 +5469,17 @@ LABEL_70:
     batteryGraphSpecifier = self->_batteryGraphSpecifier;
   }
 
-  v8 = [(BatteryUIController *)self batteryUIQueryRangeKey];
-  [(PSSpecifier *)batteryGraphSpecifier setProperty:v8 forKey:@"DisplayRange"];
+  batteryUIQueryRangeKey = [(BatteryUIController *)self batteryUIQueryRangeKey];
+  [(PSSpecifier *)batteryGraphSpecifier setProperty:batteryUIQueryRangeKey forKey:@"DisplayRange"];
 
   v9 = self->_batteryGraphSpecifier;
 
   return v9;
 }
 
-- (id)getChargeCycles:(id)a3
+- (id)getChargeCycles:(id)cycles
 {
-  v4 = a3;
+  cyclesCopy = cycles;
   v5 = self->_batteryUIQueryRange == 0;
   battArray = self->_battArray;
   if (!battArray)
@@ -5578,11 +5578,11 @@ LABEL_70:
   return v29;
 }
 
-- (id)getActiveTime:(id)a3
+- (id)getActiveTime:(id)time
 {
-  v4 = [(BatteryUIController *)self currentDictionary];
-  v5 = [(BatteryUIController *)self batteryUIQueryRangeKey];
-  v6 = [v4 objectForKeyedSubscript:v5];
+  currentDictionary = [(BatteryUIController *)self currentDictionary];
+  batteryUIQueryRangeKey = [(BatteryUIController *)self batteryUIQueryRangeKey];
+  v6 = [currentDictionary objectForKeyedSubscript:batteryUIQueryRangeKey];
   v7 = [v6 objectForKeyedSubscript:@"PLBatteryUIForegroundTimeKey"];
 
   v8 = [(BatteryUIController *)self formatUsageStringInMin:v7];
@@ -5590,11 +5590,11 @@ LABEL_70:
   return v8;
 }
 
-- (id)getBackgroundActiveTime:(id)a3
+- (id)getBackgroundActiveTime:(id)time
 {
-  v4 = [(BatteryUIController *)self currentDictionary];
-  v5 = [(BatteryUIController *)self batteryUIQueryRangeKey];
-  v6 = [v4 objectForKeyedSubscript:v5];
+  currentDictionary = [(BatteryUIController *)self currentDictionary];
+  batteryUIQueryRangeKey = [(BatteryUIController *)self batteryUIQueryRangeKey];
+  v6 = [currentDictionary objectForKeyedSubscript:batteryUIQueryRangeKey];
   v7 = [v6 objectForKeyedSubscript:@"PLBatteryUIBackgroundTimeKey"];
 
   v8 = [(BatteryUIController *)self formatUsageStringInMin:v7];
@@ -5629,11 +5629,11 @@ LABEL_70:
 - (id)setUpInternalAppSpecifiers
 {
   v3 = +[NSMutableArray array];
-  v4 = [(BatteryUIController *)self showRootNodesInInternal];
-  v5 = [(BatteryUIController *)self batteryUIQueryType];
-  if (v4)
+  showRootNodesInInternal = [(BatteryUIController *)self showRootNodesInInternal];
+  batteryUIQueryType = [(BatteryUIController *)self batteryUIQueryType];
+  if (showRootNodesInInternal)
   {
-    if (v5 == 2)
+    if (batteryUIQueryType == 2)
     {
       v6 = @"Show Everything";
       goto LABEL_9;
@@ -5644,7 +5644,7 @@ LABEL_70:
 
   else
   {
-    v7 = v5 == 2;
+    v7 = batteryUIQueryType == 2;
   }
 
   if (v7)
@@ -5691,14 +5691,14 @@ LABEL_9:
   [(BatteryUIController *)self reloadSpecifiers];
 }
 
-- (void)reloadOtherTypeUI:(id)a3
+- (void)reloadOtherTypeUI:(id)i
 {
-  v12 = a3;
-  v4 = [(BatteryUIController *)self showRootNodesInInternal];
-  v5 = [v12 name];
-  v6 = [v5 isEqualToString:@"Show Daemons"];
+  iCopy = i;
+  showRootNodesInInternal = [(BatteryUIController *)self showRootNodesInInternal];
+  name = [iCopy name];
+  v6 = [name isEqualToString:@"Show Daemons"];
 
-  if (v4)
+  if (showRootNodesInInternal)
   {
     if (v6)
     {
@@ -5706,8 +5706,8 @@ LABEL_9:
       goto LABEL_9;
     }
 
-    v10 = [v12 name];
-    v11 = [v10 isEqualToString:@"Show Everything"];
+    name2 = [iCopy name];
+    v11 = [name2 isEqualToString:@"Show Everything"];
 
     v8 = v11 == 0;
     v9 = 3;
@@ -5779,9 +5779,9 @@ LABEL_9:
     -[BatteryUIController setBatteryUIQueryType:](self, "setBatteryUIQueryType:", [v3 intValue]);
   }
 
-  v5 = [(BatteryUIController *)self batteryUIQueryType];
+  batteryUIQueryType = [(BatteryUIController *)self batteryUIQueryType];
 
-  return v5;
+  return batteryUIQueryType;
 }
 
 - (BOOL)shouldAutoCycle
@@ -5813,28 +5813,28 @@ LABEL_9:
   return qword_187BF0 != 0;
 }
 
-- (void)didTappedBar:(id)a3
+- (void)didTappedBar:(id)bar
 {
-  v4 = a3;
+  barCopy = bar;
   if ((_os_feature_enabled_impl() & 1) == 0)
   {
-    v5 = [v4 intValue];
+    intValue = [barCopy intValue];
     v6 = +[BatteryUIResourceClass get_log_handle_bui];
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       *buf = 67109120;
-      v31 = v5;
+      v31 = intValue;
       _os_log_impl(&dword_0, v6, OS_LOG_TYPE_INFO, "=============> Tapped event with i: %d", buf, 8u);
     }
 
     v7 = &__kCFBooleanFalse;
-    if (v5 != -1)
+    if (intValue != -1)
     {
-      v8 = [(BatteryUIController *)self currentDictionary];
-      v9 = [PLBatteryUIUtilities getNumOfBreakdownEntriesAtTapIndex:v5 fromBreakdownData:v8 queryRange:self->_batteryUIQueryRange];
+      currentDictionary = [(BatteryUIController *)self currentDictionary];
+      v9 = [PLBatteryUIUtilities getNumOfBreakdownEntriesAtTapIndex:intValue fromBreakdownData:currentDictionary queryRange:self->_batteryUIQueryRange];
 
-      v10 = [(BatteryUIController *)self currentGraphDictionary];
-      v11 = [PLBatteryUIUtilities getScreenOnOffSecsAtTapIndex:v5 fromGraphData:v10 queryRange:self->_batteryUIQueryRange];
+      currentGraphDictionary = [(BatteryUIController *)self currentGraphDictionary];
+      v11 = [PLBatteryUIUtilities getScreenOnOffSecsAtTapIndex:intValue fromGraphData:currentGraphDictionary queryRange:self->_batteryUIQueryRange];
 
       v12 = [v11 objectAtIndexedSubscript:0];
       [v12 doubleValue];
@@ -5844,10 +5844,10 @@ LABEL_9:
       [v15 doubleValue];
       v17 = v16;
 
-      v18 = [(BatteryUIController *)self currentGraphDictionary];
-      v19 = [PLBatteryUIUtilities hasBatteryLevelDataAtTapIndex:v5 fromGraphData:v18 queryRange:self->_batteryUIQueryRange];
+      currentGraphDictionary2 = [(BatteryUIController *)self currentGraphDictionary];
+      v19 = [PLBatteryUIUtilities hasBatteryLevelDataAtTapIndex:intValue fromGraphData:currentGraphDictionary2 queryRange:self->_batteryUIQueryRange];
 
-      v20 = [PLBatteryUIUtilities isTappedIntervalCurrentBucket:v5 withQueryRange:self->_batteryUIQueryRange andEndTime:self->_endTime];
+      v20 = [PLBatteryUIUtilities isTappedIntervalCurrentBucket:intValue withQueryRange:self->_batteryUIQueryRange andEndTime:self->_endTime];
       v21 = v14 > 0.0;
       if (v17 > 0.0)
       {
@@ -5867,21 +5867,21 @@ LABEL_9:
 
       if ((v22 & 1) == 0)
       {
-        LODWORD(v5) = -1;
+        LODWORD(intValue) = -1;
       }
     }
 
     tappedIndex = self->_tappedIndex;
-    if (tappedIndex != -1 || v5 != -1)
+    if (tappedIndex != -1 || intValue != -1)
     {
-      if (tappedIndex == v5)
+      if (tappedIndex == intValue)
       {
         v25 = -1;
       }
 
       else
       {
-        v25 = v5;
+        v25 = intValue;
       }
 
       self->_tappedIndex = v25;
@@ -5912,7 +5912,7 @@ LABEL_9:
   }
 }
 
-- (void)didPushButton:(id)a3
+- (void)didPushButton:(id)button
 {
   self->_buttonPressed = 1;
   [(BatteryUIController *)self stopRepeatingTimer];
@@ -5926,7 +5926,7 @@ LABEL_9:
   [(BatteryUIController *)self rebuildList];
 }
 
-- (void)didPushBatteryButton:(id)a3
+- (void)didPushBatteryButton:(id)button
 {
   self->_iconDisplayType = (self->_iconDisplayType & 1) == 0;
   ADClientAddValueForScalarKey();
@@ -5989,9 +5989,9 @@ LABEL_9:
 - (void)handleBiomeDonationForBUIVisit
 {
   v4 = +[BMStreams discoverabilitySignal];
-  v2 = [v4 source];
+  source = [v4 source];
   v3 = [[BMDiscoverabilitySignalEvent alloc] initWithIdentifier:@"com.apple.batteryui.visit" bundleID:@"com.apple.batteryui" context:0];
-  [v2 sendEvent:v3];
+  [source sendEvent:v3];
 }
 
 - (void)logViewDidLoadEvents
@@ -6007,14 +6007,14 @@ LABEL_9:
 
 - (BOOL)inDemoMode
 {
-  v2 = [(BatteryUIController *)self specifier];
-  v3 = [v2 propertyForKey:@"manualFIle"];
+  specifier = [(BatteryUIController *)self specifier];
+  v3 = [specifier propertyForKey:@"manualFIle"];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (void)getDemoName:(id)a3
+- (void)getDemoName:(id)name
 {
   v4 = [[UIAlertView alloc] initWithTitle:@"Demo File" message:@"It can take up to a minute to generate a new Demo. Please enter a name for this Demo if you would like to continue:" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:{@"OK", 0}];
   [v4 setAlertViewStyle:2];
@@ -6023,21 +6023,21 @@ LABEL_9:
   [v4 show];
 }
 
-- (void)alertView:(id)a3 clickedButtonAtIndex:(int64_t)a4
+- (void)alertView:(id)view clickedButtonAtIndex:(int64_t)index
 {
-  v9 = a3;
-  v6 = [v9 alertViewStyle];
-  if (a4 == 1 && v6 == &dword_0 + 2)
+  viewCopy = view;
+  alertViewStyle = [viewCopy alertViewStyle];
+  if (index == 1 && alertViewStyle == &dword_0 + 2)
   {
-    v7 = [v9 textFieldAtIndex:0];
-    v8 = [v7 text];
-    [(BatteryUIController *)self savePList:v8];
+    v7 = [viewCopy textFieldAtIndex:0];
+    text = [v7 text];
+    [(BatteryUIController *)self savePList:text];
   }
 }
 
-- (void)savePList:(id)a3
+- (void)savePList:(id)list
 {
-  v4 = a3;
+  listCopy = list;
   v5 = +[NSFileManager defaultManager];
   v18 = 0;
   if (([v5 fileExistsAtPath:@"Library/Logs/BatteryUIDemos" isDirectory:&v18] & 1) == 0)
@@ -6068,12 +6068,12 @@ LABEL_8:
   v6 = 0;
 LABEL_5:
 
-  v9 = [(BatteryUIController *)self view];
-  v10 = [(BatteryUIController *)self activityIndicator];
-  [v9 addSubview:v10];
+  view = [(BatteryUIController *)self view];
+  activityIndicator = [(BatteryUIController *)self activityIndicator];
+  [view addSubview:activityIndicator];
 
-  v11 = [(BatteryUIController *)self activityIndicator];
-  [v11 startAnimating];
+  activityIndicator2 = [(BatteryUIController *)self activityIndicator];
+  [activityIndicator2 startAnimating];
 
   v12 = +[BatteryUsageQueryModule sharedModule];
   [v12 setType:2];
@@ -6082,8 +6082,8 @@ LABEL_5:
   v13[2] = sub_428EC;
   v13[3] = &unk_165200;
   v16 = 2;
-  v14 = v4;
-  v15 = self;
+  v14 = listCopy;
+  selfCopy = self;
   [v12 populateBatteryUsageWithCompletion:v13];
 
 LABEL_9:

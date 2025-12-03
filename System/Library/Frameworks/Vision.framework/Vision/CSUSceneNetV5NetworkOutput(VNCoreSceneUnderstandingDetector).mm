@@ -6,7 +6,7 @@
 
 - (id)VNRequiredBufferFromSelector:()VNCoreSceneUnderstandingDetector error:
 {
-  v6 = [a1 performSelector:?];
+  v6 = [self performSelector:?];
   v7 = v6;
   if (v6)
   {

@@ -1,23 +1,23 @@
 @interface VLFSessionTask
 + (BOOL)isVLFModeSupported;
 - (PlatformController)platformController;
-- (VLFSessionTask)initWithPlatformController:(id)a3;
+- (VLFSessionTask)initWithPlatformController:(id)controller;
 - (void)clearMapState;
 - (void)clearUserState;
 - (void)dealloc;
-- (void)navigationSession:(id)a3 didChangeCurrentTransportType:(int64_t)a4;
-- (void)platformController:(id)a3 didChangeCurrentSessionFromSession:(id)a4 toSession:(id)a5;
+- (void)navigationSession:(id)session didChangeCurrentTransportType:(int64_t)type;
+- (void)platformController:(id)controller didChangeCurrentSessionFromSession:(id)session toSession:(id)toSession;
 - (void)saveMapState;
 - (void)saveUserState;
-- (void)setCanShowVLFPuckUI:(BOOL)a3;
-- (void)setNavigationSession:(id)a3;
+- (void)setCanShowVLFPuckUI:(BOOL)i;
+- (void)setNavigationSession:(id)session;
 - (void)showVLFUI;
-- (void)updateVLFPuckUIForState:(int64_t)a3;
-- (void)vlfContaineeViewControllerDidAppearNotification:(id)a3;
-- (void)vlfContaineeViewControllerDidDisappearNotification:(id)a3;
-- (void)vlfContaineeViewControllerWillCancelNotification:(id)a3;
-- (void)vlfSessionDidStartNotification:(id)a3;
-- (void)vlfSessionDidStopNotification:(id)a3;
+- (void)updateVLFPuckUIForState:(int64_t)state;
+- (void)vlfContaineeViewControllerDidAppearNotification:(id)notification;
+- (void)vlfContaineeViewControllerDidDisappearNotification:(id)notification;
+- (void)vlfContaineeViewControllerWillCancelNotification:(id)notification;
+- (void)vlfSessionDidStartNotification:(id)notification;
+- (void)vlfSessionDidStopNotification:(id)notification;
 @end
 
 @implementation VLFSessionTask
@@ -54,7 +54,7 @@
   return WeakRetained;
 }
 
-- (void)vlfContaineeViewControllerWillCancelNotification:(id)a3
+- (void)vlfContaineeViewControllerWillCancelNotification:(id)notification
 {
   v4 = sub_10065CC94();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -63,13 +63,13 @@
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEBUG, "VLF will cancel", &v16, 2u);
   }
 
-  v5 = [(VLFSessionTask *)self platformController];
-  v6 = [v5 chromeViewController];
+  platformController = [(VLFSessionTask *)self platformController];
+  chromeViewController = [platformController chromeViewController];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
+    v7 = chromeViewController;
   }
 
   else
@@ -81,17 +81,17 @@
 
   if (v8)
   {
-    v9 = [v8 mapView];
-    v10 = [v9 userTrackingMode];
+    mapView = [v8 mapView];
+    userTrackingMode = [mapView userTrackingMode];
 
-    if (v10 == 2)
+    if (userTrackingMode == 2)
     {
-      v11 = [v8 mapView];
-      [v11 setUserTrackingMode:1 animated:0];
+      mapView2 = [v8 mapView];
+      [mapView2 setUserTrackingMode:1 animated:0];
     }
 
-    v12 = [v8 mapView];
-    [v12 setUserTrackingMode:0 animated:0];
+    mapView3 = [v8 mapView];
+    [mapView3 setUserTrackingMode:0 animated:0];
   }
 
   else
@@ -122,16 +122,16 @@
       }
     }
 
-    v12 = sub_10065CC94();
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+    mapView3 = sub_10065CC94();
+    if (os_log_type_enabled(mapView3, OS_LOG_TYPE_ERROR))
     {
       LOWORD(v16) = 0;
-      _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "chromeVC was not an IOSBased one; ignoring", &v16, 2u);
+      _os_log_impl(&_mh_execute_header, mapView3, OS_LOG_TYPE_ERROR, "chromeVC was not an IOSBased one; ignoring", &v16, 2u);
     }
   }
 }
 
-- (void)vlfContaineeViewControllerDidDisappearNotification:(id)a3
+- (void)vlfContaineeViewControllerDidDisappearNotification:(id)notification
 {
   v4 = sub_10065CC94();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -143,13 +143,13 @@
   v5 = +[NSNotificationCenter defaultCenter];
   [v5 removeObserver:self name:@"VLFContaineeViewControllerDidDisappearNotification" object:0];
 
-  v6 = [(VLFSessionTask *)self platformController];
-  v7 = [v6 chromeViewController];
+  platformController = [(VLFSessionTask *)self platformController];
+  chromeViewController = [platformController chromeViewController];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v7;
+    v8 = chromeViewController;
   }
 
   else
@@ -161,17 +161,17 @@
 
   if (v9)
   {
-    v10 = [(VLFSessionTask *)self wasLastLocalizationSuccessful];
-    v11 = [(VLFSessionTask *)self originalMapState];
-    v12 = [(VLFSessionTask *)self originalUserState];
-    v13 = v12;
+    wasLastLocalizationSuccessful = [(VLFSessionTask *)self wasLastLocalizationSuccessful];
+    originalMapState = [(VLFSessionTask *)self originalMapState];
+    originalUserState = [(VLFSessionTask *)self originalUserState];
+    v13 = originalUserState;
     memset(buf, 0, sizeof(buf));
-    if (v12)
+    if (originalUserState)
     {
-      [v12 originalUserTrackingBehavior];
+      [originalUserState originalUserTrackingBehavior];
     }
 
-    if ([v13 originalUserTrackingMode] || v10)
+    if ([v13 originalUserTrackingMode] || wasLastLocalizationSuccessful)
     {
       [v13 originalCenterCoordinateDistance];
       *&buf[8] = v14;
@@ -182,15 +182,15 @@
     block[1] = 3221225472;
     block[2] = sub_10065D0B4;
     block[3] = &unk_101624E08;
-    v23 = v11;
+    v23 = originalMapState;
     v15 = v9;
     v26 = *buf;
     v27 = *&buf[16];
     v24 = v15;
     v25 = v13;
-    v28 = v10;
+    v28 = wasLastLocalizationSuccessful;
     v16 = v13;
-    v17 = v11;
+    v17 = originalMapState;
     dispatch_async(&_dispatch_main_q, block);
     [(VLFSessionTask *)self clearUserState];
     [(VLFSessionTask *)self clearMapState];
@@ -233,7 +233,7 @@
   }
 }
 
-- (void)vlfContaineeViewControllerDidAppearNotification:(id)a3
+- (void)vlfContaineeViewControllerDidAppearNotification:(id)notification
 {
   v4 = sub_10065CC94();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -242,13 +242,13 @@
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEBUG, "VLF mode VC did appear", buf, 2u);
   }
 
-  v5 = [(VLFSessionTask *)self platformController];
-  v6 = [v5 chromeViewController];
+  platformController = [(VLFSessionTask *)self platformController];
+  chromeViewController = [platformController chromeViewController];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
+    v7 = chromeViewController;
   }
 
   else
@@ -265,7 +265,7 @@
     v16 = sub_10065D8B8;
     v17 = &unk_101661A90;
     v18 = v8;
-    v19 = self;
+    selfCopy = self;
     dispatch_async(&_dispatch_main_q, &v14);
     v9 = [NSNotificationCenter defaultCenter:v14];
     [v9 addObserver:self selector:"vlfContaineeViewControllerDidDisappearNotification:" name:@"VLFContaineeViewControllerDidDisappearNotification" object:0];
@@ -310,9 +310,9 @@
   }
 }
 
-- (void)vlfSessionDidStopNotification:(id)a3
+- (void)vlfSessionDidStopNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = sub_10065CC94();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -331,10 +331,10 @@
   }
 
   v8 = +[UIApplication sharedMapsDelegate];
-  v9 = [v8 idleTimerController];
-  [v9 setDesiredIdleTimerState:0 forReason:3];
+  idleTimerController = [v8 idleTimerController];
+  [idleTimerController setDesiredIdleTimerState:0 forReason:3];
 
-  v10 = [v4 object];
+  object = [notificationCopy object];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -369,7 +369,7 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    -[VLFSessionTask setWasLastLocalizationSuccessful:](self, "setWasLastLocalizationSuccessful:", [v10 wasLastLocalizationSuccessful]);
+    -[VLFSessionTask setWasLastLocalizationSuccessful:](self, "setWasLastLocalizationSuccessful:", [object wasLastLocalizationSuccessful]);
   }
 
   else
@@ -378,13 +378,13 @@
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       v15 = 138412290;
-      v16 = v10;
+      v16 = object;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, "Notification object (%@), was not a VLFSession; ignoring", &v15, 0xCu);
     }
   }
 }
 
-- (void)vlfSessionDidStartNotification:(id)a3
+- (void)vlfSessionDidStartNotification:(id)notification
 {
   v4 = sub_10065CC94();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -401,28 +401,28 @@
   }
 
   v6 = +[UIApplication sharedMapsDelegate];
-  v7 = [v6 idleTimerController];
-  [v7 setDesiredIdleTimerState:1 forReason:3];
+  idleTimerController = [v6 idleTimerController];
+  [idleTimerController setDesiredIdleTimerState:1 forReason:3];
 
   [(VLFSessionTask *)self setWasLastLocalizationSuccessful:0];
   v8 = +[NSNotificationCenter defaultCenter];
   [v8 addObserver:self selector:"vlfSessionDidStopNotification:" name:@"VLFSessionDidStopNotification" object:0];
 }
 
-- (void)navigationSession:(id)a3 didChangeCurrentTransportType:(int64_t)a4
+- (void)navigationSession:(id)session didChangeCurrentTransportType:(int64_t)type
 {
-  v5 = [objc_opt_class() isSupportedForTransportType:a4];
+  v5 = [objc_opt_class() isSupportedForTransportType:type];
 
   [(VLFSessionTask *)self setCanShowVLFPuckUI:v5];
 }
 
-- (void)platformController:(id)a3 didChangeCurrentSessionFromSession:(id)a4 toSession:(id)a5
+- (void)platformController:(id)controller didChangeCurrentSessionFromSession:(id)session toSession:(id)toSession
 {
-  v15 = a5;
+  toSessionCopy = toSession;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v15;
+    v6 = toSessionCopy;
   }
 
   else
@@ -433,29 +433,29 @@
   v7 = v6;
   [(VLFSessionTask *)self setNavigationSession:v7];
 
-  v8 = [(VLFSessionTask *)self navigationSession];
+  navigationSession = [(VLFSessionTask *)self navigationSession];
 
-  if (!v8)
+  if (!navigationSession)
   {
     goto LABEL_7;
   }
 
   v9 = objc_opt_class();
-  v10 = [(VLFSessionTask *)self navigationSession];
-  v11 = [v9 isSupportedForTransportType:{objc_msgSend(v10, "currentTransportType")}];
+  navigationSession2 = [(VLFSessionTask *)self navigationSession];
+  v11 = [v9 isSupportedForTransportType:{objc_msgSend(navigationSession2, "currentTransportType")}];
 
   if (!v11)
   {
     goto LABEL_9;
   }
 
-  v12 = [(VLFSessionTask *)self navigationSession];
-  v13 = [v12 currentTransportType];
+  navigationSession3 = [(VLFSessionTask *)self navigationSession];
+  currentTransportType = [navigationSession3 currentTransportType];
 
-  if (v13 != 3)
+  if (currentTransportType != 3)
   {
-    v14 = [(VLFSessionTask *)self navigationSession];
-    v11 = [v14 navigationType] != 2;
+    navigationSession4 = [(VLFSessionTask *)self navigationSession];
+    v11 = [navigationSession4 navigationType] != 2;
   }
 
   else
@@ -489,13 +489,13 @@ LABEL_9:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEBUG, "Saving map state", &v32, 2u);
   }
 
-  v4 = [(VLFSessionTask *)self platformController];
-  v5 = [v4 chromeViewController];
+  platformController = [(VLFSessionTask *)self platformController];
+  chromeViewController = [platformController chromeViewController];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = chromeViewController;
   }
 
   else
@@ -508,24 +508,24 @@ LABEL_9:
   if (v7)
   {
     v8 = objc_opt_new();
-    v9 = [v7 mapView];
-    [v8 setScrollEnabled:{objc_msgSend(v9, "isScrollEnabled")}];
+    mapView = [v7 mapView];
+    [v8 setScrollEnabled:{objc_msgSend(mapView, "isScrollEnabled")}];
 
-    v10 = [v7 mapView];
-    [v8 setRotateEnabled:{objc_msgSend(v10, "isRotateEnabled")}];
+    mapView2 = [v7 mapView];
+    [v8 setRotateEnabled:{objc_msgSend(mapView2, "isRotateEnabled")}];
 
-    v11 = [v7 mapView];
-    [v8 setZoomEnabled:{objc_msgSend(v11, "isZoomEnabled")}];
+    mapView3 = [v7 mapView];
+    [v8 setZoomEnabled:{objc_msgSend(mapView3, "isZoomEnabled")}];
 
-    v12 = [v7 mapView];
-    [v8 setPitchEnabled:{objc_msgSend(v12, "isPitchEnabled")}];
+    mapView4 = [v7 mapView];
+    [v8 setPitchEnabled:{objc_msgSend(mapView4, "isPitchEnabled")}];
 
     [(VLFSessionTask *)self setOriginalMapState:v8];
     v13 = sub_10065CC94();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
     {
-      v14 = [(VLFSessionTask *)self originalMapState];
-      if ([v14 scrollEnabled])
+      originalMapState = [(VLFSessionTask *)self originalMapState];
+      if ([originalMapState scrollEnabled])
       {
         v15 = @"YES";
       }
@@ -544,8 +544,8 @@ LABEL_9:
     v17 = sub_10065CC94();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
     {
-      v18 = [(VLFSessionTask *)self originalMapState];
-      if ([v18 rotateEnabled])
+      originalMapState2 = [(VLFSessionTask *)self originalMapState];
+      if ([originalMapState2 rotateEnabled])
       {
         v19 = @"YES";
       }
@@ -564,8 +564,8 @@ LABEL_9:
     v21 = sub_10065CC94();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
     {
-      v22 = [(VLFSessionTask *)self originalMapState];
-      if ([v22 zoomEnabled])
+      originalMapState3 = [(VLFSessionTask *)self originalMapState];
+      if ([originalMapState3 zoomEnabled])
       {
         v23 = @"YES";
       }
@@ -584,8 +584,8 @@ LABEL_9:
     v25 = sub_10065CC94();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
     {
-      v26 = [(VLFSessionTask *)self originalMapState];
-      if ([v26 pitchEnabled])
+      originalMapState4 = [(VLFSessionTask *)self originalMapState];
+      if ([originalMapState4 pitchEnabled])
       {
         v27 = @"YES";
       }
@@ -660,13 +660,13 @@ LABEL_9:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEBUG, "Saving user state", buf, 2u);
   }
 
-  v4 = [(VLFSessionTask *)self platformController];
-  v5 = [v4 chromeViewController];
+  platformController = [(VLFSessionTask *)self platformController];
+  chromeViewController = [platformController chromeViewController];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = chromeViewController;
   }
 
   else
@@ -679,19 +679,19 @@ LABEL_9:
   if (v7)
   {
     v8 = objc_opt_new();
-    v9 = [v7 mapView];
-    v10 = [v9 camera];
-    [v10 centerCoordinateDistance];
+    mapView = [v7 mapView];
+    camera = [mapView camera];
+    [camera centerCoordinateDistance];
     [v8 setOriginalCenterCoordinateDistance:?];
 
-    v11 = [v7 mapView];
-    [v8 setOriginalUserTrackingMode:{objc_msgSend(v11, "userTrackingMode")}];
+    mapView2 = [v7 mapView];
+    [v8 setOriginalUserTrackingMode:{objc_msgSend(mapView2, "userTrackingMode")}];
 
-    v12 = [v7 mapView];
-    v13 = v12;
-    if (v12)
+    mapView3 = [v7 mapView];
+    v13 = mapView3;
+    if (mapView3)
     {
-      [v12 _userTrackingBehavior];
+      [mapView3 _userTrackingBehavior];
     }
 
     else
@@ -706,11 +706,11 @@ LABEL_9:
 
     [(VLFSessionTask *)self setOriginalUserState:v8];
     memset(buf, 0, sizeof(buf));
-    v14 = [(VLFSessionTask *)self originalUserState];
-    v15 = v14;
-    if (v14)
+    originalUserState = [(VLFSessionTask *)self originalUserState];
+    v15 = originalUserState;
+    if (originalUserState)
     {
-      [v14 originalUserTrackingBehavior];
+      [originalUserState originalUserTrackingBehavior];
     }
 
     else
@@ -721,8 +721,8 @@ LABEL_9:
     v16 = sub_10065CC94();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
     {
-      v17 = [(VLFSessionTask *)self originalUserState];
-      [v17 originalCenterCoordinateDistance];
+      originalUserState2 = [(VLFSessionTask *)self originalUserState];
+      [originalUserState2 originalCenterCoordinateDistance];
       *v29 = 134217984;
       v30 = v18;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEBUG, "Original center coordinate distance: %f", v29, 0xCu);
@@ -731,10 +731,10 @@ LABEL_9:
     v19 = sub_10065CC94();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
     {
-      v20 = [(VLFSessionTask *)self originalUserState];
-      v21 = [v20 originalUserTrackingMode];
+      originalUserState3 = [(VLFSessionTask *)self originalUserState];
+      originalUserTrackingMode = [originalUserState3 originalUserTrackingMode];
       *v29 = 134217984;
-      v30 = v21;
+      v30 = originalUserTrackingMode;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEBUG, "Original tracking mode: %ld", v29, 0xCu);
     }
 
@@ -785,15 +785,15 @@ LABEL_9:
   }
 }
 
-- (void)updateVLFPuckUIForState:(int64_t)a3
+- (void)updateVLFPuckUIForState:(int64_t)state
 {
-  v5 = [(VLFSessionTask *)self platformController];
-  v6 = [v5 chromeViewController];
+  platformController = [(VLFSessionTask *)self platformController];
+  chromeViewController = [platformController chromeViewController];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
+    v7 = chromeViewController;
   }
 
   else
@@ -805,11 +805,11 @@ LABEL_9:
 
   if (!v8)
   {
-    v10 = sub_10065CC94();
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
+    userLocationView = sub_10065CC94();
+    if (os_log_type_enabled(userLocationView, OS_LOG_TYPE_INFO))
     {
       *v11 = 0;
-      _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "chromeVC was not an IOSBased one; ignoring", v11, 2u);
+      _os_log_impl(&_mh_execute_header, userLocationView, OS_LOG_TYPE_INFO, "chromeVC was not an IOSBased one; ignoring", v11, 2u);
     }
 
     goto LABEL_12;
@@ -817,29 +817,29 @@ LABEL_9:
 
   if (![(VLFSessionTask *)self canShowVLFPuckUI])
   {
-    v10 = [v8 userLocationView];
-    [v10 setVlfMode:0];
+    userLocationView = [v8 userLocationView];
+    [userLocationView setVlfMode:0];
 LABEL_12:
 
     goto LABEL_13;
   }
 
-  if (a3 != 2)
+  if (state != 2)
   {
-    a3 = a3 == 1;
+    state = state == 1;
   }
 
-  v9 = [v8 userLocationView];
-  [v9 setVlfMode:a3];
+  userLocationView2 = [v8 userLocationView];
+  [userLocationView2 setVlfMode:state];
 
 LABEL_13:
 }
 
-- (void)setCanShowVLFPuckUI:(BOOL)a3
+- (void)setCanShowVLFPuckUI:(BOOL)i
 {
-  if (self->_canShowVLFPuckUI != a3)
+  if (self->_canShowVLFPuckUI != i)
   {
-    self->_canShowVLFPuckUI = a3;
+    self->_canShowVLFPuckUI = i;
     v4 = sub_10065CC94();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
@@ -859,34 +859,34 @@ LABEL_13:
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "Can show VLF puck UI: %@", &v8, 0xCu);
     }
 
-    v7 = [(VLFSessionTask *)self stateManager];
-    -[VLFSessionTask updateVLFPuckUIForState:](self, "updateVLFPuckUIForState:", [v7 currentState]);
+    stateManager = [(VLFSessionTask *)self stateManager];
+    -[VLFSessionTask updateVLFPuckUIForState:](self, "updateVLFPuckUIForState:", [stateManager currentState]);
   }
 }
 
-- (void)setNavigationSession:(id)a3
+- (void)setNavigationSession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   navigationSession = self->_navigationSession;
-  if (navigationSession != v5)
+  if (navigationSession != sessionCopy)
   {
-    v7 = v5;
+    v7 = sessionCopy;
     [(NavigationSession *)navigationSession unregisterObserver:self];
-    objc_storeStrong(&self->_navigationSession, a3);
+    objc_storeStrong(&self->_navigationSession, session);
     [(NavigationSession *)self->_navigationSession registerObserver:self];
-    v5 = v7;
+    sessionCopy = v7;
   }
 }
 
 - (void)showVLFUI
 {
-  v3 = [(VLFSessionTask *)self platformController];
-  v4 = [v3 currentSession];
+  platformController = [(VLFSessionTask *)self platformController];
+  currentSession = [platformController currentSession];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = currentSession;
   }
 
   else
@@ -903,19 +903,19 @@ LABEL_13:
     goto LABEL_10;
   }
 
-  v7 = [v6 currentTransportType];
-  if (v7 == 2)
+  currentTransportType = [v6 currentTransportType];
+  if (currentTransportType == 2)
   {
     v10 = 0;
     v9 = 1;
 LABEL_10:
-    v11 = [(VLFSessionTask *)self platformController];
-    v12 = [v11 chromeViewController];
+    platformController2 = [(VLFSessionTask *)self platformController];
+    chromeViewController = [platformController2 chromeViewController];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v13 = v12;
+      v13 = chromeViewController;
     }
 
     else
@@ -963,16 +963,16 @@ LABEL_10:
       goto LABEL_39;
     }
 
-    v15 = [(VLFSessionTask *)self originalUserState];
+    originalUserState = [(VLFSessionTask *)self originalUserState];
 
-    if (!v15)
+    if (!originalUserState)
     {
       [(VLFSessionTask *)self saveUserState];
     }
 
-    v16 = [(VLFSessionTask *)self originalMapState];
+    originalMapState = [(VLFSessionTask *)self originalMapState];
 
-    if (!v16)
+    if (!originalMapState)
     {
       [(VLFSessionTask *)self saveMapState];
     }
@@ -980,34 +980,34 @@ LABEL_10:
     v17 = +[NSNotificationCenter defaultCenter];
     [v17 postNotificationName:@"VLFSessionTaskWillShowVLFUINotification" object:0];
 
-    v18 = [v14 mapView];
-    v19 = [v18 userTrackingMode];
+    mapView = [v14 mapView];
+    userTrackingMode = [mapView userTrackingMode];
 
-    if (v19 == 2)
+    if (userTrackingMode == 2)
     {
-      v20 = [v14 mapView];
-      [v20 setUserTrackingMode:1 animated:0];
+      mapView2 = [v14 mapView];
+      [mapView2 setUserTrackingMode:1 animated:0];
     }
 
-    v21 = [v14 mapView];
-    [v21 setUserTrackingMode:0 animated:0];
+    mapView3 = [v14 mapView];
+    [mapView3 setUserTrackingMode:0 animated:0];
 
-    v22 = [v14 appCoordinator];
-    v23 = v22;
+    appCoordinator = [v14 appCoordinator];
+    v23 = appCoordinator;
     if (v9)
     {
-      v24 = [v22 navModeController];
+      navModeController = [appCoordinator navModeController];
     }
 
     else if (v10)
     {
-      v24 = [v22 stepModeController];
-      if (!v24)
+      navModeController = [appCoordinator stepModeController];
+      if (!navModeController)
       {
-        v25 = [v23 transitNavigationContext];
-        if (v25)
+        transitNavigationContext = [v23 transitNavigationContext];
+        if (transitNavigationContext)
         {
-          v26 = v25;
+          actionCoordinator = transitNavigationContext;
         }
 
         else
@@ -1038,7 +1038,7 @@ LABEL_10:
             }
           }
 
-          v26 = 0;
+          actionCoordinator = 0;
         }
 
         v27 = 0;
@@ -1048,17 +1048,17 @@ LABEL_10:
 
     else
     {
-      v24 = [v22 baseModeController];
+      navModeController = [appCoordinator baseModeController];
     }
 
-    v27 = v24;
-    v26 = [v24 actionCoordinator];
+    v27 = navModeController;
+    actionCoordinator = [navModeController actionCoordinator];
 LABEL_38:
-    [v26 showVLF];
+    [actionCoordinator showVLF];
 
-    v32 = [(VLFSessionTask *)self platformController];
-    v33 = [v32 auxiliaryTasksManager];
-    v34 = [v33 auxilaryTaskForClass:objc_opt_class()];
+    platformController3 = [(VLFSessionTask *)self platformController];
+    auxiliaryTasksManager = [platformController3 auxiliaryTasksManager];
+    v34 = [auxiliaryTasksManager auxilaryTaskForClass:objc_opt_class()];
 
     [v34 cancelNavigationAutoLaunchIfNeccessary];
 LABEL_39:
@@ -1066,8 +1066,8 @@ LABEL_39:
     goto LABEL_40;
   }
 
-  v8 = v7;
-  if (v7 == 3)
+  v8 = currentTransportType;
+  if (currentTransportType == 3)
   {
     v9 = 0;
     v10 = 1;
@@ -1127,10 +1127,10 @@ LABEL_40:
   [(VLFSessionTask *)&v3 dealloc];
 }
 
-- (VLFSessionTask)initWithPlatformController:(id)a3
+- (VLFSessionTask)initWithPlatformController:(id)controller
 {
-  v4 = a3;
-  if (!v4)
+  controllerCopy = controller;
+  if (!controllerCopy)
   {
     v18 = sub_10006D178();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -1166,7 +1166,7 @@ LABEL_40:
   if (v5)
   {
     v5->_canShowVLFPuckUI = 1;
-    objc_storeWeak(&v5->_platformController, v4);
+    objc_storeWeak(&v5->_platformController, controllerCopy);
     v7 = objc_alloc_init(VLFSessionAnalyticsTracker);
     analyticsTracker = v6->_analyticsTracker;
     v6->_analyticsTracker = v7;

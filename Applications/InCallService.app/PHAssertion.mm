@@ -6,7 +6,7 @@
 
 - (void)releaseAssertion
 {
-  v2 = self;
+  selfCopy = self;
   sub_100228FE4();
 }
 

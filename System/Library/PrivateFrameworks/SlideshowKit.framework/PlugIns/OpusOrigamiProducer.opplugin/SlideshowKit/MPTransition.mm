@@ -1,42 +1,42 @@
 @interface MPTransition
-+ (MPTransition)transitionWithTransitionID:(id)a3;
++ (MPTransition)transitionWithTransitionID:(id)d;
 - (MPTransition)init;
-- (MPTransition)initWithTransitionID:(id)a3;
+- (MPTransition)initWithTransitionID:(id)d;
 - (double)findMaxDuration;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)formattedAttributes;
 - (id)parentDocument;
-- (id)transitionAttributeForKey:(id)a3;
+- (id)transitionAttributeForKey:(id)key;
 - (id)transitionAttributes;
 - (void)applyFormattedAttributes;
-- (void)copyAttribures:(id)a3;
-- (void)copyVars:(id)a3;
+- (void)copyAttribures:(id)attribures;
+- (void)copyVars:(id)vars;
 - (void)dealloc;
-- (void)setDuration:(double)a3;
-- (void)setParent:(id)a3;
-- (void)setPresetID:(id)a3;
-- (void)setTransitionAttribute:(id)a3 forKey:(id)a4;
-- (void)setTransitionAttributes:(id)a3;
-- (void)setTransitionID:(id)a3;
+- (void)setDuration:(double)duration;
+- (void)setParent:(id)parent;
+- (void)setPresetID:(id)d;
+- (void)setTransitionAttribute:(id)attribute forKey:(id)key;
+- (void)setTransitionAttributes:(id)attributes;
+- (void)setTransitionID:(id)d;
 @end
 
 @implementation MPTransition
 
-+ (MPTransition)transitionWithTransitionID:(id)a3
++ (MPTransition)transitionWithTransitionID:(id)d
 {
-  v3 = [[a1 alloc] initWithTransitionID:a3];
+  v3 = [[self alloc] initWithTransitionID:d];
 
   return v3;
 }
 
-- (MPTransition)initWithTransitionID:(id)a3
+- (MPTransition)initWithTransitionID:(id)d
 {
   v4 = [(MPTransition *)self init];
   if (v4)
   {
-    v4->_transitionID = [a3 copy];
-    v4->_isRandom = [a3 isEqualToString:@"Random"];
+    v4->_transitionID = [d copy];
+    v4->_isRandom = [d isEqualToString:@"Random"];
     v4->_presetID = [@"Default" copy];
     if ([+[MPTransitionManager sharedManager](MPTransitionManager "sharedManager")])
     {
@@ -66,9 +66,9 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 copyVars:self];
   [v4 copyAttribures:self->_attributes];
   return v4;
@@ -92,7 +92,7 @@
   [(MPTransition *)&v3 dealloc];
 }
 
-- (void)setTransitionID:(id)a3
+- (void)setTransitionID:(id)d
 {
   transitionID = self->_transitionID;
   if (transitionID)
@@ -101,13 +101,13 @@
     self->_transitionID = 0;
   }
 
-  self->_transitionID = [a3 copy];
+  self->_transitionID = [d copy];
   if (self->_randomSeed == -1 && [+[MPTransitionManager sharedManager](MPTransitionManager "sharedManager")])
   {
     self->_randomSeed = arc4random();
   }
 
-  -[MPTransition setIsRandom:](self, "setIsRandom:", [a3 isEqualToString:@"Random"]);
+  -[MPTransition setIsRandom:](self, "setIsRandom:", [d isEqualToString:@"Random"]);
   [(MPTransition *)self setPresetID:@"Default"];
   if (self->_parent)
   {
@@ -133,7 +133,7 @@
   [(MPTransition *)self applyFormattedAttributes];
 }
 
-- (void)setPresetID:(id)a3
+- (void)setPresetID:(id)d
 {
   presetID = self->_presetID;
   if (presetID)
@@ -142,7 +142,7 @@
     self->_presetID = 0;
   }
 
-  self->_presetID = [a3 copy];
+  self->_presetID = [d copy];
   attributes = self->_attributes;
   if (attributes)
   {
@@ -152,26 +152,26 @@
   [(MPTransition *)self applyFormattedAttributes];
 }
 
-- (void)setDuration:(double)a3
+- (void)setDuration:(double)duration
 {
-  if (a3 >= 0.0)
+  if (duration >= 0.0)
   {
-    v3 = a3;
+    durationCopy = duration;
     v5 = [objc_msgSend(-[MPTransition parentContainer](self "parentContainer")];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
     if ([objc_msgSend(v5 documentAttributeForKey:{kMPDocumentEnforceSafeTiming), "BOOLValue"}] & 1) == 0 && (isKindOfClass)
     {
       [(MPTransition *)self findMaxDuration];
-      if (v7 != -1.0 && v7 < v3)
+      if (v7 != -1.0 && v7 < durationCopy)
       {
-        v3 = v7;
+        durationCopy = v7;
       }
     }
 
     [(MPTransition *)self duration];
     v10 = v9;
-    self->_duration = v3;
+    self->_duration = durationCopy;
     parent = self->_parent;
     if (((parent != 0) & isKindOfClass) == 1)
     {
@@ -184,25 +184,25 @@
     {
       if ([v12 parentLayer])
       {
-        v13 = [self->_parent parentLayer];
+        parentLayer = [self->_parent parentLayer];
         [objc_msgSend(self->_parent "parentLayer")];
-        [v13 setDuration:v14 - (v3 - v10)];
+        [parentLayer setDuration:v14 - (durationCopy - v10)];
       }
 
       v15 = self->_parent;
       if (v15 && [v15 plug] && objc_msgSend(self->_parent, "isTransitionConnected"))
       {
-        v16 = [self->_parent plug];
+        plug = [self->_parent plug];
 
-        [v16 setTransitionDuration:v3];
+        [plug setTransitionDuration:durationCopy];
       }
     }
 
     else if (v12 && [v12 container])
     {
-      v17 = [self->_parent container];
+      container = [self->_parent container];
 
-      [v17 setInitialTransitionDuration:v3];
+      [container setInitialTransitionDuration:durationCopy];
     }
   }
 }
@@ -213,16 +213,16 @@
   if (!result)
   {
     v4 = +[MPTransitionManager sharedManager];
-    v5 = [(MPTransition *)self transitionID];
-    v6 = [(MPTransition *)self presetID];
+    transitionID = [(MPTransition *)self transitionID];
+    presetID = [(MPTransition *)self presetID];
 
-    return [v4 attributesForTransitionID:v5 andPresetID:v6];
+    return [v4 attributesForTransitionID:transitionID andPresetID:presetID];
   }
 
   return result;
 }
 
-- (void)setTransitionAttributes:(id)a3
+- (void)setTransitionAttributes:(id)attributes
 {
   attributes = self->_attributes;
   if (attributes)
@@ -231,12 +231,12 @@
     self->_attributes = 0;
   }
 
-  self->_attributes = [a3 mutableCopy];
+  self->_attributes = [attributes mutableCopy];
 
   [(MPTransition *)self applyFormattedAttributes];
 }
 
-- (id)transitionAttributeForKey:(id)a3
+- (id)transitionAttributeForKey:(id)key
 {
   attributes = self->_attributes;
   if (!attributes)
@@ -244,21 +244,21 @@
     attributes = [+[MPTransitionManager sharedManager](MPTransitionManager "sharedManager")];
   }
 
-  result = [(NSMutableDictionary *)attributes objectForKey:a3];
+  result = [(NSMutableDictionary *)attributes objectForKey:key];
   if (!result)
   {
-    result = [+[MPUtilities defaultAttributesForMPTransition:](MPUtilities defaultAttributesForMPTransition:{self), "objectForKey:", a3}];
+    result = [+[MPUtilities defaultAttributesForMPTransition:](MPUtilities defaultAttributesForMPTransition:{self), "objectForKey:", key}];
     if (result)
     {
 
-      return [(MPTransition *)self convertMPAttributeToMCAttribute:result withKey:a3];
+      return [(MPTransition *)self convertMPAttributeToMCAttribute:result withKey:key];
     }
   }
 
   return result;
 }
 
-- (void)setTransitionAttribute:(id)a3 forKey:(id)a4
+- (void)setTransitionAttribute:(id)attribute forKey:(id)key
 {
   attributes = self->_attributes;
   if (!attributes)
@@ -267,7 +267,7 @@
     self->_attributes = attributes;
   }
 
-  [(NSMutableDictionary *)attributes setObject:a3 forKey:a4];
+  [(NSMutableDictionary *)attributes setObject:attribute forKey:key];
 
   [(MPTransition *)self applyFormattedAttributes];
 }
@@ -345,9 +345,9 @@
   return v6;
 }
 
-- (void)copyVars:(id)a3
+- (void)copyVars:(id)vars
 {
-  self->_duration = *(a3 + 5);
+  self->_duration = *(vars + 5);
   transitionID = self->_transitionID;
   if (transitionID)
   {
@@ -355,7 +355,7 @@
     self->_transitionID = 0;
   }
 
-  self->_transitionID = [*(a3 + 3) copy];
+  self->_transitionID = [*(vars + 3) copy];
   presetID = self->_presetID;
   if (presetID)
   {
@@ -363,18 +363,18 @@
     self->_transitionID = 0;
   }
 
-  self->_presetID = [*(a3 + 4) copy];
-  self->_isRandom = *(a3 + 48);
+  self->_presetID = [*(vars + 4) copy];
+  self->_isRandom = *(vars + 48);
 }
 
-- (void)copyAttribures:(id)a3
+- (void)copyAttribures:(id)attribures
 {
   attributes = self->_attributes;
   if (attributes)
   {
   }
 
-  self->_attributes = [[NSMutableDictionary alloc] initWithDictionary:a3 copyItems:1];
+  self->_attributes = [[NSMutableDictionary alloc] initWithDictionary:attribures copyItems:1];
 }
 
 - (id)parentDocument
@@ -384,15 +384,15 @@
   return [v2 parentDocument];
 }
 
-- (void)setParent:(id)a3
+- (void)setParent:(id)parent
 {
-  if (a3 && self->_parent)
+  if (parent && self->_parent)
   {
     objc_exception_throw([NSException exceptionWithName:@"ManyToOneException" reason:@"A transition may one have one parent.  Please remove it first.  This is unsupported." userInfo:0]);
   }
 
-  self->_parent = a3;
-  if (a3)
+  self->_parent = parent;
+  if (parent)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) != 0 && [self->_parent plug])
@@ -424,7 +424,7 @@
 
 - (id)formattedAttributes
 {
-  v3 = [(MPTransition *)self isRandom];
+  isRandom = [(MPTransition *)self isRandom];
   if (self->_attributes)
   {
     goto LABEL_2;
@@ -447,7 +447,7 @@ LABEL_2:
   }
 
   v5 = v4;
-  if ((v3 & 1) == 0)
+  if ((isRandom & 1) == 0)
   {
     [v4 setObject:-[MPTransition presetID](self forKey:{"presetID"), @"PresetID"}];
   }

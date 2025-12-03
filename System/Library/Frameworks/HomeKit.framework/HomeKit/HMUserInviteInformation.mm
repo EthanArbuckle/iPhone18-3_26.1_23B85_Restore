@@ -1,14 +1,14 @@
 @interface HMUserInviteInformation
 + (id)shortDescription;
-- (BOOL)_validateInviteInformationForHome:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (HMUserInviteInformation)initWithCoder:(id)a3;
-- (HMUserInviteInformation)initWithUser:(id)a3 administrator:(BOOL)a4 remoteAccess:(BOOL)a5 announceAccess:(BOOL)a6 camerasAccessLevel:(unint64_t)a7;
+- (BOOL)_validateInviteInformationForHome:(id)home;
+- (BOOL)isEqual:(id)equal;
+- (HMUserInviteInformation)initWithCoder:(id)coder;
+- (HMUserInviteInformation)initWithUser:(id)user administrator:(BOOL)administrator remoteAccess:(BOOL)access announceAccess:(BOOL)announceAccess camerasAccessLevel:(unint64_t)level;
 - (NSArray)attributeDescriptions;
 - (NSString)shortDescription;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMUserInviteInformation
@@ -17,8 +17,8 @@
 {
   v27[7] = *MEMORY[0x1E69E9840];
   v3 = objc_alloc(MEMORY[0x1E69A29C8]);
-  v26 = [(HMUserInviteInformation *)self userID];
-  v25 = [v3 initWithName:@"User ID" value:v26];
+  userID = [(HMUserInviteInformation *)self userID];
+  v25 = [v3 initWithName:@"User ID" value:userID];
   v27[0] = v25;
   v4 = objc_alloc(MEMORY[0x1E69A29C8]);
   [(HMUserInviteInformation *)self isAdministrator];
@@ -45,8 +45,8 @@
   v15 = [v13 initWithName:@"Restricted Guest" value:v14];
   v27[5] = v15;
   v16 = objc_alloc(MEMORY[0x1E69A29C8]);
-  v17 = [(HMUserInviteInformation *)self restrictedGuestHomeAccessSettings];
-  v18 = [v16 initWithName:@"Restricted guest access settings" value:v17];
+  restrictedGuestHomeAccessSettings = [(HMUserInviteInformation *)self restrictedGuestHomeAccessSettings];
+  v18 = [v16 initWithName:@"Restricted guest access settings" value:restrictedGuestHomeAccessSettings];
   v27[6] = v18;
   v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v27 count:7];
 
@@ -62,57 +62,57 @@
   return NSStringFromClass(v2);
 }
 
-- (HMUserInviteInformation)initWithCoder:(id)a3
+- (HMUserInviteInformation)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMUserInviteInformationUserIDCodingKey"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMUserInviteInformationUserIDCodingKey"];
   if (v5)
   {
-    v6 = [v4 decodeBoolForKey:@"HMUserInviteInformationAdministratorCodingKey"];
-    v7 = [v4 decodeBoolForKey:@"HMUserInviteInformationAnnounceAccessAllowedCodingKey"];
-    v8 = [v4 decodeBoolForKey:@"HMUserInviteInformationRemoteAccessCodingKey"];
-    v9 = [v4 decodeIntegerForKey:@"HMUserInviteInformationCamerasAccessLevelCodingKey"];
-    v10 = [v4 decodeBoolForKey:@"HMUserInviteInformationRestrictedGuestPrivilegeCodingKey"];
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMUserInviteInformationRestrictedGuestHomeAccessSettingsCodingKey"];
+    v6 = [coderCopy decodeBoolForKey:@"HMUserInviteInformationAdministratorCodingKey"];
+    v7 = [coderCopy decodeBoolForKey:@"HMUserInviteInformationAnnounceAccessAllowedCodingKey"];
+    v8 = [coderCopy decodeBoolForKey:@"HMUserInviteInformationRemoteAccessCodingKey"];
+    v9 = [coderCopy decodeIntegerForKey:@"HMUserInviteInformationCamerasAccessLevelCodingKey"];
+    v10 = [coderCopy decodeBoolForKey:@"HMUserInviteInformationRestrictedGuestPrivilegeCodingKey"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMUserInviteInformationRestrictedGuestHomeAccessSettingsCodingKey"];
     self = [(HMUserInviteInformation *)self initWithUser:v5 administrator:v6 remoteAccess:v8 announceAccess:v7 camerasAccessLevel:v9 restrictedGuest:v10 restrictedGuestHomeAccessSettings:v11];
 
-    v12 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v12 = 0;
+    selfCopy = 0;
   }
 
-  return v12;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HMUserInviteInformation *)self userID];
-  [v4 encodeObject:v5 forKey:@"HMUserInviteInformationUserIDCodingKey"];
+  coderCopy = coder;
+  userID = [(HMUserInviteInformation *)self userID];
+  [coderCopy encodeObject:userID forKey:@"HMUserInviteInformationUserIDCodingKey"];
 
-  [v4 encodeBool:-[HMUserInviteInformation isAdministrator](self forKey:{"isAdministrator"), @"HMUserInviteInformationAdministratorCodingKey"}];
-  [v4 encodeBool:-[HMUserInviteInformation isAnnounceAccessAllowed](self forKey:{"isAnnounceAccessAllowed"), @"HMUserInviteInformationAnnounceAccessAllowedCodingKey"}];
-  [v4 encodeBool:-[HMUserInviteInformation isRemoteAccessAllowed](self forKey:{"isRemoteAccessAllowed"), @"HMUserInviteInformationRemoteAccessCodingKey"}];
-  [v4 encodeInteger:-[HMUserInviteInformation camerasAccessLevel](self forKey:{"camerasAccessLevel"), @"HMUserInviteInformationCamerasAccessLevelCodingKey"}];
-  [v4 encodeBool:-[HMUserInviteInformation isRestrictedGuest](self forKey:{"isRestrictedGuest"), @"HMUserInviteInformationRestrictedGuestPrivilegeCodingKey"}];
-  v6 = [(HMUserInviteInformation *)self restrictedGuestHomeAccessSettings];
-  [v4 encodeObject:v6 forKey:@"HMUserInviteInformationRestrictedGuestHomeAccessSettingsCodingKey"];
+  [coderCopy encodeBool:-[HMUserInviteInformation isAdministrator](self forKey:{"isAdministrator"), @"HMUserInviteInformationAdministratorCodingKey"}];
+  [coderCopy encodeBool:-[HMUserInviteInformation isAnnounceAccessAllowed](self forKey:{"isAnnounceAccessAllowed"), @"HMUserInviteInformationAnnounceAccessAllowedCodingKey"}];
+  [coderCopy encodeBool:-[HMUserInviteInformation isRemoteAccessAllowed](self forKey:{"isRemoteAccessAllowed"), @"HMUserInviteInformationRemoteAccessCodingKey"}];
+  [coderCopy encodeInteger:-[HMUserInviteInformation camerasAccessLevel](self forKey:{"camerasAccessLevel"), @"HMUserInviteInformationCamerasAccessLevelCodingKey"}];
+  [coderCopy encodeBool:-[HMUserInviteInformation isRestrictedGuest](self forKey:{"isRestrictedGuest"), @"HMUserInviteInformationRestrictedGuestPrivilegeCodingKey"}];
+  restrictedGuestHomeAccessSettings = [(HMUserInviteInformation *)self restrictedGuestHomeAccessSettings];
+  [coderCopy encodeObject:restrictedGuestHomeAccessSettings forKey:@"HMUserInviteInformationRestrictedGuestHomeAccessSettingsCodingKey"];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [HMMutableUserInviteInformation alloc];
-  v5 = [(HMUserInviteInformation *)self userID];
-  v6 = [(HMUserInviteInformation *)self isAdministrator];
-  v7 = [(HMUserInviteInformation *)self isRemoteAccessAllowed];
-  v8 = [(HMUserInviteInformation *)self isAnnounceAccessAllowed];
-  v9 = [(HMUserInviteInformation *)self camerasAccessLevel];
-  v10 = [(HMUserInviteInformation *)self isRestrictedGuest];
-  v11 = [(HMUserInviteInformation *)self restrictedGuestHomeAccessSettings];
-  v12 = [(HMUserInviteInformation *)v4 initWithUser:v5 administrator:v6 remoteAccess:v7 announceAccess:v8 camerasAccessLevel:v9 restrictedGuest:v10 restrictedGuestHomeAccessSettings:v11];
+  userID = [(HMUserInviteInformation *)self userID];
+  isAdministrator = [(HMUserInviteInformation *)self isAdministrator];
+  isRemoteAccessAllowed = [(HMUserInviteInformation *)self isRemoteAccessAllowed];
+  isAnnounceAccessAllowed = [(HMUserInviteInformation *)self isAnnounceAccessAllowed];
+  camerasAccessLevel = [(HMUserInviteInformation *)self camerasAccessLevel];
+  isRestrictedGuest = [(HMUserInviteInformation *)self isRestrictedGuest];
+  restrictedGuestHomeAccessSettings = [(HMUserInviteInformation *)self restrictedGuestHomeAccessSettings];
+  v12 = [(HMUserInviteInformation *)v4 initWithUser:userID administrator:isAdministrator remoteAccess:isRemoteAccessAllowed announceAccess:isAnnounceAccessAllowed camerasAccessLevel:camerasAccessLevel restrictedGuest:isRestrictedGuest restrictedGuestHomeAccessSettings:restrictedGuestHomeAccessSettings];
 
   return v12;
 }
@@ -124,19 +124,19 @@
   return NSStringFromClass(v2);
 }
 
-- (BOOL)_validateInviteInformationForHome:(id)a3
+- (BOOL)_validateInviteInformationForHome:(id)home
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  homeCopy = home;
   if (![(HMUserInviteInformation *)self isAdministrator]|| ![(HMUserInviteInformation *)self isRestrictedGuest])
   {
-    v6 = [(HMUserInviteInformation *)self restrictedGuestHomeAccessSettings];
+    restrictedGuestHomeAccessSettings = [(HMUserInviteInformation *)self restrictedGuestHomeAccessSettings];
     if ([(HMUserInviteInformation *)self isAdministrator])
     {
-      if (v6)
+      if (restrictedGuestHomeAccessSettings)
       {
         v7 = objc_autoreleasePoolPush();
-        v8 = self;
+        selfCopy = self;
         v9 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
         {
@@ -144,7 +144,7 @@
           v19 = 138543618;
           v20 = v10;
           v21 = 2112;
-          v22 = v8;
+          v22 = selfCopy;
           v11 = "%{public}@An admin cannot have restricted guest access settings : %@";
 LABEL_13:
           _os_log_impl(&dword_19BB39000, v9, OS_LOG_TYPE_ERROR, v11, &v19, 0x16u);
@@ -168,25 +168,25 @@ LABEL_13:
         goto LABEL_11;
       }
 
-      if (v6)
+      if (restrictedGuestHomeAccessSettings)
       {
-        if (![v6 doAllAccessoriesBelongToHome:v4])
+        if (![restrictedGuestHomeAccessSettings doAllAccessoriesBelongToHome:homeCopy])
         {
           goto LABEL_11;
         }
 
-        v13 = [v6 guestAccessSchedule];
-        if (v13)
+        guestAccessSchedule = [restrictedGuestHomeAccessSettings guestAccessSchedule];
+        if (guestAccessSchedule)
         {
-          v14 = v13;
-          v15 = [v6 guestAccessSchedule];
-          v16 = [v15 isValidSchedule];
+          v14 = guestAccessSchedule;
+          guestAccessSchedule2 = [restrictedGuestHomeAccessSettings guestAccessSchedule];
+          isValidSchedule = [guestAccessSchedule2 isValidSchedule];
 
-          if ((v16 & 1) == 0)
+          if ((isValidSchedule & 1) == 0)
           {
 LABEL_11:
             v7 = objc_autoreleasePoolPush();
-            v12 = self;
+            selfCopy2 = self;
             v9 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
             {
@@ -194,7 +194,7 @@ LABEL_11:
               v19 = 138543618;
               v20 = v10;
               v21 = 2112;
-              v22 = v12;
+              v22 = selfCopy2;
               v11 = "%{public}@Restricted guest home access settings are not valid. Accessory list is empty, accessories do not belong to the home where this user is invited in, or the schedule is invalid: %@";
               goto LABEL_13;
             }
@@ -224,27 +224,27 @@ LABEL_21:
 
 - (unint64_t)hash
 {
-  v3 = [(HMUserInviteInformation *)self userID];
-  v4 = [v3 hash];
+  userID = [(HMUserInviteInformation *)self userID];
+  v4 = [userID hash];
 
   v5 = v4 ^ [(HMUserInviteInformation *)self isAdministrator];
-  v6 = [(HMUserInviteInformation *)self isRemoteAccessAllowed];
-  v7 = v5 ^ v6 ^ [(HMUserInviteInformation *)self isAnnounceAccessAllowed];
-  v8 = [(HMUserInviteInformation *)self camerasAccessLevel];
-  v9 = v8 ^ [(HMUserInviteInformation *)self isRestrictedGuest];
-  v10 = [(HMUserInviteInformation *)self restrictedGuestHomeAccessSettings];
-  v11 = v9 ^ [v10 hash];
+  isRemoteAccessAllowed = [(HMUserInviteInformation *)self isRemoteAccessAllowed];
+  v7 = v5 ^ isRemoteAccessAllowed ^ [(HMUserInviteInformation *)self isAnnounceAccessAllowed];
+  camerasAccessLevel = [(HMUserInviteInformation *)self camerasAccessLevel];
+  v9 = camerasAccessLevel ^ [(HMUserInviteInformation *)self isRestrictedGuest];
+  restrictedGuestHomeAccessSettings = [(HMUserInviteInformation *)self restrictedGuestHomeAccessSettings];
+  v11 = v9 ^ [restrictedGuestHomeAccessSettings hash];
 
   return v7 ^ v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -255,12 +255,12 @@ LABEL_21:
   v6 = v5;
   if (v6)
   {
-    v7 = [(HMUserInviteInformation *)self userID];
-    v8 = [v6 userID];
-    if ([v7 isEqual:v8] && (v9 = -[HMUserInviteInformation isAdministrator](self, "isAdministrator"), v9 == objc_msgSend(v6, "isAdministrator")) && (v10 = -[HMUserInviteInformation isRemoteAccessAllowed](self, "isRemoteAccessAllowed"), v10 == objc_msgSend(v6, "isRemoteAccessAllowed")) && (v11 = -[HMUserInviteInformation isAnnounceAccessAllowed](self, "isAnnounceAccessAllowed"), v11 == objc_msgSend(v6, "isAnnounceAccessAllowed")) && (v12 = -[HMUserInviteInformation camerasAccessLevel](self, "camerasAccessLevel"), v12 == objc_msgSend(v6, "camerasAccessLevel")) && (v13 = -[HMUserInviteInformation isRestrictedGuest](self, "isRestrictedGuest"), v13 == objc_msgSend(v6, "isRestrictedGuest")))
+    userID = [(HMUserInviteInformation *)self userID];
+    userID2 = [v6 userID];
+    if ([userID isEqual:userID2] && (v9 = -[HMUserInviteInformation isAdministrator](self, "isAdministrator"), v9 == objc_msgSend(v6, "isAdministrator")) && (v10 = -[HMUserInviteInformation isRemoteAccessAllowed](self, "isRemoteAccessAllowed"), v10 == objc_msgSend(v6, "isRemoteAccessAllowed")) && (v11 = -[HMUserInviteInformation isAnnounceAccessAllowed](self, "isAnnounceAccessAllowed"), v11 == objc_msgSend(v6, "isAnnounceAccessAllowed")) && (v12 = -[HMUserInviteInformation camerasAccessLevel](self, "camerasAccessLevel"), v12 == objc_msgSend(v6, "camerasAccessLevel")) && (v13 = -[HMUserInviteInformation isRestrictedGuest](self, "isRestrictedGuest"), v13 == objc_msgSend(v6, "isRestrictedGuest")))
     {
-      v16 = [(HMUserInviteInformation *)self restrictedGuestHomeAccessSettings];
-      v17 = [v6 restrictedGuestHomeAccessSettings];
+      restrictedGuestHomeAccessSettings = [(HMUserInviteInformation *)self restrictedGuestHomeAccessSettings];
+      restrictedGuestHomeAccessSettings2 = [v6 restrictedGuestHomeAccessSettings];
       v14 = HMFEqualObjects();
     }
 
@@ -278,20 +278,20 @@ LABEL_21:
   return v14;
 }
 
-- (HMUserInviteInformation)initWithUser:(id)a3 administrator:(BOOL)a4 remoteAccess:(BOOL)a5 announceAccess:(BOOL)a6 camerasAccessLevel:(unint64_t)a7
+- (HMUserInviteInformation)initWithUser:(id)user administrator:(BOOL)administrator remoteAccess:(BOOL)access announceAccess:(BOOL)announceAccess camerasAccessLevel:(unint64_t)level
 {
-  v13 = a3;
+  userCopy = user;
   v17.receiver = self;
   v17.super_class = HMUserInviteInformation;
   v14 = [(HMUserInviteInformation *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_userID, a3);
-    v15->_administrator = a4;
-    v15->_remoteAccessAllowed = a5;
-    v15->_camerasAccessLevel = a7;
-    v15->_announceAccessAllowed = a6;
+    objc_storeStrong(&v14->_userID, user);
+    v15->_administrator = administrator;
+    v15->_remoteAccessAllowed = access;
+    v15->_camerasAccessLevel = level;
+    v15->_announceAccessAllowed = announceAccess;
   }
 
   return v15;

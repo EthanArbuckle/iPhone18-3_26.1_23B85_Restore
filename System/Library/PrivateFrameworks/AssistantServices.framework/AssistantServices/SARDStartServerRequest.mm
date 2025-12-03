@@ -1,59 +1,59 @@
 @interface SARDStartServerRequest
-- (void)ad_setAFSpeechEvent:(int64_t)a3;
-- (void)ad_setAFSpeechRequestOptions:(id)a3;
-- (void)ad_setCSSiriRecordingInfo:(id)a3;
+- (void)ad_setAFSpeechEvent:(int64_t)event;
+- (void)ad_setAFSpeechRequestOptions:(id)options;
+- (void)ad_setCSSiriRecordingInfo:(id)info;
 @end
 
 @implementation SARDStartServerRequest
 
-- (void)ad_setCSSiriRecordingInfo:(id)a3
+- (void)ad_setCSSiriRecordingInfo:(id)info
 {
-  v4 = a3;
-  v5 = [v4 source];
+  infoCopy = info;
+  source = [infoCopy source];
   v6 = AFSiriLogContextSpeech;
   if (os_log_type_enabled(AFSiriLogContextSpeech, OS_LOG_TYPE_INFO))
   {
     v10 = 136315394;
     v11 = "[SARDStartServerRequest(ADSAExtensions) ad_setCSSiriRecordingInfo:]";
     v12 = 2112;
-    v13 = v5;
+    v13 = source;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "%s audioSource = %@", &v10, 0x16u);
   }
 
-  [(SARDStartServerRequest *)self setAudioSource:v5];
-  v7 = [v4 destination];
+  [(SARDStartServerRequest *)self setAudioSource:source];
+  destination = [infoCopy destination];
   v8 = AFSiriLogContextSpeech;
   if (os_log_type_enabled(AFSiriLogContextSpeech, OS_LOG_TYPE_INFO))
   {
     v10 = 136315394;
     v11 = "[SARDStartServerRequest(ADSAExtensions) ad_setCSSiriRecordingInfo:]";
     v12 = 2112;
-    v13 = v7;
+    v13 = destination;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%s audioDestination = %@", &v10, 0x16u);
   }
 
-  [(SARDStartServerRequest *)self setAudioDestination:v7];
-  v9 = [v4 modelName];
-  [(SARDStartServerRequest *)self setDeviceModel:v9];
+  [(SARDStartServerRequest *)self setAudioDestination:destination];
+  modelName = [infoCopy modelName];
+  [(SARDStartServerRequest *)self setDeviceModel:modelName];
 }
 
-- (void)ad_setAFSpeechRequestOptions:(id)a3
+- (void)ad_setAFSpeechRequestOptions:(id)options
 {
-  v4 = a3;
-  v11 = v4;
-  if (v4)
+  optionsCopy = options;
+  v11 = optionsCopy;
+  if (optionsCopy)
   {
-    v5 = [v4 activationEvent];
+    activationEvent = [optionsCopy activationEvent];
   }
 
   else
   {
-    v5 = 0;
+    activationEvent = 0;
   }
 
-  [(SARDStartServerRequest *)self ad_setAFSpeechEvent:v5];
-  v6 = [v11 turnIdentifier];
-  if (v6)
+  [(SARDStartServerRequest *)self ad_setAFSpeechEvent:activationEvent];
+  turnIdentifier = [v11 turnIdentifier];
+  if (turnIdentifier)
   {
     v7 = AFTurnIdentifierGetString();
     [(SARDStartServerRequest *)self setTurnId:v7];
@@ -75,21 +75,21 @@
   }
 
   [(SARDStartServerRequest *)self setEyesFree:v8];
-  v9 = [(SARDStartServerRequest *)self voiceTriggerEventInfo];
+  voiceTriggerEventInfo = [(SARDStartServerRequest *)self voiceTriggerEventInfo];
 
-  if (!v9)
+  if (!voiceTriggerEventInfo)
   {
-    v10 = [v11 voiceTriggerEventInfo];
-    [(SARDStartServerRequest *)self setVoiceTriggerEventInfo:v10];
+    voiceTriggerEventInfo2 = [v11 voiceTriggerEventInfo];
+    [(SARDStartServerRequest *)self setVoiceTriggerEventInfo:voiceTriggerEventInfo2];
   }
 }
 
-- (void)ad_setAFSpeechEvent:(int64_t)a3
+- (void)ad_setAFSpeechEvent:(int64_t)event
 {
-  v5 = sub_10000EF08(a3);
+  v5 = sub_10000EF08(event);
   [(SARDStartServerRequest *)self setOrigin:v5];
 
-  v6 = sub_10000EF08(a3);
+  v6 = sub_10000EF08(event);
   [(SARDStartServerRequest *)self setInputOrigin:v6];
 }
 

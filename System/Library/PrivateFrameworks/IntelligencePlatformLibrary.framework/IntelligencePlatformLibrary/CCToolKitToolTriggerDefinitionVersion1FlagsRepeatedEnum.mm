@@ -1,18 +1,18 @@
 @interface CCToolKitToolTriggerDefinitionVersion1FlagsRepeatedEnum
-- (void)enumerateEnumValuesWithBlock:(id)a3;
+- (void)enumerateEnumValuesWithBlock:(id)block;
 @end
 
 @implementation CCToolKitToolTriggerDefinitionVersion1FlagsRepeatedEnum
 
-- (void)enumerateEnumValuesWithBlock:(id)a3
+- (void)enumerateEnumValuesWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __88__CCToolKitToolTriggerDefinitionVersion1FlagsRepeatedEnum_enumerateEnumValuesWithBlock___block_invoke;
   v6[3] = &unk_1E73E8EC8;
-  v7 = v4;
-  v5 = v4;
+  v7 = blockCopy;
+  v5 = blockCopy;
   [(CCRepeatedUInt32 *)self enumerateUInt32ValuesWithBlock:v6];
 }
 

@@ -1,35 +1,35 @@
 @interface VCSInterface
 - (BOOL)_canRetryInvalidChangeCounter;
-- (BOOL)sendGainSetting:(char)a3 inputType:(unsigned __int8)a4;
+- (BOOL)sendGainSetting:(char)setting inputType:(unsigned __int8)type;
 - (BOOL)sendVolumeControlPoint;
-- (BOOL)sendVolumeOffset:(signed __int16)a3 audioLocation:(unsigned int)a4;
-- (BOOL)setAbsoluteVolume:(unsigned __int8)a3;
+- (BOOL)sendVolumeOffset:(signed __int16)offset audioLocation:(unsigned int)location;
+- (BOOL)setAbsoluteVolume:(unsigned __int8)volume;
 - (BOOL)setInitialVolume;
-- (BOOL)setMute:(BOOL)a3;
+- (BOOL)setMute:(BOOL)mute;
 - (BOOL)setRelativeVolumeDown;
 - (BOOL)setRelativeVolumeUp;
-- (VCSInterface)initWithPeripheral:(id)a3 service:(id)a4;
-- (id)getIncludedServiceInterfaceForService:(id)a3;
+- (VCSInterface)initWithPeripheral:(id)peripheral service:(id)service;
+- (id)getIncludedServiceInterfaceForService:(id)service;
 - (void)_handleVolumeFlagsUpdate;
 - (void)_handleVolumeStateCharacteristicUpdate;
 - (void)_updateComplete;
 - (void)dealloc;
-- (void)peripheral:(id)a3 didDiscoverCharacteristicsForService:(id)a4 error:(id)a5;
-- (void)peripheral:(id)a3 didDiscoverIncludedServicesForService:(id)a4 error:(id)a5;
-- (void)peripheral:(id)a3 didUpdateNotificationStateForCharacteristic:(id)a4 error:(id)a5;
-- (void)peripheral:(id)a3 didUpdateValueForCharacteristic:(id)a4 error:(id)a5;
-- (void)peripheral:(id)a3 didWriteValueForCharacteristic:(id)a4 error:(id)a5;
+- (void)peripheral:(id)peripheral didDiscoverCharacteristicsForService:(id)service error:(id)error;
+- (void)peripheral:(id)peripheral didDiscoverIncludedServicesForService:(id)service error:(id)error;
+- (void)peripheral:(id)peripheral didUpdateNotificationStateForCharacteristic:(id)characteristic error:(id)error;
+- (void)peripheral:(id)peripheral didUpdateValueForCharacteristic:(id)characteristic error:(id)error;
+- (void)peripheral:(id)peripheral didWriteValueForCharacteristic:(id)characteristic error:(id)error;
 - (void)start;
 - (void)stop;
 @end
 
 @implementation VCSInterface
 
-- (VCSInterface)initWithPeripheral:(id)a3 service:(id)a4
+- (VCSInterface)initWithPeripheral:(id)peripheral service:(id)service
 {
   v9.receiver = self;
   v9.super_class = VCSInterface;
-  v4 = [(ServiceInterface *)&v9 initWithPeripheral:a3 service:a4];
+  v4 = [(ServiceInterface *)&v9 initWithPeripheral:peripheral service:service];
   v5 = v4;
   if (v4)
   {
@@ -65,9 +65,9 @@
   v17[3] = v6;
   v7 = [NSArray arrayWithObjects:v17 count:4];
 
-  v8 = [(ServiceInterface *)self peripheral];
-  v9 = [(ServiceInterface *)self service];
-  [v8 discoverCharacteristics:v7 forService:v9];
+  peripheral = [(ServiceInterface *)self peripheral];
+  service = [(ServiceInterface *)self service];
+  [peripheral discoverCharacteristics:v7 forService:service];
 
   v10 = [CBUUID UUIDWithString:CBUUIDVolumeOffsetControlServiceString];
   v16[0] = v10;
@@ -75,9 +75,9 @@
   v16[1] = v11;
   v12 = [NSArray arrayWithObjects:v16 count:2];
 
-  v13 = [(ServiceInterface *)self peripheral];
-  v14 = [(ServiceInterface *)self service];
-  [v13 discoverIncludedServices:v12 forService:v14];
+  peripheral2 = [(ServiceInterface *)self peripheral];
+  service2 = [(ServiceInterface *)self service];
+  [peripheral2 discoverIncludedServices:v12 forService:service2];
 }
 
 - (void)stop
@@ -130,27 +130,27 @@
   [(VCSInterface *)&v9 dealloc];
 }
 
-- (void)peripheral:(id)a3 didDiscoverCharacteristicsForService:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didDiscoverCharacteristicsForService:(id)service error:(id)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  peripheralCopy = peripheral;
+  serviceCopy = service;
+  errorCopy = error;
   v10 = qword_1000A9FE0;
   if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v40 = v9;
+    v40 = errorCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "didDiscoverCharacteristicsForService %@", buf, 0xCu);
   }
 
-  if (!v9)
+  if (!errorCopy)
   {
-    v29 = v8;
+    v29 = serviceCopy;
     v36 = 0u;
     v37 = 0u;
     v34 = 0u;
     v35 = 0u;
-    obj = [v8 characteristics];
+    obj = [serviceCopy characteristics];
     v11 = [obj countByEnumeratingWithState:&v34 objects:v38 count:16];
     if (!v11)
     {
@@ -176,15 +176,15 @@
         if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
         {
           v18 = v17;
-          v19 = [v16 UUID];
+          uUID = [v16 UUID];
           *buf = 138412290;
-          v40 = v19;
+          v40 = uUID;
           _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "didDiscoverCharacteristicsForService Characteristic %@", buf, 0xCu);
         }
 
-        v20 = [v16 UUID];
+        uUID2 = [v16 UUID];
         v21 = [CBUUID UUIDWithString:v14];
-        v22 = [v20 isEqual:v21];
+        v22 = [uUID2 isEqual:v21];
 
         if (v22)
         {
@@ -192,16 +192,16 @@
 LABEL_13:
           if (([v16 properties] & 0x10) != 0)
           {
-            [v7 setNotifyValue:1 forCharacteristic:v16];
+            [peripheralCopy setNotifyValue:1 forCharacteristic:v16];
           }
 
-          [v7 readValueForCharacteristic:v16];
+          [peripheralCopy readValueForCharacteristic:v16];
           continue;
         }
 
-        v23 = [v16 UUID];
+        uUID3 = [v16 UUID];
         v24 = [CBUUID UUIDWithString:v31];
-        v25 = [v23 isEqual:v24];
+        v25 = [uUID3 isEqual:v24];
 
         if (v25)
         {
@@ -209,9 +209,9 @@ LABEL_13:
           continue;
         }
 
-        v26 = [v16 UUID];
+        uUID4 = [v16 UUID];
         v27 = [CBUUID UUIDWithString:v30];
-        v28 = [v26 isEqual:v27];
+        v28 = [uUID4 isEqual:v27];
 
         if (v28)
         {
@@ -226,50 +226,50 @@ LABEL_13:
 LABEL_22:
 
         [(ServiceInterface *)self notifyDidStart];
-        v9 = 0;
-        v8 = v29;
+        errorCopy = 0;
+        serviceCopy = v29;
         break;
       }
     }
   }
 }
 
-- (void)peripheral:(id)a3 didDiscoverIncludedServicesForService:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didDiscoverIncludedServicesForService:(id)service error:(id)error
 {
-  v50 = a3;
-  v8 = a4;
-  v9 = a5;
+  peripheralCopy = peripheral;
+  serviceCopy = service;
+  errorCopy = error;
   v10 = &qword_1000A9FE0;
   v11 = qword_1000A9FE0;
   if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
   {
     v12 = v11;
-    v13 = [v8 includedServices];
+    includedServices = [serviceCopy includedServices];
     *buf = 138412802;
-    v60 = v13;
+    v60 = includedServices;
     v61 = 2112;
-    v62 = v8;
+    v62 = serviceCopy;
     v63 = 2112;
-    v64 = v9;
+    v64 = errorCopy;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "didDiscoverIncludedServicesForService %@ for service %@ : %@", buf, 0x20u);
   }
 
-  if (!v9)
+  if (!errorCopy)
   {
-    v47 = v8;
+    v47 = serviceCopy;
     v54 = 0u;
     v55 = 0u;
     v52 = 0u;
     v53 = 0u;
-    v14 = [v8 includedServices];
-    v15 = [v14 countByEnumeratingWithState:&v52 objects:v58 count:16];
+    includedServices2 = [serviceCopy includedServices];
+    v15 = [includedServices2 countByEnumeratingWithState:&v52 objects:v58 count:16];
     if (v15)
     {
       v16 = v15;
       v17 = *v53;
       v51 = CBUUIDAudioInputControlServiceString;
       v49 = CBUUIDVolumeOffsetControlServiceString;
-      v48 = v14;
+      v48 = includedServices2;
       do
       {
         v18 = 0;
@@ -277,18 +277,18 @@ LABEL_22:
         {
           if (*v53 != v17)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(includedServices2);
           }
 
           v19 = *(*(&v52 + 1) + 8 * v18);
-          v20 = [(VCSInterface *)self includedServiceInterfaceMap];
-          v21 = [v20 objectForKey:v19];
+          includedServiceInterfaceMap = [(VCSInterface *)self includedServiceInterfaceMap];
+          v21 = [includedServiceInterfaceMap objectForKey:v19];
 
           if (!v21)
           {
-            v22 = [v19 UUID];
+            uUID = [v19 UUID];
             v23 = [CBUUID UUIDWithString:v51];
-            v24 = [v22 isEqual:v23];
+            v24 = [uUID isEqual:v23];
 
             v25 = @"AICSInterface";
             if (v24)
@@ -296,9 +296,9 @@ LABEL_22:
               goto LABEL_12;
             }
 
-            v26 = [v19 UUID];
+            uUID2 = [v19 UUID];
             v27 = [CBUUID UUIDWithString:v49];
-            v28 = [v26 isEqual:v27];
+            v28 = [uUID2 isEqual:v27];
 
             v25 = @"VOCSInterface";
             if (v28)
@@ -307,7 +307,7 @@ LABEL_12:
               v29 = NSClassFromString(&v25->isa);
               if (v29)
               {
-                v30 = [[v29 alloc] initWithPeripheral:v50 service:v19];
+                v30 = [[v29 alloc] initWithPeripheral:peripheralCopy service:v19];
                 [v30 setParentServiceInterface:self];
                 v31 = *v10;
                 if (os_log_type_enabled(*v10, OS_LOG_TYPE_DEBUG))
@@ -320,20 +320,20 @@ LABEL_12:
                 if (os_log_type_enabled(*v10, OS_LOG_TYPE_DEFAULT))
                 {
                   v34 = v33;
-                  v35 = [v50 name];
-                  v36 = [v19 UUID];
+                  name = [peripheralCopy name];
+                  uUID3 = [v19 UUID];
                   *buf = 138412802;
-                  v60 = v35;
+                  v60 = name;
                   v61 = 2114;
-                  v62 = v36;
+                  v62 = uUID3;
                   v63 = 2112;
                   v64 = v19;
                   _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_DEFAULT, "Peripheral %@ supports included service %{public}@. %@", buf, 0x20u);
                 }
 
                 [(NSMapTable *)self->_includedServiceInterfaceMap setObject:v30 forKey:v19];
-                v37 = [(ServiceInterface *)self serviceEventHandler];
-                [v30 setServiceEventHandler:v37];
+                serviceEventHandler = [(ServiceInterface *)self serviceEventHandler];
+                [v30 setServiceEventHandler:serviceEventHandler];
 
                 v10 = v32;
                 if (([v30 isStarted] & 1) == 0)
@@ -342,13 +342,13 @@ LABEL_12:
                   if (os_log_type_enabled(*v32, OS_LOG_TYPE_DEFAULT))
                   {
                     v39 = v38;
-                    v40 = [v19 UUID];
-                    v41 = [(ServiceInterface *)self peripheral];
-                    v42 = [v41 name];
+                    uUID4 = [v19 UUID];
+                    peripheral = [(ServiceInterface *)self peripheral];
+                    name2 = [peripheral name];
                     *buf = 138412546;
-                    v60 = v40;
+                    v60 = uUID4;
                     v61 = 2112;
-                    v62 = v42;
+                    v62 = name2;
                     _os_log_impl(&_mh_execute_header, v39, OS_LOG_TYPE_DEFAULT, "Starting included service %@ on peripheral %@", buf, 0x16u);
 
                     v10 = v32;
@@ -357,7 +357,7 @@ LABEL_12:
                   [v30 start];
                 }
 
-                v14 = v48;
+                includedServices2 = v48;
               }
             }
 
@@ -377,38 +377,38 @@ LABEL_12:
         }
 
         while (v16 != v18);
-        v16 = [v14 countByEnumeratingWithState:&v52 objects:v58 count:16];
+        v16 = [includedServices2 countByEnumeratingWithState:&v52 objects:v58 count:16];
       }
 
       while (v16);
     }
 
-    v44 = [(VCSInterface *)self includedServiceInterfaceMap];
-    v45 = [v44 count];
+    includedServiceInterfaceMap2 = [(VCSInterface *)self includedServiceInterfaceMap];
+    v45 = [includedServiceInterfaceMap2 count];
 
-    v9 = 0;
-    v8 = v47;
+    errorCopy = 0;
+    serviceCopy = v47;
     if (!v45)
     {
       v46 = *v10;
       if (os_log_type_enabled(*v10, OS_LOG_TYPE_DEBUG))
       {
-        sub_10005B564(v46, v50, v47);
+        sub_10005B564(v46, peripheralCopy, v47);
       }
     }
   }
 }
 
-- (void)peripheral:(id)a3 didUpdateValueForCharacteristic:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didUpdateValueForCharacteristic:(id)characteristic error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  peripheralCopy = peripheral;
+  characteristicCopy = characteristic;
+  errorCopy = error;
   v11 = qword_1000A9FE0;
   if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
   {
     v12 = v11;
-    v13 = [v9 description];
+    v13 = [characteristicCopy description];
     v16 = 136315394;
     v17 = "[VCSInterface peripheral:didUpdateValueForCharacteristic:error:]";
     v18 = 2112;
@@ -416,20 +416,20 @@ LABEL_12:
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "VCSClientService %s updated characteristic %@ ", &v16, 0x16u);
   }
 
-  if (!v10)
+  if (!errorCopy)
   {
-    v14 = [(VCSInterface *)self volumeStateCharacteristic];
+    volumeStateCharacteristic = [(VCSInterface *)self volumeStateCharacteristic];
 
-    if (v14 == v9)
+    if (volumeStateCharacteristic == characteristicCopy)
     {
       [(VCSInterface *)self _handleVolumeStateCharacteristicUpdate];
     }
 
     else
     {
-      v15 = [(VCSInterface *)self volumeFlagsCharacteristic];
+      volumeFlagsCharacteristic = [(VCSInterface *)self volumeFlagsCharacteristic];
 
-      if (v15 == v9)
+      if (volumeFlagsCharacteristic == characteristicCopy)
       {
         [(VCSInterface *)self _handleVolumeFlagsUpdate];
       }
@@ -437,16 +437,16 @@ LABEL_12:
   }
 }
 
-- (void)peripheral:(id)a3 didUpdateNotificationStateForCharacteristic:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didUpdateNotificationStateForCharacteristic:(id)characteristic error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  peripheralCopy = peripheral;
+  characteristicCopy = characteristic;
+  errorCopy = error;
   v11 = qword_1000A9FE0;
   if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
   {
     v12 = v11;
-    v13 = [v9 description];
+    v13 = [characteristicCopy description];
     v16 = 136315394;
     v17 = "[VCSInterface peripheral:didUpdateNotificationStateForCharacteristic:error:]";
     v18 = 2112;
@@ -454,20 +454,20 @@ LABEL_12:
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "VCSClientService %s notified updated characteristic %@ ", &v16, 0x16u);
   }
 
-  if (!v10)
+  if (!errorCopy)
   {
-    v14 = [(VCSInterface *)self volumeStateCharacteristic];
+    volumeStateCharacteristic = [(VCSInterface *)self volumeStateCharacteristic];
 
-    if (v14 == v9)
+    if (volumeStateCharacteristic == characteristicCopy)
     {
       [(VCSInterface *)self _handleVolumeStateCharacteristicUpdate];
     }
 
     else
     {
-      v15 = [(VCSInterface *)self volumeFlagsCharacteristic];
+      volumeFlagsCharacteristic = [(VCSInterface *)self volumeFlagsCharacteristic];
 
-      if (v15 == v9)
+      if (volumeFlagsCharacteristic == characteristicCopy)
       {
         [(VCSInterface *)self _handleVolumeFlagsUpdate];
       }
@@ -475,41 +475,41 @@ LABEL_12:
   }
 }
 
-- (void)peripheral:(id)a3 didWriteValueForCharacteristic:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didWriteValueForCharacteristic:(id)characteristic error:(id)error
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  v11 = [(VCSInterface *)self volumeControlPointCharacteristic];
+  peripheralCopy = peripheral;
+  errorCopy = error;
+  characteristicCopy = characteristic;
+  volumeControlPointCharacteristic = [(VCSInterface *)self volumeControlPointCharacteristic];
 
-  if (v11 == v10)
+  if (volumeControlPointCharacteristic == characteristicCopy)
   {
     v12 = qword_1000A9FE0;
     if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
     {
       v13 = v12;
-      v14 = [(ServiceInterface *)self peripheral];
-      v15 = [v14 name];
+      peripheral = [(ServiceInterface *)self peripheral];
+      name = [peripheral name];
       v24 = 138412546;
-      v25 = v15;
+      v25 = name;
       v26 = 2112;
-      v27 = v9;
+      v27 = errorCopy;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Volume Control Point result for member %@: %@", &v24, 0x16u);
     }
 
-    v16 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v9 code]);
-    if ([v9 code] == 128)
+    v16 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [errorCopy code]);
+    if ([errorCopy code] == 128)
     {
       v17 = qword_1000A9FE0;
       if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_ERROR))
       {
-        sub_10005B69C(v9, v17);
+        sub_10005B69C(errorCopy, v17);
       }
 
       if ([(VCSInterface *)self _canRetryInvalidChangeCounter])
       {
-        v18 = [(VCSInterface *)self volumeStateCharacteristic];
-        [v8 readValueForCharacteristic:v18];
+        volumeStateCharacteristic = [(VCSInterface *)self volumeStateCharacteristic];
+        [peripheralCopy readValueForCharacteristic:volumeStateCharacteristic];
         goto LABEL_19;
       }
 
@@ -519,16 +519,16 @@ LABEL_12:
       v16 = v20;
     }
 
-    else if ([v9 code] == 129)
+    else if ([errorCopy code] == 129)
     {
       v19 = qword_1000A9FE0;
       if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_ERROR))
       {
-        sub_10005B624(v9, v19);
+        sub_10005B624(errorCopy, v19);
       }
     }
 
-    else if (![v9 code])
+    else if (![errorCopy code])
     {
       v21 = qword_1000A9FE0;
       if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
@@ -541,19 +541,19 @@ LABEL_12:
     }
 
     [(VCSInterface *)self _updateComplete];
-    v22 = [(ServiceInterface *)self serviceEventHandler];
+    serviceEventHandler = [(ServiceInterface *)self serviceEventHandler];
 
-    if (!v22)
+    if (!serviceEventHandler)
     {
 LABEL_20:
 
       goto LABEL_21;
     }
 
-    v18 = objc_alloc_init(NSMutableDictionary);
-    [v18 setValue:v16 forKey:@"kVolumeControlPoint"];
-    v23 = [(ServiceInterface *)self serviceEventHandler];
-    (v23)[2](v23, 10, v18);
+    volumeStateCharacteristic = objc_alloc_init(NSMutableDictionary);
+    [volumeStateCharacteristic setValue:v16 forKey:@"kVolumeControlPoint"];
+    serviceEventHandler2 = [(ServiceInterface *)self serviceEventHandler];
+    (serviceEventHandler2)[2](serviceEventHandler2, 10, volumeStateCharacteristic);
 
 LABEL_19:
     goto LABEL_20;
@@ -577,9 +577,9 @@ LABEL_12:
 
   else
   {
-    v4 = [(VCSInterface *)self volumeControlPointCharacteristic];
+    volumeControlPointCharacteristic = [(VCSInterface *)self volumeControlPointCharacteristic];
 
-    if (v4)
+    if (volumeControlPointCharacteristic)
     {
       [(VCSInterface *)self _updateStart];
       v5 = +[DataOutputStream outputStream];
@@ -597,10 +597,10 @@ LABEL_12:
         _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "volumeControlPointCharacteristic discovered", buf, 2u);
       }
 
-      v7 = [(ServiceInterface *)self peripheral];
-      v8 = [v5 data];
-      v9 = [(VCSInterface *)self volumeControlPointCharacteristic];
-      [v7 writeValue:v8 forCharacteristic:v9 type:0];
+      peripheral = [(ServiceInterface *)self peripheral];
+      data = [v5 data];
+      volumeControlPointCharacteristic2 = [(VCSInterface *)self volumeControlPointCharacteristic];
+      [peripheral writeValue:data forCharacteristic:volumeControlPointCharacteristic2 type:0];
 
       LOBYTE(v3) = 1;
     }
@@ -648,9 +648,9 @@ LABEL_12:
   }
 }
 
-- (BOOL)setAbsoluteVolume:(unsigned __int8)a3
+- (BOOL)setAbsoluteVolume:(unsigned __int8)volume
 {
-  v3 = a3;
+  volumeCopy = volume;
   if ([(VCSInterface *)self _updateInProgress])
   {
     if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_ERROR))
@@ -661,7 +661,7 @@ LABEL_12:
     return 0;
   }
 
-  if (self->_volumeControlPoint.volumeSetting == v3)
+  if (self->_volumeControlPoint.volumeSetting == volumeCopy)
   {
     if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEBUG))
     {
@@ -672,7 +672,7 @@ LABEL_12:
   }
 
   self->_volumeControlPoint.opcode = 4;
-  self->_volumeControlPoint.volumeSetting = v3;
+  self->_volumeControlPoint.volumeSetting = volumeCopy;
 
   return [(VCSInterface *)self sendVolumeControlPoint];
 }
@@ -717,9 +717,9 @@ LABEL_12:
   }
 }
 
-- (BOOL)setMute:(BOOL)a3
+- (BOOL)setMute:(BOOL)mute
 {
-  v3 = a3;
+  muteCopy = mute;
   if ([(VCSInterface *)self _updateInProgress])
   {
     if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_ERROR))
@@ -732,7 +732,7 @@ LABEL_12:
 
   else
   {
-    if (v3)
+    if (muteCopy)
     {
       v6 = 6;
     }
@@ -748,7 +748,7 @@ LABEL_12:
   }
 }
 
-- (BOOL)sendGainSetting:(char)a3 inputType:(unsigned __int8)a4
+- (BOOL)sendGainSetting:(char)setting inputType:(unsigned __int8)type
 {
   v10 = 0;
   v11 = &v10;
@@ -759,16 +759,16 @@ LABEL_12:
   v7[1] = 3221225472;
   v7[2] = sub_100009CCC;
   v7[3] = &unk_100094C40;
-  v8 = a4;
+  typeCopy = type;
   v7[4] = &v10;
-  v9 = a3;
+  settingCopy = setting;
   [(NSMapTable *)includedServiceInterfaceMap enumerateKeysAndObjectsUsingBlock:v7];
   v5 = *(v11 + 24);
   _Block_object_dispose(&v10, 8);
   return v5;
 }
 
-- (BOOL)sendVolumeOffset:(signed __int16)a3 audioLocation:(unsigned int)a4
+- (BOOL)sendVolumeOffset:(signed __int16)offset audioLocation:(unsigned int)location
 {
   v10 = 0;
   v11 = &v10;
@@ -779,20 +779,20 @@ LABEL_12:
   v7[1] = 3221225472;
   v7[2] = sub_100009E98;
   v7[3] = &unk_100094C68;
-  v8 = a4;
+  locationCopy = location;
   v7[4] = &v10;
-  v9 = a3;
+  offsetCopy = offset;
   [(NSMapTable *)includedServiceInterfaceMap enumerateKeysAndObjectsUsingBlock:v7];
   v5 = *(v11 + 24);
   _Block_object_dispose(&v10, 8);
   return v5;
 }
 
-- (id)getIncludedServiceInterfaceForService:(id)a3
+- (id)getIncludedServiceInterfaceForService:(id)service
 {
-  v4 = a3;
-  v5 = [(VCSInterface *)self includedServiceInterfaceMap];
-  v6 = [v5 objectForKey:v4];
+  serviceCopy = service;
+  includedServiceInterfaceMap = [(VCSInterface *)self includedServiceInterfaceMap];
+  v6 = [includedServiceInterfaceMap objectForKey:serviceCopy];
 
   return v6;
 }
@@ -806,9 +806,9 @@ LABEL_12:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Volume State Characteristic update", buf, 2u);
   }
 
-  v4 = [(VCSInterface *)self volumeStateCharacteristic];
-  v5 = [v4 value];
-  v6 = [DataInputStream inputStreamWithData:v5 byteOrder:1];
+  volumeStateCharacteristic = [(VCSInterface *)self volumeStateCharacteristic];
+  value = [volumeStateCharacteristic value];
+  v6 = [DataInputStream inputStreamWithData:value byteOrder:1];
 
   v7 = objc_alloc_init(NSMutableDictionary);
   v29 = 0;
@@ -818,10 +818,10 @@ LABEL_12:
     if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
     {
       v9 = v8;
-      v10 = [(ServiceInterface *)self peripheral];
-      v11 = [v10 name];
+      peripheral = [(ServiceInterface *)self peripheral];
+      name = [peripheral name];
       *buf = 138412546;
-      v31 = v11;
+      v31 = name;
       v32 = 1024;
       v33 = v29;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Volume setting for member %@: %u", buf, 0x12u);
@@ -843,10 +843,10 @@ LABEL_12:
     if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
     {
       v14 = v13;
-      v15 = [(ServiceInterface *)self peripheral];
-      v16 = [v15 name];
+      peripheral2 = [(ServiceInterface *)self peripheral];
+      name2 = [peripheral2 name];
       *buf = 138412546;
-      v31 = v16;
+      v31 = name2;
       v32 = 1024;
       v33 = v28;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Volume Mute setting for member %@: %u", buf, 0x12u);
@@ -868,10 +868,10 @@ LABEL_12:
     if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
     {
       v19 = v18;
-      v20 = [(ServiceInterface *)self peripheral];
-      v21 = [v20 name];
+      peripheral3 = [(ServiceInterface *)self peripheral];
+      name3 = [peripheral3 name];
       *buf = 138412546;
-      v31 = v21;
+      v31 = name3;
       v32 = 1024;
       v33 = v27;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "Change counter for member %@: 0x%02x", buf, 0x12u);
@@ -892,16 +892,16 @@ LABEL_12:
     }
   }
 
-  v23 = [(ServiceInterface *)self serviceEventHandler];
-  if (v23)
+  serviceEventHandler = [(ServiceInterface *)self serviceEventHandler];
+  if (serviceEventHandler)
   {
-    v24 = v23;
+    v24 = serviceEventHandler;
     v25 = [v7 count];
 
     if (v25)
     {
-      v26 = [(ServiceInterface *)self serviceEventHandler];
-      (v26)[2](v26, 8, v7);
+      serviceEventHandler2 = [(ServiceInterface *)self serviceEventHandler];
+      (serviceEventHandler2)[2](serviceEventHandler2, 8, v7);
     }
   }
 }
@@ -915,9 +915,9 @@ LABEL_12:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Volume Flags Characteristic update", buf, 2u);
   }
 
-  v4 = [(VCSInterface *)self volumeFlagsCharacteristic];
-  v5 = [v4 value];
-  v6 = [DataInputStream inputStreamWithData:v5];
+  volumeFlagsCharacteristic = [(VCSInterface *)self volumeFlagsCharacteristic];
+  value = [volumeFlagsCharacteristic value];
+  v6 = [DataInputStream inputStreamWithData:value];
 
   v7 = objc_alloc_init(NSMutableDictionary);
   v17 = 0;
@@ -927,10 +927,10 @@ LABEL_12:
     if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
     {
       v9 = v8;
-      v10 = [(ServiceInterface *)self peripheral];
-      v11 = [v10 name];
+      peripheral = [(ServiceInterface *)self peripheral];
+      name = [peripheral name];
       *buf = 138412546;
-      v19 = v11;
+      v19 = name;
       v20 = 1024;
       v21 = v17;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Volume flags for member %@: %u", buf, 0x12u);
@@ -945,16 +945,16 @@ LABEL_12:
     }
   }
 
-  v13 = [(ServiceInterface *)self serviceEventHandler];
-  if (v13)
+  serviceEventHandler = [(ServiceInterface *)self serviceEventHandler];
+  if (serviceEventHandler)
   {
-    v14 = v13;
+    v14 = serviceEventHandler;
     v15 = [v7 count];
 
     if (v15)
     {
-      v16 = [(ServiceInterface *)self serviceEventHandler];
-      (v16)[2](v16, 9, v7);
+      serviceEventHandler2 = [(ServiceInterface *)self serviceEventHandler];
+      (serviceEventHandler2)[2](serviceEventHandler2, 9, v7);
     }
   }
 }

@@ -4,7 +4,7 @@
 - (BOOL)isFinished;
 - (BOOL)isNetworkError;
 - (BOOL)isTimeout;
-- (BOOL)transitionToState:(int64_t)a3;
+- (BOOL)transitionToState:(int64_t)state;
 @end
 
 @implementation GKMatchResponse
@@ -54,54 +54,54 @@ void __42__GKMatchResponse_secureCodedPropertyKeys__block_invoke()
 
 - (BOOL)isFinished
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_state > 3;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_state > 3;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (BOOL)isCancelled
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_state == 5;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_state == 5;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (BOOL)isTimeout
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_state == 6;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_state == 6;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (BOOL)isNetworkError
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_state == 7;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_state == 7;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (BOOL)transitionToState:(int64_t)a3
+- (BOOL)transitionToState:(int64_t)state
 {
-  v4 = self;
-  objc_sync_enter(v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v5 = 0;
-  if (a3 <= 3)
+  if (state <= 3)
   {
-    if (a3 == 1)
+    if (state == 1)
     {
-      if (!v4->_state)
+      if (!selfCopy->_state)
       {
         goto LABEL_4;
       }
@@ -109,14 +109,14 @@ void __42__GKMatchResponse_secureCodedPropertyKeys__block_invoke()
       goto LABEL_10;
     }
 
-    if (a3 == 2 || a3 == 3)
+    if (state == 2 || state == 3)
     {
 LABEL_3:
-      if (v4->_state < 4)
+      if (selfCopy->_state < 4)
       {
 LABEL_4:
-        v4->_state = a3;
-        [(GKMatchResponse *)v4 _incrementSequence];
+        selfCopy->_state = state;
+        [(GKMatchResponse *)selfCopy _incrementSequence];
         v5 = 1;
         goto LABEL_11;
       }
@@ -126,13 +126,13 @@ LABEL_10:
     }
   }
 
-  else if ((a3 - 4) < 4)
+  else if ((state - 4) < 4)
   {
     goto LABEL_3;
   }
 
 LABEL_11:
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
   return v5;
 }

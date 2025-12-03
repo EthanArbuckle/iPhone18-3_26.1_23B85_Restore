@@ -1,19 +1,19 @@
 @interface _GEOResourceRequestHelper
-+ (id)helperForHandler:(id)a3 queue:(id)a4 resources:(id)a5 wantsUnpacked:(BOOL)a6 signpost:(unint64_t)a7;
-- (BOOL)finishedResource:(id)a3 withResult:(id)a4 error:(id)a5;
-- (BOOL)wantsUnpacked:(id)a3;
++ (id)helperForHandler:(id)handler queue:(id)queue resources:(id)resources wantsUnpacked:(BOOL)unpacked signpost:(unint64_t)signpost;
+- (BOOL)finishedResource:(id)resource withResult:(id)result error:(id)error;
+- (BOOL)wantsUnpacked:(id)unpacked;
 - (id)description;
-- (void)_callResultHandlerWith:(id)a3 paths:(id)a4 error:(id)a5;
+- (void)_callResultHandlerWith:(id)with paths:(id)paths error:(id)error;
 - (void)failAllRemainingRequests;
 @end
 
 @implementation _GEOResourceRequestHelper
 
-- (void)_callResultHandlerWith:(id)a3 paths:(id)a4 error:(id)a5
+- (void)_callResultHandlerWith:(id)with paths:(id)paths error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  withCopy = with;
+  pathsCopy = paths;
+  errorCopy = error;
   v11 = objc_retainBlock(self->_resultHandler);
   resultHandler = self->_resultHandler;
   self->_resultHandler = 0;
@@ -27,9 +27,9 @@ LABEL_14:
       voucher = self->_voucher;
       qos = self->_qos;
       v28 = v11;
-      v25 = v10;
-      v26 = v8;
-      v27 = v9;
+      v25 = errorCopy;
+      v26 = withCopy;
+      v27 = pathsCopy;
       v24 = dispatch_block_create_with_voucher_and_qos_class();
       dispatch_async(resultQueue, v24);
 
@@ -40,7 +40,7 @@ LABEL_14:
     v13 = sub_1000018BC();
     v14 = v13;
     signpost = self->_signpost;
-    if (v10)
+    if (errorCopy)
     {
       if (signpost - 1 > 0xFFFFFFFFFFFFFFFDLL || !os_signpost_enabled(v13))
       {
@@ -62,7 +62,7 @@ LABEL_14:
       }
 
       *buf = 67109120;
-      v30 = [v9 count];
+      v30 = [pathsCopy count];
       v16 = "Result=Success Count=%d";
       v17 = v14;
       v18 = signpost;
@@ -92,8 +92,8 @@ LABEL_15:
     v3 = sub_1000018BC();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
     {
-      v4 = [(NSMutableSet *)self->_remaining allObjects];
-      v5 = [v4 componentsJoinedByString:{@", "}];
+      allObjects = [(NSMutableSet *)self->_remaining allObjects];
+      v5 = [allObjects componentsJoinedByString:{@", "}];
       v10 = 138543362;
       v11 = v5;
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_ERROR, "Server error fetching resources: %{public}@", &v10, 0xCu);
@@ -121,15 +121,15 @@ LABEL_15:
   }
 }
 
-- (BOOL)finishedResource:(id)a3 withResult:(id)a4 error:(id)a5
+- (BOOL)finishedResource:(id)resource withResult:(id)result error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  [(NSMutableSet *)self->_remaining removeObject:v8];
-  if (v9 && self->_resultNames)
+  resourceCopy = resource;
+  resultCopy = result;
+  errorCopy = error;
+  [(NSMutableSet *)self->_remaining removeObject:resourceCopy];
+  if (resultCopy && self->_resultNames)
   {
-    v11 = [(NSDictionary *)self->_orderMap objectForKeyedSubscript:v8];
+    v11 = [(NSDictionary *)self->_orderMap objectForKeyedSubscript:resourceCopy];
     if (!v11)
     {
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_FAULT))
@@ -147,14 +147,14 @@ LABEL_15:
     v15[2] = sub_100043A8C;
     v15[3] = &unk_100083368;
     v15[4] = self;
-    v16 = v8;
-    v17 = v9;
+    v16 = resourceCopy;
+    v17 = resultCopy;
     [v12 enumerateIndexesUsingBlock:v15];
   }
 
   if (![(NSMutableSet *)self->_remaining count])
   {
-    [(_GEOResourceRequestHelper *)self _callResultHandlerWith:self->_resultNames paths:self->_resultPaths error:v10];
+    [(_GEOResourceRequestHelper *)self _callResultHandlerWith:self->_resultNames paths:self->_resultPaths error:errorCopy];
     v13 = 1;
     goto LABEL_8;
   }
@@ -166,9 +166,9 @@ LABEL_8:
   return v13;
 }
 
-- (BOOL)wantsUnpacked:(id)a3
+- (BOOL)wantsUnpacked:(id)unpacked
 {
-  v4 = [(NSDictionary *)self->_orderMap objectForKeyedSubscript:a3];
+  v4 = [(NSDictionary *)self->_orderMap objectForKeyedSubscript:unpacked];
   if (v4)
   {
     wantsUnpacked = self->_wantsUnpacked;
@@ -187,45 +187,45 @@ LABEL_8:
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
   v5 = objc_retainBlock(self->_resultHandler);
-  v6 = [(NSDictionary *)self->_orderMap allKeys];
-  v7 = [NSString stringWithFormat:@"<%@ %p handler %p resources %@ remaning %@ results.count: %d", v4, self, v5, v6, self->_remaining, [(NSMutableArray *)self->_resultNames count]];
+  allKeys = [(NSDictionary *)self->_orderMap allKeys];
+  v7 = [NSString stringWithFormat:@"<%@ %p handler %p resources %@ remaning %@ results.count: %d", v4, self, v5, allKeys, self->_remaining, [(NSMutableArray *)self->_resultNames count]];
 
   return v7;
 }
 
-+ (id)helperForHandler:(id)a3 queue:(id)a4 resources:(id)a5 wantsUnpacked:(BOOL)a6 signpost:(unint64_t)a7
++ (id)helperForHandler:(id)handler queue:(id)queue resources:(id)resources wantsUnpacked:(BOOL)unpacked signpost:(unint64_t)signpost
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  handlerCopy = handler;
+  queueCopy = queue;
+  resourcesCopy = resources;
   v14 = objc_alloc_init(_GEOResourceRequestHelper);
   if (v14)
   {
-    v15 = [v11 copy];
+    v15 = [handlerCopy copy];
     resultHandler = v14->_resultHandler;
     v14->_resultHandler = v15;
 
-    objc_storeStrong(&v14->_resultQueue, a4);
+    objc_storeStrong(&v14->_resultQueue, queue);
     v17 = voucher_copy();
     voucher = v14->_voucher;
     v14->_voucher = v17;
 
     v14->_qos = qos_class_self();
-    v14->_signpost = a7;
-    v19 = [NSMutableSet setWithArray:v13];
+    v14->_signpost = signpost;
+    v19 = [NSMutableSet setWithArray:resourcesCopy];
     remaining = v14->_remaining;
     v14->_remaining = v19;
 
-    v21 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v13 count]);
+    v21 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [resourcesCopy count]);
     resultNames = v14->_resultNames;
     v14->_resultNames = v21;
 
-    v23 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v13 count]);
+    v23 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [resourcesCopy count]);
     resultPaths = v14->_resultPaths;
     v14->_resultPaths = v23;
 
-    v14->_wantsUnpacked = a6;
-    v25 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v13 count]);
+    v14->_wantsUnpacked = unpacked;
+    v25 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [resourcesCopy count]);
     v26 = [NSURL fileURLWithPath:@"/"];
     v33[0] = _NSConcreteStackBlock;
     v33[1] = 3221225472;
@@ -237,7 +237,7 @@ LABEL_8:
     v36 = v25;
     v28 = v25;
     v29 = v26;
-    [v13 enumerateObjectsUsingBlock:v33];
+    [resourcesCopy enumerateObjectsUsingBlock:v33];
     v30 = [v28 copy];
     orderMap = v27->_orderMap;
     v27->_orderMap = v30;

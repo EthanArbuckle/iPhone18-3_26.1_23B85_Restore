@@ -7,10 +7,10 @@
 
 - (uint64_t)SBUISA_layoutMode
 {
-  v1 = [a1 systemApertureHostedElementContext];
-  v2 = [v1 layoutMode];
+  systemApertureHostedElementContext = [self systemApertureHostedElementContext];
+  layoutMode = [systemApertureHostedElementContext layoutMode];
 
-  return v2;
+  return layoutMode;
 }
 
 - (double)SBUISA_maximumAccessoryViewWidth

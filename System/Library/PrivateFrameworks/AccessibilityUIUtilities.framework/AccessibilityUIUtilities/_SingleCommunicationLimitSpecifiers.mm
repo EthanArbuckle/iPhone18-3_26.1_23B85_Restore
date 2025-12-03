@@ -1,61 +1,61 @@
 @interface _SingleCommunicationLimitSpecifiers
 - (NSArray)allSpecifiers;
-- (_SingleCommunicationLimitSpecifiers)initWithHeaderText:(id)a3 communicationLimit:(id)a4 maximumCommunicationLimit:(id)a5 app:(unint64_t)a6 direction:(unint64_t)a7;
-- (id)communicationLimitForSpecifier:(id)a3;
-- (id)specifierForCommunicationLimit:(id)a3;
-- (void)updateForCommunicationLimit:(id)a3 maximumCommunicationLimit:(id)a4;
+- (_SingleCommunicationLimitSpecifiers)initWithHeaderText:(id)text communicationLimit:(id)limit maximumCommunicationLimit:(id)communicationLimit app:(unint64_t)app direction:(unint64_t)direction;
+- (id)communicationLimitForSpecifier:(id)specifier;
+- (id)specifierForCommunicationLimit:(id)limit;
+- (void)updateForCommunicationLimit:(id)limit maximumCommunicationLimit:(id)communicationLimit;
 @end
 
 @implementation _SingleCommunicationLimitSpecifiers
 
-- (_SingleCommunicationLimitSpecifiers)initWithHeaderText:(id)a3 communicationLimit:(id)a4 maximumCommunicationLimit:(id)a5 app:(unint64_t)a6 direction:(unint64_t)a7
+- (_SingleCommunicationLimitSpecifiers)initWithHeaderText:(id)text communicationLimit:(id)limit maximumCommunicationLimit:(id)communicationLimit app:(unint64_t)app direction:(unint64_t)direction
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
+  textCopy = text;
+  limitCopy = limit;
+  communicationLimitCopy = communicationLimit;
   v40.receiver = self;
   v40.super_class = _SingleCommunicationLimitSpecifiers;
   v15 = [(_SingleCommunicationLimitSpecifiers *)&v40 init];
   if (v15)
   {
-    v16 = [MEMORY[0x1E69C5748] groupSpecifierWithName:v12];
+    v16 = [MEMORY[0x1E69C5748] groupSpecifierWithName:textCopy];
     groupSpecifier = v15->_groupSpecifier;
     v15->_groupSpecifier = v16;
 
     [(PSSpecifier *)v15->_groupSpecifier setProperty:MEMORY[0x1E695E118] forKey:*MEMORY[0x1E69C5938]];
     v18 = @"SEND_MESSAGES_TO_FAVORITES";
-    if (!a7)
+    if (!direction)
     {
       v18 = @"RECEIVE_MESSAGES_FROM_FAVORITES";
     }
 
     v19 = @"RECEIVE_MESSAGES_FROM_CONTACTS";
-    if (a7)
+    if (direction)
     {
       v19 = @"SEND_MESSAGES_TO_CONTACTS";
     }
 
     v20 = @"SEND_MESSAGES_TO_ANYONE";
     v21 = @"MAKE_CALLS_TO_FAVORITES";
-    if (!a7)
+    if (!direction)
     {
       v20 = @"RECEIVE_MESSAGES_FROM_ANYONE";
     }
 
     v22 = @"MAKE_CALLS_TO_CONTACTS";
-    if (!a7)
+    if (!direction)
     {
       v21 = @"RECEIVE_CALLS_FROM_FAVORITES";
       v22 = @"RECEIVE_CALLS_FROM_CONTACTS";
     }
 
     v23 = @"MAKE_CALLS_TO_ANYONE";
-    if (!a7)
+    if (!direction)
     {
       v23 = @"RECEIVE_CALLS_FROM_ANYONE";
     }
 
-    if (a6)
+    if (app)
     {
       v24 = v18;
     }
@@ -65,7 +65,7 @@
       v24 = v21;
     }
 
-    if (a6)
+    if (app)
     {
       v25 = v19;
     }
@@ -76,7 +76,7 @@
     }
 
     v26 = MEMORY[0x1E69C5748];
-    if (a6)
+    if (app)
     {
       v27 = v20;
     }
@@ -103,7 +103,7 @@
     everyoneSpecifier = v15->_everyoneSpecifier;
     v15->_everyoneSpecifier = v37;
 
-    [(_SingleCommunicationLimitSpecifiers *)v15 updateForCommunicationLimit:v13 maximumCommunicationLimit:v14];
+    [(_SingleCommunicationLimitSpecifiers *)v15 updateForCommunicationLimit:limitCopy maximumCommunicationLimit:communicationLimitCopy];
   }
 
   return v15;
@@ -112,39 +112,39 @@
 - (NSArray)allSpecifiers
 {
   v9[4] = *MEMORY[0x1E69E9840];
-  v3 = [(_SingleCommunicationLimitSpecifiers *)self groupSpecifier];
-  v9[0] = v3;
-  v4 = [(_SingleCommunicationLimitSpecifiers *)self selectedContactsSpecifier];
-  v9[1] = v4;
-  v5 = [(_SingleCommunicationLimitSpecifiers *)self allContactsSpecifier];
-  v9[2] = v5;
-  v6 = [(_SingleCommunicationLimitSpecifiers *)self everyoneSpecifier];
-  v9[3] = v6;
+  groupSpecifier = [(_SingleCommunicationLimitSpecifiers *)self groupSpecifier];
+  v9[0] = groupSpecifier;
+  selectedContactsSpecifier = [(_SingleCommunicationLimitSpecifiers *)self selectedContactsSpecifier];
+  v9[1] = selectedContactsSpecifier;
+  allContactsSpecifier = [(_SingleCommunicationLimitSpecifiers *)self allContactsSpecifier];
+  v9[2] = allContactsSpecifier;
+  everyoneSpecifier = [(_SingleCommunicationLimitSpecifiers *)self everyoneSpecifier];
+  v9[3] = everyoneSpecifier;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:4];
 
   return v7;
 }
 
-- (id)specifierForCommunicationLimit:(id)a3
+- (id)specifierForCommunicationLimit:(id)limit
 {
-  v4 = a3;
-  if ([v4 isEqualToString:*MEMORY[0x1E69945F0]])
+  limitCopy = limit;
+  if ([limitCopy isEqualToString:*MEMORY[0x1E69945F0]])
   {
-    v5 = [(_SingleCommunicationLimitSpecifiers *)self allContactsSpecifier];
+    allContactsSpecifier = [(_SingleCommunicationLimitSpecifiers *)self allContactsSpecifier];
 LABEL_7:
-    v6 = v5;
+    v6 = allContactsSpecifier;
     goto LABEL_8;
   }
 
-  if ([v4 isEqualToString:*MEMORY[0x1E6994610]])
+  if ([limitCopy isEqualToString:*MEMORY[0x1E6994610]])
   {
-    v5 = [(_SingleCommunicationLimitSpecifiers *)self selectedContactsSpecifier];
+    allContactsSpecifier = [(_SingleCommunicationLimitSpecifiers *)self selectedContactsSpecifier];
     goto LABEL_7;
   }
 
-  if ([v4 isEqualToString:*MEMORY[0x1E6994600]])
+  if ([limitCopy isEqualToString:*MEMORY[0x1E6994600]])
   {
-    v5 = [(_SingleCommunicationLimitSpecifiers *)self everyoneSpecifier];
+    allContactsSpecifier = [(_SingleCommunicationLimitSpecifiers *)self everyoneSpecifier];
     goto LABEL_7;
   }
 
@@ -154,31 +154,31 @@ LABEL_8:
   return v6;
 }
 
-- (id)communicationLimitForSpecifier:(id)a3
+- (id)communicationLimitForSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = [(_SingleCommunicationLimitSpecifiers *)self allContactsSpecifier];
+  specifierCopy = specifier;
+  allContactsSpecifier = [(_SingleCommunicationLimitSpecifiers *)self allContactsSpecifier];
 
-  if (v5 != v4)
+  if (allContactsSpecifier != specifierCopy)
   {
-    v6 = [(_SingleCommunicationLimitSpecifiers *)self selectedContactsSpecifier];
+    selectedContactsSpecifier = [(_SingleCommunicationLimitSpecifiers *)self selectedContactsSpecifier];
 
-    if (v6 == v4)
+    if (selectedContactsSpecifier == specifierCopy)
     {
       v9 = MEMORY[0x1E6994610];
       goto LABEL_10;
     }
 
-    v7 = [(_SingleCommunicationLimitSpecifiers *)self everyoneSpecifier];
+    everyoneSpecifier = [(_SingleCommunicationLimitSpecifiers *)self everyoneSpecifier];
 
-    if (v7 == v4)
+    if (everyoneSpecifier == specifierCopy)
     {
       v9 = MEMORY[0x1E6994600];
       goto LABEL_10;
     }
 
-    v8 = [MEMORY[0x1E6994620] commonLog];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_FAULT))
+    commonLog = [MEMORY[0x1E6994620] commonLog];
+    if (os_log_type_enabled(commonLog, OS_LOG_TYPE_FAULT))
     {
       [_SingleCommunicationLimitSpecifiers communicationLimitForSpecifier:];
     }
@@ -192,20 +192,20 @@ LABEL_10:
   return v10;
 }
 
-- (void)updateForCommunicationLimit:(id)a3 maximumCommunicationLimit:(id)a4
+- (void)updateForCommunicationLimit:(id)limit maximumCommunicationLimit:(id)communicationLimit
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(_SingleCommunicationLimitSpecifiers *)self groupSpecifier];
-  v9 = [(_SingleCommunicationLimitSpecifiers *)self specifierForCommunicationLimit:v7];
+  communicationLimitCopy = communicationLimit;
+  limitCopy = limit;
+  groupSpecifier = [(_SingleCommunicationLimitSpecifiers *)self groupSpecifier];
+  v9 = [(_SingleCommunicationLimitSpecifiers *)self specifierForCommunicationLimit:limitCopy];
 
-  [v8 setProperty:v9 forKey:*MEMORY[0x1E69C5958]];
+  [groupSpecifier setProperty:v9 forKey:*MEMORY[0x1E69C5958]];
   v10 = CLFSortedCommunicationLimits();
-  v11 = [v10 indexOfObject:v6];
+  v11 = [v10 indexOfObject:communicationLimitCopy];
   if (v11 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v12 = [MEMORY[0x1E6994620] commonLog];
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_FAULT))
+    commonLog = [MEMORY[0x1E6994620] commonLog];
+    if (os_log_type_enabled(commonLog, OS_LOG_TYPE_FAULT))
     {
       [_SingleCommunicationLimitSpecifiers updateForCommunicationLimit:maximumCommunicationLimit:];
     }

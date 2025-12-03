@@ -1,7 +1,7 @@
 @interface DocumentScannerViewController
-- (_TtC16ContinuityCamera29DocumentScannerViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)documentCameraViewController:(id)a3 didFinishWithScan:(id)a4;
-- (void)documentCameraViewControllerDidCancel:(id)a3;
+- (_TtC16ContinuityCamera29DocumentScannerViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)documentCameraViewController:(id)controller didFinishWithScan:(id)scan;
+- (void)documentCameraViewControllerDidCancel:(id)cancel;
 - (void)viewDidLoad;
 @end
 
@@ -9,28 +9,28 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000080F0();
 }
 
-- (void)documentCameraViewController:(id)a3 didFinishWithScan:(id)a4
+- (void)documentCameraViewController:(id)controller didFinishWithScan:(id)scan
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1000082C0(v6, v7);
+  controllerCopy = controller;
+  scanCopy = scan;
+  selfCopy = self;
+  sub_1000082C0(controllerCopy, scanCopy);
 }
 
-- (void)documentCameraViewControllerDidCancel:(id)a3
+- (void)documentCameraViewControllerDidCancel:(id)cancel
 {
-  v4 = a3;
-  v5 = self;
-  sub_1000083D0(v4);
+  cancelCopy = cancel;
+  selfCopy = self;
+  sub_1000083D0(cancelCopy);
 }
 
-- (_TtC16ContinuityCamera29DocumentScannerViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC16ContinuityCamera29DocumentScannerViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_100008964();
     v7 = v6;
@@ -42,8 +42,8 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_1000084C4(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_1000084C4(v5, v7, bundle);
 }
 
 @end

@@ -10,9 +10,9 @@
   v5 = a3;
   v30 = a4;
   v6 = [v5 mutableCopy];
-  v7 = [MEMORY[0x277CBEAF8] currentLocale];
-  v8 = [v7 languageCode];
-  v9 = [v8 isEqualToString:@"th"];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  languageCode = [currentLocale languageCode];
+  v9 = [languageCode isEqualToString:@"th"];
 
   if (v9)
   {
@@ -51,8 +51,8 @@
               objc_enumerationMutation(obj);
             }
 
-            v18 = [*(*(&v31 + 1) + 8 * i) range];
-            v20 = [v13 substringWithRange:{v18, v19}];
+            range = [*(*(&v31 + 1) + 8 * i) range];
+            v20 = [v13 substringWithRange:{range, v19}];
             v21 = [v20 mutableCopy];
             [v21 replaceOccurrencesOfString:@"%" withString:&stru_285611AE0 options:1 range:{0, objc_msgSend(v21, "length")}];
             [v21 replaceOccurrencesOfString:@"$@" withString:&stru_285611AE0 options:1 range:{0, objc_msgSend(v21, "length")}];

@@ -1,10 +1,10 @@
 @interface __RKEntityAudioAction
-- (id)copyWithZone:(void *)a3;
+- (id)copyWithZone:(void *)zone;
 @end
 
 @implementation __RKEntityAudioAction
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
 
   __RKEntityAudioAction.copy(with:)(v5);

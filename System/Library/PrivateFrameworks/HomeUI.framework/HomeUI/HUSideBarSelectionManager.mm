@@ -1,42 +1,42 @@
 @interface HUSideBarSelectionManager
 - (HFHomeKitObject)dashboarHomeKitObject;
 - (HFItem)currentSelectedItem;
-- (HUSideBarSelectionManager)initWithSideBarViewController:(id)a3 sideBarItemManager:(id)a4 delegate:(id)a5;
+- (HUSideBarSelectionManager)initWithSideBarViewController:(id)controller sideBarItemManager:(id)manager delegate:(id)delegate;
 - (id)initForTest;
 - (void)_didUpdateToAutomationTab;
 - (void)_didUpdateToDiscoverTab;
 - (void)_didUpdateToHomeTab;
-- (void)_didUpdateToTabForCategory:(id)a3;
-- (void)_didUpdateToTabForRoom:(id)a3;
+- (void)_didUpdateToTabForCategory:(id)category;
+- (void)_didUpdateToTabForRoom:(id)room;
 - (void)_updateAppearanceForSidebar;
 - (void)_updateSidebarSelection;
-- (void)setCurrentContext:(id)a3;
-- (void)setCurrentTabIdentifier:(id)a3;
-- (void)updateWithSideBarViewController:(id)a3 sideBarItemManager:(id)a4;
+- (void)setCurrentContext:(id)context;
+- (void)setCurrentTabIdentifier:(id)identifier;
+- (void)updateWithSideBarViewController:(id)controller sideBarItemManager:(id)manager;
 @end
 
 @implementation HUSideBarSelectionManager
 
-- (HUSideBarSelectionManager)initWithSideBarViewController:(id)a3 sideBarItemManager:(id)a4 delegate:(id)a5
+- (HUSideBarSelectionManager)initWithSideBarViewController:(id)controller sideBarItemManager:(id)manager delegate:(id)delegate
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  controllerCopy = controller;
+  managerCopy = manager;
+  delegateCopy = delegate;
   v19.receiver = self;
   v19.super_class = HUSideBarSelectionManager;
   v12 = [(HUSideBarSelectionManager *)&v19 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_sideBarViewController, a3);
-    objc_storeStrong(&v13->_sideBarItemManager, a4);
-    objc_storeStrong(&v13->_delegate, a5);
-    v14 = [MEMORY[0x277D14B30] sharedInstance];
-    v15 = [v14 selectedHomeAppTabIdentifier];
-    v16 = v15;
-    if (v15)
+    objc_storeStrong(&v12->_sideBarViewController, controller);
+    objc_storeStrong(&v13->_sideBarItemManager, manager);
+    objc_storeStrong(&v13->_delegate, delegate);
+    mEMORY[0x277D14B30] = [MEMORY[0x277D14B30] sharedInstance];
+    selectedHomeAppTabIdentifier = [mEMORY[0x277D14B30] selectedHomeAppTabIdentifier];
+    v16 = selectedHomeAppTabIdentifier;
+    if (selectedHomeAppTabIdentifier)
     {
-      v17 = v15;
+      v17 = selectedHomeAppTabIdentifier;
     }
 
     else
@@ -52,16 +52,16 @@
   return v13;
 }
 
-- (void)updateWithSideBarViewController:(id)a3 sideBarItemManager:(id)a4
+- (void)updateWithSideBarViewController:(id)controller sideBarItemManager:(id)manager
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  managerCopy = manager;
   sideBarViewController = self->_sideBarViewController;
-  self->_sideBarViewController = v6;
-  v9 = v6;
+  self->_sideBarViewController = controllerCopy;
+  v9 = controllerCopy;
 
   sideBarItemManager = self->_sideBarItemManager;
-  self->_sideBarItemManager = v7;
+  self->_sideBarItemManager = managerCopy;
 
   [(HUSideBarSelectionManager *)self _updateAppearanceForSidebar];
 }
@@ -81,96 +81,96 @@
 
 - (HFHomeKitObject)dashboarHomeKitObject
 {
-  v3 = [(HUSideBarSelectionManager *)self currentContext];
-  v4 = [v3 room];
+  currentContext = [(HUSideBarSelectionManager *)self currentContext];
+  room = [currentContext room];
 
-  v5 = [(HUSideBarSelectionManager *)self currentContext];
-  v6 = v5;
-  if (v4)
+  currentContext2 = [(HUSideBarSelectionManager *)self currentContext];
+  v6 = currentContext2;
+  if (room)
   {
-    [v5 room];
+    [currentContext2 room];
   }
 
   else
   {
-    [v5 home];
+    [currentContext2 home];
   }
   v7 = ;
 
   return v7;
 }
 
-- (void)setCurrentTabIdentifier:(id)a3
+- (void)setCurrentTabIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   if (![(NSString *)self->_currentTabIdentifier isEqualToString:?])
   {
-    objc_storeStrong(&self->_currentTabIdentifier, a3);
+    objc_storeStrong(&self->_currentTabIdentifier, identifier);
     [(HUSideBarSelectionManager *)self _updateSidebarSelection];
   }
 }
 
-- (void)setCurrentContext:(id)a3
+- (void)setCurrentContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   if (![(HUDashboardContext *)self->_currentContext isEqual:?])
   {
-    objc_storeStrong(&self->_currentContext, a3);
+    objc_storeStrong(&self->_currentContext, context);
     [(HUSideBarSelectionManager *)self _updateSidebarSelection];
   }
 }
 
 - (HFItem)currentSelectedItem
 {
-  v3 = [(HUSideBarSelectionManager *)self currentTabIdentifier];
-  v4 = [v3 isEqualToString:*MEMORY[0x277D13940]];
+  currentTabIdentifier = [(HUSideBarSelectionManager *)self currentTabIdentifier];
+  v4 = [currentTabIdentifier isEqualToString:*MEMORY[0x277D13940]];
 
   if (v4)
   {
-    v5 = [(HUSideBarSelectionManager *)self sideBarItemManager];
-    v6 = [v5 automationItem];
+    sideBarItemManager = [(HUSideBarSelectionManager *)self sideBarItemManager];
+    automationItem = [sideBarItemManager automationItem];
 LABEL_5:
-    v9 = v6;
+    v9 = automationItem;
     goto LABEL_11;
   }
 
-  v7 = [(HUSideBarSelectionManager *)self currentTabIdentifier];
-  v8 = [v7 isEqualToString:*MEMORY[0x277D13930]];
+  currentTabIdentifier2 = [(HUSideBarSelectionManager *)self currentTabIdentifier];
+  v8 = [currentTabIdentifier2 isEqualToString:*MEMORY[0x277D13930]];
 
   if (v8)
   {
-    v5 = [(HUSideBarSelectionManager *)self sideBarItemManager];
-    v6 = [v5 discoverItem];
+    sideBarItemManager = [(HUSideBarSelectionManager *)self sideBarItemManager];
+    automationItem = [sideBarItemManager discoverItem];
     goto LABEL_5;
   }
 
-  v10 = [(HUSideBarSelectionManager *)self currentContext];
-  v11 = [v10 room];
+  currentContext = [(HUSideBarSelectionManager *)self currentContext];
+  room = [currentContext room];
 
-  if (v11)
+  if (room)
   {
-    v5 = [(HUSideBarSelectionManager *)self sideBarItemManager];
-    v12 = [(HUSideBarSelectionManager *)self currentContext];
-    v13 = [v12 room];
-    v14 = [v5 roomItemForRoom:v13];
+    sideBarItemManager = [(HUSideBarSelectionManager *)self sideBarItemManager];
+    currentContext2 = [(HUSideBarSelectionManager *)self currentContext];
+    room2 = [currentContext2 room];
+    v14 = [sideBarItemManager roomItemForRoom:room2];
   }
 
   else
   {
-    v15 = [(HUSideBarSelectionManager *)self currentContext];
-    v16 = [v15 accessoryTypeGroup];
+    currentContext3 = [(HUSideBarSelectionManager *)self currentContext];
+    accessoryTypeGroup = [currentContext3 accessoryTypeGroup];
 
-    v17 = [(HUSideBarSelectionManager *)self sideBarItemManager];
-    v5 = v17;
-    if (!v16)
+    sideBarItemManager2 = [(HUSideBarSelectionManager *)self sideBarItemManager];
+    sideBarItemManager = sideBarItemManager2;
+    if (!accessoryTypeGroup)
     {
-      v6 = [v17 homeItem];
+      automationItem = [sideBarItemManager2 homeItem];
       goto LABEL_5;
     }
 
-    v12 = [(HUSideBarSelectionManager *)self currentContext];
-    v13 = [v12 accessoryTypeGroup];
-    v14 = [v5 categoryItemForCategory:v13];
+    currentContext2 = [(HUSideBarSelectionManager *)self currentContext];
+    room2 = [currentContext2 accessoryTypeGroup];
+    v14 = [sideBarItemManager categoryItemForCategory:room2];
   }
 
   v9 = v14;
@@ -183,11 +183,11 @@ LABEL_11:
 - (void)_updateSidebarSelection
 {
   [(HUSideBarSelectionManager *)self _updateAppearanceForSidebar];
-  v3 = [(HUSideBarSelectionManager *)self delegate];
-  [v3 contextDidUpdate];
+  delegate = [(HUSideBarSelectionManager *)self delegate];
+  [delegate contextDidUpdate];
 
-  v4 = [(HUSideBarSelectionManager *)self currentTabIdentifier];
-  v5 = [v4 isEqualToString:*MEMORY[0x277D13940]];
+  currentTabIdentifier = [(HUSideBarSelectionManager *)self currentTabIdentifier];
+  v5 = [currentTabIdentifier isEqualToString:*MEMORY[0x277D13940]];
 
   if (v5)
   {
@@ -196,8 +196,8 @@ LABEL_11:
     return;
   }
 
-  v6 = [(HUSideBarSelectionManager *)self currentTabIdentifier];
-  v7 = [v6 isEqualToString:*MEMORY[0x277D13930]];
+  currentTabIdentifier2 = [(HUSideBarSelectionManager *)self currentTabIdentifier];
+  v7 = [currentTabIdentifier2 isEqualToString:*MEMORY[0x277D13930]];
 
   if (v7)
   {
@@ -206,27 +206,27 @@ LABEL_11:
     return;
   }
 
-  v8 = [(HUSideBarSelectionManager *)self currentContext];
-  v9 = [v8 accessoryTypeGroup];
+  currentContext = [(HUSideBarSelectionManager *)self currentContext];
+  accessoryTypeGroup = [currentContext accessoryTypeGroup];
 
-  v10 = [(HUSideBarSelectionManager *)self currentContext];
-  v13 = v10;
-  if (v9)
+  currentContext2 = [(HUSideBarSelectionManager *)self currentContext];
+  currentContext3 = currentContext2;
+  if (accessoryTypeGroup)
   {
-    v11 = [v10 accessoryTypeGroup];
-    [(HUSideBarSelectionManager *)self _didUpdateToTabForCategory:v11];
+    accessoryTypeGroup2 = [currentContext2 accessoryTypeGroup];
+    [(HUSideBarSelectionManager *)self _didUpdateToTabForCategory:accessoryTypeGroup2];
 LABEL_13:
 
     return;
   }
 
-  v12 = [v10 room];
+  room = [currentContext2 room];
 
-  if (v12)
+  if (room)
   {
-    v13 = [(HUSideBarSelectionManager *)self currentContext];
-    v11 = [v13 room];
-    [(HUSideBarSelectionManager *)self _didUpdateToTabForRoom:v11];
+    currentContext3 = [(HUSideBarSelectionManager *)self currentContext];
+    accessoryTypeGroup2 = [currentContext3 room];
+    [(HUSideBarSelectionManager *)self _didUpdateToTabForRoom:accessoryTypeGroup2];
     goto LABEL_13;
   }
 
@@ -235,57 +235,57 @@ LABEL_13:
 
 - (void)_didUpdateToHomeTab
 {
-  v3 = [(HUSideBarSelectionManager *)self sideBarItemManager];
-  v5 = [v3 homeItem];
+  sideBarItemManager = [(HUSideBarSelectionManager *)self sideBarItemManager];
+  homeItem = [sideBarItemManager homeItem];
 
-  v4 = [(HUSideBarSelectionManager *)self sideBarViewController];
-  [v4 updateSelectionToItem:v5];
+  sideBarViewController = [(HUSideBarSelectionManager *)self sideBarViewController];
+  [sideBarViewController updateSelectionToItem:homeItem];
 }
 
-- (void)_didUpdateToTabForCategory:(id)a3
+- (void)_didUpdateToTabForCategory:(id)category
 {
-  v4 = a3;
-  v5 = [(HUSideBarSelectionManager *)self sideBarItemManager];
-  v7 = [v5 categoryItemForCategory:v4];
+  categoryCopy = category;
+  sideBarItemManager = [(HUSideBarSelectionManager *)self sideBarItemManager];
+  v7 = [sideBarItemManager categoryItemForCategory:categoryCopy];
 
-  v6 = [(HUSideBarSelectionManager *)self sideBarViewController];
-  [v6 updateSelectionToItem:v7];
+  sideBarViewController = [(HUSideBarSelectionManager *)self sideBarViewController];
+  [sideBarViewController updateSelectionToItem:v7];
 }
 
-- (void)_didUpdateToTabForRoom:(id)a3
+- (void)_didUpdateToTabForRoom:(id)room
 {
-  v4 = a3;
-  v5 = [(HUSideBarSelectionManager *)self sideBarItemManager];
-  v7 = [v5 roomItemForRoom:v4];
+  roomCopy = room;
+  sideBarItemManager = [(HUSideBarSelectionManager *)self sideBarItemManager];
+  v7 = [sideBarItemManager roomItemForRoom:roomCopy];
 
-  v6 = [(HUSideBarSelectionManager *)self sideBarViewController];
-  [v6 updateSelectionToItem:v7];
+  sideBarViewController = [(HUSideBarSelectionManager *)self sideBarViewController];
+  [sideBarViewController updateSelectionToItem:v7];
 }
 
 - (void)_didUpdateToDiscoverTab
 {
-  v3 = [(HUSideBarSelectionManager *)self sideBarItemManager];
-  v5 = [v3 discoverItem];
+  sideBarItemManager = [(HUSideBarSelectionManager *)self sideBarItemManager];
+  discoverItem = [sideBarItemManager discoverItem];
 
-  v4 = [(HUSideBarSelectionManager *)self sideBarViewController];
-  [v4 updateSelectionToItem:v5];
+  sideBarViewController = [(HUSideBarSelectionManager *)self sideBarViewController];
+  [sideBarViewController updateSelectionToItem:discoverItem];
 }
 
 - (void)_didUpdateToAutomationTab
 {
-  v3 = [(HUSideBarSelectionManager *)self sideBarItemManager];
-  v5 = [v3 automationItem];
+  sideBarItemManager = [(HUSideBarSelectionManager *)self sideBarItemManager];
+  automationItem = [sideBarItemManager automationItem];
 
-  v4 = [(HUSideBarSelectionManager *)self sideBarViewController];
-  [v4 updateSelectionToItem:v5];
+  sideBarViewController = [(HUSideBarSelectionManager *)self sideBarViewController];
+  [sideBarViewController updateSelectionToItem:automationItem];
 }
 
 - (void)_updateAppearanceForSidebar
 {
-  v5 = [(HUSideBarSelectionManager *)self currentTabIdentifier];
-  v3 = [v5 isEqualToString:*MEMORY[0x277D13938]];
-  v4 = [(HUSideBarSelectionManager *)self sideBarViewController];
-  [v4 setShouldUseDashboardEffects:v3];
+  currentTabIdentifier = [(HUSideBarSelectionManager *)self currentTabIdentifier];
+  v3 = [currentTabIdentifier isEqualToString:*MEMORY[0x277D13938]];
+  sideBarViewController = [(HUSideBarSelectionManager *)self sideBarViewController];
+  [sideBarViewController setShouldUseDashboardEffects:v3];
 }
 
 @end

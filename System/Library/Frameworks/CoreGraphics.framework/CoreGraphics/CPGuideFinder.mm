@@ -1,30 +1,30 @@
 @interface CPGuideFinder
-+ (BOOL)guideSeparates:(id)a3 from:(id)a4;
-+ (BOOL)gutterSeparates:(id)a3 from:(id)a4;
-+ (void)reclusterBetweenGuides:(id)a3;
-+ (void)reclusterPreservingAlignment:(id)a3;
-- (BOOL)addStripTo:(id)a3 bottom:(double)a4 left:(double)a5 top:(double)a6 right:(double)a7;
++ (BOOL)guideSeparates:(id)separates from:(id)from;
++ (BOOL)gutterSeparates:(id)separates from:(id)from;
++ (void)reclusterBetweenGuides:(id)guides;
++ (void)reclusterPreservingAlignment:(id)alignment;
+- (BOOL)addStripTo:(id)to bottom:(double)bottom left:(double)left top:(double)top right:(double)right;
 - (BOOL)hasGutters;
 - (BOOL)hasLeftGuides;
 - (BOOL)hasRightGuides;
-- (CPGuideFinder)initWithContentZone:(id)a3;
+- (CPGuideFinder)initWithContentZone:(id)zone;
 - (void)dealloc;
 - (void)dispose;
 - (void)finalize;
 - (void)findGuides;
 - (void)findGutters;
 - (void)findWordEdgeClusters;
-- (void)func:(id)a3 and:(id)a4 and:(unsigned int)a5 and:(unsigned int)a6;
+- (void)func:(id)func and:(id)and and:(unsigned int)a5 and:(unsigned int)a6;
 - (void)getWordEdges;
 - (void)markTextLines;
-- (void)setAlignForWordWithExtent:(id *)a3 stripArray:(id)a4 stripMax:(double)a5;
+- (void)setAlignForWordWithExtent:(id *)extent stripArray:(id)array stripMax:(double)max;
 - (void)splitTextLines;
 - (void)splitTextLinesAtBorderWords;
 - (void)splitTextLinesBetweenBorderWords;
-- (void)subdivideGutterFrom:(unsigned int)a3 to:(unsigned int)a4;
-- (void)subdivideLeftGuideAt:(unsigned int)a3;
-- (void)subdivideRightGuideAt:(unsigned int)a3;
-- (void)subdivideStripInto:(id)a3 from:(double)a4 to:(double)a5 borderedBy:(id *)a6 ofCount:(unsigned int)a7 crossedBy:(id *)a8 ofCount:(unsigned int)a9;
+- (void)subdivideGutterFrom:(unsigned int)from to:(unsigned int)to;
+- (void)subdivideLeftGuideAt:(unsigned int)at;
+- (void)subdivideRightGuideAt:(unsigned int)at;
+- (void)subdivideStripInto:(id)into from:(double)from to:(double)to borderedBy:(id *)by ofCount:(unsigned int)count crossedBy:(id *)crossedBy ofCount:(unsigned int)ofCount;
 @end
 
 @implementation CPGuideFinder
@@ -81,23 +81,23 @@
     LOBYTE(v3) = 1;
   }
 
-  v4 = [(CPZone *)self->contentZone textLinesInZone];
-  v5 = [v4 count];
+  textLinesInZone = [(CPZone *)self->contentZone textLinesInZone];
+  v5 = [textLinesInZone count];
   v6 = v5;
   if (v5)
   {
     v7 = 0;
-    v15 = 0;
-    v16 = 0;
+    firstWord = 0;
+    lastWord = 0;
     do
     {
-      v8 = [v4 objectAtIndex:v7];
+      v8 = [textLinesInZone objectAtIndex:v7];
       if ([v8 levels] >= 3)
       {
-        v15 = [v8 firstWord];
-        v16 = [v8 lastWord];
+        firstWord = [v8 firstWord];
+        lastWord = [v8 lastWord];
         [v8 mapToWordPairs:markSplitByGuide passing:&v13];
-        v9 = v15;
+        v9 = firstWord;
         v10 = v9 == [v8 firstWord] ? 1 : v3;
         if ((v10 & 1) == 0)
         {
@@ -126,39 +126,39 @@
 {
   if ([(CPGuideFinder *)self hasGutters:self->gutters])
   {
-    v3 = 1;
+    hasRightGuides = 1;
   }
 
   else if ([(CPGuideFinder *)self hasLeftGuides])
   {
-    v3 = [(CPGuideFinder *)self hasRightGuides];
+    hasRightGuides = [(CPGuideFinder *)self hasRightGuides];
   }
 
   else
   {
-    v3 = 0;
+    hasRightGuides = 0;
   }
 
-  v4 = [(CPZone *)self->contentZone textLinesInZone];
-  v5 = [v4 count];
+  textLinesInZone = [(CPZone *)self->contentZone textLinesInZone];
+  v5 = [textLinesInZone count];
   v6 = v5;
   if (v5)
   {
     v7 = 0;
-    v12 = 0;
-    v13 = 0;
+    firstWord = 0;
+    lastWord = 0;
     v8 = v5;
     do
     {
-      v9 = [v4 objectAtIndex:v7];
+      v9 = [textLinesInZone objectAtIndex:v7];
       if ([v9 levels] >= 3)
       {
-        v12 = [v9 firstWord];
-        v13 = [v9 lastWord];
-        if ((v3 & [v9 removeTextLines:v4 whereTrue:isSplitByGuide passing:&v11]) == 1)
+        firstWord = [v9 firstWord];
+        lastWord = [v9 lastWord];
+        if ((hasRightGuides & [v9 removeTextLines:textLinesInZone whereTrue:isSplitByGuide passing:&v11]) == 1)
         {
-          v10 = [v4 count];
-          [(CPGuideFinder *)self func:v4 and:v9 and:v6 and:v10];
+          v10 = [textLinesInZone count];
+          [(CPGuideFinder *)self func:textLinesInZone and:v9 and:v6 and:v10];
           v6 = v10;
         }
       }
@@ -174,21 +174,21 @@
 {
   if ([(CPGuideFinder *)self hasGutters])
   {
-    v3 = 1;
+    hasRightGuides = 1;
   }
 
   else if ([(CPGuideFinder *)self hasLeftGuides])
   {
-    v3 = [(CPGuideFinder *)self hasRightGuides];
+    hasRightGuides = [(CPGuideFinder *)self hasRightGuides];
   }
 
   else
   {
-    v3 = 0;
+    hasRightGuides = 0;
   }
 
-  v4 = [(CPZone *)self->contentZone textLinesInZone];
-  v5 = [v4 count];
+  textLinesInZone = [(CPZone *)self->contentZone textLinesInZone];
+  v5 = [textLinesInZone count];
   v6 = v5;
   if (v5)
   {
@@ -196,12 +196,12 @@
     v8 = v5;
     do
     {
-      v9 = [v4 objectAtIndex:v7];
+      v9 = [textLinesInZone objectAtIndex:v7];
       v11[1] = [v9 lastWord];
-      if ((v3 & [v9 removeTextLines:v4 whereTrue:isAlignedWithGuide passing:v11]) == 1)
+      if ((hasRightGuides & [v9 removeTextLines:textLinesInZone whereTrue:isAlignedWithGuide passing:v11]) == 1)
       {
-        v10 = [v4 count];
-        [(CPGuideFinder *)self func:v4 and:v9 and:v6 and:v10];
+        v10 = [textLinesInZone count];
+        [(CPGuideFinder *)self func:textLinesInZone and:v9 and:v6 and:v10];
         v6 = v10;
       }
 
@@ -212,14 +212,14 @@
   }
 }
 
-- (void)func:(id)a3 and:(id)a4 and:(unsigned int)a5 and:(unsigned int)a6
+- (void)func:(id)func and:(id)and and:(unsigned int)a5 and:(unsigned int)a6
 {
   LODWORD(v7) = a5;
-  v10 = [a4 hasJustifiedAlignment];
-  if (a6 <= v7 || (v10 & 1) != 0)
+  hasJustifiedAlignment = [and hasJustifiedAlignment];
+  if (a6 <= v7 || (hasJustifiedAlignment & 1) != 0)
   {
 LABEL_8:
-    if (!v10)
+    if (!hasJustifiedAlignment)
     {
       return;
     }
@@ -228,20 +228,20 @@ LABEL_8:
   else
   {
     v11 = v7;
-    v12 = a4;
+    andCopy = and;
     while (1)
     {
-      v13 = [a3 objectAtIndex:v11];
-      if (([v13 hasJustifiedAlignment] & 1) != 0 || +[CPGuideFinder gutterSeparates:from:](CPGuideFinder, "gutterSeparates:from:", v12, v13))
+      v13 = [func objectAtIndex:v11];
+      if (([v13 hasJustifiedAlignment] & 1) != 0 || +[CPGuideFinder gutterSeparates:from:](CPGuideFinder, "gutterSeparates:from:", andCopy, v13))
       {
         break;
       }
 
-      v10 = [v12 changesFontAt:v13];
+      hasJustifiedAlignment = [andCopy changesFontAt:v13];
       if (++v11 < a6)
       {
-        v12 = v13;
-        if (!v10)
+        andCopy = v13;
+        if (!hasJustifiedAlignment)
         {
           continue;
         }
@@ -251,7 +251,7 @@ LABEL_8:
     }
   }
 
-  [CPGuideFinder reclusterPreservingAlignment:a4];
+  [CPGuideFinder reclusterPreservingAlignment:and];
   v14 = a6 >= v7;
   v15 = a6 - v7;
   if (v15 != 0 && v14)
@@ -259,7 +259,7 @@ LABEL_8:
     v7 = v7;
     do
     {
-      +[CPGuideFinder reclusterPreservingAlignment:](CPGuideFinder, "reclusterPreservingAlignment:", [a3 objectAtIndex:v7++]);
+      +[CPGuideFinder reclusterPreservingAlignment:](CPGuideFinder, "reclusterPreservingAlignment:", [func objectAtIndex:v7++]);
       --v15;
     }
 
@@ -272,10 +272,10 @@ LABEL_8:
   [(NSMutableArray *)self->leftGuides removeAllObjects];
   [(NSMutableArray *)self->rightGuides removeAllObjects];
   [(CPGuideFinder *)self findWordEdgeClusters];
-  v3 = [(CPCluster *)self->anchors clusterCount];
-  if (v3)
+  clusterCount = [(CPCluster *)self->anchors clusterCount];
+  if (clusterCount)
   {
-    v4 = v3;
+    v4 = clusterCount;
     v5 = 0;
     do
     {
@@ -286,10 +286,10 @@ LABEL_8:
     while (v4 != v5);
   }
 
-  v6 = [(CPCluster *)self->rightHandSides clusterCount];
-  if (v6)
+  clusterCount2 = [(CPCluster *)self->rightHandSides clusterCount];
+  if (clusterCount2)
   {
-    v7 = v6;
+    v7 = clusterCount2;
     v8 = 0;
     do
     {
@@ -307,11 +307,11 @@ LABEL_8:
   [(CPGuideFinder *)self findWordEdgeClusters];
   medianFontSizeOfFirstCharacter = self->medianFontSizeOfFirstCharacter;
   medianFontSizeOfLastCharacter = self->medianFontSizeOfLastCharacter;
-  v5 = [(CPCluster *)self->anchors clusterCount];
-  v6 = [(CPCluster *)self->rightHandSides clusterCount];
-  if (v5)
+  clusterCount = [(CPCluster *)self->anchors clusterCount];
+  clusterCount2 = [(CPCluster *)self->rightHandSides clusterCount];
+  if (clusterCount)
   {
-    v7 = v6;
+    v7 = clusterCount2;
     v8 = 0;
     v9 = 0;
     v10 = 0;
@@ -382,7 +382,7 @@ LABEL_8:
       v9 = v16;
     }
 
-    while (v8 != v5);
+    while (v8 != clusterCount);
   }
 }
 
@@ -413,13 +413,13 @@ LABEL_8:
   }
 }
 
-- (void)subdivideRightGuideAt:(unsigned int)a3
+- (void)subdivideRightGuideAt:(unsigned int)at
 {
   memset(v11, 0, sizeof(v11));
   rightHandSides = self->rightHandSides;
   if (rightHandSides)
   {
-    [rightHandSides clusterStatisticsAtIndex:*&a3];
+    [rightHandSides clusterStatisticsAtIndex:*&at];
     rightHandSides = 56 * LODWORD(v11[0]);
   }
 
@@ -441,13 +441,13 @@ LABEL_8:
   free(v5);
 }
 
-- (void)subdivideLeftGuideAt:(unsigned int)a3
+- (void)subdivideLeftGuideAt:(unsigned int)at
 {
   memset(v11, 0, sizeof(v11));
   anchors = self->anchors;
   if (anchors)
   {
-    [anchors clusterStatisticsAtIndex:*&a3];
+    [anchors clusterStatisticsAtIndex:*&at];
     anchors = 56 * LODWORD(v11[0]);
   }
 
@@ -469,15 +469,15 @@ LABEL_8:
   free(v5);
 }
 
-- (void)subdivideGutterFrom:(unsigned int)a3 to:(unsigned int)a4
+- (void)subdivideGutterFrom:(unsigned int)from to:(unsigned int)to
 {
-  v4 = *&a4;
+  v4 = *&to;
   v6 = 0uLL;
   memset(v17, 0, sizeof(v17));
   rightHandSides = self->rightHandSides;
   if (rightHandSides)
   {
-    [(CPCluster *)rightHandSides clusterStatisticsAtIndex:*&a3];
+    [(CPCluster *)rightHandSides clusterStatisticsAtIndex:*&from];
     v6 = 0uLL;
   }
 
@@ -513,15 +513,15 @@ LABEL_8:
   free(v10);
 }
 
-- (void)subdivideStripInto:(id)a3 from:(double)a4 to:(double)a5 borderedBy:(id *)a6 ofCount:(unsigned int)a7 crossedBy:(id *)a8 ofCount:(unsigned int)a9
+- (void)subdivideStripInto:(id)into from:(double)from to:(double)to borderedBy:(id *)by ofCount:(unsigned int)count crossedBy:(id *)crossedBy ofCount:(unsigned int)ofCount
 {
-  qsort(a6, a7, 0x38uLL, compareWordExtentBottomAscendingLeftDescending);
-  v58 = a9;
-  v54 = a8;
-  qsort(a8, a9, 0x38uLL, compareWordExtentBottomAscendingLeftDescending);
-  if (a7)
+  qsort(by, count, 0x38uLL, compareWordExtentBottomAscendingLeftDescending);
+  ofCountCopy = ofCount;
+  crossedByCopy = crossedBy;
+  qsort(crossedBy, ofCount, 0x38uLL, compareWordExtentBottomAscendingLeftDescending);
+  if (count)
   {
-    v16 = a7;
+    countCopy = count;
     v17 = 0;
     v18 = 0;
     v19 = 0;
@@ -530,24 +530,24 @@ LABEL_8:
     v22 = 0.0;
     v23 = 0.0;
     v24 = 0.0;
-    v25 = a6;
-    v56 = a6;
-    v57 = v16;
-    v26 = a9;
+    byCopy = by;
+    byCopy2 = by;
+    v57 = countCopy;
+    ofCountCopy2 = ofCount;
     do
     {
-      if (v16 <= v20 + 1)
+      if (countCopy <= v20 + 1)
       {
         v27 = v20 + 1;
       }
 
       else
       {
-        v27 = v16;
+        v27 = countCopy;
       }
 
       v55 = v27;
-      v28 = &v25[v20];
+      v28 = &byCopy[v20];
       v20 = v20;
       v29 = v22;
       v30 = v23;
@@ -557,7 +557,7 @@ LABEL_8:
         v18 = v31;
         v23 = v30;
         v22 = v29;
-        v32 = &v25[v20];
+        v32 = &byCopy[v20];
         var2 = v32->var2;
         var3 = v32->var3;
         var0 = v32->var0;
@@ -567,7 +567,7 @@ LABEL_8:
           break;
         }
 
-        if (v19 != v26 && var3 > v24)
+        if (v19 != ofCountCopy2 && var3 > v24)
         {
           if (v31 < 5 || v17 < 1)
           {
@@ -576,14 +576,14 @@ LABEL_8:
 
           else
           {
-            if ([(CPGuideFinder *)self addStripTo:a3 bottom:v29 left:a4 top:v30 right:a5])
+            if ([(CPGuideFinder *)self addStripTo:into bottom:v29 left:from top:v30 right:to])
             {
               v45 = v18;
               v46 = v18 + 1;
               v47 = &v28[-v45];
               do
               {
-                [(CPGuideFinder *)self setAlignForWordWithExtent:v47 stripArray:a3 stripMax:a5];
+                [(CPGuideFinder *)self setAlignForWordWithExtent:v47 stripArray:into stripMax:to];
                 --v46;
                 ++v47;
               }
@@ -593,9 +593,9 @@ LABEL_8:
             }
 
             v17 = 0;
-            v25 = v56;
-            v16 = v57;
-            v26 = v58;
+            byCopy = byCopy2;
+            countCopy = v57;
+            ofCountCopy2 = ofCountCopy;
           }
 
           break;
@@ -604,17 +604,17 @@ LABEL_8:
         v37 = v31 == 1 && v17 <= 0;
         v38 = !v37;
         var4 = v32->var4;
-        if ((var4 & 2) != 0 && var1 <= a5)
+        if ((var4 & 2) != 0 && var1 <= to)
         {
           v40 = 1;
         }
 
         else
         {
-          v40 = var4 & (var0 >= a4);
+          v40 = var4 & (var0 >= from);
         }
 
-        if (self->gutters == a3 || (v40 & v38 & 1) != 0 || (v41 = CPPDFStyleEqual(var6, v32->var6, 0xFFFF), v16 = v57, v26 = v58, v25 = v56, (v41 & 1) != 0))
+        if (self->gutters == into || (v40 & v38 & 1) != 0 || (v41 = CPPDFStyleEqual(var6, v32->var6, 0xFFFF), countCopy = v57, ofCountCopy2 = ofCountCopy, byCopy = byCopy2, (v41 & 1) != 0))
         {
           if (var3 <= v23)
           {
@@ -648,14 +648,14 @@ LABEL_8:
             v17 = 0;
             if (!v37)
             {
-              if ([(CPGuideFinder *)self addStripTo:a3 bottom:v22 left:a4 top:v23 right:a5])
+              if ([(CPGuideFinder *)self addStripTo:into bottom:v22 left:from top:v23 right:to])
               {
                 v42 = v18;
                 v43 = v18 + 1;
                 v44 = &v28[-v42];
                 do
                 {
-                  [(CPGuideFinder *)self setAlignForWordWithExtent:v44 stripArray:a3 stripMax:a5];
+                  [(CPGuideFinder *)self setAlignForWordWithExtent:v44 stripArray:into stripMax:to];
                   --v43;
                   ++v44;
                 }
@@ -667,9 +667,9 @@ LABEL_8:
               v31 = 1;
               v30 = var3;
               v29 = var2;
-              v25 = v56;
-              v16 = v57;
-              v26 = v58;
+              byCopy = byCopy2;
+              countCopy = v57;
+              ofCountCopy2 = ofCountCopy;
             }
           }
         }
@@ -678,7 +678,7 @@ LABEL_8:
         var6 = v32->var6;
         ++v20;
         ++v28;
-        if (v20 >= v16)
+        if (v20 >= countCopy)
         {
           LODWORD(v20) = v55;
           v23 = v30;
@@ -688,22 +688,22 @@ LABEL_8:
         }
       }
 
-      if (v20 == v16)
+      if (v20 == countCopy)
       {
         break;
       }
 
-      if (v19 < v26)
+      if (v19 < ofCountCopy2)
       {
-        v48 = &v54[v19];
+        v48 = &crossedByCopy[v19];
         while (v48->var3 <= var2)
         {
           ++v19;
           ++v48;
-          if (v19 >= v26)
+          if (v19 >= ofCountCopy2)
           {
             v24 = v48[-1].var2;
-            v19 = v26;
+            v19 = ofCountCopy2;
             goto LABEL_59;
           }
         }
@@ -712,7 +712,7 @@ LABEL_8:
         if (var3 <= v24)
         {
           v49 = v32->var4;
-          if ((v49 & 2) != 0 && var1 <= a5 || (v49 & 1) != 0 && var0 >= a4)
+          if ((v49 & 2) != 0 && var1 <= to || (v49 & 1) != 0 && var0 >= from)
           {
             v17 = 1;
           }
@@ -726,11 +726,11 @@ LABEL_8:
         LODWORD(v20) = v20 + 1;
       }
 
-      if (v19 == v26)
+      if (v19 == ofCountCopy2)
       {
 LABEL_59:
         v50 = v32->var4;
-        if ((v50 & 2) != 0 && var1 <= a5 || (v50 & 1) != 0 && var0 >= a4)
+        if ((v50 & 2) != 0 && var1 <= to || (v50 & 1) != 0 && var0 >= from)
         {
           v17 = 1;
         }
@@ -743,17 +743,17 @@ LABEL_59:
       }
     }
 
-    while (v20 < v16 && v19 <= v26);
+    while (v20 < countCopy && v19 <= ofCountCopy2);
     if (v18 >= 5 && v17 >= 1)
     {
-      v51 = v25;
-      if ([(CPGuideFinder *)self addStripTo:a3 bottom:v22 left:a4 top:v23 right:a5])
+      v51 = byCopy;
+      if ([(CPGuideFinder *)self addStripTo:into bottom:v22 left:from top:v23 right:to])
       {
         v52 = v18 + 1;
         v53 = v57 - v18;
         do
         {
-          [(CPGuideFinder *)self setAlignForWordWithExtent:&v51[v53] stripArray:a3 stripMax:a5];
+          [(CPGuideFinder *)self setAlignForWordWithExtent:&v51[v53] stripArray:into stripMax:to];
           --v52;
           ++v53;
         }
@@ -764,19 +764,19 @@ LABEL_59:
   }
 }
 
-- (void)setAlignForWordWithExtent:(id *)a3 stripArray:(id)a4 stripMax:(double)a5
+- (void)setAlignForWordWithExtent:(id *)extent stripArray:(id)array stripMax:(double)max
 {
-  if (self->leftGuides == a4)
+  if (self->leftGuides == array)
   {
     v5 = 1;
   }
 
-  else if (self->rightGuides == a4)
+  else if (self->rightGuides == array)
   {
     v5 = 2;
   }
 
-  else if (a3->var0 >= a5)
+  else if (extent->var0 >= max)
   {
     v5 = 4;
   }
@@ -786,23 +786,23 @@ LABEL_59:
     v5 = 8;
   }
 
-  *a3->var5 |= v5;
+  *extent->var5 |= v5;
 }
 
-- (BOOL)addStripTo:(id)a3 bottom:(double)a4 left:(double)a5 top:(double)a6 right:(double)a7
+- (BOOL)addStripTo:(id)to bottom:(double)bottom left:(double)left top:(double)top right:(double)right
 {
-  v16 = a5;
-  v17 = a4;
-  v7 = a6 - a4;
-  v18 = a7 - a5;
+  leftCopy = left;
+  bottomCopy = bottom;
+  v7 = top - bottom;
+  v18 = right - left;
   v19 = v7;
-  v8 = (*&a4 & 0x7FFFFFFFFFFFFFFFuLL) < 0x7FF0000000000000 && (*&a5 & 0x7FFFFFFFFFFFFFFFuLL) < 0x7FF0000000000000;
-  v9 = fabs(a7 - a5);
+  v8 = (*&bottom & 0x7FFFFFFFFFFFFFFFuLL) < 0x7FF0000000000000 && (*&left & 0x7FFFFFFFFFFFFFFFuLL) < 0x7FF0000000000000;
+  v9 = fabs(right - left);
   v12 = v8 && *&v9 < 0x7FF0000000000000 && (*&v7 & 0x7FFFFFFFFFFFFFFFuLL) < 0x7FF0000000000000;
   if (v12)
   {
-    v14 = [objc_alloc(MEMORY[0x1E696B098]) initWithBytes:&v16 objCType:"{CGRect={CGPoint=dd}{CGSize=dd}}"];
-    [a3 addObject:{v14, *&v16, *&v17, *&v18, *&v19}];
+    v14 = [objc_alloc(MEMORY[0x1E696B098]) initWithBytes:&leftCopy objCType:"{CGRect={CGPoint=dd}{CGSize=dd}}"];
+    [to addObject:{v14, *&leftCopy, *&bottomCopy, *&v18, *&v19}];
   }
 
   return v12;
@@ -810,11 +810,11 @@ LABEL_59:
 
 - (void)getWordEdges
 {
-  v3 = [(CPZone *)self->contentZone wordCount];
-  self->countOfWordsInZone = v3;
-  if (v3)
+  wordCount = [(CPZone *)self->contentZone wordCount];
+  self->countOfWordsInZone = wordCount;
+  if (wordCount)
   {
-    self->anchorArray = malloc_type_malloc(8 * v3, 0x100004000313F17uLL);
+    self->anchorArray = malloc_type_malloc(8 * wordCount, 0x100004000313F17uLL);
     self->rightHandSideArray = malloc_type_malloc(8 * self->countOfWordsInZone, 0x100004000313F17uLL);
     v4 = malloc_type_malloc(8 * self->countOfWordsInZone, 0x100004000313F17uLL);
     v5 = malloc_type_malloc(8 * self->countOfWordsInZone, 0x100004000313F17uLL);
@@ -861,7 +861,7 @@ LABEL_59:
   }
 }
 
-- (CPGuideFinder)initWithContentZone:(id)a3
+- (CPGuideFinder)initWithContentZone:(id)zone
 {
   v7.receiver = self;
   v7.super_class = CPGuideFinder;
@@ -869,7 +869,7 @@ LABEL_59:
   v5 = v4;
   if (v4)
   {
-    v4->contentZone = a3;
+    v4->contentZone = zone;
     v4->gutters = objc_alloc_init(MEMORY[0x1E695DF70]);
     v5->leftGuides = objc_alloc_init(MEMORY[0x1E695DF70]);
     v5->rightGuides = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -878,17 +878,17 @@ LABEL_59:
   return v5;
 }
 
-+ (void)reclusterBetweenGuides:(id)a3
++ (void)reclusterBetweenGuides:(id)guides
 {
-  if ([a3 wordCount])
+  if ([guides wordCount])
   {
-    v4 = [a3 wordArray];
-    v6 = *(v4 + 8);
-    v5 = *(v4 + 12);
+    wordArray = [guides wordArray];
+    v6 = *(wordArray + 8);
+    v5 = *(wordArray + 12);
     v7 = v5 & 0x55;
     v22 = 0;
     v8 = v5 & 0xAA;
-    if ([a3 wordCount] < 2)
+    if ([guides wordCount] < 2)
     {
       v9 = 0;
       v10 = 1;
@@ -902,25 +902,25 @@ LABEL_59:
       v11 = v6;
       do
       {
-        v12 = *(v4 + 48 * v10 + 12);
+        v12 = *(wordArray + 48 * v10 + 12);
         v13 = v12 & 0x55;
         if (v8 | v13)
         {
           v22 = v10 - v9;
-          [CPCluster reclusterTextLine:a3 fromWordIndex:v9 count:&v22];
-          v14 = [a3 wordArray];
-          v4 = v14;
-          v15 = v14 + 48 * v9;
+          [CPCluster reclusterTextLine:guides fromWordIndex:v9 count:&v22];
+          wordArray2 = [guides wordArray];
+          wordArray = wordArray2;
+          v15 = wordArray2 + 48 * v9;
           v16 = *(v15 + 12) | v7;
           *(v15 + 8) = v6;
           *(v15 + 12) = v16;
           v9 = (v22 + v9);
           if (v22)
           {
-            *(v14 + 48 * (v9 - 1) + 12) |= v8;
+            *(wordArray2 + 48 * (v9 - 1) + 12) |= v8;
           }
 
-          v17 = v14 + 48 * v9;
+          v17 = wordArray2 + 48 * v9;
           v6 = *(v17 + 8);
           v12 = *(v17 + 12);
           if (v11 <= v6)
@@ -936,49 +936,49 @@ LABEL_59:
         v8 = v12 & 0xAA;
       }
 
-      while (v10 < [a3 wordCount]);
+      while (v10 < [guides wordCount]);
     }
 
     v22 = v10 - v9;
-    [CPCluster reclusterTextLine:a3 fromWordIndex:v9 count:&v22];
-    v18 = [a3 wordArray];
-    v19 = v18 + 48 * v9;
+    [CPCluster reclusterTextLine:guides fromWordIndex:v9 count:&v22];
+    wordArray3 = [guides wordArray];
+    v19 = wordArray3 + 48 * v9;
     v20 = *(v19 + 12) | v7;
     *(v19 + 8) = v6;
     *(v19 + 12) = v20;
     if (v22)
     {
-      v21 = v18 + 48 * (v9 + v22 - 1);
+      v21 = wordArray3 + 48 * (v9 + v22 - 1);
       *(v21 + 12) |= v8;
     }
 
-    if ([a3 levels] <= v11)
+    if ([guides levels] <= v11)
     {
-      [a3 setLevels:(v11 + 1)];
+      [guides setLevels:(v11 + 1)];
     }
   }
 }
 
-+ (void)reclusterPreservingAlignment:(id)a3
++ (void)reclusterPreservingAlignment:(id)alignment
 {
-  v4 = [a3 wordCount];
-  if (v4)
+  wordCount = [alignment wordCount];
+  if (wordCount)
   {
-    v5 = v4;
-    v6 = 48 * v4;
+    v5 = wordCount;
+    v6 = 48 * wordCount;
     v7 = malloc_type_malloc(v6, 0x6230A59DuLL);
-    memcpy(v7, [a3 wordArray], v6);
-    [CPCluster clusterTextLine:a3];
-    v8 = [a3 wordCount];
-    v9 = [a3 wordArray];
-    if (v8)
+    memcpy(v7, [alignment wordArray], v6);
+    [CPCluster clusterTextLine:alignment];
+    wordCount2 = [alignment wordCount];
+    wordArray = [alignment wordArray];
+    if (wordCount2)
     {
       v10 = 0;
       v11 = 0;
       do
       {
         v12 = &v7[48 * v10];
-        v13 = (v9 + 48 * v11);
+        v13 = (wordArray + 48 * v11);
         v14 = v13[1];
         if (*v13 == *v12)
         {
@@ -1020,34 +1020,34 @@ LABEL_11:
         ++v10;
       }
 
-      while (v10 < v5 && v11 < v8);
+      while (v10 < v5 && v11 < wordCount2);
     }
 
     free(v7);
   }
 }
 
-+ (BOOL)gutterSeparates:(id)a3 from:(id)a4
++ (BOOL)gutterSeparates:(id)separates from:(id)from
 {
-  v5 = [a3 lastWord];
-  v6 = [a4 firstWord];
+  lastWord = [separates lastWord];
+  firstWord = [from firstWord];
   result = 0;
-  if (v5 && v6)
+  if (lastWord && firstWord)
   {
-    return (*(v5 + 12) & 0x88) != 0 || (*(v6 + 12) & 0x44) != 0;
+    return (*(lastWord + 12) & 0x88) != 0 || (*(firstWord + 12) & 0x44) != 0;
   }
 
   return result;
 }
 
-+ (BOOL)guideSeparates:(id)a3 from:(id)a4
++ (BOOL)guideSeparates:(id)separates from:(id)from
 {
-  v5 = [a3 lastWord];
-  v6 = [a4 firstWord];
+  lastWord = [separates lastWord];
+  firstWord = [from firstWord];
   result = 0;
-  if (v5 && v6)
+  if (lastWord && firstWord)
   {
-    return (*(v5 + 12) & 0xAA) != 0 || (*(v6 + 12) & 0x55) != 0;
+    return (*(lastWord + 12) & 0xAA) != 0 || (*(firstWord + 12) & 0x55) != 0;
   }
 
   return result;

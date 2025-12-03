@@ -1,9 +1,9 @@
 @interface _UIRemoteViewControllerAppProtectionMetrics
-+ (id)metricsForExtensionBundleIdentifier:(void *)a3 extensionPlugin:;
++ (id)metricsForExtensionBundleIdentifier:(void *)identifier extensionPlugin:;
 - (NSString)debugDescription;
 - (_UIRemoteViewControllerAppProtectionMetrics)init;
 - (id)succinctDescription;
-- (void)appendDescriptionToStream:(id)a3;
+- (void)appendDescriptionToStream:(id)stream;
 @end
 
 @implementation _UIRemoteViewControllerAppProtectionMetrics
@@ -21,7 +21,7 @@
     v11 = 2114;
     v12 = v7;
     v13 = 2048;
-    v14 = self;
+    selfCopy = self;
     v15 = 2114;
     v16 = @"_UIRemoteViewControllerAppProtectionMetrics.m";
     v17 = 1024;
@@ -37,10 +37,10 @@
   return result;
 }
 
-+ (id)metricsForExtensionBundleIdentifier:(void *)a3 extensionPlugin:
++ (id)metricsForExtensionBundleIdentifier:(void *)identifier extensionPlugin:
 {
   v5 = a2;
-  v6 = a3;
+  identifierCopy = identifier;
   objc_opt_self();
   if (!v5)
   {
@@ -53,10 +53,10 @@
   v8 = v7;
   if (!v33)
   {
-    v20 = [v7 containingBundleRecord];
-    v12 = [v20 bundleIdentifier];
-    v13 = _UIMainBundleIdentifier();
-    if ([v12 isEqualToString:v13])
+    containingBundleRecord = [v7 containingBundleRecord];
+    bundleIdentifier = [containingBundleRecord bundleIdentifier];
+    containingBundleRecord2 = _UIMainBundleIdentifier();
+    if ([bundleIdentifier isEqualToString:containingBundleRecord2])
     {
       v19 = 0;
 LABEL_22:
@@ -64,9 +64,9 @@ LABEL_22:
       goto LABEL_23;
     }
 
-    v21 = [v8 optsOutOfAppProtectionShield];
+    optsOutOfAppProtectionShield = [v8 optsOutOfAppProtectionShield];
 
-    if (v21)
+    if (optsOutOfAppProtectionShield)
     {
       goto LABEL_16;
     }
@@ -76,16 +76,16 @@ LABEL_22:
     {
       v11 = v27;
 LABEL_5:
-      v12 = [v8 appProtectionEffectiveContainer];
-      v13 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:v12 allowPlaceholder:1 error:0];
-      if (!v13)
+      bundleIdentifier = [v8 appProtectionEffectiveContainer];
+      containingBundleRecord2 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:bundleIdentifier allowPlaceholder:1 error:0];
+      if (!containingBundleRecord2)
       {
-        v13 = [v8 containingBundleRecord];
+        containingBundleRecord2 = [v8 containingBundleRecord];
       }
 
-      if (v12)
+      if (bundleIdentifier)
       {
-        v14 = v12;
+        v14 = bundleIdentifier;
       }
 
       else
@@ -95,23 +95,23 @@ LABEL_5:
 
       obj = v14;
       v15 = v14;
-      v16 = [v13 localizedName];
-      v17 = v16;
+      localizedName = [containingBundleRecord2 localizedName];
+      v17 = localizedName;
       v32 = v8;
-      if (v16)
+      if (localizedName)
       {
-        v18 = v16;
+        localizedName2 = localizedName;
       }
 
       else
       {
-        v18 = [v6 localizedName];
+        localizedName2 = [identifierCopy localizedName];
       }
 
-      v22 = v18;
+      v22 = localizedName2;
 
       v23 = [_UIRemoteViewControllerAppProtectionMetrics alloc];
-      v20 = v11;
+      containingBundleRecord = v11;
       v31 = v15;
       v28 = v22;
       v24 = v22;
@@ -141,11 +141,11 @@ LABEL_5:
     }
   }
 
-  v9 = [v6 uuid];
-  if (v9)
+  uuid = [identifierCopy uuid];
+  if (uuid)
   {
-    v10 = v9;
-    v11 = [objc_alloc(getAPExtensionClass()) initWithExtensionUUID:v9 bundleIdentifier:v5];
+    v10 = uuid;
+    v11 = [objc_alloc(getAPExtensionClass()) initWithExtensionUUID:uuid bundleIdentifier:v5];
 
     if (v11)
     {
@@ -162,28 +162,28 @@ LABEL_24:
   return v19;
 }
 
-- (void)appendDescriptionToStream:(id)a3
+- (void)appendDescriptionToStream:(id)stream
 {
-  v4 = a3;
+  streamCopy = stream;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __73___UIRemoteViewControllerAppProtectionMetrics_appendDescriptionToStream___block_invoke;
   v11[3] = &unk_1E70F35B8;
-  v5 = v4;
+  v5 = streamCopy;
   v12 = v5;
-  v13 = self;
+  selfCopy = self;
   [v5 appendProem:self block:v11];
-  v6 = [v5 style];
-  v7 = [v6 verbosity];
+  style = [v5 style];
+  verbosity = [style verbosity];
 
-  if (v7 != 2)
+  if (verbosity != 2)
   {
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __73___UIRemoteViewControllerAppProtectionMetrics_appendDescriptionToStream___block_invoke_2;
     v8[3] = &unk_1E70F35B8;
     v9 = v5;
-    v10 = self;
+    selfCopy2 = self;
     [v9 appendBodySectionWithName:0 block:v8];
   }
 }
@@ -191,8 +191,8 @@ LABEL_24:
 - (id)succinctDescription
 {
   v3 = MEMORY[0x1E698E688];
-  v4 = [MEMORY[0x1E698E690] succinctStyle];
-  v5 = [v3 descriptionForRootObject:self withStyle:v4];
+  succinctStyle = [MEMORY[0x1E698E690] succinctStyle];
+  v5 = [v3 descriptionForRootObject:self withStyle:succinctStyle];
 
   return v5;
 }
@@ -200,8 +200,8 @@ LABEL_24:
 - (NSString)debugDescription
 {
   v3 = MEMORY[0x1E698E688];
-  v4 = [MEMORY[0x1E698E690] debugStyle];
-  v5 = [v3 descriptionForRootObject:self withStyle:v4];
+  debugStyle = [MEMORY[0x1E698E690] debugStyle];
+  v5 = [v3 descriptionForRootObject:self withStyle:debugStyle];
 
   return v5;
 }

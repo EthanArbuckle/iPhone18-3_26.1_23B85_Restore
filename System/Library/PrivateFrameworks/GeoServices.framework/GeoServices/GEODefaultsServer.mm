@@ -1,29 +1,29 @@
 @interface GEODefaultsServer
 + (id)_acceptableKeys;
 + (void)submitBackgroundTasksNeededDuringDaemonStart;
-- (BOOL)_validatePeer:(id)a3 canSetKey:(id)a4 error:(id *)a5;
-- (BOOL)handleIncomingMessage:(id)a3 withObject:(id)a4 fromPeer:(id)a5 signpostId:(unint64_t)a6;
-- (GEODefaultsServer)initWithDaemon:(id)a3;
-- (void)_configKeysChanged:(id)a3;
-- (void)_expiringKeysChanged:(id)a3;
-- (void)_notifyListenersOfKeysChange:(id)a3 options:(unint64_t)a4 postInternalNotification:(BOOL)a5;
-- (void)addChangeListenerForWithRequest:(id)a3;
-- (void)clearExpiredKeyWithRequest:(id)a3;
+- (BOOL)_validatePeer:(id)peer canSetKey:(id)key error:(id *)error;
+- (BOOL)handleIncomingMessage:(id)message withObject:(id)object fromPeer:(id)peer signpostId:(unint64_t)id;
+- (GEODefaultsServer)initWithDaemon:(id)daemon;
+- (void)_configKeysChanged:(id)changed;
+- (void)_expiringKeysChanged:(id)changed;
+- (void)_notifyListenersOfKeysChange:(id)change options:(unint64_t)options postInternalNotification:(BOOL)notification;
+- (void)addChangeListenerForWithRequest:(id)request;
+- (void)clearExpiredKeyWithRequest:(id)request;
 - (void)dealloc;
-- (void)getAllExpiringKeysWithRequest:(id)a3;
-- (void)getAllValuesInStoreWithRequest:(id)a3;
-- (void)getCompanionSyncValuesForKeysWithRequest:(id)a3;
-- (void)getConfigValueForKeyWithRequest:(id)a3;
-- (void)migrageEntitledKeyWithRequest:(id)a3;
-- (void)peerDidConnect:(id)a3;
-- (void)peerDidDisconnect:(id)a3;
-- (void)removeChangeListenerForWithRequest:(id)a3;
-- (void)resetAllDefaultsWithMessage:(id)a3;
-- (void)runBackgroundTask:(id)a3;
-- (void)setAllValuesInStoreWithRequest:(id)a3;
-- (void)setConfigValueForKeyWithRequest:(id)a3;
-- (void)setExpiringKeyWithRequest:(id)a3;
-- (void)updateNetworkDefaultsWithMessage:(id)a3;
+- (void)getAllExpiringKeysWithRequest:(id)request;
+- (void)getAllValuesInStoreWithRequest:(id)request;
+- (void)getCompanionSyncValuesForKeysWithRequest:(id)request;
+- (void)getConfigValueForKeyWithRequest:(id)request;
+- (void)migrageEntitledKeyWithRequest:(id)request;
+- (void)peerDidConnect:(id)connect;
+- (void)peerDidDisconnect:(id)disconnect;
+- (void)removeChangeListenerForWithRequest:(id)request;
+- (void)resetAllDefaultsWithMessage:(id)message;
+- (void)runBackgroundTask:(id)task;
+- (void)setAllValuesInStoreWithRequest:(id)request;
+- (void)setConfigValueForKeyWithRequest:(id)request;
+- (void)setExpiringKeyWithRequest:(id)request;
+- (void)updateNetworkDefaultsWithMessage:(id)message;
 @end
 
 @implementation GEODefaultsServer
@@ -40,12 +40,12 @@
   return v3;
 }
 
-- (BOOL)handleIncomingMessage:(id)a3 withObject:(id)a4 fromPeer:(id)a5 signpostId:(unint64_t)a6
+- (BOOL)handleIncomingMessage:(id)message withObject:(id)object fromPeer:(id)peer signpostId:(unint64_t)id
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = sub_100001334(v10);
+  messageCopy = message;
+  objectCopy = object;
+  peerCopy = peer;
+  v13 = sub_100001334(messageCopy);
   v14 = 0;
   if (v13 <= 1944)
   {
@@ -54,11 +54,11 @@
       if (v13 == 1851)
       {
         v34 = objc_opt_class();
-        v35 = sub_100001388(@"defaults", v10, v11, v34, v12);
+        v35 = sub_100001388(@"defaults", messageCopy, objectCopy, v34, peerCopy);
         v16 = v35;
         if (v35)
         {
-          [v35 setSignpostId:a6];
+          [v35 setSignpostId:id];
           [(GEODefaultsServer *)self getAllExpiringKeysWithRequest:v16];
           goto LABEL_54;
         }
@@ -71,11 +71,11 @@
         if (v13 == 1933)
         {
           v20 = objc_opt_class();
-          v21 = sub_100001388(@"defaults", v10, v11, v20, v12);
+          v21 = sub_100001388(@"defaults", messageCopy, objectCopy, v20, peerCopy);
           v16 = v21;
           if (v21)
           {
-            [v21 setSignpostId:a6];
+            [v21 setSignpostId:id];
             [(GEODefaultsServer *)self getAllValuesInStoreWithRequest:v16];
             goto LABEL_54;
           }
@@ -86,14 +86,14 @@
         goto LABEL_56;
       }
 
-      if ((sub_100001548(self, v12) & 1) == 0)
+      if ((sub_100001548(self, peerCopy) & 1) == 0)
       {
         v38 = objc_opt_class();
-        v39 = sub_100001388(@"defaults", v10, v11, v38, v12);
+        v39 = sub_100001388(@"defaults", messageCopy, objectCopy, v38, peerCopy);
         v16 = v39;
         if (v39)
         {
-          [v39 setSignpostId:a6];
+          [v39 setSignpostId:id];
           [(GEODefaultsServer *)self migrageEntitledKeyWithRequest:v16];
           goto LABEL_54;
         }
@@ -107,14 +107,14 @@
       switch(v13)
       {
         case 1467:
-          if ((sub_100001548(self, v12) & 1) == 0)
+          if ((sub_100001548(self, peerCopy) & 1) == 0)
           {
             v32 = objc_opt_class();
-            v33 = sub_100001388(@"defaults", v10, v11, v32, v12);
+            v33 = sub_100001388(@"defaults", messageCopy, objectCopy, v32, peerCopy);
             v16 = v33;
             if (v33)
             {
-              [v33 setSignpostId:a6];
+              [v33 setSignpostId:id];
               [(GEODefaultsServer *)self setExpiringKeyWithRequest:v16];
               goto LABEL_54;
             }
@@ -124,14 +124,14 @@
 
           break;
         case 1537:
-          if ((sub_100001548(self, v12) & 1) == 0)
+          if ((sub_100001548(self, peerCopy) & 1) == 0)
           {
             v36 = objc_opt_class();
-            v37 = sub_100001388(@"defaults", v10, v11, v36, v12);
+            v37 = sub_100001388(@"defaults", messageCopy, objectCopy, v36, peerCopy);
             v16 = v37;
             if (v37)
             {
-              [v37 setSignpostId:a6];
+              [v37 setSignpostId:id];
               [(GEODefaultsServer *)self clearExpiredKeyWithRequest:v16];
               goto LABEL_54;
             }
@@ -141,13 +141,13 @@
 
           break;
         case 1652:
-          if ((sub_100001548(self, v12) & 1) == 0)
+          if ((sub_100001548(self, peerCopy) & 1) == 0)
           {
-            v17 = [[GEOMessage alloc] initWithXPCMessage:v11 peer:v12];
+            v17 = [[GEOMessage alloc] initWithXPCMessage:objectCopy peer:peerCopy];
             v16 = v17;
             if (v17)
             {
-              [v17 setSignpostId:a6];
+              [v17 setSignpostId:id];
               [(GEODefaultsServer *)self resetAllDefaultsWithMessage:v16];
               goto LABEL_54;
             }
@@ -173,14 +173,14 @@ LABEL_51:
     switch(v13)
     {
       case 1945:
-        if ((sub_100001548(self, v12) & 1) == 0)
+        if ((sub_100001548(self, peerCopy) & 1) == 0)
         {
           v28 = objc_opt_class();
-          v29 = sub_100001388(@"defaults", v10, v11, v28, v12);
+          v29 = sub_100001388(@"defaults", messageCopy, objectCopy, v28, peerCopy);
           v16 = v29;
           if (v29)
           {
-            [v29 setSignpostId:a6];
+            [v29 setSignpostId:id];
             [(GEODefaultsServer *)self setAllValuesInStoreWithRequest:v16];
             goto LABEL_54;
           }
@@ -191,25 +191,25 @@ LABEL_51:
         break;
       case 2012:
         v30 = objc_opt_class();
-        v31 = sub_100001388(@"defaults", v10, v11, v30, v12);
+        v31 = sub_100001388(@"defaults", messageCopy, objectCopy, v30, peerCopy);
         v16 = v31;
         if (v31)
         {
-          [v31 setSignpostId:a6];
+          [v31 setSignpostId:id];
           [(GEODefaultsServer *)self addChangeListenerForWithRequest:v16];
           goto LABEL_54;
         }
 
         goto LABEL_57;
       case 2019:
-        if ((sub_100001548(self, v12) & 1) == 0)
+        if ((sub_100001548(self, peerCopy) & 1) == 0)
         {
           v18 = objc_opt_class();
-          v19 = sub_100001388(@"defaults", v10, v11, v18, v12);
+          v19 = sub_100001388(@"defaults", messageCopy, objectCopy, v18, peerCopy);
           v16 = v19;
           if (v19)
           {
-            [v19 setSignpostId:a6];
+            [v19 setSignpostId:id];
             [(GEODefaultsServer *)self getConfigValueForKeyWithRequest:v16];
             goto LABEL_54;
           }
@@ -230,11 +230,11 @@ LABEL_51:
     if (v13 == 2369)
     {
       v26 = objc_opt_class();
-      v27 = sub_100001388(@"defaults", v10, v11, v26, v12);
+      v27 = sub_100001388(@"defaults", messageCopy, objectCopy, v26, peerCopy);
       v16 = v27;
       if (v27)
       {
-        [v27 setSignpostId:a6];
+        [v27 setSignpostId:id];
         [(GEODefaultsServer *)self removeChangeListenerForWithRequest:v16];
         goto LABEL_54;
       }
@@ -247,14 +247,14 @@ LABEL_51:
       goto LABEL_56;
     }
 
-    if ((sub_100001548(self, v12) & 1) == 0)
+    if ((sub_100001548(self, peerCopy) & 1) == 0)
     {
       v22 = objc_opt_class();
-      v23 = sub_100001388(@"defaults", v10, v11, v22, v12);
+      v23 = sub_100001388(@"defaults", messageCopy, objectCopy, v22, peerCopy);
       v16 = v23;
       if (v23)
       {
-        [v23 setSignpostId:a6];
+        [v23 setSignpostId:id];
         [(GEODefaultsServer *)self getCompanionSyncValuesForKeysWithRequest:v16];
         goto LABEL_54;
       }
@@ -267,14 +267,14 @@ LABEL_51:
 
   if (v13 == 2031)
   {
-    if ((sub_100001548(self, v12) & 1) == 0)
+    if ((sub_100001548(self, peerCopy) & 1) == 0)
     {
       v24 = objc_opt_class();
-      v25 = sub_100001388(@"defaults", v10, v11, v24, v12);
+      v25 = sub_100001388(@"defaults", messageCopy, objectCopy, v24, peerCopy);
       v16 = v25;
       if (v25)
       {
-        [v25 setSignpostId:a6];
+        [v25 setSignpostId:id];
         [(GEODefaultsServer *)self setConfigValueForKeyWithRequest:v16];
         goto LABEL_54;
       }
@@ -287,13 +287,13 @@ LABEL_51:
 
   if (v13 == 2213)
   {
-    if ((sub_100001548(self, v12) & 1) == 0)
+    if ((sub_100001548(self, peerCopy) & 1) == 0)
     {
-      v15 = [[GEOMessage alloc] initWithXPCMessage:v11 peer:v12];
+      v15 = [[GEOMessage alloc] initWithXPCMessage:objectCopy peer:peerCopy];
       v16 = v15;
       if (v15)
       {
-        [v15 setSignpostId:a6];
+        [v15 setSignpostId:id];
         [(GEODefaultsServer *)self updateNetworkDefaultsWithMessage:v16];
 LABEL_54:
         v14 = 1;
@@ -313,27 +313,27 @@ LABEL_56:
   return v14;
 }
 
-- (void)migrageEntitledKeyWithRequest:(id)a3
+- (void)migrageEntitledKeyWithRequest:(id)request
 {
-  v3 = a3;
+  requestCopy = request;
   v4 = _GEOConfigProxy();
-  v7 = [v4 configStoreForOptions:{objc_msgSend(v3, "keyOptions")}];
+  v7 = [v4 configStoreForOptions:{objc_msgSend(requestCopy, "keyOptions")}];
 
-  v5 = [v3 keyString];
-  [v3 keyOptions];
+  keyString = [requestCopy keyString];
+  [requestCopy keyOptions];
 
   v6 = GEOConfig_migrateEntitledKey();
 }
 
-- (void)setConfigValueForKeyWithRequest:(id)a3
+- (void)setConfigValueForKeyWithRequest:(id)request
 {
-  v4 = a3;
-  v5 = [[GEOConfigStorageSetValueForKeyReply alloc] initWithRequest:v4];
-  v6 = [v4 keyString];
+  requestCopy = request;
+  v5 = [[GEOConfigStorageSetValueForKeyReply alloc] initWithRequest:requestCopy];
+  keyString = [requestCopy keyString];
   v7 = GEOConfig_keyRequiresEntitlement();
   if (v7)
   {
-    v8 = [v4 preferredAuditToken];
+    preferredAuditToken = [requestCopy preferredAuditToken];
     v26[1] = 0;
     v9 = GEOConfig_validateEntitlementForKey();
     v10 = 0;
@@ -363,9 +363,9 @@ LABEL_18:
   }
 
   v15 = v10;
-  v16 = [v4 peer];
+  peer = [requestCopy peer];
   v26[0] = v10;
-  v17 = [(GEODefaultsServer *)self _validatePeer:v16 canSetKey:v6 error:v26];
+  v17 = [(GEODefaultsServer *)self _validatePeer:peer canSetKey:keyString error:v26];
   v10 = v26[0];
 
   if ((v17 & 1) == 0)
@@ -374,7 +374,7 @@ LABEL_18:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v28 = v6;
+      v28 = keyString;
       v29 = 2114;
       v30[0] = v10;
       v12 = "Could not validate peer's ability to set key: %{public}@ - %{public}@";
@@ -390,13 +390,13 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  v18 = [v4 keyOptions];
+  keyOptions = [requestCopy keyOptions];
   v19 = _GEOConfigProxy();
-  v20 = [v19 configStoreForOptions:v18];
+  v20 = [v19 configStoreForOptions:keyOptions];
 
-  v21 = [v20 getConfigValueForKey:v6 countryCode:0 options:v18 source:0];
-  v22 = [v4 keyValue];
-  v23 = v22;
+  v21 = [v20 getConfigValueForKey:keyString countryCode:0 options:keyOptions source:0];
+  keyValue = [requestCopy keyValue];
+  v23 = keyValue;
   if (v21)
   {
     v24 = 0;
@@ -407,7 +407,7 @@ LABEL_19:
     v24 = v7;
   }
 
-  if (v24 == 1 && v22)
+  if (v24 == 1 && keyValue)
   {
     GEOConfig_createEntitledKeyPathForKey();
   }
@@ -416,38 +416,38 @@ LABEL_19:
   if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412802;
-    v28 = v6;
+    v28 = keyString;
     v29 = 1024;
-    LODWORD(v30[0]) = v18;
+    LODWORD(v30[0]) = keyOptions;
     WORD2(v30[0]) = 2112;
     *(v30 + 6) = v23;
     _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEBUG, "Setting value for key: %@ (%#x) = %@", buf, 0x1Cu);
   }
 
-  [v20 setConfigValue:v23 forKey:v6 options:v18 synchronous:1];
+  [v20 setConfigValue:v23 forKey:keyString options:keyOptions synchronous:1];
   [v5 send];
 
 LABEL_20:
 }
 
-- (void)getConfigValueForKeyWithRequest:(id)a3
+- (void)getConfigValueForKeyWithRequest:(id)request
 {
-  v3 = a3;
-  v4 = [[GEOConfigStorageGetValueForKeyReply alloc] initWithRequest:v3];
-  v5 = [v3 keyString];
-  v6 = [v3 preferredAuditToken];
+  requestCopy = request;
+  v4 = [[GEOConfigStorageGetValueForKeyReply alloc] initWithRequest:requestCopy];
+  keyString = [requestCopy keyString];
+  preferredAuditToken = [requestCopy preferredAuditToken];
   v7 = GEOConfig_validateEntitlementForKey();
   v8 = 0;
 
   if (v7)
   {
-    v9 = [v3 keyOptions];
+    keyOptions = [requestCopy keyOptions];
     v10 = _GEOConfigProxy();
-    v11 = [v10 configStoreForOptions:v9];
+    v11 = [v10 configStoreForOptions:keyOptions];
 
     *buf = 0;
-    v12 = [v3 countryCode];
-    v13 = [v11 getConfigValueForKey:v5 countryCode:v12 options:v9 source:buf];
+    countryCode = [requestCopy countryCode];
+    v13 = [v11 getConfigValueForKey:keyString countryCode:countryCode options:keyOptions source:buf];
     [v4 setKeyValue:v13];
 
     [v4 setKeySource:*buf];
@@ -469,61 +469,61 @@ LABEL_20:
   }
 }
 
-- (void)removeChangeListenerForWithRequest:(id)a3
+- (void)removeChangeListenerForWithRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   peersIsolater = self->_peersIsolater;
-  v7 = v4;
-  v6 = v4;
+  v7 = requestCopy;
+  v6 = requestCopy;
   geo_isolate_sync();
 }
 
-- (void)addChangeListenerForWithRequest:(id)a3
+- (void)addChangeListenerForWithRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   peersIsolater = self->_peersIsolater;
-  v7 = v4;
-  v6 = v4;
+  v7 = requestCopy;
+  v6 = requestCopy;
   geo_isolate_sync();
 }
 
-- (void)peerDidDisconnect:(id)a3
+- (void)peerDidDisconnect:(id)disconnect
 {
-  v4 = a3;
+  disconnectCopy = disconnect;
   peersIsolater = self->_peersIsolater;
-  v7 = v4;
-  v6 = v4;
+  v7 = disconnectCopy;
+  v6 = disconnectCopy;
   geo_isolate_sync();
 }
 
-- (void)peerDidConnect:(id)a3
+- (void)peerDidConnect:(id)connect
 {
-  v4 = a3;
+  connectCopy = connect;
   peersIsolater = self->_peersIsolater;
-  v7 = v4;
-  v6 = v4;
+  v7 = connectCopy;
+  v6 = connectCopy;
   geo_isolate_sync();
 }
 
-- (void)runBackgroundTask:(id)a3
+- (void)runBackgroundTask:(id)task
 {
-  v3 = a3;
-  v4 = [v3 identifier];
+  taskCopy = task;
+  identifier = [taskCopy identifier];
   GEOBackgroundTaskReportReportTaskInitiated();
 
-  v5 = [v3 identifier];
-  v6 = [v5 isEqual:GEOMapsAuthBackgroundTaskIdentifier];
+  identifier2 = [taskCopy identifier];
+  v6 = [identifier2 isEqual:GEOMapsAuthBackgroundTaskIdentifier];
 
   if (v6)
   {
     v7 = +[GEOMapsAuthServiceHelper sharedAuthHelper];
-    [v7 refreshFromTask:v3];
+    [v7 refreshFromTask:taskCopy];
   }
 
   else
   {
-    v8 = [v3 identifier];
-    v9 = [v8 isEqual:GEOUpdateNetworkDefaultsTaskIdentifier];
+    identifier3 = [taskCopy identifier];
+    v9 = [identifier3 isEqual:GEOUpdateNetworkDefaultsTaskIdentifier];
 
     if (v9)
     {
@@ -537,7 +537,7 @@ LABEL_20:
       v18[2] = sub_100030A78;
       v18[3] = &unk_100082ED0;
       v20 = v21;
-      v10 = v3;
+      v10 = taskCopy;
       v19 = v10;
       v16[0] = _NSConcreteStackBlock;
       v16[1] = 3221225472;
@@ -560,64 +560,64 @@ LABEL_20:
   }
 }
 
-- (void)setExpiringKeyWithRequest:(id)a3
+- (void)setExpiringKeyWithRequest:(id)request
 {
-  v4 = a3;
-  v5 = [v4 peer];
-  v6 = [v4 keyString];
+  requestCopy = request;
+  peer = [requestCopy peer];
+  keyString = [requestCopy keyString];
   v12 = 0;
-  LODWORD(self) = [(GEODefaultsServer *)self _validatePeer:v5 canSetKey:v6 error:&v12];
+  LODWORD(self) = [(GEODefaultsServer *)self _validatePeer:peer canSetKey:keyString error:&v12];
 
   if (self)
   {
     v7 = _GEOConfigProxy();
-    v8 = [v7 configExpiryForOptions:{objc_msgSend(v4, "keyOptions")}];
+    v8 = [v7 configExpiryForOptions:{objc_msgSend(requestCopy, "keyOptions")}];
 
-    v9 = [v4 keyString];
-    v10 = [v4 expireTime];
-    v11 = [v4 expireOSVersion];
-    [v8 setConfigKeyExpiry:v9 date:v10 osVersion:v11];
+    keyString2 = [requestCopy keyString];
+    expireTime = [requestCopy expireTime];
+    expireOSVersion = [requestCopy expireOSVersion];
+    [v8 setConfigKeyExpiry:keyString2 date:expireTime osVersion:expireOSVersion];
   }
 }
 
-- (void)getAllExpiringKeysWithRequest:(id)a3
+- (void)getAllExpiringKeysWithRequest:(id)request
 {
-  v3 = a3;
-  v8 = [[GEOConfigGetExpiringKeysReply alloc] initWithRequest:v3];
+  requestCopy = request;
+  v8 = [[GEOConfigGetExpiringKeysReply alloc] initWithRequest:requestCopy];
   v4 = _GEOConfigProxy();
-  v5 = [v3 keyOptions];
+  keyOptions = [requestCopy keyOptions];
 
-  v6 = [v4 configExpiryForOptions:v5];
+  v6 = [v4 configExpiryForOptions:keyOptions];
 
-  v7 = [v6 getAllExpiringKeys];
-  [v8 setExpiringKeys:v7];
+  getAllExpiringKeys = [v6 getAllExpiringKeys];
+  [v8 setExpiringKeys:getAllExpiringKeys];
 
   [v8 send];
 }
 
-- (void)getCompanionSyncValuesForKeysWithRequest:(id)a3
+- (void)getCompanionSyncValuesForKeysWithRequest:(id)request
 {
-  v3 = a3;
-  v7 = [[GEOConfigGetCompanionSyncValuesForKeysReply alloc] initWithRequest:v3];
-  v4 = [v3 keyStrings];
+  requestCopy = request;
+  v7 = [[GEOConfigGetCompanionSyncValuesForKeysReply alloc] initWithRequest:requestCopy];
+  keyStrings = [requestCopy keyStrings];
 
-  v5 = [NSSet setWithArray:v4];
+  v5 = [NSSet setWithArray:keyStrings];
   v6 = GEOGetValuesForKeysForCompanionSync();
   [v7 setKeyStringsAndValues:v6];
 
   [v7 send];
 }
 
-- (void)setAllValuesInStoreWithRequest:(id)a3
+- (void)setAllValuesInStoreWithRequest:(id)request
 {
-  v3 = a3;
-  v4 = [v3 peer];
-  v5 = [v4 hasEntitlement:@"com.apple.geoservices.setanydefault"];
+  requestCopy = request;
+  peer = [requestCopy peer];
+  v5 = [peer hasEntitlement:@"com.apple.geoservices.setanydefault"];
 
   if (v5)
   {
-    [v3 keyOptions];
-    v6 = [v3 keyStringsAndValues];
+    [requestCopy keyOptions];
+    keyStringsAndValues = [requestCopy keyStringsAndValues];
     _GEOSetAllValuesInStore();
 
     v7 = +[GEOResourceManifestManager modernManager];
@@ -636,13 +636,13 @@ LABEL_20:
   }
 }
 
-- (void)getAllValuesInStoreWithRequest:(id)a3
+- (void)getAllValuesInStoreWithRequest:(id)request
 {
-  v3 = a3;
-  v7 = [[GEOConfigGetAllValueInStoreReply alloc] initWithRequest:v3];
-  [v3 keyOptions];
+  requestCopy = request;
+  v7 = [[GEOConfigGetAllValueInStoreReply alloc] initWithRequest:requestCopy];
+  [requestCopy keyOptions];
   v4 = _GEOGetAllValuesInStore();
-  v5 = [v3 preferredAuditToken];
+  preferredAuditToken = [requestCopy preferredAuditToken];
 
   v6 = GEOConfig_pruneEntitledKeysForAuditToken();
   [v7 setKeyStringsAndValues:v6];
@@ -650,23 +650,23 @@ LABEL_20:
   [v7 send];
 }
 
-- (void)clearExpiredKeyWithRequest:(id)a3
+- (void)clearExpiredKeyWithRequest:(id)request
 {
-  v3 = a3;
-  v4 = [v3 keyString];
-  [v3 keyOptions];
+  requestCopy = request;
+  keyString = [requestCopy keyString];
+  [requestCopy keyOptions];
 
   _GEOConfigClearExpiredKey();
 }
 
-- (void)_notifyListenersOfKeysChange:(id)a3 options:(unint64_t)a4 postInternalNotification:(BOOL)a5
+- (void)_notifyListenersOfKeysChange:(id)change options:(unint64_t)options postInternalNotification:(BOOL)notification
 {
-  v5 = a5;
-  v6 = a4;
-  v8 = a3;
-  if ([v8 count])
+  notificationCopy = notification;
+  optionsCopy = options;
+  changeCopy = change;
+  if ([changeCopy count])
   {
-    if (v5)
+    if (notificationCopy)
     {
       _GEOConfigPostKeysChangedNotification();
     }
@@ -682,7 +682,7 @@ LABEL_20:
     v23 = 3221225472;
     v24 = sub_1000312C4;
     v25 = &unk_100082ED0;
-    v26 = self;
+    selfCopy = self;
     v27 = &v28;
     geo_isolate_sync();
     v20 = 0u;
@@ -694,7 +694,7 @@ LABEL_20:
     if (v11)
     {
       v12 = *v19;
-      v13 = *&v6 & 0xFFF000;
+      v13 = *&optionsCopy & 0xFFF000;
       do
       {
         v14 = 0;
@@ -706,7 +706,7 @@ LABEL_20:
           }
 
           v15 = *(*(&v18 + 1) + 8 * v14);
-          v16 = v8;
+          v16 = changeCopy;
           if (v15)
           {
             if (v13)
@@ -736,11 +736,11 @@ LABEL_20:
   }
 }
 
-- (void)_expiringKeysChanged:(id)a3
+- (void)_expiringKeysChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:@"keys"];
+  changedCopy = changed;
+  userInfo = [changedCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:@"keys"];
 
   if (![v6 count])
   {
@@ -756,11 +756,11 @@ LABEL_22:
     goto LABEL_17;
   }
 
-  v7 = [v4 userInfo];
-  v8 = [v7 objectForKeyedSubscript:@"options"];
-  v9 = [v8 unsignedIntegerValue];
+  userInfo2 = [changedCopy userInfo];
+  v8 = [userInfo2 objectForKeyedSubscript:@"options"];
+  unsignedIntegerValue = [v8 unsignedIntegerValue];
 
-  if (!v9)
+  if (!unsignedIntegerValue)
   {
     if (!os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_FAULT))
     {
@@ -783,7 +783,7 @@ LABEL_22:
   v25 = 3221225472;
   v26 = sub_1000317A0;
   v27 = &unk_100082ED0;
-  v28 = self;
+  selfCopy = self;
   v29 = v30;
   geo_isolate_sync();
   v22 = 0u;
@@ -795,7 +795,7 @@ LABEL_22:
   if (v12)
   {
     v13 = *v21;
-    v14 = v9 & 0xFFF000;
+    v14 = unsignedIntegerValue & 0xFFF000;
     do
     {
       v15 = 0;
@@ -837,22 +837,22 @@ LABEL_22:
 LABEL_17:
 }
 
-- (void)_configKeysChanged:(id)a3
+- (void)_configKeysChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [v4 object];
+  changedCopy = changed;
+  object = [changedCopy object];
 
-  if (v5 != self)
+  if (object != self)
   {
-    v6 = [v4 userInfo];
-    v7 = [v6 objectForKeyedSubscript:@"options"];
+    userInfo = [changedCopy userInfo];
+    v7 = [userInfo objectForKeyedSubscript:@"options"];
 
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) != 0 && (v8 = [v7 integerValue]) != 0)
     {
       v9 = v8;
-      v10 = [v4 userInfo];
-      v11 = [v10 objectForKeyedSubscript:@"keys"];
+      userInfo2 = [changedCopy userInfo];
+      v11 = [userInfo2 objectForKeyedSubscript:@"keys"];
       [(GEODefaultsServer *)self _notifyListenersOfKeysChange:v11 options:v9 postInternalNotification:0];
     }
 
@@ -864,16 +864,16 @@ LABEL_17:
   }
 }
 
-- (void)resetAllDefaultsWithMessage:(id)a3
+- (void)resetAllDefaultsWithMessage:(id)message
 {
-  v3 = a3;
+  messageCopy = message;
   _GEOResetAllDefaults();
-  [v3 sendReply:&__NSDictionary0__struct];
+  [messageCopy sendReply:&__NSDictionary0__struct];
 }
 
-- (void)updateNetworkDefaultsWithMessage:(id)a3
+- (void)updateNetworkDefaultsWithMessage:(id)message
 {
-  v3 = a3;
+  messageCopy = message;
   v4 = GEOGetUserDefaultsLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
@@ -881,18 +881,18 @@ LABEL_17:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEBUG, "Updating network defaults", buf, 2u);
   }
 
-  v5 = [v3 userInfo];
-  v6 = [v5 objectForKeyedSubscript:@"reason"];
+  userInfo = [messageCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:@"reason"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v6 unsignedIntegerValue];
+    unsignedIntegerValue = [v6 unsignedIntegerValue];
   }
 
   else
   {
-    v7 = 4;
+    unsignedIntegerValue = 4;
   }
 
   v8 = +[GEONetworkDefaults sharedNetworkDefaults];
@@ -900,34 +900,34 @@ LABEL_17:
   v10[1] = 3221225472;
   v10[2] = sub_100031B18;
   v10[3] = &unk_100083EC0;
-  v11 = v3;
-  v9 = v3;
-  [v8 updateNetworkDefaultsWithReason:v7 completionHandler:v10];
+  v11 = messageCopy;
+  v9 = messageCopy;
+  [v8 updateNetworkDefaultsWithReason:unsignedIntegerValue completionHandler:v10];
 }
 
-- (BOOL)_validatePeer:(id)a3 canSetKey:(id)a4 error:(id *)a5
+- (BOOL)_validatePeer:(id)peer canSetKey:(id)key error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  if (![v8 length])
+  peerCopy = peer;
+  keyCopy = key;
+  if (![keyCopy length])
   {
     v10 = 0;
     goto LABEL_9;
   }
 
-  v9 = +[GEODefaultsServer _acceptableKeys];
-  v10 = [v9 containsObject:v8];
+  keyCopy = +[GEODefaultsServer _acceptableKeys];
+  v10 = [keyCopy containsObject:keyCopy];
   if (v10)
   {
     goto LABEL_8;
   }
 
-  v11 = [v7 hasEntitlement:@"com.apple.geoservices.setanydefault"];
+  v11 = [peerCopy hasEntitlement:@"com.apple.geoservices.setanydefault"];
 
-  if ((v11 & 1) == 0 && (![v8 isEqualToString:GEOAddressCorrectionAuthorizationStatusKey] || (objc_msgSend(v7, "hasEntitlement:", @"com.apple.CoreRoutine.preferences") & 1) == 0))
+  if ((v11 & 1) == 0 && (![keyCopy isEqualToString:GEOAddressCorrectionAuthorizationStatusKey] || (objc_msgSend(peerCopy, "hasEntitlement:", @"com.apple.CoreRoutine.preferences") & 1) == 0))
   {
-    v9 = [NSString stringWithFormat:@"Cannot set value for invalid key: %@, missing entitlement?", v8];
-    *a5 = [NSError GEOErrorWithCode:-10 reason:v9];
+    keyCopy = [NSString stringWithFormat:@"Cannot set value for invalid key: %@, missing entitlement?", keyCopy];
+    *error = [NSError GEOErrorWithCode:-10 reason:keyCopy];
 LABEL_8:
 
     goto LABEL_9;
@@ -949,11 +949,11 @@ LABEL_9:
   [(GEODefaultsServer *)&v4 dealloc];
 }
 
-- (GEODefaultsServer)initWithDaemon:(id)a3
+- (GEODefaultsServer)initWithDaemon:(id)daemon
 {
   v18.receiver = self;
   v18.super_class = GEODefaultsServer;
-  v3 = [(GEODefaultsServer *)&v18 initWithDaemon:a3];
+  v3 = [(GEODefaultsServer *)&v18 initWithDaemon:daemon];
   if (v3)
   {
     v4 = geo_isolater_create();
@@ -993,9 +993,9 @@ LABEL_9:
 {
   if (sub_10001FD1C())
   {
-    v2 = [sub_10001FF30() sharedScheduler];
+    sharedScheduler = [sub_10001FF30() sharedScheduler];
     v3 = GEOUpdateNetworkDefaultsTaskIdentifier;
-    v4 = [v2 taskRequestForIdentifier:GEOUpdateNetworkDefaultsTaskIdentifier];
+    v4 = [sharedScheduler taskRequestForIdentifier:GEOUpdateNetworkDefaultsTaskIdentifier];
     if (v4)
     {
       v5 = GEOGetUserDefaultsLog();
@@ -1018,7 +1018,7 @@ LABEL_9:
       [v5 setPowerBudgeted:1];
       [v5 setInterval:21600.0];
       v10 = 0;
-      v6 = [v2 submitTaskRequest:v5 error:&v10];
+      v6 = [sharedScheduler submitTaskRequest:v5 error:&v10];
       v7 = v10;
       if ((v6 & 1) == 0)
       {

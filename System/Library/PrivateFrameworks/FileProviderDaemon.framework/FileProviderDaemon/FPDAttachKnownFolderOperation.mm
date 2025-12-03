@@ -1,19 +1,19 @@
 @interface FPDAttachKnownFolderOperation
-- (FPDAttachKnownFolderOperation)initWithKnownFolderURLs:(id)a3 onlyForDomain:(id)a4 server:(id)a5 options:(unint64_t)a6 request:(id)a7;
-- (FPDAttachKnownFolderOperation)initWithKnownFolders:(unint64_t)a3 onlyForDomain:(id)a4 server:(id)a5 options:(unint64_t)a6 request:(id)a7;
-- (id)resolveKnownFolderURLsWithError:(id *)a3;
+- (FPDAttachKnownFolderOperation)initWithKnownFolderURLs:(id)ls onlyForDomain:(id)domain server:(id)server options:(unint64_t)options request:(id)request;
+- (FPDAttachKnownFolderOperation)initWithKnownFolders:(unint64_t)folders onlyForDomain:(id)domain server:(id)server options:(unint64_t)options request:(id)request;
+- (id)resolveKnownFolderURLsWithError:(id *)error;
 - (void)main;
-- (void)notifyUserForDomain:(id)a3 withCompletionHandler:(id)a4;
+- (void)notifyUserForDomain:(id)domain withCompletionHandler:(id)handler;
 @end
 
 @implementation FPDAttachKnownFolderOperation
 
-- (FPDAttachKnownFolderOperation)initWithKnownFolderURLs:(id)a3 onlyForDomain:(id)a4 server:(id)a5 options:(unint64_t)a6 request:(id)a7
+- (FPDAttachKnownFolderOperation)initWithKnownFolderURLs:(id)ls onlyForDomain:(id)domain server:(id)server options:(unint64_t)options request:(id)request
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a7;
+  lsCopy = ls;
+  domainCopy = domain;
+  serverCopy = server;
+  requestCopy = request;
   v20.receiver = self;
   v20.super_class = FPDAttachKnownFolderOperation;
   v17 = [(FPOperation *)&v20 init];
@@ -21,44 +21,44 @@
   if (v17)
   {
     v17->_knownFolders = 0;
-    objc_storeStrong(&v17->_knownFolderPhysicalURLs, a3);
-    objc_storeStrong(&v18->_onlyForDomain, a4);
-    objc_storeStrong(&v18->_server, a5);
-    v18->_options = a6;
-    objc_storeStrong(&v18->_request, a7);
+    objc_storeStrong(&v17->_knownFolderPhysicalURLs, ls);
+    objc_storeStrong(&v18->_onlyForDomain, domain);
+    objc_storeStrong(&v18->_server, server);
+    v18->_options = options;
+    objc_storeStrong(&v18->_request, request);
   }
 
   return v18;
 }
 
-- (FPDAttachKnownFolderOperation)initWithKnownFolders:(unint64_t)a3 onlyForDomain:(id)a4 server:(id)a5 options:(unint64_t)a6 request:(id)a7
+- (FPDAttachKnownFolderOperation)initWithKnownFolders:(unint64_t)folders onlyForDomain:(id)domain server:(id)server options:(unint64_t)options request:(id)request
 {
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  domainCopy = domain;
+  serverCopy = server;
+  requestCopy = request;
   v20.receiver = self;
   v20.super_class = FPDAttachKnownFolderOperation;
   v16 = [(FPOperation *)&v20 init];
   v17 = v16;
   if (v16)
   {
-    v16->_knownFolders = a3;
+    v16->_knownFolders = folders;
     knownFolderPhysicalURLs = v16->_knownFolderPhysicalURLs;
     v16->_knownFolderPhysicalURLs = 0;
 
-    objc_storeStrong(&v17->_onlyForDomain, a4);
-    objc_storeStrong(&v17->_server, a5);
-    v17->_options = a6;
-    objc_storeStrong(&v17->_request, a7);
+    objc_storeStrong(&v17->_onlyForDomain, domain);
+    objc_storeStrong(&v17->_server, server);
+    v17->_options = options;
+    objc_storeStrong(&v17->_request, request);
   }
 
   return v17;
 }
 
-- (void)notifyUserForDomain:(id)a3 withCompletionHandler:(id)a4
+- (void)notifyUserForDomain:(id)domain withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  domainCopy = domain;
+  handlerCopy = handler;
   options = self->_options;
   v9 = fp_current_or_default_log();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG);
@@ -85,7 +85,7 @@
         [v14 timeIntervalSince1970];
         [v11 setDouble:@"forceAttachPromptLastInterception" forKey:?];
 
-        v7[2](v7, 0);
+        handlerCopy[2](handlerCopy, 0);
         goto LABEL_21;
       }
 
@@ -102,28 +102,28 @@
         [v11 setDouble:@"forceAttachPromptLastInterception" forKey:?];
 
         v17 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:3072 userInfo:0];
-        (v7)[2](v7, v17);
+        (handlerCopy)[2](handlerCopy, v17);
         goto LABEL_20;
       }
     }
 
-    v18 = [v6 provider];
-    v11 = [v18 providerDomainForDomain:v6];
+    provider = [domainCopy provider];
+    v11 = [provider providerDomainForDomain:domainCopy];
 
-    v19 = [v6 provider];
-    [v11 setShouldHideDomainDisplayName:{objc_msgSend(v19, "shouldHideDomainDisplayName")}];
+    provider2 = [domainCopy provider];
+    [v11 setShouldHideDomainDisplayName:{objc_msgSend(provider2, "shouldHideDomainDisplayName")}];
 
     v12 = [objc_opt_new() initWithProviderDomain:v11];
     if ([v12 presentAlertWithUserAprovalToContinue])
     {
-      v7[2](v7, 0);
+      handlerCopy[2](handlerCopy, 0);
 LABEL_21:
 
       goto LABEL_22;
     }
 
     v17 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:3072 userInfo:0];
-    (v7)[2](v7, v17);
+    (handlerCopy)[2](handlerCopy, v17);
 LABEL_20:
 
     goto LABEL_21;
@@ -134,11 +134,11 @@ LABEL_20:
     [FPDAttachKnownFolderOperation notifyUserForDomain:withCompletionHandler:];
   }
 
-  v7[2](v7, 0);
+  handlerCopy[2](handlerCopy, 0);
 LABEL_22:
 }
 
-- (id)resolveKnownFolderURLsWithError:(id *)a3
+- (id)resolveKnownFolderURLsWithError:(id *)error
 {
   knownFolderPhysicalURLs = self->_knownFolderPhysicalURLs;
   if (knownFolderPhysicalURLs)
@@ -175,10 +175,10 @@ LABEL_22:
     }
 
 LABEL_10:
-    if (a3)
+    if (error)
     {
       [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:4 userInfo:0];
-      *a3 = v4 = 0;
+      *error = v4 = 0;
     }
 
     else
@@ -231,28 +231,28 @@ LABEL_14:
           }
 
           v11 = *(*(&v29 + 1) + 8 * i);
-          v12 = [(FPDServer *)self->_server extensionManager];
-          v13 = [v12 domainForURL:v11 reason:0];
+          extensionManager = [(FPDServer *)self->_server extensionManager];
+          v13 = [extensionManager domainForURL:v11 reason:0];
 
           if (v13)
           {
             if (!v8)
             {
-              v14 = [(FPDServer *)self->_server extensionManager];
-              v15 = [v13 providerDomainID];
-              v8 = [v14 domainWithID:v15 reason:0];
+              extensionManager2 = [(FPDServer *)self->_server extensionManager];
+              providerDomainID = [v13 providerDomainID];
+              v8 = [extensionManager2 domainWithID:providerDomainID reason:0];
             }
 
             if (!self->_onlyForDomain || ([v13 providerDomainID], v16 = objc_claimAutoreleasedReturnValue(), -[FPDDomain providerDomainID](self->_onlyForDomain, "providerDomainID"), v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v16, "isEqualToString:", v17), v17, v16, v18))
             {
-              v19 = [v13 providerDomainID];
-              v20 = [v26 objectForKeyedSubscript:v19];
+              providerDomainID2 = [v13 providerDomainID];
+              v20 = [v26 objectForKeyedSubscript:providerDomainID2];
 
               if (!v20)
               {
                 v20 = objc_opt_new();
-                v21 = [v13 providerDomainID];
-                [v26 setObject:v20 forKeyedSubscript:v21];
+                providerDomainID3 = [v13 providerDomainID];
+                [v26 setObject:v20 forKeyedSubscript:providerDomainID3];
               }
 
               [v20 addObject:v11];

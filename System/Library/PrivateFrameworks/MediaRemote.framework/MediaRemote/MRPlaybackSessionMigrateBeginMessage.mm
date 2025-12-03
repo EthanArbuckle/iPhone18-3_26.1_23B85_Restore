@@ -1,26 +1,26 @@
 @interface MRPlaybackSessionMigrateBeginMessage
-- (MRPlaybackSessionMigrateBeginMessage)initWithRequest:(id)a3 playerPath:(id)a4;
+- (MRPlaybackSessionMigrateBeginMessage)initWithRequest:(id)request playerPath:(id)path;
 - (MRPlaybackSessionRequest)request;
 - (MRPlayerPath)playerPath;
 @end
 
 @implementation MRPlaybackSessionMigrateBeginMessage
 
-- (MRPlaybackSessionMigrateBeginMessage)initWithRequest:(id)a3 playerPath:(id)a4
+- (MRPlaybackSessionMigrateBeginMessage)initWithRequest:(id)request playerPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  pathCopy = path;
   v13.receiver = self;
   v13.super_class = MRPlaybackSessionMigrateBeginMessage;
   v8 = [(MRProtocolMessage *)&v13 init];
   if (v8)
   {
     v9 = objc_alloc_init(_MRPlaybackSessionMigrateBeginMessageProtobuf);
-    v10 = [v6 protobuf];
-    [(_MRPlaybackSessionMigrateBeginMessageProtobuf *)v9 setRequest:v10];
+    protobuf = [requestCopy protobuf];
+    [(_MRPlaybackSessionMigrateBeginMessageProtobuf *)v9 setRequest:protobuf];
 
-    v11 = [v7 protobuf];
-    [(_MRPlaybackSessionMigrateBeginMessageProtobuf *)v9 setPlayerPath:v11];
+    protobuf2 = [pathCopy protobuf];
+    [(_MRPlaybackSessionMigrateBeginMessageProtobuf *)v9 setPlayerPath:protobuf2];
 
     [(MRProtocolMessage *)v8 setUnderlyingCodableMessage:v9];
   }
@@ -31,9 +31,9 @@
 - (MRPlaybackSessionRequest)request
 {
   v3 = [MRPlaybackSessionRequest alloc];
-  v4 = [(MRProtocolMessage *)self underlyingCodableMessage];
-  v5 = [v4 request];
-  v6 = [(MRPlaybackSessionRequest *)v3 initWithProtobuf:v5];
+  underlyingCodableMessage = [(MRProtocolMessage *)self underlyingCodableMessage];
+  request = [underlyingCodableMessage request];
+  v6 = [(MRPlaybackSessionRequest *)v3 initWithProtobuf:request];
 
   return v6;
 }
@@ -41,9 +41,9 @@
 - (MRPlayerPath)playerPath
 {
   v3 = [MRPlayerPath alloc];
-  v4 = [(MRProtocolMessage *)self underlyingCodableMessage];
-  v5 = [v4 playerPath];
-  v6 = [(MRPlayerPath *)v3 initWithProtobuf:v5];
+  underlyingCodableMessage = [(MRProtocolMessage *)self underlyingCodableMessage];
+  playerPath = [underlyingCodableMessage playerPath];
+  v6 = [(MRPlayerPath *)v3 initWithProtobuf:playerPath];
 
   return v6;
 }

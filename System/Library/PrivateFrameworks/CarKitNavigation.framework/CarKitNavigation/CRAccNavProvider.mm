@@ -1,27 +1,27 @@
 @interface CRAccNavProvider
-+ (id)_localizedNameForIdentifier:(id)a3;
-- (CRAccNavProvider)initWithDelegate:(id)a3;
++ (id)_localizedNameForIdentifier:(id)identifier;
+- (CRAccNavProvider)initWithDelegate:(id)delegate;
 - (NSArray)activeComponents;
 - (id)_componentKeys;
 - (id)_locked_activeComponents;
-- (void)_addAccessoryIfNeeded:(id)a3;
-- (void)_broadcastRouteGuidance:(id)a3;
-- (void)_locked_addAccessoryIfNeeded:(id)a3;
-- (void)navigation:(id)a3 accessoryAttached:(id)a4;
-- (void)navigation:(id)a3 accessoryDetached:(id)a4;
-- (void)navigation:(id)a3 startRouteGuidance:(id)a4 componentList:(id)a5;
-- (void)navigation:(id)a3 stopRouteGuidance:(id)a4 componentList:(id)a5;
+- (void)_addAccessoryIfNeeded:(id)needed;
+- (void)_broadcastRouteGuidance:(id)guidance;
+- (void)_locked_addAccessoryIfNeeded:(id)needed;
+- (void)navigation:(id)navigation accessoryAttached:(id)attached;
+- (void)navigation:(id)navigation accessoryDetached:(id)detached;
+- (void)navigation:(id)navigation startRouteGuidance:(id)guidance componentList:(id)list;
+- (void)navigation:(id)navigation stopRouteGuidance:(id)guidance componentList:(id)list;
 - (void)resetActiveComponents;
-- (void)sendInfo:(id)a3 toComponentUID:(id)a4;
-- (void)sendNoSupportForAppIdentifier:(id)a3;
+- (void)sendInfo:(id)info toComponentUID:(id)d;
+- (void)sendNoSupportForAppIdentifier:(id)identifier;
 @end
 
 @implementation CRAccNavProvider
 
-- (CRAccNavProvider)initWithDelegate:(id)a3
+- (CRAccNavProvider)initWithDelegate:(id)delegate
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  delegateCopy = delegate;
   v20.receiver = self;
   v20.super_class = CRAccNavProvider;
   v6 = [(CRAccNavProvider *)&v20 init];
@@ -35,7 +35,7 @@
       _os_log_impl(&dword_224A23000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ Setting up iAP Navigation", buf, 0xCu);
     }
 
-    objc_storeStrong(&v6->_delegate, a3);
+    objc_storeStrong(&v6->_delegate, delegate);
     v8 = dispatch_queue_create("com.apple.carkit.AccNavProvider", 0);
     workQueue = v6->_workQueue;
     v6->_workQueue = v8;
@@ -65,17 +65,17 @@
 - (NSArray)activeComponents
 {
   os_unfair_lock_lock(&self->_accessoryLock);
-  v3 = [(CRAccNavProvider *)self _locked_activeComponents];
+  _locked_activeComponents = [(CRAccNavProvider *)self _locked_activeComponents];
   os_unfair_lock_unlock(&self->_accessoryLock);
 
-  return v3;
+  return _locked_activeComponents;
 }
 
 - (id)_locked_activeComponents
 {
-  v2 = [(CRAccNavProvider *)self activeComponentsIndexed];
-  v3 = [v2 allValues];
-  v4 = [v3 sortedArrayUsingComparator:&__block_literal_global_0];
+  activeComponentsIndexed = [(CRAccNavProvider *)self activeComponentsIndexed];
+  allValues = [activeComponentsIndexed allValues];
+  v4 = [allValues sortedArrayUsingComparator:&__block_literal_global_0];
 
   return v4;
 }
@@ -90,62 +90,62 @@ uint64_t __44__CRAccNavProvider__locked_activeComponents__block_invoke(uint64_t 
   return v7;
 }
 
-- (void)sendInfo:(id)a3 toComponentUID:(id)a4
+- (void)sendInfo:(id)info toComponentUID:(id)d
 {
   v46 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  infoCopy = info;
+  dCopy = d;
   os_unfair_lock_lock(&self->_accessoryLock);
-  v8 = [(CRAccNavProvider *)self activeComponentsIndexed];
-  v9 = [v8 objectForKeyedSubscript:v7];
+  activeComponentsIndexed = [(CRAccNavProvider *)self activeComponentsIndexed];
+  v9 = [activeComponentsIndexed objectForKeyedSubscript:dCopy];
 
   if (v9)
   {
-    v10 = [(CRAccNavProvider *)self accessoriesIndexed];
-    v11 = [v9 accessoryUID];
-    v12 = [v10 objectForKeyedSubscript:v11];
+    accessoriesIndexed = [(CRAccNavProvider *)self accessoriesIndexed];
+    accessoryUID = [v9 accessoryUID];
+    v12 = [accessoriesIndexed objectForKeyedSubscript:accessoryUID];
 
     os_unfair_lock_unlock(&self->_accessoryLock);
-    v13 = [v9 component];
+    component = [v9 component];
 
-    if (v13 && v12)
+    if (component && v12)
     {
-      v14 = [v9 component];
-      v15 = [v14 isEnabled];
+      component2 = [v9 component];
+      isEnabled = [component2 isEnabled];
 
-      if ((v15 & 1) == 0)
+      if ((isEnabled & 1) == 0)
       {
         v16 = CarNavLogging();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
         {
-          v17 = [v7 UUIDString];
-          v18 = [v9 component];
-          v19 = [v18 identifier];
-          v20 = [v12 accessoryUID];
+          uUIDString = [dCopy UUIDString];
+          component3 = [v9 component];
+          identifier = [component3 identifier];
+          accessoryUID2 = [v12 accessoryUID];
           *buf = 138544130;
-          v35 = self;
+          selfCopy3 = self;
           v36 = 2114;
-          v37 = v17;
+          v37 = uUIDString;
           v38 = 2048;
-          v39 = v19;
+          v39 = identifier;
           v40 = 2114;
-          v41 = v20;
+          v41 = accessoryUID2;
           _os_log_impl(&dword_224A23000, v16, OS_LOG_TYPE_INFO, "%{public}@: component %{public}@ %lu from %{public}@ not enabled", buf, 0x2Au);
         }
       }
 
-      v21 = [(CRAccNavProvider *)self workQueue];
+      workQueue = [(CRAccNavProvider *)self workQueue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __44__CRAccNavProvider_sendInfo_toComponentUID___block_invoke;
       block[3] = &unk_27853CE90;
-      v29 = v6;
-      v30 = self;
+      v29 = infoCopy;
+      selfCopy2 = self;
       v12 = v12;
       v31 = v12;
-      v32 = v7;
+      v32 = dCopy;
       v33 = v9;
-      dispatch_async(v21, block);
+      dispatch_async(workQueue, block);
 
       v22 = v29;
       goto LABEL_12;
@@ -161,20 +161,20 @@ uint64_t __44__CRAccNavProvider__locked_activeComponents__block_invoke(uint64_t 
   v22 = CarNavLogging();
   if (os_log_type_enabled(v22, OS_LOG_TYPE_FAULT))
   {
-    v24 = [v7 UUIDString];
-    v25 = [v9 component];
-    v26 = [(CRAccNavProvider *)self _componentKeys];
-    v27 = [v26 valueForKey:@"UUIDString"];
+    uUIDString2 = [dCopy UUIDString];
+    component4 = [v9 component];
+    _componentKeys = [(CRAccNavProvider *)self _componentKeys];
+    v27 = [_componentKeys valueForKey:@"UUIDString"];
     *buf = 138544642;
-    v35 = self;
+    selfCopy3 = self;
     v36 = 2114;
-    v37 = v24;
+    v37 = uUIDString2;
     v38 = 2048;
     v39 = v9;
     v40 = 2048;
     v41 = v12;
     v42 = 2048;
-    v43 = v25;
+    v43 = component4;
     v44 = 2114;
     v45 = v27;
     _os_log_fault_impl(&dword_224A23000, v22, OS_LOG_TYPE_FAULT, "%{public}@: missing component information.  uid=%{public}@ component=%p accessory=%p component.component=%p compontentsIndexed=%{public}@", buf, 0x3Eu);
@@ -299,14 +299,14 @@ LABEL_19:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_broadcastRouteGuidance:(id)a3
+- (void)_broadcastRouteGuidance:(id)guidance
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  guidanceCopy = guidance;
   v5 = CarNavLogging();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    [(CRAccNavProvider *)self _broadcastRouteGuidance:v4, v5];
+    [(CRAccNavProvider *)self _broadcastRouteGuidance:guidanceCopy, v5];
   }
 
   os_unfair_lock_lock(&self->_accessoryLock);
@@ -314,11 +314,11 @@ LABEL_19:
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v6 = [(CRAccNavProvider *)self activeComponentsIndexed];
-  v7 = [v6 allValues];
+  activeComponentsIndexed = [(CRAccNavProvider *)self activeComponentsIndexed];
+  allValues = [activeComponentsIndexed allValues];
 
-  obj = v7;
-  v8 = [v7 countByEnumeratingWithState:&v20 objects:v25 count:16];
+  obj = allValues;
+  v8 = [allValues countByEnumeratingWithState:&v20 objects:v25 count:16];
   if (v8)
   {
     v9 = v8;
@@ -334,14 +334,14 @@ LABEL_19:
         }
 
         v12 = *(*(&v20 + 1) + 8 * v11);
-        v13 = [(CRAccNavProvider *)self accessoriesIndexed];
-        v14 = [v12 accessoryUID];
-        v15 = [v13 objectForKeyedSubscript:v14];
+        accessoriesIndexed = [(CRAccNavProvider *)self accessoriesIndexed];
+        accessoryUID = [v12 accessoryUID];
+        v15 = [accessoriesIndexed objectForKeyedSubscript:accessoryUID];
 
-        v16 = [v12 component];
-        v24 = v16;
+        component = [v12 component];
+        v24 = component;
         v17 = [MEMORY[0x277CBEA60] arrayWithObjects:&v24 count:1];
-        [v15 updateRouteGuidanceInfo:v4 componentList:v17];
+        [v15 updateRouteGuidanceInfo:guidanceCopy componentList:v17];
 
         ++v11;
       }
@@ -359,13 +359,13 @@ LABEL_19:
 
 - (void)resetActiveComponents
 {
-  v3 = [(CRAccNavProvider *)self workQueue];
+  workQueue = [(CRAccNavProvider *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __41__CRAccNavProvider_resetActiveComponents__block_invoke;
   block[3] = &unk_27853CEB8;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(workQueue, block);
 }
 
 void __41__CRAccNavProvider_resetActiveComponents__block_invoke(uint64_t a1)
@@ -387,21 +387,21 @@ void __41__CRAccNavProvider_resetActiveComponents__block_invoke(uint64_t a1)
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendNoSupportForAppIdentifier:(id)a3
+- (void)sendNoSupportForAppIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [objc_opt_class() _localizedNameForIdentifier:v4];
+  identifierCopy = identifier;
+  v5 = [objc_opt_class() _localizedNameForIdentifier:identifierCopy];
   if (v5)
   {
-    v6 = [(CRAccNavProvider *)self workQueue];
+    workQueue = [(CRAccNavProvider *)self workQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __50__CRAccNavProvider_sendNoSupportForAppIdentifier___block_invoke;
     block[3] = &unk_27853CEE0;
     block[4] = self;
-    v8 = v4;
+    v8 = identifierCopy;
     v9 = v5;
-    dispatch_async(v6, block);
+    dispatch_async(workQueue, block);
   }
 
   else
@@ -433,45 +433,45 @@ void __50__CRAccNavProvider_sendNoSupportForAppIdentifier___block_invoke(uint64_
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)navigation:(id)a3 accessoryAttached:(id)a4
+- (void)navigation:(id)navigation accessoryAttached:(id)attached
 {
   v10 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  attachedCopy = attached;
   v6 = CarNavLogging();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138543362;
-    v9 = v5;
+    v9 = attachedCopy;
     _os_log_impl(&dword_224A23000, v6, OS_LOG_TYPE_DEFAULT, "iAP Accessory is available %{public}@", &v8, 0xCu);
   }
 
-  [(CRAccNavProvider *)self _addAccessoryIfNeeded:v5];
+  [(CRAccNavProvider *)self _addAccessoryIfNeeded:attachedCopy];
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)navigation:(id)a3 accessoryDetached:(id)a4
+- (void)navigation:(id)navigation accessoryDetached:(id)detached
 {
   v40 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  detachedCopy = detached;
   os_unfair_lock_lock(&self->_accessoryLock);
   v6 = CarNavLogging();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(CRAccNavProvider *)self _locked_activeComponents];
+    _locked_activeComponents = [(CRAccNavProvider *)self _locked_activeComponents];
     *buf = 138543618;
-    v37 = v5;
+    v37 = detachedCopy;
     v38 = 2114;
-    v39 = v7;
+    v39 = _locked_activeComponents;
     _os_log_impl(&dword_224A23000, v6, OS_LOG_TYPE_DEFAULT, "iAP Accessory is unavailable %{public}@ activeComponents=%{public}@", buf, 0x16u);
   }
 
-  v8 = [(CRAccNavProvider *)self accessoriesIndexed];
-  v9 = [v5 accessoryUID];
-  [v8 removeObjectForKey:v9];
+  accessoriesIndexed = [(CRAccNavProvider *)self accessoriesIndexed];
+  accessoryUID = [detachedCopy accessoryUID];
+  [accessoriesIndexed removeObjectForKey:accessoryUID];
 
-  v10 = [(CRAccNavProvider *)self activeAccessoryComponentsIndexed];
-  v11 = [v5 accessoryUID];
-  v12 = [v10 objectForKeyedSubscript:v11];
+  activeAccessoryComponentsIndexed = [(CRAccNavProvider *)self activeAccessoryComponentsIndexed];
+  accessoryUID2 = [detachedCopy accessoryUID];
+  v12 = [activeAccessoryComponentsIndexed objectForKeyedSubscript:accessoryUID2];
   v13 = [v12 count];
 
   if (v13)
@@ -480,12 +480,12 @@ void __50__CRAccNavProvider_sendNoSupportForAppIdentifier___block_invoke(uint64_
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v14 = [(CRAccNavProvider *)self activeAccessoryComponentsIndexed];
-    v15 = [v5 accessoryUID];
-    v16 = [v14 objectForKeyedSubscript:v15];
-    v17 = [v16 allValues];
+    activeAccessoryComponentsIndexed2 = [(CRAccNavProvider *)self activeAccessoryComponentsIndexed];
+    accessoryUID3 = [detachedCopy accessoryUID];
+    v16 = [activeAccessoryComponentsIndexed2 objectForKeyedSubscript:accessoryUID3];
+    allValues = [v16 allValues];
 
-    v18 = [v17 countByEnumeratingWithState:&v31 objects:v35 count:16];
+    v18 = [allValues countByEnumeratingWithState:&v31 objects:v35 count:16];
     if (v18)
     {
       v19 = v18;
@@ -497,84 +497,84 @@ void __50__CRAccNavProvider_sendNoSupportForAppIdentifier___block_invoke(uint64_
         {
           if (*v32 != v20)
           {
-            objc_enumerationMutation(v17);
+            objc_enumerationMutation(allValues);
           }
 
           v22 = *(*(&v31 + 1) + 8 * v21);
-          v23 = [(CRAccNavProvider *)self activeComponentsIndexed];
-          [v23 removeObjectForKey:v22];
+          activeComponentsIndexed = [(CRAccNavProvider *)self activeComponentsIndexed];
+          [activeComponentsIndexed removeObjectForKey:v22];
 
           ++v21;
         }
 
         while (v19 != v21);
-        v19 = [v17 countByEnumeratingWithState:&v31 objects:v35 count:16];
+        v19 = [allValues countByEnumeratingWithState:&v31 objects:v35 count:16];
       }
 
       while (v19);
     }
   }
 
-  v24 = [(CRAccNavProvider *)self activeAccessoryComponentsIndexed];
-  v25 = [v5 accessoryUID];
-  [v24 removeObjectForKey:v25];
+  activeAccessoryComponentsIndexed3 = [(CRAccNavProvider *)self activeAccessoryComponentsIndexed];
+  accessoryUID4 = [detachedCopy accessoryUID];
+  [activeAccessoryComponentsIndexed3 removeObjectForKey:accessoryUID4];
 
-  v26 = [(CRAccNavProvider *)self _locked_activeComponents];
+  _locked_activeComponents2 = [(CRAccNavProvider *)self _locked_activeComponents];
   v27 = CarNavLogging();
   if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
   {
-    v28 = [(CRAccNavProvider *)self _locked_activeComponents];
+    _locked_activeComponents3 = [(CRAccNavProvider *)self _locked_activeComponents];
     *buf = 138543618;
-    v37 = v5;
+    v37 = detachedCopy;
     v38 = 2114;
-    v39 = v28;
+    v39 = _locked_activeComponents3;
     _os_log_impl(&dword_224A23000, v27, OS_LOG_TYPE_DEFAULT, "iAP Accessory removed %{public}@, new activeComponents=%{public}@", buf, 0x16u);
   }
 
   os_unfair_lock_unlock(&self->_accessoryLock);
   if (v13)
   {
-    v29 = [(CRAccNavProvider *)self delegate];
-    [v29 session:self didUpdateActiveComponents:v26];
+    delegate = [(CRAccNavProvider *)self delegate];
+    [delegate session:self didUpdateActiveComponents:_locked_activeComponents2];
   }
 
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (void)navigation:(id)a3 startRouteGuidance:(id)a4 componentList:(id)a5
+- (void)navigation:(id)navigation startRouteGuidance:(id)guidance componentList:(id)list
 {
   v47 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
+  guidanceCopy = guidance;
+  listCopy = list;
   v9 = CarNavLogging();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v44 = v7;
+    v44 = guidanceCopy;
     v45 = 2114;
-    v46 = v8;
+    v46 = listCopy;
     _os_log_impl(&dword_224A23000, v9, OS_LOG_TYPE_DEFAULT, "iAP Accessory did enable navigation updates %{public}@ components=%{public}@", buf, 0x16u);
   }
 
   os_unfair_lock_lock(&self->_accessoryLock);
-  [(CRAccNavProvider *)self _locked_addAccessoryIfNeeded:v7];
-  v10 = v8;
-  v36 = v10;
-  if (!v10)
+  [(CRAccNavProvider *)self _locked_addAccessoryIfNeeded:guidanceCopy];
+  allValues = listCopy;
+  v36 = allValues;
+  if (!allValues)
   {
-    v11 = [v7 componentList];
-    v10 = [v11 allValues];
+    componentList = [guidanceCopy componentList];
+    allValues = [componentList allValues];
   }
 
-  v12 = [(CRAccNavProvider *)self activeAccessoryComponentsIndexed];
-  v13 = [v7 accessoryUID];
-  v14 = [v12 objectForKeyedSubscript:v13];
+  activeAccessoryComponentsIndexed = [(CRAccNavProvider *)self activeAccessoryComponentsIndexed];
+  accessoryUID = [guidanceCopy accessoryUID];
+  v14 = [activeAccessoryComponentsIndexed objectForKeyedSubscript:accessoryUID];
 
   v40 = 0u;
   v41 = 0u;
   v38 = 0u;
   v39 = 0u;
-  obj = v10;
+  obj = allValues;
   v15 = [obj countByEnumeratingWithState:&v38 objects:v42 count:16];
   if (v15)
   {
@@ -596,21 +596,21 @@ void __50__CRAccNavProvider_sendNoSupportForAppIdentifier___block_invoke(uint64_
         if (!v21)
         {
           v22 = [CRAccNavComponent alloc];
-          v23 = [v7 accessoryUID];
-          v24 = [(CRAccNavComponent *)v22 initWithAccessoryUID:v23 component:v19];
+          accessoryUID2 = [guidanceCopy accessoryUID];
+          v24 = [(CRAccNavComponent *)v22 initWithAccessoryUID:accessoryUID2 component:v19];
 
-          v25 = [(CRAccNavProvider *)self activeComponentsIndexed];
+          activeComponentsIndexed = [(CRAccNavProvider *)self activeComponentsIndexed];
           [(CRAccNavComponent *)v24 uuid];
-          v27 = v26 = v7;
-          [v25 setObject:v24 forKeyedSubscript:v27];
+          v27 = v26 = guidanceCopy;
+          [activeComponentsIndexed setObject:v24 forKeyedSubscript:v27];
 
-          v28 = [(CRAccNavComponent *)v24 uuid];
+          uuid = [(CRAccNavComponent *)v24 uuid];
           v29 = MEMORY[0x277CCABB0];
-          v30 = [v19 identifier];
+          identifier = [v19 identifier];
           v31 = v29;
-          v7 = v26;
-          v32 = [v31 numberWithUnsignedInteger:v30];
-          [v14 setObject:v28 forKeyedSubscript:v32];
+          guidanceCopy = v26;
+          v32 = [v31 numberWithUnsignedInteger:identifier];
+          [v14 setObject:uuid forKeyedSubscript:v32];
         }
       }
 
@@ -620,37 +620,37 @@ void __50__CRAccNavProvider_sendNoSupportForAppIdentifier___block_invoke(uint64_
     while (v16);
   }
 
-  v33 = [(CRAccNavProvider *)self _locked_activeComponents];
+  _locked_activeComponents = [(CRAccNavProvider *)self _locked_activeComponents];
   os_unfair_lock_unlock(&self->_accessoryLock);
-  v34 = [(CRAccNavProvider *)self delegate];
-  [v34 session:self didUpdateActiveComponents:v33];
+  delegate = [(CRAccNavProvider *)self delegate];
+  [delegate session:self didUpdateActiveComponents:_locked_activeComponents];
 
   v35 = *MEMORY[0x277D85DE8];
 }
 
-- (void)navigation:(id)a3 stopRouteGuidance:(id)a4 componentList:(id)a5
+- (void)navigation:(id)navigation stopRouteGuidance:(id)guidance componentList:(id)list
 {
   v45 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
+  guidanceCopy = guidance;
+  listCopy = list;
   v9 = CarNavLogging();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v42 = v7;
+    v42 = guidanceCopy;
     v43 = 2114;
-    v44 = v8;
+    v44 = listCopy;
     _os_log_impl(&dword_224A23000, v9, OS_LOG_TYPE_DEFAULT, "iAP Accessory did disable navigation updates %{public}@ components=%{public}@", buf, 0x16u);
   }
 
   os_unfair_lock_lock(&self->_accessoryLock);
-  [(CRAccNavProvider *)self _locked_addAccessoryIfNeeded:v7];
-  v10 = v8;
+  [(CRAccNavProvider *)self _locked_addAccessoryIfNeeded:guidanceCopy];
+  v10 = listCopy;
   v11 = v10;
-  if (!v10 || (v12 = v10, ![v10 count]))
+  if (!v10 || (allValues = v10, ![v10 count]))
   {
-    v13 = [v7 componentList];
-    v12 = [v13 allValues];
+    componentList = [guidanceCopy componentList];
+    allValues = [componentList allValues];
   }
 
   v32 = v11;
@@ -658,7 +658,7 @@ void __50__CRAccNavProvider_sendNoSupportForAppIdentifier___block_invoke(uint64_
   v39 = 0u;
   v36 = 0u;
   v37 = 0u;
-  obj = v12;
+  obj = allValues;
   v35 = [obj countByEnumeratingWithState:&v36 objects:v40 count:16];
   if (v35)
   {
@@ -674,22 +674,22 @@ void __50__CRAccNavProvider_sendNoSupportForAppIdentifier___block_invoke(uint64_
         }
 
         v16 = *(*(&v36 + 1) + 8 * i);
-        v17 = [(CRAccNavProvider *)self activeAccessoryComponentsIndexed];
-        v18 = [v7 accessoryUID];
-        v19 = [v17 objectForKeyedSubscript:v18];
+        activeAccessoryComponentsIndexed = [(CRAccNavProvider *)self activeAccessoryComponentsIndexed];
+        accessoryUID = [guidanceCopy accessoryUID];
+        v19 = [activeAccessoryComponentsIndexed objectForKeyedSubscript:accessoryUID];
         [*(v14 + 2992) numberWithUnsignedInteger:{objc_msgSend(v16, "identifier")}];
-        v20 = v7;
+        v20 = guidanceCopy;
         v22 = v21 = v14;
         v23 = [v19 objectForKeyedSubscript:v22];
 
         if (v23)
         {
-          v24 = [(CRAccNavProvider *)self activeComponentsIndexed];
-          [v24 removeObjectForKey:v23];
+          activeComponentsIndexed = [(CRAccNavProvider *)self activeComponentsIndexed];
+          [activeComponentsIndexed removeObjectForKey:v23];
 
-          v25 = [(CRAccNavProvider *)self activeAccessoryComponentsIndexed];
-          v26 = [v20 accessoryUID];
-          v27 = [v25 objectForKeyedSubscript:v26];
+          activeAccessoryComponentsIndexed2 = [(CRAccNavProvider *)self activeAccessoryComponentsIndexed];
+          accessoryUID2 = [v20 accessoryUID];
+          v27 = [activeAccessoryComponentsIndexed2 objectForKeyedSubscript:accessoryUID2];
           v28 = [*(v21 + 2992) numberWithUnsignedInteger:{objc_msgSend(v16, "identifier")}];
           [v27 removeObjectForKey:v28];
 
@@ -699,20 +699,20 @@ void __50__CRAccNavProvider_sendNoSupportForAppIdentifier___block_invoke(uint64_
         else
         {
           v14 = v21;
-          v25 = CarNavLogging();
-          if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
+          activeAccessoryComponentsIndexed2 = CarNavLogging();
+          if (os_log_type_enabled(activeAccessoryComponentsIndexed2, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138543618;
-            v7 = v20;
+            guidanceCopy = v20;
             v42 = v20;
             v43 = 2114;
             v44 = v16;
-            _os_log_impl(&dword_224A23000, v25, OS_LOG_TYPE_DEFAULT, "Unknown accessory %{public}@ component %{public}@ already deactivated", buf, 0x16u);
+            _os_log_impl(&dword_224A23000, activeAccessoryComponentsIndexed2, OS_LOG_TYPE_DEFAULT, "Unknown accessory %{public}@ component %{public}@ already deactivated", buf, 0x16u);
             goto LABEL_16;
           }
         }
 
-        v7 = v20;
+        guidanceCopy = v20;
 LABEL_16:
       }
 
@@ -722,58 +722,58 @@ LABEL_16:
     while (v35);
   }
 
-  v29 = [(CRAccNavProvider *)self _locked_activeComponents];
+  _locked_activeComponents = [(CRAccNavProvider *)self _locked_activeComponents];
   os_unfair_lock_unlock(&self->_accessoryLock);
-  v30 = [(CRAccNavProvider *)self delegate];
-  [v30 session:self didUpdateActiveComponents:v29];
+  delegate = [(CRAccNavProvider *)self delegate];
+  [delegate session:self didUpdateActiveComponents:_locked_activeComponents];
 
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_addAccessoryIfNeeded:(id)a3
+- (void)_addAccessoryIfNeeded:(id)needed
 {
-  v4 = a3;
+  neededCopy = needed;
   os_unfair_lock_lock(&self->_accessoryLock);
-  [(CRAccNavProvider *)self _locked_addAccessoryIfNeeded:v4];
+  [(CRAccNavProvider *)self _locked_addAccessoryIfNeeded:neededCopy];
 
   os_unfair_lock_unlock(&self->_accessoryLock);
 }
 
-- (void)_locked_addAccessoryIfNeeded:(id)a3
+- (void)_locked_addAccessoryIfNeeded:(id)needed
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(CRAccNavProvider *)self accessoriesIndexed];
-  v6 = [v4 accessoryUID];
-  v7 = [v5 objectForKeyedSubscript:v6];
+  neededCopy = needed;
+  accessoriesIndexed = [(CRAccNavProvider *)self accessoriesIndexed];
+  accessoryUID = [neededCopy accessoryUID];
+  v7 = [accessoriesIndexed objectForKeyedSubscript:accessoryUID];
 
   if (!v7)
   {
     v8 = CarNavLogging();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [v4 componentList];
+      componentList = [neededCopy componentList];
       v19 = 138543618;
-      v20 = v4;
+      v20 = neededCopy;
       v21 = 2114;
-      v22 = v9;
+      v22 = componentList;
       _os_log_impl(&dword_224A23000, v8, OS_LOG_TYPE_DEFAULT, "Unknown accessory %{public}@ components=%{public}@", &v19, 0x16u);
     }
 
-    v10 = [(CRAccNavProvider *)self accessoriesIndexed];
-    v11 = [v4 accessoryUID];
-    [v10 setObject:v4 forKeyedSubscript:v11];
+    accessoriesIndexed2 = [(CRAccNavProvider *)self accessoriesIndexed];
+    accessoryUID2 = [neededCopy accessoryUID];
+    [accessoriesIndexed2 setObject:neededCopy forKeyedSubscript:accessoryUID2];
 
-    v12 = [(CRAccNavProvider *)self activeAccessoryComponentsIndexed];
-    v13 = [v4 accessoryUID];
-    v14 = [v12 objectForKeyedSubscript:v13];
+    activeAccessoryComponentsIndexed = [(CRAccNavProvider *)self activeAccessoryComponentsIndexed];
+    accessoryUID3 = [neededCopy accessoryUID];
+    v14 = [activeAccessoryComponentsIndexed objectForKeyedSubscript:accessoryUID3];
 
     if (!v14)
     {
       v15 = objc_opt_new();
-      v16 = [(CRAccNavProvider *)self activeAccessoryComponentsIndexed];
-      v17 = [v4 accessoryUID];
-      [v16 setObject:v15 forKeyedSubscript:v17];
+      activeAccessoryComponentsIndexed2 = [(CRAccNavProvider *)self activeAccessoryComponentsIndexed];
+      accessoryUID4 = [neededCopy accessoryUID];
+      [activeAccessoryComponentsIndexed2 setObject:v15 forKeyedSubscript:accessoryUID4];
     }
   }
 
@@ -783,17 +783,17 @@ LABEL_16:
 - (id)_componentKeys
 {
   os_unfair_lock_lock(&self->_accessoryLock);
-  v3 = [(CRAccNavProvider *)self activeComponentsIndexed];
-  v4 = [v3 allKeys];
+  activeComponentsIndexed = [(CRAccNavProvider *)self activeComponentsIndexed];
+  allKeys = [activeComponentsIndexed allKeys];
 
   os_unfair_lock_unlock(&self->_accessoryLock);
 
-  return v4;
+  return allKeys;
 }
 
-+ (id)_localizedNameForIdentifier:(id)a3
++ (id)_localizedNameForIdentifier:(id)identifier
 {
-  v3 = [MEMORY[0x277CC1E60] applicationProxyForIdentifier:a3];
+  v3 = [MEMORY[0x277CC1E60] applicationProxyForIdentifier:identifier];
   v4 = [v3 localizedNameForContext:@"Car"];
   v5 = v4;
   if (v4)

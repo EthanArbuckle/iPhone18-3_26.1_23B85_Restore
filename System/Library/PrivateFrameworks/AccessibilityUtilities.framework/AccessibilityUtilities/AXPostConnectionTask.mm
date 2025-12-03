@@ -1,34 +1,34 @@
 @interface AXPostConnectionTask
-- (AXPostConnectionTask)initWithConnectBlock:(id)a3 timeout:(double)a4 accessQueue:(id)a5;
+- (AXPostConnectionTask)initWithConnectBlock:(id)block timeout:(double)timeout accessQueue:(id)queue;
 - (void)_performTask;
 - (void)performTask;
 @end
 
 @implementation AXPostConnectionTask
 
-- (AXPostConnectionTask)initWithConnectBlock:(id)a3 timeout:(double)a4 accessQueue:(id)a5
+- (AXPostConnectionTask)initWithConnectBlock:(id)block timeout:(double)timeout accessQueue:(id)queue
 {
-  v8 = a3;
-  v9 = a5;
+  blockCopy = block;
+  queueCopy = queue;
   v18.receiver = self;
   v18.super_class = AXPostConnectionTask;
   v10 = [(AXPostConnectionTask *)&v18 init];
   if (v10)
   {
     v11 = v10;
-    if (v8)
+    if (blockCopy)
     {
-      [(AXPostConnectionTask *)v10 setPostConnectionBlock:v8];
-      v12 = [objc_alloc(MEMORY[0x1E6988750]) initWithTargetAccessQueue:v9];
+      [(AXPostConnectionTask *)v10 setPostConnectionBlock:blockCopy];
+      v12 = [objc_alloc(MEMORY[0x1E6988750]) initWithTargetAccessQueue:queueCopy];
       [v11 setTimeoutTimer:v12];
-      v13 = [v11 timeoutTimer];
+      timeoutTimer = [v11 timeoutTimer];
       v16[0] = MEMORY[0x1E69E9820];
       v16[1] = 3221225472;
       v16[2] = __65__AXPostConnectionTask_initWithConnectBlock_timeout_accessQueue___block_invoke;
       v16[3] = &unk_1E71E9B98;
       v14 = v11;
       v17 = v14;
-      [v13 afterDelay:v16 processWritingBlock:a4];
+      [timeoutTimer afterDelay:v16 processWritingBlock:timeout];
 
       v11 = v12;
     }
@@ -57,8 +57,8 @@ uint64_t __65__AXPostConnectionTask_initWithConnectBlock_timeout_accessQueue___b
 
 - (void)performTask
 {
-  v3 = [(AXPostConnectionTask *)self timeoutTimer];
-  [v3 cancel];
+  timeoutTimer = [(AXPostConnectionTask *)self timeoutTimer];
+  [timeoutTimer cancel];
 
   [(AXPostConnectionTask *)self _performTask];
 }

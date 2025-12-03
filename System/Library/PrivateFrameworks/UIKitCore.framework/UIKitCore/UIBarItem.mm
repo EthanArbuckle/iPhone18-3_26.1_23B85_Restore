@@ -1,11 +1,11 @@
 @interface UIBarItem
-+ (id)appearanceWhenContainedIn:(Class)a3;
-+ (id)appearanceWhenContainedInInstancesOfClasses:(id)a3;
++ (id)appearanceWhenContainedIn:(Class)in;
++ (id)appearanceWhenContainedInInstancesOfClasses:(id)classes;
 - (UIBarItem)init;
 - (UIBarItem)initWithCoder:(NSCoder *)coder;
 - (UIEdgeInsets)largeContentSizeImageInsets;
-- (id)_attributedTitleForState:(unint64_t)a3 withDefaultAttributes:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (id)_attributedTitleForState:(unint64_t)state withDefaultAttributes:(id)attributes;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UIBarItem
@@ -17,23 +17,23 @@
   return [(UIBarItem *)&v3 init];
 }
 
-+ (id)appearanceWhenContainedInInstancesOfClasses:(id)a3
++ (id)appearanceWhenContainedInInstancesOfClasses:(id)classes
 {
-  v4 = _UIInternalContainerClassArrayForContainerClassArray(a3);
-  v5 = [a1 _appearanceWhenContainedIn:v4];
+  v4 = _UIInternalContainerClassArrayForContainerClassArray(classes);
+  v5 = [self _appearanceWhenContainedIn:v4];
 
   return v5;
 }
 
-+ (id)appearanceWhenContainedIn:(Class)a3
++ (id)appearanceWhenContainedIn:(Class)in
 {
-  if (!a3 || (_UIInternalContainerClassesForContainerClasses(a3, &v9, 0), (v4 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (!in || (_UIInternalContainerClassesForContainerClasses(in, &v9, 0), (array = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v4 = [MEMORY[0x1E695DEC8] array];
+    array = [MEMORY[0x1E695DEC8] array];
   }
 
-  v5 = v4;
-  v6 = [a1 _appearanceWhenContainedIn:v4];
+  v5 = array;
+  v6 = [self _appearanceWhenContainedIn:array];
 
   return v6;
 }
@@ -68,10 +68,10 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v9 = v4;
+  coderCopy = coder;
+  v9 = coderCopy;
   if (self->_shouldArchiveUIAppearanceTags)
   {
     v5 = objc_getAssociatedObject(self, &_UIAppearanceCustomizedSelectorsAssociationKey);
@@ -80,14 +80,14 @@
       [v9 encodeObject:v5 forKey:0x1EFB59970];
     }
 
-    v4 = v9;
+    coderCopy = v9;
   }
 
   largeContentSizeImage = self->_largeContentSizeImage;
   if (largeContentSizeImage)
   {
     [v9 encodeObject:largeContentSizeImage forKey:@"_UIBarItemLargeContentSizeImageCodingKey"];
-    v4 = v9;
+    coderCopy = v9;
   }
 
   v7 = *&self->_largeContentSizeImageInsets.top;
@@ -95,17 +95,17 @@
   if (vmaxv_u16(vmovn_s32(vmvnq_s8(vuzp1q_s32(vceqzq_f64(v7), vceqzq_f64(v8))))))
   {
     [v9 encodeUIEdgeInsets:@"_UIBarItemLargeContentSizeImageInsetsCodingKey" forKey:{*&v7, *&v8}];
-    v4 = v9;
+    coderCopy = v9;
   }
 }
 
-- (id)_attributedTitleForState:(unint64_t)a3 withDefaultAttributes:(id)a4
+- (id)_attributedTitleForState:(unint64_t)state withDefaultAttributes:(id)attributes
 {
-  v6 = a4;
+  attributesCopy = attributes;
   if ([(UIBarItem *)self hasTitle])
   {
-    v7 = v6;
-    v8 = [(UIBarItem *)self titleTextAttributesForState:a3];
+    v7 = attributesCopy;
+    v8 = [(UIBarItem *)self titleTextAttributesForState:state];
     if ([v8 count])
     {
       v9 = [v7 mutableCopy];
@@ -122,8 +122,8 @@
     }
 
     v12 = objc_alloc(MEMORY[0x1E696AAB0]);
-    v13 = [(UIBarItem *)self resolvedTitle];
-    v14 = [v12 initWithString:v13 attributes:v7];
+    resolvedTitle = [(UIBarItem *)self resolvedTitle];
+    v14 = [v12 initWithString:resolvedTitle attributes:v7];
   }
 
   else

@@ -1,13 +1,13 @@
 @interface APIDAccountsDefaultsSettings
-+ (id)storageWithDefaultValues:(id)a3;
++ (id)storageWithDefaultValues:(id)values;
 @end
 
 @implementation APIDAccountsDefaultsSettings
 
-+ (id)storageWithDefaultValues:(id)a3
++ (id)storageWithDefaultValues:(id)values
 {
-  v3 = a3;
-  v4 = [[APSettingsStorageUserDefaults alloc] initWithDefaultValues:v3];
+  valuesCopy = values;
+  v4 = [[APSettingsStorageUserDefaults alloc] initWithDefaultValues:valuesCopy];
 
   return v4;
 }

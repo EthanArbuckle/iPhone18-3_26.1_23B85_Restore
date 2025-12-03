@@ -1,12 +1,12 @@
 @interface HKWatchAppInstallationDataSource
 - (HKWatchAppInstallationDataSource)init;
-- (HKWatchAppInstallationDataSource)initWithDevicePairingAndSwitchingNotificationDataSource:(id)a3;
-- (id)_populateManagersDictionaryForBundleIdentifier:(id)a3;
-- (id)isWatchAppInstalledWithBundleIdentifier:(id)a3 error:(id *)a4;
-- (id)makeAndRegisterBridgedObserverForKey:(id)a3 handle:(id)a4;
-- (id)watchAppInstallationManagerForBundleIdentifier:(id)a3;
-- (void)addWatchAppInstallationManager:(id)a3 forBundleIdentifier:(id)a4;
-- (void)unregisterBridgedObserver:(id)a3 forKey:(id)a4;
+- (HKWatchAppInstallationDataSource)initWithDevicePairingAndSwitchingNotificationDataSource:(id)source;
+- (id)_populateManagersDictionaryForBundleIdentifier:(id)identifier;
+- (id)isWatchAppInstalledWithBundleIdentifier:(id)identifier error:(id *)error;
+- (id)makeAndRegisterBridgedObserverForKey:(id)key handle:(id)handle;
+- (id)watchAppInstallationManagerForBundleIdentifier:(id)identifier;
+- (void)addWatchAppInstallationManager:(id)manager forBundleIdentifier:(id)identifier;
+- (void)unregisterBridgedObserver:(id)observer forKey:(id)key;
 @end
 
 @implementation HKWatchAppInstallationDataSource
@@ -19,16 +19,16 @@
   return v4;
 }
 
-- (HKWatchAppInstallationDataSource)initWithDevicePairingAndSwitchingNotificationDataSource:(id)a3
+- (HKWatchAppInstallationDataSource)initWithDevicePairingAndSwitchingNotificationDataSource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   v11.receiver = self;
   v11.super_class = HKWatchAppInstallationDataSource;
   v6 = [(HKObserverBridge *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_devicePairingAndSwitchingDataSource, a3);
+    objc_storeStrong(&v6->_devicePairingAndSwitchingDataSource, source);
     v8 = objc_alloc_init(MEMORY[0x1E695DF90]);
     watchAppInstallationManagersByBundleIdentifier = v7->_watchAppInstallationManagersByBundleIdentifier;
     v7->_watchAppInstallationManagersByBundleIdentifier = v8;
@@ -39,14 +39,14 @@
   return v7;
 }
 
-- (id)_populateManagersDictionaryForBundleIdentifier:(id)a3
+- (id)_populateManagersDictionaryForBundleIdentifier:(id)identifier
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = +[_HKBehavior sharedBehavior];
-  v6 = [v5 isAppleWatch];
+  isAppleWatch = [v5 isAppleWatch];
 
-  if (v6)
+  if (isAppleWatch)
   {
     v7 = off_1E7375148;
   }
@@ -54,9 +54,9 @@
   else
   {
     v8 = +[_HKBehavior sharedBehavior];
-    v9 = [v8 isCompanionCapable];
+    isCompanionCapable = [v8 isCompanionCapable];
 
-    if (!v9)
+    if (!isCompanionCapable)
     {
       goto LABEL_7;
     }
@@ -64,12 +64,12 @@
     v7 = off_1E7375338;
   }
 
-  v10 = [objc_alloc(*v7) initWithBundleIdentifier:v4];
+  v10 = [objc_alloc(*v7) initWithBundleIdentifier:identifierCopy];
   if (v10)
   {
     v11 = v10;
     os_unfair_lock_lock(&self->_watchAppInstallationManagersLock);
-    [(NSMutableDictionary *)self->_watchAppInstallationManagersByBundleIdentifier setObject:v11 forKeyedSubscript:v4];
+    [(NSMutableDictionary *)self->_watchAppInstallationManagersByBundleIdentifier setObject:v11 forKeyedSubscript:identifierCopy];
     os_unfair_lock_unlock(&self->_watchAppInstallationManagersLock);
     goto LABEL_10;
   }
@@ -93,13 +93,13 @@ LABEL_10:
   return v11;
 }
 
-- (id)watchAppInstallationManagerForBundleIdentifier:(id)a3
+- (id)watchAppInstallationManagerForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&self->_watchAppInstallationManagersLock);
   v5 = [(NSMutableDictionary *)self->_watchAppInstallationManagersByBundleIdentifier copy];
   os_unfair_lock_unlock(&self->_watchAppInstallationManagersLock);
-  v6 = [v5 objectForKeyedSubscript:v4];
+  v6 = [v5 objectForKeyedSubscript:identifierCopy];
   v7 = v6;
   if (v6)
   {
@@ -108,7 +108,7 @@ LABEL_10:
 
   else
   {
-    v8 = [(HKWatchAppInstallationDataSource *)self _populateManagersDictionaryForBundleIdentifier:v4];
+    v8 = [(HKWatchAppInstallationDataSource *)self _populateManagersDictionaryForBundleIdentifier:identifierCopy];
   }
 
   v9 = v8;
@@ -116,27 +116,27 @@ LABEL_10:
   return v9;
 }
 
-- (void)addWatchAppInstallationManager:(id)a3 forBundleIdentifier:(id)a4
+- (void)addWatchAppInstallationManager:(id)manager forBundleIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = a3;
+  identifierCopy = identifier;
+  managerCopy = manager;
   os_unfair_lock_lock(&self->_watchAppInstallationManagersLock);
-  [(NSMutableDictionary *)self->_watchAppInstallationManagersByBundleIdentifier setObject:v7 forKeyedSubscript:v6];
+  [(NSMutableDictionary *)self->_watchAppInstallationManagersByBundleIdentifier setObject:managerCopy forKeyedSubscript:identifierCopy];
 
   os_unfair_lock_unlock(&self->_watchAppInstallationManagersLock);
 }
 
-- (id)makeAndRegisterBridgedObserverForKey:(id)a3 handle:(id)a4
+- (id)makeAndRegisterBridgedObserverForKey:(id)key handle:(id)handle
 {
-  v6 = a4;
-  v7 = [(HKWatchAppInstallationDataSource *)self watchAppInstallationManagerForBundleIdentifier:a3];
-  v8 = [[_HKWatchAppInstallationManagerObserverBridge alloc] initWithHandle:v6];
+  handleCopy = handle;
+  v7 = [(HKWatchAppInstallationDataSource *)self watchAppInstallationManagerForBundleIdentifier:key];
+  v8 = [[_HKWatchAppInstallationManagerObserverBridge alloc] initWithHandle:handleCopy];
 
   [v7 registerObserver:v8];
   v9 = +[_HKBehavior sharedBehavior];
-  v10 = [v9 isAppleWatch];
+  isAppleWatch = [v9 isAppleWatch];
 
-  if ((v10 & 1) == 0)
+  if ((isAppleWatch & 1) == 0)
   {
     devicePairingAndSwitchingDataSource = self->_devicePairingAndSwitchingDataSource;
     v13[0] = MEMORY[0x1E69E9820];
@@ -151,11 +151,11 @@ LABEL_10:
   return v8;
 }
 
-- (id)isWatchAppInstalledWithBundleIdentifier:(id)a3 error:(id *)a4
+- (id)isWatchAppInstalledWithBundleIdentifier:(id)identifier error:(id *)error
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(HKWatchAppInstallationDataSource *)self watchAppInstallationManagerForBundleIdentifier:v6];
+  identifierCopy = identifier;
+  v7 = [(HKWatchAppInstallationDataSource *)self watchAppInstallationManagerForBundleIdentifier:identifierCopy];
   v8 = v7;
   if (v7)
   {
@@ -165,10 +165,10 @@ LABEL_10:
     v11 = v10;
     if (v10)
     {
-      if (a4)
+      if (error)
       {
         v12 = v10;
-        *a4 = v11;
+        *error = v11;
       }
 
       else
@@ -184,7 +184,7 @@ LABEL_10:
         *buf = 138543874;
         v21 = v17;
         v22 = 2114;
-        v23 = v6;
+        v23 = identifierCopy;
         v24 = 2114;
         v25 = v11;
         v18 = v17;
@@ -210,16 +210,16 @@ LABEL_10:
   return v13;
 }
 
-- (void)unregisterBridgedObserver:(id)a3 forKey:(id)a4
+- (void)unregisterBridgedObserver:(id)observer forKey:(id)key
 {
-  v6 = a3;
-  v8 = [(HKWatchAppInstallationDataSource *)self watchAppInstallationManagerForBundleIdentifier:a4];
-  [v8 unregisterObserver:v6];
+  observerCopy = observer;
+  v8 = [(HKWatchAppInstallationDataSource *)self watchAppInstallationManagerForBundleIdentifier:key];
+  [v8 unregisterObserver:observerCopy];
 
   v7 = +[_HKBehavior sharedBehavior];
-  LOBYTE(v6) = [v7 isAppleWatch];
+  LOBYTE(observerCopy) = [v7 isAppleWatch];
 
-  if ((v6 & 1) == 0)
+  if ((observerCopy & 1) == 0)
   {
     [(HKNanoRegistryPairingAndSwitchingNotificationDataSource *)self->_devicePairingAndSwitchingDataSource unregisterObserverForDevicePairingChanges:self];
   }

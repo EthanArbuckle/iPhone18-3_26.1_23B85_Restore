@@ -7,13 +7,13 @@
 - (void)_ensureStopped;
 - (void)_invalidate;
 - (void)_invalidated;
-- (void)_networkInterfacesChanged:(BOOL)a3;
-- (void)_primaryIPChanged:(BOOL)a3;
-- (void)_primaryIPChangedNW:(BOOL)a3;
-- (void)activateWithCompletion:(id)a3;
+- (void)_networkInterfacesChanged:(BOOL)changed;
+- (void)_primaryIPChanged:(BOOL)changed;
+- (void)_primaryIPChangedNW:(BOOL)w;
+- (void)activateWithCompletion:(id)completion;
 - (void)dealloc;
 - (void)invalidate;
-- (void)setLabel:(id)a3;
+- (void)setLabel:(id)label;
 @end
 
 @implementation CUNetInterfaceMonitor
@@ -32,7 +32,7 @@
   return self;
 }
 
-- (void)_primaryIPChangedNW:(BOOL)a3
+- (void)_primaryIPChangedNW:(BOOL)w
 {
   v98 = *MEMORY[0x1E69E9840];
   v4 = nw_path_evaluator_copy_path();
@@ -376,7 +376,7 @@ LABEL_82:
   }
 }
 
-- (void)_primaryIPChanged:(BOOL)a3
+- (void)_primaryIPChanged:(BOOL)changed
 {
   scStore = self->_scStore;
   if (scStore)
@@ -423,7 +423,7 @@ LABEL_5:
       else if (BYTE1(v46[0]) == 2)
       {
         self->_primaryIPv4Addr.sa = v46[0];
-        if (!a3)
+        if (!changed)
         {
 LABEL_25:
           v23 = self->_ucat;
@@ -461,7 +461,7 @@ LABEL_30:
             else if (BYTE1(v45[0]) == 2)
             {
               self->_primaryIPv6Addr.sa = v45[0];
-              if (!a3)
+              if (!changed)
               {
 LABEL_41:
                 v28 = self->_ucat;
@@ -495,9 +495,9 @@ LABEL_48:
                 }
 
                 active = SCNetworkSignatureCopyActiveIdentifiers();
-                v32 = [active firstObject];
+                firstObject = [active firstObject];
                 primaryNetworkSignature = self->_primaryNetworkSignature;
-                v34 = v32;
+                v34 = firstObject;
                 v35 = primaryNetworkSignature;
                 v36 = v35;
                 if (v34 == v35)
@@ -523,8 +523,8 @@ LABEL_62:
                 {
                 }
 
-                objc_storeStrong(&self->_primaryNetworkSignature, v32);
-                if (a3)
+                objc_storeStrong(&self->_primaryNetworkSignature, firstObject);
+                if (changed)
                 {
 LABEL_63:
 
@@ -568,7 +568,7 @@ LABEL_38:
               goto LABEL_45;
             }
 
-            if (!a3)
+            if (!changed)
             {
               goto LABEL_41;
             }
@@ -577,7 +577,7 @@ LABEL_38:
           }
 
           self->_primaryIPv6Addr.sa.sa_family = 0;
-          if (!a3)
+          if (!changed)
           {
             goto LABEL_41;
           }
@@ -590,7 +590,7 @@ LABEL_23:
         goto LABEL_30;
       }
 
-      if (!a3)
+      if (!changed)
       {
         goto LABEL_25;
       }
@@ -599,7 +599,7 @@ LABEL_23:
     }
 
     self->_primaryIPv4Addr.sa.sa_family = 0;
-    if (!a3)
+    if (!changed)
     {
       goto LABEL_25;
     }
@@ -626,9 +626,9 @@ LABEL_23:
   LogPrintF(v17, "[CUNetInterfaceMonitor _primaryIPChanged:]", 0x5Au, "### PrimaryIP changed with no SCStore\n", v3, v4, v5, v6, v48);
 }
 
-- (void)_networkInterfacesChanged:(BOOL)a3
+- (void)_networkInterfacesChanged:(BOOL)changed
 {
-  v47 = a3;
+  changedCopy = changed;
   v54 = *MEMORY[0x1E69E9840];
   v4 = socket(2, 2, 0);
   if (v4 < 0)
@@ -804,9 +804,9 @@ LABEL_38:
 
   v21 = 0;
 LABEL_47:
-  v35 = [v19 allValues];
+  allValues = [v19 allValues];
   interfaces = self->_interfaces;
-  self->_interfaces = v35;
+  self->_interfaces = allValues;
 
   v37 = _Block_copy(self->_interfacesChangedHandler);
   v38 = v37;
@@ -821,7 +821,7 @@ LABEL_47:
     goto LABEL_61;
   }
 
-  if (!v47)
+  if (!changedCopy)
   {
     v44 = self->_ucat;
     if (v44->var0 <= 30)
@@ -1234,17 +1234,17 @@ LABEL_6:
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)activateWithCompletion:(id)a3
+- (void)activateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __48__CUNetInterfaceMonitor_activateWithCompletion___block_invoke;
   v7[3] = &unk_1E73A49A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -1294,13 +1294,13 @@ LABEL_5:
   return result;
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  objc_storeStrong(&self->_label, a3);
-  v13 = a3;
+  objc_storeStrong(&self->_label, label);
+  labelCopy = label;
   v5 = qword_1EADE8D50;
-  v6 = v13;
-  [v13 UTF8String];
+  v6 = labelCopy;
+  [labelCopy UTF8String];
   LogCategoryReplaceF(&self->_ucat, "%s-%s", v7, v8, v9, v10, v11, v12, v5);
 }
 

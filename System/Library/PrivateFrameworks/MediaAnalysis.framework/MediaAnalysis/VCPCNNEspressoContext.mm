@@ -2,10 +2,10 @@
 + (void)createContextPreferred;
 + (void)createContextWithForceCPU;
 + (void)createContextWithMPSGraph;
-+ (void)sharedContextPreferred:(BOOL)a3;
-+ (void)sharedContextWithForceCPU:(BOOL)a3;
-+ (void)sharedContextWithMPSGraph:(BOOL)a3;
-- (VCPCNNEspressoContext)initWithForceCPU:(BOOL)a3 forceNNGraph:(BOOL)a4 shared:(BOOL)a5;
++ (void)sharedContextPreferred:(BOOL)preferred;
++ (void)sharedContextWithForceCPU:(BOOL)u;
++ (void)sharedContextWithMPSGraph:(BOOL)graph;
+- (VCPCNNEspressoContext)initWithForceCPU:(BOOL)u forceNNGraph:(BOOL)graph shared:(BOOL)shared;
 - (void)dealloc;
 @end
 
@@ -69,7 +69,7 @@ LABEL_8:
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "[VCPCNNEspressoContext] Failed to create MPSGraph context, fall back to CPU context", v6, 2u);
     }
 
-    return [a1 createContextWithForceCPU];
+    return [self createContextWithForceCPU];
   }
 
   return context;
@@ -105,22 +105,22 @@ LABEL_8:
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "[VCPCNNEspressoContext] Failed to create MPS context, fall back to CPU context", v6, 2u);
       }
 
-      return [a1 createContextWithForceCPU];
+      return [self createContextWithForceCPU];
     }
   }
 
   return context;
 }
 
-+ (void)sharedContextWithForceCPU:(BOOL)a3
++ (void)sharedContextWithForceCPU:(BOOL)u
 {
-  if (a3)
+  if (u)
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __51__VCPCNNEspressoContext_sharedContextWithForceCPU___block_invoke;
     block[3] = &__block_descriptor_40_e5_v8__0l;
-    block[4] = a1;
+    block[4] = self;
     if (+[VCPCNNEspressoContext sharedContextWithForceCPU:]::onceToken != -1)
     {
       dispatch_once(&+[VCPCNNEspressoContext sharedContextWithForceCPU:]::onceToken, block);
@@ -140,15 +140,15 @@ void __51__VCPCNNEspressoContext_sharedContextWithForceCPU___block_invoke(uint64
   }
 }
 
-+ (void)sharedContextWithMPSGraph:(BOOL)a3
++ (void)sharedContextWithMPSGraph:(BOOL)graph
 {
-  if (a3)
+  if (graph)
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __51__VCPCNNEspressoContext_sharedContextWithMPSGraph___block_invoke;
     block[3] = &__block_descriptor_40_e5_v8__0l;
-    block[4] = a1;
+    block[4] = self;
     if (+[VCPCNNEspressoContext sharedContextWithMPSGraph:]::onceToken != -1)
     {
       dispatch_once(&+[VCPCNNEspressoContext sharedContextWithMPSGraph:]::onceToken, block);
@@ -168,15 +168,15 @@ void __51__VCPCNNEspressoContext_sharedContextWithMPSGraph___block_invoke(uint64
   }
 }
 
-+ (void)sharedContextPreferred:(BOOL)a3
++ (void)sharedContextPreferred:(BOOL)preferred
 {
-  if (a3)
+  if (preferred)
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __48__VCPCNNEspressoContext_sharedContextPreferred___block_invoke;
     block[3] = &__block_descriptor_40_e5_v8__0l;
-    block[4] = a1;
+    block[4] = self;
     if (+[VCPCNNEspressoContext sharedContextPreferred:]::onceToken != -1)
     {
       dispatch_once(&+[VCPCNNEspressoContext sharedContextPreferred:]::onceToken, block);
@@ -196,58 +196,58 @@ void __48__VCPCNNEspressoContext_sharedContextPreferred___block_invoke(uint64_t 
   }
 }
 
-- (VCPCNNEspressoContext)initWithForceCPU:(BOOL)a3 forceNNGraph:(BOOL)a4 shared:(BOOL)a5
+- (VCPCNNEspressoContext)initWithForceCPU:(BOOL)u forceNNGraph:(BOOL)graph shared:(BOOL)shared
 {
-  v5 = a5;
-  v6 = a4;
-  v7 = a3;
+  sharedCopy = shared;
+  graphCopy = graph;
+  uCopy = u;
   v13.receiver = self;
   v13.super_class = VCPCNNEspressoContext;
   v8 = [(VCPCNNEspressoContext *)&v13 init];
   if (v8)
   {
-    if (v5)
+    if (sharedCopy)
     {
-      if (v7)
+      if (uCopy)
       {
-        v9 = [objc_opt_class() sharedContextWithForceCPU:1];
+        createContextWithForceCPU = [objc_opt_class() sharedContextWithForceCPU:1];
       }
 
-      else if (v6)
+      else if (graphCopy)
       {
-        v9 = [objc_opt_class() sharedContextWithMPSGraph:1];
+        createContextWithForceCPU = [objc_opt_class() sharedContextWithMPSGraph:1];
       }
 
       else
       {
-        v9 = [objc_opt_class() sharedContextPreferred:1];
+        createContextWithForceCPU = [objc_opt_class() sharedContextPreferred:1];
       }
     }
 
-    else if (v7)
+    else if (uCopy)
     {
-      v9 = [objc_opt_class() createContextWithForceCPU];
+      createContextWithForceCPU = [objc_opt_class() createContextWithForceCPU];
     }
 
-    else if (v6)
+    else if (graphCopy)
     {
-      v9 = [objc_opt_class() createContextWithMPSGraph];
+      createContextWithForceCPU = [objc_opt_class() createContextWithMPSGraph];
     }
 
     else
     {
-      v9 = [objc_opt_class() createContextPreferred];
+      createContextWithForceCPU = [objc_opt_class() createContextPreferred];
     }
 
-    v8->_espressoContext = v9;
+    v8->_espressoContext = createContextWithForceCPU;
   }
 
   else
   {
-    v9 = MEMORY[8];
+    createContextWithForceCPU = MEMORY[8];
   }
 
-  if (v9)
+  if (createContextWithForceCPU)
   {
     v10 = v8;
   }

@@ -1,16 +1,16 @@
 @interface BSUIReadingGoalsGaugeMetrics
 + (id)attributesKindMapping;
 + (id)supportedAttributes;
-+ (unint64_t)defaultKindForAttribute:(unsigned __int16)a3;
++ (unint64_t)defaultKindForAttribute:(unsigned __int16)attribute;
 + (void)registerAttributes;
 - (BOOL)isAX;
-- (BOOL)isEqual:(id)a3;
-- (BSUIReadingGoalsGaugeMetrics)initWithNode:(id)a3 attributes:(id)a4 context:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (BSUIReadingGoalsGaugeMetrics)initWithNode:(id)node attributes:(id)attributes context:(id)context;
 - (CGSize)size;
 - (void)dealloc;
 - (void)defaultsMissingMetrics;
-- (void)dynamicProgressChanged:(id)a3;
-- (void)updateWithConfiguration:(id)a3 context:(id)a4;
+- (void)dynamicProgressChanged:(id)changed;
+- (void)updateWithConfiguration:(id)configuration context:(id)context;
 @end
 
 @implementation BSUIReadingGoalsGaugeMetrics
@@ -46,46 +46,46 @@
   return v3;
 }
 
-+ (unint64_t)defaultKindForAttribute:(unsigned __int16)a3
++ (unint64_t)defaultKindForAttribute:(unsigned __int16)attribute
 {
-  v3 = a3;
-  v4 = [a1 attributesKindMapping];
-  if (v3)
+  attributeCopy = attribute;
+  attributesKindMapping = [self attributesKindMapping];
+  if (attributeCopy)
   {
-    v5 = [TUIAttributeRegistry nameForAttribute:v3];
-    v6 = [v4 objectForKeyedSubscript:v5];
-    v7 = [v6 unsignedIntegerValue];
+    v5 = [TUIAttributeRegistry nameForAttribute:attributeCopy];
+    v6 = [attributesKindMapping objectForKeyedSubscript:v5];
+    unsignedIntegerValue = [v6 unsignedIntegerValue];
   }
 
   else
   {
-    v7 = 0;
+    unsignedIntegerValue = 0;
   }
 
-  return v7;
+  return unsignedIntegerValue;
 }
 
-- (BSUIReadingGoalsGaugeMetrics)initWithNode:(id)a3 attributes:(id)a4 context:(id)a5
+- (BSUIReadingGoalsGaugeMetrics)initWithNode:(id)node attributes:(id)attributes context:(id)context
 {
-  v8 = a4;
-  v9 = a5;
+  attributesCopy = attributes;
+  contextCopy = context;
   v36.receiver = self;
   v36.super_class = BSUIReadingGoalsGaugeMetrics;
   v10 = [(BSUIReadingGoalsGaugeMetrics *)&v36 init];
   if (v10)
   {
     objc_opt_class();
-    v11 = [v8 stringForAttribute:137 node:a3.var0];
+    v11 = [attributesCopy stringForAttribute:137 node:node.var0];
     v12 = BUDynamicCast();
 
-    v13 = [v8 stringForAttribute:206 node:a3.var0];
-    v14 = [v8 colorForAttribute:BSUIAttributeControlColor node:a3.var0];
-    v15 = [v8 colorForAttribute:BSUIAttributeProgressColor node:a3.var0];
-    v16 = [v9 environment];
-    v17 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v16 contentSizeCategory]);
+    v13 = [attributesCopy stringForAttribute:206 node:node.var0];
+    v14 = [attributesCopy colorForAttribute:BSUIAttributeControlColor node:node.var0];
+    v15 = [attributesCopy colorForAttribute:BSUIAttributeProgressColor node:node.var0];
+    environment = [contextCopy environment];
+    v17 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [environment contentSizeCategory]);
 
-    [v9 environment];
-    v18 = v35 = v9;
+    [contextCopy environment];
+    v18 = v35 = contextCopy;
     v19 = [v18 style] == &dword_0 + 2;
 
     name = v10->_name;
@@ -112,9 +112,9 @@
     nightMode = v10->_nightMode;
     v10->_nightMode = v29;
 
-    v9 = v35;
-    v31 = COERCE_FLOAT([v8 lengthForAttribute:225 node:a3.var0]);
-    v32 = COERCE_FLOAT([v8 lengthForAttribute:98 node:a3.var0]);
+    contextCopy = v35;
+    v31 = COERCE_FLOAT([attributesCopy lengthForAttribute:225 node:node.var0]);
+    v32 = COERCE_FLOAT([attributesCopy lengthForAttribute:98 node:node.var0]);
     v10->_size.width = v31;
     v10->_size.height = v32;
     [(BSUIReadingGoalsGaugeMetrics *)v10 defaultsMissingMetrics];
@@ -131,26 +131,26 @@
   [(BSUIReadingGoalsGaugeMetrics *)&v3 dealloc];
 }
 
-- (void)updateWithConfiguration:(id)a3 context:(id)a4
+- (void)updateWithConfiguration:(id)configuration context:(id)context
 {
-  v5 = a3;
-  v29 = [v5 colorForKey:@"control-color"];
-  v6 = [v5 colorForKey:@"progress-color"];
-  v7 = [v5 dataForKey:@"current-reading-time"];
+  configurationCopy = configuration;
+  v29 = [configurationCopy colorForKey:@"control-color"];
+  v6 = [configurationCopy colorForKey:@"progress-color"];
+  v7 = [configurationCopy dataForKey:@"current-reading-time"];
   objc_opt_class();
   objc_opt_class();
   v8 = BUDynamicCast();
-  v9 = [v8 value];
+  value = [v8 value];
   v27 = v7;
   v10 = BUDynamicCast();
 
   v11 = v10;
   objc_opt_class();
-  v12 = [v5 dataForKey:@"goal-reading-time"];
+  v12 = [configurationCopy dataForKey:@"goal-reading-time"];
   v13 = BUDynamicCast();
 
   objc_opt_class();
-  v14 = [v5 dataForKey:@"opacity"];
+  v14 = [configurationCopy dataForKey:@"opacity"];
   v15 = BUDynamicCast();
   v16 = v15;
   v17 = &off_39B500;
@@ -161,8 +161,8 @@
 
   v18 = v17;
 
-  v19 = [v5 fontSpecForKey:@"time-text-style"];
-  v20 = [v5 fontSpecForKey:@"streak-day-text-style"];
+  v19 = [configurationCopy fontSpecForKey:@"time-text-style"];
+  v20 = [configurationCopy fontSpecForKey:@"streak-day-text-style"];
 
   if (v29)
   {
@@ -196,15 +196,15 @@
   }
 
   v21 = +[BSUITemplate manager];
-  v22 = [v21 dynamicRegistry];
+  dynamicRegistry = [v21 dynamicRegistry];
 
   v23 = +[BCReadingTimeToday kind];
-  v24 = [v22 progressProviderForKind:v23];
+  v24 = [dynamicRegistry progressProviderForKind:v23];
   v25 = [v24 dynamicProgressForKind:v23 instance:0 parameters:0];
   [(BSUIReadingGoalsGaugeMetrics *)self setReadingProgress:v25];
 
-  v26 = [(BSUIReadingGoalsGaugeMetrics *)self readingProgress];
-  [v26 registerProgressObserver:self];
+  readingProgress = [(BSUIReadingGoalsGaugeMetrics *)self readingProgress];
+  [readingProgress registerProgressObserver:self];
 
   [(BSUIReadingGoalsGaugeMetrics *)self setOpacity:v18];
 }
@@ -237,31 +237,31 @@
 
 - (BOOL)isAX
 {
-  v2 = [(BSUIReadingGoalsGaugeMetrics *)self axValue];
-  v3 = [v2 integerValue] > 7;
+  axValue = [(BSUIReadingGoalsGaugeMetrics *)self axValue];
+  v3 = [axValue integerValue] > 7;
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   v5 = BUDynamicCast();
 
   objc_opt_class();
-  v6 = [v5 axValue];
+  axValue = [v5 axValue];
   v7 = BUDynamicCast();
 
-  v8 = [(BSUIReadingGoalsGaugeMetrics *)self axValue];
-  if (v8 | v7)
+  axValue2 = [(BSUIReadingGoalsGaugeMetrics *)self axValue];
+  if (axValue2 | v7)
   {
-    v9 = [(BSUIReadingGoalsGaugeMetrics *)self axValue];
+    axValue3 = [(BSUIReadingGoalsGaugeMetrics *)self axValue];
     v10 = 0;
-    if (v9 && v7)
+    if (axValue3 && v7)
     {
-      v11 = [(BSUIReadingGoalsGaugeMetrics *)self axValue];
-      v10 = [v11 isEqualToNumber:v7];
+      axValue4 = [(BSUIReadingGoalsGaugeMetrics *)self axValue];
+      v10 = [axValue4 isEqualToNumber:v7];
     }
 
     v31 = v10;
@@ -273,18 +273,18 @@
   }
 
   objc_opt_class();
-  v12 = [v5 nightMode];
+  nightMode = [v5 nightMode];
   v13 = BUDynamicCast();
 
-  v14 = [(BSUIReadingGoalsGaugeMetrics *)self nightMode];
-  if (v14 | v13)
+  nightMode2 = [(BSUIReadingGoalsGaugeMetrics *)self nightMode];
+  if (nightMode2 | v13)
   {
-    v15 = [(BSUIReadingGoalsGaugeMetrics *)self nightMode];
+    nightMode3 = [(BSUIReadingGoalsGaugeMetrics *)self nightMode];
     v16 = 0;
-    if (v15 && v13)
+    if (nightMode3 && v13)
     {
-      v17 = [(BSUIReadingGoalsGaugeMetrics *)self nightMode];
-      v16 = [v17 isEqualToNumber:v13];
+      nightMode4 = [(BSUIReadingGoalsGaugeMetrics *)self nightMode];
+      v16 = [nightMode4 isEqualToNumber:v13];
     }
 
     v30 = v16;
@@ -296,18 +296,18 @@
   }
 
   objc_opt_class();
-  v18 = [v5 opacity];
+  opacity = [v5 opacity];
   v19 = BUDynamicCast();
 
-  v20 = [(BSUIReadingGoalsGaugeMetrics *)self opacity];
-  if (v20 | v19)
+  opacity2 = [(BSUIReadingGoalsGaugeMetrics *)self opacity];
+  if (opacity2 | v19)
   {
-    v21 = [(BSUIReadingGoalsGaugeMetrics *)self opacity];
+    opacity3 = [(BSUIReadingGoalsGaugeMetrics *)self opacity];
     v22 = 0;
-    if (v21 && v19)
+    if (opacity3 && v19)
     {
-      v23 = [(BSUIReadingGoalsGaugeMetrics *)self opacity];
-      v22 = [v23 isEqualToNumber:v19];
+      opacity4 = [(BSUIReadingGoalsGaugeMetrics *)self opacity];
+      v22 = [opacity4 isEqualToNumber:v19];
     }
   }
 
@@ -318,13 +318,13 @@
 
   if (v5)
   {
-    v24 = [(BSUIReadingGoalsGaugeMetrics *)self timeFontSpec];
-    v25 = [v5 timeFontSpec];
-    if ([v24 isEqual:v25])
+    timeFontSpec = [(BSUIReadingGoalsGaugeMetrics *)self timeFontSpec];
+    timeFontSpec2 = [v5 timeFontSpec];
+    if ([timeFontSpec isEqual:timeFontSpec2])
     {
-      v26 = [(BSUIReadingGoalsGaugeMetrics *)self streakFontSpec];
-      v27 = [v5 streakFontSpec];
-      if ([v26 isEqual:v27])
+      streakFontSpec = [(BSUIReadingGoalsGaugeMetrics *)self streakFontSpec];
+      streakFontSpec2 = [v5 streakFontSpec];
+      if ([streakFontSpec isEqual:streakFontSpec2])
       {
         v28 = v31 & v30 & v22;
       }
@@ -349,15 +349,15 @@
   return v28;
 }
 
-- (void)dynamicProgressChanged:(id)a3
+- (void)dynamicProgressChanged:(id)changed
 {
-  v7 = a3;
-  v4 = [v7 progress];
+  changedCopy = changed;
+  progress = [changedCopy progress];
 
-  if (v4)
+  if (progress)
   {
-    v5 = [v7 progress];
-    [v5 doubleValue];
+    progress2 = [changedCopy progress];
+    [progress2 doubleValue];
     v6 = [NSNumber numberWithDouble:?];
     [(BSUIReadingGoalsGaugeMetrics *)self setActualReadingTimeSeconds:v6];
   }

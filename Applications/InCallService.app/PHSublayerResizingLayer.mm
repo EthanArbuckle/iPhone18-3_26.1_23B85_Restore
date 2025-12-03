@@ -1,52 +1,52 @@
 @interface PHSublayerResizingLayer
-- (void)addAnimation:(id)a3 forKey:(id)a4;
-- (void)setFrame:(CGRect)a3;
+- (void)addAnimation:(id)animation forKey:(id)key;
+- (void)setFrame:(CGRect)frame;
 @end
 
 @implementation PHSublayerResizingLayer
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
+  height = frame.size.height;
+  width = frame.size.width;
   v9.receiver = self;
   v9.super_class = PHSublayerResizingLayer;
-  [(PHSublayerResizingLayer *)&v9 setFrame:a3.origin.x, a3.origin.y];
+  [(PHSublayerResizingLayer *)&v9 setFrame:frame.origin.x, frame.origin.y];
   y = CGPointZero.y;
-  v7 = [(PHSublayerResizingLayer *)self sublayers];
-  v8 = [v7 firstObject];
+  sublayers = [(PHSublayerResizingLayer *)self sublayers];
+  firstObject = [sublayers firstObject];
 
   +[CATransaction begin];
   [CATransaction setDisableActions:1];
-  [v8 setFrame:{CGPointZero.x, y, width, height}];
+  [firstObject setFrame:{CGPointZero.x, y, width, height}];
   +[CATransaction commit];
 }
 
-- (void)addAnimation:(id)a3 forKey:(id)a4
+- (void)addAnimation:(id)animation forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  animationCopy = animation;
+  keyCopy = key;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v6;
-    v9 = [(PHSublayerResizingLayer *)self sublayers];
-    v10 = [v9 firstObject];
+    v8 = animationCopy;
+    sublayers = [(PHSublayerResizingLayer *)self sublayers];
+    firstObject = [sublayers firstObject];
 
     v11 = [v8 copy];
     [v11 setDelegate:0];
-    v12 = [v11 keyPath];
-    v13 = [v12 isEqualToString:@"bounds.size"];
+    keyPath = [v11 keyPath];
+    v13 = [keyPath isEqualToString:@"bounds.size"];
 
     if (v13)
     {
-      v14 = [v11 fromValue];
-      [v14 sizeValue];
+      fromValue = [v11 fromValue];
+      [fromValue sizeValue];
       v16 = v15;
       v18 = v17;
 
-      v19 = [v11 toValue];
-      [v19 sizeValue];
+      toValue = [v11 toValue];
+      [toValue sizeValue];
       v21 = v20;
       v23 = v22;
 
@@ -56,12 +56,12 @@
       [v11 setToValue:v25];
     }
 
-    [v10 addAnimation:v11 forKey:v7];
+    [firstObject addAnimation:v11 forKey:keyCopy];
   }
 
   v26.receiver = self;
   v26.super_class = PHSublayerResizingLayer;
-  [(PHSublayerResizingLayer *)&v26 addAnimation:v6 forKey:v7];
+  [(PHSublayerResizingLayer *)&v26 addAnimation:animationCopy forKey:keyCopy];
 }
 
 @end

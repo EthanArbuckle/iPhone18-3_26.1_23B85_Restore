@@ -1,9 +1,9 @@
 @interface TUIResourceCollector
 + (id)createImageResourceCollector;
 + (id)createImageResourceCollectorForLoaded;
-+ (id)createImageResourceCollectorForNotLoadedInVisibleBounds:(CGRect)a3 viewState:(id)a4;
++ (id)createImageResourceCollectorForNotLoadedInVisibleBounds:(CGRect)bounds viewState:(id)state;
 + (id)createResourceCollectorForEverything;
-+ (id)createResourceCollectorForVisibleBounds:(CGRect)a3 viewState:(id)a4;
++ (id)createResourceCollectorForVisibleBounds:(CGRect)bounds viewState:(id)state;
 @end
 
 @implementation TUIResourceCollector
@@ -15,16 +15,16 @@
   return v2;
 }
 
-+ (id)createResourceCollectorForVisibleBounds:(CGRect)a3 viewState:(id)a4
++ (id)createResourceCollectorForVisibleBounds:(CGRect)bounds viewState:(id)state
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = a4;
-  v9 = [[_TUIResourceCollector alloc] initWithBounds:v8 viewState:x, y, width, height];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  stateCopy = state;
+  height = [[_TUIResourceCollector alloc] initWithBounds:stateCopy viewState:x, y, width, height];
 
-  return v9;
+  return height;
 }
 
 + (id)createImageResourceCollectorForLoaded
@@ -34,16 +34,16 @@
   return v2;
 }
 
-+ (id)createImageResourceCollectorForNotLoadedInVisibleBounds:(CGRect)a3 viewState:(id)a4
++ (id)createImageResourceCollectorForNotLoadedInVisibleBounds:(CGRect)bounds viewState:(id)state
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = a4;
-  v9 = [(_TUIImageResourceCollector *)[_TUINotLoadedImageResourceCollector alloc] initWithBounds:v8 viewState:x, y, width, height];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  stateCopy = state;
+  height = [(_TUIImageResourceCollector *)[_TUINotLoadedImageResourceCollector alloc] initWithBounds:stateCopy viewState:x, y, width, height];
 
-  return v9;
+  return height;
 }
 
 + (id)createImageResourceCollector

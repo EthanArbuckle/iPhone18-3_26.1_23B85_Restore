@@ -16,9 +16,9 @@
   {
     if (objc_opt_isKindOfClass())
     {
-      v7 = [a1 wf_contentItemClass];
+      wf_contentItemClass = [self wf_contentItemClass];
       v8 = INObjectWithTypedObject();
-      v9 = [v7 itemWithObject:v8];
+      v9 = [wf_contentItemClass itemWithObject:v8];
 
       goto LABEL_8;
     }
@@ -49,18 +49,18 @@ LABEL_8:
 
 - (id)wf_contentItemClass
 {
-  v2 = [a1 codableDescription];
-  v3 = [a1 objectTypeNamespace];
-  v4 = [v2 wf_contentItemClassForCustomObjectWithNamespace:v3];
+  codableDescription = [self codableDescription];
+  objectTypeNamespace = [self objectTypeNamespace];
+  v4 = [codableDescription wf_contentItemClassForCustomObjectWithNamespace:objectTypeNamespace];
 
   return v4;
 }
 
 - (id)wf_parameterClass
 {
-  v1 = [a1 modifier];
+  modifier = [self modifier];
   v2 = off_1E836F4D0;
-  if (v1)
+  if (modifier)
   {
     v2 = off_1E836E2C0;
   }

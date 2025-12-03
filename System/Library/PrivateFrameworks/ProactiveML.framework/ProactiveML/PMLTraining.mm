@@ -1,28 +1,28 @@
 @interface PMLTraining
-+ (id)sharedSingletonWithDirectory:(id)a3;
-- (BOOL)isMultiLabelModel:(id)a3;
-- (PMLTraining)initWithStore:(id)a3 fidesStore:(id)a4 availableSessionsTracker:(id)a5;
-- (id)_trainWithRecipe:(id)a3 chunkData:(id)a4 args:(id)a5 error:(id *)a6;
-- (id)planReceivedWithPayload:(id)a3 error:(id *)a4;
-- (id)planReceivedWithRecipe:(id)a3 attachments:(id)a4 error:(id *)a5;
++ (id)sharedSingletonWithDirectory:(id)directory;
+- (BOOL)isMultiLabelModel:(id)model;
+- (PMLTraining)initWithStore:(id)store fidesStore:(id)fidesStore availableSessionsTracker:(id)tracker;
+- (id)_trainWithRecipe:(id)recipe chunkData:(id)data args:(id)args error:(id *)error;
+- (id)planReceivedWithPayload:(id)payload error:(id *)error;
+- (id)planReceivedWithRecipe:(id)recipe attachments:(id)attachments error:(id *)error;
 - (void)_deleteAllSavedRecordsFromFidesStoreSync;
-- (void)_sendStatsToFidesForModel:(id)a3 sessionCount:(unint64_t)a4 positivesCount:(unint64_t)a5 negativesCount:(unint64_t)a6 support:(float)a7;
-- (void)_sendStatsToFidesForMultiLabelModel:(id)a3 sessionCount:(unint64_t)a4 labeledStats:(id)a5;
-- (void)addSessionWithCovariates:(id)a3 label:(int64_t)a4 sessionDescriptor:(id)a5 spotlightReference:(id)a6 isInternal:(BOOL)a7;
-- (void)deleteSessionsWithDomainIdentifiers:(id)a3 bundleID:(id)a4;
-- (void)deleteSessionsWithIdentifiers:(id)a3 bundleID:(id)a4;
+- (void)_sendStatsToFidesForModel:(id)model sessionCount:(unint64_t)count positivesCount:(unint64_t)positivesCount negativesCount:(unint64_t)negativesCount support:(float)support;
+- (void)_sendStatsToFidesForMultiLabelModel:(id)model sessionCount:(unint64_t)count labeledStats:(id)stats;
+- (void)addSessionWithCovariates:(id)covariates label:(int64_t)label sessionDescriptor:(id)descriptor spotlightReference:(id)reference isInternal:(BOOL)internal;
+- (void)deleteSessionsWithDomainIdentifiers:(id)identifiers bundleID:(id)d;
+- (void)deleteSessionsWithIdentifiers:(id)identifiers bundleID:(id)d;
 - (void)sendSessionStatsToFides;
-- (void)trimDbWithDeferralBlock:(id)a3;
+- (void)trimDbWithDeferralBlock:(id)block;
 @end
 
 @implementation PMLTraining
 
-- (id)planReceivedWithRecipe:(id)a3 attachments:(id)a4 error:(id *)a5
+- (id)planReceivedWithRecipe:(id)recipe attachments:(id)attachments error:(id *)error
 {
   v59 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 objectForKeyedSubscript:@"isEspressoTraining"];
+  recipeCopy = recipe;
+  attachmentsCopy = attachments;
+  v10 = [recipeCopy objectForKeyedSubscript:@"isEspressoTraining"];
   if (!v10 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || ([v10 BOOLValue] & 1) == 0)
   {
     v30 = PML_LogHandle();
@@ -32,10 +32,10 @@
       _os_log_fault_impl(&dword_260D68000, v30, OS_LOG_TYPE_FAULT, "Unable to train with Espresso because recipe flag IS_ESPRESSO_TRAINING is not set", buf, 2u);
     }
 
-    if (a5)
+    if (error)
     {
       [MEMORY[0x277CCA9B8] errorWithDomain:@"ProactiveMLErrorDomain" code:4 userInfo:0];
-      *a5 = v29 = 0;
+      *error = v29 = 0;
     }
 
     else
@@ -46,26 +46,26 @@
     goto LABEL_36;
   }
 
-  v43 = a5;
+  errorCopy = error;
   v46 = 0u;
   v47 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v11 = v9;
+  v11 = attachmentsCopy;
   v12 = [v11 countByEnumeratingWithState:&v44 objects:v58 count:16];
   if (!v12)
   {
 
     v15 = 0;
     v14 = 0;
-    v24 = a5;
+    errorCopy2 = error;
     goto LABEL_28;
   }
 
   v13 = v12;
-  v39 = self;
-  v40 = v9;
-  v41 = v8;
+  selfCopy = self;
+  v40 = attachmentsCopy;
+  v41 = recipeCopy;
   v42 = v10;
   v14 = 0;
   v15 = 0;
@@ -81,15 +81,15 @@
       }
 
       v19 = *(*(&v44 + 1) + 8 * i);
-      v20 = [v19 pathExtension];
-      if ([v20 isEqualToString:@"chunk"])
+      pathExtension = [v19 pathExtension];
+      if ([pathExtension isEqualToString:@"chunk"])
       {
         v21 = v15;
         v22 = v14;
         v15 = v19;
       }
 
-      else if ([v20 isEqualToString:@"bin"])
+      else if ([pathExtension isEqualToString:@"bin"])
       {
         v21 = v14;
         v22 = v19;
@@ -99,7 +99,7 @@
       {
         v21 = v14;
         v22 = v19;
-        if (![v20 isEqualToString:@"net"])
+        if (![pathExtension isEqualToString:@"net"])
         {
           goto LABEL_15;
         }
@@ -119,17 +119,17 @@ LABEL_15:
 
   if (v15)
   {
-    v9 = v40;
-    v8 = v41;
+    attachmentsCopy = v40;
+    recipeCopy = v41;
     v10 = v42;
-    v24 = v43;
+    errorCopy2 = errorCopy;
     if (v14)
     {
       v25 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:v15];
       if ([v25 length])
       {
         v26 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(MEMORY[0x277D05620], "pluginShouldAddNoiseAndEncryptResult:", v41)}];
-        store = v39->_store;
+        store = selfCopy->_store;
         v48[0] = @"TRAINING_STORE";
         v48[1] = @"PML_ESPRESSO_TRAINING_NETWORK_PATH";
         v49[0] = store;
@@ -137,7 +137,7 @@ LABEL_15:
         v48[2] = @"PLUGIN_SHOULD_ADD_NOISE_AND_ENCRYPT_RESULT";
         v49[2] = v26;
         v28 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v49 forKeys:v48 count:3];
-        v29 = [(PMLTraining *)v39 _trainWithRecipe:v41 chunkData:v25 args:v28 error:v43];
+        v29 = [(PMLTraining *)selfCopy _trainWithRecipe:v41 chunkData:v25 args:v28 error:errorCopy];
 
         v10 = v42;
         goto LABEL_33;
@@ -150,13 +150,13 @@ LABEL_15:
         _os_log_fault_impl(&dword_260D68000, v37, OS_LOG_TYPE_FAULT, "Unable to train because chunk file contents were empty", buf, 2u);
       }
 
-      if (v43)
+      if (errorCopy)
       {
         v33 = MEMORY[0x277CCA9B8];
         v34 = 0;
 LABEL_32:
         [v33 errorWithDomain:@"ProactiveMLErrorDomain" code:4 userInfo:v34];
-        *v24 = v29 = 0;
+        *errorCopy2 = v29 = 0;
       }
 
       else
@@ -172,10 +172,10 @@ LABEL_33:
 
   else
   {
-    v9 = v40;
-    v8 = v41;
+    attachmentsCopy = v40;
+    recipeCopy = v41;
     v10 = v42;
-    v24 = v43;
+    errorCopy2 = errorCopy;
   }
 
 LABEL_28:
@@ -192,7 +192,7 @@ LABEL_28:
     _os_log_fault_impl(&dword_260D68000, v31, OS_LOG_TYPE_FAULT, "Unable to train because chunk path %@ or training network path %@ not found in %lu attachments", buf, 0x20u);
   }
 
-  if (v24)
+  if (errorCopy2)
   {
     v32 = MEMORY[0x277CCA9B8];
     v50 = @"attachments";
@@ -212,29 +212,29 @@ LABEL_36:
   return v29;
 }
 
-- (id)planReceivedWithPayload:(id)a3 error:(id *)a4
+- (id)planReceivedWithPayload:(id)payload error:(id *)error
 {
   v14[1] = *MEMORY[0x277D85DE8];
   store = self->_store;
   v13 = @"TRAINING_STORE";
   v14[0] = store;
   v7 = MEMORY[0x277CBEAC0];
-  v8 = a3;
+  payloadCopy = payload;
   v9 = [v7 dictionaryWithObjects:v14 forKeys:&v13 count:1];
-  v10 = [(PMLTraining *)self _trainWithRecipe:MEMORY[0x277CBEC10] chunkData:v8 args:v9 error:a4];
+  v10 = [(PMLTraining *)self _trainWithRecipe:MEMORY[0x277CBEC10] chunkData:payloadCopy args:v9 error:error];
 
   v11 = *MEMORY[0x277D85DE8];
 
   return v10;
 }
 
-- (id)_trainWithRecipe:(id)a3 chunkData:(id)a4 args:(id)a5 error:(id *)a6
+- (id)_trainWithRecipe:(id)recipe chunkData:(id)data args:(id)args error:(id *)error
 {
   v38[3] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [PMLPlanSerialization planFromData:v11 withArgs:v12];
+  recipeCopy = recipe;
+  dataCopy = data;
+  argsCopy = args;
+  v13 = [PMLPlanSerialization planFromData:dataCopy withArgs:argsCopy];
   if (!v13)
   {
     v17 = PML_LogHandle();
@@ -244,7 +244,7 @@ LABEL_36:
       _os_log_fault_impl(&dword_260D68000, v17, OS_LOG_TYPE_FAULT, "Training plan deserialized without exception but is nil", &v31, 2u);
     }
 
-    if (!a6)
+    if (!error)
     {
       v13 = 0;
       goto LABEL_22;
@@ -252,7 +252,7 @@ LABEL_36:
 
     v18 = MEMORY[0x277CCA9B8];
     v37 = @"isEspressoTraining";
-    v19 = [v10 objectForKeyedSubscript:?];
+    v19 = [recipeCopy objectForKeyedSubscript:?];
     v20 = v19;
     v21 = MEMORY[0x277CBEC28];
     if (v19)
@@ -262,11 +262,11 @@ LABEL_36:
 
     v38[0] = v21;
     v22 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v38 forKeys:&v37 count:1];
-    *a6 = [v18 errorWithDomain:@"ProactiveMLErrorDomain" code:4 userInfo:v22];
+    *error = [v18 errorWithDomain:@"ProactiveMLErrorDomain" code:4 userInfo:v22];
 
     v13 = 0;
 LABEL_20:
-    a6 = 0;
+    error = 0;
     goto LABEL_22;
   }
 
@@ -280,15 +280,15 @@ LABEL_20:
       _os_log_impl(&dword_260D68000, v14, OS_LOG_TYPE_DEFAULT, "Running %@ synchronously", &v31, 0xCu);
     }
 
-    a6 = [v13 runWithError:a6];
+    error = [v13 runWithError:error];
     v15 = PML_LogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = [v13 planId];
+      planId = [v13 planId];
       v31 = 138412546;
-      v32 = v16;
+      v32 = planId;
       v33 = 1024;
-      v34 = a6 != 0;
+      v34 = error != 0;
       _os_log_impl(&dword_260D68000, v15, OS_LOG_TYPE_DEFAULT, "Plan %@ completed run. Result present? %d.", &v31, 0x12u);
     }
 
@@ -304,11 +304,11 @@ LABEL_20:
     _os_log_impl(&dword_260D68000, v23, OS_LOG_TYPE_DEFAULT, "Ignoring synchronous plan %@ because the db is not open.", &v31, 0xCu);
   }
 
-  if (a6)
+  if (error)
   {
     v24 = MEMORY[0x277CCA9B8];
     v35 = @"isEspressoTraining";
-    v25 = [v10 objectForKeyedSubscript:?];
+    v25 = [recipeCopy objectForKeyedSubscript:?];
     v26 = v25;
     v27 = MEMORY[0x277CBEC28];
     if (v25)
@@ -318,7 +318,7 @@ LABEL_20:
 
     v36 = v27;
     v28 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v36 forKeys:&v35 count:1];
-    *a6 = [v24 errorWithDomain:@"ProactiveMLErrorDomain" code:5 userInfo:v28];
+    *error = [v24 errorWithDomain:@"ProactiveMLErrorDomain" code:5 userInfo:v28];
 
     goto LABEL_20;
   }
@@ -327,16 +327,16 @@ LABEL_22:
 
   v29 = *MEMORY[0x277D85DE8];
 
-  return a6;
+  return error;
 }
 
-- (void)trimDbWithDeferralBlock:(id)a3
+- (void)trimDbWithDeferralBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(PMLTrainingStore *)self->_store isDbOpen];
+  blockCopy = block;
+  isDbOpen = [(PMLTrainingStore *)self->_store isDbOpen];
   v6 = PML_LogHandle();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
-  if (!v5)
+  if (!isDbOpen)
   {
     if (v7)
     {
@@ -364,7 +364,7 @@ LABEL_19:
     _os_log_impl(&dword_260D68000, v8, OS_LOG_TYPE_DEFAULT, "DONE limitSessionsByLastUsedTTL", buf, 2u);
   }
 
-  if (v4[2](v4))
+  if (blockCopy[2](blockCopy))
   {
     goto LABEL_14;
   }
@@ -377,7 +377,7 @@ LABEL_19:
     _os_log_impl(&dword_260D68000, v9, OS_LOG_TYPE_DEFAULT, "DONE limitSessionsByMaxTimesAccessed", buf, 2u);
   }
 
-  if (v4[2](v4))
+  if (blockCopy[2](blockCopy))
   {
     goto LABEL_14;
   }
@@ -392,7 +392,7 @@ LABEL_19:
   v14[2] = __39__PMLTraining_trimDbWithDeferralBlock___block_invoke;
   v14[3] = &unk_279AC0650;
   v14[4] = self;
-  v11 = v4;
+  v11 = blockCopy;
   v15 = v11;
   v16 = buf;
   [(PMLTrainingStore *)store enumerateSessionDescriptorsUsingBlock:v14];
@@ -412,7 +412,7 @@ LABEL_19:
   }
 
   [(PMLTrainingStore *)self->_store vacuumDbWithDeferralBlock:v11];
-  if (v4[2](v11))
+  if (blockCopy[2](v11))
   {
 LABEL_14:
     v6 = PML_LogHandle();
@@ -487,16 +487,16 @@ LABEL_9:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deleteSessionsWithDomainIdentifiers:(id)a3 bundleID:(id)a4
+- (void)deleteSessionsWithDomainIdentifiers:(id)identifiers bundleID:(id)d
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifiersCopy = identifiers;
+  dCopy = d;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v8 = [identifiersCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {
     v9 = v8;
@@ -508,14 +508,14 @@ LABEL_9:
       {
         if (*v14 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(identifiersCopy);
         }
 
-        [(PMLTrainingStore *)self->_store deleteSessionsWithBundleId:v7 domainId:*(*(&v13 + 1) + 8 * v11++)];
+        [(PMLTrainingStore *)self->_store deleteSessionsWithBundleId:dCopy domainId:*(*(&v13 + 1) + 8 * v11++)];
       }
 
       while (v9 != v11);
-      v9 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v9 = [identifiersCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v9);
@@ -524,16 +524,16 @@ LABEL_9:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deleteSessionsWithIdentifiers:(id)a3 bundleID:(id)a4
+- (void)deleteSessionsWithIdentifiers:(id)identifiers bundleID:(id)d
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifiersCopy = identifiers;
+  dCopy = d;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v8 = [identifiersCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {
     v9 = v8;
@@ -545,14 +545,14 @@ LABEL_9:
       {
         if (*v14 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(identifiersCopy);
         }
 
-        [(PMLTrainingStore *)self->_store deleteSessionsWithBundleId:v7 itemId:*(*(&v13 + 1) + 8 * v11++)];
+        [(PMLTrainingStore *)self->_store deleteSessionsWithBundleId:dCopy itemId:*(*(&v13 + 1) + 8 * v11++)];
       }
 
       while (v9 != v11);
-      v9 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v9 = [identifiersCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v9);
@@ -595,26 +595,26 @@ void __55__PMLTraining__deleteAllSavedRecordsFromFidesStoreSync__block_invoke(ui
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_sendStatsToFidesForMultiLabelModel:(id)a3 sessionCount:(unint64_t)a4 labeledStats:(id)a5
+- (void)_sendStatsToFidesForMultiLabelModel:(id)model sessionCount:(unint64_t)count labeledStats:(id)stats
 {
   v22[5] = *MEMORY[0x277D85DE8];
   v21[0] = @"modelName";
-  v8 = a5;
-  v9 = a3;
-  v10 = [v9 name];
-  v22[0] = v10;
+  statsCopy = stats;
+  modelCopy = model;
+  name = [modelCopy name];
+  v22[0] = name;
   v21[1] = @"modelVersion";
-  v11 = [v9 version];
-  v22[1] = v11;
+  version = [modelCopy version];
+  v22[1] = version;
   v21[2] = @"modelLocale";
-  v12 = [v9 locale];
+  locale = [modelCopy locale];
 
-  v22[2] = v12;
+  v22[2] = locale;
   v21[3] = @"sessionsCount";
-  v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
+  v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:count];
   v21[4] = @"labeledStats";
   v22[3] = v13;
-  v22[4] = v8;
+  v22[4] = statsCopy;
   v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v22 forKeys:v21 count:5];
 
   fidesStore = self->_fidesStore;
@@ -660,31 +660,31 @@ void __77__PMLTraining__sendStatsToFidesForMultiLabelModel_sessionCount_labeledS
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_sendStatsToFidesForModel:(id)a3 sessionCount:(unint64_t)a4 positivesCount:(unint64_t)a5 negativesCount:(unint64_t)a6 support:(float)a7
+- (void)_sendStatsToFidesForModel:(id)model sessionCount:(unint64_t)count positivesCount:(unint64_t)positivesCount negativesCount:(unint64_t)negativesCount support:(float)support
 {
   v29[7] = *MEMORY[0x277D85DE8];
   v28[0] = @"modelName";
-  v12 = a3;
-  v13 = [v12 name];
-  v29[0] = v13;
+  modelCopy = model;
+  name = [modelCopy name];
+  v29[0] = name;
   v28[1] = @"modelVersion";
-  v14 = [v12 version];
-  v29[1] = v14;
+  version = [modelCopy version];
+  v29[1] = version;
   v28[2] = @"modelLocale";
-  v15 = [v12 locale];
+  locale = [modelCopy locale];
 
-  v29[2] = v15;
+  v29[2] = locale;
   v28[3] = @"sessionsCount";
-  v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
+  v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:count];
   v29[3] = v16;
   v28[4] = @"positivesCount";
-  v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a5];
+  v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:positivesCount];
   v29[4] = v17;
   v28[5] = @"negativesCount";
-  v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a6];
+  v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:negativesCount];
   v29[5] = v18;
   v28[6] = @"support";
-  *&v19 = a7;
+  *&v19 = support;
   v20 = [MEMORY[0x277CCABB0] numberWithFloat:v19];
   v29[6] = v20;
   v21 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v29 forKeys:v28 count:7];
@@ -737,13 +737,13 @@ void __92__PMLTraining__sendStatsToFidesForModel_sessionCount_positivesCount_neg
   if ([(PMLTrainingStore *)self->_store isDbOpen])
   {
     [(PMLTraining *)self _deleteAllSavedRecordsFromFidesStoreSync];
-    v3 = [(PMLTrainingStore *)self->_store sessionStats];
+    sessionStats = [(PMLTrainingStore *)self->_store sessionStats];
     v4[0] = MEMORY[0x277D85DD0];
     v4[1] = 3221225472;
     v4[2] = __38__PMLTraining_sendSessionStatsToFides__block_invoke;
     v4[3] = &unk_279AC05D8;
     v4[4] = self;
-    [v3 enumerateKeysAndObjectsUsingBlock:v4];
+    [sessionStats enumerateKeysAndObjectsUsingBlock:v4];
   }
 }
 
@@ -900,17 +900,17 @@ void __38__PMLTraining_sendSessionStatsToFides__block_invoke(uint64_t a1, void *
   v43 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isMultiLabelModel:(id)a3
+- (BOOL)isMultiLabelModel:(id)model
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  modelCopy = model;
   isMultiLabel = self->_isMultiLabel;
-  v6 = [v4 name];
-  v7 = [(NSDictionary *)isMultiLabel objectForKeyedSubscript:v6];
+  name = [modelCopy name];
+  v7 = [(NSDictionary *)isMultiLabel objectForKeyedSubscript:name];
 
   if (v7)
   {
-    v8 = [v7 BOOLValue];
+    bOOLValue = [v7 BOOLValue];
   }
 
   else
@@ -918,62 +918,62 @@ void __38__PMLTraining_sendSessionStatsToFides__block_invoke(uint64_t a1, void *
     v9 = PML_LogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
     {
-      v12 = [v4 name];
+      name2 = [modelCopy name];
       v13 = 138412290;
-      v14 = v12;
+      v14 = name2;
       _os_log_fault_impl(&dword_260D68000, v9, OS_LOG_TYPE_FAULT, "No isMultiLabel information for %@", &v13, 0xCu);
     }
 
-    v8 = 0;
+    bOOLValue = 0;
   }
 
   v10 = *MEMORY[0x277D85DE8];
-  return v8;
+  return bOOLValue;
 }
 
-- (void)addSessionWithCovariates:(id)a3 label:(int64_t)a4 sessionDescriptor:(id)a5 spotlightReference:(id)a6 isInternal:(BOOL)a7
+- (void)addSessionWithCovariates:(id)covariates label:(int64_t)label sessionDescriptor:(id)descriptor spotlightReference:(id)reference isInternal:(BOOL)internal
 {
   v28 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
+  covariatesCopy = covariates;
+  descriptorCopy = descriptor;
+  referenceCopy = reference;
   v15 = PML_LogHandle();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412802;
-    v23 = v13;
+    v23 = descriptorCopy;
     v24 = 2048;
-    v25 = a4;
+    labelCopy = label;
     v26 = 2048;
-    v27 = [v12 length];
+    v27 = [covariatesCopy length];
     _os_log_debug_impl(&dword_260D68000, v15, OS_LOG_TYPE_DEBUG, "Adding session for %@ (label: %tu, length: %tu)", buf, 0x20u);
   }
 
   store = self->_store;
-  v17 = [v14 bundleIdentifier];
-  v18 = [v14 domainIdentifier];
-  v19 = [v14 itemIdentifiers];
+  bundleIdentifier = [referenceCopy bundleIdentifier];
+  domainIdentifier = [referenceCopy domainIdentifier];
+  itemIdentifiers = [referenceCopy itemIdentifiers];
 
-  LOBYTE(v21) = a7;
-  [(PMLTrainingStore *)store storeSession:v12 label:a4 model:v13 bundleId:v17 domainId:v18 itemIds:v19 isAppleInternal:v21];
+  LOBYTE(v21) = internal;
+  [(PMLTrainingStore *)store storeSession:covariatesCopy label:label model:descriptorCopy bundleId:bundleIdentifier domainId:domainIdentifier itemIds:itemIdentifiers isAppleInternal:v21];
 
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (PMLTraining)initWithStore:(id)a3 fidesStore:(id)a4 availableSessionsTracker:(id)a5
+- (PMLTraining)initWithStore:(id)store fidesStore:(id)fidesStore availableSessionsTracker:(id)tracker
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  storeCopy = store;
+  fidesStoreCopy = fidesStore;
+  trackerCopy = tracker;
   v16.receiver = self;
   v16.super_class = PMLTraining;
   v12 = [(PMLTraining *)&v16 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_store, a3);
-    objc_storeStrong(&v13->_fidesStore, a4);
-    objc_storeStrong(&v13->_availableSessionsTracker, a5);
+    objc_storeStrong(&v12->_store, store);
+    objc_storeStrong(&v13->_fidesStore, fidesStore);
+    objc_storeStrong(&v13->_availableSessionsTracker, tracker);
     [(PMLAWDAvailableSessionsTracker *)v13->_availableSessionsTracker setAWDMetricQueryDelegate:v13];
     isMultiLabel = v13->_isMultiLabel;
     v13->_isMultiLabel = &unk_287358508;
@@ -982,10 +982,10 @@ void __38__PMLTraining_sendSessionStatsToFides__block_invoke(uint64_t a1, void *
   return v13;
 }
 
-+ (id)sharedSingletonWithDirectory:(id)a3
++ (id)sharedSingletonWithDirectory:(id)directory
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  directoryCopy = directory;
   pthread_mutex_lock(&sharedSingletonWithDirectory__sharedInstanceInitLock);
   if (sharedSingletonWithDirectory__sharedInstance)
   {
@@ -1001,7 +1001,7 @@ void __38__PMLTraining_sendSessionStatsToFides__block_invoke(uint64_t a1, void *
   }
 
   v6 = [PMLTrainingStore alloc];
-  v7 = [(__CFString *)v3 stringByAppendingPathComponent:@"training.db"];
+  v7 = [(__CFString *)directoryCopy stringByAppendingPathComponent:@"training.db"];
   v8 = [(PMLTrainingStore *)v6 initWithPath:v7];
 
   v9 = [objc_alloc(MEMORY[0x277D05630]) initWithBundleIdentifier:@"com.apple.proactive.PMLDESPlugin"];
@@ -1013,19 +1013,19 @@ void __38__PMLTraining_sendSessionStatsToFides__block_invoke(uint64_t a1, void *
     v13 = sharedSingletonWithDirectory__sharedInstance;
     sharedSingletonWithDirectory__sharedInstance = v12;
 
-    v14 = [(__CFString *)v3 copy];
+    v14 = [(__CFString *)directoryCopy copy];
     v15 = sharedSingletonWithDirectory__sharedInstanceDirectory;
     sharedSingletonWithDirectory__sharedInstanceDirectory = v14;
 
     objc_autoreleasePoolPop(v4);
 LABEL_6:
-    if (sharedSingletonWithDirectory__sharedInstanceDirectory && ([(__CFString *)v3 isEqualToString:?]& 1) == 0)
+    if (sharedSingletonWithDirectory__sharedInstanceDirectory && ([(__CFString *)directoryCopy isEqualToString:?]& 1) == 0)
     {
       v16 = PML_LogHandle();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
         v21 = 138412546;
-        v22 = v3;
+        v22 = directoryCopy;
         v23 = 2112;
         v24 = sharedSingletonWithDirectory__sharedInstanceDirectory;
         _os_log_impl(&dword_260D68000, v16, OS_LOG_TYPE_DEFAULT, "Can't instantiate PMLTraining in %@, becacuse there is already an instance in %@.", &v21, 0x16u);

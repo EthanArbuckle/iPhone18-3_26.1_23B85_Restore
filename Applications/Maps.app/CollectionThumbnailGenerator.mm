@@ -1,76 +1,76 @@
 @interface CollectionThumbnailGenerator
-- (CollectionThumbnailGenerator)initWithPlaceCollection:(id)a3 size:(CGSize)a4;
+- (CollectionThumbnailGenerator)initWithPlaceCollection:(id)collection size:(CGSize)size;
 - (id)thumbnailImage;
-- (void)loadThumbnailIfNeededWithCompletion:(id)a3;
+- (void)loadThumbnailIfNeededWithCompletion:(id)completion;
 @end
 
 @implementation CollectionThumbnailGenerator
 
 - (id)thumbnailImage
 {
-  v3 = [(CollectionThumbnailGenerator *)self currentImage];
-  if (!v3)
+  currentImage = [(CollectionThumbnailGenerator *)self currentImage];
+  if (!currentImage)
   {
-    v3 = [(CollectionThumbnailGenerator *)self placeholderImage];
+    currentImage = [(CollectionThumbnailGenerator *)self placeholderImage];
   }
 
-  return v3;
+  return currentImage;
 }
 
-- (void)loadThumbnailIfNeededWithCompletion:(id)a3
+- (void)loadThumbnailIfNeededWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (![(CollectionThumbnailGenerator *)self hasFinishedLoading])
   {
-    v6 = [(GEOPlaceCollection *)self->_collection photos];
-    v5 = [v6 _geo_firstPhotoOfAtLeastSize:{self->_size.width, self->_size.height}];
+    photos = [(GEOPlaceCollection *)self->_collection photos];
+    thumbnailImage2 = [photos _geo_firstPhotoOfAtLeastSize:{self->_size.width, self->_size.height}];
 
-    if (v5)
+    if (thumbnailImage2)
     {
       v7 = +[MKAppImageManager sharedImageManager];
-      v8 = [v5 url];
+      v8 = [thumbnailImage2 url];
       v10[0] = _NSConcreteStackBlock;
       v10[1] = 3221225472;
       v10[2] = sub_100E7FDE8;
       v10[3] = &unk_101656A70;
       v10[4] = self;
-      v11 = v4;
+      v11 = completionCopy;
       [v7 loadAppImageAtURL:v8 completionHandler:v10];
     }
 
     else
     {
       [(CollectionThumbnailGenerator *)self setHasFinishedLoading:1];
-      if (v4)
+      if (completionCopy)
       {
-        v9 = [(CollectionThumbnailGenerator *)self thumbnailImage];
-        (*(v4 + 2))(v4, v9, 0);
+        thumbnailImage = [(CollectionThumbnailGenerator *)self thumbnailImage];
+        (*(completionCopy + 2))(completionCopy, thumbnailImage, 0);
       }
     }
 
     goto LABEL_8;
   }
 
-  if (v4)
+  if (completionCopy)
   {
-    v5 = [(CollectionThumbnailGenerator *)self thumbnailImage];
-    (*(v4 + 2))(v4, v5, 0);
+    thumbnailImage2 = [(CollectionThumbnailGenerator *)self thumbnailImage];
+    (*(completionCopy + 2))(completionCopy, thumbnailImage2, 0);
 LABEL_8:
   }
 }
 
-- (CollectionThumbnailGenerator)initWithPlaceCollection:(id)a3 size:(CGSize)a4
+- (CollectionThumbnailGenerator)initWithPlaceCollection:(id)collection size:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v8 = a3;
+  height = size.height;
+  width = size.width;
+  collectionCopy = collection;
   v14.receiver = self;
   v14.super_class = CollectionThumbnailGenerator;
   v9 = [(CollectionThumbnailGenerator *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_collection, a3);
+    objc_storeStrong(&v9->_collection, collection);
     v10->_size.width = width;
     v10->_size.height = height;
     v10->_hasFinishedLoading = 0;

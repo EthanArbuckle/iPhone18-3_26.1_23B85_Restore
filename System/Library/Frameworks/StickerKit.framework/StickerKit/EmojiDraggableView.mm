@@ -1,14 +1,14 @@
 @interface EmojiDraggableView
 - (CGSize)intrinsicContentSize;
-- (id)_dragInteraction:(id)a3 sessionPropertiesForSession:(id)a4;
-- (id)dragInteraction:(id)a3 itemsForBeginningSession:(id)a4;
-- (id)dragInteraction:(id)a3 previewForLiftingItem:(id)a4 session:(id)a5;
-- (void)_dragInteractionDidCancelLiftWithoutDragging:(id)a3;
-- (void)dragInteraction:(id)a3 item:(id)a4 willAnimateCancelWithAnimator:(id)a5;
-- (void)dragInteraction:(id)a3 session:(id)a4 didEndWithOperation:(unint64_t)a5;
-- (void)dragInteraction:(id)a3 sessionDidTransferItems:(id)a4;
-- (void)dragInteraction:(id)a3 sessionWillBegin:(id)a4;
-- (void)dragInteraction:(id)a3 willAnimateLiftWithAnimator:(id)a4 session:(id)a5;
+- (id)_dragInteraction:(id)interaction sessionPropertiesForSession:(id)session;
+- (id)dragInteraction:(id)interaction itemsForBeginningSession:(id)session;
+- (id)dragInteraction:(id)interaction previewForLiftingItem:(id)item session:(id)session;
+- (void)_dragInteractionDidCancelLiftWithoutDragging:(id)dragging;
+- (void)dragInteraction:(id)interaction item:(id)item willAnimateCancelWithAnimator:(id)animator;
+- (void)dragInteraction:(id)interaction session:(id)session didEndWithOperation:(unint64_t)operation;
+- (void)dragInteraction:(id)interaction sessionDidTransferItems:(id)items;
+- (void)dragInteraction:(id)interaction sessionWillBegin:(id)begin;
+- (void)dragInteraction:(id)interaction willAnimateLiftWithAnimator:(id)animator session:(id)session;
 - (void)layoutSubviews;
 @end
 
@@ -35,48 +35,48 @@
   *&v2[OBJC_IVAR____TtC10StickerKit18EmojiDraggableView_liftScale] = 0x3FF0000000000000;
 }
 
-- (void)dragInteraction:(id)a3 sessionWillBegin:(id)a4
+- (void)dragInteraction:(id)interaction sessionWillBegin:(id)begin
 {
   v5 = objc_opt_self();
-  v7 = self;
-  v6 = [v5 defaultCenter];
+  selfCopy = self;
+  defaultCenter = [v5 defaultCenter];
   if (qword_1EAFCAFF0 != -1)
   {
     swift_once();
   }
 
-  [v6 postNotificationName:qword_1EAFDD660 object:v7];
+  [defaultCenter postNotificationName:qword_1EAFDD660 object:selfCopy];
 }
 
-- (void)dragInteraction:(id)a3 session:(id)a4 didEndWithOperation:(unint64_t)a5
+- (void)dragInteraction:(id)interaction session:(id)session didEndWithOperation:(unint64_t)operation
 {
-  v6 = self;
+  selfCopy = self;
   sub_19A610AD0();
   if (swift_unknownObjectWeakLoadStrong())
   {
-    sub_19A63D55C(a5);
+    sub_19A63D55C(operation);
     swift_unknownObjectRelease();
   }
 }
 
-- (void)dragInteraction:(id)a3 sessionDidTransferItems:(id)a4
+- (void)dragInteraction:(id)interaction sessionDidTransferItems:(id)items
 {
-  v4 = self;
+  selfCopy = self;
   sub_19A611E54();
 }
 
-- (void)dragInteraction:(id)a3 willAnimateLiftWithAnimator:(id)a4 session:(id)a5
+- (void)dragInteraction:(id)interaction willAnimateLiftWithAnimator:(id)animator session:(id)session
 {
-  v5 = self;
+  selfCopy = self;
   sub_19A611E54();
 }
 
-- (void)dragInteraction:(id)a3 item:(id)a4 willAnimateCancelWithAnimator:(id)a5
+- (void)dragInteraction:(id)interaction item:(id)item willAnimateCancelWithAnimator:(id)animator
 {
-  v8 = a3;
-  v9 = a4;
+  interactionCopy = interaction;
+  itemCopy = item;
   swift_unknownObjectRetain();
-  v10 = self;
+  selfCopy = self;
   sub_19A611E54();
   v11 = swift_allocObject();
   swift_unknownObjectWeakInit();
@@ -88,17 +88,17 @@
   v13[3] = &block_descriptor_105;
   v12 = _Block_copy(v13);
 
-  [a5 addCompletion_];
+  [animator addCompletion_];
   _Block_release(v12);
 
   swift_unknownObjectRelease();
 }
 
-- (id)dragInteraction:(id)a3 itemsForBeginningSession:(id)a4
+- (id)dragInteraction:(id)interaction itemsForBeginningSession:(id)session
 {
-  v5 = a3;
+  interactionCopy = interaction;
   swift_unknownObjectRetain();
-  v6 = self;
+  selfCopy = self;
   sub_19A61260C();
 
   swift_unknownObjectRelease();
@@ -108,12 +108,12 @@
   return v7;
 }
 
-- (id)dragInteraction:(id)a3 previewForLiftingItem:(id)a4 session:(id)a5
+- (id)dragInteraction:(id)interaction previewForLiftingItem:(id)item session:(id)session
 {
-  v7 = a3;
-  v8 = a4;
+  interactionCopy = interaction;
+  itemCopy = item;
   swift_unknownObjectRetain();
-  v9 = self;
+  selfCopy = self;
   v10 = sub_19A61288C();
 
   swift_unknownObjectRelease();
@@ -121,7 +121,7 @@
   return v10;
 }
 
-- (id)_dragInteraction:(id)a3 sessionPropertiesForSession:(id)a4
+- (id)_dragInteraction:(id)interaction sessionPropertiesForSession:(id)session
 {
   v4 = [objc_allocWithZone(MEMORY[0x1E69DD480]) init];
   [v4 set:1 rotatable:?];
@@ -132,10 +132,10 @@
   return v4;
 }
 
-- (void)_dragInteractionDidCancelLiftWithoutDragging:(id)a3
+- (void)_dragInteractionDidCancelLiftWithoutDragging:(id)dragging
 {
-  v4 = a3;
-  v5 = self;
+  draggingCopy = dragging;
+  selfCopy = self;
   sub_19A612D00();
 }
 

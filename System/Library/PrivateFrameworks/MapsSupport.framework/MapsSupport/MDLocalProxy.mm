@@ -1,41 +1,41 @@
 @interface MDLocalProxy
 - (BOOL)deleteAppGroupContainer;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (MDLocalProxy)initWithState:(id)a3;
-- (void)addSufficientVisitsNotification:(id)a3 message:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (MDLocalProxy)initWithState:(id)state;
+- (void)addSufficientVisitsNotification:(id)notification message:(id)message;
 - (void)clearAirportArrivalBulletin;
-- (void)clearBulletinWithRecordID:(id)a3;
+- (void)clearBulletinWithRecordID:(id)d;
 - (void)clearLowFuelAlertBulletin;
 - (void)clearMapsSuggestionsBulletin;
 - (void)clearParkedCarBulletin;
 - (void)clearPredictedRouteTrafficIncidentBulletin;
-- (void)clearTrafficIncidentBulletinWithAlertID:(id)a3;
+- (void)clearTrafficIncidentBulletinWithAlertID:(id)d;
 - (void)clearVenueBulletin;
 - (void)dealloc;
 - (void)deleteFilesOutsideContainer;
-- (void)fetchDevicePushToken:(id)a3;
-- (void)handleMapsApplicationRemoval:(id)a3;
-- (void)showAirportArrivalBulletinWithTitle:(id)a3 message:(id)a4 mapRegion:(id)a5 regionName:(id)a6;
-- (void)showLowFuelAlertBulletinForLowFuelDetails:(id)a3;
-- (void)showMapsSuggestionsBulletinWithTitle:(id)a3 message:(id)a4 actionURL:(id)a5;
-- (void)showParkedCarBulletinForEvent:(id)a3;
-- (void)showParkedCarReplacementBulletinForEvent:(id)a3 replacingEvent:(id)a4;
-- (void)showPredictedRouteTrafficIncidentBulletinForCommuteDetails:(id)a3;
-- (void)showVenueBulletinWithTitle:(id)a3 message:(id)a4 actionURL:(id)a5;
+- (void)fetchDevicePushToken:(id)token;
+- (void)handleMapsApplicationRemoval:(id)removal;
+- (void)showAirportArrivalBulletinWithTitle:(id)title message:(id)message mapRegion:(id)region regionName:(id)name;
+- (void)showLowFuelAlertBulletinForLowFuelDetails:(id)details;
+- (void)showMapsSuggestionsBulletinWithTitle:(id)title message:(id)message actionURL:(id)l;
+- (void)showParkedCarBulletinForEvent:(id)event;
+- (void)showParkedCarReplacementBulletinForEvent:(id)event replacingEvent:(id)replacingEvent;
+- (void)showPredictedRouteTrafficIncidentBulletinForCommuteDetails:(id)details;
+- (void)showVenueBulletinWithTitle:(id)title message:(id)message actionURL:(id)l;
 @end
 
 @implementation MDLocalProxy
 
-- (MDLocalProxy)initWithState:(id)a3
+- (MDLocalProxy)initWithState:(id)state
 {
-  v5 = a3;
+  stateCopy = state;
   v12.receiver = self;
   v12.super_class = MDLocalProxy;
   v6 = [(MDLocalProxy *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_state, a3);
+    objc_storeStrong(&v6->_state, state);
     v8 = [[NSXPCListener alloc] initWithMachServiceName:@"com.apple.Maps.mapspushd"];
     listener = v7->_listener;
     v7->_listener = v8;
@@ -56,153 +56,153 @@
   [(MDLocalProxy *)&v3 dealloc];
 }
 
-- (void)showParkedCarBulletinForEvent:(id)a3
+- (void)showParkedCarBulletinForEvent:(id)event
 {
-  v8 = a3;
-  v4 = [(MDState *)self->_state locationManager];
-  v5 = [v4 mapsLocationAuthorized];
+  eventCopy = event;
+  locationManager = [(MDState *)self->_state locationManager];
+  mapsLocationAuthorized = [locationManager mapsLocationAuthorized];
 
-  if (v5)
+  if (mapsLocationAuthorized)
   {
-    v6 = [(MDState *)self->_state notificationCenter];
-    v7 = [v6 addParkedCarNotificationWithEvent:v8];
+    notificationCenter = [(MDState *)self->_state notificationCenter];
+    v7 = [notificationCenter addParkedCarNotificationWithEvent:eventCopy];
   }
 }
 
-- (void)showParkedCarReplacementBulletinForEvent:(id)a3 replacingEvent:(id)a4
+- (void)showParkedCarReplacementBulletinForEvent:(id)event replacingEvent:(id)replacingEvent
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [(MDState *)self->_state locationManager];
-  v8 = [v7 mapsLocationAuthorized];
+  eventCopy = event;
+  replacingEventCopy = replacingEvent;
+  locationManager = [(MDState *)self->_state locationManager];
+  mapsLocationAuthorized = [locationManager mapsLocationAuthorized];
 
-  if (v8)
+  if (mapsLocationAuthorized)
   {
-    v9 = [(MDState *)self->_state notificationCenter];
-    v10 = [v9 addParkedCarReplacementNotificationWithEvent:v11 replacingEvent:v6];
+    notificationCenter = [(MDState *)self->_state notificationCenter];
+    v10 = [notificationCenter addParkedCarReplacementNotificationWithEvent:eventCopy replacingEvent:replacingEventCopy];
   }
 }
 
 - (void)clearParkedCarBulletin
 {
-  v2 = [(MDState *)self->_state notificationCenter];
-  [v2 clearNotificationsOfType:5];
+  notificationCenter = [(MDState *)self->_state notificationCenter];
+  [notificationCenter clearNotificationsOfType:5];
 }
 
-- (void)showLowFuelAlertBulletinForLowFuelDetails:(id)a3
+- (void)showLowFuelAlertBulletinForLowFuelDetails:(id)details
 {
-  v6 = a3;
-  v4 = [(MDState *)self->_state notificationCenter];
-  v5 = [v4 addLowFuelAlertNotificationWithDetails:v6];
+  detailsCopy = details;
+  notificationCenter = [(MDState *)self->_state notificationCenter];
+  v5 = [notificationCenter addLowFuelAlertNotificationWithDetails:detailsCopy];
 }
 
 - (void)clearLowFuelAlertBulletin
 {
-  v2 = [(MDState *)self->_state notificationCenter];
-  [v2 clearNotificationsOfType:7];
+  notificationCenter = [(MDState *)self->_state notificationCenter];
+  [notificationCenter clearNotificationsOfType:7];
 }
 
-- (void)showMapsSuggestionsBulletinWithTitle:(id)a3 message:(id)a4 actionURL:(id)a5
+- (void)showMapsSuggestionsBulletinWithTitle:(id)title message:(id)message actionURL:(id)l
 {
-  v12 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(MDState *)self->_state notificationCenter];
-  v11 = [v10 addMapsSuggestionsNotificationWithTitle:v12 message:v8 actionURL:v9];
+  titleCopy = title;
+  messageCopy = message;
+  lCopy = l;
+  notificationCenter = [(MDState *)self->_state notificationCenter];
+  v11 = [notificationCenter addMapsSuggestionsNotificationWithTitle:titleCopy message:messageCopy actionURL:lCopy];
 }
 
 - (void)clearMapsSuggestionsBulletin
 {
-  v2 = [(MDState *)self->_state notificationCenter];
-  [v2 clearNotificationsOfType:10];
+  notificationCenter = [(MDState *)self->_state notificationCenter];
+  [notificationCenter clearNotificationsOfType:10];
 }
 
-- (void)showPredictedRouteTrafficIncidentBulletinForCommuteDetails:(id)a3
+- (void)showPredictedRouteTrafficIncidentBulletinForCommuteDetails:(id)details
 {
-  v6 = a3;
-  v4 = [(MDState *)self->_state notificationCenter];
-  v5 = [v4 addPredictedRouteTrafficIncidentNotificationForCommuteDetails:v6];
+  detailsCopy = details;
+  notificationCenter = [(MDState *)self->_state notificationCenter];
+  v5 = [notificationCenter addPredictedRouteTrafficIncidentNotificationForCommuteDetails:detailsCopy];
 }
 
 - (void)clearPredictedRouteTrafficIncidentBulletin
 {
-  v2 = [(MDState *)self->_state notificationCenter];
-  [v2 clearNotificationsOfType:6];
+  notificationCenter = [(MDState *)self->_state notificationCenter];
+  [notificationCenter clearNotificationsOfType:6];
 }
 
-- (void)clearTrafficIncidentBulletinWithAlertID:(id)a3
+- (void)clearTrafficIncidentBulletinWithAlertID:(id)d
 {
   state = self->_state;
-  v4 = a3;
-  v5 = [(MDState *)state notificationCenter];
-  [v5 clearNotificationWithTrafficIncidentAlertID:v4];
+  dCopy = d;
+  notificationCenter = [(MDState *)state notificationCenter];
+  [notificationCenter clearNotificationWithTrafficIncidentAlertID:dCopy];
 }
 
-- (void)showAirportArrivalBulletinWithTitle:(id)a3 message:(id)a4 mapRegion:(id)a5 regionName:(id)a6
+- (void)showAirportArrivalBulletinWithTitle:(id)title message:(id)message mapRegion:(id)region regionName:(id)name
 {
-  v15 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(MDState *)self->_state notificationCenter];
-  v14 = [v13 addAirportArrivalNotificationWithTitle:v15 message:v10 mapRegion:v11 regionName:v12];
+  titleCopy = title;
+  messageCopy = message;
+  regionCopy = region;
+  nameCopy = name;
+  notificationCenter = [(MDState *)self->_state notificationCenter];
+  v14 = [notificationCenter addAirportArrivalNotificationWithTitle:titleCopy message:messageCopy mapRegion:regionCopy regionName:nameCopy];
 }
 
 - (void)clearAirportArrivalBulletin
 {
-  v2 = [(MDState *)self->_state notificationCenter];
-  [v2 clearNotificationsOfType:20];
+  notificationCenter = [(MDState *)self->_state notificationCenter];
+  [notificationCenter clearNotificationsOfType:20];
 }
 
-- (void)showVenueBulletinWithTitle:(id)a3 message:(id)a4 actionURL:(id)a5
+- (void)showVenueBulletinWithTitle:(id)title message:(id)message actionURL:(id)l
 {
-  v12 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(MDState *)self->_state notificationCenter];
-  v11 = [v10 addVenueNotificationWithTitle:v12 message:v8 actionURL:v9];
+  titleCopy = title;
+  messageCopy = message;
+  lCopy = l;
+  notificationCenter = [(MDState *)self->_state notificationCenter];
+  v11 = [notificationCenter addVenueNotificationWithTitle:titleCopy message:messageCopy actionURL:lCopy];
 }
 
 - (void)clearVenueBulletin
 {
-  v2 = [(MDState *)self->_state notificationCenter];
-  [v2 clearNotificationsOfType:11];
+  notificationCenter = [(MDState *)self->_state notificationCenter];
+  [notificationCenter clearNotificationsOfType:11];
 }
 
-- (void)clearBulletinWithRecordID:(id)a3
+- (void)clearBulletinWithRecordID:(id)d
 {
   state = self->_state;
-  v4 = a3;
-  v5 = [(MDState *)state notificationCenter];
-  [v5 clearNotificationWithIdentifier:v4];
+  dCopy = d;
+  notificationCenter = [(MDState *)state notificationCenter];
+  [notificationCenter clearNotificationWithIdentifier:dCopy];
 }
 
-- (void)addSufficientVisitsNotification:(id)a3 message:(id)a4
+- (void)addSufficientVisitsNotification:(id)notification message:(id)message
 {
   state = self->_state;
-  v6 = a4;
-  v7 = a3;
-  v8 = [(MDState *)state notificationCenter];
-  [v8 addSufficientVisitsNotification:v7 message:v6];
+  messageCopy = message;
+  notificationCopy = notification;
+  notificationCenter = [(MDState *)state notificationCenter];
+  [notificationCenter addSufficientVisitsNotification:notificationCopy message:messageCopy];
 }
 
-- (void)fetchDevicePushToken:(id)a3
+- (void)fetchDevicePushToken:(id)token
 {
   pushManager = self->_pushManager;
-  v5 = a3;
-  v6 = [(MDDevicePushManager *)pushManager devicePushToken];
-  (*(a3 + 2))(v5, v6);
+  tokenCopy = token;
+  devicePushToken = [(MDDevicePushManager *)pushManager devicePushToken];
+  (*(token + 2))(tokenCopy, devicePushToken);
 }
 
-- (void)handleMapsApplicationRemoval:(id)a3
+- (void)handleMapsApplicationRemoval:(id)removal
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1000025A4;
   v4[3] = &unk_10003C8B8;
   v4[4] = self;
-  v5 = a3;
-  v3 = v5;
+  removalCopy = removal;
+  v3 = removalCopy;
   dispatch_async(&_dispatch_main_q, v4);
 }
 
@@ -337,12 +337,12 @@ LABEL_17:
   return v7;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 valueForEntitlement:@"com.apple.MapsSupport.ParkedCarBulletin"];
-  v9 = [v7 valueForEntitlement:@"com.apple.MapsSupport.MapsDaemon"];
+  listenerCopy = listener;
+  connectionCopy = connection;
+  v8 = [connectionCopy valueForEntitlement:@"com.apple.MapsSupport.ParkedCarBulletin"];
+  v9 = [connectionCopy valueForEntitlement:@"com.apple.MapsSupport.MapsDaemon"];
   if (v8 | v9)
   {
     if (qword_10004ABE0 != -1)
@@ -350,34 +350,34 @@ LABEL_17:
       sub_100021964();
     }
 
-    [v7 setExportedInterface:qword_10004ABE8];
-    [v7 setExportedObject:self];
-    [v7 setRemoteObjectInterface:qword_10004ABF0];
-    v10 = [(MDState *)self->_state peerConnectionsLock];
-    [v10 lock];
+    [connectionCopy setExportedInterface:qword_10004ABE8];
+    [connectionCopy setExportedObject:self];
+    [connectionCopy setRemoteObjectInterface:qword_10004ABF0];
+    peerConnectionsLock = [(MDState *)self->_state peerConnectionsLock];
+    [peerConnectionsLock lock];
 
-    v11 = [(MDState *)self->_state peerConnections];
-    [v11 addObject:v7];
+    peerConnections = [(MDState *)self->_state peerConnections];
+    [peerConnections addObject:connectionCopy];
 
-    v12 = [(MDState *)self->_state peerConnectionsLock];
-    [v12 unlock];
+    peerConnectionsLock2 = [(MDState *)self->_state peerConnectionsLock];
+    [peerConnectionsLock2 unlock];
 
-    objc_initWeak(&location, v7);
+    objc_initWeak(&location, connectionCopy);
     v21[0] = _NSConcreteStackBlock;
     v21[1] = 3221225472;
     v21[2] = sub_100002E94;
     v21[3] = &unk_10003C920;
     objc_copyWeak(&v22, &location);
     v21[4] = self;
-    [v7 setInvalidationHandler:v21];
+    [connectionCopy setInvalidationHandler:v21];
     v15 = _NSConcreteStackBlock;
     v16 = 3221225472;
     v17 = sub_100002F38;
     v18 = &unk_10003C920;
     objc_copyWeak(&v20, &location);
-    v19 = self;
-    [v7 setInterruptionHandler:&v15];
-    [v7 resume];
+    selfCopy = self;
+    [connectionCopy setInterruptionHandler:&v15];
+    [connectionCopy resume];
     objc_destroyWeak(&v20);
     objc_destroyWeak(&v22);
     objc_destroyWeak(&location);
@@ -389,7 +389,7 @@ LABEL_17:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
       LODWORD(location) = 67109120;
-      HIDWORD(location) = [v7 processIdentifier];
+      HIDWORD(location) = [connectionCopy processIdentifier];
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "ERROR: PID (%d) is trying to connect without proper entitlement.", &location, 8u);
     }
   }

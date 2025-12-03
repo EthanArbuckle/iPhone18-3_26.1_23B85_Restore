@@ -1,21 +1,21 @@
 @interface MOScreenTimeManager
-- (MOScreenTimeManager)initWithUniverse:(id)a3;
-- (id)_createNewEventFromAppUsageData:(id)a3;
-- (id)_createResultsWithStoredEvents:(id)a3 AppUsageData:(id)a4;
-- (unint64_t)_getAppCategoryBasedOnString:(id)a3;
-- (void)_fetchScreenTimeEventsBetweenStartDate:(id)a3 endDate:(id)a4 withStoredEvents:(id)a5 handler:(id)a6;
+- (MOScreenTimeManager)initWithUniverse:(id)universe;
+- (id)_createNewEventFromAppUsageData:(id)data;
+- (id)_createResultsWithStoredEvents:(id)events AppUsageData:(id)data;
+- (unint64_t)_getAppCategoryBasedOnString:(id)string;
+- (void)_fetchScreenTimeEventsBetweenStartDate:(id)date endDate:(id)endDate withStoredEvents:(id)events handler:(id)handler;
 - (void)_registerForDeviceActivity;
-- (void)_rehydrateScreenTimeEvents:(id)a3 handler:(id)a4;
-- (void)_setDynamicPropertiesForEvent:(id)a3 appUsage:(id)a4;
-- (void)fetchScreenTimeEventsBetweenStartDate:(id)a3 endDate:(id)a4 withStoredEvents:(id)a5 handler:(id)a6;
-- (void)rehydrateScreenTimeEvents:(id)a3 handler:(id)a4;
+- (void)_rehydrateScreenTimeEvents:(id)events handler:(id)handler;
+- (void)_setDynamicPropertiesForEvent:(id)event appUsage:(id)usage;
+- (void)fetchScreenTimeEventsBetweenStartDate:(id)date endDate:(id)endDate withStoredEvents:(id)events handler:(id)handler;
+- (void)rehydrateScreenTimeEvents:(id)events handler:(id)handler;
 @end
 
 @implementation MOScreenTimeManager
 
-- (MOScreenTimeManager)initWithUniverse:(id)a3
+- (MOScreenTimeManager)initWithUniverse:(id)universe
 {
-  v4 = a3;
+  universeCopy = universe;
   v16.receiver = self;
   v16.super_class = MOScreenTimeManager;
   v5 = [(MOScreenTimeManager *)&v16 init];
@@ -32,7 +32,7 @@
 
     v11 = objc_opt_class();
     v12 = NSStringFromClass(v11);
-    v13 = [v4 getService:v12];
+    v13 = [universeCopy getService:v12];
     configurationManager = v5->_configurationManager;
     v5->_configurationManager = v13;
 
@@ -46,9 +46,9 @@
 {
   v2 = [[MOLocalSettingsStore alloc] initWithName:@"DeviceActivityStore" sharedContainer:@"com.apple.momentsd"];
   v3 = [[MOApplication alloc] initWithBundleIdentifier:@"com.apple.momentsd"];
-  v4 = [v2 deviceActivity];
-  v5 = [v4 allowedClients];
-  v6 = [v5 containsObject:v3];
+  deviceActivity = [v2 deviceActivity];
+  allowedClients = [deviceActivity allowedClients];
+  v6 = [allowedClients containsObject:v3];
 
   v7 = _mo_log_facility_get_os_log(&MOLogFacilityScreenTime);
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_INFO);
@@ -71,27 +71,27 @@
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "ManagedSettings store device activity is not registered for: %@, updating allow list", &v13, 0xCu);
     }
 
-    v9 = [v2 deviceActivity];
-    v10 = [v9 allowedClients];
-    v7 = [NSMutableSet setWithSet:v10];
+    deviceActivity2 = [v2 deviceActivity];
+    allowedClients2 = [deviceActivity2 allowedClients];
+    v7 = [NSMutableSet setWithSet:allowedClients2];
 
     [v7 addObject:v3];
     v11 = [v7 copy];
-    v12 = [v2 deviceActivity];
-    [v12 setAllowedClients:v11];
+    deviceActivity3 = [v2 deviceActivity];
+    [deviceActivity3 setAllowedClients:v11];
   }
 }
 
-- (id)_createResultsWithStoredEvents:(id)a3 AppUsageData:(id)a4
+- (id)_createResultsWithStoredEvents:(id)events AppUsageData:(id)data
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 count])
+  eventsCopy = events;
+  dataCopy = data;
+  if ([dataCopy count])
   {
     v8 = objc_opt_new();
     v9 = objc_opt_new();
-    v55 = v7;
-    if ([v6 count])
+    v55 = dataCopy;
+    if ([eventsCopy count])
     {
       v57 = v9;
       v58 = v8;
@@ -101,8 +101,8 @@
       v66 = 0u;
       v67 = 0u;
       v68 = 0u;
-      v54 = v6;
-      v12 = v6;
+      v54 = eventsCopy;
+      v12 = eventsCopy;
       v13 = [v12 countByEnumeratingWithState:&v65 objects:v81 count:16];
       if (v13)
       {
@@ -118,11 +118,11 @@
             }
 
             v17 = *(*(&v65 + 1) + 8 * i);
-            v18 = [v17 startDate];
-            [v10 setObject:v17 forKey:v18];
+            startDate = [v17 startDate];
+            [v10 setObject:v17 forKey:startDate];
 
-            v19 = [v17 startDate];
-            [v11 addObject:v19];
+            startDate2 = [v17 startDate];
+            [v11 addObject:startDate2];
           }
 
           v14 = [v12 countByEnumeratingWithState:&v65 objects:v81 count:16];
@@ -137,7 +137,7 @@
       v64 = 0u;
       v61 = 0u;
       v62 = 0u;
-      obj = v7;
+      obj = dataCopy;
       v20 = [obj countByEnumeratingWithState:&v61 objects:v80 count:16];
       if (v20)
       {
@@ -153,15 +153,15 @@
             }
 
             v24 = *(*(&v61 + 1) + 8 * j);
-            v25 = [v24 dateInterval];
-            v26 = [v25 startDate];
-            v27 = [v11 containsObject:v26];
+            dateInterval = [v24 dateInterval];
+            startDate3 = [dateInterval startDate];
+            v27 = [v11 containsObject:startDate3];
 
             if (v27)
             {
-              v28 = [v24 dateInterval];
-              v29 = [v28 startDate];
-              v30 = [v10 objectForKey:v29];
+              dateInterval2 = [v24 dateInterval];
+              startDate4 = [dateInterval2 startDate];
+              v30 = [v10 objectForKey:startDate4];
 
               [(MOScreenTimeManager *)self _setDynamicPropertiesForEvent:v30 appUsage:v24];
               v31 = _mo_log_facility_get_os_log(&MOLogFacilityScreenTime);
@@ -200,16 +200,16 @@ LABEL_22:
       }
 
       v34 = [MORehydrationMetrics alloc];
-      v35 = [v53 firstObject];
-      v36 = [v35 category];
-      v37 = [v53 firstObject];
+      firstObject = [v53 firstObject];
+      category = [firstObject category];
+      firstObject2 = [v53 firstObject];
       v8 = v58;
-      v38 = -[MORehydrationMetrics initWithCategory:provider:spiSuccess:spiError:failCount:successAfterPreFailCount:totalCount:rehydrationTrigger:](v34, "initWithCategory:provider:spiSuccess:spiError:failCount:successAfterPreFailCount:totalCount:rehydrationTrigger:", v36, [v37 provider], 1, 0, objc_msgSend(v53, "count"), 3, (objc_msgSend(v53, "count") - -[MORehydrationMetrics count](v58, "count")), 0.0);
+      v38 = -[MORehydrationMetrics initWithCategory:provider:spiSuccess:spiError:failCount:successAfterPreFailCount:totalCount:rehydrationTrigger:](v34, "initWithCategory:provider:spiSuccess:spiError:failCount:successAfterPreFailCount:totalCount:rehydrationTrigger:", category, [firstObject2 provider], 1, 0, objc_msgSend(v53, "count"), 3, (objc_msgSend(v53, "count") - -[MORehydrationMetrics count](v58, "count")), 0.0);
 
       v60 = 0;
       [(MORehydrationMetrics *)v38 submitMetricsWithError:&v60];
 
-      v6 = v54;
+      eventsCopy = v54;
       v9 = v57;
     }
 
@@ -228,7 +228,7 @@ LABEL_22:
       v72 = 0u;
       v69 = 0u;
       v70 = 0u;
-      v10 = v7;
+      v10 = dataCopy;
       v43 = [v10 countByEnumeratingWithState:&v69 objects:v82 count:16];
       if (v43)
       {
@@ -262,7 +262,7 @@ LABEL_22:
     {
       v49 = [(MORehydrationMetrics *)v8 count];
       v50 = [(MORehydrationMetrics *)v9 count];
-      v51 = [v6 count];
+      v51 = [eventsCopy count];
       *buf = 134218496;
       v75 = v49;
       v76 = 2048;
@@ -278,7 +278,7 @@ LABEL_22:
       [v40 setObject:v9 forKey:@"newEvents"];
     }
 
-    v7 = v55;
+    dataCopy = v55;
     if ([(MORehydrationMetrics *)v8 count])
     {
       [v40 setObject:v8 forKey:@"rehydratedEvents"];
@@ -293,7 +293,7 @@ LABEL_22:
       [MOScreenTimeManager _createResultsWithStoredEvents:a2 AppUsageData:v39];
     }
 
-    v8 = -[MORehydrationMetrics initWithCategory:provider:spiSuccess:spiError:failCount:successAfterPreFailCount:totalCount:rehydrationTrigger:]([MORehydrationMetrics alloc], "initWithCategory:provider:spiSuccess:spiError:failCount:successAfterPreFailCount:totalCount:rehydrationTrigger:", 20, 9, 1, 0, [v6 count], 3, objc_msgSend(v6, "count"), 0.0);
+    v8 = -[MORehydrationMetrics initWithCategory:provider:spiSuccess:spiError:failCount:successAfterPreFailCount:totalCount:rehydrationTrigger:]([MORehydrationMetrics alloc], "initWithCategory:provider:spiSuccess:spiError:failCount:successAfterPreFailCount:totalCount:rehydrationTrigger:", 20, 9, 1, 0, [eventsCopy count], 3, objc_msgSend(eventsCopy, "count"), 0.0);
     v73 = 0;
     [(MORehydrationMetrics *)v8 submitMetricsWithError:&v73];
     v40 = 0;
@@ -302,30 +302,30 @@ LABEL_22:
   return v40;
 }
 
-- (id)_createNewEventFromAppUsageData:(id)a3
+- (id)_createNewEventFromAppUsageData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = [MOEvent alloc];
   v6 = +[NSUUID UUID];
-  v7 = [v4 dateInterval];
-  v8 = [v7 startDate];
-  v9 = [v4 dateInterval];
-  v10 = [v9 endDate];
+  dateInterval = [dataCopy dateInterval];
+  startDate = [dateInterval startDate];
+  dateInterval2 = [dataCopy dateInterval];
+  endDate = [dateInterval2 endDate];
   v11 = +[NSDate date];
-  v12 = [(MOEvent *)v5 initWithEventIdentifier:v6 startDate:v8 endDate:v10 creationDate:v11 provider:9 category:20];
+  v12 = [(MOEvent *)v5 initWithEventIdentifier:v6 startDate:startDate endDate:endDate creationDate:v11 provider:9 category:20];
 
-  v13 = [v4 dateInterval];
-  v14 = [v13 endDate];
-  v15 = [(MOScreenTimeManager *)self configurationManager];
+  dateInterval3 = [dataCopy dateInterval];
+  endDate2 = [dateInterval3 endDate];
+  configurationManager = [(MOScreenTimeManager *)self configurationManager];
   LODWORD(v16) = 1242802176;
-  [v15 getFloatSettingForKey:@"EventManagerOverrideMaximumEventAge" withFallback:v16];
-  v18 = [v14 dateByAddingTimeInterval:v17];
+  [configurationManager getFloatSettingForKey:@"EventManagerOverrideMaximumEventAge" withFallback:v16];
+  v18 = [endDate2 dateByAddingTimeInterval:v17];
   [(MOEvent *)v12 setExpirationDate:v18];
 
-  [(MOScreenTimeManager *)self _setDynamicPropertiesForEvent:v12 appUsage:v4];
-  v19 = [(MOEvent *)v12 screenTimeEvent];
-  v20 = [v19 appCategoryUsages];
-  v21 = [v20 count];
+  [(MOScreenTimeManager *)self _setDynamicPropertiesForEvent:v12 appUsage:dataCopy];
+  screenTimeEvent = [(MOEvent *)v12 screenTimeEvent];
+  appCategoryUsages = [screenTimeEvent appCategoryUsages];
+  v21 = [appCategoryUsages count];
 
   if (v21)
   {
@@ -347,18 +347,18 @@ LABEL_22:
   return v22;
 }
 
-- (void)_setDynamicPropertiesForEvent:(id)a3 appUsage:(id)a4
+- (void)_setDynamicPropertiesForEvent:(id)event appUsage:(id)usage
 {
-  v27 = a3;
-  v6 = a4;
+  eventCopy = event;
+  usageCopy = usage;
   v7 = objc_opt_new();
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v26 = v6;
-  v8 = [v6 categoryUsages];
-  v9 = [v8 countByEnumeratingWithState:&v28 objects:v32 count:16];
+  v26 = usageCopy;
+  categoryUsages = [usageCopy categoryUsages];
+  v9 = [categoryUsages countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v9)
   {
     v10 = v9;
@@ -369,7 +369,7 @@ LABEL_22:
       {
         if (*v29 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(categoryUsages);
         }
 
         v13 = *(*(&v28 + 1) + 8 * i);
@@ -377,8 +377,8 @@ LABEL_22:
         if (v14 > 0.0)
         {
           v15 = objc_alloc_init(MOCategoryUsage);
-          v16 = [v13 category];
-          [(MOCategoryUsage *)v15 setAppCategory:[(MOScreenTimeManager *)self _getAppCategoryBasedOnString:v16]];
+          category = [v13 category];
+          [(MOCategoryUsage *)v15 setAppCategory:[(MOScreenTimeManager *)self _getAppCategoryBasedOnString:category]];
 
           [v13 totalDuration];
           v17 = [NSNumber numberWithDouble:?];
@@ -388,7 +388,7 @@ LABEL_22:
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v28 objects:v32 count:16];
+      v10 = [categoryUsages countByEnumeratingWithState:&v28 objects:v32 count:16];
     }
 
     while (v10);
@@ -398,59 +398,59 @@ LABEL_22:
   {
     v18 = objc_alloc_init(MOEventScreenTime);
     [(MOEventScreenTime *)v18 setAppCategoryUsages:v7];
-    v19 = [v26 longestActivity];
+    longestActivity = [v26 longestActivity];
 
-    if (v19)
+    if (longestActivity)
     {
       v20 = [NSDateInterval alloc];
-      v21 = [v26 longestActivity];
-      v22 = [v21 startDate];
-      v23 = [v26 longestActivity];
-      v24 = [v23 endDate];
-      v25 = [v20 initWithStartDate:v22 endDate:v24];
+      longestActivity2 = [v26 longestActivity];
+      startDate = [longestActivity2 startDate];
+      longestActivity3 = [v26 longestActivity];
+      endDate = [longestActivity3 endDate];
+      v25 = [v20 initWithStartDate:startDate endDate:endDate];
       [(MOEventScreenTime *)v18 setLongestActivity:v25];
     }
 
-    [v27 setScreenTimeEvent:v18];
+    [eventCopy setScreenTimeEvent:v18];
   }
 }
 
-- (unint64_t)_getAppCategoryBasedOnString:(id)a3
+- (unint64_t)_getAppCategoryBasedOnString:(id)string
 {
-  v3 = a3;
-  if ([v3 compare:@"DH0000"])
+  stringCopy = string;
+  if ([stringCopy compare:@"DH0000"])
   {
-    if ([v3 compare:@"DH0010"])
+    if ([stringCopy compare:@"DH0010"])
     {
-      if ([v3 compare:@"DH0011"])
+      if ([stringCopy compare:@"DH0011"])
       {
-        if ([v3 compare:@"DH0012"])
+        if ([stringCopy compare:@"DH0012"])
         {
-          if ([v3 compare:@"DH0013"])
+          if ([stringCopy compare:@"DH0013"])
           {
-            if ([v3 compare:@"DH1001"])
+            if ([stringCopy compare:@"DH1001"])
             {
-              if ([v3 compare:@"DH1002"])
+              if ([stringCopy compare:@"DH1002"])
               {
-                if ([v3 compare:@"DH1003"])
+                if ([stringCopy compare:@"DH1003"])
                 {
-                  if ([v3 compare:@"DH1004"])
+                  if ([stringCopy compare:@"DH1004"])
                   {
-                    if ([v3 compare:@"DH1005"])
+                    if ([stringCopy compare:@"DH1005"])
                     {
-                      if ([v3 compare:@"DH1006"])
+                      if ([stringCopy compare:@"DH1006"])
                       {
-                        if ([v3 compare:@"DH1007"])
+                        if ([stringCopy compare:@"DH1007"])
                         {
-                          if ([v3 compare:@"DH1008"])
+                          if ([stringCopy compare:@"DH1008"])
                           {
-                            if ([v3 compare:@"DH1009"])
+                            if ([stringCopy compare:@"DH1009"])
                             {
-                              if ([v3 compare:@"DH1011"])
+                              if ([stringCopy compare:@"DH1011"])
                               {
-                                if ([v3 compare:@"DH1012"])
+                                if ([stringCopy compare:@"DH1012"])
                                 {
-                                  if ([v3 compare:@"DH1013"])
+                                  if ([stringCopy compare:@"DH1013"])
                                   {
                                     v4 = 0;
                                   }
@@ -559,42 +559,42 @@ LABEL_22:
   return v4;
 }
 
-- (void)fetchScreenTimeEventsBetweenStartDate:(id)a3 endDate:(id)a4 withStoredEvents:(id)a5 handler:(id)a6
+- (void)fetchScreenTimeEventsBetweenStartDate:(id)date endDate:(id)endDate withStoredEvents:(id)events handler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(MOScreenTimeManager *)self queue];
+  dateCopy = date;
+  endDateCopy = endDate;
+  eventsCopy = events;
+  handlerCopy = handler;
+  queue = [(MOScreenTimeManager *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __94__MOScreenTimeManager_fetchScreenTimeEventsBetweenStartDate_endDate_withStoredEvents_handler___block_invoke;
   block[3] = &unk_100336C98;
   block[4] = self;
-  v20 = v10;
-  v21 = v11;
-  v22 = v12;
-  v23 = v13;
-  v15 = v13;
-  v16 = v12;
-  v17 = v11;
-  v18 = v10;
-  dispatch_async(v14, block);
+  v20 = dateCopy;
+  v21 = endDateCopy;
+  v22 = eventsCopy;
+  v23 = handlerCopy;
+  v15 = handlerCopy;
+  v16 = eventsCopy;
+  v17 = endDateCopy;
+  v18 = dateCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_fetchScreenTimeEventsBetweenStartDate:(id)a3 endDate:(id)a4 withStoredEvents:(id)a5 handler:(id)a6
+- (void)_fetchScreenTimeEventsBetweenStartDate:(id)date endDate:(id)endDate withStoredEvents:(id)events handler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = a5;
+  dateCopy = date;
+  endDateCopy = endDate;
+  handlerCopy = handler;
+  eventsCopy = events;
   v14 = _mo_log_facility_get_os_log(&MOLogFacilityScreenTime);
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v29 = v10;
+    v29 = dateCopy;
     v30 = 2112;
-    v31 = v11;
+    v31 = endDateCopy;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "fetchScreenTimeEventsBetweenStartDate, %@, endDate, %@", buf, 0x16u);
   }
 
@@ -605,19 +605,19 @@ LABEL_22:
   v17 = [NSArray arrayWithObjects:v27 count:2];
   v18 = [NSCompoundPredicate andPredicateWithSubpredicates:v17];
 
-  v19 = [v13 filteredArrayUsingPredicate:v18];
+  v19 = [eventsCopy filteredArrayUsingPredicate:v18];
 
-  v20 = [(MOScreenTimeManager *)self screenTimeProvider];
+  screenTimeProvider = [(MOScreenTimeManager *)self screenTimeProvider];
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v23[2] = __95__MOScreenTimeManager__fetchScreenTimeEventsBetweenStartDate_endDate_withStoredEvents_handler___block_invoke;
   v23[3] = &unk_10033FAD0;
-  v25 = self;
-  v26 = v12;
+  selfCopy = self;
+  v26 = handlerCopy;
   v24 = v19;
-  v21 = v12;
+  v21 = handlerCopy;
   v22 = v19;
-  [v20 fetchHourlyAppUsageWithStartDate:v10 endDate:v11 completion:v23];
+  [screenTimeProvider fetchHourlyAppUsageWithStartDate:dateCopy endDate:endDateCopy completion:v23];
 }
 
 void __95__MOScreenTimeManager__fetchScreenTimeEventsBetweenStartDate_endDate_withStoredEvents_handler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -657,42 +657,42 @@ void __95__MOScreenTimeManager__fetchScreenTimeEventsBetweenStartDate_endDate_wi
 LABEL_8:
 }
 
-- (void)rehydrateScreenTimeEvents:(id)a3 handler:(id)a4
+- (void)rehydrateScreenTimeEvents:(id)events handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MOScreenTimeManager *)self queue];
+  eventsCopy = events;
+  handlerCopy = handler;
+  queue = [(MOScreenTimeManager *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __57__MOScreenTimeManager_rehydrateScreenTimeEvents_handler___block_invoke;
   block[3] = &unk_100336A58;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = eventsCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = eventsCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_rehydrateScreenTimeEvents:(id)a3 handler:(id)a4
+- (void)_rehydrateScreenTimeEvents:(id)events handler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 getDurationOfMOEventArray];
-  v10 = [(MOScreenTimeManager *)self screenTimeProvider];
-  v11 = [v9 startDate];
-  v12 = [v9 endDate];
+  eventsCopy = events;
+  handlerCopy = handler;
+  getDurationOfMOEventArray = [eventsCopy getDurationOfMOEventArray];
+  screenTimeProvider = [(MOScreenTimeManager *)self screenTimeProvider];
+  startDate = [getDurationOfMOEventArray startDate];
+  endDate = [getDurationOfMOEventArray endDate];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = __58__MOScreenTimeManager__rehydrateScreenTimeEvents_handler___block_invoke;
   v15[3] = &unk_100340AE0;
-  v16 = v7;
-  v17 = self;
-  v18 = v8;
+  v16 = eventsCopy;
+  selfCopy = self;
+  v18 = handlerCopy;
   v19 = a2;
-  v13 = v7;
-  v14 = v8;
-  [v10 fetchHourlyAppUsageWithStartDate:v11 endDate:v12 completion:v15];
+  v13 = eventsCopy;
+  v14 = handlerCopy;
+  [screenTimeProvider fetchHourlyAppUsageWithStartDate:startDate endDate:endDate completion:v15];
 }
 
 void __58__MOScreenTimeManager__rehydrateScreenTimeEvents_handler___block_invoke(uint64_t a1, void *a2, void *a3)

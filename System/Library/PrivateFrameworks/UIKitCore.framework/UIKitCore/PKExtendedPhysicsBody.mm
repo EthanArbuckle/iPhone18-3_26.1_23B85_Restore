@@ -1,30 +1,30 @@
 @interface PKExtendedPhysicsBody
-+ (id)bodyWithBodies:(id)a3;
-+ (id)bodyWithCircleOfRadius:(double)a3;
-+ (id)bodyWithEdgeChainFromPath:(CGPath *)a3;
-+ (id)bodyWithEdgeFromPoint:(CGPoint)a3 toPoint:(CGPoint)a4;
-+ (id)bodyWithEdgeLoopFromPath:(CGPath *)a3;
-+ (id)bodyWithEllipseInRect:(CGRect)a3;
-+ (id)bodyWithPolygonFromPath:(CGPath *)a3;
-+ (id)bodyWithRectangleOfSize:(CGSize)a3;
-+ (id)bodyWithRectangleOfSize:(CGSize)a3 center:(CGPoint)a4;
++ (id)bodyWithBodies:(id)bodies;
++ (id)bodyWithCircleOfRadius:(double)radius;
++ (id)bodyWithEdgeChainFromPath:(CGPath *)path;
++ (id)bodyWithEdgeFromPoint:(CGPoint)point toPoint:(CGPoint)toPoint;
++ (id)bodyWithEdgeLoopFromPath:(CGPath *)path;
++ (id)bodyWithEllipseInRect:(CGRect)rect;
++ (id)bodyWithPolygonFromPath:(CGPath *)path;
++ (id)bodyWithRectangleOfSize:(CGSize)size;
++ (id)bodyWithRectangleOfSize:(CGSize)size center:(CGPoint)center;
 - (BOOL)dissociate;
 - (PKExtendedPhysicsBody)init;
-- (PKExtendedPhysicsBody)initWithRectangleOfSize:(CGSize)a3;
+- (PKExtendedPhysicsBody)initWithRectangleOfSize:(CGSize)size;
 - (double)normalizedDensity;
 - (id)description;
-- (void)setNormalizedDensity:(double)a3;
+- (void)setNormalizedDensity:(double)density;
 @end
 
 @implementation PKExtendedPhysicsBody
 
-+ (id)bodyWithEllipseInRect:(CGRect)a3
++ (id)bodyWithEllipseInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = CGRectGetWidth(a3) * -0.5;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v7 = CGRectGetWidth(rect) * -0.5;
   v14.origin.x = x;
   v14.origin.y = y;
   v14.size.width = width;
@@ -50,59 +50,59 @@
   return v11;
 }
 
-+ (id)bodyWithCircleOfRadius:(double)a3
++ (id)bodyWithCircleOfRadius:(double)radius
 {
-  v3 = [[PKExtendedPhysicsBody alloc] initWithCircleOfRadius:a3];
+  v3 = [[PKExtendedPhysicsBody alloc] initWithCircleOfRadius:radius];
 
   return v3;
 }
 
-+ (id)bodyWithRectangleOfSize:(CGSize)a3
++ (id)bodyWithRectangleOfSize:(CGSize)size
 {
-  v3 = [[PKExtendedPhysicsBody alloc] initWithRectangleOfSize:a3.width, a3.height];
+  v3 = [[PKExtendedPhysicsBody alloc] initWithRectangleOfSize:size.width, size.height];
 
   return v3;
 }
 
-+ (id)bodyWithRectangleOfSize:(CGSize)a3 center:(CGPoint)a4
++ (id)bodyWithRectangleOfSize:(CGSize)size center:(CGPoint)center
 {
-  v4 = [[PKExtendedPhysicsBody alloc] initWithRectangleOfSize:a3.width center:a3.height, a4.x, a4.y];
+  v4 = [[PKExtendedPhysicsBody alloc] initWithRectangleOfSize:size.width center:size.height, center.x, center.y];
 
   return v4;
 }
 
-+ (id)bodyWithEdgeFromPoint:(CGPoint)a3 toPoint:(CGPoint)a4
++ (id)bodyWithEdgeFromPoint:(CGPoint)point toPoint:(CGPoint)toPoint
 {
-  v4 = [[PKExtendedPhysicsBody alloc] initWithEdgeFromPoint:a3.x toPoint:a3.y, a4.x, a4.y];
+  v4 = [[PKExtendedPhysicsBody alloc] initWithEdgeFromPoint:point.x toPoint:point.y, toPoint.x, toPoint.y];
 
   return v4;
 }
 
-+ (id)bodyWithPolygonFromPath:(CGPath *)a3
++ (id)bodyWithPolygonFromPath:(CGPath *)path
 {
-  v3 = [[PKExtendedPhysicsBody alloc] initWithPolygonFromPath:a3];
+  v3 = [[PKExtendedPhysicsBody alloc] initWithPolygonFromPath:path];
 
   return v3;
 }
 
-+ (id)bodyWithEdgeChainFromPath:(CGPath *)a3
++ (id)bodyWithEdgeChainFromPath:(CGPath *)path
 {
-  v3 = [[PKExtendedPhysicsBody alloc] initWithEdgeChainFromPath:a3];
+  v3 = [[PKExtendedPhysicsBody alloc] initWithEdgeChainFromPath:path];
 
   return v3;
 }
 
-+ (id)bodyWithEdgeLoopFromPath:(CGPath *)a3
++ (id)bodyWithEdgeLoopFromPath:(CGPath *)path
 {
-  v3 = [[PKExtendedPhysicsBody alloc] initWithEdgeLoopFromPath:a3];
+  v3 = [[PKExtendedPhysicsBody alloc] initWithEdgeLoopFromPath:path];
 
   return v3;
 }
 
-+ (id)bodyWithBodies:(id)a3
++ (id)bodyWithBodies:(id)bodies
 {
-  v3 = a3;
-  v4 = [[PKExtendedPhysicsBody alloc] initWithBodies:v3];
+  bodiesCopy = bodies;
+  v4 = [[PKExtendedPhysicsBody alloc] initWithBodies:bodiesCopy];
 
   return v4;
 }
@@ -122,15 +122,15 @@
   return v3;
 }
 
-- (void)setNormalizedDensity:(double)a3
+- (void)setNormalizedDensity:(double)density
 {
   areaFactor = self->_areaFactor;
   if (areaFactor != 0.0)
   {
-    a3 = areaFactor * a3;
+    density = areaFactor * density;
   }
 
-  [(PKExtendedPhysicsBody *)self setDensity:a3];
+  [(PKExtendedPhysicsBody *)self setDensity:density];
 }
 
 - (double)normalizedDensity
@@ -145,10 +145,10 @@
   return result;
 }
 
-- (PKExtendedPhysicsBody)initWithRectangleOfSize:(CGSize)a3
+- (PKExtendedPhysicsBody)initWithRectangleOfSize:(CGSize)size
 {
-  width = a3.width;
-  height = a3.height;
+  width = size.width;
+  height = size.height;
   PKGet_INV_PTM_RATIO();
   *&v5 = 0.02 / v4;
   v6.f64[0] = width;
@@ -167,35 +167,35 @@
 
 - (id)description
 {
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   [(PKExtendedPhysicsBody *)self position];
   v5 = v4;
   [(PKExtendedPhysicsBody *)self position];
-  [v3 appendFormat:@" PO:(%f, %f)", v5, v6];
+  [string appendFormat:@" PO:(%f, %f)", v5, v6];
   [(PKExtendedPhysicsBody *)self rotation];
-  [v3 appendFormat:@" AN:(%f)", v7];
+  [string appendFormat:@" AN:(%f)", v7];
   [(PKExtendedPhysicsBody *)self velocity];
   v9 = v8;
   [(PKExtendedPhysicsBody *)self velocity];
-  [v3 appendFormat:@" VE:(%f, %f)", v9, v10];
+  [string appendFormat:@" VE:(%f, %f)", v9, v10];
   [(PKExtendedPhysicsBody *)self angularVelocity];
-  [v3 appendFormat:@" AV:(%f)", v11];
-  [v3 appendFormat:@" dy:(%d)", -[PKExtendedPhysicsBody isDynamic](self, "isDynamic")];
-  [v3 appendFormat:@" cc:(%d)", -[PKExtendedPhysicsBody usesPreciseCollisionDetection](self, "usesPreciseCollisionDetection")];
-  [v3 appendFormat:@" ar:(%d)", -[PKExtendedPhysicsBody allowsRotation](self, "allowsRotation")];
-  [v3 appendFormat:@" rs:(%d)", -[PKExtendedPhysicsBody isResting](self, "isResting")];
+  [string appendFormat:@" AV:(%f)", v11];
+  [string appendFormat:@" dy:(%d)", -[PKExtendedPhysicsBody isDynamic](self, "isDynamic")];
+  [string appendFormat:@" cc:(%d)", -[PKExtendedPhysicsBody usesPreciseCollisionDetection](self, "usesPreciseCollisionDetection")];
+  [string appendFormat:@" ar:(%d)", -[PKExtendedPhysicsBody allowsRotation](self, "allowsRotation")];
+  [string appendFormat:@" rs:(%d)", -[PKExtendedPhysicsBody isResting](self, "isResting")];
   [(PKExtendedPhysicsBody *)self friction];
-  [v3 appendFormat:@" fr:(%f)", v12];
+  [string appendFormat:@" fr:(%f)", v12];
   [(PKExtendedPhysicsBody *)self restitution];
-  [v3 appendFormat:@" re:(%f)", v13];
+  [string appendFormat:@" re:(%f)", v13];
   [(PKExtendedPhysicsBody *)self density];
-  [v3 appendFormat:@" de:(%f)", v14];
-  [v3 appendFormat:@" gr:(%d)", -[PKExtendedPhysicsBody affectedByGravity](self, "affectedByGravity")];
+  [string appendFormat:@" de:(%f)", v14];
+  [string appendFormat:@" gr:(%d)", -[PKExtendedPhysicsBody affectedByGravity](self, "affectedByGravity")];
   v15 = MEMORY[0x1E696AEC0];
   v19.receiver = self;
   v19.super_class = PKExtendedPhysicsBody;
   v16 = [(PKExtendedPhysicsBody *)&v19 description];
-  v17 = [v15 stringWithFormat:@"%@ %p %@", v16, self, v3];
+  v17 = [v15 stringWithFormat:@"%@ %p %@", v16, self, string];
 
   return v17;
 }

@@ -3,95 +3,95 @@
 - (SWCollaborationDetailViewModel)viewModel;
 - (SWHighlight)collaborationHighlight;
 - (UICloudSharingControllerDelegate)cloudSharingControllerDelegate;
-- (_SWCollaborationDetailViewController)initWithHighlight:(id)a3 listContent:(id)a4;
-- (_SWCollaborationDetailViewController)initWithItemProvider:(id)a3;
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3;
-- (void)setCloudSharingControllerDelegate:(id)a3;
-- (void)setCollaborationHighlight:(id)a3;
-- (void)setItemProvider:(id)a3;
-- (void)setListContentView:(id)a3;
-- (void)setManageButtonTitle:(id)a3;
+- (_SWCollaborationDetailViewController)initWithHighlight:(id)highlight listContent:(id)content;
+- (_SWCollaborationDetailViewController)initWithItemProvider:(id)provider;
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container;
+- (void)setCloudSharingControllerDelegate:(id)delegate;
+- (void)setCollaborationHighlight:(id)highlight;
+- (void)setItemProvider:(id)provider;
+- (void)setListContentView:(id)view;
+- (void)setManageButtonTitle:(id)title;
 @end
 
 @implementation _SWCollaborationDetailViewController
 
-- (void)setItemProvider:(id)a3
+- (void)setItemProvider:(id)provider
 {
-  v4 = a3;
-  v5 = [(_SWCollaborationDetailViewController *)self viewModel];
-  [v5 setItemProvider:v4];
+  providerCopy = provider;
+  viewModel = [(_SWCollaborationDetailViewController *)self viewModel];
+  [viewModel setItemProvider:providerCopy];
 }
 
 - (NSItemProvider)itemProvider
 {
-  v2 = [(_SWCollaborationDetailViewController *)self viewModel];
-  v3 = [v2 itemProvider];
+  viewModel = [(_SWCollaborationDetailViewController *)self viewModel];
+  itemProvider = [viewModel itemProvider];
 
-  return v3;
+  return itemProvider;
 }
 
-- (void)setCloudSharingControllerDelegate:(id)a3
+- (void)setCloudSharingControllerDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(_SWCollaborationDetailViewController *)self viewModel];
-  [v5 setCloudSharingControllerDelegate:v4];
+  delegateCopy = delegate;
+  viewModel = [(_SWCollaborationDetailViewController *)self viewModel];
+  [viewModel setCloudSharingControllerDelegate:delegateCopy];
 }
 
 - (UICloudSharingControllerDelegate)cloudSharingControllerDelegate
 {
-  v2 = [(_SWCollaborationDetailViewController *)self viewModel];
-  v3 = [v2 cloudSharingControllerDelegate];
+  viewModel = [(_SWCollaborationDetailViewController *)self viewModel];
+  cloudSharingControllerDelegate = [viewModel cloudSharingControllerDelegate];
 
-  return v3;
+  return cloudSharingControllerDelegate;
 }
 
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container
 {
-  [a3 preferredContentSize];
+  [container preferredContentSize];
 
   [(_SWCollaborationDetailViewController *)self setPreferredContentSize:?];
 }
 
-- (void)setManageButtonTitle:(id)a3
+- (void)setManageButtonTitle:(id)title
 {
-  v4 = a3;
-  if (v4)
+  titleCopy = title;
+  if (titleCopy)
   {
-    v8 = v4;
-    v5 = [(_SWCollaborationDetailViewController *)self viewModel];
-    v6 = [v5 manageButtonTitle];
+    v8 = titleCopy;
+    viewModel = [(_SWCollaborationDetailViewController *)self viewModel];
+    manageButtonTitle = [viewModel manageButtonTitle];
 
-    v4 = v8;
-    if (v6 != v8)
+    titleCopy = v8;
+    if (manageButtonTitle != v8)
     {
-      v7 = [(_SWCollaborationDetailViewController *)self viewModel];
-      [v7 setManageButtonTitle:v8];
+      viewModel2 = [(_SWCollaborationDetailViewController *)self viewModel];
+      [viewModel2 setManageButtonTitle:v8];
 
-      v4 = v8;
+      titleCopy = v8;
     }
   }
 }
 
-- (_SWCollaborationDetailViewController)initWithItemProvider:(id)a3
+- (_SWCollaborationDetailViewController)initWithItemProvider:(id)provider
 {
-  if (a3)
+  if (provider)
   {
     self = [(_SWCollaborationDetailViewController *)self initWithItemProvider_impl:?];
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (SWCollaborationDetailViewModel)viewModel
 {
-  v2 = self;
-  result = [(_SWCollaborationDetailViewController *)v2 typeErasedViewModel];
+  selfCopy = self;
+  result = [(_SWCollaborationDetailViewController *)selfCopy typeErasedViewModel];
   if (result)
   {
 
@@ -109,17 +109,17 @@
   return result;
 }
 
-- (void)setListContentView:(id)a3
+- (void)setListContentView:(id)view
 {
-  v4 = a3;
-  v5 = self;
-  _SWCollaborationDetailViewController.setListContentView(_:)(v4);
+  viewCopy = view;
+  selfCopy = self;
+  _SWCollaborationDetailViewController.setListContentView(_:)(viewCopy);
 }
 
 - (SWHighlight)collaborationHighlight
 {
-  v2 = self;
-  v3 = [(_SWCollaborationDetailViewController *)v2 viewModel];
+  selfCopy = self;
+  viewModel = [(_SWCollaborationDetailViewController *)selfCopy viewModel];
   swift_getKeyPath();
   swift_getKeyPath();
   sub_1BBC40ABC();
@@ -127,22 +127,22 @@
   return v5;
 }
 
-- (void)setCollaborationHighlight:(id)a3
+- (void)setCollaborationHighlight:(id)highlight
 {
-  v4 = a3;
-  v5 = self;
-  v6 = [(_SWCollaborationDetailViewController *)v5 viewModel];
+  highlightCopy = highlight;
+  selfCopy = self;
+  viewModel = [(_SWCollaborationDetailViewController *)selfCopy viewModel];
   swift_getKeyPath();
   swift_getKeyPath();
-  v7 = v4;
+  v7 = highlightCopy;
   sub_1BBC40ACC();
 }
 
-- (_SWCollaborationDetailViewController)initWithHighlight:(id)a3 listContent:(id)a4
+- (_SWCollaborationDetailViewController)initWithHighlight:(id)highlight listContent:(id)content
 {
   swift_getObjectType();
-  v6 = a3;
-  v7 = sub_1BBC3CA9C(a3, a4);
+  highlightCopy = highlight;
+  v7 = sub_1BBC3CA9C(highlight, content);
   swift_deallocPartialClassInstance();
   return v7;
 }

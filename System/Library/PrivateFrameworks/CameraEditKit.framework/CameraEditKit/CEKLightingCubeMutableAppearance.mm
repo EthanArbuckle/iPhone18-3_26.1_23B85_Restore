@@ -1,126 +1,126 @@
 @interface CEKLightingCubeMutableAppearance
-- (void)setBackground:(CGGradient *)a3;
-- (void)setBottomFill:(CGColor *)a3;
-- (void)setBottomInnerGlow:(CGGradient *)a3;
-- (void)setBottomMask:(CGGradient *)a3;
-- (void)setBottomOuterGlow:(CGGradient *)a3;
-- (void)setStroke:(CGColor *)a3;
-- (void)setTopFill:(CGColor *)a3;
-- (void)setTopGlow:(CGGradient *)a3;
-- (void)setTopMask:(CGGradient *)a3;
-- (void)setTopOver:(CGGradient *)a3;
-- (void)setVerticalFillColor:(CGColor *)a3;
+- (void)setBackground:(CGGradient *)background;
+- (void)setBottomFill:(CGColor *)fill;
+- (void)setBottomInnerGlow:(CGGradient *)glow;
+- (void)setBottomMask:(CGGradient *)mask;
+- (void)setBottomOuterGlow:(CGGradient *)glow;
+- (void)setStroke:(CGColor *)stroke;
+- (void)setTopFill:(CGColor *)fill;
+- (void)setTopGlow:(CGGradient *)glow;
+- (void)setTopMask:(CGGradient *)mask;
+- (void)setTopOver:(CGGradient *)over;
+- (void)setVerticalFillColor:(CGColor *)color;
 @end
 
 @implementation CEKLightingCubeMutableAppearance
 
-- (void)setBackground:(CGGradient *)a3
+- (void)setBackground:(CGGradient *)background
 {
   background = self->super._background;
-  if (background != a3)
+  if (background != background)
   {
     CGGradientRelease(background);
-    self->super._background = CGGradientRetain(a3);
+    self->super._background = CGGradientRetain(background);
   }
 }
 
-- (void)setTopFill:(CGColor *)a3
+- (void)setTopFill:(CGColor *)fill
 {
   topFill = self->super._topFill;
-  if (topFill != a3)
+  if (topFill != fill)
   {
     CGColorRelease(topFill);
-    self->super._topFill = CGColorRetain(a3);
+    self->super._topFill = CGColorRetain(fill);
   }
 }
 
-- (void)setTopGlow:(CGGradient *)a3
+- (void)setTopGlow:(CGGradient *)glow
 {
   topGlow = self->super._topGlow;
-  if (topGlow != a3)
+  if (topGlow != glow)
   {
     CGGradientRelease(topGlow);
-    self->super._topGlow = CGGradientRetain(a3);
+    self->super._topGlow = CGGradientRetain(glow);
   }
 }
 
-- (void)setTopMask:(CGGradient *)a3
+- (void)setTopMask:(CGGradient *)mask
 {
   topMask = self->super._topMask;
-  if (topMask != a3)
+  if (topMask != mask)
   {
     CGGradientRelease(topMask);
-    self->super._topMask = CGGradientRetain(a3);
+    self->super._topMask = CGGradientRetain(mask);
   }
 }
 
-- (void)setBottomFill:(CGColor *)a3
+- (void)setBottomFill:(CGColor *)fill
 {
   bottomFill = self->super._bottomFill;
-  if (bottomFill != a3)
+  if (bottomFill != fill)
   {
     CGColorRelease(bottomFill);
-    self->super._bottomFill = CGColorRetain(a3);
+    self->super._bottomFill = CGColorRetain(fill);
   }
 }
 
-- (void)setBottomInnerGlow:(CGGradient *)a3
+- (void)setBottomInnerGlow:(CGGradient *)glow
 {
   bottomInnerGlow = self->super._bottomInnerGlow;
-  if (bottomInnerGlow != a3)
+  if (bottomInnerGlow != glow)
   {
     CGGradientRelease(bottomInnerGlow);
-    self->super._bottomInnerGlow = CGGradientRetain(a3);
+    self->super._bottomInnerGlow = CGGradientRetain(glow);
   }
 }
 
-- (void)setBottomOuterGlow:(CGGradient *)a3
+- (void)setBottomOuterGlow:(CGGradient *)glow
 {
   bottomOuterGlow = self->super._bottomOuterGlow;
-  if (bottomOuterGlow != a3)
+  if (bottomOuterGlow != glow)
   {
     CGGradientRelease(bottomOuterGlow);
-    self->super._bottomOuterGlow = CGGradientRetain(a3);
+    self->super._bottomOuterGlow = CGGradientRetain(glow);
   }
 }
 
-- (void)setBottomMask:(CGGradient *)a3
+- (void)setBottomMask:(CGGradient *)mask
 {
   bottomMask = self->super._bottomMask;
-  if (bottomMask != a3)
+  if (bottomMask != mask)
   {
     CGGradientRelease(bottomMask);
-    self->super._bottomMask = CGGradientRetain(a3);
+    self->super._bottomMask = CGGradientRetain(mask);
   }
 }
 
-- (void)setTopOver:(CGGradient *)a3
+- (void)setTopOver:(CGGradient *)over
 {
   topOver = self->super._topOver;
-  if (topOver != a3)
+  if (topOver != over)
   {
     CGGradientRelease(topOver);
-    self->super._topOver = CGGradientRetain(a3);
+    self->super._topOver = CGGradientRetain(over);
   }
 }
 
-- (void)setVerticalFillColor:(CGColor *)a3
+- (void)setVerticalFillColor:(CGColor *)color
 {
   verticalFillColor = self->super._verticalFillColor;
-  if (verticalFillColor != a3)
+  if (verticalFillColor != color)
   {
     CGColorRelease(verticalFillColor);
-    self->super._verticalFillColor = CGColorRetain(a3);
+    self->super._verticalFillColor = CGColorRetain(color);
   }
 }
 
-- (void)setStroke:(CGColor *)a3
+- (void)setStroke:(CGColor *)stroke
 {
   stroke = self->super._stroke;
-  if (stroke != a3)
+  if (stroke != stroke)
   {
     CGColorRelease(stroke);
-    self->super._stroke = CGColorRetain(a3);
+    self->super._stroke = CGColorRetain(stroke);
   }
 }
 

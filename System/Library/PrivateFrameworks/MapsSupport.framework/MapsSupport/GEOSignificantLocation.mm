@@ -1,53 +1,53 @@
 @interface GEOSignificantLocation
-+ (id)signifcantLocationWithAddressFromRTLocationOfInterest:(id)a3;
-+ (id)significantLocationFromRTLocationOfInterest:(id)a3 numberOfVisitsBucketSize:(unsigned int)a4;
++ (id)signifcantLocationWithAddressFromRTLocationOfInterest:(id)interest;
++ (id)significantLocationFromRTLocationOfInterest:(id)interest numberOfVisitsBucketSize:(unsigned int)size;
 @end
 
 @implementation GEOSignificantLocation
 
-+ (id)significantLocationFromRTLocationOfInterest:(id)a3 numberOfVisitsBucketSize:(unsigned int)a4
++ (id)significantLocationFromRTLocationOfInterest:(id)interest numberOfVisitsBucketSize:(unsigned int)size
 {
-  v5 = a3;
+  interestCopy = interest;
   v6 = objc_alloc_init(GEOSignificantLocation);
   v7 = [GEOLocation alloc];
-  v8 = [v5 location];
-  [v8 latitude];
+  location = [interestCopy location];
+  [location latitude];
   v10 = v9;
-  v11 = [v5 location];
-  [v11 longitude];
+  location2 = [interestCopy location];
+  [location2 longitude];
   v13 = [v7 initWithLatitude:v10 longitude:v12];
 
-  v14 = [v5 location];
-  [v14 horizontalUncertainty];
+  location3 = [interestCopy location];
+  [location3 horizontalUncertainty];
   [v13 setHorizontalAccuracy:?];
 
   [v6 setLocation:v13];
-  v15 = [v5 identifier];
-  v16 = [v15 UUIDString];
-  [v6 setIdentifier:v16];
+  identifier = [interestCopy identifier];
+  uUIDString = [identifier UUIDString];
+  [v6 setIdentifier:uUIDString];
 
-  [v5 confidence];
+  [interestCopy confidence];
   [v6 setConfidence:?];
-  if (a4)
+  if (size)
   {
-    v17 = [v5 visits];
-    LODWORD(v18) = vcvtmd_u64_f64([v17 count] / a4);
+    visits = [interestCopy visits];
+    LODWORD(v18) = vcvtmd_u64_f64([visits count] / size);
     [v6 setNumberOfVisitsBucket:v18];
   }
 
   return v6;
 }
 
-+ (id)signifcantLocationWithAddressFromRTLocationOfInterest:(id)a3
++ (id)signifcantLocationWithAddressFromRTLocationOfInterest:(id)interest
 {
-  v4 = a3;
-  v5 = [a1 significantLocationFromRTLocationOfInterest:v4 numberOfVisitsBucketSize:1];
+  interestCopy = interest;
+  v5 = [self significantLocationFromRTLocationOfInterest:interestCopy numberOfVisitsBucketSize:1];
   [v5 setHasNumberOfVisitsBucket:0];
   v6 = [GEOStructuredAddress alloc];
-  v7 = [v4 mapItem];
+  mapItem = [interestCopy mapItem];
 
-  v8 = [v7 address];
-  v9 = [v6 initWithRTAddress:v8];
+  address = [mapItem address];
+  v9 = [v6 initWithRTAddress:address];
 
   [v5 setAddress:v9];
 

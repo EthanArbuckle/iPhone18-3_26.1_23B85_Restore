@@ -4,14 +4,14 @@
 - (id)_init;
 - (void)_clearPendingClusterLeaderOperations;
 - (void)_clearPendingGroupLeaderOperations;
-- (void)_reevaluateClusterLeaderConnectionWithDeviceInfo:(id)a3;
-- (void)_reevaluateGroupLeaderConnectionWithDeviceInfo:(id)a3;
-- (void)addObserver:(id)a3;
-- (void)removeObserver:(id)a3;
-- (void)setGroupLeader:(id)a3;
-- (void)setPreferredClusterLeader:(id)a3;
-- (void)setPreviousClusterLeaderID:(id)a3;
-- (void)setPreviousGroupID:(id)a3;
+- (void)_reevaluateClusterLeaderConnectionWithDeviceInfo:(id)info;
+- (void)_reevaluateGroupLeaderConnectionWithDeviceInfo:(id)info;
+- (void)addObserver:(id)observer;
+- (void)removeObserver:(id)observer;
+- (void)setGroupLeader:(id)leader;
+- (void)setPreferredClusterLeader:(id)leader;
+- (void)setPreviousClusterLeaderID:(id)d;
+- (void)setPreviousGroupID:(id)d;
 @end
 
 @implementation MRDPreemptiveRemoteControlConnectionManager
@@ -38,13 +38,13 @@
     v15 = v8;
     v9 = [v6 addObserverForName:v7 object:0 queue:0 usingBlock:v14];
 
-    v10 = [(MRDPreemptiveRemoteControlConnectionManager *)v8 queue];
+    queue = [(MRDPreemptiveRemoteControlConnectionManager *)v8 queue];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_1001976F0;
     v12[3] = &unk_1004B6D08;
     v13 = v8;
-    sub_10019FEE8(v10, v12);
+    sub_10019FEE8(queue, v12);
   }
 
   return v2;
@@ -65,7 +65,7 @@
 - (NSString)debugDescription
 {
   v3 = [[NSMutableString alloc] initWithFormat:@"<%@:%p {\n", objc_opt_class(), self];
-  v4 = [(MRDPreemptiveRemoteControlConnectionManager *)self queue];
+  queue = [(MRDPreemptiveRemoteControlConnectionManager *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100197880;
@@ -73,7 +73,7 @@
   block[4] = self;
   v5 = v3;
   v10 = v5;
-  dispatch_sync(v4, block);
+  dispatch_sync(queue, block);
 
   [v5 appendString:@"}>"];
   v6 = v10;
@@ -82,51 +82,51 @@
   return v5;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(MRDPreemptiveRemoteControlConnectionManager *)self queue];
+  observerCopy = observer;
+  queue = [(MRDPreemptiveRemoteControlConnectionManager *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100197A3C;
   v7[3] = &unk_1004B68F0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = observerCopy;
+  v6 = observerCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(MRDPreemptiveRemoteControlConnectionManager *)self queue];
+  observerCopy = observer;
+  queue = [(MRDPreemptiveRemoteControlConnectionManager *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100197B80;
   v7[3] = &unk_1004B68F0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = observerCopy;
+  v6 = observerCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)setPreviousGroupID:(id)a3
+- (void)setPreviousGroupID:(id)d
 {
-  v5 = a3;
-  v6 = [(MRDPreemptiveRemoteControlConnectionManager *)self queue];
-  dispatch_assert_queue_V2(v6);
+  dCopy = d;
+  queue = [(MRDPreemptiveRemoteControlConnectionManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   previousGroupID = self->_previousGroupID;
   p_previousGroupID = &self->_previousGroupID;
   v9 = previousGroupID;
   v10 = v9;
-  if (v9 == v5)
+  if (v9 == dCopy)
   {
   }
 
   else
   {
-    v11 = [(NSString *)v9 isEqual:v5];
+    v11 = [(NSString *)v9 isEqual:dCopy];
 
     if ((v11 & 1) == 0)
     {
@@ -145,7 +145,7 @@
           v23 = 2112;
           v24 = v15;
           v25 = 2112;
-          v26 = v5;
+          v26 = dCopy;
           v16 = "Set: %{public}@ setting %{public}@ from <%@> to <%@>";
           v17 = v13;
           v18 = 42;
@@ -161,58 +161,58 @@ LABEL_9:
         v21 = 2114;
         v22 = @"previousGroupID";
         v23 = 2112;
-        v24 = v5;
+        v24 = dCopy;
         v16 = "Set: %{public}@ setting %{public}@ to <%@>";
         v17 = v13;
         v18 = 32;
         goto LABEL_9;
       }
 
-      objc_storeStrong(p_previousGroupID, a3);
+      objc_storeStrong(p_previousGroupID, d);
     }
   }
 }
 
-- (void)setGroupLeader:(id)a3
+- (void)setGroupLeader:(id)leader
 {
-  v5 = a3;
-  v6 = [(MRDPreemptiveRemoteControlConnectionManager *)self queue];
-  dispatch_assert_queue_V2(v6);
+  leaderCopy = leader;
+  queue = [(MRDPreemptiveRemoteControlConnectionManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   p_groupLeader = &self->_groupLeader;
   v8 = self->_groupLeader;
   v9 = v8;
-  if (v8 == v5)
+  if (v8 == leaderCopy)
   {
 
     goto LABEL_12;
   }
 
-  v10 = [(MRAVEndpoint *)v8 isEqual:v5];
+  v10 = [(MRAVEndpoint *)v8 isEqual:leaderCopy];
 
   if ((v10 & 1) == 0)
   {
-    v11 = [(MRAVEndpoint *)*p_groupLeader debugName];
+    debugName = [(MRAVEndpoint *)*p_groupLeader debugName];
 
     v12 = _MRLogForCategory();
     v13 = os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT);
-    if (v11)
+    if (debugName)
     {
       if (!v13)
       {
         goto LABEL_10;
       }
 
-      v14 = [(MRAVEndpoint *)*p_groupLeader debugName];
-      v15 = [(MRAVEndpoint *)v5 debugName];
+      debugName2 = [(MRAVEndpoint *)*p_groupLeader debugName];
+      debugName3 = [(MRAVEndpoint *)leaderCopy debugName];
       *buf = 138544130;
       v22 = @"PreemptiveRemoteControlConnectionManager";
       v23 = 2114;
       v24 = @"groupLeader";
       v25 = 2112;
-      v26 = v14;
+      v26 = debugName2;
       v27 = 2112;
-      v28 = v15;
+      v28 = debugName3;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Set: %{public}@ setting %{public}@ from <%@> to <%@>", buf, 0x2Au);
     }
 
@@ -223,27 +223,27 @@ LABEL_9:
         goto LABEL_10;
       }
 
-      v14 = [(MRAVEndpoint *)v5 debugName];
+      debugName2 = [(MRAVEndpoint *)leaderCopy debugName];
       *buf = 138543874;
       v22 = @"PreemptiveRemoteControlConnectionManager";
       v23 = 2114;
       v24 = @"groupLeader";
       v25 = 2112;
-      v26 = v14;
+      v26 = debugName2;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Set: %{public}@ setting %{public}@ to <%@>", buf, 0x20u);
     }
 
 LABEL_10:
-    objc_storeStrong(&self->_groupLeader, a3);
-    if (v5)
+    objc_storeStrong(&self->_groupLeader, leader);
+    if (leaderCopy)
     {
       [(NSHashTable *)self->_observers allObjects];
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_100198030;
       v18 = block[3] = &unk_1004B69D0;
-      v19 = self;
-      v20 = v5;
+      selfCopy = self;
+      v20 = leaderCopy;
       v16 = v18;
       dispatch_async(&_dispatch_main_q, block);
     }
@@ -252,23 +252,23 @@ LABEL_10:
 LABEL_12:
 }
 
-- (void)setPreviousClusterLeaderID:(id)a3
+- (void)setPreviousClusterLeaderID:(id)d
 {
-  v5 = a3;
-  v6 = [(MRDPreemptiveRemoteControlConnectionManager *)self queue];
-  dispatch_assert_queue_V2(v6);
+  dCopy = d;
+  queue = [(MRDPreemptiveRemoteControlConnectionManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   previousClusterLeaderID = self->_previousClusterLeaderID;
   p_previousClusterLeaderID = &self->_previousClusterLeaderID;
   v9 = previousClusterLeaderID;
   v10 = v9;
-  if (v9 == v5)
+  if (v9 == dCopy)
   {
   }
 
   else
   {
-    v11 = [(NSString *)v9 isEqual:v5];
+    v11 = [(NSString *)v9 isEqual:dCopy];
 
     if ((v11 & 1) == 0)
     {
@@ -287,7 +287,7 @@ LABEL_12:
           v23 = 2112;
           v24 = v15;
           v25 = 2112;
-          v26 = v5;
+          v26 = dCopy;
           v16 = "Set: %{public}@ setting %{public}@ from <%@> to <%@>";
           v17 = v13;
           v18 = 42;
@@ -303,58 +303,58 @@ LABEL_9:
         v21 = 2114;
         v22 = @"previousClusterLeaderID";
         v23 = 2112;
-        v24 = v5;
+        v24 = dCopy;
         v16 = "Set: %{public}@ setting %{public}@ to <%@>";
         v17 = v13;
         v18 = 32;
         goto LABEL_9;
       }
 
-      objc_storeStrong(p_previousClusterLeaderID, a3);
+      objc_storeStrong(p_previousClusterLeaderID, d);
     }
   }
 }
 
-- (void)setPreferredClusterLeader:(id)a3
+- (void)setPreferredClusterLeader:(id)leader
 {
-  v5 = a3;
-  v6 = [(MRDPreemptiveRemoteControlConnectionManager *)self queue];
-  dispatch_assert_queue_V2(v6);
+  leaderCopy = leader;
+  queue = [(MRDPreemptiveRemoteControlConnectionManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   p_preferredClusterLeader = &self->_preferredClusterLeader;
   v8 = self->_preferredClusterLeader;
   v9 = v8;
-  if (v8 == v5)
+  if (v8 == leaderCopy)
   {
 
     goto LABEL_12;
   }
 
-  v10 = [(MRAVEndpoint *)v8 isEqual:v5];
+  v10 = [(MRAVEndpoint *)v8 isEqual:leaderCopy];
 
   if ((v10 & 1) == 0)
   {
-    v11 = [(MRAVEndpoint *)*p_preferredClusterLeader debugName];
+    debugName = [(MRAVEndpoint *)*p_preferredClusterLeader debugName];
 
     v12 = _MRLogForCategory();
     v13 = os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT);
-    if (v11)
+    if (debugName)
     {
       if (!v13)
       {
         goto LABEL_10;
       }
 
-      v14 = [(MRAVEndpoint *)*p_preferredClusterLeader debugName];
-      v15 = [(MRAVEndpoint *)v5 debugName];
+      debugName2 = [(MRAVEndpoint *)*p_preferredClusterLeader debugName];
+      debugName3 = [(MRAVEndpoint *)leaderCopy debugName];
       *buf = 138544130;
       v22 = @"PreemptiveRemoteControlConnectionManager";
       v23 = 2114;
       v24 = @"clusterLeader";
       v25 = 2112;
-      v26 = v14;
+      v26 = debugName2;
       v27 = 2112;
-      v28 = v15;
+      v28 = debugName3;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Set: %{public}@ setting %{public}@ from <%@> to <%@>", buf, 0x2Au);
     }
 
@@ -365,27 +365,27 @@ LABEL_9:
         goto LABEL_10;
       }
 
-      v14 = [(MRAVEndpoint *)v5 debugName];
+      debugName2 = [(MRAVEndpoint *)leaderCopy debugName];
       *buf = 138543874;
       v22 = @"PreemptiveRemoteControlConnectionManager";
       v23 = 2114;
       v24 = @"clusterLeader";
       v25 = 2112;
-      v26 = v14;
+      v26 = debugName2;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Set: %{public}@ setting %{public}@ to <%@>", buf, 0x20u);
     }
 
 LABEL_10:
-    objc_storeStrong(&self->_preferredClusterLeader, a3);
-    if (v5)
+    objc_storeStrong(&self->_preferredClusterLeader, leader);
+    if (leaderCopy)
     {
       [(NSHashTable *)self->_observers allObjects];
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_1001985AC;
       v18 = block[3] = &unk_1004B69D0;
-      v19 = self;
-      v20 = v5;
+      selfCopy = self;
+      v20 = leaderCopy;
       v16 = v18;
       dispatch_async(&_dispatch_main_q, block);
     }
@@ -394,17 +394,17 @@ LABEL_10:
 LABEL_12:
 }
 
-- (void)_reevaluateGroupLeaderConnectionWithDeviceInfo:(id)a3
+- (void)_reevaluateGroupLeaderConnectionWithDeviceInfo:(id)info
 {
-  v4 = a3;
-  v5 = [(MRDPreemptiveRemoteControlConnectionManager *)self queue];
-  dispatch_assert_queue_V2(v5);
+  infoCopy = info;
+  queue = [(MRDPreemptiveRemoteControlConnectionManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v25[0] = _NSConcreteStackBlock;
   v25[1] = 3221225472;
   v25[2] = sub_100198990;
   v25[3] = &unk_1004C0AB8;
-  v6 = v4;
+  v6 = infoCopy;
   v26 = v6;
   v7 = sub_100198990(v25);
   if ([v7 result])
@@ -419,17 +419,17 @@ LABEL_12:
     v9 = sub_100198A20(v23);
     if ([v9 result])
     {
-      v10 = [v8 groupUID];
-      [(MRDPreemptiveRemoteControlConnectionManager *)self setPreviousGroupID:v10];
+      groupUID = [v8 groupUID];
+      [(MRDPreemptiveRemoteControlConnectionManager *)self setPreviousGroupID:groupUID];
       [(MRDPreemptiveRemoteControlConnectionManager *)self _clearPendingGroupLeaderOperations];
-      v11 = [[MRDConenctToGroupLeaderOperation alloc] initWithGroupID:v10];
+      v11 = [[MRDConenctToGroupLeaderOperation alloc] initWithGroupID:groupUID];
       objc_initWeak(&location, v11);
       v16 = _NSConcreteStackBlock;
       v17 = 3221225472;
       v18 = sub_100198B38;
       v19 = &unk_1004B9630;
       objc_copyWeak(&v21, &location);
-      v20 = self;
+      selfCopy = self;
       [(MRDConenctToGroupLeaderOperation *)v11 setCompletionBlock:&v16];
       v12 = [(MRDPreemptiveRemoteControlConnectionManager *)self groupLeaderOperations:v16];
 
@@ -438,12 +438,12 @@ LABEL_12:
         v13 = objc_alloc_init(NSOperationQueue);
         [(MRDPreemptiveRemoteControlConnectionManager *)self setGroupLeaderOperations:v13];
 
-        v14 = [(MRDPreemptiveRemoteControlConnectionManager *)self groupLeaderOperations];
-        [v14 setMaxConcurrentOperationCount:3];
+        groupLeaderOperations = [(MRDPreemptiveRemoteControlConnectionManager *)self groupLeaderOperations];
+        [groupLeaderOperations setMaxConcurrentOperationCount:3];
       }
 
-      v15 = [(MRDPreemptiveRemoteControlConnectionManager *)self groupLeaderOperations];
-      [v15 addOperation:v11];
+      groupLeaderOperations2 = [(MRDPreemptiveRemoteControlConnectionManager *)self groupLeaderOperations];
+      [groupLeaderOperations2 addOperation:v11];
 
       objc_destroyWeak(&v21);
       objc_destroyWeak(&location);
@@ -458,17 +458,17 @@ LABEL_12:
   }
 }
 
-- (void)_reevaluateClusterLeaderConnectionWithDeviceInfo:(id)a3
+- (void)_reevaluateClusterLeaderConnectionWithDeviceInfo:(id)info
 {
-  v4 = a3;
-  v5 = [(MRDPreemptiveRemoteControlConnectionManager *)self queue];
-  dispatch_assert_queue_V2(v5);
+  infoCopy = info;
+  queue = [(MRDPreemptiveRemoteControlConnectionManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v24[0] = _NSConcreteStackBlock;
   v24[1] = 3221225472;
   v24[2] = sub_100198EA4;
   v24[3] = &unk_1004C0AB8;
-  v6 = v4;
+  v6 = infoCopy;
   v25 = v6;
   v7 = sub_100198EA4(v24);
   if ([v7 result])
@@ -483,17 +483,17 @@ LABEL_12:
     v9 = sub_100198F68(v22);
     if ([v9 result])
     {
-      v10 = [v8 preferredClusterLeaderID];
-      [(MRDPreemptiveRemoteControlConnectionManager *)self setPreviousClusterLeaderID:v10];
+      preferredClusterLeaderID = [v8 preferredClusterLeaderID];
+      [(MRDPreemptiveRemoteControlConnectionManager *)self setPreviousClusterLeaderID:preferredClusterLeaderID];
       [(MRDPreemptiveRemoteControlConnectionManager *)self _clearPendingClusterLeaderOperations];
-      v11 = [[MRDConenctToClusterLeaderOperation alloc] initWithClusterLeaderID:v10];
+      v11 = [[MRDConenctToClusterLeaderOperation alloc] initWithClusterLeaderID:preferredClusterLeaderID];
       objc_initWeak(&location, v11);
       v15 = _NSConcreteStackBlock;
       v16 = 3221225472;
       v17 = sub_100199080;
       v18 = &unk_1004B9630;
       objc_copyWeak(&v20, &location);
-      v19 = self;
+      selfCopy = self;
       [(MRDConenctToClusterLeaderOperation *)v11 setCompletionBlock:&v15];
       v12 = [(MRDPreemptiveRemoteControlConnectionManager *)self clusterLeaderOperations:v15];
 
@@ -503,8 +503,8 @@ LABEL_12:
         [(MRDPreemptiveRemoteControlConnectionManager *)self setClusterLeaderOperations:v13];
       }
 
-      v14 = [(MRDPreemptiveRemoteControlConnectionManager *)self clusterLeaderOperations];
-      [v14 addOperation:v11];
+      clusterLeaderOperations = [(MRDPreemptiveRemoteControlConnectionManager *)self clusterLeaderOperations];
+      [clusterLeaderOperations addOperation:v11];
 
       objc_destroyWeak(&v20);
       objc_destroyWeak(&location);
@@ -520,13 +520,13 @@ LABEL_12:
 
 - (void)_clearPendingGroupLeaderOperations
 {
-  v3 = [(MRDPreemptiveRemoteControlConnectionManager *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(MRDPreemptiveRemoteControlConnectionManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(MRDPreemptiveRemoteControlConnectionManager *)self groupLeaderOperations];
-  v5 = [v4 operationCount];
+  groupLeaderOperations = [(MRDPreemptiveRemoteControlConnectionManager *)self groupLeaderOperations];
+  operationCount = [groupLeaderOperations operationCount];
 
-  if (v5)
+  if (operationCount)
   {
     v6 = _MRLogForCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -535,20 +535,20 @@ LABEL_12:
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "[PreemptiveRemoteControlConnectionManager] Cancelling pending groupLeaderOperations", v8, 2u);
     }
 
-    v7 = [(MRDPreemptiveRemoteControlConnectionManager *)self groupLeaderOperations];
-    [v7 cancelAllOperations];
+    groupLeaderOperations2 = [(MRDPreemptiveRemoteControlConnectionManager *)self groupLeaderOperations];
+    [groupLeaderOperations2 cancelAllOperations];
   }
 }
 
 - (void)_clearPendingClusterLeaderOperations
 {
-  v3 = [(MRDPreemptiveRemoteControlConnectionManager *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(MRDPreemptiveRemoteControlConnectionManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(MRDPreemptiveRemoteControlConnectionManager *)self clusterLeaderOperations];
-  v5 = [v4 operationCount];
+  clusterLeaderOperations = [(MRDPreemptiveRemoteControlConnectionManager *)self clusterLeaderOperations];
+  operationCount = [clusterLeaderOperations operationCount];
 
-  if (v5)
+  if (operationCount)
   {
     v6 = _MRLogForCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -557,8 +557,8 @@ LABEL_12:
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "[PreemptiveRemoteControlConnectionManager] Cancelling Pending clusterLeaderOperations", v8, 2u);
     }
 
-    v7 = [(MRDPreemptiveRemoteControlConnectionManager *)self clusterLeaderOperations];
-    [v7 cancelAllOperations];
+    clusterLeaderOperations2 = [(MRDPreemptiveRemoteControlConnectionManager *)self clusterLeaderOperations];
+    [clusterLeaderOperations2 cancelAllOperations];
   }
 }
 

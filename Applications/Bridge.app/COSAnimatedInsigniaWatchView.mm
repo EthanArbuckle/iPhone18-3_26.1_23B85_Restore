@@ -2,11 +2,11 @@
 - (BOOL)_verboseMALogging;
 - (COSAnimatedInsigniaWatchView)init;
 - (void)_maybePresentInsignia;
-- (void)addItemWithURL:(id)a3 completion:(id)a4;
+- (void)addItemWithURL:(id)l completion:(id)completion;
 - (void)layoutSubviews;
 - (void)loadInsigniaAsset;
 - (void)moveOutroToInsignia;
-- (void)playerItemDidReachEnd:(id)a3;
+- (void)playerItemDidReachEnd:(id)end;
 - (void)setupInsigniaLayer;
 @end
 
@@ -48,14 +48,14 @@
 
   v14 = [AVPlayerLayer playerLayerWithPlayer:self->_player];
   [v14 setFrame:{CGPointZero.x, CGPointZero.y, v8, v10}];
-  v15 = [(UIView *)self->_deviceInsignia layer];
-  [v15 addSublayer:v14];
+  layer = [(UIView *)self->_deviceInsignia layer];
+  [layer addSublayer:v14];
 
   [(COSAnimatedInsigniaWatchView *)self addSubview:self->_deviceInsignia];
   v16 = +[PBBridgeWatchAttributeController sharedDeviceController];
-  v17 = [v16 hardwareBehavior];
+  hardwareBehavior = [v16 hardwareBehavior];
 
-  if (v17)
+  if (hardwareBehavior)
   {
     v18 = +[UIScreen mainScreen];
     [v18 scale];
@@ -68,14 +68,14 @@
     v21 = v19;
 
     v22 = +[PBBridgeWatchAttributeController sharedDeviceController];
-    v23 = [v22 material];
+    material = [v22 material];
 
     v24 = +[PBBridgeWatchAttributeController sharedDeviceController];
     v25 = [v24 size];
 
     v26 = [UIImageView alloc];
-    v27 = sub_10002E594(@"overlay", v17);
-    v28 = [PBBridgeWatchAttributeController resourceString:v27 material:v23 size:v25 forAttributes:4];
+    v27 = sub_10002E594(@"overlay", hardwareBehavior);
+    v28 = [PBBridgeWatchAttributeController resourceString:v27 material:material size:v25 forAttributes:4];
     v29 = [v28 stringByAppendingString:v21];
 
     v30 = sub_10002D528(v29);
@@ -84,9 +84,9 @@
     overlay = self->_overlay;
     self->_overlay = v32;
 
-    v34 = [(UIImageView *)self->_overlay layer];
+    layer2 = [(UIImageView *)self->_overlay layer];
     v35 = [CAFilter filterWithType:kCAFilterMultiplyBlendMode];
-    [v34 setCompositingFilter:v35];
+    [layer2 setCompositingFilter:v35];
 
     [(UIImageView *)self->_overlay setAlpha:0.0];
     [(UIView *)self->_deviceInsignia addSubview:self->_overlay];
@@ -117,9 +117,9 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v8 = +[PBBridgeWatchAttributeController sharedDeviceController];
-      v9 = [v8 attributesDescription];
+      attributesDescription = [v8 attributesDescription];
       *buf = 138412290;
-      v26 = v9;
+      v26 = attributesDescription;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "HW Details: %@", buf, 0xCu);
     }
 
@@ -162,7 +162,7 @@
   v21 = v16;
   v17 = v6;
   v22 = v17;
-  v23 = self;
+  selfCopy = self;
   [(COSAnimatedInsigniaWatchView *)self addItemWithURL:v14 completion:v19];
 
   v18 = +[NSNotificationCenter defaultCenter];
@@ -182,16 +182,16 @@
   [(UIImageView *)overlay setFrame:?];
 }
 
-- (void)addItemWithURL:(id)a3 completion:(id)a4
+- (void)addItemWithURL:(id)l completion:(id)completion
 {
-  v5 = a4;
-  [AVURLAsset assetWithURL:a3];
+  completionCopy = completion;
+  [AVURLAsset assetWithURL:l];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100064FB0;
   v9 = v8[3] = &unk_100268C18;
-  v10 = v5;
-  v6 = v5;
+  v10 = completionCopy;
+  v6 = completionCopy;
   v7 = v9;
   [v7 loadValuesAsynchronouslyForKeys:&off_100281798 completionHandler:v8];
 }
@@ -223,7 +223,7 @@
   }
 }
 
-- (void)playerItemDidReachEnd:(id)a3
+- (void)playerItemDidReachEnd:(id)end
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;

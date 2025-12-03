@@ -3,39 +3,39 @@
 - (NSDictionary)metadata;
 - (NSString)eventType;
 - (PRRenderingEventAction)init;
-- (PRRenderingEventAction)initWithEvent:(id)a3 responder:(id)a4;
-- (PRRenderingEventAction)initWithInfo:(id)a3 responder:(id)a4;
+- (PRRenderingEventAction)initWithEvent:(id)event responder:(id)responder;
+- (PRRenderingEventAction)initWithInfo:(id)info responder:(id)responder;
 - (id)event;
 @end
 
 @implementation PRRenderingEventAction
 
-- (PRRenderingEventAction)initWithEvent:(id)a3 responder:(id)a4
+- (PRRenderingEventAction)initWithEvent:(id)event responder:(id)responder
 {
   v6 = MEMORY[0x1E698E700];
-  v7 = a4;
-  v8 = a3;
+  responderCopy = responder;
+  eventCopy = event;
   v9 = objc_alloc_init(v6);
-  [v9 setObject:v8 forSetting:0];
+  [v9 setObject:eventCopy forSetting:0];
 
   v12.receiver = self;
   v12.super_class = PRRenderingEventAction;
-  v10 = [(PRRenderingEventAction *)&v12 initWithInfo:v9 responder:v7];
+  v10 = [(PRRenderingEventAction *)&v12 initWithInfo:v9 responder:responderCopy];
 
   return v10;
 }
 
 - (id)event
 {
-  v2 = [(PRRenderingEventAction *)self info];
-  v3 = [v2 objectForSetting:0];
+  info = [(PRRenderingEventAction *)self info];
+  v3 = [info objectForSetting:0];
 
   return v3;
 }
 
-- (PRRenderingEventAction)initWithInfo:(id)a3 responder:(id)a4
+- (PRRenderingEventAction)initWithInfo:(id)info responder:(id)responder
 {
-  [(PRRenderingEventAction *)self doesNotRecognizeSelector:a2, a4];
+  [(PRRenderingEventAction *)self doesNotRecognizeSelector:a2, responder];
 
   return 0;
 }
@@ -49,16 +49,16 @@
 
 - (NSString)eventType
 {
-  v2 = [(PRRenderingEventAction *)self event];
-  v3 = [v2 type];
+  event = [(PRRenderingEventAction *)self event];
+  type = [event type];
 
-  return v3;
+  return type;
 }
 
 - (CGPoint)location
 {
-  v2 = [(PRRenderingEventAction *)self event];
-  [v2 location];
+  event = [(PRRenderingEventAction *)self event];
+  [event location];
   v4 = v3;
   v6 = v5;
 
@@ -71,10 +71,10 @@
 
 - (NSDictionary)metadata
 {
-  v2 = [(PRRenderingEventAction *)self event];
-  v3 = [v2 metadata];
+  event = [(PRRenderingEventAction *)self event];
+  metadata = [event metadata];
 
-  return v3;
+  return metadata;
 }
 
 @end

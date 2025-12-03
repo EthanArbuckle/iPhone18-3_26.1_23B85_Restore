@@ -1,42 +1,42 @@
 @interface USBCPDAccess
-- (BOOL)didFailErrorRecovery:(id)a3;
-- (USBCPDAccess)initWithPDController:(id)a3;
-- (id)DeviceInAlternateMode:(BOOL *)a3;
-- (id)EnterUpdateMode:(id)a3;
+- (BOOL)didFailErrorRecovery:(id)recovery;
+- (USBCPDAccess)initWithPDController:(id)controller;
+- (id)DeviceInAlternateMode:(BOOL *)mode;
+- (id)EnterUpdateMode:(id)mode;
 - (id)localPollForIdle;
 - (id)remotePollForIdle;
 @end
 
 @implementation USBCPDAccess
 
-- (USBCPDAccess)initWithPDController:(id)a3
+- (USBCPDAccess)initWithPDController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v9.receiver = self;
   v9.super_class = USBCPDAccess;
   v6 = [(USBCPDAccess *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_pdController, a3);
+    objc_storeStrong(&v6->_pdController, controller);
   }
 
   return v7;
 }
 
-- (BOOL)didFailErrorRecovery:(id)a3
+- (BOOL)didFailErrorRecovery:(id)recovery
 {
-  v3 = a3;
-  v4 = v3;
+  recoveryCopy = recovery;
+  v4 = recoveryCopy;
   v5 = 0;
-  if (v3)
+  if (recoveryCopy)
   {
-    v6 = v3;
+    v6 = recoveryCopy;
     do
     {
-      v7 = [v6 userInfo];
+      userInfo = [v6 userInfo];
       v5 |= (([v6 code] >> 8) - 51) < 2;
-      v8 = [v7 objectForKeyedSubscript:@"Previous Error Response"];
+      v8 = [userInfo objectForKeyedSubscript:@"Previous Error Response"];
 
       v6 = v8;
     }
@@ -47,14 +47,14 @@
   return v5 & 1;
 }
 
-- (id)EnterUpdateMode:(id)a3
+- (id)EnterUpdateMode:(id)mode
 {
   [(USBCPDAccess *)self doesNotRecognizeSelector:a2];
 
   return [NSError errorWithDomain:@"USBCAccessoryFirmwareUpdater Domain" code:3840 userInfo:0];
 }
 
-- (id)DeviceInAlternateMode:(BOOL *)a3
+- (id)DeviceInAlternateMode:(BOOL *)mode
 {
   [(USBCPDAccess *)self doesNotRecognizeSelector:a2];
 

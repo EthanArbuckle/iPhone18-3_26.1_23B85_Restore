@@ -1,35 +1,35 @@
 @interface PKCreditAccountMergeSummary
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToCreditAccountMergeSummary:(id)a3;
-- (PKCreditAccountMergeSummary)initWithCoder:(id)a3;
-- (PKCreditAccountMergeSummary)initWithDictionary:(id)a3;
-- (id)accountDetailsForAccountIdentifier:(id)a3;
-- (id)accountDetailsForAltDSID:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToCreditAccountMergeSummary:(id)summary;
+- (PKCreditAccountMergeSummary)initWithCoder:(id)coder;
+- (PKCreditAccountMergeSummary)initWithDictionary:(id)dictionary;
+- (id)accountDetailsForAccountIdentifier:(id)identifier;
+- (id)accountDetailsForAltDSID:(id)d;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKCreditAccountMergeSummary
 
-- (PKCreditAccountMergeSummary)initWithDictionary:(id)a3
+- (PKCreditAccountMergeSummary)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = PKCreditAccountMergeSummary;
   v5 = [(PKCreditAccountMergeSummary *)&v14 init];
   if (v5)
   {
-    v6 = [v4 PKDateForKey:@"mergeDate"];
+    v6 = [dictionaryCopy PKDateForKey:@"mergeDate"];
     mergeDate = v5->_mergeDate;
     v5->_mergeDate = v6;
 
-    v8 = [v4 PKDecimalNumberFromStringForKey:@"totalBalance"];
+    v8 = [dictionaryCopy PKDecimalNumberFromStringForKey:@"totalBalance"];
     totalBalance = v5->_totalBalance;
     v5->_totalBalance = v8;
 
-    v10 = [v4 PKSetContaining:objc_opt_class() forKey:@"accountDetails"];
+    v10 = [dictionaryCopy PKSetContaining:objc_opt_class() forKey:@"accountDetails"];
     v11 = [v10 pk_setByApplyingBlock:&__block_literal_global_61];
     accountDetails = v5->_accountDetails;
     v5->_accountDetails = v11;
@@ -46,33 +46,33 @@ PKCreditAccountMergeSummaryAccountDetails *__50__PKCreditAccountMergeSummary_ini
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKCreditAccountMergeSummary *)self isEqualToCreditAccountMergeSummary:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKCreditAccountMergeSummary *)self isEqualToCreditAccountMergeSummary:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToCreditAccountMergeSummary:(id)a3
+- (BOOL)isEqualToCreditAccountMergeSummary:(id)summary
 {
-  v4 = a3;
-  if (!v4)
+  summaryCopy = summary;
+  if (!summaryCopy)
   {
     goto LABEL_17;
   }
 
   mergeDate = self->_mergeDate;
-  v6 = v4[1];
+  v6 = summaryCopy[1];
   if (mergeDate)
   {
     v7 = v6 == 0;
@@ -97,7 +97,7 @@ PKCreditAccountMergeSummaryAccountDetails *__50__PKCreditAccountMergeSummary_ini
   }
 
   totalBalance = self->_totalBalance;
-  v9 = v4[2];
+  v9 = summaryCopy[2];
   if (!totalBalance || !v9)
   {
     if (totalBalance == v9)
@@ -117,7 +117,7 @@ LABEL_17:
 
 LABEL_13:
   accountDetails = self->_accountDetails;
-  v11 = v4[3];
+  v11 = summaryCopy[3];
   if (accountDetails && v11)
   {
     v12 = [(NSSet *)accountDetails isEqual:?];
@@ -148,8 +148,8 @@ LABEL_18:
 {
   v3 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"<%@: %p; ", objc_opt_class(), self];
   [v3 appendFormat:@"mergeDate: '%@'; ", self->_mergeDate];
-  v4 = [(NSDecimalNumber *)self->_totalBalance stringValue];
-  [v3 appendFormat:@"totalBalance: '%@'; ", v4];
+  stringValue = [(NSDecimalNumber *)self->_totalBalance stringValue];
+  [v3 appendFormat:@"totalBalance: '%@'; ", stringValue];
 
   [v3 appendFormat:@"accountDetails: '%@'; ", self->_accountDetails];
   [v3 appendFormat:@">"];
@@ -158,26 +158,26 @@ LABEL_18:
   return v5;
 }
 
-- (PKCreditAccountMergeSummary)initWithCoder:(id)a3
+- (PKCreditAccountMergeSummary)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = PKCreditAccountMergeSummary;
   v5 = [(PKCreditAccountMergeSummary *)&v16 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mergeDate"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mergeDate"];
     mergeDate = v5->_mergeDate;
     v5->_mergeDate = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"totalBalance"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"totalBalance"];
     totalBalance = v5->_totalBalance;
     v5->_totalBalance = v8;
 
     v10 = objc_alloc(MEMORY[0x1E695DFD8]);
     v11 = objc_opt_class();
     v12 = [v10 initWithObjects:{v11, objc_opt_class(), 0}];
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"accountDetails"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"accountDetails"];
     accountDetails = v5->_accountDetails;
     v5->_accountDetails = v13;
   }
@@ -185,45 +185,45 @@ LABEL_18:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   mergeDate = self->_mergeDate;
-  v5 = a3;
-  [v5 encodeObject:mergeDate forKey:@"mergeDate"];
-  [v5 encodeObject:self->_totalBalance forKey:@"totalBalance"];
-  [v5 encodeObject:self->_accountDetails forKey:@"accountDetails"];
+  coderCopy = coder;
+  [coderCopy encodeObject:mergeDate forKey:@"mergeDate"];
+  [coderCopy encodeObject:self->_totalBalance forKey:@"totalBalance"];
+  [coderCopy encodeObject:self->_accountDetails forKey:@"accountDetails"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSDate *)self->_mergeDate copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSDate *)self->_mergeDate copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(NSDecimalNumber *)self->_totalBalance copyWithZone:a3];
+  v8 = [(NSDecimalNumber *)self->_totalBalance copyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 
-  v10 = [(NSSet *)self->_accountDetails copyWithZone:a3];
+  v10 = [(NSSet *)self->_accountDetails copyWithZone:zone];
   v11 = v5[3];
   v5[3] = v10;
 
   return v5;
 }
 
-- (id)accountDetailsForAccountIdentifier:(id)a3
+- (id)accountDetailsForAccountIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  identifierCopy = identifier;
+  v5 = identifierCopy;
+  if (identifierCopy)
   {
     accountDetails = self->_accountDetails;
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __66__PKCreditAccountMergeSummary_accountDetailsForAccountIdentifier___block_invoke;
     v9[3] = &unk_1E79CECA0;
-    v10 = v4;
+    v10 = identifierCopy;
     v7 = [(NSSet *)accountDetails pk_anyObjectPassingTest:v9];
   }
 
@@ -259,18 +259,18 @@ uint64_t __66__PKCreditAccountMergeSummary_accountDetailsForAccountIdentifier___
   return v8;
 }
 
-- (id)accountDetailsForAltDSID:(id)a3
+- (id)accountDetailsForAltDSID:(id)d
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  dCopy = d;
+  v5 = dCopy;
+  if (dCopy)
   {
     accountDetails = self->_accountDetails;
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __56__PKCreditAccountMergeSummary_accountDetailsForAltDSID___block_invoke;
     v9[3] = &unk_1E79CECA0;
-    v10 = v4;
+    v10 = dCopy;
     v7 = [(NSSet *)accountDetails pk_anyObjectPassingTest:v9];
   }
 

@@ -1,8 +1,8 @@
 @interface BLNotificationManager
 + (BLNotificationManager)sharedInstance;
 - (BLNotificationManager)init;
-- (void)userNotificationCenter:(id)a3 didChangeSettings:(id)a4;
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5;
+- (void)userNotificationCenter:(id)center didChangeSettings:(id)settings;
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler;
 @end
 
 @implementation BLNotificationManager
@@ -39,7 +39,7 @@
   block[1] = 3221225472;
   block[2] = sub_100068248;
   block[3] = &unk_10011D1C8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10013EBA8 != -1)
   {
     dispatch_once(&qword_10013EBA8, block);
@@ -50,26 +50,26 @@
   return v2;
 }
 
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a5;
-  if ([AMSUserNotification shouldHandleNotificationResponse:v6])
+  responseCopy = response;
+  handlerCopy = handler;
+  if ([AMSUserNotification shouldHandleNotificationResponse:responseCopy])
   {
     v8 = +[BUBag defaultBag];
-    v9 = [AMSUserNotification handleNotificationResponse:v6 bag:v8];
+    v9 = [AMSUserNotification handleNotificationResponse:responseCopy bag:v8];
 
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_100068398;
     v11[3] = &unk_10011D1F0;
-    v12 = v7;
+    v12 = handlerCopy;
     [v9 addFinishBlock:v11];
   }
 
   else
   {
-    v10 = objc_retainBlock(v7);
+    v10 = objc_retainBlock(handlerCopy);
     v9 = v10;
     if (v10)
     {
@@ -78,12 +78,12 @@
   }
 }
 
-- (void)userNotificationCenter:(id)a3 didChangeSettings:(id)a4
+- (void)userNotificationCenter:(id)center didChangeSettings:(id)settings
 {
-  v8 = a3;
-  v5 = a4;
+  centerCopy = center;
+  settingsCopy = settings;
   v6 = +[BUBag defaultBag];
-  v7 = [AMSUserNotification notificationCenter:v8 didChangeSettings:v5 bag:v6];
+  v7 = [AMSUserNotification notificationCenter:centerCopy didChangeSettings:settingsCopy bag:v6];
 }
 
 @end

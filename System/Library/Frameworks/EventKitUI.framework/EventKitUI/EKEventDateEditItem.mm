@@ -1,21 +1,21 @@
 @interface EKEventDateEditItem
 + (id)_timeZoneLocalizedString;
 - (BOOL)_endDateIsBeforeStartDate;
-- (BOOL)configureForCalendarConstraints:(id)a3;
-- (BOOL)editor:(id)a3 canSelectSubitem:(unint64_t)a4;
-- (BOOL)handleClassicSubitemSelection:(int64_t)a3;
-- (BOOL)saveAndDismissWithForce:(BOOL)a3;
+- (BOOL)configureForCalendarConstraints:(id)constraints;
+- (BOOL)editor:(id)editor canSelectSubitem:(unint64_t)subitem;
+- (BOOL)handleClassicSubitemSelection:(int64_t)selection;
+- (BOOL)saveAndDismissWithForce:(BOOL)force;
 - (EKEventDateEditItem)init;
 - (EKEventDateEditItemDelegate)eventDateEditItemDelegate;
 - (NSString)description;
-- (double)defaultCellHeightForSubitemAtIndex:(unint64_t)a3 forWidth:(double)a4;
+- (double)defaultCellHeightForSubitemAtIndex:(unint64_t)index forWidth:(double)width;
 - (id)_allDayCell;
-- (id)_calendarForEventComponents:(BOOL)a3;
+- (id)_calendarForEventComponents:(BOOL)components;
 - (id)_classicEndDateCell;
 - (id)_classicStartDateCell;
-- (id)_dateComponentsInSystemCalendarFromDate:(id)a3;
-- (id)_dateFromComponents:(id)a3 timeZone:(id)a4;
-- (id)_dateInSystemCalendarFromComponents:(id)a3;
+- (id)_dateComponentsInSystemCalendarFromDate:(id)date;
+- (id)_dateFromComponents:(id)components timeZone:(id)zone;
+- (id)_dateInSystemCalendarFromComponents:(id)components;
 - (id)_endDatePickerCell;
 - (id)_endTimeZoneCell;
 - (id)_modernEndDateCell;
@@ -23,50 +23,50 @@
 - (id)_newDatePicker;
 - (id)_startDatePickerCell;
 - (id)_startTimeZoneCell;
-- (id)_timeZoneDescription:(id)a3;
-- (id)cellForSubitemAtIndex:(unint64_t)a3;
-- (int64_t)_rowForSubitem:(int64_t)a3;
-- (int64_t)_subitemForRow:(int64_t)a3;
+- (id)_timeZoneDescription:(id)description;
+- (id)cellForSubitemAtIndex:(unint64_t)index;
+- (int64_t)_rowForSubitem:(int64_t)subitem;
+- (int64_t)_subitemForRow:(int64_t)row;
 - (unint64_t)numberOfSubitems;
 - (unint64_t)onSaveEditItemsToRefresh;
 - (unint64_t)onSaveEditorReloadBehavior;
 - (void)_adjustEndDateIfNeededAfterTogglingAllDay;
-- (void)_adjustStartAndEndComponentsForEventIfNeeded:(id)a3;
-- (void)_allDayChanged:(id)a3;
-- (void)_contentSizeCategoryDidChange:(id)a3;
-- (void)_datePickerChanged:(id)a3;
+- (void)_adjustStartAndEndComponentsForEventIfNeeded:(id)needed;
+- (void)_allDayChanged:(id)changed;
+- (void)_contentSizeCategoryDidChange:(id)change;
+- (void)_datePickerChanged:(id)changed;
 - (void)_hideInlineDateControls;
 - (void)_pickNextReasonableTime;
 - (void)_refreshDatePicker;
-- (void)_resetClassicStartString:(BOOL)a3 endString:(BOOL)a4;
-- (void)_resetStartString:(BOOL)a3 endString:(BOOL)a4;
-- (void)_setAllDay:(BOOL)a3;
-- (void)_setEndDate:(id)a3;
-- (void)_setEndTimeZone:(id)a3;
-- (void)_setStartDate:(id)a3;
-- (void)_setStartTimeZone:(id)a3;
-- (void)_showInlineControls:(int64_t)a3 forSubitem:(int64_t)a4 includingInlineDatePicker:(BOOL)a5;
+- (void)_resetClassicStartString:(BOOL)string endString:(BOOL)endString;
+- (void)_resetStartString:(BOOL)string endString:(BOOL)endString;
+- (void)_setAllDay:(BOOL)day;
+- (void)_setEndDate:(id)date;
+- (void)_setEndTimeZone:(id)zone;
+- (void)_setStartDate:(id)date;
+- (void)_setStartTimeZone:(id)zone;
+- (void)_showInlineControls:(int64_t)controls forSubitem:(int64_t)subitem includingInlineDatePicker:(BOOL)picker;
 - (void)_updateClassicDateCellColors;
 - (void)_updateClassicDateCellTimeWidths;
-- (void)_updateDatePicker:(id)a3 animated:(BOOL)a4;
+- (void)_updateDatePicker:(id)picker animated:(BOOL)animated;
 - (void)_validateTimezones;
-- (void)adjustDatePickerInterval:(id)a3;
-- (void)dateChanged:(id)a3 forSubitem:(int64_t)a4;
-- (void)dateTimeCell:(id)a3 dateChanged:(id)a4;
-- (void)dateTimeCellBeganEditing:(id)a3;
-- (void)dateTimeCellDateTapped:(id)a3;
-- (void)dateTimeCellEndedEditing:(id)a3;
-- (void)dateTimeCellTimeTapped:(id)a3;
+- (void)adjustDatePickerInterval:(id)interval;
+- (void)dateChanged:(id)changed forSubitem:(int64_t)subitem;
+- (void)dateTimeCell:(id)cell dateChanged:(id)changed;
+- (void)dateTimeCellBeganEditing:(id)editing;
+- (void)dateTimeCellDateTapped:(id)tapped;
+- (void)dateTimeCellEndedEditing:(id)editing;
+- (void)dateTimeCellTimeTapped:(id)tapped;
 - (void)dealloc;
-- (void)editor:(id)a3 didSelectSubitem:(unint64_t)a4;
-- (void)editor:(id)a3 didStartEditingItem:(id)a4;
+- (void)editor:(id)editor didSelectSubitem:(unint64_t)subitem;
+- (void)editor:(id)editor didStartEditingItem:(id)item;
 - (void)endInlineEditing;
 - (void)refreshFromCalendarItemAndStore;
-- (void)setupPickerConstraintsForCell:(id)a3 datePicker:(id)a4;
-- (void)shortenCell:(id)a3;
-- (void)timeZoneViewController:(id)a3 didSelectTimeZone:(id)a4;
-- (void)timeZoneViewControllerDidCancel:(id)a3;
-- (void)updateStartDateToDate:(id)a3;
+- (void)setupPickerConstraintsForCell:(id)cell datePicker:(id)picker;
+- (void)shortenCell:(id)cell;
+- (void)timeZoneViewController:(id)controller didSelectTimeZone:(id)zone;
+- (void)timeZoneViewControllerDidCancel:(id)cancel;
+- (void)updateStartDateToDate:(id)date;
 @end
 
 @implementation EKEventDateEditItem
@@ -81,8 +81,8 @@
   {
     v2->_selectedSubitem = 5;
     v2->_targetedSubitemForTimezone = 5;
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 addObserver:v3 selector:sel__contentSizeCategoryDidChange_ name:*MEMORY[0x1E69DDC48] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel__contentSizeCategoryDidChange_ name:*MEMORY[0x1E69DDC48] object:0];
   }
 
   return v3;
@@ -90,8 +90,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E69DDC48] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DDC48] object:0];
 
   v4.receiver = self;
   v4.super_class = EKEventDateEditItem;
@@ -117,9 +117,9 @@
     modernEndDateCell = self->_classicEndDateCell;
   }
 
-  v8 = [v3 stringWithFormat:@"%@\n startDateCell:%@\n endDateCell:%@", v4, modernStartDateCell, modernEndDateCell];
+  modernEndDateCell = [v3 stringWithFormat:@"%@\n startDateCell:%@\n endDateCell:%@", v4, modernStartDateCell, modernEndDateCell];
 
-  return v8;
+  return modernEndDateCell;
 }
 
 - (void)refreshFromCalendarItemAndStore
@@ -128,33 +128,33 @@
   v21.super_class = EKEventDateEditItem;
   [(EKCalendarItemEditItem *)&v21 refreshFromCalendarItemAndStore];
   WeakRetained = objc_loadWeakRetained(&self->super.super._calendarItem);
-  v4 = [WeakRetained startTimeZone];
-  if ([v4 isUTC])
+  startTimeZone = [WeakRetained startTimeZone];
+  if ([startTimeZone isUTC])
   {
-    v5 = objc_loadWeakRetained(&self->super.super._store);
-    v6 = [v5 timeZone];
-    [(EKEventDateEditItem *)self _setStartTimeZone:v6];
+    startTimeZone2 = objc_loadWeakRetained(&self->super.super._store);
+    timeZone = [startTimeZone2 timeZone];
+    [(EKEventDateEditItem *)self _setStartTimeZone:timeZone];
   }
 
   else
   {
-    v5 = [WeakRetained startTimeZone];
-    [(EKEventDateEditItem *)self _setStartTimeZone:v5];
+    startTimeZone2 = [WeakRetained startTimeZone];
+    [(EKEventDateEditItem *)self _setStartTimeZone:startTimeZone2];
   }
 
-  v7 = [WeakRetained endTimeZone];
-  if (v7)
+  endTimeZone = [WeakRetained endTimeZone];
+  if (endTimeZone)
   {
-    v8 = [WeakRetained endTimeZone];
-    if ([v8 isUTC])
+    endTimeZone2 = [WeakRetained endTimeZone];
+    if ([endTimeZone2 isUTC])
     {
       [(EKEventDateEditItem *)self _setEndTimeZone:self->_startTimeZone];
     }
 
     else
     {
-      v9 = [WeakRetained endTimeZone];
-      [(EKEventDateEditItem *)self _setEndTimeZone:v9];
+      endTimeZone3 = [WeakRetained endTimeZone];
+      [(EKEventDateEditItem *)self _setEndTimeZone:endTimeZone3];
     }
   }
 
@@ -163,41 +163,41 @@
     [(EKEventDateEditItem *)self _setEndTimeZone:self->_startTimeZone];
   }
 
-  v10 = [WeakRetained startDate];
-  v11 = [WeakRetained endDateUnadjustedForLegacyClients];
+  startDate = [WeakRetained startDate];
+  endDateUnadjustedForLegacyClients = [WeakRetained endDateUnadjustedForLegacyClients];
   pendingProposedTime = self->_pendingProposedTime;
   if (pendingProposedTime)
   {
-    v13 = pendingProposedTime;
+    proposedStartDate2 = pendingProposedTime;
 LABEL_12:
-    v14 = v13;
+    v14 = proposedStartDate2;
 
     [WeakRetained duration];
     v15 = [(NSDate *)v14 dateByAddingTimeInterval:?];
-    v10 = v14;
+    startDate = v14;
 
-    v11 = v15;
+    endDateUnadjustedForLegacyClients = v15;
     goto LABEL_16;
   }
 
   if ([(EKEventDateEditItem *)self proposedTime])
   {
-    v16 = [WeakRetained proposedStartDate];
+    proposedStartDate = [WeakRetained proposedStartDate];
 
-    if (v16)
+    if (proposedStartDate)
     {
-      v13 = [WeakRetained proposedStartDate];
+      proposedStartDate2 = [WeakRetained proposedStartDate];
       goto LABEL_12;
     }
   }
 
 LABEL_16:
   v17 = [(EKEventDateEditItem *)self _calendarForEventComponents:1];
-  v18 = [v17 components:254 fromDate:v10];
+  v18 = [v17 components:254 fromDate:startDate];
   [(EKEventDateEditItem *)self _setStartDate:v18];
 
   v19 = [(EKEventDateEditItem *)self _calendarForEventComponents:0];
-  v20 = [v19 components:254 fromDate:v11];
+  v20 = [v19 components:254 fromDate:endDateUnadjustedForLegacyClients];
   [(EKEventDateEditItem *)self _setEndDate:v20];
 
   -[EKEventDateEditItem _setAllDay:](self, "_setAllDay:", [WeakRetained isAllDay]);
@@ -206,13 +206,13 @@ LABEL_16:
   [(EKEventDateEditItem *)self _refreshDatePicker];
 }
 
-- (void)updateStartDateToDate:(id)a3
+- (void)updateStartDateToDate:(id)date
 {
-  objc_storeStrong(&self->_pendingProposedTime, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_pendingProposedTime, date);
+  dateCopy = date;
   self->_selectedSubitem = 1;
   v7 = [(EKEventDateEditItem *)self _calendarForEventComponents:1];
-  v6 = [v7 components:254 fromDate:v5];
+  v6 = [v7 components:254 fromDate:dateCopy];
 
   [(EKEventDateEditItem *)self _setStartDate:v6];
 }
@@ -226,9 +226,9 @@ LABEL_16:
   [(EKEventDateEditItem *)self _updateClassicDateCellTimeWidths];
 }
 
-- (void)_adjustStartAndEndComponentsForEventIfNeeded:(id)a3
+- (void)_adjustStartAndEndComponentsForEventIfNeeded:(id)needed
 {
-  if ([a3 isAllDay])
+  if ([needed isAllDay])
   {
     [(NSDateComponents *)self->_startComponents setSecond:0];
     [(NSDateComponents *)self->_startComponents setMinute:0];
@@ -241,29 +241,29 @@ LABEL_16:
   }
 }
 
-- (BOOL)configureForCalendarConstraints:(id)a3
+- (BOOL)configureForCalendarConstraints:(id)constraints
 {
-  v4 = a3;
-  v5 = [(EKEventEditItem *)self event];
-  startComponents = [v5 occurrenceDate];
+  constraintsCopy = constraints;
+  event = [(EKEventEditItem *)self event];
+  startComponents = [event occurrenceDate];
   if (startComponents)
   {
     goto LABEL_2;
   }
 
-  v9 = [v4 source];
-  v10 = [v9 constraints];
-  v11 = [v10 futureStartDateLimitedToOccurrenceCacheBounds];
+  source = [constraintsCopy source];
+  constraints = [source constraints];
+  futureStartDateLimitedToOccurrenceCacheBounds = [constraints futureStartDateLimitedToOccurrenceCacheBounds];
 
-  if (!v11)
+  if (!futureStartDateLimitedToOccurrenceCacheBounds)
   {
     goto LABEL_4;
   }
 
-  v12 = [(NSDateComponents *)self->_startComponents calendar];
-  v5 = [v12 dateFromComponents:self->_startComponents];
+  calendar = [(NSDateComponents *)self->_startComponents calendar];
+  event = [calendar dateFromComponents:self->_startComponents];
 
-  [v5 timeIntervalSinceReferenceDate];
+  [event timeIntervalSinceReferenceDate];
   if ((CUIKCheckEventStartDateAgainstOccurrenceCacheBounds() & 1) == 0)
   {
     v13 = CUIKTodayComponents();
@@ -273,7 +273,7 @@ LABEL_2:
   }
 
 LABEL_4:
-  v7 = [(EKEventDateEditItem *)self canBeConfiguredForCalendarConstraints:v4];
+  v7 = [(EKEventDateEditItem *)self canBeConfiguredForCalendarConstraints:constraintsCopy];
 
   return v7;
 }
@@ -293,16 +293,16 @@ LABEL_4:
 
 - (unint64_t)onSaveEditItemsToRefresh
 {
-  v3 = [(EKEventEditItem *)self event];
-  v4 = [v3 calendar];
-  v5 = [v4 source];
-  v6 = [v5 constraints];
-  if ([v6 supportsAvailabilityRequests])
+  event = [(EKEventEditItem *)self event];
+  calendar = [event calendar];
+  source = [calendar source];
+  constraints = [source constraints];
+  if ([constraints supportsAvailabilityRequests])
   {
-    v7 = [(EKEventEditItem *)self event];
-    v8 = [v7 hasAttendees];
+    event2 = [(EKEventEditItem *)self event];
+    hasAttendees = [event2 hasAttendees];
 
-    if (v8)
+    if (hasAttendees)
     {
       v9 = 22;
     }
@@ -321,14 +321,14 @@ LABEL_4:
   return v9;
 }
 
-- (int64_t)_rowForSubitem:(int64_t)a3
+- (int64_t)_rowForSubitem:(int64_t)subitem
 {
   showsAllDay = self->_showsAllDay;
-  result = a3 - (showsAllDay ^ 1);
+  result = subitem - (showsAllDay ^ 1);
   selectedSubitem = self->_selectedSubitem;
   if (selectedSubitem != 5)
   {
-    if (a3 == 3)
+    if (subitem == 3)
     {
       v7 = !showsAllDay;
       v8 = 1;
@@ -340,12 +340,12 @@ LABEL_4:
       return selectedSubitem + v8 - !self->_showingInlineDatePicker;
     }
 
-    else if (a3 == 4)
+    else if (subitem == 4)
     {
       return selectedSubitem + showsAllDay;
     }
 
-    else if (selectedSubitem < a3)
+    else if (selectedSubitem < subitem)
     {
       return result - !self->_showingInlineDatePicker + 2;
     }
@@ -354,9 +354,9 @@ LABEL_4:
   return result;
 }
 
-- (int64_t)_subitemForRow:(int64_t)a3
+- (int64_t)_subitemForRow:(int64_t)row
 {
-  v4 = !self->_showsAllDay + a3;
+  v4 = !self->_showsAllDay + row;
   if (v4 == self->_selectedSubitem + 1)
   {
     if (self->_showingInlineDatePicker || ![(EKEventDateEditItem *)self _shouldShowTimeZone])
@@ -379,9 +379,9 @@ LABEL_4:
 
   if (v4 > self->_selectedSubitem)
   {
-    v5 = [(EKEventDateEditItem *)self _shouldShowTimeZone];
+    _shouldShowTimeZone = [(EKEventDateEditItem *)self _shouldShowTimeZone];
     v6 = -2;
-    if (!v5)
+    if (!_shouldShowTimeZone)
     {
       v6 = -1;
     }
@@ -471,17 +471,17 @@ LABEL_4:
 
       v7 = EventKitUIBundle();
       v8 = [v7 localizedStringForKey:@"Starts" value:&stru_1F4EF6790 table:0];
-      v9 = [(PreferencesTwoPartValueCell *)self->_classicStartDateCell textLabel];
-      [v9 setText:v8];
+      textLabel = [(PreferencesTwoPartValueCell *)self->_classicStartDateCell textLabel];
+      [textLabel setText:v8];
 
       v10 = *MEMORY[0x1E69DDD80];
       v11 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD80]];
-      v12 = [(PreferencesTwoPartValueCell *)self->_classicStartDateCell detailTextLabel];
-      [v12 setFont:v11];
+      detailTextLabel = [(PreferencesTwoPartValueCell *)self->_classicStartDateCell detailTextLabel];
+      [detailTextLabel setFont:v11];
 
       v13 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:v10];
-      v14 = [(PreferencesTwoPartValueCell *)self->_classicStartDateCell largePart2TextLabel];
-      [v14 setFont:v13];
+      largePart2TextLabel = [(PreferencesTwoPartValueCell *)self->_classicStartDateCell largePart2TextLabel];
+      [largePart2TextLabel setFont:v13];
     }
 
     else
@@ -492,13 +492,13 @@ LABEL_4:
 
       v17 = EventKitUIBundle();
       v18 = [v17 localizedStringForKey:@"Starts" value:&stru_1F4EF6790 table:0];
-      v19 = [(PreferencesTwoPartValueCell *)self->_classicStartDateCell textLabel];
-      [v19 setText:v18];
+      textLabel2 = [(PreferencesTwoPartValueCell *)self->_classicStartDateCell textLabel];
+      [textLabel2 setText:v18];
 
-      v20 = [(PreferencesTwoPartValueCell *)self->_classicStartDateCell textLabel];
-      v21 = [v20 font];
-      v22 = [(PreferencesTwoPartValueCell *)self->_classicStartDateCell twoPartTextLabel];
-      [v22 setFont:v21];
+      textLabel3 = [(PreferencesTwoPartValueCell *)self->_classicStartDateCell textLabel];
+      font = [textLabel3 font];
+      twoPartTextLabel = [(PreferencesTwoPartValueCell *)self->_classicStartDateCell twoPartTextLabel];
+      [twoPartTextLabel setFont:font];
 
       [(PreferencesTwoPartValueCell *)self->_classicStartDateCell setShortener:self];
     }
@@ -523,17 +523,17 @@ LABEL_4:
 
       v7 = EventKitUIBundle();
       v8 = [v7 localizedStringForKey:@"Ends" value:&stru_1F4EF6790 table:0];
-      v9 = [(PreferencesTwoPartValueCell *)self->_classicEndDateCell textLabel];
-      [v9 setText:v8];
+      textLabel = [(PreferencesTwoPartValueCell *)self->_classicEndDateCell textLabel];
+      [textLabel setText:v8];
 
       v10 = *MEMORY[0x1E69DDD80];
       v11 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD80]];
-      v12 = [(PreferencesTwoPartValueCell *)self->_classicEndDateCell detailTextLabel];
-      [v12 setFont:v11];
+      detailTextLabel = [(PreferencesTwoPartValueCell *)self->_classicEndDateCell detailTextLabel];
+      [detailTextLabel setFont:v11];
 
       v13 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:v10];
-      v14 = [(PreferencesTwoPartValueCell *)self->_classicEndDateCell largePart2TextLabel];
-      [v14 setFont:v13];
+      largePart2TextLabel = [(PreferencesTwoPartValueCell *)self->_classicEndDateCell largePart2TextLabel];
+      [largePart2TextLabel setFont:v13];
     }
 
     else
@@ -544,13 +544,13 @@ LABEL_4:
 
       v17 = EventKitUIBundle();
       v18 = [v17 localizedStringForKey:@"Ends" value:&stru_1F4EF6790 table:0];
-      v19 = [(PreferencesTwoPartValueCell *)self->_classicEndDateCell textLabel];
-      [v19 setText:v18];
+      textLabel2 = [(PreferencesTwoPartValueCell *)self->_classicEndDateCell textLabel];
+      [textLabel2 setText:v18];
 
-      v20 = [(PreferencesTwoPartValueCell *)self->_classicEndDateCell textLabel];
-      v21 = [v20 font];
-      v22 = [(PreferencesTwoPartValueCell *)self->_classicEndDateCell twoPartTextLabel];
-      [v22 setFont:v21];
+      textLabel3 = [(PreferencesTwoPartValueCell *)self->_classicEndDateCell textLabel];
+      font = [textLabel3 font];
+      twoPartTextLabel = [(PreferencesTwoPartValueCell *)self->_classicEndDateCell twoPartTextLabel];
+      [twoPartTextLabel setFont:font];
 
       [(PreferencesTwoPartValueCell *)self->_classicEndDateCell setShortener:self];
     }
@@ -577,8 +577,8 @@ LABEL_4:
     [(UITableViewCell *)self->_allDayCell setAccessoryView:v6];
     v7 = EventKitUIBundle();
     v8 = [v7 localizedStringForKey:@"All-day" value:&stru_1F4EF6790 table:0];
-    v9 = [(UITableViewCell *)self->_allDayCell textLabel];
-    [v9 setText:v8];
+    textLabel = [(UITableViewCell *)self->_allDayCell textLabel];
+    [textLabel setText:v8];
 
     allDayCell = self->_allDayCell;
   }
@@ -595,9 +595,9 @@ LABEL_4:
     v5 = self->_startTimeZoneCell;
     self->_startTimeZoneCell = &v4->super;
 
-    v6 = [objc_opt_class() _timeZoneLocalizedString];
-    v7 = [(UITableViewCell *)self->_startTimeZoneCell textLabel];
-    [v7 setText:v6];
+    _timeZoneLocalizedString = [objc_opt_class() _timeZoneLocalizedString];
+    textLabel = [(UITableViewCell *)self->_startTimeZoneCell textLabel];
+    [textLabel setText:_timeZoneLocalizedString];
 
     [(UITableViewCell *)self->_startTimeZoneCell setAccessoryType:1];
     startTimeZoneCell = self->_startTimeZoneCell;
@@ -615,9 +615,9 @@ LABEL_4:
     v5 = self->_endTimeZoneCell;
     self->_endTimeZoneCell = &v4->super;
 
-    v6 = [objc_opt_class() _timeZoneLocalizedString];
-    v7 = [(UITableViewCell *)self->_endTimeZoneCell textLabel];
-    [v7 setText:v6];
+    _timeZoneLocalizedString = [objc_opt_class() _timeZoneLocalizedString];
+    textLabel = [(UITableViewCell *)self->_endTimeZoneCell textLabel];
+    [textLabel setText:_timeZoneLocalizedString];
 
     [(UITableViewCell *)self->_endTimeZoneCell setAccessoryType:1];
     endTimeZoneCell = self->_endTimeZoneCell;
@@ -651,21 +651,21 @@ LABEL_4:
   [v3 setMinuteInterval:5];
   [v3 setRoundsToMinuteInterval:0];
   [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v5 = [MEMORY[0x1E695DEE8] currentCalendar];
-  [v5 setFirstWeekday:CUIKOneIndexedWeekStart()];
-  [v3 setCalendar:v5];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  [currentCalendar setFirstWeekday:CUIKOneIndexedWeekStart()];
+  [v3 setCalendar:currentCalendar];
   [v3 addTarget:self action:sel__datePickerChanged_ forControlEvents:4096];
   [v3 addTarget:self action:sel__datePickerEndedEditing_ forControlEvents:0x40000];
 
   return v3;
 }
 
-- (void)adjustDatePickerInterval:(id)a3
+- (void)adjustDatePickerInterval:(id)interval
 {
-  v3 = a3;
-  v7 = [v3 date];
-  v4 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v5 = [v4 component:64 fromDate:v7];
+  intervalCopy = interval;
+  date = [intervalCopy date];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  v5 = [currentCalendar component:64 fromDate:date];
 
   if (0xCCCCCCCCCCCCCCCDLL * v5 + 0x1999999999999999 >= 0x3333333333333333)
   {
@@ -677,7 +677,7 @@ LABEL_4:
     v6 = 5;
   }
 
-  [v3 setMinuteInterval:v6];
+  [intervalCopy setMinuteInterval:v6];
 }
 
 - (id)_startDatePickerCell
@@ -689,12 +689,12 @@ LABEL_4:
     v5 = self->_startDatePickerCell;
     self->_startDatePickerCell = &v4->super;
 
-    v6 = [(EKEventDateEditItem *)self _newDatePicker];
+    _newDatePicker = [(EKEventDateEditItem *)self _newDatePicker];
     startDatePicker = self->_startDatePicker;
-    self->_startDatePicker = v6;
+    self->_startDatePicker = _newDatePicker;
 
-    v8 = [(UITableViewCell *)self->_startDatePickerCell contentView];
-    [v8 addSubview:self->_startDatePicker];
+    contentView = [(UITableViewCell *)self->_startDatePickerCell contentView];
+    [contentView addSubview:self->_startDatePicker];
 
     if (self->_allDay)
     {
@@ -723,12 +723,12 @@ LABEL_4:
     v5 = self->_endDatePickerCell;
     self->_endDatePickerCell = &v4->super;
 
-    v6 = [(EKEventDateEditItem *)self _newDatePicker];
+    _newDatePicker = [(EKEventDateEditItem *)self _newDatePicker];
     endDatePicker = self->_endDatePicker;
-    self->_endDatePicker = v6;
+    self->_endDatePicker = _newDatePicker;
 
-    v8 = [(UITableViewCell *)self->_endDatePickerCell contentView];
-    [v8 addSubview:self->_endDatePicker];
+    contentView = [(UITableViewCell *)self->_endDatePickerCell contentView];
+    [contentView addSubview:self->_endDatePicker];
 
     if (self->_allDay)
     {
@@ -748,34 +748,34 @@ LABEL_4:
   return endDatePickerCell;
 }
 
-- (void)setupPickerConstraintsForCell:(id)a3 datePicker:(id)a4
+- (void)setupPickerConstraintsForCell:(id)cell datePicker:(id)picker
 {
   v19 = MEMORY[0x1E695DF70];
   v5 = MEMORY[0x1E696ACD8];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 contentView];
-  v9 = [v5 constraintWithItem:v6 attribute:5 relatedBy:0 toItem:v8 attribute:5 multiplier:1.0 constant:0.0];
+  pickerCopy = picker;
+  cellCopy = cell;
+  contentView = [cellCopy contentView];
+  v9 = [v5 constraintWithItem:pickerCopy attribute:5 relatedBy:0 toItem:contentView attribute:5 multiplier:1.0 constant:0.0];
   v10 = MEMORY[0x1E696ACD8];
-  v11 = [v7 contentView];
-  v12 = [v10 constraintWithItem:v6 attribute:6 relatedBy:0 toItem:v11 attribute:6 multiplier:1.0 constant:0.0];
+  contentView2 = [cellCopy contentView];
+  v12 = [v10 constraintWithItem:pickerCopy attribute:6 relatedBy:0 toItem:contentView2 attribute:6 multiplier:1.0 constant:0.0];
   v13 = MEMORY[0x1E696ACD8];
-  v14 = [v7 contentView];
-  v15 = [v13 constraintWithItem:v6 attribute:4 relatedBy:0 toItem:v14 attribute:4 multiplier:1.0 constant:0.0];
+  contentView3 = [cellCopy contentView];
+  v15 = [v13 constraintWithItem:pickerCopy attribute:4 relatedBy:0 toItem:contentView3 attribute:4 multiplier:1.0 constant:0.0];
   v16 = MEMORY[0x1E696ACD8];
-  v17 = [v7 contentView];
+  contentView4 = [cellCopy contentView];
 
-  v18 = [v16 constraintWithItem:v6 attribute:3 relatedBy:0 toItem:v17 attribute:3 multiplier:1.0 constant:0.0];
+  v18 = [v16 constraintWithItem:pickerCopy attribute:3 relatedBy:0 toItem:contentView4 attribute:3 multiplier:1.0 constant:0.0];
 
   v20 = [v19 arrayWithObjects:{v9, v12, v15, v18, 0}];
 
   [MEMORY[0x1E696ACD8] activateConstraints:v20];
 }
 
-- (id)cellForSubitemAtIndex:(unint64_t)a3
+- (id)cellForSubitemAtIndex:(unint64_t)index
 {
   v5 = [(EKEventDateEditItem *)self _subitemForRow:?];
-  v6 = 0;
+  _allDayCell = 0;
   if (v5 > 2)
   {
     if (v5 == 3)
@@ -789,7 +789,7 @@ LABEL_4:
       {
         [(EKEventDateEditItem *)self _endTimeZoneCell];
       }
-      v6 = ;
+      _allDayCell = ;
       if (self->_selectedSubitem == 1)
       {
         v9 = &OBJC_IVAR___EKEventDateEditItem__startTimeZone;
@@ -801,8 +801,8 @@ LABEL_4:
       }
 
       v10 = [(EKEventDateEditItem *)self _timeZoneDescription:*(&self->super.super.super.isa + *v9)];
-      v11 = [v6 detailTextLabel];
-      [v11 setText:v10];
+      detailTextLabel = [_allDayCell detailTextLabel];
+      [detailTextLabel setText:v10];
 
       goto LABEL_33;
     }
@@ -811,8 +811,8 @@ LABEL_4:
     {
       if (v5 == 5)
       {
-        NSLog(&cfstr_ThisShouldNeve.isa, 5, a3);
-        v6 = 0;
+        NSLog(&cfstr_ThisShouldNeve.isa, 5, index);
+        _allDayCell = 0;
       }
 
       goto LABEL_33;
@@ -827,10 +827,10 @@ LABEL_4:
     {
       [(EKEventDateEditItem *)self _endDatePickerCell];
     }
-    v6 = ;
-    v12 = [v6 superview];
+    _allDayCell = ;
+    superview = [_allDayCell superview];
 
-    if (v12)
+    if (superview)
     {
       goto LABEL_33;
     }
@@ -845,9 +845,9 @@ LABEL_4:
       v13 = &OBJC_IVAR___EKEventDateEditItem__endDatePicker;
     }
 
-    v8 = *(&self->super.super.super.isa + *v13);
-    [(EKEventDateEditItem *)self _updateDatePicker:v8 animated:0];
-    [(EKEventDateEditItem *)self adjustDatePickerInterval:v8];
+    accessoryView = *(&self->super.super.super.isa + *v13);
+    [(EKEventDateEditItem *)self _updateDatePicker:accessoryView animated:0];
+    [(EKEventDateEditItem *)self adjustDatePickerInterval:accessoryView];
 LABEL_32:
 
     goto LABEL_33;
@@ -856,9 +856,9 @@ LABEL_32:
   switch(v5)
   {
     case 0:
-      v6 = [(EKEventDateEditItem *)self _allDayCell];
-      v8 = [v6 accessoryView];
-      [v8 setOn:self->_allDay];
+      _allDayCell = [(EKEventDateEditItem *)self _allDayCell];
+      accessoryView = [_allDayCell accessoryView];
+      [accessoryView setOn:self->_allDay];
       goto LABEL_32;
     case 1:
       if ([(EKEventDateEditItem *)self usesClassicUI])
@@ -888,18 +888,18 @@ LABEL_32:
       goto LABEL_33;
   }
   v7 = ;
-  v6 = v7;
+  _allDayCell = v7;
 LABEL_33:
 
-  return v6;
+  return _allDayCell;
 }
 
-- (double)defaultCellHeightForSubitemAtIndex:(unint64_t)a3 forWidth:(double)a4
+- (double)defaultCellHeightForSubitemAtIndex:(unint64_t)index forWidth:(double)width
 {
   v7 = [(EKEventDateEditItem *)self _subitemForRow:?];
   if (v7 == 4)
   {
-    v8 = [(EKEventDateEditItem *)self cellForSubitemAtIndex:a3];
+    v8 = [(EKEventDateEditItem *)self cellForSubitemAtIndex:index];
     if (v8 == self->_startDatePickerCell)
     {
       v9 = &OBJC_IVAR___EKEventDateEditItem__startDatePicker;
@@ -918,7 +918,7 @@ LABEL_33:
   {
     if ((v7 - 1) <= 1)
     {
-      v12 = [(EKEventDateEditItem *)self cellForSubitemAtIndex:a3];
+      v12 = [(EKEventDateEditItem *)self cellForSubitemAtIndex:index];
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0 || ![v12 usingMultiLineLayout])
       {
@@ -931,16 +931,16 @@ LABEL_33:
 
     v16.receiver = self;
     v16.super_class = EKEventDateEditItem;
-    [(EKCalendarItemEditItem *)&v16 defaultCellHeightForSubitemAtIndex:a3 forWidth:a4];
+    [(EKCalendarItemEditItem *)&v16 defaultCellHeightForSubitemAtIndex:index forWidth:width];
     return v13;
   }
 
   return v11;
 }
 
-- (BOOL)editor:(id)a3 canSelectSubitem:(unint64_t)a4
+- (BOOL)editor:(id)editor canSelectSubitem:(unint64_t)subitem
 {
-  v5 = [(EKEventDateEditItem *)self _subitemForRow:a4];
+  v5 = [(EKEventDateEditItem *)self _subitemForRow:subitem];
   if ((v5 - 1) >= 2)
   {
     return v5 == 3;
@@ -949,12 +949,12 @@ LABEL_33:
   return [(EKEventDateEditItem *)self usesClassicUI];
 }
 
-- (void)editor:(id)a3 didSelectSubitem:(unint64_t)a4
+- (void)editor:(id)editor didSelectSubitem:(unint64_t)subitem
 {
   v13.receiver = self;
   v13.super_class = EKEventDateEditItem;
-  [(EKCalendarItemEditItem *)&v13 editor:a3 didSelectSubitem:?];
-  v6 = [(EKEventDateEditItem *)self _subitemForRow:a4];
+  [(EKCalendarItemEditItem *)&v13 editor:editor didSelectSubitem:?];
+  v6 = [(EKEventDateEditItem *)self _subitemForRow:subitem];
   if ((![(EKEventDateEditItem *)self usesClassicUI]|| ![(EKEventDateEditItem *)self handleClassicSubitemSelection:v6]) && v6 == 3)
   {
     self->_pushingTZController = 1;
@@ -972,71 +972,71 @@ LABEL_33:
 
     [(EKTimeZoneViewController *)v7 setTimeZone:*(&self->super.super.super.isa + *v9)];
     [(EKTimeZoneViewController *)v8 setDelegate:self];
-    v10 = [(EKCalendarItemEditItem *)self delegate];
-    v11 = [v10 viewControllerForEditItem:self];
+    delegate = [(EKCalendarItemEditItem *)self delegate];
+    v11 = [delegate viewControllerForEditItem:self];
 
-    v12 = [v11 navigationController];
-    [v12 pushViewController:v8 animated:1];
+    navigationController = [v11 navigationController];
+    [navigationController pushViewController:v8 animated:1];
   }
 
   [(EKEventDateEditItem *)self _resetStartString:1 endString:1];
   [(EKEventDateEditItem *)self _updateClassicDateCellColors];
 }
 
-- (BOOL)handleClassicSubitemSelection:(int64_t)a3
+- (BOOL)handleClassicSubitemSelection:(int64_t)selection
 {
   selectedSubitem = self->_selectedSubitem;
-  if (selectedSubitem == a3)
+  if (selectedSubitem == selection)
   {
     [(EKEventDateEditItem *)self _hideInlineDateControls];
   }
 
-  else if (a3 <= 2)
+  else if (selection <= 2)
   {
-    v6 = [MEMORY[0x1E696AD50] indexSet];
-    v7 = [MEMORY[0x1E696AD50] indexSet];
+    indexSet = [MEMORY[0x1E696AD50] indexSet];
+    indexSet2 = [MEMORY[0x1E696AD50] indexSet];
     if (selectedSubitem <= 2)
     {
-      [v6 addIndex:{-[EKEventDateEditItem _rowForSubitem:](self, "_rowForSubitem:", 4)}];
+      [indexSet addIndex:{-[EKEventDateEditItem _rowForSubitem:](self, "_rowForSubitem:", 4)}];
       if ([(EKEventDateEditItem *)self _shouldShowTimeZone])
       {
-        [v6 addIndex:{-[EKEventDateEditItem _rowForSubitem:](self, "_rowForSubitem:", 3)}];
+        [indexSet addIndex:{-[EKEventDateEditItem _rowForSubitem:](self, "_rowForSubitem:", 3)}];
       }
     }
 
-    self->_selectedSubitem = a3;
+    self->_selectedSubitem = selection;
     self->_showingInlineDatePicker = 1;
-    [v7 addIndex:{-[EKEventDateEditItem _rowForSubitem:](self, "_rowForSubitem:", a3) + 1}];
+    [indexSet2 addIndex:{-[EKEventDateEditItem _rowForSubitem:](self, "_rowForSubitem:", selection) + 1}];
     if ([(EKEventDateEditItem *)self _shouldShowTimeZone])
     {
-      [v7 addIndex:{-[EKEventDateEditItem _rowForSubitem:](self, "_rowForSubitem:", self->_selectedSubitem) + 2}];
+      [indexSet2 addIndex:{-[EKEventDateEditItem _rowForSubitem:](self, "_rowForSubitem:", self->_selectedSubitem) + 2}];
     }
 
-    if ([v6 count] || objc_msgSend(v7, "count"))
+    if ([indexSet count] || objc_msgSend(indexSet2, "count"))
     {
-      v8 = [(EKCalendarItemEditItem *)self delegate];
-      [v8 editItem:self wantsRowInsertions:v7 rowDeletions:v6];
+      delegate = [(EKCalendarItemEditItem *)self delegate];
+      [delegate editItem:self wantsRowInsertions:indexSet2 rowDeletions:indexSet];
 
       v9 = [(EKEventDateEditItem *)self _rowForSubitem:1];
       v10 = [(EKEventDateEditItem *)self _rowForSubitem:2]+ 2 * (self->_selectedSubitem == 2);
-      v11 = [MEMORY[0x1E696AD50] indexSet];
-      [v11 addIndex:v9];
-      [v11 addIndex:v10];
-      v12 = [(EKCalendarItemEditItem *)self delegate];
-      [v12 editItem:self wantsRowsScrolledToVisible:v11];
+      indexSet3 = [MEMORY[0x1E696AD50] indexSet];
+      [indexSet3 addIndex:v9];
+      [indexSet3 addIndex:v10];
+      delegate2 = [(EKCalendarItemEditItem *)self delegate];
+      [delegate2 editItem:self wantsRowsScrolledToVisible:indexSet3];
     }
   }
 
-  return a3 < 3;
+  return selection < 3;
 }
 
-- (void)editor:(id)a3 didStartEditingItem:(id)a4
+- (void)editor:(id)editor didStartEditingItem:(id)item
 {
-  v6 = a4;
+  itemCopy = item;
   v7.receiver = self;
   v7.super_class = EKEventDateEditItem;
-  [(EKCalendarItemEditItem *)&v7 editor:a3 didStartEditingItem:v6];
-  if (v6 != self && [(EKEventDateEditItem *)v6 isInline])
+  [(EKCalendarItemEditItem *)&v7 editor:editor didStartEditingItem:itemCopy];
+  if (itemCopy != self && [(EKEventDateEditItem *)itemCopy isInline])
   {
     [(EKEventDateEditItem *)self _hideInlineDateControls];
   }
@@ -1050,39 +1050,39 @@ LABEL_33:
   }
 }
 
-- (id)_calendarForEventComponents:(BOOL)a3
+- (id)_calendarForEventComponents:(BOOL)components
 {
-  v3 = a3;
-  v5 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v6 = [(EKEventEditItem *)self event];
-  if (([v6 isFloating] & 1) != 0 || self->_allDay)
+  componentsCopy = components;
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  event = [(EKEventEditItem *)self event];
+  if (([event isFloating] & 1) != 0 || self->_allDay)
   {
     WeakRetained = objc_loadWeakRetained(&self->super.super._store);
-    v8 = [WeakRetained timeZone];
-    [v5 setTimeZone:v8];
+    timeZone = [WeakRetained timeZone];
+    [currentCalendar setTimeZone:timeZone];
   }
 
   else
   {
     v9 = &OBJC_IVAR___EKEventDateEditItem__endTimeZone;
-    if (v3)
+    if (componentsCopy)
     {
       v9 = &OBJC_IVAR___EKEventDateEditItem__startTimeZone;
     }
 
-    [v5 setTimeZone:*(&self->super.super.super.isa + *v9)];
+    [currentCalendar setTimeZone:*(&self->super.super.super.isa + *v9)];
   }
 
-  return v5;
+  return currentCalendar;
 }
 
-- (BOOL)saveAndDismissWithForce:(BOOL)a3
+- (BOOL)saveAndDismissWithForce:(BOOL)force
 {
-  v5 = [(EKEventEditItem *)self event];
-  v6 = v5;
+  event = [(EKEventEditItem *)self event];
+  v6 = event;
   if (self->_showsAllDay)
   {
-    if (self->_allDay == [v5 isAllDay])
+    if (self->_allDay == [event isAllDay])
     {
       v7 = 0;
     }
@@ -1101,11 +1101,11 @@ LABEL_33:
 
   if (!self->_allDay)
   {
-    v8 = [v6 startTimeZone];
-    if (v8 || self->_startTimeZone)
+    startTimeZone = [v6 startTimeZone];
+    if (startTimeZone || self->_startTimeZone)
     {
-      v3 = [v6 startTimeZone];
-      if (([v3 isEqual:self->_startTimeZone] & 1) == 0)
+      startTimeZone2 = [v6 startTimeZone];
+      if (([startTimeZone2 isEqual:self->_startTimeZone] & 1) == 0)
       {
 
 LABEL_18:
@@ -1123,11 +1123,11 @@ LABEL_18:
       v9 = 0;
     }
 
-    v10 = [v6 endTimeZone];
-    if (v10 || self->_endTimeZone)
+    endTimeZone = [v6 endTimeZone];
+    if (endTimeZone || self->_endTimeZone)
     {
-      v11 = [v6 endTimeZone];
-      v12 = [v11 isEqual:self->_endTimeZone];
+      endTimeZone2 = [v6 endTimeZone];
+      v12 = [endTimeZone2 isEqual:self->_endTimeZone];
 
       if (v9)
       {
@@ -1152,11 +1152,11 @@ LABEL_19:
   v14 = [(EKEventDateEditItem *)self _calendarForEventComponents:0];
   v15 = [v13 dateFromComponents:self->_startComponents];
   v16 = [v14 dateFromComponents:self->_endComponents];
-  v17 = [v6 startDate];
-  if ([v17 isEqualToDate:v15])
+  startDate = [v6 startDate];
+  if ([startDate isEqualToDate:v15])
   {
-    v18 = [v6 endDateUnadjustedForLegacyClients];
-    v19 = [v18 isEqualToDate:v16];
+    endDateUnadjustedForLegacyClients = [v6 endDateUnadjustedForLegacyClients];
+    v19 = [endDateUnadjustedForLegacyClients isEqualToDate:v16];
 
     if (v19)
     {
@@ -1176,9 +1176,9 @@ LABEL_19:
   [v6 setStartDate:v15];
   [v6 setEndDateUnadjustedForLegacyClients:v16];
 LABEL_25:
-  v20 = [v6 suggestionInfo];
+  suggestionInfo = [v6 suggestionInfo];
 
-  if (v20)
+  if (suggestionInfo)
   {
     [MEMORY[0x1E69930D0] trackPseudoEventDateChanged];
   }
@@ -1190,7 +1190,7 @@ LABEL_28:
   return 1;
 }
 
-- (void)_contentSizeCategoryDidChange:(id)a3
+- (void)_contentSizeCategoryDidChange:(id)change
 {
   [(EKDateTimeCell *)self->_modernStartDateCell contentSizeCategoryChanged];
   [(EKDateTimeCell *)self->_modernEndDateCell contentSizeCategoryChanged];
@@ -1216,17 +1216,17 @@ LABEL_28:
 {
   if ([(EKEventDateEditItem *)self usesClassicUI])
   {
-    v13 = [(EKEventDateEditItem *)self _classicStartDateCell];
-    v3 = [v13 twoPartTextLabel];
-    [v3 rightmostDisplayedPartWidth];
+    _classicStartDateCell = [(EKEventDateEditItem *)self _classicStartDateCell];
+    twoPartTextLabel = [_classicStartDateCell twoPartTextLabel];
+    [twoPartTextLabel rightmostDisplayedPartWidth];
     v5 = v4;
 
-    v6 = [(EKEventDateEditItem *)self _classicEndDateCell];
-    v7 = v6;
-    if (v6)
+    _classicEndDateCell = [(EKEventDateEditItem *)self _classicEndDateCell];
+    v7 = _classicEndDateCell;
+    if (_classicEndDateCell)
     {
-      v8 = [v6 twoPartTextLabel];
-      [v8 rightmostDisplayedPartWidth];
+      twoPartTextLabel2 = [_classicEndDateCell twoPartTextLabel];
+      [twoPartTextLabel2 rightmostDisplayedPartWidth];
       v10 = v9;
 
       if (v10 > v5)
@@ -1235,11 +1235,11 @@ LABEL_28:
       }
     }
 
-    v11 = [v13 twoPartTextLabel];
-    [v11 setMinimumPart2Width:v5];
+    twoPartTextLabel3 = [_classicStartDateCell twoPartTextLabel];
+    [twoPartTextLabel3 setMinimumPart2Width:v5];
 
-    v12 = [v7 twoPartTextLabel];
-    [v12 setMinimumPart2Width:v5];
+    twoPartTextLabel4 = [v7 twoPartTextLabel];
+    [twoPartTextLabel4 setMinimumPart2Width:v5];
   }
 }
 
@@ -1247,9 +1247,9 @@ LABEL_28:
 {
   if ([(EKEventDateEditItem *)self usesClassicUI])
   {
-    v20 = [(EKEventDateEditItem *)self _classicStartDateCell];
-    v3 = [(EKEventDateEditItem *)self _classicEndDateCell];
-    v4 = [MEMORY[0x1E69DC888] labelColor];
+    _classicStartDateCell = [(EKEventDateEditItem *)self _classicStartDateCell];
+    _classicEndDateCell = [(EKEventDateEditItem *)self _classicEndDateCell];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
     v5 = CalendarAppTintColor();
     v6 = EKUIUsesLargeTextLayout(0);
     if (self->_selectedSubitem == 1)
@@ -1259,13 +1259,13 @@ LABEL_28:
 
     else
     {
-      v7 = v4;
+      v7 = labelColor;
     }
 
     if (v6)
     {
-      v8 = [v20 detailTextLabel];
-      [v8 setTextColor:v7];
+      detailTextLabel = [_classicStartDateCell detailTextLabel];
+      [detailTextLabel setTextColor:v7];
 
       if (self->_selectedSubitem == 1)
       {
@@ -1274,11 +1274,11 @@ LABEL_28:
 
       else
       {
-        v9 = v4;
+        v9 = labelColor;
       }
 
-      v10 = [v20 largePart2TextLabel];
-      [v10 setTextColor:v9];
+      largePart2TextLabel = [_classicStartDateCell largePart2TextLabel];
+      [largePart2TextLabel setTextColor:v9];
 
       if (self->_selectedSubitem == 2)
       {
@@ -1287,11 +1287,11 @@ LABEL_28:
 
       else
       {
-        v11 = v4;
+        v11 = labelColor;
       }
 
-      v12 = [v3 detailTextLabel];
-      [v12 setTextColor:v11];
+      detailTextLabel2 = [_classicEndDateCell detailTextLabel];
+      [detailTextLabel2 setTextColor:v11];
 
       if (self->_selectedSubitem == 2)
       {
@@ -1300,20 +1300,20 @@ LABEL_28:
 
       else
       {
-        v13 = v4;
+        v13 = labelColor;
       }
 
-      v14 = [v3 largePart2TextLabel];
-      [v14 setTextColor:v13];
+      largePart2TextLabel2 = [_classicEndDateCell largePart2TextLabel];
+      [largePart2TextLabel2 setTextColor:v13];
 
-      [v3 setStrikeThroughLargeDetailTextLabel:{-[EKEventDateEditItem _endDateIsBeforeStartDate](self, "_endDateIsBeforeStartDate")}];
-      [v3 setStrikeThroughLargePart2TextLabel:{-[EKEventDateEditItem _endDateIsBeforeStartDate](self, "_endDateIsBeforeStartDate")}];
+      [_classicEndDateCell setStrikeThroughLargeDetailTextLabel:{-[EKEventDateEditItem _endDateIsBeforeStartDate](self, "_endDateIsBeforeStartDate")}];
+      [_classicEndDateCell setStrikeThroughLargePart2TextLabel:{-[EKEventDateEditItem _endDateIsBeforeStartDate](self, "_endDateIsBeforeStartDate")}];
     }
 
     else
     {
-      v15 = [v20 twoPartTextLabel];
-      [v15 setTextColor:v7];
+      twoPartTextLabel = [_classicStartDateCell twoPartTextLabel];
+      [twoPartTextLabel setTextColor:v7];
 
       if (self->_selectedSubitem == 2)
       {
@@ -1322,29 +1322,29 @@ LABEL_28:
 
       else
       {
-        v16 = v4;
+        v16 = labelColor;
       }
 
-      v17 = [v3 twoPartTextLabel];
-      [v17 setTextColor:v16];
+      twoPartTextLabel2 = [_classicEndDateCell twoPartTextLabel];
+      [twoPartTextLabel2 setTextColor:v16];
 
-      v18 = [v3 twoPartTextLabel];
-      [v18 setStrikethroughPart1:{-[EKEventDateEditItem _endDateIsBeforeStartDate](self, "_endDateIsBeforeStartDate")}];
+      twoPartTextLabel3 = [_classicEndDateCell twoPartTextLabel];
+      [twoPartTextLabel3 setStrikethroughPart1:{-[EKEventDateEditItem _endDateIsBeforeStartDate](self, "_endDateIsBeforeStartDate")}];
 
-      v19 = [v3 twoPartTextLabel];
-      [v19 setStrikethroughPart2:{-[EKEventDateEditItem _endDateIsBeforeStartDate](self, "_endDateIsBeforeStartDate")}];
+      twoPartTextLabel4 = [_classicEndDateCell twoPartTextLabel];
+      [twoPartTextLabel4 setStrikethroughPart2:{-[EKEventDateEditItem _endDateIsBeforeStartDate](self, "_endDateIsBeforeStartDate")}];
     }
   }
 }
 
-- (void)shortenCell:(id)a3
+- (void)shortenCell:(id)cell
 {
-  v14 = a3;
+  cellCopy = cell;
   if (self->_shorteningStatus != 2)
   {
     v4 = _CalendarForFormattingStrings();
-    v5 = v14;
-    if (self->_classicStartDateCell == v14 && (-[PreferencesTwoPartValueCell twoPartTextLabel](v14, "twoPartTextLabel"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 hasTwoParts], v6, v5 = v14, (v7 & 1) != 0))
+    v5 = cellCopy;
+    if (self->_classicStartDateCell == cellCopy && (-[PreferencesTwoPartValueCell twoPartTextLabel](cellCopy, "twoPartTextLabel"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 hasTwoParts], v6, v5 = cellCopy, (v7 & 1) != 0))
     {
       v8 = &OBJC_IVAR___EKEventDateEditItem__startComponents;
     }
@@ -1356,30 +1356,30 @@ LABEL_28:
         goto LABEL_9;
       }
 
-      v9 = [(PreferencesTwoPartValueCell *)v14 twoPartTextLabel];
-      v10 = [v9 hasTwoParts];
+      twoPartTextLabel = [(PreferencesTwoPartValueCell *)cellCopy twoPartTextLabel];
+      hasTwoParts = [twoPartTextLabel hasTwoParts];
 
-      if (!v10)
+      if (!hasTwoParts)
       {
         goto LABEL_9;
       }
 
       v8 = &OBJC_IVAR___EKEventDateEditItem__endComponents;
-      v5 = v14;
+      v5 = cellCopy;
     }
 
-    v11 = [(PreferencesTwoPartValueCell *)v5 twoPartTextLabel];
+    twoPartTextLabel2 = [(PreferencesTwoPartValueCell *)v5 twoPartTextLabel];
     v12 = [v4 dateFromComponents:*(&self->super.super.super.isa + *v8)];
     v13 = CUIKShortStringForDateWithMonthAndYear();
-    [v11 setTextPart1:v13];
+    [twoPartTextLabel2 setTextPart1:v13];
 
 LABEL_9:
   }
 }
 
-- (void)timeZoneViewController:(id)a3 didSelectTimeZone:(id)a4
+- (void)timeZoneViewController:(id)controller didSelectTimeZone:(id)zone
 {
-  v5 = a4;
+  zoneCopy = zone;
   self->_pushingTZController = 0;
   targetedSubitemForTimezone = self->_targetedSubitemForTimezone;
   if (targetedSubitemForTimezone == 5)
@@ -1387,7 +1387,7 @@ LABEL_9:
     targetedSubitemForTimezone = self->_selectedSubitem;
   }
 
-  v12 = v5;
+  v12 = zoneCopy;
   if (targetedSubitemForTimezone == 1)
   {
     if ([(NSTimeZone *)self->_startTimeZone isEqualToTimeZone:self->_endTimeZone])
@@ -1400,24 +1400,24 @@ LABEL_9:
 
   else
   {
-    [(EKEventDateEditItem *)self _setEndTimeZone:v5];
+    [(EKEventDateEditItem *)self _setEndTimeZone:zoneCopy];
   }
 
   [(EKEventDateEditItem *)self saveAndDismissWithForce:1];
-  v7 = [(EKCalendarItemEditItem *)self delegate];
-  [v7 editItem:self wantsDoneButtonDisabled:0];
+  delegate = [(EKCalendarItemEditItem *)self delegate];
+  [delegate editItem:self wantsDoneButtonDisabled:0];
 
   [(EKCalendarItemEditItem *)self notifySubitemDidSave:[(EKEventDateEditItem *)self _rowForSubitem:3]];
-  v8 = [(EKCalendarItemEditItem *)self delegate];
-  v9 = [v8 viewControllerForEditItem:self];
+  delegate2 = [(EKCalendarItemEditItem *)self delegate];
+  v9 = [delegate2 viewControllerForEditItem:self];
 
-  v10 = [v9 navigationController];
-  v11 = [v10 popViewControllerAnimated:1];
+  navigationController = [v9 navigationController];
+  v11 = [navigationController popViewControllerAnimated:1];
 
   self->_targetedSubitemForTimezone = 5;
 }
 
-- (void)timeZoneViewControllerDidCancel:(id)a3
+- (void)timeZoneViewControllerDidCancel:(id)cancel
 {
   self->_pushingTZController = 0;
   self->_targetedSubitemForTimezone = 5;
@@ -1431,15 +1431,15 @@ LABEL_9:
     v3 = &OBJC_IVAR___EKEventDateEditItem__endTimeZone;
   }
 
-  [a3 setTimeZone:*(&self->super.super.super.isa + *v3)];
+  [cancel setTimeZone:*(&self->super.super.super.isa + *v3)];
 }
 
-- (void)_setStartDate:(id)a3
+- (void)_setStartDate:(id)date
 {
-  v6 = a3;
-  if (([v6 isEqual:self->_startComponents] & 1) == 0)
+  dateCopy = date;
+  if (([dateCopy isEqual:self->_startComponents] & 1) == 0)
   {
-    v4 = [v6 copy];
+    v4 = [dateCopy copy];
     startComponents = self->_startComponents;
     self->_startComponents = v4;
 
@@ -1454,14 +1454,14 @@ LABEL_9:
   }
 }
 
-- (void)_setEndDate:(id)a3
+- (void)_setEndDate:(id)date
 {
-  v9 = a3;
-  v4 = [v9 isEqual:self->_endComponents];
-  v5 = v9;
+  dateCopy = date;
+  v4 = [dateCopy isEqual:self->_endComponents];
+  v5 = dateCopy;
   if ((v4 & 1) == 0)
   {
-    v6 = [v9 copy];
+    v6 = [dateCopy copy];
     endComponents = self->_endComponents;
     self->_endComponents = v6;
 
@@ -1480,30 +1480,30 @@ LABEL_9:
 
     [(EKEventDateEditItem *)self _updateClassicDateCellColors];
     [(EKEventDateEditItem *)self _updateClassicDateCellTimeWidths];
-    v5 = v9;
+    v5 = dateCopy;
   }
 }
 
-- (void)_setAllDay:(BOOL)a3
+- (void)_setAllDay:(BOOL)day
 {
-  if (self->_allDay == a3)
+  if (self->_allDay == day)
   {
     return;
   }
 
-  self->_allDay = a3;
+  self->_allDay = day;
   if (self->_showsAllDay)
   {
-    v4 = [(EKEventDateEditItem *)self _allDayCell];
-    v5 = [v4 accessoryView];
-    [v5 setOn:self->_allDay];
+    _allDayCell = [(EKEventDateEditItem *)self _allDayCell];
+    accessoryView = [_allDayCell accessoryView];
+    [accessoryView setOn:self->_allDay];
     if (!self->_allDay)
     {
-      v6 = [MEMORY[0x1E695DFE8] calendarTimeZone];
-      [(EKEventDateEditItem *)self _setStartTimeZone:v6];
+      calendarTimeZone = [MEMORY[0x1E695DFE8] calendarTimeZone];
+      [(EKEventDateEditItem *)self _setStartTimeZone:calendarTimeZone];
 
-      v7 = [MEMORY[0x1E695DFE8] calendarTimeZone];
-      [(EKEventDateEditItem *)self _setEndTimeZone:v7];
+      calendarTimeZone2 = [MEMORY[0x1E695DFE8] calendarTimeZone];
+      [(EKEventDateEditItem *)self _setEndTimeZone:calendarTimeZone2];
 
       if (![(NSDateComponents *)self->_startComponents hour]&& ![(NSDateComponents *)self->_startComponents minute]&& ![(NSDateComponents *)self->_startComponents second]&& [(NSDateComponents *)self->_endComponents hour]== 23 && [(NSDateComponents *)self->_endComponents minute]== 59 && [(NSDateComponents *)self->_endComponents second]== 59)
       {
@@ -1519,7 +1519,7 @@ LABEL_9:
     goto LABEL_14;
   }
 
-  if (a3)
+  if (day)
   {
 LABEL_14:
     if ((self->_selectedSubitem - 1) <= 1)
@@ -1574,37 +1574,37 @@ LABEL_16:
   self->_showTimeZones = v8;
 }
 
-- (void)_setStartTimeZone:(id)a3
+- (void)_setStartTimeZone:(id)zone
 {
-  v7 = a3;
-  if (([v7 isEqualToTimeZone:self->_startTimeZone] & 1) == 0)
+  zoneCopy = zone;
+  if (([zoneCopy isEqualToTimeZone:self->_startTimeZone] & 1) == 0)
   {
-    objc_storeStrong(&self->_startTimeZone, a3);
+    objc_storeStrong(&self->_startTimeZone, zone);
     [(EKEventDateEditItem *)self _validateTimezones];
     [(EKEventDateEditItem *)self _resetStartString:1 endString:1];
     v5 = [(EKEventDateEditItem *)self _timeZoneDescription:self->_startTimeZone];
-    v6 = [(UITableViewCell *)self->_startTimeZoneCell detailTextLabel];
-    [v6 setText:v5];
+    detailTextLabel = [(UITableViewCell *)self->_startTimeZoneCell detailTextLabel];
+    [detailTextLabel setText:v5];
   }
 }
 
-- (void)_setEndTimeZone:(id)a3
+- (void)_setEndTimeZone:(id)zone
 {
-  v7 = a3;
-  if (([v7 isEqualToTimeZone:self->_endTimeZone] & 1) == 0)
+  zoneCopy = zone;
+  if (([zoneCopy isEqualToTimeZone:self->_endTimeZone] & 1) == 0)
   {
-    objc_storeStrong(&self->_endTimeZone, a3);
+    objc_storeStrong(&self->_endTimeZone, zone);
     [(EKEventDateEditItem *)self _validateTimezones];
     [(EKEventDateEditItem *)self _resetStartString:1 endString:1];
     v5 = [(EKEventDateEditItem *)self _timeZoneDescription:self->_endTimeZone];
-    v6 = [(UITableViewCell *)self->_endTimeZoneCell detailTextLabel];
-    [v6 setText:v5];
+    detailTextLabel = [(UITableViewCell *)self->_endTimeZoneCell detailTextLabel];
+    [detailTextLabel setText:v5];
   }
 }
 
-- (void)dateTimeCellDateTapped:(id)a3
+- (void)dateTimeCellDateTapped:(id)tapped
 {
-  if (self->_modernStartDateCell == a3)
+  if (self->_modernStartDateCell == tapped)
   {
     v3 = 1;
   }
@@ -1617,9 +1617,9 @@ LABEL_16:
   [(EKEventDateEditItem *)self _showInlineControls:1 forSubitem:v3 includingInlineDatePicker:1];
 }
 
-- (void)dateTimeCellTimeTapped:(id)a3
+- (void)dateTimeCellTimeTapped:(id)tapped
 {
-  if (self->_modernStartDateCell == a3)
+  if (self->_modernStartDateCell == tapped)
   {
     v3 = 1;
   }
@@ -1632,9 +1632,9 @@ LABEL_16:
   [(EKEventDateEditItem *)self _showInlineControls:0 forSubitem:v3 includingInlineDatePicker:1];
 }
 
-- (void)dateTimeCell:(id)a3 dateChanged:(id)a4
+- (void)dateTimeCell:(id)cell dateChanged:(id)changed
 {
-  if (self->_modernStartDateCell == a3)
+  if (self->_modernStartDateCell == cell)
   {
     v5 = 1;
   }
@@ -1644,12 +1644,12 @@ LABEL_16:
     v5 = 2;
   }
 
-  [(EKEventDateEditItem *)self dateChanged:a4 forSubitem:v5];
+  [(EKEventDateEditItem *)self dateChanged:changed forSubitem:v5];
 }
 
-- (void)dateTimeCellBeganEditing:(id)a3
+- (void)dateTimeCellBeganEditing:(id)editing
 {
-  if (self->_modernStartDateCell == a3)
+  if (self->_modernStartDateCell == editing)
   {
     v3 = 1;
   }
@@ -1662,15 +1662,15 @@ LABEL_16:
   [(EKEventDateEditItem *)self _showInlineControls:0 forSubitem:v3 includingInlineDatePicker:0];
 }
 
-- (void)dateTimeCellEndedEditing:(id)a3
+- (void)dateTimeCellEndedEditing:(id)editing
 {
-  v4 = a3;
+  editingCopy = editing;
   if (!self->_modifyingVisibleControls)
   {
     selectedSubitem = self->_selectedSubitem;
-    v6 = v4;
+    v6 = editingCopy;
     [(EKEventDateEditItem *)self _hideInlineDateControls];
-    v4 = v6;
+    editingCopy = v6;
     if (self->_pushingTZController)
     {
       self->_targetedSubitemForTimezone = selectedSubitem;
@@ -1678,33 +1678,33 @@ LABEL_16:
   }
 }
 
-- (void)_showInlineControls:(int64_t)a3 forSubitem:(int64_t)a4 includingInlineDatePicker:(BOOL)a5
+- (void)_showInlineControls:(int64_t)controls forSubitem:(int64_t)subitem includingInlineDatePicker:(BOOL)picker
 {
-  v5 = a5;
-  if (*&self->_selectedSubitem == __PAIR128__(a3, a4))
+  pickerCopy = picker;
+  if (*&self->_selectedSubitem == __PAIR128__(controls, subitem))
   {
 
     [(EKEventDateEditItem *)self _hideInlineDateControls];
     return;
   }
 
-  v9 = [(EKEventDateEditItem *)self _shouldShowTimeZone];
+  _shouldShowTimeZone = [(EKEventDateEditItem *)self _shouldShowTimeZone];
   showingInlineDatePicker = self->_showingInlineDatePicker;
-  self->_currentPickerMode = a3;
+  self->_currentPickerMode = controls;
   v33 = 211;
   self->_modifyingVisibleControls = 1;
   selectedSubitem = self->_selectedSubitem;
-  if (selectedSubitem == a4)
+  if (selectedSubitem == subitem)
   {
-    self->_showingInlineDatePicker = v5;
+    self->_showingInlineDatePicker = pickerCopy;
     [(EKEventDateEditItem *)self _updateDatePicker:0 animated:0];
-    [(EKEventDateEditItem *)self _resetStartString:a4 == 1 endString:a4 == 2];
+    [(EKEventDateEditItem *)self _resetStartString:subitem == 1 endString:subitem == 2];
     v12 = 0;
     v13 = 0;
-    if (v9 != [(EKEventDateEditItem *)self _shouldShowTimeZone])
+    if (_shouldShowTimeZone != [(EKEventDateEditItem *)self _shouldShowTimeZone])
     {
       v14 = [MEMORY[0x1E696AC90] indexSetWithIndex:{-[EKEventDateEditItem _rowForSubitem:](self, "_rowForSubitem:", 3)}];
-      if (v9)
+      if (_shouldShowTimeZone)
       {
         v12 = v14;
       }
@@ -1714,7 +1714,7 @@ LABEL_16:
         v12 = 0;
       }
 
-      if (v9)
+      if (_shouldShowTimeZone)
       {
         v13 = 0;
       }
@@ -1725,9 +1725,9 @@ LABEL_16:
       }
     }
 
-    if (showingInlineDatePicker != v5)
+    if (showingInlineDatePicker != pickerCopy)
     {
-      v15 = [MEMORY[0x1E696AC90] indexSetWithIndex:{-[EKEventDateEditItem _rowForSubitem:](self, "_rowForSubitem:", a4) + 1}];
+      v15 = [MEMORY[0x1E696AC90] indexSetWithIndex:{-[EKEventDateEditItem _rowForSubitem:](self, "_rowForSubitem:", subitem) + 1}];
       v16 = v15;
       if (showingInlineDatePicker)
       {
@@ -1787,18 +1787,18 @@ LABEL_16:
     return;
   }
 
-  v18 = [MEMORY[0x1E696AD50] indexSet];
-  v19 = [MEMORY[0x1E696AD50] indexSet];
+  indexSet = [MEMORY[0x1E696AD50] indexSet];
+  indexSet2 = [MEMORY[0x1E696AD50] indexSet];
   if (selectedSubitem <= 2)
   {
     if (showingInlineDatePicker)
     {
-      [v18 addIndex:{-[EKEventDateEditItem _rowForSubitem:](self, "_rowForSubitem:", 4)}];
+      [indexSet addIndex:{-[EKEventDateEditItem _rowForSubitem:](self, "_rowForSubitem:", 4)}];
     }
 
-    if (v9)
+    if (_shouldShowTimeZone)
     {
-      [v18 addIndex:{-[EKEventDateEditItem _rowForSubitem:](self, "_rowForSubitem:", 3)}];
+      [indexSet addIndex:{-[EKEventDateEditItem _rowForSubitem:](self, "_rowForSubitem:", 3)}];
     }
   }
 
@@ -1815,36 +1815,36 @@ LABEL_26:
     [*(&self->super.super.super.isa + *v20) resetDatePickerSelection];
   }
 
-  self->_selectedSubitem = a4;
-  self->_showingInlineDatePicker = v5;
-  v21 = [(EKEventDateEditItem *)self _rowForSubitem:a4, v33];
+  self->_selectedSubitem = subitem;
+  self->_showingInlineDatePicker = pickerCopy;
+  v21 = [(EKEventDateEditItem *)self _rowForSubitem:subitem, v33];
   v22 = v21 + 1;
   if (self->_showingInlineDatePicker)
   {
     v23 = v21;
-    [v19 addIndex:v22];
+    [indexSet2 addIndex:v22];
     v22 = v23 + 2;
   }
 
   if ([(EKEventDateEditItem *)self _shouldShowTimeZone])
   {
-    [v19 addIndex:v22];
+    [indexSet2 addIndex:v22];
   }
 
-  if ([v18 count] || objc_msgSend(v19, "count"))
+  if ([indexSet count] || objc_msgSend(indexSet2, "count"))
   {
-    v24 = [(EKCalendarItemEditItem *)self delegate];
-    [v24 editItem:self wantsRowInsertions:v19 rowDeletions:v18];
+    delegate = [(EKCalendarItemEditItem *)self delegate];
+    [delegate editItem:self wantsRowInsertions:indexSet2 rowDeletions:indexSet];
 
     v25 = [(EKEventDateEditItem *)self _rowForSubitem:1];
     v26 = [(EKEventDateEditItem *)self _rowForSubitem:2]+ 2 * (self->_selectedSubitem == 2);
-    v27 = [MEMORY[0x1E696AD50] indexSet];
-    [v27 addIndex:v25];
-    [v27 addIndex:v26];
-    v28 = [(EKCalendarItemEditItem *)self delegate];
+    indexSet3 = [MEMORY[0x1E696AD50] indexSet];
+    [indexSet3 addIndex:v25];
+    [indexSet3 addIndex:v26];
+    delegate2 = [(EKCalendarItemEditItem *)self delegate];
     LOBYTE(v26) = objc_opt_respondsToSelector();
 
-    if ((v26 & 1) != 0 && v5)
+    if ((v26 & 1) != 0 && pickerCopy)
     {
       v29 = dispatch_time(0, 0);
       block[0] = MEMORY[0x1E69E9820];
@@ -1855,8 +1855,8 @@ LABEL_26:
       dispatch_after(v29, MEMORY[0x1E69E96A0], block);
     }
 
-    v30 = [(EKCalendarItemEditItem *)self delegate];
-    [v30 editItem:self wantsRowsScrolledToVisible:v27];
+    delegate3 = [(EKCalendarItemEditItem *)self delegate];
+    [delegate3 editItem:self wantsRowsScrolledToVisible:indexSet3];
   }
 
   *(&self->super.super.super.isa + v34) = 0;
@@ -1899,23 +1899,23 @@ LABEL_7:
     }
   }
 
-  v6 = [MEMORY[0x1E696AD50] indexSet];
+  indexSet = [MEMORY[0x1E696AD50] indexSet];
   if (self->_showingInlineDatePicker)
   {
-    [v6 addIndex:{-[EKEventDateEditItem _rowForSubitem:](self, "_rowForSubitem:", 4)}];
+    [indexSet addIndex:{-[EKEventDateEditItem _rowForSubitem:](self, "_rowForSubitem:", 4)}];
   }
 
   if ([(EKEventDateEditItem *)self _shouldShowTimeZone])
   {
-    [v6 addIndex:{-[EKEventDateEditItem _rowForSubitem:](self, "_rowForSubitem:", 3)}];
+    [indexSet addIndex:{-[EKEventDateEditItem _rowForSubitem:](self, "_rowForSubitem:", 3)}];
   }
 
   self->_selectedSubitem = 5;
   self->_showingInlineDatePicker = 0;
-  if ([v6 count])
+  if ([indexSet count])
   {
-    v5 = [(EKCalendarItemEditItem *)self delegate];
-    [v5 editItem:self wantsRowInsertions:0 rowDeletions:v6];
+    delegate = [(EKCalendarItemEditItem *)self delegate];
+    [delegate editItem:self wantsRowInsertions:0 rowDeletions:indexSet];
   }
 
   [(EKEventDateEditItem *)self _updateClassicDateCellColors];
@@ -1930,16 +1930,16 @@ LABEL_7:
 
   v4 = objc_alloc_init(MEMORY[0x1E695DF10]);
   [v4 setHour:1];
-  v5 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v6 = [v5 dateByAddingComponents:v4 toDate:v11 options:0];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  v6 = [currentCalendar dateByAddingComponents:v4 toDate:v11 options:0];
 
   v7 = [(EKEventDateEditItem *)self _dateComponentsInSystemCalendarFromDate:v6];
   -[NSDateComponents setHour:](self->_startComponents, "setHour:", [v7 hour]);
 
   [(NSDateComponents *)self->_startComponents setMinute:0];
   [(NSDateComponents *)self->_startComponents setSecond:0];
-  v8 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v9 = [v8 dateByAddingComponents:v4 toDate:v6 options:0];
+  currentCalendar2 = [MEMORY[0x1E695DEE8] currentCalendar];
+  v9 = [currentCalendar2 dateByAddingComponents:v4 toDate:v6 options:0];
 
   v10 = [(EKEventDateEditItem *)self _dateComponentsInSystemCalendarFromDate:v9];
   -[NSDateComponents setHour:](self->_endComponents, "setHour:", [v10 hour]);
@@ -1948,13 +1948,13 @@ LABEL_7:
   [(NSDateComponents *)self->_endComponents setSecond:0];
 }
 
-- (void)_resetClassicStartString:(BOOL)a3 endString:(BOOL)a4
+- (void)_resetClassicStartString:(BOOL)string endString:(BOOL)endString
 {
-  v4 = a4;
-  if (a3 && self->_startComponents)
+  endStringCopy = endString;
+  if (string && self->_startComponents)
   {
-    v6 = [(EKEventDateEditItem *)self _classicStartDateCell];
-    if (v6)
+    _classicStartDateCell = [(EKEventDateEditItem *)self _classicStartDateCell];
+    if (_classicStartDateCell)
     {
       if (self->_showTimeZones)
       {
@@ -1977,21 +1977,21 @@ LABEL_7:
       v15 = v31;
       if (EKUIUsesLargeTextLayout(0))
       {
-        v16 = [v6 detailTextLabel];
-        [v16 setText:v14];
+        detailTextLabel = [_classicStartDateCell detailTextLabel];
+        [detailTextLabel setText:v14];
 
-        v17 = [v6 largePart2TextLabel];
-        [v17 setText:v15];
+        largePart2TextLabel = [_classicStartDateCell largePart2TextLabel];
+        [largePart2TextLabel setText:v15];
       }
 
       else
       {
-        v17 = [v6 twoPartTextLabel];
-        [v17 setTextPart1:v14 part2:v15];
+        largePart2TextLabel = [_classicStartDateCell twoPartTextLabel];
+        [largePart2TextLabel setTextPart1:v14 part2:v15];
       }
 
-      [v6 setNeedsLayout];
-      if (!v4)
+      [_classicStartDateCell setNeedsLayout];
+      if (!endStringCopy)
       {
         goto LABEL_20;
       }
@@ -2002,13 +2002,13 @@ LABEL_7:
 
   else
   {
-    v6 = 0;
+    _classicStartDateCell = 0;
   }
 
-  if (!v4)
+  if (!endStringCopy)
   {
 LABEL_20:
-    v8 = v6;
+    _classicEndDateCell = _classicStartDateCell;
     goto LABEL_23;
   }
 
@@ -2018,9 +2018,9 @@ LABEL_8:
     goto LABEL_20;
   }
 
-  v8 = [(EKEventDateEditItem *)self _classicEndDateCell];
+  _classicEndDateCell = [(EKEventDateEditItem *)self _classicEndDateCell];
 
-  if (v8)
+  if (_classicEndDateCell)
   {
     if (self->_showTimeZones)
     {
@@ -2048,41 +2048,41 @@ LABEL_8:
 
     if (EKUIUsesLargeTextLayout(0))
     {
-      v27 = [v8 detailTextLabel];
-      [v27 setText:v23];
+      detailTextLabel2 = [_classicEndDateCell detailTextLabel];
+      [detailTextLabel2 setText:v23];
 
-      v28 = [v8 largePart2TextLabel];
-      [v28 setText:v24];
+      largePart2TextLabel2 = [_classicEndDateCell largePart2TextLabel];
+      [largePart2TextLabel2 setText:v24];
     }
 
     else
     {
-      v28 = [v8 twoPartTextLabel];
-      [v28 setTextPart1:v23 part2:v24];
+      largePart2TextLabel2 = [_classicEndDateCell twoPartTextLabel];
+      [largePart2TextLabel2 setTextPart1:v23 part2:v24];
     }
 
-    [v8 setNeedsLayout];
+    [_classicEndDateCell setNeedsLayout];
   }
 
 LABEL_23:
 }
 
-- (void)_resetStartString:(BOOL)a3 endString:(BOOL)a4
+- (void)_resetStartString:(BOOL)string endString:(BOOL)endString
 {
-  v4 = a4;
-  v5 = a3;
+  endStringCopy = endString;
+  stringCopy = string;
   if ([(EKEventDateEditItem *)self usesClassicUI])
   {
 
-    [(EKEventDateEditItem *)self _resetClassicStartString:v5 endString:v4];
+    [(EKEventDateEditItem *)self _resetClassicStartString:stringCopy endString:endStringCopy];
     return;
   }
 
-  if (!v5 || !self->_startComponents)
+  if (!stringCopy || !self->_startComponents)
   {
     v8 = 0;
 LABEL_11:
-    if (!v4)
+    if (!endStringCopy)
     {
       goto LABEL_18;
     }
@@ -2090,9 +2090,9 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v7 = [(EKEventDateEditItem *)self _modernStartDateCell];
-  v8 = v7;
-  if (!v7)
+  _modernStartDateCell = [(EKEventDateEditItem *)self _modernStartDateCell];
+  v8 = _modernStartDateCell;
+  if (!_modernStartDateCell)
   {
     goto LABEL_11;
   }
@@ -2107,9 +2107,9 @@ LABEL_11:
     startTimeZone = 0;
   }
 
-  [v7 updateWithDate:self->_startComponents timeZone:startTimeZone allDay:self->_allDay needsStrikethrough:0];
+  [_modernStartDateCell updateWithDate:self->_startComponents timeZone:startTimeZone allDay:self->_allDay needsStrikethrough:0];
   [v8 setNeedsLayout];
-  if (!v4)
+  if (!endStringCopy)
   {
     goto LABEL_18;
   }
@@ -2117,17 +2117,17 @@ LABEL_11:
 LABEL_12:
   if (self->_endComponents)
   {
-    v16 = [(EKEventDateEditItem *)self _modernEndDateCell];
+    _modernEndDateCell = [(EKEventDateEditItem *)self _modernEndDateCell];
 
-    v10 = v16;
-    if (v16)
+    v10 = _modernEndDateCell;
+    if (_modernEndDateCell)
     {
       v11 = [(NSDateComponents *)self->_startComponents copy];
       startComponents = self->_startComponents;
       self->_startComponents = v11;
       v13 = v11;
 
-      v14 = [(EKEventDateEditItem *)self _endDateIsBeforeStartDate];
+      _endDateIsBeforeStartDate = [(EKEventDateEditItem *)self _endDateIsBeforeStartDate];
       if (self->_showTimeZones)
       {
         endTimeZone = self->_endTimeZone;
@@ -2138,10 +2138,10 @@ LABEL_12:
         endTimeZone = 0;
       }
 
-      [v16 updateWithDate:self->_endComponents timeZone:endTimeZone allDay:self->_allDay needsStrikethrough:v14];
+      [_modernEndDateCell updateWithDate:self->_endComponents timeZone:endTimeZone allDay:self->_allDay needsStrikethrough:_endDateIsBeforeStartDate];
 
-      [v16 setNeedsLayout];
-      v10 = v16;
+      [_modernEndDateCell setNeedsLayout];
+      v10 = _modernEndDateCell;
     }
 
     goto LABEL_21;
@@ -2194,10 +2194,10 @@ LABEL_21:
   return v7;
 }
 
-- (void)_updateDatePicker:(id)a3 animated:(BOOL)a4
+- (void)_updateDatePicker:(id)picker animated:(BOOL)animated
 {
-  v4 = a4;
-  v27 = a3;
+  animatedCopy = animated;
+  pickerCopy = picker;
   currentPickerMode = self->_currentPickerMode;
   v17 = ![(EKEventDateEditItem *)self usesClassicUI];
   v7 = 4272;
@@ -2226,10 +2226,10 @@ LABEL_21:
     v9 = v7;
   }
 
-  if (v27)
+  if (pickerCopy)
   {
-    [(UIDatePicker *)v27 setPreferredDatePickerStyle:v8];
-    endDatePicker = v27;
+    [(UIDatePicker *)pickerCopy setPreferredDatePickerStyle:v8];
+    endDatePicker = pickerCopy;
   }
 
   else
@@ -2249,10 +2249,10 @@ LABEL_21:
 
   if (self->_startComponents && self->_endComponents)
   {
-    v11 = [(EKEventDateEditItem *)self _endDateIsBeforeStartDate];
+    _endDateIsBeforeStartDate = [(EKEventDateEditItem *)self _endDateIsBeforeStartDate];
     selectedSubitem = self->_selectedSubitem;
     v13 = (selectedSubitem - 1) < 2;
-    self->_endTimeWasMessedUp = v11;
+    self->_endTimeWasMessedUp = _endDateIsBeforeStartDate;
     if (selectedSubitem == 1)
     {
       goto LABEL_21;
@@ -2284,7 +2284,7 @@ LABEL_22:
 
     v19 = *(&self->super.super.super.isa + *v18);
     v20 = [(EKEventDateEditItem *)self _dateInSystemCalendarFromComponents:v16];
-    [v19 setDate:v20 animated:v4];
+    [v19 setDate:v20 animated:animatedCopy];
     if (self->_selectedSubitem == 1)
     {
       v21 = &OBJC_IVAR___EKEventDateEditItem__modernStartDateCell;
@@ -2322,13 +2322,13 @@ LABEL_22:
   }
 }
 
-- (void)_datePickerChanged:(id)a3
+- (void)_datePickerChanged:(id)changed
 {
-  v4 = a3;
-  v7 = [(UIDatePicker *)v4 date];
+  changedCopy = changed;
+  date = [(UIDatePicker *)changedCopy date];
   startDatePicker = self->_startDatePicker;
 
-  if (startDatePicker == v4)
+  if (startDatePicker == changedCopy)
   {
     v6 = 1;
   }
@@ -2338,23 +2338,23 @@ LABEL_22:
     v6 = 2;
   }
 
-  [(EKEventDateEditItem *)self dateChanged:v7 forSubitem:v6];
+  [(EKEventDateEditItem *)self dateChanged:date forSubitem:v6];
 }
 
-- (void)dateChanged:(id)a3 forSubitem:(int64_t)a4
+- (void)dateChanged:(id)changed forSubitem:(int64_t)subitem
 {
-  v17 = a3;
+  changedCopy = changed;
   self->_changingDate = 1;
-  v6 = [(EKCalendarItemEditItem *)self delegate];
-  [v6 editItem:self wantsDoneButtonDisabled:0];
+  delegate = [(EKCalendarItemEditItem *)self delegate];
+  [delegate editItem:self wantsDoneButtonDisabled:0];
 
-  v7 = [(EKEventDateEditItem *)self _dateComponentsInSystemCalendarFromDate:v17];
-  if (a4 == 2)
+  v7 = [(EKEventDateEditItem *)self _dateComponentsInSystemCalendarFromDate:changedCopy];
+  if (subitem == 2)
   {
     [(EKEventDateEditItem *)self _setEndDate:v7];
   }
 
-  else if (a4 == 1)
+  else if (subitem == 1)
   {
     v8 = [(NSDateComponents *)self->_startComponents copy];
     [(EKEventDateEditItem *)self _setStartDate:v7];
@@ -2363,30 +2363,30 @@ LABEL_22:
       v9 = [(EKEventDateEditItem *)self _dateInSystemCalendarFromComponents:self->_endComponents];
       v10 = [(EKEventDateEditItem *)self _dateInSystemCalendarFromComponents:v8];
       [v9 timeIntervalSinceDate:v10];
-      v11 = [v17 dateByAddingTimeInterval:?];
+      v11 = [changedCopy dateByAddingTimeInterval:?];
       v12 = [(EKEventDateEditItem *)self _dateComponentsInSystemCalendarFromDate:v11];
       [(EKEventDateEditItem *)self _setEndDate:v12];
     }
   }
 
   self->_changingDate = 0;
-  v13 = [(EKEventDateEditItem *)self eventDateEditItemDelegate];
+  eventDateEditItemDelegate = [(EKEventDateEditItem *)self eventDateEditItemDelegate];
 
-  if (v13)
+  if (eventDateEditItemDelegate)
   {
     v14 = [(EKEventDateEditItem *)self _calendarForEventComponents:1];
-    v15 = [(EKEventDateEditItem *)self eventDateEditItemDelegate];
+    eventDateEditItemDelegate2 = [(EKEventDateEditItem *)self eventDateEditItemDelegate];
     v16 = [v14 dateFromComponents:self->_startComponents];
-    [v15 dateChangedTo:v16];
+    [eventDateEditItemDelegate2 dateChangedTo:v16];
   }
 
   [(EKCalendarItemEditItem *)self notifyDidEndEditing];
 }
 
-- (void)_allDayChanged:(id)a3
+- (void)_allDayChanged:(id)changed
 {
   self->_changingDate = 1;
-  -[EKEventDateEditItem _setAllDay:](self, "_setAllDay:", [a3 isOn]);
+  -[EKEventDateEditItem _setAllDay:](self, "_setAllDay:", [changed isOn]);
   self->_needsTargetedReload = 0;
   self->_changingDate = 0;
   [(EKCalendarItemEditItem *)self notifyDidStartEditing];
@@ -2394,55 +2394,55 @@ LABEL_22:
   [(EKCalendarItemEditItem *)self notifyDidEndEditing];
 }
 
-- (id)_timeZoneDescription:(id)a3
+- (id)_timeZoneDescription:(id)description
 {
-  if (a3)
+  if (description)
   {
-    v3 = [a3 cityName];
+    cityName = [description cityName];
   }
 
   else
   {
     v4 = EventKitUIBundle();
-    v3 = [v4 localizedStringForKey:@"Floating" value:&stru_1F4EF6790 table:0];
+    cityName = [v4 localizedStringForKey:@"Floating" value:&stru_1F4EF6790 table:0];
   }
 
-  return v3;
+  return cityName;
 }
 
-- (id)_dateInSystemCalendarFromComponents:(id)a3
+- (id)_dateInSystemCalendarFromComponents:(id)components
 {
   v3 = MEMORY[0x1E695DEE8];
-  v4 = a3;
-  v5 = [v3 currentCalendar];
-  v6 = [v5 dateFromComponents:v4];
+  componentsCopy = components;
+  currentCalendar = [v3 currentCalendar];
+  v6 = [currentCalendar dateFromComponents:componentsCopy];
 
   return v6;
 }
 
-- (id)_dateFromComponents:(id)a3 timeZone:(id)a4
+- (id)_dateFromComponents:(id)components timeZone:(id)zone
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v8 = [v7 copy];
+  componentsCopy = components;
+  zoneCopy = zone;
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  v8 = [currentCalendar copy];
 
-  if (v6)
+  if (zoneCopy)
   {
-    [v8 setTimeZone:v6];
+    [v8 setTimeZone:zoneCopy];
   }
 
-  v9 = [v8 dateFromComponents:v5];
+  v9 = [v8 dateFromComponents:componentsCopy];
 
   return v9;
 }
 
-- (id)_dateComponentsInSystemCalendarFromDate:(id)a3
+- (id)_dateComponentsInSystemCalendarFromDate:(id)date
 {
   v3 = MEMORY[0x1E695DEE8];
-  v4 = a3;
-  v5 = [v3 currentCalendar];
-  v6 = [v5 components:254 fromDate:v4];
+  dateCopy = date;
+  currentCalendar = [v3 currentCalendar];
+  v6 = [currentCalendar components:254 fromDate:dateCopy];
 
   return v6;
 }

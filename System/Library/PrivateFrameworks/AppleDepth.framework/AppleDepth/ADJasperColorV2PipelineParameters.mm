@@ -1,28 +1,28 @@
 @interface ADJasperColorV2PipelineParameters
-- (id)initForDevice:(id)a3;
+- (id)initForDevice:(id)device;
 @end
 
 @implementation ADJasperColorV2PipelineParameters
 
-- (id)initForDevice:(id)a3
+- (id)initForDevice:(id)device
 {
-  v4 = a3;
-  if (!v4)
+  deviceCopy = device;
+  if (!deviceCopy)
   {
-    v4 = +[ADDeviceConfiguration getDeviceName];
+    deviceCopy = +[ADDeviceConfiguration getDeviceName];
   }
 
   v22.receiver = self;
   v22.super_class = ADJasperColorV2PipelineParameters;
-  v5 = [(ADPipelineParameters *)&v22 initForDevice:v4];
+  v5 = [(ADPipelineParameters *)&v22 initForDevice:deviceCopy];
   if (v5)
   {
     v6 = objc_opt_new();
     v7 = *(v5 + 7);
     *(v5 + 7) = v6;
 
-    v8 = [v5 deviceName];
-    v9 = [ADDeviceConfiguration getLidarType:v8];
+    deviceName = [v5 deviceName];
+    v9 = [ADDeviceConfiguration getLidarType:deviceName];
 
     v11 = *(v5 + 7);
     if (v9 == 2)

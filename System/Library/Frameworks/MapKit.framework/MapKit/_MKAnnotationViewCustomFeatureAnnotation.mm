@@ -2,8 +2,8 @@
 - ($F24F406B2B787EFB06265DBA3D28CBD5)coordinate;
 - (MKAnnotationView)annotationView;
 - (VKCustomFeature)feature;
-- (_MKAnnotationViewCustomFeatureAnnotation)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_MKAnnotationViewCustomFeatureAnnotation)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _MKAnnotationViewCustomFeatureAnnotation
@@ -40,15 +40,15 @@
     v9 = objc_loadWeakRetained(&self->_annotationView);
     -[VKCustomFeature setFeatureID:](self->_customFeature, "setFeatureID:", [v9 _featureId]);
 
-    v10 = [MEMORY[0x1E69A1DB0] annotationViewProvidedCustomFeatureStyleAttributes];
+    annotationViewProvidedCustomFeatureStyleAttributes = [MEMORY[0x1E69A1DB0] annotationViewProvidedCustomFeatureStyleAttributes];
     if ([WeakRetained isSelected])
     {
-      v11 = [MEMORY[0x1E69A1DB0] styleAttributesForCalloutWithAttributes:v10];
+      v11 = [MEMORY[0x1E69A1DB0] styleAttributesForCalloutWithAttributes:annotationViewProvidedCustomFeatureStyleAttributes];
 
-      v10 = v11;
+      annotationViewProvidedCustomFeatureStyleAttributes = v11;
     }
 
-    [(VKCustomFeature *)self->_customFeature setStyleAttributes:v10];
+    [(VKCustomFeature *)self->_customFeature setStyleAttributes:annotationViewProvidedCustomFeatureStyleAttributes];
     [WeakRetained _collisionFrame];
     v26 = CGRectInset(v25, 5.0, 5.0);
     width = v26.size.width;
@@ -67,19 +67,19 @@
   return customFeature;
 }
 
-- (_MKAnnotationViewCustomFeatureAnnotation)initWithCoder:(id)a3
+- (_MKAnnotationViewCustomFeatureAnnotation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = _MKAnnotationViewCustomFeatureAnnotation;
   v5 = [(_MKAnnotationViewCustomFeatureAnnotation *)&v11 init];
   if (v5)
   {
-    [v4 decodeDoubleForKey:@"lat"];
+    [coderCopy decodeDoubleForKey:@"lat"];
     v5->_coordinate.latitude = v6;
-    [v4 decodeDoubleForKey:@"lng"];
+    [coderCopy decodeDoubleForKey:@"lng"];
     v5->_coordinate.longitude = v7;
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"feature"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"feature"];
     customFeature = v5->_customFeature;
     v5->_customFeature = v8;
   }
@@ -87,15 +87,15 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   [(_MKAnnotationViewCustomFeatureAnnotation *)self coordinate];
-  [v4 encodeDouble:@"lat" forKey:?];
+  [coderCopy encodeDouble:@"lat" forKey:?];
   [(_MKAnnotationViewCustomFeatureAnnotation *)self coordinate];
-  [v4 encodeDouble:@"lng" forKey:v5];
-  v6 = [(_MKAnnotationViewCustomFeatureAnnotation *)self feature];
-  [v4 encodeObject:v6 forKey:@"feature"];
+  [coderCopy encodeDouble:@"lng" forKey:v5];
+  feature = [(_MKAnnotationViewCustomFeatureAnnotation *)self feature];
+  [coderCopy encodeObject:feature forKey:@"feature"];
 }
 
 @end

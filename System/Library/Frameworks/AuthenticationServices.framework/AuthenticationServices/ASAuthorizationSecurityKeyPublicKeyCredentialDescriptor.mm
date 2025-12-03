@@ -1,12 +1,12 @@
 @interface ASAuthorizationSecurityKeyPublicKeyCredentialDescriptor
-- (ASAuthorizationSecurityKeyPublicKeyCredentialDescriptor)initWithCoder:(id)a3;
+- (ASAuthorizationSecurityKeyPublicKeyCredentialDescriptor)initWithCoder:(id)coder;
 - (ASAuthorizationSecurityKeyPublicKeyCredentialDescriptor)initWithCredentialID:(NSData *)credentialID transports:(NSArray *)allowedTransports;
 - (ASCPublicKeyCredentialDescriptor)coreDescriptor;
 - (NSArray)transports;
 - (NSData)credentialID;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setCredentialID:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
+- (void)setCredentialID:(id)d;
 - (void)setTransports:(NSArray *)transports;
 @end
 
@@ -43,37 +43,37 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(ASAuthorizationSecurityKeyPublicKeyCredentialDescriptor *)self credentialID];
-  v6 = [(ASAuthorizationSecurityKeyPublicKeyCredentialDescriptor *)self transports];
-  v7 = [v4 initWithCredentialID:v5 transports:v6];
+  credentialID = [(ASAuthorizationSecurityKeyPublicKeyCredentialDescriptor *)self credentialID];
+  transports = [(ASAuthorizationSecurityKeyPublicKeyCredentialDescriptor *)self transports];
+  v7 = [v4 initWithCredentialID:credentialID transports:transports];
 
   return v7;
 }
 
-- (ASAuthorizationSecurityKeyPublicKeyCredentialDescriptor)initWithCoder:(id)a3
+- (ASAuthorizationSecurityKeyPublicKeyCredentialDescriptor)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"credentialID"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"credentialID"];
   v6 = MEMORY[0x1E695DFD8];
   v7 = objc_opt_class();
   v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-  v9 = [v4 decodeObjectOfClasses:v8 forKey:@"transports"];
+  v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"transports"];
 
   v10 = [(ASAuthorizationSecurityKeyPublicKeyCredentialDescriptor *)self initWithCredentialID:v5 transports:v9];
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ASAuthorizationSecurityKeyPublicKeyCredentialDescriptor *)self credentialID];
-  [v4 encodeObject:v5 forKey:@"credentialID"];
+  coderCopy = coder;
+  credentialID = [(ASAuthorizationSecurityKeyPublicKeyCredentialDescriptor *)self credentialID];
+  [coderCopy encodeObject:credentialID forKey:@"credentialID"];
 
-  v6 = [(ASAuthorizationSecurityKeyPublicKeyCredentialDescriptor *)self transports];
-  [v4 encodeObject:v6 forKey:@"transports"];
+  transports = [(ASAuthorizationSecurityKeyPublicKeyCredentialDescriptor *)self transports];
+  [coderCopy encodeObject:transports forKey:@"transports"];
 }
 
 - (NSData)credentialID
@@ -85,12 +85,12 @@
   return v3;
 }
 
-- (void)setCredentialID:(id)a3
+- (void)setCredentialID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   os_unfair_lock_lock(&self->_internalLock);
   credentialID = self->_credentialID;
-  self->_credentialID = v4;
+  self->_credentialID = dCopy;
 
   os_unfair_lock_unlock(&self->_internalLock);
 }

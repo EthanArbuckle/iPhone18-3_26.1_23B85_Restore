@@ -1,15 +1,15 @@
 @interface SBHIconModel.IconStateUnarchivingSlugIconSource
 - (_TtCE15SpringBoardHomeCSo12SBHIconModelP33_294E8E30CF4CC42333D2CCC80E9D9C8134IconStateUnarchivingSlugIconSource)init;
-- (id)applicationIconForBundleIdentifier:(id)a3;
+- (id)applicationIconForBundleIdentifier:(id)identifier;
 @end
 
 @implementation SBHIconModel.IconStateUnarchivingSlugIconSource
 
-- (id)applicationIconForBundleIdentifier:(id)a3
+- (id)applicationIconForBundleIdentifier:(id)identifier
 {
   v4 = sub_1BEE4708C();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   v8 = sub_1BEE12D60(v4, v6);
 
   if (v8)

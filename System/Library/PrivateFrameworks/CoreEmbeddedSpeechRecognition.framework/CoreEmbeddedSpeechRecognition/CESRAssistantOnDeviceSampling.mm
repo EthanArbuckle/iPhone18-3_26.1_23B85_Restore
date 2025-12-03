@@ -1,28 +1,28 @@
 @interface CESRAssistantOnDeviceSampling
 + (id)sharedManager;
-- (BOOL)isRequestSelectedForSamplingForTask:(id)a3;
+- (BOOL)isRequestSelectedForSamplingForTask:(id)task;
 - (CESRAssistantOnDeviceSampling)init;
 @end
 
 @implementation CESRAssistantOnDeviceSampling
 
-- (BOOL)isRequestSelectedForSamplingForTask:(id)a3
+- (BOOL)isRequestSelectedForSamplingForTask:(id)task
 {
   v12 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CEF368] sharedPreferences];
-  v5 = [v4 siriDataSharingOptInStatus];
+  taskCopy = task;
+  mEMORY[0x277CEF368] = [MEMORY[0x277CEF368] sharedPreferences];
+  siriDataSharingOptInStatus = [mEMORY[0x277CEF368] siriDataSharingOptInStatus];
 
-  if (v5 == 1)
+  if (siriDataSharingOptInStatus == 1)
   {
-    if ([v3 isEqualToString:@"SearchOrMessaging"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"SiriDictation") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"Beto"))
+    if ([taskCopy isEqualToString:@"SearchOrMessaging"] & 1) != 0 || (objc_msgSend(taskCopy, "isEqualToString:", @"SiriDictation") & 1) != 0 || (objc_msgSend(taskCopy, "isEqualToString:", @"Beto"))
     {
       v6 = 1;
     }
 
     else
     {
-      v6 = [v3 isEqualToString:@"BetoDictation"];
+      v6 = [taskCopy isEqualToString:@"BetoDictation"];
     }
   }
 

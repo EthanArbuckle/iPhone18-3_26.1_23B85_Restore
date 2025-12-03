@@ -1,9 +1,9 @@
 @interface FCFileCoordinatedTodayPrivateDataTransactionQueue
-- (BOOL)peekAtTransactionsSyncWithAccessor:(id)a3;
+- (BOOL)peekAtTransactionsSyncWithAccessor:(id)accessor;
 - (FCFileCoordinatedTodayPrivateDataTransactionQueue)init;
-- (FCFileCoordinatedTodayPrivateDataTransactionQueue)initWithFileURL:(id)a3;
-- (void)dequeueTransactionsWithCompletion:(id)a3;
-- (void)enqueueTransaction:(id)a3 withMaxTransactionCount:(unint64_t)a4;
+- (FCFileCoordinatedTodayPrivateDataTransactionQueue)initWithFileURL:(id)l;
+- (void)dequeueTransactionsWithCompletion:(id)completion;
+- (void)enqueueTransaction:(id)transaction withMaxTransactionCount:(unint64_t)count;
 @end
 
 @implementation FCFileCoordinatedTodayPrivateDataTransactionQueue
@@ -34,11 +34,11 @@
   objc_exception_throw(v6);
 }
 
-- (FCFileCoordinatedTodayPrivateDataTransactionQueue)initWithFileURL:(id)a3
+- (FCFileCoordinatedTodayPrivateDataTransactionQueue)initWithFileURL:(id)l
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  lCopy = l;
+  if (!lCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v14 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "fileURL"];
     *buf = 136315906;
@@ -61,7 +61,7 @@
     v7 = objc_opt_class();
     v8 = objc_opt_class();
     v9 = [v6 setWithObjects:{v7, v8, objc_opt_class(), 0}];
-    v10 = [[FCFileCoordinatedDictionary alloc] initWithFileURL:v4 allowedClasses:v9];
+    v10 = [[FCFileCoordinatedDictionary alloc] initWithFileURL:lCopy allowedClasses:v9];
     fileCoordinatedDictionary = v5->_fileCoordinatedDictionary;
     v5->_fileCoordinatedDictionary = v10;
   }
@@ -70,11 +70,11 @@
   return v5;
 }
 
-- (void)enqueueTransaction:(id)a3 withMaxTransactionCount:(unint64_t)a4
+- (void)enqueueTransaction:(id)transaction withMaxTransactionCount:(unint64_t)count
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!v6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  transactionCopy = transaction;
+  if (!transactionCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v10 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "transaction"];
     *buf = 136315906;
@@ -88,24 +88,24 @@
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
   }
 
-  v7 = [(FCFileCoordinatedTodayPrivateDataTransactionQueue *)self fileCoordinatedDictionary];
+  fileCoordinatedDictionary = [(FCFileCoordinatedTodayPrivateDataTransactionQueue *)self fileCoordinatedDictionary];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __96__FCFileCoordinatedTodayPrivateDataTransactionQueue_enqueueTransaction_withMaxTransactionCount___block_invoke;
   v11[3] = &unk_1E7C47F00;
-  v12 = v6;
-  v13 = a4;
-  v8 = v6;
-  [v7 writeSyncWithAccessor:v11];
+  v12 = transactionCopy;
+  countCopy = count;
+  v8 = transactionCopy;
+  [fileCoordinatedDictionary writeSyncWithAccessor:v11];
 
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)peekAtTransactionsSyncWithAccessor:(id)a3
+- (BOOL)peekAtTransactionsSyncWithAccessor:(id)accessor
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  accessorCopy = accessor;
+  if (!accessorCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v10 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "accessor"];
     *buf = 136315906;
@@ -119,14 +119,14 @@
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
   }
 
-  v5 = [(FCFileCoordinatedTodayPrivateDataTransactionQueue *)self fileCoordinatedDictionary];
+  fileCoordinatedDictionary = [(FCFileCoordinatedTodayPrivateDataTransactionQueue *)self fileCoordinatedDictionary];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __88__FCFileCoordinatedTodayPrivateDataTransactionQueue_peekAtTransactionsSyncWithAccessor___block_invoke;
   v11[3] = &unk_1E7C38D88;
-  v12 = v4;
-  v6 = v4;
-  v7 = [v5 readSyncWithAccessor:v11];
+  v12 = accessorCopy;
+  v6 = accessorCopy;
+  v7 = [fileCoordinatedDictionary readSyncWithAccessor:v11];
 
   v8 = *MEMORY[0x1E69E9840];
   return v7;
@@ -150,11 +150,11 @@ void __88__FCFileCoordinatedTodayPrivateDataTransactionQueue_peekAtTransactionsS
   (*(v2 + 16))(v2, v4);
 }
 
-- (void)dequeueTransactionsWithCompletion:(id)a3
+- (void)dequeueTransactionsWithCompletion:(id)completion
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  completionCopy = completion;
+  if (!completionCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "completion"];
     *buf = 136315906;
@@ -168,14 +168,14 @@ void __88__FCFileCoordinatedTodayPrivateDataTransactionQueue_peekAtTransactionsS
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
   }
 
-  v5 = [(FCFileCoordinatedTodayPrivateDataTransactionQueue *)self fileCoordinatedDictionary];
+  fileCoordinatedDictionary = [(FCFileCoordinatedTodayPrivateDataTransactionQueue *)self fileCoordinatedDictionary];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __87__FCFileCoordinatedTodayPrivateDataTransactionQueue_dequeueTransactionsWithCompletion___block_invoke;
   v9[3] = &unk_1E7C38DB0;
-  v10 = v4;
-  v6 = v4;
-  [v5 writeWithAccessor:v9 completion:0];
+  v10 = completionCopy;
+  v6 = completionCopy;
+  [fileCoordinatedDictionary writeWithAccessor:v9 completion:0];
 
   v7 = *MEMORY[0x1E69E9840];
 }

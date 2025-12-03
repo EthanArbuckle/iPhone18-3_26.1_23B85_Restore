@@ -1,5 +1,5 @@
 @interface SPContextEngine
-- (SPContextEngine)initWithQueue:(id)a3;
+- (SPContextEngine)initWithQueue:(id)queue;
 - (void)_activate;
 - (void)_ensureLocationMonitoringStarted;
 - (void)_ensureLocationMonitoringStopped;
@@ -8,30 +8,30 @@
 - (void)_invalidate;
 - (void)activate;
 - (void)invalidate;
-- (void)processContextChangeFlags:(unsigned int)a3;
+- (void)processContextChangeFlags:(unsigned int)flags;
 @end
 
 @implementation SPContextEngine
 
-- (SPContextEngine)initWithQueue:(id)a3
+- (SPContextEngine)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v9.receiver = self;
   v9.super_class = SPContextEngine;
   v6 = [(SPContextEngine *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dispatchQueue, a3);
+    objc_storeStrong(&v6->_dispatchQueue, queue);
   }
 
   return v7;
 }
 
-- (void)processContextChangeFlags:(unsigned int)a3
+- (void)processContextChangeFlags:(unsigned int)flags
 {
-  self->_runLocationMonitoring = a3 & 1;
-  self->_runSoundSensorModule = (a3 & 2) != 0;
+  self->_runLocationMonitoring = flags & 1;
+  self->_runSoundSensorModule = (flags & 2) != 0;
   [(SPContextEngine *)self _activate];
 }
 

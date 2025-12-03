@@ -1,10 +1,10 @@
 @interface MPModelResponse
-- (BOOL)hasVideoArtworkAt:(id)a3;
+- (BOOL)hasVideoArtworkAt:(id)at;
 @end
 
 @implementation MPModelResponse
 
-- (BOOL)hasVideoArtworkAt:(id)a3
+- (BOOL)hasVideoArtworkAt:(id)at
 {
   v3 = sub_AB3820();
   v4 = *(v3 - 8);

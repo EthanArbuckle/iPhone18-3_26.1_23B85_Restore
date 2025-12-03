@@ -15,28 +15,28 @@
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = 138543362;
-  v4 = a1;
+  selfCopy = self;
   _os_log_fault_impl(&dword_1AAAE1000, a2, OS_LOG_TYPE_FAULT, "[CRIT] %{public}@", &v3, 0xCu);
   v2 = *MEMORY[0x1E69E9840];
 }
 
 - (id)fp_bundleIdentifier
 {
-  v2 = [a1 valueForEntitlement:@"application-identifier"];
+  v2 = [self valueForEntitlement:@"application-identifier"];
   v3 = v2;
-  if (!v2 || (FPAppIdentifierFromTeamAppTuple(v2), (v4 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (!v2 || (FPAppIdentifierFromTeamAppTuple(v2), (bundleIdentifier = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v5 = [a1 fp_bundleRecord];
-    v4 = [v5 bundleIdentifier];
+    fp_bundleRecord = [self fp_bundleRecord];
+    bundleIdentifier = [fp_bundleRecord bundleIdentifier];
   }
 
-  return v4;
+  return bundleIdentifier;
 }
 
 - (NSObject)fp_applicationGroups
 {
   v17 = *MEMORY[0x1E69E9840];
-  v1 = [a1 valueForEntitlement:@"com.apple.security.application-groups"];
+  v1 = [self valueForEntitlement:@"com.apple.security.application-groups"];
   if (!v1)
   {
 LABEL_18:
@@ -115,11 +115,11 @@ LABEL_19:
   v7 = a3;
   v52 = 0u;
   v53 = 0u;
-  [a1 auditToken];
-  v8 = [v7 fileSystemRepresentation];
+  [self auditToken];
+  fileSystemRepresentation = [v7 fileSystemRepresentation];
   v9 = (*MEMORY[0x1E69E9BD0] | *MEMORY[0x1E69E9BC8]);
   memset(buf, 0, 32);
-  v45 = v8;
+  v45 = fileSystemRepresentation;
   if (sandbox_check_by_audit_token())
   {
     v51 = 0;
@@ -130,7 +130,7 @@ LABEL_19:
       v50 = 0;
       v12 = [v7 getResourceValue:&v50 forKey:*MEMORY[0x1E695DBC8] error:0];
       v13 = v50;
-      v14 = v13;
+      uRLByDeletingLastPathComponent = v13;
       if (!v12)
       {
         goto LABEL_6;
@@ -141,12 +141,12 @@ LABEL_19:
         goto LABEL_6;
       }
 
-      v15 = [v7 path];
-      v16 = [v15 stringByDeletingLastPathComponent];
-      v17 = [v16 fileSystemRepresentation];
+      path = [v7 path];
+      stringByDeletingLastPathComponent = [path stringByDeletingLastPathComponent];
+      fileSystemRepresentation2 = [stringByDeletingLastPathComponent fileSystemRepresentation];
       *buf = v52;
       *&buf[16] = v53;
-      v46 = v17;
+      v46 = fileSystemRepresentation2;
       v18 = sandbox_check_by_audit_token();
 
       if (v18)
@@ -156,7 +156,7 @@ LABEL_6:
         {
           if (a5 == 2)
           {
-            [a1 processIdentifier];
+            [self processIdentifier];
             v19 = FPExecutableNameForProcessIdentifier();
           }
 
@@ -168,14 +168,14 @@ LABEL_6:
           v26 = fp_current_or_default_log();
           if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
           {
-            v36 = [a1 processIdentifier];
-            v37 = [v7 fp_shortDescription];
+            processIdentifier = [self processIdentifier];
+            fp_shortDescription = [v7 fp_shortDescription];
             *buf = 67109634;
-            *&buf[4] = v36;
+            *&buf[4] = processIdentifier;
             *&buf[8] = 2112;
             *&buf[10] = v19;
             *&buf[18] = 2112;
-            *&buf[20] = v37;
+            *&buf[20] = fp_shortDescription;
             _os_log_debug_impl(&dword_1AAAE1000, v26, OS_LOG_TYPE_DEBUG, "[DEBUG] PID %d (%@) doesn't have sandbox access to %@", buf, 0x1Cu);
           }
 
@@ -193,7 +193,7 @@ LABEL_67:
       {
         if (a5 == 2)
         {
-          [a1 processIdentifier];
+          [self processIdentifier];
           v19 = FPExecutableNameForProcessIdentifier();
         }
 
@@ -205,14 +205,14 @@ LABEL_67:
         v26 = fp_current_or_default_log();
         if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
         {
-          v41 = [a1 processIdentifier];
-          v42 = [v7 fp_shortDescription];
+          processIdentifier2 = [self processIdentifier];
+          fp_shortDescription2 = [v7 fp_shortDescription];
           *buf = 67109634;
-          *&buf[4] = v41;
+          *&buf[4] = processIdentifier2;
           *&buf[8] = 2112;
           *&buf[10] = v19;
           *&buf[18] = 2112;
-          *&buf[20] = v42;
+          *&buf[20] = fp_shortDescription2;
           _os_log_debug_impl(&dword_1AAAE1000, v26, OS_LOG_TYPE_DEBUG, "[DEBUG] PID %d (%@) has sandbox access to the parent path of %@", buf, 0x1Cu);
         }
 
@@ -228,13 +228,13 @@ LABEL_23:
     if (!_CFURLIsItemPromiseAtURL())
     {
       v20 = _CFURLCopyPromiseURLOfLogicalURL();
-      v14 = v20;
+      uRLByDeletingLastPathComponent = v20;
       if (v20)
       {
-        v21 = [v20 fileSystemRepresentation];
+        fileSystemRepresentation3 = [v20 fileSystemRepresentation];
         *buf = v52;
         *&buf[16] = v53;
-        v47 = v21;
+        v47 = fileSystemRepresentation3;
         v22 = sandbox_check_by_audit_token();
         v23 = v22 == 0;
         if (!v22)
@@ -246,7 +246,7 @@ LABEL_23:
 
           if (a5 == 2)
           {
-            [a1 processIdentifier];
+            [self processIdentifier];
             v19 = FPExecutableNameForProcessIdentifier();
           }
 
@@ -261,14 +261,14 @@ LABEL_23:
             goto LABEL_66;
           }
 
-          v38 = [a1 processIdentifier];
-          v31 = [v7 fp_shortDescription];
+          processIdentifier3 = [self processIdentifier];
+          fp_shortDescription3 = [v7 fp_shortDescription];
           *buf = 67109634;
-          *&buf[4] = v38;
+          *&buf[4] = processIdentifier3;
           *&buf[8] = 2112;
           *&buf[10] = v19;
           *&buf[18] = 2112;
-          *&buf[20] = v31;
+          *&buf[20] = fp_shortDescription3;
           v32 = "[DEBUG] PID %d (%@) has sandbox access to the promise of %@";
 LABEL_60:
           _os_log_debug_impl(&dword_1AAAE1000, v26, OS_LOG_TYPE_DEBUG, v32, buf, 0x1Cu);
@@ -278,7 +278,7 @@ LABEL_66:
         }
 
         v49 = v11;
-        v24 = [v14 checkResourceIsReachableAndReturnError:&v49, v47];
+        v24 = [uRLByDeletingLastPathComponent checkResourceIsReachableAndReturnError:&v49, v47];
         v25 = v49;
 
         if (v24)
@@ -287,7 +287,7 @@ LABEL_66:
           {
             if (a5 == 2)
             {
-              [a1 processIdentifier];
+              [self processIdentifier];
               v19 = FPExecutableNameForProcessIdentifier();
             }
 
@@ -299,14 +299,14 @@ LABEL_66:
             v26 = fp_current_or_default_log();
             if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
             {
-              v43 = [a1 processIdentifier];
-              v44 = [v7 fp_shortDescription];
+              processIdentifier4 = [self processIdentifier];
+              fp_shortDescription4 = [v7 fp_shortDescription];
               *buf = 67109634;
-              *&buf[4] = v43;
+              *&buf[4] = processIdentifier4;
               *&buf[8] = 2112;
               *&buf[10] = v19;
               *&buf[18] = 2112;
-              *&buf[20] = v44;
+              *&buf[20] = fp_shortDescription4;
               _os_log_debug_impl(&dword_1AAAE1000, v26, OS_LOG_TYPE_DEBUG, "[DEBUG] PID %d (%@) doesn't have sandbox access to %@ or its fault", buf, 0x1Cu);
             }
 
@@ -331,11 +331,11 @@ LABEL_66:
       }
     }
 
-    v14 = [v7 URLByDeletingLastPathComponent];
-    v28 = [v14 fileSystemRepresentation];
+    uRLByDeletingLastPathComponent = [v7 URLByDeletingLastPathComponent];
+    fileSystemRepresentation4 = [uRLByDeletingLastPathComponent fileSystemRepresentation];
     *buf = v52;
     *&buf[16] = v53;
-    v48 = v28;
+    v48 = fileSystemRepresentation4;
     v29 = sandbox_check_by_audit_token();
     v23 = v29 == 0;
     if (v29)
@@ -347,7 +347,7 @@ LABEL_66:
 
       if (a5 == 2)
       {
-        [a1 processIdentifier];
+        [self processIdentifier];
         v19 = FPExecutableNameForProcessIdentifier();
       }
 
@@ -362,14 +362,14 @@ LABEL_66:
         goto LABEL_66;
       }
 
-      v30 = [a1 processIdentifier];
-      v31 = [v7 fp_shortDescription];
+      processIdentifier5 = [self processIdentifier];
+      fp_shortDescription3 = [v7 fp_shortDescription];
       *buf = 67109634;
-      *&buf[4] = v30;
+      *&buf[4] = processIdentifier5;
       *&buf[8] = 2112;
       *&buf[10] = v19;
       *&buf[18] = 2112;
-      *&buf[20] = v31;
+      *&buf[20] = fp_shortDescription3;
       v32 = "[DEBUG] PID %d (%@) doesn't have sandbox access to %@ or its fault";
     }
 
@@ -382,7 +382,7 @@ LABEL_66:
 
       if (a5 == 2)
       {
-        [a1 processIdentifier];
+        [self processIdentifier];
         v19 = FPExecutableNameForProcessIdentifier();
       }
 
@@ -397,14 +397,14 @@ LABEL_66:
         goto LABEL_66;
       }
 
-      v33 = [a1 processIdentifier];
-      v31 = [v7 fp_shortDescription];
+      processIdentifier6 = [self processIdentifier];
+      fp_shortDescription3 = [v7 fp_shortDescription];
       *buf = 67109634;
-      *&buf[4] = v33;
+      *&buf[4] = processIdentifier6;
       *&buf[8] = 2112;
       *&buf[10] = v19;
       *&buf[18] = 2112;
-      *&buf[20] = v31;
+      *&buf[20] = fp_shortDescription3;
       v32 = "[DEBUG] PID %d (%@) has sandbox access to non-existent %@";
     }
 
@@ -415,7 +415,7 @@ LABEL_66:
   {
     if (a5 == 2)
     {
-      [a1 processIdentifier];
+      [self processIdentifier];
       v11 = FPExecutableNameForProcessIdentifier();
     }
 
@@ -424,18 +424,18 @@ LABEL_66:
       v11 = @"<restricted>";
     }
 
-    v14 = fp_current_or_default_log();
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
+    uRLByDeletingLastPathComponent = fp_current_or_default_log();
+    if (os_log_type_enabled(uRLByDeletingLastPathComponent, OS_LOG_TYPE_DEBUG))
     {
-      v34 = [a1 processIdentifier];
-      v35 = [v7 fp_shortDescription];
+      processIdentifier7 = [self processIdentifier];
+      fp_shortDescription5 = [v7 fp_shortDescription];
       *buf = 67109634;
-      *&buf[4] = v34;
+      *&buf[4] = processIdentifier7;
       *&buf[8] = 2112;
       *&buf[10] = v11;
       *&buf[18] = 2112;
-      *&buf[20] = v35;
-      _os_log_debug_impl(&dword_1AAAE1000, v14, OS_LOG_TYPE_DEBUG, "[DEBUG] PID %d (%@) has sandbox access to %@", buf, 0x1Cu);
+      *&buf[20] = fp_shortDescription5;
+      _os_log_debug_impl(&dword_1AAAE1000, uRLByDeletingLastPathComponent, OS_LOG_TYPE_DEBUG, "[DEBUG] PID %d (%@) has sandbox access to %@", buf, 0x1Cu);
     }
 
     goto LABEL_23;
@@ -471,7 +471,7 @@ LABEL_68:
           objc_enumerationMutation(v7);
         }
 
-        v12 = [a1 fp_valueForEntitlement:{*(*(&v20 + 1) + 8 * v11), v20}];
+        v12 = [self fp_valueForEntitlement:{*(*(&v20 + 1) + 8 * v11), v20}];
         if (v12)
         {
           objc_opt_class();
@@ -497,7 +497,7 @@ LABEL_68:
     }
   }
 
-  v13 = [a1 fp_valueForEntitlement:@"com.apple.internal.fileprovider.debug"];
+  v13 = [self fp_valueForEntitlement:@"com.apple.internal.fileprovider.debug"];
   if (v13)
   {
     objc_opt_class();
@@ -513,7 +513,7 @@ LABEL_68:
 
         if (a5 == 2)
         {
-          [a1 processIdentifier];
+          [self processIdentifier];
           v12 = FPExecutableNameForProcessIdentifier();
         }
 
@@ -525,9 +525,9 @@ LABEL_68:
         v17 = fp_current_or_default_log();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
         {
-          v18 = [a1 processIdentifier];
+          processIdentifier = [self processIdentifier];
           *buf = 67109634;
-          v25 = v18;
+          v25 = processIdentifier;
           v26 = 2112;
           v27 = v12;
           v28 = 2112;
@@ -548,7 +548,7 @@ LABEL_27:
   {
     if (a5 == 2)
     {
-      [a1 processIdentifier];
+      [self processIdentifier];
       v13 = FPExecutableNameForProcessIdentifier();
     }
 
@@ -560,9 +560,9 @@ LABEL_27:
     v12 = fp_current_or_default_log();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      v19 = [a1 processIdentifier];
+      processIdentifier2 = [self processIdentifier];
       *buf = 67109634;
-      v25 = v19;
+      v25 = processIdentifier2;
       v26 = 2112;
       v27 = v13;
       v28 = 2112;
@@ -583,7 +583,7 @@ LABEL_28:
 
 - (id)fp_bundleRecord
 {
-  v2 = objc_getAssociatedObject(a1, kFPBundleRecordAssociatedObjectKey);
+  v2 = objc_getAssociatedObject(self, kFPBundleRecordAssociatedObjectKey);
   v3 = v2;
   if (v2)
   {
@@ -593,9 +593,9 @@ LABEL_28:
   else
   {
     v5 = MEMORY[0x1E6963620];
-    [a1 auditToken];
+    [self auditToken];
     v4 = [v5 bundleRecordForAuditToken:&v7 error:0];
-    objc_setAssociatedObject(a1, kFPBundleRecordAssociatedObjectKey, v4, 0x301);
+    objc_setAssociatedObject(self, kFPBundleRecordAssociatedObjectKey, v4, 0x301);
   }
 
   return v4;
@@ -604,15 +604,15 @@ LABEL_28:
 - (void)fp_annotateInvocation:()FPAdditions withLogSection:
 {
   v5 = a3;
-  v6 = [v5 methodSignature];
-  v7 = [v6 fp_indexOfLastArgumentWithType:"@?"];
-  v8 = [v5 selector];
+  methodSignature = [v5 methodSignature];
+  v7 = [methodSignature fp_indexOfLastArgumentWithType:"@?"];
+  selector = [v5 selector];
   if (v7 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v9 = fp_current_or_default_log();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
-      [(NSXPCConnection(FPAdditions) *)v8 fp_annotateInvocation:a4 withLogSection:v9];
+      [(NSXPCConnection(FPAdditions) *)selector fp_annotateInvocation:a4 withLogSection:v9];
     }
   }
 

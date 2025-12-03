@@ -1,24 +1,24 @@
 @interface NSMetadataQueryResultGroup
 - (NSArray)results;
-- (id)_init:(id)a3 attributes:(id)a4 index:(unint64_t)a5 value:(id)a6;
+- (id)_init:(id)_init attributes:(id)attributes index:(unint64_t)index value:(id)value;
 - (id)resultAtIndex:(NSUInteger)idx;
 - (id)value;
-- (void)_addResult:(unint64_t)a3;
+- (void)_addResult:(unint64_t)result;
 - (void)dealloc;
 @end
 
 @implementation NSMetadataQueryResultGroup
 
-- (id)_init:(id)a3 attributes:(id)a4 index:(unint64_t)a5 value:(id)a6
+- (id)_init:(id)_init attributes:(id)attributes index:(unint64_t)index value:(id)value
 {
   v13 = *MEMORY[0x1E69E9840];
   v12.receiver = self;
   v12.super_class = NSMetadataQueryResultGroup;
   v10 = [(NSMetadataQueryResultGroup *)&v12 init];
-  v10->_private[0] = a3;
-  v10->_private[1] = a4;
-  v10->_private2[0] = a5;
-  v10->_private[2] = a6;
+  v10->_private[0] = _init;
+  v10->_private[1] = attributes;
+  v10->_private2[0] = index;
+  v10->_private[2] = value;
   v10->_private[3] = 0;
   v10->_private[4] = objc_alloc_init(NSMutableIndexSet);
   v10->_private[5] = 0;
@@ -35,22 +35,22 @@
   [(NSMetadataQueryResultGroup *)&v3 dealloc];
 }
 
-- (void)_addResult:(unint64_t)a3
+- (void)_addResult:(unint64_t)result
 {
   [self->_private[4] addIndex:?];
   v5 = self->_private2[0] + 1;
   if (v5 < [self->_private[1] count])
   {
-    v6 = [self->_private[0] valueOfAttribute:objc_msgSend(self->_private[1] forResultAtIndex:{"objectAtIndex:", self->_private2[0] + 1), a3}];
-    if (!v6)
+    null = [self->_private[0] valueOfAttribute:objc_msgSend(self->_private[1] forResultAtIndex:{"objectAtIndex:", self->_private2[0] + 1), result}];
+    if (!null)
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
+      null = [MEMORY[0x1E695DFB0] null];
     }
 
-    v7 = [self->_private[3] objectForKey:v6];
+    v7 = [self->_private[3] objectForKey:null];
     if (!v7)
     {
-      v7 = [[NSMetadataQueryResultGroup alloc] _init:self->_private[0] attributes:self->_private[1] index:self->_private2[0] + 1 value:v6];
+      v7 = [[NSMetadataQueryResultGroup alloc] _init:self->_private[0] attributes:self->_private[1] index:self->_private2[0] + 1 value:null];
       v8 = self->_private[3];
       if (!v8)
       {
@@ -58,10 +58,10 @@
         self->_private[3] = v8;
       }
 
-      [v8 setObject:v7 forKey:v6];
+      [v8 setObject:v7 forKey:null];
     }
 
-    [v7 _addResult:a3];
+    [v7 _addResult:result];
   }
 }
 

@@ -1,14 +1,14 @@
 @interface _UIVisualEffectBackingFakeView
 - (UIView)clientView;
-- (_UIVisualEffectBackingFakeView)initWithClientView:(id)a3;
+- (_UIVisualEffectBackingFakeView)initWithClientView:(id)view;
 - (uint64_t)_clientViewShouldBeOptedOutOfViewEffects;
-- (void)_receiveVisitor:(id)a3;
+- (void)_receiveVisitor:(id)visitor;
 - (void)applyIdentityFilterEffects;
 - (void)applyIdentityViewEffects;
 - (void)applyRequestedFilterEffects;
 - (void)applyRequestedViewEffects;
-- (void)setFilters:(id)a3;
-- (void)setViewEffects:(id)a3;
+- (void)setFilters:(id)filters;
+- (void)setViewEffects:(id)effects;
 @end
 
 @implementation _UIVisualEffectBackingFakeView
@@ -22,9 +22,9 @@
 
 - (uint64_t)_clientViewShouldBeOptedOutOfViewEffects
 {
-  if (a1)
+  if (self)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 440));
+    WeakRetained = objc_loadWeakRetained((self + 440));
     v2 = objc_opt_self();
     isKindOfClass = objc_opt_isKindOfClass();
   }
@@ -41,16 +41,16 @@
 {
   if (([(_UIVisualEffectBackingFakeView *)self _clientViewShouldBeOptedOutOfViewEffects]& 1) == 0)
   {
-    v3 = [(_UIVisualEffectBackingFakeView *)self clientView];
-    _UIVisualEffectSubviewApplyViewEffects(v3, self->_viewEffects, 1);
+    clientView = [(_UIVisualEffectBackingFakeView *)self clientView];
+    _UIVisualEffectSubviewApplyViewEffects(clientView, self->_viewEffects, 1);
   }
 }
 
 - (void)applyRequestedFilterEffects
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [(_UIVisualEffectBackingFakeView *)self clientView];
-  v4 = [(UIView *)v3 _backing_outermostLayer];
+  clientView = [(_UIVisualEffectBackingFakeView *)self clientView];
+  _backing_outermostLayer = [(UIView *)clientView _backing_outermostLayer];
 
   v15 = 0u;
   v16 = 0u;
@@ -73,8 +73,8 @@
 
         v10 = *(*(&v13 + 1) + 8 * i);
         v11 = [v10 valueAsRequested:{1, v13}];
-        v12 = [v10 filterName];
-        _UIVisualEffectSubviewApplyFilterValues(v4, v11, v12);
+        filterName = [v10 filterName];
+        _UIVisualEffectSubviewApplyFilterValues(_backing_outermostLayer, v11, filterName);
       }
 
       v7 = [(NSArray *)v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -84,25 +84,25 @@
   }
 }
 
-- (_UIVisualEffectBackingFakeView)initWithClientView:(id)a3
+- (_UIVisualEffectBackingFakeView)initWithClientView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v8.receiver = self;
   v8.super_class = _UIVisualEffectBackingFakeView;
   v5 = [(UIView *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_clientView, v4);
+    objc_storeWeak(&v5->_clientView, viewCopy);
   }
 
   return v6;
 }
 
-- (void)setViewEffects:(id)a3
+- (void)setViewEffects:(id)effects
 {
   v38 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  effectsCopy = effects;
   viewEffects = self->_viewEffects;
   v6 = MEMORY[0x1E695E0F0];
   if (!viewEffects)
@@ -111,9 +111,9 @@
   }
 
   v7 = viewEffects;
-  if (v4)
+  if (effectsCopy)
   {
-    v8 = v4;
+    v8 = effectsCopy;
   }
 
   else
@@ -152,8 +152,8 @@
           }
 
           v17 = *(*(&v32 + 1) + 8 * i);
-          v18 = [(_UIVisualEffectBackingFakeView *)self clientView];
-          [v17 removeEffectFromView:v18];
+          clientView = [(_UIVisualEffectBackingFakeView *)self clientView];
+          [v17 removeEffectFromView:clientView];
         }
 
         v14 = [(NSArray *)v12 countByEnumeratingWithState:&v32 objects:v37 count:16];
@@ -182,8 +182,8 @@
           }
 
           v24 = *(*(&v28 + 1) + 8 * j);
-          v25 = [(_UIVisualEffectBackingFakeView *)self clientView];
-          [v24 addEffectToView:v25];
+          clientView2 = [(_UIVisualEffectBackingFakeView *)self clientView];
+          [v24 addEffectToView:clientView2];
         }
 
         v21 = [v19 countByEnumeratingWithState:&v28 objects:v36 count:16];
@@ -198,24 +198,24 @@
   }
 }
 
-- (void)setFilters:(id)a3
+- (void)setFilters:(id)filters
 {
-  v8 = a3;
+  filtersCopy = filters;
   if (![(NSArray *)self->_filters isEqualToArray:?])
   {
-    objc_storeStrong(&self->_filters, a3);
-    v5 = _UIVisualEffectSubviewConvertToCAFilterArray(v8);
-    v6 = [(_UIVisualEffectBackingFakeView *)self clientView];
-    v7 = [(UIView *)v6 _backing_outermostLayer];
-    [v7 setFilters:v5];
+    objc_storeStrong(&self->_filters, filters);
+    v5 = _UIVisualEffectSubviewConvertToCAFilterArray(filtersCopy);
+    clientView = [(_UIVisualEffectBackingFakeView *)self clientView];
+    _backing_outermostLayer = [(UIView *)clientView _backing_outermostLayer];
+    [_backing_outermostLayer setFilters:v5];
   }
 }
 
 - (void)applyIdentityFilterEffects
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [(_UIVisualEffectBackingFakeView *)self clientView];
-  v4 = [(UIView *)v3 _backing_outermostLayer];
+  clientView = [(_UIVisualEffectBackingFakeView *)self clientView];
+  _backing_outermostLayer = [(UIView *)clientView _backing_outermostLayer];
 
   v15 = 0u;
   v16 = 0u;
@@ -238,8 +238,8 @@
 
         v10 = *(*(&v13 + 1) + 8 * i);
         v11 = [v10 valueAsRequested:{0, v13}];
-        v12 = [v10 filterName];
-        _UIVisualEffectSubviewApplyFilterValues(v4, v11, v12);
+        filterName = [v10 filterName];
+        _UIVisualEffectSubviewApplyFilterValues(_backing_outermostLayer, v11, filterName);
       }
 
       v7 = [(NSArray *)v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -253,16 +253,16 @@
 {
   if (([(_UIVisualEffectBackingFakeView *)self _clientViewShouldBeOptedOutOfViewEffects]& 1) == 0)
   {
-    v3 = [(_UIVisualEffectBackingFakeView *)self clientView];
-    _UIVisualEffectSubviewApplyViewEffects(v3, self->_viewEffects, 0);
+    clientView = [(_UIVisualEffectBackingFakeView *)self clientView];
+    _UIVisualEffectSubviewApplyViewEffects(clientView, self->_viewEffects, 0);
   }
 }
 
-- (void)_receiveVisitor:(id)a3
+- (void)_receiveVisitor:(id)visitor
 {
-  v4 = a3;
-  v5 = [(_UIVisualEffectBackingFakeView *)self clientView];
-  [_UIViewVisitor _startTraversalOfVisitor:v4 withView:v5];
+  visitorCopy = visitor;
+  clientView = [(_UIVisualEffectBackingFakeView *)self clientView];
+  [_UIViewVisitor _startTraversalOfVisitor:visitorCopy withView:clientView];
 }
 
 @end

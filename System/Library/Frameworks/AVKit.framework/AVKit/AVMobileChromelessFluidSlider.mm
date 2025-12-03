@@ -2,48 +2,48 @@
 - (AVContentIntersectingDelegate)contentIntersectingDelegate;
 - (AVMobileChromelessFluidSlider)init;
 - (AVMobileChromelessFluidSliderDelegate)delegate;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (CGRect)contentIntersection;
-- (CGRect)frameForSliderMark:(id)a3;
+- (CGRect)frameForSliderMark:(id)mark;
 - (CGRect)hitRect;
-- (CGRect)trackRectForBounds:(CGRect)a3;
+- (CGRect)trackRectForBounds:(CGRect)bounds;
 - (CGSize)intrinsicContentSize;
 - (NSDirectionalEdgeInsets)directionalHitRectInsets;
-- (double)_frameForSliderMark:(uint64_t)a1;
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
+- (double)_frameForSliderMark:(uint64_t)mark;
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
 - (uint64_t)_updateSliderStyle;
-- (void)_notifyDelegateAboutSpeedRateChangeToRate:(void *)a1;
+- (void)_notifyDelegateAboutSpeedRateChangeToRate:(void *)rate;
 - (void)_setUpSliderConfigurationIfNeeded;
-- (void)_sliderFluidInteractionDidEnd:(id)a3;
-- (void)_sliderFluidInteractionWillBegin:(id)a3 withLocation:(CGPoint)a4;
-- (void)_sliderFluidInteractionWillContinue:(id)a3 withLocation:(CGPoint)a4;
-- (void)_sliderFluidInteractionWillEnd:(id)a3;
-- (void)_sliderFluidInteractionWillRubberband:(id)a3 insets:(UIEdgeInsets)a4;
-- (void)_traitCollectionDidChange:(id)a3;
+- (void)_sliderFluidInteractionDidEnd:(id)end;
+- (void)_sliderFluidInteractionWillBegin:(id)begin withLocation:(CGPoint)location;
+- (void)_sliderFluidInteractionWillContinue:(id)continue withLocation:(CGPoint)location;
+- (void)_sliderFluidInteractionWillEnd:(id)end;
+- (void)_sliderFluidInteractionWillRubberband:(id)rubberband insets:(UIEdgeInsets)insets;
+- (void)_traitCollectionDidChange:(id)change;
 - (void)_updateBarTintStateAlpha;
 - (void)_updateBarVisualEffectsIfNeeded;
 - (void)_updateSliderBarMaterials;
 - (void)_updateSliderMarkViewColors;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)setBarHeight:(double)a3;
-- (void)setBarWidth:(double)a3;
-- (void)setContentIntersection:(CGRect)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setFilledBarVisualEffect:(id)a3;
-- (void)setFineScrubbingStyle:(unint64_t)a3;
-- (void)setMaximumValueView:(id)a3;
-- (void)setPrefersSliderTrackHidden:(BOOL)a3;
-- (void)setSliderMarks:(id)a3;
-- (void)setSnappingValues:(id)a3;
-- (void)setStretchLimit:(double)a3;
-- (void)setTintState:(unint64_t)a3;
-- (void)setTotalValue:(float)a3;
-- (void)setUnfilledBarVisualEffect:(id)a3;
-- (void)setUsesVolumeStyle:(BOOL)a3;
-- (void)setVariableSpeedScrubbingOffsetMultiplier:(double)a3;
+- (void)setBarHeight:(double)height;
+- (void)setBarWidth:(double)width;
+- (void)setContentIntersection:(CGRect)intersection;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setFilledBarVisualEffect:(id)effect;
+- (void)setFineScrubbingStyle:(unint64_t)style;
+- (void)setMaximumValueView:(id)view;
+- (void)setPrefersSliderTrackHidden:(BOOL)hidden;
+- (void)setSliderMarks:(id)marks;
+- (void)setSnappingValues:(id)values;
+- (void)setStretchLimit:(double)limit;
+- (void)setTintState:(unint64_t)state;
+- (void)setTotalValue:(float)value;
+- (void)setUnfilledBarVisualEffect:(id)effect;
+- (void)setUsesVolumeStyle:(BOOL)style;
+- (void)setVariableSpeedScrubbingOffsetMultiplier:(double)multiplier;
 - (void)updateForContentIntersection;
 @end
 
@@ -101,25 +101,25 @@
     if (self->_isOverVideo != v8)
     {
       self->_isOverVideo = v8;
-      v9 = [(AVMobileChromelessFluidSlider *)self contentIntersectingDelegate];
-      if (v9)
+      contentIntersectingDelegate = [(AVMobileChromelessFluidSlider *)self contentIntersectingDelegate];
+      if (contentIntersectingDelegate)
       {
-        v10 = v9;
-        [v9 viewIsOverVideoDidChange:self];
-        v9 = v10;
+        v10 = contentIntersectingDelegate;
+        [contentIntersectingDelegate viewIsOverVideoDidChange:self];
+        contentIntersectingDelegate = v10;
       }
     }
   }
 }
 
-- (void)setContentIntersection:(CGRect)a3
+- (void)setContentIntersection:(CGRect)intersection
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = intersection.size.height;
+  width = intersection.size.width;
+  y = intersection.origin.y;
+  x = intersection.origin.x;
   p_contentIntersection = &self->_contentIntersection;
-  if (!CGRectEqualToRect(a3, self->_contentIntersection))
+  if (!CGRectEqualToRect(intersection, self->_contentIntersection))
   {
     p_contentIntersection->origin.x = x;
     p_contentIntersection->origin.y = y;
@@ -130,64 +130,64 @@
   }
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  if ([(AVMobileChromelessFluidSlider *)self isEnabled]!= a3)
+  enabledCopy = enabled;
+  if ([(AVMobileChromelessFluidSlider *)self isEnabled]!= enabled)
   {
     v5.receiver = self;
     v5.super_class = AVMobileChromelessFluidSlider;
-    [(AVMobileChromelessFluidSlider *)&v5 setEnabled:v3];
+    [(AVMobileChromelessFluidSlider *)&v5 setEnabled:enabledCopy];
     [(AVMobileChromelessFluidSlider *)&self->super.super.super.super.super.isa _updateSliderBarMaterials];
   }
 }
 
 - (void)_updateSliderBarMaterials
 {
-  if (a1)
+  if (self)
   {
-    v5 = a1[67];
-    v2 = a1[68];
-    if ([a1 isEnabled])
+    v5 = self[67];
+    v2 = self[68];
+    if ([self isEnabled])
     {
-      v3 = a1[77];
+      v3 = self[77];
 
-      v4 = a1[83];
+      v4 = self[83];
       v5 = v3;
       v2 = v4;
     }
 
-    [a1[71] setMaximumTrackEffect:v2];
-    [a1[71] setMinimumTrackEffect:v5];
-    [a1 _setSliderConfiguration:a1[71]];
+    [self[71] setMaximumTrackEffect:v2];
+    [self[71] setMinimumTrackEffect:v5];
+    [self _setSliderConfiguration:self[71]];
   }
 }
 
-- (void)_sliderFluidInteractionWillRubberband:(id)a3 insets:(UIEdgeInsets)a4
+- (void)_sliderFluidInteractionWillRubberband:(id)rubberband insets:(UIEdgeInsets)insets
 {
-  right = a4.right;
-  bottom = a4.bottom;
-  left = a4.left;
-  top = a4.top;
-  v9 = [(AVMobileChromelessFluidSlider *)self delegate];
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  delegate = [(AVMobileChromelessFluidSlider *)self delegate];
   v10 = objc_opt_respondsToSelector();
 
   if (v10)
   {
-    v11 = [(AVMobileChromelessFluidSlider *)self delegate];
-    [v11 slider:self didExtendWithInsets:{top, left, bottom, right}];
+    delegate2 = [(AVMobileChromelessFluidSlider *)self delegate];
+    [delegate2 slider:self didExtendWithInsets:{top, left, bottom, right}];
   }
 }
 
-- (void)_sliderFluidInteractionDidEnd:(id)a3
+- (void)_sliderFluidInteractionDidEnd:(id)end
 {
-  v4 = [(AVMobileChromelessFluidSlider *)self delegate];
+  delegate = [(AVMobileChromelessFluidSlider *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(AVMobileChromelessFluidSlider *)self delegate];
-    [v6 sliderDidEndTracking:self];
+    delegate2 = [(AVMobileChromelessFluidSlider *)self delegate];
+    [delegate2 sliderDidEndTracking:self];
   }
 
   [(AVMobileChromelessFluidSlider *)self _sliderSpeedMultiplier];
@@ -200,30 +200,30 @@
   }
 }
 
-- (void)_notifyDelegateAboutSpeedRateChangeToRate:(void *)a1
+- (void)_notifyDelegateAboutSpeedRateChangeToRate:(void *)rate
 {
-  if (a1)
+  if (rate)
   {
-    v4 = [a1 delegate];
+    delegate = [rate delegate];
     v5 = objc_opt_respondsToSelector();
 
     if (v5)
     {
-      v6 = [a1 delegate];
-      [v6 slider:a1 didChangeScrubbingRate:a2];
+      delegate2 = [rate delegate];
+      [delegate2 slider:rate didChangeScrubbingRate:a2];
     }
   }
 }
 
-- (void)_sliderFluidInteractionWillEnd:(id)a3
+- (void)_sliderFluidInteractionWillEnd:(id)end
 {
-  v4 = [(AVMobileChromelessFluidSlider *)self delegate];
+  delegate = [(AVMobileChromelessFluidSlider *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(AVMobileChromelessFluidSlider *)self delegate];
-    [v6 sliderWillEndTracking:self];
+    delegate2 = [(AVMobileChromelessFluidSlider *)self delegate];
+    [delegate2 sliderWillEndTracking:self];
   }
 
   if (self)
@@ -234,16 +234,16 @@
   }
 }
 
-- (void)_sliderFluidInteractionWillContinue:(id)a3 withLocation:(CGPoint)a4
+- (void)_sliderFluidInteractionWillContinue:(id)continue withLocation:(CGPoint)location
 {
-  y = a4.y;
-  if ([(AVMobileChromelessFluidSlider *)self fineScrubbingStyle:a3])
+  y = location.y;
+  if ([(AVMobileChromelessFluidSlider *)self fineScrubbingStyle:continue])
   {
     [(AVMobileChromelessFluidSlider *)self center];
     v7 = y - v6;
-    v8 = [(AVMobileChromelessFluidSlider *)self fineScrubbingStyle];
-    v9 = [(AVMobileChromelessFluidSlider *)self fineScrubbingStyle];
-    if (((v8 & 2) != 0 || v7 <= 0.0) && ((v9 & 1) != 0 || v7 >= 0.0))
+    fineScrubbingStyle = [(AVMobileChromelessFluidSlider *)self fineScrubbingStyle];
+    fineScrubbingStyle2 = [(AVMobileChromelessFluidSlider *)self fineScrubbingStyle];
+    if (((fineScrubbingStyle & 2) != 0 || v7 <= 0.0) && ((fineScrubbingStyle2 & 1) != 0 || v7 >= 0.0))
     {
       v10 = fabs(v7);
       variableSpeedScrubbingOffsetMultiplier = self->_variableSpeedScrubbingOffsetMultiplier;
@@ -288,15 +288,15 @@
   }
 }
 
-- (void)_sliderFluidInteractionWillBegin:(id)a3 withLocation:(CGPoint)a4
+- (void)_sliderFluidInteractionWillBegin:(id)begin withLocation:(CGPoint)location
 {
-  v5 = [(AVMobileChromelessFluidSlider *)self delegate:a3];
+  v5 = [(AVMobileChromelessFluidSlider *)self delegate:begin];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(AVMobileChromelessFluidSlider *)self delegate];
-    [v7 sliderDidBeginTracking:self];
+    delegate = [(AVMobileChromelessFluidSlider *)self delegate];
+    [delegate sliderDidBeginTracking:self];
   }
 
   if (self)
@@ -304,11 +304,11 @@
     [(UIPointerInteraction *)self->_sliderPointerInteraction invalidate];
   }
 
-  v8 = [(AVMobileChromelessFluidSlider *)self fineScrubbingStyle];
+  fineScrubbingStyle = [(AVMobileChromelessFluidSlider *)self fineScrubbingStyle];
   speedChangeFeedbackGenerator = self->_speedChangeFeedbackGenerator;
   if (speedChangeFeedbackGenerator)
   {
-    v10 = v8 == 0;
+    v10 = fineScrubbingStyle == 0;
   }
 
   else
@@ -323,22 +323,22 @@
   }
 }
 
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region
 {
-  [(AVView *)self->_contentView frame:a3];
+  [(AVView *)self->_contentView frame:interaction];
   v5 = MEMORY[0x1E69DCDC0];
 
   return [v5 regionWithRect:0 identifier:?];
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
   v4 = MEMORY[0x1E69DD070];
-  v5 = a3;
+  interactionCopy = interaction;
   v6 = [v4 alloc];
-  v7 = [v5 view];
+  view = [interactionCopy view];
 
-  v8 = [v6 initWithView:v7];
+  v8 = [v6 initWithView:view];
   v9 = [MEMORY[0x1E69DCDA8] effectWithPreview:v8];
   [v9 setPreferredTintMode:0];
   v10 = [MEMORY[0x1E69DCDD0] styleWithEffect:v9 shape:0];
@@ -346,14 +346,14 @@
   return v10;
 }
 
-- (void)_traitCollectionDidChange:(id)a3
+- (void)_traitCollectionDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [(AVMobileChromelessFluidSlider *)self traitCollection];
-  v6 = [v5 userInterfaceStyle];
-  v7 = [v4 userInterfaceStyle];
+  changeCopy = change;
+  traitCollection = [(AVMobileChromelessFluidSlider *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
+  userInterfaceStyle2 = [changeCopy userInterfaceStyle];
 
-  if (v6 != v7)
+  if (userInterfaceStyle != userInterfaceStyle2)
   {
     [(AVMobileChromelessFluidSlider *)self _updateBarVisualEffectsIfNeeded];
 
@@ -364,54 +364,54 @@
 - (void)_updateBarVisualEffectsIfNeeded
 {
   v21[2] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v2 = [a1 traitCollection];
-    v3 = [v2 userInterfaceStyle];
+    traitCollection = [self traitCollection];
+    userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-    if (v3 == 1)
+    if (userInterfaceStyle == 1)
     {
-      if ((*(a1 + 577) & 1) == 0)
+      if ((*(self + 577) & 1) == 0)
       {
         v4 = MEMORY[0x1E69DD290];
-        v5 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-        v6 = [v4 effectCompositingColor:v5];
+        secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+        v6 = [v4 effectCompositingColor:secondaryLabelColor];
         v21[0] = v6;
         v7 = [MEMORY[0x1E69DC730] effectWithStyle:13];
         v21[1] = v7;
         v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:2];
         v9 = [v4 effectCombiningEffects:v8];
-        v10 = *(a1 + 616);
-        *(a1 + 616) = v9;
+        v10 = *(self + 616);
+        *(self + 616) = v9;
       }
 
-      if ((*(a1 + 578) & 1) == 0)
+      if ((*(self + 578) & 1) == 0)
       {
         v11 = MEMORY[0x1E69DD290];
-        v12 = [MEMORY[0x1E69DC888] tertiarySystemFillColor];
-        v13 = [v11 effectCompositingColor:v12];
+        tertiarySystemFillColor = [MEMORY[0x1E69DC888] tertiarySystemFillColor];
+        v13 = [v11 effectCompositingColor:tertiarySystemFillColor];
         v20[0] = v13;
         v14 = [MEMORY[0x1E69DC730] effectWithStyle:13];
         v20[1] = v14;
         v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:2];
         v16 = [v11 effectCombiningEffects:v15];
-        v17 = *(a1 + 664);
-        *(a1 + 664) = v16;
+        v17 = *(self + 664);
+        *(self + 664) = v16;
       }
     }
 
     else
     {
-      if ((*(a1 + 577) & 1) == 0)
+      if ((*(self + 577) & 1) == 0)
       {
         v18 = [MEMORY[0x1E69DC730] effectWithStyle:14];
-        v19 = *(a1 + 616);
-        *(a1 + 616) = v18;
+        v19 = *(self + 616);
+        *(self + 616) = v18;
       }
 
-      if ((*(a1 + 578) & 1) == 0)
+      if ((*(self + 578) & 1) == 0)
       {
-        *(a1 + 664) = [MEMORY[0x1E69DC730] effectWithStyle:11];
+        *(self + 664) = [MEMORY[0x1E69DC730] effectWithStyle:11];
 
         MEMORY[0x1EEE66BB8]();
       }
@@ -419,10 +419,10 @@
   }
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   [(AVMobileChromelessFluidSlider *)self hitRect];
   v10 = x;
   v11 = y;
@@ -435,10 +435,10 @@
   v23.receiver = self;
   v23.super_class = AVMobileChromelessFluidSlider;
   [(AVMobileChromelessFluidSlider *)&v23 layoutSubviews];
-  v3 = [(AVMobileChromelessFluidSlider *)self effectiveUserInterfaceLayoutDirection];
+  effectiveUserInterfaceLayoutDirection = [(AVMobileChromelessFluidSlider *)self effectiveUserInterfaceLayoutDirection];
   contentView = self->_contentView;
   [(AVMobileChromelessFluidSlider *)self bounds];
-  [(UIView *)contentView avkit_setFrame:v3 inLayoutDirection:?];
+  [(UIView *)contentView avkit_setFrame:effectiveUserInterfaceLayoutDirection inLayoutDirection:?];
   if ([(NSArray *)self->_sliderMarks count])
   {
     v5 = [(NSArray *)self->_sliderMarks count];
@@ -475,43 +475,43 @@
         v17 = v16;
         v19 = v18;
         [v12 setFrame:?];
-        v20 = [(AVMobileChromelessFluidSlider *)self delegate];
+        delegate = [(AVMobileChromelessFluidSlider *)self delegate];
         v21 = objc_opt_respondsToSelector();
 
         if (v21)
         {
-          v22 = [(AVMobileChromelessFluidSlider *)self delegate];
-          [v22 slider:self didUpdateFrame:v11 forSliderMark:{v13, v15, v17, v19}];
+          delegate2 = [(AVMobileChromelessFluidSlider *)self delegate];
+          [delegate2 slider:self didUpdateFrame:v11 forSliderMark:{v13, v15, v17, v19}];
         }
       }
     }
   }
 }
 
-- (double)_frameForSliderMark:(uint64_t)a1
+- (double)_frameForSliderMark:(uint64_t)mark
 {
   v3 = a2;
-  if (a1)
+  if (mark)
   {
-    [a1 bounds];
+    [mark bounds];
     v5 = v4;
     v6 = v3;
-    [a1 bounds];
+    [mark bounds];
     v8 = v7;
-    v9 = [v6 markType];
-    if (v9 == 2)
+    markType = [v6 markType];
+    if (markType == 2)
     {
       [v6 endValue];
       v20 = v19;
       [v6 startValue];
       v22 = v20 - v21;
-      [a1 maximumValue];
+      [mark maximumValue];
       v24 = v23;
-      [a1 minimumValue];
+      [mark minimumValue];
       v10 = fmax(v8 * (v22 / (v24 - v25)), 10.0);
     }
 
-    else if (v9 == 1)
+    else if (markType == 1)
     {
       v10 = 3.5;
     }
@@ -519,15 +519,15 @@
     else
     {
       v10 = 0.0;
-      if (!v9)
+      if (!markType)
       {
         [v6 endValue];
         v12 = v11;
         [v6 startValue];
         v14 = v12 - v13;
-        [a1 maximumValue];
+        [mark maximumValue];
         v16 = v15;
-        [a1 minimumValue];
+        [mark minimumValue];
         v18 = v8 * (v14 / (v16 - v17));
         if (v18 >= 5.5)
         {
@@ -543,20 +543,20 @@
 
     [v6 startValue];
     v27 = v26;
-    if (*(a1 + 576) == 1)
+    if (*(mark + 576) == 1)
     {
-      v28 = *(a1 + 584);
+      v28 = *(mark + 584);
     }
 
     else
     {
-      [a1 maximumValue];
+      [mark maximumValue];
       v28 = v29;
     }
 
-    [a1 minimumValue];
+    [mark minimumValue];
     v31 = v27 - v30;
-    [a1 minimumValue];
+    [mark minimumValue];
     v33 = (v31 / (v28 - v32));
     if ([v6 markType] == 2)
     {
@@ -620,10 +620,10 @@
   return result;
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = [a3 view];
-  LOBYTE(self) = [v4 isDescendantOfView:self];
+  view = [begin view];
+  LOBYTE(self) = [view isDescendantOfView:self];
 
   return self;
 }
@@ -649,15 +649,15 @@
   if (result)
   {
     v1 = result;
-    v2 = [result tintState];
+    tintState = [result tintState];
     objc_opt_self();
-    if (v2 >= 3)
+    if (tintState >= 3)
     {
       v4 = _AVLog();
       if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
       {
         v5 = 134217984;
-        v6 = v2;
+        v6 = tintState;
         _os_log_error_impl(&dword_18B49C000, v4, OS_LOG_TYPE_ERROR, "Error: Unrecognized slider tint state %ld", &v5, 0xCu);
       }
 
@@ -666,7 +666,7 @@
 
     else
     {
-      v3 = dbl_18B6EC600[v2];
+      v3 = dbl_18B6EC600[tintState];
     }
 
     return [v1 setAlpha:v3];
@@ -677,10 +677,10 @@
 
 - (void)_updateSliderMarkViewColors
 {
-  if (a1)
+  if (self)
   {
-    v2 = [a1[80] count];
-    if (v2 != [a1[66] count])
+    v2 = [self[80] count];
+    if (v2 != [self[66] count])
     {
       v3 = _AVLog();
       if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
@@ -690,8 +690,8 @@
       }
     }
 
-    v4 = [a1[80] count];
-    v5 = [a1[66] count];
+    v4 = [self[80] count];
+    v5 = [self[66] count];
     if (v4 >= v5)
     {
       v6 = v5;
@@ -706,29 +706,29 @@
     {
       for (i = 0; i != v6; ++i)
       {
-        v8 = [a1[80] objectAtIndex:i];
-        v9 = [a1[66] objectAtIndex:i];
-        v10 = [v8 unfilledColor];
-        [a1 value];
+        v8 = [self[80] objectAtIndex:i];
+        v9 = [self[66] objectAtIndex:i];
+        unfilledColor = [v8 unfilledColor];
+        [self value];
         v12 = v11;
         [v8 startValue];
         if (v12 >= v13)
         {
-          v14 = [v8 filledColor];
+          filledColor = [v8 filledColor];
 
-          v10 = v14;
+          unfilledColor = filledColor;
         }
 
-        v15 = v10;
+        v15 = unfilledColor;
         objc_opt_self();
         objc_opt_self();
         v19 = 0.0;
         [v15 getRed:0 green:0 blue:0 alpha:&v19];
         v16 = [v15 colorWithAlphaComponent:v19];
 
-        v17 = [v9 backgroundColor];
+        backgroundColor = [v9 backgroundColor];
 
-        if (v17 != v16)
+        if (backgroundColor != v16)
         {
           [v9 setMarkColor:v16];
         }
@@ -737,9 +737,9 @@
   }
 }
 
-- (CGRect)trackRectForBounds:(CGRect)a3
+- (CGRect)trackRectForBounds:(CGRect)bounds
 {
-  [(AVMobileChromelessFluidSlider *)self bounds:a3.origin.x];
+  [(AVMobileChromelessFluidSlider *)self bounds:bounds.origin.x];
   v6 = v5;
   v8 = v7;
   if (fabs(self->_barWidth + 1.0) >= 2.22044605e-16)
@@ -755,13 +755,13 @@
   barHeight = self->_barHeight;
   if ([(AVMobileChromelessFluidSlider *)self effectiveUserInterfaceLayoutDirection]== 1)
   {
-    v11 = [(AVView *)self->_contentView superview];
-    [v11 bounds];
+    superview = [(AVView *)self->_contentView superview];
+    [superview bounds];
     v13 = v12;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v14 = v11;
+      v14 = superview;
       [v14 contentInset];
       v16 = v15;
       v18 = v17;
@@ -787,25 +787,25 @@
   return result;
 }
 
-- (void)setVariableSpeedScrubbingOffsetMultiplier:(double)a3
+- (void)setVariableSpeedScrubbingOffsetMultiplier:(double)multiplier
 {
-  if (self->_variableSpeedScrubbingOffsetMultiplier != a3)
+  if (self->_variableSpeedScrubbingOffsetMultiplier != multiplier)
   {
-    self->_variableSpeedScrubbingOffsetMultiplier = a3;
+    self->_variableSpeedScrubbingOffsetMultiplier = multiplier;
   }
 }
 
-- (void)setMaximumValueView:(id)a3
+- (void)setMaximumValueView:(id)view
 {
-  [(_UISliderFluidTickConfiguration *)self->_fluidSliderConfiguration setMaximumValueView:a3];
+  [(_UISliderFluidTickConfiguration *)self->_fluidSliderConfiguration setMaximumValueView:view];
   fluidSliderConfiguration = self->_fluidSliderConfiguration;
 
   [(AVMobileChromelessFluidSlider *)self _setSliderConfiguration:fluidSliderConfiguration];
 }
 
-- (CGRect)frameForSliderMark:(id)a3
+- (CGRect)frameForSliderMark:(id)mark
 {
-  v3 = [(AVMobileChromelessFluidSlider *)self _frameForSliderMark:a3];
+  v3 = [(AVMobileChromelessFluidSlider *)self _frameForSliderMark:mark];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -813,11 +813,11 @@
   return result;
 }
 
-- (void)setUsesVolumeStyle:(BOOL)a3
+- (void)setUsesVolumeStyle:(BOOL)style
 {
-  if (self->_usesVolumeStyle != a3)
+  if (self->_usesVolumeStyle != style)
   {
-    self->_usesVolumeStyle = a3;
+    self->_usesVolumeStyle = style;
     [(AVMobileChromelessFluidSlider *)self _updateSliderStyle];
   }
 }
@@ -847,35 +847,35 @@
   return result;
 }
 
-- (void)setUnfilledBarVisualEffect:(id)a3
+- (void)setUnfilledBarVisualEffect:(id)effect
 {
-  v5 = a3;
+  effectCopy = effect;
   self->_hasSetUnFilledBarVisualEffect = 1;
-  if (self->_unfilledBarVisualEffect != v5)
+  if (self->_unfilledBarVisualEffect != effectCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_unfilledBarVisualEffect, a3);
+    v6 = effectCopy;
+    objc_storeStrong(&self->_unfilledBarVisualEffect, effect);
     [(AVMobileChromelessFluidSlider *)&self->super.super.super.super.super.isa _updateSliderBarMaterials];
-    v5 = v6;
+    effectCopy = v6;
   }
 }
 
-- (void)setTotalValue:(float)a3
+- (void)setTotalValue:(float)value
 {
   v18 = v9;
   v19 = v8;
   v20 = v7;
   v21 = v3;
-  if (vabds_f32(self->_totalValue, a3) >= 0.00000011921)
+  if (vabds_f32(self->_totalValue, value) >= 0.00000011921)
   {
-    self->_totalValue = a3;
+    self->_totalValue = value;
     [(AVMobileChromelessFluidSlider *)self maximumValue];
     v14 = v13;
     [(AVMobileChromelessFluidSlider *)self maximumValue];
     v16 = v15;
     if (objc_opt_respondsToSelector())
     {
-      *&v17 = v16 - (a3 - v14);
+      *&v17 = v16 - (value - v14);
       [(AVMobileChromelessFluidSlider *)self _setMaximumEnabledValue:v17];
     }
 
@@ -884,20 +884,20 @@
   }
 }
 
-- (void)setTintState:(unint64_t)a3
+- (void)setTintState:(unint64_t)state
 {
-  if (self->_tintState != a3)
+  if (self->_tintState != state)
   {
-    self->_tintState = a3;
+    self->_tintState = state;
     [(AVMobileChromelessFluidSlider *)self _updateBarTintStateAlpha];
   }
 }
 
-- (void)setStretchLimit:(double)a3
+- (void)setStretchLimit:(double)limit
 {
-  if (self->_stretchLimit != a3)
+  if (self->_stretchLimit != limit)
   {
-    self->_stretchLimit = a3;
+    self->_stretchLimit = limit;
     [(_UISliderFluidTickConfiguration *)self->_fluidSliderConfiguration setStretchLimit:?];
     fluidSliderConfiguration = self->_fluidSliderConfiguration;
 
@@ -905,13 +905,13 @@
   }
 }
 
-- (void)setSliderMarks:(id)a3
+- (void)setSliderMarks:(id)marks
 {
-  v5 = a3;
-  if (self->_sliderMarks != v5)
+  marksCopy = marks;
+  if (self->_sliderMarks != marksCopy)
   {
-    v22 = v5;
-    objc_storeStrong(&self->_sliderMarks, a3);
+    v22 = marksCopy;
+    objc_storeStrong(&self->_sliderMarks, marks);
     v6 = [(NSMutableArray *)self->_sliderMarkViews count];
     if (v6 != [(NSArray *)self->_sliderMarks count])
     {
@@ -929,9 +929,9 @@
             break;
           }
 
-          v11 = objc_alloc_init(AVMobileFluidSliderMarkView);
+          lastObject = objc_alloc_init(AVMobileFluidSliderMarkView);
           v13 = [(NSArray *)self->_sliderMarks objectAtIndex:[(NSMutableArray *)self->_sliderMarkViews count]];
-          v14 = [v13 markType];
+          markType = [v13 markType];
 
           v15 = self->_barHeight + -1.0;
           if (v15 < 1.0)
@@ -940,7 +940,7 @@
           }
 
           v16 = v15 * 0.5;
-          if (v14 == 1)
+          if (markType == 1)
           {
             v17 = 1.75;
           }
@@ -950,25 +950,25 @@
             v17 = v16;
           }
 
-          [(AVMobileFluidSliderMarkView *)v11 setAutoresizingMask:0];
-          [(AVMobileFluidSliderMarkView *)v11 setUserInteractionEnabled:0];
-          v18 = [(AVMobileFluidSliderMarkView *)v11 layer];
-          [v18 setMasksToBounds:1];
+          [(AVMobileFluidSliderMarkView *)lastObject setAutoresizingMask:0];
+          [(AVMobileFluidSliderMarkView *)lastObject setUserInteractionEnabled:0];
+          layer = [(AVMobileFluidSliderMarkView *)lastObject layer];
+          [layer setMasksToBounds:1];
 
-          v19 = [(AVMobileFluidSliderMarkView *)v11 layer];
-          [v19 setCornerRadius:v17];
+          layer2 = [(AVMobileFluidSliderMarkView *)lastObject layer];
+          [layer2 setCornerRadius:v17];
 
-          v20 = [(AVMobileFluidSliderMarkView *)v11 layer];
-          [v20 setCornerCurve:v7];
+          layer3 = [(AVMobileFluidSliderMarkView *)lastObject layer];
+          [layer3 setCornerCurve:v7];
 
-          [(AVMobileChromelessFluidSlider *)self addSubview:v11];
-          [(NSMutableArray *)self->_sliderMarkViews addObject:v11];
+          [(AVMobileChromelessFluidSlider *)self addSubview:lastObject];
+          [(NSMutableArray *)self->_sliderMarkViews addObject:lastObject];
         }
 
         else
         {
-          v11 = [(NSMutableArray *)sliderMarkViews lastObject];
-          [(AVMobileFluidSliderMarkView *)v11 removeFromSuperview];
+          lastObject = [(NSMutableArray *)sliderMarkViews lastObject];
+          [(AVMobileFluidSliderMarkView *)lastObject removeFromSuperview];
           [(NSMutableArray *)self->_sliderMarkViews removeLastObject];
         }
 
@@ -980,34 +980,34 @@
 
     [(AVMobileChromelessFluidSlider *)&self->super.super.super.super.super.isa _updateSliderMarkViewColors];
     [(AVMobileChromelessFluidSlider *)self setNeedsLayout];
-    v5 = v22;
+    marksCopy = v22;
   }
 }
 
-- (void)setSnappingValues:(id)a3
+- (void)setSnappingValues:(id)values
 {
-  v5 = a3;
-  if (self->_snappingValues != v5)
+  valuesCopy = values;
+  if (self->_snappingValues != valuesCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_snappingValues, a3);
+    v6 = valuesCopy;
+    objc_storeStrong(&self->_snappingValues, values);
     [(AVMobileChromelessFluidSlider *)self _setUpSliderConfigurationIfNeeded];
-    v5 = v6;
+    valuesCopy = v6;
   }
 }
 
 - (void)_setUpSliderConfigurationIfNeeded
 {
   v27 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v2 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v3 = [a1 snappingValues];
-    v4 = [v3 countByEnumeratingWithState:&v22 objects:v26 count:16];
+    snappingValues = [self snappingValues];
+    v4 = [snappingValues countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v4)
     {
       v5 = v4;
@@ -1018,70 +1018,70 @@
         {
           if (*v23 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(snappingValues);
           }
 
           [*(*(&v22 + 1) + 8 * i) floatValue];
           v9 = v8;
-          if (*(a1 + 576) == 1)
+          if (*(self + 576) == 1)
           {
-            v10 = *(a1 + 584);
+            v10 = *(self + 584);
           }
 
           else
           {
-            [a1 maximumValue];
+            [self maximumValue];
             v10 = v11;
           }
 
-          [a1 minimumValue];
+          [self minimumValue];
           v13 = v9 - v12;
-          [a1 minimumValue];
+          [self minimumValue];
           v15 = v13 / (v10 - v14);
           v16 = objc_alloc(MEMORY[0x1E69DD728]);
           *&v17 = v15;
           v18 = [v16 initWithPosition:0 title:0 image:v17];
-          [v2 addObject:v18];
+          [array addObject:v18];
         }
 
-        v5 = [v3 countByEnumeratingWithState:&v22 objects:v26 count:16];
+        v5 = [snappingValues countByEnumeratingWithState:&v22 objects:v26 count:16];
       }
 
       while (v5);
     }
 
-    v19 = [objc_alloc(MEMORY[0x1E69DD720]) initWithTicks:v2 behavior:2];
-    v20 = *(a1 + 568);
-    *(a1 + 568) = v19;
+    v19 = [objc_alloc(MEMORY[0x1E69DD720]) initWithTicks:array behavior:2];
+    v20 = *(self + 568);
+    *(self + 568) = v19;
 
-    [*(a1 + 568) setTickStyle:0x7FFFFFFFFFFFFFFFLL];
+    [*(self + 568) setTickStyle:0x7FFFFFFFFFFFFFFFLL];
     LODWORD(v21) = 1008981770;
-    [*(a1 + 568) setSnappingDistance:v21];
-    [*(a1 + 568) setDelegate:a1];
-    [*(a1 + 568) setExpansionFactor:1.0];
-    [*(a1 + 568) setStretchLimit:17.0];
-    [*(a1 + 568) setMaximumTrackEffect:*(a1 + 664)];
-    [*(a1 + 568) setMinimumTrackEffect:*(a1 + 616)];
-    [a1 _setSliderConfiguration:*(a1 + 568)];
+    [*(self + 568) setSnappingDistance:v21];
+    [*(self + 568) setDelegate:self];
+    [*(self + 568) setExpansionFactor:1.0];
+    [*(self + 568) setStretchLimit:17.0];
+    [*(self + 568) setMaximumTrackEffect:*(self + 664)];
+    [*(self + 568) setMinimumTrackEffect:*(self + 616)];
+    [self _setSliderConfiguration:*(self + 568)];
   }
 }
 
-- (void)setPrefersSliderTrackHidden:(BOOL)a3
+- (void)setPrefersSliderTrackHidden:(BOOL)hidden
 {
-  if (self->_prefersSliderTrackHidden != a3)
+  if (self->_prefersSliderTrackHidden != hidden)
   {
-    self->_prefersSliderTrackHidden = a3;
+    self->_prefersSliderTrackHidden = hidden;
     [(AVMobileChromelessFluidSlider *)self _setFluidTrackHidden:?];
 
     [(AVMobileChromelessFluidSlider *)self setNeedsLayout];
   }
 }
 
-- (void)setFineScrubbingStyle:(unint64_t)a3
+- (void)setFineScrubbingStyle:(unint64_t)style
 {
-  if (self->_fineScrubbingStyle != a3)
+  if (self->_fineScrubbingStyle != style)
   {
-    self->_fineScrubbingStyle = a3;
+    self->_fineScrubbingStyle = style;
     if ([(AVMobileChromelessFluidSlider *)self fineScrubbingStyle])
     {
       if (!self->_speedChangeFeedbackGenerator)
@@ -1094,24 +1094,24 @@
   }
 }
 
-- (void)setFilledBarVisualEffect:(id)a3
+- (void)setFilledBarVisualEffect:(id)effect
 {
-  v5 = a3;
+  effectCopy = effect;
   self->_hasSetFilledBarVisualEffect = 1;
-  if (self->_filledBarVisualEffect != v5)
+  if (self->_filledBarVisualEffect != effectCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_filledBarVisualEffect, a3);
+    v6 = effectCopy;
+    objc_storeStrong(&self->_filledBarVisualEffect, effect);
     [(AVMobileChromelessFluidSlider *)&self->super.super.super.super.super.isa _updateSliderBarMaterials];
-    v5 = v6;
+    effectCopy = v6;
   }
 }
 
-- (void)setBarWidth:(double)a3
+- (void)setBarWidth:(double)width
 {
-  if (self->_barWidth != a3)
+  if (self->_barWidth != width)
   {
-    self->_barWidth = a3;
+    self->_barWidth = width;
     [(AVMobileChromelessFluidSlider *)self setNeedsLayout];
     sliderPointerInteraction = self->_sliderPointerInteraction;
 
@@ -1119,14 +1119,14 @@
   }
 }
 
-- (void)setBarHeight:(double)a3
+- (void)setBarHeight:(double)height
 {
-  if (self->_barHeight != a3)
+  if (self->_barHeight != height)
   {
-    self->_barHeight = a3;
+    self->_barHeight = height;
     [(AVMobileChromelessFluidSlider *)self invalidateIntrinsicContentSize];
-    v5 = [(AVMobileChromelessFluidSlider *)self superview];
-    [v5 avkit_intrinsicContentSizeOfSubviewWasInvalidated:self];
+    superview = [(AVMobileChromelessFluidSlider *)self superview];
+    [superview avkit_intrinsicContentSizeOfSubviewWasInvalidated:self];
 
     [(AVMobileChromelessFluidSlider *)self setNeedsLayout];
     sliderPointerInteraction = self->_sliderPointerInteraction;

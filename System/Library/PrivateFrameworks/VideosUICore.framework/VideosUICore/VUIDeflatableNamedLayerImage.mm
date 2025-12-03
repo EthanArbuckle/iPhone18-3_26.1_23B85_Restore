@@ -7,17 +7,17 @@
 
 - (void)_inflateLayerStack
 {
-  v3 = [(VUINamedLayerStack *)self originalImage];
-  v4 = [v3 imageAsset];
-  v5 = [v4 _layerStack];
+  originalImage = [(VUINamedLayerStack *)self originalImage];
+  imageAsset = [originalImage imageAsset];
+  _layerStack = [imageAsset _layerStack];
 
-  v6 = [v5 layers];
+  layers = [_layerStack layers];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __50__VUIDeflatableNamedLayerImage__inflateLayerStack__block_invoke;
   v7[3] = &unk_279E21438;
   v7[4] = self;
-  [v6 enumerateObjectsUsingBlock:v7];
+  [layers enumerateObjectsUsingBlock:v7];
 }
 
 void __50__VUIDeflatableNamedLayerImage__inflateLayerStack__block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -47,8 +47,8 @@ void __50__VUIDeflatableNamedLayerImage__inflateLayerStack__block_invoke(uint64_
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(VUINamedLayerStack *)self layers];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  layers = [(VUINamedLayerStack *)self layers];
+  v3 = [layers countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = v3;
@@ -60,14 +60,14 @@ void __50__VUIDeflatableNamedLayerImage__inflateLayerStack__block_invoke(uint64_
       {
         if (*v8 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(layers);
         }
 
         [*(*(&v7 + 1) + 8 * v6++) setDecodedImage:0];
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v4 = [layers countByEnumeratingWithState:&v7 objects:v11 count:16];
     }
 
     while (v4);

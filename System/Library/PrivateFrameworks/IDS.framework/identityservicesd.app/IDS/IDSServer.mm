@@ -1,17 +1,17 @@
 @interface IDSServer
-- (IDSServer)initWithQueue:(id)a3;
-- (IDSServer)initWithQueue:(id)a3 messageDelivery:(id)a4;
-- (id)_DSAuthIDForPushToken:(id)a3;
-- (id)_authenticateMessageForRequest:(id)a3;
-- (id)_stringRepresentationForRealm:(int64_t)a3;
-- (id)authenticatePhoneUserWithRequest:(id)a3;
+- (IDSServer)initWithQueue:(id)queue;
+- (IDSServer)initWithQueue:(id)queue messageDelivery:(id)delivery;
+- (id)_DSAuthIDForPushToken:(id)token;
+- (id)_authenticateMessageForRequest:(id)request;
+- (id)_stringRepresentationForRealm:(int64_t)realm;
+- (id)authenticatePhoneUserWithRequest:(id)request;
 @end
 
 @implementation IDSServer
 
-- (IDSServer)initWithQueue:(id)a3
+- (IDSServer)initWithQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v5 = objc_alloc_init(+[FTMessageDelivery HTTPMessageDeliveryClass]);
   [v5 setUserAgent:@"com.apple.invitation-registration"];
   [v5 setRetryInAirplaneMode:1];
@@ -19,63 +19,63 @@
   v6 = +[IDSRegistrationRequestTracker sharedInstance];
   [v5 addRequestObserver:v6];
 
-  v7 = [(IDSServer *)self initWithQueue:v4 messageDelivery:v5];
+  v7 = [(IDSServer *)self initWithQueue:queueCopy messageDelivery:v5];
   return v7;
 }
 
-- (IDSServer)initWithQueue:(id)a3 messageDelivery:(id)a4
+- (IDSServer)initWithQueue:(id)queue messageDelivery:(id)delivery
 {
-  v7 = a3;
-  v8 = a4;
+  queueCopy = queue;
+  deliveryCopy = delivery;
   v12.receiver = self;
   v12.super_class = IDSServer;
   v9 = [(IDSServer *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_queue, a3);
-    objc_storeStrong(&v10->_messageDelivery, a4);
+    objc_storeStrong(&v9->_queue, queue);
+    objc_storeStrong(&v10->_messageDelivery, delivery);
   }
 
   return v10;
 }
 
-- (id)authenticatePhoneUserWithRequest:(id)a3
+- (id)authenticatePhoneUserWithRequest:(id)request
 {
-  v4 = [(IDSServer *)self queue];
-  dispatch_assert_queue_V2(v4);
+  queue = [(IDSServer *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v5 = [CUTPromiseSeal alloc];
-  v6 = [(IDSServer *)self queue];
-  v7 = [v5 initWithQueue:v6];
+  queue2 = [(IDSServer *)self queue];
+  v7 = [v5 initWithQueue:queue2];
 
-  v8 = [v7 promise];
+  promise = [v7 promise];
 
-  return v8;
+  return promise;
 }
 
-- (id)_stringRepresentationForRealm:(int64_t)a3
+- (id)_stringRepresentationForRealm:(int64_t)realm
 {
-  if (a3 > 2)
+  if (realm > 2)
   {
     return 0;
   }
 
   else
   {
-    return off_100BE6058[a3];
+    return off_100BE6058[realm];
   }
 }
 
-- (id)_DSAuthIDForPushToken:(id)a3
+- (id)_DSAuthIDForPushToken:(id)token
 {
-  v3 = a3;
+  tokenCopy = token;
   v4 = sub_10001F670();
   if (![v4 length])
   {
-    v5 = [v3 SHA1HexString];
-    v6 = [v5 uppercaseString];
-    v7 = [NSString stringWithFormat:@"t:%@", v6];
+    sHA1HexString = [tokenCopy SHA1HexString];
+    uppercaseString = [sHA1HexString uppercaseString];
+    v7 = [NSString stringWithFormat:@"t:%@", uppercaseString];
 
     v4 = v7;
   }
@@ -83,35 +83,35 @@
   return v4;
 }
 
-- (id)_authenticateMessageForRequest:(id)a3
+- (id)_authenticateMessageForRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = objc_alloc_init(IDSAuthenticateMessage);
-  v6 = [v4 user];
-  v7 = [v6 realmPrefixedIdentifier];
-  [(IDSAuthenticateMessage *)v5 setUserID:v7];
+  user = [requestCopy user];
+  realmPrefixedIdentifier = [user realmPrefixedIdentifier];
+  [(IDSAuthenticateMessage *)v5 setUserID:realmPrefixedIdentifier];
 
-  v8 = [v4 user];
-  v9 = -[IDSServer _stringRepresentationForRealm:](self, "_stringRepresentationForRealm:", [v8 realm]);
+  user2 = [requestCopy user];
+  v9 = -[IDSServer _stringRepresentationForRealm:](self, "_stringRepresentationForRealm:", [user2 realm]);
   [(IDSAuthenticateMessage *)v5 setRealm:v9];
 
-  v10 = [v4 certificateSigningRequest];
-  [(IDSAuthenticateMessage *)v5 setCsr:v10];
+  certificateSigningRequest = [requestCopy certificateSigningRequest];
+  [(IDSAuthenticateMessage *)v5 setCsr:certificateSigningRequest];
 
   v19[0] = @"push-token";
-  v11 = [v4 pushToken];
+  pushToken = [requestCopy pushToken];
   v19[1] = @"sigs";
-  v20[0] = v11;
-  v12 = [v4 phoneSignature];
-  v18 = v12;
+  v20[0] = pushToken;
+  phoneSignature = [requestCopy phoneSignature];
+  v18 = phoneSignature;
   v13 = [NSArray arrayWithObjects:&v18 count:1];
   v20[1] = v13;
   v14 = [NSDictionary dictionaryWithObjects:v20 forKeys:v19 count:2];
   [(IDSAuthenticateMessage *)v5 setAuthenticationInfo:v14];
 
-  v15 = [v4 pushToken];
+  pushToken2 = [requestCopy pushToken];
 
-  v16 = [(IDSServer *)self _DSAuthIDForPushToken:v15];
+  v16 = [(IDSServer *)self _DSAuthIDForPushToken:pushToken2];
   [(IDSAuthenticateMessage *)v5 setDSAuthID:v16];
 
   return v5;

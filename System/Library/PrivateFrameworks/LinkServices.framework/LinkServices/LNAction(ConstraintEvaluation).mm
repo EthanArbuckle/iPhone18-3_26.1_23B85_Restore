@@ -8,13 +8,13 @@
 {
   v17[1] = *MEMORY[0x1E69E9840];
   v6 = a3;
-  v7 = [a1 metadata];
-  v8 = v7;
-  if (v7)
+  metadata = [self metadata];
+  v8 = metadata;
+  if (metadata)
   {
     v9 = MEMORY[0x1E69AC658];
-    v10 = [v7 constraints];
-    v11 = [v9 evaluate:v10 inContext:v6 error:a4];
+    constraints = [metadata constraints];
+    v11 = [v9 evaluate:constraints inContext:v6 error:a4];
   }
 
   else if (a4)

@@ -42,17 +42,17 @@
 {
   MediaSubType = CMFormatDescriptionGetMediaSubType(desc);
   v5 = [(__CFDictionary *)CMFormatDescriptionGetExtensions(desc) objectForKeyedSubscript:@"MetadataKeyTable"];
-  v6 = [v5 allValues];
-  v7 = [MEMORY[0x277CBEB38] dictionary];
+  allValues = [v5 allValues];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:MediaSubType];
-  [v7 setObject:v8 forKey:@"formatType"];
+  [dictionary setObject:v8 forKey:@"formatType"];
 
-  if (v6)
+  if (allValues)
   {
-    [v7 setObject:v6 forKey:@"metadataKeys"];
+    [dictionary setObject:allValues forKey:@"metadataKeys"];
   }
 
-  return v7;
+  return dictionary;
 }
 
 + (CMMetadataFormatDescriptionRef)metadataFormatDescriptionFromDictionary:()MIOExtensions
@@ -60,11 +60,11 @@
   v14 = *MEMORY[0x277D85DE8];
   v3 = a3;
   v4 = [v3 objectForKey:@"formatType"];
-  v5 = [v4 intValue];
+  intValue = [v4 intValue];
 
   v6 = [v3 objectForKey:@"metadataKeys"];
   formatDescriptionOut = 0;
-  v7 = CMMetadataFormatDescriptionCreateWithKeys(*MEMORY[0x277CBECE8], v5, v6, &formatDescriptionOut);
+  v7 = CMMetadataFormatDescriptionCreateWithKeys(*MEMORY[0x277CBECE8], intValue, v6, &formatDescriptionOut);
   if (v7)
   {
     v8 = +[MIOLog defaultLog];
@@ -135,7 +135,7 @@
 + (CMMetadataFormatDescriptionRef)createMIOTimeRangeMetadataStreamFormatDescription
 {
   v20[2] = *MEMORY[0x277D85DE8];
-  v0 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v2 = *MEMORY[0x277CC0600];
   v19[0] = *MEMORY[0x277CC0610];
   v1 = v19[0];
@@ -144,14 +144,14 @@
   v20[0] = @"mdta/com.apple.stream_time_range_start";
   v20[1] = v3;
   v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:v19 count:2];
-  [v0 addObject:v4];
+  [array addObject:v4];
 
   v17[0] = v1;
   v17[1] = v2;
   v18[0] = @"mdta/com.apple.stream_time_range_end";
   v18[1] = v3;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:2];
-  [v0 addObject:v5];
+  [array addObject:v5];
 
   v15[0] = v1;
   v15[1] = v2;
@@ -159,10 +159,10 @@
   v16[0] = @"mdta/com.apple.stream_time_code";
   v16[1] = v6;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:v15 count:2];
-  [v0 addObject:v7];
+  [array addObject:v7];
 
   formatDescriptionOut = 0;
-  v8 = CMMetadataFormatDescriptionCreateWithMetadataSpecifications(*MEMORY[0x277CBECE8], 0x6D656278u, v0, &formatDescriptionOut);
+  v8 = CMMetadataFormatDescriptionCreateWithMetadataSpecifications(*MEMORY[0x277CBECE8], 0x6D656278u, array, &formatDescriptionOut);
   if (v8)
   {
     v9 = +[MIOLog defaultLog];
@@ -289,23 +289,23 @@
   }
 
   v11 = [MEMORY[0x277CCAC58] dataWithPropertyList:v8 format:200 options:0 error:a5];
-  v12 = [MEMORY[0x277CE6558] metadataItem];
-  [v12 setIdentifier:@"mdta/com.apple.stream_sample_attachments"];
-  [v12 setDataType:*MEMORY[0x277CC05B8]];
-  [v12 setValue:v11];
+  metadataItem = [MEMORY[0x277CE6558] metadataItem];
+  [metadataItem setIdentifier:@"mdta/com.apple.stream_sample_attachments"];
+  [metadataItem setDataType:*MEMORY[0x277CC05B8]];
+  [metadataItem setValue:v11];
 
-  return v12;
+  return metadataItem;
 }
 
 + (id)trackMetadataItemWithStreamId:()MIOExtensions
 {
   v3 = a3;
-  v4 = [MEMORY[0x277CE6558] metadataItem];
-  [v4 setIdentifier:@"mdta/com.apple.track_kind"];
-  [v4 setDataType:*MEMORY[0x277CC05F0]];
-  [v4 setValue:v3];
+  metadataItem = [MEMORY[0x277CE6558] metadataItem];
+  [metadataItem setIdentifier:@"mdta/com.apple.track_kind"];
+  [metadataItem setDataType:*MEMORY[0x277CC05F0]];
+  [metadataItem setValue:v3];
 
-  return v4;
+  return metadataItem;
 }
 
 + (id)qtTrackMetadataItemsForStreamId:()MIOExtensions
@@ -338,19 +338,19 @@
 + (id)trackMetadataItemWithQTTrackCharacteristic:()MIOExtensions
 {
   v3 = a3;
-  v4 = [MEMORY[0x277CE6558] metadataItem];
-  [v4 setKey:*MEMORY[0x277CE5FF0]];
-  [v4 setKeySpace:*MEMORY[0x277CE5FB0]];
-  [v4 setValue:v3];
+  metadataItem = [MEMORY[0x277CE6558] metadataItem];
+  [metadataItem setKey:*MEMORY[0x277CE5FF0]];
+  [metadataItem setKeySpace:*MEMORY[0x277CE5FB0]];
+  [metadataItem setValue:v3];
 
-  return v4;
+  return metadataItem;
 }
 
 + (id)trackMetadataItemWithQTTrackName:()MIOExtensions
 {
   v3 = a3;
   v4 = [v3 componentsSeparatedByString:@"."];
-  v5 = [v4 lastObject];
+  lastObject = [v4 lastObject];
   if ([v4 count] >= 6)
   {
     v6 = objc_opt_new();
@@ -364,59 +364,59 @@
 
     v10 = [v6 componentsJoinedByString:@"_"];
 
-    v5 = v10;
+    lastObject = v10;
   }
 
-  if (v5)
+  if (lastObject)
   {
-    v11 = [MEMORY[0x277CE6558] metadataItem];
-    [v11 setKey:*MEMORY[0x277CE5FF8]];
-    [v11 setKeySpace:*MEMORY[0x277CE5FB0]];
-    [v11 setValue:v5];
+    metadataItem = [MEMORY[0x277CE6558] metadataItem];
+    [metadataItem setKey:*MEMORY[0x277CE5FF8]];
+    [metadataItem setKeySpace:*MEMORY[0x277CE5FB0]];
+    [metadataItem setValue:lastObject];
   }
 
   else
   {
-    v11 = 0;
+    metadataItem = 0;
   }
 
-  return v11;
+  return metadataItem;
 }
 
 + (id)trackMetadataItemWithInputPixelFormat:()MIOExtensions
 {
-  v4 = [MEMORY[0x277CE6558] metadataItem];
-  [v4 setIdentifier:@"mdta/com.apple.stream_sample_format"];
-  [v4 setDataType:*MEMORY[0x277CC05F0]];
-  [v4 setExtraAttributes:0];
+  metadataItem = [MEMORY[0x277CE6558] metadataItem];
+  [metadataItem setIdentifier:@"mdta/com.apple.stream_sample_format"];
+  [metadataItem setDataType:*MEMORY[0x277CC05F0]];
+  [metadataItem setExtraAttributes:0];
   v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:a3];
-  [v4 setValue:v5];
+  [metadataItem setValue:v5];
 
-  return v4;
+  return metadataItem;
 }
 
 + (id)trackMetadataItemWithOutputPixelFormatOverride:()MIOExtensions
 {
-  v4 = [MEMORY[0x277CE6558] metadataItem];
-  [v4 setIdentifier:@"mdta/com.apple.stream_output_pixel_format_override"];
-  [v4 setDataType:*MEMORY[0x277CC05D0]];
-  [v4 setExtraAttributes:0];
+  metadataItem = [MEMORY[0x277CE6558] metadataItem];
+  [metadataItem setIdentifier:@"mdta/com.apple.stream_output_pixel_format_override"];
+  [metadataItem setDataType:*MEMORY[0x277CC05D0]];
+  [metadataItem setExtraAttributes:0];
   v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:a3];
-  [v4 setValue:v5];
+  [metadataItem setValue:v5];
 
-  return v4;
+  return metadataItem;
 }
 
 + (id)trackMetadataItemWithEncodedPixelFormat:()MIOExtensions
 {
-  v4 = [MEMORY[0x277CE6558] metadataItem];
-  [v4 setIdentifier:@"mdta/com.apple.stream_encoded_sample_format"];
-  [v4 setDataType:*MEMORY[0x277CC05F0]];
-  [v4 setExtraAttributes:0];
+  metadataItem = [MEMORY[0x277CE6558] metadataItem];
+  [metadataItem setIdentifier:@"mdta/com.apple.stream_encoded_sample_format"];
+  [metadataItem setDataType:*MEMORY[0x277CC05F0]];
+  [metadataItem setExtraAttributes:0];
   v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:a3];
-  [v4 setValue:v5];
+  [metadataItem setValue:v5];
 
-  return v4;
+  return metadataItem;
 }
 
 + (id)trackMetadataItemWithRawBayerRearrangeType:()MIOExtensions
@@ -432,49 +432,49 @@
     v4 = &unk_2868E37B0;
   }
 
-  v5 = [MEMORY[0x277CE6558] metadataItem];
-  [v5 setIdentifier:@"mdta/com.apple.stream_raw_bayer_rearrange_type"];
-  [v5 setDataType:*MEMORY[0x277CC05E8]];
-  [v5 setExtraAttributes:0];
-  [v5 setValue:v4];
+  metadataItem = [MEMORY[0x277CE6558] metadataItem];
+  [metadataItem setIdentifier:@"mdta/com.apple.stream_raw_bayer_rearrange_type"];
+  [metadataItem setDataType:*MEMORY[0x277CC05E8]];
+  [metadataItem setExtraAttributes:0];
+  [metadataItem setValue:v4];
 
-  return v5;
+  return metadataItem;
 }
 
 + (id)trackMetadataItemWithMIOEncoderType:()MIOExtensions
 {
   v3 = a3;
-  v4 = [MEMORY[0x277CE6558] metadataItem];
-  [v4 setIdentifier:@"mdta/com.apple.writer_encoder_type"];
-  [v4 setDataType:*MEMORY[0x277CC05D0]];
-  [v4 setExtraAttributes:0];
-  [v4 setValue:v3];
+  metadataItem = [MEMORY[0x277CE6558] metadataItem];
+  [metadataItem setIdentifier:@"mdta/com.apple.writer_encoder_type"];
+  [metadataItem setDataType:*MEMORY[0x277CC05D0]];
+  [metadataItem setExtraAttributes:0];
+  [metadataItem setValue:v3];
 
-  return v4;
+  return metadataItem;
 }
 
 + (id)trackMetadataItemWithSerializationMode:()MIOExtensions
 {
-  v4 = [MEMORY[0x277CE6558] metadataItem];
-  [v4 setIdentifier:@"mdta/com.apple.stream_sample_attachments_serialization_mode"];
-  [v4 setDataType:*MEMORY[0x277CC05F0]];
-  [v4 setExtraAttributes:0];
+  metadataItem = [MEMORY[0x277CE6558] metadataItem];
+  [metadataItem setIdentifier:@"mdta/com.apple.stream_sample_attachments_serialization_mode"];
+  [metadataItem setDataType:*MEMORY[0x277CC05F0]];
+  [metadataItem setExtraAttributes:0];
   v5 = [MEMORY[0x277CCABB0] numberWithInt:a3];
-  [v4 setValue:v5];
+  [metadataItem setValue:v5];
 
-  return v4;
+  return metadataItem;
 }
 
 + (id)trackMetadataItemWithStereoViewEncoding:()MIOExtensions
 {
-  v4 = [MEMORY[0x277CE6558] metadataItem];
-  [v4 setIdentifier:@"mdta/com.apple.stream_stereo_video"];
-  [v4 setDataType:*MEMORY[0x277CC05F0]];
-  [v4 setExtraAttributes:0];
+  metadataItem = [MEMORY[0x277CE6558] metadataItem];
+  [metadataItem setIdentifier:@"mdta/com.apple.stream_stereo_video"];
+  [metadataItem setDataType:*MEMORY[0x277CC05F0]];
+  [metadataItem setExtraAttributes:0];
   v5 = [MEMORY[0x277CCABB0] numberWithBool:a3];
-  [v4 setValue:v5];
+  [metadataItem setValue:v5];
 
-  return v4;
+  return metadataItem;
 }
 
 + (id)trackMetadataItemWithAdditionalCompressionProperties:()MIOExtensions error:
@@ -483,42 +483,42 @@
   v6 = [v5 mutableCopy];
 
   v7 = [MEMORY[0x277CCAC58] dataWithPropertyList:v6 format:200 options:0 error:a4];
-  v8 = [MEMORY[0x277CE6558] metadataItem];
-  [v8 setIdentifier:@"mdta/com.apple.stream_additional_compression_properties"];
-  [v8 setDataType:*MEMORY[0x277CC05B8]];
-  [v8 setExtraAttributes:0];
-  [v8 setValue:v7];
+  metadataItem = [MEMORY[0x277CE6558] metadataItem];
+  [metadataItem setIdentifier:@"mdta/com.apple.stream_additional_compression_properties"];
+  [metadataItem setDataType:*MEMORY[0x277CC05B8]];
+  [metadataItem setExtraAttributes:0];
+  [metadataItem setValue:v7];
 
-  return v8;
+  return metadataItem;
 }
 
 + (id)trackMetadataItemWithTimeRangeMetadata:()MIOExtensions
 {
-  v4 = [MEMORY[0x277CE6558] metadataItem];
-  [v4 setIdentifier:@"mdta/com.apple.stream_time_range_metadata"];
-  [v4 setDataType:*MEMORY[0x277CC05F0]];
-  [v4 setExtraAttributes:0];
+  metadataItem = [MEMORY[0x277CE6558] metadataItem];
+  [metadataItem setIdentifier:@"mdta/com.apple.stream_time_range_metadata"];
+  [metadataItem setDataType:*MEMORY[0x277CC05F0]];
+  [metadataItem setExtraAttributes:0];
   v5 = [MEMORY[0x277CCABB0] numberWithBool:a3];
-  [v4 setValue:v5];
+  [metadataItem setValue:v5];
 
-  return v4;
+  return metadataItem;
 }
 
 + (id)trackMetadataItemWithExactBytesPerRow:()MIOExtensions pixelFormat:
 {
   v15 = *MEMORY[0x277D85DE8];
   v5 = a3;
-  v6 = [MEMORY[0x277CE6558] metadataItem];
-  [v6 setIdentifier:@"mdta/com.apple.stream_sample_exact_bytes_per_row"];
-  [v6 setExtraAttributes:0];
+  metadataItem = [MEMORY[0x277CE6558] metadataItem];
+  [metadataItem setIdentifier:@"mdta/com.apple.stream_sample_exact_bytes_per_row"];
+  [metadataItem setExtraAttributes:0];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v7 = [(MIOPixelBufferUtility *)PixelBufferUtility numberOfPlanesForPixelFormatType:a4];
     if (v7 < 1)
     {
-      [v6 setDataType:*MEMORY[0x277CC05D8]];
-      [v6 setValue:v5];
+      [metadataItem setDataType:*MEMORY[0x277CC05D8]];
+      [metadataItem setValue:v5];
       goto LABEL_18;
     }
 
@@ -533,9 +533,9 @@
     v9 = [MOVStreamIOUtility plistSerializedObject:v8 error:0];
     if (v9)
     {
-      [v6 setDataType:*MEMORY[0x277CC05B8]];
-      [v6 setValue:v9];
-      [v6 setIdentifier:@"mdta/com.apple.stream_sample_exact_bytes_per_row_multiplanar"];
+      [metadataItem setDataType:*MEMORY[0x277CC05B8]];
+      [metadataItem setValue:v9];
+      [metadataItem setIdentifier:@"mdta/com.apple.stream_sample_exact_bytes_per_row_multiplanar"];
 
 LABEL_10:
       goto LABEL_18;
@@ -562,18 +562,18 @@ LABEL_10:
     v8 = [MOVStreamIOUtility plistSerializedObject:v5 error:0];
     if (v8)
     {
-      [v6 setDataType:*MEMORY[0x277CC05B8]];
-      [v6 setValue:v8];
-      [v6 setIdentifier:@"mdta/com.apple.stream_sample_exact_bytes_per_row_multiplanar"];
+      [metadataItem setDataType:*MEMORY[0x277CC05B8]];
+      [metadataItem setValue:v8];
+      [metadataItem setIdentifier:@"mdta/com.apple.stream_sample_exact_bytes_per_row_multiplanar"];
       goto LABEL_10;
     }
   }
 
 LABEL_17:
-  v6 = 0;
+  metadataItem = 0;
 LABEL_18:
 
-  return v6;
+  return metadataItem;
 }
 
 + (id)customTrackMetadataItems:()MIOExtensions
@@ -601,15 +601,15 @@ LABEL_18:
         }
 
         v9 = *(*(&v16 + 1) + 8 * i);
-        v10 = [MEMORY[0x277CE6558] metadataItem];
+        metadataItem = [MEMORY[0x277CE6558] metadataItem];
         v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", @"mdta/custom.", v9];
-        [v10 setIdentifier:v11];
-        [v10 setDataType:v7];
-        [v10 setExtraAttributes:0];
+        [metadataItem setIdentifier:v11];
+        [metadataItem setDataType:v7];
+        [metadataItem setExtraAttributes:0];
         v12 = [v4 objectForKey:v9];
-        [v10 setValue:v12];
+        [metadataItem setValue:v12];
 
-        [v3 addObject:v10];
+        [v3 addObject:metadataItem];
       }
 
       v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -648,22 +648,22 @@ LABEL_18:
         }
 
         v10 = *(*(&v17 + 1) + 8 * i);
-        v11 = [MEMORY[0x277CE6558] metadataItem];
-        [v11 setIdentifier:@"mdta/com.apple.metadata_stream_item"];
-        [v11 setDataType:v8];
-        [v11 setExtraAttributes:0];
+        metadataItem = [MEMORY[0x277CE6558] metadataItem];
+        [metadataItem setIdentifier:@"mdta/com.apple.metadata_stream_item"];
+        [metadataItem setDataType:v8];
+        [metadataItem setExtraAttributes:0];
         if (a4)
         {
           v12 = [v10 copy];
-          [v11 setValue:v12];
+          [metadataItem setValue:v12];
         }
 
         else
         {
-          [v11 setValue:v10];
+          [metadataItem setValue:v10];
         }
 
-        [v5 addObject:v11];
+        [v5 addObject:metadataItem];
       }
 
       v6 = [obj countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -696,19 +696,19 @@ LABEL_18:
       _os_log_impl(&dword_257883000, v4, OS_LOG_TYPE_ERROR, "Cannot serialize MIO mov metadata: %@", buf, 0xCu);
     }
 
-    v5 = 0;
+    metadataItem = 0;
   }
 
   else
   {
-    v5 = [MEMORY[0x277CE6558] metadataItem];
-    [v5 setIdentifier:@"mdta/com.apple.framework.state.MOVStreamIO"];
-    [v5 setDataType:*MEMORY[0x277CC05B8]];
-    [v5 setExtraAttributes:0];
-    [v5 setValue:v2];
+    metadataItem = [MEMORY[0x277CE6558] metadataItem];
+    [metadataItem setIdentifier:@"mdta/com.apple.framework.state.MOVStreamIO"];
+    [metadataItem setDataType:*MEMORY[0x277CC05B8]];
+    [metadataItem setExtraAttributes:0];
+    [metadataItem setValue:v2];
   }
 
-  return v5;
+  return metadataItem;
 }
 
 + (id)movMetadataItemWithSessionStartTime:()MIOExtensions error:
@@ -718,18 +718,18 @@ LABEL_18:
   v6 = [MOVStreamIOUtility plistSerializedObject:v5 error:a4];
   if (v6)
   {
-    v7 = [MEMORY[0x277CE6558] metadataItem];
-    [v7 setIdentifier:@"mdta/com.apple.framework.mio.session.starttime"];
-    [v7 setDataType:*MEMORY[0x277CC05B8]];
-    [v7 setValue:v6];
+    metadataItem = [MEMORY[0x277CE6558] metadataItem];
+    [metadataItem setIdentifier:@"mdta/com.apple.framework.mio.session.starttime"];
+    [metadataItem setDataType:*MEMORY[0x277CC05B8]];
+    [metadataItem setValue:v6];
   }
 
   else
   {
-    v7 = 0;
+    metadataItem = 0;
   }
 
-  return v7;
+  return metadataItem;
 }
 
 + (id)movMetadataItemWithTimeRangeMetadataKeyHint:()MIOExtensions error:
@@ -737,28 +737,28 @@ LABEL_18:
   v0 = [MOVStreamIOUtility plistSerializedObject:"plistSerializedObject:error:" error:?];
   if (v0)
   {
-    v1 = [MEMORY[0x277CE6558] metadataItem];
-    [v1 setIdentifier:@"mdta/com.apple.framework.mio.timeRangeMetadataKeyHint"];
-    [v1 setDataType:*MEMORY[0x277CC05B8]];
-    [v1 setValue:v0];
+    metadataItem = [MEMORY[0x277CE6558] metadataItem];
+    [metadataItem setIdentifier:@"mdta/com.apple.framework.mio.timeRangeMetadataKeyHint"];
+    [metadataItem setDataType:*MEMORY[0x277CC05B8]];
+    [metadataItem setValue:v0];
   }
 
   else
   {
-    v1 = 0;
+    metadataItem = 0;
   }
 
-  return v1;
+  return metadataItem;
 }
 
 - (void)valueAsMovSessionStartTime
 {
-  v9 = [a1 identifier];
-  v4 = [v9 isEqualToString:@"mdta/com.apple.framework.mio.session.starttime"];
+  identifier = [self identifier];
+  v4 = [identifier isEqualToString:@"mdta/com.apple.framework.mio.session.starttime"];
 
   if (v4)
   {
-    v10 = [a1 dataValue];
+    dataValue = [self dataValue];
     v5 = [MOVStreamIOUtility plistDeserializedObject:"plistDeserializedObject:error:" error:?];
     v6 = v5;
     if (v5)
@@ -787,13 +787,13 @@ LABEL_18:
 
 - (id)valueAsTimeRangeMetadataKeyHint
 {
-  v2 = [a1 identifier];
-  v3 = [v2 isEqualToString:@"mdta/com.apple.framework.mio.timeRangeMetadataKeyHint"];
+  identifier = [self identifier];
+  v3 = [identifier isEqualToString:@"mdta/com.apple.framework.mio.timeRangeMetadataKeyHint"];
 
   if (v3)
   {
-    v4 = [a1 dataValue];
-    v5 = [MOVStreamIOUtility plistDeserializedObject:v4 error:0];
+    dataValue = [self dataValue];
+    v5 = [MOVStreamIOUtility plistDeserializedObject:dataValue error:0];
   }
 
   else
@@ -806,26 +806,26 @@ LABEL_18:
 
 + (id)metadataItemForTimeRangeMetadataStartTime:()MIOExtensions
 {
-  v4 = [MEMORY[0x277CE6558] metadataItem];
-  [v4 setIdentifier:@"mdta/com.apple.stream_time_range_start"];
-  [v4 setDataType:*MEMORY[0x277CC05D8]];
-  [v4 setExtraAttributes:0];
+  metadataItem = [MEMORY[0x277CE6558] metadataItem];
+  [metadataItem setIdentifier:@"mdta/com.apple.stream_time_range_start"];
+  [metadataItem setDataType:*MEMORY[0x277CC05D8]];
+  [metadataItem setExtraAttributes:0];
   v5 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a3];
-  [v4 setValue:v5];
+  [metadataItem setValue:v5];
 
-  return v4;
+  return metadataItem;
 }
 
 + (id)metadataItemForTimeRangeMetadataEndTime:()MIOExtensions
 {
-  v4 = [MEMORY[0x277CE6558] metadataItem];
-  [v4 setIdentifier:@"mdta/com.apple.stream_time_range_end"];
-  [v4 setDataType:*MEMORY[0x277CC05D8]];
-  [v4 setExtraAttributes:0];
+  metadataItem = [MEMORY[0x277CE6558] metadataItem];
+  [metadataItem setIdentifier:@"mdta/com.apple.stream_time_range_end"];
+  [metadataItem setDataType:*MEMORY[0x277CC05D8]];
+  [metadataItem setExtraAttributes:0];
   v5 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a3];
-  [v4 setValue:v5];
+  [metadataItem setValue:v5];
 
-  return v4;
+  return metadataItem;
 }
 
 + (id)metadataItemForTimeCode:()MIOExtensions
@@ -873,29 +873,29 @@ LABEL_18:
       _os_log_impl(&dword_257883000, v17, OS_LOG_TYPE_ERROR, "Cannot serialize time code for MIO metadata: %@", buf, 0xCu);
     }
 
-    v18 = 0;
+    metadataItem = 0;
   }
 
   else
   {
-    v18 = [MEMORY[0x277CE6558] metadataItem];
-    [v18 setIdentifier:@"mdta/com.apple.stream_time_code"];
-    [v18 setDataType:*MEMORY[0x277CC05B8]];
-    [v18 setExtraAttributes:0];
-    [v18 setValue:v15];
+    metadataItem = [MEMORY[0x277CE6558] metadataItem];
+    [metadataItem setIdentifier:@"mdta/com.apple.stream_time_code"];
+    [metadataItem setDataType:*MEMORY[0x277CC05B8]];
+    [metadataItem setExtraAttributes:0];
+    [metadataItem setValue:v15];
   }
 
-  return v18;
+  return metadataItem;
 }
 
 - (void)valueAsTimeCode
 {
-  v16 = [a1 identifier];
-  v4 = [v16 isEqualToString:@"mdta/com.apple.stream_time_code"];
+  identifier = [self identifier];
+  v4 = [identifier isEqualToString:@"mdta/com.apple.stream_time_code"];
 
   if (v4)
   {
-    v17 = [a1 dataValue];
+    dataValue = [self dataValue];
     v5 = [MOVStreamIOUtility plistDeserializedObject:"plistDeserializedObject:error:" error:?];
     v6 = v5;
     *a2 = 0;
@@ -942,59 +942,59 @@ LABEL_18:
 
 - (id)dictionaryRepresentation
 {
-  v2 = [MEMORY[0x277CBEB38] dictionary];
-  v3 = [a1 identifier];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  identifier = [self identifier];
 
-  if (v3)
+  if (identifier)
   {
-    v4 = [a1 identifier];
-    [v2 setObject:v4 forKey:@"identifier"];
+    identifier2 = [self identifier];
+    [dictionary setObject:identifier2 forKey:@"identifier"];
   }
 
-  v5 = [a1 dataType];
+  dataType = [self dataType];
 
-  if (v5)
+  if (dataType)
   {
-    v6 = [a1 dataType];
-    [v2 setObject:v6 forKey:@"dataType"];
+    dataType2 = [self dataType];
+    [dictionary setObject:dataType2 forKey:@"dataType"];
   }
 
-  v7 = [a1 value];
+  value = [self value];
 
-  if (v7)
+  if (value)
   {
-    v8 = [a1 value];
-    [v2 setObject:v8 forKey:@"value"];
+    value2 = [self value];
+    [dictionary setObject:value2 forKey:@"value"];
   }
 
-  v9 = [a1 extraAttributes];
+  extraAttributes = [self extraAttributes];
 
-  if (v9)
+  if (extraAttributes)
   {
-    v10 = [a1 extraAttributes];
-    [v2 setObject:v10 forKey:@"extraAttributes"];
+    extraAttributes2 = [self extraAttributes];
+    [dictionary setObject:extraAttributes2 forKey:@"extraAttributes"];
   }
 
-  return v2;
+  return dictionary;
 }
 
 + (id)metadataItemFromDictionary:()MIOExtensions
 {
   v3 = a3;
-  v4 = [MEMORY[0x277CE6558] metadataItem];
+  metadataItem = [MEMORY[0x277CE6558] metadataItem];
   v5 = [v3 objectForKey:@"identifier"];
-  [v4 setIdentifier:v5];
+  [metadataItem setIdentifier:v5];
 
   v6 = [v3 objectForKey:@"dataType"];
-  [v4 setDataType:v6];
+  [metadataItem setDataType:v6];
 
   v7 = [v3 objectForKey:@"value"];
-  [v4 setValue:v7];
+  [metadataItem setValue:v7];
 
   v8 = [v3 objectForKey:@"extraAttributes"];
-  [v4 setExtraAttributes:v8];
+  [metadataItem setExtraAttributes:v8];
 
-  return v4;
+  return metadataItem;
 }
 
 @end

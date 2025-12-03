@@ -1,23 +1,23 @@
 @interface EFFileLogger
-- (EFFileLogger)initWithFilename:(id)a3 directory:(id)a4;
-- (void)_ensureCustomLogFileInDirectory:(id)a3;
-- (void)logSnippet:(id)a3;
-- (void)slurpAndRemoveLookasideFile:(id)a3 prefixString:(id)a4 suffixString:(id)a5;
+- (EFFileLogger)initWithFilename:(id)filename directory:(id)directory;
+- (void)_ensureCustomLogFileInDirectory:(id)directory;
+- (void)logSnippet:(id)snippet;
+- (void)slurpAndRemoveLookasideFile:(id)file prefixString:(id)string suffixString:(id)suffixString;
 @end
 
 @implementation EFFileLogger
 
-- (void)_ensureCustomLogFileInDirectory:(id)a3
+- (void)_ensureCustomLogFileInDirectory:(id)directory
 {
-  v4 = a3;
+  directoryCopy = directory;
   if (_ensureCustomLogFileInDirectory__once != -1)
   {
     [EFFileLogger _ensureCustomLogFileInDirectory:];
   }
 
-  v5 = [(EFFileLogger *)self filename];
+  filename = [(EFFileLogger *)self filename];
 
-  if (v5)
+  if (filename)
   {
     v6 = _ensureCustomLogFileInDirectory__logSetupQueue;
     v7[0] = MEMORY[0x1E69E9820];
@@ -25,7 +25,7 @@
     v7[2] = __48__EFFileLogger__ensureCustomLogFileInDirectory___block_invoke_2;
     v7[3] = &unk_1E82485D0;
     v7[4] = self;
-    v8 = v4;
+    v8 = directoryCopy;
     dispatch_sync(v6, v7);
   }
 }
@@ -84,32 +84,32 @@ void __48__EFFileLogger__ensureCustomLogFileInDirectory___block_invoke_2(uint64_
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (EFFileLogger)initWithFilename:(id)a3 directory:(id)a4
+- (EFFileLogger)initWithFilename:(id)filename directory:(id)directory
 {
-  v6 = a3;
-  v7 = a4;
+  filenameCopy = filename;
+  directoryCopy = directory;
   v11.receiver = self;
   v11.super_class = EFFileLogger;
   v8 = [(EFFileLogger *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(EFFileLogger *)v8 setFilename:v6];
-    [(EFFileLogger *)v9 _ensureCustomLogFileInDirectory:v7];
+    [(EFFileLogger *)v8 setFilename:filenameCopy];
+    [(EFFileLogger *)v9 _ensureCustomLogFileInDirectory:directoryCopy];
   }
 
   return v9;
 }
 
-- (void)logSnippet:(id)a3
+- (void)logSnippet:(id)snippet
 {
-  v4 = a3;
+  snippetCopy = snippet;
   if (+[EFFileLogger enabled])
   {
-    v5 = [v4 copy];
+    v5 = [snippetCopy copy];
 
-    v4 = v5;
-    v6 = [(EFFileLogger *)self filename];
+    snippetCopy = v5;
+    filename = [(EFFileLogger *)self filename];
     DACPLoggingAppendDataToLogFile();
   }
 }
@@ -123,15 +123,15 @@ void __27__EFFileLogger_logSnippet___block_invoke(uint64_t a1)
   }
 }
 
-- (void)slurpAndRemoveLookasideFile:(id)a3 prefixString:(id)a4 suffixString:(id)a5
+- (void)slurpAndRemoveLookasideFile:(id)file prefixString:(id)string suffixString:(id)suffixString
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  fileCopy = file;
+  stringCopy = string;
+  suffixStringCopy = suffixString;
   if (+[EFFileLogger enabled])
   {
-    v11 = [(EFFileLogger *)self filename];
-    v12 = v8;
+    filename = [(EFFileLogger *)self filename];
+    v12 = fileCopy;
     DACPLoggingSlurpFileIntoLogFile();
   }
 }

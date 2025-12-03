@@ -1,27 +1,27 @@
 @interface UITextAttachmentView
 - (CGPoint)cellBaselineOffset;
-- (CGRect)cellFrameForTextContainer:(id)a3 proposedLineFragment:(CGRect)a4 glyphPosition:(CGPoint)a5 characterIndex:(unint64_t)a6;
+- (CGRect)cellFrameForTextContainer:(id)container proposedLineFragment:(CGRect)fragment glyphPosition:(CGPoint)position characterIndex:(unint64_t)index;
 - (CGSize)cellSize;
 - (NSTextAttachment)attachment;
-- (UITextAttachmentView)initWithContentView:(id)a3;
-- (UITextAttachmentView)initWithTextAttachment:(id)a3 image:(id)a4;
+- (UITextAttachmentView)initWithContentView:(id)view;
+- (UITextAttachmentView)initWithTextAttachment:(id)attachment image:(id)image;
 - (id)contentView;
-- (void)drawWithFrame:(CGRect)a3 inView:(id)a4 characterIndex:(unint64_t)a5 layoutManager:(id)a6;
+- (void)drawWithFrame:(CGRect)frame inView:(id)view characterIndex:(unint64_t)index layoutManager:(id)manager;
 @end
 
 @implementation UITextAttachmentView
 
-- (UITextAttachmentView)initWithContentView:(id)a3
+- (UITextAttachmentView)initWithContentView:(id)view
 {
-  v4 = a3;
-  [v4 frame];
+  viewCopy = view;
+  [viewCopy frame];
   v8.receiver = self;
   v8.super_class = UITextAttachmentView;
   v5 = [(UIView *)&v8 initWithFrame:0.0, 0.0];
   if (v5)
   {
-    [v4 setAutoresizingMask:18];
-    [(UIView *)v5 addSubview:v4];
+    [viewCopy setAutoresizingMask:18];
+    [(UIView *)v5 addSubview:viewCopy];
     v6 = +[UIColor clearColor];
     [(UIView *)v5 setBackgroundColor:v6];
   }
@@ -29,19 +29,19 @@
   return v5;
 }
 
-- (UITextAttachmentView)initWithTextAttachment:(id)a3 image:(id)a4
+- (UITextAttachmentView)initWithTextAttachment:(id)attachment image:(id)image
 {
-  v6 = a3;
-  v7 = a4;
+  attachmentCopy = attachment;
+  imageCopy = image;
   v8 = MEMORY[0x1E6982C40];
-  v9 = [v6 fileType];
-  v10 = [v8 _typeWithIdentifier:v9 allowUndeclared:1];
+  fileType = [attachmentCopy fileType];
+  v10 = [v8 _typeWithIdentifier:fileType allowUndeclared:1];
 
   if (([v10 conformsToType:*MEMORY[0x1E6982DE8]] & 1) != 0 || objc_msgSend(v10, "conformsToType:", *MEMORY[0x1E6982F28]))
   {
-    if (v7)
+    if (imageCopy)
     {
-      v11 = [[_UIAnimatedAttachmentView alloc] initWithAttachment:v6];
+      v11 = [[_UIAnimatedAttachmentView alloc] initWithAttachment:attachmentCopy];
       goto LABEL_8;
     }
   }
@@ -49,9 +49,9 @@
   else
   {
     v12 = [v10 conformsToType:*MEMORY[0x1E6982E30]];
-    if (v7 && v12)
+    if (imageCopy && v12)
     {
-      v11 = [(UIImageView *)[_UITextAttachmentImageView alloc] initWithImage:v7];
+      v11 = [(UIImageView *)[_UITextAttachmentImageView alloc] initWithImage:imageCopy];
 LABEL_8:
       v13 = v11;
       if (v11)
@@ -61,13 +61,13 @@ LABEL_8:
     }
   }
 
-  v13 = [(UIImageView *)[_UITextAttachmentPlaceholderView alloc] initWithImage:v7];
+  v13 = [(UIImageView *)[_UITextAttachmentPlaceholderView alloc] initWithImage:imageCopy];
 LABEL_10:
   v14 = [(UITextAttachmentView *)self initWithContentView:v13];
   v15 = v14;
   if (v14)
   {
-    [(UITextAttachmentView *)v14 setAttachment:v6];
+    [(UITextAttachmentView *)v14 setAttachment:attachmentCopy];
   }
 
   return v15;
@@ -75,16 +75,16 @@ LABEL_10:
 
 - (id)contentView
 {
-  v2 = [(UIView *)self subviews];
-  v3 = [v2 lastObject];
+  subviews = [(UIView *)self subviews];
+  lastObject = [subviews lastObject];
 
-  return v3;
+  return lastObject;
 }
 
 - (CGSize)cellSize
 {
-  v2 = [(UITextAttachmentView *)self attachment];
-  [v2 bounds];
+  attachment = [(UITextAttachmentView *)self attachment];
+  [attachment bounds];
   v4 = v3;
   v6 = v5;
 
@@ -97,8 +97,8 @@ LABEL_10:
 
 - (CGPoint)cellBaselineOffset
 {
-  v2 = [(UITextAttachmentView *)self attachment];
-  [v2 bounds];
+  attachment = [(UITextAttachmentView *)self attachment];
+  [attachment bounds];
   v4 = v3;
   v6 = v5;
 
@@ -109,37 +109,37 @@ LABEL_10:
   return result;
 }
 
-- (void)drawWithFrame:(CGRect)a3 inView:(id)a4 characterIndex:(unint64_t)a5 layoutManager:(id)a6
+- (void)drawWithFrame:(CGRect)frame inView:(id)view characterIndex:(unint64_t)index layoutManager:(id)manager
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v29 = a4;
-  v13 = a6;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  viewCopy = view;
+  managerCopy = manager;
   if (pthread_main_np() == 1)
   {
     [(UIView *)self setFrame:x, y, width, height];
-    if (v29 && v13)
+    if (viewCopy && managerCopy)
     {
-      v14 = [v13 temporaryAttributesAtCharacterIndex:a5 effectiveRange:0];
+      v14 = [managerCopy temporaryAttributesAtCharacterIndex:index effectiveRange:0];
       v15 = [v14 objectForKey:@"NSViewTextAttachmentCellHelper"];
 
       if (!v15)
       {
-        v16 = [(UITextAttachmentView *)self attachment];
-        v15 = [_UITextAttachmentViewHelper helperForAttachment:v16];
+        attachment = [(UITextAttachmentView *)self attachment];
+        v15 = [_UITextAttachmentViewHelper helperForAttachment:attachment];
 
         v17 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{v15, @"NSViewTextAttachmentCellHelper", 0}];
-        [v13 addTemporaryAttributes:v17 forCharacterRange:{a5, 1}];
+        [managerCopy addTemporaryAttributes:v17 forCharacterRange:{index, 1}];
       }
 
-      v18 = [(UIView *)self superview];
+      superview = [(UIView *)self superview];
 
-      if (v18 != v29)
+      if (superview != viewCopy)
       {
         [(UIView *)self removeFromSuperview];
-        [v29 addSubview:self];
+        [viewCopy addSubview:self];
       }
     }
 
@@ -158,8 +158,8 @@ LABEL_10:
 
       CGContextSaveGState(v24);
       CGContextTranslateCTM(v24, x, y);
-      v28 = [(UIView *)self layer];
-      [v28 renderInContext:v24];
+      layer = [(UIView *)self layer];
+      [layer renderInContext:v24];
 
       CGContextRestoreGState(v24);
     }
@@ -167,10 +167,10 @@ LABEL_10:
 
   else
   {
-    v19 = [(UITextAttachmentView *)self attachment];
-    v20 = [v19 image];
+    attachment2 = [(UITextAttachmentView *)self attachment];
+    image = [attachment2 image];
 
-    if (v20)
+    if (image)
     {
       v21 = GetContextStack(0);
       if (*v21 < 1)
@@ -188,28 +188,28 @@ LABEL_10:
       v25 = *MEMORY[0x1E695EFF8];
       v26 = *(MEMORY[0x1E695EFF8] + 8);
       CGContextScaleCTM(v22, 1.0, -1.0);
-      v27 = [v20 CGImage];
+      cGImage = [image CGImage];
       v31.origin.x = v25;
       v31.origin.y = v26;
       v31.size.width = width;
       v31.size.height = height;
-      CGContextDrawImage(v22, v31, v27);
+      CGContextDrawImage(v22, v31, cGImage);
       CGContextRestoreGState(v22);
     }
   }
 }
 
-- (CGRect)cellFrameForTextContainer:(id)a3 proposedLineFragment:(CGRect)a4 glyphPosition:(CGPoint)a5 characterIndex:(unint64_t)a6
+- (CGRect)cellFrameForTextContainer:(id)container proposedLineFragment:(CGRect)fragment glyphPosition:(CGPoint)position characterIndex:(unint64_t)index
 {
-  y = a5.y;
-  x = a5.x;
-  height = a4.size.height;
-  width = a4.size.width;
-  v11 = a4.origin.y;
-  v12 = a4.origin.x;
-  v14 = a3;
-  v15 = [(UITextAttachmentView *)self attachment];
-  [v15 attachmentBoundsForTextContainer:v14 proposedLineFragment:a6 glyphPosition:v12 characterIndex:{v11, width, height, x, y}];
+  y = position.y;
+  x = position.x;
+  height = fragment.size.height;
+  width = fragment.size.width;
+  v11 = fragment.origin.y;
+  v12 = fragment.origin.x;
+  containerCopy = container;
+  attachment = [(UITextAttachmentView *)self attachment];
+  [attachment attachmentBoundsForTextContainer:containerCopy proposedLineFragment:index glyphPosition:v12 characterIndex:{v11, width, height, x, y}];
   v17 = v16;
   v19 = v18;
   v21 = v20;

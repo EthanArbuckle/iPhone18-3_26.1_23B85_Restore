@@ -1,30 +1,30 @@
 @interface TUIFocusStylingHelper
-- (TUIFocusStylingHelper)initWithContainer:(id)a3 reference:(id)a4 style:(id)a5;
+- (TUIFocusStylingHelper)initWithContainer:(id)container reference:(id)reference style:(id)style;
 - (id)_cornerCurve;
 - (id)focusEffect;
 - (void)_configureEffectView;
-- (void)activateEffectWithAnimationCoordinator:(id)a3;
-- (void)deactivateEffectWithAnimationCoordinator:(id)a3;
+- (void)activateEffectWithAnimationCoordinator:(id)coordinator;
+- (void)deactivateEffectWithAnimationCoordinator:(id)coordinator;
 - (void)reset;
-- (void)updateStyle:(id)a3;
+- (void)updateStyle:(id)style;
 @end
 
 @implementation TUIFocusStylingHelper
 
-- (TUIFocusStylingHelper)initWithContainer:(id)a3 reference:(id)a4 style:(id)a5
+- (TUIFocusStylingHelper)initWithContainer:(id)container reference:(id)reference style:(id)style
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  containerCopy = container;
+  referenceCopy = reference;
+  styleCopy = style;
   v14.receiver = self;
   v14.super_class = TUIFocusStylingHelper;
   v11 = [(TUIFocusStylingHelper *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    v11->_container = v8;
-    v11->_reference = v9;
-    objc_storeStrong(&v11->_style, a5);
+    v11->_container = containerCopy;
+    v11->_reference = referenceCopy;
+    objc_storeStrong(&v11->_style, style);
   }
 
   return v12;
@@ -39,12 +39,12 @@
   self->_container = 0;
 }
 
-- (void)updateStyle:(id)a3
+- (void)updateStyle:(id)style
 {
-  v5 = a3;
-  if (self->_style != v5)
+  styleCopy = style;
+  if (self->_style != styleCopy)
   {
-    objc_storeStrong(&self->_style, a3);
+    objc_storeStrong(&self->_style, style);
     if (self->_effectView)
     {
       [(TUIFocusStylingHelper *)self _configureEffectView];
@@ -72,8 +72,8 @@
   v18 = v10 - (v13 + v17);
   [(TUIFocusStyle *)self->_style cornerRadius];
   v20 = v19;
-  v21 = [(TUIFocusStylingHelper *)self _cornerCurve];
-  v22 = [UIFocusHaloEffect effectWithRoundedRect:v21 cornerRadius:v12 curve:v14, v16, v18, v20];
+  _cornerCurve = [(TUIFocusStylingHelper *)self _cornerCurve];
+  v22 = [UIFocusHaloEffect effectWithRoundedRect:_cornerCurve cornerRadius:v12 curve:v14, v16, v18, v20];
 
   [v22 setReferenceView:self->_reference];
   [v22 setContainerView:self->_container];
@@ -100,9 +100,9 @@ LABEL_8:
 
 - (id)_cornerCurve
 {
-  v2 = [(TUIFocusStyle *)self->_style continuousCurve];
+  continuousCurve = [(TUIFocusStyle *)self->_style continuousCurve];
   v3 = &kCACornerCurveContinuous;
-  if (!v2)
+  if (!continuousCurve)
   {
     v3 = &kCACornerCurveCircular;
   }
@@ -123,18 +123,18 @@ LABEL_8:
   [(UIView *)self->_effectView setFrame:v4 + v14, v6 + v11, v8 - (v14 + v12), v10 - (v11 + v13)];
   [(TUIFocusStyle *)self->_style cornerRadius];
   v16 = v15;
-  v17 = [(UIView *)self->_effectView layer];
-  [v17 setCornerRadius:v16];
+  layer = [(UIView *)self->_effectView layer];
+  [layer setCornerRadius:v16];
 
-  v18 = [(TUIFocusStylingHelper *)self _cornerCurve];
-  v19 = [(UIView *)self->_effectView layer];
-  [v19 setCornerCurve:v18];
+  _cornerCurve = [(TUIFocusStylingHelper *)self _cornerCurve];
+  layer2 = [(UIView *)self->_effectView layer];
+  [layer2 setCornerCurve:_cornerCurve];
 
   v22 = +[UIColor tintColor];
-  v20 = [(TUIFocusStyle *)self->_style color];
-  if (v20)
+  color = [(TUIFocusStyle *)self->_style color];
+  if (color)
   {
-    [(UIView *)self->_effectView setBackgroundColor:v20];
+    [(UIView *)self->_effectView setBackgroundColor:color];
   }
 
   else
@@ -144,9 +144,9 @@ LABEL_8:
   }
 }
 
-- (void)activateEffectWithAnimationCoordinator:(id)a3
+- (void)activateEffectWithAnimationCoordinator:(id)coordinator
 {
-  v20 = a3;
+  coordinatorCopy = coordinator;
   if (self->_effectView)
   {
     goto LABEL_2;
@@ -165,8 +165,8 @@ LABEL_8:
     self->_effectView = v17;
 
     [(UIView *)self->_effectView setAutoresizingMask:18];
-    v19 = [(UIView *)self->_effectView layer];
-    [v19 setCornerCurve:kCACornerCurveContinuous];
+    layer = [(UIView *)self->_effectView layer];
+    [layer setCornerCurve:kCACornerCurveContinuous];
 
     [(UIView *)self->_container insertSubview:self->_effectView atIndex:0];
     [(TUIFocusStylingHelper *)self _configureEffectView];
@@ -187,7 +187,7 @@ LABEL_2:
 LABEL_7:
 }
 
-- (void)deactivateEffectWithAnimationCoordinator:(id)a3
+- (void)deactivateEffectWithAnimationCoordinator:(id)coordinator
 {
   [(UIView *)self->_effectView removeFromSuperview];
   effectView = self->_effectView;

@@ -1,9 +1,9 @@
 @interface FTHeadlineRowOpenURLEngagementDescriptor
 - (FTHeadlineRowOpenURLEngagementDescriptor)init;
-- (FTHeadlineRowOpenURLEngagementDescriptor)initWithHeadline:(id)a3;
+- (FTHeadlineRowOpenURLEngagementDescriptor)initWithHeadline:(id)headline;
 - (NSURL)baseNewsURL;
-- (id)openInNewsReferralItemWithTrackableWidgetState:(id)a3 assetHandlesByRemoteURL:(id)a4;
-- (id)userEngagementWithWidgetEventTracker:(id)a3 trackableWidgetState:(id)a4;
+- (id)openInNewsReferralItemWithTrackableWidgetState:(id)state assetHandlesByRemoteURL:(id)l;
+- (id)userEngagementWithWidgetEventTracker:(id)tracker trackableWidgetState:(id)state;
 @end
 
 @implementation FTHeadlineRowOpenURLEngagementDescriptor
@@ -31,10 +31,10 @@
   objc_exception_throw(v4);
 }
 
-- (FTHeadlineRowOpenURLEngagementDescriptor)initWithHeadline:(id)a3
+- (FTHeadlineRowOpenURLEngagementDescriptor)initWithHeadline:(id)headline
 {
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+  headlineCopy = headline;
+  if (!headlineCopy && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_1000C4AA8();
   }
@@ -44,7 +44,7 @@
   v5 = [(FTHeadlineRowOpenURLEngagementDescriptor *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [headlineCopy copy];
     headline = v5->_headline;
     v5->_headline = v6;
   }
@@ -52,20 +52,20 @@
   return v5;
 }
 
-- (id)userEngagementWithWidgetEventTracker:(id)a3 trackableWidgetState:(id)a4
+- (id)userEngagementWithWidgetEventTracker:(id)tracker trackableWidgetState:(id)state
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+  trackerCopy = tracker;
+  stateCopy = state;
+  if (!trackerCopy && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_1000C4B6C();
-    if (v7)
+    if (stateCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v7)
+  else if (stateCopy)
   {
     goto LABEL_6;
   }
@@ -77,34 +77,34 @@
 
 LABEL_6:
   v8 = +[NSDate date];
-  v9 = [(FTHeadlineRowOpenURLEngagementDescriptor *)self headline];
-  v10 = [v6 engagementWithRowAtDate:v8 forHeadline:v9 withTrackableWidgetState:v7];
+  headline = [(FTHeadlineRowOpenURLEngagementDescriptor *)self headline];
+  v10 = [trackerCopy engagementWithRowAtDate:v8 forHeadline:headline withTrackableWidgetState:stateCopy];
 
   return v10;
 }
 
 - (NSURL)baseNewsURL
 {
-  v2 = [(FTHeadlineRowOpenURLEngagementDescriptor *)self headline];
-  v3 = [v2 NewsURL];
+  headline = [(FTHeadlineRowOpenURLEngagementDescriptor *)self headline];
+  newsURL = [headline NewsURL];
 
-  return v3;
+  return newsURL;
 }
 
-- (id)openInNewsReferralItemWithTrackableWidgetState:(id)a3 assetHandlesByRemoteURL:(id)a4
+- (id)openInNewsReferralItemWithTrackableWidgetState:(id)state assetHandlesByRemoteURL:(id)l
 {
-  v5 = a3;
-  v6 = a4;
-  if (!v5 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+  stateCopy = state;
+  lCopy = l;
+  if (!stateCopy && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_1000C4CF4();
-    if (v6)
+    if (lCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v6)
+  else if (lCopy)
   {
     goto LABEL_6;
   }
@@ -121,13 +121,13 @@ LABEL_6:
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v8 = [v5 todayResults];
-  v9 = [v8 sections];
+  todayResults = [stateCopy todayResults];
+  sections = [todayResults sections];
 
-  obj = v9;
-  v32 = [v9 countByEnumeratingWithState:&v41 objects:v54 count:16];
-  v28 = v6;
-  v29 = v5;
+  obj = sections;
+  v32 = [sections countByEnumeratingWithState:&v41 objects:v54 count:16];
+  v28 = lCopy;
+  v29 = stateCopy;
   if (v32)
   {
     v31 = *v42;
@@ -148,8 +148,8 @@ LABEL_6:
         v38 = 0u;
         v39 = 0u;
         v40 = 0u;
-        v12 = [v11 items];
-        v13 = [v12 countByEnumeratingWithState:&v37 objects:v53 count:16];
+        items = [v11 items];
+        v13 = [items countByEnumeratingWithState:&v37 objects:v53 count:16];
         if (v13)
         {
           v14 = v13;
@@ -160,22 +160,22 @@ LABEL_6:
             {
               if (*v38 != v15)
               {
-                objc_enumerationMutation(v12);
+                objc_enumerationMutation(items);
               }
 
               v17 = *(*(&v37 + 1) + 8 * i);
               if (![v17 itemType])
               {
                 v18 = v17;
-                v19 = [v18 analyticsElement];
-                v20 = [v19 articleID];
+                analyticsElement = [v18 analyticsElement];
+                articleID = [analyticsElement articleID];
 
-                v21 = [(FTHeadlineRowOpenURLEngagementDescriptor *)self headline];
-                v22 = [v18 isEqual:v21];
+                headline = [(FTHeadlineRowOpenURLEngagementDescriptor *)self headline];
+                v22 = [v18 isEqual:headline];
 
                 if (v22)
                 {
-                  if (!v20 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+                  if (!articleID && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
                   {
                     v23 = [[NSString alloc] initWithFormat:@"invalid nil value for '%s'", "articleID"];
                     *buf = 136315906;
@@ -192,7 +192,7 @@ LABEL_6:
                   v34 = [v7 count];
                 }
 
-                if (v20)
+                if (articleID)
                 {
                   [v7 addObject:v18];
                   [v35 setObject:v11 forKeyedSubscript:v18];
@@ -200,7 +200,7 @@ LABEL_6:
               }
             }
 
-            v14 = [v12 countByEnumeratingWithState:&v37 objects:v53 count:16];
+            v14 = [items countByEnumeratingWithState:&v37 objects:v53 count:16];
           }
 
           while (v14);

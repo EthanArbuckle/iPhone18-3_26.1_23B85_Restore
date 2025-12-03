@@ -1,43 +1,43 @@
 @interface IRStatisticsMO
-+ (void)setPropertiesOfStatisticsMO:(id)a3 withStatisticsDO:(id)a4;
++ (void)setPropertiesOfStatisticsMO:(id)o withStatisticsDO:(id)dO;
 - (id)convert;
 @end
 
 @implementation IRStatisticsMO
 
-+ (void)setPropertiesOfStatisticsMO:(id)a3 withStatisticsDO:(id)a4
++ (void)setPropertiesOfStatisticsMO:(id)o withStatisticsDO:(id)dO
 {
-  v5 = a4;
-  v6 = a3;
-  [v6 setNumberOfContextChanges:{objc_msgSend(v5, "numberOfContextChanges")}];
-  [v6 setNumberOfMiLoPredictions:{objc_msgSend(v5, "numberOfMiLoPredictions")}];
-  [v6 setNumberOfMiLoPredictionsInUpdatesMode:{objc_msgSend(v5, "numberOfMiLoPredictionsInUpdatesMode")}];
-  [v6 setLastMiLoLSLItems:{objc_msgSend(v5, "lastMiLoLSLItems")}];
-  [v6 setLastMiLoQualityReasonBitmap:{objc_msgSend(v5, "lastMiLoQualityReasonBitmap")}];
-  [v6 setLastMiLoQuality:{objc_msgSend(v5, "lastMiLoQuality")}];
-  [v6 setLastMiLoModels:{objc_msgSend(v5, "lastMiLoModels")}];
-  [v6 setTimeInUpdatesModeInSeconds:{objc_msgSend(v5, "timeInUpdatesModeInSeconds")}];
-  [v6 setNumberOfPickerChoiceEvents:{objc_msgSend(v5, "numberOfPickerChoiceEvents")}];
-  [v6 setNumberOfCorrectPickerChoiceEvents:{objc_msgSend(v5, "numberOfCorrectPickerChoiceEvents")}];
-  v7 = [v5 lastClearDate];
+  dOCopy = dO;
+  oCopy = o;
+  [oCopy setNumberOfContextChanges:{objc_msgSend(dOCopy, "numberOfContextChanges")}];
+  [oCopy setNumberOfMiLoPredictions:{objc_msgSend(dOCopy, "numberOfMiLoPredictions")}];
+  [oCopy setNumberOfMiLoPredictionsInUpdatesMode:{objc_msgSend(dOCopy, "numberOfMiLoPredictionsInUpdatesMode")}];
+  [oCopy setLastMiLoLSLItems:{objc_msgSend(dOCopy, "lastMiLoLSLItems")}];
+  [oCopy setLastMiLoQualityReasonBitmap:{objc_msgSend(dOCopy, "lastMiLoQualityReasonBitmap")}];
+  [oCopy setLastMiLoQuality:{objc_msgSend(dOCopy, "lastMiLoQuality")}];
+  [oCopy setLastMiLoModels:{objc_msgSend(dOCopy, "lastMiLoModels")}];
+  [oCopy setTimeInUpdatesModeInSeconds:{objc_msgSend(dOCopy, "timeInUpdatesModeInSeconds")}];
+  [oCopy setNumberOfPickerChoiceEvents:{objc_msgSend(dOCopy, "numberOfPickerChoiceEvents")}];
+  [oCopy setNumberOfCorrectPickerChoiceEvents:{objc_msgSend(dOCopy, "numberOfCorrectPickerChoiceEvents")}];
+  lastClearDate = [dOCopy lastClearDate];
 
-  [v6 setLastClearDate:v7];
+  [oCopy setLastClearDate:lastClearDate];
 }
 
 - (id)convert
 {
-  v15 = [(IRStatisticsMO *)self numberOfContextChanges];
-  v3 = [(IRStatisticsMO *)self numberOfMiLoPredictions];
-  v4 = [(IRStatisticsMO *)self numberOfMiLoPredictionsInUpdatesMode];
-  v5 = [(IRStatisticsMO *)self lastMiLoLSLItems];
-  v6 = [(IRStatisticsMO *)self lastMiLoQualityReasonBitmap];
-  v7 = [(IRStatisticsMO *)self lastMiLoQuality];
-  v8 = [(IRStatisticsMO *)self lastMiLoModels];
-  v9 = [(IRStatisticsMO *)self timeInUpdatesModeInSeconds];
-  v10 = [(IRStatisticsMO *)self numberOfPickerChoiceEvents];
-  v11 = [(IRStatisticsMO *)self numberOfCorrectPickerChoiceEvents];
-  v12 = [(IRStatisticsMO *)self lastClearDate];
-  v13 = [IRStatisticsDO statisticsDOWithNumberOfContextChanges:v15 numberOfMiLoPredictions:v3 numberOfMiLoPredictionsInUpdatesMode:v4 lastMiLoLSLItems:v5 lastMiLoQualityReasonBitmap:v6 lastMiLoQuality:v7 lastMiLoModels:v8 timeInUpdatesModeInSeconds:v9 numberOfPickerChoiceEvents:v10 numberOfCorrectPickerChoiceEvents:v11 lastClearDate:v12];
+  numberOfContextChanges = [(IRStatisticsMO *)self numberOfContextChanges];
+  numberOfMiLoPredictions = [(IRStatisticsMO *)self numberOfMiLoPredictions];
+  numberOfMiLoPredictionsInUpdatesMode = [(IRStatisticsMO *)self numberOfMiLoPredictionsInUpdatesMode];
+  lastMiLoLSLItems = [(IRStatisticsMO *)self lastMiLoLSLItems];
+  lastMiLoQualityReasonBitmap = [(IRStatisticsMO *)self lastMiLoQualityReasonBitmap];
+  lastMiLoQuality = [(IRStatisticsMO *)self lastMiLoQuality];
+  lastMiLoModels = [(IRStatisticsMO *)self lastMiLoModels];
+  timeInUpdatesModeInSeconds = [(IRStatisticsMO *)self timeInUpdatesModeInSeconds];
+  numberOfPickerChoiceEvents = [(IRStatisticsMO *)self numberOfPickerChoiceEvents];
+  numberOfCorrectPickerChoiceEvents = [(IRStatisticsMO *)self numberOfCorrectPickerChoiceEvents];
+  lastClearDate = [(IRStatisticsMO *)self lastClearDate];
+  v13 = [IRStatisticsDO statisticsDOWithNumberOfContextChanges:numberOfContextChanges numberOfMiLoPredictions:numberOfMiLoPredictions numberOfMiLoPredictionsInUpdatesMode:numberOfMiLoPredictionsInUpdatesMode lastMiLoLSLItems:lastMiLoLSLItems lastMiLoQualityReasonBitmap:lastMiLoQualityReasonBitmap lastMiLoQuality:lastMiLoQuality lastMiLoModels:lastMiLoModels timeInUpdatesModeInSeconds:timeInUpdatesModeInSeconds numberOfPickerChoiceEvents:numberOfPickerChoiceEvents numberOfCorrectPickerChoiceEvents:numberOfCorrectPickerChoiceEvents lastClearDate:lastClearDate];
 
   return v13;
 }

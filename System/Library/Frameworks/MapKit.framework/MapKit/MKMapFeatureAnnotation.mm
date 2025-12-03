@@ -1,6 +1,6 @@
 @interface MKMapFeatureAnnotation
 - (CLLocationCoordinate2D)coordinate;
-- (MKMapFeatureAnnotation)initWithVKLabelMarker:(id)a3 isHybridMap:(BOOL)a4;
+- (MKMapFeatureAnnotation)initWithVKLabelMarker:(id)marker isHybridMap:(BOOL)map;
 - (void)_setProperties;
 @end
 
@@ -24,14 +24,14 @@ LABEL_5:
 
   if ([(VKLabelMarker *)self->_marker externalFeatureCategory]== 1)
   {
-    v9 = [(VKLabelMarker *)self->_marker styleAttributes];
+    styleAttributes = [(VKLabelMarker *)self->_marker styleAttributes];
     self->_featureType = 0;
-    v4 = [v9 poiCategory];
-    v5 = MKPointOfInterestCategoryForGEOPOICategory(v4);
+    poiCategory = [styleAttributes poiCategory];
+    v5 = MKPointOfInterestCategoryForGEOPOICategory(poiCategory);
     pointOfInterestCategory = self->_pointOfInterestCategory;
     self->_pointOfInterestCategory = v5;
 
-    v7 = [[MKIconStyle alloc] initWithStyleAttributes:v9 isHybridMap:self->_isHybridMap];
+    v7 = [[MKIconStyle alloc] initWithStyleAttributes:styleAttributes isHybridMap:self->_isHybridMap];
     iconStyle = self->_iconStyle;
     self->_iconStyle = v7;
   }
@@ -51,17 +51,17 @@ LABEL_5:
   return result;
 }
 
-- (MKMapFeatureAnnotation)initWithVKLabelMarker:(id)a3 isHybridMap:(BOOL)a4
+- (MKMapFeatureAnnotation)initWithVKLabelMarker:(id)marker isHybridMap:(BOOL)map
 {
-  v7 = a3;
+  markerCopy = marker;
   v11.receiver = self;
   v11.super_class = MKMapFeatureAnnotation;
   v8 = [(MKMapFeatureAnnotation *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_marker, a3);
-    v9->_isHybridMap = a4;
+    objc_storeStrong(&v8->_marker, marker);
+    v9->_isHybridMap = map;
     [(MKMapFeatureAnnotation *)v9 _setProperties];
   }
 

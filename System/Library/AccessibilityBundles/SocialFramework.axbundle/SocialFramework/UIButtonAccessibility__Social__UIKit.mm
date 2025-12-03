@@ -8,65 +8,65 @@
 
 - (id)accessibilityLabel
 {
-  v3 = [(UIButtonAccessibility__Social__UIKit *)self accessibilityIdentification];
-  v4 = [v3 isEqualToString:@"AccountSelector"];
+  accessibilityIdentification = [(UIButtonAccessibility__Social__UIKit *)self accessibilityIdentification];
+  v4 = [accessibilityIdentification isEqualToString:@"AccountSelector"];
 
   if (v4)
   {
-    v5 = accessibilityLocalizedString(@"account.selector.label");
+    accessibilityLabel = accessibilityLocalizedString(@"account.selector.label");
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = UIButtonAccessibility__Social__UIKit;
-    v5 = [(UIButtonAccessibility__Social__UIKit *)&v7 accessibilityLabel];
+    accessibilityLabel = [(UIButtonAccessibility__Social__UIKit *)&v7 accessibilityLabel];
   }
 
-  return v5;
+  return accessibilityLabel;
 }
 
 - (id)accessibilityHint
 {
-  v3 = [(UIButtonAccessibility__Social__UIKit *)self accessibilityIdentification];
-  v4 = [v3 isEqualToString:@"AccountSelector"];
+  accessibilityIdentification = [(UIButtonAccessibility__Social__UIKit *)self accessibilityIdentification];
+  v4 = [accessibilityIdentification isEqualToString:@"AccountSelector"];
 
   if (v4)
   {
-    v5 = accessibilityLocalizedString(@"account.selector.hint");
+    accessibilityHint = accessibilityLocalizedString(@"account.selector.hint");
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = UIButtonAccessibility__Social__UIKit;
-    v5 = [(UIButtonAccessibility__Social__UIKit *)&v7 accessibilityHint];
+    accessibilityHint = [(UIButtonAccessibility__Social__UIKit *)&v7 accessibilityHint];
   }
 
-  return v5;
+  return accessibilityHint;
 }
 
 - (id)accessibilityValue
 {
-  v3 = [(UIButtonAccessibility__Social__UIKit *)self accessibilityIdentification];
-  v4 = [v3 isEqualToString:@"AccountSelector"];
+  accessibilityIdentification = [(UIButtonAccessibility__Social__UIKit *)self accessibilityIdentification];
+  v4 = [accessibilityIdentification isEqualToString:@"AccountSelector"];
 
   if (v4)
   {
-    v10 = self;
+    selfCopy = self;
     v5 = &selRef_accessibilityLabel;
-    v6 = &v10;
+    v6 = &selfCopy;
   }
 
   else
   {
-    v9 = self;
+    selfCopy2 = self;
     v5 = &selRef_accessibilityValue;
-    v6 = &v9;
+    v6 = &selfCopy2;
   }
 
   v6[1] = UIButtonAccessibility__Social__UIKit;
-  v7 = objc_msgSendSuper2(v6, *v5, v9);
+  v7 = objc_msgSendSuper2(v6, *v5, selfCopy2);
 
   return v7;
 }

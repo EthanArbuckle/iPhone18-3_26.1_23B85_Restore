@@ -1,16 +1,16 @@
 @interface _PXPhotoKitAssetBadgeManager
-- (BOOL)_shouldShowGyroBadgeForAsset:(id)a3;
-- (PXAssetBadgeInfo)badgeInfoForAsset:(SEL)a3 inCollection:(id)a4 options:(id)a5;
+- (BOOL)_shouldShowGyroBadgeForAsset:(id)asset;
+- (PXAssetBadgeInfo)badgeInfoForAsset:(SEL)asset inCollection:(id)collection options:(id)options;
 @end
 
 @implementation _PXPhotoKitAssetBadgeManager
 
-- (BOOL)_shouldShowGyroBadgeForAsset:(id)a3
+- (BOOL)_shouldShowGyroBadgeForAsset:(id)asset
 {
-  v3 = a3;
+  assetCopy = asset;
   if (((PFIsPhotosAppAnyPlatform() & 1) != 0 || PFIsCamera()) && PFPosterIsSpatialPhotoEnabled() && PFPosterDeviceSupportsSpatialPhoto())
   {
-    v4 = [v3 isEligibleForSpatialGenerationIncludingStereo:1];
+    v4 = [assetCopy isEligibleForSpatialGenerationIncludingStereo:1];
   }
 
   else
@@ -21,20 +21,20 @@
   return v4;
 }
 
-- (PXAssetBadgeInfo)badgeInfoForAsset:(SEL)a3 inCollection:(id)a4 options:(id)a5
+- (PXAssetBadgeInfo)badgeInfoForAsset:(SEL)asset inCollection:(id)collection options:(id)options
 {
-  v10 = a4;
+  collectionCopy = collection;
   *&retstr->badges = 0u;
   *&retstr->count = 0u;
   v20.receiver = self;
   v20.super_class = _PXPhotoKitAssetBadgeManager;
-  [(PXAssetBadgeInfo *)&v20 badgeInfoForAsset:v10 inCollection:a5 options:a6];
-  if (PXDisplayAssetIsSyndicatedAndUnsaved(v10))
+  [(PXAssetBadgeInfo *)&v20 badgeInfoForAsset:collectionCopy inCollection:options options:a6];
+  if (PXDisplayAssetIsSyndicatedAndUnsaved(collectionCopy))
   {
-    v11 = [v10 photoLibrary];
-    if (v11)
+    photoLibrary = [collectionCopy photoLibrary];
+    if (photoLibrary)
     {
-      v12 = [PXContentSyndicationConfigurationProvider contentSyndicationConfigurationProviderWithPhotoLibrary:v11];
+      v12 = [PXContentSyndicationConfigurationProvider contentSyndicationConfigurationProviderWithPhotoLibrary:photoLibrary];
       if ([v12 showUnsavedSyndicatedContentInPhotosGrids])
       {
         retstr->badges |= 0x80000000uLL;
@@ -44,7 +44,7 @@
 
   if ((a6 & 0x10) != 0)
   {
-    v13 = v10;
+    v13 = collectionCopy;
     if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
     {
       v14 = v13;

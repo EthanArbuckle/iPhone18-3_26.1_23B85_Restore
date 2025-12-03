@@ -1,22 +1,22 @@
 @interface CSDMessagingLinkSyncCheckInMessage
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addGenerateDescriptorInfos:(id)a3;
-- (void)addGeneratorDescriptors:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasShouldCheckAllGenerators:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addGenerateDescriptorInfos:(id)infos;
+- (void)addGeneratorDescriptors:(id)descriptors;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasShouldCheckAllGenerators:(BOOL)generators;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CSDMessagingLinkSyncCheckInMessage
 
-- (void)setHasShouldCheckAllGenerators:(BOOL)a3
+- (void)setHasShouldCheckAllGenerators:(BOOL)generators
 {
-  if (a3)
+  if (generators)
   {
     v3 = 2;
   }
@@ -29,40 +29,40 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)addGeneratorDescriptors:(id)a3
+- (void)addGeneratorDescriptors:(id)descriptors
 {
-  v4 = a3;
+  descriptorsCopy = descriptors;
   generatorDescriptors = self->_generatorDescriptors;
-  v8 = v4;
+  v8 = descriptorsCopy;
   if (!generatorDescriptors)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_generatorDescriptors;
     self->_generatorDescriptors = v6;
 
-    v4 = v8;
+    descriptorsCopy = v8;
     generatorDescriptors = self->_generatorDescriptors;
   }
 
-  [(NSMutableArray *)generatorDescriptors addObject:v4];
+  [(NSMutableArray *)generatorDescriptors addObject:descriptorsCopy];
 }
 
-- (void)addGenerateDescriptorInfos:(id)a3
+- (void)addGenerateDescriptorInfos:(id)infos
 {
-  v4 = a3;
+  infosCopy = infos;
   generateDescriptorInfos = self->_generateDescriptorInfos;
-  v8 = v4;
+  v8 = infosCopy;
   if (!generateDescriptorInfos)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_generateDescriptorInfos;
     self->_generateDescriptorInfos = v6;
 
-    v4 = v8;
+    infosCopy = v8;
     generateDescriptorInfos = self->_generateDescriptorInfos;
   }
 
-  [(NSMutableArray *)generateDescriptorInfos addObject:v4];
+  [(NSMutableArray *)generateDescriptorInfos addObject:infosCopy];
 }
 
 - (id)description
@@ -70,8 +70,8 @@
   v7.receiver = self;
   v7.super_class = CSDMessagingLinkSyncCheckInMessage;
   v3 = [(CSDMessagingLinkSyncCheckInMessage *)&v7 description];
-  v4 = [(CSDMessagingLinkSyncCheckInMessage *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(CSDMessagingLinkSyncCheckInMessage *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -116,8 +116,8 @@
             objc_enumerationMutation(v8);
           }
 
-          v13 = [*(*(&v26 + 1) + 8 * i) dictionaryRepresentation];
-          [v7 addObject:v13];
+          dictionaryRepresentation = [*(*(&v26 + 1) + 8 * i) dictionaryRepresentation];
+          [v7 addObject:dictionaryRepresentation];
         }
 
         v10 = [(NSMutableArray *)v8 countByEnumeratingWithState:&v26 objects:v31 count:16];
@@ -151,8 +151,8 @@
             objc_enumerationMutation(v15);
           }
 
-          v20 = [*(*(&v22 + 1) + 8 * j) dictionaryRepresentation];
-          [v14 addObject:v20];
+          dictionaryRepresentation2 = [*(*(&v22 + 1) + 8 * j) dictionaryRepresentation];
+          [v14 addObject:dictionaryRepresentation2];
         }
 
         v17 = [(NSMutableArray *)v15 countByEnumeratingWithState:&v22 objects:v30 count:16];
@@ -167,9 +167,9 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -243,31 +243,31 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[6] = self->_version;
-    *(v4 + 32) |= 1u;
+    toCopy[6] = self->_version;
+    *(toCopy + 32) |= 1u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    *(v4 + 28) = self->_shouldCheckAllGenerators;
-    *(v4 + 32) |= 2u;
+    *(toCopy + 28) = self->_shouldCheckAllGenerators;
+    *(toCopy + 32) |= 2u;
   }
 
-  v14 = v4;
+  v14 = toCopy;
   if ([(CSDMessagingLinkSyncCheckInMessage *)self generatorDescriptorsCount])
   {
     [v14 clearGeneratorDescriptors];
-    v6 = [(CSDMessagingLinkSyncCheckInMessage *)self generatorDescriptorsCount];
-    if (v6)
+    generatorDescriptorsCount = [(CSDMessagingLinkSyncCheckInMessage *)self generatorDescriptorsCount];
+    if (generatorDescriptorsCount)
     {
-      v7 = v6;
+      v7 = generatorDescriptorsCount;
       for (i = 0; i != v7; ++i)
       {
         v9 = [(CSDMessagingLinkSyncCheckInMessage *)self generatorDescriptorsAtIndex:i];
@@ -279,10 +279,10 @@
   if ([(CSDMessagingLinkSyncCheckInMessage *)self generateDescriptorInfosCount])
   {
     [v14 clearGenerateDescriptorInfos];
-    v10 = [(CSDMessagingLinkSyncCheckInMessage *)self generateDescriptorInfosCount];
-    if (v10)
+    generateDescriptorInfosCount = [(CSDMessagingLinkSyncCheckInMessage *)self generateDescriptorInfosCount];
+    if (generateDescriptorInfosCount)
     {
-      v11 = v10;
+      v11 = generateDescriptorInfosCount;
       for (j = 0; j != v11; ++j)
       {
         v13 = [(CSDMessagingLinkSyncCheckInMessage *)self generateDescriptorInfosAtIndex:j];
@@ -292,9 +292,9 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if (has)
@@ -329,7 +329,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v25 + 1) + 8 * i) copyWithZone:a3];
+        v13 = [*(*(&v25 + 1) + 8 * i) copyWithZone:zone];
         [v6 addGeneratorDescriptors:v13];
       }
 
@@ -358,7 +358,7 @@
           objc_enumerationMutation(v14);
         }
 
-        v19 = [*(*(&v21 + 1) + 8 * j) copyWithZone:{a3, v21}];
+        v19 = [*(*(&v21 + 1) + 8 * j) copyWithZone:{zone, v21}];
         [v6 addGenerateDescriptorInfos:v19];
       }
 
@@ -371,31 +371,31 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_14;
   }
 
-  v5 = *(v4 + 32);
+  v5 = *(equalCopy + 32);
   if (*&self->_has)
   {
-    if ((*(v4 + 32) & 1) == 0 || self->_version != *(v4 + 6))
+    if ((*(equalCopy + 32) & 1) == 0 || self->_version != *(equalCopy + 6))
     {
       goto LABEL_14;
     }
   }
 
-  else if (*(v4 + 32))
+  else if (*(equalCopy + 32))
   {
     goto LABEL_14;
   }
 
   if ((*&self->_has & 2) == 0)
   {
-    if ((*(v4 + 32) & 2) == 0)
+    if ((*(equalCopy + 32) & 2) == 0)
     {
       goto LABEL_9;
     }
@@ -405,34 +405,34 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if ((*(v4 + 32) & 2) == 0)
+  if ((*(equalCopy + 32) & 2) == 0)
   {
     goto LABEL_14;
   }
 
-  v10 = *(v4 + 28);
+  v10 = *(equalCopy + 28);
   if (self->_shouldCheckAllGenerators)
   {
-    if ((*(v4 + 28) & 1) == 0)
+    if ((*(equalCopy + 28) & 1) == 0)
     {
       goto LABEL_14;
     }
   }
 
-  else if (*(v4 + 28))
+  else if (*(equalCopy + 28))
   {
     goto LABEL_14;
   }
 
 LABEL_9:
   generatorDescriptors = self->_generatorDescriptors;
-  if (generatorDescriptors | *(v4 + 2) && ![(NSMutableArray *)generatorDescriptors isEqual:?])
+  if (generatorDescriptors | *(equalCopy + 2) && ![(NSMutableArray *)generatorDescriptors isEqual:?])
   {
     goto LABEL_14;
   }
 
   generateDescriptorInfos = self->_generateDescriptorInfos;
-  if (generateDescriptorInfos | *(v4 + 1))
+  if (generateDescriptorInfos | *(equalCopy + 1))
   {
     v8 = [(NSMutableArray *)generateDescriptorInfos isEqual:?];
   }
@@ -475,21 +475,21 @@ LABEL_6:
   return v5 ^ [(NSMutableArray *)self->_generateDescriptorInfos hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  v6 = *(v4 + 32);
+  fromCopy = from;
+  v5 = fromCopy;
+  v6 = *(fromCopy + 32);
   if (v6)
   {
-    self->_version = *(v4 + 6);
+    self->_version = *(fromCopy + 6);
     *&self->_has |= 1u;
-    v6 = *(v4 + 32);
+    v6 = *(fromCopy + 32);
   }
 
   if ((v6 & 2) != 0)
   {
-    self->_shouldCheckAllGenerators = *(v4 + 28);
+    self->_shouldCheckAllGenerators = *(fromCopy + 28);
     *&self->_has |= 2u;
   }
 
@@ -497,7 +497,7 @@ LABEL_6:
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v7 = *(v4 + 2);
+  v7 = *(fromCopy + 2);
   v8 = [v7 countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v8)
   {

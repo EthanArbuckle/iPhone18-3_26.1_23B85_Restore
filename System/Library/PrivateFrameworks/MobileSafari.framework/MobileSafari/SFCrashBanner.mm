@@ -1,27 +1,27 @@
 @interface SFCrashBanner
-- (BOOL)_shouldUseManuallyWrappedCrashMessageForWidth:(double)a3;
-- (CGSize)_labelLayoutSizeForWidth:(double)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SFCrashBanner)initWithFrame:(CGRect)a3;
+- (BOOL)_shouldUseManuallyWrappedCrashMessageForWidth:(double)width;
+- (CGSize)_labelLayoutSizeForWidth:(double)width;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SFCrashBanner)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setBannerText:(id)a3 manuallyWrappedBannerText:(id)a4;
+- (void)setBannerText:(id)text manuallyWrappedBannerText:(id)bannerText;
 - (void)themeDidChange;
 @end
 
 @implementation SFCrashBanner
 
-- (SFCrashBanner)initWithFrame:(CGRect)a3
+- (SFCrashBanner)initWithFrame:(CGRect)frame
 {
   v59[5] = *MEMORY[0x1E69E9840];
   v57.receiver = self;
   v57.super_class = SFCrashBanner;
-  v3 = [(SFPinnableBanner *)&v57 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SFPinnableBanner *)&v57 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     [(SFCrashBanner *)v3 setClipsToBounds:0];
-    v5 = [(SFCrashBanner *)v4 layer];
-    [v5 setAllowsGroupBlending:0];
+    layer = [(SFCrashBanner *)v4 layer];
+    [layer setAllowsGroupBlending:0];
 
     v6 = _WBSLocalizedString();
     bannerText = v4->_bannerText;
@@ -63,8 +63,8 @@
 
     [(UIVisualEffectView *)v4->_contentEffectView setAutoresizingMask:18];
     [(SFCrashBanner *)v4 addSubview:v4->_contentEffectView];
-    v24 = [(UIVisualEffectView *)v4->_contentEffectView contentView];
-    [v24 addSubview:v4->_closeButton];
+    contentView = [(UIVisualEffectView *)v4->_contentEffectView contentView];
+    [contentView addSubview:v4->_closeButton];
 
     v25 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     label = v4->_label;
@@ -75,66 +75,66 @@
 
     [(UILabel *)v4->_label setLineBreakMode:0];
     [(UILabel *)v4->_label setNumberOfLines:0];
-    v28 = [(UIVisualEffectView *)v4->_contentEffectView contentView];
-    [v28 addSubview:v4->_label];
+    contentView2 = [(UIVisualEffectView *)v4->_contentEffectView contentView];
+    [contentView2 addSubview:v4->_label];
 
     [(UIButton *)v4->_closeButton setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UILabel *)v4->_label setTranslatesAutoresizingMaskIntoConstraints:0];
-    LODWORD(v28) = [MEMORY[0x1E69C8880] isSolariumEnabled];
+    LODWORD(contentView2) = [MEMORY[0x1E69C8880] isSolariumEnabled];
     v50 = MEMORY[0x1E696ACD8];
-    v29 = [(UIButton *)v4->_closeButton centerYAnchor];
-    v55 = [(SFCrashBanner *)v4 centerYAnchor];
-    v30 = [v29 constraintEqualToAnchor:?];
+    centerYAnchor = [(UIButton *)v4->_closeButton centerYAnchor];
+    centerYAnchor2 = [(SFCrashBanner *)v4 centerYAnchor];
+    v30 = [centerYAnchor constraintEqualToAnchor:?];
     v54 = v30;
-    if (v28)
+    if (contentView2)
     {
       v59[0] = v30;
-      v45 = [(UILabel *)v4->_label centerYAnchor];
-      v53 = [(SFCrashBanner *)v4 centerYAnchor];
-      v52 = [v45 constraintEqualToAnchor:?];
+      centerYAnchor3 = [(UILabel *)v4->_label centerYAnchor];
+      centerYAnchor4 = [(SFCrashBanner *)v4 centerYAnchor];
+      v52 = [centerYAnchor3 constraintEqualToAnchor:?];
       v59[1] = v52;
-      v31 = [(UILabel *)v4->_label leadingAnchor];
-      v49 = [(SFCrashBanner *)v4 safeAreaLayoutGuide];
-      [v49 leadingAnchor];
-      v48 = v51 = v31;
-      v47 = [v31 constraintEqualToAnchor:8.0 constant:?];
+      leadingAnchor = [(UILabel *)v4->_label leadingAnchor];
+      safeAreaLayoutGuide = [(SFCrashBanner *)v4 safeAreaLayoutGuide];
+      [safeAreaLayoutGuide leadingAnchor];
+      leadingAnchor4 = safeAreaLayoutGuide3 = leadingAnchor;
+      v47 = [leadingAnchor constraintEqualToAnchor:8.0 constant:?];
       v59[2] = v47;
-      v32 = [(UIButton *)v4->_closeButton trailingAnchor];
-      v33 = [(SFCrashBanner *)v4 safeAreaLayoutGuide];
-      v34 = [v33 trailingAnchor];
-      v35 = [v32 constraintEqualToAnchor:v34 constant:-8.0];
+      trailingAnchor = [(UIButton *)v4->_closeButton trailingAnchor];
+      safeAreaLayoutGuide2 = [(SFCrashBanner *)v4 safeAreaLayoutGuide];
+      trailingAnchor2 = [safeAreaLayoutGuide2 trailingAnchor];
+      v35 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-8.0];
       v59[3] = v35;
-      v36 = [(UIButton *)v4->_closeButton leadingAnchor];
+      leadingAnchor2 = [(UIButton *)v4->_closeButton leadingAnchor];
       [(UILabel *)v4->_label trailingAnchor];
-      v46 = v29;
+      v46 = centerYAnchor;
       v38 = v37 = v16;
-      v39 = [v36 constraintEqualToAnchor:v38 constant:2.5];
+      v39 = [leadingAnchor2 constraintEqualToAnchor:v38 constant:2.5];
       v59[4] = v39;
       v40 = [MEMORY[0x1E695DEC8] arrayWithObjects:v59 count:5];
       [v50 activateConstraints:v40];
 
-      v41 = v45;
+      centerYAnchor5 = centerYAnchor3;
       v16 = v37;
-      v29 = v46;
+      centerYAnchor = v46;
     }
 
     else
     {
       v58[0] = v30;
-      v41 = [(UILabel *)v4->_label centerYAnchor];
-      v53 = [(SFCrashBanner *)v4 centerYAnchor];
-      v52 = [v41 constraintEqualToAnchor:?];
+      centerYAnchor5 = [(UILabel *)v4->_label centerYAnchor];
+      centerYAnchor4 = [(SFCrashBanner *)v4 centerYAnchor];
+      v52 = [centerYAnchor5 constraintEqualToAnchor:?];
       v58[1] = v52;
-      v51 = [(SFCrashBanner *)v4 safeAreaLayoutGuide];
-      v42 = [v51 leadingAnchor];
-      v48 = [(UIButton *)v4->_closeButton leadingAnchor];
-      v49 = v42;
-      v47 = [v42 constraintEqualToAnchor:-8.0 constant:?];
+      safeAreaLayoutGuide3 = [(SFCrashBanner *)v4 safeAreaLayoutGuide];
+      leadingAnchor3 = [safeAreaLayoutGuide3 leadingAnchor];
+      leadingAnchor4 = [(UIButton *)v4->_closeButton leadingAnchor];
+      safeAreaLayoutGuide = leadingAnchor3;
+      v47 = [leadingAnchor3 constraintEqualToAnchor:-8.0 constant:?];
       v58[2] = v47;
-      v32 = [(UIButton *)v4->_closeButton trailingAnchor];
-      v33 = [(UILabel *)v4->_label leadingAnchor];
-      v34 = [v32 constraintEqualToAnchor:v33 constant:-2.5];
-      v58[3] = v34;
+      trailingAnchor = [(UIButton *)v4->_closeButton trailingAnchor];
+      safeAreaLayoutGuide2 = [(UILabel *)v4->_label leadingAnchor];
+      trailingAnchor2 = [trailingAnchor constraintEqualToAnchor:safeAreaLayoutGuide2 constant:-2.5];
+      v58[3] = trailingAnchor2;
       v35 = [MEMORY[0x1E695DEC8] arrayWithObjects:v58 count:4];
       [v50 activateConstraints:v35];
     }
@@ -147,8 +147,8 @@
 
 - (void)themeDidChange
 {
-  v15 = [(SFPinnableBanner *)self theme];
-  if ([v15 backdropIsDark])
+  theme = [(SFPinnableBanner *)self theme];
+  if ([theme backdropIsDark])
   {
     [MEMORY[0x1E69DC888] whiteColor];
   }
@@ -159,11 +159,11 @@
   }
   v3 = ;
   [(UILabel *)self->_label setTextColor:v3];
-  v4 = [v15 traitCollection];
-  [(SFCrashBanner *)self _setLocalOverrideTraitCollection:v4];
+  traitCollection = [theme traitCollection];
+  [(SFCrashBanner *)self _setLocalOverrideTraitCollection:traitCollection];
 
-  [(SFThemeColorEffectView *)self->_backdrop setTheme:v15];
-  if (v15)
+  [(SFThemeColorEffectView *)self->_backdrop setTheme:theme];
+  if (theme)
   {
     v5 = MEMORY[0x1E69DD248];
     v6 = [MEMORY[0x1E69DC730] effectWithStyle:10];
@@ -173,12 +173,12 @@
 
   else
   {
-    v8 = [0 backdropIsTinted];
+    backdropIsTinted = [0 backdropIsTinted];
     v9 = MEMORY[0x1E69DD248];
-    v10 = [0 backdropEffect];
-    if (v8)
+    backdropEffect = [0 backdropEffect];
+    if (backdropIsTinted)
     {
-      v11 = [v9 effectForBlurEffect:v10];
+      v11 = [v9 effectForBlurEffect:backdropEffect];
       [(UIVisualEffectView *)self->_contentEffectView setEffect:v11];
 
       closeButton = self->_closeButton;
@@ -187,7 +187,7 @@
 
     else
     {
-      v14 = [v9 effectForBlurEffect:v10 style:4];
+      v14 = [v9 effectForBlurEffect:backdropEffect style:4];
       [(UIVisualEffectView *)self->_contentEffectView setEffect:v14];
 
       closeButton = self->_closeButton;
@@ -198,7 +198,7 @@
   }
 }
 
-- (BOOL)_shouldUseManuallyWrappedCrashMessageForWidth:(double)a3
+- (BOOL)_shouldUseManuallyWrappedCrashMessageForWidth:(double)width
 {
   v14[1] = *MEMORY[0x1E69E9840];
   v5 = objc_alloc(MEMORY[0x1E696AAB0]);
@@ -210,25 +210,25 @@
   v9 = [v5 initWithString:bannerText attributes:v8];
 
   v10 = CTTypesetterCreateWithAttributedString(v9);
-  v11 = CTTypesetterSuggestLineBreak(v10, 0, a3);
+  v11 = CTTypesetterSuggestLineBreak(v10, 0, width);
   CFRelease(v10);
   LOBYTE(v10) = v11 < [(__CFAttributedString *)v9 length];
 
   return v10;
 }
 
-- (CGSize)_labelLayoutSizeForWidth:(double)a3
+- (CGSize)_labelLayoutSizeForWidth:(double)width
 {
   p_cachedLabelLayoutSize = &self->_cachedLabelLayoutSize;
   width = self->_cachedLabelLayoutSize.width;
-  if (width == a3)
+  if (width == width)
   {
     height = self->_cachedLabelLayoutSize.height;
   }
 
   else
   {
-    v6 = a3 + -16.0;
+    v6 = width + -16.0;
     [(UIButton *)self->_closeButton bounds];
     width = v6 - (v7 + 2.5);
     if (![(SFCrashBanner *)self _shouldUseManuallyWrappedCrashMessageForWidth:width]|| (p_bannerText = &self->_manuallyWrappedBannerText, ![(NSString *)self->_manuallyWrappedBannerText length]))
@@ -243,9 +243,9 @@
     p_cachedLabelLayoutSize->height = height;
   }
 
-  v11 = width;
+  widthCopy = width;
   result.height = height;
-  result.width = v11;
+  result.width = widthCopy;
   return result;
 }
 
@@ -254,11 +254,11 @@
   v6.receiver = self;
   v6.super_class = SFCrashBanner;
   [(SFCrashBanner *)&v6 layoutSubviews];
-  v3 = [(SFPinnableBanner *)self theme];
-  if ([v3 backdropIsDark])
+  theme = [(SFPinnableBanner *)self theme];
+  if ([theme backdropIsDark])
   {
-    v4 = [v3 separatorColor];
-    v5 = v4 == 0;
+    separatorColor = [theme separatorColor];
+    v5 = separatorColor == 0;
   }
 
   else
@@ -270,24 +270,24 @@
   [(SFPinnableBanner *)self setShowsBottomSeparator:v5 ^ 1];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  [(SFCrashBanner *)self _labelLayoutSizeForWidth:a3.width, a3.height];
+  width = fits.width;
+  [(SFCrashBanner *)self _labelLayoutSizeForWidth:fits.width, fits.height];
   v5 = width;
   result.height = v4;
   result.width = v5;
   return result;
 }
 
-- (void)setBannerText:(id)a3 manuallyWrappedBannerText:(id)a4
+- (void)setBannerText:(id)text manuallyWrappedBannerText:(id)bannerText
 {
-  v6 = a4;
-  v7 = [a3 copy];
+  bannerTextCopy = bannerText;
+  v7 = [text copy];
   bannerText = self->_bannerText;
   self->_bannerText = v7;
 
-  v9 = [v6 copy];
+  v9 = [bannerTextCopy copy];
   manuallyWrappedBannerText = self->_manuallyWrappedBannerText;
   self->_manuallyWrappedBannerText = v9;
 

@@ -1,29 +1,29 @@
 @interface SUUIPhysicalCirclesTemplateDOMFeature
-+ (id)makeFeatureJSObjectForFeature:(id)a3;
++ (id)makeFeatureJSObjectForFeature:(id)feature;
 - (IKAppContext)appContext;
-- (SUUIPhysicalCirclesTemplateDOMFeature)initWithDOMNode:(id)a3 featureName:(id)a4;
+- (SUUIPhysicalCirclesTemplateDOMFeature)initWithDOMNode:(id)node featureName:(id)name;
 - (SUUIPhysicalCirclesTemplateDelegate)delegate;
 - (id)popPendingAnimationRequests;
-- (void)_addDOMUpdateBlock:(id)a3;
-- (void)_requestAnimation:(id)a3;
+- (void)_addDOMUpdateBlock:(id)block;
+- (void)_requestAnimation:(id)animation;
 - (void)finishDOMUpdates;
 @end
 
 @implementation SUUIPhysicalCirclesTemplateDOMFeature
 
-- (SUUIPhysicalCirclesTemplateDOMFeature)initWithDOMNode:(id)a3 featureName:(id)a4
+- (SUUIPhysicalCirclesTemplateDOMFeature)initWithDOMNode:(id)node featureName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  nodeCopy = node;
+  nameCopy = name;
   v13.receiver = self;
   v13.super_class = SUUIPhysicalCirclesTemplateDOMFeature;
   v8 = [(SUUIPhysicalCirclesTemplateDOMFeature *)&v13 init];
   if (v8)
   {
-    v9 = [v6 appContext];
-    objc_storeWeak(&v8->_appContext, v9);
+    appContext = [nodeCopy appContext];
+    objc_storeWeak(&v8->_appContext, appContext);
 
-    v10 = [v7 copy];
+    v10 = [nameCopy copy];
     featureName = v8->_featureName;
     v8->_featureName = v10;
   }
@@ -79,42 +79,42 @@
   return v3;
 }
 
-+ (id)makeFeatureJSObjectForFeature:(id)a3
++ (id)makeFeatureJSObjectForFeature:(id)feature
 {
-  v3 = a3;
+  featureCopy = feature;
   v4 = [SUUIJSPhysicalCirclesTemplate alloc];
-  v5 = [v3 appContext];
-  v6 = [(SUUIJSPhysicalCirclesTemplate *)v4 initWithAppContext:v5 DOMFeature:v3];
+  appContext = [featureCopy appContext];
+  v6 = [(SUUIJSPhysicalCirclesTemplate *)v4 initWithAppContext:appContext DOMFeature:featureCopy];
 
   return v6;
 }
 
-- (void)_addDOMUpdateBlock:(id)a3
+- (void)_addDOMUpdateBlock:(id)block
 {
-  v4 = a3;
-  v10 = v4;
+  blockCopy = block;
+  v10 = blockCopy;
   if (!self->_domUpdateBlocks)
   {
     v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
     domUpdateBlocks = self->_domUpdateBlocks;
     self->_domUpdateBlocks = v5;
 
-    v4 = v10;
+    blockCopy = v10;
   }
 
-  v7 = [v4 copy];
+  v7 = [blockCopy copy];
   v8 = self->_domUpdateBlocks;
   v9 = _Block_copy(v7);
   [(NSMutableArray *)v8 addObject:v9];
 }
 
-- (void)_requestAnimation:(id)a3
+- (void)_requestAnimation:(id)animation
 {
-  v8 = a3;
-  v4 = [(SUUIPhysicalCirclesTemplateDOMFeature *)self delegate];
+  animationCopy = animation;
+  delegate = [(SUUIPhysicalCirclesTemplateDOMFeature *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 physicalCirclesDOMFeature:self didRequestAnimation:v8];
+    [delegate physicalCirclesDOMFeature:self didRequestAnimation:animationCopy];
   }
 
   else
@@ -129,7 +129,7 @@
       pendingAnimationRequests = self->_pendingAnimationRequests;
     }
 
-    [(NSMutableArray *)pendingAnimationRequests addObject:v8];
+    [(NSMutableArray *)pendingAnimationRequests addObject:animationCopy];
   }
 }
 

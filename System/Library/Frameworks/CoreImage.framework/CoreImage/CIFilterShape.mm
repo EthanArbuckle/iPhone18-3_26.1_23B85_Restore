@@ -4,14 +4,14 @@
 - (CGRect)extent;
 - (CGSRegionObject)CGSRegion;
 - (CIFilterShape)initWithRect:(CGRect)r;
-- (CIFilterShape)initWithStruct:(filterShape *)a3;
+- (CIFilterShape)initWithStruct:(filterShape *)struct;
 - (CIFilterShape)insetByX:(int)dx Y:(int)dy;
 - (CIFilterShape)intersectWith:(CIFilterShape *)s2;
 - (CIFilterShape)intersectWithRect:(CGRect)r;
 - (CIFilterShape)transformBy:(CGAffineTransform *)m interior:(BOOL)flag;
 - (CIFilterShape)unionWith:(CIFilterShape *)s2;
 - (CIFilterShape)unionWithRect:(CGRect)r;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)dealloc;
 @end
@@ -34,14 +34,14 @@
 
 + (id)_shapeInfinite
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
 
 + (CIFilterShape)shapeWithRect:(CGRect)r
 {
-  v3 = [[a1 alloc] initWithRect:{r.origin.x, r.origin.y, r.size.width, r.size.height}];
+  v3 = [[self alloc] initWithRect:{r.origin.x, r.origin.y, r.size.width, r.size.height}];
 
   return v3;
 }
@@ -82,7 +82,7 @@
   return v7;
 }
 
-- (CIFilterShape)initWithStruct:(filterShape *)a3
+- (CIFilterShape)initWithStruct:(filterShape *)struct
 {
   v9.receiver = self;
   v9.super_class = CIFilterShape;
@@ -91,11 +91,11 @@
   if (v4)
   {
     v4->_priv = 0;
-    if (a3)
+    if (struct)
     {
       v6 = malloc_type_malloc(0x20uLL, 0x1000040E0EAB150uLL);
-      size = a3->var0.size;
-      *v6 = a3->var0.origin;
+      size = struct->var0.size;
+      *v6 = struct->var0.origin;
       v6[1] = size;
       v5->_priv = v6;
     }
@@ -338,9 +338,9 @@ LABEL_2:
   return +[CIFilterShape _shapeInfinite];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [CIFilterShape allocWithZone:a3];
+  v4 = [CIFilterShape allocWithZone:zone];
   priv = self->_priv;
 
   return [(CIFilterShape *)v4 initWithStruct:priv];

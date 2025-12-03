@@ -1,34 +1,34 @@
 @interface ICASSelectedResultAccountType
-- (ICASSelectedResultAccountType)initWithSelectedResultAccountType:(int64_t)a3;
-- (id)toJsonValueAndReturnError:(id *)a3;
+- (ICASSelectedResultAccountType)initWithSelectedResultAccountType:(int64_t)type;
+- (id)toJsonValueAndReturnError:(id *)error;
 @end
 
 @implementation ICASSelectedResultAccountType
 
-- (ICASSelectedResultAccountType)initWithSelectedResultAccountType:(int64_t)a3
+- (ICASSelectedResultAccountType)initWithSelectedResultAccountType:(int64_t)type
 {
   v5.receiver = self;
   v5.super_class = ICASSelectedResultAccountType;
   result = [(ICASSelectedResultAccountType *)&v5 init];
   if (result)
   {
-    result->_selectedResultAccountType = a3;
+    result->_selectedResultAccountType = type;
   }
 
   return result;
 }
 
-- (id)toJsonValueAndReturnError:(id *)a3
+- (id)toJsonValueAndReturnError:(id *)error
 {
-  v3 = [(ICASSelectedResultAccountType *)self selectedResultAccountType];
-  if ((v3 - 1) > 5)
+  selectedResultAccountType = [(ICASSelectedResultAccountType *)self selectedResultAccountType];
+  if ((selectedResultAccountType - 1) > 5)
   {
     return @"unknown";
   }
 
   else
   {
-    return off_2799AF710[v3 - 1];
+    return off_2799AF710[selectedResultAccountType - 1];
   }
 }
 

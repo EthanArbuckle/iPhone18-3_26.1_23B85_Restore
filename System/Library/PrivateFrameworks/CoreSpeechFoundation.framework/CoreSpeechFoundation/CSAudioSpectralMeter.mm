@@ -1,10 +1,10 @@
 @interface CSAudioSpectralMeter
-- (CSAudioSpectralMeter)initWithSampleRate:(float)a3 windowSize:(unint64_t)a4;
+- (CSAudioSpectralMeter)initWithSampleRate:(float)rate windowSize:(unint64_t)size;
 - (id)getFrequencyMagnitudesResult;
 - (void)dealloc;
-- (void)processAudioChunk:(id)a3;
+- (void)processAudioChunk:(id)chunk;
 - (void)reset;
-- (void)setOutputFrequencyBandsInHz:(id)a3;
+- (void)setOutputFrequencyBandsInHz:(id)hz;
 @end
 
 @implementation CSAudioSpectralMeter
@@ -45,30 +45,30 @@
   return FrequencyMagnitudesResult;
 }
 
-- (void)processAudioChunk:(id)a3
+- (void)processAudioChunk:(id)chunk
 {
-  v4 = a3;
+  chunkCopy = chunk;
   if (self->_enable)
   {
-    v7 = v4;
-    v5 = [v4 dataForChannel:0];
+    v7 = chunkCopy;
+    v5 = [chunkCopy dataForChannel:0];
     v6 = [CSFLPCMTypeConverter convertToFloatLPCMBufFromShortLPCMBuf:v5];
     CSAudioSpectralMeterImpl::processFloatBuffer(self->_spectralMeterImpl.__ptr_, [v6 bytes], objc_msgSend(v7, "numSamples"));
 
-    v4 = v7;
+    chunkCopy = v7;
   }
 }
 
-- (void)setOutputFrequencyBandsInHz:(id)a3
+- (void)setOutputFrequencyBandsInHz:(id)hz
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 count])
+  hzCopy = hz;
+  if ([hzCopy count])
   {
-    std::vector<float>::vector[abi:ne200100](&buf, [v4 count]);
-    for (i = 0; i < [v4 count]; ++i)
+    std::vector<float>::vector[abi:ne200100](&buf, [hzCopy count]);
+    for (i = 0; i < [hzCopy count]; ++i)
     {
-      v6 = [v4 objectAtIndexedSubscript:i];
+      v6 = [hzCopy objectAtIndexedSubscript:i];
       [v6 floatValue];
       *(buf + 4 * i) = v7;
     }
@@ -113,7 +113,7 @@
   *(v3 + 32) = 0;
 }
 
-- (CSAudioSpectralMeter)initWithSampleRate:(float)a3 windowSize:(unint64_t)a4
+- (CSAudioSpectralMeter)initWithSampleRate:(float)rate windowSize:(unint64_t)size
 {
   v8 = *MEMORY[0x1E69E9840];
   v7.receiver = self;

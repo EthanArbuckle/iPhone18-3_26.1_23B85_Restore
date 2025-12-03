@@ -1,25 +1,25 @@
 @interface BLSHLocalOnlySimplePlatformProvider
-- (BLSHLocalOnlySimplePlatformProvider)initWithConfiguration:(id)a3;
+- (BLSHLocalOnlySimplePlatformProvider)initWithConfiguration:(id)configuration;
 - (id)createInactiveEnvironmentSession;
 @end
 
 @implementation BLSHLocalOnlySimplePlatformProvider
 
-- (BLSHLocalOnlySimplePlatformProvider)initWithConfiguration:(id)a3
+- (BLSHLocalOnlySimplePlatformProvider)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v11.receiver = self;
   v11.super_class = BLSHLocalOnlySimplePlatformProvider;
   v5 = [(BLSHLocalOnlySimplePlatformProvider *)&v11 init];
   if (v5)
   {
-    [v4 fadeInDuration];
+    [configurationCopy fadeInDuration];
     v5->_backlightFadeInDuration = v6;
-    [v4 fadeOutDuration];
+    [configurationCopy fadeOutDuration];
     v5->_backlightFadeOutDuration = v7;
-    [v4 dimmingDuration];
+    [configurationCopy dimmingDuration];
     v5->_backlightDimmingDuration = v8;
-    [v4 dimmedFactor];
+    [configurationCopy dimmedFactor];
     v5->_backlightDimmedFactor = v9;
   }
 

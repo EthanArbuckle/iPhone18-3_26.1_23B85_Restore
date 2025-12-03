@@ -1,16 +1,16 @@
 @interface ProvisioningCarPerformPairingViewController
-- (_TtC9PassKitUI43ProvisioningCarPerformPairingViewController)initWithCoder:(id)a3;
-- (_TtC9PassKitUI43ProvisioningCarPerformPairingViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC9PassKitUI43ProvisioningCarPerformPairingViewController)initWithCoder:(id)coder;
+- (_TtC9PassKitUI43ProvisioningCarPerformPairingViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)cancelButtonPressed;
 - (void)loadView;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation ProvisioningCarPerformPairingViewController
 
-- (_TtC9PassKitUI43ProvisioningCarPerformPairingViewController)initWithCoder:(id)a3
+- (_TtC9PassKitUI43ProvisioningCarPerformPairingViewController)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC9PassKitUI43ProvisioningCarPerformPairingViewController_provisioningView;
   *(&self->super.super.super.isa + v4) = [objc_allocWithZone(PKProvisioningProgressView) init];
@@ -24,21 +24,21 @@
 - (void)viewDidLoad
 {
   v3 = objc_allocWithZone(MEMORY[0x1E69DC708]);
-  v4 = self;
-  v5 = [v3 initWithBarButtonSystemItem:1 target:v4 action:sel_cancelButtonPressed];
-  v6 = [(ProvisioningCarPerformPairingViewController *)v4 navigationItem];
-  [v6 setRightBarButtonItem:v5 animated:0];
+  selfCopy = self;
+  v5 = [v3 initWithBarButtonSystemItem:1 target:selfCopy action:sel_cancelButtonPressed];
+  navigationItem = [(ProvisioningCarPerformPairingViewController *)selfCopy navigationItem];
+  [navigationItem setRightBarButtonItem:v5 animated:0];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_1BD7E1B84(a3);
+  selfCopy = self;
+  sub_1BD7E1B84(appear);
 }
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BD7E1C84();
 }
 
@@ -48,13 +48,13 @@
   v15.super_class = swift_getObjectType();
   v2 = v15.receiver;
   [(ProvisioningCarPerformPairingViewController *)&v15 viewWillLayoutSubviews];
-  v3 = [v2 view];
-  if (v3)
+  view = [v2 view];
+  if (view)
   {
     v4 = *&v2[OBJC_IVAR____TtC9PassKitUI43ProvisioningCarPerformPairingViewController_provisioningView];
-    v5 = v3;
-    v6 = [v3 safeAreaLayoutGuide];
-    [v6 layoutFrame];
+    v5 = view;
+    safeAreaLayoutGuide = [view safeAreaLayoutGuide];
+    [safeAreaLayoutGuide layoutFrame];
     v8 = v7;
     v10 = v9;
     v12 = v11;
@@ -66,11 +66,11 @@
 
 - (void)cancelButtonPressed
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BD7E26E4();
 }
 
-- (_TtC9PassKitUI43ProvisioningCarPerformPairingViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC9PassKitUI43ProvisioningCarPerformPairingViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

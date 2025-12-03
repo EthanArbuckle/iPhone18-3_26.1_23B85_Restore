@@ -1,18 +1,18 @@
 @interface ATXProactiveSuggestionUISpecification
-- (ATXProactiveSuggestionUISpecification)initWithCoder:(id)a3;
-- (ATXProactiveSuggestionUISpecification)initWithProto:(id)a3;
-- (ATXProactiveSuggestionUISpecification)initWithProtoData:(id)a3;
-- (ATXProactiveSuggestionUISpecification)initWithTitle:(id)a3 subtitle:(id)a4 predictionReason:(id)a5 preferredLayoutConfigs:(id)a6 allowedOnLockscreen:(BOOL)a7 allowedOnHomeScreen:(BOOL)a8 allowedOnSpotlight:(BOOL)a9 shouldClearOnEngagement:(BOOL)a10 predictionReasons:(unint64_t)a11 contextStartDate:(id)a12 contextEndDate:(id)a13;
-- (BOOL)checkAndReportDecodingFailureIfNeededForBOOL:(BOOL)a3 key:(id)a4 coder:(id)a5 errorDomain:(id)a6 errorCode:(int64_t)a7;
-- (BOOL)checkAndReportDecodingFailureIfNeededForid:(id)a3 key:(id)a4 coder:(id)a5 errorDomain:(id)a6 errorCode:(int64_t)a7;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (ATXProactiveSuggestionUISpecification)initWithCoder:(id)coder;
+- (ATXProactiveSuggestionUISpecification)initWithProto:(id)proto;
+- (ATXProactiveSuggestionUISpecification)initWithProtoData:(id)data;
+- (ATXProactiveSuggestionUISpecification)initWithTitle:(id)title subtitle:(id)subtitle predictionReason:(id)reason preferredLayoutConfigs:(id)configs allowedOnLockscreen:(BOOL)lockscreen allowedOnHomeScreen:(BOOL)screen allowedOnSpotlight:(BOOL)spotlight shouldClearOnEngagement:(BOOL)self0 predictionReasons:(unint64_t)self1 contextStartDate:(id)self2 contextEndDate:(id)self3;
+- (BOOL)checkAndReportDecodingFailureIfNeededForBOOL:(BOOL)l key:(id)key coder:(id)coder errorDomain:(id)domain errorCode:(int64_t)code;
+- (BOOL)checkAndReportDecodingFailureIfNeededForid:(id)forid key:(id)key coder:(id)coder errorDomain:(id)domain errorCode:(int64_t)code;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)encodeAsProto;
 - (id)jsonRawData;
 - (id)proto;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXProactiveSuggestionUISpecification
@@ -97,10 +97,10 @@
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v20 + 1) + 8 * v9) proto];
-        if (v10)
+        proto = [*(*(&v20 + 1) + 8 * v9) proto];
+        if (proto)
         {
-          [v4 addObject:v10];
+          [v4 addObject:proto];
         }
 
         else
@@ -157,50 +157,50 @@
   return self->_contextEndDate - v12 + 32 * v12;
 }
 
-- (ATXProactiveSuggestionUISpecification)initWithTitle:(id)a3 subtitle:(id)a4 predictionReason:(id)a5 preferredLayoutConfigs:(id)a6 allowedOnLockscreen:(BOOL)a7 allowedOnHomeScreen:(BOOL)a8 allowedOnSpotlight:(BOOL)a9 shouldClearOnEngagement:(BOOL)a10 predictionReasons:(unint64_t)a11 contextStartDate:(id)a12 contextEndDate:(id)a13
+- (ATXProactiveSuggestionUISpecification)initWithTitle:(id)title subtitle:(id)subtitle predictionReason:(id)reason preferredLayoutConfigs:(id)configs allowedOnLockscreen:(BOOL)lockscreen allowedOnHomeScreen:(BOOL)screen allowedOnSpotlight:(BOOL)spotlight shouldClearOnEngagement:(BOOL)self0 predictionReasons:(unint64_t)self1 contextStartDate:(id)self2 contextEndDate:(id)self3
 {
-  v19 = a3;
-  v20 = a4;
-  v21 = a5;
-  v22 = a6;
-  v34 = a12;
-  v23 = a13;
+  titleCopy = title;
+  subtitleCopy = subtitle;
+  reasonCopy = reason;
+  configsCopy = configs;
+  dateCopy = date;
+  endDateCopy = endDate;
   v35.receiver = self;
   v35.super_class = ATXProactiveSuggestionUISpecification;
   v24 = [(ATXProactiveSuggestionUISpecification *)&v35 init];
   if (v24)
   {
-    v25 = [v19 copy];
+    v25 = [titleCopy copy];
     title = v24->_title;
     v24->_title = v25;
 
-    v27 = [v20 copy];
+    v27 = [subtitleCopy copy];
     subtitle = v24->_subtitle;
     v24->_subtitle = v27;
 
-    v29 = [v21 copy];
+    v29 = [reasonCopy copy];
     reason = v24->_reason;
     v24->_reason = v29;
 
-    v31 = [v22 copy];
+    v31 = [configsCopy copy];
     preferredLayoutConfigs = v24->_preferredLayoutConfigs;
     v24->_preferredLayoutConfigs = v31;
 
-    v24->_allowedOnLockscreen = a7;
-    v24->_allowedOnHomeScreen = a8;
-    v24->_allowedOnSpotlight = a9;
-    v24->_shouldClearOnEngagement = a10;
-    v24->_predictionReasons = a11;
-    objc_storeStrong(&v24->_contextStartDate, a12);
-    objc_storeStrong(&v24->_contextEndDate, a13);
+    v24->_allowedOnLockscreen = lockscreen;
+    v24->_allowedOnHomeScreen = screen;
+    v24->_allowedOnSpotlight = spotlight;
+    v24->_shouldClearOnEngagement = engagement;
+    v24->_predictionReasons = reasons;
+    objc_storeStrong(&v24->_contextStartDate, date);
+    objc_storeStrong(&v24->_contextEndDate, endDate);
   }
 
   return v24;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [ATXProactiveSuggestionUISpecification allocWithZone:a3];
+  v4 = [ATXProactiveSuggestionUISpecification allocWithZone:zone];
   v5 = [(NSString *)self->_title copy];
   v6 = [(NSString *)self->_subtitle copy];
   v7 = [(NSString *)self->_reason copy];
@@ -211,10 +211,10 @@
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -224,7 +224,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = self->_title;
       v7 = v6;
       if (v6 == v5->_title)
@@ -339,51 +339,51 @@ LABEL_30:
 
 - (id)encodeAsProto
 {
-  v2 = [(ATXProactiveSuggestionUISpecification *)self proto];
-  v3 = [v2 data];
+  proto = [(ATXProactiveSuggestionUISpecification *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (ATXProactiveSuggestionUISpecification)initWithProtoData:(id)a3
+- (ATXProactiveSuggestionUISpecification)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[ATXPBProactiveSuggestionUISpecification alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[ATXPBProactiveSuggestionUISpecification alloc] initWithData:dataCopy];
 
     self = [(ATXProactiveSuggestionUISpecification *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (ATXProactiveSuggestionUISpecification)initWithProto:(id)a3
+- (ATXProactiveSuggestionUISpecification)initWithProto:(id)proto
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  protoCopy = proto;
+  if (protoCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = protoCopy;
       v6 = objc_alloc(MEMORY[0x1E695DF70]);
-      v7 = [(ATXPBProactiveSuggestionUISpecification *)v5 preferredLayoutConfigs];
-      v8 = [v6 initWithCapacity:{objc_msgSend(v7, "count")}];
+      preferredLayoutConfigs = [(ATXPBProactiveSuggestionUISpecification *)v5 preferredLayoutConfigs];
+      v8 = [v6 initWithCapacity:{objc_msgSend(preferredLayoutConfigs, "count")}];
 
       v31 = 0u;
       v32 = 0u;
       v29 = 0u;
       v30 = 0u;
-      v9 = [(ATXPBProactiveSuggestionUISpecification *)v5 preferredLayoutConfigs];
-      v10 = [v9 countByEnumeratingWithState:&v29 objects:v33 count:16];
+      preferredLayoutConfigs2 = [(ATXPBProactiveSuggestionUISpecification *)v5 preferredLayoutConfigs];
+      v10 = [preferredLayoutConfigs2 countByEnumeratingWithState:&v29 objects:v33 count:16];
       if (v10)
       {
         v11 = v10;
@@ -394,27 +394,27 @@ LABEL_30:
           {
             if (*v30 != v12)
             {
-              objc_enumerationMutation(v9);
+              objc_enumerationMutation(preferredLayoutConfigs2);
             }
 
             v14 = [[ATXProactiveSuggestionLayoutConfig alloc] initWithProto:*(*(&v29 + 1) + 8 * i)];
             [v8 addObject:v14];
           }
 
-          v11 = [v9 countByEnumeratingWithState:&v29 objects:v33 count:16];
+          v11 = [preferredLayoutConfigs2 countByEnumeratingWithState:&v29 objects:v33 count:16];
         }
 
         while (v11);
       }
 
-      v28 = [(ATXPBProactiveSuggestionUISpecification *)v5 title];
-      v25 = [(ATXPBProactiveSuggestionUISpecification *)v5 subtitle];
-      v15 = [(ATXPBProactiveSuggestionUISpecification *)v5 reason];
-      v27 = [(ATXPBProactiveSuggestionUISpecification *)v5 allowedOnLockscreen];
-      v26 = [(ATXPBProactiveSuggestionUISpecification *)v5 allowedOnHomeScreen];
-      v16 = [(ATXPBProactiveSuggestionUISpecification *)v5 allowedOnSpotlight];
-      v17 = [(ATXPBProactiveSuggestionUISpecification *)v5 shouldClearOnEngagement];
-      v18 = [(ATXPBProactiveSuggestionUISpecification *)v5 predictionReasons];
+      title = [(ATXPBProactiveSuggestionUISpecification *)v5 title];
+      subtitle = [(ATXPBProactiveSuggestionUISpecification *)v5 subtitle];
+      reason = [(ATXPBProactiveSuggestionUISpecification *)v5 reason];
+      allowedOnLockscreen = [(ATXPBProactiveSuggestionUISpecification *)v5 allowedOnLockscreen];
+      allowedOnHomeScreen = [(ATXPBProactiveSuggestionUISpecification *)v5 allowedOnHomeScreen];
+      allowedOnSpotlight = [(ATXPBProactiveSuggestionUISpecification *)v5 allowedOnSpotlight];
+      shouldClearOnEngagement = [(ATXPBProactiveSuggestionUISpecification *)v5 shouldClearOnEngagement];
+      predictionReasons = [(ATXPBProactiveSuggestionUISpecification *)v5 predictionReasons];
       if ([(ATXPBProactiveSuggestionUISpecification *)v5 hasContextStartDate])
       {
         v19 = [objc_alloc(MEMORY[0x1E695DF00]) initWithTimeIntervalSinceReferenceDate:-[ATXPBProactiveSuggestionUISpecification contextStartDate](v5)];
@@ -435,11 +435,11 @@ LABEL_30:
         v21 = 0;
       }
 
-      BYTE1(v24) = v17;
-      LOBYTE(v24) = v16;
-      self = [(ATXProactiveSuggestionUISpecification *)self initWithTitle:v28 subtitle:v25 predictionReason:v15 preferredLayoutConfigs:v8 allowedOnLockscreen:v27 allowedOnHomeScreen:v26 allowedOnSpotlight:v24 shouldClearOnEngagement:v18 predictionReasons:v19 contextStartDate:v21 contextEndDate:?];
+      BYTE1(v24) = shouldClearOnEngagement;
+      LOBYTE(v24) = allowedOnSpotlight;
+      self = [(ATXProactiveSuggestionUISpecification *)self initWithTitle:title subtitle:subtitle predictionReason:reason preferredLayoutConfigs:v8 allowedOnLockscreen:allowedOnLockscreen allowedOnHomeScreen:allowedOnHomeScreen allowedOnSpotlight:v24 shouldClearOnEngagement:predictionReasons predictionReasons:v19 contextStartDate:v21 contextEndDate:?];
 
-      v20 = self;
+      selfCopy = self;
     }
 
     else
@@ -450,46 +450,46 @@ LABEL_30:
         [ATXProactiveSuggestionUISpecification initWithProto:];
       }
 
-      v20 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v20 = 0;
+    selfCopy = 0;
   }
 
   v22 = *MEMORY[0x1E69E9840];
-  return v20;
+  return selfCopy;
 }
 
-- (BOOL)checkAndReportDecodingFailureIfNeededForid:(id)a3 key:(id)a4 coder:(id)a5 errorDomain:(id)a6 errorCode:(int64_t)a7
+- (BOOL)checkAndReportDecodingFailureIfNeededForid:(id)forid key:(id)key coder:(id)coder errorDomain:(id)domain errorCode:(int64_t)code
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!a3)
+  keyCopy = key;
+  coderCopy = coder;
+  domainCopy = domain;
+  if (!forid)
   {
-    v15 = [v12 error];
+    error = [coderCopy error];
 
-    if (v15)
+    if (error)
     {
       v14 = 1;
       goto LABEL_7;
     }
 
-    if (([v12 containsValueForKey:v11] & 1) == 0)
+    if (([coderCopy containsValueForKey:keyCopy] & 1) == 0)
     {
       v16 = objc_alloc(MEMORY[0x1E696ABC0]);
       v22 = *MEMORY[0x1E696A578];
-      v17 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Failed to decode key %@", v11, v22];
+      v17 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Failed to decode key %@", keyCopy, v22];
       v23[0] = v17;
       v14 = 1;
       v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:&v22 count:1];
-      v19 = [v16 initWithDomain:v13 code:a7 userInfo:v18];
+      v19 = [v16 initWithDomain:domainCopy code:code userInfo:v18];
 
-      [v12 failWithError:v19];
+      [coderCopy failWithError:v19];
       goto LABEL_7;
     }
   }
@@ -501,33 +501,33 @@ LABEL_7:
   return v14;
 }
 
-- (BOOL)checkAndReportDecodingFailureIfNeededForBOOL:(BOOL)a3 key:(id)a4 coder:(id)a5 errorDomain:(id)a6 errorCode:(int64_t)a7
+- (BOOL)checkAndReportDecodingFailureIfNeededForBOOL:(BOOL)l key:(id)key coder:(id)coder errorDomain:(id)domain errorCode:(int64_t)code
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!a3)
+  keyCopy = key;
+  coderCopy = coder;
+  domainCopy = domain;
+  if (!l)
   {
-    v15 = [v12 error];
+    error = [coderCopy error];
 
-    if (v15)
+    if (error)
     {
       v14 = 1;
       goto LABEL_7;
     }
 
-    if (([v12 containsValueForKey:v11] & 1) == 0)
+    if (([coderCopy containsValueForKey:keyCopy] & 1) == 0)
     {
       v16 = objc_alloc(MEMORY[0x1E696ABC0]);
       v22 = *MEMORY[0x1E696A578];
-      v17 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Failed to decode key %@", v11, v22];
+      v17 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Failed to decode key %@", keyCopy, v22];
       v23[0] = v17;
       v14 = 1;
       v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:&v22 count:1];
-      v19 = [v16 initWithDomain:v13 code:a7 userInfo:v18];
+      v19 = [v16 initWithDomain:domainCopy code:code userInfo:v18];
 
-      [v12 failWithError:v19];
+      [coderCopy failWithError:v19];
       goto LABEL_7;
     }
   }
@@ -539,17 +539,17 @@ LABEL_7:
   return v14;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ATXProactiveSuggestionUISpecification *)self encodeAsProto];
-  [v4 encodeObject:v5 forKey:@"protobufData"];
+  coderCopy = coder;
+  encodeAsProto = [(ATXProactiveSuggestionUISpecification *)self encodeAsProto];
+  [coderCopy encodeObject:encodeAsProto forKey:@"protobufData"];
 }
 
-- (ATXProactiveSuggestionUISpecification)initWithCoder:(id)a3
+- (ATXProactiveSuggestionUISpecification)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"protobufData"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"protobufData"];
 
   v6 = [(ATXProactiveSuggestionUISpecification *)self initWithProtoData:v5];
   return v6;

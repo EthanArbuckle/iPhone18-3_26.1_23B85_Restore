@@ -1,6 +1,6 @@
 @interface GKInterface
-+ (id)bsdNameForIndex:(id)a3;
-+ (id)interfaceWithInterfaceIndex:(id)a3;
++ (id)bsdNameForIndex:(id)index;
++ (id)interfaceWithInterfaceIndex:(id)index;
 - (id)description;
 - (void)dealloc;
 @end
@@ -17,43 +17,43 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(NSNumber *)[(GKInterface *)self index] intValue];
+  intValue = [(NSNumber *)[(GKInterface *)self index] intValue];
   if ([(GKInterface *)self bsdName])
   {
-    v5 = [[(NSString *)[(GKInterface *)self bsdName] description] UTF8String];
+    uTF8String = [[(NSString *)[(GKInterface *)self bsdName] description] UTF8String];
   }
 
   else
   {
-    v5 = "<nil>";
+    uTF8String = "<nil>";
   }
 
   if ([(GKInterface *)self type])
   {
-    v6 = [[(NSString *)[(GKInterface *)self type] description] UTF8String];
+    uTF8String2 = [[(NSString *)[(GKInterface *)self type] description] UTF8String];
   }
 
   else
   {
-    v6 = "<nil>";
+    uTF8String2 = "<nil>";
   }
 
-  return [v3 stringWithFormat:@"GKInterface [%p] index [%d] bsdName [%s] type [%s] priority [%d]", self, v4, v5, v6, -[GKInterface priority](self, "priority")];
+  return [v3 stringWithFormat:@"GKInterface [%p] index [%d] bsdName [%s] type [%s] priority [%d]", self, intValue, uTF8String, uTF8String2, -[GKInterface priority](self, "priority")];
 }
 
-+ (id)interfaceWithInterfaceIndex:(id)a3
++ (id)interfaceWithInterfaceIndex:(id)index
 {
   v4 = objc_alloc_init(GKInterface);
-  [(GKInterface *)v4 setIndex:a3];
-  [(GKInterface *)v4 setBsdName:[GKInterface bsdNameForIndex:a3]];
+  [(GKInterface *)v4 setIndex:index];
+  [(GKInterface *)v4 setBsdName:[GKInterface bsdNameForIndex:index]];
 
   return v4;
 }
 
-+ (id)bsdNameForIndex:(id)a3
++ (id)bsdNameForIndex:(id)index
 {
   v9 = *MEMORY[0x277D85DE8];
-  if ([a3 intValue] < 1)
+  if ([index intValue] < 1)
   {
     result = @"GKInterfaceBSDNameNone";
   }
@@ -61,7 +61,7 @@
   else
   {
     memset(v8, 170, sizeof(v8));
-    if (if_indextoname([a3 intValue], v8))
+    if (if_indextoname([index intValue], v8))
     {
       result = [MEMORY[0x277CCACA8] stringWithUTF8String:v8];
     }
@@ -74,7 +74,7 @@
         v6 = *MEMORY[0x277CE5818];
         if (os_log_type_enabled(*MEMORY[0x277CE5818], OS_LOG_TYPE_ERROR))
         {
-          [(GKInterface *)v5 bsdNameForIndex:a3, v6];
+          [(GKInterface *)v5 bsdNameForIndex:index, v6];
         }
       }
 

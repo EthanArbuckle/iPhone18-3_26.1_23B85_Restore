@@ -2,17 +2,17 @@
 + (void)initializeDraggingSystem;
 - (CAContext)dragImageContext;
 - (UIScreen)screen;
-- (_UIDragManager)initWithScreen:(id)a3;
-- (id)beginDragWithSessionConfiguration:(id)a3;
-- (id)dragDestinationWithEvent:(id)a3;
-- (id)sessionSourceWithIdentifier:(unsigned int)a3;
-- (unsigned)uploadImage:(CGImage *)a3;
-- (void)_willAddDeactivationReason:(id)a3;
-- (void)deleteSlots:(id)a3;
-- (void)performAfterCompletingPendingSessionRequests:(id)a3;
+- (_UIDragManager)initWithScreen:(id)screen;
+- (id)beginDragWithSessionConfiguration:(id)configuration;
+- (id)dragDestinationWithEvent:(id)event;
+- (id)sessionSourceWithIdentifier:(unsigned int)identifier;
+- (unsigned)uploadImage:(CGImage *)image;
+- (void)_willAddDeactivationReason:(id)reason;
+- (void)deleteSlots:(id)slots;
+- (void)performAfterCompletingPendingSessionRequests:(id)requests;
 - (void)performPendingSessionCompletionBlocksIfPossible;
-- (void)sessionDestinationDidEnd:(id)a3;
-- (void)sessionSourceDidEnd:(id)a3;
+- (void)sessionDestinationDidEnd:(id)end;
+- (void)sessionSourceDidEnd:(id)end;
 @end
 
 @implementation _UIDragManager
@@ -29,10 +29,10 @@
   [v3 warmUp];
 }
 
-- (_UIDragManager)initWithScreen:(id)a3
+- (_UIDragManager)initWithScreen:(id)screen
 {
-  v4 = a3;
-  if (!v4)
+  screenCopy = screen;
+  if (!screenCopy)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"screen must be non-nil"];
   }
@@ -43,7 +43,7 @@
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_screen, v4);
+    objc_storeWeak(&v5->_screen, screenCopy);
     dragSessionSources = v6->_dragSessionSources;
     v8 = MEMORY[0x1E695E0F0];
     v6->_dragSessionSources = MEMORY[0x1E695E0F0];
@@ -55,21 +55,21 @@
     pendingSessionRequestsCompletionBlocks = v6->_pendingSessionRequestsCompletionBlocks;
     v6->_pendingSessionRequestsCompletionBlocks = v10;
 
-    v12 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v12 addObserver:v6 selector:sel__willAddDeactivationReason_ name:@"_UIApplicationWillAddDeactivationReasonNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v6 selector:sel__willAddDeactivationReason_ name:@"_UIApplicationWillAddDeactivationReasonNotification" object:0];
   }
 
   return v6;
 }
 
-- (void)_willAddDeactivationReason:(id)a3
+- (void)_willAddDeactivationReason:(id)reason
 {
   v14 = *MEMORY[0x1E69E9840];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(NSArray *)self->_dragSessionSources copy:a3];
+  v3 = [(NSArray *)self->_dragSessionSources copy:reason];
   v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
@@ -103,10 +103,10 @@
   dragImageContext = self->_dragImageContext;
   if (!dragImageContext)
   {
-    v4 = [MEMORY[0x1E695DF90] dictionary];
-    [v4 setObject:@"DragAndDropContext" forKey:*MEMORY[0x1E69796A0]];
-    [v4 setObject:*MEMORY[0x1E695E4D0] forKey:*MEMORY[0x1E69796C0]];
-    v5 = [MEMORY[0x1E6979320] remoteContextWithOptions:v4];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    [dictionary setObject:@"DragAndDropContext" forKey:*MEMORY[0x1E69796A0]];
+    [dictionary setObject:*MEMORY[0x1E695E4D0] forKey:*MEMORY[0x1E69796C0]];
+    v5 = [MEMORY[0x1E6979320] remoteContextWithOptions:dictionary];
     v6 = self->_dragImageContext;
     self->_dragImageContext = v5;
 
@@ -116,35 +116,35 @@
   return dragImageContext;
 }
 
-- (unsigned)uploadImage:(CGImage *)a3
+- (unsigned)uploadImage:(CGImage *)image
 {
-  v4 = [(_UIDragManager *)self dragImageContext];
-  if (v4)
+  dragImageContext = [(_UIDragManager *)self dragImageContext];
+  if (dragImageContext)
   {
     [MEMORY[0x1E6979518] begin];
-    v5 = [v4 createSlot];
-    [v4 setObject:a3 forSlot:v5];
+    createSlot = [dragImageContext createSlot];
+    [dragImageContext setObject:image forSlot:createSlot];
     [MEMORY[0x1E6979518] commit];
   }
 
   else
   {
-    LODWORD(v5) = 0;
+    LODWORD(createSlot) = 0;
   }
 
-  return v5;
+  return createSlot;
 }
 
-- (void)deleteSlots:(id)a3
+- (void)deleteSlots:(id)slots
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_UIDragManager *)self dragImageContext];
+  slotsCopy = slots;
+  dragImageContext = [(_UIDragManager *)self dragImageContext];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = v4;
+  v6 = slotsCopy;
   v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
@@ -160,7 +160,7 @@
           objc_enumerationMutation(v6);
         }
 
-        [v5 deleteSlot:{objc_msgSend(*(*(&v11 + 1) + 8 * v10++), "unsignedIntegerValue", v11)}];
+        [dragImageContext deleteSlot:{objc_msgSend(*(*(&v11 + 1) + 8 * v10++), "unsignedIntegerValue", v11)}];
       }
 
       while (v8 != v10);
@@ -171,15 +171,15 @@
   }
 }
 
-- (id)beginDragWithSessionConfiguration:(id)a3
+- (id)beginDragWithSessionConfiguration:(id)configuration
 {
-  v5 = a3;
-  v6 = [[_UIInternalDraggingSessionSource alloc] initWithDragManager:self configuration:v5];
+  configurationCopy = configuration;
+  v6 = [[_UIInternalDraggingSessionSource alloc] initWithDragManager:self configuration:configurationCopy];
 
   if (v6)
   {
-    v7 = [(_UIDragManager *)self dragSessionSources];
-    v8 = [v7 mutableCopy];
+    dragSessionSources = [(_UIDragManager *)self dragSessionSources];
+    v8 = [dragSessionSources mutableCopy];
 
     [v8 addObject:v6];
     [(_UIDragManager *)self setDragSessionSources:v8];
@@ -196,9 +196,9 @@
   return v6;
 }
 
-- (void)performAfterCompletingPendingSessionRequests:(id)a3
+- (void)performAfterCompletingPendingSessionRequests:(id)requests
 {
-  aBlock = a3;
+  aBlock = requests;
   if ([(_UIDragManager *)self hasPendingSessionRequests])
   {
     pendingSessionRequestsCompletionBlocks = self->_pendingSessionRequestsCompletionBlocks;
@@ -254,30 +254,30 @@
   }
 }
 
-- (void)sessionSourceDidEnd:(id)a3
+- (void)sessionSourceDidEnd:(id)end
 {
-  v6 = a3;
-  if (!v6)
+  endCopy = end;
+  if (!endCopy)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"sessionSource must be non-nil"];
   }
 
-  v4 = [(_UIDragManager *)self dragSessionSources];
-  v5 = [v4 mutableCopy];
+  dragSessionSources = [(_UIDragManager *)self dragSessionSources];
+  v5 = [dragSessionSources mutableCopy];
 
-  [v5 removeObjectIdenticalTo:v6];
+  [v5 removeObjectIdenticalTo:endCopy];
   [(_UIDragManager *)self setDragSessionSources:v5];
 }
 
-- (id)sessionSourceWithIdentifier:(unsigned int)a3
+- (id)sessionSourceWithIdentifier:(unsigned int)identifier
 {
   v17 = *MEMORY[0x1E69E9840];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(_UIDragManager *)self dragSessionSources];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  dragSessionSources = [(_UIDragManager *)self dragSessionSources];
+  v5 = [dragSessionSources countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -288,18 +288,18 @@
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(dragSessionSources);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
-        if ([v9 sessionIdentifier] == a3)
+        if ([v9 sessionIdentifier] == identifier)
         {
           v10 = v9;
           goto LABEL_11;
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [dragSessionSources countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         continue;
@@ -315,11 +315,11 @@ LABEL_11:
   return v10;
 }
 
-- (id)dragDestinationWithEvent:(id)a3
+- (id)dragDestinationWithEvent:(id)event
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  eventCopy = event;
+  if (!eventCopy)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"dragEvent must be non-nil"];
   }
@@ -328,8 +328,8 @@ LABEL_11:
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(_UIDragManager *)self dragSessionDestinations];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  dragSessionDestinations = [(_UIDragManager *)self dragSessionDestinations];
+  v6 = [dragSessionDestinations countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -340,19 +340,19 @@ LABEL_11:
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(dragSessionDestinations);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
-        if ([v10 canBeDrivenByDragEvent:v4])
+        if ([v10 canBeDrivenByDragEvent:eventCopy])
         {
-          [v10 addDragEvent:v4];
+          [v10 addDragEvent:eventCopy];
           v11 = v10;
           goto LABEL_14;
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [dragSessionDestinations countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v7)
       {
         continue;
@@ -362,14 +362,14 @@ LABEL_11:
     }
   }
 
-  v11 = [[_UIInternalDraggingSessionDestination alloc] initWithDragManager:self dragEvent:v4];
+  v11 = [[_UIInternalDraggingSessionDestination alloc] initWithDragManager:self dragEvent:eventCopy];
   if (v11)
   {
-    v12 = [(_UIDragManager *)self dragSessionDestinations];
-    v5 = [v12 mutableCopy];
+    dragSessionDestinations2 = [(_UIDragManager *)self dragSessionDestinations];
+    dragSessionDestinations = [dragSessionDestinations2 mutableCopy];
 
-    [v5 addObject:v11];
-    [(_UIDragManager *)self setDragSessionDestinations:v5];
+    [dragSessionDestinations addObject:v11];
+    [(_UIDragManager *)self setDragSessionDestinations:dragSessionDestinations];
     [(_UIInternalDraggingSessionDestination *)v11 connect];
 LABEL_14:
   }
@@ -377,10 +377,10 @@ LABEL_14:
   return v11;
 }
 
-- (void)sessionDestinationDidEnd:(id)a3
+- (void)sessionDestinationDidEnd:(id)end
 {
-  v6 = a3;
-  if (!v6)
+  endCopy = end;
+  if (!endCopy)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"sessionDestination must be non-nil"];
   }
@@ -390,10 +390,10 @@ LABEL_14:
     [_UIKitDragAndDropStatistics incrementUIKitScalarValueBy:1 forKey:@"dropOnExtension"];
   }
 
-  v4 = [(_UIDragManager *)self dragSessionDestinations];
-  v5 = [v4 mutableCopy];
+  dragSessionDestinations = [(_UIDragManager *)self dragSessionDestinations];
+  v5 = [dragSessionDestinations mutableCopy];
 
-  [v5 removeObjectIdenticalTo:v6];
+  [v5 removeObjectIdenticalTo:endCopy];
   [(_UIDragManager *)self setDragSessionDestinations:v5];
 }
 

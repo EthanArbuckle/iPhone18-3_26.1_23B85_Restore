@@ -1,11 +1,11 @@
 @interface _MRRemovePlayerMessageProtobuf
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _MRRemovePlayerMessageProtobuf
@@ -16,26 +16,26 @@
   v8.receiver = self;
   v8.super_class = _MRRemovePlayerMessageProtobuf;
   v4 = [(_MRRemovePlayerMessageProtobuf *)&v8 description];
-  v5 = [(_MRRemovePlayerMessageProtobuf *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(_MRRemovePlayerMessageProtobuf *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   playerPath = self->_playerPath;
   if (playerPath)
   {
-    v5 = [(_MRNowPlayingPlayerPathProtobuf *)playerPath dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"playerPath"];
+    dictionaryRepresentation = [(_MRNowPlayingPlayerPathProtobuf *)playerPath dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"playerPath"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (self->_playerPath)
   {
@@ -43,32 +43,32 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   playerPath = self->_playerPath;
   if (playerPath)
   {
-    [a3 setPlayerPath:playerPath];
+    [to setPlayerPath:playerPath];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(_MRNowPlayingPlayerPathProtobuf *)self->_playerPath copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(_MRNowPlayingPlayerPathProtobuf *)self->_playerPath copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     playerPath = self->_playerPath;
-    if (playerPath | v4[1])
+    if (playerPath | equalCopy[1])
     {
       v6 = [(_MRNowPlayingPlayerPathProtobuf *)playerPath isEqual:?];
     }
@@ -87,11 +87,11 @@
   return v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   playerPath = self->_playerPath;
-  v6 = v4[1];
+  v6 = fromCopy[1];
   if (playerPath)
   {
     if (!v6)
@@ -99,7 +99,7 @@
       goto LABEL_7;
     }
 
-    v7 = v4;
+    v7 = fromCopy;
     [(_MRNowPlayingPlayerPathProtobuf *)playerPath mergeFrom:?];
   }
 
@@ -110,11 +110,11 @@
       goto LABEL_7;
     }
 
-    v7 = v4;
+    v7 = fromCopy;
     [(_MRRemovePlayerMessageProtobuf *)self setPlayerPath:?];
   }
 
-  v4 = v7;
+  fromCopy = v7;
 LABEL_7:
 }
 

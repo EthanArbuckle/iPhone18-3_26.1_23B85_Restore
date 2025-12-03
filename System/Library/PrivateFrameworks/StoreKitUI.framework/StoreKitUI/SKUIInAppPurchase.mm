@@ -1,14 +1,14 @@
 @interface SKUIInAppPurchase
 - (NSMutableDictionary)cacheRepresentation;
-- (SKUIInAppPurchase)initWithCacheRepresentation:(id)a3;
-- (SKUIInAppPurchase)initWithInAppPurchaseDictionary:(id)a3;
+- (SKUIInAppPurchase)initWithCacheRepresentation:(id)representation;
+- (SKUIInAppPurchase)initWithInAppPurchaseDictionary:(id)dictionary;
 @end
 
 @implementation SKUIInAppPurchase
 
-- (SKUIInAppPurchase)initWithInAppPurchaseDictionary:(id)a3
+- (SKUIInAppPurchase)initWithInAppPurchaseDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIInAppPurchase initWithInAppPurchaseDictionary:];
@@ -19,7 +19,7 @@
   v5 = [(SKUIInAppPurchase *)&v13 init];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"price"];
+    v6 = [dictionaryCopy objectForKey:@"price"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -28,7 +28,7 @@
       v5->_formattedPrice = v7;
     }
 
-    v9 = [v4 objectForKey:@"name"];
+    v9 = [dictionaryCopy objectForKey:@"name"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -42,9 +42,9 @@
   return v5;
 }
 
-- (SKUIInAppPurchase)initWithCacheRepresentation:(id)a3
+- (SKUIInAppPurchase)initWithCacheRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIInAppPurchase initWithCacheRepresentation:];
@@ -55,7 +55,7 @@
   v5 = [(SKUIInAppPurchase *)&v13 init];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"price"];
+    v6 = [representationCopy objectForKey:@"price"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -64,7 +64,7 @@
       v5->_formattedPrice = v7;
     }
 
-    v9 = [v4 objectForKey:@"name"];
+    v9 = [representationCopy objectForKey:@"name"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -80,12 +80,12 @@
 
 - (NSMutableDictionary)cacheRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   formattedPrice = self->_formattedPrice;
   if (formattedPrice)
   {
-    [v3 setObject:formattedPrice forKey:@"price"];
+    [dictionary setObject:formattedPrice forKey:@"price"];
   }
 
   name = self->_name;

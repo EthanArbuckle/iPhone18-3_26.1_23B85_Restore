@@ -1,9 +1,9 @@
 @interface NetDiagnosticsShim
-- (BOOL)netDiagnosticTaskStatusWithReply:(id)a3;
-- (BOOL)startNetDiagnosticTaskWithOptions:(id)a3 reply:(id)a4;
-- (BOOL)stopNetDiagnosticTaskWithReply:(id)a3;
-- (NetDiagnosticsShim)initWithTaskName:(id)a3 queue:(id)a4;
-- (id)_connectionForServiceNamed:(const char *)a3 queue:(id)a4 connectionInvalidHandler:(id)a5;
+- (BOOL)netDiagnosticTaskStatusWithReply:(id)reply;
+- (BOOL)startNetDiagnosticTaskWithOptions:(id)options reply:(id)reply;
+- (BOOL)stopNetDiagnosticTaskWithReply:(id)reply;
+- (NetDiagnosticsShim)initWithTaskName:(id)name queue:(id)queue;
+- (id)_connectionForServiceNamed:(const char *)named queue:(id)queue connectionInvalidHandler:(id)handler;
 - (id)createNotificationListener;
 - (void)connectToNetDiagnosticsd;
 - (void)dealloc;
@@ -13,11 +13,11 @@
 
 @implementation NetDiagnosticsShim
 
-- (NetDiagnosticsShim)initWithTaskName:(id)a3 queue:(id)a4
+- (NetDiagnosticsShim)initWithTaskName:(id)name queue:(id)queue
 {
   v34 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  queueCopy = queue;
   v31.receiver = self;
   v31.super_class = NetDiagnosticsShim;
   v9 = [(NetDiagnosticsShim *)&v31 init];
@@ -27,8 +27,8 @@
     goto LABEL_24;
   }
 
-  objc_storeStrong(&v9->_taskName, a3);
-  if (!v8)
+  objc_storeStrong(&v9->_taskName, name);
+  if (!queueCopy)
   {
     v13 = debuggabilityLogHandle;
     if (os_log_type_enabled(debuggabilityLogHandle, OS_LOG_TYPE_ERROR))
@@ -37,16 +37,16 @@
       _os_log_impl(&dword_23255B000, v13, OS_LOG_TYPE_ERROR, "Passing in a nil queue to NetDiagnosticsShim is NOT recommended!!!", buf, 2u);
     }
 
-    v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.symptoms.%@.netdiag.msg.queue", v7];
-    v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.symptoms.%@.netdiag.msg.queue", v7];
+    nameCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.symptoms.%@.netdiag.msg.queue", nameCopy];
+    nameCopy2 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.symptoms.%@.netdiag.msg.queue", nameCopy];
     v16 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_BACKGROUND, 0);
-    v17 = dispatch_queue_create([v14 UTF8String], v16);
+    v17 = dispatch_queue_create([nameCopy UTF8String], v16);
     netDiagMsgQueue = v10->_netDiagMsgQueue;
     v10->_netDiagMsgQueue = v17;
 
     if (v10->_netDiagMsgQueue)
     {
-      v19 = dispatch_queue_create([v15 UTF8String], v16);
+      v19 = dispatch_queue_create([nameCopy2 UTF8String], v16);
       netDiagConnQueue = v10->_netDiagConnQueue;
       v10->_netDiagConnQueue = v19;
 
@@ -63,11 +63,11 @@ LABEL_23:
         goto LABEL_21;
       }
 
-      v27 = v15;
+      v27 = nameCopy2;
       v23 = v26;
-      v28 = [v15 UTF8String];
+      uTF8String = [nameCopy2 UTF8String];
       *buf = 136315138;
-      v33 = v28;
+      v33 = uTF8String;
       v25 = "Couldn't create _netDiagConnQueue %s";
     }
 
@@ -81,11 +81,11 @@ LABEL_21:
         goto LABEL_22;
       }
 
-      v22 = v14;
+      v22 = nameCopy;
       v23 = v21;
-      v24 = [v14 UTF8String];
+      uTF8String2 = [nameCopy UTF8String];
       *buf = 136315138;
-      v33 = v24;
+      v33 = uTF8String2;
       v25 = "Couldn't create _netDiagMsgQueue for %s";
     }
 
@@ -94,7 +94,7 @@ LABEL_21:
     goto LABEL_21;
   }
 
-  objc_storeStrong(&v10->_netDiagMsgQueue, a4);
+  objc_storeStrong(&v10->_netDiagMsgQueue, queue);
   if (!v10->_netDiagMsgQueue)
   {
     v11 = debuggabilityLogHandle;
@@ -106,13 +106,13 @@ LABEL_21:
     }
 
 LABEL_15:
-    v14 = v10;
+    nameCopy = v10;
 LABEL_22:
     v10 = 0;
     goto LABEL_23;
   }
 
-  objc_storeStrong(&v10->_netDiagConnQueue, a4);
+  objc_storeStrong(&v10->_netDiagConnQueue, queue);
   if (!v10->_netDiagConnQueue)
   {
     v11 = debuggabilityLogHandle;
@@ -155,9 +155,9 @@ LABEL_24:
 
         if (self->_netDiagServiceConnection)
         {
-          v7 = [(NetDiagnosticsShim *)self createNotificationListener];
+          createNotificationListener = [(NetDiagnosticsShim *)self createNotificationListener];
           netDiagNotificationListener = self->_netDiagNotificationListener;
-          self->_netDiagNotificationListener = v7;
+          self->_netDiagNotificationListener = createNotificationListener;
 
           if (self->_netDiagNotificationListener)
           {
@@ -172,9 +172,9 @@ LABEL_24:
           }
 
           v10 = v13;
-          v11 = [(NetDiagnosticsShim *)self taskName];
+          taskName = [(NetDiagnosticsShim *)self taskName];
           *buf = 138412290;
-          v16 = v11;
+          v16 = taskName;
           v12 = "Can't create a listener for notifications for %@";
         }
 
@@ -187,9 +187,9 @@ LABEL_24:
           }
 
           v10 = v9;
-          v11 = [(NetDiagnosticsShim *)self taskName];
+          taskName = [(NetDiagnosticsShim *)self taskName];
           *buf = 138412290;
-          v16 = v11;
+          v16 = taskName;
           v12 = "Can't connect to XPC service for %@";
         }
 
@@ -224,9 +224,9 @@ void __46__NetDiagnosticsShim_connectToNetDiagnosticsd__block_invoke(uint64_t a1
   if (os_log_type_enabled(debuggabilityLogHandle, OS_LOG_TYPE_INFO))
   {
     v4 = v3;
-    v5 = [(NetDiagnosticsShim *)self taskName];
+    taskName = [(NetDiagnosticsShim *)self taskName];
     v13 = 138412290;
-    v14 = v5;
+    v14 = taskName;
     _os_log_impl(&dword_23255B000, v4, OS_LOG_TYPE_INFO, "Invalidating connections (%@)", &v13, 0xCu);
   }
 
@@ -257,46 +257,46 @@ void __46__NetDiagnosticsShim_connectToNetDiagnosticsd__block_invoke(uint64_t a1
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)startNetDiagnosticTaskWithOptions:(id)a3 reply:(id)a4
+- (BOOL)startNetDiagnosticTaskWithOptions:(id)options reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  replyCopy = reply;
   v8 = xpc_dictionary_create(0, 0, 0);
   if (v8)
   {
-    v9 = [v6 objectForKeyedSubscript:@"taskName"];
+    v9 = [optionsCopy objectForKeyedSubscript:@"taskName"];
     if ([v9 UTF8String] && *objc_msgSend(v9, "UTF8String"))
     {
       xpc_dictionary_set_string(v8, kNetDiagCommand[0], kNetDiagCmdTaskRun[0]);
       xpc_dictionary_set_string(v8, kNetDiagKey[0], [v9 UTF8String]);
-      v10 = [v6 objectForKeyedSubscript:@"filename"];
+      v10 = [optionsCopy objectForKeyedSubscript:@"filename"];
       if ([v10 UTF8String] && *objc_msgSend(v10, "UTF8String"))
       {
         xpc_dictionary_set_string(v8, kNetDiagTaskFilePath[0], [v10 UTF8String]);
       }
 
-      v11 = [v6 objectForKeyedSubscript:@"taskFileUserID"];
+      v11 = [optionsCopy objectForKeyedSubscript:@"taskFileUserID"];
       v12 = v11;
       if (v11)
       {
         xpc_dictionary_set_int64(v8, kNetDiagTaskFileUserID[0], [v11 longLongValue]);
       }
 
-      v13 = [v6 objectForKeyedSubscript:@"taskFileGroupID"];
+      v13 = [optionsCopy objectForKeyedSubscript:@"taskFileGroupID"];
       v14 = v13;
       if (v13)
       {
         xpc_dictionary_set_int64(v8, kNetDiagTaskFileGroupID[0], [v13 longLongValue]);
       }
 
-      v15 = [v6 objectForKeyedSubscript:@"taskFileMode"];
+      v15 = [optionsCopy objectForKeyedSubscript:@"taskFileMode"];
       v16 = v15;
       if (v15)
       {
         xpc_dictionary_set_int64(v8, kNetDiagTaskFileMode[0], [v15 longLongValue]);
       }
 
-      v17 = [v6 objectForKeyedSubscript:@"taskFileDicts"];
+      v17 = [optionsCopy objectForKeyedSubscript:@"taskFileDicts"];
       v37 = v17;
       if (v17 && [v17 count])
       {
@@ -308,7 +308,7 @@ void __46__NetDiagnosticsShim_connectToNetDiagnosticsd__block_invoke(uint64_t a1
       }
 
       v40 = v12;
-      v19 = [v6 objectForKeyedSubscript:@"taskGNISensitive"];
+      v19 = [optionsCopy objectForKeyedSubscript:@"taskGNISensitive"];
       v20 = v19;
       if (v19)
       {
@@ -316,7 +316,7 @@ void __46__NetDiagnosticsShim_connectToNetDiagnosticsd__block_invoke(uint64_t a1
       }
 
       v39 = v14;
-      v21 = [v6 objectForKeyedSubscript:{@"taskGNISysConfig", v20}];
+      v21 = [optionsCopy objectForKeyedSubscript:{@"taskGNISysConfig", v20}];
       v22 = v21;
       if (v21)
       {
@@ -324,14 +324,14 @@ void __46__NetDiagnosticsShim_connectToNetDiagnosticsd__block_invoke(uint64_t a1
       }
 
       v41 = v10;
-      v23 = [v6 objectForKeyedSubscript:@"taskGNINDFInfo"];
+      v23 = [optionsCopy objectForKeyedSubscript:@"taskGNINDFInfo"];
       v24 = v23;
       if (v23)
       {
         xpc_dictionary_set_BOOL(v8, kNetDiagTaskGNINDFInfo[0], [v23 BOOLValue]);
       }
 
-      v25 = [v6 objectForKeyedSubscript:@"taskArchiveBaseSize"];
+      v25 = [optionsCopy objectForKeyedSubscript:@"taskArchiveBaseSize"];
       v26 = v25;
       if (v25)
       {
@@ -339,35 +339,35 @@ void __46__NetDiagnosticsShim_connectToNetDiagnosticsd__block_invoke(uint64_t a1
       }
 
       v38 = v16;
-      v27 = [v6 objectForKeyedSubscript:@"taskArchiveBaseDuration"];
+      v27 = [optionsCopy objectForKeyedSubscript:@"taskArchiveBaseDuration"];
 
       if (v27)
       {
         xpc_dictionary_set_uint64(v8, kNetDiagTaskLogArchiveBaseDuration[0], [v27 unsignedIntegerValue]);
       }
 
-      v28 = [v6 objectForKeyedSubscript:@"taskArchiveTTLSize"];
+      v28 = [optionsCopy objectForKeyedSubscript:@"taskArchiveTTLSize"];
 
       if (v28)
       {
         xpc_dictionary_set_uint64(v8, kNetDiagTaskLogArchiveTTLSize[0], [v28 unsignedIntegerValue]);
       }
 
-      v29 = [v6 objectForKeyedSubscript:@"taskArchiveTTLDuration"];
+      v29 = [optionsCopy objectForKeyedSubscript:@"taskArchiveTTLDuration"];
 
       if (v29)
       {
         xpc_dictionary_set_uint64(v8, kNetDiagTaskLogArchiveTTLDuration[0], [v29 unsignedIntegerValue]);
       }
 
-      v30 = [v6 objectForKeyedSubscript:@"taskArchiveHVSize"];
+      v30 = [optionsCopy objectForKeyedSubscript:@"taskArchiveHVSize"];
 
       if (v30)
       {
         xpc_dictionary_set_uint64(v8, kNetDiagTaskLogArchiveHVSize[0], [v30 unsignedIntegerValue]);
       }
 
-      v31 = [v6 objectForKeyedSubscript:@"taskArchiveHVDuration"];
+      v31 = [optionsCopy objectForKeyedSubscript:@"taskArchiveHVDuration"];
 
       if (v31)
       {
@@ -381,7 +381,7 @@ void __46__NetDiagnosticsShim_connectToNetDiagnosticsd__block_invoke(uint64_t a1
       handler[1] = 3221225472;
       handler[2] = __62__NetDiagnosticsShim_startNetDiagnosticTaskWithOptions_reply___block_invoke;
       handler[3] = &unk_2789901D8;
-      v44 = v7;
+      v44 = replyCopy;
       v43 = v9;
       xpc_connection_send_message_with_reply(netDiagServiceConnection, v8, netDiagMsgQueue, handler);
 
@@ -439,9 +439,9 @@ void __62__NetDiagnosticsShim_startNetDiagnosticTaskWithOptions_reply___block_in
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)stopNetDiagnosticTaskWithReply:(id)a3
+- (BOOL)stopNetDiagnosticTaskWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v5 = xpc_dictionary_create(0, 0, 0);
   v6 = v5;
   if (v5)
@@ -456,7 +456,7 @@ void __62__NetDiagnosticsShim_startNetDiagnosticTaskWithOptions_reply___block_in
     v10[2] = __53__NetDiagnosticsShim_stopNetDiagnosticTaskWithReply___block_invoke;
     v10[3] = &unk_2789901D8;
     v10[4] = self;
-    v11 = v4;
+    v11 = replyCopy;
     xpc_connection_send_message_with_reply(netDiagServiceConnection, v6, netDiagMsgQueue, v10);
   }
 
@@ -500,9 +500,9 @@ void __53__NetDiagnosticsShim_stopNetDiagnosticTaskWithReply___block_invoke(uint
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)netDiagnosticTaskStatusWithReply:(id)a3
+- (BOOL)netDiagnosticTaskStatusWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v5 = xpc_dictionary_create(0, 0, 0);
   if (v5)
   {
@@ -524,7 +524,7 @@ void __53__NetDiagnosticsShim_stopNetDiagnosticTaskWithReply___block_invoke(uint
         v12[2] = __55__NetDiagnosticsShim_netDiagnosticTaskStatusWithReply___block_invoke;
         v12[3] = &unk_2789901D8;
         v12[4] = self;
-        v13 = v4;
+        v13 = replyCopy;
         xpc_connection_send_message_with_reply(netDiagServiceConnection, v5, netDiagMsgQueue, v12);
       }
     }
@@ -851,11 +851,11 @@ uint64_t __46__NetDiagnosticsShim_sendNotificationListener__block_invoke_2(uint6
   return 1;
 }
 
-- (id)_connectionForServiceNamed:(const char *)a3 queue:(id)a4 connectionInvalidHandler:(id)a5
+- (id)_connectionForServiceNamed:(const char *)named queue:(id)queue connectionInvalidHandler:(id)handler
 {
   v19 = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  mach_service = xpc_connection_create_mach_service(a3, a4, 2uLL);
+  handlerCopy = handler;
+  mach_service = xpc_connection_create_mach_service(named, queue, 2uLL);
   if (mach_service)
   {
     handler[0] = MEMORY[0x277D85DD0];
@@ -863,8 +863,8 @@ uint64_t __46__NetDiagnosticsShim_sendNotificationListener__block_invoke_2(uint6
     handler[2] = __80__NetDiagnosticsShim__connectionForServiceNamed_queue_connectionInvalidHandler___block_invoke;
     handler[3] = &unk_278990240;
     handler[4] = self;
-    v16 = a3;
-    v15 = v8;
+    namedCopy = named;
+    v15 = handlerCopy;
     xpc_connection_set_event_handler(mach_service, handler);
     xpc_connection_resume(mach_service);
     v10 = mach_service;
@@ -876,7 +876,7 @@ uint64_t __46__NetDiagnosticsShim_sendNotificationListener__block_invoke_2(uint6
     if (os_log_type_enabled(debuggabilityLogHandle, OS_LOG_TYPE_ERROR))
     {
       *buf = 136315138;
-      v18 = a3;
+      namedCopy2 = named;
       _os_log_impl(&dword_23255B000, v11, OS_LOG_TYPE_ERROR, "Can't connect to XPC service: %s", buf, 0xCu);
     }
   }

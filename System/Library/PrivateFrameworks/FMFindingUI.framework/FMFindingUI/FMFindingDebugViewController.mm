@@ -1,8 +1,8 @@
 @interface FMFindingDebugViewController
-- (_TtC11FMFindingUI28FMFindingDebugViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)documentPicker:(id)a3 didPickDocumentsAtURLs:(id)a4;
-- (void)handleWithButton:(id)a3;
-- (void)handleWithSlider:(id)a3;
+- (_TtC11FMFindingUI28FMFindingDebugViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)documentPicker:(id)picker didPickDocumentsAtURLs:(id)ls;
+- (void)handleWithButton:(id)button;
+- (void)handleWithSlider:(id)slider;
 - (void)viewDidLayoutSubviews;
 @end
 
@@ -15,11 +15,11 @@
   v2 = v14.receiver;
   [(FMFindingDebugViewController *)&v14 viewDidLayoutSubviews];
   v3 = *&v2[OBJC_IVAR____TtC11FMFindingUI28FMFindingDebugViewController_stackView];
-  v4 = [v2 view];
-  if (v4)
+  view = [v2 view];
+  if (view)
   {
-    v5 = v4;
-    [v4 bounds];
+    v5 = view;
+    [view bounds];
     v7 = v6;
     v9 = v8;
     v11 = v10;
@@ -34,33 +34,33 @@
   }
 }
 
-- (void)handleWithButton:(id)a3
+- (void)handleWithButton:(id)button
 {
-  v4 = a3;
-  v5 = self;
+  buttonCopy = button;
+  selfCopy = self;
   sub_24A5DD2A8();
 }
 
-- (void)handleWithSlider:(id)a3
+- (void)handleWithSlider:(id)slider
 {
-  v4 = a3;
-  v5 = self;
+  sliderCopy = slider;
+  selfCopy = self;
   sub_24A5DED80();
 }
 
-- (_TtC11FMFindingUI28FMFindingDebugViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC11FMFindingUI28FMFindingDebugViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)documentPicker:(id)a3 didPickDocumentsAtURLs:(id)a4
+- (void)documentPicker:(id)picker didPickDocumentsAtURLs:(id)ls
 {
   sub_24A62E0F4();
   v6 = sub_24A62ED64();
-  v7 = a3;
-  v8 = self;
+  pickerCopy = picker;
+  selfCopy = self;
   sub_24A5DEF14(v6);
 }
 

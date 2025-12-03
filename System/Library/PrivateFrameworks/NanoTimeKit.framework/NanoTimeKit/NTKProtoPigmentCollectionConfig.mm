@@ -1,44 +1,44 @@
 @interface NTKProtoPigmentCollectionConfig
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addDefaultGalleryColorNames:(id)a3;
-- (void)addExclusions:(id)a3;
-- (void)addMigration:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasIsAddable:(BOOL)a3;
-- (void)setHasSensitivity:(BOOL)a3;
-- (void)setHasSortedByHue:(BOOL)a3;
-- (void)setHasSupportsSlider:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addDefaultGalleryColorNames:(id)names;
+- (void)addExclusions:(id)exclusions;
+- (void)addMigration:(id)migration;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasIsAddable:(BOOL)addable;
+- (void)setHasSensitivity:(BOOL)sensitivity;
+- (void)setHasSortedByHue:(BOOL)hue;
+- (void)setHasSupportsSlider:(BOOL)slider;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NTKProtoPigmentCollectionConfig
 
-- (void)addDefaultGalleryColorNames:(id)a3
+- (void)addDefaultGalleryColorNames:(id)names
 {
-  v4 = a3;
+  namesCopy = names;
   defaultGalleryColorNames = self->_defaultGalleryColorNames;
-  v8 = v4;
+  v8 = namesCopy;
   if (!defaultGalleryColorNames)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_defaultGalleryColorNames;
     self->_defaultGalleryColorNames = v6;
 
-    v4 = v8;
+    namesCopy = v8;
     defaultGalleryColorNames = self->_defaultGalleryColorNames;
   }
 
-  [(NSMutableArray *)defaultGalleryColorNames addObject:v4];
+  [(NSMutableArray *)defaultGalleryColorNames addObject:namesCopy];
 }
 
-- (void)setHasSensitivity:(BOOL)a3
+- (void)setHasSensitivity:(BOOL)sensitivity
 {
-  if (a3)
+  if (sensitivity)
   {
     v3 = 4;
   }
@@ -51,9 +51,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasIsAddable:(BOOL)a3
+- (void)setHasIsAddable:(BOOL)addable
 {
-  if (a3)
+  if (addable)
   {
     v3 = 2;
   }
@@ -66,9 +66,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasSortedByHue:(BOOL)a3
+- (void)setHasSortedByHue:(BOOL)hue
 {
-  if (a3)
+  if (hue)
   {
     v3 = 8;
   }
@@ -81,9 +81,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasSupportsSlider:(BOOL)a3
+- (void)setHasSupportsSlider:(BOOL)slider
 {
-  if (a3)
+  if (slider)
   {
     v3 = 16;
   }
@@ -96,40 +96,40 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)addExclusions:(id)a3
+- (void)addExclusions:(id)exclusions
 {
-  v4 = a3;
+  exclusionsCopy = exclusions;
   exclusions = self->_exclusions;
-  v8 = v4;
+  v8 = exclusionsCopy;
   if (!exclusions)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_exclusions;
     self->_exclusions = v6;
 
-    v4 = v8;
+    exclusionsCopy = v8;
     exclusions = self->_exclusions;
   }
 
-  [(NSMutableArray *)exclusions addObject:v4];
+  [(NSMutableArray *)exclusions addObject:exclusionsCopy];
 }
 
-- (void)addMigration:(id)a3
+- (void)addMigration:(id)migration
 {
-  v4 = a3;
+  migrationCopy = migration;
   migrations = self->_migrations;
-  v8 = v4;
+  v8 = migrationCopy;
   if (!migrations)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_migrations;
     self->_migrations = v6;
 
-    v4 = v8;
+    migrationCopy = v8;
     migrations = self->_migrations;
   }
 
-  [(NSMutableArray *)migrations addObject:v4];
+  [(NSMutableArray *)migrations addObject:migrationCopy];
 }
 
 - (id)description
@@ -138,8 +138,8 @@
   v8.receiver = self;
   v8.super_class = NTKProtoPigmentCollectionConfig;
   v4 = [(NTKProtoPigmentCollectionConfig *)&v8 description];
-  v5 = [(NTKProtoPigmentCollectionConfig *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NTKProtoPigmentCollectionConfig *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -147,12 +147,12 @@
 - (id)dictionaryRepresentation
 {
   v31 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   defaultColorOptionName = self->_defaultColorOptionName;
   if (defaultColorOptionName)
   {
-    [v3 setObject:defaultColorOptionName forKey:@"defaultColorOptionName"];
+    [dictionary setObject:defaultColorOptionName forKey:@"defaultColorOptionName"];
   }
 
   fallbackDefaultColorOptionName = self->_fallbackDefaultColorOptionName;
@@ -264,8 +264,8 @@ LABEL_14:
             objc_enumerationMutation(v15);
           }
 
-          v20 = [*(*(&v26 + 1) + 8 * i) dictionaryRepresentation];
-          [v14 addObject:v20];
+          dictionaryRepresentation = [*(*(&v26 + 1) + 8 * i) dictionaryRepresentation];
+          [v14 addObject:dictionaryRepresentation];
         }
 
         v17 = [(NSMutableArray *)v15 countByEnumeratingWithState:&v26 objects:v30 count:16];
@@ -286,10 +286,10 @@ LABEL_14:
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_defaultColorOptionName)
   {
     PBDataWriterWriteStringField();
@@ -449,45 +449,45 @@ LABEL_19:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v18 = a3;
+  toCopy = to;
   if (self->_defaultColorOptionName)
   {
-    [v18 setDefaultColorOptionName:?];
+    [toCopy setDefaultColorOptionName:?];
   }
 
   if (self->_fallbackDefaultColorOptionName)
   {
-    [v18 setFallbackDefaultColorOptionName:?];
+    [toCopy setFallbackDefaultColorOptionName:?];
   }
 
   if (self->_defaultConfigAttributeName)
   {
-    [v18 setDefaultConfigAttributeName:?];
+    [toCopy setDefaultConfigAttributeName:?];
   }
 
   if ([(NTKProtoPigmentCollectionConfig *)self defaultGalleryColorNamesCount])
   {
-    [v18 clearDefaultGalleryColorNames];
-    v4 = [(NTKProtoPigmentCollectionConfig *)self defaultGalleryColorNamesCount];
-    if (v4)
+    [toCopy clearDefaultGalleryColorNames];
+    defaultGalleryColorNamesCount = [(NTKProtoPigmentCollectionConfig *)self defaultGalleryColorNamesCount];
+    if (defaultGalleryColorNamesCount)
     {
-      v5 = v4;
+      v5 = defaultGalleryColorNamesCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(NTKProtoPigmentCollectionConfig *)self defaultGalleryColorNamesAtIndex:i];
-        [v18 addDefaultGalleryColorNames:v7];
+        [toCopy addDefaultGalleryColorNames:v7];
       }
     }
   }
 
   has = self->_has;
-  v9 = v18;
+  v9 = toCopy;
   if ((has & 4) != 0)
   {
-    v18[74] = self->_sensitivity;
-    v18[80] |= 4u;
+    toCopy[74] = self->_sensitivity;
+    toCopy[80] |= 4u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -506,8 +506,8 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  v18[73] = self->_isAddable;
-  v18[80] |= 2u;
+  toCopy[73] = self->_isAddable;
+  toCopy[80] |= 2u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -521,20 +521,20 @@ LABEL_14:
   }
 
 LABEL_35:
-  v18[75] = self->_sortedByHue;
-  v18[80] |= 8u;
+  toCopy[75] = self->_sortedByHue;
+  toCopy[80] |= 8u;
   if ((*&self->_has & 0x10) != 0)
   {
 LABEL_15:
-    v18[76] = self->_supportsSlider;
-    v18[80] |= 0x10u;
+    toCopy[76] = self->_supportsSlider;
+    toCopy[80] |= 0x10u;
   }
 
 LABEL_16:
   if (self->_featureFlag)
   {
-    [v18 setFeatureFlag:?];
-    v9 = v18;
+    [toCopy setFeatureFlag:?];
+    v9 = toCopy;
   }
 
   if (*&self->_has)
@@ -545,53 +545,53 @@ LABEL_16:
 
   if ([(NTKProtoPigmentCollectionConfig *)self exclusionsCount])
   {
-    [v18 clearExclusions];
-    v10 = [(NTKProtoPigmentCollectionConfig *)self exclusionsCount];
-    if (v10)
+    [toCopy clearExclusions];
+    exclusionsCount = [(NTKProtoPigmentCollectionConfig *)self exclusionsCount];
+    if (exclusionsCount)
     {
-      v11 = v10;
+      v11 = exclusionsCount;
       for (j = 0; j != v11; ++j)
       {
         v13 = [(NTKProtoPigmentCollectionConfig *)self exclusionsAtIndex:j];
-        [v18 addExclusions:v13];
+        [toCopy addExclusions:v13];
       }
     }
   }
 
   if ([(NTKProtoPigmentCollectionConfig *)self migrationsCount])
   {
-    [v18 clearMigrations];
-    v14 = [(NTKProtoPigmentCollectionConfig *)self migrationsCount];
-    if (v14)
+    [toCopy clearMigrations];
+    migrationsCount = [(NTKProtoPigmentCollectionConfig *)self migrationsCount];
+    if (migrationsCount)
     {
-      v15 = v14;
+      v15 = migrationsCount;
       for (k = 0; k != v15; ++k)
       {
         v17 = [(NTKProtoPigmentCollectionConfig *)self migrationAtIndex:k];
-        [v18 addMigration:v17];
+        [toCopy addMigration:v17];
       }
     }
   }
 
   if (self->_collectionOverride)
   {
-    [v18 setCollectionOverride:?];
+    [toCopy setCollectionOverride:?];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v51 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_defaultColorOptionName copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_defaultColorOptionName copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
-  v8 = [(NSString *)self->_fallbackDefaultColorOptionName copyWithZone:a3];
+  v8 = [(NSString *)self->_fallbackDefaultColorOptionName copyWithZone:zone];
   v9 = *(v5 + 48);
   *(v5 + 48) = v8;
 
-  v10 = [(NSString *)self->_defaultConfigAttributeName copyWithZone:a3];
+  v10 = [(NSString *)self->_defaultConfigAttributeName copyWithZone:zone];
   v11 = *(v5 + 24);
   *(v5 + 24) = v10;
 
@@ -614,7 +614,7 @@ LABEL_16:
           objc_enumerationMutation(v12);
         }
 
-        v17 = [*(*(&v44 + 1) + 8 * i) copyWithZone:a3];
+        v17 = [*(*(&v44 + 1) + 8 * i) copyWithZone:zone];
         [v5 addDefaultGalleryColorNames:v17];
       }
 
@@ -672,7 +672,7 @@ LABEL_12:
   }
 
 LABEL_13:
-  v19 = [(NSString *)self->_featureFlag copyWithZone:a3];
+  v19 = [(NSString *)self->_featureFlag copyWithZone:zone];
   v20 = *(v5 + 56);
   *(v5 + 56) = v19;
 
@@ -701,7 +701,7 @@ LABEL_13:
           objc_enumerationMutation(v21);
         }
 
-        v26 = [*(*(&v40 + 1) + 8 * j) copyWithZone:a3];
+        v26 = [*(*(&v40 + 1) + 8 * j) copyWithZone:zone];
         [v5 addExclusions:v26];
       }
 
@@ -730,7 +730,7 @@ LABEL_13:
           objc_enumerationMutation(v27);
         }
 
-        v32 = [*(*(&v36 + 1) + 8 * k) copyWithZone:{a3, v36}];
+        v32 = [*(*(&v36 + 1) + 8 * k) copyWithZone:{zone, v36}];
         [v5 addMigration:v32];
       }
 
@@ -740,23 +740,23 @@ LABEL_13:
     while (v29);
   }
 
-  v33 = [(NSString *)self->_collectionOverride copyWithZone:a3];
+  v33 = [(NSString *)self->_collectionOverride copyWithZone:zone];
   v34 = *(v5 + 8);
   *(v5 + 8) = v33;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_58;
   }
 
   defaultColorOptionName = self->_defaultColorOptionName;
-  if (defaultColorOptionName | *(v4 + 2))
+  if (defaultColorOptionName | *(equalCopy + 2))
   {
     if (![(NSString *)defaultColorOptionName isEqual:?])
     {
@@ -765,7 +765,7 @@ LABEL_13:
   }
 
   fallbackDefaultColorOptionName = self->_fallbackDefaultColorOptionName;
-  if (fallbackDefaultColorOptionName | *(v4 + 6))
+  if (fallbackDefaultColorOptionName | *(equalCopy + 6))
   {
     if (![(NSString *)fallbackDefaultColorOptionName isEqual:?])
     {
@@ -774,7 +774,7 @@ LABEL_13:
   }
 
   defaultConfigAttributeName = self->_defaultConfigAttributeName;
-  if (defaultConfigAttributeName | *(v4 + 3))
+  if (defaultConfigAttributeName | *(equalCopy + 3))
   {
     if (![(NSString *)defaultConfigAttributeName isEqual:?])
     {
@@ -783,7 +783,7 @@ LABEL_13:
   }
 
   defaultGalleryColorNames = self->_defaultGalleryColorNames;
-  if (defaultGalleryColorNames | *(v4 + 4))
+  if (defaultGalleryColorNames | *(equalCopy + 4))
   {
     if (![(NSMutableArray *)defaultGalleryColorNames isEqual:?])
     {
@@ -794,110 +794,110 @@ LABEL_13:
   has = self->_has;
   if ((has & 4) != 0)
   {
-    if ((*(v4 + 80) & 4) == 0)
+    if ((*(equalCopy + 80) & 4) == 0)
     {
       goto LABEL_58;
     }
 
     if (self->_sensitivity)
     {
-      if ((*(v4 + 74) & 1) == 0)
+      if ((*(equalCopy + 74) & 1) == 0)
       {
         goto LABEL_58;
       }
     }
 
-    else if (*(v4 + 74))
+    else if (*(equalCopy + 74))
     {
       goto LABEL_58;
     }
   }
 
-  else if ((*(v4 + 80) & 4) != 0)
+  else if ((*(equalCopy + 80) & 4) != 0)
   {
     goto LABEL_58;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 80) & 2) == 0)
+    if ((*(equalCopy + 80) & 2) == 0)
     {
       goto LABEL_58;
     }
 
     if (self->_isAddable)
     {
-      if ((*(v4 + 73) & 1) == 0)
+      if ((*(equalCopy + 73) & 1) == 0)
       {
         goto LABEL_58;
       }
     }
 
-    else if (*(v4 + 73))
+    else if (*(equalCopy + 73))
     {
       goto LABEL_58;
     }
   }
 
-  else if ((*(v4 + 80) & 2) != 0)
+  else if ((*(equalCopy + 80) & 2) != 0)
   {
     goto LABEL_58;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 80) & 8) == 0)
+    if ((*(equalCopy + 80) & 8) == 0)
     {
       goto LABEL_58;
     }
 
     if (self->_sortedByHue)
     {
-      if ((*(v4 + 75) & 1) == 0)
+      if ((*(equalCopy + 75) & 1) == 0)
       {
         goto LABEL_58;
       }
     }
 
-    else if (*(v4 + 75))
+    else if (*(equalCopy + 75))
     {
       goto LABEL_58;
     }
   }
 
-  else if ((*(v4 + 80) & 8) != 0)
+  else if ((*(equalCopy + 80) & 8) != 0)
   {
     goto LABEL_58;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 80) & 0x10) == 0)
+    if ((*(equalCopy + 80) & 0x10) == 0)
     {
       goto LABEL_58;
     }
 
     if (self->_supportsSlider)
     {
-      if ((*(v4 + 76) & 1) == 0)
+      if ((*(equalCopy + 76) & 1) == 0)
       {
         goto LABEL_58;
       }
     }
 
-    else if (*(v4 + 76))
+    else if (*(equalCopy + 76))
     {
       goto LABEL_58;
     }
   }
 
-  else if ((*(v4 + 80) & 0x10) != 0)
+  else if ((*(equalCopy + 80) & 0x10) != 0)
   {
     goto LABEL_58;
   }
 
   featureFlag = self->_featureFlag;
-  if (featureFlag | *(v4 + 7))
+  if (featureFlag | *(equalCopy + 7))
   {
     if (![(NSString *)featureFlag isEqual:?])
     {
@@ -909,7 +909,7 @@ LABEL_13:
 
   if ((has & 1) == 0)
   {
-    if ((*(v4 + 80) & 1) == 0)
+    if ((*(equalCopy + 80) & 1) == 0)
     {
       goto LABEL_23;
     }
@@ -919,33 +919,33 @@ LABEL_58:
     goto LABEL_59;
   }
 
-  if ((*(v4 + 80) & 1) == 0)
+  if ((*(equalCopy + 80) & 1) == 0)
   {
     goto LABEL_58;
   }
 
   if (self->_excludesDuotone)
   {
-    if ((*(v4 + 72) & 1) == 0)
+    if ((*(equalCopy + 72) & 1) == 0)
     {
       goto LABEL_58;
     }
   }
 
-  else if (*(v4 + 72))
+  else if (*(equalCopy + 72))
   {
     goto LABEL_58;
   }
 
 LABEL_23:
   exclusions = self->_exclusions;
-  if (exclusions | *(v4 + 5) && ![(NSMutableArray *)exclusions isEqual:?])
+  if (exclusions | *(equalCopy + 5) && ![(NSMutableArray *)exclusions isEqual:?])
   {
     goto LABEL_58;
   }
 
   migrations = self->_migrations;
-  if (migrations | *(v4 + 8))
+  if (migrations | *(equalCopy + 8))
   {
     if (![(NSMutableArray *)migrations isEqual:?])
     {
@@ -954,7 +954,7 @@ LABEL_23:
   }
 
   collectionOverride = self->_collectionOverride;
-  if (collectionOverride | *(v4 + 1))
+  if (collectionOverride | *(equalCopy + 1))
   {
     v14 = [(NSString *)collectionOverride isEqual:?];
   }
@@ -1042,21 +1042,21 @@ LABEL_10:
   return v12 ^ v14 ^ [(NSString *)self->_collectionOverride hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (*(v4 + 2))
+  fromCopy = from;
+  if (*(fromCopy + 2))
   {
     [(NTKProtoPigmentCollectionConfig *)self setDefaultColorOptionName:?];
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(NTKProtoPigmentCollectionConfig *)self setFallbackDefaultColorOptionName:?];
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(NTKProtoPigmentCollectionConfig *)self setDefaultConfigAttributeName:?];
   }
@@ -1065,7 +1065,7 @@ LABEL_10:
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v5 = *(v4 + 4);
+  v5 = *(fromCopy + 4);
   v6 = [v5 countByEnumeratingWithState:&v29 objects:v35 count:16];
   if (v6)
   {
@@ -1089,12 +1089,12 @@ LABEL_10:
     while (v7);
   }
 
-  v10 = *(v4 + 80);
+  v10 = *(fromCopy + 80);
   if ((v10 & 4) != 0)
   {
-    self->_sensitivity = *(v4 + 74);
+    self->_sensitivity = *(fromCopy + 74);
     *&self->_has |= 4u;
-    v10 = *(v4 + 80);
+    v10 = *(fromCopy + 80);
     if ((v10 & 2) == 0)
     {
 LABEL_16:
@@ -1107,14 +1107,14 @@ LABEL_16:
     }
   }
 
-  else if ((*(v4 + 80) & 2) == 0)
+  else if ((*(fromCopy + 80) & 2) == 0)
   {
     goto LABEL_16;
   }
 
-  self->_isAddable = *(v4 + 73);
+  self->_isAddable = *(fromCopy + 73);
   *&self->_has |= 2u;
-  v10 = *(v4 + 80);
+  v10 = *(fromCopy + 80);
   if ((v10 & 8) == 0)
   {
 LABEL_17:
@@ -1127,24 +1127,24 @@ LABEL_17:
   }
 
 LABEL_42:
-  self->_sortedByHue = *(v4 + 75);
+  self->_sortedByHue = *(fromCopy + 75);
   *&self->_has |= 8u;
-  if ((*(v4 + 80) & 0x10) != 0)
+  if ((*(fromCopy + 80) & 0x10) != 0)
   {
 LABEL_18:
-    self->_supportsSlider = *(v4 + 76);
+    self->_supportsSlider = *(fromCopy + 76);
     *&self->_has |= 0x10u;
   }
 
 LABEL_19:
-  if (*(v4 + 7))
+  if (*(fromCopy + 7))
   {
     [(NTKProtoPigmentCollectionConfig *)self setFeatureFlag:?];
   }
 
-  if (*(v4 + 80))
+  if (*(fromCopy + 80))
   {
-    self->_excludesDuotone = *(v4 + 72);
+    self->_excludesDuotone = *(fromCopy + 72);
     *&self->_has |= 1u;
   }
 
@@ -1152,7 +1152,7 @@ LABEL_19:
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v11 = *(v4 + 5);
+  v11 = *(fromCopy + 5);
   v12 = [v11 countByEnumeratingWithState:&v25 objects:v34 count:16];
   if (v12)
   {
@@ -1180,7 +1180,7 @@ LABEL_19:
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v16 = *(v4 + 8);
+  v16 = *(fromCopy + 8);
   v17 = [v16 countByEnumeratingWithState:&v21 objects:v33 count:16];
   if (v17)
   {
@@ -1204,7 +1204,7 @@ LABEL_19:
     while (v18);
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(NTKProtoPigmentCollectionConfig *)self setCollectionOverride:?];
   }

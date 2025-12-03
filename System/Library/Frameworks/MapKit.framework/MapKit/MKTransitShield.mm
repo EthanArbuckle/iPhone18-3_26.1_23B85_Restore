@@ -1,25 +1,25 @@
 @interface MKTransitShield
-- (MKTransitShield)initWithShieldType:(int64_t)a3 text:(id)a4 color:(id)a5;
+- (MKTransitShield)initWithShieldType:(int64_t)type text:(id)text color:(id)color;
 @end
 
 @implementation MKTransitShield
 
-- (MKTransitShield)initWithShieldType:(int64_t)a3 text:(id)a4 color:(id)a5
+- (MKTransitShield)initWithShieldType:(int64_t)type text:(id)text color:(id)color
 {
-  v8 = a4;
-  v9 = a5;
+  textCopy = text;
+  colorCopy = color;
   v18.receiver = self;
   v18.super_class = MKTransitShield;
   v10 = [(MKTransitShield *)&v18 init];
   v11 = v10;
   if (v10)
   {
-    v10->_shieldType = a3;
-    v12 = [v8 copy];
+    v10->_shieldType = type;
+    v12 = [textCopy copy];
     shieldText = v11->_shieldText;
     v11->_shieldText = v12;
 
-    v14 = [v9 copy];
+    v14 = [colorCopy copy];
     shieldColorString = v11->_shieldColorString;
     v11->_shieldColorString = v14;
 

@@ -1,20 +1,20 @@
 @interface MSSuggesterRequestOptions
 + (id)defaultRequest;
-+ (id)nowPlayingSuggesterOptionsWithMaxSuggestions:(int)a3 bundleId:(id)a4 seedSuggestions:(id)a5 allowedBundleIdentifiers:(id)a6;
-+ (id)nowPlayingSuggesterOptionsWithMaxSuggestions:(int)a3 bundleId:(id)a4 seedSuggestions:(id)a5 allowedBundleIdentifiers:(id)a6 suggestionSourceType:(int)a7;
-+ (id)workoutSuggesterOptionsWithMaxSuggestions:(int)a3 bundleId:(id)a4 workoutType:(int)a5 seedSuggestions:(id)a6 allowedBundleIdentifiers:(id)a7;
-+ (id)workoutSuggesterOptionsWithMaxSuggestions:(int)a3 bundleId:(id)a4 workoutType:(int)a5 seedSuggestions:(id)a6 allowedBundleIdentifiers:(id)a7 suggestionSourceType:(int)a8;
-- (MSSuggesterRequestOptions)initWithMaxSuggestions:(int)a3 bundleId:(id)a4 workoutType:(int)a5 seedSuggestions:(id)a6 allowedBundleIdentifiers:(id)a7 requestDate:(double)a8 suggestionType:(int)a9;
-- (MSSuggesterRequestOptions)initWithMaxSuggestions:(int)a3 bundleId:(id)a4 workoutType:(int)a5 seedSuggestions:(id)a6 allowedBundleIdentifiers:(id)a7 requestDate:(double)a8 suggestionType:(int)a9 suggestionSourceType:(int)a10;
++ (id)nowPlayingSuggesterOptionsWithMaxSuggestions:(int)suggestions bundleId:(id)id seedSuggestions:(id)seedSuggestions allowedBundleIdentifiers:(id)identifiers;
++ (id)nowPlayingSuggesterOptionsWithMaxSuggestions:(int)suggestions bundleId:(id)id seedSuggestions:(id)seedSuggestions allowedBundleIdentifiers:(id)identifiers suggestionSourceType:(int)type;
++ (id)workoutSuggesterOptionsWithMaxSuggestions:(int)suggestions bundleId:(id)id workoutType:(int)type seedSuggestions:(id)seedSuggestions allowedBundleIdentifiers:(id)identifiers;
++ (id)workoutSuggesterOptionsWithMaxSuggestions:(int)suggestions bundleId:(id)id workoutType:(int)type seedSuggestions:(id)seedSuggestions allowedBundleIdentifiers:(id)identifiers suggestionSourceType:(int)sourceType;
+- (MSSuggesterRequestOptions)initWithMaxSuggestions:(int)suggestions bundleId:(id)id workoutType:(int)type seedSuggestions:(id)seedSuggestions allowedBundleIdentifiers:(id)identifiers requestDate:(double)date suggestionType:(int)suggestionType;
+- (MSSuggesterRequestOptions)initWithMaxSuggestions:(int)suggestions bundleId:(id)id workoutType:(int)type seedSuggestions:(id)seedSuggestions allowedBundleIdentifiers:(id)identifiers requestDate:(double)date suggestionType:(int)suggestionType suggestionSourceType:(int)self0;
 - (NSArray)allowedBundleIdentifiers;
 - (NSArray)seedSuggestions;
 - (NSString)bundleId;
 - (NSString)description;
-- (id)copyWithZone:(void *)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAllowedBundleIdentifiers:(id)a3;
-- (void)setBundleId:(id)a3;
-- (void)setSeedSuggestions:(id)a3;
+- (id)copyWithZone:(void *)zone;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAllowedBundleIdentifiers:(id)identifiers;
+- (void)setBundleId:(id)id;
+- (void)setSeedSuggestions:(id)suggestions;
 @end
 
 @implementation MSSuggesterRequestOptions
@@ -27,11 +27,11 @@
   return v2;
 }
 
-- (void)setBundleId:(id)a3
+- (void)setBundleId:(id)id
 {
   v4 = sub_22CA20E20();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   sub_22C9D884C(v4, v6);
 }
 
@@ -44,11 +44,11 @@
   return v2;
 }
 
-- (void)setSeedSuggestions:(id)a3
+- (void)setSeedSuggestions:(id)suggestions
 {
   type metadata accessor for MSSuggestion(0);
   v4 = sub_22CA20EC0();
-  v5 = self;
+  selfCopy = self;
   sub_22C9D89A0(v4);
 }
 
@@ -60,14 +60,14 @@
   return v2;
 }
 
-- (void)setAllowedBundleIdentifiers:(id)a3
+- (void)setAllowedBundleIdentifiers:(id)identifiers
 {
   v4 = sub_22CA20EC0();
-  v5 = self;
+  selfCopy = self;
   sub_22C9D8A7C(v4);
 }
 
-- (MSSuggesterRequestOptions)initWithMaxSuggestions:(int)a3 bundleId:(id)a4 workoutType:(int)a5 seedSuggestions:(id)a6 allowedBundleIdentifiers:(id)a7 requestDate:(double)a8 suggestionType:(int)a9
+- (MSSuggesterRequestOptions)initWithMaxSuggestions:(int)suggestions bundleId:(id)id workoutType:(int)type seedSuggestions:(id)seedSuggestions allowedBundleIdentifiers:(id)identifiers requestDate:(double)date suggestionType:(int)suggestionType
 {
   sub_22CA20E20();
   type metadata accessor for MSSuggestion(0);
@@ -76,7 +76,7 @@
   return MSSuggesterRequestOptions.init(maxSuggestions:bundleId:workoutType:seedSuggestions:allowedBundleIdentifiers:requestDate:suggestionType:)();
 }
 
-- (MSSuggesterRequestOptions)initWithMaxSuggestions:(int)a3 bundleId:(id)a4 workoutType:(int)a5 seedSuggestions:(id)a6 allowedBundleIdentifiers:(id)a7 requestDate:(double)a8 suggestionType:(int)a9 suggestionSourceType:(int)a10
+- (MSSuggesterRequestOptions)initWithMaxSuggestions:(int)suggestions bundleId:(id)id workoutType:(int)type seedSuggestions:(id)seedSuggestions allowedBundleIdentifiers:(id)identifiers requestDate:(double)date suggestionType:(int)suggestionType suggestionSourceType:(int)self0
 {
   sub_22CA20E20();
   type metadata accessor for MSSuggestion(0);
@@ -86,7 +86,7 @@
   return result;
 }
 
-+ (id)nowPlayingSuggesterOptionsWithMaxSuggestions:(int)a3 bundleId:(id)a4 seedSuggestions:(id)a5 allowedBundleIdentifiers:(id)a6
++ (id)nowPlayingSuggesterOptionsWithMaxSuggestions:(int)suggestions bundleId:(id)id seedSuggestions:(id)seedSuggestions allowedBundleIdentifiers:(id)identifiers
 {
   sub_22CA20E20();
   type metadata accessor for MSSuggestion(0);
@@ -99,7 +99,7 @@
   return v7;
 }
 
-+ (id)nowPlayingSuggesterOptionsWithMaxSuggestions:(int)a3 bundleId:(id)a4 seedSuggestions:(id)a5 allowedBundleIdentifiers:(id)a6 suggestionSourceType:(int)a7
++ (id)nowPlayingSuggesterOptionsWithMaxSuggestions:(int)suggestions bundleId:(id)id seedSuggestions:(id)seedSuggestions allowedBundleIdentifiers:(id)identifiers suggestionSourceType:(int)type
 {
   sub_22CA20E20();
   type metadata accessor for MSSuggestion(0);
@@ -112,7 +112,7 @@
   return v8;
 }
 
-+ (id)workoutSuggesterOptionsWithMaxSuggestions:(int)a3 bundleId:(id)a4 workoutType:(int)a5 seedSuggestions:(id)a6 allowedBundleIdentifiers:(id)a7
++ (id)workoutSuggesterOptionsWithMaxSuggestions:(int)suggestions bundleId:(id)id workoutType:(int)type seedSuggestions:(id)seedSuggestions allowedBundleIdentifiers:(id)identifiers
 {
   sub_22CA20E20();
   type metadata accessor for MSSuggestion(0);
@@ -125,7 +125,7 @@
   return v8;
 }
 
-+ (id)workoutSuggesterOptionsWithMaxSuggestions:(int)a3 bundleId:(id)a4 workoutType:(int)a5 seedSuggestions:(id)a6 allowedBundleIdentifiers:(id)a7 suggestionSourceType:(int)a8
++ (id)workoutSuggesterOptionsWithMaxSuggestions:(int)suggestions bundleId:(id)id workoutType:(int)type seedSuggestions:(id)seedSuggestions allowedBundleIdentifiers:(id)identifiers suggestionSourceType:(int)sourceType
 {
   sub_22CA20E20();
   type metadata accessor for MSSuggestion(0);
@@ -148,7 +148,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   MSSuggesterRequestOptions.description.getter();
 
   v3 = sub_22CA20E10();
@@ -156,9 +156,9 @@
   return v3;
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v3 = self;
+  selfCopy = self;
   MSSuggesterRequestOptions.copy(with:)();
 
   sub_22C9D05CC(v6, v6[3]);
@@ -167,11 +167,11 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  MSSuggesterRequestOptions.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  MSSuggesterRequestOptions.encode(with:)(coderCopy);
 }
 
 @end

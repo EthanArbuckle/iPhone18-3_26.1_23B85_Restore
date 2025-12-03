@@ -1,7 +1,7 @@
 @interface ATXIdleTimeEndAnchor
 + (BOOL)shouldProcessContextStoreNotification;
 + (double)minimumSecondsForBeingIdle;
-+ (id)fetchAnchorOccurrencesBetweenStartDate:(id)a3 endDate:(id)a4;
++ (id)fetchAnchorOccurrencesBetweenStartDate:(id)date endDate:(id)endDate;
 + (id)filterBlock;
 + (id)predicateForContextStoreRegistration;
 + (id)sampleEvent;
@@ -25,7 +25,7 @@
   aBlock[1] = 3221225472;
   aBlock[2] = __35__ATXIdleTimeEndAnchor_filterBlock__block_invoke;
   aBlock[3] = &__block_descriptor_40_e31_B16__0___ATXGenericEventBase__8l;
-  aBlock[4] = a1;
+  aBlock[4] = self;
   v2 = _Block_copy(aBlock);
 
   return v2;
@@ -57,21 +57,21 @@ BOOL __35__ATXIdleTimeEndAnchor_filterBlock__block_invoke(uint64_t a1, void *a2)
   return v11;
 }
 
-+ (id)fetchAnchorOccurrencesBetweenStartDate:(id)a3 endDate:(id)a4
++ (id)fetchAnchorOccurrencesBetweenStartDate:(id)date endDate:(id)endDate
 {
   v5 = MEMORY[0x277CEBC40];
-  v6 = a4;
-  v7 = a3;
+  endDateCopy = endDate;
+  dateCopy = date;
   v8 = objc_alloc_init(v5);
   v9 = objc_opt_new();
-  v10 = [objc_opt_class() filterBlock];
+  filterBlock = [objc_opt_class() filterBlock];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __71__ATXIdleTimeEndAnchor_fetchAnchorOccurrencesBetweenStartDate_endDate___block_invoke;
   v14[3] = &unk_278598F50;
   v15 = v9;
   v11 = v9;
-  [v8 enumerateDeviceScreenUnLockedStateEventsFromStartDate:v7 endDate:v6 filterBlock:v10 limit:1000000 ascending:1 block:v14];
+  [v8 enumerateDeviceScreenUnLockedStateEventsFromStartDate:dateCopy endDate:endDateCopy filterBlock:filterBlock limit:1000000 ascending:1 block:v14];
 
   v12 = [v11 _pas_filteredArrayWithTest:&__block_literal_global_175];
 
@@ -120,9 +120,9 @@ BOOL __71__ATXIdleTimeEndAnchor_fetchAnchorOccurrencesBetweenStartDate_endDate__
 + (id)predicateForContextStoreRegistration
 {
   v2 = MEMORY[0x277CFE360];
-  v3 = [objc_opt_class() keyPathForContextStore];
+  keyPathForContextStore = [objc_opt_class() keyPathForContextStore];
   [objc_opt_class() minimumSecondsForBeingIdle];
-  v4 = [v2 predicateForKeyPath:v3 equalToValue:&unk_283A56FC0 withMinimumDurationInPreviousState:?];
+  v4 = [v2 predicateForKeyPath:keyPathForContextStore equalToValue:&unk_283A56FC0 withMinimumDurationInPreviousState:?];
 
   return v4;
 }

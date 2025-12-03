@@ -1,23 +1,23 @@
 @interface PKPaymentProvisionPrecursorPassResponse
-- (PKPaymentProvisionPrecursorPassResponse)initWithData:(id)a3;
+- (PKPaymentProvisionPrecursorPassResponse)initWithData:(id)data;
 @end
 
 @implementation PKPaymentProvisionPrecursorPassResponse
 
-- (PKPaymentProvisionPrecursorPassResponse)initWithData:(id)a3
+- (PKPaymentProvisionPrecursorPassResponse)initWithData:(id)data
 {
   v24 = *MEMORY[0x1E69E9840];
   v19.receiver = self;
   v19.super_class = PKPaymentProvisionPrecursorPassResponse;
-  v3 = [(PKWebServiceResponse *)&v19 initWithData:a3];
+  v3 = [(PKWebServiceResponse *)&v19 initWithData:data];
   v4 = v3;
   if (v3)
   {
-    v5 = [(PKWebServiceResponse *)v3 JSONObject];
+    jSONObject = [(PKWebServiceResponse *)v3 JSONObject];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
+      v6 = jSONObject;
       v7 = [(PKPaymentProvisionPrecursorPassResponse *)v6 PKArrayContaining:objc_opt_class() forKey:@"passes"];
       v8 = [v7 pk_arrayBySafelyApplyingBlock:&__block_literal_global_1510];
       downloadablePasses = v4->_downloadablePasses;

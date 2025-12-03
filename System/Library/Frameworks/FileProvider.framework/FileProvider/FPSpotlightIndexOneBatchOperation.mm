@@ -1,7 +1,7 @@
 @interface FPSpotlightIndexOneBatchOperation
-- (FPSpotlightIndexOneBatchOperation)initWithIndexer:(id)a3 isInitialIndexing:(BOOL)a4 isOutOfBandIndexing:(BOOL)a5 queue:(id)a6;
-- (void)_markItemsForUpdate:(id)a3 index:(id)a4 completionHandler:(id)a5;
-- (void)finishWithResult:(id)a3 error:(id)a4;
+- (FPSpotlightIndexOneBatchOperation)initWithIndexer:(id)indexer isInitialIndexing:(BOOL)indexing isOutOfBandIndexing:(BOOL)bandIndexing queue:(id)queue;
+- (void)_markItemsForUpdate:(id)update index:(id)index completionHandler:(id)handler;
+- (void)finishWithResult:(id)result error:(id)error;
 - (void)main;
 @end
 
@@ -14,16 +14,16 @@
   v4 = [WeakRetained log];
   v5 = fpfs_adopt_log(v4);
 
-  v6 = [MEMORY[0x1E69DF068] sharedManager];
-  v7 = [v6 currentPersona];
+  mEMORY[0x1E69DF068] = [MEMORY[0x1E69DF068] sharedManager];
+  currentPersona = [mEMORY[0x1E69DF068] currentPersona];
 
   v40 = 0;
-  v8 = [v7 userPersonaUniqueString];
+  userPersonaUniqueString = [currentPersona userPersonaUniqueString];
   v9 = objc_loadWeakRetained(&self->_indexer);
-  v10 = [v9 domain];
-  v11 = [v10 personaIdentifier];
-  v12 = v11;
-  if (v8 == v11)
+  domain = [v9 domain];
+  personaIdentifier = [domain personaIdentifier];
+  v12 = personaIdentifier;
+  if (userPersonaUniqueString == personaIdentifier)
   {
 
 LABEL_13:
@@ -32,9 +32,9 @@ LABEL_13:
   }
 
   v13 = objc_loadWeakRetained(&self->_indexer);
-  v14 = [v13 domain];
-  v15 = [v14 personaIdentifier];
-  v16 = [v8 isEqualToString:v15];
+  domain2 = [v13 domain];
+  personaIdentifier2 = [domain2 personaIdentifier];
+  v16 = [userPersonaUniqueString isEqualToString:personaIdentifier2];
 
   if ((v16 & 1) != 0 || !voucher_process_can_use_arbitrary_personas())
   {
@@ -42,7 +42,7 @@ LABEL_13:
   }
 
   v39 = 0;
-  v17 = [v7 copyCurrentPersonaContextWithError:&v39];
+  v17 = [currentPersona copyCurrentPersonaContextWithError:&v39];
   v18 = v39;
   v19 = v40;
   v40 = v17;
@@ -57,9 +57,9 @@ LABEL_13:
   }
 
   v21 = objc_loadWeakRetained(&self->_indexer);
-  v22 = [v21 domain];
-  v23 = [v22 personaIdentifier];
-  v24 = [v7 generateAndRestorePersonaContextWithPersonaUniqueString:v23];
+  domain3 = [v21 domain];
+  personaIdentifier3 = [domain3 personaIdentifier];
+  v24 = [currentPersona generateAndRestorePersonaContextWithPersonaUniqueString:personaIdentifier3];
 
   if (v24)
   {
@@ -67,10 +67,10 @@ LABEL_13:
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
     {
       v35 = objc_loadWeakRetained(&self->_indexer);
-      v36 = [v35 domain];
-      v37 = [v36 personaIdentifier];
+      domain4 = [v35 domain];
+      personaIdentifier4 = [domain4 personaIdentifier];
       *buf = 138412546;
-      v42 = v37;
+      v42 = personaIdentifier4;
       v43 = 2112;
       v44 = v24;
       _os_log_error_impl(&dword_1AAAE1000, v25, OS_LOG_TYPE_ERROR, "[ERROR] Can't adopt persona %@: %@", buf, 0x16u);
@@ -83,12 +83,12 @@ LABEL_14:
   if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
   {
     v31 = objc_loadWeakRetained(&self->_indexer);
-    v32 = [v31 lastIndexState];
-    v33 = v32;
+    lastIndexState = [v31 lastIndexState];
+    v33 = lastIndexState;
     v34 = @"start";
-    if (v32)
+    if (lastIndexState)
     {
-      v34 = v32;
+      v34 = lastIndexState;
     }
 
     *buf = 134218242;
@@ -100,13 +100,13 @@ LABEL_14:
 
   self->_logSection = section;
   v28 = objc_loadWeakRetained(&self->_indexer);
-  v29 = [v28 workloop];
+  workloop = [v28 workloop];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __41__FPSpotlightIndexOneBatchOperation_main__block_invoke;
   block[3] = &unk_1E79399B0;
   block[4] = self;
-  dispatch_async(v29, block);
+  dispatch_async(workloop, block);
 
   _FPRestorePersona(&v40);
   v30 = *MEMORY[0x1E69E9840];
@@ -331,24 +331,24 @@ LABEL_40:
   v66 = *MEMORY[0x1E69E9840];
 }
 
-- (FPSpotlightIndexOneBatchOperation)initWithIndexer:(id)a3 isInitialIndexing:(BOOL)a4 isOutOfBandIndexing:(BOOL)a5 queue:(id)a6
+- (FPSpotlightIndexOneBatchOperation)initWithIndexer:(id)indexer isInitialIndexing:(BOOL)indexing isOutOfBandIndexing:(BOOL)bandIndexing queue:(id)queue
 {
   v48 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v40 = a6;
-  v8 = [v7 log];
+  indexerCopy = indexer;
+  queueCopy = queue;
+  v8 = [indexerCopy log];
   v9 = fpfs_adopt_log(v8);
 
-  v10 = [MEMORY[0x1E69DF068] sharedManager];
-  v11 = [v10 currentPersona];
+  mEMORY[0x1E69DF068] = [MEMORY[0x1E69DF068] sharedManager];
+  currentPersona = [mEMORY[0x1E69DF068] currentPersona];
 
   v43 = 0;
-  v12 = [v11 userPersonaUniqueString];
-  v13 = [v7 domainContext];
-  v14 = [v13 domain];
-  v15 = [v14 personaIdentifier];
-  v16 = v15;
-  if (v12 == v15)
+  userPersonaUniqueString = [currentPersona userPersonaUniqueString];
+  domainContext = [indexerCopy domainContext];
+  domain = [domainContext domain];
+  personaIdentifier = [domain personaIdentifier];
+  v16 = personaIdentifier;
+  if (userPersonaUniqueString == personaIdentifier)
   {
 
 LABEL_13:
@@ -356,10 +356,10 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v17 = [v7 domainContext];
-  v18 = [v17 domain];
-  v19 = [v18 personaIdentifier];
-  v20 = [v12 isEqualToString:v19];
+  domainContext2 = [indexerCopy domainContext];
+  domain2 = [domainContext2 domain];
+  personaIdentifier2 = [domain2 personaIdentifier];
+  v20 = [userPersonaUniqueString isEqualToString:personaIdentifier2];
 
   if ((v20 & 1) != 0 || !voucher_process_can_use_arbitrary_personas())
   {
@@ -367,7 +367,7 @@ LABEL_13:
   }
 
   v42 = 0;
-  v21 = [v11 copyCurrentPersonaContextWithError:&v42];
+  v21 = [currentPersona copyCurrentPersonaContextWithError:&v42];
   v22 = v42;
   v23 = v43;
   v43 = v21;
@@ -381,21 +381,21 @@ LABEL_13:
     }
   }
 
-  v25 = [v7 domainContext];
-  v26 = [v25 domain];
-  v27 = [v26 personaIdentifier];
-  v28 = [v11 generateAndRestorePersonaContextWithPersonaUniqueString:v27];
+  domainContext3 = [indexerCopy domainContext];
+  domain3 = [domainContext3 domain];
+  personaIdentifier3 = [domain3 personaIdentifier];
+  v28 = [currentPersona generateAndRestorePersonaContextWithPersonaUniqueString:personaIdentifier3];
 
   if (v28)
   {
     v29 = fp_current_or_default_log();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
     {
-      v34 = [v7 domainContext];
-      v35 = [v34 domain];
-      v36 = [v35 personaIdentifier];
+      domainContext4 = [indexerCopy domainContext];
+      domain4 = [domainContext4 domain];
+      personaIdentifier4 = [domain4 personaIdentifier];
       *buf = 138412546;
-      v45 = v36;
+      v45 = personaIdentifier4;
       v46 = 2112;
       v47 = v28;
       _os_log_error_impl(&dword_1AAAE1000, v29, OS_LOG_TYPE_ERROR, "[ERROR] Can't adopt persona %@: %@", buf, 0x16u);
@@ -409,18 +409,18 @@ LABEL_14:
   v31 = v30;
   if (v30)
   {
-    objc_storeWeak(&v30->_indexer, v7);
-    v31->_isInitialIndexing = a4;
-    v31->_isOutOfBandIndexing = a5;
-    [(FPOperation *)v31 setCallbackQueue:v40];
-    if (!a5)
+    objc_storeWeak(&v30->_indexer, indexerCopy);
+    v31->_isInitialIndexing = indexing;
+    v31->_isOutOfBandIndexing = bandIndexing;
+    [(FPOperation *)v31 setCallbackQueue:queueCopy];
+    if (!bandIndexing)
     {
-      if ([v7 isIndexing])
+      if ([indexerCopy isIndexing])
       {
         __assert_rtn("[FPSpotlightIndexOneBatchOperation initWithIndexer:isInitialIndexing:isOutOfBandIndexing:queue:]", "FPSpotlightIndexOneBatchOperation.m", 229, "!indexer.isIndexing");
       }
 
-      [v7 setIndexing:1];
+      [indexerCopy setIndexing:1];
     }
   }
 
@@ -429,36 +429,36 @@ LABEL_14:
   return v31;
 }
 
-- (void)_markItemsForUpdate:(id)a3 index:(id)a4 completionHandler:(id)a5
+- (void)_markItemsForUpdate:(id)update index:(id)index completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (![v7 count])
+  updateCopy = update;
+  indexCopy = index;
+  handlerCopy = handler;
+  if (![updateCopy count])
   {
     _os_feature_enabled_impl();
-    v11 = 0;
+    bundleID = 0;
 LABEL_6:
-    v9[2](v9);
+    handlerCopy[2](handlerCopy);
     goto LABEL_7;
   }
 
-  v10 = [v7 objectAtIndexedSubscript:0];
-  v11 = [v10 bundleID];
+  v10 = [updateCopy objectAtIndexedSubscript:0];
+  bundleID = [v10 bundleID];
 
-  if (!_os_feature_enabled_impl() || !v11)
+  if (!_os_feature_enabled_impl() || !bundleID)
   {
     goto LABEL_6;
   }
 
-  v12 = [v7 fp_map:&__block_literal_global_39];
+  v12 = [updateCopy fp_map:&__block_literal_global_39];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __81__FPSpotlightIndexOneBatchOperation__markItemsForUpdate_index_completionHandler___block_invoke_2;
   v13[3] = &unk_1E793D268;
-  v14 = v7;
-  v15 = v9;
-  [v8 slowFetchAttributes:&unk_1F1FC9C08 protectionClass:0 bundleID:v11 identifiers:v12 completionHandler:v13];
+  v14 = updateCopy;
+  v15 = handlerCopy;
+  [indexCopy slowFetchAttributes:&unk_1F1FC9C08 protectionClass:0 bundleID:bundleID identifiers:v12 completionHandler:v13];
 
 LABEL_7:
 }
@@ -868,10 +868,10 @@ LABEL_35:
   v39 = *MEMORY[0x1E69E9840];
 }
 
-- (void)finishWithResult:(id)a3 error:(id)a4
+- (void)finishWithResult:(id)result error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  resultCopy = result;
+  errorCopy = error;
   WeakRetained = objc_loadWeakRetained(&self->_indexer);
   v9 = WeakRetained;
   if (!self->_isOutOfBandIndexing && WeakRetained)
@@ -881,7 +881,7 @@ LABEL_35:
 
   v10.receiver = self;
   v10.super_class = FPSpotlightIndexOneBatchOperation;
-  [(FPOperation *)&v10 finishWithResult:v6 error:v7];
+  [(FPOperation *)&v10 finishWithResult:resultCopy error:errorCopy];
 }
 
 void __41__FPSpotlightIndexOneBatchOperation_main__block_invoke_2_91_cold_2(void *a1, uint8_t *buf, os_log_t log)

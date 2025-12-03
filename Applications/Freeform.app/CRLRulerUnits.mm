@@ -1,16 +1,16 @@
 @interface CRLRulerUnits
-+ (id)formatterForRulerUnits:(unint64_t)a3 decimalPlaces:(int)a4 trailingZeros:(BOOL)a5 lenient:(BOOL)a6;
++ (id)formatterForRulerUnits:(unint64_t)units decimalPlaces:(int)places trailingZeros:(BOOL)zeros lenient:(BOOL)lenient;
 + (id)instance;
 - (CRLRulerUnits)init;
-- (double)convertPointsToRulerUnits:(double)a3;
-- (double)convertRulerUnitsToPoints:(double)a3;
+- (double)convertPointsToRulerUnits:(double)units;
+- (double)convertRulerUnitsToPoints:(double)points;
 - (id)compatibleRulerUnits;
-- (id)formatter:(BOOL)a3 lenient:(BOOL)a4;
+- (id)formatter:(BOOL)formatter lenient:(BOOL)lenient;
 - (id)localizedCompatibleRulerAbbreviatedUnits;
 - (id)localizedCompatibleRulerUnits;
-- (void)setCenterRulerOrigin:(BOOL)a3;
-- (void)setRulerUnits:(unint64_t)a3;
-- (void)setShowRulerAsPercentage:(BOOL)a3;
+- (void)setCenterRulerOrigin:(BOOL)origin;
+- (void)setRulerUnits:(unint64_t)units;
+- (void)setShowRulerAsPercentage:(BOOL)percentage;
 @end
 
 @implementation CRLRulerUnits
@@ -73,11 +73,11 @@
   return v2;
 }
 
-- (void)setRulerUnits:(unint64_t)a3
+- (void)setRulerUnits:(unint64_t)units
 {
-  if (self->_rulerUnits != a3)
+  if (self->_rulerUnits != units)
   {
-    self->_rulerUnits = a3;
+    self->_rulerUnits = units;
     formatter = self->_formatter;
     self->_formatter = 0;
 
@@ -98,11 +98,11 @@
   }
 }
 
-- (void)setShowRulerAsPercentage:(BOOL)a3
+- (void)setShowRulerAsPercentage:(BOOL)percentage
 {
-  if (self->_showRulerAsPercentage != a3)
+  if (self->_showRulerAsPercentage != percentage)
   {
-    self->_showRulerAsPercentage = a3;
+    self->_showRulerAsPercentage = percentage;
     v5 = +[NSUserDefaults standardUserDefaults];
     [v5 setBool:self->_showRulerAsPercentage forKey:@"ShowRulerAsPercentage"];
 
@@ -111,11 +111,11 @@
   }
 }
 
-- (void)setCenterRulerOrigin:(BOOL)a3
+- (void)setCenterRulerOrigin:(BOOL)origin
 {
-  if (self->_centerRulerOrigin != a3)
+  if (self->_centerRulerOrigin != origin)
   {
-    self->_centerRulerOrigin = a3;
+    self->_centerRulerOrigin = origin;
     v5 = +[NSUserDefaults standardUserDefaults];
     [v5 setBool:self->_centerRulerOrigin forKey:@"CenterRulerOrigin"];
 
@@ -124,7 +124,7 @@
   }
 }
 
-- (double)convertRulerUnitsToPoints:(double)a3
+- (double)convertRulerUnitsToPoints:(double)points
 {
   rulerUnits = self->_rulerUnits;
   v4 = 1.0;
@@ -133,10 +133,10 @@
     v4 = dbl_101462BC8[rulerUnits];
   }
 
-  return v4 * a3;
+  return v4 * points;
 }
 
-- (double)convertPointsToRulerUnits:(double)a3
+- (double)convertPointsToRulerUnits:(double)units
 {
   rulerUnits = self->_rulerUnits;
   v4 = 1.0;
@@ -145,15 +145,15 @@
     v4 = dbl_101462BC8[rulerUnits];
   }
 
-  return a3 / v4;
+  return units / v4;
 }
 
-- (id)formatter:(BOOL)a3 lenient:(BOOL)a4
+- (id)formatter:(BOOL)formatter lenient:(BOOL)lenient
 {
-  v4 = a4;
-  if (!a3)
+  lenientCopy = lenient;
+  if (!formatter)
   {
-    if (a4)
+    if (lenient)
     {
 LABEL_6:
       v7 = 0;
@@ -165,7 +165,7 @@ LABEL_6:
   }
 
   rulerUnits = self->_rulerUnits;
-  if (a4)
+  if (lenient)
   {
     if (!rulerUnits)
     {
@@ -217,7 +217,7 @@ LABEL_9:
       v12 = v11;
     }
 
-    v9 = [objc_opt_class() formatterForRulerUnits:self->_rulerUnits decimalPlaces:v12 trailingZeros:0 lenient:v4];
+    v9 = [objc_opt_class() formatterForRulerUnits:self->_rulerUnits decimalPlaces:v12 trailingZeros:0 lenient:lenientCopy];
     v13 = 16;
     if (v7)
     {
@@ -230,7 +230,7 @@ LABEL_9:
       v14 = 24;
     }
 
-    if (!v4)
+    if (!lenientCopy)
     {
       v13 = v14;
     }
@@ -291,12 +291,12 @@ LABEL_9:
   return v5;
 }
 
-+ (id)formatterForRulerUnits:(unint64_t)a3 decimalPlaces:(int)a4 trailingZeros:(BOOL)a5 lenient:(BOOL)a6
++ (id)formatterForRulerUnits:(unint64_t)units decimalPlaces:(int)places trailingZeros:(BOOL)zeros lenient:(BOOL)lenient
 {
-  v6 = a6;
-  v7 = a5;
-  v8 = *&a4;
-  if (a3 == 3)
+  lenientCopy = lenient;
+  zerosCopy = zeros;
+  v8 = *&places;
+  if (units == 3)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -330,7 +330,7 @@ LABEL_9:
     v14 = @"0";
   }
 
-  else if (v7)
+  else if (zerosCopy)
   {
     v13 = [[NSString alloc] initWithFormat:@"%%.%df", v8];
     v14 = [[NSString alloc] initWithFormat:v13, 0];
@@ -349,9 +349,9 @@ LABEL_9:
     while (v15 > 1);
   }
 
-  if (a3 > 1)
+  if (units > 1)
   {
-    switch(a3)
+    switch(units)
     {
       case 2uLL:
         v17 = +[NSBundle mainBundle];
@@ -378,7 +378,7 @@ LABEL_28:
     goto LABEL_29;
   }
 
-  if (!a3)
+  if (!units)
   {
     v17 = +[NSBundle mainBundle];
     v18 = v17;
@@ -387,7 +387,7 @@ LABEL_28:
     goto LABEL_28;
   }
 
-  if (a3 == 1)
+  if (units == 1)
   {
     v17 = +[NSBundle mainBundle];
     v18 = v17;
@@ -402,7 +402,7 @@ LABEL_29:
   v21 = [[NSString alloc] initWithFormat:v16, v14];
   v22 = objc_alloc_init(CRLPositiveZeroNumberFormatter);
   [(CRLPositiveZeroNumberFormatter *)v22 setPositiveFormat:v21];
-  [(CRLPositiveZeroNumberFormatter *)v22 setLenient:v6];
+  [(CRLPositiveZeroNumberFormatter *)v22 setLenient:lenientCopy];
 
   return v22;
 }

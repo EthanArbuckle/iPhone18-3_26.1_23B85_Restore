@@ -1,18 +1,18 @@
 @interface EDMessageSearchInfo
-+ (id)searchInfoWithInstantAnswer:(id)a3 snippetsByObjectID:(id)a4 snippetMessageObjectIDsByConversation:(id)a5;
-- (EDMessageSearchInfo)initWithInstantAnswer:(id)a3 snippetsByObjectID:(id)a4 snippetMessageObjectIDsByConversation:(id)a5;
++ (id)searchInfoWithInstantAnswer:(id)answer snippetsByObjectID:(id)d snippetMessageObjectIDsByConversation:(id)conversation;
+- (EDMessageSearchInfo)initWithInstantAnswer:(id)answer snippetsByObjectID:(id)d snippetMessageObjectIDsByConversation:(id)conversation;
 @end
 
 @implementation EDMessageSearchInfo
 
-+ (id)searchInfoWithInstantAnswer:(id)a3 snippetsByObjectID:(id)a4 snippetMessageObjectIDsByConversation:(id)a5
++ (id)searchInfoWithInstantAnswer:(id)answer snippetsByObjectID:(id)d snippetMessageObjectIDsByConversation:(id)conversation
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8 || [v9 count])
+  answerCopy = answer;
+  dCopy = d;
+  conversationCopy = conversation;
+  if (answerCopy || [dCopy count])
   {
-    v11 = [[a1 alloc] initWithInstantAnswer:v8 snippetsByObjectID:v9 snippetMessageObjectIDsByConversation:v10];
+    v11 = [[self alloc] initWithInstantAnswer:answerCopy snippetsByObjectID:dCopy snippetMessageObjectIDsByConversation:conversationCopy];
   }
 
   else
@@ -23,21 +23,21 @@
   return v11;
 }
 
-- (EDMessageSearchInfo)initWithInstantAnswer:(id)a3 snippetsByObjectID:(id)a4 snippetMessageObjectIDsByConversation:(id)a5
+- (EDMessageSearchInfo)initWithInstantAnswer:(id)answer snippetsByObjectID:(id)d snippetMessageObjectIDsByConversation:(id)conversation
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  answerCopy = answer;
+  dCopy = d;
+  conversationCopy = conversation;
   v17.receiver = self;
   v17.super_class = EDMessageSearchInfo;
   v12 = [(EDMessageSearchInfo *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_instantAnswer, a3);
-    if ([v10 count])
+    objc_storeStrong(&v12->_instantAnswer, answer);
+    if ([dCopy count])
     {
-      v14 = v10;
+      v14 = dCopy;
     }
 
     else
@@ -46,9 +46,9 @@
     }
 
     objc_storeStrong(&v13->_snippetsByObjectID, v14);
-    if ([v11 count])
+    if ([conversationCopy count])
     {
-      v15 = v11;
+      v15 = conversationCopy;
     }
 
     else

@@ -1,10 +1,10 @@
 @interface STSProgressArcLayer
 - (STSProgressArcLayer)init;
-- (void)drawInContext:(CGContext *)a3;
-- (void)setEndAngle:(double)a3;
-- (void)setLineWidth:(double)a3;
-- (void)setRadius:(double)a3;
-- (void)setStartAngle:(double)a3;
+- (void)drawInContext:(CGContext *)context;
+- (void)setEndAngle:(double)angle;
+- (void)setLineWidth:(double)width;
+- (void)setRadius:(double)radius;
+- (void)setStartAngle:(double)angle;
 @end
 
 @implementation STSProgressArcLayer
@@ -24,9 +24,9 @@
   return v3;
 }
 
-- (void)drawInContext:(CGContext *)a3
+- (void)drawInContext:(CGContext *)context
 {
-  CGContextSaveGState(a3);
+  CGContextSaveGState(context);
   [(STSProgressArcLayer *)self bounds];
   x = v24.origin.x;
   y = v24.origin.y;
@@ -58,22 +58,22 @@
   *&v23[8] = v12;
   *&v23[9] = MidX;
   *&v23[10] = MidY;
-  v23[11] = a3;
+  v23[11] = context;
   v18 = MEMORY[0x266751FB0](v23);
   v18[2](v14);
   (v18[2])(v18, v16);
-  CGContextSetLineWidth(a3, v12);
-  CGContextAddArc(a3, MidX, MidY, v17, v14, v16, 0);
-  v19 = [MEMORY[0x277D75348] whiteColor];
-  CGContextSetStrokeColorWithColor(a3, [v19 CGColor]);
+  CGContextSetLineWidth(context, v12);
+  CGContextAddArc(context, MidX, MidY, v17, v14, v16, 0);
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  CGContextSetStrokeColorWithColor(context, [whiteColor CGColor]);
 
-  CGContextStrokePath(a3);
-  CGContextAddArc(a3, MidX, MidY, v17, v16, v14 + 6.28318531, 0);
+  CGContextStrokePath(context);
+  CGContextAddArc(context, MidX, MidY, v17, v16, v14 + 6.28318531, 0);
   v20 = [MEMORY[0x277D75348] colorWithWhite:1.0 alpha:0.600000024];
-  CGContextSetStrokeColorWithColor(a3, [v20 CGColor]);
+  CGContextSetStrokeColorWithColor(context, [v20 CGColor]);
 
-  CGContextStrokePath(a3);
-  CGContextRestoreGState(a3);
+  CGContextStrokePath(context);
+  CGContextRestoreGState(context);
 }
 
 void __37__STSProgressArcLayer_drawInContext___block_invoke(uint64_t a1, CGFloat a2)
@@ -95,38 +95,38 @@ void __37__STSProgressArcLayer_drawInContext___block_invoke(uint64_t a1, CGFloat
   CGPathRelease(Mutable);
 }
 
-- (void)setRadius:(double)a3
+- (void)setRadius:(double)radius
 {
-  if (self->_radius != a3)
+  if (self->_radius != radius)
   {
-    self->_radius = a3;
+    self->_radius = radius;
     [(STSProgressArcLayer *)self setNeedsDisplay];
   }
 }
 
-- (void)setStartAngle:(double)a3
+- (void)setStartAngle:(double)angle
 {
-  if (self->_startAngle != a3)
+  if (self->_startAngle != angle)
   {
-    self->_startAngle = a3;
+    self->_startAngle = angle;
     [(STSProgressArcLayer *)self setNeedsDisplay];
   }
 }
 
-- (void)setEndAngle:(double)a3
+- (void)setEndAngle:(double)angle
 {
-  if (self->_endAngle != a3)
+  if (self->_endAngle != angle)
   {
-    self->_endAngle = a3;
+    self->_endAngle = angle;
     [(STSProgressArcLayer *)self setNeedsDisplay];
   }
 }
 
-- (void)setLineWidth:(double)a3
+- (void)setLineWidth:(double)width
 {
-  if (self->_lineWidth != a3)
+  if (self->_lineWidth != width)
   {
-    self->_lineWidth = a3;
+    self->_lineWidth = width;
     [(STSProgressArcLayer *)self setNeedsDisplay];
   }
 }

@@ -1,7 +1,7 @@
 @interface AXMScreenRecognitionCenter
 + (id)sharedInstance;
-- ($436BAF7D86476205E6C1D891D6FE0A3A)processFeatures:(SEL)a3;
-- (id)_processVisionResult:(id)a3 options:(id)a4 coagulator:(id)a5;
+- ($436BAF7D86476205E6C1D891D6FE0A3A)processFeatures:(SEL)features;
+- (id)_processVisionResult:(id)result options:(id)options coagulator:(id)coagulator;
 @end
 
 @implementation AXMScreenRecognitionCenter
@@ -25,25 +25,25 @@ void __44__AXMScreenRecognitionCenter_sharedInstance__block_invoke()
   sharedInstance_Center = v0;
 }
 
-- (id)_processVisionResult:(id)a3 options:(id)a4 coagulator:(id)a5
+- (id)_processVisionResult:(id)result options:(id)options coagulator:(id)coagulator
 {
   v74 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  resultCopy = result;
+  optionsCopy = options;
+  coagulatorCopy = coagulator;
   v10 = objc_opt_new();
   v11 = AXMediaLogMLElement();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
-    [AXMScreenRecognitionCenter _processVisionResult:v7 options:v8 coagulator:?];
+    [AXMScreenRecognitionCenter _processVisionResult:resultCopy options:optionsCopy coagulator:?];
   }
 
-  v12 = [v7 equivalenceToken];
-  v13 = [v8 equivalenceToken];
-  v14 = [v12 isEqual:v13];
+  equivalenceToken = [resultCopy equivalenceToken];
+  equivalenceToken2 = [optionsCopy equivalenceToken];
+  v14 = [equivalenceToken isEqual:equivalenceToken2];
 
-  v15 = [v7 equivalenceToken];
-  [v10 setScreenEquivalenceToken:v15];
+  equivalenceToken3 = [resultCopy equivalenceToken];
+  [v10 setScreenEquivalenceToken:equivalenceToken3];
 
   if (v14)
   {
@@ -59,15 +59,15 @@ LABEL_33:
     goto LABEL_34;
   }
 
-  v59 = v9;
-  v60 = v8;
+  v59 = coagulatorCopy;
+  v60 = optionsCopy;
   v68 = 0u;
   v69 = 0u;
   v66 = 0u;
   v67 = 0u;
-  v61 = v7;
-  v24 = [v7 features];
-  v25 = [v24 countByEnumeratingWithState:&v66 objects:v73 count:16];
+  v61 = resultCopy;
+  features = [resultCopy features];
+  v25 = [features countByEnumeratingWithState:&v66 objects:v73 count:16];
   if (v25)
   {
     v26 = v25;
@@ -79,7 +79,7 @@ LABEL_33:
       {
         if (*v67 != v27)
         {
-          objc_enumerationMutation(v24);
+          objc_enumerationMutation(features);
         }
 
         v29 = *(*(&v66 + 1) + 8 * v28);
@@ -95,7 +95,7 @@ LABEL_33:
       }
 
       while (v26 != v28);
-      v26 = [v24 countByEnumeratingWithState:&v66 objects:v73 count:16];
+      v26 = [features countByEnumeratingWithState:&v66 objects:v73 count:16];
     }
 
     while (v26);
@@ -103,19 +103,19 @@ LABEL_33:
 
   if ([v60 disableCoagulator])
   {
-    v31 = [v61 features];
-    [v10 setSortedFeatures:v31];
+    features2 = [v61 features];
+    [v10 setSortedFeatures:features2];
   }
 
   else
   {
     CFAbsoluteTimeGetCurrent();
-    v32 = [v61 features];
-    v33 = [v59 coagulateElements:v32];
+    features3 = [v61 features];
+    v33 = [v59 coagulateElements:features3];
     [v10 setSortedFeatures:v33];
 
-    v31 = AXMediaLogMLElement();
-    if (os_log_type_enabled(v31, OS_LOG_TYPE_DEBUG))
+    features2 = AXMediaLogMLElement();
+    if (os_log_type_enabled(features2, OS_LOG_TYPE_DEBUG))
     {
       [AXMScreenRecognitionCenter _processVisionResult:options:coagulator:];
     }
@@ -131,8 +131,8 @@ LABEL_33:
   v65 = 0u;
   v62 = 0u;
   v63 = 0u;
-  v42 = [v10 sortedFeatures];
-  v43 = [v42 countByEnumeratingWithState:&v62 objects:v70 count:16];
+  sortedFeatures = [v10 sortedFeatures];
+  v43 = [sortedFeatures countByEnumeratingWithState:&v62 objects:v70 count:16];
   if (v43)
   {
     v44 = v43;
@@ -144,7 +144,7 @@ LABEL_33:
       {
         if (*v63 != v45)
         {
-          objc_enumerationMutation(v42);
+          objc_enumerationMutation(sortedFeatures);
         }
 
         v47 = *(*(&v62 + 1) + 8 * v46);
@@ -160,18 +160,18 @@ LABEL_33:
       }
 
       while (v44 != v46);
-      v44 = [v42 countByEnumeratingWithState:&v62 objects:v70 count:16];
+      v44 = [sortedFeatures countByEnumeratingWithState:&v62 objects:v70 count:16];
     }
 
     while (v44);
   }
 
-  v49 = [v10 sortedFeatures];
-  v50 = [v49 count];
+  sortedFeatures2 = [v10 sortedFeatures];
+  v50 = [sortedFeatures2 count];
 
-  v8 = v60;
-  v7 = v61;
-  v9 = v59;
+  optionsCopy = v60;
+  resultCopy = v61;
+  coagulatorCopy = v59;
   if (!v50)
   {
     v16 = AXMediaLogMLElement();
@@ -188,7 +188,7 @@ LABEL_34:
   return v10;
 }
 
-- ($436BAF7D86476205E6C1D891D6FE0A3A)processFeatures:(SEL)a3
+- ($436BAF7D86476205E6C1D891D6FE0A3A)processFeatures:(SEL)features
 {
   v52 = *MEMORY[0x1E69E9840];
   v6 = a4;
@@ -197,14 +197,14 @@ LABEL_34:
     [AXMScreenRecognitionCenter processFeatures:];
   }
 
-  v7 = [processFeatures____displayManager coreAnimationMainDisplay];
-  [v7 scale];
+  coreAnimationMainDisplay = [processFeatures____displayManager coreAnimationMainDisplay];
+  [coreAnimationMainDisplay scale];
   v9 = v8;
 
   v10 = dispatch_semaphore_create(0);
-  v11 = [v6 testingImage];
+  testingImage = [v6 testingImage];
 
-  if (v11)
+  if (testingImage)
   {
     v9 = 1.0;
   }
@@ -240,35 +240,35 @@ LABEL_34:
   v16 = v10;
   v42 = v16;
   v17 = MEMORY[0x1B2700900](v39);
-  v18 = [v14 testingImage];
-  v19 = v18 == 0;
+  testingImage2 = [v14 testingImage];
+  v19 = testingImage2 == 0;
 
   if (v19)
   {
-    v20 = [processFeatures____engine captureNode];
+    captureNode = [processFeatures____engine captureNode];
     [v14 fullRect];
     v24 = v23;
     v26 = v25;
     v28 = v27;
     v30 = v29;
-    v31 = [v14 orientation];
-    v21 = [MEMORY[0x1E695DEF0] data];
-    [v20 triggerWithScreenCaptureRegion:v31 interfaceOrientation:v14 options:v21 cacheKey:v17 resultHandler:{v24, v26, v28, v30}];
+    orientation = [v14 orientation];
+    data = [MEMORY[0x1E695DEF0] data];
+    [captureNode triggerWithScreenCaptureRegion:orientation interfaceOrientation:v14 options:data cacheKey:v17 resultHandler:{v24, v26, v28, v30}];
   }
 
   else
   {
-    v20 = [processFeatures____engine imageNode];
-    v21 = [v14 testingImage];
-    v22 = [MEMORY[0x1E695DEF0] data];
-    [v20 triggerWithImage:v21 options:v14 cacheKey:v22 resultHandler:v17];
+    captureNode = [processFeatures____engine imageNode];
+    data = [v14 testingImage];
+    data2 = [MEMORY[0x1E695DEF0] data];
+    [captureNode triggerWithImage:data options:v14 cacheKey:data2 resultHandler:v17];
   }
 
   v32 = dispatch_time(0, 15000000000);
   dispatch_semaphore_wait(v16, v32);
-  v33 = [v45[5] sameScreenCapResult];
-  v34 = [v45[5] screenEquivalenceToken];
-  v35 = [v45[5] sortedFeatures];
+  sameScreenCapResult = [v45[5] sameScreenCapResult];
+  screenEquivalenceToken = [v45[5] screenEquivalenceToken];
+  sortedFeatures = [v45[5] sortedFeatures];
   v36 = AXMediaLogMLElement();
   if (os_log_type_enabled(v36, OS_LOG_TYPE_INFO))
   {
@@ -276,7 +276,7 @@ LABEL_34:
     _os_log_impl(&dword_1AE37B000, v36, OS_LOG_TYPE_INFO, "Handling results for ML detection for gen: %d", &buf, 8u);
   }
 
-  if (v33)
+  if (sameScreenCapResult)
   {
     v37 = AXMediaLogMLElement();
     if (os_log_type_enabled(v37, OS_LOG_TYPE_INFO))
@@ -287,13 +287,13 @@ LABEL_34:
 
     retstr->var1 = 0;
     retstr->var2 = 0;
-    retstr->var0 = v34;
+    retstr->var0 = screenEquivalenceToken;
   }
 
   else
   {
-    retstr->var0 = v34;
-    retstr->var1 = v35;
+    retstr->var0 = screenEquivalenceToken;
+    retstr->var1 = sortedFeatures;
     retstr->var2 = 0;
   }
 

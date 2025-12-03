@@ -1,14 +1,14 @@
 @interface PINPairDoneViewController
-- (void)handleDismissButton:(id)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)handleDismissButton:(id)button;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation PINPairDoneViewController
 
-- (void)handleDismissButton:(id)a3
+- (void)handleDismissButton:(id)button
 {
-  v4 = a3;
+  buttonCopy = button;
   if (dword_1001BEAD8 <= 30 && (dword_1001BEAD8 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -17,9 +17,9 @@
   [self->super._mainController dismiss:5];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   if (dword_1001BEAD8 <= 30 && (dword_1001BEAD8 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -27,12 +27,12 @@
 
   v5.receiver = self;
   v5.super_class = PINPairDoneViewController;
-  [(PINPairDoneViewController *)&v5 viewDidDisappear:v3];
+  [(PINPairDoneViewController *)&v5 viewDidDisappear:disappearCopy];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   if (dword_1001BEAD8 <= 30 && (dword_1001BEAD8 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -40,7 +40,7 @@
 
   v21.receiver = self;
   v21.super_class = PINPairDoneViewController;
-  [(SVSBaseViewController *)&v21 viewWillAppear:v3];
+  [(SVSBaseViewController *)&v21 viewWillAppear:appearCopy];
   if (*(&self->_doneButton + 1))
   {
     v5 = [UIImage imageNamed:@"AlertCircle.png"];
@@ -65,8 +65,8 @@
     [*(&self->_titleLabel + 1) setImage:v19];
   }
 
-  v20 = [(SVSBaseViewController *)self containerView];
-  [v20 setSwipeDismissible:1];
+  containerView = [(SVSBaseViewController *)self containerView];
+  [containerView setSwipeDismissible:1];
 }
 
 @end

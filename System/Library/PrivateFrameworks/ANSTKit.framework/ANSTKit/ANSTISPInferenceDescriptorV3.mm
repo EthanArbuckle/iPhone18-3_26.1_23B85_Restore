@@ -1,24 +1,24 @@
 @interface ANSTISPInferenceDescriptorV3
-- (ANSTISPInferenceDescriptorV3)initWithCoder:(id)a3;
-- (ANSTISPInferenceDescriptorV3)initWithConfiguration:(id)a3 error:(id *)a4;
-- (id)newPostprocessorWithError:(id *)a3;
+- (ANSTISPInferenceDescriptorV3)initWithCoder:(id)coder;
+- (ANSTISPInferenceDescriptorV3)initWithConfiguration:(id)configuration error:(id *)error;
+- (id)newPostprocessorWithError:(id *)error;
 @end
 
 @implementation ANSTISPInferenceDescriptorV3
 
-- (ANSTISPInferenceDescriptorV3)initWithCoder:(id)a3
+- (ANSTISPInferenceDescriptorV3)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = ANSTISPInferenceDescriptorV3;
-  return [(ANSTISPInferenceDescriptor *)&v4 initWithCoder:a3];
+  return [(ANSTISPInferenceDescriptor *)&v4 initWithCoder:coder];
 }
 
-- (ANSTISPInferenceDescriptorV3)initWithConfiguration:(id)a3 error:(id *)a4
+- (ANSTISPInferenceDescriptorV3)initWithConfiguration:(id)configuration error:(id *)error
 {
   v94[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v91 = v4;
-  if ((objc_msgSend_isSkinToneEnabled(v4, v5, v6) & 1) != 0 || (objc_msgSend_isBodyKeypointsEnabled(v4, v7, v8) & 1) != 0 || objc_msgSend_isDepthEnabled(v4, v7, v9))
+  configurationCopy = configuration;
+  v91 = configurationCopy;
+  if ((objc_msgSend_isSkinToneEnabled(configurationCopy, v5, v6) & 1) != 0 || (objc_msgSend_isBodyKeypointsEnabled(configurationCopy, v7, v8) & 1) != 0 || objc_msgSend_isDepthEnabled(configurationCopy, v7, v9))
   {
     v10 = @"full";
     v83 = 1;
@@ -105,17 +105,17 @@
   v62 = objc_msgSend_version(v91, v52, v53);
   v92.receiver = self;
   v92.super_class = ANSTISPInferenceDescriptorV3;
-  v63 = [(ANSTISPInferenceDescriptor *)&v92 initWithName:v87 version:v62 assetURL:v85 assetType:0 e5FunctionName:v88 inputDescriptors:v84 outputDescriptors:v51 configuration:v91 error:a4];
+  v63 = [(ANSTISPInferenceDescriptor *)&v92 initWithName:v87 version:v62 assetURL:v85 assetType:0 e5FunctionName:v88 inputDescriptors:v84 outputDescriptors:v51 configuration:v91 error:error];
 
   v64 = *MEMORY[0x277D85DE8];
   return v63;
 }
 
-- (id)newPostprocessorWithError:(id *)a3
+- (id)newPostprocessorWithError:(id *)error
 {
   v5 = [ANSTISPInferencePostprocessorV3 alloc];
 
-  return objc_msgSend_initWithInferenceDescriptor_error_(v5, v6, self, a3);
+  return objc_msgSend_initWithInferenceDescriptor_error_(v5, v6, self, error);
 }
 
 @end

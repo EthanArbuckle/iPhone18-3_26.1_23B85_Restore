@@ -1,7 +1,7 @@
 @interface HapticPlayer
 + (id)sharedInstance;
-- (BOOL)playAudioForTimes:(int64_t)a3;
-- (BOOL)playHapticForDuration:(double)a3;
+- (BOOL)playAudioForTimes:(int64_t)times;
+- (BOOL)playHapticForDuration:(double)duration;
 - (BOOL)setupHapticEngine;
 - (HapticPlayer)init;
 @end
@@ -46,13 +46,13 @@
   self->_engine = 0;
 
   v4 = +[CHHapticEngine capabilitiesForHardware];
-  v5 = [v4 supportsHaptics];
+  supportsHaptics = [v4 supportsHaptics];
 
-  if ((v5 & 1) == 0)
+  if ((supportsHaptics & 1) == 0)
   {
     v7 = [NSString stringWithFormat:@"Current platform doesn't support Core Haptics"];
-    v12 = [(MDRBaseObject *)self logger];
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+    logger = [(MDRBaseObject *)self logger];
+    if (os_log_type_enabled(logger, OS_LOG_TYPE_ERROR))
     {
       sub_100013180();
     }
@@ -68,11 +68,11 @@
 
   if (v7)
   {
-    v9 = [v7 localizedDescription];
-    v10 = [NSString stringWithFormat:@"CHHapticEngine init failed: %@", v9];
+    localizedDescription = [v7 localizedDescription];
+    v10 = [NSString stringWithFormat:@"CHHapticEngine init failed: %@", localizedDescription];
 
-    v11 = [(MDRBaseObject *)self logger];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    logger2 = [(MDRBaseObject *)self logger];
+    if (os_log_type_enabled(logger2, OS_LOG_TYPE_ERROR))
     {
       sub_100013180();
     }
@@ -103,11 +103,11 @@ LABEL_9:
   v13 = v16 == 0;
   if (v16)
   {
-    v17 = [v16 localizedDescription];
-    v18 = [NSString stringWithFormat:@"CHHapticEngine start failed: %@", v17];
+    localizedDescription2 = [v16 localizedDescription];
+    v18 = [NSString stringWithFormat:@"CHHapticEngine start failed: %@", localizedDescription2];
 
-    v19 = [(MDRBaseObject *)self logger];
-    if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
+    logger3 = [(MDRBaseObject *)self logger];
+    if (os_log_type_enabled(logger3, OS_LOG_TYPE_ERROR))
     {
       sub_100013180();
     }
@@ -121,14 +121,14 @@ LABEL_10:
   return v13;
 }
 
-- (BOOL)playHapticForDuration:(double)a3
+- (BOOL)playHapticForDuration:(double)duration
 {
-  v4 = self;
-  objc_sync_enter(v4);
-  if (v4->_engine)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_engine)
   {
     v31 = +[NSMutableArray array];
-    v5 = (a3 / 0.1);
+    v5 = (duration / 0.1);
     if (v5 >= 1)
     {
       for (i = 0; i != v5; ++i)
@@ -155,12 +155,12 @@ LABEL_10:
     v18 = v34;
     if (v18)
     {
-      v19 = v18;
-      v20 = [v18 localizedDescription];
-      v21 = [NSString stringWithFormat:@"Create CHHapticPattern failed: %@", v20];
+      logger3 = v18;
+      localizedDescription = [v18 localizedDescription];
+      v21 = [NSString stringWithFormat:@"Create CHHapticPattern failed: %@", localizedDescription];
 
-      v22 = [(MDRBaseObject *)v4 logger];
-      if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
+      logger = [(MDRBaseObject *)selfCopy logger];
+      if (os_log_type_enabled(logger, OS_LOG_TYPE_ERROR))
       {
         sub_1000131F4();
       }
@@ -168,18 +168,18 @@ LABEL_10:
 
     else
     {
-      engine = v4->_engine;
+      engine = selfCopy->_engine;
       v33 = 0;
       v21 = [(CHHapticEngine *)engine createPlayerWithPattern:v17 error:&v33];
       v25 = v33;
       if (v25)
       {
-        v19 = v25;
-        v26 = [v25 localizedDescription];
-        v22 = [NSString stringWithFormat:@"Create CHHapticPatternPlayer failed: %@", v26];
+        logger3 = v25;
+        localizedDescription2 = [v25 localizedDescription];
+        logger = [NSString stringWithFormat:@"Create CHHapticPatternPlayer failed: %@", localizedDescription2];
 
-        v27 = [(MDRBaseObject *)v4 logger];
-        if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
+        logger2 = [(MDRBaseObject *)selfCopy logger];
+        if (os_log_type_enabled(logger2, OS_LOG_TYPE_ERROR))
         {
           sub_1000131F4();
         }
@@ -190,18 +190,18 @@ LABEL_10:
         v32 = 0;
         [v21 startAtTime:&v32 error:0.0];
         v28 = v32;
-        v19 = v28;
+        logger3 = v28;
         if (!v28)
         {
           v23 = 1;
           goto LABEL_19;
         }
 
-        v29 = [v28 localizedDescription];
-        v22 = [NSString stringWithFormat:@"CHHapticPatternPlayer start failed: %@", v29];
+        localizedDescription3 = [v28 localizedDescription];
+        logger = [NSString stringWithFormat:@"CHHapticPatternPlayer start failed: %@", localizedDescription3];
 
-        v27 = [(MDRBaseObject *)v4 logger];
-        if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
+        logger2 = [(MDRBaseObject *)selfCopy logger];
+        if (os_log_type_enabled(logger2, OS_LOG_TYPE_ERROR))
         {
           sub_1000131F4();
         }
@@ -215,8 +215,8 @@ LABEL_19:
   }
 
   v31 = [NSString stringWithFormat:@"Engine is not initialized"];
-  v19 = [(MDRBaseObject *)v4 logger];
-  if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
+  logger3 = [(MDRBaseObject *)selfCopy logger];
+  if (os_log_type_enabled(logger3, OS_LOG_TYPE_ERROR))
   {
     sub_1000131F4();
   }
@@ -224,17 +224,17 @@ LABEL_19:
   v23 = 0;
 LABEL_20:
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
   return v23;
 }
 
-- (BOOL)playAudioForTimes:(int64_t)a3
+- (BOOL)playAudioForTimes:(int64_t)times
 {
-  v4 = self;
-  objc_sync_enter(v4);
-  if (v4->_engine)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_engine)
   {
-    if (a3 > 0)
+    if (times > 0)
     {
       v30 = +[NSMutableArray array];
       v5 = 0;
@@ -257,18 +257,18 @@ LABEL_20:
         ++v5;
       }
 
-      while (a3 != v5);
+      while (times != v5);
       v33 = 0;
       v16 = [[CHHapticPattern alloc] initWithEvents:v30 parameters:&__NSArray0__struct error:&v33];
       v17 = v33;
       if (v17)
       {
-        v18 = v17;
-        v19 = [v17 localizedDescription];
-        v20 = [NSString stringWithFormat:@"Create CHHapticPattern failed: %@", v19];
+        logger3 = v17;
+        localizedDescription = [v17 localizedDescription];
+        v20 = [NSString stringWithFormat:@"Create CHHapticPattern failed: %@", localizedDescription];
 
-        v21 = [(MDRBaseObject *)v4 logger];
-        if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
+        logger = [(MDRBaseObject *)selfCopy logger];
+        if (os_log_type_enabled(logger, OS_LOG_TYPE_ERROR))
         {
           sub_100013268();
         }
@@ -276,18 +276,18 @@ LABEL_20:
 
       else
       {
-        engine = v4->_engine;
+        engine = selfCopy->_engine;
         v32 = 0;
         v20 = [(CHHapticEngine *)engine createPlayerWithPattern:v16 error:&v32];
         v24 = v32;
         if (v24)
         {
-          v18 = v24;
-          v25 = [v24 localizedDescription];
-          v21 = [NSString stringWithFormat:@"Create CHHapticPatternPlayer failed: %@", v25];
+          logger3 = v24;
+          localizedDescription2 = [v24 localizedDescription];
+          logger = [NSString stringWithFormat:@"Create CHHapticPatternPlayer failed: %@", localizedDescription2];
 
-          v26 = [(MDRBaseObject *)v4 logger];
-          if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
+          logger2 = [(MDRBaseObject *)selfCopy logger];
+          if (os_log_type_enabled(logger2, OS_LOG_TYPE_ERROR))
           {
             sub_100013268();
           }
@@ -298,18 +298,18 @@ LABEL_20:
           v31 = 0;
           [v20 startAtTime:&v31 error:0.0];
           v27 = v31;
-          v18 = v27;
+          logger3 = v27;
           if (!v27)
           {
             v22 = 1;
             goto LABEL_21;
           }
 
-          v28 = [v27 localizedDescription];
-          v21 = [NSString stringWithFormat:@"CHHapticPatternPlayer start failed: %@", v28];
+          localizedDescription3 = [v27 localizedDescription];
+          logger = [NSString stringWithFormat:@"CHHapticPatternPlayer start failed: %@", localizedDescription3];
 
-          v26 = [(MDRBaseObject *)v4 logger];
-          if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
+          logger2 = [(MDRBaseObject *)selfCopy logger];
+          if (os_log_type_enabled(logger2, OS_LOG_TYPE_ERROR))
           {
             sub_100013268();
           }
@@ -323,8 +323,8 @@ LABEL_21:
     }
 
     v30 = [NSString stringWithFormat:@"Audio times should > 0"];
-    v18 = [(MDRBaseObject *)v4 logger];
-    if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+    logger3 = [(MDRBaseObject *)selfCopy logger];
+    if (os_log_type_enabled(logger3, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_11;
     }
@@ -333,8 +333,8 @@ LABEL_21:
   else
   {
     v30 = [NSString stringWithFormat:@"Engine is not initialized"];
-    v18 = [(MDRBaseObject *)v4 logger];
-    if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+    logger3 = [(MDRBaseObject *)selfCopy logger];
+    if (os_log_type_enabled(logger3, OS_LOG_TYPE_ERROR))
     {
 LABEL_11:
       sub_100013268();
@@ -344,7 +344,7 @@ LABEL_11:
   v22 = 0;
 LABEL_22:
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
   return v22;
 }
 

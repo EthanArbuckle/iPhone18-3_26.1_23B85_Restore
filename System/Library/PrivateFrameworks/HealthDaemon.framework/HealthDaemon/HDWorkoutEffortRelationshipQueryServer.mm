@@ -1,32 +1,32 @@
 @interface HDWorkoutEffortRelationshipQueryServer
-- (HDWorkoutEffortRelationshipQueryServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6;
-- (id)_fetchSamplesForWorkoutPID:(int64_t)a3 activity:(id)a4 options:(int64_t)a5 limit:(unint64_t)a6 sortDescending:(BOOL)a7 error:(id *)a8;
-- (id)_filteredRelationships:(id)a3 anchor:(id)a4;
-- (id)_relationshipForWorkout:(id)a3 activity:(id)a4 samples:(id)a5;
-- (int64_t)_batchObjectsWithError:(id *)a3 batchHandler:(id)a4;
-- (void)_handleBatchedQueryResult:(int64_t)a3 error:(id)a4;
-- (void)_queue_fetchAssociatedEffortSamplesWithHandler:(id)a3;
+- (HDWorkoutEffortRelationshipQueryServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate;
+- (id)_fetchSamplesForWorkoutPID:(int64_t)d activity:(id)activity options:(int64_t)options limit:(unint64_t)limit sortDescending:(BOOL)descending error:(id *)error;
+- (id)_filteredRelationships:(id)relationships anchor:(id)anchor;
+- (id)_relationshipForWorkout:(id)workout activity:(id)activity samples:(id)samples;
+- (int64_t)_batchObjectsWithError:(id *)error batchHandler:(id)handler;
+- (void)_handleBatchedQueryResult:(int64_t)result error:(id)error;
+- (void)_queue_fetchAssociatedEffortSamplesWithHandler:(id)handler;
 - (void)_queue_start;
 - (void)_queue_stop;
-- (void)associationsUpdatedForObject:(id)a3 subObject:(id)a4 type:(unint64_t)a5 behavior:(unint64_t)a6 objects:(id)a7 anchor:(id)a8;
+- (void)associationsUpdatedForObject:(id)object subObject:(id)subObject type:(unint64_t)type behavior:(unint64_t)behavior objects:(id)objects anchor:(id)anchor;
 @end
 
 @implementation HDWorkoutEffortRelationshipQueryServer
 
-- (HDWorkoutEffortRelationshipQueryServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6
+- (HDWorkoutEffortRelationshipQueryServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate
 {
-  v10 = a4;
+  configurationCopy = configuration;
   v16.receiver = self;
   v16.super_class = HDWorkoutEffortRelationshipQueryServer;
-  v11 = [(HDQueryServer *)&v16 initWithUUID:a3 configuration:v10 client:a5 delegate:a6];
+  v11 = [(HDQueryServer *)&v16 initWithUUID:d configuration:configurationCopy client:client delegate:delegate];
   if (v11)
   {
-    v12 = [v10 copy];
+    v12 = [configurationCopy copy];
     ratingOfExertionAssociationQueryServerConfiguration = v11->_ratingOfExertionAssociationQueryServerConfiguration;
     v11->_ratingOfExertionAssociationQueryServerConfiguration = v12;
 
-    v14 = [(_HKWorkoutEffortRelationshipQueryServerConfiguration *)v11->_ratingOfExertionAssociationQueryServerConfiguration anchor];
-    v11->_anchor = [v14 _rowid];
+    anchor = [(_HKWorkoutEffortRelationshipQueryServerConfiguration *)v11->_ratingOfExertionAssociationQueryServerConfiguration anchor];
+    v11->_anchor = [anchor _rowid];
   }
 
   return v11;
@@ -37,35 +37,35 @@
   v36.receiver = self;
   v36.super_class = HDWorkoutEffortRelationshipQueryServer;
   [(HDQueryServer *)&v36 _queue_start];
-  v3 = [(HDQueryServer *)self profile];
-  v4 = [v3 associationManager];
+  profile = [(HDQueryServer *)self profile];
+  associationManager = [profile associationManager];
   v5 = *MEMORY[0x277CCCB68];
   v6 = [MEMORY[0x277CCD720] quantityTypeForIdentifier:*MEMORY[0x277CCCB68]];
-  [v4 addObserver:self forDataType:v6];
+  [associationManager addObserver:self forDataType:v6];
 
-  v7 = [(HDQueryServer *)self profile];
-  v8 = [v7 associationManager];
+  profile2 = [(HDQueryServer *)self profile];
+  associationManager2 = [profile2 associationManager];
   v9 = *MEMORY[0x277CCCCD8];
   v10 = [MEMORY[0x277CCD720] quantityTypeForIdentifier:*MEMORY[0x277CCCCD8]];
-  [v8 addObserver:self forDataType:v10];
+  [associationManager2 addObserver:self forDataType:v10];
 
-  v11 = [(HDQueryServer *)self queryUUID];
+  queryUUID = [(HDQueryServer *)self queryUUID];
   v12 = MEMORY[0x277CBEB98];
-  v13 = [MEMORY[0x277CCD720] workoutType];
+  workoutType = [MEMORY[0x277CCD720] workoutType];
   v14 = [MEMORY[0x277CCD720] quantityTypeForIdentifier:v5];
   v15 = [MEMORY[0x277CCD720] quantityTypeForIdentifier:v9];
-  v16 = [v12 setWithObjects:{v13, v14, v15, 0}];
+  v16 = [v12 setWithObjects:{workoutType, v14, v15, 0}];
 
-  v17 = [(HDQueryServer *)self client];
-  v18 = [v17 authorizationOracle];
+  client = [(HDQueryServer *)self client];
+  authorizationOracle = [client authorizationOracle];
   v35 = 0;
-  v19 = [v18 authorizationStatusRecordsForTypes:v16 error:&v35];
+  v19 = [authorizationOracle authorizationStatusRecordsForTypes:v16 error:&v35];
   v20 = v35;
 
   if (v20)
   {
-    v21 = [(HDWorkoutEffortRelationshipQueryServer *)self queryClient];
-    [v21 client_deliverError:v20 forQuery:v11];
+    queryClient = [(HDWorkoutEffortRelationshipQueryServer *)self queryClient];
+    [queryClient client_deliverError:v20 forQuery:queryUUID];
   }
 
   else
@@ -92,15 +92,15 @@
       v24[2] = __54__HDWorkoutEffortRelationshipQueryServer__queue_start__block_invoke_2;
       v24[3] = &unk_27862BEE8;
       v24[4] = self;
-      v25 = v11;
+      v25 = queryUUID;
       [(HDWorkoutEffortRelationshipQueryServer *)self _queue_fetchAssociatedEffortSamplesWithHandler:v24];
     }
 
     else
     {
-      v22 = [(HDWorkoutEffortRelationshipQueryServer *)self queryClient];
-      v23 = [(_HKWorkoutEffortRelationshipQueryServerConfiguration *)self->_ratingOfExertionAssociationQueryServerConfiguration anchor];
-      [v22 client_deliverWorkoutEffortRelationships:MEMORY[0x277CBEBF8] isFinalBatch:1 anchor:v23 forQuery:v11];
+      queryClient2 = [(HDWorkoutEffortRelationshipQueryServer *)self queryClient];
+      anchor = [(_HKWorkoutEffortRelationshipQueryServerConfiguration *)self->_ratingOfExertionAssociationQueryServerConfiguration anchor];
+      [queryClient2 client_deliverWorkoutEffortRelationships:MEMORY[0x277CBEBF8] isFinalBatch:1 anchor:anchor forQuery:queryUUID];
     }
 
     _Block_object_dispose(&v27, 8);
@@ -202,17 +202,17 @@ void __54__HDWorkoutEffortRelationshipQueryServer__queue_start__block_invoke_2(u
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_filteredRelationships:(id)a3 anchor:(id)a4
+- (id)_filteredRelationships:(id)relationships anchor:(id)anchor
 {
   v40 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v27 = a4;
+  relationshipsCopy = relationships;
+  anchorCopy = anchor;
   v29 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  obj = v6;
+  obj = relationshipsCopy;
   v7 = [obj countByEnumeratingWithState:&v31 objects:v39 count:16];
   if (v7)
   {
@@ -230,16 +230,16 @@ void __54__HDWorkoutEffortRelationshipQueryServer__queue_start__block_invoke_2(u
         }
 
         v11 = *(*(&v31 + 1) + 8 * i);
-        v12 = [v11 samples];
+        samples = [v11 samples];
 
-        if (v12)
+        if (samples)
         {
-          v13 = [(HDQueryServer *)self client];
-          v14 = [v13 authorizationOracle];
-          v15 = [v11 samples];
-          v16 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v27, "_rowid")}];
+          client = [(HDQueryServer *)self client];
+          authorizationOracle = [client authorizationOracle];
+          samples2 = [v11 samples];
+          v16 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(anchorCopy, "_rowid")}];
           v30 = 0;
-          v17 = [v14 filteredObjectsForReadAuthorization:v15 anchor:v16 error:&v30];
+          v17 = [authorizationOracle filteredObjectsForReadAuthorization:samples2 anchor:v16 error:&v30];
           v18 = v30;
 
           if (!v17)
@@ -249,7 +249,7 @@ void __54__HDWorkoutEffortRelationshipQueryServer__queue_start__block_invoke_2(u
             if (os_log_type_enabled(*MEMORY[0x277CCC308], OS_LOG_TYPE_ERROR))
             {
               *buf = v25;
-              v36 = self;
+              selfCopy = self;
               v37 = 2112;
               v38 = v18;
               _os_log_error_impl(&dword_228986000, v19, OS_LOG_TYPE_ERROR, "%{public}@: Failed for workout samples with error: %@", buf, 0x16u);
@@ -262,9 +262,9 @@ void __54__HDWorkoutEffortRelationshipQueryServer__queue_start__block_invoke_2(u
           v17 = 0;
         }
 
-        v20 = [v11 workout];
-        v21 = [v11 activity];
-        v22 = [(HDWorkoutEffortRelationshipQueryServer *)self _relationshipForWorkout:v20 activity:v21 samples:v17];
+        workout = [v11 workout];
+        activity = [v11 activity];
+        v22 = [(HDWorkoutEffortRelationshipQueryServer *)self _relationshipForWorkout:workout activity:activity samples:v17];
 
         [v29 addObject:v22];
       }
@@ -285,26 +285,26 @@ void __54__HDWorkoutEffortRelationshipQueryServer__queue_start__block_invoke_2(u
   v9.receiver = self;
   v9.super_class = HDWorkoutEffortRelationshipQueryServer;
   [(HDQueryServer *)&v9 _queue_stop];
-  v3 = [(HDQueryServer *)self profile];
-  v4 = [v3 associationManager];
+  profile = [(HDQueryServer *)self profile];
+  associationManager = [profile associationManager];
   v5 = [MEMORY[0x277CCD720] quantityTypeForIdentifier:*MEMORY[0x277CCCB68]];
-  [v4 removeObserver:self forDataType:v5];
+  [associationManager removeObserver:self forDataType:v5];
 
-  v6 = [(HDQueryServer *)self profile];
-  v7 = [v6 associationManager];
+  profile2 = [(HDQueryServer *)self profile];
+  associationManager2 = [profile2 associationManager];
   v8 = [MEMORY[0x277CCD720] quantityTypeForIdentifier:*MEMORY[0x277CCCCD8]];
-  [v7 removeObserver:self forDataType:v8];
+  [associationManager2 removeObserver:self forDataType:v8];
 }
 
-- (void)_queue_fetchAssociatedEffortSamplesWithHandler:(id)a3
+- (void)_queue_fetchAssociatedEffortSamplesWithHandler:(id)handler
 {
   v43 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(_HKWorkoutEffortRelationshipQueryServerConfiguration *)self->_ratingOfExertionAssociationQueryServerConfiguration anchor];
-  v6 = [(HDQueryServer *)self profile];
-  v7 = [v6 database];
+  handlerCopy = handler;
+  anchor = [(_HKWorkoutEffortRelationshipQueryServerConfiguration *)self->_ratingOfExertionAssociationQueryServerConfiguration anchor];
+  profile = [(HDQueryServer *)self profile];
+  database = [profile database];
   v34 = 0;
-  v8 = [(HDHealthEntity *)HDAssociationEntity maxRowIDForPredicate:0 healthDatabase:v7 error:&v34];
+  v8 = [(HDHealthEntity *)HDAssociationEntity maxRowIDForPredicate:0 healthDatabase:database error:&v34];
   v9 = v34;
 
   if (v8)
@@ -327,15 +327,15 @@ void __54__HDWorkoutEffortRelationshipQueryServer__queue_start__block_invoke_2(u
     v21 = __89__HDWorkoutEffortRelationshipQueryServer__queue_fetchAssociatedEffortSamplesWithHandler___block_invoke;
     v22 = &unk_27862BF38;
     v25 = &v30;
-    v23 = self;
-    v12 = v5;
+    selfCopy = self;
+    v12 = anchor;
     v28 = v11;
     v24 = v12;
     v26 = v39;
     v27 = v11;
     v13 = [(HDWorkoutEffortRelationshipQueryServer *)self _batchObjectsWithError:&v29 batchHandler:&v19];
     v14 = v29;
-    [(HDWorkoutEffortRelationshipQueryServer *)self _handleBatchedQueryResult:v13 error:v14, v19, v20, v21, v22, v23];
+    [(HDWorkoutEffortRelationshipQueryServer *)self _handleBatchedQueryResult:v13 error:v14, v19, v20, v21, v22, selfCopy];
     if (v14)
     {
       _HKInitializeLogging();
@@ -343,13 +343,13 @@ void __54__HDWorkoutEffortRelationshipQueryServer__queue_start__block_invoke_2(u
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543618;
-        v36 = self;
+        selfCopy3 = self;
         v37 = 2114;
         v38 = v14;
         _os_log_error_impl(&dword_228986000, v15, OS_LOG_TYPE_ERROR, "[database] %{public}@: Failed to fetch relationships for associations: %{public}@", buf, 0x16u);
       }
 
-      v4[2](v4, 0, v12, 1, v14);
+      handlerCopy[2](handlerCopy, 0, v12, 1, v14);
     }
 
     else
@@ -361,12 +361,12 @@ void __54__HDWorkoutEffortRelationshipQueryServer__queue_start__block_invoke_2(u
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543362;
-          v36 = self;
+          selfCopy3 = self;
           _os_log_impl(&dword_228986000, v17, OS_LOG_TYPE_DEFAULT, "[database] %{public}@: No sample relationships found", buf, 0xCu);
         }
       }
 
-      v4[2](v4, *(*&v39[8] + 40), v10, *(v31 + 24), 0);
+      handlerCopy[2](handlerCopy, *(*&v39[8] + 40), v10, *(v31 + 24), 0);
       self->_anchor = [v8 longLongValue];
     }
 
@@ -387,7 +387,7 @@ void __54__HDWorkoutEffortRelationshipQueryServer__queue_start__block_invoke_2(u
       _os_log_error_impl(&dword_228986000, v16, OS_LOG_TYPE_ERROR, "%{public}@: Failed to fetch max rowID for associations table: %{public}@", v39, 0x16u);
     }
 
-    v4[2](v4, 0, v5, 1, v9);
+    handlerCopy[2](handlerCopy, 0, anchor, 1, v9);
   }
 
   v18 = *MEMORY[0x277D85DE8];
@@ -601,28 +601,28 @@ LABEL_27:
   return 1;
 }
 
-- (id)_fetchSamplesForWorkoutPID:(int64_t)a3 activity:(id)a4 options:(int64_t)a5 limit:(unint64_t)a6 sortDescending:(BOOL)a7 error:(id *)a8
+- (id)_fetchSamplesForWorkoutPID:(int64_t)d activity:(id)activity options:(int64_t)options limit:(unint64_t)limit sortDescending:(BOOL)descending error:(id *)error
 {
   v29[2] = *MEMORY[0x277D85DE8];
   v14 = MEMORY[0x277CCD720];
   v15 = *MEMORY[0x277CCCCD8];
-  v16 = a4;
+  activityCopy = activity;
   v17 = [v14 quantityTypeForIdentifier:v15];
   v29[0] = v17;
   v18 = [MEMORY[0x277CCD720] quantityTypeForIdentifier:*MEMORY[0x277CCCB68]];
   v29[1] = v18;
   v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v29 count:2];
 
-  v20 = HDReferenceForAssociatableObject(v16);
+  v20 = HDReferenceForAssociatableObject(activityCopy);
 
-  v21 = [(HDQueryServer *)self profile];
-  LOBYTE(v27) = a7;
-  v22 = [HDAssociationEntity objectsAssociatedWithObjectPID:a3 subObjectReference:v20 dataTypes:v19 associationType:1 behavior:0 limit:a6 sortDescending:v27 profile:v21 error:a8];
+  profile = [(HDQueryServer *)self profile];
+  LOBYTE(v27) = descending;
+  v22 = [HDAssociationEntity objectsAssociatedWithObjectPID:d subObjectReference:v20 dataTypes:v19 associationType:1 behavior:0 limit:limit sortDescending:v27 profile:profile error:error];
 
-  if (a5 == 1 && [v22 count] >= 2)
+  if (options == 1 && [v22 count] >= 2)
   {
-    v23 = [v22 firstObject];
-    v28 = v23;
+    firstObject = [v22 firstObject];
+    v28 = firstObject;
     v24 = [MEMORY[0x277CBEA60] arrayWithObjects:&v28 count:1];
 
     v22 = v24;
@@ -633,36 +633,36 @@ LABEL_27:
   return v22;
 }
 
-- (id)_relationshipForWorkout:(id)a3 activity:(id)a4 samples:(id)a5
+- (id)_relationshipForWorkout:(id)workout activity:(id)activity samples:(id)samples
 {
-  v8 = MEMORY[0x277CBEBF8];
-  if (a5)
+  samplesCopy = MEMORY[0x277CBEBF8];
+  if (samples)
   {
-    v8 = a5;
+    samplesCopy = samples;
   }
 
   v9 = MEMORY[0x277CCDC58];
-  v10 = v8;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [[v9 alloc] initWithWorkout:v13 activity:v12 samples:v10];
+  v10 = samplesCopy;
+  samplesCopy2 = samples;
+  activityCopy = activity;
+  workoutCopy = workout;
+  v14 = [[v9 alloc] initWithWorkout:workoutCopy activity:activityCopy samples:v10];
 
   return v14;
 }
 
-- (int64_t)_batchObjectsWithError:(id *)a3 batchHandler:(id)a4
+- (int64_t)_batchObjectsWithError:(id *)error batchHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [(HDQueryServer *)self profile];
-  v8 = [(HDDataEntity *)HDWorkoutEntity entityEnumeratorWithProfile:v7];
+  handlerCopy = handler;
+  profile = [(HDQueryServer *)self profile];
+  v8 = [(HDDataEntity *)HDWorkoutEntity entityEnumeratorWithProfile:profile];
 
-  v9 = [(HDQueryServer *)self filter];
-  [v8 setFilter:v9];
+  filter = [(HDQueryServer *)self filter];
+  [v8 setFilter:filter];
 
   if (v8)
   {
-    v10 = [(HDBatchedQueryServer *)self batchObjectsWithEnumerator:v8 error:a3 handler:v6];
+    v10 = [(HDBatchedQueryServer *)self batchObjectsWithEnumerator:v8 error:error handler:handlerCopy];
   }
 
   else
@@ -673,13 +673,13 @@ LABEL_27:
   return v10;
 }
 
-- (void)_handleBatchedQueryResult:(int64_t)a3 error:(id)a4
+- (void)_handleBatchedQueryResult:(int64_t)result error:(id)error
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  if (a3 > 2)
+  errorCopy = error;
+  if (result > 2)
   {
-    if (a3 == 4)
+    if (result == 4)
     {
       _HKInitializeLogging();
       v11 = *MEMORY[0x277CCC308];
@@ -689,13 +689,13 @@ LABEL_27:
       }
 
       v16 = 138543362;
-      v17 = self;
+      selfCopy4 = self;
       v12 = "%{public}@: Canceled during enumeration";
     }
 
     else
     {
-      if (a3 != 3)
+      if (result != 3)
       {
         goto LABEL_19;
       }
@@ -708,7 +708,7 @@ LABEL_27:
       }
 
       v16 = 138543362;
-      v17 = self;
+      selfCopy4 = self;
       v12 = "%{public}@: Suspended during enumeration";
     }
 
@@ -716,53 +716,53 @@ LABEL_27:
     goto LABEL_19;
   }
 
-  if (a3 == 1)
+  if (result == 1)
   {
     _HKInitializeLogging();
     v13 = *MEMORY[0x277CCC308];
     if (os_log_type_enabled(*MEMORY[0x277CCC308], OS_LOG_TYPE_ERROR))
     {
       v16 = 138543618;
-      v17 = self;
+      selfCopy4 = self;
       v18 = 2114;
-      v19 = v6;
+      v19 = errorCopy;
       _os_log_error_impl(&dword_228986000, v13, OS_LOG_TYPE_ERROR, "%{public}@: Encountered error enumerating update results: %{public}@", &v16, 0x16u);
-      if (v6)
+      if (errorCopy)
       {
         goto LABEL_14;
       }
     }
 
-    else if (v6)
+    else if (errorCopy)
     {
 LABEL_14:
-      v8 = [(HDWorkoutEffortRelationshipQueryServer *)self queryClient];
-      v14 = [(HDQueryServer *)self queryUUID];
-      [v8 client_deliverError:v6 forQuery:v14];
+      queryClient = [(HDWorkoutEffortRelationshipQueryServer *)self queryClient];
+      queryUUID = [(HDQueryServer *)self queryUUID];
+      [queryClient client_deliverError:errorCopy forQuery:queryUUID];
 
 LABEL_15:
       goto LABEL_19;
     }
 
-    v6 = [MEMORY[0x277CCA9B8] hk_error:122 format:@"Sample enumeration failed without reporting an error."];
+    errorCopy = [MEMORY[0x277CCA9B8] hk_error:122 format:@"Sample enumeration failed without reporting an error."];
     goto LABEL_14;
   }
 
-  if (a3 == 2)
+  if (result == 2)
   {
     _HKInitializeLogging();
     v7 = *MEMORY[0x277CCC308];
     if (os_log_type_enabled(*MEMORY[0x277CCC308], OS_LOG_TYPE_INFO))
     {
       v16 = 138543362;
-      v17 = self;
+      selfCopy4 = self;
       _os_log_impl(&dword_228986000, v7, OS_LOG_TYPE_INFO, "%{public}@: Client no longer authorized", &v16, 0xCu);
     }
 
-    v8 = [(HDWorkoutEffortRelationshipQueryServer *)self queryClient];
-    v9 = [(_HKWorkoutEffortRelationshipQueryServerConfiguration *)self->_ratingOfExertionAssociationQueryServerConfiguration anchor];
-    v10 = [(HDQueryServer *)self queryUUID];
-    [v8 client_deliverWorkoutEffortRelationships:MEMORY[0x277CBEBF8] isFinalBatch:1 anchor:v9 forQuery:v10];
+    queryClient = [(HDWorkoutEffortRelationshipQueryServer *)self queryClient];
+    anchor = [(_HKWorkoutEffortRelationshipQueryServerConfiguration *)self->_ratingOfExertionAssociationQueryServerConfiguration anchor];
+    queryUUID2 = [(HDQueryServer *)self queryUUID];
+    [queryClient client_deliverWorkoutEffortRelationships:MEMORY[0x277CBEBF8] isFinalBatch:1 anchor:anchor forQuery:queryUUID2];
 
     goto LABEL_15;
   }
@@ -772,14 +772,14 @@ LABEL_19:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)associationsUpdatedForObject:(id)a3 subObject:(id)a4 type:(unint64_t)a5 behavior:(unint64_t)a6 objects:(id)a7 anchor:(id)a8
+- (void)associationsUpdatedForObject:(id)object subObject:(id)subObject type:(unint64_t)type behavior:(unint64_t)behavior objects:(id)objects anchor:(id)anchor
 {
   v32 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
-  v15 = a8;
-  v16 = [(HDQueryServer *)self clientProxy];
+  objectCopy = object;
+  subObjectCopy = subObject;
+  objectsCopy = objects;
+  anchorCopy = anchor;
+  clientProxy = [(HDQueryServer *)self clientProxy];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -791,16 +791,16 @@ LABEL_19:
     }
 
     *buf = 138543618;
-    v29 = self;
+    selfCopy2 = self;
     v30 = 2114;
-    v31 = v12;
+    v31 = objectCopy;
     v19 = "%{public}@: Object is not a Workout: %{public}@";
 LABEL_9:
     _os_log_error_impl(&dword_228986000, v18, OS_LOG_TYPE_ERROR, v19, buf, 0x16u);
     goto LABEL_10;
   }
 
-  if (v13)
+  if (subObjectCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -813,26 +813,26 @@ LABEL_9:
       }
 
       *buf = 138543618;
-      v29 = self;
+      selfCopy2 = self;
       v30 = 2114;
-      v31 = v13;
+      v31 = subObjectCopy;
       v19 = "%{public}@: SubObject is not a WorkoutActivity: %{public}@";
       goto LABEL_9;
     }
   }
 
-  v17 = [(HDQueryServer *)self queryQueue];
+  queryQueue = [(HDQueryServer *)self queryQueue];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __110__HDWorkoutEffortRelationshipQueryServer_associationsUpdatedForObject_subObject_type_behavior_objects_anchor___block_invoke;
   v21[3] = &unk_278625448;
-  v22 = v15;
-  v23 = self;
-  v24 = v16;
-  v25 = v12;
-  v26 = v13;
-  v27 = v14;
-  dispatch_async(v17, v21);
+  v22 = anchorCopy;
+  selfCopy3 = self;
+  v24 = clientProxy;
+  v25 = objectCopy;
+  v26 = subObjectCopy;
+  v27 = objectsCopy;
+  dispatch_async(queryQueue, v21);
 
 LABEL_10:
   v20 = *MEMORY[0x277D85DE8];

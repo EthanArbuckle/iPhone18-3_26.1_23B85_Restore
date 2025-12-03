@@ -1,91 +1,91 @@
 @interface TLKFormattedText
-+ (TLKFormattedText)formattedTextWithString:(id)a3;
++ (TLKFormattedText)formattedTextWithString:(id)string;
 - (BOOL)hasContent;
 - (id)description;
-- (void)setEncapsulationStyle:(int64_t)a3;
-- (void)setString:(id)a3;
-- (void)setVerticalTextAlignment:(int64_t)a3;
+- (void)setEncapsulationStyle:(int64_t)style;
+- (void)setString:(id)string;
+- (void)setVerticalTextAlignment:(int64_t)alignment;
 @end
 
 @implementation TLKFormattedText
 
 - (BOOL)hasContent
 {
-  v2 = [(TLKFormattedText *)self string];
-  v3 = [v2 length] != 0;
+  string = [(TLKFormattedText *)self string];
+  v3 = [string length] != 0;
 
   return v3;
 }
 
-- (void)setVerticalTextAlignment:(int64_t)a3
+- (void)setVerticalTextAlignment:(int64_t)alignment
 {
-  if (self->_verticalTextAlignment != a3)
+  if (self->_verticalTextAlignment != alignment)
   {
-    self->_verticalTextAlignment = a3;
-    v4 = [(TLKObject *)self observer];
-    if (v4)
+    self->_verticalTextAlignment = alignment;
+    observer = [(TLKObject *)self observer];
+    if (observer)
     {
-      v5 = v4;
-      v6 = [(TLKObject *)self observer];
-      v7 = [v6 batchUpdateCount];
+      v5 = observer;
+      observer2 = [(TLKObject *)self observer];
+      batchUpdateCount = [observer2 batchUpdateCount];
 
-      if (!v7)
+      if (!batchUpdateCount)
       {
-        v8 = [(TLKObject *)self observer];
-        [v8 propertiesDidChange];
+        observer3 = [(TLKObject *)self observer];
+        [observer3 propertiesDidChange];
       }
     }
   }
 }
 
-- (void)setEncapsulationStyle:(int64_t)a3
+- (void)setEncapsulationStyle:(int64_t)style
 {
-  if (self->_encapsulationStyle != a3)
+  if (self->_encapsulationStyle != style)
   {
-    self->_encapsulationStyle = a3;
-    v4 = [(TLKObject *)self observer];
-    if (v4)
+    self->_encapsulationStyle = style;
+    observer = [(TLKObject *)self observer];
+    if (observer)
     {
-      v5 = v4;
-      v6 = [(TLKObject *)self observer];
-      v7 = [v6 batchUpdateCount];
+      v5 = observer;
+      observer2 = [(TLKObject *)self observer];
+      batchUpdateCount = [observer2 batchUpdateCount];
 
-      if (!v7)
+      if (!batchUpdateCount)
       {
-        v8 = [(TLKObject *)self observer];
-        [v8 propertiesDidChange];
+        observer3 = [(TLKObject *)self observer];
+        [observer3 propertiesDidChange];
       }
     }
   }
 }
 
-- (void)setString:(id)a3
+- (void)setString:(id)string
 {
-  v10 = a3;
-  if (self->_string != v10)
+  stringCopy = string;
+  if (self->_string != stringCopy)
   {
-    objc_storeStrong(&self->_string, a3);
-    v5 = [(TLKObject *)self observer];
-    if (v5)
+    objc_storeStrong(&self->_string, string);
+    observer = [(TLKObject *)self observer];
+    if (observer)
     {
-      v6 = v5;
-      v7 = [(TLKObject *)self observer];
-      v8 = [v7 batchUpdateCount];
+      v6 = observer;
+      observer2 = [(TLKObject *)self observer];
+      batchUpdateCount = [observer2 batchUpdateCount];
 
-      if (!v8)
+      if (!batchUpdateCount)
       {
-        v9 = [(TLKObject *)self observer];
-        [v9 propertiesDidChange];
+        observer3 = [(TLKObject *)self observer];
+        [observer3 propertiesDidChange];
       }
     }
   }
 }
 
-+ (TLKFormattedText)formattedTextWithString:(id)a3
++ (TLKFormattedText)formattedTextWithString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v4 = objc_opt_new();
-  [v4 setString:v3];
+  [v4 setString:stringCopy];
 
   return v4;
 }
@@ -96,8 +96,8 @@
   v8.receiver = self;
   v8.super_class = TLKFormattedText;
   v4 = [(TLKFormattedText *)&v8 description];
-  v5 = [(TLKFormattedText *)self string];
-  v6 = [v3 stringWithFormat:@"%@ string:%@ isBold:%d isEmphasized:%d", v4, v5, -[TLKFormattedTextItem isBold](self, "isBold"), -[TLKFormattedTextItem isEmphasized](self, "isEmphasized")];
+  string = [(TLKFormattedText *)self string];
+  v6 = [v3 stringWithFormat:@"%@ string:%@ isBold:%d isEmphasized:%d", v4, string, -[TLKFormattedTextItem isBold](self, "isBold"), -[TLKFormattedTextItem isEmphasized](self, "isEmphasized")];
 
   return v6;
 }

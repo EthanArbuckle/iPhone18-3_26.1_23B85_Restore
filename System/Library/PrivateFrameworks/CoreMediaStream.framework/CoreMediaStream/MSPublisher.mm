@@ -2,51 +2,51 @@
 + (BOOL)isInRetryState;
 + (id)_clearInstantiatedPublishersByPersonID;
 + (id)nextActivityDate;
-+ (id)nextActivityDateForPersonID:(id)a3;
++ (id)nextActivityDateForPersonID:(id)d;
 + (id)personIDsWithOutstandingActivities;
-+ (id)publisherForPersonID:(id)a3;
-+ (void)_setMasterNextActivityDate:(id)a3 forPersonID:(id)a4;
-+ (void)forgetPersonID:(id)a3;
++ (id)publisherForPersonID:(id)d;
++ (void)_setMasterNextActivityDate:(id)date forPersonID:(id)d;
++ (void)forgetPersonID:(id)d;
 + (void)stopAllActivities;
 - (BOOL)_isAllowedToUpload;
-- (BOOL)_verifyAssetFile:(id)a3;
-- (BOOL)dequeueAssetCollectionWithGUIDs:(id)a3 outError:(id *)a4;
-- (BOOL)enqueueAssetCollections:(id)a3 outError:(id *)a4;
-- (MSPublisher)initWithPersonID:(id)a3 baseURL:(id)a4;
+- (BOOL)_verifyAssetFile:(id)file;
+- (BOOL)dequeueAssetCollectionWithGUIDs:(id)ds outError:(id *)error;
+- (BOOL)enqueueAssetCollections:(id)collections outError:(id *)error;
+- (MSPublisher)initWithPersonID:(id)d baseURL:(id)l;
 - (id)_abortedError;
-- (id)_checkAssetCollectionFiles:(id)a3;
-- (id)_checkObjectWrappers:(id)a3;
-- (id)_collectionWithNoDerivatives:(id)a3;
-- (id)_invalidStreamsResponseErrorUnderlyingError:(id)a3;
+- (id)_checkAssetCollectionFiles:(id)files;
+- (id)_checkObjectWrappers:(id)wrappers;
+- (id)_collectionWithNoDerivatives:(id)derivatives;
+- (id)_invalidStreamsResponseErrorUnderlyingError:(id)error;
 - (int)_stop;
-- (int)publishStorageProtocol:(id)a3 didRequestFDForAsset:(id)a4;
+- (int)publishStorageProtocol:(id)protocol didRequestFDForAsset:(id)asset;
 - (void)_abort;
-- (void)_addAssetToFileHashMap:(id)a3;
-- (void)_categorizeError:(id)a3 setOutIsIgnorable:(BOOL *)a4 setOutIsCounted:(BOOL *)a5 setOutIsFatal:(BOOL *)a6 setOutNeedsBackoff:(BOOL *)a7 setOutIsTemporary:(BOOL *)a8 setOutIsTokenAuth:(BOOL *)a9 setOutIsAuthError:(BOOL *)a10;
-- (void)_didFinishUsingAssetCollections:(id)a3;
+- (void)_addAssetToFileHashMap:(id)map;
+- (void)_categorizeError:(id)error setOutIsIgnorable:(BOOL *)ignorable setOutIsCounted:(BOOL *)counted setOutIsFatal:(BOOL *)fatal setOutNeedsBackoff:(BOOL *)backoff setOutIsTemporary:(BOOL *)temporary setOutIsTokenAuth:(BOOL *)auth setOutIsAuthError:(BOOL *)self0;
+- (void)_didFinishUsingAssetCollections:(id)collections;
 - (void)_forget;
-- (void)_quarantineOrDiscardWrappers:(id)a3 withError:(id)a4;
+- (void)_quarantineOrDiscardWrappers:(id)wrappers withError:(id)error;
 - (void)_refreshServerSideConfiguredParameters;
-- (void)_registerAllAssetsForWrapper:(id)a3;
-- (void)_registerAsset:(id)a3;
-- (void)_removeAssetFromFileHashMap:(id)a3;
-- (void)_removeAssetsInAssetCollectionWrappersFromAssetMap:(id)a3;
+- (void)_registerAllAssetsForWrapper:(id)wrapper;
+- (void)_registerAsset:(id)asset;
+- (void)_removeAssetFromFileHashMap:(id)map;
+- (void)_removeAssetsInAssetCollectionWrappersFromAssetMap:(id)map;
 - (void)_requestDerivatives;
 - (void)_sendFilesToMMCS;
 - (void)_sendMetadataToStreams;
 - (void)_sendUploadComplete;
-- (void)_serverSideConfigurationDidChange:(id)a3;
+- (void)_serverSideConfigurationDidChange:(id)change;
 - (void)_updateMasterManifest;
 - (void)deactivate;
 - (void)dealloc;
 - (void)publish;
-- (void)publishStorageProtocol:(id)a3 didFinishUploadingAsset:(id)a4 error:(id)a5;
-- (void)publishStorageProtocolDidFinishPublishingAllAssets:(id)a3;
-- (void)publishStreamsProtocol:(id)a3 didFinishSendingUploadCompleteError:(id)a4;
-- (void)publishStreamsProtocol:(id)a3 didFinishUploadingMetadataResponse:(id)a4 error:(id)a5;
-- (void)publishStreamsProtocol:(id)a3 didReceiveAuthenticationError:(id)a4;
+- (void)publishStorageProtocol:(id)protocol didFinishUploadingAsset:(id)asset error:(id)error;
+- (void)publishStorageProtocolDidFinishPublishingAllAssets:(id)assets;
+- (void)publishStreamsProtocol:(id)protocol didFinishSendingUploadCompleteError:(id)error;
+- (void)publishStreamsProtocol:(id)protocol didFinishUploadingMetadataResponse:(id)response error:(id)error;
+- (void)publishStreamsProtocol:(id)protocol didReceiveAuthenticationError:(id)error;
 - (void)reenqueueQuarantinedAssetCollections;
-- (void)submitAssetCollectionsForPublication:(id)a3 skipAssetCollections:(id)a4;
+- (void)submitAssetCollectionsForPublication:(id)publication skipAssetCollections:(id)collections;
 @end
 
 @implementation MSPublisher
@@ -63,7 +63,7 @@
 - (void)_abort
 {
   [(MSPublisher *)self _stop];
-  v15 = [(MSPublisher *)self _abortedError];
+  _abortedError = [(MSPublisher *)self _abortedError];
   v3 = [(MSObjectQueue *)self->_uploadQueue allObjectWrappersMaxCount:5];
   if ([v3 count])
   {
@@ -75,7 +75,7 @@
       {
         v6 = self->_delegate;
         v7 = [MSObjectWrapper objectsFromWrappers:v3];
-        [(MSPublisherDelegate *)v6 publisher:self didEncounterError:v15 publishingAssetCollections:v7];
+        [(MSPublisherDelegate *)v6 publisher:self didEncounterError:_abortedError publishingAssetCollections:v7];
       }
 
       [(MSObjectQueue *)self->_uploadQueue removeObjectWrappersFromQueue:v3];
@@ -105,7 +105,7 @@
       {
         v12 = self->_delegate;
         v13 = [MSObjectWrapper objectsFromWrappers:v9];
-        [(MSPublisherDelegate *)v12 publisher:self didEncounterError:v15 publishingAssetCollections:v13];
+        [(MSPublisherDelegate *)v12 publisher:self didEncounterError:_abortedError publishingAssetCollections:v13];
       }
 
       [(MSObjectQueue *)self->_quarantinedQueue removeObjectWrappersFromQueue:v9];
@@ -171,29 +171,29 @@ LABEL_10:
   return result;
 }
 
-- (void)publishStreamsProtocol:(id)a3 didFinishSendingUploadCompleteError:(id)a4
+- (void)publishStreamsProtocol:(id)protocol didFinishSendingUploadCompleteError:(id)error
 {
   v53 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  protocolCopy = protocol;
+  errorCopy = error;
+  v8 = errorCopy;
   state = self->_state;
   if (state == 12)
   {
     v10 = 0x27EE36000uLL;
-    if (v7)
+    if (errorCopy)
     {
-      if ([v7 MSIsTemporaryNetworkError])
+      if ([errorCopy MSIsTemporaryNetworkError])
       {
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
         {
           v11 = objc_opt_class();
           v12 = v11;
-          v13 = [(MSCupidStateMachine *)self personID];
+          personID = [(MSCupidStateMachine *)self personID];
           *buf = 138543618;
           *v46 = v11;
           *&v46[8] = 2112;
-          v47 = v13;
+          v47 = personID;
           _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%{public}@ - %@ Encountered temporary error. Will try again later...", buf, 0x16u);
         }
 
@@ -206,14 +206,14 @@ LABEL_10:
         {
           v29 = objc_opt_class();
           v30 = v29;
-          v31 = [(MSCupidStateMachine *)self personID];
-          v32 = [v8 MSVerboseDescription];
+          personID2 = [(MSCupidStateMachine *)self personID];
+          mSVerboseDescription = [v8 MSVerboseDescription];
           *buf = 138543874;
           *v46 = v29;
           *&v46[8] = 2112;
-          v47 = v31;
+          v47 = personID2;
           v48 = 2114;
-          v49 = v32;
+          v49 = mSVerboseDescription;
           _os_log_error_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%{public}@ - %@ Error sending upload complete: %{public}@", buf, 0x20u);
 
           v10 = 0x27EE36000uLL;
@@ -226,7 +226,7 @@ LABEL_10:
 
         if ([v8 MSIsCounted])
         {
-          v38 = v6;
+          v38 = protocolCopy;
           v21 = [MEMORY[0x277CBEB18] arrayWithCapacity:{-[NSMutableArray count](self->_sendingQueue, "count")}];
           v41 = 0u;
           v42 = 0u;
@@ -262,7 +262,7 @@ LABEL_10:
           }
 
           [(MSObjectQueue *)self->_uploadQueue commitErrorCountsForObjectWrappers:self->_sendingQueue];
-          v6 = v38;
+          protocolCopy = v38;
           v10 = 0x27EE36000uLL;
           if ([v21 count])
           {
@@ -270,17 +270,17 @@ LABEL_10:
             {
               v33 = objc_opt_class();
               v37 = v33;
-              v34 = [(MSCupidStateMachine *)self personID];
+              personID3 = [(MSCupidStateMachine *)self personID];
               v36 = [v21 count];
-              v35 = [v8 MSVerboseDescription];
+              mSVerboseDescription2 = [v8 MSVerboseDescription];
               *buf = 138544130;
               *v46 = v33;
               *&v46[8] = 2112;
-              v47 = v34;
+              v47 = personID3;
               v48 = 2048;
               v49 = v36;
               v50 = 2114;
-              v51 = v35;
+              v51 = mSVerboseDescription2;
               _os_log_error_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%{public}@ - %@ Failed to send upload complete for %lu asset collections. Error: %{public}@", buf, 0x2Au);
 
               v10 = 0x27EE36000;
@@ -306,8 +306,8 @@ LABEL_10:
     else
     {
       daemon = self->_daemon;
-      v15 = [(MSCupidStateMachine *)self personID];
-      [(MSMediaStreamDaemon *)daemon didReceiveAuthenticationSuccessForPersonID:v15];
+      personID4 = [(MSCupidStateMachine *)self personID];
+      [(MSMediaStreamDaemon *)daemon didReceiveAuthenticationSuccessForPersonID:personID4];
 
       [(MSCupidStateMachine *)self _resetStreamsBackoffTimer];
       v16 = [MSObjectWrapper objectsFromWrappers:self->_sendingQueue];
@@ -321,11 +321,11 @@ LABEL_10:
       {
         v18 = objc_opt_class();
         v19 = v18;
-        v20 = [(MSCupidStateMachine *)self personID];
+        personID5 = [(MSCupidStateMachine *)self personID];
         *buf = 138543618;
         *v46 = v18;
         *&v46[8] = 2112;
-        v47 = v20;
+        v47 = personID5;
         _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%{public}@ - %@ Finished sending upload complete.", buf, 0x16u);
 
         v10 = 0x27EE36000uLL;
@@ -367,7 +367,7 @@ LABEL_10:
   [(MSPublishStreamsProtocol *)protocol sendUploadCompleteForAssetCollections:v3];
 }
 
-- (void)publishStorageProtocolDidFinishPublishingAllAssets:(id)a3
+- (void)publishStorageProtocolDidFinishPublishingAllAssets:(id)assets
 {
   v157 = *MEMORY[0x277D85DE8];
   v141 = 0;
@@ -380,7 +380,7 @@ LABEL_10:
   obj = self->_sendingQueue;
   v108 = [(NSMutableArray *)obj countByEnumeratingWithState:&v135 objects:v156 count:16];
   v4 = 0;
-  v5 = 0;
+  error2 = 0;
   if (v108)
   {
     v106 = *v136;
@@ -394,60 +394,60 @@ LABEL_10:
           objc_enumerationMutation(obj);
         }
 
-        v7 = [*(*(&v135 + 1) + 8 * v6) object];
-        v8 = [v7 masterAsset];
-        v9 = [v8 error];
+        object = [*(*(&v135 + 1) + 8 * v6) object];
+        masterAsset = [object masterAsset];
+        error = [masterAsset error];
 
-        [(MSPublisher *)self _categorizeError:v9 setOutIsIgnorable:&v141 + 1 setOutIsCounted:&v141 setOutIsFatal:&v140 + 1 setOutNeedsBackoff:&v140 setOutIsTemporary:&v139 + 1 setOutIsTokenAuth:0 setOutIsAuthError:&v139];
-        v10 = [v9 MSMMCSRetryAfterDate];
-        if (v10)
+        [(MSPublisher *)self _categorizeError:error setOutIsIgnorable:&v141 + 1 setOutIsCounted:&v141 setOutIsFatal:&v140 + 1 setOutNeedsBackoff:&v140 setOutIsTemporary:&v139 + 1 setOutIsTokenAuth:0 setOutIsAuthError:&v139];
+        mSMMCSRetryAfterDate = [error MSMMCSRetryAfterDate];
+        if (mSMMCSRetryAfterDate)
         {
-          [(MSCupidStateMachine *)self _didReceiveMMCSRetryAfterDate:v10];
+          [(MSCupidStateMachine *)self _didReceiveMMCSRetryAfterDate:mSMMCSRetryAfterDate];
         }
 
-        v110 = v10;
-        v113 = v7;
+        v110 = mSMMCSRetryAfterDate;
+        v113 = object;
         v115 = v6;
-        v4 |= v9 != 0;
+        v4 |= error != 0;
         v133 = 0u;
         v134 = 0u;
         v131 = 0u;
         v132 = 0u;
-        v11 = [v7 derivedAssets];
-        v12 = [v11 countByEnumeratingWithState:&v131 objects:v155 count:16];
+        derivedAssets = [object derivedAssets];
+        v12 = [derivedAssets countByEnumeratingWithState:&v131 objects:v155 count:16];
         if (v12)
         {
           v13 = v12;
           v14 = *v132;
-          v5 = v9;
+          error2 = error;
           do
           {
             v15 = 0;
-            v16 = v5;
+            v16 = error2;
             do
             {
               if (*v132 != v14)
               {
-                objc_enumerationMutation(v11);
+                objc_enumerationMutation(derivedAssets);
               }
 
-              v5 = [*(*(&v131 + 1) + 8 * v15) error];
+              error2 = [*(*(&v131 + 1) + 8 * v15) error];
 
-              [(MSPublisher *)self _categorizeError:v5 setOutIsIgnorable:&v141 + 1 setOutIsCounted:&v141 setOutIsFatal:&v140 + 1 setOutNeedsBackoff:&v140 setOutIsTemporary:&v139 + 1 setOutIsTokenAuth:0 setOutIsAuthError:&v139];
-              v17 = [v5 MSMMCSRetryAfterDate];
-              if (v17)
+              [(MSPublisher *)self _categorizeError:error2 setOutIsIgnorable:&v141 + 1 setOutIsCounted:&v141 setOutIsFatal:&v140 + 1 setOutNeedsBackoff:&v140 setOutIsTemporary:&v139 + 1 setOutIsTokenAuth:0 setOutIsAuthError:&v139];
+              mSMMCSRetryAfterDate2 = [error2 MSMMCSRetryAfterDate];
+              if (mSMMCSRetryAfterDate2)
               {
-                [(MSCupidStateMachine *)self _didReceiveMMCSRetryAfterDate:v17];
+                [(MSCupidStateMachine *)self _didReceiveMMCSRetryAfterDate:mSMMCSRetryAfterDate2];
               }
 
-              v4 |= v5 != 0;
+              v4 |= error2 != 0;
 
               ++v15;
-              v16 = v5;
+              v16 = error2;
             }
 
             while (v13 != v15);
-            v13 = [v11 countByEnumeratingWithState:&v131 objects:v155 count:16];
+            v13 = [derivedAssets countByEnumeratingWithState:&v131 objects:v155 count:16];
           }
 
           while (v13);
@@ -455,7 +455,7 @@ LABEL_10:
 
         else
         {
-          v5 = v9;
+          error2 = error;
         }
 
         v6 = v115 + 1;
@@ -488,8 +488,8 @@ LABEL_10:
         }
 
         v23 = *(*(&v127 + 1) + 8 * i);
-        v24 = [MEMORY[0x277CCAA00] defaultManager];
-        [v24 removeItemAtPath:v23 error:0];
+        defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+        [defaultManager removeItemAtPath:v23 error:0];
       }
 
       v20 = [(NSMutableArray *)v18 countByEnumeratingWithState:&v127 objects:v154 count:16];
@@ -510,20 +510,20 @@ LABEL_10:
       {
         v68 = objc_opt_class();
         v69 = v68;
-        v70 = [(MSCupidStateMachine *)self personID];
+        personID = [(MSCupidStateMachine *)self personID];
         v71 = [(NSMutableArray *)self->_sendingQueue count];
         *buf = 138543874;
         v144 = v68;
         v145 = 2112;
-        v146 = v70;
+        v146 = personID;
         v147 = 2048;
         v148 = v71;
         _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%{public}@ - %@ Successfully uploaded %lu asset collections.", buf, 0x20u);
       }
 
       daemon = self->_daemon;
-      v73 = [(MSCupidStateMachine *)self personID];
-      [(MSMediaStreamDaemon *)daemon didReceiveAuthenticationSuccessForPersonID:v73];
+      personID2 = [(MSCupidStateMachine *)self personID];
+      [(MSMediaStreamDaemon *)daemon didReceiveAuthenticationSuccessForPersonID:personID2];
 
       [(MSCupidStateMachine *)self _resetMMCSBackoffTimer];
       self->_state = 10;
@@ -537,12 +537,12 @@ LABEL_10:
       {
         v27 = objc_opt_class();
         v28 = v27;
-        v29 = [(MSCupidStateMachine *)self personID];
+        personID3 = [(MSCupidStateMachine *)self personID];
         v30 = [(NSMutableArray *)self->_sendingQueue count];
         *buf = 138543874;
         v144 = v27;
         v145 = 2112;
-        v146 = v29;
+        v146 = personID3;
         v147 = 2048;
         v148 = v30;
         _os_log_error_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%{public}@ - %@ Ignoring errors for %lu asset collections.", buf, 0x20u);
@@ -557,11 +557,11 @@ LABEL_10:
       {
         v100 = objc_opt_class();
         v101 = v100;
-        v102 = [(MSCupidStateMachine *)self personID];
+        personID4 = [(MSCupidStateMachine *)self personID];
         *buf = 138543618;
         v144 = v100;
         v145 = 2112;
-        v146 = v102;
+        v146 = personID4;
         _os_log_error_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%{public}@ - %@ Encountered temporary network issues during upload. Will try again later...", buf, 0x16u);
       }
 
@@ -577,13 +577,13 @@ LABEL_10:
     {
       v75 = objc_opt_class();
       v76 = v75;
-      v77 = [(MSCupidStateMachine *)self personID];
+      personID5 = [(MSCupidStateMachine *)self personID];
       v78 = self->_sendingQueueCount;
       v79 = [(NSMutableArray *)self->_sendingQueue count];
       *buf = 138544130;
       v144 = v75;
       v145 = 2112;
-      v146 = v77;
+      v146 = personID5;
       v147 = 2048;
       v148 = v78;
       v149 = 2048;
@@ -597,7 +597,7 @@ LABEL_10:
 
     v139 = 0;
     LOBYTE(v140) = 0;
-    v5 = v33;
+    error2 = v33;
     v141 = 1;
   }
 
@@ -612,12 +612,12 @@ LABEL_10:
     {
       v84 = objc_opt_class();
       v85 = v84;
-      v86 = [(MSCupidStateMachine *)self personID];
+      personID6 = [(MSCupidStateMachine *)self personID];
       v87 = [(NSMutableArray *)self->_sendingQueue count];
       *buf = 138543874;
       v144 = v84;
       v145 = 2112;
-      v146 = v86;
+      v146 = personID6;
       v147 = 2048;
       v148 = v87;
       _os_log_error_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%{public}@ - %@ Error uploading %lu asset collections.", buf, 0x20u);
@@ -660,28 +660,28 @@ LABEL_47:
       }
 
       v42 = *(*(&v123 + 1) + 8 * v41);
-      v43 = [v42 object];
-      v44 = [v43 masterAsset];
-      v45 = [v44 error];
+      object2 = [v42 object];
+      masterAsset2 = [object2 masterAsset];
+      error3 = [masterAsset2 error];
 
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
       {
         v48 = objc_opt_class();
         v111 = v48;
-        v49 = [(MSCupidStateMachine *)self personID];
-        v109 = [v45 domain];
-        v50 = [v45 code];
+        personID7 = [(MSCupidStateMachine *)self personID];
+        domain = [error3 domain];
+        code = [error3 code];
         *buf = 138544386;
         v144 = v48;
         v145 = 2112;
-        v146 = v49;
-        v51 = v49;
+        v146 = personID7;
+        v51 = personID7;
         v147 = 2114;
-        v148 = v43;
+        v148 = object2;
         v149 = 2114;
-        v150 = v109;
+        v150 = domain;
         v151 = 2048;
-        v152 = v50;
+        v152 = code;
         _os_log_error_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%{public}@ - %@ error uploading %{public}@: %{public}@ %ld.", buf, 0x34u);
 
         v37 = v107;
@@ -693,26 +693,26 @@ LABEL_47:
       }
 
       [v42 setErrorCount:{objc_msgSend(v42, "errorCount") + 1}];
-      v47 = [v42 errorCount];
+      errorCount = [v42 errorCount];
       v46 = v37;
-      if (v47 >= self->_maxErrorCount)
+      if (errorCount >= self->_maxErrorCount)
       {
         goto LABEL_59;
       }
 
-      if ([v45 MSIsRegistrationError])
+      if ([error3 MSIsRegistrationError])
       {
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
         {
           v52 = objc_opt_class();
           v112 = v52;
-          v53 = [(MSCupidStateMachine *)self personID];
+          personID8 = [(MSCupidStateMachine *)self personID];
           *buf = 138543874;
           v144 = v52;
           v145 = 2112;
-          v146 = v53;
+          v146 = personID8;
           v147 = 2114;
-          v148 = v43;
+          v148 = object2;
           _os_log_error_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%{public}@ - %@ needs to re-register %{public}@.", buf, 0x20u);
 
           v37 = v107;
@@ -763,12 +763,12 @@ LABEL_62:
                   }
 
                   v59 = *(*(&v119 + 1) + 8 * j);
-                  v60 = [v59 object];
-                  v61 = [v60 masterAsset];
-                  v62 = [v61 error];
+                  object3 = [v59 object];
+                  masterAsset3 = [object3 masterAsset];
+                  error4 = [masterAsset3 error];
 
                   v63 = [MEMORY[0x277CBEA60] arrayWithObject:v59];
-                  [(MSPublisher *)self _quarantineOrDiscardWrappers:v63 withError:v62];
+                  [(MSPublisher *)self _quarantineOrDiscardWrappers:v63 withError:error4];
                 }
 
                 v56 = [v117 countByEnumeratingWithState:&v119 objects:v142 count:16];
@@ -785,12 +785,12 @@ LABEL_62:
           {
             v91 = objc_opt_class();
             v92 = v91;
-            v93 = [(MSCupidStateMachine *)self personID];
+            personID9 = [(MSCupidStateMachine *)self personID];
             v94 = [v37 count];
             *buf = 138543874;
             v144 = v91;
             v145 = 2112;
-            v146 = v93;
+            v146 = personID9;
             v147 = 2048;
             v148 = v94;
             _os_log_error_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%{public}@ - %@ Gave up uploading %lu asset collections.", buf, 0x20u);
@@ -803,14 +803,14 @@ LABEL_62:
           {
             v95 = objc_opt_class();
             v96 = v95;
-            v97 = [(MSCupidStateMachine *)self personID];
+            personID10 = [(MSCupidStateMachine *)self personID];
             v98 = [(NSMutableArray *)self->_sendingQueue count];
             v99 = v98 - [v107 count];
             v37 = v107;
             *buf = 138543874;
             v144 = v95;
             v145 = 2112;
-            v146 = v97;
+            v146 = personID10;
             v147 = 2048;
             v148 = v99;
             _os_log_error_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%{public}@ - %@ Will retry uploading %ld asset collections.", buf, 0x20u);
@@ -834,12 +834,12 @@ LABEL_59:
   {
     v80 = objc_opt_class();
     v81 = v80;
-    v82 = [(MSCupidStateMachine *)self personID];
+    personID11 = [(MSCupidStateMachine *)self personID];
     v83 = [(NSMutableArray *)self->_sendingQueue count];
     *buf = 138543874;
     v144 = v80;
     v145 = 2112;
-    v146 = v82;
+    v146 = personID11;
     v147 = 2048;
     v148 = v83;
     _os_log_error_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%{public}@ - %@ Received auth error. Resending metadata for %lu asset collections.", buf, 0x20u);
@@ -848,8 +848,8 @@ LABEL_59:
   [(NSMutableArray *)self->_sendingQueue removeAllObjects];
   self->_state = 4;
   v34 = self->_daemon;
-  v35 = [(MSCupidStateMachine *)self personID];
-  [(MSMediaStreamDaemon *)v34 didReceiveAuthenticationFailureForPersonID:v35];
+  personID12 = [(MSCupidStateMachine *)self personID];
+  [(MSMediaStreamDaemon *)v34 didReceiveAuthenticationFailureForPersonID:personID12];
 
   v36 = 1;
 LABEL_81:
@@ -859,11 +859,11 @@ LABEL_81:
     {
       v88 = objc_opt_class();
       v89 = v88;
-      v90 = [(MSCupidStateMachine *)self personID];
+      personID13 = [(MSCupidStateMachine *)self personID];
       *buf = 138543618;
       v144 = v88;
       v145 = 2112;
-      v146 = v90;
+      v146 = personID13;
       _os_log_error_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%{public}@ - %@ Detected an inconsistent state.", buf, 0x16u);
     }
 
@@ -894,104 +894,104 @@ LABEL_92:
   v74 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_categorizeError:(id)a3 setOutIsIgnorable:(BOOL *)a4 setOutIsCounted:(BOOL *)a5 setOutIsFatal:(BOOL *)a6 setOutNeedsBackoff:(BOOL *)a7 setOutIsTemporary:(BOOL *)a8 setOutIsTokenAuth:(BOOL *)a9 setOutIsAuthError:(BOOL *)a10
+- (void)_categorizeError:(id)error setOutIsIgnorable:(BOOL *)ignorable setOutIsCounted:(BOOL *)counted setOutIsFatal:(BOOL *)fatal setOutNeedsBackoff:(BOOL *)backoff setOutIsTemporary:(BOOL *)temporary setOutIsTokenAuth:(BOOL *)auth setOutIsAuthError:(BOOL *)self0
 {
-  v15 = a3;
-  if (v15)
+  errorCopy = error;
+  if (errorCopy)
   {
-    v29 = a8;
-    v30 = v15;
-    v16 = [v15 MSCanBeIgnored];
-    v17 = [v30 MSIsCounted];
-    v18 = [v30 MSIsFatal];
-    v19 = [v30 MSNeedsBackoff];
-    v20 = [v30 MSIsTemporaryNetworkError];
-    v21 = [v30 MSIsBadTokenError];
-    v22 = [v30 MSIsAuthError];
-    if (a4 && v16)
+    temporaryCopy = temporary;
+    v30 = errorCopy;
+    mSCanBeIgnored = [errorCopy MSCanBeIgnored];
+    mSIsCounted = [v30 MSIsCounted];
+    mSIsFatal = [v30 MSIsFatal];
+    mSNeedsBackoff = [v30 MSNeedsBackoff];
+    mSIsTemporaryNetworkError = [v30 MSIsTemporaryNetworkError];
+    mSIsBadTokenError = [v30 MSIsBadTokenError];
+    mSIsAuthError = [v30 MSIsAuthError];
+    if (ignorable && mSCanBeIgnored)
     {
-      *a4 = 1;
+      *ignorable = 1;
     }
 
-    v23 = v17 ^ 1;
-    if (!a5)
+    v23 = mSIsCounted ^ 1;
+    if (!counted)
     {
       v23 = 1;
     }
 
     if ((v23 & 1) == 0)
     {
-      *a5 = 1;
+      *counted = 1;
     }
 
-    v24 = v18 ^ 1;
-    if (!a6)
+    v24 = mSIsFatal ^ 1;
+    if (!fatal)
     {
       v24 = 1;
     }
 
     if ((v24 & 1) == 0)
     {
-      *a6 = 1;
+      *fatal = 1;
     }
 
-    v25 = v19 ^ 1;
-    if (!a7)
+    v25 = mSNeedsBackoff ^ 1;
+    if (!backoff)
     {
       v25 = 1;
     }
 
     if ((v25 & 1) == 0)
     {
-      *a7 = 1;
+      *backoff = 1;
     }
 
-    v26 = v20 ^ 1;
-    if (!v29)
+    v26 = mSIsTemporaryNetworkError ^ 1;
+    if (!temporaryCopy)
     {
       v26 = 1;
     }
 
     if ((v26 & 1) == 0)
     {
-      *v29 = 1;
+      *temporaryCopy = 1;
     }
 
-    v27 = v21 ^ 1;
-    if (!a9)
+    v27 = mSIsBadTokenError ^ 1;
+    if (!auth)
     {
       v27 = 1;
     }
 
     if ((v27 & 1) == 0)
     {
-      *a9 = 1;
+      *auth = 1;
     }
 
-    v28 = v22 ^ 1;
-    if (!a10)
+    v28 = mSIsAuthError ^ 1;
+    if (!authError)
     {
       v28 = 1;
     }
 
-    v15 = v30;
+    errorCopy = v30;
     if ((v28 & 1) == 0)
     {
-      *a10 = 1;
+      *authError = 1;
     }
   }
 }
 
-- (int)publishStorageProtocol:(id)a3 didRequestFDForAsset:(id)a4
+- (int)publishStorageProtocol:(id)protocol didRequestFDForAsset:(id)asset
 {
   v43 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 fileData];
+  protocolCopy = protocol;
+  assetCopy = asset;
+  fileData = [assetCopy fileData];
 
-  if (v8)
+  if (fileData)
   {
-    v9 = [v7 fileData];
+    fileData2 = [assetCopy fileData];
     v36 = 0;
     v10 = [MEMORY[0x277CCACA8] MSTempFileOutFileName:&v36];
     v11 = v36;
@@ -1001,11 +1001,11 @@ LABEL_92:
       {
         v15 = objc_opt_class();
         v16 = v15;
-        v17 = [(MSCupidStateMachine *)self personID];
+        personID = [(MSCupidStateMachine *)self personID];
         *buf = 138543618;
         v38 = v15;
         v39 = 2112;
-        v40 = v17;
+        v40 = personID;
         _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%{public}@ - %@ Failed to create temp file.", buf, 0x16u);
       }
     }
@@ -1016,7 +1016,7 @@ LABEL_92:
       v13 = v12;
       if (v12)
       {
-        [v12 writeData:v9];
+        [v12 writeData:fileData2];
         [(NSMutableArray *)self->_tempFiles addObject:v11];
       }
 
@@ -1024,11 +1024,11 @@ LABEL_92:
       {
         v24 = objc_opt_class();
         v25 = v24;
-        v26 = [(MSCupidStateMachine *)self personID];
+        personID2 = [(MSCupidStateMachine *)self personID];
         *buf = 138543874;
         v38 = v24;
         v39 = 2112;
-        v40 = v26;
+        v40 = personID2;
         v41 = 2112;
         v42 = v11;
         _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%{public}@ - %@ Failed to write temp file at path %@.", buf, 0x20u);
@@ -1041,43 +1041,43 @@ LABEL_92:
     delegate = self->_delegate;
     if (objc_opt_respondsToSelector())
     {
-      LODWORD(v10) = [(MSPublisherDelegate *)self->_delegate publisher:self didRequestOpenFileDescriptorForAsset:v7];
+      LODWORD(v10) = [(MSPublisherDelegate *)self->_delegate publisher:self didRequestOpenFileDescriptorForAsset:assetCopy];
     }
 
     else
     {
-      v18 = [v7 path];
+      path = [assetCopy path];
 
-      if (v18)
+      if (path)
       {
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
         {
           v29 = objc_opt_class();
           v30 = v29;
-          v31 = [(MSCupidStateMachine *)self personID];
-          v32 = [v7 path];
+          personID3 = [(MSCupidStateMachine *)self personID];
+          path2 = [assetCopy path];
           *buf = 138543874;
           v38 = v29;
           v39 = 2112;
-          v40 = v31;
+          v40 = personID3;
           v41 = 2112;
-          v42 = v32;
+          v42 = path2;
           _os_log_debug_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG, "%{public}@ - %@ Opening asset file at path %@...", buf, 0x20u);
         }
 
-        v19 = [v7 path];
-        v20 = v19;
-        LODWORD(v10) = open([v19 fileSystemRepresentation], 0);
+        path3 = [assetCopy path];
+        v20 = path3;
+        LODWORD(v10) = open([path3 fileSystemRepresentation], 0);
 
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
         {
           v21 = objc_opt_class();
           v22 = v21;
-          v23 = [(MSCupidStateMachine *)self personID];
+          personID4 = [(MSCupidStateMachine *)self personID];
           *buf = 138543874;
           v38 = v21;
           v39 = 2112;
-          v40 = v23;
+          v40 = personID4;
           v41 = 1024;
           LODWORD(v42) = v10;
           _os_log_debug_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG, "%{public}@ - %@ ... got FD %d.", buf, 0x1Cu);
@@ -1090,13 +1090,13 @@ LABEL_92:
         {
           v33 = objc_opt_class();
           v34 = v33;
-          v35 = [(MSCupidStateMachine *)self personID];
+          personID5 = [(MSCupidStateMachine *)self personID];
           *buf = 138543874;
           v38 = v33;
           v39 = 2112;
-          v40 = v35;
+          v40 = personID5;
           v41 = 2114;
-          v42 = v7;
+          v42 = assetCopy;
           _os_log_error_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%{public}@ - %@ Cannot retrieve file descriptor for asset: %{public}@", buf, 0x20u);
         }
 
@@ -1109,35 +1109,35 @@ LABEL_92:
   return v10;
 }
 
-- (void)publishStorageProtocol:(id)a3 didFinishUploadingAsset:(id)a4 error:(id)a5
+- (void)publishStorageProtocol:(id)protocol didFinishUploadingAsset:(id)asset error:(id)error
 {
   v23 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  protocolCopy = protocol;
+  assetCopy = asset;
+  errorCopy = error;
+  if (errorCopy)
   {
-    [v9 setError:v10];
+    [assetCopy setError:errorCopy];
   }
 
   delegate = self->_delegate;
   if (objc_opt_respondsToSelector())
   {
-    [(MSPublisherDelegate *)self->_delegate publisher:self didRequestCloseFileDescriptor:0xFFFFFFFFLL forAsset:v9];
+    [(MSPublisherDelegate *)self->_delegate publisher:self didRequestCloseFileDescriptor:0xFFFFFFFFLL forAsset:assetCopy];
   }
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     v13 = objc_opt_class();
     v14 = v13;
-    v15 = [(MSCupidStateMachine *)self personID];
-    v16 = [v10 MSVerboseDescription];
+    personID = [(MSCupidStateMachine *)self personID];
+    mSVerboseDescription = [errorCopy MSVerboseDescription];
     v17 = 138543874;
     v18 = v13;
     v19 = 2112;
-    v20 = v15;
+    v20 = personID;
     v21 = 2114;
-    v22 = v16;
+    v22 = mSVerboseDescription;
     _os_log_debug_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG, "%{public}@ - %@ Finished uploading asset. Error: %{public}@", &v17, 0x20u);
   }
 
@@ -1151,12 +1151,12 @@ LABEL_92:
   {
     v3 = objc_opt_class();
     v4 = v3;
-    v5 = [(MSCupidStateMachine *)self personID];
+    personID = [(MSCupidStateMachine *)self personID];
     v6 = [(NSMutableArray *)self->_sendingQueue count];
     *buf = 138543874;
     *v49 = v3;
     *&v49[8] = 2112;
-    v50 = v5;
+    v50 = personID;
     v51 = 2048;
     v52 = v6;
     _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%{public}@ - %@ uploading %ld assets...", buf, 0x20u);
@@ -1175,7 +1175,7 @@ LABEL_92:
 
     self->_sendingQueueCount = [(NSMutableArray *)self->_sendingQueue count];
     [(NSMutableDictionary *)self->_fileHashToAssetMap removeAllObjects];
-    v11 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v42 = 0u;
     v43 = 0u;
     v44 = 0u;
@@ -1196,21 +1196,21 @@ LABEL_92:
           }
 
           v37 = v12;
-          v13 = [*(*(&v42 + 1) + 8 * v12) object];
-          v14 = [v13 masterAsset];
-          v15 = [MEMORY[0x277CCACA8] MSMakeUUID];
-          [v14 addMetadataValue:v15 forKey:@"MSAssetMetadataAssetFileTransferUUID"];
+          object = [*(*(&v42 + 1) + 8 * v12) object];
+          masterAsset = [object masterAsset];
+          mSMakeUUID = [MEMORY[0x277CCACA8] MSMakeUUID];
+          [masterAsset addMetadataValue:mSMakeUUID forKey:@"MSAssetMetadataAssetFileTransferUUID"];
 
-          [v11 addObject:v14];
-          v35 = v14;
-          [(MSPublisher *)self _addAssetToFileHashMap:v14];
+          [array addObject:masterAsset];
+          v35 = masterAsset;
+          [(MSPublisher *)self _addAssetToFileHashMap:masterAsset];
           v40 = 0u;
           v41 = 0u;
           v38 = 0u;
           v39 = 0u;
-          v36 = v13;
-          v16 = [v13 derivedAssets];
-          v17 = [v16 countByEnumeratingWithState:&v38 objects:v46 count:16];
+          v36 = object;
+          derivedAssets = [object derivedAssets];
+          v17 = [derivedAssets countByEnumeratingWithState:&v38 objects:v46 count:16];
           if (v17)
           {
             v18 = v17;
@@ -1221,18 +1221,18 @@ LABEL_92:
               {
                 if (*v39 != v19)
                 {
-                  objc_enumerationMutation(v16);
+                  objc_enumerationMutation(derivedAssets);
                 }
 
                 v21 = *(*(&v38 + 1) + 8 * i);
-                v22 = [MEMORY[0x277CCACA8] MSMakeUUID];
-                [v21 addMetadataValue:v22 forKey:@"MSAssetMetadataAssetFileTransferUUID"];
+                mSMakeUUID2 = [MEMORY[0x277CCACA8] MSMakeUUID];
+                [v21 addMetadataValue:mSMakeUUID2 forKey:@"MSAssetMetadataAssetFileTransferUUID"];
 
-                [v11 addObject:v21];
+                [array addObject:v21];
                 [(MSPublisher *)self _addAssetToFileHashMap:v21];
               }
 
-              v18 = [v16 countByEnumeratingWithState:&v38 objects:v46 count:16];
+              v18 = [derivedAssets countByEnumeratingWithState:&v38 objects:v46 count:16];
             }
 
             while (v18);
@@ -1255,8 +1255,8 @@ LABEL_92:
     if (v24)
     {
       v25 = MSPlatform();
-      v26 = [(MSCupidStateMachine *)self personID];
-      v27 = [v25 contentURLForPersonID:v26];
+      personID2 = [(MSCupidStateMachine *)self personID];
+      v27 = [v25 contentURLForPersonID:personID2];
 
       if (v27)
       {
@@ -1264,11 +1264,11 @@ LABEL_92:
         {
           v28 = objc_opt_class();
           v29 = v28;
-          v30 = [(MSCupidStateMachine *)self personID];
+          personID3 = [(MSCupidStateMachine *)self personID];
           *buf = 138543874;
           *v49 = v28;
           *&v49[8] = 2112;
-          v50 = v30;
+          v50 = personID3;
           v51 = 2114;
           v52 = v27;
           _os_log_debug_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG, "%{public}@ - %@ Using contentURL %{public}@ from MSPlatform for upload.", buf, 0x20u);
@@ -1286,7 +1286,7 @@ LABEL_92:
 
     v27 = self->_storageProtocolURL;
 LABEL_29:
-    [(MSPublishStorageProtocol *)self->_storageProtocol publishAssets:v11 URL:v27];
+    [(MSPublishStorageProtocol *)self->_storageProtocol publishAssets:array URL:v27];
 
     goto LABEL_30;
   }
@@ -1304,37 +1304,37 @@ LABEL_30:
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (void)publishStreamsProtocol:(id)a3 didReceiveAuthenticationError:(id)a4
+- (void)publishStreamsProtocol:(id)protocol didReceiveAuthenticationError:(id)error
 {
   v15 = *MEMORY[0x277D85DE8];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     v8 = objc_opt_class();
     v9 = v8;
-    v10 = [(MSCupidStateMachine *)self personID];
+    personID = [(MSCupidStateMachine *)self personID];
     v11 = 138543618;
     v12 = v8;
     v13 = 2112;
-    v14 = v10;
+    v14 = personID;
     _os_log_error_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%{public}@ - %@ Found authentication error. Will try again later...", &v11, 0x16u);
   }
 
   [(MSCupidStateMachine *)self _resetStreamsBackoffTimer];
   self->_state = 4;
   daemon = self->_daemon;
-  v6 = [(MSCupidStateMachine *)self personID];
-  [(MSMediaStreamDaemon *)daemon didReceiveAuthenticationFailureForPersonID:v6];
+  personID2 = [(MSCupidStateMachine *)self personID];
+  [(MSMediaStreamDaemon *)daemon didReceiveAuthenticationFailureForPersonID:personID2];
 
   [(MSDaemon *)self->_daemon releaseBusy];
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)publishStreamsProtocol:(id)a3 didFinishUploadingMetadataResponse:(id)a4 error:(id)a5
+- (void)publishStreamsProtocol:(id)protocol didFinishUploadingMetadataResponse:(id)response error:(id)error
 {
   v211 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  protocolCopy = protocol;
+  responseCopy = response;
+  errorCopy = error;
   state = self->_state;
   if (state != 6)
   {
@@ -1354,36 +1354,36 @@ LABEL_30:
   {
     v61 = objc_opt_class();
     v62 = v61;
-    v63 = [(MSCupidStateMachine *)self personID];
+    personID = [(MSCupidStateMachine *)self personID];
     *buf = 138543874;
     *v207 = v61;
     *&v207[8] = 2112;
-    v208 = v63;
+    v208 = personID;
     v209 = 2114;
-    v210 = v9;
+    v210 = responseCopy;
     _os_log_debug_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG, "%{public}@ - %@ received metadata upload response: %{public}@", buf, 0x20u);
   }
 
-  v148 = self;
-  if (v10)
+  selfCopy = self;
+  if (errorCopy)
   {
     goto LABEL_55;
   }
 
-  v12 = [v9 objectForKey:@"assets"];
+  v12 = [responseCopy objectForKey:@"assets"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v60 = MEMORY[0x277CCA9B8];
     v32 = MSCFCopyLocalizedString(@"ERROR_PUT_CONNECTION_INVALID_ASSET_HASH");
-    v35 = [v60 MSErrorWithDomain:@"MSStreamsPutConnectionErrorDomain" code:3 description:v32];
-    v10 = [(MSPublisher *)self _invalidStreamsResponseErrorUnderlyingError:v35];
+    array = [v60 MSErrorWithDomain:@"MSStreamsPutConnectionErrorDomain" code:3 description:v32];
+    errorCopy = [(MSPublisher *)self _invalidStreamsResponseErrorUnderlyingError:array];
     goto LABEL_54;
   }
 
   v145 = v12;
-  v140 = v9;
-  v142 = v8;
+  v140 = responseCopy;
+  v142 = protocolCopy;
   v195 = 0u;
   v196 = 0u;
   v193 = 0u;
@@ -1416,9 +1416,9 @@ LABEL_30:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          fileHashToAssetMap = v148->_fileHashToAssetMap;
-          v24 = [v20 MSHexData];
-          v25 = [(NSMutableDictionary *)fileHashToAssetMap objectForKey:v24];
+          fileHashToAssetMap = selfCopy->_fileHashToAssetMap;
+          mSHexData = [v20 MSHexData];
+          v25 = [(NSMutableDictionary *)fileHashToAssetMap objectForKey:mSHexData];
 
           v191 = 0u;
           v192 = 0u;
@@ -1471,9 +1471,9 @@ LABEL_30:
     while (v15);
   }
 
-  v9 = v140;
+  responseCopy = v140;
   v32 = [v140 objectForKey:@"mmcsurl"];
-  self = v148;
+  self = selfCopy;
   if (v32)
   {
     v33 = [MEMORY[0x277CBEBC0] URLWithString:v32];
@@ -1482,27 +1482,27 @@ LABEL_30:
       v64 = MEMORY[0x277CCA9B8];
       v153 = MSCFCopyLocalizedString(@"ERROR_PUT_CONNECTION_INVALID_STORAGE_URL");
       v55 = [v64 MSErrorWithDomain:@"MSStreamsPutConnectionErrorDomain" code:4 description:?];
-      v10 = [(MSPublisher *)v148 _invalidStreamsResponseErrorUnderlyingError:v55];
+      errorCopy = [(MSPublisher *)selfCopy _invalidStreamsResponseErrorUnderlyingError:v55];
 LABEL_53:
 
       v12 = v145;
-      v35 = v153;
+      array = v153;
       goto LABEL_54;
     }
 
     v34 = v33;
-    [(MSPublisher *)v148 setStorageProtocolURL:v33];
+    [(MSPublisher *)selfCopy setStorageProtocolURL:v33];
   }
 
   v150 = v32;
-  v35 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v185 = 0u;
   v186 = 0u;
   v187 = 0u;
   v188 = 0u;
-  obj = v148->_requestAuthQueue;
+  obj = selfCopy->_requestAuthQueue;
   v36 = [(NSMutableArray *)obj countByEnumeratingWithState:&v185 objects:v203 count:16];
-  v153 = v35;
+  v153 = array;
   if (!v36)
   {
     goto LABEL_46;
@@ -1522,24 +1522,24 @@ LABEL_53:
       }
 
       v40 = *(*(&v185 + 1) + 8 * v39);
-      v41 = [v40 object];
-      v42 = [v41 masterAsset];
-      v43 = [v42 MMCSAccessHeader];
+      object = [v40 object];
+      masterAsset = [object masterAsset];
+      mMCSAccessHeader = [masterAsset MMCSAccessHeader];
 
-      sendingQueue = v35;
-      if (v43)
+      sendingQueue = array;
+      if (mMCSAccessHeader)
       {
-        v45 = [v41 derivedAssets];
+        derivedAssets = [object derivedAssets];
         v181 = 0u;
         v182 = 0u;
         v183 = 0u;
         v184 = 0u;
-        v46 = [v45 countByEnumeratingWithState:&v181 objects:v202 count:16];
+        v46 = [derivedAssets countByEnumeratingWithState:&v181 objects:v202 count:16];
         if (!v46)
         {
 
 LABEL_43:
-          sendingQueue = v148->_sendingQueue;
+          sendingQueue = selfCopy->_sendingQueue;
           goto LABEL_44;
         }
 
@@ -1553,21 +1553,21 @@ LABEL_43:
           {
             if (*v182 != v49)
             {
-              objc_enumerationMutation(v45);
+              objc_enumerationMutation(derivedAssets);
             }
 
-            v52 = [*(*(&v181 + 1) + 8 * j) MMCSAccessHeader];
-            v53 = v52 != 0;
+            mMCSAccessHeader2 = [*(*(&v181 + 1) + 8 * j) MMCSAccessHeader];
+            v53 = mMCSAccessHeader2 != 0;
 
             v50 &= v53;
           }
 
-          v47 = [v45 countByEnumeratingWithState:&v181 objects:v202 count:16];
+          v47 = [derivedAssets countByEnumeratingWithState:&v181 objects:v202 count:16];
         }
 
         while (v47);
 
-        v35 = v153;
+        array = v153;
         sendingQueue = v153;
         v38 = v48;
         v37 = v156;
@@ -1590,41 +1590,41 @@ LABEL_44:
   while (v37);
 LABEL_46:
 
-  if ([(__CFString *)v35 count])
+  if ([(__CFString *)array count])
   {
-    self = v148;
-    [(MSPublisher *)v148 _removeAssetsInAssetCollectionWrappersFromAssetMap:v35];
-    [MSObjectWrapper objectsFromWrappers:v35];
-    v55 = v54 = v35;
-    [(MSPublisher *)v148 _didFinishUsingAssetCollections:v55];
-    delegate = v148->_delegate;
+    self = selfCopy;
+    [(MSPublisher *)selfCopy _removeAssetsInAssetCollectionWrappersFromAssetMap:array];
+    [MSObjectWrapper objectsFromWrappers:array];
+    v55 = v54 = array;
+    [(MSPublisher *)selfCopy _didFinishUsingAssetCollections:v55];
+    delegate = selfCopy->_delegate;
     v57 = MEMORY[0x277CCA9B8];
     v58 = MSCFCopyLocalizedString(@"ERROR_PUBLISHER_ASSET_REJECTED");
     v59 = [v57 MSErrorWithDomain:@"MSPublisherErrorDomain" code:1 description:v58];
-    [(MSPublisherDelegate *)delegate publisher:v148 didEncounterError:v59 publishingAssetCollections:v55];
+    [(MSPublisherDelegate *)delegate publisher:selfCopy didEncounterError:v59 publishingAssetCollections:v55];
 
-    [(MSObjectQueue *)v148->_uploadQueue removeObjectWrappersFromQueue:v54];
-    [(MSPublisher *)v148 _updateMasterManifest];
-    v10 = 0;
-    v8 = v142;
-    v9 = v140;
+    [(MSObjectQueue *)selfCopy->_uploadQueue removeObjectWrappersFromQueue:v54];
+    [(MSPublisher *)selfCopy _updateMasterManifest];
+    errorCopy = 0;
+    protocolCopy = v142;
+    responseCopy = v140;
     v32 = v150;
     goto LABEL_53;
   }
 
-  v10 = 0;
-  v8 = v142;
-  v9 = v140;
-  self = v148;
+  errorCopy = 0;
+  protocolCopy = v142;
+  responseCopy = v140;
+  self = selfCopy;
   v32 = v150;
   v12 = v145;
 LABEL_54:
 
-  if (!v10)
+  if (!errorCopy)
   {
     daemon = self->_daemon;
-    v78 = [(MSCupidStateMachine *)self personID];
-    [(MSMediaStreamDaemon *)daemon didReceiveAuthenticationSuccessForPersonID:v78];
+    personID2 = [(MSCupidStateMachine *)self personID];
+    [(MSMediaStreamDaemon *)daemon didReceiveAuthenticationSuccessForPersonID:personID2];
 
     [(MSCupidStateMachine *)self _resetStreamsBackoffTimer];
     [(MSPublisher *)self _removeAssetsInAssetCollectionWrappersFromAssetMap:self->_requestAuthQueue];
@@ -1639,11 +1639,11 @@ LABEL_54:
       {
         v132 = objc_opt_class();
         v133 = v132;
-        v134 = [(MSCupidStateMachine *)self personID];
+        personID3 = [(MSCupidStateMachine *)self personID];
         *buf = 138543618;
         *v207 = v132;
         *&v207[8] = 2112;
-        v208 = v134;
+        v208 = personID3;
         _os_log_debug_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG, "%{public}@ - %@ Nothing to upload.", buf, 0x16u);
       }
 
@@ -1657,22 +1657,22 @@ LABEL_54:
     block[3] = &unk_278E926D8;
     block[4] = self;
     dispatch_async(MEMORY[0x277D85CD0], block);
-    v10 = 0;
+    errorCopy = 0;
     goto LABEL_149;
   }
 
 LABEL_55:
-  if ([v10 MSIsTemporaryNetworkError])
+  if ([errorCopy MSIsTemporaryNetworkError])
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
       v80 = objc_opt_class();
       v81 = v80;
-      v82 = [(MSCupidStateMachine *)self personID];
+      personID4 = [(MSCupidStateMachine *)self personID];
       *buf = 138543618;
       *v207 = v80;
       *&v207[8] = 2112;
-      v208 = v82;
+      v208 = personID4;
       _os_log_error_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%{public}@ - %@ Encountered network issues during upload. Will try again later...", buf, 0x16u);
     }
 
@@ -1681,31 +1681,31 @@ LABEL_55:
   }
 
   v65 = [MEMORY[0x277CBEB18] arrayWithCapacity:{-[NSMutableArray count](self->_requestAuthQueue, "count")}];
-  v66 = [v10 MSIsQuotaError];
+  mSIsQuotaError = [errorCopy MSIsQuotaError];
   v67 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR);
-  if (!v66)
+  if (!mSIsQuotaError)
   {
     if (v67)
     {
       v86 = objc_opt_class();
       v87 = v86;
-      v88 = [(MSCupidStateMachine *)self personID];
-      v89 = [v10 MSVerboseDescription];
+      personID5 = [(MSCupidStateMachine *)self personID];
+      mSVerboseDescription = [errorCopy MSVerboseDescription];
       *buf = 138543874;
       *v207 = v86;
       *&v207[8] = 2112;
-      v208 = v88;
+      v208 = personID5;
       v209 = 2114;
-      v210 = v89;
+      v210 = mSVerboseDescription;
       _os_log_error_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%{public}@ - %@ Error uploading metadata to Streams server: %{public}@", buf, 0x20u);
     }
 
-    if ([v10 MSNeedsBackoff])
+    if ([errorCopy MSNeedsBackoff])
     {
       [(MSCupidStateMachine *)self _backoffStreamsBackoffTimer];
     }
 
-    if ([v10 MSIsCounted])
+    if ([errorCopy MSIsCounted])
     {
       v163 = 0u;
       v164 = 0u;
@@ -1750,15 +1750,15 @@ LABEL_55:
   {
     v83 = objc_opt_class();
     v84 = v83;
-    v85 = [(MSCupidStateMachine *)self personID];
+    personID6 = [(MSCupidStateMachine *)self personID];
     *buf = 138543618;
     *v207 = v83;
     *&v207[8] = 2112;
-    v208 = v85;
+    v208 = personID6;
     _os_log_error_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%{public}@ - %@ Received a quota error.", buf, 0x16u);
   }
 
-  v139 = [v9 objectForKey:@"code"];
+  v139 = [responseCopy objectForKey:@"code"];
   if (!v139 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
 LABEL_128:
@@ -1766,11 +1766,11 @@ LABEL_128:
     {
       v126 = objc_opt_class();
       v127 = v126;
-      v128 = [(MSCupidStateMachine *)self personID];
+      personID7 = [(MSCupidStateMachine *)self personID];
       *buf = 138543618;
       *v207 = v126;
       *&v207[8] = 2112;
-      v208 = v128;
+      v208 = personID7;
       _os_log_error_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%{public}@ - %@ Could not parse the server's response.", buf, 0x16u);
     }
 
@@ -1815,38 +1815,38 @@ LABEL_128:
   {
     v129 = objc_opt_class();
     v130 = v129;
-    v131 = [(MSCupidStateMachine *)self personID];
+    personID8 = [(MSCupidStateMachine *)self personID];
     *buf = 138543874;
     *v207 = v129;
     *&v207[8] = 2112;
-    v208 = v131;
+    v208 = personID8;
     v209 = 2114;
     v210 = v139;
     _os_log_error_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%{public}@ - %@ Quota error code: %{public}@", buf, 0x20u);
   }
 
-  v68 = [v9 objectForKey:@"retryafter"];
+  v68 = [responseCopy objectForKey:@"retryafter"];
   objc_opt_class();
   v135 = v68;
   if (objc_opt_isKindOfClass())
   {
-    v69 = [v68 intValue];
-    if (v69 < 1)
+    intValue = [v68 intValue];
+    if (intValue < 1)
     {
       [(MSCupidStateMachine *)self _backoffStreamsBackoffTimer];
     }
 
     else
     {
-      v70 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:v69];
+      v70 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:intValue];
       [(MSCupidStateMachine *)self _didReceiveStreamsRetryAfterDate:v70];
     }
 
     v90 = self->_daemon;
-    v91 = [(MSCupidStateMachine *)self personID];
-    v92 = [(MSCupidStateMachine *)self personID];
-    v93 = [MSPublisher nextActivityDateForPersonID:v92];
-    [(MSMediaStreamDaemon *)v90 didExceedPublishQuotaForPersonID:v91 retryDate:v93];
+    personID9 = [(MSCupidStateMachine *)self personID];
+    personID10 = [(MSCupidStateMachine *)self personID];
+    v93 = [MSPublisher nextActivityDateForPersonID:personID10];
+    [(MSMediaStreamDaemon *)v90 didExceedPublishQuotaForPersonID:personID9 retryDate:v93];
   }
 
   if (![v139 isEqualToString:@"4034"])
@@ -1855,7 +1855,7 @@ LABEL_128:
     goto LABEL_140;
   }
 
-  v94 = [v9 objectForKey:@"assets"];
+  v94 = [responseCopy objectForKey:@"assets"];
   if (v94)
   {
     objc_opt_class();
@@ -1867,7 +1867,7 @@ LABEL_127:
     }
   }
 
-  v141 = v9;
+  v141 = responseCopy;
   v179 = 0u;
   v180 = 0u;
   v177 = 0u;
@@ -1877,8 +1877,8 @@ LABEL_127:
   if (v138)
   {
     v137 = *v178;
-    v143 = v8;
-    v146 = v10;
+    v143 = protocolCopy;
+    v146 = errorCopy;
     v151 = v65;
     while (2)
     {
@@ -1893,21 +1893,21 @@ LABEL_127:
         v144 = v95;
         v96 = *(*(&v177 + 1) + 8 * v95);
         objc_opt_class();
-        self = v148;
+        self = selfCopy;
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
           v94 = v136;
 
-          v9 = v141;
+          responseCopy = v141;
           goto LABEL_127;
         }
 
-        v97 = [v96 MSHexData];
+        mSHexData2 = [v96 MSHexData];
         v173 = 0u;
         v174 = 0u;
         v175 = 0u;
         v176 = 0u;
-        v154 = v148->_requestAuthQueue;
+        v154 = selfCopy->_requestAuthQueue;
         obja = [(NSMutableArray *)v154 countByEnumeratingWithState:&v173 objects:v200 count:16];
         if (obja)
         {
@@ -1922,10 +1922,10 @@ LABEL_127:
               }
 
               v99 = *(*(&v173 + 1) + 8 * n);
-              v100 = [v99 object];
-              v101 = [v100 masterAsset];
-              v102 = [v101 fileHash];
-              v103 = [v102 isEqualToData:v97];
+              object2 = [v99 object];
+              masterAsset2 = [object2 masterAsset];
+              fileHash = [masterAsset2 fileHash];
+              v103 = [fileHash isEqualToData:mSHexData2];
 
               if (v103)
               {
@@ -1935,13 +1935,13 @@ LABEL_118:
                 {
                   v111 = objc_opt_class();
                   v112 = v111;
-                  v113 = [(MSCupidStateMachine *)v148 personID];
+                  personID11 = [(MSCupidStateMachine *)selfCopy personID];
                   *buf = 138543874;
                   *v207 = v111;
                   *&v207[8] = 2112;
-                  v208 = v113;
+                  v208 = personID11;
                   v209 = 2114;
-                  v210 = v100;
+                  v210 = object2;
                   _os_log_error_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%{public}@ - %@ Server reject asset collection because it is too large: %{public}@", buf, 0x20u);
                 }
               }
@@ -1952,8 +1952,8 @@ LABEL_118:
                 v172 = 0u;
                 v169 = 0u;
                 v170 = 0u;
-                v104 = [v100 derivedAssets];
-                v105 = [v104 countByEnumeratingWithState:&v169 objects:v199 count:16];
+                derivedAssets2 = [object2 derivedAssets];
+                v105 = [derivedAssets2 countByEnumeratingWithState:&v169 objects:v199 count:16];
                 if (v105)
                 {
                   v106 = v105;
@@ -1964,11 +1964,11 @@ LABEL_118:
                     {
                       if (*v170 != v107)
                       {
-                        objc_enumerationMutation(v104);
+                        objc_enumerationMutation(derivedAssets2);
                       }
 
-                      v109 = [*(*(&v169 + 1) + 8 * ii) fileHash];
-                      v110 = [v109 isEqualToData:v97];
+                      fileHash2 = [*(*(&v169 + 1) + 8 * ii) fileHash];
+                      v110 = [fileHash2 isEqualToData:mSHexData2];
 
                       if (v110)
                       {
@@ -1979,7 +1979,7 @@ LABEL_118:
                       }
                     }
 
-                    v106 = [v104 countByEnumeratingWithState:&v169 objects:v199 count:16];
+                    v106 = [derivedAssets2 countByEnumeratingWithState:&v169 objects:v199 count:16];
                     if (v106)
                     {
                       continue;
@@ -1999,9 +1999,9 @@ LABEL_118:
           while (obja);
         }
 
-        v8 = v143;
+        protocolCopy = v143;
         v95 = v144 + 1;
-        v10 = v146;
+        errorCopy = v146;
       }
 
       while (v144 + 1 != v138);
@@ -2015,8 +2015,8 @@ LABEL_118:
     }
   }
 
-  v9 = v141;
-  self = v148;
+  responseCopy = v141;
+  self = selfCopy;
 LABEL_140:
 
 LABEL_141:
@@ -2031,18 +2031,18 @@ LABEL_141:
     {
       v122 = objc_opt_class();
       v123 = v122;
-      v124 = [(MSCupidStateMachine *)self personID];
+      personID12 = [(MSCupidStateMachine *)self personID];
       v125 = [v65 count];
       *buf = 138543874;
       *v207 = v122;
       *&v207[8] = 2112;
-      v208 = v124;
+      v208 = personID12;
       v209 = 2048;
       v210 = v125;
       _os_log_error_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%{public}@ - %@ Too many errors encountered while uploading %ld asset collections. Aborting.", buf, 0x20u);
     }
 
-    [(MSPublisher *)self _quarantineOrDiscardWrappers:v65 withError:v10];
+    [(MSPublisher *)self _quarantineOrDiscardWrappers:v65 withError:errorCopy];
   }
 
   if ([(NSMutableArray *)self->_requestAuthQueue count])
@@ -2064,14 +2064,14 @@ LABEL_150:
   v121 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_invalidStreamsResponseErrorUnderlyingError:(id)a3
+- (id)_invalidStreamsResponseErrorUnderlyingError:(id)error
 {
-  v3 = a3;
+  errorCopy = error;
   v4 = MEMORY[0x277CCA9B8];
   v5 = MSCFCopyLocalizedString(@"ERROR_PUT_CONNECTION_INVALID_STREAMS_RESPONSE");
-  if (v3)
+  if (errorCopy)
   {
-    [v4 MSErrorWithDomain:@"MSStreamsPutConnectionErrorDomain" code:1 description:v5 underlyingError:v3];
+    [v4 MSErrorWithDomain:@"MSStreamsPutConnectionErrorDomain" code:1 description:v5 underlyingError:errorCopy];
   }
 
   else
@@ -2090,11 +2090,11 @@ LABEL_150:
   {
     v3 = objc_opt_class();
     v4 = v3;
-    v5 = [(MSCupidStateMachine *)self personID];
+    personID = [(MSCupidStateMachine *)self personID];
     *buf = 138543618;
     *v64 = v3;
     *&v64[8] = 2112;
-    v65 = v5;
+    v65 = personID;
     _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%{public}@ - %@ Sending metadata...", buf, 0x16u);
   }
 
@@ -2132,15 +2132,15 @@ LABEL_150:
               }
 
               v23 = *(*(&v52 + 1) + 8 * i);
-              v24 = [v23 masterAsset];
-              [(MSPublisher *)self _addAssetToFileHashMap:v24];
+              masterAsset = [v23 masterAsset];
+              [(MSPublisher *)self _addAssetToFileHashMap:masterAsset];
 
               v50 = 0u;
               v51 = 0u;
               v48 = 0u;
               v49 = 0u;
-              v25 = [v23 derivedAssets];
-              v26 = [v25 countByEnumeratingWithState:&v48 objects:v61 count:16];
+              derivedAssets = [v23 derivedAssets];
+              v26 = [derivedAssets countByEnumeratingWithState:&v48 objects:v61 count:16];
               if (v26)
               {
                 v27 = v26;
@@ -2151,13 +2151,13 @@ LABEL_150:
                   {
                     if (*v49 != v28)
                     {
-                      objc_enumerationMutation(v25);
+                      objc_enumerationMutation(derivedAssets);
                     }
 
                     [(MSPublisher *)self _addAssetToFileHashMap:*(*(&v48 + 1) + 8 * j)];
                   }
 
-                  v27 = [v25 countByEnumeratingWithState:&v48 objects:v61 count:16];
+                  v27 = [derivedAssets countByEnumeratingWithState:&v48 objects:v61 count:16];
                 }
 
                 while (v27);
@@ -2181,11 +2181,11 @@ LABEL_150:
       {
         v35 = objc_opt_class();
         v36 = v35;
-        v37 = [(MSCupidStateMachine *)self personID];
+        personID2 = [(MSCupidStateMachine *)self personID];
         *buf = 138543618;
         *v64 = v35;
         *&v64[8] = 2112;
-        v65 = v37;
+        v65 = personID2;
         _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%{public}@ - %@ nothing to send.", buf, 0x16u);
       }
 
@@ -2327,22 +2327,22 @@ LABEL_49:
   v40 = *MEMORY[0x277D85DE8];
 }
 
-- (void)submitAssetCollectionsForPublication:(id)a3 skipAssetCollections:(id)a4
+- (void)submitAssetCollectionsForPublication:(id)publication skipAssetCollections:(id)collections
 {
   v124 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v91 = a4;
+  publicationCopy = publication;
+  collectionsCopy = collections;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     v7 = objc_opt_class();
     v8 = v7;
-    v9 = [(MSCupidStateMachine *)self personID];
+    personID = [(MSCupidStateMachine *)self personID];
     *buf = 138543874;
     v114 = v7;
     v115 = 2112;
-    v116 = v9;
+    v116 = personID;
     v117 = 2048;
-    v118 = [v6 count];
+    v118 = [publicationCopy count];
     _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%{public}@ - %@ Submitting %ld asset collections for publication.", buf, 0x20u);
   }
 
@@ -2350,30 +2350,30 @@ LABEL_49:
   {
     v87 = objc_opt_class();
     v88 = v87;
-    v89 = [(MSCupidStateMachine *)self personID];
-    v90 = [v91 count];
+    personID2 = [(MSCupidStateMachine *)self personID];
+    v90 = [collectionsCopy count];
     *buf = 138543874;
     v114 = v87;
     v115 = 2112;
-    v116 = v89;
+    v116 = personID2;
     v117 = 2048;
     v118 = v90;
     _os_log_debug_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG, "%{public}@ - %@ ...skipping %ld asset collections.", buf, 0x20u);
   }
 
-  [(MSPublisher *)self _didFinishUsingAssetCollections:v91];
-  v94 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v6, "count")}];
+  [(MSPublisher *)self _didFinishUsingAssetCollections:collectionsCopy];
+  v94 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(publicationCopy, "count")}];
   v108 = 0u;
   v109 = 0u;
   v110 = 0u;
   v111 = 0u;
-  obj = v6;
+  obj = publicationCopy;
   v101 = [obj countByEnumeratingWithState:&v108 objects:v123 count:16];
   if (v101)
   {
     v10 = MEMORY[0x277D86220];
     v100 = *v109;
-    v99 = self;
+    selfCopy = self;
     do
     {
       v11 = 0;
@@ -2385,22 +2385,22 @@ LABEL_49:
         }
 
         v12 = *(*(&v108 + 1) + 8 * v11);
-        v13 = [v12 masterAsset];
-        v14 = [v13 type];
+        masterAsset = [v12 masterAsset];
+        type = [masterAsset type];
         v102 = v12;
-        if (!v14 || ([(NSMutableDictionary *)self->_maxSizeByUTI objectForKey:v14], v15 = objc_claimAutoreleasedReturnValue(), v15, !v15))
+        if (!type || ([(NSMutableDictionary *)self->_maxSizeByUTI objectForKey:type], v15 = objc_claimAutoreleasedReturnValue(), v15, !v15))
         {
           if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
           {
             v56 = objc_opt_class();
             v57 = v56;
-            v58 = [(MSCupidStateMachine *)self personID];
+            personID3 = [(MSCupidStateMachine *)self personID];
             *buf = 138544130;
             v114 = v56;
             v115 = 2112;
-            v116 = v58;
+            v116 = personID3;
             v117 = 2114;
-            v118 = v14;
+            v118 = type;
             v119 = 2114;
             v120 = v12;
             _os_log_error_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%{public}@ - %@ The UTI for “%{public}@” is not accepted by the server. Asset collection: %{public}@", buf, 0x2Au);
@@ -2410,87 +2410,87 @@ LABEL_49:
 
           v25 = MEMORY[0x277CCA9B8];
           v26 = MEMORY[0x277CCACA8];
-          v22 = MSCFCopyLocalizedString(@"ERROR_PUBLISHER_UTI_REJECTED_P_UTI");
-          v27 = [v26 stringWithFormat:v22, v14];
+          derivedAssets = MSCFCopyLocalizedString(@"ERROR_PUBLISHER_UTI_REJECTED_P_UTI");
+          v27 = [v26 stringWithFormat:derivedAssets, type];
           v28 = [v25 MSErrorWithDomain:@"MSPublisherErrorDomain" code:4 description:v27];
 
           goto LABEL_24;
         }
 
-        v16 = [(NSMutableDictionary *)self->_maxSizeByUTI objectForKey:v14];
-        v17 = [v16 longLongValue];
+        v16 = [(NSMutableDictionary *)self->_maxSizeByUTI objectForKey:type];
+        longLongValue = [v16 longLongValue];
 
-        v18 = [v13 _fileSize];
-        v19 = [(MSPublisher *)self publishStorageProtocol:0 didRequestFDForAsset:v13];
-        v20 = [v13 _fileSizeOnDisk];
-        [(MSPublisher *)self publishStorageProtocol:0 didFinishUsingFD:v19 forAsset:v13];
-        if (!v20)
+        _fileSize = [masterAsset _fileSize];
+        v19 = [(MSPublisher *)self publishStorageProtocol:0 didRequestFDForAsset:masterAsset];
+        _fileSizeOnDisk = [masterAsset _fileSizeOnDisk];
+        [(MSPublisher *)self publishStorageProtocol:0 didFinishUsingFD:v19 forAsset:masterAsset];
+        if (!_fileSizeOnDisk)
         {
           if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
           {
             v61 = objc_opt_class();
             v62 = v61;
-            v63 = [(MSCupidStateMachine *)self personID];
+            personID4 = [(MSCupidStateMachine *)self personID];
             *buf = 138543618;
             v114 = v61;
             v115 = 2112;
-            v116 = v63;
+            v116 = personID4;
             _os_log_error_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%{public}@ - %@ The master asset has zero size. Rejecting upload.", buf, 0x16u);
 
             v10 = MEMORY[0x277D86220];
           }
 
           v29 = MEMORY[0x277CCA9B8];
-          v22 = MSCFCopyLocalizedString(@"ERROR_PUBLISHER_ASSET_ZERO_SIZE");
+          derivedAssets = MSCFCopyLocalizedString(@"ERROR_PUBLISHER_ASSET_ZERO_SIZE");
           v23 = v29;
           v24 = 5;
           goto LABEL_23;
         }
 
-        if (v18 > v17)
+        if (_fileSize > longLongValue)
         {
           if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
           {
             v64 = objc_opt_class();
             v65 = v64;
-            v66 = [(MSCupidStateMachine *)self personID];
-            v67 = [v12 masterAsset];
+            personID5 = [(MSCupidStateMachine *)self personID];
+            masterAsset2 = [v12 masterAsset];
             *buf = 138544386;
             v114 = v64;
             v115 = 2112;
-            v116 = v66;
+            v116 = personID5;
             v117 = 2048;
-            v118 = v18;
+            v118 = _fileSize;
             v119 = 2048;
-            v120 = v17;
+            v120 = longLongValue;
             v121 = 2114;
-            v122 = v67;
+            v122 = masterAsset2;
             _os_log_error_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%{public}@ - %@ The master asset has size %lld, which is larger than the maximum allowed %lld. %{public}@", buf, 0x34u);
 
-            self = v99;
+            self = selfCopy;
             v10 = MEMORY[0x277D86220];
           }
 
           v21 = MEMORY[0x277CCA9B8];
-          v22 = MSCFCopyLocalizedString(@"ERROR_PUBLISHER_ASSET_TOO_LARGE");
+          derivedAssets = MSCFCopyLocalizedString(@"ERROR_PUBLISHER_ASSET_TOO_LARGE");
           v23 = v21;
           v24 = 6;
 LABEL_23:
-          v28 = [v23 MSErrorWithDomain:@"MSPublisherErrorDomain" code:v24 description:v22];
+          v28 = [v23 MSErrorWithDomain:@"MSPublisherErrorDomain" code:v24 description:derivedAssets];
 LABEL_24:
           v30 = 0;
           goto LABEL_25;
         }
 
-        v34 = [v13 fileHash];
-        if (!v34)
+        fileHash = [masterAsset fileHash];
+        if (!fileHash)
         {
           goto LABEL_49;
         }
 
-        v35 = v34;
-        v36 = [v13 metadata];
-        v37 = [v36 objectForKey:@"MSAssetMetadataSHA1HashKey"];
+        v35 = fileHash;
+        metadata = [masterAsset metadata];
+        v37 = [metadata objectForKey:@"MSAssetMetadataSHA1HashKey"];
 
         if (v37)
         {
@@ -2498,50 +2498,50 @@ LABEL_24:
           v107 = 0u;
           v104 = 0u;
           v105 = 0u;
-          v22 = [v12 derivedAssets];
-          v96 = [v22 countByEnumeratingWithState:&v104 objects:v112 count:16];
+          derivedAssets = [v12 derivedAssets];
+          v96 = [derivedAssets countByEnumeratingWithState:&v104 objects:v112 count:16];
           if (v96)
           {
             v95 = *v105;
-            v92 = v18;
-            v30 = v18;
-            v93 = v17;
+            v92 = _fileSize;
+            v30 = _fileSize;
+            v93 = longLongValue;
             while (2)
             {
               for (i = 0; i != v96; ++i)
               {
                 if (*v105 != v95)
                 {
-                  objc_enumerationMutation(v22);
+                  objc_enumerationMutation(derivedAssets);
                 }
 
                 v39 = *(*(&v104 + 1) + 8 * i);
-                v40 = [v39 fileHash];
-                if (!v40)
+                fileHash2 = [v39 fileHash];
+                if (!fileHash2)
                 {
                   goto LABEL_41;
                 }
 
-                v41 = v40;
-                v42 = [v39 metadata];
-                v43 = [v42 objectForKey:@"MSAssetMetadataSHA1HashKey"];
+                v41 = fileHash2;
+                metadata2 = [v39 metadata];
+                v43 = [metadata2 objectForKey:@"MSAssetMetadataSHA1HashKey"];
 
                 if (!v43)
                 {
 LABEL_41:
-                  v44 = v99;
-                  [(MSPublishStorageProtocol *)v99->_storageProtocol computeHashForAsset:v39];
-                  v45 = [v39 fileHash];
-                  if (!v45)
+                  v44 = selfCopy;
+                  [(MSPublishStorageProtocol *)selfCopy->_storageProtocol computeHashForAsset:v39];
+                  fileHash3 = [v39 fileHash];
+                  if (!fileHash3)
                   {
                     goto LABEL_69;
                   }
 
-                  v46 = v45;
-                  v47 = [v39 metadata];
-                  v48 = [v47 objectForKey:@"MSAssetMetadataSHA1HashKey"];
+                  v46 = fileHash3;
+                  metadata3 = [v39 metadata];
+                  v48 = [metadata3 objectForKey:@"MSAssetMetadataSHA1HashKey"];
 
-                  v44 = v99;
+                  v44 = selfCopy;
                   if (!v48)
                   {
 LABEL_69:
@@ -2551,11 +2551,11 @@ LABEL_69:
                       v74 = v73;
                       v75 = v44;
                       v76 = v74;
-                      v77 = [(MSCupidStateMachine *)v75 personID];
+                      personID6 = [(MSCupidStateMachine *)v75 personID];
                       *buf = 138543874;
                       v114 = v73;
                       v115 = 2112;
-                      v116 = v77;
+                      v116 = personID6;
                       v117 = 2114;
                       v118 = v39;
                       _os_log_error_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%{public}@ - %@ Could not compute hash for derived asset %{public}@. Rejecting asset from publication.", buf, 0x20u);
@@ -2566,21 +2566,21 @@ LABEL_69:
                     goto LABEL_62;
                   }
 
-                  v49 = [v39 _fileSize];
-                  v97 = [(MSPublisher *)v99 publishStorageProtocol:0 didRequestFDForAsset:v39];
-                  v50 = [v39 _fileSizeOnDisk];
-                  [(MSPublisher *)v99 publishStorageProtocol:0 didFinishUsingFD:v97 forAsset:v39];
-                  if (!v50)
+                  _fileSize2 = [v39 _fileSize];
+                  v97 = [(MSPublisher *)selfCopy publishStorageProtocol:0 didRequestFDForAsset:v39];
+                  _fileSizeOnDisk2 = [v39 _fileSizeOnDisk];
+                  [(MSPublisher *)selfCopy publishStorageProtocol:0 didFinishUsingFD:v97 forAsset:v39];
+                  if (!_fileSizeOnDisk2)
                   {
                     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
                     {
                       v78 = objc_opt_class();
                       v79 = v78;
-                      v80 = [(MSCupidStateMachine *)v99 personID];
+                      personID7 = [(MSCupidStateMachine *)selfCopy personID];
                       *buf = 138543618;
                       v114 = v78;
                       v115 = 2112;
-                      v116 = v80;
+                      v116 = personID7;
                       _os_log_error_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%{public}@ - %@ The asset has zero size. Rejecting upload.", buf, 0x16u);
                     }
 
@@ -2589,17 +2589,17 @@ LABEL_69:
                     goto LABEL_62;
                   }
 
-                  if (v49 > v93)
+                  if (_fileSize2 > v93)
                   {
                     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
                     {
                       v81 = objc_opt_class();
                       v82 = v81;
-                      v83 = [(MSCupidStateMachine *)v99 personID];
+                      personID8 = [(MSCupidStateMachine *)selfCopy personID];
                       *buf = 138544386;
                       v114 = v81;
                       v115 = 2112;
-                      v116 = v83;
+                      v116 = personID8;
                       v117 = 2048;
                       v118 = v92;
                       v119 = 2048;
@@ -2623,7 +2623,7 @@ LABEL_62:
                 }
               }
 
-              v96 = [v22 countByEnumeratingWithState:&v104 objects:v112 count:16];
+              v96 = [derivedAssets countByEnumeratingWithState:&v104 objects:v112 count:16];
               if (v96)
               {
                 continue;
@@ -2634,13 +2634,13 @@ LABEL_62:
 
             v28 = 0;
 LABEL_63:
-            self = v99;
+            self = selfCopy;
           }
 
           else
           {
             v28 = 0;
-            v30 = v18;
+            v30 = _fileSize;
           }
 
           v10 = MEMORY[0x277D86220];
@@ -2654,22 +2654,22 @@ LABEL_49:
           {
             v70 = objc_opt_class();
             v71 = v70;
-            v72 = [(MSCupidStateMachine *)self personID];
+            personID9 = [(MSCupidStateMachine *)self personID];
             *buf = 138543874;
             v114 = v70;
             v115 = 2112;
-            v116 = v72;
+            v116 = personID9;
             v117 = 2114;
-            v118 = v13;
+            v118 = masterAsset;
             _os_log_error_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%{public}@ - %@ The master asset in the collection does not have a hash. Rejecting from publication: %{public}@", buf, 0x20u);
 
             v10 = MEMORY[0x277D86220];
           }
 
           v51 = MEMORY[0x277CCA9B8];
-          v22 = MSCFCopyLocalizedString(@"ERROR_PUBLISHER_MISSING_HASH");
-          v28 = [v51 MSErrorWithDomain:@"MSPublisherErrorDomain" code:2 description:v22];
-          v30 = v18;
+          derivedAssets = MSCFCopyLocalizedString(@"ERROR_PUBLISHER_MISSING_HASH");
+          v28 = [v51 MSErrorWithDomain:@"MSPublisherErrorDomain" code:2 description:derivedAssets];
+          v30 = _fileSize;
         }
 
 LABEL_25:
@@ -2680,19 +2680,19 @@ LABEL_25:
           {
             v52 = objc_opt_class();
             v53 = v52;
-            v54 = [(MSCupidStateMachine *)self personID];
-            v55 = [v28 MSVerboseDescription];
+            personID10 = [(MSCupidStateMachine *)self personID];
+            mSVerboseDescription = [v28 MSVerboseDescription];
             *buf = 138544130;
             v114 = v52;
             v115 = 2112;
-            v116 = v54;
+            v116 = personID10;
             v117 = 2114;
             v118 = v102;
             v119 = 2114;
-            v120 = v55;
+            v120 = mSVerboseDescription;
             _os_log_error_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%{public}@ - %@ Rejecting asset collection %{public}@\nError: %{public}@", buf, 0x2Au);
 
-            self = v99;
+            self = selfCopy;
             v10 = MEMORY[0x277D86220];
           }
 
@@ -2739,16 +2739,16 @@ LABEL_25:
   v86 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_didFinishUsingAssetCollections:(id)a3
+- (void)_didFinishUsingAssetCollections:(id)collections
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  collectionsCopy = collections;
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = v4;
+  v6 = collectionsCopy;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -2764,11 +2764,11 @@ LABEL_25:
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
-        v12 = [v11 masterAsset];
-        [v5 addObject:v12];
+        masterAsset = [v11 masterAsset];
+        [v5 addObject:masterAsset];
 
-        v13 = [v11 derivedAssets];
-        [v5 addObjectsFromArray:v13];
+        derivedAssets = [v11 derivedAssets];
+        [v5 addObjectsFromArray:derivedAssets];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -2781,14 +2781,14 @@ LABEL_25:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_removeAssetsInAssetCollectionWrappersFromAssetMap:(id)a3
+- (void)_removeAssetsInAssetCollectionWrappersFromAssetMap:(id)map
 {
   v28 = *MEMORY[0x277D85DE8];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  obj = a3;
+  obj = map;
   v17 = [obj countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v17)
   {
@@ -2803,21 +2803,21 @@ LABEL_25:
           objc_enumerationMutation(obj);
         }
 
-        v5 = [*(*(&v22 + 1) + 8 * v4) object];
-        v6 = [v5 masterAsset];
-        v7 = [v6 fileHash];
+        object = [*(*(&v22 + 1) + 8 * v4) object];
+        masterAsset = [object masterAsset];
+        fileHash = [masterAsset fileHash];
 
-        if (v7)
+        if (fileHash)
         {
-          [(NSMutableDictionary *)self->_fileHashToAssetMap removeObjectForKey:v7];
+          [(NSMutableDictionary *)self->_fileHashToAssetMap removeObjectForKey:fileHash];
         }
 
         v20 = 0u;
         v21 = 0u;
         v18 = 0u;
         v19 = 0u;
-        v8 = [v5 derivedAssets];
-        v9 = [v8 countByEnumeratingWithState:&v18 objects:v26 count:16];
+        derivedAssets = [object derivedAssets];
+        v9 = [derivedAssets countByEnumeratingWithState:&v18 objects:v26 count:16];
         if (v9)
         {
           v10 = v9;
@@ -2829,20 +2829,20 @@ LABEL_25:
             {
               if (*v19 != v11)
               {
-                objc_enumerationMutation(v8);
+                objc_enumerationMutation(derivedAssets);
               }
 
-              v13 = [*(*(&v18 + 1) + 8 * v12) fileHash];
-              if (v13)
+              fileHash2 = [*(*(&v18 + 1) + 8 * v12) fileHash];
+              if (fileHash2)
               {
-                [(NSMutableDictionary *)self->_fileHashToAssetMap removeObjectForKey:v13];
+                [(NSMutableDictionary *)self->_fileHashToAssetMap removeObjectForKey:fileHash2];
               }
 
               ++v12;
             }
 
             while (v10 != v12);
-            v10 = [v8 countByEnumeratingWithState:&v18 objects:v26 count:16];
+            v10 = [derivedAssets countByEnumeratingWithState:&v18 objects:v26 count:16];
           }
 
           while (v10);
@@ -2861,13 +2861,13 @@ LABEL_25:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_removeAssetFromFileHashMap:(id)a3
+- (void)_removeAssetFromFileHashMap:(id)map
 {
-  v4 = a3;
+  mapCopy = map;
   fileHashToAssetMap = self->_fileHashToAssetMap;
-  v10 = v4;
-  v6 = [v4 fileHash];
-  v7 = [(NSMutableDictionary *)fileHashToAssetMap objectForKey:v6];
+  v10 = mapCopy;
+  fileHash = [mapCopy fileHash];
+  v7 = [(NSMutableDictionary *)fileHashToAssetMap objectForKey:fileHash];
 
   if (v7)
   {
@@ -2875,46 +2875,46 @@ LABEL_25:
     if (![v7 count])
     {
       v8 = self->_fileHashToAssetMap;
-      v9 = [v10 fileHash];
-      [(NSMutableDictionary *)v8 removeObjectForKey:v9];
+      fileHash2 = [v10 fileHash];
+      [(NSMutableDictionary *)v8 removeObjectForKey:fileHash2];
     }
   }
 }
 
-- (void)_addAssetToFileHashMap:(id)a3
+- (void)_addAssetToFileHashMap:(id)map
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 fileHash];
+  mapCopy = map;
+  fileHash = [mapCopy fileHash];
 
-  if (v5)
+  if (fileHash)
   {
     fileHashToAssetMap = self->_fileHashToAssetMap;
-    v7 = [v4 fileHash];
-    v8 = [(NSMutableDictionary *)fileHashToAssetMap objectForKey:v7];
+    fileHash2 = [mapCopy fileHash];
+    array = [(NSMutableDictionary *)fileHashToAssetMap objectForKey:fileHash2];
 
-    if (!v8)
+    if (!array)
     {
-      v8 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
       v9 = self->_fileHashToAssetMap;
-      v10 = [v4 fileHash];
-      [(NSMutableDictionary *)v9 setObject:v8 forKey:v10];
+      fileHash3 = [mapCopy fileHash];
+      [(NSMutableDictionary *)v9 setObject:array forKey:fileHash3];
     }
 
-    [v8 addObject:v4];
+    [array addObject:mapCopy];
   }
 
   else if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     v12 = objc_opt_class();
     v13 = v12;
-    v14 = [(MSCupidStateMachine *)self personID];
+    personID = [(MSCupidStateMachine *)self personID];
     v15 = 138543874;
     v16 = v12;
     v17 = 2112;
-    v18 = v14;
+    v18 = personID;
     v19 = 2114;
-    v20 = v4;
+    v20 = mapCopy;
     _os_log_error_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%{public}@ - %@ No file hash for asset %{public}@", &v15, 0x20u);
   }
 
@@ -2923,26 +2923,26 @@ LABEL_25:
 
 - (void)_requestDerivatives
 {
-  v2 = self;
+  selfCopy = self;
   v60 = *MEMORY[0x277D85DE8];
   v3 = [(MSObjectQueue *)self->_uploadQueue smallestObjectWrappersTargetTotalSize:1 maxCount:1];
   v4 = [v3 count];
 
   if (v4)
   {
-    v2->_state = 4;
-    [(MSDaemon *)v2->_daemon releaseBusy];
+    selfCopy->_state = 4;
+    [(MSDaemon *)selfCopy->_daemon releaseBusy];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __34__MSPublisher__requestDerivatives__block_invoke;
     block[3] = &unk_278E926D8;
-    block[4] = v2;
+    block[4] = selfCopy;
     dispatch_async(MEMORY[0x277D85CD0], block);
   }
 
   else
   {
-    v5 = [(MSObjectQueue *)v2->_uploadQueue objectWrappersWithZeroSizeMaxCount:v2->_publishBatchSize];
+    v5 = [(MSObjectQueue *)selfCopy->_uploadQueue objectWrappersWithZeroSizeMaxCount:selfCopy->_publishBatchSize];
     v6 = [MSObjectWrapper objectsFromWrappers:v5];
     if ([v6 count])
     {
@@ -2950,26 +2950,26 @@ LABEL_25:
       {
         v7 = objc_opt_class();
         v8 = v7;
-        v9 = [(MSCupidStateMachine *)v2 personID];
+        personID = [(MSCupidStateMachine *)selfCopy personID];
         *buf = 138543874;
         v55 = v7;
         v56 = 2112;
-        v57 = v9;
+        v57 = personID;
         v58 = 2048;
         v59 = [v5 count];
         _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%{public}@ - %@ Requesting derivatives for %ld files.", buf, 0x20u);
       }
 
-      v10 = [MEMORY[0x277CCAB58] indexSet];
+      indexSet = [MEMORY[0x277CCAB58] indexSet];
       v49[0] = MEMORY[0x277D85DD0];
       v49[1] = 3221225472;
       v49[2] = __34__MSPublisher__requestDerivatives__block_invoke_50;
       v49[3] = &unk_278E90560;
-      v11 = v10;
+      v11 = indexSet;
       v50 = v11;
-      v51 = v2;
+      v51 = selfCopy;
       [v6 enumerateObjectsUsingBlock:v49];
-      [(MSObjectQueue *)v2->_uploadQueue removeObjectWrappersFromQueue:v5];
+      [(MSObjectQueue *)selfCopy->_uploadQueue removeObjectWrappersFromQueue:v5];
       if ([v11 count])
       {
         v12 = [v5 mutableCopy];
@@ -2982,8 +2982,8 @@ LABEL_25:
         v5 = v12;
       }
 
-      [(MSObjectQueue *)v2->_derivativesQueue appendObjectWrappers:v5];
-      objc_storeStrong(&v2->_pendingDerivativesQueue, v5);
+      [(MSObjectQueue *)selfCopy->_derivativesQueue appendObjectWrappers:v5];
+      objc_storeStrong(&selfCopy->_pendingDerivativesQueue, v5);
 
       v14 = v5;
     }
@@ -2991,15 +2991,15 @@ LABEL_25:
     else
     {
       v43 = v6;
-      v14 = [(MSObjectQueue *)v2->_derivativesQueue allObjectWrappersOrderedByDescendingErrorCountMaxCount:5];
+      v14 = [(MSObjectQueue *)selfCopy->_derivativesQueue allObjectWrappersOrderedByDescendingErrorCountMaxCount:5];
 
       if ([v14 count])
       {
         v15 = MEMORY[0x277D86220];
-        v44 = v2;
+        v44 = selfCopy;
         while (1)
         {
-          v16 = [MEMORY[0x277CBEB18] array];
+          array = [MEMORY[0x277CBEB18] array];
           v45 = 0u;
           v46 = 0u;
           v47 = 0u;
@@ -3020,21 +3020,21 @@ LABEL_25:
                 }
 
                 v22 = *(*(&v45 + 1) + 8 * i);
-                v23 = [v22 errorCount];
-                if (v23 <= 2)
+                errorCount = [v22 errorCount];
+                if (errorCount <= 2)
                 {
-                  v28 = v23;
-                  [v22 setErrorCount:(v23 + 1)];
-                  v2 = v44;
+                  v28 = errorCount;
+                  [v22 setErrorCount:(errorCount + 1)];
+                  selfCopy = v44;
                   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
                   {
                     v29 = objc_opt_class();
                     v30 = v29;
-                    v31 = [v22 object];
+                    object = [v22 object];
                     *buf = 138543874;
                     v55 = v29;
                     v56 = 2114;
-                    v57 = v31;
+                    v57 = object;
                     v58 = 1024;
                     LODWORD(v59) = v28;
                     _os_log_impl(&dword_245B99000, v15, OS_LOG_TYPE_DEFAULT, "%{public}@ - Retrying to get derivative for %{public}@ (error count: %i)", buf, 0x1Cu);
@@ -3052,15 +3052,15 @@ LABEL_25:
                 {
                   v24 = objc_opt_class();
                   v25 = v24;
-                  v26 = [v22 object];
+                  object2 = [v22 object];
                   *buf = 138543618;
                   v55 = v24;
                   v56 = 2114;
-                  v57 = v26;
+                  v57 = object2;
                   _os_log_error_impl(&dword_245B99000, v15, OS_LOG_TYPE_ERROR, "%{public}@ - unable to generate derivatives for %{public}@ safely.", buf, 0x16u);
                 }
 
-                [v16 addObject:v22];
+                [array addObject:v22];
               }
 
               v19 = [v17 countByEnumeratingWithState:&v45 objects:v53 count:16];
@@ -3073,7 +3073,7 @@ LABEL_25:
             }
 
             v27 = 0;
-            v2 = v44;
+            selfCopy = v44;
           }
 
           else
@@ -3083,9 +3083,9 @@ LABEL_25:
 
 LABEL_26:
 
-          if ([v16 count])
+          if ([array count])
           {
-            [(MSObjectQueue *)v2->_derivativesQueue removeObjectWrappersFromQueue:v16];
+            [(MSObjectQueue *)selfCopy->_derivativesQueue removeObjectWrappersFromQueue:array];
           }
 
           if (v27)
@@ -3093,7 +3093,7 @@ LABEL_26:
             break;
           }
 
-          v14 = [(MSObjectQueue *)v2->_derivativesQueue allObjectWrappersOrderedByDescendingErrorCountMaxCount:5];
+          v14 = [(MSObjectQueue *)selfCopy->_derivativesQueue allObjectWrappersOrderedByDescendingErrorCountMaxCount:5];
 
           if (![v14 count])
           {
@@ -3102,12 +3102,12 @@ LABEL_26:
         }
 
         v37 = MEMORY[0x277CBEA60];
-        v38 = [v27 object];
-        v39 = [v37 arrayWithObject:v38];
+        object3 = [v27 object];
+        v39 = [v37 arrayWithObject:object3];
 
         v40 = [MEMORY[0x277CBEA60] arrayWithObject:v27];
-        pendingDerivativesQueue = v2->_pendingDerivativesQueue;
-        v2->_pendingDerivativesQueue = v40;
+        pendingDerivativesQueue = selfCopy->_pendingDerivativesQueue;
+        selfCopy->_pendingDerivativesQueue = v40;
 
         v6 = v39;
         v14 = v17;
@@ -3120,11 +3120,11 @@ LABEL_30:
         {
           v34 = objc_opt_class();
           v35 = v34;
-          v36 = [(MSCupidStateMachine *)v2 personID];
+          personID2 = [(MSCupidStateMachine *)selfCopy personID];
           *buf = 138543618;
           v55 = v34;
           v56 = 2112;
-          v57 = v36;
+          v57 = personID2;
           _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%{public}@ - %@ No more derivatives to request.", buf, 0x16u);
         }
 
@@ -3132,17 +3132,17 @@ LABEL_30:
       }
     }
 
-    [(MSPublisher *)v2 _updateMasterManifest];
+    [(MSPublisher *)selfCopy _updateMasterManifest];
     if ([v6 count])
     {
-      v2->_state = 3;
-      [(MSPublisherDelegate *)v2->_delegate publisher:v2 didRequestSubmissionOfAssetCollections:v6];
+      selfCopy->_state = 3;
+      [(MSPublisherDelegate *)selfCopy->_delegate publisher:selfCopy didRequestSubmissionOfAssetCollections:v6];
     }
 
     else
     {
-      v2->_state = 0;
-      [(MSDaemon *)v2->_daemon releaseBusy];
+      selfCopy->_state = 0;
+      [(MSDaemon *)selfCopy->_daemon releaseBusy];
     }
   }
 
@@ -3195,11 +3195,11 @@ LABEL_4:
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
       v3 = objc_opt_class();
-      v4 = [(MSCupidStateMachine *)self personID];
+      personID = [(MSCupidStateMachine *)self personID];
       v13 = 138543618;
       v14 = v3;
       v15 = 2112;
-      v16 = v4;
+      v16 = personID;
       _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%{public}@ - %@ Not publishing because we're shutting down.", &v13, 0x16u);
     }
 
@@ -3320,9 +3320,9 @@ LABEL_36:
   v3 = MSPlatform();
   if ([v3 policyMayUpload])
   {
-    v4 = [(MSCupidStateMachine *)self _latestNextActivityDate];
-    v5 = [MEMORY[0x277CBEAA8] date];
-    v6 = [v4 compare:v5];
+    _latestNextActivityDate = [(MSCupidStateMachine *)self _latestNextActivityDate];
+    date = [MEMORY[0x277CBEAA8] date];
+    v6 = [_latestNextActivityDate compare:date];
 
     if (v6 != 1)
     {
@@ -3341,11 +3341,11 @@ LABEL_36:
   {
     v9 = objc_opt_class();
     v10 = v9;
-    v11 = [(MSCupidStateMachine *)self personID];
+    personID = [(MSCupidStateMachine *)self personID];
     v13 = 138543618;
     v14 = v9;
     v15 = 2112;
-    v16 = v11;
+    v16 = personID;
     _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%{public}@ - %@ Not uploading at this time.", &v13, 0x16u);
 
     result = 0;
@@ -3365,7 +3365,7 @@ LABEL_7:
   {
     v21 = 0;
     v5 = MEMORY[0x277D86220];
-    v23 = self;
+    selfCopy = self;
     do
     {
       context = objc_autoreleasePoolPush();
@@ -3390,11 +3390,11 @@ LABEL_7:
             }
 
             v12 = *(*(&v24 + 1) + 8 * i);
-            v13 = [v12 object];
-            v14 = [v13 assetCollectionID];
-            if (v14)
+            object = [v12 object];
+            assetCollectionID = [object assetCollectionID];
+            if (assetCollectionID)
             {
-              if ([v4 containsObject:v14])
+              if ([v4 containsObject:assetCollectionID])
               {
                 if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
                 {
@@ -3402,7 +3402,7 @@ LABEL_7:
                   *buf = 138543618;
                   v29 = v15;
                   v30 = 2114;
-                  v31 = v14;
+                  v31 = assetCollectionID;
                   v16 = v15;
                   _os_log_error_impl(&dword_245B99000, v5, OS_LOG_TYPE_ERROR, "%{public}@ - discarding a collection with identifier %{public}@ that was quarantined too many times.", buf, 0x16u);
                 }
@@ -3410,7 +3410,7 @@ LABEL_7:
 
               else
               {
-                [v4 addObject:v14];
+                [v4 addObject:assetCollectionID];
                 [v6 addObject:v12];
               }
             }
@@ -3422,7 +3422,7 @@ LABEL_7:
         while (v9);
       }
 
-      [(MSObjectQueue *)v23->_quarantinedQueue removeObjectWrappersFromQueue:v7];
+      [(MSObjectQueue *)selfCopy->_quarantinedQueue removeObjectWrappersFromQueue:v7];
       if ([v6 count])
       {
         if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -3437,11 +3437,11 @@ LABEL_7:
           _os_log_impl(&dword_245B99000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ - reenqueuing %ld quarantined collections.", buf, 0x16u);
         }
 
-        [(MSObjectQueue *)v23->_uploadQueue appendObjectWrappers:v6];
+        [(MSObjectQueue *)selfCopy->_uploadQueue appendObjectWrappers:v6];
         v21 = 1;
       }
 
-      v3 = [(MSObjectQueue *)v23->_quarantinedQueue allObjectWrappersMaxCount:10];
+      v3 = [(MSObjectQueue *)selfCopy->_quarantinedQueue allObjectWrappersMaxCount:10];
 
       objc_autoreleasePoolPop(context);
     }
@@ -3449,23 +3449,23 @@ LABEL_7:
     while ([v3 count]);
     if (v21)
     {
-      [(MSPublisher *)v23 _updateMasterManifest];
+      [(MSPublisher *)selfCopy _updateMasterManifest];
     }
   }
 
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_checkObjectWrappers:(id)a3
+- (id)_checkObjectWrappers:(id)wrappers
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  wrappersCopy = wrappers;
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v6 = v4;
+  v6 = wrappersCopy;
   v7 = [v6 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v7)
   {
@@ -3482,15 +3482,15 @@ LABEL_7:
         }
 
         v12 = *(*(&v21 + 1) + 8 * i);
-        v13 = [v12 object];
+        object = [v12 object];
         if ([v12 size])
         {
-          v14 = [(MSPublisher *)self _checkAssetCollectionFiles:v13];
+          v14 = [(MSPublisher *)self _checkAssetCollectionFiles:object];
         }
 
         else
         {
-          v14 = v13;
+          v14 = object;
         }
 
         v15 = v14;
@@ -3499,7 +3499,7 @@ LABEL_7:
           goto LABEL_12;
         }
 
-        if (v14 != v13)
+        if (v14 != object)
         {
           v16 = [MSObjectWrapper wrapperWithObject:v14 size:0];
           [v5 addObject:v16];
@@ -3537,45 +3537,45 @@ LABEL_20:
   return v17;
 }
 
-- (id)_checkAssetCollectionFiles:(id)a3
+- (id)_checkAssetCollectionFiles:(id)files
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 masterAsset];
-  if (![(MSPublisher *)self _verifyAssetFile:v5])
+  filesCopy = files;
+  masterAsset = [filesCopy masterAsset];
+  if (![(MSPublisher *)self _verifyAssetFile:masterAsset])
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
       v24 = objc_opt_class();
       v25 = 2114;
-      v26 = v4;
+      v26 = filesCopy;
       v14 = v24;
       _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%{public}@ - %{public}@ has disappeared.", buf, 0x16u);
     }
 
     v13 = 0;
 LABEL_21:
-    v7 = v4;
+    derivedAssets = filesCopy;
     goto LABEL_22;
   }
 
-  v6 = [v4 assetCollectionID];
+  assetCollectionID = [filesCopy assetCollectionID];
 
-  if (!v6)
+  if (!assetCollectionID)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
       v24 = objc_opt_class();
       v25 = 2114;
-      v26 = v4;
-      v7 = v24;
+      v26 = filesCopy;
+      derivedAssets = v24;
       _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%{public}@ - %{public}@ has lost his collection ID.", buf, 0x16u);
 LABEL_19:
     }
 
-    v13 = [(MSPublisher *)self _collectionWithNoDerivatives:v4];
+    v13 = [(MSPublisher *)self _collectionWithNoDerivatives:filesCopy];
     goto LABEL_21;
   }
 
@@ -3583,8 +3583,8 @@ LABEL_19:
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v7 = [v4 derivedAssets];
-  v8 = [v7 countByEnumeratingWithState:&v19 objects:v29 count:16];
+  derivedAssets = [filesCopy derivedAssets];
+  v8 = [derivedAssets countByEnumeratingWithState:&v19 objects:v29 count:16];
   if (v8)
   {
     v9 = v8;
@@ -3595,7 +3595,7 @@ LABEL_19:
       {
         if (*v20 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(derivedAssets);
         }
 
         v12 = *(*(&v19 + 1) + 8 * i);
@@ -3609,7 +3609,7 @@ LABEL_19:
             v25 = 2114;
             v26 = v12;
             v27 = 2114;
-            v28 = v4;
+            v28 = filesCopy;
             v16 = v15;
             _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%{public}@ - %{public}@ for %{public}@ has disappeared. Will have to recompute derivatives.", buf, 0x20u);
           }
@@ -3618,7 +3618,7 @@ LABEL_19:
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v19 objects:v29 count:16];
+      v9 = [derivedAssets countByEnumeratingWithState:&v19 objects:v29 count:16];
       if (v9)
       {
         continue;
@@ -3628,7 +3628,7 @@ LABEL_19:
     }
   }
 
-  v13 = v4;
+  v13 = filesCopy;
 LABEL_22:
 
   v17 = *MEMORY[0x277D85DE8];
@@ -3636,32 +3636,32 @@ LABEL_22:
   return v13;
 }
 
-- (id)_collectionWithNoDerivatives:(id)a3
+- (id)_collectionWithNoDerivatives:(id)derivatives
 {
-  v3 = a3;
-  v4 = [v3 masterAsset];
-  v5 = [v3 fileName];
-  v6 = [MSAssetCollection collectionWithMasterAsset:v4 fileName:v5];
+  derivativesCopy = derivatives;
+  masterAsset = [derivativesCopy masterAsset];
+  fileName = [derivativesCopy fileName];
+  v6 = [MSAssetCollection collectionWithMasterAsset:masterAsset fileName:fileName];
 
-  v7 = [v3 assetCollectionID];
+  assetCollectionID = [derivativesCopy assetCollectionID];
 
-  if (!v7)
+  if (!assetCollectionID)
   {
-    v7 = [MEMORY[0x277CCACA8] MSMakeUUID];
+    assetCollectionID = [MEMORY[0x277CCACA8] MSMakeUUID];
   }
 
-  [v6 setAssetCollectionID:v7];
+  [v6 setAssetCollectionID:assetCollectionID];
 
   return v6;
 }
 
-- (BOOL)_verifyAssetFile:(id)a3
+- (BOOL)_verifyAssetFile:(id)file
 {
-  v4 = a3;
-  v5 = [v4 path];
-  v6 = [v4 fileData];
+  fileCopy = file;
+  path = [fileCopy path];
+  fileData = [fileCopy fileData];
 
-  if (v6)
+  if (fileData)
   {
     goto LABEL_4;
   }
@@ -3669,31 +3669,31 @@ LABEL_22:
   delegate = self->_delegate;
   if (objc_opt_respondsToSelector())
   {
-    v6 = 0;
+    fileData = 0;
 LABEL_4:
     v8 = 1;
     goto LABEL_5;
   }
 
-  if (!v5)
+  if (!path)
   {
     v8 = 1;
     goto LABEL_6;
   }
 
-  v6 = [MEMORY[0x277CCAA00] defaultManager];
-  v8 = [v6 fileExistsAtPath:v5 isDirectory:0];
+  fileData = [MEMORY[0x277CCAA00] defaultManager];
+  v8 = [fileData fileExistsAtPath:path isDirectory:0];
 LABEL_5:
 
 LABEL_6:
   return v8;
 }
 
-- (void)_quarantineOrDiscardWrappers:(id)a3 withError:(id)a4
+- (void)_quarantineOrDiscardWrappers:(id)wrappers withError:(id)error
 {
   v41 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v26 = a4;
+  wrappersCopy = wrappers;
+  errorCopy = error;
   Current = CFAbsoluteTimeGetCurrent();
   v28 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -3701,7 +3701,7 @@ LABEL_6:
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  obj = v5;
+  obj = wrappersCopy;
   v8 = [obj countByEnumeratingWithState:&v30 objects:v40 count:16];
   if (v8)
   {
@@ -3718,9 +3718,9 @@ LABEL_6:
         }
 
         v13 = *(*(&v30 + 1) + 8 * i);
-        v14 = [v13 object];
-        v15 = [v14 initialFailureDate];
-        if (v15 >= 1 && (Current - v15) >= 0x93A81)
+        object = [v13 object];
+        initialFailureDate = [object initialFailureDate];
+        if (initialFailureDate >= 1 && (Current - initialFailureDate) >= 0x93A81)
         {
           if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
           {
@@ -3728,21 +3728,21 @@ LABEL_6:
             *buf = 138543618;
             v35 = v23;
             v36 = 2114;
-            v37 = v14;
+            v37 = object;
             v24 = v23;
             _os_log_error_impl(&dword_245B99000, v11, OS_LOG_TYPE_ERROR, "%{public}@ - quarantine for %{public}@ has been there for too long. Better to just abandon", buf, 0x16u);
           }
 
           v21 = v28;
-          v22 = v14;
+          v22 = object;
         }
 
         else
         {
-          v17 = v15;
-          if (!v15)
+          v17 = initialFailureDate;
+          if (!initialFailureDate)
           {
-            [v14 setInitialFailureDate:Current];
+            [object setInitialFailureDate:Current];
           }
 
           [v13 setErrorCount:0];
@@ -3758,7 +3758,7 @@ LABEL_6:
 
             v35 = v18;
             v36 = 2114;
-            v37 = v14;
+            v37 = object;
             v38 = 2082;
             v39 = v19;
             v20 = v18;
@@ -3786,28 +3786,28 @@ LABEL_6:
   if ([v28 count])
   {
     [(MSPublisher *)self _didFinishUsingAssetCollections:v28];
-    [(MSPublisherDelegate *)self->_delegate publisher:self didEncounterError:v26 publishingAssetCollections:v28];
+    [(MSPublisherDelegate *)self->_delegate publisher:self didEncounterError:errorCopy publishingAssetCollections:v28];
   }
 
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_registerAllAssetsForWrapper:(id)a3
+- (void)_registerAllAssetsForWrapper:(id)wrapper
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = [a3 object];
-  v5 = [MEMORY[0x277CBEA60] arrayWithObject:v4];
+  object = [wrapper object];
+  v5 = [MEMORY[0x277CBEA60] arrayWithObject:object];
   [(MSPublisher *)self _didFinishUsingAssetCollections:v5];
 
-  v6 = [v4 masterAsset];
-  [(MSPublisher *)self _registerAsset:v6];
+  masterAsset = [object masterAsset];
+  [(MSPublisher *)self _registerAsset:masterAsset];
 
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v7 = [v4 derivedAssets];
-  v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  derivedAssets = [object derivedAssets];
+  v8 = [derivedAssets countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {
     v9 = v8;
@@ -3819,14 +3819,14 @@ LABEL_6:
       {
         if (*v14 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(derivedAssets);
         }
 
         [(MSPublisher *)self _registerAsset:*(*(&v13 + 1) + 8 * v11++)];
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v9 = [derivedAssets countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v9);
@@ -3835,29 +3835,29 @@ LABEL_6:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_registerAsset:(id)a3
+- (void)_registerAsset:(id)asset
 {
-  v4 = a3;
-  [v4 setFileHash:0];
-  [v4 setProtocolFileSize:0];
-  [(MSPublishStorageProtocol *)self->_storageProtocol computeHashForAsset:v4];
+  assetCopy = asset;
+  [assetCopy setFileHash:0];
+  [assetCopy setProtocolFileSize:0];
+  [(MSPublishStorageProtocol *)self->_storageProtocol computeHashForAsset:assetCopy];
 }
 
-- (void)_serverSideConfigurationDidChange:(id)a3
+- (void)_serverSideConfigurationDidChange:(id)change
 {
   v21 = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CCACC8];
-  v16 = a3;
-  v5 = [v4 currentThread];
-  v6 = [MEMORY[0x277CCACC8] mainThread];
+  changeCopy = change;
+  currentThread = [v4 currentThread];
+  mainThread = [MEMORY[0x277CCACC8] mainThread];
 
-  if (v5 == v6)
+  if (currentThread == mainThread)
   {
-    v8 = [v16 userInfo];
+    userInfo = [changeCopy userInfo];
 
-    v9 = [v8 objectForKey:@"personID"];
-    v10 = [(MSCupidStateMachine *)self personID];
-    v11 = [v9 isEqualToString:v10];
+    v9 = [userInfo objectForKey:@"personID"];
+    personID = [(MSCupidStateMachine *)self personID];
+    v11 = [v9 isEqualToString:personID];
 
     if (v11)
     {
@@ -3865,11 +3865,11 @@ LABEL_6:
       {
         v12 = objc_opt_class();
         v13 = v12;
-        v14 = [(MSCupidStateMachine *)self personID];
+        personID2 = [(MSCupidStateMachine *)self personID];
         *buf = 138543618;
         v18 = v12;
         v19 = 2112;
-        v20 = v14;
+        v20 = personID2;
         _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%{public}@ - %@ Server-side configuration has changed. Reading new values.", buf, 0x16u);
       }
 
@@ -3881,7 +3881,7 @@ LABEL_6:
 
   else
   {
-    [(MSPublisher *)self performSelectorOnMainThread:sel__serverSideConfigurationDidChange_ withObject:v16 waitUntilDone:0];
+    [(MSPublisher *)self performSelectorOnMainThread:sel__serverSideConfigurationDidChange_ withObject:changeCopy waitUntilDone:0];
     v7 = *MEMORY[0x277D85DE8];
   }
 }
@@ -3889,25 +3889,25 @@ LABEL_6:
 - (void)_refreshServerSideConfiguredParameters
 {
   v44 = *MEMORY[0x277D85DE8];
-  v3 = [(MSCupidStateMachine *)self personID];
-  self->_publishTargetByteCount = [MSServerSideConfigManager longLongValueForParameter:@"mme.streams.client.pubUploadBatchTargetSize" forPersonID:v3 defaultValue:5242880];
+  personID = [(MSCupidStateMachine *)self personID];
+  self->_publishTargetByteCount = [MSServerSideConfigManager longLongValueForParameter:@"mme.streams.client.pubUploadBatchTargetSize" forPersonID:personID defaultValue:5242880];
 
-  v4 = [(MSCupidStateMachine *)self personID];
-  self->_publishBatchSize = [MSServerSideConfigManager intValueForParameter:@"mme.streams.client.pubMaxUploadBatchCount" forPersonID:v4 defaultValue:1];
+  personID2 = [(MSCupidStateMachine *)self personID];
+  self->_publishBatchSize = [MSServerSideConfigManager intValueForParameter:@"mme.streams.client.pubMaxUploadBatchCount" forPersonID:personID2 defaultValue:1];
 
-  v5 = [(MSCupidStateMachine *)self personID];
-  v30 = self;
-  self->_maxErrorCount = [MSServerSideConfigManager intValueForParameter:@"mme.streams.client.pubMaxErrorRetryCount" forPersonID:v5 defaultValue:3];
+  personID3 = [(MSCupidStateMachine *)self personID];
+  selfCopy = self;
+  self->_maxErrorCount = [MSServerSideConfigManager intValueForParameter:@"mme.streams.client.pubMaxErrorRetryCount" forPersonID:personID3 defaultValue:3];
 
   if (_refreshServerSideConfiguredParameters_once != -1)
   {
     dispatch_once(&_refreshServerSideConfiguredParameters_once, &__block_literal_global);
   }
 
-  v6 = [(MSCupidStateMachine *)self personID];
-  v7 = [MSServerSideConfigManager objectForKey:@"supportedAssets" forPersonID:v6 defaultValue:_refreshServerSideConfiguredParameters_defaultSupportedAssetTypes];
+  personID4 = [(MSCupidStateMachine *)self personID];
+  v7 = [MSServerSideConfigManager objectForKey:@"supportedAssets" forPersonID:personID4 defaultValue:_refreshServerSideConfiguredParameters_defaultSupportedAssetTypes];
 
-  [(NSMutableDictionary *)v30->_maxSizeByUTI removeAllObjects];
+  [(NSMutableDictionary *)selfCopy->_maxSizeByUTI removeAllObjects];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -3947,9 +3947,9 @@ LABEL_6:
               v17 = [v14 objectForKey:@"maxFileSizeMB"];
               if (objc_opt_respondsToSelector())
               {
-                v18 = [v17 longLongValue];
-                maxSizeByUTI = v30->_maxSizeByUTI;
-                [MEMORY[0x277CCABB0] numberWithLongLong:v18 << 20];
+                longLongValue = [v17 longLongValue];
+                maxSizeByUTI = selfCopy->_maxSizeByUTI;
+                [MEMORY[0x277CCABB0] numberWithLongLong:longLongValue << 20];
                 v20 = v12;
                 v22 = v21 = v11;
                 v23 = maxSizeByUTI;
@@ -4000,12 +4000,12 @@ LABEL_6:
   {
     v25 = objc_opt_class();
     v26 = v25;
-    v27 = [(MSCupidStateMachine *)v30 personID];
-    v28 = v30->_maxSizeByUTI;
+    personID5 = [(MSCupidStateMachine *)selfCopy personID];
+    v28 = selfCopy->_maxSizeByUTI;
     *buf = 138543874;
     v38 = v25;
     v39 = 2112;
-    v40 = v27;
+    v40 = personID5;
     v41 = 2114;
     v42 = v28;
     _os_log_debug_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG, "%{public}@ - %@ _maxSizeByUTI: %{public}@", buf, 0x20u);
@@ -4026,28 +4026,28 @@ void __53__MSPublisher__refreshServerSideConfiguredParameters__block_invoke()
   _refreshServerSideConfiguredParameters_defaultSupportedAssetTypes = v4;
 }
 
-- (BOOL)dequeueAssetCollectionWithGUIDs:(id)a3 outError:(id *)a4
+- (BOOL)dequeueAssetCollectionWithGUIDs:(id)ds outError:(id *)error
 {
   v38 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  dsCopy = ds;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v6 = objc_opt_class();
     v7 = v6;
-    v8 = [(MSCupidStateMachine *)self personID];
+    personID = [(MSCupidStateMachine *)self personID];
     *buf = 138543874;
     v33 = v6;
     v34 = 2112;
-    v35 = v8;
+    v35 = personID;
     v36 = 2114;
-    v37 = v5;
+    v37 = dsCopy;
     _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%{public}@ - %@ dequeuing asset collections: %{public}@", buf, 0x20u);
   }
 
-  v9 = [MEMORY[0x277CBEB58] setWithArray:v5];
-  v26 = v5;
-  v10 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v5, "count")}];
-  v25 = self;
+  v9 = [MEMORY[0x277CBEB58] setWithArray:dsCopy];
+  v26 = dsCopy;
+  v10 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(dsCopy, "count")}];
+  selfCopy = self;
   [(MSObjectQueue *)self->_uploadQueue allObjectWrappersMaxCount:0x7FFFFFFFFFFFFFFFLL];
   v27 = 0u;
   v28 = 0u;
@@ -4068,14 +4068,14 @@ void __53__MSPublisher__refreshServerSideConfiguredParameters__block_invoke()
         }
 
         v16 = *(*(&v27 + 1) + 8 * i);
-        v17 = [v16 object];
-        v18 = [v17 assetCollectionID];
-        if (v18)
+        object = [v16 object];
+        assetCollectionID = [object assetCollectionID];
+        if (assetCollectionID)
         {
-          if ([v9 containsObject:v18])
+          if ([v9 containsObject:assetCollectionID])
           {
             [v10 addObject:v16];
-            [v9 removeObject:v18];
+            [v9 removeObject:assetCollectionID];
             if (![v9 count])
             {
 
@@ -4099,17 +4099,17 @@ LABEL_15:
 
   if ([v10 count])
   {
-    [(MSObjectQueue *)v25->_uploadQueue removeObjectWrappersFromQueue:v10];
+    [(MSObjectQueue *)selfCopy->_uploadQueue removeObjectWrappersFromQueue:v10];
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       v19 = objc_opt_class();
       v20 = v19;
-      v21 = [(MSCupidStateMachine *)v25 personID];
+      personID2 = [(MSCupidStateMachine *)selfCopy personID];
       v22 = [v10 count];
       *buf = 138543874;
       v33 = v19;
       v34 = 2112;
-      v35 = v21;
+      v35 = personID2;
       v36 = 2048;
       v37 = v22;
       _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%{public}@ - %@ removed %lu asset collections from upload queue", buf, 0x20u);
@@ -4120,30 +4120,30 @@ LABEL_15:
   return 1;
 }
 
-- (BOOL)enqueueAssetCollections:(id)a3 outError:(id *)a4
+- (BOOL)enqueueAssetCollections:(id)collections outError:(id *)error
 {
   v33 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  collectionsCopy = collections;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v6 = objc_opt_class();
     v7 = v6;
-    v8 = [(MSCupidStateMachine *)self personID];
+    personID = [(MSCupidStateMachine *)self personID];
     *buf = 138543874;
     v28 = v6;
     v29 = 2112;
-    v30 = v8;
+    v30 = personID;
     v31 = 2114;
-    v32 = v5;
+    v32 = collectionsCopy;
     _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%{public}@ - %@ enqueuing asset collections: %{public}@", buf, 0x20u);
   }
 
-  v9 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v5, "count")}];
+  v9 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(collectionsCopy, "count")}];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v10 = v5;
+  v10 = collectionsCopy;
   v11 = [v10 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v11)
   {
@@ -4159,12 +4159,12 @@ LABEL_15:
         }
 
         v15 = *(*(&v22 + 1) + 8 * i);
-        v16 = [v15 assetCollectionID];
+        assetCollectionID = [v15 assetCollectionID];
 
-        if (!v16)
+        if (!assetCollectionID)
         {
-          v17 = [MEMORY[0x277CCACA8] MSMakeUUID];
-          [v15 setAssetCollectionID:v17];
+          mSMakeUUID = [MEMORY[0x277CCACA8] MSMakeUUID];
+          [v15 setAssetCollectionID:mSMakeUUID];
         }
 
         v18 = [MSObjectWrapper wrapperWithObject:v15 size:0];
@@ -4192,14 +4192,14 @@ LABEL_15:
 
 - (void)_updateMasterManifest
 {
-  v7 = [(MSCupidStateMachine *)self _latestNextActivityDate];
+  _latestNextActivityDate = [(MSCupidStateMachine *)self _latestNextActivityDate];
   if ([(MSObjectQueue *)self->_uploadQueue count])
   {
-    if (v7)
+    if (_latestNextActivityDate)
     {
 LABEL_3:
-      v3 = [(MSCupidStateMachine *)self personID];
-      v4 = v7;
+      personID = [(MSCupidStateMachine *)self personID];
+      v4 = _latestNextActivityDate;
       goto LABEL_12;
     }
   }
@@ -4208,7 +4208,7 @@ LABEL_3:
   {
     if ([(MSObjectQueue *)self->_derivativesQueue count])
     {
-      v5 = v7 == 0;
+      v5 = _latestNextActivityDate == 0;
     }
 
     else
@@ -4224,17 +4224,17 @@ LABEL_3:
 
   if ([(MSObjectQueue *)self->_quarantinedQueue count])
   {
-    v3 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:604800.0];
-    v6 = [(MSCupidStateMachine *)self personID];
-    [MSPublisher _setMasterNextActivityDate:v3 forPersonID:v6];
+    personID = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:604800.0];
+    personID2 = [(MSCupidStateMachine *)self personID];
+    [MSPublisher _setMasterNextActivityDate:personID forPersonID:personID2];
 
     goto LABEL_13;
   }
 
-  v3 = [(MSCupidStateMachine *)self personID];
+  personID = [(MSCupidStateMachine *)self personID];
   v4 = 0;
 LABEL_12:
-  [MSPublisher _setMasterNextActivityDate:v4 forPersonID:v3];
+  [MSPublisher _setMasterNextActivityDate:v4 forPersonID:personID];
 LABEL_13:
 
   _commitMasterManifest();
@@ -4250,8 +4250,8 @@ LABEL_13:
 
 - (void)deactivate
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [(MSPublisher *)self stop];
   tempFiles = self->_tempFiles;
@@ -4296,33 +4296,33 @@ LABEL_13:
   [(MSCupidStateMachine *)&v16 deactivate];
 }
 
-- (MSPublisher)initWithPersonID:(id)a3 baseURL:(id)a4
+- (MSPublisher)initWithPersonID:(id)d baseURL:(id)l
 {
   v49 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  lCopy = l;
   v44.receiver = self;
   v44.super_class = MSPublisher;
-  v8 = [(MSCupidStateMachine *)&v44 initWithPersonID:v6];
+  v8 = [(MSCupidStateMachine *)&v44 initWithPersonID:dCopy];
   if (v8)
   {
     v9 = [MSObjectQueue alloc];
-    v10 = [(MSCupidStateMachine *)v8 personID];
-    v11 = MSPathPublishQueueForPersonID(v10);
+    personID = [(MSCupidStateMachine *)v8 personID];
+    v11 = MSPathPublishQueueForPersonID(personID);
     v12 = [(MSObjectQueue *)v9 initWithPath:v11];
     uploadQueue = v8->_uploadQueue;
     v8->_uploadQueue = v12;
 
     v14 = [MSObjectQueue alloc];
-    v15 = [(MSCupidStateMachine *)v8 personID];
-    v16 = MSPathPublishDerivativesQueueForPersonID(v15);
+    personID2 = [(MSCupidStateMachine *)v8 personID];
+    v16 = MSPathPublishDerivativesQueueForPersonID(personID2);
     v17 = [(MSObjectQueue *)v14 initWithPath:v16];
     derivativesQueue = v8->_derivativesQueue;
     v8->_derivativesQueue = v17;
 
     v19 = [MSObjectQueue alloc];
-    v20 = [(MSCupidStateMachine *)v8 personID];
-    v21 = MSPathPublishDiscardedQueueForPersonID(v20);
+    personID3 = [(MSCupidStateMachine *)v8 personID];
+    v21 = MSPathPublishDiscardedQueueForPersonID(personID3);
     v22 = [(MSObjectQueue *)v19 initWithPath:v21];
     quarantinedQueue = v8->_quarantinedQueue;
     v8->_quarantinedQueue = v22;
@@ -4339,7 +4339,7 @@ LABEL_13:
     fileHashToAssetMap = v8->_fileHashToAssetMap;
     v8->_fileHashToAssetMap = v28;
 
-    v30 = [[MSPublishStreamsProtocol alloc] initWithPersonID:v6 baseURL:v7];
+    v30 = [[MSPublishStreamsProtocol alloc] initWithPersonID:dCopy baseURL:lCopy];
     protocol = v8->_protocol;
     v8->_protocol = v30;
 
@@ -4348,13 +4348,13 @@ LABEL_13:
     v8->_tempFiles = v32;
 
     [(MSPublishStreamsProtocol *)v8->_protocol setDelegate:v8];
-    v34 = [[MSPublishMMCSProtocol alloc] initWithPersonID:v6];
+    v34 = [[MSPublishMMCSProtocol alloc] initWithPersonID:dCopy];
     storageProtocol = v8->_storageProtocol;
     v8->_storageProtocol = v34;
 
     [(MSPublishStorageProtocol *)v8->_storageProtocol setDelegate:v8];
-    v36 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v36 addObserver:v8 selector:sel__serverSideConfigurationDidChange_ name:@"MSServerSideConfigChanged" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v8 selector:sel__serverSideConfigurationDidChange_ name:@"MSServerSideConfigChanged" object:0];
 
     v37 = objc_alloc_init(MEMORY[0x277CBEB38]);
     maxSizeByUTI = v8->_maxSizeByUTI;
@@ -4365,7 +4365,7 @@ LABEL_13:
     {
       v39 = objc_opt_class();
       v40 = v39;
-      v41 = [objc_opt_class() nextActivityDateForPersonID:v6];
+      v41 = [objc_opt_class() nextActivityDateForPersonID:dCopy];
       *buf = 138543618;
       v46 = v39;
       v47 = 2114;
@@ -4385,8 +4385,8 @@ LABEL_13:
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [_publisherByID allValues];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  allValues = [_publisherByID allValues];
+  v3 = [allValues countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = *v9;
@@ -4396,7 +4396,7 @@ LABEL_13:
       {
         if (*v9 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(allValues);
         }
 
         if ([*(*(&v8 + 1) + 8 * i) _isInRetryState])
@@ -4406,7 +4406,7 @@ LABEL_13:
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v3 = [allValues countByEnumeratingWithState:&v8 objects:v12 count:16];
       if (v3)
       {
         continue;
@@ -4429,8 +4429,8 @@ LABEL_11:
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [_publisherByID allValues];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  allValues = [_publisherByID allValues];
+  v3 = [allValues countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = v3;
@@ -4442,14 +4442,14 @@ LABEL_11:
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v8 + 1) + 8 * v6++) stop];
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v4 = [allValues countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v4);
@@ -4461,16 +4461,16 @@ LABEL_11:
 + (id)personIDsWithOutstandingActivities
 {
   v2 = _masterNextActivityDateByPersonID();
-  v3 = [v2 allKeys];
+  allKeys = [v2 allKeys];
 
-  return v3;
+  return allKeys;
 }
 
-+ (id)nextActivityDateForPersonID:(id)a3
++ (id)nextActivityDateForPersonID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = _masterNextActivityDateByPersonID();
-  v5 = [v4 objectForKey:v3];
+  v5 = [v4 objectForKey:dCopy];
 
   return v5;
 }
@@ -4524,35 +4524,35 @@ LABEL_11:
   return v5;
 }
 
-+ (void)_setMasterNextActivityDate:(id)a3 forPersonID:(id)a4
++ (void)_setMasterNextActivityDate:(id)date forPersonID:(id)d
 {
   v13 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  dateCopy = date;
+  dCopy = d;
+  if (dCopy)
   {
     v7 = _masterNextActivityDateByPersonID();
     v8 = v7;
-    if (v5)
+    if (dateCopy)
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
         *v11 = 138543874;
         *&v11[4] = objc_opt_class();
         *&v11[12] = 2112;
-        *&v11[14] = v6;
+        *&v11[14] = dCopy;
         *&v11[22] = 2114;
-        v12 = v5;
+        v12 = dateCopy;
         v9 = *&v11[4];
         _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%{public}@ - setting next activity date for %@ to %{public}@.", v11, 0x20u);
       }
 
-      [v8 setObject:v5 forKey:{v6, *v11, *&v11[16], v12}];
+      [v8 setObject:dateCopy forKey:{dCopy, *v11, *&v11[16], v12}];
     }
 
     else
     {
-      [v7 removeObjectForKey:v6];
+      [v7 removeObjectForKey:dCopy];
     }
 
     _commitMasterManifest();
@@ -4571,15 +4571,15 @@ LABEL_10:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)forgetPersonID:(id)a3
++ (void)forgetPersonID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v3 = [_publisherByID objectForKey:?];
   v4 = v3;
   if (v3)
   {
     [v3 forget];
-    [_publisherByID removeObjectForKey:v5];
+    [_publisherByID removeObjectForKey:dCopy];
   }
 }
 
@@ -4593,10 +4593,10 @@ LABEL_10:
   return v2;
 }
 
-+ (id)publisherForPersonID:(id)a3
++ (id)publisherForPersonID:(id)d
 {
-  v3 = a3;
-  if (v3)
+  dCopy = d;
+  if (dCopy)
   {
     v4 = _publisherByID;
     if (!_publisherByID)
@@ -4608,15 +4608,15 @@ LABEL_10:
       v4 = _publisherByID;
     }
 
-    v7 = [v4 objectForKey:v3];
+    v7 = [v4 objectForKey:dCopy];
     if (!v7)
     {
       v8 = [MSPublisher alloc];
       v9 = MSPlatform();
-      v10 = [v9 baseURLForPersonID:v3];
-      v7 = [(MSPublisher *)v8 initWithPersonID:v3 baseURL:v10];
+      v10 = [v9 baseURLForPersonID:dCopy];
+      v7 = [(MSPublisher *)v8 initWithPersonID:dCopy baseURL:v10];
 
-      [_publisherByID setObject:v7 forKey:v3];
+      [_publisherByID setObject:v7 forKey:dCopy];
     }
   }
 

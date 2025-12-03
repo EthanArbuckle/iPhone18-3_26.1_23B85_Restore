@@ -1,10 +1,10 @@
 @interface ECMessageBodyOriginalTextSubparser
-- (BOOL)_isElementQuotedForwardSeparator:(id)a3;
-- (void)_consumeTextElement:(id)a3 isAttribution:(BOOL)a4;
+- (BOOL)_isElementQuotedForwardSeparator:(id)separator;
+- (void)_consumeTextElement:(id)element isAttribution:(BOOL)attribution;
 - (void)dealloc;
-- (void)messageBodyParser:(id)a3 foundMessageBodyElement:(id)a4;
-- (void)setFoundTextBlock:(id)a3;
-- (void)setFoundWhitespaceBlock:(id)a3;
+- (void)messageBodyParser:(id)parser foundMessageBodyElement:(id)element;
+- (void)setFoundTextBlock:(id)block;
+- (void)setFoundWhitespaceBlock:(id)block;
 @end
 
 @implementation ECMessageBodyOriginalTextSubparser
@@ -19,29 +19,29 @@
   [(ECMessageBodyOriginalTextSubparser *)&v3 dealloc];
 }
 
-- (void)setFoundTextBlock:(id)a3
+- (void)setFoundTextBlock:(id)block
 {
   foundTextBlock = self->_foundTextBlock;
-  if (foundTextBlock != a3)
+  if (foundTextBlock != block)
   {
 
-    self->_foundTextBlock = [a3 copy];
+    self->_foundTextBlock = [block copy];
   }
 }
 
-- (void)setFoundWhitespaceBlock:(id)a3
+- (void)setFoundWhitespaceBlock:(id)block
 {
   foundWhitespaceBlock = self->_foundWhitespaceBlock;
-  if (foundWhitespaceBlock != a3)
+  if (foundWhitespaceBlock != block)
   {
 
-    self->_foundWhitespaceBlock = [a3 copy];
+    self->_foundWhitespaceBlock = [block copy];
   }
 }
 
-- (void)_consumeTextElement:(id)a3 isAttribution:(BOOL)a4
+- (void)_consumeTextElement:(id)element isAttribution:(BOOL)attribution
 {
-  if ([a3 valueForAttributes:4])
+  if ([element valueForAttributes:4])
   {
     foundWhitespaceBlock = self->_foundWhitespaceBlock;
     if (foundWhitespaceBlock)
@@ -56,20 +56,20 @@
   {
     if (self->_foundTextBlock)
     {
-      v9 = [a3 quoteLevel];
-      if (v9)
+      quoteLevel = [element quoteLevel];
+      if (quoteLevel)
       {
-        v10 = 1;
+        attributionCopy = 1;
       }
 
       else
       {
-        v10 = a4;
+        attributionCopy = attribution;
       }
 
-      if ((self->_foundForwardSeparator || !v10) && (self->_foundText || ![a3 valueForAttributes:32]) && v9)
+      if ((self->_foundForwardSeparator || !attributionCopy) && (self->_foundText || ![element valueForAttributes:32]) && quoteLevel)
       {
-        [(ECMessageBodyOriginalTextSubparser *)self _isElementQuotedForwardSeparator:a3];
+        [(ECMessageBodyOriginalTextSubparser *)self _isElementQuotedForwardSeparator:element];
       }
 
       (*(self->_foundTextBlock + 2))();
@@ -79,12 +79,12 @@
   }
 }
 
-- (void)messageBodyParser:(id)a3 foundMessageBodyElement:(id)a4
+- (void)messageBodyParser:(id)parser foundMessageBodyElement:(id)element
 {
   if (self->_lastNonWhitespaceTextElement)
   {
-    v6 = [a4 quoteLevel];
-    if (v6 > [(ECMessageBodyElement_Private *)self->_lastNonWhitespaceTextElement quoteLevel])
+    quoteLevel = [element quoteLevel];
+    if (quoteLevel > [(ECMessageBodyElement_Private *)self->_lastNonWhitespaceTextElement quoteLevel])
     {
       v7 = [(ECMessageBodyElement_Private *)self->_lastNonWhitespaceTextElement valueForAttributes:8];
       if (!v7 && ![(ECMessageBodyElement_Private *)self->_lastNonWhitespaceTextElement quoteLevel]&& [(ECMessageBodyElement_Private *)self->_lastNonWhitespaceTextElement valueForAttributes:16])
@@ -96,7 +96,7 @@
     }
   }
 
-  if ([(ECMessageBodyOriginalTextSubparser *)self _isElementQuotedForwardSeparator:a4])
+  if ([(ECMessageBodyOriginalTextSubparser *)self _isElementQuotedForwardSeparator:element])
   {
     v8 = [(ECMessageBodyElement_Private *)self->_lastNonWhitespaceTextElement valueForAttributes:8];
     if (!v8)
@@ -105,21 +105,21 @@
     }
 
     [(ECMessageBodyOriginalTextSubparser *)self _consumeAnyLastTextElementAsAttribution:v8 != 0];
-    self->_lastNonWhitespaceTextElement = [a4 retainExternally];
+    self->_lastNonWhitespaceTextElement = [element retainExternally];
   }
 
   if (self->_foundForwardSeparator)
   {
 
-    [(ECMessageBodyOriginalTextSubparser *)self _consumeTextElement:a4 isAttribution:0];
+    [(ECMessageBodyOriginalTextSubparser *)self _consumeTextElement:element isAttribution:0];
   }
 
-  else if ([a4 valueForAttributes:2])
+  else if ([element valueForAttributes:2])
   {
-    if (![a4 valueForAttributes:4])
+    if (![element valueForAttributes:4])
     {
       [(ECMessageBodyOriginalTextSubparser *)self _consumeAnyLastTextElementAsAttribution:0];
-      self->_lastNonWhitespaceTextElement = [a4 retainExternally];
+      self->_lastNonWhitespaceTextElement = [element retainExternally];
     }
 
     if (!self->_lastTextElements)
@@ -127,19 +127,19 @@
       self->_lastTextElements = objc_alloc_init(MEMORY[0x277CBEB18]);
     }
 
-    [a4 retainExternally];
+    [element retainExternally];
     lastTextElements = self->_lastTextElements;
 
-    [(NSMutableArray *)lastTextElements addObject:a4];
+    [(NSMutableArray *)lastTextElements addObject:element];
   }
 }
 
-- (BOOL)_isElementQuotedForwardSeparator:(id)a3
+- (BOOL)_isElementQuotedForwardSeparator:(id)separator
 {
-  v4 = [a3 valueForAttributes:16];
+  v4 = [separator valueForAttributes:16];
   if (v4)
   {
-    LOBYTE(v4) = [a3 quoteLevel] == 1;
+    LOBYTE(v4) = [separator quoteLevel] == 1;
   }
 
   return v4;

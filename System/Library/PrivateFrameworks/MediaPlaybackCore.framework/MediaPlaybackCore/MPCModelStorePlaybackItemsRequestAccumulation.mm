@@ -1,52 +1,52 @@
 @interface MPCModelStorePlaybackItemsRequestAccumulation
 - (BOOL)isInvalid;
-- (MPCModelStorePlaybackItemsRequestAccumulation)initWithProgressiveResults:(id)a3 properties:(id)a4 libraryObjectDatabase:(id)a5 performanceMetrics:(id)a6;
+- (MPCModelStorePlaybackItemsRequestAccumulation)initWithProgressiveResults:(id)results properties:(id)properties libraryObjectDatabase:(id)database performanceMetrics:(id)metrics;
 - (MPSectionedCollection)results;
-- (id)_objectForProgressiveResult:(id)a3;
-- (id)identifiersForItemAtIndexPath:(id)a3;
-- (id)identifiersForSectionAtIndex:(int64_t)a3;
-- (id)itemAtIndexPath:(id)a3;
+- (id)_objectForProgressiveResult:(id)result;
+- (id)identifiersForItemAtIndexPath:(id)path;
+- (id)identifiersForSectionAtIndex:(int64_t)index;
+- (id)itemAtIndexPath:(id)path;
 - (id)onInvalidate;
-- (id)sectionAtIndex:(unint64_t)a3;
-- (void)setOnInvalidate:(id)a3;
+- (id)sectionAtIndex:(unint64_t)index;
+- (void)setOnInvalidate:(id)invalidate;
 @end
 
 @implementation MPCModelStorePlaybackItemsRequestAccumulation
 
-- (id)_objectForProgressiveResult:(id)a3
+- (id)_objectForProgressiveResult:(id)result
 {
-  v4 = a3;
-  v5 = [(_MPCAccumulatorProgressiveResult *)v4 resolvedIdentifiers];
-  v6 = [v5 modelKind];
-  v7 = [v6 identityKind];
-  v8 = [MEMORY[0x1E6970690] identityKind];
-  v9 = v8;
-  if (v7 == v8)
+  resultCopy = result;
+  resolvedIdentifiers = [(_MPCAccumulatorProgressiveResult *)resultCopy resolvedIdentifiers];
+  modelKind = [resolvedIdentifiers modelKind];
+  identityKind = [modelKind identityKind];
+  identityKind2 = [MEMORY[0x1E6970690] identityKind];
+  v9 = identityKind2;
+  if (identityKind == identityKind2)
   {
 
     goto LABEL_8;
   }
 
-  v10 = [v7 isEqual:v8];
+  v10 = [identityKind isEqual:identityKind2];
 
   if (v10)
   {
 LABEL_8:
     v13 = MEMORY[0x1E6970670];
     v14 = objc_alloc(MEMORY[0x1E6970688]);
-    v15 = [(_MPCAccumulatorProgressiveResult *)v4 resolvedIdentifiers];
-    v16 = [v14 initWithIdentifiers:v15];
+    resolvedIdentifiers2 = [(_MPCAccumulatorProgressiveResult *)resultCopy resolvedIdentifiers];
+    v16 = [v14 initWithIdentifiers:resolvedIdentifiers2];
     v17 = [v13 genericObjectWithModelObject:v16];
 
     goto LABEL_57;
   }
 
-  if (v4)
+  if (resultCopy)
   {
-    v11 = v4[12];
+    v11 = resultCopy[12];
     if (v11 && ([v11 isPlaceholder] & 1) == 0)
     {
-      v12 = [(MPObjectDatabase *)self->_sod modelObjectForResult:v4 inContext:self->_sodFullObjectContext error:0];
+      v12 = [(MPObjectDatabase *)self->_sod modelObjectForResult:resultCopy inContext:self->_sodFullObjectContext error:0];
     }
 
     else
@@ -54,14 +54,14 @@ LABEL_8:
       v12 = 0;
     }
 
-    if (v4[13])
+    if (resultCopy[13])
     {
-      v18 = v4[12];
+      v18 = resultCopy[12];
       if (v18)
       {
-        v19 = [v18 isPlaceholder];
+        isPlaceholder = [v18 isPlaceholder];
         v20 = 56;
-        if (v19)
+        if (isPlaceholder)
         {
           v20 = 48;
         }
@@ -72,7 +72,7 @@ LABEL_8:
         v20 = 48;
       }
 
-      v21 = [(MPObjectDatabase *)self->_lod modelObjectForResult:v4 inContext:*(&self->super.isa + v20) error:0];
+      v21 = [(MPObjectDatabase *)self->_lod modelObjectForResult:resultCopy inContext:*(&self->super.isa + v20) error:0];
     }
 
     else
@@ -80,7 +80,7 @@ LABEL_8:
       v21 = 0;
     }
 
-    v22 = v4[15];
+    v22 = resultCopy[15];
   }
 
   else
@@ -91,7 +91,7 @@ LABEL_8:
   }
 
   v23 = v22;
-  v24 = v4;
+  v24 = resultCopy;
   v25 = v21;
   v26 = v12;
   v27 = v23;
@@ -105,29 +105,29 @@ LABEL_8:
   {
     if (v27)
     {
-      v30 = [v27 identifiers];
-      v31 = [v30 copyWithSource:@"XL-Placeholder" block:&__block_literal_global_143];
+      identifiers = [v27 identifiers];
+      v31 = [identifiers copyWithSource:@"XL-Placeholder" block:&__block_literal_global_143];
       v32 = [v28 copyWithIdentifiers:v31];
     }
 
     else
     {
-      v30 = [(_MPCAccumulatorProgressiveResult *)v24 progressiveIdentifiers];
-      if (([v30 isPlaceholder] & 1) == 0)
+      identifiers = [(_MPCAccumulatorProgressiveResult *)v24 progressiveIdentifiers];
+      if (([identifiers isPlaceholder] & 1) == 0)
       {
-        v63 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
         v64 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"MPModelGenericObject * _Nullable _MPCAccumulationCreateFinalPlaceholder(_MPCAccumulatorProgressiveResult *__strong, MPModelGenericObject * _Nullable __strong, MPModelGenericObject * _Nullable __strong, MPModelGenericObject * _Nullable __strong)"}];
-        [v63 handleFailureInFunction:v64 file:@"MPCModelStorePlaybackItemsRequestAccumulation.m" lineNumber:198 description:{@"Unexpected non-placeholder identifers: %@", v30}];
+        [currentHandler handleFailureInFunction:v64 file:@"MPCModelStorePlaybackItemsRequestAccumulation.m" lineNumber:198 description:{@"Unexpected non-placeholder identifers: %@", identifiers}];
       }
 
-      v33 = [v30 modelKind];
-      v34 = [v33 modelClass];
-      if (!v34)
+      modelKind2 = [identifiers modelKind];
+      modelClass = [modelKind2 modelClass];
+      if (!modelClass)
       {
-        v34 = objc_opt_class();
+        modelClass = objc_opt_class();
       }
 
-      v31 = [[v34 alloc] initWithIdentifiers:v30];
+      v31 = [[modelClass alloc] initWithIdentifiers:identifiers];
 
       v32 = [MEMORY[0x1E6970670] genericObjectWithModelObject:v31];
     }
@@ -145,38 +145,38 @@ LABEL_8:
     v35 = v25;
     v36 = v26;
     v37 = v28;
-    v38 = [v35 type];
+    type = [v35 type];
     v39 = v35;
-    if ((v38 == 5 || (v40 = [v36 type], v39 = v36, v40 == 5) || (v41 = objc_msgSend(v37, "type"), v39 = v37, v41 == 5)) && (objc_msgSend(v39, "playlistEntry"), (v42 = objc_claimAutoreleasedReturnValue()) != 0))
+    if ((type == 5 || (v40 = [v36 type], v39 = v36, v40 == 5) || (v41 = objc_msgSend(v37, "type"), v39 = v37, v41 == 5)) && (objc_msgSend(v39, "playlistEntry"), (v42 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v65 = v25;
       v67 = v42;
-      v43 = [v35 flattenedGenericObject];
-      v44 = [v43 anyObject];
+      flattenedGenericObject = [v35 flattenedGenericObject];
+      anyObject = [flattenedGenericObject anyObject];
 
-      v45 = [v36 flattenedGenericObject];
-      v46 = [v45 anyObject];
+      flattenedGenericObject2 = [v36 flattenedGenericObject];
+      anyObject2 = [flattenedGenericObject2 anyObject];
 
-      v47 = [v37 flattenedGenericObject];
-      v71 = [v47 anyObject];
+      flattenedGenericObject3 = [v37 flattenedGenericObject];
+      anyObject3 = [flattenedGenericObject3 anyObject];
 
-      v66 = v46;
-      if (v46)
+      v66 = anyObject2;
+      if (anyObject2)
       {
-        v48 = v46;
+        v48 = anyObject2;
       }
 
       else
       {
-        v48 = v44;
+        v48 = anyObject;
       }
 
       v49 = v48;
       v50 = v49;
       v68 = v35;
-      if (v44 && v49 != v44)
+      if (anyObject && v49 != anyObject)
       {
-        v51 = [v49 mergeWithObject:v44];
+        v51 = [v49 mergeWithObject:anyObject];
 
         v50 = v51;
       }
@@ -184,15 +184,15 @@ LABEL_8:
       v25 = v65;
       v69 = v36;
       v70 = v37;
-      if (v71)
+      if (anyObject3)
       {
-        v52 = [v71 mergeWithObject:v50];
+        v52 = [anyObject3 mergeWithObject:v50];
 
         v50 = v52;
       }
 
-      v53 = [v67 identifiers];
-      v54 = [v53 copyWithSource:@"XL-PlaylistEntry-Merged" block:&__block_literal_global_152];
+      identifiers2 = [v67 identifiers];
+      v54 = [identifiers2 copyWithSource:@"XL-PlaylistEntry-Merged" block:&__block_literal_global_152];
 
       v72[0] = MEMORY[0x1E69E9820];
       v72[1] = 3221225472;
@@ -253,25 +253,25 @@ LABEL_57:
   return v17;
 }
 
-- (id)itemAtIndexPath:(id)a3
+- (id)itemAtIndexPath:(id)path
 {
-  v4 = [(MPSectionedCollection *)self->_progressiveResults itemAtIndexPath:a3];
+  v4 = [(MPSectionedCollection *)self->_progressiveResults itemAtIndexPath:path];
   v5 = [(MPCModelStorePlaybackItemsRequestAccumulation *)self _objectForProgressiveResult:v4];
 
   return v5;
 }
 
-- (id)sectionAtIndex:(unint64_t)a3
+- (id)sectionAtIndex:(unint64_t)index
 {
-  v4 = [(MPSectionedCollection *)self->_progressiveResults sectionAtIndex:a3];
+  v4 = [(MPSectionedCollection *)self->_progressiveResults sectionAtIndex:index];
   v5 = [(MPCModelStorePlaybackItemsRequestAccumulation *)self _objectForProgressiveResult:v4];
 
   return v5;
 }
 
-- (id)identifiersForItemAtIndexPath:(id)a3
+- (id)identifiersForItemAtIndexPath:(id)path
 {
-  v5 = [(MPSectionedCollection *)self->_progressiveResults itemAtIndexPath:a3];
+  v5 = [(MPSectionedCollection *)self->_progressiveResults itemAtIndexPath:path];
   v6 = v5;
   if (v5)
   {
@@ -284,28 +284,28 @@ LABEL_57:
   }
 
   v8 = v7;
-  v9 = [(_MPCAccumulatorProgressiveResult *)v6 progressiveIdentifiers];
+  progressiveIdentifiers = [(_MPCAccumulatorProgressiveResult *)v6 progressiveIdentifiers];
   if (v8)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v13 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v13 handleFailureInMethod:a2 object:self file:@"MPCModelStorePlaybackItemsRequestAccumulation.m" lineNumber:389 description:{@"Unexpected requestedModelObject: %@", v8}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"MPCModelStorePlaybackItemsRequestAccumulation.m" lineNumber:389 description:{@"Unexpected requestedModelObject: %@", v8}];
     }
 
-    v10 = [v8 identifiers];
-    v11 = [v10 unionSet:v9];
+    identifiers = [v8 identifiers];
+    v11 = [identifiers unionSet:progressiveIdentifiers];
 
-    v9 = v11;
+    progressiveIdentifiers = v11;
   }
 
-  return v9;
+  return progressiveIdentifiers;
 }
 
-- (id)identifiersForSectionAtIndex:(int64_t)a3
+- (id)identifiersForSectionAtIndex:(int64_t)index
 {
-  v5 = [(MPSectionedCollection *)self->_progressiveResults sectionAtIndex:a3];
+  v5 = [(MPSectionedCollection *)self->_progressiveResults sectionAtIndex:index];
   v6 = v5;
   if (v5)
   {
@@ -318,28 +318,28 @@ LABEL_57:
   }
 
   v8 = v7;
-  v9 = [(_MPCAccumulatorProgressiveResult *)v6 progressiveIdentifiers];
+  progressiveIdentifiers = [(_MPCAccumulatorProgressiveResult *)v6 progressiveIdentifiers];
   if (v8)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v13 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v13 handleFailureInMethod:a2 object:self file:@"MPCModelStorePlaybackItemsRequestAccumulation.m" lineNumber:378 description:{@"Unexpected requestedModelObject: %@", v8}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"MPCModelStorePlaybackItemsRequestAccumulation.m" lineNumber:378 description:{@"Unexpected requestedModelObject: %@", v8}];
     }
 
-    v10 = [v8 identifiers];
-    v11 = [v10 unionSet:v9];
+    identifiers = [v8 identifiers];
+    v11 = [identifiers unionSet:progressiveIdentifiers];
 
-    v9 = v11;
+    progressiveIdentifiers = v11;
   }
 
-  return v9;
+  return progressiveIdentifiers;
 }
 
-- (void)setOnInvalidate:(id)a3
+- (void)setOnInvalidate:(id)invalidate
 {
-  v4 = a3;
+  invalidateCopy = invalidate;
   os_unfair_lock_lock_with_options();
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -349,12 +349,12 @@ LABEL_57:
   v5 = _Block_copy(aBlock);
   if (self->_invalid)
   {
-    v4[2](v4);
+    invalidateCopy[2](invalidateCopy);
   }
 
   else
   {
-    v6 = _Block_copy(v4);
+    v6 = _Block_copy(invalidateCopy);
     onInvalidate = self->_onInvalidate;
     self->_onInvalidate = v6;
   }
@@ -399,33 +399,33 @@ LABEL_57:
   return v2;
 }
 
-- (MPCModelStorePlaybackItemsRequestAccumulation)initWithProgressiveResults:(id)a3 properties:(id)a4 libraryObjectDatabase:(id)a5 performanceMetrics:(id)a6
+- (MPCModelStorePlaybackItemsRequestAccumulation)initWithProgressiveResults:(id)results properties:(id)properties libraryObjectDatabase:(id)database performanceMetrics:(id)metrics
 {
   v142[5] = *MEMORY[0x1E69E9840];
-  v103 = a3;
-  v109 = a4;
-  v104 = a5;
-  v105 = a6;
+  resultsCopy = results;
+  propertiesCopy = properties;
+  databaseCopy = database;
+  metricsCopy = metrics;
   v112.receiver = self;
   v112.super_class = MPCModelStorePlaybackItemsRequestAccumulation;
   v11 = [(MPCModelStorePlaybackItemsRequestAccumulation *)&v112 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_performanceMetrics, a6);
-    v13 = [MEMORY[0x1E6970950] sharedServerObjectDatabase];
+    objc_storeStrong(&v11->_performanceMetrics, metrics);
+    mEMORY[0x1E6970950] = [MEMORY[0x1E6970950] sharedServerObjectDatabase];
     sod = v12->_sod;
-    v12->_sod = v13;
+    v12->_sod = mEMORY[0x1E6970950];
 
-    objc_storeStrong(&v12->_lod, a5);
-    objc_storeStrong(&v12->_progressiveResults, a3);
-    v15 = [v109 copy];
+    objc_storeStrong(&v12->_lod, database);
+    objc_storeStrong(&v12->_progressiveResults, results);
+    v15 = [propertiesCopy copy];
     fullObjectPropertySet = v12->_fullObjectPropertySet;
     v12->_fullObjectPropertySet = v15;
 
     v17 = MEMORY[0x1E6970660];
     v101 = v12->_fullObjectPropertySet;
-    v108 = [v17 allSupportedProperties];
+    allSupportedProperties = [v17 allSupportedProperties];
     v18 = MEMORY[0x1E69708B0];
     v19 = *MEMORY[0x1E6970010];
     v142[0] = *MEMORY[0x1E6970008];
@@ -437,7 +437,7 @@ LABEL_57:
     v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v142 count:5];
     v107 = [v18 propertySetWithProperties:v21];
 
-    v106 = [MEMORY[0x1E6970710] mqf_requiredItemPlaybackProperties];
+    mqf_requiredItemPlaybackProperties = [MEMORY[0x1E6970710] mqf_requiredItemPlaybackProperties];
     v22 = MEMORY[0x1E69708B0];
     v141 = *MEMORY[0x1E696FD00];
     v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v141 count:1];
@@ -470,12 +470,12 @@ LABEL_57:
     v33 = *MEMORY[0x1E6970200];
     v125[0] = *MEMORY[0x1E69701E8];
     v125[1] = v33;
-    v126[0] = v108;
+    v126[0] = allSupportedProperties;
     v126[1] = v107;
     v34 = *MEMORY[0x1E69701F0];
     v125[2] = *MEMORY[0x1E69701F8];
     v125[3] = v34;
-    v126[2] = v106;
+    v126[2] = mqf_requiredItemPlaybackProperties;
     v126[3] = v102;
     v35 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v126 forKeys:v125 count:4];
     v36 = [v24 initWithProperties:v32 relationships:v35];
@@ -495,10 +495,10 @@ LABEL_57:
     v42 = *MEMORY[0x1E6970190];
     v122[0] = *MEMORY[0x1E6970180];
     v122[1] = v42;
-    v123[0] = v108;
+    v123[0] = allSupportedProperties;
     v123[1] = v107;
     v122[2] = *MEMORY[0x1E6970188];
-    v123[2] = v106;
+    v123[2] = mqf_requiredItemPlaybackProperties;
     v43 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v123 forKeys:v122 count:3];
     v44 = [v37 initWithProperties:v41 relationships:v43];
 
@@ -517,10 +517,10 @@ LABEL_57:
     v50 = *MEMORY[0x1E6970228];
     v119[0] = *MEMORY[0x1E6970208];
     v119[1] = v50;
-    v120[0] = v108;
+    v120[0] = allSupportedProperties;
     v120[1] = v107;
     v119[2] = *MEMORY[0x1E6970210];
-    v120[2] = v106;
+    v120[2] = mqf_requiredItemPlaybackProperties;
     v51 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v120 forKeys:v119 count:3];
     v52 = [v45 initWithProperties:v49 relationships:v51];
 
@@ -584,31 +584,31 @@ LABEL_57:
     v76 = [(MPPropertySet *)v101 propertySetByIntersectingWithPropertySet:v75];
 
     v77 = v12->_sod;
-    v78 = [(MPSectionedCollection *)v12->_progressiveResults allElementsEnumerator];
-    v79 = [v78 msv_lazyFilter:&__block_literal_global_10972];
+    allElementsEnumerator = [(MPSectionedCollection *)v12->_progressiveResults allElementsEnumerator];
+    v79 = [allElementsEnumerator msv_lazyFilter:&__block_literal_global_10972];
     v80 = [(MPObjectDatabase *)v77 objectBuildingContextForResults:v79 propertySet:v12->_fullObjectPropertySet];
     sodFullObjectContext = v12->_sodFullObjectContext;
     v12->_sodFullObjectContext = v80;
 
     lod = v12->_lod;
-    v83 = [(MPSectionedCollection *)v12->_progressiveResults allElementsEnumerator];
-    v84 = [v83 msv_lazyFilter:&__block_literal_global_11];
-    v85 = [(MPObjectDatabase *)lod objectBuildingContextForResults:v84 propertySet:v109];
+    allElementsEnumerator2 = [(MPSectionedCollection *)v12->_progressiveResults allElementsEnumerator];
+    v84 = [allElementsEnumerator2 msv_lazyFilter:&__block_literal_global_11];
+    v85 = [(MPObjectDatabase *)lod objectBuildingContextForResults:v84 propertySet:propertiesCopy];
     lodFullObjectContext = v12->_lodFullObjectContext;
     v12->_lodFullObjectContext = v85;
 
     v87 = v12->_lod;
-    v88 = [(MPSectionedCollection *)v12->_progressiveResults allElementsEnumerator];
-    v89 = [v88 msv_lazyFilter:&__block_literal_global_13];
+    allElementsEnumerator3 = [(MPSectionedCollection *)v12->_progressiveResults allElementsEnumerator];
+    v89 = [allElementsEnumerator3 msv_lazyFilter:&__block_literal_global_13];
     v90 = [(MPObjectDatabase *)v87 objectBuildingContextForResults:v89 propertySet:v76];
     lodPersonalizationContext = v12->_lodPersonalizationContext;
     v12->_lodPersonalizationContext = v90;
 
     v92 = v12->_lod;
-    v93 = [(MPSectionedCollection *)v12->_progressiveResults allElementsEnumerator];
-    v94 = [v93 msv_lazyFilter:&__block_literal_global_15];
-    v95 = [MEMORY[0x1E69708B0] emptyPropertySet];
-    v96 = [(MPObjectDatabase *)v92 objectBuildingContextForResults:v94 propertySet:v95];
+    allElementsEnumerator4 = [(MPSectionedCollection *)v12->_progressiveResults allElementsEnumerator];
+    v94 = [allElementsEnumerator4 msv_lazyFilter:&__block_literal_global_15];
+    emptyPropertySet = [MEMORY[0x1E69708B0] emptyPropertySet];
+    v96 = [(MPObjectDatabase *)v92 objectBuildingContextForResults:v94 propertySet:emptyPropertySet];
     lodMissingObjectsContext = v12->_lodMissingObjectsContext;
     v12->_lodMissingObjectsContext = v96;
 
@@ -623,9 +623,9 @@ LABEL_57:
 
     else
     {
-      v99 = [(MPObjectDatabaseProgressiveContext *)v12->_lodMissingObjectsContext isInvalid];
-      v12->_invalid = v99;
-      if ((v99 & 1) == 0)
+      isInvalid = [(MPObjectDatabaseProgressiveContext *)v12->_lodMissingObjectsContext isInvalid];
+      v12->_invalid = isInvalid;
+      if ((isInvalid & 1) == 0)
       {
         objc_initWeak(location, v12);
         aBlock[0] = MEMORY[0x1E69E9820];

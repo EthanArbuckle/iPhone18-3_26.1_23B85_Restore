@@ -1,22 +1,22 @@
 @interface NRCompanionLinkPreferences
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)copyShortDescription;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)initInternalWithServiceClass:(unsigned __int8)a3 highThroughout:(BOOL)a4 includeP2P:(BOOL)a5;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)initInternalWithServiceClass:(unsigned __int8)class highThroughout:(BOOL)throughout includeP2P:(BOOL)p;
 @end
 
 @implementation NRCompanionLinkPreferences
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
     v7 = *(&self->super._linkType + 1);
@@ -78,15 +78,15 @@
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = NRCompanionLinkPreferences;
-  v4 = [(NRLinkPreferences *)&v7 copyWithZone:a3];
-  v5 = [(NRCompanionLinkPreferences *)self serviceClass];
+  v4 = [(NRLinkPreferences *)&v7 copyWithZone:zone];
+  serviceClass = [(NRCompanionLinkPreferences *)self serviceClass];
   if (v4)
   {
-    v4[11] = v5;
+    v4[11] = serviceClass;
     v4[9] = [(NRCompanionLinkPreferences *)self highThroughput];
     v4[10] = [(NRCompanionLinkPreferences *)self includeP2P];
   }
@@ -100,7 +100,7 @@
   return v4;
 }
 
-- (id)initInternalWithServiceClass:(unsigned __int8)a3 highThroughout:(BOOL)a4 includeP2P:(BOOL)a5
+- (id)initInternalWithServiceClass:(unsigned __int8)class highThroughout:(BOOL)throughout includeP2P:(BOOL)p
 {
   v23 = *MEMORY[0x277D85DE8];
   v22.receiver = self;
@@ -139,9 +139,9 @@ LABEL_7:
   }
 
   *(result + 2) = atomic_fetch_add_explicit(&initInternalWithServiceClass_highThroughout_includeP2P__sNRLinkID, 1uLL, memory_order_relaxed);
-  *(result + 11) = a3;
-  *(result + 9) = a4;
-  *(result + 10) = a5;
+  *(result + 11) = class;
+  *(result + 9) = throughout;
+  *(result + 10) = p;
   v9 = *MEMORY[0x277D85DE8];
   return result;
 }

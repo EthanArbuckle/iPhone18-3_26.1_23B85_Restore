@@ -1,12 +1,12 @@
 @interface CKBalloonView
 - (BOOL)hasSuggestedActionsMenu;
 - (BOOL)invisibleInkEffectEnabled;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CGSize)sizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4;
-- (CGSize)sizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4 tailInsets:(UIEdgeInsets *)a5;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CGSize)sizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets;
+- (CGSize)sizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets tailInsets:(UIEdgeInsets *)tailInsets;
 - (CKBalloonDescriptor_t)balloonDescriptor;
 - (CKBalloonDescriptor_t)highlightOverlayBalloonDescriptor;
-- (CKBalloonView)initWithFrame:(CGRect)a3;
+- (CKBalloonView)initWithFrame:(CGRect)frame;
 - (CKBalloonViewAnimationDelegate)animationDelegate;
 - (CKBalloonViewDelegate)delegate;
 - (CKTextBalloonView)asTextBalloonView;
@@ -14,74 +14,74 @@
 - (IMColorComponents)strokeColor;
 - (NSString)description;
 - (UIEdgeInsets)alignmentRectInsets;
-- (UIEdgeInsets)alignmentRectInsetsForBoundsSize:(CGSize)a3;
+- (UIEdgeInsets)alignmentRectInsetsForBoundsSize:(CGSize)size;
 - (UIEdgeInsets)tailInsets;
-- (UIEdgeInsets)tailInsetsForPillSize:(CGSize)a3;
-- (UIEdgeInsets)tailInsetsForViewSize:(CGSize)a3;
+- (UIEdgeInsets)tailInsetsForPillSize:(CGSize)size;
+- (UIEdgeInsets)tailInsetsForViewSize:(CGSize)size;
 - (UIEdgeInsets)textAlignmentInsets;
 - (UIView)snapshotCurrentView;
 - (_TtC7ChatKit12CKBubblePath)bubblePath;
 - (char)balloonShape;
 - (double)suggestedActionsMenuAdditionalHeight;
-- (double)suggestedActionsMenuAdditionalHeightForBalloonSize:(CGSize)a3;
+- (double)suggestedActionsMenuAdditionalHeightForBalloonSize:(CGSize)size;
 - (double)suggestedActionsMenuHeight;
-- (double)suggestedActionsMenuHeightForSize:(CGSize)a3;
+- (double)suggestedActionsMenuHeightForSize:(CGSize)size;
 - (id)bezierPathForDragPreview;
 - (id)createHighlightOverlayLayer;
 - (id)highlightOverlayBalloonTraitCollection;
 - (void)_performHighlightOverlayLayerAppearanceAnimation;
 - (void)_performHighlightOverlayLayerDisappearanceAnimation;
-- (void)addFilter:(id)a3;
-- (void)addSuggestedActionsMenuWithSuggestedActionsList:(id)a3 backgroundStyle:(int64_t)a4;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
-- (void)chatBotActionButton:(id)a3 didSelectChipAction:(id)a4;
+- (void)addFilter:(id)filter;
+- (void)addSuggestedActionsMenuWithSuggestedActionsList:(id)list backgroundStyle:(int64_t)style;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
+- (void)chatBotActionButton:(id)button didSelectChipAction:(id)action;
 - (void)clearFilters;
-- (void)configureForComposition:(id)a3;
-- (void)configureForEffectViewWithMediaObject:(id)a3;
-- (void)configureForMessagePart:(id)a3;
+- (void)configureForComposition:(id)composition;
+- (void)configureForEffectViewWithMediaObject:(id)object;
+- (void)configureForMessagePart:(id)part;
 - (void)configureGestureRecognizers;
 - (void)dealloc;
-- (void)didTapTruncatedCaptionForRichCard:(id)a3;
-- (void)doubleTapGestureRecognized:(id)a3;
-- (void)insertHighlightOverlayLayer:(id)a3;
+- (void)didTapTruncatedCaptionForRichCard:(id)card;
+- (void)doubleTapGestureRecognized:(id)recognized;
+- (void)insertHighlightOverlayLayer:(id)layer;
 - (void)layoutDropDownMenuIfNeeded;
-- (void)layoutSublayersOfLayer:(id)a3;
+- (void)layoutSublayersOfLayer:(id)layer;
 - (void)layoutSubviews;
-- (void)longPressGestureRecognized:(id)a3;
-- (void)openAppFromNotificationExtensionWith:(id)a3;
-- (void)performTranscriptHideAnimation:(id)a3;
-- (void)performTranscriptInsertionAnimation:(id)a3;
-- (void)performTranscriptReloadAnimation:(id)a3;
-- (void)performTranscriptRemovalAnimation:(id)a3;
-- (void)performTranscriptRevealAnimation:(id)a3;
+- (void)longPressGestureRecognized:(id)recognized;
+- (void)openAppFromNotificationExtensionWith:(id)with;
+- (void)performTranscriptHideAnimation:(id)animation;
+- (void)performTranscriptInsertionAnimation:(id)animation;
+- (void)performTranscriptReloadAnimation:(id)animation;
+- (void)performTranscriptRemovalAnimation:(id)animation;
+- (void)performTranscriptRevealAnimation:(id)animation;
 - (void)prepareForDisplay;
 - (void)prepareForDisplayIfNeeded;
 - (void)prepareForReuse;
 - (void)registerForBalloonViewTraitCollectionUpdates;
 - (void)removeSuggestedActionsMenu;
-- (void)setBackdropFilterLayer:(id)a3;
-- (void)setBackgroundLuminance:(double)a3;
-- (void)setBalloonCorners:(unint64_t)a3;
-- (void)setBalloonDescriptor:(CKBalloonDescriptor_t *)a3;
-- (void)setBalloonStyle:(char)a3;
-- (void)setCornerRadius:(double)a3;
-- (void)setDragInteraction:(id)a3;
-- (void)setDynamicFillColor:(IMColorComponents)a3;
-- (void)setEffectView:(id)a3;
-- (void)setHasHighlightOverlay:(BOOL)a3 animated:(BOOL)a4 autoDismiss:(BOOL)a5;
-- (void)setHasVibrantOuterStroke:(BOOL)a3;
-- (void)setInvisibleInkEffectEnabled:(BOOL)a3;
-- (void)setInvisibleInkEffectPaused:(BOOL)a3;
+- (void)setBackdropFilterLayer:(id)layer;
+- (void)setBackgroundLuminance:(double)luminance;
+- (void)setBalloonCorners:(unint64_t)corners;
+- (void)setBalloonDescriptor:(CKBalloonDescriptor_t *)descriptor;
+- (void)setBalloonStyle:(char)style;
+- (void)setCornerRadius:(double)radius;
+- (void)setDragInteraction:(id)interaction;
+- (void)setDynamicFillColor:(IMColorComponents)color;
+- (void)setEffectView:(id)view;
+- (void)setHasHighlightOverlay:(BOOL)overlay animated:(BOOL)animated autoDismiss:(BOOL)dismiss;
+- (void)setHasVibrantOuterStroke:(BOOL)stroke;
+- (void)setInvisibleInkEffectEnabled:(BOOL)enabled;
+- (void)setInvisibleInkEffectPaused:(BOOL)paused;
 - (void)setNeedsPrepareForDisplay;
-- (void)setOrientation:(char)a3;
-- (void)setStrokeColor:(IMColorComponents)a3;
-- (void)setTextAlignmentInsets:(UIEdgeInsets)a3;
-- (void)setTranscriptBackgroundActive:(BOOL)a3;
-- (void)setUserInterfaceLevel:(int64_t)a3;
-- (void)setUserInterfaceStyle:(int64_t)a3;
-- (void)tapGestureRecognized:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)updateBalloonForTraitCollection:(id)a3;
+- (void)setOrientation:(char)orientation;
+- (void)setStrokeColor:(IMColorComponents)color;
+- (void)setTextAlignmentInsets:(UIEdgeInsets)insets;
+- (void)setTranscriptBackgroundActive:(BOOL)active;
+- (void)setUserInterfaceLevel:(int64_t)level;
+- (void)setUserInterfaceStyle:(int64_t)style;
+- (void)tapGestureRecognized:(id)recognized;
+- (void)traitCollectionDidChange:(id)change;
+- (void)updateBalloonForTraitCollection:(id)collection;
 - (void)updateGestureEnablement;
 - (void)updateRasterizationForInvisibleInkEffect;
 @end
@@ -91,9 +91,9 @@
 - (void)configureGestureRecognizers
 {
   v3 = +[CKUIBehavior sharedBehaviors];
-  v4 = [v3 disableTranscriptInteractions];
+  disableTranscriptInteractions = [v3 disableTranscriptInteractions];
 
-  if ((v4 & 1) == 0)
+  if ((disableTranscriptInteractions & 1) == 0)
   {
     v9 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:self action:sel_doubleTapGestureRecognized_];
     [v9 setCancelsTouchesInView:0];
@@ -112,9 +112,9 @@
     [v6 requireGestureRecognizerToFail:v5];
     [(CKBalloonView *)self setTapGestureRecognizer:v6];
     v7 = +[CKPrintController sharedInstance];
-    v8 = [v7 isPrinting];
+    isPrinting = [v7 isPrinting];
 
-    if ((v8 & 1) == 0)
+    if ((isPrinting & 1) == 0)
     {
       [(CKBalloonView *)self addGestureRecognizer:v6];
       [(CKBalloonView *)self addGestureRecognizer:v9];
@@ -125,20 +125,20 @@
 
 - (void)setNeedsPrepareForDisplay
 {
-  v2 = [(CKBalloonView *)self displayUpdater];
-  [v2 setNeedsUpdate];
+  displayUpdater = [(CKBalloonView *)self displayUpdater];
+  [displayUpdater setNeedsUpdate];
 }
 
 - (void)prepareForDisplayIfNeeded
 {
-  v2 = [(CKBalloonView *)self displayUpdater];
-  [v2 updateIfNeeded];
+  displayUpdater = [(CKBalloonView *)self displayUpdater];
+  [displayUpdater updateIfNeeded];
 }
 
 - (void)prepareForDisplay
 {
-  v2 = [(CKBalloonView *)self invisibleInkEffectController];
-  [v2 prepareForDisplay];
+  invisibleInkEffectController = [(CKBalloonView *)self invisibleInkEffectController];
+  [invisibleInkEffectController prepareForDisplay];
 }
 
 - (UIEdgeInsets)alignmentRectInsets
@@ -255,16 +255,16 @@
 
 - (BOOL)invisibleInkEffectEnabled
 {
-  v2 = [(CKBalloonView *)self invisibleInkEffectController];
-  v3 = [v2 isEnabled];
+  invisibleInkEffectController = [(CKBalloonView *)self invisibleInkEffectController];
+  isEnabled = [invisibleInkEffectController isEnabled];
 
-  return v3;
+  return isEnabled;
 }
 
 - (BOOL)hasSuggestedActionsMenu
 {
-  v2 = [(CKBalloonView *)self dropDownMenuButton];
-  v3 = v2 != 0;
+  dropDownMenuButton = [(CKBalloonView *)self dropDownMenuButton];
+  v3 = dropDownMenuButton != 0;
 
   return v3;
 }
@@ -282,21 +282,21 @@
   v3 = MEMORY[0x1E696AEC0];
   [(CKBalloonView *)self balloonDescriptor];
   v4 = NSStringFromBalloonDescriptor(v11);
-  v5 = [(CKBalloonView *)self delegate];
-  v6 = [(CKBalloonImageView *)self image];
+  delegate = [(CKBalloonView *)self delegate];
+  image = [(CKBalloonImageView *)self image];
   v10.receiver = self;
   v10.super_class = CKBalloonView;
   v7 = [(CKBalloonView *)&v10 description];
-  v8 = [v3 stringWithFormat:@"[CKBalloonView balloon:%@ delegate:%@ [UIImageView image:%@ [%@]]]", v4, v5, v6, v7];
+  v8 = [v3 stringWithFormat:@"[CKBalloonView balloon:%@ delegate:%@ [UIImageView image:%@ [%@]]]", v4, delegate, image, v7];
 
   return v8;
 }
 
-- (CKBalloonView)initWithFrame:(CGRect)a3
+- (CKBalloonView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = CKBalloonView;
-  v3 = [(CKBalloonImageView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CKBalloonImageView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -319,8 +319,8 @@
 
 - (void)registerForBalloonViewTraitCollectionUpdates
 {
-  v3 = [MEMORY[0x1E69DD1B8] systemTraitsAffectingColorAppearance];
-  v6 = [v3 mutableCopy];
+  systemTraitsAffectingColorAppearance = [MEMORY[0x1E69DD1B8] systemTraitsAffectingColorAppearance];
+  v6 = [systemTraitsAffectingColorAppearance mutableCopy];
 
   [v6 addObject:objc_opt_class()];
   [v6 addObject:objc_opt_class()];
@@ -339,29 +339,29 @@ void __61__CKBalloonView_registerForBalloonViewTraitCollectionUpdates__block_inv
 - (void)updateGestureEnablement
 {
   v3 = +[CKUIBehavior sharedBehaviors];
-  v4 = [v3 disableTranscriptInteractions];
-  v5 = [(CKBalloonView *)self longPressGestureRecognizer];
-  [v5 setEnabled:v4 ^ 1u];
+  disableTranscriptInteractions = [v3 disableTranscriptInteractions];
+  longPressGestureRecognizer = [(CKBalloonView *)self longPressGestureRecognizer];
+  [longPressGestureRecognizer setEnabled:disableTranscriptInteractions ^ 1u];
 
   v6 = +[CKUIBehavior sharedBehaviors];
-  v7 = [v6 disableTranscriptInteractions];
-  v8 = [(CKBalloonView *)self doubleTapGestureRecognizer];
-  [v8 setEnabled:v7 ^ 1u];
+  disableTranscriptInteractions2 = [v6 disableTranscriptInteractions];
+  doubleTapGestureRecognizer = [(CKBalloonView *)self doubleTapGestureRecognizer];
+  [doubleTapGestureRecognizer setEnabled:disableTranscriptInteractions2 ^ 1u];
 
   v10 = +[CKUIBehavior sharedBehaviors];
   LODWORD(v6) = [v10 disableTranscriptInteractions];
-  v9 = [(CKBalloonView *)self tapGestureRecognizer];
-  [v9 setEnabled:v6 ^ 1];
+  tapGestureRecognizer = [(CKBalloonView *)self tapGestureRecognizer];
+  [tapGestureRecognizer setEnabled:v6 ^ 1];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v4 = *(MEMORY[0x1E69DDCE0] + 16);
   v12 = *MEMORY[0x1E69DDCE0];
   v13 = v4;
   v11[0] = v12;
   v11[1] = v4;
-  [(CKBalloonView *)self sizeThatFits:&v12 textAlignmentInsets:v11 tailInsets:a3.width, a3.height];
+  [(CKBalloonView *)self sizeThatFits:&v12 textAlignmentInsets:v11 tailInsets:fits.width, fits.height];
   v6 = v5;
   v8 = v7;
   [(CKBalloonView *)self setTextAlignmentInsets:v12, v13];
@@ -372,26 +372,26 @@ void __61__CKBalloonView_registerForBalloonViewTraitCollectionUpdates__block_inv
   return result;
 }
 
-- (void)addSuggestedActionsMenuWithSuggestedActionsList:(id)a3 backgroundStyle:(int64_t)a4
+- (void)addSuggestedActionsMenuWithSuggestedActionsList:(id)list backgroundStyle:(int64_t)style
 {
-  v9 = a3;
+  listCopy = list;
   if (![(CKBalloonView *)self hasSuggestedActionsMenu])
   {
-    v6 = [(CKBalloonView *)self dropDownMenuButton];
-    [v6 removeFromSuperview];
+    dropDownMenuButton = [(CKBalloonView *)self dropDownMenuButton];
+    [dropDownMenuButton removeFromSuperview];
 
-    v7 = [[CKChatBotActionButton alloc] initWithActions:v9 delegate:self backgroundStyle:a4 showTitle:1];
+    v7 = [[CKChatBotActionButton alloc] initWithActions:listCopy delegate:self backgroundStyle:style showTitle:1];
     [(CKBalloonView *)self setDropDownMenuButton:v7];
 
-    v8 = [(CKBalloonView *)self dropDownMenuButton];
-    [(CKBalloonView *)self addSubview:v8];
+    dropDownMenuButton2 = [(CKBalloonView *)self dropDownMenuButton];
+    [(CKBalloonView *)self addSubview:dropDownMenuButton2];
   }
 }
 
 - (void)removeSuggestedActionsMenu
 {
-  v3 = [(CKBalloonView *)self dropDownMenuButton];
-  [v3 removeFromSuperview];
+  dropDownMenuButton = [(CKBalloonView *)self dropDownMenuButton];
+  [dropDownMenuButton removeFromSuperview];
 
   [(CKBalloonView *)self setDropDownMenuButton:0];
 }
@@ -427,22 +427,22 @@ void __61__CKBalloonView_registerForBalloonViewTraitCollectionUpdates__block_inv
   }
 }
 
-- (void)layoutSublayersOfLayer:(id)a3
+- (void)layoutSublayersOfLayer:(id)layer
 {
   v5.receiver = self;
   v5.super_class = CKBalloonView;
-  [(CKBalloonView *)&v5 layoutSublayersOfLayer:a3];
-  v4 = [(CKBalloonView *)self invisibleInkEffectController];
-  [v4 hostViewDidLayoutSubviews];
+  [(CKBalloonView *)&v5 layoutSublayersOfLayer:layer];
+  invisibleInkEffectController = [(CKBalloonView *)self invisibleInkEffectController];
+  [invisibleInkEffectController hostViewDidLayoutSubviews];
 }
 
-- (double)suggestedActionsMenuAdditionalHeightForBalloonSize:(CGSize)a3
+- (double)suggestedActionsMenuAdditionalHeightForBalloonSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(CKBalloonView *)self hasSuggestedActionsMenu];
+  height = size.height;
+  width = size.width;
+  hasSuggestedActionsMenu = [(CKBalloonView *)self hasSuggestedActionsMenu];
   result = 0.0;
-  if (v6)
+  if (hasSuggestedActionsMenu)
   {
     v8 = +[CKUIBehavior sharedBehaviors];
     [v8 suggestedActionButtonInsets];
@@ -475,15 +475,15 @@ void __61__CKBalloonView_registerForBalloonViewTraitCollectionUpdates__block_inv
   return result;
 }
 
-- (double)suggestedActionsMenuHeightForSize:(CGSize)a3
+- (double)suggestedActionsMenuHeightForSize:(CGSize)size
 {
-  v4 = a3.width + -32.0;
+  v4 = size.width + -32.0;
   v5 = +[CKUIBehavior sharedBehaviors];
   [v5 suggestedActionButtonMinHeight];
   v7 = v6;
 
-  v8 = [(CKBalloonView *)self dropDownMenuButton];
-  [v8 sizeThatFits:{v4, 1.79769313e308}];
+  dropDownMenuButton = [(CKBalloonView *)self dropDownMenuButton];
+  [dropDownMenuButton sizeThatFits:{v4, 1.79769313e308}];
   v10 = fmax(v9, v7);
 
   return v10;
@@ -543,19 +543,19 @@ void __61__CKBalloonView_registerForBalloonViewTraitCollectionUpdates__block_inv
     v22 = v20 - v21 - v14 - v11;
     [(CKBalloonView *)self suggestedActionsMenuHeight];
     v24 = v23;
-    v25 = [(CKBalloonView *)self dropDownMenuButton];
-    [v25 setFrame:{v18, v22, v6 - (v16 + v15), v24}];
+    dropDownMenuButton = [(CKBalloonView *)self dropDownMenuButton];
+    [dropDownMenuButton setFrame:{v18, v22, v6 - (v16 + v15), v24}];
 
-    v26 = [(CKBalloonView *)self dropDownMenuButton];
-    [(CKBalloonView *)self bringSubviewToFront:v26];
+    dropDownMenuButton2 = [(CKBalloonView *)self dropDownMenuButton];
+    [(CKBalloonView *)self bringSubviewToFront:dropDownMenuButton2];
   }
 }
 
-- (UIEdgeInsets)alignmentRectInsetsForBoundsSize:(CGSize)a3
+- (UIEdgeInsets)alignmentRectInsetsForBoundsSize:(CGSize)size
 {
   v7.receiver = self;
   v7.super_class = CKBalloonView;
-  [(CKBalloonImageView *)&v7 alignmentRectInsets:a3.width];
+  [(CKBalloonImageView *)&v7 alignmentRectInsets:size.width];
   result.right = v6;
   result.bottom = v5;
   result.left = v4;
@@ -563,138 +563,138 @@ void __61__CKBalloonView_registerForBalloonViewTraitCollectionUpdates__block_inv
   return result;
 }
 
-- (void)setEffectView:(id)a3
+- (void)setEffectView:(id)view
 {
-  v10 = a3;
-  v4 = [(CKBalloonView *)self stickerEffectView];
+  viewCopy = view;
+  stickerEffectView = [(CKBalloonView *)self stickerEffectView];
 
-  v5 = v10;
-  if (v4 != v10)
+  v5 = viewCopy;
+  if (stickerEffectView != viewCopy)
   {
-    v6 = [(CKBalloonView *)self stickerEffectView];
-    [v6 removeFromSuperview];
+    stickerEffectView2 = [(CKBalloonView *)self stickerEffectView];
+    [stickerEffectView2 removeFromSuperview];
 
-    [(CKBalloonView *)self setStickerEffectView:v10];
-    v7 = [(CKBalloonView *)self stickerEffectView];
+    [(CKBalloonView *)self setStickerEffectView:viewCopy];
+    stickerEffectView3 = [(CKBalloonView *)self stickerEffectView];
 
-    if (v7)
+    if (stickerEffectView3)
     {
-      v8 = [(CKBalloonImageView *)self invisibleInkEffectImage];
+      invisibleInkEffectImage = [(CKBalloonImageView *)self invisibleInkEffectImage];
 
-      v9 = [(CKBalloonView *)self stickerEffectView];
-      if (v8)
+      stickerEffectView4 = [(CKBalloonView *)self stickerEffectView];
+      if (invisibleInkEffectImage)
       {
-        [(CKBalloonView *)self insertSubview:v9 atIndex:0];
+        [(CKBalloonView *)self insertSubview:stickerEffectView4 atIndex:0];
       }
 
       else
       {
-        [(CKBalloonView *)self addSubview:v9];
+        [(CKBalloonView *)self addSubview:stickerEffectView4];
       }
     }
 
-    [(CKBalloonImageView *)self setImageHidden:v7 != 0];
+    [(CKBalloonImageView *)self setImageHidden:stickerEffectView3 != 0];
     [(CKBalloonView *)self setNeedsLayout];
-    v5 = v10;
+    v5 = viewCopy;
   }
 }
 
-- (void)configureForEffectViewWithMediaObject:(id)a3
+- (void)configureForEffectViewWithMediaObject:(id)object
 {
-  v15 = a3;
+  objectCopy = object;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v5 = v15;
+  v5 = objectCopy;
   if (isKindOfClass)
   {
-    v6 = v15;
+    v6 = objectCopy;
     if (([v6 needsAnimation] & 1) == 0)
     {
       [v6 stickerEffectType];
       if (([v6 needsAnimation] & 1) == 0 && (IMStickerEffectTypeShouldAvoidEffectView() & 1) == 0)
       {
-        v7 = [(CKBalloonView *)self stickerEffectView];
-        if (!v7)
+        stickerEffectView = [(CKBalloonView *)self stickerEffectView];
+        if (!stickerEffectView)
         {
           v8 = MTLCreateSystemDefaultDevice();
-          v7 = [objc_alloc(MEMORY[0x1E69DFA08]) initWithDevice:v8];
-          [v7 setContentMode:1];
+          stickerEffectView = [objc_alloc(MEMORY[0x1E69DFA08]) initWithDevice:v8];
+          [stickerEffectView setContentMode:1];
           [(CKBalloonView *)self frame];
-          [v7 setFrame:?];
-          v9 = [v6 imageData];
-          v10 = [v9 UTIType];
-          v11 = [v10 hasSuffix:@"heics"];
+          [stickerEffectView setFrame:?];
+          imageData = [v6 imageData];
+          uTIType = [imageData UTIType];
+          v11 = [uTIType hasSuffix:@"heics"];
 
           if (v11)
           {
-            v12 = [v6 imageData];
-            v13 = [v12 data];
-            [v7 setVideoData:v13];
+            imageData2 = [v6 imageData];
+            data = [imageData2 data];
+            [stickerEffectView setVideoData:data];
           }
 
           else
           {
-            v12 = [(CKBalloonImageView *)self image];
-            [v7 setImage:v12];
+            imageData2 = [(CKBalloonImageView *)self image];
+            [stickerEffectView setImage:imageData2];
           }
 
           v14 = [MEMORY[0x1E69DFA00] effectWithType:{objc_msgSend(v6, "stickerEffectType")}];
-          [v7 setEffect:v14];
+          [stickerEffectView setEffect:v14];
 
-          [(CKBalloonView *)self setEffectView:v7];
+          [(CKBalloonView *)self setEffectView:stickerEffectView];
         }
       }
     }
 
-    v5 = v15;
+    v5 = objectCopy;
   }
 }
 
-- (void)setOrientation:(char)a3
+- (void)setOrientation:(char)orientation
 {
-  if (self->_orientation != a3)
+  if (self->_orientation != orientation)
   {
-    self->_orientation = a3;
+    self->_orientation = orientation;
     [(CKBalloonView *)self setNeedsPrepareForDisplay];
   }
 }
 
-- (void)setTextAlignmentInsets:(UIEdgeInsets)a3
+- (void)setTextAlignmentInsets:(UIEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.left;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_textAlignmentInsets.top, v3), vceqq_f64(*&self->_textAlignmentInsets.bottom, v4)))) & 1) == 0)
   {
-    self->_textAlignmentInsets = a3;
+    self->_textAlignmentInsets = insets;
     [(CKBalloonView *)self setNeedsLayout];
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4 tailInsets:(UIEdgeInsets *)a5
+- (CGSize)sizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets tailInsets:(UIEdgeInsets *)tailInsets
 {
   v7.receiver = self;
   v7.super_class = CKBalloonView;
-  [(CKBalloonImageView *)&v7 sizeThatFits:a4, a5, a3.width, a3.height];
+  [(CKBalloonImageView *)&v7 sizeThatFits:insets, tailInsets, fits.width, fits.height];
   result.height = v6;
   result.width = v5;
   return result;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v11.receiver = self;
   v11.super_class = CKBalloonView;
-  v4 = a3;
-  [(CKBalloonView *)&v11 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(CKBalloonView *)&v11 traitCollectionDidChange:changeCopy];
   v5 = [(CKBalloonView *)self traitCollection:v11.receiver];
   -[CKBalloonView setUserInterfaceStyle:](self, "setUserInterfaceStyle:", [v5 userInterfaceStyle]);
 
-  v6 = [(CKBalloonView *)self traitCollection];
-  [v6 displayScale];
+  traitCollection = [(CKBalloonView *)self traitCollection];
+  [traitCollection displayScale];
   v8 = v7;
-  [v4 displayScale];
+  [changeCopy displayScale];
   v10 = v9;
 
   if (v8 != v10)
@@ -704,15 +704,15 @@ void __61__CKBalloonView_registerForBalloonViewTraitCollectionUpdates__block_inv
   }
 }
 
-- (void)updateBalloonForTraitCollection:(id)a3
+- (void)updateBalloonForTraitCollection:(id)collection
 {
-  v4 = a3;
+  collectionCopy = collection;
   v5 = CKBackgroundLevelForTraitCollection();
-  -[CKBalloonView setUserInterfaceStyle:](self, "setUserInterfaceStyle:", [v4 userInterfaceStyle]);
+  -[CKBalloonView setUserInterfaceStyle:](self, "setUserInterfaceStyle:", [collectionCopy userInterfaceStyle]);
   [(CKBalloonView *)self setUserInterfaceLevel:v5];
-  v6 = [v4 isTranscriptBackgroundActive];
+  isTranscriptBackgroundActive = [collectionCopy isTranscriptBackgroundActive];
 
-  [(CKBalloonView *)self setTranscriptBackgroundActive:v6];
+  [(CKBalloonView *)self setTranscriptBackgroundActive:isTranscriptBackgroundActive];
 }
 
 - (void)prepareForReuse
@@ -732,11 +732,11 @@ void __61__CKBalloonView_registerForBalloonViewTraitCollectionUpdates__block_inv
   [(CKBalloonView *)self setUserInteractionEnabled:1];
   [(CKBalloonView *)self setInvisibleInkEffectEnabled:0];
   [(CKBalloonView *)self setInvisibleInkEffectPaused:0];
-  v3 = [(CKBalloonView *)self layer];
-  [v3 setAnchorPoint:{0.5, 0.5}];
+  layer = [(CKBalloonView *)self layer];
+  [layer setAnchorPoint:{0.5, 0.5}];
 
-  v4 = [(CKBalloonView *)self filters];
-  v5 = [v4 count];
+  filters = [(CKBalloonView *)self filters];
+  v5 = [filters count];
 
   if (v5)
   {
@@ -745,12 +745,12 @@ void __61__CKBalloonView_registerForBalloonViewTraitCollectionUpdates__block_inv
 
   [(CKBalloonView *)self setInteractions:MEMORY[0x1E695E0F0]];
   [(CKBalloonView *)self setDragInteraction:0];
-  v6 = [(CKBalloonView *)self stickerEffectView];
-  [v6 removeFromSuperview];
+  stickerEffectView = [(CKBalloonView *)self stickerEffectView];
+  [stickerEffectView removeFromSuperview];
 
   [(CKBalloonView *)self setEffectView:0];
-  v7 = [(CKBalloonView *)self dropDownMenuButton];
-  [v7 removeFromSuperview];
+  dropDownMenuButton = [(CKBalloonView *)self dropDownMenuButton];
+  [dropDownMenuButton removeFromSuperview];
 
   [(CKBalloonView *)self setDropDownMenuButton:0];
 }
@@ -766,8 +766,8 @@ void __61__CKBalloonView_registerForBalloonViewTraitCollectionUpdates__block_inv
   *&retstr->var0 = 0u;
   *&retstr->var5 = 0u;
   [(CKBalloonView *)self balloonDescriptor];
-  v10 = [(CKBalloonView *)self highlightOverlayColor];
-  [v10 ck_imColorComponents];
+  highlightOverlayColor = [(CKBalloonView *)self highlightOverlayColor];
+  [highlightOverlayColor ck_imColorComponents];
   retstr->var7.red = v5;
   retstr->var7.green = v6;
   retstr->var7.blue = v7;
@@ -778,8 +778,8 @@ void __61__CKBalloonView_registerForBalloonViewTraitCollectionUpdates__block_inv
 
 - (id)highlightOverlayBalloonTraitCollection
 {
-  v2 = [(CKBalloonView *)self traitCollection];
-  v3 = [v2 traitCollectionByModifyingTraits:&__block_literal_global_248];
+  traitCollection = [(CKBalloonView *)self traitCollection];
+  v3 = [traitCollection traitCollectionByModifyingTraits:&__block_literal_global_248];
 
   return v3;
 }
@@ -790,11 +790,11 @@ void __55__CKBalloonView_highlightOverlayBalloonTraitCollection__block_invoke(ui
   [v2 setNSIntegerValue:objc_msgSend(MEMORY[0x1E695E110] forTrait:{"integerValue"), objc_opt_class()}];
 }
 
-- (void)insertHighlightOverlayLayer:(id)a3
+- (void)insertHighlightOverlayLayer:(id)layer
 {
-  v4 = a3;
-  v5 = [(CKBalloonView *)self layer];
-  [v5 addSublayer:v4];
+  layerCopy = layer;
+  layer = [(CKBalloonView *)self layer];
+  [layer addSublayer:layerCopy];
 }
 
 - (id)createHighlightOverlayLayer
@@ -808,7 +808,7 @@ void __55__CKBalloonView_highlightOverlayBalloonTraitCollection__block_invoke(ui
   v8 = 0u;
   v9 = 0u;
   [(CKBalloonView *)self highlightOverlayBalloonDescriptor];
-  v3 = [(CKBalloonView *)self highlightOverlayBalloonTraitCollection];
+  highlightOverlayBalloonTraitCollection = [(CKBalloonView *)self highlightOverlayBalloonTraitCollection];
   v4 = [_TtC7ChatKit14CKBalloonLayer alloc];
   v7[4] = v12;
   v7[5] = v13;
@@ -818,50 +818,50 @@ void __55__CKBalloonView_highlightOverlayBalloonTraitCollection__block_invoke(ui
   v7[1] = v9;
   v7[2] = v10;
   v7[3] = v11;
-  v5 = [(CKBalloonLayer *)v4 initWithDescriptor:v7 traitCollection:v3];
+  v5 = [(CKBalloonLayer *)v4 initWithDescriptor:v7 traitCollection:highlightOverlayBalloonTraitCollection];
   [(CKBalloonLayer *)v5 setAllowsHitTesting:0];
 
   return v5;
 }
 
-- (void)setHasHighlightOverlay:(BOOL)a3 animated:(BOOL)a4 autoDismiss:(BOOL)a5
+- (void)setHasHighlightOverlay:(BOOL)overlay animated:(BOOL)animated autoDismiss:(BOOL)dismiss
 {
-  if (self->_hasHighlightOverlay != a3)
+  if (self->_hasHighlightOverlay != overlay)
   {
-    v6 = a4;
-    self->_hasHighlightOverlay = a3;
-    if (a3)
+    animatedCopy = animated;
+    self->_hasHighlightOverlay = overlay;
+    if (overlay)
     {
-      v8 = a5;
-      v9 = [(CKBalloonView *)self createHighlightOverlayLayer];
+      dismissCopy = dismiss;
+      createHighlightOverlayLayer = [(CKBalloonView *)self createHighlightOverlayLayer];
       highlightOverlayLayer = self->_highlightOverlayLayer;
-      self->_highlightOverlayLayer = v9;
+      self->_highlightOverlayLayer = createHighlightOverlayLayer;
 
       if (self->_highlightOverlayLayer)
       {
         [(CKBalloonView *)self insertHighlightOverlayLayer:?];
-        if (v6)
+        if (animatedCopy)
         {
           [(CKBalloonView *)self _performHighlightOverlayLayerAppearanceAnimation];
         }
       }
 
-      if (v8)
+      if (dismissCopy)
       {
         [MEMORY[0x1E69E58C0] cancelPreviousPerformRequestsWithTarget:self selector:sel__highlightOverlayAutoDismissTimerFired object:0];
         [(CKBalloonView *)self performSelector:sel__highlightOverlayAutoDismissTimerFired withObject:0 afterDelay:2.0];
       }
     }
 
-    else if (a4)
+    else if (animated)
     {
       [(CKBalloonView *)self _performHighlightOverlayLayerDisappearanceAnimation];
     }
 
     else
     {
-      v11 = [(CKBalloonView *)self highlightOverlayLayer];
-      [v11 removeFromSuperlayer];
+      highlightOverlayLayer = [(CKBalloonView *)self highlightOverlayLayer];
+      [highlightOverlayLayer removeFromSuperlayer];
 
       [(CKBalloonView *)self setHighlightOverlayLayer:0];
     }
@@ -910,12 +910,12 @@ void __55__CKBalloonView_highlightOverlayBalloonTraitCollection__block_invoke(ui
   }
 }
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
-  if (self->_activeHighlightOverlayLayerDisappearanceAnimation == a3)
+  if (self->_activeHighlightOverlayLayerDisappearanceAnimation == stop)
   {
-    v5 = [(CKBalloonView *)self highlightOverlayLayer];
-    [v5 removeFromSuperlayer];
+    highlightOverlayLayer = [(CKBalloonView *)self highlightOverlayLayer];
+    [highlightOverlayLayer removeFromSuperlayer];
 
     [(CKBalloonView *)self setHighlightOverlayLayer:0];
     activeHighlightOverlayLayerDisappearanceAnimation = self->_activeHighlightOverlayLayerDisappearanceAnimation;
@@ -923,119 +923,119 @@ void __55__CKBalloonView_highlightOverlayBalloonTraitCollection__block_invoke(ui
   }
 }
 
-- (void)addFilter:(id)a3
+- (void)addFilter:(id)filter
 {
-  v4 = a3;
-  [v4 balloonAlpha];
+  filterCopy = filter;
+  [filterCopy balloonAlpha];
   [(CKBalloonView *)self setAlpha:?];
-  v5 = [(CKBalloonView *)self filters];
+  filters = [(CKBalloonView *)self filters];
 
-  if (!v5)
+  if (!filters)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
-    [(CKBalloonView *)self setFilters:v6];
+    array = [MEMORY[0x1E695DF70] array];
+    [(CKBalloonView *)self setFilters:array];
   }
 
-  v7 = [(CKBalloonView *)self filters];
-  [v7 addObject:v4];
+  filters2 = [(CKBalloonView *)self filters];
+  [filters2 addObject:filterCopy];
 }
 
 - (void)clearFilters
 {
   [(CKBalloonView *)self setAlpha:1.0];
-  v3 = [(CKBalloonView *)self filters];
-  [v3 removeAllObjects];
+  filters = [(CKBalloonView *)self filters];
+  [filters removeAllObjects];
 
   [(CKBalloonView *)self setFilters:0];
 
   [(CKBalloonView *)self setNeedsPrepareForDisplay];
 }
 
-- (void)setDragInteraction:(id)a3
+- (void)setDragInteraction:(id)interaction
 {
-  v5 = a3;
+  interactionCopy = interaction;
   dragInteraction = self->_dragInteraction;
-  if (dragInteraction != v5)
+  if (dragInteraction != interactionCopy)
   {
-    v7 = v5;
+    v7 = interactionCopy;
     if (dragInteraction)
     {
       [(CKBalloonView *)self removeInteraction:?];
-      v5 = v7;
+      interactionCopy = v7;
     }
 
-    if (v5)
+    if (interactionCopy)
     {
       [(CKBalloonView *)self addInteraction:v7];
     }
 
-    objc_storeStrong(&self->_dragInteraction, a3);
-    v5 = v7;
+    objc_storeStrong(&self->_dragInteraction, interaction);
+    interactionCopy = v7;
   }
 }
 
-- (void)setBalloonStyle:(char)a3
+- (void)setBalloonStyle:(char)style
 {
-  if (self->_balloonStyle != a3)
+  if (self->_balloonStyle != style)
   {
-    self->_balloonStyle = a3;
+    self->_balloonStyle = style;
     [(CKBalloonView *)self setNeedsPrepareForDisplay];
   }
 }
 
-- (void)setUserInterfaceStyle:(int64_t)a3
+- (void)setUserInterfaceStyle:(int64_t)style
 {
-  if (self->_userInterfaceStyle != a3)
+  if (self->_userInterfaceStyle != style)
   {
-    self->_userInterfaceStyle = a3;
+    self->_userInterfaceStyle = style;
     [(CKBalloonView *)self setNeedsPrepareForDisplay];
   }
 }
 
-- (void)setBackgroundLuminance:(double)a3
+- (void)setBackgroundLuminance:(double)luminance
 {
-  v3 = vabdd_f64(a3, self->_backgroundLuminance);
-  self->_backgroundLuminance = a3;
+  v3 = vabdd_f64(luminance, self->_backgroundLuminance);
+  self->_backgroundLuminance = luminance;
   if (v3 > 0.01)
   {
     [(CKBalloonView *)self setNeedsPrepareForDisplay];
   }
 }
 
-- (void)setUserInterfaceLevel:(int64_t)a3
+- (void)setUserInterfaceLevel:(int64_t)level
 {
-  if (self->_userInterfaceLevel != a3)
+  if (self->_userInterfaceLevel != level)
   {
-    self->_userInterfaceLevel = a3;
+    self->_userInterfaceLevel = level;
     [(CKBalloonView *)self setNeedsPrepareForDisplay];
   }
 }
 
-- (void)setHasVibrantOuterStroke:(BOOL)a3
+- (void)setHasVibrantOuterStroke:(BOOL)stroke
 {
-  if (self->_hasVibrantOuterStroke != a3)
+  if (self->_hasVibrantOuterStroke != stroke)
   {
-    self->_hasVibrantOuterStroke = a3;
+    self->_hasVibrantOuterStroke = stroke;
     [(CKBalloonView *)self setNeedsPrepareForDisplay];
   }
 }
 
-- (void)setCornerRadius:(double)a3
+- (void)setCornerRadius:(double)radius
 {
-  v3 = vabdd_f64(a3, self->_cornerRadius);
-  self->_cornerRadius = a3;
+  v3 = vabdd_f64(radius, self->_cornerRadius);
+  self->_cornerRadius = radius;
   if (v3 > 0.01)
   {
     [(CKBalloonView *)self setNeedsPrepareForDisplay];
   }
 }
 
-- (void)setDynamicFillColor:(IMColorComponents)a3
+- (void)setDynamicFillColor:(IMColorComponents)color
 {
-  alpha = a3.alpha;
-  blue = a3.blue;
-  green = a3.green;
-  red = a3.red;
+  alpha = color.alpha;
+  blue = color.blue;
+  green = color.green;
+  red = color.red;
   p_dynamicFillColor = &self->_dynamicFillColor;
   if ((IMColorComponentsEqualToColorComponents() & 1) == 0)
   {
@@ -1048,12 +1048,12 @@ void __55__CKBalloonView_highlightOverlayBalloonTraitCollection__block_invoke(ui
   }
 }
 
-- (void)setStrokeColor:(IMColorComponents)a3
+- (void)setStrokeColor:(IMColorComponents)color
 {
-  alpha = a3.alpha;
-  blue = a3.blue;
-  green = a3.green;
-  red = a3.red;
+  alpha = color.alpha;
+  blue = color.blue;
+  green = color.green;
+  red = color.red;
   p_strokeColor = &self->_strokeColor;
   if ((IMColorComponentsEqualToColorComponents() & 1) == 0)
   {
@@ -1066,149 +1066,149 @@ void __55__CKBalloonView_highlightOverlayBalloonTraitCollection__block_invoke(ui
   }
 }
 
-- (void)setTranscriptBackgroundActive:(BOOL)a3
+- (void)setTranscriptBackgroundActive:(BOOL)active
 {
-  if (self->_transcriptBackgroundActive != a3)
+  if (self->_transcriptBackgroundActive != active)
   {
-    self->_transcriptBackgroundActive = a3;
+    self->_transcriptBackgroundActive = active;
     [(CKBalloonView *)self setNeedsPrepareForDisplay];
   }
 }
 
-- (void)setBalloonCorners:(unint64_t)a3
+- (void)setBalloonCorners:(unint64_t)corners
 {
-  if (self->_balloonCorners != a3)
+  if (self->_balloonCorners != corners)
   {
-    self->_balloonCorners = a3;
+    self->_balloonCorners = corners;
     [(CKBalloonView *)self setNeedsPrepareForDisplay];
   }
 }
 
-- (void)tapGestureRecognized:(id)a3
+- (void)tapGestureRecognized:(id)recognized
 {
-  v7 = a3;
-  if ([v7 modifierFlags] == 0x80000)
+  recognizedCopy = recognized;
+  if ([recognizedCopy modifierFlags] == 0x80000)
   {
-    v4 = [(CKBalloonView *)self delegate];
-    [v4 balloonViewLongTouched:self];
+    delegate = [(CKBalloonView *)self delegate];
+    [delegate balloonViewLongTouched:self];
   }
 
   else
   {
-    v5 = [v7 modifierFlags];
-    v6 = [(CKBalloonView *)self delegate];
-    v4 = v6;
-    if (v5 == 655360)
+    modifierFlags = [recognizedCopy modifierFlags];
+    delegate2 = [(CKBalloonView *)self delegate];
+    delegate = delegate2;
+    if (modifierFlags == 655360)
     {
-      [v6 balloonViewShowInlineReply:self];
+      [delegate2 balloonViewShowInlineReply:self];
     }
 
     else
     {
-      [v6 balloonViewTapped:self withModifierFlags:objc_msgSend(v7 selectedText:{"modifierFlags"), 0}];
+      [delegate2 balloonViewTapped:self withModifierFlags:objc_msgSend(recognizedCopy selectedText:{"modifierFlags"), 0}];
     }
   }
 }
 
-- (void)setInvisibleInkEffectEnabled:(BOOL)a3
+- (void)setInvisibleInkEffectEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v5 = [(CKBalloonView *)self invisibleInkEffectController];
-  if (v3 && !v5)
+  enabledCopy = enabled;
+  invisibleInkEffectController = [(CKBalloonView *)self invisibleInkEffectController];
+  if (enabledCopy && !invisibleInkEffectController)
   {
     v6 = [[CKInvisibleInkEffectController alloc] initWithHostView:self];
     [(CKInvisibleInkEffectController *)v6 setPaused:[(CKBalloonView *)self invisibleInkEffectPaused]];
     [(CKBalloonView *)self setInvisibleInkEffectController:v6];
-    v5 = v6;
+    invisibleInkEffectController = v6;
   }
 
-  v7 = v5;
-  if ([v5 isEnabled] != v3)
+  v7 = invisibleInkEffectController;
+  if ([invisibleInkEffectController isEnabled] != enabledCopy)
   {
-    [v7 setEnabled:v3];
+    [v7 setEnabled:enabledCopy];
     [(CKBalloonView *)self updateRasterizationForInvisibleInkEffect];
     [(CKBalloonView *)self setNeedsPrepareForDisplay];
     [(CKBalloonView *)self prepareForDisplayIfNeeded];
   }
 }
 
-- (void)setInvisibleInkEffectPaused:(BOOL)a3
+- (void)setInvisibleInkEffectPaused:(BOOL)paused
 {
-  if (self->_invisibleInkEffectPaused != a3)
+  if (self->_invisibleInkEffectPaused != paused)
   {
-    v4 = a3;
-    self->_invisibleInkEffectPaused = a3;
-    v6 = [(CKBalloonView *)self invisibleInkEffectController];
-    [v6 setPaused:v4];
+    pausedCopy = paused;
+    self->_invisibleInkEffectPaused = paused;
+    invisibleInkEffectController = [(CKBalloonView *)self invisibleInkEffectController];
+    [invisibleInkEffectController setPaused:pausedCopy];
 
     [(CKBalloonView *)self updateRasterizationForInvisibleInkEffect];
   }
 }
 
-- (void)setBackdropFilterLayer:(id)a3
+- (void)setBackdropFilterLayer:(id)layer
 {
-  v5 = a3;
-  if (self->_backdropFilterLayer != v5)
+  layerCopy = layer;
+  if (self->_backdropFilterLayer != layerCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_backdropFilterLayer, a3);
+    v6 = layerCopy;
+    objc_storeStrong(&self->_backdropFilterLayer, layer);
     [(CKBalloonView *)self setNeedsLayout];
-    v5 = v6;
+    layerCopy = v6;
   }
 }
 
-- (void)doubleTapGestureRecognized:(id)a3
+- (void)doubleTapGestureRecognized:(id)recognized
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  recognizedCopy = recognized;
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
-      v6 = [(CKBalloonView *)self delegate];
+      delegate = [(CKBalloonView *)self delegate];
       v7 = objc_opt_class();
       v8 = NSStringFromClass(v7);
-      v9 = [(CKBalloonView *)self delegate];
+      delegate2 = [(CKBalloonView *)self delegate];
       v11 = 134218498;
-      v12 = self;
+      selfCopy = self;
       v13 = 2112;
       v14 = v8;
       v15 = 2048;
-      v16 = v9;
+      v16 = delegate2;
       _os_log_impl(&dword_19020E000, v5, OS_LOG_TYPE_INFO, "Balloon view %p was double tapped delegate=<%@:%p>", &v11, 0x20u);
     }
   }
 
-  v10 = [(CKBalloonView *)self delegate];
-  [v10 balloonViewDoubleTapped:self];
+  delegate3 = [(CKBalloonView *)self delegate];
+  [delegate3 balloonViewDoubleTapped:self];
 }
 
-- (void)longPressGestureRecognized:(id)a3
+- (void)longPressGestureRecognized:(id)recognized
 {
-  if ([a3 state] == 1)
+  if ([recognized state] == 1)
   {
-    v4 = [(CKBalloonView *)self delegate];
-    [v4 balloonViewLongTouched:self];
+    delegate = [(CKBalloonView *)self delegate];
+    [delegate balloonViewLongTouched:self];
   }
 }
 
-- (void)setBalloonDescriptor:(CKBalloonDescriptor_t *)a3
+- (void)setBalloonDescriptor:(CKBalloonDescriptor_t *)descriptor
 {
-  [(CKBalloonView *)self setBalloonShape:a3->var0];
-  [(CKBalloonView *)self setBalloonTailShape:a3->var1];
-  [(CKBalloonView *)self setBalloonStyle:a3->var2];
-  [(CKBalloonView *)self setDynamicFillColor:a3->var7.red, a3->var7.green, a3->var7.blue, a3->var7.alpha];
-  [(CKBalloonView *)self setStrokeColor:a3->var8.red, a3->var8.green, a3->var8.blue, a3->var8.alpha];
-  [(CKBalloonView *)self setOrientation:a3->var3];
-  [(CKBalloonView *)self setBalloonCorners:a3->var4];
-  [(CKBalloonView *)self setCornerRadius:a3->var5];
-  [(CKBalloonView *)self setCanUseOpaqueMask:a3->var12];
-  [(CKBalloonView *)self setHasTail:a3->var13];
-  [(CKBalloonView *)self setUseLargeAsset:a3->var15];
-  [(CKBalloonView *)self setUserInterfaceStyle:a3->var10];
-  [(CKBalloonView *)self setHasVibrantOuterStroke:a3->var9];
-  [(CKBalloonView *)self setUserInterfaceLevel:a3->var11];
+  [(CKBalloonView *)self setBalloonShape:descriptor->var0];
+  [(CKBalloonView *)self setBalloonTailShape:descriptor->var1];
+  [(CKBalloonView *)self setBalloonStyle:descriptor->var2];
+  [(CKBalloonView *)self setDynamicFillColor:descriptor->var7.red, descriptor->var7.green, descriptor->var7.blue, descriptor->var7.alpha];
+  [(CKBalloonView *)self setStrokeColor:descriptor->var8.red, descriptor->var8.green, descriptor->var8.blue, descriptor->var8.alpha];
+  [(CKBalloonView *)self setOrientation:descriptor->var3];
+  [(CKBalloonView *)self setBalloonCorners:descriptor->var4];
+  [(CKBalloonView *)self setCornerRadius:descriptor->var5];
+  [(CKBalloonView *)self setCanUseOpaqueMask:descriptor->var12];
+  [(CKBalloonView *)self setHasTail:descriptor->var13];
+  [(CKBalloonView *)self setUseLargeAsset:descriptor->var15];
+  [(CKBalloonView *)self setUserInterfaceStyle:descriptor->var10];
+  [(CKBalloonView *)self setHasVibrantOuterStroke:descriptor->var9];
+  [(CKBalloonView *)self setUserInterfaceLevel:descriptor->var11];
   [(CKBalloonView *)self setNeedsPrepareForDisplay];
 
   [(CKBalloonView *)self setNeedsLayout];
@@ -1216,26 +1216,26 @@ void __55__CKBalloonView_highlightOverlayBalloonTraitCollection__block_invoke(ui
 
 - (id)bezierPathForDragPreview
 {
-  v2 = [(CKBalloonView *)self bubblePath];
-  v3 = [v2 bezierPath];
+  bubblePath = [(CKBalloonView *)self bubblePath];
+  bezierPath = [bubblePath bezierPath];
 
-  return v3;
+  return bezierPath;
 }
 
-- (UIEdgeInsets)tailInsetsForPillSize:(CGSize)a3
+- (UIEdgeInsets)tailInsetsForPillSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v7 = [v6 isCAShapeLayerBalloonsEnabled];
+  height = size.height;
+  width = size.width;
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isCAShapeLayerBalloonsEnabled = [mEMORY[0x1E69A8070] isCAShapeLayerBalloonsEnabled];
 
-  if ((v7 & 1) != 0 && [(CKBalloonView *)self hasBalloonShape])
+  if ((isCAShapeLayerBalloonsEnabled & 1) != 0 && [(CKBalloonView *)self hasBalloonShape])
   {
-    v8 = [(CKBalloonView *)self bubblePath];
-    [v8 cornerRadius];
+    bubblePath = [(CKBalloonView *)self bubblePath];
+    [bubblePath cornerRadius];
     if (fabs(v9) >= 0.01)
     {
-      [v8 tailInsetsForPillSize:{width, height}];
+      [bubblePath tailInsetsForPillSize:{width, height}];
       v10 = v14;
       v11 = v15;
       v12 = v16;
@@ -1270,20 +1270,20 @@ void __55__CKBalloonView_highlightOverlayBalloonTraitCollection__block_invoke(ui
   return result;
 }
 
-- (UIEdgeInsets)tailInsetsForViewSize:(CGSize)a3
+- (UIEdgeInsets)tailInsetsForViewSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v7 = [v6 isCAShapeLayerBalloonsEnabled];
+  height = size.height;
+  width = size.width;
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isCAShapeLayerBalloonsEnabled = [mEMORY[0x1E69A8070] isCAShapeLayerBalloonsEnabled];
 
-  if ((v7 & 1) != 0 && [(CKBalloonView *)self hasBalloonShape])
+  if ((isCAShapeLayerBalloonsEnabled & 1) != 0 && [(CKBalloonView *)self hasBalloonShape])
   {
-    v8 = [(CKBalloonView *)self bubblePath];
-    [v8 cornerRadius];
+    bubblePath = [(CKBalloonView *)self bubblePath];
+    [bubblePath cornerRadius];
     if (fabs(v9) >= 0.01)
     {
-      [v8 tailInsetsForBubbleSize:{width, height}];
+      [bubblePath tailInsetsForBubbleSize:{width, height}];
       v10 = v14;
       v11 = v15;
       v12 = v16;
@@ -1334,75 +1334,75 @@ void __55__CKBalloonView_highlightOverlayBalloonTraitCollection__block_invoke(ui
 {
   if ([(CKBalloonView *)self invisibleInkEffectEnabled])
   {
-    v3 = [(CKBalloonView *)self invisibleInkEffectPaused];
+    invisibleInkEffectPaused = [(CKBalloonView *)self invisibleInkEffectPaused];
   }
 
   else
   {
-    v3 = 0;
+    invisibleInkEffectPaused = 0;
   }
 
-  [(CKBalloonView *)self _setShouldRasterize:v3];
+  [(CKBalloonView *)self _setShouldRasterize:invisibleInkEffectPaused];
 }
 
-- (void)performTranscriptInsertionAnimation:(id)a3
+- (void)performTranscriptInsertionAnimation:(id)animation
 {
-  if (a3)
+  if (animation)
   {
-    (*(a3 + 2))(a3, 1);
+    (*(animation + 2))(animation, 1);
   }
 }
 
-- (void)performTranscriptReloadAnimation:(id)a3
+- (void)performTranscriptReloadAnimation:(id)animation
 {
-  if (a3)
+  if (animation)
   {
-    (*(a3 + 2))(a3, 1);
+    (*(animation + 2))(animation, 1);
   }
 }
 
-- (void)performTranscriptRemovalAnimation:(id)a3
+- (void)performTranscriptRemovalAnimation:(id)animation
 {
-  if (a3)
+  if (animation)
   {
-    (*(a3 + 2))(a3, 1);
+    (*(animation + 2))(animation, 1);
   }
 }
 
-- (void)performTranscriptHideAnimation:(id)a3
+- (void)performTranscriptHideAnimation:(id)animation
 {
-  if (a3)
+  if (animation)
   {
-    (*(a3 + 2))(a3, 1);
+    (*(animation + 2))(animation, 1);
   }
 }
 
-- (void)performTranscriptRevealAnimation:(id)a3
+- (void)performTranscriptRevealAnimation:(id)animation
 {
-  if (a3)
+  if (animation)
   {
-    (*(a3 + 2))(a3, 1);
+    (*(animation + 2))(animation, 1);
   }
 }
 
-- (void)chatBotActionButton:(id)a3 didSelectChipAction:(id)a4
+- (void)chatBotActionButton:(id)button didSelectChipAction:(id)action
 {
-  v5 = a4;
-  v6 = [(CKBalloonView *)self delegate];
-  [v6 balloonView:self selectedChipAction:v5];
+  actionCopy = action;
+  delegate = [(CKBalloonView *)self delegate];
+  [delegate balloonView:self selectedChipAction:actionCopy];
 }
 
-- (void)openAppFromNotificationExtensionWith:(id)a3
+- (void)openAppFromNotificationExtensionWith:(id)with
 {
-  v4 = [(CKBalloonView *)self delegate];
-  [v4 didTapChipListFromNotificationExtensionWithBalloonView:self];
+  delegate = [(CKBalloonView *)self delegate];
+  [delegate didTapChipListFromNotificationExtensionWithBalloonView:self];
 }
 
-- (void)didTapTruncatedCaptionForRichCard:(id)a3
+- (void)didTapTruncatedCaptionForRichCard:(id)card
 {
-  v4 = a3;
-  v5 = [(CKBalloonView *)self delegate];
-  [v5 didTapTruncatedCaptionForRichCard:v4 onBalloonView:self];
+  cardCopy = card;
+  delegate = [(CKBalloonView *)self delegate];
+  [delegate didTapTruncatedCaptionForRichCard:cardCopy onBalloonView:self];
 }
 
 - (CKBalloonViewDelegate)delegate
@@ -1432,9 +1432,9 @@ void __55__CKBalloonView_highlightOverlayBalloonTraitCollection__block_invoke(ui
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4
+- (CGSize)sizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets
 {
-  [(CKBalloonView *)self sizeThatFits:a4 textAlignmentInsets:0 tailInsets:a3.width, a3.height];
+  [(CKBalloonView *)self sizeThatFits:insets textAlignmentInsets:0 tailInsets:fits.width, fits.height];
   result.height = v5;
   result.width = v4;
   return result;
@@ -1445,20 +1445,20 @@ void __55__CKBalloonView_highlightOverlayBalloonTraitCollection__block_invoke(ui
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
-  return v3;
+  return selfCopy;
 }
 
-- (void)configureForComposition:(id)a3
+- (void)configureForComposition:(id)composition
 {
-  v4 = a3;
+  compositionCopy = composition;
   [(CKBalloonView *)self setOrientation:1];
   [(CKBalloonView *)self setHasTail:1];
   [(CKBalloonView *)self setTextAlignmentInsets:*MEMORY[0x1E69DDCE0], *(MEMORY[0x1E69DDCE0] + 8), *(MEMORY[0x1E69DDCE0] + 16), *(MEMORY[0x1E69DDCE0] + 24)];
@@ -1467,13 +1467,13 @@ void __55__CKBalloonView_highlightOverlayBalloonTraitCollection__block_invoke(ui
   [v5 balloonCornerRadius];
   [(CKBalloonView *)self setCornerRadius:?];
 
-  v6 = [v4 sendLaterPluginInfo];
+  sendLaterPluginInfo = [compositionCopy sendLaterPluginInfo];
 
-  if (v6)
+  if (sendLaterPluginInfo)
   {
     v7 = +[CKUIBehavior sharedBehaviors];
-    v8 = [v7 theme];
-    v9 = [v8 unfilledBalloonColorForColorType:15];
+    theme = [v7 theme];
+    v9 = [theme unfilledBalloonColorForColorType:15];
     [v9 ck_imColorComponents];
     [(CKBalloonView *)self setStrokeColor:?];
 
@@ -1481,49 +1481,49 @@ void __55__CKBalloonView_highlightOverlayBalloonTraitCollection__block_invoke(ui
   }
 }
 
-- (void)configureForMessagePart:(id)a3
+- (void)configureForMessagePart:(id)part
 {
-  v12 = a3;
-  v4 = [v12 transcriptTraitCollection];
-  -[CKBalloonView setUserInterfaceStyle:](self, "setUserInterfaceStyle:", [v4 userInterfaceStyle]);
-  [(CKBalloonView *)self setUserInterfaceLevel:CKBackgroundLevelForTraitCollection(v4)];
-  -[CKBalloonView setOrientation:](self, "setOrientation:", [v12 balloonOrientation]);
-  -[CKBalloonView setHasTail:](self, "setHasTail:", [v12 hasTail]);
-  [v12 textAlignmentInsets];
+  partCopy = part;
+  transcriptTraitCollection = [partCopy transcriptTraitCollection];
+  -[CKBalloonView setUserInterfaceStyle:](self, "setUserInterfaceStyle:", [transcriptTraitCollection userInterfaceStyle]);
+  [(CKBalloonView *)self setUserInterfaceLevel:CKBackgroundLevelForTraitCollection(transcriptTraitCollection)];
+  -[CKBalloonView setOrientation:](self, "setOrientation:", [partCopy balloonOrientation]);
+  -[CKBalloonView setHasTail:](self, "setHasTail:", [partCopy hasTail]);
+  [partCopy textAlignmentInsets];
   [(CKBalloonView *)self setTextAlignmentInsets:?];
-  -[CKBalloonView setBalloonCorners:](self, "setBalloonCorners:", [v12 balloonCorners]);
-  [v12 balloonCornerRadius];
+  -[CKBalloonView setBalloonCorners:](self, "setBalloonCorners:", [partCopy balloonCorners]);
+  [partCopy balloonCornerRadius];
   [(CKBalloonView *)self setCornerRadius:?];
-  [v12 transcriptBackgroundLuminance];
+  [partCopy transcriptBackgroundLuminance];
   [(CKBalloonView *)self setBackgroundLuminance:?];
-  -[CKBalloonView setTranscriptBackgroundActive:](self, "setTranscriptBackgroundActive:", [v4 isTranscriptBackgroundActive]);
-  -[CKBalloonView setHasVibrantOuterStroke:](self, "setHasVibrantOuterStroke:", [v12 needsVibrantOuterStrokeOverBackground]);
-  [v12 dynamicFillColor];
+  -[CKBalloonView setTranscriptBackgroundActive:](self, "setTranscriptBackgroundActive:", [transcriptTraitCollection isTranscriptBackgroundActive]);
+  -[CKBalloonView setHasVibrantOuterStroke:](self, "setHasVibrantOuterStroke:", [partCopy needsVibrantOuterStrokeOverBackground]);
+  [partCopy dynamicFillColor];
   [(CKBalloonView *)self setDynamicFillColor:?];
-  [v12 strokeColor];
+  [partCopy strokeColor];
   [(CKBalloonView *)self setStrokeColor:?];
-  -[CKBalloonView setBalloonStyle:](self, "setBalloonStyle:", [v12 balloonStyle]);
-  if (([v12 isCommSafetySensitive] & 1) == 0)
+  -[CKBalloonView setBalloonStyle:](self, "setBalloonStyle:", [partCopy balloonStyle]);
+  if (([partCopy isCommSafetySensitive] & 1) == 0)
   {
-    v5 = [v12 message];
-    v6 = [v5 expressiveSendStyleID];
-    -[CKBalloonView setInvisibleInkEffectEnabled:](self, "setInvisibleInkEffectEnabled:", [v6 isEqualToString:@"com.apple.MobileSMS.expressivesend.invisibleink"]);
+    message = [partCopy message];
+    expressiveSendStyleID = [message expressiveSendStyleID];
+    -[CKBalloonView setInvisibleInkEffectEnabled:](self, "setInvisibleInkEffectEnabled:", [expressiveSendStyleID isEqualToString:@"com.apple.MobileSMS.expressivesend.invisibleink"]);
   }
 
-  v7 = [v12 suggestedActionsList];
-  if ([v7 count])
+  suggestedActionsList = [partCopy suggestedActionsList];
+  if ([suggestedActionsList count])
   {
-    v8 = [v12 IMChatItem];
+    iMChatItem = [partCopy IMChatItem];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v10 = [v12 IMChatItem];
-      if ([v10 supportsSuggestedActionsMenu])
+      iMChatItem2 = [partCopy IMChatItem];
+      if ([iMChatItem2 supportsSuggestedActionsMenu])
       {
-        v11 = [v12 suggestedActionsList];
-        [(CKBalloonView *)self addSuggestedActionsMenuWithSuggestedActionsList:v11];
+        suggestedActionsList2 = [partCopy suggestedActionsList];
+        [(CKBalloonView *)self addSuggestedActionsMenuWithSuggestedActionsList:suggestedActionsList2];
       }
 
       else
@@ -1545,7 +1545,7 @@ LABEL_11:
 
 - (UIView)snapshotCurrentView
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CKBalloonView.snapshotCurrentView.getter();
 
   return v3;

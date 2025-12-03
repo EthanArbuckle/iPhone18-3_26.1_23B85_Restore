@@ -1,7 +1,7 @@
 @interface MKCalendarMigrator
 - (MKCalendarMigrator)init;
-- (void)import:(id)a3;
-- (void)importiCal:(id)a3;
+- (void)import:(id)import;
+- (void)importiCal:(id)cal;
 @end
 
 @implementation MKCalendarMigrator
@@ -23,37 +23,37 @@
   return v2;
 }
 
-- (void)importiCal:(id)a3
+- (void)importiCal:(id)cal
 {
-  v6 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
+  calCopy = cal;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v5 = objc_autoreleasePoolPush();
-  [(MKCalendarMigrator *)v4 import:v6];
+  [(MKCalendarMigrator *)selfCopy import:calCopy];
   objc_autoreleasePoolPop(v5);
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)import:(id)a3
+- (void)import:(id)import
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEAA8] date];
+  importCopy = import;
+  date = [MEMORY[0x277CBEAA8] date];
   v6 = +[MKLog log];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v25 = 138412290;
-    v26 = self;
+    selfCopy3 = self;
     _os_log_impl(&dword_2592D2000, v6, OS_LOG_TYPE_INFO, "%@ will import iCal.", &v25, 0xCu);
   }
 
-  v7 = [(EKEventStore *)self->_eventStore defaultCalendarForNewEvents];
-  v8 = [(EKEventStore *)self->_eventStore importICSData:v4 intoCalendar:v7 options:0];
+  defaultCalendarForNewEvents = [(EKEventStore *)self->_eventStore defaultCalendarForNewEvents];
+  v8 = [(EKEventStore *)self->_eventStore importICSData:importCopy intoCalendar:defaultCalendarForNewEvents options:0];
   [(EKEventStore *)self->_eventStore reset];
   if ([v8 count])
   {
     -[MKMigrator migratorDidImportWithCount:](self, "migratorDidImportWithCount:", [v8 count]);
-    -[MKMigrator migratorDidAppendDataSize:](self, "migratorDidAppendDataSize:", [v4 length]);
+    -[MKMigrator migratorDidAppendDataSize:](self, "migratorDidAppendDataSize:", [importCopy length]);
   }
 
   else
@@ -62,12 +62,12 @@
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       v25 = 138412290;
-      v26 = self;
+      selfCopy3 = self;
       _os_log_impl(&dword_2592D2000, v9, OS_LOG_TYPE_INFO, "%@ EKEventStore was failed to import data.", &v25, 0xCu);
     }
 
     v10 = [MEMORY[0x277CCA9B8] errorWithDomain:@"MKCalendarError" code:1 userInfo:0];
-    v11 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v4 encoding:4];
+    v11 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:importCopy encoding:4];
     if ([v11 length])
     {
       v12 = [v11 mk_occurrenceCountOfString:@"BEGIN:VCALENDAR"];
@@ -92,24 +92,24 @@
 
   v14 = +[MKAnalytics sharedInstance];
   objc_sync_enter(v14);
-  v15 = [v14 payload];
-  v16 = [v15 calendars];
+  payload = [v14 payload];
+  calendars = [payload calendars];
 
-  v17 = [MEMORY[0x277CBEAA8] date];
-  [v17 timeIntervalSinceDate:v5];
+  date2 = [MEMORY[0x277CBEAA8] date];
+  [date2 timeIntervalSinceDate:date];
   v19 = v18;
 
   v20 = [objc_alloc(MEMORY[0x277CCA980]) initWithDouble:v19];
-  v21 = [v16 importElapsedTime];
-  v22 = [v21 decimalNumberByAdding:v20];
-  [v16 setImportElapsedTime:v22];
+  importElapsedTime = [calendars importElapsedTime];
+  v22 = [importElapsedTime decimalNumberByAdding:v20];
+  [calendars setImportElapsedTime:v22];
 
   objc_sync_exit(v14);
   v23 = +[MKLog log];
   if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
   {
     v25 = 138412290;
-    v26 = self;
+    selfCopy3 = self;
     _os_log_impl(&dword_2592D2000, v23, OS_LOG_TYPE_INFO, "%@ did import iCal.", &v25, 0xCu);
   }
 

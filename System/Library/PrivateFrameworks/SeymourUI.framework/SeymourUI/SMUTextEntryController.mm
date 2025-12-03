@@ -1,29 +1,29 @@
 @interface SMUTextEntryController
-- (BOOL)shouldUpdateFocusInContext:(id)a3;
-- (SMUTextEntryController)initWithNibName:(id)a3 bundle:(id)a4;
+- (BOOL)shouldUpdateFocusInContext:(id)context;
+- (SMUTextEntryController)initWithNibName:(id)name bundle:(id)bundle;
 - (id)preferredFocusEnvironments;
-- (void)_cancelButtonPressed:(id)a3;
-- (void)_doneButtonPressed:(id)a3;
+- (void)_cancelButtonPressed:(id)pressed;
+- (void)_doneButtonPressed:(id)pressed;
 - (void)dealloc;
-- (void)didMoveToParentViewController:(id)a3;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
+- (void)didMoveToParentViewController:(id)controller;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
 - (void)loadView;
-- (void)systemInputViewController:(id)a3 didChangeAccessoryVisibility:(BOOL)a4;
-- (void)textFieldDidChange:(id)a3;
+- (void)systemInputViewController:(id)controller didChangeAccessoryVisibility:(BOOL)visibility;
+- (void)textFieldDidChange:(id)change;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation SMUTextEntryController
 
-- (SMUTextEntryController)initWithNibName:(id)a3 bundle:(id)a4
+- (SMUTextEntryController)initWithNibName:(id)name bundle:(id)bundle
 {
   v25.receiver = self;
   v25.super_class = SMUTextEntryController;
-  v4 = [(SMUTextEntryController *)&v25 initWithNibName:a3 bundle:a4];
+  v4 = [(SMUTextEntryController *)&v25 initWithNibName:name bundle:bundle];
   v5 = v4;
   if (v4)
   {
@@ -65,8 +65,8 @@
     v5->_doneButton = v21;
 
     [(UIButton *)v5->_doneButton addTarget:v5 action:sel__doneButtonPressed_ forControlEvents:0x2000];
-    v23 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v23 addObserver:v5 selector:sel_textFieldDidChange_ name:*MEMORY[0x277D770B0] object:v5->_textField];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v5 selector:sel_textFieldDidChange_ name:*MEMORY[0x277D770B0] object:v5->_textField];
   }
 
   return v5;
@@ -74,8 +74,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = SMUTextEntryController;
@@ -87,15 +87,15 @@
   v4.receiver = self;
   v4.super_class = SMUTextEntryController;
   [(SMUTextEntryController *)&v4 loadView];
-  v3 = [(SMUTextEntryController *)self view];
+  view = [(SMUTextEntryController *)self view];
   [(SMUTextEntryTextField *)self->_textField setText:self->_text];
-  [v3 addSubview:self->_textField];
+  [view addSubview:self->_textField];
   [(UILabel *)self->_titleLabel setText:self->_title];
-  [v3 addSubview:self->_titleLabel];
+  [view addSubview:self->_titleLabel];
   [(UILabel *)self->_messageLabel setText:self->_message];
-  [v3 addSubview:self->_messageLabel];
+  [view addSubview:self->_messageLabel];
   [(UIButton *)self->_doneButton setTitle:self->_doneText forState:0];
-  [v3 addSubview:self->_doneButton];
+  [view addSubview:self->_doneButton];
 }
 
 - (void)viewDidLoad
@@ -103,19 +103,19 @@
   v5.receiver = self;
   v5.super_class = SMUTextEntryController;
   [(SMUTextEntryController *)&v5 viewDidLoad];
-  v3 = [(SMUTextEntryController *)self view];
+  view = [(SMUTextEntryController *)self view];
   v4 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:self action:sel__cancelButtonPressed_];
   [v4 setAllowedPressTypes:&unk_282356A98];
-  [v3 addGestureRecognizer:v4];
+  [view addGestureRecognizer:v4];
 }
 
-- (void)didMoveToParentViewController:(id)a3
+- (void)didMoveToParentViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v9.receiver = self;
   v9.super_class = SMUTextEntryController;
-  [(SMUTextEntryController *)&v9 didMoveToParentViewController:v4];
-  if (v4 && !self->_systemInputViewController)
+  [(SMUTextEntryController *)&v9 didMoveToParentViewController:controllerCopy];
+  if (controllerCopy && !self->_systemInputViewController)
   {
     v5 = [MEMORY[0x277D75AF8] systemInputViewControllerForResponder:self->_textField editorView:0 containingResponder:self];
     systemInputViewController = self->_systemInputViewController;
@@ -129,9 +129,9 @@
     }
 
     [(SMUTextEntryController *)self addChildViewController:?];
-    v7 = [(SMUTextEntryController *)self view];
-    v8 = [(UISystemInputViewController *)self->_systemInputViewController view];
-    [v7 addSubview:v8];
+    view = [(SMUTextEntryController *)self view];
+    view2 = [(UISystemInputViewController *)self->_systemInputViewController view];
+    [view addSubview:view2];
 
     [(UISystemInputViewController *)self->_systemInputViewController willMoveToParentViewController:self];
     self->_isTouchEnabled = [(UISystemInputViewController *)self->_systemInputViewController supportsTouchInput];
@@ -146,37 +146,37 @@
   [(UISystemInputViewController *)self->_systemInputViewController reloadInputViewsForPersistentDelegate];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = SMUTextEntryController;
-  [(SMUTextEntryController *)&v4 viewWillAppear:a3];
+  [(SMUTextEntryController *)&v4 viewWillAppear:appear];
   [(SMUTextEntryTextField *)self->_textField setUserInteractionEnabled:1];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = SMUTextEntryController;
-  [(SMUTextEntryController *)&v4 viewWillDisappear:a3];
+  [(SMUTextEntryController *)&v4 viewWillDisappear:disappear];
   [(SMUTextEntryTextField *)self->_textField setUserInteractionEnabled:0];
 }
 
-- (BOOL)shouldUpdateFocusInContext:(id)a3
+- (BOOL)shouldUpdateFocusInContext:(id)context
 {
-  v4 = [a3 nextFocusedView];
-  LOBYTE(self) = [v4 isDescendantOfView:self->_textField];
+  nextFocusedView = [context nextFocusedView];
+  LOBYTE(self) = [nextFocusedView isDescendantOfView:self->_textField];
 
   return self ^ 1;
 }
 
 - (id)preferredFocusEnvironments
 {
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = v3;
+  array = [MEMORY[0x277CBEB18] array];
+  v4 = array;
   if (self->_preferredFocusedView)
   {
-    [v3 addObject:?];
+    [array addObject:?];
   }
 
   if (self->_systemInputViewController)
@@ -186,34 +186,34 @@
 
   v7.receiver = self;
   v7.super_class = SMUTextEntryController;
-  v5 = [(SMUTextEntryController *)&v7 preferredFocusEnvironments];
-  [v4 addObjectsFromArray:v5];
+  preferredFocusEnvironments = [(SMUTextEntryController *)&v7 preferredFocusEnvironments];
+  [v4 addObjectsFromArray:preferredFocusEnvironments];
 
   return v4;
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v5 = a3;
-  v9 = [(SMUTextEntryController *)self view];
-  v6 = [v5 nextFocusedView];
+  contextCopy = context;
+  view = [(SMUTextEntryController *)self view];
+  nextFocusedView = [contextCopy nextFocusedView];
 
-  if ([v6 isDescendantOfView:v9])
+  if ([nextFocusedView isDescendantOfView:view])
   {
-    v7 = [(UISystemInputViewController *)self->_systemInputViewController view];
-    v8 = [v6 isDescendantOfView:v7];
+    view2 = [(UISystemInputViewController *)self->_systemInputViewController view];
+    v8 = [nextFocusedView isDescendantOfView:view2];
 
     if ((v8 & 1) == 0)
     {
-      objc_storeStrong(&self->_preferredFocusedView, v6);
+      objc_storeStrong(&self->_preferredFocusedView, nextFocusedView);
     }
   }
 }
 
-- (void)textFieldDidChange:(id)a3
+- (void)textFieldDidChange:(id)change
 {
-  v3 = [(SMUTextEntryController *)self view];
-  [v3 setNeedsLayout];
+  view = [(SMUTextEntryController *)self view];
+  [view setNeedsLayout];
 }
 
 - (void)viewDidLayoutSubviews
@@ -221,11 +221,11 @@
   v37.receiver = self;
   v37.super_class = SMUTextEntryController;
   [(SMUTextEntryController *)&v37 viewDidLayoutSubviews];
-  v3 = [(UISystemInputViewController *)self->_systemInputViewController view];
-  [v3 systemLayoutSizeFittingSize:{*MEMORY[0x277D76C78], *(MEMORY[0x277D76C78] + 8)}];
+  view = [(UISystemInputViewController *)self->_systemInputViewController view];
+  [view systemLayoutSizeFittingSize:{*MEMORY[0x277D76C78], *(MEMORY[0x277D76C78] + 8)}];
   v36 = v4;
-  v5 = [(SMUTextEntryController *)self view];
-  [v5 bounds];
+  view2 = [(SMUTextEntryController *)self view];
+  [view2 bounds];
   v35 = v7;
   if (self->_isTouchEnabled)
   {
@@ -250,8 +250,8 @@
   }
 
   v16 = v12 + v15 + 100.0;
-  v17 = [(SMUTextEntryTextField *)self->_textField attributedText];
-  [v17 boundingRectWithSize:8 options:0 context:{v10, v9}];
+  attributedText = [(SMUTextEntryTextField *)self->_textField attributedText];
+  [attributedText boundingRectWithSize:8 options:0 context:{v10, v9}];
   v39 = CGRectIntegral(v38);
   width = v39.size.width;
 
@@ -293,24 +293,24 @@
   {
     [(SMUTextEntryTextField *)self->_textField frame];
     v24 = CGRectGetMaxY(v42) + 30.0;
-    v25 = [(SMUTextEntryController *)self view];
-    [v25 bounds];
+    view3 = [(SMUTextEntryController *)self view];
+    [view3 bounds];
     v26 = CGRectGetWidth(v43);
-    [v3 bounds];
-    [v3 setFrame:{0.0, v24, v26, CGRectGetHeight(v44)}];
+    [view bounds];
+    [view setFrame:{0.0, v24, v26, CGRectGetHeight(v44)}];
   }
 
   else
   {
-    [v3 bounds];
-    v27 = [(SMUTextEntryController *)self view];
-    [v27 frame];
+    [view bounds];
+    view4 = [(SMUTextEntryController *)self view];
+    [view4 frame];
     UIRectCenteredYInRect();
     v29 = v28;
     v31 = v30;
     v33 = v32;
 
-    [v3 setFrame:{194.0, v29, v31, v33}];
+    [view setFrame:{194.0, v29, v31, v33}];
   }
 
   doneButton = self->_doneButton;
@@ -318,10 +318,10 @@
   [(UIButton *)doneButton setFrame:?];
 }
 
-- (void)systemInputViewController:(id)a3 didChangeAccessoryVisibility:(BOOL)a4
+- (void)systemInputViewController:(id)controller didChangeAccessoryVisibility:(BOOL)visibility
 {
-  v5 = !a4;
-  self->_hideAccessoryViews = !a4;
+  v5 = !visibility;
+  self->_hideAccessoryViews = !visibility;
   [(UILabel *)self->_titleLabel setHidden:v5];
   [(UILabel *)self->_messageLabel setHidden:v5];
   [(SMUTextEntryTextField *)self->_textField setHidden:v5];
@@ -330,11 +330,11 @@
   [(UIButton *)doneButton setHidden:v5];
 }
 
-- (void)_doneButtonPressed:(id)a3
+- (void)_doneButtonPressed:(id)pressed
 {
-  v4 = [(SMUTextEntryTextField *)self->_textField text];
+  text = [(SMUTextEntryTextField *)self->_textField text];
   text = self->_text;
-  self->_text = v4;
+  self->_text = text;
 
   onCompletion = self->_onCompletion;
   if (onCompletion)
@@ -345,7 +345,7 @@
   }
 }
 
-- (void)_cancelButtonPressed:(id)a3
+- (void)_cancelButtonPressed:(id)pressed
 {
   text = self->_text;
   self->_text = 0;

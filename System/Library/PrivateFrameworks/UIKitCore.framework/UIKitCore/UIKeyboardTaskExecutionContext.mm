@@ -1,13 +1,13 @@
 @interface UIKeyboardTaskExecutionContext
 - (UIKeyboardTaskExecutionContext)init;
-- (UIKeyboardTaskExecutionContext)initWithExecutionQueue:(id)a3;
-- (UIKeyboardTaskExecutionContext)initWithParentContext:(id)a3 continuation:(id)a4;
-- (id)childWithContinuation:(id)a3;
+- (UIKeyboardTaskExecutionContext)initWithExecutionQueue:(id)queue;
+- (UIKeyboardTaskExecutionContext)initWithParentContext:(id)context continuation:(id)continuation;
+- (id)childWithContinuation:(id)continuation;
 - (id)takeOwnershipOfPendingCompletionBlock;
-- (void)returnExecutionToParentWithInfo:(id)a3;
-- (void)setPendingCompletionBlock:(id)a3;
-- (void)transferExecutionToMainThreadWithTask:(id)a3;
-- (void)transferExecutionToMainThreadWithTask:(id)a3 breadcrumb:(id)a4;
+- (void)returnExecutionToParentWithInfo:(id)info;
+- (void)setPendingCompletionBlock:(id)block;
+- (void)transferExecutionToMainThreadWithTask:(id)task;
+- (void)transferExecutionToMainThreadWithTask:(id)task breadcrumb:(id)breadcrumb;
 @end
 
 @implementation UIKeyboardTaskExecutionContext
@@ -17,42 +17,42 @@
   v6.receiver = self;
   v6.super_class = UIKeyboardTaskExecutionContext;
   v3 = [(UIKeyboardTaskExecutionContext *)&v6 init];
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:v3 file:@"UIKeyboardTaskQueue.m" lineNumber:152 description:@"Only UIKeyboardTaskQueue may create UIKeyboardTaskExecutionContext instances."];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:v3 file:@"UIKeyboardTaskQueue.m" lineNumber:152 description:@"Only UIKeyboardTaskQueue may create UIKeyboardTaskExecutionContext instances."];
 
   return v3;
 }
 
-- (UIKeyboardTaskExecutionContext)initWithExecutionQueue:(id)a3
+- (UIKeyboardTaskExecutionContext)initWithExecutionQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v9.receiver = self;
   v9.super_class = UIKeyboardTaskExecutionContext;
   v6 = [(UIKeyboardTaskExecutionContext *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_executionQueue, a3);
+    objc_storeStrong(&v6->_executionQueue, queue);
   }
 
   return v7;
 }
 
-- (UIKeyboardTaskExecutionContext)initWithParentContext:(id)a3 continuation:(id)a4
+- (UIKeyboardTaskExecutionContext)initWithParentContext:(id)context continuation:(id)continuation
 {
-  v7 = a3;
-  v8 = a4;
+  contextCopy = context;
+  continuationCopy = continuation;
   v15.receiver = self;
   v15.super_class = UIKeyboardTaskExecutionContext;
   v9 = [(UIKeyboardTaskExecutionContext *)&v15 init];
   if (v9)
   {
-    v10 = [v7 executionQueue];
+    executionQueue = [contextCopy executionQueue];
     executionQueue = v9->_executionQueue;
-    v9->_executionQueue = v10;
+    v9->_executionQueue = executionQueue;
 
-    objc_storeStrong(&v9->_parentExecutionContext, a3);
-    v12 = [v8 copy];
+    objc_storeStrong(&v9->_parentExecutionContext, context);
+    v12 = [continuationCopy copy];
     continuation = v9->_continuation;
     v9->_continuation = v12;
   }
@@ -60,10 +60,10 @@
   return v9;
 }
 
-- (id)childWithContinuation:(id)a3
+- (id)childWithContinuation:(id)continuation
 {
   v13 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  continuationCopy = continuation;
   if (pthread_main_np() != 1)
   {
     v6 = _UIKeyboardTaskQueueLog();
@@ -75,25 +75,25 @@
     }
   }
 
-  v7 = [(UIKeyboardTaskQueue *)self->_executionQueue executionContext];
+  executionContext = [(UIKeyboardTaskQueue *)self->_executionQueue executionContext];
 
-  if (v7 != self)
+  if (executionContext != self)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"UIKeyboardTaskQueue.m" lineNumber:192 description:{@"Received %s when not the current execution context.", "-[UIKeyboardTaskExecutionContext childWithContinuation:]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIKeyboardTaskQueue.m" lineNumber:192 description:{@"Received %s when not the current execution context.", "-[UIKeyboardTaskExecutionContext childWithContinuation:]"}];
   }
 
-  v8 = [[UIKeyboardTaskExecutionContext alloc] initWithParentContext:self continuation:v5];
+  v8 = [[UIKeyboardTaskExecutionContext alloc] initWithParentContext:self continuation:continuationCopy];
 
   [(UIKeyboardTaskQueue *)self->_executionQueue setExecutionContext:v8];
 
   return v8;
 }
 
-- (void)returnExecutionToParentWithInfo:(id)a3
+- (void)returnExecutionToParentWithInfo:(id)info
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  infoCopy = info;
   if (pthread_main_np() != 1)
   {
     v6 = _UIKeyboardTaskQueueLog();
@@ -105,27 +105,27 @@
     }
   }
 
-  v7 = [(UIKeyboardTaskQueue *)self->_executionQueue executionContext];
+  executionContext = [(UIKeyboardTaskQueue *)self->_executionQueue executionContext];
 
-  if (v7 != self)
+  if (executionContext != self)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"UIKeyboardTaskQueue.m" lineNumber:211 description:{@"Received %s when not the current execution context.", "-[UIKeyboardTaskExecutionContext returnExecutionToParentWithInfo:]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIKeyboardTaskQueue.m" lineNumber:211 description:{@"Received %s when not the current execution context.", "-[UIKeyboardTaskExecutionContext returnExecutionToParentWithInfo:]"}];
   }
 
   parentExecutionContext = self->_parentExecutionContext;
   if (parentExecutionContext)
   {
-    v9 = self;
-    [(UIKeyboardTaskExecutionContext *)parentExecutionContext setInfo:v5];
+    selfCopy = self;
+    [(UIKeyboardTaskExecutionContext *)parentExecutionContext setInfo:infoCopy];
     [(UIKeyboardTaskQueue *)self->_executionQueue setExecutionContext:self->_parentExecutionContext];
-    (*(v9->_continuation + 2))();
+    (*(selfCopy->_continuation + 2))();
   }
 
   else
   {
     executionQueue = self->_executionQueue;
-    v11 = self;
+    selfCopy2 = self;
     [(UIKeyboardTaskQueue *)executionQueue finishExecution];
   }
 
@@ -133,49 +133,49 @@
   self->_executionQueue = 0;
 }
 
-- (void)transferExecutionToMainThreadWithTask:(id)a3
+- (void)transferExecutionToMainThreadWithTask:(id)task
 {
-  v4 = a3;
+  taskCopy = task;
   v5 = _UIKeyboardTaskBreadcrumbEmpty();
-  [(UIKeyboardTaskExecutionContext *)self transferExecutionToMainThreadWithTask:v4 breadcrumb:v5];
+  [(UIKeyboardTaskExecutionContext *)self transferExecutionToMainThreadWithTask:taskCopy breadcrumb:v5];
 }
 
-- (void)transferExecutionToMainThreadWithTask:(id)a3 breadcrumb:(id)a4
+- (void)transferExecutionToMainThreadWithTask:(id)task breadcrumb:(id)breadcrumb
 {
-  v10 = a3;
-  v7 = a4;
-  v8 = [(UIKeyboardTaskQueue *)self->_executionQueue executionContext];
+  taskCopy = task;
+  breadcrumbCopy = breadcrumb;
+  executionContext = [(UIKeyboardTaskQueue *)self->_executionQueue executionContext];
 
-  if (v8 != self)
+  if (executionContext != self)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"UIKeyboardTaskQueue.m" lineNumber:240 description:{@"Received %s when not the current execution context.", "-[UIKeyboardTaskExecutionContext transferExecutionToMainThreadWithTask:breadcrumb:]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIKeyboardTaskQueue.m" lineNumber:240 description:{@"Received %s when not the current execution context.", "-[UIKeyboardTaskExecutionContext transferExecutionToMainThreadWithTask:breadcrumb:]"}];
   }
 
-  [(UIKeyboardTaskQueue *)self->_executionQueue performTaskOnMainThread:v10 breadcrumb:v7 waitUntilDone:0];
+  [(UIKeyboardTaskQueue *)self->_executionQueue performTaskOnMainThread:taskCopy breadcrumb:breadcrumbCopy waitUntilDone:0];
 }
 
-- (void)setPendingCompletionBlock:(id)a3
+- (void)setPendingCompletionBlock:(id)block
 {
-  v7 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [v7 copy];
-  pendingCompletionBlock = v4->_pendingCompletionBlock;
-  v4->_pendingCompletionBlock = v5;
+  blockCopy = block;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = [blockCopy copy];
+  pendingCompletionBlock = selfCopy->_pendingCompletionBlock;
+  selfCopy->_pendingCompletionBlock = v5;
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (id)takeOwnershipOfPendingCompletionBlock
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = _Block_copy(v2->_pendingCompletionBlock);
-  pendingCompletionBlock = v2->_pendingCompletionBlock;
-  v2->_pendingCompletionBlock = 0;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = _Block_copy(selfCopy->_pendingCompletionBlock);
+  pendingCompletionBlock = selfCopy->_pendingCompletionBlock;
+  selfCopy->_pendingCompletionBlock = 0;
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   v5 = _Block_copy(v3);
 
   return v5;

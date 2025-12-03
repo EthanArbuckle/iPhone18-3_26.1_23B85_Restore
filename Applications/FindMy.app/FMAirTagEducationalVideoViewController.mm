@@ -1,35 +1,35 @@
 @interface FMAirTagEducationalVideoViewController
-- (_TtC6FindMy38FMAirTagEducationalVideoViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC6FindMy38FMAirTagEducationalVideoViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)actionTriggered;
 - (void)doneAction;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)traitCollectionDidChange:(id)change;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation FMAirTagEducationalVideoViewController
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v9.receiver = self;
   v9.super_class = type metadata accessor for FMAirTagEducationalVideoViewController();
   v4 = v9.receiver;
-  [(FMAirTagEducationalVideoViewController *)&v9 viewWillAppear:v3];
-  v5 = [v4 view];
-  if (v5)
+  [(FMAirTagEducationalVideoViewController *)&v9 viewWillAppear:appearCopy];
+  view = [v4 view];
+  if (view)
   {
-    v6 = v5;
-    [v5 setNeedsLayout];
+    v6 = view;
+    [view setNeedsLayout];
 
-    v7 = [v4 view];
-    if (v7)
+    view2 = [v4 view];
+    if (view2)
     {
-      v8 = v7;
-      [v7 layoutIfNeeded];
+      v8 = view2;
+      [view2 layoutIfNeeded];
 
       return;
     }
@@ -43,13 +43,13 @@
   __break(1u);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5.receiver = self;
   v5.super_class = type metadata accessor for FMAirTagEducationalVideoViewController();
   v4 = v5.receiver;
-  [(FMAirTagEducationalVideoViewController *)&v5 viewDidAppear:v3];
+  [(FMAirTagEducationalVideoViewController *)&v5 viewDidAppear:appearCopy];
   if (v4[OBJC_IVAR____TtC6FindMy38FMAirTagEducationalVideoViewController_animating] & 1) == 0 && (v4[OBJC_IVAR____TtC6FindMy38FMAirTagEducationalVideoViewController_shouldAnimate])
   {
     v4[OBJC_IVAR____TtC6FindMy38FMAirTagEducationalVideoViewController_animating] = 1;
@@ -57,13 +57,13 @@
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5.receiver = self;
   v5.super_class = type metadata accessor for FMAirTagEducationalVideoViewController();
   v4 = v5.receiver;
-  [(FMAirTagEducationalVideoViewController *)&v5 viewWillDisappear:v3];
+  [(FMAirTagEducationalVideoViewController *)&v5 viewWillDisappear:disappearCopy];
   if (v4[OBJC_IVAR____TtC6FindMy38FMAirTagEducationalVideoViewController_animating] == 1)
   {
     v4[OBJC_IVAR____TtC6FindMy38FMAirTagEducationalVideoViewController_animating] = 0;
@@ -79,23 +79,23 @@
   sub_1002C2AF0();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_1002C2978(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_1002C2978(change);
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
-  v6 = self;
+  scrollCopy = scroll;
+  selfCopy = self;
   sub_1002C2AF0();
-  v5 = *(&v6->super.super.super.isa + OBJC_IVAR____TtC6FindMy38FMAirTagEducationalVideoViewController_scrollHandler);
+  v5 = *(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC6FindMy38FMAirTagEducationalVideoViewController_scrollHandler);
   if (v5)
   {
 
-    v5(v4);
+    v5(scrollCopy);
 
     sub_10001835C(v5);
   }
@@ -107,11 +107,11 @@
 
 - (void)doneAction
 {
-  v2 = self;
+  selfCopy = self;
   sub_1002C3A30();
 }
 
-- (_TtC6FindMy38FMAirTagEducationalVideoViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC6FindMy38FMAirTagEducationalVideoViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
@@ -170,7 +170,7 @@
   else
   {
     (*(v4 + 32))(v6, v2, v3);
-    v18 = [objc_opt_self() sharedApplication];
+    sharedApplication = [objc_opt_self() sharedApplication];
     URL._bridgeToObjectiveC()(v19);
     v21 = v20;
     sub_10015391C(_swiftEmptyArrayStorage);
@@ -178,7 +178,7 @@
     sub_10000A270(&qword_1006AF360, type metadata accessor for OpenExternalURLOptionsKey);
     isa = Dictionary._bridgeToObjectiveC()().super.isa;
 
-    [v18 openURL:v21 options:isa completionHandler:0];
+    [sharedApplication openURL:v21 options:isa completionHandler:0];
 
     (*(v4 + 8))(v6, v3);
   }

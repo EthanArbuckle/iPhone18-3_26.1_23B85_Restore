@@ -1,20 +1,20 @@
 @interface CAMControlDrawerButton
 + (CGSize)buttonSize;
 + (id)_backgroundImage;
-- (CAMControlDrawerButton)initWithLayoutStyle:(int64_t)a3;
+- (CAMControlDrawerButton)initWithLayoutStyle:(int64_t)style;
 - (CGSize)intrinsicContentSize;
-- (id)_imageForImageName:(id)a3;
-- (id)hudItemForAccessibilityHUDManager:(id)a3;
+- (id)_imageForImageName:(id)name;
+- (id)hudItemForAccessibilityHUDManager:(id)manager;
 - (id)imageForAXHUD;
 - (id)imageForCurrentState;
 - (id)imageNameForCurrentState;
 - (int64_t)controlType;
-- (void)_updateSlashAnimated:(BOOL)a3;
+- (void)_updateSlashAnimated:(BOOL)animated;
 - (void)layoutSubviews;
-- (void)selectedByAccessibilityHUDManager:(id)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setOrientation:(int64_t)a3 animated:(BOOL)a4;
-- (void)updateImageAnimated:(BOOL)a3;
+- (void)selectedByAccessibilityHUDManager:(id)manager;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setOrientation:(int64_t)orientation animated:(BOOL)animated;
+- (void)updateImageAnimated:(BOOL)animated;
 @end
 
 @implementation CAMControlDrawerButton
@@ -47,7 +47,7 @@ void __42__CAMControlDrawerButton__backgroundImage__block_invoke()
   block[1] = 3221225472;
   block[2] = __36__CAMControlDrawerButton_buttonSize__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (buttonSize_onceToken != -1)
   {
     dispatch_once(&buttonSize_onceToken, block);
@@ -68,7 +68,7 @@ void __36__CAMControlDrawerButton_buttonSize__block_invoke(uint64_t a1)
   buttonSize_size_1 = v2;
 }
 
-- (CAMControlDrawerButton)initWithLayoutStyle:(int64_t)a3
+- (CAMControlDrawerButton)initWithLayoutStyle:(int64_t)style
 {
   v20[1] = *MEMORY[0x1E69E9840];
   v19.receiver = self;
@@ -77,13 +77,13 @@ void __36__CAMControlDrawerButton_buttonSize__block_invoke(uint64_t a1)
   v5 = v4;
   if (v4)
   {
-    v4->_layoutStyle = a3;
+    v4->_layoutStyle = style;
     v6 = objc_alloc_init(MEMORY[0x1E69DCAE0]);
     imageView = v5->__imageView;
     v5->__imageView = v6;
 
-    v8 = [objc_opt_class() _backgroundImage];
-    v9 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v8];
+    _backgroundImage = [objc_opt_class() _backgroundImage];
+    v9 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:_backgroundImage];
     backgroundView = v5->__backgroundView;
     v5->__backgroundView = v9;
 
@@ -95,8 +95,8 @@ void __36__CAMControlDrawerButton_buttonSize__block_invoke(uint64_t a1)
       slashView = v5->__slashView;
       v5->__slashView = v11;
 
-      v13 = [MEMORY[0x1E69DC888] whiteColor];
-      [(CAMSlashView *)v5->__slashView setTintColor:v13];
+      whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+      [(CAMSlashView *)v5->__slashView setTintColor:whiteColor];
 
       [(CAMControlDrawerButton *)v5 addSubview:v5->__slashView];
       v14 = objc_alloc_init(CAMSlashMaskView);
@@ -135,88 +135,88 @@ void __36__CAMControlDrawerButton_buttonSize__block_invoke(uint64_t a1)
   [(CAMControlDrawerButton *)self bounds];
   [(CAMControlDrawerButton *)self alignmentRectForFrame:?];
   UIRectGetCenter();
-  v3 = [(CAMControlDrawerButton *)self _imageView];
-  [v3 intrinsicContentSize];
+  _imageView = [(CAMControlDrawerButton *)self _imageView];
+  [_imageView intrinsicContentSize];
   UIRectCenteredAboutPointScale();
-  [v3 frameForAlignmentRect:?];
-  CAMViewSetBoundsAndCenterForFrame(v3, v4, v5, v6, v7);
-  v8 = [(CAMControlDrawerButton *)self _backgroundView];
-  [v8 intrinsicContentSize];
+  [_imageView frameForAlignmentRect:?];
+  CAMViewSetBoundsAndCenterForFrame(_imageView, v4, v5, v6, v7);
+  _backgroundView = [(CAMControlDrawerButton *)self _backgroundView];
+  [_backgroundView intrinsicContentSize];
   UIRectCenteredAboutPointScale();
-  [v8 setFrame:?];
+  [_backgroundView setFrame:?];
   if ([(CAMControlDrawerButton *)self shouldUseSlash])
   {
-    v9 = [(CAMControlDrawerButton *)self _slashView];
-    [v9 setBounds:{0.0, 0.0, 20.0, 20.0}];
+    _slashView = [(CAMControlDrawerButton *)self _slashView];
+    [_slashView setBounds:{0.0, 0.0, 20.0, 20.0}];
 
     UIRectCenteredAboutPointScale();
     UIRectGetCenter();
     v11 = v10;
     v13 = v12;
-    v14 = [(CAMControlDrawerButton *)self _slashView];
-    [v14 setCenter:{v11, v13}];
+    _slashView2 = [(CAMControlDrawerButton *)self _slashView];
+    [_slashView2 setCenter:{v11, v13}];
 
-    [v3 bounds];
+    [_imageView bounds];
     v16 = v15;
     v18 = v17;
     v20 = v19;
     v22 = v21;
-    v23 = [(CAMControlDrawerButton *)self _slashMaskView];
-    [v23 setFrame:{v16, v18, v20, v22}];
+    _slashMaskView = [(CAMControlDrawerButton *)self _slashMaskView];
+    [_slashMaskView setFrame:{v16, v18, v20, v22}];
 
     [(CAMControlDrawerButton *)self _updateSlashAnimated:0];
   }
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
-  v5 = [(CAMControlDrawerButton *)self isHighlighted];
+  highlightedCopy = highlighted;
+  isHighlighted = [(CAMControlDrawerButton *)self isHighlighted];
   v10.receiver = self;
   v10.super_class = CAMControlDrawerButton;
-  [(CAMControlDrawerButton *)&v10 setHighlighted:v3];
-  if (v5 != v3)
+  [(CAMControlDrawerButton *)&v10 setHighlighted:highlightedCopy];
+  if (isHighlighted != highlightedCopy)
   {
     if ([(CAMControlDrawerButton *)self shouldScaleImageWhileHighlighted])
     {
-      v6 = [(CAMControlDrawerButton *)self _imageView];
-      v7 = [v6 layer];
-      [CAMAnimationHelper animateLayer:v7 forButtonHighlighted:v3 layoutStyle:[(CAMControlDrawerButton *)self layoutStyle]];
+      _imageView = [(CAMControlDrawerButton *)self _imageView];
+      layer = [_imageView layer];
+      [CAMAnimationHelper animateLayer:layer forButtonHighlighted:highlightedCopy layoutStyle:[(CAMControlDrawerButton *)self layoutStyle]];
 
-      v8 = [(CAMControlDrawerButton *)self _slashView];
-      v9 = [v8 layer];
-      [CAMAnimationHelper animateLayer:v9 forButtonHighlighted:v3 layoutStyle:[(CAMControlDrawerButton *)self layoutStyle]];
+      _slashView = [(CAMControlDrawerButton *)self _slashView];
+      layer2 = [_slashView layer];
+      [CAMAnimationHelper animateLayer:layer2 forButtonHighlighted:highlightedCopy layoutStyle:[(CAMControlDrawerButton *)self layoutStyle]];
     }
   }
 }
 
-- (id)hudItemForAccessibilityHUDManager:(id)a3
+- (id)hudItemForAccessibilityHUDManager:(id)manager
 {
-  v3 = [(CAMControlDrawerButton *)self imageForAXHUD];
+  imageForAXHUD = [(CAMControlDrawerButton *)self imageForAXHUD];
   v4 = objc_alloc(MEMORY[0x1E69DC618]);
-  v5 = [v4 initWithTitle:0 image:v3 imageInsets:1 scaleImage:{*MEMORY[0x1E69DDCE0], *(MEMORY[0x1E69DDCE0] + 8), *(MEMORY[0x1E69DDCE0] + 16), *(MEMORY[0x1E69DDCE0] + 24)}];
+  v5 = [v4 initWithTitle:0 image:imageForAXHUD imageInsets:1 scaleImage:{*MEMORY[0x1E69DDCE0], *(MEMORY[0x1E69DDCE0] + 8), *(MEMORY[0x1E69DDCE0] + 16), *(MEMORY[0x1E69DDCE0] + 24)}];
 
   return v5;
 }
 
-- (void)selectedByAccessibilityHUDManager:(id)a3
+- (void)selectedByAccessibilityHUDManager:(id)manager
 {
   [(CAMControlDrawerButton *)self cancelTouchTracking];
 
   [(CAMControlDrawerButton *)self sendActionsForControlEvents:64];
 }
 
-- (void)setOrientation:(int64_t)a3 animated:(BOOL)a4
+- (void)setOrientation:(int64_t)orientation animated:(BOOL)animated
 {
-  if (self->_orientation != a3)
+  if (self->_orientation != orientation)
   {
-    v5 = a4;
-    self->_orientation = a3;
-    v8 = [(CAMControlDrawerButton *)self _imageView];
-    [CAMView rotateView:v8 toInterfaceOrientation:a3 animated:v5];
+    animatedCopy = animated;
+    self->_orientation = orientation;
+    _imageView = [(CAMControlDrawerButton *)self _imageView];
+    [CAMView rotateView:_imageView toInterfaceOrientation:orientation animated:animatedCopy];
 
-    v9 = [(CAMControlDrawerButton *)self _slashView];
-    [CAMView rotateView:v9 toInterfaceOrientation:a3 animated:v5];
+    _slashView = [(CAMControlDrawerButton *)self _slashView];
+    [CAMView rotateView:_slashView toInterfaceOrientation:orientation animated:animatedCopy];
   }
 }
 
@@ -230,12 +230,12 @@ void __36__CAMControlDrawerButton_buttonSize__block_invoke(uint64_t a1)
   return 0;
 }
 
-- (void)updateImageAnimated:(BOOL)a3
+- (void)updateImageAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(CAMControlDrawerButton *)self imageForCurrentState];
-  v6 = [(CAMControlDrawerButton *)self _imageView];
-  [v6 setImage:v5];
+  animatedCopy = animated;
+  imageForCurrentState = [(CAMControlDrawerButton *)self imageForCurrentState];
+  _imageView = [(CAMControlDrawerButton *)self _imageView];
+  [_imageView setImage:imageForCurrentState];
 
   if ([(CAMControlDrawerButton *)self shouldUseActiveTintForCurrentState])
   {
@@ -247,22 +247,22 @@ void __36__CAMControlDrawerButton_buttonSize__block_invoke(uint64_t a1)
     [MEMORY[0x1E69DC888] whiteColor];
   }
   v8 = ;
-  v7 = [(CAMControlDrawerButton *)self _imageView];
-  [v7 setTintColor:v8];
+  _imageView2 = [(CAMControlDrawerButton *)self _imageView];
+  [_imageView2 setTintColor:v8];
 
   [(CAMControlDrawerButton *)self setNeedsLayout];
   if ([(CAMControlDrawerButton *)self shouldUseSlash])
   {
-    [(CAMControlDrawerButton *)self _updateSlashAnimated:v3];
+    [(CAMControlDrawerButton *)self _updateSlashAnimated:animatedCopy];
   }
 }
 
 - (id)imageForCurrentState
 {
-  v3 = [(CAMControlDrawerButton *)self imageNameForCurrentState];
-  if (v3)
+  imageNameForCurrentState = [(CAMControlDrawerButton *)self imageNameForCurrentState];
+  if (imageNameForCurrentState)
   {
-    v4 = [(CAMControlDrawerButton *)self _imageForImageName:v3];
+    v4 = [(CAMControlDrawerButton *)self _imageForImageName:imageNameForCurrentState];
   }
 
   else
@@ -275,8 +275,8 @@ void __36__CAMControlDrawerButton_buttonSize__block_invoke(uint64_t a1)
 
 - (id)imageForAXHUD
 {
-  v3 = [(CAMControlDrawerButton *)self imageNameForAXHUD];
-  v4 = [(CAMControlDrawerButton *)self _imageForImageName:v3];
+  imageNameForAXHUD = [(CAMControlDrawerButton *)self imageNameForAXHUD];
+  v4 = [(CAMControlDrawerButton *)self _imageForImageName:imageNameForAXHUD];
 
   return v4;
 }
@@ -291,34 +291,34 @@ void __36__CAMControlDrawerButton_buttonSize__block_invoke(uint64_t a1)
   return 0;
 }
 
-- (void)_updateSlashAnimated:(BOOL)a3
+- (void)_updateSlashAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v7 = [(CAMControlDrawerButton *)self _slashView];
-  v5 = [(CAMControlDrawerButton *)self _slashMaskView];
-  v6 = [(CAMControlDrawerButton *)self shouldShowSlashForCurrentState];
-  [v7 bounds];
-  [v5 convertRect:v7 fromView:?];
-  [v5 setSlashBounds:v3 animated:?];
-  [v7 setVisible:v6 animated:v3];
+  animatedCopy = animated;
+  _slashView = [(CAMControlDrawerButton *)self _slashView];
+  _slashMaskView = [(CAMControlDrawerButton *)self _slashMaskView];
+  shouldShowSlashForCurrentState = [(CAMControlDrawerButton *)self shouldShowSlashForCurrentState];
+  [_slashView bounds];
+  [_slashMaskView convertRect:_slashView fromView:?];
+  [_slashMaskView setSlashBounds:animatedCopy animated:?];
+  [_slashView setVisible:shouldShowSlashForCurrentState animated:animatedCopy];
 }
 
-- (id)_imageForImageName:(id)a3
+- (id)_imageForImageName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = [MEMORY[0x1E69DCAD8] configurationWithScale:3];
-  v6 = [(CAMControlDrawerButton *)self traitCollection];
-  v7 = [v5 configurationWithTraitCollection:v6];
+  traitCollection = [(CAMControlDrawerButton *)self traitCollection];
+  v7 = [v5 configurationWithTraitCollection:traitCollection];
 
-  v8 = [(CAMControlDrawerButton *)self imageSymbolColorConfiguration];
-  if (v8)
+  imageSymbolColorConfiguration = [(CAMControlDrawerButton *)self imageSymbolColorConfiguration];
+  if (imageSymbolColorConfiguration)
   {
-    v9 = [v7 configurationByApplyingConfiguration:v8];
+    v9 = [v7 configurationByApplyingConfiguration:imageSymbolColorConfiguration];
 
     v7 = v9;
   }
 
-  v10 = [MEMORY[0x1E69DCAB8] _systemImageNamed:v4 withConfiguration:v7];
+  v10 = [MEMORY[0x1E69DCAB8] _systemImageNamed:nameCopy withConfiguration:v7];
   v11 = v10;
   if (v10)
   {
@@ -329,7 +329,7 @@ void __36__CAMControlDrawerButton_buttonSize__block_invoke(uint64_t a1)
   {
     v13 = MEMORY[0x1E69DCAB8];
     v14 = CAMCameraUIFrameworkBundle();
-    v15 = [v13 imageNamed:v4 inBundle:v14];
+    v15 = [v13 imageNamed:nameCopy inBundle:v14];
     v12 = [v15 imageWithRenderingMode:2];
   }
 

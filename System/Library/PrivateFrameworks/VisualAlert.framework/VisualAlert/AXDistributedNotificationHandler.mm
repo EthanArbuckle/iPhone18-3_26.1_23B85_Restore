@@ -1,5 +1,5 @@
 @interface AXDistributedNotificationHandler
-+ (void)postDistributedNotificationWithName:(id)a3;
++ (void)postDistributedNotificationWithName:(id)name;
 - (void)_startObserving;
 - (void)_stopObserving;
 @end
@@ -10,28 +10,28 @@
 {
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   observerIdentifier = self->super._observerIdentifier;
-  v5 = [(VISAXNotificationHandler *)self _notificationName];
-  CFNotificationCenterAddObserver(DarwinNotifyCenter, observerIdentifier, _HandleDistributedNotification, v5, 0, CFNotificationSuspensionBehaviorDeliverImmediately);
+  _notificationName = [(VISAXNotificationHandler *)self _notificationName];
+  CFNotificationCenterAddObserver(DarwinNotifyCenter, observerIdentifier, _HandleDistributedNotification, _notificationName, 0, CFNotificationSuspensionBehaviorDeliverImmediately);
 }
 
 - (void)_stopObserving
 {
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   observerIdentifier = self->super._observerIdentifier;
-  v5 = [(VISAXNotificationHandler *)self _notificationName];
-  CFNotificationCenterRemoveObserver(DarwinNotifyCenter, observerIdentifier, v5, 0);
+  _notificationName = [(VISAXNotificationHandler *)self _notificationName];
+  CFNotificationCenterRemoveObserver(DarwinNotifyCenter, observerIdentifier, _notificationName, 0);
 }
 
-+ (void)postDistributedNotificationWithName:(id)a3
++ (void)postDistributedNotificationWithName:(id)name
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CE6998] sharedInstance];
-  v5 = [v4 ignoreLogging];
+  nameCopy = name;
+  mEMORY[0x277CE6998] = [MEMORY[0x277CE6998] sharedInstance];
+  ignoreLogging = [mEMORY[0x277CE6998] ignoreLogging];
 
-  if ((v5 & 1) == 0)
+  if ((ignoreLogging & 1) == 0)
   {
-    v6 = [MEMORY[0x277CE6998] identifier];
+    identifier = [MEMORY[0x277CE6998] identifier];
     v7 = AXLoggerForFacility();
 
     v8 = AXOSLogLevelFromAXLogLevel();
@@ -49,7 +49,7 @@
   }
 
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
-  CFNotificationCenterPostNotification(DarwinNotifyCenter, v3, 0, 0, 1u);
+  CFNotificationCenterPostNotification(DarwinNotifyCenter, nameCopy, 0, 0, 1u);
 
   v12 = *MEMORY[0x277D85DE8];
 }

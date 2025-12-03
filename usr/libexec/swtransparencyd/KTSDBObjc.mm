@@ -1,7 +1,7 @@
 @interface KTSDBObjc
-- (BOOL)executeSQL:(id)a3 arguments:(char *)a4;
-- (id)initDatabaseWithURL:(id)a3;
-- (id)prepareStatement:(id)a3 error:(id *)a4;
+- (BOOL)executeSQL:(id)l arguments:(char *)arguments;
+- (id)initDatabaseWithURL:(id)l;
+- (id)prepareStatement:(id)statement error:(id *)error;
 - (int)autoVacuumSetting;
 - (void)close;
 - (void)dealloc;
@@ -9,13 +9,13 @@
 
 @implementation KTSDBObjc
 
-- (id)initDatabaseWithURL:(id)a3
+- (id)initDatabaseWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v11.receiver = self;
   v11.super_class = KTSDBObjc;
   v5 = [(KTSDBObjc *)&v11 init];
-  if (v5 && ((v6 = [v4 fileSystemRepresentation]) != 0 ? (v7 = 6) : (v7 = 134), !sqlite3_open_v2(v6, &v5->_db, v7, 0) && (v8 = os_log_create("KTSDBObjc", "db"), -[KTSDBObjc setLog:](v5, "setLog:", v8), v8, -[KTSDBObjc executeSQL:](v5, "executeSQL:", @"pragma journal_mode = WAL")) && (-[KTSDBObjc autoVacuumSetting](v5, "autoVacuumSetting") == 2 || -[KTSDBObjc executeSQL:](v5, "executeSQL:", @"pragma auto_vacuum = incremental") && -[KTSDBObjc executeSQL:](v5, "executeSQL:", @"VACUUM"))))
+  if (v5 && ((v6 = [lCopy fileSystemRepresentation]) != 0 ? (v7 = 6) : (v7 = 134), !sqlite3_open_v2(v6, &v5->_db, v7, 0) && (v8 = os_log_create("KTSDBObjc", "db"), -[KTSDBObjc setLog:](v5, "setLog:", v8), v8, -[KTSDBObjc executeSQL:](v5, "executeSQL:", @"pragma journal_mode = WAL")) && (-[KTSDBObjc autoVacuumSetting](v5, "autoVacuumSetting") == 2 || -[KTSDBObjc executeSQL:](v5, "executeSQL:", @"pragma auto_vacuum = incremental") && -[KTSDBObjc executeSQL:](v5, "executeSQL:", @"VACUUM"))))
   {
     v9 = v5;
   }
@@ -28,10 +28,10 @@
   return v9;
 }
 
-- (BOOL)executeSQL:(id)a3 arguments:(char *)a4
+- (BOOL)executeSQL:(id)l arguments:(char *)arguments
 {
-  v6 = a3;
-  v7 = [[NSString alloc] initWithFormat:v6 arguments:a4];
+  lCopy = l;
+  v7 = [[NSString alloc] initWithFormat:lCopy arguments:arguments];
 
   if ([(KTSDBObjc *)self db])
   {
@@ -131,10 +131,10 @@ LABEL_12:
   [(KTSDBObjc *)&v3 dealloc];
 }
 
-- (id)prepareStatement:(id)a3 error:(id *)a4
+- (id)prepareStatement:(id)statement error:(id *)error
 {
-  v6 = a3;
-  v7 = [[KTSDBStmt alloc] initWithStatement:v6 db:self error:a4];
+  statementCopy = statement;
+  v7 = [[KTSDBStmt alloc] initWithStatement:statementCopy db:self error:error];
 
   return v7;
 }

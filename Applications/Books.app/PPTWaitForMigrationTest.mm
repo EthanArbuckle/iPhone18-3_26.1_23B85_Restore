@@ -9,9 +9,9 @@
 {
   if ([(PPTBasicTest *)self running])
   {
-    v3 = [(PPTBasicTest *)self asset];
+    asset = [(PPTBasicTest *)self asset];
 
-    if (v3)
+    if (asset)
     {
 
       [(PPTBasicTest *)self finishPPTTestWithResult:0];

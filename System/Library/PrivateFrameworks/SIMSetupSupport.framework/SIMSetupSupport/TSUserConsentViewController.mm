@@ -1,7 +1,7 @@
 @interface TSUserConsentViewController
-+ (void)calculateTitleAndDetailsWithName:(id)a3 consentType:(unint64_t)a4 title:(id *)a5 details:(id *)a6;
++ (void)calculateTitleAndDetailsWithName:(id)name consentType:(unint64_t)type title:(id *)title details:(id *)details;
 - (TSSIMSetupFlowDelegate)delegate;
-- (TSUserConsentViewController)initWithConsentType:(unint64_t)a3 name:(id)a4;
+- (TSUserConsentViewController)initWithConsentType:(unint64_t)type name:(id)name;
 - (void)_acceptButtonTapped;
 - (void)_cancelButtonTapped;
 - (void)_declineButtonTapped;
@@ -11,14 +11,14 @@
 
 @implementation TSUserConsentViewController
 
-+ (void)calculateTitleAndDetailsWithName:(id)a3 consentType:(unint64_t)a4 title:(id *)a5 details:(id *)a6
++ (void)calculateTitleAndDetailsWithName:(id)name consentType:(unint64_t)type title:(id *)title details:(id *)details
 {
-  v9 = a3;
-  if (a4 <= 1)
+  nameCopy = name;
+  if (type <= 1)
   {
-    if (a4)
+    if (type)
     {
-      if (a4 != 1)
+      if (type != 1)
       {
         goto LABEL_25;
       }
@@ -36,22 +36,22 @@
     goto LABEL_17;
   }
 
-  if (a4 == 2)
+  if (type == 2)
   {
     v10 = MEMORY[0x277CCACA8];
     v11 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v12 = [v11 localizedStringForKey:@"CONSENT_NEW_PROFILE_POLICY_TITLE" value:&stru_28753DF48 table:@"Localizable"];
-    *a5 = [v10 stringWithFormat:v12];
+    *title = [v10 stringWithFormat:v12];
 
     v13 = MEMORY[0x277CCACA8];
     v14 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    if (v9)
+    if (nameCopy)
     {
       v15 = @"CONSENT_NEW_PLAN_CANNOT_BE_DELETED_%@_%@";
 LABEL_13:
       v19 = [v14 localizedStringForKey:v15 value:&stru_28753DF48 table:@"Localizable"];
-      [v13 stringWithFormat:v19, v9, v9];
-      *a6 = LABEL_23:;
+      [v13 stringWithFormat:v19, nameCopy, nameCopy];
+      *details = LABEL_23:;
 
       goto LABEL_24;
     }
@@ -63,16 +63,16 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  if (a4 == 3)
+  if (type == 3)
   {
     v16 = MEMORY[0x277CCACA8];
     v17 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v18 = [v17 localizedStringForKey:@"CONSENT_NEW_PROFILE_POLICY_TITLE" value:&stru_28753DF48 table:@"Localizable"];
-    *a5 = [v16 stringWithFormat:v18];
+    *title = [v16 stringWithFormat:v18];
 
     v13 = MEMORY[0x277CCACA8];
     v14 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    if (v9)
+    if (nameCopy)
     {
       v15 = @"CONSENT_NEW_PLAN_CANNOT_BE_DISABLED_%@_%@";
       goto LABEL_13;
@@ -82,7 +82,7 @@ LABEL_22:
     goto LABEL_22;
   }
 
-  if (a4 != 4)
+  if (type != 4)
   {
     goto LABEL_25;
   }
@@ -91,12 +91,12 @@ LABEL_17:
   v21 = MEMORY[0x277CCACA8];
   v22 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v23 = [v22 localizedStringForKey:@"GENERAL_USER_CONSENT_TITLE" value:&stru_28753DF48 table:@"Localizable"];
-  *a5 = [v21 stringWithFormat:v23];
+  *title = [v21 stringWithFormat:v23];
 
-  if (!v9)
+  if (!nameCopy)
   {
     v14 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    *a6 = [v14 localizedStringForKey:@"GENERAL_USER_CONSENT_COMMON_DETAIL" value:&stru_28753DF48 table:@"Localizable"];
+    *details = [v14 localizedStringForKey:@"GENERAL_USER_CONSENT_COMMON_DETAIL" value:&stru_28753DF48 table:@"Localizable"];
 LABEL_24:
 
     goto LABEL_25;
@@ -105,16 +105,16 @@ LABEL_24:
   v24 = MEMORY[0x277CCACA8];
   v25 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v26 = [v25 localizedStringForKey:@"GENERAL_USER_CONSENT_COMMON_DETAIL_%@" value:&stru_28753DF48 table:@"Localizable"];
-  *a6 = [v24 stringWithFormat:v26, v9];
+  *details = [v24 stringWithFormat:v26, nameCopy];
 
 LABEL_25:
 }
 
-- (TSUserConsentViewController)initWithConsentType:(unint64_t)a3 name:(id)a4
+- (TSUserConsentViewController)initWithConsentType:(unint64_t)type name:(id)name
 {
   v12 = 0;
   v13 = 0;
-  [TSUserConsentViewController calculateTitleAndDetailsWithName:a4 consentType:a3 title:&v13 details:&v12];
+  [TSUserConsentViewController calculateTitleAndDetailsWithName:name consentType:type title:&v13 details:&v12];
   v6 = v13;
   v7 = v12;
   v11.receiver = self;
@@ -124,7 +124,7 @@ LABEL_25:
   if (v8)
   {
     [(TSUserConsentViewController *)v8 setModalInPresentation:1];
-    v9->_consentType = a3;
+    v9->_consentType = type;
     v9->_userConsentResponse = 0;
   }
 
@@ -176,25 +176,25 @@ LABEL_10:
   v5 = 0;
   v4 = 0;
 LABEL_11:
-  v6 = [MEMORY[0x277D37618] boldButton];
+  boldButton = [MEMORY[0x277D37618] boldButton];
   v7 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v8 = [v7 localizedStringForKey:v5 value:&stru_28753DF48 table:@"Localizable"];
-  [v6 setTitle:v8 forState:0];
+  [boldButton setTitle:v8 forState:0];
 
-  [v6 addTarget:self action:sel__acceptButtonTapped forControlEvents:64];
-  v9 = [(TSUserConsentViewController *)self buttonTray];
-  [v9 addButton:v6];
+  [boldButton addTarget:self action:sel__acceptButtonTapped forControlEvents:64];
+  buttonTray = [(TSUserConsentViewController *)self buttonTray];
+  [buttonTray addButton:boldButton];
 
   if (v4)
   {
-    v10 = [MEMORY[0x277D37650] linkButton];
+    linkButton = [MEMORY[0x277D37650] linkButton];
     v11 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v12 = [v11 localizedStringForKey:@"CONSENT_POLICY_DECLINE" value:&stru_28753DF48 table:@"Localizable"];
-    [v10 setTitle:v12 forState:0];
+    [linkButton setTitle:v12 forState:0];
 
-    [v10 addTarget:self action:sel__declineButtonTapped forControlEvents:64];
-    v13 = [(TSUserConsentViewController *)self buttonTray];
-    [v13 addButton:v10];
+    [linkButton addTarget:self action:sel__declineButtonTapped forControlEvents:64];
+    buttonTray2 = [(TSUserConsentViewController *)self buttonTray];
+    [buttonTray2 addButton:linkButton];
   }
 
   [(TSUserConsentViewController *)self _setNavigationItems];
@@ -207,19 +207,19 @@ LABEL_11:
 
   v7 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:1 target:self action:sel__cancelButtonTapped];
   v4 = +[TSUtilities isPad];
-  v5 = [(OBBaseWelcomeController *)self navigationItem];
-  v6 = v5;
+  navigationItem = [(OBBaseWelcomeController *)self navigationItem];
+  navigationItem2 = navigationItem;
   if (v4)
   {
-    [v5 setRightBarButtonItem:v7];
+    [navigationItem setRightBarButtonItem:v7];
 
-    v6 = [(OBBaseWelcomeController *)self navigationItem];
-    [v6 setHidesBackButton:1 animated:0];
+    navigationItem2 = [(OBBaseWelcomeController *)self navigationItem];
+    [navigationItem2 setHidesBackButton:1 animated:0];
   }
 
   else
   {
-    [v5 setLeftBarButtonItem:v7];
+    [navigationItem setLeftBarButtonItem:v7];
   }
 }
 

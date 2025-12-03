@@ -1,12 +1,12 @@
 @interface FCCurrentIssuesChecker
 - (FCCurrentIssuesChecker)init;
-- (FCCurrentIssuesChecker)initWithContext:(id)a3 subscriptionController:(id)a4 issueReadingHistory:(id)a5 bundleSubscriptionProvider:(id)a6;
+- (FCCurrentIssuesChecker)initWithContext:(id)context subscriptionController:(id)controller issueReadingHistory:(id)history bundleSubscriptionProvider:(id)provider;
 - (id)_promiseBundleChannelIDs;
-- (id)_promiseCurrentIssuesFromChannelIDs:(void *)a3 withChainingData:(uint64_t)a4 qualityOfService:;
+- (id)_promiseCurrentIssuesFromChannelIDs:(void *)ds withChainingData:(uint64_t)data qualityOfService:;
 - (id)demoFollowedChannelIDs;
-- (id)sortIssues:(void *)a3 basedOnTagIDs:;
-- (void)fetchUsersCurrentIssuesWithCompletion:(id)a3;
-- (void)fetchUsersFollowedIssuesWithQualityOfService:(int64_t)a3 completion:(id)a4;
+- (id)sortIssues:(void *)issues basedOnTagIDs:;
+- (void)fetchUsersCurrentIssuesWithCompletion:(id)completion;
+- (void)fetchUsersFollowedIssuesWithQualityOfService:(int64_t)service completion:(id)completion;
 @end
 
 @implementation FCCurrentIssuesChecker
@@ -37,30 +37,30 @@
   objc_exception_throw(v6);
 }
 
-- (FCCurrentIssuesChecker)initWithContext:(id)a3 subscriptionController:(id)a4 issueReadingHistory:(id)a5 bundleSubscriptionProvider:(id)a6
+- (FCCurrentIssuesChecker)initWithContext:(id)context subscriptionController:(id)controller issueReadingHistory:(id)history bundleSubscriptionProvider:(id)provider
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  contextCopy = context;
+  controllerCopy = controller;
+  historyCopy = history;
+  providerCopy = provider;
   v18.receiver = self;
   v18.super_class = FCCurrentIssuesChecker;
   v15 = [(FCCurrentIssuesChecker *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_context, a3);
-    objc_storeStrong(&v16->_subscriptionController, a4);
-    objc_storeStrong(&v16->_issueReadingHistory, a5);
-    objc_storeStrong(&v16->_bundleSubscriptionProvider, a6);
+    objc_storeStrong(&v15->_context, context);
+    objc_storeStrong(&v16->_subscriptionController, controller);
+    objc_storeStrong(&v16->_issueReadingHistory, history);
+    objc_storeStrong(&v16->_bundleSubscriptionProvider, provider);
   }
 
   return v16;
 }
 
-- (void)fetchUsersCurrentIssuesWithCompletion:(id)a3
+- (void)fetchUsersCurrentIssuesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __64__FCCurrentIssuesChecker_fetchUsersCurrentIssuesWithCompletion___block_invoke;
@@ -94,7 +94,7 @@
   v20[2] = __64__FCCurrentIssuesChecker_fetchUsersCurrentIssuesWithCompletion___block_invoke_19;
   v20[3] = &unk_1E7C426B0;
   v20[4] = self;
-  v12 = v4;
+  v12 = completionCopy;
   v21 = v12;
   v13 = [v10 thenOn:v11 then:v20];
   v14 = zalgo();
@@ -109,20 +109,20 @@
 
 - (id)_promiseBundleChannelIDs
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
+    selfCopy = self;
     v3 = objc_alloc(MEMORY[0x1E69B68F8]);
     var38[0] = MEMORY[0x1E69E9820];
     var38[1] = 3221225472;
     var38[2] = __50__FCCurrentIssuesChecker__promiseBundleChannelIDs__block_invoke;
     var38[3] = &unk_1E7C39ED0;
-    var38[4] = v2;
-    a1 = [v3 initWithResolver:var38];
+    var38[4] = selfCopy;
+    self = [v3 initWithResolver:var38];
     v1 = var38[8];
   }
 
-  return a1;
+  return self;
 }
 
 id __64__FCCurrentIssuesChecker_fetchUsersCurrentIssuesWithCompletion___block_invoke_2(uint64_t a1, void *a2)
@@ -242,21 +242,21 @@ id __64__FCCurrentIssuesChecker_fetchUsersCurrentIssuesWithCompletion___block_in
   return v14;
 }
 
-- (id)_promiseCurrentIssuesFromChannelIDs:(void *)a3 withChainingData:(uint64_t)a4 qualityOfService:
+- (id)_promiseCurrentIssuesFromChannelIDs:(void *)ds withChainingData:(uint64_t)data qualityOfService:
 {
   v7 = a2;
-  v8 = a3;
-  if (a1)
+  dsCopy = ds;
+  if (self)
   {
     v9 = objc_alloc(MEMORY[0x1E69B68F8]);
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __96__FCCurrentIssuesChecker__promiseCurrentIssuesFromChannelIDs_withChainingData_qualityOfService___block_invoke;
     v12[3] = &unk_1E7C427C0;
-    v13 = v8;
+    v13 = dsCopy;
     v14 = v7;
-    v15 = a1;
-    v16 = a4;
+    selfCopy = self;
+    dataCopy = data;
     v10 = [v9 initWithResolver:v12];
   }
 
@@ -551,7 +551,7 @@ uint64_t __64__FCCurrentIssuesChecker_fetchUsersCurrentIssuesWithCompletion___bl
 
 - (id)demoFollowedChannelIDs
 {
-  if (a1)
+  if (self)
   {
     v1 = NewsCoreUserDefaults();
     v2 = [v1 stringForKey:@"news.demo.followed_channels"];
@@ -567,21 +567,21 @@ uint64_t __64__FCCurrentIssuesChecker_fetchUsersCurrentIssuesWithCompletion___bl
   return v3;
 }
 
-- (id)sortIssues:(void *)a3 basedOnTagIDs:
+- (id)sortIssues:(void *)issues basedOnTagIDs:
 {
   v5 = a2;
-  v6 = a3;
-  v7 = v6;
-  if (a1)
+  issuesCopy = issues;
+  v7 = issuesCopy;
+  if (self)
   {
-    if (v5 && v6)
+    if (v5 && issuesCopy)
     {
       v10[0] = MEMORY[0x1E69E9820];
       v10[1] = 3221225472;
       v10[2] = __51__FCCurrentIssuesChecker_sortIssues_basedOnTagIDs___block_invoke_2;
       v10[3] = &unk_1E7C38D38;
       v11 = v5;
-      a1 = [v7 fc_arrayByTransformingWithBlock:v10];
+      self = [v7 fc_arrayByTransformingWithBlock:v10];
       v8 = v11;
     }
 
@@ -593,11 +593,11 @@ uint64_t __64__FCCurrentIssuesChecker_fetchUsersCurrentIssuesWithCompletion___bl
       v15 = &unk_1E7C3B578;
       v16 = v5;
       v8 = v16;
-      a1 = v8;
+      self = v8;
     }
   }
 
-  return a1;
+  return self;
 }
 
 uint64_t __64__FCCurrentIssuesChecker_fetchUsersCurrentIssuesWithCompletion___block_invoke_19(uint64_t a1, void *a2)
@@ -866,9 +866,9 @@ void __64__FCCurrentIssuesChecker_fetchUsersCurrentIssuesWithCompletion___block_
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchUsersFollowedIssuesWithQualityOfService:(int64_t)a3 completion:(id)a4
+- (void)fetchUsersFollowedIssuesWithQualityOfService:(int64_t)service completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __82__FCCurrentIssuesChecker_fetchUsersFollowedIssuesWithQualityOfService_completion___block_invoke;
@@ -881,14 +881,14 @@ void __64__FCCurrentIssuesChecker_fetchUsersCurrentIssuesWithCompletion___block_
   v20[2] = __82__FCCurrentIssuesChecker_fetchUsersFollowedIssuesWithQualityOfService_completion___block_invoke_2;
   v20[3] = &unk_1E7C426D8;
   v20[4] = self;
-  v20[5] = a3;
+  v20[5] = service;
   v9 = [v7 thenOn:v8 then:v20];
   v10 = zalgo();
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __82__FCCurrentIssuesChecker_fetchUsersFollowedIssuesWithQualityOfService_completion___block_invoke_3;
   v18[3] = &unk_1E7C42700;
-  v11 = v6;
+  v11 = completionCopy;
   v19 = v11;
   v12 = [v9 thenOn:v10 then:v18];
   v13 = zalgo();

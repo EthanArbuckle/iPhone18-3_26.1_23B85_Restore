@@ -1,7 +1,7 @@
 @interface DillProvisional
 - (_TtC18ProtoDataExtractor15DillProvisional)init;
-- (_TtC18ProtoDataExtractor15DillProvisional)initWithCoder:(id)a3;
-- (_TtC18ProtoDataExtractor15DillProvisional)initWithData:(id)a3;
+- (_TtC18ProtoDataExtractor15DillProvisional)initWithCoder:(id)coder;
+- (_TtC18ProtoDataExtractor15DillProvisional)initWithData:(id)data;
 - (id)getVersion;
 @end
 
@@ -14,18 +14,18 @@
   return result;
 }
 
-- (_TtC18ProtoDataExtractor15DillProvisional)initWithCoder:(id)a3
+- (_TtC18ProtoDataExtractor15DillProvisional)initWithCoder:(id)coder
 {
   result = sub_260F499A8();
   __break(1u);
   return result;
 }
 
-- (_TtC18ProtoDataExtractor15DillProvisional)initWithData:(id)a3
+- (_TtC18ProtoDataExtractor15DillProvisional)initWithData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v3 = a3;
+    dataCopy = data;
     v4 = sub_260F49328();
     v6 = v5;
   }
@@ -41,9 +41,9 @@
 
 - (id)getVersion
 {
-  v2 = [objc_allocWithZone(MEMORY[0x277CCABB0]) initWithInteger_];
+  initWithInteger_ = [objc_allocWithZone(MEMORY[0x277CCABB0]) initWithInteger_];
 
-  return v2;
+  return initWithInteger_;
 }
 
 @end

@@ -1,29 +1,29 @@
 @interface AVTInMemoryResourceCacheEntry
-- (AVTInMemoryResourceCacheEntry)initWithResource:(id)a3 changeToken:(id)a4 key:(id)a5 cost:(unint64_t)a6;
+- (AVTInMemoryResourceCacheEntry)initWithResource:(id)resource changeToken:(id)token key:(id)key cost:(unint64_t)cost;
 - (id)description;
 - (void)dealloc;
 @end
 
 @implementation AVTInMemoryResourceCacheEntry
 
-- (AVTInMemoryResourceCacheEntry)initWithResource:(id)a3 changeToken:(id)a4 key:(id)a5 cost:(unint64_t)a6
+- (AVTInMemoryResourceCacheEntry)initWithResource:(id)resource changeToken:(id)token key:(id)key cost:(unint64_t)cost
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  resourceCopy = resource;
+  tokenCopy = token;
+  keyCopy = key;
   v19.receiver = self;
   v19.super_class = AVTInMemoryResourceCacheEntry;
   v14 = [(AVTInMemoryResourceCacheEntry *)&v19 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_resource, a3);
-    objc_storeStrong(&v15->_changeToken, a4);
-    v16 = [v13 copy];
+    objc_storeStrong(&v14->_resource, resource);
+    objc_storeStrong(&v15->_changeToken, token);
+    v16 = [keyCopy copy];
     key = v15->_key;
     v15->_key = v16;
 
-    v15->_cost = a6;
+    v15->_cost = cost;
   }
 
   return v15;

@@ -1,33 +1,33 @@
 @interface PLPhotoStreamAlbum
-+ (id)photoStreamAlbumWithStreamID:(id)a3 inPhotoLibrary:(id)a4 createIfNeeded:(BOOL)a5;
-- (void)addAssetOrderedByDataTaken:(id)a3;
++ (id)photoStreamAlbumWithStreamID:(id)d inPhotoLibrary:(id)library createIfNeeded:(BOOL)needed;
+- (void)addAssetOrderedByDataTaken:(id)taken;
 - (void)awakeFromInsert;
 @end
 
 @implementation PLPhotoStreamAlbum
 
-- (void)addAssetOrderedByDataTaken:(id)a3
+- (void)addAssetOrderedByDataTaken:(id)taken
 {
-  v21 = a3;
-  v4 = [(PLManagedAlbum *)self mutableAssets];
-  v5 = [v21 dateCreated];
-  v6 = [v4 count];
-  if (!v6 || !v5)
+  takenCopy = taken;
+  mutableAssets = [(PLManagedAlbum *)self mutableAssets];
+  dateCreated = [takenCopy dateCreated];
+  v6 = [mutableAssets count];
+  if (!v6 || !dateCreated)
   {
-    [v4 addObject:v21];
+    [mutableAssets addObject:takenCopy];
     goto LABEL_19;
   }
 
   v7 = v6;
   v8 = v6 - 1;
-  v9 = [v4 objectAtIndex:v6 - 1];
-  v10 = [v9 dateCreated];
-  v11 = [v10 compare:v5];
+  v9 = [mutableAssets objectAtIndex:v6 - 1];
+  dateCreated2 = [v9 dateCreated];
+  v11 = [dateCreated2 compare:dateCreated];
 
   if (v11 == -1)
   {
-    v19 = v4;
-    v20 = v21;
+    v19 = mutableAssets;
+    v20 = takenCopy;
   }
 
   else
@@ -46,10 +46,10 @@
       {
         v15 = v13;
         v16 = v12 + (v14 - v12) / 2;
-        v13 = [v4 objectAtIndex:v16];
+        v13 = [mutableAssets objectAtIndex:v16];
 
-        v17 = [v13 dateCreated];
-        v18 = [v17 compare:v5];
+        dateCreated3 = [v13 dateCreated];
+        v18 = [dateCreated3 compare:dateCreated];
 
         if (v18 == 1)
         {
@@ -70,11 +70,11 @@
       while (v12 <= v14);
     }
 
-    v20 = v21;
-    v19 = v4;
+    v20 = takenCopy;
+    v19 = mutableAssets;
     if ((v16 & ~(v16 >> 63)) <= v8)
     {
-      [v4 insertObject:v21 atIndex:?];
+      [mutableAssets insertObject:takenCopy atIndex:?];
       goto LABEL_18;
     }
   }
@@ -93,20 +93,20 @@ LABEL_19:
   [(PLGenericAlbum *)self setKindValue:1500];
 }
 
-+ (id)photoStreamAlbumWithStreamID:(id)a3 inPhotoLibrary:(id)a4 createIfNeeded:(BOOL)a5
++ (id)photoStreamAlbumWithStreamID:(id)d inPhotoLibrary:(id)library createIfNeeded:(BOOL)needed
 {
-  v5 = a5;
+  neededCopy = needed;
   v44 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  dCopy = d;
+  libraryCopy = library;
   v10 = objc_autoreleasePoolPush();
-  v11 = [v9 managedObjectContext];
+  managedObjectContext = [libraryCopy managedObjectContext];
   v12 = objc_alloc_init(MEMORY[0x1E695D5E0]);
-  v13 = [a1 entityInManagedObjectContext:v11];
+  v13 = [self entityInManagedObjectContext:managedObjectContext];
   [v12 setEntity:v13];
 
   v42 = 0;
-  v14 = [v11 executeFetchRequest:v12 error:&v42];
+  v14 = [managedObjectContext executeFetchRequest:v12 error:&v42];
   v15 = v42;
   if (!v14)
   {
@@ -117,28 +117,28 @@ LABEL_19:
   {
     if ([v14 count] == 1)
     {
-      v25 = [v14 lastObject];
+      lastObject = [v14 lastObject];
       goto LABEL_26;
     }
 
-    if (v5)
+    if (neededCopy)
     {
       if (PLIsAssetsd())
       {
-        [v9 createPhotoStreamAlbumWithStreamID:v8];
+        [libraryCopy createPhotoStreamAlbumWithStreamID:dCopy];
       }
 
       else
       {
-        v26 = [v9 assetsdClient];
-        v27 = [v26 cloudInternalClient];
-        [v27 createPhotostreamAlbumWithStreamID:v8];
+        assetsdClient = [libraryCopy assetsdClient];
+        cloudInternalClient = [assetsdClient cloudInternalClient];
+        [cloudInternalClient createPhotostreamAlbumWithStreamID:dCopy];
       }
 
-      v25 = [PLPhotoStreamAlbum photoStreamAlbumWithStreamID:v8 inPhotoLibrary:v9 createIfNeeded:0];
+      lastObject = [PLPhotoStreamAlbum photoStreamAlbumWithStreamID:dCopy inPhotoLibrary:libraryCopy createIfNeeded:0];
 LABEL_26:
-      v19 = v25;
-      if (!v8)
+      v19 = lastObject;
+      if (!dCopy)
       {
         goto LABEL_31;
       }
@@ -154,8 +154,8 @@ LABEL_30:
   v33 = v15;
   v35 = v12;
   v36 = v10;
-  v37 = v9;
-  NSLog(&cfstr_WarningThePhot.isa, v8);
+  v37 = libraryCopy;
+  NSLog(&cfstr_WarningThePhot.isa, dCopy);
   v40 = 0u;
   v41 = 0u;
   v38 = 0u;
@@ -180,16 +180,16 @@ LABEL_30:
         v22 = *(*(&v38 + 1) + 8 * i);
         if (objc_opt_respondsToSelector())
         {
-          v23 = [v22 personID];
+          personID = [v22 personID];
         }
 
         else
         {
-          v23 = 0;
+          personID = 0;
         }
 
-        NSLog(&cfstr_FoundAlbumWith.isa, v23);
-        if ([v23 isEqualToString:v8])
+        NSLog(&cfstr_FoundAlbumWith.isa, personID);
+        if ([personID isEqualToString:dCopy])
         {
           v24 = v22;
 
@@ -209,11 +209,11 @@ LABEL_30:
   }
 
   v10 = v36;
-  v9 = v37;
+  libraryCopy = v37;
   v12 = v35;
   v15 = v33;
   v14 = v34;
-  if (v8)
+  if (dCopy)
   {
 LABEL_27:
     if (!v19)
@@ -221,16 +221,16 @@ LABEL_27:
       goto LABEL_31;
     }
 
-    v28 = [v19 personID];
-    v29 = [v28 isEqualToString:v8];
+    personID2 = [v19 personID];
+    v29 = [personID2 isEqualToString:dCopy];
 
     if (v29)
     {
       goto LABEL_31;
     }
 
-    v30 = [v19 personID];
-    NSLog(&cfstr_WarningPhotoSt.isa, v30, v8);
+    personID3 = [v19 personID];
+    NSLog(&cfstr_WarningPhotoSt.isa, personID3, dCopy);
 
     goto LABEL_30;
   }

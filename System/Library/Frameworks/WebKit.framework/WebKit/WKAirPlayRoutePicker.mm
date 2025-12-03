@@ -1,6 +1,6 @@
 @interface WKAirPlayRoutePicker
 - (void)dealloc;
-- (void)showFromView:(id)a3 routeSharingPolicy:(unsigned __int8)a4 routingContextUID:(id)a5 hasVideo:(BOOL)a6;
+- (void)showFromView:(id)view routeSharingPolicy:(unsigned __int8)policy routingContextUID:(id)d hasVideo:(BOOL)video;
 @end
 
 @implementation WKAirPlayRoutePicker
@@ -13,12 +13,12 @@
   [(WKAirPlayRoutePicker *)&v3 dealloc];
 }
 
-- (void)showFromView:(id)a3 routeSharingPolicy:(unsigned __int8)a4 routingContextUID:(id)a5 hasVideo:(BOOL)a6
+- (void)showFromView:(id)view routeSharingPolicy:(unsigned __int8)policy routingContextUID:(id)d hasVideo:(BOOL)video
 {
   if (!self->_actionSheet.m_ptr)
   {
-    v6 = a6;
-    v8 = a4;
+    videoCopy = video;
+    policyCopy = policy;
     v16 = 0;
     v17 = &v16;
     v18 = 0x3812000000;
@@ -29,7 +29,7 @@
     if ([_MergedGlobals_34() instancesRespondToSelector:sel_setSortByIsVideoRoute_])
     {
       v11 = [objc_alloc(_MergedGlobals_34()) init];
-      [v11 setSortByIsVideoRoute:v6];
+      [v11 setSortByIsVideoRoute:videoCopy];
     }
 
     else
@@ -46,7 +46,7 @@
 
     if (objc_opt_respondsToSelector())
     {
-      [(MPMediaControlsViewController *)self->_actionSheet.m_ptr setOverrideRouteSharingPolicy:v8 routingContextUID:a5];
+      [(MPMediaControlsViewController *)self->_actionSheet.m_ptr setOverrideRouteSharingPolicy:policyCopy routingContextUID:d];
     }
 
     v15[0] = MEMORY[0x1E69E9820];
@@ -56,7 +56,7 @@
     v15[4] = self;
     v15[5] = &v16;
     [(MPMediaControlsViewController *)self->_actionSheet.m_ptr setDidDismissHandler:v15];
-    [objc_msgSend(a3 "_wk_viewControllerForFullScreenPresentation")];
+    [objc_msgSend(view "_wk_viewControllerForFullScreenPresentation")];
     if (v11)
     {
     }

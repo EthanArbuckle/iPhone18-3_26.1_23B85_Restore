@@ -1,12 +1,12 @@
 @interface IdentifiedGameGrant
 - (NSString)description;
 - (_TtC10GamePolicy19IdentifiedGameGrant)init;
-- (_TtC10GamePolicy19IdentifiedGameGrant)initWithCoder:(id)a3;
+- (_TtC10GamePolicy19IdentifiedGameGrant)initWithCoder:(id)coder;
 @end
 
 @implementation IdentifiedGameGrant
 
-- (_TtC10GamePolicy19IdentifiedGameGrant)initWithCoder:(id)a3
+- (_TtC10GamePolicy19IdentifiedGameGrant)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = type metadata accessor for GamePolicyAssertion.Attribute();

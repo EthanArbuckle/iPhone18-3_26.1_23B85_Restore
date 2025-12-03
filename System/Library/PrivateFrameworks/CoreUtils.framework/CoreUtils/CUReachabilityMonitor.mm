@@ -1,12 +1,12 @@
 @interface CUReachabilityMonitor
 - (BOOL)_captiveDetectedCheck;
 - (CUReachabilityMonitor)init;
-- (void)URLSession:(id)a3 downloadTask:(id)a4 didFinishDownloadingToURL:(id)a5;
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5;
+- (void)URLSession:(id)session downloadTask:(id)task didFinishDownloadingToURL:(id)l;
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error;
 - (void)_activate;
-- (void)_complete:(id)a3;
+- (void)_complete:(id)_complete;
 - (void)_pathMonitorStart;
-- (void)_pathMonitorUpdated:(id)a3;
+- (void)_pathMonitorUpdated:(id)updated;
 - (void)_startDownload;
 - (void)activate;
 - (void)dealloc;
@@ -15,11 +15,11 @@
 
 @implementation CUReachabilityMonitor
 
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error
 {
-  v11 = a5;
+  errorCopy = error;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  if ([v11 code] == -1001)
+  if ([errorCopy code] == -1001)
   {
     if (gLogCategory_CUReachability <= 60 && (gLogCategory_CUReachability != -1 || _LogCategory_Initialize(&gLogCategory_CUReachability, 0x3Cu)))
     {
@@ -35,16 +35,16 @@
 
   else
   {
-    [(CUReachabilityMonitor *)self _complete:v11];
+    [(CUReachabilityMonitor *)self _complete:errorCopy];
   }
 }
 
-- (void)URLSession:(id)a3 downloadTask:(id)a4 didFinishDownloadingToURL:(id)a5
+- (void)URLSession:(id)session downloadTask:(id)task didFinishDownloadingToURL:(id)l
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a5;
+  lCopy = l;
   v26[0] = 0;
-  if ([v6 getFileSystemRepresentation:v26 maxLength:1024])
+  if ([lCopy getFileSystemRepresentation:v26 maxLength:1024])
   {
     memset(&v25, 0, sizeof(v25));
     v11 = stat(v26, &v25);
@@ -70,18 +70,18 @@
 
     if (!v13)
     {
-      v14 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithContentsOfURL:v6 options:2 error:0];
+      v14 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithContentsOfURL:lCopy options:2 error:0];
       v15 = v14;
       if (v14)
       {
-        v16 = [v14 bytes];
-        if (strncasestr(v16, "<BODY>Success</BODY>", [v15 length]))
+        bytes = [v14 bytes];
+        if (strncasestr(bytes, "<BODY>Success</BODY>", [v15 length]))
         {
 
           self->_downloadStatus = 0;
           if (gLogCategory_CUReachability <= 30 && (gLogCategory_CUReachability != -1 || _LogCategory_Initialize(&gLogCategory_CUReachability, 0x1Eu)))
           {
-            LogPrintF(&gLogCategory_CUReachability, "[CUReachabilityMonitor URLSession:downloadTask:didFinishDownloadingToURL:]", 0x1Eu, "Downloaded to <%@>, %lld bytes\n", v21, v22, v23, v24, v6);
+            LogPrintF(&gLogCategory_CUReachability, "[CUReachabilityMonitor URLSession:downloadTask:didFinishDownloadingToURL:]", 0x1Eu, "Downloaded to <%@>, %lld bytes\n", v21, v22, v23, v24, lCopy);
           }
 
           goto LABEL_19;
@@ -90,7 +90,7 @@
         v13 = 301048;
         if (gLogCategory_CUReachability <= 60 && (gLogCategory_CUReachability != -1 || _LogCategory_Initialize(&gLogCategory_CUReachability, 0x3Cu)))
         {
-          LogPrintF(&gLogCategory_CUReachability, "[CUReachabilityMonitor URLSession:downloadTask:didFinishDownloadingToURL:]", 0x3Cu, "### Downloaded content mismatch:\n%.2H\n", v17, v18, v19, v20, v16);
+          LogPrintF(&gLogCategory_CUReachability, "[CUReachabilityMonitor URLSession:downloadTask:didFinishDownloadingToURL:]", 0x3Cu, "### Downloaded content mismatch:\n%.2H\n", v17, v18, v19, v20, bytes);
         }
       }
 
@@ -109,7 +109,7 @@
   self->_downloadStatus = v13;
   if (gLogCategory_CUReachability <= 60 && (gLogCategory_CUReachability != -1 || _LogCategory_Initialize(&gLogCategory_CUReachability, 0x3Cu)))
   {
-    LogPrintF(&gLogCategory_CUReachability, "[CUReachabilityMonitor URLSession:downloadTask:didFinishDownloadingToURL:]", 0x3Cu, "### Downloaded to <%@> bad: %#m\n", v7, v8, v9, v10, v6);
+    LogPrintF(&gLogCategory_CUReachability, "[CUReachabilityMonitor URLSession:downloadTask:didFinishDownloadingToURL:]", 0x3Cu, "### Downloaded to <%@> bad: %#m\n", v7, v8, v9, v10, lCopy);
   }
 
 LABEL_19:
@@ -147,42 +147,42 @@ void __35__CUReachabilityMonitor_invalidate__block_invoke(uint64_t a1, uint64_t 
   }
 }
 
-- (void)_complete:(id)a3
+- (void)_complete:(id)_complete
 {
-  v4 = a3;
+  _completeCopy = _complete;
   captiveNotifyToken = self->_captiveNotifyToken;
   if (captiveNotifyToken != -1)
   {
-    v23 = v4;
+    v23 = _completeCopy;
     notify_cancel(captiveNotifyToken);
-    v4 = v23;
+    _completeCopy = v23;
     self->_captiveNotifyToken = -1;
   }
 
-  if (v4)
+  if (_completeCopy)
   {
 LABEL_6:
     p_completionHandler = &self->_completionHandler;
     if (!self->_completionHandler)
     {
-      v25 = v4;
+      v25 = _completeCopy;
       goto LABEL_21;
     }
 
-    if (v4)
+    if (_completeCopy)
     {
       if (gLogCategory_CUReachability <= 60)
       {
-        v24 = v4;
-        if (gLogCategory_CUReachability != -1 || (v14 = _LogCategory_Initialize(&gLogCategory_CUReachability, 0x3Cu), v4 = v24, v14))
+        v24 = _completeCopy;
+        if (gLogCategory_CUReachability != -1 || (v14 = _LogCategory_Initialize(&gLogCategory_CUReachability, 0x3Cu), _completeCopy = v24, v14))
         {
           LogPrintF(&gLogCategory_CUReachability, "[CUReachabilityMonitor _complete:]", 0x3Cu, "### Not reachable <%@>: %{error}\n", v7, v8, v9, v10, self->_destinationURL);
-          v4 = v24;
+          _completeCopy = v24;
         }
       }
 
 LABEL_20:
-      v25 = v4;
+      v25 = _completeCopy;
       (*(*p_completionHandler + 2))();
       v15 = *p_completionHandler;
       *p_completionHandler = 0;
@@ -196,14 +196,14 @@ LABEL_13:
       LogPrintF(&gLogCategory_CUReachability, "[CUReachabilityMonitor _complete:]", 0x1Eu, "Reachable: <%@>\n", v7, v8, v9, v10, self->_destinationURL);
     }
 
-    v4 = 0;
+    _completeCopy = 0;
     goto LABEL_20;
   }
 
   downloadStatus = self->_downloadStatus;
   if (downloadStatus)
   {
-    v4 = NSErrorWithOSStatusF(downloadStatus, "Download failed", v5, v6, v7, v8, v9, v10, v22);
+    _completeCopy = NSErrorWithOSStatusF(downloadStatus, "Download failed", v5, v6, v7, v8, v9, v10, v22);
     goto LABEL_6;
   }
 
@@ -237,19 +237,19 @@ LABEL_21:
   self->_urlSession = 0;
 }
 
-- (void)_pathMonitorUpdated:(id)a3
+- (void)_pathMonitorUpdated:(id)updated
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  updatedCopy = updated;
   v5 = logger_7532();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = updatedCopy;
     _os_log_impl(&dword_191EAF000, v5, OS_LOG_TYPE_DEFAULT, "Path monitor update: path=%@", &v6, 0xCu);
   }
 
-  if (nw_path_get_status(v4) == nw_path_status_satisfied)
+  if (nw_path_get_status(updatedCopy) == nw_path_status_satisfied)
   {
     [(CUReachabilityMonitor *)self _complete:0];
   }
@@ -284,18 +284,18 @@ void __42__CUReachabilityMonitor__pathMonitorStart__block_invoke(uint64_t a1, vo
 
 - (void)_startDownload
 {
-  v3 = [MEMORY[0x1E696AF80] ephemeralSessionConfiguration];
-  [v3 setDiscretionary:0];
-  [v3 setHTTPCookieAcceptPolicy:1];
-  [v3 setHTTPCookieStorage:0];
-  [v3 setHTTPShouldSetCookies:0];
-  [v3 setRequestCachePolicy:1];
-  [v3 setURLCredentialStorage:0];
-  [v3 setURLCache:0];
-  [v3 setWaitsForConnectivity:1];
+  ephemeralSessionConfiguration = [MEMORY[0x1E696AF80] ephemeralSessionConfiguration];
+  [ephemeralSessionConfiguration setDiscretionary:0];
+  [ephemeralSessionConfiguration setHTTPCookieAcceptPolicy:1];
+  [ephemeralSessionConfiguration setHTTPCookieStorage:0];
+  [ephemeralSessionConfiguration setHTTPShouldSetCookies:0];
+  [ephemeralSessionConfiguration setRequestCachePolicy:1];
+  [ephemeralSessionConfiguration setURLCredentialStorage:0];
+  [ephemeralSessionConfiguration setURLCache:0];
+  [ephemeralSessionConfiguration setWaitsForConnectivity:1];
   v19 = objc_alloc_init(MEMORY[0x1E696ADC8]);
   [v19 setUnderlyingQueue:self->_dispatchQueue];
-  v4 = [MEMORY[0x1E696AF78] sessionWithConfiguration:v3 delegate:self delegateQueue:v19];
+  v4 = [MEMORY[0x1E696AF78] sessionWithConfiguration:ephemeralSessionConfiguration delegate:self delegateQueue:v19];
   urlSession = self->_urlSession;
   self->_urlSession = v4;
 

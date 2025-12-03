@@ -1,9 +1,9 @@
 @interface PKSettingsTableViewController
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4;
-- (id)indexPathForItemWithIdentifier:(id)a3;
-- (int64_t)indexOfSectionWithIdentifier:(id)a3;
-- (void)applyConfiguration:(id)a3 reconfigureItems:(BOOL)a4 animated:(BOOL)a5;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path;
+- (id)indexPathForItemWithIdentifier:(id)identifier;
+- (int64_t)indexOfSectionWithIdentifier:(id)identifier;
+- (void)applyConfiguration:(id)configuration reconfigureItems:(BOOL)items animated:(BOOL)animated;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -14,8 +14,8 @@
   v19.receiver = self;
   v19.super_class = PKSettingsTableViewController;
   [(PKSettingsTableViewController *)&v19 viewDidLoad];
-  v3 = [(PKSettingsTableViewController *)self tableView];
-  [v3 pkui_setupForReadableContentGuide];
+  tableView = [(PKSettingsTableViewController *)self tableView];
+  [tableView pkui_setupForReadableContentGuide];
   objc_initWeak(&location, self);
   v4 = [PKTableViewDiffableDataSource alloc];
   v16[0] = MEMORY[0x1E69E9820];
@@ -23,7 +23,7 @@
   v16[2] = __44__PKSettingsTableViewController_viewDidLoad__block_invoke;
   v16[3] = &unk_1E8010C38;
   objc_copyWeak(&v17, &location);
-  v5 = [(UITableViewDiffableDataSource *)v4 initWithTableView:v3 cellProvider:v16];
+  v5 = [(UITableViewDiffableDataSource *)v4 initWithTableView:tableView cellProvider:v16];
   dataSource = self->_dataSource;
   self->_dataSource = v5;
 
@@ -42,7 +42,7 @@
   objc_copyWeak(&v13, &location);
   [(PKTableViewDiffableDataSource *)v8 setSectionFooterProvider:&v9];
   [(UITableViewDiffableDataSource *)self->_dataSource setDefaultRowAnimation:0, v9, v10, v11, v12];
-  [v3 setAccessibilityIdentifier:*MEMORY[0x1E69B9C38]];
+  [tableView setAccessibilityIdentifier:*MEMORY[0x1E69B9C38]];
   objc_destroyWeak(&v13);
   objc_destroyWeak(&v15);
   objc_destroyWeak(&v17);
@@ -108,21 +108,21 @@ id __44__PKSettingsTableViewController_viewDidLoad__block_invoke_3(uint64_t a1, 
   return v8;
 }
 
-- (void)applyConfiguration:(id)a3 reconfigureItems:(BOOL)a4 animated:(BOOL)a5
+- (void)applyConfiguration:(id)configuration reconfigureItems:(BOOL)items animated:(BOOL)animated
 {
-  v5 = a5;
-  v6 = a4;
-  v9 = a3;
-  v10 = [v9 snapshot];
-  if (v10)
+  animatedCopy = animated;
+  itemsCopy = items;
+  configurationCopy = configuration;
+  snapshot = [configurationCopy snapshot];
+  if (snapshot)
   {
-    if (v6)
+    if (itemsCopy)
     {
       currentConfiguration = self->_currentConfiguration;
       if (currentConfiguration)
       {
         v14 = 0;
-        [(PKSettingsTableViewConfiguration *)currentConfiguration diff:v9 updatedIdentifiers:&v14];
+        [(PKSettingsTableViewConfiguration *)currentConfiguration diff:configurationCopy updatedIdentifiers:&v14];
         v12 = v14;
       }
 
@@ -131,42 +131,42 @@ id __44__PKSettingsTableViewController_viewDidLoad__block_invoke_3(uint64_t a1, 
         v12 = 0;
       }
 
-      objc_storeStrong(&self->_currentConfiguration, a3);
+      objc_storeStrong(&self->_currentConfiguration, configuration);
       if ([v12 count])
       {
-        v13 = [v12 allObjects];
-        [v10 reconfigureItemsWithIdentifiers:v13];
+        allObjects = [v12 allObjects];
+        [snapshot reconfigureItemsWithIdentifiers:allObjects];
       }
     }
 
     else
     {
-      objc_storeStrong(&self->_currentConfiguration, a3);
+      objc_storeStrong(&self->_currentConfiguration, configuration);
     }
 
-    [(UITableViewDiffableDataSource *)self->_dataSource applySnapshot:v10 animatingDifferences:v5];
+    [(UITableViewDiffableDataSource *)self->_dataSource applySnapshot:snapshot animatingDifferences:animatedCopy];
   }
 }
 
-- (int64_t)indexOfSectionWithIdentifier:(id)a3
+- (int64_t)indexOfSectionWithIdentifier:(id)identifier
 {
-  if (!a3)
+  if (!identifier)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
   dataSource = self->_dataSource;
-  v4 = a3;
-  v5 = [(UITableViewDiffableDataSource *)dataSource snapshot];
-  v6 = [v5 sectionIdentifiers];
-  v7 = [v6 indexOfObject:v4];
+  identifierCopy = identifier;
+  snapshot = [(UITableViewDiffableDataSource *)dataSource snapshot];
+  sectionIdentifiers = [snapshot sectionIdentifiers];
+  v7 = [sectionIdentifiers indexOfObject:identifierCopy];
 
   return v7;
 }
 
-- (id)indexPathForItemWithIdentifier:(id)a3
+- (id)indexPathForItemWithIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v4 = [(UITableViewDiffableDataSource *)self->_dataSource indexPathForItemIdentifier:?];
   }
@@ -179,22 +179,22 @@ id __44__PKSettingsTableViewController_viewDidLoad__block_invoke_3(uint64_t a1, 
   return v4;
 }
 
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path
 {
   currentConfiguration = self->_currentConfiguration;
-  v5 = [(UITableViewDiffableDataSource *)self->_dataSource itemIdentifierForIndexPath:a4];
+  v5 = [(UITableViewDiffableDataSource *)self->_dataSource itemIdentifierForIndexPath:path];
   v6 = [(PKSettingsTableViewConfiguration *)currentConfiguration rowForItemIdentifier:v5];
 
   LOBYTE(v5) = [v6 shouldHighlight];
   return v5;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v10 = a3;
-  v6 = a4;
+  viewCopy = view;
+  pathCopy = path;
   currentConfiguration = self->_currentConfiguration;
-  v8 = [(UITableViewDiffableDataSource *)self->_dataSource itemIdentifierForIndexPath:v6];
+  v8 = [(UITableViewDiffableDataSource *)self->_dataSource itemIdentifierForIndexPath:pathCopy];
   v9 = [(PKSettingsTableViewConfiguration *)currentConfiguration rowForItemIdentifier:v8];
 
   if (objc_opt_respondsToSelector())
@@ -202,7 +202,7 @@ id __44__PKSettingsTableViewController_viewDidLoad__block_invoke_3(uint64_t a1, 
     [v9 handleCellSelection];
   }
 
-  [v10 deselectRowAtIndexPath:v6 animated:1];
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
 }
 
 @end

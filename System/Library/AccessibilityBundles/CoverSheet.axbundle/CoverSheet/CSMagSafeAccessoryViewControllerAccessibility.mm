@@ -1,16 +1,16 @@
 @interface CSMagSafeAccessoryViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 @end
 
 @implementation CSMagSafeAccessoryViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CSMagSafeAccessoryViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"CSMagSafeAccessoryViewController" isKindOfClass:@"CSAccessoryViewController"];
-  [v3 validateClass:@"CSMagSafeAccessoryViewController" hasInstanceMethod:@"accessory" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CSMagSafeAccessory" hasInstanceMethod:@"primaryColor" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CSMagSafeAccessoryViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"CSMagSafeAccessoryViewController" isKindOfClass:@"CSAccessoryViewController"];
+  [validationsCopy validateClass:@"CSMagSafeAccessoryViewController" hasInstanceMethod:@"accessory" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CSMagSafeAccessory" hasInstanceMethod:@"primaryColor" withFullSignature:{"@", 0}];
 }
 
 @end

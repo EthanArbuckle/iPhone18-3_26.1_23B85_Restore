@@ -1,32 +1,32 @@
 @interface SCATCameraPointPickerSwitchesViewController
-- (double)maximumValueForSpecifier:(id)a3;
-- (double)minimumValueForSpecifier:(id)a3;
-- (double)stepValueForSpecifier:(id)a3;
-- (double)valueForSpecifier:(id)a3;
-- (id)_actionForSpecifier:(id)a3;
-- (id)_axSwitchWithType:(unint64_t)a3;
+- (double)maximumValueForSpecifier:(id)specifier;
+- (double)minimumValueForSpecifier:(id)specifier;
+- (double)stepValueForSpecifier:(id)specifier;
+- (double)valueForSpecifier:(id)specifier;
+- (id)_actionForSpecifier:(id)specifier;
+- (id)_axSwitchWithType:(unint64_t)type;
 - (id)_customizationSpecifiers;
-- (id)_setupSpecifiersForExpressions:(id)a3;
-- (id)cameraSwitchEnabled:(id)a3;
-- (id)modeSummary:(id)a3;
+- (id)_setupSpecifiersForExpressions:(id)expressions;
+- (id)cameraSwitchEnabled:(id)enabled;
+- (id)modeSummary:(id)summary;
 - (id)specifiers;
-- (id)stringValueForSpecifier:(id)a3;
-- (void)setCameraSwitchEnabled:(id)a3 specifier:(id)a4;
-- (void)specifier:(id)a3 setValue:(double)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)viewWillAppear:(BOOL)a3;
+- (id)stringValueForSpecifier:(id)specifier;
+- (void)setCameraSwitchEnabled:(id)enabled specifier:(id)specifier;
+- (void)specifier:(id)specifier setValue:(double)value;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation SCATCameraPointPickerSwitchesViewController
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = SCATCameraPointPickerSwitchesViewController;
-  [(SCATCameraPointPickerSwitchesViewController *)&v6 viewWillAppear:a3];
+  [(SCATCameraPointPickerSwitchesViewController *)&v6 viewWillAppear:appear];
   v4 = AXParameterizedLocalizedString();
-  v5 = [(SCATCameraPointPickerSwitchesViewController *)self navigationItem];
-  [v5 setTitle:v4];
+  navigationItem = [(SCATCameraPointPickerSwitchesViewController *)self navigationItem];
+  [navigationItem setTitle:v4];
 
   [(SCATCameraPointPickerSwitchesViewController *)self reloadSpecifiers];
 }
@@ -102,12 +102,12 @@
     [(SCATCameraPointPickerSwitchesViewController *)self setSensitivitySpecifiers:v27];
 
     v28 = +[AXSettings sharedInstance];
-    v29 = [v28 switchControlUseCameraForPointMode];
+    switchControlUseCameraForPointMode = [v28 switchControlUseCameraForPointMode];
 
-    if (v29)
+    if (switchControlUseCameraForPointMode)
     {
-      v30 = [(SCATCameraPointPickerSwitchesViewController *)self _customizationSpecifiers];
-      [v5 addObjectsFromArray:v30];
+      _customizationSpecifiers = [(SCATCameraPointPickerSwitchesViewController *)self _customizationSpecifiers];
+      [v5 addObjectsFromArray:_customizationSpecifiers];
     }
 
     v31 = *&self->AXUISettingsBaseListController_opaque[v3];
@@ -119,13 +119,13 @@
   return v4;
 }
 
-- (id)_setupSpecifiersForExpressions:(id)a3
+- (id)_setupSpecifiersForExpressions:(id)expressions
 {
-  v4 = a3;
+  expressionsCopy = expressions;
   v24 = +[NSMutableArray array];
   v5 = +[AXSSMotionTracker supportedExpressions];
-  v6 = [v5 allObjects];
-  v7 = [v6 sortedArrayUsingSelector:"compare:"];
+  allObjects = [v5 allObjects];
+  v7 = [allObjects sortedArrayUsingSelector:"compare:"];
 
   v27 = 0u;
   v28 = 0u;
@@ -148,21 +148,21 @@
         }
 
         v12 = *(*(&v25 + 1) + 8 * i);
-        v13 = [v12 unsignedIntValue];
-        v14 = [v4 objectForKeyedSubscript:v12];
+        unsignedIntValue = [v12 unsignedIntValue];
+        v14 = [expressionsCopy objectForKeyedSubscript:v12];
 
         if (v14)
         {
-          v15 = [v4 objectForKeyedSubscript:v12];
-          v16 = [v15 unsignedIntValue];
+          v15 = [expressionsCopy objectForKeyedSubscript:v12];
+          unsignedIntValue2 = [v15 unsignedIntValue];
 
           v17 = AXSSHumanReadableDescriptionForMotionTrackingFacialExpression();
           v18 = [PSSpecifier preferenceSpecifierNamed:v17 target:self set:0 get:"_actionForSpecifier:" detail:0 cell:2 edit:0];
 
-          v19 = [(SCATCameraPointPickerSwitchesViewController *)self _axSwitchWithType:v16];
+          v19 = [(SCATCameraPointPickerSwitchesViewController *)self _axSwitchWithType:unsignedIntValue2];
           [v18 setProperty:v19 forKey:@"SCATCameraSwitch"];
 
-          v20 = [NSNumber numberWithUnsignedInteger:v13];
+          v20 = [NSNumber numberWithUnsignedInteger:unsignedIntValue];
           [v18 setProperty:v20 forKey:@"SCATCameraExpressionType"];
 
           [v18 setProperty:&__kCFBooleanTrue forKey:v23];
@@ -181,26 +181,26 @@
 
 - (id)_customizationSpecifiers
 {
-  v3 = [(SCATCameraPointPickerSwitchesViewController *)self actionSpecifiers];
-  v4 = [(SCATCameraPointPickerSwitchesViewController *)self modeSpecifiers];
-  v5 = [(SCATCameraPointPickerSwitchesViewController *)self sensitivitySpecifiers];
-  v6 = [NSArray axArrayWithPossiblyNilArrays:3, v3, v4, v5];
+  actionSpecifiers = [(SCATCameraPointPickerSwitchesViewController *)self actionSpecifiers];
+  modeSpecifiers = [(SCATCameraPointPickerSwitchesViewController *)self modeSpecifiers];
+  sensitivitySpecifiers = [(SCATCameraPointPickerSwitchesViewController *)self sensitivitySpecifiers];
+  v6 = [NSArray axArrayWithPossiblyNilArrays:3, actionSpecifiers, modeSpecifiers, sensitivitySpecifiers];
 
   return v6;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SCATCameraPointPickerSwitchesViewController *)self specifierForIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(SCATCameraPointPickerSwitchesViewController *)self specifierForIndexPath:pathCopy];
   v9 = [v8 propertyForKey:@"SCATCameraSwitch"];
   if (v9)
   {
     v10 = [[SCATCameraSwitchActionsController alloc] initWithSwitch:v9];
     [(SCATCameraSwitchActionsController *)v10 setParentController:self];
-    v11 = [(SCATCameraPointPickerSwitchesViewController *)self rootController];
-    [(SCATCameraSwitchActionsController *)v10 setRootController:v11];
+    rootController = [(SCATCameraPointPickerSwitchesViewController *)self rootController];
+    [(SCATCameraSwitchActionsController *)v10 setRootController:rootController];
 
     v12 = AXParameterizedLocalizedString();
     v13 = [PSSpecifier preferenceSpecifierNamed:v12 target:self set:0 get:0 detail:0 cell:-1 edit:0];
@@ -260,7 +260,7 @@ LABEL_9:
   {
     v22.receiver = self;
     v22.super_class = SCATCameraPointPickerSwitchesViewController;
-    [(SCATCameraPointPickerSwitchesViewController *)&v22 tableView:v6 didSelectRowAtIndexPath:v7];
+    [(SCATCameraPointPickerSwitchesViewController *)&v22 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
   }
 
 LABEL_10:
@@ -273,17 +273,17 @@ void __81__SCATCameraPointPickerSwitchesViewController_tableView_didSelectRowAtI
   [*(a1 + 32) dismissViewControllerAnimated:1 completion:0];
 }
 
-- (id)_actionForSpecifier:(id)a3
+- (id)_actionForSpecifier:(id)specifier
 {
-  v3 = [a3 propertyForKey:@"SCATCameraSwitch"];
-  v4 = [v3 shortcutIdentifier];
+  v3 = [specifier propertyForKey:@"SCATCameraSwitch"];
+  shortcutIdentifier = [v3 shortcutIdentifier];
 
-  if (v4)
+  if (shortcutIdentifier)
   {
     v5 = +[AXSiriShortcutsManager sharedManager];
-    v6 = [v3 shortcutIdentifier];
-    v7 = [v5 shortcutForIdentifier:v6];
-    v8 = [v7 shortcutName];
+    shortcutIdentifier2 = [v3 shortcutIdentifier];
+    v7 = [v5 shortcutForIdentifier:shortcutIdentifier2];
+    shortcutName = [v7 shortcutName];
   }
 
   else
@@ -297,22 +297,22 @@ void __81__SCATCameraPointPickerSwitchesViewController_tableView_didSelectRowAtI
     {
       AXParameterizedLocalizedString();
     }
-    v8 = ;
+    shortcutName = ;
   }
 
-  return v8;
+  return shortcutName;
 }
 
-- (id)_axSwitchWithType:(unint64_t)a3
+- (id)_axSwitchWithType:(unint64_t)type
 {
   v4 = +[AXSettings sharedInstance];
-  v5 = [v4 assistiveTouchCameraPointPickerSwitches];
+  assistiveTouchCameraPointPickerSwitches = [v4 assistiveTouchCameraPointPickerSwitches];
 
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = v5;
+  v6 = assistiveTouchCameraPointPickerSwitches;
   v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
   v8 = SCATSwitchSourceMotionTracker;
   if (v7)
@@ -329,12 +329,12 @@ LABEL_3:
       }
 
       v12 = *(*(&v17 + 1) + 8 * v11);
-      v13 = [v12 source];
-      if ([v13 isEqualToString:v8])
+      source = [v12 source];
+      if ([source isEqualToString:v8])
       {
-        v14 = [v12 cameraSwitch];
+        cameraSwitch = [v12 cameraSwitch];
 
-        if (v14 == a3)
+        if (cameraSwitch == type)
         {
           v15 = v12;
 
@@ -366,14 +366,14 @@ LABEL_3:
 
 LABEL_14:
   v15 = [AXSwitch switchWithAction:0 name:0 source:v8 type:SCATSwitchTypeOptional, v17];
-  [v15 setCameraSwitch:a3];
+  [v15 setCameraSwitch:type];
   [v15 setExpressionSensitivity:2];
 LABEL_15:
 
   return v15;
 }
 
-- (id)cameraSwitchEnabled:(id)a3
+- (id)cameraSwitchEnabled:(id)enabled
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 switchControlUseCameraForPointMode]);
@@ -381,32 +381,32 @@ LABEL_15:
   return v4;
 }
 
-- (void)setCameraSwitchEnabled:(id)a3 specifier:(id)a4
+- (void)setCameraSwitchEnabled:(id)enabled specifier:(id)specifier
 {
-  v5 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
   v6 = +[AXSettings sharedInstance];
-  v7 = [v6 switchControlUseCameraForPointMode];
+  switchControlUseCameraForPointMode = [v6 switchControlUseCameraForPointMode];
 
-  if (v5 != v7)
+  if (bOOLValue != switchControlUseCameraForPointMode)
   {
     v8 = +[AXSettings sharedInstance];
-    [v8 setSwitchControlUseCameraForPointMode:v5];
+    [v8 setSwitchControlUseCameraForPointMode:bOOLValue];
 
-    v10 = [(SCATCameraPointPickerSwitchesViewController *)self _customizationSpecifiers];
-    if (v5)
+    _customizationSpecifiers = [(SCATCameraPointPickerSwitchesViewController *)self _customizationSpecifiers];
+    if (bOOLValue)
     {
-      v9 = [(SCATCameraPointPickerSwitchesViewController *)self cameraSwitchSpecifier];
-      [(SCATCameraPointPickerSwitchesViewController *)self insertContiguousSpecifiers:v10 afterSpecifier:v9 animated:1];
+      cameraSwitchSpecifier = [(SCATCameraPointPickerSwitchesViewController *)self cameraSwitchSpecifier];
+      [(SCATCameraPointPickerSwitchesViewController *)self insertContiguousSpecifiers:_customizationSpecifiers afterSpecifier:cameraSwitchSpecifier animated:1];
     }
 
     else
     {
-      [(SCATCameraPointPickerSwitchesViewController *)self removeContiguousSpecifiers:v10 animated:1];
+      [(SCATCameraPointPickerSwitchesViewController *)self removeContiguousSpecifiers:_customizationSpecifiers animated:1];
     }
   }
 }
 
-- (id)modeSummary:(id)a3
+- (id)modeSummary:(id)summary
 {
   v3 = +[AXSettings sharedInstance];
   [v3 switchControlCameraPointPickerMode];
@@ -415,9 +415,9 @@ LABEL_15:
   return v4;
 }
 
-- (double)valueForSpecifier:(id)a3
+- (double)valueForSpecifier:(id)specifier
 {
-  v3 = [a3 propertyForKey:PSIDKey];
+  v3 = [specifier propertyForKey:PSIDKey];
   v4 = [v3 isEqualToString:@"CameraPointPickerSensitivity"];
 
   v5 = 0.0;
@@ -431,9 +431,9 @@ LABEL_15:
   return v5;
 }
 
-- (void)specifier:(id)a3 setValue:(double)a4
+- (void)specifier:(id)specifier setValue:(double)value
 {
-  v5 = [a3 propertyForKey:PSIDKey];
+  v5 = [specifier propertyForKey:PSIDKey];
   v6 = [v5 isEqualToString:@"CameraPointPickerSensitivity"];
 
   if (v6)
@@ -442,7 +442,7 @@ LABEL_15:
     [v7 switchControlCameraPointPickerSensitivity];
     v8 = switchControlUserPreferenceForNormalizedHeadTrackingSensitivity();
 
-    if (v8 != a4)
+    if (v8 != value)
     {
       switchControlNormalizedHeadTrackingSensitivityForUserPreference();
       v10 = v9;
@@ -452,9 +452,9 @@ LABEL_15:
   }
 }
 
-- (double)stepValueForSpecifier:(id)a3
+- (double)stepValueForSpecifier:(id)specifier
 {
-  v3 = [a3 propertyForKey:PSIDKey];
+  v3 = [specifier propertyForKey:PSIDKey];
   v4 = [v3 isEqualToString:@"CameraPointPickerSensitivity"];
 
   result = 0.0;
@@ -466,9 +466,9 @@ LABEL_15:
   return result;
 }
 
-- (double)minimumValueForSpecifier:(id)a3
+- (double)minimumValueForSpecifier:(id)specifier
 {
-  v3 = [a3 propertyForKey:PSIDKey];
+  v3 = [specifier propertyForKey:PSIDKey];
   v4 = [v3 isEqualToString:@"CameraPointPickerSensitivity"];
 
   result = kSwitchControlHeadTrackingSensitivityMinUserPreference;
@@ -480,9 +480,9 @@ LABEL_15:
   return result;
 }
 
-- (double)maximumValueForSpecifier:(id)a3
+- (double)maximumValueForSpecifier:(id)specifier
 {
-  v3 = [a3 propertyForKey:PSIDKey];
+  v3 = [specifier propertyForKey:PSIDKey];
   v4 = [v3 isEqualToString:@"CameraPointPickerSensitivity"];
 
   result = kSwitchControlHeadTrackingSensitivityMaxUserPreference;
@@ -494,9 +494,9 @@ LABEL_15:
   return result;
 }
 
-- (id)stringValueForSpecifier:(id)a3
+- (id)stringValueForSpecifier:(id)specifier
 {
-  [(SCATCameraPointPickerSwitchesViewController *)self valueForSpecifier:a3];
+  [(SCATCameraPointPickerSwitchesViewController *)self valueForSpecifier:specifier];
   v3 = [NSNumber numberWithDouble:?];
   v4 = AXFormatNumberWithOptions();
 

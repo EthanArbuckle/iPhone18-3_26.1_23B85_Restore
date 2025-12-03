@@ -1,29 +1,29 @@
 @interface NTKKuiperBackgroundView
 - (CGRect)dialFrame;
-- (NTKKuiperBackgroundView)initWithDevice:(id)a3 dialRadius:(double)a4;
-- (id)_foregroundDigitColorForRotationFraction:(double)a3;
+- (NTKKuiperBackgroundView)initWithDevice:(id)device dialRadius:(double)radius;
+- (id)_foregroundDigitColorForRotationFraction:(double)fraction;
 - (void)_addMulticolorCircularGradientLayer;
 - (void)_addMulticolorFullscreenGradientLayer;
 - (void)_applyColorPalette;
 - (void)_applyDialLayout;
-- (void)_applyFontForDigitIndex:(unint64_t)a3;
-- (void)_applyFullscreenGradientLayerEnabled:(BOOL)a3 circularGradientLayerEnabled:(BOOL)a4;
-- (void)_applyTransformToLabelsWithRubberbanding:(double)a3;
+- (void)_applyFontForDigitIndex:(unint64_t)index;
+- (void)_applyFullscreenGradientLayerEnabled:(BOOL)enabled circularGradientLayerEnabled:(BOOL)layerEnabled;
+- (void)_applyTransformToLabelsWithRubberbanding:(double)rubberbanding;
 - (void)_removeMulticolorCircularGradientLayer;
 - (void)_removeMulticolorFullscreenGradientLayer;
-- (void)_setTypographicSize:(CGSize)a3 rubberbanding:(double)a4;
+- (void)_setTypographicSize:(CGSize)size rubberbanding:(double)rubberbanding;
 - (void)applyFont;
-- (void)setColorPalette:(id)a3;
-- (void)setOverrideBackgroundColor:(id)a3;
-- (void)typographicSizeProviderUpdateNumeralSizes:(id)a3;
+- (void)setColorPalette:(id)palette;
+- (void)setOverrideBackgroundColor:(id)color;
+- (void)typographicSizeProviderUpdateNumeralSizes:(id)sizes;
 @end
 
 @implementation NTKKuiperBackgroundView
 
-- (NTKKuiperBackgroundView)initWithDevice:(id)a3 dialRadius:(double)a4
+- (NTKKuiperBackgroundView)initWithDevice:(id)device dialRadius:(double)radius
 {
-  v7 = a3;
-  [v7 screenBounds];
+  deviceCopy = device;
+  [deviceCopy screenBounds];
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -34,26 +34,26 @@
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_device, a3);
+    objc_storeStrong(&v16->_device, device);
     v18 = objc_opt_new();
     backgroundColorLayer = v17->_backgroundColorLayer;
     v17->_backgroundColorLayer = v18;
 
-    v20 = [(NTKKuiperBackgroundView *)v17 layer];
-    [v20 addSublayer:v17->_backgroundColorLayer];
+    layer = [(NTKKuiperBackgroundView *)v17 layer];
+    [layer addSublayer:v17->_backgroundColorLayer];
 
-    v21 = [[NTKRoundedCornerOverlayView alloc] initWithFrame:v7 forDeviceCornerRadius:{v9, v11, v13, v15}];
+    v21 = [[NTKRoundedCornerOverlayView alloc] initWithFrame:deviceCopy forDeviceCornerRadius:{v9, v11, v13, v15}];
     cornerView = v17->_cornerView;
     v17->_cornerView = v21;
 
     [(NTKKuiperBackgroundView *)v17 addSubview:v17->_cornerView];
-    v17->_dialRadius = a4;
+    v17->_dialRadius = radius;
     v23 = +[CAShapeLayer layer];
     dialLayer = v17->_dialLayer;
     v17->_dialLayer = v23;
 
-    v25 = [(NTKKuiperBackgroundView *)v17 layer];
-    [v25 addSublayer:v17->_dialLayer];
+    layer2 = [(NTKKuiperBackgroundView *)v17 layer];
+    [layer2 addSublayer:v17->_dialLayer];
 
     v27 = sub_4668(v26, 0x3CuLL);
     minuteTickReplicatorLayer = v17->_minuteTickReplicatorLayer;
@@ -64,8 +64,8 @@
     v17->_minuteTickLayer = v29;
 
     [(CAReplicatorLayer *)v17->_minuteTickReplicatorLayer addSublayer:v17->_minuteTickLayer];
-    v31 = [(NTKKuiperBackgroundView *)v17 layer];
-    [v31 addSublayer:v17->_minuteTickReplicatorLayer];
+    layer3 = [(NTKKuiperBackgroundView *)v17 layer];
+    [layer3 addSublayer:v17->_minuteTickReplicatorLayer];
 
     v32 = 12;
     v34 = sub_4668(v33, 0xCuLL);
@@ -77,11 +77,11 @@
     v17->_hourTickLayer = v36;
 
     [(CAReplicatorLayer *)v17->_hourTickReplicatorLayer addSublayer:v17->_hourTickLayer];
-    v38 = [(NTKKuiperBackgroundView *)v17 layer];
-    [v38 addSublayer:v17->_hourTickReplicatorLayer];
+    layer4 = [(NTKKuiperBackgroundView *)v17 layer];
+    [layer4 addSublayer:v17->_hourTickReplicatorLayer];
 
     v39 = [NTKKuiperFontLoader alloc];
-    sub_5C08(v7, &v46);
+    sub_5C08(deviceCopy, &v46);
     v40 = [(NTKKuiperFontLoader *)v39 initWithFontSize:*(&v46 + 1)];
     fontLoader = v17->_fontLoader;
     v17->_fontLoader = v40;
@@ -89,7 +89,7 @@
     v42 = objc_opt_new();
     do
     {
-      v43 = [[NTKKuiperNumeralLabel alloc] initWithDevice:v7];
+      v43 = [[NTKKuiperNumeralLabel alloc] initWithDevice:deviceCopy];
       [(NSArray *)v42 addObject:v43];
       [(NTKKuiperBackgroundView *)v17 addSubview:v43];
 
@@ -140,14 +140,14 @@
   v13 = v26;
   [(CALayer *)self->_minuteTickLayer setBounds:0.0, 0.0, v26];
   [(CALayer *)self->_minuteTickLayer setPosition:v11, v10 + *(&v13 + 1) * 0.5];
-  v14 = [(NTKKuiperFontLoader *)self->_fontLoader fontForMaximumOverscrollTypographicSize];
+  fontForMaximumOverscrollTypographicSize = [(NTKKuiperFontLoader *)self->_fontLoader fontForMaximumOverscrollTypographicSize];
   if (qword_16DB8 != -1)
   {
     sub_79A4();
   }
 
   v27 = NSFontAttributeName;
-  v28 = v14;
+  v28 = fontForMaximumOverscrollTypographicSize;
   v15 = qword_16DB0;
   v16 = [NSDictionary dictionaryWithObjects:&v28 forKeys:&v27 count:1];
   [v15 sizeWithAttributes:v16];
@@ -170,7 +170,7 @@
   [(NTKKuiperBackgroundView *)self applyFont];
 }
 
-- (void)_applyTransformToLabelsWithRubberbanding:(double)a3
+- (void)_applyTransformToLabelsWithRubberbanding:(double)rubberbanding
 {
   v9 = 0u;
   v10 = 0u;
@@ -183,23 +183,23 @@
   v7[2] = sub_4B54;
   v7[3] = &unk_106C0;
   *&v7[4] = dialRadius - (*&v8 + *(&v9 + 1));
-  *&v7[5] = a3;
+  *&v7[5] = rubberbanding;
   [(NSArray *)digitLabels enumerateObjectsUsingBlock:v7];
 }
 
-- (void)setOverrideBackgroundColor:(id)a3
+- (void)setOverrideBackgroundColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   if (([(UIColor *)self->_overrideBackgroundColor isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_overrideBackgroundColor, a3);
+    objc_storeStrong(&self->_overrideBackgroundColor, color);
     [(NTKKuiperBackgroundView *)self _applyColorPalette];
   }
 }
 
-- (void)setColorPalette:(id)a3
+- (void)setColorPalette:(id)palette
 {
-  objc_storeStrong(&self->_colorPalette, a3);
+  objc_storeStrong(&self->_colorPalette, palette);
 
   [(NTKKuiperBackgroundView *)self _applyColorPalette];
 }
@@ -213,22 +213,22 @@
   v5 = v4;
   if (v4)
   {
-    v6 = v4;
+    background = v4;
   }
 
   else
   {
-    v6 = [(NTKKuiperColorPalette *)v3 background];
+    background = [(NTKKuiperColorPalette *)v3 background];
   }
 
-  v7 = v6;
-  [(CALayer *)self->_backgroundColorLayer setBackgroundColor:[(UIColor *)v6 CGColor]];
-  v8 = [(NTKKuiperColorPalette *)v3 dialBackground];
-  -[CAShapeLayer setFillColor:](self->_dialLayer, "setFillColor:", [v8 CGColor]);
-  v9 = [(NTKKuiperColorPalette *)v3 hourTick];
-  -[CALayer setBackgroundColor:](self->_hourTickLayer, "setBackgroundColor:", [v9 CGColor]);
-  v10 = [(NTKKuiperColorPalette *)v3 minuteTick];
-  -[CALayer setBackgroundColor:](self->_minuteTickLayer, "setBackgroundColor:", [v10 CGColor]);
+  v7 = background;
+  [(CALayer *)self->_backgroundColorLayer setBackgroundColor:[(UIColor *)background CGColor]];
+  dialBackground = [(NTKKuiperColorPalette *)v3 dialBackground];
+  -[CAShapeLayer setFillColor:](self->_dialLayer, "setFillColor:", [dialBackground CGColor]);
+  hourTick = [(NTKKuiperColorPalette *)v3 hourTick];
+  -[CALayer setBackgroundColor:](self->_hourTickLayer, "setBackgroundColor:", [hourTick CGColor]);
+  minuteTick = [(NTKKuiperColorPalette *)v3 minuteTick];
+  -[CALayer setBackgroundColor:](self->_minuteTickLayer, "setBackgroundColor:", [minuteTick CGColor]);
   +[CATransaction commit];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -236,59 +236,59 @@
     v31 = v7;
     v32 = v5;
     v11 = v3;
-    v12 = [(NTKKuiperColorPalette *)v11 fromPalette];
-    v13 = [(NTKKuiperColorPalette *)v11 toPalette];
-    v33 = v12;
-    v14 = [v12 pigmentEditOption];
-    v15 = [v14 isRainbowColor];
+    fromPalette = [(NTKKuiperColorPalette *)v11 fromPalette];
+    toPalette = [(NTKKuiperColorPalette *)v11 toPalette];
+    v33 = fromPalette;
+    pigmentEditOption = [fromPalette pigmentEditOption];
+    isRainbowColor = [pigmentEditOption isRainbowColor];
 
-    v16 = [v13 pigmentEditOption];
-    v17 = [v16 isRainbowColor];
+    pigmentEditOption2 = [toPalette pigmentEditOption];
+    isRainbowColor2 = [pigmentEditOption2 isRainbowColor];
 
-    if ((v17 & 1) != 0 || v15)
+    if ((isRainbowColor2 & 1) != 0 || isRainbowColor)
     {
-      v28 = v15;
+      v28 = isRainbowColor;
       v23 = v33;
       if ([v23 isRainbowColor])
       {
         if ([v23 dial] > 1)
         {
-          v24 = 1;
+          isTritium = 1;
         }
 
         else
         {
-          v24 = [v23 isTritium];
+          isTritium = [v23 isTritium];
         }
       }
 
       else
       {
-        v24 = 0;
+        isTritium = 0;
       }
 
-      v25 = v13;
-      v30 = v8;
+      v25 = toPalette;
+      v30 = dialBackground;
       if ([v25 isRainbowColor])
       {
         if ([v25 dial] > 1)
         {
-          v26 = 1;
+          isTritium2 = 1;
         }
 
         else
         {
-          v26 = [v25 isTritium];
+          isTritium2 = [v25 isTritium];
         }
       }
 
       else
       {
-        v26 = 0;
+        isTritium2 = 0;
       }
 
-      [(NTKKuiperBackgroundView *)self _applyFullscreenGradientLayerEnabled:(v17 & ~v26 | v28 & ~v24) & 1 circularGradientLayerEnabled:(v26 | v24) & 1];
-      v8 = v30;
+      [(NTKKuiperBackgroundView *)self _applyFullscreenGradientLayerEnabled:(isRainbowColor2 & ~isTritium2 | v28 & ~isTritium) & 1 circularGradientLayerEnabled:(isTritium2 | isTritium) & 1];
+      dialBackground = v30;
     }
 
     else
@@ -305,32 +305,32 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v29 = v8;
+      v29 = dialBackground;
       v18 = v3;
-      v19 = [(NTKKuiperColorPalette *)v18 pigmentEditOption];
-      v20 = [v19 isRainbowColor];
+      pigmentEditOption3 = [(NTKKuiperColorPalette *)v18 pigmentEditOption];
+      isRainbowColor3 = [pigmentEditOption3 isRainbowColor];
 
-      if (v20)
+      if (isRainbowColor3)
       {
         v21 = v18;
         if ([(NTKKuiperColorPalette *)v21 isRainbowColor])
         {
-          v8 = v29;
+          dialBackground = v29;
           if ([(NTKKuiperColorPalette *)v21 dial]> 1)
           {
-            v22 = &dword_0 + 1;
+            isTritium3 = &dword_0 + 1;
           }
 
           else
           {
-            v22 = [(NTKKuiperColorPalette *)v21 isTritium];
+            isTritium3 = [(NTKKuiperColorPalette *)v21 isTritium];
           }
         }
 
         else
         {
-          v22 = 0;
-          v8 = v29;
+          isTritium3 = 0;
+          dialBackground = v29;
         }
 
         if (v5)
@@ -346,23 +346,23 @@
           v27 = 1;
         }
 
-        [(NTKKuiperBackgroundView *)self _applyFullscreenGradientLayerEnabled:(v22 ^ 1) & v27 circularGradientLayerEnabled:v22];
+        [(NTKKuiperBackgroundView *)self _applyFullscreenGradientLayerEnabled:(isTritium3 ^ 1) & v27 circularGradientLayerEnabled:isTritium3];
       }
 
       else
       {
         [(NTKKuiperBackgroundView *)self _applyFullscreenGradientLayerEnabled:0 circularGradientLayerEnabled:0];
-        v8 = v29;
+        dialBackground = v29;
       }
     }
   }
 }
 
-- (void)_applyFullscreenGradientLayerEnabled:(BOOL)a3 circularGradientLayerEnabled:(BOOL)a4
+- (void)_applyFullscreenGradientLayerEnabled:(BOOL)enabled circularGradientLayerEnabled:(BOOL)layerEnabled
 {
-  v4 = a4;
-  v5 = a3;
-  if (a3)
+  layerEnabledCopy = layerEnabled;
+  enabledCopy = enabled;
+  if (enabled)
   {
     [(NTKKuiperBackgroundView *)self _addMulticolorFullscreenGradientLayer];
   }
@@ -372,7 +372,7 @@
     [(NTKKuiperBackgroundView *)self _removeMulticolorFullscreenGradientLayer];
   }
 
-  if (v4)
+  if (layerEnabledCopy)
   {
     [(NTKKuiperBackgroundView *)self _addMulticolorCircularGradientLayer];
   }
@@ -385,14 +385,14 @@
   multicolorFullscreenGradientLayer = self->_multicolorFullscreenGradientLayer;
   if (multicolorFullscreenGradientLayer)
   {
-    [(CALayer *)multicolorFullscreenGradientLayer setHidden:!v5];
+    [(CALayer *)multicolorFullscreenGradientLayer setHidden:!enabledCopy];
   }
 
   multicolorCircularGradientLayer = self->_multicolorCircularGradientLayer;
   if (multicolorCircularGradientLayer)
   {
 
-    [(CALayer *)multicolorCircularGradientLayer setHidden:!v4];
+    [(CALayer *)multicolorCircularGradientLayer setHidden:!layerEnabledCopy];
   }
 }
 
@@ -408,19 +408,19 @@
     [(CALayer *)self->_multicolorCircularGradientLayer setFrame:?];
     v10 = NTKKuiperRainbowGradientImage();
     v5 = v10;
-    v6 = [v10 CGImage];
+    cGImage = [v10 CGImage];
     v7 = sub_4624();
     [(CALayer *)self->_multicolorCircularGradientLayer setActions:v7];
 
-    [(CALayer *)self->_multicolorCircularGradientLayer setContents:v6];
+    [(CALayer *)self->_multicolorCircularGradientLayer setContents:cGImage];
     [(CALayer *)self->_multicolorCircularGradientLayer setContentsGravity:kCAGravityResizeAspectFill];
     v8 = objc_opt_new();
     [(CAShapeLayer *)self->_dialLayer frame];
     [v8 setFrame:?];
     [v8 setPath:{-[CAShapeLayer path](self->_dialLayer, "path")}];
     [(CALayer *)self->_multicolorCircularGradientLayer setMask:v8];
-    v9 = [(NTKKuiperBackgroundView *)self layer];
-    [v9 insertSublayer:self->_multicolorCircularGradientLayer below:self->_dialLayer];
+    layer = [(NTKKuiperBackgroundView *)self layer];
+    [layer insertSublayer:self->_multicolorCircularGradientLayer below:self->_dialLayer];
   }
 }
 
@@ -436,14 +436,14 @@
     [(CALayer *)self->_multicolorFullscreenGradientLayer setFrame:?];
     v9 = NTKKuiperRainbowGradientImage();
     v5 = v9;
-    v6 = [v9 CGImage];
+    cGImage = [v9 CGImage];
     v7 = sub_4624();
     [(CALayer *)self->_multicolorFullscreenGradientLayer setActions:v7];
 
-    [(CALayer *)self->_multicolorFullscreenGradientLayer setContents:v6];
+    [(CALayer *)self->_multicolorFullscreenGradientLayer setContents:cGImage];
     [(CALayer *)self->_multicolorFullscreenGradientLayer setContentsGravity:kCAGravityResizeAspectFill];
-    v8 = [(NTKKuiperBackgroundView *)self layer];
-    [v8 insertSublayer:self->_multicolorFullscreenGradientLayer below:self->_backgroundColorLayer];
+    layer = [(NTKKuiperBackgroundView *)self layer];
+    [layer insertSublayer:self->_multicolorFullscreenGradientLayer below:self->_backgroundColorLayer];
   }
 }
 
@@ -482,12 +482,12 @@
   }
 }
 
-- (void)_applyFontForDigitIndex:(unint64_t)a3
+- (void)_applyFontForDigitIndex:(unint64_t)index
 {
   digitRotationAnimation = self->_digitRotationAnimation;
   if (digitRotationAnimation)
   {
-    [(NTKKuiperFontRotationAnimation *)digitRotationAnimation rotationForDigitIndex:a3 fraction:self->_digitRotationFraction];
+    [(NTKKuiperFontRotationAnimation *)digitRotationAnimation rotationForDigitIndex:index fraction:self->_digitRotationFraction];
     v7 = v6;
   }
 
@@ -497,21 +497,21 @@
   }
 
   v8 = [(NSArray *)self->_digitLabels count];
-  if (a3)
+  if (index)
   {
-    v9 = a3;
+    indexCopy = index;
   }
 
   else
   {
-    v9 = v8;
+    indexCopy = v8;
   }
 
-  v19 = [(NSArray *)self->_digitLabels objectAtIndex:(v9 - 1)];
+  v19 = [(NSArray *)self->_digitLabels objectAtIndex:(indexCopy - 1)];
   width = self->_typographicSize.width;
   height = self->_typographicSize.height;
-  v12 = a3 - 9;
-  v13 = [(NTKKuiperFontLoader *)self->_fontLoader foregroundFontWithTypographicSize:a3 - 9 < 0xFFFFFFFFFFFFFFFBLL tickRotation:width flipped:height, v7];
+  v12 = index - 9;
+  v13 = [(NTKKuiperFontLoader *)self->_fontLoader foregroundFontWithTypographicSize:index - 9 < 0xFFFFFFFFFFFFFFFBLL tickRotation:width flipped:height, v7];
   [v19 setForegroundFont:v13];
   if (v7 >= 1.0)
   {
@@ -520,19 +520,19 @@
       sub_79B8();
     }
 
-    v14 = qword_16DC0;
+    indexCopy = qword_16DC0;
   }
 
   else
   {
-    v14 = [NSString stringWithFormat:@"%lu", v9];
+    indexCopy = [NSString stringWithFormat:@"%lu", indexCopy];
   }
 
-  v15 = v14;
-  [v19 setText:v14];
+  v15 = indexCopy;
+  [v19 setText:indexCopy];
   if (v7 <= 0.0)
   {
-    v18 = [(NTKKuiperColorPalette *)self->_colorPalette digit];
+    digit = [(NTKKuiperColorPalette *)self->_colorPalette digit];
     v16 = 0;
     v17 = 0;
   }
@@ -541,45 +541,45 @@
   {
     v16 = [(NTKKuiperFontLoader *)self->_fontLoader backgroundFontWithTypographicSize:v12 < 0xFFFFFFFFFFFFFFFBLL tickRotation:width flipped:height, v7];
     v17 = [(NTKKuiperBackgroundView *)self _backgroundDigitColorForRotationFraction:v7];
-    v18 = [(NTKKuiperBackgroundView *)self _foregroundDigitColorForRotationFraction:v7];
+    digit = [(NTKKuiperBackgroundView *)self _foregroundDigitColorForRotationFraction:v7];
   }
 
   [v19 setBackgroundFont:v16];
   [v19 setBackgroundTextColor:v17];
-  [v19 setForegroundTextColor:v18];
+  [v19 setForegroundTextColor:digit];
   [v19 setNeedsDisplay];
 }
 
-- (id)_foregroundDigitColorForRotationFraction:(double)a3
+- (id)_foregroundDigitColorForRotationFraction:(double)fraction
 {
-  v4 = [(NTKKuiperColorPalette *)self->_colorPalette digit];
-  v5 = [(NTKKuiperColorPalette *)self->_colorPalette dialBackground];
+  digit = [(NTKKuiperColorPalette *)self->_colorPalette digit];
+  dialBackground = [(NTKKuiperColorPalette *)self->_colorPalette dialBackground];
   v6 = NTKInterpolateBetweenColors();
 
   return v6;
 }
 
-- (void)typographicSizeProviderUpdateNumeralSizes:(id)a3
+- (void)typographicSizeProviderUpdateNumeralSizes:(id)sizes
 {
-  v4 = a3;
-  [v4 typographicSize];
+  sizesCopy = sizes;
+  [sizesCopy typographicSize];
   v6 = v5;
   v8 = v7;
-  [v4 rubberbanding];
+  [sizesCopy rubberbanding];
   v10 = v9;
 
   [(NTKKuiperBackgroundView *)self _setTypographicSize:v6 rubberbanding:v8, v10];
 }
 
-- (void)_setTypographicSize:(CGSize)a3 rubberbanding:(double)a4
+- (void)_setTypographicSize:(CGSize)size rubberbanding:(double)rubberbanding
 {
-  if (self->_typographicSize.width != a3.width || self->_typographicSize.height != a3.height)
+  if (self->_typographicSize.width != size.width || self->_typographicSize.height != size.height)
   {
-    self->_typographicSize = a3;
+    self->_typographicSize = size;
     [(NTKKuiperBackgroundView *)self applyFont];
   }
 
-  [(NTKKuiperBackgroundView *)self _applyTransformToLabelsWithRubberbanding:a4];
+  [(NTKKuiperBackgroundView *)self _applyTransformToLabelsWithRubberbanding:rubberbanding];
 }
 
 - (CGRect)dialFrame

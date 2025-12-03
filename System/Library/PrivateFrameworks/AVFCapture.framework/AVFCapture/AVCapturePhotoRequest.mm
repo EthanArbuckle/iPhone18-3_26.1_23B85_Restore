@@ -1,22 +1,22 @@
 @interface AVCapturePhotoRequest
-+ (id)requestWithDelegate:(id)a3 settings:(id)a4 lensStabilizationSupported:(BOOL)a5;
-- (AVCapturePhotoRequest)initWithDelegate:(id)a3 settings:(id)a4 lensStabilizationSupported:(BOOL)a5;
++ (id)requestWithDelegate:(id)delegate settings:(id)settings lensStabilizationSupported:(BOOL)supported;
+- (AVCapturePhotoRequest)initWithDelegate:(id)delegate settings:(id)settings lensStabilizationSupported:(BOOL)supported;
 - (AVCaptureResolvedPhotoSettings)resolvedSettings;
 - (void)_resolveExpectedPhotoManifest;
 - (void)dealloc;
-- (void)setResolvedSettings:(id)a3;
+- (void)setResolvedSettings:(id)settings;
 @end
 
 @implementation AVCapturePhotoRequest
 
-+ (id)requestWithDelegate:(id)a3 settings:(id)a4 lensStabilizationSupported:(BOOL)a5
++ (id)requestWithDelegate:(id)delegate settings:(id)settings lensStabilizationSupported:(BOOL)supported
 {
-  v5 = [objc_alloc(objc_opt_class()) initWithDelegate:a3 settings:a4 lensStabilizationSupported:a5];
+  v5 = [objc_alloc(objc_opt_class()) initWithDelegate:delegate settings:settings lensStabilizationSupported:supported];
 
   return v5;
 }
 
-- (AVCapturePhotoRequest)initWithDelegate:(id)a3 settings:(id)a4 lensStabilizationSupported:(BOOL)a5
+- (AVCapturePhotoRequest)initWithDelegate:(id)delegate settings:(id)settings lensStabilizationSupported:(BOOL)supported
 {
   v12.receiver = self;
   v12.super_class = AVCapturePhotoRequest;
@@ -25,9 +25,9 @@
   {
     v9 = objc_alloc_init(MEMORY[0x1E69881A0]);
     v8->_delegateStorage = v9;
-    [(AVWeakReferencingDelegateStorage *)v9 setDelegate:a3 queue:MEMORY[0x1E69E96A0]];
-    v8->_unresolvedSettings = a4;
-    v8->_lensStabilizationSupported = a5;
+    [(AVWeakReferencingDelegateStorage *)v9 setDelegate:delegate queue:MEMORY[0x1E69E96A0]];
+    v8->_unresolvedSettings = settings;
+    v8->_lensStabilizationSupported = supported;
     [(AVCapturePhotoRequest *)v8 _resolveExpectedPhotoManifest];
     if (objc_opt_respondsToSelector())
     {
@@ -85,20 +85,20 @@ LABEL_8:
   return v2;
 }
 
-- (void)setResolvedSettings:(id)a3
+- (void)setResolvedSettings:(id)settings
 {
-  if ([a3 photoManifest])
+  if ([settings photoManifest])
   {
     expectedPhotoManifest = self->_expectedPhotoManifest;
-    self->_expectedPhotoManifest = [a3 photoManifest];
+    self->_expectedPhotoManifest = [settings photoManifest];
   }
 
-  self->_resolvedSettings = a3;
+  self->_resolvedSettings = settings;
 }
 
 - (void)_resolveExpectedPhotoManifest
 {
-  v3 = [(AVCapturePhotoSettings *)self->_unresolvedSettings formatFourCC];
+  formatFourCC = [(AVCapturePhotoSettings *)self->_unresolvedSettings formatFourCC];
   v17 = objc_alloc_init(MEMORY[0x1E695DF70]);
   if ([(AVCapturePhotoSettings *)self->_unresolvedSettings isDepthDataDeliveryEnabled]&& [(AVCapturePhotoSettings *)self->_unresolvedSettings embedsDepthDataInPhoto])
   {
@@ -195,7 +195,7 @@ LABEL_8:
         [v17 addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", v5 | 0x80)}];
       }
 
-      if (v3)
+      if (formatFourCC)
       {
         [v17 addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", v5)}];
       }

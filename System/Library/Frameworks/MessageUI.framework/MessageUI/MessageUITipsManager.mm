@@ -1,7 +1,7 @@
 @interface MessageUITipsManager
 + (void)donateHasSentEmailEvent;
 + (void)donateHasUsedAttachment;
-+ (void)setShouldDisplayTo:(BOOL)a3;
++ (void)setShouldDisplayTo:(BOOL)to;
 - (void)controllerDidAppear;
 - (void)controllerDidDisappear;
 @end
@@ -22,7 +22,7 @@
   MEMORY[0x1E69E5920](self);
 }
 
-+ (void)setShouldDisplayTo:(BOOL)a3
++ (void)setShouldDisplayTo:(BOOL)to
 {
   swift_getObjCClassMetadata();
   sub_1BE941E9C();

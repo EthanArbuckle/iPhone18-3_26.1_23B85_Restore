@@ -1,17 +1,17 @@
 @interface VNSliderNetDetector
-+ (id)modelPathForConfiguration:(id)a3 error:(id *)a4;
-- (BOOL)configureImageAnalyzerOptions:(void *)a3 error:(id *)a4;
-- (id)observationsForLastAnalysisOfImageAnalyzer:(void *)a3 processOptions:(id)a4 originatingRequestSpecifier:(id)a5 qosClass:(unsigned int)a6 error:(id *)a7;
++ (id)modelPathForConfiguration:(id)configuration error:(id *)error;
+- (BOOL)configureImageAnalyzerOptions:(void *)options error:(id *)error;
+- (id)observationsForLastAnalysisOfImageAnalyzer:(void *)analyzer processOptions:(id)options originatingRequestSpecifier:(id)specifier qosClass:(unsigned int)class error:(id *)error;
 @end
 
 @implementation VNSliderNetDetector
 
-- (id)observationsForLastAnalysisOfImageAnalyzer:(void *)a3 processOptions:(id)a4 originatingRequestSpecifier:(id)a5 qosClass:(unsigned int)a6 error:(id *)a7
+- (id)observationsForLastAnalysisOfImageAnalyzer:(void *)analyzer processOptions:(id)options originatingRequestSpecifier:(id)specifier qosClass:(unsigned int)class error:(id *)error
 {
   v30[1] = *MEMORY[0x1E69E9840];
-  v25 = a4;
-  v26 = a5;
-  vision::mod::ImageAnalyzer::getSlidersAdjustments(v27, a3);
+  optionsCopy = options;
+  specifierCopy = specifier;
+  vision::mod::ImageAnalyzer::getSlidersAdjustments(v27, analyzer);
   context = objc_autoreleasePoolPush();
   v9 = objc_alloc(MEMORY[0x1E695DF90]);
   v10 = [v9 initWithCapacity:v29];
@@ -24,7 +24,7 @@
       v13 = *v13;
     }
 
-    v14 = [v12 initWithUTF8String:{v13, context, v25}];
+    v14 = [v12 initWithUTF8String:{v13, context, optionsCopy}];
     v15 = [v14 substringWithRange:{14, objc_msgSend(v14, "length") - 29}];
     v16 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:(i[6] - i[5]) >> 2];
     v18 = i[5];
@@ -41,7 +41,7 @@
     [v10 setObject:v16 forKey:v15];
   }
 
-  v21 = [[VN1vLyVSh30UQ26TGBoV8MHv alloc] initWithOriginatingRequestSpecifier:v26 adjustments:v10];
+  v21 = [[VN1vLyVSh30UQ26TGBoV8MHv alloc] initWithOriginatingRequestSpecifier:specifierCopy adjustments:v10];
   v30[0] = v21;
   v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:v30 count:1];
 
@@ -51,26 +51,26 @@
   return v22;
 }
 
-- (BOOL)configureImageAnalyzerOptions:(void *)a3 error:(id *)a4
+- (BOOL)configureImageAnalyzerOptions:(void *)options error:(id *)error
 {
   v22 = *MEMORY[0x1E69E9840];
   v20.receiver = self;
   v20.super_class = VNSliderNetDetector;
-  if (![(VNImageAnalyzerBasedDetector *)&v20 configureImageAnalyzerOptions:a3 error:a4])
+  if (![(VNImageAnalyzerBasedDetector *)&v20 configureImageAnalyzerOptions:options error:error])
   {
     return 0;
   }
 
-  v5 = [objc_opt_class() supportedAdjustmentKeys];
-  v14 = v5 != 0;
-  if (v5)
+  supportedAdjustmentKeys = [objc_opt_class() supportedAdjustmentKeys];
+  v14 = supportedAdjustmentKeys != 0;
+  if (supportedAdjustmentKeys)
   {
-    std::vector<std::string>::clear[abi:ne200100](a3 + 42);
+    std::vector<std::string>::clear[abi:ne200100](options + 42);
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v6 = v5;
+    v6 = supportedAdjustmentKeys;
     v7 = [v6 countByEnumeratingWithState:&v16 objects:v21 count:16];
     if (v7)
     {
@@ -87,11 +87,11 @@
           v10 = *(*(&v16 + 1) + 8 * i);
           *(&v15.__r_.__value_.__s + 23) = 14;
           strcpy(&v15, "AEEnhancerNet/");
-          v11 = [v10 UTF8String];
-          v12 = strlen(v11);
-          std::string::append(&v15, v11, v12);
+          uTF8String = [v10 UTF8String];
+          v12 = strlen(uTF8String);
+          std::string::append(&v15, uTF8String, v12);
           std::string::append(&v15, "/final_output:0", 0xFuLL);
-          std::vector<std::string>::push_back[abi:ne200100](a3 + 336, &v15);
+          std::vector<std::string>::push_back[abi:ne200100](options + 336, &v15);
           if (SHIBYTE(v15.__r_.__value_.__r.__words[2]) < 0)
           {
             operator delete(v15.__r_.__value_.__l.__data_);
@@ -108,9 +108,9 @@
   return v14;
 }
 
-+ (id)modelPathForConfiguration:(id)a3 error:(id *)a4
++ (id)modelPathForConfiguration:(id)configuration error:(id *)error
 {
-  v4 = [VNEspressoHelpers pathForEspressoNetworkModelFileWithName:@"sliderflow-s6xrskinrc_29001.espresso" error:a4];
+  v4 = [VNEspressoHelpers pathForEspressoNetworkModelFileWithName:@"sliderflow-s6xrskinrc_29001.espresso" error:error];
 
   return v4;
 }

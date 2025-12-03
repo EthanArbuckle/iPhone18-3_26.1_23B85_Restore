@@ -4,15 +4,15 @@
 - (id)chargingIconoGraphyStateGet;
 - (id)getBatteryProperties;
 - (id)getBatteryUISOC;
-- (id)getNotChargingReason:(id)a3;
-- (id)getTlcCounter:(id)a3;
+- (id)getNotChargingReason:(id)reason;
+- (id)getTlcCounter:(id)counter;
 - (id)initBatteryChargingStateData;
 - (id)parseChargeLimitAndOverrideReasons;
 - (void)handleChargingStateUpdate;
 - (void)handleConnectionStateUpdate;
 - (void)notifyChargingIconographyStateChanges;
-- (void)setChargingIconographyChargeState:(id)a3 andUISOC:(id)a4 andIsEOC:(id)a5 andTLCState:(BOOL)a6;
-- (void)updateChncOnHoldArray:(BOOL)a3 andName:(id)a4;
+- (void)setChargingIconographyChargeState:(id)state andUISOC:(id)c andIsEOC:(id)oC andTLCState:(BOOL)cState;
+- (void)updateChncOnHoldArray:(BOOL)array andName:(id)name;
 @end
 
 @implementation BatteryChargingStateManager
@@ -33,15 +33,15 @@
 - (void)handleChargingStateUpdate
 {
   dispatch_assert_queue_V2(qword_1000AD330);
-  v3 = [(BatteryChargingStateManager *)self getBatteryProperties];
-  v4 = v3;
-  if (v3 && [v3 count])
+  getBatteryProperties = [(BatteryChargingStateManager *)self getBatteryProperties];
+  v4 = getBatteryProperties;
+  if (getBatteryProperties && [getBatteryProperties count])
   {
     v5 = [(BatteryChargingStateManager *)self getNotChargingReason:v4];
     if (v5)
     {
-      v6 = [(BatteryChargingStateManager *)self getBatteryUISOC];
-      if (v6)
+      getBatteryUISOC = [(BatteryChargingStateManager *)self getBatteryUISOC];
+      if (getBatteryUISOC)
       {
         v7 = [(BatteryChargingStateManager *)self getTlcCounter:v4];
         if (v7)
@@ -55,10 +55,10 @@
           }
 
           objc_storeStrong(&self->_prevTlcCounter, v7);
-          v11 = [(BatteryChargingStateManager *)self isInThermallyLimitedChargingState];
-          [(BatteryChargingStateManager *)self setChncOnHoldReasons:v5 andTLCState:v11];
-          v12 = [(BatteryChargingStateManager *)self parseChargeLimitAndOverrideReasons];
-          [(BatteryChargingStateManager *)self setChargingIconographyChargeState:v5 andUISOC:v6 andIsEOC:v12 andTLCState:v11];
+          isInThermallyLimitedChargingState = [(BatteryChargingStateManager *)self isInThermallyLimitedChargingState];
+          [(BatteryChargingStateManager *)self setChncOnHoldReasons:v5 andTLCState:isInThermallyLimitedChargingState];
+          parseChargeLimitAndOverrideReasons = [(BatteryChargingStateManager *)self parseChargeLimitAndOverrideReasons];
+          [(BatteryChargingStateManager *)self setChargingIconographyChargeState:v5 andUISOC:getBatteryUISOC andIsEOC:parseChargeLimitAndOverrideReasons andTLCState:isInThermallyLimitedChargingState];
           chncOnHoldReasons = self->_chncOnHoldReasons;
           if (chncOnHoldReasons | qword_1000AD348 && ![(NSMutableArray *)chncOnHoldReasons isEqualToArray:?]|| (chargeLimitOnHoldReasons = self->_chargeLimitOnHoldReasons, chargeLimitOnHoldReasons | qword_1000AD350) && ![(NSMutableArray *)chargeLimitOnHoldReasons isEqualToArray:?]|| (chargingToFullOverrides = self->_chargingToFullOverrides, chargingToFullOverrides | qword_1000AD358) && ![(NSMutableArray *)chargingToFullOverrides isEqualToArray:?]|| (v16 = self->_chargeState, v16 | qword_1000AD340) && ![(NSString *)v16 isEqualToString:?])
           {
@@ -84,19 +84,19 @@
             {
               chargeState = self->_chargeState;
               v27 = v25;
-              v28 = [(NSString *)chargeState UTF8String];
-              v29 = [(NSNumber *)self->_connectionState BOOLValue];
-              v30 = [v6 intValue];
-              v31 = [v5 longLongValue];
+              uTF8String = [(NSString *)chargeState UTF8String];
+              bOOLValue = [(NSNumber *)self->_connectionState BOOLValue];
+              intValue = [getBatteryUISOC intValue];
+              longLongValue = [v5 longLongValue];
               v32 = self->_tlcStartTimestamp;
               v33 = 136316162;
-              v34 = v28;
+              v34 = uTF8String;
               v35 = 1024;
-              v36 = v29;
+              v36 = bOOLValue;
               v37 = 1024;
-              v38 = v30;
+              v38 = intValue;
               v39 = 2048;
-              v40 = v31;
+              v40 = longLongValue;
               v41 = 2112;
               v42 = v32;
               _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, "handleChargingStateUpdate State:%s VBUS:%d UISOC:%d CHNC:%llx TLC:%@\n", &v33, 0x2Cu);
@@ -184,7 +184,7 @@
   self->_chargingToFullOverrides = v6;
 
   chargeLimitEndSoc = self->_chargeLimitEndSoc;
-  v90 = self;
+  selfCopy = self;
   self->_chargeLimitEndSoc = &off_1000A2CD8;
 
   v100 = 0u;
@@ -308,7 +308,7 @@
           v16 = v91;
 
           v14 = v97;
-          [(NSMutableArray *)v90->_chargingToFullOverrides addObject:v71];
+          [(NSMutableArray *)selfCopy->_chargingToFullOverrides addObject:v71];
 
 LABEL_37:
           if (v16 == ++v51)
@@ -371,7 +371,7 @@ LABEL_35:
           v33 = [NSDictionary dictionaryWithObjects:v107 forKeys:v106 count:2];
 
           v14 = v97;
-          [(NSMutableArray *)v90->_chargeLimitOnHoldReasons addObject:v33];
+          [(NSMutableArray *)selfCopy->_chargeLimitOnHoldReasons addObject:v33];
 
           v9 = v94;
 LABEL_19:
@@ -416,9 +416,9 @@ LABEL_20:
             v46 = [v94 objectForKeyedSubscript:v97];
             v47 = [v46 objectAtIndexedSubscript:v18];
             v48 = [v47 objectForKeyedSubscript:@"chargeSocLimitOwner"];
-            v49 = [v48 intValue];
+            intValue = [v48 intValue];
 
-            if (v49)
+            if (intValue)
             {
               v50 = qword_1000AC990;
               if (os_log_type_enabled(qword_1000AC990, OS_LOG_TYPE_ERROR))
@@ -438,8 +438,8 @@ LABEL_20:
               v77 = [v94 objectForKeyedSubscript:v97];
               v78 = [v77 objectAtIndexedSubscript:v18];
               v79 = [v78 objectForKeyedSubscript:@"chargeSocLimitSoc"];
-              v80 = v90->_chargeLimitEndSoc;
-              v90->_chargeLimitEndSoc = v79;
+              v80 = selfCopy->_chargeLimitEndSoc;
+              selfCopy->_chargeLimitEndSoc = v79;
 
               v83 = v76;
             }
@@ -501,12 +501,12 @@ LABEL_51:
   return v3;
 }
 
-- (id)getNotChargingReason:(id)a3
+- (id)getNotChargingReason:(id)reason
 {
   v3 = qword_1000AD330;
-  v4 = a3;
+  reasonCopy = reason;
   dispatch_assert_queue_V2(v3);
-  v5 = [v4 objectForKeyedSubscript:@"ChargerData"];
+  v5 = [reasonCopy objectForKeyedSubscript:@"ChargerData"];
 
   v6 = [v5 objectForKeyedSubscript:@"NotChargingReason"];
 
@@ -518,12 +518,12 @@ LABEL_51:
   return v6;
 }
 
-- (id)getTlcCounter:(id)a3
+- (id)getTlcCounter:(id)counter
 {
   v3 = qword_1000AD330;
-  v4 = a3;
+  counterCopy = counter;
   dispatch_assert_queue_V2(v3);
-  v5 = [v4 objectForKeyedSubscript:@"ChargerData"];
+  v5 = [counterCopy objectForKeyedSubscript:@"ChargerData"];
 
   v6 = [v5 objectForKeyedSubscript:@"TimeChargingThermallyLimited"];
 
@@ -557,17 +557,17 @@ LABEL_51:
   return self;
 }
 
-- (void)setChargingIconographyChargeState:(id)a3 andUISOC:(id)a4 andIsEOC:(id)a5 andTLCState:(BOOL)a6
+- (void)setChargingIconographyChargeState:(id)state andUISOC:(id)c andIsEOC:(id)oC andTLCState:(BOOL)cState
 {
-  v6 = a6;
-  v27 = a4;
-  v10 = a5;
-  v11 = [a3 longLongValue];
-  v12 = v11;
-  if (v11)
+  cStateCopy = cState;
+  cCopy = c;
+  oCCopy = oC;
+  longLongValue = [state longLongValue];
+  v12 = longLongValue;
+  if (longLongValue)
   {
     v13 = 1;
-    if ((v11 & 0x1000000) != 0)
+    if ((longLongValue & 0x1000000) != 0)
     {
       goto LABEL_3;
     }
@@ -575,7 +575,7 @@ LABEL_51:
 
   else
   {
-    v13 = [v27 intValue] == 100;
+    v13 = [cCopy intValue] == 100;
     if ((v12 & 0x1000000) != 0)
     {
 LABEL_3:
@@ -584,11 +584,11 @@ LABEL_3:
     }
   }
 
-  v15 = [v27 intValue];
-  v14 = v15 >= [(NSNumber *)self->_chargeLimitEndSoc intValue];
+  intValue = [cCopy intValue];
+  v14 = intValue >= [(NSNumber *)self->_chargeLimitEndSoc intValue];
 LABEL_6:
-  v16 = [(NSNumber *)self->_connectionState BOOLValue];
-  v17 = [v10 BOOLValue];
+  bOOLValue = [(NSNumber *)self->_connectionState BOOLValue];
+  bOOLValue2 = [oCCopy BOOLValue];
 
   if ([(NSMutableArray *)self->_chargingToFullOverrides count])
   {
@@ -606,7 +606,7 @@ LABEL_6:
   chargeState = self->_chargeState;
   self->_chargeState = @"Charging";
 
-  if ((v16 & 1) == 0)
+  if ((bOOLValue & 1) == 0)
   {
     v23 = self->_chargeState;
     self->_chargeState = @"Disconnected";
@@ -631,7 +631,7 @@ LABEL_14:
   {
     v24 = @"Charging On Hold";
     v25 = self->_chargeState;
-    if (v17)
+    if (bOOLValue2)
     {
       v24 = @"Charging Completed Limited";
     }
@@ -644,7 +644,7 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  if ((v12 & 0x4000) != 0 || v6)
+  if ((v12 & 0x4000) != 0 || cStateCopy)
   {
     prevTlcCounter = self->_chargeState;
     v22 = @"Charging On Hold";
@@ -681,9 +681,9 @@ LABEL_15:
   }
 }
 
-- (void)updateChncOnHoldArray:(BOOL)a3 andName:(id)a4
+- (void)updateChncOnHoldArray:(BOOL)array andName:(id)name
 {
-  v6 = a4;
+  nameCopy = name;
   dispatch_assert_queue_V2(qword_1000AD330);
   chncOnHoldReasons = self->_chncOnHoldReasons;
   if (!chncOnHoldReasons)
@@ -698,7 +698,7 @@ LABEL_15:
   v10 = [(NSMutableArray *)chncOnHoldReasons count];
   if (v10)
   {
-    v23 = a3;
+    arrayCopy = array;
     for (i = 0; i != v10; ++i)
     {
       v12 = [(NSMutableArray *)self->_chncOnHoldReasons objectAtIndexedSubscript:i];
@@ -708,7 +708,7 @@ LABEL_15:
         v14 = v13;
         v15 = [(NSMutableArray *)self->_chncOnHoldReasons objectAtIndexedSubscript:i];
         v16 = [v15 objectForKeyedSubscript:@"name"];
-        v17 = [v16 compare:v6];
+        v17 = [v16 compare:nameCopy];
 
         if (!v17)
         {
@@ -723,7 +723,7 @@ LABEL_15:
 
     i = v10;
 LABEL_11:
-    a3 = v23;
+    array = arrayCopy;
   }
 
   else
@@ -734,10 +734,10 @@ LABEL_11:
   v18 = qword_1000AC990;
   if (os_log_type_enabled(qword_1000AC990, OS_LOG_TYPE_DEFAULT))
   {
-    v19 = v6;
+    v19 = nameCopy;
     v20 = v18;
     *buf = 136315650;
-    v27 = [v6 UTF8String];
+    uTF8String = [nameCopy UTF8String];
     v28 = 2048;
     v29 = i;
     v30 = 2048;
@@ -747,11 +747,11 @@ LABEL_11:
 
   if (i == v10)
   {
-    if (a3)
+    if (array)
     {
       v24[0] = @"name";
       v24[1] = @"isEoc";
-      v25[0] = v6;
+      v25[0] = nameCopy;
       v25[1] = &__kCFBooleanFalse;
       v21 = [NSDictionary dictionaryWithObjects:v25 forKeys:v24 count:2];
       [(NSMutableArray *)self->_chncOnHoldReasons addObject:v21];
@@ -762,12 +762,12 @@ LABEL_11:
       v22 = qword_1000AC990;
       if (os_log_type_enabled(qword_1000AC990, OS_LOG_TYPE_ERROR))
       {
-        sub_10006D77C(v6, v22);
+        sub_10006D77C(nameCopy, v22);
       }
     }
   }
 
-  else if (!a3)
+  else if (!array)
   {
     [(NSMutableArray *)self->_chncOnHoldReasons removeObjectAtIndex:i];
   }

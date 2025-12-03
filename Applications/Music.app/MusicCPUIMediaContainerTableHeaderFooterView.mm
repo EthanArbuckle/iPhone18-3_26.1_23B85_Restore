@@ -1,22 +1,22 @@
 @interface MusicCPUIMediaContainerTableHeaderFooterView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC5Music44MusicCPUIMediaContainerTableHeaderFooterView)initWithCoder:(id)a3;
-- (_TtC5Music44MusicCPUIMediaContainerTableHeaderFooterView)initWithReuseIdentifier:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC5Music44MusicCPUIMediaContainerTableHeaderFooterView)initWithCoder:(id)coder;
+- (_TtC5Music44MusicCPUIMediaContainerTableHeaderFooterView)initWithReuseIdentifier:(id)identifier;
 - (void)prepareForReuse;
-- (void)setArtworkCatalog:(id)a3;
+- (void)setArtworkCatalog:(id)catalog;
 @end
 
 @implementation MusicCPUIMediaContainerTableHeaderFooterView
 
-- (void)setArtworkCatalog:(id)a3
+- (void)setArtworkCatalog:(id)catalog
 {
   v5 = sub_10010FC20(&unk_101188920);
   __chkstk_darwin(v5 - 8);
   v7 = &v13 - v6;
-  if (a3)
+  if (catalog)
   {
-    v8 = a3;
-    v9 = self;
+    catalogCopy = catalog;
+    selfCopy = self;
     Artwork.init(_:)();
     v10 = type metadata accessor for Artwork();
     (*(*(v10 - 8) + 56))(v7, 0, 1, v10);
@@ -26,15 +26,15 @@
   {
     v11 = type metadata accessor for Artwork();
     (*(*(v11 - 8) + 56))(v7, 1, 1, v11);
-    v12 = self;
+    selfCopy2 = self;
   }
 
   sub_100261718(v7);
 }
 
-- (_TtC5Music44MusicCPUIMediaContainerTableHeaderFooterView)initWithReuseIdentifier:(id)a3
+- (_TtC5Music44MusicCPUIMediaContainerTableHeaderFooterView)initWithReuseIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v3 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
@@ -48,7 +48,7 @@
   return sub_100260A70(v3, v4);
 }
 
-- (_TtC5Music44MusicCPUIMediaContainerTableHeaderFooterView)initWithCoder:(id)a3
+- (_TtC5Music44MusicCPUIMediaContainerTableHeaderFooterView)initWithCoder:(id)coder
 {
   v3 = (&self->super.super.super.super.isa + OBJC_IVAR____TtC5Music44MusicCPUIMediaContainerTableHeaderFooterView_playAction);
   *v3 = 0;
@@ -58,20 +58,20 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v3 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC5Music44MusicCPUIMediaContainerTableHeaderFooterView_hostingView);
-  v4 = self;
+  selfCopy = self;
   v5 = v3;
-  v6 = [(MusicCPUIMediaContainerTableHeaderFooterView *)v4 contentView];
-  [v6 bounds];
+  contentView = [(MusicCPUIMediaContainerTableHeaderFooterView *)selfCopy contentView];
+  [contentView bounds];
   v8 = v7;
 
   [v5 sizeThatFits:{v8, 1.79769313e308}];
   v10 = v9;
 
-  v11 = [(MusicCPUIMediaContainerTableHeaderFooterView *)v4 contentView];
-  [v11 bounds];
+  contentView2 = [(MusicCPUIMediaContainerTableHeaderFooterView *)selfCopy contentView];
+  [contentView2 bounds];
   v13 = v12;
 
   v14 = v13;

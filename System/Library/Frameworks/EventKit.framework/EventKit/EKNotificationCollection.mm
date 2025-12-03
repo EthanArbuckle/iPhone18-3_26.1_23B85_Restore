@@ -1,13 +1,13 @@
 @interface EKNotificationCollection
 + (id)knownRelationshipMultiValueKeys;
-- (BOOL)save:(id *)a3;
-- (BOOL)validate:(id *)a3;
-- (EKNotificationCollection)initWithOptions:(id)a3;
+- (BOOL)save:(id *)save;
+- (BOOL)validate:(id *)validate;
+- (EKNotificationCollection)initWithOptions:(id)options;
 - (unsigned)flags;
 - (void)_setNotificationsCollectionFlag;
-- (void)addNotification:(id)a3;
-- (void)removeNotification:(id)a3;
-- (void)setSource:(id)a3;
+- (void)addNotification:(id)notification;
+- (void)removeNotification:(id)notification;
+- (void)setSource:(id)source;
 @end
 
 @implementation EKNotificationCollection
@@ -35,60 +35,60 @@ void __59__EKNotificationCollection_knownRelationshipMultiValueKeys__block_invok
   v2 = *MEMORY[0x1E69E9840];
 }
 
-- (EKNotificationCollection)initWithOptions:(id)a3
+- (EKNotificationCollection)initWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v13.receiver = self;
   v13.super_class = EKNotificationCollection;
   v5 = [(EKObject *)&v13 init];
   if (v5)
   {
-    v6 = [v4 source];
-    [(EKNotificationCollection *)v5 setSource:v6];
+    source = [optionsCopy source];
+    [(EKNotificationCollection *)v5 setSource:source];
 
-    v7 = [v4 externalID];
-    [(EKNotificationCollection *)v5 setExternalID:v7];
+    externalID = [optionsCopy externalID];
+    [(EKNotificationCollection *)v5 setExternalID:externalID];
 
-    v8 = [v4 externalIDTag];
-    [(EKNotificationCollection *)v5 setExternalIDTag:v8];
+    externalIDTag = [optionsCopy externalIDTag];
+    [(EKNotificationCollection *)v5 setExternalIDTag:externalIDTag];
 
     [(EKNotificationCollection *)v5 _setNotificationsCollectionFlag];
-    v9 = [v4 source];
-    v10 = [v9 eventStore];
-    v11 = [(EKObject *)v5 persistentObject];
-    [v10 _registerObject:v11];
+    source2 = [optionsCopy source];
+    eventStore = [source2 eventStore];
+    persistentObject = [(EKObject *)v5 persistentObject];
+    [eventStore _registerObject:persistentObject];
   }
 
   return v5;
 }
 
-- (void)addNotification:(id)a3
+- (void)addNotification:(id)notification
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  notificationCopy = notification;
+  v5 = notificationCopy;
+  if (!notificationCopy)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"Adding nil Notification to notification collection."];
-    v4 = 0;
+    notificationCopy = 0;
   }
 
-  [(EKObject *)self addCachedMeltedObject:v4 forMultiValueKey:*MEMORY[0x1E69927B0]];
+  [(EKObject *)self addCachedMeltedObject:notificationCopy forMultiValueKey:*MEMORY[0x1E69927B0]];
 }
 
-- (void)removeNotification:(id)a3
+- (void)removeNotification:(id)notification
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  notificationCopy = notification;
+  v5 = notificationCopy;
+  if (!notificationCopy)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"Removing nil Notification from notification collection."];
-    v4 = 0;
+    notificationCopy = 0;
   }
 
-  [(EKObject *)self removeCachedMeltedObject:v4 forMultiValueKey:*MEMORY[0x1E69927B0]];
+  [(EKObject *)self removeCachedMeltedObject:notificationCopy forMultiValueKey:*MEMORY[0x1E69927B0]];
 }
 
-- (BOOL)validate:(id *)a3
+- (BOOL)validate:(id *)validate
 {
   v8.receiver = self;
   v8.super_class = EKNotificationCollection;
@@ -100,12 +100,12 @@ void __59__EKNotificationCollection_knownRelationshipMultiValueKeys__block_invok
       LOBYTE(v5) = 1;
     }
 
-    else if (a3)
+    else if (validate)
     {
       v6 = [MEMORY[0x1E696ABC0] errorWithEKErrorCode:32];
       v5 = v6;
       LOBYTE(v5) = 0;
-      *a3 = v6;
+      *validate = v6;
     }
 
     else
@@ -117,11 +117,11 @@ void __59__EKNotificationCollection_knownRelationshipMultiValueKeys__block_invok
   return v5;
 }
 
-- (BOOL)save:(id *)a3
+- (BOOL)save:(id *)save
 {
-  if (a3)
+  if (save)
   {
-    *a3 = 0;
+    *save = 0;
   }
 
   [(EKObject *)self insertPersistentObjectIfNeeded];
@@ -129,11 +129,11 @@ void __59__EKNotificationCollection_knownRelationshipMultiValueKeys__block_invok
   return 1;
 }
 
-- (void)setSource:(id)a3
+- (void)setSource:(id)source
 {
   v4 = *MEMORY[0x1E6992870];
-  v5 = a3;
-  [(EKObject *)self updateMeltedAndCachedSingleRelationObject:v5 forKey:v4 frozenClass:+[EKSource frozenClass]];
+  sourceCopy = source;
+  [(EKObject *)self updateMeltedAndCachedSingleRelationObject:sourceCopy forKey:v4 frozenClass:+[EKSource frozenClass]];
 }
 
 - (void)_setNotificationsCollectionFlag
@@ -146,9 +146,9 @@ void __59__EKNotificationCollection_knownRelationshipMultiValueKeys__block_invok
 - (unsigned)flags
 {
   v2 = [(EKObject *)self singleChangedValueForKey:*MEMORY[0x1E6992760]];
-  v3 = [v2 unsignedIntValue];
+  unsignedIntValue = [v2 unsignedIntValue];
 
-  return v3;
+  return unsignedIntValue;
 }
 
 @end

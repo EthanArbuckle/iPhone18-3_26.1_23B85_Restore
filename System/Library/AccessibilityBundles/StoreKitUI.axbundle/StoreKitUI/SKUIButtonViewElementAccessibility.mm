@@ -1,5 +1,5 @@
 @interface SKUIButtonViewElementAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityIdentifier;
 - (id)accessibilityLabel;
 - (id)accessibilityText;
@@ -8,43 +8,43 @@
 
 @implementation SKUIButtonViewElementAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SKUIButtonViewElement" hasInstanceMethod:@"buttonImage" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SKUIButtonViewElement" hasInstanceMethod:@"buttonText" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SKUIButtonViewElement" isKindOfClass:@"IKViewElement"];
-  [v3 validateClass:@"IKViewElement" hasInstanceMethod:@"accessibilityText" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SKUIImageViewElement" hasInstanceMethod:@"resourceName" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SKUIButtonViewElement" hasInstanceMethod:@"buttonImage" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SKUIButtonViewElement" hasInstanceMethod:@"buttonText" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SKUIButtonViewElement" isKindOfClass:@"IKViewElement"];
+  [validationsCopy validateClass:@"IKViewElement" hasInstanceMethod:@"accessibilityText" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SKUIImageViewElement" hasInstanceMethod:@"resourceName" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
 {
   v3 = [(SKUIButtonViewElementAccessibility *)self safeValueForKey:@"buttonText"];
-  v4 = [v3 accessibilityLabel];
+  accessibilityLabel = [v3 accessibilityLabel];
 
-  if ([v4 length])
+  if ([accessibilityLabel length])
   {
-    v5 = v4;
+    v5 = accessibilityLabel;
     goto LABEL_11;
   }
 
-  v6 = [(SKUIButtonViewElementAccessibility *)self accessibilityIdentifier];
-  if ([v6 isEqualToString:@"post"])
+  accessibilityIdentifier = [(SKUIButtonViewElementAccessibility *)self accessibilityIdentifier];
+  if ([accessibilityIdentifier isEqualToString:@"post"])
   {
     v7 = @"post.label";
   }
 
-  else if ([v6 isEqualToString:@"LoveHateControlNeutral"])
+  else if ([accessibilityIdentifier isEqualToString:@"LoveHateControlNeutral"])
   {
     v7 = @"connect.comment.likes";
   }
 
   else
   {
-    if (![v6 isEqualToString:@"share"])
+    if (![accessibilityIdentifier isEqualToString:@"share"])
     {
-      v8 = v4;
+      v8 = accessibilityLabel;
       goto LABEL_10;
     }
 
@@ -74,21 +74,21 @@ LABEL_11:
 {
   v7.receiver = self;
   v7.super_class = SKUIButtonViewElementAccessibility;
-  v3 = [(SKUIButtonViewElementAccessibility *)&v7 accessibilityText];
+  accessibilityText = [(SKUIButtonViewElementAccessibility *)&v7 accessibilityText];
 
-  if (v3)
+  if (accessibilityText)
   {
     v6.receiver = self;
     v6.super_class = SKUIButtonViewElementAccessibility;
-    v4 = [(SKUIButtonViewElementAccessibility *)&v6 accessibilityText];
+    accessibilityText2 = [(SKUIButtonViewElementAccessibility *)&v6 accessibilityText];
   }
 
   else
   {
-    v4 = 0;
+    accessibilityText2 = 0;
   }
 
-  return v4;
+  return accessibilityText2;
 }
 
 - (unint64_t)accessibilityTraits

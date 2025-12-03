@@ -1,38 +1,38 @@
 @interface APSDefaultsDebugOverrides
 - (APSDefaultsDebugOverrides)init;
-- (APSDefaultsDebugOverrides)initWithUserDefaults:(id)a3;
+- (APSDefaultsDebugOverrides)initWithUserDefaults:(id)defaults;
 - (BOOL)disableFilterOptimization;
 - (BOOL)forceInvalidAlbertCert;
 - (BOOL)forceInvalidBAACert;
 - (NSDictionary)connectionRetryPhases;
 - (NSNumber)forcedInvalidPresences;
 - (NSNumber)overrideFilterVersion;
-- (id)overrideFilterDisableResponseForConnectionType:(int64_t)a3;
+- (id)overrideFilterDisableResponseForConnectionType:(int64_t)type;
 @end
 
 @implementation APSDefaultsDebugOverrides
 
 - (APSDefaultsDebugOverrides)init
 {
-  v3 = [objc_opt_self() standardUserDefaults];
-  v4 = [(APSDefaultsDebugOverrides *)self initWithUserDefaults:v3];
+  standardUserDefaults = [objc_opt_self() standardUserDefaults];
+  v4 = [(APSDefaultsDebugOverrides *)self initWithUserDefaults:standardUserDefaults];
 
   return v4;
 }
 
-- (APSDefaultsDebugOverrides)initWithUserDefaults:(id)a3
+- (APSDefaultsDebugOverrides)initWithUserDefaults:(id)defaults
 {
-  *(&self->super.isa + OBJC_IVAR___APSDefaultsDebugOverrides_userDefaults) = a3;
+  *(&self->super.isa + OBJC_IVAR___APSDefaultsDebugOverrides_userDefaults) = defaults;
   v6.receiver = self;
   v6.super_class = type metadata accessor for DefaultsDebugOverrides();
-  v4 = a3;
+  defaultsCopy = defaults;
   return [(APSDefaultsDebugOverrides *)&v6 init];
 }
 
 - (BOOL)forceInvalidAlbertCert
 {
   v2 = *(&self->super.isa + OBJC_IVAR___APSDefaultsDebugOverrides_userDefaults);
-  v3 = self;
+  selfCopy = self;
   v4 = String._bridgeToObjectiveC()();
   LOBYTE(v2) = [v2 BOOLForKey:v4];
 
@@ -42,24 +42,24 @@
 - (BOOL)disableFilterOptimization
 {
   v2 = *(&self->super.isa + OBJC_IVAR___APSDefaultsDebugOverrides_userDefaults);
-  v3 = self;
+  selfCopy = self;
   v4 = String._bridgeToObjectiveC()();
   LOBYTE(v2) = [v2 BOOLForKey:v4];
 
   return v2;
 }
 
-- (id)overrideFilterDisableResponseForConnectionType:(int64_t)a3
+- (id)overrideFilterDisableResponseForConnectionType:(int64_t)type
 {
-  v4 = self;
-  v5 = sub_1000CBD48(a3);
+  selfCopy = self;
+  v5 = sub_1000CBD48(type);
 
   return v5;
 }
 
 - (NSNumber)overrideFilterVersion
 {
-  v2 = self;
+  selfCopy = self;
   v3.super.super.isa = sub_1000CC0C8().super.super.isa;
 
   return v3.super.super.isa;
@@ -68,7 +68,7 @@
 - (NSDictionary)connectionRetryPhases
 {
   v2 = *(&self->super.isa + OBJC_IVAR___APSDefaultsDebugOverrides_userDefaults);
-  v3 = self;
+  selfCopy = self;
   v4 = String._bridgeToObjectiveC()();
   v5 = [v2 dictionaryForKey:v4];
 
@@ -90,7 +90,7 @@
 
 - (NSNumber)forcedInvalidPresences
 {
-  v2 = self;
+  selfCopy = self;
   v3.super.super.isa = sub_1000CC3AC().super.super.isa;
 
   return v3.super.super.isa;
@@ -99,7 +99,7 @@
 - (BOOL)forceInvalidBAACert
 {
   v2 = *(&self->super.isa + OBJC_IVAR___APSDefaultsDebugOverrides_userDefaults);
-  v3 = self;
+  selfCopy = self;
   v4 = String._bridgeToObjectiveC()();
   LOBYTE(v2) = [v2 BOOLForKey:v4];
 

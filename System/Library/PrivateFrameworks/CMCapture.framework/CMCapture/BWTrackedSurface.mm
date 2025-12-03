@@ -1,19 +1,19 @@
 @interface BWTrackedSurface
-- (BWTrackedSurface)initWithSurface:(__IOSurface *)a3 handler:(id)a4;
+- (BWTrackedSurface)initWithSurface:(__IOSurface *)surface handler:(id)handler;
 - (void)dealloc;
 @end
 
 @implementation BWTrackedSurface
 
-- (BWTrackedSurface)initWithSurface:(__IOSurface *)a3 handler:(id)a4
+- (BWTrackedSurface)initWithSurface:(__IOSurface *)surface handler:(id)handler
 {
   v8.receiver = self;
   v8.super_class = BWTrackedSurface;
   v6 = [(BWTrackedSurface *)&v8 init];
   if (v6)
   {
-    v6->_surface = CFRetain(a3);
-    v6->_handler = [a4 copy];
+    v6->_surface = CFRetain(surface);
+    v6->_handler = [handler copy];
   }
 
   return v6;

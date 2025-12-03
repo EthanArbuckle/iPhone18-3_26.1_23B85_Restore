@@ -1,21 +1,21 @@
 @interface MSDOSUpdaterController
 + (id)sharedInstance;
 - (BOOL)cleanup;
-- (BOOL)doesAvailableUpdateVersion:(id)a3 andUpdateBuild:(id)a4 matchExpectedUpdateVersion:(id)a5 andUpdateBuild:(id)a6;
+- (BOOL)doesAvailableUpdateVersion:(id)version andUpdateBuild:(id)build matchExpectedUpdateVersion:(id)updateVersion andUpdateBuild:(id)updateBuild;
 - (BOOL)isOSUpdateInProgress;
 - (MSDOSUpdaterController)init;
-- (id)prettyPrintSUDescriptor:(id)a3;
-- (void)bail:(const char *)a3 error:(id)a4;
-- (void)client:(id)a3 downloadDidFinish:(id)a4;
-- (void)client:(id)a3 downloadDidStart:(id)a4;
-- (void)client:(id)a3 downloadProgressDidChange:(id)a4;
-- (void)client:(id)a3 installDidFail:(id)a4 withError:(id)a5;
-- (void)client:(id)a3 installDidFinish:(id)a4;
-- (void)client:(id)a3 installDidStart:(id)a4;
-- (void)downloadFailed:(id)a3;
-- (void)downloadProgressChanged:(id)a3 withPercent:(float)a4;
-- (void)saveAvailableOSVersion:(id)a3 andOSBuild:(id)a4;
-- (void)scanResult:(id)a3 error:(id)a4;
+- (id)prettyPrintSUDescriptor:(id)descriptor;
+- (void)bail:(const char *)bail error:(id)error;
+- (void)client:(id)client downloadDidFinish:(id)finish;
+- (void)client:(id)client downloadDidStart:(id)start;
+- (void)client:(id)client downloadProgressDidChange:(id)change;
+- (void)client:(id)client installDidFail:(id)fail withError:(id)error;
+- (void)client:(id)client installDidFinish:(id)finish;
+- (void)client:(id)client installDidStart:(id)start;
+- (void)downloadFailed:(id)failed;
+- (void)downloadProgressChanged:(id)changed withPercent:(float)percent;
+- (void)saveAvailableOSVersion:(id)version andOSBuild:(id)build;
+- (void)scanResult:(id)result error:(id)error;
 - (void)startOSUpdate;
 @end
 
@@ -53,9 +53,9 @@
 - (BOOL)isOSUpdateInProgress
 {
   v2 = +[MSDTargetDevice sharedInstance];
-  v3 = [v2 previousiOSBuild];
+  previousiOSBuild = [v2 previousiOSBuild];
 
-  if (v3)
+  if (previousiOSBuild)
   {
     v4 = sub_100063A54();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -65,15 +65,15 @@
     }
   }
 
-  return v3 != 0;
+  return previousiOSBuild != 0;
 }
 
 - (void)startOSUpdate
 {
   v3 = +[MSDTargetDevice sharedInstance];
-  v4 = [v3 previousiOSBuild];
-  v5 = [v3 getOSUpdateRequest];
-  v6 = [v5 objectForKey:@"OSVersion"];
+  previousiOSBuild = [v3 previousiOSBuild];
+  getOSUpdateRequest = [v3 getOSUpdateRequest];
+  v6 = [getOSUpdateRequest objectForKey:@"OSVersion"];
   v7 = [v6 componentsSeparatedByString:@"_"];
 
   if ([v7 count])
@@ -98,10 +98,10 @@
 
   [(MSDOSUpdaterController *)self setExpectedOSVersion:v8];
   [(MSDOSUpdaterController *)self setExpectedOSBuild:v9];
-  if (v4)
+  if (previousiOSBuild)
   {
-    v10 = [v3 OSBuild];
-    v11 = [v4 isEqualToString:v10];
+    oSBuild = [v3 OSBuild];
+    v11 = [previousiOSBuild isEqualToString:oSBuild];
 
     v12 = sub_100063A54();
     v13 = os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT);
@@ -110,7 +110,7 @@
       if (v13)
       {
         *buf = 138543362;
-        v39 = v4;
+        v39 = previousiOSBuild;
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "OS build number didn't change, still %{public}@, indicating a non-successful OS update.", buf, 0xCu);
       }
 
@@ -123,11 +123,11 @@
     {
       if (v13)
       {
-        v22 = [v3 OSBuild];
+        oSBuild2 = [v3 OSBuild];
         *buf = 138543618;
-        v39 = v4;
+        v39 = previousiOSBuild;
         v40 = 2114;
-        v41 = v22;
+        v41 = oSBuild2;
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "OS build has been changed from %{public}@ to %{public}@, indicating a successful OS update.", buf, 0x16u);
       }
 
@@ -239,8 +239,8 @@
       v34[4] = self;
       v20 = objc_retainBlock(v34);
       [v19 setForced:1];
-      v21 = [(MSDOSUpdaterController *)self manager];
-      [v21 scanForUpdates:v19 withScanResults:v20];
+      manager = [(MSDOSUpdaterController *)self manager];
+      [manager scanForUpdates:v19 withScanResults:v20];
     }
 
     else
@@ -266,14 +266,14 @@
     [v3 clearCurrentiOSBuild];
 
     v4 = dispatch_semaphore_create(0);
-    v5 = [(MSDOSUpdaterController *)self manager];
+    manager = [(MSDOSUpdaterController *)self manager];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_1000A4B04;
     v12[3] = &unk_10016BAA0;
     v6 = v4;
     v13 = v6;
-    [v5 purgeDownload:v12];
+    [manager purgeDownload:v12];
 
     v7 = dispatch_time(0, 60000000000);
     if (dispatch_semaphore_wait(v6, v7))
@@ -299,18 +299,18 @@
   return 0;
 }
 
-- (void)bail:(const char *)a3 error:(id)a4
+- (void)bail:(const char *)bail error:(id)error
 {
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  errorCopy = error;
+  v7 = errorCopy;
+  if (errorCopy)
   {
-    if ([v6 code] == 3727741185 || objc_msgSend(v7, "code") > 3727741029 && objc_msgSend(v7, "code") < 3727741034)
+    if ([errorCopy code] == 3727741185 || objc_msgSend(v7, "code") > 3727741029 && objc_msgSend(v7, "code") < 3727741034)
     {
       v8 = sub_100063A54();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
       {
-        sub_1000E696C(a3, v7);
+        sub_1000E696C(bail, v7);
       }
 
       v9 = v7;
@@ -321,11 +321,11 @@
       v14 = sub_100063A54();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
-        sub_1000E696C(a3, v7);
+        sub_1000E696C(bail, v7);
       }
 
-      v15 = [v7 localizedDescription];
-      v9 = [NSError errorDomainMSDWithCode:3727741032 message:@"OS update failed." reason:v15];
+      localizedDescription = [v7 localizedDescription];
+      v9 = [NSError errorDomainMSDWithCode:3727741032 message:@"OS update failed." reason:localizedDescription];
     }
 
     v11 = +[MSDAnalyticsEventHandler sharedInstance];
@@ -338,7 +338,7 @@
     v10 = sub_100063A54();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      sub_1000E6A00(a3, v10);
+      sub_1000E6A00(bail, v10);
     }
 
     v9 = [NSError errorDomainMSDWithCode:3727741032 message:@"OS update failed."];
@@ -356,47 +356,47 @@
     [v16 demoUpdateFailed:v9];
 
     v17 = +[MSDTestPreferences sharedInstance];
-    v18 = [v17 timeShowingFatalError];
+    timeShowingFatalError = [v17 timeShowingFatalError];
 
-    if (v18)
+    if (timeShowingFatalError)
     {
       v19 = sub_100063A54();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
         v22[0] = 67109120;
-        v22[1] = v18;
+        v22[1] = timeShowingFatalError;
         _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "Override MSDTimeShowingFatalError timeout: %u", v22, 8u);
       }
     }
 
     else
     {
-      v18 = 900;
+      timeShowingFatalError = 900;
     }
 
     v20 = +[MSDDemoUpdateTimeKeeper sharedInstance];
-    v21 = [v20 setCompletionTimeForFatalError:v18];
+    v21 = [v20 setCompletionTimeForFatalError:timeShowingFatalError];
   }
 }
 
-- (void)saveAvailableOSVersion:(id)a3 andOSBuild:(id)a4
+- (void)saveAvailableOSVersion:(id)version andOSBuild:(id)build
 {
-  v10 = a3;
-  v5 = a4;
-  v6 = v5;
-  if (v10)
+  versionCopy = version;
+  buildCopy = build;
+  v6 = buildCopy;
+  if (versionCopy)
   {
-    if (v5)
+    if (buildCopy)
     {
-      v7 = [NSString stringWithFormat:@"%@_%@", v10, v5];
+      buildCopy = [NSString stringWithFormat:@"%@_%@", versionCopy, buildCopy];
     }
 
     else
     {
-      v7 = v10;
+      buildCopy = versionCopy;
     }
 
-    v8 = v7;
+    v8 = buildCopy;
   }
 
   else
@@ -408,15 +408,15 @@
   [v9 saveMinOSVersionAvailable:v8];
 }
 
-- (void)scanResult:(id)a3 error:(id)a4
+- (void)scanResult:(id)result error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  resultCopy = result;
+  errorCopy = error;
+  if (resultCopy)
   {
-    v8 = [v6 preferredDescriptor];
-    v9 = [v6 alternateDescriptor];
-    v10 = [v6 latestUpdate];
+    preferredDescriptor = [resultCopy preferredDescriptor];
+    alternateDescriptor = [resultCopy alternateDescriptor];
+    latestUpdate = [resultCopy latestUpdate];
     v11 = sub_100063A54();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
@@ -427,7 +427,7 @@
     v12 = sub_100063A54();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [(MSDOSUpdaterController *)self prettyPrintSUDescriptor:v8];
+      v13 = [(MSDOSUpdaterController *)self prettyPrintSUDescriptor:preferredDescriptor];
       *buf = 138543362;
       v45 = v13;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, ">> Preferred update: %{public}@", buf, 0xCu);
@@ -436,44 +436,44 @@
     v14 = sub_100063A54();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [(MSDOSUpdaterController *)self prettyPrintSUDescriptor:v9];
+      v15 = [(MSDOSUpdaterController *)self prettyPrintSUDescriptor:alternateDescriptor];
       *buf = 138543362;
       v45 = v15;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, ">> Alternate update: %{public}@", buf, 0xCu);
     }
 
-    v42 = v7;
+    v42 = errorCopy;
 
     v16 = sub_100063A54();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [(MSDOSUpdaterController *)self prettyPrintSUDescriptor:v10];
+      v17 = [(MSDOSUpdaterController *)self prettyPrintSUDescriptor:latestUpdate];
       *buf = 138543362;
       v45 = v17;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, ">> Latest update: %{public}@", buf, 0xCu);
     }
 
-    v18 = v10;
+    v18 = latestUpdate;
 
-    v19 = [v8 productVersion];
-    v20 = [v8 productBuildVersion];
-    v21 = [(MSDOSUpdaterController *)self expectedOSVersion];
-    v22 = [(MSDOSUpdaterController *)self expectedOSBuild];
-    v23 = [(MSDOSUpdaterController *)self doesAvailableUpdateVersion:v19 andUpdateBuild:v20 matchExpectedUpdateVersion:v21 andUpdateBuild:v22];
+    productVersion = [preferredDescriptor productVersion];
+    productBuildVersion = [preferredDescriptor productBuildVersion];
+    expectedOSVersion = [(MSDOSUpdaterController *)self expectedOSVersion];
+    expectedOSBuild = [(MSDOSUpdaterController *)self expectedOSBuild];
+    v23 = [(MSDOSUpdaterController *)self doesAvailableUpdateVersion:productVersion andUpdateBuild:productBuildVersion matchExpectedUpdateVersion:expectedOSVersion andUpdateBuild:expectedOSBuild];
 
-    v24 = v8;
+    v24 = preferredDescriptor;
     if (v23)
     {
       goto LABEL_12;
     }
 
-    v25 = [v9 productVersion];
-    v26 = [v9 productBuildVersion];
-    v27 = [(MSDOSUpdaterController *)self expectedOSVersion];
-    v28 = [(MSDOSUpdaterController *)self expectedOSBuild];
-    v29 = [(MSDOSUpdaterController *)self doesAvailableUpdateVersion:v25 andUpdateBuild:v26 matchExpectedUpdateVersion:v27 andUpdateBuild:v28];
+    productVersion2 = [alternateDescriptor productVersion];
+    productBuildVersion2 = [alternateDescriptor productBuildVersion];
+    expectedOSVersion2 = [(MSDOSUpdaterController *)self expectedOSVersion];
+    expectedOSBuild2 = [(MSDOSUpdaterController *)self expectedOSBuild];
+    v29 = [(MSDOSUpdaterController *)self doesAvailableUpdateVersion:productVersion2 andUpdateBuild:productBuildVersion2 matchExpectedUpdateVersion:expectedOSVersion2 andUpdateBuild:expectedOSBuild2];
 
-    v24 = v9;
+    v24 = alternateDescriptor;
     if (v29)
     {
 LABEL_12:
@@ -496,26 +496,26 @@ LABEL_12:
       [v31 setDownloadFeeAgreementStatus:1];
       [v31 applyDownloadPolicy:v35];
       v36 = [[SUDownloadOptions alloc] initWithMetadata:v31 andDescriptor:v30];
-      v37 = [(MSDOSUpdaterController *)self manager];
+      manager = [(MSDOSUpdaterController *)self manager];
       v43[0] = _NSConcreteStackBlock;
       v43[1] = 3221225472;
       v43[2] = sub_1000A5560;
       v43[3] = &unk_10016BAA0;
       v43[4] = self;
-      [v37 startDownloadWithOptions:v36 withResult:v43];
+      [manager startDownloadWithOptions:v36 withResult:v43];
     }
 
     else
     {
       v39 = [NSError errorDomainMSDWithCode:3727741030 message:@"Unexpected OS update version found."];
-      v40 = [v18 productVersion];
-      v41 = [v18 productBuildVersion];
-      [(MSDOSUpdaterController *)self saveAvailableOSVersion:v40 andOSBuild:v41];
+      productVersion3 = [v18 productVersion];
+      productBuildVersion3 = [v18 productBuildVersion];
+      [(MSDOSUpdaterController *)self saveAvailableOSVersion:productVersion3 andOSBuild:productBuildVersion3];
 
       [(MSDOSUpdaterController *)self bail:"[MSDOSUpdaterController scanResult:error:]" error:v39];
     }
 
-    v7 = v42;
+    errorCopy = v42;
   }
 
   else
@@ -527,41 +527,41 @@ LABEL_12:
       _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_DEFAULT, "No update found.", buf, 2u);
     }
 
-    [(MSDOSUpdaterController *)self bail:"[MSDOSUpdaterController scanResult:error:]" error:v7];
+    [(MSDOSUpdaterController *)self bail:"[MSDOSUpdaterController scanResult:error:]" error:errorCopy];
   }
 }
 
-- (id)prettyPrintSUDescriptor:(id)a3
+- (id)prettyPrintSUDescriptor:(id)descriptor
 {
-  v3 = a3;
+  descriptorCopy = descriptor;
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  [v3 updateType];
+  [descriptorCopy updateType];
   v6 = SUStringFromUpdateType();
-  v7 = [v3 humanReadableUpdateName];
-  v8 = [v3 productSystemName];
-  v9 = [v3 productVersion];
-  v10 = [v3 productBuildVersion];
-  v11 = [v3 releaseType];
-  v12 = [v3 downloadSize];
+  humanReadableUpdateName = [descriptorCopy humanReadableUpdateName];
+  productSystemName = [descriptorCopy productSystemName];
+  productVersion = [descriptorCopy productVersion];
+  productBuildVersion = [descriptorCopy productBuildVersion];
+  releaseType = [descriptorCopy releaseType];
+  downloadSize = [descriptorCopy downloadSize];
 
-  v13 = [NSString stringWithFormat:@"<%@[%p] Update type: %@, Update name: %@, System name: %@, OS version: %@, Build version: %@, Release type: %@, Download size: %lld>", v5, self, v6, v7, v8, v9, v10, v11, v12];
+  v13 = [NSString stringWithFormat:@"<%@[%p] Update type: %@, Update name: %@, System name: %@, OS version: %@, Build version: %@, Release type: %@, Download size: %lld>", v5, self, v6, humanReadableUpdateName, productSystemName, productVersion, productBuildVersion, releaseType, downloadSize];
 
   return v13;
 }
 
-- (void)client:(id)a3 downloadDidStart:(id)a4
+- (void)client:(id)client downloadDidStart:(id)start
 {
-  if ([(MSDOSUpdaterController *)self started:a3])
+  if ([(MSDOSUpdaterController *)self started:client])
   {
 
     [(MSDOSUpdaterController *)self setPurged:0];
   }
 }
 
-- (void)client:(id)a3 downloadDidFinish:(id)a4
+- (void)client:(id)client downloadDidFinish:(id)finish
 {
-  if ([(MSDOSUpdaterController *)self started:a3])
+  if ([(MSDOSUpdaterController *)self started:client])
   {
     v5 = sub_100063A54();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -579,24 +579,24 @@ LABEL_12:
   }
 }
 
-- (void)client:(id)a3 downloadProgressDidChange:(id)a4
+- (void)client:(id)client downloadProgressDidChange:(id)change
 {
-  v5 = a4;
-  v6 = [v5 progress];
-  v11 = [v6 phase];
+  changeCopy = change;
+  progress = [changeCopy progress];
+  phase = [progress phase];
 
-  v7 = [v5 progress];
+  progress2 = [changeCopy progress];
 
-  [v7 percentComplete];
+  [progress2 percentComplete];
   v9 = v8;
 
   LODWORD(v10) = v9;
-  [(MSDOSUpdaterController *)self downloadProgressChanged:v11 withPercent:v10];
+  [(MSDOSUpdaterController *)self downloadProgressChanged:phase withPercent:v10];
 }
 
-- (void)client:(id)a3 installDidStart:(id)a4
+- (void)client:(id)client installDidStart:(id)start
 {
-  if ([(MSDOSUpdaterController *)self started:a3])
+  if ([(MSDOSUpdaterController *)self started:client])
   {
     v4 = +[MSDTargetDevice sharedInstance];
     [v4 saveCurrentiOSBuild];
@@ -610,18 +610,18 @@ LABEL_12:
   }
 }
 
-- (void)client:(id)a3 installDidFail:(id)a4 withError:(id)a5
+- (void)client:(id)client installDidFail:(id)fail withError:(id)error
 {
-  v6 = a5;
+  errorCopy = error;
   if ([(MSDOSUpdaterController *)self started])
   {
-    [(MSDOSUpdaterController *)self bail:"[MSDOSUpdaterController client:installDidFail:withError:]" error:v6];
+    [(MSDOSUpdaterController *)self bail:"[MSDOSUpdaterController client:installDidFail:withError:]" error:errorCopy];
   }
 }
 
-- (void)client:(id)a3 installDidFinish:(id)a4
+- (void)client:(id)client installDidFinish:(id)finish
 {
-  if ([(MSDOSUpdaterController *)self started:a3])
+  if ([(MSDOSUpdaterController *)self started:client])
   {
     v4 = sub_100063A54();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -633,9 +633,9 @@ LABEL_12:
   }
 }
 
-- (void)downloadProgressChanged:(id)a3 withPercent:(float)a4
+- (void)downloadProgressChanged:(id)changed withPercent:(float)percent
 {
-  v6 = a3;
+  changedCopy = changed;
   if ([(MSDOSUpdaterController *)self started])
   {
     v7 = +[MSDDemoUpdateTimeKeeper sharedInstance];
@@ -649,36 +649,36 @@ LABEL_12:
       v10 = +[MSDDemoUpdateStatusHub sharedInstance];
       [v10 demoUpdateFailed:v9];
 
-      v11 = [(MSDOSUpdaterController *)self manager];
-      [v11 cancelDownload:&stru_10016C088];
+      manager = [(MSDOSUpdaterController *)self manager];
+      [manager cancelDownload:&stru_10016C088];
     }
 
     v12 = sub_100063A54();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v18 = v6;
+      v18 = changedCopy;
       v19 = 2048;
-      v20 = a4;
+      percentCopy = percent;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Download/Prepare progress: %{public}@: %lf", buf, 0x16u);
     }
 
-    if ([v6 isEqualToString:@"SUDownloadPhaseFetching"])
+    if ([changedCopy isEqualToString:@"SUDownloadPhaseFetching"])
     {
       v13 = +[MSDDemoUpdateStatusHub sharedInstance];
       v14 = v13;
-      v15 = (a4 * 50.0);
+      v15 = (percent * 50.0);
 LABEL_11:
       [v13 demoUpdateProgress:v15];
 
       goto LABEL_12;
     }
 
-    if ([v6 isEqualToString:@"SUDownloadPhasePreparingForInstallation"])
+    if ([changedCopy isEqualToString:@"SUDownloadPhasePreparingForInstallation"])
     {
       v13 = +[MSDDemoUpdateStatusHub sharedInstance];
       v14 = v13;
-      v15 = (a4 * 50.0) + 50;
+      v15 = (percent * 50.0) + 50;
       goto LABEL_11;
     }
   }
@@ -691,9 +691,9 @@ LABEL_11:
 LABEL_12:
 }
 
-- (void)downloadFailed:(id)a3
+- (void)downloadFailed:(id)failed
 {
-  v4 = a3;
+  failedCopy = failed;
   if ([(MSDOSUpdaterController *)self started])
   {
     v5 = sub_100063A54();
@@ -703,39 +703,39 @@ LABEL_12:
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Download failed.", v6, 2u);
     }
 
-    [(MSDOSUpdaterController *)self bail:"[MSDOSUpdaterController downloadFailed:]" error:v4];
+    [(MSDOSUpdaterController *)self bail:"[MSDOSUpdaterController downloadFailed:]" error:failedCopy];
   }
 }
 
-- (BOOL)doesAvailableUpdateVersion:(id)a3 andUpdateBuild:(id)a4 matchExpectedUpdateVersion:(id)a5 andUpdateBuild:(id)a6
+- (BOOL)doesAvailableUpdateVersion:(id)version andUpdateBuild:(id)build matchExpectedUpdateVersion:(id)updateVersion andUpdateBuild:(id)updateBuild
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  versionCopy = version;
+  buildCopy = build;
+  updateVersionCopy = updateVersion;
+  updateBuildCopy = updateBuild;
   v13 = 0;
-  if (v9 && v11)
+  if (versionCopy && updateVersionCopy)
   {
-    if ([v11 length])
+    if ([updateVersionCopy length])
     {
-      v14 = [v9 isEqualToString:v11];
+      v14 = [versionCopy isEqualToString:updateVersionCopy];
       v13 = v14;
-      if (!v12 || !v14)
+      if (!updateBuildCopy || !v14)
       {
         goto LABEL_11;
       }
     }
 
-    else if (!v12)
+    else if (!updateBuildCopy)
     {
 LABEL_10:
       v13 = 1;
       goto LABEL_11;
     }
 
-    if ([v12 length])
+    if ([updateBuildCopy length])
     {
-      v13 = [v10 isEqualToString:v12];
+      v13 = [buildCopy isEqualToString:updateBuildCopy];
       goto LABEL_11;
     }
 
@@ -747,13 +747,13 @@ LABEL_11:
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     v17 = 138544386;
-    v18 = v9;
+    v18 = versionCopy;
     v19 = 2114;
-    v20 = v10;
+    v20 = buildCopy;
     v21 = 2114;
-    v22 = v11;
+    v22 = updateVersionCopy;
     v23 = 2114;
-    v24 = v12;
+    v24 = updateBuildCopy;
     v25 = 1024;
     v26 = v13;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Does available update version (%{public}@, %{public}@) match expected update version (%{public}@, %{public}@): %{BOOL}d", &v17, 0x30u);

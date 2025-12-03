@@ -1,7 +1,7 @@
 @interface AccountCacheDBClient
 - (AccountCacheDBClient)init;
 - (id)_databasePath;
-- (id)dSIDForAppleID:(id)a3;
+- (id)dSIDForAppleID:(id)d;
 @end
 
 @implementation AccountCacheDBClient
@@ -14,8 +14,8 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [(AccountCacheDBClient *)v2 _databasePath];
-    v5 = [[SSSQLiteDatabase alloc] initWithDatabaseURL:v4 readOnly:1 protectionType:NSFileProtectionCompleteUntilFirstUserAuthentication];
+    _databasePath = [(AccountCacheDBClient *)v2 _databasePath];
+    v5 = [[SSSQLiteDatabase alloc] initWithDatabaseURL:_databasePath readOnly:1 protectionType:NSFileProtectionCompleteUntilFirstUserAuthentication];
     database = v3->_database;
     v3->_database = v5;
   }
@@ -23,9 +23,9 @@
   return v3;
 }
 
-- (id)dSIDForAppleID:(id)a3
+- (id)dSIDForAppleID:(id)d
 {
-  v4 = [NSString stringWithFormat:@"SELECT dsid FROM account WHERE apple_id = '%@'", a3];
+  v4 = [NSString stringWithFormat:@"SELECT dsid FROM account WHERE apple_id = '%@'", d];
   v5 = objc_opt_new();
   database = self->_database;
   v10[0] = _NSConcreteStackBlock;
@@ -38,15 +38,15 @@
   [(SSSQLiteDatabase *)database prepareStatementForSQL:v4 cache:0 usingBlock:v10];
   if ([v7 count])
   {
-    v8 = [v7 firstObject];
+    firstObject = [v7 firstObject];
   }
 
   else
   {
-    v8 = 0;
+    firstObject = 0;
   }
 
-  return v8;
+  return firstObject;
 }
 
 - (id)_databasePath

@@ -1,23 +1,23 @@
 @interface ISForegroundSegmentation
-- (BOOL)computeMaskWithWidth:(int)a3 height:(int)a4 samples:(id)a5 foregroundMask:(id *)a6;
-- (ISForegroundSegmentation)initWithStrict:(BOOL)a3;
+- (BOOL)computeMaskWithWidth:(int)width height:(int)height samples:(id)samples foregroundMask:(id *)mask;
+- (ISForegroundSegmentation)initWithStrict:(BOOL)strict;
 @end
 
 @implementation ISForegroundSegmentation
 
-- (ISForegroundSegmentation)initWithStrict:(BOOL)a3
+- (ISForegroundSegmentation)initWithStrict:(BOOL)strict
 {
-  v3 = a3;
+  strictCopy = strict;
   v7.receiver = self;
   v7.super_class = ISForegroundSegmentation;
   result = [(ISForegroundSegmentation *)&v7 init];
   if (result)
   {
-    result->_strict = v3;
+    result->_strict = strictCopy;
     *&result->_numberOfClusters = xmmword_1A78250D0;
     result->_clusterGroupingDistanceThreshold = 1.0;
     v5 = 0.17647;
-    if (v3)
+    if (strictCopy)
     {
       v5 = 0.015686;
       v6 = 2;
@@ -35,56 +35,56 @@
   return result;
 }
 
-- (BOOL)computeMaskWithWidth:(int)a3 height:(int)a4 samples:(id)a5 foregroundMask:(id *)a6
+- (BOOL)computeMaskWithWidth:(int)width height:(int)height samples:(id)samples foregroundMask:(id *)mask
 {
   result = 0;
   v361[12] = *MEMORY[0x1E69E9840];
-  if (a3 < 8 || a4 < 8)
+  if (width < 8 || height < 8)
   {
     goto LABEL_241;
   }
 
-  v9 = *&a5.var2;
-  v10 = *&a5.var0;
-  v323 = self;
+  v9 = *&samples.var2;
+  v10 = *&samples.var0;
+  selfCopy = self;
   v316 = &v313;
-  v6.i32[0] = a3 / 3u;
-  LODWORD(v11) = a3 / 3u;
+  v6.i32[0] = width / 3u;
+  LODWORD(v11) = width / 3u;
   HIDWORD(v11) = 1;
-  LODWORD(v12) = a3 >> 1;
-  LODWORD(v13) = a3 >> 1;
+  LODWORD(v12) = width >> 1;
+  LODWORD(v13) = width >> 1;
   HIDWORD(v13) = 1;
   v361[0] = v11;
   v361[1] = v13;
-  LODWORD(v11) = 4 * a3 / 6u;
-  v14 = a4 / 3u;
+  LODWORD(v11) = 4 * width / 6u;
+  v14 = height / 3u;
   LODWORD(v15) = 1;
   LODWORD(v16) = 1;
-  HIDWORD(v16) = a4 / 3u;
+  HIDWORD(v16) = height / 3u;
   v361[2] = v11 | 0x100000000;
   v361[3] = v16;
-  v320 = a3;
-  v321 = a4;
-  LODWORD(v13) = a3 - 2;
+  widthCopy = width;
+  heightCopy = height;
+  LODWORD(v13) = width - 2;
   LODWORD(v16) = 1;
-  HIDWORD(v16) = a4 >> 1;
-  HIDWORD(v15) = 4 * a4 / 6u;
+  HIDWORD(v16) = height >> 1;
+  HIDWORD(v15) = 4 * height / 6u;
   v361[4] = v16;
   v361[5] = v15;
-  LODWORD(v15) = a3 - 2;
-  HIDWORD(v15) = a4 / 3u;
-  LODWORD(v16) = a3 - 2;
-  HIDWORD(v16) = a4 >> 1;
+  LODWORD(v15) = width - 2;
+  HIDWORD(v15) = height / 3u;
+  LODWORD(v16) = width - 2;
+  HIDWORD(v16) = height >> 1;
   v361[6] = v15;
   v361[7] = v16;
-  HIDWORD(v13) = 4 * a4 / 6u;
+  HIDWORD(v13) = 4 * height / 6u;
   *v330 = v6;
-  LODWORD(v15) = a3 / 3u;
-  HIDWORD(v15) = a4 - 2;
+  LODWORD(v15) = width / 3u;
+  HIDWORD(v15) = height - 2;
   v361[8] = v13;
   v361[9] = v15;
-  HIDWORD(v12) = a4 - 2;
-  HIDWORD(v11) = a4 - 2;
+  HIDWORD(v12) = height - 2;
+  HIDWORD(v11) = height - 2;
   v361[10] = v12;
   v361[11] = v11;
   MEMORY[0x1EEE9AC00](0);
@@ -108,38 +108,38 @@
   }
 
   while (v17 != 12);
-  v22 = v321;
+  v22 = heightCopy;
   LODWORD(v23) = v330[0];
   LODWORD(v24) = v330[0];
-  HIDWORD(v24) = v321 / 0xC;
-  LODWORD(v25) = (1431655766 * (2 * v320)) >> 32;
+  HIDWORD(v24) = heightCopy / 0xC;
+  LODWORD(v25) = (1431655766 * (2 * widthCopy)) >> 32;
   LODWORD(v26) = v25;
-  HIDWORD(v26) = v321 / 0xC;
+  HIDWORD(v26) = heightCopy / 0xC;
   v342.i64[0] = v24;
   v342.i64[1] = v26;
   LODWORD(v24) = v25;
-  HIDWORD(v24) = v321 / 0xA;
+  HIDWORD(v24) = heightCopy / 0xA;
   LODWORD(v26) = v330[0];
-  HIDWORD(v26) = v321 / 0xA;
-  v27 = v320 / 0xC;
-  LODWORD(v28) = v320 / 0xC;
-  LODWORD(v29) = v320 / 0xC;
+  HIDWORD(v26) = heightCopy / 0xA;
+  v27 = widthCopy / 0xC;
+  LODWORD(v28) = widthCopy / 0xC;
+  LODWORD(v29) = widthCopy / 0xC;
   HIDWORD(v29) = v14;
-  HIDWORD(v28) = (1431655766 * (2 * v321)) >> 32;
+  HIDWORD(v28) = (1431655766 * (2 * heightCopy)) >> 32;
   v343 = v24;
   v344 = v26;
   v345 = v29;
   v346 = v28;
-  LODWORD(v24) = v320 / 0xA;
-  LODWORD(v26) = v320 / 0xA;
+  LODWORD(v24) = widthCopy / 0xA;
+  LODWORD(v26) = widthCopy / 0xA;
   HIDWORD(v26) = v14;
   HIDWORD(v24) = HIDWORD(v28);
-  LODWORD(v28) = v320 - 1 - v320 / 0xC;
+  LODWORD(v28) = widthCopy - 1 - widthCopy / 0xC;
   v347 = v26;
   v348 = v24;
   v349 = __PAIR64__(v14, v28);
   v350 = v28;
-  LODWORD(v24) = v320 - 1 - v320 / 0xA;
+  LODWORD(v24) = widthCopy - 1 - widthCopy / 0xA;
   HIDWORD(v24) = HIDWORD(v28);
   v351 = __PAIR64__(v14, v24);
   v352 = v24;
@@ -149,11 +149,11 @@
   v353 = v24;
   v354 = __PAIR64__(HIDWORD(v24), v25);
   HIDWORD(v25) = HIDWORD(v23);
-  v30 = v320 / 8.5;
-  v31 = v321 / 8.5;
-  v327.i32[0] = v320 - 1;
+  v30 = widthCopy / 8.5;
+  v31 = heightCopy / 8.5;
+  v327.i32[0] = widthCopy - 1;
   LODWORD(v28) = v30;
-  v32 = ((v320 - 1) - v30);
+  v32 = ((widthCopy - 1) - v30);
   LODWORD(v30) = v30;
   HIDWORD(v30) = v31;
   v355 = v23;
@@ -163,8 +163,8 @@
   HIDWORD(v29) = v31;
   v357 = v30;
   v358 = v29;
-  LODWORD(v318) = v321 - 1;
-  HIDWORD(v28) = ((v321 - 1) - v31);
+  LODWORD(v318) = heightCopy - 1;
+  HIDWORD(v28) = ((heightCopy - 1) - v31);
   HIDWORD(v25) = HIDWORD(v28);
   v359 = v28;
   v360 = v25;
@@ -193,9 +193,9 @@
   if (v18 == 12)
   {
     _ZF = v34 == 20;
-    v38 = v323;
-    v40 = v320;
-    v39 = v321;
+    v38 = selfCopy;
+    v40 = widthCopy;
+    v39 = heightCopy;
     if (_ZF)
     {
       v41 = 0;
@@ -269,9 +269,9 @@
 
   else
   {
-    v38 = v323;
-    v40 = v320;
-    v39 = v321;
+    v38 = selfCopy;
+    v40 = widthCopy;
+    v39 = heightCopy;
   }
 
   v315 = v39 * v40;
@@ -310,7 +310,7 @@ LABEL_61:
             v93.f32[0] = (v93.f32[2] + vaddv_f32(*v93.f32)) / 3.0;
             v94.f32[0] = (v93.f32[0] * -1.1) + 7.41;
             v95 = (v93.f32[0] * -37.0) + 139.52;
-            if (v323->_strict)
+            if (selfCopy->_strict)
             {
               v96 = v94.f32[0];
             }
@@ -403,8 +403,8 @@ LABEL_61:
 
           v84 = v326;
           v85 = borderSamplingWidth + v326;
-          v86 = ~v328.i32[0] + v321;
-          v87 = ~(2 * v328.i32[0]) + v321;
+          v86 = ~v328.i32[0] + heightCopy;
+          v87 = ~(2 * v328.i32[0]) + heightCopy;
           while (v86 <= v328.i32[0])
           {
 LABEL_60:
@@ -451,7 +451,7 @@ LABEL_60:
 
         else
         {
-          v79 = ~v326 + v321;
+          v79 = ~v326 + heightCopy;
           v80 = v328.i32[0];
           while (borderSamplingWidth < 1)
           {
@@ -500,8 +500,8 @@ LABEL_52:
       {
         v72 = v327.i32[0] - v326;
         v73 = v327.i32[0] - v326 - borderSamplingWidth;
-        v74 = ~v328.i32[0] + v321;
-        LODWORD(v330[0]) = ~(2 * v328.i32[0]) + v321;
+        v74 = ~v328.i32[0] + heightCopy;
+        LODWORD(v330[0]) = ~(2 * v328.i32[0]) + heightCopy;
         while (v74 <= v328.i32[0])
         {
 LABEL_44:
@@ -546,8 +546,8 @@ LABEL_44:
         }
       }
 
-      v38 = v323;
-      v40 = v320;
+      v38 = selfCopy;
+      v40 = widthCopy;
     }
 
     else
@@ -710,13 +710,13 @@ LABEL_36:
             }
 
             while (!_ZF);
-            v40 = v320;
+            v40 = widthCopy;
             v103 = v328.i32[0];
             v104 = v329.i32[0];
-            v38 = v323;
+            v38 = selfCopy;
             if (v113 >= 6)
             {
-              v109.i32[0] = LODWORD(v323->_borderNoiseScale);
+              v109.i32[0] = LODWORD(selfCopy->_borderNoiseScale);
               *v330 = v109;
               v121.f32[0] = ISSegmentationMathUtils_sampleNormalDistribution(&v339);
               v325 = v121;
@@ -745,8 +745,8 @@ LABEL_36:
     {
       v127 = 0;
       v325.i32[0] = v40 - v326;
-      v128 = v321 - v103;
-      LODWORD(v319) = v321 - v103;
+      v128 = heightCopy - v103;
+      LODWORD(v319) = heightCopy - v103;
       do
       {
         v329.i32[0] = v127;
@@ -842,13 +842,13 @@ LABEL_36:
 
             while (!_ZF);
             v231 = v137 < 6;
-            v133 = v321;
+            v133 = heightCopy;
             v103 = v328.i32[0];
             v105 = v324;
-            v38 = v323;
+            v38 = selfCopy;
             if (!v231)
             {
-              v132.i32[0] = LODWORD(v323->_borderNoiseScale);
+              v132.i32[0] = LODWORD(selfCopy->_borderNoiseScale);
               *v330 = v132;
               v145.f32[0] = ISSegmentationMathUtils_sampleNormalDistribution(&v339);
               v314 = v145;
@@ -866,8 +866,8 @@ LABEL_36:
 
           else
           {
-            v38 = v323;
-            v133 = v321;
+            v38 = selfCopy;
+            v133 = heightCopy;
           }
 
           v128 = v319;
@@ -875,8 +875,8 @@ LABEL_36:
 
         else
         {
-          v38 = v323;
-          v133 = v321;
+          v38 = selfCopy;
+          v133 = heightCopy;
         }
 
         v127 = v329.i32[0] + 1;
@@ -985,10 +985,10 @@ LABEL_36:
               v103 = v328.i32[0];
               v105 = v324;
               v128 = v319;
-              v38 = v323;
+              v38 = selfCopy;
               if (v160 >= 6)
               {
-                v155.i32[0] = LODWORD(v323->_borderNoiseScale);
+                v155.i32[0] = LODWORD(selfCopy->_borderNoiseScale);
                 *v330 = v155;
                 v168.f32[0] = ISSegmentationMathUtils_sampleNormalDistribution(&v339);
                 v314 = v168;
@@ -1008,14 +1008,14 @@ LABEL_36:
 
             else
             {
-              v38 = v323;
+              v38 = selfCopy;
               v128 = v319;
             }
           }
 
           else
           {
-            v38 = v323;
+            v38 = selfCopy;
           }
 
           ++v151;
@@ -1098,10 +1098,10 @@ LABEL_36:
               while (!_ZF);
               v103 = v328.i32[0];
               v128 = v319;
-              v38 = v323;
+              v38 = selfCopy;
               if (v293 >= 6)
               {
-                v289.i32[0] = LODWORD(v323->_borderNoiseScale);
+                v289.i32[0] = LODWORD(selfCopy->_borderNoiseScale);
                 *v330 = v289;
                 v301.f32[0] = ISSegmentationMathUtils_sampleNormalDistribution(&v339);
                 v325 = v301;
@@ -1271,17 +1271,17 @@ LABEL_36:
   {
     do
     {
-      v239 = [v214 lastObject];
-      v240 = [v239 intValue];
+      lastObject = [v214 lastObject];
+      intValue = [lastObject intValue];
 
       [v214 removeLastObject];
-      v241 = [MEMORY[0x1E696AD98] numberWithInt:v240];
+      v241 = [MEMORY[0x1E696AD98] numberWithInt:intValue];
       [v327.i64[0] addObject:v241];
 
       if (v193 >= 1)
       {
         v242 = 0;
-        v243 = &v322[4 * v240 * v193];
+        v243 = &v322[4 * intValue * v193];
         do
         {
           v244 = [MEMORY[0x1E696AD98] numberWithInt:v242];
@@ -1327,7 +1327,7 @@ LABEL_36:
 
   v253 = [v248 count];
 
-  v254 = v321;
+  v254 = heightCopy;
   v255 = v326;
   v256 = v329.i64[0];
   v257 = v318;
@@ -1354,8 +1354,8 @@ LABEL_36:
     while (v260);
   }
 
-  v266 = v323;
-  BOOLeanThreshold_low = LOBYTE(v323->_BOOLeanThreshold);
+  v266 = selfCopy;
+  BOOLeanThreshold_low = LOBYTE(selfCopy->_BOOLeanThreshold);
   v340 = *v10;
   v341 = v10[1].i64[0];
   v337 = *v9;
@@ -1365,7 +1365,7 @@ LABEL_36:
   v269 = 0;
   v270 = 0;
   v271 = v266->_borderSamplingWidth;
-  v272 = v320;
+  v272 = widthCopy;
   do
   {
     v273 = v255;

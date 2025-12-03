@@ -1,38 +1,38 @@
 @interface MDMServiceDelegate
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (MDMServiceDelegate)initWithServer:(id)a3;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (MDMServiceDelegate)initWithServer:(id)server;
 @end
 
 @implementation MDMServiceDelegate
 
-- (MDMServiceDelegate)initWithServer:(id)a3
+- (MDMServiceDelegate)initWithServer:(id)server
 {
-  v5 = a3;
+  serverCopy = server;
   v9.receiver = self;
   v9.super_class = MDMServiceDelegate;
   v6 = [(MDMServiceDelegate *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_server, a3);
+    objc_storeStrong(&v6->_server, server);
   }
 
   return v7;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
-  v6 = [(MDMServiceDelegate *)self server];
-  v7 = [v6 channelType];
+  connectionCopy = connection;
+  server = [(MDMServiceDelegate *)self server];
+  channelType = [server channelType];
 
-  if (v7 == 1)
+  if (channelType == 1)
   {
     v8 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_28685EC28];
     MDMUserXPCProtocolInitialize();
   }
 
-  else if (v7)
+  else if (channelType)
   {
     v8 = 0;
   }
@@ -43,13 +43,13 @@
     MDMXPCProtocolInitialize();
   }
 
-  [v5 setExportedInterface:v8];
+  [connectionCopy setExportedInterface:v8];
   v9 = [MDMServicerCore alloc];
-  v10 = [(MDMServiceDelegate *)self server];
-  v11 = [(MDMServicerCore *)v9 initWithXPCConnection:v5 server:v10];
-  [v5 setExportedObject:v11];
+  server2 = [(MDMServiceDelegate *)self server];
+  v11 = [(MDMServicerCore *)v9 initWithXPCConnection:connectionCopy server:server2];
+  [connectionCopy setExportedObject:v11];
 
-  [v5 resume];
+  [connectionCopy resume];
   v12 = *(DMCLogObjects() + 8);
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {

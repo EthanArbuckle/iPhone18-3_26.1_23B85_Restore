@@ -1,34 +1,34 @@
 @interface CKVCustomTerm
-+ (id)customTermFromItem:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToCustomTerm:(id)a3;
++ (id)customTermFromItem:(id)item;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToCustomTerm:(id)term;
 - (CKVCustomTerm)init;
-- (CKVCustomTerm)initWithCoder:(id)a3;
-- (CKVCustomTerm)initWithItemId:(id)a3 vocabularyType:(unsigned __int16)a4 term:(id)a5 vocabularyId:(id)a6;
+- (CKVCustomTerm)initWithCoder:(id)coder;
+- (CKVCustomTerm)initWithItemId:(id)id vocabularyType:(unsigned __int16)type term:(id)term vocabularyId:(id)vocabularyId;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)toItemWithError:(id *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)toItemWithError:(id *)error;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CKVCustomTerm
 
-- (id)toItemWithError:(id *)a3
+- (id)toItemWithError:(id *)error
 {
   v5 = objc_alloc_init(MEMORY[0x1E69ABCF8]);
-  v6 = [(CKVCustomTerm *)self vocabularyType];
-  v7 = [(CKVCustomTerm *)self itemId];
-  v8 = [v5 setItemType:1 itemId:v7 error:a3];
+  vocabularyType = [(CKVCustomTerm *)self vocabularyType];
+  itemId = [(CKVCustomTerm *)self itemId];
+  v8 = [v5 setItemType:1 itemId:itemId error:error];
   if (!v8)
   {
     goto LABEL_6;
   }
 
   v9 = v8;
-  v10 = CKVCustomTypeToFieldType(v6);
-  v11 = [(CKVCustomTerm *)self term];
-  v12 = [v5 addFieldWithType:v10 value:v11 error:a3];
+  v10 = CKVCustomTypeToFieldType(vocabularyType);
+  term = [(CKVCustomTerm *)self term];
+  v12 = [v5 addFieldWithType:v10 value:term error:error];
   if (!v12)
   {
 
@@ -37,12 +37,12 @@ LABEL_6:
   }
 
   v13 = v12;
-  v14 = [(CKVCustomTerm *)self vocabularyId];
-  v15 = [v5 addFieldWithType:20 value:v14 error:a3];
+  vocabularyId = [(CKVCustomTerm *)self vocabularyId];
+  v15 = [v5 addFieldWithType:20 value:vocabularyId error:error];
 
   if (v15)
   {
-    v16 = [v5 buildItemWithError:a3];
+    v16 = [v5 buildItemWithError:error];
     goto LABEL_8;
   }
 
@@ -53,19 +53,19 @@ LABEL_8:
   return v16;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_opt_class() allocWithZone:a3];
-  v6 = [(NSString *)self->_itemId copyWithZone:a3];
+  v5 = [objc_opt_class() allocWithZone:zone];
+  v6 = [(NSString *)self->_itemId copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
   *(v5 + 8) = self->_vocabularyType;
-  v8 = [(NSString *)self->_term copyWithZone:a3];
+  v8 = [(NSString *)self->_term copyWithZone:zone];
   v9 = *(v5 + 24);
   *(v5 + 24) = v8;
 
-  v10 = [(NSString *)self->_vocabularyId copyWithZone:a3];
+  v10 = [(NSString *)self->_vocabularyId copyWithZone:zone];
   v11 = *(v5 + 32);
   *(v5 + 32) = v10;
 
@@ -83,11 +83,11 @@ LABEL_8:
   return v5 ^ v7;
 }
 
-- (BOOL)isEqualToCustomTerm:(id)a3
+- (BOOL)isEqualToCustomTerm:(id)term
 {
-  v7 = a3;
-  v8 = v7;
-  if (!v7)
+  termCopy = term;
+  v8 = termCopy;
+  if (!termCopy)
   {
     v13 = 0;
     goto LABEL_35;
@@ -97,8 +97,8 @@ LABEL_8:
   v10 = itemId;
   if (!itemId)
   {
-    v3 = [v7 itemId];
-    if (!v3)
+    itemId = [termCopy itemId];
+    if (!itemId)
     {
       vocabularyType = self->_vocabularyType;
       v12 = 0;
@@ -116,8 +116,8 @@ LABEL_34:
     v10 = self->_itemId;
   }
 
-  v4 = [v8 itemId];
-  if (([(NSString *)v10 isEqual:v4]& 1) == 0)
+  itemId2 = [v8 itemId];
+  if (([(NSString *)v10 isEqual:itemId2]& 1) == 0)
   {
 
     v13 = 0;
@@ -134,11 +134,11 @@ LABEL_34:
   v12 = 1;
 LABEL_12:
   term = self->_term;
-  v16 = term;
+  termCopy2 = term;
   if (!term)
   {
-    v17 = [v8 term];
-    if (!v17)
+    term = [v8 term];
+    if (!term)
     {
       v27 = v12;
       v26 = 0;
@@ -148,20 +148,20 @@ LABEL_19:
       v20 = vocabularyId;
       if (!vocabularyId)
       {
-        v21 = [v8 vocabularyId];
-        if (!v21)
+        vocabularyId = [v8 vocabularyId];
+        if (!vocabularyId)
         {
           v23 = 0;
           v13 = 1;
           goto LABEL_28;
         }
 
-        v25 = v21;
+        v25 = vocabularyId;
         v20 = self->_vocabularyId;
       }
 
-      v22 = [v8 vocabularyId];
-      v13 = [(NSString *)v20 isEqual:v22];
+      vocabularyId2 = [v8 vocabularyId];
+      v13 = [(NSString *)v20 isEqual:vocabularyId2];
 
       if (vocabularyId)
       {
@@ -187,12 +187,12 @@ LABEL_28:
       goto LABEL_29;
     }
 
-    v26 = v17;
-    v16 = self->_term;
+    v26 = term;
+    termCopy2 = self->_term;
   }
 
-  v5 = [v8 term];
-  if ([(NSString *)v16 isEqual:v5])
+  term2 = [v8 term];
+  if ([(NSString *)termCopy2 isEqual:term2])
   {
     v27 = v12;
     v18 = 1;
@@ -229,18 +229,18 @@ LABEL_35:
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CKVCustomTerm *)self isEqualToCustomTerm:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CKVCustomTerm *)self isEqualToCustomTerm:v5];
   }
 
   return v6;
@@ -258,34 +258,34 @@ LABEL_35:
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   itemId = self->_itemId;
-  v5 = a3;
-  [v5 encodeObject:itemId forKey:@"itemId"];
-  [v5 encodeInteger:self->_vocabularyType forKey:@"vocabType"];
-  [v5 encodeObject:self->_term forKey:@"term"];
-  [v5 encodeObject:self->_vocabularyId forKey:@"vocabId"];
+  coderCopy = coder;
+  [coderCopy encodeObject:itemId forKey:@"itemId"];
+  [coderCopy encodeInteger:self->_vocabularyType forKey:@"vocabType"];
+  [coderCopy encodeObject:self->_term forKey:@"term"];
+  [coderCopy encodeObject:self->_vocabularyId forKey:@"vocabId"];
 }
 
-- (CKVCustomTerm)initWithCoder:(id)a3
+- (CKVCustomTerm)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = CKVCustomTerm;
   v5 = [(CKVCustomTerm *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"itemId"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"itemId"];
     itemId = v5->_itemId;
     v5->_itemId = v6;
 
-    v5->_vocabularyType = [v4 decodeIntegerForKey:@"vocabType"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"term"];
+    v5->_vocabularyType = [coderCopy decodeIntegerForKey:@"vocabType"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"term"];
     term = v5->_term;
     v5->_term = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"vocabId"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"vocabId"];
     vocabularyId = v5->_vocabularyId;
     v5->_vocabularyId = v10;
   }
@@ -299,13 +299,13 @@ LABEL_35:
   objc_exception_throw(v2);
 }
 
-- (CKVCustomTerm)initWithItemId:(id)a3 vocabularyType:(unsigned __int16)a4 term:(id)a5 vocabularyId:(id)a6
+- (CKVCustomTerm)initWithItemId:(id)id vocabularyType:(unsigned __int16)type term:(id)term vocabularyId:(id)vocabularyId
 {
-  v8 = a4;
+  typeCopy = type;
   v36 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  idCopy = id;
+  termCopy = term;
+  vocabularyIdCopy = vocabularyId;
   v29.receiver = self;
   v29.super_class = CKVCustomTerm;
   v13 = [(CKVCustomTerm *)&v29 init];
@@ -314,7 +314,7 @@ LABEL_35:
     goto LABEL_8;
   }
 
-  v14 = [v10 copy];
+  v14 = [idCopy copy];
   itemId = v13->_itemId;
   v13->_itemId = v14;
 
@@ -324,8 +324,8 @@ LABEL_35:
     goto LABEL_11;
   }
 
-  v13->_vocabularyType = v8;
-  if (!CKVCustomTypeIsValid(v8))
+  v13->_vocabularyType = typeCopy;
+  if (!CKVCustomTypeIsValid(typeCopy))
   {
     v23 = CKLogContextVocabulary;
     if (os_log_type_enabled(CKLogContextVocabulary, OS_LOG_TYPE_ERROR))
@@ -346,7 +346,7 @@ LABEL_35:
     goto LABEL_11;
   }
 
-  v17 = [v11 copy];
+  v17 = [termCopy copy];
   term = v13->_term;
   v13->_term = v17;
 
@@ -358,7 +358,7 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v20 = [v12 copy];
+  v20 = [vocabularyIdCopy copy];
   vocabularyId = v13->_vocabularyId;
   v13->_vocabularyId = v20;
 
@@ -369,12 +369,12 @@ LABEL_12:
   return v22;
 }
 
-+ (id)customTermFromItem:(id)a3
++ (id)customTermFromItem:(id)item
 {
   v35 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  itemCopy = item;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [v3 itemType] == 1)
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [itemCopy itemType] == 1)
   {
     *buf = 0;
     *&buf[8] = buf;
@@ -394,22 +394,22 @@ LABEL_12:
     v19[3] = &unk_1E831E280;
     v19[4] = &v20;
     v19[5] = buf;
-    [v3 enumerateFieldsUsingBlock:v19];
-    v4 = [*(*&buf[8] + 40) fieldType];
-    if ((v4 - 1) > 0x12)
+    [itemCopy enumerateFieldsUsingBlock:v19];
+    fieldType = [*(*&buf[8] + 40) fieldType];
+    if ((fieldType - 1) > 0x12)
     {
       v5 = 0;
     }
 
     else
     {
-      v5 = word_1C86FE3E8[v4 - 1];
+      v5 = word_1C86FE3E8[fieldType - 1];
     }
 
     v8 = [CKVCustomTerm alloc];
-    v9 = [v3 itemId];
-    v10 = [*(*&buf[8] + 40) value];
-    v7 = [(CKVCustomTerm *)v8 initWithItemId:v9 vocabularyType:v5 term:v10 vocabularyId:v21[5]];
+    itemId = [itemCopy itemId];
+    value = [*(*&buf[8] + 40) value];
+    v7 = [(CKVCustomTerm *)v8 initWithItemId:itemId vocabularyType:v5 term:value vocabularyId:v21[5]];
 
     if (!v7)
     {
@@ -423,7 +423,7 @@ LABEL_12:
         v28 = 2112;
         v29 = v18;
         v30 = 2112;
-        v31 = v3;
+        v31 = itemCopy;
         _os_log_error_impl(&dword_1C8683000, v11, OS_LOG_TYPE_ERROR, "%s Failed to initialize %@ from item: %@", v26, 0x20u);
       }
     }
@@ -445,7 +445,7 @@ LABEL_12:
       *buf = 136315906;
       *&buf[4] = "+[CKVCustomTerm customTermFromItem:]";
       *&buf[12] = 2112;
-      *&buf[14] = v3;
+      *&buf[14] = itemCopy;
       *&buf[22] = 2112;
       v33 = v15;
       LOWORD(v34) = 2112;

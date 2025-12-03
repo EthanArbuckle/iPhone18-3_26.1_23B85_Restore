@@ -1,11 +1,11 @@
 @interface SSBDatabaseUpdaterStatus
 - (NSString)provider;
-- (id)_initWithDatabaseUpdaterStatus:(DatabaseUpdaterStatus)a3;
+- (id)_initWithDatabaseUpdaterStatus:(DatabaseUpdaterStatus)status;
 @end
 
 @implementation SSBDatabaseUpdaterStatus
 
-- (id)_initWithDatabaseUpdaterStatus:(DatabaseUpdaterStatus)a3
+- (id)_initWithDatabaseUpdaterStatus:(DatabaseUpdaterStatus)status
 {
   v8.receiver = self;
   v8.super_class = SSBDatabaseUpdaterStatus;
@@ -13,7 +13,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_databaseUpdaterStatus = a3;
+    v4->_databaseUpdaterStatus = status;
     v6 = v4;
   }
 

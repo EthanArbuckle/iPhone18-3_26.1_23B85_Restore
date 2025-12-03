@@ -1,12 +1,12 @@
 @interface PKPaymentConfigurationRequest
-- (id)_requestWithServiceURL:(id)a3;
+- (id)_requestWithServiceURL:(id)l;
 @end
 
 @implementation PKPaymentConfigurationRequest
 
-- (id)_requestWithServiceURL:(id)a3
+- (id)_requestWithServiceURL:(id)l
 {
-  v3 = [(PKPaymentWebServiceRequest *)self _murlRequestWithURL:a3];
+  v3 = [(PKPaymentWebServiceRequest *)self _murlRequestWithURL:l];
   v4 = [v3 copy];
 
   return v4;

@@ -1,5 +1,5 @@
 @interface EKUIYearMonthViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_axIsCurrentMonth;
 - (id)accessibilityLabel;
 - (id)accessibilityUserInputLabels;
@@ -7,11 +7,11 @@
 
 @implementation EKUIYearMonthViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"EKUIYearMonthView" hasInstanceVariable:@"_todayIndex" withType:"q"];
-  [v3 validateClass:@"EKUIYearMonthView" hasInstanceVariable:@"_calendarDate" withType:"EKCalendarDate"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"EKUIYearMonthView" hasInstanceVariable:@"_todayIndex" withType:"q"];
+  [validationsCopy validateClass:@"EKUIYearMonthView" hasInstanceVariable:@"_calendarDate" withType:"EKCalendarDate"];
 }
 
 - (BOOL)_axIsCurrentMonth
@@ -28,7 +28,7 @@
   v3 = [(EKUIYearMonthViewAccessibility *)self safeValueForKey:@"_calendarDate"];
   v4 = __UIAccessibilityCastAsClass();
 
-  v5 = [v4 date];
+  date = [v4 date];
   v6 = MEMORY[0x29C2D5150]();
 
   if ([(EKUIYearMonthViewAccessibility *)self _axIsCurrentMonth])

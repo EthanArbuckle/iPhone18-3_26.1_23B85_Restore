@@ -1,22 +1,22 @@
 @interface ASUSQLiteTransporter
-- (ASUSQLiteTransporter)initWithDatabasePath:(id)a3;
+- (ASUSQLiteTransporter)initWithDatabasePath:(id)path;
 - (BOOL)canBeginTransportation;
 - (BOOL)endTransportationAndRemoveDatabase;
-- (void)performTransportationUsingBlock:(id)a3;
+- (void)performTransportationUsingBlock:(id)block;
 @end
 
 @implementation ASUSQLiteTransporter
 
-- (ASUSQLiteTransporter)initWithDatabasePath:(id)a3
+- (ASUSQLiteTransporter)initWithDatabasePath:(id)path
 {
-  v5 = a3;
+  pathCopy = path;
   v9.receiver = self;
   v9.super_class = ASUSQLiteTransporter;
   v6 = [(ASUSQLiteTransporter *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_databasePath, a3);
+    objc_storeStrong(&v6->_databasePath, path);
   }
 
   return v7;
@@ -67,8 +67,8 @@ LABEL_20:
     os_unfair_lock_unlock(&_configurationLock);
   }
 
-  v13 = [MEMORY[0x277CCAA00] defaultManager];
-  v14 = [v13 fileExistsAtPath:self->_databasePath];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v14 = [defaultManager fileExistsAtPath:self->_databasePath];
 
   if ((v14 & 1) == 0)
   {
@@ -122,9 +122,9 @@ LABEL_17:
   connection = self->_connection;
   self->_connection = v23;
 
-  v25 = [(ASUSQLiteConnection *)self->_connection open];
+  open = [(ASUSQLiteConnection *)self->_connection open];
   v26 = *MEMORY[0x277D85DE8];
-  return v25;
+  return open;
 }
 
 - (BOOL)endTransportationAndRemoveDatabase
@@ -174,17 +174,17 @@ LABEL_17:
   return result;
 }
 
-- (void)performTransportationUsingBlock:(id)a3
+- (void)performTransportationUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   connection = self->_connection;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __56__ASUSQLiteTransporter_performTransportationUsingBlock___block_invoke;
   v7[3] = &unk_278C97C50;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   [(ASUSQLiteConnection *)connection performTransaction:v7 error:0];
 }
 

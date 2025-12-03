@@ -1,48 +1,48 @@
 @interface MRConfigureConnectionMessage
-- (MRConfigureConnectionMessage)initWithGroupID:(id)a3;
-- (MRConfigureConnectionMessage)initWithUnderlyingCodableMessage:(id)a3 error:(id)a4;
+- (MRConfigureConnectionMessage)initWithGroupID:(id)d;
+- (MRConfigureConnectionMessage)initWithUnderlyingCodableMessage:(id)message error:(id)error;
 - (NSString)groupID;
-- (void)setGroupID:(id)a3;
+- (void)setGroupID:(id)d;
 @end
 
 @implementation MRConfigureConnectionMessage
 
-- (MRConfigureConnectionMessage)initWithGroupID:(id)a3
+- (MRConfigureConnectionMessage)initWithGroupID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v8.receiver = self;
   v8.super_class = MRConfigureConnectionMessage;
   v5 = [(MRProtocolMessage *)&v8 init];
   if (v5)
   {
     v6 = objc_alloc_init(_MRConfigureConnectionMessageProtobuf);
-    [(_MRConfigureConnectionMessageProtobuf *)v6 setGroupID:v4];
+    [(_MRConfigureConnectionMessageProtobuf *)v6 setGroupID:dCopy];
     [(MRProtocolMessage *)v5 setUnderlyingCodableMessage:v6];
   }
 
   return v5;
 }
 
-- (MRConfigureConnectionMessage)initWithUnderlyingCodableMessage:(id)a3 error:(id)a4
+- (MRConfigureConnectionMessage)initWithUnderlyingCodableMessage:(id)message error:(id)error
 {
   v5.receiver = self;
   v5.super_class = MRConfigureConnectionMessage;
-  return [(MRProtocolMessage *)&v5 initWithUnderlyingCodableMessage:a3 error:a4];
+  return [(MRProtocolMessage *)&v5 initWithUnderlyingCodableMessage:message error:error];
 }
 
 - (NSString)groupID
 {
-  v2 = [(MRProtocolMessage *)self underlyingCodableMessage];
-  v3 = [v2 groupID];
+  underlyingCodableMessage = [(MRProtocolMessage *)self underlyingCodableMessage];
+  groupID = [underlyingCodableMessage groupID];
 
-  return v3;
+  return groupID;
 }
 
-- (void)setGroupID:(id)a3
+- (void)setGroupID:(id)d
 {
-  v4 = a3;
-  v5 = [(MRProtocolMessage *)self underlyingCodableMessage];
-  [v5 setGroupID:v4];
+  dCopy = d;
+  underlyingCodableMessage = [(MRProtocolMessage *)self underlyingCodableMessage];
+  [underlyingCodableMessage setGroupID:dCopy];
 }
 
 @end

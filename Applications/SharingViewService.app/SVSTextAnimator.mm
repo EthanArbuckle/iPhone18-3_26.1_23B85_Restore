@@ -1,7 +1,7 @@
 @interface SVSTextAnimator
 - (void)_update;
-- (void)setDisplayEndIndex:(unint64_t)a3;
-- (void)setText:(id)a3;
+- (void)setDisplayEndIndex:(unint64_t)index;
+- (void)setText:(id)text;
 @end
 
 @implementation SVSTextAnimator
@@ -10,11 +10,11 @@
 {
   if (!self->_busy)
   {
-    v3 = [(NSMutableArray *)self->_changes firstObject];
-    v4 = v3;
-    if (v3)
+    firstObject = [(NSMutableArray *)self->_changes firstObject];
+    v4 = firstObject;
+    if (firstObject)
     {
-      v5 = [v3 unsignedIntegerValue];
+      unsignedIntegerValue = [firstObject unsignedIntegerValue];
       [(NSMutableArray *)self->_changes removeObjectAtIndex:0];
       v6 = self->_activeLabel;
       label1 = self->_label1;
@@ -26,18 +26,18 @@
       v8 = label1;
       v9 = [(NSMutableAttributedString *)self->_attributedText length];
       [(NSMutableAttributedString *)self->_attributedText removeAttribute:NSForegroundColorAttributeName range:0, v9];
-      if (v9 < v5)
+      if (v9 < unsignedIntegerValue)
       {
-        v5 = v9;
+        unsignedIntegerValue = v9;
       }
 
       attributedText = self->_attributedText;
       v11 = +[UIColor systemBlueColor];
-      [(NSMutableAttributedString *)attributedText addAttribute:NSForegroundColorAttributeName value:v11 range:0, v5];
+      [(NSMutableAttributedString *)attributedText addAttribute:NSForegroundColorAttributeName value:v11 range:0, unsignedIntegerValue];
 
       v12 = self->_attributedText;
       v13 = +[UIColor clearColor];
-      [(NSMutableAttributedString *)v12 addAttribute:NSForegroundColorAttributeName value:v13 range:v5, v9 - v5];
+      [(NSMutableAttributedString *)v12 addAttribute:NSForegroundColorAttributeName value:v13 range:unsignedIntegerValue, v9 - unsignedIntegerValue];
 
       [(UILabel *)v8 setAttributedText:self->_attributedText];
       self->_busy = 1;
@@ -54,7 +54,7 @@
       v14 = v23;
       v19 = v14;
       v20 = v6;
-      v21 = self;
+      selfCopy = self;
       v15 = v6;
       [UIView animateWithDuration:2 delay:v22 options:v18 animations:0.08 completion:0.0];
       activeLabel = self->_activeLabel;
@@ -64,11 +64,11 @@
   }
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  v5 = a3;
-  objc_storeStrong(&self->_text, a3);
-  v15 = v5;
+  textCopy = text;
+  objc_storeStrong(&self->_text, text);
+  v15 = textCopy;
   if (v15)
   {
     v6 = [[NSMutableAttributedString alloc] initWithString:v15];
@@ -76,11 +76,11 @@
     self->_attributedText = v6;
 
     v8 = [v15 length];
-    v9 = [(UILabel *)self->_label1 font];
-    v10 = v9;
-    if (v9)
+    font = [(UILabel *)self->_label1 font];
+    v10 = font;
+    if (font)
     {
-      v11 = v9;
+      v11 = font;
     }
 
     else
@@ -111,9 +111,9 @@
   }
 }
 
-- (void)setDisplayEndIndex:(unint64_t)a3
+- (void)setDisplayEndIndex:(unint64_t)index
 {
-  self->_displayEndIndex = a3;
+  self->_displayEndIndex = index;
   changes = self->_changes;
   if (!changes)
   {
@@ -124,7 +124,7 @@
     changes = self->_changes;
   }
 
-  v8 = [NSNumber numberWithUnsignedInteger:a3];
+  v8 = [NSNumber numberWithUnsignedInteger:index];
   [(NSMutableArray *)changes addObject:v8];
 
   [(SVSTextAnimator *)self _update];

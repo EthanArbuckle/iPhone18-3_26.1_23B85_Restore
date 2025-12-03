@@ -4,8 +4,8 @@
 - (NSDirectionalEdgeInsets)cellInteriorLayoutMargins;
 - (double)cellCornerRadius;
 - (id)_init;
-- (id)backgroundColorForTag:(id)a3 selected:(BOOL)a4;
-- (id)checkmarkImageColorForTag:(id)a3;
+- (id)backgroundColorForTag:(id)tag selected:(BOOL)selected;
+- (id)checkmarkImageColorForTag:(id)tag;
 @end
 
 @implementation DOCTagListCellAppearance
@@ -24,39 +24,39 @@
   return v2;
 }
 
-- (id)checkmarkImageColorForTag:(id)a3
+- (id)checkmarkImageColorForTag:(id)tag
 {
-  v3 = [a3 tagColorIfNotClear];
-  v4 = v3;
-  if (v3)
+  tagColorIfNotClear = [tag tagColorIfNotClear];
+  v4 = tagColorIfNotClear;
+  if (tagColorIfNotClear)
   {
-    v5 = v3;
+    nonClearNoneTagColor = tagColorIfNotClear;
   }
 
   else
   {
-    v5 = [MEMORY[0x277D06260] nonClearNoneTagColor];
+    nonClearNoneTagColor = [MEMORY[0x277D06260] nonClearNoneTagColor];
   }
 
-  v6 = v5;
+  v6 = nonClearNoneTagColor;
 
   return v6;
 }
 
-- (id)backgroundColorForTag:(id)a3 selected:(BOOL)a4
+- (id)backgroundColorForTag:(id)tag selected:(BOOL)selected
 {
-  if (a3 && a4)
+  if (tag && selected)
   {
-    v4 = [a3 tagBackgroundColor];
+    tagBackgroundColor = [tag tagBackgroundColor];
   }
 
   else
   {
-    v5 = [MEMORY[0x277D75348] labelColor];
-    v4 = [v5 colorWithAlphaComponent:0.04];
+    labelColor = [MEMORY[0x277D75348] labelColor];
+    tagBackgroundColor = [labelColor colorWithAlphaComponent:0.04];
   }
 
-  return v4;
+  return tagBackgroundColor;
 }
 
 - (NSDirectionalEdgeInsets)cellExternalMargins

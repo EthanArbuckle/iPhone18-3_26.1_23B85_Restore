@@ -1,36 +1,36 @@
 @interface SOKeychainHelper
-- (BOOL)hasCredentialsInKeychainWithService:(id)a3;
-- (__SecIdentity)identityForPersistentRef:(id)a3;
-- (__SecIdentity)identityForUUIDString:(id)a3;
-- (int)addCredentialsToKeychainWithService:(id)a3 withUsername:(id)a4 withPassword:(id)a5 requireUserPresence:(BOOL)a6;
-- (int)removeCredentialsFromKeychainWithService:(id)a3;
-- (int)retrieveCredentialsFromKeychainWithContext:(id)a3 service:(id)a4 returnedUsername:(id *)a5 returnedPassword:(id *)a6;
+- (BOOL)hasCredentialsInKeychainWithService:(id)service;
+- (__SecIdentity)identityForPersistentRef:(id)ref;
+- (__SecIdentity)identityForUUIDString:(id)string;
+- (int)addCredentialsToKeychainWithService:(id)service withUsername:(id)username withPassword:(id)password requireUserPresence:(BOOL)presence;
+- (int)removeCredentialsFromKeychainWithService:(id)service;
+- (int)retrieveCredentialsFromKeychainWithContext:(id)context service:(id)service returnedUsername:(id *)username returnedPassword:(id *)password;
 @end
 
 @implementation SOKeychainHelper
 
-- (__SecIdentity)identityForPersistentRef:(id)a3
+- (__SecIdentity)identityForPersistentRef:(id)ref
 {
-  v3 = a3;
+  refCopy = ref;
   v4 = SO_LOG_SOKeychainHelper();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
   {
-    [(SOKeychainHelper *)v3 identityForPersistentRef:v4];
+    [(SOKeychainHelper *)refCopy identityForPersistentRef:v4];
   }
 
   return 0;
 }
 
-- (__SecIdentity)identityForUUIDString:(id)a3
+- (__SecIdentity)identityForUUIDString:(id)string
 {
   v17[4] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  stringCopy = string;
   v4 = *MEMORY[0x277CDC240];
   v5 = *MEMORY[0x277CDC080];
   v16[0] = *MEMORY[0x277CDC228];
   v16[1] = v5;
   v17[0] = v4;
-  v17[1] = v3;
+  v17[1] = stringCopy;
   v6 = *MEMORY[0x277CDC428];
   v16[2] = *MEMORY[0x277CDC568];
   v16[3] = v6;
@@ -46,7 +46,7 @@
     v11 = SO_LOG_SOKeychainHelper();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      [(SOKeychainHelper *)v3 identityForUUIDString:v10, v11];
+      [(SOKeychainHelper *)stringCopy identityForUUIDString:v10, v11];
     }
 
     v12 = 0;
@@ -61,37 +61,37 @@
   return v12;
 }
 
-- (int)addCredentialsToKeychainWithService:(id)a3 withUsername:(id)a4 withPassword:(id)a5 requireUserPresence:(BOOL)a6
+- (int)addCredentialsToKeychainWithService:(id)service withUsername:(id)username withPassword:(id)password requireUserPresence:(BOOL)presence
 {
-  v6 = a6;
+  presenceCopy = presence;
   v42 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  serviceCopy = service;
+  usernameCopy = username;
+  passwordCopy = password;
   v13 = SO_LOG_SOKeychainHelper();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315650;
     v37 = "[SOKeychainHelper addCredentialsToKeychainWithService:withUsername:withPassword:requireUserPresence:]";
     v38 = 2112;
-    v39 = v10;
+    selfCopy4 = serviceCopy;
     v40 = 2112;
-    v41 = self;
+    selfCopy = self;
     _os_log_impl(&dword_24006C000, v13, OS_LOG_TYPE_DEFAULT, "%s service %@ on %@", buf, 0x20u);
   }
 
-  v14 = [v12 dataUsingEncoding:4];
+  v14 = [passwordCopy dataUsingEncoding:4];
 
   v15 = SO_LOG_SOKeychainHelper();
   v16 = os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT);
-  if (v6)
+  if (presenceCopy)
   {
     if (v16)
     {
       *buf = 136315394;
       v37 = "[SOKeychainHelper addCredentialsToKeychainWithService:withUsername:withPassword:requireUserPresence:]";
       v38 = 2112;
-      v39 = self;
+      selfCopy4 = self;
       _os_log_impl(&dword_24006C000, v15, OS_LOG_TYPE_DEFAULT, "%s requireUserPresence is enabled on %@", buf, 0x16u);
     }
 
@@ -105,7 +105,7 @@
       *buf = 136315394;
       v37 = "[SOKeychainHelper addCredentialsToKeychainWithService:withUsername:withPassword:requireUserPresence:]";
       v38 = 2112;
-      v39 = self;
+      selfCopy4 = self;
       _os_log_impl(&dword_24006C000, v15, OS_LOG_TYPE_DEFAULT, "%s requireUserPresence is disabled on %@", buf, 0x16u);
     }
 
@@ -126,14 +126,14 @@
   }
 
   v19 = v18;
-  if (v10 && v11 && v14)
+  if (serviceCopy && usernameCopy && v14)
   {
     v20 = *MEMORY[0x277CDC5E8];
     v35[0] = v14;
-    v21 = [v11 lowercaseString];
+    lowercaseString = [usernameCopy lowercaseString];
     v22 = *MEMORY[0x277CDC120];
-    v35[1] = v21;
-    v35[2] = v10;
+    v35[1] = lowercaseString;
+    v35[2] = serviceCopy;
     v23 = *MEMORY[0x277CDC228];
     v34[2] = v22;
     v34[3] = v23;
@@ -169,7 +169,7 @@ LABEL_20:
     *buf = 136315394;
     v37 = "[SOKeychainHelper addCredentialsToKeychainWithService:withUsername:withPassword:requireUserPresence:]";
     v38 = 2112;
-    v39 = self;
+    selfCopy4 = self;
     _os_log_impl(&dword_24006C000, v31, OS_LOG_TYPE_DEFAULT, "%s Could not add credentials to keychain. Invalid parameters on %@", buf, 0x16u);
   }
 
@@ -181,21 +181,21 @@ LABEL_24:
   return v30;
 }
 
-- (int)retrieveCredentialsFromKeychainWithContext:(id)a3 service:(id)a4 returnedUsername:(id *)a5 returnedPassword:(id *)a6
+- (int)retrieveCredentialsFromKeychainWithContext:(id)context service:(id)service returnedUsername:(id *)username returnedPassword:(id *)password
 {
   v34 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
+  contextCopy = context;
+  serviceCopy = service;
   result = 0;
   v12 = SO_LOG_SOKeychainHelper();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v31 = v11;
+    v31 = serviceCopy;
     _os_log_impl(&dword_24006C000, v12, OS_LOG_TYPE_DEFAULT, "Finding keychain entry for service %@", buf, 0xCu);
   }
 
-  if (v11)
+  if (serviceCopy)
   {
     v13 = *MEMORY[0x277CBED28];
     v14 = *MEMORY[0x277CDC558];
@@ -205,7 +205,7 @@ LABEL_24:
     v28[2] = *MEMORY[0x277CDC120];
     v28[3] = v15;
     v16 = *MEMORY[0x277CDC238];
-    v29[2] = v11;
+    v29[2] = serviceCopy;
     v29[3] = v16;
     v29[0] = v13;
     v29[1] = v13;
@@ -214,9 +214,9 @@ LABEL_24:
     v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v29 forKeys:v28 count:5];
     v18 = [v17 mutableCopy];
 
-    if (v10)
+    if (contextCopy)
     {
-      [v18 setObject:v10 forKeyedSubscript:*MEMORY[0x277CDC5A0]];
+      [v18 setObject:contextCopy forKeyedSubscript:*MEMORY[0x277CDC5A0]];
     }
 
     v19 = SecItemCopyMatching(v18, &result);
@@ -237,9 +237,9 @@ LABEL_24:
       v21 = [v20 objectForKey:*MEMORY[0x277CDBF20]];
       v22 = [v20 objectForKey:*MEMORY[0x277CDC5E8]];
       v23 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v22 encoding:4];
-      *a6 = v23;
+      *password = v23;
       v24 = v21;
-      *a5 = v21;
+      *username = v21;
       if (result)
       {
         CFRelease(result);
@@ -257,7 +257,7 @@ LABEL_24:
       *buf = 136315394;
       v31 = "[SOKeychainHelper retrieveCredentialsFromKeychainWithContext:service:returnedUsername:returnedPassword:]";
       v32 = 2112;
-      v33 = self;
+      selfCopy = self;
       _os_log_impl(&dword_24006C000, v18, OS_LOG_TYPE_DEFAULT, "%s Could not find credentials in keychain. Invalid parameters on %@", buf, 0x16u);
     }
   }
@@ -266,20 +266,20 @@ LABEL_24:
   return v19;
 }
 
-- (BOOL)hasCredentialsInKeychainWithService:(id)a3
+- (BOOL)hasCredentialsInKeychainWithService:(id)service
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  serviceCopy = service;
   result = 0;
   v5 = SO_LOG_SOKeychainHelper();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v24 = v4;
+    v24 = serviceCopy;
     _os_log_impl(&dword_24006C000, v5, OS_LOG_TYPE_DEFAULT, "Checking if keychain entry existis for service %@", buf, 0xCu);
   }
 
-  if (v4)
+  if (serviceCopy)
   {
     v6 = objc_alloc_init(MEMORY[0x277CD4790]);
     [v6 setInteractionNotAllowed:1];
@@ -294,7 +294,7 @@ LABEL_24:
     v21[2] = *MEMORY[0x277CDC120];
     v21[3] = v10;
     v11 = *MEMORY[0x277CDC238];
-    v22[2] = v4;
+    v22[2] = serviceCopy;
     v22[3] = v11;
     v12 = *MEMORY[0x277CDC5A0];
     v21[4] = *MEMORY[0x277CDC5C8];
@@ -330,7 +330,7 @@ LABEL_24:
       *buf = 136315394;
       v24 = "[SOKeychainHelper hasCredentialsInKeychainWithService:]";
       v25 = 2112;
-      v26 = self;
+      selfCopy = self;
       _os_log_impl(&dword_24006C000, v6, OS_LOG_TYPE_DEFAULT, "%s Could not find credentials in keychain. Invalid parameters on %@", buf, 0x16u);
     }
 
@@ -341,19 +341,19 @@ LABEL_24:
   return v15;
 }
 
-- (int)removeCredentialsFromKeychainWithService:(id)a3
+- (int)removeCredentialsFromKeychainWithService:(id)service
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  serviceCopy = service;
   v5 = SO_LOG_SOKeychainHelper();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v18 = v4;
+    v18 = serviceCopy;
     _os_log_impl(&dword_24006C000, v5, OS_LOG_TYPE_DEFAULT, "Deleting keychain entry for service %@", buf, 0xCu);
   }
 
-  if (v4)
+  if (serviceCopy)
   {
     v6 = *MEMORY[0x277CBED28];
     v7 = *MEMORY[0x277CDC558];
@@ -363,7 +363,7 @@ LABEL_24:
     v15[2] = *MEMORY[0x277CDC120];
     v15[3] = v8;
     v9 = *MEMORY[0x277CDC238];
-    v16[2] = v4;
+    v16[2] = serviceCopy;
     v16[3] = v9;
     v16[0] = v6;
     v16[1] = v6;
@@ -392,7 +392,7 @@ LABEL_24:
       *buf = 136315394;
       v18 = "[SOKeychainHelper removeCredentialsFromKeychainWithService:]";
       v19 = 2112;
-      v20 = self;
+      selfCopy = self;
       _os_log_impl(&dword_24006C000, v10, OS_LOG_TYPE_DEFAULT, "%s Could not delete credentials from keychain. Invalid parameters on %@", buf, 0x16u);
     }
   }

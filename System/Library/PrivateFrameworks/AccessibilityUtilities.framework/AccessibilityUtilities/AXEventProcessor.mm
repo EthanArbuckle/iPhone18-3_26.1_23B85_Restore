@@ -1,22 +1,22 @@
 @interface AXEventProcessor
 - (AXEventProcessor)init;
-- (AXEventProcessor)initWithHIDTapIdentifier:(id)a3 HIDEventTapPriority:(int)a4 shouldMonitorHIDEventsOnly:(BOOL)a5 systemEventTapIdentifier:(id)a6 systemEventTapPriority:(int)a7;
+- (AXEventProcessor)initWithHIDTapIdentifier:(id)identifier HIDEventTapPriority:(int)priority shouldMonitorHIDEventsOnly:(BOOL)only systemEventTapIdentifier:(id)tapIdentifier systemEventTapPriority:(int)tapPriority;
 - (void)_installHIDEventFilter;
 - (void)_installSystemEventFilter;
 - (void)_runHIDEventReceiveThread;
 - (void)_uninstallHIDEventFilter;
 - (void)_uninstallSystemEventFilter;
-- (void)beginHandlingHIDEventsForReason:(id)a3;
-- (void)beginHandlingSystemEventsForReason:(id)a3;
+- (void)beginHandlingHIDEventsForReason:(id)reason;
+- (void)beginHandlingSystemEventsForReason:(id)reason;
 - (void)cleanup;
 - (void)dealloc;
-- (void)endHandlingHIDEventsForReason:(id)a3;
-- (void)endHandlingSystemEventsForReason:(id)a3;
+- (void)endHandlingHIDEventsForReason:(id)reason;
+- (void)endHandlingSystemEventsForReason:(id)reason;
 - (void)raiseHIDEventTapPriorityToMaximum;
 - (void)raiseSystemEventTapPriorityToMaximum;
 - (void)restoreHIDEventTapPriorityToDefault;
 - (void)restoreSystemEventTapPriorityToDefault;
-- (void)setIgnoreEventsForContinuitySession:(BOOL)a3;
+- (void)setIgnoreEventsForContinuitySession:(BOOL)session;
 @end
 
 @implementation AXEventProcessor
@@ -28,38 +28,38 @@
   return [(AXEventProcessor *)self initWithHIDTapIdentifier:0 HIDEventTapPriority:0 shouldMonitorHIDEventsOnly:0 systemEventTapIdentifier:0 systemEventTapPriority:0];
 }
 
-- (AXEventProcessor)initWithHIDTapIdentifier:(id)a3 HIDEventTapPriority:(int)a4 shouldMonitorHIDEventsOnly:(BOOL)a5 systemEventTapIdentifier:(id)a6 systemEventTapPriority:(int)a7
+- (AXEventProcessor)initWithHIDTapIdentifier:(id)identifier HIDEventTapPriority:(int)priority shouldMonitorHIDEventsOnly:(BOOL)only systemEventTapIdentifier:(id)tapIdentifier systemEventTapPriority:(int)tapPriority
 {
-  v7 = *&a7;
-  v9 = a5;
-  v10 = *&a4;
-  v12 = a3;
-  v13 = a6;
+  v7 = *&tapPriority;
+  onlyCopy = only;
+  v10 = *&priority;
+  identifierCopy = identifier;
+  tapIdentifierCopy = tapIdentifier;
   v31.receiver = self;
   v31.super_class = AXEventProcessor;
   v14 = [(AXEventProcessor *)&v31 init];
   v15 = v14;
   if (v14)
   {
-    [(AXEventProcessor *)v14 setHIDEventTapIdentifier:v12];
+    [(AXEventProcessor *)v14 setHIDEventTapIdentifier:identifierCopy];
     [(AXEventProcessor *)v15 setHIDEventTapPriority:v10];
     [(AXEventProcessor *)v15 setHIDEventFilterMask:1];
-    [(AXEventProcessor *)v15 setSystemEventTapIdentifier:v13];
+    [(AXEventProcessor *)v15 setSystemEventTapIdentifier:tapIdentifierCopy];
     [(AXEventProcessor *)v15 setSystemEventTapPriority:v7];
-    [(AXEventProcessor *)v15 setShouldMonitorHIDEventsOnly:v9];
-    v16 = [MEMORY[0x1E695DF70] array];
-    [(AXEventProcessor *)v15 setHidActualEventTapEnabledReasons:v16];
+    [(AXEventProcessor *)v15 setShouldMonitorHIDEventsOnly:onlyCopy];
+    array = [MEMORY[0x1E695DF70] array];
+    [(AXEventProcessor *)v15 setHidActualEventTapEnabledReasons:array];
 
-    v17 = [MEMORY[0x1E695DF70] array];
-    [(AXEventProcessor *)v15 setSystemActualEventTapEnabledReasons:v17];
+    array2 = [MEMORY[0x1E695DF70] array];
+    [(AXEventProcessor *)v15 setSystemActualEventTapEnabledReasons:array2];
 
     IsBackboard = AXProcessIsBackboard();
-    if (v13 && (IsBackboard & 1) == 0)
+    if (tapIdentifierCopy && (IsBackboard & 1) == 0)
     {
       _AXAssert();
     }
 
-    if (v12)
+    if (identifierCopy)
     {
       v15->_shouldRunHIDReceiveThreadRunloop = 1;
       objc_initWeak(&location, v15);
@@ -74,7 +74,7 @@
       v15->_HIDEventReceiveThread = v20;
 
       v22 = v15->_HIDEventReceiveThread;
-      v23 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-HIDEventReceive-%p", v12, v15, v25, v26, v27, v28];
+      v23 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-HIDEventReceive-%p", identifierCopy, v15, v25, v26, v27, v28];
       [(NSThread *)v22 setName:v23];
 
       [(NSThread *)v15->_HIDEventReceiveThread start];
@@ -116,32 +116,32 @@ void __140__AXEventProcessor_initWithHIDTapIdentifier_HIDEventTapPriority_should
   }
 }
 
-- (void)beginHandlingHIDEventsForReason:(id)a3
+- (void)beginHandlingHIDEventsForReason:(id)reason
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(AXEventProcessor *)self HIDEventTapIdentifier];
+  reasonCopy = reason;
+  hIDEventTapIdentifier = [(AXEventProcessor *)self HIDEventTapIdentifier];
 
-  if (v5)
+  if (hIDEventTapIdentifier)
   {
-    v6 = [(AXEventProcessor *)self hidActualEventTapEnabledReasons];
-    v7 = [v6 containsObject:v4];
+    hidActualEventTapEnabledReasons = [(AXEventProcessor *)self hidActualEventTapEnabledReasons];
+    v7 = [hidActualEventTapEnabledReasons containsObject:reasonCopy];
 
     if (v7)
     {
-      v8 = AXLogCommon();
-      if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+      hidActualEventTapEnabledReasons2 = AXLogCommon();
+      if (os_log_type_enabled(hidActualEventTapEnabledReasons2, OS_LOG_TYPE_DEFAULT))
       {
         v9 = 138412290;
-        v10 = v4;
-        _os_log_impl(&dword_18B15E000, v8, OS_LOG_TYPE_DEFAULT, "EventProcessor: This reason already exists among reasons for tapping HID events. Unbalanced. %@", &v9, 0xCu);
+        v10 = reasonCopy;
+        _os_log_impl(&dword_18B15E000, hidActualEventTapEnabledReasons2, OS_LOG_TYPE_DEFAULT, "EventProcessor: This reason already exists among reasons for tapping HID events. Unbalanced. %@", &v9, 0xCu);
       }
     }
 
     else
     {
-      v8 = [(AXEventProcessor *)self hidActualEventTapEnabledReasons];
-      [v8 addObject:v4];
+      hidActualEventTapEnabledReasons2 = [(AXEventProcessor *)self hidActualEventTapEnabledReasons];
+      [hidActualEventTapEnabledReasons2 addObject:reasonCopy];
     }
 
     if (![(AXEventProcessor *)self isHandlingHIDEvents])
@@ -157,40 +157,40 @@ void __140__AXEventProcessor_initWithHIDTapIdentifier_HIDEventTapPriority_should
   }
 }
 
-- (void)endHandlingHIDEventsForReason:(id)a3
+- (void)endHandlingHIDEventsForReason:(id)reason
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(AXEventProcessor *)self hidActualEventTapEnabledReasons];
-  v6 = [v5 containsObject:v4];
+  reasonCopy = reason;
+  hidActualEventTapEnabledReasons = [(AXEventProcessor *)self hidActualEventTapEnabledReasons];
+  v6 = [hidActualEventTapEnabledReasons containsObject:reasonCopy];
 
   if (v6)
   {
-    v7 = [(AXEventProcessor *)self hidActualEventTapEnabledReasons];
-    [v7 removeObject:v4];
+    hidActualEventTapEnabledReasons2 = [(AXEventProcessor *)self hidActualEventTapEnabledReasons];
+    [hidActualEventTapEnabledReasons2 removeObject:reasonCopy];
   }
 
   else
   {
-    v7 = AXLogCommon();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+    hidActualEventTapEnabledReasons2 = AXLogCommon();
+    if (os_log_type_enabled(hidActualEventTapEnabledReasons2, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138412290;
-      v11 = v4;
-      _os_log_impl(&dword_18B15E000, v7, OS_LOG_TYPE_DEFAULT, "EventProcessor: This reason does not exist among reasons for tapping HID events. Unbalanced. %@", &v10, 0xCu);
+      v11 = reasonCopy;
+      _os_log_impl(&dword_18B15E000, hidActualEventTapEnabledReasons2, OS_LOG_TYPE_DEFAULT, "EventProcessor: This reason does not exist among reasons for tapping HID events. Unbalanced. %@", &v10, 0xCu);
     }
   }
 
-  v8 = [(AXEventProcessor *)self hidActualEventTapEnabledReasons];
-  if ([v8 count])
+  hidActualEventTapEnabledReasons3 = [(AXEventProcessor *)self hidActualEventTapEnabledReasons];
+  if ([hidActualEventTapEnabledReasons3 count])
   {
   }
 
   else
   {
-    v9 = [(AXEventProcessor *)self isHandlingHIDEvents];
+    isHandlingHIDEvents = [(AXEventProcessor *)self isHandlingHIDEvents];
 
-    if (v9)
+    if (isHandlingHIDEvents)
     {
       [(AXEventProcessor *)self setHandlingHIDEvents:0];
       [(AXEventProcessor *)self performSelector:sel__uninstallHIDEventFilter onThread:self->_HIDEventReceiveThread withObject:0 waitUntilDone:0];
@@ -200,9 +200,9 @@ void __140__AXEventProcessor_initWithHIDTapIdentifier_HIDEventTapPriority_should
 
 - (void)raiseHIDEventTapPriorityToMaximum
 {
-  v3 = [(AXEventProcessor *)self HIDEventTapIdentifier];
+  hIDEventTapIdentifier = [(AXEventProcessor *)self HIDEventTapIdentifier];
 
-  if (v3)
+  if (hIDEventTapIdentifier)
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
@@ -222,9 +222,9 @@ void __53__AXEventProcessor_raiseHIDEventTapPriorityToMaximum__block_invoke(uint
 
 - (void)restoreHIDEventTapPriorityToDefault
 {
-  v3 = [(AXEventProcessor *)self HIDEventTapIdentifier];
+  hIDEventTapIdentifier = [(AXEventProcessor *)self HIDEventTapIdentifier];
 
-  if (v3)
+  if (hIDEventTapIdentifier)
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
@@ -242,19 +242,19 @@ void __55__AXEventProcessor_restoreHIDEventTapPriorityToDefault__block_invoke(ui
   [v3 setEventTapPriority:v2 priority:{objc_msgSend(*(a1 + 32), "HIDEventTapPriority")}];
 }
 
-- (void)beginHandlingSystemEventsForReason:(id)a3
+- (void)beginHandlingSystemEventsForReason:(id)reason
 {
-  v4 = a3;
-  v5 = [(AXEventProcessor *)self systemEventTapIdentifier];
+  reasonCopy = reason;
+  systemEventTapIdentifier = [(AXEventProcessor *)self systemEventTapIdentifier];
 
-  if (v5)
+  if (systemEventTapIdentifier)
   {
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __55__AXEventProcessor_beginHandlingSystemEventsForReason___block_invoke;
     v6[3] = &unk_1E71EA128;
     v6[4] = self;
-    v7 = v4;
+    v7 = reasonCopy;
     dispatch_async(MEMORY[0x1E69E96A0], v6);
   }
 
@@ -295,16 +295,16 @@ uint64_t __55__AXEventProcessor_beginHandlingSystemEventsForReason___block_invok
   return result;
 }
 
-- (void)endHandlingSystemEventsForReason:(id)a3
+- (void)endHandlingSystemEventsForReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __53__AXEventProcessor_endHandlingSystemEventsForReason___block_invoke;
   v6[3] = &unk_1E71EA128;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = reasonCopy;
+  v5 = reasonCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
@@ -348,9 +348,9 @@ void __53__AXEventProcessor_endHandlingSystemEventsForReason___block_invoke(uint
 
 - (void)raiseSystemEventTapPriorityToMaximum
 {
-  v3 = [(AXEventProcessor *)self systemEventTapIdentifier];
+  systemEventTapIdentifier = [(AXEventProcessor *)self systemEventTapIdentifier];
 
-  if (v3)
+  if (systemEventTapIdentifier)
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
@@ -370,9 +370,9 @@ void __56__AXEventProcessor_raiseSystemEventTapPriorityToMaximum__block_invoke(u
 
 - (void)restoreSystemEventTapPriorityToDefault
 {
-  v3 = [(AXEventProcessor *)self systemEventTapIdentifier];
+  systemEventTapIdentifier = [(AXEventProcessor *)self systemEventTapIdentifier];
 
-  if (v3)
+  if (systemEventTapIdentifier)
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
@@ -390,14 +390,14 @@ void __58__AXEventProcessor_restoreSystemEventTapPriorityToDefault__block_invoke
   [v3 setEventTapPriority:v2 priority:{objc_msgSend(*(a1 + 32), "systemEventTapPriority")}];
 }
 
-- (void)setIgnoreEventsForContinuitySession:(BOOL)a3
+- (void)setIgnoreEventsForContinuitySession:(BOOL)session
 {
-  self->_ignoreEventsForContinuitySession = a3;
+  self->_ignoreEventsForContinuitySession = session;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __56__AXEventProcessor_setIgnoreEventsForContinuitySession___block_invoke;
   block[3] = &__block_descriptor_33_e5_v8__0l;
-  v4 = a3;
+  sessionCopy = session;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
@@ -412,16 +412,16 @@ void __56__AXEventProcessor_setIgnoreEventsForContinuitySession___block_invoke(u
 {
   AXSetThreadPriority();
   v3 = objc_autoreleasePoolPush();
-  v4 = [MEMORY[0x1E695DFD0] currentRunLoop];
-  v5 = [MEMORY[0x1E695DF60] port];
+  currentRunLoop = [MEMORY[0x1E695DFD0] currentRunLoop];
+  port = [MEMORY[0x1E695DF60] port];
   v6 = *MEMORY[0x1E695D918];
-  [v4 addPort:v5 forMode:*MEMORY[0x1E695D918]];
+  [currentRunLoop addPort:port forMode:*MEMORY[0x1E695D918]];
 
   do
   {
     v7 = objc_autoreleasePoolPush();
-    v8 = [MEMORY[0x1E695DF00] distantFuture];
-    [v4 runMode:v6 beforeDate:v8];
+    distantFuture = [MEMORY[0x1E695DF00] distantFuture];
+    [currentRunLoop runMode:v6 beforeDate:distantFuture];
 
     objc_autoreleasePoolPop(v7);
   }
@@ -433,17 +433,17 @@ void __56__AXEventProcessor_setIgnoreEventsForContinuitySession___block_invoke(u
 
 - (void)_installHIDEventFilter
 {
-  v3 = [(AXEventProcessor *)self HIDEventFilterMask];
+  hIDEventFilterMask = [(AXEventProcessor *)self HIDEventFilterMask];
   v4 = ([(AXEventProcessor *)self HIDEventFilterMask]>> 1) & 1;
   v5 = ([(AXEventProcessor *)self HIDEventFilterMask]>> 2) & 1;
   v6 = ([(AXEventProcessor *)self HIDEventFilterMask]>> 3) & 1;
-  v21 = [(AXEventProcessor *)self HIDEventFilterMask];
+  hIDEventFilterMask2 = [(AXEventProcessor *)self HIDEventFilterMask];
   v7 = ([(AXEventProcessor *)self HIDEventFilterMask]>> 4) & 1;
   v8 = ([(AXEventProcessor *)self HIDEventFilterMask]>> 5) & 1;
   v9 = ([(AXEventProcessor *)self HIDEventFilterMask]>> 6) & 1;
   v10 = ([(AXEventProcessor *)self HIDEventFilterMask]>> 7) & 1;
   v11 = objc_opt_new();
-  [v11 setWantsDigitizerEvents:v3 & 1];
+  [v11 setWantsDigitizerEvents:hIDEventFilterMask & 1];
   [v11 setWantsKeyboardEvents:v4];
   [v11 setWantsATVRemoteEvents:v5];
   [v11 setWantsLisaEvents:v6];
@@ -458,7 +458,7 @@ void __56__AXEventProcessor_setIgnoreEventsForContinuitySession___block_invoke(u
   v22[2] = __42__AXEventProcessor__installHIDEventFilter__block_invoke;
   v22[3] = &unk_1E71EC9F0;
   objc_copyWeak(&v23, &location);
-  v13 = [(AXEventProcessor *)self HIDEventTapIdentifier];
+  hIDEventTapIdentifier = [(AXEventProcessor *)self HIDEventTapIdentifier];
   if ([(AXEventProcessor *)self shouldMonitorHIDEventsOnly])
   {
     v14 = 2;
@@ -469,16 +469,16 @@ void __56__AXEventProcessor_setIgnoreEventsForContinuitySession___block_invoke(u
     v14 = 1;
   }
 
-  v15 = [v12 installEventTap:v22 identifier:v13 type:v14 skipDeviceMatching:(v21 >> 8) & 1 filterEvents:v11 matchingServiceHandler:0];
+  v15 = [v12 installEventTap:v22 identifier:hIDEventTapIdentifier type:v14 skipDeviceMatching:(hIDEventFilterMask2 >> 8) & 1 filterEvents:v11 matchingServiceHandler:0];
 
   v16 = +[AXEventTapManager sharedManager];
-  v17 = [(AXEventProcessor *)self HIDEventTapIdentifier];
-  [v16 setEventTapPriority:v17 priority:{-[AXEventProcessor HIDEventTapPriority](self, "HIDEventTapPriority")}];
+  hIDEventTapIdentifier2 = [(AXEventProcessor *)self HIDEventTapIdentifier];
+  [v16 setEventTapPriority:hIDEventTapIdentifier2 priority:{-[AXEventProcessor HIDEventTapPriority](self, "HIDEventTapPriority")}];
 
   v18 = +[AXEventTapManager sharedManager];
-  v19 = [(AXEventProcessor *)self HIDEventTapIdentifier];
-  v20 = [(AXEventProcessor *)self failedToHandleEventInTime];
-  [v18 setFailedToProcessInTimeCallback:v19 callback:v20];
+  hIDEventTapIdentifier3 = [(AXEventProcessor *)self HIDEventTapIdentifier];
+  failedToHandleEventInTime = [(AXEventProcessor *)self failedToHandleEventInTime];
+  [v18 setFailedToProcessInTimeCallback:hIDEventTapIdentifier3 callback:failedToHandleEventInTime];
 
   objc_destroyWeak(&v23);
   objc_destroyWeak(&location);
@@ -539,8 +539,8 @@ void __42__AXEventProcessor__installHIDEventFilter__block_invoke_3()
 - (void)_uninstallHIDEventFilter
 {
   v4 = +[AXEventTapManager sharedManager];
-  v3 = [(AXEventProcessor *)self HIDEventTapIdentifier];
-  [v4 removeEventTap:v3];
+  hIDEventTapIdentifier = [(AXEventProcessor *)self HIDEventTapIdentifier];
+  [v4 removeEventTap:hIDEventTapIdentifier];
 }
 
 - (void)_installSystemEventFilter
@@ -553,8 +553,8 @@ void __42__AXEventProcessor__installHIDEventFilter__block_invoke_3()
   v5 = [v3 installEventTap:&v8 identifier:v4 type:0];
 
   v6 = +[AXEventTapManager sharedManager];
-  v7 = [(AXEventProcessor *)self systemEventTapIdentifier];
-  [v6 setEventTapPriority:v7 priority:{-[AXEventProcessor systemEventTapPriority](self, "systemEventTapPriority")}];
+  systemEventTapIdentifier = [(AXEventProcessor *)self systemEventTapIdentifier];
+  [v6 setEventTapPriority:systemEventTapIdentifier priority:{-[AXEventProcessor systemEventTapPriority](self, "systemEventTapPriority")}];
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -592,8 +592,8 @@ void __45__AXEventProcessor__installSystemEventFilter__block_invoke_2()
 - (void)_uninstallSystemEventFilter
 {
   v4 = +[AXEventTapManager sharedManager];
-  v3 = [(AXEventProcessor *)self systemEventTapIdentifier];
-  [v4 removeEventTap:v3];
+  systemEventTapIdentifier = [(AXEventProcessor *)self systemEventTapIdentifier];
+  [v4 removeEventTap:systemEventTapIdentifier];
 }
 
 @end

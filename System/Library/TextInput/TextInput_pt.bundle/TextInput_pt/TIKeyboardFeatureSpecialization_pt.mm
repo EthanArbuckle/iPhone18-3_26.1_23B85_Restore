@@ -8,8 +8,8 @@
 {
   v5.receiver = self;
   v5.super_class = TIKeyboardFeatureSpecialization_pt;
-  v2 = [(TIKeyboardFeatureSpecialization *)&v5 nonstopPunctuationCharacters];
-  v3 = [v2 stringByAppendingString:@"-"];
+  nonstopPunctuationCharacters = [(TIKeyboardFeatureSpecialization *)&v5 nonstopPunctuationCharacters];
+  v3 = [nonstopPunctuationCharacters stringByAppendingString:@"-"];
 
   return v3;
 }

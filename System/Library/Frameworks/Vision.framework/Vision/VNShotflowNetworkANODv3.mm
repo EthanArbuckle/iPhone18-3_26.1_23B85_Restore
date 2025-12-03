@@ -1,19 +1,19 @@
 @interface VNShotflowNetworkANODv3
 + (const)importantClasses;
 + (tuple<float,)inputBiasRGB;
-- (VNShotflowNetworkANODv3)initWithModelPath:(id)a3 espressoEngineID:(int)a4 espressoDeviceID:(int)a5 espressoStorageType:(int)a6 threshold:(float)a7;
-- (id)processVImage:(vImage_Buffer *)a3 inputIsBGR:(BOOL)a4;
-- (int)setInputShape:(unint64_t)a3 height:(unint64_t)a4;
+- (VNShotflowNetworkANODv3)initWithModelPath:(id)path espressoEngineID:(int)d espressoDeviceID:(int)iD espressoStorageType:(int)type threshold:(float)threshold;
+- (id)processVImage:(vImage_Buffer *)image inputIsBGR:(BOOL)r;
+- (int)setInputShape:(unint64_t)shape height:(unint64_t)height;
 - (void)initializeBuffers;
 @end
 
 @implementation VNShotflowNetworkANODv3
 
-- (id)processVImage:(vImage_Buffer *)a3 inputIsBGR:(BOOL)a4
+- (id)processVImage:(vImage_Buffer *)image inputIsBGR:(BOOL)r
 {
-  v4 = a4;
-  height = a3->height;
-  width = a3->width;
+  rCopy = r;
+  height = image->height;
+  width = image->width;
   if ([(VNShotflowNetworkANODv3 *)self setInputShape:width height:height])
   {
     exception = __cxa_allocate_exception(8uLL);
@@ -21,10 +21,10 @@
     __cxa_throw(exception, MEMORY[0x1E69E54B0], 0);
   }
 
-  v9 = *&a3->width;
-  v51[0] = *&a3->data;
+  v9 = *&image->width;
+  v51[0] = *&image->data;
   v51[1] = v9;
-  [(VNShotflowNetwork *)self runNetwork:v51 inputIsBGR:v4];
+  [(VNShotflowNetwork *)self runNetwork:v51 inputIsBGR:rCopy];
   v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
   [(VNShotflowNetwork *)self threshold];
   if (v11 == 1.0)
@@ -68,11 +68,11 @@
       if (*v14 >= v23)
       {
         v25 = *v15;
-        v26 = [v12 hasPose];
+        hasPose = [v12 hasPose];
         v27 = (v25 + 1.0);
         if (v27 == 1)
         {
-          v28 = v26;
+          v28 = hasPose;
         }
 
         else
@@ -94,14 +94,14 @@
         v34 = *v22;
         v35 = v22[1];
         v36 = [VNShotflowDetection alloc];
-        v37 = [v12 importantClasses];
+        importantClasses = [v12 importantClasses];
         v38 = (v32 / v50);
         v39 = (v33 / v20);
         v40 = (v34 / v50) - v38;
         v41 = (v35 / v20) - v39;
         v42 = 1.0 - (v41 * 0.5 + v39) - v41 * 0.5;
         LODWORD(v47) = v29;
-        v43 = [(VNShotflowDetection *)v36 initWithBox:0 defaultBox:v37[1] - *v37 > 8uLL confidence:v27 scale:v40 * 0.5 + v38 - v40 * 0.5 rotationAngle:v42 yawAngle:v40 hasLabel:v41 label:v40 * 0.5 + v38 - v40 * 0.5, v42, v40, v41, __PAIR64__(v30, LODWORD(v24)), v47];
+        v43 = [(VNShotflowDetection *)v36 initWithBox:0 defaultBox:importantClasses[1] - *importantClasses > 8uLL confidence:v27 scale:v40 * 0.5 + v38 - v40 * 0.5 rotationAngle:v42 yawAngle:v40 hasLabel:v41 label:v40 * 0.5 + v38 - v40 * 0.5, v42, v40, v41, __PAIR64__(v30, LODWORD(v24)), v47];
         [v10 addObject:v43];
 
         v23 = 0.5;
@@ -120,20 +120,20 @@
   return v10;
 }
 
-- (int)setInputShape:(unint64_t)a3 height:(unint64_t)a4
+- (int)setInputShape:(unint64_t)shape height:(unint64_t)height
 {
-  v4 = a4;
-  v5 = a3;
-  if (*&self->super.super._currentNetworkWidth == __PAIR128__(a4, a3))
+  heightCopy = height;
+  shapeCopy = shape;
+  if (*&self->super.super._currentNetworkWidth == __PAIR128__(height, shape))
   {
     return 0;
   }
 
-  v8 = [objc_opt_class() inputLayerName];
-  [v8 UTF8String];
+  inputLayerName = [objc_opt_class() inputLayerName];
+  [inputLayerName UTF8String];
 
   [objc_opt_class() inputImageSize];
-  if (v10 != v4 || v9 != v5)
+  if (v10 != heightCopy || v9 != shapeCopy)
   {
     exception = __cxa_allocate_exception(8uLL);
     *exception = 6005;
@@ -163,8 +163,8 @@
   v3 = objc_opt_class();
   v7 = 0;
   std::vector<unsigned long>::vector[abi:ne200100](&__p, 4uLL);
-  v4 = [v3 inputLayerName];
-  [v4 UTF8String];
+  inputLayerName = [v3 inputLayerName];
+  [inputLayerName UTF8String];
   blob_dimensions = espresso_network_query_blob_dimensions();
 
   if (!blob_dimensions)
@@ -178,16 +178,16 @@
   __cxa_throw(exception, MEMORY[0x1E69E54B0], 0);
 }
 
-- (VNShotflowNetworkANODv3)initWithModelPath:(id)a3 espressoEngineID:(int)a4 espressoDeviceID:(int)a5 espressoStorageType:(int)a6 threshold:(float)a7
+- (VNShotflowNetworkANODv3)initWithModelPath:(id)path espressoEngineID:(int)d espressoDeviceID:(int)iD espressoStorageType:(int)type threshold:(float)threshold
 {
-  v8 = *&a6;
-  v9 = *&a5;
-  v10 = *&a4;
-  v12 = a3;
+  v8 = *&type;
+  v9 = *&iD;
+  v10 = *&d;
+  pathCopy = path;
   v18.receiver = self;
   v18.super_class = VNShotflowNetworkANODv3;
-  *&v13 = a7;
-  v14 = [(VNShotflowNetworkANODBase *)&v18 initWithModelPath:v12 espressoEngineID:v10 espressoDeviceID:v9 espressoStorageType:v8 threshold:v13];
+  *&v13 = threshold;
+  v14 = [(VNShotflowNetworkANODBase *)&v18 initWithModelPath:pathCopy espressoEngineID:v10 espressoDeviceID:v9 espressoStorageType:v8 threshold:v13];
   v15 = v14;
   if (v14)
   {

@@ -1,19 +1,19 @@
 @interface MutedTalkerBannerViewController
-- (CGSize)preferredContentSizeWithPresentationSize:(CGSize)a3 containerSize:(CGSize)a4;
+- (CGSize)preferredContentSizeWithPresentationSize:(CGSize)size containerSize:(CGSize)containerSize;
 - (CNKMutedTalkerBannerViewControllerDelegate)delegate;
 - (NSString)requestIdentifier;
 - (NSString)requesterIdentifier;
 - (UIEdgeInsets)bannerContentOutsets;
 - (UIViewController)viewController;
-- (_TtC15ConversationKit31MutedTalkerBannerViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC15ConversationKit31MutedTalkerBannerViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)dismissBanner;
-- (void)handleTap:(id)a3;
+- (void)handleTap:(id)tap;
 - (void)playBannerSound;
-- (void)presentableWillAppearAsBanner:(id)a3;
-- (void)presentableWillDisappearAsBanner:(id)a3 withReason:(id)a4;
-- (void)setDelegate:(id)a3;
+- (void)presentableWillAppearAsBanner:(id)banner;
+- (void)presentableWillDisappearAsBanner:(id)banner withReason:(id)reason;
+- (void)setDelegate:(id)delegate;
 - (void)showBanner;
-- (void)updatePillViewWithIsMuted:(BOOL)a3;
+- (void)updatePillViewWithIsMuted:(BOOL)muted;
 - (void)viewDidLoad;
 @end
 
@@ -26,75 +26,75 @@
   return v2;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   MutedTalkerBannerViewController.delegate.setter();
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   MutedTalkerBannerViewController.viewDidLoad()();
 }
 
-- (void)handleTap:(id)a3
+- (void)handleTap:(id)tap
 {
-  v4 = a3;
-  v5 = self;
-  MutedTalkerBannerViewController.handleTap(_:)(v5);
+  tapCopy = tap;
+  selfCopy = self;
+  MutedTalkerBannerViewController.handleTap(_:)(selfCopy);
 }
 
-- (void)updatePillViewWithIsMuted:(BOOL)a3
+- (void)updatePillViewWithIsMuted:(BOOL)muted
 {
-  v4 = self;
-  MutedTalkerBannerViewController.updatePillView(isMuted:)(a3);
+  selfCopy = self;
+  MutedTalkerBannerViewController.updatePillView(isMuted:)(muted);
 }
 
 - (void)playBannerSound
 {
-  v2 = self;
+  selfCopy = self;
   MutedTalkerBannerViewController.playBannerSound()();
 }
 
 - (void)showBanner
 {
-  v2 = self;
+  selfCopy = self;
   MutedTalkerBannerViewController.showBanner()();
 }
 
 - (void)dismissBanner
 {
-  v2 = self;
+  selfCopy = self;
   MutedTalkerBannerViewController.dismissBanner()();
 }
 
-- (void)presentableWillAppearAsBanner:(id)a3
+- (void)presentableWillAppearAsBanner:(id)banner
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   MutedTalkerBannerViewController.presentableWillAppear(asBanner:)();
   swift_unknownObjectRelease();
 }
 
-- (void)presentableWillDisappearAsBanner:(id)a3 withReason:(id)a4
+- (void)presentableWillDisappearAsBanner:(id)banner withReason:(id)reason
 {
   swift_unknownObjectRetain();
-  v6 = a4;
-  v7 = self;
+  reasonCopy = reason;
+  selfCopy = self;
   MutedTalkerBannerViewController.presentableWillDisappear(asBanner:withReason:)();
   swift_unknownObjectRelease();
 }
 
-- (_TtC15ConversationKit31MutedTalkerBannerViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC15ConversationKit31MutedTalkerBannerViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   MutedTalkerBannerViewController.init(nibName:bundle:)();
 }
 
@@ -129,11 +129,11 @@
   return v2;
 }
 
-- (CGSize)preferredContentSizeWithPresentationSize:(CGSize)a3 containerSize:(CGSize)a4
+- (CGSize)preferredContentSizeWithPresentationSize:(CGSize)size containerSize:(CGSize)containerSize
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = self;
+  height = size.height;
+  width = size.width;
+  selfCopy = self;
   v9 = MutedTalkerBannerViewController.preferredContentSize(withPresentationSize:containerSize:)(__PAIR128__(*&height, *&width), __PAIR128__(v8, v7));
 
   v10 = v9.width;
@@ -145,7 +145,7 @@
 
 - (UIEdgeInsets)bannerContentOutsets
 {
-  v2 = self;
+  selfCopy = self;
   MutedTalkerBannerViewController.bannerContentOutsets.getter();
   v4 = v3;
   v6 = v5;

@@ -1,21 +1,21 @@
 @interface IMDRelayMessageToSuper_Default_Frame
-- (void)parser:(id)a3 context:(id)a4 foundCharacters:(id)a5;
+- (void)parser:(id)parser context:(id)context foundCharacters:(id)characters;
 @end
 
 @implementation IMDRelayMessageToSuper_Default_Frame
 
-- (void)parser:(id)a3 context:(id)a4 foundCharacters:(id)a5
+- (void)parser:(id)parser context:(id)context foundCharacters:(id)characters
 {
   v8 = MEMORY[0x277CCA900];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [v8 newlineCharacterSet];
-  v13 = [v9 stringByRemovingCharactersFromSet:v12];
+  charactersCopy = characters;
+  contextCopy = context;
+  parserCopy = parser;
+  newlineCharacterSet = [v8 newlineCharacterSet];
+  v13 = [charactersCopy stringByRemovingCharactersFromSet:newlineCharacterSet];
 
   v14.receiver = self;
   v14.super_class = IMDRelayMessageToSuper_Default_Frame;
-  [(IMToSuperParserFrame *)&v14 parser:v11 context:v10 foundCharacters:v13];
+  [(IMToSuperParserFrame *)&v14 parser:parserCopy context:contextCopy foundCharacters:v13];
 }
 
 @end

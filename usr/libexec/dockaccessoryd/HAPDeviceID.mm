@@ -1,14 +1,14 @@
 @interface HAPDeviceID
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToDeviceID:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToDeviceID:(id)d;
 - (HAPDeviceID)init;
-- (HAPDeviceID)initWithCoder:(id)a3;
-- (HAPDeviceID)initWithDeviceIDData:(id)a3;
-- (HAPDeviceID)initWithDeviceIDString:(id)a3;
+- (HAPDeviceID)initWithCoder:(id)coder;
+- (HAPDeviceID)initWithDeviceIDData:(id)data;
+- (HAPDeviceID)initWithDeviceIDString:(id)string;
 - (NSString)deviceIDString;
 - (id)debugDescription;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HAPDeviceID
@@ -23,13 +23,13 @@
   objc_exception_throw(v4);
 }
 
-- (HAPDeviceID)initWithDeviceIDString:(id)a3
+- (HAPDeviceID)initWithDeviceIDString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v5 = HAPDeviceIDLength;
   v6 = &buf[-((HAPDeviceIDLength + 15) & 0xFFFFFFFFFFFFFFF0)];
-  [v4 UTF8String];
-  [v4 length];
+  [stringCopy UTF8String];
+  [stringCopy length];
   if (TextToHardwareAddress())
   {
     v7 = sub_10007FAA0();
@@ -39,27 +39,27 @@
       *buf = 138543618;
       v12 = v8;
       v13 = 2112;
-      v14 = v4;
+      v14 = stringCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, "%{public}@Invalid device identifier string: %@", buf, 0x16u);
     }
 
-    v9 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     v7 = [NSData dataWithBytes:v6 length:v5];
     self = [(HAPDeviceID *)self initWithDeviceIDData:v7];
-    v9 = self;
+    selfCopy = self;
   }
 
-  return v9;
+  return selfCopy;
 }
 
-- (HAPDeviceID)initWithDeviceIDData:(id)a3
+- (HAPDeviceID)initWithDeviceIDData:(id)data
 {
-  v4 = a3;
-  v5 = [v4 length];
+  dataCopy = data;
+  v5 = [dataCopy length];
   if (v5 == HAPDeviceIDLength)
   {
     v13.receiver = self;
@@ -67,13 +67,13 @@
     v6 = [(HAPDeviceID *)&v13 init];
     if (v6)
     {
-      v7 = [v4 copy];
+      v7 = [dataCopy copy];
       data = v6->_data;
       v6->_data = v7;
     }
 
     self = v6;
-    v9 = self;
+    selfCopy = self;
   }
 
   else
@@ -85,37 +85,37 @@
       *buf = 138543618;
       v15 = v11;
       v16 = 2112;
-      v17 = v4;
+      v17 = dataCopy;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "%{public}@Invalid device identifier data: %@", buf, 0x16u);
     }
 
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
 - (id)debugDescription
 {
   v3 = objc_opt_class();
-  v4 = [(HAPDeviceID *)self deviceIDString];
-  v5 = [NSString stringWithFormat:@"<%@ %p: %@>", v3, self, v4];
+  deviceIDString = [(HAPDeviceID *)self deviceIDString];
+  v5 = [NSString stringWithFormat:@"<%@ %p: %@>", v3, self, deviceIDString];
 
   return v5;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(HAPDeviceID *)self data];
-  v3 = [v2 hash];
+  data = [(HAPDeviceID *)self data];
+  v3 = [data hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -125,7 +125,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -148,28 +148,28 @@
   return v7;
 }
 
-- (BOOL)isEqualToDeviceID:(id)a3
+- (BOOL)isEqualToDeviceID:(id)d
 {
-  if (self == a3)
+  if (self == d)
   {
     return 1;
   }
 
-  v4 = a3;
-  v5 = [(HAPDeviceID *)self data];
-  v6 = [v4 data];
+  dCopy = d;
+  data = [(HAPDeviceID *)self data];
+  data2 = [dCopy data];
 
-  LOBYTE(v4) = [v5 isEqualToData:v6];
-  return v4;
+  LOBYTE(dCopy) = [data isEqualToData:data2];
+  return dCopy;
 }
 
 - (NSString)deviceIDString
 {
   v3 = &v8 - ((3 * HAPDeviceIDLength + 15) & 0xFFFFFFFFFFFFFFF0);
-  v4 = [(HAPDeviceID *)self data];
-  [v4 bytes];
-  v5 = [(HAPDeviceID *)self data];
-  [v5 length];
+  data = [(HAPDeviceID *)self data];
+  [data bytes];
+  data2 = [(HAPDeviceID *)self data];
+  [data2 length];
   HardwareAddressToCString();
 
   v6 = [NSString stringWithUTF8String:v3];
@@ -177,32 +177,32 @@
   return v6;
 }
 
-- (HAPDeviceID)initWithCoder:(id)a3
+- (HAPDeviceID)initWithCoder:(id)coder
 {
-  v4 = a3;
-  if ([v4 allowsKeyedCoding])
+  coderCopy = coder;
+  if ([coderCopy allowsKeyedCoding])
   {
-    v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HAP.data"];
+    v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HAP.data"];
     self = [(HAPDeviceID *)self initWithDeviceIDData:v5];
 
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  if ([v5 allowsKeyedCoding])
+  coderCopy = coder;
+  if ([coderCopy allowsKeyedCoding])
   {
-    v4 = [(HAPDeviceID *)self data];
-    [v5 encodeObject:v4 forKey:@"HAP.data"];
+    data = [(HAPDeviceID *)self data];
+    [coderCopy encodeObject:data forKey:@"HAP.data"];
   }
 }
 

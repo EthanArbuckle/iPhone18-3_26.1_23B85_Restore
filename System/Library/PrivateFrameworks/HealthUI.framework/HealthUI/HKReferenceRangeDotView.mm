@@ -1,23 +1,23 @@
 @interface HKReferenceRangeDotView
 - (CGRect)desiredDotViewFrame;
-- (HKReferenceRangeDotView)initWithFrame:(CGRect)a3;
+- (HKReferenceRangeDotView)initWithFrame:(CGRect)frame;
 - (UIColor)dotColor;
 - (_HKReferenceRangeDotViewDot)dotView;
-- (void)setDotColor:(id)a3;
-- (void)setFrame:(CGRect)a3;
+- (void)setDotColor:(id)color;
+- (void)setFrame:(CGRect)frame;
 @end
 
 @implementation HKReferenceRangeDotView
 
-- (HKReferenceRangeDotView)initWithFrame:(CGRect)a3
+- (HKReferenceRangeDotView)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = HKReferenceRangeDotView;
-  v3 = [(HKReferenceRangeDotView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(HKReferenceRangeDotView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x1E69DC888] clearColor];
-    [(HKReferenceRangeDotView *)v3 setBackgroundColor:v4];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(HKReferenceRangeDotView *)v3 setBackgroundColor:clearColor];
 
     [(HKReferenceRangeDotView *)v3 setClipsToBounds:0];
     v5 = [_HKReferenceRangeDotViewDot alloc];
@@ -30,11 +30,11 @@
   return v3;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v13.receiver = self;
   v13.super_class = HKReferenceRangeDotView;
-  [(HKReferenceRangeDotView *)&v13 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(HKReferenceRangeDotView *)&v13 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(HKReferenceRangeDotView *)self desiredDotViewFrame];
   v5 = v4;
   v7 = v6;
@@ -54,16 +54,16 @@
 - (UIColor)dotColor
 {
   WeakRetained = objc_loadWeakRetained(&self->_dotView);
-  v3 = [WeakRetained dotColor];
+  dotColor = [WeakRetained dotColor];
 
-  return v3;
+  return dotColor;
 }
 
-- (void)setDotColor:(id)a3
+- (void)setDotColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   WeakRetained = objc_loadWeakRetained(&self->_dotView);
-  [WeakRetained setDotColor:v4];
+  [WeakRetained setDotColor:colorCopy];
 }
 
 - (_HKReferenceRangeDotViewDot)dotView

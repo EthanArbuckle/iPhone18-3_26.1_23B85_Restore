@@ -1,12 +1,12 @@
 @interface MobileSafariWindow
 - (CGPoint)lastTapLocation;
-- (MobileSafariWindow)initWithWindowScene:(id)a3;
+- (MobileSafariWindow)initWithWindowScene:(id)scene;
 - (MobileSafariWindowDelegate)safariWindowDelegate;
 - (void)_didCompleteSystemSnapshot;
 - (void)_updateLastTouchedWindowIfNeeded;
-- (void)handleStatusBarChangeFromHeight:(double)a3 toHeight:(double)a4;
-- (void)sendEvent:(id)a3;
-- (void)setSafariWindowDelegate:(id)a3;
+- (void)handleStatusBarChangeFromHeight:(double)height toHeight:(double)toHeight;
+- (void)sendEvent:(id)event;
+- (void)setSafariWindowDelegate:(id)delegate;
 @end
 
 @implementation MobileSafariWindow
@@ -26,25 +26,25 @@
   }
 }
 
-- (MobileSafariWindow)initWithWindowScene:(id)a3
+- (MobileSafariWindow)initWithWindowScene:(id)scene
 {
   v7.receiver = self;
   v7.super_class = MobileSafariWindow;
-  v3 = [(MobileSafariWindow *)&v7 initWithWindowScene:a3];
+  v3 = [(MobileSafariWindow *)&v7 initWithWindowScene:scene];
   if (v3)
   {
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v4 addObserver:v3 selector:sel__willBeginSystemSnapshot name:*MEMORY[0x277D77530] object:0];
-    [v4 addObserver:v3 selector:sel__didCompleteSystemSnapshot name:*MEMORY[0x277D77520] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel__willBeginSystemSnapshot name:*MEMORY[0x277D77530] object:0];
+    [defaultCenter addObserver:v3 selector:sel__didCompleteSystemSnapshot name:*MEMORY[0x277D77520] object:0];
     v5 = v3;
   }
 
   return v3;
 }
 
-- (void)setSafariWindowDelegate:(id)a3
+- (void)setSafariWindowDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_safariWindowDelegate);
 
   if (WeakRetained != obj)
@@ -56,7 +56,7 @@
   }
 }
 
-- (void)handleStatusBarChangeFromHeight:(double)a3 toHeight:(double)a4
+- (void)handleStatusBarChangeFromHeight:(double)height toHeight:(double)toHeight
 {
   v8.receiver = self;
   v8.super_class = MobileSafariWindow;
@@ -64,24 +64,24 @@
   if (self->_safariWindowDelegateRespondsToStatusBarChangedFromHeightToHeight)
   {
     WeakRetained = objc_loadWeakRetained(&self->_safariWindowDelegate);
-    [WeakRetained safariWindow:self statusBarChangedFromHeight:a3 toHeight:a4];
+    [WeakRetained safariWindow:self statusBarChangedFromHeight:height toHeight:toHeight];
   }
 }
 
-- (void)sendEvent:(id)a3
+- (void)sendEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v11.receiver = self;
   v11.super_class = MobileSafariWindow;
-  [(MobileSafariWindow *)&v11 sendEvent:v4];
-  if (![v4 type])
+  [(MobileSafariWindow *)&v11 sendEvent:eventCopy];
+  if (![eventCopy type])
   {
-    v5 = [v4 allTouches];
-    v6 = [v5 anyObject];
+    allTouches = [eventCopy allTouches];
+    anyObject = [allTouches anyObject];
 
     if (self->_safariWindowDelegateRespondsToDidEndAllTouchesAtPoint)
     {
-      WeakRetained = [v4 allTouches];
+      WeakRetained = [eventCopy allTouches];
       if ([WeakRetained count] != 1)
       {
 LABEL_6:
@@ -89,19 +89,19 @@ LABEL_6:
         goto LABEL_7;
       }
 
-      v8 = [v6 phase];
+      phase = [anyObject phase];
 
-      if (v8 == 3)
+      if (phase == 3)
       {
         WeakRetained = objc_loadWeakRetained(&self->_safariWindowDelegate);
-        [v6 locationInView:self];
+        [anyObject locationInView:self];
         [WeakRetained safariWindow:self didEndAllTouchesAtPoint:?];
         goto LABEL_6;
       }
     }
 
 LABEL_7:
-    [v6 locationInView:self];
+    [anyObject locationInView:self];
     self->_lastTapLocation.x = v9;
     self->_lastTapLocation.y = v10;
     [(MobileSafariWindow *)self _updateLastTouchedWindowIfNeeded];

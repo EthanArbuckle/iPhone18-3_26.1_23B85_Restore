@@ -1,7 +1,7 @@
 @interface RideBookingDataCoordinator
-+ (void)openRideBookingApplication:(id)a3 withUserActivity:(id)a4;
++ (void)openRideBookingApplication:(id)application withUserActivity:(id)activity;
 - (RideBookingDataCoordinator)init;
-- (RideBookingDataCoordinator)initWithRideBookingApplicationFinder:(id)a3;
+- (RideBookingDataCoordinator)initWithRideBookingApplicationFinder:(id)finder;
 - (void)_broadcastRequestRideStatusDidChange;
 - (void)_broadcastRideOptionStateDidChange;
 - (void)_broadcastRideStatusDidChange;
@@ -11,37 +11,37 @@
 - (void)_refreshRideOptions;
 - (void)_resetRequestRide;
 - (void)_startRefreshRideOptionsTimer;
-- (void)_startRequestRideExpireTimerWithExpirationDate:(id)a3;
-- (void)_startTimer:(id *)a3 withInterval:(double)a4 repeats:(BOOL)a5 block:(id)a6;
+- (void)_startRequestRideExpireTimerWithExpirationDate:(id)date;
+- (void)_startTimer:(id *)timer withInterval:(double)interval repeats:(BOOL)repeats block:(id)block;
 - (void)_stopRefreshRideOptionsTimer;
 - (void)_stopRequestRideExpireTimer;
-- (void)_stopTimer:(id *)a3;
+- (void)_stopTimer:(id *)timer;
 - (void)_updateRequestRidePickupAndDropoffLocations;
-- (void)_updateRequestRideStatus:(id)a3;
-- (void)_updateRideOptionStatusMapForOrigin:(id)a3 destination:(id)a4 application:(id)a5;
-- (void)_updateRideOptionStatusMapWithApplication:(id)a3 status:(id)a4;
-- (void)_updateRideStatusMapForApplication:(id)a3;
-- (void)_updateRideStatusMapWithApplication:(id)a3 status:(id)a4;
-- (void)addRideBookingDataCoordinatorRequestRideObserver:(id)a3;
-- (void)addRideBookingDataCoordinatorRideOptionStateObserver:(id)a3;
-- (void)addRideBookingDataCoordinatorRideStatusObserver:(id)a3;
-- (void)cancelRideWithRideStatus:(id)a3 completion:(id)a4;
-- (void)checkIfCanCancelRideWithRideStatus:(id)a3 completion:(id)a4;
-- (void)cleanMapItemName:(id)a3 completion:(id)a4;
+- (void)_updateRequestRideStatus:(id)status;
+- (void)_updateRideOptionStatusMapForOrigin:(id)origin destination:(id)destination application:(id)application;
+- (void)_updateRideOptionStatusMapWithApplication:(id)application status:(id)status;
+- (void)_updateRideStatusMapForApplication:(id)application;
+- (void)_updateRideStatusMapWithApplication:(id)application status:(id)status;
+- (void)addRideBookingDataCoordinatorRequestRideObserver:(id)observer;
+- (void)addRideBookingDataCoordinatorRideOptionStateObserver:(id)observer;
+- (void)addRideBookingDataCoordinatorRideStatusObserver:(id)observer;
+- (void)cancelRideWithRideStatus:(id)status completion:(id)completion;
+- (void)checkIfCanCancelRideWithRideStatus:(id)status completion:(id)completion;
+- (void)cleanMapItemName:(id)name completion:(id)completion;
 - (void)dealloc;
-- (void)enableRideBookingApplications:(id)a3;
-- (void)removeRideBookingDataCoordinatorRequestRideObserver:(id)a3;
-- (void)removeRideBookingDataCoordinatorRideOptionStateObserver:(id)a3;
-- (void)removeRideBookingDataCoordinatorRideStatusObserver:(id)a3;
-- (void)requestRideWithCompletion:(id)a3;
-- (void)rideBookingApplicationsDidChange:(id)a3;
-- (void)rideStatusDidChange:(id)a3;
-- (void)sendFeedbackForRideStatus:(id)a3 feedbackRating:(id)a4 feedbackTip:(id)a5 completion:(id)a6;
-- (void)startRequestRideForRideOption:(id)a3;
-- (void)updateRequestRidePassengers:(id)a3;
-- (void)updateRequestRidePaymentMethod:(id)a3;
-- (void)updateRequestRideStartingWaypointCoordinate:(CLLocationCoordinate2D)a3;
-- (void)updateRideOptionStateForOrigin:(id)a3 destination:(id)a4;
+- (void)enableRideBookingApplications:(id)applications;
+- (void)removeRideBookingDataCoordinatorRequestRideObserver:(id)observer;
+- (void)removeRideBookingDataCoordinatorRideOptionStateObserver:(id)observer;
+- (void)removeRideBookingDataCoordinatorRideStatusObserver:(id)observer;
+- (void)requestRideWithCompletion:(id)completion;
+- (void)rideBookingApplicationsDidChange:(id)change;
+- (void)rideStatusDidChange:(id)change;
+- (void)sendFeedbackForRideStatus:(id)status feedbackRating:(id)rating feedbackTip:(id)tip completion:(id)completion;
+- (void)startRequestRideForRideOption:(id)option;
+- (void)updateRequestRidePassengers:(id)passengers;
+- (void)updateRequestRidePaymentMethod:(id)method;
+- (void)updateRequestRideStartingWaypointCoordinate:(CLLocationCoordinate2D)coordinate;
+- (void)updateRideOptionStateForOrigin:(id)origin destination:(id)destination;
 - (void)updateRideStatusMap;
 @end
 
@@ -107,15 +107,15 @@
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "{RBInfo}{%s}: %@", buf, 0x16u);
   }
 
-  v9 = [(RideBookingDataCoordinator *)self rideStatusMap];
-  v10 = [v9 copy];
+  rideStatusMap = [(RideBookingDataCoordinator *)self rideStatusMap];
+  v10 = [rideStatusMap copy];
 
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v11 = [(RideBookingDataCoordinator *)self rideStatusObservers];
-  v12 = [v11 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  rideStatusObservers = [(RideBookingDataCoordinator *)self rideStatusObservers];
+  v12 = [rideStatusObservers countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v12)
   {
     v13 = v12;
@@ -127,7 +127,7 @@
       {
         if (*v25 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(rideStatusObservers);
         }
 
         v16 = *(*(&v24 + 1) + 8 * v15);
@@ -140,7 +140,7 @@
       }
 
       while (v13 != v15);
-      v13 = [v11 countByEnumeratingWithState:&v24 objects:v28 count:16];
+      v13 = [rideStatusObservers countByEnumeratingWithState:&v24 objects:v28 count:16];
     }
 
     while (v13);
@@ -151,10 +151,10 @@
   {
     v18 = basename("/Library/Caches/com.apple.xbs/Sources/Maps/iOS/Ride Booking/RideBookingDataCoordinator.m");
     v19 = [NSString alloc];
-    v20 = [(RideBookingDataCoordinator *)self rideStatusObservers];
-    v21 = [v20 count];
-    v22 = [(RideBookingDataCoordinator *)self rideStatusObservers];
-    v23 = [v19 initWithFormat:@"Broadcasted to %lu RideBookingDataCoordinatorRideStatusObservers: %@", v21, v22];
+    rideStatusObservers2 = [(RideBookingDataCoordinator *)self rideStatusObservers];
+    v21 = [rideStatusObservers2 count];
+    rideStatusObservers3 = [(RideBookingDataCoordinator *)self rideStatusObservers];
+    v23 = [v19 initWithFormat:@"Broadcasted to %lu RideBookingDataCoordinatorRideStatusObservers: %@", v21, rideStatusObservers3];
     *buf = 136315394;
     v30 = v18;
     v31 = 2112;
@@ -183,8 +183,8 @@
   v40 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v9 = [(RideBookingDataCoordinator *)self rideOptionStateObservers];
-  v10 = [v9 countByEnumeratingWithState:&v37 objects:v41 count:16];
+  rideOptionStateObservers = [(RideBookingDataCoordinator *)self rideOptionStateObservers];
+  v10 = [rideOptionStateObservers countByEnumeratingWithState:&v37 objects:v41 count:16];
   if (v10)
   {
     v11 = v10;
@@ -198,14 +198,14 @@
       {
         if (*v38 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(rideOptionStateObservers);
         }
 
         v14 = *(*(&v37 + 1) + 8 * v13);
         if (objc_opt_respondsToSelector())
         {
-          v15 = [(RideBookingDataCoordinator *)self rideOptionStatusMap];
-          v16 = [v15 copy];
+          rideOptionStatusMap = [(RideBookingDataCoordinator *)self rideOptionStatusMap];
+          v16 = [rideOptionStatusMap copy];
 
           if ([(RideBookingDataCoordinator *)self waitingAppSuggestionsToLoad])
           {
@@ -214,8 +214,8 @@
 
           else
           {
-            v18 = [(RideBookingDataCoordinator *)self appStoreSuggestions];
-            v17 = [v18 copy];
+            appStoreSuggestions = [(RideBookingDataCoordinator *)self appStoreSuggestions];
+            v17 = [appStoreSuggestions copy];
           }
 
           if ([(RideBookingDataCoordinator *)self waitingAppSuggestionsToLoad])
@@ -225,8 +225,8 @@
 
           else
           {
-            v20 = [(RideBookingDataCoordinator *)self installedSuggestions];
-            v19 = [v20 copy];
+            installedSuggestions = [(RideBookingDataCoordinator *)self installedSuggestions];
+            v19 = [installedSuggestions copy];
           }
 
           v36 = v16;
@@ -234,14 +234,14 @@
           v22 = GEOFindOrCreateLog();
           if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
           {
-            v23 = self;
-            v24 = v9;
+            selfCopy = self;
+            v24 = rideOptionStateObservers;
             v25 = basename("/Library/Caches/com.apple.xbs/Sources/Maps/iOS/Ride Booking/RideBookingDataCoordinator.m");
             v26 = [[NSString alloc] initWithFormat:@"rideOptionState: %@, appStoreSuggestions:%@ installedSuggestions:%@", v21, v17, v19];
             *buf = 136315394;
             v43 = v25;
-            v9 = v24;
-            self = v23;
+            rideOptionStateObservers = v24;
+            self = selfCopy;
             v12 = v34;
             v44 = 2112;
             v45 = v26;
@@ -256,7 +256,7 @@
       }
 
       while (v11 != v13);
-      v11 = [v9 countByEnumeratingWithState:&v37 objects:v41 count:16];
+      v11 = [rideOptionStateObservers countByEnumeratingWithState:&v37 objects:v41 count:16];
     }
 
     while (v11);
@@ -267,10 +267,10 @@
   {
     v28 = basename("/Library/Caches/com.apple.xbs/Sources/Maps/iOS/Ride Booking/RideBookingDataCoordinator.m");
     v29 = [NSString alloc];
-    v30 = [(RideBookingDataCoordinator *)self rideOptionStateObservers];
-    v31 = [v30 count];
-    v32 = [(RideBookingDataCoordinator *)self rideOptionStateObservers];
-    v33 = [v29 initWithFormat:@"Broadcasted to %lu RideBookingDataCoordinatorRideOptionStateObservers: %@", v31, v32];
+    rideOptionStateObservers2 = [(RideBookingDataCoordinator *)self rideOptionStateObservers];
+    v31 = [rideOptionStateObservers2 count];
+    rideOptionStateObservers3 = [(RideBookingDataCoordinator *)self rideOptionStateObservers];
+    v33 = [v29 initWithFormat:@"Broadcasted to %lu RideBookingDataCoordinatorRideOptionStateObservers: %@", v31, rideOptionStateObservers3];
     *buf = 136315394;
     v43 = v28;
     v44 = 2112;
@@ -308,7 +308,7 @@
   objc_destroyWeak(buf);
 }
 
-- (void)_stopTimer:(id *)a3
+- (void)_stopTimer:(id *)timer
 {
   v5 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -324,7 +324,7 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "{RBInfo}{%s}: %@", buf, 0x16u);
   }
 
-  if (!a3)
+  if (!timer)
   {
     v10 = GEOFindOrCreateLog();
     if (!os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
@@ -344,7 +344,7 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if (!*a3)
+  if (!*timer)
   {
     v10 = GEOFindOrCreateLog();
     if (!os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
@@ -361,18 +361,18 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  dispatch_source_set_timer(*a3, 0xFFFFFFFFFFFFFFFFLL, 0xFFFFFFFFFFFFFFFFLL, 0);
-  dispatch_source_cancel(*a3);
-  v10 = *a3;
-  *a3 = 0;
+  dispatch_source_set_timer(*timer, 0xFFFFFFFFFFFFFFFFLL, 0xFFFFFFFFFFFFFFFFLL, 0);
+  dispatch_source_cancel(*timer);
+  v10 = *timer;
+  *timer = 0;
 LABEL_11:
 }
 
-- (void)_startTimer:(id *)a3 withInterval:(double)a4 repeats:(BOOL)a5 block:(id)a6
+- (void)_startTimer:(id *)timer withInterval:(double)interval repeats:(BOOL)repeats block:(id)block
 {
-  v6 = a5;
-  v11 = a6;
-  if (!v11)
+  repeatsCopy = repeats;
+  blockCopy = block;
+  if (!blockCopy)
   {
     v25 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_FAULT))
@@ -405,7 +405,7 @@ LABEL_11:
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "{RBInfo}{%s}: %@", buf, 0x16u);
   }
 
-  if (!a3)
+  if (!timer)
   {
     v25 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
@@ -424,8 +424,8 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  v17 = *a3;
-  if (!*a3)
+  v17 = *timer;
+  if (!*timer)
   {
     v18 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
@@ -440,18 +440,18 @@ LABEL_17:
     }
 
     v21 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, self->_processQueue);
-    v22 = *a3;
-    *a3 = v21;
+    v22 = *timer;
+    *timer = v21;
 
-    dispatch_source_set_timer(*a3, 0xFFFFFFFFFFFFFFFFLL, 0xFFFFFFFFFFFFFFFFLL, 0);
-    dispatch_source_set_event_handler(*a3, v11);
-    dispatch_resume(*a3);
-    v17 = *a3;
+    dispatch_source_set_timer(*timer, 0xFFFFFFFFFFFFFFFFLL, 0xFFFFFFFFFFFFFFFFLL, 0);
+    dispatch_source_set_event_handler(*timer, blockCopy);
+    dispatch_resume(*timer);
+    v17 = *timer;
   }
 
-  if (v6)
+  if (repeatsCopy)
   {
-    v23 = (a4 * 1000000000.0);
+    v23 = (interval * 1000000000.0);
   }
 
   else
@@ -459,16 +459,16 @@ LABEL_17:
     v23 = -1;
   }
 
-  v24 = dispatch_time(0, (a4 * 1000000000.0));
+  v24 = dispatch_time(0, (interval * 1000000000.0));
   dispatch_source_set_timer(v17, v24, v23, 0x3B9ACA00uLL);
 LABEL_18:
 }
 
-- (void)cleanMapItemName:(id)a3 completion:(id)a4
+- (void)cleanMapItemName:(id)name completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  nameCopy = name;
+  completionCopy = completion;
+  if (completionCopy)
   {
     v8 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
@@ -484,18 +484,18 @@ LABEL_18:
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "{RBInfo}{%s}: %@", buf, 0x16u);
     }
 
-    v13 = [v6 addressObject];
-    v14 = [v13 fullAddressWithMultiline:0];
+    addressObject = [nameCopy addressObject];
+    v14 = [addressObject fullAddressWithMultiline:0];
 
     *buf = 0;
     *&buf[8] = buf;
     *&buf[16] = 0x3032000000;
     *&buf[24] = sub_10084D604;
     *&buf[32] = sub_10084D614;
-    v15 = v6;
+    v15 = nameCopy;
     v38 = v15;
-    v16 = [v15 place];
-    [v16 setName:v14];
+    place = [v15 place];
+    [place setName:v14];
 
     v17 = objc_opt_new();
     [v17 setName:v14];
@@ -515,26 +515,26 @@ LABEL_18:
       }
 
       v21 = +[GEOMapService sharedService];
-      v22 = [v21 defaultTraits];
+      defaultTraits = [v21 defaultTraits];
 
       v23 = +[GEOMapService sharedService];
-      v24 = [v15 _identifier];
-      v32 = v24;
+      _identifier = [v15 _identifier];
+      v32 = _identifier;
       v25 = [NSArray arrayWithObjects:&v32 count:1];
-      v26 = [v23 ticketForIdentifiers:v25 traits:v22];
+      v26 = [v23 ticketForIdentifiers:v25 traits:defaultTraits];
 
       v29[0] = _NSConcreteStackBlock;
       v29[1] = 3221225472;
       v29[2] = sub_10084D61C;
       v29[3] = &unk_101638908;
       v31 = buf;
-      v30 = v7;
+      v30 = completionCopy;
       [v26 submitWithHandler:v29 networkActivity:0];
     }
 
     else
     {
-      (*(v7 + 2))(v7, *(*&buf[8] + 40));
+      (*(completionCopy + 2))(completionCopy, *(*&buf[8] + 40));
       v26 = GEOFindOrCreateLog();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
       {
@@ -547,7 +547,7 @@ LABEL_18:
         _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_INFO, "{RBInfo}{%s}: %@", v33, 0x16u);
       }
 
-      v22 = v26;
+      defaultTraits = v26;
     }
 
     _Block_object_dispose(buf, 8);
@@ -571,9 +571,9 @@ LABEL_18:
   }
 }
 
-- (void)enableRideBookingApplications:(id)a3
+- (void)enableRideBookingApplications:(id)applications
 {
-  v5 = a3;
+  applicationsCopy = applications;
   v6 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -594,8 +594,8 @@ LABEL_18:
   block[1] = 3221225472;
   block[2] = sub_10084D978;
   block[3] = &unk_101661340;
-  v14 = v5;
-  v12 = v5;
+  v14 = applicationsCopy;
+  v12 = applicationsCopy;
   objc_copyWeak(&v15, buf);
   dispatch_async(processQueue, block);
   objc_destroyWeak(&v15);
@@ -603,11 +603,11 @@ LABEL_18:
   objc_destroyWeak(buf);
 }
 
-- (void)cancelRideWithRideStatus:(id)a3 completion:(id)a4
+- (void)cancelRideWithRideStatus:(id)status completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  statusCopy = status;
+  completionCopy = completion;
+  if (completionCopy)
   {
     v9 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
@@ -630,10 +630,10 @@ LABEL_18:
     block[2] = sub_10084DE70;
     block[3] = &unk_10162BE08;
     objc_copyWeak(v21, buf);
-    v18 = v7;
-    v15 = v8;
+    v18 = statusCopy;
+    v15 = completionCopy;
     v21[1] = a2;
-    v19 = self;
+    selfCopy = self;
     v20 = v15;
     dispatch_async(processQueue, block);
 
@@ -659,11 +659,11 @@ LABEL_18:
   }
 }
 
-- (void)checkIfCanCancelRideWithRideStatus:(id)a3 completion:(id)a4
+- (void)checkIfCanCancelRideWithRideStatus:(id)status completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  statusCopy = status;
+  completionCopy = completion;
+  if (completionCopy)
   {
     v9 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
@@ -686,9 +686,9 @@ LABEL_18:
     block[2] = sub_10084E610;
     block[3] = &unk_10162C510;
     objc_copyWeak(v19, buf);
-    v17 = v7;
+    v17 = statusCopy;
     v19[1] = a2;
-    v18 = v8;
+    v18 = completionCopy;
     dispatch_async(processQueue, block);
 
     objc_destroyWeak(v19);
@@ -713,13 +713,13 @@ LABEL_18:
   }
 }
 
-- (void)sendFeedbackForRideStatus:(id)a3 feedbackRating:(id)a4 feedbackTip:(id)a5 completion:(id)a6
+- (void)sendFeedbackForRideStatus:(id)status feedbackRating:(id)rating feedbackTip:(id)tip completion:(id)completion
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (v14)
+  statusCopy = status;
+  ratingCopy = rating;
+  tipCopy = tip;
+  completionCopy = completion;
+  if (completionCopy)
   {
     v15 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
@@ -742,11 +742,11 @@ LABEL_18:
     block[2] = sub_10084ECE8;
     block[3] = &unk_10162BD70;
     objc_copyWeak(v27, buf);
-    v23 = v11;
-    v24 = v12;
-    v25 = v13;
+    v23 = statusCopy;
+    v24 = ratingCopy;
+    v25 = tipCopy;
     v27[1] = a2;
-    v26 = v14;
+    v26 = completionCopy;
     dispatch_async(processQueue, block);
 
     objc_destroyWeak(v27);
@@ -771,9 +771,9 @@ LABEL_18:
   }
 }
 
-- (void)rideStatusDidChange:(id)a3
+- (void)rideStatusDidChange:(id)change
 {
-  v5 = a3;
+  changeCopy = change;
   v6 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -796,18 +796,18 @@ LABEL_18:
   block[3] = &unk_101651D38;
   objc_copyWeak(v15, buf);
   v15[1] = a2;
-  v14 = v5;
-  v12 = v5;
+  v14 = changeCopy;
+  v12 = changeCopy;
   dispatch_async(processQueue, block);
 
   objc_destroyWeak(v15);
   objc_destroyWeak(buf);
 }
 
-- (void)_updateRideStatusMapWithApplication:(id)a3 status:(id)a4
+- (void)_updateRideStatusMapWithApplication:(id)application status:(id)status
 {
-  v7 = a3;
-  v8 = a4;
+  applicationCopy = application;
+  statusCopy = status;
   v9 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
@@ -829,20 +829,20 @@ LABEL_18:
   block[2] = sub_10084F678;
   block[3] = &unk_10162BD20;
   objc_copyWeak(v20, buf);
-  v18 = v8;
-  v19 = v7;
+  v18 = statusCopy;
+  v19 = applicationCopy;
   v20[1] = a2;
-  v15 = v7;
-  v16 = v8;
+  v15 = applicationCopy;
+  v16 = statusCopy;
   dispatch_async(processQueue, block);
 
   objc_destroyWeak(v20);
   objc_destroyWeak(buf);
 }
 
-- (void)_updateRideStatusMapForApplication:(id)a3
+- (void)_updateRideStatusMapForApplication:(id)application
 {
-  v5 = a3;
+  applicationCopy = application;
   v6 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -863,8 +863,8 @@ LABEL_18:
   block[1] = 3221225472;
   block[2] = sub_10084FF94;
   block[3] = &unk_101651D38;
-  v14 = v5;
-  v12 = v5;
+  v14 = applicationCopy;
+  v12 = applicationCopy;
   objc_copyWeak(v15, buf);
   v15[1] = a2;
   dispatch_async(processQueue, block);
@@ -873,10 +873,10 @@ LABEL_18:
   objc_destroyWeak(buf);
 }
 
-- (void)removeRideBookingDataCoordinatorRideStatusObserver:(id)a3
+- (void)removeRideBookingDataCoordinatorRideStatusObserver:(id)observer
 {
-  v5 = a3;
-  if (v5)
+  observerCopy = observer;
+  if (observerCopy)
   {
     v6 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -899,7 +899,7 @@ LABEL_18:
     block[2] = sub_1008504D4;
     block[3] = &unk_101661340;
     objc_copyWeak(&v15, buf);
-    v14 = v5;
+    v14 = observerCopy;
     dispatch_async(processQueue, block);
 
     objc_destroyWeak(&v15);
@@ -924,10 +924,10 @@ LABEL_18:
   }
 }
 
-- (void)addRideBookingDataCoordinatorRideStatusObserver:(id)a3
+- (void)addRideBookingDataCoordinatorRideStatusObserver:(id)observer
 {
-  v5 = a3;
-  if (v5)
+  observerCopy = observer;
+  if (observerCopy)
   {
     v6 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -935,11 +935,11 @@ LABEL_18:
       v7 = basename("/Library/Caches/com.apple.xbs/Sources/Maps/iOS/Ride Booking/RideBookingDataCoordinator.m");
       v8 = [NSString alloc];
       v9 = NSStringFromSelector(a2);
-      v10 = [v8 initWithFormat:@"%@, adding observer: %@", v9, v5];
+      observerCopy = [v8 initWithFormat:@"%@, adding observer: %@", v9, observerCopy];
       *buf = 136315394;
       v17 = v7;
       v18 = 2112;
-      *v19 = v10;
+      *v19 = observerCopy;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "{RBInfo}{%s}: %@", buf, 0x16u);
     }
 
@@ -950,7 +950,7 @@ LABEL_18:
     block[2] = sub_1008508F8;
     block[3] = &unk_101661340;
     objc_copyWeak(&v15, buf);
-    v14 = v5;
+    v14 = observerCopy;
     dispatch_async(processQueue, block);
 
     objc_destroyWeak(&v15);
@@ -975,10 +975,10 @@ LABEL_18:
   }
 }
 
-- (void)requestRideWithCompletion:(id)a3
+- (void)requestRideWithCompletion:(id)completion
 {
-  v5 = a3;
-  if (v5)
+  completionCopy = completion;
+  if (completionCopy)
   {
     v6 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -1003,7 +1003,7 @@ LABEL_18:
     objc_copyWeak(v15, buf);
     block[4] = self;
     v15[1] = a2;
-    v14 = v5;
+    v14 = completionCopy;
     dispatch_async(processQueue, block);
 
     objc_destroyWeak(v15);
@@ -1028,10 +1028,10 @@ LABEL_18:
   }
 }
 
-- (void)updateRequestRidePassengers:(id)a3
+- (void)updateRequestRidePassengers:(id)passengers
 {
-  v5 = a3;
-  if (v5)
+  passengersCopy = passengers;
+  if (passengersCopy)
   {
     v6 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -1055,7 +1055,7 @@ LABEL_18:
     block[3] = &unk_101651D38;
     objc_copyWeak(v15, buf);
     v15[1] = a2;
-    v14 = v5;
+    v14 = passengersCopy;
     dispatch_sync(processQueue, block);
 
     objc_destroyWeak(v15);
@@ -1080,9 +1080,9 @@ LABEL_18:
   }
 }
 
-- (void)updateRequestRidePaymentMethod:(id)a3
+- (void)updateRequestRidePaymentMethod:(id)method
 {
-  v5 = a3;
+  methodCopy = method;
   v6 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -1104,18 +1104,18 @@ LABEL_18:
   block[2] = sub_100851A74;
   block[3] = &unk_101661340;
   objc_copyWeak(&v15, buf);
-  v14 = v5;
-  v12 = v5;
+  v14 = methodCopy;
+  v12 = methodCopy;
   dispatch_sync(processQueue, block);
 
   objc_destroyWeak(&v15);
   objc_destroyWeak(buf);
 }
 
-- (void)updateRequestRideStartingWaypointCoordinate:(CLLocationCoordinate2D)a3
+- (void)updateRequestRideStartingWaypointCoordinate:(CLLocationCoordinate2D)coordinate
 {
-  longitude = a3.longitude;
-  latitude = a3.latitude;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
   v7 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -1144,9 +1144,9 @@ LABEL_18:
   objc_destroyWeak(buf);
 }
 
-- (void)_updateRequestRideStatus:(id)a3
+- (void)_updateRequestRideStatus:(id)status
 {
-  v5 = a3;
+  statusCopy = status;
   v6 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -1168,8 +1168,8 @@ LABEL_18:
   block[2] = sub_100852AE4;
   block[3] = &unk_101661340;
   objc_copyWeak(&v15, buf);
-  v14 = v5;
-  v12 = v5;
+  v14 = statusCopy;
+  v12 = statusCopy;
   dispatch_async(processQueue, block);
 
   objc_destroyWeak(&v15);
@@ -1261,9 +1261,9 @@ LABEL_18:
   objc_destroyWeak(buf);
 }
 
-- (void)_startRequestRideExpireTimerWithExpirationDate:(id)a3
+- (void)_startRequestRideExpireTimerWithExpirationDate:(id)date
 {
-  v5 = a3;
+  dateCopy = date;
   v6 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -1278,7 +1278,7 @@ LABEL_18:
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "{RBInfo}{%s}: %@", buf, 0x16u);
   }
 
-  if (v5)
+  if (dateCopy)
   {
     objc_initWeak(buf, self);
     processQueue = self->_processQueue;
@@ -1287,7 +1287,7 @@ LABEL_18:
     block[2] = sub_100853B5C;
     block[3] = &unk_101661340;
     objc_copyWeak(&v14, buf);
-    v13 = v5;
+    v13 = dateCopy;
     dispatch_async(processQueue, block);
 
     objc_destroyWeak(&v14);
@@ -1323,10 +1323,10 @@ LABEL_18:
   objc_destroyWeak(buf);
 }
 
-- (void)startRequestRideForRideOption:(id)a3
+- (void)startRequestRideForRideOption:(id)option
 {
-  v5 = a3;
-  if (v5)
+  optionCopy = option;
+  if (optionCopy)
   {
     v6 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -1349,7 +1349,7 @@ LABEL_18:
     block[2] = sub_100854538;
     block[3] = &unk_101661340;
     objc_copyWeak(&v15, buf);
-    v14 = v5;
+    v14 = optionCopy;
     dispatch_async(processQueue, block);
 
     objc_destroyWeak(&v15);
@@ -1394,8 +1394,8 @@ LABEL_18:
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v9 = [(RideBookingDataCoordinator *)self requestRideObservers];
-  v10 = [v9 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  requestRideObservers = [(RideBookingDataCoordinator *)self requestRideObservers];
+  v10 = [requestRideObservers countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v10)
   {
     v11 = v10;
@@ -1407,21 +1407,21 @@ LABEL_18:
       {
         if (*v24 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(requestRideObservers);
         }
 
         v14 = *(*(&v23 + 1) + 8 * v13);
         if (objc_opt_respondsToSelector())
         {
-          v15 = [(RideBookingDataCoordinator *)self requestRideStatus];
-          [v14 requestRideStatusDidChange:v15];
+          requestRideStatus = [(RideBookingDataCoordinator *)self requestRideStatus];
+          [v14 requestRideStatusDidChange:requestRideStatus];
         }
 
         v13 = v13 + 1;
       }
 
       while (v11 != v13);
-      v11 = [v9 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v11 = [requestRideObservers countByEnumeratingWithState:&v23 objects:v27 count:16];
     }
 
     while (v11);
@@ -1432,10 +1432,10 @@ LABEL_18:
   {
     v17 = basename("/Library/Caches/com.apple.xbs/Sources/Maps/iOS/Ride Booking/RideBookingDataCoordinator.m");
     v18 = [NSString alloc];
-    v19 = [(RideBookingDataCoordinator *)self requestRideObservers];
-    v20 = [v19 count];
-    v21 = [(RideBookingDataCoordinator *)self requestRideObservers];
-    v22 = [v18 initWithFormat:@"Broadcasted to %lu RideBookingDataSourceRequestRideObservers: %@", v20, v21];
+    requestRideObservers2 = [(RideBookingDataCoordinator *)self requestRideObservers];
+    v20 = [requestRideObservers2 count];
+    requestRideObservers3 = [(RideBookingDataCoordinator *)self requestRideObservers];
+    v22 = [v18 initWithFormat:@"Broadcasted to %lu RideBookingDataSourceRequestRideObservers: %@", v20, requestRideObservers3];
     *buf = 136315394;
     v29 = v17;
     v30 = 2112;
@@ -1483,10 +1483,10 @@ LABEL_18:
   self->_requestRideStatus = 0;
 }
 
-- (void)removeRideBookingDataCoordinatorRequestRideObserver:(id)a3
+- (void)removeRideBookingDataCoordinatorRequestRideObserver:(id)observer
 {
-  v5 = a3;
-  if (v5)
+  observerCopy = observer;
+  if (observerCopy)
   {
     v6 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -1509,7 +1509,7 @@ LABEL_18:
     block[2] = sub_100854D9C;
     block[3] = &unk_101661340;
     objc_copyWeak(&v15, buf);
-    v14 = v5;
+    v14 = observerCopy;
     dispatch_async(processQueue, block);
 
     objc_destroyWeak(&v15);
@@ -1534,10 +1534,10 @@ LABEL_18:
   }
 }
 
-- (void)addRideBookingDataCoordinatorRequestRideObserver:(id)a3
+- (void)addRideBookingDataCoordinatorRequestRideObserver:(id)observer
 {
-  v5 = a3;
-  if (v5)
+  observerCopy = observer;
+  if (observerCopy)
   {
     v6 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -1560,7 +1560,7 @@ LABEL_18:
     block[2] = sub_1008551C0;
     block[3] = &unk_101661340;
     objc_copyWeak(&v15, buf);
-    v14 = v5;
+    v14 = observerCopy;
     dispatch_async(processQueue, block);
 
     objc_destroyWeak(&v15);
@@ -1669,10 +1669,10 @@ LABEL_18:
   objc_destroyWeak(buf);
 }
 
-- (void)_updateRideOptionStatusMapWithApplication:(id)a3 status:(id)a4
+- (void)_updateRideOptionStatusMapWithApplication:(id)application status:(id)status
 {
-  v7 = a3;
-  v8 = a4;
+  applicationCopy = application;
+  statusCopy = status;
   v9 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
@@ -1687,9 +1687,9 @@ LABEL_18:
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "{RBInfo}{%s}: %@", buf, 0x16u);
   }
 
-  v14 = [v7 identifier];
+  identifier = [applicationCopy identifier];
 
-  if (v14)
+  if (identifier)
   {
     objc_initWeak(buf, self);
     processQueue = self->_processQueue;
@@ -1698,8 +1698,8 @@ LABEL_18:
     block[2] = sub_1008562F8;
     block[3] = &unk_101661480;
     objc_copyWeak(&v21, buf);
-    v19 = v8;
-    v20 = v7;
+    v19 = statusCopy;
+    v20 = applicationCopy;
     dispatch_async(processQueue, block);
 
     objc_destroyWeak(&v21);
@@ -1711,7 +1711,7 @@ LABEL_18:
     v16 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_FAULT))
     {
-      v17 = [v7 name];
+      name = [applicationCopy name];
       *buf = 136447234;
       v23 = "/Library/Caches/com.apple.xbs/Sources/Maps/iOS/Ride Booking/RideBookingDataCoordinator.m";
       v24 = 1024;
@@ -1721,17 +1721,17 @@ LABEL_18:
       v26 = 2082;
       v27 = "nil == (application.identifier)";
       v28 = 2112;
-      v29 = v17;
+      v29 = name;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_FAULT, "At %{public}s:%d, %{public}s forbids: %{public}s. application %@ identifier cannot be nil", buf, 0x30u);
     }
   }
 }
 
-- (void)_updateRideOptionStatusMapForOrigin:(id)a3 destination:(id)a4 application:(id)a5
+- (void)_updateRideOptionStatusMapForOrigin:(id)origin destination:(id)destination application:(id)application
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  originCopy = origin;
+  destinationCopy = destination;
+  applicationCopy = application;
   v12 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
@@ -1746,29 +1746,29 @@ LABEL_18:
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "{RBInfo}{%s}: %@", buf, 0x16u);
   }
 
-  v17 = [CLPlacemark placemarkWithGEOMapItem:v9];
-  v18 = [CLPlacemark placemarkWithGEOMapItem:v10];
+  v17 = [CLPlacemark placemarkWithGEOMapItem:originCopy];
+  v18 = [CLPlacemark placemarkWithGEOMapItem:destinationCopy];
   *buf = 0;
   *&buf[8] = buf;
   *&buf[16] = 0x3032000000;
   v42 = sub_10084D604;
   v43 = sub_10084D614;
   v44 = 0;
-  if ([v11 enabled] && (objc_msgSend(v11, "identifier"), v19 = objc_claimAutoreleasedReturnValue(), v20 = isExtensionHidden(), v19, !v20))
+  if ([applicationCopy enabled] && (objc_msgSend(applicationCopy, "identifier"), v19 = objc_claimAutoreleasedReturnValue(), v20 = isExtensionHidden(), v19, !v20))
   {
-    v26 = [RideBookingRideOptionStatus statusWithApplication:v11 loadingRideOptions:1];
-    [(RideBookingDataCoordinator *)self _updateRideOptionStatusMapWithApplication:v11 status:v26];
+    v26 = [RideBookingRideOptionStatus statusWithApplication:applicationCopy loadingRideOptions:1];
+    [(RideBookingDataCoordinator *)self _updateRideOptionStatusMapWithApplication:applicationCopy status:v26];
 
     objc_initWeak(&location, self);
     v27 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
     {
       v28 = basename("/Library/Caches/com.apple.xbs/Sources/Maps/iOS/Ride Booking/RideBookingDataCoordinator.m");
-      v29 = [[NSString alloc] initWithFormat:@"Sending a getRideStatus request with application %@", v11];
+      applicationCopy = [[NSString alloc] initWithFormat:@"Sending a getRideStatus request with application %@", applicationCopy];
       *v37 = 136315394;
       v38 = v28;
       v39 = 2112;
-      v40 = v29;
+      v40 = applicationCopy;
       _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_INFO, "{RBInfo}{%s}: %@", v37, 0x16u);
     }
 
@@ -1778,7 +1778,7 @@ LABEL_18:
     v30[3] = &unk_10162BC30;
     objc_copyWeak(&v35, &location);
     v34 = buf;
-    v31 = v11;
+    v31 = applicationCopy;
     v32 = v17;
     v33 = v18;
     [v31 getRideStatusWithCompletion:v30];
@@ -1801,20 +1801,20 @@ LABEL_18:
       _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_INFO, "{RBInfo}{%s}: %@", v37, 0x16u);
     }
 
-    v24 = [RideBookingRideOptionStatus statusWithApplication:v11];
+    v24 = [RideBookingRideOptionStatus statusWithApplication:applicationCopy];
     v25 = *(*&buf[8] + 40);
     *(*&buf[8] + 40) = v24;
 
-    [(RideBookingDataCoordinator *)self _updateRideOptionStatusMapWithApplication:v11 status:*(*&buf[8] + 40)];
+    [(RideBookingDataCoordinator *)self _updateRideOptionStatusMapWithApplication:applicationCopy status:*(*&buf[8] + 40)];
   }
 
   _Block_object_dispose(buf, 8);
 }
 
-- (void)updateRideOptionStateForOrigin:(id)a3 destination:(id)a4
+- (void)updateRideOptionStateForOrigin:(id)origin destination:(id)destination
 {
-  v7 = a3;
-  v8 = a4;
+  originCopy = origin;
+  destinationCopy = destination;
   v9 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
@@ -1836,9 +1836,9 @@ LABEL_18:
   block[2] = sub_1008571F0;
   block[3] = &unk_101661480;
   objc_copyWeak(&v31, buf);
-  v15 = v7;
+  v15 = originCopy;
   v29 = v15;
-  v16 = v8;
+  v16 = destinationCopy;
   v30 = v16;
   dispatch_async(processQueue, block);
   [v15 coordinate];
@@ -1863,9 +1863,9 @@ LABEL_18:
   objc_destroyWeak(buf);
 }
 
-- (void)removeRideBookingDataCoordinatorRideOptionStateObserver:(id)a3
+- (void)removeRideBookingDataCoordinatorRideOptionStateObserver:(id)observer
 {
-  v5 = a3;
+  observerCopy = observer;
   v6 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -1887,17 +1887,17 @@ LABEL_18:
   block[2] = sub_100857BA4;
   block[3] = &unk_101661340;
   objc_copyWeak(&v15, buf);
-  v14 = v5;
-  v12 = v5;
+  v14 = observerCopy;
+  v12 = observerCopy;
   dispatch_async(processQueue, block);
 
   objc_destroyWeak(&v15);
   objc_destroyWeak(buf);
 }
 
-- (void)addRideBookingDataCoordinatorRideOptionStateObserver:(id)a3
+- (void)addRideBookingDataCoordinatorRideOptionStateObserver:(id)observer
 {
-  v5 = a3;
+  observerCopy = observer;
   v6 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -1919,17 +1919,17 @@ LABEL_18:
   block[2] = sub_100857FE0;
   block[3] = &unk_101661340;
   objc_copyWeak(&v15, buf);
-  v14 = v5;
-  v12 = v5;
+  v14 = observerCopy;
+  v12 = observerCopy;
   dispatch_async(processQueue, block);
 
   objc_destroyWeak(&v15);
   objc_destroyWeak(buf);
 }
 
-- (void)rideBookingApplicationsDidChange:(id)a3
+- (void)rideBookingApplicationsDidChange:(id)change
 {
-  v5 = a3;
+  changeCopy = change;
   v6 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -1951,17 +1951,17 @@ LABEL_18:
   block[2] = sub_100858558;
   block[3] = &unk_101661340;
   objc_copyWeak(&v15, buf);
-  v14 = v5;
-  v12 = v5;
+  v14 = changeCopy;
+  v12 = changeCopy;
   dispatch_async(processQueue, block);
 
   objc_destroyWeak(&v15);
   objc_destroyWeak(buf);
 }
 
-- (RideBookingDataCoordinator)initWithRideBookingApplicationFinder:(id)a3
+- (RideBookingDataCoordinator)initWithRideBookingApplicationFinder:(id)finder
 {
-  v4 = a3;
+  finderCopy = finder;
   v31.receiver = self;
   v31.super_class = RideBookingDataCoordinator;
   v5 = [(RideBookingDataCoordinator *)&v31 init];
@@ -1971,11 +1971,11 @@ LABEL_18:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       v7 = basename("/Library/Caches/com.apple.xbs/Sources/Maps/iOS/Ride Booking/RideBookingDataCoordinator.m");
-      v8 = [[NSString alloc] initWithFormat:@"Initializing RideBookingDataCoordinator with RideBookingApplicationFinder: %@", v4];
+      finderCopy = [[NSString alloc] initWithFormat:@"Initializing RideBookingDataCoordinator with RideBookingApplicationFinder: %@", finderCopy];
       *buf = 136315394;
       v33 = v7;
       v34 = 2112;
-      v35 = v8;
+      v35 = finderCopy;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "{RBInfo}{%s}: %@", buf, 0x16u);
     }
 
@@ -1990,12 +1990,12 @@ LABEL_18:
     requestRideExpireTimer = v5->_requestRideExpireTimer;
     v5->_requestRideExpireTimer = 0;
 
-    if (!v4)
+    if (!finderCopy)
     {
-      v4 = objc_alloc_init(RideBookingApplicationFinder);
+      finderCopy = objc_alloc_init(RideBookingApplicationFinder);
     }
 
-    objc_storeStrong(&v5->_applicationFinder, v4);
+    objc_storeStrong(&v5->_applicationFinder, finderCopy);
     [(RideBookingApplicationFinder *)v5->_applicationFinder setDelegate:v5];
     v14 = objc_opt_new();
     applications = v5->_applications;
@@ -2044,10 +2044,10 @@ LABEL_18:
   return v5;
 }
 
-+ (void)openRideBookingApplication:(id)a3 withUserActivity:(id)a4
++ (void)openRideBookingApplication:(id)application withUserActivity:(id)activity
 {
-  v6 = a4;
-  v7 = a3;
+  activityCopy = activity;
+  applicationCopy = application;
   v8 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -2067,8 +2067,8 @@ LABEL_18:
   {
     v14 = basename("/Library/Caches/com.apple.xbs/Sources/Maps/iOS/Ride Booking/RideBookingDataCoordinator.m");
     v15 = [NSString alloc];
-    v16 = [v6 title];
-    v17 = [v15 initWithFormat:@"Opening app with activity: %@", v16];
+    title = [activityCopy title];
+    v17 = [v15 initWithFormat:@"Opening app with activity: %@", title];
     *buf = 136315394;
     v19 = v14;
     v20 = 2112;
@@ -2076,7 +2076,7 @@ LABEL_18:
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "{RBInfo}{%s}: %@", buf, 0x16u);
   }
 
-  [v7 openWithActivity:v6];
+  [applicationCopy openWithActivity:activityCopy];
 }
 
 @end

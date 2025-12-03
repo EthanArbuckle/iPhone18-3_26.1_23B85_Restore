@@ -1,9 +1,9 @@
 @interface TVQueueListLockupView
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
-- (void)handlePan:(id)a3;
-- (void)handleTap:(id)a3;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
+- (void)handlePan:(id)pan;
+- (void)handleTap:(id)tap;
 - (void)prepareForReuse;
-- (void)pressesBegan:(id)a3 withEvent:(id)a4;
+- (void)pressesBegan:(id)began withEvent:(id)event;
 @end
 
 @implementation TVQueueListLockupView
@@ -19,40 +19,40 @@
   [v2 setNeedsFocusUpdate];
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_20BD6EA80(v6, v7);
+  contextCopy = context;
+  coordinatorCopy = coordinator;
+  selfCopy = self;
+  sub_20BD6EA80(contextCopy, coordinatorCopy);
 }
 
-- (void)pressesBegan:(id)a3 withEvent:(id)a4
+- (void)pressesBegan:(id)began withEvent:(id)event
 {
   sub_20B51C88C(0, &qword_27C764588);
   sub_20B9E0F28();
   v6 = sub_20C13CF74();
-  v7 = a4;
-  v8 = self;
-  sub_20BD6EC54(v6, a4);
+  eventCopy = event;
+  selfCopy = self;
+  sub_20BD6EC54(v6, event);
 }
 
-- (void)handleTap:(id)a3
+- (void)handleTap:(id)tap
 {
-  v4 = a3;
-  v5 = self;
-  if ([v4 state] == 3 && swift_unknownObjectWeakLoadStrong())
+  tapCopy = tap;
+  selfCopy = self;
+  if ([tapCopy state] == 3 && swift_unknownObjectWeakLoadStrong())
   {
     sub_20B8E2580();
     swift_unknownObjectRelease();
   }
 }
 
-- (void)handlePan:(id)a3
+- (void)handlePan:(id)pan
 {
-  v4 = a3;
-  v5 = self;
-  sub_20BD6EFA0(v4);
+  panCopy = pan;
+  selfCopy = self;
+  sub_20BD6EFA0(panCopy);
 }
 
 @end

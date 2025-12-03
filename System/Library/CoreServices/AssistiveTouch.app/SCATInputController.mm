@@ -1,37 +1,37 @@
 @interface SCATInputController
 - (AXUIClient)userInterfaceClient;
-- (BOOL)_handleHoldAtPointForActionIdentifier:(id)a3 start:(BOOL)a4;
+- (BOOL)_handleHoldAtPointForActionIdentifier:(id)identifier start:(BOOL)start;
 - (BOOL)_hasExternalSwitchConfigured;
-- (BOOL)_isSwitchWithSource:(id)a3 isEnabled:(id)a4;
+- (BOOL)_isSwitchWithSource:(id)source isEnabled:(id)enabled;
 - (BOOL)_switchConfigurationRendersDeviceUnusable;
 - (BOOL)isMotionTrackingEnabled;
 - (BOOL)isOnDeviceEyeTrackingSupported;
 - (BOOL)isTadmorInputSourceConnected;
-- (SCATInputController)initWithInterDeviceCommunicator:(id)a3;
+- (SCATInputController)initWithInterDeviceCommunicator:(id)communicator;
 - (SCATInputControllerDelegate)delegate;
 - (id)_allSwitchesInUse;
 - (int64_t)role;
 - (void)_addMotionTrackingInputSource;
-- (void)_configureMFIAccessoryIfNecessary:(id)a3;
-- (void)_didReceiveActionWithIdentifier:(id)a3 start:(BOOL)a4 ignoreInputHold:(BOOL)a5;
+- (void)_configureMFIAccessoryIfNecessary:(id)necessary;
+- (void)_didReceiveActionWithIdentifier:(id)identifier start:(BOOL)start ignoreInputHold:(BOOL)hold;
 - (void)_endAction;
-- (void)_hideAlertForSource:(unint64_t)a3;
+- (void)_hideAlertForSource:(unint64_t)source;
 - (void)_hideAlerts;
-- (void)_hideStateForSource:(unint64_t)a3;
+- (void)_hideStateForSource:(unint64_t)source;
 - (void)_invalidateAssertionForSystemApertureInert;
-- (void)_removeInputSource:(id)a3;
+- (void)_removeInputSource:(id)source;
 - (void)_removeInputSources;
 - (void)_removeInputTimers;
-- (void)_removeMotionTrackingInputSourceAndClearAlert:(BOOL)a3;
+- (void)_removeMotionTrackingInputSourceAndClearAlert:(BOOL)alert;
 - (void)_restrictSystemApertureLayoutToInert;
-- (void)_sendActionWithIdentifier:(id)a3;
+- (void)_sendActionWithIdentifier:(id)identifier;
 - (void)_setupInputTimers;
 - (void)_sharedInit;
-- (void)_showAlert:(id)a3 forSource:(unint64_t)a4;
+- (void)_showAlert:(id)alert forSource:(unint64_t)source;
 - (void)_showHeadTrackingErrorMessageForHeadMovementSwitchConflict;
-- (void)_showState:(id)a3 forSource:(unint64_t)a4;
+- (void)_showState:(id)state forSource:(unint64_t)source;
 - (void)_updateAccessibilityEventInputSource;
-- (void)_updateActionsForSource:(id)a3;
+- (void)_updateActionsForSource:(id)source;
 - (void)_updateAirPodsSource;
 - (void)_updateCameraHandGestureSource;
 - (void)_updateEyeGazeMotionTrackingInputSource;
@@ -56,47 +56,47 @@
 - (void)_updateTimeIntervalBeforeSendAction;
 - (void)_updateTimeIntervalBeforeSendRepeatAction;
 - (void)_updateTimeIntervalBetweenDidSendActions;
-- (void)airPodsInputSource:(id)a3 didReceiveActionWithIdentifier:(int64_t)a4 start:(BOOL)a5;
-- (void)airPodsInputSource:(id)a3 didUpdateAvailability:(BOOL)a4 withDetail:(int64_t)a5;
-- (void)cameraInputSource:(id)a3 didUpdateAvailability:(BOOL)a4 withDetail:(unint64_t)a5;
-- (void)cameraInputSource:(id)a3 didUpdateState:(id)a4;
+- (void)airPodsInputSource:(id)source didReceiveActionWithIdentifier:(int64_t)identifier start:(BOOL)start;
+- (void)airPodsInputSource:(id)source didUpdateAvailability:(BOOL)availability withDetail:(int64_t)detail;
+- (void)cameraInputSource:(id)source didUpdateAvailability:(BOOL)availability withDetail:(unint64_t)detail;
+- (void)cameraInputSource:(id)source didUpdateState:(id)state;
 - (void)dealloc;
-- (void)didBeginLongPressForInputSource:(id)a3;
-- (void)didEndLongPressForInputSource:(id)a3;
-- (void)didReceiveSwitchEvent:(id)a3 forDeviceWithName:(id)a4;
-- (void)handTrackerInputSource:(id)a3 didReceiveActionWithIdentifier:(int64_t)a4 start:(BOOL)a5 ignoreInputHold:(BOOL)a6;
-- (void)handTrackerInputSource:(id)a3 didUpdateAvailability:(BOOL)a4 withDetail:(int64_t)a5;
-- (void)handleInterDeviceBailOutForInputSource:(id)a3;
-- (void)hardwareInputSource:(id)a3 didUpdateAvailability:(BOOL)a4 withDetail:(unint64_t)a5;
-- (void)headTrackerInputSource:(id)a3 didReceiveActionWithIdentifier:(int64_t)a4 start:(BOOL)a5 ignoreInputHold:(BOOL)a6;
-- (void)headTrackerInputSource:(id)a3 didUpdateAvailability:(BOOL)a4 withDetail:(int64_t)a5;
-- (void)headTrackerInputSource:(id)a3 didUpdateState:(id)a4;
-- (void)inputSource:(id)a3 forwardSwitchEvent:(id)a4;
-- (void)motionTrackerInputSource:(id)a3 didReceivePoint:(CGPoint)a4;
-- (void)motionTrackerInputSource:(id)a3 failedToTrackFaceWithError:(id)a4;
-- (void)motionTrackerInputSource:(id)a3 isShowingCalibrationUI:(BOOL)a4;
-- (void)overrideMotionTrackerLookAtPoint:(CGPoint)a3;
+- (void)didBeginLongPressForInputSource:(id)source;
+- (void)didEndLongPressForInputSource:(id)source;
+- (void)didReceiveSwitchEvent:(id)event forDeviceWithName:(id)name;
+- (void)handTrackerInputSource:(id)source didReceiveActionWithIdentifier:(int64_t)identifier start:(BOOL)start ignoreInputHold:(BOOL)hold;
+- (void)handTrackerInputSource:(id)source didUpdateAvailability:(BOOL)availability withDetail:(int64_t)detail;
+- (void)handleInterDeviceBailOutForInputSource:(id)source;
+- (void)hardwareInputSource:(id)source didUpdateAvailability:(BOOL)availability withDetail:(unint64_t)detail;
+- (void)headTrackerInputSource:(id)source didReceiveActionWithIdentifier:(int64_t)identifier start:(BOOL)start ignoreInputHold:(BOOL)hold;
+- (void)headTrackerInputSource:(id)source didUpdateAvailability:(BOOL)availability withDetail:(int64_t)detail;
+- (void)headTrackerInputSource:(id)source didUpdateState:(id)state;
+- (void)inputSource:(id)source forwardSwitchEvent:(id)event;
+- (void)motionTrackerInputSource:(id)source didReceivePoint:(CGPoint)point;
+- (void)motionTrackerInputSource:(id)source failedToTrackFaceWithError:(id)error;
+- (void)motionTrackerInputSource:(id)source isShowingCalibrationUI:(BOOL)i;
+- (void)overrideMotionTrackerLookAtPoint:(CGPoint)point;
 - (void)performSysdiagnose;
-- (void)setDelegate:(id)a3 queue:(id)a4;
-- (void)setEyeGazeMotionTrackingEnabled:(BOOL)a3;
-- (void)setHeadMotionTrackingEnabled:(BOOL)a3;
-- (void)setMotionTrackingEnabled:(BOOL)a3;
-- (void)setRecipe:(id)a3;
-- (void)tadmorInputSource:(id)a3 didReceiveItemSelectionIndex:(int64_t)a4;
-- (void)tadmorInputSource:(id)a3 didReceiveMovementDelta:(CGPoint)a4;
-- (void)tadmorInputSource:(id)a3 didUpdateSignalQuality:(int64_t)a4;
+- (void)setDelegate:(id)delegate queue:(id)queue;
+- (void)setEyeGazeMotionTrackingEnabled:(BOOL)enabled;
+- (void)setHeadMotionTrackingEnabled:(BOOL)enabled;
+- (void)setMotionTrackingEnabled:(BOOL)enabled;
+- (void)setRecipe:(id)recipe;
+- (void)tadmorInputSource:(id)source didReceiveItemSelectionIndex:(int64_t)index;
+- (void)tadmorInputSource:(id)source didReceiveMovementDelta:(CGPoint)delta;
+- (void)tadmorInputSource:(id)source didUpdateSignalQuality:(int64_t)quality;
 - (void)updateWhetherSwitchConfigurationHasScreenSwitch;
 - (void)updateWhetherSwitchConfigurationRendersDeviceUnusable;
 @end
 
 @implementation SCATInputController
 
-- (void)_updateActionsForSource:(id)a3
+- (void)_updateActionsForSource:(id)source
 {
-  v4 = a3;
-  v6 = [(SCATInputController *)self _allSwitchesInUse];
-  v5 = [(SCATInputController *)self recipe];
-  [v4 updateWithSwitches:v6 recipe:v5];
+  sourceCopy = source;
+  _allSwitchesInUse = [(SCATInputController *)self _allSwitchesInUse];
+  recipe = [(SCATInputController *)self recipe];
+  [sourceCopy updateWithSwitches:_allSwitchesInUse recipe:recipe];
 }
 
 - (BOOL)_hasExternalSwitchConfigured
@@ -111,56 +111,56 @@
   return [(SCATInputController *)self isEnabledSwitchWithSource:v4];
 }
 
-- (BOOL)_handleHoldAtPointForActionIdentifier:(id)a3 start:(BOOL)a4
+- (BOOL)_handleHoldAtPointForActionIdentifier:(id)identifier start:(BOOL)start
 {
-  v4 = a4;
-  v6 = a3;
-  if (![v6 action])
+  startCopy = start;
+  identifierCopy = identifier;
+  if (![identifierCopy action])
   {
-    v7 = [v6 shortcutIdentifier];
+    shortcutIdentifier = [identifierCopy shortcutIdentifier];
 
-    if (!v7)
+    if (!shortcutIdentifier)
     {
       goto LABEL_10;
     }
   }
 
-  v8 = [(SCATInputController *)self recipe];
+  recipe = [(SCATInputController *)self recipe];
 
-  if (!v8)
+  if (!recipe)
   {
     goto LABEL_10;
   }
 
   v32 = 0x7FFFFFFFFFFFFFFFLL;
   v31 = 0;
-  SCATGetRecipeMappingIndexAndLongPressVariant(v6, &v32, &v31);
+  SCATGetRecipeMappingIndexAndLongPressVariant(identifierCopy, &v32, &v31);
   v9 = v32;
-  v10 = [(SCATInputController *)self recipe];
-  v11 = [v10 mappings];
-  v12 = [v11 count];
+  recipe2 = [(SCATInputController *)self recipe];
+  mappings = [recipe2 mappings];
+  v12 = [mappings count];
 
   if (v9 >= v12)
   {
     v13 = v32;
-    v14 = [(SCATInputController *)self recipe];
-    v15 = [v14 mappings];
-    v29 = v6;
-    v30 = [v15 count];
+    recipe3 = [(SCATInputController *)self recipe];
+    mappings2 = [recipe3 mappings];
+    v29 = identifierCopy;
+    v30 = [mappings2 count];
     v28 = v13;
     _AXAssert();
   }
 
   v16 = v32;
   v17 = [(SCATInputController *)self recipe:v28];
-  v18 = [v17 mappings];
-  v19 = [v18 count];
+  mappings3 = [v17 mappings];
+  v19 = [mappings3 count];
 
   if (v16 < v19)
   {
-    v20 = [(SCATInputController *)self recipe];
-    v21 = [v20 mappings];
-    v22 = [v21 objectAtIndexedSubscript:v32];
+    recipe4 = [(SCATInputController *)self recipe];
+    mappings4 = [recipe4 mappings];
+    v22 = [mappings4 objectAtIndexedSubscript:v32];
 
     if (v31 || ([v22 action], v23 = objc_claimAutoreleasedReturnValue(), v24 = objc_msgSend(v23, "isEqualToString:", AXSwitchRecipeMappingActionHoldAtPoint), v23, !v24))
     {
@@ -169,9 +169,9 @@
 
     else
     {
-      v25 = [(SCATInputController *)self delegate];
+      delegate = [(SCATInputController *)self delegate];
       [v22 holdPoint];
-      [v25 inputController:self didReceiveRecipeHoldAtPoint:v4 isDown:?];
+      [delegate inputController:self didReceiveRecipeHoldAtPoint:startCopy isDown:?];
 
       v26 = 1;
     }
@@ -186,10 +186,10 @@ LABEL_10:
   return v26;
 }
 
-- (void)_didReceiveActionWithIdentifier:(id)a3 start:(BOOL)a4 ignoreInputHold:(BOOL)a5
+- (void)_didReceiveActionWithIdentifier:(id)identifier start:(BOOL)start ignoreInputHold:(BOOL)hold
 {
-  v6 = a4;
-  v8 = a3;
+  startCopy = start;
+  identifierCopy = identifier;
   if ([(SCATInputController *)self shouldIgnoreActions])
   {
     v9 = SWCHLogCommon();
@@ -200,27 +200,27 @@ LABEL_10:
     }
   }
 
-  else if (![(SCATInputController *)self _handleHoldAtPointForActionIdentifier:v8 start:v6])
+  else if (![(SCATInputController *)self _handleHoldAtPointForActionIdentifier:identifierCopy start:startCopy])
   {
-    if (v6)
+    if (startCopy)
     {
       v12 = _NSConcreteStackBlock;
       v13 = 3221225472;
       v14 = sub_100071F3C;
       v15 = &unk_1001D36E8;
-      v16 = self;
-      v17 = v8;
+      selfCopy = self;
+      v17 = identifierCopy;
       v10 = objc_retainBlock(&v12);
-      if (![(SCATInputController *)self isInputHoldEnabled:v12]|| a5)
+      if (![(SCATInputController *)self isInputHoldEnabled:v12]|| hold)
       {
         (v10[2])(v10);
       }
 
       else
       {
-        v11 = [(SCATInputController *)self inputHoldTimer];
+        inputHoldTimer = [(SCATInputController *)self inputHoldTimer];
         [(SCATInputController *)self timeIntervalBeforeSendAction];
-        [v11 afterDelay:v10 processBlock:?];
+        [inputHoldTimer afterDelay:v10 processBlock:?];
       }
     }
 
@@ -233,52 +233,52 @@ LABEL_10:
 
 - (void)_endAction
 {
-  v4 = [(SCATInputController *)self inputHoldTimer];
-  [v4 cancel];
-  v3 = [(SCATInputController *)self inputRepeatTimer];
-  [v3 cancel];
+  inputHoldTimer = [(SCATInputController *)self inputHoldTimer];
+  [inputHoldTimer cancel];
+  inputRepeatTimer = [(SCATInputController *)self inputRepeatTimer];
+  [inputRepeatTimer cancel];
 }
 
-- (void)_sendActionWithIdentifier:(id)a3
+- (void)_sendActionWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(SCATInputController *)self delegate];
-  v6 = [(SCATInputController *)self queue];
-  v7 = [(SCATInputController *)self queue];
-  if (v7)
+  identifierCopy = identifier;
+  delegate = [(SCATInputController *)self delegate];
+  queue = [(SCATInputController *)self queue];
+  queue2 = [(SCATInputController *)self queue];
+  if (queue2)
   {
-    v8 = v7;
-    v9 = v4;
+    v8 = queue2;
+    v9 = identifierCopy;
     if ([v9 action])
     {
     }
 
     else
     {
-      v10 = [v9 shortcutIdentifier];
+      shortcutIdentifier = [v9 shortcutIdentifier];
 
-      if (!v10)
+      if (!shortcutIdentifier)
       {
         goto LABEL_15;
       }
     }
 
-    v11 = [(SCATInputController *)self recipe];
+    recipe = [(SCATInputController *)self recipe];
 
-    if (!v11)
+    if (!recipe)
     {
       v31[0] = _NSConcreteStackBlock;
       v31[1] = 3221225472;
       v31[2] = sub_1000723BC;
       v31[3] = &unk_1001D3C80;
-      v32 = v5;
-      v33 = self;
+      v32 = delegate;
+      selfCopy = self;
       v22 = v9;
       v34 = v22;
-      [v6 performAsynchronousWritingBlock:v31];
+      [queue performAsynchronousWritingBlock:v31];
       if (-[SCATInputController isInputRepeatEnabled](self, "isInputRepeatEnabled") && ([v22 action] & 0xFFFFFFFFFFFFFFFELL) == 0x68)
       {
-        v23 = [(SCATInputController *)self inputRepeatTimer];
+        inputRepeatTimer = [(SCATInputController *)self inputRepeatTimer];
         [(SCATInputController *)self timeIntervalBeforeSendRepeatAction];
         v25 = v24;
         objc_initWeak(&location, self);
@@ -288,7 +288,7 @@ LABEL_10:
         v28[3] = &unk_1001D3438;
         objc_copyWeak(&v30, &location);
         v29 = v22;
-        [v23 afterDelay:v28 processBlock:v25];
+        [inputRepeatTimer afterDelay:v28 processBlock:v25];
 
         objc_destroyWeak(&v30);
         objc_destroyWeak(&location);
@@ -302,9 +302,9 @@ LABEL_10:
     v40 = 0;
     SCATGetRecipeMappingIndexAndLongPressVariant(v9, &location, &v40);
     v12 = location;
-    v13 = [(SCATInputController *)self recipe];
-    v14 = [v13 mappings];
-    v15 = [v14 count];
+    recipe2 = [(SCATInputController *)self recipe];
+    mappings = [recipe2 mappings];
+    v15 = [mappings count];
 
     if (v12 >= v15)
     {
@@ -316,8 +316,8 @@ LABEL_10:
 
     v17 = location;
     v18 = [(SCATInputController *)self recipe:v26];
-    v19 = [v18 mappings];
-    v20 = [v19 count];
+    mappings2 = [v18 mappings];
+    v20 = [mappings2 count];
 
     if (v17 < v20)
     {
@@ -325,11 +325,11 @@ LABEL_10:
       v35[1] = 3221225472;
       v35[2] = sub_1000723A8;
       v35[3] = &unk_1001D5918;
-      v36 = v5;
-      v37 = self;
+      v36 = delegate;
+      selfCopy2 = self;
       v38 = location;
       v39 = v40;
-      [v6 performAsynchronousWritingBlock:v35];
+      [queue performAsynchronousWritingBlock:v35];
       v21 = v36;
 LABEL_14:
     }
@@ -377,26 +377,26 @@ LABEL_15:
   -[SCATInputController setIsInputCoalesceEnabled:](self, "setIsInputCoalesceEnabled:", [v3 assistiveTouchInputCoalescingEnabled]);
 }
 
-- (void)didBeginLongPressForInputSource:(id)a3
+- (void)didBeginLongPressForInputSource:(id)source
 {
-  v4 = [(SCATInputController *)self delegate];
-  [v4 didBeginLongPressForInputController:self];
+  delegate = [(SCATInputController *)self delegate];
+  [delegate didBeginLongPressForInputController:self];
 }
 
-- (void)didEndLongPressForInputSource:(id)a3
+- (void)didEndLongPressForInputSource:(id)source
 {
-  v4 = [(SCATInputController *)self delegate];
-  [v4 didEndLongPressForInputController:self];
+  delegate = [(SCATInputController *)self delegate];
+  [delegate didEndLongPressForInputController:self];
 }
 
-- (void)inputSource:(id)a3 forwardSwitchEvent:(id)a4
+- (void)inputSource:(id)source forwardSwitchEvent:(id)event
 {
-  v5 = a4;
-  v6 = [(SCATInputController *)self interDeviceCommunicator];
-  [v6 forwardSwitchEvent:v5];
+  eventCopy = event;
+  interDeviceCommunicator = [(SCATInputController *)self interDeviceCommunicator];
+  [interDeviceCommunicator forwardSwitchEvent:eventCopy];
 }
 
-- (void)handleInterDeviceBailOutForInputSource:(id)a3
+- (void)handleInterDeviceBailOutForInputSource:(id)source
 {
   v4 = AXSSLogForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -414,20 +414,20 @@ LABEL_15:
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Performing sysdiagnose on forwarder and receiver.", v9, 2u);
     }
 
-    v6 = [(SCATInputController *)self delegate];
-    [v6 performSysdiagnoseForInputController:self];
+    delegate = [(SCATInputController *)self delegate];
+    [delegate performSysdiagnoseForInputController:self];
 
-    v7 = [(SCATInputController *)self interDeviceCommunicator];
-    [v7 performSysdiagnoseOnReceiver];
+    interDeviceCommunicator = [(SCATInputController *)self interDeviceCommunicator];
+    [interDeviceCommunicator performSysdiagnoseOnReceiver];
   }
 
-  v8 = [(SCATInputController *)self interDeviceCommunicator];
-  [v8 stop];
+  interDeviceCommunicator2 = [(SCATInputController *)self interDeviceCommunicator];
+  [interDeviceCommunicator2 stop];
 }
 
-- (void)cameraInputSource:(id)a3 didUpdateAvailability:(BOOL)a4 withDetail:(unint64_t)a5
+- (void)cameraInputSource:(id)source didUpdateAvailability:(BOOL)availability withDetail:(unint64_t)detail
 {
-  if (a4)
+  if (availability)
   {
 
     [(SCATInputController *)self _hideAlertForSource:1];
@@ -435,16 +435,16 @@ LABEL_15:
 
   else
   {
-    v6 = SCATCameraInputSourceAvailabilityDetailLocalizedDescription(a5);
+    v6 = SCATCameraInputSourceAvailabilityDetailLocalizedDescription(detail);
     [(SCATInputController *)self _showAlert:v6 forSource:1];
     [(SCATInputController *)self _endAction];
   }
 }
 
-- (void)cameraInputSource:(id)a3 didUpdateState:(id)a4
+- (void)cameraInputSource:(id)source didUpdateState:(id)state
 {
-  var1 = a4.var1;
-  v6 = [NSNumber numberWithDouble:a3, a4.var0];
+  var1 = state.var1;
+  v6 = [NSNumber numberWithDouble:source, state.var0];
   v9[0] = v6;
   v7 = [NSNumber numberWithDouble:var1];
   v9[1] = v7;
@@ -453,18 +453,18 @@ LABEL_15:
   [(SCATInputController *)self _showState:v8 forSource:1];
 }
 
-- (void)headTrackerInputSource:(id)a3 didReceiveActionWithIdentifier:(int64_t)a4 start:(BOOL)a5 ignoreInputHold:(BOOL)a6
+- (void)headTrackerInputSource:(id)source didReceiveActionWithIdentifier:(int64_t)identifier start:(BOOL)start ignoreInputHold:(BOOL)hold
 {
-  v6 = a6;
-  v7 = a5;
+  holdCopy = hold;
+  startCopy = start;
   v10 = objc_opt_new();
-  [v10 setAction:a4];
-  [(SCATInputController *)self _didReceiveActionWithIdentifier:v10 start:v7 ignoreInputHold:v6];
+  [v10 setAction:identifier];
+  [(SCATInputController *)self _didReceiveActionWithIdentifier:v10 start:startCopy ignoreInputHold:holdCopy];
 }
 
-- (void)headTrackerInputSource:(id)a3 didUpdateAvailability:(BOOL)a4 withDetail:(int64_t)a5
+- (void)headTrackerInputSource:(id)source didUpdateAvailability:(BOOL)availability withDetail:(int64_t)detail
 {
-  if (a4)
+  if (availability)
   {
 
     [(SCATInputController *)self _hideAlertForSource:1];
@@ -472,16 +472,16 @@ LABEL_15:
 
   else
   {
-    v6 = [a3 localizedDescriptionForAvailabilityDetail:a5];
+    v6 = [source localizedDescriptionForAvailabilityDetail:detail];
     [(SCATInputController *)self _showAlert:v6 forSource:1];
     [(SCATInputController *)self _endAction];
   }
 }
 
-- (void)headTrackerInputSource:(id)a3 didUpdateState:(id)a4
+- (void)headTrackerInputSource:(id)source didUpdateState:(id)state
 {
-  var1 = a4.var1;
-  v6 = [NSNumber numberWithDouble:a3, a4.var0];
+  var1 = state.var1;
+  v6 = [NSNumber numberWithDouble:source, state.var0];
   v9[0] = v6;
   v7 = [NSNumber numberWithDouble:var1];
   v9[1] = v7;
@@ -490,18 +490,18 @@ LABEL_15:
   [(SCATInputController *)self _showState:v8 forSource:1];
 }
 
-- (void)handTrackerInputSource:(id)a3 didReceiveActionWithIdentifier:(int64_t)a4 start:(BOOL)a5 ignoreInputHold:(BOOL)a6
+- (void)handTrackerInputSource:(id)source didReceiveActionWithIdentifier:(int64_t)identifier start:(BOOL)start ignoreInputHold:(BOOL)hold
 {
-  v6 = a6;
-  v7 = a5;
+  holdCopy = hold;
+  startCopy = start;
   v10 = objc_opt_new();
-  [v10 setAction:a4];
-  [(SCATInputController *)self _didReceiveActionWithIdentifier:v10 start:v7 ignoreInputHold:v6];
+  [v10 setAction:identifier];
+  [(SCATInputController *)self _didReceiveActionWithIdentifier:v10 start:startCopy ignoreInputHold:holdCopy];
 }
 
-- (void)handTrackerInputSource:(id)a3 didUpdateAvailability:(BOOL)a4 withDetail:(int64_t)a5
+- (void)handTrackerInputSource:(id)source didUpdateAvailability:(BOOL)availability withDetail:(int64_t)detail
 {
-  if (a4)
+  if (availability)
   {
 
     [(SCATInputController *)self _hideAlertForSource:1];
@@ -509,23 +509,23 @@ LABEL_15:
 
   else
   {
-    v6 = [a3 localizedDescriptionForAvailabilityDetail:a5];
+    v6 = [source localizedDescriptionForAvailabilityDetail:detail];
     [(SCATInputController *)self _showAlert:v6 forSource:1];
     [(SCATInputController *)self _endAction];
   }
 }
 
-- (void)airPodsInputSource:(id)a3 didReceiveActionWithIdentifier:(int64_t)a4 start:(BOOL)a5
+- (void)airPodsInputSource:(id)source didReceiveActionWithIdentifier:(int64_t)identifier start:(BOOL)start
 {
-  v5 = a5;
+  startCopy = start;
   v8 = objc_opt_new();
-  [v8 setAction:a4];
-  [(SCATInputController *)self _didReceiveActionWithIdentifier:v8 start:v5 ignoreInputHold:0];
+  [v8 setAction:identifier];
+  [(SCATInputController *)self _didReceiveActionWithIdentifier:v8 start:startCopy ignoreInputHold:0];
 }
 
-- (void)airPodsInputSource:(id)a3 didUpdateAvailability:(BOOL)a4 withDetail:(int64_t)a5
+- (void)airPodsInputSource:(id)source didUpdateAvailability:(BOOL)availability withDetail:(int64_t)detail
 {
-  if (a4)
+  if (availability)
   {
 
     [(SCATInputController *)self _hideAlertForSource:5];
@@ -533,23 +533,23 @@ LABEL_15:
 
   else
   {
-    v6 = [a3 localizedDescriptionForAvailabilityDetail:a5];
+    v6 = [source localizedDescriptionForAvailabilityDetail:detail];
     [(SCATInputController *)self _showAlert:v6 forSource:5];
     [(SCATInputController *)self _endAction];
   }
 }
 
-- (void)hardwareInputSource:(id)a3 didUpdateAvailability:(BOOL)a4 withDetail:(unint64_t)a5
+- (void)hardwareInputSource:(id)source didUpdateAvailability:(BOOL)availability withDetail:(unint64_t)detail
 {
-  v6 = a4;
-  v8 = a3;
+  availabilityCopy = availability;
+  sourceCopy = source;
   v9 = SWCHLogHW();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [NSNumber numberWithBool:v6];
-    v11 = [NSNumber numberWithUnsignedInteger:a5];
+    v10 = [NSNumber numberWithBool:availabilityCopy];
+    v11 = [NSNumber numberWithUnsignedInteger:detail];
     v27 = 138412802;
-    v28 = v8;
+    v28 = sourceCopy;
     v29 = 2112;
     v30 = v10;
     v31 = 2112;
@@ -559,7 +559,7 @@ LABEL_15:
 
   if (self->_availableDevices)
   {
-    if (!v8)
+    if (!sourceCopy)
     {
       goto LABEL_13;
     }
@@ -571,20 +571,20 @@ LABEL_15:
     availableDevices = self->_availableDevices;
     self->_availableDevices = v12;
 
-    if (!v8)
+    if (!sourceCopy)
     {
 LABEL_13:
-      if (v8)
+      if (sourceCopy)
       {
         v17 = SWCHLogHW();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
         {
           v27 = 138412290;
-          v28 = v8;
+          v28 = sourceCopy;
           _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Removing Hardware Input Source to available devices: %@", &v27, 0xCu);
         }
 
-        [(NSMutableSet *)self->_availableDevices removeObject:v8];
+        [(NSMutableSet *)self->_availableDevices removeObject:sourceCopy];
         v18 = SWCHLogHW();
         if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
         {
@@ -598,14 +598,14 @@ LABEL_13:
         if (objc_opt_isKindOfClass())
         {
           v20 = +[AXSettings sharedInstance];
-          v21 = [v20 assistiveTouchScanningMode];
+          assistiveTouchScanningMode = [v20 assistiveTouchScanningMode];
 
-          if (v21 == 6)
+          if (assistiveTouchScanningMode == 6)
           {
             v22 = +[AXSettings sharedInstance];
-            v23 = [v22 switchControlFirstLaunchScanningMode];
+            switchControlFirstLaunchScanningMode = [v22 switchControlFirstLaunchScanningMode];
             v24 = +[AXSettings sharedInstance];
-            [v24 setAssistiveTouchScanningMode:v23];
+            [v24 setAssistiveTouchScanningMode:switchControlFirstLaunchScanningMode];
           }
         }
       }
@@ -615,7 +615,7 @@ LABEL_13:
     }
   }
 
-  if (!v6)
+  if (!availabilityCopy)
   {
     goto LABEL_13;
   }
@@ -624,11 +624,11 @@ LABEL_13:
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     v27 = 138412290;
-    v28 = v8;
+    v28 = sourceCopy;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Adding Hardware Input Source to available devices: %@", &v27, 0xCu);
   }
 
-  [(NSMutableSet *)self->_availableDevices addObject:v8];
+  [(NSMutableSet *)self->_availableDevices addObject:sourceCopy];
   v15 = SWCHLogHW();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
@@ -638,7 +638,7 @@ LABEL_13:
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "We now have %@ availableDevices", &v27, 0xCu);
   }
 
-  [(SCATInputController *)self _configureMFIAccessoryIfNecessary:v8];
+  [(SCATInputController *)self _configureMFIAccessoryIfNecessary:sourceCopy];
   [(SCATInputController *)self _hideAlertForSource:2];
 LABEL_22:
   if (![(NSMutableSet *)self->_availableDevices count]&& [(SCATInputController *)self _hasExternalSwitchConfigured])
@@ -650,28 +650,28 @@ LABEL_22:
       _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "No available devices and there is an external switch that is configured and enabled.", &v27, 2u);
     }
 
-    v26 = SCATHardwareInputSourceAvailabilityDetailLocalizedDescription(a5);
+    v26 = SCATHardwareInputSourceAvailabilityDetailLocalizedDescription(detail);
     [(SCATInputController *)self _showAlert:v26 forSource:2];
   }
 
   [(SCATInputController *)self updateWhetherSwitchConfigurationRendersDeviceUnusable];
 }
 
-- (void)motionTrackerInputSource:(id)a3 didReceivePoint:(CGPoint)a4
+- (void)motionTrackerInputSource:(id)source didReceivePoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = [(SCATInputController *)self delegate];
-  [v7 inputController:self didReceivePoint:{x, y}];
+  y = point.y;
+  x = point.x;
+  delegate = [(SCATInputController *)self delegate];
+  [delegate inputController:self didReceivePoint:{x, y}];
 
   if ([(SCATInputController *)self motionTrackerLostFace])
   {
-    v8 = [(SCATInputController *)self motionTrackerDelayedShowAlertTimer];
+    motionTrackerDelayedShowAlertTimer = [(SCATInputController *)self motionTrackerDelayedShowAlertTimer];
 
-    if (v8)
+    if (motionTrackerDelayedShowAlertTimer)
     {
-      v9 = [(SCATInputController *)self motionTrackerDelayedShowAlertTimer];
-      [v9 invalidate];
+      motionTrackerDelayedShowAlertTimer2 = [(SCATInputController *)self motionTrackerDelayedShowAlertTimer];
+      [motionTrackerDelayedShowAlertTimer2 invalidate];
 
       [(SCATInputController *)self setMotionTrackerDelayedShowAlertTimer:0];
     }
@@ -683,14 +683,14 @@ LABEL_22:
   }
 }
 
-- (void)motionTrackerInputSource:(id)a3 isShowingCalibrationUI:(BOOL)a4
+- (void)motionTrackerInputSource:(id)source isShowingCalibrationUI:(BOOL)i
 {
-  v4 = a4;
-  v6 = a3;
-  if (v4)
+  iCopy = i;
+  sourceCopy = source;
+  if (iCopy)
   {
     [(SCATInputController *)self setShouldIgnoreActions:1];
-    v7 = [(SCATInputController *)self ignoreActionsTimer];
+    ignoreActionsTimer = [(SCATInputController *)self ignoreActionsTimer];
     v8 = SWCHLogCommon();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
@@ -707,7 +707,7 @@ LABEL_22:
     v11[3] = &unk_1001D56F8;
     v12[1] = 0x404E000000000000;
     objc_copyWeak(v12, buf);
-    [v7 afterDelay:v11 processBlock:60.0];
+    [ignoreActionsTimer afterDelay:v11 processBlock:60.0];
     objc_destroyWeak(v12);
     objc_destroyWeak(buf);
   }
@@ -722,23 +722,23 @@ LABEL_22:
     }
 
     [(SCATInputController *)self setShouldIgnoreActions:0];
-    v7 = [(SCATInputController *)self ignoreActionsTimer];
-    [v7 cancel];
+    ignoreActionsTimer = [(SCATInputController *)self ignoreActionsTimer];
+    [ignoreActionsTimer cancel];
   }
 }
 
-- (void)motionTrackerInputSource:(id)a3 failedToTrackFaceWithError:(id)a4
+- (void)motionTrackerInputSource:(id)source failedToTrackFaceWithError:(id)error
 {
-  v6 = a3;
-  v7 = [a4 code];
-  v8 = v7;
-  if (v7 > 9 || ((1 << v7) & 0x281) == 0)
+  sourceCopy = source;
+  code = [error code];
+  v8 = code;
+  if (code > 9 || ((1 << code) & 0x281) == 0)
   {
     if (![(SCATInputController *)self motionTrackerLostFace]|| [(SCATInputController *)self motionTrackerErrorCode]!= v8)
     {
       [(SCATInputController *)self setMotionTrackerLostFace:1];
-      v14 = [(SCATInputController *)self motionTrackerDelayedShowAlertTimer];
-      [v14 invalidate];
+      motionTrackerDelayedShowAlertTimer = [(SCATInputController *)self motionTrackerDelayedShowAlertTimer];
+      [motionTrackerDelayedShowAlertTimer invalidate];
 
       [(SCATInputController *)self setMotionTrackerDelayedShowAlertTimer:0];
       if (v8 == 11)
@@ -756,7 +756,7 @@ LABEL_22:
       v17[2] = sub_100073890;
       v17[3] = &unk_1001D3658;
       v17[4] = self;
-      v18 = v6;
+      v18 = sourceCopy;
       v16 = [NSTimer scheduledTimerWithTimeInterval:0 repeats:v17 block:v15];
       [(SCATInputController *)self setMotionTrackerDelayedShowAlertTimer:v16];
     }
@@ -765,7 +765,7 @@ LABEL_22:
   }
 
   v9 = AXSSHumanReadableDescriptionForMotionTrackingErrorCode();
-  if (![v6 isCalibrationPresented])
+  if (![sourceCopy isCalibrationPresented])
   {
     [(SCATInputController *)self _showAlert:v9 forSource:1];
     v19[0] = _NSConcreteStackBlock;
@@ -784,8 +784,8 @@ LABEL_22:
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Switching to Item mode because Motion Tracker ran into error: %@.", buf, 0xCu);
     }
 
-    v13 = [(SCATInputController *)self delegate];
-    [v13 inputControllerPointPickerInterrupted:self];
+    delegate = [(SCATInputController *)self delegate];
+    [delegate inputControllerPointPickerInterrupted:self];
 
 LABEL_16:
     [(SCATInputController *)self setMotionTrackerErrorCode:v8];
@@ -812,23 +812,23 @@ LABEL_17:
 - (void)_updateMotionTrackingForOneness
 {
   v3 = +[AXSpringBoardServer server];
-  v4 = [v3 isContinuitySessionActive];
+  isContinuitySessionActive = [v3 isContinuitySessionActive];
 
-  if (v4)
+  if (isContinuitySessionActive)
   {
-    v5 = [(SCATInputController *)self delegate];
-    [v5 inputControllerPointPickerInterrupted:self];
+    delegate = [(SCATInputController *)self delegate];
+    [delegate inputControllerPointPickerInterrupted:self];
   }
 }
 
-- (void)_configureMFIAccessoryIfNecessary:(id)a3
+- (void)_configureMFIAccessoryIfNecessary:(id)necessary
 {
-  v24 = a3;
-  v4 = [v24 isMFIInputSource];
-  v5 = v24;
-  if (v4)
+  necessaryCopy = necessary;
+  isMFIInputSource = [necessaryCopy isMFIInputSource];
+  v5 = necessaryCopy;
+  if (isMFIInputSource)
   {
-    v6 = v24;
+    v6 = necessaryCopy;
     v7 = SCATSwitchSourceMFI;
     v8 = [(SCATInputController *)self isEnabledSwitchWithSource:SCATSwitchSourceMFI];
     v9 = v8;
@@ -837,13 +837,13 @@ LABEL_17:
     {
 LABEL_19:
 
-      v5 = v24;
+      v5 = necessaryCopy;
       goto LABEL_20;
     }
 
     v10 = +[AXSettings sharedInstance];
-    v11 = [v10 assistiveTouchSwitches];
-    v12 = [v11 mutableCopy];
+    assistiveTouchSwitches = [v10 assistiveTouchSwitches];
+    v12 = [assistiveTouchSwitches mutableCopy];
 
     if (!v12)
     {
@@ -905,17 +905,17 @@ LABEL_17:
     [v18 setSwitchControlScanningStyle:v17];
 
 LABEL_18:
-    v19 = [v6 productName];
-    [v14 setProductName:v19];
+    productName = [v6 productName];
+    [v14 setProductName:productName];
 
-    v20 = [v6 productName];
-    [v16 setProductName:v20];
+    productName2 = [v6 productName];
+    [v16 setProductName:productName2];
 
-    v21 = [v6 manufacturerName];
-    [v14 setManufacturerName:v21];
+    manufacturerName = [v6 manufacturerName];
+    [v14 setManufacturerName:manufacturerName];
 
-    v22 = [v6 manufacturerName];
-    [v16 setManufacturerName:v22];
+    manufacturerName2 = [v6 manufacturerName];
+    [v16 setManufacturerName:manufacturerName2];
 
     NSLog(@"Auto Configuring Setting up switches: %@", v12);
     v23 = +[AXSettings sharedInstance];
@@ -926,45 +926,45 @@ LABEL_18:
 
 LABEL_20:
 
-  _objc_release_x1(v4, v5);
+  _objc_release_x1(isMFIInputSource, v5);
 }
 
-- (void)_removeInputSource:(id)a3
+- (void)_removeInputSource:(id)source
 {
-  v3 = a3;
-  if (v3)
+  sourceCopy = source;
+  if (sourceCopy)
   {
-    v4 = v3;
-    [v3 stopRunning];
+    v4 = sourceCopy;
+    [sourceCopy stopRunning];
     [v4 setDelegate:0 queue:0];
   }
 }
 
 - (void)_removeInputSources
 {
-  v3 = [(SCATInputController *)self headGestureSource];
-  [(SCATInputController *)self _removeInputSource:v3];
+  headGestureSource = [(SCATInputController *)self headGestureSource];
+  [(SCATInputController *)self _removeInputSource:headGestureSource];
 
   [(SCATInputController *)self setHeadGestureSource:0];
-  v4 = [(SCATInputController *)self handGestureSource];
-  [(SCATInputController *)self _removeInputSource:v4];
+  handGestureSource = [(SCATInputController *)self handGestureSource];
+  [(SCATInputController *)self _removeInputSource:handGestureSource];
 
   [(SCATInputController *)self setHandGestureSource:0];
   [(SCATInputController *)self _hideAlertForSource:1];
   [(SCATInputController *)self _hideStateForSource:1];
-  v5 = [(SCATInputController *)self keyboardInputSource];
-  v6 = [(SCATInputController *)self mfiInputSource];
-  v7 = [(SCATInputController *)self atvRemoteInputSource];
-  v8 = [(SCATInputController *)self midiInputSource];
-  v9 = [(SCATInputController *)self gamepadInputSource];
-  v10 = [NSArray axArrayByIgnoringNilElementsWithCount:5, v5, v6, v7, v8, v9];
+  keyboardInputSource = [(SCATInputController *)self keyboardInputSource];
+  mfiInputSource = [(SCATInputController *)self mfiInputSource];
+  atvRemoteInputSource = [(SCATInputController *)self atvRemoteInputSource];
+  midiInputSource = [(SCATInputController *)self midiInputSource];
+  gamepadInputSource = [(SCATInputController *)self gamepadInputSource];
+  v10 = [NSArray axArrayByIgnoringNilElementsWithCount:5, keyboardInputSource, mfiInputSource, atvRemoteInputSource, midiInputSource, gamepadInputSource];
   v11 = [v10 mutableCopy];
 
-  v12 = [(SCATInputController *)self airPodsSource];
-  [v11 axSafelyAddObject:v12];
+  airPodsSource = [(SCATInputController *)self airPodsSource];
+  [v11 axSafelyAddObject:airPodsSource];
 
-  v13 = [(SCATInputController *)self tadmorInputSource];
-  [v11 axSafelyAddObject:v13];
+  tadmorInputSource = [(SCATInputController *)self tadmorInputSource];
+  [v11 axSafelyAddObject:tadmorInputSource];
 
   v36 = 0u;
   v37 = 0u;
@@ -1011,62 +1011,62 @@ LABEL_20:
   [(SCATInputController *)self setGamepadInputSource:0];
   [(SCATInputController *)self setAirPodsSource:0];
   [(SCATInputController *)self setTadmorInputSource:0];
-  v20 = [(SCATInputController *)self screenInputSource];
-  v21 = v20;
-  if (v20)
+  screenInputSource = [(SCATInputController *)self screenInputSource];
+  v21 = screenInputSource;
+  if (screenInputSource)
   {
-    [v20 stopRunning];
+    [screenInputSource stopRunning];
     [v21 setDelegate:0 queue:0];
     [(SCATInputController *)self setScreenInputSource:0];
   }
 
-  v22 = [(SCATInputController *)self interDeviceInputSource];
-  [v22 stopRunning];
+  interDeviceInputSource = [(SCATInputController *)self interDeviceInputSource];
+  [interDeviceInputSource stopRunning];
 
-  v23 = [(SCATInputController *)self interDeviceInputSource];
-  [v23 setDelegate:0 queue:0];
+  interDeviceInputSource2 = [(SCATInputController *)self interDeviceInputSource];
+  [interDeviceInputSource2 setDelegate:0 queue:0];
 
   [(SCATInputController *)self setInterDeviceInputSource:0];
-  v24 = [(SCATInputController *)self motionTrackerInputSource];
-  v25 = v24;
-  if (v24)
+  motionTrackerInputSource = [(SCATInputController *)self motionTrackerInputSource];
+  v25 = motionTrackerInputSource;
+  if (motionTrackerInputSource)
   {
-    [v24 stopRunning];
+    [motionTrackerInputSource stopRunning];
     [v25 setDelegate:0 queue:0];
     [(SCATInputController *)self setMotionTrackerInputSource:0];
-    v26 = [(SCATInputController *)self motionTrackerDelayedShowAlertTimer];
+    motionTrackerDelayedShowAlertTimer = [(SCATInputController *)self motionTrackerDelayedShowAlertTimer];
 
-    if (v26)
+    if (motionTrackerDelayedShowAlertTimer)
     {
-      v27 = [(SCATInputController *)self motionTrackerDelayedShowAlertTimer];
-      [v27 invalidate];
+      motionTrackerDelayedShowAlertTimer2 = [(SCATInputController *)self motionTrackerDelayedShowAlertTimer];
+      [motionTrackerDelayedShowAlertTimer2 invalidate];
 
       [(SCATInputController *)self setMotionTrackerDelayedShowAlertTimer:0];
     }
 
-    v28 = [(SCATInputController *)self motionTrackerDelayedHideAlertTimer];
-    v29 = [v28 isValid];
+    motionTrackerDelayedHideAlertTimer = [(SCATInputController *)self motionTrackerDelayedHideAlertTimer];
+    isValid = [motionTrackerDelayedHideAlertTimer isValid];
 
-    if ((v29 & 1) == 0)
+    if ((isValid & 1) == 0)
     {
       [(SCATInputController *)self _hideAlertForMotionTrackerInputSource];
     }
   }
 
-  v30 = [(SCATInputController *)self accessibilityEventInputSource];
-  v31 = v30;
-  if (v30)
+  accessibilityEventInputSource = [(SCATInputController *)self accessibilityEventInputSource];
+  v31 = accessibilityEventInputSource;
+  if (accessibilityEventInputSource)
   {
-    [v30 stopRunning];
+    [accessibilityEventInputSource stopRunning];
     [v31 setDelegate:0 queue:0];
     [(SCATInputController *)self setAccessibilityEventInputSource:0];
   }
 
-  v32 = [(SCATInputController *)self remoteControlInputSource];
-  v33 = v32;
-  if (v32)
+  remoteControlInputSource = [(SCATInputController *)self remoteControlInputSource];
+  v33 = remoteControlInputSource;
+  if (remoteControlInputSource)
   {
-    [v32 stopRunning];
+    [remoteControlInputSource stopRunning];
     [v33 setDelegate:0 queue:0];
     [(SCATInputController *)self setRemoteControlInputSource:0];
   }
@@ -1074,12 +1074,12 @@ LABEL_20:
 
 - (void)_updateKeyboardInputSource
 {
-  v8 = [(SCATInputController *)self keyboardInputSource];
-  v3 = [(SCATInputController *)self isEnabledSwitchWithSource:SCATSwitchSourceKeyboard];
-  v4 = v8;
-  if (v3)
+  keyboardInputSource = [(SCATInputController *)self keyboardInputSource];
+  startRunning = [(SCATInputController *)self isEnabledSwitchWithSource:SCATSwitchSourceKeyboard];
+  v4 = keyboardInputSource;
+  if (startRunning)
   {
-    v5 = v8 == 0;
+    v5 = keyboardInputSource == 0;
   }
 
   else
@@ -1089,20 +1089,20 @@ LABEL_20:
 
   if (v5)
   {
-    v8 = objc_opt_new();
-    [(SCATInputController *)self setKeyboardInputSource:v8];
-    [(SCATInputController *)self _updateActionsForSource:v8];
+    keyboardInputSource = objc_opt_new();
+    [(SCATInputController *)self setKeyboardInputSource:keyboardInputSource];
+    [(SCATInputController *)self _updateActionsForSource:keyboardInputSource];
     v6 = +[AXAccessQueue mainAccessQueue];
-    [v8 setDelegate:self queue:v6];
+    [keyboardInputSource setDelegate:self queue:v6];
 
-    v3 = [v8 startRunning];
+    startRunning = [keyboardInputSource startRunning];
   }
 
-  else if (!v8 || ((v3 ^ 1) & 1) != 0)
+  else if (!keyboardInputSource || ((startRunning ^ 1) & 1) != 0)
   {
-    if (v8)
+    if (keyboardInputSource)
     {
-      v7 = v3;
+      v7 = startRunning;
     }
 
     else
@@ -1115,107 +1115,107 @@ LABEL_20:
       goto LABEL_10;
     }
 
-    [v8 stopRunning];
-    [v8 setDelegate:0 queue:0];
+    [keyboardInputSource stopRunning];
+    [keyboardInputSource setDelegate:0 queue:0];
     [(SCATInputController *)self setKeyboardInputSource:0];
-    v3 = [(SCATInputController *)self _hideAlertForSource:2];
+    startRunning = [(SCATInputController *)self _hideAlertForSource:2];
   }
 
   else
   {
-    v3 = [(SCATInputController *)self _updateActionsForSource:v8];
+    startRunning = [(SCATInputController *)self _updateActionsForSource:keyboardInputSource];
   }
 
-  v4 = v8;
+  v4 = keyboardInputSource;
 LABEL_10:
 
-  _objc_release_x1(v3, v4);
+  _objc_release_x1(startRunning, v4);
 }
 
 - (void)_updateMIDIInputSource
 {
-  v8 = [(SCATInputController *)self midiInputSource];
+  midiInputSource = [(SCATInputController *)self midiInputSource];
   v3 = [(SCATInputController *)self isEnabledSwitchWithSource:SCATSwitchSourceMIDI];
-  v4 = [NSNumber numberWithBool:v8 != 0];
+  v4 = [NSNumber numberWithBool:midiInputSource != 0];
   v7 = [NSNumber numberWithBool:v3];
   AXPrintLine();
 
-  v5 = v8;
-  if (v8 || !v3)
+  v5 = midiInputSource;
+  if (midiInputSource || !v3)
   {
-    if (v8 == 0 || !v3)
+    if (midiInputSource == 0 || !v3)
     {
-      if (v8 == 0 || v3)
+      if (midiInputSource == 0 || v3)
       {
         goto LABEL_9;
       }
 
-      [v8 stopRunning];
-      [v8 setDelegate:0 queue:0];
+      [midiInputSource stopRunning];
+      [midiInputSource setDelegate:0 queue:0];
       [(SCATInputController *)self setMidiInputSource:0];
       [(SCATInputController *)self _hideAlertForSource:2];
     }
 
     else
     {
-      [(SCATInputController *)self _updateActionsForSource:v8, v4, v7];
+      [(SCATInputController *)self _updateActionsForSource:midiInputSource, v4, v7];
     }
   }
 
   else
   {
-    v8 = objc_opt_new();
-    [(SCATInputController *)self setMidiInputSource:v8, v4, v7];
-    [(SCATInputController *)self _updateActionsForSource:v8];
+    midiInputSource = objc_opt_new();
+    [(SCATInputController *)self setMidiInputSource:midiInputSource, v4, v7];
+    [(SCATInputController *)self _updateActionsForSource:midiInputSource];
     v6 = +[AXAccessQueue mainAccessQueue];
-    [v8 setDelegate:self queue:v6];
+    [midiInputSource setDelegate:self queue:v6];
 
-    [v8 startRunning];
+    [midiInputSource startRunning];
   }
 
-  v5 = v8;
+  v5 = midiInputSource;
 LABEL_9:
 }
 
 - (void)_updateMFIInputSource
 {
-  v6 = [(SCATInputController *)self mfiInputSource];
-  v3 = [(SCATInputController *)self isEnabledSwitchWithSource:SCATSwitchSourceMFI];
-  v4 = v6;
-  if (v6)
+  mfiInputSource = [(SCATInputController *)self mfiInputSource];
+  startRunning = [(SCATInputController *)self isEnabledSwitchWithSource:SCATSwitchSourceMFI];
+  v4 = mfiInputSource;
+  if (mfiInputSource)
   {
-    if (!v3)
+    if (!startRunning)
     {
       goto LABEL_6;
     }
 
-    v3 = [(SCATInputController *)self _updateActionsForSource:v6];
+    startRunning = [(SCATInputController *)self _updateActionsForSource:mfiInputSource];
   }
 
   else
   {
-    v6 = objc_opt_new();
-    [(SCATInputController *)self setMfiInputSource:v6];
-    [(SCATInputController *)self _updateActionsForSource:v6];
+    mfiInputSource = objc_opt_new();
+    [(SCATInputController *)self setMfiInputSource:mfiInputSource];
+    [(SCATInputController *)self _updateActionsForSource:mfiInputSource];
     v5 = +[AXAccessQueue mainAccessQueue];
-    [v6 setDelegate:self queue:v5];
+    [mfiInputSource setDelegate:self queue:v5];
 
-    v3 = [v6 startRunning];
+    startRunning = [mfiInputSource startRunning];
   }
 
-  v4 = v6;
+  v4 = mfiInputSource;
 LABEL_6:
 
-  _objc_release_x1(v3, v4);
+  _objc_release_x1(startRunning, v4);
 }
 
 - (void)_updateScreenInputSource
 {
-  v9 = [(SCATInputController *)self screenInputSource];
+  screenInputSource = [(SCATInputController *)self screenInputSource];
   v3 = [(SCATInputController *)self isEnabledSwitchWithSource:SCATSwitchSourceScreen];
   if (v3)
   {
-    v4 = v9 == 0;
+    v4 = screenInputSource == 0;
   }
 
   else
@@ -1225,20 +1225,20 @@ LABEL_6:
 
   if (v4)
   {
-    v9 = objc_opt_new();
-    [(SCATInputController *)self setScreenInputSource:v9];
-    [(SCATInputController *)self _updateActionsForSource:v9];
+    screenInputSource = objc_opt_new();
+    [(SCATInputController *)self setScreenInputSource:screenInputSource];
+    [(SCATInputController *)self _updateActionsForSource:screenInputSource];
     v8 = +[AXAccessQueue mainAccessQueue];
-    [v9 setDelegate:self queue:v8];
+    [screenInputSource setDelegate:self queue:v8];
 
-    [v9 startRunning];
+    [screenInputSource startRunning];
   }
 
   else
   {
     if (v3)
     {
-      v5 = v9 == 0;
+      v5 = screenInputSource == 0;
     }
 
     else
@@ -1248,7 +1248,7 @@ LABEL_6:
 
     if (v5)
     {
-      if (v9)
+      if (screenInputSource)
       {
         v6 = v3;
       }
@@ -1260,7 +1260,7 @@ LABEL_6:
 
       if (v3)
       {
-        v7 = v9;
+        v7 = screenInputSource;
       }
 
       else
@@ -1270,20 +1270,20 @@ LABEL_6:
 
       if (v6)
       {
-        v9 = v7;
+        screenInputSource = v7;
       }
 
       else
       {
-        [v9 stopRunning];
-        [v9 setDelegate:0 queue:0];
+        [screenInputSource stopRunning];
+        [screenInputSource setDelegate:0 queue:0];
         [(SCATInputController *)self setScreenInputSource:0];
       }
     }
 
     else
     {
-      [(SCATInputController *)self _updateActionsForSource:v9];
+      [(SCATInputController *)self _updateActionsForSource:screenInputSource];
     }
   }
 
@@ -1293,12 +1293,12 @@ LABEL_6:
 
 - (void)_updateGamepadInputSource
 {
-  v9 = [(SCATInputController *)self gamepadInputSource];
-  v3 = [(SCATInputController *)self isEnabledSwitchWithSource:SCATSwitchSourceGamepad];
-  v4 = v9;
-  if (v3)
+  gamepadInputSource = [(SCATInputController *)self gamepadInputSource];
+  startRunning = [(SCATInputController *)self isEnabledSwitchWithSource:SCATSwitchSourceGamepad];
+  v4 = gamepadInputSource;
+  if (startRunning)
   {
-    v5 = v9 == 0;
+    v5 = gamepadInputSource == 0;
   }
 
   else
@@ -1308,20 +1308,20 @@ LABEL_6:
 
   if (v5)
   {
-    v9 = objc_opt_new();
-    [(SCATInputController *)self setGamepadInputSource:v9];
-    [(SCATInputController *)self _updateActionsForSource:v9];
+    gamepadInputSource = objc_opt_new();
+    [(SCATInputController *)self setGamepadInputSource:gamepadInputSource];
+    [(SCATInputController *)self _updateActionsForSource:gamepadInputSource];
     v8 = +[AXAccessQueue mainAccessQueue];
-    [v9 setDelegate:self queue:v8];
+    [gamepadInputSource setDelegate:self queue:v8];
 
-    v3 = [v9 startRunning];
+    startRunning = [gamepadInputSource startRunning];
   }
 
   else
   {
-    if (v3)
+    if (startRunning)
     {
-      v6 = v9 == 0;
+      v6 = gamepadInputSource == 0;
     }
 
     else
@@ -1331,9 +1331,9 @@ LABEL_6:
 
     if (v6)
     {
-      if (v9)
+      if (gamepadInputSource)
       {
-        v7 = v3;
+        v7 = startRunning;
       }
 
       else
@@ -1346,31 +1346,31 @@ LABEL_6:
         goto LABEL_17;
       }
 
-      [v9 stopRunning];
-      [v9 setDelegate:0 queue:0];
+      [gamepadInputSource stopRunning];
+      [gamepadInputSource setDelegate:0 queue:0];
       [(SCATInputController *)self setGamepadInputSource:0];
-      v3 = [(SCATInputController *)self _hideAlertForSource:2];
+      startRunning = [(SCATInputController *)self _hideAlertForSource:2];
     }
 
     else
     {
-      v3 = [(SCATInputController *)self _updateActionsForSource:v9];
+      startRunning = [(SCATInputController *)self _updateActionsForSource:gamepadInputSource];
     }
   }
 
-  v4 = v9;
+  v4 = gamepadInputSource;
 LABEL_17:
 
-  _objc_release_x1(v3, v4);
+  _objc_release_x1(startRunning, v4);
 }
 
 - (void)_updateTadmorInputSource
 {
-  v3 = [(SCATInputController *)self tadmorInputSource];
-  if (v3)
+  tadmorInputSource = [(SCATInputController *)self tadmorInputSource];
+  if (tadmorInputSource)
   {
-    v5 = v3;
-    [(SCATInputController *)self _updateActionsForSource:v3];
+    v5 = tadmorInputSource;
+    [(SCATInputController *)self _updateActionsForSource:tadmorInputSource];
   }
 
   else
@@ -1385,41 +1385,41 @@ LABEL_17:
   }
 }
 
-- (void)tadmorInputSource:(id)a3 didReceiveMovementDelta:(CGPoint)a4
+- (void)tadmorInputSource:(id)source didReceiveMovementDelta:(CGPoint)delta
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = [(SCATInputController *)self delegate];
-  [v7 inputController:self didReceiveMovementDelta:{x, y}];
+  y = delta.y;
+  x = delta.x;
+  delegate = [(SCATInputController *)self delegate];
+  [delegate inputController:self didReceiveMovementDelta:{x, y}];
 }
 
-- (void)tadmorInputSource:(id)a3 didUpdateSignalQuality:(int64_t)a4
+- (void)tadmorInputSource:(id)source didUpdateSignalQuality:(int64_t)quality
 {
-  v6 = [(SCATInputController *)self delegate];
-  [v6 inputController:self didUpdateSignalQuality:a4];
+  delegate = [(SCATInputController *)self delegate];
+  [delegate inputController:self didUpdateSignalQuality:quality];
 }
 
-- (void)tadmorInputSource:(id)a3 didReceiveItemSelectionIndex:(int64_t)a4
+- (void)tadmorInputSource:(id)source didReceiveItemSelectionIndex:(int64_t)index
 {
-  v6 = [(SCATInputController *)self delegate];
-  [v6 inputController:self didReceiveItemSelectionIndex:a4];
+  delegate = [(SCATInputController *)self delegate];
+  [delegate inputController:self didReceiveItemSelectionIndex:index];
 }
 
 - (BOOL)isTadmorInputSourceConnected
 {
-  v2 = [(SCATInputController *)self tadmorInputSource];
-  v3 = [v2 numberOfDevicesConnected] != 0;
+  tadmorInputSource = [(SCATInputController *)self tadmorInputSource];
+  v3 = [tadmorInputSource numberOfDevicesConnected] != 0;
 
   return v3;
 }
 
 - (void)_updateAirPodsSource
 {
-  v3 = [(SCATInputController *)self airPodsSource];
+  airPodsSource = [(SCATInputController *)self airPodsSource];
   v4 = [(SCATInputController *)self isEnabledSwitchWithSource:SCATSwitchSourceHeadGesture];
   if (v4)
   {
-    v5 = v3 == 0;
+    v5 = airPodsSource == 0;
   }
 
   else
@@ -1436,20 +1436,20 @@ LABEL_17:
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "HeadGestures: Creating a new airPodsInputSource and updating actions for airPodsInputSource", buf, 2u);
     }
 
-    v3 = objc_opt_new();
-    [(SCATInputController *)self setAirPodsSource:v3];
-    [(SCATInputController *)self _updateActionsForSource:v3];
+    airPodsSource = objc_opt_new();
+    [(SCATInputController *)self setAirPodsSource:airPodsSource];
+    [(SCATInputController *)self _updateActionsForSource:airPodsSource];
     v10 = +[AXAccessQueue mainAccessQueue];
-    [v3 setDelegate:self queue:v10];
+    [airPodsSource setDelegate:self queue:v10];
 
-    [v3 startRunning];
+    [airPodsSource startRunning];
   }
 
   else
   {
     if (v4)
     {
-      v6 = v3 == 0;
+      v6 = airPodsSource == 0;
     }
 
     else
@@ -1459,7 +1459,7 @@ LABEL_17:
 
     if (v6)
     {
-      if (v3)
+      if (airPodsSource)
       {
         v7 = v4;
       }
@@ -1478,7 +1478,7 @@ LABEL_17:
           _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "HeadGestures: No switches configured for airPodsInputSource. Tearing it down.", v13, 2u);
         }
 
-        [v3 stopRunning];
+        [airPodsSource stopRunning];
         [(SCATInputController *)self setAirPodsSource:0];
         [(SCATInputController *)self _hideAlertForSource:2];
       }
@@ -1493,18 +1493,18 @@ LABEL_17:
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "HeadGestures: Updating actions for airPodsInputSource", v14, 2u);
       }
 
-      [(SCATInputController *)self _updateActionsForSource:v3];
+      [(SCATInputController *)self _updateActionsForSource:airPodsSource];
     }
   }
 }
 
 - (void)_updateHeadGesturesInputSource
 {
-  v3 = [(SCATInputController *)self headGestureSource];
+  headGestureSource = [(SCATInputController *)self headGestureSource];
   v4 = [(SCATInputController *)self isEnabledSwitchWithSource:SCATSwitchSourceCamera];
   if (v4)
   {
-    v5 = v3 == 0;
+    v5 = headGestureSource == 0;
   }
 
   else
@@ -1521,20 +1521,20 @@ LABEL_17:
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "HeadGestures: Creating a new HeadTracker and updating actions for headGestureSource.", buf, 2u);
     }
 
-    v3 = objc_opt_new();
-    [(SCATInputController *)self setHeadGestureSource:v3];
-    [(SCATInputController *)self _updateActionsForSource:v3];
+    headGestureSource = objc_opt_new();
+    [(SCATInputController *)self setHeadGestureSource:headGestureSource];
+    [(SCATInputController *)self _updateActionsForSource:headGestureSource];
     v10 = +[AXAccessQueue mainAccessQueue];
-    [v3 setDelegate:self queue:v10];
+    [headGestureSource setDelegate:self queue:v10];
 
-    [v3 startRunning];
+    [headGestureSource startRunning];
   }
 
   else
   {
     if (v4)
     {
-      v6 = v3 == 0;
+      v6 = headGestureSource == 0;
     }
 
     else
@@ -1544,7 +1544,7 @@ LABEL_17:
 
     if (v6)
     {
-      if (v3)
+      if (headGestureSource)
       {
         v7 = v4;
       }
@@ -1556,7 +1556,7 @@ LABEL_17:
 
       if (v4)
       {
-        v8 = v3;
+        v8 = headGestureSource;
       }
 
       else
@@ -1566,7 +1566,7 @@ LABEL_17:
 
       if (v7)
       {
-        v3 = v8;
+        headGestureSource = v8;
       }
 
       else
@@ -1578,8 +1578,8 @@ LABEL_17:
           _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "HeadGestures: No switches configured for headGestureSource. Tearing it down.", v14, 2u);
         }
 
-        [v3 stopRunning];
-        [v3 setDelegate:0 queue:0];
+        [headGestureSource stopRunning];
+        [headGestureSource setDelegate:0 queue:0];
         [(SCATInputController *)self setHeadGestureSource:0];
         [(SCATInputController *)self _hideAlertForSource:1];
         [(SCATInputController *)self _hideStateForSource:1];
@@ -1595,7 +1595,7 @@ LABEL_17:
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "HeadGestures: Updating actions for headGestureSource.", v15, 2u);
       }
 
-      [(SCATInputController *)self _updateActionsForSource:v3];
+      [(SCATInputController *)self _updateActionsForSource:headGestureSource];
     }
   }
 
@@ -1604,11 +1604,11 @@ LABEL_17:
 
 - (void)_updateCameraHandGestureSource
 {
-  v3 = [(SCATInputController *)self handGestureSource];
+  handGestureSource = [(SCATInputController *)self handGestureSource];
   v4 = [(SCATInputController *)self isEnabledSwitchWithSource:SCATSwitchSourceCameraHandGesture];
   if (v4)
   {
-    v5 = v3 == 0;
+    v5 = handGestureSource == 0;
   }
 
   else
@@ -1625,20 +1625,20 @@ LABEL_17:
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "HandGestures: Creating a new HandTracker and updating actions for handGestureSource", buf, 2u);
     }
 
-    v3 = objc_opt_new();
-    [(SCATInputController *)self setHandGestureSource:v3];
-    [(SCATInputController *)self _updateActionsForSource:v3];
+    handGestureSource = objc_opt_new();
+    [(SCATInputController *)self setHandGestureSource:handGestureSource];
+    [(SCATInputController *)self _updateActionsForSource:handGestureSource];
     v10 = +[AXAccessQueue mainAccessQueue];
-    [v3 setDelegate:self queue:v10];
+    [handGestureSource setDelegate:self queue:v10];
 
-    [v3 startRunning];
+    [handGestureSource startRunning];
   }
 
   else
   {
     if (v4)
     {
-      v6 = v3 == 0;
+      v6 = handGestureSource == 0;
     }
 
     else
@@ -1648,7 +1648,7 @@ LABEL_17:
 
     if (v6)
     {
-      if (v3)
+      if (handGestureSource)
       {
         v7 = v4;
       }
@@ -1660,7 +1660,7 @@ LABEL_17:
 
       if (v4)
       {
-        v8 = v3;
+        v8 = handGestureSource;
       }
 
       else
@@ -1670,7 +1670,7 @@ LABEL_17:
 
       if (v7)
       {
-        v3 = v8;
+        handGestureSource = v8;
       }
 
       else
@@ -1682,8 +1682,8 @@ LABEL_17:
           _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "HandGestures: No switches configured for handGestureSource. Tearing it down.", v14, 2u);
         }
 
-        [v3 stopRunning];
-        [v3 setDelegate:0 queue:0];
+        [handGestureSource stopRunning];
+        [handGestureSource setDelegate:0 queue:0];
         [(SCATInputController *)self setHandGestureSource:0];
         [(SCATInputController *)self _hideAlertForSource:1];
         [(SCATInputController *)self _hideStateForSource:1];
@@ -1699,16 +1699,16 @@ LABEL_17:
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "HandGestures: Updating actions for handGestureSource", v15, 2u);
       }
 
-      [(SCATInputController *)self _updateActionsForSource:v3];
+      [(SCATInputController *)self _updateActionsForSource:handGestureSource];
     }
   }
 }
 
 - (void)_updateInterDeviceInputSource
 {
-  v3 = [(SCATInputController *)self interDeviceInputSource];
+  interDeviceInputSource = [(SCATInputController *)self interDeviceInputSource];
 
-  if (!v3)
+  if (!interDeviceInputSource)
   {
     v4 = objc_opt_new();
     [(SCATInputController *)self setInterDeviceInputSource:v4];
@@ -1719,8 +1719,8 @@ LABEL_17:
     [v4 startRunning];
   }
 
-  v6 = [(SCATInputController *)self interDeviceInputSource];
-  [(SCATInputController *)self _updateActionsForSource:v6];
+  interDeviceInputSource2 = [(SCATInputController *)self interDeviceInputSource];
+  [(SCATInputController *)self _updateActionsForSource:interDeviceInputSource2];
 }
 
 - (BOOL)isMotionTrackingEnabled
@@ -1733,9 +1733,9 @@ LABEL_17:
   return [(SCATInputController *)self eyeGazeMotionTrackingEnabled];
 }
 
-- (void)setHeadMotionTrackingEnabled:(BOOL)a3
+- (void)setHeadMotionTrackingEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v5 = SWCHLogInputController();
   v6 = os_signpost_id_generate(v5);
 
@@ -1748,13 +1748,13 @@ LABEL_17:
   }
 
   headMotionTrackingEnabled = self->_headMotionTrackingEnabled;
-  self->_headMotionTrackingEnabled = v3;
-  if (headMotionTrackingEnabled != v3)
+  self->_headMotionTrackingEnabled = enabledCopy;
+  if (headMotionTrackingEnabled != enabledCopy)
   {
     [(SCATInputController *)self _updateMotionTrackingInputSource];
   }
 
-  if (v3)
+  if (enabledCopy)
   {
     [(SCATInputController *)self _updateHeadMotionTrackingInputSource];
   }
@@ -1780,9 +1780,9 @@ LABEL_17:
   return v2;
 }
 
-- (void)setEyeGazeMotionTrackingEnabled:(BOOL)a3
+- (void)setEyeGazeMotionTrackingEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v5 = SWCHLogInputController();
   v6 = os_signpost_id_generate(v5);
 
@@ -1795,13 +1795,13 @@ LABEL_17:
   }
 
   eyeGazeMotionTrackingEnabled = self->_eyeGazeMotionTrackingEnabled;
-  self->_eyeGazeMotionTrackingEnabled = v3;
-  if (eyeGazeMotionTrackingEnabled != v3)
+  self->_eyeGazeMotionTrackingEnabled = enabledCopy;
+  if (eyeGazeMotionTrackingEnabled != enabledCopy)
   {
     [(SCATInputController *)self _updateMotionTrackingInputSource];
   }
 
-  if (v3)
+  if (enabledCopy)
   {
     [(SCATInputController *)self _updateEyeGazeMotionTrackingInputSource];
   }
@@ -1815,7 +1815,7 @@ LABEL_17:
   }
 }
 
-- (void)setMotionTrackingEnabled:(BOOL)a3
+- (void)setMotionTrackingEnabled:(BOOL)enabled
 {
   v3 = SWCHLogCommon();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_FAULT))
@@ -1824,40 +1824,40 @@ LABEL_17:
   }
 }
 
-- (void)overrideMotionTrackerLookAtPoint:(CGPoint)a3
+- (void)overrideMotionTrackerLookAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   if ([(SCATInputController *)self isMotionTrackingEnabled])
   {
-    v6 = [(SCATInputController *)self motionTrackerInputSource];
+    motionTrackerInputSource = [(SCATInputController *)self motionTrackerInputSource];
 
-    if (v6)
+    if (motionTrackerInputSource)
     {
-      v7 = [(SCATInputController *)self motionTrackerInputSource];
-      [v7 overrideLookAtPoint:{x, y}];
+      motionTrackerInputSource2 = [(SCATInputController *)self motionTrackerInputSource];
+      [motionTrackerInputSource2 overrideLookAtPoint:{x, y}];
     }
   }
 }
 
 - (void)_updateMotionTrackingInputSource
 {
-  v4 = [(SCATInputController *)self motionTrackerInputSource];
-  v3 = [(SCATInputController *)self cameraInputSource];
+  motionTrackerInputSource = [(SCATInputController *)self motionTrackerInputSource];
+  cameraInputSource = [(SCATInputController *)self cameraInputSource];
 
-  if ([(SCATInputController *)self isMotionTrackingEnabled]&& v3)
+  if ([(SCATInputController *)self isMotionTrackingEnabled]&& cameraInputSource)
   {
     [(SCATInputController *)self _showHeadTrackingErrorMessageForHeadMovementSwitchConflict];
   }
 
-  if (v3 && v4)
+  if (cameraInputSource && motionTrackerInputSource)
   {
     [(SCATInputController *)self _removeMotionTrackingInputSourceAndClearAlert:0];
   }
 
-  if ([(SCATInputController *)self isMotionTrackingEnabled]|| !v3)
+  if ([(SCATInputController *)self isMotionTrackingEnabled]|| !cameraInputSource)
   {
-    if ([(SCATInputController *)self isMotionTrackingEnabled]&& !v4 && !v3)
+    if ([(SCATInputController *)self isMotionTrackingEnabled]&& !motionTrackerInputSource && !cameraInputSource)
     {
       [(SCATInputController *)self _addMotionTrackingInputSource];
       goto LABEL_20;
@@ -1870,12 +1870,12 @@ LABEL_17:
     [(SCATInputController *)self isMotionTrackingEnabled];
   }
 
-  if ([(SCATInputController *)self isMotionTrackingEnabled]&& v4)
+  if ([(SCATInputController *)self isMotionTrackingEnabled]&& motionTrackerInputSource)
   {
-    [(SCATInputController *)self _updateActionsForSource:v4];
+    [(SCATInputController *)self _updateActionsForSource:motionTrackerInputSource];
   }
 
-  else if (![(SCATInputController *)self isMotionTrackingEnabled]&& v4)
+  else if (![(SCATInputController *)self isMotionTrackingEnabled]&& motionTrackerInputSource)
   {
     [(SCATInputController *)self _removeMotionTrackingInputSourceAndClearAlert:1];
   }
@@ -1914,24 +1914,24 @@ LABEL_20:
     [(SCATInputController *)self _updateHeadMotionTrackingInputSource];
   }
 
-  v7 = [(SCATInputController *)self motionTrackerInputSource];
-  [v7 startRunning];
+  motionTrackerInputSource = [(SCATInputController *)self motionTrackerInputSource];
+  [motionTrackerInputSource startRunning];
 }
 
 - (void)_updateHeadMotionTrackingInputSource
 {
-  v3 = [(SCATInputController *)self motionTrackerInputSource];
-  if (v3)
+  motionTrackerInputSource = [(SCATInputController *)self motionTrackerInputSource];
+  if (motionTrackerInputSource)
   {
-    v4 = v3;
-    v5 = [(SCATInputController *)self motionTrackerInputSource];
-    v6 = [v5 isHeadTracking];
+    v4 = motionTrackerInputSource;
+    motionTrackerInputSource2 = [(SCATInputController *)self motionTrackerInputSource];
+    isHeadTracking = [motionTrackerInputSource2 isHeadTracking];
 
-    if ((v6 & 1) == 0)
+    if ((isHeadTracking & 1) == 0)
     {
       v8 = [NSSet setWithObjects:&off_1001E5478, 0];
-      v7 = [(SCATInputController *)self motionTrackerInputSource];
-      [v7 setAllowedTrackingTypes:v8];
+      motionTrackerInputSource3 = [(SCATInputController *)self motionTrackerInputSource];
+      [motionTrackerInputSource3 setAllowedTrackingTypes:v8];
     }
   }
 }
@@ -1940,47 +1940,47 @@ LABEL_20:
 {
   if ([(SCATInputController *)self isOnDeviceEyeTrackingSupported])
   {
-    v3 = [(SCATInputController *)self motionTrackerInputSource];
-    if (v3)
+    motionTrackerInputSource = [(SCATInputController *)self motionTrackerInputSource];
+    if (motionTrackerInputSource)
     {
-      v4 = v3;
-      v5 = [(SCATInputController *)self motionTrackerInputSource];
-      v6 = [v5 isEyeTracking];
+      v4 = motionTrackerInputSource;
+      motionTrackerInputSource2 = [(SCATInputController *)self motionTrackerInputSource];
+      isEyeTracking = [motionTrackerInputSource2 isEyeTracking];
 
-      if ((v6 & 1) == 0)
+      if ((isEyeTracking & 1) == 0)
       {
         v8 = [NSSet setWithObjects:&off_1001E5490, 0];
-        v7 = [(SCATInputController *)self motionTrackerInputSource];
-        [v7 setAllowedTrackingTypes:v8];
+        motionTrackerInputSource3 = [(SCATInputController *)self motionTrackerInputSource];
+        [motionTrackerInputSource3 setAllowedTrackingTypes:v8];
       }
     }
   }
 }
 
-- (void)_removeMotionTrackingInputSourceAndClearAlert:(BOOL)a3
+- (void)_removeMotionTrackingInputSourceAndClearAlert:(BOOL)alert
 {
-  v3 = a3;
-  v5 = [(SCATInputController *)self motionTrackerInputSource];
-  [v5 stopRunning];
+  alertCopy = alert;
+  motionTrackerInputSource = [(SCATInputController *)self motionTrackerInputSource];
+  [motionTrackerInputSource stopRunning];
 
-  v6 = [(SCATInputController *)self motionTrackerInputSource];
-  [v6 setDelegate:0 queue:0];
+  motionTrackerInputSource2 = [(SCATInputController *)self motionTrackerInputSource];
+  [motionTrackerInputSource2 setDelegate:0 queue:0];
 
   [(SCATInputController *)self setMotionTrackerInputSource:0];
-  v7 = [(SCATInputController *)self motionTrackerDelayedShowAlertTimer];
+  motionTrackerDelayedShowAlertTimer = [(SCATInputController *)self motionTrackerDelayedShowAlertTimer];
 
-  if (v7)
+  if (motionTrackerDelayedShowAlertTimer)
   {
-    v8 = [(SCATInputController *)self motionTrackerDelayedShowAlertTimer];
-    [v8 invalidate];
+    motionTrackerDelayedShowAlertTimer2 = [(SCATInputController *)self motionTrackerDelayedShowAlertTimer];
+    [motionTrackerDelayedShowAlertTimer2 invalidate];
 
     [(SCATInputController *)self setMotionTrackerDelayedShowAlertTimer:0];
   }
 
-  v9 = [(SCATInputController *)self motionTrackerDelayedHideAlertTimer];
-  v10 = [v9 isValid];
+  motionTrackerDelayedHideAlertTimer = [(SCATInputController *)self motionTrackerDelayedHideAlertTimer];
+  isValid = [motionTrackerDelayedHideAlertTimer isValid];
 
-  if (!v10 && v3)
+  if (!isValid && alertCopy)
   {
     [(SCATInputController *)self _hideAlertForMotionTrackerInputSource];
   }
@@ -1992,8 +1992,8 @@ LABEL_20:
 
 - (void)_updateSCNeedsCameraOnLockScreen
 {
-  v3 = [(SCATInputController *)self motionTrackerInputSource];
-  if (v3)
+  motionTrackerInputSource = [(SCATInputController *)self motionTrackerInputSource];
+  if (motionTrackerInputSource)
   {
 
     v4 = 1;
@@ -2001,8 +2001,8 @@ LABEL_20:
 
   else
   {
-    v5 = [(SCATInputController *)self cameraInputSource];
-    v4 = v5 != 0;
+    cameraInputSource = [(SCATInputController *)self cameraInputSource];
+    v4 = cameraInputSource != 0;
   }
 
   __AXSSetAccessibilityNeedsCameraOnLockScreen(v4);
@@ -2031,7 +2031,7 @@ LABEL_20:
 
 - (void)_updateAccessibilityEventInputSource
 {
-  v8 = [(SCATInputController *)self accessibilityEventInputSource];
+  accessibilityEventInputSource = [(SCATInputController *)self accessibilityEventInputSource];
   if ([(SCATInputController *)self isEnabledSwitchWithSource:SCATSwitchSourceAccessibility]|| [(SCATInputController *)self isEnabledSwitchWithSource:SCATSwitchSourceBackTap])
   {
     [(SCATInputController *)self _updateSCNeedsMicrophoneOnLockScreen];
@@ -2043,31 +2043,31 @@ LABEL_20:
     [(SCATInputController *)self _updateSCNeedsMicrophoneOnLockScreen];
     if ((v7 & 1) == 0 && ![(SCATInputController *)self isEnabledSwitchWithSource:SCATSwitchSourceHandGestures]&& ![(SCATInputController *)self isEnabledSwitchWithSource:SCATSwitchSourceGamepad]&& ![(SCATInputController *)self isEnabledSwitchWithSource:SCATSwitchSourceTadmor])
     {
-      v3 = [(SCATInputController *)self isEnabledSwitchWithSource:SCATSwitchSourceAutomation];
+      startRunning = [(SCATInputController *)self isEnabledSwitchWithSource:SCATSwitchSourceAutomation];
       goto LABEL_5;
     }
   }
 
-  v3 = 1;
+  startRunning = 1;
 LABEL_5:
-  v4 = v8;
-  if (v3 && !v8)
+  v4 = accessibilityEventInputSource;
+  if (startRunning && !accessibilityEventInputSource)
   {
-    v8 = objc_opt_new();
-    [(SCATInputController *)self setAccessibilityEventInputSource:v8];
-    [(SCATInputController *)self _updateActionsForSource:v8];
+    accessibilityEventInputSource = objc_opt_new();
+    [(SCATInputController *)self setAccessibilityEventInputSource:accessibilityEventInputSource];
+    [(SCATInputController *)self _updateActionsForSource:accessibilityEventInputSource];
     v5 = +[AXAccessQueue mainAccessQueue];
-    [v8 setDelegate:self queue:v5];
+    [accessibilityEventInputSource setDelegate:self queue:v5];
 
-    v3 = [v8 startRunning];
+    startRunning = [accessibilityEventInputSource startRunning];
 LABEL_16:
-    v4 = v8;
+    v4 = accessibilityEventInputSource;
     goto LABEL_17;
   }
 
-  if (v8)
+  if (accessibilityEventInputSource)
   {
-    v6 = v3;
+    v6 = startRunning;
   }
 
   else
@@ -2077,38 +2077,38 @@ LABEL_16:
 
   if (v6 == 1)
   {
-    v3 = [(SCATInputController *)self _updateActionsForSource:v8];
+    startRunning = [(SCATInputController *)self _updateActionsForSource:accessibilityEventInputSource];
     goto LABEL_16;
   }
 
-  if ((v3 & 1) == 0 && v8)
+  if ((startRunning & 1) == 0 && accessibilityEventInputSource)
   {
-    [v8 stopRunning];
-    [v8 setDelegate:0 queue:0];
-    v3 = [(SCATInputController *)self setAccessibilityEventInputSource:0];
+    [accessibilityEventInputSource stopRunning];
+    [accessibilityEventInputSource setDelegate:0 queue:0];
+    startRunning = [(SCATInputController *)self setAccessibilityEventInputSource:0];
     goto LABEL_16;
   }
 
 LABEL_17:
 
-  _objc_release_x1(v3, v4);
+  _objc_release_x1(startRunning, v4);
 }
 
 - (void)_updateRemoteControlInputSource
 {
-  v3 = [(SCATInputController *)self remoteControlInputSource];
+  remoteControlInputSource = [(SCATInputController *)self remoteControlInputSource];
 
-  if (!v3)
+  if (!remoteControlInputSource)
   {
     v4 = objc_opt_new();
     [(SCATInputController *)self setRemoteControlInputSource:v4];
 
-    v5 = [(SCATInputController *)self remoteControlInputSource];
+    remoteControlInputSource2 = [(SCATInputController *)self remoteControlInputSource];
     v6 = +[AXAccessQueue mainAccessQueue];
-    [v5 setDelegate:self queue:v6];
+    [remoteControlInputSource2 setDelegate:self queue:v6];
 
-    v7 = [(SCATInputController *)self remoteControlInputSource];
-    [v7 startRunning];
+    remoteControlInputSource3 = [(SCATInputController *)self remoteControlInputSource];
+    [remoteControlInputSource3 startRunning];
   }
 }
 
@@ -2135,7 +2135,7 @@ LABEL_17:
 
 - (BOOL)_switchConfigurationRendersDeviceUnusable
 {
-  v3 = [(SCATInputController *)self _allSwitchesInUse];
+  _allSwitchesInUse = [(SCATInputController *)self _allSwitchesInUse];
   v87 = 0;
   v88 = &v87;
   v89 = 0x2020000000;
@@ -2157,151 +2157,151 @@ LABEL_17:
   v76 = &v87;
   v77 = &v83;
   v78 = &v79;
-  [v3 enumerateObjectsUsingBlock:v74];
-  v5 = [(SCATInputController *)self recipe];
-  if (v5)
+  [_allSwitchesInUse enumerateObjectsUsingBlock:v74];
+  recipe = [(SCATInputController *)self recipe];
+  if (recipe)
   {
-    v6 = [(SCATInputController *)self recipe];
-    v7 = [v6 shouldContinueScanning];
+    recipe2 = [(SCATInputController *)self recipe];
+    shouldContinueScanning = [recipe2 shouldContinueScanning];
 
-    if ((v7 & 1) == 0)
+    if ((shouldContinueScanning & 1) == 0)
     {
       goto LABEL_91;
     }
   }
 
   v8 = +[AXSettings sharedInstance];
-  v9 = [v8 switchControlScanningStyle];
+  switchControlScanningStyle = [v8 switchControlScanningStyle];
 
-  if (!v9)
+  if (!switchControlScanningStyle)
   {
     goto LABEL_7;
   }
 
-  if (v9 == 1)
+  if (switchControlScanningStyle == 1)
   {
-    v10 = [(SCATInputController *)self keyboardInputSource];
-    v11 = [v10 numberOfDevicesConnected];
+    keyboardInputSource = [(SCATInputController *)self keyboardInputSource];
+    numberOfDevicesConnected = [keyboardInputSource numberOfDevicesConnected];
 
-    v12 = [(SCATInputController *)self mfiInputSource];
-    v13 = [v12 numberOfDevicesConnected];
+    mfiInputSource = [(SCATInputController *)self mfiInputSource];
+    numberOfDevicesConnected2 = [mfiInputSource numberOfDevicesConnected];
 
-    v14 = [(SCATInputController *)self midiInputSource];
-    v72 = [v14 numberOfDevicesConnected];
+    midiInputSource = [(SCATInputController *)self midiInputSource];
+    numberOfDevicesConnected3 = [midiInputSource numberOfDevicesConnected];
 
-    v15 = [(SCATInputController *)self gamepadInputSource];
-    v70 = [v15 numberOfDevicesConnected];
+    gamepadInputSource = [(SCATInputController *)self gamepadInputSource];
+    numberOfDevicesConnected4 = [gamepadInputSource numberOfDevicesConnected];
 
-    v16 = [(SCATInputController *)self tadmorInputSource];
-    v68 = [v16 numberOfDevicesConnected];
+    tadmorInputSource = [(SCATInputController *)self tadmorInputSource];
+    numberOfDevicesConnected5 = [tadmorInputSource numberOfDevicesConnected];
 
-    v17 = [(SCATInputController *)self interDeviceCommunicator];
-    v18 = [v17 isReceivingSwitchEvents];
+    interDeviceCommunicator = [(SCATInputController *)self interDeviceCommunicator];
+    isReceivingSwitchEvents = [interDeviceCommunicator isReceivingSwitchEvents];
 
     if (*(v88 + 24) == 1)
     {
       v19 = [v4 objectForKeyedSubscript:SCATSwitchSourceScreen];
-      v20 = [v19 firstObject];
-      if ([v20 BOOLValue])
+      firstObject = [v19 firstObject];
+      if ([firstObject BOOLValue])
       {
-        v21 = 1;
+        bOOLValue = 1;
       }
 
       else
       {
         v22 = [v4 objectForKeyedSubscript:SCATSwitchSourceKeyboard];
-        v23 = [v22 firstObject];
-        if ([v23 BOOLValue] && v11)
+        firstObject2 = [v22 firstObject];
+        if ([firstObject2 BOOLValue] && numberOfDevicesConnected)
         {
-          v21 = 1;
+          bOOLValue = 1;
         }
 
         else
         {
           v66 = [v4 objectForKeyedSubscript:SCATSwitchSourceMFI];
-          v64 = [v66 firstObject];
-          if ([v64 BOOLValue] && v13)
+          firstObject3 = [v66 firstObject];
+          if ([firstObject3 BOOLValue] && numberOfDevicesConnected2)
           {
-            v21 = 1;
+            bOOLValue = 1;
           }
 
           else
           {
             v62 = [v4 objectForKeyedSubscript:SCATSwitchSourceMIDI];
-            v60 = [v62 firstObject];
-            if ([v60 BOOLValue] && v72)
+            firstObject4 = [v62 firstObject];
+            if ([firstObject4 BOOLValue] && numberOfDevicesConnected3)
             {
-              v21 = 1;
+              bOOLValue = 1;
             }
 
             else
             {
               v58 = [v4 objectForKeyedSubscript:SCATSwitchSourceRemote];
-              v56 = [v58 firstObject];
-              if ([v56 BOOLValue] & v18)
+              firstObject5 = [v58 firstObject];
+              if ([firstObject5 BOOLValue] & isReceivingSwitchEvents)
               {
-                v21 = 1;
+                bOOLValue = 1;
               }
 
               else
               {
                 v54 = [v4 objectForKeyedSubscript:SCATSwitchSourceGamepad];
-                v52 = [v54 firstObject];
-                if ([v52 BOOLValue] && v70)
+                firstObject6 = [v54 firstObject];
+                if ([firstObject6 BOOLValue] && numberOfDevicesConnected4)
                 {
-                  v21 = 1;
+                  bOOLValue = 1;
                 }
 
                 else
                 {
                   v50 = [v4 objectForKeyedSubscript:SCATSwitchSourceBackTap];
-                  v48 = [v50 firstObject];
-                  if ([v48 BOOLValue])
+                  firstObject7 = [v50 firstObject];
+                  if ([firstObject7 BOOLValue])
                   {
-                    v21 = 1;
+                    bOOLValue = 1;
                   }
 
                   else
                   {
                     v46 = [v4 objectForKeyedSubscript:SCATSwitchSourceSound];
-                    v44 = [v46 firstObject];
-                    if ([v44 BOOLValue])
+                    firstObject8 = [v46 firstObject];
+                    if ([firstObject8 BOOLValue])
                     {
-                      v21 = 1;
+                      bOOLValue = 1;
                     }
 
                     else
                     {
                       v42 = [v4 objectForKeyedSubscript:SCATSwitchSourceTadmor];
-                      v40 = [v42 firstObject];
-                      if ([v40 BOOLValue] && v68)
+                      firstObject9 = [v42 firstObject];
+                      if ([firstObject9 BOOLValue] && numberOfDevicesConnected5)
                       {
-                        v21 = 1;
+                        bOOLValue = 1;
                       }
 
                       else
                       {
                         v38 = [v4 objectForKeyedSubscript:SCATSwitchSourceCamera];
-                        v37 = [v38 firstObject];
-                        if ([v37 BOOLValue])
+                        firstObject10 = [v38 firstObject];
+                        if ([firstObject10 BOOLValue])
                         {
-                          v21 = 1;
+                          bOOLValue = 1;
                         }
 
                         else
                         {
                           v36 = [v4 objectForKeyedSubscript:SCATSwitchSourceCameraHandGesture];
-                          v35 = [v36 firstObject];
-                          if ([v35 BOOLValue])
+                          firstObject11 = [v36 firstObject];
+                          if ([firstObject11 BOOLValue])
                           {
-                            v21 = 1;
+                            bOOLValue = 1;
                           }
 
                           else
                           {
                             v34 = [v4 objectForKeyedSubscript:SCATSwitchSourceAutomation];
-                            v33 = [v34 firstObject];
-                            v21 = [v33 BOOLValue];
+                            firstObject12 = [v34 firstObject];
+                            bOOLValue = [firstObject12 BOOLValue];
                           }
                         }
                       }
@@ -2317,7 +2317,7 @@ LABEL_17:
 
     else
     {
-      v21 = 0;
+      bOOLValue = 0;
     }
 
     if (*(v84 + 24) != 1)
@@ -2326,107 +2326,107 @@ LABEL_17:
     }
 
     v24 = [v4 objectForKeyedSubscript:SCATSwitchSourceScreen];
-    v25 = [v24 lastObject];
-    if ([v25 BOOLValue])
+    lastObject = [v24 lastObject];
+    if ([lastObject BOOLValue])
     {
-      v26 = 1;
+      bOOLValue2 = 1;
     }
 
     else
     {
       v27 = [v4 objectForKeyedSubscript:SCATSwitchSourceKeyboard];
-      v28 = [v27 lastObject];
-      if ([v28 BOOLValue] && v11)
+      lastObject2 = [v27 lastObject];
+      if ([lastObject2 BOOLValue] && numberOfDevicesConnected)
       {
-        v26 = 1;
+        bOOLValue2 = 1;
       }
 
       else
       {
         v67 = [v4 objectForKeyedSubscript:SCATSwitchSourceMFI];
-        v29 = [v67 lastObject];
-        if ([v29 BOOLValue] && v13)
+        lastObject3 = [v67 lastObject];
+        if ([lastObject3 BOOLValue] && numberOfDevicesConnected2)
         {
-          v26 = 1;
+          bOOLValue2 = 1;
         }
 
         else
         {
           v65 = [v4 objectForKeyedSubscript:SCATSwitchSourceMIDI];
-          v30 = [v65 lastObject];
-          if ([v30 BOOLValue] && v72)
+          lastObject4 = [v65 lastObject];
+          if ([lastObject4 BOOLValue] && numberOfDevicesConnected3)
           {
-            v26 = 1;
+            bOOLValue2 = 1;
           }
 
           else
           {
             v73 = [v4 objectForKeyedSubscript:SCATSwitchSourceRemote];
-            v63 = [v73 lastObject];
-            if ([v63 BOOLValue] & v18)
+            lastObject5 = [v73 lastObject];
+            if ([lastObject5 BOOLValue] & isReceivingSwitchEvents)
             {
-              v26 = 1;
+              bOOLValue2 = 1;
             }
 
             else
             {
               v61 = [v4 objectForKeyedSubscript:SCATSwitchSourceGamepad];
-              v59 = [v61 lastObject];
-              if ([v59 BOOLValue] && v70)
+              lastObject6 = [v61 lastObject];
+              if ([lastObject6 BOOLValue] && numberOfDevicesConnected4)
               {
-                v26 = 1;
+                bOOLValue2 = 1;
               }
 
               else
               {
                 v71 = [v4 objectForKeyedSubscript:SCATSwitchSourceBackTap];
-                v57 = [v71 lastObject];
-                if ([v57 BOOLValue])
+                lastObject7 = [v71 lastObject];
+                if ([lastObject7 BOOLValue])
                 {
-                  v26 = 1;
+                  bOOLValue2 = 1;
                 }
 
                 else
                 {
                   v55 = [v4 objectForKeyedSubscript:SCATSwitchSourceSound];
-                  v53 = [v55 lastObject];
-                  if ([v53 BOOLValue])
+                  lastObject8 = [v55 lastObject];
+                  if ([lastObject8 BOOLValue])
                   {
-                    v26 = 1;
+                    bOOLValue2 = 1;
                   }
 
                   else
                   {
                     v51 = [v4 objectForKeyedSubscript:SCATSwitchSourceTadmor];
-                    v49 = [v51 lastObject];
-                    if ([v49 BOOLValue] && v68)
+                    lastObject9 = [v51 lastObject];
+                    if ([lastObject9 BOOLValue] && numberOfDevicesConnected5)
                     {
-                      v26 = 1;
+                      bOOLValue2 = 1;
                     }
 
                     else
                     {
                       v69 = [v4 objectForKeyedSubscript:SCATSwitchSourceCamera];
-                      v47 = [v69 lastObject];
-                      if ([v47 BOOLValue])
+                      lastObject10 = [v69 lastObject];
+                      if ([lastObject10 BOOLValue])
                       {
-                        v26 = 1;
+                        bOOLValue2 = 1;
                       }
 
                       else
                       {
                         v45 = [v4 objectForKeyedSubscript:SCATSwitchSourceCameraHandGesture];
-                        v43 = [v45 lastObject];
-                        if ([v43 BOOLValue])
+                        lastObject11 = [v45 lastObject];
+                        if ([lastObject11 BOOLValue])
                         {
-                          v26 = 1;
+                          bOOLValue2 = 1;
                         }
 
                         else
                         {
                           v41 = [v4 objectForKeyedSubscript:SCATSwitchSourceAutomation];
-                          v39 = [v41 lastObject];
-                          v26 = [v39 BOOLValue];
+                          lastObject12 = [v41 lastObject];
+                          bOOLValue2 = [lastObject12 BOOLValue];
                         }
                       }
                     }
@@ -2439,7 +2439,7 @@ LABEL_17:
       }
     }
 
-    if ((v21 & v26 & 1) == 0)
+    if ((bOOLValue & bOOLValue2 & 1) == 0)
     {
       goto LABEL_91;
     }
@@ -2447,7 +2447,7 @@ LABEL_17:
     goto LABEL_90;
   }
 
-  if (v9 != 2)
+  if (switchControlScanningStyle != 2)
   {
 LABEL_91:
     v31 = *(v80 + 24);
@@ -2476,57 +2476,57 @@ LABEL_92:
 
 - (void)_removeInputTimers
 {
-  v7 = [(SCATInputController *)self inputHoldTimer];
-  if (v7)
+  inputHoldTimer = [(SCATInputController *)self inputHoldTimer];
+  if (inputHoldTimer)
   {
-    [v7 cancel];
+    [inputHoldTimer cancel];
     [(SCATInputController *)self setInputHoldTimer:0];
   }
 
-  v3 = [(SCATInputController *)self inputRepeatTimer];
-  v4 = v3;
-  if (v3)
+  inputRepeatTimer = [(SCATInputController *)self inputRepeatTimer];
+  v4 = inputRepeatTimer;
+  if (inputRepeatTimer)
   {
-    [v3 cancel];
+    [inputRepeatTimer cancel];
     [(SCATInputController *)self setInputRepeatTimer:0];
   }
 
-  v5 = [(SCATInputController *)self ignoreActionsTimer];
-  v6 = v5;
-  if (v5)
+  ignoreActionsTimer = [(SCATInputController *)self ignoreActionsTimer];
+  v6 = ignoreActionsTimer;
+  if (ignoreActionsTimer)
   {
-    [v5 cancel];
+    [ignoreActionsTimer cancel];
     [(SCATInputController *)self setIgnoreActionsTimer:0];
   }
 }
 
 - (void)_setupInputTimers
 {
-  v5 = [(SCATInputController *)self inputHoldTimer];
-  if (!v5)
+  inputHoldTimer = [(SCATInputController *)self inputHoldTimer];
+  if (!inputHoldTimer)
   {
-    v5 = [[AXDispatchTimer alloc] initWithTargetSerialQueue:&_dispatch_main_q];
-    [v5 setAutomaticallyCancelPendingBlockUponSchedulingNewBlock:1];
-    [v5 setLabel:@"input hold timer"];
-    [(SCATInputController *)self setInputHoldTimer:v5];
+    inputHoldTimer = [[AXDispatchTimer alloc] initWithTargetSerialQueue:&_dispatch_main_q];
+    [inputHoldTimer setAutomaticallyCancelPendingBlockUponSchedulingNewBlock:1];
+    [inputHoldTimer setLabel:@"input hold timer"];
+    [(SCATInputController *)self setInputHoldTimer:inputHoldTimer];
   }
 
-  v3 = [(SCATInputController *)self inputRepeatTimer];
-  if (!v3)
+  inputRepeatTimer = [(SCATInputController *)self inputRepeatTimer];
+  if (!inputRepeatTimer)
   {
-    v3 = [[AXDispatchTimer alloc] initWithTargetSerialQueue:&_dispatch_main_q];
-    [v3 setAutomaticallyCancelPendingBlockUponSchedulingNewBlock:1];
-    [v3 setLabel:@"input repeat timer"];
-    [(SCATInputController *)self setInputRepeatTimer:v3];
+    inputRepeatTimer = [[AXDispatchTimer alloc] initWithTargetSerialQueue:&_dispatch_main_q];
+    [inputRepeatTimer setAutomaticallyCancelPendingBlockUponSchedulingNewBlock:1];
+    [inputRepeatTimer setLabel:@"input repeat timer"];
+    [(SCATInputController *)self setInputRepeatTimer:inputRepeatTimer];
   }
 
-  v4 = [(SCATInputController *)self ignoreActionsTimer];
-  if (!v4)
+  ignoreActionsTimer = [(SCATInputController *)self ignoreActionsTimer];
+  if (!ignoreActionsTimer)
   {
-    v4 = [[AXDispatchTimer alloc] initWithTargetSerialQueue:&_dispatch_main_q];
-    [v4 setAutomaticallyCancelPendingBlockUponSchedulingNewBlock:1];
-    [v4 setLabel:@"ignore actions timer"];
-    [(SCATInputController *)self setIgnoreActionsTimer:v4];
+    ignoreActionsTimer = [[AXDispatchTimer alloc] initWithTargetSerialQueue:&_dispatch_main_q];
+    [ignoreActionsTimer setAutomaticallyCancelPendingBlockUponSchedulingNewBlock:1];
+    [ignoreActionsTimer setLabel:@"ignore actions timer"];
+    [(SCATInputController *)self setIgnoreActionsTimer:ignoreActionsTimer];
   }
 }
 
@@ -2564,7 +2564,7 @@ LABEL_92:
   v20 = 3221225472;
   v21 = sub_100076E30;
   v22 = &unk_1001D3488;
-  v23 = self;
+  selfCopy = self;
   AXPerformBlockSynchronouslyOnMainThread();
   [(AXSSInterDeviceCommunicator *)self->_interDeviceCommunicator setActionReceiver:0];
   if (AXDeviceHasJindo())
@@ -2579,9 +2579,9 @@ LABEL_92:
   [(SCATInputController *)&v18 dealloc];
 }
 
-- (SCATInputController)initWithInterDeviceCommunicator:(id)a3
+- (SCATInputController)initWithInterDeviceCommunicator:(id)communicator
 {
-  v5 = a3;
+  communicatorCopy = communicator;
   v9.receiver = self;
   v9.super_class = SCATInputController;
   v6 = [(SCATInputController *)&v9 init];
@@ -2589,7 +2589,7 @@ LABEL_92:
   if (v6)
   {
     [(SCATInputController *)v6 _sharedInit];
-    objc_storeStrong(&v7->_interDeviceCommunicator, a3);
+    objc_storeStrong(&v7->_interDeviceCommunicator, communicator);
     [(AXSSInterDeviceCommunicator *)v7->_interDeviceCommunicator setActionReceiver:v7];
   }
 
@@ -2725,23 +2725,23 @@ LABEL_92:
 - (id)_allSwitchesInUse
 {
   v3 = +[AXSettings sharedInstance];
-  v4 = [v3 assistiveTouchSwitches];
-  v5 = [(SCATInputController *)self recipe];
+  assistiveTouchSwitches = [v3 assistiveTouchSwitches];
+  recipe = [(SCATInputController *)self recipe];
 
-  if (v5)
+  if (recipe)
   {
-    v6 = [(SCATInputController *)self recipe];
-    v7 = [v6 mappings];
-    v8 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [v7 count]);
+    recipe2 = [(SCATInputController *)self recipe];
+    mappings = [recipe2 mappings];
+    v8 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [mappings count]);
 
     v25 = 0u;
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v9 = [(SCATInputController *)self recipe];
-    v10 = [v9 mappings];
+    recipe3 = [(SCATInputController *)self recipe];
+    mappings2 = [recipe3 mappings];
 
-    v11 = [v10 countByEnumeratingWithState:&v23 objects:v27 count:16];
+    v11 = [mappings2 countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v11)
     {
       v12 = v11;
@@ -2752,20 +2752,20 @@ LABEL_92:
         {
           if (*v24 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(mappings2);
           }
 
           v15 = *(*(&v23 + 1) + 8 * i);
-          v16 = [v15 switchUUID];
+          switchUUID = [v15 switchUUID];
 
-          if (v16)
+          if (switchUUID)
           {
-            v17 = [v15 switchUUID];
-            [v8 addObject:v17];
+            switchUUID2 = [v15 switchUUID];
+            [v8 addObject:switchUUID2];
           }
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v23 objects:v27 count:16];
+        v12 = [mappings2 countByEnumeratingWithState:&v23 objects:v27 count:16];
       }
 
       while (v12);
@@ -2777,12 +2777,12 @@ LABEL_92:
     v21[3] = &unk_1001D5990;
     v22 = v8;
     v18 = v8;
-    v19 = [v4 objectsPassingTest:v21];
+    v19 = [assistiveTouchSwitches objectsPassingTest:v21];
   }
 
   else
   {
-    v19 = [v4 objectsPassingTest:&stru_1001D59D0];
+    v19 = [assistiveTouchSwitches objectsPassingTest:&stru_1001D59D0];
   }
 
   return v19;
@@ -2790,45 +2790,45 @@ LABEL_92:
 
 - (int64_t)role
 {
-  v3 = [(SCATInputController *)self interDeviceCommunicator];
-  v4 = [v3 isReceivingSwitchEvents];
+  interDeviceCommunicator = [(SCATInputController *)self interDeviceCommunicator];
+  isReceivingSwitchEvents = [interDeviceCommunicator isReceivingSwitchEvents];
 
-  if (v4)
+  if (isReceivingSwitchEvents)
   {
     return 2;
   }
 
-  v6 = [(SCATInputController *)self interDeviceCommunicator];
-  v7 = [v6 isForwardingSwitchEvents];
+  interDeviceCommunicator2 = [(SCATInputController *)self interDeviceCommunicator];
+  isForwardingSwitchEvents = [interDeviceCommunicator2 isForwardingSwitchEvents];
 
-  return v7;
+  return isForwardingSwitchEvents;
 }
 
-- (void)setRecipe:(id)a3
+- (void)setRecipe:(id)recipe
 {
-  v5 = a3;
+  recipeCopy = recipe;
   p_recipe = &self->_recipe;
-  if (self->_recipe != v5)
+  if (self->_recipe != recipeCopy)
   {
-    v7 = v5;
-    objc_storeStrong(p_recipe, a3);
+    v7 = recipeCopy;
+    objc_storeStrong(p_recipe, recipe);
     p_recipe = [(SCATInputController *)self hasInitializedInputSources];
-    v5 = v7;
+    recipeCopy = v7;
     if (p_recipe)
     {
       p_recipe = [(SCATInputController *)self _updateInputSources];
-      v5 = v7;
+      recipeCopy = v7;
     }
   }
 
-  _objc_release_x1(p_recipe, v5);
+  _objc_release_x1(p_recipe, recipeCopy);
 }
 
-- (BOOL)_isSwitchWithSource:(id)a3 isEnabled:(id)a4
+- (BOOL)_isSwitchWithSource:(id)source isEnabled:(id)enabled
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SCATInputController *)self _allSwitchesInUse];
+  sourceCopy = source;
+  enabledCopy = enabled;
+  _allSwitchesInUse = [(SCATInputController *)self _allSwitchesInUse];
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
@@ -2837,25 +2837,25 @@ LABEL_92:
   v12[1] = 3221225472;
   v12[2] = sub_100078780;
   v12[3] = &unk_1001D59F8;
-  v9 = v6;
+  v9 = sourceCopy;
   v13 = v9;
-  v10 = v7;
+  v10 = enabledCopy;
   v14 = v10;
   v15 = &v16;
-  [v8 enumerateObjectsUsingBlock:v12];
-  LOBYTE(v7) = *(v17 + 24);
+  [_allSwitchesInUse enumerateObjectsUsingBlock:v12];
+  LOBYTE(enabledCopy) = *(v17 + 24);
 
   _Block_object_dispose(&v16, 8);
-  return v7;
+  return enabledCopy;
 }
 
 - (void)updateWhetherSwitchConfigurationRendersDeviceUnusable
 {
-  v3 = [(SCATInputController *)self _switchConfigurationRendersDeviceUnusable];
-  v4 = [(SCATInputController *)self isValid];
-  if (v3)
+  _switchConfigurationRendersDeviceUnusable = [(SCATInputController *)self _switchConfigurationRendersDeviceUnusable];
+  isValid = [(SCATInputController *)self isValid];
+  if (_switchConfigurationRendersDeviceUnusable)
   {
-    if (v4)
+    if (isValid)
     {
       [(SCATInputController *)self setValid:[(SCATInputController *)self isValid]^ 1];
       v5 = AXLocStringKeyForHomeButton();
@@ -2865,14 +2865,14 @@ LABEL_92:
     }
   }
 
-  else if ((v4 & 1) == 0)
+  else if ((isValid & 1) == 0)
   {
     [(SCATInputController *)self setValid:[(SCATInputController *)self isValid]^ 1];
     [(SCATInputController *)self _hideAlertForSource:3];
   }
 
   v7 = +[AXBackBoardServer server];
-  [v7 setSwitchControlRendersDeviceUnusable:v3];
+  [v7 setSwitchControlRendersDeviceUnusable:_switchConfigurationRendersDeviceUnusable];
 }
 
 - (void)updateWhetherSwitchConfigurationHasScreenSwitch
@@ -2881,95 +2881,95 @@ LABEL_92:
   [v3 setSwitchControlHasScreenSwitch:{-[SCATInputController _switchConfigurationHasScreenSwitch](self, "_switchConfigurationHasScreenSwitch")}];
 }
 
-- (void)setDelegate:(id)a3 queue:(id)a4
+- (void)setDelegate:(id)delegate queue:(id)queue
 {
-  v6 = a4;
-  [(SCATInputController *)self setDelegate:a3];
-  [(SCATInputController *)self setQueue:v6];
+  queueCopy = queue;
+  [(SCATInputController *)self setDelegate:delegate];
+  [(SCATInputController *)self setQueue:queueCopy];
 }
 
 - (AXUIClient)userInterfaceClient
 {
-  v3 = [(SCATInputController *)self delegate];
-  v4 = [v3 userInterfaceClientForInputController:self];
+  delegate = [(SCATInputController *)self delegate];
+  v4 = [delegate userInterfaceClientForInputController:self];
 
   return v4;
 }
 
 - (void)_hideAlerts
 {
-  v3 = [(SCATInputController *)self delegate];
+  delegate = [(SCATInputController *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(SCATInputController *)self delegate];
-    [v5 inputController:self shouldHideAlerts:1];
+    delegate2 = [(SCATInputController *)self delegate];
+    [delegate2 inputController:self shouldHideAlerts:1];
   }
 }
 
-- (void)_hideAlertForSource:(unint64_t)a3
+- (void)_hideAlertForSource:(unint64_t)source
 {
-  v4 = [(SCATInputController *)self delegate];
+  delegate = [(SCATInputController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(SCATInputController *)self delegate];
-    [v6 inputController:self shouldHideAlerts:1];
+    delegate2 = [(SCATInputController *)self delegate];
+    [delegate2 inputController:self shouldHideAlerts:1];
   }
 }
 
-- (void)_hideStateForSource:(unint64_t)a3
+- (void)_hideStateForSource:(unint64_t)source
 {
-  v6 = [(SCATInputController *)self userInterfaceClient];
-  v4 = [NSNumber numberWithUnsignedInteger:a3];
+  userInterfaceClient = [(SCATInputController *)self userInterfaceClient];
+  v4 = [NSNumber numberWithUnsignedInteger:source];
   v5 = [NSDictionary dictionaryWithObjectsAndKeys:v4, @"input source", 0];
 
-  [v6 sendAsynchronousMessage:v5 withIdentifier:5 targetAccessQueue:0 completion:0];
+  [userInterfaceClient sendAsynchronousMessage:v5 withIdentifier:5 targetAccessQueue:0 completion:0];
 }
 
-- (void)_showAlert:(id)a3 forSource:(unint64_t)a4
+- (void)_showAlert:(id)alert forSource:(unint64_t)source
 {
-  v6 = a3;
+  alertCopy = alert;
   v7 = +[AXSettings sharedInstance];
-  v8 = [v7 switchControlIgnoreInvalidSwitchConfiguration];
+  switchControlIgnoreInvalidSwitchConfiguration = [v7 switchControlIgnoreInvalidSwitchConfiguration];
 
-  if ((a4 & 0xFFFFFFFFFFFFFFFELL) == 2 && v8)
+  if ((source & 0xFFFFFFFFFFFFFFFELL) == 2 && switchControlIgnoreInvalidSwitchConfiguration)
   {
     v9 = SWCHLogCommon();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [NSNumber numberWithUnsignedInteger:a4];
+      v10 = [NSNumber numberWithUnsignedInteger:source];
       v14 = 138412546;
       v15 = v10;
       v16 = 2112;
-      v17 = v6;
+      v17 = alertCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Not showing alert because switchControlIgnoreInvalidSwitchConfiguration is enabled. Input Source: %@. Alert: %@", &v14, 0x16u);
     }
   }
 
   else
   {
-    v11 = [(SCATInputController *)self delegate];
+    delegate = [(SCATInputController *)self delegate];
     v12 = objc_opt_respondsToSelector();
 
     if (v12)
     {
-      v13 = [(SCATInputController *)self delegate];
-      [v13 inputController:self showAlert:v6];
+      delegate2 = [(SCATInputController *)self delegate];
+      [delegate2 inputController:self showAlert:alertCopy];
     }
   }
 }
 
-- (void)_showState:(id)a3 forSource:(unint64_t)a4
+- (void)_showState:(id)state forSource:(unint64_t)source
 {
-  v6 = a3;
-  v9 = [(SCATInputController *)self userInterfaceClient];
-  v7 = [NSNumber numberWithUnsignedInteger:a4];
-  v8 = [NSDictionary dictionaryWithObjectsAndKeys:v7, @"input source", v6, @"input state", 0];
+  stateCopy = state;
+  userInterfaceClient = [(SCATInputController *)self userInterfaceClient];
+  v7 = [NSNumber numberWithUnsignedInteger:source];
+  v8 = [NSDictionary dictionaryWithObjectsAndKeys:v7, @"input source", stateCopy, @"input state", 0];
 
-  [v9 sendAsynchronousMessage:v8 withIdentifier:6 targetAccessQueue:0 completion:0];
+  [userInterfaceClient sendAsynchronousMessage:v8 withIdentifier:6 targetAccessQueue:0 completion:0];
 }
 
 - (void)_restrictSystemApertureLayoutToInert
@@ -2977,9 +2977,9 @@ LABEL_92:
   if (AXDeviceHasJindo())
   {
     [(SCATInputController *)self _invalidateAssertionForSystemApertureInert];
-    v3 = [(SCATInputController *)self systemApertureInvalidatable];
+    systemApertureInvalidatable = [(SCATInputController *)self systemApertureInvalidatable];
 
-    if (!v3)
+    if (!systemApertureInvalidatable)
     {
       v4 = [(SBSSystemApertureRestrictionService *)self->_restrictionService acquireRestrictSystemApertureLayoutToInertAssertionWithReason:@"switchControlBanner"];
       [(SCATInputController *)self setSystemApertureInvalidatable:v4];
@@ -2991,30 +2991,30 @@ LABEL_92:
 {
   if (AXDeviceHasJindo())
   {
-    v3 = [(SCATInputController *)self systemApertureInvalidatable];
+    systemApertureInvalidatable = [(SCATInputController *)self systemApertureInvalidatable];
 
-    if (v3)
+    if (systemApertureInvalidatable)
     {
-      v4 = [(SCATInputController *)self systemApertureInvalidatable];
-      [v4 invalidate];
+      systemApertureInvalidatable2 = [(SCATInputController *)self systemApertureInvalidatable];
+      [systemApertureInvalidatable2 invalidate];
 
       [(SCATInputController *)self setSystemApertureInvalidatable:0];
     }
   }
 }
 
-- (void)didReceiveSwitchEvent:(id)a3 forDeviceWithName:(id)a4
+- (void)didReceiveSwitchEvent:(id)event forDeviceWithName:(id)name
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SCATInputController *)self interDeviceInputSource];
-  [v8 handleReceivedSwitchEvent:v7 deviceName:v6];
+  nameCopy = name;
+  eventCopy = event;
+  interDeviceInputSource = [(SCATInputController *)self interDeviceInputSource];
+  [interDeviceInputSource handleReceivedSwitchEvent:eventCopy deviceName:nameCopy];
 }
 
 - (void)performSysdiagnose
 {
-  v3 = [(SCATInputController *)self delegate];
-  [v3 performSysdiagnoseForInputController:self];
+  delegate = [(SCATInputController *)self delegate];
+  [delegate performSysdiagnoseForInputController:self];
 }
 
 - (SCATInputControllerDelegate)delegate

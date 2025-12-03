@@ -1,26 +1,26 @@
 @interface CNAutocompleteLocalGroupsFetcher
-- (id)autocompleteResultsForProperties:(id)a3 fetchResults:(id)a4 resultFactory:(id)a5 contactStore:(id)a6;
-- (id)resultsForSearchString:(id)a3 terms:(id)a4 properties:(id)a5 contactStore:(id)a6 error:(id *)a7;
+- (id)autocompleteResultsForProperties:(id)properties fetchResults:(id)results resultFactory:(id)factory contactStore:(id)store;
+- (id)resultsForSearchString:(id)string terms:(id)terms properties:(id)properties contactStore:(id)store error:(id *)error;
 @end
 
 @implementation CNAutocompleteLocalGroupsFetcher
 
-- (id)autocompleteResultsForProperties:(id)a3 fetchResults:(id)a4 resultFactory:(id)a5 contactStore:(id)a6
+- (id)autocompleteResultsForProperties:(id)properties fetchResults:(id)results resultFactory:(id)factory contactStore:(id)store
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
+  propertiesCopy = properties;
+  factoryCopy = factory;
+  storeCopy = store;
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __109__CNAutocompleteLocalGroupsFetcher_autocompleteResultsForProperties_fetchResults_resultFactory_contactStore___block_invoke;
   v17[3] = &unk_2781C4590;
-  v18 = v10;
-  v19 = v9;
-  v20 = v11;
-  v12 = v11;
-  v13 = v9;
-  v14 = v10;
-  v15 = [a4 _cn_compactMap:v17];
+  v18 = factoryCopy;
+  v19 = propertiesCopy;
+  v20 = storeCopy;
+  v12 = storeCopy;
+  v13 = propertiesCopy;
+  v14 = factoryCopy;
+  v15 = [results _cn_compactMap:v17];
 
   return v15;
 }
@@ -92,12 +92,12 @@ id __109__CNAutocompleteLocalGroupsFetcher_autocompleteResultsForProperties_fetc
   return v10;
 }
 
-- (id)resultsForSearchString:(id)a3 terms:(id)a4 properties:(id)a5 contactStore:(id)a6 error:(id *)a7
+- (id)resultsForSearchString:(id)string terms:(id)terms properties:(id)properties contactStore:(id)store error:(id *)error
 {
   v9 = MEMORY[0x277CBDB10];
-  v10 = a6;
-  v11 = [v9 predicateForGroupsWithNameMatching:a3];
-  v12 = [v10 groupsMatchingPredicate:v11 error:a7];
+  storeCopy = store;
+  v11 = [v9 predicateForGroupsWithNameMatching:string];
+  v12 = [storeCopy groupsMatchingPredicate:v11 error:error];
 
   return v12;
 }

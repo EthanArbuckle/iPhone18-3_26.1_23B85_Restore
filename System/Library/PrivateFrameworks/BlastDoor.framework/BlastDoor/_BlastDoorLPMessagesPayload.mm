@@ -1,24 +1,24 @@
 @interface _BlastDoorLPMessagesPayload
-+ (id)linkWithDataRepresentation:(id)a3 attachments:(id)a4;
++ (id)linkWithDataRepresentation:(id)representation attachments:(id)attachments;
 - (BOOL)_needsWorkaroundForAppStoreTransformerCrash;
-- (_BlastDoorLPMessagesPayload)initWithCoder:(id)a3;
-- (id)dataRepresentationWithOutOfLineAttachments:(id *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_BlastDoorLPMessagesPayload)initWithCoder:(id)coder;
+- (id)dataRepresentationWithOutOfLineAttachments:(id *)attachments;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _BlastDoorLPMessagesPayload
 
-- (_BlastDoorLPMessagesPayload)initWithCoder:(id)a3
+- (_BlastDoorLPMessagesPayload)initWithCoder:(id)coder
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = _BlastDoorLPMessagesPayload;
   v5 = [(_BlastDoorLPMessagesPayload *)&v13 init];
   if (v5)
   {
-    v5->_placeholder = [v4 decodeBoolForKey:@"richLinkIsPlaceholder"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"richLinkMetadata"];
+    v5->_placeholder = [coderCopy decodeBoolForKey:@"richLinkIsPlaceholder"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"richLinkMetadata"];
     metadata = v5->_metadata;
     v5->_metadata = v6;
 
@@ -37,20 +37,20 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   placeholder = self->_placeholder;
-  v5 = a3;
-  [v5 encodeBool:placeholder forKey:@"richLinkIsPlaceholder"];
-  [v5 encodeObject:self->_metadata forKey:@"richLinkMetadata"];
+  coderCopy = coder;
+  [coderCopy encodeBool:placeholder forKey:@"richLinkIsPlaceholder"];
+  [coderCopy encodeObject:self->_metadata forKey:@"richLinkMetadata"];
 }
 
-+ (id)linkWithDataRepresentation:(id)a3 attachments:(id)a4
++ (id)linkWithDataRepresentation:(id)representation attachments:(id)attachments
 {
   v21[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [objc_alloc(MEMORY[0x277CCAAC8]) initForReadingFromData:v5 error:0];
+  representationCopy = representation;
+  attachmentsCopy = attachments;
+  v7 = [objc_alloc(MEMORY[0x277CCAAC8]) initForReadingFromData:representationCopy error:0];
   [v7 setClass:objc_opt_class() forClassName:@"RichLink"];
   [v7 setClass:objc_opt_class() forClassName:@"RichLinkARAssetAttachmentSubstitute"];
   [v7 setClass:objc_opt_class() forClassName:@"RichLinkImageAttachmentSubstitute"];
@@ -58,7 +58,7 @@
   [v7 _enableStrictSecureDecodingMode];
   [v7 setDecodingFailurePolicy:1];
   v8 = objc_alloc_init(_BlastDoorRichLinkAttachmentSubstituter);
-  [(_BlastDoorRichLinkAttachmentSubstituter *)v8 setAttachmentsForUnarchiving:v6];
+  [(_BlastDoorRichLinkAttachmentSubstituter *)v8 setAttachmentsForUnarchiving:attachmentsCopy];
   [v7 setDelegate:v8];
   v9 = MEMORY[0x277CBEB98];
   v10 = objc_opt_class();
@@ -102,8 +102,8 @@ LABEL_2:
 
       v16 = objc_alloc_init(_BlastDoorLPMessagesPayload);
       v17 = v14;
-      v18 = [v17 metadata];
-      [(_BlastDoorLPMessagesPayload *)v16 setMetadata:v18];
+      metadata = [v17 metadata];
+      [(_BlastDoorLPMessagesPayload *)v16 setMetadata:metadata];
 
       -[_BlastDoorLPMessagesPayload setNeedsSubresourceFetch:](v16, "setNeedsSubresourceFetch:", [v17 hasFetchedSubresources] ^ 1);
       -[_BlastDoorLPMessagesPayload setNeedsCompleteFetch:](v16, "setNeedsCompleteFetch:", [v17 hasCompletedFetch] ^ 1);
@@ -117,7 +117,7 @@ LABEL_9:
   return v16;
 }
 
-- (id)dataRepresentationWithOutOfLineAttachments:(id *)a3
+- (id)dataRepresentationWithOutOfLineAttachments:(id *)attachments
 {
   v5 = [objc_alloc(MEMORY[0x277CCAAB0]) initRequiringSecureCoding:1];
   [v5 setClassName:@"RichLink" forClass:objc_opt_class()];
@@ -125,22 +125,22 @@ LABEL_9:
   [v5 setClassName:@"RichLinkImageAttachmentSubstitute" forClass:objc_opt_class()];
   [v5 setClassName:@"RichLinkVideoAttachmentSubstitute" forClass:objc_opt_class()];
   v6 = objc_alloc_init(_BlastDoorRichLinkAttachmentSubstituter);
-  [(_BlastDoorRichLinkAttachmentSubstituter *)v6 setShouldSubstituteAttachments:a3 != 0];
+  [(_BlastDoorRichLinkAttachmentSubstituter *)v6 setShouldSubstituteAttachments:attachments != 0];
   [(_BlastDoorRichLinkAttachmentSubstituter *)v6 setShouldIgnoreAppStoreMetadata:[(_BlastDoorLPMessagesPayload *)self _needsWorkaroundForAppStoreTransformerCrash]];
   [v5 setDelegate:v6];
   [v5 encodeObject:self forKey:*MEMORY[0x277CCA308]];
-  v7 = [v5 encodedData];
-  if (a3)
+  encodedData = [v5 encodedData];
+  if (attachments)
   {
-    *a3 = [(_BlastDoorRichLinkAttachmentSubstituter *)v6 archivedAttachments];
+    *attachments = [(_BlastDoorRichLinkAttachmentSubstituter *)v6 archivedAttachments];
   }
 
-  return v7;
+  return encodedData;
 }
 
 - (BOOL)_needsWorkaroundForAppStoreTransformerCrash
 {
-  v3 = [(_BlastDoorLPLinkMetadata *)self->_metadata specialization];
+  specialization = [(_BlastDoorLPLinkMetadata *)self->_metadata specialization];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -149,9 +149,9 @@ LABEL_9:
     return 0;
   }
 
-  v5 = [(_BlastDoorLPLinkMetadata *)self->_metadata specialization];
-  v6 = [v5 screenshots];
-  v7 = [v6 count] == 0;
+  specialization2 = [(_BlastDoorLPLinkMetadata *)self->_metadata specialization];
+  screenshots = [specialization2 screenshots];
+  v7 = [screenshots count] == 0;
 
   return v7;
 }

@@ -1,6 +1,6 @@
 @interface EKRecentContactSearchResult
 - (EKStructuredLocation)location;
-- (id)conferenceRoomForSource:(id)a3;
+- (id)conferenceRoomForSource:(id)source;
 - (id)description;
 @end
 
@@ -8,8 +8,8 @@
 
 - (EKStructuredLocation)location
 {
-  v3 = [(EKRecentContactSearchResult *)self recent];
-  v4 = [EKRecents recentIsDirectoryLocation:v3];
+  recent = [(EKRecentContactSearchResult *)self recent];
+  v4 = [EKRecents recentIsDirectoryLocation:recent];
 
   if (v4)
   {
@@ -18,29 +18,29 @@
 
   else
   {
-    v6 = [(EKRecentContactSearchResult *)self recent];
-    v5 = [EKRecents locationForRecent:v6];
+    recent2 = [(EKRecentContactSearchResult *)self recent];
+    v5 = [EKRecents locationForRecent:recent2];
   }
 
   return v5;
 }
 
-- (id)conferenceRoomForSource:(id)a3
+- (id)conferenceRoomForSource:(id)source
 {
-  v4 = a3;
-  v5 = [(EKRecentContactSearchResult *)self recent];
-  v6 = [EKRecents recentIsDirectoryLocation:v5];
+  sourceCopy = source;
+  recent = [(EKRecentContactSearchResult *)self recent];
+  v6 = [EKRecents recentIsDirectoryLocation:recent];
 
   if (v6)
   {
-    v7 = [(EKRecentContactSearchResult *)self recent];
-    v8 = [EKRecents directoryLocationForRecent:v7 onSource:v4];
+    recent2 = [(EKRecentContactSearchResult *)self recent];
+    v8 = [EKRecents directoryLocationForRecent:recent2 onSource:sourceCopy];
 
     v9 = objc_opt_new();
     [v9 setLocation:v8];
     [v9 setAvailability:0];
-    v10 = [v4 _constraintsInternal];
-    [v9 setSupportsAvailability:{objc_msgSend(v10, "supportsAvailabilityRequests")}];
+    _constraintsInternal = [sourceCopy _constraintsInternal];
+    [v9 setSupportsAvailability:{objc_msgSend(_constraintsInternal, "supportsAvailabilityRequests")}];
   }
 
   else
@@ -53,8 +53,8 @@
 
 - (id)description
 {
-  v2 = [(EKRecentContactSearchResult *)self recent];
-  v3 = [v2 description];
+  recent = [(EKRecentContactSearchResult *)self recent];
+  v3 = [recent description];
 
   return v3;
 }

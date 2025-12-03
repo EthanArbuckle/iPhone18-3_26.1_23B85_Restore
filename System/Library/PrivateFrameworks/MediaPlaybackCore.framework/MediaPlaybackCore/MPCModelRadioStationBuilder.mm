@@ -1,19 +1,19 @@
 @interface MPCModelRadioStationBuilder
-- (MPCModelRadioStationBuilder)initWithRequestedProperties:(id)a3;
-- (id)modelRadioStationForMetadata:(id)a3 userIdentity:(id)a4;
+- (MPCModelRadioStationBuilder)initWithRequestedProperties:(id)properties;
+- (id)modelRadioStationForMetadata:(id)metadata userIdentity:(id)identity;
 @end
 
 @implementation MPCModelRadioStationBuilder
 
-- (id)modelRadioStationForMetadata:(id)a3 userIdentity:(id)a4
+- (id)modelRadioStationForMetadata:(id)metadata userIdentity:(id)identity
 {
-  v6 = a3;
-  v7 = a4;
+  metadataCopy = metadata;
+  identityCopy = identity;
   if ((*&self->_requestedRadioStationProperties & 1) == 0)
   {
-    v8 = [(MPCModelRadioStationBuilder *)self requestedProperties];
-    v9 = [v8 properties];
-    if ([v9 containsObject:*MEMORY[0x1E696FE80]])
+    requestedProperties = [(MPCModelRadioStationBuilder *)self requestedProperties];
+    properties = [requestedProperties properties];
+    if ([properties containsObject:*MEMORY[0x1E696FE80]])
     {
       v10 = 2;
     }
@@ -24,7 +24,7 @@
     }
 
     *&self->_requestedRadioStationProperties = *&self->_requestedRadioStationProperties & 0xFD | v10;
-    if ([v9 containsObject:*MEMORY[0x1E696FEA8]])
+    if ([properties containsObject:*MEMORY[0x1E696FEA8]])
     {
       v11 = 4;
     }
@@ -35,7 +35,7 @@
     }
 
     *&self->_requestedRadioStationProperties = *&self->_requestedRadioStationProperties & 0xFB | v11;
-    if ([v9 containsObject:*MEMORY[0x1E696FE88]])
+    if ([properties containsObject:*MEMORY[0x1E696FE88]])
     {
       v12 = 8;
     }
@@ -46,7 +46,7 @@
     }
 
     *&self->_requestedRadioStationProperties = *&self->_requestedRadioStationProperties & 0xF7 | v12;
-    if ([v9 containsObject:*MEMORY[0x1E696FEC0]])
+    if ([properties containsObject:*MEMORY[0x1E696FEC0]])
     {
       v13 = 16;
     }
@@ -57,9 +57,9 @@
     }
 
     *&self->_requestedRadioStationProperties = *&self->_requestedRadioStationProperties & 0xEF | v13;
-    self->_requestedRadioStationProperties.explicit = [v9 containsObject:*MEMORY[0x1E696FEA0]];
-    *(&self->_requestedRadioStationProperties + 8) = *(&self->_requestedRadioStationProperties + 8) & 0xFE | [v9 containsObject:*MEMORY[0x1E696FE70]];
-    if ([v9 containsObject:*MEMORY[0x1E696FE68]])
+    self->_requestedRadioStationProperties.explicit = [properties containsObject:*MEMORY[0x1E696FEA0]];
+    *(&self->_requestedRadioStationProperties + 8) = *(&self->_requestedRadioStationProperties + 8) & 0xFE | [properties containsObject:*MEMORY[0x1E696FE70]];
+    if ([properties containsObject:*MEMORY[0x1E696FE68]])
     {
       v14 = 2;
     }
@@ -70,7 +70,7 @@
     }
 
     *(&self->_requestedRadioStationProperties + 8) = *(&self->_requestedRadioStationProperties + 8) & 0xFD | v14;
-    if ([v9 containsObject:*MEMORY[0x1E696FE78]])
+    if ([properties containsObject:*MEMORY[0x1E696FE78]])
     {
       v15 = 4;
     }
@@ -81,7 +81,7 @@
     }
 
     *(&self->_requestedRadioStationProperties + 8) = *(&self->_requestedRadioStationProperties + 8) & 0xFB | v15;
-    if ([v9 containsObject:*MEMORY[0x1E696FED8]])
+    if ([properties containsObject:*MEMORY[0x1E696FED8]])
     {
       v16 = 8;
     }
@@ -92,7 +92,7 @@
     }
 
     *(&self->_requestedRadioStationProperties + 8) = *(&self->_requestedRadioStationProperties + 8) & 0xF7 | v16;
-    if ([v9 containsObject:*MEMORY[0x1E696FED0]])
+    if ([properties containsObject:*MEMORY[0x1E696FED0]])
     {
       v17 = 16;
     }
@@ -103,7 +103,7 @@
     }
 
     *(&self->_requestedRadioStationProperties + 8) = *(&self->_requestedRadioStationProperties + 8) & 0xEF | v17;
-    if ([v9 containsObject:*MEMORY[0x1E696FEC8]])
+    if ([properties containsObject:*MEMORY[0x1E696FEC8]])
     {
       v18 = 32;
     }
@@ -114,7 +114,7 @@
     }
 
     *(&self->_requestedRadioStationProperties + 8) = *(&self->_requestedRadioStationProperties + 8) & 0xDF | v18;
-    if ([v9 containsObject:*MEMORY[0x1E696FEB8]])
+    if ([properties containsObject:*MEMORY[0x1E696FEB8]])
     {
       v19 = 64;
     }
@@ -125,7 +125,7 @@
     }
 
     *(&self->_requestedRadioStationProperties + 8) = *(&self->_requestedRadioStationProperties + 8) & 0xBF | v19;
-    if ([v9 containsObject:*MEMORY[0x1E696FEB0]])
+    if ([properties containsObject:*MEMORY[0x1E696FEB0]])
     {
       v20 = 0x80;
     }
@@ -139,29 +139,29 @@
     *&self->_requestedRadioStationProperties |= 1u;
   }
 
-  v21 = [v6 stationStringID];
-  v22 = [v6 stationHash];
-  v23 = [v6 stationID];
-  if ([v21 length] || objc_msgSend(v22, "length") | v23)
+  stationStringID = [metadataCopy stationStringID];
+  stationHash = [metadataCopy stationHash];
+  stationID = [metadataCopy stationID];
+  if ([stationStringID length] || objc_msgSend(stationHash, "length") | stationID)
   {
     v24 = objc_alloc(MEMORY[0x1E6970750]);
     v25 = objc_alloc(MEMORY[0x1E6970550]);
-    v26 = [MEMORY[0x1E6970758] identityKind];
+    identityKind = [MEMORY[0x1E6970758] identityKind];
     v32[0] = MEMORY[0x1E69E9820];
     v32[1] = 3221225472;
     v32[2] = __73__MPCModelRadioStationBuilder_modelRadioStationForMetadata_userIdentity___block_invoke;
     v32[3] = &unk_1E82358D0;
-    v33 = v7;
-    v34 = v21;
-    v35 = v22;
-    v36 = v23;
-    v27 = [v25 initWithSource:@"StorePlatform" modelKind:v26 block:v32];
+    v33 = identityCopy;
+    v34 = stationStringID;
+    v35 = stationHash;
+    v36 = stationID;
+    v27 = [v25 initWithSource:@"StorePlatform" modelKind:identityKind block:v32];
     v30[0] = MEMORY[0x1E69E9820];
     v30[1] = 3221225472;
     v30[2] = __73__MPCModelRadioStationBuilder_modelRadioStationForMetadata_userIdentity___block_invoke_4;
     v30[3] = &unk_1E8235920;
     v30[4] = self;
-    v31 = v6;
+    v31 = metadataCopy;
     v28 = [v24 initWithIdentifiers:v27 block:v30];
   }
 
@@ -429,15 +429,15 @@ void __73__MPCModelRadioStationBuilder_modelRadioStationForMetadata_userIdentity
   [v4 setStationID:a1[6]];
 }
 
-- (MPCModelRadioStationBuilder)initWithRequestedProperties:(id)a3
+- (MPCModelRadioStationBuilder)initWithRequestedProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   v9.receiver = self;
   v9.super_class = MPCModelRadioStationBuilder;
   v5 = [(MPCModelRadioStationBuilder *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [propertiesCopy copy];
     requestedProperties = v5->_requestedProperties;
     v5->_requestedProperties = v6;
   }

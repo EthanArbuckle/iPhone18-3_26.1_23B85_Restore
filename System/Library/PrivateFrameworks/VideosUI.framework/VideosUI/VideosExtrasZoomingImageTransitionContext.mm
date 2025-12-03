@@ -1,23 +1,23 @@
 @interface VideosExtrasZoomingImageTransitionContext
-- (VideosExtrasZoomingImageTransitionContext)initWithZoomingImageView:(id)a3 itemIndex:(unint64_t)a4 appearState:(unint64_t)a5 isInteractive:(BOOL)a6;
+- (VideosExtrasZoomingImageTransitionContext)initWithZoomingImageView:(id)view itemIndex:(unint64_t)index appearState:(unint64_t)state isInteractive:(BOOL)interactive;
 @end
 
 @implementation VideosExtrasZoomingImageTransitionContext
 
-- (VideosExtrasZoomingImageTransitionContext)initWithZoomingImageView:(id)a3 itemIndex:(unint64_t)a4 appearState:(unint64_t)a5 isInteractive:(BOOL)a6
+- (VideosExtrasZoomingImageTransitionContext)initWithZoomingImageView:(id)view itemIndex:(unint64_t)index appearState:(unint64_t)state isInteractive:(BOOL)interactive
 {
-  v6 = a6;
-  v10 = a3;
+  interactiveCopy = interactive;
+  viewCopy = view;
   v14.receiver = self;
   v14.super_class = VideosExtrasZoomingImageTransitionContext;
   v11 = [(VideosExtrasZoomingImageTransitionContext *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    [(VideosExtrasZoomingImageTransitionContext *)v11 setZoomingImageView:v10];
-    [(VideosExtrasZoomingImageTransitionContext *)v12 setItemIndex:a4];
-    [(VideosExtrasZoomingImageTransitionContext *)v12 setAppearState:a5];
-    [(VideosExtrasZoomingImageTransitionContext *)v12 setInteractive:v6];
+    [(VideosExtrasZoomingImageTransitionContext *)v11 setZoomingImageView:viewCopy];
+    [(VideosExtrasZoomingImageTransitionContext *)v12 setItemIndex:index];
+    [(VideosExtrasZoomingImageTransitionContext *)v12 setAppearState:state];
+    [(VideosExtrasZoomingImageTransitionContext *)v12 setInteractive:interactiveCopy];
   }
 
   return v12;

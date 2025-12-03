@@ -1,19 +1,19 @@
 @interface FIUIChartUniformBarSeries
-- (FIUIChartUniformBarSeries)initWithFrame:(CGRect)a3;
-- (double)xValueForPointFromChartPoint:(id)a3;
+- (FIUIChartUniformBarSeries)initWithFrame:(CGRect)frame;
+- (double)xValueForPointFromChartPoint:(id)point;
 - (void)dealloc;
-- (void)drawLayer:(id)a3 inContext:(CGContext *)a4;
+- (void)drawLayer:(id)layer inContext:(CGContext *)context;
 - (void)layoutSubviews;
-- (void)setBarGradient:(CGGradient *)a3;
+- (void)setBarGradient:(CGGradient *)gradient;
 @end
 
 @implementation FIUIChartUniformBarSeries
 
-- (FIUIChartUniformBarSeries)initWithFrame:(CGRect)a3
+- (FIUIChartUniformBarSeries)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = FIUIChartUniformBarSeries;
-  v3 = [(FIUIChartUniformBarSeries *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(FIUIChartUniformBarSeries *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -37,10 +37,10 @@
   [(FIUIChartUniformBarSeries *)&v3 dealloc];
 }
 
-- (void)setBarGradient:(CGGradient *)a3
+- (void)setBarGradient:(CGGradient *)gradient
 {
   CGGradientRelease(self->_barGradient);
-  self->_barGradient = CGGradientRetain(a3);
+  self->_barGradient = CGGradientRetain(gradient);
 
   [(FIUIChartUniformBarSeries *)self setNeedsDisplay];
 }
@@ -50,58 +50,58 @@
   v6.receiver = self;
   v6.super_class = FIUIChartUniformBarSeries;
   [(FIUIChartSeries *)&v6 layoutSubviews];
-  v3 = [(FIUIChartNumericSeries *)self CGPointsFromDataSet];
+  cGPointsFromDataSet = [(FIUIChartNumericSeries *)self CGPointsFromDataSet];
   plotPoints = self->_plotPoints;
-  self->_plotPoints = v3;
+  self->_plotPoints = cGPointsFromDataSet;
 
-  v5 = [(FIUIChartUniformBarSeries *)self layer];
-  [v5 setNeedsDisplay];
+  layer = [(FIUIChartUniformBarSeries *)self layer];
+  [layer setNeedsDisplay];
 }
 
-- (double)xValueForPointFromChartPoint:(id)a3
+- (double)xValueForPointFromChartPoint:(id)point
 {
-  v4 = a3;
+  pointCopy = point;
   UIRoundToViewScale();
   v6 = v5;
   barWidth = self->_barWidth;
-  v8 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v9 = v8;
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  v9 = currentCalendar;
   if (self->_minDate)
   {
-    v10 = [v8 startOfDayForDate:?];
+    v10 = [currentCalendar startOfDayForDate:?];
   }
 
   else
   {
-    v11 = [MEMORY[0x1E695DF00] date];
-    v10 = [v9 startOfDayForDate:v11];
+    date = [MEMORY[0x1E695DF00] date];
+    v10 = [v9 startOfDayForDate:date];
   }
 
   v12 = v6 + barWidth;
-  v13 = [v4 xValue];
+  xValue = [pointCopy xValue];
 
-  v14 = [v9 timeZone];
-  [v14 daylightSavingTimeOffsetForDate:v13];
+  timeZone = [v9 timeZone];
+  [timeZone daylightSavingTimeOffsetForDate:xValue];
   v16 = v15;
 
-  v17 = [v9 timeZone];
-  [v17 daylightSavingTimeOffsetForDate:v10];
+  timeZone2 = [v9 timeZone];
+  [timeZone2 daylightSavingTimeOffsetForDate:v10];
   v19 = v18;
 
-  [v13 timeIntervalSinceDate:v10];
+  [xValue timeIntervalSinceDate:v10];
   v21 = v6 + (v16 - v19 + v20) / 3600.0 * v12;
 
   return v21;
 }
 
-- (void)drawLayer:(id)a3 inContext:(CGContext *)a4
+- (void)drawLayer:(id)layer inContext:(CGContext *)context
 {
   v65 = *MEMORY[0x1E69E9840];
-  UIGraphicsPushContext(a4);
+  UIGraphicsPushContext(context);
   UIRoundToViewScale();
-  CGContextSetLineWidth(a4, v6);
-  c = a4;
-  CGContextSetLineCap(a4, kCGLineCapButt);
+  CGContextSetLineWidth(context, v6);
+  c = context;
+  CGContextSetLineCap(context, kCGLineCapButt);
   [(FIUIChartSeries *)self insetBounds];
   v8 = v7;
   path = CGPathCreateMutable();

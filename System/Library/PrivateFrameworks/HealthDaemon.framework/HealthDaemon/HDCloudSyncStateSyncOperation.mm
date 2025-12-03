@@ -1,14 +1,14 @@
 @interface HDCloudSyncStateSyncOperation
-- (HDCloudSyncStateSyncOperation)initWithConfiguration:(id)a3 cloudState:(id)a4;
-- (HDCloudSyncStateSyncOperation)initWithConfiguration:(id)a3 containers:(id)a4;
-- (id)stateDataForStateSyncZone:(void *)a1;
-- (void)_notifyStateEntities:(void *)a3 stateSyncZones:;
+- (HDCloudSyncStateSyncOperation)initWithConfiguration:(id)configuration cloudState:(id)state;
+- (HDCloudSyncStateSyncOperation)initWithConfiguration:(id)configuration containers:(id)containers;
+- (id)stateDataForStateSyncZone:(void *)zone;
+- (void)_notifyStateEntities:(void *)entities stateSyncZones:;
 - (void)main;
 @end
 
 @implementation HDCloudSyncStateSyncOperation
 
-- (HDCloudSyncStateSyncOperation)initWithConfiguration:(id)a3 cloudState:(id)a4
+- (HDCloudSyncStateSyncOperation)initWithConfiguration:(id)configuration cloudState:(id)state
 {
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE660];
@@ -18,19 +18,19 @@
   return 0;
 }
 
-- (HDCloudSyncStateSyncOperation)initWithConfiguration:(id)a3 containers:(id)a4
+- (HDCloudSyncStateSyncOperation)initWithConfiguration:(id)configuration containers:(id)containers
 {
-  v7 = a4;
+  containersCopy = containers;
   v12.receiver = self;
   v12.super_class = HDCloudSyncStateSyncOperation;
-  v8 = [(HDCloudSyncOperation *)&v12 initWithConfiguration:a3 cloudState:0];
+  v8 = [(HDCloudSyncOperation *)&v12 initWithConfiguration:configuration cloudState:0];
   if (v8)
   {
     v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
     recordsToBeSaved = v8->_recordsToBeSaved;
     v8->_recordsToBeSaved = v9;
 
-    objc_storeStrong(&v8->_containers, a4);
+    objc_storeStrong(&v8->_containers, containers);
   }
 
   return v8;
@@ -39,11 +39,11 @@
 - (void)main
 {
   v68 = *MEMORY[0x277D85DE8];
-  v3 = [(HDCloudSyncOperation *)self configuration];
-  v4 = [v3 cachedCloudState];
+  configuration = [(HDCloudSyncOperation *)self configuration];
+  cachedCloudState = [configuration cachedCloudState];
   containers = self->_containers;
   v46 = 0;
-  v6 = [v4 zonesByIdentifierForContainers:containers error:&v46 filter:&__block_literal_global_111];
+  v6 = [cachedCloudState zonesByIdentifierForContainers:containers error:&v46 filter:&__block_literal_global_111];
   v7 = v46;
 
   if (v6)
@@ -53,7 +53,7 @@
     v44[1] = 3221225472;
     v44[2] = __37__HDCloudSyncStateSyncOperation_main__block_invoke_301;
     v44[3] = &unk_278616020;
-    v41 = self;
+    selfCopy = self;
     v44[4] = self;
     v39 = v6;
     v45 = v6;
@@ -91,10 +91,10 @@
           v14 = *(*(&v54 + 1) + 8 * v13);
           [v10 beginTask];
           v15 = [v11 objectForKeyedSubscript:v14];
-          v16 = [v14 zoneIdentifier];
+          zoneIdentifier = [v14 zoneIdentifier];
           v52 = 0;
           v53 = 0;
-          v17 = [v16 hd_isStateSyncZoneIDForSyncCircleIdentifier:&v53 domain:&v52];
+          v17 = [zoneIdentifier hd_isStateSyncZoneIDForSyncCircleIdentifier:&v53 domain:&v52];
           v18 = v53;
           v19 = v52;
 
@@ -112,20 +112,20 @@
           {
             v21 = MEMORY[0x277CCA9B8];
             v22 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unable to extract domain and sync circle identifier from %@.", v15];
-            v30 = [v21 hk_error:738 description:v22];
+            stateSyncShim = [v21 hk_error:738 description:v22];
 
             _HKInitializeLogging();
             v23 = *MEMORY[0x277CCC328];
             if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_ERROR))
             {
               *buf = 138543618;
-              v61 = v41;
+              v61 = selfCopy;
               v62 = 2114;
-              v63 = v30;
+              v63 = stateSyncShim;
               _os_log_error_impl(&dword_228986000, v23, OS_LOG_TYPE_ERROR, "%{public}@: Error processing zone :%{public}@", buf, 0x16u);
             }
 
-            [v10 failTaskWithError:v30];
+            [v10 failTaskWithError:stateSyncShim];
           }
 
           else
@@ -134,18 +134,18 @@
             v25 = [HDCloudSyncStateSyncOperation stateDataForStateSyncZone:v15];
             v26 = [(HDCloudSyncStateStore *)v24 initWithData:v25];
 
-            v27 = [(HDCloudSyncOperation *)v41 configuration];
-            v28 = [v27 repository];
-            [v28 cloudSyncShimProvider];
+            configuration2 = [(HDCloudSyncOperation *)selfCopy configuration];
+            repository = [configuration2 repository];
+            [repository cloudSyncShimProvider];
             v29 = v42 = v18;
-            v30 = [v29 stateSyncShim];
+            stateSyncShim = [v29 stateSyncShim];
 
-            v31 = [(HDCloudSyncOperation *)v41 configuration];
+            configuration3 = [(HDCloudSyncOperation *)selfCopy configuration];
             v47[0] = MEMORY[0x277D85DD0];
             v47[1] = 3221225472;
             v47[2] = __69__HDCloudSyncStateSyncOperation__performStateSyncInZones_completion___block_invoke_313;
             v47[3] = &unk_278621D98;
-            v47[4] = v41;
+            v47[4] = selfCopy;
             v32 = v19;
             v48 = v32;
             v49 = v10;
@@ -154,7 +154,7 @@
             v33 = v26;
             v34 = v32;
             v18 = v42;
-            [v30 mergeStateDataWithStore:v33 domain:v34 configuration:v31 completion:v47];
+            [stateSyncShim mergeStateDataWithStore:v33 domain:v34 configuration:configuration3 completion:v47];
 
             v11 = v40;
           }
@@ -186,7 +186,7 @@
     if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_ERROR))
     {
       *v64 = 138543618;
-      v65 = self;
+      selfCopy2 = self;
       v66 = 2114;
       v67 = v7;
       _os_log_error_impl(&dword_228986000, v35, OS_LOG_TYPE_ERROR, "%{public}@: Error fetching state sync zones :%{public}@", v64, 0x16u);
@@ -273,27 +273,27 @@ void __37__HDCloudSyncStateSyncOperation_main__block_invoke_301(uint64_t a1, cha
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_notifyStateEntities:(void *)a3 stateSyncZones:
+- (void)_notifyStateEntities:(void *)entities stateSyncZones:
 {
   v44 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (a1)
+  entitiesCopy = entities;
+  if (self)
   {
-    v5 = [a1 configuration];
-    v6 = [v5 repository];
-    v7 = [v6 cloudSyncShimProvider];
-    v30 = [v7 stateSyncShim];
+    configuration = [self configuration];
+    repository = [configuration repository];
+    cloudSyncShimProvider = [repository cloudSyncShimProvider];
+    stateSyncShim = [cloudSyncShimProvider stateSyncShim];
 
     v37 = 0u;
     v38 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v28 = v4;
-    v8 = v4;
+    v28 = entitiesCopy;
+    v8 = entitiesCopy;
     v31 = [v8 countByEnumeratingWithState:&v35 objects:v43 count:16];
     if (v31)
     {
-      v9 = a1;
+      selfCopy = self;
       v10 = *v36;
       do
       {
@@ -305,10 +305,10 @@ void __37__HDCloudSyncStateSyncOperation_main__block_invoke_301(uint64_t a1, cha
           }
 
           v12 = *(*(&v35 + 1) + 8 * i);
-          v13 = [v12 zoneIdentifier];
+          zoneIdentifier = [v12 zoneIdentifier];
           v33 = 0;
           v34 = 0;
-          v14 = [v13 hd_isStateSyncZoneIDForSyncCircleIdentifier:&v34 domain:&v33];
+          v14 = [zoneIdentifier hd_isStateSyncZoneIDForSyncCircleIdentifier:&v34 domain:&v33];
           v15 = v34;
           v16 = v33;
 
@@ -333,7 +333,7 @@ void __37__HDCloudSyncStateSyncOperation_main__block_invoke_301(uint64_t a1, cha
             if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_ERROR))
             {
               *buf = 138543618;
-              v40 = v9;
+              v40 = selfCopy;
               v41 = 2114;
               v42 = v26;
               _os_log_error_impl(&dword_228986000, v20, OS_LOG_TYPE_ERROR, "%{public}@: Error notifying state entity :%{public}@", buf, 0x16u);
@@ -346,18 +346,18 @@ void __37__HDCloudSyncStateSyncOperation_main__block_invoke_301(uint64_t a1, cha
             v22 = [v8 objectForKeyedSubscript:v12];
             [HDCloudSyncStateSyncOperation stateDataForStateSyncZone:v22];
             v23 = v8;
-            v25 = v24 = v9;
+            v25 = v24 = selfCopy;
             v26 = [(HDCloudSyncStateStore *)v21 initWithData:v25];
 
-            v9 = v24;
+            selfCopy = v24;
             v8 = v23;
 
             v32[0] = MEMORY[0x277D85DD0];
             v32[1] = 3221225472;
             v32[2] = __69__HDCloudSyncStateSyncOperation__notifyStateEntities_stateSyncZones___block_invoke;
             v32[3] = &unk_2786130B0;
-            v32[4] = v9;
-            [v30 syncDidFinishWithResult:a2 domain:v16 stateStore:v26 completion:v32];
+            v32[4] = selfCopy;
+            [stateSyncShim syncDidFinishWithResult:a2 domain:v16 stateStore:v26 completion:v32];
           }
         }
 
@@ -367,7 +367,7 @@ void __37__HDCloudSyncStateSyncOperation_main__block_invoke_301(uint64_t a1, cha
       while (v31);
     }
 
-    v4 = v28;
+    entitiesCopy = v28;
   }
 
   v27 = *MEMORY[0x277D85DE8];
@@ -391,10 +391,10 @@ void __69__HDCloudSyncStateSyncOperation__performStateSyncInZones_completion___b
   }
 }
 
-- (id)stateDataForStateSyncZone:(void *)a1
+- (id)stateDataForStateSyncZone:(void *)zone
 {
   v1 = MEMORY[0x277CBEB38];
-  v2 = a1;
+  zoneCopy = zone;
   v3 = objc_alloc_init(v1);
   v4 = objc_opt_class();
   v10 = 0;
@@ -404,7 +404,7 @@ void __69__HDCloudSyncStateSyncOperation__performStateSyncInZones_completion___b
   v8[3] = &unk_278621DE8;
   v5 = v3;
   v9 = v5;
-  [v2 recordsForClass:v4 epoch:0 error:&v10 enumerationHandler:v8];
+  [zoneCopy recordsForClass:v4 epoch:0 error:&v10 enumerationHandler:v8];
 
   v6 = v10;
 

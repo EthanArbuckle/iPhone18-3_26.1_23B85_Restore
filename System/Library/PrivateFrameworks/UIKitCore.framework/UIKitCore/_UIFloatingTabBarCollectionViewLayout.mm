@@ -1,16 +1,16 @@
 @interface _UIFloatingTabBarCollectionViewLayout
 - (_UIFloatingTabBar)floatingTabBar;
-- (_UIFloatingTabBarCollectionViewLayout)initWithFloatingTabBar:(id)a3;
+- (_UIFloatingTabBarCollectionViewLayout)initWithFloatingTabBar:(id)bar;
 @end
 
 @implementation _UIFloatingTabBarCollectionViewLayout
 
-- (_UIFloatingTabBarCollectionViewLayout)initWithFloatingTabBar:(id)a3
+- (_UIFloatingTabBarCollectionViewLayout)initWithFloatingTabBar:(id)bar
 {
-  v4 = a3;
-  objc_initWeak(&location, v4);
-  v5 = [v4 _currentPlatformMetrics];
-  [v5 backgroundInsets];
+  barCopy = bar;
+  objc_initWeak(&location, barCopy);
+  _currentPlatformMetrics = [barCopy _currentPlatformMetrics];
+  [_currentPlatformMetrics backgroundInsets];
   v7 = v6;
   v9 = v8;
 
@@ -33,7 +33,7 @@
   v13 = v12;
   if (v12)
   {
-    objc_storeWeak(&v12->_floatingTabBar, v4);
+    objc_storeWeak(&v12->_floatingTabBar, barCopy);
   }
 
   objc_destroyWeak(v17);

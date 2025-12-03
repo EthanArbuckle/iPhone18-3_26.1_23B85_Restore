@@ -1,21 +1,21 @@
 @interface AMSMetricsActivity
 - (OS_nw_activity)nwActivity;
 - (void)activate;
-- (void)completeAfter:(id)a3;
+- (void)completeAfter:(id)after;
 @end
 
 @implementation AMSMetricsActivity
 
-- (void)completeAfter:(id)a3
+- (void)completeAfter:(id)after
 {
-  v4 = a3;
-  v5 = self;
-  sub_1928FE360(v4);
+  afterCopy = after;
+  selfCopy = self;
+  sub_1928FE360(afterCopy);
 }
 
 - (void)activate
 {
-  v2 = self;
+  selfCopy = self;
   sub_19287C4A0();
 }
 

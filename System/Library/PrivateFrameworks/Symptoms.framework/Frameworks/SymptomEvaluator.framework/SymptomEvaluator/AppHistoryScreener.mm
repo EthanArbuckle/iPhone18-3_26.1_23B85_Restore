@@ -2,7 +2,7 @@
 + (id)_sharedInstance;
 + (id)description;
 - (AppHistoryScreener)init;
-- (void)_makeLabelWith:(id)a3 inbound:(BOOL)a4 fullLabel:(id *)a5 exportLabel:(id *)a6;
+- (void)_makeLabelWith:(id)with inbound:(BOOL)inbound fullLabel:(id *)label exportLabel:(id *)exportLabel;
 @end
 
 @implementation AppHistoryScreener
@@ -13,7 +13,7 @@
   block[1] = 3221225472;
   block[2] = __37__AppHistoryScreener__sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_sharedInstance_pred_1 != -1)
   {
     dispatch_once(&_sharedInstance_pred_1, block);
@@ -61,10 +61,10 @@ void __37__AppHistoryScreener__sharedInstance__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)_makeLabelWith:(id)a3 inbound:(BOOL)a4 fullLabel:(id *)a5 exportLabel:(id *)a6
+- (void)_makeLabelWith:(id)with inbound:(BOOL)inbound fullLabel:(id *)label exportLabel:(id *)exportLabel
 {
-  v8 = a4;
-  v9 = a3;
+  inboundCopy = inbound;
+  withCopy = with;
   if ([NetworkAnalyticsEngine hasAnyNetworkAttachmenOnLOI:0])
   {
     v10 = @"Home";
@@ -81,7 +81,7 @@ void __37__AppHistoryScreener__sharedInstance__block_invoke(uint64_t a1)
   }
 
   v11 = objc_alloc(MEMORY[0x277CCACA8]);
-  if (v8)
+  if (inboundCopy)
   {
     v12 = "DL";
   }
@@ -91,11 +91,11 @@ void __37__AppHistoryScreener__sharedInstance__block_invoke(uint64_t a1)
     v12 = "UL";
   }
 
-  *a5 = [v11 initWithFormat:@"%s-%s-%@-%@", "AHSv5", v12, v9, v10];
-  v13 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%s-%s-%@", "AHSv5", v12, v9];
+  *label = [v11 initWithFormat:@"%s-%s-%@-%@", "AHSv5", v12, withCopy, v10];
+  withCopy = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%s-%s-%@", "AHSv5", v12, withCopy];
 
-  v14 = v13;
-  *a6 = v13;
+  v14 = withCopy;
+  *exportLabel = withCopy;
 }
 
 @end

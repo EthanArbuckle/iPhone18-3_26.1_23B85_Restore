@@ -1,31 +1,31 @@
 @interface _BlastDoorCKDeviceToDeviceShareInvitationToken
-- (BOOL)isEqual:(id)a3;
-- (_BlastDoorCKDeviceToDeviceShareInvitationToken)initWithCoder:(id)a3;
-- (_BlastDoorCKDeviceToDeviceShareInvitationToken)initWithSharingInvitationData:(id)a3 shareURL:(id)a4 participantID:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (_BlastDoorCKDeviceToDeviceShareInvitationToken)initWithCoder:(id)coder;
+- (_BlastDoorCKDeviceToDeviceShareInvitationToken)initWithSharingInvitationData:(id)data shareURL:(id)l participantID:(id)d;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _BlastDoorCKDeviceToDeviceShareInvitationToken
 
-- (_BlastDoorCKDeviceToDeviceShareInvitationToken)initWithSharingInvitationData:(id)a3 shareURL:(id)a4 participantID:(id)a5
+- (_BlastDoorCKDeviceToDeviceShareInvitationToken)initWithSharingInvitationData:(id)data shareURL:(id)l participantID:(id)d
 {
   v18 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dataCopy = data;
+  lCopy = l;
+  dCopy = d;
   v17.receiver = self;
   v17.super_class = _BlastDoorCKDeviceToDeviceShareInvitationToken;
   v11 = [(_BlastDoorCKDeviceToDeviceShareInvitationToken *)&v17 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [dataCopy copy];
     [(_BlastDoorCKDeviceToDeviceShareInvitationToken *)v11 setSharingInvitationData:v12];
 
-    v13 = [v9 copy];
+    v13 = [lCopy copy];
     [(_BlastDoorCKDeviceToDeviceShareInvitationToken *)v11 setShareURL:v13];
 
-    v14 = [v10 copy];
+    v14 = [dCopy copy];
     [(_BlastDoorCKDeviceToDeviceShareInvitationToken *)v11 setParticipantID:v14];
   }
 
@@ -33,53 +33,53 @@
   return v11;
 }
 
-- (_BlastDoorCKDeviceToDeviceShareInvitationToken)initWithCoder:(id)a3
+- (_BlastDoorCKDeviceToDeviceShareInvitationToken)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (objc_opt_respondsToSelector() & 1) != 0 && ![v4 _strictSecureDecodingEnabled])
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (objc_opt_respondsToSelector() & 1) != 0 && ![coderCopy _strictSecureDecodingEnabled])
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     v5 = objc_autoreleasePoolPush();
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ShareInvitationData"];
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ShareURL"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ParticipantID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ShareInvitationData"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ShareURL"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ParticipantID"];
     objc_autoreleasePoolPop(v5);
     self = [(_BlastDoorCKDeviceToDeviceShareInvitationToken *)self initWithSharingInvitationData:v6 shareURL:v7 participantID:v8];
 
-    v9 = self;
+    selfCopy = self;
   }
 
-  return v9;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v8 = a3;
+  coderCopy = coder;
   v4 = objc_autoreleasePoolPush();
-  v5 = [(_BlastDoorCKDeviceToDeviceShareInvitationToken *)self sharingInvitationData];
-  [v8 encodeObject:v5 forKey:@"ShareInvitationData"];
+  sharingInvitationData = [(_BlastDoorCKDeviceToDeviceShareInvitationToken *)self sharingInvitationData];
+  [coderCopy encodeObject:sharingInvitationData forKey:@"ShareInvitationData"];
 
-  v6 = [(_BlastDoorCKDeviceToDeviceShareInvitationToken *)self shareURL];
-  [v8 encodeObject:v6 forKey:@"ShareURL"];
+  shareURL = [(_BlastDoorCKDeviceToDeviceShareInvitationToken *)self shareURL];
+  [coderCopy encodeObject:shareURL forKey:@"ShareURL"];
 
-  v7 = [(_BlastDoorCKDeviceToDeviceShareInvitationToken *)self participantID];
-  [v8 encodeObject:v7 forKey:@"ParticipantID"];
+  participantID = [(_BlastDoorCKDeviceToDeviceShareInvitationToken *)self participantID];
+  [coderCopy encodeObject:participantID forKey:@"ParticipantID"];
 
   objc_autoreleasePoolPop(v4);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  equalCopy = equal;
   v12.receiver = self;
   v12.super_class = _BlastDoorCKDeviceToDeviceShareInvitationToken;
-  if ([(_BlastDoorCKDeviceToDeviceShareInvitationToken *)&v12 isEqual:v4])
+  if ([(_BlastDoorCKDeviceToDeviceShareInvitationToken *)&v12 isEqual:equalCopy])
   {
     v5 = 1;
   }
@@ -89,7 +89,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v4;
+      v6 = equalCopy;
       v7 = v6[1];
       if (v7 | self->_sharingInvitationData && ![v7 isEqual:?] || (v8 = v6[2], v8 | self->_shareURL) && !objc_msgSend(v8, "isEqual:"))
       {
@@ -123,12 +123,12 @@
 
 - (unint64_t)hash
 {
-  v3 = [(_BlastDoorCKDeviceToDeviceShareInvitationToken *)self sharingInvitationData];
-  v4 = [v3 hash];
-  v5 = [(_BlastDoorCKDeviceToDeviceShareInvitationToken *)self shareURL];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(_BlastDoorCKDeviceToDeviceShareInvitationToken *)self participantID];
-  v8 = [v7 hash];
+  sharingInvitationData = [(_BlastDoorCKDeviceToDeviceShareInvitationToken *)self sharingInvitationData];
+  v4 = [sharingInvitationData hash];
+  shareURL = [(_BlastDoorCKDeviceToDeviceShareInvitationToken *)self shareURL];
+  v6 = [shareURL hash] ^ v4;
+  participantID = [(_BlastDoorCKDeviceToDeviceShareInvitationToken *)self participantID];
+  v8 = [participantID hash];
 
   return v6 ^ v8;
 }

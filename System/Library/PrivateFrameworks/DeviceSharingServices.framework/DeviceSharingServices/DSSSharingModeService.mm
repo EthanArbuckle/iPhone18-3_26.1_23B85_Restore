@@ -3,18 +3,18 @@
 - (DSSSharingModeService)init;
 - (void)dealloc;
 - (void)emitAXOpened;
-- (void)emitAXOpened:(BOOL)a3;
-- (void)emitGuestBeganInitialEnrollment:(BOOL)a3;
-- (void)emitGuestReEnrolled:(unint64_t)a3;
-- (void)emitOpenedApps:(id)a3;
+- (void)emitAXOpened:(BOOL)opened;
+- (void)emitGuestBeganInitialEnrollment:(BOOL)enrollment;
+- (void)emitGuestReEnrolled:(unint64_t)enrolled;
+- (void)emitOpenedApps:(id)apps;
 - (void)emitScreenMirroring;
-- (void)emitScreenMirroring:(BOOL)a3;
-- (void)emitSessionEnded:(id)a3;
-- (void)emitSessionStarted:(unint64_t)a3 withOpenedApps:(id)a4;
-- (void)emitTCCShown:(id)a3;
+- (void)emitScreenMirroring:(BOOL)mirroring;
+- (void)emitSessionEnded:(id)ended;
+- (void)emitSessionStarted:(unint64_t)started withOpenedApps:(id)apps;
+- (void)emitTCCShown:(id)shown;
 - (void)resetCAMetrics;
-- (void)sharingModeDidEnd:(id)a3;
-- (void)sharingModeDidStart:(unint64_t)a3 withOpenedApps:(id)a4;
+- (void)sharingModeDidEnd:(id)end;
+- (void)sharingModeDidStart:(unint64_t)start withOpenedApps:(id)apps;
 @end
 
 @implementation DSSSharingModeService
@@ -59,16 +59,16 @@ uint64_t __39__DSSSharingModeService_sharedInstance__block_invoke()
   return v2;
 }
 
-- (void)sharingModeDidStart:(unint64_t)a3 withOpenedApps:(id)a4
+- (void)sharingModeDidStart:(unint64_t)start withOpenedApps:(id)apps
 {
-  [(DSSSharingModeService *)self emitSessionStarted:a3 withOpenedApps:a4];
+  [(DSSSharingModeService *)self emitSessionStarted:start withOpenedApps:apps];
 
   [(DSSSharingModeService *)self playStartSound];
 }
 
-- (void)sharingModeDidEnd:(id)a3
+- (void)sharingModeDidEnd:(id)end
 {
-  [(DSSSharingModeService *)self emitSessionEnded:a3];
+  [(DSSSharingModeService *)self emitSessionEnded:end];
 
   [(DSSSharingModeService *)self playEndSound];
 }
@@ -76,9 +76,9 @@ uint64_t __39__DSSSharingModeService_sharedInstance__block_invoke()
 - (void)resetCAMetrics
 {
   v40 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAD78] UUID];
+  uUID = [MEMORY[0x277CCAD78] UUID];
   sessionIdentifier = self->_sessionIdentifier;
-  self->_sessionIdentifier = v3;
+  self->_sessionIdentifier = uUID;
 
   v5 = [objc_alloc(MEMORY[0x277CBEAA8]) initWithTimeIntervalSince1970:0.0];
   sharingModeStartTime = self->_sharingModeStartTime;
@@ -93,7 +93,7 @@ uint64_t __39__DSSSharingModeService_sharedInstance__block_invoke()
   v8 = DSSTelemetryLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    v10 = [(NSUUID *)self->_sessionIdentifier UUIDString];
+    uUIDString = [(NSUUID *)self->_sessionIdentifier UUIDString];
     v11 = self->_sharingModeStartTime;
     mode = self->_mode;
     smEnabled = self->_smEnabled;
@@ -104,7 +104,7 @@ uint64_t __39__DSSSharingModeService_sharedInstance__block_invoke()
     assetEnrolled = self->_assetEnrolled;
     v18 = self->_openedApps;
     v20 = 138545666;
-    v21 = v10;
+    v21 = uUIDString;
     v22 = 2114;
     v23 = v11;
     v24 = 2114;
@@ -129,15 +129,15 @@ uint64_t __39__DSSSharingModeService_sharedInstance__block_invoke()
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)emitSessionStarted:(unint64_t)a3 withOpenedApps:(id)a4
+- (void)emitSessionStarted:(unint64_t)started withOpenedApps:(id)apps
 {
   v44 = *MEMORY[0x277D85DE8];
-  v6 = [a4 componentsJoinedByString:{@", "}];
+  v6 = [apps componentsJoinedByString:{@", "}];
   v7 = DSSTelemetryLog();
   if (os_signpost_enabled(v7))
   {
     v24 = 134349314;
-    v25 = a3;
+    startedCopy = started;
     v26 = 2114;
     v27 = v6;
     _os_signpost_emit_with_name_impl(&dword_248A4A000, v7, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "SharingModeSession", " enableTelemetry=YES mode=%{public,signpost.telemetry:number1}lu, openedAppsList=%{public,signpost.telemetry:string1}@", &v24, 0x16u);
@@ -147,15 +147,15 @@ uint64_t __39__DSSSharingModeService_sharedInstance__block_invoke()
   sharingModeStartTime = self->_sharingModeStartTime;
   self->_sharingModeStartTime = v8;
 
-  self->_mode = a3;
-  v10 = [MEMORY[0x277CCAD78] UUID];
+  self->_mode = started;
+  uUID = [MEMORY[0x277CCAD78] UUID];
   sessionIdentifier = self->_sessionIdentifier;
-  self->_sessionIdentifier = v10;
+  self->_sessionIdentifier = uUID;
 
   v12 = DSSTelemetryLog();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
-    v14 = [(NSUUID *)self->_sessionIdentifier UUIDString];
+    uUIDString = [(NSUUID *)self->_sessionIdentifier UUIDString];
     v15 = self->_sharingModeStartTime;
     mode = self->_mode;
     smEnabled = self->_smEnabled;
@@ -166,7 +166,7 @@ uint64_t __39__DSSSharingModeService_sharedInstance__block_invoke()
     assetEnrolled = self->_assetEnrolled;
     openedApps = self->_openedApps;
     v24 = 138545666;
-    v25 = v14;
+    startedCopy = uUIDString;
     v26 = 2114;
     v27 = v15;
     v28 = 2114;
@@ -191,15 +191,15 @@ uint64_t __39__DSSSharingModeService_sharedInstance__block_invoke()
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)emitSessionEnded:(id)a3
+- (void)emitSessionEnded:(id)ended
 {
   v64 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  endedCopy = ended;
   v5 = DSSTelemetryLog();
   if (os_signpost_enabled(v5))
   {
     *buf = 138543362;
-    v39 = v4;
+    v39 = endedCopy;
     _os_signpost_emit_with_name_impl(&dword_248A4A000, v5, OS_SIGNPOST_INTERVAL_END, 0xEEEEB0B5B2B2EEEELL, "SharingModeSession", " enableTelemetry=YES sourceString=%{public,signpost.telemetry:string2}@", buf, 0xCu);
   }
 
@@ -209,7 +209,7 @@ uint64_t __39__DSSSharingModeService_sharedInstance__block_invoke()
   v9 = DSSTelemetryLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
-    v23 = [(NSUUID *)self->_sessionIdentifier UUIDString];
+    uUIDString = [(NSUUID *)self->_sessionIdentifier UUIDString];
     sharingModeStartTime = self->_sharingModeStartTime;
     mode = self->_mode;
     smEnabled = self->_smEnabled;
@@ -220,7 +220,7 @@ uint64_t __39__DSSSharingModeService_sharedInstance__block_invoke()
     assetEnrolled = self->_assetEnrolled;
     openedApps = self->_openedApps;
     *buf = 138546434;
-    v39 = v23;
+    v39 = uUIDString;
     v40 = 2114;
     v41 = sharingModeStartTime;
     v42 = 2114;
@@ -228,7 +228,7 @@ uint64_t __39__DSSSharingModeService_sharedInstance__block_invoke()
     v44 = 2050;
     v45 = v8;
     v46 = 2114;
-    v47 = v4;
+    v47 = endedCopy;
     v48 = 2114;
     v49 = openedApps;
     v50 = 2050;
@@ -256,7 +256,7 @@ uint64_t __39__DSSSharingModeService_sharedInstance__block_invoke()
   v36[1] = @"mode";
   v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_mode];
   v37[1] = v11;
-  v37[2] = v4;
+  v37[2] = endedCopy;
   v36[2] = @"endSource";
   v36[3] = @"numOfAppsOpened";
   v12 = [MEMORY[0x277CCABB0] numberWithInt:self->_numAppsOpened];
@@ -333,15 +333,15 @@ void __42__DSSSharingModeService_emitSessionEnded___block_invoke_44(uint64_t a1,
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)emitOpenedApps:(id)a3
+- (void)emitOpenedApps:(id)apps
 {
-  v5 = a3;
-  if (v5)
+  appsCopy = apps;
+  if (appsCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_openedApps, a3);
+    v6 = appsCopy;
+    objc_storeStrong(&self->_openedApps, apps);
     self->_numAppsOpened = [(NSArray *)self->_openedApps count];
-    v5 = v6;
+    appsCopy = v6;
   }
 }
 
@@ -357,61 +357,61 @@ void __42__DSSSharingModeService_emitSessionEnded___block_invoke_44(uint64_t a1,
   self->_smEnabled = 1;
 }
 
-- (void)emitScreenMirroring:(BOOL)a3
+- (void)emitScreenMirroring:(BOOL)mirroring
 {
-  v3 = a3;
+  mirroringCopy = mirroring;
   v7 = *MEMORY[0x277D85DE8];
   v4 = DSSTelemetryLog();
   if (os_signpost_enabled(v4))
   {
     v6[0] = 67240192;
-    v6[1] = v3;
+    v6[1] = mirroringCopy;
     _os_signpost_emit_with_name_impl(&dword_248A4A000, v4, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "SharingModeScreenMirroring", " enableTelemetry=YES screenMirroringt=%{public,signpost.telemetry:number1}d", v6, 8u);
   }
 
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)emitGuestBeganInitialEnrollment:(BOOL)a3
+- (void)emitGuestBeganInitialEnrollment:(BOOL)enrollment
 {
-  v3 = a3;
+  enrollmentCopy = enrollment;
   v8 = *MEMORY[0x277D85DE8];
   v5 = DSSTelemetryLog();
   if (os_signpost_enabled(v5))
   {
     v7[0] = 67240192;
-    v7[1] = v3;
+    v7[1] = enrollmentCopy;
     _os_signpost_emit_with_name_impl(&dword_248A4A000, v5, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "SharingModeGuestBeganInitialEnrollment", " enableTelemetry=YES clipOnsPresent=%{public,signpost.telemetry:number1}d", v7, 8u);
   }
 
-  self->_clipOnsPresent = v3;
+  self->_clipOnsPresent = enrollmentCopy;
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)emitGuestReEnrolled:(unint64_t)a3
+- (void)emitGuestReEnrolled:(unint64_t)enrolled
 {
   v9 = *MEMORY[0x277D85DE8];
   v5 = DSSTelemetryLog();
   if (os_signpost_enabled(v5))
   {
     v7 = 134349056;
-    v8 = a3;
+    enrolledCopy = enrolled;
     _os_signpost_emit_with_name_impl(&dword_248A4A000, v5, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "SharingModeGuestReEnrolled", " enableTelemetry=YES asset=%{public,signpost.telemetry:number1}lu", &v7, 0xCu);
   }
 
-  self->_assetEnrolled = a3;
+  self->_assetEnrolled = enrolled;
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)emitTCCShown:(id)a3
+- (void)emitTCCShown:(id)shown
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  shownCopy = shown;
   v5 = DSSTelemetryLog();
   if (os_signpost_enabled(v5))
   {
     v7 = 138543362;
-    v8 = v4;
+    v8 = shownCopy;
     _os_signpost_emit_with_name_impl(&dword_248A4A000, v5, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "SharingModeTCCShown", " enableTelemetry=YES bundleID=%{public,signpost.telemetry:string1}@", &v7, 0xCu);
   }
 
@@ -431,15 +431,15 @@ void __42__DSSSharingModeService_emitSessionEnded___block_invoke_44(uint64_t a1,
   self->_axOpened = 1;
 }
 
-- (void)emitAXOpened:(BOOL)a3
+- (void)emitAXOpened:(BOOL)opened
 {
-  v3 = a3;
+  openedCopy = opened;
   v7 = *MEMORY[0x277D85DE8];
   v4 = DSSTelemetryLog();
   if (os_signpost_enabled(v4))
   {
     v6[0] = 67240192;
-    v6[1] = v3;
+    v6[1] = openedCopy;
     _os_signpost_emit_with_name_impl(&dword_248A4A000, v4, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "SharingModeAXOpened", " enableTelemetry=YES modified=%{public,signpost.telemetry:number1}d", v6, 8u);
   }
 

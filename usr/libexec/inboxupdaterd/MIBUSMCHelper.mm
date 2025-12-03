@@ -1,13 +1,13 @@
 @interface MIBUSMCHelper
-- (BOOL)isKeySupported:(id)a3;
+- (BOOL)isKeySupported:(id)supported;
 - (MIBUSMCHelper)init;
-- (id)readSMCKey:(id)a3 error:(id *)a4;
-- (unsigned)_openAppleSMC:(id *)a3;
-- (unsigned)_smcKeyFromString:(id)a3;
-- (void)_closeAppleSMC:(id *)a3;
+- (id)readSMCKey:(id)key error:(id *)error;
+- (unsigned)_openAppleSMC:(id *)c;
+- (unsigned)_smcKeyFromString:(id)string;
+- (void)_closeAppleSMC:(id *)c;
 - (void)dealloc;
-- (void)openAppleSMC:(id *)a3;
-- (void)writeSMCKey:(id)a3 data:(id)a4 error:(id *)a5;
+- (void)openAppleSMC:(id *)c;
+- (void)writeSMCKey:(id)key data:(id)data error:(id *)error;
 @end
 
 @implementation MIBUSMCHelper
@@ -66,7 +66,7 @@
   [(MIBUSMCHelper *)&v6 dealloc];
 }
 
-- (void)openAppleSMC:(id *)a3
+- (void)openAppleSMC:(id *)c
 {
   if (![(MIBUSMCHelper *)self connection])
   {
@@ -139,18 +139,18 @@
 
   v4 = 0;
 LABEL_3:
-  if (a3)
+  if (c)
   {
     v5 = v4;
-    *a3 = v4;
+    *c = v4;
   }
 }
 
-- (BOOL)isKeySupported:(id)a3
+- (BOOL)isKeySupported:(id)supported
 {
-  v4 = a3;
+  supportedCopy = supported;
   v11 = 0;
-  v5 = [(MIBUSMCHelper *)self readSMCKey:v4 error:&v11];
+  v5 = [(MIBUSMCHelper *)self readSMCKey:supportedCopy error:&v11];
   v6 = v11;
   v7 = v6;
   if (v5 || [v6 code] != 2684354561)
@@ -168,7 +168,7 @@ LABEL_3:
     v8 = qword_1000B84A0;
     if (os_log_type_enabled(qword_1000B84A0, OS_LOG_TYPE_ERROR))
     {
-      sub_100056B8C(v4, v8);
+      sub_100056B8C(supportedCopy, v8);
     }
 
     v9 = 0;
@@ -177,9 +177,9 @@ LABEL_3:
   return v9;
 }
 
-- (id)readSMCKey:(id)a3 error:(id *)a4
+- (id)readSMCKey:(id)key error:(id *)error
 {
-  v6 = a3;
+  keyCopy = key;
   outputStructCnt = 168;
   memset(inputStruct, 0, sizeof(inputStruct));
   v45 = 0;
@@ -193,7 +193,7 @@ LABEL_3:
   v38 = 0u;
   outputStruct = 0u;
   v36 = 0u;
-  v7 = [(MIBUSMCHelper *)self _smcKeyFromString:v6];
+  v7 = [(MIBUSMCHelper *)self _smcKeyFromString:keyCopy];
   if ([(MIBUSMCHelper *)self connection])
   {
     memset(inputStruct + 4, 0, 164);
@@ -222,7 +222,7 @@ LABEL_3:
       if (os_log_type_enabled(qword_1000B84A0, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543874;
-        v30 = v6;
+        v30 = keyCopy;
         v31 = 1024;
         v32 = v8;
         v33 = 1024;
@@ -230,7 +230,7 @@ LABEL_3:
         _os_log_error_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "Failed to read info for key: %{public}@; ret: 0x%X; smc ret: 0x%X", buf, 0x18u);
       }
 
-      sub_100016130(a4, 2684354561, 0, @"Failed to read info for key: %@; ret: 0x%X; smc ret: 0x%X", v14, v15, v16, v17, v6);
+      sub_100016130(error, 2684354561, 0, @"Failed to read info for key: %@; ret: 0x%X; smc ret: 0x%X", v14, v15, v16, v17, keyCopy);
     }
 
     else
@@ -238,7 +238,7 @@ LABEL_3:
       v9 = HIDWORD(v36);
       if (HIDWORD(v36) >= 0x79)
       {
-        sub_100056C60(v6, SHIDWORD(v36), a4);
+        sub_100056C60(keyCopy, SHIDWORD(v36), error);
       }
 
       else
@@ -270,7 +270,7 @@ LABEL_3:
           if (os_log_type_enabled(qword_1000B84A0, OS_LOG_TYPE_ERROR))
           {
             *buf = 138543874;
-            v30 = v6;
+            v30 = keyCopy;
             v31 = 1024;
             v32 = v10;
             v33 = 1024;
@@ -278,7 +278,7 @@ LABEL_3:
             _os_log_error_impl(&_mh_execute_header, v18, OS_LOG_TYPE_ERROR, "Failed to read key: %{public}@; ret: 0x%X; smc ret: 0x%X", buf, 0x18u);
           }
 
-          sub_100016130(a4, 2684354563, 0, @"Failed to read key: %@; ret: 0x%X; smc ret: 0x%X", v19, v20, v21, v22, v6);
+          sub_100016130(error, 2684354563, 0, @"Failed to read key: %@; ret: 0x%X; smc ret: 0x%X", v19, v20, v21, v22, keyCopy);
         }
 
         else
@@ -298,7 +298,7 @@ LABEL_3:
           if (os_log_type_enabled(qword_1000B84A0, OS_LOG_TYPE_ERROR))
           {
             *buf = 138543874;
-            v30 = v6;
+            v30 = keyCopy;
             v31 = 1024;
             v32 = HIDWORD(v36);
             v33 = 1024;
@@ -306,7 +306,7 @@ LABEL_3:
             _os_log_error_impl(&_mh_execute_header, v23, OS_LOG_TYPE_ERROR, "Key %{public}@ has size %d which exceeds expected size of %d", buf, 0x18u);
           }
 
-          sub_100016130(a4, 2684354562, 0, @"Key %@ has size %d which exceeds expected size of %d", v24, v25, v26, v27, v6);
+          sub_100016130(error, 2684354562, 0, @"Key %@ has size %d which exceeds expected size of %d", v24, v25, v26, v27, keyCopy);
         }
       }
     }
@@ -314,7 +314,7 @@ LABEL_3:
 
   else
   {
-    sub_100056DA4(v6, a4);
+    sub_100056DA4(keyCopy, error);
   }
 
   v11 = 0;
@@ -323,15 +323,15 @@ LABEL_9:
   return v11;
 }
 
-- (void)writeSMCKey:(id)a3 data:(id)a4 error:(id *)a5
+- (void)writeSMCKey:(id)key data:(id)data error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(MIBUSMCHelper *)self _smcKeyFromString:v8];
+  keyCopy = key;
+  dataCopy = data;
+  v10 = [(MIBUSMCHelper *)self _smcKeyFromString:keyCopy];
   outputStructCnt = 80;
-  if ([v9 length] >= 0x21)
+  if ([dataCopy length] >= 0x21)
   {
-    sub_100056EDC(v8, v9, a5);
+    sub_100056EDC(keyCopy, dataCopy, error);
   }
 
   else
@@ -345,17 +345,17 @@ LABEL_9:
     v27 = 0u;
     inputStruct = v10;
     BYTE2(v31[1]) = 6;
-    DWORD2(v30) = [v9 length];
-    if ([v9 length])
+    DWORD2(v30) = [dataCopy length];
+    if ([dataCopy length])
     {
       v11 = 0;
       do
       {
-        *(&v31[3] + v11) = *([v9 bytes] + v11);
+        *(&v31[3] + v11) = *([dataCopy bytes] + v11);
         ++v11;
       }
 
-      while (v11 < [v9 length]);
+      while (v11 < [dataCopy length]);
     }
 
     v12 = IOConnectCallStructMethod([(MIBUSMCHelper *)self connection], 2u, &inputStruct, 0x50uLL, outputStruct, &outputStructCnt);
@@ -370,7 +370,7 @@ LABEL_9:
       if (os_log_type_enabled(qword_1000B84A0, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543874;
-        v21 = v8;
+        v21 = keyCopy;
         v22 = 1024;
         LODWORD(v23[0]) = v12;
         WORD2(v23[0]) = 1024;
@@ -378,7 +378,7 @@ LABEL_9:
         _os_log_error_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "Failed to write key: %{public}@; ret: 0x%X; smc ret: 0x%X", buf, 0x18u);
       }
 
-      sub_100016130(a5, 2684354564, 0, @"Failed to write key: %@; ret: 0x%X; smc ret: 0x%X", v15, v16, v17, v18, v8);
+      sub_100016130(error, 2684354564, 0, @"Failed to write key: %@; ret: 0x%X; smc ret: 0x%X", v15, v16, v17, v18, keyCopy);
     }
 
     else
@@ -392,16 +392,16 @@ LABEL_9:
       if (os_log_type_enabled(qword_1000B84A0, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543618;
-        v21 = v8;
+        v21 = keyCopy;
         v22 = 2114;
-        v23[0] = v9;
+        v23[0] = dataCopy;
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Successfully written key %{public}@ with data: %{public}@", buf, 0x16u);
       }
     }
   }
 }
 
-- (unsigned)_openAppleSMC:(id *)a3
+- (unsigned)_openAppleSMC:(id *)c
 {
   connect = 0;
   v3 = IOServiceMatching("AppleSMC");
@@ -440,7 +440,7 @@ LABEL_9:
   return connect;
 }
 
-- (void)_closeAppleSMC:(id *)a3
+- (void)_closeAppleSMC:(id *)c
 {
   if (IOConnectCallScalarMethod([(MIBUSMCHelper *)self connection], 1u, 0, 0, 0, 0))
   {
@@ -453,13 +453,13 @@ LABEL_9:
   }
 }
 
-- (unsigned)_smcKeyFromString:(id)a3
+- (unsigned)_smcKeyFromString:(id)string
 {
   v4 = 0;
   v5 = 0;
   do
   {
-    v5 = [a3 characterAtIndex:v4++] | (v5 << 8);
+    v5 = [string characterAtIndex:v4++] | (v5 << 8);
   }
 
   while (v4 != 4);

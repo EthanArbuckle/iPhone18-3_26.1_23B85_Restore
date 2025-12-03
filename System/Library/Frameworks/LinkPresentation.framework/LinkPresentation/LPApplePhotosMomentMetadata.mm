@@ -1,44 +1,44 @@
 @interface LPApplePhotosMomentMetadata
-- (BOOL)isEqual:(id)a3;
-- (LPApplePhotosMomentMetadata)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)presentationPropertiesForTransformer:(id)a3;
-- (id)previewImageForTransformer:(id)a3;
-- (id)previewSummaryForTransformer:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)populateMetadataForBackwardCompatibility:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (LPApplePhotosMomentMetadata)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)presentationPropertiesForTransformer:(id)transformer;
+- (id)previewImageForTransformer:(id)transformer;
+- (id)previewSummaryForTransformer:(id)transformer;
+- (void)encodeWithCoder:(id)coder;
+- (void)populateMetadataForBackwardCompatibility:(id)compatibility;
 @end
 
 @implementation LPApplePhotosMomentMetadata
 
-- (LPApplePhotosMomentMetadata)initWithCoder:(id)a3
+- (LPApplePhotosMomentMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v18.receiver = self;
   v18.super_class = LPApplePhotosMomentMetadata;
   v5 = [(LPApplePhotosMomentMetadata *)&v18 init];
   if (v5)
   {
-    v6 = decodeStringForKey(v4, @"title");
+    v6 = decodeStringForKey(coderCopy, @"title");
     title = v5->_title;
     v5->_title = v6;
 
-    v5->_photoCount = [v4 decodeInt64ForKey:@"photoCount"];
-    v5->_videoCount = [v4 decodeInt64ForKey:@"videoCount"];
-    v5->_otherItemCount = [v4 decodeInt64ForKey:@"otherItemCount"];
-    v8 = [v4 _lp_strictlyDecodeLPImageForKey:@"keyPhoto"];
+    v5->_photoCount = [coderCopy decodeInt64ForKey:@"photoCount"];
+    v5->_videoCount = [coderCopy decodeInt64ForKey:@"videoCount"];
+    v5->_otherItemCount = [coderCopy decodeInt64ForKey:@"otherItemCount"];
+    v8 = [coderCopy _lp_strictlyDecodeLPImageForKey:@"keyPhoto"];
     keyPhoto = v5->_keyPhoto;
     v5->_keyPhoto = v8;
 
-    v10 = [v4 _lp_strictlyDecodeObjectOfClass:objc_opt_class() forKey:@"expirationDate"];
+    v10 = [coderCopy _lp_strictlyDecodeObjectOfClass:objc_opt_class() forKey:@"expirationDate"];
     expirationDate = v5->_expirationDate;
     v5->_expirationDate = v10;
 
-    v12 = [v4 _lp_strictlyDecodeObjectOfClass:objc_opt_class() forKey:@"earliestAssetDate"];
+    v12 = [coderCopy _lp_strictlyDecodeObjectOfClass:objc_opt_class() forKey:@"earliestAssetDate"];
     earliestAssetDate = v5->_earliestAssetDate;
     v5->_earliestAssetDate = v12;
 
-    v14 = [v4 _lp_strictlyDecodeObjectOfClass:objc_opt_class() forKey:@"latestAssetDate"];
+    v14 = [coderCopy _lp_strictlyDecodeObjectOfClass:objc_opt_class() forKey:@"latestAssetDate"];
     latestAssetDate = v5->_latestAssetDate;
     v5->_latestAssetDate = v14;
 
@@ -48,41 +48,41 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 _lp_encodeStringIfNotNil:self->_title forKey:@"title"];
-  [v4 encodeInt64:self->_photoCount forKey:@"photoCount"];
-  [v4 encodeInt64:self->_videoCount forKey:@"videoCount"];
-  [v4 encodeInt64:self->_otherItemCount forKey:@"otherItemCount"];
-  [v4 _lp_encodeObjectIfNotNil:self->_keyPhoto forKey:@"keyPhoto"];
-  [v4 _lp_encodeObjectIfNotNil:self->_expirationDate forKey:@"expirationDate"];
-  [v4 _lp_encodeObjectIfNotNil:self->_earliestAssetDate forKey:@"earliestAssetDate"];
-  [v4 _lp_encodeObjectIfNotNil:self->_latestAssetDate forKey:@"latestAssetDate"];
+  coderCopy = coder;
+  [coderCopy _lp_encodeStringIfNotNil:self->_title forKey:@"title"];
+  [coderCopy encodeInt64:self->_photoCount forKey:@"photoCount"];
+  [coderCopy encodeInt64:self->_videoCount forKey:@"videoCount"];
+  [coderCopy encodeInt64:self->_otherItemCount forKey:@"otherItemCount"];
+  [coderCopy _lp_encodeObjectIfNotNil:self->_keyPhoto forKey:@"keyPhoto"];
+  [coderCopy _lp_encodeObjectIfNotNil:self->_expirationDate forKey:@"expirationDate"];
+  [coderCopy _lp_encodeObjectIfNotNil:self->_earliestAssetDate forKey:@"earliestAssetDate"];
+  [coderCopy _lp_encodeObjectIfNotNil:self->_latestAssetDate forKey:@"latestAssetDate"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [LPApplePhotosMomentMetadata allocWithZone:a3];
+  v4 = [LPApplePhotosMomentMetadata allocWithZone:zone];
   if (v4)
   {
-    v5 = [(LPApplePhotosMomentMetadata *)self title];
-    [(LPApplePhotosMomentMetadata *)v4 setTitle:v5];
+    title = [(LPApplePhotosMomentMetadata *)self title];
+    [(LPApplePhotosMomentMetadata *)v4 setTitle:title];
 
     [(LPApplePhotosMomentMetadata *)v4 setPhotoCount:[(LPApplePhotosMomentMetadata *)self photoCount]];
     [(LPApplePhotosMomentMetadata *)v4 setVideoCount:[(LPApplePhotosMomentMetadata *)self videoCount]];
     [(LPApplePhotosMomentMetadata *)v4 setOtherItemCount:[(LPApplePhotosMomentMetadata *)self otherItemCount]];
-    v6 = [(LPApplePhotosMomentMetadata *)self keyPhoto];
-    [(LPApplePhotosMomentMetadata *)v4 setKeyPhoto:v6];
+    keyPhoto = [(LPApplePhotosMomentMetadata *)self keyPhoto];
+    [(LPApplePhotosMomentMetadata *)v4 setKeyPhoto:keyPhoto];
 
-    v7 = [(LPApplePhotosMomentMetadata *)self expirationDate];
-    [(LPApplePhotosMomentMetadata *)v4 setExpirationDate:v7];
+    expirationDate = [(LPApplePhotosMomentMetadata *)self expirationDate];
+    [(LPApplePhotosMomentMetadata *)v4 setExpirationDate:expirationDate];
 
-    v8 = [(LPApplePhotosMomentMetadata *)self earliestAssetDate];
-    [(LPApplePhotosMomentMetadata *)v4 setEarliestAssetDate:v8];
+    earliestAssetDate = [(LPApplePhotosMomentMetadata *)self earliestAssetDate];
+    [(LPApplePhotosMomentMetadata *)v4 setEarliestAssetDate:earliestAssetDate];
 
-    v9 = [(LPApplePhotosMomentMetadata *)self latestAssetDate];
-    [(LPApplePhotosMomentMetadata *)v4 setLatestAssetDate:v9];
+    latestAssetDate = [(LPApplePhotosMomentMetadata *)self latestAssetDate];
+    [(LPApplePhotosMomentMetadata *)v4 setLatestAssetDate:latestAssetDate];
 
     v10 = v4;
   }
@@ -90,12 +90,12 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v8.receiver = self;
   v8.super_class = LPApplePhotosMomentMetadata;
-  if ([(LPApplePhotosMomentMetadata *)&v8 isEqual:v4])
+  if ([(LPApplePhotosMomentMetadata *)&v8 isEqual:equalCopy])
   {
     v5 = 1;
   }
@@ -105,7 +105,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v4;
+      v6 = equalCopy;
       if ((objectsAreEqual_0(v6[2], self->_title) & 1) != 0 && v6[3] == self->_photoCount && v6[4] == self->_videoCount && v6[5] == self->_otherItemCount && objectsAreEqual_0(v6[6], self->_keyPhoto) && objectsAreEqual_0(v6[7], self->_expirationDate) && objectsAreEqual_0(v6[8], self->_earliestAssetDate))
       {
         v5 = objectsAreEqual_0(v6[9], self->_latestAssetDate);
@@ -126,16 +126,16 @@
   return v5;
 }
 
-- (id)presentationPropertiesForTransformer:(id)a3
+- (id)presentationPropertiesForTransformer:(id)transformer
 {
   v72 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 commonPresentationPropertiesForStyle:36];
+  transformerCopy = transformer;
+  v5 = [transformerCopy commonPresentationPropertiesForStyle:36];
   v6 = objc_alloc_init(LPCaptionBarPresentationProperties);
   [v5 setCaptionBar:v6];
 
-  v7 = [(LPApplePhotosMomentMetadata *)self keyPhoto];
-  [v4 _populateProperties:v5 withPrimaryImage:v7];
+  keyPhoto = [(LPApplePhotosMomentMetadata *)self keyPhoto];
+  [transformerCopy _populateProperties:v5 withPrimaryImage:keyPhoto];
 
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -143,7 +143,7 @@
   aBlock[3] = &unk_1E7A35478;
   v8 = v5;
   v61 = v8;
-  v62 = self;
+  selfCopy = self;
   v9 = _Block_copy(aBlock);
   if (TCCAccessPreflight() && !+[LPTestingOverrides forceIgnoreAllTCCChecks])
   {
@@ -167,9 +167,9 @@
 
   if (!PhotoLibraryLibraryCore_frameworkLibrary)
   {
-    v50 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v51 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"void *PhotoLibraryLibrary(void)"];
-    [v50 handleFailureInFunction:v51 file:@"LPApplePhotosTransformers.m" lineNumber:37 description:{@"%s", v63}];
+    [currentHandler handleFailureInFunction:v51 file:@"LPApplePhotosTransformers.m" lineNumber:37 description:{@"%s", v63}];
 
     goto LABEL_32;
   }
@@ -179,18 +179,18 @@
     free(v63);
   }
 
-  v10 = [(LPApplePhotosMomentMetadata *)self title];
-  v11 = [(LPApplePhotosMomentMetadata *)self earliestAssetDate];
-  v12 = [(LPApplePhotosMomentMetadata *)self latestAssetDate];
+  title = [(LPApplePhotosMomentMetadata *)self title];
+  earliestAssetDate = [(LPApplePhotosMomentMetadata *)self earliestAssetDate];
+  latestAssetDate = [(LPApplePhotosMomentMetadata *)self latestAssetDate];
   v58 = 0;
   v59 = 0;
-  LPPLCMMTitleAndSubtitleForTitleAndFallbackDates(v10, v11, v12, &v59, &v58);
+  LPPLCMMTitleAndSubtitleForTitleAndFallbackDates(title, earliestAssetDate, latestAssetDate, &v59, &v58);
   v57 = v59;
   v56 = v58;
 
-  v13 = [(LPApplePhotosMomentMetadata *)self photoCount];
-  v14 = [(LPApplePhotosMomentMetadata *)self videoCount];
-  v15 = [(LPApplePhotosMomentMetadata *)self otherItemCount];
+  photoCount = [(LPApplePhotosMomentMetadata *)self photoCount];
+  videoCount = [(LPApplePhotosMomentMetadata *)self videoCount];
+  otherItemCount = [(LPApplePhotosMomentMetadata *)self otherItemCount];
   *&v69 = 0;
   *(&v69 + 1) = &v69;
   v70 = 0x2020000000;
@@ -210,15 +210,15 @@
   _Block_object_dispose(&v69, 8);
   if (!v16)
   {
-    v52 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
     v53 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"NSString *LPPLLocalizedCountDescription(NSUInteger, NSUInteger, NSUInteger, BOOL, BOOL)"}];
-    [v52 handleFailureInFunction:v53 file:@"LPApplePhotosTransformers.m" lineNumber:30 description:{@"%s", dlerror()}];
+    [currentHandler2 handleFailureInFunction:v53 file:@"LPApplePhotosTransformers.m" lineNumber:30 description:{@"%s", dlerror()}];
 
     goto LABEL_32;
   }
 
-  v17 = v16(v13, v14, v15, 1, 0);
-  v18 = [(LPApplePhotosMomentMetadata *)self expirationDate];
+  v17 = v16(photoCount, videoCount, otherItemCount, 1, 0);
+  expirationDate = [(LPApplePhotosMomentMetadata *)self expirationDate];
   *&v69 = 0;
   *(&v69 + 1) = &v69;
   v70 = 0x2020000000;
@@ -238,94 +238,94 @@
   _Block_object_dispose(&v69, 8);
   if (!v19)
   {
-    v54 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
     v55 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *LPPXCMMStringForExpiryDate(NSDate *__strong)"];
-    [v54 handleFailureInFunction:v55 file:@"LPApplePhotosTransformers.m" lineNumber:40 description:{@"%s", dlerror()}];
+    [currentHandler3 handleFailureInFunction:v55 file:@"LPApplePhotosTransformers.m" lineNumber:40 description:{@"%s", dlerror()}];
 
 LABEL_32:
     __break(1u);
   }
 
-  v20 = v19(v18);
+  v20 = v19(expirationDate);
 
-  v21 = [(LPApplePhotosMomentMetadata *)self keyPhoto];
-  if (v21)
+  keyPhoto2 = [(LPApplePhotosMomentMetadata *)self keyPhoto];
+  if (keyPhoto2)
   {
-    v22 = sizeClassAllowsMedia([v4 effectiveSizeClass]);
+    v22 = sizeClassAllowsMedia([transformerCopy effectiveSizeClass]);
 
     if (v22)
     {
-      v23 = [v8 captionBar];
-      v24 = [v23 top];
-      v25 = [v24 leading];
-      [v25 setText:v17];
+      captionBar = [v8 captionBar];
+      v24 = [captionBar top];
+      leading = [v24 leading];
+      [leading setText:v17];
 
-      v26 = [v8 captionBar];
-      v27 = [v26 bottom];
-      v28 = [v27 leading];
-      [v28 setText:v20];
+      captionBar2 = [v8 captionBar];
+      bottom = [captionBar2 bottom];
+      leading2 = [bottom leading];
+      [leading2 setText:v20];
 
-      v29 = [v8 captionBar];
-      [v29 setTrailingAccessoryType:1];
+      captionBar3 = [v8 captionBar];
+      [captionBar3 setTrailingAccessoryType:1];
 
       v30 = objc_alloc_init(LPCaptionBarPresentationProperties);
       [v8 setMediaTopCaptionBar:v30];
 
-      v31 = [v8 mediaTopCaptionBar];
-      v32 = [v31 top];
-      v33 = [v32 leading];
-      [v33 setText:v57];
+      mediaTopCaptionBar = [v8 mediaTopCaptionBar];
+      v32 = [mediaTopCaptionBar top];
+      leading3 = [v32 leading];
+      [leading3 setText:v57];
 
-      v34 = [v8 mediaTopCaptionBar];
-      v35 = [v34 bottom];
-      v36 = [v35 leading];
-      [v36 setText:v56];
+      mediaTopCaptionBar2 = [v8 mediaTopCaptionBar];
+      bottom2 = [mediaTopCaptionBar2 bottom];
+      leading4 = [bottom2 leading];
+      [leading4 setText:v56];
 LABEL_24:
 
       goto LABEL_25;
     }
   }
 
-  v37 = [v4 _rowConfigurationForStyle:{objc_msgSend(v8, "style")}];
+  v37 = [transformerCopy _rowConfigurationForStyle:{objc_msgSend(v8, "style")}];
   if ((v37 - 2) < 2)
   {
-    v39 = [v8 captionBar];
-    v40 = [v39 aboveTop];
-    v41 = [v40 leading];
-    [v41 setText:v57];
+    captionBar4 = [v8 captionBar];
+    aboveTop = [captionBar4 aboveTop];
+    leading5 = [aboveTop leading];
+    [leading5 setText:v57];
 
-    v42 = [v8 captionBar];
-    v43 = [v42 top];
-    v44 = [v43 leading];
-    [v44 setText:v17];
+    captionBar5 = [v8 captionBar];
+    v43 = [captionBar5 top];
+    leading6 = [v43 leading];
+    [leading6 setText:v17];
 
-    v34 = [v8 captionBar];
-    v35 = [v34 bottom];
-    v36 = [v35 leading];
-    [v36 setText:v20];
+    mediaTopCaptionBar2 = [v8 captionBar];
+    bottom2 = [mediaTopCaptionBar2 bottom];
+    leading4 = [bottom2 leading];
+    [leading4 setText:v20];
     goto LABEL_24;
   }
 
   if (v37 == 1)
   {
-    v45 = [v8 captionBar];
-    v46 = [v45 top];
-    v47 = [v46 leading];
-    [v47 setText:v57];
+    captionBar6 = [v8 captionBar];
+    v46 = [captionBar6 top];
+    leading7 = [v46 leading];
+    [leading7 setText:v57];
 
-    v34 = [v8 captionBar];
-    v35 = [v34 bottom];
-    v36 = [v35 leading];
-    [v36 setText:v56];
+    mediaTopCaptionBar2 = [v8 captionBar];
+    bottom2 = [mediaTopCaptionBar2 bottom];
+    leading4 = [bottom2 leading];
+    [leading4 setText:v56];
     goto LABEL_24;
   }
 
   if (!v37)
   {
-    v34 = [v8 captionBar];
-    v35 = [v34 top];
-    v36 = [v35 leading];
-    [v36 setText:v57];
+    mediaTopCaptionBar2 = [v8 captionBar];
+    bottom2 = [mediaTopCaptionBar2 top];
+    leading4 = [bottom2 leading];
+    [leading4 setText:v57];
     goto LABEL_24;
   }
 
@@ -352,48 +352,48 @@ void __82__LPApplePhotosMomentMetadata_Transformers__presentationPropertiesForTr
   [v7 setText:v9];
 }
 
-- (id)previewSummaryForTransformer:(id)a3
+- (id)previewSummaryForTransformer:(id)transformer
 {
   v4 = MEMORY[0x1E696AEC0];
   v5 = LPLocalizedString(@"Photos: %@");
-  v6 = [(LPApplePhotosMomentMetadata *)self title];
-  v7 = [v4 localizedStringWithFormat:v5, v6];
+  title = [(LPApplePhotosMomentMetadata *)self title];
+  v7 = [v4 localizedStringWithFormat:v5, title];
 
   return v7;
 }
 
-- (id)previewImageForTransformer:(id)a3
+- (id)previewImageForTransformer:(id)transformer
 {
-  v3 = [(LPApplePhotosMomentMetadata *)self keyPhoto];
+  keyPhoto = [(LPApplePhotosMomentMetadata *)self keyPhoto];
 
-  return v3;
+  return keyPhoto;
 }
 
-- (void)populateMetadataForBackwardCompatibility:(id)a3
+- (void)populateMetadataForBackwardCompatibility:(id)compatibility
 {
-  v4 = a3;
-  v5 = [(LPApplePhotosMomentMetadata *)self title];
-  v6 = [(LPApplePhotosMomentMetadata *)self earliestAssetDate];
-  v7 = [(LPApplePhotosMomentMetadata *)self latestAssetDate];
+  compatibilityCopy = compatibility;
+  title = [(LPApplePhotosMomentMetadata *)self title];
+  earliestAssetDate = [(LPApplePhotosMomentMetadata *)self earliestAssetDate];
+  latestAssetDate = [(LPApplePhotosMomentMetadata *)self latestAssetDate];
   v12 = 0;
   v13 = 0;
-  LPPLCMMTitleAndSubtitleForTitleAndFallbackDates(v5, v6, v7, &v13, &v12);
+  LPPLCMMTitleAndSubtitleForTitleAndFallbackDates(title, earliestAssetDate, latestAssetDate, &v13, &v12);
   v8 = v13;
   v9 = v12;
 
   if (v9)
   {
     v10 = joinedByEmDash(v8, v9);
-    [v4 setTitle:v10];
+    [compatibilityCopy setTitle:v10];
   }
 
   else
   {
-    [v4 setTitle:v8];
+    [compatibilityCopy setTitle:v8];
   }
 
-  v11 = [(LPApplePhotosMomentMetadata *)self keyPhoto];
-  [v4 setImage:v11];
+  keyPhoto = [(LPApplePhotosMomentMetadata *)self keyPhoto];
+  [compatibilityCopy setImage:keyPhoto];
 }
 
 @end

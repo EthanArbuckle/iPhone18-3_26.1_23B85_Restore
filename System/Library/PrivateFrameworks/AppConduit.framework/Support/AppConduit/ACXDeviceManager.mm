@@ -4,11 +4,11 @@
 - (ACXDeviceManagerDelegate)delegate;
 - (NSArray)allDevices;
 - (id)currentActivePairedDevice;
-- (id)deviceForIDSIdentifier:(id)a3;
-- (id)deviceForNRDevice:(id)a3;
-- (id)deviceForPairingID:(id)a3;
-- (void)setLegacyMessagingService:(id)a3 currentMessagingService:(id)a4;
-- (void)updatedIDSDevices:(id)a3 forMessager:(id)a4;
+- (id)deviceForIDSIdentifier:(id)identifier;
+- (id)deviceForNRDevice:(id)device;
+- (id)deviceForPairingID:(id)d;
+- (void)setLegacyMessagingService:(id)service currentMessagingService:(id)messagingService;
+- (void)updatedIDSDevices:(id)devices forMessager:(id)messager;
 @end
 
 @implementation ACXDeviceManager
@@ -45,21 +45,21 @@
   return v2;
 }
 
-- (void)setLegacyMessagingService:(id)a3 currentMessagingService:(id)a4
+- (void)setLegacyMessagingService:(id)service currentMessagingService:(id)messagingService
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ACXDeviceManager *)self internalQueue];
+  serviceCopy = service;
+  messagingServiceCopy = messagingService;
+  internalQueue = [(ACXDeviceManager *)self internalQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10003A9F0;
   block[3] = &unk_10008CA48;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_sync(v8, block);
+  v12 = serviceCopy;
+  v13 = messagingServiceCopy;
+  v9 = messagingServiceCopy;
+  v10 = serviceCopy;
+  dispatch_sync(internalQueue, block);
 }
 
 - (id)currentActivePairedDevice
@@ -70,14 +70,14 @@
   v11 = sub_10003AB9C;
   v12 = sub_10003ABAC;
   v13 = 0;
-  v3 = [(ACXDeviceManager *)self internalQueue];
+  internalQueue = [(ACXDeviceManager *)self internalQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10003ABB4;
   v7[3] = &unk_10008C958;
   v7[4] = self;
   v7[5] = &v8;
-  dispatch_sync(v3, v7);
+  dispatch_sync(internalQueue, v7);
 
   v4 = v9[5];
   if (!v4)
@@ -100,25 +100,25 @@
   return v5;
 }
 
-- (id)deviceForIDSIdentifier:(id)a3
+- (id)deviceForIDSIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = sub_10003AB9C;
   v17 = sub_10003ABAC;
   v18 = 0;
-  v5 = [(ACXDeviceManager *)self internalQueue];
+  internalQueue = [(ACXDeviceManager *)self internalQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10003AD94;
   block[3] = &unk_10008CA20;
   v12 = &v13;
   block[4] = self;
-  v6 = v4;
+  v6 = identifierCopy;
   v11 = v6;
-  dispatch_sync(v5, block);
+  dispatch_sync(internalQueue, block);
 
   v7 = v14[5];
   if (!v7)
@@ -142,25 +142,25 @@
   return v8;
 }
 
-- (id)deviceForPairingID:(id)a3
+- (id)deviceForPairingID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = sub_10003AB9C;
   v17 = sub_10003ABAC;
   v18 = 0;
-  v5 = [(ACXDeviceManager *)self internalQueue];
+  internalQueue = [(ACXDeviceManager *)self internalQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10003AF90;
   block[3] = &unk_10008CA70;
   block[4] = self;
-  v6 = v4;
+  v6 = dCopy;
   v11 = v6;
   v12 = &v13;
-  dispatch_sync(v5, block);
+  dispatch_sync(internalQueue, block);
 
   v7 = v14[5];
   if (!v7)
@@ -184,10 +184,10 @@
   return v8;
 }
 
-- (id)deviceForNRDevice:(id)a3
+- (id)deviceForNRDevice:(id)device
 {
-  v4 = a3;
-  v5 = [v4 valueForProperty:NRDevicePropertyPairingID];
+  deviceCopy = device;
+  v5 = [deviceCopy valueForProperty:NRDevicePropertyPairingID];
   if (v5)
   {
     v6 = [(ACXDeviceManager *)self deviceForPairingID:v5];
@@ -214,14 +214,14 @@
   v10 = sub_10003AB9C;
   v11 = sub_10003ABAC;
   v12 = 0;
-  v3 = [(ACXDeviceManager *)self internalQueue];
+  internalQueue = [(ACXDeviceManager *)self internalQueue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10003B2A0;
   v6[3] = &unk_10008C958;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(internalQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -229,21 +229,21 @@
   return v4;
 }
 
-- (void)updatedIDSDevices:(id)a3 forMessager:(id)a4
+- (void)updatedIDSDevices:(id)devices forMessager:(id)messager
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ACXDeviceManager *)self internalQueue];
+  devicesCopy = devices;
+  messagerCopy = messager;
+  internalQueue = [(ACXDeviceManager *)self internalQueue];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10003B3E0;
   v11[3] = &unk_10008CA48;
-  v12 = v6;
-  v13 = v7;
-  v14 = self;
-  v9 = v7;
-  v10 = v6;
-  sub_100005828(v8, v11);
+  v12 = devicesCopy;
+  v13 = messagerCopy;
+  selfCopy = self;
+  v9 = messagerCopy;
+  v10 = devicesCopy;
+  sub_100005828(internalQueue, v11);
 }
 
 - (ACXDeviceManagerDelegate)delegate

@@ -7,19 +7,19 @@
 
 - (id)ekui_futureTraitCollection
 {
-  v2 = objc_getAssociatedObject(a1, [a1 ekui_futureTraitCollectionCategoryPropertyKey]);
-  if (v2)
+  traitCollection = objc_getAssociatedObject(self, [self ekui_futureTraitCollectionCategoryPropertyKey]);
+  if (traitCollection)
   {
     goto LABEL_5;
   }
 
-  v3 = [a1 parentViewController];
+  parentViewController = [self parentViewController];
 
-  if (!v3 || ([a1 parentViewController], v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "ekui_futureTraitCollection"), v5 = objc_claimAutoreleasedReturnValue(), v4, !v5))
+  if (!parentViewController || ([self parentViewController], v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "ekui_futureTraitCollection"), v5 = objc_claimAutoreleasedReturnValue(), v4, !v5))
   {
-    v2 = [a1 traitCollection];
+    traitCollection = [self traitCollection];
 LABEL_5:
-    v5 = v2;
+    v5 = traitCollection;
   }
 
   return v5;
@@ -28,12 +28,12 @@ LABEL_5:
 - (void)setEkui_futureTraitCollection:()EKUIFutureTraitEnvironment
 {
   value = a3;
-  v4 = [a1 ekui_futureTraitCollection];
-  v5 = [v4 isEqual:value];
+  ekui_futureTraitCollection = [self ekui_futureTraitCollection];
+  v5 = [ekui_futureTraitCollection isEqual:value];
 
   if ((v5 & 1) == 0)
   {
-    objc_setAssociatedObject(a1, [a1 ekui_futureTraitCollectionCategoryPropertyKey], value, 0x303);
+    objc_setAssociatedObject(self, [self ekui_futureTraitCollectionCategoryPropertyKey], value, 0x303);
   }
 }
 

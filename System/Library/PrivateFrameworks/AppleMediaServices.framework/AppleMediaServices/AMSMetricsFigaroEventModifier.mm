@@ -1,15 +1,15 @@
 @interface AMSMetricsFigaroEventModifier
-- (AMSMetricsFigaroEventModifier)initWithMetricsDictionary:(id)a3 overrideDictionary:(id)a4;
-- (BOOL)_shouldSampleEvent:(id)a3;
-- (BOOL)fieldFiltersMatchEvent:(id)a3;
-- (BOOL)shouldDropEvent:(id)a3;
-- (BOOL)shouldSkipEvent:(id)a3;
+- (AMSMetricsFigaroEventModifier)initWithMetricsDictionary:(id)dictionary overrideDictionary:(id)overrideDictionary;
+- (BOOL)_shouldSampleEvent:(id)event;
+- (BOOL)fieldFiltersMatchEvent:(id)event;
+- (BOOL)shouldDropEvent:(id)event;
+- (BOOL)shouldSkipEvent:(id)event;
 - (double)flushInterval;
 - (id)_createSampleSessionKey;
-- (id)_fieldFiltersFromOverrides:(id)a3;
-- (id)_overridePropertyForKey:(id)a3;
-- (id)preparedEventWithEvent:(id)a3;
-- (id)reportingURLForEvent:(id)a3;
+- (id)_fieldFiltersFromOverrides:(id)overrides;
+- (id)_overridePropertyForKey:(id)key;
+- (id)preparedEventWithEvent:(id)event;
+- (id)reportingURLForEvent:(id)event;
 @end
 
 @implementation AMSMetricsFigaroEventModifier
@@ -18,10 +18,10 @@
 {
   v45 = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(MEMORY[0x1E696AD60]);
-  v31 = self;
-  v4 = [(AMSMetricsFigaroEventModifier *)self fieldFilters];
-  v5 = [v4 allKeys];
-  v6 = [v5 sortedArrayUsingSelector:?];
+  selfCopy = self;
+  fieldFilters = [(AMSMetricsFigaroEventModifier *)self fieldFilters];
+  allKeys = [fieldFilters allKeys];
+  v6 = [allKeys sortedArrayUsingSelector:?];
 
   v41 = 0u;
   v42 = 0u;
@@ -31,8 +31,8 @@
   v32 = [obj countByEnumeratingWithState:&v39 objects:v44 count:16];
   if (v32)
   {
-    v33 = 0;
-    v34 = 0;
+    firstObject2 = 0;
+    firstObject = 0;
     v30 = *v40;
     do
     {
@@ -45,35 +45,35 @@
 
         v8 = *(*(&v39 + 1) + 8 * i);
         [v3 appendFormat:@"%@:", v8];
-        v9 = [(AMSMetricsFigaroEventModifier *)v31 fieldFilters];
-        v10 = [v9 objectForKeyedSubscript:v8];
+        fieldFilters2 = [(AMSMetricsFigaroEventModifier *)selfCopy fieldFilters];
+        v10 = [fieldFilters2 objectForKeyedSubscript:v8];
 
-        v11 = [v10 allObjects];
-        v12 = [v11 sortedArrayUsingSelector:sel_localizedCaseInsensitiveCompare_];
+        allObjects = [v10 allObjects];
+        v12 = [allObjects sortedArrayUsingSelector:sel_localizedCaseInsensitiveCompare_];
 
-        if (!v34)
+        if (!firstObject)
         {
           if ([v8 isEqualToString:@"topic"])
           {
-            v34 = [v12 firstObject];
+            firstObject = [v12 firstObject];
           }
 
           else
           {
-            v34 = 0;
+            firstObject = 0;
           }
         }
 
-        if (!v33)
+        if (!firstObject2)
         {
           if ([v8 isEqualToString:@"eventType"])
           {
-            v33 = [v12 firstObject];
+            firstObject2 = [v12 firstObject];
           }
 
           else
           {
-            v33 = 0;
+            firstObject2 = 0;
           }
         }
 
@@ -125,13 +125,13 @@
 
   else
   {
-    v33 = 0;
-    v34 = 0;
+    firstObject2 = 0;
+    firstObject = 0;
   }
 
   v20 = [v3 dataUsingEncoding:4];
-  v21 = [v20 ams_SHA1];
-  v22 = [v21 base64EncodedStringWithOptions:0];
+  ams_SHA1 = [v20 ams_SHA1];
+  v22 = [ams_SHA1 base64EncodedStringWithOptions:0];
   if ([v22 hasSuffix:@"="])
   {
     do
@@ -149,14 +149,14 @@
     v23 = v22;
   }
 
-  if (v34)
+  if (firstObject)
   {
-    v24 = v34;
+    v24 = firstObject;
   }
 
   else
   {
-    v24 = v33;
+    v24 = firstObject2;
   }
 
   v25 = v24;
@@ -194,13 +194,13 @@
   {
   }
 
-  v7 = [(AMSMetricsFigaroEventModifier *)self metricsDictionary];
-  v8 = [v7 objectForKeyedSubscript:@"postFrequency"];
+  metricsDictionary = [(AMSMetricsFigaroEventModifier *)self metricsDictionary];
+  v8 = [metricsDictionary objectForKeyedSubscript:@"postFrequency"];
   v6 = 0.0;
   if (objc_opt_respondsToSelector())
   {
-    v9 = [(AMSMetricsFigaroEventModifier *)self metricsDictionary];
-    v10 = [v9 objectForKeyedSubscript:@"postFrequency"];
+    metricsDictionary2 = [(AMSMetricsFigaroEventModifier *)self metricsDictionary];
+    v10 = [metricsDictionary2 objectForKeyedSubscript:@"postFrequency"];
     [v10 doubleValue];
     v6 = v11;
   }
@@ -221,43 +221,43 @@ LABEL_8:
   return v14;
 }
 
-- (AMSMetricsFigaroEventModifier)initWithMetricsDictionary:(id)a3 overrideDictionary:(id)a4
+- (AMSMetricsFigaroEventModifier)initWithMetricsDictionary:(id)dictionary overrideDictionary:(id)overrideDictionary
 {
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  overrideDictionaryCopy = overrideDictionary;
   v18.receiver = self;
   v18.super_class = AMSMetricsFigaroEventModifier;
   v8 = [(AMSMetricsFigaroEventModifier *)&v18 init];
   if (v8)
   {
-    v9 = [v7 copy];
+    v9 = [overrideDictionaryCopy copy];
     overrideDictionary = v8->_overrideDictionary;
     v8->_overrideDictionary = v9;
 
-    v11 = [v6 copy];
+    v11 = [dictionaryCopy copy];
     metricsDictionary = v8->_metricsDictionary;
     v8->_metricsDictionary = v11;
 
-    v13 = [(AMSMetricsFigaroEventModifier *)v8 _fieldFiltersFromOverrides:v7];
+    v13 = [(AMSMetricsFigaroEventModifier *)v8 _fieldFiltersFromOverrides:overrideDictionaryCopy];
     fieldFilters = v8->_fieldFilters;
     v8->_fieldFilters = v13;
 
     if ([(NSDictionary *)v8->_fieldFilters count])
     {
-      v15 = [(AMSMetricsFigaroEventModifier *)v8 _createSampleSessionKey];
+      _createSampleSessionKey = [(AMSMetricsFigaroEventModifier *)v8 _createSampleSessionKey];
       sampleSessionKey = v8->_sampleSessionKey;
-      v8->_sampleSessionKey = v15;
+      v8->_sampleSessionKey = _createSampleSessionKey;
     }
   }
 
   return v8;
 }
 
-- (BOOL)fieldFiltersMatchEvent:(id)a3
+- (BOOL)fieldFiltersMatchEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(AMSMetricsFigaroEventModifier *)self fieldFilters];
-  v6 = [v5 count];
+  eventCopy = event;
+  fieldFilters = [(AMSMetricsFigaroEventModifier *)self fieldFilters];
+  v6 = [fieldFilters count];
 
   if (v6)
   {
@@ -265,14 +265,14 @@ LABEL_8:
     v14 = &v13;
     v15 = 0x2020000000;
     v16 = 1;
-    v7 = [(AMSMetricsFigaroEventModifier *)self fieldFilters];
+    fieldFilters2 = [(AMSMetricsFigaroEventModifier *)self fieldFilters];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __56__AMSMetricsFigaroEventModifier_fieldFiltersMatchEvent___block_invoke;
     v10[3] = &unk_1E73B9A00;
-    v11 = v4;
+    v11 = eventCopy;
     v12 = &v13;
-    [v7 enumerateKeysAndObjectsUsingBlock:v10];
+    [fieldFilters2 enumerateKeysAndObjectsUsingBlock:v10];
 
     v8 = *(v14 + 24);
     _Block_object_dispose(&v13, 8);
@@ -320,11 +320,11 @@ LABEL_7:
 LABEL_8:
 }
 
-- (id)preparedEventWithEvent:(id)a3
+- (id)preparedEventWithEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(AMSMetricsFigaroEventModifier *)self metricsDictionary];
-  if (v5)
+  eventCopy = event;
+  metricsDictionary = [(AMSMetricsFigaroEventModifier *)self metricsDictionary];
+  if (metricsDictionary)
   {
     v6 = [(AMSMetricsFigaroEventModifier *)self _overridePropertyForKey:@"blacklistedFields"];
     objc_opt_class();
@@ -340,10 +340,10 @@ LABEL_8:
 
     if ([v7 count])
     {
-      [v4 removePropertiesForKeys:v7];
+      [eventCopy removePropertiesForKeys:v7];
     }
 
-    v8 = [v5 objectForKeyedSubscript:@"blacklistedFields"];
+    v8 = [metricsDictionary objectForKeyedSubscript:@"blacklistedFields"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -357,19 +357,19 @@ LABEL_8:
 
     if ([v9 count])
     {
-      [v4 removePropertiesForKeys:v9];
+      [eventCopy removePropertiesForKeys:v9];
     }
   }
 
-  return v4;
+  return eventCopy;
 }
 
-- (id)reportingURLForEvent:(id)a3
+- (id)reportingURLForEvent:(id)event
 {
-  v4 = a3;
-  v5 = [v4 topic];
+  eventCopy = event;
+  topic = [eventCopy topic];
 
-  if (!v5)
+  if (!topic)
   {
     v8 = 0;
     goto LABEL_15;
@@ -391,14 +391,14 @@ LABEL_8:
   {
   }
 
-  v9 = [(AMSMetricsFigaroEventModifier *)self metricsDictionary];
-  v10 = [v9 objectForKeyedSubscript:@"metricsUrl"];
+  metricsDictionary = [(AMSMetricsFigaroEventModifier *)self metricsDictionary];
+  v10 = [metricsDictionary objectForKeyedSubscript:@"metricsUrl"];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v7 = 0;
-    v15 = 0;
+    absoluteString = 0;
     goto LABEL_12;
   }
 
@@ -407,7 +407,7 @@ LABEL_8:
   if (!v7)
   {
 LABEL_13:
-    v15 = 0;
+    absoluteString = 0;
     goto LABEL_14;
   }
 
@@ -421,45 +421,45 @@ LABEL_9:
   v12 = v11;
   v13 = [v11 URLByAppendingPathComponent:@"2"];
 
-  v14 = [v4 topic];
-  v10 = [v13 URLByAppendingPathComponent:v14];
+  topic2 = [eventCopy topic];
+  v10 = [v13 URLByAppendingPathComponent:topic2];
 
-  v15 = [v10 absoluteString];
+  absoluteString = [v10 absoluteString];
 LABEL_12:
 
 LABEL_14:
-  v8 = v15;
+  v8 = absoluteString;
 
 LABEL_15:
 
   return v8;
 }
 
-- (BOOL)shouldDropEvent:(id)a3
+- (BOOL)shouldDropEvent:(id)event
 {
   v38 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 topic];
-  v6 = [v5 length];
+  eventCopy = event;
+  topic = [eventCopy topic];
+  v6 = [topic length];
 
   v7 = [(AMSMetricsFigaroEventModifier *)self _overridePropertyForKey:@"disabled"];
   if (!v6 || (objc_opt_respondsToSelector() & 1) != 0 && [v7 BOOLValue])
   {
-    v8 = [v4 eventType];
+    eventType = [eventCopy eventType];
 LABEL_16:
     LOBYTE(v19) = 1;
     goto LABEL_17;
   }
 
-  v9 = [(AMSMetricsFigaroEventModifier *)self _shouldSampleEvent:v4];
-  v10 = [v4 eventType];
-  v8 = v10;
+  v9 = [(AMSMetricsFigaroEventModifier *)self _shouldSampleEvent:eventCopy];
+  eventType2 = [eventCopy eventType];
+  eventType = eventType2;
   if (!v9)
   {
     goto LABEL_16;
   }
 
-  if ([v10 length])
+  if ([eventType2 length])
   {
     v11 = [(AMSMetricsFigaroEventModifier *)self _overridePropertyForKey:@"blacklistedEvents"];
     objc_opt_class();
@@ -473,7 +473,7 @@ LABEL_16:
       v12 = 0;
     }
 
-    if ([v12 containsObject:v8])
+    if ([v12 containsObject:eventType])
     {
       v13 = +[AMSLogConfig sharedMetricsConfig];
       if (!v13)
@@ -481,32 +481,32 @@ LABEL_16:
         v13 = +[AMSLogConfig sharedConfig];
       }
 
-      v14 = [v13 OSLogObject];
-      if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+      oSLogObject = [v13 OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
       {
         v15 = objc_opt_class();
         v16 = v15;
         v17 = AMSLogKey();
-        v18 = [v4 topic];
+        topic2 = [eventCopy topic];
         *buf = 138544130;
         v31 = v15;
         v32 = 2114;
         v33 = v17;
         v34 = 2114;
-        v35 = v8;
+        v35 = eventType;
         v36 = 2114;
-        v37 = v18;
-        _os_log_impl(&dword_192869000, v14, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Override blacklisted eventType: %{public}@ (topic: %{public}@)", buf, 0x2Au);
+        v37 = topic2;
+        _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Override blacklisted eventType: %{public}@ (topic: %{public}@)", buf, 0x2Au);
       }
 
       goto LABEL_16;
     }
   }
 
-  if ([v8 length])
+  if ([eventType length])
   {
-    v21 = [(AMSMetricsFigaroEventModifier *)self metricsDictionary];
-    v22 = [v21 objectForKeyedSubscript:@"blacklistedEvents"];
+    metricsDictionary = [(AMSMetricsFigaroEventModifier *)self metricsDictionary];
+    v22 = [metricsDictionary objectForKeyedSubscript:@"blacklistedEvents"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -519,7 +519,7 @@ LABEL_16:
       v23 = 0;
     }
 
-    v19 = [v23 containsObject:v8];
+    v19 = [v23 containsObject:eventType];
     if (v19)
     {
       v24 = +[AMSLogConfig sharedMetricsConfig];
@@ -528,22 +528,22 @@ LABEL_16:
         v24 = +[AMSLogConfig sharedConfig];
       }
 
-      v25 = [v24 OSLogObject];
-      if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
+      oSLogObject2 = [v24 OSLogObject];
+      if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
       {
         v26 = objc_opt_class();
         v29 = v26;
         v27 = AMSLogKey();
-        v28 = [v4 topic];
+        topic3 = [eventCopy topic];
         *buf = 138544130;
         v31 = v26;
         v32 = 2114;
         v33 = v27;
         v34 = 2114;
-        v35 = v8;
+        v35 = eventType;
         v36 = 2114;
-        v37 = v28;
-        _os_log_impl(&dword_192869000, v25, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Blacklisted eventType: %{public}@ (topic: %{public}@)", buf, 0x2Au);
+        v37 = topic3;
+        _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Blacklisted eventType: %{public}@ (topic: %{public}@)", buf, 0x2Au);
       }
     }
   }
@@ -558,7 +558,7 @@ LABEL_17:
   return v19;
 }
 
-- (BOOL)shouldSkipEvent:(id)a3
+- (BOOL)shouldSkipEvent:(id)event
 {
   v3 = [(AMSMetricsFigaroEventModifier *)self _overridePropertyForKey:@"sendDisabled"];
   v4 = (objc_opt_respondsToSelector() & 1) != 0 && ([v3 BOOLValue] & 1) != 0;
@@ -566,11 +566,11 @@ LABEL_17:
   return v4;
 }
 
-- (id)_overridePropertyForKey:(id)a3
+- (id)_overridePropertyForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(AMSMetricsFigaroEventModifier *)self overrideDictionary];
-  v6 = [v5 objectForKeyedSubscript:@"properties"];
+  keyCopy = key;
+  overrideDictionary = [(AMSMetricsFigaroEventModifier *)self overrideDictionary];
+  v6 = [overrideDictionary objectForKeyedSubscript:@"properties"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -583,14 +583,14 @@ LABEL_17:
     v7 = 0;
   }
 
-  v8 = [v7 objectForKeyedSubscript:v4];
+  v8 = [v7 objectForKeyedSubscript:keyCopy];
 
   return v8;
 }
 
-- (BOOL)_shouldSampleEvent:(id)a3
+- (BOOL)_shouldSampleEvent:(id)event
 {
-  if (([a3 preventSampling] & 1) == 0)
+  if (([event preventSampling] & 1) == 0)
   {
     v5 = [(AMSMetricsFigaroEventModifier *)self _overridePropertyForKey:@"sampling"];
     objc_opt_class();
@@ -612,8 +612,8 @@ LABEL_17:
         v9 = v8;
         [v7 doubleValue];
         v11 = v10;
-        v12 = [(AMSMetricsFigaroEventModifier *)self sampleSessionKey];
-        v4 = [AMSDefaults shouldSampleWithPercentage:v12 sessionDuration:v9 identifier:v11];
+        sampleSessionKey = [(AMSMetricsFigaroEventModifier *)self sampleSessionKey];
+        v4 = [AMSDefaults shouldSampleWithPercentage:sampleSessionKey sessionDuration:v9 identifier:v11];
       }
 
       else
@@ -635,15 +635,15 @@ LABEL_12:
   return 1;
 }
 
-- (id)_fieldFiltersFromOverrides:(id)a3
+- (id)_fieldFiltersFromOverrides:(id)overrides
 {
-  if (a3)
+  if (overrides)
   {
     v3 = MEMORY[0x1E695DFD8];
-    v4 = a3;
+    overridesCopy = overrides;
     v5 = [v3 setWithArray:&unk_1F0779C10];
     v6 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    v7 = [v4 objectForKeyedSubscript:@"fieldFilters"];
+    v7 = [overridesCopy objectForKeyedSubscript:@"fieldFilters"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())

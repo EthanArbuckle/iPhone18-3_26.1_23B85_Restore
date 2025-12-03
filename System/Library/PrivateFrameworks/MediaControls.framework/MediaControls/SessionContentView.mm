@@ -1,5 +1,5 @@
 @interface SessionContentView
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (void)layoutSubviews;
 - (void)tapAction;
 @end
@@ -8,14 +8,14 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1A2250F80();
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  v4 = self;
+  width = fits.width;
+  selfCopy = self;
   v5 = sub_1A2251CBC(width);
   v7 = v6;
 
@@ -29,7 +29,7 @@
 - (void)tapAction
 {
   v2 = *((*MEMORY[0x1E69E7D40] & self->super.super.super.isa) + 0x110);
-  v5 = self;
+  selfCopy = self;
   v3 = v2();
   if (v3)
   {

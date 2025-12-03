@@ -1,44 +1,44 @@
 @interface MADVideoRemoveBackgroundPreviewFrame
-- (MADVideoRemoveBackgroundPreviewFrame)initWithCoder:(id)a3;
-- (MADVideoRemoveBackgroundPreviewFrame)initWithPresentationTimeStamp:(id *)a3 surface:(id)a4;
+- (MADVideoRemoveBackgroundPreviewFrame)initWithCoder:(id)coder;
+- (MADVideoRemoveBackgroundPreviewFrame)initWithPresentationTimeStamp:(id *)stamp surface:(id)surface;
 - (__CVBuffer)pixelBuffer;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MADVideoRemoveBackgroundPreviewFrame
 
-- (MADVideoRemoveBackgroundPreviewFrame)initWithPresentationTimeStamp:(id *)a3 surface:(id)a4
+- (MADVideoRemoveBackgroundPreviewFrame)initWithPresentationTimeStamp:(id *)stamp surface:(id)surface
 {
-  v7 = a4;
+  surfaceCopy = surface;
   v12.receiver = self;
   v12.super_class = MADVideoRemoveBackgroundPreviewFrame;
   v8 = [(MADVideoRemoveBackgroundPreviewFrame *)&v12 init];
   v9 = v8;
   if (v8)
   {
-    v10 = *&a3->var0;
-    *(v8 + 5) = a3->var3;
+    v10 = *&stamp->var0;
+    *(v8 + 5) = stamp->var3;
     *(v8 + 24) = v10;
-    objc_storeStrong(v8 + 1, a4);
+    objc_storeStrong(v8 + 1, surface);
   }
 
   return v9;
 }
 
-- (MADVideoRemoveBackgroundPreviewFrame)initWithCoder:(id)a3
+- (MADVideoRemoveBackgroundPreviewFrame)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = MADVideoRemoveBackgroundPreviewFrame;
   v5 = [(MADVideoRemoveBackgroundPreviewFrame *)&v9 init];
   if (v5)
   {
-    v5->_presentationTimeStamp.value = [v4 decodeInt64ForKey:@"PresentationTimeStampValue"];
-    v5->_presentationTimeStamp.timescale = [v4 decodeInt32ForKey:@"PresentationTimeStampScale"];
-    v5->_presentationTimeStamp.flags = [v4 decodeInt32ForKey:@"PresentationTimeStampFlags"];
-    v5->_presentationTimeStamp.epoch = [v4 decodeInt64ForKey:@"PresentationTimeStampEpoch"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Surface"];
+    v5->_presentationTimeStamp.value = [coderCopy decodeInt64ForKey:@"PresentationTimeStampValue"];
+    v5->_presentationTimeStamp.timescale = [coderCopy decodeInt32ForKey:@"PresentationTimeStampScale"];
+    v5->_presentationTimeStamp.flags = [coderCopy decodeInt32ForKey:@"PresentationTimeStampFlags"];
+    v5->_presentationTimeStamp.epoch = [coderCopy decodeInt64ForKey:@"PresentationTimeStampEpoch"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Surface"];
     surface = v5->_surface;
     v5->_surface = v6;
   }
@@ -46,29 +46,29 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInt64:self->_presentationTimeStamp.value forKey:@"PresentationTimeStampValue"];
-  [v4 encodeInt32:self->_presentationTimeStamp.timescale forKey:@"PresentationTimeStampScale"];
-  [v4 encodeInt32:self->_presentationTimeStamp.flags forKey:@"PresentationTimeStampFlags"];
-  [v4 encodeInt64:self->_presentationTimeStamp.epoch forKey:@"PresentationTimeStampEpoch"];
-  [v4 encodeObject:self->_surface forKey:@"Surface"];
+  coderCopy = coder;
+  [coderCopy encodeInt64:self->_presentationTimeStamp.value forKey:@"PresentationTimeStampValue"];
+  [coderCopy encodeInt32:self->_presentationTimeStamp.timescale forKey:@"PresentationTimeStampScale"];
+  [coderCopy encodeInt32:self->_presentationTimeStamp.flags forKey:@"PresentationTimeStampFlags"];
+  [coderCopy encodeInt64:self->_presentationTimeStamp.epoch forKey:@"PresentationTimeStampEpoch"];
+  [coderCopy encodeObject:self->_surface forKey:@"Surface"];
 }
 
 - (id)description
 {
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  [v3 appendFormat:@"<%@ %p, ", v5, self];
+  [string appendFormat:@"<%@ %p, ", v5, self];
 
   timescale = self->_presentationTimeStamp.timescale;
   time = self->_presentationTimeStamp;
-  [v3 appendFormat:@"presentationTimeStamp: %lld/%d (%0.3fs), ", time.value, timescale, CMTimeGetSeconds(&time)];
-  [v3 appendFormat:@"surface: %@>", self->_surface];
+  [string appendFormat:@"presentationTimeStamp: %lld/%d (%0.3fs), ", time.value, timescale, CMTimeGetSeconds(&time)];
+  [string appendFormat:@"surface: %@>", self->_surface];
 
-  return v3;
+  return string;
 }
 
 - (__CVBuffer)pixelBuffer

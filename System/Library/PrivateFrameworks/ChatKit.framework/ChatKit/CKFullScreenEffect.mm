@@ -1,18 +1,18 @@
 @interface CKFullScreenEffect
-+ (id)_monochromeDimmingFilterWithType:(int)a3;
++ (id)_monochromeDimmingFilterWithType:(int)type;
 + (id)tapBackFilter;
 - (BOOL)_supportsSoundEffects;
 - (BOOL)effectIsDark;
 - (CKFullScreenEffectDelegate)delegate;
-- (int)_filterTypeForCell:(id)a3 caresAboutOrientation:(BOOL *)a4 orientation:(char *)a5;
-- (void)_audioSessionOptionsWillChange:(id)a3;
+- (int)_filterTypeForCell:(id)cell caresAboutOrientation:(BOOL *)orientation orientation:(char *)a5;
+- (void)_audioSessionOptionsWillChange:(id)change;
 - (void)_didPrepareSoundEffect;
 - (void)_ensureAudioPlayer;
-- (void)animateFiltersForCell:(id)a3;
-- (void)applyMessageFiltersToCells:(id)a3;
-- (void)applyMessageFiltersToTriggeringCell:(id)a3;
-- (void)audioController:(id)a3 mediaObjectProgressDidChange:(id)a4 currentTime:(double)a5 duration:(double)a6;
-- (void)clearMessageFiltersFromCells:(id)a3;
+- (void)animateFiltersForCell:(id)cell;
+- (void)applyMessageFiltersToCells:(id)cells;
+- (void)applyMessageFiltersToTriggeringCell:(id)cell;
+- (void)audioController:(id)controller mediaObjectProgressDidChange:(id)change currentTime:(double)time duration:(double)duration;
+- (void)clearMessageFiltersFromCells:(id)cells;
 - (void)dealloc;
 - (void)playSoundEffect;
 - (void)prepareSoundEffect;
@@ -23,32 +23,32 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v4 = +[CKAudioSessionController shareInstance];
-  [v3 removeObserver:self name:@"CKAudioSessionControllerSessionOptionsWillChangeNotification" object:v4];
+  [defaultCenter removeObserver:self name:@"CKAudioSessionControllerSessionOptionsWillChangeNotification" object:v4];
 
   v5.receiver = self;
   v5.super_class = CKFullScreenEffect;
   [(CKFullScreenEffect *)&v5 dealloc];
 }
 
-- (int)_filterTypeForCell:(id)a3 caresAboutOrientation:(BOOL *)a4 orientation:(char *)a5
+- (int)_filterTypeForCell:(id)cell caresAboutOrientation:(BOOL *)orientation orientation:(char *)a5
 {
-  v8 = a3;
+  cellCopy = cell;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = v8;
+    v9 = cellCopy;
     [v9 setAnimatingInDarkEffect:{-[CKFullScreenEffect effectIsDark](self, "effectIsDark")}];
-    v10 = [v9 balloonView];
+    balloonView = [v9 balloonView];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      if (a4)
+      if (orientation)
       {
-        *a4 = 1;
+        *orientation = 1;
       }
 
       v12 = 3;
@@ -60,15 +60,15 @@
       goto LABEL_6;
     }
 
-    v14 = [v9 balloonView];
+    balloonView2 = [v9 balloonView];
     objc_opt_class();
     v15 = objc_opt_isKindOfClass();
 
     if (v15 & 1) != 0 || ([v9 balloonView], v16 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), v17 = objc_opt_isKindOfClass(), v16, (v17))
     {
-      if (a4)
+      if (orientation)
       {
-        *a4 = 1;
+        *orientation = 1;
       }
 
       v12 = 0;
@@ -78,17 +78,17 @@
       }
 
 LABEL_6:
-      v13 = [v9 balloonView];
-      *a5 = [v13 orientation];
+      balloonView3 = [v9 balloonView];
+      *a5 = [balloonView3 orientation];
 
 LABEL_7:
       goto LABEL_31;
     }
   }
 
-  if (a4)
+  if (orientation)
   {
-    *a4 = 0;
+    *orientation = 0;
   }
 
   objc_opt_class();
@@ -143,14 +143,14 @@ LABEL_31:
   return v12;
 }
 
-- (void)applyMessageFiltersToCells:(id)a3
+- (void)applyMessageFiltersToCells:(id)cells
 {
   v33 = *MEMORY[0x1E69E9840];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  obj = a3;
+  obj = cells;
   v20 = [obj countByEnumeratingWithState:&v27 objects:v32 count:16];
   if (v20)
   {
@@ -173,8 +173,8 @@ LABEL_31:
         v23 = 0u;
         v24 = 0u;
         v25 = 0u;
-        v7 = [(CKFullScreenEffect *)self messageFilters];
-        v8 = [v7 countByEnumeratingWithState:&v22 objects:v31 count:16];
+        messageFilters = [(CKFullScreenEffect *)self messageFilters];
+        v8 = [messageFilters countByEnumeratingWithState:&v22 objects:v31 count:16];
         if (v8)
         {
           v9 = v8;
@@ -185,7 +185,7 @@ LABEL_31:
             {
               if (*v23 != v10)
               {
-                objc_enumerationMutation(v7);
+                objc_enumerationMutation(messageFilters);
               }
 
               v12 = *(*(&v22 + 1) + 8 * i);
@@ -210,8 +210,8 @@ LABEL_17:
                   }
                 }
 
-                v14 = [(CKFullScreenEffect *)self identifier];
-                v15 = [v14 isEqualToString:@"com.apple.messages.effect.CKEchoEffect"];
+                identifier = [(CKFullScreenEffect *)self identifier];
+                v15 = [identifier isEqualToString:@"com.apple.messages.effect.CKEchoEffect"];
 
                 if (v15 && ((objc_opt_respondsToSelector() & 1) != 0 || (objc_opt_respondsToSelector() & 1) != 0 || (objc_opt_respondsToSelector() & 1) != 0))
                 {
@@ -223,7 +223,7 @@ LABEL_17:
               }
             }
 
-            v9 = [v7 countByEnumeratingWithState:&v22 objects:v31 count:16];
+            v9 = [messageFilters countByEnumeratingWithState:&v22 objects:v31 count:16];
           }
 
           while (v9);
@@ -232,9 +232,9 @@ LABEL_17:
         objc_opt_class();
         if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()))
         {
-          v16 = [v5 contentView];
-          v17 = [v16 layer];
-          [v17 setAllowsGroupBlending:0];
+          contentView = [v5 contentView];
+          layer = [contentView layer];
+          [layer setAllowsGroupBlending:0];
         }
 
         v4 = v21 + 1;
@@ -248,9 +248,9 @@ LABEL_17:
   }
 }
 
-- (void)animateFiltersForCell:(id)a3
+- (void)animateFiltersForCell:(id)cell
 {
-  v3 = a3;
+  cellCopy = cell;
   v4 = [MEMORY[0x1E6979390] animationWithKeyPath:@"filters.colorMatrix.inputColorMatrix"];
   v5 = MEMORY[0x1E695DEC8];
   *v37 = 1065353216;
@@ -322,16 +322,16 @@ LABEL_17:
   [v24 setDuration:4.5];
   if (objc_opt_respondsToSelector())
   {
-    v33 = [v3 imageView];
+    imageView = [cellCopy imageView];
 LABEL_5:
-    v34 = v33;
-    [v33 addAnimation:v4 forKey:@"matrixAnimation"];
+    statusButton = imageView;
+    [imageView addAnimation:v4 forKey:@"matrixAnimation"];
     goto LABEL_6;
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v33 = [v3 balloonView];
+    imageView = [cellCopy balloonView];
     goto LABEL_5;
   }
 
@@ -340,24 +340,24 @@ LABEL_5:
     goto LABEL_7;
   }
 
-  v34 = [v3 statusButton];
-  v35 = [v34 layer];
-  [v35 addAnimation:v24 forKey:@"opacityFade"];
+  statusButton = [cellCopy statusButton];
+  layer = [statusButton layer];
+  [layer addAnimation:v24 forKey:@"opacityFade"];
 
 LABEL_6:
 LABEL_7:
 }
 
-- (void)applyMessageFiltersToTriggeringCell:(id)a3
+- (void)applyMessageFiltersToTriggeringCell:(id)cell
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  cellCopy = cell;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(CKFullScreenEffect *)self messageFilters];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  messageFilters = [(CKFullScreenEffect *)self messageFilters];
+  v6 = [messageFilters countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -368,17 +368,17 @@ LABEL_7:
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(messageFilters);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
         if ([v10 type] == 6)
         {
-          v11 = v4;
+          v11 = cellCopy;
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v12 = [v11 balloonView];
+            balloonView = [v11 balloonView];
             objc_opt_class();
             isKindOfClass = objc_opt_isKindOfClass();
 
@@ -392,7 +392,7 @@ LABEL_7:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [messageFilters countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v7)
       {
         continue;
@@ -405,15 +405,15 @@ LABEL_7:
 LABEL_14:
 }
 
-- (void)clearMessageFiltersFromCells:(id)a3
+- (void)clearMessageFiltersFromCells:(id)cells
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  cellsCopy = cells;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v4 = [cellsCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -424,7 +424,7 @@ LABEL_14:
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(cellsCopy);
         }
 
         v8 = *(*(&v11 + 1) + 8 * i);
@@ -455,12 +455,12 @@ LABEL_14:
           }
         }
 
-        v9 = [v8 contentView];
-        v10 = [v9 layer];
-        [v10 setAllowsGroupBlending:1];
+        contentView = [v8 contentView];
+        layer = [contentView layer];
+        [layer setAllowsGroupBlending:1];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [cellsCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);
@@ -472,10 +472,10 @@ LABEL_14:
   v12[1] = *MEMORY[0x1E69E9840];
   if ([(CKFullScreenEffect *)self _supportsSoundEffects]&& !self->_audioController)
   {
-    v3 = [(CKFullScreenEffect *)self soundEffectFileURL];
-    if (v3)
+    soundEffectFileURL = [(CKFullScreenEffect *)self soundEffectFileURL];
+    if (soundEffectFileURL)
     {
-      v4 = [[CKFullScreenEffectMediaObject alloc] initWithFullScreenEffectAudioFileURL:v3];
+      v4 = [[CKFullScreenEffectMediaObject alloc] initWithFullScreenEffectAudioFileURL:soundEffectFileURL];
       v5 = [CKAudioController alloc];
       v12[0] = v4;
       v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
@@ -497,9 +497,9 @@ LABEL_14:
       [(CKAudioController *)self->_audioController setDelegate:self];
       [(CKAudioController *)self->_audioController setShouldStopPlayingWhenSilent:1];
       [(CKAudioController *)self->_audioController setShouldDuckOthers:1];
-      v10 = [MEMORY[0x1E696AD88] defaultCenter];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
       v11 = +[CKAudioSessionController shareInstance];
-      [v10 addObserver:self selector:sel__audioSessionOptionsWillChange_ name:@"CKAudioSessionControllerSessionOptionsWillChangeNotification" object:v11];
+      [defaultCenter addObserver:self selector:sel__audioSessionOptionsWillChange_ name:@"CKAudioSessionControllerSessionOptionsWillChangeNotification" object:v11];
     }
   }
 }
@@ -544,11 +544,11 @@ LABEL_14:
   }
 }
 
-- (void)audioController:(id)a3 mediaObjectProgressDidChange:(id)a4 currentTime:(double)a5 duration:(double)a6
+- (void)audioController:(id)controller mediaObjectProgressDidChange:(id)change currentTime:(double)time duration:(double)duration
 {
   if (self->_currentVolume <= 1.0)
   {
-    [(CKAudioController *)self->_audioController setVolume:a3, a4];
+    [(CKAudioController *)self->_audioController setVolume:controller, change];
     v7 = self->_currentVolume + 0.2;
     self->_currentVolume = v7;
   }
@@ -573,10 +573,10 @@ void __44__CKFullScreenEffect__didPrepareSoundEffect__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_audioSessionOptionsWillChange:(id)a3
+- (void)_audioSessionOptionsWillChange:(id)change
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:@"CKAudioSessionControllerSessionNotificationOptionsKey"];
+  userInfo = [change userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"CKAudioSessionControllerSessionNotificationOptionsKey"];
 
   if (v5 && ([v5 unsignedIntegerValue] & 2) == 0)
   {
@@ -603,22 +603,22 @@ void __44__CKFullScreenEffect__didPrepareSoundEffect__block_invoke(uint64_t a1)
 {
   v6 = 0.0;
   v7 = 0.0;
-  v3 = [(CKFullScreenEffect *)self backgroundColor];
+  backgroundColor = [(CKFullScreenEffect *)self backgroundColor];
 
-  if (!v3)
+  if (!backgroundColor)
   {
     return 0;
   }
 
-  v4 = [(CKFullScreenEffect *)self backgroundColor];
-  [v4 getHue:0 saturation:0 brightness:&v7 alpha:&v6];
+  backgroundColor2 = [(CKFullScreenEffect *)self backgroundColor];
+  [backgroundColor2 getHue:0 saturation:0 brightness:&v7 alpha:&v6];
 
   return v7 < 0.5 && v6 > 0.5;
 }
 
-+ (id)_monochromeDimmingFilterWithType:(int)a3
++ (id)_monochromeDimmingFilterWithType:(int)type
 {
-  v3 = *&a3;
+  v3 = *&type;
   v8[1] = *MEMORY[0x1E69E9840];
   v4 = [MEMORY[0x1E6979378] filterWithType:*MEMORY[0x1E6979888]];
   [v4 setValue:&unk_1F04E87D8 forKey:@"inputBias"];

@@ -1,30 +1,30 @@
 @interface PKAccountDocumentsViewController
-- (PKAccountDocumentsViewController)initWithConfiguration:(id)a3;
+- (PKAccountDocumentsViewController)initWithConfiguration:(id)configuration;
 - (void)loadView;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation PKAccountDocumentsViewController
 
-- (PKAccountDocumentsViewController)initWithConfiguration:(id)a3
+- (PKAccountDocumentsViewController)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v11.receiver = self;
   v11.super_class = PKAccountDocumentsViewController;
   v5 = [(PKAccountDocumentsViewController *)&v11 init];
   if (v5)
   {
-    v6 = [[_PKAccountDocumentsViewController alloc] initWithConfiguration:v4];
+    v6 = [[_PKAccountDocumentsViewController alloc] initWithConfiguration:configurationCopy];
     viewController = v5->_viewController;
     v5->_viewController = v6;
 
     [(PKAccountDocumentsViewController *)v5 addChildViewController:v5->_viewController];
-    v8 = [(PKAccountDocumentsViewController *)v5 navigationItem];
+    navigationItem = [(PKAccountDocumentsViewController *)v5 navigationItem];
     v9 = PKLocalizedFeatureString();
-    [v8 setTitle:v9];
+    [navigationItem setTitle:v9];
 
-    [v8 setLargeTitleDisplayMode:2];
-    [v8 setBackButtonDisplayMode:2];
+    [navigationItem setLargeTitleDisplayMode:2];
+    [navigationItem setBackButtonDisplayMode:2];
   }
 
   return v5;
@@ -36,9 +36,9 @@
   v5.super_class = PKAccountDocumentsViewController;
   [(PKAccountDocumentsViewController *)&v5 loadView];
   [(_PKAccountDocumentsViewController *)self->_viewController didMoveToParentViewController:self];
-  v3 = [(_PKAccountDocumentsViewController *)self->_viewController view];
-  v4 = [(PKAccountDocumentsViewController *)self view];
-  [v4 addSubview:v3];
+  view = [(_PKAccountDocumentsViewController *)self->_viewController view];
+  view2 = [(PKAccountDocumentsViewController *)self view];
+  [view2 addSubview:view];
 }
 
 - (void)viewWillLayoutSubviews
@@ -46,15 +46,15 @@
   v13.receiver = self;
   v13.super_class = PKAccountDocumentsViewController;
   [(PKAccountDocumentsViewController *)&v13 viewWillLayoutSubviews];
-  v3 = [(PKAccountDocumentsViewController *)self view];
-  [v3 bounds];
+  view = [(PKAccountDocumentsViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
-  v12 = [(_PKAccountDocumentsViewController *)self->_viewController view];
-  [v12 setFrame:{v5, v7, v9, v11}];
+  view2 = [(_PKAccountDocumentsViewController *)self->_viewController view];
+  [view2 setFrame:{v5, v7, v9, v11}];
 }
 
 @end

@@ -1,29 +1,29 @@
 @interface MRCryptoPairingIdentity
 - (MRCryptoPairingIdentity)init;
-- (MRCryptoPairingIdentity)initWithIdentifier:(id)a3 publicKey:(id)a4 privateKey:(id)a5;
+- (MRCryptoPairingIdentity)initWithIdentifier:(id)identifier publicKey:(id)key privateKey:(id)privateKey;
 @end
 
 @implementation MRCryptoPairingIdentity
 
-- (MRCryptoPairingIdentity)initWithIdentifier:(id)a3 publicKey:(id)a4 privateKey:(id)a5
+- (MRCryptoPairingIdentity)initWithIdentifier:(id)identifier publicKey:(id)key privateKey:(id)privateKey
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  keyCopy = key;
+  privateKeyCopy = privateKey;
   v19.receiver = self;
   v19.super_class = MRCryptoPairingIdentity;
   v11 = [(MRCryptoPairingIdentity *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [identifierCopy copy];
     identifier = v11->_identifier;
     v11->_identifier = v12;
 
-    v14 = [v9 copy];
+    v14 = [keyCopy copy];
     publicKey = v11->_publicKey;
     v11->_publicKey = v14;
 
-    v16 = [v10 copy];
+    v16 = [privateKeyCopy copy];
     privateKey = v11->_privateKey;
     v11->_privateKey = v16;
   }

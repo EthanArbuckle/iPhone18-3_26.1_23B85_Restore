@@ -6,10 +6,10 @@
 
 - (BOOL)wf_isCancelledStepError
 {
-  v2 = [a1 domain];
-  if ([v2 isEqualToString:@"WFToolKitErrorDomain"])
+  domain = [self domain];
+  if ([domain isEqualToString:@"WFToolKitErrorDomain"])
   {
-    v3 = [a1 code] == 0;
+    v3 = [self code] == 0;
   }
 
   else

@@ -1,9 +1,9 @@
 @interface WKBokehWallpaperInput
 + (id)new;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (WKBokehWallpaperInput)init;
-- (WKBokehWallpaperInput)initWithBackgroundColors:(id)a3 bubbleColors:(id)a4 bubbleCount:(unint64_t)a5 bubbleScale:(double)a6 parallaxMultiplier:(double)a7 thumbnailSeed:(unint64_t)a8;
-- (id)copyWithZone:(_NSZone *)a3;
+- (WKBokehWallpaperInput)initWithBackgroundColors:(id)colors bubbleColors:(id)bubbleColors bubbleCount:(unint64_t)count bubbleScale:(double)scale parallaxMultiplier:(double)multiplier thumbnailSeed:(unint64_t)seed;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)descriptionBuilderBlock;
 - (id)wk_descriptionBuilder;
@@ -40,42 +40,42 @@
   objc_exception_throw(v8);
 }
 
-- (WKBokehWallpaperInput)initWithBackgroundColors:(id)a3 bubbleColors:(id)a4 bubbleCount:(unint64_t)a5 bubbleScale:(double)a6 parallaxMultiplier:(double)a7 thumbnailSeed:(unint64_t)a8
+- (WKBokehWallpaperInput)initWithBackgroundColors:(id)colors bubbleColors:(id)bubbleColors bubbleCount:(unint64_t)count bubbleScale:(double)scale parallaxMultiplier:(double)multiplier thumbnailSeed:(unint64_t)seed
 {
-  v14 = a3;
-  v15 = a4;
+  colorsCopy = colors;
+  bubbleColorsCopy = bubbleColors;
   v22.receiver = self;
   v22.super_class = WKBokehWallpaperInput;
   v16 = [(WKBokehWallpaperInput *)&v22 init];
   if (v16)
   {
-    v17 = [v14 copy];
+    v17 = [colorsCopy copy];
     backgroundColors = v16->_backgroundColors;
     v16->_backgroundColors = v17;
 
-    v19 = [v15 copy];
+    v19 = [bubbleColorsCopy copy];
     bubbleColors = v16->_bubbleColors;
     v16->_bubbleColors = v19;
 
-    v16->_bubbleCount = a5;
-    v16->_bubbleScale = a6;
-    v16->_parallaxMultiplier = a7;
-    v16->_thumbnailSeed = a8;
+    v16->_bubbleCount = count;
+    v16->_bubbleScale = scale;
+    v16->_parallaxMultiplier = multiplier;
+    v16->_thumbnailSeed = seed;
   }
 
   return v16;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(WKBokehWallpaperInput *)self backgroundColors];
-  v6 = [(WKBokehWallpaperInput *)self bubbleColors];
-  v7 = [(WKBokehWallpaperInput *)self bubbleCount];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  backgroundColors = [(WKBokehWallpaperInput *)self backgroundColors];
+  bubbleColors = [(WKBokehWallpaperInput *)self bubbleColors];
+  bubbleCount = [(WKBokehWallpaperInput *)self bubbleCount];
   [(WKBokehWallpaperInput *)self bubbleScale];
   v9 = v8;
   [(WKBokehWallpaperInput *)self parallaxMultiplier];
-  v11 = [v4 initWithBackgroundColors:v5 bubbleColors:v6 bubbleCount:v7 bubbleScale:-[WKBokehWallpaperInput thumbnailSeed](self parallaxMultiplier:"thumbnailSeed") thumbnailSeed:{v9, v10}];
+  v11 = [v4 initWithBackgroundColors:backgroundColors bubbleColors:bubbleColors bubbleCount:bubbleCount bubbleScale:-[WKBokehWallpaperInput thumbnailSeed](self parallaxMultiplier:"thumbnailSeed") thumbnailSeed:{v9, v10}];
 
   return v11;
 }
@@ -113,19 +113,19 @@ id __36__WKBokehWallpaperInput_na_identity__block_invoke_3()
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [objc_opt_class() na_identity];
-  LOBYTE(self) = [v5 isObject:self equalToObject:v4];
+  equalCopy = equal;
+  na_identity = [objc_opt_class() na_identity];
+  LOBYTE(self) = [na_identity isObject:self equalToObject:equalCopy];
 
   return self;
 }
 
 - (unint64_t)hash
 {
-  v3 = [objc_opt_class() na_identity];
-  v4 = [v3 hashOfObject:self];
+  na_identity = [objc_opt_class() na_identity];
+  v4 = [na_identity hashOfObject:self];
 
   return v4;
 }
@@ -134,7 +134,7 @@ id __36__WKBokehWallpaperInput_na_identity__block_invoke_3()
 {
   v3 = [MEMORY[0x1E69B3778] builderWithObject:self];
   objc_initWeak(&location, self);
-  v4 = [v3 activeMultilinePrefix];
+  activeMultilinePrefix = [v3 activeMultilinePrefix];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __46__WKBokehWallpaperInput_wk_descriptionBuilder__block_invoke;
@@ -142,7 +142,7 @@ id __36__WKBokehWallpaperInput_na_identity__block_invoke_3()
   objc_copyWeak(&v9, &location);
   v5 = v3;
   v8 = v5;
-  [v5 appendBodySectionWithName:0 multilinePrefix:v4 block:v7];
+  [v5 appendBodySectionWithName:0 multilinePrefix:activeMultilinePrefix block:v7];
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -159,10 +159,10 @@ void __46__WKBokehWallpaperInput_wk_descriptionBuilder__block_invoke(uint64_t a1
 
 - (id)description
 {
-  v2 = [(WKBokehWallpaperInput *)self wk_descriptionBuilder];
-  v3 = [v2 build];
+  wk_descriptionBuilder = [(WKBokehWallpaperInput *)self wk_descriptionBuilder];
+  build = [wk_descriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)descriptionBuilderBlock

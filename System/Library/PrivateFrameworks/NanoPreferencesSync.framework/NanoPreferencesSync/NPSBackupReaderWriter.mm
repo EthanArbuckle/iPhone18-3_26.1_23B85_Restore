@@ -1,37 +1,37 @@
 @interface NPSBackupReaderWriter
-+ (BOOL)losslessFileCompressionFrom:(id)a3 to:(id)a4 shouldCompress:(BOOL)a5;
++ (BOOL)losslessFileCompressionFrom:(id)from to:(id)to shouldCompress:(BOOL)compress;
 + (id)tempFilePath;
 - (BOOL)doneWriting;
-- (BOOL)enumerateMessages:(id)a3;
-- (NPSBackupReaderWriter)initWithPathToCreateBackup:(id)a3;
-- (NPSBackupReaderWriter)initWithPathToLoadBackup:(id)a3;
-- (void)writeMessage:(unint64_t)a3 data:(id)a4;
+- (BOOL)enumerateMessages:(id)messages;
+- (NPSBackupReaderWriter)initWithPathToCreateBackup:(id)backup;
+- (NPSBackupReaderWriter)initWithPathToLoadBackup:(id)backup;
+- (void)writeMessage:(unint64_t)message data:(id)data;
 @end
 
 @implementation NPSBackupReaderWriter
 
-- (NPSBackupReaderWriter)initWithPathToCreateBackup:(id)a3
+- (NPSBackupReaderWriter)initWithPathToCreateBackup:(id)backup
 {
-  v4 = a3;
+  backupCopy = backup;
   v5 = [(NPSBackupReaderWriter *)self init];
   if (v5)
   {
-    if (v4)
+    if (backupCopy)
     {
-      v6 = v4;
+      tempFilePath = backupCopy;
     }
 
     else
     {
-      v6 = [objc_opt_class() tempFilePath];
+      tempFilePath = [objc_opt_class() tempFilePath];
     }
 
     compressedPath = v5->_compressedPath;
-    v5->_compressedPath = v6;
+    v5->_compressedPath = tempFilePath;
 
-    v8 = [objc_opt_class() tempFilePath];
+    tempFilePath2 = [objc_opt_class() tempFilePath];
     uncompressedPath = v5->_uncompressedPath;
-    v5->_uncompressedPath = v8;
+    v5->_uncompressedPath = tempFilePath2;
 
     v10 = [[NPSBlobReaderWriter alloc] initWithPathToCreateBlobFile:v5->_uncompressedPath];
     fh = v5->_fh;
@@ -53,17 +53,17 @@
   return v13;
 }
 
-- (NPSBackupReaderWriter)initWithPathToLoadBackup:(id)a3
+- (NPSBackupReaderWriter)initWithPathToLoadBackup:(id)backup
 {
-  v5 = a3;
+  backupCopy = backup;
   v6 = [(NPSBackupReaderWriter *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_compressedPath, a3);
-    v8 = [objc_opt_class() tempFilePath];
+    objc_storeStrong(&v6->_compressedPath, backup);
+    tempFilePath = [objc_opt_class() tempFilePath];
     uncompressedPath = v7->_uncompressedPath;
-    v7->_uncompressedPath = v8;
+    v7->_uncompressedPath = tempFilePath;
 
     if ([objc_opt_class() losslessFileCompressionFrom:v7->_compressedPath to:v7->_uncompressedPath shouldCompress:0])
     {
@@ -92,29 +92,29 @@
 {
   v2 = NSTemporaryDirectory();
   v3 = objc_opt_new();
-  v4 = [v3 UUIDString];
-  v5 = [v2 stringByAppendingString:v4];
+  uUIDString = [v3 UUIDString];
+  v5 = [v2 stringByAppendingString:uUIDString];
   v6 = [NSURL fileURLWithPath:v5];
 
   return v6;
 }
 
-+ (BOOL)losslessFileCompressionFrom:(id)a3 to:(id)a4 shouldCompress:(BOOL)a5
++ (BOOL)losslessFileCompressionFrom:(id)from to:(id)to shouldCompress:(BOOL)compress
 {
-  v5 = a5;
-  v7 = a3;
-  v8 = a4;
+  compressCopy = compress;
+  fromCopy = from;
+  toCopy = to;
   v27 = 0;
-  v9 = [NSFileHandle fileHandleForReadingFromURL:v7 error:&v27];
+  v9 = [NSFileHandle fileHandleForReadingFromURL:fromCopy error:&v27];
   v10 = v27;
   if (!v10)
   {
     v13 = +[NSFileManager defaultManager];
-    v14 = [v8 path];
-    [v13 createFileAtPath:v14 contents:0 attributes:0];
+    path = [toCopy path];
+    [v13 createFileAtPath:path contents:0 attributes:0];
 
     v26 = 0;
-    v15 = [NSFileHandle fileHandleForWritingToURL:v8 error:&v26];
+    v15 = [NSFileHandle fileHandleForWritingToURL:toCopy error:&v26];
     v11 = v26;
     if (v11)
     {
@@ -124,9 +124,9 @@
     else
     {
       memset(&stream, 0, sizeof(stream));
-      if (compression_stream_init(&stream, !v5, COMPRESSION_ZLIB) == COMPRESSION_STATUS_OK)
+      if (compression_stream_init(&stream, !compressCopy, COMPRESSION_ZLIB) == COMPRESSION_STATUS_OK)
       {
-        v24 = v8;
+        v24 = toCopy;
         v16 = [NSMutableData dataWithLength:0x10000];
         stream.dst_ptr = [v16 bytes];
         stream.dst_size = [v16 length];
@@ -157,7 +157,7 @@
         [v9 closeFile];
         [v15 closeFile];
 
-        v8 = v24;
+        toCopy = v24;
         if (v20 == COMPRESSION_STATUS_END)
         {
           v12 = 1;
@@ -179,41 +179,41 @@ LABEL_15:
   return v12;
 }
 
-- (void)writeMessage:(unint64_t)a3 data:(id)a4
+- (void)writeMessage:(unint64_t)message data:(id)data
 {
-  v4 = a3;
-  v6 = a4;
+  messageCopy = message;
+  dataCopy = data;
   v7 = nps_daemon_log;
   if (os_log_type_enabled(nps_daemon_log, OS_LOG_TYPE_DEFAULT))
   {
     v8 = v7;
     v10[0] = 67109376;
-    v10[1] = v4;
+    v10[1] = messageCopy;
     v11 = 1024;
-    v12 = [v6 length];
+    v12 = [dataCopy length];
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "NPSBackupReaderWriter writing type %d length %u", v10, 0xEu);
   }
 
-  LOBYTE(v10[0]) = v4;
+  LOBYTE(v10[0]) = messageCopy;
   v9 = [NSMutableData dataWithBytes:v10 length:1];
-  [v9 appendData:v6];
+  [v9 appendData:dataCopy];
   [(NPSBlobReaderWriter *)self->_fh writeBlob:v9];
 }
 
-- (BOOL)enumerateMessages:(id)a3
+- (BOOL)enumerateMessages:(id)messages
 {
-  v4 = a3;
-  v5 = [(NPSBlobReaderWriter *)self->_fh readBlob];
-  if ([v5 length] >= 2)
+  messagesCopy = messages;
+  readBlob = [(NPSBlobReaderWriter *)self->_fh readBlob];
+  if ([readBlob length] >= 2)
   {
     do
     {
-      v6 = *[v5 bytes];
+      v6 = *[readBlob bytes];
       v7 = nps_daemon_log;
       if (os_log_type_enabled(nps_daemon_log, OS_LOG_TYPE_DEFAULT))
       {
         v8 = v7;
-        v9 = [v5 length];
+        v9 = [readBlob length];
         *buf = 67109376;
         v17 = v6;
         v18 = 1024;
@@ -222,17 +222,17 @@ LABEL_15:
       }
 
       v10 = objc_autoreleasePoolPush();
-      v11 = [v5 subdataWithRange:{1, objc_msgSend(v5, "length") - 1}];
-      v4[2](v4, v6, v11);
+      v11 = [readBlob subdataWithRange:{1, objc_msgSend(readBlob, "length") - 1}];
+      messagesCopy[2](messagesCopy, v6, v11);
 
       objc_autoreleasePoolPop(v10);
-      v5 = [(NPSBlobReaderWriter *)self->_fh readBlob];
+      readBlob = [(NPSBlobReaderWriter *)self->_fh readBlob];
     }
 
-    while ([v5 length] > 1);
+    while ([readBlob length] > 1);
   }
 
-  v12 = [(NPSBlobReaderWriter *)self->_fh isFileGood];
+  isFileGood = [(NPSBlobReaderWriter *)self->_fh isFileGood];
   [(NPSBlobReaderWriter *)self->_fh close];
   fh = self->_fh;
   self->_fh = 0;
@@ -240,17 +240,17 @@ LABEL_15:
   v14 = +[NSFileManager defaultManager];
   [v14 removeItemAtURL:self->_uncompressedPath error:0];
 
-  return v12;
+  return isFileGood;
 }
 
 - (BOOL)doneWriting
 {
-  v3 = [(NPSBlobReaderWriter *)self->_fh isFileGood];
+  isFileGood = [(NPSBlobReaderWriter *)self->_fh isFileGood];
   [(NPSBlobReaderWriter *)self->_fh close];
   fh = self->_fh;
   self->_fh = 0;
 
-  if (v3 && (p_compressedPath = &self->_uncompressedPath, [objc_opt_class() losslessFileCompressionFrom:self->_uncompressedPath to:self->_compressedPath shouldCompress:1]))
+  if (isFileGood && (p_compressedPath = &self->_uncompressedPath, [objc_opt_class() losslessFileCompressionFrom:self->_uncompressedPath to:self->_compressedPath shouldCompress:1]))
   {
     v6 = +[NSFileManager defaultManager];
     v7 = 1;

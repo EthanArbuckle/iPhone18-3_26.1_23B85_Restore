@@ -1,10 +1,10 @@
 @interface DOCHorizontalTagDotPicker
 - (CGSize)intrinsicContentSize;
-- (DOCHorizontalTagDotPicker)initWithFrame:(CGRect)a3;
+- (DOCHorizontalTagDotPicker)initWithFrame:(CGRect)frame;
 - (id)selectedTagDotView;
-- (void)handleChangeColor:(id)a3;
-- (void)setSelectedTagColor:(int64_t)a3;
-- (void)setSelectedTagColorForLocation:(CGPoint)a3;
+- (void)handleChangeColor:(id)color;
+- (void)setSelectedTagColor:(int64_t)color;
+- (void)setSelectedTagColorForLocation:(CGPoint)location;
 @end
 
 @implementation DOCHorizontalTagDotPicker
@@ -26,12 +26,12 @@
   return result;
 }
 
-- (DOCHorizontalTagDotPicker)initWithFrame:(CGRect)a3
+- (DOCHorizontalTagDotPicker)initWithFrame:(CGRect)frame
 {
   v55[8] = *MEMORY[0x277D85DE8];
   v53.receiver = self;
   v53.super_class = DOCHorizontalTagDotPicker;
-  v3 = [(DOCHorizontalTagDotPicker *)&v53 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(DOCHorizontalTagDotPicker *)&v53 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -79,46 +79,46 @@
     [(UIStackView *)v4->_stackView setAxis:0];
     [(UIStackView *)v4->_stackView doc_addFlexiblySpacedArrangedSubviews:v4->_dotViews minSpacing:1.0 maxSpacing:35.0];
     [(DOCHorizontalTagDotPicker *)v4 setSelectedTagColor:0];
-    v21 = [(DOCHorizontalTagDotPicker *)v4 stackView];
-    [(DOCHorizontalTagDotPicker *)v4 addSubview:v21];
+    stackView = [(DOCHorizontalTagDotPicker *)v4 stackView];
+    [(DOCHorizontalTagDotPicker *)v4 addSubview:stackView];
 
-    v22 = [(DOCHorizontalTagDotPicker *)v4 changeColorTapGestureRecognizer];
-    [(DOCHorizontalTagDotPicker *)v4 addGestureRecognizer:v22];
+    changeColorTapGestureRecognizer = [(DOCHorizontalTagDotPicker *)v4 changeColorTapGestureRecognizer];
+    [(DOCHorizontalTagDotPicker *)v4 addGestureRecognizer:changeColorTapGestureRecognizer];
 
-    v23 = [(DOCHorizontalTagDotPicker *)v4 changeColorPanGestureRecognizer];
-    [(DOCHorizontalTagDotPicker *)v4 addGestureRecognizer:v23];
+    changeColorPanGestureRecognizer = [(DOCHorizontalTagDotPicker *)v4 changeColorPanGestureRecognizer];
+    [(DOCHorizontalTagDotPicker *)v4 addGestureRecognizer:changeColorPanGestureRecognizer];
 
-    v24 = [(DOCHorizontalTagDotPicker *)v4 changeColorPanGestureRecognizer];
-    v25 = [(DOCHorizontalTagDotPicker *)v4 changeColorTapGestureRecognizer];
-    [v24 requireGestureRecognizerToFail:v25];
+    changeColorPanGestureRecognizer2 = [(DOCHorizontalTagDotPicker *)v4 changeColorPanGestureRecognizer];
+    changeColorTapGestureRecognizer2 = [(DOCHorizontalTagDotPicker *)v4 changeColorTapGestureRecognizer];
+    [changeColorPanGestureRecognizer2 requireGestureRecognizerToFail:changeColorTapGestureRecognizer2];
 
     v39 = MEMORY[0x277CCAAD0];
-    v50 = [(DOCHorizontalTagDotPicker *)v4 stackView];
-    v48 = [v50 leadingAnchor];
-    v49 = [(DOCHorizontalTagDotPicker *)v4 layoutMarginsGuide];
-    v47 = [v49 leadingAnchor];
-    v46 = [v48 constraintGreaterThanOrEqualToAnchor:v47];
+    stackView2 = [(DOCHorizontalTagDotPicker *)v4 stackView];
+    leadingAnchor = [stackView2 leadingAnchor];
+    layoutMarginsGuide = [(DOCHorizontalTagDotPicker *)v4 layoutMarginsGuide];
+    leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+    v46 = [leadingAnchor constraintGreaterThanOrEqualToAnchor:leadingAnchor2];
     v54[0] = v46;
-    v45 = [(DOCHorizontalTagDotPicker *)v4 stackView];
-    v43 = [v45 trailingAnchor];
-    v44 = [(DOCHorizontalTagDotPicker *)v4 layoutMarginsGuide];
-    v42 = [v44 trailingAnchor];
-    v41 = [v43 constraintLessThanOrEqualToAnchor:v42];
+    stackView3 = [(DOCHorizontalTagDotPicker *)v4 stackView];
+    trailingAnchor = [stackView3 trailingAnchor];
+    layoutMarginsGuide2 = [(DOCHorizontalTagDotPicker *)v4 layoutMarginsGuide];
+    trailingAnchor2 = [layoutMarginsGuide2 trailingAnchor];
+    v41 = [trailingAnchor constraintLessThanOrEqualToAnchor:trailingAnchor2];
     v54[1] = v41;
-    v40 = [(DOCHorizontalTagDotPicker *)v4 stackView];
-    v38 = [v40 centerXAnchor];
-    v37 = [(DOCHorizontalTagDotPicker *)v4 centerXAnchor];
-    v36 = [v38 constraintEqualToAnchor:v37];
+    stackView4 = [(DOCHorizontalTagDotPicker *)v4 stackView];
+    centerXAnchor = [stackView4 centerXAnchor];
+    centerXAnchor2 = [(DOCHorizontalTagDotPicker *)v4 centerXAnchor];
+    v36 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v54[2] = v36;
-    v26 = [(DOCHorizontalTagDotPicker *)v4 stackView];
-    v27 = [v26 topAnchor];
-    v28 = [(DOCHorizontalTagDotPicker *)v4 topAnchor];
-    v29 = [v27 constraintEqualToAnchor:v28];
+    stackView5 = [(DOCHorizontalTagDotPicker *)v4 stackView];
+    topAnchor = [stackView5 topAnchor];
+    topAnchor2 = [(DOCHorizontalTagDotPicker *)v4 topAnchor];
+    v29 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v54[3] = v29;
-    v30 = [(DOCHorizontalTagDotPicker *)v4 stackView];
-    v31 = [v30 bottomAnchor];
-    v32 = [(DOCHorizontalTagDotPicker *)v4 bottomAnchor];
-    v33 = [v31 constraintEqualToAnchor:v32];
+    stackView6 = [(DOCHorizontalTagDotPicker *)v4 stackView];
+    bottomAnchor = [stackView6 bottomAnchor];
+    bottomAnchor2 = [(DOCHorizontalTagDotPicker *)v4 bottomAnchor];
+    v33 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v54[4] = v33;
     v34 = [MEMORY[0x277CBEA60] arrayWithObjects:v54 count:5];
     [v39 activateConstraints:v34];
@@ -127,76 +127,76 @@
   return v4;
 }
 
-- (void)setSelectedTagColor:(int64_t)a3
+- (void)setSelectedTagColor:(int64_t)color
 {
-  if (self->_selectedTagColor != a3)
+  if (self->_selectedTagColor != color)
   {
-    v5 = [(DOCHorizontalTagDotPicker *)self selectedTagDotView];
-    [v5 setChecked:0];
+    selectedTagDotView = [(DOCHorizontalTagDotPicker *)self selectedTagDotView];
+    [selectedTagDotView setChecked:0];
 
-    self->_selectedTagColor = a3;
-    v6 = [(DOCHorizontalTagDotPicker *)self selectedTagDotView];
-    [v6 setChecked:1];
+    self->_selectedTagColor = color;
+    selectedTagDotView2 = [(DOCHorizontalTagDotPicker *)self selectedTagDotView];
+    [selectedTagDotView2 setChecked:1];
   }
 }
 
 - (id)selectedTagDotView
 {
-  v3 = [(DOCHorizontalTagDotPicker *)self selectedTagColor];
-  if (v3 > 7)
+  selectedTagColor = [(DOCHorizontalTagDotPicker *)self selectedTagColor];
+  if (selectedTagColor > 7)
   {
     v6 = 0;
   }
 
   else
   {
-    v4 = qword_249B9A358[v3];
-    v5 = [(DOCHorizontalTagDotPicker *)self dotViews];
-    v6 = [v5 objectAtIndexedSubscript:v4];
+    v4 = qword_249B9A358[selectedTagColor];
+    dotViews = [(DOCHorizontalTagDotPicker *)self dotViews];
+    v6 = [dotViews objectAtIndexedSubscript:v4];
   }
 
   return v6;
 }
 
-- (void)handleChangeColor:(id)a3
+- (void)handleChangeColor:(id)color
 {
-  v9 = a3;
-  v4 = [v9 state];
-  if (v4 <= 2)
+  colorCopy = color;
+  state = [colorCopy state];
+  if (state <= 2)
   {
-    if (v4 == 1)
+    if (state == 1)
     {
       v7 = [MEMORY[0x277CCABB0] numberWithInteger:{-[DOCHorizontalTagDotPicker selectedTagColor](self, "selectedTagColor")}];
       [(DOCHorizontalTagDotPicker *)self setPreviousSelectedTagColor:v7];
     }
 
-    else if (v4 != 2)
+    else if (state != 2)
     {
       goto LABEL_12;
     }
 
-    v8 = [(DOCHorizontalTagDotPicker *)self stackView];
-    [v9 locationInView:v8];
+    stackView = [(DOCHorizontalTagDotPicker *)self stackView];
+    [colorCopy locationInView:stackView];
     [(DOCHorizontalTagDotPicker *)self setSelectedTagColorForLocation:?];
 
     goto LABEL_12;
   }
 
-  if (v4 == 3)
+  if (state == 3)
   {
 LABEL_9:
     [(DOCHorizontalTagDotPicker *)self setPreviousSelectedTagColor:0];
     goto LABEL_12;
   }
 
-  if (v4 == 4)
+  if (state == 4)
   {
-    v5 = [(DOCHorizontalTagDotPicker *)self previousSelectedTagColor];
+    previousSelectedTagColor = [(DOCHorizontalTagDotPicker *)self previousSelectedTagColor];
 
-    if (v5)
+    if (previousSelectedTagColor)
     {
-      v6 = [(DOCHorizontalTagDotPicker *)self previousSelectedTagColor];
-      -[DOCHorizontalTagDotPicker setSelectedTagColor:](self, "setSelectedTagColor:", [v6 integerValue]);
+      previousSelectedTagColor2 = [(DOCHorizontalTagDotPicker *)self previousSelectedTagColor];
+      -[DOCHorizontalTagDotPicker setSelectedTagColor:](self, "setSelectedTagColor:", [previousSelectedTagColor2 integerValue]);
 
       goto LABEL_9;
     }
@@ -205,17 +205,17 @@ LABEL_9:
 LABEL_12:
 }
 
-- (void)setSelectedTagColorForLocation:(CGPoint)a3
+- (void)setSelectedTagColorForLocation:(CGPoint)location
 {
-  y = a3.y;
-  x = a3.x;
+  y = location.y;
+  x = location.x;
   v17 = *MEMORY[0x277D85DE8];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [(DOCHorizontalTagDotPicker *)self dotViews];
-  v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  dotViews = [(DOCHorizontalTagDotPicker *)self dotViews];
+  v7 = [dotViews countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
     v8 = v7;
@@ -226,7 +226,7 @@ LABEL_12:
       {
         if (*v13 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(dotViews);
         }
 
         v11 = *(*(&v12 + 1) + 8 * i);
@@ -240,7 +240,7 @@ LABEL_12:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v8 = [dotViews countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v8)
       {
         continue;

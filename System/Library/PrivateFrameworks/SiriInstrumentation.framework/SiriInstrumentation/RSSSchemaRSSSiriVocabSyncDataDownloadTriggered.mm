@@ -1,33 +1,33 @@
 @interface RSSSchemaRSSSiriVocabSyncDataDownloadTriggered
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (RSSSchemaRSSSiriVocabSyncDataDownloadTriggered)initWithDictionary:(id)a3;
-- (RSSSchemaRSSSiriVocabSyncDataDownloadTriggered)initWithJSON:(id)a3;
+- (RSSSchemaRSSSiriVocabSyncDataDownloadTriggered)initWithDictionary:(id)dictionary;
+- (RSSSchemaRSSSiriVocabSyncDataDownloadTriggered)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasSyncData:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasSyncData:(BOOL)data;
+- (void)writeTo:(id)to;
 @end
 
 @implementation RSSSchemaRSSSiriVocabSyncDataDownloadTriggered
 
-- (RSSSchemaRSSSiriVocabSyncDataDownloadTriggered)initWithDictionary:(id)a3
+- (RSSSchemaRSSSiriVocabSyncDataDownloadTriggered)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = RSSSchemaRSSSiriVocabSyncDataDownloadTriggered;
   v5 = [(RSSSchemaRSSSiriVocabSyncDataDownloadTriggered *)&v10 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"trigger"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"trigger"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[RSSSchemaRSSSiriVocabSyncDataDownloadTriggered setTrigger:](v5, "setTrigger:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"syncData"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"syncData"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -40,30 +40,30 @@
   return v5;
 }
 
-- (RSSSchemaRSSSiriVocabSyncDataDownloadTriggered)initWithJSON:(id)a3
+- (RSSSchemaRSSSiriVocabSyncDataDownloadTriggered)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(RSSSchemaRSSSiriVocabSyncDataDownloadTriggered *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(RSSSchemaRSSSiriVocabSyncDataDownloadTriggered *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(RSSSchemaRSSSiriVocabSyncDataDownloadTriggered *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -76,7 +76,7 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -91,7 +91,7 @@
       v6 = off_1E78E22D8[v5];
     }
 
-    [v3 setObject:v6 forKeyedSubscript:@"syncData"];
+    [dictionary setObject:v6 forKeyedSubscript:@"syncData"];
     has = self->_has;
   }
 
@@ -108,12 +108,12 @@
       v8 = off_1E78E22F0[v7];
     }
 
-    [v3 setObject:v8 forKeyedSubscript:@"trigger"];
+    [dictionary setObject:v8 forKeyedSubscript:@"trigger"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -142,16 +142,16 @@ LABEL_3:
   return v3 ^ v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_10;
   }
 
   has = self->_has;
-  v6 = v4[16];
+  v6 = equalCopy[16];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_10;
@@ -160,7 +160,7 @@ LABEL_3:
   if (*&has)
   {
     trigger = self->_trigger;
-    if (trigger != [v4 trigger])
+    if (trigger != [equalCopy trigger])
     {
 LABEL_10:
       v10 = 0;
@@ -168,7 +168,7 @@ LABEL_10:
     }
 
     has = self->_has;
-    v6 = v4[16];
+    v6 = equalCopy[16];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -180,7 +180,7 @@ LABEL_10:
   if (v8)
   {
     syncData = self->_syncData;
-    if (syncData != [v4 syncData])
+    if (syncData != [equalCopy syncData])
     {
       goto LABEL_10;
     }
@@ -192,28 +192,28 @@ LABEL_11:
   return v10;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v6 = v4;
+  v6 = toCopy;
   if (has)
   {
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)setHasSyncData:(BOOL)a3
+- (void)setHasSyncData:(BOOL)data
 {
-  if (a3)
+  if (data)
   {
     v3 = 2;
   }

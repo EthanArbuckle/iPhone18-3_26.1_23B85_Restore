@@ -1,9 +1,9 @@
 @interface MTRContentAppObserverClusterContentAppMessageResponseParams
-- (ChipError)_setFieldsFromDecodableStruct:(const void *)a3;
+- (ChipError)_setFieldsFromDecodableStruct:(const void *)struct;
 - (MTRContentAppObserverClusterContentAppMessageResponseParams)init;
-- (MTRContentAppObserverClusterContentAppMessageResponseParams)initWithDecodableStruct:(const void *)a3;
-- (MTRContentAppObserverClusterContentAppMessageResponseParams)initWithResponseValue:(id)a3 error:(id *)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (MTRContentAppObserverClusterContentAppMessageResponseParams)initWithDecodableStruct:(const void *)struct;
+- (MTRContentAppObserverClusterContentAppMessageResponseParams)initWithResponseValue:(id)value error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -30,17 +30,17 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRContentAppObserverClusterContentAppMessageResponseParams);
-  v5 = [(MTRContentAppObserverClusterContentAppMessageResponseParams *)self status];
-  [(MTRContentAppObserverClusterContentAppMessageResponseParams *)v4 setStatus:v5];
+  status = [(MTRContentAppObserverClusterContentAppMessageResponseParams *)self status];
+  [(MTRContentAppObserverClusterContentAppMessageResponseParams *)v4 setStatus:status];
 
-  v6 = [(MTRContentAppObserverClusterContentAppMessageResponseParams *)self data];
-  [(MTRContentAppObserverClusterContentAppMessageResponseParams *)v4 setData:v6];
+  data = [(MTRContentAppObserverClusterContentAppMessageResponseParams *)self data];
+  [(MTRContentAppObserverClusterContentAppMessageResponseParams *)v4 setData:data];
 
-  v7 = [(MTRContentAppObserverClusterContentAppMessageResponseParams *)self encodingHint];
-  [(MTRContentAppObserverClusterContentAppMessageResponseParams *)v4 setEncodingHint:v7];
+  encodingHint = [(MTRContentAppObserverClusterContentAppMessageResponseParams *)self encodingHint];
+  [(MTRContentAppObserverClusterContentAppMessageResponseParams *)v4 setEncodingHint:encodingHint];
 
   return v4;
 }
@@ -55,9 +55,9 @@
   return v6;
 }
 
-- (MTRContentAppObserverClusterContentAppMessageResponseParams)initWithResponseValue:(id)a3 error:(id *)a4
+- (MTRContentAppObserverClusterContentAppMessageResponseParams)initWithResponseValue:(id)value error:(id *)error
 {
-  v6 = a3;
+  valueCopy = value;
   v15.receiver = self;
   v15.super_class = MTRContentAppObserverClusterContentAppMessageResponseParams;
   v7 = [(MTRContentAppObserverClusterContentAppMessageResponseParams *)&v15 init];
@@ -67,7 +67,7 @@
     goto LABEL_10;
   }
 
-  [MTRBaseDevice _responseDataForCommand:v6 clusterID:1296 commandID:1 error:a4];
+  [MTRBaseDevice _responseDataForCommand:valueCopy clusterID:1296 commandID:1 error:error];
   if (v14)
   {
     sub_2393C5AAC(v13);
@@ -90,7 +90,7 @@
       }
     }
 
-    sub_238DD3F98(v8, v9, a4);
+    sub_238DD3F98(v8, v9, error);
   }
 
   v10 = 0;
@@ -101,7 +101,7 @@ LABEL_10:
   return v10;
 }
 
-- (MTRContentAppObserverClusterContentAppMessageResponseParams)initWithDecodableStruct:(const void *)a3
+- (MTRContentAppObserverClusterContentAppMessageResponseParams)initWithDecodableStruct:(const void *)struct
 {
   v10.receiver = self;
   v10.super_class = MTRContentAppObserverClusterContentAppMessageResponseParams;
@@ -109,7 +109,7 @@ LABEL_10:
   v5 = v4;
   if (v4)
   {
-    v6 = [(MTRContentAppObserverClusterContentAppMessageResponseParams *)v4 _setFieldsFromDecodableStruct:a3];
+    v6 = [(MTRContentAppObserverClusterContentAppMessageResponseParams *)v4 _setFieldsFromDecodableStruct:struct];
     if (!v6)
     {
       v8 = v5;
@@ -125,26 +125,26 @@ LABEL_6:
   return v8;
 }
 
-- (ChipError)_setFieldsFromDecodableStruct:(const void *)a3
+- (ChipError)_setFieldsFromDecodableStruct:(const void *)struct
 {
-  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*a3];
+  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*struct];
   [(MTRContentAppObserverClusterContentAppMessageResponseParams *)self setStatus:v5];
 
-  if (*(a3 + 8) != 1)
+  if (*(struct + 8) != 1)
   {
     [(MTRContentAppObserverClusterContentAppMessageResponseParams *)self setData:0];
 LABEL_5:
-    v12 = *(a3 + 32);
-    v11 = a3 + 32;
+    v12 = *(struct + 32);
+    v11 = struct + 32;
     if (v12 == 1)
     {
       v13 = sub_238DE36B8(v11);
       v14 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:*v13 length:v13[1] encoding:4];
       [(MTRContentAppObserverClusterContentAppMessageResponseParams *)self setEncodingHint:v14];
 
-      v15 = [(MTRContentAppObserverClusterContentAppMessageResponseParams *)self encodingHint];
+      encodingHint = [(MTRContentAppObserverClusterContentAppMessageResponseParams *)self encodingHint];
 
-      if (!v15)
+      if (!encodingHint)
       {
         v9 = "/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/zap-generated/MTRCommandPayloadsObjc.mm";
         v10 = 0x821C00000000;
@@ -163,13 +163,13 @@ LABEL_5:
     goto LABEL_11;
   }
 
-  v6 = sub_238DE36B8(a3 + 8);
+  v6 = sub_238DE36B8(struct + 8);
   v7 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:*v6 length:v6[1] encoding:4];
   [(MTRContentAppObserverClusterContentAppMessageResponseParams *)self setData:v7];
 
-  v8 = [(MTRContentAppObserverClusterContentAppMessageResponseParams *)self data];
+  data = [(MTRContentAppObserverClusterContentAppMessageResponseParams *)self data];
 
-  if (v8)
+  if (data)
   {
     goto LABEL_5;
   }

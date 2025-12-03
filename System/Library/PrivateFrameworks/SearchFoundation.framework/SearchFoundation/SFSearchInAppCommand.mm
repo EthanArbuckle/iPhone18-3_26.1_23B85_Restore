@@ -1,12 +1,12 @@
 @interface SFSearchInAppCommand
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFSearchInAppCommand)initWithCoder:(id)a3;
-- (SFSearchInAppCommand)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFSearchInAppCommand)initWithCoder:(id)coder;
+- (SFSearchInAppCommand)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFSearchInAppCommand
@@ -16,35 +16,35 @@
   v10.receiver = self;
   v10.super_class = SFSearchInAppCommand;
   v3 = [(SFCommand *)&v10 hash];
-  v4 = [(SFSearchInAppCommand *)self searchString];
-  v5 = [v4 hash];
-  v6 = [(SFSearchInAppCommand *)self applicationBundleIdentifier];
-  v7 = v5 ^ [v6 hash];
+  searchString = [(SFSearchInAppCommand *)self searchString];
+  v5 = [searchString hash];
+  applicationBundleIdentifier = [(SFSearchInAppCommand *)self applicationBundleIdentifier];
+  v7 = v5 ^ [applicationBundleIdentifier hash];
   v8 = v7 ^ [(SFSearchInAppCommand *)self searchInAppType];
 
   return v8 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
   else
   {
-    if ([(SFSearchInAppCommand *)v5 isMemberOfClass:objc_opt_class()])
+    if ([(SFSearchInAppCommand *)equalCopy isMemberOfClass:objc_opt_class()])
     {
       v23.receiver = self;
       v23.super_class = SFSearchInAppCommand;
-      if ([(SFCommand *)&v23 isEqual:v5])
+      if ([(SFCommand *)&v23 isEqual:equalCopy])
       {
-        v6 = v5;
-        v7 = [(SFSearchInAppCommand *)self searchString];
-        v8 = [(SFSearchInAppCommand *)v6 searchString];
-        if ((v7 != 0) == (v8 == 0))
+        v6 = equalCopy;
+        searchString = [(SFSearchInAppCommand *)self searchString];
+        searchString2 = [(SFSearchInAppCommand *)v6 searchString];
+        if ((searchString != 0) == (searchString2 == 0))
         {
           v11 = 0;
 LABEL_25:
@@ -52,47 +52,47 @@ LABEL_25:
           goto LABEL_26;
         }
 
-        v9 = [(SFSearchInAppCommand *)self searchString];
-        if (v9)
+        searchString3 = [(SFSearchInAppCommand *)self searchString];
+        if (searchString3)
         {
-          v10 = [(SFSearchInAppCommand *)self searchString];
-          v3 = [(SFSearchInAppCommand *)v6 searchString];
-          if (![v10 isEqual:v3])
+          searchString4 = [(SFSearchInAppCommand *)self searchString];
+          searchString5 = [(SFSearchInAppCommand *)v6 searchString];
+          if (![searchString4 isEqual:searchString5])
           {
             v11 = 0;
             goto LABEL_23;
           }
 
-          v22 = v10;
+          v22 = searchString4;
         }
 
-        v12 = [(SFSearchInAppCommand *)self applicationBundleIdentifier];
-        v13 = [(SFSearchInAppCommand *)v6 applicationBundleIdentifier];
-        v14 = v13;
-        if ((v12 != 0) == (v13 == 0))
+        applicationBundleIdentifier = [(SFSearchInAppCommand *)self applicationBundleIdentifier];
+        applicationBundleIdentifier2 = [(SFSearchInAppCommand *)v6 applicationBundleIdentifier];
+        v14 = applicationBundleIdentifier2;
+        if ((applicationBundleIdentifier != 0) == (applicationBundleIdentifier2 == 0))
         {
 
           v11 = 0;
           goto LABEL_22;
         }
 
-        v15 = [(SFSearchInAppCommand *)self applicationBundleIdentifier];
-        if (v15)
+        applicationBundleIdentifier3 = [(SFSearchInAppCommand *)self applicationBundleIdentifier];
+        if (applicationBundleIdentifier3)
         {
-          v19 = v3;
-          v16 = [(SFSearchInAppCommand *)self applicationBundleIdentifier];
-          v20 = [(SFSearchInAppCommand *)v6 applicationBundleIdentifier];
-          v21 = v16;
-          if (![v16 isEqual:?])
+          v19 = searchString5;
+          applicationBundleIdentifier4 = [(SFSearchInAppCommand *)self applicationBundleIdentifier];
+          applicationBundleIdentifier5 = [(SFSearchInAppCommand *)v6 applicationBundleIdentifier];
+          v21 = applicationBundleIdentifier4;
+          if (![applicationBundleIdentifier4 isEqual:?])
           {
             v11 = 0;
-            v3 = v19;
+            searchString5 = v19;
 LABEL_20:
 
 LABEL_21:
 LABEL_22:
-            v10 = v22;
-            if (!v9)
+            searchString4 = v22;
+            if (!searchString3)
             {
 LABEL_24:
 
@@ -104,12 +104,12 @@ LABEL_23:
             goto LABEL_24;
           }
 
-          v3 = v19;
+          searchString5 = v19;
         }
 
-        v17 = [(SFSearchInAppCommand *)self searchInAppType];
-        v11 = v17 == [(SFSearchInAppCommand *)v6 searchInAppType];
-        if (!v15)
+        searchInAppType = [(SFSearchInAppCommand *)self searchInAppType];
+        v11 = searchInAppType == [(SFSearchInAppCommand *)v6 searchInAppType];
+        if (!applicationBundleIdentifier3)
         {
           goto LABEL_21;
         }
@@ -126,17 +126,17 @@ LABEL_26:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v10.receiver = self;
   v10.super_class = SFSearchInAppCommand;
-  v4 = [(SFCommand *)&v10 copyWithZone:a3];
-  v5 = [(SFSearchInAppCommand *)self searchString];
-  v6 = [v5 copy];
+  v4 = [(SFCommand *)&v10 copyWithZone:zone];
+  searchString = [(SFSearchInAppCommand *)self searchString];
+  v6 = [searchString copy];
   [v4 setSearchString:v6];
 
-  v7 = [(SFSearchInAppCommand *)self applicationBundleIdentifier];
-  v8 = [v7 copy];
+  applicationBundleIdentifier = [(SFSearchInAppCommand *)self applicationBundleIdentifier];
+  v8 = [applicationBundleIdentifier copy];
   [v4 setApplicationBundleIdentifier:v8];
 
   [v4 setSearchInAppType:{-[SFSearchInAppCommand searchInAppType](self, "searchInAppType")}];
@@ -146,87 +146,87 @@ LABEL_26:
 - (NSData)jsonData
 {
   v2 = [[_SFPBSearchInAppCommand alloc] initWithFacade:self];
-  v3 = [(_SFPBSearchInAppCommand *)v2 jsonData];
+  jsonData = [(_SFPBSearchInAppCommand *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBSearchInAppCommand alloc] initWithFacade:self];
-  v3 = [(_SFPBSearchInAppCommand *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBSearchInAppCommand *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = SFSearchInAppCommand;
-  [(SFCommand *)&v3 encodeWithCoder:a3];
+  [(SFCommand *)&v3 encodeWithCoder:coder];
 }
 
-- (SFSearchInAppCommand)initWithCoder:(id)a3
+- (SFSearchInAppCommand)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(SFSearchInAppCommand *)self init];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v7 = [[_SFPBCommand alloc] initWithData:v6];
   v8 = [[SFCommand alloc] initWithProtobuf:v7];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [(SFCommand *)v8 searchString];
-    [(SFSearchInAppCommand *)v5 setSearchString:v9];
+    searchString = [(SFCommand *)v8 searchString];
+    [(SFSearchInAppCommand *)v5 setSearchString:searchString];
 
-    v10 = [(SFCommand *)v8 applicationBundleIdentifier];
-    [(SFSearchInAppCommand *)v5 setApplicationBundleIdentifier:v10];
+    applicationBundleIdentifier = [(SFCommand *)v8 applicationBundleIdentifier];
+    [(SFSearchInAppCommand *)v5 setApplicationBundleIdentifier:applicationBundleIdentifier];
 
     [(SFSearchInAppCommand *)v5 setSearchInAppType:[(SFCommand *)v8 searchInAppType]];
-    v11 = [(SFCommand *)v8 commandDetail];
-    [(SFCommand *)v5 setCommandDetail:v11];
+    commandDetail = [(SFCommand *)v8 commandDetail];
+    [(SFCommand *)v5 setCommandDetail:commandDetail];
 
-    v12 = [(SFCommand *)v8 normalizedTopic];
-    [(SFCommand *)v5 setNormalizedTopic:v12];
+    normalizedTopic = [(SFCommand *)v8 normalizedTopic];
+    [(SFCommand *)v5 setNormalizedTopic:normalizedTopic];
 
-    v13 = [(SFCommand *)v8 backendData];
-    [(SFCommand *)v5 setBackendData:v13];
+    backendData = [(SFCommand *)v8 backendData];
+    [(SFCommand *)v5 setBackendData:backendData];
 
-    v14 = [(SFCommand *)v8 commandReference];
-    [(SFCommand *)v5 setCommandReference:v14];
+    commandReference = [(SFCommand *)v8 commandReference];
+    [(SFCommand *)v5 setCommandReference:commandReference];
   }
 
   return v5;
 }
 
-- (SFSearchInAppCommand)initWithProtobuf:(id)a3
+- (SFSearchInAppCommand)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v12.receiver = self;
   v12.super_class = SFSearchInAppCommand;
   v5 = [(SFSearchInAppCommand *)&v12 init];
   if (v5)
   {
-    v6 = [v4 searchString];
+    searchString = [protobufCopy searchString];
 
-    if (v6)
+    if (searchString)
     {
-      v7 = [v4 searchString];
-      [(SFSearchInAppCommand *)v5 setSearchString:v7];
+      searchString2 = [protobufCopy searchString];
+      [(SFSearchInAppCommand *)v5 setSearchString:searchString2];
     }
 
-    v8 = [v4 applicationBundleIdentifier];
+    applicationBundleIdentifier = [protobufCopy applicationBundleIdentifier];
 
-    if (v8)
+    if (applicationBundleIdentifier)
     {
-      v9 = [v4 applicationBundleIdentifier];
-      [(SFSearchInAppCommand *)v5 setApplicationBundleIdentifier:v9];
+      applicationBundleIdentifier2 = [protobufCopy applicationBundleIdentifier];
+      [(SFSearchInAppCommand *)v5 setApplicationBundleIdentifier:applicationBundleIdentifier2];
     }
 
-    if ([v4 searchInAppType])
+    if ([protobufCopy searchInAppType])
     {
-      -[SFSearchInAppCommand setSearchInAppType:](v5, "setSearchInAppType:", [v4 searchInAppType]);
+      -[SFSearchInAppCommand setSearchInAppType:](v5, "setSearchInAppType:", [protobufCopy searchInAppType]);
     }
 
     v10 = v5;

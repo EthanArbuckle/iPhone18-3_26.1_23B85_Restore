@@ -1,45 +1,45 @@
 @interface CESRRawSpeechProfileExtractor
-+ (BOOL)_isValidCategoryWithName:(id)a3 data:(id)a4 error:(id *)a5;
-+ (id)_convertItemsFromEntities:(id)a3 categoryName:(id)a4 converter:(id)a5 error:(id *)a6;
-+ (id)_dictionaryFromUserDataArray:(id)a3 error:(id *)a4;
-+ (id)_extractEntitiesFromCategoryData:(id)a3 categoryName:(id)a4 error:(id *)a5;
-+ (id)_extractNamespaceFromCategoryName:(id)a3 error:(id *)a4;
-+ (id)_extractUserDataFromRawSpeechProfile:(id)a3 error:(id *)a4;
-+ (id)extractItemsFromRawSpeechProfile:(id)a3 converter:(id)a4 error:(id *)a5;
-+ (id)extractLocaleFromRawSpeechProfile:(id)a3 error:(id *)a4;
++ (BOOL)_isValidCategoryWithName:(id)name data:(id)data error:(id *)error;
++ (id)_convertItemsFromEntities:(id)entities categoryName:(id)name converter:(id)converter error:(id *)error;
++ (id)_dictionaryFromUserDataArray:(id)array error:(id *)error;
++ (id)_extractEntitiesFromCategoryData:(id)data categoryName:(id)name error:(id *)error;
++ (id)_extractNamespaceFromCategoryName:(id)name error:(id *)error;
++ (id)_extractUserDataFromRawSpeechProfile:(id)profile error:(id *)error;
++ (id)extractItemsFromRawSpeechProfile:(id)profile converter:(id)converter error:(id *)error;
++ (id)extractLocaleFromRawSpeechProfile:(id)profile error:(id *)error;
 @end
 
 @implementation CESRRawSpeechProfileExtractor
 
-+ (id)_convertItemsFromEntities:(id)a3 categoryName:(id)a4 converter:(id)a5 error:(id *)a6
++ (id)_convertItemsFromEntities:(id)entities categoryName:(id)name converter:(id)converter error:(id *)error
 {
   v48 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [objc_opt_class() _extractNamespaceFromCategoryName:v10 error:a6];
+  entitiesCopy = entities;
+  nameCopy = name;
+  converterCopy = converter;
+  v12 = [objc_opt_class() _extractNamespaceFromCategoryName:nameCopy error:error];
   if (!v12)
   {
     v25 = 0;
     goto LABEL_24;
   }
 
-  v13 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v9, "count")}];
-  if (![v9 count])
+  v13 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(entitiesCopy, "count")}];
+  if (![entitiesCopy count])
   {
 LABEL_16:
     v25 = v13;
     goto LABEL_23;
   }
 
-  v37 = a6;
-  v38 = v10;
+  errorCopy = error;
+  v38 = nameCopy;
   v14 = 0;
   v15 = 0;
   v16 = MEMORY[0x277CEF0E8];
   while (1)
   {
-    v17 = [v9 objectAtIndex:v15];
+    v17 = [entitiesCopy objectAtIndex:v15];
     if (![v17 count])
     {
       v20 = *v16;
@@ -61,7 +61,7 @@ LABEL_16:
     }
 
     v39 = 0;
-    v18 = [v11 vocabularyItemFromSpeechWords:v17 speechNamespace:v12 error:&v39];
+    v18 = [converterCopy vocabularyItemFromSpeechWords:v17 speechNamespace:v12 error:&v39];
     v19 = v39;
     if (v19)
     {
@@ -79,9 +79,9 @@ LABEL_16:
     }
 
 LABEL_12:
-    if (++v15 >= [v9 count])
+    if (++v15 >= [entitiesCopy count])
     {
-      v10 = v38;
+      nameCopy = v38;
       if (v14)
       {
         v24 = *v16;
@@ -124,14 +124,14 @@ LABEL_12:
     _os_log_error_impl(&dword_225EEB000, v32, OS_LOG_TYPE_ERROR, "%s Conversion to vocabulary item at index: %@ in category: %@ failed with error: %@", buf, 0x2Au);
   }
 
-  if (v37)
+  if (errorCopy)
   {
     v28 = v26;
-    *v37 = v26;
+    *errorCopy = v26;
   }
 
   v25 = 0;
-  v10 = v38;
+  nameCopy = v38;
 LABEL_23:
 
 LABEL_24:
@@ -140,28 +140,28 @@ LABEL_24:
   return v25;
 }
 
-+ (id)_extractNamespaceFromCategoryName:(id)a3 error:(id *)a4
++ (id)_extractNamespaceFromCategoryName:(id)name error:(id *)error
 {
   v26 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  nameCopy = name;
   v19 = 0;
   v6 = [MEMORY[0x277CCAC68] regularExpressionWithPattern:@"(?<=urn:)(.+)(?=:)" options:1 error:&v19];
   v7 = v19;
   if (v6)
   {
-    v8 = [v6 rangeOfFirstMatchInString:v5 options:0 range:{0, objc_msgSend(v5, "length")}];
+    v8 = [v6 rangeOfFirstMatchInString:nameCopy options:0 range:{0, objc_msgSend(nameCopy, "length")}];
     if (v8 == 0x7FFFFFFFFFFFFFFFLL)
     {
       v10 = MEMORY[0x277CCA9B8];
       v20 = *MEMORY[0x277CCA068];
-      v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to extract namespace from category name: %@", v5];
-      v21 = v11;
+      nameCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to extract namespace from category name: %@", nameCopy];
+      v21 = nameCopy;
       v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v21 forKeys:&v20 count:1];
       v13 = [v10 errorWithDomain:@"com.apple.siri.speech-profile.tools" code:2 userInfo:v12];
-      if (a4 && v13)
+      if (error && v13)
       {
         v13 = v13;
-        *a4 = v13;
+        *error = v13;
       }
 
       v14 = 0;
@@ -169,7 +169,7 @@ LABEL_24:
 
     else
     {
-      v14 = [v5 substringWithRange:{v8, v9}];
+      v14 = [nameCopy substringWithRange:{v8, v9}];
     }
   }
 
@@ -186,11 +186,11 @@ LABEL_24:
     }
 
     v14 = 0;
-    if (a4 && v7)
+    if (error && v7)
     {
       v16 = v7;
       v14 = 0;
-      *a4 = v7;
+      *error = v7;
     }
   }
 
@@ -199,13 +199,13 @@ LABEL_24:
   return v14;
 }
 
-+ (id)_extractEntitiesFromCategoryData:(id)a3 categoryName:(id)a4 error:(id *)a5
++ (id)_extractEntitiesFromCategoryData:(id)data categoryName:(id)name error:(id *)error
 {
   v39[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v35 = a4;
-  v7 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v6, "count")}];
-  if (![v6 count])
+  dataCopy = data;
+  nameCopy = name;
+  v7 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(dataCopy, "count")}];
+  if (![dataCopy count])
   {
 LABEL_15:
     v16 = v7;
@@ -214,10 +214,10 @@ LABEL_15:
 
   v8 = 0;
   v33 = v7;
-  v34 = v6;
+  v34 = dataCopy;
   while (1)
   {
-    v9 = [v6 objectAtIndex:v8];
+    v9 = [dataCopy objectAtIndex:v8];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -240,14 +240,14 @@ LABEL_15:
       v38 = *MEMORY[0x277CCA068];
       v27 = MEMORY[0x277CCACA8];
       v28 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v8];
-      v29 = [v27 stringWithFormat:@"rawSpeechProfile has malformed entity words array at index: %@ in category: %@", v28, v35];
-      v39[0] = v29;
+      nameCopy = [v27 stringWithFormat:@"rawSpeechProfile has malformed entity words array at index: %@ in category: %@", v28, nameCopy];
+      v39[0] = nameCopy;
       v30 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v39 forKeys:&v38 count:1];
       v31 = [v26 errorWithDomain:@"com.apple.siri.speech-profile.tools" code:1 userInfo:v30];
-      if (a5 && v31)
+      if (error && v31)
       {
         v31 = v31;
-        *a5 = v31;
+        *error = v31;
       }
 
       v16 = 0;
@@ -264,10 +264,10 @@ LABEL_13:
     v7 = v33;
     [v33 addObject:v11];
 
-    v6 = v34;
+    dataCopy = v34;
 LABEL_14:
 
-    if (++v8 >= [v6 count])
+    if (++v8 >= [dataCopy count])
     {
       goto LABEL_15;
     }
@@ -303,19 +303,19 @@ LABEL_14:
   v18 = MEMORY[0x277CCACA8];
   v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v8];
   v20 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v12];
-  v21 = [v18 stringWithFormat:@"rawSpeechProfile has malformed entity word dictionary at item index: %@ word index: %@ in category: %@", v19, v20, v35];
-  v37 = v21;
+  nameCopy2 = [v18 stringWithFormat:@"rawSpeechProfile has malformed entity word dictionary at item index: %@ word index: %@ in category: %@", v19, v20, nameCopy];
+  v37 = nameCopy2;
   v22 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v37 forKeys:&v36 count:1];
   v23 = [v17 errorWithDomain:@"com.apple.siri.speech-profile.tools" code:1 userInfo:v22];
-  if (a5 && v23)
+  if (error && v23)
   {
     v23 = v23;
-    *a5 = v23;
+    *error = v23;
   }
 
   v16 = 0;
   v7 = v33;
-  v6 = v34;
+  dataCopy = v34;
 LABEL_20:
 
   v24 = *MEMORY[0x277D85DE8];
@@ -323,11 +323,11 @@ LABEL_20:
   return v16;
 }
 
-+ (BOOL)_isValidCategoryWithName:(id)a3 data:(id)a4 error:(id *)a5
++ (BOOL)_isValidCategoryWithName:(id)name data:(id)data error:(id *)error
 {
   v30[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  dataCopy = data;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -345,7 +345,7 @@ LABEL_20:
     v13 = NSStringFromClass(v21);
     v22 = objc_opt_class();
     v15 = NSStringFromClass(v22);
-    v16 = [v20 stringWithFormat:@"rawSpeechProfile has unexpected value class for category: %@. Found: %@ expected: %@", v7, v13, v15, v27];
+    v16 = [v20 stringWithFormat:@"rawSpeechProfile has unexpected value class for category: %@. Found: %@ expected: %@", nameCopy, v13, v15, v27];
     v28 = v16;
     v17 = MEMORY[0x277CBEAC0];
     v18 = &v28;
@@ -370,10 +370,10 @@ LABEL_20:
 
   v23 = [v17 dictionaryWithObjects:v18 forKeys:v19 count:1];
   v24 = [v10 errorWithDomain:@"com.apple.siri.speech-profile.tools" code:1 userInfo:v23];
-  if (a5 && v24)
+  if (error && v24)
   {
     v24 = v24;
-    *a5 = v24;
+    *error = v24;
   }
 
   v9 = 0;
@@ -383,16 +383,16 @@ LABEL_10:
   return v9;
 }
 
-+ (id)_dictionaryFromUserDataArray:(id)a3 error:(id *)a4
++ (id)_dictionaryFromUserDataArray:(id)array error:(id *)error
 {
   v49 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  arrayCopy = array;
   v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v6 = v4;
+  v6 = arrayCopy;
   v7 = [v6 countByEnumeratingWithState:&v36 objects:v48 count:16];
   if (v7)
   {
@@ -431,10 +431,10 @@ LABEL_3:
         v45 = v23;
         v25 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v45 forKeys:&v44 count:1];
         v31 = [v27 errorWithDomain:@"com.apple.siri.speech-profile.tools" code:1 userInfo:v25];
-        if (a4 && v31)
+        if (error && v31)
         {
           v31 = v31;
-          *a4 = v31;
+          *error = v31;
         }
 
 LABEL_22:
@@ -488,7 +488,7 @@ LABEL_22:
     v23 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v47 forKeys:&v46 count:1];
     v24 = [v17 errorWithDomain:@"com.apple.siri.speech-profile.tools" code:1 userInfo:v23];
     v25 = v24;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_22;
     }
@@ -498,7 +498,7 @@ LABEL_22:
     if (v24)
     {
       v26 = v24;
-      *a4 = v25;
+      *error = v25;
     }
 
 LABEL_23:
@@ -517,21 +517,21 @@ LABEL_24:
   return v16;
 }
 
-+ (id)_extractUserDataFromRawSpeechProfile:(id)a3 error:(id *)a4
++ (id)_extractUserDataFromRawSpeechProfile:(id)profile error:(id *)error
 {
   v27[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  profileCopy = profile;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v5 objectForKey:@"userData"];
+    v6 = [profileCopy objectForKey:@"userData"];
     objc_opt_class();
     if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v7 = [objc_opt_class() _dictionaryFromUserDataArray:v6 error:a4];
+        v7 = [objc_opt_class() _dictionaryFromUserDataArray:v6 error:error];
       }
 
       else
@@ -557,10 +557,10 @@ LABEL_24:
     v25 = v21;
     v22 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v25 forKeys:&v24 count:1];
     v23 = [v13 errorWithDomain:@"com.apple.siri.speech-profile.tools" code:1 userInfo:v22];
-    if (a4 && v23)
+    if (error && v23)
     {
       v23 = v23;
-      *a4 = v23;
+      *error = v23;
     }
   }
 
@@ -571,10 +571,10 @@ LABEL_24:
     v27[0] = @"rawSpeechProfile is nil or not an instance of NSDictionary.";
     v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v27 forKeys:&v26 count:1];
     v9 = [v8 errorWithDomain:@"com.apple.siri.speech-profile.tools" code:1 userInfo:v6];
-    if (a4 && v9)
+    if (error && v9)
     {
       v9 = v9;
-      *a4 = v9;
+      *error = v9;
     }
   }
 
@@ -586,12 +586,12 @@ LABEL_13:
   return v10;
 }
 
-+ (id)extractItemsFromRawSpeechProfile:(id)a3 converter:(id)a4 error:(id *)a5
++ (id)extractItemsFromRawSpeechProfile:(id)profile converter:(id)converter error:(id *)error
 {
   v35 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = [objc_opt_class() _extractUserDataFromRawSpeechProfile:v7 error:a5];
+  profileCopy = profile;
+  converterCopy = converter;
+  v9 = [objc_opt_class() _extractUserDataFromRawSpeechProfile:profileCopy error:error];
   if (v9)
   {
     v10 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -605,7 +605,7 @@ LABEL_13:
     {
       v12 = v11;
       v29 = *v31;
-      v26 = v7;
+      v26 = profileCopy;
       v27 = v10;
       while (2)
       {
@@ -619,31 +619,31 @@ LABEL_13:
           v14 = *(*(&v30 + 1) + 8 * i);
           v15 = v9;
           v16 = [v9 objectForKey:{v14, v26}];
-          if (![objc_opt_class() _isValidCategoryWithName:v14 data:v16 error:a5])
+          if (![objc_opt_class() _isValidCategoryWithName:v14 data:v16 error:error])
           {
             goto LABEL_17;
           }
 
-          v17 = [v8 speechCategoryId];
-          v18 = [v14 hasSuffix:v17];
+          speechCategoryId = [converterCopy speechCategoryId];
+          v18 = [v14 hasSuffix:speechCategoryId];
 
           if (v18)
           {
-            v19 = [objc_opt_class() _extractEntitiesFromCategoryData:v16 categoryName:v14 error:a5];
+            v19 = [objc_opt_class() _extractEntitiesFromCategoryData:v16 categoryName:v14 error:error];
             if (!v19)
             {
               goto LABEL_17;
             }
 
             v20 = v19;
-            v21 = [objc_opt_class() _convertItemsFromEntities:v19 categoryName:v14 converter:v8 error:a5];
+            v21 = [objc_opt_class() _convertItemsFromEntities:v19 categoryName:v14 converter:converterCopy error:error];
             if (!v21)
             {
 
 LABEL_17:
               v23 = 0;
               v9 = v15;
-              v7 = v26;
+              profileCopy = v26;
               v10 = v27;
               goto LABEL_18;
             }
@@ -656,7 +656,7 @@ LABEL_17:
         }
 
         v12 = [obj countByEnumeratingWithState:&v30 objects:v34 count:16];
-        v7 = v26;
+        profileCopy = v26;
         v10 = v27;
         if (v12)
         {
@@ -681,14 +681,14 @@ LABEL_18:
   return v23;
 }
 
-+ (id)extractLocaleFromRawSpeechProfile:(id)a3 error:(id *)a4
++ (id)extractLocaleFromRawSpeechProfile:(id)profile error:(id *)error
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  profileCopy = profile;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v5 objectForKey:@"language"];
+    v6 = [profileCopy objectForKey:@"language"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -701,10 +701,10 @@ LABEL_18:
     v17 = v11;
     v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v17 forKeys:&v16 count:1];
     v13 = [v10 errorWithDomain:@"com.apple.siri.speech-profile.tools" code:1 userInfo:v12];
-    if (a4 && v13)
+    if (error && v13)
     {
       v13 = v13;
-      *a4 = v13;
+      *error = v13;
     }
   }
 
@@ -715,10 +715,10 @@ LABEL_18:
     v19[0] = @"rawSpeechProfile is nil or not an instance of NSDictionary.";
     v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:&v18 count:1];
     v9 = [v8 errorWithDomain:@"com.apple.siri.speech-profile.tools" code:1 userInfo:v6];
-    if (a4 && v9)
+    if (error && v9)
     {
       v9 = v9;
-      *a4 = v9;
+      *error = v9;
     }
   }
 

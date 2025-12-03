@@ -3,41 +3,41 @@
 + (UIEdgeInsets)paddingOutsideRing;
 + (double)highlightedCircleViewAlpha;
 + (double)unhighlightedCircleViewAlpha;
-- (id)initForCharacter:(int64_t)a3;
+- (id)initForCharacter:(int64_t)character;
 - (id)stringCharacter;
 - (int)characterType;
-- (void)setReduceTransparencyButtonColor:(id)a3;
+- (void)setReduceTransparencyButtonColor:(id)color;
 @end
 
 @implementation SBLightPasscodeNumberPadButton
 
-- (id)initForCharacter:(int64_t)a3
+- (id)initForCharacter:(int64_t)character
 {
   v14.receiver = self;
   v14.super_class = SBLightPasscodeNumberPadButton;
-  v3 = [(TPNumberPadButton *)&v14 initForCharacter:a3];
+  v3 = [(TPNumberPadButton *)&v14 initForCharacter:character];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 revealingRingView];
-    v6 = [MEMORY[0x1E69DC888] clearColor];
-    [v5 setColorInsideRing:v6];
+    revealingRingView = [v3 revealingRingView];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [revealingRingView setColorInsideRing:clearColor];
 
-    v7 = [v4 revealingRingView];
-    v8 = [MEMORY[0x1E69DC888] clearColor];
-    [v7 setColorOutsideRing:v8];
+    revealingRingView2 = [v4 revealingRingView];
+    clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+    [revealingRingView2 setColorOutsideRing:clearColor2];
 
-    v9 = [v4 revealingRingView];
-    [v9 setRevealAnimationDuration:0.0];
+    revealingRingView3 = [v4 revealingRingView];
+    [revealingRingView3 setRevealAnimationDuration:0.0];
 
-    v10 = [v4 revealingRingView];
-    [v10 setUnrevealAnimationDuration:0.392500013];
+    revealingRingView4 = [v4 revealingRingView];
+    [revealingRingView4 setUnrevealAnimationDuration:0.392500013];
 
-    v11 = [v4 layer];
-    LODWORD(v8) = [v11 disableUpdateMask];
+    layer = [v4 layer];
+    LODWORD(clearColor2) = [layer disableUpdateMask];
 
-    v12 = [v4 layer];
-    [v12 setDisableUpdateMask:v8 | 0x10];
+    layer2 = [v4 layer];
+    [layer2 setDisableUpdateMask:clearColor2 | 0x10];
   }
 
   return v4;
@@ -45,16 +45,16 @@
 
 - (int)characterType
 {
-  v2 = [(TPNumberPadButton *)self character];
+  character = [(TPNumberPadButton *)self character];
 
-  return [SBPasscodeNumberPadButton _characterTypeForCharacter:v2];
+  return [SBPasscodeNumberPadButton _characterTypeForCharacter:character];
 }
 
 - (id)stringCharacter
 {
-  v2 = [(TPNumberPadButton *)self character];
+  character = [(TPNumberPadButton *)self character];
 
-  return [SBPasscodeNumberPadButton _stringCharacterForCharacter:v2];
+  return [SBPasscodeNumberPadButton _stringCharacterForCharacter:character];
 }
 
 + (CGSize)defaultSize
@@ -75,23 +75,23 @@
   return result;
 }
 
-- (void)setReduceTransparencyButtonColor:(id)a3
+- (void)setReduceTransparencyButtonColor:(id)color
 {
-  v5 = a3;
-  if (self->_reduceTransparencyButtonColor != v5)
+  colorCopy = color;
+  if (self->_reduceTransparencyButtonColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_reduceTransparencyButtonColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_reduceTransparencyButtonColor, color);
     [(TPNumberPadButton *)self setColor:self->_reduceTransparencyButtonColor];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
 + (double)unhighlightedCircleViewAlpha
 {
-  v2 = [a1 _shouldUseAlternativeCirlceViewAlphas];
+  _shouldUseAlternativeCirlceViewAlphas = [self _shouldUseAlternativeCirlceViewAlphas];
   result = 0.1;
-  if (v2)
+  if (_shouldUseAlternativeCirlceViewAlphas)
   {
     return 0.47;
   }
@@ -101,9 +101,9 @@
 
 + (double)highlightedCircleViewAlpha
 {
-  v2 = [a1 _shouldUseAlternativeCirlceViewAlphas];
+  _shouldUseAlternativeCirlceViewAlphas = [self _shouldUseAlternativeCirlceViewAlphas];
   result = 0.3;
-  if (v2)
+  if (_shouldUseAlternativeCirlceViewAlphas)
   {
     return 0.9;
   }

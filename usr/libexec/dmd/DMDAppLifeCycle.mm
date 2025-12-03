@@ -1,15 +1,15 @@
 @interface DMDAppLifeCycle
 + (id)_lifeCycleByBundleIdentifier;
-+ (id)lifeCycleForBundleIdentifier:(id)a3;
-+ (void)_removeLifeCycleForBundleIdentifier:(id)a3;
++ (id)lifeCycleForBundleIdentifier:(id)identifier;
++ (void)_removeLifeCycleForBundleIdentifier:(id)identifier;
 - (BOOL)_isStale;
-- (BOOL)_isUnchangedForInterval:(double)a3;
-- (DMDAppLifeCycle)initWithBundleIdentifier:(id)a3;
-- (DMDAppLifeCycle)initWithBundleIdentifier:(id)a3 currentState:(unint64_t)a4;
+- (BOOL)_isUnchangedForInterval:(double)interval;
+- (DMDAppLifeCycle)initWithBundleIdentifier:(id)identifier;
+- (DMDAppLifeCycle)initWithBundleIdentifier:(id)identifier currentState:(unint64_t)state;
 - (NSString)currentStateName;
 - (unint64_t)currentState;
 - (void)_updateLastModified;
-- (void)addObserver:(id)a3;
+- (void)addObserver:(id)observer;
 - (void)cancelAndWaitUntilAllOperationsAreFinished;
 - (void)didCancelInstalling;
 - (void)didCancelUpdating;
@@ -28,7 +28,7 @@
 - (void)didResumeUpdating;
 - (void)didStartInstalling;
 - (void)didStartUpdating;
-- (void)removeObserver:(id)a3;
+- (void)removeObserver:(id)observer;
 - (void)willStartInstalling;
 - (void)willStartUninstalling;
 - (void)willStartUpdating;
@@ -36,23 +36,23 @@
 
 @implementation DMDAppLifeCycle
 
-+ (id)lifeCycleForBundleIdentifier:(id)a3
++ (id)lifeCycleForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = a1;
-  objc_sync_enter(v5);
-  v6 = [v5 _lifeCycleByBundleIdentifier];
-  v7 = [v6 objectForKeyedSubscript:v4];
+  identifierCopy = identifier;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  _lifeCycleByBundleIdentifier = [selfCopy _lifeCycleByBundleIdentifier];
+  v7 = [_lifeCycleByBundleIdentifier objectForKeyedSubscript:identifierCopy];
   if ([v7 _isStale])
   {
-    v8 = [v7 observers];
+    observers = [v7 observers];
     v9 = DMFAppLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v14 = 134218242;
-      v15 = [v8 count];
+      v15 = [observers count];
       v16 = 2114;
-      v17 = v4;
+      v17 = identifierCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Preserving %lu observers for bundle ID: %{public}@", &v14, 0x16u);
     }
 
@@ -60,19 +60,19 @@
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v14 = 138543362;
-      v15 = v4;
+      v15 = identifierCopy;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Discard stale app lifecycle for bundle ID: %{public}@", &v14, 0xCu);
     }
 
 LABEL_10:
-    v12 = [objc_alloc(objc_opt_class()) initWithBundleIdentifier:v4];
+    v12 = [objc_alloc(objc_opt_class()) initWithBundleIdentifier:identifierCopy];
     v7 = v12;
-    if (v8)
+    if (observers)
     {
-      [v12 setObservers:v8];
+      [v12 setObservers:observers];
     }
 
-    [v6 setObject:v7 forKeyedSubscript:v4];
+    [_lifeCycleByBundleIdentifier setObject:v7 forKeyedSubscript:identifierCopy];
     [v7 didResetState];
     goto LABEL_13;
   }
@@ -81,11 +81,11 @@ LABEL_10:
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 138543362;
-    v15 = v4;
+    v15 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Lifecycle is not stale for bundle ID: %{public}@", &v14, 0xCu);
   }
 
-  v8 = 0;
+  observers = 0;
   if (!v7)
   {
     goto LABEL_10;
@@ -93,20 +93,20 @@ LABEL_10:
 
 LABEL_13:
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }
 
-+ (void)_removeLifeCycleForBundleIdentifier:(id)a3
++ (void)_removeLifeCycleForBundleIdentifier:(id)identifier
 {
-  v6 = a3;
-  v4 = a1;
-  objc_sync_enter(v4);
-  v5 = [v4 _lifeCycleByBundleIdentifier];
-  [v5 setObject:0 forKeyedSubscript:v6];
+  identifierCopy = identifier;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  _lifeCycleByBundleIdentifier = [selfCopy _lifeCycleByBundleIdentifier];
+  [_lifeCycleByBundleIdentifier setObject:0 forKeyedSubscript:identifierCopy];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 + (id)_lifeCycleByBundleIdentifier
@@ -121,7 +121,7 @@ LABEL_13:
   return v3;
 }
 
-- (DMDAppLifeCycle)initWithBundleIdentifier:(id)a3
+- (DMDAppLifeCycle)initWithBundleIdentifier:(id)identifier
 {
   v5 = +[NSAssertionHandler currentHandler];
   v6 = NSStringFromSelector(a2);
@@ -130,15 +130,15 @@ LABEL_13:
   return 0;
 }
 
-- (DMDAppLifeCycle)initWithBundleIdentifier:(id)a3 currentState:(unint64_t)a4
+- (DMDAppLifeCycle)initWithBundleIdentifier:(id)identifier currentState:(unint64_t)state
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v52.receiver = self;
   v52.super_class = DMDAppLifeCycle;
   v7 = [(DMDAppLifeCycle *)&v52 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [identifierCopy copy];
     bundleIdentifier = v7->_bundleIdentifier;
     v7->_bundleIdentifier = v8;
 
@@ -154,8 +154,8 @@ LABEL_13:
     queue = v7->_queue;
     v7->_queue = v14;
 
-    v16 = [NSString stringWithFormat:@"com.apple.dmd.%@.%p(%@).queue", objc_opt_class(), v7, v6];
-    [(NSOperationQueue *)v7->_queue setName:v16];
+    identifierCopy = [NSString stringWithFormat:@"com.apple.dmd.%@.%p(%@).queue", objc_opt_class(), v7, identifierCopy];
+    [(NSOperationQueue *)v7->_queue setName:identifierCopy];
 
     [(NSOperationQueue *)v7->_queue setMaxConcurrentOperationCount:1];
     v17 = [[CATStateMachine alloc] initWithTarget:v7];
@@ -164,9 +164,9 @@ LABEL_13:
 
     v19 = v7->_stateMachine;
     [DMFApp stringForInstallationState:0];
-    v20 = v50 = v6;
+    v20 = v50 = identifierCopy;
     [(CATStateMachine *)v19 addStateWithName:v20];
-    v21 = v49 = a4;
+    v21 = v49 = state;
 
     v22 = v7->_stateMachine;
     v23 = [DMFApp stringForInstallationState:1];
@@ -224,7 +224,7 @@ LABEL_13:
     v46 = [(CATStateMachine *)v44 stateWithName:v45];
     [(CATStateMachine *)v7->_stateMachine setInitialState:v46];
 
-    v6 = v50;
+    identifierCopy = v50;
     [(CATStateMachine *)v7->_stateMachine setLogLevel:2];
     [(CATStateMachine *)v7->_stateMachine start];
   }
@@ -234,9 +234,9 @@ LABEL_13:
 
 - (BOOL)_isStale
 {
-  v3 = [(DMDAppLifeCycle *)self _isInTransitoryState];
+  _isInTransitoryState = [(DMDAppLifeCycle *)self _isInTransitoryState];
   v4 = 60.0;
-  if (v3)
+  if (_isInTransitoryState)
   {
     v4 = 10.0;
   }
@@ -244,13 +244,13 @@ LABEL_13:
   return [(DMDAppLifeCycle *)self _isUnchangedForInterval:v4];
 }
 
-- (BOOL)_isUnchangedForInterval:(double)a3
+- (BOOL)_isUnchangedForInterval:(double)interval
 {
-  v4 = [(DMDAppLifeCycle *)self lastModified];
-  [v4 timeIntervalSinceNow];
+  lastModified = [(DMDAppLifeCycle *)self lastModified];
+  [lastModified timeIntervalSinceNow];
   v6 = -v5;
 
-  return v6 >= a3;
+  return v6 >= interval;
 }
 
 - (void)_updateLastModified
@@ -277,10 +277,10 @@ LABEL_13:
   v8[4] = self;
   v8[5] = &v9;
   v3 = [NSBlockOperation blockOperationWithBlock:v8];
-  v4 = [(DMDAppLifeCycle *)self queue];
+  queue = [(DMDAppLifeCycle *)self queue];
   v13 = v3;
   v5 = [NSArray arrayWithObjects:&v13 count:1];
-  [v4 addOperations:v5 waitUntilFinished:1];
+  [queue addOperations:v5 waitUntilFinished:1];
 
   v6 = v10[3];
   _Block_object_dispose(&v9, 8);
@@ -302,10 +302,10 @@ LABEL_13:
   v8[4] = self;
   v8[5] = &v9;
   v3 = [NSBlockOperation blockOperationWithBlock:v8];
-  v4 = [(DMDAppLifeCycle *)self queue];
+  queue = [(DMDAppLifeCycle *)self queue];
   v15 = v3;
   v5 = [NSArray arrayWithObjects:&v15 count:1];
-  [v4 addOperations:v5 waitUntilFinished:1];
+  [queue addOperations:v5 waitUntilFinished:1];
 
   v6 = v10[5];
   _Block_object_dispose(&v9, 8);
@@ -315,256 +315,256 @@ LABEL_13:
 
 - (void)willStartInstalling
 {
-  v4 = [(DMDAppLifeCycle *)self queue];
+  queue = [(DMDAppLifeCycle *)self queue];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10001D6E0;
   v5[3] = &unk_1000CE578;
   v5[4] = self;
   v5[5] = a2;
-  [v4 addOperationWithBlock:v5];
+  [queue addOperationWithBlock:v5];
 }
 
 - (void)didStartInstalling
 {
-  v4 = [(DMDAppLifeCycle *)self queue];
+  queue = [(DMDAppLifeCycle *)self queue];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10001D914;
   v5[3] = &unk_1000CE578;
   v5[4] = self;
   v5[5] = a2;
-  [v4 addOperationWithBlock:v5];
+  [queue addOperationWithBlock:v5];
 }
 
 - (void)didPauseInstalling
 {
-  v4 = [(DMDAppLifeCycle *)self queue];
+  queue = [(DMDAppLifeCycle *)self queue];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10001DB48;
   v5[3] = &unk_1000CE578;
   v5[4] = self;
   v5[5] = a2;
-  [v4 addOperationWithBlock:v5];
+  [queue addOperationWithBlock:v5];
 }
 
 - (void)didResumeInstalling
 {
-  v4 = [(DMDAppLifeCycle *)self queue];
+  queue = [(DMDAppLifeCycle *)self queue];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10001DD7C;
   v5[3] = &unk_1000CE578;
   v5[4] = self;
   v5[5] = a2;
-  [v4 addOperationWithBlock:v5];
+  [queue addOperationWithBlock:v5];
 }
 
 - (void)didCancelInstalling
 {
-  v4 = [(DMDAppLifeCycle *)self queue];
+  queue = [(DMDAppLifeCycle *)self queue];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10001DFB0;
   v5[3] = &unk_1000CE578;
   v5[4] = self;
   v5[5] = a2;
-  [v4 addOperationWithBlock:v5];
+  [queue addOperationWithBlock:v5];
 }
 
 - (void)didFailInstalling
 {
-  v4 = [(DMDAppLifeCycle *)self queue];
+  queue = [(DMDAppLifeCycle *)self queue];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10001E1E4;
   v5[3] = &unk_1000CE578;
   v5[4] = self;
   v5[5] = a2;
-  [v4 addOperationWithBlock:v5];
+  [queue addOperationWithBlock:v5];
 }
 
 - (void)didFinishInstalling
 {
-  v4 = [(DMDAppLifeCycle *)self queue];
+  queue = [(DMDAppLifeCycle *)self queue];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10001E418;
   v5[3] = &unk_1000CE578;
   v5[4] = self;
   v5[5] = a2;
-  [v4 addOperationWithBlock:v5];
+  [queue addOperationWithBlock:v5];
 }
 
 - (void)willStartUpdating
 {
-  v4 = [(DMDAppLifeCycle *)self queue];
+  queue = [(DMDAppLifeCycle *)self queue];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10001E64C;
   v5[3] = &unk_1000CE578;
   v5[4] = self;
   v5[5] = a2;
-  [v4 addOperationWithBlock:v5];
+  [queue addOperationWithBlock:v5];
 }
 
 - (void)didStartUpdating
 {
-  v4 = [(DMDAppLifeCycle *)self queue];
+  queue = [(DMDAppLifeCycle *)self queue];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10001E880;
   v5[3] = &unk_1000CE578;
   v5[4] = self;
   v5[5] = a2;
-  [v4 addOperationWithBlock:v5];
+  [queue addOperationWithBlock:v5];
 }
 
 - (void)didPauseUpdating
 {
-  v4 = [(DMDAppLifeCycle *)self queue];
+  queue = [(DMDAppLifeCycle *)self queue];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10001EAB4;
   v5[3] = &unk_1000CE578;
   v5[4] = self;
   v5[5] = a2;
-  [v4 addOperationWithBlock:v5];
+  [queue addOperationWithBlock:v5];
 }
 
 - (void)didResumeUpdating
 {
-  v4 = [(DMDAppLifeCycle *)self queue];
+  queue = [(DMDAppLifeCycle *)self queue];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10001ECE8;
   v5[3] = &unk_1000CE578;
   v5[4] = self;
   v5[5] = a2;
-  [v4 addOperationWithBlock:v5];
+  [queue addOperationWithBlock:v5];
 }
 
 - (void)didCancelUpdating
 {
-  v4 = [(DMDAppLifeCycle *)self queue];
+  queue = [(DMDAppLifeCycle *)self queue];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10001EF1C;
   v5[3] = &unk_1000CE578;
   v5[4] = self;
   v5[5] = a2;
-  [v4 addOperationWithBlock:v5];
+  [queue addOperationWithBlock:v5];
 }
 
 - (void)didFailUpdating
 {
-  v4 = [(DMDAppLifeCycle *)self queue];
+  queue = [(DMDAppLifeCycle *)self queue];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10001F150;
   v5[3] = &unk_1000CE578;
   v5[4] = self;
   v5[5] = a2;
-  [v4 addOperationWithBlock:v5];
+  [queue addOperationWithBlock:v5];
 }
 
 - (void)didFinishUpdating
 {
-  v4 = [(DMDAppLifeCycle *)self queue];
+  queue = [(DMDAppLifeCycle *)self queue];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10001F384;
   v5[3] = &unk_1000CE578;
   v5[4] = self;
   v5[5] = a2;
-  [v4 addOperationWithBlock:v5];
+  [queue addOperationWithBlock:v5];
 }
 
 - (void)willStartUninstalling
 {
-  v4 = [(DMDAppLifeCycle *)self queue];
+  queue = [(DMDAppLifeCycle *)self queue];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10001F5B8;
   v5[3] = &unk_1000CE578;
   v5[4] = self;
   v5[5] = a2;
-  [v4 addOperationWithBlock:v5];
+  [queue addOperationWithBlock:v5];
 }
 
 - (void)didFailUninstalling
 {
-  v4 = [(DMDAppLifeCycle *)self queue];
+  queue = [(DMDAppLifeCycle *)self queue];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10001F7EC;
   v5[3] = &unk_1000CE578;
   v5[4] = self;
   v5[5] = a2;
-  [v4 addOperationWithBlock:v5];
+  [queue addOperationWithBlock:v5];
 }
 
 - (void)didFinishUninstalling
 {
-  v4 = [(DMDAppLifeCycle *)self queue];
+  queue = [(DMDAppLifeCycle *)self queue];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10001FA20;
   v5[3] = &unk_1000CE578;
   v5[4] = self;
   v5[5] = a2;
-  [v4 addOperationWithBlock:v5];
+  [queue addOperationWithBlock:v5];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(DMDAppLifeCycle *)self queue];
+  observerCopy = observer;
+  queue = [(DMDAppLifeCycle *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10001FC74;
   v7[3] = &unk_1000CDC38;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 addOperationWithBlock:v7];
+  v8 = observerCopy;
+  v6 = observerCopy;
+  [queue addOperationWithBlock:v7];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(DMDAppLifeCycle *)self queue];
+  observerCopy = observer;
+  queue = [(DMDAppLifeCycle *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10001FD7C;
   v7[3] = &unk_1000CDC38;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 addOperationWithBlock:v7];
+  v8 = observerCopy;
+  v6 = observerCopy;
+  [queue addOperationWithBlock:v7];
 }
 
 - (void)didChangeInstallingProgress
 {
-  v3 = [(DMDAppLifeCycle *)self queue];
+  queue = [(DMDAppLifeCycle *)self queue];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10001FED4;
   v4[3] = &unk_1000CE5A0;
   v4[4] = self;
-  [v3 addOperationWithBlock:v4];
+  [queue addOperationWithBlock:v4];
 }
 
 - (void)didChangeUpdatingProgress
 {
-  v3 = [(DMDAppLifeCycle *)self queue];
+  queue = [(DMDAppLifeCycle *)self queue];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100020080;
   v4[3] = &unk_1000CE5A0;
   v4[4] = self;
-  [v3 addOperationWithBlock:v4];
+  [queue addOperationWithBlock:v4];
 }
 
 - (void)didResetState
@@ -572,31 +572,31 @@ LABEL_13:
   v3 = DMFAppLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(DMDAppLifeCycle *)self bundleIdentifier];
-    v5 = [(DMDAppLifeCycle *)self observers];
+    bundleIdentifier = [(DMDAppLifeCycle *)self bundleIdentifier];
+    observers = [(DMDAppLifeCycle *)self observers];
     *buf = 138543618;
-    v10 = v4;
+    v10 = bundleIdentifier;
     v11 = 2048;
-    v12 = [v5 count];
+    v12 = [observers count];
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Did reset state for lifecycle for bundle ID: %{public}@, observer count = %lu", buf, 0x16u);
   }
 
-  v6 = [(DMDAppLifeCycle *)self currentState];
-  v7 = [(DMDAppLifeCycle *)self queue];
+  currentState = [(DMDAppLifeCycle *)self currentState];
+  queue = [(DMDAppLifeCycle *)self queue];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000202F8;
   v8[3] = &unk_1000CE578;
   v8[4] = self;
-  v8[5] = v6;
-  [v7 addOperationWithBlock:v8];
+  v8[5] = currentState;
+  [queue addOperationWithBlock:v8];
 }
 
 - (void)cancelAndWaitUntilAllOperationsAreFinished
 {
-  v2 = [(DMDAppLifeCycle *)self queue];
-  [v2 cancelAllOperations];
-  [v2 waitUntilAllOperationsAreFinished];
+  queue = [(DMDAppLifeCycle *)self queue];
+  [queue cancelAllOperations];
+  [queue waitUntilAllOperationsAreFinished];
 }
 
 @end

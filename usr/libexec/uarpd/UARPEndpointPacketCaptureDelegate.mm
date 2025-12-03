@@ -2,8 +2,8 @@
 - (UARPEndpointPacketCaptureDelegate)init;
 - (void)closeDumper;
 - (void)dealloc;
-- (void)dumpPacket:(id)a3 packetDirection:(unint64_t)a4;
-- (void)updateFilepath:(id)a3 uuid:(id)a4;
+- (void)dumpPacket:(id)packet packetDirection:(unint64_t)direction;
+- (void)updateFilepath:(id)filepath uuid:(id)uuid;
 @end
 
 @implementation UARPEndpointPacketCaptureDelegate
@@ -48,11 +48,11 @@
   }
 }
 
-- (void)dumpPacket:(id)a3 packetDirection:(unint64_t)a4
+- (void)dumpPacket:(id)packet packetDirection:(unint64_t)direction
 {
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  packetCopy = packet;
+  v7 = packetCopy;
+  if (packetCopy)
   {
     internalQueue = self->_internalQueue;
     block[0] = _NSConcreteStackBlock;
@@ -60,26 +60,26 @@
     block[2] = sub_100015D9C;
     block[3] = &unk_1000B8BC8;
     block[4] = self;
-    v11 = a4;
-    v10 = v6;
+    directionCopy = direction;
+    v10 = packetCopy;
     dispatch_async(internalQueue, block);
   }
 }
 
-- (void)updateFilepath:(id)a3 uuid:(id)a4
+- (void)updateFilepath:(id)filepath uuid:(id)uuid
 {
-  v6 = a3;
-  v7 = a4;
+  filepathCopy = filepath;
+  uuidCopy = uuid;
   internalQueue = self->_internalQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100015FE8;
   block[3] = &unk_1000B8B28;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = uuidCopy;
+  v13 = filepathCopy;
+  v9 = filepathCopy;
+  v10 = uuidCopy;
   dispatch_async(internalQueue, block);
 }
 

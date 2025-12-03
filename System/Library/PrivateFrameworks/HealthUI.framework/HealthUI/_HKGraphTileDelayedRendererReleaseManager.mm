@@ -1,9 +1,9 @@
 @interface _HKGraphTileDelayedRendererReleaseManager
 + (id)singleton;
-+ (void)handleDelayedRendererRelease:(id)a3 lastAssignmentTime:(double)a4;
++ (void)handleDelayedRendererRelease:(id)release lastAssignmentTime:(double)time;
 - (_HKGraphTileDelayedRendererReleaseManager)init;
-- (void)addRenderForDelayedRelease:(id)a3 lastAssignmentTime:(double)a4;
-- (void)releaseExpiredImageRenderers:(double)a3;
+- (void)addRenderForDelayedRelease:(id)release lastAssignmentTime:(double)time;
+- (void)releaseExpiredImageRenderers:(double)renderers;
 @end
 
 @implementation _HKGraphTileDelayedRendererReleaseManager
@@ -25,14 +25,14 @@
   return v3;
 }
 
-+ (void)handleDelayedRendererRelease:(id)a3 lastAssignmentTime:(double)a4
++ (void)handleDelayedRendererRelease:(id)release lastAssignmentTime:(double)time
 {
-  v7 = a3;
+  releaseCopy = release;
   v5 = +[_HKGraphTileDelayedRendererReleaseManager singleton];
   v6 = CACurrentMediaTime();
-  if (v6 - a4 < 3.0)
+  if (v6 - time < 3.0)
   {
-    [v5 addRenderForDelayedRelease:v7 lastAssignmentTime:a4];
+    [v5 addRenderForDelayedRelease:releaseCopy lastAssignmentTime:time];
   }
 
   [v5 releaseExpiredImageRenderers:v6];
@@ -44,7 +44,7 @@
   block[1] = 3221225472;
   block[2] = __54___HKGraphTileDelayedRendererReleaseManager_singleton__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (singleton_pred != -1)
   {
     dispatch_once(&singleton_pred, block);
@@ -55,31 +55,31 @@
   return v2;
 }
 
-- (void)addRenderForDelayedRelease:(id)a3 lastAssignmentTime:(double)a4
+- (void)addRenderForDelayedRelease:(id)release lastAssignmentTime:(double)time
 {
-  v6 = a3;
-  v8 = [[_HKGraphTileDelayedRendererEntry alloc] initWithImageRenderer:v6 lastAssignmentTime:a4];
+  releaseCopy = release;
+  v8 = [[_HKGraphTileDelayedRendererEntry alloc] initWithImageRenderer:releaseCopy lastAssignmentTime:time];
 
   os_unfair_lock_lock(&self->_entriesLock);
-  v7 = [(_HKGraphTileDelayedRendererReleaseManager *)self delayedEntries];
-  [v7 addObject:v8];
+  delayedEntries = [(_HKGraphTileDelayedRendererReleaseManager *)self delayedEntries];
+  [delayedEntries addObject:v8];
 
   os_unfair_lock_unlock(&self->_entriesLock);
 }
 
-- (void)releaseExpiredImageRenderers:(double)a3
+- (void)releaseExpiredImageRenderers:(double)renderers
 {
   v33 = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->_entriesLock);
-  v5 = [(_HKGraphTileDelayedRendererReleaseManager *)self delayedEntries];
-  v6 = [v5 count];
+  delayedEntries = [(_HKGraphTileDelayedRendererReleaseManager *)self delayedEntries];
+  v6 = [delayedEntries count];
 
   v29 = 0u;
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v7 = [(_HKGraphTileDelayedRendererReleaseManager *)self delayedEntries];
-  v8 = [v7 countByEnumeratingWithState:&v27 objects:v32 count:16];
+  delayedEntries2 = [(_HKGraphTileDelayedRendererReleaseManager *)self delayedEntries];
+  v8 = [delayedEntries2 countByEnumeratingWithState:&v27 objects:v32 count:16];
   if (v8)
   {
     v9 = v8;
@@ -94,19 +94,19 @@
       {
         if (*v28 != v12)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(delayedEntries2);
         }
 
-        if (v10 < v11 || ([*(*(&v27 + 1) + 8 * v13) expiredAtTime:a3] & 1) != 0)
+        if (v10 < v11 || ([*(*(&v27 + 1) + 8 * v13) expiredAtTime:renderers] & 1) != 0)
         {
 
-          v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
+          delayedEntries2 = objc_alloc_init(MEMORY[0x1E695DF70]);
           v23 = 0u;
           v24 = 0u;
           v25 = 0u;
           v26 = 0u;
-          v15 = [(_HKGraphTileDelayedRendererReleaseManager *)self delayedEntries];
-          v16 = [v15 countByEnumeratingWithState:&v23 objects:v31 count:16];
+          delayedEntries3 = [(_HKGraphTileDelayedRendererReleaseManager *)self delayedEntries];
+          v16 = [delayedEntries3 countByEnumeratingWithState:&v23 objects:v31 count:16];
           if (v16)
           {
             v17 = v16;
@@ -120,15 +120,15 @@
               {
                 if (*v24 != v19)
                 {
-                  objc_enumerationMutation(v15);
+                  objc_enumerationMutation(delayedEntries3);
                 }
 
                 if (v21 >= v11)
                 {
                   v22 = *(*(&v23 + 1) + 8 * v20);
-                  if (([v22 expiredAtTime:a3] & 1) == 0)
+                  if (([v22 expiredAtTime:renderers] & 1) == 0)
                   {
-                    [v7 addObject:v22];
+                    [delayedEntries2 addObject:v22];
                   }
                 }
 
@@ -138,13 +138,13 @@
 
               while (v17 != v20);
               v18 += v17;
-              v17 = [v15 countByEnumeratingWithState:&v23 objects:v31 count:16];
+              v17 = [delayedEntries3 countByEnumeratingWithState:&v23 objects:v31 count:16];
             }
 
             while (v17);
           }
 
-          [(_HKGraphTileDelayedRendererReleaseManager *)self setDelayedEntries:v7];
+          [(_HKGraphTileDelayedRendererReleaseManager *)self setDelayedEntries:delayedEntries2];
           goto LABEL_22;
         }
 
@@ -152,7 +152,7 @@
       }
 
       while (v9 != v13);
-      v9 = [v7 countByEnumeratingWithState:&v27 objects:v32 count:16];
+      v9 = [delayedEntries2 countByEnumeratingWithState:&v27 objects:v32 count:16];
       v10 = v14;
       if (v9)
       {

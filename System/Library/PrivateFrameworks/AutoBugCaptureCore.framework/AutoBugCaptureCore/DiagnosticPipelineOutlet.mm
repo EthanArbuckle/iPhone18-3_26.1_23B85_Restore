@@ -1,10 +1,10 @@
 @interface DiagnosticPipelineOutlet
-- (BOOL)logRequiresUploadConsent:(id)a3;
-- (BOOL)publishReportForCase:(id)a3 options:(id)a4;
-- (id)caseSignatureFieldFromCase:(uint64_t)a1;
-- (id)contextDictionaryFromCase:(uint64_t)a1;
-- (id)issueDescriptionFromCase:(uint64_t)a1;
-- (uint64_t)shouldPublishReportForCase:(uint64_t)a1;
+- (BOOL)logRequiresUploadConsent:(id)consent;
+- (BOOL)publishReportForCase:(id)case options:(id)options;
+- (id)caseSignatureFieldFromCase:(uint64_t)case;
+- (id)contextDictionaryFromCase:(uint64_t)case;
+- (id)issueDescriptionFromCase:(uint64_t)case;
+- (uint64_t)shouldPublishReportForCase:(uint64_t)case;
 @end
 
 @implementation DiagnosticPipelineOutlet
@@ -74,52 +74,52 @@ LABEL_11:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)logRequiresUploadConsent:(id)a3
+- (BOOL)logRequiresUploadConsent:(id)consent
 {
-  v3 = [a3 lastPathComponent];
+  lastPathComponent = [consent lastPathComponent];
   v4 = +[ABCAdministrator sharedInstance];
-  v5 = [v4 configurationManager];
-  v6 = [v5 autoBugCaptureUploadPreapproved];
+  configurationManager = [v4 configurationManager];
+  autoBugCaptureUploadPreapproved = [configurationManager autoBugCaptureUploadPreapproved];
 
-  if (v6)
+  if (autoBugCaptureUploadPreapproved)
   {
     v7 = 0;
   }
 
   else
   {
-    v7 = [v3 hasSuffix:@".pcapng"];
+    v7 = [lastPathComponent hasSuffix:@".pcapng"];
   }
 
   return v7;
 }
 
-- (id)contextDictionaryFromCase:(uint64_t)a1
+- (id)contextDictionaryFromCase:(uint64_t)case
 {
   v3 = a2;
-  if (a1)
+  if (case)
   {
     v4 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    v5 = [v3 caseId];
-    v6 = [v5 UUIDString];
+    caseId = [v3 caseId];
+    uUIDString = [caseId UUIDString];
     OUTLINED_FUNCTION_3_0();
 
-    v7 = [v3 caseGroupId];
+    caseGroupId = [v3 caseGroupId];
     OUTLINED_FUNCTION_2_0();
 
-    v8 = [v3 caseDomain];
+    caseDomain = [v3 caseDomain];
     OUTLINED_FUNCTION_2_0();
 
-    v9 = [v3 caseType];
+    caseType = [v3 caseType];
     OUTLINED_FUNCTION_2_0();
 
-    v10 = [v3 caseSubType];
+    caseSubType = [v3 caseSubType];
     OUTLINED_FUNCTION_2_0();
 
-    v11 = [v3 caseSubTypeContext];
+    caseSubTypeContext = [v3 caseSubTypeContext];
     OUTLINED_FUNCTION_2_0();
 
-    v12 = [v3 caseDetectedProcess];
+    caseDetectedProcess = [v3 caseDetectedProcess];
     OUTLINED_FUNCTION_2_0();
 
     v13 = MEMORY[0x277CCABB0];
@@ -127,91 +127,91 @@ LABEL_11:
     v14 = [v13 numberWithDouble:?];
     OUTLINED_FUNCTION_2_0();
 
-    v15 = [(DiagnosticPipelineOutlet *)a1 caseSignatureFieldFromCase:v3];
+    v15 = [(DiagnosticPipelineOutlet *)case caseSignatureFieldFromCase:v3];
     [v4 setObject:v15 forKeyedSubscript:@"caseSignature"];
 
     v16 = +[SystemProperties sharedInstance];
-    v17 = [v3 buildVariant];
-    if (v17)
+    buildVariant = [v3 buildVariant];
+    if (buildVariant)
     {
       OUTLINED_FUNCTION_2_0();
     }
 
     else
     {
-      v18 = [v16 buildVariant];
+      buildVariant2 = [v16 buildVariant];
       OUTLINED_FUNCTION_3_0();
     }
 
-    v19 = [v3 buildVersion];
-    if (v19)
+    buildVersion = [v3 buildVersion];
+    if (buildVersion)
     {
       OUTLINED_FUNCTION_2_0();
     }
 
     else
     {
-      v20 = [v16 buildVersion];
+      buildVersion2 = [v16 buildVersion];
       OUTLINED_FUNCTION_3_0();
     }
 
     v21 = +[ABCAdministrator sharedInstance];
-    v22 = [v21 configurationManager];
+    configurationManager = [v21 configurationManager];
 
-    v23 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v22, "hasAppleEmail")}];
+    v23 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(configurationManager, "hasAppleEmail")}];
     OUTLINED_FUNCTION_3_0();
 
-    v24 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v22, "isCarryDevice")}];
+    v24 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(configurationManager, "isCarryDevice")}];
     OUTLINED_FUNCTION_3_0();
 
-    v25 = [v3 basebandChipset];
-    v26 = v25;
-    if (v25)
+    basebandChipset = [v3 basebandChipset];
+    v26 = basebandChipset;
+    if (basebandChipset)
     {
-      v27 = v25;
+      basebandChipset2 = basebandChipset;
     }
 
     else
     {
-      v27 = [v16 basebandChipset];
+      basebandChipset2 = [v16 basebandChipset];
     }
 
-    v28 = v27;
+    v28 = basebandChipset2;
 
     if ([v28 length])
     {
       OUTLINED_FUNCTION_3_0();
     }
 
-    v29 = [v3 basebandFirmwareVersion];
-    v30 = v29;
-    if (v29)
+    basebandFirmwareVersion = [v3 basebandFirmwareVersion];
+    v30 = basebandFirmwareVersion;
+    if (basebandFirmwareVersion)
     {
-      v31 = v29;
+      basebandFirmwareVersion2 = basebandFirmwareVersion;
     }
 
     else
     {
-      v31 = [v16 basebandFirmwareVersion];
+      basebandFirmwareVersion2 = [v16 basebandFirmwareVersion];
     }
 
-    v32 = v31;
+    v32 = basebandFirmwareVersion2;
 
     if ([v32 length])
     {
       [v4 setObject:v32 forKeyedSubscript:@"basebandFirmwareVersion"];
     }
 
-    v33 = [v3 regulatoryDomainCountry];
-    if ([v33 length])
+    regulatoryDomainCountry = [v3 regulatoryDomainCountry];
+    if ([regulatoryDomainCountry length])
     {
-      [v4 setObject:v33 forKeyedSubscript:@"regulatoryDomainCountry"];
+      [v4 setObject:regulatoryDomainCountry forKeyedSubscript:@"regulatoryDomainCountry"];
     }
 
-    v34 = [v3 homeCarrier];
-    if ([v34 length])
+    homeCarrier = [v3 homeCarrier];
+    if ([homeCarrier length])
     {
-      [v4 setObject:v34 forKeyedSubscript:@"homeCarrier"];
+      [v4 setObject:homeCarrier forKeyedSubscript:@"homeCarrier"];
     }
   }
 
@@ -223,18 +223,18 @@ LABEL_11:
   return v4;
 }
 
-- (id)caseSignatureFieldFromCase:(uint64_t)a1
+- (id)caseSignatureFieldFromCase:(uint64_t)case
 {
-  if (a1)
+  if (case)
   {
     v2 = MEMORY[0x277CBEB18];
     v3 = a2;
     v4 = objc_alloc_init(v2);
-    v5 = [v3 caseDomain];
-    v6 = v5;
-    if (v5)
+    caseDomain = [v3 caseDomain];
+    v6 = caseDomain;
+    if (caseDomain)
     {
-      v7 = v5;
+      v7 = caseDomain;
     }
 
     else
@@ -244,20 +244,20 @@ LABEL_11:
 
     [v4 addObject:v7];
 
-    v8 = [v3 caseType];
-    OUTLINED_FUNCTION_1_1(v8);
+    caseType = [v3 caseType];
+    OUTLINED_FUNCTION_1_1(caseType);
 
-    v9 = [v3 caseSubType];
-    OUTLINED_FUNCTION_1_1(v9);
+    caseSubType = [v3 caseSubType];
+    OUTLINED_FUNCTION_1_1(caseSubType);
 
-    v10 = [v3 caseSubTypeContext];
-    OUTLINED_FUNCTION_1_1(v10);
+    caseSubTypeContext = [v3 caseSubTypeContext];
+    OUTLINED_FUNCTION_1_1(caseSubTypeContext);
 
-    v11 = [v3 caseDetectedProcess];
+    caseDetectedProcess = [v3 caseDetectedProcess];
 
-    if (v11)
+    if (caseDetectedProcess)
     {
-      v12 = v11;
+      v12 = caseDetectedProcess;
     }
 
     else
@@ -278,18 +278,18 @@ LABEL_11:
   return v13;
 }
 
-- (id)issueDescriptionFromCase:(uint64_t)a1
+- (id)issueDescriptionFromCase:(uint64_t)case
 {
-  if (a1)
+  if (case)
   {
     v2 = MEMORY[0x277CCACA8];
     v3 = a2;
     v4 = [v2 alloc];
-    v5 = [v3 caseDomain];
-    v6 = [v3 caseType];
-    v7 = [v3 caseSubType];
+    caseDomain = [v3 caseDomain];
+    caseType = [v3 caseType];
+    caseSubType = [v3 caseSubType];
 
-    v8 = [v4 initWithFormat:@"AutoBugCapture case for %@, type:%@ subtype:%@", v5, v6, v7];
+    v8 = [v4 initWithFormat:@"AutoBugCapture case for %@, type:%@ subtype:%@", caseDomain, caseType, caseSubType];
   }
 
   else
@@ -300,20 +300,20 @@ LABEL_11:
   return v8;
 }
 
-- (uint64_t)shouldPublishReportForCase:(uint64_t)a1
+- (uint64_t)shouldPublishReportForCase:(uint64_t)case
 {
   v40 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (!a1)
+  if (!case)
   {
     v13 = 0;
     goto LABEL_13;
   }
 
   v4 = +[ABCAdministrator sharedInstance];
-  v5 = [v4 configurationManager];
+  configurationManager = [v4 configurationManager];
 
-  if (![v5 submitToDiagnosticPipeline])
+  if (![configurationManager submitToDiagnosticPipeline])
   {
     v6 = casemanagementLogHandle();
     if (!os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -329,12 +329,12 @@ LABEL_8:
 
   if (![v3 dampeningType])
   {
-    v16 = [v3 attachments];
-    v17 = [v16 count];
+    attachments = [v3 attachments];
+    v17 = [attachments count];
 
     if (v17)
     {
-      [v5 diagnosticPipelineSubmissionRate];
+      [configurationManager diagnosticPipelineSubmissionRate];
       v19 = (v18 * 100.0);
       if (v19 > 0x63)
       {
@@ -438,19 +438,19 @@ LABEL_13:
   return v13;
 }
 
-- (BOOL)publishReportForCase:(id)a3 options:(id)a4
+- (BOOL)publishReportForCase:(id)case options:(id)options
 {
   v49 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([(DiagnosticPipelineOutlet *)self shouldPublishReportForCase:v6])
+  caseCopy = case;
+  optionsCopy = options;
+  if ([(DiagnosticPipelineOutlet *)self shouldPublishReportForCase:caseCopy])
   {
-    v8 = [v6 caseDomain];
-    v9 = [(DiagnosticPipelineOutlet *)self issueDescriptionFromCase:v6];
-    v10 = [(DiagnosticPipelineOutlet *)self contextDictionaryFromCase:v6];
+    caseDomain = [caseCopy caseDomain];
+    v9 = [(DiagnosticPipelineOutlet *)self issueDescriptionFromCase:caseCopy];
+    v10 = [(DiagnosticPipelineOutlet *)self contextDictionaryFromCase:caseCopy];
     v11 = +[ABCAdministrator sharedInstance];
-    v12 = [v11 configurationManager];
-    v13 = [v12 cloudKitEnabled];
+    configurationManager = [v11 configurationManager];
+    cloudKitEnabled = [configurationManager cloudKitEnabled];
 
     v41 = 0;
     v42 = &v41;
@@ -462,26 +462,26 @@ LABEL_13:
     v38 = __Block_byref_object_copy__1;
     v39 = __Block_byref_object_dispose__1;
     v40 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v14 = [v6 attachments];
+    attachments = [caseCopy attachments];
     v33[0] = MEMORY[0x277D85DD0];
     v33[1] = 3221225472;
     v33[2] = __57__DiagnosticPipelineOutlet_publishReportForCase_options___block_invoke;
     v33[3] = &unk_278CF0C18;
-    v34 = v13 ^ 1;
+    v34 = cloudKitEnabled ^ 1;
     v33[4] = self;
     v33[5] = &v41;
     v33[6] = buf;
-    [v14 enumerateObjectsUsingBlock:v33];
+    [attachments enumerateObjectsUsingBlock:v33];
 
     if (*(v42 + 24) == 1)
     {
       v15 = casemanagementLogHandle();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
-        v16 = [v6 caseId];
-        v17 = [v16 UUIDString];
+        caseId = [caseCopy caseId];
+        uUIDString = [caseId UUIDString];
         *v45 = 138543362;
-        v46 = v17;
+        v46 = uUIDString;
         OUTLINED_FUNCTION_4_0(&dword_241804000, v18, v19, "Submitting case id %{public}@ to DiagnosticPipeline");
       }
 
@@ -501,14 +501,14 @@ LABEL_13:
           *v45 = 138412546;
           v46 = v22;
           v47 = 2112;
-          v48 = v6;
+          v48 = caseCopy;
           _os_log_impl(&dword_241804000, v30, OS_LOG_TYPE_DEFAULT, "Error occurred when submitting case to DiagnosticPipeline: %@ (case: %@)", v45, 0x16u);
         }
 
         v23 = 4;
       }
 
-      [v6 setDPSubmissionState:v23];
+      [caseCopy setDPSubmissionState:v23];
     }
 
     else
@@ -516,14 +516,14 @@ LABEL_13:
       v25 = casemanagementLogHandle();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
       {
-        v26 = [v6 caseId];
-        v27 = [v26 UUIDString];
+        caseId2 = [caseCopy caseId];
+        uUIDString2 = [caseId2 UUIDString];
         *v45 = 138543362;
-        v46 = v27;
+        v46 = uUIDString2;
         OUTLINED_FUNCTION_4_0(&dword_241804000, v28, v29, "Skipping submission of case id %{public}@ to DiagnosticPipeline due to preflight errors");
       }
 
-      [v6 setDPSubmissionState:3];
+      [caseCopy setDPSubmissionState:3];
       v21 = 0;
     }
 
@@ -541,7 +541,7 @@ LABEL_13:
       _os_log_impl(&dword_241804000, v24, OS_LOG_TYPE_DEFAULT, "Case not eligible for submission to DiagnosticPipeline", buf, 2u);
     }
 
-    [v6 setDPSubmissionState:2];
+    [caseCopy setDPSubmissionState:2];
     v21 = 0;
   }
 

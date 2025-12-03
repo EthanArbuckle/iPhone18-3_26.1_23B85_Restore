@@ -1,10 +1,10 @@
 @interface KGElementFilter
 + (id)any;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)matchesElement:(id)a3;
-- (BOOL)matchesLabels:(id)a3;
-- (BOOL)matchesProperties:(id)a3;
-- (KGElementFilter)initWithRequiredLabels:(id)a3 optionalLabels:(id)a4 properties:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)matchesElement:(id)element;
+- (BOOL)matchesLabels:(id)labels;
+- (BOOL)matchesProperties:(id)properties;
+- (KGElementFilter)initWithRequiredLabels:(id)labels optionalLabels:(id)optionalLabels properties:(id)properties;
 - (unint64_t)hash;
 @end
 
@@ -17,17 +17,17 @@
   return ([(NSDictionary *)self->_properties hash]+ (v4 << 6) + (v4 >> 2) + 2654435769u) ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
-  else if ([(KGElementFilter *)v4 isMemberOfClass:objc_opt_class()])
+  else if ([(KGElementFilter *)equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = [(NSArray *)self->_requiredLabels isEqualToArray:v5->_requiredLabels]&& [(NSArray *)self->_optionalLabels isEqualToArray:v5->_optionalLabels]&& [(NSDictionary *)self->_properties isEqualToDictionary:v5->_properties];
   }
 
@@ -39,10 +39,10 @@
   return v6;
 }
 
-- (BOOL)matchesProperties:(id)a3
+- (BOOL)matchesProperties:(id)properties
 {
   v57 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  propertiesCopy = properties;
   if (![(NSDictionary *)self->_properties count])
   {
     v6 = 1;
@@ -50,7 +50,7 @@
   }
 
   v5 = [(NSDictionary *)self->_properties count];
-  if (v5 > [v4 count])
+  if (v5 > [propertiesCopy count])
   {
     v6 = 0;
     goto LABEL_68;
@@ -79,14 +79,14 @@
 
         v13 = *(*(&v51 + 1) + 8 * v12);
         v14 = [(NSDictionary *)self->_properties objectForKeyedSubscript:v13, v42];
-        v15 = [v4 objectForKeyedSubscript:v13];
-        v16 = [v15 kgPropertyValue];
+        v15 = [propertiesCopy objectForKeyedSubscript:v13];
+        kgPropertyValue = [v15 kgPropertyValue];
 
         v17 = *(v10 + 2656);
         objc_opt_class();
         if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
         {
-          v18 = [v14 containsObject:v16];
+          v18 = [v14 containsObject:kgPropertyValue];
         }
 
         else
@@ -95,13 +95,13 @@
           if (objc_opt_isKindOfClass())
           {
             v20 = v14;
-            v21 = [v20 value];
-            v22 = [v20 comparator];
-            if (v22 > 4)
+            value = [v20 value];
+            comparator = [v20 comparator];
+            if (comparator > 4)
             {
-              if (v22 <= 6)
+              if (comparator <= 6)
               {
-                if (v22 == 5)
+                if (comparator == 5)
                 {
                   objc_opt_class();
                   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -109,7 +109,7 @@
                     goto LABEL_64;
                   }
 
-                  v36 = [v16 compare:v21];
+                  v36 = [kgPropertyValue compare:value];
 
                   if (v36 != 1)
                   {
@@ -125,7 +125,7 @@
                     goto LABEL_64;
                   }
 
-                  v24 = [v16 compare:v21];
+                  v24 = [kgPropertyValue compare:value];
 
                   if (v24 == -1)
                   {
@@ -136,7 +136,7 @@
                 goto LABEL_59;
               }
 
-              if (v22 == 7)
+              if (comparator == 7)
               {
                 objc_opt_class();
                 if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -144,7 +144,7 @@
                   goto LABEL_64;
                 }
 
-                v37 = [v16 compare:v21 options:1];
+                v37 = [kgPropertyValue compare:value options:1];
 
                 if (v37)
                 {
@@ -154,7 +154,7 @@
                 goto LABEL_59;
               }
 
-              if (v22 == 8)
+              if (comparator == 8)
               {
                 v26 = *(v10 + 2656);
                 objc_opt_class();
@@ -165,8 +165,8 @@
 
                 v43 = v20;
                 v44 = v7;
-                v27 = v16;
-                v28 = v21;
+                v27 = kgPropertyValue;
+                v28 = value;
                 v29 = v27;
                 v42 = v28;
                 v30 = v28;
@@ -202,9 +202,9 @@ LABEL_38:
                         goto LABEL_38;
                       }
 
-                      v16 = obj;
+                      kgPropertyValue = obj;
 
-                      v21 = v30;
+                      value = v30;
                       v20 = v43;
                       v7 = v44;
                       goto LABEL_64;
@@ -214,15 +214,15 @@ LABEL_38:
 
                 v20 = v43;
                 v7 = v44;
-                v21 = v42;
+                value = v42;
               }
             }
 
             else
             {
-              if (v22 > 2)
+              if (comparator > 2)
               {
-                if (v22 == 3)
+                if (comparator == 3)
                 {
                   objc_opt_class();
                   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -230,7 +230,7 @@ LABEL_38:
                     goto LABEL_64;
                   }
 
-                  v35 = [v16 compare:v21];
+                  v35 = [kgPropertyValue compare:value];
 
                   if (v35 != -1)
                   {
@@ -246,7 +246,7 @@ LABEL_38:
                     goto LABEL_64;
                   }
 
-                  v25 = [v16 compare:v21];
+                  v25 = [kgPropertyValue compare:value];
 
                   if (v25 == 1)
                   {
@@ -257,10 +257,10 @@ LABEL_38:
                 goto LABEL_59;
               }
 
-              switch(v22)
+              switch(comparator)
               {
                 case 1:
-                  v38 = [v21 isEqual:v16];
+                  v38 = [value isEqual:kgPropertyValue];
 
                   if ((v38 & 1) == 0)
                   {
@@ -269,7 +269,7 @@ LABEL_38:
 
                   goto LABEL_59;
                 case 2:
-                  v23 = [v21 isEqual:v16];
+                  v23 = [value isEqual:kgPropertyValue];
 
                   if (v23)
                   {
@@ -298,7 +298,7 @@ LABEL_59:
             goto LABEL_14;
           }
 
-          v18 = [v16 isEqual:v14];
+          v18 = [kgPropertyValue isEqual:v14];
         }
 
         v19 = v18;
@@ -328,12 +328,12 @@ LABEL_68:
   return v6;
 }
 
-- (BOOL)matchesLabels:(id)a3
+- (BOOL)matchesLabels:(id)labels
 {
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x277CBEB98]) initWithArray:v4];
+  labelsCopy = labels;
+  v5 = [objc_alloc(MEMORY[0x277CBEB98]) initWithArray:labelsCopy];
   v11 = 0;
-  if (!-[NSArray count](self->_requiredLabels, "count") || (v6 = -[NSArray count](self->_requiredLabels, "count"), v6 <= [v4 count]) && (v7 = objc_msgSend(objc_alloc(MEMORY[0x277CBEB98]), "initWithArray:", self->_requiredLabels), v8 = objc_msgSend(v7, "isSubsetOfSet:", v5), v7, v8))
+  if (!-[NSArray count](self->_requiredLabels, "count") || (v6 = -[NSArray count](self->_requiredLabels, "count"), v6 <= [labelsCopy count]) && (v7 = objc_msgSend(objc_alloc(MEMORY[0x277CBEB98]), "initWithArray:", self->_requiredLabels), v8 = objc_msgSend(v7, "isSubsetOfSet:", v5), v7, v8))
   {
     if (!-[NSArray count](self->_optionalLabels, "count") || (v9 = [objc_alloc(MEMORY[0x277CBEB98]) initWithArray:self->_optionalLabels], v10 = objc_msgSend(v5, "intersectsSet:", v9), v9, v10))
     {
@@ -344,17 +344,17 @@ LABEL_68:
   return v11;
 }
 
-- (BOOL)matchesElement:(id)a3
+- (BOOL)matchesElement:(id)element
 {
-  v4 = a3;
-  v5 = [v4 labels];
-  v6 = [v5 allObjects];
-  v7 = [(KGElementFilter *)self matchesLabels:v6];
+  elementCopy = element;
+  labels = [elementCopy labels];
+  allObjects = [labels allObjects];
+  v7 = [(KGElementFilter *)self matchesLabels:allObjects];
 
   if (v7)
   {
-    v8 = [v4 properties];
-    v9 = [(KGElementFilter *)self matchesProperties:v8];
+    properties = [elementCopy properties];
+    v9 = [(KGElementFilter *)self matchesProperties:properties];
   }
 
   else
@@ -365,20 +365,20 @@ LABEL_68:
   return v9;
 }
 
-- (KGElementFilter)initWithRequiredLabels:(id)a3 optionalLabels:(id)a4 properties:(id)a5
+- (KGElementFilter)initWithRequiredLabels:(id)labels optionalLabels:(id)optionalLabels properties:(id)properties
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  labelsCopy = labels;
+  optionalLabelsCopy = optionalLabels;
+  propertiesCopy = properties;
   v15.receiver = self;
   v15.super_class = KGElementFilter;
   v12 = [(KGElementFilter *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_requiredLabels, a3);
-    objc_storeStrong(&v13->_optionalLabels, a4);
-    objc_storeStrong(&v13->_properties, a5);
+    objc_storeStrong(&v12->_requiredLabels, labels);
+    objc_storeStrong(&v13->_optionalLabels, optionalLabels);
+    objc_storeStrong(&v13->_properties, properties);
   }
 
   return v13;
@@ -386,7 +386,7 @@ LABEL_68:
 
 + (id)any
 {
-  v2 = [a1 alloc];
+  v2 = [self alloc];
   v3 = [v2 initWithRequiredLabels:MEMORY[0x277CBEBF8] optionalLabels:MEMORY[0x277CBEBF8] properties:MEMORY[0x277CBEC10]];
 
   return v3;

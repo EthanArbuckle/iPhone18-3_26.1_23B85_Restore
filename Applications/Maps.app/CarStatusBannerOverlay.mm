@@ -1,15 +1,15 @@
 @interface CarStatusBannerOverlay
 - (CarStatusBannerDelegate)delegate;
-- (CarStatusBannerOverlay)initWithChromeViewController:(id)a3;
+- (CarStatusBannerOverlay)initWithChromeViewController:(id)controller;
 - (ChromeOverlayHosting)host;
 - (NSArray)focusOrderSubItems;
 - (NSArray)preferredFocusEnvironments;
 - (void)_tappedLabel;
 - (void)dealloc;
-- (void)reloadAnimated:(BOOL)a3;
-- (void)setContentView:(id)a3 layoutGuide:(id)a4;
-- (void)setHidden:(BOOL)a3 animated:(BOOL)a4;
-- (void)setHost:(id)a3;
+- (void)reloadAnimated:(BOOL)animated;
+- (void)setContentView:(id)view layoutGuide:(id)guide;
+- (void)setHidden:(BOOL)hidden animated:(BOOL)animated;
+- (void)setHost:(id)host;
 @end
 
 @implementation CarStatusBannerOverlay
@@ -62,19 +62,19 @@
 
 - (void)_tappedLabel
 {
-  v2 = [(CarStatusBannerOverlay *)self delegate];
-  [v2 carStatusBannerDidTapBanner];
+  delegate = [(CarStatusBannerOverlay *)self delegate];
+  [delegate carStatusBannerDidTapBanner];
 }
 
-- (void)setHidden:(BOOL)a3 animated:(BOOL)a4
+- (void)setHidden:(BOOL)hidden animated:(BOOL)animated
 {
   if (!self->_titleLabel)
   {
     return;
   }
 
-  v4 = a3;
-  if (!a4)
+  hiddenCopy = hidden;
+  if (!animated)
   {
     goto LABEL_12;
   }
@@ -91,26 +91,26 @@ LABEL_12:
       goto LABEL_14;
     }
 
-    v7 = self;
+    selfCopy = self;
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
     if (objc_opt_respondsToSelector())
     {
-      v10 = [(CarStatusBannerOverlay *)v7 performSelector:"accessibilityIdentifier"];
+      v10 = [(CarStatusBannerOverlay *)selfCopy performSelector:"accessibilityIdentifier"];
       v11 = v10;
       if (v10 && ![v10 isEqualToString:v9])
       {
-        v12 = [NSString stringWithFormat:@"%@<%p, %@>", v9, v7, v11];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v9, selfCopy, v11];
 
         goto LABEL_10;
       }
     }
 
-    v12 = [NSString stringWithFormat:@"%@<%p>", v9, v7];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v9, selfCopy];
 LABEL_10:
 
     *buf = 138543362;
-    v21 = v12;
+    v21 = selfCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "[%{public}@] Reduce motion enabled, running status view update without animation", buf, 0xCu);
 
     goto LABEL_11;
@@ -118,13 +118,13 @@ LABEL_10:
 
   v13 = 1;
 LABEL_14:
-  if ([(CarStatusBannerLabel *)self->_titleLabel isHidden]!= v4)
+  if ([(CarStatusBannerLabel *)self->_titleLabel isHidden]!= hiddenCopy)
   {
     v14 = sub_100006E1C();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
     {
       v15 = @"show";
-      if (v4)
+      if (hiddenCopy)
       {
         v15 = @"hide";
       }
@@ -150,18 +150,18 @@ LABEL_14:
     v18[2] = sub_100621E7C;
     v18[3] = &unk_101661AE0;
     v18[4] = self;
-    v19 = v4;
+    v19 = hiddenCopy;
     [UIView animateWithDuration:4 delay:v18 options:0 animations:v16 completion:0.0];
   }
 }
 
-- (void)reloadAnimated:(BOOL)a3
+- (void)reloadAnimated:(BOOL)animated
 {
   if (self->_titleLabel)
   {
     [(CarStatusBannerOverlay *)self _reloadContent];
-    v5 = [(CarStatusBannerOverlay *)self host];
-    [v5 setCollisionConstraintsEnabled:-[CarStatusBannerOverlay isHidden](self forOverlay:{"isHidden"), self}];
+    host = [(CarStatusBannerOverlay *)self host];
+    [host setCollisionConstraintsEnabled:-[CarStatusBannerOverlay isHidden](self forOverlay:{"isHidden"), self}];
   }
 
   else
@@ -175,20 +175,20 @@ LABEL_14:
   }
 }
 
-- (void)setContentView:(id)a3 layoutGuide:(id)a4
+- (void)setContentView:(id)view layoutGuide:(id)guide
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CarStatusBannerLabel *)self->_titleLabel superview];
-  if (v8 != v6)
+  viewCopy = view;
+  guideCopy = guide;
+  superview = [(CarStatusBannerLabel *)self->_titleLabel superview];
+  if (superview != viewCopy)
   {
     [(CarStatusBannerLabel *)self->_titleLabel removeFromSuperview];
     titleLabel = self->_titleLabel;
     self->_titleLabel = 0;
 
-    if (v6)
+    if (viewCopy)
     {
-      v49 = v8;
+      v49 = superview;
       v10 = sub_100006E1C();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
       {
@@ -203,7 +203,7 @@ LABEL_14:
       [(UIView *)self->_containerView setTranslatesAutoresizingMaskIntoConstraints:0];
       [(UIView *)self->_containerView setUserInteractionEnabled:1];
       [(UIView *)self->_containerView setAlpha:0.0];
-      [v6 addSubview:self->_containerView];
+      [viewCopy addSubview:self->_containerView];
       v13 = [CarStatusBannerLabel alloc];
       WeakRetained = objc_loadWeakRetained(&self->_chromeVC);
       v15 = [(CarStatusBannerLabel *)v13 initWithChromeViewController:WeakRetained];
@@ -214,91 +214,91 @@ LABEL_14:
       [(CarStatusBannerLabel *)self->_titleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
       [(CarStatusBannerLabel *)self->_titleLabel addTarget:self action:"_tappedLabel" forControlEvents:64];
       [(CarStatusBannerLabel *)self->_titleLabel setUserInteractionEnabled:1];
-      [v6 addSubview:self->_titleLabel];
-      v17 = [(UIView *)self->_containerView heightAnchor];
-      v18 = [v17 constraintEqualToConstant:0.0];
+      [viewCopy addSubview:self->_titleLabel];
+      heightAnchor = [(UIView *)self->_containerView heightAnchor];
+      v18 = [heightAnchor constraintEqualToConstant:0.0];
       heightConstraint = self->_heightConstraint;
       self->_heightConstraint = v18;
 
       v20 = objc_loadWeakRetained(&self->_chromeVC);
-      v21 = [v20 sceneType];
+      sceneType = [v20 sceneType];
 
-      v51 = v6;
-      if (v21 == 1)
+      v51 = viewCopy;
+      if (sceneType == 1)
       {
-        v22 = [v7 _maps_leftRHDAnchor];
-        v23 = [(UIView *)self->_containerView _maps_leftRHDAnchor];
+        _maps_leftRHDAnchor = [guideCopy _maps_leftRHDAnchor];
+        _maps_leftRHDAnchor2 = [(UIView *)self->_containerView _maps_leftRHDAnchor];
         LODWORD(v24) = 1148846080;
-        v25 = [v22 _maps_constraintWithRHDAnchor:v23 relation:0 constant:-8.0 priority:v24];
+        v25 = [_maps_leftRHDAnchor _maps_constraintWithRHDAnchor:_maps_leftRHDAnchor2 relation:0 constant:-8.0 priority:v24];
         v26 = 24;
       }
 
       else
       {
-        v27 = [v7 leadingAnchor];
-        v28 = [(UIView *)self->_containerView leadingAnchor];
-        v29 = [v27 constraintEqualToAnchor:v28];
+        leadingAnchor = [guideCopy leadingAnchor];
+        leadingAnchor2 = [(UIView *)self->_containerView leadingAnchor];
+        v29 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
         leadingConstraint = self->_leadingConstraint;
         self->_leadingConstraint = v29;
 
-        v22 = [(UIView *)self->_containerView trailingAnchor];
-        v23 = [v7 trailingAnchor];
-        v25 = [v22 constraintEqualToAnchor:v23];
+        _maps_leftRHDAnchor = [(UIView *)self->_containerView trailingAnchor];
+        _maps_leftRHDAnchor2 = [guideCopy trailingAnchor];
+        v25 = [_maps_leftRHDAnchor constraintEqualToAnchor:_maps_leftRHDAnchor2];
         v26 = 32;
       }
 
       v31 = *(&self->super.isa + v26);
       *(&self->super.isa + v26) = v25;
 
-      v48 = [(UIView *)self->_containerView topAnchor];
-      v47 = [v7 topAnchor];
-      v46 = [v48 constraintEqualToAnchor:v47 constant:2.5];
+      topAnchor = [(UIView *)self->_containerView topAnchor];
+      topAnchor2 = [guideCopy topAnchor];
+      v46 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:2.5];
       v53[0] = v46;
-      v45 = [(UIView *)self->_containerView bottomAnchor];
-      v44 = [v7 bottomAnchor];
-      v43 = [v45 constraintEqualToAnchor:v44 constant:-2.5];
+      bottomAnchor = [(UIView *)self->_containerView bottomAnchor];
+      bottomAnchor2 = [guideCopy bottomAnchor];
+      v43 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-2.5];
       v32 = self->_heightConstraint;
       v53[1] = v43;
       v53[2] = v32;
-      v42 = [(CarStatusBannerLabel *)self->_titleLabel leadingAnchor];
+      leadingAnchor3 = [(CarStatusBannerLabel *)self->_titleLabel leadingAnchor];
       [(UIView *)self->_containerView leadingAnchor];
-      v33 = v50 = v7;
-      v34 = [v42 constraintEqualToAnchor:v33];
+      v33 = v50 = guideCopy;
+      v34 = [leadingAnchor3 constraintEqualToAnchor:v33];
       v53[3] = v34;
-      v35 = [(CarStatusBannerLabel *)self->_titleLabel trailingAnchor];
-      v36 = [(UIView *)self->_containerView trailingAnchor];
-      v37 = [v35 constraintEqualToAnchor:v36];
+      trailingAnchor = [(CarStatusBannerLabel *)self->_titleLabel trailingAnchor];
+      trailingAnchor2 = [(UIView *)self->_containerView trailingAnchor];
+      v37 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
       v53[4] = v37;
-      v38 = [(CarStatusBannerLabel *)self->_titleLabel centerYAnchor];
-      v39 = [(UIView *)self->_containerView centerYAnchor];
-      v40 = [v38 constraintEqualToAnchor:v39];
+      centerYAnchor = [(CarStatusBannerLabel *)self->_titleLabel centerYAnchor];
+      centerYAnchor2 = [(UIView *)self->_containerView centerYAnchor];
+      v40 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
       v53[5] = v40;
       v41 = [NSArray arrayWithObjects:v53 count:6];
       [NSLayoutConstraint activateConstraints:v41];
 
-      v7 = v50;
+      guideCopy = v50;
       [(NSLayoutConstraint *)self->_leadingConstraint setActive:1];
       [(NSLayoutConstraint *)self->_trailingConstraint setActive:1];
       [(CarStatusBannerOverlay *)self reloadAnimated:0];
-      v6 = v51;
-      v8 = v49;
+      viewCopy = v51;
+      superview = v49;
     }
   }
 }
 
-- (void)setHost:(id)a3
+- (void)setHost:(id)host
 {
-  v4 = a3;
+  hostCopy = host;
   WeakRetained = objc_loadWeakRetained(&self->_host);
 
-  if (WeakRetained != v4)
+  if (WeakRetained != hostCopy)
   {
-    objc_storeWeak(&self->_host, v4);
-    if (v4)
+    objc_storeWeak(&self->_host, hostCopy);
+    if (hostCopy)
     {
-      v6 = [v4 overlayContentView];
-      v7 = [v4 layoutGuideForOverlay:self];
-      [(CarStatusBannerOverlay *)self setContentView:v6 layoutGuide:v7];
+      overlayContentView = [hostCopy overlayContentView];
+      v7 = [hostCopy layoutGuideForOverlay:self];
+      [(CarStatusBannerOverlay *)self setContentView:overlayContentView layoutGuide:v7];
 
       if (!self->_titleLabel)
       {
@@ -326,16 +326,16 @@ LABEL_14:
   [(CarStatusBannerOverlay *)&v3 dealloc];
 }
 
-- (CarStatusBannerOverlay)initWithChromeViewController:(id)a3
+- (CarStatusBannerOverlay)initWithChromeViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v8.receiver = self;
   v8.super_class = CarStatusBannerOverlay;
   v5 = [(CarStatusBannerOverlay *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_chromeVC, v4);
+    objc_storeWeak(&v5->_chromeVC, controllerCopy);
   }
 
   return v6;

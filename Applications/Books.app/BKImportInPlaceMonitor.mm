@@ -1,28 +1,28 @@
 @interface BKImportInPlaceMonitor
-- (BKImportInPlaceMonitor)initWithAssetID:(id)a3 notify:(id)a4;
+- (BKImportInPlaceMonitor)initWithAssetID:(id)d notify:(id)notify;
 - (void)dealloc;
-- (void)managedObjectBackgroundMonitor:(id)a3 didSaveNotify:(id)a4;
+- (void)managedObjectBackgroundMonitor:(id)monitor didSaveNotify:(id)notify;
 @end
 
 @implementation BKImportInPlaceMonitor
 
-- (BKImportInPlaceMonitor)initWithAssetID:(id)a3 notify:(id)a4
+- (BKImportInPlaceMonitor)initWithAssetID:(id)d notify:(id)notify
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  notifyCopy = notify;
   v9 = +[BKLibraryManager defaultManager];
-  v10 = [v9 persistentStoreCoordinator];
+  persistentStoreCoordinator = [v9 persistentStoreCoordinator];
   v11 = +[BKLibraryManager defaultManager];
-  v12 = [v11 predicateForLocalLibraryAssets];
+  predicateForLocalLibraryAssets = [v11 predicateForLocalLibraryAssets];
   v13 = [NSSet setWithObjects:@"state", @"dataSourceIdentifier", 0];
   v18.receiver = self;
   v18.super_class = BKImportInPlaceMonitor;
-  v14 = [(BKImportInPlaceMonitor *)&v18 initWithContext:0 coordinator:v10 entityName:@"BKLibraryAsset" predicate:v12 mapProperty:@"assetID" propertiesOfInterest:v13 observer:self];
+  v14 = [(BKImportInPlaceMonitor *)&v18 initWithContext:0 coordinator:persistentStoreCoordinator entityName:@"BKLibraryAsset" predicate:predicateForLocalLibraryAssets mapProperty:@"assetID" propertiesOfInterest:v13 observer:self];
 
   if (v14)
   {
-    objc_storeStrong(&v14->_assetID, a3);
-    v15 = [v8 copy];
+    objc_storeStrong(&v14->_assetID, d);
+    v15 = [notifyCopy copy];
     notifyBlock = v14->_notifyBlock;
     v14->_notifyBlock = v15;
   }
@@ -40,16 +40,16 @@
   [(BKImportInPlaceMonitor *)&v4 dealloc];
 }
 
-- (void)managedObjectBackgroundMonitor:(id)a3 didSaveNotify:(id)a4
+- (void)managedObjectBackgroundMonitor:(id)monitor didSaveNotify:(id)notify
 {
-  v5 = a4;
-  v6 = [v5 updatedObjects];
-  if ([v6 count] && self->_notifyBlock)
+  notifyCopy = notify;
+  updatedObjects = [notifyCopy updatedObjects];
+  if ([updatedObjects count] && self->_notifyBlock)
   {
     assetID = self->_assetID;
-    v8 = [v5 updatedObjects];
-    v9 = [v8 firstObject];
-    LODWORD(assetID) = [(NSString *)assetID isEqualToString:v9];
+    updatedObjects2 = [notifyCopy updatedObjects];
+    firstObject = [updatedObjects2 firstObject];
+    LODWORD(assetID) = [(NSString *)assetID isEqualToString:firstObject];
 
     if (assetID)
     {

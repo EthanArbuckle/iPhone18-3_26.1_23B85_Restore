@@ -1,32 +1,32 @@
 @interface ACTVSchemaACTVButtonInteractionDetected
-- (ACTVSchemaACTVButtonInteractionDetected)initWithDictionary:(id)a3;
-- (ACTVSchemaACTVButtonInteractionDetected)initWithJSON:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (ACTVSchemaACTVButtonInteractionDetected)initWithDictionary:(id)dictionary;
+- (ACTVSchemaACTVButtonInteractionDetected)initWithJSON:(id)n;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ACTVSchemaACTVButtonInteractionDetected
 
-- (ACTVSchemaACTVButtonInteractionDetected)initWithDictionary:(id)a3
+- (ACTVSchemaACTVButtonInteractionDetected)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = ACTVSchemaACTVButtonInteractionDetected;
   v5 = [(ACTVSchemaACTVButtonInteractionDetected *)&v11 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"buttonInteractionType"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"buttonInteractionType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ACTVSchemaACTVButtonInteractionDetected setButtonInteractionType:](v5, "setButtonInteractionType:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"buttonName"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"buttonName"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -40,30 +40,30 @@
   return v5;
 }
 
-- (ACTVSchemaACTVButtonInteractionDetected)initWithJSON:(id)a3
+- (ACTVSchemaACTVButtonInteractionDetected)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ACTVSchemaACTVButtonInteractionDetected *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ACTVSchemaACTVButtonInteractionDetected *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ACTVSchemaACTVButtonInteractionDetected *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -76,7 +76,7 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [(ACTVSchemaACTVButtonInteractionDetected *)self buttonInteractionType]- 1;
@@ -90,19 +90,19 @@
       v5 = off_1E78D15B8[v4];
     }
 
-    [v3 setObject:v5 forKeyedSubscript:@"buttonInteractionType"];
+    [dictionary setObject:v5 forKeyedSubscript:@"buttonInteractionType"];
   }
 
   if (self->_buttonName)
   {
-    v6 = [(ACTVSchemaACTVButtonInteractionDetected *)self buttonName];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"buttonName"];
+    buttonName = [(ACTVSchemaACTVButtonInteractionDetected *)self buttonName];
+    v7 = [buttonName copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"buttonName"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -120,22 +120,22 @@
   return [(NSString *)self->_buttonName hash]^ v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    if ((*&self->_has & 1) == (v4[24] & 1))
+    if ((*&self->_has & 1) == (equalCopy[24] & 1))
     {
-      if ((*&self->_has & 1) == 0 || (buttonInteractionType = self->_buttonInteractionType, buttonInteractionType == [v4 buttonInteractionType]))
+      if ((*&self->_has & 1) == 0 || (buttonInteractionType = self->_buttonInteractionType, buttonInteractionType == [equalCopy buttonInteractionType]))
       {
-        v6 = [(ACTVSchemaACTVButtonInteractionDetected *)self buttonName];
-        v7 = [v4 buttonName];
-        v8 = v7;
-        if ((v6 != 0) != (v7 == 0))
+        buttonName = [(ACTVSchemaACTVButtonInteractionDetected *)self buttonName];
+        buttonName2 = [equalCopy buttonName];
+        v8 = buttonName2;
+        if ((buttonName != 0) != (buttonName2 == 0))
         {
-          v9 = [(ACTVSchemaACTVButtonInteractionDetected *)self buttonName];
-          if (!v9)
+          buttonName3 = [(ACTVSchemaACTVButtonInteractionDetected *)self buttonName];
+          if (!buttonName3)
           {
 
 LABEL_13:
@@ -143,10 +143,10 @@ LABEL_13:
             goto LABEL_11;
           }
 
-          v10 = v9;
-          v11 = [(ACTVSchemaACTVButtonInteractionDetected *)self buttonName];
-          v12 = [v4 buttonName];
-          v13 = [v11 isEqual:v12];
+          v10 = buttonName3;
+          buttonName4 = [(ACTVSchemaACTVButtonInteractionDetected *)self buttonName];
+          buttonName5 = [equalCopy buttonName];
+          v13 = [buttonName4 isEqual:buttonName5];
 
           if (v13)
           {
@@ -167,21 +167,21 @@ LABEL_11:
   return v14;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     PBDataWriterWriteInt32Field();
   }
 
-  v4 = [(ACTVSchemaACTVButtonInteractionDetected *)self buttonName];
+  buttonName = [(ACTVSchemaACTVButtonInteractionDetected *)self buttonName];
 
-  v5 = v6;
-  if (v4)
+  v5 = toCopy;
+  if (buttonName)
   {
     PBDataWriterWriteStringField();
-    v5 = v6;
+    v5 = toCopy;
   }
 }
 

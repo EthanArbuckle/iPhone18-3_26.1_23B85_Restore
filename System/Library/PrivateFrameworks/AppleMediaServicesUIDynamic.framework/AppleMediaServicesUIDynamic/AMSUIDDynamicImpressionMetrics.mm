@@ -1,31 +1,31 @@
 @interface AMSUIDDynamicImpressionMetrics
-- (AMSUIDDynamicImpressionMetrics)initWithIdentifier:(id)a3 fields:(id)a4 custom:(id)a5;
+- (AMSUIDDynamicImpressionMetrics)initWithIdentifier:(id)identifier fields:(id)fields custom:(id)custom;
 - (AMSUIDDynamicImpressionMetricsIdentifier)identifier;
-- (void)setCustom:(id)a3;
-- (void)setFields:(id)a3;
-- (void)setIdentifier:(id)a3;
+- (void)setCustom:(id)custom;
+- (void)setFields:(id)fields;
+- (void)setIdentifier:(id)identifier;
 @end
 
 @implementation AMSUIDDynamicImpressionMetrics
 
-- (AMSUIDDynamicImpressionMetrics)initWithIdentifier:(id)a3 fields:(id)a4 custom:(id)a5
+- (AMSUIDDynamicImpressionMetrics)initWithIdentifier:(id)identifier fields:(id)fields custom:(id)custom
 {
   v6 = sub_1CA19C018();
   v7 = sub_1CA19C018();
-  return DynamicImpressionMetrics.init(identifier:fields:custom:)(a3, v6, v7);
+  return DynamicImpressionMetrics.init(identifier:fields:custom:)(identifier, v6, v7);
 }
 
-- (void)setCustom:(id)a3
+- (void)setCustom:(id)custom
 {
   v4 = sub_1CA19C018();
-  v5 = self;
+  selfCopy = self;
   DynamicImpressionMetrics.custom.setter(v4);
 }
 
-- (void)setFields:(id)a3
+- (void)setFields:(id)fields
 {
   v4 = sub_1CA19C018();
-  v5 = self;
+  selfCopy = self;
   DynamicImpressionMetrics.fields.setter(v4);
 }
 
@@ -36,11 +36,11 @@
   return v2;
 }
 
-- (void)setIdentifier:(id)a3
+- (void)setIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = self;
-  DynamicImpressionMetrics.identifier.setter(v4);
+  identifierCopy = identifier;
+  selfCopy = self;
+  DynamicImpressionMetrics.identifier.setter(identifierCopy);
 }
 
 @end

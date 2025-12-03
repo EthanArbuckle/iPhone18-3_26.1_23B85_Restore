@@ -1,31 +1,31 @@
 @interface AuthTokenResponse
-- (AuthTokenResponse)initWithData:(id)a3 urlResponse:(id)a4 error:(id)a5;
+- (AuthTokenResponse)initWithData:(id)data urlResponse:(id)response error:(id)error;
 @end
 
 @implementation AuthTokenResponse
 
-- (AuthTokenResponse)initWithData:(id)a3 urlResponse:(id)a4 error:(id)a5
+- (AuthTokenResponse)initWithData:(id)data urlResponse:(id)response error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dataCopy = data;
+  responseCopy = response;
+  errorCopy = error;
   v27.receiver = self;
   v27.super_class = AuthTokenResponse;
   v11 = [(AuthTokenResponse *)&v27 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_error, a5);
+    objc_storeStrong(&v11->_error, error);
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v12->_statusCode = [v9 statusCode];
+      v12->_statusCode = [responseCopy statusCode];
     }
 
-    if (v8 && !v12->_error)
+    if (dataCopy && !v12->_error)
     {
       v26 = 0;
-      v13 = [NSJSONSerialization JSONObjectWithData:v8 options:0 error:&v26];
+      v13 = [NSJSONSerialization JSONObjectWithData:dataCopy options:0 error:&v26];
       v14 = v26;
       v15 = v26;
       if (v15)

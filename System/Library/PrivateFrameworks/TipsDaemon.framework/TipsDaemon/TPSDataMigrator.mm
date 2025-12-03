@@ -9,36 +9,36 @@
 
 + (void)performMigrationIfNeeded
 {
-  [a1 _performDesiredOutcomeMigration];
+  [self _performDesiredOutcomeMigration];
 
-  [a1 _performSavedTipsMigration];
+  [self _performSavedTipsMigration];
 }
 
 + (void)_performDesiredOutcomeMigration
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  if (([v2 BOOLForKey:@"TPSDidMigrateDesiredOutcomePerformed"] & 1) == 0)
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  if (([standardUserDefaults BOOLForKey:@"TPSDidMigrateDesiredOutcomePerformed"] & 1) == 0)
   {
-    v3 = [MEMORY[0x277D71778] daemon];
-    if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+    daemon = [MEMORY[0x277D71778] daemon];
+    if (os_log_type_enabled(daemon, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_232D6F000, v3, OS_LOG_TYPE_DEFAULT, "Should perform desired outcome migration.", buf, 2u);
+      _os_log_impl(&dword_232D6F000, daemon, OS_LOG_TYPE_DEFAULT, "Should perform desired outcome migration.", buf, 2u);
     }
 
-    v4 = [MEMORY[0x277D716E8] sharedInstance];
-    v5 = [v4 tipStatusController];
+    mEMORY[0x277D716E8] = [MEMORY[0x277D716E8] sharedInstance];
+    tipStatusController = [mEMORY[0x277D716E8] tipStatusController];
 
-    v6 = [v5 tipStatusMap];
+    tipStatusMap = [tipStatusController tipStatusMap];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __50__TPSDataMigrator__performDesiredOutcomeMigration__block_invoke;
     v8[3] = &unk_2789B1210;
-    v9 = v5;
-    v7 = v5;
-    [v6 enumerateKeysAndObjectsUsingBlock:v8];
-    [v2 setBool:1 forKey:@"TPSDidMigrateDesiredOutcomePerformed"];
-    [v2 synchronize];
+    v9 = tipStatusController;
+    v7 = tipStatusController;
+    [tipStatusMap enumerateKeysAndObjectsUsingBlock:v8];
+    [standardUserDefaults setBool:1 forKey:@"TPSDidMigrateDesiredOutcomePerformed"];
+    [standardUserDefaults synchronize];
   }
 }
 
@@ -61,33 +61,33 @@ void __50__TPSDataMigrator__performDesiredOutcomeMigration__block_invoke(uint64_
 
 + (void)_performSavedTipsMigration
 {
-  v2 = [MEMORY[0x277D71778] daemon];
-  if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
+  daemon = [MEMORY[0x277D71778] daemon];
+  if (os_log_type_enabled(daemon, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
-    _os_log_impl(&dword_232D6F000, v2, OS_LOG_TYPE_DEFAULT, "Should migrate saved tips and dates with correlation id.", buf, 2u);
+    _os_log_impl(&dword_232D6F000, daemon, OS_LOG_TYPE_DEFAULT, "Should migrate saved tips and dates with correlation id.", buf, 2u);
   }
 
-  v3 = [MEMORY[0x277D716E8] sharedInstance];
-  v4 = [v3 tipStatusController];
+  mEMORY[0x277D716E8] = [MEMORY[0x277D716E8] sharedInstance];
+  tipStatusController = [mEMORY[0x277D716E8] tipStatusController];
 
-  v5 = [v4 tipStatusMap];
-  v6 = [MEMORY[0x277D71798] sharedInstance];
-  v7 = [MEMORY[0x277D716E8] sharedInstance];
-  v8 = [v7 majorVersion];
-  v9 = [v8 integerValue];
+  tipStatusMap = [tipStatusController tipStatusMap];
+  mEMORY[0x277D71798] = [MEMORY[0x277D71798] sharedInstance];
+  mEMORY[0x277D716E8]2 = [MEMORY[0x277D716E8] sharedInstance];
+  majorVersion = [mEMORY[0x277D716E8]2 majorVersion];
+  integerValue = [majorVersion integerValue];
 
-  [v6 removeInvalidEntries];
+  [mEMORY[0x277D71798] removeInvalidEntries];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __45__TPSDataMigrator__performSavedTipsMigration__block_invoke;
   v12[3] = &unk_2789B1238;
-  v14 = v4;
-  v15 = v9;
-  v13 = v6;
-  v10 = v4;
-  v11 = v6;
-  [v5 enumerateKeysAndObjectsUsingBlock:v12];
+  v14 = tipStatusController;
+  v15 = integerValue;
+  v13 = mEMORY[0x277D71798];
+  v10 = tipStatusController;
+  v11 = mEMORY[0x277D71798];
+  [tipStatusMap enumerateKeysAndObjectsUsingBlock:v12];
 }
 
 void __45__TPSDataMigrator__performSavedTipsMigration__block_invoke(void *a1, void *a2, void *a3)
@@ -121,51 +121,51 @@ void __45__TPSDataMigrator__performSavedTipsMigration__block_invoke(void *a1, vo
 + (void)revertTipStatusArchivalIfNeeded
 {
   v16 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  if (([v2 BOOLForKey:@"TPSDidRevertArchivedTipStatuses"] & 1) == 0)
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  if (([standardUserDefaults BOOLForKey:@"TPSDidRevertArchivedTipStatuses"] & 1) == 0)
   {
-    v3 = [MEMORY[0x277D71778] daemon];
-    if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+    daemon = [MEMORY[0x277D71778] daemon];
+    if (os_log_type_enabled(daemon, OS_LOG_TYPE_DEFAULT))
     {
       LOWORD(v14) = 0;
-      _os_log_impl(&dword_232D6F000, v3, OS_LOG_TYPE_DEFAULT, "Should revert tip status archival.", &v14, 2u);
+      _os_log_impl(&dword_232D6F000, daemon, OS_LOG_TYPE_DEFAULT, "Should revert tip status archival.", &v14, 2u);
     }
 
-    v4 = [MEMORY[0x277D716E8] sharedInstance];
-    v5 = [v4 archivedTipStatuses];
+    mEMORY[0x277D716E8] = [MEMORY[0x277D716E8] sharedInstance];
+    archivedTipStatuses = [mEMORY[0x277D716E8] archivedTipStatuses];
 
-    if ([v5 count])
+    if ([archivedTipStatuses count])
     {
-      v6 = [MEMORY[0x277D716E8] sharedInstance];
-      v7 = [v6 tipStatusController];
+      mEMORY[0x277D716E8]2 = [MEMORY[0x277D716E8] sharedInstance];
+      tipStatusController = [mEMORY[0x277D716E8]2 tipStatusController];
 
-      v8 = [MEMORY[0x277D71778] daemon];
-      if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+      daemon2 = [MEMORY[0x277D71778] daemon];
+      if (os_log_type_enabled(daemon2, OS_LOG_TYPE_DEFAULT))
       {
-        v9 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v7, "tipStatusCount")}];
+        v9 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(tipStatusController, "tipStatusCount")}];
         v14 = 138412290;
         v15 = v9;
-        _os_log_impl(&dword_232D6F000, v8, OS_LOG_TYPE_DEFAULT, "Pre-unarchival tip status count: %@", &v14, 0xCu);
+        _os_log_impl(&dword_232D6F000, daemon2, OS_LOG_TYPE_DEFAULT, "Pre-unarchival tip status count: %@", &v14, 0xCu);
       }
 
-      [v7 addTipStatuses:v5];
-      v10 = [MEMORY[0x277D71778] daemon];
-      if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+      [tipStatusController addTipStatuses:archivedTipStatuses];
+      daemon3 = [MEMORY[0x277D71778] daemon];
+      if (os_log_type_enabled(daemon3, OS_LOG_TYPE_DEFAULT))
       {
-        v11 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v7, "tipStatusCount")}];
+        v11 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(tipStatusController, "tipStatusCount")}];
         v14 = 138412290;
         v15 = v11;
-        _os_log_impl(&dword_232D6F000, v10, OS_LOG_TYPE_DEFAULT, "Post-unarchival tip status count: %@", &v14, 0xCu);
+        _os_log_impl(&dword_232D6F000, daemon3, OS_LOG_TYPE_DEFAULT, "Post-unarchival tip status count: %@", &v14, 0xCu);
       }
     }
 
-    v12 = [MEMORY[0x277D716E8] sharedInstance];
-    [v12 deleteTipStatusArchivalDirectory];
+    mEMORY[0x277D716E8]3 = [MEMORY[0x277D716E8] sharedInstance];
+    [mEMORY[0x277D716E8]3 deleteTipStatusArchivalDirectory];
 
-    [v2 setBool:1 forKey:@"TPSDidRevertArchivedTipStatuses"];
-    [v2 removeObjectForKey:@"TPSLastTipStatusArchivalMajorVersion"];
-    [v2 removeObjectForKey:@"TPSDidResetTipStatusDataProtectionLevel"];
-    [v2 synchronize];
+    [standardUserDefaults setBool:1 forKey:@"TPSDidRevertArchivedTipStatuses"];
+    [standardUserDefaults removeObjectForKey:@"TPSLastTipStatusArchivalMajorVersion"];
+    [standardUserDefaults removeObjectForKey:@"TPSDidResetTipStatusDataProtectionLevel"];
+    [standardUserDefaults synchronize];
   }
 
   v13 = *MEMORY[0x277D85DE8];

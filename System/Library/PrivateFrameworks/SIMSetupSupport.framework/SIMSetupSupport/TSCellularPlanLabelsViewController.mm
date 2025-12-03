@@ -1,30 +1,30 @@
 @interface TSCellularPlanLabelsViewController
-- (TSCellularPlanLabelsViewController)initWithAllowDismiss:(BOOL)a3;
-- (TSCellularPlanLabelsViewController)initWithIccid:(id)a3 forceDualSIMSetup:(BOOL)a4 allowDismiss:(BOOL)a5;
+- (TSCellularPlanLabelsViewController)initWithAllowDismiss:(BOOL)dismiss;
+- (TSCellularPlanLabelsViewController)initWithIccid:(id)iccid forceDualSIMSetup:(BOOL)setup allowDismiss:(BOOL)dismiss;
 - (TSSIMSetupFlowDelegate)delegate;
-- (double)tableView:(id)a3 heightForFooterInSection:(int64_t)a4;
-- (id)getPendingLabelAtIndex:(int64_t)a3;
-- (id)getPlanItemByIndex:(int64_t)a3;
+- (double)tableView:(id)view heightForFooterInSection:(int64_t)section;
+- (id)getPendingLabelAtIndex:(int64_t)index;
+- (id)getPlanItemByIndex:(int64_t)index;
 - (id)getPredefinedUserLabels;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
 - (void)_cancelButtonTapped;
 - (void)_doneButtonTapped;
-- (void)prepare:(id)a3;
-- (void)prepareLabels:(id)a3;
-- (void)savePlanLabels:(id)a3;
-- (void)setPendingLabel:(id)a3 forPlanItem:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayFooterView:(id)a4 forSection:(int64_t)a5;
-- (void)tableView:(id)a3 willDisplayHeaderView:(id)a4 forSection:(int64_t)a5;
+- (void)prepare:(id)prepare;
+- (void)prepareLabels:(id)labels;
+- (void)savePlanLabels:(id)labels;
+- (void)setPendingLabel:(id)label forPlanItem:(id)item;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayFooterView:(id)footerView forSection:(int64_t)section;
+- (void)tableView:(id)view willDisplayHeaderView:(id)headerView forSection:(int64_t)section;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
 
 @implementation TSCellularPlanLabelsViewController
 
-- (TSCellularPlanLabelsViewController)initWithAllowDismiss:(BOOL)a3
+- (TSCellularPlanLabelsViewController)initWithAllowDismiss:(BOOL)dismiss
 {
   v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v6 = [v5 localizedStringForKey:@"CELLULAR_PLAN_LABELS_TITLE" value:&stru_28753DF48 table:@"Localizable"];
@@ -44,16 +44,16 @@
     v9->_iccid = 0;
 
     v9->_forceDualSIMSetup = 0;
-    v9->_allowDismiss = a3;
+    v9->_allowDismiss = dismiss;
     v9->_showDupLabelsFooter = 0;
   }
 
   return v9;
 }
 
-- (TSCellularPlanLabelsViewController)initWithIccid:(id)a3 forceDualSIMSetup:(BOOL)a4 allowDismiss:(BOOL)a5
+- (TSCellularPlanLabelsViewController)initWithIccid:(id)iccid forceDualSIMSetup:(BOOL)setup allowDismiss:(BOOL)dismiss
 {
-  v9 = a3;
+  iccidCopy = iccid;
   v10 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v11 = [v10 localizedStringForKey:@"CELLULAR_PLAN_LABELS_TITLE" value:&stru_28753DF48 table:@"Localizable"];
   v12 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -68,9 +68,9 @@
     sortedPlanItemsWithPendingLabels = v14->_sortedPlanItemsWithPendingLabels;
     v14->_sortedPlanItemsWithPendingLabels = v15;
 
-    objc_storeStrong(&v14->_iccid, a3);
-    v14->_forceDualSIMSetup = a4;
-    v14->_allowDismiss = a5;
+    objc_storeStrong(&v14->_iccid, iccid);
+    v14->_forceDualSIMSetup = setup;
+    v14->_allowDismiss = dismiss;
     v14->_showDupLabelsFooter = 0;
   }
 
@@ -82,9 +82,9 @@
   v24.receiver = self;
   v24.super_class = TSCellularPlanLabelsViewController;
   [(TSOBTableWelcomeController *)&v24 viewDidLoad];
-  v3 = [MEMORY[0x277D37618] boldButton];
+  boldButton = [MEMORY[0x277D37618] boldButton];
   doneButton = self->_doneButton;
-  self->_doneButton = v3;
+  self->_doneButton = boldButton;
 
   [(OBBoldTrayButton *)self->_doneButton addTarget:self action:sel__doneButtonTapped forControlEvents:64];
   v5 = self->_doneButton;
@@ -92,43 +92,43 @@
   v7 = [v6 localizedStringForKey:@"CONTINUE" value:&stru_28753DF48 table:@"Localizable"];
   [(OBBoldTrayButton *)v5 setTitle:v7 forState:0];
 
-  v8 = [(TSCellularPlanLabelsViewController *)self buttonTray];
-  [v8 addButton:self->_doneButton];
+  buttonTray = [(TSCellularPlanLabelsViewController *)self buttonTray];
+  [buttonTray addButton:self->_doneButton];
 
   v9 = objc_alloc(MEMORY[0x277D75B40]);
   v10 = [v9 initWithFrame:2 style:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
   [(OBTableWelcomeController *)self setTableView:v10];
 
-  v11 = [(OBTableWelcomeController *)self tableView];
-  [v11 setAllowsSelectionDuringEditing:1];
+  tableView = [(OBTableWelcomeController *)self tableView];
+  [tableView setAllowsSelectionDuringEditing:1];
 
-  v12 = [(OBTableWelcomeController *)self tableView];
-  [v12 setTranslatesAutoresizingMaskIntoConstraints:0];
+  tableView2 = [(OBTableWelcomeController *)self tableView];
+  [tableView2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v13 = [(OBTableWelcomeController *)self tableView];
-  [v13 setRowHeight:*MEMORY[0x277D76F30]];
+  tableView3 = [(OBTableWelcomeController *)self tableView];
+  [tableView3 setRowHeight:*MEMORY[0x277D76F30]];
 
-  v14 = [(OBTableWelcomeController *)self tableView];
-  [v14 setEstimatedRowHeight:0.0];
+  tableView4 = [(OBTableWelcomeController *)self tableView];
+  [tableView4 setEstimatedRowHeight:0.0];
 
-  v15 = [(OBTableWelcomeController *)self tableView];
-  v16 = [MEMORY[0x277D75348] clearColor];
-  [v15 setBackgroundColor:v16];
+  tableView5 = [(OBTableWelcomeController *)self tableView];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [tableView5 setBackgroundColor:clearColor];
 
-  v17 = [(OBTableWelcomeController *)self tableView];
-  [v17 setDataSource:self];
+  tableView6 = [(OBTableWelcomeController *)self tableView];
+  [tableView6 setDataSource:self];
 
-  v18 = [(OBTableWelcomeController *)self tableView];
-  [v18 setDelegate:self];
+  tableView7 = [(OBTableWelcomeController *)self tableView];
+  [tableView7 setDelegate:self];
 
-  v19 = [(OBTableWelcomeController *)self tableView];
-  [v19 setScrollEnabled:1];
+  tableView8 = [(OBTableWelcomeController *)self tableView];
+  [tableView8 setScrollEnabled:1];
 
-  v20 = [(OBTableWelcomeController *)self tableView];
-  [v20 reloadData];
+  tableView9 = [(OBTableWelcomeController *)self tableView];
+  [tableView9 reloadData];
 
-  v21 = [(OBTableWelcomeController *)self tableView];
-  [v21 layoutIfNeeded];
+  tableView10 = [(OBTableWelcomeController *)self tableView];
+  [tableView10 layoutIfNeeded];
 
   v22 = 0;
   if (self->_allowDismiss)
@@ -136,24 +136,24 @@
     v22 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:1 target:self action:sel__cancelButtonTapped];
   }
 
-  v23 = [(OBBaseWelcomeController *)self navigationItem];
-  [v23 setLeftBarButtonItem:v22];
+  navigationItem = [(OBBaseWelcomeController *)self navigationItem];
+  [navigationItem setLeftBarButtonItem:v22];
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v3 = [(TSCellularPlanLabelsViewController *)self view];
-  [v3 layoutIfNeeded];
+  view = [(TSCellularPlanLabelsViewController *)self view];
+  [view layoutIfNeeded];
 
   v4.receiver = self;
   v4.super_class = TSCellularPlanLabelsViewController;
   [(OBTableWelcomeController *)&v4 viewDidLayoutSubviews];
 }
 
-- (void)savePlanLabels:(id)a3
+- (void)savePlanLabels:(id)labels
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  labelsCopy = labels;
   if ([(NSMutableArray *)self->_sortedPlanItemsWithPendingLabels count])
   {
     v18 = 0u;
@@ -191,30 +191,30 @@
     goto LABEL_11;
   }
 
-  if (v4)
+  if (labelsCopy)
   {
 LABEL_11:
-    v4[2](v4);
+    labelsCopy[2](labelsCopy);
   }
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setPendingLabel:(id)a3 forPlanItem:(id)a4
+- (void)setPendingLabel:(id)label forPlanItem:(id)item
 {
   v16[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  labelCopy = label;
+  itemCopy = item;
   v8 = _TSLogDomain();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    [TSCellularPlanLabelsViewController setPendingLabel:v6 forPlanItem:v7];
+    [TSCellularPlanLabelsViewController setPendingLabel:labelCopy forPlanItem:itemCopy];
   }
 
   v15[0] = @"pendingLabel";
   v15[1] = @"planItem";
-  v16[0] = v6;
-  v16[1] = v7;
+  v16[0] = labelCopy;
+  v16[1] = itemCopy;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:v15 count:2];
   if ([(NSMutableArray *)self->_sortedPlanItemsWithPendingLabels count])
   {
@@ -222,10 +222,10 @@ LABEL_11:
     while (1)
     {
       v11 = [(TSCellularPlanLabelsViewController *)self getPlanItemByIndex:v10];
-      v12 = [v11 uuid];
-      v13 = [v7 uuid];
+      uuid = [v11 uuid];
+      uuid2 = [itemCopy uuid];
 
-      if (v12 == v13)
+      if (uuid == uuid2)
       {
         break;
       }
@@ -248,30 +248,30 @@ LABEL_7:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (id)getPlanItemByIndex:(int64_t)a3
+- (id)getPlanItemByIndex:(int64_t)index
 {
-  v3 = [(NSMutableArray *)self->_sortedPlanItemsWithPendingLabels objectAtIndexedSubscript:a3];
+  v3 = [(NSMutableArray *)self->_sortedPlanItemsWithPendingLabels objectAtIndexedSubscript:index];
   v4 = [v3 objectForKeyedSubscript:@"planItem"];
 
   return v4;
 }
 
-- (id)getPendingLabelAtIndex:(int64_t)a3
+- (id)getPendingLabelAtIndex:(int64_t)index
 {
-  v3 = [(NSMutableArray *)self->_sortedPlanItemsWithPendingLabels objectAtIndexedSubscript:a3];
+  v3 = [(NSMutableArray *)self->_sortedPlanItemsWithPendingLabels objectAtIndexedSubscript:index];
   v4 = [v3 objectForKeyedSubscript:@"pendingLabel"];
 
   return v4;
 }
 
-- (void)prepareLabels:(id)a3
+- (void)prepareLabels:(id)labels
 {
   v48 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CF96D8] sharedManager];
-  v6 = [v5 planItemsShouldUpdate:0];
+  labelsCopy = labels;
+  mEMORY[0x277CF96D8] = [MEMORY[0x277CF96D8] sharedManager];
+  v6 = [mEMORY[0x277CF96D8] planItemsShouldUpdate:0];
 
-  v7 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
@@ -294,14 +294,14 @@ LABEL_7:
         v13 = *(*(&v39 + 1) + 8 * i);
         if ([v13 isSelected])
         {
-          [v7 addObject:v13];
+          [array addObject:v13];
         }
 
         if (!-[NSString length](self->_iccid, "length") && [v13 isInstalling])
         {
-          v14 = [v13 iccid];
+          iccid = [v13 iccid];
           iccid = self->_iccid;
-          self->_iccid = v14;
+          self->_iccid = iccid;
         }
       }
 
@@ -311,42 +311,42 @@ LABEL_7:
     while (v10);
   }
 
-  v16 = [v7 sortedArrayUsingSelector:sel_compare_];
+  v16 = [array sortedArrayUsingSelector:sel_compare_];
   if ([v16 count] >= 2)
   {
     v17 = [v16 objectAtIndex:0];
-    v18 = [v17 label];
-    v19 = [v18 length];
+    label = [v17 label];
+    v19 = [label length];
 
     if (v19)
     {
-      v20 = [v16 objectAtIndex:0];
-      [v20 userLabel];
+      getPredefinedUserLabels = [v16 objectAtIndex:0];
+      [getPredefinedUserLabels userLabel];
     }
 
     else
     {
-      v20 = [(TSCellularPlanLabelsViewController *)self getPredefinedUserLabels];
-      [v20 objectAtIndex:0];
+      getPredefinedUserLabels = [(TSCellularPlanLabelsViewController *)self getPredefinedUserLabels];
+      [getPredefinedUserLabels objectAtIndex:0];
     }
     v21 = ;
     v22 = [v16 objectAtIndex:0];
     [(TSCellularPlanLabelsViewController *)self setPendingLabel:v21 forPlanItem:v22];
 
     v23 = [v16 objectAtIndex:1];
-    v24 = [v23 label];
-    v25 = [v24 length];
+    label2 = [v23 label];
+    v25 = [label2 length];
 
     if (v25)
     {
-      v26 = [v16 objectAtIndex:1];
-      [v26 userLabel];
+      getPredefinedUserLabels2 = [v16 objectAtIndex:1];
+      [getPredefinedUserLabels2 userLabel];
     }
 
     else
     {
-      v26 = [(TSCellularPlanLabelsViewController *)self getPredefinedUserLabels];
-      [v26 objectAtIndex:1];
+      getPredefinedUserLabels2 = [(TSCellularPlanLabelsViewController *)self getPredefinedUserLabels];
+      [getPredefinedUserLabels2 objectAtIndex:1];
     }
     v27 = ;
     v28 = [v16 objectAtIndex:1];
@@ -381,9 +381,9 @@ LABEL_7:
   v36[2] = __52__TSCellularPlanLabelsViewController_prepareLabels___block_invoke;
   v36[3] = &unk_279B45058;
   v37 = v16;
-  v38 = v4;
+  v38 = labelsCopy;
   v33 = v16;
-  v34 = v4;
+  v34 = labelsCopy;
   dispatch_async(MEMORY[0x277D85CD0], v36);
 
   v35 = *MEMORY[0x277D85DE8];
@@ -400,20 +400,20 @@ uint64_t __52__TSCellularPlanLabelsViewController_prepareLabels___block_invoke(u
 
 - (id)getPredefinedUserLabels
 {
-  v2 = [MEMORY[0x277CF96D8] sharedManager];
-  v3 = [v2 getPredefinedLabels];
+  mEMORY[0x277CF96D8] = [MEMORY[0x277CF96D8] sharedManager];
+  getPredefinedLabels = [mEMORY[0x277CF96D8] getPredefinedLabels];
 
-  return v3;
+  return getPredefinedLabels;
 }
 
-- (void)prepare:(id)a3
+- (void)prepare:(id)prepare
 {
-  v4 = a3;
-  if (v4)
+  prepareCopy = prepare;
+  if (prepareCopy)
   {
     if (self->_forceDualSIMSetup)
     {
-      [(TSCellularPlanLabelsViewController *)self prepareLabels:v4];
+      [(TSCellularPlanLabelsViewController *)self prepareLabels:prepareCopy];
     }
 
     else
@@ -425,7 +425,7 @@ uint64_t __52__TSCellularPlanLabelsViewController_prepareLabels___block_invoke(u
       v6[2] = __46__TSCellularPlanLabelsViewController_prepare___block_invoke;
       v6[3] = &unk_279B44CD0;
       objc_copyWeak(&v8, &location);
-      v7 = v4;
+      v7 = prepareCopy;
       [v5 shouldShowPlanSetupWithCompletion:v6];
 
       objc_destroyWeak(&v8);
@@ -482,7 +482,7 @@ LABEL_8:
 LABEL_9:
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
   if (![(NSMutableArray *)self->_sortedPlanItemsWithPendingLabels count])
   {
@@ -490,24 +490,24 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v6 = [(TSCellularPlanLabelsViewController *)self getPlanItemByIndex:a4];
-  v7 = [v6 phoneNumber];
-  v8 = [v7 length];
+  v6 = [(TSCellularPlanLabelsViewController *)self getPlanItemByIndex:section];
+  phoneNumber = [v6 phoneNumber];
+  v8 = [phoneNumber length];
 
   if (v8)
   {
     v9 = MEMORY[0x277CCACA8];
     v10 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v11 = [v10 localizedStringForKey:@"LABEL_FOR_PHONE_NUMBER_%@" value:&stru_28753DF48 table:@"Localizable"];
-    v12 = [v6 phoneNumber];
-    v13 = [v12 formattedPhoneNumber];
-    v14 = [v9 stringWithFormat:v11, v13];
+    phoneNumber2 = [v6 phoneNumber];
+    formattedPhoneNumber = [phoneNumber2 formattedPhoneNumber];
+    v14 = [v9 stringWithFormat:v11, formattedPhoneNumber];
   }
 
   else
   {
-    v15 = [v6 carrierName];
-    v16 = [v15 length];
+    carrierName = [v6 carrierName];
+    v16 = [carrierName length];
 
     if (!v16)
     {
@@ -519,8 +519,8 @@ LABEL_9:
     v17 = MEMORY[0x277CCACA8];
     v10 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v11 = [v10 localizedStringForKey:@"LABEL_FOR_YOUR_CARRIER_PLAN_%@" value:&stru_28753DF48 table:@"Localizable"];
-    v12 = [v6 carrierName];
-    v14 = [v17 stringWithFormat:v11, v12];
+    phoneNumber2 = [v6 carrierName];
+    v14 = [v17 stringWithFormat:v11, phoneNumber2];
   }
 
 LABEL_8:
@@ -529,21 +529,21 @@ LABEL_9:
   return v14;
 }
 
-- (void)tableView:(id)a3 willDisplayHeaderView:(id)a4 forSection:(int64_t)a5
+- (void)tableView:(id)view willDisplayHeaderView:(id)headerView forSection:(int64_t)section
 {
-  v6 = [a4 textLabel];
-  v5 = [MEMORY[0x277D75348] systemGrayColor];
-  [v6 setTextColor:v5];
+  textLabel = [headerView textLabel];
+  systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
+  [textLabel setTextColor:systemGrayColor];
 }
 
-- (double)tableView:(id)a3 heightForFooterInSection:(int64_t)a4
+- (double)tableView:(id)view heightForFooterInSection:(int64_t)section
 {
   result = 0.0;
   if (self->_showDupLabelsFooter)
   {
-    v6 = [a3 numberOfSections];
+    numberOfSections = [view numberOfSections];
     result = *MEMORY[0x277D76F30];
-    if (v6 - 1 != a4)
+    if (numberOfSections - 1 != section)
     {
       return 0.0;
     }
@@ -552,9 +552,9 @@ LABEL_9:
   return result;
 }
 
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section
 {
-  if (self->_showDupLabelsFooter && [a3 numberOfSections] - 1 == a4)
+  if (self->_showDupLabelsFooter && [view numberOfSections] - 1 == section)
   {
     v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v5 = [v4 localizedStringForKey:@"CELLULAR_PLAN_LABELS_SECTION_FOOTER" value:&stru_28753DF48 table:@"Localizable"];
@@ -568,31 +568,31 @@ LABEL_9:
   return v5;
 }
 
-- (void)tableView:(id)a3 willDisplayFooterView:(id)a4 forSection:(int64_t)a5
+- (void)tableView:(id)view willDisplayFooterView:(id)footerView forSection:(int64_t)section
 {
-  v6 = [a4 textLabel];
-  v5 = [MEMORY[0x277D75348] systemGrayColor];
-  [v6 setTextColor:v5];
+  textLabel = [footerView textLabel];
+  systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
+  [textLabel setTextColor:systemGrayColor];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v5 = a4;
+  pathCopy = path;
   v6 = [[TSCellularPlanLabelTableViewCell alloc] initWithStyle:0 reuseIdentifier:@"plan"];
-  v7 = -[TSCellularPlanLabelsViewController getPendingLabelAtIndex:](self, "getPendingLabelAtIndex:", [v5 section]);
-  v8 = [v7 label];
+  v7 = -[TSCellularPlanLabelsViewController getPendingLabelAtIndex:](self, "getPendingLabelAtIndex:", [pathCopy section]);
+  label = [v7 label];
 
   [(TSCellularPlanLabelTableViewCell *)v6 setAccessoryType:1];
   planItemBadges = self->_planItemBadges;
-  v10 = [v5 section];
+  section = [pathCopy section];
 
-  v11 = [(NSArray *)planItemBadges objectAtIndex:v10];
-  [(TSCellularPlanLabelTableViewCell *)v6 setLabel:v8 badge:v11];
+  v11 = [(NSArray *)planItemBadges objectAtIndex:section];
+  [(TSCellularPlanLabelTableViewCell *)v6 setLabel:label badge:v11];
 
-  v12 = [(TSCellularPlanLabelsViewController *)self traitCollection];
-  v13 = [v12 userInterfaceStyle];
+  traitCollection = [(TSCellularPlanLabelsViewController *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  if (v13 == 1)
+  if (userInterfaceStyle == 1)
   {
     v14 = [MEMORY[0x277D75348] colorWithWhite:0.95 alpha:1.0];
     [(TSCellularPlanLabelTableViewCell *)v6 setBackgroundColor:v14];
@@ -601,22 +601,22 @@ LABEL_9:
   return v6;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v5 = a4;
+  pathCopy = path;
   v6 = [SSLabelPickerViewController alloc];
-  v7 = -[TSCellularPlanLabelsViewController getPlanItemByIndex:](self, "getPlanItemByIndex:", [v5 section]);
-  v8 = -[TSCellularPlanLabelsViewController getPendingLabelAtIndex:](self, "getPendingLabelAtIndex:", [v5 section]);
-  v9 = [(TSCellularPlanLabelsViewController *)self getPredefinedUserLabels];
-  v10 = [(SSLabelPickerViewController *)v6 initWithAssociatedPlanItem:v7 initialLabel:v8 predefinedUserLabels:v9];
+  v7 = -[TSCellularPlanLabelsViewController getPlanItemByIndex:](self, "getPlanItemByIndex:", [pathCopy section]);
+  v8 = -[TSCellularPlanLabelsViewController getPendingLabelAtIndex:](self, "getPendingLabelAtIndex:", [pathCopy section]);
+  getPredefinedUserLabels = [(TSCellularPlanLabelsViewController *)self getPredefinedUserLabels];
+  v10 = [(SSLabelPickerViewController *)v6 initWithAssociatedPlanItem:v7 initialLabel:v8 predefinedUserLabels:getPredefinedUserLabels];
   [(TSCellularPlanLabelsViewController *)self setLabelPickerViewController:v10];
 
-  v11 = [(TSCellularPlanLabelsViewController *)self navigationController];
-  v12 = [(TSCellularPlanLabelsViewController *)self labelPickerViewController];
-  [v11 pushViewController:v12 animated:1];
+  navigationController = [(TSCellularPlanLabelsViewController *)self navigationController];
+  labelPickerViewController = [(TSCellularPlanLabelsViewController *)self labelPickerViewController];
+  [navigationController pushViewController:labelPickerViewController animated:1];
 
-  v13 = [(OBTableWelcomeController *)self tableView];
-  [v13 deselectRowAtIndexPath:v5 animated:1];
+  tableView = [(OBTableWelcomeController *)self tableView];
+  [tableView deselectRowAtIndexPath:pathCopy animated:1];
 }
 
 - (void)_cancelButtonTapped
@@ -627,8 +627,8 @@ LABEL_9:
 
 - (void)_doneButtonTapped
 {
-  v3 = [(TSCellularPlanLabelsViewController *)self view];
-  [v3 setUserInteractionEnabled:0];
+  view = [(TSCellularPlanLabelsViewController *)self view];
+  [view setUserInteractionEnabled:0];
 
   objc_initWeak(&location, self);
   v4 = dispatch_get_global_queue(2, 0);

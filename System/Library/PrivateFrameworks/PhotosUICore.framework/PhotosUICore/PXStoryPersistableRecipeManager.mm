@@ -1,14 +1,14 @@
 @interface PXStoryPersistableRecipeManager
 - (NSString)diagnosticDescription;
 - (PXStoryPersistableRecipeManager)init;
-- (PXStoryPersistableRecipeManager)initWithModel:(id)a3 styleManager:(id)a4;
-- (id)_persistableRecipeWithOriginalPersistableRecipe:(id)a3 recipe:(id)a4 recipeAssetEdits:(id)a5 currentStyle:(id)a6 error:(id *)a7;
-- (void)_handlePersistableRecipe:(id)a3 recipeAssetEdits:(id)a4 error:(id)a5 progress:(id)a6;
+- (PXStoryPersistableRecipeManager)initWithModel:(id)model styleManager:(id)manager;
+- (id)_persistableRecipeWithOriginalPersistableRecipe:(id)recipe recipe:(id)a4 recipeAssetEdits:(id)edits currentStyle:(id)style error:(id *)error;
+- (void)_handlePersistableRecipe:(id)recipe recipeAssetEdits:(id)edits error:(id)error progress:(id)progress;
 - (void)_invalidateHasUserExperiencedFirstPlaybackEver;
 - (void)_invalidateHasUserExperiencedPlayback;
 - (void)_invalidateIsReadyToProducePersistableRecipe;
 - (void)_invalidateOriginalPersistableRecipe;
-- (void)_invalidatePersistableRecipeForUserActionKind:(int64_t)a3;
+- (void)_invalidatePersistableRecipeForUserActionKind:(int64_t)kind;
 - (void)_invalidatePersistencePermission;
 - (void)_updateHasUserExperiencedFirstPlaybackEver;
 - (void)_updateHasUserExperiencedPlayback;
@@ -18,19 +18,19 @@
 - (void)_updatePersistencePermission;
 - (void)dealloc;
 - (void)didPerformChanges;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)performChanges:(id)a3;
-- (void)setError:(id)a3;
-- (void)setHasUserExperiencedFirstPlaybackEver:(BOOL)a3;
-- (void)setHasUserExperiencedPlayback:(BOOL)a3;
-- (void)setIsOriginalPersistableRecipeValid:(BOOL)a3;
-- (void)setIsPreparedForUserChanges:(BOOL)a3;
-- (void)setIsProducingPersistableRecipe:(BOOL)a3;
-- (void)setIsReadyToProducePersistableRecipe:(BOOL)a3;
-- (void)setPersistableRecipe:(id)a3;
-- (void)setPersistencePermission:(int64_t)a3;
-- (void)setProgress:(id)a3;
-- (void)setRecipeAssetEdits:(id)a3;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)performChanges:(id)changes;
+- (void)setError:(id)error;
+- (void)setHasUserExperiencedFirstPlaybackEver:(BOOL)ever;
+- (void)setHasUserExperiencedPlayback:(BOOL)playback;
+- (void)setIsOriginalPersistableRecipeValid:(BOOL)valid;
+- (void)setIsPreparedForUserChanges:(BOOL)changes;
+- (void)setIsProducingPersistableRecipe:(BOOL)recipe;
+- (void)setIsReadyToProducePersistableRecipe:(BOOL)recipe;
+- (void)setPersistableRecipe:(id)recipe;
+- (void)setPersistencePermission:(int64_t)permission;
+- (void)setProgress:(id)progress;
+- (void)setRecipeAssetEdits:(id)edits;
 @end
 
 @implementation PXStoryPersistableRecipeManager
@@ -44,12 +44,12 @@
 
   if ([(PXStoryPersistableRecipeManager *)self isOriginalPersistableRecipeValid])
   {
-    v7 = [(PXStoryPersistableRecipeManager *)self originalPersistableRecipe];
-    if (v7)
+    originalPersistableRecipe = [(PXStoryPersistableRecipeManager *)self originalPersistableRecipe];
+    if (originalPersistableRecipe)
     {
-      v8 = [(PXStoryPersistableRecipeManager *)self originalPersistableRecipe];
-      v9 = [v8 diagnosticDescription];
-      [v6 appendFormat:@"originalPersistableRecipe: %@\n", v9];
+      originalPersistableRecipe2 = [(PXStoryPersistableRecipeManager *)self originalPersistableRecipe];
+      diagnosticDescription = [originalPersistableRecipe2 diagnosticDescription];
+      [v6 appendFormat:@"originalPersistableRecipe: %@\n", diagnosticDescription];
     }
 
     else
@@ -69,23 +69,23 @@
   [v6 appendFormat:@"isPreparedForUserChanges: %i\n", -[PXStoryPersistableRecipeManager isPreparedForUserChanges](self, "isPreparedForUserChanges")];
   if (![(PXStoryPersistableRecipeManager *)self isReadyToProducePersistableRecipe])
   {
-    v10 = [(PXStoryPersistableRecipeManager *)self recipeManager];
-    [v6 appendFormat:@"isRecipeFinal: %i\n", objc_msgSend(v10, "isRecipeFinal")];
+    recipeManager = [(PXStoryPersistableRecipeManager *)self recipeManager];
+    [v6 appendFormat:@"isRecipeFinal: %i\n", objc_msgSend(recipeManager, "isRecipeFinal")];
 
-    v11 = [(PXStoryPersistableRecipeManager *)self resourcesDataSourceManager];
-    [v6 appendFormat:@"areResourcesFinal: %i\n", objc_msgSend(v11, "isDataSourceFinal")];
+    resourcesDataSourceManager = [(PXStoryPersistableRecipeManager *)self resourcesDataSourceManager];
+    [v6 appendFormat:@"areResourcesFinal: %i\n", objc_msgSend(resourcesDataSourceManager, "isDataSourceFinal")];
 
-    v12 = [(PXStoryPersistableRecipeManager *)self styleManager];
-    [v6 appendFormat:@"isCurrentStyleFinal: %i\n", objc_msgSend(v12, "isCurrentStyleFinal")];
+    styleManager = [(PXStoryPersistableRecipeManager *)self styleManager];
+    [v6 appendFormat:@"isCurrentStyleFinal: %i\n", objc_msgSend(styleManager, "isCurrentStyleFinal")];
   }
 
   [v6 appendFormat:@"isProducingPersistableRecipe: %i\n", -[PXStoryPersistableRecipeManager isProducingPersistableRecipe](self, "isProducingPersistableRecipe")];
-  v13 = [(PXStoryPersistableRecipeManager *)self persistableRecipe];
-  v14 = [v13 diagnosticDescription];
-  v15 = v14;
-  if (v14)
+  persistableRecipe = [(PXStoryPersistableRecipeManager *)self persistableRecipe];
+  diagnosticDescription2 = [persistableRecipe diagnosticDescription];
+  v15 = diagnosticDescription2;
+  if (diagnosticDescription2)
   {
-    v16 = v14;
+    v16 = diagnosticDescription2;
   }
 
   else
@@ -95,11 +95,11 @@
 
   [v6 appendFormat:@"persistableRecipe: %@\n", v16];
 
-  v17 = [(PXStoryPersistableRecipeManager *)self error];
-  v18 = v17;
-  if (v17)
+  error = [(PXStoryPersistableRecipeManager *)self error];
+  v18 = error;
+  if (error)
   {
-    v19 = v17;
+    v19 = error;
   }
 
   else
@@ -114,15 +114,15 @@
   return v20;
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __64__PXStoryPersistableRecipeManager_observable_didChange_context___block_invoke;
   v5[3] = &unk_1E7746748;
   v5[4] = self;
-  v5[5] = a5;
-  v5[6] = a4;
+  v5[5] = context;
+  v5[6] = change;
   v5[7] = a2;
   [(PXStoryPersistableRecipeManager *)self performChanges:v5];
 }
@@ -228,27 +228,27 @@ LABEL_22:
 LABEL_24:
 }
 
-- (void)_handlePersistableRecipe:(id)a3 recipeAssetEdits:(id)a4 error:(id)a5 progress:(id)a6
+- (void)_handlePersistableRecipe:(id)recipe recipeAssetEdits:(id)edits error:(id)error progress:(id)progress
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (([a6 isCancelled] & 1) == 0)
+  recipeCopy = recipe;
+  editsCopy = edits;
+  errorCopy = error;
+  if (([progress isCancelled] & 1) == 0)
   {
-    if (!v10 || v12)
+    if (!recipeCopy || errorCopy)
     {
-      v13 = [(PXStoryPersistableRecipeManager *)self model];
-      [v13 reportPersistenceFailureWithError:v12];
+      model = [(PXStoryPersistableRecipeManager *)self model];
+      [model reportPersistenceFailureWithError:errorCopy];
     }
 
     v16 = MEMORY[0x1E69E9820];
     v17 = 3221225472;
     v18 = __92__PXStoryPersistableRecipeManager__handlePersistableRecipe_recipeAssetEdits_error_progress___block_invoke;
     v19 = &unk_1E773A8B8;
-    v20 = self;
-    v21 = v10;
-    v22 = v11;
-    v14 = v12;
+    selfCopy = self;
+    v21 = recipeCopy;
+    v22 = editsCopy;
+    v14 = errorCopy;
     v23 = v14;
     [(PXStoryPersistableRecipeManager *)self performChanges:&v16];
     v15 = [(PXStoryPersistableRecipeManager *)self errorReporter:v16];
@@ -270,12 +270,12 @@ uint64_t __92__PXStoryPersistableRecipeManager__handlePersistableRecipe_recipeAs
 {
   if ([(PXStoryPersistableRecipeManager *)self isReadyToProducePersistableRecipe])
   {
-    v3 = [(PXStoryPersistableRecipeManager *)self model];
-    v4 = [v3 persistencePermission];
-    v5 = [v3 configuration];
-    v6 = [v5 isRelated];
+    model = [(PXStoryPersistableRecipeManager *)self model];
+    persistencePermission = [model persistencePermission];
+    configuration = [model configuration];
+    isRelated = [configuration isRelated];
 
-    if (v6)
+    if (isRelated)
     {
       if (![(PXStoryPersistableRecipeManager *)self isPreparedForUserChanges])
       {
@@ -283,44 +283,44 @@ uint64_t __92__PXStoryPersistableRecipeManager__handlePersistableRecipe_recipeAs
       }
     }
 
-    else if ((![(PXStoryPersistableRecipeManager *)self hasUserExperiencedFirstPlaybackEver]|| v4 != 1) && ![(PXStoryPersistableRecipeManager *)self isPreparedForUserChanges])
+    else if ((![(PXStoryPersistableRecipeManager *)self hasUserExperiencedFirstPlaybackEver]|| persistencePermission != 1) && ![(PXStoryPersistableRecipeManager *)self isPreparedForUserChanges])
     {
       goto LABEL_9;
     }
 
     [(PXStoryPersistableRecipeManager *)self setIsPreparedForUserChanges:0];
-    v7 = [(PXStoryPersistableRecipeManager *)self originalPersistableRecipe];
-    v8 = [(PXStoryPersistableRecipeManager *)self recipeManager];
-    v9 = [v8 recipeAssetEdits];
+    originalPersistableRecipe = [(PXStoryPersistableRecipeManager *)self originalPersistableRecipe];
+    recipeManager = [(PXStoryPersistableRecipeManager *)self recipeManager];
+    recipeAssetEdits = [recipeManager recipeAssetEdits];
 
-    v10 = [(PXStoryPersistableRecipeManager *)self recipeManager];
-    v11 = [v10 recipe];
+    recipeManager2 = [(PXStoryPersistableRecipeManager *)self recipeManager];
+    recipe = [recipeManager2 recipe];
 
-    v22 = [(PXStoryPersistableRecipeManager *)self styleManager];
-    v12 = [v22 currentStyle];
-    v13 = [(PXStoryPersistableRecipeManager *)self storyQueue];
+    styleManager = [(PXStoryPersistableRecipeManager *)self styleManager];
+    currentStyle = [styleManager currentStyle];
+    storyQueue = [(PXStoryPersistableRecipeManager *)self storyQueue];
     v14 = [MEMORY[0x1E696AE38] discreteProgressWithTotalUnitCount:0];
     objc_initWeak(&location, self);
-    v15 = [(PXStoryPersistableRecipeManager *)self workQueue];
+    workQueue = [(PXStoryPersistableRecipeManager *)self workQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __59__PXStoryPersistableRecipeManager__updatePersistableRecipe__block_invoke;
     block[3] = &unk_1E77399E8;
     v16 = v14;
     v24 = v16;
-    v25 = self;
-    v17 = v7;
+    selfCopy = self;
+    v17 = originalPersistableRecipe;
     v26 = v17;
-    v18 = v11;
+    v18 = recipe;
     v27 = v18;
-    v19 = v9;
+    v19 = recipeAssetEdits;
     v28 = v19;
-    v20 = v12;
+    v20 = currentStyle;
     v29 = v20;
-    v21 = v13;
+    v21 = storyQueue;
     v30 = v21;
     objc_copyWeak(&v31, &location);
-    dispatch_async(v15, block);
+    dispatch_async(workQueue, block);
 
     [(PXStoryPersistableRecipeManager *)self setProgress:v16];
     objc_destroyWeak(&v31);
@@ -366,25 +366,25 @@ void __59__PXStoryPersistableRecipeManager__updatePersistableRecipe__block_invok
   [WeakRetained _handlePersistableRecipe:*(a1 + 32) recipeAssetEdits:*(a1 + 40) error:*(a1 + 48) progress:*(a1 + 56)];
 }
 
-- (void)_invalidatePersistableRecipeForUserActionKind:(int64_t)a3
+- (void)_invalidatePersistableRecipeForUserActionKind:(int64_t)kind
 {
-  v5 = [(PXStoryPersistableRecipeManager *)self model];
-  [v5 performedUserActionKind:a3];
+  model = [(PXStoryPersistableRecipeManager *)self model];
+  [model performedUserActionKind:kind];
 
-  v6 = [(PXStoryPersistableRecipeManager *)self updater];
-  [v6 setNeedsUpdateOf:sel__updatePersistableRecipe];
+  updater = [(PXStoryPersistableRecipeManager *)self updater];
+  [updater setNeedsUpdateOf:sel__updatePersistableRecipe];
 }
 
 - (void)_updatePersistencePermission
 {
-  v3 = [(PXStoryPersistableRecipeManager *)self model];
-  -[PXStoryPersistableRecipeManager setPersistencePermission:](self, "setPersistencePermission:", [v3 persistencePermission]);
+  model = [(PXStoryPersistableRecipeManager *)self model];
+  -[PXStoryPersistableRecipeManager setPersistencePermission:](self, "setPersistencePermission:", [model persistencePermission]);
 }
 
 - (void)_invalidatePersistencePermission
 {
-  v2 = [(PXStoryPersistableRecipeManager *)self updater];
-  [v2 setNeedsUpdateOf:sel__updatePersistencePermission];
+  updater = [(PXStoryPersistableRecipeManager *)self updater];
+  [updater setNeedsUpdateOf:sel__updatePersistencePermission];
 }
 
 - (void)_updateHasUserExperiencedFirstPlaybackEver
@@ -393,9 +393,9 @@ void __59__PXStoryPersistableRecipeManager__updatePersistableRecipe__block_invok
   {
     if ([(PXStoryPersistableRecipeManager *)self isOriginalPersistableRecipeValid])
     {
-      v3 = [(PXStoryPersistableRecipeManager *)self originalPersistableRecipe];
+      originalPersistableRecipe = [(PXStoryPersistableRecipeManager *)self originalPersistableRecipe];
 
-      if (!v3)
+      if (!originalPersistableRecipe)
       {
 
         [(PXStoryPersistableRecipeManager *)self setHasUserExperiencedFirstPlaybackEver:1];
@@ -406,16 +406,16 @@ void __59__PXStoryPersistableRecipeManager__updatePersistableRecipe__block_invok
 
 - (void)_invalidateHasUserExperiencedFirstPlaybackEver
 {
-  v2 = [(PXStoryPersistableRecipeManager *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateHasUserExperiencedFirstPlaybackEver];
+  updater = [(PXStoryPersistableRecipeManager *)self updater];
+  [updater setNeedsUpdateOf:sel__updateHasUserExperiencedFirstPlaybackEver];
 }
 
 - (void)_updateHasUserExperiencedPlayback
 {
-  v3 = [(PXStoryPersistableRecipeManager *)self model];
-  v4 = [v3 desiredPlayState];
+  model = [(PXStoryPersistableRecipeManager *)self model];
+  desiredPlayState = [model desiredPlayState];
 
-  if (v4 == 1)
+  if (desiredPlayState == 1)
   {
 
     [(PXStoryPersistableRecipeManager *)self setHasUserExperiencedPlayback:1];
@@ -424,37 +424,37 @@ void __59__PXStoryPersistableRecipeManager__updatePersistableRecipe__block_invok
 
 - (void)_invalidateHasUserExperiencedPlayback
 {
-  v2 = [(PXStoryPersistableRecipeManager *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateHasUserExperiencedPlayback];
+  updater = [(PXStoryPersistableRecipeManager *)self updater];
+  [updater setNeedsUpdateOf:sel__updateHasUserExperiencedPlayback];
 }
 
 - (void)_updateIsReadyToProducePersistableRecipe
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [(PXStoryPersistableRecipeManager *)self resourcesDataSourceManager];
-  v4 = [v3 isDataSourceFinal];
+  resourcesDataSourceManager = [(PXStoryPersistableRecipeManager *)self resourcesDataSourceManager];
+  isDataSourceFinal = [resourcesDataSourceManager isDataSourceFinal];
 
-  v5 = [(PXStoryPersistableRecipeManager *)self styleManager];
-  v6 = [v5 currentStyleAttributes] & 3;
+  styleManager = [(PXStoryPersistableRecipeManager *)self styleManager];
+  v6 = [styleManager currentStyleAttributes] & 3;
 
-  v7 = [(PXStoryPersistableRecipeManager *)self isOriginalPersistableRecipeValid];
+  isOriginalPersistableRecipeValid = [(PXStoryPersistableRecipeManager *)self isOriginalPersistableRecipeValid];
   v8 = PLStoryGetLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     v10 = 138413058;
-    v11 = self;
+    selfCopy = self;
     v12 = 1024;
-    v13 = v4;
+    v13 = isDataSourceFinal;
     v14 = 1024;
     v15 = v6 != 0;
     v16 = 1024;
-    v17 = v7;
+    v17 = isOriginalPersistableRecipeValid;
     _os_log_impl(&dword_1A3C1C000, v8, OS_LOG_TYPE_DEBUG, "%@ areResourcesFinal: %i isCurrentStyleFinal: %i isOriginalPersistableRecipeValid: %i", &v10, 0x1Eu);
   }
 
   if (v6)
   {
-    v9 = v4;
+    v9 = isDataSourceFinal;
   }
 
   else
@@ -462,65 +462,65 @@ void __59__PXStoryPersistableRecipeManager__updatePersistableRecipe__block_invok
     v9 = 0;
   }
 
-  [(PXStoryPersistableRecipeManager *)self setIsReadyToProducePersistableRecipe:v9 & v7];
+  [(PXStoryPersistableRecipeManager *)self setIsReadyToProducePersistableRecipe:v9 & isOriginalPersistableRecipeValid];
 }
 
 - (void)_invalidateIsReadyToProducePersistableRecipe
 {
-  v2 = [(PXStoryPersistableRecipeManager *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateIsReadyToProducePersistableRecipe];
+  updater = [(PXStoryPersistableRecipeManager *)self updater];
+  [updater setNeedsUpdateOf:sel__updateIsReadyToProducePersistableRecipe];
 }
 
 - (void)_updateOriginalPersistableRecipe
 {
-  v6 = [(PXStoryPersistableRecipeManager *)self recipeManager];
-  if ([v6 recipeAttributes])
+  recipeManager = [(PXStoryPersistableRecipeManager *)self recipeManager];
+  if ([recipeManager recipeAttributes])
   {
     [(PXStoryPersistableRecipeManager *)self setIsOriginalPersistableRecipeValid:1];
-    v3 = [(PXStoryPersistableRecipeManager *)self recipeManager];
-    v4 = [v3 recipe];
-    v5 = [v4 sourcePersistableRecipe];
-    [(PXStoryPersistableRecipeManager *)self setOriginalPersistableRecipe:v5];
+    recipeManager2 = [(PXStoryPersistableRecipeManager *)self recipeManager];
+    recipe = [recipeManager2 recipe];
+    sourcePersistableRecipe = [recipe sourcePersistableRecipe];
+    [(PXStoryPersistableRecipeManager *)self setOriginalPersistableRecipe:sourcePersistableRecipe];
   }
 }
 
 - (void)_invalidateOriginalPersistableRecipe
 {
-  v2 = [(PXStoryPersistableRecipeManager *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateOriginalPersistableRecipe];
+  updater = [(PXStoryPersistableRecipeManager *)self updater];
+  [updater setNeedsUpdateOf:sel__updateOriginalPersistableRecipe];
 }
 
-- (id)_persistableRecipeWithOriginalPersistableRecipe:(id)a3 recipe:(id)a4 recipeAssetEdits:(id)a5 currentStyle:(id)a6 error:(id *)a7
+- (id)_persistableRecipeWithOriginalPersistableRecipe:(id)recipe recipe:(id)a4 recipeAssetEdits:(id)edits currentStyle:(id)style error:(id *)error
 {
-  v11 = a3;
+  recipeCopy = recipe;
   v46 = a4;
-  v12 = a5;
-  v13 = a6;
+  editsCopy = edits;
+  styleCopy = style;
   v64 = 0;
   v65 = &v64;
   v66 = 0x3032000000;
   v67 = __Block_byref_object_copy__109697;
   v68 = __Block_byref_object_dispose__109698;
   v69 = 0;
-  v14 = [MEMORY[0x1E69C08C8] createRecipe];
-  v15 = [v14 mutableCopyWithZone:0];
+  createRecipe = [MEMORY[0x1E69C08C8] createRecipe];
+  v15 = [createRecipe mutableCopyWithZone:0];
 
   v62 = 0u;
   v63 = 0u;
   v60 = 0u;
   v61 = 0u;
   v59 = 0u;
-  if (v11)
+  if (recipeCopy)
   {
-    [v11 overallDurationInfo];
+    [recipeCopy overallDurationInfo];
   }
 
-  if (v12)
+  if (editsCopy)
   {
-    [v12 overallDurationInfo];
+    [editsCopy overallDurationInfo];
     if (v54)
     {
-      [v12 overallDurationInfo];
+      [editsCopy overallDurationInfo];
       v61 = v56;
       v62 = v57;
       v63 = v58;
@@ -535,7 +535,7 @@ void __59__PXStoryPersistableRecipeManager__updatePersistableRecipe__block_invok
   v54 = v59;
   v55 = v60;
   [v15 setOverallDurationInfo:&v54];
-  v43 = a7;
+  errorCopy = error;
   v16 = objc_alloc_init(MEMORY[0x1E695DF90]);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -547,11 +547,11 @@ void __59__PXStoryPersistableRecipeManager__updatePersistableRecipe__block_invok
   v18 = v15;
   v52 = v18;
   v45 = _Block_copy(aBlock);
-  v19 = [v13 originalColorGradeCategory];
-  v42 = v12;
-  v44 = [v13 customColorGradeKind];
-  v20 = [v13 songResource];
-  if (PXStorySongResourceIsNullResource(v20))
+  originalColorGradeCategory = [styleCopy originalColorGradeCategory];
+  v42 = editsCopy;
+  customColorGradeKind = [styleCopy customColorGradeKind];
+  songResource = [styleCopy songResource];
+  if (PXStorySongResourceIsNullResource(songResource))
   {
     v21 = *MEMORY[0x1E69C0DC0];
     v22 = 1;
@@ -559,18 +559,18 @@ void __59__PXStoryPersistableRecipeManager__updatePersistableRecipe__block_invok
 
   else
   {
-    v23 = [v13 songResource];
-    v24 = [v23 px_storyResourceSongAsset];
+    songResource2 = [styleCopy songResource];
+    px_storyResourceSongAsset = [songResource2 px_storyResourceSongAsset];
 
-    if (v24)
+    if (px_storyResourceSongAsset)
     {
-      v22 = v45[2](v45, v24, 2, 0);
-      v25 = [v24 identifier];
-      v21 = [v17 objectForKeyedSubscript:v25];
+      v22 = v45[2](v45, px_storyResourceSongAsset, 2, 0);
+      identifier = [px_storyResourceSongAsset identifier];
+      v21 = [v17 objectForKeyedSubscript:identifier];
 
       if (!v21)
       {
-        v32 = PXStoryErrorCreateWithCodeDebugFormat(1, @"recipe doesn't contain audio asset: %@", v26, v27, v28, v29, v30, v31, v24);
+        v32 = PXStoryErrorCreateWithCodeDebugFormat(1, @"recipe doesn't contain audio asset: %@", v26, v27, v28, v29, v30, v31, px_storyResourceSongAsset);
         v33 = v65[5];
         v65[5] = v32;
 
@@ -586,10 +586,10 @@ void __59__PXStoryPersistableRecipeManager__updatePersistableRecipe__block_invok
     }
   }
 
-  v34 = [v20 px_storyResourceSongAsset];
-  v35 = [v34 catalog];
+  px_storyResourceSongAsset2 = [songResource px_storyResourceSongAsset];
+  catalog = [px_storyResourceSongAsset2 catalog];
 
-  if (v35 != 4)
+  if (catalog != 4)
   {
     *&v54 = 0;
     *(&v54 + 1) = &v54;
@@ -601,26 +601,26 @@ void __59__PXStoryPersistableRecipeManager__updatePersistableRecipe__block_invok
     v47[3] = &unk_1E7739998;
     v48 = v18;
     v49 = &v54;
-    [v11 enumerateAssetsWithKind:2 usingBlock:v47];
-    v36 = [v46 fallbackSongResource];
-    v37 = [v36 px_storyResourceSongAsset];
+    [recipeCopy enumerateAssetsWithKind:2 usingBlock:v47];
+    fallbackSongResource = [v46 fallbackSongResource];
+    px_storyResourceSongAsset3 = [fallbackSongResource px_storyResourceSongAsset];
 
-    if ((*(*(&v54 + 1) + 24) & 1) == 0 && [v37 catalog] == 4)
+    if ((*(*(&v54 + 1) + 24) & 1) == 0 && [px_storyResourceSongAsset3 catalog] == 4)
     {
-      v45[2](v45, v37, 1, 0);
+      v45[2](v45, px_storyResourceSongAsset3, 1, 0);
     }
 
     _Block_object_dispose(&v54, 8);
   }
 
-  v38 = [MEMORY[0x1E69C08D8] createStyleWithOriginalColorGradeCategory:v19 customColorGradeKind:v44 songAssetIdentifier:v21 isCustomized:{objc_msgSend(v13, "isCustomized")}];
+  v38 = [MEMORY[0x1E69C08D8] createStyleWithOriginalColorGradeCategory:originalColorGradeCategory customColorGradeKind:customColorGradeKind songAssetIdentifier:v21 isCustomized:{objc_msgSend(styleCopy, "isCustomized")}];
   [v18 setCurrentStyle:v38];
-  v39 = [v11 seedSongIdentifiersByCatalog];
-  [v18 setSeedSongIdentifiersByCatalog:v39];
+  seedSongIdentifiersByCatalog = [recipeCopy seedSongIdentifiersByCatalog];
+  [v18 setSeedSongIdentifiersByCatalog:seedSongIdentifiersByCatalog];
 
-  if (v43)
+  if (errorCopy)
   {
-    *v43 = v65[5];
+    *errorCopy = v65[5];
   }
 
   if (v22)
@@ -681,22 +681,22 @@ void __126__PXStoryPersistableRecipeManager__persistableRecipeWithOriginalPersis
   }
 }
 
-- (void)setError:(id)a3
+- (void)setError:(id)error
 {
   v13 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = v5;
-  if (self->_error != v5 && ([(NSError *)v5 isEqual:?]& 1) == 0)
+  errorCopy = error;
+  v6 = errorCopy;
+  if (self->_error != errorCopy && ([(NSError *)errorCopy isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_error, a3);
+    objc_storeStrong(&self->_error, error);
     v7 = PLStoryGetLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
       error = self->_error;
       v9 = 138412546;
-      v10 = self;
+      selfCopy = self;
       v11 = 2112;
-      v12 = error;
+      errorCopy2 = error;
       _os_log_impl(&dword_1A3C1C000, v7, OS_LOG_TYPE_DEBUG, "%@ error: %@", &v9, 0x16u);
     }
 
@@ -704,12 +704,12 @@ void __126__PXStoryPersistableRecipeManager__persistableRecipeWithOriginalPersis
   }
 }
 
-- (void)setRecipeAssetEdits:(id)a3
+- (void)setRecipeAssetEdits:(id)edits
 {
-  v8 = a3;
+  editsCopy = edits;
   v5 = self->_recipeAssetEdits;
   v6 = v5;
-  if (v5 == v8)
+  if (v5 == editsCopy)
   {
   }
 
@@ -719,18 +719,18 @@ void __126__PXStoryPersistableRecipeManager__persistableRecipeWithOriginalPersis
 
     if (!v7)
     {
-      objc_storeStrong(&self->_recipeAssetEdits, a3);
+      objc_storeStrong(&self->_recipeAssetEdits, edits);
       [(PXStoryPersistableRecipeManager *)self signalChange:8];
     }
   }
 }
 
-- (void)setPersistableRecipe:(id)a3
+- (void)setPersistableRecipe:(id)recipe
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (self->_persistableRecipe != v4 && ([(PFStoryRecipe *)v4 isEqual:?]& 1) == 0)
+  recipeCopy = recipe;
+  v5 = recipeCopy;
+  if (self->_persistableRecipe != recipeCopy && ([(PFStoryRecipe *)recipeCopy isEqual:?]& 1) == 0)
   {
     v6 = [(PFStoryRecipe *)v5 copyWithZone:0];
     persistableRecipe = self->_persistableRecipe;
@@ -741,7 +741,7 @@ void __126__PXStoryPersistableRecipeManager__persistableRecipeWithOriginalPersis
     {
       v9 = self->_persistableRecipe;
       v10 = 138412546;
-      v11 = self;
+      selfCopy = self;
       v12 = 2112;
       v13 = v9;
       _os_log_impl(&dword_1A3C1C000, v8, OS_LOG_TYPE_DEBUG, "%@ persistableRecipe: %@", &v10, 0x16u);
@@ -751,18 +751,18 @@ void __126__PXStoryPersistableRecipeManager__persistableRecipeWithOriginalPersis
   }
 }
 
-- (void)setIsProducingPersistableRecipe:(BOOL)a3
+- (void)setIsProducingPersistableRecipe:(BOOL)recipe
 {
   v10 = *MEMORY[0x1E69E9840];
-  if (self->_isProducingPersistableRecipe != a3)
+  if (self->_isProducingPersistableRecipe != recipe)
   {
-    self->_isProducingPersistableRecipe = a3;
+    self->_isProducingPersistableRecipe = recipe;
     v4 = PLStoryGetLog();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
     {
       isProducingPersistableRecipe = self->_isProducingPersistableRecipe;
       v6 = 138412546;
-      v7 = self;
+      selfCopy = self;
       v8 = 1024;
       v9 = isProducingPersistableRecipe;
       _os_log_impl(&dword_1A3C1C000, v4, OS_LOG_TYPE_DEBUG, "%@ isProducingPersistableRecipe: %i", &v6, 0x12u);
@@ -772,30 +772,30 @@ void __126__PXStoryPersistableRecipeManager__persistableRecipeWithOriginalPersis
   }
 }
 
-- (void)setProgress:(id)a3
+- (void)setProgress:(id)progress
 {
-  v5 = a3;
+  progressCopy = progress;
   progress = self->_progress;
-  if (progress != v5)
+  if (progress != progressCopy)
   {
-    v7 = v5;
+    v7 = progressCopy;
     [(NSProgress *)progress cancel];
-    objc_storeStrong(&self->_progress, a3);
+    objc_storeStrong(&self->_progress, progress);
     [(PXStoryPersistableRecipeManager *)self setIsProducingPersistableRecipe:self->_progress != 0];
-    v5 = v7;
+    progressCopy = v7;
   }
 }
 
-- (void)setPersistencePermission:(int64_t)a3
+- (void)setPersistencePermission:(int64_t)permission
 {
-  if (self->_persistencePermission != a3)
+  if (self->_persistencePermission != permission)
   {
-    self->_persistencePermission = a3;
-    if (a3 == 1)
+    self->_persistencePermission = permission;
+    if (permission == 1)
     {
-      v5 = [(PXStoryPersistableRecipeManager *)self model];
-      v4 = [v5 configuration];
-      [(PXStoryPersistableRecipeManager *)self setIsPreparedForUserChanges:[PXStoryPersistableRecipeWriterFactory canPersistForConfiguration:v4]^ 1];
+      model = [(PXStoryPersistableRecipeManager *)self model];
+      configuration = [model configuration];
+      [(PXStoryPersistableRecipeManager *)self setIsPreparedForUserChanges:[PXStoryPersistableRecipeWriterFactory canPersistForConfiguration:configuration]^ 1];
     }
 
     else
@@ -806,18 +806,18 @@ void __126__PXStoryPersistableRecipeManager__persistableRecipeWithOriginalPersis
   }
 }
 
-- (void)setIsPreparedForUserChanges:(BOOL)a3
+- (void)setIsPreparedForUserChanges:(BOOL)changes
 {
   v12 = *MEMORY[0x1E69E9840];
-  if (self->_isPreparedForUserChanges != a3)
+  if (self->_isPreparedForUserChanges != changes)
   {
-    self->_isPreparedForUserChanges = a3;
+    self->_isPreparedForUserChanges = changes;
     v4 = PLStoryGetLog();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
     {
       isPreparedForUserChanges = self->_isPreparedForUserChanges;
       v8 = 138412546;
-      v9 = self;
+      selfCopy = self;
       v10 = 1024;
       v11 = isPreparedForUserChanges;
       _os_log_impl(&dword_1A3C1C000, v4, OS_LOG_TYPE_DEBUG, "%@ isPreparedForUserChanges: %i", &v8, 0x12u);
@@ -825,10 +825,10 @@ void __126__PXStoryPersistableRecipeManager__persistableRecipeWithOriginalPersis
 
     if (self->_isPreparedForUserChanges)
     {
-      v6 = [(PXStoryPersistableRecipeManager *)self model];
-      v7 = [v6 persistencePermission];
+      model = [(PXStoryPersistableRecipeManager *)self model];
+      persistencePermission = [model persistencePermission];
 
-      if (v7 != 1)
+      if (persistencePermission != 1)
       {
         PXAssertGetLog();
       }
@@ -838,18 +838,18 @@ void __126__PXStoryPersistableRecipeManager__persistableRecipeWithOriginalPersis
   }
 }
 
-- (void)setHasUserExperiencedFirstPlaybackEver:(BOOL)a3
+- (void)setHasUserExperiencedFirstPlaybackEver:(BOOL)ever
 {
   v10 = *MEMORY[0x1E69E9840];
-  if (self->_hasUserExperiencedFirstPlaybackEver != a3)
+  if (self->_hasUserExperiencedFirstPlaybackEver != ever)
   {
-    self->_hasUserExperiencedFirstPlaybackEver = a3;
+    self->_hasUserExperiencedFirstPlaybackEver = ever;
     v4 = PLStoryGetLog();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
     {
       hasUserExperiencedFirstPlaybackEver = self->_hasUserExperiencedFirstPlaybackEver;
       v6 = 138412546;
-      v7 = self;
+      selfCopy = self;
       v8 = 1024;
       v9 = hasUserExperiencedFirstPlaybackEver;
       _os_log_impl(&dword_1A3C1C000, v4, OS_LOG_TYPE_DEBUG, "%@ hasUserExperiencedFirstPlaybackEver: %i", &v6, 0x12u);
@@ -862,18 +862,18 @@ void __126__PXStoryPersistableRecipeManager__persistableRecipeWithOriginalPersis
   }
 }
 
-- (void)setHasUserExperiencedPlayback:(BOOL)a3
+- (void)setHasUserExperiencedPlayback:(BOOL)playback
 {
   v10 = *MEMORY[0x1E69E9840];
-  if (self->_hasUserExperiencedPlayback != a3)
+  if (self->_hasUserExperiencedPlayback != playback)
   {
-    self->_hasUserExperiencedPlayback = a3;
+    self->_hasUserExperiencedPlayback = playback;
     v4 = PLStoryGetLog();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
     {
       hasUserExperiencedPlayback = self->_hasUserExperiencedPlayback;
       v6 = 138412546;
-      v7 = self;
+      selfCopy = self;
       v8 = 1024;
       v9 = hasUserExperiencedPlayback;
       _os_log_impl(&dword_1A3C1C000, v4, OS_LOG_TYPE_DEBUG, "%@ hasUserExperiencedPlayback: %i", &v6, 0x12u);
@@ -883,18 +883,18 @@ void __126__PXStoryPersistableRecipeManager__persistableRecipeWithOriginalPersis
   }
 }
 
-- (void)setIsReadyToProducePersistableRecipe:(BOOL)a3
+- (void)setIsReadyToProducePersistableRecipe:(BOOL)recipe
 {
   v10 = *MEMORY[0x1E69E9840];
-  if (self->_isReadyToProducePersistableRecipe != a3)
+  if (self->_isReadyToProducePersistableRecipe != recipe)
   {
-    self->_isReadyToProducePersistableRecipe = a3;
+    self->_isReadyToProducePersistableRecipe = recipe;
     v4 = PLStoryGetLog();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
     {
       isReadyToProducePersistableRecipe = self->_isReadyToProducePersistableRecipe;
       v6 = 138412546;
-      v7 = self;
+      selfCopy = self;
       v8 = 1024;
       v9 = isReadyToProducePersistableRecipe;
       _os_log_impl(&dword_1A3C1C000, v4, OS_LOG_TYPE_DEBUG, "%@ isReadyToProducePersistableRecipe: %i", &v6, 0x12u);
@@ -905,18 +905,18 @@ void __126__PXStoryPersistableRecipeManager__persistableRecipeWithOriginalPersis
   }
 }
 
-- (void)setIsOriginalPersistableRecipeValid:(BOOL)a3
+- (void)setIsOriginalPersistableRecipeValid:(BOOL)valid
 {
   v10 = *MEMORY[0x1E69E9840];
-  if (self->_isOriginalPersistableRecipeValid != a3)
+  if (self->_isOriginalPersistableRecipeValid != valid)
   {
-    self->_isOriginalPersistableRecipeValid = a3;
+    self->_isOriginalPersistableRecipeValid = valid;
     v4 = PLStoryGetLog();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
     {
       isOriginalPersistableRecipeValid = self->_isOriginalPersistableRecipeValid;
       v6 = 138412546;
-      v7 = self;
+      selfCopy = self;
       v8 = 1024;
       v9 = isOriginalPersistableRecipeValid;
       _os_log_impl(&dword_1A3C1C000, v4, OS_LOG_TYPE_DEBUG, "%@ isOriginalPersistableRecipeValid: %i", &v6, 0x12u);
@@ -932,19 +932,19 @@ void __126__PXStoryPersistableRecipeManager__persistableRecipeWithOriginalPersis
   v4.receiver = self;
   v4.super_class = PXStoryPersistableRecipeManager;
   [(PXStoryPersistableRecipeManager *)&v4 didPerformChanges];
-  v3 = [(PXStoryPersistableRecipeManager *)self updater];
-  [v3 updateIfNeeded];
+  updater = [(PXStoryPersistableRecipeManager *)self updater];
+  [updater updateIfNeeded];
 }
 
-- (void)performChanges:(id)a3
+- (void)performChanges:(id)changes
 {
-  v4 = a3;
-  v5 = [(PXStoryPersistableRecipeManager *)self storyQueue];
-  dispatch_assert_queue_V2(v5);
+  changesCopy = changes;
+  storyQueue = [(PXStoryPersistableRecipeManager *)self storyQueue];
+  dispatch_assert_queue_V2(storyQueue);
 
   v6.receiver = self;
   v6.super_class = PXStoryPersistableRecipeManager;
-  [(PXStoryPersistableRecipeManager *)&v6 performChanges:v4];
+  [(PXStoryPersistableRecipeManager *)&v6 performChanges:changesCopy];
 }
 
 - (void)dealloc
@@ -955,11 +955,11 @@ void __126__PXStoryPersistableRecipeManager__persistableRecipeWithOriginalPersis
   [(PXStoryPersistableRecipeManager *)&v3 dealloc];
 }
 
-- (PXStoryPersistableRecipeManager)initWithModel:(id)a3 styleManager:(id)a4
+- (PXStoryPersistableRecipeManager)initWithModel:(id)model styleManager:(id)manager
 {
   v55 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  modelCopy = model;
+  managerCopy = manager;
   v46.receiver = self;
   v46.super_class = PXStoryPersistableRecipeManager;
   v10 = [(PXStoryPersistableRecipeManager *)&v46 init];
@@ -967,62 +967,62 @@ void __126__PXStoryPersistableRecipeManager__persistableRecipeWithOriginalPersis
   if (v10)
   {
     v43 = a2;
-    objc_storeStrong(&v10->_model, a3);
+    objc_storeStrong(&v10->_model, model);
     [(PXStoryModel *)v11->_model registerChangeObserver:v11 context:ModelObservationContext_109675];
-    v12 = [v8 recipeManager];
+    recipeManager = [modelCopy recipeManager];
     recipeManager = v11->_recipeManager;
-    v11->_recipeManager = v12;
+    v11->_recipeManager = recipeManager;
 
     [(PXStoryRecipeManager *)v11->_recipeManager registerChangeObserver:v11 context:RecipeManagerObservationContext_109676];
-    v14 = [v8 resourcesDataSourceManager];
+    resourcesDataSourceManager = [modelCopy resourcesDataSourceManager];
     resourcesDataSourceManager = v11->_resourcesDataSourceManager;
-    v11->_resourcesDataSourceManager = v14;
+    v11->_resourcesDataSourceManager = resourcesDataSourceManager;
 
     [(PXStoryResourcesDataSourceManager *)v11->_resourcesDataSourceManager registerChangeObserver:v11 context:ResourcesDataSourceManagerObservationContext];
-    objc_storeStrong(&v11->_styleManager, a4);
+    objc_storeStrong(&v11->_styleManager, manager);
     [(PXStoryStyleManager *)v11->_styleManager registerChangeObserver:v11 context:StyleManagerObservationContext];
-    v16 = [v8 configuration];
-    v17 = [v16 errorReporter];
+    configuration = [modelCopy configuration];
+    errorReporter = [configuration errorReporter];
     errorReporter = v11->_errorReporter;
-    v11->_errorReporter = v17;
+    v11->_errorReporter = errorReporter;
 
-    v19 = [v16 storyQueue];
+    storyQueue = [configuration storyQueue];
     storyQueue = v11->_storyQueue;
-    v11->_storyQueue = v19;
+    v11->_storyQueue = storyQueue;
 
     v21 = v11->_storyQueue;
-    v22 = [(PXStoryRecipeManager *)v11->_recipeManager storyQueue];
+    storyQueue2 = [(PXStoryRecipeManager *)v11->_recipeManager storyQueue];
 
-    if (v21 != v22)
+    if (v21 != storyQueue2)
     {
-      v40 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v40 handleFailureInMethod:v43 object:v11 file:@"PXStoryPersistableRecipeManager.m" lineNumber:90 description:{@"Invalid parameter not satisfying: %@", @"_storyQueue == _recipeManager.storyQueue"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:v43 object:v11 file:@"PXStoryPersistableRecipeManager.m" lineNumber:90 description:{@"Invalid parameter not satisfying: %@", @"_storyQueue == _recipeManager.storyQueue"}];
     }
 
     v23 = v11->_storyQueue;
-    v24 = [(PXStoryResourcesDataSourceManager *)v11->_resourcesDataSourceManager storyQueue];
+    storyQueue3 = [(PXStoryResourcesDataSourceManager *)v11->_resourcesDataSourceManager storyQueue];
 
-    if (v23 != v24)
+    if (v23 != storyQueue3)
     {
-      v41 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v41 handleFailureInMethod:v43 object:v11 file:@"PXStoryPersistableRecipeManager.m" lineNumber:91 description:{@"Invalid parameter not satisfying: %@", @"_storyQueue == _resourcesDataSourceManager.storyQueue"}];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:v43 object:v11 file:@"PXStoryPersistableRecipeManager.m" lineNumber:91 description:{@"Invalid parameter not satisfying: %@", @"_storyQueue == _resourcesDataSourceManager.storyQueue"}];
     }
 
     v25 = v11->_storyQueue;
-    v26 = [(PXStoryStyleManager *)v11->_styleManager storyQueue];
+    storyQueue4 = [(PXStoryStyleManager *)v11->_styleManager storyQueue];
 
-    if (v25 != v26)
+    if (v25 != storyQueue4)
     {
-      v42 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v42 handleFailureInMethod:v43 object:v11 file:@"PXStoryPersistableRecipeManager.m" lineNumber:92 description:{@"Invalid parameter not satisfying: %@", @"_storyQueue == _styleManager.storyQueue"}];
+      currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler3 handleFailureInMethod:v43 object:v11 file:@"PXStoryPersistableRecipeManager.m" lineNumber:92 description:{@"Invalid parameter not satisfying: %@", @"_storyQueue == _styleManager.storyQueue"}];
     }
 
     v27 = objc_opt_class();
     v28 = NSStringFromClass(v27);
-    v29 = [v28 UTF8String];
+    uTF8String = [v28 UTF8String];
     v30 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v31 = dispatch_queue_attr_make_with_qos_class(v30, QOS_CLASS_USER_INITIATED, 0);
-    v32 = dispatch_queue_create(v29, v31);
+    v32 = dispatch_queue_create(uTF8String, v31);
     workQueue = v11->_workQueue;
     v11->_workQueue = v32;
 
@@ -1048,7 +1048,7 @@ void __126__PXStoryPersistableRecipeManager__persistableRecipeWithOriginalPersis
       v51 = 2112;
       v52 = v38;
       v53 = 2112;
-      v54 = v9;
+      v54 = managerCopy;
       _os_log_impl(&dword_1A3C1C000, v36, OS_LOG_TYPE_DEBUG, "%@ initialized with recipeManager: %@ resourcesDataSourceManager: %@ styleManager: %@", buf, 0x2Au);
     }
 
@@ -1075,8 +1075,8 @@ uint64_t __62__PXStoryPersistableRecipeManager_initWithModel_styleManager___bloc
 
 - (PXStoryPersistableRecipeManager)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXStoryPersistableRecipeManager.m" lineNumber:68 description:{@"%s is not available as initializer", "-[PXStoryPersistableRecipeManager init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryPersistableRecipeManager.m" lineNumber:68 description:{@"%s is not available as initializer", "-[PXStoryPersistableRecipeManager init]"}];
 
   abort();
 }

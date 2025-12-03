@@ -1,25 +1,25 @@
 @interface IPInstallableProgressSource
-- (IPInstallableProgressSource)initWithStateSource:(id)a3;
+- (IPInstallableProgressSource)initWithStateSource:(id)source;
 - (IPProgressObserver)observer;
-- (id)currentProgressWithError:(id *)a3;
+- (id)currentProgressWithError:(id *)error;
 - (void)dealloc;
-- (void)finishWithReason:(unint64_t)a3;
-- (void)notifyOfUpdate:(id)a3;
+- (void)finishWithReason:(unint64_t)reason;
+- (void)notifyOfUpdate:(id)update;
 - (void)resume;
 @end
 
 @implementation IPInstallableProgressSource
 
-- (IPInstallableProgressSource)initWithStateSource:(id)a3
+- (IPInstallableProgressSource)initWithStateSource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   v9.receiver = self;
   v9.super_class = IPInstallableProgressSource;
   v6 = [(IPInstallableProgressSource *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_installableStateSource, a3);
+    objc_storeStrong(&v6->_installableStateSource, source);
     v7->_resumed = 0;
   }
 
@@ -29,17 +29,17 @@
 - (void)dealloc
 {
   objc_storeWeak(&self->_observer, 0);
-  v3 = [(IPInstallableStateSource *)self->_installableStateSource associatedRegistry];
-  [v3 unregisterProgressSource:self];
+  associatedRegistry = [(IPInstallableStateSource *)self->_installableStateSource associatedRegistry];
+  [associatedRegistry unregisterProgressSource:self];
 
   v4.receiver = self;
   v4.super_class = IPInstallableProgressSource;
   [(IPInstallableProgressSource *)&v4 dealloc];
 }
 
-- (id)currentProgressWithError:(id *)a3
+- (id)currentProgressWithError:(id *)error
 {
-  v4 = [(IPInstallableStateSource *)self->_installableStateSource currentProgressForSource:self error:a3];
+  v4 = [(IPInstallableStateSource *)self->_installableStateSource currentProgressForSource:self error:error];
   if (v4)
   {
     v5 = [[IPInstallableProgress alloc] initWithSource:self progressSnapshot:v4];
@@ -68,14 +68,14 @@
   else
   {
     self->_resumed = 1;
-    v4 = [(IPInstallableStateSource *)self->_installableStateSource associatedRegistry];
-    [v4 registerProgressSource:self];
+    associatedRegistry = [(IPInstallableStateSource *)self->_installableStateSource associatedRegistry];
+    [associatedRegistry registerProgressSource:self];
 
     v3 = _IPClientLog();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
       v6 = 138412290;
-      v7 = self;
+      selfCopy = self;
       _os_log_impl(&dword_254C69000, v3, OS_LOG_TYPE_DEFAULT, "Progress source resumed: %@", &v6, 0xCu);
     }
   }
@@ -83,19 +83,19 @@
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)notifyOfUpdate:(id)a3
+- (void)notifyOfUpdate:(id)update
 {
-  v4 = a3;
-  v6 = [[IPInstallableProgress alloc] initWithSource:self progressSnapshot:v4];
+  updateCopy = update;
+  v6 = [[IPInstallableProgress alloc] initWithSource:self progressSnapshot:updateCopy];
 
   WeakRetained = objc_loadWeakRetained(&self->_observer);
   [WeakRetained progressSource:self progressDidChange:v6];
 }
 
-- (void)finishWithReason:(unint64_t)a3
+- (void)finishWithReason:(unint64_t)reason
 {
   WeakRetained = objc_loadWeakRetained(&self->_observer);
-  [WeakRetained progressSource:self didEndForReason:a3];
+  [WeakRetained progressSource:self didEndForReason:reason];
 }
 
 - (IPProgressObserver)observer

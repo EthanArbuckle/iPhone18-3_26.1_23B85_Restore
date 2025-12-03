@@ -1,17 +1,17 @@
 @interface AppDelegate
-- (id)application:(id)a3 configurationForConnectingSceneSession:(id)a4 options:(id)a5;
-- (void)application:(id)a3 didDiscardSceneSessions:(id)a4;
-- (void)applicationDidFinishLaunching:(id)a3;
+- (id)application:(id)application configurationForConnectingSceneSession:(id)session options:(id)options;
+- (void)application:(id)application didDiscardSceneSessions:(id)sessions;
+- (void)applicationDidFinishLaunching:(id)launching;
 @end
 
 @implementation AppDelegate
 
-- (void)applicationDidFinishLaunching:(id)a3
+- (void)applicationDidFinishLaunching:(id)launching
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, launching);
   v7 = SUSUILog();
   v6 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -26,16 +26,16 @@
   objc_storeStrong(location, 0);
 }
 
-- (id)application:(id)a3 configurationForConnectingSceneSession:(id)a4 options:(id)a5
+- (id)application:(id)application configurationForConnectingSceneSession:(id)session options:(id)options
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, application);
   v13 = 0;
-  objc_storeStrong(&v13, a4);
+  objc_storeStrong(&v13, session);
   v12 = 0;
-  objc_storeStrong(&v12, a5);
+  objc_storeStrong(&v12, options);
   v11 = SUSUILog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -45,7 +45,7 @@
 
   objc_storeStrong(&v11, 0);
   v6 = [UISceneConfiguration alloc];
-  v7 = [v13 role];
+  role = [v13 role];
   v8 = [v6 initWithName:@"Default Configuration" sessionRole:?];
 
   objc_storeStrong(&v12, 0);
@@ -55,14 +55,14 @@
   return v8;
 }
 
-- (void)application:(id)a3 didDiscardSceneSessions:(id)a4
+- (void)application:(id)application didDiscardSceneSessions:(id)sessions
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, application);
   v6 = 0;
-  objc_storeStrong(&v6, a4);
+  objc_storeStrong(&v6, sessions);
   oslog = SUSUILog();
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {

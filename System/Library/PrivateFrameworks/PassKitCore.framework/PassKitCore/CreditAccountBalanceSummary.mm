@@ -8,18 +8,18 @@
 - (id)creditAccountBalanceSummary
 {
   v3 = objc_alloc_init(PKCreditAccountBalanceSummary);
-  v4 = [objc_opt_class() _propertySettersForCreditAccountBalanceSummary];
-  v5 = [v4 allKeys];
+  _propertySettersForCreditAccountBalanceSummary = [objc_opt_class() _propertySettersForCreditAccountBalanceSummary];
+  allKeys = [_propertySettersForCreditAccountBalanceSummary allKeys];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100009BA8;
   v11[3] = &unk_10083BEE0;
   v11[4] = self;
-  v12 = v4;
+  v12 = _propertySettersForCreditAccountBalanceSummary;
   v6 = v3;
   v13 = v6;
-  v7 = v4;
-  [(SQLiteEntity *)self getValuesForProperties:v5 withApplier:v11];
+  v7 = _propertySettersForCreditAccountBalanceSummary;
+  [(SQLiteEntity *)self getValuesForProperties:allKeys withApplier:v11];
 
   v8 = v13;
   v9 = v6;

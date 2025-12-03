@@ -9,14 +9,14 @@
 - (id)specifierForID:()PreferencesAdditions
 {
   v4 = a3;
-  v5 = [a1 objectEnumerator];
-  v6 = 0;
+  objectEnumerator = [self objectEnumerator];
+  nextObject = 0;
   while (1)
   {
-    v7 = v6;
-    v6 = [v5 nextObject];
+    v7 = nextObject;
+    nextObject = [objectEnumerator nextObject];
 
-    if (!v6)
+    if (!nextObject)
     {
       break;
     }
@@ -27,12 +27,12 @@
       break;
     }
 
-    v8 = [v6 identifier];
-    v9 = [v8 isEqualToString:v4];
+    identifier = [nextObject identifier];
+    v9 = [identifier isEqualToString:v4];
 
     if (v9)
     {
-      v10 = v6;
+      v10 = nextObject;
       goto LABEL_7;
     }
   }
@@ -52,7 +52,7 @@ LABEL_7:
   v8[3] = &unk_1E71DDE80;
   v9 = v4;
   v5 = v4;
-  v6 = [a1 indexOfObjectPassingTest:v8];
+  v6 = [self indexOfObjectPassingTest:v8];
 
   return v6;
 }
@@ -62,14 +62,14 @@ LABEL_7:
   if (a3)
   {
     v3 = a3;
-    if ([a1 count] > a3)
+    if ([self count] > a3)
     {
-      while (++v3 < [a1 count])
+      while (++v3 < [self count])
       {
-        v5 = [a1 objectAtIndexedSubscript:v3];
-        v6 = [v5 cellType];
+        v5 = [self objectAtIndexedSubscript:v3];
+        cellType = [v5 cellType];
 
-        if (!v6)
+        if (!cellType)
         {
           return v3;
         }

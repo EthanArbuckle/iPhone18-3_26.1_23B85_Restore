@@ -1,42 +1,42 @@
 @interface BLLibraryUtility
 + (BOOL)_isMultiUser;
-+ (BOOL)writeBinaryPropertyList:(id)a3 toPath:(id)a4 error:(id *)a5;
-+ (id)_dcIdentifierFromOpfPath:(id)a3 isEPUB:(BOOL)a4;
-+ (id)_storeIdFromiTunesMetadataPath:(id)a3 error:(id *)a4;
-+ (id)dcIdentifierFromBookPath:(id)a3;
-+ (id)generateFileUniqueIdFromPath:(id)a3;
-+ (id)identifierFromBookContainer:(id)a3 allowHash:(BOOL)a4 allowStoreID:(BOOL)a5 error:(id *)a6;
-+ (id)identifierFromBookZipArchive:(id)a3 allowHash:(BOOL)a4 allowStoreID:(BOOL)a5 error:(id *)a6;
-+ (id)md5FromPath:(id)a3;
-+ (id)opfPathFromEpubPath:(id)a3;
-+ (id)opfPathFromFullOpfContainerPath:(id)a3;
-+ (id)p_opfPathFromContainerXmlDoc:(_xmlDoc *)a3 epubPath:(id)a4;
-+ (id)p_opfPathFromContainerXmlPath:(id)a3 epubPath:(id)a4;
-+ (id)uniqueIdFromEpubPath:(id)a3;
++ (BOOL)writeBinaryPropertyList:(id)list toPath:(id)path error:(id *)error;
++ (id)_dcIdentifierFromOpfPath:(id)path isEPUB:(BOOL)b;
++ (id)_storeIdFromiTunesMetadataPath:(id)path error:(id *)error;
++ (id)dcIdentifierFromBookPath:(id)path;
++ (id)generateFileUniqueIdFromPath:(id)path;
++ (id)identifierFromBookContainer:(id)container allowHash:(BOOL)hash allowStoreID:(BOOL)d error:(id *)error;
++ (id)identifierFromBookZipArchive:(id)archive allowHash:(BOOL)hash allowStoreID:(BOOL)d error:(id *)error;
++ (id)md5FromPath:(id)path;
++ (id)opfPathFromEpubPath:(id)path;
++ (id)opfPathFromFullOpfContainerPath:(id)path;
++ (id)p_opfPathFromContainerXmlDoc:(_xmlDoc *)doc epubPath:(id)path;
++ (id)p_opfPathFromContainerXmlPath:(id)path epubPath:(id)epubPath;
++ (id)uniqueIdFromEpubPath:(id)path;
 @end
 
 @implementation BLLibraryUtility
 
-+ (id)p_opfPathFromContainerXmlPath:(id)a3 epubPath:(id)a4
++ (id)p_opfPathFromContainerXmlPath:(id)path epubPath:(id)epubPath
 {
   v6 = MEMORY[0x277CBEA90];
-  v7 = a4;
-  v8 = a3;
-  v9 = [[v6 alloc] initWithContentsOfFile:v8];
+  epubPathCopy = epubPath;
+  pathCopy = path;
+  v9 = [[v6 alloc] initWithContentsOfFile:pathCopy];
 
   Memory = xmlReadMemory([v9 bytes], objc_msgSend(v9, "length"), 0, "UTF-8", 2049);
-  v11 = [a1 p_opfPathFromContainerXmlDoc:Memory epubPath:v7];
+  v11 = [self p_opfPathFromContainerXmlDoc:Memory epubPath:epubPathCopy];
 
   return v11;
 }
 
-+ (id)p_opfPathFromContainerXmlDoc:(_xmlDoc *)a3 epubPath:(id)a4
++ (id)p_opfPathFromContainerXmlDoc:(_xmlDoc *)doc epubPath:(id)path
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  if (a3)
+  pathCopy = path;
+  if (doc)
   {
-    v6 = xmlXPathNewContext(a3);
+    v6 = xmlXPathNewContext(doc);
     v7 = xmlXPathRegisterNs(v6, "a", "urn:oasis:names:tc:opendocument:xmlns:container");
     if (v7)
     {
@@ -84,7 +84,7 @@ LABEL_15:
 
             v14 = Prop;
             v15 = [MEMORY[0x277CCACA8] stringWithCString:Prop encoding:4];
-            v6 = [v5 stringByAppendingPathComponent:v15];
+            v6 = [pathCopy stringByAppendingPathComponent:v15];
             free(v14);
           }
 
@@ -106,7 +106,7 @@ LABEL_15:
       }
     }
 
-    xmlFreeDoc(a3);
+    xmlFreeDoc(doc);
   }
 
   else
@@ -119,13 +119,13 @@ LABEL_15:
   return v6;
 }
 
-+ (id)opfPathFromFullOpfContainerPath:(id)a3
++ (id)opfPathFromFullOpfContainerPath:(id)path
 {
-  v4 = a3;
-  if ([v4 length])
+  pathCopy = path;
+  if ([pathCopy length])
   {
-    v5 = [v4 stringByReplacingOccurrencesOfString:@"META-INF/container.xml" withString:&stru_2853E2EC8];
-    v6 = [a1 p_opfPathFromContainerXmlPath:v4 epubPath:v5];
+    v5 = [pathCopy stringByReplacingOccurrencesOfString:@"META-INF/container.xml" withString:&stru_2853E2EC8];
+    v6 = [self p_opfPathFromContainerXmlPath:pathCopy epubPath:v5];
   }
 
   else
@@ -136,13 +136,13 @@ LABEL_15:
   return v6;
 }
 
-+ (id)opfPathFromEpubPath:(id)a3
++ (id)opfPathFromEpubPath:(id)path
 {
-  v4 = a3;
-  if ([v4 length])
+  pathCopy = path;
+  if ([pathCopy length])
   {
-    v5 = [v4 stringByAppendingPathComponent:@"META-INF/container.xml"];
-    v6 = [a1 p_opfPathFromContainerXmlPath:v5 epubPath:v4];
+    v5 = [pathCopy stringByAppendingPathComponent:@"META-INF/container.xml"];
+    v6 = [self p_opfPathFromContainerXmlPath:v5 epubPath:pathCopy];
   }
 
   else
@@ -153,11 +153,11 @@ LABEL_15:
   return v6;
 }
 
-+ (id)_dcIdentifierFromOpfPath:(id)a3 isEPUB:(BOOL)a4
++ (id)_dcIdentifierFromOpfPath:(id)path isEPUB:(BOOL)b
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = xmlNewTextReaderFilename([v5 UTF8String]);
+  bCopy = b;
+  pathCopy = path;
+  v6 = xmlNewTextReaderFilename([pathCopy UTF8String]);
   if (v6)
   {
     v7 = v6;
@@ -256,7 +256,7 @@ LABEL_9:
                 }
 
                 free(v28);
-                if (!v4)
+                if (!bCopy)
                 {
                   goto LABEL_11;
                 }
@@ -294,7 +294,7 @@ LABEL_11:
     }
 
     xmlFreeTextReader(v7);
-    if (!v4)
+    if (!bCopy)
     {
       goto LABEL_18;
     }
@@ -304,7 +304,7 @@ LABEL_11:
   {
     v14 = 0;
     v15 = 0;
-    if (!v4)
+    if (!bCopy)
     {
       goto LABEL_18;
     }
@@ -324,20 +324,20 @@ LABEL_20:
   return v16;
 }
 
-+ (id)dcIdentifierFromBookPath:(id)a3
++ (id)dcIdentifierFromBookPath:(id)path
 {
-  v3 = a3;
-  v4 = [v3 pathExtension];
-  v5 = [v4 lowercaseString];
-  v6 = [@"epub" isEqualToString:v5];
+  pathCopy = path;
+  pathExtension = [pathCopy pathExtension];
+  lowercaseString = [pathExtension lowercaseString];
+  v6 = [@"epub" isEqualToString:lowercaseString];
 
-  v7 = [v3 pathExtension];
-  v8 = [v7 lowercaseString];
-  v9 = [@"ibooks" isEqualToString:v8];
+  pathExtension2 = [pathCopy pathExtension];
+  lowercaseString2 = [pathExtension2 lowercaseString];
+  v9 = [@"ibooks" isEqualToString:lowercaseString2];
 
   if ((v6 & 1) != 0 || v9)
   {
-    v11 = [BLLibraryUtility opfPathFromEpubPath:v3];
+    v11 = [BLLibraryUtility opfPathFromEpubPath:pathCopy];
     v10 = [BLLibraryUtility _dcIdentifierFromOpfPath:v11 isEPUB:v6];
   }
 
@@ -349,14 +349,14 @@ LABEL_20:
   return v10;
 }
 
-+ (id)md5FromPath:(id)a3
++ (id)md5FromPath:(id)path
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 length])
+  pathCopy = path;
+  if ([pathCopy length])
   {
     v9 = 0;
-    v4 = IMStreamingHashStringWithFilePathSync(v3, 0, &v9);
+    v4 = IMStreamingHashStringWithFilePathSync(pathCopy, 0, &v9);
     v5 = v9;
     if (!v4)
     {
@@ -364,7 +364,7 @@ LABEL_20:
       if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v11 = v3;
+        v11 = pathCopy;
         v12 = 2112;
         v13 = v5;
         _os_log_impl(&dword_241D1F000, v6, OS_LOG_TYPE_ERROR, "Error hashing file: %@ --  %@", buf, 0x16u);
@@ -382,30 +382,30 @@ LABEL_20:
   return v4;
 }
 
-+ (id)uniqueIdFromEpubPath:(id)a3
++ (id)uniqueIdFromEpubPath:(id)path
 {
-  v3 = [BLLibraryUtility opfPathFromEpubPath:a3];
+  v3 = [BLLibraryUtility opfPathFromEpubPath:path];
   v4 = [BLLibraryUtility md5FromPath:v3];
 
   return v4;
 }
 
-+ (id)generateFileUniqueIdFromPath:(id)a3
++ (id)generateFileUniqueIdFromPath:(id)path
 {
-  v3 = a3;
-  if ([v3 length])
+  pathCopy = path;
+  if ([pathCopy length])
   {
-    v4 = [v3 pathExtension];
-    v5 = BLBookTypeFromPathExtension(v4);
+    pathExtension = [pathCopy pathExtension];
+    v5 = BLBookTypeFromPathExtension(pathExtension);
 
     if (v5 > 1)
     {
-      [BLLibraryUtility uniqueIdFromPdfPath:v3];
+      [BLLibraryUtility uniqueIdFromPdfPath:pathCopy];
     }
 
     else
     {
-      [BLLibraryUtility uniqueIdFromEpubPath:v3];
+      [BLLibraryUtility uniqueIdFromEpubPath:pathCopy];
     }
     v6 = ;
   }
@@ -424,15 +424,15 @@ LABEL_20:
   return v6;
 }
 
-+ (id)_storeIdFromiTunesMetadataPath:(id)a3 error:(id *)a4
++ (id)_storeIdFromiTunesMetadataPath:(id)path error:(id *)error
 {
   v5 = MEMORY[0x277CBEA90];
-  v6 = [MEMORY[0x277CBEBC0] fileURLWithPath:a3];
-  v7 = [v5 dataWithContentsOfURL:v6 options:1 error:a4];
+  v6 = [MEMORY[0x277CBEBC0] fileURLWithPath:path];
+  v7 = [v5 dataWithContentsOfURL:v6 options:1 error:error];
 
   if (v7)
   {
-    v8 = [MEMORY[0x277CCAC58] propertyListWithData:v7 options:0 format:0 error:a4];
+    v8 = [MEMORY[0x277CCAC58] propertyListWithData:v7 options:0 format:0 error:error];
     v9 = v8;
     if (v8)
     {
@@ -450,17 +450,17 @@ LABEL_20:
     v10 = 0;
   }
 
-  v11 = [v10 stringValue];
+  stringValue = [v10 stringValue];
 
-  return v11;
+  return stringValue;
 }
 
-+ (id)identifierFromBookZipArchive:(id)a3 allowHash:(BOOL)a4 allowStoreID:(BOOL)a5 error:(id *)a6
++ (id)identifierFromBookZipArchive:(id)archive allowHash:(BOOL)hash allowStoreID:(BOOL)d error:(id *)error
 {
-  v6 = a5;
-  v40 = a4;
+  dCopy = d;
+  hashCopy = hash;
   v56 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  archiveCopy = archive;
   v46 = 0;
   v47 = &v46;
   v48 = 0x3032000000;
@@ -471,12 +471,12 @@ LABEL_20:
   dispatch_group_enter(v9);
   v10 = dispatch_get_global_queue(-2, 0);
   v11 = MEMORY[0x277CF3308];
-  v12 = [MEMORY[0x277CBEBC0] fileURLWithPath:v8];
+  v12 = [MEMORY[0x277CBEBC0] fileURLWithPath:archiveCopy];
   v42[0] = MEMORY[0x277D85DD0];
   v42[1] = 3221225472;
   v42[2] = sub_241D4D4D8;
   v42[3] = &unk_278D17990;
-  v43 = v8;
+  v43 = archiveCopy;
   v45 = &v46;
   v13 = v9;
   v44 = v13;
@@ -488,7 +488,7 @@ LABEL_20:
   {
     v15 = [v14 entryForName:@"iTunesMetadata.plist"];
     v16 = v15;
-    if (!v6)
+    if (!dCopy)
     {
       goto LABEL_5;
     }
@@ -501,38 +501,38 @@ LABEL_20:
     v17 = [v15 plistFromArchive:v47[5]];
     objc_opt_class();
     v18 = [v17 objectForKeyedSubscript:STORE_ID_KEY];
-    v19 = BUDynamicCast();
+    bl_md5Hash = BUDynamicCast();
 
-    if (!v19)
+    if (!bl_md5Hash)
     {
 LABEL_5:
       v20 = [v47[5] entryForName:@"META-INF/container.xml"];
       v21 = v20;
       if (v20)
       {
-        v39 = [a1 p_opfPathFromContainerXmlDoc:objc_msgSend(v20 epubPath:{"xmlDocumentFromArchive:", v47[5]), &stru_2853E2EC8}];
+        v39 = [self p_opfPathFromContainerXmlDoc:objc_msgSend(v20 epubPath:{"xmlDocumentFromArchive:", v47[5]), &stru_2853E2EC8}];
         v22 = [v47[5] entryForName:?];
         v23 = v22;
         if (v22)
         {
           v24 = [v22 extractFromArchive:v47[5]];
-          v25 = [v8 pathExtension];
-          v26 = [v25 lowercaseString];
-          v27 = [@"epub" isEqualToString:v26];
+          pathExtension = [archiveCopy pathExtension];
+          lowercaseString = [pathExtension lowercaseString];
+          v27 = [@"epub" isEqualToString:lowercaseString];
 
-          v28 = [v24 path];
-          v19 = [BLLibraryUtility _dcIdentifierFromOpfPath:v28 isEPUB:v27];
+          path = [v24 path];
+          bl_md5Hash = [BLLibraryUtility _dcIdentifierFromOpfPath:path isEPUB:v27];
 
-          if (!v19 && v40)
+          if (!bl_md5Hash && hashCopy)
           {
-            v29 = [v24 path];
-            v19 = [BLLibraryUtility md5FromPath:v29];
+            path2 = [v24 path];
+            bl_md5Hash = [BLLibraryUtility md5FromPath:path2];
           }
 
-          v30 = [MEMORY[0x277CCAA00] defaultManager];
-          v31 = [v24 path];
+          defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+          path3 = [v24 path];
           v41 = 0;
-          v32 = [v30 removeItemAtPath:v31 error:&v41];
+          v32 = [defaultManager removeItemAtPath:path3 error:&v41];
           v33 = v41;
 
           if ((v32 & 1) == 0)
@@ -540,9 +540,9 @@ LABEL_5:
             v34 = BLDefaultLog();
             if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
             {
-              v35 = [v24 path];
+              path4 = [v24 path];
               *buf = 138412546;
-              v53 = v35;
+              v53 = path4;
               v54 = 2112;
               v55 = v33;
               _os_log_impl(&dword_241D1F000, v34, OS_LOG_TYPE_ERROR, "Failed to remove {%@} file. Error:  %@", buf, 0x16u);
@@ -552,16 +552,16 @@ LABEL_5:
 
         else
         {
-          v19 = 0;
+          bl_md5Hash = 0;
         }
       }
 
       else
       {
-        v19 = 0;
+        bl_md5Hash = 0;
       }
 
-      if (!v19 && v40)
+      if (!bl_md5Hash && hashCopy)
       {
         v36 = BLDefaultLog();
         if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
@@ -570,32 +570,32 @@ LABEL_5:
           _os_log_impl(&dword_241D1F000, v36, OS_LOG_TYPE_ERROR, "Warning: using a completely temporary NSUUID to add the book to the bookshelf", buf, 2u);
         }
 
-        v19 = [v8 bl_md5Hash];
+        bl_md5Hash = [archiveCopy bl_md5Hash];
       }
     }
   }
 
   else
   {
-    v19 = 0;
+    bl_md5Hash = 0;
   }
 
   _Block_object_dispose(&v46, 8);
 
   v37 = *MEMORY[0x277D85DE8];
 
-  return v19;
+  return bl_md5Hash;
 }
 
-+ (id)identifierFromBookContainer:(id)a3 allowHash:(BOOL)a4 allowStoreID:(BOOL)a5 error:(id *)a6
++ (id)identifierFromBookContainer:(id)container allowHash:(BOOL)hash allowStoreID:(BOOL)d error:(id *)error
 {
-  v7 = a5;
-  v8 = a4;
+  dCopy = d;
+  hashCopy = hash;
   v28 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  if (v7)
+  containerCopy = container;
+  if (dCopy)
   {
-    v10 = [BLLibraryUtility _iTunesMetadataPathForEpubPath:v9];
+    v10 = [BLLibraryUtility _iTunesMetadataPathForEpubPath:containerCopy];
     v25 = 0;
     v11 = [BLLibraryUtility _storeIdFromiTunesMetadataPath:v10 error:&v25];
     v12 = v25;
@@ -620,15 +620,15 @@ LABEL_5:
       goto LABEL_19;
     }
 
-    v14 = [v12 userInfo];
-    v15 = [v14 objectForKey:*MEMORY[0x277CCA7E8]];
+    userInfo = [v12 userInfo];
+    v15 = [userInfo objectForKey:*MEMORY[0x277CCA7E8]];
 
-    v16 = [v15 domain];
-    if ([v16 isEqualToString:*MEMORY[0x277CCA5B8]])
+    domain = [v15 domain];
+    if ([domain isEqualToString:*MEMORY[0x277CCA5B8]])
     {
-      v18 = [v15 code];
+      code = [v15 code];
 
-      if (v18 == 2)
+      if (code == 2)
       {
 LABEL_18:
 
@@ -648,10 +648,10 @@ LABEL_18:
       _os_log_impl(&dword_241D1F000, v19, OS_LOG_TYPE_ERROR, "Error attempting to read store id. Error:  %@", buf, 0xCu);
     }
 
-    if (a6)
+    if (error)
     {
       v20 = v12;
-      *a6 = v12;
+      *error = v12;
     }
 
     goto LABEL_18;
@@ -659,17 +659,17 @@ LABEL_18:
 
   v12 = 0;
 LABEL_19:
-  v21 = [BLLibraryUtility dcIdentifierFromBookPath:v9];
+  v21 = [BLLibraryUtility dcIdentifierFromBookPath:containerCopy];
   v11 = v21;
-  if (v8 && !v21)
+  if (hashCopy && !v21)
   {
-    v22 = [BLLibraryUtility uniqueIdFromEpubPath:v9];
-    if (!v22)
+    bl_md5Hash = [BLLibraryUtility uniqueIdFromEpubPath:containerCopy];
+    if (!bl_md5Hash)
     {
-      v22 = [v9 bl_md5Hash];
+      bl_md5Hash = [containerCopy bl_md5Hash];
     }
 
-    v11 = v22;
+    v11 = bl_md5Hash;
   }
 
 LABEL_24:
@@ -679,12 +679,12 @@ LABEL_24:
   return v11;
 }
 
-+ (BOOL)writeBinaryPropertyList:(id)a3 toPath:(id)a4 error:(id *)a5
++ (BOOL)writeBinaryPropertyList:(id)list toPath:(id)path error:(id *)error
 {
   v23 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  pathCopy = path;
   v20 = 0;
-  v8 = [MEMORY[0x277CCAC58] dataWithPropertyList:a3 format:200 options:0 error:&v20];
+  v8 = [MEMORY[0x277CCAC58] dataWithPropertyList:list format:200 options:0 error:&v20];
   v9 = v20;
   v10 = v9;
   if (!v8)
@@ -701,7 +701,7 @@ LABEL_24:
   }
 
   v19 = v9;
-  v11 = [v8 writeToFile:v7 options:1 error:&v19];
+  v11 = [v8 writeToFile:pathCopy options:1 error:&v19];
   v12 = v19;
 
   v13 = BLDefaultLog();
@@ -718,11 +718,11 @@ LABEL_24:
     v10 = v12;
 LABEL_11:
 
-    if (a5)
+    if (error)
     {
       v16 = v10;
       v15 = 0;
-      *a5 = v10;
+      *error = v10;
     }
 
     else
@@ -737,7 +737,7 @@ LABEL_11:
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v22 = v7;
+    v22 = pathCopy;
     _os_log_impl(&dword_241D1F000, v14, OS_LOG_TYPE_DEFAULT, "DownloadInstaller: Wrote plist to: %@", buf, 0xCu);
   }
 
@@ -761,16 +761,16 @@ LABEL_15:
     return v2;
   }
 
-  v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v4 = [v3 valueForKey:@"BLLibrarySimulateMultiUser"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v4 = [standardUserDefaults valueForKey:@"BLLibrarySimulateMultiUser"];
 
   if (!v4)
   {
     return v2;
   }
 
-  v5 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v6 = [v5 BOOLForKey:@"BLLibrarySimulateMultiUser"];
+  standardUserDefaults2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v6 = [standardUserDefaults2 BOOLForKey:@"BLLibrarySimulateMultiUser"];
 
   return v6;
 }

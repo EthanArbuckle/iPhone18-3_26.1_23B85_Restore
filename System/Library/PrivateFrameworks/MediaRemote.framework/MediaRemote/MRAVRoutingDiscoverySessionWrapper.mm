@@ -1,37 +1,37 @@
 @interface MRAVRoutingDiscoverySessionWrapper
-- (MRAVRoutingDiscoverySessionWrapper)initWithSession:(id)a3 configuration:(id)a4;
-- (id)addEndpointsAddedCallback:(id)a3;
-- (id)addEndpointsChangedCallback:(id)a3;
-- (id)addEndpointsModifiedCallback:(id)a3;
-- (id)addEndpointsRemovedCallback:(id)a3;
-- (id)addOutputDevicesAddedCallback:(id)a3;
-- (id)addOutputDevicesChangedCallback:(id)a3;
-- (id)addOutputDevicesModifiedCallback:(id)a3;
-- (id)addOutputDevicesRemovedCallback:(id)a3;
+- (MRAVRoutingDiscoverySessionWrapper)initWithSession:(id)session configuration:(id)configuration;
+- (id)addEndpointsAddedCallback:(id)callback;
+- (id)addEndpointsChangedCallback:(id)callback;
+- (id)addEndpointsModifiedCallback:(id)callback;
+- (id)addEndpointsRemovedCallback:(id)callback;
+- (id)addOutputDevicesAddedCallback:(id)callback;
+- (id)addOutputDevicesChangedCallback:(id)callback;
+- (id)addOutputDevicesModifiedCallback:(id)callback;
+- (id)addOutputDevicesRemovedCallback:(id)callback;
 - (id)description;
 - (void)dealloc;
-- (void)reevaluateDiscoveryModeForSession:(id)a3;
-- (void)removeEndpointsAddedCallback:(id)a3;
-- (void)removeEndpointsChangedCallback:(id)a3;
-- (void)removeEndpointsModifiedCallback:(id)a3;
-- (void)removeEndpointsRemovedCallback:(id)a3;
-- (void)removeOutputDevicesAddedCallback:(id)a3;
-- (void)removeOutputDevicesChangedCallback:(id)a3;
-- (void)removeOutputDevicesModifiedCallback:(id)a3;
-- (void)removeOutputDevicesRemovedCallback:(id)a3;
-- (void)setConfiguration:(id)a3;
-- (void)setRoutingContextUID:(id)a3;
-- (void)setSharedSession:(id)a3;
-- (void)transferCallbacksFromSession:(id)a3 toSession:(id)a4;
-- (void)transferEndpointsAddedCallbacksFromSession:(id)a3 toSession:(id)a4;
-- (void)transferEndpointsChangedCallbacksFromSession:(id)a3 toSession:(id)a4;
-- (void)transferEndpointsModifiedCallbacksFromSession:(id)a3 toSession:(id)a4;
-- (void)transferEndpointsRemovedCallbacksFromSession:(id)a3 toSession:(id)a4;
-- (void)transferOutputDevicesAddedCallbacksFromSession:(id)a3 toSession:(id)a4;
-- (void)transferOutputDevicesChangedCallbacksFromSession:(id)a3 toSession:(id)a4;
-- (void)transferOutputDevicesModifiedCallbacksFromSession:(id)a3 toSession:(id)a4;
-- (void)transferOutputDevicesRemovedCallbacksFromSession:(id)a3 toSession:(id)a4;
-- (void)updateObserversWithPreviousSession:(id)a3;
+- (void)reevaluateDiscoveryModeForSession:(id)session;
+- (void)removeEndpointsAddedCallback:(id)callback;
+- (void)removeEndpointsChangedCallback:(id)callback;
+- (void)removeEndpointsModifiedCallback:(id)callback;
+- (void)removeEndpointsRemovedCallback:(id)callback;
+- (void)removeOutputDevicesAddedCallback:(id)callback;
+- (void)removeOutputDevicesChangedCallback:(id)callback;
+- (void)removeOutputDevicesModifiedCallback:(id)callback;
+- (void)removeOutputDevicesRemovedCallback:(id)callback;
+- (void)setConfiguration:(id)configuration;
+- (void)setRoutingContextUID:(id)d;
+- (void)setSharedSession:(id)session;
+- (void)transferCallbacksFromSession:(id)session toSession:(id)toSession;
+- (void)transferEndpointsAddedCallbacksFromSession:(id)session toSession:(id)toSession;
+- (void)transferEndpointsChangedCallbacksFromSession:(id)session toSession:(id)toSession;
+- (void)transferEndpointsModifiedCallbacksFromSession:(id)session toSession:(id)toSession;
+- (void)transferEndpointsRemovedCallbacksFromSession:(id)session toSession:(id)toSession;
+- (void)transferOutputDevicesAddedCallbacksFromSession:(id)session toSession:(id)toSession;
+- (void)transferOutputDevicesChangedCallbacksFromSession:(id)session toSession:(id)toSession;
+- (void)transferOutputDevicesModifiedCallbacksFromSession:(id)session toSession:(id)toSession;
+- (void)transferOutputDevicesRemovedCallbacksFromSession:(id)session toSession:(id)toSession;
+- (void)updateObserversWithPreviousSession:(id)session;
 - (void)updateSharedSession;
 @end
 
@@ -44,13 +44,13 @@
   [(MRAVRoutingDiscoverySessionWrapper *)self setSharedSession:v4];
 }
 
-- (MRAVRoutingDiscoverySessionWrapper)initWithSession:(id)a3 configuration:(id)a4
+- (MRAVRoutingDiscoverySessionWrapper)initWithSession:(id)session configuration:(id)configuration
 {
   v39 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  objc_storeStrong(&self->_sharedSession, a3);
-  v8 = a4;
-  v9 = [v8 copy];
+  sessionCopy = session;
+  objc_storeStrong(&self->_sharedSession, session);
+  configurationCopy = configuration;
+  v9 = [configurationCopy copy];
 
   configuration = self->_configuration;
   self->_configuration = v9;
@@ -100,7 +100,7 @@
   {
     sharedSession = self->_sharedSession;
     v35 = 134218242;
-    v36 = self;
+    selfCopy = self;
     v37 = 2114;
     v38 = sharedSession;
     _os_log_impl(&dword_1A2860000, v31, OS_LOG_TYPE_INFO, "[MRAVRoutingDiscoverySessionWrapper] <%p> Init with shared session: %{public}@", &v35, 0x16u);
@@ -116,127 +116,127 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(MRAVRoutingDiscoverySessionWrapper *)self sharedSession];
-  v7 = [v3 stringWithFormat:@"<%@: %p> sharedSession: %@", v5, self, v6];
+  sharedSession = [(MRAVRoutingDiscoverySessionWrapper *)self sharedSession];
+  v7 = [v3 stringWithFormat:@"<%@: %p> sharedSession: %@", v5, self, sharedSession];
 
   return v7;
 }
 
-- (void)setRoutingContextUID:(id)a3
+- (void)setRoutingContextUID:(id)d
 {
-  v6 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(MRAVRoutingDiscoverySessionConfiguration *)v4->_configuration routingContextUID];
+  dCopy = d;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  routingContextUID = [(MRAVRoutingDiscoverySessionConfiguration *)selfCopy->_configuration routingContextUID];
 
-  if (v5 != v6)
+  if (routingContextUID != dCopy)
   {
-    [(MRAVRoutingDiscoverySessionConfiguration *)v4->_configuration setRoutingContextUID:v6];
-    [(MRAVRoutingDiscoverySessionWrapper *)v4 updateSharedSession];
+    [(MRAVRoutingDiscoverySessionConfiguration *)selfCopy->_configuration setRoutingContextUID:dCopy];
+    [(MRAVRoutingDiscoverySessionWrapper *)selfCopy updateSharedSession];
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)setConfiguration:(id)a3
+- (void)setConfiguration:(id)configuration
 {
-  v6 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (![(MRAVRoutingDiscoverySessionConfiguration *)v5->_configuration isEqual:v6])
+  configurationCopy = configuration;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (![(MRAVRoutingDiscoverySessionConfiguration *)selfCopy->_configuration isEqual:configurationCopy])
   {
-    objc_storeStrong(&v5->_configuration, a3);
-    [(MRAVRoutingDiscoverySessionWrapper *)v5 updateSharedSession];
+    objc_storeStrong(&selfCopy->_configuration, configuration);
+    [(MRAVRoutingDiscoverySessionWrapper *)selfCopy updateSharedSession];
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (id)addEndpointsChangedCallback:(id)a3
+- (id)addEndpointsChangedCallback:(id)callback
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(MRAVRoutingDiscoverySession *)v5->_sharedSession addEndpointsChangedCallback:v4];
-  v7 = [v4 copy];
+  callbackCopy = callback;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(MRAVRoutingDiscoverySession *)selfCopy->_sharedSession addEndpointsChangedCallback:callbackCopy];
+  v7 = [callbackCopy copy];
   v8 = MEMORY[0x1A58E3570]();
-  [(NSMutableDictionary *)v5->_endpointsChangedCallbacks setObject:v8 forKeyedSubscript:v6];
+  [(NSMutableDictionary *)selfCopy->_endpointsChangedCallbacks setObject:v8 forKeyedSubscript:v6];
 
-  [(NSMutableDictionary *)v5->_endpointsTokensMap setObject:v6 forKeyedSubscript:v6];
-  objc_sync_exit(v5);
+  [(NSMutableDictionary *)selfCopy->_endpointsTokensMap setObject:v6 forKeyedSubscript:v6];
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
-- (id)addEndpointsAddedCallback:(id)a3
+- (id)addEndpointsAddedCallback:(id)callback
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(MRAVRoutingDiscoverySession *)v5->_sharedSession addEndpointsAddedCallback:v4];
-  v7 = [v4 copy];
+  callbackCopy = callback;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(MRAVRoutingDiscoverySession *)selfCopy->_sharedSession addEndpointsAddedCallback:callbackCopy];
+  v7 = [callbackCopy copy];
   v8 = MEMORY[0x1A58E3570]();
-  [(NSMutableDictionary *)v5->_endpointsAddedCallbacks setObject:v8 forKeyedSubscript:v6];
+  [(NSMutableDictionary *)selfCopy->_endpointsAddedCallbacks setObject:v8 forKeyedSubscript:v6];
 
-  [(NSMutableDictionary *)v5->_endpointsTokensMap setObject:v6 forKeyedSubscript:v6];
-  objc_sync_exit(v5);
+  [(NSMutableDictionary *)selfCopy->_endpointsTokensMap setObject:v6 forKeyedSubscript:v6];
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
-- (id)addEndpointsRemovedCallback:(id)a3
+- (id)addEndpointsRemovedCallback:(id)callback
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(MRAVRoutingDiscoverySession *)v5->_sharedSession addEndpointsRemovedCallback:v4];
-  v7 = [v4 copy];
+  callbackCopy = callback;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(MRAVRoutingDiscoverySession *)selfCopy->_sharedSession addEndpointsRemovedCallback:callbackCopy];
+  v7 = [callbackCopy copy];
   v8 = MEMORY[0x1A58E3570]();
-  [(NSMutableDictionary *)v5->_endpointsRemovedCallbacks setObject:v8 forKeyedSubscript:v6];
+  [(NSMutableDictionary *)selfCopy->_endpointsRemovedCallbacks setObject:v8 forKeyedSubscript:v6];
 
-  [(NSMutableDictionary *)v5->_endpointsTokensMap setObject:v6 forKeyedSubscript:v6];
-  objc_sync_exit(v5);
+  [(NSMutableDictionary *)selfCopy->_endpointsTokensMap setObject:v6 forKeyedSubscript:v6];
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
-- (id)addEndpointsModifiedCallback:(id)a3
+- (id)addEndpointsModifiedCallback:(id)callback
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(MRAVRoutingDiscoverySession *)v5->_sharedSession addEndpointsModifiedCallback:v4];
-  v7 = [v4 copy];
+  callbackCopy = callback;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(MRAVRoutingDiscoverySession *)selfCopy->_sharedSession addEndpointsModifiedCallback:callbackCopy];
+  v7 = [callbackCopy copy];
   v8 = MEMORY[0x1A58E3570]();
-  [(NSMutableDictionary *)v5->_endpointsModifiedCallbacks setObject:v8 forKeyedSubscript:v6];
+  [(NSMutableDictionary *)selfCopy->_endpointsModifiedCallbacks setObject:v8 forKeyedSubscript:v6];
 
-  [(NSMutableDictionary *)v5->_endpointsTokensMap setObject:v6 forKeyedSubscript:v6];
-  objc_sync_exit(v5);
+  [(NSMutableDictionary *)selfCopy->_endpointsTokensMap setObject:v6 forKeyedSubscript:v6];
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
-- (id)addOutputDevicesChangedCallback:(id)a3
+- (id)addOutputDevicesChangedCallback:(id)callback
 {
-  v4 = a3;
+  callbackCopy = callback;
   objc_initWeak(&location, self);
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __70__MRAVRoutingDiscoverySessionWrapper_addOutputDevicesChangedCallback___block_invoke;
   v12[3] = &unk_1E769B7D8;
-  v5 = v4;
+  v5 = callbackCopy;
   v13 = v5;
   objc_copyWeak(&v14, &location);
   v6 = MEMORY[0x1A58E3570](v12);
-  v7 = self;
-  objc_sync_enter(v7);
-  v8 = [(MRAVRoutingDiscoverySession *)v7->_sharedSession addOutputDevicesChangedCallback:v6];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v8 = [(MRAVRoutingDiscoverySession *)selfCopy->_sharedSession addOutputDevicesChangedCallback:v6];
   v9 = [v6 copy];
   v10 = MEMORY[0x1A58E3570]();
-  [(NSMutableDictionary *)v7->_outputDevicesChangedCallbacks setObject:v10 forKeyedSubscript:v8];
+  [(NSMutableDictionary *)selfCopy->_outputDevicesChangedCallbacks setObject:v10 forKeyedSubscript:v8];
 
-  [(NSMutableDictionary *)v7->_outputDevicesTokensMap setObject:v8 forKeyedSubscript:v8];
-  objc_sync_exit(v7);
+  [(NSMutableDictionary *)selfCopy->_outputDevicesTokensMap setObject:v8 forKeyedSubscript:v8];
+  objc_sync_exit(selfCopy);
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
@@ -255,27 +255,27 @@ void __70__MRAVRoutingDiscoverySessionWrapper_addOutputDevicesChangedCallback___
   (*(v3 + 16))(v3, v6);
 }
 
-- (id)addOutputDevicesAddedCallback:(id)a3
+- (id)addOutputDevicesAddedCallback:(id)callback
 {
-  v4 = a3;
+  callbackCopy = callback;
   objc_initWeak(&location, self);
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __68__MRAVRoutingDiscoverySessionWrapper_addOutputDevicesAddedCallback___block_invoke;
   v12[3] = &unk_1E769B7D8;
-  v5 = v4;
+  v5 = callbackCopy;
   v13 = v5;
   objc_copyWeak(&v14, &location);
   v6 = MEMORY[0x1A58E3570](v12);
-  v7 = self;
-  objc_sync_enter(v7);
-  v8 = [(MRAVRoutingDiscoverySession *)v7->_sharedSession addOutputDevicesAddedCallback:v6];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v8 = [(MRAVRoutingDiscoverySession *)selfCopy->_sharedSession addOutputDevicesAddedCallback:v6];
   v9 = [v6 copy];
   v10 = MEMORY[0x1A58E3570]();
-  [(NSMutableDictionary *)v7->_outputDevicesAddedCallbacks setObject:v10 forKeyedSubscript:v8];
+  [(NSMutableDictionary *)selfCopy->_outputDevicesAddedCallbacks setObject:v10 forKeyedSubscript:v8];
 
-  [(NSMutableDictionary *)v7->_outputDevicesTokensMap setObject:v8 forKeyedSubscript:v8];
-  objc_sync_exit(v7);
+  [(NSMutableDictionary *)selfCopy->_outputDevicesTokensMap setObject:v8 forKeyedSubscript:v8];
+  objc_sync_exit(selfCopy);
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
@@ -294,27 +294,27 @@ void __68__MRAVRoutingDiscoverySessionWrapper_addOutputDevicesAddedCallback___bl
   (*(v3 + 16))(v3, v6);
 }
 
-- (id)addOutputDevicesRemovedCallback:(id)a3
+- (id)addOutputDevicesRemovedCallback:(id)callback
 {
-  v4 = a3;
+  callbackCopy = callback;
   objc_initWeak(&location, self);
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __70__MRAVRoutingDiscoverySessionWrapper_addOutputDevicesRemovedCallback___block_invoke;
   v12[3] = &unk_1E769B7D8;
-  v5 = v4;
+  v5 = callbackCopy;
   v13 = v5;
   objc_copyWeak(&v14, &location);
   v6 = MEMORY[0x1A58E3570](v12);
-  v7 = self;
-  objc_sync_enter(v7);
-  v8 = [(MRAVRoutingDiscoverySession *)v7->_sharedSession addOutputDevicesRemovedCallback:v6];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v8 = [(MRAVRoutingDiscoverySession *)selfCopy->_sharedSession addOutputDevicesRemovedCallback:v6];
   v9 = [v6 copy];
   v10 = MEMORY[0x1A58E3570]();
-  [(NSMutableDictionary *)v7->_outputDevicesRemovedCallbacks setObject:v10 forKeyedSubscript:v8];
+  [(NSMutableDictionary *)selfCopy->_outputDevicesRemovedCallbacks setObject:v10 forKeyedSubscript:v8];
 
-  [(NSMutableDictionary *)v7->_outputDevicesTokensMap setObject:v8 forKeyedSubscript:v8];
-  objc_sync_exit(v7);
+  [(NSMutableDictionary *)selfCopy->_outputDevicesTokensMap setObject:v8 forKeyedSubscript:v8];
+  objc_sync_exit(selfCopy);
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
@@ -333,27 +333,27 @@ void __70__MRAVRoutingDiscoverySessionWrapper_addOutputDevicesRemovedCallback___
   (*(v3 + 16))(v3, v6);
 }
 
-- (id)addOutputDevicesModifiedCallback:(id)a3
+- (id)addOutputDevicesModifiedCallback:(id)callback
 {
-  v4 = a3;
+  callbackCopy = callback;
   objc_initWeak(&location, self);
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __71__MRAVRoutingDiscoverySessionWrapper_addOutputDevicesModifiedCallback___block_invoke;
   v12[3] = &unk_1E769B7D8;
-  v5 = v4;
+  v5 = callbackCopy;
   v13 = v5;
   objc_copyWeak(&v14, &location);
   v6 = MEMORY[0x1A58E3570](v12);
-  v7 = self;
-  objc_sync_enter(v7);
-  v8 = [(MRAVRoutingDiscoverySession *)v7->_sharedSession addOutputDevicesModifiedCallback:v6];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v8 = [(MRAVRoutingDiscoverySession *)selfCopy->_sharedSession addOutputDevicesModifiedCallback:v6];
   v9 = [v6 copy];
   v10 = MEMORY[0x1A58E3570]();
-  [(NSMutableDictionary *)v7->_outputDevicesModifiedCallbacks setObject:v10 forKeyedSubscript:v8];
+  [(NSMutableDictionary *)selfCopy->_outputDevicesModifiedCallbacks setObject:v10 forKeyedSubscript:v8];
 
-  [(NSMutableDictionary *)v7->_outputDevicesTokensMap setObject:v8 forKeyedSubscript:v8];
-  objc_sync_exit(v7);
+  [(NSMutableDictionary *)selfCopy->_outputDevicesTokensMap setObject:v8 forKeyedSubscript:v8];
+  objc_sync_exit(selfCopy);
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
@@ -372,12 +372,12 @@ void __71__MRAVRoutingDiscoverySessionWrapper_addOutputDevicesModifiedCallback__
   (*(v3 + 16))(v3, v6);
 }
 
-- (void)removeEndpointsChangedCallback:(id)a3
+- (void)removeEndpointsChangedCallback:(id)callback
 {
-  v8 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(NSMutableDictionary *)v4->_endpointsTokensMap objectForKeyedSubscript:v8];
+  callbackCopy = callback;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = [(NSMutableDictionary *)selfCopy->_endpointsTokensMap objectForKeyedSubscript:callbackCopy];
   if (v5)
   {
     v6 = v5;
@@ -385,24 +385,24 @@ void __71__MRAVRoutingDiscoverySessionWrapper_addOutputDevicesModifiedCallback__
 
   else
   {
-    v6 = v8;
+    v6 = callbackCopy;
   }
 
   v7 = v6;
 
-  [(MRAVRoutingDiscoverySession *)v4->_sharedSession removeEndpointsChangedCallback:v7];
-  [(NSMutableDictionary *)v4->_endpointsChangedCallbacks setObject:0 forKeyedSubscript:v8];
-  [(NSMutableDictionary *)v4->_endpointsTokensMap setObject:0 forKeyedSubscript:v8];
+  [(MRAVRoutingDiscoverySession *)selfCopy->_sharedSession removeEndpointsChangedCallback:v7];
+  [(NSMutableDictionary *)selfCopy->_endpointsChangedCallbacks setObject:0 forKeyedSubscript:callbackCopy];
+  [(NSMutableDictionary *)selfCopy->_endpointsTokensMap setObject:0 forKeyedSubscript:callbackCopy];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)removeEndpointsAddedCallback:(id)a3
+- (void)removeEndpointsAddedCallback:(id)callback
 {
-  v8 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(NSMutableDictionary *)v4->_endpointsTokensMap objectForKeyedSubscript:v8];
+  callbackCopy = callback;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = [(NSMutableDictionary *)selfCopy->_endpointsTokensMap objectForKeyedSubscript:callbackCopy];
   if (v5)
   {
     v6 = v5;
@@ -410,24 +410,24 @@ void __71__MRAVRoutingDiscoverySessionWrapper_addOutputDevicesModifiedCallback__
 
   else
   {
-    v6 = v8;
+    v6 = callbackCopy;
   }
 
   v7 = v6;
 
-  [(MRAVRoutingDiscoverySession *)v4->_sharedSession removeEndpointsAddedCallback:v7];
-  [(NSMutableDictionary *)v4->_endpointsAddedCallbacks setObject:0 forKeyedSubscript:v8];
-  [(NSMutableDictionary *)v4->_endpointsTokensMap setObject:0 forKeyedSubscript:v8];
+  [(MRAVRoutingDiscoverySession *)selfCopy->_sharedSession removeEndpointsAddedCallback:v7];
+  [(NSMutableDictionary *)selfCopy->_endpointsAddedCallbacks setObject:0 forKeyedSubscript:callbackCopy];
+  [(NSMutableDictionary *)selfCopy->_endpointsTokensMap setObject:0 forKeyedSubscript:callbackCopy];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)removeEndpointsRemovedCallback:(id)a3
+- (void)removeEndpointsRemovedCallback:(id)callback
 {
-  v8 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(NSMutableDictionary *)v4->_endpointsTokensMap objectForKeyedSubscript:v8];
+  callbackCopy = callback;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = [(NSMutableDictionary *)selfCopy->_endpointsTokensMap objectForKeyedSubscript:callbackCopy];
   if (v5)
   {
     v6 = v5;
@@ -435,24 +435,24 @@ void __71__MRAVRoutingDiscoverySessionWrapper_addOutputDevicesModifiedCallback__
 
   else
   {
-    v6 = v8;
+    v6 = callbackCopy;
   }
 
   v7 = v6;
 
-  [(MRAVRoutingDiscoverySession *)v4->_sharedSession removeEndpointsRemovedCallback:v7];
-  [(NSMutableDictionary *)v4->_endpointsRemovedCallbacks setObject:0 forKeyedSubscript:v8];
-  [(NSMutableDictionary *)v4->_endpointsTokensMap setObject:0 forKeyedSubscript:v8];
+  [(MRAVRoutingDiscoverySession *)selfCopy->_sharedSession removeEndpointsRemovedCallback:v7];
+  [(NSMutableDictionary *)selfCopy->_endpointsRemovedCallbacks setObject:0 forKeyedSubscript:callbackCopy];
+  [(NSMutableDictionary *)selfCopy->_endpointsTokensMap setObject:0 forKeyedSubscript:callbackCopy];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)removeEndpointsModifiedCallback:(id)a3
+- (void)removeEndpointsModifiedCallback:(id)callback
 {
-  v8 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(NSMutableDictionary *)v4->_endpointsTokensMap objectForKeyedSubscript:v8];
+  callbackCopy = callback;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = [(NSMutableDictionary *)selfCopy->_endpointsTokensMap objectForKeyedSubscript:callbackCopy];
   if (v5)
   {
     v6 = v5;
@@ -460,24 +460,24 @@ void __71__MRAVRoutingDiscoverySessionWrapper_addOutputDevicesModifiedCallback__
 
   else
   {
-    v6 = v8;
+    v6 = callbackCopy;
   }
 
   v7 = v6;
 
-  [(MRAVRoutingDiscoverySession *)v4->_sharedSession removeEndpointsModifiedCallback:v7];
-  [(NSMutableDictionary *)v4->_endpointsModifiedCallbacks setObject:0 forKeyedSubscript:v8];
-  [(NSMutableDictionary *)v4->_endpointsTokensMap setObject:0 forKeyedSubscript:v8];
+  [(MRAVRoutingDiscoverySession *)selfCopy->_sharedSession removeEndpointsModifiedCallback:v7];
+  [(NSMutableDictionary *)selfCopy->_endpointsModifiedCallbacks setObject:0 forKeyedSubscript:callbackCopy];
+  [(NSMutableDictionary *)selfCopy->_endpointsTokensMap setObject:0 forKeyedSubscript:callbackCopy];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)removeOutputDevicesChangedCallback:(id)a3
+- (void)removeOutputDevicesChangedCallback:(id)callback
 {
-  v8 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(NSMutableDictionary *)v4->_outputDevicesTokensMap objectForKeyedSubscript:v8];
+  callbackCopy = callback;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = [(NSMutableDictionary *)selfCopy->_outputDevicesTokensMap objectForKeyedSubscript:callbackCopy];
   if (v5)
   {
     v6 = v5;
@@ -485,24 +485,24 @@ void __71__MRAVRoutingDiscoverySessionWrapper_addOutputDevicesModifiedCallback__
 
   else
   {
-    v6 = v8;
+    v6 = callbackCopy;
   }
 
   v7 = v6;
 
-  [(MRAVRoutingDiscoverySession *)v4->_sharedSession removeOutputDevicesChangedCallback:v7];
-  [(NSMutableDictionary *)v4->_outputDevicesChangedCallbacks setObject:0 forKeyedSubscript:v8];
-  [(NSMutableDictionary *)v4->_outputDevicesTokensMap setObject:0 forKeyedSubscript:v8];
+  [(MRAVRoutingDiscoverySession *)selfCopy->_sharedSession removeOutputDevicesChangedCallback:v7];
+  [(NSMutableDictionary *)selfCopy->_outputDevicesChangedCallbacks setObject:0 forKeyedSubscript:callbackCopy];
+  [(NSMutableDictionary *)selfCopy->_outputDevicesTokensMap setObject:0 forKeyedSubscript:callbackCopy];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)removeOutputDevicesAddedCallback:(id)a3
+- (void)removeOutputDevicesAddedCallback:(id)callback
 {
-  v8 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(NSMutableDictionary *)v4->_outputDevicesTokensMap objectForKeyedSubscript:v8];
+  callbackCopy = callback;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = [(NSMutableDictionary *)selfCopy->_outputDevicesTokensMap objectForKeyedSubscript:callbackCopy];
   if (v5)
   {
     v6 = v5;
@@ -510,24 +510,24 @@ void __71__MRAVRoutingDiscoverySessionWrapper_addOutputDevicesModifiedCallback__
 
   else
   {
-    v6 = v8;
+    v6 = callbackCopy;
   }
 
   v7 = v6;
 
-  [(MRAVRoutingDiscoverySession *)v4->_sharedSession removeOutputDevicesAddedCallback:v7];
-  [(NSMutableDictionary *)v4->_outputDevicesAddedCallbacks setObject:0 forKeyedSubscript:v8];
-  [(NSMutableDictionary *)v4->_outputDevicesTokensMap setObject:0 forKeyedSubscript:v8];
+  [(MRAVRoutingDiscoverySession *)selfCopy->_sharedSession removeOutputDevicesAddedCallback:v7];
+  [(NSMutableDictionary *)selfCopy->_outputDevicesAddedCallbacks setObject:0 forKeyedSubscript:callbackCopy];
+  [(NSMutableDictionary *)selfCopy->_outputDevicesTokensMap setObject:0 forKeyedSubscript:callbackCopy];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)removeOutputDevicesRemovedCallback:(id)a3
+- (void)removeOutputDevicesRemovedCallback:(id)callback
 {
-  v8 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(NSMutableDictionary *)v4->_outputDevicesTokensMap objectForKeyedSubscript:v8];
+  callbackCopy = callback;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = [(NSMutableDictionary *)selfCopy->_outputDevicesTokensMap objectForKeyedSubscript:callbackCopy];
   if (v5)
   {
     v6 = v5;
@@ -535,24 +535,24 @@ void __71__MRAVRoutingDiscoverySessionWrapper_addOutputDevicesModifiedCallback__
 
   else
   {
-    v6 = v8;
+    v6 = callbackCopy;
   }
 
   v7 = v6;
 
-  [(MRAVRoutingDiscoverySession *)v4->_sharedSession removeOutputDevicesRemovedCallback:v7];
-  [(NSMutableDictionary *)v4->_outputDevicesRemovedCallbacks setObject:0 forKeyedSubscript:v8];
-  [(NSMutableDictionary *)v4->_outputDevicesTokensMap setObject:0 forKeyedSubscript:v8];
+  [(MRAVRoutingDiscoverySession *)selfCopy->_sharedSession removeOutputDevicesRemovedCallback:v7];
+  [(NSMutableDictionary *)selfCopy->_outputDevicesRemovedCallbacks setObject:0 forKeyedSubscript:callbackCopy];
+  [(NSMutableDictionary *)selfCopy->_outputDevicesTokensMap setObject:0 forKeyedSubscript:callbackCopy];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)removeOutputDevicesModifiedCallback:(id)a3
+- (void)removeOutputDevicesModifiedCallback:(id)callback
 {
-  v8 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(NSMutableDictionary *)v4->_outputDevicesTokensMap objectForKeyedSubscript:v8];
+  callbackCopy = callback;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = [(NSMutableDictionary *)selfCopy->_outputDevicesTokensMap objectForKeyedSubscript:callbackCopy];
   if (v5)
   {
     v6 = v5;
@@ -560,23 +560,23 @@ void __71__MRAVRoutingDiscoverySessionWrapper_addOutputDevicesModifiedCallback__
 
   else
   {
-    v6 = v8;
+    v6 = callbackCopy;
   }
 
   v7 = v6;
 
-  [(MRAVRoutingDiscoverySession *)v4->_sharedSession removeOutputDevicesModifiedCallback:v7];
-  [(NSMutableDictionary *)v4->_outputDevicesModifiedCallbacks setObject:0 forKeyedSubscript:v8];
-  [(NSMutableDictionary *)v4->_outputDevicesTokensMap setObject:0 forKeyedSubscript:v8];
+  [(MRAVRoutingDiscoverySession *)selfCopy->_sharedSession removeOutputDevicesModifiedCallback:v7];
+  [(NSMutableDictionary *)selfCopy->_outputDevicesModifiedCallbacks setObject:0 forKeyedSubscript:callbackCopy];
+  [(NSMutableDictionary *)selfCopy->_outputDevicesTokensMap setObject:0 forKeyedSubscript:callbackCopy];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)transferEndpointsChangedCallbacksFromSession:(id)a3 toSession:(id)a4
+- (void)transferEndpointsChangedCallbacksFromSession:(id)session toSession:(id)toSession
 {
   v24 = *MEMORY[0x1E69E9840];
-  v18 = a3;
-  v17 = a4;
+  sessionCopy = session;
+  toSessionCopy = toSession;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -601,8 +601,8 @@ void __71__MRAVRoutingDiscoverySessionWrapper_addOutputDevicesModifiedCallback__
         v12 = [(NSMutableDictionary *)self->_endpointsChangedCallbacks objectForKeyedSubscript:v10];
         v13 = MEMORY[0x1A58E3570]();
 
-        [v18 removeEndpointsChangedCallback:v11];
-        v14 = [v17 addEndpointsChangedCallback:v13];
+        [sessionCopy removeEndpointsChangedCallback:v11];
+        v14 = [toSessionCopy addEndpointsChangedCallback:v13];
         [(NSMutableDictionary *)self->_endpointsTokensMap setObject:v14 forKeyedSubscript:v10];
       }
 
@@ -615,11 +615,11 @@ void __71__MRAVRoutingDiscoverySessionWrapper_addOutputDevicesModifiedCallback__
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)transferEndpointsAddedCallbacksFromSession:(id)a3 toSession:(id)a4
+- (void)transferEndpointsAddedCallbacksFromSession:(id)session toSession:(id)toSession
 {
   v24 = *MEMORY[0x1E69E9840];
-  v18 = a3;
-  v17 = a4;
+  sessionCopy = session;
+  toSessionCopy = toSession;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -644,8 +644,8 @@ void __71__MRAVRoutingDiscoverySessionWrapper_addOutputDevicesModifiedCallback__
         v12 = [(NSMutableDictionary *)self->_endpointsAddedCallbacks objectForKeyedSubscript:v10];
         v13 = MEMORY[0x1A58E3570]();
 
-        [v18 removeEndpointsAddedCallback:v11];
-        v14 = [v17 addEndpointsAddedCallback:v13];
+        [sessionCopy removeEndpointsAddedCallback:v11];
+        v14 = [toSessionCopy addEndpointsAddedCallback:v13];
         [(NSMutableDictionary *)self->_endpointsTokensMap setObject:v14 forKeyedSubscript:v10];
       }
 
@@ -658,11 +658,11 @@ void __71__MRAVRoutingDiscoverySessionWrapper_addOutputDevicesModifiedCallback__
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)transferEndpointsRemovedCallbacksFromSession:(id)a3 toSession:(id)a4
+- (void)transferEndpointsRemovedCallbacksFromSession:(id)session toSession:(id)toSession
 {
   v24 = *MEMORY[0x1E69E9840];
-  v18 = a3;
-  v17 = a4;
+  sessionCopy = session;
+  toSessionCopy = toSession;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -687,8 +687,8 @@ void __71__MRAVRoutingDiscoverySessionWrapper_addOutputDevicesModifiedCallback__
         v12 = [(NSMutableDictionary *)self->_endpointsRemovedCallbacks objectForKeyedSubscript:v10];
         v13 = MEMORY[0x1A58E3570]();
 
-        [v18 removeEndpointsRemovedCallback:v11];
-        v14 = [v17 addEndpointsRemovedCallback:v13];
+        [sessionCopy removeEndpointsRemovedCallback:v11];
+        v14 = [toSessionCopy addEndpointsRemovedCallback:v13];
         [(NSMutableDictionary *)self->_endpointsTokensMap setObject:v14 forKeyedSubscript:v10];
       }
 
@@ -701,11 +701,11 @@ void __71__MRAVRoutingDiscoverySessionWrapper_addOutputDevicesModifiedCallback__
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)transferEndpointsModifiedCallbacksFromSession:(id)a3 toSession:(id)a4
+- (void)transferEndpointsModifiedCallbacksFromSession:(id)session toSession:(id)toSession
 {
   v24 = *MEMORY[0x1E69E9840];
-  v18 = a3;
-  v17 = a4;
+  sessionCopy = session;
+  toSessionCopy = toSession;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -730,8 +730,8 @@ void __71__MRAVRoutingDiscoverySessionWrapper_addOutputDevicesModifiedCallback__
         v12 = [(NSMutableDictionary *)self->_endpointsModifiedCallbacks objectForKeyedSubscript:v10];
         v13 = MEMORY[0x1A58E3570]();
 
-        [v18 removeEndpointsModifiedCallback:v11];
-        v14 = [v17 addEndpointsModifiedCallback:v13];
+        [sessionCopy removeEndpointsModifiedCallback:v11];
+        v14 = [toSessionCopy addEndpointsModifiedCallback:v13];
         [(NSMutableDictionary *)self->_endpointsTokensMap setObject:v14 forKeyedSubscript:v10];
       }
 
@@ -744,11 +744,11 @@ void __71__MRAVRoutingDiscoverySessionWrapper_addOutputDevicesModifiedCallback__
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)transferOutputDevicesChangedCallbacksFromSession:(id)a3 toSession:(id)a4
+- (void)transferOutputDevicesChangedCallbacksFromSession:(id)session toSession:(id)toSession
 {
   v24 = *MEMORY[0x1E69E9840];
-  v18 = a3;
-  v17 = a4;
+  sessionCopy = session;
+  toSessionCopy = toSession;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -773,8 +773,8 @@ void __71__MRAVRoutingDiscoverySessionWrapper_addOutputDevicesModifiedCallback__
         v12 = [(NSMutableDictionary *)self->_outputDevicesChangedCallbacks objectForKeyedSubscript:v10];
         v13 = MEMORY[0x1A58E3570]();
 
-        [v18 removeOutputDevicesChangedCallback:v11];
-        v14 = [v17 addOutputDevicesChangedCallback:v13];
+        [sessionCopy removeOutputDevicesChangedCallback:v11];
+        v14 = [toSessionCopy addOutputDevicesChangedCallback:v13];
         [(NSMutableDictionary *)self->_outputDevicesTokensMap setObject:v14 forKeyedSubscript:v10];
       }
 
@@ -787,11 +787,11 @@ void __71__MRAVRoutingDiscoverySessionWrapper_addOutputDevicesModifiedCallback__
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)transferOutputDevicesAddedCallbacksFromSession:(id)a3 toSession:(id)a4
+- (void)transferOutputDevicesAddedCallbacksFromSession:(id)session toSession:(id)toSession
 {
   v24 = *MEMORY[0x1E69E9840];
-  v18 = a3;
-  v17 = a4;
+  sessionCopy = session;
+  toSessionCopy = toSession;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -816,8 +816,8 @@ void __71__MRAVRoutingDiscoverySessionWrapper_addOutputDevicesModifiedCallback__
         v12 = [(NSMutableDictionary *)self->_outputDevicesAddedCallbacks objectForKeyedSubscript:v10];
         v13 = MEMORY[0x1A58E3570]();
 
-        [v18 removeOutputDevicesAddedCallback:v11];
-        v14 = [v17 addOutputDevicesAddedCallback:v13];
+        [sessionCopy removeOutputDevicesAddedCallback:v11];
+        v14 = [toSessionCopy addOutputDevicesAddedCallback:v13];
         [(NSMutableDictionary *)self->_outputDevicesTokensMap setObject:v14 forKeyedSubscript:v10];
       }
 
@@ -830,11 +830,11 @@ void __71__MRAVRoutingDiscoverySessionWrapper_addOutputDevicesModifiedCallback__
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)transferOutputDevicesRemovedCallbacksFromSession:(id)a3 toSession:(id)a4
+- (void)transferOutputDevicesRemovedCallbacksFromSession:(id)session toSession:(id)toSession
 {
   v24 = *MEMORY[0x1E69E9840];
-  v18 = a3;
-  v17 = a4;
+  sessionCopy = session;
+  toSessionCopy = toSession;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -859,8 +859,8 @@ void __71__MRAVRoutingDiscoverySessionWrapper_addOutputDevicesModifiedCallback__
         v12 = [(NSMutableDictionary *)self->_outputDevicesRemovedCallbacks objectForKeyedSubscript:v10];
         v13 = MEMORY[0x1A58E3570]();
 
-        [v18 removeOutputDevicesRemovedCallback:v11];
-        v14 = [v17 addOutputDevicesRemovedCallback:v13];
+        [sessionCopy removeOutputDevicesRemovedCallback:v11];
+        v14 = [toSessionCopy addOutputDevicesRemovedCallback:v13];
         [(NSMutableDictionary *)self->_outputDevicesTokensMap setObject:v14 forKeyedSubscript:v10];
       }
 
@@ -873,11 +873,11 @@ void __71__MRAVRoutingDiscoverySessionWrapper_addOutputDevicesModifiedCallback__
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)transferOutputDevicesModifiedCallbacksFromSession:(id)a3 toSession:(id)a4
+- (void)transferOutputDevicesModifiedCallbacksFromSession:(id)session toSession:(id)toSession
 {
   v24 = *MEMORY[0x1E69E9840];
-  v18 = a3;
-  v17 = a4;
+  sessionCopy = session;
+  toSessionCopy = toSession;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -902,8 +902,8 @@ void __71__MRAVRoutingDiscoverySessionWrapper_addOutputDevicesModifiedCallback__
         v12 = [(NSMutableDictionary *)self->_outputDevicesModifiedCallbacks objectForKeyedSubscript:v10];
         v13 = MEMORY[0x1A58E3570]();
 
-        [v18 removeOutputDevicesModifiedCallback:v11];
-        v14 = [v17 addOutputDevicesModifiedCallback:v13];
+        [sessionCopy removeOutputDevicesModifiedCallback:v11];
+        v14 = [toSessionCopy addOutputDevicesModifiedCallback:v13];
         [(NSMutableDictionary *)self->_outputDevicesTokensMap setObject:v14 forKeyedSubscript:v10];
       }
 
@@ -916,45 +916,45 @@ void __71__MRAVRoutingDiscoverySessionWrapper_addOutputDevicesModifiedCallback__
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)transferCallbacksFromSession:(id)a3 toSession:(id)a4
+- (void)transferCallbacksFromSession:(id)session toSession:(id)toSession
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  toSessionCopy = toSession;
   v8 = _MRLogForCategory(0);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v10 = 134218498;
-    v11 = self;
+    selfCopy = self;
     v12 = 2114;
-    v13 = v6;
+    v13 = sessionCopy;
     v14 = 2114;
-    v15 = v7;
+    v15 = toSessionCopy;
     _os_log_impl(&dword_1A2860000, v8, OS_LOG_TYPE_INFO, "[MRAVRoutingDiscoverySessionWrapper] <%p> Transferring callbacks from: %{public}@ to: %{public}@", &v10, 0x20u);
   }
 
-  [(MRAVRoutingDiscoverySessionWrapper *)self transferEndpointsChangedCallbacksFromSession:v6 toSession:v7];
-  [(MRAVRoutingDiscoverySessionWrapper *)self transferEndpointsAddedCallbacksFromSession:v6 toSession:v7];
-  [(MRAVRoutingDiscoverySessionWrapper *)self transferEndpointsRemovedCallbacksFromSession:v6 toSession:v7];
-  [(MRAVRoutingDiscoverySessionWrapper *)self transferEndpointsModifiedCallbacksFromSession:v6 toSession:v7];
-  [(MRAVRoutingDiscoverySessionWrapper *)self transferOutputDevicesChangedCallbacksFromSession:v6 toSession:v7];
-  [(MRAVRoutingDiscoverySessionWrapper *)self transferOutputDevicesAddedCallbacksFromSession:v6 toSession:v7];
-  [(MRAVRoutingDiscoverySessionWrapper *)self transferOutputDevicesRemovedCallbacksFromSession:v6 toSession:v7];
-  [(MRAVRoutingDiscoverySessionWrapper *)self transferOutputDevicesModifiedCallbacksFromSession:v6 toSession:v7];
+  [(MRAVRoutingDiscoverySessionWrapper *)self transferEndpointsChangedCallbacksFromSession:sessionCopy toSession:toSessionCopy];
+  [(MRAVRoutingDiscoverySessionWrapper *)self transferEndpointsAddedCallbacksFromSession:sessionCopy toSession:toSessionCopy];
+  [(MRAVRoutingDiscoverySessionWrapper *)self transferEndpointsRemovedCallbacksFromSession:sessionCopy toSession:toSessionCopy];
+  [(MRAVRoutingDiscoverySessionWrapper *)self transferEndpointsModifiedCallbacksFromSession:sessionCopy toSession:toSessionCopy];
+  [(MRAVRoutingDiscoverySessionWrapper *)self transferOutputDevicesChangedCallbacksFromSession:sessionCopy toSession:toSessionCopy];
+  [(MRAVRoutingDiscoverySessionWrapper *)self transferOutputDevicesAddedCallbacksFromSession:sessionCopy toSession:toSessionCopy];
+  [(MRAVRoutingDiscoverySessionWrapper *)self transferOutputDevicesRemovedCallbacksFromSession:sessionCopy toSession:toSessionCopy];
+  [(MRAVRoutingDiscoverySessionWrapper *)self transferOutputDevicesModifiedCallbacksFromSession:sessionCopy toSession:toSessionCopy];
 
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateObserversWithPreviousSession:(id)a3
+- (void)updateObserversWithPreviousSession:(id)session
 {
   v103 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 availableEndpoints];
-  v6 = v5;
+  sessionCopy = session;
+  availableEndpoints = [sessionCopy availableEndpoints];
+  v6 = availableEndpoints;
   v7 = MEMORY[0x1E695E0F0];
-  if (v5)
+  if (availableEndpoints)
   {
-    v8 = v5;
+    v8 = availableEndpoints;
   }
 
   else
@@ -964,12 +964,12 @@ void __71__MRAVRoutingDiscoverySessionWrapper_addOutputDevicesModifiedCallback__
 
   v9 = v8;
 
-  v60 = v4;
-  v10 = [v4 availableOutputDevices];
-  v11 = v10;
-  if (v10)
+  v60 = sessionCopy;
+  availableOutputDevices = [sessionCopy availableOutputDevices];
+  v11 = availableOutputDevices;
+  if (availableOutputDevices)
   {
-    v12 = v10;
+    v12 = availableOutputDevices;
   }
 
   else
@@ -979,22 +979,22 @@ void __71__MRAVRoutingDiscoverySessionWrapper_addOutputDevicesModifiedCallback__
 
   v62 = v12;
 
-  v13 = [(MRAVRoutingDiscoverySession *)self->_sharedSession availableEndpoints];
-  v14 = [(MRAVRoutingDiscoverySession *)self->_sharedSession availableOutputDevices];
+  availableEndpoints2 = [(MRAVRoutingDiscoverySession *)self->_sharedSession availableEndpoints];
+  availableOutputDevices2 = [(MRAVRoutingDiscoverySession *)self->_sharedSession availableOutputDevices];
   v15 = _MRLogForCategory(0);
   v61 = v9;
   if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
   {
     *buf = 134219008;
-    v94 = self;
+    selfCopy = self;
     v95 = 2048;
     v96 = [v9 count];
     v97 = 2048;
-    v98 = [v13 count];
+    v98 = [availableEndpoints2 count];
     v99 = 2048;
     v100 = [v62 count];
     v101 = 2048;
-    v102 = [v14 count];
+    v102 = [availableOutputDevices2 count];
     _os_log_impl(&dword_1A2860000, v15, OS_LOG_TYPE_INFO, "[MRAVRoutingDiscoverySessionWrapper] <%p> Notifying existing observers from %lu to %lu endpoints and from %lu to %lu output devices", buf, 0x34u);
   }
 
@@ -1047,7 +1047,7 @@ void __71__MRAVRoutingDiscoverySessionWrapper_addOutputDevicesModifiedCallback__
         }
 
         v27 = [(NSMutableDictionary *)self->_endpointsAddedCallbacks objectForKeyedSubscript:*(*(&v79 + 1) + 8 * j)];
-        (v27)[2](v27, v13);
+        (v27)[2](v27, availableEndpoints2);
       }
 
       v24 = [(NSMutableDictionary *)v22 countByEnumeratingWithState:&v79 objects:v91 count:16];
@@ -1076,7 +1076,7 @@ void __71__MRAVRoutingDiscoverySessionWrapper_addOutputDevicesModifiedCallback__
         }
 
         v33 = [(NSMutableDictionary *)self->_endpointsChangedCallbacks objectForKeyedSubscript:*(*(&v75 + 1) + 8 * k)];
-        (v33)[2](v33, v13);
+        (v33)[2](v33, availableEndpoints2);
       }
 
       v30 = [(NSMutableDictionary *)v28 countByEnumeratingWithState:&v75 objects:v90 count:16];
@@ -1085,7 +1085,7 @@ void __71__MRAVRoutingDiscoverySessionWrapper_addOutputDevicesModifiedCallback__
     while (v30);
   }
 
-  v59 = v13;
+  v59 = availableEndpoints2;
 
   v73 = 0u;
   v74 = 0u;
@@ -1107,8 +1107,8 @@ void __71__MRAVRoutingDiscoverySessionWrapper_addOutputDevicesModifiedCallback__
         }
 
         v39 = [(NSMutableDictionary *)self->_outputDevicesRemovedCallbacks objectForKeyedSubscript:*(*(&v71 + 1) + 8 * m), v59];
-        v40 = [(MRAVRoutingDiscoverySessionWrapper *)self configuration];
-        v41 = [v62 resultsFromConfiguration:v40];
+        configuration = [(MRAVRoutingDiscoverySessionWrapper *)self configuration];
+        v41 = [v62 resultsFromConfiguration:configuration];
         (v39)[2](v39, v41);
       }
 
@@ -1138,8 +1138,8 @@ void __71__MRAVRoutingDiscoverySessionWrapper_addOutputDevicesModifiedCallback__
         }
 
         v47 = [(NSMutableDictionary *)self->_outputDevicesAddedCallbacks objectForKeyedSubscript:*(*(&v67 + 1) + 8 * n), v59];
-        v48 = [(MRAVRoutingDiscoverySessionWrapper *)self configuration];
-        v49 = [v14 resultsFromConfiguration:v48];
+        configuration2 = [(MRAVRoutingDiscoverySessionWrapper *)self configuration];
+        v49 = [availableOutputDevices2 resultsFromConfiguration:configuration2];
         (v47)[2](v47, v49);
       }
 
@@ -1169,8 +1169,8 @@ void __71__MRAVRoutingDiscoverySessionWrapper_addOutputDevicesModifiedCallback__
         }
 
         v55 = [(NSMutableDictionary *)self->_outputDevicesChangedCallbacks objectForKeyedSubscript:*(*(&v63 + 1) + 8 * ii), v59];
-        v56 = [(MRAVRoutingDiscoverySessionWrapper *)self configuration];
-        v57 = [v14 resultsFromConfiguration:v56];
+        configuration3 = [(MRAVRoutingDiscoverySessionWrapper *)self configuration];
+        v57 = [availableOutputDevices2 resultsFromConfiguration:configuration3];
         (v55)[2](v55, v57);
       }
 
@@ -1183,67 +1183,67 @@ void __71__MRAVRoutingDiscoverySessionWrapper_addOutputDevicesModifiedCallback__
   v58 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setSharedSession:(id)a3
+- (void)setSharedSession:(id)session
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = self;
-  objc_sync_enter(v6);
-  sharedSession = v6->_sharedSession;
+  sessionCopy = session;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  sharedSession = selfCopy->_sharedSession;
   if (sharedSession)
   {
     v8 = sharedSession;
     objc_sync_enter(v8);
-    v9 = [(MRAVRoutingDiscoverySession *)v6->_sharedSession clientDiscoveryStates];
-    [v9 removeObjectForKey:v6];
+    clientDiscoveryStates = [(MRAVRoutingDiscoverySession *)selfCopy->_sharedSession clientDiscoveryStates];
+    [clientDiscoveryStates removeObjectForKey:selfCopy];
 
-    [(MRAVRoutingDiscoverySessionWrapper *)v6 transferCallbacksFromSession:v6->_sharedSession toSession:v5];
-    [(MRAVRoutingDiscoverySessionWrapper *)v6 reevaluateDiscoveryModeForSession:v6->_sharedSession];
+    [(MRAVRoutingDiscoverySessionWrapper *)selfCopy transferCallbacksFromSession:selfCopy->_sharedSession toSession:sessionCopy];
+    [(MRAVRoutingDiscoverySessionWrapper *)selfCopy reevaluateDiscoveryModeForSession:selfCopy->_sharedSession];
     objc_sync_exit(v8);
 
-    sharedSession = v6->_sharedSession;
+    sharedSession = selfCopy->_sharedSession;
   }
 
   v10 = sharedSession;
-  objc_storeStrong(&v6->_sharedSession, a3);
-  if (v6->_sharedSession)
+  objc_storeStrong(&selfCopy->_sharedSession, session);
+  if (selfCopy->_sharedSession)
   {
     v11 = _MRLogForCategory(0);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
-      v12 = v6->_sharedSession;
+      v12 = selfCopy->_sharedSession;
       v14 = 134218242;
-      v15 = v6;
+      v15 = selfCopy;
       v16 = 2114;
       v17 = v12;
       _os_log_impl(&dword_1A2860000, v11, OS_LOG_TYPE_INFO, "[MRAVRoutingDiscoverySessionWrapper] <%p> Changed to shared session: %{public}@", &v14, 0x16u);
     }
 
-    [(MRAVRoutingDiscoverySessionWrapper *)v6 setDiscoveryMode:v6->_discoveryMode];
+    [(MRAVRoutingDiscoverySessionWrapper *)selfCopy setDiscoveryMode:selfCopy->_discoveryMode];
   }
 
-  [(MRAVRoutingDiscoverySessionWrapper *)v6 updateObserversWithPreviousSession:v10];
+  [(MRAVRoutingDiscoverySessionWrapper *)selfCopy updateObserversWithPreviousSession:v10];
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)reevaluateDiscoveryModeForSession:(id)a3
+- (void)reevaluateDiscoveryModeForSession:(id)session
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  sessionCopy = session;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [v3 clientDiscoveryStates];
-  v5 = [v4 objectEnumerator];
+  clientDiscoveryStates = [sessionCopy clientDiscoveryStates];
+  objectEnumerator = [clientDiscoveryStates objectEnumerator];
 
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v6 = [objectEnumerator countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
-    v8 = 0;
+    intValue = 0;
     v9 = *v14;
     do
     {
@@ -1251,17 +1251,17 @@ void __71__MRAVRoutingDiscoverySessionWrapper_addOutputDevicesModifiedCallback__
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v11 = *(*(&v13 + 1) + 8 * i);
-        if (v8 <= [v11 intValue])
+        if (intValue <= [v11 intValue])
         {
-          v8 = [v11 intValue];
+          intValue = [v11 intValue];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [objectEnumerator countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
@@ -1269,10 +1269,10 @@ void __71__MRAVRoutingDiscoverySessionWrapper_addOutputDevicesModifiedCallback__
 
   else
   {
-    v8 = 0;
+    intValue = 0;
   }
 
-  [v3 setDiscoveryMode:v8];
+  [sessionCopy setDiscoveryMode:intValue];
   v12 = *MEMORY[0x1E69E9840];
 }
 

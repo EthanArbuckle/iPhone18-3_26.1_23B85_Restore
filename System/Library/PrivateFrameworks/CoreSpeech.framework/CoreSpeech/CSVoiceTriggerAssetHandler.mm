@@ -2,13 +2,13 @@
 + (id)sharedHandler;
 + (id)sharedHandlerDisabledOnDeviceCompilation;
 - (CSVoiceTriggerAssetHandler)init;
-- (id)defaultFallbackModelIfNil:(id)a3;
-- (void)getVoiceTriggerAssetWithEndpointId:(id)a3 completion:(id)a4;
-- (void)mapAssetToExclaveKit:(id)a3 completion:(id)a4;
-- (void)notifyObservers:(id)a3 endpointId:(id)a4;
-- (void)registerObserver:(id)a3;
-- (void)retryMappingAssetToExclaveKit:(id)a3 completion:(id)a4;
-- (void)unregisterObserver:(id)a3;
+- (id)defaultFallbackModelIfNil:(id)nil;
+- (void)getVoiceTriggerAssetWithEndpointId:(id)id completion:(id)completion;
+- (void)mapAssetToExclaveKit:(id)kit completion:(id)completion;
+- (void)notifyObservers:(id)observers endpointId:(id)id;
+- (void)registerObserver:(id)observer;
+- (void)retryMappingAssetToExclaveKit:(id)kit completion:(id)completion;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation CSVoiceTriggerAssetHandler
@@ -25,92 +25,92 @@
   return v3;
 }
 
-- (void)retryMappingAssetToExclaveKit:(id)a3 completion:(id)a4
+- (void)retryMappingAssetToExclaveKit:(id)kit completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  kitCopy = kit;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100053720;
   block[3] = &unk_1002533A0;
-  v13 = self;
-  v14 = v7;
-  v12 = v6;
-  v9 = v6;
-  v10 = v7;
+  selfCopy = self;
+  v14 = completionCopy;
+  v12 = kitCopy;
+  v9 = kitCopy;
+  v10 = completionCopy;
   dispatch_async(queue, block);
 }
 
-- (void)mapAssetToExclaveKit:(id)a3 completion:(id)a4
+- (void)mapAssetToExclaveKit:(id)kit completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  kitCopy = kit;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000539F0;
   block[3] = &unk_1002533A0;
-  v13 = self;
-  v14 = v7;
-  v12 = v6;
-  v9 = v6;
-  v10 = v7;
+  selfCopy = self;
+  v14 = completionCopy;
+  v12 = kitCopy;
+  v9 = kitCopy;
+  v10 = completionCopy;
   dispatch_async(queue, block);
 }
 
-- (void)notifyObservers:(id)a3 endpointId:(id)a4
+- (void)notifyObservers:(id)observers endpointId:(id)id
 {
-  v6 = a3;
-  v7 = a4;
+  observersCopy = observers;
+  idCopy = id;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100053CC4;
   block[3] = &unk_100253680;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = idCopy;
+  v13 = observersCopy;
+  v9 = observersCopy;
+  v10 = idCopy;
   dispatch_async(queue, block);
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100053EF4;
   v7[3] = &unk_100253C48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100053F98;
   v7[3] = &unk_100253C48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_async(queue, v7);
 }
 
-- (id)defaultFallbackModelIfNil:(id)a3
+- (id)defaultFallbackModelIfNil:(id)nil
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  nilCopy = nil;
+  v4 = nilCopy;
+  if (nilCopy)
   {
-    v5 = v3;
+    v5 = nilCopy;
   }
 
   else
@@ -131,10 +131,10 @@
   return v7;
 }
 
-- (void)getVoiceTriggerAssetWithEndpointId:(id)a3 completion:(id)a4
+- (void)getVoiceTriggerAssetWithEndpointId:(id)id completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  idCopy = id;
+  completionCopy = completion;
   __assert_rtn("[CSVoiceTriggerAssetHandler getVoiceTriggerAssetWithEndpointId:completion:]", "CSVoiceTriggerAssetHandler.m", 105, "NO");
 }
 

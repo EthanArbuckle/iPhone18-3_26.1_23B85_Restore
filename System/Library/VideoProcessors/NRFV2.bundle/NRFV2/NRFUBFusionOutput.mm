@@ -1,6 +1,6 @@
 @interface NRFUBFusionOutput
 - (__n128)refFrameTransform;
-- (__n128)setRefFrameTransform:(__n128)a3;
+- (__n128)setRefFrameTransform:(__n128)transform;
 - (void)dealloc;
 @end
 
@@ -19,16 +19,16 @@
 
 - (__n128)refFrameTransform
 {
-  result = *(a1 + 96);
-  v2 = *(a1 + 112);
-  v3 = *(a1 + 128);
+  result = *(self + 96);
+  v2 = *(self + 112);
+  v3 = *(self + 128);
   return result;
 }
 
-- (__n128)setRefFrameTransform:(__n128)a3
+- (__n128)setRefFrameTransform:(__n128)transform
 {
   result[6] = a2;
-  result[7] = a3;
+  result[7] = transform;
   result[8] = a4;
   return result;
 }

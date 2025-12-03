@@ -17,7 +17,7 @@
 
   v4.receiver = self;
   v4.super_class = type metadata accessor for HearingTestNoiseInterruptionViewController();
-  v3 = self;
+  selfCopy = self;
   [(HearingTestInterruptionsViewController *)&v4 viewDidLoad];
   sub_20CDA8BF0();
   sub_20CDA8F34();
@@ -34,11 +34,11 @@
   }
 
   v3 = objc_allocWithZone(type metadata accessor for HTUIHowToReduceNoiseViewController());
-  v6 = self;
+  selfCopy = self;
   v4 = HTUIHowToReduceNoiseViewController.init()();
-  v5 = [objc_allocWithZone(MEMORY[0x277D12978]) initWithRootViewController_];
+  initWithRootViewController_ = [objc_allocWithZone(MEMORY[0x277D12978]) initWithRootViewController_];
 
-  [(HearingTestNoiseInterruptionViewController *)v6 presentViewController:v5 animated:1 completion:0];
+  [(HearingTestNoiseInterruptionViewController *)selfCopy presentViewController:initWithRootViewController_ animated:1 completion:0];
 }
 
 @end

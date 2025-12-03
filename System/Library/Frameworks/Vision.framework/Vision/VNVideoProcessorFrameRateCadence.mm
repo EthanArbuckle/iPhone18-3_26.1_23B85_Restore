@@ -1,25 +1,25 @@
 @interface VNVideoProcessorFrameRateCadence
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (VNVideoProcessorFrameRateCadence)initWithFrameRate:(NSInteger)frameRate;
-- (void)populateVCPVideoProcessorRequestConfiguration:(id)a3;
+- (void)populateVCPVideoProcessorRequestConfiguration:(id)configuration;
 @end
 
 @implementation VNVideoProcessorFrameRateCadence
 
-- (void)populateVCPVideoProcessorRequestConfiguration:(id)a3
+- (void)populateVCPVideoProcessorRequestConfiguration:(id)configuration
 {
   v6.receiver = self;
   v6.super_class = VNVideoProcessorFrameRateCadence;
-  v4 = a3;
-  [(VNVideoProcessorCadence *)&v6 populateVCPVideoProcessorRequestConfiguration:v4];
+  configurationCopy = configuration;
+  [(VNVideoProcessorCadence *)&v6 populateVCPVideoProcessorRequestConfiguration:configurationCopy];
   v5 = [MEMORY[0x1E696AD98] numberWithInteger:{-[VNVideoProcessorFrameRateCadence frameRate](self, "frameRate", v6.receiver, v6.super_class)}];
-  [v4 setObject:v5 forKeyedSubscript:@"VNVideoProcessingOptionFrameCadence"];
+  [configurationCopy setObject:v5 forKeyedSubscript:@"VNVideoProcessingOptionFrameCadence"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -29,11 +29,11 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(VNVideoProcessorFrameRateCadence *)self frameRate];
-      v7 = [(VNVideoProcessorFrameRateCadence *)v5 frameRate];
+      v5 = equalCopy;
+      frameRate = [(VNVideoProcessorFrameRateCadence *)self frameRate];
+      frameRate2 = [(VNVideoProcessorFrameRateCadence *)v5 frameRate];
 
-      v8 = v6 == v7;
+      v8 = frameRate == frameRate2;
     }
 
     else

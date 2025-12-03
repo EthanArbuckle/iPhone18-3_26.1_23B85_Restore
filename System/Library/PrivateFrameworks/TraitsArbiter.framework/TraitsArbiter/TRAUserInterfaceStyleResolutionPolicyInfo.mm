@@ -1,21 +1,21 @@
 @interface TRAUserInterfaceStyleResolutionPolicyInfo
-- (TRAUserInterfaceStyleResolutionPolicyInfo)initWithActuationContext:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (TRAUserInterfaceStyleResolutionPolicyInfo)initWithActuationContext:(id)context;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 @end
 
 @implementation TRAUserInterfaceStyleResolutionPolicyInfo
 
-- (TRAUserInterfaceStyleResolutionPolicyInfo)initWithActuationContext:(id)a3
+- (TRAUserInterfaceStyleResolutionPolicyInfo)initWithActuationContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v9.receiver = self;
   v9.super_class = TRAUserInterfaceStyleResolutionPolicyInfo;
   v5 = [(TRAUserInterfaceStyleResolutionPolicyInfo *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [contextCopy copy];
     actuationContext = v5->_actuationContext;
     v5->_actuationContext = v6;
   }
@@ -25,10 +25,10 @@
 
 - (id)succinctDescription
 {
-  v2 = [(TRAUserInterfaceStyleResolutionPolicyInfo *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(TRAUserInterfaceStyleResolutionPolicyInfo *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -44,12 +44,12 @@
   return v4;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(TRAUserInterfaceStyleResolutionPolicyInfo *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(TRAUserInterfaceStyleResolutionPolicyInfo *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 @end

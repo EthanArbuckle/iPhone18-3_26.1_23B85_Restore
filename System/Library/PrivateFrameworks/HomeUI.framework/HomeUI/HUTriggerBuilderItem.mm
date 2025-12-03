@@ -1,28 +1,28 @@
 @interface HUTriggerBuilderItem
-+ (id)_detailedErrorDescriptionForForceDisableReasons:(unint64_t)a3 inHome:(id)a4;
-+ (id)settingsURLForForceDisableReasons:(unint64_t)a3;
++ (id)_detailedErrorDescriptionForForceDisableReasons:(unint64_t)reasons inHome:(id)home;
++ (id)settingsURLForForceDisableReasons:(unint64_t)reasons;
 - (HUTriggerBuilderItem)init;
-- (HUTriggerBuilderItem)initWithTriggerBuilder:(id)a3 nameType:(unint64_t)a4;
+- (HUTriggerBuilderItem)initWithTriggerBuilder:(id)builder nameType:(unint64_t)type;
 - (id)_forceDisableReasons;
 - (id)_resultsForTriggerConditions;
-- (id)_subclass_updateWithOptions:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_subclass_updateWithOptions:(id)options;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)_triggerType;
 @end
 
 @implementation HUTriggerBuilderItem
 
-- (HUTriggerBuilderItem)initWithTriggerBuilder:(id)a3 nameType:(unint64_t)a4
+- (HUTriggerBuilderItem)initWithTriggerBuilder:(id)builder nameType:(unint64_t)type
 {
-  v7 = a3;
+  builderCopy = builder;
   v11.receiver = self;
   v11.super_class = HUTriggerBuilderItem;
   v8 = [(HUTriggerBuilderItem *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_triggerBuilder, a3);
-    v9->_naturalLanguageNameType = a4;
+    objc_storeStrong(&v8->_triggerBuilder, builder);
+    v9->_naturalLanguageNameType = type;
   }
 
   return v9;
@@ -30,42 +30,42 @@
 
 - (HUTriggerBuilderItem)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithTriggerBuilder_nameType_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HUTriggerBuilderItem.m" lineNumber:41 description:{@"%s is unavailable; use %@ instead", "-[HUTriggerBuilderItem init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUTriggerBuilderItem.m" lineNumber:41 description:{@"%s is unavailable; use %@ instead", "-[HUTriggerBuilderItem init]", v5}];
 
   return 0;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(HUTriggerBuilderItem *)self triggerBuilder];
-  v6 = [v4 initWithTriggerBuilder:v5 nameType:{-[HUTriggerBuilderItem naturalLanguageNameType](self, "naturalLanguageNameType")}];
+  triggerBuilder = [(HUTriggerBuilderItem *)self triggerBuilder];
+  v6 = [v4 initWithTriggerBuilder:triggerBuilder nameType:{-[HUTriggerBuilderItem naturalLanguageNameType](self, "naturalLanguageNameType")}];
 
   return v6;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
   v53[2] = *MEMORY[0x277D85DE8];
-  v4 = [(HUTriggerBuilderItem *)self triggerBuilder];
+  triggerBuilder = [(HUTriggerBuilderItem *)self triggerBuilder];
 
-  if (!v4)
+  if (!triggerBuilder)
   {
     NSLog(&cfstr_Triggerbuilder_0.isa);
   }
 
-  v5 = [(HUTriggerBuilderItem *)self triggerBuilder];
+  triggerBuilder2 = [(HUTriggerBuilderItem *)self triggerBuilder];
 
-  if (v5)
+  if (triggerBuilder2)
   {
-    v6 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     objc_opt_class();
-    v7 = [(HUTriggerBuilderItem *)self triggerBuilder];
+    triggerBuilder3 = [(HUTriggerBuilderItem *)self triggerBuilder];
     if (objc_opt_isKindOfClass())
     {
-      v8 = v7;
+      v8 = triggerBuilder3;
     }
 
     else
@@ -76,31 +76,31 @@
     v9 = v8;
 
     v10 = objc_alloc(MEMORY[0x277D14C78]);
-    v11 = [(HUTriggerBuilderItem *)self triggerBuilder];
-    v12 = [v11 trigger];
-    v13 = [(HUTriggerBuilderItem *)self triggerBuilder];
-    v14 = [v13 home];
-    v15 = [v10 initWithTrigger:v12 inHome:v14 forceDisabled:0 ignoringDisabled:1];
+    triggerBuilder4 = [(HUTriggerBuilderItem *)self triggerBuilder];
+    trigger = [triggerBuilder4 trigger];
+    triggerBuilder5 = [(HUTriggerBuilderItem *)self triggerBuilder];
+    home = [triggerBuilder5 home];
+    v15 = [v10 initWithTrigger:trigger inHome:home forceDisabled:0 ignoringDisabled:1];
 
-    v16 = [(HUTriggerBuilderItem *)self triggerBuilder];
-    v17 = [v16 naturalLanguageNameOfType:{-[HUTriggerBuilderItem naturalLanguageNameType](self, "naturalLanguageNameType")}];
+    triggerBuilder6 = [(HUTriggerBuilderItem *)self triggerBuilder];
+    v17 = [triggerBuilder6 naturalLanguageNameOfType:{-[HUTriggerBuilderItem naturalLanguageNameType](self, "naturalLanguageNameType")}];
 
     if ([(HUTriggerBuilderItem *)self naturalLanguageNameType]== 3)
     {
-      v18 = [v15 triggerDisplayTitle];
+      triggerDisplayTitle = [v15 triggerDisplayTitle];
     }
 
     else
     {
-      v22 = [(HUTriggerBuilderItem *)self triggerBuilder];
-      v18 = [v22 naturalLanguageNameOfType:{-[HUTriggerBuilderItem naturalLanguageNameType](self, "naturalLanguageNameType")}];
+      triggerBuilder7 = [(HUTriggerBuilderItem *)self triggerBuilder];
+      triggerDisplayTitle = [triggerBuilder7 naturalLanguageNameOfType:{-[HUTriggerBuilderItem naturalLanguageNameType](self, "naturalLanguageNameType")}];
 
-      v17 = v22;
+      v17 = triggerBuilder7;
     }
 
-    if (v18)
+    if (triggerDisplayTitle)
     {
-      v23 = v18;
+      v23 = triggerDisplayTitle;
     }
 
     else
@@ -109,33 +109,33 @@
     }
 
     v24 = MEMORY[0x277D13FB8];
-    if (v18)
+    if (triggerDisplayTitle)
     {
       v24 = MEMORY[0x277D13F60];
     }
 
-    [v6 setObject:v23 forKeyedSubscript:*v24];
+    [dictionary setObject:v23 forKeyedSubscript:*v24];
     v25 = [MEMORY[0x277D14C58] iconDescriptorForTriggerType:{-[HUTriggerBuilderItem _triggerType](self, "_triggerType")}];
-    [v6 setObject:v25 forKeyedSubscript:*MEMORY[0x277D13E88]];
+    [dictionary setObject:v25 forKeyedSubscript:*MEMORY[0x277D13E88]];
 
-    v26 = [(HUTriggerBuilderItem *)self triggerBuilder];
-    v27 = [v26 home];
-    v28 = [v27 hf_currentUserIsAdministrator];
-    v29 = v28 ^ 1u;
+    triggerBuilder8 = [(HUTriggerBuilderItem *)self triggerBuilder];
+    home2 = [triggerBuilder8 home];
+    hf_currentUserIsAdministrator = [home2 hf_currentUserIsAdministrator];
+    v29 = hf_currentUserIsAdministrator ^ 1u;
 
     if (v9)
     {
-      v30 = [v9 locationInterface];
-      v31 = [v30 locationEventBuilder];
+      locationInterface = [v9 locationInterface];
+      locationEventBuilder = [locationInterface locationEventBuilder];
 
-      if (v31)
+      if (locationEventBuilder)
       {
-        if (v28)
+        if (hf_currentUserIsAdministrator)
         {
-          v32 = [v9 locationInterface];
-          v33 = [v32 locationEventBuilder];
-          v34 = [v33 eventType];
-          v29 = v34 == 0;
+          locationInterface2 = [v9 locationInterface];
+          locationEventBuilder2 = [locationInterface2 locationEventBuilder];
+          eventType = [locationEventBuilder2 eventType];
+          v29 = eventType == 0;
         }
 
         else
@@ -144,14 +144,14 @@
         }
 
         objc_opt_class();
-        v35 = [v9 locationInterface];
-        v36 = [v35 locationEventBuilder];
-        v37 = (objc_opt_isKindOfClass() & 1) != 0 ? v36 : 0;
+        locationInterface3 = [v9 locationInterface];
+        locationEventBuilder3 = [locationInterface3 locationEventBuilder];
+        v37 = (objc_opt_isKindOfClass() & 1) != 0 ? locationEventBuilder3 : 0;
 
         if (v37)
         {
-          v38 = [v9 trigger];
-          v39 = [v38 creator];
+          trigger2 = [v9 trigger];
+          creator = [trigger2 creator];
 
           if (v29)
           {
@@ -160,31 +160,31 @@
 
           else
           {
-            v40 = [(HUTriggerBuilderItem *)self triggerBuilder];
-            v41 = [v40 home];
-            v42 = [v41 currentUser];
-            v29 = v39 != v42;
+            triggerBuilder9 = [(HUTriggerBuilderItem *)self triggerBuilder];
+            home3 = [triggerBuilder9 home];
+            currentUser = [home3 currentUser];
+            v29 = creator != currentUser;
           }
         }
       }
     }
 
     v43 = [MEMORY[0x277CCABB0] numberWithBool:v29];
-    [v6 setObject:v43 forKeyedSubscript:*MEMORY[0x277D13EA8]];
+    [dictionary setObject:v43 forKeyedSubscript:*MEMORY[0x277D13EA8]];
 
     v44 = MEMORY[0x277D2C900];
-    v45 = [(HUTriggerBuilderItem *)self _resultsForTriggerConditions];
-    v53[0] = v45;
-    v46 = [(HUTriggerBuilderItem *)self _forceDisableReasons];
-    v53[1] = v46;
+    _resultsForTriggerConditions = [(HUTriggerBuilderItem *)self _resultsForTriggerConditions];
+    v53[0] = _resultsForTriggerConditions;
+    _forceDisableReasons = [(HUTriggerBuilderItem *)self _forceDisableReasons];
+    v53[1] = _forceDisableReasons;
     v47 = [MEMORY[0x277CBEA60] arrayWithObjects:v53 count:2];
     v48 = [v44 combineAllFutures:v47];
     v51[0] = MEMORY[0x277D85DD0];
     v51[1] = 3221225472;
     v51[2] = __52__HUTriggerBuilderItem__subclass_updateWithOptions___block_invoke;
     v51[3] = &unk_277DB7A90;
-    v52 = v6;
-    v49 = v6;
+    v52 = dictionary;
+    v49 = dictionary;
     v21 = [v48 flatMap:v51];
   }
 
@@ -216,12 +216,12 @@ id __52__HUTriggerBuilderItem__subclass_updateWithOptions___block_invoke(uint64_
 - (id)_resultsForTriggerConditions
 {
   v3 = [HUTriggerConditionSummaryItem alloc];
-  v4 = [(HUTriggerBuilderItem *)self triggerBuilder];
-  v5 = [v4 conditionCollection];
-  v6 = [v5 conditions];
-  v7 = [(HUTriggerBuilderItem *)self triggerBuilder];
-  v8 = [v7 home];
-  v9 = [(HUTriggerConditionSummaryItem *)v3 initWithConditions:v6 home:v8];
+  triggerBuilder = [(HUTriggerBuilderItem *)self triggerBuilder];
+  conditionCollection = [triggerBuilder conditionCollection];
+  conditions = [conditionCollection conditions];
+  triggerBuilder2 = [(HUTriggerBuilderItem *)self triggerBuilder];
+  home = [triggerBuilder2 home];
+  v9 = [(HUTriggerConditionSummaryItem *)v3 initWithConditions:conditions home:home];
 
   v10 = [(HUTriggerConditionSummaryItem *)v9 updateWithOptions:MEMORY[0x277CBEC10]];
   v11 = [v10 flatMap:&__block_literal_global_72];
@@ -249,9 +249,9 @@ id __52__HUTriggerBuilderItem__resultsForTriggerConditions__block_invoke(uint64_
 
   if (([MEMORY[0x277D14CE8] isAMac] & 1) == 0)
   {
-    v6 = [MEMORY[0x277D14CB0] sharedInstance];
-    v7 = [v6 notificationSettings];
-    v8 = [v7 flatMap:&__block_literal_global_33];
+    mEMORY[0x277D14CB0] = [MEMORY[0x277D14CB0] sharedInstance];
+    notificationSettings = [mEMORY[0x277D14CB0] notificationSettings];
+    v8 = [notificationSettings flatMap:&__block_literal_global_33];
     v9 = [v8 recover:&__block_literal_global_36];
 
     v5 = v9;
@@ -432,10 +432,10 @@ id __44__HUTriggerBuilderItem__forceDisableReasons__block_invoke_3(uint64_t a1, 
 - (unint64_t)_triggerType
 {
   objc_opt_class();
-  v3 = [(HUTriggerBuilderItem *)self triggerBuilder];
+  triggerBuilder = [(HUTriggerBuilderItem *)self triggerBuilder];
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = triggerBuilder;
   }
 
   else
@@ -445,7 +445,7 @@ id __44__HUTriggerBuilderItem__forceDisableReasons__block_invoke_3(uint64_t a1, 
 
   v5 = v4;
 
-  v6 = [(HUTriggerBuilderItem *)self triggerBuilder];
+  triggerBuilder2 = [(HUTriggerBuilderItem *)self triggerBuilder];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -456,18 +456,18 @@ id __44__HUTriggerBuilderItem__forceDisableReasons__block_invoke_3(uint64_t a1, 
 
   else if (v5)
   {
-    v9 = [v5 eventTypes];
-    v10 = [v9 count];
+    eventTypes = [v5 eventTypes];
+    v10 = [eventTypes count];
 
     if (v10 <= 1)
     {
-      v13 = [v5 eventTypes];
-      v14 = [v13 containsObject:*MEMORY[0x277D13890]];
+      eventTypes2 = [v5 eventTypes];
+      v14 = [eventTypes2 containsObject:*MEMORY[0x277D13890]];
 
       if (v14)
       {
-        v15 = [v5 locationInterface];
-        v16 = [v15 locationEventBuilder];
+        locationInterface = [v5 locationInterface];
+        locationEventBuilder = [locationInterface locationEventBuilder];
 
         objc_opt_class();
         if (objc_opt_isKindOfClass())
@@ -480,7 +480,7 @@ id __44__HUTriggerBuilderItem__forceDisableReasons__block_invoke_3(uint64_t a1, 
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            if ([v16 locationEventType] == 2)
+            if ([locationEventBuilder locationEventType] == 2)
             {
               v8 = 4;
             }
@@ -500,8 +500,8 @@ id __44__HUTriggerBuilderItem__forceDisableReasons__block_invoke_3(uint64_t a1, 
 
       else
       {
-        v17 = [v5 eventTypes];
-        v18 = [v17 containsObject:*MEMORY[0x277D13888]];
+        eventTypes3 = [v5 eventTypes];
+        v18 = [eventTypes3 containsObject:*MEMORY[0x277D13888]];
 
         if (!v18)
         {
@@ -509,15 +509,15 @@ id __44__HUTriggerBuilderItem__forceDisableReasons__block_invoke_3(uint64_t a1, 
           goto LABEL_27;
         }
 
-        v19 = [MEMORY[0x277CD1970] hf_sensingCharacteristicTypes];
-        v20 = [v5 characteristics];
+        hf_sensingCharacteristicTypes = [MEMORY[0x277CD1970] hf_sensingCharacteristicTypes];
+        characteristics = [v5 characteristics];
         v23[0] = MEMORY[0x277D85DD0];
         v23[1] = 3221225472;
         v23[2] = __36__HUTriggerBuilderItem__triggerType__block_invoke;
         v23[3] = &unk_277DB9538;
-        v24 = v19;
-        v16 = v19;
-        v21 = [v20 na_any:v23];
+        v24 = hf_sensingCharacteristicTypes;
+        locationEventBuilder = hf_sensingCharacteristicTypes;
+        v21 = [characteristics na_any:v23];
 
         if (v21)
         {
@@ -538,7 +538,7 @@ id __44__HUTriggerBuilderItem__forceDisableReasons__block_invoke_3(uint64_t a1, 
 
   else
   {
-    v11 = [(HUTriggerBuilderItem *)self triggerBuilder];
+    triggerBuilder3 = [(HUTriggerBuilderItem *)self triggerBuilder];
     objc_opt_class();
     v12 = objc_opt_isKindOfClass();
 
@@ -567,18 +567,18 @@ uint64_t __36__HUTriggerBuilderItem__triggerType__block_invoke(uint64_t a1, void
   return v4;
 }
 
-+ (id)_detailedErrorDescriptionForForceDisableReasons:(unint64_t)a3 inHome:(id)a4
++ (id)_detailedErrorDescriptionForForceDisableReasons:(unint64_t)reasons inHome:(id)home
 {
-  v5 = a4;
-  v6 = v5;
-  if ((a3 & 8) != 0)
+  homeCopy = home;
+  v6 = homeCopy;
+  if ((reasons & 8) != 0)
   {
-    v8 = [v5 hf_primaryResidentDevice];
-    v9 = [v8 name];
+    hf_primaryResidentDevice = [homeCopy hf_primaryResidentDevice];
+    name = [hf_primaryResidentDevice name];
 
-    if (v9)
+    if (name)
     {
-      HULocalizedStringWithFormat(@"HUTriggerRequiresUpdatedHomeHub", @"%@", v10, v11, v12, v13, v14, v15, v9);
+      HULocalizedStringWithFormat(@"HUTriggerRequiresUpdatedHomeHub", @"%@", v10, v11, v12, v13, v14, v15, name);
     }
 
     else
@@ -590,31 +590,31 @@ uint64_t __36__HUTriggerBuilderItem__triggerType__block_invoke(uint64_t a1, void
     goto LABEL_21;
   }
 
-  if ((a3 & 4) != 0)
+  if ((reasons & 4) != 0)
   {
     v7 = @"HUTriggerRequiresHomeHub";
     goto LABEL_14;
   }
 
-  if ((a3 & 0x10) != 0)
+  if ((reasons & 0x10) != 0)
   {
     v7 = @"HUTriggerRequiresLocationServicesAuthorization";
     goto LABEL_14;
   }
 
-  if (a3)
+  if (reasons)
   {
     v17 = @"RequiresConfirmationToRunButNotificationsAreDisabled";
   }
 
-  else if ((a3 & 2) != 0)
+  else if ((reasons & 2) != 0)
   {
     v17 = @"RequiresConfirmationToRunButAccessWhileLockedIsDisabled";
   }
 
   else
   {
-    if ((a3 & 0x20) == 0)
+    if ((reasons & 0x20) == 0)
     {
       v7 = @"HUTriggerRequiresConfirmationToRunWarning";
 LABEL_14:
@@ -635,11 +635,11 @@ LABEL_14:
   {
     v30 = v28;
     v34 = v29;
-    v31 = [MEMORY[0x277CBEB38] dictionary];
-    v32 = [objc_opt_class() settingsURLForForceDisableReasons:a3];
-    [v31 na_safeSetObject:v32 forKey:*MEMORY[0x277D740E8]];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    v32 = [objc_opt_class() settingsURLForForceDisableReasons:reasons];
+    [dictionary na_safeSetObject:v32 forKey:*MEMORY[0x277D740E8]];
 
-    [v16 addAttributes:v31 range:{v30, v34}];
+    [v16 addAttributes:dictionary range:{v30, v34}];
   }
 
 LABEL_21:
@@ -647,29 +647,29 @@ LABEL_21:
   return v16;
 }
 
-+ (id)settingsURLForForceDisableReasons:(unint64_t)a3
++ (id)settingsURLForForceDisableReasons:(unint64_t)reasons
 {
-  if (a3)
+  if (reasons)
   {
-    v3 = [MEMORY[0x277CBEBC0] hf_notificationSettingsURL];
+    hf_notificationSettingsURL = [MEMORY[0x277CBEBC0] hf_notificationSettingsURL];
   }
 
-  else if ((a3 & 2) != 0)
+  else if ((reasons & 2) != 0)
   {
-    v3 = [MEMORY[0x277CBEBC0] hf_allowAccessWhileLockedSettingsURL];
+    hf_notificationSettingsURL = [MEMORY[0x277CBEBC0] hf_allowAccessWhileLockedSettingsURL];
   }
 
-  else if ((a3 & 0x20) != 0)
+  else if ((reasons & 0x20) != 0)
   {
-    v3 = [MEMORY[0x277CBEBC0] hf_locationDeviceSettingsURL];
+    hf_notificationSettingsURL = [MEMORY[0x277CBEBC0] hf_locationDeviceSettingsURL];
   }
 
   else
   {
-    v3 = 0;
+    hf_notificationSettingsURL = 0;
   }
 
-  return v3;
+  return hf_notificationSettingsURL;
 }
 
 @end

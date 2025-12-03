@@ -1,13 +1,13 @@
 @interface SummarySharingAlertsSelectionViewController
-- (_TtC18HealthExperienceUI43SummarySharingAlertsSelectionViewController)initWithCoder:(id)a3;
-- (_TtC18HealthExperienceUI43SummarySharingAlertsSelectionViewController)initWithCollectionViewLayout:(id)a3;
+- (_TtC18HealthExperienceUI43SummarySharingAlertsSelectionViewController)initWithCoder:(id)coder;
+- (_TtC18HealthExperienceUI43SummarySharingAlertsSelectionViewController)initWithCollectionViewLayout:(id)layout;
 - (void)done;
 - (void)viewDidLoad;
 @end
 
 @implementation SummarySharingAlertsSelectionViewController
 
-- (_TtC18HealthExperienceUI43SummarySharingAlertsSelectionViewController)initWithCoder:(id)a3
+- (_TtC18HealthExperienceUI43SummarySharingAlertsSelectionViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super._responderFlags + OBJC_IVAR____TtC18HealthExperienceUI43SummarySharingAlertsSelectionViewController_delegate) = 0;
   swift_unknownObjectWeakInit();
@@ -19,17 +19,17 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BA35EDCC();
 }
 
 - (void)done
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BA35EF7C();
 }
 
-- (_TtC18HealthExperienceUI43SummarySharingAlertsSelectionViewController)initWithCollectionViewLayout:(id)a3
+- (_TtC18HealthExperienceUI43SummarySharingAlertsSelectionViewController)initWithCollectionViewLayout:(id)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

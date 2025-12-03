@@ -1,40 +1,40 @@
 @interface VoiceOverCommandProfileValidationPresenter
-+ (id)presenterWithValidation:(id)a3;
-- (id)_initWithValidation:(id)a3;
-- (void)presentWithController:(id)a3;
++ (id)presenterWithValidation:(id)validation;
+- (id)_initWithValidation:(id)validation;
+- (void)presentWithController:(id)controller;
 @end
 
 @implementation VoiceOverCommandProfileValidationPresenter
 
-+ (id)presenterWithValidation:(id)a3
++ (id)presenterWithValidation:(id)validation
 {
-  v3 = a3;
-  v4 = [[VoiceOverCommandProfileValidationPresenter alloc] _initWithValidation:v3];
+  validationCopy = validation;
+  v4 = [[VoiceOverCommandProfileValidationPresenter alloc] _initWithValidation:validationCopy];
 
   return v4;
 }
 
-- (id)_initWithValidation:(id)a3
+- (id)_initWithValidation:(id)validation
 {
-  v5 = a3;
+  validationCopy = validation;
   v9.receiver = self;
   v9.super_class = VoiceOverCommandProfileValidationPresenter;
   v6 = [(VoiceOverCommandProfileValidationPresenter *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_validation, a3);
+    objc_storeStrong(&v6->_validation, validation);
   }
 
   return v7;
 }
 
-- (void)presentWithController:(id)a3
+- (void)presentWithController:(id)controller
 {
-  v4 = a3;
-  v5 = [(VOSCommandProfileValidation *)self->_validation localizedErrorTitle];
-  v6 = [(VOSCommandProfileValidation *)self->_validation localizedErrorMessage];
-  v7 = [UIAlertController alertControllerWithTitle:v5 message:v6 preferredStyle:1];
+  controllerCopy = controller;
+  localizedErrorTitle = [(VOSCommandProfileValidation *)self->_validation localizedErrorTitle];
+  localizedErrorMessage = [(VOSCommandProfileValidation *)self->_validation localizedErrorMessage];
+  v7 = [UIAlertController alertControllerWithTitle:localizedErrorTitle message:localizedErrorMessage preferredStyle:1];
 
   v8 = settingsLocString(@"vo.cancel", @"VoiceOverSettings");
   v13[0] = _NSConcreteStackBlock;
@@ -58,7 +58,7 @@
     [v7 addAction:v11];
   }
 
-  [v4 presentViewController:v7 animated:1 completion:0];
+  [controllerCopy presentViewController:v7 animated:1 completion:0];
 }
 
 void __68__VoiceOverCommandProfileValidationPresenter_presentWithController___block_invoke(uint64_t a1)

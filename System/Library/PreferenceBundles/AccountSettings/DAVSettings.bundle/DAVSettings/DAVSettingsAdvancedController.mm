@@ -1,11 +1,11 @@
 @interface DAVSettingsAdvancedController
 - (DAAccount)account;
 - (DAVSettingsAccountsUIController)accountController;
-- (id)accountBooleanPropertyWithSpecifier:(id)a3;
-- (id)accountPropertyWithSpecifier:(id)a3;
+- (id)accountBooleanPropertyWithSpecifier:(id)specifier;
+- (id)accountPropertyWithSpecifier:(id)specifier;
 - (id)specifiers;
-- (void)setAccountBooleanProperty:(id)a3 withSpecifier:(id)a4;
-- (void)setAccountProperty:(id)a3 withSpecifier:(id)a4;
+- (void)setAccountBooleanProperty:(id)property withSpecifier:(id)specifier;
+- (void)setAccountProperty:(id)property withSpecifier:(id)specifier;
 @end
 
 @implementation DAVSettingsAdvancedController
@@ -29,8 +29,8 @@
     v9 = objc_loadWeakRetained(&self->PSListController_opaque[v6]);
     objc_storeWeak(&self->_accountController, v9);
 
-    v10 = [(DAVSettingsAdvancedController *)self specifier];
-    v11 = [v10 propertyForKey:@"DAVAdvancedControllerAccountKey"];
+    specifier = [(DAVSettingsAdvancedController *)self specifier];
+    v11 = [specifier propertyForKey:@"DAVAdvancedControllerAccountKey"];
 
     v12 = objc_loadWeakRetained(&self->_account);
     if (v11 != v12)
@@ -42,10 +42,10 @@
     v14 = *&self->PSListController_opaque[v3];
     *&self->PSListController_opaque[v3] = v13;
 
-    v15 = [v11 backingAccountInfo];
-    v16 = [v15 mcBackingProfile];
+    backingAccountInfo = [v11 backingAccountInfo];
+    mcBackingProfile = [backingAccountInfo mcBackingProfile];
 
-    if (v16)
+    if (mcBackingProfile)
     {
       v26 = 0u;
       v27 = 0u;
@@ -86,15 +86,15 @@
   return v4;
 }
 
-- (void)setAccountProperty:(id)a3 withSpecifier:(id)a4
+- (void)setAccountProperty:(id)property withSpecifier:(id)specifier
 {
-  v14 = a3;
-  v6 = [a4 identifier];
-  if ([v6 isEqualToString:@"PORT"])
+  propertyCopy = property;
+  identifier = [specifier identifier];
+  if ([identifier isEqualToString:@"PORT"])
   {
-    v7 = [v14 intValue];
+    intValue = [propertyCopy intValue];
     WeakRetained = objc_loadWeakRetained(&self->_account);
-    [WeakRetained setPort:v7];
+    [WeakRetained setPort:intValue];
 
     if (!self->_isReloadingProperties)
     {
@@ -104,9 +104,9 @@
     }
   }
 
-  else if ([v6 isEqualToString:@"ACCOUNT_URL"])
+  else if ([identifier isEqualToString:@"ACCOUNT_URL"])
   {
-    if (v14)
+    if (propertyCopy)
     {
       v9 = [NSURL URLWithString:?];
     }
@@ -138,16 +138,16 @@
   [v13 setAttemptedValidation:0];
 }
 
-- (void)setAccountBooleanProperty:(id)a3 withSpecifier:(id)a4
+- (void)setAccountBooleanProperty:(id)property withSpecifier:(id)specifier
 {
-  v6 = a4;
-  v7 = [a3 BOOLValue];
-  v12 = [v6 identifier];
+  specifierCopy = specifier;
+  bOOLValue = [property BOOLValue];
+  identifier = [specifierCopy identifier];
 
-  if ([v12 isEqualToString:@"USE_SSL"])
+  if ([identifier isEqualToString:@"USE_SSL"])
   {
     WeakRetained = objc_loadWeakRetained(&self->_account);
-    [WeakRetained setUseSSL:v7];
+    [WeakRetained setUseSSL:bOOLValue];
 
     v9 = objc_loadWeakRetained(&self->_account);
     [v9 setPort:0];
@@ -168,50 +168,50 @@
   [v11 setAttemptedValidation:0];
 }
 
-- (id)accountPropertyWithSpecifier:(id)a3
+- (id)accountPropertyWithSpecifier:(id)specifier
 {
-  v4 = [a3 identifier];
-  if ([v4 isEqualToString:@"PORT"])
+  identifier = [specifier identifier];
+  if ([identifier isEqualToString:@"PORT"])
   {
     WeakRetained = objc_loadWeakRetained(&self->_account);
-    v6 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [WeakRetained port]);
-    v7 = [v6 stringValue];
+    principalURL = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [WeakRetained port]);
+    stringValue = [principalURL stringValue];
 LABEL_5:
 
     goto LABEL_7;
   }
 
-  if ([v4 isEqualToString:@"ACCOUNT_URL"])
+  if ([identifier isEqualToString:@"ACCOUNT_URL"])
   {
     WeakRetained = objc_loadWeakRetained(&self->_account);
-    v6 = [WeakRetained principalURL];
-    v8 = [v6 da_urlByRemovingUsername];
-    v7 = [v8 absoluteString];
+    principalURL = [WeakRetained principalURL];
+    da_urlByRemovingUsername = [principalURL da_urlByRemovingUsername];
+    stringValue = [da_urlByRemovingUsername absoluteString];
 
     goto LABEL_5;
   }
 
-  v7 = 0;
+  stringValue = 0;
 LABEL_7:
 
-  return v7;
+  return stringValue;
 }
 
-- (id)accountBooleanPropertyWithSpecifier:(id)a3
+- (id)accountBooleanPropertyWithSpecifier:(id)specifier
 {
-  v4 = [a3 identifier];
-  if ([v4 isEqualToString:@"USE_SSL"])
+  identifier = [specifier identifier];
+  if ([identifier isEqualToString:@"USE_SSL"])
   {
     WeakRetained = objc_loadWeakRetained(&self->_account);
-    v6 = [WeakRetained useSSL];
+    useSSL = [WeakRetained useSSL];
   }
 
   else
   {
-    v6 = 0;
+    useSSL = 0;
   }
 
-  v7 = [NSNumber numberWithBool:v6];
+  v7 = [NSNumber numberWithBool:useSSL];
 
   return v7;
 }

@@ -1,32 +1,32 @@
 @interface CKVSimulatedMultiDatasetBridge
 - (CKVSimulatedMultiDatasetBridge)init;
-- (CKVSimulatedMultiDatasetBridge)initWithTask:(unsigned __int16)a3;
-- (id)_createDatasetInfoSummary:(int64_t)a3 withOriginAppId:(id)a4;
+- (CKVSimulatedMultiDatasetBridge)initWithTask:(unsigned __int16)task;
+- (id)_createDatasetInfoSummary:(int64_t)summary withOriginAppId:(id)id;
 - (id)datasetInfoSummaryListForTask;
 - (id)profileDirectory;
 - (id)profileFileName;
-- (void)enumerateAllDatasets:(unint64_t *)a3 usingBlock:(id)a4;
+- (void)enumerateAllDatasets:(unint64_t *)datasets usingBlock:(id)block;
 @end
 
 @implementation CKVSimulatedMultiDatasetBridge
 
-- (id)_createDatasetInfoSummary:(int64_t)a3 withOriginAppId:(id)a4
+- (id)_createDatasetInfoSummary:(int64_t)summary withOriginAppId:(id)id
 {
   v5 = MEMORY[0x1E69ABCC8];
-  v6 = a4;
-  v7 = [[v5 alloc] initWithItemType:a3 originAppId:v6 itemCount:0 error:0];
+  idCopy = id;
+  v7 = [[v5 alloc] initWithItemType:summary originAppId:idCopy itemCount:0 error:0];
 
   return v7;
 }
 
-- (void)enumerateAllDatasets:(unint64_t *)a3 usingBlock:(id)a4
+- (void)enumerateAllDatasets:(unint64_t *)datasets usingBlock:(id)block
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  blockCopy = block;
   v7 = MEMORY[0x1E695DFF8];
-  v8 = [(CKVSimulatedMultiDatasetBridge *)self profileFileName];
-  v9 = [(CKVSimulatedMultiDatasetBridge *)self profileDirectory];
-  v10 = [v7 fileURLWithPath:v8 isDirectory:0 relativeToURL:v9];
+  profileFileName = [(CKVSimulatedMultiDatasetBridge *)self profileFileName];
+  profileDirectory = [(CKVSimulatedMultiDatasetBridge *)self profileDirectory];
+  v10 = [v7 fileURLWithPath:profileFileName isDirectory:0 relativeToURL:profileDirectory];
 
   v21 = 0;
   v11 = [MEMORY[0x1E69ABD00] profileWithContentsOfURL:v10 error:&v21];
@@ -44,19 +44,19 @@
     }
   }
 
-  v14 = [v11 profileInfo];
-  *a3 = [v14 datasetCount];
+  profileInfo = [v11 profileInfo];
+  *datasets = [profileInfo datasetCount];
 
   v20 = 0;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __66__CKVSimulatedMultiDatasetBridge_enumerateAllDatasets_usingBlock___block_invoke;
   v18[3] = &unk_1E831E1E0;
-  v15 = v6;
+  v15 = blockCopy;
   v19 = v15;
-  LOBYTE(v14) = [v11 enumerateDatasetsWithError:&v20 usingBlock:v18];
+  LOBYTE(profileInfo) = [v11 enumerateDatasetsWithError:&v20 usingBlock:v18];
   v16 = v20;
-  if ((v14 & 1) == 0)
+  if ((profileInfo & 1) == 0)
   {
     v17 = CKLogContextVocabulary;
     if (os_log_type_enabled(CKLogContextVocabulary, OS_LOG_TYPE_ERROR))
@@ -221,14 +221,14 @@ LABEL_26:
   objc_exception_throw(v2);
 }
 
-- (CKVSimulatedMultiDatasetBridge)initWithTask:(unsigned __int16)a3
+- (CKVSimulatedMultiDatasetBridge)initWithTask:(unsigned __int16)task
 {
   v5.receiver = self;
   v5.super_class = CKVSimulatedMultiDatasetBridge;
   result = [(CKVSimulatedMultiDatasetBridge *)&v5 init];
   if (result)
   {
-    result->_task = a3;
+    result->_task = task;
   }
 
   return result;

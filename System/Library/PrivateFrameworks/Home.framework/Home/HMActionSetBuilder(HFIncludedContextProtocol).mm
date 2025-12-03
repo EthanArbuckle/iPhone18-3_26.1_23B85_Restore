@@ -11,7 +11,7 @@
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138413058;
-    v13 = a1;
+    selfCopy = self;
     v14 = 2080;
     v15 = "[HMActionSetBuilder(HFIncludedContextProtocol) hf_setValue:forContextType:]";
     v16 = 1024;
@@ -33,11 +33,11 @@
       goto LABEL_13;
     }
 
-    v8 = [a1 applicationData];
+    applicationData = [self applicationData];
     v9 = [MEMORY[0x277CCABB0] numberWithBool:a3];
     v10 = @"HFApplicationDataActionSetIsFavoriteKey";
 LABEL_11:
-    HFAppDataSetValueIfChanged(v8, v10, v9);
+    HFAppDataSetValueIfChanged(applicationData, v10, v9);
 
     goto LABEL_13;
   }
@@ -50,7 +50,7 @@ LABEL_11:
 
   if (a4 == 3)
   {
-    v8 = [a1 applicationData];
+    applicationData = [self applicationData];
     v9 = [MEMORY[0x277CCABB0] numberWithBool:a3];
     v10 = @"HFApplicationDataActionSetShowInHomeDashboard";
     goto LABEL_11;

@@ -1,6 +1,6 @@
 @interface MRExternalDeviceMessageMetricsEntry
 - (MRExternalDeviceMessageMetricsEntry)init;
-- (void)updateWithValue:(unint64_t)a3;
+- (void)updateWithValue:(unint64_t)value;
 @end
 
 @implementation MRExternalDeviceMessageMetricsEntry
@@ -22,24 +22,24 @@
   return v2;
 }
 
-- (void)updateWithValue:(unint64_t)a3
+- (void)updateWithValue:(unint64_t)value
 {
   values = self->_values;
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:?];
   [(NSMutableArray *)values addObject:v6];
 
-  if (self->_max < a3)
+  if (self->_max < value)
   {
-    self->_max = a3;
+    self->_max = value;
   }
 
-  if (self->_min > a3)
+  if (self->_min > value)
   {
-    self->_min = a3;
+    self->_min = value;
   }
 
   v7 = self->_values;
-  v8 = self->_total + a3;
+  v8 = self->_total + value;
   self->_total = v8;
   self->_avg = v8 / [(NSMutableArray *)v7 count];
 }

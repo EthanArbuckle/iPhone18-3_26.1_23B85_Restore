@@ -1,30 +1,30 @@
 @interface ADEspressoBufferHandle
-- (ADEspressoBufferHandle)initWithName:(id)a3 buffer:(id *)a4;
-- (ADEspressoBufferHandle)initWithName:(id)a3 rawData:(void *)a4 dimensions:(id)a5 strides:(id)a6;
-- (BOOL)copyTo:(id)a3;
-- (BOOL)writeToFile:(id)a3 atomically:(BOOL)a4;
+- (ADEspressoBufferHandle)initWithName:(id)name buffer:(id *)buffer;
+- (ADEspressoBufferHandle)initWithName:(id)name rawData:(void *)data dimensions:(id)dimensions strides:(id)strides;
+- (BOOL)copyTo:(id)to;
+- (BOOL)writeToFile:(id)file atomically:(BOOL)atomically;
 - (unint64_t)dimensionsProduct;
 - (void)clearBuffer;
 @end
 
 @implementation ADEspressoBufferHandle
 
-- (BOOL)copyTo:(id)a3
+- (BOOL)copyTo:(id)to
 {
   size = self->_size;
-  v4 = *(a3 + 13);
+  v4 = *(to + 13);
   if (size == v4)
   {
-    memcpy(*(a3 + 2), self->_rawData, size);
+    memcpy(*(to + 2), self->_rawData, size);
   }
 
   return size == v4;
 }
 
-- (BOOL)writeToFile:(id)a3 atomically:(BOOL)a4
+- (BOOL)writeToFile:(id)file atomically:(BOOL)atomically
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  fileCopy = file;
   v15 = xmmword_278CA6028;
   v16 = *off_278CA6038;
   v17 = @"rgba";
@@ -41,9 +41,9 @@
 
   v8 = v7;
   v9 = [(NSString *)self->_name stringByReplacingOccurrencesOfString:@"/" withString:@"_"];
-  if (v5)
+  if (fileCopy)
   {
-    v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", v5, v8];
+    v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", fileCopy, v8];
 
     v11 = v10;
   }
@@ -100,16 +100,16 @@
   return v5;
 }
 
-- (ADEspressoBufferHandle)initWithName:(id)a3 rawData:(void *)a4 dimensions:(id)a5 strides:(id)a6
+- (ADEspressoBufferHandle)initWithName:(id)name rawData:(void *)data dimensions:(id)dimensions strides:(id)strides
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  v14 = v13;
-  v15 = 0;
-  if (v11 && a4 && v12 && v13)
+  nameCopy = name;
+  dimensionsCopy = dimensions;
+  stridesCopy = strides;
+  v14 = stridesCopy;
+  selfCopy = 0;
+  if (nameCopy && data && dimensionsCopy && stridesCopy)
   {
-    if ([v12 count] && (v16 = objc_msgSend(v12, "count"), v16 == objc_msgSend(v14, "count")))
+    if ([dimensionsCopy count] && (v16 = objc_msgSend(dimensionsCopy, "count"), v16 == objc_msgSend(v14, "count")))
     {
       v39.receiver = self;
       v39.super_class = ADEspressoBufferHandle;
@@ -117,79 +117,79 @@
       v18 = v17;
       if (v17)
       {
-        objc_storeStrong(&v17->_name, a3);
-        v18->_rawData = a4;
-        objc_storeStrong(&v18->_dimensions, a5);
-        v19 = [v12 objectEnumerator];
-        v20 = [v19 nextObject];
-        v21 = v20;
-        if (v20)
+        objc_storeStrong(&v17->_name, name);
+        v18->_rawData = data;
+        objc_storeStrong(&v18->_dimensions, dimensions);
+        objectEnumerator = [dimensionsCopy objectEnumerator];
+        nextObject = [objectEnumerator nextObject];
+        v21 = nextObject;
+        if (nextObject)
         {
-          v22 = [v20 unsignedIntValue];
+          unsignedIntValue = [nextObject unsignedIntValue];
         }
 
         else
         {
-          v22 = 1;
+          unsignedIntValue = 1;
         }
 
-        v18->_width = v22;
-        v23 = [v19 nextObject];
+        v18->_width = unsignedIntValue;
+        nextObject2 = [objectEnumerator nextObject];
 
-        if (v23)
+        if (nextObject2)
         {
-          v24 = [v23 unsignedIntValue];
+          unsignedIntValue2 = [nextObject2 unsignedIntValue];
         }
 
         else
         {
-          v24 = 1;
+          unsignedIntValue2 = 1;
         }
 
-        v18->_height = v24;
-        v25 = [v19 nextObject];
+        v18->_height = unsignedIntValue2;
+        nextObject3 = [objectEnumerator nextObject];
 
-        if (v25)
+        if (nextObject3)
         {
-          v26 = [v25 unsignedIntValue];
+          unsignedIntValue3 = [nextObject3 unsignedIntValue];
         }
 
         else
         {
-          v26 = 1;
+          unsignedIntValue3 = 1;
         }
 
-        v18->_channels = v26;
-        v27 = [v19 nextObject];
+        v18->_channels = unsignedIntValue3;
+        nextObject4 = [objectEnumerator nextObject];
 
-        if (v27)
+        if (nextObject4)
         {
-          v28 = [v27 unsignedIntValue];
+          unsignedIntValue4 = [nextObject4 unsignedIntValue];
         }
 
         else
         {
-          v28 = 1;
+          unsignedIntValue4 = 1;
         }
 
-        v18->_batches = v28;
-        v29 = [v19 nextObject];
+        v18->_batches = unsignedIntValue4;
+        nextObject5 = [objectEnumerator nextObject];
 
-        if (v29)
+        if (nextObject5)
         {
-          v30 = [v29 unsignedIntValue];
+          unsignedIntValue5 = [nextObject5 unsignedIntValue];
         }
 
         else
         {
-          v30 = 1;
+          unsignedIntValue5 = 1;
         }
 
-        v18->_sequences = v30;
-        v31 = [v14 lastObject];
-        v32 = [v31 unsignedIntValue];
-        v33 = [v12 lastObject];
-        v18->_size = [v33 unsignedIntValue] * v32;
+        v18->_sequences = unsignedIntValue5;
+        lastObject = [v14 lastObject];
+        unsignedIntValue6 = [lastObject unsignedIntValue];
+        lastObject2 = [dimensionsCopy lastObject];
+        v18->_size = [lastObject2 unsignedIntValue] * unsignedIntValue6;
 
         if ([v14 count] < 2)
         {
@@ -237,23 +237,23 @@
       }
 
       self = v18;
-      v15 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v15 = 0;
+      selfCopy = 0;
     }
   }
 
-  return v15;
+  return selfCopy;
 }
 
-- (ADEspressoBufferHandle)initWithName:(id)a3 buffer:(id *)a4
+- (ADEspressoBufferHandle)initWithName:(id)name buffer:(id *)buffer
 {
   v20[4] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  if (v7)
+  nameCopy = name;
+  if (nameCopy)
   {
     v19.receiver = self;
     v19.super_class = ADEspressoBufferHandle;
@@ -261,43 +261,43 @@
     v9 = v8;
     if (v8)
     {
-      objc_storeStrong(&v8->_name, a3);
-      v9->_rawData = a4->var0;
-      v10 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:a4->var2[0]];
+      objc_storeStrong(&v8->_name, name);
+      v9->_rawData = buffer->var0;
+      v10 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:buffer->var2[0]];
       v20[0] = v10;
-      v11 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:a4->var2[1]];
+      v11 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:buffer->var2[1]];
       v20[1] = v11;
-      v12 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:a4->var2[2]];
+      v12 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:buffer->var2[2]];
       v20[2] = v12;
-      v13 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:a4->var2[3]];
+      v13 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:buffer->var2[3]];
       v20[3] = v13;
       v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:4];
       dimensions = v9->_dimensions;
       v9->_dimensions = v14;
 
-      v9->_width = a4->var4;
-      v9->_height = a4->var5;
-      v9->_channels = a4->var6;
-      v9->_batches = a4->var7;
-      var8 = a4->var8;
+      v9->_width = buffer->var4;
+      v9->_height = buffer->var5;
+      v9->_channels = buffer->var6;
+      v9->_batches = buffer->var7;
+      var8 = buffer->var8;
       v9->_sequences = var8;
-      v9->_size = var8 * a4->var3[3];
-      v9->_rowBytes = a4->var3[0];
-      v9->_channelBytes = a4->var3[1];
-      v9->_batchBytes = a4->var3[2];
-      v9->_sequenceBytes = a4->var3[3];
+      v9->_size = var8 * buffer->var3[3];
+      v9->_rowBytes = buffer->var3[0];
+      v9->_channelBytes = buffer->var3[1];
+      v9->_batchBytes = buffer->var3[2];
+      v9->_sequenceBytes = buffer->var3[3];
     }
 
     self = v9;
-    v17 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v17 = 0;
+    selfCopy = 0;
   }
 
-  return v17;
+  return selfCopy;
 }
 
 @end

@@ -1,55 +1,55 @@
 @interface TSCHStyleUtilities
-+ (BOOL)allSeriesInList:(id)a3 haveExplosionValue:(double)a4;
-+ (BOOL)groupedShadowsForChartModel:(id)a3;
-+ (BOOL)hasNoFill:(id)a3;
-+ (BOOL)hasShadow:(id)a3;
-+ (BOOL)isNullFill:(id)a3;
-+ (BOOL)labelExplosionIsCenteredInWedgeWithInnerRadius:(double)a3 labelExplosion:(double)a4;
-+ (BOOL)p_hasShadow:(id)a3;
-+ (BOOL)shouldAnchorLabelsForSeries:(id)a3 innerRadius:(double)a4 calloutLineType:(int64_t)a5 defaultLabelExplosion:(double)a6;
-+ (BOOL)shouldExteriorBorderButtonBeAdded:(id)a3;
-+ (BOOL)shouldExteriorBorderButtonBeDisabled:(id)a3;
-+ (BOOL)upgradeShadowProperties:(id)a3 inMap:(id)a4;
-+ (BOOL)upgradedShadowPropertyFromShadow:(id)a3 outUpgraded:(id *)a4;
-+ (BOOL)useOutsideParagraphStyleIndexForSeries:(id)a3 chartType:(id)a4 layout:(id)a5;
-+ (CGSize)bodySizeWithMinimumWedgeExplosionWithChartModel:(id)a3 bodySize:(CGSize)a4;
-+ (double)bendedCalloutLineLabelExplosionValueFromPre2_4ExplosionValue:(double)a3 chartModel:(id)a4 bodySize:(CGSize)a5;
-+ (double)p_bendedCalloutLineLabelExplosionValueFromPre2_4ExplosionValue:(double)a3 chartRadius:(double)a4;
-+ (double)p_pre2_4BendedCalloutLineLabelExplosionValueFromExplosionValue:(double)a3 chartRadius:(double)a4;
-+ (double)pre2_4BendedCalloutLineLabelExplosionValueFromExplosionValue:(double)a3 chartModel:(id)a4 bodySize:(CGSize)a5;
++ (BOOL)allSeriesInList:(id)list haveExplosionValue:(double)value;
++ (BOOL)groupedShadowsForChartModel:(id)model;
++ (BOOL)hasNoFill:(id)fill;
++ (BOOL)hasShadow:(id)shadow;
++ (BOOL)isNullFill:(id)fill;
++ (BOOL)labelExplosionIsCenteredInWedgeWithInnerRadius:(double)radius labelExplosion:(double)explosion;
++ (BOOL)p_hasShadow:(id)shadow;
++ (BOOL)shouldAnchorLabelsForSeries:(id)series innerRadius:(double)radius calloutLineType:(int64_t)type defaultLabelExplosion:(double)explosion;
++ (BOOL)shouldExteriorBorderButtonBeAdded:(id)added;
++ (BOOL)shouldExteriorBorderButtonBeDisabled:(id)disabled;
++ (BOOL)upgradeShadowProperties:(id)properties inMap:(id)map;
++ (BOOL)upgradedShadowPropertyFromShadow:(id)shadow outUpgraded:(id *)upgraded;
++ (BOOL)useOutsideParagraphStyleIndexForSeries:(id)series chartType:(id)type layout:(id)layout;
++ (CGSize)bodySizeWithMinimumWedgeExplosionWithChartModel:(id)model bodySize:(CGSize)size;
++ (double)bendedCalloutLineLabelExplosionValueFromPre2_4ExplosionValue:(double)value chartModel:(id)model bodySize:(CGSize)size;
++ (double)p_bendedCalloutLineLabelExplosionValueFromPre2_4ExplosionValue:(double)value chartRadius:(double)radius;
++ (double)p_pre2_4BendedCalloutLineLabelExplosionValueFromExplosionValue:(double)value chartRadius:(double)radius;
++ (double)pre2_4BendedCalloutLineLabelExplosionValueFromExplosionValue:(double)value chartModel:(id)model bodySize:(CGSize)size;
 + (float)defaultDonutLabelExplosionPercentage;
 + (id)availableStrokes;
-+ (id)chartsNullShadowToDefaultDisabledShadow:(id)a3;
++ (id)chartsNullShadowToDefaultDisabledShadow:(id)shadow;
 + (id)defaultShadow;
-+ (id)fillForSeries:(id)a3 chartType:(id)a4;
-+ (id)fullyPopulatedStyleFromStyle:(id)a3 context:(id)a4;
-+ (id)fullyPopulatedStylesFromArray:(id)a3 context:(id)a4 styleClass:(Class)a5;
-+ (id)lineEndForSegmentIndex:(int64_t)a3;
-+ (id)p_referenceColorForObject:(id)a3;
-+ (id)shadowToChartsNullShadow:(id)a3;
-+ (id)stylesheetOfStyles:(id)a3 nilAllowed:(BOOL)a4;
-+ (id)swapTuplesForParagraphStyleMutations:(id)a3 forReferencingProperty:(int)a4 forStyleOwner:(id)a5;
-+ (id)trendlineColorFromCGColor:(CGColor *)a3;
-+ (id)tupleToUpdate2_3ExplosionFromValue:(id)a3 chartInfo:(id)a4 forStyleOwner:(id)a5;
-+ (id)uiStringForLabelFormatType:(int)a3 useShortString:(BOOL)a4;
-+ (id)upgradedShadowPropertyForParagraphStyle:(id)a3;
-+ (unint64_t)segmentIndexForLineEnd:(id)a3;
-+ (void)breakUpFontName:(id)a3 isBold:(BOOL *)a4 isItalic:(BOOL *)a5;
-+ (void)convertToSimpleTSDFillsInProperties:(id)a3 inMap:(id)a4 context:(id)a5;
-+ (void)p_adjustTrendlineSaturation:(double *)a3 brightness:(double *)a4;
-+ (void)updateParagraphStylePropertyMapsForMutationLookup:(id)a3 mutationDictionary:(id)a4 styleOwner:(id)a5 indexProperty:(int)a6 paragraphStyleProperty:(int)a7 value:(id)a8;
-+ (void)updateStyleState:(id)a3 forMutationsPerStyleOwner:(id)a4;
-+ (void)updateStyleState:(id)a3 forPropertyMutationTuples:(id)a4;
-+ (void)upgradeAlignmentInParagraphStyles:(id)a3 willModifyBlock:(id)a4;
++ (id)fillForSeries:(id)series chartType:(id)type;
++ (id)fullyPopulatedStyleFromStyle:(id)style context:(id)context;
++ (id)fullyPopulatedStylesFromArray:(id)array context:(id)context styleClass:(Class)class;
++ (id)lineEndForSegmentIndex:(int64_t)index;
++ (id)p_referenceColorForObject:(id)object;
++ (id)shadowToChartsNullShadow:(id)shadow;
++ (id)stylesheetOfStyles:(id)styles nilAllowed:(BOOL)allowed;
++ (id)swapTuplesForParagraphStyleMutations:(id)mutations forReferencingProperty:(int)property forStyleOwner:(id)owner;
++ (id)trendlineColorFromCGColor:(CGColor *)color;
++ (id)tupleToUpdate2_3ExplosionFromValue:(id)value chartInfo:(id)info forStyleOwner:(id)owner;
++ (id)uiStringForLabelFormatType:(int)type useShortString:(BOOL)string;
++ (id)upgradedShadowPropertyForParagraphStyle:(id)style;
++ (unint64_t)segmentIndexForLineEnd:(id)end;
++ (void)breakUpFontName:(id)name isBold:(BOOL *)bold isItalic:(BOOL *)italic;
++ (void)convertToSimpleTSDFillsInProperties:(id)properties inMap:(id)map context:(id)context;
++ (void)p_adjustTrendlineSaturation:(double *)saturation brightness:(double *)brightness;
++ (void)updateParagraphStylePropertyMapsForMutationLookup:(id)lookup mutationDictionary:(id)dictionary styleOwner:(id)owner indexProperty:(int)property paragraphStyleProperty:(int)styleProperty value:(id)value;
++ (void)updateStyleState:(id)state forMutationsPerStyleOwner:(id)owner;
++ (void)updateStyleState:(id)state forPropertyMutationTuples:(id)tuples;
++ (void)upgradeAlignmentInParagraphStyles:(id)styles willModifyBlock:(id)block;
 @end
 
 @implementation TSCHStyleUtilities
 
-+ (id)fullyPopulatedStyleFromStyle:(id)a3 context:(id)a4
++ (id)fullyPopulatedStyleFromStyle:(id)style context:(id)context
 {
-  v5 = a3;
-  v7 = a4;
-  if (!v5)
+  styleCopy = style;
+  contextCopy = context;
+  if (!styleCopy)
   {
     v11 = MEMORY[0x277D81150];
     v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, v8, v9, v10, "+[TSCHStyleUtilities fullyPopulatedStyleFromStyle:context:]");
@@ -60,24 +60,24 @@
   }
 
   v26 = objc_alloc(objc_opt_class());
-  v31 = objc_msgSend_name(v5, v27, v28, v29, v30);
-  v36 = objc_msgSend_fullPropertyMap(v5, v32, v33, v34, v35);
-  isVariation = objc_msgSend_initWithContext_name_overridePropertyMap_isVariation_(v26, v37, v38, v39, v40, v7, v31, v36, 0);
+  v31 = objc_msgSend_name(styleCopy, v27, v28, v29, v30);
+  v36 = objc_msgSend_fullPropertyMap(styleCopy, v32, v33, v34, v35);
+  isVariation = objc_msgSend_initWithContext_name_overridePropertyMap_isVariation_(v26, v37, v38, v39, v40, contextCopy, v31, v36, 0);
 
   return isVariation;
 }
 
-+ (id)fullyPopulatedStylesFromArray:(id)a3 context:(id)a4 styleClass:(Class)a5
++ (id)fullyPopulatedStylesFromArray:(id)array context:(id)context styleClass:(Class)class
 {
   v57 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v13 = objc_msgSend_array(MEMORY[0x277CBEB18], v9, v10, v11, v12, v7);
+  arrayCopy = array;
+  contextCopy = context;
+  v13 = objc_msgSend_array(MEMORY[0x277CBEB18], v9, v10, v11, v12, arrayCopy);
   v54 = 0u;
   v55 = 0u;
   v52 = 0u;
   v53 = 0u;
-  obj = v7;
+  obj = arrayCopy;
   v18 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v14, v15, v16, v17, &v52, v56, 16);
   if (v18)
   {
@@ -95,16 +95,16 @@
         v22 = TSUDynamicCast();
         if (v22)
         {
-          v26 = objc_msgSend_fullyPopulatedStyleFromStyle_context_(TSCHStyleUtilities, v21, v23, v24, v25, v22, v8);
+          v26 = objc_msgSend_fullyPopulatedStyleFromStyle_context_(TSCHStyleUtilities, v21, v23, v24, v25, v22, contextCopy);
 
           objc_msgSend_addObject_(v13, v27, v28, v29, v30, v26);
         }
 
-        else if (a5)
+        else if (class)
         {
-          v31 = [a5 alloc];
-          v36 = objc_msgSend_defaultPropertyMap(a5, v32, v33, v34, v35);
-          isVariation = objc_msgSend_initWithContext_name_overridePropertyMap_isVariation_(v31, v37, v38, v39, v40, v8, 0, v36, 0);
+          v31 = [class alloc];
+          v36 = objc_msgSend_defaultPropertyMap(class, v32, v33, v34, v35);
+          isVariation = objc_msgSend_initWithContext_name_overridePropertyMap_isVariation_(v31, v37, v38, v39, v40, contextCopy, 0, v36, 0);
 
           objc_msgSend_addObject_(v13, v42, v43, v44, v45, isVariation);
           v26 = isVariation;
@@ -125,12 +125,12 @@
   return v13;
 }
 
-+ (BOOL)hasNoFill:(id)a3
++ (BOOL)hasNoFill:(id)fill
 {
-  v5 = a3;
-  if (v5)
+  fillCopy = fill;
+  if (fillCopy)
   {
-    isNullFill = objc_msgSend_isNullFill_(a1, v4, v6, v7, v8, v5);
+    isNullFill = objc_msgSend_isNullFill_(self, v4, v6, v7, v8, fillCopy);
   }
 
   else
@@ -141,21 +141,21 @@
   return isNullFill;
 }
 
-+ (BOOL)isNullFill:(id)a3
++ (BOOL)isNullFill:(id)fill
 {
-  v4 = a3;
-  v9 = objc_msgSend_nullFill(a1, v5, v6, v7, v8);
-  isEqual = objc_msgSend_isEqual_(v4, v10, v11, v12, v13, v9);
+  fillCopy = fill;
+  v9 = objc_msgSend_nullFill(self, v5, v6, v7, v8);
+  isEqual = objc_msgSend_isEqual_(fillCopy, v10, v11, v12, v13, v9);
 
   return isEqual;
 }
 
-+ (BOOL)shouldExteriorBorderButtonBeAdded:(id)a3
++ (BOOL)shouldExteriorBorderButtonBeAdded:(id)added
 {
-  v3 = a3;
-  if (objc_msgSend_shouldRender(v3, v4, v5, v6, v7))
+  addedCopy = added;
+  if (objc_msgSend_shouldRender(addedCopy, v4, v5, v6, v7))
   {
-    v12 = objc_msgSend_color(v3, v8, v9, v10, v11);
+    v12 = objc_msgSend_color(addedCopy, v8, v9, v10, v11);
     v17 = objc_msgSend_isClear(v12, v13, v14, v15, v16) ^ 1;
   }
 
@@ -167,12 +167,12 @@
   return v17;
 }
 
-+ (BOOL)shouldExteriorBorderButtonBeDisabled:(id)a3
++ (BOOL)shouldExteriorBorderButtonBeDisabled:(id)disabled
 {
-  v3 = a3;
-  if (objc_msgSend_shouldRender(v3, v4, v5, v6, v7))
+  disabledCopy = disabled;
+  if (objc_msgSend_shouldRender(disabledCopy, v4, v5, v6, v7))
   {
-    v12 = objc_msgSend_color(v3, v8, v9, v10, v11);
+    v12 = objc_msgSend_color(disabledCopy, v8, v9, v10, v11);
     isClear = objc_msgSend_isClear(v12, v13, v14, v15, v16);
   }
 
@@ -184,13 +184,13 @@
   return isClear;
 }
 
-+ (BOOL)p_hasShadow:(id)a3
++ (BOOL)p_hasShadow:(id)shadow
 {
-  v5 = a3;
-  if (v5)
+  shadowCopy = shadow;
+  if (shadowCopy)
   {
-    v9 = objc_msgSend_nullShadow(a1, v4, v6, v7, v8);
-    v14 = objc_msgSend_isEqual_(v5, v10, v11, v12, v13, v9) ^ 1;
+    v9 = objc_msgSend_nullShadow(self, v4, v6, v7, v8);
+    v14 = objc_msgSend_isEqual_(shadowCopy, v10, v11, v12, v13, v9) ^ 1;
   }
 
   else
@@ -201,10 +201,10 @@
   return v14;
 }
 
-+ (BOOL)upgradedShadowPropertyFromShadow:(id)a3 outUpgraded:(id *)a4
++ (BOOL)upgradedShadowPropertyFromShadow:(id)shadow outUpgraded:(id *)upgraded
 {
-  v7 = a3;
-  if (!a4)
+  shadowCopy = shadow;
+  if (!upgraded)
   {
     v11 = MEMORY[0x277D81150];
     v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, v8, v9, v10, "+[TSCHStyleUtilities upgradedShadowPropertyFromShadow:outUpgraded:]");
@@ -214,26 +214,26 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v22, v23, v24, v25);
   }
 
-  if (objc_msgSend_p_hasShadow_(a1, v6, v8, v9, v10, v7) && objc_msgSend_isEnabled(v7, v26, v27, v28, v29))
+  if (objc_msgSend_p_hasShadow_(self, v6, v8, v9, v10, shadowCopy) && objc_msgSend_isEnabled(shadowCopy, v26, v27, v28, v29))
   {
-    v30 = v7;
+    v30 = shadowCopy;
     v31 = 0;
   }
 
   else
   {
-    v30 = objc_msgSend_nullShadow(a1, v26, v27, v28, v29);
+    v30 = objc_msgSend_nullShadow(self, v26, v27, v28, v29);
     v31 = 1;
   }
 
-  *a4 = v30;
+  *upgraded = v30;
 
   return v31;
 }
 
-+ (BOOL)upgradeShadowProperties:(id)a3 inMap:(id)a4
++ (BOOL)upgradeShadowProperties:(id)properties inMap:(id)map
 {
-  v6 = a4;
+  mapCopy = map;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
@@ -243,49 +243,49 @@
   v13[2] = sub_2762CA05C;
   v13[3] = &unk_27A6B77A0;
   v15 = &v17;
-  v16 = a1;
-  v14 = v6;
-  v7 = v6;
-  objc_msgSend_enumeratePropertiesUsingBlock_(a3, v8, v9, v10, v11, v13);
-  LOBYTE(a3) = *(v18 + 24);
+  selfCopy = self;
+  v14 = mapCopy;
+  v7 = mapCopy;
+  objc_msgSend_enumeratePropertiesUsingBlock_(properties, v8, v9, v10, v11, v13);
+  LOBYTE(properties) = *(v18 + 24);
 
   _Block_object_dispose(&v17, 8);
-  return a3;
+  return properties;
 }
 
-+ (id)upgradedShadowPropertyForParagraphStyle:(id)a3
++ (id)upgradedShadowPropertyForParagraphStyle:(id)style
 {
-  v4 = a3;
-  v9 = objc_msgSend_valueForProperty_(v4, v5, v6, v7, v8, 40);
+  styleCopy = style;
+  v9 = objc_msgSend_valueForProperty_(styleCopy, v5, v6, v7, v8, 40);
   v31 = 0;
-  v14 = objc_msgSend_upgradedShadowPropertyFromShadow_outUpgraded_(a1, v10, v11, v12, v13, v9, &v31);
+  v14 = objc_msgSend_upgradedShadowPropertyFromShadow_outUpgraded_(self, v10, v11, v12, v13, v9, &v31);
   v16 = v31;
   if (v14)
   {
-    v20 = objc_msgSend_context(v4, v15, v17, v18, v19);
-    v25 = objc_msgSend_fullyPopulatedStyleFromStyle_context_(a1, v21, v22, v23, v24, v4, v20);
+    v20 = objc_msgSend_context(styleCopy, v15, v17, v18, v19);
+    v25 = objc_msgSend_fullyPopulatedStyleFromStyle_context_(self, v21, v22, v23, v24, styleCopy, v20);
 
     objc_msgSend_setValue_forProperty_(v25, v26, v27, v28, v29, v16, 40);
   }
 
   else
   {
-    v25 = v4;
+    v25 = styleCopy;
   }
 
   return v25;
 }
 
-+ (BOOL)hasShadow:(id)a3
++ (BOOL)hasShadow:(id)shadow
 {
-  v4 = a3;
-  hasShadow = objc_msgSend_p_hasShadow_(a1, v5, v6, v7, v8, v4);
-  if (hasShadow && (objc_msgSend_isEnabled(v4, v9, v11, v12, v13) & 1) == 0)
+  shadowCopy = shadow;
+  hasShadow = objc_msgSend_p_hasShadow_(self, v5, v6, v7, v8, shadowCopy);
+  if (hasShadow && (objc_msgSend_isEnabled(shadowCopy, v9, v11, v12, v13) & 1) == 0)
   {
     v18 = MEMORY[0x277D81150];
     v19 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v14, v15, v16, v17, "+[TSCHStyleUtilities hasShadow:]");
     v24 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v20, v21, v22, v23, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCHStyleUtilities.mm");
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v18, v25, v26, v27, v28, v19, v24, 166, 0, "inconsistent shadow state %@", v4);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v18, v25, v26, v27, v28, v19, v24, 166, 0, "inconsistent shadow state %@", shadowCopy);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v29, v30, v31, v32);
   }
@@ -302,20 +302,20 @@
   return v8;
 }
 
-+ (id)shadowToChartsNullShadow:(id)a3
++ (id)shadowToChartsNullShadow:(id)shadow
 {
-  v4 = a3;
+  shadowCopy = shadow;
   objc_opt_class();
   v5 = TSUDynamicCast();
   v10 = v5;
-  if (!v4 || v5 == v4 && (objc_msgSend_isEnabled(v5, v6, v7, v8, v9) & 1) != 0)
+  if (!shadowCopy || v5 == shadowCopy && (objc_msgSend_isEnabled(v5, v6, v7, v8, v9) & 1) != 0)
   {
-    v11 = v4;
+    v11 = shadowCopy;
   }
 
   else
   {
-    v11 = objc_msgSend_nullShadow(a1, v6, v7, v8, v9);
+    v11 = objc_msgSend_nullShadow(self, v6, v7, v8, v9);
   }
 
   v12 = v11;
@@ -323,12 +323,12 @@
   return v12;
 }
 
-+ (id)chartsNullShadowToDefaultDisabledShadow:(id)a3
++ (id)chartsNullShadowToDefaultDisabledShadow:(id)shadow
 {
-  v4 = a3;
-  if (objc_msgSend_hasShadow_(a1, v5, v6, v7, v8, v4))
+  shadowCopy = shadow;
+  if (objc_msgSend_hasShadow_(self, v5, v6, v7, v8, shadowCopy))
   {
-    v13 = v4;
+    v13 = shadowCopy;
   }
 
   else
@@ -341,16 +341,16 @@
   return v14;
 }
 
-+ (void)updateStyleState:(id)a3 forMutationsPerStyleOwner:(id)a4
++ (void)updateStyleState:(id)state forMutationsPerStyleOwner:(id)owner
 {
   v70 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  stateCopy = state;
   v64 = 0u;
   v65 = 0u;
   v66 = 0u;
   v67 = 0u;
-  v59 = a4;
-  v9 = objc_msgSend_allKeys(v59, v6, 0.0, v7, v8);
+  ownerCopy = owner;
+  v9 = objc_msgSend_allKeys(ownerCopy, v6, 0.0, v7, v8);
   obj = v9;
   v15 = objc_msgSend_countByEnumeratingWithState_objects_count_(v9, v10, v11, v12, v13, &v64, v69, 16);
   if (v15)
@@ -366,7 +366,7 @@
         }
 
         v21 = *(*(&v64 + 1) + 8 * i);
-        v23 = objc_msgSend_objectForKey_(v59, v14, v16, v17, v18, v21);
+        v23 = objc_msgSend_objectForKey_(ownerCopy, v14, v16, v17, v18, v21);
         if (!v23)
         {
           v27 = MEMORY[0x277D81150];
@@ -400,7 +400,7 @@
               v56 = objc_msgSend_swapType(v55, v48, v50, v51, v52);
               if ((sub_276312018(v56) & 1) == 0)
               {
-                v57 = objc_msgSend_applyStyleSwapTuple_ignoringBeforeValues_(v5, v48, v50, v51, v52, v55, 1);
+                v57 = objc_msgSend_applyStyleSwapTuple_ignoringBeforeValues_(stateCopy, v48, v50, v51, v52, v55, 1);
               }
             }
 
@@ -419,17 +419,17 @@
   }
 }
 
-+ (void)updateStyleState:(id)a3 forPropertyMutationTuples:(id)a4
++ (void)updateStyleState:(id)state forPropertyMutationTuples:(id)tuples
 {
   v45 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  stateCopy = state;
+  tuplesCopy = tuples;
   v12 = objc_msgSend_dictionary(MEMORY[0x277D81278], v8, v9, v10, v11);
   v42 = 0u;
   v43 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v13 = v7;
+  v13 = tuplesCopy;
   v19 = objc_msgSend_countByEnumeratingWithState_objects_count_(v13, v14, v15, v16, v17, &v40, v44, 16);
   if (v19)
   {
@@ -455,19 +455,19 @@
     while (v19);
   }
 
-  objc_msgSend_updateStyleState_forMutationsPerStyleOwner_(a1, v36, v37, v38, v39, v6, v12);
+  objc_msgSend_updateStyleState_forMutationsPerStyleOwner_(self, v36, v37, v38, v39, stateCopy, v12);
 }
 
-+ (void)upgradeAlignmentInParagraphStyles:(id)a3 willModifyBlock:(id)a4
++ (void)upgradeAlignmentInParagraphStyles:(id)styles willModifyBlock:(id)block
 {
   v34 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  stylesCopy = styles;
+  blockCopy = block;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v7 = v5;
+  v7 = stylesCopy;
   v12 = objc_msgSend_countByEnumeratingWithState_objects_count_(v7, v8, v9, v10, v11, &v29, v33, 16);
   if (v12)
   {
@@ -485,9 +485,9 @@
         v16 = *(*(&v29 + 1) + 8 * i);
         if (objc_msgSend_intValueForProperty_(v16, v17, v18, v19, v20, 86, v29) != 2)
         {
-          if (!((v6 == 0) | v13 & 1))
+          if (!((blockCopy == 0) | v13 & 1))
           {
-            v6[2](v6);
+            blockCopy[2](blockCopy);
             v13 = 1;
           }
 
@@ -502,67 +502,67 @@
   }
 }
 
-+ (void)convertToSimpleTSDFillsInProperties:(id)a3 inMap:(id)a4 context:(id)a5
++ (void)convertToSimpleTSDFillsInProperties:(id)properties inMap:(id)map context:(id)context
 {
-  v7 = a4;
-  v8 = a5;
+  mapCopy = map;
+  contextCopy = context;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_2762CAC4C;
   v15[3] = &unk_27A6B6E50;
-  v16 = v7;
-  v17 = v8;
-  v9 = v8;
-  v10 = v7;
-  objc_msgSend_enumeratePropertiesUsingBlock_(a3, v11, v12, v13, v14, v15);
+  v16 = mapCopy;
+  v17 = contextCopy;
+  v9 = contextCopy;
+  v10 = mapCopy;
+  objc_msgSend_enumeratePropertiesUsingBlock_(properties, v11, v12, v13, v14, v15);
 }
 
-+ (void)p_adjustTrendlineSaturation:(double *)a3 brightness:(double *)a4
++ (void)p_adjustTrendlineSaturation:(double *)saturation brightness:(double *)brightness
 {
-  v4 = *a4;
-  if (*a4 == 1.0)
+  v4 = *brightness;
+  if (*brightness == 1.0)
   {
-    v5 = *a3;
+    v5 = *saturation;
     v6 = -0.2;
     goto LABEL_5;
   }
 
   if (v4 == 0.9)
   {
-    *a4 = 1.0;
-    v5 = *a3;
+    *brightness = 1.0;
+    v5 = *saturation;
     v6 = -0.1;
 LABEL_5:
     v7 = v5 + v6;
-    *a3 = v7;
+    *saturation = v7;
     if (v7 < 0.0)
     {
-      *a3 = 0.0;
+      *saturation = 0.0;
     }
 
     return;
   }
 
   v8 = v4 + 0.2;
-  *a4 = v8;
+  *brightness = v8;
   if (v8 > 1.0)
   {
-    *a4 = 1.0;
+    *brightness = 1.0;
   }
 }
 
-+ (id)trendlineColorFromCGColor:(CGColor *)a3
++ (id)trendlineColorFromCGColor:(CGColor *)color
 {
   components[4] = *MEMORY[0x277D85DE8];
   v8 = objc_msgSend_colorWithCGColor_(MEMORY[0x277D81180], a2, v3, v4, v5);
-  if (CGColorGetNumberOfComponents(a3) == 4)
+  if (CGColorGetNumberOfComponents(color) == 4)
   {
     v23[0] = 0;
     v23[1] = 0;
     v22 = 0;
-    v9 = CGColorGetComponents(a3)[3];
+    v9 = CGColorGetComponents(color)[3];
     TSURGBToHSB();
-    objc_msgSend_p_adjustTrendlineSaturation_brightness_(a1, v10, v11, v12, v13, v23, &v22);
+    objc_msgSend_p_adjustTrendlineSaturation_brightness_(self, v10, v11, v12, v13, v23, &v22);
     TSUHSBToRGB();
     memset(components, 0, 24);
     components[3] = v9;
@@ -582,14 +582,14 @@ LABEL_5:
   return v20;
 }
 
-+ (id)stylesheetOfStyles:(id)a3 nilAllowed:(BOOL)a4
++ (id)stylesheetOfStyles:(id)styles nilAllowed:(BOOL)allowed
 {
   v51 = *MEMORY[0x277D85DE8];
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
-  obj = a3;
+  obj = styles;
   v8 = 0;
   v10 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v4, v5, v6, v7, &v46, v50, 16);
   if (v10)
@@ -638,10 +638,10 @@ LABEL_5:
   return v8;
 }
 
-+ (void)breakUpFontName:(id)a3 isBold:(BOOL *)a4 isItalic:(BOOL *)a5
++ (void)breakUpFontName:(id)name isBold:(BOOL *)bold isItalic:(BOOL *)italic
 {
-  *a4 = 0;
-  *a5 = 0;
+  *bold = 0;
+  *italic = 0;
   v5 = TSWPCreateFontWithName();
   if (v5)
   {
@@ -651,15 +651,15 @@ LABEL_5:
   }
 }
 
-+ (BOOL)allSeriesInList:(id)a3 haveExplosionValue:(double)a4
++ (BOOL)allSeriesInList:(id)list haveExplosionValue:(double)value
 {
   v26 = *MEMORY[0x277D85DE8];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v5 = a3;
-  v11 = objc_msgSend_countByEnumeratingWithState_objects_count_(v5, v6, v7, v8, v9, &v21, v25, 16);
+  listCopy = list;
+  v11 = objc_msgSend_countByEnumeratingWithState_objects_count_(listCopy, v6, v7, v8, v9, &v21, v25, 16);
   if (v11)
   {
     v15 = *v22;
@@ -669,21 +669,21 @@ LABEL_5:
       {
         if (*v22 != v15)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(listCopy);
         }
 
-        v16 = a4;
-        *&v12 = v16;
+        valueCopy = value;
+        *&v12 = valueCopy;
         objc_msgSend_floatValueForProperty_defaultValue_(*(*(&v21 + 1) + 8 * i), v10, v12, v13, v14, 1163, v21);
         v12 = v18;
-        if (v12 != a4)
+        if (v12 != value)
         {
           v19 = 0;
           goto LABEL_11;
         }
       }
 
-      v11 = objc_msgSend_countByEnumeratingWithState_objects_count_(v5, v10, v12, v13, v14, &v21, v25, 16);
+      v11 = objc_msgSend_countByEnumeratingWithState_objects_count_(listCopy, v10, v12, v13, v14, &v21, v25, 16);
       if (v11)
       {
         continue;
@@ -699,20 +699,20 @@ LABEL_11:
   return v19;
 }
 
-+ (void)updateParagraphStylePropertyMapsForMutationLookup:(id)a3 mutationDictionary:(id)a4 styleOwner:(id)a5 indexProperty:(int)a6 paragraphStyleProperty:(int)a7 value:(id)a8
++ (void)updateParagraphStylePropertyMapsForMutationLookup:(id)lookup mutationDictionary:(id)dictionary styleOwner:(id)owner indexProperty:(int)property paragraphStyleProperty:(int)styleProperty value:(id)value
 {
-  v9 = *&a7;
-  v10 = *&a6;
+  v9 = *&styleProperty;
+  v10 = *&property;
   v115[1] = *MEMORY[0x277D85DE8];
-  v112 = a3;
-  v113 = a4;
-  v13 = a5;
-  v14 = a8;
-  v19 = objc_msgSend_chartInfo(v13, v15, v16, v17, v18);
-  v24 = objc_msgSend_intValueForProperty_defaultValue_(v13, v20, v21, v22, v23, v10, 0);
+  lookupCopy = lookup;
+  dictionaryCopy = dictionary;
+  ownerCopy = owner;
+  valueCopy = value;
+  v19 = objc_msgSend_chartInfo(ownerCopy, v15, v16, v17, v18);
+  v24 = objc_msgSend_intValueForProperty_defaultValue_(ownerCopy, v20, v21, v22, v23, v10, 0);
   v111 = objc_msgSend_paragraphStyleAtIndex_(v19, v25, v26, v27, v28, v24);
   v34 = objc_msgSend_boxedValueForProperty_(v111, v29, v30, v31, v32, v9);
-  if (!v14)
+  if (!valueCopy)
   {
     v38 = MEMORY[0x277D81150];
     v39 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v33, v35, v36, v37, "+[TSCHStyleUtilities updateParagraphStylePropertyMapsForMutationLookup:mutationDictionary:styleOwner:indexProperty:paragraphStyleProperty:value:]");
@@ -722,24 +722,24 @@ LABEL_11:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v49, v50, v51, v52);
   }
 
-  if ((objc_msgSend_isEqual_(v14, v33, v35, v36, v37, v34) & 1) == 0)
+  if ((objc_msgSend_isEqual_(valueCopy, v33, v35, v36, v37, v34) & 1) == 0)
   {
-    v110 = objc_msgSend_styleOwnerPathForStyleOwner_(v19, v53, v54, v55, v56, v13);
+    v110 = objc_msgSend_styleOwnerPathForStyleOwner_(v19, v53, v54, v55, v56, ownerCopy);
     v61 = objc_msgSend_numberWithInt_(MEMORY[0x277CCABB0], v57, v58, v59, v60, v9);
     v114 = v61;
-    v115[0] = v14;
+    v115[0] = valueCopy;
     v66 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v62, v63, v64, v65, v115, &v114, 1);
     v67 = sub_2762F40C4(v66);
 
-    v73 = objc_msgSend_indexOfObject_(v112, v68, v69, v70, v71, v67);
+    v73 = objc_msgSend_indexOfObject_(lookupCopy, v68, v69, v70, v71, v67);
     if (v73 == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v73 = objc_msgSend_count(v112, v72, v74, v75, v76);
-      objc_msgSend_addObject_(v112, v77, v78, v79, v80, v67);
+      v73 = objc_msgSend_count(lookupCopy, v72, v74, v75, v76);
+      objc_msgSend_addObject_(lookupCopy, v77, v78, v79, v80, v67);
     }
 
     v81 = objc_opt_class();
-    v87 = objc_msgSend_tsu_objectForKey_withDefaultOfClass_(v113, v82, v83, v84, v85, v110, v81);
+    v87 = objc_msgSend_tsu_objectForKey_withDefaultOfClass_(dictionaryCopy, v82, v83, v84, v85, v110, v81);
     if (v73 >> 31)
     {
       v91 = MEMORY[0x277D81150];
@@ -783,14 +783,14 @@ LABEL_11:
   return v53;
 }
 
-+ (id)uiStringForLabelFormatType:(int)a3 useShortString:(BOOL)a4
++ (id)uiStringForLabelFormatType:(int)type useShortString:(BOOL)string
 {
   v7 = 0;
-  if (a3 > 4)
+  if (type > 4)
   {
-    if (a3 > 8)
+    if (type > 8)
     {
-      switch(a3)
+      switch(type)
       {
         case 9:
           v8 = sub_276360774(v4, v5, v6);
@@ -811,7 +811,7 @@ LABEL_11:
 
     else
     {
-      switch(a3)
+      switch(type)
       {
         case 5:
           v8 = sub_276360774(v4, v5, v6);
@@ -833,24 +833,24 @@ LABEL_11:
     goto LABEL_28;
   }
 
-  if (a3 <= 1)
+  if (type <= 1)
   {
-    if (!a3)
+    if (!type)
     {
       v8 = sub_276360774(v4, v5, v6);
       v13 = objc_msgSend_localizedStringForKey_value_table_(v8, v28, v29, v30, v31, @"Unknown Format", &stru_288528678, @"TSCharts");
       goto LABEL_28;
     }
 
-    if (a3 != 1)
+    if (type != 1)
     {
       goto LABEL_29;
     }
 
-    v22 = a4;
+    stringCopy = string;
     v23 = sub_276360774(v4, v5, v6);
     v8 = v23;
-    if (v22)
+    if (stringCopy)
     {
       objc_msgSend_localizedStringForKey_value_table_(v23, v24, v25, v26, v27, @"Source", &stru_288528678, @"TSCharts");
     }
@@ -863,14 +863,14 @@ LABEL_11:
 
   else
   {
-    if (a3 == 2)
+    if (type == 2)
     {
       v8 = sub_276360774(v4, v5, v6);
       v13 = objc_msgSend_localizedStringForKey_value_table_(v8, v44, v45, v46, v47, @"Number", &stru_288528678, @"TSCharts");
       goto LABEL_28;
     }
 
-    if (a3 == 3)
+    if (type == 3)
     {
       v8 = sub_276360774(v4, v5, v6);
       objc_msgSend_localizedStringForKey_value_table_(v8, v32, v33, v34, v35, @"Currency", &stru_288528678, @"TSCharts");
@@ -891,9 +891,9 @@ LABEL_29:
   return v7;
 }
 
-+ (unint64_t)segmentIndexForLineEnd:(id)a3
++ (unint64_t)segmentIndexForLineEnd:(id)end
 {
-  v6 = objc_msgSend_identifier(a3, a2, v3, v4, v5);
+  v6 = objc_msgSend_identifier(end, a2, v3, v4, v5);
   v11 = objc_msgSend_none(MEMORY[0x277D80308], v7, v8, v9, v10);
   v16 = objc_msgSend_identifier(v11, v12, v13, v14, v15);
   isEqualToString = objc_msgSend_isEqualToString_(v6, v17, v18, v19, v20, v16);
@@ -934,26 +934,26 @@ LABEL_7:
   return v26;
 }
 
-+ (id)lineEndForSegmentIndex:(int64_t)a3
++ (id)lineEndForSegmentIndex:(int64_t)index
 {
-  if (a3 == 2)
+  if (index == 2)
   {
     v22 = objc_msgSend_line(MEMORY[0x277D80308], a2, v3, v4, v5);
   }
 
-  else if (a3 == 1)
+  else if (index == 1)
   {
     v22 = objc_msgSend_invertedArrow(MEMORY[0x277D80308], a2, v3, v4, v5);
   }
 
   else
   {
-    if (a3)
+    if (index)
     {
       v7 = MEMORY[0x277D81150];
       v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, v3, v4, v5, "+[TSCHStyleUtilities lineEndForSegmentIndex:]");
       v13 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v9, v10, v11, v12, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCHStyleUtilities.mm");
-      objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v7, v14, v15, v16, v17, v8, v13, 532, 0, "unexpected segment index %ld", a3);
+      objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v7, v14, v15, v16, v17, v8, v13, 532, 0, "unexpected segment index %ld", index);
 
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v18, v19, v20, v21);
     }
@@ -964,9 +964,9 @@ LABEL_7:
   return v22;
 }
 
-+ (id)p_referenceColorForObject:(id)a3
++ (id)p_referenceColorForObject:(id)object
 {
-  v3 = a3;
+  objectCopy = object;
   objc_opt_class();
   v4 = TSUDynamicCast();
   v9 = v4;
@@ -1026,18 +1026,18 @@ LABEL_8:
   return v11;
 }
 
-+ (id)fillForSeries:(id)a3 chartType:(id)a4
++ (id)fillForSeries:(id)series chartType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
-  v12 = objc_msgSend_seriesType(v6, v8, v9, v10, v11);
-  v17 = objc_msgSend_seriesType(v6, v13, v14, v15, v16);
+  seriesCopy = series;
+  typeCopy = type;
+  v12 = objc_msgSend_seriesType(seriesCopy, v8, v9, v10, v11);
+  v17 = objc_msgSend_seriesType(seriesCopy, v13, v14, v15, v16);
   v22 = objc_msgSend_supportsUseSeriesStrokeColorForFill(v17, v18, v19, v20, v21);
 
   if (v22)
   {
-    v27 = objc_msgSend_objectValueForProperty_(v6, v23, v24, v25, v26, 1184);
-    if ((objc_msgSend_isNullStroke(v27, v28, v29, v30, v31) & 1) != 0 || (objc_msgSend_p_referenceColorForObject_(a1, v32, v33, v34, v35, v27), (v37 = objc_claimAutoreleasedReturnValue()) == 0))
+    v27 = objc_msgSend_objectValueForProperty_(seriesCopy, v23, v24, v25, v26, 1184);
+    if ((objc_msgSend_isNullStroke(v27, v28, v29, v30, v31) & 1) != 0 || (objc_msgSend_p_referenceColorForObject_(self, v32, v33, v34, v35, v27), (v37 = objc_claimAutoreleasedReturnValue()) == 0))
     {
     }
 
@@ -1052,12 +1052,12 @@ LABEL_8:
     }
   }
 
-  if (objc_msgSend_supportsSharedAndSeparateX(v7, v23, v24, v25, v26))
+  if (objc_msgSend_supportsSharedAndSeparateX(typeCopy, v23, v24, v25, v26))
   {
     if (objc_msgSend_supportsFillSetFill(v12, v42, v43, v44, v45))
     {
       v50 = objc_msgSend_fillSetFillProperty(v12, v46, v47, v48, v49);
-      v41 = objc_msgSend_objectValueForProperty_(v6, v51, v52, v53, v54, v50);
+      v41 = objc_msgSend_objectValueForProperty_(seriesCopy, v51, v52, v53, v54, v50);
       if (v41)
       {
         goto LABEL_26;
@@ -1069,14 +1069,14 @@ LABEL_8:
   {
     if (objc_msgSend_supportsSeriesFill(v12, v42, v43, v44, v45))
     {
-      v41 = objc_msgSend_cdeFillForSeries_(v12, v55, v56, v57, v58, v6);
+      v41 = objc_msgSend_cdeFillForSeries_(v12, v55, v56, v57, v58, seriesCopy);
       if (v41)
       {
         goto LABEL_26;
       }
     }
 
-    v59 = objc_msgSend_objectValueForProperty_(v6, v55, v56, v57, v58, 1184);
+    v59 = objc_msgSend_objectValueForProperty_(seriesCopy, v55, v56, v57, v58, 1184);
     if (objc_msgSend_isNullStroke(v59, v60, v61, v62, v63))
     {
       v41 = 0;
@@ -1084,7 +1084,7 @@ LABEL_8:
 
     else
     {
-      v69 = objc_msgSend_p_referenceColorForObject_(a1, v64, v65, v66, v67, v59);
+      v69 = objc_msgSend_p_referenceColorForObject_(self, v64, v65, v66, v67, v59);
       if (v69)
       {
         v41 = objc_msgSend_colorWithColor_(MEMORY[0x277D801F8], v68, v70, v71, v72, v69);
@@ -1102,8 +1102,8 @@ LABEL_8:
     }
   }
 
-  v73 = objc_msgSend_objectValueForProperty_(v6, v46, v47, v48, v49, 1189);
-  if ((objc_msgSend_isNullStroke(v73, v74, v75, v76, v77) & 1) != 0 || (objc_msgSend_p_referenceColorForObject_(a1, v78, v79, v80, v81, v73), (v83 = objc_claimAutoreleasedReturnValue()) == 0))
+  v73 = objc_msgSend_objectValueForProperty_(seriesCopy, v46, v47, v48, v49, 1189);
+  if ((objc_msgSend_isNullStroke(v73, v74, v75, v76, v77) & 1) != 0 || (objc_msgSend_p_referenceColorForObject_(self, v78, v79, v80, v81, v73), (v83 = objc_claimAutoreleasedReturnValue()) == 0))
   {
   }
 
@@ -1117,26 +1117,26 @@ LABEL_8:
     }
   }
 
-  v41 = objc_msgSend_objectValueForProperty_(v6, v87, v88, v89, v90, 1185);
+  v41 = objc_msgSend_objectValueForProperty_(seriesCopy, v87, v88, v89, v90, 1185);
 LABEL_26:
 
   return v41;
 }
 
-+ (BOOL)useOutsideParagraphStyleIndexForSeries:(id)a3 chartType:(id)a4 layout:(id)a5
++ (BOOL)useOutsideParagraphStyleIndexForSeries:(id)series chartType:(id)type layout:(id)layout
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v14 = objc_msgSend_intValueForProperty_defaultValue_(v7, v10, v11, v12, v13, 1208, 0);
-  v19 = objc_msgSend_seriesType(v7, v15, v16, v17, v18);
-  v24 = objc_msgSend_filterChartLabelPosition_forSeries_(v19, v20, v21, v22, v23, v14, v7);
+  seriesCopy = series;
+  typeCopy = type;
+  layoutCopy = layout;
+  v14 = objc_msgSend_intValueForProperty_defaultValue_(seriesCopy, v10, v11, v12, v13, 1208, 0);
+  v19 = objc_msgSend_seriesType(seriesCopy, v15, v16, v17, v18);
+  v24 = objc_msgSend_filterChartLabelPosition_forSeries_(v19, v20, v21, v22, v23, v14, seriesCopy);
 
-  v29 = objc_msgSend_supportsCalloutLines(v8, v25, v26, v27, v28);
-  v35 = objc_msgSend_supportsInnerRadius(v8, v30, v31, v32, v33);
+  v29 = objc_msgSend_supportsCalloutLines(typeCopy, v25, v26, v27, v28);
+  v35 = objc_msgSend_supportsInnerRadius(typeCopy, v30, v31, v32, v33);
   if ((v29 | v35))
   {
-    v39 = objc_msgSend_seriesIndexedPieNormalizedLabelDistancesFromWedgeTips(v9, v34, v36, v37, v38);
+    v39 = objc_msgSend_seriesIndexedPieNormalizedLabelDistancesFromWedgeTips(layoutCopy, v34, v36, v37, v38);
   }
 
   else
@@ -1144,7 +1144,7 @@ LABEL_26:
     v39 = MEMORY[0x277CBEC10];
   }
 
-  v41 = objc_msgSend_intValueForProperty_defaultValue_(v7, v34, v36, v37, v38, 1138, 2);
+  v41 = objc_msgSend_intValueForProperty_defaultValue_(seriesCopy, v34, v36, v37, v38, 1138, 2);
   if (v41)
   {
     v45 = v29;
@@ -1158,7 +1158,7 @@ LABEL_26:
   if (v45 == 1)
   {
     v46 = MEMORY[0x277CCABB0];
-    v47 = objc_msgSend_seriesIndex(v7, v40, v42, v43, v44);
+    v47 = objc_msgSend_seriesIndex(seriesCopy, v40, v42, v43, v44);
     v52 = objc_msgSend_numberWithUnsignedInteger_(v46, v48, v49, v50, v51, v47);
     v57 = objc_msgSend_objectForKeyedSubscript_(v39, v53, v54, v55, v56, v52);
 
@@ -1176,11 +1176,11 @@ LABEL_26:
 
   if (v35)
   {
-    v63 = objc_msgSend_chartInfo(v7, v40, v42, v43, v44);
+    v63 = objc_msgSend_chartInfo(seriesCopy, v40, v42, v43, v44);
     v68 = objc_msgSend_valueForProperty_(v63, v64, v65, v66, v67, 1103);
 
     v69 = MEMORY[0x277CCABB0];
-    v74 = objc_msgSend_seriesIndex(v7, v70, v71, v72, v73);
+    v74 = objc_msgSend_seriesIndex(seriesCopy, v70, v71, v72, v73);
     v79 = objc_msgSend_numberWithUnsignedInteger_(v69, v75, v76, v77, v78, v74);
     v84 = objc_msgSend_objectForKeyedSubscript_(v39, v80, v81, v82, v83, v79);
 
@@ -1192,7 +1192,7 @@ LABEL_26:
 
     else
     {
-      objc_msgSend_effectiveLabelExplosion(v7, v85, v86, v87, v88);
+      objc_msgSend_effectiveLabelExplosion(seriesCopy, v85, v86, v87, v88);
       v91 = 0.01;
       v93 = v90 * 0.01;
     }
@@ -1207,15 +1207,15 @@ LABEL_26:
   return (v24 >> 1) & 1;
 }
 
-+ (BOOL)groupedShadowsForChartModel:(id)a3
++ (BOOL)groupedShadowsForChartModel:(id)model
 {
-  v3 = a3;
-  v8 = objc_msgSend_chartInfo(v3, v4, v5, v6, v7);
+  modelCopy = model;
+  v8 = objc_msgSend_chartInfo(modelCopy, v4, v5, v6, v7);
   v13 = objc_msgSend_chartType(v8, v9, v10, v11, v12);
   if (objc_msgSend_supportsGroupedShadows(v13, v14, v15, v16, v17))
   {
-    v22 = objc_msgSend_numberOfSeries(v3, v18, v19, v20, v21);
-    v31 = (objc_msgSend_numberOfValues(v3, v23, v24, v25, v26) * v22) > 0xC8 || objc_msgSend_intValueForProperty_defaultValue_(v8, v27, v28, v29, v30, 1082, 1) != 0;
+    v22 = objc_msgSend_numberOfSeries(modelCopy, v18, v19, v20, v21);
+    v31 = (objc_msgSend_numberOfValues(modelCopy, v23, v24, v25, v26) * v22) > 0xC8 || objc_msgSend_intValueForProperty_defaultValue_(v8, v27, v28, v29, v30, 1082, 1) != 0;
   }
 
   else
@@ -1226,13 +1226,13 @@ LABEL_26:
   return v31;
 }
 
-+ (id)swapTuplesForParagraphStyleMutations:(id)a3 forReferencingProperty:(int)a4 forStyleOwner:(id)a5
++ (id)swapTuplesForParagraphStyleMutations:(id)mutations forReferencingProperty:(int)property forStyleOwner:(id)owner
 {
-  v6 = *&a4;
+  v6 = *&property;
   v171[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v9 = a5;
-  if (!v9)
+  mutationsCopy = mutations;
+  ownerCopy = owner;
+  if (!ownerCopy)
   {
     v13 = MEMORY[0x277D81150];
     v14 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v8, v10, v11, v12, "+[TSCHStyleUtilities swapTuplesForParagraphStyleMutations:forReferencingProperty:forStyleOwner:]");
@@ -1243,10 +1243,10 @@ LABEL_26:
   }
 
   v28 = objc_msgSend_paragraphStyleIndexProperties(TSCHChartInfo, v8, v10, v11, v12);
-  v33 = objc_msgSend_specificPropertyForGeneric_(v9, v29, v30, v31, v32, v6);
+  v33 = objc_msgSend_specificPropertyForGeneric_(ownerCopy, v29, v30, v31, v32, v6);
   if ((objc_msgSend_containsProperty_(v28, v34, v35, v36, v37, v33) & 1) == 0)
   {
-    v42 = objc_msgSend_defaultPropertyForGeneric_(v9, v38, v39, v40, v41, v6);
+    v42 = objc_msgSend_defaultPropertyForGeneric_(ownerCopy, v38, v39, v40, v41, v6);
     if ((objc_msgSend_containsProperty_(v28, v43, v44, v45, v46, v42) & 1) == 0)
     {
       v151 = MEMORY[0x277D81150];
@@ -1261,20 +1261,20 @@ LABEL_12:
     }
   }
 
-  if (!v9 || !objc_msgSend_count(v7, v38, v39, v40, v41))
+  if (!ownerCopy || !objc_msgSend_count(mutationsCopy, v38, v39, v40, v41))
   {
     goto LABEL_12;
   }
 
-  v51 = objc_msgSend_intValueForProperty_defaultValue_(v9, v47, v48, v49, v50, v6, 0);
-  v56 = objc_msgSend_chartInfo(v9, v52, v53, v54, v55);
+  v51 = objc_msgSend_intValueForProperty_defaultValue_(ownerCopy, v47, v48, v49, v50, v6, 0);
+  v56 = objc_msgSend_chartInfo(ownerCopy, v52, v53, v54, v55);
   v61 = objc_msgSend_paragraphStyleAtIndex_(v56, v57, v58, v59, v60, v51);
 
-  v66 = objc_msgSend_chartInfo(v9, v62, v63, v64, v65);
+  v66 = objc_msgSend_chartInfo(ownerCopy, v62, v63, v64, v65);
   v71 = objc_msgSend_documentStylesheet(v66, v67, v68, v69, v70);
 
   v168 = v71;
-  v169 = sub_2762F40C4(v7);
+  v169 = sub_2762F40C4(mutationsCopy);
   v77 = objc_msgSend_variationOfStyle_propertyMap_(v71, v72, v73, v74, v75, v61, v169);
   if (v77 == v61)
   {
@@ -1284,7 +1284,7 @@ LABEL_12:
   else
   {
     v81 = objc_msgSend_array(MEMORY[0x277CBEB18], v76, v78, v79, v80);
-    v86 = objc_msgSend_chartInfo(v9, v82, v83, v84, v85);
+    v86 = objc_msgSend_chartInfo(ownerCopy, v82, v83, v84, v85);
     v91 = objc_msgSend_chartStyleState(v86, v87, v88, v89, v90);
 
     v167 = v91;
@@ -1293,12 +1293,12 @@ LABEL_12:
 
     if (v101 == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v106 = objc_msgSend_chartInfo(v9, v102, v103, v104, v105);
+      v106 = objc_msgSend_chartInfo(ownerCopy, v102, v103, v104, v105);
       v111 = objc_msgSend_paragraphStyles(v106, v107, v108, v109, v110);
       v101 = objc_msgSend_count(v111, v112, v113, v114, v115);
 
       v116 = [TSCHStyleSwapUndoTuple alloc];
-      v121 = objc_msgSend_chartInfo(v9, v117, v118, v119, v120);
+      v121 = objc_msgSend_chartInfo(ownerCopy, v117, v118, v119, v120);
       v126 = objc_msgSend_initWithChartInfo_swapType_index_oldValue_newValue_(v116, v122, v123, v124, v125, v121, 12, v101, 0, v77);
 
       objc_msgSend_addObject_(v81, v127, v128, v129, v130, v126);
@@ -1309,7 +1309,7 @@ LABEL_12:
     v136 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x277CCABB0], v132, v133, v134, v135, v101);
     v171[0] = v136;
     v141 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v137, v138, v139, v140, v171, &v170, 1);
-    v146 = objc_msgSend_swapTuplesForMutations_forImport_(v9, v142, v143, v144, v145, v141, 0);
+    v146 = objc_msgSend_swapTuplesForMutations_forImport_(ownerCopy, v142, v143, v144, v145, v141, 0);
 
     objc_msgSend_tsu_addObjectsFromNonNilArray_(v81, v147, v148, v149, v150, v146);
   }
@@ -1319,12 +1319,12 @@ LABEL_15:
   return v81;
 }
 
-+ (CGSize)bodySizeWithMinimumWedgeExplosionWithChartModel:(id)a3 bodySize:(CGSize)a4
++ (CGSize)bodySizeWithMinimumWedgeExplosionWithChartModel:(id)model bodySize:(CGSize)size
 {
-  width = a4.width;
+  width = size.width;
   v48 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v10 = objc_msgSend_seriesList(v5, v6, v7, v8, v9);
+  modelCopy = model;
+  v10 = objc_msgSend_seriesList(modelCopy, v6, v7, v8, v9);
   v45 = 0u;
   v46 = 0u;
   v43 = 0u;
@@ -1345,7 +1345,7 @@ LABEL_15:
         }
 
         v27 = objc_msgSend_seriesIndex(*(*(&v43 + 1) + 8 * i), v19, v21, v22, v23);
-        v32 = objc_msgSend_pieSeriesModelCacheForSeries_(v5, v28, v29, v30, v31, v27);
+        v32 = objc_msgSend_pieSeriesModelCacheForSeries_(modelCopy, v28, v29, v30, v31, v27);
         objc_msgSend_wedgeExplosion(v32, v33, v34, v35, v36);
         v38 = v37;
         if (v25 < v38)
@@ -1374,17 +1374,17 @@ LABEL_15:
   return result;
 }
 
-+ (double)p_bendedCalloutLineLabelExplosionValueFromPre2_4ExplosionValue:(double)a3 chartRadius:(double)a4
++ (double)p_bendedCalloutLineLabelExplosionValueFromPre2_4ExplosionValue:(double)value chartRadius:(double)radius
 {
-  objc_msgSend_pre2_4DefaultPieLabelExplosionPercentageForCalloutLineCalculation(a1, a2, a3, a4, v4);
+  objc_msgSend_pre2_4DefaultPieLabelExplosionPercentageForCalloutLineCalculation(self, a2, value, radius, v4);
   v9 = *&v8;
-  objc_msgSend_pieFamilyLabelExplosionMinimumPercentage(a1, v10, v8, v11, v12);
+  objc_msgSend_pieFamilyLabelExplosionMinimumPercentage(self, v10, v8, v11, v12);
   v14 = v13;
-  objc_msgSend_pieFamilyLabelExplosionMaximumPercentage(a1, v15, v13, v16, v17);
+  objc_msgSend_pieFamilyLabelExplosionMaximumPercentage(self, v15, v13, v16, v17);
   v22 = v21;
-  v23 = a4 * 0.05;
-  v24 = a4 * 0.596791045;
-  v25 = a4 * 0.596791045 - a4 * 0.05;
+  v23 = radius * 0.05;
+  v24 = radius * 0.596791045;
+  v25 = radius * 0.596791045 - radius * 0.05;
   if (v25 <= 0.0)
   {
     v26 = MEMORY[0x277D81150];
@@ -1395,44 +1395,44 @@ LABEL_15:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v37, v38, v39, v40);
   }
 
-  return v14 + (50.0 - v9 * 0.5 + a3 * 0.5 - v23) / v25 * (v22 - v14);
+  return v14 + (50.0 - v9 * 0.5 + value * 0.5 - v23) / v25 * (v22 - v14);
 }
 
-+ (double)p_pre2_4BendedCalloutLineLabelExplosionValueFromExplosionValue:(double)a3 chartRadius:(double)a4
++ (double)p_pre2_4BendedCalloutLineLabelExplosionValueFromExplosionValue:(double)value chartRadius:(double)radius
 {
-  objc_msgSend_pieFamilyLabelExplosionMinimumPercentage(a1, a2, a3, a4, v4);
+  objc_msgSend_pieFamilyLabelExplosionMinimumPercentage(self, a2, value, radius, v4);
   v9 = v8;
-  objc_msgSend_pieFamilyLabelExplosionMaximumPercentage(a1, v10, v8, v11, v12);
-  v14 = a4 * 0.596791045 - a4 * 0.05;
-  v15 = a4 * 0.05 + v14 * ((a3 - v9) / (v13 - v9)) + -50.0;
+  objc_msgSend_pieFamilyLabelExplosionMaximumPercentage(self, v10, v8, v11, v12);
+  v14 = radius * 0.596791045 - radius * 0.05;
+  v15 = radius * 0.05 + v14 * ((value - v9) / (v13 - v9)) + -50.0;
   v16 = v15 + v15;
-  objc_msgSend_pre2_4DefaultPieLabelExplosionPercentageForCalloutLineCalculation(a1, v17, v15, -50.0, v14);
+  objc_msgSend_pre2_4DefaultPieLabelExplosionPercentageForCalloutLineCalculation(self, v17, v15, -50.0, v14);
   return v16 + v18;
 }
 
-+ (double)bendedCalloutLineLabelExplosionValueFromPre2_4ExplosionValue:(double)a3 chartModel:(id)a4 bodySize:(CGSize)a5
++ (double)bendedCalloutLineLabelExplosionValueFromPre2_4ExplosionValue:(double)value chartModel:(id)model bodySize:(CGSize)size
 {
-  objc_msgSend_bodySizeWithMinimumWedgeExplosionWithChartModel_bodySize_(a1, a2, a5.width, a5.height, a5.height, a4);
+  objc_msgSend_bodySizeWithMinimumWedgeExplosionWithChartModel_bodySize_(self, a2, size.width, size.height, size.height, model);
 
-  MEMORY[0x2821F9670](a1, sel_p_bendedCalloutLineLabelExplosionValueFromPre2_4ExplosionValue_chartRadius_, a3, v7 * 0.5, v8);
+  MEMORY[0x2821F9670](self, sel_p_bendedCalloutLineLabelExplosionValueFromPre2_4ExplosionValue_chartRadius_, value, v7 * 0.5, v8);
   return result;
 }
 
-+ (double)pre2_4BendedCalloutLineLabelExplosionValueFromExplosionValue:(double)a3 chartModel:(id)a4 bodySize:(CGSize)a5
++ (double)pre2_4BendedCalloutLineLabelExplosionValueFromExplosionValue:(double)value chartModel:(id)model bodySize:(CGSize)size
 {
-  objc_msgSend_bodySizeWithMinimumWedgeExplosionWithChartModel_bodySize_(a1, a2, a5.width, a5.height, a5.height, a4);
+  objc_msgSend_bodySizeWithMinimumWedgeExplosionWithChartModel_bodySize_(self, a2, size.width, size.height, size.height, model);
 
-  MEMORY[0x2821F9670](a1, sel_p_pre2_4BendedCalloutLineLabelExplosionValueFromExplosionValue_chartRadius_, a3, v7 * 0.5, v8);
+  MEMORY[0x2821F9670](self, sel_p_pre2_4BendedCalloutLineLabelExplosionValueFromExplosionValue_chartRadius_, value, v7 * 0.5, v8);
   return result;
 }
 
-+ (id)tupleToUpdate2_3ExplosionFromValue:(id)a3 chartInfo:(id)a4 forStyleOwner:(id)a5
++ (id)tupleToUpdate2_3ExplosionFromValue:(id)value chartInfo:(id)info forStyleOwner:(id)owner
 {
   v83[1] = *MEMORY[0x277D85DE8];
-  v81 = a3;
-  v8 = a4;
-  v9 = a5;
-  v14 = objc_msgSend_chart(v8, v10, v11, v12, v13);
+  valueCopy = value;
+  infoCopy = info;
+  ownerCopy = owner;
+  v14 = objc_msgSend_chart(infoCopy, v10, v11, v12, v13);
   v19 = objc_msgSend_nonstyle(v14, v15, v16, v17, v18);
   v24 = objc_msgSend_intValueForProperty_(v19, v20, v21, v22, v23, 1327);
 
@@ -1444,12 +1444,12 @@ LABEL_15:
   v40 = v31;
   if (v24 == 1)
   {
-    v41 = objc_msgSend_chart(v8, v35, v37, v38, v39);
+    v41 = objc_msgSend_chart(infoCopy, v35, v37, v38, v39);
     v46 = objc_msgSend_model(v41, v42, v43, v44, v45);
-    v51 = objc_msgSend_chart(v8, v47, v48, v49, v50);
+    v51 = objc_msgSend_chart(infoCopy, v47, v48, v49, v50);
     v56 = objc_msgSend_geometry(v51, v52, v53, v54, v55);
     objc_msgSend_size(v56, v57, v58, v59, v60);
-    objc_msgSend_pre2_4BendedCalloutLineLabelExplosionValueFromExplosionValue_chartModel_bodySize_(a1, v61, v40, v62, v63, v46);
+    objc_msgSend_pre2_4BendedCalloutLineLabelExplosionValueFromExplosionValue_chartModel_bodySize_(self, v61, v40, v62, v63, v46);
     v40 = v64;
   }
 
@@ -1458,23 +1458,23 @@ LABEL_15:
   v69 = objc_msgSend_numberWithDouble_(MEMORY[0x277CCABB0], v66, v40, v67, v68);
   v83[0] = v69;
   v74 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v70, v71, v72, v73, v83, &v82, 1);
-  v79 = objc_msgSend_initWithStyleOwner_mutations_(v65, v75, v76, v77, v78, v9, v74);
+  v79 = objc_msgSend_initWithStyleOwner_mutations_(v65, v75, v76, v77, v78, ownerCopy, v74);
 
   return v79;
 }
 
 + (float)defaultDonutLabelExplosionPercentage
 {
-  objc_msgSend_defaultInnerRadiusPercentage(a1, a2, v2, v3, v4);
+  objc_msgSend_defaultInnerRadiusPercentage(self, a2, v2, v3, v4);
   v9 = v8;
 
-  MEMORY[0x2821F9670](a1, sel_centeredDonutLabelExplosionPercentageWithInnerRadius_, v9, v6, v7);
+  MEMORY[0x2821F9670](self, sel_centeredDonutLabelExplosionPercentageWithInnerRadius_, v9, v6, v7);
   return result;
 }
 
-+ (BOOL)labelExplosionIsCenteredInWedgeWithInnerRadius:(double)a3 labelExplosion:(double)a4
++ (BOOL)labelExplosionIsCenteredInWedgeWithInnerRadius:(double)radius labelExplosion:(double)explosion
 {
-  v4 = ((1.0 - a3) * 0.5 + a3) * 100.0 - a4;
+  v4 = ((1.0 - radius) * 0.5 + radius) * 100.0 - explosion;
   if (v4 < 0.0)
   {
     v4 = -v4;
@@ -1493,14 +1493,14 @@ LABEL_15:
   return v4 == 4.0;
 }
 
-+ (BOOL)shouldAnchorLabelsForSeries:(id)a3 innerRadius:(double)a4 calloutLineType:(int64_t)a5 defaultLabelExplosion:(double)a6
++ (BOOL)shouldAnchorLabelsForSeries:(id)series innerRadius:(double)radius calloutLineType:(int64_t)type defaultLabelExplosion:(double)explosion
 {
-  v10 = a3;
-  v15 = objc_msgSend_intValueForProperty_defaultValue_(v10, v11, v12, v13, v14, 1138, 0);
-  *&v16 = a6;
-  objc_msgSend_floatValueForProperty_defaultValue_(v10, v17, v16, v18, v19, 1163);
-  IsCenteredInWedgeWithInnerRadius_labelExplosion = objc_msgSend_labelExplosionIsCenteredInWedgeWithInnerRadius_labelExplosion_(a1, v21, a4, v20, v22);
-  if (a5)
+  seriesCopy = series;
+  v15 = objc_msgSend_intValueForProperty_defaultValue_(seriesCopy, v11, v12, v13, v14, 1138, 0);
+  *&v16 = explosion;
+  objc_msgSend_floatValueForProperty_defaultValue_(seriesCopy, v17, v16, v18, v19, 1163);
+  IsCenteredInWedgeWithInnerRadius_labelExplosion = objc_msgSend_labelExplosionIsCenteredInWedgeWithInnerRadius_labelExplosion_(self, v21, radius, v20, v22);
+  if (type)
   {
     v24 = v15 == 0;
   }

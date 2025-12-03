@@ -44,13 +44,13 @@
     v5 = [(CIKernel *)CIColorKernel kernelWithInternalRepresentation:&CI::_colorThreshold];
     [(NSNumber *)self->inputThreshold floatValue];
     v7 = v6;
-    v8 = [(CIImage *)self->inputImage imageByUnpremultiplyingAlpha];
+    imageByUnpremultiplyingAlpha = [(CIImage *)self->inputImage imageByUnpremultiplyingAlpha];
     [(CIImage *)self->inputImage extent];
     v10 = v9;
     v12 = v11;
     v14 = v13;
     v16 = v15;
-    v17[0] = v8;
+    v17[0] = imageByUnpremultiplyingAlpha;
     LODWORD(v9) = v7;
     v17[1] = [MEMORY[0x1E696AD98] numberWithFloat:v9];
     return -[CIImage imageByPremultiplyingAlpha](-[CIColorKernel applyWithExtent:arguments:](v5, "applyWithExtent:arguments:", [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:2], v10, v12, v14, v16), "imageByPremultiplyingAlpha");

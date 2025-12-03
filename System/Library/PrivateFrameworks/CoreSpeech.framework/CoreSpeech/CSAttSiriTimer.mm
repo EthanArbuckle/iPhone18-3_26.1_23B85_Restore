@@ -1,7 +1,7 @@
 @interface CSAttSiriTimer
-- (CSAttSiriTimer)initWithQueue:(id)a3;
+- (CSAttSiriTimer)initWithQueue:(id)queue;
 - (void)cancelTimer;
-- (void)setTimerForSecs:(double)a3 completionBlock:(id)a4;
+- (void)setTimerForSecs:(double)secs completionBlock:(id)block;
 @end
 
 @implementation CSAttSiriTimer
@@ -17,32 +17,32 @@
   dispatch_async(queue, block);
 }
 
-- (void)setTimerForSecs:(double)a3 completionBlock:(id)a4
+- (void)setTimerForSecs:(double)secs completionBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000D8FC4;
   block[3] = &unk_100251038;
   block[4] = self;
-  v10 = v6;
-  v11 = a3;
-  v8 = v6;
+  v10 = blockCopy;
+  secsCopy = secs;
+  v8 = blockCopy;
   dispatch_async(queue, block);
 }
 
-- (CSAttSiriTimer)initWithQueue:(id)a3
+- (CSAttSiriTimer)initWithQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v9.receiver = self;
   v9.super_class = CSAttSiriTimer;
   v5 = [(CSAttSiriTimer *)&v9 init];
   if (v5)
   {
-    if (v4)
+    if (queueCopy)
     {
-      v6 = v4;
+      v6 = queueCopy;
     }
 
     else

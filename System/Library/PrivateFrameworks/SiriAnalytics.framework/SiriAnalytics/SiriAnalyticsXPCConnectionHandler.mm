@@ -1,50 +1,50 @@
 @interface SiriAnalyticsXPCConnectionHandler
 - ($115C4C562B26FF47E01F9F4EA65B5887)auditToken;
-- (SiriAnalyticsXPCConnectionHandler)initWithConnection:(id)a3 entitlementsKey:(id)a4 queue:(id)a5 delegate:(id)a6;
-- (id)mapToAnnotatedMessage:(id)a3;
-- (void)createTag:(id)a3 completion:(id)a4;
-- (void)fetchKillSwitchEnabledWithCompletion:(id)a3;
-- (void)fetchLogicalClocksWithCompletion:(id)a3;
-- (void)fetchStateForPluginWithCompletion:(id)a3;
-- (void)fetchTags:(id)a3;
-- (void)publishLargeMessage:(id)a3 completion:(id)a4;
-- (void)publishMessages:(id)a3 completion:(id)a4;
-- (void)publishUnorderedMessages:(id)a3 topic:(id)a4 completion:(id)a5;
-- (void)purgeStagedMessagesWithCompletion:(id)a3;
-- (void)resetLogicalClockWithCompletion:(id)a3;
-- (void)resolveMessages:(id)a3 completion:(id)a4;
-- (void)runPipelineWithCompletion:(id)a3;
-- (void)saveState:(id)a3 forPluginWithCompletion:(id)a4;
-- (void)sensitiveCondition:(int)a3 endedAt:(unint64_t)a4 completion:(id)a5;
-- (void)sensitiveCondition:(int)a3 startedAt:(unint64_t)a4 completion:(id)a5;
-- (void)setKillSwitchEnabled:(BOOL)a3 completion:(id)a4;
-- (void)vendResource:(int64_t)a3 readonly:(BOOL)a4 completion:(id)a5;
-- (void)vendSandboxExtensionWithResource:(int64_t)a3 readonly:(BOOL)a4 completion:(id)a5;
+- (SiriAnalyticsXPCConnectionHandler)initWithConnection:(id)connection entitlementsKey:(id)key queue:(id)queue delegate:(id)delegate;
+- (id)mapToAnnotatedMessage:(id)message;
+- (void)createTag:(id)tag completion:(id)completion;
+- (void)fetchKillSwitchEnabledWithCompletion:(id)completion;
+- (void)fetchLogicalClocksWithCompletion:(id)completion;
+- (void)fetchStateForPluginWithCompletion:(id)completion;
+- (void)fetchTags:(id)tags;
+- (void)publishLargeMessage:(id)message completion:(id)completion;
+- (void)publishMessages:(id)messages completion:(id)completion;
+- (void)publishUnorderedMessages:(id)messages topic:(id)topic completion:(id)completion;
+- (void)purgeStagedMessagesWithCompletion:(id)completion;
+- (void)resetLogicalClockWithCompletion:(id)completion;
+- (void)resolveMessages:(id)messages completion:(id)completion;
+- (void)runPipelineWithCompletion:(id)completion;
+- (void)saveState:(id)state forPluginWithCompletion:(id)completion;
+- (void)sensitiveCondition:(int)condition endedAt:(unint64_t)at completion:(id)completion;
+- (void)sensitiveCondition:(int)condition startedAt:(unint64_t)at completion:(id)completion;
+- (void)setKillSwitchEnabled:(BOOL)enabled completion:(id)completion;
+- (void)vendResource:(int64_t)resource readonly:(BOOL)readonly completion:(id)completion;
+- (void)vendSandboxExtensionWithResource:(int64_t)resource readonly:(BOOL)readonly completion:(id)completion;
 @end
 
 @implementation SiriAnalyticsXPCConnectionHandler
 
-- (id)mapToAnnotatedMessage:(id)a3
+- (id)mapToAnnotatedMessage:(id)message
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  messageCopy = message;
   v4 = objc_alloc_init(MEMORY[0x1E69CF568]);
-  [v4 setAnyEventType:{objc_msgSend(v3, "messageType")}];
-  v5 = [v3 messageBody];
-  [v4 setPayload:v5];
+  [v4 setAnyEventType:{objc_msgSend(messageCopy, "messageType")}];
+  messageBody = [messageCopy messageBody];
+  [v4 setPayload:messageBody];
 
-  v6 = [v4 unwrap];
-  if (v6)
+  unwrap = [v4 unwrap];
+  if (unwrap)
   {
     v7 = objc_alloc_init(SiriAnalyticsTimeAnnotatedMessage);
-    -[SiriAnalyticsTimeAnnotatedMessage setTimestamp:](v7, "setTimestamp:", [v3 timestamp]);
-    v8 = [v3 streamUUID];
-    [(SiriAnalyticsTimeAnnotatedMessage *)v7 setStreamUUID:v8];
+    -[SiriAnalyticsTimeAnnotatedMessage setTimestamp:](v7, "setTimestamp:", [messageCopy timestamp]);
+    streamUUID = [messageCopy streamUUID];
+    [(SiriAnalyticsTimeAnnotatedMessage *)v7 setStreamUUID:streamUUID];
 
-    v9 = [v3 messageUUID];
-    [(SiriAnalyticsTimeAnnotatedMessage *)v7 setMessageUUID:v9];
+    messageUUID = [messageCopy messageUUID];
+    [(SiriAnalyticsTimeAnnotatedMessage *)v7 setMessageUUID:messageUUID];
 
-    [(SiriAnalyticsTimeAnnotatedMessage *)v7 setMessage:v6];
+    [(SiriAnalyticsTimeAnnotatedMessage *)v7 setMessage:unwrap];
   }
 
   else
@@ -61,7 +61,7 @@
       v14 = 136315394;
       v15 = "[SiriAnalyticsXPCConnectionHandler mapToAnnotatedMessage:]";
       v16 = 2048;
-      v17 = [v3 messageType];
+      messageType = [messageCopy messageType];
       _os_log_error_impl(&dword_1D9863000, v13, OS_LOG_TYPE_ERROR, "%s Unable to unwrap anyEventType: %lu", &v14, 0x16u);
     }
 
@@ -73,18 +73,18 @@
   return v7;
 }
 
-- (void)setKillSwitchEnabled:(BOOL)a3 completion:(id)a4
+- (void)setKillSwitchEnabled:(BOOL)enabled completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __69__SiriAnalyticsXPCConnectionHandler_setKillSwitchEnabled_completion___block_invoke;
   block[3] = &unk_1E8587D08;
-  v11 = a3;
+  enabledCopy = enabled;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = completionCopy;
+  v8 = completionCopy;
   dispatch_async(queue, block);
 }
 
@@ -94,11 +94,11 @@ void __69__SiriAnalyticsXPCConnectionHandler_setKillSwitchEnabled_completion___b
   [WeakRetained handler:*(a1 + 32) setKillSwitchEnabled:*(a1 + 48) completion:*(a1 + 40)];
 }
 
-- (void)fetchKillSwitchEnabledWithCompletion:(id)a3
+- (void)fetchKillSwitchEnabledWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  completionCopy = completion;
+  v5 = completionCopy;
+  if (completionCopy)
   {
     queue = self->_queue;
     v7[0] = MEMORY[0x1E69E9820];
@@ -106,7 +106,7 @@ void __69__SiriAnalyticsXPCConnectionHandler_setKillSwitchEnabled_completion___b
     v7[2] = __74__SiriAnalyticsXPCConnectionHandler_fetchKillSwitchEnabledWithCompletion___block_invoke;
     v7[3] = &unk_1E8587C90;
     v7[4] = self;
-    v8 = v4;
+    v8 = completionCopy;
     dispatch_async(queue, v7);
   }
 }
@@ -117,20 +117,20 @@ void __74__SiriAnalyticsXPCConnectionHandler_fetchKillSwitchEnabledWithCompletio
   [WeakRetained handler:*(a1 + 32) fetchKillSwitchWithCompletion:*(a1 + 40)];
 }
 
-- (void)createTag:(id)a3 completion:(id)a4
+- (void)createTag:(id)tag completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  tagCopy = tag;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __58__SiriAnalyticsXPCConnectionHandler_createTag_completion___block_invoke;
   block[3] = &unk_1E8587CE0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = tagCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = tagCopy;
   dispatch_async(queue, block);
 }
 
@@ -140,17 +140,17 @@ void __58__SiriAnalyticsXPCConnectionHandler_createTag_completion___block_invoke
   [WeakRetained handler:a1[4] createTag:a1[5] completion:a1[6]];
 }
 
-- (void)purgeStagedMessagesWithCompletion:(id)a3
+- (void)purgeStagedMessagesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __71__SiriAnalyticsXPCConnectionHandler_purgeStagedMessagesWithCompletion___block_invoke;
   v7[3] = &unk_1E8587C90;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(queue, v7);
 }
 
@@ -189,17 +189,17 @@ void __71__SiriAnalyticsXPCConnectionHandler_purgeStagedMessagesWithCompletion__
   }
 }
 
-- (void)runPipelineWithCompletion:(id)a3
+- (void)runPipelineWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __63__SiriAnalyticsXPCConnectionHandler_runPipelineWithCompletion___block_invoke;
   v7[3] = &unk_1E8587C90;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(queue, v7);
 }
 
@@ -238,20 +238,20 @@ void __63__SiriAnalyticsXPCConnectionHandler_runPipelineWithCompletion___block_i
   }
 }
 
-- (void)saveState:(id)a3 forPluginWithCompletion:(id)a4
+- (void)saveState:(id)state forPluginWithCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  stateCopy = state;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __71__SiriAnalyticsXPCConnectionHandler_saveState_forPluginWithCompletion___block_invoke;
   block[3] = &unk_1E8587CE0;
-  v12 = v6;
-  v13 = v7;
+  v12 = stateCopy;
+  v13 = completionCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = stateCopy;
+  v10 = completionCopy;
   dispatch_async(queue, block);
 }
 
@@ -314,17 +314,17 @@ LABEL_13:
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchStateForPluginWithCompletion:(id)a3
+- (void)fetchStateForPluginWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __71__SiriAnalyticsXPCConnectionHandler_fetchStateForPluginWithCompletion___block_invoke;
   v7[3] = &unk_1E8587C90;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(queue, v7);
 }
 
@@ -387,17 +387,17 @@ LABEL_13:
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchTags:(id)a3
+- (void)fetchTags:(id)tags
 {
-  v4 = a3;
+  tagsCopy = tags;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __47__SiriAnalyticsXPCConnectionHandler_fetchTags___block_invoke;
   v7[3] = &unk_1E8587C90;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = tagsCopy;
+  v6 = tagsCopy;
   dispatch_async(queue, v7);
 }
 
@@ -436,17 +436,17 @@ void __47__SiriAnalyticsXPCConnectionHandler_fetchTags___block_invoke(uint64_t a
   }
 }
 
-- (void)fetchLogicalClocksWithCompletion:(id)a3
+- (void)fetchLogicalClocksWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __70__SiriAnalyticsXPCConnectionHandler_fetchLogicalClocksWithCompletion___block_invoke;
   v7[3] = &unk_1E8587C90;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(queue, v7);
 }
 
@@ -485,19 +485,19 @@ void __70__SiriAnalyticsXPCConnectionHandler_fetchLogicalClocksWithCompletion___
   }
 }
 
-- (void)vendResource:(int64_t)a3 readonly:(BOOL)a4 completion:(id)a5
+- (void)vendResource:(int64_t)resource readonly:(BOOL)readonly completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   queue = self->_queue;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __70__SiriAnalyticsXPCConnectionHandler_vendResource_readonly_completion___block_invoke;
   v11[3] = &unk_1E8587CB8;
-  v12 = v8;
-  v13 = a3;
-  v14 = a4;
+  v12 = completionCopy;
+  resourceCopy = resource;
+  readonlyCopy = readonly;
   v11[4] = self;
-  v10 = v8;
+  v10 = completionCopy;
   dispatch_async(queue, v11);
 }
 
@@ -507,19 +507,19 @@ void __70__SiriAnalyticsXPCConnectionHandler_vendResource_readonly_completion___
   [WeakRetained handler:*(a1 + 32) vendResource:*(a1 + 48) readonly:*(a1 + 56) completion:*(a1 + 40)];
 }
 
-- (void)vendSandboxExtensionWithResource:(int64_t)a3 readonly:(BOOL)a4 completion:(id)a5
+- (void)vendSandboxExtensionWithResource:(int64_t)resource readonly:(BOOL)readonly completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   queue = self->_queue;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __90__SiriAnalyticsXPCConnectionHandler_vendSandboxExtensionWithResource_readonly_completion___block_invoke;
   v11[3] = &unk_1E8587CB8;
-  v12 = v8;
-  v13 = a3;
-  v14 = a4;
+  v12 = completionCopy;
+  resourceCopy = resource;
+  readonlyCopy = readonly;
   v11[4] = self;
-  v10 = v8;
+  v10 = completionCopy;
   dispatch_async(queue, v11);
 }
 
@@ -529,17 +529,17 @@ void __90__SiriAnalyticsXPCConnectionHandler_vendSandboxExtensionWithResource_re
   [WeakRetained handler:*(a1 + 32) vendSandboxExtensionWithResource:*(a1 + 48) readonly:*(a1 + 56) completion:*(a1 + 40)];
 }
 
-- (void)resetLogicalClockWithCompletion:(id)a3
+- (void)resetLogicalClockWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __69__SiriAnalyticsXPCConnectionHandler_resetLogicalClockWithCompletion___block_invoke;
   v7[3] = &unk_1E8587C90;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(queue, v7);
 }
 
@@ -578,19 +578,19 @@ void __69__SiriAnalyticsXPCConnectionHandler_resetLogicalClockWithCompletion___b
   }
 }
 
-- (void)sensitiveCondition:(int)a3 endedAt:(unint64_t)a4 completion:(id)a5
+- (void)sensitiveCondition:(int)condition endedAt:(unint64_t)at completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   queue = self->_queue;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __75__SiriAnalyticsXPCConnectionHandler_sensitiveCondition_endedAt_completion___block_invoke;
   v11[3] = &unk_1E8587C68;
-  v14 = a3;
-  v12 = v8;
-  v13 = a4;
+  conditionCopy = condition;
+  v12 = completionCopy;
+  atCopy = at;
   v11[4] = self;
-  v10 = v8;
+  v10 = completionCopy;
   dispatch_async(queue, v11);
 }
 
@@ -600,19 +600,19 @@ void __75__SiriAnalyticsXPCConnectionHandler_sensitiveCondition_endedAt_completi
   [WeakRetained handler:*(a1 + 32) sensitiveCondition:*(a1 + 56) endedAt:*(a1 + 48) completion:*(a1 + 40)];
 }
 
-- (void)sensitiveCondition:(int)a3 startedAt:(unint64_t)a4 completion:(id)a5
+- (void)sensitiveCondition:(int)condition startedAt:(unint64_t)at completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   queue = self->_queue;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __77__SiriAnalyticsXPCConnectionHandler_sensitiveCondition_startedAt_completion___block_invoke;
   v11[3] = &unk_1E8587C68;
-  v14 = a3;
-  v12 = v8;
-  v13 = a4;
+  conditionCopy = condition;
+  v12 = completionCopy;
+  atCopy = at;
   v11[4] = self;
-  v10 = v8;
+  v10 = completionCopy;
   dispatch_async(queue, v11);
 }
 
@@ -622,19 +622,19 @@ void __77__SiriAnalyticsXPCConnectionHandler_sensitiveCondition_startedAt_comple
   [WeakRetained handler:*(a1 + 32) sensitiveCondition:*(a1 + 56) startedAt:*(a1 + 48) completion:*(a1 + 40)];
 }
 
-- (void)publishUnorderedMessages:(id)a3 topic:(id)a4 completion:(id)a5
+- (void)publishUnorderedMessages:(id)messages topic:(id)topic completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  messagesCopy = messages;
+  topicCopy = topic;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __79__SiriAnalyticsXPCConnectionHandler_publishUnorderedMessages_topic_completion___block_invoke;
   aBlock[3] = &unk_1E8587C18;
-  v11 = v10;
+  v11 = completionCopy;
   v19 = v11;
   v12 = _Block_copy(aBlock);
-  if ([v8 count])
+  if ([messagesCopy count])
   {
     queue = self->_queue;
     block[0] = MEMORY[0x1E69E9820];
@@ -643,8 +643,8 @@ void __77__SiriAnalyticsXPCConnectionHandler_sensitiveCondition_startedAt_comple
     block[3] = &unk_1E8587C40;
     block[4] = self;
     v17 = v12;
-    v15 = v8;
-    v16 = v9;
+    v15 = messagesCopy;
+    v16 = topicCopy;
     dispatch_async(queue, block);
   }
 
@@ -732,20 +732,20 @@ void __79__SiriAnalyticsXPCConnectionHandler_publishUnorderedMessages_topic_comp
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)publishLargeMessage:(id)a3 completion:(id)a4
+- (void)publishLargeMessage:(id)message completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __68__SiriAnalyticsXPCConnectionHandler_publishLargeMessage_completion___block_invoke;
   block[3] = &unk_1E8587CE0;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = messageCopy;
+  selfCopy = self;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = messageCopy;
   dispatch_async(queue, block);
 }
 
@@ -761,15 +761,15 @@ void __68__SiriAnalyticsXPCConnectionHandler_publishLargeMessage_completion___bl
   [WeakRetained handler:*(a1 + 40) largeMessageReceivedWithPath:v7 requestIdentifier:v2 messageWrapper:v5 completion:*(a1 + 48)];
 }
 
-- (void)resolveMessages:(id)a3 completion:(id)a4
+- (void)resolveMessages:(id)messages completion:(id)completion
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a4;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __64__SiriAnalyticsXPCConnectionHandler_resolveMessages_completion___block_invoke;
   aBlock[3] = &unk_1E8587C18;
-  v5 = v4;
+  v5 = completionCopy;
   v10 = v5;
   v6 = _Block_copy(aBlock);
   if (SiriAnalyticsLoggingInit_once != -1)
@@ -801,26 +801,26 @@ uint64_t __64__SiriAnalyticsXPCConnectionHandler_resolveMessages_completion___bl
   return result;
 }
 
-- (void)publishMessages:(id)a3 completion:(id)a4
+- (void)publishMessages:(id)messages completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  messagesCopy = messages;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __64__SiriAnalyticsXPCConnectionHandler_publishMessages_completion___block_invoke;
   aBlock[3] = &unk_1E8587C18;
-  v8 = v7;
+  v8 = completionCopy;
   v16 = v8;
   v9 = _Block_copy(aBlock);
-  if ([v6 count])
+  if ([messagesCopy count])
   {
     queue = self->_queue;
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __64__SiriAnalyticsXPCConnectionHandler_publishMessages_completion___block_invoke_2;
     v11[3] = &unk_1E8587CE0;
-    v12 = v6;
-    v13 = self;
+    v12 = messagesCopy;
+    selfCopy = self;
     v14 = v9;
     dispatch_async(queue, v11);
   }
@@ -897,24 +897,24 @@ void __64__SiriAnalyticsXPCConnectionHandler_publishMessages_completion___block_
   return self;
 }
 
-- (SiriAnalyticsXPCConnectionHandler)initWithConnection:(id)a3 entitlementsKey:(id)a4 queue:(id)a5 delegate:(id)a6
+- (SiriAnalyticsXPCConnectionHandler)initWithConnection:(id)connection entitlementsKey:(id)key queue:(id)queue delegate:(id)delegate
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  connectionCopy = connection;
+  keyCopy = key;
+  queueCopy = queue;
+  delegateCopy = delegate;
   v26.receiver = self;
   v26.super_class = SiriAnalyticsXPCConnectionHandler;
   v15 = [(SiriAnalyticsXPCConnectionHandler *)&v26 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_connection, a3);
-    objc_storeStrong(&v16->_queue, a5);
-    objc_storeWeak(&v16->_delegate, v14);
-    if (v11)
+    objc_storeStrong(&v15->_connection, connection);
+    objc_storeStrong(&v16->_queue, queue);
+    objc_storeWeak(&v16->_delegate, delegateCopy);
+    if (connectionCopy)
     {
-      [v11 auditToken];
+      [connectionCopy auditToken];
     }
 
     else
@@ -926,12 +926,12 @@ void __64__SiriAnalyticsXPCConnectionHandler_publishMessages_completion___block_
     *v16->_auditToken.val = v24;
     *&v16->_auditToken.val[4] = v25;
     v17 = [SiriAnalyticsXPCConnectionEntitlements alloc];
-    v18 = [v11 valueForEntitlement:v12];
+    v18 = [connectionCopy valueForEntitlement:keyCopy];
     v19 = [(SiriAnalyticsXPCConnectionEntitlements *)v17 initWithEntitlements:v18];
     entitlements = v16->_entitlements;
     v16->_entitlements = v19;
 
-    v21 = [v11 valueForEntitlement:@"application-identifier"];
+    v21 = [connectionCopy valueForEntitlement:@"application-identifier"];
     connectionApplicationIdentifier = v16->_connectionApplicationIdentifier;
     v16->_connectionApplicationIdentifier = v21;
   }

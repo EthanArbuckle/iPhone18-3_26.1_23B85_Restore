@@ -1,11 +1,11 @@
 @interface FCArticleSearchStream
-- (FCArticleSearchStream)initWithParsecQueryID:(unint64_t)a3;
-- (id)fetchMoreResultsWithLimit:(unint64_t)a3 qualityOfService:(int64_t)a4 callbackQueue:(id)a5 completionHandler:(id)a6;
+- (FCArticleSearchStream)initWithParsecQueryID:(unint64_t)d;
+- (id)fetchMoreResultsWithLimit:(unint64_t)limit qualityOfService:(int64_t)service callbackQueue:(id)queue completionHandler:(id)handler;
 @end
 
 @implementation FCArticleSearchStream
 
-- (FCArticleSearchStream)initWithParsecQueryID:(unint64_t)a3
+- (FCArticleSearchStream)initWithParsecQueryID:(unint64_t)d
 {
   v9.receiver = self;
   v9.super_class = FCArticleSearchStream;
@@ -13,7 +13,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_parsecQueryID = a3;
+    v4->_parsecQueryID = d;
     v6 = objc_alloc_init(MEMORY[0x1E695DFA0]);
     articleSearchResults = v5->_articleSearchResults;
     v5->_articleSearchResults = v6;
@@ -22,22 +22,22 @@
   return v5;
 }
 
-- (id)fetchMoreResultsWithLimit:(unint64_t)a3 qualityOfService:(int64_t)a4 callbackQueue:(id)a5 completionHandler:(id)a6
+- (id)fetchMoreResultsWithLimit:(unint64_t)limit qualityOfService:(int64_t)service callbackQueue:(id)queue completionHandler:(id)handler
 {
   v38 = *MEMORY[0x1E69E9840];
-  v9 = a5;
-  v10 = a6;
+  queueCopy = queue;
+  handlerCopy = handler;
   if ([(FCArticleSearchStream *)self isFinished])
   {
     v11 = 0;
-    if (v9 && v10)
+    if (queueCopy && handlerCopy)
     {
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __100__FCArticleSearchStream_fetchMoreResultsWithLimit_qualityOfService_callbackQueue_completionHandler___block_invoke;
       block[3] = &unk_1E7C379C8;
-      v29 = v10;
-      dispatch_async(v9, block);
+      v29 = handlerCopy;
+      dispatch_async(queueCopy, block);
 
       v11 = 0;
     }
@@ -61,32 +61,32 @@
 
     [(FCArticleSearchStream *)self setFetching:1];
     v12 = [FCParsecArticleSearchOperation alloc];
-    v13 = [(FCArticleSearchStream *)self moreResults];
-    v11 = [(FCParsecArticleSearchOperation *)v12 initWithMoreResults:v13 parsecQueryID:[(FCArticleSearchStream *)self parsecQueryID]];
+    moreResults = [(FCArticleSearchStream *)self moreResults];
+    v11 = [(FCParsecArticleSearchOperation *)v12 initWithMoreResults:moreResults parsecQueryID:[(FCArticleSearchStream *)self parsecQueryID]];
 
-    v14 = [(FCArticleSearchStream *)self cloudContext];
-    [(FCParsecArticleSearchOperation *)v11 setContentContext:v14];
+    cloudContext = [(FCArticleSearchStream *)self cloudContext];
+    [(FCParsecArticleSearchOperation *)v11 setContentContext:cloudContext];
 
-    v15 = [(FCArticleSearchStream *)self query];
-    [(FCParsecArticleSearchOperation *)v11 setQuery:v15];
+    query = [(FCArticleSearchStream *)self query];
+    [(FCParsecArticleSearchOperation *)v11 setQuery:query];
 
-    v16 = [(FCArticleSearchStream *)self keyboardInputMode];
-    [(FCParsecArticleSearchOperation *)v11 setKeyboardInputMode:v16];
+    keyboardInputMode = [(FCArticleSearchStream *)self keyboardInputMode];
+    [(FCParsecArticleSearchOperation *)v11 setKeyboardInputMode:keyboardInputMode];
 
     [(FCArticleSearchStream *)self scale];
     [(FCParsecArticleSearchOperation *)v11 setScale:?];
-    v17 = [(FCArticleSearchStream *)self rankingFeedback];
-    [(FCParsecArticleSearchOperation *)v11 setPreviousRankingFeedback:v17];
+    rankingFeedback = [(FCArticleSearchStream *)self rankingFeedback];
+    [(FCParsecArticleSearchOperation *)v11 setPreviousRankingFeedback:rankingFeedback];
 
     [(FCOperation *)v11 setRelativePriority:1];
-    [(FCOperation *)v11 setQualityOfService:a4];
+    [(FCOperation *)v11 setQualityOfService:service];
     v21 = MEMORY[0x1E69E9820];
     v22 = 3221225472;
     v23 = __100__FCArticleSearchStream_fetchMoreResultsWithLimit_qualityOfService_callbackQueue_completionHandler___block_invoke_108;
     v24 = &unk_1E7C43EB8;
-    v25 = self;
-    v27 = v10;
-    v26 = v9;
+    selfCopy = self;
+    v27 = handlerCopy;
+    v26 = queueCopy;
     [(FCParsecArticleSearchOperation *)v11 setArticleSearchCompletionHandler:&v21];
     [(FCOperation *)v11 start:v21];
   }

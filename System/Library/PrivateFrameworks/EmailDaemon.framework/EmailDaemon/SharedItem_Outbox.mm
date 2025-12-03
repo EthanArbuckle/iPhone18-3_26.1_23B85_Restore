@@ -40,8 +40,8 @@
 
 - (id)itemURLString
 {
-  v2 = [(SharedItem_Outbox *)self itemID];
-  v3 = [NSString stringWithFormat:@"favoriteitem://outbox/%@", v2];
+  itemID = [(SharedItem_Outbox *)self itemID];
+  v3 = [NSString stringWithFormat:@"favoriteitem://outbox/%@", itemID];
 
   return v3;
 }

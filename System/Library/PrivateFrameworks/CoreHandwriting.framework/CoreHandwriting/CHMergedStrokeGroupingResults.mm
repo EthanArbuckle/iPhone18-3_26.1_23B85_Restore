@@ -1,33 +1,33 @@
 @interface CHMergedStrokeGroupingResults
-- (CHMergedStrokeGroupingResults)initWithCoder:(id)a3;
-- (CHMergedStrokeGroupingResults)initWithStrokeGroups:(id)a3 createdStrokeGroups:(id)a4 deletedStrokeGroups:(id)a5 groupingResultsByStrategyIdentifier:(id)a6;
-- (id)groupingResultUpdatedWithGroupReplacements:(id)a3;
-- (id)strokeGroupsOfClass:(int64_t)a3;
-- (void)encodeWithCoder:(id)a3;
+- (CHMergedStrokeGroupingResults)initWithCoder:(id)coder;
+- (CHMergedStrokeGroupingResults)initWithStrokeGroups:(id)groups createdStrokeGroups:(id)strokeGroups deletedStrokeGroups:(id)deletedStrokeGroups groupingResultsByStrategyIdentifier:(id)identifier;
+- (id)groupingResultUpdatedWithGroupReplacements:(id)replacements;
+- (id)strokeGroupsOfClass:(int64_t)class;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CHMergedStrokeGroupingResults
 
-- (CHMergedStrokeGroupingResults)initWithStrokeGroups:(id)a3 createdStrokeGroups:(id)a4 deletedStrokeGroups:(id)a5 groupingResultsByStrategyIdentifier:(id)a6
+- (CHMergedStrokeGroupingResults)initWithStrokeGroups:(id)groups createdStrokeGroups:(id)strokeGroups deletedStrokeGroups:(id)deletedStrokeGroups groupingResultsByStrategyIdentifier:(id)identifier
 {
-  v11 = a6;
+  identifierCopy = identifier;
   v15.receiver = self;
   v15.super_class = CHMergedStrokeGroupingResults;
-  v12 = [(CHStrokeGroupingResult *)&v15 initWithStrokeGroups:a3 createdStrokeGroups:a4 deletedStrokeGroups:a5];
+  v12 = [(CHStrokeGroupingResult *)&v15 initWithStrokeGroups:groups createdStrokeGroups:strokeGroups deletedStrokeGroups:deletedStrokeGroups];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_groupingResultsByStrategyIdentifier, a6);
+    objc_storeStrong(&v12->_groupingResultsByStrategyIdentifier, identifier);
   }
 
   return v13;
 }
 
-- (id)groupingResultUpdatedWithGroupReplacements:(id)a3
+- (id)groupingResultUpdatedWithGroupReplacements:(id)replacements
 {
   v507 = *MEMORY[0x1E69E9840];
-  v472 = a3;
-  if (objc_msgSend_count(v472, v3, v4, v5, v6, v7))
+  replacementsCopy = replacements;
+  if (objc_msgSend_count(replacementsCopy, v3, v4, v5, v6, v7))
   {
     v13 = objc_msgSend_strokeGroups(self, v8, v9, v10, v11, v12);
     v475 = objc_msgSend_mutableCopy(v13, v14, v15, v16, v17, v18);
@@ -126,7 +126,7 @@
     v496 = 0u;
     v493 = 0u;
     v494 = 0u;
-    v148 = objc_msgSend_allValues(v472, v143, v144, v145, v146, v147);
+    v148 = objc_msgSend_allValues(replacementsCopy, v143, v144, v145, v146, v147);
     v156 = objc_msgSend_countByEnumeratingWithState_objects_count_(v148, v149, &v493, v504, 16, v150);
     if (v156)
     {
@@ -187,7 +187,7 @@
           v210 = MEMORY[0x1E696AD98];
           v211 = objc_msgSend_uniqueIdentifier(v209, v201, v202, v203, v204, v205);
           v216 = objc_msgSend_numberWithInteger_(v210, v212, v211, v213, v214, v215);
-          v221 = objc_msgSend_objectForKeyedSubscript_(v472, v217, v216, v218, v219, v220);
+          v221 = objc_msgSend_objectForKeyedSubscript_(replacementsCopy, v217, v216, v218, v219, v220);
 
           v227 = objc_msgSend_strategyIdentifier(v209, v222, v223, v224, v225, v226);
           v233 = objc_msgSend_classification(v209, v228, v229, v230, v231, v232);
@@ -322,21 +322,21 @@
     }
 
     v465 = [CHMergedStrokeGroupingResults alloc];
-    v36 = objc_msgSend_initWithStrokeGroups_createdStrokeGroups_deletedStrokeGroups_groupingResultsByStrategyIdentifier_(v465, v466, v475, v474, v468, v471);
+    selfCopy = objc_msgSend_initWithStrokeGroups_createdStrokeGroups_deletedStrokeGroups_groupingResultsByStrategyIdentifier_(v465, v466, v475, v474, v468, v471);
   }
 
   else
   {
-    v36 = self;
+    selfCopy = self;
   }
 
-  return v36;
+  return selfCopy;
 }
 
-- (id)strokeGroupsOfClass:(int64_t)a3
+- (id)strokeGroupsOfClass:(int64_t)class
 {
   v49 = *MEMORY[0x1E69E9840];
-  v8 = objc_msgSend_set(MEMORY[0x1E695DFA8], a2, a3, v3, v4, v5);
+  v8 = objc_msgSend_set(MEMORY[0x1E695DFA8], a2, class, v3, v4, v5);
   v46 = 0u;
   v47 = 0u;
   v44 = 0u;
@@ -363,7 +363,7 @@
         v43[1] = 3221225472;
         v43[2] = sub_18373907C;
         v43[3] = &unk_1E6DDD130;
-        v43[4] = a3;
+        v43[4] = class;
         v36 = objc_msgSend_objectsPassingTest_(v31, v32, v43, v33, v34, v35);
 
         objc_msgSend_unionSet_(v8, v37, v36, v38, v39, v40);
@@ -379,26 +379,26 @@
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v16 = a3;
+  coderCopy = coder;
   v9 = objc_msgSend_strokeGroups(self, v4, v5, v6, v7, v8);
-  objc_msgSend_encodeObject_forKey_(v16, v10, v9, @"strokeGroups", v11, v12);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v10, v9, @"strokeGroups", v11, v12);
 
-  objc_msgSend_encodeObject_forKey_(v16, v13, self->_groupingResultsByStrategyIdentifier, @"groupingResultsByStrategyIdentifier", v14, v15);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v13, self->_groupingResultsByStrategyIdentifier, @"groupingResultsByStrategyIdentifier", v14, v15);
 }
 
-- (CHMergedStrokeGroupingResults)initWithCoder:(id)a3
+- (CHMergedStrokeGroupingResults)initWithCoder:(id)coder
 {
   v37[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v5 = MEMORY[0x1E695DFD8];
   v37[0] = objc_opt_class();
   v37[1] = objc_opt_class();
   v37[2] = objc_opt_class();
   v9 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v6, v37, 3, v7, v8);
   v14 = objc_msgSend_setWithArray_(v5, v10, v9, v11, v12, v13);
-  v18 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v15, v14, @"strokeGroups", v16, v17);
+  v18 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v15, v14, @"strokeGroups", v16, v17);
 
   v19 = MEMORY[0x1E695DFD8];
   v36[0] = objc_opt_class();
@@ -406,7 +406,7 @@
   v36[2] = objc_opt_class();
   v23 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v20, v36, 3, v21, v22);
   v28 = objc_msgSend_setWithArray_(v19, v24, v23, v25, v26, v27);
-  v32 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v29, v28, @"groupingResultsByStrategyIdentifier", v30, v31);
+  v32 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v29, v28, @"groupingResultsByStrategyIdentifier", v30, v31);
 
   v34 = objc_msgSend_initWithStrokeGroups_createdStrokeGroups_deletedStrokeGroups_groupingResultsByStrategyIdentifier_(self, v33, v18, v18, 0, v32);
   return v34;

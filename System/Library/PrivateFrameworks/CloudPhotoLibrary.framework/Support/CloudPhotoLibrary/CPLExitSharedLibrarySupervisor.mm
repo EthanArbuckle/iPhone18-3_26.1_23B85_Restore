@@ -1,35 +1,35 @@
 @interface CPLExitSharedLibrarySupervisor
-+ (id)descriptionForExitState:(int64_t)a3;
++ (id)descriptionForExitState:(int64_t)state;
 - (BOOL)shouldRunForceProcessingStagedScopesTaskNow;
 - (BOOL)shouldRunForceProcessingStagedScopesTaskNowMovingToForeground;
 - (BOOL)shouldScheduleForceProcessingStagedScopesTask;
-- (CPLExitSharedLibrarySupervisor)initWithScopeIdentifier:(id)a3 exitState:(int64_t)a4 supervisorInfo:(id)a5;
+- (CPLExitSharedLibrarySupervisor)initWithScopeIdentifier:(id)identifier exitState:(int64_t)state supervisorInfo:(id)info;
 - (NSDictionary)supervisorInfo;
 - (NSString)status;
 - (void)noteServerHasChanges;
 - (void)ping;
-- (void)setExitState:(int64_t)a3;
+- (void)setExitState:(int64_t)state;
 - (void)updateLastForcedExitDate;
 @end
 
 @implementation CPLExitSharedLibrarySupervisor
 
-- (CPLExitSharedLibrarySupervisor)initWithScopeIdentifier:(id)a3 exitState:(int64_t)a4 supervisorInfo:(id)a5
+- (CPLExitSharedLibrarySupervisor)initWithScopeIdentifier:(id)identifier exitState:(int64_t)state supervisorInfo:(id)info
 {
-  v8 = a3;
-  v9 = a5;
+  identifierCopy = identifier;
+  infoCopy = info;
   v42.receiver = self;
   v42.super_class = CPLExitSharedLibrarySupervisor;
   v10 = [(CPLExitSharedLibrarySupervisor *)&v42 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [identifierCopy copy];
     scopeIdentifier = v10->_scopeIdentifier;
     v10->_scopeIdentifier = v11;
 
-    if (v9)
+    if (infoCopy)
     {
-      v13 = [v9 objectForKeyedSubscript:@"exitStartDate"];
+      v13 = [infoCopy objectForKeyedSubscript:@"exitStartDate"];
       if (v13 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && ([v13 timeIntervalSinceNow], v14 <= 0.0))
       {
         v15 = v13;
@@ -43,7 +43,7 @@
       exitStartDate = v10->_exitStartDate;
       v10->_exitStartDate = v15;
 
-      v17 = [v9 objectForKeyedSubscript:@"lastForcedExitDate"];
+      v17 = [infoCopy objectForKeyedSubscript:@"lastForcedExitDate"];
       if (v17 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && ([v17 timeIntervalSinceNow], v18 <= 0.0))
       {
         v19 = v17;
@@ -57,7 +57,7 @@
       lastForcedExitDate = v10->_lastForcedExitDate;
       v10->_lastForcedExitDate = v19;
 
-      v21 = [v9 objectForKeyedSubscript:@"nextForcedExitDate"];
+      v21 = [infoCopy objectForKeyedSubscript:@"nextForcedExitDate"];
       if (v10->_lastForcedExitDate)
       {
         v22 = 86400.0;
@@ -132,7 +132,7 @@ LABEL_33:
         v10->_nextForcedExitDate = v39;
 
 LABEL_34:
-        v10->_exitState = a4;
+        v10->_exitState = state;
         [(NSMutableDictionary *)v10->_supervisorInfo setObject:v10->_nextForcedExitDate forKeyedSubscript:@"nextForcedExitDate"];
         goto LABEL_35;
       }
@@ -150,7 +150,7 @@ LABEL_35:
   return v10;
 }
 
-- (void)setExitState:(int64_t)a3
+- (void)setExitState:(int64_t)state
 {
   if (self->_exitState == 4 && !self->_lastForcedExitDate)
   {
@@ -172,7 +172,7 @@ LABEL_35:
     [(NSMutableDictionary *)self->_supervisorInfo setObject:self->_nextForcedExitDate forKeyedSubscript:@"nextForcedExitDate"];
   }
 
-  self->_exitState = a3;
+  self->_exitState = state;
 }
 
 - (NSDictionary)supervisorInfo
@@ -201,26 +201,26 @@ LABEL_35:
 
 - (BOOL)shouldRunForceProcessingStagedScopesTaskNow
 {
-  v3 = [(CPLExitSharedLibrarySupervisor *)self shouldScheduleForceProcessingStagedScopesTask];
-  if (v3)
+  shouldScheduleForceProcessingStagedScopesTask = [(CPLExitSharedLibrarySupervisor *)self shouldScheduleForceProcessingStagedScopesTask];
+  if (shouldScheduleForceProcessingStagedScopesTask)
   {
     [(NSDate *)self->_nextForcedExitDate timeIntervalSinceNow];
-    LOBYTE(v3) = v4 < 10.0;
+    LOBYTE(shouldScheduleForceProcessingStagedScopesTask) = v4 < 10.0;
   }
 
-  return v3;
+  return shouldScheduleForceProcessingStagedScopesTask;
 }
 
 - (BOOL)shouldRunForceProcessingStagedScopesTaskNowMovingToForeground
 {
-  v3 = [(CPLExitSharedLibrarySupervisor *)self shouldScheduleForceProcessingStagedScopesTask];
-  if (v3)
+  shouldScheduleForceProcessingStagedScopesTask = [(CPLExitSharedLibrarySupervisor *)self shouldScheduleForceProcessingStagedScopesTask];
+  if (shouldScheduleForceProcessingStagedScopesTask)
   {
     lastForcedExitDate = self->_lastForcedExitDate;
-    LOBYTE(v3) = !lastForcedExitDate || ([(NSDate *)lastForcedExitDate timeIntervalSinceNow], v5 < -3600.0);
+    LOBYTE(shouldScheduleForceProcessingStagedScopesTask) = !lastForcedExitDate || ([(NSDate *)lastForcedExitDate timeIntervalSinceNow], v5 < -3600.0);
   }
 
-  return v3;
+  return shouldScheduleForceProcessingStagedScopesTask;
 }
 
 - (void)updateLastForcedExitDate
@@ -300,28 +300,28 @@ LABEL_35:
   [(NSMutableDictionary *)supervisorInfo setObject:v11 forKeyedSubscript:@"nextForcedExitDate"];
 }
 
-+ (id)descriptionForExitState:(int64_t)a3
++ (id)descriptionForExitState:(int64_t)state
 {
-  if (a3 > 4)
+  if (state > 4)
   {
     return @"unknown";
   }
 
   else
   {
-    return off_100273708[a3];
+    return off_100273708[state];
   }
 }
 
 - (NSString)status
 {
   v3 = +[NSDate date];
-  v4 = [(CPLExitSharedLibrarySupervisor *)self shouldScheduleForceProcessingStagedScopesTask];
+  shouldScheduleForceProcessingStagedScopesTask = [(CPLExitSharedLibrarySupervisor *)self shouldScheduleForceProcessingStagedScopesTask];
   v5 = [NSString alloc];
   v6 = [CPLExitSharedLibrarySupervisor descriptionForExitState:self->_exitState];
   v7 = [CPLDateFormatter stringFromDateAgo:self->_exitStartDate now:v3];
   v8 = v7;
-  if (v4)
+  if (shouldScheduleForceProcessingStagedScopesTask)
   {
     v9 = [CPLDateFormatter stringFromDateAgo:self->_nextForcedExitDate now:v3];
     v10 = [v5 initWithFormat:@"%@ - start: %@ - next retry: %@", v6, v8, v9];

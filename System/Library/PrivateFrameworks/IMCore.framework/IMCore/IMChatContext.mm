@@ -1,21 +1,21 @@
 @interface IMChatContext
-- (id)_copyWithClass:(Class)a3 zone:(_NSZone *)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_copyWithClass:(Class)class zone:(_NSZone *)zone;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 @end
 
 @implementation IMChatContext
 
-- (id)_copyWithClass:(Class)a3 zone:(_NSZone *)a4
+- (id)_copyWithClass:(Class)class zone:(_NSZone *)zone
 {
   v8 = objc_opt_class();
-  if ((objc_msgSend_isSubclassOfClass_(a3, v9, v8) & 1) == 0)
+  if ((objc_msgSend_isSubclassOfClass_(class, v9, v8) & 1) == 0)
   {
     sub_1A84DFB20(a2, self, v11);
   }
 
-  v12 = objc_msgSend_allocWithZone_(a3, v10, a4);
+  v12 = objc_msgSend_allocWithZone_(class, v10, zone);
   v15 = objc_msgSend_init(v12, v13, v14);
   *(v15 + 8) = objc_msgSend_serviceVariant(self, v16, v17);
   *(v15 + 16) = objc_msgSend_filterCategory(self, v18, v19);
@@ -88,14 +88,14 @@
   return v28;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_class();
 
   return MEMORY[0x1EEE66B58](self, sel__copyWithClass_zone_, v4);
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_class();
 

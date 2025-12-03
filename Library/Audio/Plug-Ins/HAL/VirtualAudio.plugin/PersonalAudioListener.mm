@@ -5,7 +5,7 @@
 - (void)_fire;
 - (void)addListener:(function<void)( withID:;
 - (void)dealloc;
-- (void)removeListener:(unsigned int)a3;
+- (void)removeListener:(unsigned int)listener;
 @end
 
 @implementation PersonalAudioListener
@@ -79,14 +79,14 @@
 
 - (void)_fire
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_68E60();
-  v4 = v2;
+  v4 = selfCopy;
   v5 = v3;
   operator new();
 }
 
-- (void)removeListener:(unsigned int)a3
+- (void)removeListener:(unsigned int)listener
 {
   std::mutex::lock((self + 32));
   v6 = *(self + 1);
@@ -99,7 +99,7 @@
       v10 = *v6;
       sub_51F38(v12, (v6 + 2));
       sub_4C70(v12);
-      if (v10 == a3)
+      if (v10 == listener)
       {
         break;
       }
@@ -127,7 +127,7 @@
           v11 = *v8;
           sub_51F38(v12, (v8 + 2));
           sub_4C70(v12);
-          if (v11 != a3)
+          if (v11 != listener)
           {
             sub_459E28(v7, v8);
             v7 += 40;

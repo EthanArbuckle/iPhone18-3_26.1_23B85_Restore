@@ -1,22 +1,22 @@
 @interface VITextBlockAnnotation
 + (id)empty;
-+ (id)textBlockWithAnnotations:(id)a3;
-+ (id)textBlockWithDocumentObservations:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (VITextBlockAnnotation)initWithTextAnnotations:(id)a3;
++ (id)textBlockWithAnnotations:(id)annotations;
++ (id)textBlockWithDocumentObservations:(id)observations;
+- (BOOL)isEqual:(id)equal;
+- (VITextBlockAnnotation)initWithTextAnnotations:(id)annotations;
 @end
 
 @implementation VITextBlockAnnotation
 
-- (VITextBlockAnnotation)initWithTextAnnotations:(id)a3
+- (VITextBlockAnnotation)initWithTextAnnotations:(id)annotations
 {
-  v4 = a3;
+  annotationsCopy = annotations;
   v9.receiver = self;
   v9.super_class = VITextBlockAnnotation;
   v5 = [(VITextBlockAnnotation *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [annotationsCopy copy];
     textAnnotations = v5->_textAnnotations;
     v5->_textAnnotations = v6;
   }
@@ -32,17 +32,17 @@
   return v3;
 }
 
-+ (id)textBlockWithAnnotations:(id)a3
++ (id)textBlockWithAnnotations:(id)annotations
 {
-  v3 = a3;
-  v4 = [[VITextBlockAnnotation alloc] initWithTextAnnotations:v3];
+  annotationsCopy = annotations;
+  v4 = [[VITextBlockAnnotation alloc] initWithTextAnnotations:annotationsCopy];
 
   return v4;
 }
 
-+ (id)textBlockWithDocumentObservations:(id)a3
++ (id)textBlockWithDocumentObservations:(id)observations
 {
-  v3 = VIFlatMapArray(a3, &__block_literal_global_4);
+  v3 = VIFlatMapArray(observations, &__block_literal_global_4);
   v4 = [[VITextBlockAnnotation alloc] initWithTextAnnotations:v3];
 
   return v4;
@@ -56,20 +56,20 @@ id __59__VITextBlockAnnotation_textBlockWithDocumentObservations___block_invoke(
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
   v15 = v5;
   v16 = v3;
-  v10 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = v10;
+    v11 = equalCopy;
   }
 
   else
@@ -78,8 +78,8 @@ id __59__VITextBlockAnnotation_textBlockWithDocumentObservations___block_invoke(
   }
 
   textAnnotations = self->_textAnnotations;
-  v13 = [v11 textAnnotations];
-  LOBYTE(textAnnotations) = VIObjectIsEqual(textAnnotations, v13);
+  textAnnotations = [v11 textAnnotations];
+  LOBYTE(textAnnotations) = VIObjectIsEqual(textAnnotations, textAnnotations);
 
   return textAnnotations;
 }

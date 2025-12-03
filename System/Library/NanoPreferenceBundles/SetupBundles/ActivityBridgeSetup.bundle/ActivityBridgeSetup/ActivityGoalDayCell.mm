@@ -1,16 +1,16 @@
 @interface ActivityGoalDayCell
-- (_TtC19ActivityBridgeSetup19ActivityGoalDayCell)initWithCoder:(id)a3;
-- (_TtC19ActivityBridgeSetup19ActivityGoalDayCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (void)setupGoalViewValueChanged:(id)a3 value:(id)a4;
+- (_TtC19ActivityBridgeSetup19ActivityGoalDayCell)initWithCoder:(id)coder;
+- (_TtC19ActivityBridgeSetup19ActivityGoalDayCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (void)setupGoalViewValueChanged:(id)changed value:(id)value;
 @end
 
 @implementation ActivityGoalDayCell
 
-- (_TtC19ActivityBridgeSetup19ActivityGoalDayCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC19ActivityBridgeSetup19ActivityGoalDayCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
-    a4 = sub_22050();
+    identifier = sub_22050();
     v6 = v5;
   }
 
@@ -19,10 +19,10 @@
     v6 = 0;
   }
 
-  return sub_15020(a3, a4, v6);
+  return sub_15020(style, identifier, v6);
 }
 
-- (_TtC19ActivityBridgeSetup19ActivityGoalDayCell)initWithCoder:(id)a3
+- (_TtC19ActivityBridgeSetup19ActivityGoalDayCell)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC19ActivityBridgeSetup19ActivityGoalDayCell_dayLabel;
   *(&self->super.super.super.super.isa + v4) = [objc_allocWithZone(UILabel) initWithFrame:{0.0, 0.0, 0.0, 0.0}];
@@ -34,7 +34,7 @@
   return result;
 }
 
-- (void)setupGoalViewValueChanged:(id)a3 value:(id)a4
+- (void)setupGoalViewValueChanged:(id)changed value:(id)value
 {
   v6 = self + OBJC_IVAR____TtC19ActivityBridgeSetup19ActivityGoalDayCell_delegate;
   if (swift_unknownObjectWeakLoadStrong())
@@ -42,8 +42,8 @@
     v7 = *(v6 + 1);
     swift_getObjectType();
     v8 = *(v7 + 8);
-    v9 = a4;
-    v10 = self;
+    valueCopy = value;
+    selfCopy = self;
     v8();
     swift_unknownObjectRelease();
   }

@@ -1,13 +1,13 @@
 @interface TSDClockStatistics
-- (TSDClockStatistics)initWithClockIdentifier:(unint64_t)a3;
+- (TSDClockStatistics)initWithClockIdentifier:(unint64_t)identifier;
 - (void)dealloc;
-- (void)didBeginClockGrandmasterChangeWithGrandmasterID:(unint64_t)a3 localPort:(unsigned __int16)a4 forClock:(id)a5;
-- (void)didChangeClockMasterForClock:(id)a3;
-- (void)didChangeLockStateTo:(int)a3 forClock:(id)a4;
-- (void)didEndClockGrandmasterChangeWithGrandmasterID:(unint64_t)a3 localPort:(unsigned __int16)a4 forClock:(id)a5;
-- (void)didGetStatsOfLocalPortNumber:(unint64_t)a3 mean:(unint64_t)a4 median:(unint64_t)a5 stddev:(unint64_t)a6 min:(unint64_t)a7 max:(unint64_t)a8 numberOfSamples:(unsigned int)a9 forClock:(id)a10;
-- (void)didProcessSync:(id)a3;
-- (void)didResetClock:(id)a3;
+- (void)didBeginClockGrandmasterChangeWithGrandmasterID:(unint64_t)d localPort:(unsigned __int16)port forClock:(id)clock;
+- (void)didChangeClockMasterForClock:(id)clock;
+- (void)didChangeLockStateTo:(int)to forClock:(id)clock;
+- (void)didEndClockGrandmasterChangeWithGrandmasterID:(unint64_t)d localPort:(unsigned __int16)port forClock:(id)clock;
+- (void)didGetStatsOfLocalPortNumber:(unint64_t)number mean:(unint64_t)mean median:(unint64_t)median stddev:(unint64_t)stddev min:(unint64_t)min max:(unint64_t)max numberOfSamples:(unsigned int)samples forClock:(id)self0;
+- (void)didProcessSync:(id)sync;
+- (void)didResetClock:(id)clock;
 - (void)finalizeClock;
 - (void)logStatistics;
 @end
@@ -25,38 +25,38 @@
     v6 = &_os_log_default;
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [(TSDKernelClock *)self->_clock clockIdentifier];
+      clockIdentifier = [(TSDKernelClock *)self->_clock clockIdentifier];
       *buf = 134217984;
-      *&buf[4] = v7;
+      *&buf[4] = clockIdentifier;
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "PTP Clock Statistics for 0x%016llx\n", buf, 0xCu);
     }
 
     v8 = &_os_log_default;
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [(TSDKernelClock *)v5 grandmasterIdentity];
+      grandmasterIdentity = [(TSDKernelClock *)v5 grandmasterIdentity];
       *buf = 134217984;
-      *&buf[4] = v9;
+      *&buf[4] = grandmasterIdentity;
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "    Grandmaster Identity: 0x%016llx\n", buf, 0xCu);
     }
 
-    v10 = [(TSDKernelClock *)v5 lockState];
-    if (v10 > 2)
+    lockState = [(TSDKernelClock *)v5 lockState];
+    if (lockState > 2)
     {
       v11 = @"Unknown";
     }
 
     else
     {
-      v11 = off_10004CAF8[v10];
+      v11 = off_10004CAF8[lockState];
     }
 
     v15 = &_os_log_default;
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = [(__CFString *)v11 UTF8String];
+      uTF8String = [(__CFString *)v11 UTF8String];
       *buf = 136315138;
-      *&buf[4] = v16;
+      *&buf[4] = uTF8String;
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "    Clock lock state: %s\n", buf, 0xCu);
     }
 
@@ -108,10 +108,10 @@
 
     else if (v20)
     {
-      v28 = [v18 localizedDescription];
-      v29 = [v28 UTF8String];
+      localizedDescription = [v18 localizedDescription];
+      uTF8String2 = [localizedDescription UTF8String];
       *buf = 136315138;
-      *&buf[4] = v29;
+      *&buf[4] = uTF8String2;
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "    Mach Sync Info: failed to get rate ratio and anchors with error %s\n", buf, 0xCu);
     }
 
@@ -135,7 +135,7 @@
         _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "    TimeSync Rate Ratio: %llu/%llu (%0.12f)\n", buf, 0x20u);
       }
 
-      v33 = self;
+      selfCopy2 = self;
 
       v34 = &_os_log_default;
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
@@ -160,25 +160,25 @@
 
     else
     {
-      v33 = self;
+      selfCopy2 = self;
       if (v32)
       {
-        v42 = [v285 localizedDescription];
-        v43 = [v42 UTF8String];
+        localizedDescription2 = [v285 localizedDescription];
+        uTF8String3 = [localizedDescription2 UTF8String];
         *buf = 136315138;
-        *&buf[4] = v43;
+        *&buf[4] = uTF8String3;
         _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "    TimeSync Sync Info: failed to get rate ratio and anchors with error %s\n", buf, 0xCu);
       }
     }
 
-    v44 = [(TSDKernelClock *)v5 ports];
+    ports = [(TSDKernelClock *)v5 ports];
     v295 = +[NSMutableDictionary dictionary];
     v347 = +[NSMutableDictionary dictionary];
     v372 = 0u;
     v373 = 0u;
     v374 = 0u;
     v375 = 0u;
-    obj = v44;
+    obj = ports;
     v45 = [obj countByEnumeratingWithState:&v372 objects:v386 count:16];
     if (v45)
     {
@@ -204,15 +204,15 @@
             }
           }
 
-          v50 = [v49 statistics];
-          if (v50)
+          statistics = [v49 statistics];
+          if (statistics)
           {
-            v51 = v50;
-            v52 = [v50 portIdentifier];
-            [v295 setObject:v51 forKeyedSubscript:v52];
+            v51 = statistics;
+            portIdentifier = [statistics portIdentifier];
+            [v295 setObject:v51 forKeyedSubscript:portIdentifier];
 
-            v53 = [v51 portIdentifier];
-            [v347 setObject:v49 forKeyedSubscript:v53];
+            portIdentifier2 = [v51 portIdentifier];
+            [v347 setObject:v49 forKeyedSubscript:portIdentifier2];
           }
         }
 
@@ -222,11 +222,11 @@
       while (v46);
     }
 
-    v54 = v33;
-    if (!v33->_firstStatistics)
+    v54 = selfCopy2;
+    if (!selfCopy2->_firstStatistics)
     {
       v55 = +[TSDClockManager sharedClockManager];
-      v340 = [v55 machAbsoluteTicksToNanoseconds:v286 - v33->_lastStatisticsTime];
+      v340 = [v55 machAbsoluteTicksToNanoseconds:v286 - selfCopy2->_lastStatisticsTime];
 
       v370 = 0u;
       v371 = 0u;
@@ -241,7 +241,7 @@
 
       v296 = *v369;
       v287 = v56;
-      v288 = v33;
+      v288 = selfCopy2;
       while (1)
       {
         for (j = 0; j != v297; j = j + 1)
@@ -261,12 +261,12 @@
             _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "    Port:\n", buf, 2u);
           }
 
-          v62 = [v60 portType];
-          if (v62 <= 3)
+          portType = [v60 portType];
+          if (portType <= 3)
           {
-            if (v62 > 1)
+            if (portType > 1)
             {
-              if (v62 == 2)
+              if (portType == 2)
               {
                 v69 = &_os_log_default;
                 if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
@@ -289,9 +289,9 @@
               }
             }
 
-            else if (v62)
+            else if (portType)
             {
-              if (v62 != 1)
+              if (portType != 1)
               {
                 goto LABEL_97;
               }
@@ -318,9 +318,9 @@ LABEL_95:
             }
           }
 
-          else if (v62 <= 5)
+          else if (portType <= 5)
           {
-            if (v62 == 4)
+            if (portType == 4)
             {
               v71 = &_os_log_default;
               if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
@@ -345,7 +345,7 @@ LABEL_95:
 
           else
           {
-            switch(v62)
+            switch(portType)
             {
               case 6:
                 v70 = &_os_log_default;
@@ -386,101 +386,101 @@ LABEL_97:
           v73 = &_os_log_default;
           if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
           {
-            v74 = [v59 interfaceName];
-            v75 = [v74 UTF8String];
+            interfaceName = [v59 interfaceName];
+            uTF8String4 = [interfaceName UTF8String];
             *buf = 136315138;
-            *&buf[4] = v75;
+            *&buf[4] = uTF8String4;
             _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "        Interface: %s\n", buf, 0xCu);
           }
 
           v76 = &_os_log_default;
           if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
           {
-            v77 = [v59 destinationAddressString];
-            v78 = [v77 UTF8String];
+            destinationAddressString = [v59 destinationAddressString];
+            uTF8String5 = [destinationAddressString UTF8String];
             *buf = 136315138;
-            *&buf[4] = v78;
+            *&buf[4] = uTF8String5;
             _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "        Destination Address: %s\n", buf, 0xCu);
           }
 
           v79 = &_os_log_default;
           if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
           {
-            v80 = [v59 propagationDelay];
+            propagationDelay = [v59 propagationDelay];
             *buf = 67109120;
-            *&buf[4] = v80;
+            *&buf[4] = propagationDelay;
             _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "        Propgation Delay: %u\n", buf, 8u);
           }
 
           v81 = &_os_log_default;
           if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
           {
-            v82 = [v59 minimumPropagationDelay];
+            minimumPropagationDelay = [v59 minimumPropagationDelay];
             *buf = 67109120;
-            *&buf[4] = v82;
+            *&buf[4] = minimumPropagationDelay;
             _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "        Minimum Propagation Delay: %u\n", buf, 8u);
           }
 
           v83 = &_os_log_default;
           if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
           {
-            v84 = [v59 maximumPropagationDelay];
+            maximumPropagationDelay = [v59 maximumPropagationDelay];
             *buf = 67109120;
-            *&buf[4] = v84;
+            *&buf[4] = maximumPropagationDelay;
             _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "        Maximum Propagation Delay: %u\n", buf, 8u);
           }
 
           v85 = &_os_log_default;
           if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
           {
-            v86 = [v59 minimumRawDelay];
+            minimumRawDelay = [v59 minimumRawDelay];
             *buf = 67109120;
-            *&buf[4] = v86;
+            *&buf[4] = minimumRawDelay;
             _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "        Minimum Raw Delay: %u\n", buf, 8u);
           }
 
           v87 = &_os_log_default;
           if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
           {
-            v88 = [v59 maximumRawDelay];
+            maximumRawDelay = [v59 maximumRawDelay];
             *buf = 67109120;
-            *&buf[4] = v88;
+            *&buf[4] = maximumRawDelay;
             _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "        Maximum Raw Delay: %u\n", buf, 8u);
           }
 
           v89 = &_os_log_default;
           if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
           {
-            v90 = [v59 portNumber];
+            portNumber = [v59 portNumber];
             *buf = 67109120;
-            *&buf[4] = v90;
+            *&buf[4] = portNumber;
             _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "        Local Clock Port Number: %hu\n", buf, 8u);
           }
 
           v91 = &_os_log_default;
           if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
           {
-            v92 = [v59 remoteClockIdentity];
+            remoteClockIdentity = [v59 remoteClockIdentity];
             *buf = 134217984;
-            *&buf[4] = v92;
+            *&buf[4] = remoteClockIdentity;
             _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "        Remote Clock Identity: 0x%016llx\n", buf, 0xCu);
           }
 
           v93 = &_os_log_default;
           if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
           {
-            v94 = [v59 remotePortNumber];
+            remotePortNumber = [v59 remotePortNumber];
             *buf = 67109120;
-            *&buf[4] = v94;
+            *&buf[4] = remotePortNumber;
             _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "        Remote Clock Port Number: %hu\n", buf, 8u);
           }
 
-          v95 = [v59 portRole];
-          if (v95 <= 1)
+          portRole = [v59 portRole];
+          if (portRole <= 1)
           {
-            if (v95)
+            if (portRole)
             {
-              if (v95 != 1)
+              if (portRole != 1)
               {
                 goto LABEL_135;
               }
@@ -509,7 +509,7 @@ LABEL_133:
 
           else
           {
-            switch(v95)
+            switch(portRole)
             {
               case 2:
                 v99 = &_os_log_default;
@@ -556,8 +556,8 @@ LABEL_135:
 
           v339 = j;
           v103 = [(NSDictionary *)v54->_lastStatistics objectForKeyedSubscript:v58];
-          v104 = [v103 portRole];
-          if (v104 != [v60 portRole])
+          portRole2 = [v103 portRole];
+          if (portRole2 != [v60 portRole])
           {
             v105 = &_os_log_default;
             if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
@@ -592,49 +592,49 @@ LABEL_135:
             LODWORD(v354) = 0;
           }
 
-          v343 = [v60 receivedSyncCounter];
-          v341 = [v103 receivedSyncCounter];
-          v108 = v343 - v341;
-          v109 = [v60 receivedFollowUpCounter];
-          v110 = [v103 receivedFollowUpCounter];
-          v302 = [v60 receivedAnnounceCounter];
-          v301 = [v103 receivedAnnounceCounter];
-          v300 = [v60 receivedSignalCounter];
-          v299 = [v103 receivedSignalCounter];
-          v304 = [v60 receivedPacketDiscardCounter];
-          v303 = [v103 receivedPacketDiscardCounter];
-          v306 = [v60 syncReceiptTimeoutCounter];
-          v305 = [v103 syncReceiptTimeoutCounter];
-          v308 = [v60 announceReceiptTimeoutCounter];
-          v307 = [v103 announceReceiptTimeoutCounter];
-          v310 = [v60 allowedLostResponsesExceededCounter];
-          v309 = [v103 allowedLostResponsesExceededCounter];
-          v351 = [v60 transmittedSyncCounter];
-          v348 = [v103 transmittedSyncCounter];
-          v312 = [v60 transmittedFollowUpCounter];
-          v311 = [v103 transmittedFollowUpCounter];
-          v360 = [v60 transmittedAnnounceCounter];
-          v357 = [v103 transmittedAnnounceCounter];
-          v314 = [v60 transmittedSignalCounter];
-          v313 = [v103 transmittedSignalCounter];
-          v316 = [v60 transmittedPacketDiscardCounter];
-          v315 = [v103 transmittedPacketDiscardCounter];
-          v318 = [v60 attemptedSyncCounter];
-          v317 = [v103 attemptedSyncCounter];
-          v324 = [v60 attemptedFollowUpCounter];
-          v321 = [v103 attemptedFollowUpCounter];
-          v330 = [v60 attemptedAnnounceCounter];
-          v327 = [v103 attemptedAnnounceCounter];
-          v336 = [v60 attemptedSignalCounter];
-          v333 = [v103 attemptedSignalCounter];
-          v292 = [v60 rawDelayExceededCounter];
-          v291 = [v103 rawDelayExceededCounter];
-          v294 = [v60 rawDelayMeasurementCounter];
-          v293 = [v103 rawDelayMeasurementCounter];
+          receivedSyncCounter = [v60 receivedSyncCounter];
+          receivedSyncCounter2 = [v103 receivedSyncCounter];
+          v108 = receivedSyncCounter - receivedSyncCounter2;
+          receivedFollowUpCounter = [v60 receivedFollowUpCounter];
+          receivedFollowUpCounter2 = [v103 receivedFollowUpCounter];
+          receivedAnnounceCounter = [v60 receivedAnnounceCounter];
+          receivedAnnounceCounter2 = [v103 receivedAnnounceCounter];
+          receivedSignalCounter = [v60 receivedSignalCounter];
+          receivedSignalCounter2 = [v103 receivedSignalCounter];
+          receivedPacketDiscardCounter = [v60 receivedPacketDiscardCounter];
+          receivedPacketDiscardCounter2 = [v103 receivedPacketDiscardCounter];
+          syncReceiptTimeoutCounter = [v60 syncReceiptTimeoutCounter];
+          syncReceiptTimeoutCounter2 = [v103 syncReceiptTimeoutCounter];
+          announceReceiptTimeoutCounter = [v60 announceReceiptTimeoutCounter];
+          announceReceiptTimeoutCounter2 = [v103 announceReceiptTimeoutCounter];
+          allowedLostResponsesExceededCounter = [v60 allowedLostResponsesExceededCounter];
+          allowedLostResponsesExceededCounter2 = [v103 allowedLostResponsesExceededCounter];
+          transmittedSyncCounter = [v60 transmittedSyncCounter];
+          transmittedSyncCounter2 = [v103 transmittedSyncCounter];
+          transmittedFollowUpCounter = [v60 transmittedFollowUpCounter];
+          transmittedFollowUpCounter2 = [v103 transmittedFollowUpCounter];
+          transmittedAnnounceCounter = [v60 transmittedAnnounceCounter];
+          transmittedAnnounceCounter2 = [v103 transmittedAnnounceCounter];
+          transmittedSignalCounter = [v60 transmittedSignalCounter];
+          transmittedSignalCounter2 = [v103 transmittedSignalCounter];
+          transmittedPacketDiscardCounter = [v60 transmittedPacketDiscardCounter];
+          transmittedPacketDiscardCounter2 = [v103 transmittedPacketDiscardCounter];
+          attemptedSyncCounter = [v60 attemptedSyncCounter];
+          attemptedSyncCounter2 = [v103 attemptedSyncCounter];
+          attemptedFollowUpCounter = [v60 attemptedFollowUpCounter];
+          attemptedFollowUpCounter2 = [v103 attemptedFollowUpCounter];
+          attemptedAnnounceCounter = [v60 attemptedAnnounceCounter];
+          attemptedAnnounceCounter2 = [v103 attemptedAnnounceCounter];
+          attemptedSignalCounter = [v60 attemptedSignalCounter];
+          attemptedSignalCounter2 = [v103 attemptedSignalCounter];
+          rawDelayExceededCounter = [v60 rawDelayExceededCounter];
+          rawDelayExceededCounter2 = [v103 rawDelayExceededCounter];
+          rawDelayMeasurementCounter = [v60 rawDelayMeasurementCounter];
+          rawDelayMeasurementCounter2 = [v103 rawDelayMeasurementCounter];
           v111 = (v106 + 9) / 0xAu;
           v112 = &_os_log_default;
           v113 = os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT);
-          v114 = v343 - v341 < v106 - v111 && v106 >= v111;
+          v114 = receivedSyncCounter - receivedSyncCounter2 < v106 - v111 && v106 >= v111;
           if (v114 || v108 > v111 + v106)
           {
             if (!v113)
@@ -643,7 +643,7 @@ LABEL_135:
             }
 
             *buf = 67109632;
-            *&buf[4] = v343 - v341;
+            *&buf[4] = receivedSyncCounter - receivedSyncCounter2;
             *&buf[8] = 1024;
             *&buf[10] = v106;
             LOWORD(v388) = 1024;
@@ -660,7 +660,7 @@ LABEL_135:
             }
 
             *buf = 67109376;
-            *&buf[4] = v343 - v341;
+            *&buf[4] = receivedSyncCounter - receivedSyncCounter2;
             *&buf[8] = 1024;
             *&buf[10] = v106;
             v115 = "        Received Sync Counter: %u expected %u\n";
@@ -669,16 +669,16 @@ LABEL_135:
 
           _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, v115, buf, v116);
 LABEL_157:
-          v117 = v109 - v110;
+          v117 = receivedFollowUpCounter - receivedFollowUpCounter2;
 
           v118 = &_os_log_default;
           v119 = os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT);
-          v120 = v117 >= v108 - 1 || v343 == v341;
+          v120 = v117 >= v108 - 1 || receivedSyncCounter == receivedSyncCounter2;
           v289 = v108 + 1;
           v290 = v108 - 1;
           if (v120 && v117 <= v108 + 1)
           {
-            v121 = v302;
+            v121 = receivedAnnounceCounter;
             if (!v119)
             {
               goto LABEL_168;
@@ -687,13 +687,13 @@ LABEL_157:
             *buf = 67109376;
             *&buf[4] = v117;
             *&buf[8] = 1024;
-            *&buf[10] = v343 - v341;
+            *&buf[10] = receivedSyncCounter - receivedSyncCounter2;
             v122 = "        Received FollowUp Counter: %u expected %u\n";
           }
 
           else
           {
-            v121 = v302;
+            v121 = receivedAnnounceCounter;
             if (!v119)
             {
               goto LABEL_168;
@@ -702,18 +702,18 @@ LABEL_157:
             *buf = 67109376;
             *&buf[4] = v117;
             *&buf[8] = 1024;
-            *&buf[10] = v343 - v341;
+            *&buf[10] = receivedSyncCounter - receivedSyncCounter2;
             v122 = "        Received FollowUp Counter: %u out of expected bounds (%u ± 1)\n";
           }
 
           _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, v122, buf, 0xEu);
 LABEL_168:
-          v123 = v121 - v301;
+          v123 = v121 - receivedAnnounceCounter2;
 
           v124 = (v107 + 9) / 0xAu;
           v125 = &_os_log_default;
           v126 = os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT);
-          v127 = v121 - v301 < v107 - v124 && v107 >= v124;
+          v127 = v121 - receivedAnnounceCounter2 < v107 - v124 && v107 >= v124;
           if (v127 || v123 > v124 + v107)
           {
             if (!v126)
@@ -722,7 +722,7 @@ LABEL_168:
             }
 
             *buf = 67109632;
-            *&buf[4] = v121 - v301;
+            *&buf[4] = v121 - receivedAnnounceCounter2;
             *&buf[8] = 1024;
             *&buf[10] = v107;
             LOWORD(v388) = 1024;
@@ -739,7 +739,7 @@ LABEL_168:
             }
 
             *buf = 67109376;
-            *&buf[4] = v121 - v301;
+            *&buf[4] = v121 - receivedAnnounceCounter2;
             *&buf[8] = 1024;
             *&buf[10] = v107;
             v128 = "        Received Announce Counter: %u expected %u\n";
@@ -751,8 +751,8 @@ LABEL_178:
 
           v130 = &_os_log_default;
           v131 = os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT);
-          v132 = v300 - v299 >= v123 - 1 || v121 == v301;
-          if (v132 && v300 - v299 <= v123 + 1)
+          v132 = receivedSignalCounter - receivedSignalCounter2 >= v123 - 1 || v121 == receivedAnnounceCounter2;
+          if (v132 && receivedSignalCounter - receivedSignalCounter2 <= v123 + 1)
           {
             if (!v131)
             {
@@ -760,9 +760,9 @@ LABEL_178:
             }
 
             *buf = 67109376;
-            *&buf[4] = v300 - v299;
+            *&buf[4] = receivedSignalCounter - receivedSignalCounter2;
             *&buf[8] = 1024;
-            *&buf[10] = v121 - v301;
+            *&buf[10] = v121 - receivedAnnounceCounter2;
             v133 = "        Received Signal Counter: %u expected %u\n";
           }
 
@@ -774,9 +774,9 @@ LABEL_178:
             }
 
             *buf = 67109376;
-            *&buf[4] = v300 - v299;
+            *&buf[4] = receivedSignalCounter - receivedSignalCounter2;
             *&buf[8] = 1024;
-            *&buf[10] = v121 - v301;
+            *&buf[10] = v121 - receivedAnnounceCounter2;
             v133 = "        Received Signal Counter: %u out of expected bounds (%u ± 1)\n";
           }
 
@@ -785,7 +785,7 @@ LABEL_189:
 
           v134 = &_os_log_default;
           v135 = os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT);
-          if (v304 == v303)
+          if (receivedPacketDiscardCounter == receivedPacketDiscardCounter2)
           {
             if (!v135)
             {
@@ -804,7 +804,7 @@ LABEL_189:
             }
 
             *buf = 67109120;
-            *&buf[4] = v304 - v303;
+            *&buf[4] = receivedPacketDiscardCounter - receivedPacketDiscardCounter2;
             v136 = "        Received Packet Discard Counter: %u greater than 0\n";
           }
 
@@ -813,7 +813,7 @@ LABEL_195:
 
           v137 = &_os_log_default;
           v138 = os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT);
-          if (v306 == v305)
+          if (syncReceiptTimeoutCounter == syncReceiptTimeoutCounter2)
           {
             if (!v138)
             {
@@ -832,7 +832,7 @@ LABEL_195:
             }
 
             *buf = 67109120;
-            *&buf[4] = v306 - v305;
+            *&buf[4] = syncReceiptTimeoutCounter - syncReceiptTimeoutCounter2;
             v139 = "        Received Sync Receipt Timeout Counter: %u greater than 0\n";
           }
 
@@ -841,7 +841,7 @@ LABEL_201:
 
           v140 = &_os_log_default;
           v141 = os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT);
-          if (v308 == v307)
+          if (announceReceiptTimeoutCounter == announceReceiptTimeoutCounter2)
           {
             if (!v141)
             {
@@ -860,7 +860,7 @@ LABEL_201:
             }
 
             *buf = 67109120;
-            *&buf[4] = v308 - v307;
+            *&buf[4] = announceReceiptTimeoutCounter - announceReceiptTimeoutCounter2;
             v142 = "        Received Announce Receipt Timeout Counter: %u greater than 0\n";
           }
 
@@ -869,7 +869,7 @@ LABEL_207:
 
           v143 = &_os_log_default;
           v144 = os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT);
-          if (v310 == v309)
+          if (allowedLostResponsesExceededCounter == allowedLostResponsesExceededCounter2)
           {
             if (!v144)
             {
@@ -888,18 +888,18 @@ LABEL_207:
             }
 
             *buf = 67109120;
-            *&buf[4] = v310 - v309;
+            *&buf[4] = allowedLostResponsesExceededCounter - allowedLostResponsesExceededCounter2;
             v145 = "        Received Allowed Lost Responses Exceeded Counter: %u greater than 0\n";
           }
 
           _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, v145, buf, 8u);
 LABEL_213:
-          v146 = v351 - v348;
+          v146 = transmittedSyncCounter - transmittedSyncCounter2;
 
           v147 = (v354 + 9) / 0xAu;
           v148 = &_os_log_default;
           v149 = os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT);
-          v150 = v351 - v348 < v354 - v147 && v354 >= v147;
+          v150 = transmittedSyncCounter - transmittedSyncCounter2 < v354 - v147 && v354 >= v147;
           if (v150 || v146 > v147 + v354)
           {
             if (!v149)
@@ -908,7 +908,7 @@ LABEL_213:
             }
 
             *buf = 67109632;
-            *&buf[4] = v351 - v348;
+            *&buf[4] = transmittedSyncCounter - transmittedSyncCounter2;
             *&buf[8] = 1024;
             *&buf[10] = v354;
             LOWORD(v388) = 1024;
@@ -925,7 +925,7 @@ LABEL_213:
             }
 
             *buf = 67109376;
-            *&buf[4] = v351 - v348;
+            *&buf[4] = transmittedSyncCounter - transmittedSyncCounter2;
             *&buf[8] = 1024;
             *&buf[10] = v354;
             v151 = "        Transmitted Sync Counter: %u expected %u\n";
@@ -937,8 +937,8 @@ LABEL_223:
 
           v153 = &_os_log_default;
           v154 = os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT);
-          v155 = v312 - v311 >= v146 - 1 || v351 == v348;
-          if (v155 && v312 - v311 <= v146 + 1)
+          v155 = transmittedFollowUpCounter - transmittedFollowUpCounter2 >= v146 - 1 || transmittedSyncCounter == transmittedSyncCounter2;
+          if (v155 && transmittedFollowUpCounter - transmittedFollowUpCounter2 <= v146 + 1)
           {
             if (!v154)
             {
@@ -946,9 +946,9 @@ LABEL_223:
             }
 
             *buf = 67109376;
-            *&buf[4] = v312 - v311;
+            *&buf[4] = transmittedFollowUpCounter - transmittedFollowUpCounter2;
             *&buf[8] = 1024;
-            *&buf[10] = v351 - v348;
+            *&buf[10] = transmittedSyncCounter - transmittedSyncCounter2;
             v156 = "        Transmitted FollowUp Counter: %u expected %u\n";
           }
 
@@ -960,17 +960,17 @@ LABEL_223:
             }
 
             *buf = 67109376;
-            *&buf[4] = v312 - v311;
+            *&buf[4] = transmittedFollowUpCounter - transmittedFollowUpCounter2;
             *&buf[8] = 1024;
-            *&buf[10] = v351 - v348;
+            *&buf[10] = transmittedSyncCounter - transmittedSyncCounter2;
             v156 = "        Transmitted FollowUp Counter: %u out of expected bounds (%u ± 1)\n";
           }
 
           _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, v156, buf, 0xEu);
 LABEL_234:
-          v157 = v360 - v357;
+          v157 = transmittedAnnounceCounter - transmittedAnnounceCounter2;
 
-          v158 = v360 - v357 < v363 - 1 && v363 != 0;
+          v158 = transmittedAnnounceCounter - transmittedAnnounceCounter2 < v363 - 1 && v363 != 0;
           v159 = &_os_log_default;
           v160 = os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT);
           if (v158 || v157 > v363 + 1)
@@ -981,7 +981,7 @@ LABEL_234:
             }
 
             *buf = 67109376;
-            *&buf[4] = v360 - v357;
+            *&buf[4] = transmittedAnnounceCounter - transmittedAnnounceCounter2;
             *&buf[8] = 1024;
             *&buf[10] = v363;
             v161 = "        Transmitted Announce Counter: %u out of expected bounds (%u ± 1)\n";
@@ -995,7 +995,7 @@ LABEL_234:
             }
 
             *buf = 67109376;
-            *&buf[4] = v360 - v357;
+            *&buf[4] = transmittedAnnounceCounter - transmittedAnnounceCounter2;
             *&buf[8] = 1024;
             *&buf[10] = v363;
             v161 = "        Transmitted Announce Counter: %u expected %u\n";
@@ -1006,8 +1006,8 @@ LABEL_244:
 
           v162 = &_os_log_default;
           v163 = os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT);
-          v164 = v314 - v313 >= v157 - 1 || v360 == v357;
-          if (v164 && v314 - v313 <= v157 + 1)
+          v164 = transmittedSignalCounter - transmittedSignalCounter2 >= v157 - 1 || transmittedAnnounceCounter == transmittedAnnounceCounter2;
+          if (v164 && transmittedSignalCounter - transmittedSignalCounter2 <= v157 + 1)
           {
             if (!v163)
             {
@@ -1015,9 +1015,9 @@ LABEL_244:
             }
 
             *buf = 67109376;
-            *&buf[4] = v314 - v313;
+            *&buf[4] = transmittedSignalCounter - transmittedSignalCounter2;
             *&buf[8] = 1024;
-            *&buf[10] = v360 - v357;
+            *&buf[10] = transmittedAnnounceCounter - transmittedAnnounceCounter2;
             v165 = "        Transmitted Signal Counter: %u expected %u\n";
           }
 
@@ -1029,9 +1029,9 @@ LABEL_244:
             }
 
             *buf = 67109376;
-            *&buf[4] = v314 - v313;
+            *&buf[4] = transmittedSignalCounter - transmittedSignalCounter2;
             *&buf[8] = 1024;
-            *&buf[10] = v360 - v357;
+            *&buf[10] = transmittedAnnounceCounter - transmittedAnnounceCounter2;
             v165 = "        Transmitted Signal Counter: %u out of expected bounds (%u ± 1)\n";
           }
 
@@ -1040,7 +1040,7 @@ LABEL_255:
 
           v166 = &_os_log_default;
           v167 = os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT);
-          if (v316 == v315)
+          if (transmittedPacketDiscardCounter == transmittedPacketDiscardCounter2)
           {
             if (!v167)
             {
@@ -1059,7 +1059,7 @@ LABEL_255:
             }
 
             *buf = 67109120;
-            *&buf[4] = v316 - v315;
+            *&buf[4] = transmittedPacketDiscardCounter - transmittedPacketDiscardCounter2;
             v168 = "        Transmitted Packet Discard Counter: %u greater than 0\n";
           }
 
@@ -1068,8 +1068,8 @@ LABEL_261:
 
           v169 = &_os_log_default;
           v170 = os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT);
-          v171 = v318 - v317 < v354 - v147 && v354 >= v147;
-          if (v171 || v318 - v317 > v147 + v354)
+          v171 = attemptedSyncCounter - attemptedSyncCounter2 < v354 - v147 && v354 >= v147;
+          if (v171 || attemptedSyncCounter - attemptedSyncCounter2 > v147 + v354)
           {
             if (!v170)
             {
@@ -1077,7 +1077,7 @@ LABEL_261:
             }
 
             *buf = 67109632;
-            *&buf[4] = v318 - v317;
+            *&buf[4] = attemptedSyncCounter - attemptedSyncCounter2;
             *&buf[8] = 1024;
             *&buf[10] = v354;
             LOWORD(v388) = 1024;
@@ -1094,7 +1094,7 @@ LABEL_261:
             }
 
             *buf = 67109376;
-            *&buf[4] = v318 - v317;
+            *&buf[4] = attemptedSyncCounter - attemptedSyncCounter2;
             *&buf[8] = 1024;
             *&buf[10] = v354;
             v172 = "        Attempted Sync Counter: %u expected %u\n";
@@ -1106,8 +1106,8 @@ LABEL_271:
 
           v174 = &_os_log_default;
           v175 = os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT);
-          v176 = v324 - v321 >= v146 - 1 || v351 == v348;
-          if (v176 && v324 - v321 <= v146 + 1)
+          v176 = attemptedFollowUpCounter - attemptedFollowUpCounter2 >= v146 - 1 || transmittedSyncCounter == transmittedSyncCounter2;
+          if (v176 && attemptedFollowUpCounter - attemptedFollowUpCounter2 <= v146 + 1)
           {
             v59 = v345;
             v177 = v363 + 1;
@@ -1117,9 +1117,9 @@ LABEL_271:
             }
 
             *buf = 67109376;
-            *&buf[4] = v324 - v321;
+            *&buf[4] = attemptedFollowUpCounter - attemptedFollowUpCounter2;
             *&buf[8] = 1024;
-            *&buf[10] = v351 - v348;
+            *&buf[10] = transmittedSyncCounter - transmittedSyncCounter2;
             v178 = "        Attempted FollowUp Counter: %u expected %u\n";
           }
 
@@ -1133,9 +1133,9 @@ LABEL_271:
             }
 
             *buf = 67109376;
-            *&buf[4] = v324 - v321;
+            *&buf[4] = attemptedFollowUpCounter - attemptedFollowUpCounter2;
             *&buf[8] = 1024;
-            *&buf[10] = v351 - v348;
+            *&buf[10] = transmittedSyncCounter - transmittedSyncCounter2;
             v178 = "        Attempted FollowUp Counter: %u out of expected bounds (%u ± 1)\n";
           }
 
@@ -1144,8 +1144,8 @@ LABEL_282:
 
           v179 = &_os_log_default;
           v180 = os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT);
-          v181 = v330 - v327 >= v363 - 1 || v363 == 0;
-          if (v181 && v330 - v327 <= v177)
+          v181 = attemptedAnnounceCounter - attemptedAnnounceCounter2 >= v363 - 1 || v363 == 0;
+          if (v181 && attemptedAnnounceCounter - attemptedAnnounceCounter2 <= v177)
           {
             if (!v180)
             {
@@ -1153,7 +1153,7 @@ LABEL_282:
             }
 
             *buf = 67109376;
-            *&buf[4] = v330 - v327;
+            *&buf[4] = attemptedAnnounceCounter - attemptedAnnounceCounter2;
             *&buf[8] = 1024;
             *&buf[10] = v363;
             v182 = "        Attempted Announce Counter: %u expected %u\n";
@@ -1167,7 +1167,7 @@ LABEL_282:
             }
 
             *buf = 67109376;
-            *&buf[4] = v330 - v327;
+            *&buf[4] = attemptedAnnounceCounter - attemptedAnnounceCounter2;
             *&buf[8] = 1024;
             *&buf[10] = v363;
             v182 = "        Attempted Announce Counter: %u out of expected bounds (%u ± 1)\n";
@@ -1178,8 +1178,8 @@ LABEL_293:
 
           v183 = &_os_log_default;
           v184 = os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT);
-          v185 = v336 - v333 >= v157 - 1 || v360 == v357;
-          if (v185 && v336 - v333 <= v157 + 1)
+          v185 = attemptedSignalCounter - attemptedSignalCounter2 >= v157 - 1 || transmittedAnnounceCounter == transmittedAnnounceCounter2;
+          if (v185 && attemptedSignalCounter - attemptedSignalCounter2 <= v157 + 1)
           {
             if (!v184)
             {
@@ -1187,9 +1187,9 @@ LABEL_293:
             }
 
             *buf = 67109376;
-            *&buf[4] = v336 - v333;
+            *&buf[4] = attemptedSignalCounter - attemptedSignalCounter2;
             *&buf[8] = 1024;
-            *&buf[10] = v360 - v357;
+            *&buf[10] = transmittedAnnounceCounter - transmittedAnnounceCounter2;
             v186 = "        Attempted Signal Counter: %u expected %u\n";
           }
 
@@ -1201,9 +1201,9 @@ LABEL_293:
             }
 
             *buf = 67109376;
-            *&buf[4] = v336 - v333;
+            *&buf[4] = attemptedSignalCounter - attemptedSignalCounter2;
             *&buf[8] = 1024;
-            *&buf[10] = v360 - v357;
+            *&buf[10] = transmittedAnnounceCounter - transmittedAnnounceCounter2;
             v186 = "        Attempted Signal Counter: %u out of expected bounds (%u ± 1)\n";
           }
 
@@ -1214,7 +1214,7 @@ LABEL_304:
           if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 67109120;
-            *&buf[4] = v292 - v291;
+            *&buf[4] = rawDelayExceededCounter - rawDelayExceededCounter2;
             _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "        Raw Delay Exceeded Counter: %u\n", buf, 8u);
           }
 
@@ -1222,7 +1222,7 @@ LABEL_304:
           if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 67109120;
-            *&buf[4] = v294 - v293;
+            *&buf[4] = rawDelayMeasurementCounter - rawDelayMeasurementCounter2;
             _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "        Raw Delay Measurements Counter: %u\n", buf, 8u);
           }
 
@@ -1231,35 +1231,35 @@ LABEL_304:
           {
             v344 = sub_100017D7C([v59 localPDelayLogMeanInterval]);
             v189 = v340 / sub_100017D7C([v59 remotePDelayLogMeanInterval]);
-            v190 = [v60 receivedPDelayRequestCounter];
-            v191 = [v103 receivedPDelayRequestCounter];
-            v192 = v190 - v191;
-            v319 = [v60 transmittedPDelayResponseCounter];
-            v193 = [v103 transmittedPDelayResponseCounter];
-            v325 = [v60 transmittedPDelayResponseFollowUpCounter];
-            v322 = [v103 transmittedPDelayResponseFollowUpCounter];
-            v331 = [v60 attemptedPDelayResponseCounter];
-            v328 = [v103 attemptedPDelayResponseCounter];
-            v337 = [v60 attemptedPDelayResponseFollowUpCounter];
-            v334 = [v103 attemptedPDelayResponseFollowUpCounter];
-            v364 = [v60 transmittedPDelayRequestCounter];
-            v361 = [v103 transmittedPDelayRequestCounter];
-            v346 = [v60 attemptedPDelayRequestCounter];
-            v342 = [v103 attemptedPDelayRequestCounter];
-            v352 = [v60 receivedPDelayResponseCounter];
-            v349 = [v103 receivedPDelayResponseCounter];
-            v358 = [v60 receivedPDelayResponseFollowUpCounter];
-            v355 = [v103 receivedPDelayResponseFollowUpCounter];
+            receivedPDelayRequestCounter = [v60 receivedPDelayRequestCounter];
+            receivedPDelayRequestCounter2 = [v103 receivedPDelayRequestCounter];
+            v192 = receivedPDelayRequestCounter - receivedPDelayRequestCounter2;
+            transmittedPDelayResponseCounter = [v60 transmittedPDelayResponseCounter];
+            transmittedPDelayResponseCounter2 = [v103 transmittedPDelayResponseCounter];
+            transmittedPDelayResponseFollowUpCounter = [v60 transmittedPDelayResponseFollowUpCounter];
+            transmittedPDelayResponseFollowUpCounter2 = [v103 transmittedPDelayResponseFollowUpCounter];
+            attemptedPDelayResponseCounter = [v60 attemptedPDelayResponseCounter];
+            attemptedPDelayResponseCounter2 = [v103 attemptedPDelayResponseCounter];
+            attemptedPDelayResponseFollowUpCounter = [v60 attemptedPDelayResponseFollowUpCounter];
+            attemptedPDelayResponseFollowUpCounter2 = [v103 attemptedPDelayResponseFollowUpCounter];
+            transmittedPDelayRequestCounter = [v60 transmittedPDelayRequestCounter];
+            transmittedPDelayRequestCounter2 = [v103 transmittedPDelayRequestCounter];
+            attemptedPDelayRequestCounter = [v60 attemptedPDelayRequestCounter];
+            attemptedPDelayRequestCounter2 = [v103 attemptedPDelayRequestCounter];
+            receivedPDelayResponseCounter = [v60 receivedPDelayResponseCounter];
+            receivedPDelayResponseCounter2 = [v103 receivedPDelayResponseCounter];
+            receivedPDelayResponseFollowUpCounter = [v60 receivedPDelayResponseFollowUpCounter];
+            receivedPDelayResponseFollowUpCounter2 = [v103 receivedPDelayResponseFollowUpCounter];
             v194 = (v189 + 9) / 0xAu;
             v195 = &_os_log_default;
             v196 = os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT);
-            v197 = v190 - v191 < v189 - v194 && v189 >= v194;
+            v197 = receivedPDelayRequestCounter - receivedPDelayRequestCounter2 < v189 - v194 && v189 >= v194;
             if (v197 || v192 > v194 + v189)
             {
               if (v196)
               {
                 *buf = 67109632;
-                *&buf[4] = v190 - v191;
+                *&buf[4] = receivedPDelayRequestCounter - receivedPDelayRequestCounter2;
                 *&buf[8] = 1024;
                 *&buf[10] = v189;
                 LOWORD(v388) = 1024;
@@ -1274,7 +1274,7 @@ LABEL_332:
             else if (v196)
             {
               *buf = 67109376;
-              *&buf[4] = v190 - v191;
+              *&buf[4] = receivedPDelayRequestCounter - receivedPDelayRequestCounter2;
               *&buf[8] = 1024;
               *&buf[10] = v189;
               v198 = "        Received PDelay Request Counter: %u expected %u\n";
@@ -1282,12 +1282,12 @@ LABEL_332:
               goto LABEL_332;
             }
 
-            v211 = v319 - v193;
+            v211 = transmittedPDelayResponseCounter - transmittedPDelayResponseCounter2;
 
             v212 = v192 - 1;
             v213 = &_os_log_default;
             v214 = os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT);
-            v215 = v319 - v193 >= v192 - 1 || v190 == v191;
+            v215 = transmittedPDelayResponseCounter - transmittedPDelayResponseCounter2 >= v192 - 1 || receivedPDelayRequestCounter == receivedPDelayRequestCounter2;
             v216 = v192 + 1;
             if (v215 && v211 <= v216)
             {
@@ -1296,7 +1296,7 @@ LABEL_332:
                 *buf = 67109376;
                 *&buf[4] = v211;
                 *&buf[8] = 1024;
-                *&buf[10] = v190 - v191;
+                *&buf[10] = receivedPDelayRequestCounter - receivedPDelayRequestCounter2;
                 v217 = "        Transmitted PDelay Response Counter: %u expected %u\n";
                 goto LABEL_343;
               }
@@ -1307,7 +1307,7 @@ LABEL_332:
               *buf = 67109376;
               *&buf[4] = v211;
               *&buf[8] = 1024;
-              *&buf[10] = v190 - v191;
+              *&buf[10] = receivedPDelayRequestCounter - receivedPDelayRequestCounter2;
               v217 = "        Transmitted PDelay Response Counter: %u out of expected bounds (%u ± 1)\n";
 LABEL_343:
               _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, v217, buf, 0xEu);
@@ -1315,15 +1315,15 @@ LABEL_343:
 
             v218 = &_os_log_default;
             v219 = os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT);
-            v220 = v325 - v322 >= v212 || v190 == v191;
-            if (v220 && v325 - v322 <= v216)
+            v220 = transmittedPDelayResponseFollowUpCounter - transmittedPDelayResponseFollowUpCounter2 >= v212 || receivedPDelayRequestCounter == receivedPDelayRequestCounter2;
+            if (v220 && transmittedPDelayResponseFollowUpCounter - transmittedPDelayResponseFollowUpCounter2 <= v216)
             {
               if (v219)
               {
                 *buf = 67109376;
-                *&buf[4] = v325 - v322;
+                *&buf[4] = transmittedPDelayResponseFollowUpCounter - transmittedPDelayResponseFollowUpCounter2;
                 *&buf[8] = 1024;
-                *&buf[10] = v190 - v191;
+                *&buf[10] = receivedPDelayRequestCounter - receivedPDelayRequestCounter2;
                 v221 = "        Transmitted PDelay Response FollowUp Counter: %u expected %u\n";
                 goto LABEL_354;
               }
@@ -1332,9 +1332,9 @@ LABEL_343:
             else if (v219)
             {
               *buf = 67109376;
-              *&buf[4] = v325 - v322;
+              *&buf[4] = transmittedPDelayResponseFollowUpCounter - transmittedPDelayResponseFollowUpCounter2;
               *&buf[8] = 1024;
-              *&buf[10] = v190 - v191;
+              *&buf[10] = receivedPDelayRequestCounter - receivedPDelayRequestCounter2;
               v221 = "        Transmitted PDelay Response FollowUp Counter: %u out of expected bounds (%u ± 1)\n";
 LABEL_354:
               _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, v221, buf, 0xEu);
@@ -1342,15 +1342,15 @@ LABEL_354:
 
             v222 = &_os_log_default;
             v223 = os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT);
-            v224 = v331 - v328 >= v212 || v190 == v191;
-            if (v224 && v331 - v328 <= v216)
+            v224 = attemptedPDelayResponseCounter - attemptedPDelayResponseCounter2 >= v212 || receivedPDelayRequestCounter == receivedPDelayRequestCounter2;
+            if (v224 && attemptedPDelayResponseCounter - attemptedPDelayResponseCounter2 <= v216)
             {
               if (v223)
               {
                 *buf = 67109376;
-                *&buf[4] = v331 - v328;
+                *&buf[4] = attemptedPDelayResponseCounter - attemptedPDelayResponseCounter2;
                 *&buf[8] = 1024;
-                *&buf[10] = v190 - v191;
+                *&buf[10] = receivedPDelayRequestCounter - receivedPDelayRequestCounter2;
                 v225 = "        Attempted PDelay Response Counter: %u expected %u\n";
                 goto LABEL_365;
               }
@@ -1359,9 +1359,9 @@ LABEL_354:
             else if (v223)
             {
               *buf = 67109376;
-              *&buf[4] = v331 - v328;
+              *&buf[4] = attemptedPDelayResponseCounter - attemptedPDelayResponseCounter2;
               *&buf[8] = 1024;
-              *&buf[10] = v190 - v191;
+              *&buf[10] = receivedPDelayRequestCounter - receivedPDelayRequestCounter2;
               v225 = "        Attempted PDelay Response Counter: %u out of expected bounds (%u ± 1)\n";
 LABEL_365:
               _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, v225, buf, 0xEu);
@@ -1369,15 +1369,15 @@ LABEL_365:
 
             v226 = &_os_log_default;
             v227 = os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT);
-            v228 = v337 - v334 >= v212 || v190 == v191;
-            if (v228 && v337 - v334 <= v216)
+            v228 = attemptedPDelayResponseFollowUpCounter - attemptedPDelayResponseFollowUpCounter2 >= v212 || receivedPDelayRequestCounter == receivedPDelayRequestCounter2;
+            if (v228 && attemptedPDelayResponseFollowUpCounter - attemptedPDelayResponseFollowUpCounter2 <= v216)
             {
               if (v227)
               {
                 *buf = 67109376;
-                *&buf[4] = v337 - v334;
+                *&buf[4] = attemptedPDelayResponseFollowUpCounter - attemptedPDelayResponseFollowUpCounter2;
                 *&buf[8] = 1024;
-                *&buf[10] = v190 - v191;
+                *&buf[10] = receivedPDelayRequestCounter - receivedPDelayRequestCounter2;
                 v229 = "        Attempted PDelay Response FollowUp Counter: %u expected %u\n";
                 goto LABEL_376;
               }
@@ -1386,29 +1386,29 @@ LABEL_365:
             else if (v227)
             {
               *buf = 67109376;
-              *&buf[4] = v337 - v334;
+              *&buf[4] = attemptedPDelayResponseFollowUpCounter - attemptedPDelayResponseFollowUpCounter2;
               *&buf[8] = 1024;
-              *&buf[10] = v190 - v191;
+              *&buf[10] = receivedPDelayRequestCounter - receivedPDelayRequestCounter2;
               v229 = "        Attempted PDelay Response FollowUp Counter: %u out of expected bounds (%u ± 1)\n";
 LABEL_376:
               _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, v229, buf, 0xEu);
             }
 
-            v230 = v364 - v361;
+            v230 = transmittedPDelayRequestCounter - transmittedPDelayRequestCounter2;
             v231 = v340 / v344;
 
             v232 = ((v340 / v344) + 9) / 0xA;
             v233 = v340 / v344 - v232;
             v234 = &_os_log_default;
             v235 = os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT);
-            v236 = v364 - v361 < v233 && v231 >= v232;
+            v236 = transmittedPDelayRequestCounter - transmittedPDelayRequestCounter2 < v233 && v231 >= v232;
             v237 = v232 + v231;
             if (v236 || v230 > v237)
             {
               if (v235)
               {
                 *buf = 67109632;
-                *&buf[4] = v364 - v361;
+                *&buf[4] = transmittedPDelayRequestCounter - transmittedPDelayRequestCounter2;
                 *&buf[8] = 1024;
                 *&buf[10] = v340 / v344;
                 LOWORD(v388) = 1024;
@@ -1423,7 +1423,7 @@ LABEL_386:
             else if (v235)
             {
               *buf = 67109376;
-              *&buf[4] = v364 - v361;
+              *&buf[4] = transmittedPDelayRequestCounter - transmittedPDelayRequestCounter2;
               *&buf[8] = 1024;
               *&buf[10] = v340 / v344;
               v238 = "        Transmitted PDelay Request Counter: %u expected %u\n";
@@ -1433,13 +1433,13 @@ LABEL_386:
 
             v240 = &_os_log_default;
             v241 = os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT);
-            v242 = v346 - v342 < v233 && v231 >= v232;
-            if (v242 || v346 - v342 > v237)
+            v242 = attemptedPDelayRequestCounter - attemptedPDelayRequestCounter2 < v233 && v231 >= v232;
+            if (v242 || attemptedPDelayRequestCounter - attemptedPDelayRequestCounter2 > v237)
             {
               if (v241)
               {
                 *buf = 67109632;
-                *&buf[4] = v346 - v342;
+                *&buf[4] = attemptedPDelayRequestCounter - attemptedPDelayRequestCounter2;
                 *&buf[8] = 1024;
                 *&buf[10] = v340 / v344;
                 LOWORD(v388) = 1024;
@@ -1454,7 +1454,7 @@ LABEL_396:
             else if (v241)
             {
               *buf = 67109376;
-              *&buf[4] = v346 - v342;
+              *&buf[4] = attemptedPDelayRequestCounter - attemptedPDelayRequestCounter2;
               *&buf[8] = 1024;
               *&buf[10] = v340 / v344;
               v243 = "        Attempted PDelay Request Counter: %u expected %u\n";
@@ -1464,17 +1464,17 @@ LABEL_396:
 
             v245 = &_os_log_default;
             v246 = os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT);
-            v247 = v352 - v349 >= v230 - 1 || v364 == v361;
+            v247 = receivedPDelayResponseCounter - receivedPDelayResponseCounter2 >= v230 - 1 || transmittedPDelayRequestCounter == transmittedPDelayRequestCounter2;
             v248 = v230 + 1;
-            if (v247 && v352 - v349 <= v248)
+            if (v247 && receivedPDelayResponseCounter - receivedPDelayResponseCounter2 <= v248)
             {
               v59 = v345;
               if (v246)
               {
                 *buf = 67109376;
-                *&buf[4] = v352 - v349;
+                *&buf[4] = receivedPDelayResponseCounter - receivedPDelayResponseCounter2;
                 *&buf[8] = 1024;
-                *&buf[10] = v364 - v361;
+                *&buf[10] = transmittedPDelayRequestCounter - transmittedPDelayRequestCounter2;
                 v249 = "        Received PDelay Response Counter: %u expected %u\n";
                 goto LABEL_407;
               }
@@ -1486,9 +1486,9 @@ LABEL_396:
               if (v246)
               {
                 *buf = 67109376;
-                *&buf[4] = v352 - v349;
+                *&buf[4] = receivedPDelayResponseCounter - receivedPDelayResponseCounter2;
                 *&buf[8] = 1024;
-                *&buf[10] = v364 - v361;
+                *&buf[10] = transmittedPDelayRequestCounter - transmittedPDelayRequestCounter2;
                 v249 = "        Received PDelay Response Counter: %u out of expected bounds (%u ± 1)\n";
 LABEL_407:
                 _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, v249, buf, 0xEu);
@@ -1497,15 +1497,15 @@ LABEL_407:
 
             v250 = &_os_log_default;
             v251 = os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT);
-            v252 = v358 - v355 >= v230 - 1 || v364 == v361;
-            if (v252 && v358 - v355 <= v248)
+            v252 = receivedPDelayResponseFollowUpCounter - receivedPDelayResponseFollowUpCounter2 >= v230 - 1 || transmittedPDelayRequestCounter == transmittedPDelayRequestCounter2;
+            if (v252 && receivedPDelayResponseFollowUpCounter - receivedPDelayResponseFollowUpCounter2 <= v248)
             {
               if (v251)
               {
                 *buf = 67109376;
-                *&buf[4] = v358 - v355;
+                *&buf[4] = receivedPDelayResponseFollowUpCounter - receivedPDelayResponseFollowUpCounter2;
                 *&buf[8] = 1024;
-                *&buf[10] = v364 - v361;
+                *&buf[10] = transmittedPDelayRequestCounter - transmittedPDelayRequestCounter2;
                 v253 = "        Received PDelay Response FollowUp Counter: %u expected %u\n";
                 goto LABEL_418;
               }
@@ -1521,9 +1521,9 @@ LABEL_489:
             }
 
             *buf = 67109376;
-            *&buf[4] = v358 - v355;
+            *&buf[4] = receivedPDelayResponseFollowUpCounter - receivedPDelayResponseFollowUpCounter2;
             *&buf[8] = 1024;
-            *&buf[10] = v364 - v361;
+            *&buf[10] = transmittedPDelayRequestCounter - transmittedPDelayRequestCounter2;
             v253 = "        Received PDelay Response FollowUp Counter: %u out of expected bounds (%u ± 1)\n";
 LABEL_418:
             v254 = 14;
@@ -1537,7 +1537,7 @@ LABEL_488:
           {
             if ([v60 portRole] == 4)
             {
-              v200 = v351 - v348;
+              v200 = transmittedSyncCounter - transmittedSyncCounter2;
             }
 
             else
@@ -1547,7 +1547,7 @@ LABEL_488:
 
             if ([v60 portRole] == 3)
             {
-              v201 = v343 - v341;
+              v201 = receivedSyncCounter - receivedSyncCounter2;
             }
 
             else
@@ -1556,24 +1556,24 @@ LABEL_488:
             }
 
             v359 = v201;
-            v202 = [v60 receivedDelayRequestCounter];
-            v203 = [v103 receivedDelayRequestCounter];
-            v204 = v202 - v203;
-            v205 = [v60 transmittedDelayResponseCounter];
-            v206 = [v103 transmittedDelayResponseCounter];
-            v323 = [v60 attemptedDelayResponseCounter];
-            v320 = [v103 attemptedDelayResponseCounter];
-            v329 = [v60 transmittedDelayRequestCounter];
-            v326 = [v103 transmittedDelayRequestCounter];
-            v335 = [v60 attemptedDelayRequestCounter];
-            v332 = [v103 attemptedDelayRequestCounter];
-            v350 = [v60 receivedDelayResponseCounter];
-            v338 = [v103 receivedDelayResponseCounter];
-            v356 = [v60 supersededSyncCounter];
-            v353 = [v103 supersededSyncCounter];
-            v365 = [v60 supersededDelayCounter];
-            v362 = [v103 supersededDelayCounter];
-            v207 = v202 - v203 < v200 - 1 && v200 != 0;
+            receivedDelayRequestCounter = [v60 receivedDelayRequestCounter];
+            receivedDelayRequestCounter2 = [v103 receivedDelayRequestCounter];
+            v204 = receivedDelayRequestCounter - receivedDelayRequestCounter2;
+            transmittedDelayResponseCounter = [v60 transmittedDelayResponseCounter];
+            transmittedDelayResponseCounter2 = [v103 transmittedDelayResponseCounter];
+            attemptedDelayResponseCounter = [v60 attemptedDelayResponseCounter];
+            attemptedDelayResponseCounter2 = [v103 attemptedDelayResponseCounter];
+            transmittedDelayRequestCounter = [v60 transmittedDelayRequestCounter];
+            transmittedDelayRequestCounter2 = [v103 transmittedDelayRequestCounter];
+            attemptedDelayRequestCounter = [v60 attemptedDelayRequestCounter];
+            attemptedDelayRequestCounter2 = [v103 attemptedDelayRequestCounter];
+            receivedDelayResponseCounter = [v60 receivedDelayResponseCounter];
+            receivedDelayResponseCounter2 = [v103 receivedDelayResponseCounter];
+            supersededSyncCounter = [v60 supersededSyncCounter];
+            supersededSyncCounter2 = [v103 supersededSyncCounter];
+            supersededDelayCounter = [v60 supersededDelayCounter];
+            supersededDelayCounter2 = [v103 supersededDelayCounter];
+            v207 = receivedDelayRequestCounter - receivedDelayRequestCounter2 < v200 - 1 && v200 != 0;
             v208 = &_os_log_default;
             v209 = os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT);
             if (v207 || v204 > v200 + 1)
@@ -1581,7 +1581,7 @@ LABEL_488:
               if (v209)
               {
                 *buf = 67109376;
-                *&buf[4] = v202 - v203;
+                *&buf[4] = receivedDelayRequestCounter - receivedDelayRequestCounter2;
                 *&buf[8] = 1024;
                 *&buf[10] = v200;
                 v210 = "        Received Delay Request Counter: %u out of expected bounds (%u ± 1)\n";
@@ -1593,18 +1593,18 @@ LABEL_421:
             else if (v209)
             {
               *buf = 67109376;
-              *&buf[4] = v202 - v203;
+              *&buf[4] = receivedDelayRequestCounter - receivedDelayRequestCounter2;
               *&buf[8] = 1024;
               *&buf[10] = v200;
               v210 = "        Received Delay Request Counter: %u expected %u\n";
               goto LABEL_421;
             }
 
-            v255 = v205 - v206;
+            v255 = transmittedDelayResponseCounter - transmittedDelayResponseCounter2;
 
             v256 = &_os_log_default;
             v257 = os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT);
-            v258 = v205 - v206 >= v204 - 1 || v202 == v203;
+            v258 = transmittedDelayResponseCounter - transmittedDelayResponseCounter2 >= v204 - 1 || receivedDelayRequestCounter == receivedDelayRequestCounter2;
             v259 = v204 + 1;
             if (v258 && v255 <= v259)
             {
@@ -1613,7 +1613,7 @@ LABEL_421:
                 *buf = 67109376;
                 *&buf[4] = v255;
                 *&buf[8] = 1024;
-                *&buf[10] = v202 - v203;
+                *&buf[10] = receivedDelayRequestCounter - receivedDelayRequestCounter2;
                 v260 = "        Transmitted Delay Response Counter: %u expected %u\n";
                 goto LABEL_432;
               }
@@ -1624,7 +1624,7 @@ LABEL_421:
               *buf = 67109376;
               *&buf[4] = v255;
               *&buf[8] = 1024;
-              *&buf[10] = v202 - v203;
+              *&buf[10] = receivedDelayRequestCounter - receivedDelayRequestCounter2;
               v260 = "        Transmitted Delay Response Counter: %u out of expected bounds (%u ± 1)\n";
 LABEL_432:
               _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, v260, buf, 0xEu);
@@ -1632,15 +1632,15 @@ LABEL_432:
 
             v261 = &_os_log_default;
             v262 = os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT);
-            v263 = v323 - v320 >= v204 - 1 || v202 == v203;
-            if (v263 && v323 - v320 <= v259)
+            v263 = attemptedDelayResponseCounter - attemptedDelayResponseCounter2 >= v204 - 1 || receivedDelayRequestCounter == receivedDelayRequestCounter2;
+            if (v263 && attemptedDelayResponseCounter - attemptedDelayResponseCounter2 <= v259)
             {
               v59 = v345;
               v264 = v290;
               if (v262)
               {
                 *buf = 67109376;
-                *&buf[4] = v323 - v320;
+                *&buf[4] = attemptedDelayResponseCounter - attemptedDelayResponseCounter2;
                 *&buf[8] = 1024;
                 *&buf[10] = v204;
                 v265 = "        Attempted Delay Response Counter: %u expected %u\n";
@@ -1655,7 +1655,7 @@ LABEL_432:
               if (v262)
               {
                 *buf = 67109376;
-                *&buf[4] = v323 - v320;
+                *&buf[4] = attemptedDelayResponseCounter - attemptedDelayResponseCounter2;
                 *&buf[8] = 1024;
                 *&buf[10] = v204;
                 v265 = "        Attempted Delay Response Counter: %u out of expected bounds (%u ± 1)\n";
@@ -1666,15 +1666,15 @@ LABEL_443:
 
             v266 = &_os_log_default;
             v267 = os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT);
-            v268 = v329 - v326 >= v264 || v343 == v341;
-            if (v268 && v329 - v326 <= v289)
+            v268 = transmittedDelayRequestCounter - transmittedDelayRequestCounter2 >= v264 || receivedSyncCounter == receivedSyncCounter2;
+            if (v268 && transmittedDelayRequestCounter - transmittedDelayRequestCounter2 <= v289)
             {
               if (v267)
               {
                 *buf = 67109376;
-                *&buf[4] = v329 - v326;
+                *&buf[4] = transmittedDelayRequestCounter - transmittedDelayRequestCounter2;
                 *&buf[8] = 1024;
-                *&buf[10] = v343 - v341;
+                *&buf[10] = receivedSyncCounter - receivedSyncCounter2;
                 v269 = "        Transmitted Delay Request Counter: %u expected %u\n";
                 goto LABEL_454;
               }
@@ -1683,9 +1683,9 @@ LABEL_443:
             else if (v267)
             {
               *buf = 67109376;
-              *&buf[4] = v329 - v326;
+              *&buf[4] = transmittedDelayRequestCounter - transmittedDelayRequestCounter2;
               *&buf[8] = 1024;
-              *&buf[10] = v343 - v341;
+              *&buf[10] = receivedSyncCounter - receivedSyncCounter2;
               v269 = "        Transmitted Delay Request Counter: %u out of expected bounds (%u ± 1)\n";
 LABEL_454:
               _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, v269, buf, 0xEu);
@@ -1693,15 +1693,15 @@ LABEL_454:
 
             v270 = &_os_log_default;
             v271 = os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT);
-            v272 = v335 - v332 >= v264 || v343 == v341;
-            if (v272 && v335 - v332 <= v289)
+            v272 = attemptedDelayRequestCounter - attemptedDelayRequestCounter2 >= v264 || receivedSyncCounter == receivedSyncCounter2;
+            if (v272 && attemptedDelayRequestCounter - attemptedDelayRequestCounter2 <= v289)
             {
               if (v271)
               {
                 *buf = 67109376;
-                *&buf[4] = v335 - v332;
+                *&buf[4] = attemptedDelayRequestCounter - attemptedDelayRequestCounter2;
                 *&buf[8] = 1024;
-                *&buf[10] = v343 - v341;
+                *&buf[10] = receivedSyncCounter - receivedSyncCounter2;
                 v273 = "        Attempted Delay Request Counter: %u expected %u\n";
                 goto LABEL_465;
               }
@@ -1710,23 +1710,23 @@ LABEL_454:
             else if (v271)
             {
               *buf = 67109376;
-              *&buf[4] = v335 - v332;
+              *&buf[4] = attemptedDelayRequestCounter - attemptedDelayRequestCounter2;
               *&buf[8] = 1024;
-              *&buf[10] = v343 - v341;
+              *&buf[10] = receivedSyncCounter - receivedSyncCounter2;
               v273 = "        Attempted Delay Request Counter: %u out of expected bounds (%u ± 1)\n";
 LABEL_465:
               _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, v273, buf, 0xEu);
             }
 
-            v274 = v350 - v338 < v359 - 1 && v359 != 0;
+            v274 = receivedDelayResponseCounter - receivedDelayResponseCounter2 < v359 - 1 && v359 != 0;
             v275 = &_os_log_default;
             v276 = os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT);
-            if (v274 || v350 - v338 > v359 + 1)
+            if (v274 || receivedDelayResponseCounter - receivedDelayResponseCounter2 > v359 + 1)
             {
               if (v276)
               {
                 *buf = 67109376;
-                *&buf[4] = v350 - v338;
+                *&buf[4] = receivedDelayResponseCounter - receivedDelayResponseCounter2;
                 *&buf[8] = 1024;
                 *&buf[10] = v359;
                 v277 = "        Received Delay Response Counter: %u out of expected bounds (%u ± 1)\n";
@@ -1738,7 +1738,7 @@ LABEL_475:
             else if (v276)
             {
               *buf = 67109376;
-              *&buf[4] = v350 - v338;
+              *&buf[4] = receivedDelayResponseCounter - receivedDelayResponseCounter2;
               *&buf[8] = 1024;
               *&buf[10] = v359;
               v277 = "        Received Delay Response Counter: %u expected %u\n";
@@ -1747,7 +1747,7 @@ LABEL_475:
 
             v278 = &_os_log_default;
             v279 = os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT);
-            if (v356 == v353)
+            if (supersededSyncCounter == supersededSyncCounter2)
             {
               if (v279)
               {
@@ -1760,7 +1760,7 @@ LABEL_475:
             else if (v279)
             {
               *buf = 67109120;
-              *&buf[4] = v356 - v353;
+              *&buf[4] = supersededSyncCounter - supersededSyncCounter2;
               v280 = "        Superseded Sync Counter: %u out of expected bounds (0)\n";
 LABEL_481:
               _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, v280, buf, 8u);
@@ -1768,7 +1768,7 @@ LABEL_481:
 
             v281 = &_os_log_default;
             v282 = os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT);
-            if (v365 == v362)
+            if (supersededDelayCounter == supersededDelayCounter2)
             {
               if (!v282)
               {
@@ -1787,7 +1787,7 @@ LABEL_481:
               }
 
               *buf = 67109120;
-              *&buf[4] = v365 - v362;
+              *&buf[4] = supersededDelayCounter - supersededDelayCounter2;
               v253 = "        Superseded Delay Counter: %u out of expected bounds (0)\n";
             }
 
@@ -1822,28 +1822,28 @@ LABEL_493:
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [(TSDKernelClock *)self->_clock clockIdentifier];
+      clockIdentifier2 = [(TSDKernelClock *)self->_clock clockIdentifier];
       *buf = 134217984;
-      *&buf[4] = v12;
+      *&buf[4] = clockIdentifier2;
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Clock Statistics for 0x%016llx\n", buf, 0xCu);
     }
 
-    v13 = [(TSDKernelClock *)self->_clock lockState];
-    if (v13 > 2)
+    lockState2 = [(TSDKernelClock *)self->_clock lockState];
+    if (lockState2 > 2)
     {
       v14 = @"Unknown";
     }
 
     else
     {
-      v14 = off_10004CAF8[v13];
+      v14 = off_10004CAF8[lockState2];
     }
 
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
-      v23 = [(__CFString *)v14 UTF8String];
+      uTF8String6 = [(__CFString *)v14 UTF8String];
       *buf = 136315138;
-      *&buf[4] = v23;
+      *&buf[4] = uTF8String6;
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "    Clock lock state: %s\n", buf, 0xCu);
     }
 
@@ -1882,10 +1882,10 @@ LABEL_493:
 
     else if (v27)
     {
-      v36 = [v26 localizedDescription];
-      v37 = [v36 UTF8String];
+      localizedDescription3 = [v26 localizedDescription];
+      uTF8String7 = [localizedDescription3 UTF8String];
       *buf = 136315138;
-      *&buf[4] = v37;
+      *&buf[4] = uTF8String7;
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "    Mach Sync Info: failed to get rate ratio and anchors with error %s\n", buf, 0xCu);
     }
 
@@ -1920,16 +1920,16 @@ LABEL_493:
 
     else if (v41)
     {
-      v283 = [v40 localizedDescription];
-      v284 = [v283 UTF8String];
+      localizedDescription4 = [v40 localizedDescription];
+      uTF8String8 = [localizedDescription4 UTF8String];
       *buf = 136315138;
-      *&buf[4] = v284;
+      *&buf[4] = uTF8String8;
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "    TimeSync Sync Info: failed to get rate ratio and anchors with error %s\n", buf, 0xCu);
     }
   }
 }
 
-- (TSDClockStatistics)initWithClockIdentifier:(unint64_t)a3
+- (TSDClockStatistics)initWithClockIdentifier:(unint64_t)identifier
 {
   v11.receiver = self;
   v11.super_class = TSDClockStatistics;
@@ -1937,7 +1937,7 @@ LABEL_493:
   v5 = v4;
   if (v4)
   {
-    if (a3 == -1)
+    if (identifier == -1)
     {
       sub_10002B904(v4);
       return 0;
@@ -1945,7 +1945,7 @@ LABEL_493:
 
     else
     {
-      v4->_clockIdentifier = a3;
+      v4->_clockIdentifier = identifier;
       v4->_firstStatistics = 1;
       v6 = +[TSDClockManager sharedClockManager];
       v7 = [v6 clockWithClockIdentifier:{-[TSDClockStatistics clockIdentifier](v5, "clockIdentifier")}];
@@ -1979,90 +1979,90 @@ LABEL_493:
   self->_clock = 0;
 }
 
-- (void)didResetClock:(id)a3
+- (void)didResetClock:(id)clock
 {
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v4 = 134217984;
-    v5 = [(TSDClockStatistics *)self clockIdentifier];
+    clockIdentifier = [(TSDClockStatistics *)self clockIdentifier];
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "0x%016llx: reset clock\n", &v4, 0xCu);
   }
 }
 
-- (void)didChangeClockMasterForClock:(id)a3
+- (void)didChangeClockMasterForClock:(id)clock
 {
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v4 = 134217984;
-    v5 = [(TSDClockStatistics *)self clockIdentifier];
+    clockIdentifier = [(TSDClockStatistics *)self clockIdentifier];
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "0x%016llx: master clock changed\n", &v4, 0xCu);
   }
 }
 
-- (void)didChangeLockStateTo:(int)a3 forClock:(id)a4
+- (void)didChangeLockStateTo:(int)to forClock:(id)clock
 {
-  v6 = a4;
-  if (a3 > 2)
+  clockCopy = clock;
+  if (to > 2)
   {
     v7 = @"Unknown";
   }
 
   else
   {
-    v7 = off_10004CAF8[a3];
+    v7 = off_10004CAF8[to];
   }
 
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 134218498;
-    v9 = [(TSDClockStatistics *)self clockIdentifier];
+    clockIdentifier = [(TSDClockStatistics *)self clockIdentifier];
     v10 = 1024;
-    v11 = a3;
+    toCopy = to;
     v12 = 2080;
-    v13 = [(__CFString *)v7 UTF8String];
+    uTF8String = [(__CFString *)v7 UTF8String];
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "0x%016llx: set lock state to %u (%s)\n", &v8, 0x1Cu);
   }
 
-  if (a3 == 2)
+  if (to == 2)
   {
     self->_hasSyncedSinceLocked = 0;
   }
 }
 
-- (void)didBeginClockGrandmasterChangeWithGrandmasterID:(unint64_t)a3 localPort:(unsigned __int16)a4 forClock:(id)a5
+- (void)didBeginClockGrandmasterChangeWithGrandmasterID:(unint64_t)d localPort:(unsigned __int16)port forClock:(id)clock
 {
-  v5 = a4;
+  portCopy = port;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 134218496;
-    v9 = [(TSDClockStatistics *)self clockIdentifier];
+    clockIdentifier = [(TSDClockStatistics *)self clockIdentifier];
     v10 = 2048;
-    v11 = a3;
+    dCopy = d;
     v12 = 1024;
-    v13 = v5;
+    v13 = portCopy;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "0x%016llx: begin grandmaster change GMID 0x%016llx local port %hu\n", &v8, 0x1Cu);
   }
 }
 
-- (void)didEndClockGrandmasterChangeWithGrandmasterID:(unint64_t)a3 localPort:(unsigned __int16)a4 forClock:(id)a5
+- (void)didEndClockGrandmasterChangeWithGrandmasterID:(unint64_t)d localPort:(unsigned __int16)port forClock:(id)clock
 {
-  v5 = a4;
+  portCopy = port;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 134218496;
-    v9 = [(TSDClockStatistics *)self clockIdentifier];
+    clockIdentifier = [(TSDClockStatistics *)self clockIdentifier];
     v10 = 2048;
-    v11 = a3;
+    dCopy = d;
     v12 = 1024;
-    v13 = v5;
+    v13 = portCopy;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "0x%016llx: end grandmaster change GMID 0x%016llx local port %hu\n", &v8, 0x1Cu);
   }
 }
 
-- (void)didProcessSync:(id)a3
+- (void)didProcessSync:(id)sync
 {
-  v4 = a3;
-  v5 = v4;
+  syncCopy = sync;
+  v5 = syncCopy;
   if (!self->_hasSyncedSinceLocked)
   {
     v27 = 0;
@@ -2073,16 +2073,16 @@ LABEL_493:
     v24 = 0;
     v22 = 0;
     v21 = 0;
-    v6 = [v4 getMachAbsoluteRateRatioNumerator:&v28 denominator:&v27 machAnchor:&v26 andDomainAnchor:&v24 forGrandmasterIdentity:&v23 portNumber:&v22 withError:&v21];
+    v6 = [syncCopy getMachAbsoluteRateRatioNumerator:&v28 denominator:&v27 machAnchor:&v26 andDomainAnchor:&v24 forGrandmasterIdentity:&v23 portNumber:&v22 withError:&v21];
     v7 = v21;
     v8 = os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT);
     if (v6)
     {
       if (v8)
       {
-        v9 = [(TSDClockStatistics *)self clockIdentifier];
+        clockIdentifier = [(TSDClockStatistics *)self clockIdentifier];
         *buf = 134219520;
-        v30 = v9;
+        v30 = clockIdentifier;
         v31 = 2048;
         v32 = v28;
         v33 = 2048;
@@ -2101,13 +2101,13 @@ LABEL_493:
 
     else if (v8)
     {
-      v10 = [(TSDClockStatistics *)self clockIdentifier];
-      v11 = [v7 localizedDescription];
-      v12 = [v11 UTF8String];
+      clockIdentifier2 = [(TSDClockStatistics *)self clockIdentifier];
+      localizedDescription = [v7 localizedDescription];
+      uTF8String = [localizedDescription UTF8String];
       *buf = 134218242;
-      v30 = v10;
+      v30 = clockIdentifier2;
       v31 = 2080;
-      v32 = v12;
+      v32 = uTF8String;
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "0x%016llx: failed to get mach rate ratio and anchors with error %s\n", buf, 0x16u);
     }
 
@@ -2120,9 +2120,9 @@ LABEL_493:
     {
       if (v15)
       {
-        v16 = [(TSDClockStatistics *)self clockIdentifier];
+        clockIdentifier3 = [(TSDClockStatistics *)self clockIdentifier];
         *buf = 134219520;
-        v30 = v16;
+        v30 = clockIdentifier3;
         v31 = 2048;
         v32 = v28;
         v33 = 2048;
@@ -2141,13 +2141,13 @@ LABEL_493:
 
     else if (v15)
     {
-      v17 = [(TSDClockStatistics *)self clockIdentifier];
-      v18 = [v14 localizedDescription];
-      v19 = [v18 UTF8String];
+      clockIdentifier4 = [(TSDClockStatistics *)self clockIdentifier];
+      localizedDescription2 = [v14 localizedDescription];
+      uTF8String2 = [localizedDescription2 UTF8String];
       *buf = 134218242;
-      v30 = v17;
+      v30 = clockIdentifier4;
       v31 = 2080;
-      v32 = v19;
+      v32 = uTF8String2;
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "0x%016llx: failed to get timesync rate ratio and anchors with error %s\n", buf, 0x16u);
     }
 
@@ -2155,12 +2155,12 @@ LABEL_493:
   }
 }
 
-- (void)didGetStatsOfLocalPortNumber:(unint64_t)a3 mean:(unint64_t)a4 median:(unint64_t)a5 stddev:(unint64_t)a6 min:(unint64_t)a7 max:(unint64_t)a8 numberOfSamples:(unsigned int)a9 forClock:(id)a10
+- (void)didGetStatsOfLocalPortNumber:(unint64_t)number mean:(unint64_t)mean median:(unint64_t)median stddev:(unint64_t)stddev min:(unint64_t)min max:(unint64_t)max numberOfSamples:(unsigned int)samples forClock:(id)self0
 {
-  v14 = [a10 portWithPortNumber:a3];
-  v15 = [v14 remoteClockIdentity];
-  v16 = BYTE5(v15);
-  v17 = v15 >> 40;
+  v14 = [clock portWithPortNumber:number];
+  remoteClockIdentity = [v14 remoteClockIdentity];
+  v16 = BYTE5(remoteClockIdentity);
+  v17 = remoteClockIdentity >> 40;
   v32[0] = @"LocalLinkType";
   v31 = +[NSNumber numberWithUnsignedChar:](NSNumber, "numberWithUnsignedChar:", [v14 localLinkType]);
   v33[0] = v31;
@@ -2177,22 +2177,22 @@ LABEL_493:
   v18 = +[NSNumber numberWithUnsignedChar:](NSNumber, "numberWithUnsignedChar:", [v14 portType]);
   v33[4] = v18;
   v32[5] = @"MinimumDelay";
-  v19 = [NSNumber numberWithDouble:a7 / 1000.0];
+  v19 = [NSNumber numberWithDouble:min / 1000.0];
   v33[5] = v19;
   v32[6] = @"MaximumDelay";
-  v20 = [NSNumber numberWithDouble:a8 / 1000.0];
+  v20 = [NSNumber numberWithDouble:max / 1000.0];
   v33[6] = v20;
   v32[7] = @"MeanDelay";
-  v21 = [NSNumber numberWithDouble:a4 / 1000.0];
+  v21 = [NSNumber numberWithDouble:mean / 1000.0];
   v33[7] = v21;
   v32[8] = @"MedianDelay";
-  v22 = [NSNumber numberWithDouble:a5 / 1000.0];
+  v22 = [NSNumber numberWithDouble:median / 1000.0];
   v33[8] = v22;
   v32[9] = @"StandardDeviation";
-  v23 = [NSNumber numberWithDouble:a6 / 1000.0];
+  v23 = [NSNumber numberWithDouble:stddev / 1000.0];
   v33[9] = v23;
   v32[10] = @"NumberOfSamples";
-  v24 = [NSNumber numberWithUnsignedInt:a9];
+  v24 = [NSNumber numberWithUnsignedInt:samples];
   v33[10] = v24;
   v32[11] = @"RemoteOUI";
   v25 = [NSString stringWithFormat:@"%02x-%02x-%02x", WORD1(v17), BYTE1(v17), v16];

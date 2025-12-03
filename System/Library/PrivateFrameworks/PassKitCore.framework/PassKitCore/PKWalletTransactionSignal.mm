@@ -1,29 +1,29 @@
 @interface PKWalletTransactionSignal
-+ (void)_donateSignalForPass:(id)a3 transactionType:(int)a4 transactionDate:(id)a5 transactionID:(id)a6 merchantCategory:(int64_t)a7 merchantDetailedCategory:(id)a8 queue:(id)a9 completion:(id)a10;
-+ (void)donateSignalForPass:(id)a3 transaction:(id)a4 queue:(id)a5 completion:(id)a6;
-+ (void)donateSignalForPass:(id)a3 transactionType:(int)a4 queue:(id)a5 completion:(id)a6;
++ (void)_donateSignalForPass:(id)pass transactionType:(int)type transactionDate:(id)date transactionID:(id)d merchantCategory:(int64_t)category merchantDetailedCategory:(id)detailedCategory queue:(id)queue completion:(id)self0;
++ (void)donateSignalForPass:(id)pass transaction:(id)transaction queue:(id)queue completion:(id)completion;
++ (void)donateSignalForPass:(id)pass transactionType:(int)type queue:(id)queue completion:(id)completion;
 @end
 
 @implementation PKWalletTransactionSignal
 
-+ (void)donateSignalForPass:(id)a3 transaction:(id)a4 queue:(id)a5 completion:(id)a6
++ (void)donateSignalForPass:(id)pass transaction:(id)transaction queue:(id)queue completion:(id)completion
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [v12 transactionType];
-  if (v14 == 2)
+  completionCopy = completion;
+  queueCopy = queue;
+  transactionCopy = transaction;
+  passCopy = pass;
+  transactionType = [transactionCopy transactionType];
+  if (transactionType == 2)
   {
     v15 = 3;
   }
 
   else
   {
-    v15 = v14 == 0;
+    v15 = transactionType == 0;
   }
 
-  if (v14 == 15)
+  if (transactionType == 15)
   {
     v16 = 6;
   }
@@ -33,47 +33,47 @@
     v16 = v15;
   }
 
-  v21 = [v12 merchant];
-  v17 = [v12 transactionDate];
-  v18 = [v12 identifier];
+  merchant = [transactionCopy merchant];
+  transactionDate = [transactionCopy transactionDate];
+  identifier = [transactionCopy identifier];
 
-  v19 = [v21 category];
-  v20 = [v21 detailedCategory];
-  [a1 _donateSignalForPass:v13 transactionType:v16 transactionDate:v17 transactionID:v18 merchantCategory:v19 merchantDetailedCategory:v20 queue:v11 completion:v10];
+  category = [merchant category];
+  detailedCategory = [merchant detailedCategory];
+  [self _donateSignalForPass:passCopy transactionType:v16 transactionDate:transactionDate transactionID:identifier merchantCategory:category merchantDetailedCategory:detailedCategory queue:queueCopy completion:completionCopy];
 }
 
-+ (void)donateSignalForPass:(id)a3 transactionType:(int)a4 queue:(id)a5 completion:(id)a6
++ (void)donateSignalForPass:(id)pass transactionType:(int)type queue:(id)queue completion:(id)completion
 {
-  v7 = *&a4;
+  v7 = *&type;
   v10 = MEMORY[0x1E695DF00];
-  v11 = a6;
-  v12 = a5;
-  v13 = a3;
+  completionCopy = completion;
+  queueCopy = queue;
+  passCopy = pass;
   v14 = [v10 now];
-  [a1 _donateSignalForPass:v13 transactionType:v7 transactionDate:v14 transactionID:0 merchantCategory:0 merchantDetailedCategory:0 queue:v12 completion:v11];
+  [self _donateSignalForPass:passCopy transactionType:v7 transactionDate:v14 transactionID:0 merchantCategory:0 merchantDetailedCategory:0 queue:queueCopy completion:completionCopy];
 }
 
-+ (void)_donateSignalForPass:(id)a3 transactionType:(int)a4 transactionDate:(id)a5 transactionID:(id)a6 merchantCategory:(int64_t)a7 merchantDetailedCategory:(id)a8 queue:(id)a9 completion:(id)a10
++ (void)_donateSignalForPass:(id)pass transactionType:(int)type transactionDate:(id)date transactionID:(id)d merchantCategory:(int64_t)category merchantDetailedCategory:(id)detailedCategory queue:(id)queue completion:(id)self0
 {
-  v14 = a3;
-  v15 = a6;
-  v16 = a8;
-  v17 = a10;
+  passCopy = pass;
+  dCopy = d;
+  detailedCategoryCopy = detailedCategory;
+  completionCopy = completion;
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __155__PKWalletTransactionSignal__donateSignalForPass_transactionType_transactionDate_transactionID_merchantCategory_merchantDetailedCategory_queue_completion___block_invoke;
   v22[3] = &unk_1E79DE8A8;
-  v28 = a4;
-  v26 = v17;
-  v27 = a7;
-  v23 = v14;
-  v24 = v15;
-  v25 = v16;
-  v18 = v17;
-  v19 = v16;
-  v20 = v15;
-  v21 = v14;
-  dispatch_async(a9, v22);
+  typeCopy = type;
+  v26 = completionCopy;
+  categoryCopy = category;
+  v23 = passCopy;
+  v24 = dCopy;
+  v25 = detailedCategoryCopy;
+  v18 = completionCopy;
+  v19 = detailedCategoryCopy;
+  v20 = dCopy;
+  v21 = passCopy;
+  dispatch_async(queue, v22);
 }
 
 void __155__PKWalletTransactionSignal__donateSignalForPass_transactionType_transactionDate_transactionID_merchantCategory_merchantDetailedCategory_queue_completion___block_invoke(uint64_t a1)

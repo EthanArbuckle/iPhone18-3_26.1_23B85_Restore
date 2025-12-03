@@ -1,7 +1,7 @@
 @interface GESSAlgBase
 - (BOOL)run;
-- (BOOL)setErrorCallback:(id)a3;
-- (BOOL)setProgressCallback:(id)a3;
+- (BOOL)setErrorCallback:(id)callback;
+- (BOOL)setProgressCallback:(id)callback;
 - (GESSAlgBase)init;
 - (id)returnReport;
 @end
@@ -22,18 +22,18 @@
   return v5;
 }
 
-- (BOOL)setProgressCallback:(id)a3
+- (BOOL)setProgressCallback:(id)callback
 {
-  v4 = MEMORY[0x24C254FE0](a3, a2);
+  v4 = MEMORY[0x24C254FE0](callback, a2);
   progress_callback = self->_progress_callback;
   self->_progress_callback = v4;
 
   return 1;
 }
 
-- (BOOL)setErrorCallback:(id)a3
+- (BOOL)setErrorCallback:(id)callback
 {
-  v4 = MEMORY[0x24C254FE0](a3, a2);
+  v4 = MEMORY[0x24C254FE0](callback, a2);
   error_callback = self->_error_callback;
   self->_error_callback = v4;
 

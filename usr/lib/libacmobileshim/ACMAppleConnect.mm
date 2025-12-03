@@ -5,24 +5,24 @@
 - (id)hideAppleConnectSignInDialog;
 - (id)private;
 - (unint64_t)logLevel;
-- (void)authenticate:(id)a3;
-- (void)authenticateWithRequest:(id)a3 password:(id)a4;
+- (void)authenticate:(id)authenticate;
+- (void)authenticateWithRequest:(id)request password:(id)password;
 - (void)cancelRequests;
 - (void)dealloc;
-- (void)handleMemoryWarningNotification:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setLogLevel:(unint64_t)a3;
+- (void)handleMemoryWarningNotification:(id)notification;
+- (void)setDelegate:(id)delegate;
+- (void)setLogLevel:(unint64_t)level;
 - (void)setupComponents;
-- (void)verifyServiceTicket:(id)a3;
+- (void)verifyServiceTicket:(id)ticket;
 @end
 
 @implementation ACMAppleConnect
 
-- (void)authenticateWithRequest:(id)a3 password:(id)a4
+- (void)authenticateWithRequest:(id)request password:(id)password
 {
-  v6 = [(ACMAppleConnect *)self private];
+  private = [(ACMAppleConnect *)self private];
 
-  [v6 authenticateWithRequest:a3 password:a4];
+  [private authenticateWithRequest:request password:password];
 }
 
 + (id)sharedInstance
@@ -61,9 +61,9 @@
     v8.super_class = ACMAppleConnect;
     v4 = [(ACMAppleConnect *)&v8 init];
     sAppleConnect = v4;
-    v5 = [MEMORY[0x29EDBA068] defaultCenter];
-    v6 = [MEMORY[0x29EDC7938] sharedApplication];
-    [v5 addObserver:v4 selector:sel_handleMemoryWarningNotification_ name:*MEMORY[0x29EDC8020] object:v6];
+    defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+    mEMORY[0x29EDC7938] = [MEMORY[0x29EDC7938] sharedApplication];
+    [defaultCenter addObserver:v4 selector:sel_handleMemoryWarningNotification_ name:*MEMORY[0x29EDC8020] object:mEMORY[0x29EDC7938]];
   }
 
   objc_sync_exit(v3);
@@ -91,7 +91,7 @@
   [(ACMAppleConnect *)&v4 dealloc];
 }
 
-- (void)handleMemoryWarningNotification:(id)a3
+- (void)handleMemoryWarningNotification:(id)notification
 {
   objc_sync_enter(self);
   v4 = self->_private;
@@ -141,32 +141,32 @@
   return v5;
 }
 
-- (void)authenticate:(id)a3
+- (void)authenticate:(id)authenticate
 {
-  v4 = [(ACMAppleConnect *)self private];
+  private = [(ACMAppleConnect *)self private];
 
-  [v4 authenticate:a3];
+  [private authenticate:authenticate];
 }
 
-- (void)verifyServiceTicket:(id)a3
+- (void)verifyServiceTicket:(id)ticket
 {
-  v4 = [(ACMAppleConnect *)self private];
+  private = [(ACMAppleConnect *)self private];
 
-  [v4 verifyServiceTicket:a3];
+  [private verifyServiceTicket:ticket];
 }
 
 - (void)cancelRequests
 {
-  v2 = [(ACMAppleConnect *)self private];
+  private = [(ACMAppleConnect *)self private];
 
-  [v2 cancelRequests];
+  [private cancelRequests];
 }
 
 - (id)hideAppleConnectSignInDialog
 {
-  v2 = [(ACMAppleConnect *)self private];
+  private = [(ACMAppleConnect *)self private];
 
-  return [v2 hideAppleConnectSignInDialog];
+  return [private hideAppleConnectSignInDialog];
 }
 
 - (id)delegate
@@ -177,13 +177,13 @@
   return delegate;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   objc_sync_enter(self);
-  if (self->_delegate != a3)
+  if (self->_delegate != delegate)
   {
-    self->_delegate = a3;
-    [self->_private setDelegate:a3];
+    self->_delegate = delegate;
+    [self->_private setDelegate:delegate];
   }
 
   objc_sync_exit(self);
@@ -191,16 +191,16 @@
 
 - (unint64_t)logLevel
 {
-  v2 = [(ACMAppleConnect *)self private];
+  private = [(ACMAppleConnect *)self private];
 
-  return [v2 logLevel];
+  return [private logLevel];
 }
 
-- (void)setLogLevel:(unint64_t)a3
+- (void)setLogLevel:(unint64_t)level
 {
-  v4 = [(ACMAppleConnect *)self private];
+  private = [(ACMAppleConnect *)self private];
 
-  [v4 setLogLevel:a3];
+  [private setLogLevel:level];
 }
 
 @end

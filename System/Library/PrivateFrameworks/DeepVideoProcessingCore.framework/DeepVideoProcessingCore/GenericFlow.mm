@@ -1,20 +1,20 @@
 @interface GenericFlow
 - (BOOL)finishProcessing;
-- (BOOL)processWithFirstFrame:(id)a3 secondFrame:(id)a4 forwardFlow:(__CVBuffer *)a5 backwardFlow:(__CVBuffer *)a6 streamingMode:(BOOL)a7 error:(id *)a8;
-- (BOOL)startSessionWithFlowWidth:(unint64_t)a3 flowHeight:(unint64_t)a4 frameWidth:(unint64_t)a5 frameHeight:(unint64_t)a6 useHomographyInFlow:(BOOL)a7 error:(id *)a8;
-- (GenericFlow)initWithOpticalFlow:(id)a3 usage:(int64_t)a4 rotation:(int64_t)a5;
-- (int64_t)bindWithMTLTextureFromDownscaledImage:(__CVBuffer *)a3 downscaledSecond:(__CVBuffer *)a4 forwardFlow:(__CVBuffer *)a5 backwardFlow:(__CVBuffer *)a6 prevBackwardFlow:(__CVBuffer *)a7 depth:(__CVBuffer *)a8 interleaveFactor:(unint64_t)a9;
-- (int64_t)computeForwardFlow:(__CVBuffer *)a3 backwardFlow:(__CVBuffer *)a4;
-- (int64_t)preProcessHomographyFirstFrame:(id)a3 secondFrame:(id)a4 previousFlow:(__CVBuffer *)a5;
+- (BOOL)processWithFirstFrame:(id)frame secondFrame:(id)secondFrame forwardFlow:(__CVBuffer *)flow backwardFlow:(__CVBuffer *)backwardFlow streamingMode:(BOOL)mode error:(id *)error;
+- (BOOL)startSessionWithFlowWidth:(unint64_t)width flowHeight:(unint64_t)height frameWidth:(unint64_t)frameWidth frameHeight:(unint64_t)frameHeight useHomographyInFlow:(BOOL)flow error:(id *)error;
+- (GenericFlow)initWithOpticalFlow:(id)flow usage:(int64_t)usage rotation:(int64_t)rotation;
+- (int64_t)bindWithMTLTextureFromDownscaledImage:(__CVBuffer *)image downscaledSecond:(__CVBuffer *)second forwardFlow:(__CVBuffer *)flow backwardFlow:(__CVBuffer *)backwardFlow prevBackwardFlow:(__CVBuffer *)prevBackwardFlow depth:(__CVBuffer *)depth interleaveFactor:(unint64_t)factor;
+- (int64_t)computeForwardFlow:(__CVBuffer *)flow backwardFlow:(__CVBuffer *)backwardFlow;
+- (int64_t)preProcessHomographyFirstFrame:(id)frame secondFrame:(id)secondFrame previousFlow:(__CVBuffer *)flow;
 - (void)releaseInternalBuffers;
 - (void)setPropertiesFromDefaults;
 @end
 
 @implementation GenericFlow
 
-- (BOOL)startSessionWithFlowWidth:(unint64_t)a3 flowHeight:(unint64_t)a4 frameWidth:(unint64_t)a5 frameHeight:(unint64_t)a6 useHomographyInFlow:(BOOL)a7 error:(id *)a8
+- (BOOL)startSessionWithFlowWidth:(unint64_t)width flowHeight:(unint64_t)height frameWidth:(unint64_t)frameWidth frameHeight:(unint64_t)frameHeight useHomographyInFlow:(BOOL)flow error:(id *)error
 {
-  self->_useHomographyInFlow = a7;
+  self->_useHomographyInFlow = flow;
   *&self->_streamingMode = 257;
   [(VEOpticalFlowEstimator *)self->_opticalFlow updateFlowOnlyMode:self->_flowOnlyMode];
   if (!self->_useHomographyInFlow)
@@ -26,9 +26,9 @@
   homographyFlow = self->_homographyFlow;
   self->_homographyFlow = v14;
 
-  if (!self->_homographyFlow || (v16 = [[ImageReg alloc] initWithSubmodules:self->_homographyFlow WithDevice:self->_device commandQueue:self->_commandQueue flowDerivedHomography:self->_streamingMode], pImageRegInstance = self->_pImageRegInstance, self->_pImageRegInstance = v16, pImageRegInstance, (v18 = self->_pImageRegInstance) == 0) || ([(ImageReg *)v18 setStreamingMode:self->_streamingMode], [self->_pImageRegInstance setRefreshCalculation:1], [(GenericFlow *)self setPropertiesFromDefaults], [(VEMetalBase *)self->_homographyFlow setEnableGpuWaitForComplete:self->_EnableGpuWaitForComplete], [(GenericFlow *)self releaseInternalBuffers], PixelBuffer = CreatePixelBuffer(a3, a4, 843264104), (self->_HomoFlow12 = PixelBuffer) == 0) || (v20 = CreatePixelBuffer(a3, a4, 843264104), (self->_HomoFlow21 = v20) == 0))
+  if (!self->_homographyFlow || (v16 = [[ImageReg alloc] initWithSubmodules:self->_homographyFlow WithDevice:self->_device commandQueue:self->_commandQueue flowDerivedHomography:self->_streamingMode], pImageRegInstance = self->_pImageRegInstance, self->_pImageRegInstance = v16, pImageRegInstance, (v18 = self->_pImageRegInstance) == 0) || ([(ImageReg *)v18 setStreamingMode:self->_streamingMode], [self->_pImageRegInstance setRefreshCalculation:1], [(GenericFlow *)self setPropertiesFromDefaults], [(VEMetalBase *)self->_homographyFlow setEnableGpuWaitForComplete:self->_EnableGpuWaitForComplete], [(GenericFlow *)self releaseInternalBuffers], PixelBuffer = CreatePixelBuffer(width, height, 843264104), (self->_HomoFlow12 = PixelBuffer) == 0) || (v20 = CreatePixelBuffer(width, height, 843264104), (self->_HomoFlow21 = v20) == 0))
   {
-    [GenericFlow startSessionWithFlowWidth:a8 flowHeight:&v27 frameWidth:? frameHeight:? useHomographyInFlow:? error:?];
+    [GenericFlow startSessionWithFlowWidth:error flowHeight:&v27 frameWidth:? frameHeight:? useHomographyInFlow:? error:?];
     return v27;
   }
 
@@ -45,11 +45,11 @@
 
   [(VEMetalBase *)self->_pseudoDepthGenerator setEnableGpuWaitForComplete:self->_EnableGpuWaitForComplete];
   [(PseudoDepthGenerator *)self->_pseudoDepthGenerator setPseudoDepth:1];
-  self->_previousFlow = CreatePixelBuffer(a3, a4, 843264104);
-  v24 = vcvts_n_f32_u64(a5, 2uLL);
-  v25 = vcvts_n_f32_u64(a6, 2uLL);
+  self->_previousFlow = CreatePixelBuffer(width, height, 843264104);
+  v24 = vcvts_n_f32_u64(frameWidth, 2uLL);
+  v25 = vcvts_n_f32_u64(frameHeight, 2uLL);
   self->_previousDepth = CreatePixelBuffer(v24, v25, 843264104);
-  [(PseudoDepthGenerator *)self->_pseudoDepthGenerator allocateFlowOnlyBufferWithFlowWidth:a3 flowHeight:a4 depthWidth:v24 depthHeight:v25 interleaveFactor:1];
+  [(PseudoDepthGenerator *)self->_pseudoDepthGenerator allocateFlowOnlyBufferWithFlowWidth:width flowHeight:height depthWidth:v24 depthHeight:v25 interleaveFactor:1];
   return v21;
 }
 
@@ -145,17 +145,17 @@
   return 1;
 }
 
-- (GenericFlow)initWithOpticalFlow:(id)a3 usage:(int64_t)a4 rotation:(int64_t)a5
+- (GenericFlow)initWithOpticalFlow:(id)flow usage:(int64_t)usage rotation:(int64_t)rotation
 {
-  v9 = a3;
+  flowCopy = flow;
   v21.receiver = self;
   v21.super_class = GenericFlow;
   v10 = [(GenericFlow *)&v21 init];
   v11 = v10;
-  if (v10 && (objc_storeStrong(&v10->_opticalFlow, a3), v12 = MTLCreateSystemDefaultDevice(), device = v11->_device, v11->_device = v12, device, v14 = [(MTLDevice *)v11->_device newCommandQueue], commandQueue = v11->_commandQueue, v11->_commandQueue = v14, commandQueue, v16 = [[ImageProcessor_Ext alloc] initWithUsage:a4 device:v11->_device commandQueue:v11->_commandQueue opticalFlowModeOnly:1], imageProcessor = v11->_imageProcessor, v11->_imageProcessor = v16, imageProcessor, (v18 = v11->_imageProcessor) != 0))
+  if (v10 && (objc_storeStrong(&v10->_opticalFlow, flow), v12 = MTLCreateSystemDefaultDevice(), device = v11->_device, v11->_device = v12, device, v14 = [(MTLDevice *)v11->_device newCommandQueue], commandQueue = v11->_commandQueue, v11->_commandQueue = v14, commandQueue, v16 = [[ImageProcessor_Ext alloc] initWithUsage:usage device:v11->_device commandQueue:v11->_commandQueue opticalFlowModeOnly:1], imageProcessor = v11->_imageProcessor, v11->_imageProcessor = v16, imageProcessor, (v18 = v11->_imageProcessor) != 0))
   {
-    [(ImageProcessor_Ext *)v18 setFirstRotation:a5];
-    [(ImageProcessor_Ext *)v11->_imageProcessor setSecondRotation:a5];
+    [(ImageProcessor_Ext *)v18 setFirstRotation:rotation];
+    [(ImageProcessor_Ext *)v11->_imageProcessor setSecondRotation:rotation];
     v11->_flowOnlyMode = 1;
     v19 = v11;
   }
@@ -168,65 +168,65 @@
   return v19;
 }
 
-- (BOOL)processWithFirstFrame:(id)a3 secondFrame:(id)a4 forwardFlow:(__CVBuffer *)a5 backwardFlow:(__CVBuffer *)a6 streamingMode:(BOOL)a7 error:(id *)a8
+- (BOOL)processWithFirstFrame:(id)frame secondFrame:(id)secondFrame forwardFlow:(__CVBuffer *)flow backwardFlow:(__CVBuffer *)backwardFlow streamingMode:(BOOL)mode error:(id *)error
 {
-  v9 = a7;
-  v14 = a3;
-  v15 = a4;
+  modeCopy = mode;
+  frameCopy = frame;
+  secondFrameCopy = secondFrame;
   if (self->_useHomographyInFlow)
   {
-    [self->_pImageRegInstance setStreamingMode:v9];
-    v16 = !v9 || !self->_streamingMode;
+    [self->_pImageRegInstance setStreamingMode:modeCopy];
+    v16 = !modeCopy || !self->_streamingMode;
     [self->_pImageRegInstance setRefreshCalculation:v16];
     [(VEOpticalFlowEstimator *)self->_opticalFlow setStreamingMode:0];
-    if (self->_streamingMode != v9)
+    if (self->_streamingMode != modeCopy)
     {
-      self->_isFirstFrameInStream = v9;
-      self->_streamingMode = v9;
+      self->_isFirstFrameInStream = modeCopy;
+      self->_streamingMode = modeCopy;
     }
   }
 
-  else if ([(VEOpticalFlowEstimator *)self->_opticalFlow streamingMode]!= v9)
+  else if ([(VEOpticalFlowEstimator *)self->_opticalFlow streamingMode]!= modeCopy)
   {
-    [(VEOpticalFlowEstimator *)self->_opticalFlow setIsFirstFrameInStream:v9];
-    [(VEOpticalFlowEstimator *)self->_opticalFlow setStreamingMode:v9];
+    [(VEOpticalFlowEstimator *)self->_opticalFlow setIsFirstFrameInStream:modeCopy];
+    [(VEOpticalFlowEstimator *)self->_opticalFlow setStreamingMode:modeCopy];
   }
 
-  v17 = -[ImageProcessor_Ext getPixelAttributesForBuffer:](self->_imageProcessor, "getPixelAttributesForBuffer:", [v14 buffer]);
+  v17 = -[ImageProcessor_Ext getPixelAttributesForBuffer:](self->_imageProcessor, "getPixelAttributesForBuffer:", [frameCopy buffer]);
   if (!v17)
   {
-    v17 = [(ImageProcessor_Ext *)self->_imageProcessor preserveCMAttachmentFirstFrame:v14 secondFrame:v15];
+    v17 = [(ImageProcessor_Ext *)self->_imageProcessor preserveCMAttachmentFirstFrame:frameCopy secondFrame:secondFrameCopy];
     if (!v17)
     {
       OUTLINED_FUNCTION_0_0();
-      v17 = -[ImageProcessor_Ext preProcessFirstInput:secondInput:waitForCompletion:](self->_imageProcessor, "preProcessFirstInput:secondInput:waitForCompletion:", [v14 buffer], objc_msgSend(v15, "buffer"), 0);
-      if (!v17 && (!self->_useHomographyInFlow || (v17 = [(GenericFlow *)self preProcessHomographyFirstFrame:v14 secondFrame:v15 previousFlow:self->_previousFlow]) == 0))
+      v17 = -[ImageProcessor_Ext preProcessFirstInput:secondInput:waitForCompletion:](self->_imageProcessor, "preProcessFirstInput:secondInput:waitForCompletion:", [frameCopy buffer], objc_msgSend(secondFrameCopy, "buffer"), 0);
+      if (!v17 && (!self->_useHomographyInFlow || (v17 = [(GenericFlow *)self preProcessHomographyFirstFrame:frameCopy secondFrame:secondFrameCopy previousFlow:self->_previousFlow]) == 0))
       {
         OUTLINED_FUNCTION_0_0();
-        v17 = [(GenericFlow *)self computeForwardFlow:a5 backwardFlow:a6];
+        v17 = [(GenericFlow *)self computeForwardFlow:flow backwardFlow:backwardFlow];
         if (!v17)
         {
-          v17 = [(ImageProcessor_Ext *)self->_imageProcessor restoreCMAttachmentToFirstFrame:v14 secondFrame:v15 synthesizedFrame:0];
+          v17 = [(ImageProcessor_Ext *)self->_imageProcessor restoreCMAttachmentToFirstFrame:frameCopy secondFrame:secondFrameCopy synthesizedFrame:0];
         }
       }
     }
   }
 
   v18 = v17;
-  if (a8 && v17)
+  if (error && v17)
   {
-    *a8 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.OpticalFlow" code:v17 userInfo:0];
+    *error = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.OpticalFlow" code:v17 userInfo:0];
   }
 
   return v18 == 0;
 }
 
-- (int64_t)bindWithMTLTextureFromDownscaledImage:(__CVBuffer *)a3 downscaledSecond:(__CVBuffer *)a4 forwardFlow:(__CVBuffer *)a5 backwardFlow:(__CVBuffer *)a6 prevBackwardFlow:(__CVBuffer *)a7 depth:(__CVBuffer *)a8 interleaveFactor:(unint64_t)a9
+- (int64_t)bindWithMTLTextureFromDownscaledImage:(__CVBuffer *)image downscaledSecond:(__CVBuffer *)second forwardFlow:(__CVBuffer *)flow backwardFlow:(__CVBuffer *)backwardFlow prevBackwardFlow:(__CVBuffer *)prevBackwardFlow depth:(__CVBuffer *)depth interleaveFactor:(unint64_t)factor
 {
   result = 12;
-  if (a3 && a5 && a6 && a7 && a8)
+  if (image && flow && backwardFlow && prevBackwardFlow && depth)
   {
-    if (self->_streamingMode && self->_bindTexture && (v13 = checkTextureBoundBuffer(self->_forwardFlowTexture, a5), self->_bindTexture = v13))
+    if (self->_streamingMode && self->_bindTexture && (v13 = checkTextureBoundBuffer(self->_forwardFlowTexture, flow), self->_bindTexture = v13))
     {
       return 0;
     }
@@ -234,11 +234,11 @@
     else
     {
       self->_bindTexture = 0;
-      v14 = createRGBATextureFromCVPixelBuffer(a3, self->_device);
+      v14 = createRGBATextureFromCVPixelBuffer(image, self->_device);
       downscaleImage1Texture = self->_downscaleImage1Texture;
       self->_downscaleImage1Texture = v14;
 
-      if (self->_downscaleImage1Texture && (createRGBATextureFromCVPixelBuffer(a4, self->_device), v16 = objc_claimAutoreleasedReturnValue(), downscaleImage2Texture = self->_downscaleImage2Texture, self->_downscaleImage2Texture = v16, downscaleImage2Texture, self->_downscaleImage2Texture) && (OUTLINED_FUNCTION_7(), createTexturesFromCVPixelBuffer(v18, v19, v20, v21), v22 = objc_claimAutoreleasedReturnValue(), forwardFlowTexture = self->_forwardFlowTexture, self->_forwardFlowTexture = v22, forwardFlowTexture, self->_forwardFlowTexture) && (OUTLINED_FUNCTION_7(), createTexturesFromCVPixelBuffer(v24, v25, v26, v27), v28 = objc_claimAutoreleasedReturnValue(), backwardFlowTexture = self->_backwardFlowTexture, self->_backwardFlowTexture = v28, backwardFlowTexture, self->_backwardFlowTexture) && (OUTLINED_FUNCTION_7(), createTexturesFromCVPixelBuffer(v30, v31, v32, v33), v34 = objc_claimAutoreleasedReturnValue(), previousDepthTexture = self->_previousDepthTexture, self->_previousDepthTexture = v34, previousDepthTexture, self->_previousDepthTexture) && (OUTLINED_FUNCTION_7(), createTexturesFromCVPixelBuffer(v36, v37, v38, v39), v40 = objc_claimAutoreleasedReturnValue(), previousFlowTexture = self->_previousFlowTexture, self->_previousFlowTexture = v40, previousFlowTexture, self->_previousFlowTexture))
+      if (self->_downscaleImage1Texture && (createRGBATextureFromCVPixelBuffer(second, self->_device), v16 = objc_claimAutoreleasedReturnValue(), downscaleImage2Texture = self->_downscaleImage2Texture, self->_downscaleImage2Texture = v16, downscaleImage2Texture, self->_downscaleImage2Texture) && (OUTLINED_FUNCTION_7(), createTexturesFromCVPixelBuffer(v18, v19, v20, v21), v22 = objc_claimAutoreleasedReturnValue(), forwardFlowTexture = self->_forwardFlowTexture, self->_forwardFlowTexture = v22, forwardFlowTexture, self->_forwardFlowTexture) && (OUTLINED_FUNCTION_7(), createTexturesFromCVPixelBuffer(v24, v25, v26, v27), v28 = objc_claimAutoreleasedReturnValue(), backwardFlowTexture = self->_backwardFlowTexture, self->_backwardFlowTexture = v28, backwardFlowTexture, self->_backwardFlowTexture) && (OUTLINED_FUNCTION_7(), createTexturesFromCVPixelBuffer(v30, v31, v32, v33), v34 = objc_claimAutoreleasedReturnValue(), previousDepthTexture = self->_previousDepthTexture, self->_previousDepthTexture = v34, previousDepthTexture, self->_previousDepthTexture) && (OUTLINED_FUNCTION_7(), createTexturesFromCVPixelBuffer(v36, v37, v38, v39), v40 = objc_claimAutoreleasedReturnValue(), previousFlowTexture = self->_previousFlowTexture, self->_previousFlowTexture = v40, previousFlowTexture, self->_previousFlowTexture))
       {
         result = 0;
         self->_bindTexture = 1;
@@ -254,13 +254,13 @@
   return result;
 }
 
-- (int64_t)preProcessHomographyFirstFrame:(id)a3 secondFrame:(id)a4 previousFlow:(__CVBuffer *)a5
+- (int64_t)preProcessHomographyFirstFrame:(id)frame secondFrame:(id)secondFrame previousFlow:(__CVBuffer *)flow
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
+  frameCopy = frame;
+  secondFrameCopy = secondFrame;
+  v10 = secondFrameCopy;
   v11 = 12;
-  if (v8 && v9)
+  if (frameCopy && secondFrameCopy)
   {
     if (!self->_useHomographyInFlow)
     {
@@ -278,22 +278,22 @@ LABEL_22:
       v15 = Height;
       if (self->_isFirstFrameInStream)
       {
-        [(VEOpticalFlowEstimator *)self->_opticalFlow opticalFlowFrom:[(ImageProcessor_Ext *)self->_imageProcessor rgbaFirst] to:[(ImageProcessor_Ext *)self->_imageProcessor rgbaSecond] flow:a5];
+        [(VEOpticalFlowEstimator *)self->_opticalFlow opticalFlowFrom:[(ImageProcessor_Ext *)self->_imageProcessor rgbaFirst] to:[(ImageProcessor_Ext *)self->_imageProcessor rgbaSecond] flow:flow];
         pImageRegInstance = self->_pImageRegInstance;
-        v17 = [(ImageProcessor_Ext *)self->_imageProcessor packedDownscaledFirstRGB];
-        v18 = [(ImageProcessor_Ext *)self->_imageProcessor packedDownscaledSecondRGB];
+        packedDownscaledFirstRGB = [(ImageProcessor_Ext *)self->_imageProcessor packedDownscaledFirstRGB];
+        packedDownscaledSecondRGB = [(ImageProcessor_Ext *)self->_imageProcessor packedDownscaledSecondRGB];
         if (pImageRegInstance)
         {
-          v19 = v18;
+          v19 = packedDownscaledSecondRGB;
           v20 = pImageRegInstance;
-          v21 = a5;
+          flowCopy2 = flow;
           v22 = 0;
-          v23 = v17;
+          v23 = packedDownscaledFirstRGB;
           v24 = v14;
           v25 = v15;
           v26 = 1;
 LABEL_12:
-          [(ImageReg *)v20 extractHomographyFromFlow:v21 depth:v22 im1:v23 im2:v19 targetResolution:v26 currentPairFlow:v24, v25];
+          [(ImageReg *)v20 extractHomographyFromFlow:flowCopy2 depth:v22 im1:v23 im2:v19 targetResolution:v26 currentPairFlow:v24, v25];
           goto LABEL_14;
         }
       }
@@ -302,15 +302,15 @@ LABEL_12:
       {
         v30 = self->_pImageRegInstance;
         previousDepth = self->_previousDepth;
-        v32 = [(ImageProcessor_Ext *)self->_imageProcessor packedDownscaledFirstRGB];
-        v33 = [(ImageProcessor_Ext *)self->_imageProcessor packedDownscaledSecondRGB];
+        packedDownscaledFirstRGB2 = [(ImageProcessor_Ext *)self->_imageProcessor packedDownscaledFirstRGB];
+        packedDownscaledSecondRGB2 = [(ImageProcessor_Ext *)self->_imageProcessor packedDownscaledSecondRGB];
         if (v30)
         {
-          v19 = v33;
+          v19 = packedDownscaledSecondRGB2;
           v20 = v30;
-          v21 = a5;
+          flowCopy2 = flow;
           v22 = previousDepth;
-          v23 = v32;
+          v23 = packedDownscaledFirstRGB2;
           v24 = v14;
           v25 = v15;
           v26 = 0;
@@ -322,11 +322,11 @@ LABEL_12:
     else
     {
       v27 = self->_pImageRegInstance;
-      v28 = [(ImageProcessor_Ext *)self->_imageProcessor rgbaFirst];
-      v29 = [(ImageProcessor_Ext *)self->_imageProcessor rgbaSecond];
+      rgbaFirst = [(ImageProcessor_Ext *)self->_imageProcessor rgbaFirst];
+      rgbaSecond = [(ImageProcessor_Ext *)self->_imageProcessor rgbaSecond];
       if (v27)
       {
-        [(ImageReg *)v27 registerImage0:v28 toImage1:v29 Normalize:0];
+        [(ImageReg *)v27 registerImage0:rgbaFirst toImage1:rgbaSecond Normalize:0];
         goto LABEL_14;
       }
     }
@@ -384,16 +384,16 @@ LABEL_23:
   return v11;
 }
 
-- (int64_t)computeForwardFlow:(__CVBuffer *)a3 backwardFlow:(__CVBuffer *)a4
+- (int64_t)computeForwardFlow:(__CVBuffer *)flow backwardFlow:(__CVBuffer *)backwardFlow
 {
   v4 = 12;
-  if (a3 && a4)
+  if (flow && backwardFlow)
   {
     OUTLINED_FUNCTION_0_0();
     [(VEOpticalFlowEstimator *)self->_opticalFlow setInputRotation:0];
     useHomographyInFlow = self->_useHomographyInFlow;
     opticalFlow = self->_opticalFlow;
-    v9 = [(ImageProcessor_Ext *)self->_imageProcessor rgbaFirst];
+    rgbaFirst = [(ImageProcessor_Ext *)self->_imageProcessor rgbaFirst];
     if (useHomographyInFlow)
     {
       if (!self->_homo12good)
@@ -403,7 +403,7 @@ LABEL_23:
       }
 
       v10 = opticalFlow;
-      v11 = v9;
+      v11 = rgbaFirst;
     }
 
     else
@@ -418,7 +418,7 @@ LABEL_23:
     {
       OUTLINED_FUNCTION_0_0();
       CVPixelBufferGetWidth([(ImageProcessor_Ext *)self->_imageProcessor rgbaFirst]);
-      CVPixelBufferGetWidth(a3);
+      CVPixelBufferGetWidth(flow);
       OUTLINED_FUNCTION_2_7();
       v13 = [v12 postprocessFlowWithhomographyMatrix21:? matrix12:? inputForwardFlow:? inputBackwardFlow:? outputForwardFlow:? outputBackwardFlow:? downscaleFacttor:?];
       if (!self->_streamingMode)

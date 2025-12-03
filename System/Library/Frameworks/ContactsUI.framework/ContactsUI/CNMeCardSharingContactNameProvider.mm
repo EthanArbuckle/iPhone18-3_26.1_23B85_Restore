@@ -1,20 +1,20 @@
 @interface CNMeCardSharingContactNameProvider
 + (id)descriptorForRequiredKeys;
-- (CNMeCardSharingContactNameProvider)initWithContact:(id)a3;
+- (CNMeCardSharingContactNameProvider)initWithContact:(id)contact;
 @end
 
 @implementation CNMeCardSharingContactNameProvider
 
-- (CNMeCardSharingContactNameProvider)initWithContact:(id)a3
+- (CNMeCardSharingContactNameProvider)initWithContact:(id)contact
 {
-  v5 = a3;
+  contactCopy = contact;
   v10.receiver = self;
   v10.super_class = CNMeCardSharingContactNameProvider;
   v6 = [(CNMeCardSharingContactNameProvider *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_contact, a3);
+    objc_storeStrong(&v6->_contact, contact);
     v8 = v7;
   }
 

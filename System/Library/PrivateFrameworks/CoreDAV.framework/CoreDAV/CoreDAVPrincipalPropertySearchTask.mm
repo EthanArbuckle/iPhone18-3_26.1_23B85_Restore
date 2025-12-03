@@ -1,16 +1,16 @@
 @interface CoreDAVPrincipalPropertySearchTask
-- (CoreDAVPrincipalPropertySearchTask)initWithPropertiesToFind:(id)a3 atURL:(id)a4;
+- (CoreDAVPrincipalPropertySearchTask)initWithPropertiesToFind:(id)find atURL:(id)l;
 - (id)requestBody;
-- (void)finishCoreDAVTaskWithError:(id)a3;
+- (void)finishCoreDAVTaskWithError:(id)error;
 @end
 
 @implementation CoreDAVPrincipalPropertySearchTask
 
-- (CoreDAVPrincipalPropertySearchTask)initWithPropertiesToFind:(id)a3 atURL:(id)a4
+- (CoreDAVPrincipalPropertySearchTask)initWithPropertiesToFind:(id)find atURL:(id)l
 {
   v5.receiver = self;
   v5.super_class = CoreDAVPrincipalPropertySearchTask;
-  result = [(CoreDAVPropertyFindBaseTask *)&v5 initWithPropertiesToFind:a3 atURL:a4];
+  result = [(CoreDAVPropertyFindBaseTask *)&v5 initWithPropertiesToFind:find atURL:l];
   if (result)
   {
     result->super.super._depth = 2;
@@ -22,21 +22,21 @@
 - (id)requestBody
 {
   v32 = *MEMORY[0x277D85DE8];
-  v3 = [(CoreDAVPropertyFindBaseTask *)self propertiesToFind];
-  v4 = [v3 count];
+  propertiesToFind = [(CoreDAVPropertyFindBaseTask *)self propertiesToFind];
+  data = [propertiesToFind count];
 
-  if (v4)
+  if (data)
   {
     v5 = objc_alloc_init(CoreDAVXMLData);
-    v6 = [(CoreDAVPrincipalPropertySearchTask *)self extraAttributes];
-    [(CoreDAVXMLData *)v5 startElement:@"principal-property-search" inNamespace:@"DAV:" withAttributes:v6];
+    extraAttributes = [(CoreDAVPrincipalPropertySearchTask *)self extraAttributes];
+    [(CoreDAVXMLData *)v5 startElement:@"principal-property-search" inNamespace:@"DAV:" withAttributes:extraAttributes];
 
     v28 = 0u;
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v7 = [(CoreDAVPrincipalPropertySearchTask *)self searchItems];
-    v8 = [v7 countByEnumeratingWithState:&v26 objects:v31 count:16];
+    searchItems = [(CoreDAVPrincipalPropertySearchTask *)self searchItems];
+    v8 = [searchItems countByEnumeratingWithState:&v26 objects:v31 count:16];
     if (v8)
     {
       v9 = v8;
@@ -47,13 +47,13 @@
         {
           if (*v27 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(searchItems);
           }
 
           [*(*(&v26 + 1) + 8 * i) write:v5];
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v26 objects:v31 count:16];
+        v9 = [searchItems countByEnumeratingWithState:&v26 objects:v31 count:16];
       }
 
       while (v9);
@@ -64,8 +64,8 @@
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v12 = [(CoreDAVPropertyFindBaseTask *)self propertiesToFind];
-    v13 = [v12 countByEnumeratingWithState:&v22 objects:v30 count:16];
+    propertiesToFind2 = [(CoreDAVPropertyFindBaseTask *)self propertiesToFind];
+    v13 = [propertiesToFind2 countByEnumeratingWithState:&v22 objects:v30 count:16];
     if (v13)
     {
       v14 = v13;
@@ -76,16 +76,16 @@
         {
           if (*v23 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(propertiesToFind2);
           }
 
           v17 = *(*(&v22 + 1) + 8 * j);
-          v18 = [v17 name];
-          v19 = [v17 nameSpace];
-          [(CoreDAVXMLData *)v5 appendElement:v18 inNamespace:v19 withStringContent:0 withAttributeNamesAndValues:0];
+          name = [v17 name];
+          nameSpace = [v17 nameSpace];
+          [(CoreDAVXMLData *)v5 appendElement:name inNamespace:nameSpace withStringContent:0 withAttributeNamesAndValues:0];
         }
 
-        v14 = [v12 countByEnumeratingWithState:&v22 objects:v30 count:16];
+        v14 = [propertiesToFind2 countByEnumeratingWithState:&v22 objects:v30 count:16];
       }
 
       while (v14);
@@ -93,32 +93,32 @@
 
     [(CoreDAVXMLData *)v5 endElement:@"prop" inNamespace:@"DAV:"];
     [(CoreDAVXMLData *)v5 endElement:@"principal-property-search" inNamespace:@"DAV:"];
-    v4 = [(CoreDAVXMLData *)v5 data];
+    data = [(CoreDAVXMLData *)v5 data];
   }
 
   v20 = *MEMORY[0x277D85DE8];
 
-  return v4;
+  return data;
 }
 
-- (void)finishCoreDAVTaskWithError:(id)a3
+- (void)finishCoreDAVTaskWithError:(id)error
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  errorCopy = error;
+  v5 = errorCopy;
+  if (errorCopy)
   {
-    v6 = v4;
+    getTotalFailureError = errorCopy;
   }
 
   else
   {
-    v6 = [(CoreDAVPropertyFindBaseTask *)self getTotalFailureError];
+    getTotalFailureError = [(CoreDAVPropertyFindBaseTask *)self getTotalFailureError];
   }
 
-  v7 = v6;
+  v7 = getTotalFailureError;
   v8.receiver = self;
   v8.super_class = CoreDAVPrincipalPropertySearchTask;
-  [(CoreDAVPropertyFindBaseTask *)&v8 finishCoreDAVTaskWithError:v6];
+  [(CoreDAVPropertyFindBaseTask *)&v8 finishCoreDAVTaskWithError:getTotalFailureError];
 }
 
 @end

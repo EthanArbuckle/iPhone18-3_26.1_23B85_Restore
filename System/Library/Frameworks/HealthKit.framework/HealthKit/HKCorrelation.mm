@@ -1,18 +1,18 @@
 @interface HKCorrelation
 + (HKCorrelation)correlationWithType:(HKCorrelationType *)correlationType startDate:(NSDate *)startDate endDate:(NSDate *)endDate objects:(NSSet *)objects device:(HKDevice *)device metadata:(NSDictionary *)metadata;
 - (BOOL)_containsObjects;
-- (BOOL)_correlatedObjectsMatchFilterDictionary:(id)a3;
-- (HKCorrelation)initWithCoder:(id)a3;
+- (BOOL)_correlatedObjectsMatchFilterDictionary:(id)dictionary;
+- (HKCorrelation)initWithCoder:(id)coder;
 - (NSSet)objects;
 - (NSSet)objectsForType:(HKObjectType *)objectType;
 - (id)_init;
-- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)a3;
+- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)configuration;
 - (id)description;
-- (void)_addCorrelatedObject:(id)a3;
-- (void)_addCorrelatedObjects:(id)a3;
-- (void)_filterCorrelatedObjectsWithFilterDictionary:(id)a3;
+- (void)_addCorrelatedObject:(id)object;
+- (void)_addCorrelatedObjects:(id)objects;
+- (void)_filterCorrelatedObjectsWithFilterDictionary:(id)dictionary;
 - (void)_removeAllCorrelatedObjects;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKCorrelation
@@ -55,7 +55,7 @@ LABEL_6:
   v27[3] = &unk_1E73843A8;
   v28 = v17;
   v24 = v17;
-  v25 = [a1 _newSampleWithType:v14 startDate:v18 endDate:v19 device:v27 metadata:v21 config:v23];
+  v25 = [self _newSampleWithType:v14 startDate:v18 endDate:v19 device:v27 metadata:v21 config:v23];
 
   return v25;
 }
@@ -64,15 +64,15 @@ LABEL_6:
 {
   v6.receiver = self;
   v6.super_class = HKCorrelation;
-  v2 = [(HKSample *)&v6 _init];
-  if (v2)
+  _init = [(HKSample *)&v6 _init];
+  if (_init)
   {
-    v3 = [MEMORY[0x1E695DF90] dictionary];
-    v4 = v2[12];
-    v2[12] = v3;
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    v4 = _init[12];
+    _init[12] = dictionary;
   }
 
-  return v2;
+  return _init;
 }
 
 - (NSSet)objects
@@ -83,8 +83,8 @@ LABEL_6:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(NSMutableDictionary *)self->_objects allValues];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  allValues = [(NSMutableDictionary *)self->_objects allValues];
+  v5 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -95,13 +95,13 @@ LABEL_6:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allValues);
         }
 
         [v3 unionSet:*(*(&v11 + 1) + 8 * i)];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -119,35 +119,35 @@ LABEL_6:
   v9.receiver = self;
   v9.super_class = HKCorrelation;
   v5 = [(HKSample *)&v9 description];
-  v6 = [(HKCorrelation *)self objects];
-  v7 = [v3 stringWithFormat:@"<%@> %@ (%ld objects)", v4, v5, objc_msgSend(v6, "count")];
+  objects = [(HKCorrelation *)self objects];
+  v7 = [v3 stringWithFormat:@"<%@> %@ (%ld objects)", v4, v5, objc_msgSend(objects, "count")];
 
   return v7;
 }
 
-- (void)_addCorrelatedObject:(id)a3
+- (void)_addCorrelatedObject:(id)object
 {
-  v6 = a3;
-  v4 = [v6 sampleType];
-  v5 = [(NSMutableDictionary *)self->_objects objectForKeyedSubscript:v4];
+  objectCopy = object;
+  sampleType = [objectCopy sampleType];
+  v5 = [(NSMutableDictionary *)self->_objects objectForKeyedSubscript:sampleType];
   if (!v5)
   {
     v5 = [MEMORY[0x1E695DFA8] set];
-    [(NSMutableDictionary *)self->_objects setObject:v5 forKeyedSubscript:v4];
+    [(NSMutableDictionary *)self->_objects setObject:v5 forKeyedSubscript:sampleType];
   }
 
-  [v5 addObject:v6];
+  [v5 addObject:objectCopy];
 }
 
-- (void)_addCorrelatedObjects:(id)a3
+- (void)_addCorrelatedObjects:(id)objects
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  objectsCopy = objects;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v5 = [objectsCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -159,14 +159,14 @@ LABEL_6:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(objectsCopy);
         }
 
         [(HKCorrelation *)self _addCorrelatedObject:*(*(&v10 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [objectsCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
@@ -183,19 +183,19 @@ LABEL_6:
   return v4;
 }
 
-- (void)_filterCorrelatedObjectsWithFilterDictionary:(id)a3
+- (void)_filterCorrelatedObjectsWithFilterDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF90] dictionary];
+  dictionaryCopy = dictionary;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   objects = self->_objects;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __62__HKCorrelation__filterCorrelatedObjectsWithFilterDictionary___block_invoke;
   v11[3] = &unk_1E73843D0;
-  v12 = v4;
-  v7 = v5;
+  v12 = dictionaryCopy;
+  v7 = dictionary;
   v13 = v7;
-  v8 = v4;
+  v8 = dictionaryCopy;
   [(NSMutableDictionary *)objects enumerateKeysAndObjectsUsingBlock:v11];
   v9 = self->_objects;
   self->_objects = v7;
@@ -249,14 +249,14 @@ void __62__HKCorrelation__filterCorrelatedObjectsWithFilterDictionary___block_in
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_correlatedObjectsMatchFilterDictionary:(id)a3
+- (BOOL)_correlatedObjectsMatchFilterDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  dictionaryCopy = dictionary;
+  v5 = dictionaryCopy;
+  if (dictionaryCopy)
   {
     v6 = 1;
-    if ([v4 count])
+    if ([dictionaryCopy count])
     {
       v12 = 0;
       v13 = &v12;
@@ -363,20 +363,20 @@ uint64_t __33__HKCorrelation__containsObjects__block_invoke(uint64_t a1, uint64_
 
 - (void)_removeAllCorrelatedObjects
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   objects = self->_objects;
-  self->_objects = v3;
+  self->_objects = dictionary;
 
-  MEMORY[0x1EEE66BB8](v3, objects);
+  MEMORY[0x1EEE66BB8](dictionary, objects);
 }
 
-- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)a3
+- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)configuration
 {
-  var0 = a3.var0;
+  var0 = configuration.var0;
   v76 = *MEMORY[0x1E69E9840];
   v73.receiver = self;
   v73.super_class = HKCorrelation;
-  v6 = [(HKSample *)&v73 _validateWithConfiguration:a3.var0, a3.var1];
+  v6 = [(HKSample *)&v73 _validateWithConfiguration:configuration.var0, configuration.var1];
   v7 = v6;
   if (v6)
   {
@@ -386,7 +386,7 @@ LABEL_3:
     goto LABEL_43;
   }
 
-  v10 = [(HKCorrelation *)self correlationType];
+  correlationType = [(HKCorrelation *)self correlationType];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -394,8 +394,8 @@ LABEL_3:
   {
     v36 = MEMORY[0x1E696ABC0];
     v37 = objc_opt_class();
-    v38 = [(HKCorrelation *)self correlationType];
-    v9 = [v36 hk_errorForInvalidArgument:@"@" class:v37 selector:a2 format:{@"Data type %@ must be of type %@", v38, objc_opt_class()}];
+    correlationType2 = [(HKCorrelation *)self correlationType];
+    v9 = [v36 hk_errorForInvalidArgument:@"@" class:v37 selector:a2 format:{@"Data type %@ must be of type %@", correlationType2, objc_opt_class()}];
 
     goto LABEL_43;
   }
@@ -473,13 +473,13 @@ LABEL_38:
         goto LABEL_38;
       }
 
-      v17 = [v16 _source];
-      if (v17)
+      _source = [v16 _source];
+      if (_source)
       {
-        v18 = v17;
-        v19 = [v16 _source];
+        v18 = _source;
+        _source2 = [v16 _source];
         v20 = +[HKSource defaultSource];
-        v21 = [v19 isEqual:v20];
+        v21 = [_source2 isEqual:v20];
 
         v12 = v63;
         if ((v21 & 1) == 0)
@@ -514,11 +514,11 @@ LABEL_41:
 
   else
   {
-    v23 = [(HKCorrelation *)self correlationType];
-    v24 = [v23 code];
+    correlationType3 = [(HKCorrelation *)self correlationType];
+    code = [correlationType3 code];
 
     v7 = 0;
-    if (v24 != 80)
+    if (code != 80)
     {
       goto LABEL_31;
     }
@@ -547,14 +547,14 @@ LABEL_41:
             }
 
             v32 = *(*(&v65 + 1) + 8 * j);
-            v33 = [v32 sampleType];
-            v34 = [v33 code] == 17;
+            sampleType = [v32 sampleType];
+            v34 = [sampleType code] == 17;
 
             v28 |= v34;
-            v35 = [v32 sampleType];
-            LODWORD(v33) = [v35 code] == 16;
+            sampleType2 = [v32 sampleType];
+            LODWORD(sampleType) = [sampleType2 code] == 16;
 
-            v29 |= v33;
+            v29 |= sampleType;
           }
 
           v27 = [v25 countByEnumeratingWithState:&v65 objects:v74 count:16];
@@ -632,12 +632,12 @@ LABEL_43:
   return v9;
 }
 
-- (HKCorrelation)initWithCoder:(id)a3
+- (HKCorrelation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = HKCorrelation;
-  v5 = [(HKSample *)&v14 initWithCoder:v4];
+  v5 = [(HKSample *)&v14 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = MEMORY[0x1E695DFD8];
@@ -645,7 +645,7 @@ LABEL_43:
     v8 = objc_opt_class();
     v9 = objc_opt_class();
     v10 = [v6 setWithObjects:{v7, v8, v9, objc_opt_class(), 0}];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"correlatedObjects"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"correlatedObjects"];
     objects = v5->_objects;
     v5->_objects = v11;
   }
@@ -653,13 +653,13 @@ LABEL_43:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = HKCorrelation;
-  v4 = a3;
-  [(HKSample *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_objects forKey:{@"correlatedObjects", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(HKSample *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_objects forKey:{@"correlatedObjects", v5.receiver, v5.super_class}];
 }
 
 - (void)_validateWithConfiguration:(void *)a1 .cold.1(void *a1, NSObject *a2)

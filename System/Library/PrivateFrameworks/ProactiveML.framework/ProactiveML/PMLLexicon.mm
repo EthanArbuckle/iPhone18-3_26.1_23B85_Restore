@@ -1,9 +1,9 @@
 @interface PMLLexicon
-+ (BOOL)serializeLexiconToFile:(id)a3 tokenToWordIDDict:(id)a4;
++ (BOOL)serializeLexiconToFile:(id)file tokenToWordIDDict:(id)dict;
 - (PMLLexicon)init;
-- (PMLLexicon)initWithPath:(id)a3;
+- (PMLLexicon)initWithPath:(id)path;
 - (unint64_t)getTotalEntries;
-- (unint64_t)getWordIDforToken:(id)a3;
+- (unint64_t)getWordIDforToken:(id)token;
 @end
 
 @implementation PMLLexicon
@@ -33,18 +33,18 @@ uint64_t __29__PMLLexicon_getTotalEntries__block_invoke(uint64_t a1)
   return result;
 }
 
-- (unint64_t)getWordIDforToken:(id)a3
+- (unint64_t)getWordIDforToken:(id)token
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(_PASCFBurstTrie *)self->_lexicon payloadForString:v4];
+  tokenCopy = token;
+  v5 = [(_PASCFBurstTrie *)self->_lexicon payloadForString:tokenCopy];
   if (v5 == -1)
   {
     v7 = PML_LogHandle();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
       v10 = 138412290;
-      v11 = v4;
+      v11 = tokenCopy;
       _os_log_debug_impl(&dword_260D68000, v7, OS_LOG_TYPE_DEBUG, "Returning 0 for word id since token is not in lexicon: %@", &v10, 0xCu);
     }
 
@@ -60,35 +60,35 @@ uint64_t __29__PMLLexicon_getTotalEntries__block_invoke(uint64_t a1)
   return v6;
 }
 
-- (PMLLexicon)initWithPath:(id)a3
+- (PMLLexicon)initWithPath:(id)path
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  pathCopy = path;
+  if (!pathCopy)
   {
-    v19 = [MEMORY[0x277CCA890] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"PMLLexicon.m" lineNumber:37 description:{@"Invalid parameter not satisfying: %@", @"path"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PMLLexicon.m" lineNumber:37 description:{@"Invalid parameter not satisfying: %@", @"path"}];
   }
 
-  v6 = [MEMORY[0x277CCAA00] defaultManager];
-  if (([v6 fileExistsAtPath:v5] & 1) == 0)
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  if (([defaultManager fileExistsAtPath:pathCopy] & 1) == 0)
   {
 
     goto LABEL_9;
   }
 
-  v7 = [MEMORY[0x277CCAA00] defaultManager];
-  v8 = [v7 attributesOfItemAtPath:v5 error:0];
-  v9 = [v8 fileSize];
+  defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+  v8 = [defaultManager2 attributesOfItemAtPath:pathCopy error:0];
+  fileSize = [v8 fileSize];
 
-  if (!v9)
+  if (!fileSize)
   {
 LABEL_9:
     v14 = PML_LogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v22 = v5;
+      v22 = pathCopy;
       _os_log_impl(&dword_260D68000, v14, OS_LOG_TYPE_DEFAULT, "Falling back to default system lexicon since lexicon at following path is invalid in existence: %@", buf, 0xCu);
     }
 
@@ -99,7 +99,7 @@ LABEL_9:
   v20.receiver = self;
   v20.super_class = PMLLexicon;
   v10 = [(PMLLexicon *)&v20 init];
-  if (!v10 || (v11 = [objc_alloc(MEMORY[0x277D42558]) initWithPath:v5], lexicon = v10->_lexicon, v10->_lexicon = v11, lexicon, v10->_lexicon))
+  if (!v10 || (v11 = [objc_alloc(MEMORY[0x277D42558]) initWithPath:pathCopy], lexicon = v10->_lexicon, v10->_lexicon = v11, lexicon, v10->_lexicon))
   {
     v13 = v10;
 LABEL_12:
@@ -147,10 +147,10 @@ LABEL_13:
   return v5;
 }
 
-+ (BOOL)serializeLexiconToFile:(id)a3 tokenToWordIDDict:(id)a4
++ (BOOL)serializeLexiconToFile:(id)file tokenToWordIDDict:(id)dict
 {
-  v5 = a3;
-  v6 = a4;
+  fileCopy = file;
+  dictCopy = dict;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
@@ -169,7 +169,7 @@ LABEL_13:
     v11[3] = &unk_279AC0780;
     v11[4] = &v12;
     v11[5] = &v16;
-    [v6 enumerateKeysAndObjectsUsingBlock:v11];
+    [dictCopy enumerateKeysAndObjectsUsingBlock:v11];
     v8 = v17[3];
     if (*(v13 + 24) == 1)
     {

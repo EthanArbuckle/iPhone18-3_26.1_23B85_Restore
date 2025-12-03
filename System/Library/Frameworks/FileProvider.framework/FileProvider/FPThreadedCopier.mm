@@ -1,9 +1,9 @@
 @interface FPThreadedCopier
 + (FPThreadedCopier)sharedCopier;
-- (BOOL)finishReading:(int)a3 writing:(int)a4 error:(id *)a5;
+- (BOOL)finishReading:(int)reading writing:(int)writing error:(id *)error;
 - (FPThreadedCopier)init;
-- (int)beginReading:(id)a3 error:(id *)a4;
-- (int)beginWriting:(id)a3 overwriteDestination:(BOOL)a4 error:(id *)a5;
+- (int)beginReading:(id)reading error:(id *)error;
+- (int)beginWriting:(id)writing overwriteDestination:(BOOL)destination error:(id *)error;
 - (void)beginOperation;
 - (void)endOperation;
 @end
@@ -101,44 +101,44 @@ LABEL_11:
   dispatch_semaphore_signal(v13);
 }
 
-- (int)beginReading:(id)a3 error:(id *)a4
+- (int)beginReading:(id)reading error:(id *)error
 {
-  v5 = open([a3 fileSystemRepresentation], 33028);
+  v5 = open([reading fileSystemRepresentation], 33028);
   v6 = v5;
-  if (a4 && v5 == -1)
+  if (error && v5 == -1)
   {
-    *a4 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:*__error() userInfo:0];
+    *error = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:*__error() userInfo:0];
   }
 
   return v6;
 }
 
-- (int)beginWriting:(id)a3 overwriteDestination:(BOOL)a4 error:(id *)a5
+- (int)beginWriting:(id)writing overwriteDestination:(BOOL)destination error:(id *)error
 {
-  v6 = a4;
-  v7 = [a3 fileSystemRepresentation];
-  if (v6)
+  destinationCopy = destination;
+  fileSystemRepresentation = [writing fileSystemRepresentation];
+  if (destinationCopy)
   {
-    v8 = open(v7, 1797, 384);
+    v8 = open(fileSystemRepresentation, 1797, 384);
   }
 
   else
   {
-    v8 = open(v7, 3845, 384);
+    v8 = open(fileSystemRepresentation, 3845, 384);
   }
 
   v9 = v8;
-  if (a5 && v8 == -1)
+  if (error && v8 == -1)
   {
-    *a5 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:*__error() userInfo:0];
+    *error = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:*__error() userInfo:0];
   }
 
   return v9;
 }
 
-- (BOOL)finishReading:(int)a3 writing:(int)a4 error:(id *)a5
+- (BOOL)finishReading:(int)reading writing:(int)writing error:(id *)error
 {
-  close(a3);
+  close(reading);
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -150,14 +150,14 @@ LABEL_11:
   v12[1] = 3221225472;
   v12[2] = __48__FPThreadedCopier_finishReading_writing_error___block_invoke;
   v12[3] = &unk_1E793B958;
-  v13 = a4;
+  writingCopy = writing;
   v12[4] = &v14;
   dispatch_sync(writeQueue, v12);
   v9 = v15[5];
-  if (a5 && v9)
+  if (error && v9)
   {
     v9 = v9;
-    *a5 = v9;
+    *error = v9;
   }
 
   v10 = v9 == 0;

@@ -1,9 +1,9 @@
 @interface PMSignInWithAppleController
-- (void)cancelAppIconRequestBundleID:(id)a3 completion:(id)a4;
-- (void)deleteAllItemsFromDepartedGroupWithContext:(id)a3 completion:(id)a4;
-- (void)fetchAppIconForBundleID:(id)a3 iconSize:(CGSize)a4 completion:(id)a5;
-- (void)leaveGroupWithContext:(id)a3 completion:(id)a4;
-- (void)participantRemovedWithContext:(id)a3 participantID:(id)a4 completion:(id)a5;
+- (void)cancelAppIconRequestBundleID:(id)d completion:(id)completion;
+- (void)deleteAllItemsFromDepartedGroupWithContext:(id)context completion:(id)completion;
+- (void)fetchAppIconForBundleID:(id)d iconSize:(CGSize)size completion:(id)completion;
+- (void)leaveGroupWithContext:(id)context completion:(id)completion;
+- (void)participantRemovedWithContext:(id)context participantID:(id)d completion:(id)completion;
 - (void)performHealthCheckInBackground;
 @end
 
@@ -11,10 +11,10 @@
 
 - (void)performHealthCheckInBackground
 {
-  v2 = [MEMORY[0x277CF0130] sharedInstance];
-  v3 = [MEMORY[0x277CF0130] sharedInstance];
-  v4 = [v3 primaryAuthKitAccount];
-  v7 = [v2 altDSIDForAccount:v4];
+  mEMORY[0x277CF0130] = [MEMORY[0x277CF0130] sharedInstance];
+  mEMORY[0x277CF0130]2 = [MEMORY[0x277CF0130] sharedInstance];
+  primaryAuthKitAccount = [mEMORY[0x277CF0130]2 primaryAuthKitAccount];
+  v7 = [mEMORY[0x277CF0130] altDSIDForAccount:primaryAuthKitAccount];
 
   if (v7)
   {
@@ -24,32 +24,32 @@
   }
 }
 
-- (void)leaveGroupWithContext:(id)a3 completion:(id)a4
+- (void)leaveGroupWithContext:(id)context completion:(id)completion
 {
   v5 = MEMORY[0x277CF02E0];
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  contextCopy = context;
   v8 = objc_alloc_init(v5);
-  [v8 leaveGroupWithContext:v7 completion:v6];
+  [v8 leaveGroupWithContext:contextCopy completion:completionCopy];
 }
 
-- (void)deleteAllItemsFromDepartedGroupWithContext:(id)a3 completion:(id)a4
+- (void)deleteAllItemsFromDepartedGroupWithContext:(id)context completion:(id)completion
 {
   v5 = MEMORY[0x277CF02E0];
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  contextCopy = context;
   v8 = objc_alloc_init(v5);
-  [v8 deleteAllItemsFromDepartedGroupWithContext:v7 completion:v6];
+  [v8 deleteAllItemsFromDepartedGroupWithContext:contextCopy completion:completionCopy];
 }
 
-- (void)participantRemovedWithContext:(id)a3 participantID:(id)a4 completion:(id)a5
+- (void)participantRemovedWithContext:(id)context participantID:(id)d completion:(id)completion
 {
   v7 = MEMORY[0x277CF02E0];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  completionCopy = completion;
+  dCopy = d;
+  contextCopy = context;
   v11 = objc_alloc_init(v7);
-  [v11 participantRemovedWithContext:v10 participantID:v9 completion:v8];
+  [v11 participantRemovedWithContext:contextCopy participantID:dCopy completion:completionCopy];
 }
 
 void __61__PMSignInWithAppleController_performHealthCheckInBackground__block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -71,25 +71,25 @@ void __61__PMSignInWithAppleController_performHealthCheckInBackground__block_inv
   }
 }
 
-- (void)fetchAppIconForBundleID:(id)a3 iconSize:(CGSize)a4 completion:(id)a5
+- (void)fetchAppIconForBundleID:(id)d iconSize:(CGSize)size completion:(id)completion
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v8 = MEMORY[0x277CF0268];
-  v9 = a5;
-  v10 = a3;
-  v12 = [v8 sharedInstance];
+  completionCopy = completion;
+  dCopy = d;
+  sharedInstance = [v8 sharedInstance];
   v11 = [MEMORY[0x277CCAE60] valueWithCGSize:{width, height}];
-  [v12 appIconForBundleID:v10 size:v11 completion:v9];
+  [sharedInstance appIconForBundleID:dCopy size:v11 completion:completionCopy];
 }
 
-- (void)cancelAppIconRequestBundleID:(id)a3 completion:(id)a4
+- (void)cancelAppIconRequestBundleID:(id)d completion:(id)completion
 {
   v5 = MEMORY[0x277CF0268];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v5 sharedInstance];
-  [v8 cancelAppIconRequestForBundleID:v7 completion:v6];
+  completionCopy = completion;
+  dCopy = d;
+  sharedInstance = [v5 sharedInstance];
+  [sharedInstance cancelAppIconRequestForBundleID:dCopy completion:completionCopy];
 }
 
 void __61__PMSignInWithAppleController_performHealthCheckInBackground__block_invoke_cold_1(uint64_t a1, NSObject *a2)

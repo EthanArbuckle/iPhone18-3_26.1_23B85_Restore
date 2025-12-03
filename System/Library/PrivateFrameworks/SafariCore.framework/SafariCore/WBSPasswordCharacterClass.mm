@@ -1,38 +1,38 @@
 @interface WBSPasswordCharacterClass
-+ (id)customCharacterClassWithValue:(id)a3;
-+ (id)namedCharacterClassWithType:(int64_t)a3;
-- (BOOL)isEqual:(id)a3;
-- (WBSPasswordCharacterClass)initWithType:(int64_t)a3 value:(id)a4;
++ (id)customCharacterClassWithValue:(id)value;
++ (id)namedCharacterClassWithType:(int64_t)type;
+- (BOOL)isEqual:(id)equal;
+- (WBSPasswordCharacterClass)initWithType:(int64_t)type value:(id)value;
 @end
 
 @implementation WBSPasswordCharacterClass
 
-+ (id)customCharacterClassWithValue:(id)a3
++ (id)customCharacterClassWithValue:(id)value
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithType:6 value:v4];
+  valueCopy = value;
+  v5 = [[self alloc] initWithType:6 value:valueCopy];
 
   return v5;
 }
 
-+ (id)namedCharacterClassWithType:(int64_t)a3
++ (id)namedCharacterClassWithType:(int64_t)type
 {
-  v3 = [[a1 alloc] initWithType:a3 value:&stru_1F3064D08];
+  v3 = [[self alloc] initWithType:type value:&stru_1F3064D08];
 
   return v3;
 }
 
-- (WBSPasswordCharacterClass)initWithType:(int64_t)a3 value:(id)a4
+- (WBSPasswordCharacterClass)initWithType:(int64_t)type value:(id)value
 {
-  v6 = a4;
+  valueCopy = value;
   v13.receiver = self;
   v13.super_class = WBSPasswordCharacterClass;
   v7 = [(WBSPasswordCharacterClass *)&v13 init];
   v8 = v7;
   if (v7)
   {
-    v7->_type = a3;
-    v9 = [v6 copy];
+    v7->_type = type;
+    v9 = [valueCopy copy];
     value = v8->_value;
     v8->_value = v9;
 
@@ -42,10 +42,10 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
@@ -55,18 +55,18 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(WBSPasswordCharacterClass *)v4 value];
+      value = [(WBSPasswordCharacterClass *)equalCopy value];
       type = self->_type;
-      if (type == [(WBSPasswordCharacterClass *)v4 type])
+      if (type == [(WBSPasswordCharacterClass *)equalCopy type])
       {
-        if (v5 == self->_value)
+        if (value == self->_value)
         {
           v7 = 1;
         }
 
         else
         {
-          v7 = [(NSString *)v5 isEqualToString:?];
+          v7 = [(NSString *)value isEqualToString:?];
         }
       }
 

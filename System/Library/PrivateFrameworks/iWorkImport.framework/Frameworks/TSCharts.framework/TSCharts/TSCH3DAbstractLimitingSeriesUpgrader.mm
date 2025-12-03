@@ -1,28 +1,28 @@
 @interface TSCH3DAbstractLimitingSeriesUpgrader
-+ (BOOL)chartTypeUsesSeriesLimiting:(id)a3;
-+ (double)depthFactorForAdjustingNumberOfSeries:(unint64_t)a3 chartType:(id)a4 fromOldLimitingSeries:(unint64_t)a5 toNewLimitingSeries:(unint64_t)a6;
-+ (id)upgraderWithChartInfo:(id)a3;
-- ($6BF1DF173A55784CAE4B3BED4B6FCF3F)p_oldLayoutSettingsForSpice:(SEL)a3;
++ (BOOL)chartTypeUsesSeriesLimiting:(id)limiting;
++ (double)depthFactorForAdjustingNumberOfSeries:(unint64_t)series chartType:(id)type fromOldLimitingSeries:(unint64_t)limitingSeries toNewLimitingSeries:(unint64_t)newLimitingSeries;
++ (id)upgraderWithChartInfo:(id)info;
+- ($6BF1DF173A55784CAE4B3BED4B6FCF3F)p_oldLayoutSettingsForSpice:(SEL)spice;
 - ($6BF1DF173A55784CAE4B3BED4B6FCF3F)upgradedLayoutSettings;
-- (TSCH3DAbstractLimitingSeriesUpgrader)initWithChartInfo:(id)a3;
-- (id)adjustedScaleFromLayoutSettings:(id *)a3 toLayoutSettings:(id *)a4;
-- (id)configuredSceneWithLayoutSettings:(id *)a3;
-- (id)constantDepthInfoChartScaleForInfoChartScale:(id)a3;
+- (TSCH3DAbstractLimitingSeriesUpgrader)initWithChartInfo:(id)info;
+- (id)adjustedScaleFromLayoutSettings:(id *)settings toLayoutSettings:(id *)layoutSettings;
+- (id)configuredSceneWithLayoutSettings:(id *)settings;
+- (id)constantDepthInfoChartScaleForInfoChartScale:(id)scale;
 - (unint64_t)numberOfSeries;
-- (void)configureScene:(id)a3;
-- (void)mutateInfoByAdjustingScaleFromLayoutSettings:(id *)a3 toLayoutSettings:(id *)a4;
-- (void)mutateInfoWithContainingViewport:(id)a3 scene:(id)a4;
-- (void)mutateInfoWithMutations:(id)a3;
-- (void)upgradeForSpice:(BOOL)a3 naturalSize:(CGSize)a4;
+- (void)configureScene:(id)scene;
+- (void)mutateInfoByAdjustingScaleFromLayoutSettings:(id *)settings toLayoutSettings:(id *)layoutSettings;
+- (void)mutateInfoWithContainingViewport:(id)viewport scene:(id)scene;
+- (void)mutateInfoWithMutations:(id)mutations;
+- (void)upgradeForSpice:(BOOL)spice naturalSize:(CGSize)size;
 @end
 
 @implementation TSCH3DAbstractLimitingSeriesUpgrader
 
-+ (BOOL)chartTypeUsesSeriesLimiting:(id)a3
++ (BOOL)chartTypeUsesSeriesLimiting:(id)limiting
 {
-  v3 = a3;
+  limitingCopy = limiting;
   v9 = objc_msgSend_lineChart3D(TSCHChartType, v4, v5, v6, v7);
-  if (v9 == v3)
+  if (v9 == limitingCopy)
   {
     v14 = 1;
   }
@@ -30,84 +30,84 @@
   else
   {
     v13 = objc_msgSend_areaChart3D(TSCHChartType, v8, v10, v11, v12);
-    v14 = v13 == v3;
+    v14 = v13 == limitingCopy;
   }
 
   return v14;
 }
 
-+ (double)depthFactorForAdjustingNumberOfSeries:(unint64_t)a3 chartType:(id)a4 fromOldLimitingSeries:(unint64_t)a5 toNewLimitingSeries:(unint64_t)a6
++ (double)depthFactorForAdjustingNumberOfSeries:(unint64_t)series chartType:(id)type fromOldLimitingSeries:(unint64_t)limitingSeries toNewLimitingSeries:(unint64_t)newLimitingSeries
 {
-  v10 = a4;
+  typeCopy = type;
   v19 = 1.0;
-  if (objc_msgSend_chartTypeUsesSeriesLimiting_(a1, v11, v12, v13, v14, v10))
+  if (objc_msgSend_chartTypeUsesSeriesLimiting_(self, v11, v12, v13, v14, typeCopy))
   {
-    if (!a5 || !a6)
+    if (!limitingSeries || !newLimitingSeries)
     {
       v20 = MEMORY[0x277D81150];
       v21 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v15, v16, v17, v18, "+[TSCH3DAbstractLimitingSeriesUpgrader depthFactorForAdjustingNumberOfSeries:chartType:fromOldLimitingSeries:toNewLimitingSeries:]");
       v26 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v22, v23, v24, v25, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCH3DAbstractLimitingSeriesUpgrader.mm");
-      objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v20, v27, v28, v29, v30, v21, v26, 41, 0, "invalid max limiting series count old %lu new %lu", a5, a6);
+      objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v20, v27, v28, v29, v30, v21, v26, 41, 0, "invalid max limiting series count old %lu new %lu", limitingSeries, newLimitingSeries);
 
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v31, v32, v33, v34);
     }
 
-    v35 = a6;
-    if (a3 <= a6)
+    newLimitingSeriesCopy = newLimitingSeries;
+    if (series <= newLimitingSeries)
     {
-      v36 = a6;
+      seriesCopy = newLimitingSeries;
     }
 
     else
     {
-      v36 = a3;
+      seriesCopy = series;
     }
 
-    v37 = v35 / v36;
-    if (a3 <= a5)
+    v37 = newLimitingSeriesCopy / seriesCopy;
+    if (series <= limitingSeries)
     {
-      v38 = a5;
+      seriesCopy2 = limitingSeries;
     }
 
     else
     {
-      v38 = a3;
+      seriesCopy2 = series;
     }
 
     if (v37 == 0.0)
     {
       v39 = MEMORY[0x277D81150];
-      v40 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v15, v35, v36, v18, "+[TSCH3DAbstractLimitingSeriesUpgrader depthFactorForAdjustingNumberOfSeries:chartType:fromOldLimitingSeries:toNewLimitingSeries:]");
+      v40 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v15, newLimitingSeriesCopy, seriesCopy, v18, "+[TSCH3DAbstractLimitingSeriesUpgrader depthFactorForAdjustingNumberOfSeries:chartType:fromOldLimitingSeries:toNewLimitingSeries:]");
       v45 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v41, v42, v43, v44, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCH3DAbstractLimitingSeriesUpgrader.mm");
       objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v39, v46, v47, v48, v49, v40, v45, 44, 0, "invalid current factor %f", *&v37);
 
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v50, v51, v52, v53);
     }
 
-    v19 = a5 / v38 / v37;
+    v19 = limitingSeries / seriesCopy2 / v37;
   }
 
   return v19;
 }
 
-+ (id)upgraderWithChartInfo:(id)a3
++ (id)upgraderWithChartInfo:(id)info
 {
-  v4 = a3;
-  v5 = [a1 alloc];
-  v10 = objc_msgSend_initWithChartInfo_(v5, v6, v7, v8, v9, v4);
+  infoCopy = info;
+  v5 = [self alloc];
+  v10 = objc_msgSend_initWithChartInfo_(v5, v6, v7, v8, v9, infoCopy);
 
   return v10;
 }
 
-- (TSCH3DAbstractLimitingSeriesUpgrader)initWithChartInfo:(id)a3
+- (TSCH3DAbstractLimitingSeriesUpgrader)initWithChartInfo:(id)info
 {
-  v5 = a3;
+  infoCopy = info;
   v27.receiver = self;
   v27.super_class = TSCH3DAbstractLimitingSeriesUpgrader;
   v7 = [(TSCH3DAbstractLimitingSeriesUpgrader *)&v27 init];
   if (v7)
   {
-    if (!v5)
+    if (!infoCopy)
     {
       v11 = MEMORY[0x277D81150];
       v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, v8, v9, v10, "[TSCH3DAbstractLimitingSeriesUpgrader initWithChartInfo:]");
@@ -117,13 +117,13 @@
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v22, v23, v24, v25);
     }
 
-    objc_storeStrong(&v7->_chartInfo, a3);
+    objc_storeStrong(&v7->_chartInfo, info);
   }
 
   return v7;
 }
 
-- ($6BF1DF173A55784CAE4B3BED4B6FCF3F)p_oldLayoutSettingsForSpice:(SEL)a3
+- ($6BF1DF173A55784CAE4B3BED4B6FCF3F)p_oldLayoutSettingsForSpice:(SEL)spice
 {
   v4 = a4;
   *&retstr->var0 = 0;
@@ -146,10 +146,10 @@
   return result;
 }
 
-- (void)configureScene:(id)a3
+- (void)configureScene:(id)scene
 {
-  v4 = a3;
-  if (!v4)
+  sceneCopy = scene;
+  if (!sceneCopy)
   {
     v8 = MEMORY[0x277D81150];
     v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v3, v5, v6, v7, "[TSCH3DAbstractLimitingSeriesUpgrader configureScene:]");
@@ -161,22 +161,22 @@
 
   v27[0] = 0;
   v27[1] = 0;
-  objc_msgSend_setLabelWrapBounds_forScene_(TSCH3DChartTitleSceneObject, v3, v5, v6, v7, v27, v4);
-  objc_msgSend_setIsFixedPosition_forScene_(TSCH3DChartValueAxisTitleSceneObject, v23, v24, v25, v26, 1, v4);
+  objc_msgSend_setLabelWrapBounds_forScene_(TSCH3DChartTitleSceneObject, v3, v5, v6, v7, v27, sceneCopy);
+  objc_msgSend_setIsFixedPosition_forScene_(TSCH3DChartValueAxisTitleSceneObject, v23, v24, v25, v26, 1, sceneCopy);
 }
 
-- (id)configuredSceneWithLayoutSettings:(id *)a3
+- (id)configuredSceneWithLayoutSettings:(id *)settings
 {
-  v12 = *a3;
+  v12 = *settings;
   v6 = objc_msgSend_sceneResetWithLayoutSettings_(self, a2, *&v12.var0, v3, v4, &v12);
   objc_msgSend_configureScene_(self, v7, v8, v9, v10, v6);
 
   return v6;
 }
 
-- (void)mutateInfoWithMutations:(id)a3
+- (void)mutateInfoWithMutations:(id)mutations
 {
-  v17 = objc_msgSend_swapTuplesForMutations_forImport_(self->_chartInfo, a2, v3, v4, v5, a3, 0);
+  v17 = objc_msgSend_swapTuplesForMutations_forImport_(self->_chartInfo, a2, v3, v4, v5, mutations, 0);
   if (objc_msgSend_count(v17, v7, v8, v9, v10))
   {
     willModifyBlock = self->_willModifyBlock;
@@ -189,22 +189,22 @@
   }
 }
 
-- (id)constantDepthInfoChartScaleForInfoChartScale:(id)a3
+- (id)constantDepthInfoChartScaleForInfoChartScale:(id)scale
 {
-  v4 = a3;
+  scaleCopy = scale;
   v9 = objc_msgSend_intValueForProperty_defaultValue_(self->_chartInfo, v5, v6, v7, v8, 1067, 0);
   v14 = objc_msgSend_chartType(self->_chartInfo, v10, v11, v12, v13);
-  v19 = objc_msgSend_constantDepthInfoChartScaleForInfoChartScale_chartType_barShape_(TSCHChartType, v15, v16, v17, v18, v4, v14, v9);
+  v19 = objc_msgSend_constantDepthInfoChartScaleForInfoChartScale_chartType_barShape_(TSCHChartType, v15, v16, v17, v18, scaleCopy, v14, v9);
 
   return v19;
 }
 
-- (void)mutateInfoWithContainingViewport:(id)a3 scene:(id)a4
+- (void)mutateInfoWithContainingViewport:(id)viewport scene:(id)scene
 {
   v65[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v8 = a4;
-  if (!v6)
+  viewportCopy = viewport;
+  sceneCopy = scene;
+  if (!viewportCopy)
   {
     v12 = MEMORY[0x277D81150];
     v13 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, v9, v10, v11, "[TSCH3DAbstractLimitingSeriesUpgrader mutateInfoWithContainingViewport:scene:]");
@@ -214,7 +214,7 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v23, v24, v25, v26);
   }
 
-  if (!v8)
+  if (!sceneCopy)
   {
     v27 = MEMORY[0x277D81150];
     v28 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, v9, v10, v11, "[TSCH3DAbstractLimitingSeriesUpgrader mutateInfoWithContainingViewport:scene:]");
@@ -224,7 +224,7 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v38, v39, v40, v41);
   }
 
-  v42 = objc_msgSend_nonNilAccessorWithScene_(TSCH3DChartScenePropertyAccessor, v7, v9, v10, v11, v8);
+  v42 = objc_msgSend_nonNilAccessorWithScene_(TSCH3DChartScenePropertyAccessor, v7, v9, v10, v11, sceneCopy);
   v47 = v42;
   if (v42)
   {
@@ -242,7 +242,7 @@
   v64[0] = &unk_28856E900;
   v64[1] = &unk_28856E918;
   v65[0] = v53;
-  v65[1] = v6;
+  v65[1] = viewportCopy;
   v58 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v54, v55, v56, v57, v65, v64, 2);
   objc_msgSend_mutateInfoWithMutations_(self, v59, v60, v61, v62, v58);
 }
@@ -265,12 +265,12 @@
   return v25;
 }
 
-- (id)adjustedScaleFromLayoutSettings:(id *)a3 toLayoutSettings:(id *)a4
+- (id)adjustedScaleFromLayoutSettings:(id *)settings toLayoutSettings:(id *)layoutSettings
 {
   v7 = objc_opt_class();
   v12 = objc_msgSend_numberOfSeries(self, v8, v9, v10, v11);
   v17 = objc_msgSend_chartType(self->_chartInfo, v13, v14, v15, v16);
-  objc_msgSend_depthFactorForAdjustingNumberOfSeries_chartType_fromOldLimitingSeries_toNewLimitingSeries_(v7, v18, v19, v20, v21, v12, v17, a3->var9, a4->var9);
+  objc_msgSend_depthFactorForAdjustingNumberOfSeries_chartType_fromOldLimitingSeries_toNewLimitingSeries_(v7, v18, v19, v20, v21, v12, v17, settings->var9, layoutSettings->var9);
   v23 = v22;
 
   v28 = objc_msgSend_objectValueForProperty_(self->_chartInfo, v24, v25, v26, v27, 1073);
@@ -295,10 +295,10 @@
   return v43;
 }
 
-- (void)mutateInfoByAdjustingScaleFromLayoutSettings:(id *)a3 toLayoutSettings:(id *)a4
+- (void)mutateInfoByAdjustingScaleFromLayoutSettings:(id *)settings toLayoutSettings:(id *)layoutSettings
 {
   v24[1] = *MEMORY[0x277D85DE8];
-  v8 = objc_msgSend_adjustedScaleFromLayoutSettings_toLayoutSettings_(self, a2, v4, v5, v6, a3, a4);
+  v8 = objc_msgSend_adjustedScaleFromLayoutSettings_toLayoutSettings_(self, a2, v4, v5, v6, settings, layoutSettings);
   v23 = &unk_28856E900;
   v13 = objc_msgSend_copy(v8, v9, v10, v11, v12);
   v24[0] = v13;
@@ -307,15 +307,15 @@
   objc_msgSend_mutateInfoWithMutations_(self, v19, v20, v21, v22, v18);
 }
 
-- (void)upgradeForSpice:(BOOL)a3 naturalSize:(CGSize)a4
+- (void)upgradeForSpice:(BOOL)spice naturalSize:(CGSize)size
 {
-  if (a3)
+  if (spice)
   {
-    height = a4.height;
-    width = a4.width;
+    height = size.height;
+    width = size.width;
     v138 = 0uLL;
     v139 = 0;
-    objc_msgSend_p_oldLayoutSettingsForSpice_(self, a2, a4.width, a4.height, v4, 1);
+    objc_msgSend_p_oldLayoutSettingsForSpice_(self, a2, size.width, size.height, v4, 1);
     v136 = 0uLL;
     v137 = 0;
     objc_msgSend_upgradedLayoutSettings(self, v8, v9, v10, v11);
@@ -375,7 +375,7 @@ LABEL_18:
 
   v138 = 0uLL;
   v139 = 0;
-  objc_msgSend_oldLayoutSettings(self, a2, a4.width, a4.height, v4);
+  objc_msgSend_oldLayoutSettings(self, a2, size.width, size.height, v4);
   v136 = 0uLL;
   v137 = 0;
   objc_msgSend_upgradedLayoutSettings(self, v55, v56, v57, v58);

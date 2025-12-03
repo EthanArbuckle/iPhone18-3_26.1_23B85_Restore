@@ -1,7 +1,7 @@
 @interface ParticipantListLayout
 - (CGSize)collectionViewContentSize;
-- (id)layoutAttributesForElementsInRect:(CGRect)a3;
-- (id)layoutAttributesForItemAtIndexPath:(id)a3;
+- (id)layoutAttributesForElementsInRect:(CGRect)rect;
+- (id)layoutAttributesForItemAtIndexPath:(id)path;
 - (void)prepareLayout;
 @end
 
@@ -9,7 +9,7 @@
 
 - (void)prepareLayout
 {
-  v2 = self;
+  selfCopy = self;
   ParticipantListLayout.prepare()();
 }
 
@@ -21,14 +21,14 @@
   return result;
 }
 
-- (id)layoutAttributesForItemAtIndexPath:(id)a3
+- (id)layoutAttributesForItemAtIndexPath:(id)path
 {
   v4 = type metadata accessor for IndexPath();
   v5 = *(v4 - 8);
   MEMORY[0x1EEE9AC00](v4);
   v7 = &v11 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v8 = self;
+  selfCopy = self;
   v9 = ParticipantListLayout.layoutAttributesForItem(at:)();
 
   (*(v5 + 8))(v7, v4);
@@ -36,13 +36,13 @@
   return v9;
 }
 
-- (id)layoutAttributesForElementsInRect:(CGRect)a3
+- (id)layoutAttributesForElementsInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  selfCopy = self;
   v12.origin.x = x;
   v12.origin.y = y;
   v12.size.width = width;

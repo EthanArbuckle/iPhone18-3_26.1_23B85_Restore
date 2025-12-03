@@ -1,43 +1,43 @@
 @interface CHDocumentLayoutAnalysisResult
-+ (void)mergeTileStrokeClassificationMatrix:(const void *)a3 tileSparseAdjacencyMatrix:(const void *)a4 intoMergedStrokeClassificationMatrix:(void *)a5 mergedAdjacencyMatrix:(void *)a6 strokeIndexMapping:(const void *)a7 tileOverlapStrokeIndexes:(const void *)a8;
-- (BOOL)isEqual:(id)a3;
-- (CHDocumentLayoutAnalysisResult)initWithCoder:(id)a3;
-- (CHDocumentLayoutAnalysisResult)initWithLastDocumentLayoutAnalysisResult:(id)a3 affectedLayoutAnalysisResultsPerTile:(id)a4 allLayoutAnalysisResultsPerTile:(id)a5 updatedStrokeIdentifiers:(id)a6 orderedStrokeIdentifiers:(id)a7 strokeBoundsPerStrokeIdentifier:(id)a8;
-- (CHDocumentLayoutAnalysisResult)initWithLayoutAnalysisResultsPerTile:(id)a3 orderedStrokeIdentifiers:(id)a4 strokeBoundsPerStrokeIdentifier:(id)a5;
++ (void)mergeTileStrokeClassificationMatrix:(const void *)matrix tileSparseAdjacencyMatrix:(const void *)adjacencyMatrix intoMergedStrokeClassificationMatrix:(void *)classificationMatrix mergedAdjacencyMatrix:(void *)mergedAdjacencyMatrix strokeIndexMapping:(const void *)mapping tileOverlapStrokeIndexes:(const void *)indexes;
+- (BOOL)isEqual:(id)equal;
+- (CHDocumentLayoutAnalysisResult)initWithCoder:(id)coder;
+- (CHDocumentLayoutAnalysisResult)initWithLastDocumentLayoutAnalysisResult:(id)result affectedLayoutAnalysisResultsPerTile:(id)tile allLayoutAnalysisResultsPerTile:(id)perTile updatedStrokeIdentifiers:(id)identifiers orderedStrokeIdentifiers:(id)strokeIdentifiers strokeBoundsPerStrokeIdentifier:(id)identifier;
+- (CHDocumentLayoutAnalysisResult)initWithLayoutAnalysisResultsPerTile:(id)tile orderedStrokeIdentifiers:(id)identifiers strokeBoundsPerStrokeIdentifier:(id)identifier;
 - (id).cxx_construct;
 - (id)debugDescription;
 - (id)description;
-- (id)probabilityByScriptClassificationsForStrokeIndex:(unint64_t)a3 scriptCodeMap:(id)a4;
-- (id)rawScriptClassificationResultForStrokeIndex:(unint64_t)a3 scriptCodeMap:(id)a4;
+- (id)probabilityByScriptClassificationsForStrokeIndex:(unint64_t)index scriptCodeMap:(id)map;
+- (id)rawScriptClassificationResultForStrokeIndex:(unint64_t)index scriptCodeMap:(id)map;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CHDocumentLayoutAnalysisResult
 
-- (CHDocumentLayoutAnalysisResult)initWithLayoutAnalysisResultsPerTile:(id)a3 orderedStrokeIdentifiers:(id)a4 strokeBoundsPerStrokeIdentifier:(id)a5
+- (CHDocumentLayoutAnalysisResult)initWithLayoutAnalysisResultsPerTile:(id)tile orderedStrokeIdentifiers:(id)identifiers strokeBoundsPerStrokeIdentifier:(id)identifier
 {
   v180 = *MEMORY[0x1E69E9840];
-  v146 = a3;
-  v153 = a4;
-  v145 = a5;
+  tileCopy = tile;
+  identifiersCopy = identifiers;
+  identifierCopy = identifier;
   v172.receiver = self;
   v172.super_class = CHDocumentLayoutAnalysisResult;
   v147 = [(CHDocumentLayoutAnalysisResult *)&v172 init];
   if (v147)
   {
-    objc_storeStrong(&v147->_layoutAnalysisResultsPerTile, a3);
-    objc_storeStrong(&v147->_strokeBoundsPerStrokeIdentifier, a5);
+    objc_storeStrong(&v147->_layoutAnalysisResultsPerTile, tile);
+    objc_storeStrong(&v147->_strokeBoundsPerStrokeIdentifier, identifier);
     v147->_hash = 0x7FFFFFFFFFFFFFFFLL;
     v154 = objc_msgSend_dictionary(MEMORY[0x1E695DF90], v9, v10, v11, v12, v13);
-    for (i = 0; i < objc_msgSend_count(v153, v14, v15, v16, v17, v18); ++i)
+    for (i = 0; i < objc_msgSend_count(identifiersCopy, v14, v15, v16, v17, v18); ++i)
     {
       v25 = objc_msgSend_numberWithInteger_(MEMORY[0x1E696AD98], v20, i, v22, v23, v24);
-      v30 = objc_msgSend_objectAtIndexedSubscript_(v153, v26, i, v27, v28, v29);
+      v30 = objc_msgSend_objectAtIndexedSubscript_(identifiersCopy, v26, i, v27, v28, v29);
       objc_msgSend_setObject_forKeyedSubscript_(v154, v31, v25, v30, v32, v33);
     }
 
-    v34 = objc_msgSend_count(v153, v20, v21, v22, v23, v24);
+    v34 = objc_msgSend_count(identifiersCopy, v20, v21, v22, v23, v24);
     __p[0] = 0;
     __p[1] = 0;
     v171 = 0;
@@ -53,7 +53,7 @@
       sub_18368964C();
     }
 
-    v40 = objc_msgSend_count(v153, v35, v36, v37, v38, v39);
+    v40 = objc_msgSend_count(identifiersCopy, v35, v36, v37, v38, v39);
     v168 = 0uLL;
     v169 = 0;
     *buf = &v168;
@@ -72,7 +72,7 @@
     v165 = 0u;
     v166 = 0u;
     v167 = 0u;
-    obj = v146;
+    obj = tileCopy;
     v149 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v41, &v164, v179, 16, v42);
     if (v149)
     {
@@ -198,7 +198,7 @@ LABEL_39:
                     v95 = qword_1EA84DC50[0];
                     if (os_log_type_enabled(v95, OS_LOG_TYPE_ERROR))
                     {
-                      v101 = objc_msgSend_count(v153, v96, v97, v98, v99, v100);
+                      v101 = objc_msgSend_count(identifiersCopy, v96, v97, v98, v99, v100);
                       *buf = 138412802;
                       *&buf[4] = v64;
                       v174 = 2112;
@@ -216,7 +216,7 @@ LABEL_39:
                     v102 = qword_1EA84DC50[0];
                     if (os_log_type_enabled(v102, OS_LOG_TYPE_FAULT))
                     {
-                      v108 = objc_msgSend_count(v153, v103, v104, v105, v106, v107);
+                      v108 = objc_msgSend_count(identifiersCopy, v103, v104, v105, v106, v107);
                       *buf = 138412802;
                       *&buf[4] = v64;
                       v174 = 2112;
@@ -374,15 +374,15 @@ LABEL_39:
   return v147;
 }
 
-- (CHDocumentLayoutAnalysisResult)initWithLastDocumentLayoutAnalysisResult:(id)a3 affectedLayoutAnalysisResultsPerTile:(id)a4 allLayoutAnalysisResultsPerTile:(id)a5 updatedStrokeIdentifiers:(id)a6 orderedStrokeIdentifiers:(id)a7 strokeBoundsPerStrokeIdentifier:(id)a8
+- (CHDocumentLayoutAnalysisResult)initWithLastDocumentLayoutAnalysisResult:(id)result affectedLayoutAnalysisResultsPerTile:(id)tile allLayoutAnalysisResultsPerTile:(id)perTile updatedStrokeIdentifiers:(id)identifiers orderedStrokeIdentifiers:(id)strokeIdentifiers strokeBoundsPerStrokeIdentifier:(id)identifier
 {
   v293 = *MEMORY[0x1E69E9840];
-  v248 = a3;
-  v247 = a4;
-  v245 = a5;
-  v249 = a6;
-  v256 = a7;
-  v246 = a8;
+  resultCopy = result;
+  tileCopy = tile;
+  perTileCopy = perTile;
+  identifiersCopy = identifiers;
+  strokeIdentifiersCopy = strokeIdentifiers;
+  identifierCopy = identifier;
   v283.receiver = self;
   v283.super_class = CHDocumentLayoutAnalysisResult;
   v250 = [(CHDocumentLayoutAnalysisResult *)&v283 init];
@@ -390,21 +390,21 @@ LABEL_39:
   v14 = v250;
   if (v250)
   {
-    objc_storeStrong(&v250->_layoutAnalysisResultsPerTile, a5);
-    objc_storeStrong(&v250->_strokeBoundsPerStrokeIdentifier, a8);
+    objc_storeStrong(&v250->_layoutAnalysisResultsPerTile, perTile);
+    objc_storeStrong(&v250->_strokeBoundsPerStrokeIdentifier, identifier);
     v250->_hash = 0x7FFFFFFFFFFFFFFFLL;
     v257 = objc_msgSend_dictionary(MEMORY[0x1E695DF90], v15, v16, v17, v18, v19);
-    for (i = 0; i < objc_msgSend_count(v256, v20, v21, v22, v23, v24); ++i)
+    for (i = 0; i < objc_msgSend_count(strokeIdentifiersCopy, v20, v21, v22, v23, v24); ++i)
     {
       v31 = objc_msgSend_numberWithInteger_(MEMORY[0x1E696AD98], v26, i, v28, v29, v30);
-      v36 = objc_msgSend_objectAtIndexedSubscript_(v256, v32, i, v33, v34, v35);
+      v36 = objc_msgSend_objectAtIndexedSubscript_(strokeIdentifiersCopy, v32, i, v33, v34, v35);
       objc_msgSend_setObject_forKeyedSubscript_(v257, v37, v31, v36, v38, v39);
     }
 
     *__p = 0u;
     *v281 = 0u;
     v282 = 1.0;
-    prime = vcvtps_u32_f32(objc_msgSend_count(v249, v26, v27, v28, v29, v30) / 1.0);
+    prime = vcvtps_u32_f32(objc_msgSend_count(identifiersCopy, v26, v27, v28, v29, v30) / 1.0);
     if (prime == 1)
     {
       prime = 2;
@@ -453,7 +453,7 @@ LABEL_10:
     v279 = 0u;
     v276 = 0u;
     v277 = 0u;
-    obj = v249;
+    obj = identifiersCopy;
     v50 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v44, &v276, v286, 16, v45);
     if (v50)
     {
@@ -563,7 +563,7 @@ LABEL_47:
       while (v50);
     }
 
-    v71 = objc_msgSend_strokeClassificationMatrix(v248, v66, v67, v68, v69, v70);
+    v71 = objc_msgSend_strokeClassificationMatrix(resultCopy, v66, v67, v68, v69, v70);
     v274[0] = 0;
     v274[1] = 0;
     v275 = 0;
@@ -581,7 +581,7 @@ LABEL_47:
       sub_18368964C();
     }
 
-    v79 = objc_msgSend_count(v256, v72, v73, v74, v75, v76);
+    v79 = objc_msgSend_count(strokeIdentifiersCopy, v72, v73, v74, v75, v76);
     v85 = v274[1];
     v86 = 0xAAAAAAAAAAAAAAABLL * ((v274[1] - v274[0]) >> 3);
     v87 = v79 - v86;
@@ -651,7 +651,7 @@ LABEL_47:
       v274[1] = &v85[3 * ((24 * v87 - 24) / 0x18) + 3];
     }
 
-    v94 = objc_msgSend_sparseAdjacencyMatrix(v248, v80, v81, v82, v83, v84);
+    v94 = objc_msgSend_sparseAdjacencyMatrix(resultCopy, v80, v81, v82, v83, v84);
     v272 = 0uLL;
     v273 = 0;
     v100 = *v94;
@@ -668,7 +668,7 @@ LABEL_47:
       sub_18368964C();
     }
 
-    v102 = objc_msgSend_count(v256, v95, v96, v97, v98, v99);
+    v102 = objc_msgSend_count(strokeIdentifiersCopy, v95, v96, v97, v98, v99);
     v103 = *(&v272 + 1);
     v104 = 0xCCCCCCCCCCCCCCCDLL * ((*(&v272 + 1) - v272) >> 3);
     v105 = v102 - v104;
@@ -1002,7 +1002,7 @@ LABEL_101:
     v271 = 0u;
     v268 = 0u;
     v269 = 0u;
-    v253 = v247;
+    v253 = tileCopy;
     v252 = objc_msgSend_countByEnumeratingWithState_objects_count_(v253, v137, &v268, v285, 16, v138);
     if (v252)
     {
@@ -1128,7 +1128,7 @@ LABEL_180:
                     v191 = qword_1EA84DC50[0];
                     if (os_log_type_enabled(v191, OS_LOG_TYPE_ERROR))
                     {
-                      v197 = objc_msgSend_count(v256, v192, v193, v194, v195, v196);
+                      v197 = objc_msgSend_count(strokeIdentifiersCopy, v192, v193, v194, v195, v196);
                       *buf = 138412802;
                       *&buf[4] = v160;
                       v288 = 2112;
@@ -1146,7 +1146,7 @@ LABEL_180:
                     v198 = qword_1EA84DC50[0];
                     if (os_log_type_enabled(v198, OS_LOG_TYPE_FAULT))
                     {
-                      v204 = objc_msgSend_count(v256, v199, v200, v201, v202, v203);
+                      v204 = objc_msgSend_count(strokeIdentifiersCopy, v199, v200, v201, v202, v203);
                       *buf = 138412802;
                       *&buf[4] = v160;
                       v288 = 2112;
@@ -1328,10 +1328,10 @@ LABEL_180:
   return v243;
 }
 
-+ (void)mergeTileStrokeClassificationMatrix:(const void *)a3 tileSparseAdjacencyMatrix:(const void *)a4 intoMergedStrokeClassificationMatrix:(void *)a5 mergedAdjacencyMatrix:(void *)a6 strokeIndexMapping:(const void *)a7 tileOverlapStrokeIndexes:(const void *)a8
++ (void)mergeTileStrokeClassificationMatrix:(const void *)matrix tileSparseAdjacencyMatrix:(const void *)adjacencyMatrix intoMergedStrokeClassificationMatrix:(void *)classificationMatrix mergedAdjacencyMatrix:(void *)mergedAdjacencyMatrix strokeIndexMapping:(const void *)mapping tileOverlapStrokeIndexes:(const void *)indexes
 {
   v78 = *MEMORY[0x1E69E9840];
-  if (0xAAAAAAAAAAAAAAABLL * ((*(a3 + 1) - *a3) >> 3) != 0xCCCCCCCCCCCCCCCDLL * ((*(a4 + 1) - *a4) >> 3))
+  if (0xAAAAAAAAAAAAAAABLL * ((*(matrix + 1) - *matrix) >> 3) != 0xCCCCCCCCCCCCCCCDLL * ((*(adjacencyMatrix + 1) - *adjacencyMatrix) >> 3))
   {
     if (qword_1EA84DC48 != -1)
     {
@@ -1341,8 +1341,8 @@ LABEL_180:
     v11 = qword_1EA84DC50[0];
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      v12 = 0xAAAAAAAAAAAAAAABLL * ((*(a3 + 1) - *a3) >> 3);
-      v13 = 0xCCCCCCCCCCCCCCCDLL * ((*(a4 + 1) - *a4) >> 3);
+      v12 = 0xAAAAAAAAAAAAAAABLL * ((*(matrix + 1) - *matrix) >> 3);
+      v13 = 0xCCCCCCCCCCCCCCCDLL * ((*(adjacencyMatrix + 1) - *adjacencyMatrix) >> 3);
       *buf = 134218240;
       *&buf[4] = v12;
       *&buf[12] = 2048;
@@ -1350,7 +1350,7 @@ LABEL_180:
       _os_log_impl(&dword_18366B000, v11, OS_LOG_TYPE_ERROR, "Number of strokes in the tile stroke classification matrix (%lu) doesn't match the number of strokes in the tile adjacency matrix (%lu)", buf, 0x16u);
     }
 
-    if (0xAAAAAAAAAAAAAAABLL * ((*(a3 + 1) - *a3) >> 3) != 0xCCCCCCCCCCCCCCCDLL * ((*(a4 + 1) - *a4) >> 3))
+    if (0xAAAAAAAAAAAAAAABLL * ((*(matrix + 1) - *matrix) >> 3) != 0xCCCCCCCCCCCCCCCDLL * ((*(adjacencyMatrix + 1) - *adjacencyMatrix) >> 3))
     {
       if (qword_1EA84DC48 != -1)
       {
@@ -1360,8 +1360,8 @@ LABEL_180:
       v14 = qword_1EA84DC50[0];
       if (os_log_type_enabled(v14, OS_LOG_TYPE_FAULT))
       {
-        v15 = 0xAAAAAAAAAAAAAAABLL * ((*(a3 + 1) - *a3) >> 3);
-        v16 = 0xCCCCCCCCCCCCCCCDLL * ((*(a4 + 1) - *a4) >> 3);
+        v15 = 0xAAAAAAAAAAAAAAABLL * ((*(matrix + 1) - *matrix) >> 3);
+        v16 = 0xCCCCCCCCCCCCCCCDLL * ((*(adjacencyMatrix + 1) - *adjacencyMatrix) >> 3);
         *buf = 134218240;
         *&buf[4] = v15;
         *&buf[12] = 2048;
@@ -1371,7 +1371,7 @@ LABEL_180:
     }
   }
 
-  if (0xAAAAAAAAAAAAAAABLL * ((*(a5 + 1) - *a5) >> 3) != 0xCCCCCCCCCCCCCCCDLL * ((*(a6 + 1) - *a6) >> 3))
+  if (0xAAAAAAAAAAAAAAABLL * ((*(classificationMatrix + 1) - *classificationMatrix) >> 3) != 0xCCCCCCCCCCCCCCCDLL * ((*(mergedAdjacencyMatrix + 1) - *mergedAdjacencyMatrix) >> 3))
   {
     if (qword_1EA84DC48 != -1)
     {
@@ -1381,8 +1381,8 @@ LABEL_180:
     v17 = qword_1EA84DC50[0];
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
-      v18 = 0xAAAAAAAAAAAAAAABLL * ((*(a5 + 1) - *a5) >> 3);
-      v19 = 0xCCCCCCCCCCCCCCCDLL * ((*(a6 + 1) - *a6) >> 3);
+      v18 = 0xAAAAAAAAAAAAAAABLL * ((*(classificationMatrix + 1) - *classificationMatrix) >> 3);
+      v19 = 0xCCCCCCCCCCCCCCCDLL * ((*(mergedAdjacencyMatrix + 1) - *mergedAdjacencyMatrix) >> 3);
       *buf = 134218240;
       *&buf[4] = v18;
       *&buf[12] = 2048;
@@ -1390,7 +1390,7 @@ LABEL_180:
       _os_log_impl(&dword_18366B000, v17, OS_LOG_TYPE_ERROR, "Number of strokes in the merged stroke classification matrix (%lu) doesn't match the number of strokes in the merged adjacency matrix (%lu)", buf, 0x16u);
     }
 
-    if (0xAAAAAAAAAAAAAAABLL * ((*(a5 + 1) - *a5) >> 3) != 0xCCCCCCCCCCCCCCCDLL * ((*(a6 + 1) - *a6) >> 3))
+    if (0xAAAAAAAAAAAAAAABLL * ((*(classificationMatrix + 1) - *classificationMatrix) >> 3) != 0xCCCCCCCCCCCCCCCDLL * ((*(mergedAdjacencyMatrix + 1) - *mergedAdjacencyMatrix) >> 3))
     {
       if (qword_1EA84DC48 != -1)
       {
@@ -1400,8 +1400,8 @@ LABEL_180:
       v20 = qword_1EA84DC50[0];
       if (os_log_type_enabled(v20, OS_LOG_TYPE_FAULT))
       {
-        v21 = 0xAAAAAAAAAAAAAAABLL * ((*(a5 + 1) - *a5) >> 3);
-        v22 = 0xCCCCCCCCCCCCCCCDLL * ((*(a6 + 1) - *a6) >> 3);
+        v21 = 0xAAAAAAAAAAAAAAABLL * ((*(classificationMatrix + 1) - *classificationMatrix) >> 3);
+        v22 = 0xCCCCCCCCCCCCCCCDLL * ((*(mergedAdjacencyMatrix + 1) - *mergedAdjacencyMatrix) >> 3);
         *buf = 134218240;
         *&buf[4] = v21;
         *&buf[12] = 2048;
@@ -1411,15 +1411,15 @@ LABEL_180:
     }
   }
 
-  v24 = *a3;
-  v23 = *(a3 + 1);
-  if (v23 != *a3)
+  v24 = *matrix;
+  v23 = *(matrix + 1);
+  if (v23 != *matrix)
   {
     v25 = 0;
-    v73 = (a8 + 8);
+    v73 = (indexes + 8);
     while (1)
     {
-      v26 = *(a7 + 1);
+      v26 = *(mapping + 1);
       if (!v26)
       {
 LABEL_122:
@@ -1463,7 +1463,7 @@ LABEL_122:
 
       if ((v28 & 0x8000000000000000) == 0)
       {
-        v29 = 0xAAAAAAAAAAAAAAABLL * ((*(a5 + 1) - *a5) >> 3);
+        v29 = 0xAAAAAAAAAAAAAAABLL * ((*(classificationMatrix + 1) - *classificationMatrix) >> 3);
         if (v28 < v29)
         {
           goto LABEL_43;
@@ -1478,7 +1478,7 @@ LABEL_122:
       v30 = qword_1EA84DC50[0];
       if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
       {
-        v31 = 0xAAAAAAAAAAAAAAABLL * ((*(a5 + 1) - *a5) >> 3);
+        v31 = 0xAAAAAAAAAAAAAAABLL * ((*(classificationMatrix + 1) - *classificationMatrix) >> 3);
         *buf = 134218496;
         *&buf[4] = v25;
         *&buf[12] = 2048;
@@ -1502,7 +1502,7 @@ LABEL_44:
       v32 = qword_1EA84DC50[0];
       if (os_log_type_enabled(v32, OS_LOG_TYPE_FAULT))
       {
-        v33 = 0xAAAAAAAAAAAAAAABLL * ((*(a5 + 1) - *a5) >> 3);
+        v33 = 0xAAAAAAAAAAAAAAABLL * ((*(classificationMatrix + 1) - *classificationMatrix) >> 3);
         *buf = 134218496;
         *&buf[4] = v25;
         *&buf[12] = 2048;
@@ -1519,7 +1519,7 @@ LABEL_49:
         goto LABEL_56;
       }
 
-      v35 = (a8 + 8);
+      v35 = (indexes + 8);
       do
       {
         if (*(v34 + 4) >= v25)
@@ -1534,15 +1534,15 @@ LABEL_49:
       if (v35 == v73 || v25 < v35[4])
       {
 LABEL_56:
-        v36 = *a3 + 24 * v25;
-        v37 = (*a5 + 24 * v28);
+        v36 = *matrix + 24 * v25;
+        v37 = (*classificationMatrix + 24 * v28);
         if (v37 != v36)
         {
           sub_18372F694(v37, *v36, *(v36 + 8), (*(v36 + 8) - *v36) >> 2);
         }
       }
 
-      v38 = *a4 + 40 * v25;
+      v38 = *adjacencyMatrix + 40 * v25;
       memset(buf, 0, sizeof(buf));
       v77 = 1.0;
       v39 = *(v38 + 24);
@@ -1606,7 +1606,7 @@ LABEL_64:
 LABEL_75:
       for (i = *(v38 + 16); i; i = *i)
       {
-        v62 = *(a7 + 1);
+        v62 = *(mapping + 1);
         if (!v62)
         {
 LABEL_121:
@@ -1653,7 +1653,7 @@ LABEL_121:
         }
       }
 
-      v47 = *a6 + 40 * v28;
+      v47 = *mergedAdjacencyMatrix + 40 * v28;
       if (!*(v47 + 24))
       {
         if (v47 != buf)
@@ -1803,8 +1803,8 @@ LABEL_116:
         operator delete(v69);
       }
 
-      v24 = *a3;
-      v23 = *(a3 + 1);
+      v24 = *matrix;
+      v23 = *(matrix + 1);
 LABEL_26:
       if (++v25 >= 0xAAAAAAAAAAAAAAABLL * ((v23 - v24) >> 3))
       {
@@ -1812,7 +1812,7 @@ LABEL_26:
       }
     }
 
-    v29 = 0xAAAAAAAAAAAAAAABLL * ((*(a5 + 1) - *a5) >> 3);
+    v29 = 0xAAAAAAAAAAAAAAABLL * ((*(classificationMatrix + 1) - *classificationMatrix) >> 3);
 LABEL_43:
     if (v28 < v29)
     {
@@ -1823,12 +1823,12 @@ LABEL_43:
   }
 }
 
-- (id)probabilityByScriptClassificationsForStrokeIndex:(unint64_t)a3 scriptCodeMap:(id)a4
+- (id)probabilityByScriptClassificationsForStrokeIndex:(unint64_t)index scriptCodeMap:(id)map
 {
   v35 = *MEMORY[0x1E69E9840];
-  v11 = a4;
+  mapCopy = map;
   v12 = 0xAAAAAAAAAAAAAAABLL * ((self->_strokeClassificationMatrix.__end_ - self->_strokeClassificationMatrix.__begin_) >> 3);
-  if (v12 <= a3)
+  if (v12 <= index)
   {
     if (qword_1EA84DC48 != -1)
     {
@@ -1839,14 +1839,14 @@ LABEL_43:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
       v33 = 134217984;
-      v34 = a3;
+      indexCopy2 = index;
       _os_log_impl(&dword_18366B000, v13, OS_LOG_TYPE_ERROR, "Stroke index %lu out of bounds when getting raw script classification from document layout analysis result.", &v33, 0xCu);
     }
 
     v12 = 0xAAAAAAAAAAAAAAABLL * ((self->_strokeClassificationMatrix.__end_ - self->_strokeClassificationMatrix.__begin_) >> 3);
   }
 
-  if (v12 <= a3)
+  if (v12 <= index)
   {
     if (qword_1EA84DC48 != -1)
     {
@@ -1857,51 +1857,51 @@ LABEL_43:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_FAULT))
     {
       v33 = 134217984;
-      v34 = a3;
+      indexCopy2 = index;
       _os_log_impl(&dword_18366B000, v14, OS_LOG_TYPE_FAULT, "Stroke index %lu out of bounds when getting raw script classification from document layout analysis result.", &v33, 0xCu);
     }
   }
 
   v19 = objc_msgSend_dictionary(MEMORY[0x1E695DF90], v6, v7, v8, v9, v10);
-  if (*(self->_strokeClassificationMatrix.__begin_ + 3 * a3 + 1) != *(self->_strokeClassificationMatrix.__begin_ + 3 * a3))
+  if (*(self->_strokeClassificationMatrix.__begin_ + 3 * index + 1) != *(self->_strokeClassificationMatrix.__begin_ + 3 * index))
   {
     v20 = 0;
     do
     {
-      v21 = objc_msgSend_objectAtIndexedSubscript_(v11, v15, v20, v16, v17, v18);
-      LODWORD(v22) = *(*(self->_strokeClassificationMatrix.__begin_ + 3 * a3) + 4 * v20);
+      v21 = objc_msgSend_objectAtIndexedSubscript_(mapCopy, v15, v20, v16, v17, v18);
+      LODWORD(v22) = *(*(self->_strokeClassificationMatrix.__begin_ + 3 * index) + 4 * v20);
       v28 = objc_msgSend_numberWithFloat_(MEMORY[0x1E696AD98], v23, v24, v25, v26, v27, v22);
       objc_msgSend_setObject_forKeyedSubscript_(v19, v29, v28, v21, v30, v31);
 
       ++v20;
     }
 
-    while (v20 < (*(self->_strokeClassificationMatrix.__begin_ + 3 * a3 + 1) - *(self->_strokeClassificationMatrix.__begin_ + 3 * a3)) >> 2);
+    while (v20 < (*(self->_strokeClassificationMatrix.__begin_ + 3 * index + 1) - *(self->_strokeClassificationMatrix.__begin_ + 3 * index)) >> 2);
   }
 
   return v19;
 }
 
-- (id)rawScriptClassificationResultForStrokeIndex:(unint64_t)a3 scriptCodeMap:(id)a4
+- (id)rawScriptClassificationResultForStrokeIndex:(unint64_t)index scriptCodeMap:(id)map
 {
-  v6 = objc_msgSend_probabilityByScriptClassificationsForStrokeIndex_scriptCodeMap_(self, a2, a3, a4, v4, v5);
+  v6 = objc_msgSend_probabilityByScriptClassificationsForStrokeIndex_scriptCodeMap_(self, a2, index, map, v4, v5);
   v7 = [CHScriptClassificationRawResult alloc];
   v12 = objc_msgSend_initWithProbabilityByScriptClassifications_(v7, v8, v6, v9, v10, v11);
 
   return v12;
 }
 
-- (CHDocumentLayoutAnalysisResult)initWithCoder:(id)a3
+- (CHDocumentLayoutAnalysisResult)initWithCoder:(id)coder
 {
   v65[4] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v61 = 0;
   v62 = 0;
   v63 = 0;
   __p = 0;
   v59 = 0;
   v60 = 0;
-  objc_msgSend_deserializeStrokeClassificationMatrix_sparseAdjacencyMatrix_withCoder_(CHDocumentLayoutAnalysisTileResult, v5, &v61, &__p, v4, v6);
+  objc_msgSend_deserializeStrokeClassificationMatrix_sparseAdjacencyMatrix_withCoder_(CHDocumentLayoutAnalysisTileResult, v5, &v61, &__p, coderCopy, v6);
   v7 = MEMORY[0x1E695DFD8];
   v65[0] = objc_opt_class();
   v65[1] = objc_opt_class();
@@ -1909,7 +1909,7 @@ LABEL_43:
   v65[3] = objc_opt_class();
   v11 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v8, v65, 4, v9, v10);
   v16 = objc_msgSend_setWithArray_(v7, v12, v11, v13, v14, v15);
-  v20 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v17, v16, @"layoutAnalysisResultsPerTile", v18, v19);
+  v20 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v17, v16, @"layoutAnalysisResultsPerTile", v18, v19);
 
   v21 = MEMORY[0x1E695DFD8];
   v64[0] = objc_opt_class();
@@ -1917,7 +1917,7 @@ LABEL_43:
   v64[2] = objc_opt_class();
   v25 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v22, v64, 3, v23, v24);
   v30 = objc_msgSend_setWithArray_(v21, v26, v25, v27, v28, v29);
-  v34 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v31, v30, @"strokeBoundsPerStrokeIdentifier", v32, v33);
+  v34 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v31, v30, @"strokeBoundsPerStrokeIdentifier", v32, v33);
 
   v57.receiver = self;
   v57.super_class = CHDocumentLayoutAnalysisResult;
@@ -1938,7 +1938,7 @@ LABEL_43:
 
     objc_storeStrong(&v36->_layoutAnalysisResultsPerTile, v20);
     objc_storeStrong(&v36->_strokeBoundsPerStrokeIdentifier, v34);
-    v36->_hash = objc_msgSend_decodeIntegerForKey_(v4, v38, @"hash", v39, v40, v41);
+    v36->_hash = objc_msgSend_decodeIntegerForKey_(coderCopy, v38, @"hash", v39, v40, v41);
   }
 
   v42 = v36;
@@ -2016,10 +2016,10 @@ LABEL_43:
   return v42;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  coderCopy = coder;
   if (0xAAAAAAAAAAAAAAABLL * ((self->_strokeClassificationMatrix.__end_ - self->_strokeClassificationMatrix.__begin_) >> 3) != 0xCCCCCCCCCCCCCCCDLL * ((self->_sparseAdjacencyMatrix.__end_ - self->_sparseAdjacencyMatrix.__begin_) >> 3))
   {
     if (qword_1EA84DC48 != -1)
@@ -2074,10 +2074,10 @@ LABEL_10:
   }
 
 LABEL_11:
-  objc_msgSend_serializeStrokeClassificationMatrix_sparseAdjacencyMatrix_withCoder_(CHDocumentLayoutAnalysisTileResult, v4, &self->_strokeClassificationMatrix, &self->_sparseAdjacencyMatrix, v6, v5);
-  objc_msgSend_encodeObject_forKey_(v6, v13, self->_strokeBoundsPerStrokeIdentifier, @"strokeBoundsPerStrokeIdentifier", v14, v15);
-  objc_msgSend_encodeObject_forKey_(v6, v16, self->_layoutAnalysisResultsPerTile, @"layoutAnalysisResultsPerTile", v17, v18);
-  objc_msgSend_encodeInteger_forKey_(v6, v19, self->_hash, @"hash", v20, v21);
+  objc_msgSend_serializeStrokeClassificationMatrix_sparseAdjacencyMatrix_withCoder_(CHDocumentLayoutAnalysisTileResult, v4, &self->_strokeClassificationMatrix, &self->_sparseAdjacencyMatrix, coderCopy, v5);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v13, self->_strokeBoundsPerStrokeIdentifier, @"strokeBoundsPerStrokeIdentifier", v14, v15);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v16, self->_layoutAnalysisResultsPerTile, @"layoutAnalysisResultsPerTile", v17, v18);
+  objc_msgSend_encodeInteger_forKey_(coderCopy, v19, self->_hash, @"hash", v20, v21);
 }
 
 - (id)description
@@ -2102,14 +2102,14 @@ LABEL_11:
   return v27;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v99 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v11 = v5;
     if (self)
     {

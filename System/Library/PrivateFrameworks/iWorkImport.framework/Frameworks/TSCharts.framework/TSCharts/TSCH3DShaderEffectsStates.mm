@@ -1,10 +1,10 @@
 @interface TSCH3DShaderEffectsStates
 - (TSCH3DShaderEffectsStates)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)stateForStateInfo:(id)a3 createIfNil:(BOOL)a4;
-- (id)valueStateForKey:(id)a3;
-- (void)setState:(id)a3 forStateInfo:(id)a4;
+- (id)stateForStateInfo:(id)info createIfNil:(BOOL)nil;
+- (id)valueStateForKey:(id)key;
+- (void)setState:(id)state forStateInfo:(id)info;
 @end
 
 @implementation TSCH3DShaderEffectsStates
@@ -35,18 +35,18 @@
   return v9;
 }
 
-- (id)valueStateForKey:(id)a3
+- (id)valueStateForKey:(id)key
 {
-  v6 = objc_msgSend_objectForKey_(self->_objects, a2, v3, v4, v5, a3);
+  v6 = objc_msgSend_objectForKey_(self->_objects, a2, v3, v4, v5, key);
 
   return v6;
 }
 
-- (id)stateForStateInfo:(id)a3 createIfNil:(BOOL)a4
+- (id)stateForStateInfo:(id)info createIfNil:(BOOL)nil
 {
-  v4 = a4;
-  v6 = a3;
-  v11 = objc_msgSend_stateSharingID(v6, v7, v8, v9, v10);
+  nilCopy = nil;
+  infoCopy = info;
+  v11 = objc_msgSend_stateSharingID(infoCopy, v7, v8, v9, v10);
   v17 = objc_msgSend_objectForKey_(self->_objects, v12, v13, v14, v15, v11);
   if (v17)
   {
@@ -55,12 +55,12 @@
 
   else
   {
-    v21 = !v4;
+    v21 = !nilCopy;
   }
 
   if (!v21)
   {
-    v17 = objc_alloc_init(objc_msgSend_stateClass(v6, v16, v18, v19, v20));
+    v17 = objc_alloc_init(objc_msgSend_stateClass(infoCopy, v16, v18, v19, v20));
     v43 = &unk_28856FD90;
     v23 = TSUCheckedProtocolCast();
     if (!v23)
@@ -79,10 +79,10 @@
   return v17;
 }
 
-- (void)setState:(id)a3 forStateInfo:(id)a4
+- (void)setState:(id)state forStateInfo:(id)info
 {
   v31 = &unk_28856FD90;
-  v32 = a4;
+  infoCopy = info;
   v6 = TSUCheckedProtocolCast();
   if (!v6)
   {
@@ -95,15 +95,15 @@
   }
 
   objects = self->_objects;
-  v26 = objc_msgSend_stateSharingID(v32, v5, v7, v8, v9, v31);
+  v26 = objc_msgSend_stateSharingID(infoCopy, v5, v7, v8, v9, v31);
   objc_msgSend_tsu_setNonNilObject_forKey_(objects, v27, v28, v29, v30, v6, v26);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v74 = *MEMORY[0x277D85DE8];
   v5 = objc_opt_class();
-  v10 = objc_msgSend_allocWithZone_(v5, v6, v7, v8, v9, a3);
+  v10 = objc_msgSend_allocWithZone_(v5, v6, v7, v8, v9, zone);
   v66 = objc_msgSend_init(v10, v11, v12, v13, v14);
   if (v66)
   {

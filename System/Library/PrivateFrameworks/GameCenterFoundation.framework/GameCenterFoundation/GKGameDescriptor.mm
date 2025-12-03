@@ -1,63 +1,63 @@
 @interface GKGameDescriptor
-+ (BOOL)supportsPlatform:(int64_t)a3;
-+ (GKGameDescriptor)gameDescriptorWithBundleID:(id)a3 bundleVersion:(id)a4 shortBundleVersion:(id)a5 adamID:(id)a6;
-+ (id)gamePlatformStringSetFromGamePlatformSet:(unsigned int)a3;
++ (BOOL)supportsPlatform:(int64_t)platform;
++ (GKGameDescriptor)gameDescriptorWithBundleID:(id)d bundleVersion:(id)version shortBundleVersion:(id)bundleVersion adamID:(id)iD;
++ (id)gamePlatformStringSetFromGamePlatformSet:(unsigned int)set;
 + (id)secureCodedPropertyKeys;
-+ (id)stringForPlatform:(int64_t)a3;
-+ (int64_t)gamePlatformFromServerGameDescriptorString:(id)a3;
-+ (int64_t)gamePlatformFromServerPushString:(id)a3;
-+ (unsigned)gamePlatformSetForGamePlatformStrings:(id)a3;
-+ (unsigned)gamePlatformSetFromGamePlatform:(int64_t)a3;
-- (GKGameDescriptor)initWithDictionary:(id)a3;
-- (GKGameDescriptor)initWithPushDictionary:(id)a3;
++ (id)stringForPlatform:(int64_t)platform;
++ (int64_t)gamePlatformFromServerGameDescriptorString:(id)string;
++ (int64_t)gamePlatformFromServerPushString:(id)string;
++ (unsigned)gamePlatformSetForGamePlatformStrings:(id)strings;
++ (unsigned)gamePlatformSetFromGamePlatform:(int64_t)platform;
+- (GKGameDescriptor)initWithDictionary:(id)dictionary;
+- (GKGameDescriptor)initWithPushDictionary:(id)dictionary;
 - (id)description;
 - (id)dictionaryForRequest;
 @end
 
 @implementation GKGameDescriptor
 
-+ (GKGameDescriptor)gameDescriptorWithBundleID:(id)a3 bundleVersion:(id)a4 shortBundleVersion:(id)a5 adamID:(id)a6
++ (GKGameDescriptor)gameDescriptorWithBundleID:(id)d bundleVersion:(id)version shortBundleVersion:(id)bundleVersion adamID:(id)iD
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  iDCopy = iD;
+  bundleVersionCopy = bundleVersion;
+  versionCopy = version;
+  dCopy = d;
   v14 = objc_alloc_init(GKGameDescriptor);
-  [(GKGameDescriptor *)v14 setBundleIdentifier:v13];
+  [(GKGameDescriptor *)v14 setBundleIdentifier:dCopy];
 
-  [(GKGameDescriptor *)v14 setBundleVersion:v12];
-  [(GKGameDescriptor *)v14 setShortBundleVersion:v11];
+  [(GKGameDescriptor *)v14 setBundleVersion:versionCopy];
+  [(GKGameDescriptor *)v14 setShortBundleVersion:bundleVersionCopy];
 
-  [(GKGameDescriptor *)v14 setAdamID:v10];
-  -[GKGameDescriptor setPlatform:](v14, "setPlatform:", [a1 currentPlatform]);
+  [(GKGameDescriptor *)v14 setAdamID:iDCopy];
+  -[GKGameDescriptor setPlatform:](v14, "setPlatform:", [self currentPlatform]);
 
   return v14;
 }
 
-+ (int64_t)gamePlatformFromServerGameDescriptorString:(id)a3
++ (int64_t)gamePlatformFromServerGameDescriptorString:(id)string
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"ios"])
+  stringCopy = string;
+  if ([stringCopy isEqualToString:@"ios"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"xros"])
+  else if ([stringCopy isEqualToString:@"xros"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"macos"])
+  else if ([stringCopy isEqualToString:@"macos"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"appletvos"])
+  else if ([stringCopy isEqualToString:@"appletvos"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"watchos"])
+  else if ([stringCopy isEqualToString:@"watchos"])
   {
     v4 = 4;
   }
@@ -70,30 +70,30 @@
   return v4;
 }
 
-+ (int64_t)gamePlatformFromServerPushString:(id)a3
++ (int64_t)gamePlatformFromServerPushString:(id)string
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"i"])
+  stringCopy = string;
+  if ([stringCopy isEqualToString:@"i"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"r"])
+  else if ([stringCopy isEqualToString:@"r"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"m"])
+  else if ([stringCopy isEqualToString:@"m"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"t"])
+  else if ([stringCopy isEqualToString:@"t"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"w"])
+  else if ([stringCopy isEqualToString:@"w"])
   {
     v4 = 4;
   }
@@ -106,31 +106,31 @@
   return v4;
 }
 
-+ (unsigned)gamePlatformSetFromGamePlatform:(int64_t)a3
++ (unsigned)gamePlatformSetFromGamePlatform:(int64_t)platform
 {
-  if ((a3 - 1) > 4)
+  if ((platform - 1) > 4)
   {
     return 0;
   }
 
   else
   {
-    return dword_227A9FE28[a3 - 1];
+    return dword_227A9FE28[platform - 1];
   }
 }
 
-+ (id)gamePlatformStringSetFromGamePlatformSet:(unsigned int)a3
++ (id)gamePlatformStringSetFromGamePlatformSet:(unsigned int)set
 {
-  v3 = a3;
+  setCopy = set;
   v4 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v5 = v4;
-  if ((v3 & 2) != 0)
+  if ((setCopy & 2) != 0)
   {
     [v4 addObject:@"ios"];
-    if ((v3 & 4) == 0)
+    if ((setCopy & 4) == 0)
     {
 LABEL_3:
-      if ((v3 & 8) == 0)
+      if ((setCopy & 8) == 0)
       {
         goto LABEL_4;
       }
@@ -139,16 +139,16 @@ LABEL_3:
     }
   }
 
-  else if ((v3 & 4) == 0)
+  else if ((setCopy & 4) == 0)
   {
     goto LABEL_3;
   }
 
   [v5 addObject:@"macos"];
-  if ((v3 & 8) == 0)
+  if ((setCopy & 8) == 0)
   {
 LABEL_4:
-    if ((v3 & 0x10) == 0)
+    if ((setCopy & 0x10) == 0)
     {
       goto LABEL_5;
     }
@@ -158,10 +158,10 @@ LABEL_4:
 
 LABEL_12:
   [v5 addObject:@"appletvos"];
-  if ((v3 & 0x10) == 0)
+  if ((setCopy & 0x10) == 0)
   {
 LABEL_5:
-    if ((v3 & 0x20) == 0)
+    if ((setCopy & 0x20) == 0)
     {
       goto LABEL_7;
     }
@@ -171,7 +171,7 @@ LABEL_5:
 
 LABEL_13:
   [v5 addObject:@"watchos"];
-  if ((v3 & 0x20) != 0)
+  if ((setCopy & 0x20) != 0)
   {
 LABEL_6:
     [v5 addObject:@"xros"];
@@ -182,15 +182,15 @@ LABEL_7:
   return v5;
 }
 
-+ (unsigned)gamePlatformSetForGamePlatformStrings:(id)a3
++ (unsigned)gamePlatformSetForGamePlatformStrings:(id)strings
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  stringsCopy = strings;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v4 = [stringsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -202,7 +202,7 @@ LABEL_7:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(stringsCopy);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
@@ -212,7 +212,7 @@ LABEL_7:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [stringsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v5);
@@ -227,54 +227,54 @@ LABEL_7:
   return v6;
 }
 
-+ (BOOL)supportsPlatform:(int64_t)a3
++ (BOOL)supportsPlatform:(int64_t)platform
 {
   v4 = +[GKGameDescriptor supportedPlatforms];
-  v5 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v5 = [MEMORY[0x277CCABB0] numberWithInteger:platform];
   v6 = [v4 containsObject:v5];
 
   return v6;
 }
 
-- (GKGameDescriptor)initWithDictionary:(id)a3
+- (GKGameDescriptor)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v19.receiver = self;
   v19.super_class = GKGameDescriptor;
   v5 = [(GKGameDescriptor *)&v19 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"bundle-id"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"bundle-id"];
     bundleIdentifier = v5->_bundleIdentifier;
     v5->_bundleIdentifier = v6;
 
-    v8 = [v4 objectForKeyedSubscript:@"bundle-version"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"bundle-version"];
     bundleVersion = v5->_bundleVersion;
     v5->_bundleVersion = v8;
 
-    v10 = [v4 objectForKeyedSubscript:@"adam-id"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"adam-id"];
     adamID = v5->_adamID;
     v5->_adamID = v10;
 
-    v12 = [v4 objectForKeyedSubscript:@"external-version"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"external-version"];
     externalVersion = v5->_externalVersion;
     v5->_externalVersion = v12;
 
-    v14 = [v4 objectForKeyedSubscript:@"short-bundle-version"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"short-bundle-version"];
     shortBundleVersion = v5->_shortBundleVersion;
     v5->_shortBundleVersion = v14;
 
     v16 = objc_opt_class();
-    v17 = [v4 objectForKeyedSubscript:@"platform"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"platform"];
     v5->_platform = [v16 gamePlatformFromServerGameDescriptorString:v17];
   }
 
   return v5;
 }
 
-- (GKGameDescriptor)initWithPushDictionary:(id)a3
+- (GKGameDescriptor)initWithPushDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   if (!os_log_GKGeneral)
   {
     v5 = GKOSLoggers();
@@ -292,24 +292,24 @@ LABEL_7:
   v7 = [(GKGameDescriptor *)&v19 init];
   if (v7)
   {
-    v8 = [v4 objectForKeyedSubscript:@"i"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"i"];
     bundleIdentifier = v7->_bundleIdentifier;
     v7->_bundleIdentifier = v8;
 
-    v10 = [v4 objectForKeyedSubscript:@"v"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"v"];
     bundleVersion = v7->_bundleVersion;
     v7->_bundleVersion = v10;
 
-    v12 = [v4 objectForKeyedSubscript:@"a"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"a"];
     adamID = v7->_adamID;
     v7->_adamID = v12;
 
-    v14 = [v4 objectForKeyedSubscript:@"V"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"V"];
     shortBundleVersion = v7->_shortBundleVersion;
     v7->_shortBundleVersion = v14;
 
     v16 = objc_opt_class();
-    v17 = [v4 objectForKeyedSubscript:@"p"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"p"];
     v7->_platform = [v16 gamePlatformFromServerPushString:v17];
   }
 
@@ -350,10 +350,10 @@ void __43__GKGameDescriptor_secureCodedPropertyKeys__block_invoke()
   v2 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)stringForPlatform:(int64_t)a3
++ (id)stringForPlatform:(int64_t)platform
 {
   v13 = *MEMORY[0x277D85DE8];
-  if ((a3 - 1) >= 5)
+  if ((platform - 1) >= 5)
   {
     v5 = os_log_GKGeneral;
     if (!os_log_GKGeneral)
@@ -366,7 +366,7 @@ void __43__GKGameDescriptor_secureCodedPropertyKeys__block_invoke()
     {
       v7 = MEMORY[0x277CCABB0];
       v8 = v5;
-      v9 = [v7 numberWithInteger:a3];
+      v9 = [v7 numberWithInteger:platform];
       v11 = 138412290;
       v12 = v9;
       _os_log_impl(&dword_227904000, v8, OS_LOG_TYPE_INFO, "No platform string for specified GKGamePlatform value (%@), defaulting to iOS.", &v11, 0xCu);
@@ -377,7 +377,7 @@ void __43__GKGameDescriptor_secureCodedPropertyKeys__block_invoke()
 
   else
   {
-    result = off_2785DDE10[a3 - 1];
+    result = off_2785DDE10[platform - 1];
   }
 
   v10 = *MEMORY[0x277D85DE8];
@@ -434,13 +434,13 @@ void __43__GKGameDescriptor_secureCodedPropertyKeys__block_invoke()
   v12.receiver = self;
   v12.super_class = GKGameDescriptor;
   v3 = [(GKInternalRepresentation *)&v12 description];
-  v4 = [(GKGameDescriptor *)self bundleIdentifier];
-  v5 = [(GKGameDescriptor *)self bundleVersion];
-  v6 = [(GKGameDescriptor *)self adamID];
-  v7 = [(GKGameDescriptor *)self externalVersion];
-  v8 = [(GKGameDescriptor *)self shortBundleVersion];
+  bundleIdentifier = [(GKGameDescriptor *)self bundleIdentifier];
+  bundleVersion = [(GKGameDescriptor *)self bundleVersion];
+  adamID = [(GKGameDescriptor *)self adamID];
+  externalVersion = [(GKGameDescriptor *)self externalVersion];
+  shortBundleVersion = [(GKGameDescriptor *)self shortBundleVersion];
   v9 = [MEMORY[0x277CCABB0] numberWithInteger:{-[GKGameDescriptor platform](self, "platform")}];
-  v10 = [v3 stringByAppendingFormat:@"bundleIdentifier:%@\nbundleVersion:%@\nadamID:%@\nexternalVersion:%@\nshortBundleVersion:%@\nplatform:%@", v4, v5, v6, v7, v8, v9];
+  v10 = [v3 stringByAppendingFormat:@"bundleIdentifier:%@\nbundleVersion:%@\nadamID:%@\nexternalVersion:%@\nshortBundleVersion:%@\nplatform:%@", bundleIdentifier, bundleVersion, adamID, externalVersion, shortBundleVersion, v9];
 
   return v10;
 }

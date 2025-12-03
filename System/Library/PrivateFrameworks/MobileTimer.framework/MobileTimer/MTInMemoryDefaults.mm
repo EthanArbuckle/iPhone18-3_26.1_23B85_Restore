@@ -1,11 +1,11 @@
 @interface MTInMemoryDefaults
 - (MTInMemoryDefaults)init;
-- (float)floatForKey:(id)a3;
-- (id)objectForKey:(id)a3;
-- (id)objectForKey:(id)a3 defaultValue:(id)a4;
-- (void)removeObjectForKey:(id)a3;
-- (void)setFloat:(float)a3 forKey:(id)a4;
-- (void)setObject:(id)a3 forKey:(id)a4;
+- (float)floatForKey:(id)key;
+- (id)objectForKey:(id)key;
+- (id)objectForKey:(id)key defaultValue:(id)value;
+- (void)removeObjectForKey:(id)key;
+- (void)setFloat:(float)float forKey:(id)key;
+- (void)setObject:(id)object forKey:(id)key;
 @end
 
 @implementation MTInMemoryDefaults
@@ -25,10 +25,10 @@
   return v2;
 }
 
-- (id)objectForKey:(id)a3 defaultValue:(id)a4
+- (id)objectForKey:(id)key defaultValue:(id)value
 {
-  v6 = a4;
-  v7 = [(MTInMemoryDefaults *)self objectForKey:a3];
+  valueCopy = value;
+  v7 = [(MTInMemoryDefaults *)self objectForKey:key];
   v8 = v7;
   if (v7)
   {
@@ -37,7 +37,7 @@
 
   else
   {
-    v9 = v6;
+    v9 = valueCopy;
   }
 
   v10 = v9;
@@ -45,21 +45,21 @@
   return v9;
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(MTInMemoryDefaults *)self storage];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  keyCopy = key;
+  storage = [(MTInMemoryDefaults *)self storage];
+  v6 = [storage objectForKeyedSubscript:keyCopy];
 
   return v6;
 }
 
-- (float)floatForKey:(id)a3
+- (float)floatForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   objc_opt_class();
-  v5 = [(MTInMemoryDefaults *)self storage];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  storage = [(MTInMemoryDefaults *)self storage];
+  v6 = [storage objectForKeyedSubscript:keyCopy];
 
   if (objc_opt_isKindOfClass())
   {
@@ -79,29 +79,29 @@
   return v10;
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(MTInMemoryDefaults *)self storage];
-  [v8 setObject:v7 forKeyedSubscript:v6];
+  keyCopy = key;
+  objectCopy = object;
+  storage = [(MTInMemoryDefaults *)self storage];
+  [storage setObject:objectCopy forKeyedSubscript:keyCopy];
 }
 
-- (void)setFloat:(float)a3 forKey:(id)a4
+- (void)setFloat:(float)float forKey:(id)key
 {
   v6 = MEMORY[0x1E696AD98];
-  v7 = a4;
-  *&v8 = a3;
+  keyCopy = key;
+  *&v8 = float;
   v10 = [v6 numberWithFloat:v8];
-  v9 = [(MTInMemoryDefaults *)self storage];
-  [v9 setObject:v10 forKeyedSubscript:v7];
+  storage = [(MTInMemoryDefaults *)self storage];
+  [storage setObject:v10 forKeyedSubscript:keyCopy];
 }
 
-- (void)removeObjectForKey:(id)a3
+- (void)removeObjectForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(MTInMemoryDefaults *)self storage];
-  [v5 removeObjectForKey:v4];
+  keyCopy = key;
+  storage = [(MTInMemoryDefaults *)self storage];
+  [storage removeObjectForKey:keyCopy];
 }
 
 @end

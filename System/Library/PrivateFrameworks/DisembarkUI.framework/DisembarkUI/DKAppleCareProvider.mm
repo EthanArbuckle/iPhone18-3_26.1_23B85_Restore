@@ -1,10 +1,10 @@
 @interface DKAppleCareProvider
 - (DKAppleCareProvider)init;
-- (DKAppleCareProvider)initWithFetchCoverageDetails:(id)a3;
+- (DKAppleCareProvider)initWithFetchCoverageDetails:(id)details;
 - (NSString)coverageLabel;
 - (id)_fetchCoverageDetails;
-- (void)setCoverageLabel:(id)a3;
-- (void)set_fetchCoverageDetails:(id)a3;
+- (void)setCoverageLabel:(id)label;
+- (void)set_fetchCoverageDetails:(id)details;
 @end
 
 @implementation DKAppleCareProvider
@@ -27,9 +27,9 @@
   return v4;
 }
 
-- (void)setCoverageLabel:(id)a3
+- (void)setCoverageLabel:(id)label
 {
-  if (a3)
+  if (label)
   {
     v4 = sub_248D82F20();
   }
@@ -60,9 +60,9 @@
   return v3;
 }
 
-- (void)set_fetchCoverageDetails:(id)a3
+- (void)set_fetchCoverageDetails:(id)details
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(details);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   v6 = (self + OBJC_IVAR___DKAppleCareProvider__fetchCoverageDetails);
@@ -88,9 +88,9 @@
   return [(DKAppleCareProvider *)&v8 init];
 }
 
-- (DKAppleCareProvider)initWithFetchCoverageDetails:(id)a3
+- (DKAppleCareProvider)initWithFetchCoverageDetails:(id)details
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(details);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   v6 = (self + OBJC_IVAR___DKAppleCareProvider_coverageLabel);

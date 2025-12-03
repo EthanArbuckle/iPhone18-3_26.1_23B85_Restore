@@ -31,8 +31,8 @@
 {
   v3 = objc_autoreleasePoolPush();
   v5 = +[NSXPCListener serviceListener];
-  v4 = [(CRKScreenshotService *)self listenerDelegate];
-  [v5 setDelegate:v4];
+  listenerDelegate = [(CRKScreenshotService *)self listenerDelegate];
+  [v5 setDelegate:listenerDelegate];
 
   objc_autoreleasePoolPop(v3);
   [v5 resume];

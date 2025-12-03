@@ -1,53 +1,53 @@
 @interface EXDrawing
-+ (EDCellAnchorMarker)readAnchorMarkerFromNode:(_xmlNode *)a3 state:(id)a4;
-+ (id)readAbsoluteAnchorNode:(_xmlNode *)a3 state:(id)a4;
-+ (id)readAnchorNode:(_xmlNode *)a3 state:(id)a4;
-+ (id)readDrawableNode:(_xmlNode *)a3 anchor:(id)a4 state:(id)a5;
-+ (id)readOneCellAnchorNode:(_xmlNode *)a3 state:(id)a4;
-+ (id)readTwoCellAnchorNode:(_xmlNode *)a3 state:(id)a4;
++ (EDCellAnchorMarker)readAnchorMarkerFromNode:(_xmlNode *)node state:(id)state;
++ (id)readAbsoluteAnchorNode:(_xmlNode *)node state:(id)state;
++ (id)readAnchorNode:(_xmlNode *)node state:(id)state;
++ (id)readDrawableNode:(_xmlNode *)node anchor:(id)anchor state:(id)state;
++ (id)readOneCellAnchorNode:(_xmlNode *)node state:(id)state;
++ (id)readTwoCellAnchorNode:(_xmlNode *)node state:(id)state;
 + (void)initialize;
-+ (void)readFromPart:(id)a3 state:(id)a4;
++ (void)readFromPart:(id)part state:(id)state;
 @end
 
 @implementation EXDrawing
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
     objc_opt_class();
   }
 }
 
-+ (id)readAnchorNode:(_xmlNode *)a3 state:(id)a4
++ (id)readAnchorNode:(_xmlNode *)node state:(id)state
 {
-  v6 = a4;
-  v7 = v6;
-  if (a3->type == XML_ELEMENT_NODE)
+  stateCopy = state;
+  v7 = stateCopy;
+  if (node->type == XML_ELEMENT_NODE)
   {
-    v8 = [v6 EXSpreadsheetDrawingNamespace];
-    v9 = [v8 containsNode:a3];
+    eXSpreadsheetDrawingNamespace = [stateCopy EXSpreadsheetDrawingNamespace];
+    v9 = [eXSpreadsheetDrawingNamespace containsNode:node];
 
     if (v9)
     {
-      if (xmlStrEqual(a3->name, "twoCellAnchor"))
+      if (xmlStrEqual(node->name, "twoCellAnchor"))
       {
-        v10 = [a1 readTwoCellAnchorNode:a3 state:v7];
+        v10 = [self readTwoCellAnchorNode:node state:v7];
 LABEL_9:
         v11 = v10;
         goto LABEL_11;
       }
 
-      if (xmlStrEqual(a3->name, "oneCellAnchor"))
+      if (xmlStrEqual(node->name, "oneCellAnchor"))
       {
-        v10 = [a1 readOneCellAnchorNode:a3 state:v7];
+        v10 = [self readOneCellAnchorNode:node state:v7];
         goto LABEL_9;
       }
 
-      if (xmlStrEqual(a3->name, "absoluteAnchor"))
+      if (xmlStrEqual(node->name, "absoluteAnchor"))
       {
-        v10 = [a1 readAbsoluteAnchorNode:a3 state:v7];
+        v10 = [self readAbsoluteAnchorNode:node state:v7];
         goto LABEL_9;
       }
     }
@@ -59,20 +59,20 @@ LABEL_11:
   return v11;
 }
 
-+ (void)readFromPart:(id)a3 state:(id)a4
++ (void)readFromPart:(id)part state:(id)state
 {
-  v13 = a3;
-  v6 = a4;
-  if (v13)
+  partCopy = part;
+  stateCopy = state;
+  if (partCopy)
   {
-    v7 = [v6 officeArtState];
-    [v7 setPackagePart:v13];
+    officeArtState = [stateCopy officeArtState];
+    [officeArtState setPackagePart:partCopy];
 
-    v8 = OCXGetRootElement([v13 xmlDocument]);
+    v8 = OCXGetRootElement([partCopy xmlDocument]);
     if (v8)
     {
-      v9 = [v6 EXSpreadsheetDrawingNamespace];
-      if ([v9 containsNode:v8])
+      eXSpreadsheetDrawingNamespace = [stateCopy EXSpreadsheetDrawingNamespace];
+      if ([eXSpreadsheetDrawingNamespace containsNode:v8])
       {
         v10 = xmlStrEqual(v8->name, "wsDr");
 
@@ -80,7 +80,7 @@ LABEL_11:
         {
           for (i = OCXFirstChild(v8); i; i = OCXNextSibling(i))
           {
-            v12 = [a1 readAnchorNode:i state:v6];
+            v12 = [self readAnchorNode:i state:stateCopy];
           }
         }
       }
@@ -92,23 +92,23 @@ LABEL_11:
   }
 }
 
-+ (EDCellAnchorMarker)readAnchorMarkerFromNode:(_xmlNode *)a3 state:(id)a4
++ (EDCellAnchorMarker)readAnchorMarkerFromNode:(_xmlNode *)node state:(id)state
 {
-  v5 = a4;
-  v6 = [v5 EXSpreadsheetDrawingNamespace];
-  v7 = CXRequiredLongChild(a3, v6, "col");
+  stateCopy = state;
+  eXSpreadsheetDrawingNamespace = [stateCopy EXSpreadsheetDrawingNamespace];
+  v7 = CXRequiredLongChild(node, eXSpreadsheetDrawingNamespace, "col");
 
-  v8 = [v5 EXSpreadsheetDrawingNamespace];
-  v9 = CXRequiredLongChild(a3, v8, "colOff", 12);
+  eXSpreadsheetDrawingNamespace2 = [stateCopy EXSpreadsheetDrawingNamespace];
+  v9 = CXRequiredLongChild(node, eXSpreadsheetDrawingNamespace2, "colOff", 12);
 
-  v10 = [v5 EXSpreadsheetDrawingNamespace];
-  LODWORD(v8) = CXRequiredLongChild(a3, v10, "row");
+  eXSpreadsheetDrawingNamespace3 = [stateCopy EXSpreadsheetDrawingNamespace];
+  LODWORD(eXSpreadsheetDrawingNamespace2) = CXRequiredLongChild(node, eXSpreadsheetDrawingNamespace3, "row");
 
-  v11 = [v5 EXSpreadsheetDrawingNamespace];
-  *&v12 = CXRequiredLongChild(a3, v11, "rowOff", 12) / 12700.0;
+  eXSpreadsheetDrawingNamespace4 = [stateCopy EXSpreadsheetDrawingNamespace];
+  *&v12 = CXRequiredLongChild(node, eXSpreadsheetDrawingNamespace4, "rowOff", 12) / 12700.0;
 
   v13 = v7 | (COERCE_UNSIGNED_INT(v9 / 12700.0) << 32);
-  v14 = v8 | (v12 << 32);
+  v14 = eXSpreadsheetDrawingNamespace2 | (v12 << 32);
   result.rowIndex = v14;
   result.rowAdjustment = *(&v14 + 1);
   result.columnIndex = v13;
@@ -116,22 +116,22 @@ LABEL_11:
   return result;
 }
 
-+ (id)readTwoCellAnchorNode:(_xmlNode *)a3 state:(id)a4
++ (id)readTwoCellAnchorNode:(_xmlNode *)node state:(id)state
 {
-  v6 = a4;
+  stateCopy = state;
   v7 = objc_alloc_init(EDTwoCellAnchor);
   [(EDTwoCellAnchor *)v7 setRelative:0];
-  v8 = [v6 EXSpreadsheetDrawingNamespace];
-  v9 = OCXFirstChild(a3, v8, "from");
+  eXSpreadsheetDrawingNamespace = [stateCopy EXSpreadsheetDrawingNamespace];
+  v9 = OCXFirstChild(node, eXSpreadsheetDrawingNamespace, "from");
 
-  v10 = [a1 readAnchorMarkerFromNode:v9 state:v6];
+  v10 = [self readAnchorMarkerFromNode:v9 state:stateCopy];
   [(EDTwoCellAnchor *)v7 setFrom:v10, v11];
-  v12 = [v6 EXSpreadsheetDrawingNamespace];
-  v13 = OCXNextSibling(v9, v12, "to");
+  eXSpreadsheetDrawingNamespace2 = [stateCopy EXSpreadsheetDrawingNamespace];
+  v13 = OCXNextSibling(v9, eXSpreadsheetDrawingNamespace2, "to");
 
-  v14 = [a1 readAnchorMarkerFromNode:v13 state:v6];
+  v14 = [self readAnchorMarkerFromNode:v13 state:stateCopy];
   [(EDTwoCellAnchor *)v7 setTo:v14, v15];
-  v16 = CXDefaultStringAttribute(a3, CXNoNamespace, "editAs", 0);
+  v16 = CXDefaultStringAttribute(node, CXNoNamespace, "editAs", 0);
   if ([v16 isEqualToString:@"twoCell"])
   {
     v17 = 0;
@@ -153,74 +153,74 @@ LABEL_11:
   }
 
   [(EDTwoCellAnchor *)v7 setEditAs:v17];
-  v18 = [a1 readDrawableNode:OCXNextSibling(v13) anchor:v7 state:v6];
+  v18 = [self readDrawableNode:OCXNextSibling(v13) anchor:v7 state:stateCopy];
 
   return v18;
 }
 
-+ (id)readOneCellAnchorNode:(_xmlNode *)a3 state:(id)a4
++ (id)readOneCellAnchorNode:(_xmlNode *)node state:(id)state
 {
-  v6 = a4;
+  stateCopy = state;
   v7 = objc_alloc_init(EDOneCellAnchor);
   [(EDOneCellAnchor *)v7 setRelative:0];
-  v8 = [v6 EXSpreadsheetDrawingNamespace];
-  v9 = OCXFirstChild(a3, v8, "from");
+  eXSpreadsheetDrawingNamespace = [stateCopy EXSpreadsheetDrawingNamespace];
+  v9 = OCXFirstChild(node, eXSpreadsheetDrawingNamespace, "from");
 
-  v10 = [a1 readAnchorMarkerFromNode:v9 state:v6];
+  v10 = [self readAnchorMarkerFromNode:v9 state:stateCopy];
   [(EDOneCellAnchor *)v7 setFrom:v10, v11];
-  v12 = [v6 EXSpreadsheetDrawingNamespace];
-  v13 = OCXNextSibling(v9, v12, "ext");
+  eXSpreadsheetDrawingNamespace2 = [stateCopy EXSpreadsheetDrawingNamespace];
+  v13 = OCXNextSibling(v9, eXSpreadsheetDrawingNamespace2, "ext");
 
   [OAXBaseTypes readSize2DFromXmlNode:v13];
   [(EDOneCellAnchor *)v7 setSize:?];
-  v14 = [a1 readDrawableNode:OCXNextSibling(v13) anchor:v7 state:v6];
+  v14 = [self readDrawableNode:OCXNextSibling(v13) anchor:v7 state:stateCopy];
 
   return v14;
 }
 
-+ (id)readAbsoluteAnchorNode:(_xmlNode *)a3 state:(id)a4
++ (id)readAbsoluteAnchorNode:(_xmlNode *)node state:(id)state
 {
-  v6 = a4;
+  stateCopy = state;
   v7 = objc_alloc_init(EDAbsoluteAnchor);
-  v8 = [v6 EXSpreadsheetDrawingNamespace];
-  v9 = OCXFirstChild(a3, v8, "pos");
+  eXSpreadsheetDrawingNamespace = [stateCopy EXSpreadsheetDrawingNamespace];
+  v9 = OCXFirstChild(node, eXSpreadsheetDrawingNamespace, "pos");
 
   [OAXBaseTypes readPoint2DFromXmlNode:v9];
   [(EDAbsoluteAnchor *)v7 setPosition:?];
-  v10 = [v6 EXSpreadsheetDrawingNamespace];
-  v11 = OCXNextSibling(v9, v10, "ext");
+  eXSpreadsheetDrawingNamespace2 = [stateCopy EXSpreadsheetDrawingNamespace];
+  v11 = OCXNextSibling(v9, eXSpreadsheetDrawingNamespace2, "ext");
 
   [OAXBaseTypes readSize2DFromXmlNode:v11];
   [(EDAbsoluteAnchor *)v7 setSize:?];
-  v12 = [a1 readDrawableNode:OCXNextSibling(v11) anchor:v7 state:v6];
+  v12 = [self readDrawableNode:OCXNextSibling(v11) anchor:v7 state:stateCopy];
 
   return v12;
 }
 
-+ (id)readDrawableNode:(_xmlNode *)a3 anchor:(id)a4 state:(id)a5
++ (id)readDrawableNode:(_xmlNode *)node anchor:(id)anchor state:(id)state
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [v8 EXSpreadsheetDrawingNamespace];
-  v10 = [v8 officeArtState];
-  v11 = [OAXDrawable readDrawableFromXmlNode:a3 inNamespace:v9 drawingState:v10];
+  anchorCopy = anchor;
+  stateCopy = state;
+  eXSpreadsheetDrawingNamespace = [stateCopy EXSpreadsheetDrawingNamespace];
+  officeArtState = [stateCopy officeArtState];
+  v11 = [OAXDrawable readDrawableFromXmlNode:node inNamespace:eXSpreadsheetDrawingNamespace drawingState:officeArtState];
 
   if (v11)
   {
-    v12 = [v11 clientData];
-    if (!v12)
+    clientData = [v11 clientData];
+    if (!clientData)
     {
       v13 = objc_alloc_init(EDOfficeArtClient);
-      v14 = [v8 currentSheet];
-      [(EDOfficeArtClient *)v13 setSheet:v14];
+      currentSheet = [stateCopy currentSheet];
+      [(EDOfficeArtClient *)v13 setSheet:currentSheet];
 
-      v12 = v13;
+      clientData = v13;
       [v11 setClientData:v13];
     }
 
-    [v12 setAnchor:v7];
-    v15 = [v8 currentSheet];
-    [v15 addDrawable:v11];
+    [clientData setAnchor:anchorCopy];
+    currentSheet2 = [stateCopy currentSheet];
+    [currentSheet2 addDrawable:v11];
   }
 
   return v11;

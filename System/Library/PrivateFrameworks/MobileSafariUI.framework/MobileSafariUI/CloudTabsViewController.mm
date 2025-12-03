@@ -1,42 +1,42 @@
 @interface CloudTabsViewController
-- (CloudTabsViewController)initWithDeviceProvider:(id)a3 primaryDeviceUUID:(id)a4 profileIdentifier:(id)a5;
+- (CloudTabsViewController)initWithDeviceProvider:(id)provider primaryDeviceUUID:(id)d profileIdentifier:(id)identifier;
 - (LinkPreviewProvider)linkPreviewProvider;
 - (TabGroupProvider)tabGroupProvider;
 - (_SFNavigationIntentHandling)navigationIntentHandler;
-- (double)tableView:(id)a3 heightForFooterInSection:(int64_t)a4;
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4;
-- (id)_deviceForIndexPath:(id)a3;
-- (id)_filteredTabsInSection:(int64_t)a3;
-- (id)_tabForIndexPath:(id)a3;
-- (id)_urlForRowAtIndexPath:(id)a3;
-- (id)previewTableViewController:(id)a3 menuForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 itemsForBeginningDragSession:(id)a4 atIndexPath:(id)a5;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (double)tableView:(id)view heightForFooterInSection:(int64_t)section;
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section;
+- (id)_deviceForIndexPath:(id)path;
+- (id)_filteredTabsInSection:(int64_t)section;
+- (id)_tabForIndexPath:(id)path;
+- (id)_urlForRowAtIndexPath:(id)path;
+- (id)previewTableViewController:(id)controller menuForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view itemsForBeginningDragSession:(id)session atIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)_delayReloadTimerFired;
-- (void)_deleteRowAtIndexPath:(id)a3;
+- (void)_deleteRowAtIndexPath:(id)path;
 - (void)_loadDevices;
 - (void)_reloadDevicesAndTable;
 - (void)_updateContentUnavailableConfiguration;
-- (void)cloudTabDeviceProvider:(id)a3 didUpdateCloudTabsInProfileWithIdentifier:(id)a4;
+- (void)cloudTabDeviceProvider:(id)provider didUpdateCloudTabsInProfileWithIdentifier:(id)identifier;
 - (void)dealloc;
 - (void)loadView;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)updateSearchResultsForSearchController:(id)a3;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)updateSearchResultsForSearchController:(id)controller;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation CloudTabsViewController
 
-- (CloudTabsViewController)initWithDeviceProvider:(id)a3 primaryDeviceUUID:(id)a4 profileIdentifier:(id)a5
+- (CloudTabsViewController)initWithDeviceProvider:(id)provider primaryDeviceUUID:(id)d profileIdentifier:(id)identifier
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  providerCopy = provider;
+  dCopy = d;
+  identifierCopy = identifier;
   v22.receiver = self;
   v22.super_class = CloudTabsViewController;
   v12 = [(CloudTabsViewController *)&v22 init];
@@ -48,17 +48,17 @@
     v14 = objc_alloc(MEMORY[0x277D751E0]);
     v15 = _WBSLocalizedString();
     v16 = [v14 initWithTitle:v15 style:2 target:v12 action:sel_dismiss];
-    v17 = [(CloudTabsViewController *)v12 navigationItem];
-    [v17 setRightBarButtonItem:v16];
+    navigationItem = [(CloudTabsViewController *)v12 navigationItem];
+    [navigationItem setRightBarButtonItem:v16];
 
-    [v9 addCloudTabsObserver:v12];
-    objc_storeStrong(&v12->_deviceProvider, a3);
-    objc_storeStrong(&v12->_primaryDeviceUUID, a4);
-    v18 = [v11 copy];
+    [providerCopy addCloudTabsObserver:v12];
+    objc_storeStrong(&v12->_deviceProvider, provider);
+    objc_storeStrong(&v12->_primaryDeviceUUID, d);
+    v18 = [identifierCopy copy];
     profileIdentifier = v12->_profileIdentifier;
     v12->_profileIdentifier = v18;
 
-    v12->_onlyShowsPrimaryDevice = v10 != 0;
+    v12->_onlyShowsPrimaryDevice = dCopy != 0;
     [(CloudTabsViewController *)v12 _loadDevices];
     v20 = v12;
   }
@@ -68,8 +68,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = CloudTabsViewController;
@@ -82,20 +82,20 @@
   v4 = [v3 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
   [(CloudTabsViewController *)self setView:v4];
 
-  v5 = [(CloudTabsViewController *)self view];
-  [v5 setAutoresizingMask:18];
+  view = [(CloudTabsViewController *)self view];
+  [view setAutoresizingMask:18];
 
   v6 = [[PreviewTableViewController alloc] initWithStyle:2];
   tableViewController = self->_tableViewController;
   self->_tableViewController = v6;
 
   [(PreviewTableViewController *)self->_tableViewController setPreviewDelegate:self];
-  v8 = [(CloudTabsViewController *)self linkPreviewProvider];
-  [(PreviewTableViewController *)self->_tableViewController setLinkPreviewProvider:v8];
+  linkPreviewProvider = [(CloudTabsViewController *)self linkPreviewProvider];
+  [(PreviewTableViewController *)self->_tableViewController setLinkPreviewProvider:linkPreviewProvider];
 
-  v9 = [(PreviewTableViewController *)self->_tableViewController tableView];
+  tableView = [(PreviewTableViewController *)self->_tableViewController tableView];
   tableView = self->_tableView;
-  self->_tableView = v9;
+  self->_tableView = tableView;
 
   [(UITableView *)self->_tableView setAccessibilityIdentifier:@"CloudTabsTable"];
   [(UITableView *)self->_tableView setAutoresizingMask:18];
@@ -109,8 +109,8 @@
   [(UITableView *)self->_tableView setSectionHeaderHeight:0.0];
   [(UITableView *)self->_tableView setSectionFooterHeight:0.0];
   [(CloudTabsViewController *)self addChildViewController:self->_tableViewController];
-  v11 = [(CloudTabsViewController *)self view];
-  [v11 addSubview:self->_tableView];
+  view2 = [(CloudTabsViewController *)self view];
+  [view2 addSubview:self->_tableView];
 
   v12 = self->_tableViewController;
 
@@ -137,21 +137,21 @@
 
   else
   {
-    v7 = [(UISearchController *)v6 searchBar];
-    [v7 setShowsScopeBar:0];
+    searchBar = [(UISearchController *)v6 searchBar];
+    [searchBar setShowsScopeBar:0];
   }
 
   [(UISearchController *)self->_searchController setHidesNavigationBarDuringPresentation:primaryDeviceUUID != 0];
   v8 = _WBSLocalizedString();
-  v9 = [(UISearchController *)self->_searchController searchBar];
-  [v9 setPlaceholder:v8];
+  searchBar2 = [(UISearchController *)self->_searchController searchBar];
+  [searchBar2 setPlaceholder:v8];
 
-  v10 = [(CloudTabsViewController *)self navigationItem];
-  [v10 setHidesSearchBarWhenScrolling:0];
+  navigationItem = [(CloudTabsViewController *)self navigationItem];
+  [navigationItem setHidesSearchBarWhenScrolling:0];
 
   v11 = self->_searchController;
-  v12 = [(CloudTabsViewController *)self navigationItem];
-  [v12 setSearchController:v11];
+  navigationItem2 = [(CloudTabsViewController *)self navigationItem];
+  [navigationItem2 setSearchController:v11];
 
   [(CloudTabsViewController *)self _reloadDevicesAndTable];
 }
@@ -163,16 +163,16 @@
 LABEL_5:
     if ([(NSArray *)self->_devices count]&& [(NSString *)self->_userTypedFilter length])
     {
-      v4 = [MEMORY[0x277D75390] searchConfiguration];
-      v5 = [(UISearchController *)self->_searchController _contentUnavailableConfigurationState];
-      v6 = [v4 updatedConfigurationForState:v5];
+      searchConfiguration = [MEMORY[0x277D75390] searchConfiguration];
+      _contentUnavailableConfigurationState = [(UISearchController *)self->_searchController _contentUnavailableConfigurationState];
+      v6 = [searchConfiguration updatedConfigurationForState:_contentUnavailableConfigurationState];
 
       if (self->_onlyShowsPrimaryDevice)
       {
         v7 = _WBSLocalizedString();
-        v8 = [v6 buttonProperties];
-        v9 = [v8 configuration];
-        [v9 setTitle:v7];
+        buttonProperties = [v6 buttonProperties];
+        configuration = [buttonProperties configuration];
+        [configuration setTitle:v7];
 
         objc_initWeak(&location, self);
         v10 = MEMORY[0x277D750C8];
@@ -182,8 +182,8 @@ LABEL_5:
         v17[3] = &unk_2781D5B80;
         objc_copyWeak(&v18, &location);
         v11 = [v10 actionWithHandler:v17];
-        v12 = [v6 buttonProperties];
-        [v12 setPrimaryAction:v11];
+        buttonProperties2 = [v6 buttonProperties];
+        [buttonProperties2 setPrimaryAction:v11];
 
         objc_destroyWeak(&v18);
         objc_destroyWeak(&location);
@@ -194,18 +194,18 @@ LABEL_5:
 
     else
     {
-      v16 = [MEMORY[0x277D75390] emptyExtraProminentConfiguration];
+      emptyExtraProminentConfiguration = [MEMORY[0x277D75390] emptyExtraProminentConfiguration];
       v13 = [MEMORY[0x277D755B8] systemImageNamed:@"icloud"];
-      [v16 setImage:v13];
+      [emptyExtraProminentConfiguration setImage:v13];
 
       v14 = _WBSLocalizedString();
-      [v16 setText:v14];
+      [emptyExtraProminentConfiguration setText:v14];
 
       [(WBSCloudTabDeviceProvider *)self->_deviceProvider cloudTabsAreEnabled];
       v15 = _WBSLocalizedString();
-      [v16 setSecondaryText:v15];
+      [emptyExtraProminentConfiguration setSecondaryText:v15];
 
-      [(CloudTabsViewController *)self _setContentUnavailableConfiguration:v16];
+      [(CloudTabsViewController *)self _setContentUnavailableConfiguration:emptyExtraProminentConfiguration];
     }
   }
 
@@ -238,11 +238,11 @@ void __65__CloudTabsViewController__updateContentUnavailableConfiguration__block
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = CloudTabsViewController;
-  [(CloudTabsViewController *)&v4 viewWillAppear:a3];
+  [(CloudTabsViewController *)&v4 viewWillAppear:appear];
   [(CloudTabsViewController *)self _updateContentUnavailableConfiguration];
   if (!self->_onlyShowsPrimaryDevice)
   {
@@ -250,11 +250,11 @@ void __65__CloudTabsViewController__updateContentUnavailableConfiguration__block
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = CloudTabsViewController;
-  [(CloudTabsViewController *)&v4 viewWillDisappear:a3];
+  [(CloudTabsViewController *)&v4 viewWillDisappear:disappear];
   if (!self->_onlyShowsPrimaryDevice)
   {
     [(UIViewController *)self safari_saveTableViewScrollPosition];
@@ -282,8 +282,8 @@ void __65__CloudTabsViewController__updateContentUnavailableConfiguration__block
     {
       v8 = MEMORY[0x277CCACA8];
       v9 = _WBSLocalizedString();
-      v10 = [v7 name];
-      v11 = [v8 stringWithFormat:v9, v10];
+      name = [v7 name];
+      v11 = [v8 stringWithFormat:v9, name];
       [(CloudTabsViewController *)self setTitle:v11];
 
       v21[0] = v7;
@@ -291,13 +291,13 @@ void __65__CloudTabsViewController__updateContentUnavailableConfiguration__block
       v13 = self->_devices;
       self->_devices = v12;
 
-      v14 = [v7 name];
-      v20[0] = v14;
+      name2 = [v7 name];
+      v20[0] = name2;
       v15 = _WBSLocalizedString();
       v20[1] = v15;
       v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:2];
-      v17 = [(UISearchController *)self->_searchController searchBar];
-      [v17 setScopeButtonTitles:v16];
+      searchBar = [(UISearchController *)self->_searchController searchBar];
+      [searchBar setScopeButtonTitles:v16];
     }
 
     else
@@ -332,7 +332,7 @@ uint64_t __39__CloudTabsViewController__loadDevices__block_invoke(uint64_t a1, v
   [(CloudTabsViewController *)self _reloadDevicesAndTable];
 }
 
-- (void)cloudTabDeviceProvider:(id)a3 didUpdateCloudTabsInProfileWithIdentifier:(id)a4
+- (void)cloudTabDeviceProvider:(id)provider didUpdateCloudTabsInProfileWithIdentifier:(id)identifier
 {
   if (WBSIsEqual())
   {
@@ -356,18 +356,18 @@ uint64_t __39__CloudTabsViewController__loadDevices__block_invoke(uint64_t a1, v
   }
 }
 
-- (id)_deviceForIndexPath:(id)a3
+- (id)_deviceForIndexPath:(id)path
 {
   devices = self->_devices;
-  v4 = [a3 section];
+  section = [path section];
 
-  return [(NSArray *)devices objectAtIndexedSubscript:v4];
+  return [(NSArray *)devices objectAtIndexedSubscript:section];
 }
 
-- (id)_filteredTabsInSection:(int64_t)a3
+- (id)_filteredTabsInSection:(int64_t)section
 {
-  v4 = [(NSArray *)self->_devices objectAtIndexedSubscript:a3];
-  v5 = [v4 tabs];
+  v4 = [(NSArray *)self->_devices objectAtIndexedSubscript:section];
+  tabs = [v4 tabs];
 
   if ([(NSString *)self->_userTypedFilter length])
   {
@@ -376,12 +376,12 @@ uint64_t __39__CloudTabsViewController__loadDevices__block_invoke(uint64_t a1, v
     v9[2] = __50__CloudTabsViewController__filteredTabsInSection___block_invoke;
     v9[3] = &unk_2781D93A8;
     v9[4] = self;
-    v6 = [v5 safari_filterObjectsUsingBlock:v9];
+    v6 = [tabs safari_filterObjectsUsingBlock:v9];
   }
 
   else
   {
-    v6 = v5;
+    v6 = tabs;
   }
 
   v7 = v6;
@@ -389,24 +389,24 @@ uint64_t __39__CloudTabsViewController__loadDevices__block_invoke(uint64_t a1, v
   return v7;
 }
 
-- (id)_tabForIndexPath:(id)a3
+- (id)_tabForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = -[CloudTabsViewController _filteredTabsInSection:](self, "_filteredTabsInSection:", [v4 section]);
-  v6 = [v4 row];
+  pathCopy = path;
+  v5 = -[CloudTabsViewController _filteredTabsInSection:](self, "_filteredTabsInSection:", [pathCopy section]);
+  v6 = [pathCopy row];
 
   v7 = [v5 objectAtIndexedSubscript:v6];
 
   return v7;
 }
 
-- (void)updateSearchResultsForSearchController:(id)a3
+- (void)updateSearchResultsForSearchController:(id)controller
 {
-  v8 = [a3 searchBar];
-  v4 = [v8 text];
+  searchBar = [controller searchBar];
+  text = [searchBar text];
   if (self->_primaryDeviceUUID)
   {
-    v5 = [v8 selectedScopeButtonIndex] == 0;
+    v5 = [searchBar selectedScopeButtonIndex] == 0;
   }
 
   else
@@ -417,7 +417,7 @@ uint64_t __39__CloudTabsViewController__loadDevices__block_invoke(uint64_t a1, v
   if (self->_onlyShowsPrimaryDevice != v5 || (WBSIsEqual() & 1) == 0)
   {
     self->_onlyShowsPrimaryDevice = v5;
-    v6 = [v4 copy];
+    v6 = [text copy];
     userTypedFilter = self->_userTypedFilter;
     self->_userTypedFilter = v6;
 
@@ -425,12 +425,12 @@ uint64_t __39__CloudTabsViewController__loadDevices__block_invoke(uint64_t a1, v
   }
 }
 
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section
 {
   v4 = 10.0;
   if (!self->_onlyShowsPrimaryDevice)
   {
-    v5 = [(CloudTabsViewController *)self _filteredTabsInSection:a4];
+    v5 = [(CloudTabsViewController *)self _filteredTabsInSection:section];
     if ([v5 count])
     {
       v4 = *MEMORY[0x277D76F30];
@@ -445,9 +445,9 @@ uint64_t __39__CloudTabsViewController__loadDevices__block_invoke(uint64_t a1, v
   return v4;
 }
 
-- (double)tableView:(id)a3 heightForFooterInSection:(int64_t)a4
+- (double)tableView:(id)view heightForFooterInSection:(int64_t)section
 {
-  v4 = [(CloudTabsViewController *)self _filteredTabsInSection:a4];
+  v4 = [(CloudTabsViewController *)self _filteredTabsInSection:section];
   if ([v4 count])
   {
     v5 = 20.0;
@@ -461,29 +461,29 @@ uint64_t __39__CloudTabsViewController__loadDevices__block_invoke(uint64_t a1, v
   return v5;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
-  if (self->_onlyShowsPrimaryDevice || (-[CloudTabsViewController _filteredTabsInSection:](self, "_filteredTabsInSection:", a4), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 count], v7, !v8))
+  viewCopy = view;
+  if (self->_onlyShowsPrimaryDevice || (-[CloudTabsViewController _filteredTabsInSection:](self, "_filteredTabsInSection:", section), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 count], v7, !v8))
   {
-    v10 = 0;
+    name = 0;
   }
 
   else
   {
-    v9 = [(NSArray *)self->_devices objectAtIndexedSubscript:a4];
-    v10 = [v9 name];
+    v9 = [(NSArray *)self->_devices objectAtIndexedSubscript:section];
+    name = [v9 name];
   }
 
-  return v10;
+  return name;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
   result = [(NSArray *)self->_devices count];
   if (result)
   {
-    v7 = [(CloudTabsViewController *)self _filteredTabsInSection:a4];
+    v7 = [(CloudTabsViewController *)self _filteredTabsInSection:section];
     v8 = [v7 count];
 
     return v8;
@@ -492,47 +492,47 @@ uint64_t __39__CloudTabsViewController__loadDevices__block_invoke(uint64_t a1, v
   return result;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = [(CloudTabsViewController *)self _tabForIndexPath:a4];
-  v8 = [v6 dequeueReusableCellWithIdentifier:@"CloudTabReuseIdentifier"];
+  viewCopy = view;
+  v7 = [(CloudTabsViewController *)self _tabForIndexPath:path];
+  v8 = [viewCopy dequeueReusableCellWithIdentifier:@"CloudTabReuseIdentifier"];
 
   if (!v8)
   {
     v8 = [[PageTitleAndAddressTableViewCell alloc] initWithStyle:3 reuseIdentifier:@"CloudTabReuseIdentifier"];
   }
 
-  v9 = [v7 title];
-  [(UITableViewCell *)v8 safari_setLinkedPageTitle:v9 description:0];
+  title = [v7 title];
+  [(UITableViewCell *)v8 safari_setLinkedPageTitle:title description:0];
 
   return v8;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v8 = [(CloudTabsViewController *)self _tabForIndexPath:a4];
-  v5 = [MEMORY[0x277D28F40] builder];
-  v6 = [v5 navigationIntentWithCloudTab:v8];
+  v8 = [(CloudTabsViewController *)self _tabForIndexPath:path];
+  builder = [MEMORY[0x277D28F40] builder];
+  v6 = [builder navigationIntentWithCloudTab:v8];
 
   WeakRetained = objc_loadWeakRetained(&self->_navigationIntentHandler);
   [WeakRetained handleNavigationIntent:v6 completion:0];
 }
 
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path
 {
-  v4 = [(CloudTabsViewController *)self _deviceForIndexPath:a4];
-  v5 = [v4 isCloseRequestSupported];
+  v4 = [(CloudTabsViewController *)self _deviceForIndexPath:path];
+  isCloseRequestSupported = [v4 isCloseRequestSupported];
 
-  return v5;
+  return isCloseRequestSupported;
 }
 
-- (void)_deleteRowAtIndexPath:(id)a3
+- (void)_deleteRowAtIndexPath:(id)path
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(CloudTabsViewController *)self _deviceForIndexPath:v4];
-  v6 = [(CloudTabsViewController *)self _tabForIndexPath:v4];
+  pathCopy = path;
+  v5 = [(CloudTabsViewController *)self _deviceForIndexPath:pathCopy];
+  v6 = [(CloudTabsViewController *)self _tabForIndexPath:pathCopy];
   [(NSTimer *)self->_delayReloadTimer invalidate];
   v7 = [MEMORY[0x277CBEBB8] scheduledTimerWithTimeInterval:self target:sel__delayReloadTimerFired selector:0 userInfo:0 repeats:0.35];
   delayReloadTimer = self->_delayReloadTimer;
@@ -540,20 +540,20 @@ uint64_t __39__CloudTabsViewController__loadDevices__block_invoke(uint64_t a1, v
 
   if ([(WBSCloudTabDeviceProvider *)self->_deviceProvider closeTab:v6 onDevice:v5])
   {
-    v9 = [v5 tabs];
-    v10 = [v9 count];
+    tabs = [v5 tabs];
+    v10 = [tabs count];
 
     [(CloudTabsViewController *)self _loadDevices];
     tableView = self->_tableView;
     if (v10 == 1)
     {
-      v12 = [MEMORY[0x277CCAA78] indexSetWithIndex:{objc_msgSend(v4, "section")}];
+      v12 = [MEMORY[0x277CCAA78] indexSetWithIndex:{objc_msgSend(pathCopy, "section")}];
       [(UITableView *)tableView deleteSections:v12 withRowAnimation:100];
     }
 
     else
     {
-      v13[0] = v4;
+      v13[0] = pathCopy;
       v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:1];
       [(UITableView *)tableView deleteRowsAtIndexPaths:v12 withRowAnimation:100];
     }
@@ -565,23 +565,23 @@ uint64_t __39__CloudTabsViewController__loadDevices__block_invoke(uint64_t a1, v
   }
 }
 
-- (id)_urlForRowAtIndexPath:(id)a3
+- (id)_urlForRowAtIndexPath:(id)path
 {
-  v3 = [(CloudTabsViewController *)self _tabForIndexPath:a3];
+  v3 = [(CloudTabsViewController *)self _tabForIndexPath:path];
   v4 = [v3 url];
 
   return v4;
 }
 
-- (id)previewTableViewController:(id)a3 menuForRowAtIndexPath:(id)a4
+- (id)previewTableViewController:(id)controller menuForRowAtIndexPath:(id)path
 {
   v48[3] = *MEMORY[0x277D85DE8];
-  v34 = a3;
-  v6 = a4;
-  v35 = [MEMORY[0x277CBEB18] array];
-  v7 = [MEMORY[0x277CBEB18] array];
-  v8 = [MEMORY[0x277CBEB18] array];
-  v9 = [(CloudTabsViewController *)self _urlForRowAtIndexPath:v6];
+  controllerCopy = controller;
+  pathCopy = path;
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
+  array3 = [MEMORY[0x277CBEB18] array];
+  v9 = [(CloudTabsViewController *)self _urlForRowAtIndexPath:pathCopy];
   if (v9)
   {
     v10 = MEMORY[0x277D750C8];
@@ -594,7 +594,7 @@ uint64_t __39__CloudTabsViewController__loadDevices__block_invoke(uint64_t a1, v
     v13 = v9;
     v47 = v13;
     v14 = [v10 actionWithTitle:v11 image:v12 identifier:0 handler:v46];
-    [v35 addObject:v14];
+    [array addObject:v14];
 
     objc_initWeak(&location, self);
     aBlock[0] = MEMORY[0x277D85DD0];
@@ -613,7 +613,7 @@ uint64_t __39__CloudTabsViewController__loadDevices__block_invoke(uint64_t a1, v
     v18 = v16;
     v41 = v18;
     v19 = [v17 _sf_openInNewTabActionWithHandler:v40];
-    [v7 addObject:v19];
+    [array2 addObject:v19];
 
     WeakRetained = objc_loadWeakRetained(&self->_tabGroupProvider);
     v38[0] = MEMORY[0x277D85DD0];
@@ -623,13 +623,13 @@ uint64_t __39__CloudTabsViewController__loadDevices__block_invoke(uint64_t a1, v
     v21 = v18;
     v39 = v21;
     v22 = [WeakRetained openInTabGroupMenuWithNewTabGroupName:0 URL:v15 descendantCount:0 handler:v38];
-    [v7 addObject:v22];
+    [array2 addObject:v22];
 
     objc_destroyWeak(&v44);
     objc_destroyWeak(&location);
   }
 
-  if ([(CloudTabsViewController *)self tableView:self->_tableView editingStyleForRowAtIndexPath:v6]== 1)
+  if ([(CloudTabsViewController *)self tableView:self->_tableView editingStyleForRowAtIndexPath:pathCopy]== 1)
   {
     v23 = MEMORY[0x277D750C8];
     v24 = _WBSLocalizedString();
@@ -639,19 +639,19 @@ uint64_t __39__CloudTabsViewController__loadDevices__block_invoke(uint64_t a1, v
     v36[2] = __76__CloudTabsViewController_previewTableViewController_menuForRowAtIndexPath___block_invoke_5;
     v36[3] = &unk_2781D9420;
     v36[4] = self;
-    v37 = v6;
+    v37 = pathCopy;
     v26 = [v23 actionWithTitle:v24 image:v25 identifier:0 handler:v36];
 
     [v26 setAttributes:2];
-    [v8 addObject:v26];
+    [array3 addObject:v26];
   }
 
   v27 = MEMORY[0x277D75710];
-  v28 = [MEMORY[0x277D75710] menuWithTitle:&stru_2827BF158 image:0 identifier:0 options:1 children:v35];
+  v28 = [MEMORY[0x277D75710] menuWithTitle:&stru_2827BF158 image:0 identifier:0 options:1 children:array];
   v48[0] = v28;
-  v29 = [MEMORY[0x277D75710] menuWithTitle:&stru_2827BF158 image:0 identifier:0 options:1 children:v7];
+  v29 = [MEMORY[0x277D75710] menuWithTitle:&stru_2827BF158 image:0 identifier:0 options:1 children:array2];
   v48[1] = v29;
-  v30 = [MEMORY[0x277D75710] menuWithTitle:&stru_2827BF158 image:0 identifier:0 options:1 children:v8];
+  v30 = [MEMORY[0x277D75710] menuWithTitle:&stru_2827BF158 image:0 identifier:0 options:1 children:array3];
   v48[2] = v30;
   v31 = [MEMORY[0x277CBEA60] arrayWithObjects:v48 count:3];
   v32 = [v27 menuWithTitle:&stru_2827BF158 children:v31];
@@ -689,13 +689,13 @@ void __76__CloudTabsViewController_previewTableViewController_menuForRowAtIndexP
   }
 }
 
-- (id)tableView:(id)a3 itemsForBeginningDragSession:(id)a4 atIndexPath:(id)a5
+- (id)tableView:(id)view itemsForBeginningDragSession:(id)session atIndexPath:(id)path
 {
   v14[1] = *MEMORY[0x277D85DE8];
   v6 = MEMORY[0x277CCAA88];
-  v7 = a5;
+  pathCopy = path;
   v8 = [v6 alloc];
-  v9 = [(CloudTabsViewController *)self _urlForRowAtIndexPath:v7];
+  v9 = [(CloudTabsViewController *)self _urlForRowAtIndexPath:pathCopy];
 
   v10 = [v8 initWithContentsOfURL:v9];
   v11 = [objc_alloc(MEMORY[0x277D75470]) initWithItemProvider:v10];

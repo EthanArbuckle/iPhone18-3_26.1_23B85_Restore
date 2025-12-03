@@ -1,14 +1,14 @@
 @interface PLCoreAnalyticsReportingMaintenanceTask
-- (BOOL)runTaskWithTransaction:(id)a3;
+- (BOOL)runTaskWithTransaction:(id)transaction;
 @end
 
 @implementation PLCoreAnalyticsReportingMaintenanceTask
 
-- (BOOL)runTaskWithTransaction:(id)a3
+- (BOOL)runTaskWithTransaction:(id)transaction
 {
   v4 = [PLAssetResourceUploadJobCoreAnalytics alloc];
-  v5 = [(PLMaintenanceTask *)self photoLibrary];
-  v6 = [v4 initWithPhotoLibrary:v5];
+  photoLibrary = [(PLMaintenanceTask *)self photoLibrary];
+  v6 = [v4 initWithPhotoLibrary:photoLibrary];
 
   [v6 publishCoreAnalyticsEvent];
   return 1;

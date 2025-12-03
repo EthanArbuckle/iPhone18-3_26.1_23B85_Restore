@@ -1,20 +1,20 @@
 @interface LAUIPearlGlyphViewAutoLayoutWrapper
-- (LAUIPearlGlyphViewAutoLayoutWrapper)initWithGlyphView:(id)a3;
+- (LAUIPearlGlyphViewAutoLayoutWrapper)initWithGlyphView:(id)view;
 - (void)layoutSubviews;
 @end
 
 @implementation LAUIPearlGlyphViewAutoLayoutWrapper
 
-- (LAUIPearlGlyphViewAutoLayoutWrapper)initWithGlyphView:(id)a3
+- (LAUIPearlGlyphViewAutoLayoutWrapper)initWithGlyphView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   v9.receiver = self;
   v9.super_class = LAUIPearlGlyphViewAutoLayoutWrapper;
   v6 = [(LAUIPearlGlyphViewAutoLayoutWrapper *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_glyphView, a3);
+    objc_storeStrong(&v6->_glyphView, view);
     if (v7->_glyphView)
     {
       [(LAUIPearlGlyphViewAutoLayoutWrapper *)v7 addSubview:?];

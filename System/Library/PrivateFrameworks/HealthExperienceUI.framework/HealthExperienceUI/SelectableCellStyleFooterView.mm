@@ -6,7 +6,7 @@
 
 - (void)didSelect
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BA0A4348();
 }
 

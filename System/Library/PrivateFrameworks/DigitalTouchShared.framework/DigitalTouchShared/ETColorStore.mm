@@ -5,9 +5,9 @@
 - (unint64_t)selectedColorIndex;
 - (void)addDefaultsObserver;
 - (void)dealloc;
-- (void)defaultsChanged:(id)a3;
-- (void)saveColor:(id)a3 forIndex:(unint64_t)a4;
-- (void)setSelectedColorIndex:(unint64_t)a3;
+- (void)defaultsChanged:(id)changed;
+- (void)saveColor:(id)color forIndex:(unint64_t)index;
+- (void)setSelectedColorIndex:(unint64_t)index;
 @end
 
 @implementation ETColorStore
@@ -33,8 +33,8 @@ uint64_t __28__ETColorStore_defaultStore__block_invoke()
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterRemoveObserver(DarwinNotifyCenter, self, @"ETColorPrefsChangedExternallyNotification", 0);
@@ -59,11 +59,11 @@ uint64_t __28__ETColorStore_defaultStore__block_invoke()
 
 - (void)addDefaultsObserver
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:self selector:sel_defaultsChanged_ name:*MEMORY[0x277CCA858] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_defaultsChanged_ name:*MEMORY[0x277CCA858] object:0];
 }
 
-- (void)defaultsChanged:(id)a3
+- (void)defaultsChanged:(id)changed
 {
   colors = self->_colors;
   self->_colors = 0;
@@ -122,11 +122,11 @@ uint64_t __28__ETColorStore_defaultStore__block_invoke()
   return colors;
 }
 
-- (void)saveColor:(id)a3 forIndex:(unint64_t)a4
+- (void)saveColor:(id)color forIndex:(unint64_t)index
 {
-  v6 = a3;
-  v7 = [(ETColorStore *)self _colors];
-  [v7 setObject:v6 atIndexedSubscript:a4];
+  colorCopy = color;
+  _colors = [(ETColorStore *)self _colors];
+  [_colors setObject:colorCopy atIndexedSubscript:index];
   v8 = PaletteColorsDataArray();
   v9 = [v8 mutableCopy];
 
@@ -135,17 +135,17 @@ uint64_t __28__ETColorStore_defaultStore__block_invoke()
   v15 = 0.0;
   v16 = 0.0;
   v17 = 0.0;
-  [v6 getRed:&v17 green:&v16 blue:&v15 alpha:&v14];
+  [colorCopy getRed:&v17 green:&v16 blue:&v15 alpha:&v14];
 
   v11 = [v10 numberWithUnsignedInt:bswap32(((v15 * 255.0) << 16) | ((v14 * 255.0) << 24) | ((v16 * 255.0) << 8) | (v17 * 255.0))];
-  [v9 setObject:v11 atIndexedSubscript:a4];
+  [v9 setObject:v11 atIndexedSubscript:index];
 
-  v12 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v12 removeObserver:self name:*MEMORY[0x277CCA858] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277CCA858] object:0];
 
-  v13 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v13 setObject:v9 forKey:@"ETColorPickerColorData"];
-  [v13 synchronize];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults setObject:v9 forKey:@"ETColorPickerColorData"];
+  [standardUserDefaults synchronize];
   [(ETColorStore *)self addDefaultsObserver];
 }
 
@@ -153,9 +153,9 @@ uint64_t __28__ETColorStore_defaultStore__block_invoke()
 {
   if (!self->_selectedIndexLoaded)
   {
-    v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    [v3 synchronize];
-    v4 = [v3 objectForKey:@"ETColorPickerSelectedIndex"];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    [standardUserDefaults synchronize];
+    v4 = [standardUserDefaults objectForKey:@"ETColorPickerSelectedIndex"];
     self->_selectedColorIndex = [v4 unsignedIntegerValue];
 
     if (self->_selectedColorIndex >= 8)
@@ -169,19 +169,19 @@ uint64_t __28__ETColorStore_defaultStore__block_invoke()
   return self->_selectedColorIndex;
 }
 
-- (void)setSelectedColorIndex:(unint64_t)a3
+- (void)setSelectedColorIndex:(unint64_t)index
 {
-  if (self->_selectedColorIndex != a3)
+  if (self->_selectedColorIndex != index)
   {
-    self->_selectedColorIndex = a3;
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v5 removeObserver:self name:*MEMORY[0x277CCA858] object:0];
+    self->_selectedColorIndex = index;
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:self name:*MEMORY[0x277CCA858] object:0];
 
-    v7 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
     v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_selectedColorIndex];
-    [v7 setObject:v6 forKey:@"ETColorPickerSelectedIndex"];
+    [standardUserDefaults setObject:v6 forKey:@"ETColorPickerSelectedIndex"];
 
-    [v7 synchronize];
+    [standardUserDefaults synchronize];
     [(ETColorStore *)self addDefaultsObserver];
   }
 }

@@ -78,7 +78,7 @@
     _os_log_impl(&dword_1A9B83000, v5, OS_LOG_TYPE_DEFAULT, "Set dictation override: %@", &v6, 0xCu);
   }
 
-  [a1 _accessibilitySetRetainedValue:v4 forKey:@"_accessibilityIsDictationListeningOverride"];
+  [self _accessibilitySetRetainedValue:v4 forKey:@"_accessibilityIsDictationListeningOverride"];
 }
 
 @end

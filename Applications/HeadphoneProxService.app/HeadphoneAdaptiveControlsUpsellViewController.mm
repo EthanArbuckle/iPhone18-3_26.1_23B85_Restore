@@ -1,5 +1,5 @@
 @interface HeadphoneAdaptiveControlsUpsellViewController
-- (_TtC20HeadphoneProxService45HeadphoneAdaptiveControlsUpsellViewController)initWithContentView:(id)a3;
+- (_TtC20HeadphoneProxService45HeadphoneAdaptiveControlsUpsellViewController)initWithContentView:(id)view;
 - (void)viewDidLoad;
 @end
 
@@ -7,11 +7,11 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_10000626C();
 }
 
-- (_TtC20HeadphoneProxService45HeadphoneAdaptiveControlsUpsellViewController)initWithContentView:(id)a3
+- (_TtC20HeadphoneProxService45HeadphoneAdaptiveControlsUpsellViewController)initWithContentView:(id)view
 {
   ObjectType = swift_getObjectType();
   *&self->PRXCardContentViewController_opaque[OBJC_IVAR____TtC20HeadphoneProxService45HeadphoneAdaptiveControlsUpsellViewController_sectionWidth] = 0x4074000000000000;
@@ -21,7 +21,7 @@
   self->PRXCardContentViewController_opaque[OBJC_IVAR____TtC20HeadphoneProxService45HeadphoneAdaptiveControlsUpsellViewController_type] = 8;
   v7.receiver = self;
   v7.super_class = ObjectType;
-  return [(HeadphoneAdaptiveControlsUpsellViewController *)&v7 initWithContentView:a3];
+  return [(HeadphoneAdaptiveControlsUpsellViewController *)&v7 initWithContentView:view];
 }
 
 @end

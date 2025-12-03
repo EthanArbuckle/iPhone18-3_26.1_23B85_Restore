@@ -1,5 +1,5 @@
 @interface UIInputSwitcherTableCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (CGPoint)accessibilityActivationPoint;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
@@ -7,14 +7,14 @@
 
 @implementation UIInputSwitcherTableCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v6 = location;
   obj = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v3 = "@";
   [location[0] validateClass:@"UIInputSwitcherItem" hasInstanceMethod:@"identifier" withFullSignature:0];
   v4 = @"UIInputSwitcherView";
@@ -25,20 +25,20 @@
 
 - (id)accessibilityLabel
 {
-  v48 = self;
+  selfCopy = self;
   v47[1] = a2;
-  v15 = [(UIInputSwitcherTableCellAccessibility *)self textLabel];
-  v14 = [v15 accessibilityLabel];
-  v13 = [(UIInputSwitcherTableCellAccessibility *)v48 detailTextLabel];
-  v10 = [v13 accessibilityLabel];
+  textLabel = [(UIInputSwitcherTableCellAccessibility *)self textLabel];
+  accessibilityLabel = [textLabel accessibilityLabel];
+  detailTextLabel = [(UIInputSwitcherTableCellAccessibility *)selfCopy detailTextLabel];
+  accessibilityLabel2 = [detailTextLabel accessibilityLabel];
   v47[0] = __UIAXStringForVariables();
-  MEMORY[0x29EDC9740](v10);
-  MEMORY[0x29EDC9740](v13);
-  MEMORY[0x29EDC9740](v14);
-  MEMORY[0x29EDC9740](v15);
+  MEMORY[0x29EDC9740](accessibilityLabel2);
+  MEMORY[0x29EDC9740](detailTextLabel);
+  MEMORY[0x29EDC9740](accessibilityLabel);
+  MEMORY[0x29EDC9740](textLabel);
   v46 = 0;
-  v45 = [(UIInputSwitcherTableCellAccessibility *)v48 _accessibilityAncestorIsKindOf:NSClassFromString(&cfstr_Uiinputswitche_13.isa), v10, @"__AXStringForVariablesSentinel"];
-  v44 = [(UIInputSwitcherTableCellAccessibility *)v48 _accessibilityAncestorIsKindOf:objc_opt_class()];
+  v45 = [(UIInputSwitcherTableCellAccessibility *)selfCopy _accessibilityAncestorIsKindOf:NSClassFromString(&cfstr_Uiinputswitche_13.isa), accessibilityLabel2, @"__AXStringForVariablesSentinel"];
+  v44 = [(UIInputSwitcherTableCellAccessibility *)selfCopy _accessibilityAncestorIsKindOf:objc_opt_class()];
   v16 = v44;
   v42 = 0;
   objc_opt_class();
@@ -157,9 +157,9 @@ double __59__UIInputSwitcherTableCellAccessibility_accessibilityLabel__block_inv
   objc_storeStrong(&v7, 0);
   v9[0] = [v6 accessoryView];
   *&v2 = MEMORY[0x29EDC9740](v6).n128_u64[0];
-  v5 = [v9[0] accessibilityValue];
-  v4 = MEMORY[0x29EDC9748](v5);
-  objc_storeStrong(&v5, 0);
+  accessibilityValue = [v9[0] accessibilityValue];
+  v4 = MEMORY[0x29EDC9748](accessibilityValue);
+  objc_storeStrong(&accessibilityValue, 0);
   objc_storeStrong(v9, 0);
 
   return v4;
@@ -167,7 +167,7 @@ double __59__UIInputSwitcherTableCellAccessibility_accessibilityLabel__block_inv
 
 - (CGPoint)accessibilityActivationPoint
 {
-  v16 = self;
+  selfCopy = self;
   v15 = a2;
   v17 = 0uLL;
   v14.receiver = self;
@@ -180,17 +180,17 @@ double __59__UIInputSwitcherTableCellAccessibility_accessibilityLabel__block_inv
   v11 = __UIAccessibilityCastAsClass();
   v10 = MEMORY[0x29EDC9748](v11);
   objc_storeStrong(&v11, 0);
-  v13 = [v10 accessoryView];
+  accessoryView = [v10 accessoryView];
   *&v4 = MEMORY[0x29EDC9740](v10).n128_u64[0];
-  if (v13)
+  if (accessoryView)
   {
-    [v13 accessibilityActivationPoint];
+    [accessoryView accessibilityActivationPoint];
     *&v9 = v5;
     *(&v9 + 1) = v6;
     v17 = v9;
   }
 
-  objc_storeStrong(&v13, 0);
+  objc_storeStrong(&accessoryView, 0);
   v8 = *(&v17 + 1);
   v7 = *&v17;
   result.y = v8;

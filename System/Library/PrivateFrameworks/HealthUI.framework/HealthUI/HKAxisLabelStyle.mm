@@ -1,62 +1,62 @@
 @interface HKAxisLabelStyle
-+ (HKAxisLabelStyle)labelStyleWithColor:(id)a3 font:(id)a4 horizontalAlignment:(int64_t)a5 verticalAlignment:(int64_t)a6;
-+ (HKAxisLabelStyle)labelStyleWithColor:(id)a3 font:(id)a4 horizontalAlignment:(int64_t)a5 verticalAlignment:(int64_t)a6 hyphenationFactor:(id)a7;
-+ (HKAxisLabelStyle)labelStyleWithColor:(id)a3 font:(id)a4 horizontalAlignment:(int64_t)a5 verticalAlignment:(int64_t)a6 isSystemSymbol:(BOOL)a7;
-+ (HKAxisLabelStyle)labelStyleWithColor:(id)a3 font:(id)a4 horizontalAlignment:(int64_t)a5 verticalAlignment:(int64_t)a6 numberFormatter:(id)a7;
-- (id)copyWithZone:(_NSZone *)a3;
++ (HKAxisLabelStyle)labelStyleWithColor:(id)color font:(id)font horizontalAlignment:(int64_t)alignment verticalAlignment:(int64_t)verticalAlignment;
++ (HKAxisLabelStyle)labelStyleWithColor:(id)color font:(id)font horizontalAlignment:(int64_t)alignment verticalAlignment:(int64_t)verticalAlignment hyphenationFactor:(id)factor;
++ (HKAxisLabelStyle)labelStyleWithColor:(id)color font:(id)font horizontalAlignment:(int64_t)alignment verticalAlignment:(int64_t)verticalAlignment isSystemSymbol:(BOOL)symbol;
++ (HKAxisLabelStyle)labelStyleWithColor:(id)color font:(id)font horizontalAlignment:(int64_t)alignment verticalAlignment:(int64_t)verticalAlignment numberFormatter:(id)formatter;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation HKAxisLabelStyle
 
-+ (HKAxisLabelStyle)labelStyleWithColor:(id)a3 font:(id)a4 horizontalAlignment:(int64_t)a5 verticalAlignment:(int64_t)a6
++ (HKAxisLabelStyle)labelStyleWithColor:(id)color font:(id)font horizontalAlignment:(int64_t)alignment verticalAlignment:(int64_t)verticalAlignment
 {
-  v9 = a4;
-  v10 = a3;
+  fontCopy = font;
+  colorCopy = color;
   v11 = objc_opt_new();
-  [v11 setTextColor:v10];
+  [v11 setTextColor:colorCopy];
 
-  [v11 setFont:v9];
-  [v11 setHorizontalAlignment:a5];
-  [v11 setVerticalAlignment:a6];
+  [v11 setFont:fontCopy];
+  [v11 setHorizontalAlignment:alignment];
+  [v11 setVerticalAlignment:verticalAlignment];
   [v11 setIsSystemSymbol:0];
 
   return v11;
 }
 
-+ (HKAxisLabelStyle)labelStyleWithColor:(id)a3 font:(id)a4 horizontalAlignment:(int64_t)a5 verticalAlignment:(int64_t)a6 numberFormatter:(id)a7
++ (HKAxisLabelStyle)labelStyleWithColor:(id)color font:(id)font horizontalAlignment:(int64_t)alignment verticalAlignment:(int64_t)verticalAlignment numberFormatter:(id)formatter
 {
-  v12 = a7;
-  v13 = [a1 labelStyleWithColor:a3 font:a4 horizontalAlignment:a5 verticalAlignment:a6];
-  [v13 setNumberFormatter:v12];
+  formatterCopy = formatter;
+  v13 = [self labelStyleWithColor:color font:font horizontalAlignment:alignment verticalAlignment:verticalAlignment];
+  [v13 setNumberFormatter:formatterCopy];
 
   [v13 setIsSystemSymbol:0];
 
   return v13;
 }
 
-+ (HKAxisLabelStyle)labelStyleWithColor:(id)a3 font:(id)a4 horizontalAlignment:(int64_t)a5 verticalAlignment:(int64_t)a6 hyphenationFactor:(id)a7
++ (HKAxisLabelStyle)labelStyleWithColor:(id)color font:(id)font horizontalAlignment:(int64_t)alignment verticalAlignment:(int64_t)verticalAlignment hyphenationFactor:(id)factor
 {
-  v12 = a7;
-  v13 = [a1 labelStyleWithColor:a3 font:a4 horizontalAlignment:a5 verticalAlignment:a6];
-  [v13 setHyphenationFactor:v12];
+  factorCopy = factor;
+  v13 = [self labelStyleWithColor:color font:font horizontalAlignment:alignment verticalAlignment:verticalAlignment];
+  [v13 setHyphenationFactor:factorCopy];
 
   [v13 setIsSystemSymbol:0];
 
   return v13;
 }
 
-+ (HKAxisLabelStyle)labelStyleWithColor:(id)a3 font:(id)a4 horizontalAlignment:(int64_t)a5 verticalAlignment:(int64_t)a6 isSystemSymbol:(BOOL)a7
++ (HKAxisLabelStyle)labelStyleWithColor:(id)color font:(id)font horizontalAlignment:(int64_t)alignment verticalAlignment:(int64_t)verticalAlignment isSystemSymbol:(BOOL)symbol
 {
-  v7 = a7;
-  v8 = [a1 labelStyleWithColor:a3 font:a4 horizontalAlignment:a5 verticalAlignment:a6];
-  [v8 setIsSystemSymbol:v7];
+  symbolCopy = symbol;
+  v8 = [self labelStyleWithColor:color font:font horizontalAlignment:alignment verticalAlignment:verticalAlignment];
+  [v8 setIsSystemSymbol:symbolCopy];
 
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = [(UIColor *)self->_textColor copy];
   v6 = *(v4 + 16);
   *(v4 + 16) = v5;

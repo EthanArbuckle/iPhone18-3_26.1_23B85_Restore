@@ -7,12 +7,12 @@
 - (NSDictionary)context
 {
   v3 = objc_alloc_init(NSMutableDictionary);
-  v4 = [(RAPWebBundleTransitSystemContext *)self system];
+  system = [(RAPWebBundleTransitSystemContext *)self system];
 
-  if (v4)
+  if (system)
   {
-    v5 = [(RAPWebBundleTransitSystemContext *)self system];
-    [v3 setObject:v5 forKeyedSubscript:@"system"];
+    system2 = [(RAPWebBundleTransitSystemContext *)self system];
+    [v3 setObject:system2 forKeyedSubscript:@"system"];
   }
 
   v6 = objc_alloc_init(NSMutableArray);
@@ -20,8 +20,8 @@
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v7 = [(RAPWebBundleTransitSystemContext *)self lines];
-  v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  lines = [(RAPWebBundleTransitSystemContext *)self lines];
+  v8 = [lines countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v8)
   {
     v9 = v8;
@@ -32,14 +32,14 @@
       {
         if (*v17 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(lines);
         }
 
-        v12 = [*(*(&v16 + 1) + 8 * i) context];
-        [v6 addObject:v12];
+        context = [*(*(&v16 + 1) + 8 * i) context];
+        [v6 addObject:context];
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v9 = [lines countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v9);

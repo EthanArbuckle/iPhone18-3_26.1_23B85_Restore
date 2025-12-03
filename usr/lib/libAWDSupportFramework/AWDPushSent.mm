@@ -1,20 +1,20 @@
 @interface AWDPushSent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasConnectionType:(BOOL)a3;
-- (void)setHasDualChannelState:(BOOL)a3;
-- (void)setHasError:(BOOL)a3;
-- (void)setHasFlushes:(BOOL)a3;
-- (void)setHasLinkQuality:(BOOL)a3;
-- (void)setHasPayloadSize:(BOOL)a3;
-- (void)setHasSendDuration:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasConnectionType:(BOOL)type;
+- (void)setHasDualChannelState:(BOOL)state;
+- (void)setHasError:(BOOL)error;
+- (void)setHasFlushes:(BOOL)flushes;
+- (void)setHasLinkQuality:(BOOL)quality;
+- (void)setHasPayloadSize:(BOOL)size;
+- (void)setHasSendDuration:(BOOL)duration;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDPushSent
@@ -28,9 +28,9 @@
   [(AWDPushSent *)&v3 dealloc];
 }
 
-- (void)setHasConnectionType:(BOOL)a3
+- (void)setHasConnectionType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -43,9 +43,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasLinkQuality:(BOOL)a3
+- (void)setHasLinkQuality:(BOOL)quality
 {
-  if (a3)
+  if (quality)
   {
     v3 = 32;
   }
@@ -58,9 +58,9 @@
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasFlushes:(BOOL)a3
+- (void)setHasFlushes:(BOOL)flushes
 {
-  if (a3)
+  if (flushes)
   {
     v3 = 16;
   }
@@ -73,9 +73,9 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasSendDuration:(BOOL)a3
+- (void)setHasSendDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 0x80;
   }
@@ -88,9 +88,9 @@
   *&self->_has = v3 & 0x80 | *&self->_has & 0x7F;
 }
 
-- (void)setHasPayloadSize:(BOOL)a3
+- (void)setHasPayloadSize:(BOOL)size
 {
-  if (a3)
+  if (size)
   {
     v3 = 64;
   }
@@ -103,9 +103,9 @@
   *&self->_has = *&self->_has & 0xBF | v3;
 }
 
-- (void)setHasError:(BOOL)a3
+- (void)setHasError:(BOOL)error
 {
-  if (a3)
+  if (error)
   {
     v3 = 8;
   }
@@ -118,9 +118,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasDualChannelState:(BOOL)a3
+- (void)setHasDualChannelState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 4;
   }
@@ -142,12 +142,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
+  v4 = dictionary;
   guid = self->_guid;
   if (guid)
   {
-    [v3 setObject:guid forKey:@"guid"];
+    [dictionary setObject:guid forKey:@"guid"];
   }
 
   has = self->_has;
@@ -259,7 +259,7 @@ LABEL_12:
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (self->_guid)
   {
@@ -381,18 +381,18 @@ LABEL_12:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if (self->_guid)
   {
-    [a3 setGuid:?];
+    [to setGuid:?];
   }
 
   has = self->_has;
   if (has)
   {
-    *(a3 + 1) = self->_timestamp;
-    *(a3 + 64) |= 1u;
+    *(to + 1) = self->_timestamp;
+    *(to + 64) |= 1u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -411,8 +411,8 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  *(a3 + 4) = self->_connectionType;
-  *(a3 + 64) |= 2u;
+  *(to + 4) = self->_connectionType;
+  *(to + 64) |= 2u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -426,8 +426,8 @@ LABEL_6:
   }
 
 LABEL_18:
-  *(a3 + 10) = self->_linkQuality;
-  *(a3 + 64) |= 0x20u;
+  *(to + 10) = self->_linkQuality;
+  *(to + 64) |= 0x20u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -441,8 +441,8 @@ LABEL_7:
   }
 
 LABEL_19:
-  *(a3 + 7) = self->_flushes;
-  *(a3 + 64) |= 0x10u;
+  *(to + 7) = self->_flushes;
+  *(to + 64) |= 0x10u;
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -456,8 +456,8 @@ LABEL_8:
   }
 
 LABEL_20:
-  *(a3 + 12) = self->_sendDuration;
-  *(a3 + 64) |= 0x80u;
+  *(to + 12) = self->_sendDuration;
+  *(to + 64) |= 0x80u;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -471,8 +471,8 @@ LABEL_9:
   }
 
 LABEL_21:
-  *(a3 + 11) = self->_payloadSize;
-  *(a3 + 64) |= 0x40u;
+  *(to + 11) = self->_payloadSize;
+  *(to + 64) |= 0x40u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -486,28 +486,28 @@ LABEL_10:
   }
 
 LABEL_22:
-  *(a3 + 6) = self->_error;
-  *(a3 + 64) |= 8u;
+  *(to + 6) = self->_error;
+  *(to + 64) |= 8u;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_11:
-    *(a3 + 5) = self->_dualChannelState;
-    *(a3 + 64) |= 4u;
+    *(to + 5) = self->_dualChannelState;
+    *(to + 64) |= 4u;
   }
 
 LABEL_12:
   if (self->_topic)
   {
 
-    [a3 setTopic:?];
+    [to setTopic:?];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
 
-  *(v5 + 32) = [(NSString *)self->_guid copyWithZone:a3];
+  *(v5 + 32) = [(NSString *)self->_guid copyWithZone:zone];
   has = self->_has;
   if (has)
   {
@@ -617,80 +617,80 @@ LABEL_9:
 
 LABEL_10:
 
-  *(v5 + 56) = [(NSString *)self->_topic copyWithZone:a3];
+  *(v5 + 56) = [(NSString *)self->_topic copyWithZone:zone];
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     guid = self->_guid;
-    if (!(guid | *(a3 + 4)) || (v5 = [(NSString *)guid isEqual:?]) != 0)
+    if (!(guid | *(equal + 4)) || (v5 = [(NSString *)guid isEqual:?]) != 0)
     {
-      v7 = *(a3 + 64);
+      v7 = *(equal + 64);
       if (*&self->_has)
       {
-        if ((*(a3 + 64) & 1) == 0 || self->_timestamp != *(a3 + 1))
+        if ((*(equal + 64) & 1) == 0 || self->_timestamp != *(equal + 1))
         {
           goto LABEL_46;
         }
       }
 
-      else if (*(a3 + 64))
+      else if (*(equal + 64))
       {
         goto LABEL_46;
       }
 
       if ((*&self->_has & 2) != 0)
       {
-        if ((*(a3 + 64) & 2) == 0 || self->_connectionType != *(a3 + 4))
+        if ((*(equal + 64) & 2) == 0 || self->_connectionType != *(equal + 4))
         {
           goto LABEL_46;
         }
       }
 
-      else if ((*(a3 + 64) & 2) != 0)
+      else if ((*(equal + 64) & 2) != 0)
       {
         goto LABEL_46;
       }
 
       if ((*&self->_has & 0x20) != 0)
       {
-        if ((*(a3 + 64) & 0x20) == 0 || self->_linkQuality != *(a3 + 10))
+        if ((*(equal + 64) & 0x20) == 0 || self->_linkQuality != *(equal + 10))
         {
           goto LABEL_46;
         }
       }
 
-      else if ((*(a3 + 64) & 0x20) != 0)
+      else if ((*(equal + 64) & 0x20) != 0)
       {
         goto LABEL_46;
       }
 
       if ((*&self->_has & 0x10) != 0)
       {
-        if ((*(a3 + 64) & 0x10) == 0 || self->_flushes != *(a3 + 7))
+        if ((*(equal + 64) & 0x10) == 0 || self->_flushes != *(equal + 7))
         {
           goto LABEL_46;
         }
       }
 
-      else if ((*(a3 + 64) & 0x10) != 0)
+      else if ((*(equal + 64) & 0x10) != 0)
       {
         goto LABEL_46;
       }
 
       if ((*&self->_has & 0x80) != 0)
       {
-        if ((*(a3 + 64) & 0x80) == 0 || self->_sendDuration != *(a3 + 12))
+        if ((*(equal + 64) & 0x80) == 0 || self->_sendDuration != *(equal + 12))
         {
           goto LABEL_46;
         }
       }
 
-      else if ((*(a3 + 64) & 0x80) != 0)
+      else if ((*(equal + 64) & 0x80) != 0)
       {
 LABEL_46:
         LOBYTE(v5) = 0;
@@ -699,45 +699,45 @@ LABEL_46:
 
       if ((*&self->_has & 0x40) != 0)
       {
-        if ((*(a3 + 64) & 0x40) == 0 || self->_payloadSize != *(a3 + 11))
+        if ((*(equal + 64) & 0x40) == 0 || self->_payloadSize != *(equal + 11))
         {
           goto LABEL_46;
         }
       }
 
-      else if ((*(a3 + 64) & 0x40) != 0)
+      else if ((*(equal + 64) & 0x40) != 0)
       {
         goto LABEL_46;
       }
 
       if ((*&self->_has & 8) != 0)
       {
-        if ((*(a3 + 64) & 8) == 0 || self->_error != *(a3 + 6))
+        if ((*(equal + 64) & 8) == 0 || self->_error != *(equal + 6))
         {
           goto LABEL_46;
         }
       }
 
-      else if ((*(a3 + 64) & 8) != 0)
+      else if ((*(equal + 64) & 8) != 0)
       {
         goto LABEL_46;
       }
 
       if ((*&self->_has & 4) != 0)
       {
-        if ((*(a3 + 64) & 4) == 0 || self->_dualChannelState != *(a3 + 5))
+        if ((*(equal + 64) & 4) == 0 || self->_dualChannelState != *(equal + 5))
         {
           goto LABEL_46;
         }
       }
 
-      else if ((*(a3 + 64) & 4) != 0)
+      else if ((*(equal + 64) & 4) != 0)
       {
         goto LABEL_46;
       }
 
       topic = self->_topic;
-      if (topic | *(a3 + 7))
+      if (topic | *(equal + 7))
       {
 
         LOBYTE(v5) = [(NSString *)topic isEqual:?];
@@ -864,19 +864,19 @@ LABEL_9:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ [(NSString *)self->_topic hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if (*(a3 + 4))
+  if (*(from + 4))
   {
     [(AWDPushSent *)self setGuid:?];
   }
 
-  v5 = *(a3 + 64);
+  v5 = *(from + 64);
   if (v5)
   {
-    self->_timestamp = *(a3 + 1);
+    self->_timestamp = *(from + 1);
     *&self->_has |= 1u;
-    v5 = *(a3 + 64);
+    v5 = *(from + 64);
     if ((v5 & 2) == 0)
     {
 LABEL_5:
@@ -889,14 +889,14 @@ LABEL_5:
     }
   }
 
-  else if ((*(a3 + 64) & 2) == 0)
+  else if ((*(from + 64) & 2) == 0)
   {
     goto LABEL_5;
   }
 
-  self->_connectionType = *(a3 + 4);
+  self->_connectionType = *(from + 4);
   *&self->_has |= 2u;
-  v5 = *(a3 + 64);
+  v5 = *(from + 64);
   if ((v5 & 0x20) == 0)
   {
 LABEL_6:
@@ -909,9 +909,9 @@ LABEL_6:
   }
 
 LABEL_18:
-  self->_linkQuality = *(a3 + 10);
+  self->_linkQuality = *(from + 10);
   *&self->_has |= 0x20u;
-  v5 = *(a3 + 64);
+  v5 = *(from + 64);
   if ((v5 & 0x10) == 0)
   {
 LABEL_7:
@@ -924,9 +924,9 @@ LABEL_7:
   }
 
 LABEL_19:
-  self->_flushes = *(a3 + 7);
+  self->_flushes = *(from + 7);
   *&self->_has |= 0x10u;
-  v5 = *(a3 + 64);
+  v5 = *(from + 64);
   if ((v5 & 0x80) == 0)
   {
 LABEL_8:
@@ -939,9 +939,9 @@ LABEL_8:
   }
 
 LABEL_20:
-  self->_sendDuration = *(a3 + 12);
+  self->_sendDuration = *(from + 12);
   *&self->_has |= 0x80u;
-  v5 = *(a3 + 64);
+  v5 = *(from + 64);
   if ((v5 & 0x40) == 0)
   {
 LABEL_9:
@@ -954,9 +954,9 @@ LABEL_9:
   }
 
 LABEL_21:
-  self->_payloadSize = *(a3 + 11);
+  self->_payloadSize = *(from + 11);
   *&self->_has |= 0x40u;
-  v5 = *(a3 + 64);
+  v5 = *(from + 64);
   if ((v5 & 8) == 0)
   {
 LABEL_10:
@@ -969,17 +969,17 @@ LABEL_10:
   }
 
 LABEL_22:
-  self->_error = *(a3 + 6);
+  self->_error = *(from + 6);
   *&self->_has |= 8u;
-  if ((*(a3 + 64) & 4) != 0)
+  if ((*(from + 64) & 4) != 0)
   {
 LABEL_11:
-    self->_dualChannelState = *(a3 + 5);
+    self->_dualChannelState = *(from + 5);
     *&self->_has |= 4u;
   }
 
 LABEL_12:
-  if (*(a3 + 7))
+  if (*(from + 7))
   {
 
     [(AWDPushSent *)self setTopic:?];

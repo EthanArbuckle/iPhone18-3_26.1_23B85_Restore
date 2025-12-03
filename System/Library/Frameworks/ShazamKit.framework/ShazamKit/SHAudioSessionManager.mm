@@ -1,32 +1,32 @@
 @interface SHAudioSessionManager
 - (SHAudioSessionManager)init;
 - (SHAudioSessionManagerDelegate)delegate;
-- (void)activateAudioSessionForClient:(int64_t)a3;
-- (void)configureAudioSessionForAssistantService:(id)a3;
-- (void)configureAudioSessionForStandardClient:(id)a3;
+- (void)activateAudioSessionForClient:(int64_t)client;
+- (void)configureAudioSessionForAssistantService:(id)service;
+- (void)configureAudioSessionForStandardClient:(id)client;
 - (void)deactivateAudioSession;
 - (void)dealloc;
-- (void)handleAudioSessionInterruption:(id)a3;
-- (void)handleAudioSessionRouteChange:(id)a3;
-- (void)handleMediaServicesWereLost:(id)a3;
-- (void)handleMediaServicesWereReset:(id)a3;
+- (void)handleAudioSessionInterruption:(id)interruption;
+- (void)handleAudioSessionRouteChange:(id)change;
+- (void)handleMediaServicesWereLost:(id)lost;
+- (void)handleMediaServicesWereReset:(id)reset;
 - (void)registerAudioSessionObservers;
 - (void)unregisterAudioSessionObservers;
-- (void)updateMediaSafetyNetExemptionToRunning:(BOOL)a3;
+- (void)updateMediaSafetyNetExemptionToRunning:(BOOL)running;
 @end
 
 @implementation SHAudioSessionManager
 
-- (void)updateMediaSafetyNetExemptionToRunning:(BOOL)a3
+- (void)updateMediaSafetyNetExemptionToRunning:(BOOL)running
 {
-  v3 = a3;
+  runningCopy = running;
   os_unfair_lock_lock(&self->_mediaSafetyNetLock);
   hasStartedSafetynetException = self->_hasStartedSafetynetException;
-  if (v3)
+  if (runningCopy)
   {
     if (!self->_hasStartedSafetynetException)
     {
-      self->_hasStartedSafetynetException = v3;
+      self->_hasStartedSafetynetException = runningCopy;
       MSNMonitorBeginException();
     }
   }
@@ -115,7 +115,7 @@
   [v7 removeObserver:self name:AVAudioSessionMediaServicesWereResetNotification object:0];
 }
 
-- (void)activateAudioSessionForClient:(int64_t)a3
+- (void)activateAudioSessionForClient:(int64_t)client
 {
   if (![(SHAudioSessionManager *)self audioSessionIsActive])
   {
@@ -130,12 +130,12 @@
     [(SHAudioSessionManager *)self registerAudioSessionObservers];
     [(SHAudioSessionManager *)self setIsAudioSessionInterrupted:0];
     v6 = +[AVAudioSession sharedInstance];
-    if (a3 == 2)
+    if (client == 2)
     {
       [(SHAudioSessionManager *)self configureAudioSessionForAssistantService:v6];
     }
 
-    else if (a3 == 1)
+    else if (client == 1)
     {
       [(SHAudioSessionManager *)self configureAudioSessionForStandardClient:v6];
     }
@@ -161,9 +161,9 @@
   }
 }
 
-- (void)configureAudioSessionForStandardClient:(id)a3
+- (void)configureAudioSessionForStandardClient:(id)client
 {
-  v3 = a3;
+  clientCopy = client;
   v4 = sh_log_object();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -172,7 +172,7 @@
   }
 
   v24 = 0;
-  v5 = [v3 setCategory:AVAudioSessionCategoryPlayAndRecord withOptions:41 error:&v24];
+  v5 = [clientCopy setCategory:AVAudioSessionCategoryPlayAndRecord withOptions:41 error:&v24];
   v6 = v24;
   if ((v5 & 1) == 0)
   {
@@ -186,7 +186,7 @@
   }
 
   v23 = v6;
-  v8 = [v3 setMode:AVAudioSessionModeVideoRecording error:&v23];
+  v8 = [clientCopy setMode:AVAudioSessionModeVideoRecording error:&v23];
   v9 = v23;
 
   if ((v8 & 1) == 0)
@@ -201,7 +201,7 @@
   }
 
   v22 = v9;
-  v11 = [v3 setAllowHapticsAndSystemSoundsDuringRecording:1 error:&v22];
+  v11 = [clientCopy setAllowHapticsAndSystemSoundsDuringRecording:1 error:&v22];
   v12 = v22;
 
   if ((v11 & 1) == 0)
@@ -216,7 +216,7 @@
   }
 
   v21 = v12;
-  v14 = [v3 setEligibleForBTSmartRoutingConsideration:0 error:&v21];
+  v14 = [clientCopy setEligibleForBTSmartRoutingConsideration:0 error:&v21];
   v15 = v21;
 
   if ((v14 & 1) == 0)
@@ -231,7 +231,7 @@
   }
 
   v20 = v15;
-  v17 = [v3 preferDecoupledIO:1 error:&v20];
+  v17 = [clientCopy preferDecoupledIO:1 error:&v20];
   v18 = v20;
 
   if ((v17 & 1) == 0)
@@ -246,9 +246,9 @@
   }
 }
 
-- (void)configureAudioSessionForAssistantService:(id)a3
+- (void)configureAudioSessionForAssistantService:(id)service
 {
-  v3 = a3;
+  serviceCopy = service;
   v4 = sh_log_object();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -257,7 +257,7 @@
   }
 
   v12 = 0;
-  v5 = [v3 setCategory:AVAudioSessionCategoryPlayAndRecord withOptions:1 error:&v12];
+  v5 = [serviceCopy setCategory:AVAudioSessionCategoryPlayAndRecord withOptions:1 error:&v12];
   v6 = v12;
   if ((v5 & 1) == 0)
   {
@@ -271,7 +271,7 @@
   }
 
   v11 = v6;
-  v8 = [v3 setMode:AVAudioSessionModeSpeechRecognition error:&v11];
+  v8 = [serviceCopy setMode:AVAudioSessionModeSpeechRecognition error:&v11];
   v9 = v11;
 
   if ((v8 & 1) == 0)
@@ -319,21 +319,21 @@
   }
 }
 
-- (void)handleAudioSessionInterruption:(id)a3
+- (void)handleAudioSessionInterruption:(id)interruption
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKey:AVAudioSessionInterruptionTypeKey];
-  v7 = [v6 unsignedIntegerValue];
+  interruptionCopy = interruption;
+  userInfo = [interruptionCopy userInfo];
+  v6 = [userInfo objectForKey:AVAudioSessionInterruptionTypeKey];
+  unsignedIntegerValue = [v6 unsignedIntegerValue];
 
-  v8 = [v4 userInfo];
+  userInfo2 = [interruptionCopy userInfo];
 
-  v9 = [v8 objectForKey:AVAudioSessionInterruptionOptionKey];
-  v10 = [v9 unsignedIntegerValue];
+  v9 = [userInfo2 objectForKey:AVAudioSessionInterruptionOptionKey];
+  unsignedIntegerValue2 = [v9 unsignedIntegerValue];
 
-  if (v7)
+  if (unsignedIntegerValue)
   {
-    if (v7 != 1)
+    if (unsignedIntegerValue != 1)
     {
       return;
     }
@@ -346,8 +346,8 @@
     }
 
     [(SHAudioSessionManager *)self setIsAudioSessionInterrupted:1];
-    v12 = [(SHAudioSessionManager *)self delegate];
-    [v12 audioSessionManager:self interruptionBeganWithOptions:v10];
+    delegate = [(SHAudioSessionManager *)self delegate];
+    [delegate audioSessionManager:self interruptionBeganWithOptions:unsignedIntegerValue2];
   }
 
   else
@@ -360,12 +360,12 @@
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Audio interruption ended", v14, 2u);
     }
 
-    v12 = [(SHAudioSessionManager *)self delegate];
-    [v12 audioSessionManager:self interruptionEndedWithOptions:v10];
+    delegate = [(SHAudioSessionManager *)self delegate];
+    [delegate audioSessionManager:self interruptionEndedWithOptions:unsignedIntegerValue2];
   }
 }
 
-- (void)handleMediaServicesWereLost:(id)a3
+- (void)handleMediaServicesWereLost:(id)lost
 {
   v3 = sh_log_object();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -375,7 +375,7 @@
   }
 }
 
-- (void)handleMediaServicesWereReset:(id)a3
+- (void)handleMediaServicesWereReset:(id)reset
 {
   v4 = sh_log_object();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -384,18 +384,18 @@
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Received media services were reset notification - restarting recognition", v6, 2u);
   }
 
-  v5 = [(SHAudioSessionManager *)self delegate];
-  [v5 mediaServicesWereReset];
+  delegate = [(SHAudioSessionManager *)self delegate];
+  [delegate mediaServicesWereReset];
 }
 
-- (void)handleAudioSessionRouteChange:(id)a3
+- (void)handleAudioSessionRouteChange:(id)change
 {
-  v3 = a3;
+  changeCopy = change;
   v4 = sh_log_object();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138412290;
-    v6 = v3;
+    v6 = changeCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "handleAudioSessionRouteChange: %@", &v5, 0xCu);
   }
 }

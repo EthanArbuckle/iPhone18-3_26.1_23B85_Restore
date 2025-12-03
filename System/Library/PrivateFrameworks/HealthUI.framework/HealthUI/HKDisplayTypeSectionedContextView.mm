@@ -1,63 +1,63 @@
 @interface HKDisplayTypeSectionedContextView
-- (BOOL)_appendHeaderForSectionIndex:(int64_t)a3;
+- (BOOL)_appendHeaderForSectionIndex:(int64_t)index;
 - (BOOL)_isHorizontalInTwoOverlaysMode;
-- (BOOL)collectionView:(id)a3 shouldHighlightItemAtIndexPath:(id)a4;
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4;
+- (BOOL)collectionView:(id)view shouldHighlightItemAtIndexPath:(id)path;
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path;
 - (CGSize)intrinsicContentSize;
 - (HKDisplayTypeContextItem)sizingItem;
 - (HKDisplayTypeContextVerticalCollectionViewCell)sizingCell;
-- (HKDisplayTypeSectionedContextView)initWithStyle:(int64_t)a3;
+- (HKDisplayTypeSectionedContextView)initWithStyle:(int64_t)style;
 - (HKDisplayTypeSectionedContextViewDelegate)delegate;
-- (NSDirectionalEdgeInsets)_contentItemInsetsWithTopInsets:(BOOL)a3 BottomInsets:(BOOL)a4 horizontalInsets:(BOOL)a5;
+- (NSDirectionalEdgeInsets)_contentItemInsetsWithTopInsets:(BOOL)insets BottomInsets:(BOOL)bottomInsets horizontalInsets:(BOOL)horizontalInsets;
 - (double)_cellSizingWidth;
 - (double)_collectionViewLineSpacing;
 - (double)_contentHeight;
 - (double)_contentWidth;
-- (double)_estimateCellHeightForCell:(id)a3;
+- (double)_estimateCellHeightForCell:(id)cell;
 - (double)_estimatedDynamicCellHeight;
 - (double)_interItemSpacing;
 - (double)_maximumHeaderLabelLength;
-- (double)_preferredCollectionViewHeightForCount:(int64_t)a3;
-- (id)_buildCollectionViewLayoutWithBottomInsets:(BOOL)a3 horizontalInsets:(BOOL)a4 topInsetsWithNoHeader:(BOOL)a5;
-- (id)_collectionViewLayoutForHorizontalTwoOverlaysWithConfig:(id)a3;
-- (id)_collectionViewLayoutWithLayoutGroup:(id)a3 bottomInsets:(BOOL)a4 horizontalInsets:(BOOL)a5 topInsetsWithNoHeader:(BOOL)a6;
-- (id)_currentConfigurationWithBottomInsets:(BOOL)a3 horizontalInsets:(BOOL)a4 topInsetsWithNoHeader:(BOOL)a5;
-- (id)_defaultCollectionViewLayoutWithConfiguration:(id)a3;
+- (double)_preferredCollectionViewHeightForCount:(int64_t)count;
+- (id)_buildCollectionViewLayoutWithBottomInsets:(BOOL)insets horizontalInsets:(BOOL)horizontalInsets topInsetsWithNoHeader:(BOOL)header;
+- (id)_collectionViewLayoutForHorizontalTwoOverlaysWithConfig:(id)config;
+- (id)_collectionViewLayoutWithLayoutGroup:(id)group bottomInsets:(BOOL)insets horizontalInsets:(BOOL)horizontalInsets topInsetsWithNoHeader:(BOOL)header;
+- (id)_currentConfigurationWithBottomInsets:(BOOL)insets horizontalInsets:(BOOL)horizontalInsets topInsetsWithNoHeader:(BOOL)header;
+- (id)_defaultCollectionViewLayoutWithConfiguration:(id)configuration;
 - (id)_makeDummySizingItem;
-- (id)_makeSizingItemWithItem:(id)a3;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5;
-- (id)createCellWithItem:(id)a3;
+- (id)_makeSizingItemWithItem:(id)item;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path;
+- (id)createCellWithItem:(id)item;
 - (int64_t)_rowsForScreenSize;
-- (int64_t)_widthDesignationFromTraitCollection:(id)a3;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInCollectionView:(id)a3;
+- (int64_t)_widthDesignationFromTraitCollection:(id)collection;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInCollectionView:(id)view;
 - (void)_dynamicUserInterfaceTraitDidChange;
-- (void)_handleSelection:(id)a3 indexPath:(id)a4 informDelegate:(BOOL)a5;
+- (void)_handleSelection:(id)selection indexPath:(id)path informDelegate:(BOOL)delegate;
 - (void)_reconfigureCollectionViewLayoutAndInsetsIfNecessary;
 - (void)_registerForTraitChange;
 - (void)_reloadCollectionViewWithSelectedItems;
 - (void)_updateSelfSizingHeightConstraintIfNecessary;
 - (void)_updateSizingCellEstimatedHeightIfNecessary;
-- (void)_updateSizingCellWithContextItemSections:(id)a3;
-- (void)collectionView:(id)a3 didDeselectItemAtIndexPath:(id)a4;
-- (void)deselectAllItemsAnimated:(BOOL)a3;
-- (void)didTapOnInfoButtonForCollectionViewCell:(id)a3;
+- (void)_updateSizingCellWithContextItemSections:(id)sections;
+- (void)collectionView:(id)view didDeselectItemAtIndexPath:(id)path;
+- (void)deselectAllItemsAnimated:(BOOL)animated;
+- (void)didTapOnInfoButtonForCollectionViewCell:(id)cell;
 - (void)layoutSubviews;
 - (void)scrollToTop;
-- (void)selectItemAtIndexPath:(id)a3 animated:(BOOL)a4 scrollPosition:(unint64_t)a5;
-- (void)setContentViewTopInset:(double)a3;
-- (void)setDisplayTypeContextSections:(id)a3;
-- (void)setSemanticContentAttribute:(int64_t)a3;
-- (void)setUseBottomInsets:(BOOL)a3;
-- (void)setUseHorizontalInsets:(BOOL)a3;
-- (void)setUseTopInsetsWithNoHeader:(BOOL)a3;
+- (void)selectItemAtIndexPath:(id)path animated:(BOOL)animated scrollPosition:(unint64_t)position;
+- (void)setContentViewTopInset:(double)inset;
+- (void)setDisplayTypeContextSections:(id)sections;
+- (void)setSemanticContentAttribute:(int64_t)attribute;
+- (void)setUseBottomInsets:(BOOL)insets;
+- (void)setUseHorizontalInsets:(BOOL)insets;
+- (void)setUseTopInsetsWithNoHeader:(BOOL)header;
 - (void)updateConstraints;
 @end
 
 @implementation HKDisplayTypeSectionedContextView
 
-- (HKDisplayTypeSectionedContextView)initWithStyle:(int64_t)a3
+- (HKDisplayTypeSectionedContextView)initWithStyle:(int64_t)style
 {
   v51[4] = *MEMORY[0x1E69E9840];
   v50.receiver = self;
@@ -70,9 +70,9 @@
   v9 = v8;
   if (v8)
   {
-    v8->_style = a3;
-    v10 = a3;
-    v49 = a3;
+    v8->_style = style;
+    styleCopy = style;
+    styleCopy2 = style;
     v8->_bottomInsetsEnabled = 0;
     v8->_horizontalInsetsEnabled = 0;
     v8->_topInsetsWithNoHeaderEnabled = 1;
@@ -92,14 +92,14 @@
     v9->_collectionView = v15;
 
     [(UICollectionView *)v9->_collectionView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v17 = [MEMORY[0x1E69DC888] clearColor];
-    [(UICollectionView *)v9->_collectionView setBackgroundColor:v17];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(UICollectionView *)v9->_collectionView setBackgroundColor:clearColor];
 
     [(UICollectionView *)v9->_collectionView setDelegate:v9];
     [(UICollectionView *)v9->_collectionView setDataSource:v9];
     [(UICollectionView *)v9->_collectionView setAllowsSelection:1];
     [(UICollectionView *)v9->_collectionView setAllowsMultipleSelection:1];
-    [(UICollectionView *)v9->_collectionView setScrollEnabled:v10 == 3];
+    [(UICollectionView *)v9->_collectionView setScrollEnabled:styleCopy == 3];
     [(UICollectionView *)v9->_collectionView setAlwaysBounceVertical:1];
     [(HKDisplayTypeSectionedContextView *)v9 addSubview:v9->_collectionView];
     v18 = v9->_collectionView;
@@ -119,29 +119,29 @@
     [(UICollectionView *)v25 registerClass:v26 forSupplementaryViewOfKind:v23 withReuseIdentifier:v27];
 
     v43 = MEMORY[0x1E696ACD8];
-    v48 = [(UICollectionView *)v9->_collectionView leadingAnchor];
-    v47 = [(HKDisplayTypeSectionedContextView *)v9 leadingAnchor];
-    v46 = [v48 constraintEqualToAnchor:v47];
+    leadingAnchor = [(UICollectionView *)v9->_collectionView leadingAnchor];
+    leadingAnchor2 = [(HKDisplayTypeSectionedContextView *)v9 leadingAnchor];
+    v46 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v51[0] = v46;
-    v45 = [(UICollectionView *)v9->_collectionView trailingAnchor];
-    v44 = [(HKDisplayTypeSectionedContextView *)v9 trailingAnchor];
-    v28 = [v45 constraintEqualToAnchor:v44];
+    trailingAnchor = [(UICollectionView *)v9->_collectionView trailingAnchor];
+    trailingAnchor2 = [(HKDisplayTypeSectionedContextView *)v9 trailingAnchor];
+    v28 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v51[1] = v28;
-    v29 = [(UICollectionView *)v9->_collectionView topAnchor];
-    v30 = [(HKDisplayTypeSectionedContextView *)v9 topAnchor];
-    v31 = [v29 constraintEqualToAnchor:v30];
+    topAnchor = [(UICollectionView *)v9->_collectionView topAnchor];
+    topAnchor2 = [(HKDisplayTypeSectionedContextView *)v9 topAnchor];
+    v31 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v51[2] = v31;
-    v32 = [(UICollectionView *)v9->_collectionView bottomAnchor];
-    v33 = [(HKDisplayTypeSectionedContextView *)v9 bottomAnchor];
-    v34 = [v32 constraintEqualToAnchor:v33];
+    bottomAnchor = [(UICollectionView *)v9->_collectionView bottomAnchor];
+    bottomAnchor2 = [(HKDisplayTypeSectionedContextView *)v9 bottomAnchor];
+    v34 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v51[3] = v34;
     v35 = [MEMORY[0x1E695DEC8] arrayWithObjects:v51 count:4];
     [v43 activateConstraints:v35];
 
-    if (v49 != 3)
+    if (styleCopy2 != 3)
     {
-      v36 = [(UICollectionView *)v9->_collectionView heightAnchor];
-      v37 = [v36 constraintEqualToConstant:48.0];
+      heightAnchor = [(UICollectionView *)v9->_collectionView heightAnchor];
+      v37 = [heightAnchor constraintEqualToConstant:48.0];
       collectionViewHeightConstraint = v9->_collectionViewHeightConstraint;
       v9->_collectionViewHeightConstraint = v37;
 
@@ -161,46 +161,46 @@
   return v9;
 }
 
-- (void)setSemanticContentAttribute:(int64_t)a3
+- (void)setSemanticContentAttribute:(int64_t)attribute
 {
   v5.receiver = self;
   v5.super_class = HKDisplayTypeSectionedContextView;
   [(HKDisplayTypeSectionedContextView *)&v5 setSemanticContentAttribute:?];
-  [(UICollectionView *)self->_collectionView setSemanticContentAttribute:a3];
+  [(UICollectionView *)self->_collectionView setSemanticContentAttribute:attribute];
 }
 
-- (void)setUseBottomInsets:(BOOL)a3
+- (void)setUseBottomInsets:(BOOL)insets
 {
-  if (self->_bottomInsetsEnabled != a3)
+  if (self->_bottomInsetsEnabled != insets)
   {
-    self->_bottomInsetsEnabled = a3;
+    self->_bottomInsetsEnabled = insets;
     [(HKDisplayTypeSectionedContextView *)self _reconfigureCollectionViewLayoutAndInsetsIfNecessary];
   }
 }
 
-- (void)setUseHorizontalInsets:(BOOL)a3
+- (void)setUseHorizontalInsets:(BOOL)insets
 {
-  if (self->_horizontalInsetsEnabled != a3)
+  if (self->_horizontalInsetsEnabled != insets)
   {
-    self->_horizontalInsetsEnabled = a3;
+    self->_horizontalInsetsEnabled = insets;
     [(HKDisplayTypeSectionedContextView *)self _reconfigureCollectionViewLayoutAndInsetsIfNecessary];
   }
 }
 
-- (void)setUseTopInsetsWithNoHeader:(BOOL)a3
+- (void)setUseTopInsetsWithNoHeader:(BOOL)header
 {
-  if (self->_topInsetsWithNoHeaderEnabled != a3)
+  if (self->_topInsetsWithNoHeaderEnabled != header)
   {
-    self->_topInsetsWithNoHeaderEnabled = a3;
+    self->_topInsetsWithNoHeaderEnabled = header;
     [(HKDisplayTypeSectionedContextView *)self _reconfigureCollectionViewLayoutAndInsetsIfNecessary];
   }
 }
 
-- (void)setContentViewTopInset:(double)a3
+- (void)setContentViewTopInset:(double)inset
 {
-  if (a3 >= 0.0 && self->_contentViewTopInset != a3)
+  if (inset >= 0.0 && self->_contentViewTopInset != inset)
   {
-    self->_contentViewTopInset = a3;
+    self->_contentViewTopInset = inset;
     [(UICollectionView *)self->_collectionView setContentInset:?];
 
     [(HKDisplayTypeSectionedContextView *)self _reconfigureCollectionViewLayoutAndInsetsIfNecessary];
@@ -218,13 +218,13 @@
 - (void)_reloadCollectionViewWithSelectedItems
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = [(UICollectionView *)self->_collectionView indexPathsForSelectedItems];
+  indexPathsForSelectedItems = [(UICollectionView *)self->_collectionView indexPathsForSelectedItems];
   [(UICollectionView *)self->_collectionView reloadData];
   v11 = 0u;
   v12 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v4 = v3;
+  v4 = indexPathsForSelectedItems;
   v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
@@ -343,23 +343,23 @@ void __60__HKDisplayTypeSectionedContextView__registerForTraitChange__block_invo
   }
 }
 
-- (id)_currentConfigurationWithBottomInsets:(BOOL)a3 horizontalInsets:(BOOL)a4 topInsetsWithNoHeader:(BOOL)a5
+- (id)_currentConfigurationWithBottomInsets:(BOOL)insets horizontalInsets:(BOOL)horizontalInsets topInsetsWithNoHeader:(BOOL)header
 {
-  v5 = a5;
-  v6 = a4;
-  v7 = a3;
+  headerCopy = header;
+  horizontalInsetsCopy = horizontalInsets;
+  insetsCopy = insets;
   v9 = objc_alloc_init(_HKSectionedContextViewConfiguration);
   [(_HKSectionedContextViewConfiguration *)v9 setIsHorizontalInTwoOverlaysMode:[(HKDisplayTypeSectionedContextView *)self _isHorizontalInTwoOverlaysMode]];
-  [(_HKSectionedContextViewConfiguration *)v9 setBottomInsetsEnabled:v7];
-  [(_HKSectionedContextViewConfiguration *)v9 setHorizontalInsetsEnabled:v6];
-  [(_HKSectionedContextViewConfiguration *)v9 setTopInsetsWithNoHeaderEnabled:v5];
+  [(_HKSectionedContextViewConfiguration *)v9 setBottomInsetsEnabled:insetsCopy];
+  [(_HKSectionedContextViewConfiguration *)v9 setHorizontalInsetsEnabled:horizontalInsetsCopy];
+  [(_HKSectionedContextViewConfiguration *)v9 setTopInsetsWithNoHeaderEnabled:headerCopy];
 
   return v9;
 }
 
-- (id)_buildCollectionViewLayoutWithBottomInsets:(BOOL)a3 horizontalInsets:(BOOL)a4 topInsetsWithNoHeader:(BOOL)a5
+- (id)_buildCollectionViewLayoutWithBottomInsets:(BOOL)insets horizontalInsets:(BOOL)horizontalInsets topInsetsWithNoHeader:(BOOL)header
 {
-  v6 = [(HKDisplayTypeSectionedContextView *)self _currentConfigurationWithBottomInsets:a3 horizontalInsets:a4 topInsetsWithNoHeader:a5];
+  v6 = [(HKDisplayTypeSectionedContextView *)self _currentConfigurationWithBottomInsets:insets horizontalInsets:horizontalInsets topInsetsWithNoHeader:header];
   if ([v6 isHorizontalInTwoOverlaysMode])
   {
     [(HKDisplayTypeSectionedContextView *)self _collectionViewLayoutForHorizontalTwoOverlaysWithConfig:v6];
@@ -374,15 +374,15 @@ void __60__HKDisplayTypeSectionedContextView__registerForTraitChange__block_invo
   return v7;
 }
 
-- (id)_collectionViewLayoutForHorizontalTwoOverlaysWithConfig:(id)a3
+- (id)_collectionViewLayoutForHorizontalTwoOverlaysWithConfig:(id)config
 {
   v23[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_collectionViewLayoutCache objectForKeyedSubscript:v4];
+  configCopy = config;
+  v5 = [(NSMutableDictionary *)self->_collectionViewLayoutCache objectForKeyedSubscript:configCopy];
 
   if (v5)
   {
-    v6 = [(NSMutableDictionary *)self->_collectionViewLayoutCache objectForKeyedSubscript:v4];
+    v6 = [(NSMutableDictionary *)self->_collectionViewLayoutCache objectForKeyedSubscript:configCopy];
   }
 
   else
@@ -410,22 +410,22 @@ void __60__HKDisplayTypeSectionedContextView__registerForTraitChange__block_invo
     v21 = [v20 fixedSpacing:?];
     [v19 setInterItemSpacing:v21];
 
-    v6 = -[HKDisplayTypeSectionedContextView _collectionViewLayoutWithLayoutGroup:bottomInsets:horizontalInsets:topInsetsWithNoHeader:](self, "_collectionViewLayoutWithLayoutGroup:bottomInsets:horizontalInsets:topInsetsWithNoHeader:", v19, [v4 bottomInsetsEnabled], objc_msgSend(v4, "horizontalInsetsEnabled"), objc_msgSend(v4, "topInsetsWithNoHeaderEnabled"));
-    [(NSMutableDictionary *)self->_collectionViewLayoutCache setObject:v6 forKeyedSubscript:v4];
+    v6 = -[HKDisplayTypeSectionedContextView _collectionViewLayoutWithLayoutGroup:bottomInsets:horizontalInsets:topInsetsWithNoHeader:](self, "_collectionViewLayoutWithLayoutGroup:bottomInsets:horizontalInsets:topInsetsWithNoHeader:", v19, [configCopy bottomInsetsEnabled], objc_msgSend(configCopy, "horizontalInsetsEnabled"), objc_msgSend(configCopy, "topInsetsWithNoHeaderEnabled"));
+    [(NSMutableDictionary *)self->_collectionViewLayoutCache setObject:v6 forKeyedSubscript:configCopy];
   }
 
   return v6;
 }
 
-- (id)_defaultCollectionViewLayoutWithConfiguration:(id)a3
+- (id)_defaultCollectionViewLayoutWithConfiguration:(id)configuration
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_collectionViewLayoutCache objectForKeyedSubscript:v4];
+  configurationCopy = configuration;
+  v5 = [(NSMutableDictionary *)self->_collectionViewLayoutCache objectForKeyedSubscript:configurationCopy];
 
   if (v5)
   {
-    v6 = [(NSMutableDictionary *)self->_collectionViewLayoutCache objectForKeyedSubscript:v4];
+    v6 = [(NSMutableDictionary *)self->_collectionViewLayoutCache objectForKeyedSubscript:configurationCopy];
   }
 
   else
@@ -442,8 +442,8 @@ void __60__HKDisplayTypeSectionedContextView__registerForTraitChange__block_invo
     v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:1];
     v15 = [v13 horizontalGroupWithLayoutSize:v12 subitems:v14];
 
-    v6 = -[HKDisplayTypeSectionedContextView _collectionViewLayoutWithLayoutGroup:bottomInsets:horizontalInsets:topInsetsWithNoHeader:](self, "_collectionViewLayoutWithLayoutGroup:bottomInsets:horizontalInsets:topInsetsWithNoHeader:", v15, [v4 bottomInsetsEnabled], objc_msgSend(v4, "horizontalInsetsEnabled"), objc_msgSend(v4, "topInsetsWithNoHeaderEnabled"));
-    [(NSMutableDictionary *)self->_collectionViewLayoutCache setObject:v6 forKeyedSubscript:v4];
+    v6 = -[HKDisplayTypeSectionedContextView _collectionViewLayoutWithLayoutGroup:bottomInsets:horizontalInsets:topInsetsWithNoHeader:](self, "_collectionViewLayoutWithLayoutGroup:bottomInsets:horizontalInsets:topInsetsWithNoHeader:", v15, [configurationCopy bottomInsetsEnabled], objc_msgSend(configurationCopy, "horizontalInsetsEnabled"), objc_msgSend(configurationCopy, "topInsetsWithNoHeaderEnabled"));
+    [(NSMutableDictionary *)self->_collectionViewLayoutCache setObject:v6 forKeyedSubscript:configurationCopy];
   }
 
   return v6;
@@ -451,8 +451,8 @@ void __60__HKDisplayTypeSectionedContextView__registerForTraitChange__block_invo
 
 - (double)_collectionViewLineSpacing
 {
-  v2 = [MEMORY[0x1E696C608] sharedBehavior];
-  if ([v2 isiPad])
+  mEMORY[0x1E696C608] = [MEMORY[0x1E696C608] sharedBehavior];
+  if ([mEMORY[0x1E696C608] isiPad])
   {
     v3 = 16.0;
   }
@@ -465,28 +465,28 @@ void __60__HKDisplayTypeSectionedContextView__registerForTraitChange__block_invo
   return v3;
 }
 
-- (id)_collectionViewLayoutWithLayoutGroup:(id)a3 bottomInsets:(BOOL)a4 horizontalInsets:(BOOL)a5 topInsetsWithNoHeader:(BOOL)a6
+- (id)_collectionViewLayoutWithLayoutGroup:(id)group bottomInsets:(BOOL)insets horizontalInsets:(BOOL)horizontalInsets topInsetsWithNoHeader:(BOOL)header
 {
-  v6 = a6;
-  v7 = a5;
-  v8 = a4;
+  headerCopy = header;
+  horizontalInsetsCopy = horizontalInsets;
+  insetsCopy = insets;
   v29[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
+  groupCopy = group;
   v11 = MEMORY[0x1E6995588];
   v12 = [MEMORY[0x1E6995558] fractionalWidthDimension:1.0];
   v13 = [MEMORY[0x1E6995558] estimatedDimension:50.0];
   v14 = [v11 sizeWithWidthDimension:v12 heightDimension:v13];
 
   v15 = [MEMORY[0x1E6995548] boundarySupplementaryItemWithLayoutSize:v14 elementKind:*MEMORY[0x1E69DDC08] alignment:1];
-  v16 = [MEMORY[0x1E6995580] sectionWithGroup:v10];
+  v16 = [MEMORY[0x1E6995580] sectionWithGroup:groupCopy];
   [(HKDisplayTypeSectionedContextView *)self _collectionViewLineSpacing];
   [v16 setInterGroupSpacing:?];
-  [(HKDisplayTypeSectionedContextView *)self _contentItemInsetsWithTopInsets:v6 BottomInsets:v8 horizontalInsets:v7];
+  [(HKDisplayTypeSectionedContextView *)self _contentItemInsetsWithTopInsets:headerCopy BottomInsets:insetsCopy horizontalInsets:horizontalInsetsCopy];
   [v16 setContentInsets:?];
-  v17 = [MEMORY[0x1E6995580] sectionWithGroup:v10];
+  v17 = [MEMORY[0x1E6995580] sectionWithGroup:groupCopy];
   [(HKDisplayTypeSectionedContextView *)self _collectionViewLineSpacing];
   [v17 setInterGroupSpacing:?];
-  [(HKDisplayTypeSectionedContextView *)self _contentItemInsetsWithTopInsets:1 BottomInsets:v8 horizontalInsets:v7];
+  [(HKDisplayTypeSectionedContextView *)self _contentItemInsetsWithTopInsets:1 BottomInsets:insetsCopy horizontalInsets:horizontalInsetsCopy];
   [v17 setContentInsets:?];
   v29[0] = v15;
   v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v29 count:1];
@@ -535,7 +535,7 @@ id __126__HKDisplayTypeSectionedContextView__collectionViewLayoutWithLayoutGroup
   return v8;
 }
 
-- (BOOL)_appendHeaderForSectionIndex:(int64_t)a3
+- (BOOL)_appendHeaderForSectionIndex:(int64_t)index
 {
   displayTypeContextSections = self->_displayTypeContextSections;
   if (!displayTypeContextSections)
@@ -543,12 +543,12 @@ id __126__HKDisplayTypeSectionedContextView__collectionViewLayoutWithLayoutGroup
     return 0;
   }
 
-  v4 = [(NSArray *)displayTypeContextSections objectAtIndexedSubscript:a3];
-  v5 = [v4 title];
+  v4 = [(NSArray *)displayTypeContextSections objectAtIndexedSubscript:index];
+  title = [v4 title];
 
-  if (v5)
+  if (title)
   {
-    v6 = [v5 length] != 0;
+    v6 = [title length] != 0;
   }
 
   else
@@ -559,10 +559,10 @@ id __126__HKDisplayTypeSectionedContextView__collectionViewLayoutWithLayoutGroup
   return v6;
 }
 
-- (NSDirectionalEdgeInsets)_contentItemInsetsWithTopInsets:(BOOL)a3 BottomInsets:(BOOL)a4 horizontalInsets:(BOOL)a5
+- (NSDirectionalEdgeInsets)_contentItemInsetsWithTopInsets:(BOOL)insets BottomInsets:(BOOL)bottomInsets horizontalInsets:(BOOL)horizontalInsets
 {
   v5 = 0.0;
-  if (a3)
+  if (insets)
   {
     v6 = 16.0;
   }
@@ -572,7 +572,7 @@ id __126__HKDisplayTypeSectionedContextView__collectionViewLayoutWithLayoutGroup
     v6 = 0.0;
   }
 
-  if (a5)
+  if (horizontalInsets)
   {
     v7 = 16.0;
   }
@@ -582,7 +582,7 @@ id __126__HKDisplayTypeSectionedContextView__collectionViewLayoutWithLayoutGroup
     v7 = 0.0;
   }
 
-  if (a4)
+  if (bottomInsets)
   {
     v5 = 16.0;
   }
@@ -595,10 +595,10 @@ id __126__HKDisplayTypeSectionedContextView__collectionViewLayoutWithLayoutGroup
   return result;
 }
 
-- (int64_t)_widthDesignationFromTraitCollection:(id)a3
+- (int64_t)_widthDesignationFromTraitCollection:(id)collection
 {
-  v3 = a3;
-  v4 = [v3 valueForNSIntegerTrait:objc_opt_class()];
+  collectionCopy = collection;
+  v4 = [collectionCopy valueForNSIntegerTrait:objc_opt_class()];
 
   return v4;
 }
@@ -610,8 +610,8 @@ id __126__HKDisplayTypeSectionedContextView__collectionViewLayoutWithLayoutGroup
     return 0;
   }
 
-  v3 = [(HKDisplayTypeSectionedContextView *)self traitCollection];
-  v4 = [(HKDisplayTypeSectionedContextView *)self _widthDesignationFromTraitCollection:v3];
+  traitCollection = [(HKDisplayTypeSectionedContextView *)self traitCollection];
+  v4 = [(HKDisplayTypeSectionedContextView *)self _widthDesignationFromTraitCollection:traitCollection];
 
   return (v4 - 4) < 3;
 }
@@ -623,8 +623,8 @@ id __126__HKDisplayTypeSectionedContextView__collectionViewLayoutWithLayoutGroup
     return 0.0;
   }
 
-  v3 = [(HKDisplayTypeSectionedContextView *)self traitCollection];
-  v4 = [(HKDisplayTypeSectionedContextView *)self _widthDesignationFromTraitCollection:v3];
+  traitCollection = [(HKDisplayTypeSectionedContextView *)self traitCollection];
+  v4 = [(HKDisplayTypeSectionedContextView *)self _widthDesignationFromTraitCollection:traitCollection];
 
   return HKCollectionViewLayoutDefaultInterItemSpacingForWidthDesignation(v4);
 }
@@ -632,8 +632,8 @@ id __126__HKDisplayTypeSectionedContextView__collectionViewLayoutWithLayoutGroup
 - (void)_reconfigureCollectionViewLayoutAndInsetsIfNecessary
 {
   v5 = [(HKDisplayTypeSectionedContextView *)self _buildCollectionViewLayoutWithBottomInsets:self->_bottomInsetsEnabled horizontalInsets:self->_horizontalInsetsEnabled topInsetsWithNoHeader:self->_topInsetsWithNoHeaderEnabled];
-  v3 = [(UICollectionView *)self->_collectionView collectionViewLayout];
-  v4 = [v5 isEqual:v3];
+  collectionViewLayout = [(UICollectionView *)self->_collectionView collectionViewLayout];
+  v4 = [v5 isEqual:collectionViewLayout];
 
   if ((v4 & 1) == 0)
   {
@@ -645,25 +645,25 @@ id __126__HKDisplayTypeSectionedContextView__collectionViewLayoutWithLayoutGroup
   }
 }
 
-- (void)setDisplayTypeContextSections:(id)a3
+- (void)setDisplayTypeContextSections:(id)sections
 {
-  objc_storeStrong(&self->_displayTypeContextSections, a3);
-  v5 = a3;
-  [(HKDisplayTypeSectionedContextView *)self _updateSizingCellWithContextItemSections:v5];
+  objc_storeStrong(&self->_displayTypeContextSections, sections);
+  sectionsCopy = sections;
+  [(HKDisplayTypeSectionedContextView *)self _updateSizingCellWithContextItemSections:sectionsCopy];
   [(UICollectionView *)self->_collectionView reloadData];
 }
 
-- (void)selectItemAtIndexPath:(id)a3 animated:(BOOL)a4 scrollPosition:(unint64_t)a5
+- (void)selectItemAtIndexPath:(id)path animated:(BOOL)animated scrollPosition:(unint64_t)position
 {
   collectionView = self->_collectionView;
-  v7 = a3;
-  [(UICollectionView *)collectionView selectItemAtIndexPath:v7 animated:0 scrollPosition:0];
-  [(HKDisplayTypeSectionedContextView *)self _handleSelection:self->_collectionView indexPath:v7 informDelegate:0];
+  pathCopy = path;
+  [(UICollectionView *)collectionView selectItemAtIndexPath:pathCopy animated:0 scrollPosition:0];
+  [(HKDisplayTypeSectionedContextView *)self _handleSelection:self->_collectionView indexPath:pathCopy informDelegate:0];
 }
 
-- (void)deselectAllItemsAnimated:(BOOL)a3
+- (void)deselectAllItemsAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v17 = *MEMORY[0x1E69E9840];
   v5 = [MEMORY[0x1E696AC88] indexPathWithIndex:-1];
   lastSelectedIndex = self->_lastSelectedIndex;
@@ -673,8 +673,8 @@ id __126__HKDisplayTypeSectionedContextView__collectionViewLayoutWithLayoutGroup
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v7 = [(UICollectionView *)self->_collectionView indexPathsForSelectedItems];
-  v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  indexPathsForSelectedItems = [(UICollectionView *)self->_collectionView indexPathsForSelectedItems];
+  v8 = [indexPathsForSelectedItems countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v8)
   {
     v9 = v8;
@@ -686,14 +686,14 @@ id __126__HKDisplayTypeSectionedContextView__collectionViewLayoutWithLayoutGroup
       {
         if (*v13 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(indexPathsForSelectedItems);
         }
 
-        [(UICollectionView *)self->_collectionView deselectItemAtIndexPath:*(*(&v12 + 1) + 8 * v11++) animated:v3];
+        [(UICollectionView *)self->_collectionView deselectItemAtIndexPath:*(*(&v12 + 1) + 8 * v11++) animated:animatedCopy];
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v9 = [indexPathsForSelectedItems countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v9);
@@ -735,8 +735,8 @@ id __126__HKDisplayTypeSectionedContextView__collectionViewLayoutWithLayoutGroup
 
     [(HKDisplayTypeContextVerticalCollectionViewCell *)self->_sizingCell setHidden:1];
     v7 = self->_sizingCell;
-    v8 = [(HKDisplayTypeSectionedContextView *)self sizingItem];
-    [(HKDisplayTypeContextVerticalCollectionViewCell *)v7 updateWithContextItem:v8 mode:self->_style];
+    sizingItem = [(HKDisplayTypeSectionedContextView *)self sizingItem];
+    [(HKDisplayTypeContextVerticalCollectionViewCell *)v7 updateWithContextItem:sizingItem mode:self->_style];
 
     sizingCell = self->_sizingCell;
   }
@@ -744,12 +744,12 @@ id __126__HKDisplayTypeSectionedContextView__collectionViewLayoutWithLayoutGroup
   return sizingCell;
 }
 
-- (id)createCellWithItem:(id)a3
+- (id)createCellWithItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   [(HKDisplayTypeSectionedContextView *)self _cellSizingWidth];
   v6 = [[HKDisplayTypeContextVerticalCollectionViewCell alloc] initWithFrame:0.0, 0.0, v5, 48.0];
-  [(HKDisplayTypeContextVerticalCollectionViewCell *)v6 updateWithContextItem:v4 mode:self->_style];
+  [(HKDisplayTypeContextVerticalCollectionViewCell *)v6 updateWithContextItem:itemCopy mode:self->_style];
 
   return v6;
 }
@@ -781,54 +781,54 @@ id __126__HKDisplayTypeSectionedContextView__collectionViewLayoutWithLayoutGroup
   return v2;
 }
 
-- (id)_makeSizingItemWithItem:(id)a3
+- (id)_makeSizingItemWithItem:(id)item
 {
-  v4 = a3;
-  if (v4)
+  itemCopy = item;
+  if (itemCopy)
   {
-    v5 = objc_alloc_init(HKDisplayTypeContextItem);
-    v6 = [v4 title];
-    [(HKDisplayTypeContextItem *)v5 setTitle:v6];
+    _makeDummySizingItem = objc_alloc_init(HKDisplayTypeContextItem);
+    title = [itemCopy title];
+    [(HKDisplayTypeContextItem *)_makeDummySizingItem setTitle:title];
 
-    v7 = [v4 accessibilityIdentifier];
-    [(HKDisplayTypeContextItem *)v5 setAccessibilityIdentifier:v7];
+    accessibilityIdentifier = [itemCopy accessibilityIdentifier];
+    [(HKDisplayTypeContextItem *)_makeDummySizingItem setAccessibilityIdentifier:accessibilityIdentifier];
 
-    v8 = [v4 value];
-    [(HKDisplayTypeContextItem *)v5 setValue:v8];
+    value = [itemCopy value];
+    [(HKDisplayTypeContextItem *)_makeDummySizingItem setValue:value];
 
-    v9 = [v4 unit];
-    [(HKDisplayTypeContextItem *)v5 setUnit:v9];
+    unit = [itemCopy unit];
+    [(HKDisplayTypeContextItem *)_makeDummySizingItem setUnit:unit];
 
-    v10 = [v4 attributedLabelTextOverride];
-    [(HKDisplayTypeContextItem *)v5 setAttributedLabelTextOverride:v10];
+    attributedLabelTextOverride = [itemCopy attributedLabelTextOverride];
+    [(HKDisplayTypeContextItem *)_makeDummySizingItem setAttributedLabelTextOverride:attributedLabelTextOverride];
 
-    v11 = [v4 valueContext];
-    [(HKDisplayTypeContextItem *)v5 setValueContext:v11];
+    valueContext = [itemCopy valueContext];
+    [(HKDisplayTypeContextItem *)_makeDummySizingItem setValueContext:valueContext];
 
-    -[HKDisplayTypeContextItem setIsUnitIncludedInValue:](v5, "setIsUnitIncludedInValue:", [v4 isUnitIncludedInValue]);
+    -[HKDisplayTypeContextItem setIsUnitIncludedInValue:](_makeDummySizingItem, "setIsUnitIncludedInValue:", [itemCopy isUnitIncludedInValue]);
   }
 
   else
   {
-    v5 = [(HKDisplayTypeSectionedContextView *)self _makeDummySizingItem];
+    _makeDummySizingItem = [(HKDisplayTypeSectionedContextView *)self _makeDummySizingItem];
   }
 
-  return v5;
+  return _makeDummySizingItem;
 }
 
-- (void)_updateSizingCellWithContextItemSections:(id)a3
+- (void)_updateSizingCellWithContextItemSections:(id)sections
 {
   if ((self->_style - 1) <= 1)
   {
-    v21 = [a3 firstObject];
-    v4 = [v21 items];
-    v5 = [v4 firstObject];
-    v6 = [(HKDisplayTypeSectionedContextView *)self _makeSizingItemWithItem:v5];
+    firstObject = [sections firstObject];
+    items = [firstObject items];
+    firstObject2 = [items firstObject];
+    v6 = [(HKDisplayTypeSectionedContextView *)self _makeSizingItemWithItem:firstObject2];
 
     if (self->_style == 2)
     {
-      v7 = [v21 items];
-      v8 = [v7 objectAtIndexedSubscript:1];
+      items2 = [firstObject items];
+      v8 = [items2 objectAtIndexedSubscript:1];
       v9 = [(HKDisplayTypeSectionedContextView *)self _makeSizingItemWithItem:v8];
 
       v10 = [(HKDisplayTypeSectionedContextView *)self createCellWithItem:v6];
@@ -853,14 +853,14 @@ id __126__HKDisplayTypeSectionedContextView__collectionViewLayoutWithLayoutGroup
       v17 = 0;
     }
 
-    v18 = [(HKDisplayTypeSectionedContextView *)self sizingItem];
-    v19 = [v6 isEqualToContextItem:v18];
+    sizingItem = [(HKDisplayTypeSectionedContextView *)self sizingItem];
+    v19 = [v6 isEqualToContextItem:sizingItem];
 
     if (v17 || !v19)
     {
       objc_storeStrong(&self->_sizingItem, v6);
-      v20 = [(HKDisplayTypeSectionedContextView *)self sizingCell];
-      [v20 updateWithContextItem:self->_sizingItem mode:self->_style];
+      sizingCell = [(HKDisplayTypeSectionedContextView *)self sizingCell];
+      [sizingCell updateWithContextItem:self->_sizingItem mode:self->_style];
 
       [(HKDisplayTypeSectionedContextView *)self _updateSizingCellEstimatedHeightIfNecessary];
     }
@@ -871,11 +871,11 @@ id __126__HKDisplayTypeSectionedContextView__collectionViewLayoutWithLayoutGroup
 {
   [(HKDisplayTypeSectionedContextView *)self _estimatedDynamicCellHeight];
   v4 = v3;
-  v5 = [(HKDisplayTypeSectionedContextView *)self _rowsForScreenSize];
-  if (vabdd_f64(v4, self->_sizingCellEstimatedHeight) > 0.00000011920929 || v5 != self->_lastRowsForScreenSize)
+  _rowsForScreenSize = [(HKDisplayTypeSectionedContextView *)self _rowsForScreenSize];
+  if (vabdd_f64(v4, self->_sizingCellEstimatedHeight) > 0.00000011920929 || _rowsForScreenSize != self->_lastRowsForScreenSize)
   {
     self->_sizingCellEstimatedHeight = v4;
-    self->_lastRowsForScreenSize = v5;
+    self->_lastRowsForScreenSize = _rowsForScreenSize;
     [(HKDisplayTypeSectionedContextView *)self invalidateIntrinsicContentSize];
     [(HKDisplayTypeSectionedContextView *)self setNeedsLayout];
 
@@ -885,39 +885,39 @@ id __126__HKDisplayTypeSectionedContextView__collectionViewLayoutWithLayoutGroup
 
 - (double)_estimatedDynamicCellHeight
 {
-  v3 = [(HKDisplayTypeSectionedContextView *)self sizingCell];
-  [(HKDisplayTypeSectionedContextView *)self addSubview:v3];
+  sizingCell = [(HKDisplayTypeSectionedContextView *)self sizingCell];
+  [(HKDisplayTypeSectionedContextView *)self addSubview:sizingCell];
 
-  v4 = [(HKDisplayTypeSectionedContextView *)self sizingCell];
-  [v4 configureForTraitCollection];
+  sizingCell2 = [(HKDisplayTypeSectionedContextView *)self sizingCell];
+  [sizingCell2 configureForTraitCollection];
 
-  v5 = [(HKDisplayTypeSectionedContextView *)self sizingCell];
-  [v5 setNeedsLayout];
+  sizingCell3 = [(HKDisplayTypeSectionedContextView *)self sizingCell];
+  [sizingCell3 setNeedsLayout];
 
-  v6 = [(HKDisplayTypeSectionedContextView *)self sizingCell];
-  [v6 layoutIfNeeded];
+  sizingCell4 = [(HKDisplayTypeSectionedContextView *)self sizingCell];
+  [sizingCell4 layoutIfNeeded];
 
-  v7 = [(HKDisplayTypeSectionedContextView *)self sizingCell];
-  [(HKDisplayTypeSectionedContextView *)self _estimateCellHeightForCell:v7];
+  sizingCell5 = [(HKDisplayTypeSectionedContextView *)self sizingCell];
+  [(HKDisplayTypeSectionedContextView *)self _estimateCellHeightForCell:sizingCell5];
   v9 = v8;
 
-  v10 = [(HKDisplayTypeSectionedContextView *)self sizingCell];
-  [v10 removeFromSuperview];
+  sizingCell6 = [(HKDisplayTypeSectionedContextView *)self sizingCell];
+  [sizingCell6 removeFromSuperview];
 
   return v9;
 }
 
-- (double)_estimateCellHeightForCell:(id)a3
+- (double)_estimateCellHeightForCell:(id)cell
 {
-  v4 = a3;
+  cellCopy = cell;
   [(HKDisplayTypeSectionedContextView *)self _cellSizingWidth];
-  [v4 systemLayoutSizeFittingSize:? withHorizontalFittingPriority:? verticalFittingPriority:?];
+  [cellCopy systemLayoutSizeFittingSize:? withHorizontalFittingPriority:? verticalFittingPriority:?];
   v6 = v5;
 
   return v6;
 }
 
-- (double)_preferredCollectionViewHeightForCount:(int64_t)a3
+- (double)_preferredCollectionViewHeightForCount:(int64_t)count
 {
   v5 = 16.0;
   if (!self->_bottomInsetsEnabled)
@@ -927,8 +927,8 @@ id __126__HKDisplayTypeSectionedContextView__collectionViewLayoutWithLayoutGroup
 
   v6 = self->_contentViewTopInset + 16.0 + v5;
   [(HKDisplayTypeSectionedContextView *)self _collectionViewLineSpacing];
-  v8 = v6 + v7 * (a3 - 1);
-  if (a3 < 3)
+  v8 = v6 + v7 * (count - 1);
+  if (count < 3)
   {
     sizingCellEstimatedHeight = self->_sizingCellEstimatedHeight;
     if (sizingCellEstimatedHeight == -1.0)
@@ -936,12 +936,12 @@ id __126__HKDisplayTypeSectionedContextView__collectionViewLayoutWithLayoutGroup
       [(HKDisplayTypeSectionedContextView *)self _estimatedDynamicCellHeight];
     }
 
-    return v8 + sizingCellEstimatedHeight * a3;
+    return v8 + sizingCellEstimatedHeight * count;
   }
 
   else
   {
-    v9 = v8 + a3 * 48.0;
+    v9 = v8 + count * 48.0;
     if (([MEMORY[0x1E69DCEB0] hk_currentDeviceHas4InchScreen] & 1) != 0 || objc_msgSend(MEMORY[0x1E69DCEB0], "hk_currentDeviceHas4Point7InchScreen"))
     {
       return fmin(v9, 125.0);
@@ -989,8 +989,8 @@ id __126__HKDisplayTypeSectionedContextView__collectionViewLayoutWithLayoutGroup
   [(HKDisplayTypeSectionedContextView *)self frame];
   if (v3 == 0.0)
   {
-    v4 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v4 bounds];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen bounds];
     v6 = v5;
   }
 
@@ -1015,10 +1015,10 @@ id __126__HKDisplayTypeSectionedContextView__collectionViewLayoutWithLayoutGroup
     v3 = 0.0;
   }
 
-  v4 = [(HKDisplayTypeSectionedContextView *)self _isHorizontalInTwoOverlaysMode];
+  _isHorizontalInTwoOverlaysMode = [(HKDisplayTypeSectionedContextView *)self _isHorizontalInTwoOverlaysMode];
   [(HKDisplayTypeSectionedContextView *)self _contentWidth];
   v6 = v5;
-  if (v4)
+  if (_isHorizontalInTwoOverlaysMode)
   {
     [(HKDisplayTypeSectionedContextView *)self _interItemSpacing];
     v8 = (v6 - v7 - v3) * 0.5;
@@ -1034,11 +1034,11 @@ id __126__HKDisplayTypeSectionedContextView__collectionViewLayoutWithLayoutGroup
 
 - (int64_t)_rowsForScreenSize
 {
-  v2 = [(HKDisplayTypeSectionedContextView *)self window];
-  v3 = v2;
-  if (v2)
+  window = [(HKDisplayTypeSectionedContextView *)self window];
+  v3 = window;
+  if (window)
   {
-    [v2 bounds];
+    [window bounds];
     v5 = 2;
     if (v4 > 800.0)
     {
@@ -1064,7 +1064,7 @@ id __126__HKDisplayTypeSectionedContextView__collectionViewLayoutWithLayoutGroup
   return v6;
 }
 
-- (int64_t)numberOfSectionsInCollectionView:(id)a3
+- (int64_t)numberOfSectionsInCollectionView:(id)view
 {
   result = self->_displayTypeContextSections;
   if (result)
@@ -1075,15 +1075,15 @@ id __126__HKDisplayTypeSectionedContextView__collectionViewLayoutWithLayoutGroup
   return result;
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  v6 = a3;
+  viewCopy = view;
   displayTypeContextSections = self->_displayTypeContextSections;
-  if (displayTypeContextSections && [(NSArray *)displayTypeContextSections count]- 1 >= a4)
+  if (displayTypeContextSections && [(NSArray *)displayTypeContextSections count]- 1 >= section)
   {
-    v9 = [(NSArray *)self->_displayTypeContextSections objectAtIndexedSubscript:a4];
-    v10 = [v9 items];
-    v8 = [v10 count];
+    v9 = [(NSArray *)self->_displayTypeContextSections objectAtIndexedSubscript:section];
+    items = [v9 items];
+    v8 = [items count];
   }
 
   else
@@ -1094,37 +1094,37 @@ id __126__HKDisplayTypeSectionedContextView__collectionViewLayoutWithLayoutGroup
   return v8;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
+  pathCopy = path;
+  viewCopy = view;
   v8 = +[HKDisplayTypeContextVerticalCollectionViewCell reuseIdentifier];
-  v9 = [v7 dequeueReusableCellWithReuseIdentifier:v8 forIndexPath:v6];
+  v9 = [viewCopy dequeueReusableCellWithReuseIdentifier:v8 forIndexPath:pathCopy];
 
   [v9 setDelegate:self];
-  v10 = -[NSArray objectAtIndexedSubscript:](self->_displayTypeContextSections, "objectAtIndexedSubscript:", [v6 section]);
-  v11 = [v10 items];
-  v12 = [v6 item];
+  v10 = -[NSArray objectAtIndexedSubscript:](self->_displayTypeContextSections, "objectAtIndexedSubscript:", [pathCopy section]);
+  items = [v10 items];
+  item = [pathCopy item];
 
-  v13 = [v11 objectAtIndexedSubscript:v12];
+  v13 = [items objectAtIndexedSubscript:item];
 
   [v9 updateWithContextItem:v13 mode:self->_style];
 
   return v9;
 }
 
-- (void)_handleSelection:(id)a3 indexPath:(id)a4 informDelegate:(BOOL)a5
+- (void)_handleSelection:(id)selection indexPath:(id)path informDelegate:(BOOL)delegate
 {
-  v5 = a5;
+  delegateCopy = delegate;
   v24 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  selectionCopy = selection;
+  pathCopy = path;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v10 = [v8 indexPathsForSelectedItems];
-  v11 = [v10 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  indexPathsForSelectedItems = [selectionCopy indexPathsForSelectedItems];
+  v11 = [indexPathsForSelectedItems countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v11)
   {
     v12 = v11;
@@ -1136,74 +1136,74 @@ id __126__HKDisplayTypeSectionedContextView__collectionViewLayoutWithLayoutGroup
       {
         if (*v20 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(indexPathsForSelectedItems);
         }
 
         v15 = *(*(&v19 + 1) + 8 * v14);
-        if (v15 != v9)
+        if (v15 != pathCopy)
         {
-          [v8 deselectItemAtIndexPath:v15 animated:0];
+          [selectionCopy deselectItemAtIndexPath:v15 animated:0];
         }
 
         ++v14;
       }
 
       while (v12 != v14);
-      v12 = [v10 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v12 = [indexPathsForSelectedItems countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v12);
   }
 
-  if (self->_lastSelectedIndex == v9)
+  if (self->_lastSelectedIndex == pathCopy)
   {
-    if (v5)
+    if (delegateCopy)
     {
-      [v8 deselectItemAtIndexPath:v9 animated:0];
+      [selectionCopy deselectItemAtIndexPath:pathCopy animated:0];
       v17 = [MEMORY[0x1E696AC88] indexPathWithIndex:-1];
       lastSelectedIndex = self->_lastSelectedIndex;
       self->_lastSelectedIndex = v17;
 
-      v16 = [(HKDisplayTypeSectionedContextView *)self delegate];
-      [v16 contextView:self didDeselectItemAtIndexPath:v9];
+      delegate = [(HKDisplayTypeSectionedContextView *)self delegate];
+      [delegate contextView:self didDeselectItemAtIndexPath:pathCopy];
       goto LABEL_15;
     }
   }
 
   else
   {
-    objc_storeStrong(&self->_lastSelectedIndex, a4);
-    if (v5)
+    objc_storeStrong(&self->_lastSelectedIndex, path);
+    if (delegateCopy)
     {
-      v16 = [(HKDisplayTypeSectionedContextView *)self delegate];
-      [v16 contextView:self didSelectItemAtIndexPath:v9];
+      delegate = [(HKDisplayTypeSectionedContextView *)self delegate];
+      [delegate contextView:self didSelectItemAtIndexPath:pathCopy];
 LABEL_15:
     }
   }
 }
 
-- (void)collectionView:(id)a3 didDeselectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didDeselectItemAtIndexPath:(id)path
 {
   v5 = MEMORY[0x1E696AC88];
-  v6 = a4;
+  pathCopy = path;
   v7 = [v5 indexPathWithIndex:-1];
   lastSelectedIndex = self->_lastSelectedIndex;
   self->_lastSelectedIndex = v7;
 
-  v9 = [(HKDisplayTypeSectionedContextView *)self delegate];
-  [v9 contextView:self didDeselectItemAtIndexPath:v6];
+  delegate = [(HKDisplayTypeSectionedContextView *)self delegate];
+  [delegate contextView:self didDeselectItemAtIndexPath:pathCopy];
 }
 
-- (BOOL)collectionView:(id)a3 shouldHighlightItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldHighlightItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(HKDisplayTypeSectionedContextView *)self delegate];
+  pathCopy = path;
+  delegate = [(HKDisplayTypeSectionedContextView *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(HKDisplayTypeSectionedContextView *)self delegate];
-    v9 = [v8 contextView:self canSelectItemAtIndexPath:v5];
+    delegate2 = [(HKDisplayTypeSectionedContextView *)self delegate];
+    v9 = [delegate2 contextView:self canSelectItemAtIndexPath:pathCopy];
   }
 
   else
@@ -1214,16 +1214,16 @@ LABEL_15:
   return v9;
 }
 
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(HKDisplayTypeSectionedContextView *)self delegate];
+  pathCopy = path;
+  delegate = [(HKDisplayTypeSectionedContextView *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(HKDisplayTypeSectionedContextView *)self delegate];
-    v9 = [v8 contextView:self canSelectItemAtIndexPath:v5];
+    delegate2 = [(HKDisplayTypeSectionedContextView *)self delegate];
+    v9 = [delegate2 contextView:self canSelectItemAtIndexPath:pathCopy];
   }
 
   else
@@ -1234,38 +1234,38 @@ LABEL_15:
   return v9;
 }
 
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = -[NSArray objectAtIndexedSubscript:](self->_displayTypeContextSections, "objectAtIndexedSubscript:", [v8 section]);
+  viewCopy = view;
+  pathCopy = path;
+  v9 = -[NSArray objectAtIndexedSubscript:](self->_displayTypeContextSections, "objectAtIndexedSubscript:", [pathCopy section]);
   v10 = objc_opt_respondsToSelector();
 
-  if ((v10 & 1) != 0 && (-[NSArray objectAtIndexedSubscript:](self->_displayTypeContextSections, "objectAtIndexedSubscript:", [v8 section]), v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "accessoryButtonAction"), v12 = objc_claimAutoreleasedReturnValue(), v12, v11, v12))
+  if ((v10 & 1) != 0 && (-[NSArray objectAtIndexedSubscript:](self->_displayTypeContextSections, "objectAtIndexedSubscript:", [pathCopy section]), v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "accessoryButtonAction"), v12 = objc_claimAutoreleasedReturnValue(), v12, v11, v12))
   {
     v13 = *MEMORY[0x1E69DDC08];
     v14 = +[_HKDisplayTypeSectionedHeaderWithButtonView reuseIdentifier];
-    v15 = [v7 dequeueReusableSupplementaryViewOfKind:v13 withReuseIdentifier:v14 forIndexPath:v8];
+    v15 = [viewCopy dequeueReusableSupplementaryViewOfKind:v13 withReuseIdentifier:v14 forIndexPath:pathCopy];
 
-    v16 = -[NSArray objectAtIndexedSubscript:](self->_displayTypeContextSections, "objectAtIndexedSubscript:", [v8 section]);
-    v17 = [v16 title];
+    v16 = -[NSArray objectAtIndexedSubscript:](self->_displayTypeContextSections, "objectAtIndexedSubscript:", [pathCopy section]);
+    title = [v16 title];
 
-    [v15 setTitle:v17];
-    v18 = -[NSArray objectAtIndexedSubscript:](self->_displayTypeContextSections, "objectAtIndexedSubscript:", [v8 section]);
-    v19 = [v18 accessoryButtonAction];
-    [v15 setAccessoryButtonAction:v19];
+    [v15 setTitle:title];
+    v18 = -[NSArray objectAtIndexedSubscript:](self->_displayTypeContextSections, "objectAtIndexedSubscript:", [pathCopy section]);
+    accessoryButtonAction = [v18 accessoryButtonAction];
+    [v15 setAccessoryButtonAction:accessoryButtonAction];
   }
 
   else
   {
     v20 = *MEMORY[0x1E69DDC08];
     v21 = +[_HKDisplayTypeSectionedHeaderView reuseIdentifier];
-    v15 = [v7 dequeueReusableSupplementaryViewOfKind:v20 withReuseIdentifier:v21 forIndexPath:v8];
+    v15 = [viewCopy dequeueReusableSupplementaryViewOfKind:v20 withReuseIdentifier:v21 forIndexPath:pathCopy];
 
-    v22 = -[NSArray objectAtIndexedSubscript:](self->_displayTypeContextSections, "objectAtIndexedSubscript:", [v8 section]);
-    v17 = [v22 title];
+    v22 = -[NSArray objectAtIndexedSubscript:](self->_displayTypeContextSections, "objectAtIndexedSubscript:", [pathCopy section]);
+    title = [v22 title];
 
-    [v15 setTitle:v17];
+    [v15 setTitle:title];
   }
 
   return v15;
@@ -1281,16 +1281,16 @@ LABEL_15:
   return v5 + v6;
 }
 
-- (void)didTapOnInfoButtonForCollectionViewCell:(id)a3
+- (void)didTapOnInfoButtonForCollectionViewCell:(id)cell
 {
-  v7 = [(UICollectionView *)self->_collectionView indexPathForCell:a3];
-  v4 = [(HKDisplayTypeSectionedContextView *)self delegate];
+  v7 = [(UICollectionView *)self->_collectionView indexPathForCell:cell];
+  delegate = [(HKDisplayTypeSectionedContextView *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(HKDisplayTypeSectionedContextView *)self delegate];
-    [v6 contextView:self didTapOnInfoButtonAtIndex:{objc_msgSend(v7, "row")}];
+    delegate2 = [(HKDisplayTypeSectionedContextView *)self delegate];
+    [delegate2 contextView:self didTapOnInfoButtonAtIndex:{objc_msgSend(v7, "row")}];
   }
 }
 

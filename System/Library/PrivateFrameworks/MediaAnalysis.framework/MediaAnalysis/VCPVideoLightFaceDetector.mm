@@ -1,27 +1,27 @@
 @interface VCPVideoLightFaceDetector
-- (VCPVideoLightFaceDetector)initWithTransform:(CGAffineTransform *)a3 faceDominated:(BOOL)a4;
-- (int)analyzeFrame:(__CVBuffer *)a3 timestamp:(id *)a4 duration:(id *)a5 frameStats:(id)a6 flags:(unint64_t *)a7;
-- (int)detectFaces:(__CVBuffer *)a3 faces:(id)a4 frameStats:(id)a5;
-- (int)finishAnalysisPass:(id *)a3;
+- (VCPVideoLightFaceDetector)initWithTransform:(CGAffineTransform *)transform faceDominated:(BOOL)dominated;
+- (int)analyzeFrame:(__CVBuffer *)frame timestamp:(id *)timestamp duration:(id *)duration frameStats:(id)stats flags:(unint64_t *)flags;
+- (int)detectFaces:(__CVBuffer *)faces faces:(id)a4 frameStats:(id)stats;
+- (int)finishAnalysisPass:(id *)pass;
 @end
 
 @implementation VCPVideoLightFaceDetector
 
-- (VCPVideoLightFaceDetector)initWithTransform:(CGAffineTransform *)a3 faceDominated:(BOOL)a4
+- (VCPVideoLightFaceDetector)initWithTransform:(CGAffineTransform *)transform faceDominated:(BOOL)dominated
 {
   v15.receiver = self;
   v15.super_class = VCPVideoLightFaceDetector;
   v6 = [(VCPVideoLightFaceDetector *)&v15 init];
   if (v6)
   {
-    v7 = *&a3->c;
-    v14[0] = *&a3->a;
+    v7 = *&transform->c;
+    v14[0] = *&transform->a;
     v14[1] = v7;
-    v14[2] = *&a3->tx;
+    v14[2] = *&transform->tx;
     *(v6 + 2) = angleForTransform(v14);
-    v8 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v9 = *(v6 + 5);
-    *(v6 + 5) = v8;
+    *(v6 + 5) = dictionary;
 
     v10 = *(MEMORY[0x1E6960C80] + 16);
     *(v6 + 12) = *MEMORY[0x1E6960C80];
@@ -31,7 +31,7 @@
 
     *(v6 + 14) = 0;
     *(v6 + 15) = 0;
-    v6[64] = a4;
+    v6[64] = dominated;
     v12 = *(v6 + 9);
     *(v6 + 9) = 0;
   }
@@ -39,19 +39,19 @@
   return v6;
 }
 
-- (int)detectFaces:(__CVBuffer *)a3 faces:(id)a4 frameStats:(id)a5
+- (int)detectFaces:(__CVBuffer *)faces faces:(id)a4 frameStats:(id)stats
 {
   v54[1] = *MEMORY[0x1E69E9840];
   v47 = a4;
-  v43 = a5;
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
+  statsCopy = stats;
+  Width = CVPixelBufferGetWidth(faces);
+  Height = CVPixelBufferGetHeight(faces);
   context = objc_autoreleasePoolPush();
   obj = [MEMORY[0x1E695DF70] array];
-  v44 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v10 = objc_autoreleasePoolPush();
   v11 = objc_alloc(MEMORY[0x1E69845B8]);
-  v12 = [v11 initWithCVPixelBuffer:a3 options:MEMORY[0x1E695E0F8]];
+  v12 = [v11 initWithCVPixelBuffer:faces options:MEMORY[0x1E695E0F8]];
   if (!v12)
   {
     v45 = 0;
@@ -92,24 +92,24 @@
 
     if ([v12 performRequests:v16 error:0])
     {
-      v20 = [v14 results];
-      v21 = v20 == 0;
+      results = [v14 results];
+      v21 = results == 0;
 
       if (!v21)
       {
-        v22 = [v14 results];
-        [obj addObjectsFromArray:v22];
+        results2 = [v14 results];
+        [obj addObjectsFromArray:results2];
       }
 
       if (v19)
       {
-        v23 = [v19 results];
-        v24 = v23 == 0;
+        results3 = [v19 results];
+        v24 = results3 == 0;
 
         if (!v24)
         {
-          v25 = [v19 results];
-          [v44 addObjectsFromArray:v25];
+          results4 = [v19 results];
+          [array addObjectsFromArray:results4];
         }
       }
 
@@ -134,8 +134,8 @@ LABEL_20:
   objc_autoreleasePoolPop(v10);
   if (v45)
   {
-    v26 = v44;
-    if (!v44)
+    v26 = array;
+    if (!array)
     {
       v26 = obj;
     }
@@ -211,16 +211,16 @@ LABEL_20:
   objc_autoreleasePoolPop(context);
   if (v45)
   {
-    [v43 setFrameProcessedByFaceDetector:1];
+    [statsCopy setFrameProcessedByFaceDetector:1];
   }
 
   return v41;
 }
 
-- (int)analyzeFrame:(__CVBuffer *)a3 timestamp:(id *)a4 duration:(id *)a5 frameStats:(id)a6 flags:(unint64_t *)a7
+- (int)analyzeFrame:(__CVBuffer *)frame timestamp:(id *)timestamp duration:(id *)duration frameStats:(id)stats flags:(unint64_t *)flags
 {
   v85 = *MEMORY[0x1E69E9840];
-  v72 = a6;
+  statsCopy = stats;
   if (self->super._results)
   {
     v11 = -18;
@@ -229,18 +229,18 @@ LABEL_3:
     goto LABEL_52;
   }
 
-  if (CVPixelBufferGetPixelFormatType(a3) != 875704438 && CVPixelBufferGetPixelFormatType(a3) != 875704422)
+  if (CVPixelBufferGetPixelFormatType(frame) != 875704438 && CVPixelBufferGetPixelFormatType(frame) != 875704422)
   {
     v11 = -50;
     goto LABEL_3;
   }
 
-  v12 = [v72 detectedFaces];
-  [v12 removeAllObjects];
+  detectedFaces = [statsCopy detectedFaces];
+  [detectedFaces removeAllObjects];
 
-  [v72 setFrameProcessedByFaceDetector:0];
+  [statsCopy setFrameProcessedByFaceDetector:0];
   v13 = objc_autoreleasePoolPush();
-  lhs = *a4;
+  lhs = *timestamp;
   rhs.origin = *(&self->super._angle + 1);
   rhs.size.width = *&self->super._timeLastDetection.flags;
   CMTimeSubtract(&time, &lhs, &rhs);
@@ -249,29 +249,29 @@ LABEL_3:
   context = v13;
   if (Seconds >= v15)
   {
-    v17 = *&a4->var0;
-    *&self->super._timeLastDetection.flags = a4->var3;
+    v17 = *&timestamp->var0;
+    *&self->super._timeLastDetection.flags = timestamp->var3;
     *(&self->super._angle + 1) = v17;
-    v61 = [MEMORY[0x1E695DF70] array];
-    v18 = [VCPVideoLightFaceDetector detectFaces:"detectFaces:faces:frameStats:" faces:a3 frameStats:?];
+    array = [MEMORY[0x1E695DF70] array];
+    v18 = [VCPVideoLightFaceDetector detectFaces:"detectFaces:faces:frameStats:" faces:frame frameStats:?];
     v16 = 0;
     v71 = 0;
     v62 = v18 == 0;
     v64 = v18;
     if (!v18)
     {
-      v19 = v61;
-      if (!v61)
+      v19 = array;
+      if (!array)
       {
 LABEL_35:
 
         goto LABEL_36;
       }
 
-      if ([v61 count])
+      if ([array count])
       {
-        WidthOfPlane = CVPixelBufferGetWidthOfPlane(a3, 0);
-        HeightOfPlane = CVPixelBufferGetHeightOfPlane(a3, 0);
+        WidthOfPlane = CVPixelBufferGetWidthOfPlane(frame, 0);
+        HeightOfPlane = CVPixelBufferGetHeightOfPlane(frame, 0);
         angle = self->super._angle;
         if (angle)
         {
@@ -285,14 +285,14 @@ LABEL_35:
 
         v24 = v23;
         v69 = v24;
-        *a7 |= 0x20uLL;
+        *flags |= 0x20uLL;
         v79 = 0u;
         v80 = 0u;
         v81 = 0u;
         v82 = 0u;
-        obj = v61;
+        obj = array;
         v25 = [obj countByEnumeratingWithState:&v79 objects:v84 count:16];
-        v73 = self;
+        selfCopy = self;
         if (v25)
         {
           v66 = HeightOfPlane;
@@ -326,19 +326,19 @@ LABEL_35:
               v34 = MediaAnalysisFacePosition(&rhs);
               v35 = objc_alloc_init(VCPFace);
               [(VCPFace *)v35 setBounds:rhs.origin.x, rhs.origin.y, rhs.size.width, rhs.size.height];
-              v36 = [v28 observation];
-              [(VCPFace *)v35 setObservation:v36];
+              observation = [v28 observation];
+              [(VCPFace *)v35 setObservation:observation];
 
-              v37 = [v72 detectedFaces];
-              [v37 addObject:v35];
+              detectedFaces2 = [statsCopy detectedFaces];
+              [detectedFaces2 addObject:v35];
 
-              activeFaces = v73->super._activeFaces;
+              activeFaces = selfCopy->super._activeFaces;
               v39 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v28, "trackID")}];
               v40 = [(NSMutableDictionary *)activeFaces objectForKey:v39];
 
               if (v40)
               {
-                lhs = *a4;
+                lhs = *timestamp;
                 [v40 setLast:&lhs];
                 [v40 setFlags:{objc_msgSend(v40, "flags") | v29}];
                 [v40 setPosition:{objc_msgSend(v40, "position") | v34}];
@@ -347,19 +347,19 @@ LABEL_35:
               else
               {
                 v41 = objc_alloc_init(VCPFaceDetectionRange);
-                lhs = *a4;
+                lhs = *timestamp;
                 [(VCPFaceDetectionRange *)v41 setStart:&lhs];
-                lhs = *a4;
+                lhs = *timestamp;
                 [(VCPFaceDetectionRange *)v41 setLast:&lhs];
                 [(VCPFaceDetectionRange *)v41 setFlags:v29];
                 [(VCPFaceDetectionRange *)v41 setBounds:rhs.origin.x, rhs.origin.y, rhs.size.width, rhs.size.height];
                 [(VCPFaceDetectionRange *)v41 setPosition:v34];
-                v42 = v73->super._activeFaces;
+                v42 = selfCopy->super._activeFaces;
                 v43 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v28, "trackID")}];
                 [(NSMutableDictionary *)v42 setObject:v41 forKey:v43];
               }
 
-              *a7 |= v29;
+              *flags |= v29;
               v44 = rhs.size.height * rhs.size.width;
               if (rhs.size.height * rhs.size.width > v26)
               {
@@ -383,7 +383,7 @@ LABEL_35:
           v16 = 0;
         }
 
-        self = v73;
+        self = selfCopy;
       }
 
       else
@@ -393,7 +393,7 @@ LABEL_35:
       }
     }
 
-    v19 = v61;
+    v19 = array;
     goto LABEL_35;
   }
 
@@ -405,27 +405,27 @@ LABEL_36:
   objc_autoreleasePoolPop(context);
   if (v62)
   {
-    if ([v72 frameProcessedByFaceDetector] && self->_lastDominantFace != 0 && v16)
+    if ([statsCopy frameProcessedByFaceDetector] && self->_lastDominantFace != 0 && v16)
     {
-      v46 = [v71 observation];
-      v47 = [v46 landmarks65];
-      v48 = self;
-      v49 = [v47 allPoints];
+      observation2 = [v71 observation];
+      landmarks65 = [observation2 landmarks65];
+      selfCopy2 = self;
+      allPoints = [landmarks65 allPoints];
 
-      v50 = [(VCPFace *)self->_lastDominantFace observation];
-      v51 = [v50 landmarks65];
-      v52 = [v51 allPoints];
+      observation3 = [(VCPFace *)self->_lastDominantFace observation];
+      landmarks652 = [observation3 landmarks65];
+      allPoints2 = [landmarks652 allPoints];
 
-      if (v49 && v52)
+      if (allPoints && allPoints2)
       {
         v53 = 0;
         v54 = 0.0;
-        while ([v49 pointCount] > v53)
+        while ([allPoints pointCount] > v53)
         {
-          v55 = v49;
-          v74 = *([v49 normalizedPoints] + 16 * v53);
-          v56 = v52;
-          v57 = vcvt_f32_f64(vsubq_f64(v74, *([v52 normalizedPoints] + 16 * v53)));
+          v55 = allPoints;
+          v74 = *([allPoints normalizedPoints] + 16 * v53);
+          v56 = allPoints2;
+          v57 = vcvt_f32_f64(vsubq_f64(v74, *([allPoints2 normalizedPoints] + 16 * v53)));
           v54 = v54 + sqrtf(vaddv_f32(vmul_f32(v57, v57)));
           ++v53;
         }
@@ -442,10 +442,10 @@ LABEL_36:
           *&v59 = v58;
         }
 
-        [v72 setFrameExpressionScore:v59];
+        [statsCopy setFrameExpressionScore:v59];
       }
 
-      self = v48;
+      self = selfCopy2;
     }
 
     objc_storeStrong(&self->_lastDominantFace, v71);
@@ -456,7 +456,7 @@ LABEL_52:
   return v64;
 }
 
-- (int)finishAnalysisPass:(id *)a3
+- (int)finishAnalysisPass:(id *)pass
 {
   v49 = *MEMORY[0x1E69E9840];
   if (self->super._results)
@@ -467,7 +467,7 @@ LABEL_52:
   memset(&v40, 0, sizeof(v40));
   [(VCPVideoLightFaceDetector *)self minProcessTimeIntervalInSecs];
   CMTimeMakeWithSeconds(&v40, (v5 * 0.5), 100);
-  v27 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v38 = 0u;
   v39 = 0u;
   v36 = 0u;
@@ -511,23 +511,23 @@ LABEL_52:
           rhs = v40;
           CMTimeSubtract(&v32, &lhs.start, &rhs);
           lhs.start = v32;
-          rhs = a3->var0;
+          rhs = pass->var0;
           v11 = CMTimeCompare(&lhs.start, &rhs);
-          v12 = &v32;
+          passCopy = &v32;
           if (v11 < 0)
           {
-            v12 = a3;
+            passCopy = pass;
           }
 
-          v35 = *v12;
+          v35 = *passCopy;
           *&lhs.start.value = v33;
           lhs.start.epoch = epoch;
           rhs = v40;
           CMTimeAdd(&v32, &lhs.start, &rhs);
-          v13 = *&a3->var0.var3;
-          *&lhs.start.value = *&a3->var0.var0;
+          v13 = *&pass->var0.var3;
+          *&lhs.start.value = *&pass->var0.var0;
           *&lhs.start.epoch = v13;
-          *&lhs.duration.timescale = *&a3->var1.var1;
+          *&lhs.duration.timescale = *&pass->var1.var1;
           CMTimeRangeGetEnd(&v31, &lhs);
           lhs.start = v31;
           rhs = v32;
@@ -568,7 +568,7 @@ LABEL_52:
         v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v45 forKeys:v44 count:2];
         v47[3] = v21;
         v22 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v47 forKeys:v46 count:4];
-        [v27 addObject:v22];
+        [array addObject:v22];
       }
 
       v6 = [(NSMutableDictionary *)obj countByEnumeratingWithState:&v36 objects:v48 count:16];
@@ -578,7 +578,7 @@ LABEL_52:
   }
 
   v42 = @"FaceResults";
-  v43 = v27;
+  v43 = array;
   v23 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v43 forKeys:&v42 count:1];
   results = self->super._results;
   self->super._results = v23;

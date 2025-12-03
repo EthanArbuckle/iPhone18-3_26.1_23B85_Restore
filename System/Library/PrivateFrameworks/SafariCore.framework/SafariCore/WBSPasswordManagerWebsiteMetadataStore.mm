@@ -1,19 +1,19 @@
 @interface WBSPasswordManagerWebsiteMetadataStore
-- (WBSPasswordManagerWebsiteMetadataStore)initWithMetadataEntryClass:(Class)a3 isForTesting:(BOOL)a4;
-- (id)_initWithMetadataEntryClass:(Class)a3 keychainAccessGroup:(id)a4;
-- (id)synchronousMetadataForDomain:(id)a3;
-- (id)test_initWithMetadataEntryClass:(Class)a3 keychainAccessGroup:(id)a4;
-- (void)allMetadataWithCompletionHandler:(id)a3;
-- (void)debug_deleteAllPersistedDataWithCompletionHandler:(id)a3;
-- (void)metadataForDomain:(id)a3 completionHandler:(id)a4;
-- (void)saveMetadataEntry:(id)a3 forDomain:(id)a4 completionHandler:(id)a5;
+- (WBSPasswordManagerWebsiteMetadataStore)initWithMetadataEntryClass:(Class)class isForTesting:(BOOL)testing;
+- (id)_initWithMetadataEntryClass:(Class)class keychainAccessGroup:(id)group;
+- (id)synchronousMetadataForDomain:(id)domain;
+- (id)test_initWithMetadataEntryClass:(Class)class keychainAccessGroup:(id)group;
+- (void)allMetadataWithCompletionHandler:(id)handler;
+- (void)debug_deleteAllPersistedDataWithCompletionHandler:(id)handler;
+- (void)metadataForDomain:(id)domain completionHandler:(id)handler;
+- (void)saveMetadataEntry:(id)entry forDomain:(id)domain completionHandler:(id)handler;
 @end
 
 @implementation WBSPasswordManagerWebsiteMetadataStore
 
-- (WBSPasswordManagerWebsiteMetadataStore)initWithMetadataEntryClass:(Class)a3 isForTesting:(BOOL)a4
+- (WBSPasswordManagerWebsiteMetadataStore)initWithMetadataEntryClass:(Class)class isForTesting:(BOOL)testing
 {
-  if (a4)
+  if (testing)
   {
     v4 = @"com.apple.password-manager.website-metadata.testing";
   }
@@ -23,27 +23,27 @@
     v4 = @"com.apple.password-manager.website-metadata";
   }
 
-  return [(WBSPasswordManagerWebsiteMetadataStore *)self _initWithMetadataEntryClass:a3 keychainAccessGroup:v4];
+  return [(WBSPasswordManagerWebsiteMetadataStore *)self _initWithMetadataEntryClass:class keychainAccessGroup:v4];
 }
 
-- (id)test_initWithMetadataEntryClass:(Class)a3 keychainAccessGroup:(id)a4
+- (id)test_initWithMetadataEntryClass:(Class)class keychainAccessGroup:(id)group
 {
-  v4 = [(WBSPasswordManagerWebsiteMetadataStore *)self _initWithMetadataEntryClass:a3 keychainAccessGroup:a4];
+  v4 = [(WBSPasswordManagerWebsiteMetadataStore *)self _initWithMetadataEntryClass:class keychainAccessGroup:group];
 
   return v4;
 }
 
-- (id)_initWithMetadataEntryClass:(Class)a3 keychainAccessGroup:(id)a4
+- (id)_initWithMetadataEntryClass:(Class)class keychainAccessGroup:(id)group
 {
-  v6 = a4;
+  groupCopy = group;
   v19.receiver = self;
   v19.super_class = WBSPasswordManagerWebsiteMetadataStore;
   v7 = [(WBSPasswordManagerWebsiteMetadataStore *)&v19 init];
   v8 = v7;
   if (v7)
   {
-    v7->_metadataEntryClass = a3;
-    v9 = [v6 copy];
+    v7->_metadataEntryClass = class;
+    v9 = [groupCopy copy];
     accessGroup = v8->_accessGroup;
     v8->_accessGroup = v9;
 
@@ -62,17 +62,17 @@
   return v8;
 }
 
-- (void)allMetadataWithCompletionHandler:(id)a3
+- (void)allMetadataWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __75__WBSPasswordManagerWebsiteMetadataStore_allMetadataWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7CF16B8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(queue, v7);
 }
 
@@ -250,20 +250,20 @@ LABEL_32:
   v37 = *MEMORY[0x1E69E9840];
 }
 
-- (void)metadataForDomain:(id)a3 completionHandler:(id)a4
+- (void)metadataForDomain:(id)domain completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  domainCopy = domain;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __78__WBSPasswordManagerWebsiteMetadataStore_metadataForDomain_completionHandler___block_invoke;
   block[3] = &unk_1E7CF1908;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = domainCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = domainCopy;
   dispatch_async(queue, block);
 }
 
@@ -341,9 +341,9 @@ void __78__WBSPasswordManagerWebsiteMetadataStore_metadataForDomain_completionHa
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (id)synchronousMetadataForDomain:(id)a3
+- (id)synchronousMetadataForDomain:(id)domain
 {
-  v4 = a3;
+  domainCopy = domain;
   v5 = dispatch_group_create();
   v13 = 0;
   v14 = &v13;
@@ -360,7 +360,7 @@ void __78__WBSPasswordManagerWebsiteMetadataStore_metadataForDomain_completionHa
   v12 = &v13;
   v6 = v5;
   v11 = v6;
-  [(WBSPasswordManagerWebsiteMetadataStore *)self metadataForDomain:v4 completionHandler:v10];
+  [(WBSPasswordManagerWebsiteMetadataStore *)self metadataForDomain:domainCopy completionHandler:v10];
   v7 = dispatch_time(0, 5000000000);
   dispatch_group_wait(v6, v7);
   os_unfair_lock_lock(&self->_metadataEntryLock);
@@ -385,23 +385,23 @@ void __71__WBSPasswordManagerWebsiteMetadataStore_synchronousMetadataForDomain__
   dispatch_group_leave(*(a1 + 40));
 }
 
-- (void)saveMetadataEntry:(id)a3 forDomain:(id)a4 completionHandler:(id)a5
+- (void)saveMetadataEntry:(id)entry forDomain:(id)domain completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  entryCopy = entry;
+  domainCopy = domain;
+  handlerCopy = handler;
   queue = self->_queue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __88__WBSPasswordManagerWebsiteMetadataStore_saveMetadataEntry_forDomain_completionHandler___block_invoke;
   v15[3] = &unk_1E7CF1958;
-  v16 = v8;
-  v17 = self;
-  v18 = v9;
-  v19 = v10;
-  v12 = v9;
-  v13 = v10;
-  v14 = v8;
+  v16 = entryCopy;
+  selfCopy = self;
+  v18 = domainCopy;
+  v19 = handlerCopy;
+  v12 = domainCopy;
+  v13 = handlerCopy;
+  v14 = entryCopy;
   dispatch_async(queue, v15);
 }
 
@@ -538,17 +538,17 @@ void __88__WBSPasswordManagerWebsiteMetadataStore_saveMetadataEntry_forDomain_co
   v32 = *MEMORY[0x1E69E9840];
 }
 
-- (void)debug_deleteAllPersistedDataWithCompletionHandler:(id)a3
+- (void)debug_deleteAllPersistedDataWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __92__WBSPasswordManagerWebsiteMetadataStore_debug_deleteAllPersistedDataWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7CF16B8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(queue, v7);
 }
 

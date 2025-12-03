@@ -2,13 +2,13 @@
 - (BOOL)shouldRouteToPhotoThumbnailGallery;
 - (BOOL)showMorePhotoPunchoutAtEndOfSlider;
 - (BOOL)showPhotoAttributionAtEndOfSlider;
-- (MUPhotoSliderTileProvider)initWithMapItem:(id)a3;
-- (id)_albumOverlayForPhoto:(id)a3;
-- (id)_flatListOverlayForPhoto:(id)a3;
-- (id)_photoAlbumForPhoto:(id)a3;
-- (id)albumIdForPhoto:(id)a3;
-- (id)overlayForPhoto:(id)a3;
-- (id)photoItemAtIndex:(unint64_t)a3;
+- (MUPhotoSliderTileProvider)initWithMapItem:(id)item;
+- (id)_albumOverlayForPhoto:(id)photo;
+- (id)_flatListOverlayForPhoto:(id)photo;
+- (id)_photoAlbumForPhoto:(id)photo;
+- (id)albumIdForPhoto:(id)photo;
+- (id)overlayForPhoto:(id)photo;
+- (id)photoItemAtIndex:(unint64_t)index;
 - (id)yourPhotosTileOverlay;
 - (unint64_t)numberOfPhotos;
 - (void)_setup;
@@ -20,43 +20,43 @@
 
 - (BOOL)shouldRouteToPhotoThumbnailGallery
 {
-  v3 = [(MKMapItem *)self->_mapItem _mapkit_supportsFullScreenExperience];
-  if (v3)
+  _mapkit_supportsFullScreenExperience = [(MKMapItem *)self->_mapItem _mapkit_supportsFullScreenExperience];
+  if (_mapkit_supportsFullScreenExperience)
   {
-    v4 = [(MUPhotoSliderTileProvider *)self numberOfPhotos];
-    LOBYTE(v3) = v4 > GEOConfigGetUInteger();
+    numberOfPhotos = [(MUPhotoSliderTileProvider *)self numberOfPhotos];
+    LOBYTE(_mapkit_supportsFullScreenExperience) = numberOfPhotos > GEOConfigGetUInteger();
   }
 
-  return v3;
+  return _mapkit_supportsFullScreenExperience;
 }
 
 - (BOOL)showPhotoAttributionAtEndOfSlider
 {
-  v3 = [(MKMapItem *)self->_mapItem _mapkit_hasSinglePhotoVendor];
-  if (v3)
+  _mapkit_hasSinglePhotoVendor = [(MKMapItem *)self->_mapItem _mapkit_hasSinglePhotoVendor];
+  if (_mapkit_hasSinglePhotoVendor)
   {
-    LOBYTE(v3) = ([(MKMapItem *)self->_mapItem _mapkit_canAtLeastOneAttributionShowPhotosLocally]& 1) == 0 && [(MUPhotoSliderTileProvider *)self displayType]== 0;
+    LOBYTE(_mapkit_hasSinglePhotoVendor) = ([(MKMapItem *)self->_mapItem _mapkit_canAtLeastOneAttributionShowPhotosLocally]& 1) == 0 && [(MUPhotoSliderTileProvider *)self displayType]== 0;
   }
 
-  return v3;
+  return _mapkit_hasSinglePhotoVendor;
 }
 
 - (BOOL)showMorePhotoPunchoutAtEndOfSlider
 {
   if ([(MUPhotoSliderTileProvider *)self displayType]== 1)
   {
-    v3 = [(MUPhotoSliderTileProvider *)self numberOfPhotos];
-    return v3 >= GEOConfigGetUInteger();
+    numberOfPhotos = [(MUPhotoSliderTileProvider *)self numberOfPhotos];
+    return numberOfPhotos >= GEOConfigGetUInteger();
   }
 
   else
   {
     UInteger = GEOConfigGetUInteger();
-    v6 = [(MKMapItem *)self->_mapItem _mapkit_numberOfPhotosAvailableForFlatList];
+    _mapkit_numberOfPhotosAvailableForFlatList = [(MKMapItem *)self->_mapItem _mapkit_numberOfPhotosAvailableForFlatList];
     if ([(MKMapItem *)self->_mapItem _mapkit_hasSinglePhotoVendor])
     {
       result = [(MKMapItem *)self->_mapItem _mapkit_canAtLeastOneAttributionShowPhotosLocally];
-      if (v6 <= UInteger)
+      if (_mapkit_numberOfPhotosAvailableForFlatList <= UInteger)
       {
         return 0;
       }
@@ -64,19 +64,19 @@
 
     else
     {
-      return v6 > UInteger;
+      return _mapkit_numberOfPhotosAvailableForFlatList > UInteger;
     }
   }
 
   return result;
 }
 
-- (id)_photoAlbumForPhoto:(id)a3
+- (id)_photoAlbumForPhoto:(id)photo
 {
-  v4 = [(NSArray *)self->_photos indexOfObject:a3];
-  v5 = [(MKMapItem *)self->_mapItem _geoMapItem];
-  v6 = [v5 _captionedPhotoAlbums];
-  v7 = [v6 count];
+  v4 = [(NSArray *)self->_photos indexOfObject:photo];
+  _geoMapItem = [(MKMapItem *)self->_mapItem _geoMapItem];
+  _captionedPhotoAlbums = [_geoMapItem _captionedPhotoAlbums];
+  v7 = [_captionedPhotoAlbums count];
 
   if (v4 >= v7)
   {
@@ -85,28 +85,28 @@
 
   else
   {
-    v8 = [(MKMapItem *)self->_mapItem _geoMapItem];
-    v9 = [v8 _captionedPhotoAlbums];
-    v10 = [v9 objectAtIndexedSubscript:v4];
+    _geoMapItem2 = [(MKMapItem *)self->_mapItem _geoMapItem];
+    _captionedPhotoAlbums2 = [_geoMapItem2 _captionedPhotoAlbums];
+    v10 = [_captionedPhotoAlbums2 objectAtIndexedSubscript:v4];
   }
 
   return v10;
 }
 
-- (id)_albumOverlayForPhoto:(id)a3
+- (id)_albumOverlayForPhoto:(id)photo
 {
-  v4 = a3;
-  v5 = [(MUPhotoSliderTileProvider *)self _photoAlbumForPhoto:v4];
+  photoCopy = photo;
+  v5 = [(MUPhotoSliderTileProvider *)self _photoAlbumForPhoto:photoCopy];
   if (v5)
   {
-    v6 = [(MUPhotoSliderTileProvider *)self _flatListOverlayForPhoto:v4];
+    v6 = [(MUPhotoSliderTileProvider *)self _flatListOverlayForPhoto:photoCopy];
     if (!v6)
     {
       v6 = objc_alloc_init(MUPhotoTileOverlay);
     }
 
-    v7 = [v5 categoryName];
-    [(MUPhotoTileOverlay *)v6 setTileTitle:v7];
+    categoryName = [v5 categoryName];
+    [(MUPhotoTileOverlay *)v6 setTileTitle:categoryName];
   }
 
   else
@@ -117,25 +117,25 @@
   return v6;
 }
 
-- (id)_flatListOverlayForPhoto:(id)a3
+- (id)_flatListOverlayForPhoto:(id)photo
 {
-  v3 = a3;
-  v4 = [v3 attribution];
-  if ([v4 shouldHandlePhotosLocally])
+  photoCopy = photo;
+  attribution = [photoCopy attribution];
+  if ([attribution shouldHandlePhotosLocally])
   {
-    v5 = [v3 geoMapItemPhoto];
-    v6 = [v5 author];
+    geoMapItemPhoto = [photoCopy geoMapItemPhoto];
+    author = [geoMapItemPhoto author];
 
-    v7 = [v3 attribution];
-    v8 = [v7 isUserSubmitted];
+    attribution2 = [photoCopy attribution];
+    isUserSubmitted = [attribution2 isUserSubmitted];
 
     v9 = 0;
-    if (!GEOConfigGetBOOL() || !v8)
+    if (!GEOConfigGetBOOL() || !isUserSubmitted)
     {
       goto LABEL_9;
     }
 
-    if (![v6 length])
+    if (![author length])
     {
       v9 = 0;
       goto LABEL_9;
@@ -147,8 +147,8 @@
 
   else
   {
-    v11 = [v4 captionDisplayName];
-    v9 = [v11 length];
+    captionDisplayName = [attribution captionDisplayName];
+    v9 = [captionDisplayName length];
 
     if (!v9)
     {
@@ -156,11 +156,11 @@
     }
 
     v9 = objc_alloc_init(MUPhotoTileOverlay);
-    v6 = [v4 captionDisplayName];
+    author = [attribution captionDisplayName];
     v10 = v9;
   }
 
-  [(MUPhotoTileOverlay *)v10 setAttributionTitle:v6];
+  [(MUPhotoTileOverlay *)v10 setAttributionTitle:author];
 LABEL_9:
 
 LABEL_10:
@@ -177,23 +177,23 @@ LABEL_10:
   return v2;
 }
 
-- (id)overlayForPhoto:(id)a3
+- (id)overlayForPhoto:(id)photo
 {
-  v5 = a3;
-  v6 = [(MUPhotoSliderTileProvider *)self displayType];
-  if (v6 == 1)
+  photoCopy = photo;
+  displayType = [(MUPhotoSliderTileProvider *)self displayType];
+  if (displayType == 1)
   {
-    v7 = [(MUPhotoSliderTileProvider *)self _albumOverlayForPhoto:v5];
+    v7 = [(MUPhotoSliderTileProvider *)self _albumOverlayForPhoto:photoCopy];
   }
 
   else
   {
-    if (v6)
+    if (displayType)
     {
       goto LABEL_6;
     }
 
-    v7 = [(MUPhotoSliderTileProvider *)self _flatListOverlayForPhoto:v5];
+    v7 = [(MUPhotoSliderTileProvider *)self _flatListOverlayForPhoto:photoCopy];
   }
 
   v3 = v7;
@@ -202,26 +202,26 @@ LABEL_6:
   return v3;
 }
 
-- (id)albumIdForPhoto:(id)a3
+- (id)albumIdForPhoto:(id)photo
 {
-  v4 = a3;
+  photoCopy = photo;
   if ([(MUPhotoSliderTileProvider *)self displayType]== 1)
   {
-    v5 = [(MUPhotoSliderTileProvider *)self _photoAlbumForPhoto:v4];
-    v6 = [v5 categoryId];
+    v5 = [(MUPhotoSliderTileProvider *)self _photoAlbumForPhoto:photoCopy];
+    categoryId = [v5 categoryId];
   }
 
   else
   {
-    v6 = 0;
+    categoryId = 0;
   }
 
-  return v6;
+  return categoryId;
 }
 
-- (id)photoItemAtIndex:(unint64_t)a3
+- (id)photoItemAtIndex:(unint64_t)index
 {
-  if ([(MUPhotoSliderTileProvider *)self numberOfPhotos]<= a3)
+  if ([(MUPhotoSliderTileProvider *)self numberOfPhotos]<= index)
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_FAULT))
     {
@@ -234,7 +234,7 @@ LABEL_6:
 
   else
   {
-    v5 = [(NSArray *)self->_photos objectAtIndexedSubscript:a3];
+    v5 = [(NSArray *)self->_photos objectAtIndexedSubscript:index];
   }
 
   return v5;
@@ -245,9 +245,9 @@ LABEL_6:
   result = [(MUPhotoSliderTileProvider *)self displayType];
   if (result == 1)
   {
-    v5 = [(MKMapItem *)self->_mapItem _geoMapItem];
-    v6 = [v5 _captionedPhotoAlbums];
-    v7 = [v6 count];
+    _geoMapItem = [(MKMapItem *)self->_mapItem _geoMapItem];
+    _captionedPhotoAlbums = [_geoMapItem _captionedPhotoAlbums];
+    v7 = [_captionedPhotoAlbums count];
 
     return v7;
   }
@@ -266,15 +266,15 @@ LABEL_6:
 {
   v26 = *MEMORY[0x1E69E9840];
   v3 = objc_alloc(MEMORY[0x1E695DF70]);
-  v4 = [(MKMapItem *)self->_mapItem _mapkit_resolvedFlatPhotoList];
-  v5 = [v3 initWithCapacity:{objc_msgSend(v4, "count")}];
+  _mapkit_resolvedFlatPhotoList = [(MKMapItem *)self->_mapItem _mapkit_resolvedFlatPhotoList];
+  v5 = [v3 initWithCapacity:{objc_msgSend(_mapkit_resolvedFlatPhotoList, "count")}];
 
-  v6 = [(MKMapItem *)self->_mapItem _mapkit_resolvedFlatPhotoList];
+  _mapkit_resolvedFlatPhotoList2 = [(MKMapItem *)self->_mapItem _mapkit_resolvedFlatPhotoList];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  v7 = [_mapkit_resolvedFlatPhotoList2 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v7)
   {
     v8 = v7;
@@ -286,20 +286,20 @@ LABEL_6:
       {
         if (*v22 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(_mapkit_resolvedFlatPhotoList2);
         }
 
         v11 = *(*(&v21 + 1) + 8 * v10);
         v12 = objc_alloc(MEMORY[0x1E696F288]);
-        v13 = [(MKMapItem *)self->_mapItem name];
-        v14 = [v12 initWithGeoMapItemPhoto:v11 fallbackTitle:v13];
+        name = [(MKMapItem *)self->_mapItem name];
+        v14 = [v12 initWithGeoMapItemPhoto:v11 fallbackTitle:name];
         [v5 addObject:v14];
 
         ++v10;
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v8 = [_mapkit_resolvedFlatPhotoList2 countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v8);
@@ -354,18 +354,18 @@ uint64_t __51__MUPhotoSliderTileProvider__setupForFlatPhotoList__block_invoke(ui
 {
   v28 = *MEMORY[0x1E69E9840];
   v3 = objc_alloc(MEMORY[0x1E695DF70]);
-  v4 = [(MKMapItem *)self->_mapItem _geoMapItem];
-  v5 = [v4 _photos];
-  v6 = [v3 initWithCapacity:{objc_msgSend(v5, "count")}];
+  _geoMapItem = [(MKMapItem *)self->_mapItem _geoMapItem];
+  _photos = [_geoMapItem _photos];
+  v6 = [v3 initWithCapacity:{objc_msgSend(_photos, "count")}];
 
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v7 = [(MKMapItem *)self->_mapItem _geoMapItem];
-  v8 = [v7 _captionedPhotoAlbums];
+  _geoMapItem2 = [(MKMapItem *)self->_mapItem _geoMapItem];
+  _captionedPhotoAlbums = [_geoMapItem2 _captionedPhotoAlbums];
 
-  v9 = [v8 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  v9 = [_captionedPhotoAlbums countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v9)
   {
     v10 = v9;
@@ -377,22 +377,22 @@ uint64_t __51__MUPhotoSliderTileProvider__setupForFlatPhotoList__block_invoke(ui
       {
         if (*v24 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(_captionedPhotoAlbums);
         }
 
-        v13 = [*(*(&v23 + 1) + 8 * v12) photoList];
-        v14 = [v13 firstObject];
+        photoList = [*(*(&v23 + 1) + 8 * v12) photoList];
+        firstObject = [photoList firstObject];
 
         v15 = objc_alloc(MEMORY[0x1E696F288]);
-        v16 = [(MKMapItem *)self->_mapItem name];
-        v17 = [v15 initWithGeoMapItemPhoto:v14 fallbackTitle:v16];
+        name = [(MKMapItem *)self->_mapItem name];
+        v17 = [v15 initWithGeoMapItemPhoto:firstObject fallbackTitle:name];
 
         [v6 addObject:v17];
         ++v12;
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v10 = [_captionedPhotoAlbums countByEnumeratingWithState:&v23 objects:v27 count:16];
     }
 
     while (v10);
@@ -415,30 +415,30 @@ uint64_t __51__MUPhotoSliderTileProvider__setupForFlatPhotoList__block_invoke(ui
 
 - (void)_setup
 {
-  v3 = [(MUPhotoSliderTileProvider *)self displayType];
-  if (v3 == 1)
+  displayType = [(MUPhotoSliderTileProvider *)self displayType];
+  if (displayType == 1)
   {
 
     [(MUPhotoSliderTileProvider *)self _setupForPhotoAlbums];
   }
 
-  else if (!v3)
+  else if (!displayType)
   {
 
     [(MUPhotoSliderTileProvider *)self _setupForFlatPhotoList];
   }
 }
 
-- (MUPhotoSliderTileProvider)initWithMapItem:(id)a3
+- (MUPhotoSliderTileProvider)initWithMapItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   v9.receiver = self;
   v9.super_class = MUPhotoSliderTileProvider;
   v6 = [(MUPhotoSliderTileProvider *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_mapItem, a3);
+    objc_storeStrong(&v6->_mapItem, item);
     [(MUPhotoSliderTileProvider *)v7 _setup];
   }
 

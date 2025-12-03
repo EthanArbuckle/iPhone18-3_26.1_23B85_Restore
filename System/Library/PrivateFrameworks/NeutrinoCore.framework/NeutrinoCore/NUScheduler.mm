@@ -1,19 +1,19 @@
 @interface NUScheduler
 + (id)sharedScheduler;
-- (BOOL)_coalesceJobs:(id)a3;
-- (BOOL)_prepareNewJob:(id)a3 at:(unint64_t)a4;
-- (NUScheduler)initWithName:(id)a3;
-- (id)_queueForStage:(int64_t)a3;
+- (BOOL)_coalesceJobs:(id)jobs;
+- (BOOL)_prepareNewJob:(id)job at:(unint64_t)at;
+- (NUScheduler)initWithName:(id)name;
+- (id)_queueForStage:(int64_t)stage;
 - (id)debugDescription;
-- (void)_enqueueDependentJobsForRenderJob:(id)a3;
-- (void)_enqueueJobsForRequests:(id)a3 withGroup:(id)a4;
-- (void)_enqueueRenderJob:(id)a3 toStage:(int64_t)a4;
-- (void)_observeRenderJob:(id)a3 withGroup:(id)a4;
-- (void)_scheduleRateLimitWakeupForContext:(id)a3;
-- (void)_wakeupRateLimitJobForContext:(id)a3;
-- (void)cancelJobsForRenderContext:(id)a3;
-- (void)enqueueJobsForRequests:(id)a3 withGroup:(id)a4;
-- (void)submitRequests:(id)a3 withGroup:(id)a4;
+- (void)_enqueueDependentJobsForRenderJob:(id)job;
+- (void)_enqueueJobsForRequests:(id)requests withGroup:(id)group;
+- (void)_enqueueRenderJob:(id)job toStage:(int64_t)stage;
+- (void)_observeRenderJob:(id)job withGroup:(id)group;
+- (void)_scheduleRateLimitWakeupForContext:(id)context;
+- (void)_wakeupRateLimitJobForContext:(id)context;
+- (void)cancelJobsForRenderContext:(id)context;
+- (void)enqueueJobsForRequests:(id)requests withGroup:(id)group;
+- (void)submitRequests:(id)requests withGroup:(id)group;
 @end
 
 @implementation NUScheduler
@@ -30,11 +30,11 @@
   return v8;
 }
 
-- (void)cancelJobsForRenderContext:(id)a3
+- (void)cancelJobsForRenderContext:(id)context
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  contextCopy = context;
+  if (!contextCopy)
   {
     v7 = NUAssertLogger_18064();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -55,8 +55,8 @@
         v14 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v15 = MEMORY[0x1E696AF00];
         v16 = v14;
-        v17 = [v15 callStackSymbols];
-        v18 = [v17 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v15 callStackSymbols];
+        v18 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v26 = v14;
         v27 = 2114;
@@ -67,8 +67,8 @@
 
     else if (v11)
     {
-      v12 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v13 = [v12 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v13 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v26 = v13;
       _os_log_error_impl(&dword_1C0184000, v10, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -82,29 +82,29 @@
   block[1] = 3221225472;
   block[2] = __42__NUScheduler_cancelJobsForRenderContext___block_invoke;
   block[3] = &unk_1E810B9A8;
-  v24 = v4;
-  v6 = v4;
+  v24 = contextCopy;
+  v6 = contextCopy;
   dispatch_sync(queue, block);
 }
 
-- (void)_enqueueRenderJob:(id)a3 toStage:(int64_t)a4
+- (void)_enqueueRenderJob:(id)job toStage:(int64_t)stage
 {
-  v6 = a3;
-  v7 = [(NUScheduler *)self _queueForStage:a4];
-  [v7 addJob:v6];
+  jobCopy = job;
+  v7 = [(NUScheduler *)self _queueForStage:stage];
+  [v7 addJob:jobCopy];
 }
 
-- (void)_enqueueDependentJobsForRenderJob:(id)a3
+- (void)_enqueueDependentJobsForRenderJob:(id)job
 {
   v27 = *MEMORY[0x1E69E9840];
-  v16 = a3;
-  v4 = [v16 dependentJobs];
+  jobCopy = job;
+  dependentJobs = [jobCopy dependentJobs];
   v5 = dispatch_group_create();
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  obj = v4;
+  obj = dependentJobs;
   v6 = [obj countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v6)
   {
@@ -122,17 +122,17 @@
 
         v10 = *(*(&v22 + 1) + 8 * v9);
         dispatch_group_enter(v5);
-        v11 = [v10 replyGroup];
-        [(NUScheduler *)self _observeRenderJob:v10 withGroup:v11];
+        replyGroup = [v10 replyGroup];
+        [(NUScheduler *)self _observeRenderJob:v10 withGroup:replyGroup];
 
-        v12 = [v10 replyGroup];
+        replyGroup2 = [v10 replyGroup];
         queue = self->_queue;
         block[0] = MEMORY[0x1E69E9820];
         block[1] = 3221225472;
         block[2] = __49__NUScheduler__enqueueDependentJobsForRenderJob___block_invoke;
         block[3] = &unk_1E810B9A8;
         v21 = v5;
-        dispatch_group_notify(v12, queue, block);
+        dispatch_group_notify(replyGroup2, queue, block);
 
         ++v9;
       }
@@ -150,33 +150,33 @@
   v18[2] = __49__NUScheduler__enqueueDependentJobsForRenderJob___block_invoke_2;
   v18[3] = &unk_1E810B958;
   v18[4] = self;
-  v19 = v16;
-  v15 = v16;
+  v19 = jobCopy;
+  v15 = jobCopy;
   dispatch_group_notify(v5, v14, v18);
   [(NUJobQueue *)self->_prepareQueue addJobs:obj];
 }
 
-- (void)_observeRenderJob:(id)a3 withGroup:(id)a4
+- (void)_observeRenderJob:(id)job withGroup:(id)group
 {
-  v6 = a4;
-  v7 = a3;
-  dispatch_group_enter(v6);
+  groupCopy = group;
+  jobCopy = job;
+  dispatch_group_enter(groupCopy);
   queue = self->_queue;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __43__NUScheduler__observeRenderJob_withGroup___block_invoke;
   v12[3] = &unk_1E810A9D8;
-  v13 = v6;
-  v14 = self;
-  v9 = v6;
-  [v7 addStageObserver:self queue:queue block:v12];
+  v13 = groupCopy;
+  selfCopy = self;
+  v9 = groupCopy;
+  [jobCopy addStageObserver:self queue:queue block:v12];
   v10 = self->_queue;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __43__NUScheduler__observeRenderJob_withGroup___block_invoke_2;
   v11[3] = &unk_1E810AA00;
   v11[4] = self;
-  [v7 addCancelObserver:self queue:v10 block:v11];
+  [jobCopy addCancelObserver:self queue:v10 block:v11];
 }
 
 void __43__NUScheduler__observeRenderJob_withGroup___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -208,16 +208,16 @@ void __43__NUScheduler__observeRenderJob_withGroup___block_invoke_2(uint64_t a1,
   [v6 removeJob:v5];
 }
 
-- (void)_scheduleRateLimitWakeupForContext:(id)a3
+- (void)_scheduleRateLimitWakeupForContext:(id)context
 {
-  v4 = a3;
-  if (([(NSMutableSet *)self->_scheduledContextWakeups containsObject:v4]& 1) == 0)
+  contextCopy = context;
+  if (([(NSMutableSet *)self->_scheduledContextWakeups containsObject:contextCopy]& 1) == 0)
   {
-    [(NSMutableSet *)self->_scheduledContextWakeups addObject:v4];
+    [(NSMutableSet *)self->_scheduledContextWakeups addObject:contextCopy];
     objc_initWeak(&location, self);
-    objc_initWeak(&from, v4);
+    objc_initWeak(&from, contextCopy);
     rateLimiterQueue = self->_rateLimiterQueue;
-    v6 = [v4 nextRenderTime];
+    nextRenderTime = [contextCopy nextRenderTime];
     queue = self->_queue;
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
@@ -225,7 +225,7 @@ void __43__NUScheduler__observeRenderJob_withGroup___block_invoke_2(uint64_t a1,
     v8[3] = &unk_1E810A9B0;
     objc_copyWeak(&v9, &from);
     objc_copyWeak(&v10, &location);
-    [(NUScheduledQueue *)rateLimiterQueue dispatchAt:v6 queue:queue block:v8];
+    [(NUScheduledQueue *)rateLimiterQueue dispatchAt:nextRenderTime queue:queue block:v8];
     objc_destroyWeak(&v10);
     objc_destroyWeak(&v9);
     objc_destroyWeak(&from);
@@ -246,37 +246,37 @@ void __50__NUScheduler__scheduleRateLimitWakeupForContext___block_invoke(uint64_
   }
 }
 
-- (void)_wakeupRateLimitJobForContext:(id)a3
+- (void)_wakeupRateLimitJobForContext:(id)context
 {
-  v6 = a3;
-  [(NSMutableSet *)self->_scheduledContextWakeups removeObject:v6];
-  v4 = [v6 dequeueRateLimitedJob];
-  v5 = v4;
-  if (v4)
+  contextCopy = context;
+  [(NSMutableSet *)self->_scheduledContextWakeups removeObject:contextCopy];
+  dequeueRateLimitedJob = [contextCopy dequeueRateLimitedJob];
+  v5 = dequeueRateLimitedJob;
+  if (dequeueRateLimitedJob)
   {
-    [v4 resume];
-    [v6 updateNextRenderTimeFromTime:{objc_msgSend(v6, "nextRenderTime")}];
-    [(NUScheduler *)self _scheduleRateLimitWakeupForContext:v6];
+    [dequeueRateLimitedJob resume];
+    [contextCopy updateNextRenderTimeFromTime:{objc_msgSend(contextCopy, "nextRenderTime")}];
+    [(NUScheduler *)self _scheduleRateLimitWakeupForContext:contextCopy];
   }
 
   else
   {
-    [v6 setNextRenderTime:0];
+    [contextCopy setNextRenderTime:0];
   }
 }
 
-- (void)_enqueueJobsForRequests:(id)a3 withGroup:(id)a4
+- (void)_enqueueJobsForRequests:(id)requests withGroup:(id)group
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  requestsCopy = requests;
+  groupCopy = group;
   v17 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v8 = dispatch_time(0, 0);
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v9 = v6;
+  v9 = requestsCopy;
   v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v10)
   {
@@ -292,20 +292,20 @@ void __50__NUScheduler__scheduleRateLimitWakeupForContext___block_invoke(uint64_
           objc_enumerationMutation(v9);
         }
 
-        v14 = [*(*(&v18 + 1) + 8 * v13) newRenderJob];
-        [(NUScheduler *)self _observeRenderJob:v14 withGroup:v7];
-        [v14 setReplyGroup:v7];
-        if ([(NUScheduler *)self _prepareNewJob:v14 at:v8])
+        newRenderJob = [*(*(&v18 + 1) + 8 * v13) newRenderJob];
+        [(NUScheduler *)self _observeRenderJob:newRenderJob withGroup:groupCopy];
+        [newRenderJob setReplyGroup:groupCopy];
+        if ([(NUScheduler *)self _prepareNewJob:newRenderJob at:v8])
         {
-          [v17 addObject:v14];
+          [v17 addObject:newRenderJob];
         }
 
         else
         {
-          [v14 pause];
-          v15 = [v14 request];
-          v16 = [v15 renderContext];
-          [(NUScheduler *)self _scheduleRateLimitWakeupForContext:v16];
+          [newRenderJob pause];
+          request = [newRenderJob request];
+          renderContext = [request renderContext];
+          [(NUScheduler *)self _scheduleRateLimitWakeupForContext:renderContext];
         }
 
         ++v13;
@@ -321,9 +321,9 @@ void __50__NUScheduler__scheduleRateLimitWakeupForContext___block_invoke(uint64_
   [(NUJobQueue *)self->_prepareQueue addJobs:v17];
 }
 
-- (id)_queueForStage:(int64_t)a3
+- (id)_queueForStage:(int64_t)stage
 {
-  switch(a3)
+  switch(stage)
   {
     case 1:
       v4 = 16;
@@ -344,35 +344,35 @@ LABEL_7:
   return v5;
 }
 
-- (void)submitRequests:(id)a3 withGroup:(id)a4
+- (void)submitRequests:(id)requests withGroup:(id)group
 {
-  v6 = a3;
-  v7 = a4;
+  requestsCopy = requests;
+  groupCopy = group;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __40__NUScheduler_submitRequests_withGroup___block_invoke;
   block[3] = &unk_1E810B3A0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = requestsCopy;
+  v13 = groupCopy;
+  v9 = groupCopy;
+  v10 = requestsCopy;
   dispatch_group_async(v9, queue, block);
 }
 
-- (NUScheduler)initWithName:(id)a3
+- (NUScheduler)initWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v24.receiver = self;
   v24.super_class = NUScheduler;
   v5 = [(NUScheduler *)&v24 init];
-  v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"NUScheduler-%@", v4];
-  v7 = [v6 cStringUsingEncoding:1];
+  nameCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"NUScheduler-%@", nameCopy];
+  v7 = [nameCopy cStringUsingEncoding:1];
 
   name = v5->_name;
-  v5->_name = v4;
-  v9 = v4;
+  v5->_name = nameCopy;
+  v9 = nameCopy;
 
   v10 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
   v11 = dispatch_queue_create(v7, v10);
@@ -405,32 +405,32 @@ LABEL_7:
 + (id)sharedScheduler
 {
   v2 = +[NUFactory sharedFactory];
-  v3 = [v2 scheduler];
+  scheduler = [v2 scheduler];
 
-  return v3;
+  return scheduler;
 }
 
-- (void)enqueueJobsForRequests:(id)a3 withGroup:(id)a4
+- (void)enqueueJobsForRequests:(id)requests withGroup:(id)group
 {
-  v6 = a3;
-  v7 = a4;
+  requestsCopy = requests;
+  groupCopy = group;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __69__NUScheduler_RenderJobManagement__enqueueJobsForRequests_withGroup___block_invoke;
   block[3] = &unk_1E810B3A0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = requestsCopy;
+  v13 = groupCopy;
+  v9 = groupCopy;
+  v10 = requestsCopy;
   dispatch_sync(queue, block);
 }
 
-- (BOOL)_coalesceJobs:(id)a3
+- (BOOL)_coalesceJobs:(id)jobs
 {
-  v3 = a3;
-  v4 = [v3 count];
+  jobsCopy = jobs;
+  v4 = [jobsCopy count];
   if (v4)
   {
     v5 = v4;
@@ -438,13 +438,13 @@ LABEL_7:
     v7 = 0;
     for (i = 0; i != v5; ++i)
     {
-      v9 = [v3 objectAtIndexedSubscript:i];
-      v10 = [v9 currentStage];
-      v11 = v10;
-      if ((v7 & 1) != 0 || (v12 = v10 - 3, v13 = [v9 isExecuting], v14 = 1, v12 >= 0xFFFFFFFFFFFFFFFELL) && (v13 & 1) == 0)
+      v9 = [jobsCopy objectAtIndexedSubscript:i];
+      currentStage = [v9 currentStage];
+      v11 = currentStage;
+      if ((v7 & 1) != 0 || (v12 = currentStage - 3, v13 = [v9 isExecuting], v14 = 1, v12 >= 0xFFFFFFFFFFFFFFFELL) && (v13 & 1) == 0)
       {
-        v15 = [v9 cancelCoalescedJob];
-        if (v15)
+        cancelCoalescedJob = [v9 cancelCoalescedJob];
+        if (cancelCoalescedJob)
         {
           v14 = v7;
         }
@@ -454,7 +454,7 @@ LABEL_7:
           v14 = 1;
         }
 
-        if (v15)
+        if (cancelCoalescedJob)
         {
           v6 |= v11 != 2;
         }
@@ -472,38 +472,38 @@ LABEL_7:
   return v6 & 1;
 }
 
-- (BOOL)_prepareNewJob:(id)a3 at:(unint64_t)a4
+- (BOOL)_prepareNewJob:(id)job at:(unint64_t)at
 {
-  v6 = a3;
-  v7 = [v6 request];
-  v8 = [v7 renderContext];
+  jobCopy = job;
+  request = [jobCopy request];
+  renderContext = [request renderContext];
 
-  [v8 minimumRenderInterval];
+  [renderContext minimumRenderInterval];
   v10 = v9;
   v11 = v9 != 0.0;
-  if ([v8 shouldCoalesceUpdates])
+  if ([renderContext shouldCoalesceUpdates])
   {
-    v12 = [v8 jobs];
-    v13 = [(NUScheduler *)self _coalesceJobs:v12];
+    jobs = [renderContext jobs];
+    v13 = [(NUScheduler *)self _coalesceJobs:jobs];
 
     v11 = (v10 != 0.0) & ~v13;
   }
 
-  [v8 addJob:v6];
+  [renderContext addJob:jobCopy];
   if (v10 == 0.0 || v11 == 0)
   {
     goto LABEL_10;
   }
 
-  if ([v8 nextRenderTime] <= a4)
+  if ([renderContext nextRenderTime] <= at)
   {
-    [v8 updateNextRenderTimeFromTime:a4];
+    [renderContext updateNextRenderTimeFromTime:at];
 LABEL_10:
     v15 = 1;
     goto LABEL_11;
   }
 
-  [v8 enqueueRateLimitedJob:v6];
+  [renderContext enqueueRateLimitedJob:jobCopy];
   v15 = 0;
 LABEL_11:
 

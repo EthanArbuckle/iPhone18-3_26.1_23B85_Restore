@@ -1,27 +1,27 @@
 @interface LNQueryParameterSortingOption
-- (BOOL)isEqual:(id)a3;
-- (LNQueryParameterSortingOption)initWithCoder:(id)a3;
-- (LNQueryParameterSortingOption)initWithOrder:(int64_t)a3 sortParameterIndex:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (LNQueryParameterSortingOption)initWithCoder:(id)coder;
+- (LNQueryParameterSortingOption)initWithOrder:(int64_t)order sortParameterIndex:(id)index;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNQueryParameterSortingOption
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self != v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self != equalCopy)
   {
-    v6 = v4;
+    v6 = equalCopy;
     if (v6)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v7 = [(LNQueryParameterSortingOption *)self order];
-        if (v7 != [(LNQueryParameterSortingOption *)v6 order])
+        order = [(LNQueryParameterSortingOption *)self order];
+        if (order != [(LNQueryParameterSortingOption *)v6 order])
         {
           v13 = 0;
 LABEL_16:
@@ -29,10 +29,10 @@ LABEL_16:
           goto LABEL_17;
         }
 
-        v8 = [(LNQueryParameterSortingOption *)self sortParameterIndex];
-        v9 = [(LNQueryParameterSortingOption *)v6 sortParameterIndex];
-        v10 = v8;
-        v11 = v9;
+        sortParameterIndex = [(LNQueryParameterSortingOption *)self sortParameterIndex];
+        sortParameterIndex2 = [(LNQueryParameterSortingOption *)v6 sortParameterIndex];
+        v10 = sortParameterIndex;
+        v11 = sortParameterIndex2;
         v12 = v11;
         if (v10 == v11)
         {
@@ -74,48 +74,48 @@ LABEL_17:
 
 - (unint64_t)hash
 {
-  v3 = [(LNQueryParameterSortingOption *)self order];
-  v4 = [(LNQueryParameterSortingOption *)self sortParameterIndex];
-  v5 = [v4 hash];
+  order = [(LNQueryParameterSortingOption *)self order];
+  sortParameterIndex = [(LNQueryParameterSortingOption *)self sortParameterIndex];
+  v5 = [sortParameterIndex hash];
 
-  return v5 + v3;
+  return v5 + order;
 }
 
-- (LNQueryParameterSortingOption)initWithCoder:(id)a3
+- (LNQueryParameterSortingOption)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"order"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sortParameterIndex"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"order"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sortParameterIndex"];
 
   if (v6)
   {
     self = [(LNQueryParameterSortingOption *)self initWithOrder:v5 sortParameterIndex:v6];
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[LNQueryParameterSortingOption order](self forKey:{"order"), @"order"}];
-  v5 = [(LNQueryParameterSortingOption *)self sortParameterIndex];
-  [v4 encodeObject:v5 forKey:@"sortParameterIndex"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[LNQueryParameterSortingOption order](self forKey:{"order"), @"order"}];
+  sortParameterIndex = [(LNQueryParameterSortingOption *)self sortParameterIndex];
+  [coderCopy encodeObject:sortParameterIndex forKey:@"sortParameterIndex"];
 }
 
-- (LNQueryParameterSortingOption)initWithOrder:(int64_t)a3 sortParameterIndex:(id)a4
+- (LNQueryParameterSortingOption)initWithOrder:(int64_t)order sortParameterIndex:(id)index
 {
-  v8 = a4;
-  if (!v8)
+  indexCopy = index;
+  if (!indexCopy)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"LNQueryParameterSortingOption.m" lineNumber:18 description:{@"Invalid parameter not satisfying: %@", @"sortParameterIndex"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNQueryParameterSortingOption.m" lineNumber:18 description:{@"Invalid parameter not satisfying: %@", @"sortParameterIndex"}];
   }
 
   v14.receiver = self;
@@ -124,8 +124,8 @@ LABEL_17:
   v10 = v9;
   if (v9)
   {
-    v9->_order = a3;
-    objc_storeStrong(&v9->_sortParameterIndex, a4);
+    v9->_order = order;
+    objc_storeStrong(&v9->_sortParameterIndex, index);
     v11 = v10;
   }
 

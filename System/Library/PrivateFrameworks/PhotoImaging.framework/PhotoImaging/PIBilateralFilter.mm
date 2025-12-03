@@ -55,8 +55,8 @@
         v141 = dispatch_get_specific(*v135);
         v142 = MEMORY[0x1E696AF00];
         v143 = v141;
-        v144 = [v142 callStackSymbols];
-        v145 = [v144 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v142 callStackSymbols];
+        v145 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v171 = v141;
         v172 = 2114;
@@ -67,8 +67,8 @@
 
     else if (v138)
     {
-      v139 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v140 = [v139 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v140 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v171 = v140;
       _os_log_error_impl(&dword_1C7694000, v137, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -96,8 +96,8 @@ LABEL_129:
         v154 = dispatch_get_specific(*v148);
         v155 = MEMORY[0x1E696AF00];
         v156 = v154;
-        v157 = [v155 callStackSymbols];
-        v158 = [v157 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v155 callStackSymbols];
+        v158 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v171 = v154;
         v172 = 2114;
@@ -108,8 +108,8 @@ LABEL_129:
 
     else if (v151)
     {
-      v152 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v153 = [v152 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v153 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v171 = v153;
       _os_log_error_impl(&dword_1C7694000, v150, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -631,7 +631,7 @@ LABEL_115:
     goto LABEL_117;
   }
 
-  v162 = self;
+  selfCopy = self;
   v21 = [MEMORY[0x1E695DF70] arrayWithCapacity:v18];
   v22 = [MEMORY[0x1E695DF70] arrayWithCapacity:v18];
   v168 = 1 - v6;
@@ -673,10 +673,10 @@ LABEL_115:
   free(v9);
   v29 = objc_alloc_init(GUBilateralConvolution);
   v30 = *MEMORY[0x1E695FAB0];
-  [(GUBilateralConvolution *)v29 setValue:v162->_inputImage forKey:*MEMORY[0x1E695FAB0]];
+  [(GUBilateralConvolution *)v29 setValue:selfCopy->_inputImage forKey:*MEMORY[0x1E695FAB0]];
   [(GUBilateralConvolution *)v29 setValue:v21 forKey:@"inputPoints"];
   [(GUBilateralConvolution *)v29 setValue:v22 forKey:@"inputWeights"];
-  [(GUBilateralConvolution *)v29 setValue:v162->_inputEdgeDetail forKey:@"inputEdgeDetail"];
+  [(GUBilateralConvolution *)v29 setValue:selfCopy->_inputEdgeDetail forKey:@"inputEdgeDetail"];
   v31 = [(GUBilateralConvolution *)v29 valueForKey:*MEMORY[0x1E695FB50]];
   [(GUBilateralConvolution *)v29 setValue:0 forKey:v30];
 

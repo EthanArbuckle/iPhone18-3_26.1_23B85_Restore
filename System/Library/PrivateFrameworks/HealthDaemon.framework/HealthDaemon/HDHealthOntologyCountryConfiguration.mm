@@ -1,27 +1,27 @@
 @interface HDHealthOntologyCountryConfiguration
-- (HDHealthOntologyCountryConfiguration)initWithCountryCode:(id)a3 supportedCodingSystems:(id)a4 analyticsOptions:(unint64_t)a5;
+- (HDHealthOntologyCountryConfiguration)initWithCountryCode:(id)code supportedCodingSystems:(id)systems analyticsOptions:(unint64_t)options;
 @end
 
 @implementation HDHealthOntologyCountryConfiguration
 
-- (HDHealthOntologyCountryConfiguration)initWithCountryCode:(id)a3 supportedCodingSystems:(id)a4 analyticsOptions:(unint64_t)a5
+- (HDHealthOntologyCountryConfiguration)initWithCountryCode:(id)code supportedCodingSystems:(id)systems analyticsOptions:(unint64_t)options
 {
-  v8 = a3;
-  v9 = a4;
+  codeCopy = code;
+  systemsCopy = systems;
   v16.receiver = self;
   v16.super_class = HDHealthOntologyCountryConfiguration;
   v10 = [(HDHealthOntologyCountryConfiguration *)&v16 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [codeCopy copy];
     countryCode = v10->_countryCode;
     v10->_countryCode = v11;
 
-    v13 = [v9 copy];
+    v13 = [systemsCopy copy];
     supportedCodingSystems = v10->_supportedCodingSystems;
     v10->_supportedCodingSystems = v13;
 
-    v10->_analyticsOptions = a5;
+    v10->_analyticsOptions = options;
   }
 
   return v10;

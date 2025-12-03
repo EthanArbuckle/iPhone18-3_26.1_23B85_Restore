@@ -3,9 +3,9 @@
 + (id)defaultUserIdentity;
 + (id)globalBundleUserIdentity;
 + (id)globalSystemUserIdentity;
-+ (id)userIdentityWithPersonaAttributes:(id)a3;
-+ (id)userIdentityWithPersonaAttributes:(id)a3 POSIXUser:(id)a4 forceUnspecific:(BOOL)a5;
-- (BOOL)_lock_resync_fromUserPersonaAttributes:(id)a3;
++ (id)userIdentityWithPersonaAttributes:(id)attributes;
++ (id)userIdentityWithPersonaAttributes:(id)attributes POSIXUser:(id)user forceUnspecific:(BOOL)unspecific;
+- (BOOL)_lock_resync_fromUserPersonaAttributes:(id)attributes;
 - (BOOL)cacheInvalid;
 - (MCMContainerClassIterator)classIterator;
 - (MCMUserIdentity)defaultUserIdentity;
@@ -19,39 +19,39 @@
 - (NSMutableDictionary)lock_libraryRepairForUserIdentity;
 - (NSMutableDictionary)lock_managedPathRegistryForUserIdentity;
 - (NSSet)previousUserIdentities;
-- (id)_lock_userIdentitiesForBundleIdentifier:(id)a3;
-- (id)_lock_userIdentityForCurrentUserWithPersonaUniqueString:(id)a3;
+- (id)_lock_userIdentitiesForBundleIdentifier:(id)identifier;
+- (id)_lock_userIdentityForCurrentUserWithPersonaUniqueString:(id)string;
 - (id)allAccessibleUserIdentities;
 - (id)globalBundleUserIdentity;
 - (id)globalSystemUserIdentity;
-- (id)libraryRepairForUserIdentity:(id)a3;
-- (id)managedUserPathRegistryForUserIdentity:(id)a3;
+- (id)libraryRepairForUserIdentity:(id)identity;
+- (id)managedUserPathRegistryForUserIdentity:(id)identity;
 - (id)personaUniqueStringForCurrentContext;
 - (id)unspecificUserIdentity;
-- (id)userIdentitiesForBundleIdentifier:(id)a3;
-- (id)userIdentitiesForContainerConfig:(id)a3 originatorUserIdentities:(id)a4;
-- (id)userIdentityForClient:(container_client *)a3 error:(id *)a4;
-- (id)userIdentityForContainerConfig:(id)a3 originatorUserIdentity:(id)a4;
+- (id)userIdentitiesForBundleIdentifier:(id)identifier;
+- (id)userIdentitiesForContainerConfig:(id)config originatorUserIdentities:(id)identities;
+- (id)userIdentityForClient:(container_client *)client error:(id *)error;
+- (id)userIdentityForContainerConfig:(id)config originatorUserIdentity:(id)identity;
 - (id)userIdentityForCurrentContext;
-- (id)userIdentityForCurrentUserWithPersonaUniqueString:(id)a3;
+- (id)userIdentityForCurrentUserWithPersonaUniqueString:(id)string;
 - (id)userIdentityForLegacyMobileUser;
-- (id)userIdentityForPersonaUniqueString:(id)a3 POSIXUser:(id)a4;
+- (id)userIdentityForPersonaUniqueString:(id)string POSIXUser:(id)user;
 - (id)userIdentityForPersonalPersona;
-- (id)userIdentityForPersonalPersonaWithPOSIXUser:(id)a3;
+- (id)userIdentityForPersonalPersonaWithPOSIXUser:(id)user;
 - (unint64_t)savedGeneration;
 - (void)_lock_flush;
-- (void)_lock_flushAndRepopulateWithUserIdentities:(id)a3;
+- (void)_lock_flushAndRepopulateWithUserIdentities:(id)identities;
 - (void)_lock_resync;
-- (void)_notifyObserversOfChangesWithUserIdentities:(id)a3 firstFetch:(BOOL)a4;
+- (void)_notifyObserversOfChangesWithUserIdentities:(id)identities firstFetch:(BOOL)fetch;
 - (void)_refreshFromUserManagementIfNecessary;
-- (void)addUserIdentityCacheObserver:(id)a3;
+- (void)addUserIdentityCacheObserver:(id)observer;
 - (void)flush;
-- (void)flushAndRepopulateWithUserIdentities:(id)a3;
-- (void)forEachAccessibleUserIdentitySynchronouslyExecuteBlock:(id)a3;
-- (void)removeUserIdentityCacheObserver:(id)a3;
-- (void)setCacheInvalid:(BOOL)a3;
-- (void)setPreviousUserIdentities:(id)a3;
-- (void)setSavedGeneration:(unint64_t)a3;
+- (void)flushAndRepopulateWithUserIdentities:(id)identities;
+- (void)forEachAccessibleUserIdentitySynchronouslyExecuteBlock:(id)block;
+- (void)removeUserIdentityCacheObserver:(id)observer;
+- (void)setCacheInvalid:(BOOL)invalid;
+- (void)setPreviousUserIdentities:(id)identities;
+- (void)setSavedGeneration:(unint64_t)generation;
 @end
 
 @implementation MCMUserIdentityCache
@@ -61,11 +61,11 @@
   v10 = *MEMORY[0x1E69E9840];
   if ([objc_opt_class() personasAreSupported] && objc_opt_class())
   {
-    v2 = [MEMORY[0x1E69DF060] sharedManager];
-    v3 = [v2 currentPersona];
+    mEMORY[0x1E69DF060] = [MEMORY[0x1E69DF060] sharedManager];
+    currentPersona = [mEMORY[0x1E69DF060] currentPersona];
 
-    v4 = [v3 userPersonaUniqueString];
-    if (!v4)
+    userPersonaUniqueString = [currentPersona userPersonaUniqueString];
+    if (!userPersonaUniqueString)
     {
       v5 = container_log_handle_for_category();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -78,13 +78,13 @@
 
   else
   {
-    v4 = 0;
+    userPersonaUniqueString = 0;
   }
 
   if (personaUniqueStringForCurrentContext_onceToken != -1)
   {
     dispatch_once(&personaUniqueStringForCurrentContext_onceToken, &__block_literal_global_14);
-    if (v4)
+    if (userPersonaUniqueString)
     {
       goto LABEL_11;
     }
@@ -94,17 +94,17 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if (!v4)
+  if (!userPersonaUniqueString)
   {
     goto LABEL_15;
   }
 
 LABEL_11:
-  v6 = [personaUniqueStringForCurrentContext_dedupCache objectForKey:v4];
+  v6 = [personaUniqueStringForCurrentContext_dedupCache objectForKey:userPersonaUniqueString];
   if (!v6)
   {
-    [personaUniqueStringForCurrentContext_dedupCache setObject:v4 forKey:v4];
-    v6 = v4;
+    [personaUniqueStringForCurrentContext_dedupCache setObject:userPersonaUniqueString forKey:userPersonaUniqueString];
+    v6 = userPersonaUniqueString;
   }
 
 LABEL_16:
@@ -141,9 +141,9 @@ LABEL_16:
   v13 = *MEMORY[0x1E69E9840];
   if ([objc_opt_class() personasAreSupported])
   {
-    v3 = [MEMORY[0x1E69DF060] sharedManager];
+    mEMORY[0x1E69DF060] = [MEMORY[0x1E69DF060] sharedManager];
     v10 = 0;
-    v4 = [v3 personaGenerationIdentifierWithError:&v10];
+    v4 = [mEMORY[0x1E69DF060] personaGenerationIdentifierWithError:&v10];
 
     if (v4 && v4 != self->_savedGeneration)
     {
@@ -221,8 +221,8 @@ LABEL_11:
 {
   v8 = *MEMORY[0x1E69E9840];
   v3 = containermanager_copy_global_configuration();
-  v4 = [v3 defaultUser];
-  v5 = [(MCMUserIdentityCache *)self userIdentityForPersonalPersonaWithPOSIXUser:v4];
+  defaultUser = [v3 defaultUser];
+  v5 = [(MCMUserIdentityCache *)self userIdentityForPersonalPersonaWithPOSIXUser:defaultUser];
 
   v6 = *MEMORY[0x1E69E9840];
 
@@ -282,10 +282,10 @@ LABEL_11:
   return lock_bundleToDataSeparatedIdentitiesMap;
 }
 
-- (void)setSavedGeneration:(unint64_t)a3
+- (void)setSavedGeneration:(unint64_t)generation
 {
   v4 = *MEMORY[0x1E69E9840];
-  self->_savedGeneration = a3;
+  self->_savedGeneration = generation;
   v3 = *MEMORY[0x1E69E9840];
 }
 
@@ -305,10 +305,10 @@ LABEL_11:
   return result;
 }
 
-- (void)setCacheInvalid:(BOOL)a3
+- (void)setCacheInvalid:(BOOL)invalid
 {
   v4 = *MEMORY[0x1E69E9840];
-  self->_cacheInvalid = a3;
+  self->_cacheInvalid = invalid;
   v3 = *MEMORY[0x1E69E9840];
 }
 
@@ -336,13 +336,13 @@ LABEL_11:
   return result;
 }
 
-- (void)setPreviousUserIdentities:(id)a3
+- (void)setPreviousUserIdentities:(id)identities
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = *MEMORY[0x1E69E9840];
   p_previousUserIdentities = &self->_previousUserIdentities;
 
-  objc_storeStrong(p_previousUserIdentities, a3);
+  objc_storeStrong(p_previousUserIdentities, identities);
 }
 
 - (NSSet)previousUserIdentities
@@ -369,46 +369,46 @@ LABEL_11:
   return result;
 }
 
-- (void)_notifyObserversOfChangesWithUserIdentities:(id)a3 firstFetch:(BOOL)a4
+- (void)_notifyObserversOfChangesWithUserIdentities:(id)identities firstFetch:(BOOL)fetch
 {
   v65 = *MEMORY[0x1E69E9840];
-  v37 = a3;
+  identitiesCopy = identities;
   context = objc_autoreleasePoolPush();
-  v6 = [(MCMUserIdentityCache *)self observers];
-  objc_sync_enter(v6);
-  v7 = [(MCMUserIdentityCache *)self observers];
-  v8 = [v7 allObjects];
+  observers = [(MCMUserIdentityCache *)self observers];
+  objc_sync_enter(observers);
+  observers2 = [(MCMUserIdentityCache *)self observers];
+  allObjects = [observers2 allObjects];
 
-  objc_sync_exit(v6);
-  v41 = [v37 mutableCopy];
-  v9 = [(MCMUserIdentityCache *)self previousUserIdentities];
-  [v41 minusSet:v9];
+  objc_sync_exit(observers);
+  v41 = [identitiesCopy mutableCopy];
+  previousUserIdentities = [(MCMUserIdentityCache *)self previousUserIdentities];
+  [v41 minusSet:previousUserIdentities];
 
-  v10 = [(MCMUserIdentityCache *)self previousUserIdentities];
-  v11 = [v10 mutableCopy];
+  previousUserIdentities2 = [(MCMUserIdentityCache *)self previousUserIdentities];
+  v11 = [previousUserIdentities2 mutableCopy];
 
   v40 = v11;
   v12 = v11;
-  v13 = v37;
-  [v12 minusSet:v37];
-  if (!a4)
+  v13 = identitiesCopy;
+  [v12 minusSet:identitiesCopy];
+  if (!fetch)
   {
-    v14 = [(MCMUserIdentityCache *)self previousUserIdentities];
-    if (![v14 count])
+    previousUserIdentities3 = [(MCMUserIdentityCache *)self previousUserIdentities];
+    if (![previousUserIdentities3 count])
     {
-      v13 = v37;
-      v15 = [v37 count];
+      v13 = identitiesCopy;
+      v15 = [identitiesCopy count];
 
       if (!v15)
       {
         goto LABEL_6;
       }
 
-      v14 = [(MCMUserIdentityCache *)self defaultUserIdentity];
-      [v40 addObject:v14];
+      previousUserIdentities3 = [(MCMUserIdentityCache *)self defaultUserIdentity];
+      [v40 addObject:previousUserIdentities3];
     }
 
-    v13 = v37;
+    v13 = identitiesCopy;
   }
 
 LABEL_6:
@@ -417,7 +417,7 @@ LABEL_6:
   v64 = 0u;
   v61 = 0u;
   v62 = 0u;
-  obj = v8;
+  obj = allObjects;
   v42 = [obj countByEnumeratingWithState:&v61 objects:v60 count:16];
   if (v42)
   {
@@ -540,22 +540,22 @@ LABEL_6:
   v35 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_lock_resync_fromUserPersonaAttributes:(id)a3
+- (BOOL)_lock_resync_fromUserPersonaAttributes:(id)attributes
 {
   v151 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v106 = self;
+  attributesCopy = attributes;
+  selfCopy = self;
   os_unfair_lock_assert_owner(&self->_lock);
   v105 = objc_autoreleasePoolPush();
-  v5 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v110 = [MEMORY[0x1E695DFA8] set];
-  v6 = [MEMORY[0x1E695DF90] dictionary];
-  v113 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary3 = [MEMORY[0x1E695DF90] dictionary];
   v147 = 0u;
   v148 = 0u;
   v149 = 0u;
   v150 = 0u;
-  v7 = v4;
+  v7 = attributesCopy;
   v8 = [v7 countByEnumeratingWithState:&v147 objects:v146 count:16];
   if (!v8)
   {
@@ -564,7 +564,7 @@ LABEL_6:
 
   v9 = v8;
   v10 = *v148;
-  v109 = v6;
+  v109 = dictionary2;
   v104 = v7;
   while (2)
   {
@@ -579,20 +579,20 @@ LABEL_6:
       v13 = container_log_handle_for_category();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
       {
-        v14 = [v12 isUniversalPersona];
-        v15 = [v12 isSystemPersona];
-        v16 = [v12 isPersonalPersona];
-        v17 = [v12 isDataSeparatedPersona];
+        isUniversalPersona = [v12 isUniversalPersona];
+        isSystemPersona = [v12 isSystemPersona];
+        isPersonalPersona = [v12 isPersonalPersona];
+        isDataSeparatedPersona = [v12 isDataSeparatedPersona];
         *buf = 67110146;
-        *v145 = v14;
+        *v145 = isUniversalPersona;
         *&v145[4] = 1024;
-        *&v145[6] = v15;
+        *&v145[6] = isSystemPersona;
         v7 = v104;
         *&v145[10] = 1024;
-        *&v145[12] = v16;
-        v6 = v109;
+        *&v145[12] = isPersonalPersona;
+        dictionary2 = v109;
         *&v145[16] = 1024;
-        *&v145[18] = v17;
+        *&v145[18] = isDataSeparatedPersona;
         *&v145[22] = 2112;
         *&v145[24] = v12;
         _os_log_debug_impl(&dword_1DF2C3000, v13, OS_LOG_TYPE_DEBUG, "[Personal] Looking at universal=%d system=%d personal=%d ds=%d attributes: %@", buf, 0x24u);
@@ -600,13 +600,13 @@ LABEL_6:
 
       if ([v12 isPersonalPersona])
       {
-        v22 = [v12 userPersonaUniqueString];
-        if (v22)
+        userPersonaUniqueString = [v12 userPersonaUniqueString];
+        if (userPersonaUniqueString)
         {
-          v23 = v22;
+          v23 = userPersonaUniqueString;
           v116 = [objc_opt_class() userIdentityWithPersonaAttributes:v12];
           log = [objc_opt_class() userIdentityWithPersonaAttributes:v12 forceUnspecific:1];
-          v24 = [v6 objectForKeyedSubscript:v23];
+          v24 = [dictionary2 objectForKeyedSubscript:v23];
 
           if (v24)
           {
@@ -621,9 +621,9 @@ LABEL_6:
             }
           }
 
-          [v6 setObject:v116 forKeyedSubscript:v23];
+          [dictionary2 setObject:v116 forKeyedSubscript:v23];
           v26 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(v12, "userPersona_id")}];
-          [v113 setObject:v116 forKeyedSubscript:v26];
+          [dictionary3 setObject:v116 forKeyedSubscript:v26];
 
           v27 = container_log_handle_for_category();
           if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
@@ -666,20 +666,20 @@ LABEL_6:
                 v33 = container_log_handle_for_category();
                 if (os_log_type_enabled(v33, OS_LOG_TYPE_DEBUG))
                 {
-                  v42 = [v32 isUniversalPersona];
-                  v43 = [v32 isSystemPersona];
-                  v44 = [v32 isPersonalPersona];
-                  v45 = [v32 isDataSeparatedPersona];
+                  isUniversalPersona2 = [v32 isUniversalPersona];
+                  isSystemPersona2 = [v32 isSystemPersona];
+                  isPersonalPersona2 = [v32 isPersonalPersona];
+                  isDataSeparatedPersona2 = [v32 isDataSeparatedPersona];
                   *buf = 67110146;
-                  *v145 = v42;
+                  *v145 = isUniversalPersona2;
                   *&v145[4] = 1024;
-                  *&v145[6] = v43;
-                  v6 = v109;
+                  *&v145[6] = isSystemPersona2;
+                  dictionary2 = v109;
                   *&v145[10] = 1024;
-                  *&v145[12] = v44;
+                  *&v145[12] = isPersonalPersona2;
                   v18 = v116;
                   *&v145[16] = 1024;
-                  *&v145[18] = v45;
+                  *&v145[18] = isDataSeparatedPersona2;
                   *&v145[22] = 2112;
                   *&v145[24] = v32;
                   _os_log_debug_impl(&dword_1DF2C3000, v33, OS_LOG_TYPE_DEBUG, "[Multi] Looking at universal=%d system=%d personal=%d ds=%d attributes: %@", buf, 0x24u);
@@ -687,30 +687,30 @@ LABEL_6:
 
                 if (([v32 isPersonalPersona] & 1) == 0 && (objc_msgSend(v32, "isDataSeparatedPersona") & 1) == 0)
                 {
-                  v34 = [v32 userPersonaBundleIDList];
+                  userPersonaBundleIDList = [v32 userPersonaBundleIDList];
                   v35 = container_log_handle_for_category();
                   if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
                   {
-                    v36 = [v32 userPersona_id];
+                    userPersona_id = [v32 userPersona_id];
                     *buf = 67109634;
-                    *v145 = v36;
+                    *v145 = userPersona_id;
                     *&v145[4] = 2112;
                     *&v145[6] = v32;
                     *&v145[14] = 2112;
-                    *&v145[16] = v34;
+                    *&v145[16] = userPersonaBundleIDList;
                     _os_log_impl(&dword_1DF2C3000, v35, OS_LOG_TYPE_DEFAULT, "Fetched bundle ID list for (%u) %@: %@", buf, 0x1Cu);
                   }
 
-                  if (v34 && [v34 count])
+                  if (userPersonaBundleIDList && [userPersonaBundleIDList count])
                   {
-                    v37 = [MEMORY[0x1E695DFD8] setWithArray:v34];
+                    v37 = [MEMORY[0x1E695DFD8] setWithArray:userPersonaBundleIDList];
                     [v110 unionSet:v37];
                   }
 
-                  v38 = [v32 userPersonaUniqueString];
-                  if (v38)
+                  userPersonaUniqueString2 = [v32 userPersonaUniqueString];
+                  if (userPersonaUniqueString2)
                   {
-                    v39 = [v6 objectForKeyedSubscript:v38];
+                    v39 = [dictionary2 objectForKeyedSubscript:userPersonaUniqueString2];
 
                     if (v39)
                     {
@@ -718,18 +718,18 @@ LABEL_6:
                       if (os_log_type_enabled(v40, OS_LOG_TYPE_FAULT))
                       {
                         *buf = 138412546;
-                        *v145 = v38;
+                        *v145 = userPersonaUniqueString2;
                         *&v145[8] = 2112;
                         *&v145[10] = v32;
                         _os_log_fault_impl(&dword_1DF2C3000, v40, OS_LOG_TYPE_FAULT, "Persona with duplicate unique string [%@]: %@", buf, 0x16u);
                       }
                     }
 
-                    [v6 setObject:log forKeyedSubscript:v38];
+                    [dictionary2 setObject:log forKeyedSubscript:userPersonaUniqueString2];
                   }
 
                   v41 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(v32, "userPersona_id")}];
-                  [v113 setObject:log forKeyedSubscript:v41];
+                  [dictionary3 setObject:log forKeyedSubscript:v41];
 
                   v18 = v116;
                 }
@@ -771,20 +771,20 @@ LABEL_6:
                   v52 = container_log_handle_for_category();
                   if (os_log_type_enabled(v52, OS_LOG_TYPE_DEBUG))
                   {
-                    v79 = [v51 isUniversalPersona];
-                    v80 = [v51 isSystemPersona];
-                    v81 = [v51 isPersonalPersona];
-                    v82 = [v51 isDataSeparatedPersona];
+                    isUniversalPersona3 = [v51 isUniversalPersona];
+                    isSystemPersona3 = [v51 isSystemPersona];
+                    isPersonalPersona3 = [v51 isPersonalPersona];
+                    isDataSeparatedPersona3 = [v51 isDataSeparatedPersona];
                     *buf = 67110146;
-                    *v145 = v79;
+                    *v145 = isUniversalPersona3;
                     *&v145[4] = 1024;
-                    *&v145[6] = v80;
+                    *&v145[6] = isSystemPersona3;
                     *&v145[10] = 1024;
-                    *&v145[12] = v81;
+                    *&v145[12] = isPersonalPersona3;
                     v49 = v107;
                     v48 = v108;
                     *&v145[16] = 1024;
-                    *&v145[18] = v82;
+                    *&v145[18] = isDataSeparatedPersona3;
                     *&v145[22] = 2112;
                     *&v145[24] = v51;
                     _os_log_debug_impl(&dword_1DF2C3000, v52, OS_LOG_TYPE_DEBUG, "[DS] Looking at universal=%d system=%d personal=%d ds=%d attributes: %@", buf, 0x24u);
@@ -804,7 +804,7 @@ LABEL_6:
                       _os_log_debug_impl(&dword_1DF2C3000, v54, OS_LOG_TYPE_DEBUG, "Creating user identity for %@: %@", buf, 0x16u);
                     }
 
-                    v55 = [v6 objectForKeyedSubscript:obja];
+                    v55 = [dictionary2 objectForKeyedSubscript:obja];
 
                     if (v55)
                     {
@@ -819,15 +819,15 @@ LABEL_6:
                       }
                     }
 
-                    [v6 setObject:v53 forKeyedSubscript:obja];
+                    [dictionary2 setObject:v53 forKeyedSubscript:obja];
                     v57 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(v51, "userPersona_id")}];
-                    [v113 setObject:v53 forKeyedSubscript:v57];
+                    [dictionary3 setObject:v53 forKeyedSubscript:v57];
 
-                    v58 = [v51 sandboxExtensionForPersonaLayoutPath];
-                    v115 = v58;
-                    if (v58)
+                    sandboxExtensionForPersonaLayoutPath = [v51 sandboxExtensionForPersonaLayoutPath];
+                    v115 = sandboxExtensionForPersonaLayoutPath;
+                    if (sandboxExtensionForPersonaLayoutPath)
                     {
-                      [v58 UTF8String];
+                      [sandboxExtensionForPersonaLayoutPath UTF8String];
                       v59 = sandbox_extension_consume();
                       if (v59 < 0)
                       {
@@ -852,34 +852,34 @@ LABEL_6:
                       v62 = container_log_handle_for_category();
                       if (os_log_type_enabled(v62, OS_LOG_TYPE_ERROR))
                       {
-                        v83 = [v51 personaLayoutPathURL];
+                        personaLayoutPathURL = [v51 personaLayoutPathURL];
                         *buf = 138543618;
                         *v145 = obja;
                         *&v145[8] = 2114;
-                        *&v145[10] = v83;
+                        *&v145[10] = personaLayoutPathURL;
                         _os_log_error_impl(&dword_1DF2C3000, v62, OS_LOG_TYPE_ERROR, "Error fetching sandbox extension for persona %{public}@, path %{public}@", buf, 0x16u);
                       }
                     }
 
-                    v63 = [v51 userPersonaBundleIDList];
+                    userPersonaBundleIDList2 = [v51 userPersonaBundleIDList];
                     v64 = container_log_handle_for_category();
                     if (os_log_type_enabled(v64, OS_LOG_TYPE_DEFAULT))
                     {
                       *buf = 138412546;
                       *v145 = v51;
                       *&v145[8] = 2112;
-                      *&v145[10] = v63;
+                      *&v145[10] = userPersonaBundleIDList2;
                       _os_log_impl(&dword_1DF2C3000, v64, OS_LOG_TYPE_DEFAULT, "Fetched bundle ID list for data separated persona %@: %@", buf, 0x16u);
                     }
 
-                    v114 = v63;
-                    if (v63 && [v63 count])
+                    v114 = userPersonaBundleIDList2;
+                    if (userPersonaBundleIDList2 && [userPersonaBundleIDList2 count])
                     {
                       v132 = 0u;
                       v133 = 0u;
                       v130 = 0u;
                       v131 = 0u;
-                      v65 = v63;
+                      v65 = userPersonaBundleIDList2;
                       v66 = [v65 countByEnumeratingWithState:&v130 objects:v129 count:16];
                       if (v66)
                       {
@@ -895,11 +895,11 @@ LABEL_6:
                             }
 
                             v70 = *(*(&v130 + 1) + 8 * k);
-                            v71 = [v5 objectForKeyedSubscript:v70];
+                            v71 = [dictionary objectForKeyedSubscript:v70];
                             if (!v71)
                             {
                               v71 = [MEMORY[0x1E695DFA8] set];
-                              [v5 setObject:v71 forKeyedSubscript:v70];
+                              [dictionary setObject:v71 forKeyedSubscript:v70];
                             }
 
                             [v71 addObject:v53];
@@ -932,11 +932,11 @@ LABEL_6:
                           }
 
                           v77 = *(*(&v125 + 1) + 8 * m);
-                          v78 = [v5 objectForKeyedSubscript:v77];
+                          v78 = [dictionary objectForKeyedSubscript:v77];
                           if (!v78)
                           {
                             v78 = [MEMORY[0x1E695DFA8] set];
-                            [v5 setObject:v78 forKeyedSubscript:v77];
+                            [dictionary setObject:v78 forKeyedSubscript:v77];
                           }
 
                           [v78 addObject:v53];
@@ -949,7 +949,7 @@ LABEL_6:
                     }
 
                     v48 = v108;
-                    v6 = v109;
+                    dictionary2 = v109;
                     v18 = v116;
                     v49 = v107;
                   }
@@ -996,11 +996,11 @@ LABEL_6:
                 }
 
                 v90 = *(*(&v120 + 1) + 8 * n);
-                v91 = [v5 objectForKeyedSubscript:v90];
+                v91 = [dictionary objectForKeyedSubscript:v90];
                 if (!v91)
                 {
                   v91 = [MEMORY[0x1E695DFA8] set];
-                  [v5 setObject:v91 forKeyedSubscript:v90];
+                  [dictionary setObject:v91 forKeyedSubscript:v90];
                 }
 
                 [v91 addObject:v18];
@@ -1012,28 +1012,28 @@ LABEL_6:
             while (v87);
           }
 
-          v92 = [v5 copy];
+          v92 = [dictionary copy];
           lock_bundleToDataSeparatedIdentitiesMap = self->_lock_bundleToDataSeparatedIdentitiesMap;
           self->_lock_bundleToDataSeparatedIdentitiesMap = v92;
 
-          v94 = [v6 copy];
+          v94 = [dictionary2 copy];
           lock_personaUniqueStringToUserIdentityMap = self->_lock_personaUniqueStringToUserIdentityMap;
           self->_lock_personaUniqueStringToUserIdentityMap = v94;
 
-          v96 = [v113 copy];
+          v96 = [dictionary3 copy];
           lock_personaIDToUserIdentityMap = self->_lock_personaIDToUserIdentityMap;
           self->_lock_personaIDToUserIdentityMap = v96;
 
           objc_storeStrong(&self->_lock_userIdentityForPersonalPersona, v18);
           lock_userIdentityForUnspecificPersona = self->_lock_userIdentityForUnspecificPersona;
-          v106->_lock_userIdentityForUnspecificPersona = log;
+          selfCopy->_lock_userIdentityForUnspecificPersona = log;
           log = log;
 
           v99 = container_log_handle_for_category();
           v7 = v104;
           if (os_log_type_enabled(v99, OS_LOG_TYPE_DEBUG))
           {
-            v102 = v106->_lock_personaUniqueStringToUserIdentityMap;
+            v102 = selfCopy->_lock_personaUniqueStringToUserIdentityMap;
             *buf = 138412290;
             *v145 = v102;
             _os_log_debug_impl(&dword_1DF2C3000, v99, OS_LOG_TYPE_DEBUG, "User identities locked in: %@", buf, 0xCu);
@@ -1092,25 +1092,25 @@ LABEL_116:
   return v21;
 }
 
-- (void)_lock_flushAndRepopulateWithUserIdentities:(id)a3
+- (void)_lock_flushAndRepopulateWithUserIdentities:(id)identities
 {
   v42 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v35 = self;
+  identitiesCopy = identities;
+  selfCopy = self;
   os_unfair_lock_assert_owner(&self->_lock);
-  v5 = [MEMORY[0x1E695DF90] dictionary];
-  v6 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  dictionary2 = [MEMORY[0x1E695DF90] dictionary];
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  obj = v4;
+  obj = identitiesCopy;
   v7 = [obj countByEnumeratingWithState:&v38 objects:v37 count:16];
   if (v7)
   {
     v8 = v7;
     v9 = 0;
-    v10 = 0;
+    defaultUserIdentity = 0;
     v11 = *v39;
     do
     {
@@ -1126,7 +1126,7 @@ LABEL_116:
         {
           v14 = v13;
 
-          v10 = v14;
+          defaultUserIdentity = v14;
         }
 
         if ([v13 isNoSpecificPersona])
@@ -1136,16 +1136,16 @@ LABEL_116:
           v9 = v15;
         }
 
-        v16 = [v13 personaUniqueString];
+        personaUniqueString = [v13 personaUniqueString];
 
-        if (v16)
+        if (personaUniqueString)
         {
-          v17 = [v13 personaUniqueString];
-          [v5 setObject:v13 forKeyedSubscript:v17];
+          personaUniqueString2 = [v13 personaUniqueString];
+          [dictionary setObject:v13 forKeyedSubscript:personaUniqueString2];
         }
 
         v18 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(v13, "kernelPersonaID")}];
-        [v6 setObject:v13 forKeyedSubscript:v18];
+        [dictionary2 setObject:v13 forKeyedSubscript:v18];
       }
 
       v8 = [obj countByEnumeratingWithState:&v38 objects:v37 count:16];
@@ -1157,12 +1157,12 @@ LABEL_116:
   else
   {
     v9 = 0;
-    v10 = 0;
+    defaultUserIdentity = 0;
   }
 
-  v19 = v35;
+  v19 = selfCopy;
   [objc_opt_class() personasAreSupported];
-  if (v10)
+  if (defaultUserIdentity)
   {
     if (!v9)
     {
@@ -1172,35 +1172,35 @@ LABEL_116:
 
   else
   {
-    v10 = v9;
-    v9 = v10;
-    if (!v10)
+    defaultUserIdentity = v9;
+    v9 = defaultUserIdentity;
+    if (!defaultUserIdentity)
     {
-      v10 = [(MCMUserIdentityCache *)v35 defaultUserIdentity];
+      defaultUserIdentity = [(MCMUserIdentityCache *)selfCopy defaultUserIdentity];
 LABEL_22:
       v20 = [MCMUserIdentity alloc];
-      v21 = [(MCMUserIdentity *)v10 posixUser];
-      v22 = [(MCMUserIdentity *)v10 homeDirectoryURL];
-      v23 = [(MCMUserIdentity *)v10 personaUniqueString];
-      v9 = [(MCMUserIdentity *)v20 initWithPOSIXUser:v21 homeDirectoryURL:v22 personaUniqueString:v23 personaType:2 kernelPersonaID:[(MCMUserIdentity *)v10 kernelPersonaID]];
+      posixUser = [(MCMUserIdentity *)defaultUserIdentity posixUser];
+      homeDirectoryURL = [(MCMUserIdentity *)defaultUserIdentity homeDirectoryURL];
+      personaUniqueString3 = [(MCMUserIdentity *)defaultUserIdentity personaUniqueString];
+      v9 = [(MCMUserIdentity *)v20 initWithPOSIXUser:posixUser homeDirectoryURL:homeDirectoryURL personaUniqueString:personaUniqueString3 personaType:2 kernelPersonaID:[(MCMUserIdentity *)defaultUserIdentity kernelPersonaID]];
     }
   }
 
-  v24 = [MEMORY[0x1E695DF20] dictionary];
+  dictionary3 = [MEMORY[0x1E695DF20] dictionary];
   lock_bundleToDataSeparatedIdentitiesMap = v19->_lock_bundleToDataSeparatedIdentitiesMap;
-  v19->_lock_bundleToDataSeparatedIdentitiesMap = v24;
+  v19->_lock_bundleToDataSeparatedIdentitiesMap = dictionary3;
 
-  v26 = [v5 copy];
+  v26 = [dictionary copy];
   lock_personaUniqueStringToUserIdentityMap = v19->_lock_personaUniqueStringToUserIdentityMap;
   v19->_lock_personaUniqueStringToUserIdentityMap = v26;
 
-  v28 = [v6 copy];
+  v28 = [dictionary2 copy];
   lock_personaIDToUserIdentityMap = v19->_lock_personaIDToUserIdentityMap;
   v19->_lock_personaIDToUserIdentityMap = v28;
 
   lock_userIdentityForPersonalPersona = v19->_lock_userIdentityForPersonalPersona;
-  v19->_lock_userIdentityForPersonalPersona = v10;
-  v31 = v10;
+  v19->_lock_userIdentityForPersonalPersona = defaultUserIdentity;
+  v31 = defaultUserIdentity;
 
   lock_userIdentityForUnspecificPersona = v19->_lock_userIdentityForUnspecificPersona;
   v19->_lock_userIdentityForUnspecificPersona = v9;
@@ -1215,33 +1215,33 @@ LABEL_22:
   v18 = *MEMORY[0x1E69E9840];
   os_unfair_lock_assert_owner(&self->_lock);
   self->_cacheInvalid = 1;
-  v3 = [MEMORY[0x1E695DF20] dictionary];
+  dictionary = [MEMORY[0x1E695DF20] dictionary];
   lock_bundleToDataSeparatedIdentitiesMap = self->_lock_bundleToDataSeparatedIdentitiesMap;
-  self->_lock_bundleToDataSeparatedIdentitiesMap = v3;
+  self->_lock_bundleToDataSeparatedIdentitiesMap = dictionary;
 
-  v5 = [MEMORY[0x1E695DF20] dictionary];
+  dictionary2 = [MEMORY[0x1E695DF20] dictionary];
   lock_personaUniqueStringToUserIdentityMap = self->_lock_personaUniqueStringToUserIdentityMap;
-  self->_lock_personaUniqueStringToUserIdentityMap = v5;
+  self->_lock_personaUniqueStringToUserIdentityMap = dictionary2;
 
-  v7 = [MEMORY[0x1E695DF20] dictionary];
+  dictionary3 = [MEMORY[0x1E695DF20] dictionary];
   lock_personaIDToUserIdentityMap = self->_lock_personaIDToUserIdentityMap;
-  self->_lock_personaIDToUserIdentityMap = v7;
+  self->_lock_personaIDToUserIdentityMap = dictionary3;
 
-  v9 = [(MCMUserIdentityCache *)self defaultUserIdentity];
+  defaultUserIdentity = [(MCMUserIdentityCache *)self defaultUserIdentity];
   lock_userIdentityForPersonalPersona = self->_lock_userIdentityForPersonalPersona;
-  self->_lock_userIdentityForPersonalPersona = v9;
+  self->_lock_userIdentityForPersonalPersona = defaultUserIdentity;
 
-  v11 = [(MCMUserIdentityCache *)self defaultUserIdentity];
+  defaultUserIdentity2 = [(MCMUserIdentityCache *)self defaultUserIdentity];
   lock_userIdentityForUnspecificPersona = self->_lock_userIdentityForUnspecificPersona;
-  self->_lock_userIdentityForUnspecificPersona = v11;
+  self->_lock_userIdentityForUnspecificPersona = defaultUserIdentity2;
 
-  v13 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary4 = [MEMORY[0x1E695DF90] dictionary];
   lock_managedPathRegistryForUserIdentity = self->_lock_managedPathRegistryForUserIdentity;
-  self->_lock_managedPathRegistryForUserIdentity = v13;
+  self->_lock_managedPathRegistryForUserIdentity = dictionary4;
 
-  v15 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary5 = [MEMORY[0x1E695DF90] dictionary];
   lock_libraryRepairForUserIdentity = self->_lock_libraryRepairForUserIdentity;
-  self->_lock_libraryRepairForUserIdentity = v15;
+  self->_lock_libraryRepairForUserIdentity = dictionary5;
   v17 = *MEMORY[0x1E69E9840];
 
   MEMORY[0x1EEE66BB8]();
@@ -1258,9 +1258,9 @@ LABEL_22:
     v5 = +[MCMTestLocks sharedInstance];
     if ([v5 countOfLock:13] < 1)
     {
-      v8 = [MEMORY[0x1E69DF060] sharedManager];
+      mEMORY[0x1E69DF060] = [MEMORY[0x1E69DF060] sharedManager];
       v22 = 0;
-      v7 = [v8 listAllPersonaAttributesWithError:&v22];
+      v7 = [mEMORY[0x1E69DF060] listAllPersonaAttributesWithError:&v22];
       v6 = v22;
     }
 
@@ -1288,8 +1288,8 @@ LABEL_22:
     {
       self->_fetchedFromUM = [(MCMUserIdentityCache *)self _lock_resync_fromUserPersonaAttributes:v7];
       v11 = MEMORY[0x1E695DFD8];
-      v12 = [(NSDictionary *)self->_lock_personaUniqueStringToUserIdentityMap allValues];
-      v13 = [v11 setWithArray:v12];
+      allValues = [(NSDictionary *)self->_lock_personaUniqueStringToUserIdentityMap allValues];
+      v13 = [v11 setWithArray:allValues];
 
       *buf = 0;
       *&buf[8] = buf;
@@ -1331,41 +1331,41 @@ void __36__MCMUserIdentityCache__lock_resync__block_invoke(uint64_t a1)
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_lock_userIdentityForCurrentUserWithPersonaUniqueString:(id)a3
+- (id)_lock_userIdentityForCurrentUserWithPersonaUniqueString:(id)string
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  stringCopy = string;
   os_unfair_lock_assert_owner(&self->_lock);
-  if (v4)
+  if (stringCopy)
   {
-    v5 = [(MCMUserIdentityCache *)self lock_personaUniqueStringToUserIdentityMap];
-    v6 = [v5 objectForKeyedSubscript:v4];
+    lock_personaUniqueStringToUserIdentityMap = [(MCMUserIdentityCache *)self lock_personaUniqueStringToUserIdentityMap];
+    v6 = [lock_personaUniqueStringToUserIdentityMap objectForKeyedSubscript:stringCopy];
 
     v7 = container_log_handle_for_category();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
-      v12 = [v6 shortDescription];
+      shortDescription = [v6 shortDescription];
       v14 = 138412546;
-      v15 = v12;
+      v15 = shortDescription;
       v16 = 2112;
-      v17 = v4;
+      v17 = stringCopy;
       _os_log_debug_impl(&dword_1DF2C3000, v7, OS_LOG_TYPE_DEBUG, "Found %@ for %@", &v14, 0x16u);
     }
 
     if (!v6)
     {
       [(MCMUserIdentityCache *)self _lock_flush];
-      v8 = [(MCMUserIdentityCache *)self lock_personaUniqueStringToUserIdentityMap];
-      v6 = [v8 objectForKeyedSubscript:v4];
+      lock_personaUniqueStringToUserIdentityMap2 = [(MCMUserIdentityCache *)self lock_personaUniqueStringToUserIdentityMap];
+      v6 = [lock_personaUniqueStringToUserIdentityMap2 objectForKeyedSubscript:stringCopy];
 
       v9 = container_log_handle_for_category();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
       {
-        v13 = [v6 shortDescription];
+        shortDescription2 = [v6 shortDescription];
         v14 = 138412546;
-        v15 = v13;
+        v15 = shortDescription2;
         v16 = 2112;
-        v17 = v4;
+        v17 = stringCopy;
         _os_log_debug_impl(&dword_1DF2C3000, v9, OS_LOG_TYPE_DEBUG, "After refresh, found %@ for %@", &v14, 0x16u);
       }
     }
@@ -1381,22 +1381,22 @@ void __36__MCMUserIdentityCache__lock_resync__block_invoke(uint64_t a1)
   return v6;
 }
 
-- (id)_lock_userIdentitiesForBundleIdentifier:(id)a3
+- (id)_lock_userIdentitiesForBundleIdentifier:(id)identifier
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_assert_owner(&self->_lock);
-  v5 = [(MCMUserIdentityCache *)self lock_bundleToDataSeparatedIdentitiesMap];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  lock_bundleToDataSeparatedIdentitiesMap = [(MCMUserIdentityCache *)self lock_bundleToDataSeparatedIdentitiesMap];
+  v6 = [lock_bundleToDataSeparatedIdentitiesMap objectForKeyedSubscript:identifierCopy];
 
   if (!v6)
   {
-    v7 = [(MCMUserIdentityCache *)self lock_userIdentityForPersonalPersona];
+    lock_userIdentityForPersonalPersona = [(MCMUserIdentityCache *)self lock_userIdentityForPersonalPersona];
     v8 = MEMORY[0x1E695DFD8];
-    if (v7)
+    if (lock_userIdentityForPersonalPersona)
     {
-      v9 = [(MCMUserIdentityCache *)self lock_userIdentityForPersonalPersona];
-      v6 = [v8 setWithObject:v9];
+      lock_userIdentityForPersonalPersona2 = [(MCMUserIdentityCache *)self lock_userIdentityForPersonalPersona];
+      v6 = [v8 setWithObject:lock_userIdentityForPersonalPersona2];
     }
 
     else
@@ -1425,30 +1425,30 @@ void __36__MCMUserIdentityCache__lock_resync__block_invoke(uint64_t a1)
   return lock_userIdentityForUnspecificPersona;
 }
 
-- (id)libraryRepairForUserIdentity:(id)a3
+- (id)libraryRepairForUserIdentity:(id)identity
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  identityCopy = identity;
+  if (!identityCopy)
   {
-    v4 = [(MCMUserIdentityCache *)self defaultUserIdentity];
+    identityCopy = [(MCMUserIdentityCache *)self defaultUserIdentity];
   }
 
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(NSMutableDictionary *)self->_lock_libraryRepairForUserIdentity objectForKeyedSubscript:v4];
+  v5 = [(NSMutableDictionary *)self->_lock_libraryRepairForUserIdentity objectForKeyedSubscript:identityCopy];
   os_unfair_lock_unlock(&self->_lock);
   if (!v5)
   {
-    v6 = [(MCMUserIdentityCache *)self managedUserPathRegistryForUserIdentity:v4];
+    v6 = [(MCMUserIdentityCache *)self managedUserPathRegistryForUserIdentity:identityCopy];
     v7 = [MCMLibraryRepairForUser alloc];
     v8 = +[MCMFileManager defaultManager];
-    v9 = [(MCMUserIdentityCache *)self classIterator];
-    v5 = [(MCMLibraryRepairForUser *)v7 initWithManagedUserPathRegistry:v6 fileManager:v8 classIterator:v9];
+    classIterator = [(MCMUserIdentityCache *)self classIterator];
+    v5 = [(MCMLibraryRepairForUser *)v7 initWithManagedUserPathRegistry:v6 fileManager:v8 classIterator:classIterator];
 
     os_unfair_lock_lock(&self->_lock);
-    [(NSMutableDictionary *)self->_lock_libraryRepairForUserIdentity setObject:v5 forKeyedSubscript:v4];
+    [(NSMutableDictionary *)self->_lock_libraryRepairForUserIdentity setObject:v5 forKeyedSubscript:identityCopy];
     os_unfair_lock_unlock(&self->_lock);
-    if ([v4 personaType] != 3)
+    if ([identityCopy personaType] != 3)
     {
       v15 = 0;
       v10 = [(MCMLibraryRepair *)v5 createPathsIfNecessaryWithError:&v15];
@@ -1459,7 +1459,7 @@ void __36__MCMUserIdentityCache__lock_resync__block_invoke(uint64_t a1)
         if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412546;
-          v17 = v4;
+          v17 = identityCopy;
           v18 = 2114;
           v19 = v11;
           _os_log_error_impl(&dword_1DF2C3000, v12, OS_LOG_TYPE_ERROR, "Failed creating working directories for %@: %{public}@", buf, 0x16u);
@@ -1473,27 +1473,27 @@ void __36__MCMUserIdentityCache__lock_resync__block_invoke(uint64_t a1)
   return v5;
 }
 
-- (id)managedUserPathRegistryForUserIdentity:(id)a3
+- (id)managedUserPathRegistryForUserIdentity:(id)identity
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  identityCopy = identity;
+  if (!identityCopy)
   {
-    v4 = [(MCMUserIdentityCache *)self defaultUserIdentity];
+    identityCopy = [(MCMUserIdentityCache *)self defaultUserIdentity];
   }
 
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(NSMutableDictionary *)self->_lock_managedPathRegistryForUserIdentity objectForKeyedSubscript:v4];
+  v5 = [(NSMutableDictionary *)self->_lock_managedPathRegistryForUserIdentity objectForKeyedSubscript:identityCopy];
   os_unfair_lock_unlock(&self->_lock);
   if (!v5)
   {
     v6 = [MCMManagedUserPathRegistry alloc];
     v7 = containermanager_copy_global_configuration();
-    v8 = [v7 currentUser];
-    v5 = [(MCMManagedUserPathRegistry *)v6 initWithUserIdentity:v4 daemonUser:v8];
+    currentUser = [v7 currentUser];
+    v5 = [(MCMManagedUserPathRegistry *)v6 initWithUserIdentity:identityCopy daemonUser:currentUser];
 
     os_unfair_lock_lock(&self->_lock);
-    [(NSMutableDictionary *)self->_lock_managedPathRegistryForUserIdentity setObject:v5 forKeyedSubscript:v4];
+    [(NSMutableDictionary *)self->_lock_managedPathRegistryForUserIdentity setObject:v5 forKeyedSubscript:identityCopy];
     os_unfair_lock_unlock(&self->_lock);
   }
 
@@ -1502,38 +1502,38 @@ void __36__MCMUserIdentityCache__lock_resync__block_invoke(uint64_t a1)
   return v5;
 }
 
-- (void)removeUserIdentityCacheObserver:(id)a3
+- (void)removeUserIdentityCacheObserver:(id)observer
 {
   v8 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v4 = [(MCMUserIdentityCache *)self observers];
-  objc_sync_enter(v4);
-  v5 = [(MCMUserIdentityCache *)self observers];
-  [v5 removeObject:v7];
+  observerCopy = observer;
+  observers = [(MCMUserIdentityCache *)self observers];
+  objc_sync_enter(observers);
+  observers2 = [(MCMUserIdentityCache *)self observers];
+  [observers2 removeObject:observerCopy];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(observers);
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addUserIdentityCacheObserver:(id)a3
+- (void)addUserIdentityCacheObserver:(id)observer
 {
   v8 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v4 = [(MCMUserIdentityCache *)self observers];
-  objc_sync_enter(v4);
-  v5 = [(MCMUserIdentityCache *)self observers];
-  [v5 addObject:v7];
+  observerCopy = observer;
+  observers = [(MCMUserIdentityCache *)self observers];
+  objc_sync_enter(observers);
+  observers2 = [(MCMUserIdentityCache *)self observers];
+  [observers2 addObject:observerCopy];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(observers);
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)flushAndRepopulateWithUserIdentities:(id)a3
+- (void)flushAndRepopulateWithUserIdentities:(id)identities
 {
   v6 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identitiesCopy = identities;
   os_unfair_lock_lock(&self->_lock);
-  [(MCMUserIdentityCache *)self _lock_flushAndRepopulateWithUserIdentities:v4];
+  [(MCMUserIdentityCache *)self _lock_flushAndRepopulateWithUserIdentities:identitiesCopy];
 
   v5 = *MEMORY[0x1E69E9840];
 
@@ -1551,10 +1551,10 @@ void __36__MCMUserIdentityCache__lock_resync__block_invoke(uint64_t a1)
 - (id)userIdentityForCurrentContext
 {
   v9 = *MEMORY[0x1E69E9840];
-  v3 = [(MCMUserIdentityCache *)self personaUniqueStringForCurrentContext];
+  personaUniqueStringForCurrentContext = [(MCMUserIdentityCache *)self personaUniqueStringForCurrentContext];
   v4 = containermanager_copy_global_configuration();
-  v5 = [v4 defaultUser];
-  v6 = [(MCMUserIdentityCache *)self userIdentityForPersonaUniqueString:v3 POSIXUser:v5];
+  defaultUser = [v4 defaultUser];
+  v6 = [(MCMUserIdentityCache *)self userIdentityForPersonaUniqueString:personaUniqueStringForCurrentContext POSIXUser:defaultUser];
 
   v7 = *MEMORY[0x1E69E9840];
 
@@ -1579,15 +1579,15 @@ uint64_t __60__MCMUserIdentityCache_personaUniqueStringForCurrentContext__block_
   return [v2 globalBundleUserIdentity];
 }
 
-- (id)userIdentitiesForContainerConfig:(id)a3 originatorUserIdentities:(id)a4
+- (id)userIdentitiesForContainerConfig:(id)config originatorUserIdentities:(id)identities
 {
   v15 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (([v6 personaAndUserSpecific] & 1) == 0)
+  configCopy = config;
+  identitiesCopy = identities;
+  v8 = identitiesCopy;
+  if (([configCopy personaAndUserSpecific] & 1) == 0)
   {
-    v9 = [(MCMUserIdentityCache *)self userIdentityForContainerConfig:v6 originatorUserIdentity:0];
+    v9 = [(MCMUserIdentityCache *)self userIdentityForContainerConfig:configCopy originatorUserIdentity:0];
     v8 = [MEMORY[0x1E695DFD8] setWithObject:v9];
   }
 
@@ -1599,8 +1599,8 @@ uint64_t __60__MCMUserIdentityCache_personaUniqueStringForCurrentContext__block_
   else
   {
     v11 = MEMORY[0x1E695DFD8];
-    v12 = [(MCMUserIdentityCache *)self defaultUserIdentity];
-    v10 = [v11 setWithObject:v12];
+    defaultUserIdentity = [(MCMUserIdentityCache *)self defaultUserIdentity];
+    v10 = [v11 setWithObject:defaultUserIdentity];
   }
 
   v13 = *MEMORY[0x1E69E9840];
@@ -1608,22 +1608,22 @@ uint64_t __60__MCMUserIdentityCache_personaUniqueStringForCurrentContext__block_
   return v10;
 }
 
-- (id)userIdentityForContainerConfig:(id)a3 originatorUserIdentity:(id)a4
+- (id)userIdentityForContainerConfig:(id)config originatorUserIdentity:(id)identity
 {
   v14 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (([v6 personaAndUserSpecific] & 1) == 0)
+  configCopy = config;
+  identityCopy = identity;
+  v8 = identityCopy;
+  if (([configCopy personaAndUserSpecific] & 1) == 0)
   {
-    if ([v6 usesGlobalBundleUserIdentity])
+    if ([configCopy usesGlobalBundleUserIdentity])
     {
-      v9 = [(MCMUserIdentityCache *)self globalBundleUserIdentity];
+      globalBundleUserIdentity = [(MCMUserIdentityCache *)self globalBundleUserIdentity];
     }
 
     else
     {
-      if ([v6 usesGlobalSystemUserIdentity])
+      if ([configCopy usesGlobalSystemUserIdentity])
       {
         [(MCMUserIdentityCache *)self globalSystemUserIdentity];
       }
@@ -1632,39 +1632,39 @@ uint64_t __60__MCMUserIdentityCache_personaUniqueStringForCurrentContext__block_
       {
         [(MCMUserIdentityCache *)self defaultUserIdentity];
       }
-      v9 = ;
+      globalBundleUserIdentity = ;
     }
 
-    v8 = v9;
+    v8 = globalBundleUserIdentity;
   }
 
   if (v8)
   {
-    v10 = v8;
+    defaultUserIdentity = v8;
   }
 
   else
   {
-    v10 = [(MCMUserIdentityCache *)self defaultUserIdentity];
+    defaultUserIdentity = [(MCMUserIdentityCache *)self defaultUserIdentity];
   }
 
-  v11 = v10;
+  v11 = defaultUserIdentity;
 
   v12 = *MEMORY[0x1E69E9840];
 
   return v11;
 }
 
-- (void)forEachAccessibleUserIdentitySynchronouslyExecuteBlock:(id)a3
+- (void)forEachAccessibleUserIdentitySynchronouslyExecuteBlock:(id)block
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(MCMUserIdentityCache *)self allAccessibleUserIdentities];
+  blockCopy = block;
+  allAccessibleUserIdentities = [(MCMUserIdentityCache *)self allAccessibleUserIdentities];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v11 count:16];
+  v6 = [allAccessibleUserIdentities countByEnumeratingWithState:&v12 objects:v11 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1676,14 +1676,14 @@ uint64_t __60__MCMUserIdentityCache_personaUniqueStringForCurrentContext__block_
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allAccessibleUserIdentities);
         }
 
-        v4[2](v4, *(*(&v12 + 1) + 8 * v9++));
+        blockCopy[2](blockCopy, *(*(&v12 + 1) + 8 * v9++));
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v11 count:16];
+      v7 = [allAccessibleUserIdentities countByEnumeratingWithState:&v12 objects:v11 count:16];
     }
 
     while (v7);
@@ -1700,15 +1700,15 @@ uint64_t __60__MCMUserIdentityCache_personaUniqueStringForCurrentContext__block_
   if ([objc_opt_class() personasAreSupported])
   {
     os_unfair_lock_lock(&self->_lock);
-    v4 = [(MCMUserIdentityCache *)self lock_personaUniqueStringToUserIdentityMap];
-    v5 = [v4 allValues];
+    lock_personaUniqueStringToUserIdentityMap = [(MCMUserIdentityCache *)self lock_personaUniqueStringToUserIdentityMap];
+    allValues = [lock_personaUniqueStringToUserIdentityMap allValues];
 
     os_unfair_lock_unlock(&self->_lock);
     v24 = 0u;
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v6 = v5;
+    v6 = allValues;
     v7 = [v6 countByEnumeratingWithState:&v22 objects:v21 count:16];
     if (v7)
     {
@@ -1742,21 +1742,21 @@ uint64_t __60__MCMUserIdentityCache_personaUniqueStringForCurrentContext__block_
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
         v17 = 138412546;
-        v18 = self;
+        selfCopy = self;
         v19 = 2112;
         v20 = v3;
         _os_log_error_impl(&dword_1DF2C3000, v12, OS_LOG_TYPE_ERROR, "Expected to find at least one persona; self = %@, personaAttributeList = %@", &v17, 0x16u);
       }
 
-      v13 = [(MCMUserIdentityCache *)self defaultUserIdentity];
-      [v3 addObject:v13];
+      defaultUserIdentity = [(MCMUserIdentityCache *)self defaultUserIdentity];
+      [v3 addObject:defaultUserIdentity];
     }
   }
 
   else
   {
-    v14 = [(MCMUserIdentityCache *)self defaultUserIdentity];
-    [v3 addObject:v14];
+    defaultUserIdentity2 = [(MCMUserIdentityCache *)self defaultUserIdentity];
+    [v3 addObject:defaultUserIdentity2];
   }
 
   v15 = *MEMORY[0x1E69E9840];
@@ -1775,35 +1775,35 @@ uint64_t __60__MCMUserIdentityCache_personaUniqueStringForCurrentContext__block_
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (id)userIdentityForPersonalPersonaWithPOSIXUser:(id)a3
+- (id)userIdentityForPersonalPersonaWithPOSIXUser:(id)user
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  userCopy = user;
   [(MCMUserIdentityCache *)self _refreshFromUserManagementIfNecessary];
-  if ([v4 isRoleUser])
+  if ([userCopy isRoleUser])
   {
     v5 = containermanager_copy_global_configuration();
-    v6 = [v5 defaultUser];
+    defaultUser = [v5 defaultUser];
 
-    v4 = v6;
+    userCopy = defaultUser;
   }
 
   os_unfair_lock_lock(&self->_lock);
-  v7 = [(MCMUserIdentityCache *)self lock_userIdentityForPersonalPersona];
+  lock_userIdentityForPersonalPersona = [(MCMUserIdentityCache *)self lock_userIdentityForPersonalPersona];
   os_unfair_lock_unlock(&self->_lock);
-  v8 = [v7 posixUser];
-  v9 = [v8 isEqual:v4];
+  posixUser = [lock_userIdentityForPersonalPersona posixUser];
+  v9 = [posixUser isEqual:userCopy];
 
   if ((v9 & 1) == 0)
   {
-    v10 = [v7 userIdentityWithPOSIXUser:v4];
+    v10 = [lock_userIdentityForPersonalPersona userIdentityWithPOSIXUser:userCopy];
 
-    v7 = v10;
+    lock_userIdentityForPersonalPersona = v10;
   }
 
   v11 = *MEMORY[0x1E69E9840];
 
-  return v7;
+  return lock_userIdentityForPersonalPersona;
 }
 
 - (id)unspecificUserIdentity
@@ -1811,30 +1811,30 @@ uint64_t __60__MCMUserIdentityCache_personaUniqueStringForCurrentContext__block_
   v6 = *MEMORY[0x1E69E9840];
   [(MCMUserIdentityCache *)self _refreshFromUserManagementIfNecessary];
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(MCMUserIdentityCache *)self lock_userIdentityForUnspecificPersona];
+  lock_userIdentityForUnspecificPersona = [(MCMUserIdentityCache *)self lock_userIdentityForUnspecificPersona];
   os_unfair_lock_unlock(&self->_lock);
   v4 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return lock_userIdentityForUnspecificPersona;
 }
 
-- (id)userIdentityForClient:(container_client *)a3 error:(id *)a4
+- (id)userIdentityForClient:(container_client *)client error:(id *)error
 {
   v19 = *MEMORY[0x1E69E9840];
   [(MCMUserIdentityCache *)self _refreshFromUserManagementIfNecessary];
   persona_unique_string = container_client_get_persona_unique_string();
   euid = container_client_get_euid();
   v8 = containermanager_copy_global_configuration();
-  v9 = [v8 defaultUser];
+  defaultUser = [v8 defaultUser];
 
   v10 = containermanager_copy_global_configuration();
-  v11 = [v10 userContainerMode];
+  userContainerMode = [v10 userContainerMode];
 
-  if (v11 == 2)
+  if (userContainerMode == 2)
   {
     v12 = [MCMPOSIXUser posixUserWithUID:euid];
 
-    v9 = v12;
+    defaultUser = v12;
   }
 
   if (persona_unique_string)
@@ -1842,7 +1842,7 @@ uint64_t __60__MCMUserIdentityCache_personaUniqueStringForCurrentContext__block_
     persona_unique_string = [MEMORY[0x1E696AEC0] stringWithUTF8String:persona_unique_string];
   }
 
-  v13 = [(MCMUserIdentityCache *)self userIdentityForPersonaUniqueString:persona_unique_string POSIXUser:v9];
+  v13 = [(MCMUserIdentityCache *)self userIdentityForPersonaUniqueString:persona_unique_string POSIXUser:defaultUser];
   if (v13)
   {
     v14 = 0;
@@ -1852,10 +1852,10 @@ uint64_t __60__MCMUserIdentityCache_personaUniqueStringForCurrentContext__block_
   {
     v15 = [[MCMError alloc] initWithErrorType:76 category:3];
     v14 = v15;
-    if (a4)
+    if (error)
     {
       v16 = v15;
-      *a4 = v14;
+      *error = v14;
     }
   }
 
@@ -1864,30 +1864,30 @@ uint64_t __60__MCMUserIdentityCache_personaUniqueStringForCurrentContext__block_
   return v13;
 }
 
-- (id)userIdentityForPersonaUniqueString:(id)a3 POSIXUser:(id)a4
+- (id)userIdentityForPersonaUniqueString:(id)string POSIXUser:(id)user
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  stringCopy = string;
+  userCopy = user;
   [(MCMUserIdentityCache *)self _refreshFromUserManagementIfNecessary];
-  if ([v7 isRoleUser])
+  if ([userCopy isRoleUser])
   {
     v8 = containermanager_copy_global_configuration();
-    v9 = [v8 defaultUser];
+    defaultUser = [v8 defaultUser];
 
-    v7 = v9;
+    userCopy = defaultUser;
   }
 
   if (![objc_opt_class() personasAreSupported])
   {
-    v12 = [(MCMUserIdentityCache *)self userIdentityForPersonalPersonaWithPOSIXUser:v7];
+    unspecificUserIdentity = [(MCMUserIdentityCache *)self userIdentityForPersonalPersonaWithPOSIXUser:userCopy];
     goto LABEL_16;
   }
 
-  if (!v6)
+  if (!stringCopy)
   {
-    v12 = [(MCMUserIdentityCache *)self unspecificUserIdentity];
-    if (!v12)
+    unspecificUserIdentity = [(MCMUserIdentityCache *)self unspecificUserIdentity];
+    if (!unspecificUserIdentity)
     {
       goto LABEL_16;
     }
@@ -1896,14 +1896,14 @@ uint64_t __60__MCMUserIdentityCache_personaUniqueStringForCurrentContext__block_
   }
 
   v10 = [MEMORY[0x1E696AEC0] stringWithUTF8String:*MEMORY[0x1E69E9980]];
-  v11 = [v6 isEqualToString:v10];
+  v11 = [stringCopy isEqualToString:v10];
 
   if (!v11)
   {
     os_unfair_lock_lock(&self->_lock);
-    v12 = [(MCMUserIdentityCache *)self _lock_userIdentityForCurrentUserWithPersonaUniqueString:v6];
+    unspecificUserIdentity = [(MCMUserIdentityCache *)self _lock_userIdentityForCurrentUserWithPersonaUniqueString:stringCopy];
     os_unfair_lock_unlock(&self->_lock);
-    if (!v12)
+    if (!unspecificUserIdentity)
     {
       goto LABEL_16;
     }
@@ -1911,27 +1911,27 @@ uint64_t __60__MCMUserIdentityCache_personaUniqueStringForCurrentContext__block_
     goto LABEL_14;
   }
 
-  v12 = [(MCMUserIdentityCache *)self userIdentityForPersonalPersona];
+  unspecificUserIdentity = [(MCMUserIdentityCache *)self userIdentityForPersonalPersona];
   v13 = container_log_handle_for_category();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
-    v19 = [v12 debugDescription];
+    v19 = [unspecificUserIdentity debugDescription];
     v20 = 138412290;
     v21 = v19;
     _os_log_debug_impl(&dword_1DF2C3000, v13, OS_LOG_TYPE_DEBUG, "Sentinel persona, using: %@", &v20, 0xCu);
   }
 
-  if (v12)
+  if (unspecificUserIdentity)
   {
 LABEL_14:
-    v14 = [v12 posixUser];
-    v15 = [v14 isEqual:v7];
+    posixUser = [unspecificUserIdentity posixUser];
+    v15 = [posixUser isEqual:userCopy];
 
     if ((v15 & 1) == 0)
     {
-      v16 = [v12 userIdentityWithPOSIXUser:v7];
+      v16 = [unspecificUserIdentity userIdentityWithPOSIXUser:userCopy];
 
-      v12 = v16;
+      unspecificUserIdentity = v16;
     }
   }
 
@@ -1939,38 +1939,38 @@ LABEL_16:
 
   v17 = *MEMORY[0x1E69E9840];
 
-  return v12;
+  return unspecificUserIdentity;
 }
 
-- (id)userIdentityForCurrentUserWithPersonaUniqueString:(id)a3
+- (id)userIdentityForCurrentUserWithPersonaUniqueString:(id)string
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  stringCopy = string;
   [(MCMUserIdentityCache *)self _refreshFromUserManagementIfNecessary];
   if (![objc_opt_class() personasAreSupported])
   {
-    v9 = [(MCMUserIdentityCache *)self userIdentityForPersonalPersona];
+    userIdentityForPersonalPersona = [(MCMUserIdentityCache *)self userIdentityForPersonalPersona];
 LABEL_9:
-    v7 = v9;
+    userIdentityForPersonalPersona2 = userIdentityForPersonalPersona;
     goto LABEL_10;
   }
 
-  if (!v4)
+  if (!stringCopy)
   {
-    v9 = [(MCMUserIdentityCache *)self unspecificUserIdentity];
+    userIdentityForPersonalPersona = [(MCMUserIdentityCache *)self unspecificUserIdentity];
     goto LABEL_9;
   }
 
   v5 = [MEMORY[0x1E696AEC0] stringWithUTF8String:*MEMORY[0x1E69E9980]];
-  v6 = [v4 isEqualToString:v5];
+  v6 = [stringCopy isEqualToString:v5];
 
   if (v6)
   {
-    v7 = [(MCMUserIdentityCache *)self userIdentityForPersonalPersona];
+    userIdentityForPersonalPersona2 = [(MCMUserIdentityCache *)self userIdentityForPersonalPersona];
     v8 = container_log_handle_for_category();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
-      v12 = [v7 debugDescription];
+      v12 = [userIdentityForPersonalPersona2 debugDescription];
       v13 = 138412290;
       v14 = v12;
       _os_log_debug_impl(&dword_1DF2C3000, v8, OS_LOG_TYPE_DEBUG, "Sentinel persona, using: %@", &v13, 0xCu);
@@ -1980,7 +1980,7 @@ LABEL_9:
   else
   {
     os_unfair_lock_lock(&self->_lock);
-    v7 = [(MCMUserIdentityCache *)self _lock_userIdentityForCurrentUserWithPersonaUniqueString:v4];
+    userIdentityForPersonalPersona2 = [(MCMUserIdentityCache *)self _lock_userIdentityForCurrentUserWithPersonaUniqueString:stringCopy];
     os_unfair_lock_unlock(&self->_lock);
   }
 
@@ -1988,16 +1988,16 @@ LABEL_10:
 
   v10 = *MEMORY[0x1E69E9840];
 
-  return v7;
+  return userIdentityForPersonalPersona2;
 }
 
-- (id)userIdentitiesForBundleIdentifier:(id)a3
+- (id)userIdentitiesForBundleIdentifier:(id)identifier
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   [(MCMUserIdentityCache *)self _refreshFromUserManagementIfNecessary];
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(MCMUserIdentityCache *)self _lock_userIdentitiesForBundleIdentifier:v4];
+  v5 = [(MCMUserIdentityCache *)self _lock_userIdentitiesForBundleIdentifier:identifierCopy];
 
   os_unfair_lock_unlock(&self->_lock);
   if (v5)
@@ -2027,9 +2027,9 @@ LABEL_10:
   if (v2)
   {
     v2->_lock._os_unfair_lock_opaque = 0;
-    v4 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     observers = v3->_observers;
-    v3->_observers = v4;
+    v3->_observers = weakObjectsHashTable;
 
     listener = v3->_listener;
     v3->_listener = 0;
@@ -2043,9 +2043,9 @@ LABEL_10:
     v3->_flushQueue = v9;
 
     v11 = containermanager_copy_global_configuration();
-    v12 = [v11 classIterator];
+    classIterator = [v11 classIterator];
     classIterator = v3->_classIterator;
-    v3->_classIterator = v12;
+    v3->_classIterator = classIterator;
 
     *&v3->_fetchedFromUM = 256;
     v14 = objc_opt_new();
@@ -2061,16 +2061,16 @@ LABEL_10:
   return v3;
 }
 
-+ (id)userIdentityWithPersonaAttributes:(id)a3 POSIXUser:(id)a4 forceUnspecific:(BOOL)a5
++ (id)userIdentityWithPersonaAttributes:(id)attributes POSIXUser:(id)user forceUnspecific:(BOOL)unspecific
 {
   v21 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = [v8 UID];
-  v10 = [v7 userPersonaUniqueString];
-  if (v7 && (v9 = [v7 userPersona_id], objc_msgSend(v7, "isDataSeparatedPersona")) && (objc_msgSend(v7, "personaLayoutPathURL"), (v11 = objc_claimAutoreleasedReturnValue()) != 0))
+  attributesCopy = attributes;
+  userCopy = user;
+  v9 = [userCopy UID];
+  userPersonaUniqueString = [attributesCopy userPersonaUniqueString];
+  if (attributesCopy && (v9 = [attributesCopy userPersona_id], objc_msgSend(attributesCopy, "isDataSeparatedPersona")) && (objc_msgSend(attributesCopy, "personaLayoutPathURL"), (homeDirectoryURL = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    if (a5)
+    if (unspecific)
     {
       goto LABEL_7;
     }
@@ -2078,26 +2078,26 @@ LABEL_10:
 
   else
   {
-    v11 = [v8 homeDirectoryURL];
-    if (a5)
+    homeDirectoryURL = [userCopy homeDirectoryURL];
+    if (unspecific)
     {
       goto LABEL_7;
     }
   }
 
-  if ([v7 isPersonalPersona])
+  if ([attributesCopy isPersonalPersona])
   {
     v12 = 0;
     goto LABEL_12;
   }
 
-  if ([v7 isDataSeparatedPersona])
+  if ([attributesCopy isDataSeparatedPersona])
   {
     v12 = 1;
     goto LABEL_12;
   }
 
-  if ([v7 isSystemPersona] & 1) != 0 || (objc_msgSend(v7, "isDefaultPersona"))
+  if ([attributesCopy isSystemPersona] & 1) != 0 || (objc_msgSend(attributesCopy, "isDefaultPersona"))
   {
 LABEL_7:
     v12 = 2;
@@ -2108,27 +2108,27 @@ LABEL_7:
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
     v17 = 134218242;
-    v18 = [v7 userPersonaType];
+    userPersonaType = [attributesCopy userPersonaType];
     v19 = 2114;
-    v20 = v7;
+    v20 = attributesCopy;
     _os_log_impl(&dword_1DF2C3000, v16, OS_LOG_TYPE_DEFAULT, "Persona of unknown type %lu being treated as Unspecific: %{public}@", &v17, 0x16u);
   }
 
   v12 = 3;
 LABEL_12:
-  v13 = [[MCMUserIdentity alloc] initWithPOSIXUser:v8 homeDirectoryURL:v11 personaUniqueString:v10 personaType:v12 kernelPersonaID:v9];
+  v13 = [[MCMUserIdentity alloc] initWithPOSIXUser:userCopy homeDirectoryURL:homeDirectoryURL personaUniqueString:userPersonaUniqueString personaType:v12 kernelPersonaID:v9];
 
   v14 = *MEMORY[0x1E69E9840];
 
   return v13;
 }
 
-+ (id)userIdentityWithPersonaAttributes:(id)a3
++ (id)userIdentityWithPersonaAttributes:(id)attributes
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = *MEMORY[0x1E69E9840];
 
-  return [a1 userIdentityWithPersonaAttributes:a3 forceUnspecific:0];
+  return [self userIdentityWithPersonaAttributes:attributes forceUnspecific:0];
 }
 
 void __48__MCMUserIdentityCache_globalSystemUserIdentity__block_invoke()
@@ -2179,11 +2179,11 @@ void __48__MCMUserIdentityCache_globalBundleUserIdentity__block_invoke()
 {
   v6 = *MEMORY[0x1E69E9840];
   v2 = +[MCMUserIdentitySharedCache sharedInstance];
-  v3 = [v2 defaultUserIdentity];
+  defaultUserIdentity = [v2 defaultUserIdentity];
 
   v4 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return defaultUserIdentity;
 }
 
 @end

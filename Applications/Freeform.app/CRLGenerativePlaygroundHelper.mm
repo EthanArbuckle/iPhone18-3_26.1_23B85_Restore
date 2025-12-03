@@ -1,22 +1,22 @@
 @interface CRLGenerativePlaygroundHelper
-+ (BOOL)iccHasGenerativePlaygroundInputSelection:(id)a3;
-+ (id)iptcMetadataFor:(id)a3;
++ (BOOL)iccHasGenerativePlaygroundInputSelection:(id)selection;
++ (id)iptcMetadataFor:(id)for;
 @end
 
 @implementation CRLGenerativePlaygroundHelper
 
-+ (BOOL)iccHasGenerativePlaygroundInputSelection:(id)a3
++ (BOOL)iccHasGenerativePlaygroundInputSelection:(id)selection
 {
-  v3 = a3;
-  v4 = sub_10126EF20(v3);
+  selectionCopy = selection;
+  v4 = sub_10126EF20(selectionCopy);
 
   return v4 & 1;
 }
 
-+ (id)iptcMetadataFor:(id)a3
++ (id)iptcMetadataFor:(id)for
 {
-  v3 = a3;
-  sub_10126BFAC(v3);
+  forCopy = for;
+  sub_10126BFAC(forCopy);
   v5 = v4;
 
   if (v5)

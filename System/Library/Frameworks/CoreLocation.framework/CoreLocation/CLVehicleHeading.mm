@@ -1,17 +1,17 @@
 @interface CLVehicleHeading
-- (CLVehicleHeading)initWithClientVehicleHeading:(id)a3;
-- (CLVehicleHeading)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CLVehicleHeading)initWithClientVehicleHeading:(id)heading;
+- (CLVehicleHeading)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CLVehicleHeading
 
-- (CLVehicleHeading)initWithClientVehicleHeading:(id)a3
+- (CLVehicleHeading)initWithClientVehicleHeading:(id)heading
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = heading.var1;
+  var0 = heading.var0;
   v7.receiver = self;
   v7.super_class = CLVehicleHeading;
   v5 = [(CLVehicleHeading *)&v7 init];
@@ -23,23 +23,23 @@
   return v5;
 }
 
-- (CLVehicleHeading)initWithCoder:(id)a3
+- (CLVehicleHeading)initWithCoder:(id)coder
 {
   v10 = 0.0;
   v11 = 0.0;
-  if ([a3 allowsKeyedCoding])
+  if ([coder allowsKeyedCoding])
   {
-    [a3 decodeDoubleForKey:@"kCLVehicleHeadingCodingKeyTrueHeading"];
+    [coder decodeDoubleForKey:@"kCLVehicleHeadingCodingKeyTrueHeading"];
     v6 = v5;
-    [a3 decodeDoubleForKey:{@"kCLVehicleHeadingCodingKeyTimestamp", *&v5}];
+    [coder decodeDoubleForKey:{@"kCLVehicleHeadingCodingKeyTimestamp", *&v5}];
     v8 = v7;
     v11 = v7;
   }
 
   else
   {
-    [a3 decodeValueOfObjCType:"d" at:&v10];
-    [a3 decodeValueOfObjCType:"d" at:&v11];
+    [coder decodeValueOfObjCType:"d" at:&v10];
+    [coder decodeValueOfObjCType:"d" at:&v11];
     v6 = v10;
     v8 = v11;
   }
@@ -47,22 +47,22 @@
   return [(CLVehicleHeading *)self initWithClientVehicleHeading:v6, v8];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   internal = self->_internal;
-  if ([a3 allowsKeyedCoding])
+  if ([coder allowsKeyedCoding])
   {
-    [a3 encodeDouble:@"kCLVehicleHeadingCodingKeyTrueHeading" forKey:internal[1]];
+    [coder encodeDouble:@"kCLVehicleHeadingCodingKeyTrueHeading" forKey:internal[1]];
     v5 = internal[2];
 
-    [a3 encodeDouble:@"kCLVehicleHeadingCodingKeyTimestamp" forKey:v5];
+    [coder encodeDouble:@"kCLVehicleHeadingCodingKeyTimestamp" forKey:v5];
   }
 
   else
   {
-    [a3 encodeValueOfObjCType:"d" at:internal + 1];
+    [coder encodeValueOfObjCType:"d" at:internal + 1];
 
-    [a3 encodeValueOfObjCType:"d" at:internal + 2];
+    [coder encodeValueOfObjCType:"d" at:internal + 2];
   }
 }
 
@@ -73,10 +73,10 @@
   [(CLVehicleHeading *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_opt_class() allocWithZone:a3];
-  v5[1] = [self->_internal copyWithZone:a3];
+  v5 = [objc_opt_class() allocWithZone:zone];
+  v5[1] = [self->_internal copyWithZone:zone];
   return v5;
 }
 

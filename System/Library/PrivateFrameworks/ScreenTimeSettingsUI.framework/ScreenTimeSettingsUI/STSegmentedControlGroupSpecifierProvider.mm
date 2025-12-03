@@ -1,9 +1,9 @@
 @interface STSegmentedControlGroupSpecifierProvider
 - (STSegmentedControlGroupSpecifierProvider)init;
-- (void)_selectedDayDidChange:(id)a3;
-- (void)_selectedSegmentIndexChanged:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setCoordinator:(id)a3;
+- (void)_selectedDayDidChange:(id)change;
+- (void)_selectedSegmentIndexChanged:(id)changed;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setCoordinator:(id)coordinator;
 @end
 
 @implementation STSegmentedControlGroupSpecifierProvider
@@ -13,48 +13,48 @@
   v9.receiver = self;
   v9.super_class = STSegmentedControlGroupSpecifierProvider;
   v2 = [(STGroupSpecifierProvider *)&v9 init];
-  v3 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
+  emptyGroupSpecifier = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
   v4 = objc_opt_new();
-  v5 = [v4 UUIDString];
-  [v3 setIdentifier:v5];
+  uUIDString = [v4 UUIDString];
+  [emptyGroupSpecifier setIdentifier:uUIDString];
 
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
-  [v3 setObject:v7 forKeyedSubscript:*MEMORY[0x277D3FFA0]];
+  [emptyGroupSpecifier setObject:v7 forKeyedSubscript:*MEMORY[0x277D3FFA0]];
 
-  [v3 setTarget:v2];
-  [v3 setButtonAction:sel__selectedSegmentIndexChanged_];
-  [(STGroupSpecifierProvider *)v2 setGroupSpecifier:v3];
+  [emptyGroupSpecifier setTarget:v2];
+  [emptyGroupSpecifier setButtonAction:sel__selectedSegmentIndexChanged_];
+  [(STGroupSpecifierProvider *)v2 setGroupSpecifier:emptyGroupSpecifier];
 
   return v2;
 }
 
-- (void)setCoordinator:(id)a3
+- (void)setCoordinator:(id)coordinator
 {
-  v4 = a3;
-  v5 = [(STUsageGroupSpecifierProvider *)self coordinator];
-  [v5 removeObserver:self forKeyPath:@"usageDetailsCoordinator.viewModel.selectedDay" context:"KVOContextSegmentedControlGroupSpecifierProvider"];
+  coordinatorCopy = coordinator;
+  coordinator = [(STUsageGroupSpecifierProvider *)self coordinator];
+  [coordinator removeObserver:self forKeyPath:@"usageDetailsCoordinator.viewModel.selectedDay" context:"KVOContextSegmentedControlGroupSpecifierProvider"];
   v6.receiver = self;
   v6.super_class = STSegmentedControlGroupSpecifierProvider;
-  [(STUsageGroupSpecifierProvider *)&v6 setCoordinator:v4];
-  [v4 addObserver:self forKeyPath:@"usageDetailsCoordinator.viewModel.selectedDay" options:5 context:"KVOContextSegmentedControlGroupSpecifierProvider"];
+  [(STUsageGroupSpecifierProvider *)&v6 setCoordinator:coordinatorCopy];
+  [coordinatorCopy addObserver:self forKeyPath:@"usageDetailsCoordinator.viewModel.selectedDay" options:5 context:"KVOContextSegmentedControlGroupSpecifierProvider"];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a5;
-  if (a6 == "KVOContextSegmentedControlGroupSpecifierProvider")
+  changeCopy = change;
+  if (context == "KVOContextSegmentedControlGroupSpecifierProvider")
   {
-    v12 = a3;
+    pathCopy = path;
     [(STUsageGroupSpecifierProvider *)self coordinator];
 
-    v13 = [v12 isEqualToString:@"usageDetailsCoordinator.viewModel.selectedDay"];
+    v13 = [pathCopy isEqualToString:@"usageDetailsCoordinator.viewModel.selectedDay"];
     if (v13)
     {
-      v14 = [v10 objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
-      v15 = [MEMORY[0x277CBEB68] null];
+      v14 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
+      null = [MEMORY[0x277CBEB68] null];
 
-      if (v14 == v15)
+      if (v14 == null)
       {
 
         v14 = 0;
@@ -68,20 +68,20 @@
   {
     v16.receiver = self;
     v16.super_class = STSegmentedControlGroupSpecifierProvider;
-    v11 = a3;
-    [(STSegmentedControlGroupSpecifierProvider *)&v16 observeValueForKeyPath:v11 ofObject:a4 change:v10 context:a6];
+    pathCopy2 = path;
+    [(STSegmentedControlGroupSpecifierProvider *)&v16 observeValueForKeyPath:pathCopy2 ofObject:object change:changeCopy context:context];
   }
 }
 
-- (void)_selectedDayDidChange:(id)a3
+- (void)_selectedDayDidChange:(id)change
 {
-  v8 = a3;
-  v4 = [(STGroupSpecifierProvider *)self groupSpecifier];
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277D3FFB0]];
+  changeCopy = change;
+  groupSpecifier = [(STGroupSpecifierProvider *)self groupSpecifier];
+  v5 = [groupSpecifier objectForKeyedSubscript:*MEMORY[0x277D3FFB0]];
 
-  if (v8)
+  if (changeCopy)
   {
-    v6 = [v8 unsignedIntegerValue] != 0x7FFFFFFFFFFFFFFFLL;
+    v6 = [changeCopy unsignedIntegerValue] != 0x7FFFFFFFFFFFFFFFLL;
   }
 
   else
@@ -89,39 +89,39 @@
     v6 = 0;
   }
 
-  v7 = [v5 segmentedControl];
-  [v7 setSelectedSegmentIndex:v6];
+  segmentedControl = [v5 segmentedControl];
+  [segmentedControl setSelectedSegmentIndex:v6];
 }
 
-- (void)_selectedSegmentIndexChanged:(id)a3
+- (void)_selectedSegmentIndexChanged:(id)changed
 {
-  v5 = [a3 selectedSegmentIndex];
-  if (v5 >= 2)
+  selectedSegmentIndex = [changed selectedSegmentIndex];
+  if (selectedSegmentIndex >= 2)
   {
     [(STSegmentedControlGroupSpecifierProvider *)a2 _selectedSegmentIndexChanged:?];
   }
 
-  v6 = [(STUsageGroupSpecifierProvider *)self coordinator];
-  v7 = [v6 usageDetailsCoordinator];
-  v9 = [v7 viewModel];
+  coordinator = [(STUsageGroupSpecifierProvider *)self coordinator];
+  usageDetailsCoordinator = [coordinator usageDetailsCoordinator];
+  viewModel = [usageDetailsCoordinator viewModel];
 
-  if (v5)
+  if (selectedSegmentIndex)
   {
-    v8 = v9;
-    if (v5 != 1)
+    v8 = viewModel;
+    if (selectedSegmentIndex != 1)
     {
       goto LABEL_8;
     }
 
-    [v9 selectToday];
+    [viewModel selectToday];
   }
 
   else
   {
-    [v9 setSelectedDay:0x7FFFFFFFFFFFFFFFLL];
+    [viewModel setSelectedDay:0x7FFFFFFFFFFFFFFFLL];
   }
 
-  v8 = v9;
+  v8 = viewModel;
 LABEL_8:
 }
 

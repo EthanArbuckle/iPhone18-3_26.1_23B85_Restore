@@ -2,7 +2,7 @@
 - (BOOL)deletesByComposedCharacterSequence;
 - (BOOL)doesComposeText;
 - (BOOL)doesSupportInlineCompletion;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)preferredModelLocaleIsMultilingual;
 - (BOOL)spaceAutocorrectionEnabled;
 - (BOOL)supportsMultilingualKeyboard;
@@ -31,7 +31,7 @@
 - (NSString)spaceDeletingCharacters;
 - (NSString)variant;
 - (NSString)wordMedialPunctuationCharacters;
-- (TIInputMode)initWithNormalizedIdentifier:(id)a3 isSiriMode:(BOOL)a4;
+- (TIInputMode)initWithNormalizedIdentifier:(id)identifier isSiriMode:(BOOL)mode;
 - (id)description;
 - (id)preferredMultilingualLanguageModelLocale;
 - (unint64_t)hash;
@@ -45,23 +45,23 @@
   multilingualInputManagerClass = self->_multilingualInputManagerClass;
   if (!multilingualInputManagerClass)
   {
-    v4 = [(TIInputMode *)self normalizedIdentifier];
+    normalizedIdentifier = [(TIInputMode *)self normalizedIdentifier];
     v5 = TIGetInputModeProperties();
 
     v6 = [v5 objectForKey:*MEMORY[0x277D6F760]];
-    v7 = [v6 BOOLValue];
+    bOOLValue = [v6 BOOLValue];
 
-    if (v7 && ([(objc_class *)[(TIInputMode *)self inputManagerClass] isSubclassOfClass:objc_opt_class()]& 1) == 0)
+    if (bOOLValue && ([(objc_class *)[(TIInputMode *)self inputManagerClass] isSubclassOfClass:objc_opt_class()]& 1) == 0)
     {
-      v8 = objc_opt_class();
+      inputManagerClass = objc_opt_class();
     }
 
     else
     {
-      v8 = [(TIInputMode *)self inputManagerClass];
+      inputManagerClass = [(TIInputMode *)self inputManagerClass];
     }
 
-    self->_multilingualInputManagerClass = v8;
+    self->_multilingualInputManagerClass = inputManagerClass;
 
     multilingualInputManagerClass = self->_multilingualInputManagerClass;
   }
@@ -74,7 +74,7 @@
   languageWithRegion = self->_languageWithRegion;
   if (!languageWithRegion)
   {
-    v4 = [(TIInputMode *)self normalizedIdentifier];
+    normalizedIdentifier = [(TIInputMode *)self normalizedIdentifier];
     v5 = TIInputModeGetLanguageWithRegion();
     v6 = [v5 copy];
     v7 = self->_languageWithRegion;
@@ -88,12 +88,12 @@
 
 - (unint64_t)hash
 {
-  v3 = [(TIInputMode *)self normalizedIdentifier];
-  v4 = [v3 hash];
+  normalizedIdentifier = [(TIInputMode *)self normalizedIdentifier];
+  v4 = [normalizedIdentifier hash];
 
-  v5 = [(TIInputMode *)self isSiriMode];
+  isSiriMode = [(TIInputMode *)self isSiriMode];
   v6 = 81069269;
-  if (v5)
+  if (isSiriMode)
   {
     v6 = 16843009;
   }
@@ -105,8 +105,8 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(TIInputMode *)self normalizedIdentifier];
-  v6 = [v3 stringWithFormat:@"<%@: %p identifier = %@>", v4, self, v5];;
+  normalizedIdentifier = [(TIInputMode *)self normalizedIdentifier];
+  v6 = [v3 stringWithFormat:@"<%@: %p identifier = %@>", v4, self, normalizedIdentifier];;
 
   return v6;
 }
@@ -117,8 +117,8 @@
   if (!locale)
   {
     v4 = objc_alloc(MEMORY[0x277CBEAF8]);
-    v5 = [(TIInputMode *)self normalizedIdentifier];
-    v6 = [v4 initWithLocaleIdentifier:v5];
+    normalizedIdentifier = [(TIInputMode *)self normalizedIdentifier];
+    v6 = [v4 initWithLocaleIdentifier:normalizedIdentifier];
     v7 = self->_locale;
     self->_locale = v6;
 
@@ -130,7 +130,7 @@
 
 - (NSDictionary)compositionMap
 {
-  v2 = [(TIInputMode *)self normalizedIdentifier];
+  normalizedIdentifier = [(TIInputMode *)self normalizedIdentifier];
   v3 = TIGetInputModeProperties();
   v4 = [v3 objectForKey:*MEMORY[0x277D6F698]];
 
@@ -139,7 +139,7 @@
 
 - (NSDictionary)reverseCompositionMap
 {
-  v2 = [(TIInputMode *)self normalizedIdentifier];
+  normalizedIdentifier = [(TIInputMode *)self normalizedIdentifier];
   v3 = TIGetInputModeProperties();
   v4 = [v3 objectForKey:*MEMORY[0x277D6F720]];
 
@@ -148,7 +148,7 @@
 
 - (NSArray)allAccentKeyStrings
 {
-  v2 = [(TIInputMode *)self normalizedIdentifier];
+  normalizedIdentifier = [(TIInputMode *)self normalizedIdentifier];
   v3 = TIGetInputModeProperties();
   v4 = [v3 objectForKey:*MEMORY[0x277D6F668]];
 
@@ -157,7 +157,7 @@
 
 - (NSString)replacementForDoubleSpace
 {
-  v2 = [(TIInputMode *)self normalizedIdentifier];
+  normalizedIdentifier = [(TIInputMode *)self normalizedIdentifier];
   v3 = TIGetInputModeProperties();
   v4 = [v3 objectForKey:*MEMORY[0x277D6F6C8]];
 
@@ -168,33 +168,33 @@
 {
   if ((_os_feature_enabled_impl() & 1) == 0)
   {
-    v5 = [(TIInputMode *)self locale];
-    v4 = [v5 localeIdentifier];
+    locale = [(TIInputMode *)self locale];
+    localeIdentifier = [locale localeIdentifier];
     goto LABEL_5;
   }
 
-  v3 = [(TIInputMode *)self preferredMultilingualLanguageModelLocale];
-  if (v3)
+  preferredMultilingualLanguageModelLocale = [(TIInputMode *)self preferredMultilingualLanguageModelLocale];
+  if (preferredMultilingualLanguageModelLocale)
   {
-    v4 = v3;
-    v5 = v4;
+    localeIdentifier = preferredMultilingualLanguageModelLocale;
+    locale = localeIdentifier;
 LABEL_5:
-    v6 = v4;
+    localeIdentifier2 = localeIdentifier;
     goto LABEL_6;
   }
 
-  v8 = [(TIInputMode *)self locale];
-  v6 = [v8 localeIdentifier];
+  locale2 = [(TIInputMode *)self locale];
+  localeIdentifier2 = [locale2 localeIdentifier];
 
-  v5 = 0;
+  locale = 0;
 LABEL_6:
 
-  return v6;
+  return localeIdentifier2;
 }
 
 - (id)preferredMultilingualLanguageModelLocale
 {
-  v2 = [(TIInputMode *)self originalIdentifier];
+  originalIdentifier = [(TIInputMode *)self originalIdentifier];
   v3 = TIInputModeGetPreferredMultilingualLanguageModelLocale();
 
   return v3;
@@ -202,27 +202,27 @@ LABEL_6:
 
 - (BOOL)preferredModelLocaleIsMultilingual
 {
-  v2 = self;
-  v3 = [(TIInputMode *)self preferredModelLocaleIdentifier];
-  v4 = [(TIInputMode *)v2 preferredMultilingualLanguageModelLocale];
-  LOBYTE(v2) = v3 == v4;
+  selfCopy = self;
+  preferredModelLocaleIdentifier = [(TIInputMode *)self preferredModelLocaleIdentifier];
+  preferredMultilingualLanguageModelLocale = [(TIInputMode *)selfCopy preferredMultilingualLanguageModelLocale];
+  LOBYTE(selfCopy) = preferredModelLocaleIdentifier == preferredMultilingualLanguageModelLocale;
 
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)doesSupportInlineCompletion
 {
-  v2 = [(TIInputMode *)self normalizedIdentifier];
+  normalizedIdentifier = [(TIInputMode *)self normalizedIdentifier];
   v3 = TIGetInputModeProperties();
   v4 = [v3 objectForKey:*MEMORY[0x277D6F6E8]];
-  v5 = [v4 BOOLValue];
+  bOOLValue = [v4 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
 - (NSString)autocorrectionLocaleIdentifier
 {
-  v2 = [(TIInputMode *)self normalizedIdentifier];
+  normalizedIdentifier = [(TIInputMode *)self normalizedIdentifier];
   v3 = TIGetInputModeProperties();
   v4 = [v3 objectForKey:*MEMORY[0x277D6F678]];
 
@@ -231,7 +231,7 @@ LABEL_6:
 
 - (NSString)spaceDeletingCharacters
 {
-  v2 = [(TIInputMode *)self normalizedIdentifier];
+  normalizedIdentifier = [(TIInputMode *)self normalizedIdentifier];
   v3 = TIGetInputModeProperties();
   v4 = [v3 objectForKey:*MEMORY[0x277D6F748]];
 
@@ -240,7 +240,7 @@ LABEL_6:
 
 - (NSString)wordMedialPunctuationCharacters
 {
-  v2 = [(TIInputMode *)self normalizedIdentifier];
+  normalizedIdentifier = [(TIInputMode *)self normalizedIdentifier];
   v3 = TIGetInputModeProperties();
   v4 = [v3 objectForKey:*MEMORY[0x277D6F780]];
 
@@ -249,7 +249,7 @@ LABEL_6:
 
 - (NSString)sentenceTrailingCharacters
 {
-  v2 = [(TIInputMode *)self normalizedIdentifier];
+  normalizedIdentifier = [(TIInputMode *)self normalizedIdentifier];
   v3 = TIGetInputModeProperties();
   v4 = [v3 objectForKey:*MEMORY[0x277D6F738]];
 
@@ -258,7 +258,7 @@ LABEL_6:
 
 - (NSString)clauseDelimitingCharacters
 {
-  v2 = [(TIInputMode *)self normalizedIdentifier];
+  normalizedIdentifier = [(TIInputMode *)self normalizedIdentifier];
   v3 = TIGetInputModeProperties();
   v4 = [v3 objectForKey:*MEMORY[0x277D6F688]];
 
@@ -267,7 +267,7 @@ LABEL_6:
 
 - (NSString)sentenceDelimitingCharacters
 {
-  v2 = [(TIInputMode *)self normalizedIdentifier];
+  normalizedIdentifier = [(TIInputMode *)self normalizedIdentifier];
   v3 = TIGetInputModeProperties();
   v4 = [v3 objectForKey:*MEMORY[0x277D6F728]];
 
@@ -276,7 +276,7 @@ LABEL_6:
 
 - (NSString)sentencePrefixingCharacters
 {
-  v2 = [(TIInputMode *)self normalizedIdentifier];
+  normalizedIdentifier = [(TIInputMode *)self normalizedIdentifier];
   v3 = TIGetInputModeProperties();
   v4 = [v3 objectForKey:*MEMORY[0x277D6F730]];
 
@@ -285,7 +285,7 @@ LABEL_6:
 
 - (NSString)nonstopPunctuationCharacters
 {
-  v2 = [(TIInputMode *)self normalizedIdentifier];
+  normalizedIdentifier = [(TIInputMode *)self normalizedIdentifier];
   v3 = TIGetInputModeProperties();
   v4 = [v3 objectForKey:*MEMORY[0x277D6F710]];
 
@@ -294,7 +294,7 @@ LABEL_6:
 
 - (NSDictionary)layoutTags
 {
-  v2 = [(TIInputMode *)self normalizedIdentifier];
+  normalizedIdentifier = [(TIInputMode *)self normalizedIdentifier];
   v3 = TIGetInputModeProperties();
   v4 = [v3 objectForKey:*MEMORY[0x277D6F700]];
 
@@ -303,51 +303,51 @@ LABEL_6:
 
 - (BOOL)deletesByComposedCharacterSequence
 {
-  v2 = [(TIInputMode *)self normalizedIdentifier];
+  normalizedIdentifier = [(TIInputMode *)self normalizedIdentifier];
   v3 = TIGetInputModeProperties();
   v4 = [v3 objectForKey:*MEMORY[0x277D6F6C0]];
 
   if (v4)
   {
-    v5 = [v4 BOOLValue];
+    bOOLValue = [v4 BOOLValue];
   }
 
   else
   {
-    v5 = 1;
+    bOOLValue = 1;
   }
 
-  return v5;
+  return bOOLValue;
 }
 
 - (BOOL)doesComposeText
 {
-  v2 = [(TIInputMode *)self normalizedIdentifier];
+  normalizedIdentifier = [(TIInputMode *)self normalizedIdentifier];
   v3 = TIGetInputModeProperties();
   v4 = [v3 objectForKey:*MEMORY[0x277D6F690]];
-  v5 = [v4 BOOLValue];
+  bOOLValue = [v4 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
 - (BOOL)typedStringLMRankingEnabled
 {
-  v2 = [(TIInputMode *)self normalizedIdentifier];
+  normalizedIdentifier = [(TIInputMode *)self normalizedIdentifier];
   v3 = TIGetInputModeProperties();
 
   v4 = [v3 objectForKey:*MEMORY[0x277D6F768]];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 BOOLValue];
+    bOOLValue = [v4 BOOLValue];
   }
 
   else
   {
-    v6 = 1;
+    bOOLValue = 1;
   }
 
-  return v6;
+  return bOOLValue;
 }
 
 - (BOOL)spaceAutocorrectionEnabled
@@ -357,11 +357,11 @@ LABEL_6:
     dispatch_once(&TIGetKeyboardDisableSpaceCorrectionsValue_onceToken, &__block_literal_global_147);
   }
 
-  v3 = [MEMORY[0x277D6F470] sharedPreferencesController];
-  v4 = [v3 valueForPreferenceKey:@"KeyboardDisableSpaceCorrections"];
+  mEMORY[0x277D6F470] = [MEMORY[0x277D6F470] sharedPreferencesController];
+  v4 = [mEMORY[0x277D6F470] valueForPreferenceKey:@"KeyboardDisableSpaceCorrections"];
 
-  LOBYTE(v3) = [v4 BOOLValue];
-  if (v3)
+  LOBYTE(mEMORY[0x277D6F470]) = [v4 BOOLValue];
+  if (mEMORY[0x277D6F470])
   {
     return 0;
   }
@@ -371,47 +371,47 @@ LABEL_6:
     dispatch_once(&TIGetKeyboardForceSpaceCorrectionsValue_onceToken, &__block_literal_global_158);
   }
 
-  v6 = [MEMORY[0x277D6F470] sharedPreferencesController];
-  v7 = [v6 valueForPreferenceKey:@"KeyboardForceSpaceCorrections"];
+  mEMORY[0x277D6F470]2 = [MEMORY[0x277D6F470] sharedPreferencesController];
+  v7 = [mEMORY[0x277D6F470]2 valueForPreferenceKey:@"KeyboardForceSpaceCorrections"];
 
-  LOBYTE(v6) = [v7 BOOLValue];
-  if (v6)
+  LOBYTE(mEMORY[0x277D6F470]2) = [v7 BOOLValue];
+  if (mEMORY[0x277D6F470]2)
   {
     return 1;
   }
 
-  v8 = [(TIInputMode *)self normalizedIdentifier];
+  normalizedIdentifier = [(TIInputMode *)self normalizedIdentifier];
   v9 = TIGetInputModeProperties();
 
   v10 = [v9 objectForKey:*MEMORY[0x277D6F740]];
   v11 = v10;
   if (v10)
   {
-    v5 = [v10 BOOLValue];
+    bOOLValue = [v10 BOOLValue];
   }
 
   else
   {
-    v5 = 1;
+    bOOLValue = 1;
   }
 
-  return v5;
+  return bOOLValue;
 }
 
 - (BOOL)wantsMultilingualUnionOVS
 {
-  v2 = [(TIInputMode *)self normalizedIdentifier];
+  normalizedIdentifier = [(TIInputMode *)self normalizedIdentifier];
   v3 = TIGetInputModeProperties();
 
   v4 = [v3 objectForKey:*MEMORY[0x277D6F778]];
-  v5 = [v4 BOOLValue];
+  bOOLValue = [v4 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
 - (BOOL)supportsMultilingualKeyboard
 {
-  v2 = [(TIInputMode *)self originalIdentifier];
+  originalIdentifier = [(TIInputMode *)self originalIdentifier];
   v3 = TIInputModeSupportsMultilingual();
 
   return v3;
@@ -419,13 +419,13 @@ LABEL_6:
 
 - (BOOL)supportsPrediction
 {
-  v2 = [(TIInputMode *)self normalizedIdentifier];
+  normalizedIdentifier = [(TIInputMode *)self normalizedIdentifier];
   v3 = TIGetInputModeProperties();
 
   v4 = [v3 objectForKey:*MEMORY[0x277D6F6D8]];
-  v5 = [v4 BOOLValue];
+  bOOLValue = [v4 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
 - (Class)keyboardFeatureSpecializationClass
@@ -437,9 +437,9 @@ LABEL_6:
     self->_keyboardFeatureSpecializationClass = keyboardFeatureSpecializationClass;
     if (!keyboardFeatureSpecializationClass)
     {
-      v4 = [(TIInputMode *)self supportsPrediction];
+      supportsPrediction = [(TIInputMode *)self supportsPrediction];
       v5 = off_27872D600;
-      if (!v4)
+      if (!supportsPrediction)
       {
         v5 = off_27872D560;
       }
@@ -455,7 +455,7 @@ LABEL_6:
 
 - (Class)keyboardFeatureSpecializationClassFromInputModeProperties
 {
-  v3 = [(TIInputMode *)self normalizedIdentifier];
+  normalizedIdentifier = [(TIInputMode *)self normalizedIdentifier];
   v4 = TIGetInputModeProperties();
 
   v5 = [v4 objectForKey:*MEMORY[0x277D6F6F8]];
@@ -473,7 +473,7 @@ LABEL_6:
 
   if (v8)
   {
-    v9 = [(TIInputMode *)self normalizedIdentifier];
+    normalizedIdentifier2 = [(TIInputMode *)self normalizedIdentifier];
     v10 = TIBundleForInputMode();
 
     v7 = [v10 classNamed:v5];
@@ -489,7 +489,7 @@ LABEL_6:
   inputManagerClass = self->_inputManagerClass;
   if (!inputManagerClass)
   {
-    v4 = [(TIInputMode *)self normalizedIdentifier];
+    normalizedIdentifier = [(TIInputMode *)self normalizedIdentifier];
     v5 = TIGetInputModeProperties();
 
     if (self->_inputManagerClass)
@@ -513,7 +513,7 @@ LABEL_11:
       goto LABEL_13;
     }
 
-    v7 = [(TIInputMode *)self normalizedIdentifier];
+    normalizedIdentifier2 = [(TIInputMode *)self normalizedIdentifier];
     v8 = TIBundleForInputMode();
 
     v9 = [v8 classNamed:v6];
@@ -596,7 +596,7 @@ LABEL_9:
   variant = self->_variant;
   if (!variant)
   {
-    v4 = [(TIInputMode *)self normalizedIdentifier];
+    normalizedIdentifier = [(TIInputMode *)self normalizedIdentifier];
     v5 = TIInputModeGetVariant();
     v6 = [v5 copy];
     v7 = self->_variant;
@@ -608,10 +608,10 @@ LABEL_9:
   return variant;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v12 = 1;
   }
@@ -621,13 +621,13 @@ LABEL_9:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(TIInputMode *)self normalizedIdentifier];
-      if ([v6 isEqualToString:@"ko_KR"])
+      v5 = equalCopy;
+      normalizedIdentifier = [(TIInputMode *)self normalizedIdentifier];
+      if ([normalizedIdentifier isEqualToString:@"ko_KR"])
       {
-        v7 = [(TIInputMode *)self originalIdentifier];
+        originalIdentifier = [(TIInputMode *)self originalIdentifier];
         v8 = TIInputModeGetSWLayout();
-        v9 = [(TIInputMode *)v5 originalIdentifier];
+        originalIdentifier2 = [(TIInputMode *)v5 originalIdentifier];
         v10 = TIInputModeGetSWLayout();
         v11 = [v8 isEqualToString:v10];
 
@@ -639,9 +639,9 @@ LABEL_9:
 
       else
       {
-        v13 = [(TIInputMode *)self normalizedIdentifier];
-        v14 = [(TIInputMode *)v5 normalizedIdentifier];
-        v15 = [v13 isEqualToString:v14];
+        normalizedIdentifier2 = [(TIInputMode *)self normalizedIdentifier];
+        normalizedIdentifier3 = [(TIInputMode *)v5 normalizedIdentifier];
+        v15 = [normalizedIdentifier2 isEqualToString:normalizedIdentifier3];
 
         if ((v15 & 1) == 0)
         {
@@ -649,12 +649,12 @@ LABEL_9:
         }
       }
 
-      v16 = [(TIInputMode *)self isSiriMode];
-      if (v16 == [(TIInputMode *)v5 isSiriMode])
+      isSiriMode = [(TIInputMode *)self isSiriMode];
+      if (isSiriMode == [(TIInputMode *)v5 isSiriMode])
       {
-        v17 = [(TIInputMode *)self originalIdentifier];
+        originalIdentifier3 = [(TIInputMode *)self originalIdentifier];
         v18 = TIInputModeGetMultilingualID();
-        v19 = [(TIInputMode *)v5 originalIdentifier];
+        originalIdentifier4 = [(TIInputMode *)v5 originalIdentifier];
         v20 = TIInputModeGetMultilingualID();
         v12 = v18 == v20;
 
@@ -676,19 +676,19 @@ LABEL_13:
   return v12;
 }
 
-- (TIInputMode)initWithNormalizedIdentifier:(id)a3 isSiriMode:(BOOL)a4
+- (TIInputMode)initWithNormalizedIdentifier:(id)identifier isSiriMode:(BOOL)mode
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = TIInputMode;
   v7 = [(TIInputMode *)&v11 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [identifierCopy copy];
     normalizedIdentifier = v7->_normalizedIdentifier;
     v7->_normalizedIdentifier = v8;
 
-    v7->_isSiriMode = a4;
+    v7->_isSiriMode = mode;
   }
 
   return v7;

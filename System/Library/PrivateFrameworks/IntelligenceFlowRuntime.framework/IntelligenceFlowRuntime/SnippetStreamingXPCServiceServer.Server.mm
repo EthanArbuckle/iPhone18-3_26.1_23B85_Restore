@@ -1,15 +1,15 @@
 @interface SnippetStreamingXPCServiceServer.Server
-- (void)checkInParameters:(id)a3 reply:(id)a4;
-- (void)postWithUpdate:(id)a3 reply:(id)a4;
+- (void)checkInParameters:(id)parameters reply:(id)reply;
+- (void)postWithUpdate:(id)update reply:(id)reply;
 @end
 
 @implementation SnippetStreamingXPCServiceServer.Server
 
-- (void)checkInParameters:(id)a3 reply:(id)a4
+- (void)checkInParameters:(id)parameters reply:(id)reply
 {
-  v6 = _Block_copy(a4);
-  v7 = a3;
-  v12 = self;
+  v6 = _Block_copy(reply);
+  parametersCopy = parameters;
+  selfCopy = self;
   v8 = sub_22BDB4304();
   v10 = v9;
 
@@ -20,11 +20,11 @@
   sub_22BB3531C(v8, v10);
 }
 
-- (void)postWithUpdate:(id)a3 reply:(id)a4
+- (void)postWithUpdate:(id)update reply:(id)reply
 {
-  v6 = _Block_copy(a4);
-  v7 = a3;
-  v12 = self;
+  v6 = _Block_copy(reply);
+  updateCopy = update;
+  selfCopy = self;
   v8 = sub_22BDB4304();
   v10 = v9;
 

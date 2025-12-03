@@ -1,8 +1,8 @@
 @interface EditShortcutContactCell
-- (EditShortcutContactCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (void)_buttonAction:(id)a3;
+- (EditShortcutContactCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (void)_buttonAction:(id)action;
 - (void)_updateFonts;
-- (void)setContactValue:(id)a3;
+- (void)setContactValue:(id)value;
 @end
 
 @implementation EditShortcutContactCell
@@ -18,21 +18,21 @@
   [(UILabel *)label setNumberOfLines:v4];
 }
 
-- (void)setContactValue:(id)a3
+- (void)setContactValue:(id)value
 {
-  v5 = a3;
-  objc_storeStrong(&self->_contactValue, a3);
+  valueCopy = value;
+  objc_storeStrong(&self->_contactValue, value);
   v6 = self->_imageView;
-  v7 = [v5 contact];
+  contact = [valueCopy contact];
 
-  if (v7)
+  if (contact)
   {
-    v8 = [v5 contact];
-    v9 = [CNContactFormatter stringFromContact:v8 style:0];
+    contact2 = [valueCopy contact];
+    v9 = [CNContactFormatter stringFromContact:contact2 style:0];
     [(UILabel *)self->_label setText:v9];
 
-    v10 = +[MapsUIImageCache sharedCache];
-    v11 = [v5 contact];
+    window = +[MapsUIImageCache sharedCache];
+    contact3 = [valueCopy contact];
     v20[0] = _NSConcreteStackBlock;
     v20[1] = 3221225472;
     v20[2] = sub_100B33544;
@@ -40,17 +40,17 @@
     v12 = &v21;
     v21 = v6;
     v13 = v6;
-    [v10 getImageForContact:v11 size:v20 completion:30.0];
+    [window getImageForContact:contact3 size:v20 completion:30.0];
   }
 
   else
   {
-    v14 = [v5 stringValue];
-    [(UILabel *)self->_label setText:v14];
+    stringValue = [valueCopy stringValue];
+    [(UILabel *)self->_label setText:stringValue];
 
-    v10 = [(EditShortcutContactCell *)self window];
-    v11 = [v10 screen];
-    [v11 scale];
+    window = [(EditShortcutContactCell *)self window];
+    contact3 = [window screen];
+    [contact3 scale];
     v16 = v15;
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;
@@ -65,27 +65,27 @@
   [(EditShortcutContactCell *)self _updateFonts];
 }
 
-- (void)_buttonAction:(id)a3
+- (void)_buttonAction:(id)action
 {
-  v4 = [(EditShortcutContactCell *)self action];
+  action = [(EditShortcutContactCell *)self action];
 
-  if (v4)
+  if (action)
   {
-    v5 = [(EditShortcutContactCell *)self action];
-    v5[2]();
+    action2 = [(EditShortcutContactCell *)self action];
+    action2[2]();
   }
 }
 
-- (EditShortcutContactCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (EditShortcutContactCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v54.receiver = self;
   v54.super_class = EditShortcutContactCell;
-  v4 = [(EditShortcutContactCell *)&v54 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(EditShortcutContactCell *)&v54 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
     [(EditShortcutContactCell *)v4 setAccessibilityIdentifier:@"EditShortcutContactCell"];
-    v6 = [(EditShortcutContactCell *)v5 contentView];
+    contentView = [(EditShortcutContactCell *)v5 contentView];
     v7 = [UIButton buttonWithType:0];
     v8 = +[UIColor tertiaryLabelColor];
     v53 = v7;
@@ -110,7 +110,7 @@
     [(UIImageView *)v15 _setCornerRadius:15.0];
     [(UIImageView *)v15 setClipsToBounds:1];
     [(UIImageView *)v15 setAccessibilityIdentifier:@"EditShortcutContactImage"];
-    [v6 addSubview:v15];
+    [contentView addSubview:v15];
     imageView = v5->_imageView;
     v5->_imageView = v15;
     v17 = v15;
@@ -118,48 +118,48 @@
     v18 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
     [(UILabel *)v18 setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UILabel *)v18 setAccessibilityIdentifier:@"EditShortcutContactLabel"];
-    [v6 addSubview:v18];
+    [contentView addSubview:v18];
     label = v5->_label;
     v5->_label = v18;
     v20 = v18;
 
-    v52 = [(UIImageView *)v17 heightAnchor];
-    v51 = [v52 constraintEqualToConstant:30.0];
+    heightAnchor = [(UIImageView *)v17 heightAnchor];
+    v51 = [heightAnchor constraintEqualToConstant:30.0];
     v55[0] = v51;
-    v50 = [(UIImageView *)v17 widthAnchor];
-    v49 = [v50 constraintEqualToConstant:30.0];
+    widthAnchor = [(UIImageView *)v17 widthAnchor];
+    v49 = [widthAnchor constraintEqualToConstant:30.0];
     v55[1] = v49;
-    v47 = [(UIImageView *)v17 centerYAnchor];
-    v46 = [v6 centerYAnchor];
-    v45 = [v47 constraintEqualToAnchor:v46];
+    centerYAnchor = [(UIImageView *)v17 centerYAnchor];
+    centerYAnchor2 = [contentView centerYAnchor];
+    v45 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v55[2] = v45;
     v48 = v17;
-    v44 = [(UIImageView *)v17 leadingAnchor];
-    v43 = [v6 leadingAnchor];
-    v42 = [v44 constraintEqualToAnchor:v43 constant:16.0];
+    leadingAnchor = [(UIImageView *)v17 leadingAnchor];
+    leadingAnchor2 = [contentView leadingAnchor];
+    v42 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:16.0];
     v55[3] = v42;
-    v40 = [(UILabel *)v20 leadingAnchor];
-    v38 = [(UIImageView *)v17 trailingAnchor];
-    v37 = [v40 constraintEqualToAnchor:v38 constant:10.0];
+    leadingAnchor3 = [(UILabel *)v20 leadingAnchor];
+    trailingAnchor = [(UIImageView *)v17 trailingAnchor];
+    v37 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor constant:10.0];
     v55[4] = v37;
-    v36 = [(UILabel *)v20 trailingAnchor];
-    v35 = [v6 trailingAnchor];
-    v34 = [v36 constraintEqualToAnchor:v35 constant:-16.0];
+    trailingAnchor2 = [(UILabel *)v20 trailingAnchor];
+    trailingAnchor3 = [contentView trailingAnchor];
+    v34 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3 constant:-16.0];
     v55[5] = v34;
-    v33 = [(UILabel *)v20 centerYAnchor];
-    v21 = [v6 centerYAnchor];
-    v22 = [v33 constraintEqualToAnchor:v21];
+    centerYAnchor3 = [(UILabel *)v20 centerYAnchor];
+    centerYAnchor4 = [contentView centerYAnchor];
+    v22 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
     v55[6] = v22;
     v39 = v20;
-    v23 = [(UILabel *)v20 topAnchor];
-    v24 = v6;
-    v41 = v6;
-    v25 = [v6 topAnchor];
-    v26 = [v23 constraintEqualToAnchor:v25 constant:15.0];
+    topAnchor = [(UILabel *)v20 topAnchor];
+    v24 = contentView;
+    v41 = contentView;
+    topAnchor2 = [contentView topAnchor];
+    v26 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:15.0];
     v55[7] = v26;
-    v27 = [(UILabel *)v20 bottomAnchor];
-    v28 = [v24 bottomAnchor];
-    v29 = [v27 constraintEqualToAnchor:v28 constant:-15.0];
+    bottomAnchor = [(UILabel *)v20 bottomAnchor];
+    bottomAnchor2 = [v24 bottomAnchor];
+    v29 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-15.0];
     v55[8] = v29;
     v30 = [NSArray arrayWithObjects:v55 count:9];
     [NSLayoutConstraint activateConstraints:v30];

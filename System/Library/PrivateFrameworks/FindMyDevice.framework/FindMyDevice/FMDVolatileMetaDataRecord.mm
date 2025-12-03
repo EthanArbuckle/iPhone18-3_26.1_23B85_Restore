@@ -1,10 +1,10 @@
 @interface FMDVolatileMetaDataRecord
 - (FMDVolatileMetaDataRecord)init;
-- (FMDVolatileMetaDataRecord)initWithCoder:(id)a3;
-- (FMDVolatileMetaDataRecord)initWithDictionary:(id)a3;
+- (FMDVolatileMetaDataRecord)initWithCoder:(id)coder;
+- (FMDVolatileMetaDataRecord)initWithDictionary:(id)dictionary;
 - (NSDictionary)dictionaryValue;
-- (void)appendMetaData:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)appendMetaData:(id)data;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FMDVolatileMetaDataRecord
@@ -26,17 +26,17 @@
   return v2;
 }
 
-- (void)appendMetaData:(id)a3
+- (void)appendMetaData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   serialQueue = self->_serialQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __44__FMDVolatileMetaDataRecord_appendMetaData___block_invoke;
   v7[3] = &unk_1E86BD7E8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dataCopy;
+  v6 = dataCopy;
   dispatch_sync(serialQueue, v7);
 }
 
@@ -47,9 +47,9 @@ void __44__FMDVolatileMetaDataRecord_appendMetaData___block_invoke(uint64_t a1)
   [*(a1 + 32) setDictionary:v2];
 }
 
-- (FMDVolatileMetaDataRecord)initWithDictionary:(id)a3
+- (FMDVolatileMetaDataRecord)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = FMDVolatileMetaDataRecord;
   v5 = [(FMDVolatileMetaDataRecord *)&v10 init];
@@ -59,9 +59,9 @@ void __44__FMDVolatileMetaDataRecord_appendMetaData___block_invoke(uint64_t a1)
     serialQueue = v5->_serialQueue;
     v5->_serialQueue = v6;
 
-    if (v4)
+    if (dictionaryCopy)
     {
-      v8 = v4;
+      v8 = dictionaryCopy;
     }
 
     else
@@ -107,10 +107,10 @@ uint64_t __44__FMDVolatileMetaDataRecord_dictionaryValue__block_invoke(uint64_t 
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (FMDVolatileMetaDataRecord)initWithCoder:(id)a3
+- (FMDVolatileMetaDataRecord)initWithCoder:(id)coder
 {
   v16[4] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = FMDVolatileMetaDataRecord;
   v5 = [(FMDVolatileMetaDataRecord *)&v15 init];
@@ -128,7 +128,7 @@ uint64_t __44__FMDVolatileMetaDataRecord_dictionaryValue__block_invoke(uint64_t 
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:4];
     v10 = [v8 setWithArray:v9];
     v11 = NSStringFromSelector(sel_dictionary);
-    v12 = [v4 decodeObjectOfClasses:v10 forKey:v11];
+    v12 = [coderCopy decodeObjectOfClasses:v10 forKey:v11];
     [(FMDVolatileMetaDataRecord *)v5 setDictionary:v12];
   }
 
@@ -136,9 +136,9 @@ uint64_t __44__FMDVolatileMetaDataRecord_dictionaryValue__block_invoke(uint64_t 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9 = 0;
   v10 = &v9;
   v11 = 0x3032000000;
@@ -155,7 +155,7 @@ uint64_t __44__FMDVolatileMetaDataRecord_dictionaryValue__block_invoke(uint64_t 
   dispatch_sync(serialQueue, v8);
   v6 = v10[5];
   v7 = NSStringFromSelector(sel_dictionary);
-  [v4 encodeObject:v6 forKey:v7];
+  [coderCopy encodeObject:v6 forKey:v7];
 
   _Block_object_dispose(&v9, 8);
 }

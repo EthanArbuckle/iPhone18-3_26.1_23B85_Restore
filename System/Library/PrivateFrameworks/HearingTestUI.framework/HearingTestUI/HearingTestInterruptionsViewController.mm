@@ -1,12 +1,12 @@
 @interface HearingTestInterruptionsViewController
-- (_TtC13HearingTestUI38HearingTestInterruptionsViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6;
-- (_TtC13HearingTestUI38HearingTestInterruptionsViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6;
+- (_TtC13HearingTestUI38HearingTestInterruptionsViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout;
+- (_TtC13HearingTestUI38HearingTestInterruptionsViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout;
 - (void)viewDidLoad;
 @end
 
 @implementation HearingTestInterruptionsViewController
 
-- (_TtC13HearingTestUI38HearingTestInterruptionsViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6
+- (_TtC13HearingTestUI38HearingTestInterruptionsViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout
 {
   sub_20CE13B84();
   sub_20CE13B74();
@@ -16,7 +16,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v7 = a5;
+  iconCopy = icon;
   sub_20CD84E34();
 }
 
@@ -30,11 +30,11 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
+  selfCopy = self;
   sub_20CD84424();
 }
 
-- (_TtC13HearingTestUI38HearingTestInterruptionsViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6
+- (_TtC13HearingTestUI38HearingTestInterruptionsViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout
 {
   sub_20CE13B84();
   sub_20CE13B74();

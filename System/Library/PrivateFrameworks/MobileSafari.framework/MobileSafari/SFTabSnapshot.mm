@@ -1,16 +1,16 @@
 @interface SFTabSnapshot
 - (SFTabSnapshot)init;
-- (SFTabSnapshot)initWithImage:(id)a3 metadata:(id)a4;
+- (SFTabSnapshot)initWithImage:(id)image metadata:(id)metadata;
 @end
 
 @implementation SFTabSnapshot
 
-- (SFTabSnapshot)initWithImage:(id)a3 metadata:(id)a4
+- (SFTabSnapshot)initWithImage:(id)image metadata:(id)metadata
 {
-  *(&self->super.isa + OBJC_IVAR___SFTabSnapshot_image) = a3;
-  v6 = a3;
-  v7 = a4;
-  [v7 copyWithZone_];
+  *(&self->super.isa + OBJC_IVAR___SFTabSnapshot_image) = image;
+  imageCopy = image;
+  metadataCopy = metadata;
+  [metadataCopy copyWithZone_];
   sub_18BC218B8();
   swift_unknownObjectRelease();
   type metadata accessor for SFTabSnapshotMetadata(0);

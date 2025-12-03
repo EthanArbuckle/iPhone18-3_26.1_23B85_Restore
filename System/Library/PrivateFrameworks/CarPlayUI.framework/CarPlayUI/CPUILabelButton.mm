@@ -1,6 +1,6 @@
 @interface CPUILabelButton
 - (id)tintColor;
-- (void)setEnabled:(BOOL)a3;
+- (void)setEnabled:(BOOL)enabled;
 @end
 
 @implementation CPUILabelButton
@@ -21,11 +21,11 @@
   return v3;
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
   v4.receiver = self;
   v4.super_class = CPUILabelButton;
-  [(CPUILabelButton *)&v4 setEnabled:a3];
+  [(CPUILabelButton *)&v4 setEnabled:enabled];
   [(CPUILabelButton *)self setNeedsLayout];
 }
 

@@ -1,11 +1,11 @@
 @interface APSettingsManager
 + (id)sharedManager;
 - (APSettingsManager)init;
-- (BOOL)canChangeHiddenStatusOfSubject:(id)a3;
-- (BOOL)canChangeLockedStatusOfSubject:(id)a3;
+- (BOOL)canChangeHiddenStatusOfSubject:(id)subject;
+- (BOOL)canChangeLockedStatusOfSubject:(id)subject;
 - (BOOL)isAppHidingAvailable;
-- (void)setSubject:(id)a3 shownInSearchAndSiri:(BOOL)a4 completion:(id)a5;
-- (void)waitForManagedProtectability:(id)a3;
+- (void)setSubject:(id)subject shownInSearchAndSiri:(BOOL)siri completion:(id)completion;
+- (void)waitForManagedProtectability:(id)protectability;
 @end
 
 @implementation APSettingsManager
@@ -29,43 +29,43 @@
 
 - (BOOL)isAppHidingAvailable
 {
-  v2 = self;
-  if ([(APSettingsManager *)v2 isAppLockingAvailable])
+  selfCopy = self;
+  if ([(APSettingsManager *)selfCopy isAppLockingAvailable])
   {
-    v3 = [objc_opt_self() sharedConnection];
-    if (!v3)
+    sharedConnection = [objc_opt_self() sharedConnection];
+    if (!sharedConnection)
     {
       __break(1u);
-      return v3;
+      return sharedConnection;
     }
 
-    v4 = v3;
-    v5 = [v3 isHidingAppsAllowed];
+    v4 = sharedConnection;
+    isHidingAppsAllowed = [sharedConnection isHidingAppsAllowed];
   }
 
   else
   {
-    v5 = 0;
+    isHidingAppsAllowed = 0;
   }
 
-  LOBYTE(v3) = v5;
-  return v3;
+  LOBYTE(sharedConnection) = isHidingAppsAllowed;
+  return sharedConnection;
 }
 
-- (BOOL)canChangeHiddenStatusOfSubject:(id)a3
+- (BOOL)canChangeHiddenStatusOfSubject:(id)subject
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_185B49F34(v4);
+  subjectCopy = subject;
+  selfCopy = self;
+  v6 = sub_185B49F34(subjectCopy);
 
   return v6 & 1;
 }
 
-- (BOOL)canChangeLockedStatusOfSubject:(id)a3
+- (BOOL)canChangeLockedStatusOfSubject:(id)subject
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_185B49E58(v4);
+  subjectCopy = subject;
+  selfCopy = self;
+  v6 = sub_185B49E58(subjectCopy);
 
   return v6 & 1;
 }
@@ -77,11 +77,11 @@
   return [(APSettingsManager *)&v3 init];
 }
 
-- (void)setSubject:(id)a3 shownInSearchAndSiri:(BOOL)a4 completion:(id)a5
+- (void)setSubject:(id)subject shownInSearchAndSiri:(BOOL)siri completion:(id)completion
 {
-  v7 = _Block_copy(a5);
-  v8 = a3;
-  v9 = self;
+  v7 = _Block_copy(completion);
+  subjectCopy = subject;
+  selfCopy = self;
   v10 = sub_185B49FEC();
   v11 = sub_185B6791C();
   v7[2](v7, 0, v11);
@@ -89,9 +89,9 @@
   _Block_release(v7);
 }
 
-- (void)waitForManagedProtectability:(id)a3
+- (void)waitForManagedProtectability:(id)protectability
 {
-  v3 = _Block_copy(a3);
+  v3 = _Block_copy(protectability);
   v4 = swift_allocObject();
   *(v4 + 16) = v3;
   if (qword_1EA8CB968 != -1)

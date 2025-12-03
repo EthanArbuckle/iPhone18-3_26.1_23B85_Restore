@@ -2,41 +2,41 @@
 + (BOOL)shouldShowUpdateRequired;
 - (BOOL)_shouldPresentOrPushViewController;
 - (BOOL)isPresentingViewController;
-- (BOOL)prepareHandlingURLForSpecifierID:(id)a3 resourceDictionary:(id)a4 animatePush:(BOOL *)a5;
+- (BOOL)prepareHandlingURLForSpecifierID:(id)d resourceDictionary:(id)dictionary animatePush:(BOOL *)push;
 - (Class)tableViewClass;
 - (NPKPassbookBridgeSettingsController)init;
 - (id)localizedMirroringDetailFooter;
 - (id)localizedPaneTitle;
-- (id)presentingViewControllerForPendingTransactionHandler:(id)a3;
+- (id)presentingViewControllerForPendingTransactionHandler:(id)handler;
 - (id)specifiers;
 - (void)_endPreflightBackgroundTaskIfNecessary;
-- (void)_handleApplicationDidBecomeActiveNotification:(id)a3;
-- (void)_handleCompanionPassesChanged:(id)a3;
-- (void)_handleDatabaseChanged:(id)a3;
-- (void)_handleDefaultCardChanged:(id)a3;
-- (void)_handleDidEnterBackgroundNotification:(id)a3;
-- (void)_handlePaymentPassDetailAppearedNotification:(id)a3;
-- (void)_handlePeerPaymentWebServiceChanged:(id)a3;
-- (void)_handlePreferencesChanged:(id)a3;
-- (void)_handleWillEnterForegroundNotification:(id)a3;
-- (void)_launchBridgeInForegroundWithCompletion:(id)a3;
-- (void)_promptUserAboutGymKitConflictWithPass:(id)a3 visibleViewController:(id)a4 completion:(id)a5;
-- (void)_settingsController:(id)a3 requestsDetailViewControllerForPass:(id)a4 animated:(BOOL)a5 completion:(id)a6;
-- (void)_setupPendingTransactionHandlerForPassWithUniqueID:(id)a3;
+- (void)_handleApplicationDidBecomeActiveNotification:(id)notification;
+- (void)_handleCompanionPassesChanged:(id)changed;
+- (void)_handleDatabaseChanged:(id)changed;
+- (void)_handleDefaultCardChanged:(id)changed;
+- (void)_handleDidEnterBackgroundNotification:(id)notification;
+- (void)_handlePaymentPassDetailAppearedNotification:(id)notification;
+- (void)_handlePeerPaymentWebServiceChanged:(id)changed;
+- (void)_handlePreferencesChanged:(id)changed;
+- (void)_handleWillEnterForegroundNotification:(id)notification;
+- (void)_launchBridgeInForegroundWithCompletion:(id)completion;
+- (void)_promptUserAboutGymKitConflictWithPass:(id)pass visibleViewController:(id)controller completion:(id)completion;
+- (void)_settingsController:(id)controller requestsDetailViewControllerForPass:(id)pass animated:(BOOL)animated completion:(id)completion;
+- (void)_setupPendingTransactionHandlerForPassWithUniqueID:(id)d;
 - (void)_startPreflightBackgroundTaskIfNecessary;
-- (void)allowEnableExpressGymKitWithVisibleViewController:(id)a3 completion:(id)a4;
+- (void)allowEnableExpressGymKitWithVisibleViewController:(id)controller completion:(id)completion;
 - (void)dealloc;
-- (void)handleURL:(id)a3 withCompletion:(id)a4;
-- (void)pendingTransactionHandlerDidComplete:(id)a3;
-- (void)registerTableCellClass:(Class)a3 forCellReuseIdentifier:(id)a4;
-- (void)settingsController:(id)a3 requestShowPeerPaymentAssociatedAccountsFlowWithController:(id)a4 withPresentationContext:(id)a5;
-- (void)settingsController:(id)a3 requestsAddCardPreflightWithCompletion:(id)a4;
-- (void)settingsController:(id)a3 requestsAddLocalCardPreflightWithCompletion:(id)a4;
-- (void)settingsController:(id)a3 requestsAuthenticationChallengeForAppleAccountInformation:(id)a4 completion:(id)a5;
-- (void)settingsController:(id)a3 requestsPresentAuthorizationFlowWithRedirectURL:(id)a4 animated:(BOOL)a5 completion:(id)a6;
-- (void)settingsController:(id)a3 requestsPresentInboxMessage:(id)a4 animated:(BOOL)a5 completion:(id)a6;
-- (void)settingsController:(id)a3 requestsPresentViewController:(id)a4 animated:(BOOL)a5 completion:(id)a6;
-- (void)settingsControllerRequestsPresentPrivacyWithPresenter:(id)a3;
+- (void)handleURL:(id)l withCompletion:(id)completion;
+- (void)pendingTransactionHandlerDidComplete:(id)complete;
+- (void)registerTableCellClass:(Class)class forCellReuseIdentifier:(id)identifier;
+- (void)settingsController:(id)controller requestShowPeerPaymentAssociatedAccountsFlowWithController:(id)withController withPresentationContext:(id)context;
+- (void)settingsController:(id)controller requestsAddCardPreflightWithCompletion:(id)completion;
+- (void)settingsController:(id)controller requestsAddLocalCardPreflightWithCompletion:(id)completion;
+- (void)settingsController:(id)controller requestsAuthenticationChallengeForAppleAccountInformation:(id)information completion:(id)completion;
+- (void)settingsController:(id)controller requestsPresentAuthorizationFlowWithRedirectURL:(id)l animated:(BOOL)animated completion:(id)completion;
+- (void)settingsController:(id)controller requestsPresentInboxMessage:(id)message animated:(BOOL)animated completion:(id)completion;
+- (void)settingsController:(id)controller requestsPresentViewController:(id)viewController animated:(BOOL)animated completion:(id)completion;
+- (void)settingsControllerRequestsPresentPrivacyWithPresenter:(id)presenter;
 - (void)viewDidLoad;
 @end
 
@@ -73,12 +73,12 @@
     v3 = +[NPKPassbookPaymentSetupDelegate sharedSetupDelegate];
     [(NPKPassbookBridgeSettingsController *)v2 setPaymentSetupDelegate:v3];
 
-    v4 = [(NPKPassbookBridgeSettingsController *)v2 paymentSetupDelegate];
-    v5 = [v4 companionAgentConnection];
+    paymentSetupDelegate = [(NPKPassbookBridgeSettingsController *)v2 paymentSetupDelegate];
+    companionAgentConnection = [paymentSetupDelegate companionAgentConnection];
 
     v6 = +[NSNotificationCenter defaultCenter];
-    [v6 addObserver:v2 selector:"_handleDatabaseChanged:" name:NPKCompanionAgentConnectionPaymentPassesChanged object:v5];
-    [v6 addObserver:v2 selector:"_handleDefaultCardChanged:" name:NPKCompanionAgentConnectionDefaultCardChanged object:v5];
+    [v6 addObserver:v2 selector:"_handleDatabaseChanged:" name:NPKCompanionAgentConnectionPaymentPassesChanged object:companionAgentConnection];
+    [v6 addObserver:v2 selector:"_handleDefaultCardChanged:" name:NPKCompanionAgentConnectionDefaultCardChanged object:companionAgentConnection];
     v7 = +[PKPassLibrary sharedInstance];
     [v6 addObserver:v2 selector:"_handleCompanionPassesChanged:" name:PKPassLibraryDidChangeNotification object:v7];
 
@@ -105,55 +105,55 @@
     v10 = +[NPKPassbookPaymentSetupDelegate sharedSetupDelegate];
     [(NPKPassbookBridgeSettingsController *)v9 setPaymentSetupDelegate:v10];
 
-    v11 = [(NPKPassbookBridgeSettingsController *)v9 paymentSetupDelegate];
-    [v11 loadWebService];
+    paymentSetupDelegate2 = [(NPKPassbookBridgeSettingsController *)v9 paymentSetupDelegate];
+    [paymentSetupDelegate2 loadWebService];
 
     v12 = [NPKStockholmProvisioningController alloc];
-    v13 = [(NPKPassbookBridgeSettingsController *)v9 paymentSetupDelegate];
-    v14 = [(NPKStockholmProvisioningController *)v12 initWithPaymentSetupDelegate:v13];
+    paymentSetupDelegate3 = [(NPKPassbookBridgeSettingsController *)v9 paymentSetupDelegate];
+    v14 = [(NPKStockholmProvisioningController *)v12 initWithPaymentSetupDelegate:paymentSetupDelegate3];
     [(NPKPassbookBridgeSettingsController *)v9 setProvisioningController:v14];
 
     v15 = pk_Payment_log();
-    LODWORD(v13) = os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT);
+    LODWORD(paymentSetupDelegate3) = os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT);
 
-    if (v13)
+    if (paymentSetupDelegate3)
     {
       v16 = pk_Payment_log();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
-        v17 = [(NPKPassbookBridgeSettingsController *)v9 paymentSetupDelegate];
-        v18 = [(NPKPassbookBridgeSettingsController *)v9 provisioningController];
+        paymentSetupDelegate4 = [(NPKPassbookBridgeSettingsController *)v9 paymentSetupDelegate];
+        provisioningController = [(NPKPassbookBridgeSettingsController *)v9 provisioningController];
         *buf = 138412546;
-        v34 = v17;
+        v34 = paymentSetupDelegate4;
         v35 = 2112;
-        v36 = v18;
+        v36 = provisioningController;
         _os_log_impl(&dword_0, v16, OS_LOG_TYPE_DEFAULT, "Notice: Payment setup delegate: %@, provisioning controller: %@", buf, 0x16u);
       }
     }
 
     v19 = [PKPassbookSettingsController alloc];
-    v20 = [(NPKPassbookBridgeSettingsController *)v9 provisioningController];
-    v21 = [v19 initWithDelegate:v9 dataSource:v20 context:1];
+    provisioningController2 = [(NPKPassbookBridgeSettingsController *)v9 provisioningController];
+    v21 = [v19 initWithDelegate:v9 dataSource:provisioningController2 context:1];
     [(NPKPassbookBridgeSettingsController *)v9 setSettingsController:v21];
 
-    v22 = [(NPKPassbookBridgeSettingsController *)v9 provisioningController];
-    [v22 updateRegionSupportIfNecessary];
+    provisioningController3 = [(NPKPassbookBridgeSettingsController *)v9 provisioningController];
+    [provisioningController3 updateRegionSupportIfNecessary];
 
     [(NPKPassbookBridgeSettingsController *)v9 setBackgroundPreflightingTaskIdentifier:UIBackgroundTaskInvalid];
     -[NPKPassbookBridgeSettingsController setShowUpdateRequired:](v9, "setShowUpdateRequired:", [objc_opt_class() shouldShowUpdateRequired]);
     v23 = objc_alloc_init(PKPassLibrary);
-    v24 = [v23 _remoteLibrary];
+    _remoteLibrary = [v23 _remoteLibrary];
 
-    v25 = [[PKGroupsController alloc] initWithPassLibrary:v24];
+    v25 = [[PKGroupsController alloc] initWithPassLibrary:_remoteLibrary];
     [(NPKPassbookBridgeSettingsController *)v9 setGroupsController:v25];
 
-    v26 = [(NPKPassbookBridgeSettingsController *)v9 groupsController];
-    [v26 loadGroupsWithCompletion:&stru_2C700];
+    groupsController = [(NPKPassbookBridgeSettingsController *)v9 groupsController];
+    [groupsController loadGroupsWithCompletion:&stru_2C700];
 
     v27 = +[UIApplication sharedApplication];
-    v28 = [v27 applicationState];
+    applicationState = [v27 applicationState];
 
-    if (v28 != &dword_0 + 2)
+    if (applicationState != &dword_0 + 2)
     {
       [PKAnalyticsReporter beginSubjectReporting:PKAnalyticsSubjectBridge];
     }
@@ -165,8 +165,8 @@
 - (void)dealloc
 {
   [PKAnalyticsReporter endSubjectReporting:PKAnalyticsSubjectBridge];
-  v3 = [(NPKPassbookBridgeSettingsController *)self settingsController];
-  [v3 setDelegate:0];
+  settingsController = [(NPKPassbookBridgeSettingsController *)self settingsController];
+  [settingsController setDelegate:0];
 
   v4.receiver = self;
   v4.super_class = NPKPassbookBridgeSettingsController;
@@ -175,12 +175,12 @@
 
 - (id)localizedPaneTitle
 {
-  v2 = [(NPKPassbookBridgeSettingsController *)self provisioningController];
-  v3 = [v2 isRegistrationSupported];
+  provisioningController = [(NPKPassbookBridgeSettingsController *)self provisioningController];
+  isRegistrationSupported = [provisioningController isRegistrationSupported];
 
   v4 = [NSBundle bundleForClass:objc_opt_class()];
   v5 = v4;
-  if (v3)
+  if (isRegistrationSupported)
   {
     v6 = @"PASSBOOK_PANE_TITLE";
   }
@@ -211,11 +211,11 @@
     {
       v31.receiver = self;
       v31.super_class = NPKPassbookBridgeSettingsController;
-      v6 = [(NPKPassbookBridgeSettingsController *)&v31 specifiers];
-      v7 = v6;
-      if (v6)
+      specifiers = [(NPKPassbookBridgeSettingsController *)&v31 specifiers];
+      v7 = specifiers;
+      if (specifiers)
       {
-        v8 = v6;
+        v8 = specifiers;
       }
 
       else
@@ -226,8 +226,8 @@
       v9 = v8;
 
       v10 = +[NSArray array];
-      v11 = [(NPKPassbookBridgeSettingsController *)self suppressMirrorOption];
-      if (v11)
+      suppressMirrorOption = [(NPKPassbookBridgeSettingsController *)self suppressMirrorOption];
+      if (suppressMirrorOption)
       {
         v12 = @"CUSTOM_RADIO_GROUP_ID";
       }
@@ -238,7 +238,7 @@
       }
 
       v13 = [v9 specifierForID:v12];
-      if (v11 && [(NPKPassbookBridgeSettingsController *)self mirrorSettings])
+      if (suppressMirrorOption && [(NPKPassbookBridgeSettingsController *)self mirrorSettings])
       {
         v14 = objc_opt_respondsToSelector();
         v15 = pk_General_log();
@@ -276,12 +276,12 @@
         v20 = [v19 localizedStringForKey:@"NOTIFICATIONS_GROUP_HEADER" value:&stru_2D300 table:@"NanoPassbookBridgeSettings"];
         [v13 setName:v20];
 
-        v21 = [(NPKPassbookBridgeSettingsController *)self settingsController];
-        v22 = [v21 specifiers];
-        v23 = v22;
-        if (v22)
+        settingsController = [(NPKPassbookBridgeSettingsController *)self settingsController];
+        specifiers2 = [settingsController specifiers];
+        v23 = specifiers2;
+        if (specifiers2)
         {
-          v24 = v22;
+          v24 = specifiers2;
         }
 
         else
@@ -328,23 +328,23 @@
 {
   if ([(NPKPassbookBridgeSettingsController *)self showUpdateRequired])
   {
-    v3 = objc_opt_class();
+    tableViewClass = objc_opt_class();
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = NPKPassbookBridgeSettingsController;
-    v3 = [(NPKPassbookBridgeSettingsController *)&v5 tableViewClass];
+    tableViewClass = [(NPKPassbookBridgeSettingsController *)&v5 tableViewClass];
   }
 
-  return v3;
+  return tableViewClass;
 }
 
-- (BOOL)prepareHandlingURLForSpecifierID:(id)a3 resourceDictionary:(id)a4 animatePush:(BOOL *)a5
+- (BOOL)prepareHandlingURLForSpecifierID:(id)d resourceDictionary:(id)dictionary animatePush:(BOOL *)push
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  dictionaryCopy = dictionary;
   v8 = pk_Payment_log();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
 
@@ -354,9 +354,9 @@
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v12 = 138412546;
-      v13 = v7;
+      v13 = dictionaryCopy;
       v14 = 2112;
-      v15 = v6;
+      v15 = dCopy;
       _os_log_impl(&dword_0, v10, OS_LOG_TYPE_DEFAULT, "Notice: prepare handling URL: %@ with specifier: %@@", &v12, 0x16u);
     }
   }
@@ -364,10 +364,10 @@
   return 1;
 }
 
-- (void)handleURL:(id)a3 withCompletion:(id)a4
+- (void)handleURL:(id)l withCompletion:(id)completion
 {
-  v6 = a3;
-  v81 = a4;
+  lCopy = l;
+  completionCopy = completion;
   v7 = pk_Payment_log();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
 
@@ -376,23 +376,23 @@
     v9 = pk_Payment_log();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = objc_retainBlock(v81);
+      v10 = objc_retainBlock(completionCopy);
       *buf = 138412546;
-      v91 = v6;
+      v91 = lCopy;
       v92 = 2112;
       v93 = v10;
       _os_log_impl(&dword_0, v9, OS_LOG_TYPE_DEFAULT, "Notice: handling URL: %@ withCompletion: %@", buf, 0x16u);
     }
   }
 
-  v11 = [(NPKPassbookBridgeSettingsController *)self settingsController];
-  [v11 willHandleURL];
+  settingsController = [(NPKPassbookBridgeSettingsController *)self settingsController];
+  [settingsController willHandleURL];
 
-  v83 = [v6 objectForKeyedSubscript:@"action"];
+  v83 = [lCopy objectForKeyedSubscript:@"action"];
   if ([v83 isEqualToString:@"ADD_CARD"])
   {
-    v12 = [v6 objectForKeyedSubscript:@"passTypeIdentifier"];
-    v13 = [v6 objectForKeyedSubscript:@"passSerialNumber"];
+    v12 = [lCopy objectForKeyedSubscript:@"passTypeIdentifier"];
+    v13 = [lCopy objectForKeyedSubscript:@"passSerialNumber"];
     v14 = v13;
     v15 = 0;
     if (v12 && v13)
@@ -419,16 +419,16 @@
     }
 
     v19 = +[UIApplication sharedApplication];
-    v20 = [v19 applicationState];
+    applicationState = [v19 applicationState];
     if (v15 && (-[NPKPassbookBridgeSettingsController paymentSetupDelegate](self, "paymentSetupDelegate"), v21 = objc_claimAutoreleasedReturnValue(), v22 = [v21 hasPaymentPassWithUniqueID:v15], v21, v22))
     {
-      v23 = v20 != &dword_0 + 2;
-      v24 = [(NPKPassbookBridgeSettingsController *)self paymentSetupDelegate];
-      v25 = [v24 passWithUniqueID:v15];
-      v26 = [v25 paymentPass];
+      v23 = applicationState != &dword_0 + 2;
+      paymentSetupDelegate = [(NPKPassbookBridgeSettingsController *)self paymentSetupDelegate];
+      v25 = [paymentSetupDelegate passWithUniqueID:v15];
+      paymentPass = [v25 paymentPass];
 
-      v27 = [(NPKPassbookBridgeSettingsController *)self settingsController];
-      [(NPKPassbookBridgeSettingsController *)self settingsController:v27 requestsDetailViewControllerForPass:v26 animated:v23];
+      settingsController2 = [(NPKPassbookBridgeSettingsController *)self settingsController];
+      [(NPKPassbookBridgeSettingsController *)self settingsController:settingsController2 requestsDetailViewControllerForPass:paymentPass animated:v23];
 
       if (v82)
       {
@@ -438,27 +438,27 @@
 
     else
     {
-      if (v20 == &dword_0 + 2)
+      if (applicationState == &dword_0 + 2)
       {
         [(NPKPassbookBridgeSettingsController *)self _startPreflightBackgroundTaskIfNecessary];
         [(NPKPassbookBridgeSettingsController *)self setPerformingBackgroundPreflight:1];
       }
 
-      v36 = [(NPKPassbookBridgeSettingsController *)self settingsController];
-      v37 = v36;
+      settingsController3 = [(NPKPassbookBridgeSettingsController *)self settingsController];
+      v37 = settingsController3;
       if (v15)
       {
-        [v36 refreshPasses];
+        [settingsController3 refreshPasses];
 
         objc_initWeak(buf, self);
-        v38 = [(NPKPassbookBridgeSettingsController *)self settingsController];
+        settingsController4 = [(NPKPassbookBridgeSettingsController *)self settingsController];
         v87[0] = _NSConcreteStackBlock;
         v87[1] = 3221225472;
         v87[2] = sub_3704;
         v87[3] = &unk_2C728;
         objc_copyWeak(&v89, buf);
         v88 = v82;
-        [v38 addCardTappedForPaymentPassWithUniqueID:v15 withCompletion:v87];
+        [settingsController4 addCardTappedForPaymentPassWithUniqueID:v15 withCompletion:v87];
 
         objc_destroyWeak(&v89);
         objc_destroyWeak(buf);
@@ -466,7 +466,7 @@
 
       else
       {
-        [v36 addCardTapped];
+        [settingsController3 addCardTapped];
 
         if (v82)
         {
@@ -480,21 +480,21 @@
 
   if ([v83 isEqualToString:@"ACCEPT_PP_TC"])
   {
-    v28 = [(NPKPassbookBridgeSettingsController *)self paymentSetupDelegate];
-    v29 = [v28 peerPaymentPassUniqueID];
+    paymentSetupDelegate2 = [(NPKPassbookBridgeSettingsController *)self paymentSetupDelegate];
+    peerPaymentPassUniqueID = [paymentSetupDelegate2 peerPaymentPassUniqueID];
 
-    v30 = [(NPKPassbookBridgeSettingsController *)self paymentSetupDelegate];
-    v31 = [v30 passWithUniqueID:v29];
-    v32 = [v31 paymentPass];
+    paymentSetupDelegate3 = [(NPKPassbookBridgeSettingsController *)self paymentSetupDelegate];
+    v31 = [paymentSetupDelegate3 passWithUniqueID:peerPaymentPassUniqueID];
+    paymentPass2 = [v31 paymentPass];
 
-    if (v32)
+    if (paymentPass2)
     {
       v33 = +[UIApplication sharedApplication];
       v34 = [v33 applicationState] != &dword_0 + 2;
 
       [(NPKPassbookBridgeSettingsController *)self setShouldNavigateToTermsAndConditions:1];
-      v35 = [(NPKPassbookBridgeSettingsController *)self settingsController];
-      [(NPKPassbookBridgeSettingsController *)self settingsController:v35 requestsDetailViewControllerForPass:v32 animated:v34];
+      settingsController5 = [(NPKPassbookBridgeSettingsController *)self settingsController];
+      [(NPKPassbookBridgeSettingsController *)self settingsController:settingsController5 requestsDetailViewControllerForPass:paymentPass2 animated:v34];
     }
 
     if (v82)
@@ -541,25 +541,25 @@
       }
     }
 
-    v46 = [v6 objectForKeyedSubscript:@"passTypeIdentifier"];
-    v47 = [v6 objectForKeyedSubscript:@"passSerialNumber"];
+    v46 = [lCopy objectForKeyedSubscript:@"passTypeIdentifier"];
+    v47 = [lCopy objectForKeyedSubscript:@"passSerialNumber"];
     v48 = v47;
     if (v46 && v47 && (PKGeneratePassUniqueID(), (v49 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v50 = [(NPKPassbookBridgeSettingsController *)self paymentSetupDelegate];
-      v51 = [v50 hasPaymentPassWithUniqueID:v49];
+      paymentSetupDelegate4 = [(NPKPassbookBridgeSettingsController *)self paymentSetupDelegate];
+      v51 = [paymentSetupDelegate4 hasPaymentPassWithUniqueID:v49];
 
       if (v51)
       {
         v52 = +[UIApplication sharedApplication];
         v53 = [v52 applicationState] != &dword_0 + 2;
 
-        v54 = [(NPKPassbookBridgeSettingsController *)self paymentSetupDelegate];
-        v55 = [v54 passWithUniqueID:v49];
-        v56 = [v55 paymentPass];
+        paymentSetupDelegate5 = [(NPKPassbookBridgeSettingsController *)self paymentSetupDelegate];
+        v55 = [paymentSetupDelegate5 passWithUniqueID:v49];
+        paymentPass3 = [v55 paymentPass];
 
-        v57 = [(NPKPassbookBridgeSettingsController *)self settingsController];
-        [(NPKPassbookBridgeSettingsController *)self settingsController:v57 requestsDetailViewControllerForPass:v56 animated:v53];
+        settingsController6 = [(NPKPassbookBridgeSettingsController *)self settingsController];
+        [(NPKPassbookBridgeSettingsController *)self settingsController:settingsController6 requestsDetailViewControllerForPass:paymentPass3 animated:v53];
       }
 
       else
@@ -572,12 +572,12 @@
           goto LABEL_71;
         }
 
-        v56 = pk_Payment_log();
-        if (os_log_type_enabled(v56, OS_LOG_TYPE_DEFAULT))
+        paymentPass3 = pk_Payment_log();
+        if (os_log_type_enabled(paymentPass3, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
           v91 = v49;
-          _os_log_impl(&dword_0, v56, OS_LOG_TYPE_DEFAULT, "Notice: Unable to complete pass details presentation request for %@ as no matching pass was found.", buf, 0xCu);
+          _os_log_impl(&dword_0, paymentPass3, OS_LOG_TYPE_DEFAULT, "Notice: Unable to complete pass details presentation request for %@ as no matching pass was found.", buf, 0xCu);
         }
       }
     }
@@ -593,11 +593,11 @@
         goto LABEL_71;
       }
 
-      v56 = pk_Payment_log();
-      if (os_log_type_enabled(v56, OS_LOG_TYPE_DEFAULT))
+      paymentPass3 = pk_Payment_log();
+      if (os_log_type_enabled(paymentPass3, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 0;
-        _os_log_impl(&dword_0, v56, OS_LOG_TYPE_DEFAULT, "Notice: Skipped handling pass details presentation request because there is no valid passUniqueID.", buf, 2u);
+        _os_log_impl(&dword_0, paymentPass3, OS_LOG_TYPE_DEFAULT, "Notice: Skipped handling pass details presentation request because there is no valid passUniqueID.", buf, 2u);
       }
 
       v49 = 0;
@@ -616,7 +616,7 @@ LABEL_71:
   {
     v84.receiver = self;
     v84.super_class = NPKPassbookBridgeSettingsController;
-    [(NPKPassbookBridgeSettingsController *)&v84 handleURL:v6 withCompletion:v82];
+    [(NPKPassbookBridgeSettingsController *)&v84 handleURL:lCopy withCompletion:v82];
     goto LABEL_37;
   }
 
@@ -633,24 +633,24 @@ LABEL_71:
     }
   }
 
-  v61 = [v6 objectForKeyedSubscript:@"passTypeIdentifier"];
-  v62 = [v6 objectForKeyedSubscript:@"passSerialNumber"];
+  v61 = [lCopy objectForKeyedSubscript:@"passTypeIdentifier"];
+  v62 = [lCopy objectForKeyedSubscript:@"passSerialNumber"];
   v63 = v62;
   if (v61 && v62 && (PKGeneratePassUniqueID(), (v64 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v65 = [(NPKPassbookBridgeSettingsController *)self pendingTransactionHandler];
-    v66 = v65 == 0;
+    pendingTransactionHandler = [(NPKPassbookBridgeSettingsController *)self pendingTransactionHandler];
+    v66 = pendingTransactionHandler == 0;
 
     if (v66)
     {
       v76 = +[UIApplication sharedApplication];
       v77 = [v76 applicationState] != &dword_0 + 2;
 
-      v78 = [(NPKPassbookBridgeSettingsController *)self paymentSetupDelegate];
-      v79 = [v78 passWithUniqueID:v64];
-      v69 = [v79 paymentPass];
+      paymentSetupDelegate6 = [(NPKPassbookBridgeSettingsController *)self paymentSetupDelegate];
+      v79 = [paymentSetupDelegate6 passWithUniqueID:v64];
+      paymentPass4 = [v79 paymentPass];
 
-      v80 = [(NPKPassbookBridgeSettingsController *)self settingsController];
+      settingsController7 = [(NPKPassbookBridgeSettingsController *)self settingsController];
       v85[0] = _NSConcreteStackBlock;
       v85[1] = 3221225472;
       v85[2] = sub_3784;
@@ -658,7 +658,7 @@ LABEL_71:
       v85[4] = self;
       v64 = v64;
       v86 = v64;
-      [(NPKPassbookBridgeSettingsController *)self _settingsController:v80 requestsDetailViewControllerForPass:v69 animated:v77 completion:v85];
+      [(NPKPassbookBridgeSettingsController *)self _settingsController:settingsController7 requestsDetailViewControllerForPass:paymentPass4 animated:v77 completion:v85];
 
 LABEL_79:
       goto LABEL_80;
@@ -669,11 +669,11 @@ LABEL_79:
 
     if (v68)
     {
-      v69 = pk_Payment_log();
-      if (os_log_type_enabled(v69, OS_LOG_TYPE_DEFAULT))
+      paymentPass4 = pk_Payment_log();
+      if (os_log_type_enabled(paymentPass4, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 0;
-        _os_log_impl(&dword_0, v69, OS_LOG_TYPE_DEFAULT, "Notice: [BarcodeEvent] Skipped handling pending transaction because there is an on-going session.", buf, 2u);
+        _os_log_impl(&dword_0, paymentPass4, OS_LOG_TYPE_DEFAULT, "Notice: [BarcodeEvent] Skipped handling pending transaction because there is an on-going session.", buf, 2u);
       }
 
       goto LABEL_79;
@@ -687,11 +687,11 @@ LABEL_79:
 
     if (v73)
     {
-      v69 = pk_Payment_log();
-      if (os_log_type_enabled(v69, OS_LOG_TYPE_DEFAULT))
+      paymentPass4 = pk_Payment_log();
+      if (os_log_type_enabled(paymentPass4, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 0;
-        _os_log_impl(&dword_0, v69, OS_LOG_TYPE_DEFAULT, "Notice: [BarcodeEvent] Skipped handling pending transaction because there is no valid passUniqueID.", buf, 2u);
+        _os_log_impl(&dword_0, paymentPass4, OS_LOG_TYPE_DEFAULT, "Notice: [BarcodeEvent] Skipped handling pending transaction because there is no valid passUniqueID.", buf, 2u);
       }
 
       v64 = 0;
@@ -710,25 +710,25 @@ LABEL_80:
 LABEL_37:
 }
 
-- (void)_handlePaymentPassDetailAppearedNotification:(id)a3
+- (void)_handlePaymentPassDetailAppearedNotification:(id)notification
 {
   if ([(NPKPassbookBridgeSettingsController *)self shouldNavigateToTermsAndConditions])
   {
-    v4 = [(NPKPassbookBridgeSettingsController *)self navigationController];
-    v5 = [v4 topViewController];
+    navigationController = [(NPKPassbookBridgeSettingsController *)self navigationController];
+    topViewController = [navigationController topViewController];
 
     if (objc_opt_respondsToSelector())
     {
-      [v5 presentTermsAndConditions];
+      [topViewController presentTermsAndConditions];
     }
 
     [(NPKPassbookBridgeSettingsController *)self setShouldNavigateToTermsAndConditions:0];
   }
 }
 
-- (void)_handleDatabaseChanged:(id)a3
+- (void)_handleDatabaseChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -737,21 +737,21 @@ LABEL_37:
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 name];
+      name = [changedCopy name];
       v11 = 138412290;
-      v12 = v8;
+      v12 = name;
       _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEFAULT, "Notice: Database changed, refreshing passes... (notification name = %@)", &v11, 0xCu);
     }
   }
 
-  v9 = [(NPKPassbookBridgeSettingsController *)self settingsController];
-  [v9 refreshPasses];
+  settingsController = [(NPKPassbookBridgeSettingsController *)self settingsController];
+  [settingsController refreshPasses];
 
   v10 = +[NSNotificationCenter defaultCenter];
   [v10 postNotificationName:PKPassLibraryDidChangeNotification object:0];
 }
 
-- (void)_handleDefaultCardChanged:(id)a3
+- (void)_handleDefaultCardChanged:(id)changed
 {
   v4 = pk_Payment_log();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
@@ -766,11 +766,11 @@ LABEL_37:
     }
   }
 
-  v7 = [(NPKPassbookBridgeSettingsController *)self settingsController];
-  [v7 refreshDefaultCard];
+  settingsController = [(NPKPassbookBridgeSettingsController *)self settingsController];
+  [settingsController refreshDefaultCard];
 }
 
-- (void)_handleCompanionPassesChanged:(id)a3
+- (void)_handleCompanionPassesChanged:(id)changed
 {
   v4 = pk_Payment_log();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
@@ -793,13 +793,13 @@ LABEL_37:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)_handlePreferencesChanged:(id)a3
+- (void)_handlePreferencesChanged:(id)changed
 {
-  v4 = [(NPKPassbookBridgeSettingsController *)self paymentSetupDelegate];
-  v5 = [v4 isSettingsControllerReloadNecessary];
+  paymentSetupDelegate = [(NPKPassbookBridgeSettingsController *)self paymentSetupDelegate];
+  isSettingsControllerReloadNecessary = [paymentSetupDelegate isSettingsControllerReloadNecessary];
 
-  v6 = [(NPKPassbookBridgeSettingsController *)self provisioningController];
-  v7 = [v6 isSettingsControllerReloadNecessary];
+  provisioningController = [(NPKPassbookBridgeSettingsController *)self provisioningController];
+  isSettingsControllerReloadNecessary2 = [provisioningController isSettingsControllerReloadNecessary];
 
   v8 = pk_Payment_log();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
@@ -810,20 +810,20 @@ LABEL_37:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v11[0] = 67109376;
-      v11[1] = v5;
+      v11[1] = isSettingsControllerReloadNecessary;
       v12 = 1024;
-      v13 = v7;
+      v13 = isSettingsControllerReloadNecessary2;
       _os_log_impl(&dword_0, v10, OS_LOG_TYPE_DEFAULT, "Notice: Preferences changed… delegate wants refresh %d, provisioning controller wants refresh %d", v11, 0xEu);
     }
   }
 
-  if ((v5 | v7))
+  if ((isSettingsControllerReloadNecessary | isSettingsControllerReloadNecessary2))
   {
     [(NPKPassbookBridgeSettingsController *)self reloadSpecifiers];
   }
 }
 
-- (void)_handlePeerPaymentWebServiceChanged:(id)a3
+- (void)_handlePeerPaymentWebServiceChanged:(id)changed
 {
   v4 = pk_Payment_log();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
@@ -838,11 +838,11 @@ LABEL_37:
     }
   }
 
-  v7 = [(NPKPassbookBridgeSettingsController *)self settingsController];
-  [v7 refreshPeerPaymentStatus];
+  settingsController = [(NPKPassbookBridgeSettingsController *)self settingsController];
+  [settingsController refreshPeerPaymentStatus];
 }
 
-- (void)_handleWillEnterForegroundNotification:(id)a3
+- (void)_handleWillEnterForegroundNotification:(id)notification
 {
   v4 = pk_Payment_log();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
@@ -857,19 +857,19 @@ LABEL_37:
     }
   }
 
-  v7 = [(NPKPassbookBridgeSettingsController *)self paymentSetupDelegate];
-  v8 = [v7 companionAgentConnection];
+  paymentSetupDelegate = [(NPKPassbookBridgeSettingsController *)self paymentSetupDelegate];
+  companionAgentConnection = [paymentSetupDelegate companionAgentConnection];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_3E30;
   v9[3] = &unk_2C6C0;
   v9[4] = self;
-  [v8 reloadPaymentPassesWithCompletion:v9];
+  [companionAgentConnection reloadPaymentPassesWithCompletion:v9];
 
   [PKAnalyticsReporter beginSubjectReporting:PKAnalyticsSubjectBridge];
 }
 
-- (void)_handleDidEnterBackgroundNotification:(id)a3
+- (void)_handleDidEnterBackgroundNotification:(id)notification
 {
   v3 = pk_Payment_log();
   v4 = os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT);
@@ -887,7 +887,7 @@ LABEL_37:
   [PKAnalyticsReporter endSubjectReporting:PKAnalyticsSubjectBridge];
 }
 
-- (void)_handleApplicationDidBecomeActiveNotification:(id)a3
+- (void)_handleApplicationDidBecomeActiveNotification:(id)notification
 {
   v4 = pk_Payment_log();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
@@ -902,8 +902,8 @@ LABEL_37:
     }
   }
 
-  v7 = [(NPKPassbookBridgeSettingsController *)self settingsController];
-  [v7 applicationDidBecomeActive];
+  settingsController = [(NPKPassbookBridgeSettingsController *)self settingsController];
+  [settingsController applicationDidBecomeActive];
 }
 
 - (void)viewDidLoad
@@ -911,45 +911,45 @@ LABEL_37:
   v6.receiver = self;
   v6.super_class = NPKPassbookBridgeSettingsController;
   [(NPKPassbookBridgeSettingsController *)&v6 viewDidLoad];
-  v3 = [(NPKPassbookBridgeSettingsController *)self settingsController];
+  settingsController = [(NPKPassbookBridgeSettingsController *)self settingsController];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(NPKPassbookBridgeSettingsController *)self settingsController];
-    [v5 performSelector:"viewDidLoad"];
+    settingsController2 = [(NPKPassbookBridgeSettingsController *)self settingsController];
+    [settingsController2 performSelector:"viewDidLoad"];
   }
 }
 
-- (void)settingsController:(id)a3 requestsAddCardPreflightWithCompletion:(id)a4
+- (void)settingsController:(id)controller requestsAddCardPreflightWithCompletion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   [(NPKPassbookBridgeSettingsController *)self _startPreflightBackgroundTaskIfNecessary];
-  v6 = [(NPKPassbookBridgeSettingsController *)self provisioningController];
-  [v6 preflightWithCompletion:v5];
+  provisioningController = [(NPKPassbookBridgeSettingsController *)self provisioningController];
+  [provisioningController preflightWithCompletion:completionCopy];
 }
 
-- (void)settingsController:(id)a3 requestsAddLocalCardPreflightWithCompletion:(id)a4
+- (void)settingsController:(id)controller requestsAddLocalCardPreflightWithCompletion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   [(NPKPassbookBridgeSettingsController *)self _startPreflightBackgroundTaskIfNecessary];
-  v6 = [(NPKPassbookBridgeSettingsController *)self provisioningController];
-  [v6 preflightForLocalPassWithCompletion:v5];
+  provisioningController = [(NPKPassbookBridgeSettingsController *)self provisioningController];
+  [provisioningController preflightForLocalPassWithCompletion:completionCopy];
 }
 
 - (BOOL)isPresentingViewController
 {
-  v2 = [(NPKPassbookBridgeSettingsController *)self presentedViewController];
-  v3 = v2 != 0;
+  presentedViewController = [(NPKPassbookBridgeSettingsController *)self presentedViewController];
+  v3 = presentedViewController != 0;
 
   return v3;
 }
 
-- (void)settingsController:(id)a3 requestsPresentViewController:(id)a4 animated:(BOOL)a5 completion:(id)a6
+- (void)settingsController:(id)controller requestsPresentViewController:(id)viewController animated:(BOOL)animated completion:(id)completion
 {
-  LODWORD(v7) = a5;
-  v9 = a4;
-  v10 = a6;
+  LODWORD(v7) = animated;
+  viewControllerCopy = viewController;
+  completionCopy = completion;
   v11 = pk_Payment_log();
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
 
@@ -959,34 +959,34 @@ LABEL_37:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v30 = v9;
+      v30 = viewControllerCopy;
       v31 = 1024;
       v32 = v7;
       _os_log_impl(&dword_0, v13, OS_LOG_TYPE_DEFAULT, "Notice: Bridge settings controller requested to present view controller %@ animated %d", buf, 0x12u);
     }
   }
 
-  v14 = [(NPKPassbookBridgeSettingsController *)self _shouldPresentOrPushViewController];
+  _shouldPresentOrPushViewController = [(NPKPassbookBridgeSettingsController *)self _shouldPresentOrPushViewController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v15 = v9;
-    v16 = [v15 title];
-    v17 = [v15 message];
+    v15 = viewControllerCopy;
+    title = [v15 title];
+    message = [v15 message];
     v18 = objc_alloc_init(NSMutableDictionary);
     v19 = v18;
-    if (v16)
+    if (title)
     {
-      [v18 setObject:v16 forKeyedSubscript:NSLocalizedFailureReasonErrorKey];
+      [v18 setObject:title forKeyedSubscript:NSLocalizedFailureReasonErrorKey];
     }
 
-    if (v17)
+    if (message)
     {
-      [v19 setObject:v17 forKeyedSubscript:NSLocalizedRecoverySuggestionErrorKey];
+      [v19 setObject:message forKeyedSubscript:NSLocalizedRecoverySuggestionErrorKey];
     }
 
     v20 = [NSError errorWithDomain:PKDisplayableErrorDomain code:0 userInfo:v19];
-    v21 = ![(NPKPassbookBridgeSettingsController *)self _handleProvisioningPreflightFinishedWithSuccess:0 displayableError:v20]& v14;
+    v21 = ![(NPKPassbookBridgeSettingsController *)self _handleProvisioningPreflightFinishedWithSuccess:0 displayableError:v20]& _shouldPresentOrPushViewController;
 
     if ((v21 & 1) == 0)
     {
@@ -994,22 +994,22 @@ LABEL_37:
     }
   }
 
-  else if (!v14)
+  else if (!_shouldPresentOrPushViewController)
   {
 LABEL_11:
     [(NPKPassbookBridgeSettingsController *)self _handleProvisioningPreflightFinishedWithSuccess:0 displayableError:0];
-    if (v10)
+    if (completionCopy)
     {
-      v10[2](v10);
+      completionCopy[2](completionCopy);
     }
 
     goto LABEL_18;
   }
 
   v22 = +[UIApplication sharedApplication];
-  v23 = [v22 applicationState];
+  applicationState = [v22 applicationState];
 
-  if (v23 == &dword_0 + 2)
+  if (applicationState == &dword_0 + 2)
   {
     v7 = 0;
   }
@@ -1019,42 +1019,42 @@ LABEL_11:
     v7 = v7;
   }
 
-  v24 = [(NPKPassbookBridgeSettingsController *)self splitViewController];
+  splitViewController = [(NPKPassbookBridgeSettingsController *)self splitViewController];
   v25[0] = _NSConcreteStackBlock;
   v25[1] = 3221225472;
   v25[2] = sub_4614;
   v25[3] = &unk_2C778;
-  v26 = v9;
-  v27 = self;
-  v28 = v10;
-  [v24 presentViewController:v26 animated:v7 completion:v25];
+  v26 = viewControllerCopy;
+  selfCopy = self;
+  v28 = completionCopy;
+  [splitViewController presentViewController:v26 animated:v7 completion:v25];
 
 LABEL_18:
 }
 
-- (void)registerTableCellClass:(Class)a3 forCellReuseIdentifier:(id)a4
+- (void)registerTableCellClass:(Class)class forCellReuseIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = [(NPKPassbookBridgeSettingsController *)self table];
-  [v7 registerClass:a3 forCellReuseIdentifier:v6];
+  identifierCopy = identifier;
+  table = [(NPKPassbookBridgeSettingsController *)self table];
+  [table registerClass:class forCellReuseIdentifier:identifierCopy];
 }
 
-- (void)_settingsController:(id)a3 requestsDetailViewControllerForPass:(id)a4 animated:(BOOL)a5 completion:(id)a6
+- (void)_settingsController:(id)controller requestsDetailViewControllerForPass:(id)pass animated:(BOOL)animated completion:(id)completion
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  if (v11 && [(NPKPassbookBridgeSettingsController *)self _shouldPresentOrPushViewController])
+  animatedCopy = animated;
+  controllerCopy = controller;
+  passCopy = pass;
+  completionCopy = completion;
+  if (passCopy && [(NPKPassbookBridgeSettingsController *)self _shouldPresentOrPushViewController])
   {
-    v44 = v10;
-    v13 = [(NPKPassbookBridgeSettingsController *)self groupsController];
-    v43 = v11;
-    v14 = [v11 uniqueID];
-    v15 = [v13 groupIndexForPassUniqueID:v14];
+    v44 = controllerCopy;
+    groupsController = [(NPKPassbookBridgeSettingsController *)self groupsController];
+    v43 = passCopy;
+    uniqueID = [passCopy uniqueID];
+    v15 = [groupsController groupIndexForPassUniqueID:uniqueID];
 
-    v42 = v12;
-    v41 = v7;
+    v42 = completionCopy;
+    v41 = animatedCopy;
     if (v15 == 0x7FFFFFFFFFFFFFFFLL)
     {
       v45 = 0;
@@ -1062,57 +1062,57 @@ LABEL_18:
 
     else
     {
-      v20 = [(NPKPassbookBridgeSettingsController *)self groupsController];
-      v45 = [v20 groupAtIndex:v15];
+      groupsController2 = [(NPKPassbookBridgeSettingsController *)self groupsController];
+      v45 = [groupsController2 groupAtIndex:v15];
     }
 
     v21 = [PKPaymentPassDetailViewController alloc];
-    v22 = [(NPKPassbookBridgeSettingsController *)self groupsController];
-    v23 = [(NPKPassbookBridgeSettingsController *)self paymentSetupDelegate];
-    v24 = [v23 webService];
-    v25 = [(NPKPassbookBridgeSettingsController *)self paymentSetupDelegate];
-    v26 = [v25 peerPaymentWebService];
-    v27 = [(NPKPassbookBridgeSettingsController *)self paymentSetupDelegate];
-    v28 = [(NPKPassbookBridgeSettingsController *)self provisioningController];
-    v11 = v43;
-    v29 = [v21 initWithPass:v43 group:v45 groupsController:v22 webService:v24 peerPaymentWebService:v26 style:2 passLibraryDataProvider:v27 paymentServiceDataProvider:v28];
+    groupsController3 = [(NPKPassbookBridgeSettingsController *)self groupsController];
+    paymentSetupDelegate = [(NPKPassbookBridgeSettingsController *)self paymentSetupDelegate];
+    webService = [paymentSetupDelegate webService];
+    paymentSetupDelegate2 = [(NPKPassbookBridgeSettingsController *)self paymentSetupDelegate];
+    peerPaymentWebService = [paymentSetupDelegate2 peerPaymentWebService];
+    paymentSetupDelegate3 = [(NPKPassbookBridgeSettingsController *)self paymentSetupDelegate];
+    provisioningController = [(NPKPassbookBridgeSettingsController *)self provisioningController];
+    passCopy = v43;
+    v29 = [v21 initWithPass:v43 group:v45 groupsController:groupsController3 webService:webService peerPaymentWebService:peerPaymentWebService style:2 passLibraryDataProvider:paymentSetupDelegate3 paymentServiceDataProvider:provisioningController];
 
-    v30 = [(NPKPassbookBridgeSettingsController *)self paymentSetupDelegate];
-    [v29 setDeleteOverrider:v30];
+    paymentSetupDelegate4 = [(NPKPassbookBridgeSettingsController *)self paymentSetupDelegate];
+    [v29 setDeleteOverrider:paymentSetupDelegate4];
 
     v31 = +[PSListController appearance];
-    v32 = [v31 textColor];
-    [v29 setPrimaryTextColor:v32];
+    textColor = [v31 textColor];
+    [v29 setPrimaryTextColor:textColor];
 
     v33 = +[PSListController appearance];
-    v34 = [v33 altTextColor];
-    [v29 setDetailTextColor:v34];
+    altTextColor = [v33 altTextColor];
+    [v29 setDetailTextColor:altTextColor];
 
     v35 = +[PSListController appearance];
-    v36 = [v35 buttonTextColor];
-    [v29 setLinkTextColor:v36];
+    buttonTextColor = [v35 buttonTextColor];
+    [v29 setLinkTextColor:buttonTextColor];
 
     v37 = +[UIColor systemRedColor];
     [v29 setWarningTextColor:v37];
 
     v38 = +[PSListController appearance];
-    v39 = [v38 cellHighlightColor];
-    [v29 setHighlightColor:v39];
+    cellHighlightColor = [v38 cellHighlightColor];
+    [v29 setHighlightColor:cellHighlightColor];
 
     +[CATransaction begin];
-    v40 = [(NPKPassbookBridgeSettingsController *)self settingsController];
-    [(NPKPassbookBridgeSettingsController *)self settingsController:v40 requestsPushViewController:v29 animated:v41];
+    settingsController = [(NPKPassbookBridgeSettingsController *)self settingsController];
+    [(NPKPassbookBridgeSettingsController *)self settingsController:settingsController requestsPushViewController:v29 animated:v41];
 
     v46[0] = _NSConcreteStackBlock;
     v46[1] = 3221225472;
     v46[2] = sub_5174;
     v46[3] = &unk_2C7A0;
-    v12 = v42;
+    completionCopy = v42;
     v47 = v42;
     [CATransaction setCompletionBlock:v46];
     +[CATransaction commit];
 
-    v10 = v44;
+    controllerCopy = v44;
   }
 
   else
@@ -1125,30 +1125,30 @@ LABEL_18:
       v18 = pk_Payment_log();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
-        v19 = [v11 uniqueID];
+        uniqueID2 = [passCopy uniqueID];
         *buf = 138412290;
-        v49 = v19;
+        v49 = uniqueID2;
         _os_log_impl(&dword_0, v18, OS_LOG_TYPE_DEFAULT, "Notice: Unable to push pass detail view controller for pass: %@", buf, 0xCu);
       }
     }
 
-    if (v12)
+    if (completionCopy)
     {
-      v12[2](v12);
+      completionCopy[2](completionCopy);
     }
   }
 }
 
 - (BOOL)_shouldPresentOrPushViewController
 {
-  v3 = [(NPKPassbookBridgeSettingsController *)self navigationController];
-  v4 = [v3 topViewController];
+  navigationController = [(NPKPassbookBridgeSettingsController *)self navigationController];
+  topViewController = [navigationController topViewController];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 childViewControllers];
-    v6 = [v5 containsObject:self];
+    childViewControllers = [topViewController childViewControllers];
+    v6 = [childViewControllers containsObject:self];
   }
 
   else
@@ -1159,30 +1159,30 @@ LABEL_18:
   return v6;
 }
 
-- (void)settingsControllerRequestsPresentPrivacyWithPresenter:(id)a3
+- (void)settingsControllerRequestsPresentPrivacyWithPresenter:(id)presenter
 {
-  v5 = a3;
+  presenterCopy = presenter;
   if ([(NPKPassbookBridgeSettingsController *)self _shouldPresentOrPushViewController])
   {
-    v4 = [(NPKPassbookBridgeSettingsController *)self splitViewController];
-    [v5 setPresentingViewController:v4];
+    splitViewController = [(NPKPassbookBridgeSettingsController *)self splitViewController];
+    [presenterCopy setPresentingViewController:splitViewController];
 
-    [v5 present];
+    [presenterCopy present];
   }
 }
 
-- (void)settingsController:(id)a3 requestsAuthenticationChallengeForAppleAccountInformation:(id)a4 completion:(id)a5
+- (void)settingsController:(id)controller requestsAuthenticationChallengeForAppleAccountInformation:(id)information completion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
+  completionCopy = completion;
+  informationCopy = information;
   v9 = objc_alloc_init(AKAppleIDAuthenticationInAppContext);
   [v9 setPresentingViewController:self];
-  v10 = [v8 appleID];
-  [v9 setUsername:v10];
+  appleID = [informationCopy appleID];
+  [v9 setUsername:appleID];
 
-  v11 = [v8 aaAlternateDSID];
+  aaAlternateDSID = [informationCopy aaAlternateDSID];
 
-  [v9 setAltDSID:v11];
+  [v9 setAltDSID:aaAlternateDSID];
   [v9 setIsUsernameEditable:0];
   [v9 setShouldPromptForPasswordOnly:1];
   [v9 setAuthenticationType:2];
@@ -1192,30 +1192,30 @@ LABEL_18:
   v14[2] = sub_53E8;
   v14[3] = &unk_2C7F0;
   v14[4] = self;
-  v15 = v7;
-  v13 = v7;
+  v15 = completionCopy;
+  v13 = completionCopy;
   [v12 authenticateWithContext:v9 completion:v14];
 }
 
-- (void)settingsController:(id)a3 requestShowPeerPaymentAssociatedAccountsFlowWithController:(id)a4 withPresentationContext:(id)a5
+- (void)settingsController:(id)controller requestShowPeerPaymentAssociatedAccountsFlowWithController:(id)withController withPresentationContext:(id)context
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [(NPKPassbookBridgeSettingsController *)self navigationController];
-  [v8 presentAssociatedAccountsFlowWithPresentationContext:v7 fromNavigationController:v9];
+  contextCopy = context;
+  withControllerCopy = withController;
+  navigationController = [(NPKPassbookBridgeSettingsController *)self navigationController];
+  [withControllerCopy presentAssociatedAccountsFlowWithPresentationContext:contextCopy fromNavigationController:navigationController];
 }
 
-- (void)settingsController:(id)a3 requestsPresentInboxMessage:(id)a4 animated:(BOOL)a5 completion:(id)a6
+- (void)settingsController:(id)controller requestsPresentInboxMessage:(id)message animated:(BOOL)animated completion:(id)completion
 {
-  if (a6)
+  if (completion)
   {
-    (*(a6 + 2))(a6);
+    (*(completion + 2))(completion);
   }
 }
 
-- (void)settingsController:(id)a3 requestsPresentAuthorizationFlowWithRedirectURL:(id)a4 animated:(BOOL)a5 completion:(id)a6
+- (void)settingsController:(id)controller requestsPresentAuthorizationFlowWithRedirectURL:(id)l animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a6;
+  completionCopy = completion;
   v7 = pk_Payment_log();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
 
@@ -1229,9 +1229,9 @@ LABEL_18:
     }
   }
 
-  if (v6)
+  if (completionCopy)
   {
-    v6[2](v6);
+    completionCopy[2](completionCopy);
   }
 }
 
@@ -1275,10 +1275,10 @@ LABEL_18:
 
 - (void)_endPreflightBackgroundTaskIfNecessary
 {
-  v3 = [(NPKPassbookBridgeSettingsController *)self backgroundPreflightingTaskIdentifier];
-  if (v3 != UIBackgroundTaskInvalid)
+  backgroundPreflightingTaskIdentifier = [(NPKPassbookBridgeSettingsController *)self backgroundPreflightingTaskIdentifier];
+  if (backgroundPreflightingTaskIdentifier != UIBackgroundTaskInvalid)
   {
-    v4 = v3;
+    v4 = backgroundPreflightingTaskIdentifier;
     v5 = pk_Payment_log();
     v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -1300,9 +1300,9 @@ LABEL_18:
   }
 }
 
-- (void)_launchBridgeInForegroundWithCompletion:(id)a3
+- (void)_launchBridgeInForegroundWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = pk_Payment_log();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
 
@@ -1318,20 +1318,20 @@ LABEL_18:
 
   v7 = +[FBSOpenApplicationService serviceWithDefaultShellEndpoint];
   v8 = +[NSBundle mainBundle];
-  v9 = [v8 bundleIdentifier];
+  bundleIdentifier = [v8 bundleIdentifier];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_604C;
   v11[3] = &unk_2C890;
-  v12 = v3;
-  v10 = v3;
-  [v7 openApplication:v9 withOptions:0 completion:v11];
+  v12 = completionCopy;
+  v10 = completionCopy;
+  [v7 openApplication:bundleIdentifier withOptions:0 completion:v11];
 }
 
-- (void)allowEnableExpressGymKitWithVisibleViewController:(id)a3 completion:(id)a4
+- (void)allowEnableExpressGymKitWithVisibleViewController:(id)controller completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  completionCopy = completion;
   v8 = pk_Payment_log();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
 
@@ -1341,15 +1341,15 @@ LABEL_18:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v38 = self;
+      selfCopy = self;
       _os_log_impl(&dword_0, v10, OS_LOG_TYPE_DEFAULT, "Notice: NPKPassbookBridgeSettingsController: requested allow enable GymKit with view controller: %@", buf, 0xCu);
     }
   }
 
-  if (v6 && v7)
+  if (controllerCopy && completionCopy)
   {
-    v11 = [(NPKPassbookBridgeSettingsController *)self provisioningController];
-    v12 = [v11 expressPassConfigurations];
+    provisioningController = [(NPKPassbookBridgeSettingsController *)self provisioningController];
+    expressPassConfigurations = [provisioningController expressPassConfigurations];
 
     v13 = pk_Payment_log();
     v14 = os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT);
@@ -1359,27 +1359,27 @@ LABEL_18:
       v15 = pk_Payment_log();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
-        v16 = [v12 count];
+        v16 = [expressPassConfigurations count];
         *buf = 134217984;
-        v38 = v16;
+        selfCopy = v16;
         _os_log_impl(&dword_0, v15, OS_LOG_TYPE_DEFAULT, "Notice: NPKPassbookBridgeSettingsController: found %lu express passes.", buf, 0xCu);
       }
     }
 
-    if ([v12 count]== &dword_0 + 1)
+    if ([expressPassConfigurations count]== &dword_0 + 1)
     {
-      v17 = [v12 anyObject];
-      v18 = [v17 passInformation];
-      v19 = [v18 npk_hasImmediateAutomaticSelectionCriterion];
+      anyObject = [expressPassConfigurations anyObject];
+      passInformation = [anyObject passInformation];
+      npk_hasImmediateAutomaticSelectionCriterion = [passInformation npk_hasImmediateAutomaticSelectionCriterion];
 
-      if (v19)
+      if (npk_hasImmediateAutomaticSelectionCriterion)
       {
-        if (v17)
+        if (anyObject)
         {
-          v20 = [v17 passUniqueIdentifier];
-          v21 = [(NPKPassbookBridgeSettingsController *)self provisioningController];
-          v22 = [v21 passLibraryDataProvider];
-          v23 = [v22 passWithUniqueID:v20];
+          passUniqueIdentifier = [anyObject passUniqueIdentifier];
+          provisioningController2 = [(NPKPassbookBridgeSettingsController *)self provisioningController];
+          passLibraryDataProvider = [provisioningController2 passLibraryDataProvider];
+          v23 = [passLibraryDataProvider passWithUniqueID:passUniqueIdentifier];
 
           v24 = pk_Payment_log();
           v25 = os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT);
@@ -1392,7 +1392,7 @@ LABEL_18:
               if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 138412290;
-                v38 = v20;
+                selfCopy = passUniqueIdentifier;
                 _os_log_impl(&dword_0, v26, OS_LOG_TYPE_DEFAULT, "Notice: NPKPassbookBridgeSettingsController: found one pass with unique ID %@ that conflicts with GymKit", buf, 0xCu);
               }
             }
@@ -1402,9 +1402,9 @@ LABEL_18:
             v33[2] = sub_65CC;
             v33[3] = &unk_2C8E0;
             v33[4] = self;
-            v34 = v20;
-            v35 = v6;
-            v36 = v7;
+            v34 = passUniqueIdentifier;
+            v35 = controllerCopy;
+            v36 = completionCopy;
             [(NPKPassbookBridgeSettingsController *)self _promptUserAboutGymKitConflictWithPass:v23 visibleViewController:v35 completion:v33];
           }
 
@@ -1416,12 +1416,12 @@ LABEL_18:
               if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 138412290;
-                v38 = v20;
+                selfCopy = passUniqueIdentifier;
                 _os_log_impl(&dword_0, v32, OS_LOG_TYPE_DEFAULT, "Warning: NPKPassbookBridgeSettingsController: have express pass information for a conflicting pass with unique ID %@, but no pass on the device", buf, 0xCu);
               }
             }
 
-            (*(v7 + 2))(v7, 1, 0);
+            (*(completionCopy + 2))(completionCopy, 1, 0);
           }
 
 LABEL_29:
@@ -1447,7 +1447,7 @@ LABEL_29:
       }
     }
 
-    (*(v7 + 2))(v7, 1, 0);
+    (*(completionCopy + 2))(completionCopy, 1, 0);
     goto LABEL_29;
   }
 
@@ -1456,11 +1456,11 @@ LABEL_29:
 
   if (v28)
   {
-    v12 = pk_Payment_log();
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+    expressPassConfigurations = pk_Payment_log();
+    if (os_log_type_enabled(expressPassConfigurations, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_0, v12, OS_LOG_TYPE_DEFAULT, "Notice: NPKPassbookBridgeSettingsController: missing completion block or view controller", buf, 2u);
+      _os_log_impl(&dword_0, expressPassConfigurations, OS_LOG_TYPE_DEFAULT, "Notice: NPKPassbookBridgeSettingsController: missing completion block or view controller", buf, 2u);
     }
 
     goto LABEL_29;
@@ -1469,12 +1469,12 @@ LABEL_29:
 LABEL_30:
 }
 
-- (void)_promptUserAboutGymKitConflictWithPass:(id)a3 visibleViewController:(id)a4 completion:(id)a5
+- (void)_promptUserAboutGymKitConflictWithPass:(id)pass visibleViewController:(id)controller completion:(id)completion
 {
-  v30 = a5;
-  v31 = a4;
-  v7 = a3;
-  v8 = [v7 uniqueID];
+  completionCopy = completion;
+  controllerCopy = controller;
+  passCopy = pass;
+  uniqueID = [passCopy uniqueID];
   v9 = pk_Payment_log();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
 
@@ -1484,20 +1484,20 @@ LABEL_30:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v39 = v8;
+      v39 = uniqueID;
       _os_log_impl(&dword_0, v11, OS_LOG_TYPE_DEFAULT, "Notice: NPKPassbookBridgeSettingsController: prompting user about disabling express mode for conflicting pass with unique ID %@", buf, 0xCu);
     }
   }
 
-  v27 = v8;
+  v27 = uniqueID;
   v12 = [NSBundle bundleForClass:objc_opt_class()];
   v29 = [v12 localizedStringForKey:@"EXPRESS_GYMKIT_CONFLICT_TITLE" value:&stru_2D300 table:@"NanoPassbookBridgeSettings-Companion_ICE"];
 
   v13 = [NSBundle bundleForClass:objc_opt_class()];
   v14 = [v13 localizedStringForKey:@"EXPRESS_GYMKIT_CONFLICT_MESSAGE" value:&stru_2D300 table:@"NanoPassbookBridgeSettings-Companion_ICE"];
-  v15 = [v7 localizedDescription];
+  localizedDescription = [passCopy localizedDescription];
 
-  v28 = [NSString stringWithFormat:v14, v15];
+  v28 = [NSString stringWithFormat:v14, localizedDescription];
 
   v16 = [UIAlertController alertControllerWithTitle:v29 message:v28 preferredStyle:1];
   v17 = [NSBundle bundleForClass:objc_opt_class()];
@@ -1508,7 +1508,7 @@ LABEL_30:
   v35[3] = &unk_2C908;
   v19 = v27;
   v36 = v19;
-  v20 = v30;
+  v20 = completionCopy;
   v37 = v20;
   v21 = [UIAlertAction actionWithTitle:v18 style:1 handler:v35];
   [v16 addAction:v21];
@@ -1526,45 +1526,45 @@ LABEL_30:
   v26 = [UIAlertAction actionWithTitle:v23 style:0 handler:v32];
   [v16 addAction:v26];
 
-  [v31 presentViewController:v16 animated:1 completion:0];
+  [controllerCopy presentViewController:v16 animated:1 completion:0];
 }
 
-- (void)_setupPendingTransactionHandlerForPassWithUniqueID:(id)a3
+- (void)_setupPendingTransactionHandlerForPassWithUniqueID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = [NPKBridgePendingTransactionHandler alloc];
-  v6 = [(NPKPassbookBridgeSettingsController *)self paymentSetupDelegate];
-  v7 = [v6 companionAgentConnection];
-  v8 = [(NPKBridgePendingTransactionHandler *)v5 initWithPassUniqueID:v4 companionAgentConnection:v7];
+  paymentSetupDelegate = [(NPKPassbookBridgeSettingsController *)self paymentSetupDelegate];
+  companionAgentConnection = [paymentSetupDelegate companionAgentConnection];
+  v8 = [(NPKBridgePendingTransactionHandler *)v5 initWithPassUniqueID:dCopy companionAgentConnection:companionAgentConnection];
 
   [(NPKBridgePendingTransactionHandler *)v8 setDelegate:self];
   [(NPKPassbookBridgeSettingsController *)self setPendingTransactionHandler:v8];
 }
 
-- (id)presentingViewControllerForPendingTransactionHandler:(id)a3
+- (id)presentingViewControllerForPendingTransactionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(NPKPassbookBridgeSettingsController *)self pendingTransactionHandler];
+  handlerCopy = handler;
+  pendingTransactionHandler = [(NPKPassbookBridgeSettingsController *)self pendingTransactionHandler];
 
-  if (v5 == v4)
+  if (pendingTransactionHandler == handlerCopy)
   {
-    v6 = [(NPKPassbookBridgeSettingsController *)self pkui_frontMostViewController];
+    pkui_frontMostViewController = [(NPKPassbookBridgeSettingsController *)self pkui_frontMostViewController];
   }
 
   else
   {
-    v6 = 0;
+    pkui_frontMostViewController = 0;
   }
 
-  return v6;
+  return pkui_frontMostViewController;
 }
 
-- (void)pendingTransactionHandlerDidComplete:(id)a3
+- (void)pendingTransactionHandlerDidComplete:(id)complete
 {
-  v4 = a3;
-  v5 = [(NPKPassbookBridgeSettingsController *)self pendingTransactionHandler];
+  completeCopy = complete;
+  pendingTransactionHandler = [(NPKPassbookBridgeSettingsController *)self pendingTransactionHandler];
 
-  if (v5 == v4)
+  if (pendingTransactionHandler == completeCopy)
   {
 
     [(NPKPassbookBridgeSettingsController *)self setPendingTransactionHandler:0];

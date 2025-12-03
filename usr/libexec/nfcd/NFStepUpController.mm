@@ -1,18 +1,18 @@
 @interface NFStepUpController
-- (NFStepUpController)initWithQueue:(id)a3 driverWrapper:(id)a4 expressModeManager:(id)a5;
+- (NFStepUpController)initWithQueue:(id)queue driverWrapper:(id)wrapper expressModeManager:(id)manager;
 - (id)extractKeyTypeFromExpressPass;
-- (void)handleStepUpEvent:(id)a3 transactionType:(unsigned int)a4 forApplet:(id)a5;
-- (void)hceReadWithHandle:(id)a3 completion:(id)a4;
+- (void)handleStepUpEvent:(id)event transactionType:(unsigned int)type forApplet:(id)applet;
+- (void)hceReadWithHandle:(id)handle completion:(id)completion;
 - (void)invalidate;
 @end
 
 @implementation NFStepUpController
 
-- (NFStepUpController)initWithQueue:(id)a3 driverWrapper:(id)a4 expressModeManager:(id)a5
+- (NFStepUpController)initWithQueue:(id)queue driverWrapper:(id)wrapper expressModeManager:(id)manager
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  queueCopy = queue;
+  wrapperCopy = wrapper;
+  managerCopy = manager;
   v31.receiver = self;
   v31.super_class = NFStepUpController;
   v13 = [(NFStepUpController *)&v31 init];
@@ -22,9 +22,9 @@
     goto LABEL_3;
   }
 
-  objc_storeStrong(&v13->_workQueue, a3);
-  objc_storeStrong(&v14->_driverWrapper, a4);
-  objc_storeWeak(&v14->_expressModeManager, v12);
+  objc_storeStrong(&v13->_workQueue, queue);
+  objc_storeStrong(&v14->_driverWrapper, wrapper);
+  objc_storeWeak(&v14->_expressModeManager, managerCopy);
   v14->_transactionType = 0;
   v15 = objc_opt_new();
   stsHelper = v14->_stsHelper;
@@ -100,18 +100,18 @@ LABEL_3:
   self->_applet = 0;
 }
 
-- (void)handleStepUpEvent:(id)a3 transactionType:(unsigned int)a4 forApplet:(id)a5
+- (void)handleStepUpEvent:(id)event transactionType:(unsigned int)type forApplet:(id)applet
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = [v10 objectForKeyedSubscript:@"StepUpReaderData"];
+  eventCopy = event;
+  appletCopy = applet;
+  v12 = [eventCopy objectForKeyedSubscript:@"StepUpReaderData"];
   if (v12 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v57 = v11;
-    objc_storeStrong(&self->_theStepUpEvent, a3);
-    self->_transactionType = a4;
-    objc_storeStrong(&self->_applet, a5);
-    v13 = [v10 objectForKeyedSubscript:@"appletIdentifier"];
+    v57 = appletCopy;
+    objc_storeStrong(&self->_theStepUpEvent, event);
+    self->_transactionType = type;
+    objc_storeStrong(&self->_applet, applet);
+    v13 = [eventCopy objectForKeyedSubscript:@"appletIdentifier"];
 
     if (v13 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
@@ -123,7 +123,7 @@ LABEL_3:
       v14 = 0;
     }
 
-    v56 = [v10 objectForKeyedSubscript:@"StepUpReaderData"];
+    v56 = [eventCopy objectForKeyedSubscript:@"StepUpReaderData"];
     v23 = [v56 objectForKeyedSubscript:@"SharedSecret"];
 
     if (v23 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
@@ -136,7 +136,7 @@ LABEL_3:
       v60 = 0;
     }
 
-    v24 = [v10 objectForKeyedSubscript:@"endPointIdentifier"];
+    v24 = [eventCopy objectForKeyedSubscript:@"endPointIdentifier"];
 
     if (v24 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
@@ -148,7 +148,7 @@ LABEL_3:
       v59 = 0;
     }
 
-    v12 = [v10 objectForKeyedSubscript:@"ProtocolVersion"];
+    v12 = [eventCopy objectForKeyedSubscript:@"ProtocolVersion"];
 
     if (v12 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
@@ -302,7 +302,7 @@ LABEL_3:
       }
     }
 
-    v11 = v57;
+    appletCopy = v57;
   }
 
   else
@@ -357,8 +357,8 @@ LABEL_3:
 {
   v3 = [NSMutableDictionary dictionaryWithDictionary:self->_theStepUpEvent];
   WeakRetained = objc_loadWeakRetained(&self->_expressModeManager);
-  v5 = [(NFApplet *)self->_applet identifier];
-  v6 = sub_100032938(WeakRetained, v5);
+  identifier = [(NFApplet *)self->_applet identifier];
+  v6 = sub_100032938(WeakRetained, identifier);
 
   v7 = [NSNumber numberWithUnsignedInt:sub_1000A5614(NFUnifiedAccessTransactionCALogger, v6, v3)];
   [v3 setObject:v7 forKeyedSubscript:@"keyType"];
@@ -366,10 +366,10 @@ LABEL_3:
   return v3;
 }
 
-- (void)hceReadWithHandle:(id)a3 completion:(id)a4
+- (void)hceReadWithHandle:(id)handle completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  handleCopy = handle;
+  completionCopy = completion;
   v43 = 0;
   v44 = &v43;
   v45 = 0x3032000000;
@@ -383,7 +383,7 @@ LABEL_3:
   v41 = sub_1001862F4;
   v42 = objc_opt_new();
   v36 = 0;
-  v8 = [v6 readApduAndReturnError:&v36];
+  v8 = [handleCopy readApduAndReturnError:&v36];
   v9 = v36;
   theStepUpEvent = self->_theStepUpEvent;
   if (theStepUpEvent)
@@ -401,22 +401,22 @@ LABEL_3:
   {
     strcpy(buf, "o");
     v13 = [[NSData alloc] initWithBytes:buf length:2];
-    v14 = v13;
+    extractKeyTypeFromExpressPass2 = v13;
     stsHelper = self->_stsHelper;
     if (!stsHelper)
     {
-      [v6 sendAPDU:v13];
+      [handleCopy sendAPDU:v13];
       [v38[5] setObject:&__kCFBooleanTrue forKeyedSubscript:@"didError"];
       v22 = [NFContactlessPaymentEndEvent alloc];
       v23 = [(NFContactlessPaymentEndEvent *)v22 initWithDictionary:v38[5]];
       v24 = v44[5];
       v44[5] = v23;
 
-      v7[2](v7, v44[5], self->_theStepUpEvent);
+      completionCopy[2](completionCopy, v44[5], self->_theStepUpEvent);
       if (self->_theStepUpEvent)
       {
-        v25 = [(NFStepUpController *)self extractKeyTypeFromExpressPass];
-        sub_1000A3C44(NFUnifiedAccessTransactionCALogger, v25, self->_transactionType, 28416);
+        extractKeyTypeFromExpressPass = [(NFStepUpController *)self extractKeyTypeFromExpressPass];
+        sub_1000A3C44(NFUnifiedAccessTransactionCALogger, extractKeyTypeFromExpressPass, self->_transactionType, 28416);
         v26 = NFSharedSignpostLog();
         if (os_signpost_enabled(v26))
         {
@@ -439,9 +439,9 @@ LABEL_3:
     v28[4] = v13;
     v32 = &v37;
     v33 = &v43;
-    v29 = v6;
-    v30 = self;
-    v31 = v7;
+    v29 = handleCopy;
+    selfCopy = self;
+    v31 = completionCopy;
     [(STSHelperLibrary *)stsHelper processUnifiedAccessStepupAPDU:v8 callbackQueue:workQueue responseHandler:v28];
 
     v17 = v29;
@@ -453,7 +453,7 @@ LABEL_15:
 
   if ([v9 code] == 62)
   {
-    v7[2](v7, 0, 0);
+    completionCopy[2](completionCopy, 0, 0);
   }
 
   else
@@ -465,11 +465,11 @@ LABEL_15:
     v20 = v44[5];
     v44[5] = v19;
 
-    v7[2](v7, v44[5], self->_theStepUpEvent);
+    completionCopy[2](completionCopy, v44[5], self->_theStepUpEvent);
     if (self->_theStepUpEvent)
     {
-      v14 = [(NFStepUpController *)self extractKeyTypeFromExpressPass];
-      sub_1000A3C44(NFUnifiedAccessTransactionCALogger, v14, self->_transactionType, [v9 code]);
+      extractKeyTypeFromExpressPass2 = [(NFStepUpController *)self extractKeyTypeFromExpressPass];
+      sub_1000A3C44(NFUnifiedAccessTransactionCALogger, extractKeyTypeFromExpressPass2, self->_transactionType, [v9 code]);
       v21 = NFSharedSignpostLog();
       if (os_signpost_enabled(v21))
       {

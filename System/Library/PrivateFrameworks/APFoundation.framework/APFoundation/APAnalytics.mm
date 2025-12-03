@@ -1,30 +1,30 @@
 @interface APAnalytics
-+ (BOOL)_validatePayload:(id)a3;
-+ (void)_sendEvent:(id)a3 payload:(id)a4;
-+ (void)sendEvent:(id)a3;
-+ (void)sendEvent:(id)a3 customPayload:(id)a4;
-+ (void)sendEvent:(id)a3 statusDetail:(id)a4 startDate:(id)a5 error:(id)a6;
-+ (void)sendEvent:(id)a3 valueFloat:(float)a4;
-+ (void)sendEvent:(id)a3 valueInt:(int64_t)a4;
-+ (void)sendEventAppleDomain:(id)a3 customPayload:(id)a4;
-+ (void)sendEventError:(int64_t)a3 message:(id)a4;
-+ (void)sendEventLazy:(id)a3 eventPayloadBuilder:(id)a4;
-+ (void)sendEventTimed:(int64_t)a3 roundtrip:(double)a4 message:(id)a5;
-+ (void)sendEventTimed:(int64_t)a3 startDate:(id)a4 endDate:(id)a5 message:(id)a6;
++ (BOOL)_validatePayload:(id)payload;
++ (void)_sendEvent:(id)event payload:(id)payload;
++ (void)sendEvent:(id)event;
++ (void)sendEvent:(id)event customPayload:(id)payload;
++ (void)sendEvent:(id)event statusDetail:(id)detail startDate:(id)date error:(id)error;
++ (void)sendEvent:(id)event valueFloat:(float)float;
++ (void)sendEvent:(id)event valueInt:(int64_t)int;
++ (void)sendEventAppleDomain:(id)domain customPayload:(id)payload;
++ (void)sendEventError:(int64_t)error message:(id)message;
++ (void)sendEventLazy:(id)lazy eventPayloadBuilder:(id)builder;
++ (void)sendEventTimed:(int64_t)timed roundtrip:(double)roundtrip message:(id)message;
++ (void)sendEventTimed:(int64_t)timed startDate:(id)date endDate:(id)endDate message:(id)message;
 @end
 
 @implementation APAnalytics
 
-+ (void)sendEventTimed:(int64_t)a3 startDate:(id)a4 endDate:(id)a5 message:(id)a6
++ (void)sendEventTimed:(int64_t)timed startDate:(id)date endDate:(id)endDate message:(id)message
 {
   v20 = *MEMORY[0x1E69E9840];
-  v12 = a6;
-  if (a4 && a5)
+  messageCopy = message;
+  if (date && endDate)
   {
-    objc_msgSend_timeIntervalSinceDate_(a5, v10, a4, v11);
+    objc_msgSend_timeIntervalSinceDate_(endDate, v10, date, v11);
     if (v14 >= 0.0)
     {
-      objc_msgSend_sendEventTimed_roundtrip_message_(a1, v13, a3, v12);
+      objc_msgSend_sendEventTimed_roundtrip_message_(self, v13, timed, messageCopy);
       goto LABEL_11;
     }
 
@@ -55,31 +55,31 @@ LABEL_11:
   v17 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)sendEventTimed:(int64_t)a3 roundtrip:(double)a4 message:(id)a5
++ (void)sendEventTimed:(int64_t)timed roundtrip:(double)roundtrip message:(id)message
 {
   v30[2] = *MEMORY[0x1E69E9840];
-  v7 = a5;
+  messageCopy = message;
   v13 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v8, @"%@.%@", v9, @"com.apple.ap.promotedcontent", @"timed");
-  if (v7 && objc_msgSend_length(v7, v10, v11, v12))
+  if (messageCopy && objc_msgSend_length(messageCopy, v10, v11, v12))
   {
     v27[0] = @"code";
-    v14 = objc_msgSend_numberWithInteger_(MEMORY[0x1E696AD98], v10, a3, v12);
+    v14 = objc_msgSend_numberWithInteger_(MEMORY[0x1E696AD98], v10, timed, v12);
     v28[0] = v14;
     v27[1] = @"roundTrip";
-    v18 = objc_msgSend_numberWithDouble_(MEMORY[0x1E696AD98], v15, v16, v17, a4);
+    v18 = objc_msgSend_numberWithDouble_(MEMORY[0x1E696AD98], v15, v16, v17, roundtrip);
     v27[2] = @"message";
     v28[1] = v18;
-    v28[2] = v7;
+    v28[2] = messageCopy;
     objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x1E695DF20], v19, v28, v27, 3);
   }
 
   else
   {
     v29[0] = @"code";
-    v14 = objc_msgSend_numberWithInteger_(MEMORY[0x1E696AD98], v10, a3, v12);
+    v14 = objc_msgSend_numberWithInteger_(MEMORY[0x1E696AD98], v10, timed, v12);
     v29[1] = @"roundTrip";
     v30[0] = v14;
-    v18 = objc_msgSend_numberWithDouble_(MEMORY[0x1E696AD98], v20, v21, v22, a4);
+    v18 = objc_msgSend_numberWithDouble_(MEMORY[0x1E696AD98], v20, v21, v22, roundtrip);
     v30[1] = v18;
     objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x1E695DF20], v23, v30, v29, 2);
   }
@@ -89,25 +89,25 @@ LABEL_11:
   v26 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)sendEventError:(int64_t)a3 message:(id)a4
++ (void)sendEventError:(int64_t)error message:(id)message
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  messageCopy = message;
   v11 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v6, @"%@.%@", v7, @"com.apple.ap.promotedcontent", @"error");
-  if (v5 && objc_msgSend_length(v5, v8, v9, v10))
+  if (messageCopy && objc_msgSend_length(messageCopy, v8, v9, v10))
   {
     v18[0] = @"code";
-    v12 = objc_msgSend_numberWithInteger_(MEMORY[0x1E696AD98], v8, a3, v10);
+    v12 = objc_msgSend_numberWithInteger_(MEMORY[0x1E696AD98], v8, error, v10);
     v18[1] = @"message";
     v19[0] = v12;
-    v19[1] = v5;
+    v19[1] = messageCopy;
     objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x1E695DF20], v13, v19, v18, 2);
   }
 
   else
   {
     v20 = @"code";
-    v12 = objc_msgSend_numberWithInteger_(MEMORY[0x1E696AD98], v8, a3, v10);
+    v12 = objc_msgSend_numberWithInteger_(MEMORY[0x1E696AD98], v8, error, v10);
     v21[0] = v12;
     objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x1E695DF20], v14, v21, &v20, 1);
   }
@@ -117,12 +117,12 @@ LABEL_11:
   v17 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)sendEvent:(id)a3
++ (void)sendEvent:(id)event
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v7 = v3;
-  if (v3 && objc_msgSend_length(v3, v4, v5, v6))
+  eventCopy = event;
+  v7 = eventCopy;
+  if (eventCopy && objc_msgSend_length(eventCopy, v4, v5, v6))
   {
     v10 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v8, @"%@.%@", v9, @"com.apple.ap.promotedcontent", v7);
     objc_msgSend__sendEvent_payload_(APAnalytics, v11, v7, 0);
@@ -142,50 +142,50 @@ LABEL_11:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)sendEvent:(id)a3 valueInt:(int64_t)a4
++ (void)sendEvent:(id)event valueInt:(int64_t)int
 {
   v15[1] = *MEMORY[0x1E69E9840];
   v14 = @"dataInt";
   v5 = MEMORY[0x1E696AD98];
-  v6 = a3;
-  v9 = objc_msgSend_numberWithInteger_(v5, v7, a4, v8);
+  eventCopy = event;
+  v9 = objc_msgSend_numberWithInteger_(v5, v7, int, v8);
   v15[0] = v9;
   v11 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x1E695DF20], v10, v15, &v14, 1);
 
-  objc_msgSend__sendEvent_payload_(APAnalytics, v12, v6, v11);
+  objc_msgSend__sendEvent_payload_(APAnalytics, v12, eventCopy, v11);
   v13 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)sendEvent:(id)a3 valueFloat:(float)a4
++ (void)sendEvent:(id)event valueFloat:(float)float
 {
   v17[1] = *MEMORY[0x1E69E9840];
   v16 = @"dataFloat";
   v5 = MEMORY[0x1E696AD98];
-  v6 = a3;
-  *&v7 = a4;
+  eventCopy = event;
+  *&v7 = float;
   v11 = objc_msgSend_numberWithFloat_(v5, v8, v9, v10, v7);
   v17[0] = v11;
   v13 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x1E695DF20], v12, v17, &v16, 1);
 
-  objc_msgSend__sendEvent_payload_(APAnalytics, v14, v6, v13);
+  objc_msgSend__sendEvent_payload_(APAnalytics, v14, eventCopy, v13);
   v15 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)sendEvent:(id)a3 statusDetail:(id)a4 startDate:(id)a5 error:(id)a6
++ (void)sendEvent:(id)event statusDetail:(id)detail startDate:(id)date error:(id)error
 {
   v40 = *MEMORY[0x1E69E9840];
-  v9 = a6;
+  errorCopy = error;
   v10 = MEMORY[0x1E696AD98];
-  v11 = a4;
-  v12 = a3;
-  objc_msgSend_timeIntervalSinceNow(a5, v13, v14, v15);
+  detailCopy = detail;
+  eventCopy = event;
+  objc_msgSend_timeIntervalSinceNow(date, v13, v14, v15);
   v19 = objc_msgSend_numberWithDouble_(v10, v16, v17, v18);
-  if (v9)
+  if (errorCopy)
   {
     v20 = APLogForCategory(2uLL);
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
-      v24 = objc_msgSend_localizedDescription(v9, v21, v22, v23);
+      v24 = objc_msgSend_localizedDescription(errorCopy, v21, v22, v23);
       v36 = 136446466;
       v37 = "+[APAnalytics sendEvent:statusDetail:startDate:error:]";
       v38 = 2114;
@@ -203,37 +203,37 @@ LABEL_11:
 
   v26 = objc_alloc_init(MEMORY[0x1E695DF90]);
   objc_msgSend_setObject_forKeyedSubscript_(v26, v27, v19, @"processingTime");
-  objc_msgSend_setObject_forKeyedSubscript_(v26, v28, v11, @"statusDetails");
+  objc_msgSend_setObject_forKeyedSubscript_(v26, v28, detailCopy, @"statusDetails");
 
   objc_msgSend_setObject_forKeyedSubscript_(v26, v29, v25, @"statusCode");
   v33 = objc_msgSend_copy(v26, v30, v31, v32);
-  objc_msgSend_sendEvent_customPayload_(APAnalytics, v34, v12, v33);
+  objc_msgSend_sendEvent_customPayload_(APAnalytics, v34, eventCopy, v33);
 
   v35 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)sendEvent:(id)a3 customPayload:(id)a4
++ (void)sendEvent:(id)event customPayload:(id)payload
 {
-  v14 = a3;
-  v6 = a4;
-  v10 = v6;
-  if (v6 && objc_msgSend_count(v6, v7, v8, v9) && objc_msgSend__validatePayload_(a1, v11, v10, v12))
+  eventCopy = event;
+  payloadCopy = payload;
+  v10 = payloadCopy;
+  if (payloadCopy && objc_msgSend_count(payloadCopy, v7, v8, v9) && objc_msgSend__validatePayload_(self, v11, v10, v12))
   {
-    objc_msgSend__sendEvent_payload_(APAnalytics, v13, v14, v10);
+    objc_msgSend__sendEvent_payload_(APAnalytics, v13, eventCopy, v10);
   }
 }
 
-+ (void)sendEventAppleDomain:(id)a3 customPayload:(id)a4
++ (void)sendEventAppleDomain:(id)domain customPayload:(id)payload
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v11 = v7;
-  if (v7 && objc_msgSend_count(v7, v8, v9, v10) && objc_msgSend__validatePayload_(a1, v12, v11, v13))
+  domainCopy = domain;
+  payloadCopy = payload;
+  v11 = payloadCopy;
+  if (payloadCopy && objc_msgSend_count(payloadCopy, v8, v9, v10) && objc_msgSend__validatePayload_(self, v12, v11, v13))
   {
-    if (v6 && objc_msgSend_length(v6, v14, v15, v16))
+    if (domainCopy && objc_msgSend_length(domainCopy, v14, v15, v16))
     {
-      v19 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v17, @"%@.%@", v18, @"com.apple", v6);
+      v19 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v17, @"%@.%@", v18, @"com.apple", domainCopy);
       objc_msgSend__analyticsSendEvent_eventPayload_(APAnalytics, v20, v19, v11);
     }
 
@@ -252,15 +252,15 @@ LABEL_11:
   v21 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)_sendEvent:(id)a3 payload:(id)a4
++ (void)_sendEvent:(id)event payload:(id)payload
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v9 = a4;
-  if (v5 && objc_msgSend_length(v5, v6, v7, v8))
+  eventCopy = event;
+  payloadCopy = payload;
+  if (eventCopy && objc_msgSend_length(eventCopy, v6, v7, v8))
   {
-    v12 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v10, @"%@.%@", v11, @"com.apple.ap.promotedcontent", v5);
-    objc_msgSend__analyticsSendEvent_eventPayload_(APAnalytics, v13, v12, v9);
+    v12 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v10, @"%@.%@", v11, @"com.apple.ap.promotedcontent", eventCopy);
+    objc_msgSend__analyticsSendEvent_eventPayload_(APAnalytics, v13, v12, payloadCopy);
   }
 
   else
@@ -277,16 +277,16 @@ LABEL_11:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)sendEventLazy:(id)a3 eventPayloadBuilder:(id)a4
++ (void)sendEventLazy:(id)lazy eventPayloadBuilder:(id)builder
 {
-  v5 = a3;
-  v9 = a4;
-  if (v9)
+  lazyCopy = lazy;
+  builderCopy = builder;
+  if (builderCopy)
   {
-    if (objc_msgSend_length(v5, v6, v7, v8))
+    if (objc_msgSend_length(lazyCopy, v6, v7, v8))
     {
-      v12 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v10, @"%@.%@", v11, @"com.apple.ap.promotedcontent", v5);
-      v13 = v9;
+      v12 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v10, @"%@.%@", v11, @"com.apple.ap.promotedcontent", lazyCopy);
+      v13 = builderCopy;
       AnalyticsSendEventLazy();
     }
 
@@ -302,15 +302,15 @@ LABEL_11:
   }
 }
 
-+ (BOOL)_validatePayload:(id)a3
++ (BOOL)_validatePayload:(id)payload
 {
   v25 = *MEMORY[0x1E69E9840];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v3 = a3;
-  v5 = objc_msgSend_countByEnumeratingWithState_objects_count_(v3, v4, &v20, v24, 16);
+  payloadCopy = payload;
+  v5 = objc_msgSend_countByEnumeratingWithState_objects_count_(payloadCopy, v4, &v20, v24, 16);
   if (!v5)
   {
     v14 = 1;
@@ -325,7 +325,7 @@ LABEL_11:
     {
       if (*v21 != v7)
       {
-        objc_enumerationMutation(v3);
+        objc_enumerationMutation(payloadCopy);
       }
 
       v9 = *(*(&v20 + 1) + 8 * i);
@@ -342,7 +342,7 @@ LABEL_11:
         goto LABEL_21;
       }
 
-      v12 = objc_msgSend_objectForKeyedSubscript_(v3, v10, v9, v11);
+      v12 = objc_msgSend_objectForKeyedSubscript_(payloadCopy, v10, v9, v11);
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -377,7 +377,7 @@ LABEL_21:
       }
     }
 
-    v6 = objc_msgSend_countByEnumeratingWithState_objects_count_(v3, v13, &v20, v24, 16);
+    v6 = objc_msgSend_countByEnumeratingWithState_objects_count_(payloadCopy, v13, &v20, v24, 16);
     v14 = 1;
     if (v6)
     {

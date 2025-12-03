@@ -1,12 +1,12 @@
 @interface FILocalAppContainerCollection
-+ (id)appContainerForDocumentsNode:(id)a3;
-+ (id)sharedInstanceCreateIfNeeded:(BOOL)a3;
++ (id)appContainerForDocumentsNode:(id)node;
++ (id)sharedInstanceCreateIfNeeded:(BOOL)needed;
 - (BOOL)isPopulated;
 - (BOOL)populate;
 - (FILocalAppContainerCollection)init;
 - (id).cxx_construct;
-- (id)_appContainerForDocumentsNode:(id)a3;
-- (id)appContainerForDocumentsNode:(id)a3;
+- (id)_appContainerForDocumentsNode:(id)node;
+- (id)appContainerForDocumentsNode:(id)node;
 - (id)fileParent;
 - (id)nodesForSizing;
 - (id)parent;
@@ -40,9 +40,9 @@
     *(v2 + 17) = v5;
 
     TNode::SetInitialPopulationDeferred([(FIDSNode *)v2 asTNode]);
-    v7 = [objc_opt_class() sharedRegistry];
+    sharedRegistry = [objc_opt_class() sharedRegistry];
     v8 = *(v2 + 15);
-    *(v2 + 15) = v7;
+    *(v2 + 15) = sharedRegistry;
   }
 
   return v2;
@@ -62,18 +62,18 @@
 {
   v2 = objc_opt_class();
   objc_sync_enter(v2);
-  v3 = [sLocalStorageNode storageNode];
+  storageNode = [sLocalStorageNode storageNode];
   objc_sync_exit(v2);
 
-  return v3;
+  return storageNode;
 }
 
-+ (id)sharedInstanceCreateIfNeeded:(BOOL)a3
++ (id)sharedInstanceCreateIfNeeded:(BOOL)needed
 {
-  v3 = a3;
+  neededCopy = needed;
   std::mutex::lock(&+[FILocalAppContainerCollection sharedInstanceCreateIfNeeded:]::sLock);
   v4 = +[FILocalAppContainerCollection sharedInstanceCreateIfNeeded:]::sSingleton;
-  if (v3 && !+[FILocalAppContainerCollection sharedInstanceCreateIfNeeded:]::sSingleton)
+  if (neededCopy && !+[FILocalAppContainerCollection sharedInstanceCreateIfNeeded:]::sSingleton)
   {
     v5 = objc_alloc_init(FILocalAppContainerCollection);
     v6 = +[FILocalAppContainerCollection sharedInstanceCreateIfNeeded:]::sSingleton;
@@ -88,29 +88,29 @@
   return v7;
 }
 
-+ (id)appContainerForDocumentsNode:(id)a3
++ (id)appContainerForDocumentsNode:(id)node
 {
-  v4 = a3;
-  v5 = [a1 sharedInstanceCreateIfNeeded:0];
-  v6 = [v5 appContainerForDocumentsNode:v4];
+  nodeCopy = node;
+  v5 = [self sharedInstanceCreateIfNeeded:0];
+  v6 = [v5 appContainerForDocumentsNode:nodeCopy];
 
   return v6;
 }
 
-- (id)appContainerForDocumentsNode:(id)a3
+- (id)appContainerForDocumentsNode:(id)node
 {
-  v4 = a3;
+  nodeCopy = node;
   std::mutex::lock((self + 152));
-  v5 = [(FILocalAppContainerCollection *)self _appContainerForDocumentsNode:v4];
+  v5 = [(FILocalAppContainerCollection *)self _appContainerForDocumentsNode:nodeCopy];
   std::mutex::unlock((self + 152));
 
   return v5;
 }
 
-- (id)_appContainerForDocumentsNode:(id)a3
+- (id)_appContainerForDocumentsNode:(id)node
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  nodeCopy = node;
   v5 = objc_opt_class();
   if (v5 != objc_opt_class())
   {
@@ -159,8 +159,8 @@ LABEL_10:
       }
 
       v15 = *(*(&v28 + 1) + 8 * v14);
-      v16 = [v15 documentsNode];
-      v17 = v16 == v4;
+      documentsNode = [v15 documentsNode];
+      v17 = documentsNode == nodeCopy;
 
       if (v17)
       {
@@ -199,8 +199,8 @@ LABEL_18:
       }
 
       v15 = *(*(&v24 + 1) + 8 * v19);
-      v20 = [v15 documentsNode];
-      v21 = v20 == v4;
+      documentsNode2 = [v15 documentsNode];
+      v21 = documentsNode2 == nodeCopy;
 
       if (v21)
       {
@@ -246,16 +246,16 @@ LABEL_27:
 
     memset(v62, 0, sizeof(v62));
     v4 = atomic_load(self + 105);
-    v5 = [(FINode *)self nodeRef];
-    v7 = TNode::NodeFromNodeRef(v5, v6);
+    nodeRef = [(FINode *)self nodeRef];
+    v7 = TNode::NodeFromNodeRef(nodeRef, v6);
     TNodePtr::TNodePtr(&v61, v7);
     v42 = v4;
-    v8 = self;
-    v55 = v8;
+    selfCopy = self;
+    v55 = selfCopy;
     v56 = v61.fFINode;
     LOBYTE(v57) = (v4 & 1) == 0;
     *(&v57 + 1) = v62;
-    v58 = v8;
+    v58 = selfCopy;
     TNodePtr::TNodePtr(&v59, &v56);
     v60 = v57;
 
@@ -269,8 +269,8 @@ LABEL_27:
     TNode::StPopulating::StPopulating(v54, &v61, 0);
     v52 = 0;
     v53 = 0;
-    v10 = [*(v8 + 15) listOfMonitoredApps];
-    TContainerFetcher::FetchContainersAndDocumentsFolders(&v52, v10, &v50);
+    listOfMonitoredApps = [*(selfCopy + 15) listOfMonitoredApps];
+    TContainerFetcher::FetchContainersAndDocumentsFolders(&v52, listOfMonitoredApps, &v50);
 
     v44 = objc_alloc_init(MEMORY[0x1E695DF70]);
     obj = +[FINode protectedAppIdentifiers];
@@ -279,10 +279,10 @@ LABEL_27:
     CFRetain(&stru_1F5F42870);
     TString::SetStringRefAsImmutable(&theString, v11);
 
-    std::mutex::lock((v8 + 152));
-    objc_storeStrong(v8 + 18, obj);
-    v12 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithArray:*(v8 + 16)];
-    [v12 unionSet:*(v8 + 17)];
+    std::mutex::lock((selfCopy + 152));
+    objc_storeStrong(selfCopy + 18, obj);
+    v12 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithArray:*(selfCopy + 16)];
+    [v12 unionSet:*(selfCopy + 17)];
     v14 = v50;
     v13 = v51;
     while (v14 != v13)
@@ -293,8 +293,8 @@ LABEL_27:
       while (*buf != v64.fFINode || v74 != v65)
       {
         v16 = *(v69 + 8 * v73);
-        v17 = [v16 documentsNode];
-        v18 = v17 == v15;
+        documentsNode = [v16 documentsNode];
+        v18 = documentsNode == v15;
 
         if (v18)
         {
@@ -363,7 +363,7 @@ LABEL_26:
 
       if (v22)
       {
-        v26 = [*(v8 + 17) containsObject:v22];
+        v26 = [*(selfCopy + 17) containsObject:v22];
         v27 = v26;
         if (*(v14 + 40) == 1)
         {
@@ -371,7 +371,7 @@ LABEL_26:
           [v44 addObject:v22];
           if (v27)
           {
-            [*(v8 + 17) removeObject:v22];
+            [*(selfCopy + 17) removeObject:v22];
             TNodePtr::TNodePtr(&v64, [v22 asTNode]);
             TNodeEvent::CreateNodeEvent(3, &v64.fFINode, 0, buf);
             TNodeEventPtrs::AddEvent(v62, &v61, buf);
@@ -386,7 +386,7 @@ LABEL_26:
 
         else
         {
-          [*(v8 + 17) addObject:v22];
+          [*(selfCopy + 17) addObject:v22];
         }
       }
 
@@ -398,8 +398,8 @@ LABEL_26:
         {
           if (*(v14 + 40) == 1)
           {
-            v30 = [(FINode *)v28 nodeRef];
-            v32 = TNode::NodeFromNodeRef(v30, v31);
+            nodeRef2 = [(FINode *)v28 nodeRef];
+            v32 = TNode::NodeFromNodeRef(nodeRef2, v31);
             TNodePtr::TNodePtr(buf, v32);
             [v44 addObject:v29];
             TNodeEvent::CreateNodeEvent(3, buf, 0, &v64);
@@ -409,7 +409,7 @@ LABEL_26:
 
           else
           {
-            [*(v8 + 17) addObject:v28];
+            [*(selfCopy + 17) addObject:v28];
           }
         }
       }
@@ -444,9 +444,9 @@ LABEL_26:
           v38 = LogObj(7);
           if (os_log_type_enabled(v38, OS_LOG_TYPE_DEBUG))
           {
-            v39 = [v37 displayName];
+            displayName = [v37 displayName];
             *buf = 138412290;
-            *&buf[4] = v39;
+            *&buf[4] = displayName;
             _os_log_impl(&dword_1E5674000, v38, OS_LOG_TYPE_DEBUG, "Local storage node removed %@", buf, 0xCu);
           }
         }
@@ -457,7 +457,7 @@ LABEL_26:
       while (v34);
     }
 
-    objc_storeStrong(v8 + 16, v44);
+    objc_storeStrong(selfCopy + 16, v44);
     if (v42)
     {
       TNodeEvent::CreateNodeEvent(20, &v61.fFINode, 0, buf);
@@ -465,7 +465,7 @@ LABEL_26:
       TNodeEventPtr::~TNodeEventPtr(buf);
     }
 
-    std::mutex::unlock((v8 + 152));
+    std::mutex::unlock((selfCopy + 152));
     TRef<__CFString const*,TRetainReleasePolicy<__CFString const*>>::~TRef(&theString);
 
     *buf = &v50;
@@ -491,28 +491,28 @@ LABEL_26:
     _os_log_impl(&dword_1E5674000, v2, OS_LOG_TYPE_INFO, "AppCollection sync finished", v5, 2u);
   }
 
-  atomic_store(1u, *a1 + 105);
-  atomic_store(0, *a1 + 104);
-  if (*(a1 + 16) == 1)
+  atomic_store(1u, *self + 105);
+  atomic_store(0, *self + 104);
+  if (*(self + 16) == 1)
   {
-    [*(*a1 + 15) setDelegate:?];
-    v3 = TNodeFromFINode(a1[1]);
+    [*(*self + 15) setDelegate:?];
+    v3 = TNodeFromFINode(self[1]);
     TNode::HandleSyncCompleted(v3, 0x800000);
   }
 
   else
   {
-    TNodeEventPtrs::SendNotifications(a1[3]);
+    TNodeEventPtrs::SendNotifications(self[3]);
   }
 
-  return a1;
+  return self;
 }
 
 - (BOOL)isPopulated
 {
-  v2 = [(FIDSNode *)self asTNode];
+  asTNode = [(FIDSNode *)self asTNode];
 
-  return TNode::IsPopulated(v2);
+  return TNode::IsPopulated(asTNode);
 }
 
 - (id)nodesForSizing

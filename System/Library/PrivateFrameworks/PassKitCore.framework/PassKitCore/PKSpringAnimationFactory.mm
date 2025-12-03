@@ -1,26 +1,26 @@
 @interface PKSpringAnimationFactory
 + (double)defaultDuration;
 + (id)createDefaultFactory;
-+ (id)highFrameRateSpringAnimationWithKeyPath:(id)a3 reason:(unsigned __int16)a4;
++ (id)highFrameRateSpringAnimationWithKeyPath:(id)path reason:(unsigned __int16)reason;
 + (id)sharedDefaultFactory;
-+ (id)springAnimationWithKeyPath:(id)a3;
++ (id)springAnimationWithKeyPath:(id)path;
 - (PKSpringAnimationFactory)factoryWithInvertedVelocity;
-- (PKSpringAnimationFactory)initWithSpringState:(id)a3;
-- (double)_durationWithReferenceSpring:(uint64_t)a1;
-- (id)_createSpringAnimationWithKeyPath:(id)a3;
+- (PKSpringAnimationFactory)initWithSpringState:(id)state;
+- (double)_durationWithReferenceSpring:(uint64_t)spring;
+- (id)_createSpringAnimationWithKeyPath:(id)path;
 - (id)copy;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)highFrameRateSpringAnimationWithKeyPath:(id)a3 reason:(unsigned __int16)a4;
-- (id)springAnimationWithKeyPath:(id)a3;
-- (void)_createReferenceSpringAnimationWithKeyPath:(double *)a1;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)highFrameRateSpringAnimationWithKeyPath:(id)path reason:(unsigned __int16)reason;
+- (id)springAnimationWithKeyPath:(id)path;
+- (void)_createReferenceSpringAnimationWithKeyPath:(double *)path;
 - (void)dealloc;
-- (void)setDamping:(double)a3;
-- (void)setMass:(double)a3;
-- (void)setSpeed:(double)a3;
-- (void)setStiffness:(double)a3;
-- (void)setTiming:(id)a3;
-- (void)setTiming:(id)a3 withDynamicDurationProvider:(id)a4;
-- (void)setVelocity:(double)a3;
+- (void)setDamping:(double)damping;
+- (void)setMass:(double)mass;
+- (void)setSpeed:(double)speed;
+- (void)setStiffness:(double)stiffness;
+- (void)setTiming:(id)timing;
+- (void)setTiming:(id)timing withDynamicDurationProvider:(id)provider;
+- (void)setVelocity:(double)velocity;
 @end
 
 @implementation PKSpringAnimationFactory
@@ -65,43 +65,43 @@
   return [(PKSpringAnimationFactory *)v3 _durationWithReferenceSpring:?];
 }
 
-- (double)_durationWithReferenceSpring:(uint64_t)a1
+- (double)_durationWithReferenceSpring:(uint64_t)spring
 {
   v3 = a2;
-  if (a1)
+  if (spring)
   {
-    if (*(a1 + 56))
+    if (*(spring + 56))
     {
-      *(a1 + 56) = 0;
-      WeakRetained = objc_loadWeakRetained((a1 + 64));
+      *(spring + 56) = 0;
+      WeakRetained = objc_loadWeakRetained((spring + 64));
       if (WeakRetained)
       {
-        objc_storeWeak((a1 + 64), 0);
+        objc_storeWeak((spring + 64), 0);
         objc_storeWeak(WeakRetained + 8, 0);
       }
 
       if (!v3)
       {
-        v3 = [(PKSpringAnimationFactory *)a1 _createReferenceSpringAnimationWithKeyPath:?];
+        v3 = [(PKSpringAnimationFactory *)spring _createReferenceSpringAnimationWithKeyPath:?];
       }
 
       [v3 durationForEpsilon:0.001];
       v6 = v5;
-      if (*(a1 + 80))
+      if (*(spring + 80))
       {
-        v7 = *(a1 + 48);
+        v7 = *(spring + 48);
         if (v7)
         {
-          v6 = fmax((*(v7 + 16))(*(a1 + 8), *(a1 + 16), *(a1 + 24), *(a1 + 32), v5), v5);
+          v6 = fmax((*(v7 + 16))(*(spring + 8), *(spring + 16), *(spring + 24), *(spring + 32), v5), v5);
         }
       }
 
-      *(a1 + 40) = v6;
+      *(spring + 40) = v6;
     }
 
     else
     {
-      v6 = *(a1 + 40);
+      v6 = *(spring + 40);
     }
   }
 
@@ -113,41 +113,41 @@
   return v6;
 }
 
-+ (id)springAnimationWithKeyPath:(id)a3
++ (id)springAnimationWithKeyPath:(id)path
 {
   v3 = qword_1ED6D18D8;
-  v4 = a3;
+  pathCopy = path;
   if (v3 != -1)
   {
     dispatch_once(&qword_1ED6D18D8, &__block_literal_global_42);
   }
 
-  v5 = [_MergedGlobals_202 springAnimationWithKeyPath:v4];
+  v5 = [_MergedGlobals_202 springAnimationWithKeyPath:pathCopy];
 
   return v5;
 }
 
-+ (id)highFrameRateSpringAnimationWithKeyPath:(id)a3 reason:(unsigned __int16)a4
++ (id)highFrameRateSpringAnimationWithKeyPath:(id)path reason:(unsigned __int16)reason
 {
-  v4 = a4;
+  reasonCopy = reason;
   v5 = qword_1ED6D18D8;
-  v6 = a3;
+  pathCopy = path;
   if (v5 != -1)
   {
     dispatch_once(&qword_1ED6D18D8, &__block_literal_global_42);
   }
 
-  v7 = [_MergedGlobals_202 highFrameRateSpringAnimationWithKeyPath:v6 reason:v4];
+  v7 = [_MergedGlobals_202 highFrameRateSpringAnimationWithKeyPath:pathCopy reason:reasonCopy];
 
   return v7;
 }
 
-- (PKSpringAnimationFactory)initWithSpringState:(id)a3
+- (PKSpringAnimationFactory)initWithSpringState:(id)state
 {
-  var3 = a3.var3;
-  var2 = a3.var2;
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var3 = state.var3;
+  var2 = state.var2;
+  var1 = state.var1;
+  var0 = state.var0;
   v8.receiver = self;
   v8.super_class = PKSpringAnimationFactory;
   result = [(PKSpringAnimationFactory *)&v8 init];
@@ -171,9 +171,9 @@
   return [(PKSpringAnimationFactory *)&v3 copy];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "initWithSpringState:", self->_state.mass, self->_state.stiffness, self->_state.damping, self->_state.velocity}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "initWithSpringState:", self->_state.mass, self->_state.stiffness, self->_state.damping, self->_state.velocity}];
   [v4 setSpeed:self->_speed];
   timing = self->_timing;
   if (timing)
@@ -196,14 +196,14 @@
   if (self->_state.velocity != 0.0)
   {
     v4 = objc_autoreleasePoolPush();
-    v5 = self;
+    selfCopy2 = self;
     if (self->_needsDurationUpdate)
     {
       [(PKSpringAnimationFactory *)self _durationWithReferenceSpring:?];
-      v5 = self;
+      selfCopy2 = self;
     }
 
-    WeakRetained = objc_loadWeakRetained(&v5->_invertedFactory);
+    WeakRetained = objc_loadWeakRetained(&selfCopy2->_invertedFactory);
     if (WeakRetained)
     {
       v7 = WeakRetained;
@@ -217,7 +217,7 @@
       v8 = objc_loadWeakRetained(&self->_invertedFactory);
 
       objc_autoreleasePoolPop(v4);
-      v9 = self;
+      selfCopy4 = self;
       v7 = v8;
       if (v8)
       {
@@ -231,10 +231,10 @@ LABEL_14:
     else
     {
       objc_autoreleasePoolPop(v4);
-      v9 = self;
+      selfCopy4 = self;
     }
 
-    v7 = [(PKSpringAnimationFactory *)v9 copy];
+    v7 = [(PKSpringAnimationFactory *)selfCopy4 copy];
     [v7 setVelocity:-self->_state.velocity];
     [(PKSpringAnimationFactory *)v7 _durationWithReferenceSpring:?];
     objc_storeWeak(v7 + 8, self);
@@ -245,19 +245,19 @@ LABEL_14:
   return self;
 }
 
-- (id)springAnimationWithKeyPath:(id)a3
+- (id)springAnimationWithKeyPath:(id)path
 {
-  v3 = [(PKSpringAnimationFactory *)self _createSpringAnimationWithKeyPath:a3];
+  v3 = [(PKSpringAnimationFactory *)self _createSpringAnimationWithKeyPath:path];
   [v3 setAdditive:1];
 
   return v3;
 }
 
-- (id)highFrameRateSpringAnimationWithKeyPath:(id)a3 reason:(unsigned __int16)a4
+- (id)highFrameRateSpringAnimationWithKeyPath:(id)path reason:(unsigned __int16)reason
 {
-  v4 = a4;
-  v5 = [(PKSpringAnimationFactory *)self springAnimationWithKeyPath:a3];
-  [v5 setHighFrameRateReason:v4 | 0x210000u];
+  reasonCopy = reason;
+  v5 = [(PKSpringAnimationFactory *)self springAnimationWithKeyPath:path];
+  [v5 setHighFrameRateReason:reasonCopy | 0x210000u];
   LODWORD(v6) = 1117782016;
   LODWORD(v7) = 1123024896;
   LODWORD(v8) = 1123024896;
@@ -266,24 +266,24 @@ LABEL_14:
   return v5;
 }
 
-- (void)_createReferenceSpringAnimationWithKeyPath:(double *)a1
+- (void)_createReferenceSpringAnimationWithKeyPath:(double *)path
 {
-  if (!a1)
+  if (!path)
   {
     return 0;
   }
 
   v3 = [MEMORY[0x1E69794A8] animationWithKeyPath:a2];
-  [v3 setMass:a1[1]];
-  [v3 setStiffness:a1[2]];
-  [v3 setDamping:a1[3]];
-  [v3 setVelocity:a1[4]];
+  [v3 setMass:path[1]];
+  [v3 setStiffness:path[2]];
+  [v3 setDamping:path[3]];
+  [v3 setVelocity:path[4]];
   return v3;
 }
 
-- (id)_createSpringAnimationWithKeyPath:(id)a3
+- (id)_createSpringAnimationWithKeyPath:(id)path
 {
-  v4 = [(PKSpringAnimationFactory *)self _createReferenceSpringAnimationWithKeyPath:a3];
+  v4 = [(PKSpringAnimationFactory *)self _createReferenceSpringAnimationWithKeyPath:path];
   v5 = [(PKSpringAnimationFactory *)self _durationWithReferenceSpring:v4];
   speed = self->_speed;
   *&speed = speed;
@@ -295,53 +295,53 @@ LABEL_14:
   return v4;
 }
 
-- (void)setSpeed:(double)a3
+- (void)setSpeed:(double)speed
 {
-  if (self->_speed != a3)
+  if (self->_speed != speed)
   {
-    self->_speed = a3;
+    self->_speed = speed;
   }
 }
 
-- (void)setMass:(double)a3
+- (void)setMass:(double)mass
 {
-  if (self->_state.mass != a3)
+  if (self->_state.mass != mass)
   {
-    self->_state.mass = a3;
+    self->_state.mass = mass;
     self->_needsDurationUpdate = 1;
   }
 }
 
-- (void)setStiffness:(double)a3
+- (void)setStiffness:(double)stiffness
 {
-  if (self->_state.stiffness != a3)
+  if (self->_state.stiffness != stiffness)
   {
-    self->_state.stiffness = a3;
+    self->_state.stiffness = stiffness;
     self->_needsDurationUpdate = 1;
   }
 }
 
-- (void)setDamping:(double)a3
+- (void)setDamping:(double)damping
 {
-  if (self->_state.damping != a3)
+  if (self->_state.damping != damping)
   {
-    self->_state.damping = a3;
+    self->_state.damping = damping;
     self->_needsDurationUpdate = 1;
   }
 }
 
-- (void)setVelocity:(double)a3
+- (void)setVelocity:(double)velocity
 {
-  if (self->_state.velocity != a3)
+  if (self->_state.velocity != velocity)
   {
-    self->_state.velocity = a3;
+    self->_state.velocity = velocity;
     self->_needsDurationUpdate = 1;
   }
 }
 
-- (void)setTiming:(id)a3
+- (void)setTiming:(id)timing
 {
-  if (a3)
+  if (timing)
   {
 
     [PKSpringAnimationFactory setTiming:"setTiming:withDynamicDurationProvider:" withDynamicDurationProvider:?];
@@ -362,20 +362,20 @@ LABEL_14:
   }
 }
 
-- (void)setTiming:(id)a3 withDynamicDurationProvider:(id)a4
+- (void)setTiming:(id)timing withDynamicDurationProvider:(id)provider
 {
-  v7 = a3;
-  if (v7)
+  timingCopy = timing;
+  if (timingCopy)
   {
-    v11 = v7;
-    objc_storeStrong(&self->_timing, a3);
-    v8 = a4;
-    v9 = _Block_copy(v8);
+    v11 = timingCopy;
+    objc_storeStrong(&self->_timing, timing);
+    providerCopy = provider;
+    v9 = _Block_copy(providerCopy);
 
     dynamicDurationProvider = self->_dynamicDurationProvider;
     self->_dynamicDurationProvider = v9;
 
-    v7 = v11;
+    timingCopy = v11;
     self->_needsDurationUpdate = 1;
   }
 }

@@ -1,14 +1,14 @@
 @interface PPTopicUtils
-+ (id)cachedTopicScoresAtPath:(id)a3;
++ (id)cachedTopicScoresAtPath:(id)path;
 @end
 
 @implementation PPTopicUtils
 
-+ (id)cachedTopicScoresAtPath:(id)a3
++ (id)cachedTopicScoresAtPath:(id)path
 {
   v12 = *MEMORY[0x1E69E9840];
   v9 = 0;
-  v3 = [MEMORY[0x1E69C5D40] dictionaryWithPath:a3 error:&v9];
+  v3 = [MEMORY[0x1E69C5D40] dictionaryWithPath:path error:&v9];
   v4 = v9;
   if (v3)
   {

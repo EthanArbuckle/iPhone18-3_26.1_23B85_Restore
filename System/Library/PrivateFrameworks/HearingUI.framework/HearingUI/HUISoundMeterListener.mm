@@ -1,29 +1,29 @@
 @interface HUISoundMeterListener
 - (BOOL)shouldShow;
-- (HUISoundMeterListener)initWithDelgate:(id)a3 source:(unint64_t)a4;
+- (HUISoundMeterListener)initWithDelgate:(id)delgate source:(unint64_t)source;
 - (HUISoundMeterListenerDelegate)delegate;
 - (void)_startLocalLevels;
 - (void)_startRemoteLevels;
 - (void)_stopLocalLevels;
 - (void)_stopRemoteLevels;
-- (void)_updateSoundMeterAvailableLocally:(BOOL)a3 remotely:(BOOL)a4;
+- (void)_updateSoundMeterAvailableLocally:(BOOL)locally remotely:(BOOL)remotely;
 - (void)start;
 - (void)stop;
 @end
 
 @implementation HUISoundMeterListener
 
-- (HUISoundMeterListener)initWithDelgate:(id)a3 source:(unint64_t)a4
+- (HUISoundMeterListener)initWithDelgate:(id)delgate source:(unint64_t)source
 {
-  v6 = a3;
+  delgateCopy = delgate;
   v10.receiver = self;
   v10.super_class = HUISoundMeterListener;
   v7 = [(HUISoundMeterListener *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    [(HUISoundMeterListener *)v7 setSource:a4];
-    [(HUISoundMeterListener *)v8 setDelegate:v6];
+    [(HUISoundMeterListener *)v7 setSource:source];
+    [(HUISoundMeterListener *)v8 setDelegate:delgateCopy];
   }
 
   return v8;
@@ -54,52 +54,52 @@
   return [(HUISoundMeterListener *)self areRemoteLevelsAvailable];
 }
 
-- (void)_updateSoundMeterAvailableLocally:(BOOL)a3 remotely:(BOOL)a4
+- (void)_updateSoundMeterAvailableLocally:(BOOL)locally remotely:(BOOL)remotely
 {
-  v4 = a4;
-  v5 = a3;
+  remotelyCopy = remotely;
+  locallyCopy = locally;
   v31 = *MEMORY[0x277D85DE8];
-  v7 = [(HUISoundMeterListener *)self shouldShow];
-  v8 = [(HUISoundMeterListener *)self areLocalLevelsAvailable];
-  v9 = [(HUISoundMeterListener *)self areRemoteLevelsAvailable];
-  v10 = v5 | v4;
-  [(HUISoundMeterListener *)self setAreLocalLevelsAvailable:v5];
-  [(HUISoundMeterListener *)self setAreRemoteLevelsAvailable:v4];
-  v11 = [(HUISoundMeterListener *)self areLocalLevelsAvailable];
-  v12 = v9 ^ [(HUISoundMeterListener *)self areRemoteLevelsAvailable];
-  if (v8 != v11)
+  shouldShow = [(HUISoundMeterListener *)self shouldShow];
+  areLocalLevelsAvailable = [(HUISoundMeterListener *)self areLocalLevelsAvailable];
+  areRemoteLevelsAvailable = [(HUISoundMeterListener *)self areRemoteLevelsAvailable];
+  v10 = locallyCopy | remotelyCopy;
+  [(HUISoundMeterListener *)self setAreLocalLevelsAvailable:locallyCopy];
+  [(HUISoundMeterListener *)self setAreRemoteLevelsAvailable:remotelyCopy];
+  areLocalLevelsAvailable2 = [(HUISoundMeterListener *)self areLocalLevelsAvailable];
+  v12 = areRemoteLevelsAvailable ^ [(HUISoundMeterListener *)self areRemoteLevelsAvailable];
+  if (areLocalLevelsAvailable != areLocalLevelsAvailable2)
   {
-    v13 = [(HUISoundMeterListener *)self delegate];
+    delegate = [(HUISoundMeterListener *)self delegate];
     v14 = objc_opt_respondsToSelector();
 
     if (v14)
     {
-      v15 = [(HUISoundMeterListener *)self delegate];
+      delegate2 = [(HUISoundMeterListener *)self delegate];
       v16 = objc_opt_respondsToSelector();
 
       if (v16)
       {
-        v17 = [(HUISoundMeterListener *)self delegate];
-        [v17 localSourceAvailableDidUpdate:v5];
+        delegate3 = [(HUISoundMeterListener *)self delegate];
+        [delegate3 localSourceAvailableDidUpdate:locallyCopy];
       }
     }
   }
 
-  v18 = v10 ^ v7;
+  v18 = v10 ^ shouldShow;
   if (v12)
   {
-    v19 = [(HUISoundMeterListener *)self delegate];
+    delegate4 = [(HUISoundMeterListener *)self delegate];
     v20 = objc_opt_respondsToSelector();
 
     if (v20)
     {
-      v21 = [(HUISoundMeterListener *)self delegate];
+      delegate5 = [(HUISoundMeterListener *)self delegate];
       v22 = objc_opt_respondsToSelector();
 
       if (v22)
       {
-        v23 = [(HUISoundMeterListener *)self delegate];
-        [v23 remoteSourceAvailableDidUpdate:v4];
+        delegate6 = [(HUISoundMeterListener *)self delegate];
+        [delegate6 remoteSourceAvailableDidUpdate:remotelyCopy];
       }
     }
   }
@@ -120,13 +120,13 @@
       _os_log_impl(&dword_252166000, v24, OS_LOG_TYPE_INFO, "%s sound meter", &v29, 0xCu);
     }
 
-    v26 = [(HUISoundMeterListener *)self delegate];
+    delegate7 = [(HUISoundMeterListener *)self delegate];
     v27 = objc_opt_respondsToSelector();
 
     if (v27)
     {
-      v28 = [(HUISoundMeterListener *)self delegate];
-      [v28 liveLevelMeteringDisplayStateChanged:v10];
+      delegate8 = [(HUISoundMeterListener *)self delegate];
+      [delegate8 liveLevelMeteringDisplayStateChanged:v10];
     }
   }
 }
@@ -144,13 +144,13 @@
 
     [(HUISoundMeterListener *)self setIsListeningForLocalLevels:1];
     objc_initWeak(buf, self);
-    v4 = [MEMORY[0x277D12DE8] sharedInstance];
+    mEMORY[0x277D12DE8] = [MEMORY[0x277D12DE8] sharedInstance];
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __42__HUISoundMeterListener__startLocalLevels__block_invoke;
     v5[3] = &unk_2796F74D0;
     objc_copyWeak(&v6, buf);
-    [v4 registerListener:self forLiveHeadphoneLevelHandler:v5];
+    [mEMORY[0x277D12DE8] registerListener:self forLiveHeadphoneLevelHandler:v5];
 
     objc_destroyWeak(&v6);
     objc_destroyWeak(buf);
@@ -257,8 +257,8 @@ uint64_t __42__HUISoundMeterListener__startLocalLevels__block_invoke_13(uint64_t
   }
 
   [(HUISoundMeterListener *)self setIsListeningForLocalLevels:0];
-  v4 = [MEMORY[0x277D12DE8] sharedInstance];
-  [v4 unregisterLiveHeadphoneLevelHandler:self];
+  mEMORY[0x277D12DE8] = [MEMORY[0x277D12DE8] sharedInstance];
+  [mEMORY[0x277D12DE8] unregisterLiveHeadphoneLevelHandler:self];
 }
 
 - (void)_startRemoteLevels
@@ -274,13 +274,13 @@ uint64_t __42__HUISoundMeterListener__startLocalLevels__block_invoke_13(uint64_t
 
     [(HUISoundMeterListener *)self setIsListeningForRemoteLevels:1];
     objc_initWeak(buf, self);
-    v4 = [MEMORY[0x277D12DE8] sharedInstance];
+    mEMORY[0x277D12DE8] = [MEMORY[0x277D12DE8] sharedInstance];
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __43__HUISoundMeterListener__startRemoteLevels__block_invoke;
     v5[3] = &unk_2796F74D0;
     objc_copyWeak(&v6, buf);
-    [v4 registerListener:self forRemoteLiveHeadphoneLevelHandler:v5];
+    [mEMORY[0x277D12DE8] registerListener:self forRemoteLiveHeadphoneLevelHandler:v5];
 
     objc_destroyWeak(&v6);
     objc_destroyWeak(buf);
@@ -359,8 +359,8 @@ uint64_t __43__HUISoundMeterListener__startRemoteLevels__block_invoke_15(uint64_
   }
 
   [(HUISoundMeterListener *)self setIsListeningForRemoteLevels:0];
-  v4 = [MEMORY[0x277D12DE8] sharedInstance];
-  [v4 unregisterRemoteLiveHeadphoneLevelHandler:self];
+  mEMORY[0x277D12DE8] = [MEMORY[0x277D12DE8] sharedInstance];
+  [mEMORY[0x277D12DE8] unregisterRemoteLiveHeadphoneLevelHandler:self];
 }
 
 - (HUISoundMeterListenerDelegate)delegate

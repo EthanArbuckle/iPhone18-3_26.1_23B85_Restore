@@ -1,12 +1,12 @@
 @interface ParmesanMaskedBackdropView
-- (_TtC30NTKParmesanFaceBundleCompanion26ParmesanMaskedBackdropView)initWithCoder:(id)a3;
-- (void)addMaskingSubview:(id)a3;
+- (_TtC30NTKParmesanFaceBundleCompanion26ParmesanMaskedBackdropView)initWithCoder:(id)coder;
+- (void)addMaskingSubview:(id)subview;
 - (void)layoutSubviews;
 @end
 
 @implementation ParmesanMaskedBackdropView
 
-- (_TtC30NTKParmesanFaceBundleCompanion26ParmesanMaskedBackdropView)initWithCoder:(id)a3
+- (_TtC30NTKParmesanFaceBundleCompanion26ParmesanMaskedBackdropView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC30NTKParmesanFaceBundleCompanion26ParmesanMaskedBackdropView_maskingView;
   *(&self->super.super.super.super.super.isa + v4) = [objc_allocWithZone(type metadata accessor for ParmseanPassthroughView()) initWithFrame_];
@@ -31,12 +31,12 @@
   [v3 setFrame_];
 }
 
-- (void)addMaskingSubview:(id)a3
+- (void)addMaskingSubview:(id)subview
 {
-  v4 = a3;
-  v6 = self;
-  [v4 removeFromSuperview];
-  v5 = *(&v6->super.super.super.super.super.isa + OBJC_IVAR____TtC30NTKParmesanFaceBundleCompanion26ParmesanMaskedBackdropView_maskingView);
+  subviewCopy = subview;
+  selfCopy = self;
+  [subviewCopy removeFromSuperview];
+  v5 = *(&selfCopy->super.super.super.super.super.isa + OBJC_IVAR____TtC30NTKParmesanFaceBundleCompanion26ParmesanMaskedBackdropView_maskingView);
   [v5 addSubview_];
 }
 

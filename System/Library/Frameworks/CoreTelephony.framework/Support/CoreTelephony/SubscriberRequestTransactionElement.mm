@@ -1,15 +1,15 @@
 @interface SubscriberRequestTransactionElement
-+ (id)requestWithAction:(id)a3 andAnnotation:(id)a4;
-- (id)initRequestWithAction:(id)a3 andAnnotation:(id)a4;
++ (id)requestWithAction:(id)action andAnnotation:(id)annotation;
+- (id)initRequestWithAction:(id)action andAnnotation:(id)annotation;
 @end
 
 @implementation SubscriberRequestTransactionElement
 
-- (id)initRequestWithAction:(id)a3 andAnnotation:(id)a4
+- (id)initRequestWithAction:(id)action andAnnotation:(id)annotation
 {
   v7.receiver = self;
   v7.super_class = SubscriberRequestTransactionElement;
-  v4 = [(SubscriberTransactionElement *)&v7 initWithAction:a3 andAnnotation:a4];
+  v4 = [(SubscriberTransactionElement *)&v7 initWithAction:action andAnnotation:annotation];
   v5 = v4;
   if (v4)
   {
@@ -19,9 +19,9 @@
   return v5;
 }
 
-+ (id)requestWithAction:(id)a3 andAnnotation:(id)a4
++ (id)requestWithAction:(id)action andAnnotation:(id)annotation
 {
-  v4 = [[SubscriberRequestTransactionElement alloc] initRequestWithAction:a3 andAnnotation:a4];
+  v4 = [[SubscriberRequestTransactionElement alloc] initRequestWithAction:action andAnnotation:annotation];
 
   return v4;
 }

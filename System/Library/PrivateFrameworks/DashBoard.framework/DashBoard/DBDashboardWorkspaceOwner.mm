@@ -1,30 +1,30 @@
 @interface DBDashboardWorkspaceOwner
-- (DBDashboardWorkspaceOwner)initWithStateResolver:(id)a3 environment:(id)a4 sceneWorkspaceIdentifier:(id)a5 rootViewController:(id)a6 siriViewController:(id)a7;
+- (DBDashboardWorkspaceOwner)initWithStateResolver:(id)resolver environment:(id)environment sceneWorkspaceIdentifier:(id)identifier rootViewController:(id)controller siriViewController:(id)viewController;
 - (DBEnvironment)environment;
 - (DBFocusMovementActionHandling)focusMovementActionHandler;
 - (DBNotificationSuspending)notificationSuspender;
 - (DBUserAlertServer)userAlertServer;
 - (DBWorkspace)workspace;
 - (NSString)activeBaseApplicationBundleID;
-- (id)_existingViewControllerForEntity:(id)a3;
-- (unint64_t)session:(id)a3 policyForRequest:(id)a4;
-- (void)_handleSuspendedActivationForEntity:(id)a3 changeItem:(id)a4 completion:(id)a5;
-- (void)_newViewControllerForEntity:(id)a3 changeItem:(id)a4 persist:(BOOL)a5 completion:(id)a6;
-- (void)_updateViewControllerForEntity:(id)a3 changeItem:(id)a4 oldEntity:(id)a5 completion:(id)a6;
-- (void)alertServer:(id)a3 wantsAppDismissalForAlert:(id)a4 bundleID:(id)a5;
-- (void)alertServer:(id)a3 wantsAppPresentationForAlert:(id)a4 bundleID:(id)a5;
-- (void)handleEvent:(id)a3;
+- (id)_existingViewControllerForEntity:(id)entity;
+- (unint64_t)session:(id)session policyForRequest:(id)request;
+- (void)_handleSuspendedActivationForEntity:(id)entity changeItem:(id)item completion:(id)completion;
+- (void)_newViewControllerForEntity:(id)entity changeItem:(id)item persist:(BOOL)persist completion:(id)completion;
+- (void)_updateViewControllerForEntity:(id)entity changeItem:(id)item oldEntity:(id)oldEntity completion:(id)completion;
+- (void)alertServer:(id)server wantsAppDismissalForAlert:(id)alert bundleID:(id)d;
+- (void)alertServer:(id)server wantsAppPresentationForAlert:(id)alert bundleID:(id)d;
+- (void)handleEvent:(id)event;
 - (void)invalidate;
-- (void)session:(id)a3 handleStateChangeRequest:(id)a4;
-- (void)setBannerHeight:(double)a3;
-- (void)setFocusAssertion:(id)a3;
-- (void)setFocusMovementActionHandler:(id)a3;
-- (void)setFocusedEntity:(id)a3;
-- (void)setUserFocusAlertAssertion:(id)a3;
+- (void)session:(id)session handleStateChangeRequest:(id)request;
+- (void)setBannerHeight:(double)height;
+- (void)setFocusAssertion:(id)assertion;
+- (void)setFocusMovementActionHandler:(id)handler;
+- (void)setFocusedEntity:(id)entity;
+- (void)setUserFocusAlertAssertion:(id)assertion;
 - (void)startObservingNavigationApplicationProcesses;
 - (void)updateApplicationSceneFrames;
-- (void)workspace:(id)a3 didBeginStateChangeSession:(id)a4;
-- (void)workspace:(id)a3 didEndStateChangeSession:(id)a4;
+- (void)workspace:(id)workspace didBeginStateChangeSession:(id)session;
+- (void)workspace:(id)workspace didEndStateChangeSession:(id)session;
 @end
 
 @implementation DBDashboardWorkspaceOwner
@@ -50,31 +50,31 @@
   return WeakRetained;
 }
 
-- (DBDashboardWorkspaceOwner)initWithStateResolver:(id)a3 environment:(id)a4 sceneWorkspaceIdentifier:(id)a5 rootViewController:(id)a6 siriViewController:(id)a7
+- (DBDashboardWorkspaceOwner)initWithStateResolver:(id)resolver environment:(id)environment sceneWorkspaceIdentifier:(id)identifier rootViewController:(id)controller siriViewController:(id)viewController
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  resolverCopy = resolver;
+  environmentCopy = environment;
+  identifierCopy = identifier;
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
   v28.receiver = self;
   v28.super_class = DBDashboardWorkspaceOwner;
   v18 = [(DBDashboardWorkspaceOwner *)&v28 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeWeak(&v18->_environment, v14);
-    objc_storeStrong(&v19->_stateResolver, a3);
-    objc_storeStrong(&v19->_rootViewController, a6);
-    objc_storeStrong(&v19->_siriViewController, a7);
+    objc_storeWeak(&v18->_environment, environmentCopy);
+    objc_storeStrong(&v19->_stateResolver, resolver);
+    objc_storeStrong(&v19->_rootViewController, controller);
+    objc_storeStrong(&v19->_siriViewController, viewController);
     v20 = objc_opt_new();
     entityIdentifierToViewControllerMap = v19->_entityIdentifierToViewControllerMap;
     v19->_entityIdentifierToViewControllerMap = v20;
 
     v22 = [_TtC9DashBoard23DBDashboardSceneManager alloc];
     WeakRetained = objc_loadWeakRetained(&v19->_environment);
-    v24 = [v16 homeViewController];
-    v25 = [(DBDashboardSceneManager *)v22 initWithEnvironment:WeakRetained iconProvider:v24 sceneWorkspaceIdentifier:v15];
+    homeViewController = [controllerCopy homeViewController];
+    v25 = [(DBDashboardSceneManager *)v22 initWithEnvironment:WeakRetained iconProvider:homeViewController sceneWorkspaceIdentifier:identifierCopy];
     sceneManager = v19->_sceneManager;
     v19->_sceneManager = v25;
   }
@@ -89,35 +89,35 @@
   [WeakRetained invalidate];
 
   [(DBWorkspaceStateChangeSession *)self->_currentSession invalidate];
-  v4 = [(DBDashboardWorkspaceOwner *)self sceneManager];
-  [v4 invalidate];
+  sceneManager = [(DBDashboardWorkspaceOwner *)self sceneManager];
+  [sceneManager invalidate];
 }
 
 - (DBFocusMovementActionHandling)focusMovementActionHandler
 {
-  v2 = [(DBDashboardWorkspaceOwner *)self sceneManager];
-  v3 = [v2 focusMovementActionHandler];
+  sceneManager = [(DBDashboardWorkspaceOwner *)self sceneManager];
+  focusMovementActionHandler = [sceneManager focusMovementActionHandler];
 
-  return v3;
+  return focusMovementActionHandler;
 }
 
-- (void)setFocusMovementActionHandler:(id)a3
+- (void)setFocusMovementActionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(DBDashboardWorkspaceOwner *)self sceneManager];
-  [v5 setFocusMovementActionHandler:v4];
+  handlerCopy = handler;
+  sceneManager = [(DBDashboardWorkspaceOwner *)self sceneManager];
+  [sceneManager setFocusMovementActionHandler:handlerCopy];
 }
 
 - (NSString)activeBaseApplicationBundleID
 {
   WeakRetained = objc_loadWeakRetained(&self->_workspace);
-  v3 = [WeakRetained state];
+  state = [WeakRetained state];
 
   objc_opt_class();
-  v4 = [v3 baseEntity];
-  if (v4 && (objc_opt_isKindOfClass() & 1) != 0)
+  baseEntity = [state baseEntity];
+  if (baseEntity && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v5 = v4;
+    v5 = baseEntity;
   }
 
   else
@@ -127,58 +127,58 @@
 
   if (v5)
   {
-    v6 = [v5 application];
-    v7 = [v6 bundleIdentifier];
+    application = [v5 application];
+    bundleIdentifier = [application bundleIdentifier];
   }
 
   else
   {
     objc_opt_class();
-    v8 = [v3 baseEntity];
-    if (v8 && (objc_opt_isKindOfClass() & 1) != 0)
+    baseEntity2 = [state baseEntity];
+    if (baseEntity2 && (objc_opt_isKindOfClass() & 1) != 0)
     {
-      v6 = v8;
+      application = baseEntity2;
     }
 
     else
     {
-      v6 = 0;
+      application = 0;
     }
 
-    if (v6)
+    if (application)
     {
-      v9 = [v6 applicationToProxy];
-      v7 = [v9 bundleIdentifier];
+      applicationToProxy = [application applicationToProxy];
+      bundleIdentifier = [applicationToProxy bundleIdentifier];
     }
 
     else
     {
-      v7 = 0;
+      bundleIdentifier = 0;
     }
   }
 
-  return v7;
+  return bundleIdentifier;
 }
 
-- (void)setBannerHeight:(double)a3
+- (void)setBannerHeight:(double)height
 {
   if ((BSFloatEqualToFloat() & 1) == 0)
   {
-    self->_bannerHeight = a3;
+    self->_bannerHeight = height;
     WeakRetained = objc_loadWeakRetained(&self->_workspace);
-    v6 = [WeakRetained state];
-    v7 = [v6 baseEntity];
+    state = [WeakRetained state];
+    baseEntity = [state baseEntity];
 
-    if (([v7 isApplicationEntity] & 1) != 0 || objc_msgSend(v7, "isProxiedApplicationEntity"))
+    if (([baseEntity isApplicationEntity] & 1) != 0 || objc_msgSend(baseEntity, "isProxiedApplicationEntity"))
     {
-      v8 = [(DBDashboardWorkspaceOwner *)self sceneManager];
-      v9 = [v8 sceneForApplicationEntity:v7];
+      sceneManager = [(DBDashboardWorkspaceOwner *)self sceneManager];
+      v9 = [sceneManager sceneForApplicationEntity:baseEntity];
 
       v10[0] = MEMORY[0x277D85DD0];
       v10[1] = 3221225472;
       v10[2] = __45__DBDashboardWorkspaceOwner_setBannerHeight___block_invoke;
       v10[3] = &__block_descriptor_40_e33_v16__0__FBSMutableSceneSettings_8l;
-      *&v10[4] = a3;
+      *&v10[4] = height;
       [v9 updateSettings:v10];
     }
   }
@@ -214,56 +214,56 @@ void __45__DBDashboardWorkspaceOwner_setBannerHeight___block_invoke(uint64_t a1,
 
 - (void)startObservingNavigationApplicationProcesses
 {
-  v2 = [(DBDashboardWorkspaceOwner *)self sceneManager];
-  [v2 startObservingNavigationApplicationProcesses];
+  sceneManager = [(DBDashboardWorkspaceOwner *)self sceneManager];
+  [sceneManager startObservingNavigationApplicationProcesses];
 }
 
 - (void)updateApplicationSceneFrames
 {
-  v2 = [(DBDashboardWorkspaceOwner *)self sceneManager];
-  [v2 updateApplicationSceneFrames];
+  sceneManager = [(DBDashboardWorkspaceOwner *)self sceneManager];
+  [sceneManager updateApplicationSceneFrames];
 }
 
-- (void)alertServer:(id)a3 wantsAppPresentationForAlert:(id)a4 bundleID:(id)a5
+- (void)alertServer:(id)server wantsAppPresentationForAlert:(id)alert bundleID:(id)d
 {
-  v18 = a4;
-  v7 = [(NSMutableDictionary *)self->_entityIdentifierToViewControllerMap objectForKey:a5];
+  alertCopy = alert;
+  v7 = [(NSMutableDictionary *)self->_entityIdentifierToViewControllerMap objectForKey:d];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v7 setUserAlert:v18];
-    v8 = [v7 entity];
-    v9 = [v8 identifier];
-    v10 = [(DBDashboardWorkspaceOwner *)self focusedEntity];
-    v11 = [v10 identifier];
-    v12 = [v9 isEqualToString:v11];
+    [v7 setUserAlert:alertCopy];
+    entity = [v7 entity];
+    identifier = [entity identifier];
+    focusedEntity = [(DBDashboardWorkspaceOwner *)self focusedEntity];
+    identifier2 = [focusedEntity identifier];
+    v12 = [identifier isEqualToString:identifier2];
 
     if (v12)
     {
-      v13 = [(DBDashboardWorkspaceOwner *)self environment];
-      v14 = [v13 focusController];
+      environment = [(DBDashboardWorkspaceOwner *)self environment];
+      focusController = [environment focusController];
 
-      v15 = [v18 window];
-      v16 = [v18 scene];
-      v17 = [v14 deferFocusToWindow:v15 scene:v16 priority:2 reason:@"appUserAlert"];
+      window = [alertCopy window];
+      scene = [alertCopy scene];
+      v17 = [focusController deferFocusToWindow:window scene:scene priority:2 reason:@"appUserAlert"];
 
       [(DBDashboardWorkspaceOwner *)self setUserAlertFocusAssertion:v17];
     }
   }
 }
 
-- (void)alertServer:(id)a3 wantsAppDismissalForAlert:(id)a4 bundleID:(id)a5
+- (void)alertServer:(id)server wantsAppDismissalForAlert:(id)alert bundleID:(id)d
 {
-  v11 = [(NSMutableDictionary *)self->_entityIdentifierToViewControllerMap objectForKey:a5, a4];
+  alert = [(NSMutableDictionary *)self->_entityIdentifierToViewControllerMap objectForKey:d, alert];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v11 setUserAlert:0];
-    v6 = [v11 entity];
-    v7 = [v6 identifier];
-    v8 = [(DBDashboardWorkspaceOwner *)self focusedEntity];
-    v9 = [v8 identifier];
-    v10 = [v7 isEqualToString:v9];
+    [alert setUserAlert:0];
+    entity = [alert entity];
+    identifier = [entity identifier];
+    focusedEntity = [(DBDashboardWorkspaceOwner *)self focusedEntity];
+    identifier2 = [focusedEntity identifier];
+    v10 = [identifier isEqualToString:identifier2];
 
     if (v10)
     {
@@ -272,31 +272,31 @@ void __45__DBDashboardWorkspaceOwner_setBannerHeight___block_invoke(uint64_t a1,
   }
 }
 
-- (void)workspace:(id)a3 didBeginStateChangeSession:(id)a4
+- (void)workspace:(id)workspace didBeginStateChangeSession:(id)session
 {
   v10 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  sessionCopy = session;
   v6 = DBLogForCategory(8uLL);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = v5;
+    v9 = sessionCopy;
     _os_log_impl(&dword_248146000, v6, OS_LOG_TYPE_DEFAULT, "Beginning session: %@", &v8, 0xCu);
   }
 
   currentSession = self->_currentSession;
-  self->_currentSession = v5;
+  self->_currentSession = sessionCopy;
 }
 
-- (void)workspace:(id)a3 didEndStateChangeSession:(id)a4
+- (void)workspace:(id)workspace didEndStateChangeSession:(id)session
 {
   v10 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  sessionCopy = session;
   v6 = DBLogForCategory(8uLL);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = v5;
+    v9 = sessionCopy;
     _os_log_impl(&dword_248146000, v6, OS_LOG_TYPE_DEFAULT, "Ended session: %@", &v8, 0xCu);
   }
 
@@ -304,73 +304,73 @@ void __45__DBDashboardWorkspaceOwner_setBannerHeight___block_invoke(uint64_t a1,
   self->_currentSession = 0;
 }
 
-- (unint64_t)session:(id)a3 policyForRequest:(id)a4
+- (unint64_t)session:(id)session policyForRequest:(id)request
 {
   if (self->_invalidated)
   {
     return 1;
   }
 
-  [a3 owner];
+  [session owner];
 
   return 0;
 }
 
-- (void)session:(id)a3 handleStateChangeRequest:(id)a4
+- (void)session:(id)session handleStateChangeRequest:(id)request
 {
   v122 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  requestCopy = request;
   if (self->_invalidated)
   {
-    [v6 invalidate];
+    [sessionCopy invalidate];
   }
 
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_workspace);
-    v9 = [WeakRetained state];
+    state = [WeakRetained state];
 
-    if (!v9)
+    if (!state)
     {
       v10 = objc_alloc_init(DBMutableDashboardWorkspaceState);
       v11 = +[DBDashboardHomescreenEntity entity];
       [(DBMutableDashboardWorkspaceState *)v10 setBaseEntity:v11];
 
-      v9 = [(DBMutableDashboardWorkspaceState *)v10 copy];
+      state = [(DBMutableDashboardWorkspaceState *)v10 copy];
     }
 
-    v86 = [(DBDashboardWorkspaceStateResolver *)self->_stateResolver computeNewStateFromState:v9 andRequest:v7];
-    v84 = [v86 state];
-    [v6 setState:?];
+    v86 = [(DBDashboardWorkspaceStateResolver *)self->_stateResolver computeNewStateFromState:state andRequest:requestCopy];
+    state2 = [v86 state];
+    [sessionCopy setState:?];
     v12 = dispatch_group_create();
     v13 = DBLogForCategory(8uLL);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v121 = v6;
+      v121 = sessionCopy;
       _os_log_impl(&dword_248146000, v13, OS_LOG_TYPE_INFO, "Starting display layout publisher transition for workspace change session: %@", buf, 0xCu);
     }
 
-    v14 = [(DBDashboardWorkspaceOwner *)self environment];
-    v15 = [v14 environmentConfiguration];
-    v16 = [v15 displayLayoutPublisher];
-    v82 = [v16 transitionAssertionWithReason:@"Workspace Change"];
+    environment = [(DBDashboardWorkspaceOwner *)self environment];
+    environmentConfiguration = [environment environmentConfiguration];
+    displayLayoutPublisher = [environmentConfiguration displayLayoutPublisher];
+    v82 = [displayLayoutPublisher transitionAssertionWithReason:@"Workspace Change"];
 
-    v17 = [v84 baseEntity];
-    v18 = [v84 stackedEntity];
-    v19 = [v86 activateSuspendedEntity];
-    v20 = [v9 baseEntity];
+    baseEntity = [state2 baseEntity];
+    stackedEntity = [state2 stackedEntity];
+    activateSuspendedEntity = [v86 activateSuspendedEntity];
+    baseEntity2 = [state baseEntity];
 
-    v85 = v18;
-    v83 = v19;
-    if (v17 != v20)
+    v85 = stackedEntity;
+    v83 = activateSuspendedEntity;
+    if (baseEntity != baseEntity2)
     {
       dispatch_group_enter(v12);
-      v21 = [v17 identifier];
-      v22 = [v9 baseEntity];
-      v23 = [v22 identifier];
-      v24 = [v21 isEqualToString:v23];
+      identifier = [baseEntity identifier];
+      baseEntity3 = [state baseEntity];
+      identifier2 = [baseEntity3 identifier];
+      v24 = [identifier isEqualToString:identifier2];
 
       if (v24)
       {
@@ -381,31 +381,31 @@ void __45__DBDashboardWorkspaceOwner_setBannerHeight___block_invoke(uint64_t a1,
           _os_log_impl(&dword_248146000, v25, OS_LOG_TYPE_DEFAULT, "[WorkspaceOwner] Starting update for base view controller", buf, 2u);
         }
 
-        v26 = [v86 changeItemForEntity:v17];
-        v27 = [v9 baseEntity];
+        v26 = [v86 changeItemForEntity:baseEntity];
+        baseEntity4 = [state baseEntity];
         v118[0] = MEMORY[0x277D85DD0];
         v118[1] = 3221225472;
         v118[2] = __62__DBDashboardWorkspaceOwner_session_handleStateChangeRequest___block_invoke;
         v118[3] = &unk_278F01580;
         v119 = v12;
-        [(DBDashboardWorkspaceOwner *)self _updateViewControllerForEntity:v17 changeItem:v26 oldEntity:v27 completion:v118];
+        [(DBDashboardWorkspaceOwner *)self _updateViewControllerForEntity:baseEntity changeItem:v26 oldEntity:baseEntity4 completion:v118];
 
         v28 = v119;
       }
 
-      else if ([v17 isHomescreenEntity])
+      else if ([baseEntity isHomescreenEntity])
       {
-        v80 = v7;
+        v80 = requestCopy;
         entityIdentifierToViewControllerMap = self->_entityIdentifierToViewControllerMap;
-        v30 = [v9 baseEntity];
-        v31 = [v30 identifier];
-        [(NSMutableDictionary *)entityIdentifierToViewControllerMap removeObjectForKey:v31];
+        baseEntity5 = [state baseEntity];
+        identifier3 = [baseEntity5 identifier];
+        [(NSMutableDictionary *)entityIdentifierToViewControllerMap removeObjectForKey:identifier3];
 
-        v32 = [MEMORY[0x277CCAD78] UUID];
-        v33 = [v32 UUIDString];
+        uUID = [MEMORY[0x277CCAD78] UUID];
+        uUIDString = [uUID UUIDString];
 
-        v34 = [(DBDashboardWorkspaceOwner *)self notificationSuspender];
-        [v34 setSuspended:1 cancellingCurrent:1 forReason:v33];
+        notificationSuspender = [(DBDashboardWorkspaceOwner *)self notificationSuspender];
+        [notificationSuspender setSuspended:1 cancellingCurrent:1 forReason:uUIDString];
 
         v35 = DBLogForCategory(8uLL);
         if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
@@ -415,24 +415,24 @@ void __45__DBDashboardWorkspaceOwner_setBannerHeight___block_invoke(uint64_t a1,
         }
 
         rootViewController = self->_rootViewController;
-        v37 = [v86 changeItemForEntity:v17];
-        v38 = [v37 prefersAnimation];
+        v37 = [v86 changeItemForEntity:baseEntity];
+        prefersAnimation = [v37 prefersAnimation];
         v115[0] = MEMORY[0x277D85DD0];
         v115[1] = 3221225472;
         v115[2] = __62__DBDashboardWorkspaceOwner_session_handleStateChangeRequest___block_invoke_218;
         v115[3] = &unk_278F015F8;
         v115[4] = self;
-        v116 = v33;
+        v116 = uUIDString;
         v117 = v12;
-        v28 = v33;
-        [(DBDashboardRootViewController *)rootViewController dismissBaseViewControllerAnimated:v38 completion:v115];
+        v28 = uUIDString;
+        [(DBDashboardRootViewController *)rootViewController dismissBaseViewControllerAnimated:prefersAnimation completion:v115];
 
-        v7 = v80;
+        requestCopy = v80;
       }
 
       else
       {
-        v39 = [v86 changeItemForEntity:v17];
+        v39 = [v86 changeItemForEntity:baseEntity];
         v40 = DBLogForCategory(8uLL);
         if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
         {
@@ -445,7 +445,7 @@ void __45__DBDashboardWorkspaceOwner_setBannerHeight___block_invoke(uint64_t a1,
         v110[2] = __62__DBDashboardWorkspaceOwner_session_handleStateChangeRequest___block_invoke_219;
         v110[3] = &unk_278F04418;
         v110[4] = self;
-        v111 = v17;
+        v111 = baseEntity;
         v112 = v39;
         v113 = v85;
         v114 = v12;
@@ -453,27 +453,27 @@ void __45__DBDashboardWorkspaceOwner_setBannerHeight___block_invoke(uint64_t a1,
         [(DBDashboardWorkspaceOwner *)self _newViewControllerForEntity:v111 changeItem:v28 completion:v110];
       }
 
-      v19 = v83;
+      activateSuspendedEntity = v83;
 
-      v18 = v85;
+      stackedEntity = v85;
     }
 
-    v41 = [v9 stackedEntity];
+    stackedEntity2 = [state stackedEntity];
 
-    if (v18 != v41)
+    if (stackedEntity != stackedEntity2)
     {
       dispatch_group_enter(v12);
       aBlock[0] = MEMORY[0x277D85DD0];
       aBlock[1] = 3221225472;
       aBlock[2] = __62__DBDashboardWorkspaceOwner_session_handleStateChangeRequest___block_invoke_225;
       aBlock[3] = &unk_278F014B8;
-      v42 = v18;
+      v42 = stackedEntity;
       v108 = v42;
-      v109 = self;
+      selfCopy = self;
       v79 = _Block_copy(aBlock);
       objc_opt_class();
       v43 = v42;
-      v81 = v7;
+      v81 = requestCopy;
       if (v43 && (objc_opt_isKindOfClass() & 1) != 0)
       {
         -[DBSiriViewController setTouchToDismissEnabled:forRequester:](self->_siriViewController, "setTouchToDismissEnabled:forRequester:", [v43 isFloating], @"FloatingSiri");
@@ -486,10 +486,10 @@ void __45__DBDashboardWorkspaceOwner_setBannerHeight___block_invoke(uint64_t a1,
         v78 = 0;
       }
 
-      v44 = [v43 identifier];
-      v45 = [v9 stackedEntity];
-      v46 = [v45 identifier];
-      v47 = [v44 isEqualToString:v46];
+      identifier4 = [v43 identifier];
+      stackedEntity3 = [state stackedEntity];
+      identifier5 = [stackedEntity3 identifier];
+      v47 = [identifier4 isEqualToString:identifier5];
 
       if (v47)
       {
@@ -501,24 +501,24 @@ void __45__DBDashboardWorkspaceOwner_setBannerHeight___block_invoke(uint64_t a1,
         }
 
         v49 = [v86 changeItemForEntity:v43];
-        v50 = [v9 stackedEntity];
+        stackedEntity4 = [state stackedEntity];
         v104[0] = MEMORY[0x277D85DD0];
         v104[1] = 3221225472;
         v104[2] = __62__DBDashboardWorkspaceOwner_session_handleStateChangeRequest___block_invoke_229;
         v104[3] = &unk_278F02D68;
         v106 = v79;
         v105 = v12;
-        [(DBDashboardWorkspaceOwner *)self _updateViewControllerForEntity:v43 changeItem:v49 oldEntity:v50 completion:v104];
+        [(DBDashboardWorkspaceOwner *)self _updateViewControllerForEntity:v43 changeItem:v49 oldEntity:stackedEntity4 completion:v104];
 
         objc_opt_class();
-        v51 = [v9 stackedEntity];
-        v7 = v81;
-        if (v51)
+        stackedEntity5 = [state stackedEntity];
+        requestCopy = v81;
+        if (stackedEntity5)
         {
-          v19 = v83;
+          activateSuspendedEntity = v83;
           if (objc_opt_isKindOfClass())
           {
-            v52 = v51;
+            v52 = stackedEntity5;
           }
 
           else
@@ -530,16 +530,16 @@ void __45__DBDashboardWorkspaceOwner_setBannerHeight___block_invoke(uint64_t a1,
         else
         {
           v52 = 0;
-          v19 = v83;
+          activateSuspendedEntity = v83;
         }
 
         if ([v52 isFloating])
         {
           v67 = self->_entityIdentifierToViewControllerMap;
-          v68 = [v17 identifier];
-          v69 = [(NSMutableDictionary *)v67 objectForKeyedSubscript:v68];
+          identifier6 = [baseEntity identifier];
+          v69 = [(NSMutableDictionary *)v67 objectForKeyedSubscript:identifier6];
 
-          v19 = v83;
+          activateSuspendedEntity = v83;
           [v69 deactivateSceneWithReasonMask:16];
         }
 
@@ -553,7 +553,7 @@ void __45__DBDashboardWorkspaceOwner_setBannerHeight___block_invoke(uint64_t a1,
         {
           v53 = [v86 changeItemForEntity:v43];
           v54 = DBLogForCategory(8uLL);
-          v7 = v81;
+          requestCopy = v81;
           if (os_log_type_enabled(v54, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 0;
@@ -565,7 +565,7 @@ void __45__DBDashboardWorkspaceOwner_setBannerHeight___block_invoke(uint64_t a1,
           v94[2] = __62__DBDashboardWorkspaceOwner_session_handleStateChangeRequest___block_invoke_231;
           v94[3] = &unk_278F04468;
           v94[4] = self;
-          v95 = v17;
+          v95 = baseEntity;
           v96 = v43;
           v97 = v53;
           v55 = v79;
@@ -580,18 +580,18 @@ void __45__DBDashboardWorkspaceOwner_setBannerHeight___block_invoke(uint64_t a1,
         else
         {
           v58 = self->_entityIdentifierToViewControllerMap;
-          v59 = [v9 stackedEntity];
-          v60 = [v59 identifier];
-          [(NSMutableDictionary *)v58 removeObjectForKey:v60];
+          stackedEntity6 = [state stackedEntity];
+          identifier7 = [stackedEntity6 identifier];
+          [(NSMutableDictionary *)v58 removeObjectForKey:identifier7];
 
-          v61 = [MEMORY[0x277CCAD78] UUID];
-          v62 = [v61 UUIDString];
+          uUID2 = [MEMORY[0x277CCAD78] UUID];
+          uUIDString2 = [uUID2 UUIDString];
 
-          v63 = [(DBDashboardWorkspaceOwner *)self notificationSuspender];
-          [v63 setSuspended:1 cancellingCurrent:0 forReason:v62];
+          notificationSuspender2 = [(DBDashboardWorkspaceOwner *)self notificationSuspender];
+          [notificationSuspender2 setSuspended:1 cancellingCurrent:0 forReason:uUIDString2];
 
           v64 = DBLogForCategory(8uLL);
-          v7 = v81;
+          requestCopy = v81;
           if (os_log_type_enabled(v64, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 0;
@@ -605,9 +605,9 @@ void __45__DBDashboardWorkspaceOwner_setBannerHeight___block_invoke(uint64_t a1,
           v100[3] = &unk_278F03570;
           v103 = v79;
           v100[4] = self;
-          v101 = v62;
+          v101 = uUIDString2;
           v102 = v12;
-          v66 = v62;
+          v66 = uUIDString2;
           v55 = v79;
           v56 = v66;
           [(DBDashboardRootViewController *)v65 dismissStackedViewControllerAnimated:1 completion:v100];
@@ -615,34 +615,34 @@ void __45__DBDashboardWorkspaceOwner_setBannerHeight___block_invoke(uint64_t a1,
           v57 = v103;
         }
 
-        v19 = v83;
+        activateSuspendedEntity = v83;
       }
 
-      v18 = v85;
+      stackedEntity = v85;
     }
 
-    if ([v17 isHomescreenEntity])
+    if ([baseEntity isHomescreenEntity])
     {
       v70 = 0;
     }
 
     else
     {
-      v70 = v17;
+      v70 = baseEntity;
     }
 
     v71 = v70;
-    if (v18 && ([v18 isSiriEntity] & 1) == 0)
+    if (stackedEntity && ([stackedEntity isSiriEntity] & 1) == 0)
     {
-      v72 = v18;
+      v72 = stackedEntity;
 
       v71 = v72;
     }
 
-    if (v19)
+    if (activateSuspendedEntity)
     {
       dispatch_group_enter(v12);
-      v73 = [v86 changeItemForEntity:v19];
+      v73 = [v86 changeItemForEntity:activateSuspendedEntity];
       v74 = DBLogForCategory(8uLL);
       if (os_log_type_enabled(v74, OS_LOG_TYPE_DEFAULT))
       {
@@ -655,9 +655,9 @@ void __45__DBDashboardWorkspaceOwner_setBannerHeight___block_invoke(uint64_t a1,
       v92[2] = __62__DBDashboardWorkspaceOwner_session_handleStateChangeRequest___block_invoke_233;
       v92[3] = &unk_278F01580;
       v93 = v12;
-      [(DBDashboardWorkspaceOwner *)self _handleSuspendedActivationForEntity:v19 changeItem:v73 completion:v92];
+      [(DBDashboardWorkspaceOwner *)self _handleSuspendedActivationForEntity:activateSuspendedEntity changeItem:v73 completion:v92];
 
-      v18 = v85;
+      stackedEntity = v85;
     }
 
     block[0] = MEMORY[0x277D85DD0];
@@ -666,11 +666,11 @@ void __45__DBDashboardWorkspaceOwner_setBannerHeight___block_invoke(uint64_t a1,
     block[3] = &unk_278F02130;
     block[4] = self;
     v88 = v71;
-    v89 = v6;
+    v89 = sessionCopy;
     v90 = v82;
-    v91 = v7;
+    v91 = requestCopy;
     v75 = v82;
-    v76 = v19;
+    v76 = activateSuspendedEntity;
     v77 = v71;
     dispatch_group_notify(v12, MEMORY[0x277D85CD0], block);
   }
@@ -943,104 +943,104 @@ void __62__DBDashboardWorkspaceOwner_session_handleStateChangeRequest___block_in
   }
 }
 
-- (void)handleEvent:(id)a3
+- (void)handleEvent:(id)event
 {
   if (!self->_invalidated)
   {
-    [(DBDashboardRootViewController *)self->_rootViewController handleEvent:a3];
+    [(DBDashboardRootViewController *)self->_rootViewController handleEvent:event];
   }
 }
 
-- (void)setFocusAssertion:(id)a3
+- (void)setFocusAssertion:(id)assertion
 {
-  v5 = a3;
+  assertionCopy = assertion;
   focusAssertion = self->_focusAssertion;
   p_focusAssertion = &self->_focusAssertion;
   v6 = focusAssertion;
-  if (focusAssertion != v5)
+  if (focusAssertion != assertionCopy)
   {
-    v9 = v5;
+    v9 = assertionCopy;
     [(DBFocusAssertion *)v6 invalidate];
-    objc_storeStrong(p_focusAssertion, a3);
-    v5 = v9;
+    objc_storeStrong(p_focusAssertion, assertion);
+    assertionCopy = v9;
   }
 
-  MEMORY[0x2821F96F8](v6, v5);
+  MEMORY[0x2821F96F8](v6, assertionCopy);
 }
 
-- (void)setUserFocusAlertAssertion:(id)a3
+- (void)setUserFocusAlertAssertion:(id)assertion
 {
-  v5 = a3;
+  assertionCopy = assertion;
   userAlertFocusAssertion = self->_userAlertFocusAssertion;
   p_userAlertFocusAssertion = &self->_userAlertFocusAssertion;
   v6 = userAlertFocusAssertion;
-  if (userAlertFocusAssertion != v5)
+  if (userAlertFocusAssertion != assertionCopy)
   {
-    v9 = v5;
+    v9 = assertionCopy;
     [(DBFocusAssertion *)v6 invalidate];
-    objc_storeStrong(p_userAlertFocusAssertion, a3);
-    v5 = v9;
+    objc_storeStrong(p_userAlertFocusAssertion, assertion);
+    assertionCopy = v9;
   }
 
-  MEMORY[0x2821F96F8](v6, v5);
+  MEMORY[0x2821F96F8](v6, assertionCopy);
 }
 
-- (void)setFocusedEntity:(id)a3
+- (void)setFocusedEntity:(id)entity
 {
-  v26 = a3;
+  entityCopy = entity;
   p_focusedEntity = &self->_focusedEntity;
   v6 = self->_focusedEntity;
-  objc_storeStrong(&self->_focusedEntity, a3);
-  v7 = [(DBDashboardEntity *)self->_focusedEntity identifier];
-  v8 = [(DBDashboardEntity *)v6 identifier];
-  v9 = [v7 isEqualToString:v8];
+  objc_storeStrong(&self->_focusedEntity, entity);
+  identifier = [(DBDashboardEntity *)self->_focusedEntity identifier];
+  identifier2 = [(DBDashboardEntity *)v6 identifier];
+  v9 = [identifier isEqualToString:identifier2];
 
   if ((v9 & 1) == 0)
   {
-    v10 = [(DBDashboardWorkspaceOwner *)self environment];
-    v11 = [v10 focusController];
+    environment = [(DBDashboardWorkspaceOwner *)self environment];
+    focusController = [environment focusController];
 
     focusedEntity = self->_focusedEntity;
     if (focusedEntity)
     {
       if ([(DBDashboardEntity *)focusedEntity isApplicationEntity]|| [(DBDashboardEntity *)*p_focusedEntity isProxiedApplicationEntity])
       {
-        v13 = [(DBDashboardWorkspaceOwner *)self sceneManager];
-        v14 = [v13 sceneForApplicationEntity:v26];
+        sceneManager = [(DBDashboardWorkspaceOwner *)self sceneManager];
+        v14 = [sceneManager sceneForApplicationEntity:entityCopy];
 
         if (v14)
         {
-          v15 = [v11 deferFocusToScene:v14 priority:1 reason:@"app"];
+          v15 = [focusController deferFocusToScene:v14 priority:1 reason:@"app"];
           [(DBDashboardWorkspaceOwner *)self setFocusAssertion:v15];
         }
       }
 
-      v16 = [(DBDashboardEntity *)*p_focusedEntity isApplicationEntity];
+      isApplicationEntity = [(DBDashboardEntity *)*p_focusedEntity isApplicationEntity];
       v17 = *p_focusedEntity;
-      if (v16)
+      if (isApplicationEntity)
       {
-        v18 = [(DBDashboardEntity *)v17 application];
+        application = [(DBDashboardEntity *)v17 application];
         goto LABEL_12;
       }
 
       if ([(DBDashboardEntity *)v17 isProxiedApplicationEntity])
       {
-        v18 = [(DBDashboardEntity *)*p_focusedEntity applicationToProxy];
+        application = [(DBDashboardEntity *)*p_focusedEntity applicationToProxy];
 LABEL_12:
-        v19 = v18;
-        v20 = [v18 bundleIdentifier];
+        v19 = application;
+        bundleIdentifier = [application bundleIdentifier];
 
         [(DBDashboardWorkspaceOwner *)self setUserAlertFocusAssertion:0];
-        if (v20)
+        if (bundleIdentifier)
         {
-          v21 = [(DBDashboardWorkspaceOwner *)self userAlertServer];
-          v22 = [v21 alertForBundleID:v20];
+          userAlertServer = [(DBDashboardWorkspaceOwner *)self userAlertServer];
+          v22 = [userAlertServer alertForBundleID:bundleIdentifier];
 
           if (v22)
           {
-            v23 = [v22 window];
-            v24 = [v22 scene];
-            v25 = [v11 deferFocusToWindow:v23 scene:v24 priority:2 reason:@"appUserAlert"];
+            window = [v22 window];
+            scene = [v22 scene];
+            v25 = [focusController deferFocusToWindow:window scene:scene priority:2 reason:@"appUserAlert"];
 
             [(DBDashboardWorkspaceOwner *)self setUserAlertFocusAssertion:v25];
           }
@@ -1061,20 +1061,20 @@ LABEL_17:
   }
 }
 
-- (id)_existingViewControllerForEntity:(id)a3
+- (id)_existingViewControllerForEntity:(id)entity
 {
   entityIdentifierToViewControllerMap = self->_entityIdentifierToViewControllerMap;
-  v4 = [a3 identifier];
-  v5 = [(NSMutableDictionary *)entityIdentifierToViewControllerMap objectForKey:v4];
+  identifier = [entity identifier];
+  v5 = [(NSMutableDictionary *)entityIdentifierToViewControllerMap objectForKey:identifier];
 
   return v5;
 }
 
-- (void)_newViewControllerForEntity:(id)a3 changeItem:(id)a4 persist:(BOOL)a5 completion:(id)a6
+- (void)_newViewControllerForEntity:(id)entity changeItem:(id)item persist:(BOOL)persist completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v48 = a6;
+  entityCopy = entity;
+  itemCopy = item;
+  completionCopy = completion;
   v63 = 0;
   v64 = &v63;
   v65 = 0x3032000000;
@@ -1082,26 +1082,26 @@ LABEL_17:
   v67 = __Block_byref_object_dispose__8;
   v68 = 0;
   v11 = dispatch_group_create();
-  if ([v9 isApplicationEntity])
+  if ([entityCopy isApplicationEntity])
   {
-    WeakRetained = v9;
-    v47 = v10;
-    v46 = v10;
-    v13 = [(DBDashboardWorkspaceOwner *)self sceneManager];
-    v14 = [v13 sceneForApplicationEntity:WeakRetained];
+    WeakRetained = entityCopy;
+    v47 = itemCopy;
+    v46 = itemCopy;
+    sceneManager = [(DBDashboardWorkspaceOwner *)self sceneManager];
+    v14 = [sceneManager sceneForApplicationEntity:WeakRetained];
 
     v15 = [DBApplicationViewController alloc];
-    v16 = [(DBDashboardWorkspaceOwner *)self environment];
-    v17 = [(DBApplicationViewController *)v15 initWithScene:v14 entity:WeakRetained environment:v16];
+    environment = [(DBDashboardWorkspaceOwner *)self environment];
+    v17 = [(DBApplicationViewController *)v15 initWithScene:v14 entity:WeakRetained environment:environment];
 
-    v18 = [(DBDashboardWorkspaceOwner *)self environment];
-    [v18 statusBarInsets];
+    environment2 = [(DBDashboardWorkspaceOwner *)self environment];
+    [environment2 statusBarInsets];
     [(DBApplicationViewController *)v17 setAdditionalSafeAreaInsets:?];
 
-    v19 = [(DBDashboardWorkspaceOwner *)self userAlertServer];
-    v20 = [WeakRetained application];
-    v21 = [v20 bundleIdentifier];
-    v22 = [v19 alertForBundleID:v21];
+    userAlertServer = [(DBDashboardWorkspaceOwner *)self userAlertServer];
+    application = [WeakRetained application];
+    bundleIdentifier = [application bundleIdentifier];
+    v22 = [userAlertServer alertForBundleID:bundleIdentifier];
 
     if (v22)
     {
@@ -1109,7 +1109,7 @@ LABEL_17:
     }
 
     dispatch_group_enter(v11);
-    v23 = [v46 activationSettings];
+    activationSettings = [v46 activationSettings];
     v59[0] = MEMORY[0x277D85DD0];
     v59[1] = 3221225472;
     v59[2] = __87__DBDashboardWorkspaceOwner__newViewControllerForEntity_changeItem_persist_completion___block_invoke;
@@ -1118,35 +1118,35 @@ LABEL_17:
     v24 = v17;
     v60 = v24;
     v61 = v11;
-    [(DBApplicationViewController *)v24 foregroundSceneWithSettings:v23 completion:v59];
+    [(DBApplicationViewController *)v24 foregroundSceneWithSettings:activationSettings completion:v59];
 
 LABEL_9:
-    v10 = v47;
+    itemCopy = v47;
     goto LABEL_10;
   }
 
-  if ([v9 isProxiedApplicationEntity])
+  if ([entityCopy isProxiedApplicationEntity])
   {
-    WeakRetained = v9;
-    v47 = v10;
-    v46 = v10;
-    v25 = [(DBDashboardWorkspaceOwner *)self sceneManager];
-    v26 = [v25 sceneForApplicationEntity:WeakRetained];
+    WeakRetained = entityCopy;
+    v47 = itemCopy;
+    v46 = itemCopy;
+    sceneManager2 = [(DBDashboardWorkspaceOwner *)self sceneManager];
+    v26 = [sceneManager2 sceneForApplicationEntity:WeakRetained];
 
     v27 = [DBApplicationViewController alloc];
-    v28 = [(DBDashboardWorkspaceOwner *)self environment];
-    v29 = [(DBApplicationViewController *)v27 initWithScene:v26 entity:WeakRetained environment:v28];
+    environment3 = [(DBDashboardWorkspaceOwner *)self environment];
+    v29 = [(DBApplicationViewController *)v27 initWithScene:v26 entity:WeakRetained environment:environment3];
 
-    v30 = [(DBDashboardWorkspaceOwner *)self environment];
-    [v30 statusBarInsets];
+    environment4 = [(DBDashboardWorkspaceOwner *)self environment];
+    [environment4 statusBarInsets];
     [(DBApplicationViewController *)v29 setAdditionalSafeAreaInsets:?];
     v45 = v26;
 
-    v31 = [(DBDashboardWorkspaceOwner *)self userAlertServer];
-    v32 = [WeakRetained proxyEntity];
-    v33 = [v32 application];
-    v34 = [v33 bundleIdentifier];
-    v35 = [v31 alertForBundleID:v34];
+    userAlertServer2 = [(DBDashboardWorkspaceOwner *)self userAlertServer];
+    proxyEntity = [WeakRetained proxyEntity];
+    application2 = [proxyEntity application];
+    bundleIdentifier2 = [application2 bundleIdentifier];
+    v35 = [userAlertServer2 alertForBundleID:bundleIdentifier2];
 
     if (v35)
     {
@@ -1154,7 +1154,7 @@ LABEL_9:
     }
 
     dispatch_group_enter(v11);
-    v36 = [v46 activationSettings];
+    activationSettings2 = [v46 activationSettings];
     v55[0] = MEMORY[0x277D85DD0];
     v55[1] = 3221225472;
     v55[2] = __87__DBDashboardWorkspaceOwner__newViewControllerForEntity_changeItem_persist_completion___block_invoke_2;
@@ -1163,12 +1163,12 @@ LABEL_9:
     v37 = v29;
     v56 = v37;
     v57 = v11;
-    [(DBApplicationViewController *)v37 foregroundSceneWithSettings:v36 completion:v55];
+    [(DBApplicationViewController *)v37 foregroundSceneWithSettings:activationSettings2 completion:v55];
 
     goto LABEL_9;
   }
 
-  if ([v9 isSiriEntity])
+  if ([entityCopy isSiriEntity])
   {
     v40 = v64;
     v41 = self->_siriViewController;
@@ -1178,14 +1178,14 @@ LABEL_9:
 
   else
   {
-    if (![v9 isOEMPunchthroughEntity])
+    if (![entityCopy isOEMPunchthroughEntity])
     {
       goto LABEL_11;
     }
 
     v42 = [DBOEMPunchthroughViewController alloc];
     WeakRetained = objc_loadWeakRetained(&self->_environment);
-    v43 = [(DBOEMPunchthroughViewController *)v42 initWithOEMPunchthroughEntity:v9 environment:WeakRetained];
+    v43 = [(DBOEMPunchthroughViewController *)v42 initWithOEMPunchthroughEntity:entityCopy environment:WeakRetained];
     v44 = v64[5];
     v64[5] = v43;
   }
@@ -1197,13 +1197,13 @@ LABEL_11:
   block[1] = 3221225472;
   block[2] = __87__DBDashboardWorkspaceOwner__newViewControllerForEntity_changeItem_persist_completion___block_invoke_3;
   block[3] = &unk_278F044B8;
-  v54 = a5;
+  persistCopy = persist;
   block[4] = self;
-  v51 = v9;
+  v51 = entityCopy;
   v53 = &v63;
-  v52 = v48;
-  v38 = v48;
-  v39 = v9;
+  v52 = completionCopy;
+  v38 = completionCopy;
+  v39 = entityCopy;
   dispatch_group_notify(v11, MEMORY[0x277D85CD0], block);
 
   _Block_object_dispose(&v63, 8);
@@ -1240,34 +1240,34 @@ uint64_t __87__DBDashboardWorkspaceOwner__newViewControllerForEntity_changeItem_
   return v5();
 }
 
-- (void)_updateViewControllerForEntity:(id)a3 changeItem:(id)a4 oldEntity:(id)a5 completion:(id)a6
+- (void)_updateViewControllerForEntity:(id)entity changeItem:(id)item oldEntity:(id)oldEntity completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = a5;
+  entityCopy = entity;
+  itemCopy = item;
+  completionCopy = completion;
+  oldEntityCopy = oldEntity;
   v14 = dispatch_group_create();
   entityIdentifierToViewControllerMap = self->_entityIdentifierToViewControllerMap;
-  v16 = [v13 identifier];
+  identifier = [oldEntityCopy identifier];
 
-  v17 = [(NSMutableDictionary *)entityIdentifierToViewControllerMap objectForKeyedSubscript:v16];
+  v17 = [(NSMutableDictionary *)entityIdentifierToViewControllerMap objectForKeyedSubscript:identifier];
 
-  if (([v10 isApplicationEntity] & 1) != 0 || objc_msgSend(v10, "isProxiedApplicationEntity"))
+  if (([entityCopy isApplicationEntity] & 1) != 0 || objc_msgSend(entityCopy, "isProxiedApplicationEntity"))
   {
     v18 = v17;
-    v19 = v11;
-    v20 = [v19 activationSettings];
+    v19 = itemCopy;
+    activationSettings = [v19 activationSettings];
 
-    if (v20)
+    if (activationSettings)
     {
       dispatch_group_enter(v14);
-      v21 = [v19 activationSettings];
+      activationSettings2 = [v19 activationSettings];
       v29[0] = MEMORY[0x277D85DD0];
       v29[1] = 3221225472;
       v29[2] = __92__DBDashboardWorkspaceOwner__updateViewControllerForEntity_changeItem_oldEntity_completion___block_invoke;
       v29[3] = &unk_278F01580;
       v30 = v14;
-      [v18 activateSceneWithSettings:v21 completion:v29];
+      [v18 activateSceneWithSettings:activationSettings2 completion:v29];
     }
   }
 
@@ -1276,12 +1276,12 @@ uint64_t __87__DBDashboardWorkspaceOwner__newViewControllerForEntity_changeItem_
   block[2] = __92__DBDashboardWorkspaceOwner__updateViewControllerForEntity_changeItem_oldEntity_completion___block_invoke_2;
   block[3] = &unk_278F044E0;
   block[4] = self;
-  v26 = v10;
+  v26 = entityCopy;
   v27 = v17;
-  v28 = v12;
-  v22 = v12;
+  v28 = completionCopy;
+  v22 = completionCopy;
   v23 = v17;
-  v24 = v10;
+  v24 = entityCopy;
   dispatch_group_notify(v14, MEMORY[0x277D85CD0], block);
 }
 
@@ -1297,15 +1297,15 @@ uint64_t __92__DBDashboardWorkspaceOwner__updateViewControllerForEntity_changeIt
   return v5();
 }
 
-- (void)_handleSuspendedActivationForEntity:(id)a3 changeItem:(id)a4 completion:(id)a5
+- (void)_handleSuspendedActivationForEntity:(id)entity changeItem:(id)item completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  entityCopy = entity;
+  itemCopy = item;
+  completionCopy = completion;
   v11 = dispatch_group_create();
   entityIdentifierToViewControllerMap = self->_entityIdentifierToViewControllerMap;
-  v13 = [v8 identifier];
-  v14 = [(NSMutableDictionary *)entityIdentifierToViewControllerMap objectForKeyedSubscript:v13];
+  identifier = [entityCopy identifier];
+  v14 = [(NSMutableDictionary *)entityIdentifierToViewControllerMap objectForKeyedSubscript:identifier];
 
   if (!v14)
   {
@@ -1323,13 +1323,13 @@ uint64_t __92__DBDashboardWorkspaceOwner__updateViewControllerForEntity_changeIt
     v23[3] = &unk_278F04508;
     v18 = &v24;
     v24 = v11;
-    [(DBDashboardWorkspaceOwner *)self _newViewControllerForEntity:v8 changeItem:v9 persist:0 completion:v23];
+    [(DBDashboardWorkspaceOwner *)self _newViewControllerForEntity:entityCopy changeItem:itemCopy persist:0 completion:v23];
     goto LABEL_10;
   }
 
-  if (([v8 isApplicationEntity] & 1) != 0 || objc_msgSend(v8, "isProxiedApplicationEntity"))
+  if (([entityCopy isApplicationEntity] & 1) != 0 || objc_msgSend(entityCopy, "isProxiedApplicationEntity"))
   {
-    v15 = v9;
+    v15 = itemCopy;
     v16 = DBLogForCategory(8uLL);
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
@@ -1338,7 +1338,7 @@ uint64_t __92__DBDashboardWorkspaceOwner__updateViewControllerForEntity_changeIt
     }
 
     dispatch_group_enter(v11);
-    v17 = [v15 activationSettings];
+    activationSettings = [v15 activationSettings];
 
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
@@ -1346,7 +1346,7 @@ uint64_t __92__DBDashboardWorkspaceOwner__updateViewControllerForEntity_changeIt
     v25[3] = &unk_278F01580;
     v18 = &v26;
     v26 = v11;
-    [v14 foregroundSceneWithSettings:v17 completion:v25];
+    [v14 foregroundSceneWithSettings:activationSettings completion:v25];
 
 LABEL_10:
   }
@@ -1355,8 +1355,8 @@ LABEL_10:
   block[1] = 3221225472;
   block[2] = __87__DBDashboardWorkspaceOwner__handleSuspendedActivationForEntity_changeItem_completion___block_invoke_2;
   block[3] = &unk_278F02678;
-  v22 = v10;
-  v20 = v10;
+  v22 = completionCopy;
+  v20 = completionCopy;
   dispatch_group_notify(v11, MEMORY[0x277D85CD0], block);
 }
 

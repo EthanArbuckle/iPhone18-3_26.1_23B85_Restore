@@ -1,21 +1,21 @@
 @interface MADFullImageFetchProcessingTask
-- (MADFullImageFetchProcessingTask)initWithFetchBlock:(id)a3 photoLibraryWithURL:(id)a4 cancelBlock:(id)a5 progressHandler:(id)a6 completionHandler:(id)a7;
-- (id)batchWithAnalysisDatabase:(id)a3 allowDownload:(BOOL)a4 cancelBlock:(id)a5;
+- (MADFullImageFetchProcessingTask)initWithFetchBlock:(id)block photoLibraryWithURL:(id)l cancelBlock:(id)cancelBlock progressHandler:(id)handler completionHandler:(id)completionHandler;
+- (id)batchWithAnalysisDatabase:(id)database allowDownload:(BOOL)download cancelBlock:(id)block;
 - (void)dealloc;
 @end
 
 @implementation MADFullImageFetchProcessingTask
 
-- (MADFullImageFetchProcessingTask)initWithFetchBlock:(id)a3 photoLibraryWithURL:(id)a4 cancelBlock:(id)a5 progressHandler:(id)a6 completionHandler:(id)a7
+- (MADFullImageFetchProcessingTask)initWithFetchBlock:(id)block photoLibraryWithURL:(id)l cancelBlock:(id)cancelBlock progressHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v12 = a4;
+  lCopy = l;
   v18.receiver = self;
   v18.super_class = MADFullImageFetchProcessingTask;
-  v13 = [(VCPMADPhotosFetchProcessingTask *)&v18 initWithFetchBlock:a3 photoLibraryWithURL:v12 cancelBlock:a5 progressHandler:a6 completionHandler:a7];
+  v13 = [(VCPMADPhotosFetchProcessingTask *)&v18 initWithFetchBlock:block photoLibraryWithURL:lCopy cancelBlock:cancelBlock progressHandler:handler completionHandler:completionHandler];
   if (v13)
   {
     v14 = +[VCPPhotoLibraryManager sharedManager];
-    v15 = [v14 photoLibraryWithURL:v12];
+    v15 = [v14 photoLibraryWithURL:lCopy];
     v16 = *(v13 + 52);
     *(v13 + 52) = v15;
   }
@@ -34,11 +34,11 @@
   [(MADFullImageFetchProcessingTask *)&v4 dealloc];
 }
 
-- (id)batchWithAnalysisDatabase:(id)a3 allowDownload:(BOOL)a4 cancelBlock:(id)a5
+- (id)batchWithAnalysisDatabase:(id)database allowDownload:(BOOL)download cancelBlock:(id)block
 {
-  v7 = a5;
-  v8 = a3;
-  v9 = [[MADFullImageAssetBatch alloc] initWithPhotoLibrary:*(&self->super._progressHandler + 4) database:v8 cancelBlock:v7];
+  blockCopy = block;
+  databaseCopy = database;
+  v9 = [[MADFullImageAssetBatch alloc] initWithPhotoLibrary:*(&self->super._progressHandler + 4) database:databaseCopy cancelBlock:blockCopy];
 
   return v9;
 }

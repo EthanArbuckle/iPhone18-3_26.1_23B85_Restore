@@ -1,23 +1,23 @@
 @interface BCMessageData
-- (BCMessageData)initWithUrl:(id)a3 data:(id)a4;
+- (BCMessageData)initWithUrl:(id)url data:(id)data;
 - (NSArray)imagesArray;
 - (NSDictionary)combinedDictionary;
-- (void)decodeData:(void *)a3 dictionaryKey:;
+- (void)decodeData:(void *)data dictionaryKey:;
 @end
 
 @implementation BCMessageData
 
-- (BCMessageData)initWithUrl:(id)a3 data:(id)a4
+- (BCMessageData)initWithUrl:(id)url data:(id)data
 {
-  v5 = a3;
+  urlCopy = url;
   v40 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  urlCopy2 = url;
+  dataCopy = data;
   v9 = LogCategory_Daemon();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v7 description];
-    v11 = [v8 description];
+    v10 = [urlCopy2 description];
+    v11 = [dataCopy description];
     *buf = 138412546;
     v37 = v10;
     v38 = 2112;
@@ -30,19 +30,19 @@
   v12 = [(BCMessageData *)&v34 init];
   if (v12)
   {
-    if (v7)
+    if (urlCopy2)
     {
-      v26 = v8;
-      v27 = v5;
-      v28 = a4;
-      v29 = v7;
+      v26 = dataCopy;
+      v27 = urlCopy;
+      dataCopy2 = data;
+      v29 = urlCopy2;
       v30 = 0u;
       v31 = 0u;
       v32 = 0u;
       v33 = 0u;
-      v25 = [objc_alloc(MEMORY[0x277CCACE0]) initWithURL:v7 resolvingAgainstBaseURL:0];
-      v13 = [v25 queryItems];
-      v14 = [v13 countByEnumeratingWithState:&v30 objects:v35 count:16];
+      v25 = [objc_alloc(MEMORY[0x277CCACE0]) initWithURL:urlCopy2 resolvingAgainstBaseURL:0];
+      queryItems = [v25 queryItems];
+      v14 = [queryItems countByEnumeratingWithState:&v30 objects:v35 count:16];
       if (v14)
       {
         v15 = v14;
@@ -53,52 +53,52 @@
           {
             if (*v31 != v16)
             {
-              objc_enumerationMutation(v13);
+              objc_enumerationMutation(queryItems);
             }
 
             v18 = *(*(&v30 + 1) + 8 * i);
-            v19 = [v18 value];
-            v20 = [(NSString *)v19 normalizedBase64Encoded];
-            v21 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBase64EncodedString:v20 options:0];
-            v22 = [v18 name];
-            [(BCMessageData *)v12 decodeData:v21 dictionaryKey:v22];
+            value = [v18 value];
+            normalizedBase64Encoded = [(NSString *)value normalizedBase64Encoded];
+            v21 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBase64EncodedString:normalizedBase64Encoded options:0];
+            name = [v18 name];
+            [(BCMessageData *)v12 decodeData:v21 dictionaryKey:name];
           }
 
-          v15 = [v13 countByEnumeratingWithState:&v30 objects:v35 count:16];
+          v15 = [queryItems countByEnumeratingWithState:&v30 objects:v35 count:16];
         }
 
         while (v15);
       }
 
-      a4 = v28;
-      v7 = v29;
-      v8 = v26;
-      v5 = v27;
+      data = dataCopy2;
+      urlCopy2 = v29;
+      dataCopy = v26;
+      urlCopy = v27;
     }
 
-    if (v8)
+    if (dataCopy)
     {
-      [(BCMessageData *)v12 decodeData:v8 dictionaryKey:@"data"];
+      [(BCMessageData *)v12 decodeData:dataCopy dictionaryKey:@"data"];
     }
 
-    objc_storeStrong(&v12->_url, v5);
-    objc_storeStrong(&v12->_data, a4);
+    objc_storeStrong(&v12->_url, urlCopy);
+    objc_storeStrong(&v12->_data, data);
   }
 
   v23 = *MEMORY[0x277D85DE8];
   return v12;
 }
 
-- (void)decodeData:(void *)a3 dictionaryKey:
+- (void)decodeData:(void *)data dictionaryKey:
 {
   v20 = *MEMORY[0x277D85DE8];
   v5 = a2;
-  v6 = a3;
+  dataCopy = data;
   v7 = LogCategory_Daemon();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v17 = v6;
+    v17 = dataCopy;
     v18 = 2112;
     v19 = v5;
     _os_log_impl(&dword_236EA0000, v7, OS_LOG_TYPE_DEFAULT, "BCMessageData: decodeDataKey %@ %@", buf, 0x16u);
@@ -113,32 +113,32 @@
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v17 = v6;
+      v17 = dataCopy;
       v18 = 2112;
       v19 = v9;
       _os_log_error_impl(&dword_236EA0000, v10, OS_LOG_TYPE_ERROR, "BCMessageData: error serializing JSON for key %@, error: %@", buf, 0x16u);
     }
   }
 
-  else if ([v6 isEqualToString:@"replyMessage"])
+  else if ([dataCopy isEqualToString:@"replyMessage"])
   {
     v11 = v8;
-    v10 = a1[4];
-    a1[4] = v11;
+    v10 = self[4];
+    self[4] = v11;
   }
 
-  else if ([v6 isEqualToString:@"receivedMessage"])
+  else if ([dataCopy isEqualToString:@"receivedMessage"])
   {
     v12 = v8;
-    v10 = a1[5];
-    a1[5] = v12;
+    v10 = self[5];
+    self[5] = v12;
   }
 
-  else if ([v6 isEqualToString:@"data"])
+  else if ([dataCopy isEqualToString:@"data"])
   {
     v13 = v8;
-    v10 = a1[3];
-    a1[3] = v13;
+    v10 = self[3];
+    self[3] = v13;
   }
 
   else
@@ -147,7 +147,7 @@
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v17 = v6;
+      v17 = dataCopy;
       _os_log_impl(&dword_236EA0000, v10, OS_LOG_TYPE_DEFAULT, "BCMessageData: unrecognized key in the url %@", buf, 0xCu);
     }
   }
@@ -157,23 +157,23 @@
 
 - (NSDictionary)combinedDictionary
 {
-  v3 = [(BCMessageData *)self jsonDictionary];
-  v4 = [v3 mutableCopy];
+  jsonDictionary = [(BCMessageData *)self jsonDictionary];
+  v4 = [jsonDictionary mutableCopy];
 
-  v5 = [(BCMessageData *)self replyMessageDictionary];
+  replyMessageDictionary = [(BCMessageData *)self replyMessageDictionary];
 
-  if (v5)
+  if (replyMessageDictionary)
   {
-    v6 = [(BCMessageData *)self replyMessageDictionary];
-    [v4 setObject:v6 forKeyedSubscript:@"replyMessage"];
+    replyMessageDictionary2 = [(BCMessageData *)self replyMessageDictionary];
+    [v4 setObject:replyMessageDictionary2 forKeyedSubscript:@"replyMessage"];
   }
 
-  v7 = [(BCMessageData *)self receivedMessageDictionary];
+  receivedMessageDictionary = [(BCMessageData *)self receivedMessageDictionary];
 
-  if (v7)
+  if (receivedMessageDictionary)
   {
-    v8 = [(BCMessageData *)self receivedMessageDictionary];
-    [v4 setObject:v8 forKeyedSubscript:@"receivedMessage"];
+    receivedMessageDictionary2 = [(BCMessageData *)self receivedMessageDictionary];
+    [v4 setObject:receivedMessageDictionary2 forKeyedSubscript:@"receivedMessage"];
   }
 
   return v4;
@@ -181,8 +181,8 @@
 
 - (NSArray)imagesArray
 {
-  v2 = [(BCMessageData *)self jsonDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"images"];
+  jsonDictionary = [(BCMessageData *)self jsonDictionary];
+  v3 = [jsonDictionary objectForKeyedSubscript:@"images"];
 
   return v3;
 }

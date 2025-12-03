@@ -1,18 +1,18 @@
 @interface TVLatencyColorimeterSetupMainController
 - (BOOL)_deviceSupported;
 - (unint64_t)supportedInterfaceOrientations;
-- (void)_sessionHandleProgress:(unsigned int)a3 info:(id)a4;
-- (void)_sessionStart:(id)a3;
-- (void)configureWithContext:(id)a3 completion:(id)a4;
-- (void)dismissAnimated:(BOOL)a3 reenableProxCard:(BOOL)a4 completion:(id)a5;
-- (void)handleButtonActions:(id)a3;
-- (void)showAuthUIWithFlags:(unsigned int)a3 throttleSeconds:(int)a4;
-- (void)showDoneUI:(id)a3 final:(BOOL)a4 completed:(BOOL)a5;
+- (void)_sessionHandleProgress:(unsigned int)progress info:(id)info;
+- (void)_sessionStart:(id)start;
+- (void)configureWithContext:(id)context completion:(id)completion;
+- (void)dismissAnimated:(BOOL)animated reenableProxCard:(BOOL)card completion:(id)completion;
+- (void)handleButtonActions:(id)actions;
+- (void)showAuthUIWithFlags:(unsigned int)flags throttleSeconds:(int)seconds;
+- (void)showDoneUI:(id)i final:(BOOL)final completed:(BOOL)completed;
 - (void)showPreparingUI;
 - (void)showProgressUI;
 - (void)showTryAgainUI;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 @end
 
 @implementation TVLatencyColorimeterSetupMainController
@@ -102,20 +102,20 @@
   sub_100102018(vcNav, vcPreparing);
 }
 
-- (void)showDoneUI:(id)a3 final:(BOOL)a4 completed:(BOOL)a5
+- (void)showDoneUI:(id)i final:(BOOL)final completed:(BOOL)completed
 {
-  v5 = a5;
-  v6 = a4;
-  v13 = a3;
+  completedCopy = completed;
+  finalCopy = final;
+  iCopy = i;
   if (dword_1001BEA68 <= 30 && (dword_1001BEA68 != -1 || _LogCategory_Initialize()))
   {
-    v12 = v13;
+    v12 = iCopy;
     LogPrintF();
   }
 
   if (self->_vcDone)
   {
-    if (!v6)
+    if (!finalCopy)
     {
       goto LABEL_14;
     }
@@ -128,10 +128,10 @@
     self->_vcDone = v8;
 
     [(TVLatencyColorimeterSetupBaseViewController *)self->_vcDone setMainController:self];
-    [(TVLatencyColorimeterSetupDoneViewController *)self->_vcDone setError:v13];
-    [(TVLatencyColorimeterSetupDoneViewController *)self->_vcDone setCompleted:v5];
+    [(TVLatencyColorimeterSetupDoneViewController *)self->_vcDone setError:iCopy];
+    [(TVLatencyColorimeterSetupDoneViewController *)self->_vcDone setCompleted:completedCopy];
     sub_100102018(self->_vcNav, self->_vcDone);
-    if (!v6)
+    if (!finalCopy)
     {
       goto LABEL_14;
     }
@@ -146,19 +146,19 @@
   colorCalibratorSetupSession = self->_colorCalibratorSetupSession;
   self->_colorCalibratorSetupSession = 0;
 
-  v11 = [(TVLatencyColorimeterSetupMainController *)self _remoteViewControllerProxy];
-  [v11 setIdleTimerDisabled:0 forReason:@"com.apple.SharingViewService.TVLatencySetup"];
+  _remoteViewControllerProxy = [(TVLatencyColorimeterSetupMainController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy setIdleTimerDisabled:0 forReason:@"com.apple.SharingViewService.TVLatencySetup"];
 
 LABEL_14:
 }
 
-- (void)showAuthUIWithFlags:(unsigned int)a3 throttleSeconds:(int)a4
+- (void)showAuthUIWithFlags:(unsigned int)flags throttleSeconds:(int)seconds
 {
   vcAuth = self->_vcAuth;
   if (vcAuth)
   {
 
-    [(TVLatencyColorimeterSetupAuthViewController *)vcAuth showWithFlags:*&a3 throttleSeconds:*&a4];
+    [(TVLatencyColorimeterSetupAuthViewController *)vcAuth showWithFlags:*&flags throttleSeconds:*&seconds];
   }
 
   else
@@ -180,14 +180,14 @@ LABEL_14:
   }
 }
 
-- (void)_sessionHandleProgress:(unsigned int)a3 info:(id)a4
+- (void)_sessionHandleProgress:(unsigned int)progress info:(id)info
 {
-  v8 = a4;
-  if (a3 > 279)
+  infoCopy = info;
+  if (progress > 279)
   {
-    if (a3 <= 281)
+    if (progress <= 281)
     {
-      if (a3 != 280)
+      if (progress != 280)
       {
         [(TVLatencyColorimeterSetupMainController *)self showTryAgainUI];
         goto LABEL_26;
@@ -196,9 +196,9 @@ LABEL_14:
       goto LABEL_14;
     }
 
-    if (a3 != 282)
+    if (progress != 282)
     {
-      if (a3 == 400)
+      if (progress == 400)
       {
         if (dword_1001BEA68 <= 30 && (dword_1001BEA68 != -1 || _LogCategory_Initialize()))
         {
@@ -214,7 +214,7 @@ LABEL_14:
     goto LABEL_17;
   }
 
-  switch(a3)
+  switch(progress)
   {
     case 0x1Eu:
 LABEL_14:
@@ -236,7 +236,7 @@ LABEL_17:
         LogPrintF();
       }
 
-      [(TVLatencyColorimeterSetupMainController *)self showDoneUI:0 completed:v8 != 0];
+      [(TVLatencyColorimeterSetupMainController *)self showDoneUI:0 completed:infoCopy != 0];
       break;
     case 0x116u:
       [(TVLatencyColorimeterSetupMainController *)self showProgressUI];
@@ -247,15 +247,15 @@ LABEL_17:
 LABEL_26:
 }
 
-- (void)_sessionStart:(id)a3
+- (void)_sessionStart:(id)start
 {
   self->_started = 1;
-  v4 = a3;
+  startCopy = start;
   v5 = objc_alloc_init(SFDeviceSetupTVColorCalibratorSession);
   colorCalibratorSetupSession = self->_colorCalibratorSetupSession;
   self->_colorCalibratorSetupSession = v5;
 
-  [(SFDeviceSetupTVColorCalibratorSession *)self->_colorCalibratorSetupSession setPeerDevice:v4];
+  [(SFDeviceSetupTVColorCalibratorSession *)self->_colorCalibratorSetupSession setPeerDevice:startCopy];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100105048;
@@ -269,18 +269,18 @@ LABEL_26:
   v8[4] = self;
   [(SFDeviceSetupTVColorCalibratorSession *)self->_colorCalibratorSetupSession setPromptForPINHandler:v8];
   [(SFDeviceSetupTVColorCalibratorSession *)self->_colorCalibratorSetupSession activate];
-  v7 = [(TVLatencyColorimeterSetupMainController *)self _remoteViewControllerProxy];
-  [v7 setIdleTimerDisabled:1 forReason:@"com.apple.SharingViewService.TVLatencySetup"];
+  _remoteViewControllerProxy = [(TVLatencyColorimeterSetupMainController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy setIdleTimerDisabled:1 forReason:@"com.apple.SharingViewService.TVLatencySetup"];
 }
 
-- (void)handleButtonActions:(id)a3
+- (void)handleButtonActions:(id)actions
 {
-  v4 = a3;
+  actionsCopy = actions;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [actionsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -291,7 +291,7 @@ LABEL_26:
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(actionsCopy);
         }
 
         if (([*(*(&v9 + 1) + 8 * i) events] & 0x10) != 0)
@@ -305,18 +305,18 @@ LABEL_26:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [actionsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)dismissAnimated:(BOOL)a3 reenableProxCard:(BOOL)a4 completion:(id)a5
+- (void)dismissAnimated:(BOOL)animated reenableProxCard:(BOOL)card completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
-  v8 = a5;
+  cardCopy = card;
+  animatedCopy = animated;
+  completionCopy = completion;
   if (!self->_dismissed)
   {
     self->_dismissed = 1;
@@ -324,7 +324,7 @@ LABEL_26:
     {
       v9 = objc_alloc_init(SFClient);
       v10 = v9;
-      if (v5)
+      if (cardCopy)
       {
         v17[0] = _NSConcreteStackBlock;
         v17[1] = 3221225472;
@@ -340,8 +340,8 @@ LABEL_26:
       }
     }
 
-    v11 = [(TVLatencyColorimeterSetupMainController *)self _remoteViewControllerProxy];
-    v12 = v11;
+    _remoteViewControllerProxy = [(TVLatencyColorimeterSetupMainController *)self _remoteViewControllerProxy];
+    v12 = _remoteViewControllerProxy;
     vcNav = self->_vcNav;
     if (vcNav)
     {
@@ -349,28 +349,28 @@ LABEL_26:
       v14[1] = 3221225472;
       v14[2] = sub_1001054B0;
       v14[3] = &unk_1001959D0;
-      v16 = v8;
+      v16 = completionCopy;
       v15 = v12;
-      [(UINavigationController *)vcNav dismissViewControllerAnimated:v6 completion:v14];
+      [(UINavigationController *)vcNav dismissViewControllerAnimated:animatedCopy completion:v14];
     }
 
     else
     {
-      [v11 dismiss];
+      [_remoteViewControllerProxy dismiss];
     }
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   if (dword_1001BEA68 <= 30 && (dword_1001BEA68 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
   }
 
-  v5 = [(TVLatencyColorimeterSetupMainController *)self _remoteViewControllerProxy];
-  [v5 setIdleTimerDisabled:0 forReason:@"com.apple.SharingViewService.TVLatencySetup"];
+  _remoteViewControllerProxy = [(TVLatencyColorimeterSetupMainController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy setIdleTimerDisabled:0 forReason:@"com.apple.SharingViewService.TVLatencySetup"];
 
   if (!self->_dismissed)
   {
@@ -418,12 +418,12 @@ LABEL_26:
 
   v15.receiver = self;
   v15.super_class = TVLatencyColorimeterSetupMainController;
-  [(SVSBaseMainController *)&v15 viewDidDisappear:v3];
+  [(SVSBaseMainController *)&v15 viewDidDisappear:disappearCopy];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   if (dword_1001BEA68 <= 30 && (dword_1001BEA68 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -431,14 +431,14 @@ LABEL_26:
 
   v12.receiver = self;
   v12.super_class = TVLatencyColorimeterSetupMainController;
-  [(TVLatencyColorimeterSetupMainController *)&v12 viewDidAppear:v3];
+  [(TVLatencyColorimeterSetupMainController *)&v12 viewDidAppear:appearCopy];
   v5 = [UIStoryboard storyboardWithName:@"TVColorCalibrationSetup" bundle:0];
   storyboard = self->_storyboard;
   self->_storyboard = v5;
 
-  v7 = [(TVLatencyColorimeterSetupMainController *)self _deviceSupported];
+  _deviceSupported = [(TVLatencyColorimeterSetupMainController *)self _deviceSupported];
   v8 = off_10018D478;
-  if (!v7)
+  if (!_deviceSupported)
   {
     v8 = &off_10018D480;
   }
@@ -452,18 +452,18 @@ LABEL_26:
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v2 = [(TVLatencyColorimeterSetupMainController *)self view];
-  v3 = [v2 window];
+  view = [(TVLatencyColorimeterSetupMainController *)self view];
+  window = [view window];
 
-  if (!v3)
+  if (!window)
   {
     return 30;
   }
 
   v4 = +[UIDevice currentDevice];
-  v5 = [v4 userInterfaceIdiom];
+  userInterfaceIdiom = [v4 userInterfaceIdiom];
 
-  if (v5 == 1)
+  if (userInterfaceIdiom == 1)
   {
     return (1 << [UIApp activeInterfaceOrientation]);
   }
@@ -474,12 +474,12 @@ LABEL_26:
   }
 }
 
-- (void)configureWithContext:(id)a3 completion:(id)a4
+- (void)configureWithContext:(id)context completion:(id)completion
 {
-  v12 = a4;
-  v6 = [a3 userInfo];
+  completionCopy = completion;
+  userInfo = [context userInfo];
   userInfo = self->super._userInfo;
-  self->super._userInfo = v6;
+  self->super._userInfo = userInfo;
 
   if (dword_1001BEA68 <= 30 && (dword_1001BEA68 != -1 || _LogCategory_Initialize()))
   {
@@ -503,9 +503,9 @@ LABEL_26:
     self->_testFlags = SFTestFlagsFromString();
   }
 
-  if (v12)
+  if (completionCopy)
   {
-    v12[2](v12);
+    completionCopy[2](completionCopy);
   }
 }
 

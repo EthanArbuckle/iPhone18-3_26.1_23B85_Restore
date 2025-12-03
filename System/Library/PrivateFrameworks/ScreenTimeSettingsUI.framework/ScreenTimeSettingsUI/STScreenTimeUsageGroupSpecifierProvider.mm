@@ -1,14 +1,14 @@
 @interface STScreenTimeUsageGroupSpecifierProvider
 - (STScreenTimeUsageGroupSpecifierProvider)init;
-- (id)_usageDetailsCoordinator:(id)a3;
-- (id)_weeklyTotal:(id)a3;
-- (void)_headerButtonPressed:(id)a3;
-- (void)_lastUpdatedDateDidChangeFrom:(id)a3 to:(id)a4;
-- (void)_refreshingDidChange:(BOOL)a3;
-- (void)_selectedUsageReportDidChangeFrom:(id)a3 to:(id)a4;
-- (void)_specifierIdentifierDidChange:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setCoordinator:(id)a3;
+- (id)_usageDetailsCoordinator:(id)coordinator;
+- (id)_weeklyTotal:(id)total;
+- (void)_headerButtonPressed:(id)pressed;
+- (void)_lastUpdatedDateDidChangeFrom:(id)from to:(id)to;
+- (void)_refreshingDidChange:(BOOL)change;
+- (void)_selectedUsageReportDidChangeFrom:(id)from to:(id)to;
+- (void)_specifierIdentifierDidChange:(id)change;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setCoordinator:(id)coordinator;
 @end
 
 @implementation STScreenTimeUsageGroupSpecifierProvider
@@ -43,47 +43,47 @@
     v13 = [v11 preferenceSpecifierNamed:v12 target:v2 set:0 get:sel__weeklyTotal_ detail:0 cell:4 edit:0];
 
     [(STScreenTimeUsageGroupSpecifierProvider *)v2 setWeeklyTotalSpecifier:v13];
-    v14 = [(STGroupSpecifierProvider *)v2 mutableSpecifiers];
-    [v14 addObject:v10];
-    [v14 addObject:v13];
-    v15 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v15 addObserver:v2 selector:sel__specifierIdentifierDidChange_ name:0x2876743A8 object:0];
+    mutableSpecifiers = [(STGroupSpecifierProvider *)v2 mutableSpecifiers];
+    [mutableSpecifiers addObject:v10];
+    [mutableSpecifiers addObject:v13];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__specifierIdentifierDidChange_ name:0x2876743A8 object:0];
   }
 
   return v2;
 }
 
-- (void)setCoordinator:(id)a3
+- (void)setCoordinator:(id)coordinator
 {
-  v4 = a3;
-  v5 = [(STUsageGroupSpecifierProvider *)self coordinator];
-  [v5 removeObserver:self forKeyPath:@"usageDetailsCoordinator.viewModel.hasUsageData" context:"KVOContextScreenTimeUsageGroupSpecifierProvider"];
-  [v5 removeObserver:self forKeyPath:@"usageDetailsCoordinator.viewModel.lastUpdatedDate" context:"KVOContextScreenTimeUsageGroupSpecifierProvider"];
-  [v5 removeObserver:self forKeyPath:@"usageDetailsCoordinator.viewModel.selectedUsageReport" context:"KVOContextScreenTimeUsageGroupSpecifierProvider"];
-  [v5 removeObserver:self forKeyPath:@"usageDetailsCoordinator.refreshing" context:"KVOContextScreenTimeUsageGroupSpecifierProvider"];
+  coordinatorCopy = coordinator;
+  coordinator = [(STUsageGroupSpecifierProvider *)self coordinator];
+  [coordinator removeObserver:self forKeyPath:@"usageDetailsCoordinator.viewModel.hasUsageData" context:"KVOContextScreenTimeUsageGroupSpecifierProvider"];
+  [coordinator removeObserver:self forKeyPath:@"usageDetailsCoordinator.viewModel.lastUpdatedDate" context:"KVOContextScreenTimeUsageGroupSpecifierProvider"];
+  [coordinator removeObserver:self forKeyPath:@"usageDetailsCoordinator.viewModel.selectedUsageReport" context:"KVOContextScreenTimeUsageGroupSpecifierProvider"];
+  [coordinator removeObserver:self forKeyPath:@"usageDetailsCoordinator.refreshing" context:"KVOContextScreenTimeUsageGroupSpecifierProvider"];
   v6.receiver = self;
   v6.super_class = STScreenTimeUsageGroupSpecifierProvider;
-  [(STUsageGroupSpecifierProvider *)&v6 setCoordinator:v4];
-  [v4 addObserver:self forKeyPath:@"usageDetailsCoordinator.viewModel.hasUsageData" options:7 context:"KVOContextScreenTimeUsageGroupSpecifierProvider"];
-  [v4 addObserver:self forKeyPath:@"usageDetailsCoordinator.viewModel.lastUpdatedDate" options:7 context:"KVOContextScreenTimeUsageGroupSpecifierProvider"];
-  [v4 addObserver:self forKeyPath:@"usageDetailsCoordinator.viewModel.selectedUsageReport" options:7 context:"KVOContextScreenTimeUsageGroupSpecifierProvider"];
-  [v4 addObserver:self forKeyPath:@"usageDetailsCoordinator.refreshing" options:5 context:"KVOContextScreenTimeUsageGroupSpecifierProvider"];
+  [(STUsageGroupSpecifierProvider *)&v6 setCoordinator:coordinatorCopy];
+  [coordinatorCopy addObserver:self forKeyPath:@"usageDetailsCoordinator.viewModel.hasUsageData" options:7 context:"KVOContextScreenTimeUsageGroupSpecifierProvider"];
+  [coordinatorCopy addObserver:self forKeyPath:@"usageDetailsCoordinator.viewModel.lastUpdatedDate" options:7 context:"KVOContextScreenTimeUsageGroupSpecifierProvider"];
+  [coordinatorCopy addObserver:self forKeyPath:@"usageDetailsCoordinator.viewModel.selectedUsageReport" options:7 context:"KVOContextScreenTimeUsageGroupSpecifierProvider"];
+  [coordinatorCopy addObserver:self forKeyPath:@"usageDetailsCoordinator.refreshing" options:5 context:"KVOContextScreenTimeUsageGroupSpecifierProvider"];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a5;
-  if (a6 == "KVOContextScreenTimeUsageGroupSpecifierProvider")
+  pathCopy = path;
+  changeCopy = change;
+  if (context == "KVOContextScreenTimeUsageGroupSpecifierProvider")
   {
     [(STUsageGroupSpecifierProvider *)self coordinator];
 
-    if ([v10 isEqualToString:@"usageDetailsCoordinator.viewModel.hasUsageData"])
+    if ([pathCopy isEqualToString:@"usageDetailsCoordinator.viewModel.hasUsageData"])
     {
-      v12 = [v11 objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
-      v13 = [MEMORY[0x277CBEB68] null];
+      v12 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
+      null = [MEMORY[0x277CBEB68] null];
 
-      if (v12 == v13)
+      if (v12 == null)
       {
 
         v12 = 0;
@@ -96,21 +96,21 @@
     {
       [(STUsageGroupSpecifierProvider *)self coordinator];
 
-      if ([v10 isEqualToString:@"usageDetailsCoordinator.viewModel.lastUpdatedDate"])
+      if ([pathCopy isEqualToString:@"usageDetailsCoordinator.viewModel.lastUpdatedDate"])
       {
-        v12 = [v11 objectForKeyedSubscript:*MEMORY[0x277CCA300]];
-        v14 = [MEMORY[0x277CBEB68] null];
+        v12 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA300]];
+        null2 = [MEMORY[0x277CBEB68] null];
 
-        if (v12 == v14)
+        if (v12 == null2)
         {
 
           v12 = 0;
         }
 
-        v15 = [v11 objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
-        v16 = [MEMORY[0x277CBEB68] null];
+        v15 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
+        null3 = [MEMORY[0x277CBEB68] null];
 
-        if (v15 == v16)
+        if (v15 == null3)
         {
 
           v15 = 0;
@@ -123,19 +123,19 @@
       {
         [(STUsageGroupSpecifierProvider *)self coordinator];
 
-        if (![v10 isEqualToString:@"usageDetailsCoordinator.viewModel.selectedUsageReport"])
+        if (![pathCopy isEqualToString:@"usageDetailsCoordinator.viewModel.selectedUsageReport"])
         {
           [(STUsageGroupSpecifierProvider *)self coordinator];
 
-          if (![v10 isEqualToString:@"usageDetailsCoordinator.refreshing"])
+          if (![pathCopy isEqualToString:@"usageDetailsCoordinator.refreshing"])
           {
             goto LABEL_21;
           }
 
-          v12 = [v11 objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
-          v19 = [MEMORY[0x277CBEB68] null];
+          v12 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
+          null4 = [MEMORY[0x277CBEB68] null];
 
-          if (v12 == v19)
+          if (v12 == null4)
           {
 
             v12 = 0;
@@ -145,19 +145,19 @@
           goto LABEL_20;
         }
 
-        v12 = [v11 objectForKeyedSubscript:*MEMORY[0x277CCA300]];
-        v17 = [MEMORY[0x277CBEB68] null];
+        v12 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA300]];
+        null5 = [MEMORY[0x277CBEB68] null];
 
-        if (v12 == v17)
+        if (v12 == null5)
         {
 
           v12 = 0;
         }
 
-        v15 = [v11 objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
-        v18 = [MEMORY[0x277CBEB68] null];
+        v15 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
+        null6 = [MEMORY[0x277CBEB68] null];
 
-        if (v15 == v18)
+        if (v15 == null6)
         {
 
           v15 = 0;
@@ -174,17 +174,17 @@ LABEL_20:
 
   v20.receiver = self;
   v20.super_class = STScreenTimeUsageGroupSpecifierProvider;
-  [(STScreenTimeUsageGroupSpecifierProvider *)&v20 observeValueForKeyPath:v10 ofObject:a4 change:v11 context:a6];
+  [(STScreenTimeUsageGroupSpecifierProvider *)&v20 observeValueForKeyPath:pathCopy ofObject:object change:changeCopy context:context];
 LABEL_21:
 }
 
-- (void)_lastUpdatedDateDidChangeFrom:(id)a3 to:(id)a4
+- (void)_lastUpdatedDateDidChangeFrom:(id)from to:(id)to
 {
-  v19 = a3;
-  v6 = a4;
-  if (v19 != v6 && ([v19 isEqual:v6] & 1) == 0)
+  fromCopy = from;
+  toCopy = to;
+  if (fromCopy != toCopy && ([fromCopy isEqual:toCopy] & 1) == 0)
   {
-    v7 = v6;
+    v7 = toCopy;
     if (v7)
     {
       v8 = objc_opt_new();
@@ -197,8 +197,8 @@ LABEL_21:
       v11 = [v10 localizedStringForKey:@"LastUpdatedDateFormat" value:&stru_28766E5A8 table:0];
 
       v12 = objc_alloc(MEMORY[0x277CCACA8]);
-      v13 = [MEMORY[0x277CBEAF8] currentLocale];
-      v14 = [v12 initWithFormat:v11 locale:v13, v9];
+      currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+      v14 = [v12 initWithFormat:v11 locale:currentLocale, v9];
     }
 
     else
@@ -207,13 +207,13 @@ LABEL_21:
       v14 = [v8 localizedStringForKey:@"NoLastUpdatedDate" value:&stru_28766E5A8 table:0];
     }
 
-    v15 = [(STGroupSpecifierProvider *)self groupSpecifier];
+    groupSpecifier = [(STGroupSpecifierProvider *)self groupSpecifier];
     v16 = *MEMORY[0x277D3FF88];
-    v17 = [v15 objectForKeyedSubscript:*MEMORY[0x277D3FF88]];
-    [v15 setObject:v14 forKeyedSubscript:v16];
+    v17 = [groupSpecifier objectForKeyedSubscript:*MEMORY[0x277D3FF88]];
+    [groupSpecifier setObject:v14 forKeyedSubscript:v16];
     if (v17)
     {
-      v18 = [v15 objectForKeyedSubscript:*MEMORY[0x277D3FF90]];
+      v18 = [groupSpecifier objectForKeyedSubscript:*MEMORY[0x277D3FF90]];
       [v18 reloadFromSpecifier];
     }
 
@@ -224,56 +224,56 @@ LABEL_21:
   }
 }
 
-- (void)_selectedUsageReportDidChangeFrom:(id)a3 to:(id)a4
+- (void)_selectedUsageReportDidChangeFrom:(id)from to:(id)to
 {
-  v24 = a3;
-  v6 = a4;
-  if (v24 != v6 && ([v24 isEqual:v6] & 1) == 0)
+  fromCopy = from;
+  toCopy = to;
+  if (fromCopy != toCopy && ([fromCopy isEqual:toCopy] & 1) == 0)
   {
-    v7 = [(STGroupSpecifierProvider *)self groupSpecifier];
-    v8 = [v7 objectForKeyedSubscript:*MEMORY[0x277D3FFB0]];
-    v9 = [v6 type];
-    v10 = [v6 reportDateInterval];
-    v11 = [v10 startDate];
+    groupSpecifier = [(STGroupSpecifierProvider *)self groupSpecifier];
+    v8 = [groupSpecifier objectForKeyedSubscript:*MEMORY[0x277D3FFB0]];
+    type = [toCopy type];
+    reportDateInterval = [toCopy reportDateInterval];
+    startDate = [reportDateInterval startDate];
 
-    if (!v11)
+    if (!startDate)
     {
 LABEL_13:
       [v8 reloadFromSpecifier];
-      v20 = [v24 type] == v9;
-      v21 = [(STScreenTimeUsageGroupSpecifierProvider *)self usageSummaryGraphSpecifier];
-      [(STGroupSpecifierProvider *)self reloadSpecifier:v21 animated:v20];
-      v22 = [(STScreenTimeUsageGroupSpecifierProvider *)self weeklyTotalSpecifier];
-      v23 = [(STGroupSpecifierProvider *)self mutableSpecifiers];
-      if ([v6 type])
+      v20 = [fromCopy type] == type;
+      usageSummaryGraphSpecifier = [(STScreenTimeUsageGroupSpecifierProvider *)self usageSummaryGraphSpecifier];
+      [(STGroupSpecifierProvider *)self reloadSpecifier:usageSummaryGraphSpecifier animated:v20];
+      weeklyTotalSpecifier = [(STScreenTimeUsageGroupSpecifierProvider *)self weeklyTotalSpecifier];
+      mutableSpecifiers = [(STGroupSpecifierProvider *)self mutableSpecifiers];
+      if ([toCopy type])
       {
-        [v23 removeObject:v22];
+        [mutableSpecifiers removeObject:weeklyTotalSpecifier];
       }
 
-      else if ([v23 containsObject:v22])
+      else if ([mutableSpecifiers containsObject:weeklyTotalSpecifier])
       {
-        [(STGroupSpecifierProvider *)self reloadSpecifier:v22 animated:1];
+        [(STGroupSpecifierProvider *)self reloadSpecifier:weeklyTotalSpecifier animated:1];
       }
 
       else
       {
-        [v23 ps_insertObject:v22 afterObject:v21];
+        [mutableSpecifiers ps_insertObject:weeklyTotalSpecifier afterObject:usageSummaryGraphSpecifier];
       }
 
       goto LABEL_19;
     }
 
-    v12 = [MEMORY[0x277CBEA80] currentCalendar];
-    v13 = v12;
-    if (v9 == 1)
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+    v13 = currentCalendar;
+    if (type == 1)
     {
-      if (([v12 isDateInToday:v11] & 1) == 0)
+      if (([currentCalendar isDateInToday:startDate] & 1) == 0)
       {
         v19 = +[STScreenTimeSettingsUIBundle bundle];
         v17 = [v19 localizedStringForKey:@"ShowTodayButtonText" value:&stru_28766E5A8 table:0];
 
-        [v7 setObject:v17 forKeyedSubscript:0x287677008];
-        [v7 setObject:MEMORY[0x277CBEC28] forKeyedSubscript:0x287677028];
+        [groupSpecifier setObject:v17 forKeyedSubscript:0x287677008];
+        [groupSpecifier setObject:MEMORY[0x277CBEC28] forKeyedSubscript:0x287677028];
         v18 = &unk_28769D418;
         goto LABEL_11;
       }
@@ -281,7 +281,7 @@ LABEL_13:
 
     else
     {
-      if (v9)
+      if (type)
       {
 LABEL_12:
 
@@ -289,37 +289,37 @@ LABEL_12:
       }
 
       v14 = objc_opt_new();
-      v15 = [v13 isDate:v11 equalToDate:v14 toUnitGranularity:0x2000];
+      v15 = [v13 isDate:startDate equalToDate:v14 toUnitGranularity:0x2000];
 
       if ((v15 & 1) == 0)
       {
         v16 = +[STScreenTimeSettingsUIBundle bundle];
         v17 = [v16 localizedStringForKey:@"ShowThisWeekButtonText" value:&stru_28766E5A8 table:0];
 
-        [v7 setObject:v17 forKeyedSubscript:0x287677008];
-        [v7 setObject:MEMORY[0x277CBEC28] forKeyedSubscript:0x287677028];
+        [groupSpecifier setObject:v17 forKeyedSubscript:0x287677008];
+        [groupSpecifier setObject:MEMORY[0x277CBEC28] forKeyedSubscript:0x287677028];
         v18 = &unk_28769D400;
 LABEL_11:
-        [v7 setObject:v18 forKeyedSubscript:0x287677048];
+        [groupSpecifier setObject:v18 forKeyedSubscript:0x287677048];
 
         goto LABEL_12;
       }
     }
 
-    [v7 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:0x287677028];
+    [groupSpecifier setObject:MEMORY[0x277CBEC38] forKeyedSubscript:0x287677028];
     goto LABEL_12;
   }
 
 LABEL_19:
 }
 
-- (void)_refreshingDidChange:(BOOL)a3
+- (void)_refreshingDidChange:(BOOL)change
 {
-  v3 = a3;
-  v4 = [(STGroupSpecifierProvider *)self groupSpecifier];
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277D3FF90]];
+  changeCopy = change;
+  groupSpecifier = [(STGroupSpecifierProvider *)self groupSpecifier];
+  v5 = [groupSpecifier objectForKeyedSubscript:*MEMORY[0x277D3FF90]];
 
-  if (v3)
+  if (changeCopy)
   {
     [v5 startAnimatingSpinner];
   }
@@ -330,74 +330,74 @@ LABEL_19:
   }
 }
 
-- (id)_usageDetailsCoordinator:(id)a3
+- (id)_usageDetailsCoordinator:(id)coordinator
 {
-  v3 = [(STUsageGroupSpecifierProvider *)self coordinator];
-  v4 = [v3 usageDetailsCoordinator];
+  coordinator = [(STUsageGroupSpecifierProvider *)self coordinator];
+  usageDetailsCoordinator = [coordinator usageDetailsCoordinator];
 
-  return v4;
+  return usageDetailsCoordinator;
 }
 
-- (id)_weeklyTotal:(id)a3
+- (id)_weeklyTotal:(id)total
 {
-  v3 = [(STUsageGroupSpecifierProvider *)self coordinator];
-  v4 = [v3 usageDetailsCoordinator];
-  v5 = [v4 viewModel];
-  v6 = [v5 selectedUsageReport];
-  [v6 totalScreenTime];
+  coordinator = [(STUsageGroupSpecifierProvider *)self coordinator];
+  usageDetailsCoordinator = [coordinator usageDetailsCoordinator];
+  viewModel = [usageDetailsCoordinator viewModel];
+  selectedUsageReport = [viewModel selectedUsageReport];
+  [selectedUsageReport totalScreenTime];
   v8 = v7;
 
   if (v8 >= 60.0)
   {
-    v9 = objc_opt_new();
-    [v9 setAllowedUnits:96];
-    [v9 setUnitsStyle:1];
+    st_sharedAbbreviatedSecondsDateFormatter = objc_opt_new();
+    [st_sharedAbbreviatedSecondsDateFormatter setAllowedUnits:96];
+    [st_sharedAbbreviatedSecondsDateFormatter setUnitsStyle:1];
   }
 
   else
   {
-    v9 = [MEMORY[0x277CCA958] st_sharedAbbreviatedSecondsDateFormatter];
+    st_sharedAbbreviatedSecondsDateFormatter = [MEMORY[0x277CCA958] st_sharedAbbreviatedSecondsDateFormatter];
   }
 
-  v10 = [v9 stringFromTimeInterval:v8];
+  v10 = [st_sharedAbbreviatedSecondsDateFormatter stringFromTimeInterval:v8];
 
   return v10;
 }
 
-- (void)_headerButtonPressed:(id)a3
+- (void)_headerButtonPressed:(id)pressed
 {
-  v5 = a3;
-  v6 = [(STUsageGroupSpecifierProvider *)self coordinator];
-  v7 = [v6 usageDetailsCoordinator];
-  v11 = [v7 viewModel];
+  pressedCopy = pressed;
+  coordinator = [(STUsageGroupSpecifierProvider *)self coordinator];
+  usageDetailsCoordinator = [coordinator usageDetailsCoordinator];
+  viewModel = [usageDetailsCoordinator viewModel];
 
-  v8 = [v5 tag];
+  v8 = [pressedCopy tag];
   if (v8 == 1)
   {
-    [v11 selectToday];
+    [viewModel selectToday];
   }
 
   else if (v8)
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"STScreenTimeUsageGroupSpecifierProvider.m" lineNumber:235 description:{@"Unknown button tag: %lu", v8}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"STScreenTimeUsageGroupSpecifierProvider.m" lineNumber:235 description:{@"Unknown button tag: %lu", v8}];
   }
 
   else
   {
-    [v11 setSelectedWeek:0];
+    [viewModel setSelectedWeek:0];
   }
 
-  v10 = [(STGroupSpecifierProvider *)self groupSpecifier];
-  [v10 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:0x287677028];
+  groupSpecifier = [(STGroupSpecifierProvider *)self groupSpecifier];
+  [groupSpecifier setObject:MEMORY[0x277CBEC38] forKeyedSubscript:0x287677028];
 }
 
-- (void)_specifierIdentifierDidChange:(id)a3
+- (void)_specifierIdentifierDidChange:(id)change
 {
-  v6 = [a3 userInfo];
-  v4 = [v6 objectForKeyedSubscript:0x2876743C8];
-  v5 = [(STScreenTimeUsageGroupSpecifierProvider *)self usageSummaryGraphSpecifier];
-  [v5 setIdentifier:v4];
+  userInfo = [change userInfo];
+  v4 = [userInfo objectForKeyedSubscript:0x2876743C8];
+  usageSummaryGraphSpecifier = [(STScreenTimeUsageGroupSpecifierProvider *)self usageSummaryGraphSpecifier];
+  [usageSummaryGraphSpecifier setIdentifier:v4];
 }
 
 @end

@@ -2,8 +2,8 @@
 + (AAPrivacyValidation)default;
 - (AAPrivacyValidation)init;
 - (NSSet)denylistDescriptors;
-- (id)withDenylistDescriptors:(id)a3;
-- (id)withEnabled:(BOOL)a3;
+- (id)withDenylistDescriptors:(id)descriptors;
+- (id)withEnabled:(BOOL)enabled;
 @end
 
 @implementation AAPrivacyValidation
@@ -29,12 +29,12 @@
   return v3;
 }
 
-- (id)withEnabled:(BOOL)a3
+- (id)withEnabled:(BOOL)enabled
 {
   ObjectType = swift_getObjectType();
   v6 = *(self + OBJC_IVAR___AAPrivacyValidation_denylistDescriptors);
   v7 = objc_allocWithZone(ObjectType);
-  v7[OBJC_IVAR___AAPrivacyValidation_enabled] = a3;
+  v7[OBJC_IVAR___AAPrivacyValidation_enabled] = enabled;
   *&v7[OBJC_IVAR___AAPrivacyValidation_denylistDescriptors] = v6;
   v10.receiver = v7;
   v10.super_class = ObjectType;
@@ -44,7 +44,7 @@
   return v8;
 }
 
-- (id)withDenylistDescriptors:(id)a3
+- (id)withDenylistDescriptors:(id)descriptors
 {
   ObjectType = swift_getObjectType();
   v5 = sub_1B6AB97C0();

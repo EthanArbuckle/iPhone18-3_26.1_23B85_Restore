@@ -1,16 +1,16 @@
 @interface _INPBFindEventsIntent
-- (BOOL)isEqual:(id)a3;
-- (_INPBFindEventsIntent)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBFindEventsIntent)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (int)StringAsRequestedEventAttribute:(id)a3;
+- (int)StringAsRequestedEventAttribute:(id)attribute;
 - (unint64_t)hash;
-- (void)addParticipants:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setParticipants:(id)a3;
-- (void)setRequestedEventAttribute:(int)a3;
-- (void)setSearchQuery:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addParticipants:(id)participants;
+- (void)encodeWithCoder:(id)coder;
+- (void)setParticipants:(id)participants;
+- (void)setRequestedEventAttribute:(int)attribute;
+- (void)setSearchQuery:(id)query;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBFindEventsIntent
@@ -18,22 +18,22 @@
 - (id)dictionaryRepresentation
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(_INPBFindEventsIntent *)self dateTimeRange];
-  v5 = [v4 dictionaryRepresentation];
-  [v3 setObject:v5 forKeyedSubscript:@"dateTimeRange"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  dateTimeRange = [(_INPBFindEventsIntent *)self dateTimeRange];
+  dictionaryRepresentation = [dateTimeRange dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"dateTimeRange"];
 
-  v6 = [(_INPBFindEventsIntent *)self intentMetadata];
-  v7 = [v6 dictionaryRepresentation];
-  [v3 setObject:v7 forKeyedSubscript:@"intentMetadata"];
+  intentMetadata = [(_INPBFindEventsIntent *)self intentMetadata];
+  dictionaryRepresentation2 = [intentMetadata dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"intentMetadata"];
 
-  v8 = [(_INPBFindEventsIntent *)self location];
-  v9 = [v8 dictionaryRepresentation];
-  [v3 setObject:v9 forKeyedSubscript:@"location"];
+  location = [(_INPBFindEventsIntent *)self location];
+  dictionaryRepresentation3 = [location dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"location"];
 
   if ([(NSArray *)self->_participants count])
   {
-    v10 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
@@ -53,8 +53,8 @@
             objc_enumerationMutation(v11);
           }
 
-          v16 = [*(*(&v23 + 1) + 8 * i) dictionaryRepresentation];
-          [v10 addObject:v16];
+          dictionaryRepresentation4 = [*(*(&v23 + 1) + 8 * i) dictionaryRepresentation];
+          [array addObject:dictionaryRepresentation4];
         }
 
         v13 = [(NSArray *)v11 countByEnumeratingWithState:&v23 objects:v27 count:16];
@@ -63,35 +63,35 @@
       while (v13);
     }
 
-    [v3 setObject:v10 forKeyedSubscript:@"participants"];
+    [dictionary setObject:array forKeyedSubscript:@"participants"];
   }
 
   if ([(_INPBFindEventsIntent *)self hasRequestedEventAttribute])
   {
-    v17 = [(_INPBFindEventsIntent *)self requestedEventAttribute];
-    if ((v17 - 1) >= 3)
+    requestedEventAttribute = [(_INPBFindEventsIntent *)self requestedEventAttribute];
+    if ((requestedEventAttribute - 1) >= 3)
     {
-      v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v17];
+      v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", requestedEventAttribute];
     }
 
     else
     {
-      v18 = off_1E727F610[(v17 - 1)];
+      v18 = off_1E727F610[(requestedEventAttribute - 1)];
     }
 
-    [v3 setObject:v18 forKeyedSubscript:@"requestedEventAttribute"];
+    [dictionary setObject:v18 forKeyedSubscript:@"requestedEventAttribute"];
   }
 
   if (self->_searchQuery)
   {
-    v19 = [(_INPBFindEventsIntent *)self searchQuery];
-    v20 = [v19 copy];
-    [v3 setObject:v20 forKeyedSubscript:@"searchQuery"];
+    searchQuery = [(_INPBFindEventsIntent *)self searchQuery];
+    v20 = [searchQuery copy];
+    [dictionary setObject:v20 forKeyedSubscript:@"searchQuery"];
   }
 
   v21 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -113,28 +113,28 @@
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ [(NSString *)self->_searchQuery hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_31;
   }
 
-  v5 = [(_INPBFindEventsIntent *)self dateTimeRange];
-  v6 = [v4 dateTimeRange];
-  if ((v5 != 0) == (v6 == 0))
+  dateTimeRange = [(_INPBFindEventsIntent *)self dateTimeRange];
+  dateTimeRange2 = [equalCopy dateTimeRange];
+  if ((dateTimeRange != 0) == (dateTimeRange2 == 0))
   {
     goto LABEL_30;
   }
 
-  v7 = [(_INPBFindEventsIntent *)self dateTimeRange];
-  if (v7)
+  dateTimeRange3 = [(_INPBFindEventsIntent *)self dateTimeRange];
+  if (dateTimeRange3)
   {
-    v8 = v7;
-    v9 = [(_INPBFindEventsIntent *)self dateTimeRange];
-    v10 = [v4 dateTimeRange];
-    v11 = [v9 isEqual:v10];
+    v8 = dateTimeRange3;
+    dateTimeRange4 = [(_INPBFindEventsIntent *)self dateTimeRange];
+    dateTimeRange5 = [equalCopy dateTimeRange];
+    v11 = [dateTimeRange4 isEqual:dateTimeRange5];
 
     if (!v11)
     {
@@ -146,20 +146,20 @@
   {
   }
 
-  v5 = [(_INPBFindEventsIntent *)self intentMetadata];
-  v6 = [v4 intentMetadata];
-  if ((v5 != 0) == (v6 == 0))
+  dateTimeRange = [(_INPBFindEventsIntent *)self intentMetadata];
+  dateTimeRange2 = [equalCopy intentMetadata];
+  if ((dateTimeRange != 0) == (dateTimeRange2 == 0))
   {
     goto LABEL_30;
   }
 
-  v12 = [(_INPBFindEventsIntent *)self intentMetadata];
-  if (v12)
+  intentMetadata = [(_INPBFindEventsIntent *)self intentMetadata];
+  if (intentMetadata)
   {
-    v13 = v12;
-    v14 = [(_INPBFindEventsIntent *)self intentMetadata];
-    v15 = [v4 intentMetadata];
-    v16 = [v14 isEqual:v15];
+    v13 = intentMetadata;
+    intentMetadata2 = [(_INPBFindEventsIntent *)self intentMetadata];
+    intentMetadata3 = [equalCopy intentMetadata];
+    v16 = [intentMetadata2 isEqual:intentMetadata3];
 
     if (!v16)
     {
@@ -171,20 +171,20 @@
   {
   }
 
-  v5 = [(_INPBFindEventsIntent *)self location];
-  v6 = [v4 location];
-  if ((v5 != 0) == (v6 == 0))
+  dateTimeRange = [(_INPBFindEventsIntent *)self location];
+  dateTimeRange2 = [equalCopy location];
+  if ((dateTimeRange != 0) == (dateTimeRange2 == 0))
   {
     goto LABEL_30;
   }
 
-  v17 = [(_INPBFindEventsIntent *)self location];
-  if (v17)
+  location = [(_INPBFindEventsIntent *)self location];
+  if (location)
   {
-    v18 = v17;
-    v19 = [(_INPBFindEventsIntent *)self location];
-    v20 = [v4 location];
-    v21 = [v19 isEqual:v20];
+    v18 = location;
+    location2 = [(_INPBFindEventsIntent *)self location];
+    location3 = [equalCopy location];
+    v21 = [location2 isEqual:location3];
 
     if (!v21)
     {
@@ -196,20 +196,20 @@
   {
   }
 
-  v5 = [(_INPBFindEventsIntent *)self participants];
-  v6 = [v4 participants];
-  if ((v5 != 0) == (v6 == 0))
+  dateTimeRange = [(_INPBFindEventsIntent *)self participants];
+  dateTimeRange2 = [equalCopy participants];
+  if ((dateTimeRange != 0) == (dateTimeRange2 == 0))
   {
     goto LABEL_30;
   }
 
-  v22 = [(_INPBFindEventsIntent *)self participants];
-  if (v22)
+  participants = [(_INPBFindEventsIntent *)self participants];
+  if (participants)
   {
-    v23 = v22;
-    v24 = [(_INPBFindEventsIntent *)self participants];
-    v25 = [v4 participants];
-    v26 = [v24 isEqual:v25];
+    v23 = participants;
+    participants2 = [(_INPBFindEventsIntent *)self participants];
+    participants3 = [equalCopy participants];
+    v26 = [participants2 isEqual:participants3];
 
     if (!v26)
     {
@@ -221,30 +221,30 @@
   {
   }
 
-  v27 = [(_INPBFindEventsIntent *)self hasRequestedEventAttribute];
-  if (v27 != [v4 hasRequestedEventAttribute])
+  hasRequestedEventAttribute = [(_INPBFindEventsIntent *)self hasRequestedEventAttribute];
+  if (hasRequestedEventAttribute != [equalCopy hasRequestedEventAttribute])
   {
     goto LABEL_31;
   }
 
   if ([(_INPBFindEventsIntent *)self hasRequestedEventAttribute])
   {
-    if ([v4 hasRequestedEventAttribute])
+    if ([equalCopy hasRequestedEventAttribute])
     {
       requestedEventAttribute = self->_requestedEventAttribute;
-      if (requestedEventAttribute != [v4 requestedEventAttribute])
+      if (requestedEventAttribute != [equalCopy requestedEventAttribute])
       {
         goto LABEL_31;
       }
     }
   }
 
-  v5 = [(_INPBFindEventsIntent *)self searchQuery];
-  v6 = [v4 searchQuery];
-  if ((v5 != 0) != (v6 == 0))
+  dateTimeRange = [(_INPBFindEventsIntent *)self searchQuery];
+  dateTimeRange2 = [equalCopy searchQuery];
+  if ((dateTimeRange != 0) != (dateTimeRange2 == 0))
   {
-    v29 = [(_INPBFindEventsIntent *)self searchQuery];
-    if (!v29)
+    searchQuery = [(_INPBFindEventsIntent *)self searchQuery];
+    if (!searchQuery)
     {
 
 LABEL_34:
@@ -252,10 +252,10 @@ LABEL_34:
       goto LABEL_32;
     }
 
-    v30 = v29;
-    v31 = [(_INPBFindEventsIntent *)self searchQuery];
-    v32 = [v4 searchQuery];
-    v33 = [v31 isEqual:v32];
+    v30 = searchQuery;
+    searchQuery2 = [(_INPBFindEventsIntent *)self searchQuery];
+    searchQuery3 = [equalCopy searchQuery];
+    v33 = [searchQuery2 isEqual:searchQuery3];
 
     if (v33)
     {
@@ -275,19 +275,19 @@ LABEL_32:
   return v34;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBFindEventsIntent allocWithZone:](_INPBFindEventsIntent init];
-  v6 = [(_INPBDateTimeRangeValue *)self->_dateTimeRange copyWithZone:a3];
+  v6 = [(_INPBDateTimeRangeValue *)self->_dateTimeRange copyWithZone:zone];
   [(_INPBFindEventsIntent *)v5 setDateTimeRange:v6];
 
-  v7 = [(_INPBIntentMetadata *)self->_intentMetadata copyWithZone:a3];
+  v7 = [(_INPBIntentMetadata *)self->_intentMetadata copyWithZone:zone];
   [(_INPBFindEventsIntent *)v5 setIntentMetadata:v7];
 
-  v8 = [(_INPBLocation *)self->_location copyWithZone:a3];
+  v8 = [(_INPBLocation *)self->_location copyWithZone:zone];
   [(_INPBFindEventsIntent *)v5 setLocation:v8];
 
-  v9 = [(NSArray *)self->_participants copyWithZone:a3];
+  v9 = [(NSArray *)self->_participants copyWithZone:zone];
   [(_INPBFindEventsIntent *)v5 setParticipants:v9];
 
   if ([(_INPBFindEventsIntent *)self hasRequestedEventAttribute])
@@ -295,61 +295,61 @@ LABEL_32:
     [(_INPBFindEventsIntent *)v5 setRequestedEventAttribute:[(_INPBFindEventsIntent *)self requestedEventAttribute]];
   }
 
-  v10 = [(NSString *)self->_searchQuery copyWithZone:a3];
+  v10 = [(NSString *)self->_searchQuery copyWithZone:zone];
   [(_INPBFindEventsIntent *)v5 setSearchQuery:v10];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBFindEventsIntent *)self data];
+  coderCopy = coder;
+  data = [(_INPBFindEventsIntent *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBFindEventsIntent)initWithCoder:(id)a3
+- (_INPBFindEventsIntent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBFindEventsIntent *)self initWithData:v6];
+    self = [(_INPBFindEventsIntent *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_INPBFindEventsIntent *)self dateTimeRange];
+  toCopy = to;
+  dateTimeRange = [(_INPBFindEventsIntent *)self dateTimeRange];
 
-  if (v5)
+  if (dateTimeRange)
   {
-    v6 = [(_INPBFindEventsIntent *)self dateTimeRange];
+    dateTimeRange2 = [(_INPBFindEventsIntent *)self dateTimeRange];
     PBDataWriterWriteSubmessage();
   }
 
-  v7 = [(_INPBFindEventsIntent *)self intentMetadata];
+  intentMetadata = [(_INPBFindEventsIntent *)self intentMetadata];
 
-  if (v7)
+  if (intentMetadata)
   {
-    v8 = [(_INPBFindEventsIntent *)self intentMetadata];
+    intentMetadata2 = [(_INPBFindEventsIntent *)self intentMetadata];
     PBDataWriterWriteSubmessage();
   }
 
-  v9 = [(_INPBFindEventsIntent *)self location];
+  location = [(_INPBFindEventsIntent *)self location];
 
-  if (v9)
+  if (location)
   {
-    v10 = [(_INPBFindEventsIntent *)self location];
+    location2 = [(_INPBFindEventsIntent *)self location];
     PBDataWriterWriteSubmessage();
   }
 
@@ -391,9 +391,9 @@ LABEL_32:
     PBDataWriterWriteInt32Field();
   }
 
-  v18 = [(_INPBFindEventsIntent *)self searchQuery];
+  searchQuery = [(_INPBFindEventsIntent *)self searchQuery];
 
-  if (v18)
+  if (searchQuery)
   {
     searchQuery = self->_searchQuery;
     PBDataWriterWriteStringField();
@@ -402,29 +402,29 @@ LABEL_32:
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setSearchQuery:(id)a3
+- (void)setSearchQuery:(id)query
 {
-  v4 = [a3 copy];
+  v4 = [query copy];
   searchQuery = self->_searchQuery;
   self->_searchQuery = v4;
 
   MEMORY[0x1EEE66BB8](v4, searchQuery);
 }
 
-- (int)StringAsRequestedEventAttribute:(id)a3
+- (int)StringAsRequestedEventAttribute:(id)attribute
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"EVENT_LOCATION"])
+  attributeCopy = attribute;
+  if ([attributeCopy isEqualToString:@"EVENT_LOCATION"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"PARTICIPANTS"])
+  else if ([attributeCopy isEqualToString:@"PARTICIPANTS"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"DATETIME"])
+  else if ([attributeCopy isEqualToString:@"DATETIME"])
   {
     v4 = 3;
   }
@@ -437,10 +437,10 @@ LABEL_32:
   return v4;
 }
 
-- (void)setRequestedEventAttribute:(int)a3
+- (void)setRequestedEventAttribute:(int)attribute
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (attribute == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xFE;
   }
@@ -448,31 +448,31 @@ LABEL_32:
   else
   {
     *&self->_has = has | 1;
-    self->_requestedEventAttribute = a3;
+    self->_requestedEventAttribute = attribute;
   }
 }
 
-- (void)addParticipants:(id)a3
+- (void)addParticipants:(id)participants
 {
-  v4 = a3;
+  participantsCopy = participants;
   participants = self->_participants;
-  v8 = v4;
+  v8 = participantsCopy;
   if (!participants)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_participants;
-    self->_participants = v6;
+    self->_participants = array;
 
-    v4 = v8;
+    participantsCopy = v8;
     participants = self->_participants;
   }
 
-  [(NSArray *)participants addObject:v4];
+  [(NSArray *)participants addObject:participantsCopy];
 }
 
-- (void)setParticipants:(id)a3
+- (void)setParticipants:(id)participants
 {
-  v4 = [a3 mutableCopy];
+  v4 = [participants mutableCopy];
   participants = self->_participants;
   self->_participants = v4;
 

@@ -2,52 +2,52 @@
 - (BOOL)inUnscheduledSleepMode;
 - (HDSPEnvironment)environment;
 - (HDSPSleepEventDelegate)sleepEventDelegate;
-- (HDSPSleepLockScreenManager)initWithEnvironment:(id)a3;
-- (HDSPSleepLockScreenManager)initWithEnvironment:(id)a3 assertionManager:(id)a4;
+- (HDSPSleepLockScreenManager)initWithEnvironment:(id)environment;
+- (HDSPSleepLockScreenManager)initWithEnvironment:(id)environment assertionManager:(id)manager;
 - (HKSPSleepScheduleModel)sleepScheduleModel;
 - (NSDate)currentDate;
 - (NSString)providerIdentifier;
 - (id)_currentState;
 - (id)diagnosticDescription;
 - (id)eventIdentifiers;
-- (id)upcomingEventsDueAfterDate:(id)a3;
+- (id)upcomingEventsDueAfterDate:(id)date;
 - (int64_t)_lock_resolvedLockScreenState;
 - (int64_t)currentLockScreenState;
 - (int64_t)sleepMode;
 - (void)_lock_updateLockScreenAssertion;
 - (void)dismissAlertForGoodMorning;
-- (void)environmentDidBecomeReady:(id)a3;
-- (void)environmentWillBecomeReady:(id)a3;
+- (void)environmentDidBecomeReady:(id)ready;
+- (void)environmentWillBecomeReady:(id)ready;
 - (void)lockScreenDidConnect;
-- (void)overrideLockScreenState:(int64_t)a3 userInfo:(id)a4;
+- (void)overrideLockScreenState:(int64_t)state userInfo:(id)info;
 - (void)presentAlertForGoodMorning;
 - (void)scheduleStateExpiration;
 - (void)sensitiveUIStateChanged;
-- (void)significantTimeChangeDetected:(id)a3;
-- (void)sleepEventIsDue:(id)a3;
-- (void)sleepLockScreenStateDidChange:(int64_t)a3 previousState:(int64_t)a4;
-- (void)sleepModeDidChange:(int64_t)a3 previousMode:(int64_t)a4 reason:(unint64_t)a5;
-- (void)sleepScheduleModelManager:(id)a3 didUpdateSleepSettings:(id)a4;
-- (void)timeZoneChangeDetected:(id)a3;
+- (void)significantTimeChangeDetected:(id)detected;
+- (void)sleepEventIsDue:(id)due;
+- (void)sleepLockScreenStateDidChange:(int64_t)change previousState:(int64_t)state;
+- (void)sleepModeDidChange:(int64_t)change previousMode:(int64_t)mode reason:(unint64_t)reason;
+- (void)sleepScheduleModelManager:(id)manager didUpdateSleepSettings:(id)settings;
+- (void)timeZoneChangeDetected:(id)detected;
 - (void)unscheduleStateExpiration;
 @end
 
 @implementation HDSPSleepLockScreenManager
 
-- (HDSPSleepLockScreenManager)initWithEnvironment:(id)a3
+- (HDSPSleepLockScreenManager)initWithEnvironment:(id)environment
 {
-  v4 = a3;
-  v5 = [[HDSPSleepLockScreenAssertionManager alloc] initWithEnvironment:v4];
-  v6 = [(HDSPSleepLockScreenManager *)self initWithEnvironment:v4 assertionManager:v5];
+  environmentCopy = environment;
+  v5 = [[HDSPSleepLockScreenAssertionManager alloc] initWithEnvironment:environmentCopy];
+  v6 = [(HDSPSleepLockScreenManager *)self initWithEnvironment:environmentCopy assertionManager:v5];
 
   return v6;
 }
 
-- (HDSPSleepLockScreenManager)initWithEnvironment:(id)a3 assertionManager:(id)a4
+- (HDSPSleepLockScreenManager)initWithEnvironment:(id)environment assertionManager:(id)manager
 {
   v32 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  environmentCopy = environment;
+  managerCopy = manager;
   v27.receiver = self;
   v27.super_class = HDSPSleepLockScreenManager;
   v8 = [(HDSPSleepLockScreenManager *)&v27 init];
@@ -65,11 +65,11 @@
       _os_log_impl(&dword_269B11000, v9, OS_LOG_TYPE_DEFAULT, "[%{public}@.%p] initializing...", buf, 0x16u);
     }
 
-    objc_storeWeak(&v8->_environment, v6);
-    objc_storeStrong(&v8->_assertionManager, a4);
+    objc_storeWeak(&v8->_environment, environmentCopy);
+    objc_storeStrong(&v8->_assertionManager, manager);
     [(HDSPSleepLockScreenAssertionManager *)v8->_assertionManager setDelegate:v8];
-    v12 = [v6 mutexGenerator];
-    v13 = v12[2]();
+    mutexGenerator = [environmentCopy mutexGenerator];
+    v13 = mutexGenerator[2]();
     mutexProvider = v8->_mutexProvider;
     v8->_mutexProvider = v13;
 
@@ -77,10 +77,10 @@
     v16 = objc_opt_class();
     v17 = NSStringFromClass(v16);
     v18 = objc_alloc(MEMORY[0x277D62558]);
-    v19 = [v6 userDefaults];
-    v20 = [v18 initWithUserDefaults:v19];
-    v21 = [v6 currentDateProvider];
-    v22 = [(HDSPSleepLockScreenStateMachine *)v15 initWithIdentifier:v17 persistence:v20 delegate:v8 infoProvider:v8 currentDateProvider:v21];
+    userDefaults = [environmentCopy userDefaults];
+    v20 = [v18 initWithUserDefaults:userDefaults];
+    currentDateProvider = [environmentCopy currentDateProvider];
+    v22 = [(HDSPSleepLockScreenStateMachine *)v15 initWithIdentifier:v17 persistence:v20 delegate:v8 infoProvider:v8 currentDateProvider:currentDateProvider];
     stateMachine = v8->_stateMachine;
     v8->_stateMachine = v22;
 
@@ -91,10 +91,10 @@
   return v8;
 }
 
-- (void)environmentWillBecomeReady:(id)a3
+- (void)environmentWillBecomeReady:(id)ready
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  readyCopy = ready;
   v5 = HKSPLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -104,34 +104,34 @@
     _os_log_impl(&dword_269B11000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] environmentWillBecomeReady", &v16, 0xCu);
   }
 
-  v7 = [v4 sleepModeManager];
-  [v7 addObserver:self];
+  sleepModeManager = [readyCopy sleepModeManager];
+  [sleepModeManager addObserver:self];
 
-  v8 = [v4 sleepScheduleModelManager];
-  [v8 addObserver:self];
+  sleepScheduleModelManager = [readyCopy sleepScheduleModelManager];
+  [sleepScheduleModelManager addObserver:self];
 
-  v9 = [v4 goodMorningAlertManager];
-  [v9 addObserver:self];
+  goodMorningAlertManager = [readyCopy goodMorningAlertManager];
+  [goodMorningAlertManager addObserver:self];
 
-  v10 = [v4 diagnostics];
-  [v10 addProvider:self];
+  diagnostics = [readyCopy diagnostics];
+  [diagnostics addProvider:self];
 
-  v11 = [v4 timeChangeListener];
-  [v11 addObserver:self];
+  timeChangeListener = [readyCopy timeChangeListener];
+  [timeChangeListener addObserver:self];
 
-  v12 = [v4 sleepScheduler];
-  [v12 addEventHandler:self];
+  sleepScheduler = [readyCopy sleepScheduler];
+  [sleepScheduler addEventHandler:self];
 
-  v13 = [v4 sleepScheduler];
-  [v13 addEventProvider:self];
+  sleepScheduler2 = [readyCopy sleepScheduler];
+  [sleepScheduler2 addEventProvider:self];
 
-  v14 = [v4 sensitiveUIMonitor];
+  sensitiveUIMonitor = [readyCopy sensitiveUIMonitor];
 
-  [v14 addObserver:self];
+  [sensitiveUIMonitor addObserver:self];
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)environmentDidBecomeReady:(id)a3
+- (void)environmentDidBecomeReady:(id)ready
 {
   v10 = *MEMORY[0x277D85DE8];
   v4 = HKSPLogForCategory();
@@ -152,7 +152,7 @@
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sleepModeDidChange:(int64_t)a3 previousMode:(int64_t)a4 reason:(unint64_t)a5
+- (void)sleepModeDidChange:(int64_t)change previousMode:(int64_t)mode reason:(unint64_t)reason
 {
   v21 = *MEMORY[0x277D85DE8];
   v8 = HKSPLogForCategory();
@@ -176,8 +176,8 @@
   v14[2] = __69__HDSPSleepLockScreenManager_sleepModeDidChange_previousMode_reason___block_invoke;
   v14[3] = &unk_279C7B650;
   v14[4] = self;
-  v14[5] = a3;
-  v14[6] = a5;
+  v14[5] = change;
+  v14[6] = reason;
   [(HDSPSleepLockScreenManager *)self _withLock:v14];
   v13 = *MEMORY[0x277D85DE8];
 }
@@ -188,7 +188,7 @@ void __69__HDSPSleepLockScreenManager_sleepModeDidChange_previousMode_reason___b
   [v2 sleepModeDidChange:*(a1 + 40) reason:*(a1 + 48)];
 }
 
-- (void)sleepScheduleModelManager:(id)a3 didUpdateSleepSettings:(id)a4
+- (void)sleepScheduleModelManager:(id)manager didUpdateSleepSettings:(id)settings
 {
   v11 = *MEMORY[0x277D85DE8];
   v5 = HKSPLogForCategory();
@@ -269,7 +269,7 @@ void __56__HDSPSleepLockScreenManager_dismissAlertForGoodMorning__block_invoke(u
   [v1 dismissAlertForGoodMorning];
 }
 
-- (void)sleepLockScreenStateDidChange:(int64_t)a3 previousState:(int64_t)a4
+- (void)sleepLockScreenStateDidChange:(int64_t)change previousState:(int64_t)state
 {
   v16 = *MEMORY[0x277D85DE8];
   v7 = HKSPLogForCategory();
@@ -278,14 +278,14 @@ void __56__HDSPSleepLockScreenManager_dismissAlertForGoodMorning__block_invoke(u
     v10 = 138543874;
     v11 = objc_opt_class();
     v12 = 2048;
-    v13 = a3;
+    changeCopy = change;
     v14 = 2048;
-    v15 = a4;
+    stateCopy = state;
     v8 = v11;
     _os_log_impl(&dword_269B11000, v7, OS_LOG_TYPE_DEFAULT, "[%{public}@] sleepLockScreenStateDidChange: %ld previousState: %ld", &v10, 0x20u);
   }
 
-  self->_state = a3;
+  self->_state = change;
   [(HDSPSleepLockScreenManager *)self _lock_updateLockScreenAssertion];
   v9 = *MEMORY[0x277D85DE8];
 }
@@ -302,8 +302,8 @@ void __56__HDSPSleepLockScreenManager_dismissAlertForGoodMorning__block_invoke(u
     _os_log_impl(&dword_269B11000, v3, OS_LOG_TYPE_DEFAULT, "[%{public}@] telling scheduler we have events to schedule", &v7, 0xCu);
   }
 
-  v5 = [(HDSPSleepLockScreenManager *)self sleepEventDelegate];
-  [v5 eventProviderHasUpcomingEvents:self];
+  sleepEventDelegate = [(HDSPSleepLockScreenManager *)self sleepEventDelegate];
+  [sleepEventDelegate eventProviderHasUpcomingEvents:self];
 
   v6 = *MEMORY[0x277D85DE8];
 }
@@ -320,8 +320,8 @@ void __56__HDSPSleepLockScreenManager_dismissAlertForGoodMorning__block_invoke(u
     _os_log_impl(&dword_269B11000, v3, OS_LOG_TYPE_DEFAULT, "[%{public}@] telling scheduler we no longer have events to schedule", &v7, 0xCu);
   }
 
-  v5 = [(HDSPSleepLockScreenManager *)self sleepEventDelegate];
-  [v5 eventProviderCancelledEvents:self];
+  sleepEventDelegate = [(HDSPSleepLockScreenManager *)self sleepEventDelegate];
+  [sleepEventDelegate eventProviderCancelledEvents:self];
 
   v6 = *MEMORY[0x277D85DE8];
 }
@@ -330,13 +330,13 @@ void __56__HDSPSleepLockScreenManager_dismissAlertForGoodMorning__block_invoke(u
 {
   v29 = *MEMORY[0x277D85DE8];
   WeakRetained = objc_loadWeakRetained(&self->_environment);
-  v4 = [WeakRetained sleepScheduleModelManager];
-  v5 = [v4 sleepSettings];
-  v6 = [v5 sleepModeOptions];
+  sleepScheduleModelManager = [WeakRetained sleepScheduleModelManager];
+  sleepSettings = [sleepScheduleModelManager sleepSettings];
+  sleepModeOptions = [sleepSettings sleepModeOptions];
 
   v7 = objc_loadWeakRetained(&self->_environment);
-  v8 = [v7 sleepModeManager];
-  v9 = [v8 sleepMode];
+  sleepModeManager = [v7 sleepModeManager];
+  sleepMode = [sleepModeManager sleepMode];
 
   v10 = HKSPLogForCategory();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -344,8 +344,8 @@ void __56__HDSPSleepLockScreenManager_dismissAlertForGoodMorning__block_invoke(u
     v11 = objc_opt_class();
     v12 = MEMORY[0x277CCABB0];
     v13 = v11;
-    v14 = [v12 numberWithBool:(v6 >> 14) & 1];
-    v15 = [MEMORY[0x277CCABB0] numberWithBool:v9 != 0];
+    v14 = [v12 numberWithBool:(sleepModeOptions >> 14) & 1];
+    v15 = [MEMORY[0x277CCABB0] numberWithBool:sleepMode != 0];
     v23 = 138543874;
     v24 = v11;
     v25 = 2112;
@@ -355,7 +355,7 @@ void __56__HDSPSleepLockScreenManager_dismissAlertForGoodMorning__block_invoke(u
     _os_log_impl(&dword_269B11000, v10, OS_LOG_TYPE_DEFAULT, "[%{public}@] updating assertion, sleep screen enabled: %@, sleep mode on: %@", &v23, 0x20u);
   }
 
-  v16 = [(HDSPSleepLockScreenManager *)self _lock_resolvedLockScreenState];
+  _lock_resolvedLockScreenState = [(HDSPSleepLockScreenManager *)self _lock_resolvedLockScreenState];
   if ([(HDSPSleepLockScreenManager *)self _lock_overridingLockScreenState])
   {
     overrideUserInfo = self->_overrideUserInfo;
@@ -367,12 +367,12 @@ void __56__HDSPSleepLockScreenManager_dismissAlertForGoodMorning__block_invoke(u
   }
 
   v18 = overrideUserInfo;
-  v19 = [(HDSPSleepLockScreenManager *)self _lock_shouldShowLockScreenForState:v16];
+  v19 = [(HDSPSleepLockScreenManager *)self _lock_shouldShowLockScreenForState:_lock_resolvedLockScreenState];
   assertionManager = self->_assertionManager;
   if (v19)
   {
     [(HDSPSleepLockScreenAssertionManager *)assertionManager takeAssertionIfNeeded];
-    [(HDSPSleepLockScreenAssertionManager *)self->_assertionManager sendLockScreenState:v16 userInfo:v18];
+    [(HDSPSleepLockScreenAssertionManager *)self->_assertionManager sendLockScreenState:_lock_resolvedLockScreenState userInfo:v18];
   }
 
   else
@@ -383,7 +383,7 @@ void __56__HDSPSleepLockScreenManager_dismissAlertForGoodMorning__block_invoke(u
   didUpdateAlertAssertion = self->_didUpdateAlertAssertion;
   if (didUpdateAlertAssertion)
   {
-    didUpdateAlertAssertion[2](didUpdateAlertAssertion, v16);
+    didUpdateAlertAssertion[2](didUpdateAlertAssertion, _lock_resolvedLockScreenState);
   }
 
   v22 = *MEMORY[0x277D85DE8];
@@ -391,9 +391,9 @@ void __56__HDSPSleepLockScreenManager_dismissAlertForGoodMorning__block_invoke(u
 
 - (int64_t)_lock_resolvedLockScreenState
 {
-  v3 = [(HDSPSleepLockScreenManager *)self _lock_overridingLockScreenState];
+  _lock_overridingLockScreenState = [(HDSPSleepLockScreenManager *)self _lock_overridingLockScreenState];
   v4 = 8;
-  if (v3)
+  if (_lock_overridingLockScreenState)
   {
     v4 = 16;
   }
@@ -411,7 +411,7 @@ void __56__HDSPSleepLockScreenManager_dismissAlertForGoodMorning__block_invoke(u
   [(HDSPSleepLockScreenManager *)self _withLock:v2];
 }
 
-- (void)significantTimeChangeDetected:(id)a3
+- (void)significantTimeChangeDetected:(id)detected
 {
   v10 = *MEMORY[0x277D85DE8];
   v4 = HKSPLogForCategory();
@@ -438,7 +438,7 @@ void __60__HDSPSleepLockScreenManager_significantTimeChangeDetected___block_invo
   [v1 updateState];
 }
 
-- (void)timeZoneChangeDetected:(id)a3
+- (void)timeZoneChangeDetected:(id)detected
 {
   v10 = *MEMORY[0x277D85DE8];
   v4 = HKSPLogForCategory();
@@ -468,8 +468,8 @@ void __53__HDSPSleepLockScreenManager_timeZoneChangeDetected___block_invoke(uint
 - (NSDate)currentDate
 {
   WeakRetained = objc_loadWeakRetained(&self->_environment);
-  v3 = [WeakRetained currentDateProvider];
-  v4 = v3[2]();
+  currentDateProvider = [WeakRetained currentDateProvider];
+  v4 = currentDateProvider[2]();
 
   return v4;
 }
@@ -477,28 +477,28 @@ void __53__HDSPSleepLockScreenManager_timeZoneChangeDetected___block_invoke(uint
 - (HKSPSleepScheduleModel)sleepScheduleModel
 {
   WeakRetained = objc_loadWeakRetained(&self->_environment);
-  v3 = [WeakRetained sleepScheduleModelManager];
-  v4 = [v3 sleepScheduleModel];
+  sleepScheduleModelManager = [WeakRetained sleepScheduleModelManager];
+  sleepScheduleModel = [sleepScheduleModelManager sleepScheduleModel];
 
-  return v4;
+  return sleepScheduleModel;
 }
 
 - (int64_t)sleepMode
 {
   WeakRetained = objc_loadWeakRetained(&self->_environment);
-  v3 = [WeakRetained sleepModeManager];
-  v4 = [v3 sleepMode];
+  sleepModeManager = [WeakRetained sleepModeManager];
+  sleepMode = [sleepModeManager sleepMode];
 
-  return v4;
+  return sleepMode;
 }
 
 - (BOOL)inUnscheduledSleepMode
 {
   WeakRetained = objc_loadWeakRetained(&self->_environment);
-  v3 = [WeakRetained sleepModeManager];
-  v4 = [v3 inUnscheduledSleepMode];
+  sleepModeManager = [WeakRetained sleepModeManager];
+  inUnscheduledSleepMode = [sleepModeManager inUnscheduledSleepMode];
 
-  return v4;
+  return inUnscheduledSleepMode;
 }
 
 - (int64_t)currentLockScreenState
@@ -526,10 +526,10 @@ uint64_t __52__HDSPSleepLockScreenManager_currentLockScreenState__block_invoke(u
   return result;
 }
 
-- (void)overrideLockScreenState:(int64_t)a3 userInfo:(id)a4
+- (void)overrideLockScreenState:(int64_t)state userInfo:(id)info
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  infoCopy = info;
   v7 = HKSPLogForCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -541,7 +541,7 @@ uint64_t __52__HDSPSleepLockScreenManager_currentLockScreenState__block_invoke(u
     v18 = 2112;
     v19 = v10;
     v20 = 2112;
-    v21 = v6;
+    v21 = infoCopy;
     _os_log_impl(&dword_269B11000, v7, OS_LOG_TYPE_DEFAULT, "[%{public}@] overriding lock screen state: %@ (userInfo: %@)", buf, 0x20u);
   }
 
@@ -549,10 +549,10 @@ uint64_t __52__HDSPSleepLockScreenManager_currentLockScreenState__block_invoke(u
   v13[1] = 3221225472;
   v13[2] = __63__HDSPSleepLockScreenManager_overrideLockScreenState_userInfo___block_invoke;
   v13[3] = &unk_279C7B6A0;
-  v14 = v6;
-  v15 = a3;
+  v14 = infoCopy;
+  stateCopy = state;
   v13[4] = self;
-  v11 = v6;
+  v11 = infoCopy;
   [(HDSPSleepLockScreenManager *)self _withLock:v13];
 
   v12 = *MEMORY[0x277D85DE8];
@@ -571,20 +571,20 @@ uint64_t __63__HDSPSleepLockScreenManager_overrideLockScreenState_userInfo___blo
   return [v5 _lock_updateLockScreenAssertion];
 }
 
-- (void)sleepEventIsDue:(id)a3
+- (void)sleepEventIsDue:(id)due
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dueCopy = due;
   v5 = HKSPLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = objc_opt_class();
     v7 = v6;
-    v8 = [v4 identifier];
+    identifier = [dueCopy identifier];
     *buf = 138543618;
     v14 = v6;
     v15 = 2114;
-    v16 = v8;
+    v16 = identifier;
     _os_log_impl(&dword_269B11000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] %{public}@ expired", buf, 0x16u);
   }
 
@@ -593,8 +593,8 @@ uint64_t __63__HDSPSleepLockScreenManager_overrideLockScreenState_userInfo___blo
   v11[2] = __46__HDSPSleepLockScreenManager_sleepEventIsDue___block_invoke;
   v11[3] = &unk_279C7B2D0;
   v11[4] = self;
-  v12 = v4;
-  v9 = v4;
+  v12 = dueCopy;
+  v9 = dueCopy;
   [(HDSPSleepLockScreenManager *)self _withLock:v11];
 
   v10 = *MEMORY[0x277D85DE8];
@@ -661,10 +661,10 @@ void __46__HDSPSleepLockScreenManager_eventIdentifiers__block_invoke_296(uint64_
   return NSStringFromClass(v2);
 }
 
-- (id)upcomingEventsDueAfterDate:(id)a3
+- (id)upcomingEventsDueAfterDate:(id)date
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dateCopy = date;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -676,7 +676,7 @@ void __46__HDSPSleepLockScreenManager_eventIdentifiers__block_invoke_296(uint64_
   v13[2] = __57__HDSPSleepLockScreenManager_upcomingEventsDueAfterDate___block_invoke;
   v13[3] = &unk_279C7B6C8;
   v13[4] = self;
-  v5 = v4;
+  v5 = dateCopy;
   v14 = v5;
   v15 = &v16;
   [(HDSPSleepLockScreenManager *)self _withLock:v13];
@@ -768,8 +768,8 @@ uint64_t __43__HDSPSleepLockScreenManager__currentState__block_invoke(uint64_t a
 - (id)diagnosticDescription
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(HDSPSleepLockScreenManager *)self _currentState];
-  v4 = [v2 stringWithFormat:@"Current State: %@", v3];
+  _currentState = [(HDSPSleepLockScreenManager *)self _currentState];
+  v4 = [v2 stringWithFormat:@"Current State: %@", _currentState];
 
   return v4;
 }

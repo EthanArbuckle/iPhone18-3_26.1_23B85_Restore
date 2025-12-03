@@ -4,9 +4,9 @@
 - (int64_t)widgetState;
 - (void)didEnter;
 - (void)significantTimeChangeOccurred;
-- (void)sleepModeDidChange:(int64_t)a3 isUserRequested:(BOOL)a4;
-- (void)sleepScheduleModelDidChange:(id)a3;
-- (void)sleepScheduleStateDidChange:(unint64_t)a3;
+- (void)sleepModeDidChange:(int64_t)change isUserRequested:(BOOL)requested;
+- (void)sleepScheduleModelDidChange:(id)change;
+- (void)sleepScheduleStateDidChange:(unint64_t)change;
 - (void)updateState;
 @end
 
@@ -28,25 +28,25 @@
 
 - (void)didEnter
 {
-  v3 = [(HKSPStateMachineState *)self stateMachine];
-  v8 = [v3 currentContext];
+  stateMachine = [(HKSPStateMachineState *)self stateMachine];
+  currentContext = [stateMachine currentContext];
 
-  if ([v8 hasStateTransitionOrInitializing])
+  if ([currentContext hasStateTransitionOrInitializing])
   {
-    v4 = [v8 previousState];
-    v5 = [(HKSPStateMachineState *)self stateMachine];
-    v6 = [(HDSPSleepWidgetStateMachineState *)self widgetState];
-    if (v4)
+    previousState = [currentContext previousState];
+    stateMachine2 = [(HKSPStateMachineState *)self stateMachine];
+    widgetState = [(HDSPSleepWidgetStateMachineState *)self widgetState];
+    if (previousState)
     {
-      v7 = [v4 widgetState];
+      widgetState2 = [previousState widgetState];
     }
 
     else
     {
-      v7 = 0;
+      widgetState2 = 0;
     }
 
-    [v5 sleepWidgetStateDidChange:v6 previousState:v7];
+    [stateMachine2 sleepWidgetStateDidChange:widgetState previousState:widgetState2];
   }
 
   MEMORY[0x2821F96F8]();
@@ -64,79 +64,79 @@
     _os_log_impl(&dword_269B11000, v3, OS_LOG_TYPE_DEFAULT, "[%{public}@] determining state", v70, 0xCu);
   }
 
-  v5 = [(HKSPStateMachineState *)self stateMachine];
-  v6 = [v5 infoProvider];
-  v7 = [v5 infoProvider];
-  v8 = [v7 currentDate];
+  stateMachine = [(HKSPStateMachineState *)self stateMachine];
+  infoProvider = [stateMachine infoProvider];
+  infoProvider2 = [stateMachine infoProvider];
+  currentDate = [infoProvider2 currentDate];
 
-  v9 = [v6 sleepScheduleModel];
-  v10 = [v6 sleepScheduleState];
-  v11 = [v6 inUnscheduledSleepMode];
-  if (([v6 isOnboarded] & 1) == 0)
+  sleepScheduleModel = [infoProvider sleepScheduleModel];
+  sleepScheduleState = [infoProvider sleepScheduleState];
+  inUnscheduledSleepMode = [infoProvider inUnscheduledSleepMode];
+  if (([infoProvider isOnboarded] & 1) == 0)
   {
     v18 = HKSPLogForCategory();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
       v19 = objc_opt_class();
       v20 = v19;
-      v21 = [v5 notOnboardedState];
-      v22 = [v21 stateName];
+      notOnboardedState = [stateMachine notOnboardedState];
+      stateName = [notOnboardedState stateName];
       *v70 = 138543618;
       *&v70[4] = v19;
       *&v70[12] = 2114;
-      *&v70[14] = v22;
+      *&v70[14] = stateName;
       _os_log_impl(&dword_269B11000, v18, OS_LOG_TYPE_DEFAULT, "[%{public}@] not onboarded, determined state: %{public}@", v70, 0x16u);
     }
 
-    v17 = [v5 notOnboardedState];
+    notOnboardedState2 = [stateMachine notOnboardedState];
     goto LABEL_15;
   }
 
-  if (!v10)
+  if (!sleepScheduleState)
   {
     v23 = HKSPLogForCategory();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
     {
       v24 = objc_opt_class();
       v25 = v24;
-      v26 = [v5 disabledState];
-      v27 = [v26 stateName];
+      disabledState = [stateMachine disabledState];
+      stateName2 = [disabledState stateName];
       *v70 = 138543618;
       *&v70[4] = v24;
       *&v70[12] = 2114;
-      *&v70[14] = v27;
+      *&v70[14] = stateName2;
       _os_log_impl(&dword_269B11000, v23, OS_LOG_TYPE_DEFAULT, "[%{public}@] schedule disabled, determined state: %{public}@", v70, 0x16u);
     }
 
-    v17 = [v5 disabledState];
+    notOnboardedState2 = [stateMachine disabledState];
     goto LABEL_15;
   }
 
-  if (v11)
+  if (inUnscheduledSleepMode)
   {
     v12 = HKSPLogForCategory();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v13 = objc_opt_class();
       v14 = v13;
-      v15 = [v5 bedtimeInProgressState];
-      v16 = [v15 stateName];
+      bedtimeInProgressState = [stateMachine bedtimeInProgressState];
+      stateName3 = [bedtimeInProgressState stateName];
       *v70 = 138543618;
       *&v70[4] = v13;
       *&v70[12] = 2114;
-      *&v70[14] = v16;
+      *&v70[14] = stateName3;
       _os_log_impl(&dword_269B11000, v12, OS_LOG_TYPE_DEFAULT, "[%{public}@] in user requested sleep mode, determined state: %{public}@", v70, 0x16u);
     }
 
-    v17 = [v5 bedtimeInProgressState];
+    notOnboardedState2 = [stateMachine bedtimeInProgressState];
     goto LABEL_15;
   }
 
-  if (v10 > 2)
+  if (sleepScheduleState > 2)
   {
-    if (v10 != 6)
+    if (sleepScheduleState != 6)
     {
-      if (v10 != 3)
+      if (sleepScheduleState != 3)
       {
         goto LABEL_17;
       }
@@ -146,34 +146,34 @@
       {
         v31 = objc_opt_class();
         v32 = v31;
-        v33 = [v5 windDownState];
-        v34 = [v33 stateName];
+        windDownState = [stateMachine windDownState];
+        stateName4 = [windDownState stateName];
         *v70 = 138543618;
         *&v70[4] = v31;
         *&v70[12] = 2114;
-        *&v70[14] = v34;
+        *&v70[14] = stateName4;
         _os_log_impl(&dword_269B11000, v30, OS_LOG_TYPE_DEFAULT, "[%{public}@] determined state: %{public}@", v70, 0x16u);
       }
 
-      v17 = [v5 windDownState];
+      notOnboardedState2 = [stateMachine windDownState];
       goto LABEL_15;
     }
 
     goto LABEL_27;
   }
 
-  if (v10 != 1)
+  if (sleepScheduleState != 1)
   {
-    if (v10 != 2)
+    if (sleepScheduleState != 2)
     {
       goto LABEL_17;
     }
 
 LABEL_27:
-    v28 = [v9 previousEventWithIdentifier:*MEMORY[0x277D621B8] dueBeforeDate:{v8, *v70, *&v70[8]}];
+    v28 = [sleepScheduleModel previousEventWithIdentifier:*MEMORY[0x277D621B8] dueBeforeDate:{currentDate, *v70, *&v70[8]}];
     if (v28)
     {
-      [v8 timeIntervalSinceDate:v28];
+      [currentDate timeIntervalSinceDate:v28];
       v36 = v35;
     }
 
@@ -182,8 +182,8 @@ LABEL_27:
       v36 = 1.79769313e308;
     }
 
-    v37 = [v5 bedtimeState];
-    [v37 expirationDuration];
+    bedtimeState = [stateMachine bedtimeState];
+    [bedtimeState expirationDuration];
     v39 = v38;
 
     v40 = HKSPLogForCategory();
@@ -194,16 +194,16 @@ LABEL_27:
       {
         v47 = objc_opt_class();
         v48 = v47;
-        v49 = [v5 bedtimeInProgressState];
-        v50 = [v49 stateName];
+        bedtimeInProgressState2 = [stateMachine bedtimeInProgressState];
+        stateName5 = [bedtimeInProgressState2 stateName];
         *v70 = 138543618;
         *&v70[4] = v47;
         *&v70[12] = 2114;
-        *&v70[14] = v50;
+        *&v70[14] = stateName5;
         _os_log_impl(&dword_269B11000, v40, OS_LOG_TYPE_DEFAULT, "[%{public}@] determined state: %{public}@", v70, 0x16u);
       }
 
-      v46 = [v5 bedtimeInProgressState];
+      bedtimeInProgressState3 = [stateMachine bedtimeInProgressState];
     }
 
     else
@@ -212,31 +212,31 @@ LABEL_27:
       {
         v42 = objc_opt_class();
         v43 = v42;
-        v44 = [v5 bedtimeState];
-        v45 = [v44 stateName];
+        bedtimeState2 = [stateMachine bedtimeState];
+        stateName6 = [bedtimeState2 stateName];
         *v70 = 138543618;
         *&v70[4] = v42;
         *&v70[12] = 2114;
-        *&v70[14] = v45;
+        *&v70[14] = stateName6;
         _os_log_impl(&dword_269B11000, v40, OS_LOG_TYPE_DEFAULT, "[%{public}@] determined state: %{public}@", v70, 0x16u);
       }
 
-      v46 = [v5 bedtimeState];
+      bedtimeInProgressState3 = [stateMachine bedtimeState];
     }
 
 LABEL_39:
-    v51 = v46;
-    [v5 enterState:{v46, *v70, *&v70[8]}];
+    v51 = bedtimeInProgressState3;
+    [stateMachine enterState:{bedtimeInProgressState3, *v70, *&v70[8]}];
 
     goto LABEL_16;
   }
 
   if (![(HDSPSleepWidgetStateMachineState *)self shouldGoIntoUpcomingState])
   {
-    v28 = [v9 previousEventWithIdentifier:*MEMORY[0x277D621E0] dueBeforeDate:v8];
+    v28 = [sleepScheduleModel previousEventWithIdentifier:*MEMORY[0x277D621E0] dueBeforeDate:currentDate];
     if (v28)
     {
-      [v8 timeIntervalSinceDate:v28];
+      [currentDate timeIntervalSinceDate:v28];
       v53 = v52;
     }
 
@@ -259,8 +259,8 @@ LABEL_39:
       _os_log_impl(&dword_269B11000, v54, OS_LOG_TYPE_DEFAULT, "[%{public}@] wake up date: %{public}@ (secondsAfterWakeUp: %f)", v70, 0x20u);
     }
 
-    v57 = [v5 greetingState];
-    [v57 expirationDuration];
+    greetingState = [stateMachine greetingState];
+    [greetingState expirationDuration];
     v59 = v58;
 
     v60 = HKSPLogForCategory();
@@ -271,16 +271,16 @@ LABEL_39:
       {
         v66 = objc_opt_class();
         v67 = v66;
-        v68 = [v5 waitingState];
-        v69 = [v68 stateName];
+        waitingState = [stateMachine waitingState];
+        stateName7 = [waitingState stateName];
         *v70 = 138543618;
         *&v70[4] = v66;
         *&v70[12] = 2114;
-        *&v70[14] = v69;
+        *&v70[14] = stateName7;
         _os_log_impl(&dword_269B11000, v60, OS_LOG_TYPE_DEFAULT, "[%{public}@] determined state: %{public}@", v70, 0x16u);
       }
 
-      v46 = [v5 waitingState];
+      bedtimeInProgressState3 = [stateMachine waitingState];
     }
 
     else
@@ -289,25 +289,25 @@ LABEL_39:
       {
         v62 = objc_opt_class();
         v63 = v62;
-        v64 = [v5 greetingState];
-        v65 = [v64 stateName];
+        greetingState2 = [stateMachine greetingState];
+        stateName8 = [greetingState2 stateName];
         *v70 = 138543618;
         *&v70[4] = v62;
         *&v70[12] = 2114;
-        *&v70[14] = v65;
+        *&v70[14] = stateName8;
         _os_log_impl(&dword_269B11000, v60, OS_LOG_TYPE_DEFAULT, "[%{public}@] determined state: %{public}@", v70, 0x16u);
       }
 
-      v46 = [v5 greetingState];
+      bedtimeInProgressState3 = [stateMachine greetingState];
     }
 
     goto LABEL_39;
   }
 
-  v17 = [v5 upcomingState];
+  notOnboardedState2 = [stateMachine upcomingState];
 LABEL_15:
-  v28 = v17;
-  [v5 enterState:{v17, *v70}];
+  v28 = notOnboardedState2;
+  [stateMachine enterState:{notOnboardedState2, *v70}];
 LABEL_16:
 
 LABEL_17:
@@ -317,26 +317,26 @@ LABEL_17:
 - (BOOL)shouldGoIntoUpcomingState
 {
   v19 = *MEMORY[0x277D85DE8];
-  v2 = [(HKSPStateMachineState *)self stateMachine];
-  v3 = [v2 infoProvider];
-  v4 = [v3 currentDate];
+  stateMachine = [(HKSPStateMachineState *)self stateMachine];
+  infoProvider = [stateMachine infoProvider];
+  currentDate = [infoProvider currentDate];
 
-  v5 = [v2 waitingState];
-  v6 = [v5 expirationDate];
+  waitingState = [stateMachine waitingState];
+  expirationDate = [waitingState expirationDate];
 
-  if (v6 && [v4 hksp_isAfterOrSameAsDate:v6])
+  if (expirationDate && [currentDate hksp_isAfterOrSameAsDate:expirationDate])
   {
     v7 = HKSPLogForCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v8 = objc_opt_class();
       v9 = v8;
-      v10 = [v2 upcomingState];
-      v11 = [v10 stateName];
+      upcomingState = [stateMachine upcomingState];
+      stateName = [upcomingState stateName];
       v15 = 138543618;
       v16 = v8;
       v17 = 2114;
-      v18 = v11;
+      v18 = stateName;
       _os_log_impl(&dword_269B11000, v7, OS_LOG_TYPE_DEFAULT, "[%{public}@] determined state: %{public}@", &v15, 0x16u);
     }
 
@@ -352,12 +352,12 @@ LABEL_17:
   return v12;
 }
 
-- (void)sleepModeDidChange:(int64_t)a3 isUserRequested:(BOOL)a4
+- (void)sleepModeDidChange:(int64_t)change isUserRequested:(BOOL)requested
 {
-  v4 = a4;
+  requestedCopy = requested;
   v13 = *MEMORY[0x277D85DE8];
-  v6 = [(HKSPStateMachineState *)self stateMachine];
-  if (a3 == 2 && v4)
+  stateMachine = [(HKSPStateMachineState *)self stateMachine];
+  if (change == 2 && requestedCopy)
   {
     v7 = HKSPLogForCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -368,18 +368,18 @@ LABEL_17:
       _os_log_impl(&dword_269B11000, v7, OS_LOG_TYPE_DEFAULT, "[%{public}@] user turned on sleep mode", &v11, 0xCu);
     }
 
-    v9 = [v6 bedtimeInProgressState];
-    [v6 enterState:v9];
+    bedtimeInProgressState = [stateMachine bedtimeInProgressState];
+    [stateMachine enterState:bedtimeInProgressState];
   }
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sleepScheduleStateDidChange:(unint64_t)a3
+- (void)sleepScheduleStateDidChange:(unint64_t)change
 {
   v14 = *MEMORY[0x277D85DE8];
-  v5 = [(HKSPStateMachineState *)self stateMachine];
-  if (a3 == 3)
+  stateMachine = [(HKSPStateMachineState *)self stateMachine];
+  if (change == 3)
   {
     v9 = HKSPLogForCategory();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -390,15 +390,15 @@ LABEL_17:
       _os_log_impl(&dword_269B11000, v9, OS_LOG_TYPE_DEFAULT, "[%{public}@] schedule state is wind down", v13, 0xCu);
     }
 
-    v8 = [v5 windDownState];
+    windDownState = [stateMachine windDownState];
   }
 
   else
   {
-    if (a3)
+    if (change)
     {
-      v11 = [(HKSPStateMachineState *)self stateMachine];
-      [v11 updateState];
+      stateMachine2 = [(HKSPStateMachineState *)self stateMachine];
+      [stateMachine2 updateState];
       goto LABEL_11;
     }
 
@@ -411,39 +411,39 @@ LABEL_17:
       _os_log_impl(&dword_269B11000, v6, OS_LOG_TYPE_DEFAULT, "[%{public}@] schedule state is disabled", v13, 0xCu);
     }
 
-    v8 = [v5 disabledState];
+    windDownState = [stateMachine disabledState];
   }
 
-  v11 = v8;
-  [v5 enterState:{v8, *v13}];
+  stateMachine2 = windDownState;
+  [stateMachine enterState:{windDownState, *v13}];
 LABEL_11:
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sleepScheduleModelDidChange:(id)a3
+- (void)sleepScheduleModelDidChange:(id)change
 {
-  v8 = [(HKSPStateMachineState *)self stateMachine];
-  v4 = [v8 infoProvider];
-  if (![v4 isOnboarded])
+  stateMachine = [(HKSPStateMachineState *)self stateMachine];
+  infoProvider = [stateMachine infoProvider];
+  if (![infoProvider isOnboarded])
   {
 
     goto LABEL_5;
   }
 
-  v5 = [(HDSPSleepWidgetStateMachineState *)self widgetStateHasTimeComponent];
+  widgetStateHasTimeComponent = [(HDSPSleepWidgetStateMachineState *)self widgetStateHasTimeComponent];
 
-  if (v5)
+  if (widgetStateHasTimeComponent)
   {
 LABEL_5:
-    v6 = [(HKSPStateMachineState *)self stateMachine];
-    [v6 updateState];
+    stateMachine2 = [(HKSPStateMachineState *)self stateMachine];
+    [stateMachine2 updateState];
   }
 
   if ([(HDSPSleepWidgetStateMachineState *)self reloadsWidgetOnModelChange])
   {
-    v7 = [(HKSPStateMachineState *)self stateMachine];
-    [v7 sleepWidgetShouldReload];
+    stateMachine3 = [(HKSPStateMachineState *)self stateMachine];
+    [stateMachine3 sleepWidgetShouldReload];
   }
 }
 
@@ -451,14 +451,14 @@ LABEL_5:
 {
   if ([(HDSPSleepWidgetStateMachineState *)self widgetStateHasTimeComponent])
   {
-    v3 = [(HKSPStateMachineState *)self stateMachine];
-    [v3 updateState];
+    stateMachine = [(HKSPStateMachineState *)self stateMachine];
+    [stateMachine updateState];
   }
 
   if ([(HDSPSleepWidgetStateMachineState *)self reloadsWidgetOnTimeChange])
   {
-    v4 = [(HKSPStateMachineState *)self stateMachine];
-    [v4 sleepWidgetShouldReload];
+    stateMachine2 = [(HKSPStateMachineState *)self stateMachine];
+    [stateMachine2 sleepWidgetShouldReload];
   }
 }
 

@@ -1,10 +1,10 @@
 @interface BPSTTRMetadata
 - (BPSTTRMetadata)init;
-- (BPSTTRMetadata)initWithComponent:(unint64_t)a3;
-- (BPSTTRMetadata)initWithComponentName:(id)a3 componentVersion:(id)a4 componentID:(int64_t)a5;
+- (BPSTTRMetadata)initWithComponent:(unint64_t)component;
+- (BPSTTRMetadata)initWithComponentName:(id)name componentVersion:(id)version componentID:(int64_t)d;
 - (id)_parameters;
 - (id)queryItems;
-- (void)_setComponentValuesFromComponent:(unint64_t)a3;
+- (void)_setComponentValuesFromComponent:(unint64_t)component;
 @end
 
 @implementation BPSTTRMetadata
@@ -23,7 +23,7 @@
   return v3;
 }
 
-- (BPSTTRMetadata)initWithComponent:(unint64_t)a3
+- (BPSTTRMetadata)initWithComponent:(unint64_t)component
 {
   v7.receiver = self;
   v7.super_class = BPSTTRMetadata;
@@ -31,35 +31,35 @@
   v5 = v4;
   if (v4)
   {
-    [(BPSTTRMetadata *)v4 _setComponentValuesFromComponent:a3];
+    [(BPSTTRMetadata *)v4 _setComponentValuesFromComponent:component];
   }
 
   return v5;
 }
 
-- (BPSTTRMetadata)initWithComponentName:(id)a3 componentVersion:(id)a4 componentID:(int64_t)a5
+- (BPSTTRMetadata)initWithComponentName:(id)name componentVersion:(id)version componentID:(int64_t)d
 {
-  v8 = a3;
-  v9 = a4;
+  nameCopy = name;
+  versionCopy = version;
   v13.receiver = self;
   v13.super_class = BPSTTRMetadata;
   v10 = [(BPSTTRMetadata *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    [(BPSTTRMetadata *)v10 setComponentName:v8];
-    [(BPSTTRMetadata *)v11 setComponentVersion:v9];
-    [(BPSTTRMetadata *)v11 setComponentID:a5];
+    [(BPSTTRMetadata *)v10 setComponentName:nameCopy];
+    [(BPSTTRMetadata *)v11 setComponentVersion:versionCopy];
+    [(BPSTTRMetadata *)v11 setComponentID:d];
   }
 
   return v11;
 }
 
-- (void)_setComponentValuesFromComponent:(unint64_t)a3
+- (void)_setComponentValuesFromComponent:(unint64_t)component
 {
-  if (a3 > 1)
+  if (component > 1)
   {
-    if (a3 == 2)
+    if (component == 2)
     {
       [(BPSTTRMetadata *)self setComponentID:871848];
       v5 = @"HealthKit";
@@ -67,7 +67,7 @@
 
     else
     {
-      if (a3 != 3)
+      if (component != 3)
       {
         goto LABEL_8;
       }
@@ -81,7 +81,7 @@
     goto LABEL_15;
   }
 
-  if (!a3)
+  if (!component)
   {
 LABEL_12:
     [(BPSTTRMetadata *)self setComponentID:576381];
@@ -90,7 +90,7 @@ LABEL_12:
     return;
   }
 
-  if (a3 != 1)
+  if (component != 1)
   {
 LABEL_8:
     v6 = bps_setup_log();
@@ -114,24 +114,24 @@ LABEL_15:
 - (id)_parameters
 {
   v20[5] = *MEMORY[0x277D85DE8];
-  v3 = [(BPSTTRMetadata *)self componentName];
-  if (!v3)
+  componentName = [(BPSTTRMetadata *)self componentName];
+  if (!componentName)
   {
     goto LABEL_9;
   }
 
-  v4 = v3;
-  v5 = [(BPSTTRMetadata *)self componentVersion];
-  if (!v5)
+  v4 = componentName;
+  componentVersion = [(BPSTTRMetadata *)self componentVersion];
+  if (!componentVersion)
   {
 
     goto LABEL_9;
   }
 
-  v6 = v5;
-  v7 = [(BPSTTRMetadata *)self componentID];
+  v6 = componentVersion;
+  componentID = [(BPSTTRMetadata *)self componentID];
 
-  if (v7 == -1)
+  if (componentID == -1)
   {
 LABEL_9:
     v13 = MEMORY[0x277CBEC10];
@@ -139,15 +139,15 @@ LABEL_9:
   }
 
   v19[0] = @"ComponentName";
-  v8 = [(BPSTTRMetadata *)self componentName];
-  v20[0] = v8;
+  componentName2 = [(BPSTTRMetadata *)self componentName];
+  v20[0] = componentName2;
   v19[1] = @"ComponentVersion";
-  v9 = [(BPSTTRMetadata *)self componentVersion];
-  v20[1] = v9;
+  componentVersion2 = [(BPSTTRMetadata *)self componentVersion];
+  v20[1] = componentVersion2;
   v19[2] = @"ComponentID";
   v10 = [MEMORY[0x277CCABB0] numberWithInteger:{-[BPSTTRMetadata componentID](self, "componentID")}];
-  v11 = [v10 stringValue];
-  v20[2] = v11;
+  stringValue = [v10 stringValue];
+  v20[2] = stringValue;
   v20[3] = @"Watch";
   v19[3] = @"DeviceClasses";
   v19[4] = @"Keywords";
@@ -155,20 +155,20 @@ LABEL_9:
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:v19 count:5];
   v13 = [v12 mutableCopy];
 
-  v14 = [(BPSTTRMetadata *)self title];
+  title = [(BPSTTRMetadata *)self title];
 
-  if (v14)
+  if (title)
   {
-    v15 = [(BPSTTRMetadata *)self title];
-    [v13 setObject:v15 forKey:@"Title"];
+    title2 = [(BPSTTRMetadata *)self title];
+    [v13 setObject:title2 forKey:@"Title"];
   }
 
-  v16 = [(BPSTTRMetadata *)self radarDescription];
+  radarDescription = [(BPSTTRMetadata *)self radarDescription];
 
-  if (v16)
+  if (radarDescription)
   {
-    v17 = [(BPSTTRMetadata *)self radarDescription];
-    [v13 setObject:v17 forKey:@"Description"];
+    radarDescription2 = [(BPSTTRMetadata *)self radarDescription];
+    [v13 setObject:radarDescription2 forKey:@"Description"];
   }
 
 LABEL_10:
@@ -180,12 +180,12 @@ LABEL_10:
 {
   v19 = *MEMORY[0x277D85DE8];
   v3 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v4 = [(BPSTTRMetadata *)self _parameters];
+  _parameters = [(BPSTTRMetadata *)self _parameters];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v5 = [_parameters countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -196,16 +196,16 @@ LABEL_10:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(_parameters);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v4 objectForKey:v9];
+        v10 = [_parameters objectForKey:v9];
         v11 = [objc_alloc(MEMORY[0x277CCAD18]) initWithName:v9 value:v10];
         [v3 addObject:v11];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [_parameters countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);

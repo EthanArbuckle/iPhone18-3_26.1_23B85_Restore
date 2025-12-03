@@ -1,19 +1,19 @@
 @interface CADPredicateMonitorAgent
-- (CADPredicateMonitorAgent)initWithPredicate:(id)a3 filter:(unint64_t)a4 options:(unint64_t)a5 token:(int)a6 connection:(id)a7;
-- (id)filterWithPredicate:(id)a3;
-- (void)handleChangeReport:(id)a3;
+- (CADPredicateMonitorAgent)initWithPredicate:(id)predicate filter:(unint64_t)filter options:(unint64_t)options token:(int)token connection:(id)connection;
+- (id)filterWithPredicate:(id)predicate;
+- (void)handleChangeReport:(id)report;
 - (void)reset;
 - (void)start;
 - (void)stop;
-- (void)updatePredicate:(id)a3 propertyFilter:(unint64_t)a4 options:(unint64_t)a5 generation:(int)a6;
+- (void)updatePredicate:(id)predicate propertyFilter:(unint64_t)filter options:(unint64_t)options generation:(int)generation;
 @end
 
 @implementation CADPredicateMonitorAgent
 
 - (void)start
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:self selector:sel_handleChangeReport_ name:*MEMORY[0x277CF7558] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_handleChangeReport_ name:*MEMORY[0x277CF7558] object:0];
 
   [(CADPredicateMonitorAgent *)self reset];
 }
@@ -55,11 +55,11 @@
       v14 = 3221225472;
       v15 = __33__CADPredicateMonitorAgent_reset__block_invoke_2;
       v16 = &unk_27851A238;
-      v17 = self;
+      selfCopy = self;
       v19 = resetGeneration + 1;
       objc_copyWeak(&v18, &location);
       [(CADFetchCalendarItemsWithPredicateOperation *)v12 setStartCallback:&v13];
-      [WeakRetained addOperation:{v12, v13, v14, v15, v16, v17}];
+      [WeakRetained addOperation:{v12, v13, v14, v15, v16, selfCopy}];
       objc_destroyWeak(&v18);
       objc_destroyWeak(&location);
     }
@@ -90,21 +90,21 @@ void __33__CADPredicateMonitorAgent_reset__block_invoke_2(uint64_t a1)
   os_unfair_lock_unlock(v6);
 }
 
-- (CADPredicateMonitorAgent)initWithPredicate:(id)a3 filter:(unint64_t)a4 options:(unint64_t)a5 token:(int)a6 connection:(id)a7
+- (CADPredicateMonitorAgent)initWithPredicate:(id)predicate filter:(unint64_t)filter options:(unint64_t)options token:(int)token connection:(id)connection
 {
-  v13 = a3;
-  v14 = a7;
+  predicateCopy = predicate;
+  connectionCopy = connection;
   v20.receiver = self;
   v20.super_class = CADPredicateMonitorAgent;
   v15 = [(CADPredicateMonitorAgent *)&v20 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_predicate, a3);
-    v16->_filter = a4;
-    v16->_options = a5;
-    v16->_token = a6;
-    objc_storeWeak(&v16->_conn, v14);
+    objc_storeStrong(&v15->_predicate, predicate);
+    v16->_filter = filter;
+    v16->_options = options;
+    v16->_token = token;
+    objc_storeWeak(&v16->_conn, connectionCopy);
     v17 = objc_alloc_init(CADEventOccurrenceSet);
     occurrences = v16->_occurrences;
     v16->_occurrences = v17;
@@ -115,22 +115,22 @@ void __33__CADPredicateMonitorAgent_reset__block_invoke_2(uint64_t a1)
   return v16;
 }
 
-- (void)updatePredicate:(id)a3 propertyFilter:(unint64_t)a4 options:(unint64_t)a5 generation:(int)a6
+- (void)updatePredicate:(id)predicate propertyFilter:(unint64_t)filter options:(unint64_t)options generation:(int)generation
 {
   v54 = *MEMORY[0x277D85DE8];
-  v28 = a3;
+  predicateCopy = predicate;
   os_unfair_lock_lock(&self->_lock);
   predicate = self->_predicate;
-  v33 = a6;
-  self->_predicateGeneration = a6;
-  v27 = predicate;
-  objc_storeStrong(&self->_predicate, a3);
-  self->_filter = a4;
-  self->_options = a5;
+  generationCopy = generation;
+  self->_predicateGeneration = generation;
+  predicateCopy2 = predicate;
+  objc_storeStrong(&self->_predicate, predicate);
+  self->_filter = filter;
+  self->_options = options;
   resetGeneration = self->_resetGeneration;
   os_unfair_lock_unlock(&self->_lock);
   v52 = 0;
-  v12 = [v28 incrementalPredicatesToExpandResultsFromPredicate:v27 filteringRequiredToRemoveEventsNoLongerMatched:&v52];
+  v12 = [predicateCopy incrementalPredicatesToExpandResultsFromPredicate:predicateCopy2 filteringRequiredToRemoveEventsNoLongerMatched:&v52];
   v29 = v12;
   if (v12)
   {
@@ -153,9 +153,9 @@ void __33__CADPredicateMonitorAgent_reset__block_invoke_2(uint64_t a1)
       v47 = resetGeneration;
       objc_copyWeak(v46, &location);
       v45 = v50;
-      v44 = v28;
+      v44 = predicateCopy;
       v46[1] = v31;
-      v48 = a6;
+      generationCopy2 = generation;
       [(NSBlockOperation *)v13 addExecutionBlock:v43];
       WeakRetained = objc_loadWeakRetained(&self->_conn);
       [WeakRetained addOperation:v13];
@@ -196,7 +196,7 @@ void __33__CADPredicateMonitorAgent_reset__block_invoke_2(uint64_t a1)
           v37[5] = v50;
           v37[6] = v16;
           v37[7] = v31;
-          v38 = v33;
+          v38 = generationCopy;
           v24 = [(CADFetchCalendarItemsWithPredicateOperation *)v21 initWithPredicate:v20 entityType:2 connection:v22 fetchIdentifier:token completionHandler:v37];
 
           objc_initWeak(&location, v24);
@@ -225,7 +225,7 @@ void __33__CADPredicateMonitorAgent_reset__block_invoke_2(uint64_t a1)
 
     if ((v52 & 1) == 0 && ![obj count])
     {
-      [(CADPredicateMonitorAgent *)self reportResultsReset:0 newAndUpdated:0 removed:0 reportPredicateGeneration:1 generation:v33];
+      [(CADPredicateMonitorAgent *)self reportResultsReset:0 newAndUpdated:0 removed:0 reportPredicateGeneration:1 generation:generationCopy];
     }
 
     _Block_object_dispose(v50, 8);
@@ -368,9 +368,9 @@ void __78__CADPredicateMonitorAgent_updatePredicate_propertyFilter_options_gener
   os_unfair_lock_unlock(v2 + 16);
 }
 
-- (id)filterWithPredicate:(id)a3
+- (id)filterWithPredicate:(id)predicate
 {
-  v4 = a3;
+  predicateCopy = predicate;
   v5 = self->_occurrences;
   v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v7 = objc_alloc_init(MEMORY[0x277CBEB38]);
@@ -380,12 +380,12 @@ void __78__CADPredicateMonitorAgent_updatePredicate_propertyFilter_options_gener
   v15[3] = &unk_27851A2B0;
   v15[4] = self;
   v16 = v5;
-  v17 = v4;
+  v17 = predicateCopy;
   v18 = v6;
   v8 = v7;
   v19 = v8;
   v9 = v6;
-  v10 = v4;
+  v10 = predicateCopy;
   v11 = v5;
   [(CADEventOccurrenceSet *)v11 enumerateDatabases:v15];
   v12 = v19;
@@ -482,8 +482,8 @@ void __48__CADPredicateMonitorAgent_filterWithPredicate___block_invoke_3(uint64_
 - (void)stop
 {
   self->_shutdown = 1;
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 }
 
 void __33__CADPredicateMonitorAgent_reset__block_invoke(uint64_t a1, void *a2)
@@ -529,21 +529,21 @@ void __33__CADPredicateMonitorAgent_reset__block_invoke(uint64_t a1, void *a2)
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleChangeReport:(id)a3
+- (void)handleChangeReport:(id)report
 {
-  v4 = a3;
+  reportCopy = report;
   if (!self->_shutdown)
   {
     WeakRetained = objc_loadWeakRetained(&self->_conn);
     if (WeakRetained)
     {
-      v6 = [v4 userInfo];
-      v7 = [v6 objectForKeyedSubscript:@"path"];
-      v8 = [v6 objectForKeyedSubscript:@"auxDBID"];
-      v9 = [v8 intValue];
-      if ([WeakRetained hasDatabaseAtPath:v7 withDatabaseID:v9])
+      userInfo = [reportCopy userInfo];
+      v7 = [userInfo objectForKeyedSubscript:@"path"];
+      v8 = [userInfo objectForKeyedSubscript:@"auxDBID"];
+      intValue = [v8 intValue];
+      if ([WeakRetained hasDatabaseAtPath:v7 withDatabaseID:intValue])
       {
-        v10 = [v6 objectForKeyedSubscript:@"report"];
+        v10 = [userInfo objectForKeyedSubscript:@"report"];
         os_unfair_lock_lock(&self->_lock);
         resetGeneration = self->_resetGeneration;
         os_unfair_lock_unlock(&self->_lock);
@@ -555,7 +555,7 @@ void __33__CADPredicateMonitorAgent_reset__block_invoke(uint64_t a1, void *a2)
         v15[4] = self;
         v16 = v10;
         v17 = resetGeneration;
-        v18 = v9;
+        v18 = intValue;
         v13 = v10;
         v14 = [CADClientBlockOperation blockOperationWithToken:token block:v15];
         [WeakRetained addOperation:v14];

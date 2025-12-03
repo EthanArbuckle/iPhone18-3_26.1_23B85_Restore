@@ -1,9 +1,9 @@
 @interface HMDLegacyV4Model
-+ (Class)hmbModelClassForHMDModelClass:(Class)a3;
-+ (id)createWithLegacyRecord:(id)a3 modelContainer:(id)a4 error:(id *)a5;
++ (Class)hmbModelClassForHMDModelClass:(Class)class;
++ (id)createWithLegacyRecord:(id)record modelContainer:(id)container error:(id *)error;
 + (id)hmbProperties;
 - (id)convertToHMDModelObject;
-- (id)encodeWithExistingRecord:(id)a3 cloudZone:(id)a4 modelContainer:(id)a5 error:(id *)a6;
+- (id)encodeWithExistingRecord:(id)record cloudZone:(id)zone modelContainer:(id)container error:(id *)error;
 - (id)hmbType;
 @end
 
@@ -21,24 +21,24 @@
     _Unwind_Resume(v15);
   }
 
-  v4 = [(HMBModel *)self hmbParentModelID];
-  v5 = [MEMORY[0x277CCAD78] hmf_zeroUUID];
-  if ([v4 hmf_isEqualToUUID:v5])
+  hmbParentModelID = [(HMBModel *)self hmbParentModelID];
+  hmf_zeroUUID = [MEMORY[0x277CCAD78] hmf_zeroUUID];
+  if ([hmbParentModelID hmf_isEqualToUUID:hmf_zeroUUID])
   {
-    v6 = 0;
+    hmbParentModelID2 = 0;
   }
 
   else
   {
-    v6 = [(HMBModel *)self hmbParentModelID];
+    hmbParentModelID2 = [(HMBModel *)self hmbParentModelID];
   }
 
   v7 = objc_alloc([v3 hmdModelClass]);
-  v8 = [(HMBModel *)self hmbModelID];
-  v9 = [v7 initWithUUID:v8 parentUUID:v6];
+  hmbModelID = [(HMBModel *)self hmbModelID];
+  v9 = [v7 initWithUUID:hmbModelID parentUUID:hmbParentModelID2];
 
-  v10 = [(HMBModel *)self hmbReserved];
-  v11 = [v10 mutableCopy];
+  hmbReserved = [(HMBModel *)self hmbReserved];
+  v11 = [hmbReserved mutableCopy];
   v12 = v9[1];
   v9[1] = v11;
 
@@ -48,24 +48,24 @@
   return v9;
 }
 
-- (id)encodeWithExistingRecord:(id)a3 cloudZone:(id)a4 modelContainer:(id)a5 error:(id *)a6
+- (id)encodeWithExistingRecord:(id)record cloudZone:(id)zone modelContainer:(id)container error:(id *)error
 {
   v41 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  recordCopy = record;
+  zoneCopy = zone;
+  containerCopy = container;
   v36 = 0;
-  if (a6)
+  if (error)
   {
-    v13 = a6;
+    errorCopy = error;
   }
 
   else
   {
-    v13 = &v36;
+    errorCopy = &v36;
   }
 
-  v14 = v11;
+  v14 = zoneCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -84,12 +84,12 @@
     _HMFPreconditionFailure();
   }
 
-  v17 = [(HMDLegacyV4Model *)self convertToHMDModelObject];
-  v18 = [v17 encodeWithEncoding:1 for:1 error:v13];
+  convertToHMDModelObject = [(HMDLegacyV4Model *)self convertToHMDModelObject];
+  v18 = [convertToHMDModelObject encodeWithEncoding:1 for:1 error:errorCopy];
   if (v18)
   {
-    v19 = [(HMBModel *)self hmbParentModelID];
-    v20 = [v16 recordWithExistingRecord:v10 modelData:v18 parentModelID:v19 modelContainer:v12 error:v13];
+    hmbParentModelID = [(HMBModel *)self hmbParentModelID];
+    v20 = [v16 recordWithExistingRecord:recordCopy modelData:v18 parentModelID:hmbParentModelID modelContainer:containerCopy error:errorCopy];
 
     if (v20)
     {
@@ -99,12 +99,12 @@
     else
     {
       context = objc_autoreleasePoolPush();
-      v27 = self;
+      selfCopy = self;
       v28 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
       {
         v29 = HMFGetLogIdentifier();
-        v30 = *v13;
+        v30 = *errorCopy;
         *buf = 138543618;
         v38 = v29;
         v31 = v29;
@@ -120,13 +120,13 @@
   else
   {
     v22 = objc_autoreleasePoolPush();
-    v23 = self;
+    selfCopy2 = self;
     v24 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
     {
       HMFGetLogIdentifier();
       v25 = contexta = v22;
-      v26 = *v13;
+      v26 = *errorCopy;
       *buf = 138543618;
       v38 = v25;
       v39 = 2112;
@@ -152,11 +152,11 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 hmdTypeName];
+    hmdTypeName = [v2 hmdTypeName];
 
     os_unfair_lock_unlock(&lock);
 
-    return v4;
+    return hmdTypeName;
   }
 
   else
@@ -168,23 +168,23 @@
   return result;
 }
 
-+ (id)createWithLegacyRecord:(id)a3 modelContainer:(id)a4 error:(id *)a5
++ (id)createWithLegacyRecord:(id)record modelContainer:(id)container error:(id *)error
 {
   v78 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  recordCopy = record;
+  containerCopy = container;
   v71 = 0;
-  if (a5)
+  if (error)
   {
-    v10 = a5;
+    errorCopy = error;
   }
 
   else
   {
-    v10 = &v71;
+    errorCopy = &v71;
   }
 
-  v11 = v9;
+  v11 = containerCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -203,17 +203,17 @@
     _HMFPreconditionFailure();
   }
 
-  v14 = [v8 recordType];
-  v15 = [v14 isEqual:@"ObjectRecord"];
+  recordType = [recordCopy recordType];
+  v15 = [recordType isEqual:@"ObjectRecord"];
 
   if (v15)
   {
-    v16 = [v8 objectForKey:@"k00"];
+    v16 = [recordCopy objectForKey:@"k00"];
     if (v16)
     {
       v17 = MEMORY[0x277CCAAC8];
-      v18 = [MEMORY[0x277D170A8] allowedTypes];
-      v19 = [v17 unarchivedObjectOfClasses:v18 fromData:v16 error:v10];
+      allowedTypes = [MEMORY[0x277D170A8] allowedTypes];
+      v19 = [v17 unarchivedObjectOfClasses:allowedTypes fromData:v16 error:errorCopy];
 
       if (v19)
       {
@@ -259,7 +259,7 @@
         if ([v40 unsignedIntegerValue] == 1)
         {
           v41 = [MEMORY[0x277CCACA8] stringWithFormat:@"k%02lu", 1];
-          v65 = [v8 objectForKey:v41];
+          v65 = [recordCopy objectForKey:v41];
           v42 = [v13 decryptData:? decompress:? error:?];
           v43 = 0;
           v64 = v43;
@@ -269,7 +269,7 @@
             v63 = v41;
             v67 = v19;
             v45 = objc_autoreleasePoolPush();
-            v46 = a1;
+            selfCopy = self;
             v47 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v47, OS_LOG_TYPE_DEFAULT))
             {
@@ -302,15 +302,15 @@
             v50 = v65;
           }
 
-          v58 = [HMDBackingStoreModelObject objectFromData:v42 encoding:1 error:v10];
-          v29 = [v58 convertToLegacyV4];
-          [v29 hmbAssociateWithContainer:v13];
+          v58 = [HMDBackingStoreModelObject objectFromData:v42 encoding:1 error:errorCopy];
+          convertToLegacyV4 = [v58 convertToLegacyV4];
+          [convertToLegacyV4 hmbAssociateWithContainer:v13];
         }
 
         else
         {
           v52 = objc_autoreleasePoolPush();
-          v53 = a1;
+          selfCopy2 = self;
           v54 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v54, OS_LOG_TYPE_ERROR))
           {
@@ -333,19 +333,19 @@
 
           objc_autoreleasePoolPop(v52);
           [MEMORY[0x277CCA9B8] hmfErrorWithCode:15];
-          *v10 = v29 = 0;
+          *errorCopy = convertToLegacyV4 = 0;
         }
       }
 
       else
       {
         v34 = objc_autoreleasePoolPush();
-        v35 = a1;
+        selfCopy3 = self;
         v36 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
         {
           v37 = HMFGetLogIdentifier();
-          v38 = *v10;
+          v38 = *errorCopy;
           *buf = 138543874;
           v73 = v37;
           v74 = 2112;
@@ -356,15 +356,15 @@
         }
 
         objc_autoreleasePoolPop(v34);
-        if (*v10)
+        if (*errorCopy)
         {
-          v29 = 0;
+          convertToLegacyV4 = 0;
         }
 
         else
         {
           [MEMORY[0x277CCA9B8] hmfErrorWithCode:15];
-          *v10 = v29 = 0;
+          *errorCopy = convertToLegacyV4 = 0;
         }
       }
     }
@@ -372,7 +372,7 @@
     else
     {
       v30 = objc_autoreleasePoolPush();
-      v31 = a1;
+      selfCopy4 = self;
       v32 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
       {
@@ -384,34 +384,34 @@
 
       objc_autoreleasePoolPop(v30);
       [MEMORY[0x277CCA9B8] hmfErrorWithCode:15];
-      *v10 = v29 = 0;
+      *errorCopy = convertToLegacyV4 = 0;
     }
   }
 
   else
   {
     v24 = objc_autoreleasePoolPush();
-    v25 = a1;
+    selfCopy5 = self;
     v26 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
     {
       v27 = HMFGetLogIdentifier();
-      v28 = [v8 recordType];
+      recordType2 = [recordCopy recordType];
       *buf = 138543618;
       v73 = v27;
       v74 = 2112;
-      v75 = v28;
+      v75 = recordType2;
       _os_log_impl(&dword_229538000, v26, OS_LOG_TYPE_ERROR, "%{public}@Unexpected legacy record type: %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v24);
     [MEMORY[0x277CCA9B8] hmfErrorWithCode:15];
-    *v10 = v29 = 0;
+    *errorCopy = convertToLegacyV4 = 0;
   }
 
   v59 = *MEMORY[0x277D85DE8];
 
-  return v29;
+  return convertToLegacyV4;
 }
 
 + (id)hmbProperties
@@ -421,11 +421,11 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 properties];
+    properties = [v2 properties];
 
     os_unfair_lock_unlock(&lock);
 
-    return v4;
+    return properties;
   }
 
   else
@@ -437,7 +437,7 @@
   return result;
 }
 
-+ (Class)hmbModelClassForHMDModelClass:(Class)a3
++ (Class)hmbModelClassForHMDModelClass:(Class)class
 {
   v23 = *MEMORY[0x277D85DE8];
   if (hmbModelClassForHMDModelClass__onceToken != -1)
@@ -446,13 +446,13 @@
   }
 
   os_unfair_lock_lock_with_options();
-  if (!a3)
+  if (!class)
   {
     _HMFPreconditionFailure();
     __break(1u);
   }
 
-  v5 = [__classMap objectForKey:a3];
+  v5 = [__classMap objectForKey:class];
   if (v5)
   {
     v6 = v5;
@@ -461,14 +461,14 @@
   else
   {
     v7 = MEMORY[0x277CCACA8];
-    v8 = NSStringFromClass(a3);
+    v8 = NSStringFromClass(class);
     v9 = [v7 stringWithFormat:@"%@%@", @"WRAP_", v8];
 
     v10 = objc_opt_class();
     ClassPair = objc_allocateClassPair(v10, [v9 UTF8String], 0);
     objc_registerClassPair(ClassPair);
     v12 = objc_autoreleasePoolPush();
-    v13 = a1;
+    selfCopy = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
@@ -481,9 +481,9 @@
     }
 
     objc_autoreleasePoolPop(v12);
-    v16 = [[HMDLegacyV4ModelInfo alloc] initWithClass:a3];
+    v16 = [[HMDLegacyV4ModelInfo alloc] initWithClass:class];
     [__propertiesMap setObject:v16 forKey:ClassPair];
-    [__classMap setObject:ClassPair forKey:a3];
+    [__classMap setObject:ClassPair forKey:class];
     v6 = ClassPair;
   }
 

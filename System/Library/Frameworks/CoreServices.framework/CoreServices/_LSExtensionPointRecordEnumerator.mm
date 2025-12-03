@@ -1,9 +1,9 @@
 @interface _LSExtensionPointRecordEnumerator
-- (BOOL)_getObject:(id *)a3 atIndex:(unint64_t)a4 context:(LSContext *)a5;
-- (BOOL)_prepareWithContext:(LSContext *)a3 error:(id *)a4;
-- (_LSExtensionPointRecordEnumerator)initWithExtensionPointIdentifier:(id)a3;
+- (BOOL)_getObject:(id *)object atIndex:(unint64_t)index context:(LSContext *)context;
+- (BOOL)_prepareWithContext:(LSContext *)context error:(id *)error;
+- (_LSExtensionPointRecordEnumerator)initWithExtensionPointIdentifier:(id)identifier;
 - (id).cxx_construct;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation _LSExtensionPointRecordEnumerator
@@ -16,31 +16,31 @@
   return self;
 }
 
-- (_LSExtensionPointRecordEnumerator)initWithExtensionPointIdentifier:(id)a3
+- (_LSExtensionPointRecordEnumerator)initWithExtensionPointIdentifier:(id)identifier
 {
   v8.receiver = self;
   v8.super_class = _LSExtensionPointRecordEnumerator;
   v4 = [(_LSDBEnumerator *)&v8 _initWithContext:0];
-  v5 = [a3 copy];
+  v5 = [identifier copy];
   extensionPointID = v4->_extensionPointID;
   v4->_extensionPointID = v5;
 
   return v4;
 }
 
-- (BOOL)_prepareWithContext:(LSContext *)a3 error:(id *)a4
+- (BOOL)_prepareWithContext:(LSContext *)context error:(id *)error
 {
-  v6 = [(_LSExtensionPointRecordEnumerator *)self parentApplicationRecord:a3];
-  v7 = [v6 unitID];
+  v6 = [(_LSExtensionPointRecordEnumerator *)self parentApplicationRecord:context];
+  unitID = [v6 unitID];
 
-  StringForCFString = _LSDatabaseGetStringForCFString(a3->db, self->_extensionPointID, 0);
-  db = a3->db;
+  StringForCFString = _LSDatabaseGetStringForCFString(context->db, self->_extensionPointID, 0);
+  db = context->db;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __63___LSExtensionPointRecordEnumerator__prepareWithContext_error___block_invoke;
   v12[3] = &unk_1E6A1CD38;
   v12[4] = self;
-  v13 = v7;
+  v13 = unitID;
   v14 = StringForCFString;
   _LSEnumerateExtensionPoints(db, v12);
   v10 = _LSEnumeratorLog;
@@ -52,32 +52,32 @@
   return 1;
 }
 
-- (BOOL)_getObject:(id *)a3 atIndex:(unint64_t)a4 context:(LSContext *)a5
+- (BOOL)_getObject:(id *)object atIndex:(unint64_t)index context:(LSContext *)context
 {
   begin = self->_extensionIDs.__begin_;
   v7 = self->_extensionIDs.__end_ - begin;
-  if (v7 > a4)
+  if (v7 > index)
   {
-    v8 = begin[a4];
+    v8 = begin[index];
     if (v8)
     {
-      if (_LSGetExtensionPointData(a5->db, begin[a4]))
+      if (_LSGetExtensionPointData(context->db, begin[index]))
       {
-        v11 = [(LSRecord *)[LSExtensionPointRecord alloc] _initWithContext:a5 tableID:*([(_LSDatabase *)a5->db schema]+ 1592) unitID:v8];
-        v12 = *a3;
-        *a3 = v11;
+        v11 = [(LSRecord *)[LSExtensionPointRecord alloc] _initWithContext:context tableID:*([(_LSDatabase *)context->db schema]+ 1592) unitID:v8];
+        v12 = *object;
+        *object = v11;
       }
     }
   }
 
-  return v7 > a4;
+  return v7 > index;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = _LSExtensionPointRecordEnumerator;
-  v4 = [(_LSDBEnumerator *)&v8 copyWithZone:a3];
+  v4 = [(_LSDBEnumerator *)&v8 copyWithZone:zone];
   v5 = v4;
   if (v4)
   {

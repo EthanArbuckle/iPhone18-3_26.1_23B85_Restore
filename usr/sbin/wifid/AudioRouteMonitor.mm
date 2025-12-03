@@ -1,14 +1,14 @@
 @interface AudioRouteMonitor
-- (void)audioRouteChange:(id)a3;
+- (void)audioRouteChange:(id)change;
 - (void)dealloc;
-- (void)initializeWithHandler:(__WiFiAudioRoute *)a3;
+- (void)initializeWithHandler:(__WiFiAudioRoute *)handler;
 - (void)startMonitoring;
 - (void)stopMonitoring;
 @end
 
 @implementation AudioRouteMonitor
 
-- (void)initializeWithHandler:(__WiFiAudioRoute *)a3
+- (void)initializeWithHandler:(__WiFiAudioRoute *)handler
 {
   v5 = objc_autoreleasePoolPush();
   if (off_100298C40)
@@ -17,7 +17,7 @@
   }
 
   objc_autoreleasePoolPop(v5);
-  [(AudioRouteMonitor *)self setAudioRouteHandler:a3];
+  [(AudioRouteMonitor *)self setAudioRouteHandler:handler];
 
   [(AudioRouteMonitor *)self setMonitoring:0];
 }
@@ -34,11 +34,11 @@
   [(AudioRouteMonitor *)&v3 dealloc];
 }
 
-- (void)audioRouteChange:(id)a3
+- (void)audioRouteChange:(id)change
 {
-  v3 = [(AudioRouteMonitor *)self audioRouteHandler];
+  audioRouteHandler = [(AudioRouteMonitor *)self audioRouteHandler];
 
-  sub_100036664(v3);
+  sub_100036664(audioRouteHandler);
 }
 
 - (void)startMonitoring

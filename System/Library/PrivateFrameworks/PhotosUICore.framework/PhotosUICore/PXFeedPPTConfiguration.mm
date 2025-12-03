@@ -1,26 +1,26 @@
 @interface PXFeedPPTConfiguration
-+ (id)configurationsForPreset:(unint64_t)a3 testOptions:(id)a4;
++ (id)configurationsForPreset:(unint64_t)preset testOptions:(id)options;
 - (PXFeedPPTConfiguration)init;
-- (PXFeedPPTConfiguration)initWithName:(id)a3 feedConfiguration:(id)a4;
-- (PXFeedPPTConfiguration)initWithPreset:(unint64_t)a3;
+- (PXFeedPPTConfiguration)initWithName:(id)name feedConfiguration:(id)configuration;
+- (PXFeedPPTConfiguration)initWithPreset:(unint64_t)preset;
 @end
 
 @implementation PXFeedPPTConfiguration
 
-- (PXFeedPPTConfiguration)initWithName:(id)a3 feedConfiguration:(id)a4
+- (PXFeedPPTConfiguration)initWithName:(id)name feedConfiguration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  configurationCopy = configuration;
   v14.receiver = self;
   v14.super_class = PXFeedPPTConfiguration;
   v8 = [(PXFeedPPTConfiguration *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [nameCopy copy];
     name = v8->_name;
     v8->_name = v9;
 
-    v11 = [v7 copy];
+    v11 = [configurationCopy copy];
     feedConfiguration = v8->_feedConfiguration;
     v8->_feedConfiguration = v11;
   }
@@ -28,44 +28,44 @@
   return v8;
 }
 
-- (PXFeedPPTConfiguration)initWithPreset:(unint64_t)a3
+- (PXFeedPPTConfiguration)initWithPreset:(unint64_t)preset
 {
-  if (a3 > 3)
+  if (preset > 3)
   {
     v6 = @"??";
   }
 
   else
   {
-    v6 = off_1E7749960[a3];
+    v6 = off_1E7749960[preset];
   }
 
   v7 = v6;
   v8 = [(__CFString *)v7 stringByReplacingOccurrencesOfString:@" " withString:@"_"];
 
-  if (a3 == 2)
+  if (preset == 2)
   {
     v10 = [PXStoryMemoryFeedConfiguration alloc];
-    v11 = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
-    v12 = [(PXStoryMemoryFeedConfiguration *)v10 initWithSyntheticSectionCount:5 numberOfItemsPerSection:20 photoLibrary:v11 layoutKind:1];
+    px_deprecated_appPhotoLibrary = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
+    v12 = [(PXStoryMemoryFeedConfiguration *)v10 initWithSyntheticSectionCount:5 numberOfItemsPerSection:20 photoLibrary:px_deprecated_appPhotoLibrary layoutKind:1];
 LABEL_10:
     v9 = v12;
 
     goto LABEL_11;
   }
 
-  if (a3 == 3)
+  if (preset == 3)
   {
     v13 = [PXStoryMemoryFeedConfiguration alloc];
-    v11 = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
-    v12 = [(PXStoryMemoryFeedConfiguration *)v13 initWithMemoriesInPhotoLibrary:v11 layoutKind:1 viewControllerSetupBlock:0];
+    px_deprecated_appPhotoLibrary = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
+    v12 = [(PXStoryMemoryFeedConfiguration *)v13 initWithMemoriesInPhotoLibrary:px_deprecated_appPhotoLibrary layoutKind:1 viewControllerSetupBlock:0];
     goto LABEL_10;
   }
 
-  if (a3 <= 1)
+  if (preset <= 1)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"PXFeedPPTConfiguration.m" lineNumber:55 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXFeedPPTConfiguration.m" lineNumber:55 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
@@ -79,13 +79,13 @@ LABEL_11:
 
 - (PXFeedPPTConfiguration)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXFeedPPTConfiguration.m" lineNumber:43 description:{@"%s is not available as initializer", "-[PXFeedPPTConfiguration init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXFeedPPTConfiguration.m" lineNumber:43 description:{@"%s is not available as initializer", "-[PXFeedPPTConfiguration init]"}];
 
   abort();
 }
 
-+ (id)configurationsForPreset:(unint64_t)a3 testOptions:(id)a4
++ (id)configurationsForPreset:(unint64_t)preset testOptions:(id)options
 {
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -96,7 +96,7 @@ LABEL_11:
   v17 = v6;
   v7 = _Block_copy(aBlock);
   v8 = v7;
-  if (a3 == 1)
+  if (preset == 1)
   {
     v11 = MEMORY[0x1E69E9820];
     v12 = 3221225472;
@@ -105,15 +105,15 @@ LABEL_11:
     v15 = v7;
     do
     {
-      v13(&v11, a3++);
+      v13(&v11, preset++);
     }
 
-    while (a3 != 4);
+    while (preset != 4);
   }
 
   else
   {
-    (*(v7 + 2))(v7, a3);
+    (*(v7 + 2))(v7, preset);
   }
 
   v9 = [v6 copy];

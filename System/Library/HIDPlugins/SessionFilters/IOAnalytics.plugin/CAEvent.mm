@@ -1,25 +1,25 @@
 @interface CAEvent
-+ (id)eventWithName:(id)a3 fields:(id)a4;
-- (BOOL)isValidPayload:(id)a3;
-- (BOOL)sendPayload:(id)a3;
-- (CAEvent)initWithName:(id)a3 fields:(id)a4;
-- (id)createPayloadFromDictionary:(id)a3;
++ (id)eventWithName:(id)name fields:(id)fields;
+- (BOOL)isValidPayload:(id)payload;
+- (BOOL)sendPayload:(id)payload;
+- (CAEvent)initWithName:(id)name fields:(id)fields;
+- (id)createPayloadFromDictionary:(id)dictionary;
 @end
 
 @implementation CAEvent
 
-- (CAEvent)initWithName:(id)a3 fields:(id)a4
+- (CAEvent)initWithName:(id)name fields:(id)fields
 {
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  fieldsCopy = fields;
   v14.receiver = self;
   v14.super_class = CAEvent;
   v9 = [(CAEvent *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_name, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_name, name);
+    v11 = [fieldsCopy copy];
     fields = v10->_fields;
     v10->_fields = v11;
   }
@@ -27,30 +27,30 @@
   return v10;
 }
 
-+ (id)eventWithName:(id)a3 fields:(id)a4
++ (id)eventWithName:(id)name fields:(id)fields
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithName:v7 fields:v6];
+  fieldsCopy = fields;
+  nameCopy = name;
+  v8 = [[self alloc] initWithName:nameCopy fields:fieldsCopy];
 
   return v8;
 }
 
-- (id)createPayloadFromDictionary:(id)a3
+- (id)createPayloadFromDictionary:(id)dictionary
 {
-  PayloadFromDictionary = createPayloadFromDictionary(self->_fields, a3);
+  PayloadFromDictionary = createPayloadFromDictionary(self->_fields, dictionary);
 
   return PayloadFromDictionary;
 }
 
-- (BOOL)isValidPayload:(id)a3
+- (BOOL)isValidPayload:(id)payload
 {
-  v4 = a3;
+  payloadCopy = payload;
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
-  v39 = self;
+  selfCopy = self;
   v5 = self->_fields;
   v6 = [(NSArray *)v5 countByEnumeratingWithState:&v48 objects:v60 count:16];
   if (!v6)
@@ -73,20 +73,20 @@
       }
 
       v11 = *(*(&v48 + 1) + 8 * v10);
-      v12 = [v11 name];
-      v13 = [v4 objectForKeyedSubscript:v12];
+      name = [v11 name];
+      v13 = [payloadCopy objectForKeyedSubscript:name];
 
       if (!v13)
       {
         v14 = LogIOAnalytics();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
         {
-          name = v39->_name;
-          v16 = [v11 name];
+          name = selfCopy->_name;
+          name2 = [v11 name];
           *buf = 138412546;
           v55 = name;
           v56 = 2112;
-          v57 = v16;
+          v57 = name2;
           v17 = v14;
           v18 = "[%@] missing field. (%@)";
           v19 = 22;
@@ -109,12 +109,12 @@ LABEL_13:
         v14 = LogIOAnalytics();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
         {
-          v20 = v39->_name;
-          v16 = [v11 name];
+          v20 = selfCopy->_name;
+          name2 = [v11 name];
           *buf = 138412802;
           v55 = v20;
           v56 = 2112;
-          v57 = v16;
+          v57 = name2;
           v58 = 2112;
           v59 = v13;
           v17 = v14;
@@ -146,7 +146,7 @@ LABEL_22:
   v47 = 0u;
   v44 = 0u;
   v45 = 0u;
-  obj = v4;
+  obj = payloadCopy;
   v22 = [obj countByEnumeratingWithState:&v44 objects:v53 count:16];
   if (v22)
   {
@@ -168,7 +168,7 @@ LABEL_22:
         v41 = 0u;
         v42 = 0u;
         v43 = 0u;
-        v27 = v39->_fields;
+        v27 = selfCopy->_fields;
         v28 = [v27 countByEnumeratingWithState:&v40 objects:v52 count:16];
         if (v28)
         {
@@ -183,8 +183,8 @@ LABEL_29:
               objc_enumerationMutation(v27);
             }
 
-            v32 = [*(*(&v40 + 1) + 8 * v31) name];
-            v33 = [v26 isEqual:v32];
+            name3 = [*(*(&v40 + 1) + 8 * v31) name];
+            v33 = [v26 isEqual:name3];
 
             if (v33)
             {
@@ -211,7 +211,7 @@ LABEL_35:
           v27 = LogIOAnalytics();
           if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
           {
-            v34 = v39->_name;
+            v34 = selfCopy->_name;
             *buf = v36;
             v55 = v34;
             v56 = 2112;
@@ -232,10 +232,10 @@ LABEL_35:
   return v9 & 1;
 }
 
-- (BOOL)sendPayload:(id)a3
+- (BOOL)sendPayload:(id)payload
 {
-  v4 = a3;
-  if (!v4)
+  payloadCopy = payload;
+  if (!payloadCopy)
   {
     v7 = LogIOAnalytics();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -246,7 +246,7 @@ LABEL_35:
     goto LABEL_10;
   }
 
-  v5 = [(CAEvent *)self isValidPayload:v4];
+  v5 = [(CAEvent *)self isValidPayload:payloadCopy];
   v6 = LogIOAnalytics();
   v7 = v6;
   if ((v5 & 1) == 0)

@@ -1,21 +1,21 @@
 @interface _PXCustomTimingFunctionAnimationFactory
-+ (id)factoryWithTimingFunction:(id)a3;
++ (id)factoryWithTimingFunction:(id)function;
 @end
 
 @implementation _PXCustomTimingFunctionAnimationFactory
 
-+ (id)factoryWithTimingFunction:(id)a3
++ (id)factoryWithTimingFunction:(id)function
 {
-  v5 = a3;
-  if (!v5)
+  functionCopy = function;
+  if (!functionCopy)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:a1 file:@"PXStoryScrubberContentLayout.m" lineNumber:1339 description:{@"Invalid parameter not satisfying: %@", @"timingFunction"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryScrubberContentLayout.m" lineNumber:1339 description:{@"Invalid parameter not satisfying: %@", @"timingFunction"}];
   }
 
-  v6 = objc_alloc_init(a1);
+  v6 = objc_alloc_init(self);
   v7 = v6[1];
-  v6[1] = v5;
+  v6[1] = functionCopy;
 
   return v6;
 }

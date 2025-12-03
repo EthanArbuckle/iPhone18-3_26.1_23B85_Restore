@@ -1,12 +1,12 @@
 @interface VNAnimalprintDetectorBase
-+ (Class)detectorClassForConfigurationOptions:(id)a3 error:(id *)a4;
-+ (float)_animalBoundingBoxScalingFactorForAnimalDetectorRevision:(unint64_t)a3;
-+ (id)espressoModelInputImageDimensionsBlobNameForConfigurationOptions:(id)a3;
-+ (id)supportedComputeStageDevicesForOptions:(id)a3 error:(id *)a4;
-- (BOOL)completeInitializationForSession:(id)a3 error:(id *)a4;
-- (BOOL)createRegionOfInterestCrop:(CGRect)a3 options:(id)a4 qosClass:(unsigned int)a5 warningRecorder:(id)a6 pixelBuffer:(__CVBuffer *)a7 error:(id *)a8 progressHandler:(id)a9;
++ (Class)detectorClassForConfigurationOptions:(id)options error:(id *)error;
++ (float)_animalBoundingBoxScalingFactorForAnimalDetectorRevision:(unint64_t)revision;
++ (id)espressoModelInputImageDimensionsBlobNameForConfigurationOptions:(id)options;
++ (id)supportedComputeStageDevicesForOptions:(id)options error:(id *)error;
+- (BOOL)completeInitializationForSession:(id)session error:(id *)error;
+- (BOOL)createRegionOfInterestCrop:(CGRect)crop options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder pixelBuffer:(__CVBuffer *)buffer error:(id *)error progressHandler:(id)handler;
 - (id).cxx_construct;
-- (id)processRegionOfInterest:(CGRect)a3 croppedPixelBuffer:(const __CVBuffer *)a4 options:(id)a5 qosClass:(unsigned int)a6 warningRecorder:(id)a7 error:(id *)a8 progressHandler:(id)a9;
+- (id)processRegionOfInterest:(CGRect)interest croppedPixelBuffer:(const __CVBuffer *)buffer options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder error:(id *)error progressHandler:(id)handler;
 @end
 
 @implementation VNAnimalprintDetectorBase
@@ -18,26 +18,26 @@
   return self;
 }
 
-- (id)processRegionOfInterest:(CGRect)a3 croppedPixelBuffer:(const __CVBuffer *)a4 options:(id)a5 qosClass:(unsigned int)a6 warningRecorder:(id)a7 error:(id *)a8 progressHandler:(id)a9
+- (id)processRegionOfInterest:(CGRect)interest croppedPixelBuffer:(const __CVBuffer *)buffer options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder error:(id *)error progressHandler:(id)handler
 {
-  v13 = a5;
-  v14 = a7;
-  v18 = a9;
-  v19 = [VNValidationUtilities originatingRequestSpecifierInOptions:v13 error:a8];
+  optionsCopy = options;
+  recorderCopy = recorder;
+  handlerCopy = handler;
+  v19 = [VNValidationUtilities originatingRequestSpecifierInOptions:optionsCopy error:error];
   if (v19)
   {
-    v17 = [VNValidationUtilities requiredObjectOfClass:objc_opt_class() forKey:@"VNAnimalprintDetectorProcessOption_InputAnimalObservation" inOptions:v13 error:a8];
+    v17 = [VNValidationUtilities requiredObjectOfClass:objc_opt_class() forKey:@"VNAnimalprintDetectorProcessOption_InputAnimalObservation" inOptions:optionsCopy error:error];
     if (v17)
     {
-      v15 = CVPixelBufferLockBaseAddress(a4, 1uLL);
+      v15 = CVPixelBufferLockBaseAddress(buffer, 1uLL);
       if (!v15)
       {
         operator new();
       }
 
-      if (a8)
+      if (error)
       {
-        *a8 = [VNError errorForCVReturnCode:v15 localizedDescription:@"could not lock cropped image"];
+        *error = [VNError errorForCVReturnCode:v15 localizedDescription:@"could not lock cropped image"];
       }
     }
   }
@@ -45,36 +45,36 @@
   return 0;
 }
 
-- (BOOL)createRegionOfInterestCrop:(CGRect)a3 options:(id)a4 qosClass:(unsigned int)a5 warningRecorder:(id)a6 pixelBuffer:(__CVBuffer *)a7 error:(id *)a8 progressHandler:(id)a9
+- (BOOL)createRegionOfInterestCrop:(CGRect)crop options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder pixelBuffer:(__CVBuffer *)buffer error:(id *)error progressHandler:(id)handler
 {
-  v12 = a4;
-  v13 = [(VNDetector *)self validatedImageBufferFromOptions:v12 error:a8];
+  optionsCopy = options;
+  v13 = [(VNDetector *)self validatedImageBufferFromOptions:optionsCopy error:error];
   if (v13)
   {
-    v14 = [VNValidationUtilities requiredObjectOfClass:objc_opt_class() forKey:@"VNAnimalprintDetectorProcessOption_InputAnimalObservation" inOptions:v12 error:a8];
+    v14 = [VNValidationUtilities requiredObjectOfClass:objc_opt_class() forKey:@"VNAnimalprintDetectorProcessOption_InputAnimalObservation" inOptions:optionsCopy error:error];
     if (v14)
     {
-      v15 = [v13 width];
-      v16 = [v13 height];
+      width = [v13 width];
+      height = [v13 height];
       [v14 boundingBox];
       v18 = v17;
       v20 = v19;
       v22 = v21;
       v24 = v23;
       [objc_opt_class() _animalBoundingBoxScalingFactorForAnimalDetectorRevision:{objc_msgSend(v14, "requestRevision")}];
-      v38.size.width = v22 * v15;
-      v38.origin.y = v20 * v16;
-      v38.size.height = v24 * v16;
+      v38.size.width = v22 * width;
+      v38.origin.y = v20 * height;
+      v38.size.height = v24 * height;
       v26 = (v25 + -1.0);
       v27 = -(v38.size.width * v26) * 0.5;
       v28 = -(v38.size.height * v26) * 0.5;
-      v38.origin.x = v18 * v15;
+      v38.origin.x = v18 * width;
       v39 = CGRectInset(v38, v27, v28);
       v40 = CGRectIntegral(v39);
       v42.origin.x = 0.0;
       v42.origin.y = 0.0;
-      v42.size.width = v15;
-      v42.size.height = v16;
+      v42.size.width = width;
+      v42.size.height = height;
       v41 = CGRectIntersection(v40, v42);
       x = v41.origin.x;
       y = v41.origin.y;
@@ -83,9 +83,9 @@
       ptr = self->_petprintGenerator.__ptr_;
       LODWORD(v22) = *(ptr + 12);
       v34 = *(ptr + 13);
-      [v12 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"VNImageBufferOption_CreateFromPixelBufferPool"];
-      v35 = [v13 croppedBufferWithWidth:v34 height:*&v22 format:1111970369 cropRect:v12 options:a8 error:{x, y, width, height}];
-      *a7 = v35;
+      [optionsCopy setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"VNImageBufferOption_CreateFromPixelBufferPool"];
+      v35 = [v13 croppedBufferWithWidth:v34 height:*&v22 format:1111970369 cropRect:optionsCopy options:error error:{x, y, width, height}];
+      *buffer = v35;
       v36 = v35 != 0;
     }
 
@@ -103,20 +103,20 @@
   return v36;
 }
 
-- (BOOL)completeInitializationForSession:(id)a3 error:(id *)a4
+- (BOOL)completeInitializationForSession:(id)session error:(id *)error
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  sessionCopy = session;
   v21.receiver = self;
   v21.super_class = VNAnimalprintDetectorBase;
-  if ([(VNEspressoModelFileBasedDetector *)&v21 completeInitializationForSession:v6 error:a4])
+  if ([(VNEspressoModelFileBasedDetector *)&v21 completeInitializationForSession:sessionCopy error:error])
   {
-    v7 = [(VNDetector *)self configurationOptions];
+    configurationOptions = [(VNDetector *)self configurationOptions];
     v8 = objc_opt_class();
-    v16 = [(VNEspressoModelFileBasedDetector *)self espressoResources];
-    [v8 espressoModelFileNameForConfigurationOptions:v7];
-    v9 = [objc_claimAutoreleasedReturnValue() UTF8String];
-    v10 = strlen(v9);
+    espressoResources = [(VNEspressoModelFileBasedDetector *)self espressoResources];
+    [v8 espressoModelFileNameForConfigurationOptions:configurationOptions];
+    uTF8String = [objc_claimAutoreleasedReturnValue() UTF8String];
+    v10 = strlen(uTF8String);
     if (v10 <= 0x7FFFFFFFFFFFFFF7)
     {
       v11 = v10;
@@ -125,11 +125,11 @@
         v20 = v10;
         if (v10)
         {
-          memmove(&__dst, v9, v10);
+          memmove(&__dst, uTF8String, v10);
         }
 
         *(&__dst + v11) = 0;
-        v12 = [v8 modelVersionForOptions:v7];
+        v12 = [v8 modelVersionForOptions:configurationOptions];
         v13 = *(v12 + 8);
         if (v13 <= 0x7FFFFFFFFFFFFFF7)
         {
@@ -143,8 +143,8 @@
             }
 
             *(&v17 + v13) = 0;
-            [v16 network];
-            [v16 plan];
+            [espressoResources network];
+            [espressoResources plan];
             operator new();
           }
 
@@ -163,23 +163,23 @@
   return 0;
 }
 
-+ (id)espressoModelInputImageDimensionsBlobNameForConfigurationOptions:(id)a3
++ (id)espressoModelInputImageDimensionsBlobNameForConfigurationOptions:(id)options
 {
   v3 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%s", "input"];
 
   return v3;
 }
 
-+ (float)_animalBoundingBoxScalingFactorForAnimalDetectorRevision:(unint64_t)a3
++ (float)_animalBoundingBoxScalingFactorForAnimalDetectorRevision:(unint64_t)revision
 {
   result = 1.3;
   v4 = 1.0;
-  if (a3 - 1 < 2)
+  if (revision - 1 < 2)
   {
     v4 = 1.3;
   }
 
-  if (a3 - 3737841664u >= 3)
+  if (revision - 3737841664u >= 3)
   {
     return v4;
   }
@@ -187,11 +187,11 @@
   return result;
 }
 
-+ (id)supportedComputeStageDevicesForOptions:(id)a3 error:(id *)a4
++ (id)supportedComputeStageDevicesForOptions:(id)options error:(id *)error
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (objc_opt_class() == a1)
+  optionsCopy = options;
+  if (objc_opt_class() == self)
   {
     v13 = @"VNComputeStageMain";
     v8 = +[VNComputeDeviceUtilities mostPerformantComputeDevice];
@@ -203,18 +203,18 @@
 
   else
   {
-    v11.receiver = a1;
+    v11.receiver = self;
     v11.super_class = &OBJC_METACLASS___VNAnimalprintDetectorBase;
-    v7 = objc_msgSendSuper2(&v11, sel_supportedComputeStageDevicesForOptions_error_, v6, a4);
+    v7 = objc_msgSendSuper2(&v11, sel_supportedComputeStageDevicesForOptions_error_, optionsCopy, error);
   }
 
   return v7;
 }
 
-+ (Class)detectorClassForConfigurationOptions:(id)a3 error:(id *)a4
++ (Class)detectorClassForConfigurationOptions:(id)options error:(id *)error
 {
-  v5 = a3;
-  v6 = [VNValidationUtilities originatingRequestSpecifierInOptions:v5 error:a4];
+  optionsCopy = options;
+  v6 = [VNValidationUtilities originatingRequestSpecifierInOptions:optionsCopy error:error];
   if (!v6)
   {
 LABEL_7:
@@ -224,10 +224,10 @@ LABEL_7:
 
   if (![v6 specifiesRequestClass:objc_opt_class()] || (v7 = objc_msgSend(v6, "requestRevision"), v7 != 1) && v7 != 3737841667)
   {
-    if (a4)
+    if (error)
     {
       [VNError errorForUnsupportedRequestSpecifier:v6];
-      *a4 = v8 = 0;
+      *error = v8 = 0;
       goto LABEL_9;
     }
 

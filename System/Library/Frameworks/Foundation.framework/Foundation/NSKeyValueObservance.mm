@@ -1,12 +1,12 @@
 @interface NSKeyValueObservance
-- (id)_initWithObserver:(id)a3 property:(id)a4 options:(unint64_t)a5 context:(void *)a6 originalObservable:(id)a7;
+- (id)_initWithObserver:(id)observer property:(id)property options:(unint64_t)options context:(void *)context originalObservable:(id)observable;
 - (id)description;
-- (uint64_t)_safelyStore:(id *)a3 at:;
+- (uint64_t)_safelyStore:(id *)store at:;
 - (uint64_t)tryRetainMember:(uint64_t)result;
 - (uint64_t)tryRetainMembers;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)releaseMembers;
 @end
 
@@ -39,12 +39,12 @@
 
 - (unint64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
   LODWORD(self) = 0;
   v13 = *MEMORY[0x1E69E9840];
-  v10 = *(v2 + 8);
-  v11 = *(v2 + 40) >> 4;
-  v12 = *(v2 + 24);
+  v10 = *(selfCopy + 8);
+  v11 = *(selfCopy + 40) >> 4;
+  v12 = *(selfCopy + 24);
   v3 = &v10 + 3;
   for (i = 44; i > 7; i -= 4)
   {
@@ -60,18 +60,18 @@
   return self;
 }
 
-- (uint64_t)_safelyStore:(id *)a3 at:
+- (uint64_t)_safelyStore:(id *)store at:
 {
   if (object_isClass(obj))
   {
     result = 0;
 LABEL_3:
     v7 = 0;
-    *a3 = obj;
+    *store = obj;
     goto LABEL_6;
   }
 
-  if (!objc_initWeakOrNil(a3, obj))
+  if (!objc_initWeakOrNil(store, obj))
   {
     result = [obj _isDeallocating];
     if (result)
@@ -85,28 +85,28 @@ LABEL_3:
   v7 = 1;
   result = 1;
 LABEL_6:
-  if ((a1 + 8) == a3)
+  if ((self + 8) == store)
   {
-    v13 = *(a1 + 40);
-    v9 = (a1 + 40);
+    v13 = *(self + 40);
+    v9 = (self + 40);
     v11 = v13 & 0xFA;
     v12 = 4;
   }
 
   else
   {
-    if ((*(a1 + 41) & 1) == 0)
+    if ((*(self + 41) & 1) == 0)
     {
       __assert_rtn("[NSKeyValueObservance _safelyStore:at:]", "NSKeyValueObservationInfo.m", 356, "_isObservedByAnObservance");
     }
 
-    if ((a1 + 32) != a3)
+    if ((self + 32) != store)
     {
       __assert_rtn("[NSKeyValueObservance _safelyStore:at:]", "NSKeyValueObservationInfo.m", 357, "ref == &(_originalObservableOrUnownedObserver.originalObservable)");
     }
 
-    v10 = *(a1 + 40);
-    v9 = (a1 + 40);
+    v10 = *(self + 40);
+    v9 = (self + 40);
     v8 = v10;
     if (v7)
     {
@@ -131,9 +131,9 @@ LABEL_6:
   return result;
 }
 
-- (id)_initWithObserver:(id)a3 property:(id)a4 options:(unint64_t)a5 context:(void *)a6 originalObservable:(id)a7
+- (id)_initWithObserver:(id)observer property:(id)property options:(unint64_t)options context:(void *)context originalObservable:(id)observable
 {
-  v9 = a5;
+  optionsCopy = options;
   v20 = *MEMORY[0x1E69E9840];
   v19.receiver = self;
   v19.super_class = NSKeyValueObservance;
@@ -141,26 +141,26 @@ LABEL_6:
   v13 = v12;
   if (v12)
   {
-    *(v12 + 40) = *(v12 + 40) & 0xF | (16 * v9) & 0xBF;
-    v12->_property = a4;
-    v12->_context = a6;
-    Class = object_getClass(a3);
+    *(v12 + 40) = *(v12 + 40) & 0xF | (16 * optionsCopy) & 0xBF;
+    v12->_property = property;
+    v12->_context = context;
+    Class = object_getClass(observer);
     v15 = Class == NSKeyValueObservance || _NSKVONotifyingOriginalClassForIsa(Class) == NSKeyValueObservance;
     *(v13 + 41) = *(v13 + 41) & 0xFE | v15;
-    [(NSKeyValueObservance *)v13 _safelyStore:a3 at:(v13 + 8)];
+    [(NSKeyValueObservance *)v13 _safelyStore:observer at:(v13 + 8)];
     if (*(v13 + 41))
     {
-      if (!a7)
+      if (!observable)
       {
         __assert_rtn("[NSKeyValueObservance _initWithObserver:property:options:context:originalObservable:]", "NSKeyValueObservationInfo.m", 385, "inOriginalObservableOrNil != nil");
       }
 
-      [(NSKeyValueObservance *)v13 _safelyStore:a7 at:(v13 + 32)];
+      [(NSKeyValueObservance *)v13 _safelyStore:observable at:(v13 + 32)];
     }
 
     else
     {
-      *(v13 + 32) = a3;
+      *(v13 + 32) = observer;
     }
 
     if (objc_opt_isKindOfClass())
@@ -274,16 +274,16 @@ LABEL_6:
 
 - (void)releaseMembers
 {
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 8);
+    v2 = *(self + 8);
     if (!object_isClass(v2))
     {
     }
 
-    if (*(a1 + 41))
+    if (*(self + 41))
     {
-      v3 = *(a1 + 32);
+      v3 = *(self + 32);
       if (!object_isClass(v3))
       {
       }
@@ -295,7 +295,7 @@ LABEL_6:
 {
   v3 = objc_opt_class();
   observer = self->_observer;
-  v5 = [(NSKeyValueProperty *)self->_property keyPath];
+  keyPath = [(NSKeyValueProperty *)self->_property keyPath];
   v6 = *(self + 40);
   v7 = v6;
   if ((v6 >> 4))
@@ -328,22 +328,22 @@ LABEL_6:
     v10 = @"NO";
   }
 
-  return [NSString stringWithFormat:@"<%@ %p: Observer: %p, Key path: %@, Options: <New: %@, Old: %@, Prior: %@> Context: %p, Property: %p>", v3, self, observer, v5, v8, v9, v10, self->_context, self->_property];
+  return [NSString stringWithFormat:@"<%@ %p: Observer: %p, Key path: %@, Options: <New: %@, Old: %@, Prior: %@> Context: %p, Property: %p>", v3, self, observer, keyPath, v8, v9, v10, self->_context, self->_property];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v7 = a5;
+  changeCopy = change;
   v16 = *MEMORY[0x1E69E9840];
-  v9 = [a5 objectForKey:{0x1EEF09E30, a4}];
+  v9 = [change objectForKey:{0x1EEF09E30, object}];
   if (v9)
   {
     v10 = v9;
-    if (a6)
+    if (context)
     {
       v15 = 0;
-      v11 = [a6 dependentValueKeyOrKeysIsASet:&v15];
-      if ([objc_msgSend(v7 objectForKey:{@"notificationIsPrior", "BOOLValue"}])
+      v11 = [context dependentValueKeyOrKeysIsASet:&v15];
+      if ([objc_msgSend(changeCopy objectForKey:{@"notificationIsPrior", "BOOLValue"}])
       {
         NSKeyValueWillChangeForObservance(v10, v11, v15, self);
       }
@@ -366,16 +366,16 @@ LABEL_6:
         originalObservable = 0;
       }
 
-      Class = object_getClass(v7);
+      Class = object_getClass(changeCopy);
       if (Class == NSKeyValueChangeDictionary)
       {
-        [v7 setOriginalObservable:originalObservable];
+        [changeCopy setOriginalObservable:originalObservable];
       }
 
       else
       {
-        v14 = [v7 mutableCopy];
-        v7 = v14;
+        v14 = [changeCopy mutableCopy];
+        changeCopy = v14;
         if (originalObservable)
         {
           [v14 setObject:originalObservable forKey:0x1EEF09E30];
@@ -387,7 +387,7 @@ LABEL_6:
         }
       }
 
-      NSKVONotify(self->_observer, [(NSKeyValueProperty *)self->_property keyPath], v10, v7, self->_context);
+      NSKVONotify(self->_observer, [(NSKeyValueProperty *)self->_property keyPath], v10, changeCopy, self->_context);
       if (Class != NSKeyValueChangeDictionary)
       {
       }

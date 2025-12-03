@@ -1,23 +1,23 @@
 @interface WLKOfferListing
 - (BOOL)_prefersSD;
-- (WLKOfferListing)initWithMAPIDictionaries:(id)a3;
-- (id)_bestStoreOfferForOfferType:(unint64_t)a3;
-- (id)_filteredStoreContentSource:(id)a3;
-- (id)_storeOffersFromMAPIDictionaries:(id)a3;
+- (WLKOfferListing)initWithMAPIDictionaries:(id)dictionaries;
+- (id)_bestStoreOfferForOfferType:(unint64_t)type;
+- (id)_filteredStoreContentSource:(id)source;
+- (id)_storeOffersFromMAPIDictionaries:(id)dictionaries;
 @end
 
 @implementation WLKOfferListing
 
-- (WLKOfferListing)initWithMAPIDictionaries:(id)a3
+- (WLKOfferListing)initWithMAPIDictionaries:(id)dictionaries
 {
-  v4 = a3;
+  dictionariesCopy = dictionaries;
   v10.receiver = self;
   v10.super_class = WLKOfferListing;
   v5 = [(WLKOfferListing *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    v7 = [(WLKOfferListing *)v5 _storeOffersFromMAPIDictionaries:v4];
+    v7 = [(WLKOfferListing *)v5 _storeOffersFromMAPIDictionaries:dictionariesCopy];
     storeOffers = v6->_storeOffers;
     v6->_storeOffers = v7;
   }
@@ -25,16 +25,16 @@
   return v6;
 }
 
-- (id)_storeOffersFromMAPIDictionaries:(id)a3
+- (id)_storeOffersFromMAPIDictionaries:(id)dictionaries
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  dictionariesCopy = dictionaries;
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = v3;
+  v5 = dictionariesCopy;
   v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
@@ -79,35 +79,35 @@
   return v13;
 }
 
-- (id)_filteredStoreContentSource:(id)a3
+- (id)_filteredStoreContentSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   if ([(WLKOfferListing *)self _prefersSD])
   {
-    v5 = [(WLKOfferListing *)self _standardDefinitionPredicate];
-    v6 = [v4 filteredArrayUsingPredicate:v5];
+    _standardDefinitionPredicate = [(WLKOfferListing *)self _standardDefinitionPredicate];
+    v6 = [sourceCopy filteredArrayUsingPredicate:_standardDefinitionPredicate];
   }
 
   else
   {
-    v7 = [(WLKOfferListing *)self _highDefinitionPredicate];
-    v6 = [v4 filteredArrayUsingPredicate:v7];
+    _highDefinitionPredicate = [(WLKOfferListing *)self _highDefinitionPredicate];
+    v6 = [sourceCopy filteredArrayUsingPredicate:_highDefinitionPredicate];
 
     if ([v6 count])
     {
       goto LABEL_6;
     }
 
-    v5 = [(WLKOfferListing *)self _standardDefinitionPredicate];
-    v8 = [v4 filteredArrayUsingPredicate:v5];
+    _standardDefinitionPredicate = [(WLKOfferListing *)self _standardDefinitionPredicate];
+    v8 = [sourceCopy filteredArrayUsingPredicate:_standardDefinitionPredicate];
 
     v6 = v8;
   }
 
 LABEL_6:
-  v9 = [v6 firstObject];
+  firstObject = [v6 firstObject];
 
-  return v9;
+  return firstObject;
 }
 
 - (BOOL)_prefersSD
@@ -128,11 +128,11 @@ LABEL_6:
   return v4;
 }
 
-- (id)_bestStoreOfferForOfferType:(unint64_t)a3
+- (id)_bestStoreOfferForOfferType:(unint64_t)type
 {
-  v4 = [MEMORY[0x277CCAC30] predicateWithFormat:@"offerType = %d", a3];
-  v5 = [(WLKOfferListing *)self storeOffers];
-  v6 = [v5 filteredArrayUsingPredicate:v4];
+  type = [MEMORY[0x277CCAC30] predicateWithFormat:@"offerType = %d", type];
+  storeOffers = [(WLKOfferListing *)self storeOffers];
+  v6 = [storeOffers filteredArrayUsingPredicate:type];
 
   v7 = [(WLKOfferListing *)self _filteredStoreContentSource:v6];
 

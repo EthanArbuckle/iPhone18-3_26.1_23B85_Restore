@@ -1,54 +1,54 @@
 @interface GCFLocalizedString
-+ (id)allocWithZone:(_NSZone *)a3;
++ (id)allocWithZone:(_NSZone *)zone;
 - (GCFLocalizedString)init;
-- (GCFLocalizedString)initWithBytesNoCopy:(void *)a3 length:(unint64_t)a4 encoding:(unint64_t)a5 deallocator:(id)a6;
-- (GCFLocalizedString)initWithCharacters:(const unsigned __int16 *)a3 length:(unint64_t)a4;
-- (GCFLocalizedString)initWithCharactersNoCopy:(unsigned __int16 *)a3 length:(unint64_t)a4 deallocator:(id)a5;
-- (GCFLocalizedString)initWithCoder:(id)a3;
-- (GCFLocalizedString)initWithFormat:(id)a3 arg:(id)a4;
-- (GCFLocalizedString)initWithFormat:(id)a3 locale:(id)a4 arguments:(char *)a5;
-- (GCFLocalizedString)initWithKey:(id)a3 sourceBundle:(id)a4 table:(id)a5 locale:(id)a6;
-- (GCFLocalizedString)initWithString:(id)a3;
-- (GCFLocalizedString)initWithUTF8String:(const char *)a3;
-- (GCFLocalizedString)initWithValidatedFormat:(id)a3 validFormatSpecifiers:(id)a4 locale:(id)a5 arguments:(char *)a6 error:(id *)a7;
+- (GCFLocalizedString)initWithBytesNoCopy:(void *)copy length:(unint64_t)length encoding:(unint64_t)encoding deallocator:(id)deallocator;
+- (GCFLocalizedString)initWithCharacters:(const unsigned __int16 *)characters length:(unint64_t)length;
+- (GCFLocalizedString)initWithCharactersNoCopy:(unsigned __int16 *)copy length:(unint64_t)length deallocator:(id)deallocator;
+- (GCFLocalizedString)initWithCoder:(id)coder;
+- (GCFLocalizedString)initWithFormat:(id)format arg:(id)arg;
+- (GCFLocalizedString)initWithFormat:(id)format locale:(id)locale arguments:(char *)arguments;
+- (GCFLocalizedString)initWithKey:(id)key sourceBundle:(id)bundle table:(id)table locale:(id)locale;
+- (GCFLocalizedString)initWithString:(id)string;
+- (GCFLocalizedString)initWithUTF8String:(const char *)string;
+- (GCFLocalizedString)initWithValidatedFormat:(id)format validFormatSpecifiers:(id)specifiers locale:(id)locale arguments:(char *)arguments error:(id *)error;
 - (unint64_t)length;
-- (unsigned)characterAtIndex:(unint64_t)a3;
-- (void)getCharacters:(unsigned __int16 *)a3 range:(_NSRange)a4;
+- (unsigned)characterAtIndex:(unint64_t)index;
+- (void)getCharacters:(unsigned __int16 *)characters range:(_NSRange)range;
 @end
 
 @implementation GCFLocalizedString
 
 - (unint64_t)length
 {
-  v2 = [(GCFLocalizedString *)self _realizedString];
+  _realizedString = [(GCFLocalizedString *)self _realizedString];
 
-  return [v2 length];
+  return [_realizedString length];
 }
 
-- (void)getCharacters:(unsigned __int16 *)a3 range:(_NSRange)a4
+- (void)getCharacters:(unsigned __int16 *)characters range:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v7 = [(GCFLocalizedString *)self _realizedString];
+  length = range.length;
+  location = range.location;
+  _realizedString = [(GCFLocalizedString *)self _realizedString];
 
-  [v7 getCharacters:a3 range:{location, length}];
+  [_realizedString getCharacters:characters range:{location, length}];
 }
 
-- (unsigned)characterAtIndex:(unint64_t)a3
+- (unsigned)characterAtIndex:(unint64_t)index
 {
-  v4 = [(GCFLocalizedString *)self _realizedString];
+  _realizedString = [(GCFLocalizedString *)self _realizedString];
 
-  return [v4 characterAtIndex:a3];
+  return [_realizedString characterAtIndex:index];
 }
 
-- (GCFLocalizedString)initWithCoder:(id)a3
+- (GCFLocalizedString)initWithCoder:(id)coder
 {
   v4 = [_GCFLocalizedString alloc];
 
-  return [(_GCFLocalizedString *)v4 initWithCoder:a3];
+  return [(_GCFLocalizedString *)v4 initWithCoder:coder];
 }
 
-+ (id)allocWithZone:(_NSZone *)a3
++ (id)allocWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
   if (v5 == objc_opt_class())
@@ -59,24 +59,24 @@
 
   else
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___GCFLocalizedString;
-    return objc_msgSendSuper2(&v7, sel_allocWithZone_, a3);
+    return objc_msgSendSuper2(&v7, sel_allocWithZone_, zone);
   }
 }
 
-- (GCFLocalizedString)initWithKey:(id)a3 sourceBundle:(id)a4 table:(id)a5 locale:(id)a6
+- (GCFLocalizedString)initWithKey:(id)key sourceBundle:(id)bundle table:(id)table locale:(id)locale
 {
   v10 = [_GCFLocalizedString alloc];
 
-  return [(_GCFLocalizedString *)v10 initWithKey:a3 sourceBundle:a4 table:a5 locale:a6];
+  return [(_GCFLocalizedString *)v10 initWithKey:key sourceBundle:bundle table:table locale:locale];
 }
 
-- (GCFLocalizedString)initWithFormat:(id)a3 arg:(id)a4
+- (GCFLocalizedString)initWithFormat:(id)format arg:(id)arg
 {
   v6 = [_GCFFormattedLocalizedString alloc];
 
-  return [(_GCFFormattedLocalizedString *)v6 initWithFormat:a3 arg:a4];
+  return [(_GCFFormattedLocalizedString *)v6 initWithFormat:format arg:arg];
 }
 
 - (GCFLocalizedString)init
@@ -86,56 +86,56 @@
   return [(_GCFLocalizedString *)v2 initWithKey:&stru_1F4E1BE30 sourceBundle:0 table:0 locale:0];
 }
 
-- (GCFLocalizedString)initWithString:(id)a3
+- (GCFLocalizedString)initWithString:(id)string
 {
   v4 = [_GCFLocalizedString alloc];
 
-  return [(_GCFLocalizedString *)v4 initWithKey:a3 sourceBundle:0 table:0 locale:0];
+  return [(_GCFLocalizedString *)v4 initWithKey:string sourceBundle:0 table:0 locale:0];
 }
 
-- (GCFLocalizedString)initWithCharactersNoCopy:(unsigned __int16 *)a3 length:(unint64_t)a4 deallocator:(id)a5
+- (GCFLocalizedString)initWithCharactersNoCopy:(unsigned __int16 *)copy length:(unint64_t)length deallocator:(id)deallocator
 {
-  v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithCharactersNoCopy:a3 length:a4 deallocator:a5];
+  v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithCharactersNoCopy:copy length:length deallocator:deallocator];
   v9 = [[_GCFLocalizedString alloc] initWithKey:v8 sourceBundle:0 table:0 locale:0];
 
   return &v9->super;
 }
 
-- (GCFLocalizedString)initWithCharacters:(const unsigned __int16 *)a3 length:(unint64_t)a4
+- (GCFLocalizedString)initWithCharacters:(const unsigned __int16 *)characters length:(unint64_t)length
 {
-  v6 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithCharacters:a3 length:a4];
+  v6 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithCharacters:characters length:length];
   v7 = [[_GCFLocalizedString alloc] initWithKey:v6 sourceBundle:0 table:0 locale:0];
 
   return &v7->super;
 }
 
-- (GCFLocalizedString)initWithUTF8String:(const char *)a3
+- (GCFLocalizedString)initWithUTF8String:(const char *)string
 {
-  v4 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithUTF8String:a3];
+  v4 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithUTF8String:string];
   v5 = [[_GCFLocalizedString alloc] initWithKey:v4 sourceBundle:0 table:0 locale:0];
 
   return &v5->super;
 }
 
-- (GCFLocalizedString)initWithFormat:(id)a3 locale:(id)a4 arguments:(char *)a5
+- (GCFLocalizedString)initWithFormat:(id)format locale:(id)locale arguments:(char *)arguments
 {
-  v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:a3 locale:a4 arguments:a5];
-  v9 = [[_GCFLocalizedString alloc] initWithKey:v8 sourceBundle:0 table:0 locale:a4];
+  v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:format locale:locale arguments:arguments];
+  v9 = [[_GCFLocalizedString alloc] initWithKey:v8 sourceBundle:0 table:0 locale:locale];
 
   return &v9->super;
 }
 
-- (GCFLocalizedString)initWithValidatedFormat:(id)a3 validFormatSpecifiers:(id)a4 locale:(id)a5 arguments:(char *)a6 error:(id *)a7
+- (GCFLocalizedString)initWithValidatedFormat:(id)format validFormatSpecifiers:(id)specifiers locale:(id)locale arguments:(char *)arguments error:(id *)error
 {
-  v12 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithValidatedFormat:a3 validFormatSpecifiers:a4 locale:a5 arguments:a6 error:a7];
-  v13 = [[_GCFLocalizedString alloc] initWithKey:v12 sourceBundle:0 table:0 locale:a5];
+  v12 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithValidatedFormat:format validFormatSpecifiers:specifiers locale:locale arguments:arguments error:error];
+  v13 = [[_GCFLocalizedString alloc] initWithKey:v12 sourceBundle:0 table:0 locale:locale];
 
   return &v13->super;
 }
 
-- (GCFLocalizedString)initWithBytesNoCopy:(void *)a3 length:(unint64_t)a4 encoding:(unint64_t)a5 deallocator:(id)a6
+- (GCFLocalizedString)initWithBytesNoCopy:(void *)copy length:(unint64_t)length encoding:(unint64_t)encoding deallocator:(id)deallocator
 {
-  v10 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithBytesNoCopy:a3 length:a4 encoding:a5 deallocator:a6];
+  v10 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithBytesNoCopy:copy length:length encoding:encoding deallocator:deallocator];
   v11 = [[_GCFLocalizedString alloc] initWithKey:v10 sourceBundle:0 table:0 locale:0];
 
   return &v11->super;

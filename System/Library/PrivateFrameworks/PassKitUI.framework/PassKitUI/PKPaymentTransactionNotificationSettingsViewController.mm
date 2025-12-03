@@ -1,32 +1,32 @@
 @interface PKPaymentTransactionNotificationSettingsViewController
 - (BOOL)_allTogglesAreDisabled;
-- (BOOL)shouldMapSection:(unint64_t)a3;
-- (PKPaymentTransactionNotificationSettingsViewController)initWithPaymentPasses:(id)a3;
-- (id)_allNotificationCellForRow:(int64_t)a3 tableView:(id)a4;
-- (id)_dailyCashNotificationCellForRow:(int64_t)a3 tableView:(id)a4;
-- (id)_paymentCardCellForRow:(int64_t)a3 tableView:(id)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (BOOL)shouldMapSection:(unint64_t)section;
+- (PKPaymentTransactionNotificationSettingsViewController)initWithPaymentPasses:(id)passes;
+- (id)_allNotificationCellForRow:(int64_t)row tableView:(id)view;
+- (id)_dailyCashNotificationCellForRow:(int64_t)row tableView:(id)view;
+- (id)_paymentCardCellForRow:(int64_t)row tableView:(id)view;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)_toggleAllNotifications;
-- (void)_toggleDailyCash:(id)a3;
-- (void)_togglePaymentPassNotifications:(id)a3;
-- (void)updateMasterToggle:(BOOL)a3;
+- (void)_toggleDailyCash:(id)cash;
+- (void)_togglePaymentPassNotifications:(id)notifications;
+- (void)updateMasterToggle:(BOOL)toggle;
 - (void)viewDidLoad;
 @end
 
 @implementation PKPaymentTransactionNotificationSettingsViewController
 
-- (PKPaymentTransactionNotificationSettingsViewController)initWithPaymentPasses:(id)a3
+- (PKPaymentTransactionNotificationSettingsViewController)initWithPaymentPasses:(id)passes
 {
-  v4 = a3;
+  passesCopy = passes;
   v26.receiver = self;
   v26.super_class = PKPaymentTransactionNotificationSettingsViewController;
   v5 = -[PKSectionTableViewController initWithStyle:numberOfSections:](&v26, sel_initWithStyle_numberOfSections_, [MEMORY[0x1E69DD020] pkui_groupedStyleDefaultRoundedCornerBehavior], 3);
   if (v5)
   {
-    v6 = [v4 sortedArrayUsingComparator:&__block_literal_global_69];
+    v6 = [passesCopy sortedArrayUsingComparator:&__block_literal_global_69];
     paymentPasses = v5->_paymentPasses;
     v5->_paymentPasses = v6;
 
@@ -34,19 +34,19 @@
     peerPaymentPass = v5->_peerPaymentPass;
     v5->_peerPaymentPass = v8;
 
-    v10 = [MEMORY[0x1E69B9000] sharedInstance];
-    v11 = [v10 account];
+    mEMORY[0x1E69B9000] = [MEMORY[0x1E69B9000] sharedInstance];
+    account = [mEMORY[0x1E69B9000] account];
     peerPaymentAccount = v5->_peerPaymentAccount;
-    v5->_peerPaymentAccount = v11;
+    v5->_peerPaymentAccount = account;
 
-    v13 = [MEMORY[0x1E69B8400] sharedInstance];
+    mEMORY[0x1E69B8400] = [MEMORY[0x1E69B8400] sharedInstance];
     v24[0] = MEMORY[0x1E69E9820];
     v24[1] = 3221225472;
     v24[2] = __80__PKPaymentTransactionNotificationSettingsViewController_initWithPaymentPasses___block_invoke_3;
     v24[3] = &unk_1E80112C0;
     v14 = v5;
     v25 = v14;
-    [v13 defaultAccountForFeature:2 completion:v24];
+    [mEMORY[0x1E69B8400] defaultAccountForFeature:2 completion:v24];
 
     v15 = objc_alloc_init(MEMORY[0x1E695DF70]);
     visibleSections = v14->_visibleSections;
@@ -119,20 +119,20 @@ void __80__PKPaymentTransactionNotificationSettingsViewController_initWithPaymen
   v6.receiver = self;
   v6.super_class = PKPaymentTransactionNotificationSettingsViewController;
   [(PKSectionTableViewController *)&v6 viewDidLoad];
-  v3 = [(PKPaymentTransactionNotificationSettingsViewController *)self tableView];
-  [v3 setAllowsSelection:1];
-  [v3 setRowHeight:*MEMORY[0x1E69DE3D0]];
-  v4 = [(PKPaymentTransactionNotificationSettingsViewController *)self navigationItem];
+  tableView = [(PKPaymentTransactionNotificationSettingsViewController *)self tableView];
+  [tableView setAllowsSelection:1];
+  [tableView setRowHeight:*MEMORY[0x1E69DE3D0]];
+  navigationItem = [(PKPaymentTransactionNotificationSettingsViewController *)self navigationItem];
   v5 = PKLocalizedPaymentString(&cfstr_NotificationSe.isa);
-  [v4 setTitle:v5];
+  [navigationItem setTitle:v5];
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v5 = [(NSMutableArray *)self->_visibleSections objectAtIndex:a4];
-  v6 = [v5 intValue];
+  v5 = [(NSMutableArray *)self->_visibleSections objectAtIndex:section];
+  intValue = [v5 intValue];
 
-  switch(v6)
+  switch(intValue)
   {
     case 2:
       return 1;
@@ -147,14 +147,14 @@ void __80__PKPaymentTransactionNotificationSettingsViewController_initWithPaymen
   }
 }
 
-- (BOOL)shouldMapSection:(unint64_t)a3
+- (BOOL)shouldMapSection:(unint64_t)section
 {
-  if (a3 == 3)
+  if (section == 3)
   {
     return 0;
   }
 
-  if (a3 == 2)
+  if (section == 2)
   {
     return self->_peerPaymentPass != 0;
   }
@@ -162,12 +162,12 @@ void __80__PKPaymentTransactionNotificationSettingsViewController_initWithPaymen
   return 1;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v4 = [(NSMutableArray *)self->_visibleSections objectAtIndex:a4];
-  v5 = [v4 intValue];
+  v4 = [(NSMutableArray *)self->_visibleSections objectAtIndex:section];
+  intValue = [v4 intValue];
 
-  if (v5 == 2)
+  if (intValue == 2)
   {
     v6 = PKLocalizedPaymentString(&cfstr_NotificationSe_7.isa);
   }
@@ -180,18 +180,18 @@ void __80__PKPaymentTransactionNotificationSettingsViewController_initWithPaymen
   return v6;
 }
 
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section
 {
-  v4 = [(NSMutableArray *)self->_visibleSections objectAtIndex:a4];
-  v5 = [v4 intValue];
+  v4 = [(NSMutableArray *)self->_visibleSections objectAtIndex:section];
+  intValue = [v4 intValue];
 
-  if (!v5)
+  if (!intValue)
   {
     v6 = @"NOTIFICATION_SETTINGS_TRANSACTIONS_FOOTER";
     goto LABEL_5;
   }
 
-  if (v5 == 2)
+  if (intValue == 2)
   {
     v6 = @"NOTIFICATION_SETTINGS_DAILY_CASH_FOOTER";
 LABEL_5:
@@ -205,23 +205,23 @@ LABEL_7:
   return v7;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = -[NSMutableArray objectAtIndex:](self->_visibleSections, "objectAtIndex:", [v7 section]);
-  v9 = [v8 intValue];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = -[NSMutableArray objectAtIndex:](self->_visibleSections, "objectAtIndex:", [pathCopy section]);
+  intValue = [v8 intValue];
 
-  switch(v9)
+  switch(intValue)
   {
     case 2:
-      v10 = -[PKPaymentTransactionNotificationSettingsViewController _dailyCashNotificationCellForRow:tableView:](self, "_dailyCashNotificationCellForRow:tableView:", [v7 row], v6);
+      v10 = -[PKPaymentTransactionNotificationSettingsViewController _dailyCashNotificationCellForRow:tableView:](self, "_dailyCashNotificationCellForRow:tableView:", [pathCopy row], viewCopy);
       goto LABEL_7;
     case 1:
-      v10 = -[PKPaymentTransactionNotificationSettingsViewController _paymentCardCellForRow:tableView:](self, "_paymentCardCellForRow:tableView:", [v7 row], v6);
+      v10 = -[PKPaymentTransactionNotificationSettingsViewController _paymentCardCellForRow:tableView:](self, "_paymentCardCellForRow:tableView:", [pathCopy row], viewCopy);
       goto LABEL_7;
     case 0:
-      v10 = -[PKPaymentTransactionNotificationSettingsViewController _allNotificationCellForRow:tableView:](self, "_allNotificationCellForRow:tableView:", [v7 row], v6);
+      v10 = -[PKPaymentTransactionNotificationSettingsViewController _allNotificationCellForRow:tableView:](self, "_allNotificationCellForRow:tableView:", [pathCopy row], viewCopy);
 LABEL_7:
       v11 = v10;
       goto LABEL_9;
@@ -233,11 +233,11 @@ LABEL_9:
   return v11;
 }
 
-- (id)_allNotificationCellForRow:(int64_t)a3 tableView:(id)a4
+- (id)_allNotificationCellForRow:(int64_t)row tableView:(id)view
 {
-  v5 = a4;
+  viewCopy = view;
   v6 = [(PKPaymentTransactionNotificationSettingsViewController *)self _reuseIdentifierForSection:0];
-  v7 = [v5 dequeueReusableCellWithIdentifier:v6];
+  v7 = [viewCopy dequeueReusableCellWithIdentifier:v6];
 
   allNotificationsCell = self->_allNotificationsCell;
   self->_allNotificationsCell = v7;
@@ -262,24 +262,24 @@ LABEL_9:
 
 - (void)_toggleAllNotifications
 {
-  v3 = [(PKSettingTableCell *)self->_allNotificationsCell isOn];
+  isOn = [(PKSettingTableCell *)self->_allNotificationsCell isOn];
   paymentPasses = self->_paymentPasses;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __81__PKPaymentTransactionNotificationSettingsViewController__toggleAllNotifications__block_invoke;
   v7[3] = &unk_1E80162C8;
-  v8 = v3;
+  v8 = isOn;
   v7[4] = self;
   [(NSArray *)paymentPasses enumerateObjectsUsingBlock:v7];
   v5 = [(PKSecureElementPass *)self->_peerPaymentPass settings]& 0xFFFFFFFFFFFFFBFFLL;
   v6 = 1024;
-  if (v3)
+  if (isOn)
   {
     v6 = 0;
   }
 
   [(PKSecureElementPass *)self->_peerPaymentPass setSettings:v5 | v6];
-  [(PKSettingTableCell *)self->_dailyCashCell setOn:v3];
+  [(PKSettingTableCell *)self->_dailyCashCell setOn:isOn];
 }
 
 void __81__PKPaymentTransactionNotificationSettingsViewController__toggleAllNotifications__block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -382,11 +382,11 @@ LABEL_18:
   return v9;
 }
 
-- (id)_dailyCashNotificationCellForRow:(int64_t)a3 tableView:(id)a4
+- (id)_dailyCashNotificationCellForRow:(int64_t)row tableView:(id)view
 {
-  v5 = a4;
+  viewCopy = view;
   v6 = [(PKPaymentTransactionNotificationSettingsViewController *)self _reuseIdentifierForSection:2];
-  v7 = [v5 dequeueReusableCellWithIdentifier:v6];
+  v7 = [viewCopy dequeueReusableCellWithIdentifier:v6];
 
   dailyCashCell = self->_dailyCashCell;
   self->_dailyCashCell = v7;
@@ -409,37 +409,37 @@ LABEL_18:
   return v13;
 }
 
-- (void)_toggleDailyCash:(id)a3
+- (void)_toggleDailyCash:(id)cash
 {
   peerPaymentPass = self->_peerPaymentPass;
-  v5 = a3;
-  v6 = [(PKSecureElementPass *)peerPaymentPass settings];
-  v7 = [v5 isOn];
+  cashCopy = cash;
+  settings = [(PKSecureElementPass *)peerPaymentPass settings];
+  isOn = [cashCopy isOn];
 
   v8 = 1024;
-  if (v7)
+  if (isOn)
   {
     v8 = 0;
   }
 
-  [(PKSecureElementPass *)self->_peerPaymentPass setSettings:v8 | v6 & 0xFFFFFFFFFFFFFBFFLL];
+  [(PKSecureElementPass *)self->_peerPaymentPass setSettings:v8 | settings & 0xFFFFFFFFFFFFFBFFLL];
 
-  [(PKPaymentTransactionNotificationSettingsViewController *)self updateMasterToggle:v7];
+  [(PKPaymentTransactionNotificationSettingsViewController *)self updateMasterToggle:isOn];
 }
 
-- (id)_paymentCardCellForRow:(int64_t)a3 tableView:(id)a4
+- (id)_paymentCardCellForRow:(int64_t)row tableView:(id)view
 {
   paymentPasses = self->_paymentPasses;
-  v7 = a4;
-  v8 = [(NSArray *)paymentPasses objectAtIndex:a3];
-  v9 = [v8 settings];
-  v10 = [v7 dequeueReusableCellWithIdentifier:@"cellPaymentPassIdentifier"];
+  viewCopy = view;
+  v8 = [(NSArray *)paymentPasses objectAtIndex:row];
+  settings = [v8 settings];
+  v10 = [viewCopy dequeueReusableCellWithIdentifier:@"cellPaymentPassIdentifier"];
 
   if ([v8 isPeerPaymentPass])
   {
-    v11 = [(PKPeerPaymentAccount *)self->_peerPaymentAccount currentBalance];
-    v12 = [v11 minimalFormattedStringValue];
-    v13 = PKLocalizedPaymentString(&cfstr_NotificationSe_10.isa, &stru_1F3BD5BF0.isa, v12);
+    currentBalance = [(PKPeerPaymentAccount *)self->_peerPaymentAccount currentBalance];
+    minimalFormattedStringValue = [currentBalance minimalFormattedStringValue];
+    displayableListOfBalances = PKLocalizedPaymentString(&cfstr_NotificationSe_10.isa, &stru_1F3BD5BF0.isa, minimalFormattedStringValue);
 LABEL_5:
 
     goto LABEL_6;
@@ -447,18 +447,18 @@ LABEL_5:
 
   if ([v8 isAppleCardPass])
   {
-    v11 = [(PKAccount *)self->_appleCardAccount creditDetails];
-    v12 = [v11 cardBalance];
-    v14 = [v12 minimalFormattedStringValue];
-    v13 = PKLocalizedPaymentString(&cfstr_NotificationSe_11.isa, &stru_1F3BD5BF0.isa, v14);
+    currentBalance = [(PKAccount *)self->_appleCardAccount creditDetails];
+    minimalFormattedStringValue = [currentBalance cardBalance];
+    v12MinimalFormattedStringValue = [minimalFormattedStringValue minimalFormattedStringValue];
+    displayableListOfBalances = PKLocalizedPaymentString(&cfstr_NotificationSe_11.isa, &stru_1F3BD5BF0.isa, v12MinimalFormattedStringValue);
 
     goto LABEL_5;
   }
 
   if (![v8 isStoredValuePass])
   {
-    v11 = [v8 paymentPass];
-    v13 = PKSanitizedPrimaryAccountRepresentationForPass();
+    currentBalance = [v8 paymentPass];
+    displayableListOfBalances = PKSanitizedPrimaryAccountRepresentationForPass();
 LABEL_6:
 
     if (v10)
@@ -473,27 +473,27 @@ LABEL_6:
   transitBalanceModel = self->_transitBalanceModel;
   self->_transitBalanceModel = v19;
 
-  v13 = [(PKTransitBalanceModel *)self->_transitBalanceModel displayableListOfBalances];
+  displayableListOfBalances = [(PKTransitBalanceModel *)self->_transitBalanceModel displayableListOfBalances];
   if (!v10)
   {
 LABEL_7:
-    v15 = [v8 localizedDescription];
-    v10 = [[PKPassSettingTableCell alloc] initWithTitle:v15 detailText:v13 target:self action:sel__togglePaymentPassNotifications_ reuseIdentifier:@"cellPaymentPassIdentifier"];
+    localizedDescription = [v8 localizedDescription];
+    v10 = [[PKPassSettingTableCell alloc] initWithTitle:localizedDescription detailText:displayableListOfBalances target:self action:sel__togglePaymentPassNotifications_ reuseIdentifier:@"cellPaymentPassIdentifier"];
   }
 
 LABEL_8:
-  [(PKPassSettingTableCell *)v10 setPass:v8 withDetailText:v13];
-  v16 = [(PKSettingTableCell *)v10 settingSwitch];
-  [v16 setTag:a3];
+  [(PKPassSettingTableCell *)v10 setPass:v8 withDetailText:displayableListOfBalances];
+  settingSwitch = [(PKSettingTableCell *)v10 settingSwitch];
+  [settingSwitch setTag:row];
 
   if ((([v8 supportsFPANNotifications] & 1) != 0 || objc_msgSend(v8, "supportsDPANNotifications")) && (objc_msgSend(v8, "isPeerPaymentPass") & 1) == 0)
   {
-    v17 = (v9 & 0x80) == 0;
+    v17 = (settings & 0x80) == 0;
   }
 
   else
   {
-    v17 = (v9 >> 3) & 1;
+    v17 = (settings >> 3) & 1;
   }
 
   [(PKSettingTableCell *)v10 setOn:v17];
@@ -501,54 +501,54 @@ LABEL_8:
   return v10;
 }
 
-- (void)_togglePaymentPassNotifications:(id)a3
+- (void)_togglePaymentPassNotifications:(id)notifications
 {
   paymentPasses = self->_paymentPasses;
-  v5 = a3;
-  v10 = -[NSArray objectAtIndex:](paymentPasses, "objectAtIndex:", [v5 tag]);
-  v6 = [v10 settings];
-  v7 = [v5 isOn];
+  notificationsCopy = notifications;
+  v10 = -[NSArray objectAtIndex:](paymentPasses, "objectAtIndex:", [notificationsCopy tag]);
+  settings = [v10 settings];
+  isOn = [notificationsCopy isOn];
 
   if ((([v10 supportsFPANNotifications] & 1) != 0 || objc_msgSend(v10, "supportsDPANNotifications")) && (objc_msgSend(v10, "isPeerPaymentPass") & 1) == 0)
   {
     v8 = v10;
-    if (v7)
+    if (isOn)
     {
-      v9 = v6 & 0xFFFFFFFFFFFFFF7FLL;
+      v9 = settings & 0xFFFFFFFFFFFFFF7FLL;
     }
 
     else
     {
-      v9 = v6 | 0x80;
+      v9 = settings | 0x80;
     }
   }
 
   else
   {
     v8 = v10;
-    if (v7)
+    if (isOn)
     {
-      v9 = v6 | 8;
+      v9 = settings | 8;
     }
 
     else
     {
-      v9 = v6 & 0xFFFFFFFFFFFFFFF7;
+      v9 = settings & 0xFFFFFFFFFFFFFFF7;
     }
   }
 
   [v8 setSettings:v9];
-  [(PKPaymentTransactionNotificationSettingsViewController *)self updateMasterToggle:v7];
+  [(PKPaymentTransactionNotificationSettingsViewController *)self updateMasterToggle:isOn];
 }
 
-- (void)updateMasterToggle:(BOOL)a3
+- (void)updateMasterToggle:(BOOL)toggle
 {
-  v3 = a3;
-  if (a3 || [(PKPaymentTransactionNotificationSettingsViewController *)self _allTogglesAreDisabled])
+  toggleCopy = toggle;
+  if (toggle || [(PKPaymentTransactionNotificationSettingsViewController *)self _allTogglesAreDisabled])
   {
     allNotificationsCell = self->_allNotificationsCell;
 
-    [(PKSettingTableCell *)allNotificationsCell setOn:v3];
+    [(PKSettingTableCell *)allNotificationsCell setOn:toggleCopy];
   }
 }
 

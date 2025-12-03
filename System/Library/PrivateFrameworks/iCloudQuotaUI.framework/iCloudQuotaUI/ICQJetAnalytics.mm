@@ -1,21 +1,21 @@
 @interface ICQJetAnalytics
-+ (void)preloadWithAccount:(id)a3;
++ (void)preloadWithAccount:(id)account;
 - (ICQJetAnalytics)init;
 @end
 
 @implementation ICQJetAnalytics
 
-+ (void)preloadWithAccount:(id)a3
++ (void)preloadWithAccount:(id)account
 {
   swift_beginAccess();
   if (qword_280A0D888)
   {
-    v4 = a3;
+    accountCopy = account;
   }
 
   else
   {
-    qword_280A0D888 = sub_275752938(a3);
+    qword_280A0D888 = sub_275752938(account);
   }
 }
 

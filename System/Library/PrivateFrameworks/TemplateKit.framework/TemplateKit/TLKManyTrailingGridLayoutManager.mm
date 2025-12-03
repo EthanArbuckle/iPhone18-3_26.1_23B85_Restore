@@ -1,27 +1,27 @@
 @interface TLKManyTrailingGridLayoutManager
-+ (id)computeTruncationForAlignments:(id)a3 indexForFirstTrailingColumn:(unint64_t)a4 totalEqualColumns:(unint64_t)a5;
-- (CGSize)sizeForFittingSize:(CGSize)a3 forRow:(id)a4;
++ (id)computeTruncationForAlignments:(id)alignments indexForFirstTrailingColumn:(unint64_t)column totalEqualColumns:(unint64_t)columns;
+- (CGSize)sizeForFittingSize:(CGSize)size forRow:(id)row;
 - (_NSRange)ignoreRange;
-- (double)gridArrangement:(id)a3 widthOfColumnAtIndex:(int64_t)a4 spacingAfter:(double *)a5;
+- (double)gridArrangement:(id)arrangement widthOfColumnAtIndex:(int64_t)index spacingAfter:(double *)after;
 @end
 
 @implementation TLKManyTrailingGridLayoutManager
 
-- (CGSize)sizeForFittingSize:(CGSize)a3 forRow:(id)a4
+- (CGSize)sizeForFittingSize:(CGSize)size forRow:(id)row
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  rowCopy = row;
   [(TLKGridLayoutManager *)self cachedFittingSize];
   if (width != v9 || height != v8)
   {
     [(TLKGridLayoutManager *)self setCachedFittingSize:width, height];
-    v11 = [(TLKGridLayoutManager *)self gridArrangement];
-    [v11 layoutSizeFittingSize:{width, height}];
+    gridArrangement = [(TLKGridLayoutManager *)self gridArrangement];
+    [gridArrangement layoutSizeFittingSize:{width, height}];
     [(TLKGridLayoutManager *)self setCachedGridSize:?];
 
-    v12 = [(TLKGridLayoutManager *)self itemsForRows];
-    v13 = [v12 count];
+    itemsForRows = [(TLKGridLayoutManager *)self itemsForRows];
+    v13 = [itemsForRows count];
 
     if (v13)
     {
@@ -29,19 +29,19 @@
       v15 = 0.0;
       do
       {
-        v16 = [(TLKGridLayoutManager *)self itemsForRows];
-        v17 = [v16 objectAtIndexedSubscript:v14];
-        v18 = [v17 firstObject];
+        itemsForRows2 = [(TLKGridLayoutManager *)self itemsForRows];
+        v17 = [itemsForRows2 objectAtIndexedSubscript:v14];
+        firstObject = [v17 firstObject];
 
-        [v18 sizeForTargetSize:{width, height}];
+        [firstObject sizeForTargetSize:{width, height}];
         if (v15 < v19)
         {
           v15 = v19;
         }
 
         ++v14;
-        v20 = [(TLKGridLayoutManager *)self itemsForRows];
-        v21 = [v20 count];
+        itemsForRows3 = [(TLKGridLayoutManager *)self itemsForRows];
+        v21 = [itemsForRows3 count];
       }
 
       while (v14 < v21);
@@ -54,8 +54,8 @@
 
     +[TLKLabelItem minimumWidthForLabelItem];
     v23 = vcvtmd_u64_f64((width - v15) / v22);
-    v24 = [(TLKGridLayoutManager *)self alignments];
-    v25 = [v24 count] - v23;
+    alignments = [(TLKGridLayoutManager *)self alignments];
+    v25 = [alignments count] - v23;
 
     if (v25 > 0)
     {
@@ -68,13 +68,13 @@
     }
 
     [(TLKManyTrailingGridLayoutManager *)self setIgnoreRange:v26, v25 & ~(v25 >> 63)];
-    v27 = [(TLKGridLayoutManager *)self gridArrangement];
-    [v27 reloadData];
+    gridArrangement2 = [(TLKGridLayoutManager *)self gridArrangement];
+    [gridArrangement2 reloadData];
   }
 
   v34.receiver = self;
   v34.super_class = TLKManyTrailingGridLayoutManager;
-  [(TLKGridLayoutManager *)&v34 sizeForFittingSize:v7 forRow:width, height];
+  [(TLKGridLayoutManager *)&v34 sizeForFittingSize:rowCopy forRow:width, height];
   v29 = v28;
   v31 = v30;
 
@@ -85,24 +85,24 @@
   return result;
 }
 
-- (double)gridArrangement:(id)a3 widthOfColumnAtIndex:(int64_t)a4 spacingAfter:(double *)a5
+- (double)gridArrangement:(id)arrangement widthOfColumnAtIndex:(int64_t)index spacingAfter:(double *)after
 {
   v10.receiver = self;
   v10.super_class = TLKManyTrailingGridLayoutManager;
-  [(TLKGridLayoutManager *)&v10 gridArrangement:a3 widthOfColumnAtIndex:a4 spacingAfter:a5];
+  [(TLKGridLayoutManager *)&v10 gridArrangement:arrangement widthOfColumnAtIndex:index spacingAfter:after];
   if ([(TLKManyTrailingGridLayoutManager *)self ignoreRange]== 0x7FFFFFFFFFFFFFFFLL)
   {
     return *MEMORY[0x1E698B6F8];
   }
 
-  v8 = [(TLKManyTrailingGridLayoutManager *)self ignoreRange];
-  if (a4 < v8)
+  ignoreRange = [(TLKManyTrailingGridLayoutManager *)self ignoreRange];
+  if (index < ignoreRange)
   {
     return *MEMORY[0x1E698B6F8];
   }
 
   result = 0.0;
-  if (a4 - v8 >= v9)
+  if (index - ignoreRange >= v9)
   {
     return *MEMORY[0x1E698B6F8];
   }
@@ -110,11 +110,11 @@
   return result;
 }
 
-+ (id)computeTruncationForAlignments:(id)a3 indexForFirstTrailingColumn:(unint64_t)a4 totalEqualColumns:(unint64_t)a5
++ (id)computeTruncationForAlignments:(id)alignments indexForFirstTrailingColumn:(unint64_t)column totalEqualColumns:(unint64_t)columns
 {
-  v5 = a3;
+  alignmentsCopy = alignments;
   v6 = objc_opt_new();
-  if ([v5 count])
+  if ([alignmentsCopy count])
   {
     v7 = 0;
     do
@@ -135,7 +135,7 @@
       ++v7;
     }
 
-    while (v7 < [v5 count]);
+    while (v7 < [alignmentsCopy count]);
   }
 
   return v6;

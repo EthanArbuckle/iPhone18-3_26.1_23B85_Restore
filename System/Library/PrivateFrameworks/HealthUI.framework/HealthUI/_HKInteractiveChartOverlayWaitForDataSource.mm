@@ -1,70 +1,70 @@
 @interface _HKInteractiveChartOverlayWaitForDataSource
 - (HKInteractiveChartOverlayViewController)overlayController;
 - (_HKInteractiveChartOverlayWaitForCacheData)parent;
-- (_HKInteractiveChartOverlayWaitForDataSource)initWithOverlayController:(id)a3 dataSource:(id)a4 parent:(id)a5;
-- (void)_requestDataForTimeScope:(int64_t)a3 resolution:(int64_t)a4 startDate:(id)a5 endDate:(id)a6 priorityDelegate:(id)a7;
-- (void)addWaitForDataGraphSeriesContext:(id)a3 timeScope:(int64_t)a4 resolution:(int64_t)a5 startDate:(id)a6 endDate:(id)a7 priorityDelegate:(id)a8 completion:(id)a9;
-- (void)dataSourceDidUpdateCache:(id)a3;
+- (_HKInteractiveChartOverlayWaitForDataSource)initWithOverlayController:(id)controller dataSource:(id)source parent:(id)parent;
+- (void)_requestDataForTimeScope:(int64_t)scope resolution:(int64_t)resolution startDate:(id)date endDate:(id)endDate priorityDelegate:(id)delegate;
+- (void)addWaitForDataGraphSeriesContext:(id)context timeScope:(int64_t)scope resolution:(int64_t)resolution startDate:(id)date endDate:(id)endDate priorityDelegate:(id)delegate completion:(id)completion;
+- (void)dataSourceDidUpdateCache:(id)cache;
 @end
 
 @implementation _HKInteractiveChartOverlayWaitForDataSource
 
-- (_HKInteractiveChartOverlayWaitForDataSource)initWithOverlayController:(id)a3 dataSource:(id)a4 parent:(id)a5
+- (_HKInteractiveChartOverlayWaitForDataSource)initWithOverlayController:(id)controller dataSource:(id)source parent:(id)parent
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  controllerCopy = controller;
+  sourceCopy = source;
+  parentCopy = parent;
   v16.receiver = self;
   v16.super_class = _HKInteractiveChartOverlayWaitForDataSource;
   v11 = [(_HKInteractiveChartOverlayWaitForDataSource *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    [(_HKInteractiveChartOverlayWaitForDataSource *)v11 setOverlayController:v8];
-    [(_HKInteractiveChartOverlayWaitForDataSource *)v12 setParent:v10];
-    objc_storeStrong(&v12->_dataSource, a4);
+    [(_HKInteractiveChartOverlayWaitForDataSource *)v11 setOverlayController:controllerCopy];
+    [(_HKInteractiveChartOverlayWaitForDataSource *)v12 setParent:parentCopy];
+    objc_storeStrong(&v12->_dataSource, source);
     v13 = objc_alloc_init(MEMORY[0x1E695DF70]);
     [(_HKInteractiveChartOverlayWaitForDataSource *)v12 setDeliveries:v13];
 
-    v14 = [v9 delegate];
-    [(_HKInteractiveChartOverlayWaitForDataSource *)v12 setPreviousDelegate:v14];
+    delegate = [sourceCopy delegate];
+    [(_HKInteractiveChartOverlayWaitForDataSource *)v12 setPreviousDelegate:delegate];
 
-    [v9 setDelegate:v12];
+    [sourceCopy setDelegate:v12];
   }
 
   return v12;
 }
 
-- (void)addWaitForDataGraphSeriesContext:(id)a3 timeScope:(int64_t)a4 resolution:(int64_t)a5 startDate:(id)a6 endDate:(id)a7 priorityDelegate:(id)a8 completion:(id)a9
+- (void)addWaitForDataGraphSeriesContext:(id)context timeScope:(int64_t)scope resolution:(int64_t)resolution startDate:(id)date endDate:(id)endDate priorityDelegate:(id)delegate completion:(id)completion
 {
-  v15 = a9;
-  v16 = a8;
-  v17 = a7;
-  v18 = a6;
-  v19 = a3;
+  completionCopy = completion;
+  delegateCopy = delegate;
+  endDateCopy = endDate;
+  dateCopy = date;
+  contextCopy = context;
   v20 = [_HKInteractiveChartOverlayDeliverCachedData alloc];
-  v21 = [(_HKInteractiveChartOverlayWaitForDataSource *)self overlayController];
-  v22 = [(_HKInteractiveChartOverlayWaitForDataSource *)self dataSource];
-  v25 = [(_HKInteractiveChartOverlayDeliverCachedData *)v20 initWithOverlayController:v21 dataSource:v22 graphSeriesContext:v19 timeScope:a4 resolution:a5 startDate:v18 endDate:v17 completion:v15];
+  overlayController = [(_HKInteractiveChartOverlayWaitForDataSource *)self overlayController];
+  dataSource = [(_HKInteractiveChartOverlayWaitForDataSource *)self dataSource];
+  v25 = [(_HKInteractiveChartOverlayDeliverCachedData *)v20 initWithOverlayController:overlayController dataSource:dataSource graphSeriesContext:contextCopy timeScope:scope resolution:resolution startDate:dateCopy endDate:endDateCopy completion:completionCopy];
 
-  v23 = [(_HKInteractiveChartOverlayWaitForDataSource *)self deliveries];
-  [v23 addObject:v25];
+  deliveries = [(_HKInteractiveChartOverlayWaitForDataSource *)self deliveries];
+  [deliveries addObject:v25];
 
-  [(_HKInteractiveChartOverlayWaitForDataSource *)self _requestDataForTimeScope:a4 resolution:a5 startDate:v18 endDate:v17 priorityDelegate:v16];
+  [(_HKInteractiveChartOverlayWaitForDataSource *)self _requestDataForTimeScope:scope resolution:resolution startDate:dateCopy endDate:endDateCopy priorityDelegate:delegateCopy];
 }
 
-- (void)_requestDataForTimeScope:(int64_t)a3 resolution:(int64_t)a4 startDate:(id)a5 endDate:(id)a6 priorityDelegate:(id)a7
+- (void)_requestDataForTimeScope:(int64_t)scope resolution:(int64_t)resolution startDate:(id)date endDate:(id)endDate priorityDelegate:(id)delegate
 {
-  v12 = a5;
-  v13 = a6;
+  dateCopy = date;
+  endDateCopy = endDate;
   v26 = 0uLL;
   v27 = 0;
-  v14 = a7;
-  v15 = [(_HKInteractiveChartOverlayWaitForDataSource *)self dataSource];
-  v16 = v15;
-  if (v15)
+  delegateCopy = delegate;
+  dataSource = [(_HKInteractiveChartOverlayWaitForDataSource *)self dataSource];
+  v16 = dataSource;
+  if (dataSource)
   {
-    [v15 blockPathForX:v12 zoom:a3 resolution:a4];
+    [dataSource blockPathForX:dateCopy zoom:scope resolution:resolution];
   }
 
   else
@@ -75,11 +75,11 @@
 
   v24 = 0uLL;
   v25 = 0;
-  v17 = [(_HKInteractiveChartOverlayWaitForDataSource *)self dataSource];
-  v18 = v17;
-  if (v17)
+  dataSource2 = [(_HKInteractiveChartOverlayWaitForDataSource *)self dataSource];
+  v18 = dataSource2;
+  if (dataSource2)
   {
-    [v17 blockPathForX:v13 zoom:a3 resolution:a4];
+    [dataSource2 blockPathForX:endDateCopy zoom:scope resolution:resolution];
   }
 
   else
@@ -88,19 +88,19 @@
     v25 = 0;
   }
 
-  v19 = [(_HKInteractiveChartOverlayWaitForDataSource *)self dataSource];
+  dataSource3 = [(_HKInteractiveChartOverlayWaitForDataSource *)self dataSource];
   v22 = v26;
   v23 = v27;
   v20 = v24;
   v21 = v25;
-  [v19 blocksRequestedFromPath:&v22 toPath:&v20 priorityDelegate:v14];
+  [dataSource3 blocksRequestedFromPath:&v22 toPath:&v20 priorityDelegate:delegateCopy];
 }
 
-- (void)dataSourceDidUpdateCache:(id)a3
+- (void)dataSourceDidUpdateCache:(id)cache
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = [(_HKInteractiveChartOverlayWaitForDataSource *)self deliveries];
-  v5 = [v4 copy];
+  deliveries = [(_HKInteractiveChartOverlayWaitForDataSource *)self deliveries];
+  v5 = [deliveries copy];
 
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v22 = 0u;
@@ -135,29 +135,29 @@
     while (v9);
   }
 
-  v13 = [(_HKInteractiveChartOverlayWaitForDataSource *)self deliveries];
-  [v13 removeObjectsInArray:v6];
+  deliveries2 = [(_HKInteractiveChartOverlayWaitForDataSource *)self deliveries];
+  [deliveries2 removeObjectsInArray:v6];
 
-  v14 = [(_HKInteractiveChartOverlayWaitForDataSource *)self deliveries];
-  v15 = [v14 count];
+  deliveries3 = [(_HKInteractiveChartOverlayWaitForDataSource *)self deliveries];
+  v15 = [deliveries3 count];
 
   if (!v15)
   {
-    v16 = [(_HKInteractiveChartOverlayWaitForDataSource *)self previousDelegate];
-    v17 = [(_HKInteractiveChartOverlayWaitForDataSource *)self dataSource];
-    [v17 setDelegate:v16];
+    previousDelegate = [(_HKInteractiveChartOverlayWaitForDataSource *)self previousDelegate];
+    dataSource = [(_HKInteractiveChartOverlayWaitForDataSource *)self dataSource];
+    [dataSource setDelegate:previousDelegate];
 
-    v18 = [(_HKInteractiveChartOverlayWaitForDataSource *)self previousDelegate];
+    previousDelegate2 = [(_HKInteractiveChartOverlayWaitForDataSource *)self previousDelegate];
 
-    if (v18)
+    if (previousDelegate2)
     {
-      v19 = [(_HKInteractiveChartOverlayWaitForDataSource *)self previousDelegate];
-      v20 = [(_HKInteractiveChartOverlayWaitForDataSource *)self dataSource];
-      [v19 dataSourceDidUpdateCache:v20];
+      previousDelegate3 = [(_HKInteractiveChartOverlayWaitForDataSource *)self previousDelegate];
+      dataSource2 = [(_HKInteractiveChartOverlayWaitForDataSource *)self dataSource];
+      [previousDelegate3 dataSourceDidUpdateCache:dataSource2];
     }
 
-    v21 = [(_HKInteractiveChartOverlayWaitForDataSource *)self parent];
-    [v21 removeWaitForDataSource:self];
+    parent = [(_HKInteractiveChartOverlayWaitForDataSource *)self parent];
+    [parent removeWaitForDataSource:self];
   }
 }
 

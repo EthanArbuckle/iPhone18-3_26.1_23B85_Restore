@@ -1,20 +1,20 @@
 @interface ZWUIServer
-+ (BOOL)isSafeToProcessMessageFromUnentitledProcessWithIdentifier:(unint64_t)a3;
-+ (id)possibleRequiredEntitlementsForProcessingMessageWithIdentifier:(unint64_t)a3;
-+ (id)requiredEntitlementForProcessingMessageWithIdentifier:(unint64_t)a3;
++ (BOOL)isSafeToProcessMessageFromUnentitledProcessWithIdentifier:(unint64_t)identifier;
++ (id)possibleRequiredEntitlementsForProcessingMessageWithIdentifier:(unint64_t)identifier;
++ (id)requiredEntitlementForProcessingMessageWithIdentifier:(unint64_t)identifier;
 + (id)sharedInstance;
 - (NSMutableDictionary)zoomRootViewControllers;
 - (ZWUIServer)init;
-- (double)desiredWindowLevelForContentViewController:(id)a3 userInteractionEnabled:(BOOL)a4;
-- (id)processMessage:(id)a3 withIdentifier:(unint64_t)a4 fromClientWithIdentifier:(id)a5 error:(id *)a6;
+- (double)desiredWindowLevelForContentViewController:(id)controller userInteractionEnabled:(BOOL)enabled;
+- (id)processMessage:(id)message withIdentifier:(unint64_t)identifier fromClientWithIdentifier:(id)withIdentifier error:(id *)error;
 - (void)_showingOrHidingControllerWillBegin;
 - (void)_showingOrHidingControllerWillEnd;
-- (void)_waitForControllerShowHideToComplete:(id)a3;
+- (void)_waitForControllerShowHideToComplete:(id)complete;
 - (void)dealloc;
-- (void)externalDisplaySceneConnected:(id)a3 forSceneClientIdentifier:(id)a4;
-- (void)externalDisplaySceneDisconnected:(id)a3 forSceneClientIdentifier:(id)a4;
-- (void)notifyOtherDisplaysOfDockedZoomRegionVisibilityChange:(BOOL)a3;
-- (void)updateZoomListeners:(id)a3;
+- (void)externalDisplaySceneConnected:(id)connected forSceneClientIdentifier:(id)identifier;
+- (void)externalDisplaySceneDisconnected:(id)disconnected forSceneClientIdentifier:(id)identifier;
+- (void)notifyOtherDisplaysOfDockedZoomRegionVisibilityChange:(BOOL)change;
+- (void)updateZoomListeners:(id)listeners;
 @end
 
 @implementation ZWUIServer
@@ -98,9 +98,9 @@ void __28__ZWUIServer_sharedInstance__block_invoke(id a1)
   [(ZWUIServer *)&v4 dealloc];
 }
 
-- (double)desiredWindowLevelForContentViewController:(id)a3 userInteractionEnabled:(BOOL)a4
+- (double)desiredWindowLevelForContentViewController:(id)controller userInteractionEnabled:(BOOL)enabled
 {
-  v4 = a3;
+  controllerCopy = controller;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -113,37 +113,37 @@ void __28__ZWUIServer_sharedInstance__block_invoke(id a1)
   return result;
 }
 
-- (void)externalDisplaySceneConnected:(id)a3 forSceneClientIdentifier:(id)a4
+- (void)externalDisplaySceneConnected:(id)connected forSceneClientIdentifier:(id)identifier
 {
-  v5 = a3;
+  connectedCopy = connected;
   zoomRootViewControllers = self->_zoomRootViewControllers;
-  v7 = [v5 _sceneIdentifier];
-  v8 = [(NSMutableDictionary *)zoomRootViewControllers objectForKeyedSubscript:v7];
+  _sceneIdentifier = [connectedCopy _sceneIdentifier];
+  v8 = [(NSMutableDictionary *)zoomRootViewControllers objectForKeyedSubscript:_sceneIdentifier];
 
   if (!v8)
   {
-    v9 = [(ZWUIServer *)self externalWindowScenes];
-    [v9 addObject:v5];
+    externalWindowScenes = [(ZWUIServer *)self externalWindowScenes];
+    [externalWindowScenes addObject:connectedCopy];
 
     v10 = [ZWRootViewController alloc];
-    v11 = [v5 screen];
-    v12 = [(ZWRootViewController *)v10 initWithAXUIService:self onScreen:v11 isMainDisplay:0];
+    screen = [connectedCopy screen];
+    v12 = [(ZWRootViewController *)v10 initWithAXUIService:self onScreen:screen isMainDisplay:0];
 
     v13 = self->_zoomRootViewControllers;
-    v14 = [v5 _sceneIdentifier];
-    [(NSMutableDictionary *)v13 setObject:v12 forKeyedSubscript:v14];
+    _sceneIdentifier2 = [connectedCopy _sceneIdentifier];
+    [(NSMutableDictionary *)v13 setObject:v12 forKeyedSubscript:_sceneIdentifier2];
 
     v15 = [(NSMutableDictionary *)self->_zoomRootViewControllers objectForKeyedSubscript:@"MAIN-DISPLAY"];
     if ([v15 isZoomLensVisible])
     {
       [(ZWUIServer *)self _showingOrHidingControllerWillBegin];
       v16 = +[AXUIDisplayManager sharedDisplayManager];
-      [v16 addContentViewController:v12 withUserInteractionEnabled:1 forService:self context:0 userInterfaceStyle:1 forWindowScene:v5 completion:0];
+      [v16 addContentViewController:v12 withUserInteractionEnabled:1 forService:self context:0 userInterfaceStyle:1 forWindowScene:connectedCopy completion:0];
 
       v17 = +[AXSubsystemZoom sharedInstance];
-      v18 = [v17 ignoreLogging];
+      ignoreLogging = [v17 ignoreLogging];
 
-      if ((v18 & 1) == 0)
+      if ((ignoreLogging & 1) == 0)
       {
         v19 = +[AXSubsystemZoom identifier];
         v20 = AXLoggerForFacility();
@@ -152,15 +152,15 @@ void __28__ZWUIServer_sharedInstance__block_invoke(id a1)
         if (os_log_type_enabled(v20, v21))
         {
           v31 = AXColorizeFormatLog();
-          v30 = [(ZWRootViewController *)v12 view];
-          [v30 bounds];
+          view = [(ZWRootViewController *)v12 view];
+          [view bounds];
           v22 = NSStringFromCGRect(v35);
           [(ZWRootViewController *)v12 view];
           v23 = v29 = v21;
-          v24 = [v23 window];
-          [v24 bounds];
+          window = [v23 window];
+          [window bounds];
           v27 = NSStringFromCGRect(v36);
-          v28 = [(ZWRootViewController *)v12 interfaceOrientation];
+          interfaceOrientation = [(ZWRootViewController *)v12 interfaceOrientation];
           v26 = v22;
           v25 = _AXStringForArgs();
 
@@ -178,26 +178,26 @@ void __28__ZWUIServer_sharedInstance__block_invoke(id a1)
       v32[2] = __69__ZWUIServer_externalDisplaySceneConnected_forSceneClientIdentifier___block_invoke;
       v32[3] = &unk_78D00;
       v32[4] = self;
-      [(ZWRootViewController *)v12 showZoomSlugAndLens:1 completion:v32, v26, v27, v28];
+      [(ZWRootViewController *)v12 showZoomSlugAndLens:1 completion:v32, v26, v27, interfaceOrientation];
     }
   }
 }
 
-- (void)externalDisplaySceneDisconnected:(id)a3 forSceneClientIdentifier:(id)a4
+- (void)externalDisplaySceneDisconnected:(id)disconnected forSceneClientIdentifier:(id)identifier
 {
-  v5 = a3;
-  v6 = [(ZWUIServer *)self externalWindowScenes];
-  [v6 removeObject:v5];
+  disconnectedCopy = disconnected;
+  externalWindowScenes = [(ZWUIServer *)self externalWindowScenes];
+  [externalWindowScenes removeObject:disconnectedCopy];
 
-  v8 = [(ZWUIServer *)self zoomRootViewControllers];
-  v7 = [v5 _sceneIdentifier];
+  zoomRootViewControllers = [(ZWUIServer *)self zoomRootViewControllers];
+  _sceneIdentifier = [disconnectedCopy _sceneIdentifier];
 
-  [v8 removeObjectForKey:v7];
+  [zoomRootViewControllers removeObjectForKey:_sceneIdentifier];
 }
 
-- (void)updateZoomListeners:(id)a3
+- (void)updateZoomListeners:(id)listeners
 {
-  v4 = a3;
+  listenersCopy = listeners;
   v24[0] = 0;
   v24[1] = v24;
   v24[2] = 0x3032000000;
@@ -210,7 +210,7 @@ void __28__ZWUIServer_sharedInstance__block_invoke(id a1)
   v22[3] = __Block_byref_object_copy_;
   v22[4] = __Block_byref_object_dispose_;
   v23 = 0;
-  v5 = [v4 objectForKeyedSubscript:ZWAttributeKeyDisplayID];
+  v5 = [listenersCopy objectForKeyedSubscript:ZWAttributeKeyDisplayID];
   zoomListenersUpdateQueue = self->_zoomListenersUpdateQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -221,7 +221,7 @@ void __28__ZWUIServer_sharedInstance__block_invoke(id a1)
   v7 = v5;
   v18 = v7;
   v21 = v22;
-  v8 = v4;
+  v8 = listenersCopy;
   v19 = v8;
   dispatch_sync(zoomListenersUpdateQueue, block);
   objc_initWeak(&location, self);
@@ -388,17 +388,17 @@ id __34__ZWUIServer_updateZoomListeners___block_invoke_3(void *a1)
   return [*(a1[4] + 32) setObject:a1[5] forKeyedSubscript:a1[6]];
 }
 
-- (void)notifyOtherDisplaysOfDockedZoomRegionVisibilityChange:(BOOL)a3
+- (void)notifyOtherDisplaysOfDockedZoomRegionVisibilityChange:(BOOL)change
 {
-  v3 = a3;
+  changeCopy = change;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [(ZWUIServer *)self zoomRootViewControllers];
-  v5 = [v4 allValues];
+  zoomRootViewControllers = [(ZWUIServer *)self zoomRootViewControllers];
+  allValues = [zoomRootViewControllers allValues];
 
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v6 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -410,33 +410,33 @@ id __34__ZWUIServer_updateZoomListeners___block_invoke_3(void *a1)
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allValues);
         }
 
-        [*(*(&v10 + 1) + 8 * v9) updateDockedZoomRegionVisibility:v3];
+        [*(*(&v10 + 1) + 8 * v9) updateDockedZoomRegionVisibility:changeCopy];
         v9 = v9 + 1;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)_waitForControllerShowHideToComplete:(id)a3
+- (void)_waitForControllerShowHideToComplete:(id)complete
 {
-  v4 = a3;
-  v5 = [(ZWUIServer *)self showHideQueue];
+  completeCopy = complete;
+  showHideQueue = [(ZWUIServer *)self showHideQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = __51__ZWUIServer__waitForControllerShowHideToComplete___block_invoke;
   v7[3] = &unk_79018;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = completeCopy;
+  v6 = completeCopy;
+  dispatch_async(showHideQueue, v7);
 }
 
 void __51__ZWUIServer__waitForControllerShowHideToComplete___block_invoke(uint64_t a1)
@@ -451,14 +451,14 @@ void __51__ZWUIServer__waitForControllerShowHideToComplete___block_invoke(uint64
 
 - (void)_showingOrHidingControllerWillBegin
 {
-  v2 = [(ZWUIServer *)self showHideGroup];
-  dispatch_group_enter(v2);
+  showHideGroup = [(ZWUIServer *)self showHideGroup];
+  dispatch_group_enter(showHideGroup);
 }
 
 - (void)_showingOrHidingControllerWillEnd
 {
-  v2 = [(ZWUIServer *)self showHideGroup];
-  dispatch_group_leave(v2);
+  showHideGroup = [(ZWUIServer *)self showHideGroup];
+  dispatch_group_leave(showHideGroup);
 }
 
 - (NSMutableDictionary)zoomRootViewControllers
@@ -482,13 +482,13 @@ void __51__ZWUIServer__waitForControllerShowHideToComplete___block_invoke(uint64
   return zoomRootViewControllers;
 }
 
-+ (id)requiredEntitlementForProcessingMessageWithIdentifier:(unint64_t)a3
++ (id)requiredEntitlementForProcessingMessageWithIdentifier:(unint64_t)identifier
 {
   result = 0;
-  if (a3 > 2500)
+  if (identifier > 2500)
   {
-    v4 = a3 + 59;
-    if (a3 - 2501 > 0xD)
+    v4 = identifier + 59;
+    if (identifier - 2501 > 0xD)
     {
       return result;
     }
@@ -509,14 +509,14 @@ void __51__ZWUIServer__waitForControllerShowHideToComplete___block_invoke(uint64
     return @"com.apple.accessibility.SpringBoard";
   }
 
-  if (a3 > 2015)
+  if (identifier > 2015)
   {
-    if (a3 - 2200 < 4 || a3 - 2019 < 3)
+    if (identifier - 2200 < 4 || identifier - 2019 < 3)
     {
       return @"com.apple.accessibility.zoom.client";
     }
 
-    if (a3 == 2016)
+    if (identifier == 2016)
     {
       return @"com.apple.springboard.inCallPresentation";
     }
@@ -524,17 +524,17 @@ void __51__ZWUIServer__waitForControllerShowHideToComplete___block_invoke(uint64
     return 0;
   }
 
-  if (a3 - 2007 < 2)
+  if (identifier - 2007 < 2)
   {
     return @"com.apple.accessibility.SpringBoard";
   }
 
-  if (a3 - 2013 < 2)
+  if (identifier - 2013 < 2)
   {
     return @"com.apple.accessibility.voiceover";
   }
 
-  if (a3 == 2003)
+  if (identifier == 2003)
   {
     return @"com.apple.accessibility.SpringBoard";
   }
@@ -542,9 +542,9 @@ void __51__ZWUIServer__waitForControllerShowHideToComplete___block_invoke(uint64
   return result;
 }
 
-+ (id)possibleRequiredEntitlementsForProcessingMessageWithIdentifier:(unint64_t)a3
++ (id)possibleRequiredEntitlementsForProcessingMessageWithIdentifier:(unint64_t)identifier
 {
-  if (a3 - 2004 <= 0xB && ((1 << (a3 + 44)) & 0x821) != 0)
+  if (identifier - 2004 <= 0xB && ((1 << (identifier + 44)) & 0x821) != 0)
   {
     v4 = &off_7B6B0;
 LABEL_8:
@@ -552,14 +552,14 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if (a3 - 1000 < 2)
+  if (identifier - 1000 < 2)
   {
     v3 = [NSMutableSet setWithObject:@"com.apple.accessibility.BackBoard"];
     [v3 addObject:@"com.apple.ClarityBoard"];
     goto LABEL_9;
   }
 
-  if (a3 == 2500)
+  if (identifier == 2500)
   {
     v4 = &off_7B698;
     goto LABEL_8;
@@ -571,43 +571,43 @@ LABEL_9:
   return v3;
 }
 
-+ (BOOL)isSafeToProcessMessageFromUnentitledProcessWithIdentifier:(unint64_t)a3
++ (BOOL)isSafeToProcessMessageFromUnentitledProcessWithIdentifier:(unint64_t)identifier
 {
   result = 1;
-  if (a3 - 2000 > 0x18 || ((1 << (a3 + 48)) & 0x1C20467) == 0)
+  if (identifier - 2000 > 0x18 || ((1 << (identifier + 48)) & 0x1C20467) == 0)
   {
-    return a3 == 3000;
+    return identifier == 3000;
   }
 
   return result;
 }
 
-- (id)processMessage:(id)a3 withIdentifier:(unint64_t)a4 fromClientWithIdentifier:(id)a5 error:(id *)a6
+- (id)processMessage:(id)message withIdentifier:(unint64_t)identifier fromClientWithIdentifier:(id)withIdentifier error:(id *)error
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = v9;
-  if (a4 > 2199)
+  messageCopy = message;
+  withIdentifierCopy = withIdentifier;
+  v10 = withIdentifierCopy;
+  if (identifier > 2199)
   {
     v13 = 0;
-    if (a4 <= 2506)
+    if (identifier <= 2506)
     {
-      if (a4 <= 2202)
+      if (identifier <= 2202)
       {
-        if (a4 == 2200)
+        if (identifier == 2200)
         {
-          v245 = [v8 objectForKeyedSubscript:@"displayID"];
-          v246 = [v245 unsignedIntValue];
+          v245 = [messageCopy objectForKeyedSubscript:@"displayID"];
+          unsignedIntValue = [v245 unsignedIntValue];
 
           v347 = 0u;
           v348 = 0u;
           v345 = 0u;
           v346 = 0u;
-          v247 = [(ZWUIServer *)self zoomRootViewControllers];
-          v248 = [v247 allKeys];
+          zoomRootViewControllers = [(ZWUIServer *)self zoomRootViewControllers];
+          allKeys = [zoomRootViewControllers allKeys];
 
-          objb = v248;
-          v249 = [v248 countByEnumeratingWithState:&v345 objects:v438 count:16];
+          objb = allKeys;
+          v249 = [allKeys countByEnumeratingWithState:&v345 objects:v438 count:16];
           if (v249)
           {
             v250 = v249;
@@ -623,14 +623,14 @@ LABEL_9:
                 }
 
                 v252 = *(*(&v345 + 1) + 8 * i);
-                v253 = [(ZWUIServer *)self zoomRootViewControllers];
-                v239 = [v253 objectForKeyedSubscript:v252];
+                zoomRootViewControllers2 = [(ZWUIServer *)self zoomRootViewControllers];
+                v239 = [zoomRootViewControllers2 objectForKeyedSubscript:v252];
 
-                v254 = [v239 view];
-                v255 = [v254 window];
-                v256 = [v255 screen];
-                v257 = [v256 displayIdentity];
-                if ([v257 displayID] == v246)
+                view = [v239 view];
+                window = [view window];
+                screen = [window screen];
+                displayIdentity = [screen displayIdentity];
+                if ([displayIdentity displayID] == unsignedIntValue)
                 {
 
 LABEL_271:
@@ -650,7 +650,7 @@ LABEL_274:
                   goto LABEL_255;
                 }
 
-                if (v246)
+                if (unsignedIntValue)
                 {
                 }
 
@@ -676,17 +676,17 @@ LABEL_274:
 
         else
         {
-          if (a4 != 2201)
+          if (identifier != 2201)
           {
-            v35 = v9;
+            v35 = withIdentifierCopy;
             v351 = 0u;
             v352 = 0u;
             v349 = 0u;
             v350 = 0u;
-            v36 = [(ZWUIServer *)self zoomRootViewControllers];
-            v37 = [v36 allKeys];
+            zoomRootViewControllers3 = [(ZWUIServer *)self zoomRootViewControllers];
+            allKeys2 = [zoomRootViewControllers3 allKeys];
 
-            v38 = [v37 countByEnumeratingWithState:&v349 objects:v439 count:16];
+            v38 = [allKeys2 countByEnumeratingWithState:&v349 objects:v439 count:16];
             if (v38)
             {
               v39 = v38;
@@ -697,12 +697,12 @@ LABEL_274:
                 {
                   if (*v350 != v40)
                   {
-                    objc_enumerationMutation(v37);
+                    objc_enumerationMutation(allKeys2);
                   }
 
                   v42 = *(*(&v349 + 1) + 8 * j);
-                  v43 = [(ZWUIServer *)self zoomRootViewControllers];
-                  v44 = [v43 objectForKeyedSubscript:v42];
+                  zoomRootViewControllers4 = [(ZWUIServer *)self zoomRootViewControllers];
+                  v44 = [zoomRootViewControllers4 objectForKeyedSubscript:v42];
 
                   if ([v42 isEqualToString:@"MAIN-DISPLAY"])
                   {
@@ -712,7 +712,7 @@ LABEL_274:
                   }
                 }
 
-                v39 = [v37 countByEnumeratingWithState:&v349 objects:v439 count:16];
+                v39 = [allKeys2 countByEnumeratingWithState:&v349 objects:v439 count:16];
               }
 
               while (v39);
@@ -725,18 +725,18 @@ LABEL_262:
             goto LABEL_255;
           }
 
-          v230 = [v8 objectForKeyedSubscript:@"displayID"];
-          v231 = [v230 unsignedIntValue];
+          v230 = [messageCopy objectForKeyedSubscript:@"displayID"];
+          unsignedIntValue2 = [v230 unsignedIntValue];
 
           v343 = 0u;
           v344 = 0u;
           v341 = 0u;
           v342 = 0u;
-          v232 = [(ZWUIServer *)self zoomRootViewControllers];
-          v233 = [v232 allKeys];
+          zoomRootViewControllers5 = [(ZWUIServer *)self zoomRootViewControllers];
+          allKeys3 = [zoomRootViewControllers5 allKeys];
 
-          objb = v233;
-          v234 = [v233 countByEnumeratingWithState:&v341 objects:v435 count:16];
+          objb = allKeys3;
+          v234 = [allKeys3 countByEnumeratingWithState:&v341 objects:v435 count:16];
           if (v234)
           {
             v235 = v234;
@@ -752,14 +752,14 @@ LABEL_262:
                 }
 
                 v237 = *(*(&v341 + 1) + 8 * k);
-                v238 = [(ZWUIServer *)self zoomRootViewControllers];
-                v239 = [v238 objectForKeyedSubscript:v237];
+                zoomRootViewControllers6 = [(ZWUIServer *)self zoomRootViewControllers];
+                v239 = [zoomRootViewControllers6 objectForKeyedSubscript:v237];
 
-                v240 = [v239 view];
-                v241 = [v240 window];
-                v242 = [v241 screen];
-                v243 = [v242 displayIdentity];
-                if ([v243 displayID] == v231)
+                view2 = [v239 view];
+                window2 = [view2 window];
+                screen2 = [window2 screen];
+                displayIdentity2 = [screen2 displayIdentity];
+                if ([displayIdentity2 displayID] == unsignedIntValue2)
                 {
 
 LABEL_269:
@@ -772,7 +772,7 @@ LABEL_269:
                   goto LABEL_272;
                 }
 
-                if (v231)
+                if (unsignedIntValue2)
                 {
                 }
 
@@ -802,22 +802,22 @@ LABEL_243:
         goto LABEL_274;
       }
 
-      if (a4 - 2500 < 3)
+      if (identifier - 2500 < 3)
       {
         goto LABEL_255;
       }
 
-      if (a4 == 2203)
+      if (identifier == 2203)
       {
-        v20 = v9;
+        v20 = withIdentifierCopy;
         v339 = 0u;
         v340 = 0u;
         v337 = 0u;
         v338 = 0u;
-        v21 = [(ZWUIServer *)self zoomRootViewControllers];
-        v22 = [v21 allKeys];
+        zoomRootViewControllers7 = [(ZWUIServer *)self zoomRootViewControllers];
+        allKeys4 = [zoomRootViewControllers7 allKeys];
 
-        v23 = [v22 countByEnumeratingWithState:&v337 objects:v432 count:16];
+        v23 = [allKeys4 countByEnumeratingWithState:&v337 objects:v432 count:16];
         if (!v23)
         {
           goto LABEL_27;
@@ -831,21 +831,21 @@ LABEL_243:
           {
             if (*v338 != v25)
             {
-              objc_enumerationMutation(v22);
+              objc_enumerationMutation(allKeys4);
             }
 
             v27 = *(*(&v337 + 1) + 8 * m);
-            v28 = [(ZWUIServer *)self zoomRootViewControllers];
-            v29 = [v28 objectForKeyedSubscript:v27];
+            zoomRootViewControllers8 = [(ZWUIServer *)self zoomRootViewControllers];
+            v29 = [zoomRootViewControllers8 objectForKeyedSubscript:v27];
 
             if ([v27 isEqualToString:@"MAIN-DISPLAY"])
             {
-              v265 = [v29 getLastSpeakUnderFingerPhrase];
-              v266 = v265;
-              if (v265)
+              getLastSpeakUnderFingerPhrase = [v29 getLastSpeakUnderFingerPhrase];
+              v266 = getLastSpeakUnderFingerPhrase;
+              if (getLastSpeakUnderFingerPhrase)
               {
                 v430 = @"result";
-                v431 = v265;
+                v431 = getLastSpeakUnderFingerPhrase;
                 v13 = [NSDictionary dictionaryWithObjects:&v431 forKeys:&v430 count:1];
               }
 
@@ -860,7 +860,7 @@ LABEL_243:
             }
           }
 
-          v24 = [v22 countByEnumeratingWithState:&v337 objects:v432 count:16];
+          v24 = [allKeys4 countByEnumeratingWithState:&v337 objects:v432 count:16];
           if (!v24)
           {
 LABEL_27:
@@ -876,23 +876,23 @@ LABEL_284:
 
     else
     {
-      if (a4 <= 2509)
+      if (identifier <= 2509)
       {
-        if (a4 == 2507)
+        if (identifier == 2507)
         {
           goto LABEL_255;
         }
 
-        if (a4 == 2508)
+        if (identifier == 2508)
         {
           v380 = 0u;
           v379 = 0u;
           v378 = 0u;
           v377 = 0u;
-          v47 = [(ZWUIServer *)self zoomRootViewControllers];
-          v15 = [v47 allValues];
+          zoomRootViewControllers9 = [(ZWUIServer *)self zoomRootViewControllers];
+          allValues = [zoomRootViewControllers9 allValues];
 
-          v48 = [v15 countByEnumeratingWithState:&v377 objects:v446 count:16];
+          v48 = [allValues countByEnumeratingWithState:&v377 objects:v446 count:16];
           if (v48)
           {
             v49 = v48;
@@ -903,13 +903,13 @@ LABEL_284:
               {
                 if (*v378 != v50)
                 {
-                  objc_enumerationMutation(v15);
+                  objc_enumerationMutation(allValues);
                 }
 
                 [*(*(&v377 + 1) + 8 * n) handleDeviceReturnedToClockAtIdle];
               }
 
-              v49 = [v15 countByEnumeratingWithState:&v377 objects:v446 count:16];
+              v49 = [allValues countByEnumeratingWithState:&v377 objects:v446 count:16];
             }
 
             while (v49);
@@ -922,10 +922,10 @@ LABEL_284:
           v375 = 0u;
           v374 = 0u;
           v373 = 0u;
-          v14 = [(ZWUIServer *)self zoomRootViewControllers];
-          v15 = [v14 allValues];
+          zoomRootViewControllers10 = [(ZWUIServer *)self zoomRootViewControllers];
+          allValues = [zoomRootViewControllers10 allValues];
 
-          v16 = [v15 countByEnumeratingWithState:&v373 objects:v445 count:16];
+          v16 = [allValues countByEnumeratingWithState:&v373 objects:v445 count:16];
           if (v16)
           {
             v17 = v16;
@@ -936,13 +936,13 @@ LABEL_284:
               {
                 if (*v374 != v18)
                 {
-                  objc_enumerationMutation(v15);
+                  objc_enumerationMutation(allValues);
                 }
 
                 [*(*(&v373 + 1) + 8 * ii) handleCarouselLockBegan];
               }
 
-              v17 = [v15 countByEnumeratingWithState:&v373 objects:v445 count:16];
+              v17 = [allValues countByEnumeratingWithState:&v373 objects:v445 count:16];
             }
 
             while (v17);
@@ -952,21 +952,21 @@ LABEL_284:
         goto LABEL_253;
       }
 
-      if (a4 - 2512 < 3)
+      if (identifier - 2512 < 3)
       {
         goto LABEL_255;
       }
 
-      if (a4 == 2510)
+      if (identifier == 2510)
       {
         v372 = 0u;
         v371 = 0u;
         v370 = 0u;
         v369 = 0u;
-        v259 = [(ZWUIServer *)self zoomRootViewControllers];
-        v15 = [v259 allValues];
+        zoomRootViewControllers11 = [(ZWUIServer *)self zoomRootViewControllers];
+        allValues = [zoomRootViewControllers11 allValues];
 
-        v260 = [v15 countByEnumeratingWithState:&v369 objects:v444 count:16];
+        v260 = [allValues countByEnumeratingWithState:&v369 objects:v444 count:16];
         if (v260)
         {
           v261 = v260;
@@ -977,13 +977,13 @@ LABEL_284:
             {
               if (*v370 != v262)
               {
-                objc_enumerationMutation(v15);
+                objc_enumerationMutation(allValues);
               }
 
               [*(*(&v369 + 1) + 8 * jj) handleCarouselLockEnded];
             }
 
-            v261 = [v15 countByEnumeratingWithState:&v369 objects:v444 count:16];
+            v261 = [allValues countByEnumeratingWithState:&v369 objects:v444 count:16];
           }
 
           while (v261);
@@ -992,16 +992,16 @@ LABEL_284:
         goto LABEL_253;
       }
 
-      if (a4 == 2511)
+      if (identifier == 2511)
       {
         v327 = 0u;
         v328 = 0u;
         v325 = 0u;
         v326 = 0u;
-        v30 = [(ZWUIServer *)self zoomRootViewControllers];
-        v15 = [v30 allValues];
+        zoomRootViewControllers12 = [(ZWUIServer *)self zoomRootViewControllers];
+        allValues = [zoomRootViewControllers12 allValues];
 
-        v31 = [v15 countByEnumeratingWithState:&v325 objects:v427 count:16];
+        v31 = [allValues countByEnumeratingWithState:&v325 objects:v427 count:16];
         if (v31)
         {
           v32 = v31;
@@ -1012,13 +1012,13 @@ LABEL_284:
             {
               if (*v326 != v33)
               {
-                objc_enumerationMutation(v15);
+                objc_enumerationMutation(allValues);
               }
 
               [*(*(&v325 + 1) + 8 * kk) handleDeviceWillWake];
             }
 
-            v32 = [v15 countByEnumeratingWithState:&v325 objects:v427 count:16];
+            v32 = [allValues countByEnumeratingWithState:&v325 objects:v427 count:16];
           }
 
           while (v32);
@@ -1033,7 +1033,7 @@ LABEL_254:
     }
 
 LABEL_61:
-    v52 = [NSNumber numberWithUnsignedInteger:a4];
+    v52 = [NSNumber numberWithUnsignedInteger:identifier];
     v53 = [NSString stringWithFormat:@"Unexpected message sent: %@", v52];
     v54 = [NSException exceptionWithName:@"Zoom Exception" reason:v53 userInfo:0];
     [v54 raise];
@@ -1042,7 +1042,7 @@ LABEL_281:
     goto LABEL_254;
   }
 
-  switch(a4)
+  switch(identifier)
   {
     case 0x7D0uLL:
       focusedAppsRetrievalQueue = self->_focusedAppsRetrievalQueue;
@@ -1050,8 +1050,8 @@ LABEL_281:
       block[1] = 3221225472;
       block[2] = __75__ZWUIServer_processMessage_withIdentifier_fromClientWithIdentifier_error___block_invoke_4;
       block[3] = &unk_79170;
-      v416 = v8;
-      v417 = self;
+      v416 = messageCopy;
+      selfCopy = self;
       dispatch_async(focusedAppsRetrievalQueue, block);
       v12 = v416;
       goto LABEL_199;
@@ -1061,54 +1061,54 @@ LABEL_281:
       v412[1] = 3221225472;
       v412[2] = __75__ZWUIServer_processMessage_withIdentifier_fromClientWithIdentifier_error___block_invoke_6;
       v412[3] = &unk_79170;
-      v413 = v8;
-      v414 = self;
+      v413 = messageCopy;
+      selfCopy2 = self;
       dispatch_async(v166, v412);
       v12 = v413;
       goto LABEL_199;
     case 0x7D2uLL:
-      v120 = [v8 objectForKeyedSubscript:@"focusType"];
-      v121 = [v120 unsignedIntegerValue];
+      v120 = [messageCopy objectForKeyedSubscript:@"focusType"];
+      unsignedIntegerValue = [v120 unsignedIntegerValue];
 
       v122 = +[AXSettings sharedInstance];
-      v123 = [v122 zoomShouldFollowFocus];
+      zoomShouldFollowFocus = [v122 zoomShouldFollowFocus];
 
-      if ((v123 & 1) == 0 && v121 != &dword_0 + 1)
+      if ((zoomShouldFollowFocus & 1) == 0 && unsignedIntegerValue != &dword_0 + 1)
       {
         goto LABEL_254;
       }
 
-      v290 = v121;
-      v124 = [v8 objectForKeyedSubscript:@"focusFrame"];
+      v290 = unsignedIntegerValue;
+      v124 = [messageCopy objectForKeyedSubscript:@"focusFrame"];
       v453 = NSRectFromString(v124);
       x = v453.origin.x;
       y = v453.origin.y;
       width = v453.size.width;
       height = v453.size.height;
 
-      v129 = [v8 objectForKeyedSubscript:@"contextId"];
-      v288 = [v129 unsignedIntValue];
+      v129 = [messageCopy objectForKeyedSubscript:@"contextId"];
+      unsignedIntValue3 = [v129 unsignedIntValue];
 
-      v130 = [v8 objectForKeyedSubscript:@"keyboardFrame"];
+      v130 = [messageCopy objectForKeyedSubscript:@"keyboardFrame"];
       v454 = NSRectFromString(v130);
       v131 = v454.origin.x;
       v132 = v454.origin.y;
       v133 = v454.size.width;
       v134 = v454.size.height;
 
-      v52 = [v8 objectForKeyedSubscript:@"appID"];
-      v135 = [v8 objectForKeyedSubscript:@"displayID"];
-      v299 = [v135 unsignedIntValue];
+      v52 = [messageCopy objectForKeyedSubscript:@"appID"];
+      v135 = [messageCopy objectForKeyedSubscript:@"displayID"];
+      unsignedIntValue4 = [v135 unsignedIntValue];
 
       v400 = 0u;
       v399 = 0u;
       v398 = 0u;
       v397 = 0u;
-      v136 = [(ZWUIServer *)self zoomRootViewControllers];
-      v137 = [v136 allValues];
+      zoomRootViewControllers13 = [(ZWUIServer *)self zoomRootViewControllers];
+      allValues2 = [zoomRootViewControllers13 allValues];
 
-      obja = v137;
-      v138 = [v137 countByEnumeratingWithState:&v397 objects:v451 count:16];
+      obja = allValues2;
+      v138 = [allValues2 countByEnumeratingWithState:&v397 objects:v451 count:16];
       if (!v138)
       {
         goto LABEL_280;
@@ -1128,16 +1128,16 @@ LABEL_281:
           }
 
           v142 = *(*(&v397 + 1) + 8 * mm);
-          v143 = [v142 view];
-          v144 = [v143 window];
-          v145 = [v144 screen];
-          v146 = [v145 displayIdentity];
-          v147 = [v146 displayID];
+          view3 = [v142 view];
+          window3 = [view3 window];
+          screen3 = [window3 screen];
+          displayIdentity3 = [screen3 displayIdentity];
+          displayID = [displayIdentity3 displayID];
 
-          if (v147 == v299)
+          if (displayID == unsignedIntValue4)
           {
             v52 = v292;
-            [v142 handleFocusChangedWithType:v290 rect:v288 keyboardFrame:v292 contextId:x appID:{y, width, height, v131, v132, v133, v134}];
+            [v142 handleFocusChangedWithType:v290 rect:unsignedIntValue3 keyboardFrame:v292 contextId:x appID:{y, width, height, v131, v132, v133, v134}];
             v10 = v141;
             goto LABEL_280;
           }
@@ -1163,10 +1163,10 @@ LABEL_280:
       v395 = 0u;
       v394 = 0u;
       v393 = 0u;
-      v177 = [(ZWUIServer *)self zoomRootViewControllers];
-      v15 = [v177 allValues];
+      zoomRootViewControllers14 = [(ZWUIServer *)self zoomRootViewControllers];
+      allValues = [zoomRootViewControllers14 allValues];
 
-      v178 = [v15 countByEnumeratingWithState:&v393 objects:v450 count:16];
+      v178 = [allValues countByEnumeratingWithState:&v393 objects:v450 count:16];
       if (v178)
       {
         v179 = v178;
@@ -1177,13 +1177,13 @@ LABEL_280:
           {
             if (*v394 != v180)
             {
-              objc_enumerationMutation(v15);
+              objc_enumerationMutation(allValues);
             }
 
             [*(*(&v393 + 1) + 8 * nn) handleLockButtonWasPressed];
           }
 
-          v179 = [v15 countByEnumeratingWithState:&v393 objects:v450 count:16];
+          v179 = [allValues countByEnumeratingWithState:&v393 objects:v450 count:16];
         }
 
         while (v179);
@@ -1191,15 +1191,15 @@ LABEL_280:
 
       goto LABEL_253;
     case 0x7D4uLL:
-      v111 = v9;
+      v111 = withIdentifierCopy;
       v392 = 0u;
       v391 = 0u;
       v390 = 0u;
       v389 = 0u;
-      v182 = [(ZWUIServer *)self zoomRootViewControllers];
-      v113 = [v182 allValues];
+      zoomRootViewControllers15 = [(ZWUIServer *)self zoomRootViewControllers];
+      allValues3 = [zoomRootViewControllers15 allValues];
 
-      v183 = [v113 countByEnumeratingWithState:&v389 objects:v449 count:16];
+      v183 = [allValues3 countByEnumeratingWithState:&v389 objects:v449 count:16];
       if (v183)
       {
         v184 = v183;
@@ -1210,15 +1210,15 @@ LABEL_280:
           {
             if (*v390 != v185)
             {
-              objc_enumerationMutation(v113);
+              objc_enumerationMutation(allValues3);
             }
 
             v187 = *(*(&v389 + 1) + 8 * i1);
-            v188 = [v8 objectForKeyedSubscript:@"lensMode"];
+            v188 = [messageCopy objectForKeyedSubscript:@"lensMode"];
             [v187 handleSettingsAppDidUpdatePreferredLensMode:v188];
           }
 
-          v184 = [v113 countByEnumeratingWithState:&v389 objects:v449 count:16];
+          v184 = [allValues3 countByEnumeratingWithState:&v389 objects:v449 count:16];
         }
 
         while (v184);
@@ -1226,9 +1226,9 @@ LABEL_280:
 
       goto LABEL_186;
     case 0x7D5uLL:
-      v148 = v9;
-      v149 = [v8 objectForKey:@"appID"];
-      v150 = [v8 objectForKeyedSubscript:@"keyboardFrame"];
+      v148 = withIdentifierCopy;
+      v149 = [messageCopy objectForKey:@"appID"];
+      v150 = [messageCopy objectForKeyedSubscript:@"keyboardFrame"];
       v455 = NSRectFromString(v150);
       v151 = v455.origin.x;
       v152 = v455.origin.y;
@@ -1239,10 +1239,10 @@ LABEL_280:
       v367 = 0u;
       v366 = 0u;
       v365 = 0u;
-      v155 = [(ZWUIServer *)self zoomRootViewControllers];
-      v156 = [v155 allValues];
+      zoomRootViewControllers16 = [(ZWUIServer *)self zoomRootViewControllers];
+      allValues4 = [zoomRootViewControllers16 allValues];
 
-      v157 = [v156 countByEnumeratingWithState:&v365 objects:v443 count:16];
+      v157 = [allValues4 countByEnumeratingWithState:&v365 objects:v443 count:16];
       if (v157)
       {
         v158 = v157;
@@ -1253,13 +1253,13 @@ LABEL_280:
           {
             if (*v366 != v159)
             {
-              objc_enumerationMutation(v156);
+              objc_enumerationMutation(allValues4);
             }
 
             [*(*(&v365 + 1) + 8 * i2) handleAppDidBecomeActiveWithID:v149 initialKeyboardFrame:{v151, v152, v153, v154}];
           }
 
-          v158 = [v156 countByEnumeratingWithState:&v365 objects:v443 count:16];
+          v158 = [allValues4 countByEnumeratingWithState:&v365 objects:v443 count:16];
         }
 
         while (v158);
@@ -1267,16 +1267,16 @@ LABEL_280:
 
       goto LABEL_154;
     case 0x7D6uLL:
-      v148 = v9;
-      v149 = [v8 objectForKey:@"appID"];
+      v148 = withIdentifierCopy;
+      v149 = [messageCopy objectForKey:@"appID"];
       v361 = 0u;
       v362 = 0u;
       v363 = 0u;
       v364 = 0u;
-      v167 = [(ZWUIServer *)self zoomRootViewControllers];
-      v156 = [v167 allValues];
+      zoomRootViewControllers17 = [(ZWUIServer *)self zoomRootViewControllers];
+      allValues4 = [zoomRootViewControllers17 allValues];
 
-      v168 = [v156 countByEnumeratingWithState:&v361 objects:v442 count:16];
+      v168 = [allValues4 countByEnumeratingWithState:&v361 objects:v442 count:16];
       if (v168)
       {
         v169 = v168;
@@ -1287,13 +1287,13 @@ LABEL_280:
           {
             if (*v362 != v170)
             {
-              objc_enumerationMutation(v156);
+              objc_enumerationMutation(allValues4);
             }
 
             [*(*(&v361 + 1) + 8 * i3) handleAppDidEnterBackgroundWithID:v149];
           }
 
-          v169 = [v156 countByEnumeratingWithState:&v361 objects:v442 count:16];
+          v169 = [allValues4 countByEnumeratingWithState:&v361 objects:v442 count:16];
         }
 
         while (v169);
@@ -1309,10 +1309,10 @@ LABEL_154:
       v332 = 0u;
       v329 = 0u;
       v330 = 0u;
-      v201 = [(ZWUIServer *)self zoomRootViewControllers];
-      v15 = [v201 allValues];
+      zoomRootViewControllers18 = [(ZWUIServer *)self zoomRootViewControllers];
+      allValues = [zoomRootViewControllers18 allValues];
 
-      v202 = [v15 countByEnumeratingWithState:&v329 objects:v428 count:16];
+      v202 = [allValues countByEnumeratingWithState:&v329 objects:v428 count:16];
       if (v202)
       {
         v203 = v202;
@@ -1323,13 +1323,13 @@ LABEL_154:
           {
             if (*v330 != v204)
             {
-              objc_enumerationMutation(v15);
+              objc_enumerationMutation(allValues);
             }
 
             [*(*(&v329 + 1) + 8 * i4) handleDeviceWasUnlocked];
           }
 
-          v203 = [v15 countByEnumeratingWithState:&v329 objects:v428 count:16];
+          v203 = [allValues countByEnumeratingWithState:&v329 objects:v428 count:16];
         }
 
         while (v203);
@@ -1341,10 +1341,10 @@ LABEL_154:
       v324 = 0u;
       v321 = 0u;
       v322 = 0u;
-      v172 = [(ZWUIServer *)self zoomRootViewControllers];
-      v15 = [v172 allValues];
+      zoomRootViewControllers19 = [(ZWUIServer *)self zoomRootViewControllers];
+      allValues = [zoomRootViewControllers19 allValues];
 
-      v173 = [v15 countByEnumeratingWithState:&v321 objects:v426 count:16];
+      v173 = [allValues countByEnumeratingWithState:&v321 objects:v426 count:16];
       if (v173)
       {
         v174 = v173;
@@ -1355,13 +1355,13 @@ LABEL_154:
           {
             if (*v322 != v175)
             {
-              objc_enumerationMutation(v15);
+              objc_enumerationMutation(allValues);
             }
 
             [*(*(&v321 + 1) + 8 * i5) handleHomeButtonWasPressed];
           }
 
-          v174 = [v15 countByEnumeratingWithState:&v321 objects:v426 count:16];
+          v174 = [allValues countByEnumeratingWithState:&v321 objects:v426 count:16];
         }
 
         while (v174);
@@ -1369,15 +1369,15 @@ LABEL_154:
 
       goto LABEL_253;
     case 0x7D9uLL:
-      v111 = v9;
+      v111 = withIdentifierCopy;
       v384 = 0u;
       v383 = 0u;
       v382 = 0u;
       v381 = 0u;
-      v189 = [(ZWUIServer *)self zoomRootViewControllers];
-      v113 = [v189 allValues];
+      zoomRootViewControllers20 = [(ZWUIServer *)self zoomRootViewControllers];
+      allValues3 = [zoomRootViewControllers20 allValues];
 
-      v190 = [v113 countByEnumeratingWithState:&v381 objects:v447 count:16];
+      v190 = [allValues3 countByEnumeratingWithState:&v381 objects:v447 count:16];
       if (v190)
       {
         v191 = v190;
@@ -1388,16 +1388,16 @@ LABEL_154:
           {
             if (*v382 != v192)
             {
-              objc_enumerationMutation(v113);
+              objc_enumerationMutation(allValues3);
             }
 
             v194 = *(*(&v381 + 1) + 8 * i6);
-            v195 = [v8 objectForKeyedSubscript:@"idleSlugOpacity"];
+            v195 = [messageCopy objectForKeyedSubscript:@"idleSlugOpacity"];
             [v195 floatValue];
             [v194 handleSettingsAppDidUpdateIdleSlugOpacity:v196];
           }
 
-          v191 = [v113 countByEnumeratingWithState:&v381 objects:v447 count:16];
+          v191 = [allValues3 countByEnumeratingWithState:&v381 objects:v447 count:16];
         }
 
         while (v191);
@@ -1405,15 +1405,15 @@ LABEL_154:
 
       goto LABEL_186;
     case 0x7DAuLL:
-      v207 = [v8 objectForKeyedSubscript:@"register"];
-      v208 = [v207 BOOLValue];
+      v207 = [messageCopy objectForKeyedSubscript:@"register"];
+      bOOLValue = [v207 BOOLValue];
 
       zoomListenersUpdateQueue = self->_zoomListenersUpdateQueue;
       v406[0] = _NSConcreteStackBlock;
       v406[1] = 3221225472;
       v406[2] = __75__ZWUIServer_processMessage_withIdentifier_fromClientWithIdentifier_error___block_invoke_11;
       v406[3] = &unk_78EE8;
-      v408 = v208;
+      v408 = bOOLValue;
       v406[4] = self;
       v407 = v10;
       dispatch_async(zoomListenersUpdateQueue, v406);
@@ -1428,10 +1428,10 @@ LABEL_154:
       v320 = 0u;
       v317 = 0u;
       v318 = 0u;
-      v161 = [(ZWUIServer *)self zoomRootViewControllers];
-      v15 = [v161 allValues];
+      zoomRootViewControllers21 = [(ZWUIServer *)self zoomRootViewControllers];
+      allValues = [zoomRootViewControllers21 allValues];
 
-      v162 = [v15 countByEnumeratingWithState:&v317 objects:v425 count:16];
+      v162 = [allValues countByEnumeratingWithState:&v317 objects:v425 count:16];
       if (v162)
       {
         v163 = v162;
@@ -1442,13 +1442,13 @@ LABEL_154:
           {
             if (*v318 != v164)
             {
-              objc_enumerationMutation(v15);
+              objc_enumerationMutation(allValues);
             }
 
             [*(*(&v317 + 1) + 8 * i7) setBrailleInputUIIsShowing:1];
           }
 
-          v163 = [v15 countByEnumeratingWithState:&v317 objects:v425 count:16];
+          v163 = [allValues countByEnumeratingWithState:&v317 objects:v425 count:16];
         }
 
         while (v163);
@@ -1460,10 +1460,10 @@ LABEL_154:
       v316 = 0u;
       v313 = 0u;
       v314 = 0u;
-      v73 = [(ZWUIServer *)self zoomRootViewControllers];
-      v15 = [v73 allValues];
+      zoomRootViewControllers22 = [(ZWUIServer *)self zoomRootViewControllers];
+      allValues = [zoomRootViewControllers22 allValues];
 
-      v74 = [v15 countByEnumeratingWithState:&v313 objects:v424 count:16];
+      v74 = [allValues countByEnumeratingWithState:&v313 objects:v424 count:16];
       if (v74)
       {
         v75 = v74;
@@ -1474,13 +1474,13 @@ LABEL_154:
           {
             if (*v314 != v76)
             {
-              objc_enumerationMutation(v15);
+              objc_enumerationMutation(allValues);
             }
 
             [*(*(&v313 + 1) + 8 * i8) setBrailleInputUIIsShowing:0];
           }
 
-          v75 = [v15 countByEnumeratingWithState:&v313 objects:v424 count:16];
+          v75 = [allValues countByEnumeratingWithState:&v313 objects:v424 count:16];
         }
 
         while (v75);
@@ -1488,15 +1488,15 @@ LABEL_154:
 
       goto LABEL_253;
     case 0x7DFuLL:
-      v111 = v9;
+      v111 = withIdentifierCopy;
       v388 = 0u;
       v387 = 0u;
       v386 = 0u;
       v385 = 0u;
-      v112 = [(ZWUIServer *)self zoomRootViewControllers];
-      v113 = [v112 allValues];
+      zoomRootViewControllers23 = [(ZWUIServer *)self zoomRootViewControllers];
+      allValues3 = [zoomRootViewControllers23 allValues];
 
-      v114 = [v113 countByEnumeratingWithState:&v385 objects:v448 count:16];
+      v114 = [allValues3 countByEnumeratingWithState:&v385 objects:v448 count:16];
       if (v114)
       {
         v115 = v114;
@@ -1507,15 +1507,15 @@ LABEL_154:
           {
             if (*v386 != v116)
             {
-              objc_enumerationMutation(v113);
+              objc_enumerationMutation(allValues3);
             }
 
             v118 = *(*(&v385 + 1) + 8 * i9);
-            v119 = [v8 objectForKeyedSubscript:@"dockPosition"];
+            v119 = [messageCopy objectForKeyedSubscript:@"dockPosition"];
             [v118 handleSettingsAppDidUpdatePreferredDockPosition:v119];
           }
 
-          v115 = [v113 countByEnumeratingWithState:&v385 objects:v448 count:16];
+          v115 = [allValues3 countByEnumeratingWithState:&v385 objects:v448 count:16];
         }
 
         while (v115);
@@ -1528,9 +1528,9 @@ LABEL_186:
       goto LABEL_255;
     case 0x7E0uLL:
       v96 = +[AXSubsystemZoom sharedInstance];
-      v97 = [v96 ignoreLogging];
+      ignoreLogging = [v96 ignoreLogging];
 
-      if ((v97 & 1) == 0)
+      if ((ignoreLogging & 1) == 0)
       {
         v98 = +[AXSubsystemZoom identifier];
         v99 = AXLoggerForFacility();
@@ -1550,9 +1550,9 @@ LABEL_186:
       }
 
       v103 = +[AXSettings sharedInstance];
-      v104 = [v103 zoomInStandby];
+      zoomInStandby = [v103 zoomInStandby];
 
-      if (v104)
+      if (zoomInStandby)
       {
         goto LABEL_254;
       }
@@ -1566,27 +1566,27 @@ LABEL_186:
       v409[1] = 3221225472;
       v409[2] = __75__ZWUIServer_processMessage_withIdentifier_fromClientWithIdentifier_error___block_invoke_9;
       v409[3] = &unk_79170;
-      v410 = v8;
-      v411 = self;
+      v410 = messageCopy;
+      selfCopy3 = self;
       dispatch_async(v206, v409);
       v12 = v410;
 LABEL_199:
 
       goto LABEL_254;
     case 0x7E3uLL:
-      v291 = v9;
-      v210 = [v8 objectForKeyedSubscript:@"displayID"];
-      v211 = [v210 unsignedIntValue];
+      v291 = withIdentifierCopy;
+      v210 = [messageCopy objectForKeyedSubscript:@"displayID"];
+      unsignedIntValue5 = [v210 unsignedIntValue];
 
       v359 = 0u;
       v360 = 0u;
       v357 = 0u;
       v358 = 0u;
-      v212 = [(ZWUIServer *)self zoomRootViewControllers];
-      v213 = [v212 allKeys];
+      zoomRootViewControllers24 = [(ZWUIServer *)self zoomRootViewControllers];
+      allKeys5 = [zoomRootViewControllers24 allKeys];
 
-      obj = v213;
-      v214 = [v213 countByEnumeratingWithState:&v357 objects:v441 count:16];
+      obj = allKeys5;
+      v214 = [allKeys5 countByEnumeratingWithState:&v357 objects:v441 count:16];
       if (!v214)
       {
         goto LABEL_287;
@@ -1598,7 +1598,7 @@ LABEL_202:
       v216 = 0;
       break;
     case 0x7E4uLL:
-      v78 = [v8 objectForKeyedSubscript:@"zoomLevel"];
+      v78 = [messageCopy objectForKeyedSubscript:@"zoomLevel"];
       [v78 doubleValue];
       v80 = v79;
 
@@ -1608,18 +1608,18 @@ LABEL_202:
       }
 
       v291 = v10;
-      v81 = [v8 objectForKeyedSubscript:@"displayID"];
-      v82 = [v81 unsignedIntValue];
+      v81 = [messageCopy objectForKeyedSubscript:@"displayID"];
+      unsignedIntValue6 = [v81 unsignedIntValue];
 
       v355 = 0u;
       v356 = 0u;
       v353 = 0u;
       v354 = 0u;
-      v83 = [(ZWUIServer *)self zoomRootViewControllers];
-      v84 = [v83 allKeys];
+      zoomRootViewControllers25 = [(ZWUIServer *)self zoomRootViewControllers];
+      allKeys6 = [zoomRootViewControllers25 allKeys];
 
-      obj = v84;
-      v85 = [v84 countByEnumeratingWithState:&v353 objects:v440 count:16];
+      obj = allKeys6;
+      v85 = [allKeys6 countByEnumeratingWithState:&v353 objects:v440 count:16];
       if (!v85)
       {
         goto LABEL_287;
@@ -1637,25 +1637,25 @@ LABEL_202:
           }
 
           v88 = *(*(&v353 + 1) + 8 * i10);
-          v89 = [(ZWUIServer *)self zoomRootViewControllers];
-          v90 = [v89 objectForKeyedSubscript:v88];
+          zoomRootViewControllers26 = [(ZWUIServer *)self zoomRootViewControllers];
+          v90 = [zoomRootViewControllers26 objectForKeyedSubscript:v88];
 
-          v91 = [v90 view];
-          v92 = [v91 window];
-          v93 = [v92 screen];
-          v94 = [v93 displayIdentity];
-          if ([v94 displayID] == v82)
+          view4 = [v90 view];
+          window4 = [view4 window];
+          screen4 = [window4 screen];
+          displayIdentity4 = [screen4 displayIdentity];
+          if ([displayIdentity4 displayID] == unsignedIntValue6)
           {
 
 LABEL_286:
-            v283 = [v8 objectForKeyedSubscript:@"zoomLevel"];
+            v283 = [messageCopy objectForKeyedSubscript:@"zoomLevel"];
             [v283 doubleValue];
             [v90 externalClientSetZoomFactor:?];
 
             goto LABEL_287;
           }
 
-          if (v82)
+          if (unsignedIntValue6)
           {
           }
 
@@ -1678,25 +1678,25 @@ LABEL_286:
       }
 
     case 0x7E5uLL:
-      v291 = v9;
-      v55 = [v8 objectForKeyedSubscript:@"autoPanLocation"];
+      v291 = withIdentifierCopy;
+      v55 = [messageCopy objectForKeyedSubscript:@"autoPanLocation"];
       v56 = CGPointFromString(v55);
 
-      v57 = [v8 objectForKeyedSubscript:@"panningStyle"];
-      v289 = [v57 unsignedIntegerValue];
+      v57 = [messageCopy objectForKeyedSubscript:@"panningStyle"];
+      unsignedIntegerValue2 = [v57 unsignedIntegerValue];
 
-      v58 = [v8 objectForKeyedSubscript:@"displayID"];
-      v59 = [v58 unsignedIntValue];
+      v58 = [messageCopy objectForKeyedSubscript:@"displayID"];
+      unsignedIntValue7 = [v58 unsignedIntValue];
 
       v335 = 0u;
       v336 = 0u;
       v333 = 0u;
       v334 = 0u;
-      v60 = [(ZWUIServer *)self zoomRootViewControllers];
-      v61 = [v60 allKeys];
+      zoomRootViewControllers27 = [(ZWUIServer *)self zoomRootViewControllers];
+      allKeys7 = [zoomRootViewControllers27 allKeys];
 
-      obj = v61;
-      v62 = [v61 countByEnumeratingWithState:&v333 objects:v429 count:16];
+      obj = allKeys7;
+      v62 = [allKeys7 countByEnumeratingWithState:&v333 objects:v429 count:16];
       if (!v62)
       {
         goto LABEL_287;
@@ -1714,23 +1714,23 @@ LABEL_286:
           }
 
           v65 = *(*(&v333 + 1) + 8 * i11);
-          v66 = [(ZWUIServer *)self zoomRootViewControllers];
-          v67 = [v66 objectForKeyedSubscript:v65];
+          zoomRootViewControllers28 = [(ZWUIServer *)self zoomRootViewControllers];
+          v67 = [zoomRootViewControllers28 objectForKeyedSubscript:v65];
 
-          v68 = [v67 view];
-          v69 = [v68 window];
-          v70 = [v69 screen];
-          v71 = [v70 displayIdentity];
-          if ([v71 displayID] == v59)
+          view5 = [v67 view];
+          window5 = [view5 window];
+          screen5 = [window5 screen];
+          displayIdentity5 = [screen5 displayIdentity];
+          if ([displayIdentity5 displayID] == unsignedIntValue7)
           {
 
 LABEL_264:
-            [v67 externalClientWantsToAutopan:v289 withPanningStyle:{v56.x, v56.y}];
+            [v67 externalClientWantsToAutopan:unsignedIntegerValue2 withPanningStyle:{v56.x, v56.y}];
 
             goto LABEL_287;
           }
 
-          if (v59)
+          if (unsignedIntValue7)
           {
           }
 
@@ -1757,10 +1757,10 @@ LABEL_264:
       v312 = 0u;
       v309 = 0u;
       v310 = 0u;
-      v106 = [(ZWUIServer *)self zoomRootViewControllers];
-      v15 = [v106 allValues];
+      zoomRootViewControllers29 = [(ZWUIServer *)self zoomRootViewControllers];
+      allValues = [zoomRootViewControllers29 allValues];
 
-      v107 = [v15 countByEnumeratingWithState:&v309 objects:v421 count:16];
+      v107 = [allValues countByEnumeratingWithState:&v309 objects:v421 count:16];
       if (v107)
       {
         v108 = v107;
@@ -1771,13 +1771,13 @@ LABEL_264:
           {
             if (*v310 != v109)
             {
-              objc_enumerationMutation(v15);
+              objc_enumerationMutation(allValues);
             }
 
             [*(*(&v309 + 1) + 8 * i12) handleDragWillStart];
           }
 
-          v108 = [v15 countByEnumeratingWithState:&v309 objects:v421 count:16];
+          v108 = [allValues countByEnumeratingWithState:&v309 objects:v421 count:16];
         }
 
         while (v108);
@@ -1789,10 +1789,10 @@ LABEL_264:
       v308 = 0u;
       v305 = 0u;
       v306 = 0u;
-      v225 = [(ZWUIServer *)self zoomRootViewControllers];
-      v15 = [v225 allValues];
+      zoomRootViewControllers30 = [(ZWUIServer *)self zoomRootViewControllers];
+      allValues = [zoomRootViewControllers30 allValues];
 
-      v226 = [v15 countByEnumeratingWithState:&v305 objects:v420 count:16];
+      v226 = [allValues countByEnumeratingWithState:&v305 objects:v420 count:16];
       if (v226)
       {
         v227 = v226;
@@ -1803,13 +1803,13 @@ LABEL_264:
           {
             if (*v306 != v228)
             {
-              objc_enumerationMutation(v15);
+              objc_enumerationMutation(allValues);
             }
 
             [*(*(&v305 + 1) + 8 * i13) handleDragWillEnd];
           }
 
-          v227 = [v15 countByEnumeratingWithState:&v305 objects:v420 count:16];
+          v227 = [allValues countByEnumeratingWithState:&v305 objects:v420 count:16];
         }
 
         while (v227);
@@ -1817,18 +1817,18 @@ LABEL_264:
 
       goto LABEL_253;
     case 0x7E8uLL:
-      v197 = [v8 objectForKeyedSubscript:@"register"];
-      v198 = [v197 BOOLValue];
+      v197 = [messageCopy objectForKeyedSubscript:@"register"];
+      bOOLValue2 = [v197 BOOLValue];
 
-      v199 = [v8 objectForKeyedSubscript:@"attributes"];
+      v199 = [messageCopy objectForKeyedSubscript:@"attributes"];
       v200 = self->_zoomListenersUpdateQueue;
       v401[0] = _NSConcreteStackBlock;
       v401[1] = 3221225472;
       v401[2] = __75__ZWUIServer_processMessage_withIdentifier_fromClientWithIdentifier_error___block_invoke_13;
       v401[3] = &unk_79198;
       v402 = v199;
-      v403 = self;
-      v405 = v198;
+      selfCopy4 = self;
+      v405 = bOOLValue2;
       v404 = v10;
       v105 = v199;
       dispatch_async(v200, v401);
@@ -1836,20 +1836,20 @@ LABEL_264:
 LABEL_188:
       goto LABEL_254;
     default:
-      if (a4 == 1000)
+      if (identifier == 1000)
       {
         v419[0] = _NSConcreteStackBlock;
         v419[1] = 3221225472;
         v419[2] = __75__ZWUIServer_processMessage_withIdentifier_fromClientWithIdentifier_error___block_invoke;
         v419[3] = &unk_78D00;
-        v45 = self;
+        selfCopy6 = self;
         v419[4] = self;
         v46 = v419;
       }
 
       else
       {
-        if (a4 != 1001)
+        if (identifier != 1001)
         {
           goto LABEL_61;
         }
@@ -1858,12 +1858,12 @@ LABEL_188:
         v418[1] = 3221225472;
         v418[2] = __75__ZWUIServer_processMessage_withIdentifier_fromClientWithIdentifier_error___block_invoke_2;
         v418[3] = &unk_78D00;
-        v45 = self;
+        selfCopy6 = self;
         v418[4] = self;
         v46 = v418;
       }
 
-      [(ZWUIServer *)v45 _waitForControllerShowHideToComplete:v46];
+      [(ZWUIServer *)selfCopy6 _waitForControllerShowHideToComplete:v46];
       goto LABEL_254;
   }
 
@@ -1875,14 +1875,14 @@ LABEL_188:
     }
 
     v217 = *(*(&v357 + 1) + 8 * v216);
-    v218 = [(ZWUIServer *)self zoomRootViewControllers];
-    v219 = [v218 objectForKeyedSubscript:v217];
+    zoomRootViewControllers31 = [(ZWUIServer *)self zoomRootViewControllers];
+    v219 = [zoomRootViewControllers31 objectForKeyedSubscript:v217];
 
-    v220 = [v219 view];
-    v221 = [v220 window];
-    v222 = [v221 screen];
-    v223 = [v222 displayIdentity];
-    if ([v223 displayID] == v211)
+    view6 = [v219 view];
+    window6 = [view6 window];
+    screen6 = [window6 screen];
+    displayIdentity6 = [screen6 displayIdentity];
+    if ([displayIdentity6 displayID] == unsignedIntValue5)
     {
 
 LABEL_266:
@@ -1892,7 +1892,7 @@ LABEL_266:
       [v219 zoomFrame];
       v272 = v271;
       v274 = v273;
-      v275 = [v8 objectForKeyedSubscript:@"direction"];
+      v275 = [messageCopy objectForKeyedSubscript:@"direction"];
       v276 = [v275 isEqualToString:@"left"];
 
       if (v276)
@@ -1902,12 +1902,12 @@ LABEL_266:
 
       else
       {
-        v281 = [v8 objectForKeyedSubscript:@"direction"];
+        v281 = [messageCopy objectForKeyedSubscript:@"direction"];
         v282 = [v281 isEqualToString:@"right"];
 
         if (!v282)
         {
-          v284 = [v8 objectForKeyedSubscript:@"direction"];
+          v284 = [messageCopy objectForKeyedSubscript:@"direction"];
           v285 = [v284 isEqualToString:@"up"];
 
           if (v285)
@@ -1917,7 +1917,7 @@ LABEL_266:
 
           else
           {
-            v286 = [v8 objectForKeyedSubscript:@"direction"];
+            v286 = [messageCopy objectForKeyedSubscript:@"direction"];
             v287 = [v286 isEqualToString:@"down"];
 
             if (v287)
@@ -1939,7 +1939,7 @@ LABEL_278:
       goto LABEL_287;
     }
 
-    if (v211)
+    if (unsignedIntValue5)
     {
     }
 

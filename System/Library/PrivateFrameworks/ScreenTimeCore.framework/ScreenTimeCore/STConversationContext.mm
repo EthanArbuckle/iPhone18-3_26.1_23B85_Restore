@@ -1,6 +1,6 @@
 @interface STConversationContext
 - (STConversationContext)init;
-- (void)updateForThirdPartyApplicationState:(int64_t)a3;
+- (void)updateForThirdPartyApplicationState:(int64_t)state;
 @end
 
 @implementation STConversationContext
@@ -19,12 +19,12 @@
   return result;
 }
 
-- (void)updateForThirdPartyApplicationState:(int64_t)a3
+- (void)updateForThirdPartyApplicationState:(int64_t)state
 {
-  if ((a3 == 0) != [(STConversationContext *)self allowedByScreenTime])
+  if ((state == 0) != [(STConversationContext *)self allowedByScreenTime])
   {
 
-    [(STConversationContext *)self setAllowedByScreenTime:a3 == 0];
+    [(STConversationContext *)self setAllowedByScreenTime:state == 0];
   }
 }
 

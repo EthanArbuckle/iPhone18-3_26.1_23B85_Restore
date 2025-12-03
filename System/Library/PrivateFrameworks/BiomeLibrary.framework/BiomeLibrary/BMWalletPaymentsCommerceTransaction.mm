@@ -1,39 +1,39 @@
 @interface BMWalletPaymentsCommerceTransaction
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMWalletPaymentsCommerceTransaction)initWithAmount:(id)a3 transactionDate:(id)a4 transactionID:(id)a5 currencyCode:(id)a6 transactionDescription:(id)a7 timeZone:(id)a8 account:(id)a9 merchant:(id)a10 transactionSource:(int)a11 accountType:(int)a12 transactionStatus:(int)a13 transactionType:(int)a14;
-- (BMWalletPaymentsCommerceTransaction)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMWalletPaymentsCommerceTransaction)initWithAmount:(id)amount transactionDate:(id)date transactionID:(id)d currencyCode:(id)code transactionDescription:(id)description timeZone:(id)zone account:(id)account merchant:(id)self0 transactionSource:(int)self1 accountType:(int)self2 transactionStatus:(int)self3 transactionType:(int)self4;
+- (BMWalletPaymentsCommerceTransaction)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSDate)transactionDate;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMWalletPaymentsCommerceTransaction
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMWalletPaymentsCommerceTransaction *)self amount];
-    v7 = [v5 amount];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    amount = [(BMWalletPaymentsCommerceTransaction *)self amount];
+    amount2 = [v5 amount];
+    v8 = amount2;
+    if (amount == amount2)
     {
     }
 
     else
     {
-      v9 = [(BMWalletPaymentsCommerceTransaction *)self amount];
-      v10 = [v5 amount];
-      v11 = [v9 isEqual:v10];
+      amount3 = [(BMWalletPaymentsCommerceTransaction *)self amount];
+      amount4 = [v5 amount];
+      v11 = [amount3 isEqual:amount4];
 
       if (!v11)
       {
@@ -41,18 +41,18 @@
       }
     }
 
-    v13 = [(BMWalletPaymentsCommerceTransaction *)self transactionDate];
-    v14 = [v5 transactionDate];
-    v15 = v14;
-    if (v13 == v14)
+    transactionDate = [(BMWalletPaymentsCommerceTransaction *)self transactionDate];
+    transactionDate2 = [v5 transactionDate];
+    v15 = transactionDate2;
+    if (transactionDate == transactionDate2)
     {
     }
 
     else
     {
-      v16 = [(BMWalletPaymentsCommerceTransaction *)self transactionDate];
-      v17 = [v5 transactionDate];
-      v18 = [v16 isEqual:v17];
+      transactionDate3 = [(BMWalletPaymentsCommerceTransaction *)self transactionDate];
+      transactionDate4 = [v5 transactionDate];
+      v18 = [transactionDate3 isEqual:transactionDate4];
 
       if (!v18)
       {
@@ -60,18 +60,18 @@
       }
     }
 
-    v19 = [(BMWalletPaymentsCommerceTransaction *)self transactionID];
-    v20 = [v5 transactionID];
-    v21 = v20;
-    if (v19 == v20)
+    transactionID = [(BMWalletPaymentsCommerceTransaction *)self transactionID];
+    transactionID2 = [v5 transactionID];
+    v21 = transactionID2;
+    if (transactionID == transactionID2)
     {
     }
 
     else
     {
-      v22 = [(BMWalletPaymentsCommerceTransaction *)self transactionID];
-      v23 = [v5 transactionID];
-      v24 = [v22 isEqual:v23];
+      transactionID3 = [(BMWalletPaymentsCommerceTransaction *)self transactionID];
+      transactionID4 = [v5 transactionID];
+      v24 = [transactionID3 isEqual:transactionID4];
 
       if (!v24)
       {
@@ -79,18 +79,18 @@
       }
     }
 
-    v25 = [(BMWalletPaymentsCommerceTransaction *)self currencyCode];
-    v26 = [v5 currencyCode];
-    v27 = v26;
-    if (v25 == v26)
+    currencyCode = [(BMWalletPaymentsCommerceTransaction *)self currencyCode];
+    currencyCode2 = [v5 currencyCode];
+    v27 = currencyCode2;
+    if (currencyCode == currencyCode2)
     {
     }
 
     else
     {
-      v28 = [(BMWalletPaymentsCommerceTransaction *)self currencyCode];
-      v29 = [v5 currencyCode];
-      v30 = [v28 isEqual:v29];
+      currencyCode3 = [(BMWalletPaymentsCommerceTransaction *)self currencyCode];
+      currencyCode4 = [v5 currencyCode];
+      v30 = [currencyCode3 isEqual:currencyCode4];
 
       if (!v30)
       {
@@ -98,18 +98,18 @@
       }
     }
 
-    v31 = [(BMWalletPaymentsCommerceTransaction *)self transactionDescription];
-    v32 = [v5 transactionDescription];
-    v33 = v32;
-    if (v31 == v32)
+    transactionDescription = [(BMWalletPaymentsCommerceTransaction *)self transactionDescription];
+    transactionDescription2 = [v5 transactionDescription];
+    v33 = transactionDescription2;
+    if (transactionDescription == transactionDescription2)
     {
     }
 
     else
     {
-      v34 = [(BMWalletPaymentsCommerceTransaction *)self transactionDescription];
-      v35 = [v5 transactionDescription];
-      v36 = [v34 isEqual:v35];
+      transactionDescription3 = [(BMWalletPaymentsCommerceTransaction *)self transactionDescription];
+      transactionDescription4 = [v5 transactionDescription];
+      v36 = [transactionDescription3 isEqual:transactionDescription4];
 
       if (!v36)
       {
@@ -117,18 +117,18 @@
       }
     }
 
-    v37 = [(BMWalletPaymentsCommerceTransaction *)self timeZone];
-    v38 = [v5 timeZone];
-    v39 = v38;
-    if (v37 == v38)
+    timeZone = [(BMWalletPaymentsCommerceTransaction *)self timeZone];
+    timeZone2 = [v5 timeZone];
+    v39 = timeZone2;
+    if (timeZone == timeZone2)
     {
     }
 
     else
     {
-      v40 = [(BMWalletPaymentsCommerceTransaction *)self timeZone];
-      v41 = [v5 timeZone];
-      v42 = [v40 isEqual:v41];
+      timeZone3 = [(BMWalletPaymentsCommerceTransaction *)self timeZone];
+      timeZone4 = [v5 timeZone];
+      v42 = [timeZone3 isEqual:timeZone4];
 
       if (!v42)
       {
@@ -136,18 +136,18 @@
       }
     }
 
-    v43 = [(BMWalletPaymentsCommerceTransaction *)self account];
-    v44 = [v5 account];
-    v45 = v44;
-    if (v43 == v44)
+    account = [(BMWalletPaymentsCommerceTransaction *)self account];
+    account2 = [v5 account];
+    v45 = account2;
+    if (account == account2)
     {
     }
 
     else
     {
-      v46 = [(BMWalletPaymentsCommerceTransaction *)self account];
-      v47 = [v5 account];
-      v48 = [v46 isEqual:v47];
+      account3 = [(BMWalletPaymentsCommerceTransaction *)self account];
+      account4 = [v5 account];
+      v48 = [account3 isEqual:account4];
 
       if (!v48)
       {
@@ -155,18 +155,18 @@
       }
     }
 
-    v49 = [(BMWalletPaymentsCommerceTransaction *)self merchant];
-    v50 = [v5 merchant];
-    v51 = v50;
-    if (v49 == v50)
+    merchant = [(BMWalletPaymentsCommerceTransaction *)self merchant];
+    merchant2 = [v5 merchant];
+    v51 = merchant2;
+    if (merchant == merchant2)
     {
     }
 
     else
     {
-      v52 = [(BMWalletPaymentsCommerceTransaction *)self merchant];
-      v53 = [v5 merchant];
-      v54 = [v52 isEqual:v53];
+      merchant3 = [(BMWalletPaymentsCommerceTransaction *)self merchant];
+      merchant4 = [v5 merchant];
+      v54 = [merchant3 isEqual:merchant4];
 
       if (!v54)
       {
@@ -174,17 +174,17 @@
       }
     }
 
-    v55 = [(BMWalletPaymentsCommerceTransaction *)self transactionSource];
-    if (v55 == [v5 transactionSource])
+    transactionSource = [(BMWalletPaymentsCommerceTransaction *)self transactionSource];
+    if (transactionSource == [v5 transactionSource])
     {
-      v56 = [(BMWalletPaymentsCommerceTransaction *)self accountType];
-      if (v56 == [v5 accountType])
+      accountType = [(BMWalletPaymentsCommerceTransaction *)self accountType];
+      if (accountType == [v5 accountType])
       {
-        v57 = [(BMWalletPaymentsCommerceTransaction *)self transactionStatus];
-        if (v57 == [v5 transactionStatus])
+        transactionStatus = [(BMWalletPaymentsCommerceTransaction *)self transactionStatus];
+        if (transactionStatus == [v5 transactionStatus])
         {
-          v58 = [(BMWalletPaymentsCommerceTransaction *)self transactionType];
-          v12 = v58 == [v5 transactionType];
+          transactionType = [(BMWalletPaymentsCommerceTransaction *)self transactionType];
+          v12 = transactionType == [v5 transactionType];
 LABEL_40:
 
           goto LABEL_41;
@@ -223,13 +223,13 @@ LABEL_41:
 - (id)jsonDictionary
 {
   v44[12] = *MEMORY[0x1E69E9840];
-  v3 = [(BMWalletPaymentsCommerceTransaction *)self amount];
-  v4 = [(BMWalletPaymentsCommerceTransaction *)self transactionDate];
-  if (v4)
+  amount = [(BMWalletPaymentsCommerceTransaction *)self amount];
+  transactionDate = [(BMWalletPaymentsCommerceTransaction *)self transactionDate];
+  if (transactionDate)
   {
     v5 = MEMORY[0x1E696AD98];
-    v6 = [(BMWalletPaymentsCommerceTransaction *)self transactionDate];
-    [v6 timeIntervalSinceReferenceDate];
+    transactionDate2 = [(BMWalletPaymentsCommerceTransaction *)self transactionDate];
+    [transactionDate2 timeIntervalSinceReferenceDate];
     v7 = [v5 numberWithDouble:?];
   }
 
@@ -238,124 +238,124 @@ LABEL_41:
     v7 = 0;
   }
 
-  v8 = [(BMWalletPaymentsCommerceTransaction *)self transactionID];
-  v9 = [(BMWalletPaymentsCommerceTransaction *)self currencyCode];
-  v42 = [(BMWalletPaymentsCommerceTransaction *)self transactionDescription];
-  v41 = [(BMWalletPaymentsCommerceTransaction *)self timeZone];
-  v10 = [(BMWalletPaymentsCommerceTransaction *)self account];
-  v40 = [v10 jsonDictionary];
+  transactionID = [(BMWalletPaymentsCommerceTransaction *)self transactionID];
+  currencyCode = [(BMWalletPaymentsCommerceTransaction *)self currencyCode];
+  transactionDescription = [(BMWalletPaymentsCommerceTransaction *)self transactionDescription];
+  timeZone = [(BMWalletPaymentsCommerceTransaction *)self timeZone];
+  account = [(BMWalletPaymentsCommerceTransaction *)self account];
+  jsonDictionary = [account jsonDictionary];
 
-  v11 = [(BMWalletPaymentsCommerceTransaction *)self merchant];
-  v39 = [v11 jsonDictionary];
+  merchant = [(BMWalletPaymentsCommerceTransaction *)self merchant];
+  jsonDictionary2 = [merchant jsonDictionary];
 
   v38 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMWalletPaymentsCommerceTransaction transactionSource](self, "transactionSource")}];
   v37 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMWalletPaymentsCommerceTransaction accountType](self, "accountType")}];
   v12 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMWalletPaymentsCommerceTransaction transactionStatus](self, "transactionStatus")}];
   v13 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMWalletPaymentsCommerceTransaction transactionType](self, "transactionType")}];
   v43[0] = @"amount";
-  v14 = v3;
-  if (!v3)
+  null = amount;
+  if (!amount)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v32 = v14;
-  v44[0] = v14;
+  v32 = null;
+  v44[0] = null;
   v43[1] = @"transactionDate";
-  v15 = v7;
+  null2 = v7;
   if (!v7)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v31 = v15;
-  v44[1] = v15;
+  v31 = null2;
+  v44[1] = null2;
   v43[2] = @"transactionID";
-  v16 = v8;
-  if (!v8)
+  null3 = transactionID;
+  if (!transactionID)
   {
-    v16 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v30 = v16;
-  v44[2] = v16;
+  v30 = null3;
+  v44[2] = null3;
   v43[3] = @"currencyCode";
-  v17 = v9;
-  if (!v9)
+  null4 = currencyCode;
+  if (!currencyCode)
   {
-    v17 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v29 = v17;
-  v44[3] = v17;
+  v29 = null4;
+  v44[3] = null4;
   v43[4] = @"transactionDescription";
-  v18 = v42;
-  if (!v42)
+  null5 = transactionDescription;
+  if (!transactionDescription)
   {
-    v18 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v36 = v3;
-  v44[4] = v18;
+  v36 = amount;
+  v44[4] = null5;
   v43[5] = @"timeZone";
-  v19 = v41;
-  if (!v41)
+  null6 = timeZone;
+  if (!timeZone)
   {
-    v19 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
   v35 = v7;
-  v44[5] = v19;
+  v44[5] = null6;
   v43[6] = @"account";
-  v20 = v40;
-  if (!v40)
+  null7 = jsonDictionary;
+  if (!jsonDictionary)
   {
-    v20 = [MEMORY[0x1E695DFB0] null];
+    null7 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v34 = v8;
-  v44[6] = v20;
+  v34 = transactionID;
+  v44[6] = null7;
   v43[7] = @"merchant";
-  v21 = v39;
-  if (!v39)
+  null8 = jsonDictionary2;
+  if (!jsonDictionary2)
   {
-    v21 = [MEMORY[0x1E695DFB0] null];
+    null8 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v44[7] = v21;
+  v44[7] = null8;
   v43[8] = @"transactionSource";
-  v22 = v38;
+  null9 = v38;
   if (!v38)
   {
-    v22 = [MEMORY[0x1E695DFB0] null];
+    null9 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v28 = v18;
-  v44[8] = v22;
+  v28 = null5;
+  v44[8] = null9;
   v43[9] = @"accountType";
-  v23 = v37;
+  null10 = v37;
   if (!v37)
   {
-    v23 = [MEMORY[0x1E695DFB0] null];
+    null10 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v44[9] = v23;
+  v44[9] = null10;
   v43[10] = @"transactionStatus";
-  v24 = v12;
+  null11 = v12;
   if (!v12)
   {
-    v24 = [MEMORY[0x1E695DFB0] null];
+    null11 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v44[10] = v24;
+  v44[10] = null11;
   v43[11] = @"transactionType";
-  v25 = v13;
+  null12 = v13;
   if (!v13)
   {
-    v25 = [MEMORY[0x1E695DFB0] null];
+    null12 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v44[11] = v25;
+  v44[11] = null12;
   v33 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v44 forKeys:v43 count:12];
   if (v13)
   {
@@ -383,21 +383,21 @@ LABEL_30:
   {
   }
 
-  if (!v39)
+  if (!jsonDictionary2)
   {
   }
 
-  if (!v40)
+  if (!jsonDictionary)
   {
   }
 
-  if (!v41)
+  if (!timeZone)
   {
   }
 
-  if (v42)
+  if (transactionDescription)
   {
-    if (v9)
+    if (currencyCode)
     {
       goto LABEL_42;
     }
@@ -406,7 +406,7 @@ LABEL_30:
   else
   {
 
-    if (v9)
+    if (currencyCode)
     {
 LABEL_42:
       if (v34)
@@ -457,29 +457,29 @@ LABEL_45:
   return v33;
 }
 
-- (BMWalletPaymentsCommerceTransaction)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMWalletPaymentsCommerceTransaction)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v177[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"amount"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"amount"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v150 = 0;
 LABEL_4:
-    v151 = [v6 objectForKeyedSubscript:@"transactionDate"];
+    v151 = [dictionaryCopy objectForKeyedSubscript:@"transactionDate"];
     if (v151 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         v9 = MEMORY[0x1E695DF00];
-        v10 = a4;
+        errorCopy = error;
         v11 = v151;
         v12 = [v9 alloc];
         [v11 doubleValue];
         v14 = v13;
 
-        a4 = v10;
+        error = errorCopy;
         v15 = [v12 initWithTimeIntervalSinceReferenceDate:v14];
       }
 
@@ -497,14 +497,14 @@ LABEL_4:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!a4)
+          if (!error)
           {
             v8 = 0;
             v19 = 0;
             goto LABEL_124;
           }
 
-          v80 = a4;
+          errorCopy2 = error;
           v81 = objc_alloc(MEMORY[0x1E696ABC0]);
           v82 = *MEMORY[0x1E698F240];
           v174 = *MEMORY[0x1E696A578];
@@ -515,7 +515,7 @@ LABEL_4:
           v21 = v83;
           v8 = 0;
           v19 = 0;
-          *v80 = [v81 initWithDomain:v84 code:2 userInfo:v83];
+          *errorCopy2 = [v81 initWithDomain:v84 code:2 userInfo:v83];
           goto LABEL_123;
         }
 
@@ -531,14 +531,14 @@ LABEL_4:
     }
 
 LABEL_16:
-    v21 = [v6 objectForKeyedSubscript:@"transactionID"];
-    v149 = self;
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"transactionID"];
+    selfCopy = self;
     if (v21 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v37 = 0;
           v19 = 0;
@@ -547,7 +547,7 @@ LABEL_123:
           goto LABEL_124;
         }
 
-        v38 = a4;
+        errorCopy3 = error;
         v39 = objc_alloc(MEMORY[0x1E696ABC0]);
         v40 = v21;
         v41 = *MEMORY[0x1E698F240];
@@ -559,7 +559,7 @@ LABEL_123:
         v21 = v40;
         v37 = 0;
         v19 = 0;
-        *v38 = [v39 initWithDomain:v43 code:2 userInfo:v42];
+        *errorCopy3 = [v39 initWithDomain:v43 code:2 userInfo:v42];
         goto LABEL_122;
       }
 
@@ -573,7 +573,7 @@ LABEL_123:
       v147 = 0;
     }
 
-    v23 = [v6 objectForKeyedSubscript:@"currencyCode"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"currencyCode"];
     v146 = v23;
     if (!v23 || (v24 = v23, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
@@ -586,31 +586,31 @@ LABEL_123:
     {
       v148 = v24;
 LABEL_22:
-      v25 = [v6 objectForKeyedSubscript:@"transactionDescription"];
+      v25 = [dictionaryCopy objectForKeyedSubscript:@"transactionDescription"];
       v145 = v25;
       if (!v25 || (v26 = v25, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
         v143 = 0;
 LABEL_25:
-        [v6 objectForKeyedSubscript:@"timeZone"];
+        [dictionaryCopy objectForKeyedSubscript:@"timeZone"];
         v27 = v8 = v22;
         if (v27 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
         {
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
-            if (!a4)
+            if (!error)
             {
               v144 = 0;
               v19 = 0;
               v42 = v146;
               v37 = v147;
 LABEL_119:
-              a4 = v143;
+              error = v143;
               goto LABEL_120;
             }
 
-            v65 = a4;
+            errorCopy4 = error;
             v139 = v21;
             v66 = objc_alloc(MEMORY[0x1E696ABC0]);
             v67 = *MEMORY[0x1E698F240];
@@ -623,7 +623,7 @@ LABEL_119:
             v141 = v68;
             v144 = 0;
             v19 = 0;
-            *v65 = [v69 initWithDomain:v67 code:2 userInfo:?];
+            *errorCopy4 = [v69 initWithDomain:v67 code:2 userInfo:?];
             v37 = v147;
             goto LABEL_63;
           }
@@ -636,21 +636,21 @@ LABEL_119:
           v144 = 0;
         }
 
-        v28 = [v6 objectForKeyedSubscript:@"account"];
+        v28 = [dictionaryCopy objectForKeyedSubscript:@"account"];
         v140 = v27;
         v136 = v28;
         if (!v28 || (v29 = v28, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
         {
           v141 = 0;
 LABEL_31:
-          v30 = [v6 objectForKeyedSubscript:@"merchant"];
+          v30 = [dictionaryCopy objectForKeyedSubscript:@"merchant"];
           v131 = v30;
           if (v30 && (v31 = v30, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
           {
             objc_opt_class();
             if ((objc_opt_isKindOfClass() & 1) == 0)
             {
-              if (!a4)
+              if (!error)
               {
                 v19 = 0;
                 v42 = v146;
@@ -658,7 +658,7 @@ LABEL_31:
                 goto LABEL_116;
               }
 
-              v75 = a4;
+              errorCopy5 = error;
               v76 = objc_alloc(MEMORY[0x1E696ABC0]);
               v134 = *MEMORY[0x1E698F240];
               v162 = *MEMORY[0x1E696A578];
@@ -666,7 +666,7 @@ LABEL_31:
               v163 = v135;
               v57 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v163 forKeys:&v162 count:1];
               v19 = 0;
-              *v75 = [v76 initWithDomain:v134 code:2 userInfo:v57];
+              *errorCopy5 = [v76 initWithDomain:v134 code:2 userInfo:v57];
               v42 = v146;
               v37 = v147;
 LABEL_115:
@@ -684,10 +684,10 @@ LABEL_116:
             if (v56)
             {
               v133 = v54;
-              if (a4)
+              if (error)
               {
                 v56 = v56;
-                *a4 = v56;
+                *error = v56;
               }
 
               v19 = 0;
@@ -703,12 +703,12 @@ LABEL_116:
             v135 = 0;
           }
 
-          v32 = [v6 objectForKeyedSubscript:@"transactionSource"];
+          v32 = [dictionaryCopy objectForKeyedSubscript:@"transactionSource"];
           v137 = v21;
           v128 = v32;
           if (v32 && (v33 = v32, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
           {
-            v70 = a4;
+            errorCopy6 = error;
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
@@ -720,7 +720,7 @@ LABEL_116:
               objc_opt_class();
               if ((objc_opt_isKindOfClass() & 1) == 0)
               {
-                if (!a4)
+                if (!error)
                 {
                   v57 = 0;
                   v19 = 0;
@@ -739,7 +739,7 @@ LABEL_116:
                 v111 = [v109 initWithDomain:v110 code:2 userInfo:?];
                 v57 = 0;
                 v19 = 0;
-                *v70 = v111;
+                *errorCopy6 = v111;
                 v27 = v140;
                 v42 = v146;
                 v37 = v147;
@@ -760,11 +760,11 @@ LABEL_114:
             v132 = 0;
           }
 
-          v77 = [v6 objectForKeyedSubscript:@"accountType"];
+          v77 = [dictionaryCopy objectForKeyedSubscript:@"accountType"];
           v127 = v77;
           if (v77 && (v78 = v77, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
           {
-            v79 = a4;
+            errorCopy7 = error;
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
@@ -776,7 +776,7 @@ LABEL_114:
               objc_opt_class();
               if ((objc_opt_isKindOfClass() & 1) == 0)
               {
-                if (!a4)
+                if (!error)
                 {
                   v130 = 0;
                   v19 = 0;
@@ -796,7 +796,7 @@ LABEL_114:
                 v106 = v114;
                 v130 = 0;
                 v19 = 0;
-                *v79 = [v115 initWithDomain:v113 code:2 userInfo:v114];
+                *errorCopy7 = [v115 initWithDomain:v113 code:2 userInfo:v114];
                 v27 = v140;
                 v42 = v146;
                 v37 = v147;
@@ -818,11 +818,11 @@ LABEL_112:
             v130 = 0;
           }
 
-          v85 = [v6 objectForKeyedSubscript:@"transactionStatus"];
+          v85 = [dictionaryCopy objectForKeyedSubscript:@"transactionStatus"];
           v126 = v85;
           if (v85 && (v86 = v85, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
           {
-            v87 = a4;
+            errorCopy8 = error;
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
@@ -834,7 +834,7 @@ LABEL_112:
               objc_opt_class();
               if ((objc_opt_isKindOfClass() & 1) == 0)
               {
-                if (!a4)
+                if (!error)
                 {
                   v129 = 0;
                   v19 = 0;
@@ -853,7 +853,7 @@ LABEL_112:
                 v118 = [v116 initWithDomain:v117 code:2 userInfo:?];
                 v129 = 0;
                 v19 = 0;
-                *v87 = v118;
+                *errorCopy8 = v118;
                 v37 = v147;
                 goto LABEL_108;
               }
@@ -870,17 +870,17 @@ LABEL_112:
             v129 = 0;
           }
 
-          v89 = [v6 objectForKeyedSubscript:@"transactionType"];
+          v89 = [dictionaryCopy objectForKeyedSubscript:@"transactionType"];
           v125 = v89;
           if (v89 && (v90 = v89, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
           {
-            v98 = a4;
+            errorCopy9 = error;
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
               v99 = v7;
               v93 = v148;
-              v92 = v149;
+              v92 = selfCopy;
               v94 = v8;
               v95 = v150;
               v96 = v99;
@@ -892,7 +892,7 @@ LABEL_112:
               objc_opt_class();
               if ((objc_opt_isKindOfClass() & 1) == 0)
               {
-                if (a4)
+                if (error)
                 {
                   v119 = objc_alloc(MEMORY[0x1E696ABC0]);
                   v120 = *MEMORY[0x1E698F240];
@@ -900,7 +900,7 @@ LABEL_112:
                   v121 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber (corresponding to enum value), or NSString (string version of enum)", objc_opt_class(), @"transactionType"];
                   v155 = v121;
                   v122 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v155 forKeys:&v154 count:1];
-                  *v98 = [v119 initWithDomain:v120 code:2 userInfo:v122];
+                  *errorCopy9 = [v119 initWithDomain:v120 code:2 userInfo:v122];
                 }
 
                 v97 = 0;
@@ -911,7 +911,7 @@ LABEL_112:
 
               v101 = v7;
               v93 = v148;
-              v92 = v149;
+              v92 = selfCopy;
               v94 = v8;
               v95 = v150;
               v96 = v101;
@@ -925,24 +925,24 @@ LABEL_112:
           {
             v91 = v7;
             v93 = v148;
-            v92 = v149;
+            v92 = selfCopy;
             v94 = v8;
             v95 = v150;
             v96 = v91;
             v97 = 0;
           }
 
-          v102 = [v132 intValue];
-          v103 = [v130 intValue];
-          v104 = [v129 intValue];
-          v124 = __PAIR64__([v97 intValue], v104);
+          intValue = [v132 intValue];
+          intValue2 = [v130 intValue];
+          intValue3 = [v129 intValue];
+          v124 = __PAIR64__([v97 intValue], intValue3);
           v150 = v95;
           v105 = v95;
           v8 = v94;
           v37 = v147;
           v148 = v93;
-          v19 = [(BMWalletPaymentsCommerceTransaction *)v92 initWithAmount:v105 transactionDate:v94 transactionID:v147 currencyCode:v93 transactionDescription:v143 timeZone:v144 account:v141 merchant:v135 transactionSource:__PAIR64__(v103 accountType:v102) transactionStatus:v124 transactionType:?];
-          v149 = v19;
+          v19 = [(BMWalletPaymentsCommerceTransaction *)v92 initWithAmount:v105 transactionDate:v94 transactionID:v147 currencyCode:v93 transactionDescription:v143 timeZone:v144 account:v141 merchant:v135 transactionSource:__PAIR64__(intValue2 accountType:intValue) transactionStatus:v124 transactionType:?];
+          selfCopy = v19;
           v7 = v96;
           v21 = v137;
 LABEL_108:
@@ -959,16 +959,16 @@ LABEL_110:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (a4)
+          if (error)
           {
-            v71 = a4;
+            errorCopy10 = error;
             v72 = objc_alloc(MEMORY[0x1E696ABC0]);
             v73 = *MEMORY[0x1E698F240];
             v164 = *MEMORY[0x1E696A578];
             v142 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSDictionary", objc_opt_class(), @"account"];
             v165 = v142;
             v74 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v165 forKeys:&v164 count:1];
-            *v71 = [v72 initWithDomain:v73 code:2 userInfo:v74];
+            *errorCopy10 = [v72 initWithDomain:v73 code:2 userInfo:v74];
 
             v19 = 0;
             v35 = v136;
@@ -988,7 +988,7 @@ LABEL_110:
           goto LABEL_118;
         }
 
-        v34 = a4;
+        errorCopy11 = error;
         v35 = v29;
         v153 = 0;
         v141 = [[BMWalletPaymentsCommerceTransactionAccount alloc] initWithJSONDictionary:v35 error:&v153];
@@ -996,15 +996,15 @@ LABEL_110:
         if (!v36)
         {
 
-          a4 = v34;
+          error = errorCopy11;
           goto LABEL_31;
         }
 
         v37 = v147;
-        if (v34)
+        if (errorCopy11)
         {
           v36 = v36;
-          *v34 = v36;
+          *errorCopy11 = v36;
         }
 
         v19 = 0;
@@ -1023,9 +1023,9 @@ LABEL_118:
         goto LABEL_25;
       }
 
-      if (a4)
+      if (error)
       {
-        v58 = a4;
+        errorCopy12 = error;
         v59 = objc_alloc(MEMORY[0x1E696ABC0]);
         v60 = v21;
         v61 = *MEMORY[0x1E698F240];
@@ -1036,9 +1036,9 @@ LABEL_118:
         v63 = v61;
         v21 = v60;
         v64 = [v59 initWithDomain:v63 code:2 userInfo:v62];
-        a4 = 0;
+        error = 0;
         v19 = 0;
-        *v58 = v64;
+        *errorCopy12 = v64;
         v42 = v146;
         v37 = v147;
         v8 = v22;
@@ -1058,9 +1058,9 @@ LABEL_121:
       goto LABEL_122;
     }
 
-    if (a4)
+    if (error)
     {
-      v44 = a4;
+      errorCopy13 = error;
       v45 = objc_alloc(MEMORY[0x1E696ABC0]);
       v46 = v21;
       v47 = *MEMORY[0x1E698F240];
@@ -1073,13 +1073,13 @@ LABEL_121:
       v171 = v50;
       v51 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v171 forKeys:&v170 count:1];
       v52 = v45;
-      a4 = v50;
+      error = v50;
       v53 = v47;
       v21 = v46;
       v145 = v51;
       v148 = 0;
       v19 = 0;
-      *v44 = [v52 initWithDomain:v53 code:2 userInfo:?];
+      *errorCopy13 = [v52 initWithDomain:v53 code:2 userInfo:?];
       v37 = v147;
       goto LABEL_84;
     }
@@ -1090,7 +1090,7 @@ LABEL_121:
     v37 = v147;
     v8 = v22;
 LABEL_122:
-    self = v149;
+    self = selfCopy;
 
     goto LABEL_123;
   }
@@ -1102,9 +1102,9 @@ LABEL_122:
     goto LABEL_4;
   }
 
-  if (a4)
+  if (error)
   {
-    v16 = a4;
+    errorCopy14 = error;
     v17 = objc_alloc(MEMORY[0x1E696ABC0]);
     v18 = *MEMORY[0x1E698F240];
     v176 = *MEMORY[0x1E696A578];
@@ -1113,7 +1113,7 @@ LABEL_122:
     v151 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v177 forKeys:&v176 count:1];
     v150 = 0;
     v19 = 0;
-    *v16 = [v17 initWithDomain:v18 code:2 userInfo:?];
+    *errorCopy14 = [v17 initWithDomain:v18 code:2 userInfo:?];
 LABEL_124:
 
     goto LABEL_125;
@@ -1131,14 +1131,14 @@ LABEL_125:
 {
   v3 = objc_opt_new();
   [(BMWalletPaymentsCommerceTransaction *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_amount)
   {
     PBDataWriterWriteStringField();
@@ -1173,14 +1173,14 @@ LABEL_125:
   if (self->_account)
   {
     PBDataWriterPlaceMark();
-    [(BMWalletPaymentsCommerceTransactionAccount *)self->_account writeTo:v4];
+    [(BMWalletPaymentsCommerceTransactionAccount *)self->_account writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
   if (self->_merchant)
   {
     PBDataWriterPlaceMark();
-    [(BMWalletPaymentsCommerceTransactionMerchant *)self->_merchant writeTo:v4];
+    [(BMWalletPaymentsCommerceTransactionMerchant *)self->_merchant writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
@@ -1194,9 +1194,9 @@ LABEL_125:
   PBDataWriterWriteUint32Field();
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v51.receiver = self;
   v51.super_class = BMWalletPaymentsCommerceTransaction;
   v5 = [(BMEventBase *)&v51 init];
@@ -1205,12 +1205,12 @@ LABEL_125:
     goto LABEL_110;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -1221,18 +1221,18 @@ LABEL_125:
       while (1)
       {
         LOBYTE(v52) = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v52 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v52 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (LOBYTE(v52) & 0x7F) << v7;
@@ -1249,9 +1249,9 @@ LABEL_125:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -1270,18 +1270,18 @@ LABEL_16:
               while (1)
               {
                 LOBYTE(v52) = 0;
-                v34 = [v4 position] + 1;
-                if (v34 >= [v4 position] && (v35 = objc_msgSend(v4, "position") + 1, v35 <= objc_msgSend(v4, "length")))
+                v34 = [fromCopy position] + 1;
+                if (v34 >= [fromCopy position] && (v35 = objc_msgSend(fromCopy, "position") + 1, v35 <= objc_msgSend(fromCopy, "length")))
                 {
-                  v36 = [v4 data];
-                  [v36 getBytes:&v52 range:{objc_msgSend(v4, "position"), 1}];
+                  data2 = [fromCopy data];
+                  [data2 getBytes:&v52 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                  [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                  [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
                 }
 
                 else
                 {
-                  [v4 _setError];
+                  [fromCopy _setError];
                 }
 
                 v20 |= (LOBYTE(v52) & 0x7F) << v32;
@@ -1298,7 +1298,7 @@ LABEL_16:
                 }
               }
 
-              if (([v4 hasError] & 1) != 0 || v20 > 2)
+              if (([fromCopy hasError] & 1) != 0 || v20 > 2)
               {
 LABEL_97:
                 LODWORD(v20) = 0;
@@ -1313,18 +1313,18 @@ LABEL_97:
               while (1)
               {
                 LOBYTE(v52) = 0;
-                v43 = [v4 position] + 1;
-                if (v43 >= [v4 position] && (v44 = objc_msgSend(v4, "position") + 1, v44 <= objc_msgSend(v4, "length")))
+                v43 = [fromCopy position] + 1;
+                if (v43 >= [fromCopy position] && (v44 = objc_msgSend(fromCopy, "position") + 1, v44 <= objc_msgSend(fromCopy, "length")))
                 {
-                  v45 = [v4 data];
-                  [v45 getBytes:&v52 range:{objc_msgSend(v4, "position"), 1}];
+                  data3 = [fromCopy data];
+                  [data3 getBytes:&v52 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                  [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                  [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
                 }
 
                 else
                 {
-                  [v4 _setError];
+                  [fromCopy _setError];
                 }
 
                 v20 |= (LOBYTE(v52) & 0x7F) << v41;
@@ -1341,7 +1341,7 @@ LABEL_97:
                 }
               }
 
-              if (([v4 hasError] & 1) != 0 || v20 > 2)
+              if (([fromCopy hasError] & 1) != 0 || v20 > 2)
               {
 LABEL_101:
                 LODWORD(v20) = 0;
@@ -1356,18 +1356,18 @@ LABEL_101:
               while (1)
               {
                 LOBYTE(v52) = 0;
-                v27 = [v4 position] + 1;
-                if (v27 >= [v4 position] && (v28 = objc_msgSend(v4, "position") + 1, v28 <= objc_msgSend(v4, "length")))
+                v27 = [fromCopy position] + 1;
+                if (v27 >= [fromCopy position] && (v28 = objc_msgSend(fromCopy, "position") + 1, v28 <= objc_msgSend(fromCopy, "length")))
                 {
-                  v29 = [v4 data];
-                  [v29 getBytes:&v52 range:{objc_msgSend(v4, "position"), 1}];
+                  data4 = [fromCopy data];
+                  [data4 getBytes:&v52 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                  [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                  [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
                 }
 
                 else
                 {
-                  [v4 _setError];
+                  [fromCopy _setError];
                 }
 
                 v20 |= (LOBYTE(v52) & 0x7F) << v25;
@@ -1384,7 +1384,7 @@ LABEL_101:
                 }
               }
 
-              if (([v4 hasError] & 1) != 0 || v20 > 2)
+              if (([fromCopy hasError] & 1) != 0 || v20 > 2)
               {
 LABEL_93:
                 LODWORD(v20) = 0;
@@ -1415,7 +1415,7 @@ LABEL_85:
               goto LABEL_109;
             }
 
-            v30 = [[BMWalletPaymentsCommerceTransactionAccount alloc] initByReadFrom:v4];
+            v30 = [[BMWalletPaymentsCommerceTransactionAccount alloc] initByReadFrom:fromCopy];
             if (!v30)
             {
               goto LABEL_109;
@@ -1431,7 +1431,7 @@ LABEL_85:
               goto LABEL_109;
             }
 
-            v30 = [[BMWalletPaymentsCommerceTransactionMerchant alloc] initByReadFrom:v4];
+            v30 = [[BMWalletPaymentsCommerceTransactionMerchant alloc] initByReadFrom:fromCopy];
             if (!v30)
             {
               goto LABEL_109;
@@ -1446,18 +1446,18 @@ LABEL_85:
             while (1)
             {
               LOBYTE(v52) = 0;
-              v21 = [v4 position] + 1;
-              if (v21 >= [v4 position] && (v22 = objc_msgSend(v4, "position") + 1, v22 <= objc_msgSend(v4, "length")))
+              v21 = [fromCopy position] + 1;
+              if (v21 >= [fromCopy position] && (v22 = objc_msgSend(fromCopy, "position") + 1, v22 <= objc_msgSend(fromCopy, "length")))
               {
-                v23 = [v4 data];
-                [v23 getBytes:&v52 range:{objc_msgSend(v4, "position"), 1}];
+                data5 = [fromCopy data];
+                [data5 getBytes:&v52 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
               }
 
               else
               {
-                [v4 _setError];
+                [fromCopy _setError];
               }
 
               v20 |= (LOBYTE(v52) & 0x7F) << v18;
@@ -1474,7 +1474,7 @@ LABEL_85:
               }
             }
 
-            if (([v4 hasError] & 1) != 0 || v20 > 3)
+            if (([fromCopy hasError] & 1) != 0 || v20 > 3)
             {
 LABEL_89:
               LODWORD(v20) = 0;
@@ -1528,18 +1528,18 @@ LABEL_103:
             case 2:
               v5->_hasRaw_transactionDate = 1;
               v52 = 0.0;
-              v37 = [v4 position] + 8;
-              if (v37 >= [v4 position] && (v38 = objc_msgSend(v4, "position") + 8, v38 <= objc_msgSend(v4, "length")))
+              v37 = [fromCopy position] + 8;
+              if (v37 >= [fromCopy position] && (v38 = objc_msgSend(fromCopy, "position") + 8, v38 <= objc_msgSend(fromCopy, "length")))
               {
-                v48 = [v4 data];
-                [v48 getBytes:&v52 range:{objc_msgSend(v4, "position"), 8}];
+                data6 = [fromCopy data];
+                [data6 getBytes:&v52 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-                [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+                [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
               }
 
               else
               {
-                [v4 _setError];
+                [fromCopy _setError];
               }
 
               v5->_raw_transactionDate = v52;
@@ -1558,13 +1558,13 @@ LABEL_103:
       }
 
 LABEL_104:
-      v47 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v47 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_109:
     v49 = 0;
@@ -1582,44 +1582,44 @@ LABEL_110:
 - (NSString)description
 {
   v14 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v17 = [(BMWalletPaymentsCommerceTransaction *)self amount];
-  v16 = [(BMWalletPaymentsCommerceTransaction *)self transactionDate];
-  v3 = [(BMWalletPaymentsCommerceTransaction *)self transactionID];
-  v4 = [(BMWalletPaymentsCommerceTransaction *)self currencyCode];
-  v5 = [(BMWalletPaymentsCommerceTransaction *)self transactionDescription];
-  v6 = [(BMWalletPaymentsCommerceTransaction *)self timeZone];
-  v7 = [(BMWalletPaymentsCommerceTransaction *)self account];
-  v8 = [(BMWalletPaymentsCommerceTransaction *)self merchant];
+  amount = [(BMWalletPaymentsCommerceTransaction *)self amount];
+  transactionDate = [(BMWalletPaymentsCommerceTransaction *)self transactionDate];
+  transactionID = [(BMWalletPaymentsCommerceTransaction *)self transactionID];
+  currencyCode = [(BMWalletPaymentsCommerceTransaction *)self currencyCode];
+  transactionDescription = [(BMWalletPaymentsCommerceTransaction *)self transactionDescription];
+  timeZone = [(BMWalletPaymentsCommerceTransaction *)self timeZone];
+  account = [(BMWalletPaymentsCommerceTransaction *)self account];
+  merchant = [(BMWalletPaymentsCommerceTransaction *)self merchant];
   v9 = BMWalletPaymentsCommerceTransactionTransactionSourceAsString([(BMWalletPaymentsCommerceTransaction *)self transactionSource]);
   v10 = BMWalletPaymentsCommerceTransactionAccountTypeAsString([(BMWalletPaymentsCommerceTransaction *)self accountType]);
   v11 = BMWalletPaymentsCommerceTransactionTransactionStatusAsString([(BMWalletPaymentsCommerceTransaction *)self transactionStatus]);
   v12 = BMWalletPaymentsCommerceTransactionTransactionTypeAsString([(BMWalletPaymentsCommerceTransaction *)self transactionType]);
-  v15 = [v14 initWithFormat:@"BMWalletPaymentsCommerceTransaction with amount: %@, transactionDate: %@, transactionID: %@, currencyCode: %@, transactionDescription: %@, timeZone: %@, account: %@, merchant: %@, transactionSource: %@, accountType: %@, transactionStatus: %@, transactionType: %@", v17, v16, v3, v4, v5, v6, v7, v8, v9, v10, v11, v12];
+  v15 = [v14 initWithFormat:@"BMWalletPaymentsCommerceTransaction with amount: %@, transactionDate: %@, transactionID: %@, currencyCode: %@, transactionDescription: %@, timeZone: %@, account: %@, merchant: %@, transactionSource: %@, accountType: %@, transactionStatus: %@, transactionType: %@", amount, transactionDate, transactionID, currencyCode, transactionDescription, timeZone, account, merchant, v9, v10, v11, v12];
 
   return v15;
 }
 
-- (BMWalletPaymentsCommerceTransaction)initWithAmount:(id)a3 transactionDate:(id)a4 transactionID:(id)a5 currencyCode:(id)a6 transactionDescription:(id)a7 timeZone:(id)a8 account:(id)a9 merchant:(id)a10 transactionSource:(int)a11 accountType:(int)a12 transactionStatus:(int)a13 transactionType:(int)a14
+- (BMWalletPaymentsCommerceTransaction)initWithAmount:(id)amount transactionDate:(id)date transactionID:(id)d currencyCode:(id)code transactionDescription:(id)description timeZone:(id)zone account:(id)account merchant:(id)self0 transactionSource:(int)self1 accountType:(int)self2 transactionStatus:(int)self3 transactionType:(int)self4
 {
-  v31 = a3;
-  v21 = a4;
-  v30 = a5;
-  v29 = a6;
-  v28 = a7;
-  v27 = a8;
-  v26 = a9;
-  v25 = a10;
+  amountCopy = amount;
+  dateCopy = date;
+  dCopy = d;
+  codeCopy = code;
+  descriptionCopy = description;
+  zoneCopy = zone;
+  accountCopy = account;
+  merchantCopy = merchant;
   v32.receiver = self;
   v32.super_class = BMWalletPaymentsCommerceTransaction;
   v22 = [(BMEventBase *)&v32 init];
   if (v22)
   {
     v22->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v22->_amount, a3);
-    if (v21)
+    objc_storeStrong(&v22->_amount, amount);
+    if (dateCopy)
     {
       v22->_hasRaw_transactionDate = 1;
-      [v21 timeIntervalSinceReferenceDate];
+      [dateCopy timeIntervalSinceReferenceDate];
     }
 
     else
@@ -1629,16 +1629,16 @@ LABEL_110:
     }
 
     v22->_raw_transactionDate = v23;
-    objc_storeStrong(&v22->_transactionID, a5);
-    objc_storeStrong(&v22->_currencyCode, a6);
-    objc_storeStrong(&v22->_transactionDescription, a7);
-    objc_storeStrong(&v22->_timeZone, a8);
-    objc_storeStrong(&v22->_account, a9);
-    objc_storeStrong(&v22->_merchant, a10);
-    v22->_transactionSource = a11;
-    v22->_accountType = a12;
-    v22->_transactionStatus = a13;
-    v22->_transactionType = a14;
+    objc_storeStrong(&v22->_transactionID, d);
+    objc_storeStrong(&v22->_currencyCode, code);
+    objc_storeStrong(&v22->_transactionDescription, description);
+    objc_storeStrong(&v22->_timeZone, zone);
+    objc_storeStrong(&v22->_account, account);
+    objc_storeStrong(&v22->_merchant, merchant);
+    v22->_transactionSource = source;
+    v22->_accountType = type;
+    v22->_transactionStatus = status;
+    v22->_transactionType = transactionType;
   }
 
   return v22;
@@ -1732,9 +1732,9 @@ id __46__BMWalletPaymentsCommerceTransaction_columns__block_invoke(uint64_t a1, 
   return v5;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -1742,8 +1742,8 @@ id __46__BMWalletPaymentsCommerceTransaction_columns__block_invoke(uint64_t a1, 
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMWalletPaymentsCommerceTransaction alloc] initByReadFrom:v7];
     v4 = v8;

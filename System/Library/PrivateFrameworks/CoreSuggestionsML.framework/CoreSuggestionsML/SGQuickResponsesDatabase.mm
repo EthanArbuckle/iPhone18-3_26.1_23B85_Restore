@@ -1,18 +1,18 @@
 @interface SGQuickResponsesDatabase
-+ (id)_openAnotherHandleForPath:(id)a3;
-+ (id)_openFreshHandleForPath:(id)a3 inMemory:(BOOL)a4;
-- (BOOL)_handleCorruptionWithCheck:(BOOL)a3 path:(id)a4 inMemory:(BOOL)a5;
++ (id)_openAnotherHandleForPath:(id)path;
++ (id)_openFreshHandleForPath:(id)path inMemory:(BOOL)memory;
+- (BOOL)_handleCorruptionWithCheck:(BOOL)check path:(id)path inMemory:(BOOL)memory;
 - (id)migrations;
-- (id)queriesToSkipFromEmptyToVersion:(unsigned int *)a3;
+- (id)queriesToSkipFromEmptyToVersion:(unsigned int *)version;
 @end
 
 @implementation SGQuickResponsesDatabase
 
-- (id)queriesToSkipFromEmptyToVersion:(unsigned int *)a3
+- (id)queriesToSkipFromEmptyToVersion:(unsigned int *)version
 {
-  if (a3)
+  if (version)
   {
-    *a3 = 0;
+    *version = 0;
   }
 
   return MEMORY[0x277CBEBF8];
@@ -61,20 +61,20 @@
   return v9;
 }
 
-- (BOOL)_handleCorruptionWithCheck:(BOOL)a3 path:(id)a4 inMemory:(BOOL)a5
+- (BOOL)_handleCorruptionWithCheck:(BOOL)check path:(id)path inMemory:(BOOL)memory
 {
-  v6 = a3;
+  checkCopy = check;
   v27 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  if (a5)
+  pathCopy = path;
+  if (memory)
   {
     v9 = 1;
   }
 
   else
   {
-    v10 = [MEMORY[0x277D42630] corruptionMarkerPathForPath:v8];
-    if (v6 && ([MEMORY[0x277CCAA00] defaultManager], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "fileExistsAtPath:isDirectory:", v10, 0), v11, !v12))
+    v10 = [MEMORY[0x277D42630] corruptionMarkerPathForPath:pathCopy];
+    if (checkCopy && ([MEMORY[0x277CCAA00] defaultManager], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "fileExistsAtPath:isDirectory:", v10, 0), v11, !v12))
     {
       v9 = 1;
     }
@@ -84,23 +84,23 @@
       db = self->_db;
       p_db = &self->_db;
       [(_PASSqliteDatabase *)db closePermanently];
-      [MEMORY[0x277D42630] truncateDatabaseAtPath:v8];
-      v15 = [MEMORY[0x277CCAA00] defaultManager];
+      [MEMORY[0x277D42630] truncateDatabaseAtPath:pathCopy];
+      defaultManager = [MEMORY[0x277CCAA00] defaultManager];
       v22 = 0;
-      v16 = [v15 removeItemAtPath:v10 error:&v22];
+      v16 = [defaultManager removeItemAtPath:v10 error:&v22];
       v17 = v22;
 
       if ((v16 & 1) == 0 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
       {
-        v21 = [v17 localizedDescription];
+        localizedDescription = [v17 localizedDescription];
         *buf = 138412546;
         v24 = v10;
         v25 = 2112;
-        v26 = v21;
+        v26 = localizedDescription;
         _os_log_error_impl(&dword_24799E000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "SGQuickResponsesDatabase failed to remove corruption marker at %@: %@", buf, 0x16u);
       }
 
-      v18 = [SGQuickResponsesDatabase _openFreshHandleForPath:v8 inMemory:0];
+      v18 = [SGQuickResponsesDatabase _openFreshHandleForPath:pathCopy inMemory:0];
       v9 = v18 != 0;
       if (v18)
       {
@@ -113,11 +113,11 @@
   return v9;
 }
 
-+ (id)_openAnotherHandleForPath:(id)a3
++ (id)_openAnotherHandleForPath:(id)path
 {
   v10 = *MEMORY[0x277D85DE8];
   v7 = 0;
-  v3 = [MEMORY[0x277D42630] sqliteDatabaseWithFilename:a3 contentProtection:3 errorHandler:0 error:&v7];
+  v3 = [MEMORY[0x277D42630] sqliteDatabaseWithFilename:path contentProtection:3 errorHandler:0 error:&v7];
   v4 = v7;
   [v3 prepAndRunQuery:@"PRAGMA journal_mode=WAL" onPrep:0 onRow:0 onError:0];
   [v3 prepAndRunQuery:@"PRAGMA synchronous=NORMAL" onPrep:0 onRow:0 onError:0];
@@ -133,18 +133,18 @@
   return v3;
 }
 
-+ (id)_openFreshHandleForPath:(id)a3 inMemory:(BOOL)a4
++ (id)_openFreshHandleForPath:(id)path inMemory:(BOOL)memory
 {
-  v4 = a4;
-  v5 = a3;
-  if (v4)
+  memoryCopy = memory;
+  pathCopy = path;
+  if (memoryCopy)
   {
     [MEMORY[0x277D42630] sqliteDatabaseInMemoryWithError:0 errorHandler:0];
   }
 
   else
   {
-    [MEMORY[0x277D42630] initializeDatabase:v5 withContentProtection:3 newDatabaseCreated:0 errorHandler:0];
+    [MEMORY[0x277D42630] initializeDatabase:pathCopy withContentProtection:3 newDatabaseCreated:0 errorHandler:0];
   }
   v6 = ;
   if (!v6 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))

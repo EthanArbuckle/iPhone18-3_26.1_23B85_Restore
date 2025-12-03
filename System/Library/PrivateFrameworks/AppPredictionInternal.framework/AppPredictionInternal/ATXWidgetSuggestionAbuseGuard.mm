@@ -1,9 +1,9 @@
 @interface ATXWidgetSuggestionAbuseGuard
 + (id)sharedInstance;
-- (ATXWidgetSuggestionAbuseGuard)initWithConfig:(id)a3 store:(id)a4;
-- (BOOL)shouldDemoteSuggestionsForWidget:(id)a3 kind:(id)a4 intent:(id)a5;
+- (ATXWidgetSuggestionAbuseGuard)initWithConfig:(id)config store:(id)store;
+- (BOOL)shouldDemoteSuggestionsForWidget:(id)widget kind:(id)kind intent:(id)intent;
 - (void)_invalidatePreviousVerdicts;
-- (void)_scheduleRefreshNoLaterThanDate:(id)a3;
+- (void)_scheduleRefreshNoLaterThanDate:(id)date;
 @end
 
 @implementation ATXWidgetSuggestionAbuseGuard
@@ -33,21 +33,21 @@ void __47__ATXWidgetSuggestionAbuseGuard_sharedInstance__block_invoke()
   objc_autoreleasePoolPop(v0);
 }
 
-- (ATXWidgetSuggestionAbuseGuard)initWithConfig:(id)a3 store:(id)a4
+- (ATXWidgetSuggestionAbuseGuard)initWithConfig:(id)config store:(id)store
 {
-  v7 = a3;
-  v8 = a4;
+  configCopy = config;
+  storeCopy = store;
   v16.receiver = self;
   v16.super_class = ATXWidgetSuggestionAbuseGuard;
   v9 = [(ATXWidgetSuggestionAbuseGuard *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_config, a3);
-    objc_storeStrong(&v10->_store, a4);
-    v11 = [MEMORY[0x277CBEAA8] distantFuture];
+    objc_storeStrong(&v9->_config, config);
+    objc_storeStrong(&v10->_store, store);
+    distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
     scheduledRefreshDate = v10->_scheduledRefreshDate;
-    v10->_scheduledRefreshDate = v11;
+    v10->_scheduledRefreshDate = distantFuture;
 
     v13 = [[ATXInformationFilter alloc] initWithStore:v10->_store abuseControlConfig:v10->_config];
     filter = v10->_filter;
@@ -57,13 +57,13 @@ void __47__ATXWidgetSuggestionAbuseGuard_sharedInstance__block_invoke()
   return v10;
 }
 
-- (BOOL)shouldDemoteSuggestionsForWidget:(id)a3 kind:(id)a4 intent:(id)a5
+- (BOOL)shouldDemoteSuggestionsForWidget:(id)widget kind:(id)kind intent:(id)intent
 {
   v38 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v8;
+  widgetCopy = widget;
+  kindCopy = kind;
+  intentCopy = intent;
+  v11 = widgetCopy;
   if (CFPreferencesGetAppBooleanValue(@"widgetKitDeveloperModeEnabled", @"com.apple.duetexpertd", 0))
   {
     LOBYTE(v30) = 0;
@@ -74,15 +74,15 @@ LABEL_6:
       v13 = __atxlog_handle_relevant_shortcut();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
-        v14 = [v10 intentDescription];
+        intentDescription = [intentCopy intentDescription];
         v30 = 136315906;
         v31 = "[ATXWidgetSuggestionAbuseGuard shouldDemoteSuggestionsForWidget:kind:intent:]";
         v32 = 2112;
         v33 = v11;
         v34 = 2112;
-        v35 = v9;
+        v35 = kindCopy;
         v36 = 2112;
-        v37 = v14;
+        v37 = intentDescription;
         _os_log_impl(&dword_2263AA000, v13, OS_LOG_TYPE_DEFAULT, "%s: NO (WidgetKit Developer Mode enabled) for widget %@:%@:%@", &v30, 0x2Au);
       }
 
@@ -102,20 +102,20 @@ LABEL_6:
   {
   }
 
-  v16 = [(ATXInformationFilter *)self->_filter numberOfSeenRotationsForWidget:v11 kind:v9 intent:v10 filterByClientModelId:0];
-  v17 = [(ATXTimelineAbuseControlConfig *)self->_config hardRotationQuotaForWidgetWithIdentifier:v11 kind:v9];
+  v16 = [(ATXInformationFilter *)self->_filter numberOfSeenRotationsForWidget:v11 kind:kindCopy intent:intentCopy filterByClientModelId:0];
+  v17 = [(ATXTimelineAbuseControlConfig *)self->_config hardRotationQuotaForWidgetWithIdentifier:v11 kind:kindCopy];
   if ((v17 & 0x8000000000000000) != 0 || v16 < v17)
   {
-    v13 = [(ATXInformationStore *)self->_store mostRecentRotationRecordForWidget:v11 kind:v9 intent:v10 considerStalenessRotation:0 filterByClientModelId:0];
+    v13 = [(ATXInformationStore *)self->_store mostRecentRotationRecordForWidget:v11 kind:kindCopy intent:intentCopy considerStalenessRotation:0 filterByClientModelId:0];
     store = self->_store;
-    v20 = [v13 rotationDate];
-    v21 = [(ATXInformationStore *)store firstEngagementOfWidget:v11 kind:v9 intent:v10 sinceTimestamp:v20];
+    rotationDate = [v13 rotationDate];
+    v21 = [(ATXInformationStore *)store firstEngagementOfWidget:v11 kind:kindCopy intent:intentCopy sinceTimestamp:rotationDate];
 
     if (v13 && v21)
     {
-      v22 = [v21 date];
+      date = [v21 date];
       [v13 coolDownInterval];
-      v23 = [v22 dateByAddingTimeInterval:?];
+      v23 = [date dateByAddingTimeInterval:?];
 
       [v23 timeIntervalSinceNow];
       if (v24 > 0.0)
@@ -124,15 +124,15 @@ LABEL_6:
         v26 = __atxlog_handle_relevant_shortcut();
         if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
         {
-          v27 = [v10 intentDescription];
+          intentDescription2 = [intentCopy intentDescription];
           v30 = 136315906;
           v31 = "[ATXWidgetSuggestionAbuseGuard shouldDemoteSuggestionsForWidget:kind:intent:]";
           v32 = 2112;
           v33 = v11;
           v34 = 2112;
-          v35 = v9;
+          v35 = kindCopy;
           v36 = 2112;
-          v37 = v27;
+          v37 = intentDescription2;
           _os_log_impl(&dword_2263AA000, v26, OS_LOG_TYPE_DEFAULT, "%s: YES (in cool down) for widget %@:%@:%@", &v30, 0x2Au);
         }
 
@@ -144,15 +144,15 @@ LABEL_6:
     v23 = __atxlog_handle_relevant_shortcut();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
     {
-      v25 = [v10 intentDescription];
+      intentDescription3 = [intentCopy intentDescription];
       v30 = 136315906;
       v31 = "[ATXWidgetSuggestionAbuseGuard shouldDemoteSuggestionsForWidget:kind:intent:]";
       v32 = 2112;
       v33 = v11;
       v34 = 2112;
-      v35 = v9;
+      v35 = kindCopy;
       v36 = 2112;
-      v37 = v25;
+      v37 = intentDescription3;
       _os_log_impl(&dword_2263AA000, v23, OS_LOG_TYPE_DEFAULT, "%s: NO for widget %@:%@:%@", &v30, 0x2Au);
     }
 
@@ -165,15 +165,15 @@ LABEL_24:
   v13 = __atxlog_handle_relevant_shortcut();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v18 = [v10 intentDescription];
+    intentDescription4 = [intentCopy intentDescription];
     v30 = 136315906;
     v31 = "[ATXWidgetSuggestionAbuseGuard shouldDemoteSuggestionsForWidget:kind:intent:]";
     v32 = 2112;
     v33 = v11;
     v34 = 2112;
-    v35 = v9;
+    v35 = kindCopy;
     v36 = 2112;
-    v37 = v18;
+    v37 = intentDescription4;
     _os_log_impl(&dword_2263AA000, v13, OS_LOG_TYPE_DEFAULT, "%s: YES (exceeds quota) for widget %@:%@:%@", &v30, 0x2Au);
   }
 
@@ -184,23 +184,23 @@ LABEL_25:
   return v15;
 }
 
-- (void)_scheduleRefreshNoLaterThanDate:(id)a3
+- (void)_scheduleRefreshNoLaterThanDate:(id)date
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  dateCopy = date;
   scheduledRefreshDate = self->_scheduledRefreshDate;
-  v7 = [(NSDate *)scheduledRefreshDate earlierDate:v5];
+  v7 = [(NSDate *)scheduledRefreshDate earlierDate:dateCopy];
 
   if (scheduledRefreshDate != v7)
   {
-    objc_storeStrong(&self->_scheduledRefreshDate, a3);
+    objc_storeStrong(&self->_scheduledRefreshDate, date);
     v8 = __atxlog_handle_relevant_shortcut();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 136315394;
       v15 = "[ATXWidgetSuggestionAbuseGuard _scheduleRefreshNoLaterThanDate:]";
       v16 = 2112;
-      v17 = v5;
+      v17 = dateCopy;
       _os_log_impl(&dword_2263AA000, v8, OS_LOG_TYPE_DEFAULT, "%s: Updated refresh date to %@.", buf, 0x16u);
     }
 
@@ -235,8 +235,8 @@ LABEL_25:
     _os_log_impl(&dword_2263AA000, v3, OS_LOG_TYPE_DEFAULT, "%s", &v6, 0xCu);
   }
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 postNotificationName:@"ATXWidgetSuggestionAbuseGuardRefresh" object:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"ATXWidgetSuggestionAbuseGuardRefresh" object:self];
 
   v5 = *MEMORY[0x277D85DE8];
 }

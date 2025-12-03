@@ -1,5 +1,5 @@
 @interface AFUISiriCarPlayShockwaveViewController
-- (void)initializeEdgeLightForRequest:(id)a3;
+- (void)initializeEdgeLightForRequest:(id)request;
 - (void)playShockwave;
 - (void)viewDidLoad;
 @end
@@ -8,24 +8,24 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_241437360();
 }
 
-- (void)initializeEdgeLightForRequest:(id)a3
+- (void)initializeEdgeLightForRequest:(id)request
 {
-  v4 = a3;
-  v5 = self;
-  sub_2414384B8(v4);
+  requestCopy = request;
+  selfCopy = self;
+  sub_2414384B8(requestCopy);
 }
 
 - (void)playShockwave
 {
   if ((*(&self->super.super.super.isa + OBJC_IVAR____TtC11AssistantUI38AFUISiriCarPlayShockwaveViewController_isDirectActionActivation) & 1) == 0)
   {
-    v5 = self;
+    selfCopy = self;
     sub_2414861B0();
-    v3 = *(&v5->super.super.super.isa + OBJC_IVAR____TtC11AssistantUI38AFUISiriCarPlayShockwaveViewController_shockwaveViewController);
+    v3 = *(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC11AssistantUI38AFUISiriCarPlayShockwaveViewController_shockwaveViewController);
     if (v3)
     {
       v4 = v3;

@@ -1,7 +1,7 @@
 @interface _NSStringFormattingOptions
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_NSStringFormattingOptions)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 - (void)dealloc;
 @end
@@ -31,7 +31,7 @@
   [(_NSStringFormattingOptions *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(_NSStringFormattingOptions);
   [(_NSStringFormattingOptions *)v4 setPluralizationNumber:[(_NSStringFormattingOptions *)self pluralizationNumber]];
@@ -40,41 +40,41 @@
 
 - (unint64_t)hash
 {
-  v2 = [(_NSStringFormattingOptions *)self pluralizationNumber];
+  pluralizationNumber = [(_NSStringFormattingOptions *)self pluralizationNumber];
 
-  return [(NSNumber *)v2 hash];
+  return [(NSNumber *)pluralizationNumber hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(_NSStringFormattingOptions *)self pluralizationNumber];
-    if (v5 == [a3 pluralizationNumber])
+    pluralizationNumber = [(_NSStringFormattingOptions *)self pluralizationNumber];
+    if (pluralizationNumber == [equal pluralizationNumber])
     {
-      LOBYTE(v6) = 1;
+      LOBYTE(pluralizationNumber2) = 1;
     }
 
     else
     {
-      v6 = [a3 pluralizationNumber];
-      if (v6)
+      pluralizationNumber2 = [equal pluralizationNumber];
+      if (pluralizationNumber2)
       {
-        v7 = [(_NSStringFormattingOptions *)self pluralizationNumber];
-        v8 = [a3 pluralizationNumber];
+        pluralizationNumber3 = [(_NSStringFormattingOptions *)self pluralizationNumber];
+        pluralizationNumber4 = [equal pluralizationNumber];
 
-        LOBYTE(v6) = [(NSNumber *)v7 isEqualToNumber:v8];
+        LOBYTE(pluralizationNumber2) = [(NSNumber *)pluralizationNumber3 isEqualToNumber:pluralizationNumber4];
       }
     }
   }
 
   else
   {
-    LOBYTE(v6) = 0;
+    LOBYTE(pluralizationNumber2) = 0;
   }
 
-  return v6;
+  return pluralizationNumber2;
 }
 
 @end

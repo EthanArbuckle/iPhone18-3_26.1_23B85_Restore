@@ -1,87 +1,87 @@
 @interface LoGFilter
-- (BOOL)createMaskFrom:(__CVBuffer *)a3 to:(__CVBuffer *)a4;
+- (BOOL)createMaskFrom:(__CVBuffer *)from to:(__CVBuffer *)to;
 - (LoGFilter)init;
-- (void)encodeDiffToCommandBuffer:(id)a3 texture0:(id)a4 texture1:(id)a5;
-- (void)encodeToCommandBuffer:(id)a3 sourceTexture:(id)a4 destinationTexture:(id)a5;
-- (void)encodeUpsampleScaleToCommandBuffer:(id)a3 sourceTexture:(id)a4 destinationTexture:(id)a5;
+- (void)encodeDiffToCommandBuffer:(id)buffer texture0:(id)texture0 texture1:(id)texture1;
+- (void)encodeToCommandBuffer:(id)buffer sourceTexture:(id)texture destinationTexture:(id)destinationTexture;
+- (void)encodeUpsampleScaleToCommandBuffer:(id)buffer sourceTexture:(id)texture destinationTexture:(id)destinationTexture;
 @end
 
 @implementation LoGFilter
 
-- (void)encodeDiffToCommandBuffer:(id)a3 texture0:(id)a4 texture1:(id)a5
+- (void)encodeDiffToCommandBuffer:(id)buffer texture0:(id)texture0 texture1:(id)texture1
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [a3 computeCommandEncoder];
-  [v10 setComputePipelineState:self->_absoluteDiffKernel];
-  [v10 setTexture:v9 atIndex:0];
+  texture1Copy = texture1;
+  texture0Copy = texture0;
+  computeCommandEncoder = [buffer computeCommandEncoder];
+  [computeCommandEncoder setComputePipelineState:self->_absoluteDiffKernel];
+  [computeCommandEncoder setTexture:texture0Copy atIndex:0];
 
-  [v10 setTexture:v8 atIndex:1];
-  v11 = ([v8 width] + 15) >> 4;
-  v12 = [v8 height];
+  [computeCommandEncoder setTexture:texture1Copy atIndex:1];
+  v11 = ([texture1Copy width] + 15) >> 4;
+  height = [texture1Copy height];
 
   v15[0] = v11;
-  v15[1] = (v12 + 15) >> 4;
+  v15[1] = (height + 15) >> 4;
   v15[2] = 1;
   v13 = vdupq_n_s64(0x10uLL);
   v14 = 1;
-  [v10 dispatchThreadgroups:v15 threadsPerThreadgroup:&v13];
-  [v10 endEncoding];
+  [computeCommandEncoder dispatchThreadgroups:v15 threadsPerThreadgroup:&v13];
+  [computeCommandEncoder endEncoding];
 }
 
-- (void)encodeUpsampleScaleToCommandBuffer:(id)a3 sourceTexture:(id)a4 destinationTexture:(id)a5
+- (void)encodeUpsampleScaleToCommandBuffer:(id)buffer sourceTexture:(id)texture destinationTexture:(id)destinationTexture
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
-  v11 = [v8 width];
-  v12 = [v9 width];
+  textureCopy = texture;
+  destinationTextureCopy = destinationTexture;
+  bufferCopy = buffer;
+  width = [textureCopy width];
+  width2 = [destinationTextureCopy width];
   maskScaleFactor = self->_maskScaleFactor;
-  v18[0] = v11 / v12;
+  v18[0] = width / width2;
   v18[1] = maskScaleFactor;
   v18[2] = self->_maskStrength;
-  v14 = [v10 computeCommandEncoder];
+  computeCommandEncoder = [bufferCopy computeCommandEncoder];
 
-  if (v14)
+  if (computeCommandEncoder)
   {
-    [v14 setComputePipelineState:self->_upsampleScaleKernel];
-    [v14 setTexture:v8 atIndex:0];
-    [v14 setTexture:v9 atIndex:1];
-    [v14 setBytes:v18 length:12 atIndex:0];
-    v17[0] = ([v9 width] + 15) >> 4;
-    v17[1] = ([v9 height] + 15) >> 4;
+    [computeCommandEncoder setComputePipelineState:self->_upsampleScaleKernel];
+    [computeCommandEncoder setTexture:textureCopy atIndex:0];
+    [computeCommandEncoder setTexture:destinationTextureCopy atIndex:1];
+    [computeCommandEncoder setBytes:v18 length:12 atIndex:0];
+    v17[0] = ([destinationTextureCopy width] + 15) >> 4;
+    v17[1] = ([destinationTextureCopy height] + 15) >> 4;
     v17[2] = 1;
     v15 = vdupq_n_s64(0x10uLL);
     v16 = 1;
-    [v14 dispatchThreadgroups:v17 threadsPerThreadgroup:&v15];
-    [v14 endEncoding];
+    [computeCommandEncoder dispatchThreadgroups:v17 threadsPerThreadgroup:&v15];
+    [computeCommandEncoder endEncoding];
   }
 }
 
-- (void)encodeToCommandBuffer:(id)a3 sourceTexture:(id)a4 destinationTexture:(id)a5
+- (void)encodeToCommandBuffer:(id)buffer sourceTexture:(id)texture destinationTexture:(id)destinationTexture
 {
-  v14 = a3;
-  v8 = a4;
-  v9 = a5;
+  bufferCopy = buffer;
+  textureCopy = texture;
+  destinationTextureCopy = destinationTexture;
   if (!self->_gaussianFilteredTexture1)
   {
-    v10 = createTextures(self->super._device, [v8 width], objc_msgSend(v8, "height"), 1, 1uLL);
+    v10 = createTextures(self->super._device, [textureCopy width], objc_msgSend(textureCopy, "height"), 1, 1uLL);
     gaussianFilteredTexture1 = self->_gaussianFilteredTexture1;
     self->_gaussianFilteredTexture1 = v10;
   }
 
   if (!self->_gaussianFilteredTexture2)
   {
-    v12 = createTextures(self->super._device, [v8 width], objc_msgSend(v8, "height"), 1, 1uLL);
+    v12 = createTextures(self->super._device, [textureCopy width], objc_msgSend(textureCopy, "height"), 1, 1uLL);
     gaussianFilteredTexture2 = self->_gaussianFilteredTexture2;
     self->_gaussianFilteredTexture2 = v12;
   }
 
-  [(MPSImageGaussianBlur *)self->_gauss1 encodeToCommandBuffer:v14 sourceTexture:v8 destinationTexture:self->_gaussianFilteredTexture1];
-  [(MPSImageGaussianBlur *)self->_gauss2 encodeToCommandBuffer:v14 sourceTexture:v8 destinationTexture:self->_gaussianFilteredTexture2];
-  [(LoGFilter *)self encodeDiffToCommandBuffer:v14 texture0:self->_gaussianFilteredTexture1 texture1:self->_gaussianFilteredTexture2];
-  [(MPSImageGaussianBlur *)self->_gauss3 encodeToCommandBuffer:v14 sourceTexture:self->_gaussianFilteredTexture2 destinationTexture:self->_gaussianFilteredTexture1];
-  [(LoGFilter *)self encodeUpsampleScaleToCommandBuffer:v14 sourceTexture:self->_gaussianFilteredTexture1 destinationTexture:v9];
+  [(MPSImageGaussianBlur *)self->_gauss1 encodeToCommandBuffer:bufferCopy sourceTexture:textureCopy destinationTexture:self->_gaussianFilteredTexture1];
+  [(MPSImageGaussianBlur *)self->_gauss2 encodeToCommandBuffer:bufferCopy sourceTexture:textureCopy destinationTexture:self->_gaussianFilteredTexture2];
+  [(LoGFilter *)self encodeDiffToCommandBuffer:bufferCopy texture0:self->_gaussianFilteredTexture1 texture1:self->_gaussianFilteredTexture2];
+  [(MPSImageGaussianBlur *)self->_gauss3 encodeToCommandBuffer:bufferCopy sourceTexture:self->_gaussianFilteredTexture2 destinationTexture:self->_gaussianFilteredTexture1];
+  [(LoGFilter *)self encodeUpsampleScaleToCommandBuffer:bufferCopy sourceTexture:self->_gaussianFilteredTexture1 destinationTexture:destinationTextureCopy];
 }
 
 - (LoGFilter)init
@@ -158,13 +158,13 @@ LABEL_10:
   return v21;
 }
 
-- (BOOL)createMaskFrom:(__CVBuffer *)a3 to:(__CVBuffer *)a4
+- (BOOL)createMaskFrom:(__CVBuffer *)from to:(__CVBuffer *)to
 {
-  v7 = [(MTLCommandQueue *)self->super._commandQueue commandBuffer];
-  v8 = createTexturesFromCVPixelBuffer(a3, self->super._device, 1, 1uLL);
-  v9 = createTexturesFromCVPixelBuffer(a4, self->super._device, 1, 1uLL);
+  commandBuffer = [(MTLCommandQueue *)self->super._commandQueue commandBuffer];
+  v8 = createTexturesFromCVPixelBuffer(from, self->super._device, 1, 1uLL);
+  v9 = createTexturesFromCVPixelBuffer(to, self->super._device, 1, 1uLL);
   v10 = v9;
-  if (v7)
+  if (commandBuffer)
   {
     v11 = v8 == 0;
   }
@@ -178,9 +178,9 @@ LABEL_10:
   v13 = !v12;
   if (!v12)
   {
-    [(LoGFilter *)self encodeToCommandBuffer:v7 sourceTexture:v8 destinationTexture:v9];
-    [v7 commit];
-    [v7 waitUntilCompleted];
+    [(LoGFilter *)self encodeToCommandBuffer:commandBuffer sourceTexture:v8 destinationTexture:v9];
+    [commandBuffer commit];
+    [commandBuffer waitUntilCompleted];
   }
 
   return v13;

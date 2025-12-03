@@ -1,51 +1,51 @@
 @interface TSPLazyReference
-+ (id)referenceForObject:(id)a3;
-+ (id)weakReferenceForObject:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)validateObject:(id)a3 expectedObjectClass:(Class)a4 expectedObjectProtocol:(id)a5 delegate:(id)a6 shouldIgnoreFailure:(BOOL *)a7 shouldUpdateObjectClass:(BOOL *)a8 error:(id *)a9;
++ (id)referenceForObject:(id)object;
++ (id)weakReferenceForObject:(id)object;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)validateObject:(id)object expectedObjectClass:(Class)class expectedObjectProtocol:(id)protocol delegate:(id)delegate shouldIgnoreFailure:(BOOL *)failure shouldUpdateObjectClass:(BOOL *)objectClass error:(id *)error;
 - (NSString)description;
 - (TSPComponent)component;
-- (TSPLazyReference)initWithDelegate:(id)a3 identifier:(int64_t)a4 ownershipMode:(int64_t)a5 allowUnknownObject:(BOOL)a6 objectClass:(Class)a7 objectProtocol:(id)a8;
-- (TSPLazyReference)initWithObject:(id)a3 ownershipMode:(int64_t)a4;
+- (TSPLazyReference)initWithDelegate:(id)delegate identifier:(int64_t)identifier ownershipMode:(int64_t)mode allowUnknownObject:(BOOL)object objectClass:(Class)class objectProtocol:(id)protocol;
+- (TSPLazyReference)initWithObject:(id)object ownershipMode:(int64_t)mode;
 - (TSPLazyReferenceDelegate)delegate;
 - (TSPObject)weakObject;
 - (id)additionalDescription;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)objectAndReturnError:(id *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)objectAndReturnError:(id *)error;
 - (id)objectIfLoaded;
 - (int64_t)ownershipMode;
 - (int64_t)releaseObjectIfPossible;
-- (void)addLoadObserver:(id)a3 action:(SEL)a4;
-- (void)resetIdentifierFromCopy:(BOOL)a3;
-- (void)retainObject:(id)a3;
-- (void)setIsExternal:(BOOL)a3;
-- (void)setKeepObjectInMemory:(BOOL)a3;
+- (void)addLoadObserver:(id)observer action:(SEL)action;
+- (void)resetIdentifierFromCopy:(BOOL)copy;
+- (void)retainObject:(id)object;
+- (void)setIsExternal:(BOOL)external;
+- (void)setKeepObjectInMemory:(BOOL)memory;
 @end
 
 @implementation TSPLazyReference
 
-+ (id)referenceForObject:(id)a3
++ (id)referenceForObject:(id)object
 {
-  v4 = a3;
-  v5 = [a1 alloc];
-  v7 = objc_msgSend_initWithObject_(v5, v6, v4);
+  objectCopy = object;
+  v5 = [self alloc];
+  v7 = objc_msgSend_initWithObject_(v5, v6, objectCopy);
 
   return v7;
 }
 
-+ (id)weakReferenceForObject:(id)a3
++ (id)weakReferenceForObject:(id)object
 {
-  v3 = objc_msgSend_weakReferenceForObject_retainedUntilArchived_(a1, a2, a3, 0);
+  v3 = objc_msgSend_weakReferenceForObject_retainedUntilArchived_(self, a2, object, 0);
 
   return v3;
 }
 
-- (TSPLazyReference)initWithDelegate:(id)a3 identifier:(int64_t)a4 ownershipMode:(int64_t)a5 allowUnknownObject:(BOOL)a6 objectClass:(Class)a7 objectProtocol:(id)a8
+- (TSPLazyReference)initWithDelegate:(id)delegate identifier:(int64_t)identifier ownershipMode:(int64_t)mode allowUnknownObject:(BOOL)object objectClass:(Class)class objectProtocol:(id)protocol
 {
-  v9 = a6;
-  v13 = a3;
-  v15 = a8;
-  if (!v13)
+  objectCopy = object;
+  delegateCopy = delegate;
+  protocolCopy = protocol;
+  if (!delegateCopy)
   {
     v16 = MEMORY[0x277D81150];
     v17 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v14, "[TSPLazyReference initWithDelegate:identifier:ownershipMode:allowUnknownObject:objectClass:objectProtocol:]");
@@ -61,13 +61,13 @@
   v24 = v23;
   if (v23)
   {
-    objc_storeWeak(&v23->_delegate, v13);
-    v24->_identifier = a4;
+    objc_storeWeak(&v23->_delegate, delegateCopy);
+    v24->_identifier = identifier;
     v24->_objectLock._os_unfair_lock_opaque = 0;
     __dmb(0xBu);
-    if (a5 < 3)
+    if (mode < 3)
     {
-      v25 = a5 + 1;
+      v25 = mode + 1;
     }
 
     else
@@ -75,55 +75,55 @@
       v25 = 0;
     }
 
-    if (v9)
+    if (objectCopy)
     {
       v25 |= 8u;
     }
 
     atomic_store(v25, &v24->_flags);
-    v24->_objectClass = a7;
-    objc_storeStrong(&v24->_objectProtocol, a8);
+    v24->_objectClass = class;
+    objc_storeStrong(&v24->_objectProtocol, protocol);
   }
 
   return v24;
 }
 
-- (TSPLazyReference)initWithObject:(id)a3 ownershipMode:(int64_t)a4
+- (TSPLazyReference)initWithObject:(id)object ownershipMode:(int64_t)mode
 {
-  v7 = a3;
-  v10 = v7;
-  if (v7)
+  objectCopy = object;
+  v10 = objectCopy;
+  if (objectCopy)
   {
-    v11 = objc_msgSend_context(v7, v8, v9);
+    v11 = objc_msgSend_context(objectCopy, v8, v9);
     v14 = objc_msgSend_tsp_identifier(v10, v12, v13);
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
     v16 = objc_opt_class();
-    v18 = objc_msgSend_initWithDelegate_identifier_ownershipMode_allowUnknownObject_objectClass_objectProtocol_(self, v17, v11, v14, a4, isKindOfClass & 1, v16, 0);
+    v18 = objc_msgSend_initWithDelegate_identifier_ownershipMode_allowUnknownObject_objectClass_objectProtocol_(self, v17, v11, v14, mode, isKindOfClass & 1, v16, 0);
 
     if (v18)
     {
-      if (a4 != 1)
+      if (mode != 1)
       {
-        objc_storeStrong(v18 + 2, a3);
+        objc_storeStrong(v18 + 2, object);
       }
 
       objc_storeWeak(v18 + 3, v10);
     }
 
     self = v18;
-    v19 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v19 = 0;
+    selfCopy = 0;
   }
 
-  return v19;
+  return selfCopy;
 }
 
-- (id)objectAndReturnError:(id *)a3
+- (id)objectAndReturnError:(id *)error
 {
   os_unfair_lock_lock(&self->_objectLock);
   strongObject = self->_strongObject;
@@ -223,11 +223,11 @@
         }
       }
 
-      if (a3)
+      if (error)
       {
         v31 = v10;
         v7 = 0;
-        *a3 = v10;
+        *error = v10;
       }
 
       else
@@ -298,12 +298,12 @@
   return v5;
 }
 
-- (BOOL)validateObject:(id)a3 expectedObjectClass:(Class)a4 expectedObjectProtocol:(id)a5 delegate:(id)a6 shouldIgnoreFailure:(BOOL *)a7 shouldUpdateObjectClass:(BOOL *)a8 error:(id *)a9
+- (BOOL)validateObject:(id)object expectedObjectClass:(Class)class expectedObjectProtocol:(id)protocol delegate:(id)delegate shouldIgnoreFailure:(BOOL *)failure shouldUpdateObjectClass:(BOOL *)objectClass error:(id *)error
 {
-  v15 = a3;
-  v16 = a5;
-  v17 = a6;
-  if (!v15)
+  objectCopy = object;
+  protocolCopy = protocol;
+  delegateCopy = delegate;
+  if (!objectCopy)
   {
     goto LABEL_15;
   }
@@ -321,19 +321,19 @@
         v81 = MEMORY[0x277D81150];
         v23 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v18, "[TSPLazyReference validateObject:expectedObjectClass:expectedObjectProtocol:delegate:shouldIgnoreFailure:shouldUpdateObjectClass:error:]");
         v25 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v24, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/persistence/src/TSPLazyReference.mm");
-        if (!a4)
+        if (!class)
         {
-          a4 = objc_opt_class();
+          class = objc_opt_class();
         }
 
-        v26 = NSStringFromClass(a4);
+        v26 = NSStringFromClass(class);
         objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v81, v27, v23, v25, 272, 0, "Object [%{public}@-%llu] resolved to an unknown object.", v26, self->_identifier);
 
         objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v28, v29);
       }
 
       v30 = atomic_load(&self->_flags);
-      if ((v30 & 2) == 0 && (objc_msgSend_ignoreReferencesToUnknownObjects(v17, v18, v19) & 1) == 0)
+      if ((v30 & 2) == 0 && (objc_msgSend_ignoreReferencesToUnknownObjects(delegateCopy, v18, v19) & 1) == 0)
       {
         v32 = MEMORY[0x277CCA9B8];
         v33 = objc_msgSend_tsp_errorWithCode_(MEMORY[0x277CCA9B8], v31, 7);
@@ -354,7 +354,7 @@ LABEL_41:
     goto LABEL_15;
   }
 
-  if (!a4 || (objc_opt_isKindOfClass()) && (!v16 || (objc_msgSend_conformsToProtocol_(v15, v18, v16)))
+  if (!class || (objc_opt_isKindOfClass()) && (!protocolCopy || (objc_msgSend_conformsToProtocol_(objectCopy, v18, protocolCopy)))
   {
 LABEL_15:
     v35 = 0;
@@ -366,10 +366,10 @@ LABEL_16:
   }
 
   v40 = objc_opt_class();
-  if (objc_msgSend_isSubclassOfClass_(a4, v41, v40))
+  if (objc_msgSend_isSubclassOfClass_(class, v41, v40))
   {
     v43 = objc_opt_class();
-    if (objc_msgSend_allowUnarchivingObjectClass_(a4, v44, v43))
+    if (objc_msgSend_allowUnarchivingObjectClass_(class, v44, v43))
     {
       v35 = 0;
       isKindOfClass = 0;
@@ -383,12 +383,12 @@ LABEL_16:
     v55 = objc_opt_class();
     v80 = NSStringFromClass(v55);
     identifier = self->_identifier;
-    if (!a4)
+    if (!class)
     {
-      a4 = objc_opt_class();
+      class = objc_opt_class();
     }
 
-    v49 = NSStringFromClass(a4);
+    v49 = NSStringFromClass(class);
     v75 = identifier;
     v51 = v53;
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v79, v57, v53, v82, 294, 0, "Object [%{public}@-%llu] is not allowed by reference wrapper %{public}@.", v80, v75, v49);
@@ -397,20 +397,20 @@ LABEL_16:
   else
   {
     v78 = MEMORY[0x277D81150];
-    if (v16)
+    if (protocolCopy)
     {
       v77 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v42, "[TSPLazyReference validateObject:expectedObjectClass:expectedObjectProtocol:delegate:shouldIgnoreFailure:shouldUpdateObjectClass:error:]");
       v82 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v46, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/persistence/src/TSPLazyReference.mm");
       v47 = objc_opt_class();
       v80 = NSStringFromClass(v47);
       v48 = self->_identifier;
-      if (!a4)
+      if (!class)
       {
-        a4 = objc_opt_class();
+        class = objc_opt_class();
       }
 
-      v49 = NSStringFromClass(a4);
-      v50 = NSStringFromProtocol(v16);
+      v49 = NSStringFromClass(class);
+      v50 = NSStringFromProtocol(protocolCopy);
       v74 = v48;
       v51 = v77;
       objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v78, v52, v77, v82, 296, 0, "Object [%{public}@-%llu] is not subclass of %{public}@ or does not conform to %{public}@.", v80, v74, v49, v50);
@@ -423,12 +423,12 @@ LABEL_16:
       v60 = objc_opt_class();
       v80 = NSStringFromClass(v60);
       v61 = self->_identifier;
-      if (!a4)
+      if (!class)
       {
-        a4 = objc_opt_class();
+        class = objc_opt_class();
       }
 
-      v49 = NSStringFromClass(a4);
+      v49 = NSStringFromClass(class);
       v76 = v61;
       v51 = v58;
       objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v78, v62, v58, v82, 298, 0, "Object [%{public}@-%llu] is not subclass of %{public}@.", v80, v76, v49);
@@ -459,29 +459,29 @@ LABEL_44:
 
   v36 = 0;
 LABEL_17:
-  if (a7)
+  if (failure)
   {
-    *a7 = isKindOfClass & 1;
+    *failure = isKindOfClass & 1;
   }
 
-  if (a8)
+  if (objectClass)
   {
-    *a8 = v36;
+    *objectClass = v36;
   }
 
-  if (a9)
+  if (error)
   {
     v38 = v35;
-    *a9 = v35;
+    *error = v35;
   }
 
   return v37;
 }
 
-- (void)setKeepObjectInMemory:(BOOL)a3
+- (void)setKeepObjectInMemory:(BOOL)memory
 {
   p_flags = &self->_flags;
-  if (a3)
+  if (memory)
   {
     atomic_fetch_or(p_flags, 0x10u);
   }
@@ -492,13 +492,13 @@ LABEL_17:
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    isEqualToLazyReference = objc_msgSend_isEqualToLazyReference_(self, v5, v4);
+    isEqualToLazyReference = objc_msgSend_isEqualToLazyReference_(self, v5, equalCopy);
   }
 
   else
@@ -509,9 +509,9 @@ LABEL_17:
   return isEqualToLazyReference;
 }
 
-- (void)addLoadObserver:(id)a3 action:(SEL)a4
+- (void)addLoadObserver:(id)observer action:(SEL)action
 {
-  v15 = a3;
+  observerCopy = observer;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (!WeakRetained)
   {
@@ -523,14 +523,14 @@ LABEL_17:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v13, v14);
   }
 
-  objc_msgSend_addLoadObserver_action_forLazyReference_(WeakRetained, v6, v15, a4, self);
+  objc_msgSend_addLoadObserver_action_forLazyReference_(WeakRetained, v6, observerCopy, action, self);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   os_unfair_lock_lock(&self->_objectLock);
-  v7 = objc_msgSend_allocWithZone_(TSPLazyReference, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(TSPLazyReference, v6, zone);
   v9 = objc_msgSend_initWithDelegate_identifier_ownershipMode_allowUnknownObject_objectClass_objectProtocol_(v7, v8, WeakRetained, self->_identifier, 0, 0, self->_objectClass, self->_objectProtocol);
   v10 = v9;
   if (v9)
@@ -568,9 +568,9 @@ LABEL_17:
   return WeakRetained;
 }
 
-- (void)retainObject:(id)a3
+- (void)retainObject:(id)object
 {
-  obj = a3;
+  obj = object;
   v4 = atomic_load(&self->_flags);
   if ((v4 & 8) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
@@ -710,10 +710,10 @@ LABEL_10:
   }
 }
 
-- (void)setIsExternal:(BOOL)a3
+- (void)setIsExternal:(BOOL)external
 {
   p_flags = &self->_flags;
-  if (a3)
+  if (external)
   {
     atomic_fetch_or(p_flags, 4u);
   }
@@ -724,9 +724,9 @@ LABEL_10:
   }
 }
 
-- (void)resetIdentifierFromCopy:(BOOL)a3
+- (void)resetIdentifierFromCopy:(BOOL)copy
 {
-  v3 = a3;
+  copyCopy = copy;
   WeakRetained = objc_loadWeakRetained(&self->_weakObject);
   v18 = WeakRetained;
   if (WeakRetained)
@@ -737,7 +737,7 @@ LABEL_10:
 
   else
   {
-    if (v3)
+    if (copyCopy)
     {
       objc_msgSend_resetToIdentifier_(self, v6, 0);
     }

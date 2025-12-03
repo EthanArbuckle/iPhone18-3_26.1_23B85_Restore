@@ -1,28 +1,28 @@
 @interface TVSettingsListItemCell
-- (TVSettingsListItemCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
-- (id)_subtitleForSpecifier:(id)a3;
+- (TVSettingsListItemCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
+- (id)_subtitleForSpecifier:(id)specifier;
 @end
 
 @implementation TVSettingsListItemCell
 
-- (TVSettingsListItemCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (TVSettingsListItemCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
-  v8 = a5;
+  specifierCopy = specifier;
   v14.receiver = self;
   v14.super_class = TVSettingsListItemCell;
-  v9 = [(TVSettingsListItemCell *)&v14 initWithStyle:a3 reuseIdentifier:a4 specifier:v8];
+  v9 = [(TVSettingsListItemCell *)&v14 initWithStyle:style reuseIdentifier:identifier specifier:specifierCopy];
   v10 = v9;
   if (v9)
   {
-    v11 = [(TVSettingsListItemCell *)v9 detailTextLabel];
-    v12 = [(TVSettingsListItemCell *)v10 _subtitleForSpecifier:v8];
-    [v11 setText:v12];
+    detailTextLabel = [(TVSettingsListItemCell *)v9 detailTextLabel];
+    v12 = [(TVSettingsListItemCell *)v10 _subtitleForSpecifier:specifierCopy];
+    [detailTextLabel setText:v12];
   }
 
   return v10;
 }
 
-- (id)_subtitleForSpecifier:(id)a3
+- (id)_subtitleForSpecifier:(id)specifier
 {
   v3 = NSStringFromSelector(a2);
   [NSException raise:NSInternalInconsistencyException format:@"The %@ method needs to be override by a subclass.", v3];

@@ -1,21 +1,21 @@
 @interface FPDCoreAnalyticsReport
-- (FPDCoreAnalyticsReport)initWithEventName:(id)a3;
-- (void)addValue:(id)a3 forKey:(id)a4;
+- (FPDCoreAnalyticsReport)initWithEventName:(id)name;
+- (void)addValue:(id)value forKey:(id)key;
 - (void)sendReport;
 @end
 
 @implementation FPDCoreAnalyticsReport
 
-- (FPDCoreAnalyticsReport)initWithEventName:(id)a3
+- (FPDCoreAnalyticsReport)initWithEventName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   v12.receiver = self;
   v12.super_class = FPDCoreAnalyticsReport;
   v6 = [(FPDCoreAnalyticsReport *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_eventName, a3);
+    objc_storeStrong(&v6->_eventName, name);
     IsEventUsed = AnalyticsIsEventUsed();
     v7->_isEventEnabled = IsEventUsed;
     if (IsEventUsed)
@@ -29,11 +29,11 @@
   return v7;
 }
 
-- (void)addValue:(id)a3 forKey:(id)a4
+- (void)addValue:(id)value forKey:(id)key
 {
   if (self->_isEventEnabled)
   {
-    [(NSMutableDictionary *)self->_report setObject:a3 forKeyedSubscript:a4];
+    [(NSMutableDictionary *)self->_report setObject:value forKeyedSubscript:key];
   }
 }
 

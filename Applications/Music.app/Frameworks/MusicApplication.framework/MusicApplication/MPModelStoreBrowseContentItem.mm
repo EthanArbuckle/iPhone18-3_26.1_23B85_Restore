@@ -1,41 +1,41 @@
 @interface MPModelStoreBrowseContentItem
 - (MPModelObject)innermostModelObject;
 - (id)storeContentItemObject;
-- (id)storeContentItemObjectPropertiesFor:(id)a3;
+- (id)storeContentItemObjectPropertiesFor:(id)for;
 @end
 
 @implementation MPModelStoreBrowseContentItem
 
 - (id)storeContentItemObject
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_271B9C();
 
   return v3;
 }
 
-- (id)storeContentItemObjectPropertiesFor:(id)a3
+- (id)storeContentItemObjectPropertiesFor:(id)for
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_271C3C(v4);
+  forCopy = for;
+  selfCopy = self;
+  v6 = sub_271C3C(forCopy);
 
   return v6;
 }
 
 - (MPModelObject)innermostModelObject
 {
-  v2 = self;
-  v3 = [(MPModelStoreBrowseContentItem *)v2 innerObject];
-  if (v3)
+  selfCopy = self;
+  innerObject = [(MPModelStoreBrowseContentItem *)selfCopy innerObject];
+  if (innerObject)
   {
-    v4 = v3;
-    v5 = [v3 innermostModelObject];
+    v4 = innerObject;
+    innermostModelObject = [innerObject innermostModelObject];
 
-    v2 = v5;
+    selfCopy = innermostModelObject;
   }
 
-  return v2;
+  return selfCopy;
 }
 
 @end

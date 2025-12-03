@@ -1,50 +1,50 @@
 @interface MRSendCommandHandlerEvent
-- (MRSendCommandHandlerEvent)initWithCommand:(unsigned int)a3 options:(id)a4;
-- (MRSendCommandHandlerEvent)initWithProtobuf:(id)a3;
+- (MRSendCommandHandlerEvent)initWithCommand:(unsigned int)command options:(id)options;
+- (MRSendCommandHandlerEvent)initWithProtobuf:(id)protobuf;
 - (NSString)commandDescription;
 - (_MRSendCommandMessageProtobuf)protobuf;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
 @implementation MRSendCommandHandlerEvent
 
-- (MRSendCommandHandlerEvent)initWithCommand:(unsigned int)a3 options:(id)a4
+- (MRSendCommandHandlerEvent)initWithCommand:(unsigned int)command options:(id)options
 {
-  v7 = a4;
+  optionsCopy = options;
   v11.receiver = self;
   v11.super_class = MRSendCommandHandlerEvent;
   v8 = [(MRSendCommandHandlerEvent *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_command = a3;
-    objc_storeStrong(&v8->_options, a4);
+    v8->_command = command;
+    objc_storeStrong(&v8->_options, options);
   }
 
   return v9;
 }
 
-- (MRSendCommandHandlerEvent)initWithProtobuf:(id)a3
+- (MRSendCommandHandlerEvent)initWithProtobuf:(id)protobuf
 {
-  if (a3)
+  if (protobuf)
   {
-    v4 = a3;
-    v5 = MRMediaRemoteCommandFromProtobuf([v4 command]);
-    v6 = [v4 options];
+    protobufCopy = protobuf;
+    v5 = MRMediaRemoteCommandFromProtobuf([protobufCopy command]);
+    options = [protobufCopy options];
 
-    v7 = MRMediaRemoteCommandOptionsFromProtobuf(v6);
+    v7 = MRMediaRemoteCommandOptionsFromProtobuf(options);
     self = [(MRSendCommandHandlerEvent *)self initWithCommand:v5 options:v7];
 
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 - (NSString)commandDescription
@@ -58,20 +58,20 @@
 {
   v3 = objc_alloc_init(_MRSendCommandMessageProtobuf);
   [(_MRSendCommandMessageProtobuf *)v3 setCommand:MRMediaRemoteCommandToProtobuf([(MRSendCommandHandlerEvent *)self command])];
-  v4 = [(MRSendCommandHandlerEvent *)self options];
-  v5 = MRMediaRemoteCommandOptionsToProtobuf(v4);
+  options = [(MRSendCommandHandlerEvent *)self options];
+  v5 = MRMediaRemoteCommandOptionsToProtobuf(options);
   [(_MRSendCommandMessageProtobuf *)v3 setOptions:v5];
 
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_opt_class() allocWithZone:a3];
-  v6 = [(MRSendCommandHandlerEvent *)self command];
-  v7 = [(MRSendCommandHandlerEvent *)self options];
-  v8 = [v7 copyWithZone:a3];
-  v9 = [v5 initWithCommand:v6 options:v8];
+  v5 = [objc_opt_class() allocWithZone:zone];
+  command = [(MRSendCommandHandlerEvent *)self command];
+  options = [(MRSendCommandHandlerEvent *)self options];
+  v8 = [options copyWithZone:zone];
+  v9 = [v5 initWithCommand:command options:v8];
 
   return v9;
 }
@@ -80,10 +80,10 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(MRSendCommandHandlerEvent *)self commandDescription];
-  v6 = [(MRSendCommandHandlerEvent *)self options];
-  v7 = MRCreateIndentedDebugDescriptionFromObject(v6);
-  v8 = [v3 stringWithFormat:@"<%@ : %p {\n   command= %@\n   options= %@\n}>\n", v4, self, v5, v7];
+  commandDescription = [(MRSendCommandHandlerEvent *)self commandDescription];
+  options = [(MRSendCommandHandlerEvent *)self options];
+  v7 = MRCreateIndentedDebugDescriptionFromObject(options);
+  v8 = [v3 stringWithFormat:@"<%@ : %p {\n   command= %@\n   options= %@\n}>\n", v4, self, commandDescription, v7];
 
   return v8;
 }

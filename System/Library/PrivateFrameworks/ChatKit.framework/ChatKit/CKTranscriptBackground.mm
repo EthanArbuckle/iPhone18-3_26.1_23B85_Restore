@@ -1,10 +1,10 @@
 @interface CKTranscriptBackground
 - (NSURL)filePathURL;
 - (_TtC7ChatKit22CKTranscriptBackground)init;
-- (_TtC7ChatKit22CKTranscriptBackground)initWithEditorConfiguration:(id)a3 archivedPosterData:(id)a4 watchData:(id)a5 backgroundIdentifier:(id)a6 fileName:(id)a7 extensionIdentifier:(id)a8 extensionIsPlayground:(BOOL)a9;
-- (_TtC7ChatKit22CKTranscriptBackground)initWithPosterData:(id)a3 watchData:(id)a4 backgroundIdentifier:(id)a5 fileName:(id)a6 extensionIdentifier:(id)a7 extensionIsPlayground:(BOOL)a8;
-- (void)createBackgroundWithWatchDataWithCompletion:(id)a3;
-- (void)createBackgroundWithWatchDataWithMaxRetries:(int64_t)a3 completion:(id)a4;
+- (_TtC7ChatKit22CKTranscriptBackground)initWithEditorConfiguration:(id)configuration archivedPosterData:(id)data watchData:(id)watchData backgroundIdentifier:(id)identifier fileName:(id)name extensionIdentifier:(id)extensionIdentifier extensionIsPlayground:(BOOL)playground;
+- (_TtC7ChatKit22CKTranscriptBackground)initWithPosterData:(id)data watchData:(id)watchData backgroundIdentifier:(id)identifier fileName:(id)name extensionIdentifier:(id)extensionIdentifier extensionIsPlayground:(BOOL)playground;
+- (void)createBackgroundWithWatchDataWithCompletion:(id)completion;
+- (void)createBackgroundWithWatchDataWithMaxRetries:(int64_t)retries completion:(id)completion;
 @end
 
 @implementation CKTranscriptBackground
@@ -29,17 +29,17 @@
   return v9;
 }
 
-- (_TtC7ChatKit22CKTranscriptBackground)initWithPosterData:(id)a3 watchData:(id)a4 backgroundIdentifier:(id)a5 fileName:(id)a6 extensionIdentifier:(id)a7 extensionIsPlayground:(BOOL)a8
+- (_TtC7ChatKit22CKTranscriptBackground)initWithPosterData:(id)data watchData:(id)watchData backgroundIdentifier:(id)identifier fileName:(id)name extensionIdentifier:(id)extensionIdentifier extensionIsPlayground:(BOOL)playground
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = a4;
+  dataCopy = data;
+  identifierCopy = identifier;
+  nameCopy = name;
+  extensionIdentifierCopy = extensionIdentifier;
+  watchDataCopy = watchData;
   v32 = sub_190D51670();
   v18 = v17;
 
-  if (v16)
+  if (watchDataCopy)
   {
     v19 = sub_190D51670();
     v21 = v20;
@@ -60,19 +60,19 @@
   v28 = sub_190D56F10();
   v30 = v29;
 
-  return CKTranscriptBackground.init(posterData:watchData:backgroundIdentifier:fileName:extensionIdentifier:extensionIsPlayground:)(v32, v18, v19, v21, v22, v24, v25, v27, v28, v30, a8);
+  return CKTranscriptBackground.init(posterData:watchData:backgroundIdentifier:fileName:extensionIdentifier:extensionIsPlayground:)(v32, v18, v19, v21, v22, v24, v25, v27, v28, v30, playground);
 }
 
-- (_TtC7ChatKit22CKTranscriptBackground)initWithEditorConfiguration:(id)a3 archivedPosterData:(id)a4 watchData:(id)a5 backgroundIdentifier:(id)a6 fileName:(id)a7 extensionIdentifier:(id)a8 extensionIsPlayground:(BOOL)a9
+- (_TtC7ChatKit22CKTranscriptBackground)initWithEditorConfiguration:(id)configuration archivedPosterData:(id)data watchData:(id)watchData backgroundIdentifier:(id)identifier fileName:(id)name extensionIdentifier:(id)extensionIdentifier extensionIsPlayground:(BOOL)playground
 {
-  if (a4)
+  if (data)
   {
-    v15 = a3;
-    v16 = a5;
-    v17 = a6;
-    v18 = a7;
-    v19 = a8;
-    v20 = a4;
+    configurationCopy = configuration;
+    watchDataCopy = watchData;
+    identifierCopy = identifier;
+    nameCopy = name;
+    extensionIdentifierCopy = extensionIdentifier;
+    dataCopy = data;
     v21 = sub_190D51670();
     v48 = v22;
     v49 = v21;
@@ -80,16 +80,16 @@
 
   else
   {
-    v23 = a3;
-    v24 = a5;
-    v25 = a6;
-    v26 = a7;
-    v27 = a8;
+    configurationCopy2 = configuration;
+    watchDataCopy2 = watchData;
+    identifierCopy2 = identifier;
+    nameCopy2 = name;
+    extensionIdentifierCopy2 = extensionIdentifier;
     v48 = 0xF000000000000000;
     v49 = 0;
   }
 
-  if (a5)
+  if (watchData)
   {
     v28 = sub_190D51670();
     v30 = v29;
@@ -113,7 +113,7 @@
   v40 = OBJC_IVAR____TtC7ChatKit22CKTranscriptBackground_filePathURL;
   v41 = sub_190D515F0();
   (*(*(v41 - 8) + 56))(self + v40, 1, 1, v41);
-  *(self + OBJC_IVAR____TtC7ChatKit22CKTranscriptBackground_editorConfiguration) = a3;
+  *(self + OBJC_IVAR____TtC7ChatKit22CKTranscriptBackground_editorConfiguration) = configuration;
   v42 = (self + OBJC_IVAR____TtC7ChatKit22CKTranscriptBackground_posterData);
   *v42 = v49;
   v42[1] = v48;
@@ -129,7 +129,7 @@
   v46 = (self + OBJC_IVAR____TtC7ChatKit22CKTranscriptBackground_extensionIdentifier);
   *v46 = v37;
   v46[1] = v39;
-  *(self + OBJC_IVAR____TtC7ChatKit22CKTranscriptBackground_extensionIsPlayground) = a9;
+  *(self + OBJC_IVAR____TtC7ChatKit22CKTranscriptBackground_extensionIsPlayground) = playground;
   v51.receiver = self;
   v51.super_class = type metadata accessor for CKTranscriptBackground();
   return [(CKTranscriptBackground *)&v51 init];
@@ -142,23 +142,23 @@
   return result;
 }
 
-- (void)createBackgroundWithWatchDataWithCompletion:(id)a3
+- (void)createBackgroundWithWatchDataWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   _Block_copy(v4);
-  v5 = self;
-  sub_19087F4C8(3, v5, v4, v6);
+  selfCopy = self;
+  sub_19087F4C8(3, selfCopy, v4, v6);
   _Block_release(v4);
 
   _Block_release(v4);
 }
 
-- (void)createBackgroundWithWatchDataWithMaxRetries:(int64_t)a3 completion:(id)a4
+- (void)createBackgroundWithWatchDataWithMaxRetries:(int64_t)retries completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   _Block_copy(v6);
-  v8 = self;
-  sub_19087F4C8(a3, v8, v6, v7);
+  selfCopy = self;
+  sub_19087F4C8(retries, selfCopy, v6, v7);
   _Block_release(v6);
   _Block_release(v6);
 }

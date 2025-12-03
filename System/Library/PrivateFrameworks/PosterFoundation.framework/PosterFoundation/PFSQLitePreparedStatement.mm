@@ -1,8 +1,8 @@
 @interface PFSQLitePreparedStatement
-+ (id)_newPreparedStatementForDatabaseConnection:(void *)a3 withSQLQuery:;
++ (id)_newPreparedStatementForDatabaseConnection:(void *)connection withSQLQuery:;
 - (uint64_t)loggingCategory;
 - (uint64_t)setLoggingCategory:(uint64_t)result;
-- (void)_initWithDatabaseConnection:(void *)a1;
+- (void)_initWithDatabaseConnection:(void *)connection;
 - (void)dealloc;
 @end
 
@@ -16,10 +16,10 @@
   [(PFSQLitePreparedStatement *)&v3 dealloc];
 }
 
-+ (id)_newPreparedStatementForDatabaseConnection:(void *)a3 withSQLQuery:
++ (id)_newPreparedStatementForDatabaseConnection:(void *)connection withSQLQuery:
 {
   v4 = a2;
-  v5 = a3;
+  connectionCopy = connection;
   objc_opt_self();
   v14 = 0;
   v15 = &v14;
@@ -31,7 +31,7 @@
   v10[1] = 3221225472;
   v10[2] = __85__PFSQLitePreparedStatement__newPreparedStatementForDatabaseConnection_withSQLQuery___block_invoke;
   v10[3] = &unk_1E818A0D0;
-  v6 = v5;
+  v6 = connectionCopy;
   v11 = v6;
   v7 = v4;
   v12 = v7;
@@ -109,24 +109,24 @@ LABEL_15:
   }
 }
 
-- (void)_initWithDatabaseConnection:(void *)a1
+- (void)_initWithDatabaseConnection:(void *)connection
 {
   v3 = a2;
-  if (a1)
+  if (connection)
   {
-    v7.receiver = a1;
+    v7.receiver = connection;
     v7.super_class = PFSQLitePreparedStatement;
     v4 = objc_msgSendSuper2(&v7, sel_init);
-    a1 = v4;
+    connection = v4;
     if (v4)
     {
       objc_storeWeak(v4 + 1, v3);
       v5 = BSLogCommon();
-      a1[2] = v5;
+      connection[2] = v5;
     }
   }
 
-  return a1;
+  return connection;
 }
 
 - (uint64_t)setLoggingCategory:(uint64_t)result

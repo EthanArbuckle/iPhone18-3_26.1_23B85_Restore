@@ -1,125 +1,125 @@
 @interface PXGAbsoluteCompositeLayout
 - (BOOL)shouldUpdateSublayoutsInStrictOrder;
 - (PXGAbsoluteCompositeLayout)init;
-- (PXGAbsoluteCompositeLayout)initWithComposition:(id)a3;
-- (void)insertSublayout:(id)a3 atIndex:(int64_t)a4;
-- (void)insertSublayoutProvider:(id)a3 inRange:(_NSRange)a4;
-- (void)removeSublayoutsInRange:(_NSRange)a3;
-- (void)setContentSize:(CGSize)a3;
-- (void)setFrames:(const CGRect *)a3 forSublayoutsInRange:(_NSRange)a4;
-- (void)setOrigins:(const CGPoint *)a3 forSublayoutsInRange:(_NSRange)a4;
-- (void)setReferenceDepths:(const double *)a3 forSublayoutsInRange:(_NSRange)a4;
-- (void)setShouldUpdateSublayoutsInStrictOrder:(BOOL)a3;
-- (void)setSpriteTransform:(id *)a3 forSublayoutAtIndex:(int64_t)a4;
-- (void)setZPositions:(const double *)a3 forSublayoutsInRange:(_NSRange)a4;
+- (PXGAbsoluteCompositeLayout)initWithComposition:(id)composition;
+- (void)insertSublayout:(id)sublayout atIndex:(int64_t)index;
+- (void)insertSublayoutProvider:(id)provider inRange:(_NSRange)range;
+- (void)removeSublayoutsInRange:(_NSRange)range;
+- (void)setContentSize:(CGSize)size;
+- (void)setFrames:(const CGRect *)frames forSublayoutsInRange:(_NSRange)range;
+- (void)setOrigins:(const CGPoint *)origins forSublayoutsInRange:(_NSRange)range;
+- (void)setReferenceDepths:(const double *)depths forSublayoutsInRange:(_NSRange)range;
+- (void)setShouldUpdateSublayoutsInStrictOrder:(BOOL)order;
+- (void)setSpriteTransform:(id *)transform forSublayoutAtIndex:(int64_t)index;
+- (void)setZPositions:(const double *)positions forSublayoutsInRange:(_NSRange)range;
 @end
 
 @implementation PXGAbsoluteCompositeLayout
 
 - (BOOL)shouldUpdateSublayoutsInStrictOrder
 {
-  v2 = [(PXGAbsoluteCompositeLayout *)self absoluteComposition];
-  v3 = [v2 shouldUpdateSublayoutsInStrictOrder];
+  absoluteComposition = [(PXGAbsoluteCompositeLayout *)self absoluteComposition];
+  shouldUpdateSublayoutsInStrictOrder = [absoluteComposition shouldUpdateSublayoutsInStrictOrder];
 
-  return v3;
+  return shouldUpdateSublayoutsInStrictOrder;
 }
 
-- (void)setShouldUpdateSublayoutsInStrictOrder:(BOOL)a3
+- (void)setShouldUpdateSublayoutsInStrictOrder:(BOOL)order
 {
-  v3 = a3;
-  v4 = [(PXGAbsoluteCompositeLayout *)self absoluteComposition];
-  [v4 setShouldUpdateSublayoutsInStrictOrder:v3];
+  orderCopy = order;
+  absoluteComposition = [(PXGAbsoluteCompositeLayout *)self absoluteComposition];
+  [absoluteComposition setShouldUpdateSublayoutsInStrictOrder:orderCopy];
 }
 
-- (void)setSpriteTransform:(id *)a3 forSublayoutAtIndex:(int64_t)a4
+- (void)setSpriteTransform:(id *)transform forSublayoutAtIndex:(int64_t)index
 {
-  v6 = [(PXGAbsoluteCompositeLayout *)self absoluteComposition];
-  [v6 setSpriteTransforms:a3 forSublayoutsInRange:{a4, 1}];
+  absoluteComposition = [(PXGAbsoluteCompositeLayout *)self absoluteComposition];
+  [absoluteComposition setSpriteTransforms:transform forSublayoutsInRange:{index, 1}];
 }
 
-- (void)setReferenceDepths:(const double *)a3 forSublayoutsInRange:(_NSRange)a4
+- (void)setReferenceDepths:(const double *)depths forSublayoutsInRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v7 = [(PXGAbsoluteCompositeLayout *)self absoluteComposition];
-  [v7 setReferenceDepths:a3 forSublayoutsInRange:{location, length}];
+  length = range.length;
+  location = range.location;
+  absoluteComposition = [(PXGAbsoluteCompositeLayout *)self absoluteComposition];
+  [absoluteComposition setReferenceDepths:depths forSublayoutsInRange:{location, length}];
 }
 
-- (void)setZPositions:(const double *)a3 forSublayoutsInRange:(_NSRange)a4
+- (void)setZPositions:(const double *)positions forSublayoutsInRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v7 = [(PXGAbsoluteCompositeLayout *)self absoluteComposition];
-  [v7 setZPositions:a3 forSublayoutsInRange:{location, length}];
+  length = range.length;
+  location = range.location;
+  absoluteComposition = [(PXGAbsoluteCompositeLayout *)self absoluteComposition];
+  [absoluteComposition setZPositions:positions forSublayoutsInRange:{location, length}];
 }
 
-- (void)setFrames:(const CGRect *)a3 forSublayoutsInRange:(_NSRange)a4
+- (void)setFrames:(const CGRect *)frames forSublayoutsInRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v7 = [(PXGAbsoluteCompositeLayout *)self absoluteComposition];
-  [v7 setFrames:a3 forSublayoutsInRange:{location, length}];
+  length = range.length;
+  location = range.location;
+  absoluteComposition = [(PXGAbsoluteCompositeLayout *)self absoluteComposition];
+  [absoluteComposition setFrames:frames forSublayoutsInRange:{location, length}];
 }
 
-- (void)setOrigins:(const CGPoint *)a3 forSublayoutsInRange:(_NSRange)a4
+- (void)setOrigins:(const CGPoint *)origins forSublayoutsInRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v7 = [(PXGAbsoluteCompositeLayout *)self absoluteComposition];
-  [v7 setOrigins:a3 forSublayoutsInRange:{location, length}];
+  length = range.length;
+  location = range.location;
+  absoluteComposition = [(PXGAbsoluteCompositeLayout *)self absoluteComposition];
+  [absoluteComposition setOrigins:origins forSublayoutsInRange:{location, length}];
 }
 
-- (void)setContentSize:(CGSize)a3
+- (void)setContentSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v7.receiver = self;
   v7.super_class = PXGAbsoluteCompositeLayout;
   [(PXGLayout *)&v7 setContentSize:?];
-  v6 = [(PXGAbsoluteCompositeLayout *)self absoluteComposition];
-  [v6 setContentSize:{width, height}];
+  absoluteComposition = [(PXGAbsoluteCompositeLayout *)self absoluteComposition];
+  [absoluteComposition setContentSize:{width, height}];
 }
 
-- (void)removeSublayoutsInRange:(_NSRange)a3
+- (void)removeSublayoutsInRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v7.receiver = self;
   v7.super_class = PXGAbsoluteCompositeLayout;
   [(PXGLayout *)&v7 removeSublayoutsInRange:?];
-  v6 = [(PXGAbsoluteCompositeLayout *)self absoluteComposition];
-  [v6 removeRange:{location, length}];
+  absoluteComposition = [(PXGAbsoluteCompositeLayout *)self absoluteComposition];
+  [absoluteComposition removeRange:{location, length}];
 }
 
-- (void)insertSublayoutProvider:(id)a3 inRange:(_NSRange)a4
+- (void)insertSublayoutProvider:(id)provider inRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v7 = a3;
-  v8 = [(PXGAbsoluteCompositeLayout *)self absoluteComposition];
-  [v8 insertRange:{location, length}];
+  length = range.length;
+  location = range.location;
+  providerCopy = provider;
+  absoluteComposition = [(PXGAbsoluteCompositeLayout *)self absoluteComposition];
+  [absoluteComposition insertRange:{location, length}];
 
   v9.receiver = self;
   v9.super_class = PXGAbsoluteCompositeLayout;
-  [(PXGCompositeLayout *)&v9 insertSublayoutProvider:v7 inRange:location, length];
+  [(PXGCompositeLayout *)&v9 insertSublayoutProvider:providerCopy inRange:location, length];
 }
 
-- (void)insertSublayout:(id)a3 atIndex:(int64_t)a4
+- (void)insertSublayout:(id)sublayout atIndex:(int64_t)index
 {
-  v6 = a3;
-  v7 = [(PXGAbsoluteCompositeLayout *)self absoluteComposition];
-  [v7 insertRange:{a4, 1}];
+  sublayoutCopy = sublayout;
+  absoluteComposition = [(PXGAbsoluteCompositeLayout *)self absoluteComposition];
+  [absoluteComposition insertRange:{index, 1}];
 
   v8.receiver = self;
   v8.super_class = PXGAbsoluteCompositeLayout;
-  [(PXGLayout *)&v8 insertSublayout:v6 atIndex:a4];
+  [(PXGLayout *)&v8 insertSublayout:sublayoutCopy atIndex:index];
 }
 
-- (PXGAbsoluteCompositeLayout)initWithComposition:(id)a3
+- (PXGAbsoluteCompositeLayout)initWithComposition:(id)composition
 {
-  v5 = a3;
-  v6 = [MEMORY[0x277CCA890] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"PXGAbsoluteCompositeLayout.m" lineNumber:45 description:{@"%s is not available as initializer", "-[PXGAbsoluteCompositeLayout initWithComposition:]"}];
+  compositionCopy = composition;
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXGAbsoluteCompositeLayout.m" lineNumber:45 description:{@"%s is not available as initializer", "-[PXGAbsoluteCompositeLayout initWithComposition:]"}];
 
   abort();
 }

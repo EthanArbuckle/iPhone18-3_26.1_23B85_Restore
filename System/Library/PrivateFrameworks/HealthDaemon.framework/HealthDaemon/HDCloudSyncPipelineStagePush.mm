@@ -1,8 +1,8 @@
 @interface HDCloudSyncPipelineStagePush
 + (id)operationTagDependencies;
-- (HDCloudSyncCompoundOperation)_computePushAndCleanupOperationForPushStores:(uint64_t)a3 error:;
-- (HDCloudSyncPipelineStagePush)initWithConfiguration:(id)a3 cloudState:(id)a4;
-- (void)_analytics_operationFinishedWithSuccess:(void *)a1;
+- (HDCloudSyncCompoundOperation)_computePushAndCleanupOperationForPushStores:(uint64_t)stores error:;
+- (HDCloudSyncPipelineStagePush)initWithConfiguration:(id)configuration cloudState:(id)state;
+- (void)_analytics_operationFinishedWithSuccess:(void *)success;
 - (void)main;
 @end
 
@@ -18,11 +18,11 @@
   return v2;
 }
 
-- (HDCloudSyncPipelineStagePush)initWithConfiguration:(id)a3 cloudState:(id)a4
+- (HDCloudSyncPipelineStagePush)initWithConfiguration:(id)configuration cloudState:(id)state
 {
   v8.receiver = self;
   v8.super_class = HDCloudSyncPipelineStagePush;
-  v4 = [(HDCloudSyncPipelineStage *)&v8 initWithConfiguration:a3 cloudState:a4];
+  v4 = [(HDCloudSyncPipelineStage *)&v8 initWithConfiguration:configuration cloudState:state];
   v5 = v4;
   if (v4)
   {
@@ -37,18 +37,18 @@
 - (void)main
 {
   v85 = *MEMORY[0x277D85DE8];
-  v3 = [(HDCloudSyncOperation *)self configuration];
-  v4 = [v3 context];
-  v5 = [v4 options];
+  configuration = [(HDCloudSyncOperation *)self configuration];
+  context = [configuration context];
+  options = [context options];
 
-  if ((v5 & 4) == 0)
+  if ((options & 4) == 0)
   {
-    v6 = [(HDCloudSyncOperation *)self configuration];
-    v7 = [v6 repository];
-    v8 = [v7 profile];
-    v9 = [v8 legacyRepositoryProfile];
+    configuration2 = [(HDCloudSyncOperation *)self configuration];
+    repository = [configuration2 repository];
+    profile = [repository profile];
+    legacyRepositoryProfile = [profile legacyRepositoryProfile];
     v78 = 0;
-    v10 = HDUpgradedToSyncIdentity(v9, &v78);
+    v10 = HDUpgradedToSyncIdentity(legacyRepositoryProfile, &v78);
     v11 = v78;
 
     if (v11)
@@ -61,12 +61,12 @@ LABEL_35:
 
     if (v10)
     {
-      v13 = [(HDCloudSyncOperation *)self profile];
-      v14 = [v13 syncIdentityManager];
-      v15 = [v14 currentSyncIdentity];
-      v16 = [v15 identity];
+      profile2 = [(HDCloudSyncOperation *)self profile];
+      syncIdentityManager = [profile2 syncIdentityManager];
+      currentSyncIdentity = [syncIdentityManager currentSyncIdentity];
+      identity = [currentSyncIdentity identity];
       currentSyncIdentity = self->_currentSyncIdentity;
-      self->_currentSyncIdentity = v16;
+      self->_currentSyncIdentity = identity;
     }
 
     else if (!self)
@@ -78,18 +78,18 @@ LABEL_31:
       v11 = v77;
       if (v61)
       {
-        v62 = [(HDCloudSyncOperation *)self configuration];
-        v63 = [v62 repository];
-        v64 = [v63 profile];
-        v65 = [v64 legacyRepositoryProfile];
-        HDUpdateOldestSampleStartDateForProfile(v65);
+        configuration3 = [(HDCloudSyncOperation *)self configuration];
+        repository2 = [configuration3 repository];
+        profile3 = [repository2 profile];
+        legacyRepositoryProfile2 = [profile3 legacyRepositoryProfile];
+        HDUpdateOldestSampleStartDateForProfile(legacyRepositoryProfile2);
 
         v74[0] = MEMORY[0x277D85DD0];
         v74[1] = 3221225472;
         v74[2] = __36__HDCloudSyncPipelineStagePush_main__block_invoke;
         v74[3] = &unk_278614BA8;
         v75 = v42;
-        v76 = self;
+        selfCopy = self;
         [v61 setOnSuccess:v74];
         v73[0] = MEMORY[0x277D85DD0];
         v73[1] = 3221225472;
@@ -97,15 +97,15 @@ LABEL_31:
         v73[3] = &unk_278613088;
         v73[4] = self;
         [v61 setOnError:v73];
-        v66 = [v61 progress];
-        v67 = [v66 totalUnitCount];
+        progress = [v61 progress];
+        totalUnitCount = [progress totalUnitCount];
 
-        v68 = [(HDCloudSyncOperation *)self progress];
-        [v68 setTotalUnitCount:{objc_msgSend(v68, "totalUnitCount") + v67}];
+        progress2 = [(HDCloudSyncOperation *)self progress];
+        [progress2 setTotalUnitCount:{objc_msgSend(progress2, "totalUnitCount") + totalUnitCount}];
 
-        v69 = [(HDCloudSyncOperation *)self progress];
-        v70 = [v61 progress];
-        [v69 addChild:v70 withPendingUnitCount:v67];
+        progress3 = [(HDCloudSyncOperation *)self progress];
+        progress4 = [v61 progress];
+        [progress3 addChild:progress4 withPendingUnitCount:totalUnitCount];
 
         [v61 start];
       }
@@ -118,28 +118,28 @@ LABEL_31:
       goto LABEL_35;
     }
 
-    v18 = [(HDCloudSyncOperation *)self configuration];
-    v19 = [v18 computedState];
-    v20 = [v19 pushTargets];
-    v21 = [v20 hk_map:&__block_literal_global_354];
+    configuration4 = [(HDCloudSyncOperation *)self configuration];
+    computedState = [configuration4 computedState];
+    pushTargets = [computedState pushTargets];
+    v21 = [pushTargets hk_map:&__block_literal_global_354];
 
     v22 = v21;
-    v23 = [(HDCloudSyncOperation *)self configuration];
-    v24 = [v23 repository];
-    v25 = [v24 primaryCKContainer];
+    configuration5 = [(HDCloudSyncOperation *)self configuration];
+    repository3 = [configuration5 repository];
+    primaryCKContainer = [repository3 primaryCKContainer];
 
-    v26 = [(HDCloudSyncOperation *)self configuration];
-    v27 = [v26 repository];
-    v28 = [v27 cachedOwnerIdentifierForContainer:v25];
-    v29 = [v28 string];
+    configuration6 = [(HDCloudSyncOperation *)self configuration];
+    repository4 = [configuration6 repository];
+    v28 = [repository4 cachedOwnerIdentifierForContainer:primaryCKContainer];
+    string = [v28 string];
 
-    v30 = [(HDCloudSyncOperation *)self profile];
-    v31 = [(HDCloudSyncOperation *)self configuration];
-    v32 = [v31 syncDate];
-    v33 = [v25 containerIdentifier];
+    profile4 = [(HDCloudSyncOperation *)self profile];
+    configuration7 = [(HDCloudSyncOperation *)self configuration];
+    syncDate = [configuration7 syncDate];
+    containerIdentifier = [primaryCKContainer containerIdentifier];
     v34 = self->_currentSyncIdentity;
     v80 = 0;
-    v35 = [HDCloudSyncStore createOrUpdateShardStoresForProfile:v30 throughDate:v32 ownerIdentifier:v29 containerIdentifier:v33 syncIdentity:v34 error:&v80];
+    v35 = [HDCloudSyncStore createOrUpdateShardStoresForProfile:profile4 throughDate:syncDate ownerIdentifier:string containerIdentifier:containerIdentifier syncIdentity:v34 error:&v80];
     v36 = v80;
 
     if (v35)
@@ -165,19 +165,19 @@ LABEL_16:
         else
         {
           v72 = v22;
-          v43 = [(HDCloudSyncOperation *)self configuration];
-          v44 = [(HDCloudSyncOperation *)self configuration];
-          v45 = [v44 repository];
-          v46 = [v45 primaryCKContainer];
+          configuration8 = [(HDCloudSyncOperation *)self configuration];
+          configuration9 = [(HDCloudSyncOperation *)self configuration];
+          repository5 = [configuration9 repository];
+          primaryCKContainer2 = [repository5 primaryCKContainer];
           v80 = 0;
-          v47 = [v43 pushStoresForContainer:v46 error:&v80];
+          v47 = [configuration8 pushStoresForContainer:primaryCKContainer2 error:&v80];
           v48 = v80;
-          v49 = [v47 firstObject];
-          v50 = [v49 storeIdentifier];
+          firstObject = [v47 firstObject];
+          storeIdentifier = [firstObject storeIdentifier];
 
-          if (v50)
+          if (storeIdentifier)
           {
-            v51 = v50;
+            uUID = storeIdentifier;
           }
 
           else
@@ -194,17 +194,17 @@ LABEL_16:
               }
             }
 
-            v51 = [MEMORY[0x277CCAD78] UUID];
+            uUID = [MEMORY[0x277CCAD78] UUID];
           }
 
-          v53 = v51;
+          v53 = uUID;
 
-          v54 = [(HDCloudSyncOperation *)self configuration];
-          v55 = [(HDCloudSyncOperation *)self configuration];
-          v56 = [v55 repository];
-          v57 = [v56 primaryCKContainer];
+          configuration10 = [(HDCloudSyncOperation *)self configuration];
+          configuration11 = [(HDCloudSyncOperation *)self configuration];
+          repository6 = [configuration11 repository];
+          primaryCKContainer3 = [repository6 primaryCKContainer];
           v79 = 0;
-          v58 = [v54 pushStoreWithIdentifier:v53 container:v57 error:&v79];
+          v58 = [configuration10 pushStoreWithIdentifier:v53 container:primaryCKContainer3 error:&v79];
           v59 = v79;
 
           if (v58)
@@ -266,32 +266,32 @@ LABEL_36:
   v71 = *MEMORY[0x277D85DE8];
 }
 
-- (HDCloudSyncCompoundOperation)_computePushAndCleanupOperationForPushStores:(uint64_t)a3 error:
+- (HDCloudSyncCompoundOperation)_computePushAndCleanupOperationForPushStores:(uint64_t)stores error:
 {
   v245 = *MEMORY[0x277D85DE8];
   v4 = a2;
-  v205 = a1;
+  selfCopy = self;
   v197 = v4;
-  if (a1)
+  if (self)
   {
     v5 = [v4 hk_firstObjectPassingTest:&__block_literal_global_333];
-    v6 = [a1 configuration];
-    v7 = [v6 computedState];
-    v8 = [v7 pushTargets];
+    configuration = [self configuration];
+    computedState = [configuration computedState];
+    pushTargets = [computedState pushTargets];
     v214[0] = MEMORY[0x277D85DD0];
     v214[1] = 3221225472;
     v214[2] = __83__HDCloudSyncPipelineStagePush__computePushAndCleanupOperationForPushStores_error___block_invoke_2;
     v214[3] = &unk_278614BF0;
     v9 = v5;
     v215 = v9;
-    v196 = [v8 hk_firstObjectPassingTest:v214];
+    v196 = [pushTargets hk_firstObjectPassingTest:v214];
 
     v199 = v9;
     v200 = v197;
-    v10 = [v205 configuration];
-    v11 = [v10 computedState];
-    v12 = [v11 pushTargets];
-    v13 = [v12 count] == 0;
+    configuration2 = [selfCopy configuration];
+    computedState2 = [configuration2 computedState];
+    pushTargets2 = [computedState2 pushTargets];
+    v13 = [pushTargets2 count] == 0;
 
     if (v13)
     {
@@ -300,20 +300,20 @@ LABEL_36:
       if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
       {
         *v241 = 138543362;
-        *&v241[4] = v205;
+        *&v241[4] = selfCopy;
         _os_log_impl(&dword_228986000, v66, OS_LOG_TYPE_DEFAULT, "%{public}@: Full sync required; no push targets found", v241, 0xCu);
       }
 
       v67 = 0;
-      v198 = 1;
+      configuration20 = 1;
       v68 = 2;
     }
 
     else
     {
-      v14 = [v205 configuration];
-      v15 = [v14 context];
-      v16 = ([v15 options] & 8) == 0;
+      configuration3 = [selfCopy configuration];
+      context = [configuration3 context];
+      v16 = ([context options] & 8) == 0;
 
       if (v16)
       {
@@ -337,41 +337,41 @@ LABEL_36:
               }
 
               v22 = *(*(&v222 + 1) + 8 * i);
-              v23 = [v22 persistedStateWithError:a3];
+              v23 = [v22 persistedStateWithError:stores];
               if (!v23)
               {
                 v193 = 0;
                 v67 = 0;
-                v198 = 0;
+                configuration20 = 0;
 LABEL_42:
 
                 goto LABEL_65;
               }
 
-              v24 = [v22 storeIdentifier];
-              v25 = [v199 storeIdentifier];
-              v26 = [v24 isEqual:v25];
+              storeIdentifier = [v22 storeIdentifier];
+              storeIdentifier2 = [v199 storeIdentifier];
+              v26 = [storeIdentifier isEqual:storeIdentifier2];
 
               if ((v26 & 1) == 0)
               {
-                v27 = [v23 rebaseDeadline];
-                v28 = v27 == 0;
+                rebaseDeadline = [v23 rebaseDeadline];
+                v28 = rebaseDeadline == 0;
 
                 if (!v28)
                 {
-                  v29 = [v23 rebaseDeadline];
-                  v30 = [v205 configuration];
-                  v31 = [v30 syncDate];
-                  [v29 timeIntervalSinceDate:v31];
+                  rebaseDeadline2 = [v23 rebaseDeadline];
+                  configuration4 = [selfCopy configuration];
+                  syncDate = [configuration4 syncDate];
+                  [rebaseDeadline2 timeIntervalSinceDate:syncDate];
                   v33 = v32;
 
                   if (v33 < *v20)
                   {
-                    v69 = [v22 shardPredicate];
-                    v67 = [v69 description];
+                    shardPredicate = [v22 shardPredicate];
+                    v67 = [shardPredicate description];
                     v70 = v67;
 
-                    v198 = 1;
+                    configuration20 = 1;
                     v193 = 4;
                     goto LABEL_42;
                   }
@@ -408,33 +408,33 @@ LABEL_42:
               }
 
               v37 = *(*(&v218 + 1) + 8 * j);
-              v38 = [v37 persistedStateWithError:a3];
+              v38 = [v37 persistedStateWithError:stores];
               if (!v38)
               {
                 v193 = 0;
                 v67 = 0;
-                v198 = 0;
+                configuration20 = 0;
 LABEL_53:
 
                 goto LABEL_65;
               }
 
-              v39 = [v37 storeIdentifier];
-              v40 = [v199 storeIdentifier];
-              v41 = [v39 isEqual:v40];
+              storeIdentifier3 = [v37 storeIdentifier];
+              storeIdentifier4 = [v199 storeIdentifier];
+              v41 = [storeIdentifier3 isEqual:storeIdentifier4];
 
               if ((v41 & 1) == 0)
               {
-                v42 = [v38 lastSyncDate];
-                if (!v42)
+                lastSyncDate = [v38 lastSyncDate];
+                if (!lastSyncDate)
                 {
                   goto LABEL_44;
                 }
 
-                v43 = [v38 lastSyncDate];
-                v44 = [v205 configuration];
-                v45 = [v44 syncDate];
-                [v43 timeIntervalSinceDate:v45];
+                lastSyncDate2 = [v38 lastSyncDate];
+                configuration5 = [selfCopy configuration];
+                syncDate2 = [configuration5 syncDate];
+                [lastSyncDate2 timeIntervalSinceDate:syncDate2];
                 v47 = v46 < -1814400.0;
 
                 if (v47)
@@ -445,23 +445,23 @@ LABEL_44:
                   if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
                   {
                     v72 = v71;
-                    v73 = [v38 lastSyncDate];
+                    lastSyncDate3 = [v38 lastSyncDate];
                     *v231 = 138544130;
-                    *&v231[4] = v205;
+                    *&v231[4] = selfCopy;
                     *&v231[12] = 2114;
                     *&v231[14] = v37;
                     *&v231[22] = 2114;
-                    v232 = v73;
+                    v232 = lastSyncDate3;
                     LOWORD(v233) = 2114;
                     *(&v233 + 2) = v37;
                     _os_log_impl(&dword_228986000, v72, OS_LOG_TYPE_DEFAULT, "%{public}@: Full sync required; %{public}@ last sync date (%{public}@) is too old for %{public}@", v231, 0x2Au);
                   }
 
-                  v74 = [v37 shardPredicate];
-                  v67 = [v74 description];
+                  shardPredicate2 = [v37 shardPredicate];
+                  v67 = [shardPredicate2 description];
                   v75 = v67;
 
-                  v198 = 1;
+                  configuration20 = 1;
                   v193 = 5;
                   goto LABEL_53;
                 }
@@ -473,13 +473,13 @@ LABEL_44:
                   if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
                   {
                     *v231 = 138543362;
-                    *&v231[4] = v205;
+                    *&v231[4] = selfCopy;
                     _os_log_impl(&dword_228986000, v77, OS_LOG_TYPE_DEFAULT, "%{public}@: Full sync required; continuing interrupted full sync", v231, 0xCu);
                   }
 
                   v193 = 0;
                   v67 = 0;
-                  v198 = 1;
+                  configuration20 = 1;
                   goto LABEL_53;
                 }
               }
@@ -502,18 +502,18 @@ LABEL_44:
           if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
           {
             *v231 = 138543362;
-            *&v231[4] = v205;
+            *&v231[4] = selfCopy;
             _os_log_impl(&dword_228986000, v76, OS_LOG_TYPE_DEFAULT, "%{public}@: Full sync required; no staging store found", v231, 0xCu);
           }
 
           v67 = 0;
           v193 = 1;
-          v198 = 1;
+          configuration20 = 1;
 LABEL_65:
 
           v82 = v67;
-          v83 = v198;
-          if (!v198)
+          v83 = configuration20;
+          if (!configuration20)
           {
             v204 = 0;
 LABEL_120:
@@ -522,27 +522,27 @@ LABEL_120:
           }
 
           v192 = v82;
-          if (v198 == 1)
+          if (configuration20 == 1)
           {
             v84 = v200;
             v85 = +[HDMutableDatabaseTransactionContext contextForWritingProtectedData];
-            v86 = [v205 configuration];
-            v87 = [v86 accessibilityAssertion];
-            v88 = [v85 contextWithAccessibilityAssertion:v87];
+            configuration6 = [selfCopy configuration];
+            accessibilityAssertion = [configuration6 accessibilityAssertion];
+            v88 = [v85 contextWithAccessibilityAssertion:accessibilityAssertion];
 
-            v89 = [v205 configuration];
-            v90 = [v89 repository];
-            v91 = [v90 profile];
-            v92 = [v91 database];
+            configuration7 = [selfCopy configuration];
+            repository = [configuration7 repository];
+            profile = [repository profile];
+            database = [profile database];
             *v241 = MEMORY[0x277D85DD0];
             *&v241[8] = 3221225472;
             *&v241[16] = __82__HDCloudSyncPipelineStagePush__performPrerequisitesForFullSync_withReason_error___block_invoke;
             v242 = &unk_278614698;
             v244 = v193;
-            *&v243 = v205;
+            *&v243 = selfCopy;
             v93 = v84;
             *(&v243 + 1) = v93;
-            v94 = [v92 performTransactionWithContext:v88 error:a3 block:v241 inaccessibilityHandler:0];
+            v94 = [database performTransactionWithContext:v88 error:stores block:v241 inaccessibilityHandler:0];
 
             v83 = 1;
             if (!v94)
@@ -559,7 +559,7 @@ LABEL_119:
           v213[1] = 3221225472;
           v213[2] = __83__HDCloudSyncPipelineStagePush__computePushAndCleanupOperationForPushStores_error___block_invoke_3;
           v213[3] = &unk_278614CA8;
-          v213[4] = v205;
+          v213[4] = selfCopy;
           v191 = [v200 hk_filter:v213];
           if (v95)
           {
@@ -574,12 +574,12 @@ LABEL_119:
 
           obja = v96;
           v97 = [HDCloudSyncCompoundOperation alloc];
-          v98 = [v205 configuration];
-          v204 = [(HDCloudSyncCompoundOperation *)v97 initWithConfiguration:v98 cloudState:0 name:@"Push Stores" continueOnSubOperationError:1];
+          configuration8 = [selfCopy configuration];
+          v204 = [(HDCloudSyncCompoundOperation *)v97 initWithConfiguration:configuration8 cloudState:0 name:@"Push Stores" continueOnSubOperationError:1];
 
-          v99 = [v205 configuration];
-          v100 = [v99 context];
-          v101 = ([v100 options] & 0x80) == 0;
+          configuration9 = [selfCopy configuration];
+          context2 = [configuration9 context];
+          v101 = ([context2 options] & 0x80) == 0;
 
           if (v101)
           {
@@ -606,18 +606,18 @@ LABEL_119:
 
                 v105 = *(*(&v237 + 1) + 8 * k);
                 v106 = [HDCloudSyncCompoundOperation alloc];
-                v107 = [v205 configuration];
-                v108 = [(HDCloudSyncCompoundOperation *)v106 initWithConfiguration:v107 cloudState:0 name:@"Prepare & Push" continueOnSubOperationError:0];
+                configuration10 = [selfCopy configuration];
+                v108 = [(HDCloudSyncCompoundOperation *)v106 initWithConfiguration:configuration10 cloudState:0 name:@"Prepare & Push" continueOnSubOperationError:0];
 
                 v109 = [HDCloudSyncPreparePushZoneForStoreOperation alloc];
-                v110 = [v205 configuration];
-                v111 = [(HDCloudSyncPreparePushZoneForStoreOperation *)v109 initWithConfiguration:v110 cloudState:0 store:v105];
+                configuration11 = [selfCopy configuration];
+                v111 = [(HDCloudSyncPreparePushZoneForStoreOperation *)v109 initWithConfiguration:configuration11 cloudState:0 store:v105];
 
                 [(HDCloudSyncCompoundOperation *)v108 addOperation:v111 transitionHandler:0];
                 v112 = [HDCloudSyncPushStoreOperation alloc];
-                v113 = [v205 configuration];
-                v114 = [v205 cloudState];
-                v115 = [(HDCloudSyncPushStoreOperation *)v112 initWithConfiguration:v113 cloudState:v114 target:0];
+                configuration12 = [selfCopy configuration];
+                cloudState = [selfCopy cloudState];
+                v115 = [(HDCloudSyncPushStoreOperation *)v112 initWithConfiguration:configuration12 cloudState:cloudState target:0];
 
                 *&v222 = MEMORY[0x277D85DD0];
                 *(&v222 + 1) = 3221225472;
@@ -628,21 +628,21 @@ LABEL_119:
                 v117 = v111;
                 *(&v224 + 1) = v117;
                 [(HDCloudSyncCompoundOperation *)v108 addOperation:v116 transitionHandler:&v222];
-                v118 = [v105 shardPredicate];
-                LOBYTE(v114) = [v118 type] == 2;
+                shardPredicate3 = [v105 shardPredicate];
+                LOBYTE(cloudState) = [shardPredicate3 type] == 2;
 
-                if ((v114 & 1) == 0)
+                if ((cloudState & 1) == 0)
                 {
                   v119 = [HDCloudSyncBlockOperation alloc];
-                  v120 = [v205 configuration];
-                  v121 = [v205 cloudState];
+                  configuration13 = [selfCopy configuration];
+                  cloudState2 = [selfCopy cloudState];
                   *&v218 = MEMORY[0x277D85DD0];
                   *(&v218 + 1) = 3221225472;
                   *&v219 = __56__HDCloudSyncPipelineStagePush__pushOperationWithStore___block_invoke_2;
                   *(&v219 + 1) = &unk_278614D20;
-                  *&v220 = v205;
+                  *&v220 = selfCopy;
                   *(&v220 + 1) = v105;
-                  v122 = [(HDCloudSyncBlockOperation *)v119 initWithConfiguration:v120 cloudState:v121 synchronousBlock:&v218];
+                  v122 = [(HDCloudSyncBlockOperation *)v119 initWithConfiguration:configuration13 cloudState:cloudState2 synchronousBlock:&v218];
 
                   [(HDCloudSyncCompoundOperation *)v108 addOperation:v122 transitionHandler:0];
                 }
@@ -656,21 +656,21 @@ LABEL_119:
             while (v102);
           }
 
-          v123 = [v205 configuration];
-          v124 = [v123 repository];
-          v125 = [v124 profile];
-          v126 = [v125 cloudSyncManager];
-          if ([v126 supportsRebase])
+          configuration14 = [selfCopy configuration];
+          repository2 = [configuration14 repository];
+          profile2 = [repository2 profile];
+          cloudSyncManager = [profile2 cloudSyncManager];
+          if ([cloudSyncManager supportsRebase])
           {
-            v127 = [v205 configuration];
-            v128 = [v127 context];
-            v129 = ([v128 options] & 0x40) == 0;
+            configuration15 = [selfCopy configuration];
+            context3 = [configuration15 context];
+            v129 = ([context3 options] & 0x40) == 0;
 
             if (!v129)
             {
               v202 = MEMORY[0x277CBEBF8];
 LABEL_90:
-              if (v198 == 1)
+              if (configuration20 == 1)
               {
                 _HKInitializeLogging();
                 v130 = *MEMORY[0x277CCC328];
@@ -679,7 +679,7 @@ LABEL_90:
                   v131 = v130;
                   v132 = [v191 count];
                   *v241 = 138543618;
-                  *&v241[4] = v205;
+                  *&v241[4] = selfCopy;
                   *&v241[12] = 2050;
                   *&v241[14] = v132;
                   _os_log_impl(&dword_228986000, v131, OS_LOG_TYPE_DEFAULT, "%{public}@: Stores pending full sync %{public}lu", v241, 0x16u);
@@ -689,15 +689,15 @@ LABEL_90:
                 v212[1] = 3221225472;
                 v212[2] = __83__HDCloudSyncPipelineStagePush__computePushAndCleanupOperationForPushStores_error___block_invoke_334;
                 v212[3] = &unk_278614CD0;
-                v212[4] = v205;
+                v212[4] = selfCopy;
                 [v191 enumerateObjectsUsingBlock:v212];
-                v133 = [v196 storeRecord];
-                v134 = v133 == 0;
+                storeRecord = [v196 storeRecord];
+                v134 = storeRecord == 0;
 
                 if (!v134)
                 {
-                  v135 = [v196 storeRecord];
-                  v136 = [v202 arrayByAddingObject:v135];
+                  storeRecord2 = [v196 storeRecord];
+                  v136 = [v202 arrayByAddingObject:storeRecord2];
 
                   v202 = v136;
                 }
@@ -706,9 +706,9 @@ LABEL_90:
               if ([v202 count])
               {
                 v137 = [HDCloudSyncDeleteStoresOperation alloc];
-                v138 = [v205 configuration];
-                v139 = [v205 cloudState];
-                v140 = [(HDCloudSyncDeleteStoresOperation *)v137 initWithConfiguration:v138 cloudState:v139 storeRecordsToDelete:v202];
+                configuration16 = [selfCopy configuration];
+                cloudState3 = [selfCopy cloudState];
+                v140 = [(HDCloudSyncDeleteStoresOperation *)v137 initWithConfiguration:configuration16 cloudState:cloudState3 storeRecordsToDelete:v202];
                 v210[0] = MEMORY[0x277D85DD0];
                 v210[1] = 3221225472;
                 v210[2] = __83__HDCloudSyncPipelineStagePush__computePushAndCleanupOperationForPushStores_error___block_invoke_337;
@@ -720,18 +720,18 @@ LABEL_90:
                 [(HDCloudSyncCompoundOperation *)v141 addOperation:v142 transitionHandler:0];
               }
 
-              if (v199 && v198 == 1)
+              if (v199 && configuration20 == 1)
               {
                 v143 = [HDCloudSyncBlockOperation alloc];
-                v144 = [v205 configuration];
-                v145 = [v205 cloudState];
+                configuration17 = [selfCopy configuration];
+                cloudState4 = [selfCopy cloudState];
                 v208[0] = MEMORY[0x277D85DD0];
                 v208[1] = 3221225472;
                 v208[2] = __83__HDCloudSyncPipelineStagePush__computePushAndCleanupOperationForPushStores_error___block_invoke_2_340;
                 v208[3] = &unk_278614D20;
-                v208[4] = v205;
+                v208[4] = selfCopy;
                 v209 = v199;
-                v146 = [(HDCloudSyncBlockOperation *)v143 initWithConfiguration:v144 cloudState:v145 synchronousBlock:v208];
+                v146 = [(HDCloudSyncBlockOperation *)v143 initWithConfiguration:configuration17 cloudState:cloudState4 synchronousBlock:v208];
                 v206[0] = MEMORY[0x277D85DD0];
                 v206[1] = 3221225472;
                 v206[2] = __83__HDCloudSyncPipelineStagePush__computePushAndCleanupOperationForPushStores_error___block_invoke_3_342;
@@ -745,34 +745,34 @@ LABEL_90:
 
               v149 = v192;
               Current = CFAbsoluteTimeGetCurrent();
-              v151 = [v205 fullSyncMetricsStorage];
-              [v151 setCurrentRunStartTime:Current];
+              fullSyncMetricsStorage = [selfCopy fullSyncMetricsStorage];
+              [fullSyncMetricsStorage setCurrentRunStartTime:Current];
 
-              v152 = [v205 fullSyncMetricsStorage];
-              v153 = [v152 ongoingSyncMetrics];
+              fullSyncMetricsStorage2 = [selfCopy fullSyncMetricsStorage];
+              ongoingSyncMetrics = [fullSyncMetricsStorage2 ongoingSyncMetrics];
 
-              v154 = [v205 fullSyncMetricsStorage];
-              [v154 startTime];
+              fullSyncMetricsStorage3 = [selfCopy fullSyncMetricsStorage];
+              [fullSyncMetricsStorage3 startTime];
               v156 = v155;
 
-              v157 = [v205 fullSyncMetricsStorage];
-              [v157 activeDuration];
+              fullSyncMetricsStorage4 = [selfCopy fullSyncMetricsStorage];
+              [fullSyncMetricsStorage4 activeDuration];
               v159 = v158;
 
-              v160 = [v205 fullSyncMetricsStorage];
-              v161 = [v160 numberOfRuns];
+              fullSyncMetricsStorage5 = [selfCopy fullSyncMetricsStorage];
+              numberOfRuns = [fullSyncMetricsStorage5 numberOfRuns];
 
-              if (v153)
+              if (ongoingSyncMetrics)
               {
                 _HKInitializeLogging();
                 v162 = *MEMORY[0x277CCC328];
                 if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
                 {
                   v163 = v162;
-                  v164 = [v153 objectForKeyedSubscript:@"fullSyncReason"];
+                  v164 = [ongoingSyncMetrics objectForKeyedSubscript:@"fullSyncReason"];
                   v165 = [MEMORY[0x277CCABB0] numberWithDouble:v156];
                   v166 = [MEMORY[0x277CCABB0] numberWithDouble:v159];
-                  v167 = [MEMORY[0x277CCABB0] numberWithLongLong:v161];
+                  v167 = [MEMORY[0x277CCABB0] numberWithLongLong:numberOfRuns];
                   *v241 = 138413058;
                   *&v241[4] = v164;
                   *&v241[12] = 2112;
@@ -787,21 +787,21 @@ LABEL_90:
 
               if (!v193)
               {
-                v171 = v153;
+                v171 = ongoingSyncMetrics;
 LABEL_118:
 
                 goto LABEL_119;
               }
 
               v168 = HKCloudSyncFullSyncReasonToString();
-              if (v153)
+              if (ongoingSyncMetrics)
               {
-                v169 = [v153 objectForKeyedSubscript:@"fullSyncReason"];
+                v169 = [ongoingSyncMetrics objectForKeyedSubscript:@"fullSyncReason"];
                 v170 = [v168 isEqualToString:v169];
 
                 if (v170)
                 {
-                  v171 = v153;
+                  v171 = ongoingSyncMetrics;
 LABEL_117:
 
                   goto LABEL_118;
@@ -816,17 +816,17 @@ LABEL_117:
                   _os_log_impl(&dword_228986000, v172, OS_LOG_TYPE_DEFAULT, "Full Sync was ongoing, but restarted with new reason: %@", v241, 0xCu);
                 }
 
-                v173 = [v205 configuration];
-                v174 = [v173 repository];
-                v175 = [v174 profile];
-                v176 = [v175 daemon];
-                v177 = [v176 analyticsSubmissionCoordinator];
+                configuration18 = [selfCopy configuration];
+                repository3 = [configuration18 repository];
+                profile3 = [repository3 profile];
+                daemon = [profile3 daemon];
+                analyticsSubmissionCoordinator = [daemon analyticsSubmissionCoordinator];
 
-                v178 = [v153 objectForKeyedSubscript:@"fullSyncReason"];
-                v179 = [v153 objectForKeyedSubscript:@"shardResponsible"];
-                v180 = [v153 objectForKeyedSubscript:@"daysSincePreviousFullSync"];
-                v181 = [MEMORY[0x277CCABB0] numberWithLongLong:v161];
-                [v177 cloudSync_reportFullSyncMetricsWithReason:v178 shard:v179 daysSincePreviousFullSync:v180 totalDuration:v181 activeDuration:1 numberOfRuns:Current - v156 incomplete:v159];
+                v178 = [ongoingSyncMetrics objectForKeyedSubscript:@"fullSyncReason"];
+                v179 = [ongoingSyncMetrics objectForKeyedSubscript:@"shardResponsible"];
+                v180 = [ongoingSyncMetrics objectForKeyedSubscript:@"daysSincePreviousFullSync"];
+                v181 = [MEMORY[0x277CCABB0] numberWithLongLong:numberOfRuns];
+                [analyticsSubmissionCoordinator cloudSync_reportFullSyncMetricsWithReason:v178 shard:v179 daysSincePreviousFullSync:v180 totalDuration:v181 activeDuration:1 numberOfRuns:Current - v156 incomplete:v159];
               }
 
               if (v156 <= 0.0)
@@ -854,25 +854,25 @@ LABEL_117:
               *&v241[16] = v184;
               v171 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v241 forKeys:&v237 count:3];
 
-              v185 = [v205 fullSyncMetricsStorage];
-              [v185 setStartTime:Current];
+              fullSyncMetricsStorage6 = [selfCopy fullSyncMetricsStorage];
+              [fullSyncMetricsStorage6 setStartTime:Current];
 
-              v186 = [v205 fullSyncMetricsStorage];
-              [v186 setOngoingSyncMetrics:v171];
+              fullSyncMetricsStorage7 = [selfCopy fullSyncMetricsStorage];
+              [fullSyncMetricsStorage7 setOngoingSyncMetrics:v171];
 
-              v187 = [v205 fullSyncMetricsStorage];
-              [v187 setActiveDuration:0.0];
+              fullSyncMetricsStorage8 = [selfCopy fullSyncMetricsStorage];
+              [fullSyncMetricsStorage8 setActiveDuration:0.0];
 
-              v188 = [v205 fullSyncMetricsStorage];
-              [v188 setNumberOfRuns:0];
+              fullSyncMetricsStorage9 = [selfCopy fullSyncMetricsStorage];
+              [fullSyncMetricsStorage9 setNumberOfRuns:0];
 
               goto LABEL_117;
             }
 
-            v123 = [v205 configuration];
-            v124 = [v123 computedState];
-            v125 = [v124 pushTargets];
-            v202 = [v125 hk_map:&__block_literal_global_317_0];
+            configuration14 = [selfCopy configuration];
+            repository2 = [configuration14 computedState];
+            profile2 = [repository2 pushTargets];
+            v202 = [profile2 hk_map:&__block_literal_global_317_0];
           }
 
           else
@@ -884,33 +884,33 @@ LABEL_117:
           goto LABEL_90;
         }
 
-        v48 = [v205 configuration];
-        v49 = [v48 computedState];
-        v50 = [v49 pushTargets];
+        configuration19 = [selfCopy configuration];
+        computedState3 = [configuration19 computedState];
+        pushTargets3 = [computedState3 pushTargets];
         v216[0] = MEMORY[0x277D85DD0];
         v216[1] = 3221225472;
         v216[2] = __107__HDCloudSyncPipelineStagePush__requiresFullSyncWithStagingStore_pushStores_reason_shardResponsible_error___block_invoke;
         v216[3] = &unk_278614BF0;
         v51 = v199;
         v217 = v51;
-        v52 = [v50 hk_firstObjectPassingTest:v216];
+        v52 = [pushTargets3 hk_firstObjectPassingTest:v216];
 
         if (v52)
         {
-          v198 = [v205 configuration];
-          v53 = [v198 cachedCloudState];
-          v54 = [v52 storeRecord];
-          v55 = [v54 recordID];
-          v56 = [v205 configuration];
-          v57 = [v56 repository];
-          v58 = [v57 primaryCKContainer];
-          v59 = [v58 containerIdentifier];
-          v60 = [v53 zoneForRecordID:v55 containerIdentifier:v59 error:a3];
+          configuration20 = [selfCopy configuration];
+          cachedCloudState = [configuration20 cachedCloudState];
+          storeRecord3 = [v52 storeRecord];
+          recordID = [storeRecord3 recordID];
+          configuration21 = [selfCopy configuration];
+          repository4 = [configuration21 repository];
+          primaryCKContainer = [repository4 primaryCKContainer];
+          containerIdentifier = [primaryCKContainer containerIdentifier];
+          v60 = [cachedCloudState zoneForRecordID:recordID containerIdentifier:containerIdentifier error:stores];
 
           if (!v60)
           {
             v193 = 0;
-            v198 = 0;
+            configuration20 = 0;
 LABEL_64:
 
             v67 = 0;
@@ -928,7 +928,7 @@ LABEL_64:
           v232 = &unk_278614C18;
           *&v233 = v51;
           *(&v233 + 1) = &v234;
-          v62 = [v60 recordsForClass:v61 error:a3 filter:v231];
+          v62 = [v60 recordsForClass:v61 error:stores filter:v231];
           if (v62)
           {
             if (*(*(&v234 + 1) + 24) < 400)
@@ -945,14 +945,14 @@ LABEL_64:
               {
                 v64 = *(*(&v234 + 1) + 24);
                 *buf = 138543618;
-                v228 = v205;
+                v228 = selfCopy;
                 v229 = 2048;
                 v230 = v64;
                 _os_log_impl(&dword_228986000, v63, OS_LOG_TYPE_DEFAULT, "%{public}@: Full sync required; staging store has too many change records (%ld)", buf, 0x16u);
               }
 
               v65 = 0;
-              v198 = 1;
+              configuration20 = 1;
               v193 = 6;
             }
           }
@@ -961,7 +961,7 @@ LABEL_64:
           {
             v193 = 0;
             v65 = 0;
-            v198 = 0;
+            configuration20 = 0;
           }
 
           _Block_object_dispose(&v234, 8);
@@ -976,13 +976,13 @@ LABEL_64:
           v193 = 0;
         }
 
-        v78 = [v205 configuration];
-        v79 = [v78 context];
-        v80 = ([v79 options] & 0x2000) == 0;
+        configuration22 = [selfCopy configuration];
+        context4 = [configuration22 context];
+        v80 = ([context4 options] & 0x2000) == 0;
 
         if (v80)
         {
-          v198 = 2;
+          configuration20 = 2;
         }
 
         else
@@ -992,11 +992,11 @@ LABEL_64:
           if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
           {
             LODWORD(v234) = 138543362;
-            *(&v234 + 4) = v205;
+            *(&v234 + 4) = selfCopy;
             _os_log_impl(&dword_228986000, v81, OS_LOG_TYPE_DEFAULT, "%{public}@: Full sync requested", &v234, 0xCu);
           }
 
-          v198 = 1;
+          configuration20 = 1;
           v193 = 7;
         }
 
@@ -1004,7 +1004,7 @@ LABEL_64:
       }
 
       v67 = 0;
-      v198 = 1;
+      configuration20 = 1;
       v68 = 3;
     }
 
@@ -1210,51 +1210,51 @@ void __36__HDCloudSyncPipelineStagePush_main__block_invoke_304(uint64_t a1, uint
   [*(a1 + 32) finishWithSuccess:0 error:v5];
 }
 
-- (void)_analytics_operationFinishedWithSuccess:(void *)a1
+- (void)_analytics_operationFinishedWithSuccess:(void *)success
 {
   v46 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (success)
   {
-    v4 = [a1 fullSyncMetricsStorage];
-    v5 = [v4 ongoingSyncMetrics];
+    fullSyncMetricsStorage = [success fullSyncMetricsStorage];
+    ongoingSyncMetrics = [fullSyncMetricsStorage ongoingSyncMetrics];
 
-    if (v5)
+    if (ongoingSyncMetrics)
     {
       Current = CFAbsoluteTimeGetCurrent();
-      v7 = [a1 fullSyncMetricsStorage];
-      [v7 activeDuration];
+      fullSyncMetricsStorage2 = [success fullSyncMetricsStorage];
+      [fullSyncMetricsStorage2 activeDuration];
       v9 = v8;
 
-      v10 = [a1 fullSyncMetricsStorage];
-      [v10 currentRunStartTime];
+      fullSyncMetricsStorage3 = [success fullSyncMetricsStorage];
+      [fullSyncMetricsStorage3 currentRunStartTime];
       v12 = v9 + Current - v11;
 
-      v13 = [a1 fullSyncMetricsStorage];
-      v14 = [v13 numberOfRuns];
+      fullSyncMetricsStorage4 = [success fullSyncMetricsStorage];
+      numberOfRuns = [fullSyncMetricsStorage4 numberOfRuns];
 
-      v15 = [a1 fullSyncMetricsStorage];
-      v16 = v15;
+      fullSyncMetricsStorage5 = [success fullSyncMetricsStorage];
+      v16 = fullSyncMetricsStorage5;
       if (a2)
       {
-        [v15 startTime];
+        [fullSyncMetricsStorage5 startTime];
         v18 = v17;
 
         v19 = Current - v18;
-        v20 = [a1 configuration];
-        v21 = [v20 repository];
-        v22 = [v21 profile];
-        v23 = [v22 daemon];
-        v24 = [v23 analyticsSubmissionCoordinator];
+        configuration = [success configuration];
+        repository = [configuration repository];
+        profile = [repository profile];
+        daemon = [profile daemon];
+        analyticsSubmissionCoordinator = [daemon analyticsSubmissionCoordinator];
 
         _HKInitializeLogging();
         v25 = *MEMORY[0x277CCC328];
         if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
         {
           v26 = v25;
-          v27 = [v5 objectForKeyedSubscript:@"fullSyncReason"];
+          v27 = [ongoingSyncMetrics objectForKeyedSubscript:@"fullSyncReason"];
           v28 = [MEMORY[0x277CCABB0] numberWithDouble:v18];
           v29 = [MEMORY[0x277CCABB0] numberWithDouble:v12];
-          v30 = [MEMORY[0x277CCABB0] numberWithInteger:v14 + 1];
+          v30 = [MEMORY[0x277CCABB0] numberWithInteger:numberOfRuns + 1];
           v38 = 138413058;
           v39 = v27;
           v40 = 2112;
@@ -1266,22 +1266,22 @@ void __36__HDCloudSyncPipelineStagePush_main__block_invoke_304(uint64_t a1, uint
           _os_log_impl(&dword_228986000, v26, OS_LOG_TYPE_DEFAULT, "Full Sync Completed with following stats: reason: %@, startTime: %@, actively spent time: %@, number of runs completed %@  ", &v38, 0x2Au);
         }
 
-        v31 = [v5 objectForKeyedSubscript:@"fullSyncReason"];
-        v32 = [v5 objectForKeyedSubscript:@"shardResponsible"];
-        v33 = [v5 objectForKeyedSubscript:@"daysSincePreviousFullSync"];
-        v34 = [MEMORY[0x277CCABB0] numberWithInteger:v14 + 1];
-        [v24 cloudSync_reportFullSyncMetricsWithReason:v31 shard:v32 daysSincePreviousFullSync:v33 totalDuration:v34 activeDuration:0 numberOfRuns:v19 incomplete:v12];
+        v31 = [ongoingSyncMetrics objectForKeyedSubscript:@"fullSyncReason"];
+        v32 = [ongoingSyncMetrics objectForKeyedSubscript:@"shardResponsible"];
+        v33 = [ongoingSyncMetrics objectForKeyedSubscript:@"daysSincePreviousFullSync"];
+        v34 = [MEMORY[0x277CCABB0] numberWithInteger:numberOfRuns + 1];
+        [analyticsSubmissionCoordinator cloudSync_reportFullSyncMetricsWithReason:v31 shard:v32 daysSincePreviousFullSync:v33 totalDuration:v34 activeDuration:0 numberOfRuns:v19 incomplete:v12];
 
-        v35 = [a1 fullSyncMetricsStorage];
-        [v35 reset];
+        fullSyncMetricsStorage6 = [success fullSyncMetricsStorage];
+        [fullSyncMetricsStorage6 reset];
       }
 
       else
       {
-        [v15 setActiveDuration:v12];
+        [fullSyncMetricsStorage5 setActiveDuration:v12];
 
-        v36 = [a1 fullSyncMetricsStorage];
-        [v36 setNumberOfRuns:v14 + 1];
+        fullSyncMetricsStorage7 = [success fullSyncMetricsStorage];
+        [fullSyncMetricsStorage7 setNumberOfRuns:numberOfRuns + 1];
       }
     }
   }

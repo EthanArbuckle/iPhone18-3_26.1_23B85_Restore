@@ -1,53 +1,53 @@
 @interface TCButton
-+ (id)descriptorForJsonDictionary:(id)a3;
++ (id)descriptorForJsonDictionary:(id)dictionary;
 - (CGPoint)offset;
 - (CGPoint)position;
 - (CGSize)size;
 - (GCSJSONObject)jsonObject;
-- (TCButton)initWithDescriptor:(id)a3 touchController:(id)a4;
+- (TCButton)initWithDescriptor:(id)descriptor touchController:(id)controller;
 - (TCTouchController)touchController;
 - (void)_calculatePosition;
-- (void)collectQuadDataInto:(id)a3;
-- (void)handleTouchBeganAtPoint:(CGPoint)a3;
-- (void)handleTouchEndedAtPoint:(CGPoint)a3;
+- (void)collectQuadDataInto:(id)into;
+- (void)handleTouchBeganAtPoint:(CGPoint)point;
+- (void)handleTouchEndedAtPoint:(CGPoint)point;
 @end
 
 @implementation TCButton
 
-- (TCButton)initWithDescriptor:(id)a3 touchController:(id)a4
+- (TCButton)initWithDescriptor:(id)descriptor touchController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
+  descriptorCopy = descriptor;
+  controllerCopy = controller;
   v23.receiver = self;
   v23.super_class = TCButton;
   v8 = [(TCButton *)&v23 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_touchController, v7);
+    objc_storeWeak(&v8->_touchController, controllerCopy);
     v9->_enabled = 1;
-    v10 = [v6 contents];
+    contents = [descriptorCopy contents];
     contents = v9->_contents;
-    v9->_contents = v10;
+    v9->_contents = contents;
 
-    v9->_anchor = [v6 anchor];
-    v9->_anchorCoordinateSystem = [v6 anchorCoordinateSystem];
-    [v6 offset];
+    v9->_anchor = [descriptorCopy anchor];
+    v9->_anchorCoordinateSystem = [descriptorCopy anchorCoordinateSystem];
+    [descriptorCopy offset];
     v9->_offset.x = v12;
     v9->_offset.y = v13;
-    v9->_zIndex = [v6 zIndex];
-    [v6 size];
+    v9->_zIndex = [descriptorCopy zIndex];
+    [descriptorCopy size];
     v9->_size.width = v14;
     v9->_size.height = v15;
-    [v6 highlightDuration];
+    [descriptorCopy highlightDuration];
     v9->_highlightDuration = v16;
-    v17 = [v6 label];
+    label = [descriptorCopy label];
     label = v9->_label;
-    v9->_label = v17;
+    v9->_label = label;
 
-    if ([v6 colliderShape])
+    if ([descriptorCopy colliderShape])
     {
-      if ([v6 colliderShape] != 1)
+      if ([descriptorCopy colliderShape] != 1)
       {
 LABEL_7:
         [(TCButton *)v9 _calculatePosition];
@@ -86,7 +86,7 @@ LABEL_8:
   self->_position = vaddq_f64(v6, self->_offset);
 }
 
-- (void)handleTouchBeganAtPoint:(CGPoint)a3
+- (void)handleTouchBeganAtPoint:(CGPoint)point
 {
   if (!self->pressed)
   {
@@ -97,7 +97,7 @@ LABEL_8:
   }
 }
 
-- (void)handleTouchEndedAtPoint:(CGPoint)a3
+- (void)handleTouchEndedAtPoint:(CGPoint)point
 {
   if (self->pressed)
   {
@@ -108,10 +108,10 @@ LABEL_8:
   }
 }
 
-- (void)collectQuadDataInto:(id)a3
+- (void)collectQuadDataInto:(id)into
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  intoCopy = into;
   if (self->_enabled)
   {
     v5 = self->_contents;
@@ -120,8 +120,8 @@ LABEL_8:
     v24 = 0u;
     v25 = 0u;
     v21 = v5;
-    v6 = [(TCControlContents *)v5 images];
-    v7 = [v6 countByEnumeratingWithState:&v22 objects:v26 count:16];
+    images = [(TCControlContents *)v5 images];
+    v7 = [images countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v7)
     {
       v8 = v7;
@@ -133,7 +133,7 @@ LABEL_8:
         {
           if (*v23 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(images);
           }
 
           v11 = *(*(&v22 + 1) + 8 * v10);
@@ -149,18 +149,18 @@ LABEL_8:
           [v12 setTintColor:{objc_msgSend(v11, "tintColor")}];
           [(TCButton *)self highlightIntensity];
           [v12 setHighlightIntensity:?];
-          v18 = [v11 texture];
-          [v12 setTexture:v18];
+          texture = [v11 texture];
+          [v12 setTexture:texture];
 
-          v19 = [v11 highlightTexture];
-          [v12 setHighlightTexture:v19];
+          highlightTexture = [v11 highlightTexture];
+          [v12 setHighlightTexture:highlightTexture];
 
-          [v4 addObject:v12];
+          [intoCopy addObject:v12];
           ++v10;
         }
 
         while (v8 != v10);
-        v8 = [v6 countByEnumeratingWithState:&v22 objects:v26 count:16];
+        v8 = [images countByEnumeratingWithState:&v22 objects:v26 count:16];
       }
 
       while (v8);
@@ -204,26 +204,26 @@ LABEL_8:
   return WeakRetained;
 }
 
-+ (id)descriptorForJsonDictionary:(id)a3
++ (id)descriptorForJsonDictionary:(id)dictionary
 {
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v4 = objc_opt_new();
-  v5 = [v3 objectForKeyedSubscript:@"size"];
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"size"];
   [v4 setSize:CGSizeFromJSONDictionary(v5)];
 
-  v6 = [v3 objectForKeyedSubscript:@"offset"];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"offset"];
   [v4 setOffset:CGPointFromJSONDictionary(v6)];
 
   v7 = [TCControlLabel alloc];
-  v8 = [v3 objectForKey:@"label"];
+  v8 = [dictionaryCopy objectForKey:@"label"];
   v9 = [(TCControlLabel *)v7 initWithJSONObject:v8];
   [v4 setLabel:v9];
 
-  v10 = [v3 objectForKey:@"anchor"];
+  v10 = [dictionaryCopy objectForKey:@"anchor"];
   [v4 setAnchor:{objc_msgSend(v10, "unsignedIntValue")}];
-  v11 = [v3 objectForKey:@"zIndex"];
+  v11 = [dictionaryCopy objectForKey:@"zIndex"];
   [v4 setZIndex:{objc_msgSend(v11, "unsignedIntValue")}];
-  v12 = [v3 objectForKey:@"colliderShape"];
+  v12 = [dictionaryCopy objectForKey:@"colliderShape"];
 
   [v4 setColliderShape:{objc_msgSend(v12, "unsignedIntValue")}];
 
@@ -243,8 +243,8 @@ LABEL_8:
   v5 = [MEMORY[0x277CCABB0] numberWithBool:self->_enabled];
   v14[2] = v5;
   v13[3] = @"label";
-  v6 = [(TCControlLabel *)self->_label jsonObject];
-  v14[3] = v6;
+  jsonObject = [(TCControlLabel *)self->_label jsonObject];
+  v14[3] = jsonObject;
   v13[4] = @"anchor";
   v7 = [MEMORY[0x277CCABB0] numberWithInteger:self->_anchor];
   v14[4] = v7;

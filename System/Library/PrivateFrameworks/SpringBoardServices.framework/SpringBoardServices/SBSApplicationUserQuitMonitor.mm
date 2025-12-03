@@ -1,24 +1,24 @@
 @interface SBSApplicationUserQuitMonitor
-- (SBSApplicationUserQuitMonitor)initWithDelegate:(id)a3;
+- (SBSApplicationUserQuitMonitor)initWithDelegate:(id)delegate;
 - (void)_connectionQueue_invalidate;
 - (void)_connectionQueue_setupAndActivate;
 - (void)invalidate;
-- (void)userClosedLastSceneOfApplicationWithBundleID:(id)a3;
+- (void)userClosedLastSceneOfApplicationWithBundleID:(id)d;
 @end
 
 @implementation SBSApplicationUserQuitMonitor
 
-- (SBSApplicationUserQuitMonitor)initWithDelegate:(id)a3
+- (SBSApplicationUserQuitMonitor)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v14.receiver = self;
   v14.super_class = SBSApplicationUserQuitMonitor;
   v5 = [(SBSApplicationUserQuitMonitor *)&v14 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
-    v7 = [MEMORY[0x1E698E698] serial];
+    objc_storeWeak(&v5->_delegate, delegateCopy);
+    serial = [MEMORY[0x1E698E698] serial];
     v8 = BSDispatchQueueCreate();
     connectionQueue = v6->_connectionQueue;
     v6->_connectionQueue = v8;
@@ -46,20 +46,20 @@
   dispatch_sync(connectionQueue, block);
 }
 
-- (void)userClosedLastSceneOfApplicationWithBundleID:(id)a3
+- (void)userClosedLastSceneOfApplicationWithBundleID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained quitMonitor:self userClosedLastSceneOfApplicationWithBundleID:v4];
+  [WeakRetained quitMonitor:self userClosedLastSceneOfApplicationWithBundleID:dCopy];
 }
 
 - (void)_connectionQueue_setupAndActivate
 {
   v15 = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E698F498];
-  v4 = [MEMORY[0x1E698F498] defaultShellMachName];
+  defaultShellMachName = [MEMORY[0x1E698F498] defaultShellMachName];
   v5 = +[SBSApplicationUserQuitMonitorSessionSpecification identifier];
-  v6 = [v3 endpointForMachName:v4 service:v5 instance:0];
+  v6 = [v3 endpointForMachName:defaultShellMachName service:v5 instance:0];
 
   v7 = [MEMORY[0x1E698F490] connectionWithEndpoint:v6];
   connection = self->_connection;

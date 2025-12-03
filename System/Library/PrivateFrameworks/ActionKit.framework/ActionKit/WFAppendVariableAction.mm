@@ -1,27 +1,27 @@
 @interface WFAppendVariableAction
 - (id)accessibilityName;
-- (id)outputVariableWithVariableProvider:(id)a3 UUIDProvider:(id)a4;
+- (id)outputVariableWithVariableProvider:(id)provider UUIDProvider:(id)dProvider;
 - (id)variableName;
-- (void)runWithInput:(id)a3 error:(id *)a4;
+- (void)runWithInput:(id)input error:(id *)error;
 @end
 
 @implementation WFAppendVariableAction
 
-- (id)outputVariableWithVariableProvider:(id)a3 UUIDProvider:(id)a4
+- (id)outputVariableWithVariableProvider:(id)provider UUIDProvider:(id)dProvider
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WFAppendVariableAction *)self variableName];
-  if ([v8 length])
+  providerCopy = provider;
+  dProviderCopy = dProvider;
+  variableName = [(WFAppendVariableAction *)self variableName];
+  if ([variableName length])
   {
-    v9 = [objc_alloc(MEMORY[0x277D7C9E8]) initWithName:v8 variableProvider:v6 aggrandizements:0];
+    v9 = [objc_alloc(MEMORY[0x277D7C9E8]) initWithName:variableName variableProvider:providerCopy aggrandizements:0];
   }
 
   else
   {
     v12.receiver = self;
     v12.super_class = WFAppendVariableAction;
-    v9 = [(WFAppendVariableAction *)&v12 outputVariableWithVariableProvider:v6 UUIDProvider:v7];
+    v9 = [(WFAppendVariableAction *)&v12 outputVariableWithVariableProvider:providerCopy UUIDProvider:dProviderCopy];
   }
 
   v10 = v9;
@@ -31,16 +31,16 @@
 
 - (id)accessibilityName
 {
-  v3 = [(WFAppendVariableAction *)self localizedName];
-  v4 = [(WFAppendVariableAction *)self variableName];
-  v5 = v4;
+  localizedName = [(WFAppendVariableAction *)self localizedName];
+  variableName = [(WFAppendVariableAction *)self variableName];
+  v5 = variableName;
   v6 = &stru_2850323E8;
-  if (v4)
+  if (variableName)
   {
-    v6 = v4;
+    v6 = variableName;
   }
 
-  v7 = [v3 stringByAppendingFormat:@" (%@)", v6];
+  v7 = [localizedName stringByAppendingFormat:@" (%@)", v6];
 
   return v7;
 }
@@ -48,18 +48,18 @@
 - (id)variableName
 {
   v2 = [(WFAppendVariableAction *)self parameterStateForKey:@"WFVariableName"];
-  v3 = [v2 string];
+  string = [v2 string];
 
-  return v3;
+  return string;
 }
 
-- (void)runWithInput:(id)a3 error:(id *)a4
+- (void)runWithInput:(id)input error:(id *)error
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  inputCopy = input;
   v6 = [(WFAppendVariableAction *)self parameterValueForKey:@"WFVariableName" ofClass:objc_opt_class()];
-  v7 = [(WFAppendVariableAction *)self variableSource];
-  v8 = [v7 contentForVariableWithName:v6];
+  variableSource = [(WFAppendVariableAction *)self variableSource];
+  v8 = [variableSource contentForVariableWithName:v6];
   v9 = v8;
   if (v8)
   {
@@ -77,8 +77,8 @@
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v12 = [v5 items];
-  v13 = [v12 copy];
+  items = [inputCopy items];
+  v13 = [items copy];
 
   v14 = [v13 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v14)
@@ -103,8 +103,8 @@
     while (v15);
   }
 
-  v18 = [(WFAppendVariableAction *)self variableSource];
-  [v18 setContent:v11 forVariableWithName:v6];
+  variableSource2 = [(WFAppendVariableAction *)self variableSource];
+  [variableSource2 setContent:v11 forVariableWithName:v6];
 
   [(WFAppendVariableAction *)self setOutput:v11];
   v19 = *MEMORY[0x277D85DE8];

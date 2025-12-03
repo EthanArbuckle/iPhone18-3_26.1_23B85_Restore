@@ -1,32 +1,32 @@
 @interface GKContactsIntegrationEligibilityChecker
-- (BOOL)isEligibleAllowingIneligibility:(unint64_t)a3 usingSettings:(id)a4 localPlayerInternal:(id)a5 isConnectionManagerReady:(BOOL)a6 withContext:(id)a7;
-- (unint64_t)currentIneligibilityUsingSettings:(id)a3 localPlayerInternal:(id)a4 isConnectionManagerReady:(BOOL)a5 loggingEnabled:(BOOL)a6 withContext:(id)a7;
+- (BOOL)isEligibleAllowingIneligibility:(unint64_t)ineligibility usingSettings:(id)settings localPlayerInternal:(id)internal isConnectionManagerReady:(BOOL)ready withContext:(id)context;
+- (unint64_t)currentIneligibilityUsingSettings:(id)settings localPlayerInternal:(id)internal isConnectionManagerReady:(BOOL)ready loggingEnabled:(BOOL)enabled withContext:(id)context;
 @end
 
 @implementation GKContactsIntegrationEligibilityChecker
 
-- (BOOL)isEligibleAllowingIneligibility:(unint64_t)a3 usingSettings:(id)a4 localPlayerInternal:(id)a5 isConnectionManagerReady:(BOOL)a6 withContext:(id)a7
+- (BOOL)isEligibleAllowingIneligibility:(unint64_t)ineligibility usingSettings:(id)settings localPlayerInternal:(id)internal isConnectionManagerReady:(BOOL)ready withContext:(id)context
 {
-  v7 = a6;
+  readyCopy = ready;
   v12 = os_log_GKContacts;
-  v13 = a7;
-  v14 = a5;
-  v15 = a4;
-  LOBYTE(v7) = [(GKContactsIntegrationEligibilityChecker *)self isEligibleAllowingIneligibility:a3 usingSettings:v15 localPlayerInternal:v14 isConnectionManagerReady:v7 loggingEnabled:os_log_is_debug_enabled(v12) withContext:v13];
+  contextCopy = context;
+  internalCopy = internal;
+  settingsCopy = settings;
+  LOBYTE(readyCopy) = [(GKContactsIntegrationEligibilityChecker *)self isEligibleAllowingIneligibility:ineligibility usingSettings:settingsCopy localPlayerInternal:internalCopy isConnectionManagerReady:readyCopy loggingEnabled:os_log_is_debug_enabled(v12) withContext:contextCopy];
 
-  return v7;
+  return readyCopy;
 }
 
-- (unint64_t)currentIneligibilityUsingSettings:(id)a3 localPlayerInternal:(id)a4 isConnectionManagerReady:(BOOL)a5 loggingEnabled:(BOOL)a6 withContext:(id)a7
+- (unint64_t)currentIneligibilityUsingSettings:(id)settings localPlayerInternal:(id)internal isConnectionManagerReady:(BOOL)ready loggingEnabled:(BOOL)enabled withContext:(id)context
 {
-  v8 = a6;
-  v11 = a3;
-  v12 = a4;
-  v13 = a7;
-  if (v8)
+  enabledCopy = enabled;
+  settingsCopy = settings;
+  internalCopy = internal;
+  contextCopy = context;
+  if (enabledCopy)
   {
     v14 = +[NSMutableString string];
-    if (v11)
+    if (settingsCopy)
     {
 LABEL_3:
       v15 = 0;
@@ -37,7 +37,7 @@ LABEL_3:
   else
   {
     v14 = 0;
-    if (v11)
+    if (settingsCopy)
     {
       goto LABEL_3;
     }
@@ -46,15 +46,15 @@ LABEL_3:
   [v14 appendString:{@"MissingSettings, "}];
   v15 = 1;
 LABEL_6:
-  if (([v11 allowUpdates] & 1) == 0)
+  if (([settingsCopy allowUpdates] & 1) == 0)
   {
     [v14 appendString:{@"NotAllowedInSettings, "}];
     v15 |= 0x10uLL;
   }
 
-  if (v12)
+  if (internalCopy)
   {
-    if ([v12 hasAcknowledgedLatestGDPR])
+    if ([internalCopy hasAcknowledgedLatestGDPR])
     {
       goto LABEL_13;
     }
@@ -72,16 +72,16 @@ LABEL_6:
   [v14 appendString:v16];
   v15 |= v17;
 LABEL_13:
-  if (!a5)
+  if (!ready)
   {
     [v14 appendString:{@"IDSMissingAccount, "}];
     v15 |= 4uLL;
   }
 
-  if (([v11 allowUpdatesWithoutFriends] & 1) == 0)
+  if (([settingsCopy allowUpdatesWithoutFriends] & 1) == 0)
   {
     v18 = +[GKFriendListEntryCacheObject _gkFetchRequest];
-    v19 = [v13 _gkCountObjectsFromRequest:v18];
+    v19 = [contextCopy _gkCountObjectsFromRequest:v18];
 
     if (!v19)
     {

@@ -1,39 +1,39 @@
 @interface HUVelocitySampler
 - (CGVector)velocity;
-- (void)addTouchSample:(CGPoint)a3;
+- (void)addTouchSample:(CGPoint)sample;
 - (void)reset;
 @end
 
 @implementation HUVelocitySampler
 
-- (void)addTouchSample:(CGPoint)a3
+- (void)addTouchSample:(CGPoint)sample
 {
-  y = a3.y;
-  x = a3.x;
+  y = sample.y;
+  x = sample.x;
   v6 = CACurrentMediaTime();
-  v7 = [(HUVelocitySampler *)self currentSample];
-  if (v7 && (v8 = v7, -[HUVelocitySampler currentSample](self, "currentSample"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 isSampleDistinctFromPoint:{x, y}], v9, v8, (v10 & 1) == 0))
+  currentSample = [(HUVelocitySampler *)self currentSample];
+  if (currentSample && (v8 = currentSample, -[HUVelocitySampler currentSample](self, "currentSample"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 isSampleDistinctFromPoint:{x, y}], v9, v8, (v10 & 1) == 0))
   {
-    v20 = [(HUVelocitySampler *)self currentSample];
-    [v20 setEnd:{x, y}];
+    currentSample2 = [(HUVelocitySampler *)self currentSample];
+    [currentSample2 setEnd:{x, y}];
 
-    v22 = [(HUVelocitySampler *)self currentSample];
-    [v22 setEndTime:v6];
+    currentSample3 = [(HUVelocitySampler *)self currentSample];
+    [currentSample3 setEndTime:v6];
   }
 
   else
   {
-    v11 = [(HUVelocitySampler *)self currentSample];
+    currentSample4 = [(HUVelocitySampler *)self currentSample];
 
-    if (v11)
+    if (currentSample4)
     {
-      v12 = [(HUVelocitySampler *)self currentSample];
-      [v12 end];
+      currentSample5 = [(HUVelocitySampler *)self currentSample];
+      [currentSample5 end];
       v14 = v13;
       v16 = v15;
 
-      v17 = [(HUVelocitySampler *)self currentSample];
-      [v17 endTime];
+      currentSample6 = [(HUVelocitySampler *)self currentSample];
+      [currentSample6 endTime];
       v19 = v18;
     }
 
@@ -44,10 +44,10 @@
       v19 = v6;
     }
 
-    v21 = [(HUVelocitySampler *)self currentSample];
-    [(HUVelocitySampler *)self setPreviousSample:v21];
+    currentSample7 = [(HUVelocitySampler *)self currentSample];
+    [(HUVelocitySampler *)self setPreviousSample:currentSample7];
 
-    v22 = [HUVelocitySample sampleWithStart:v14 end:v16 startTime:x endTime:y, v19, v6];
+    currentSample3 = [HUVelocitySample sampleWithStart:v14 end:v16 startTime:x endTime:y, v19, v6];
     [(HUVelocitySampler *)self setCurrentSample:?];
   }
 }
@@ -61,27 +61,27 @@
 
 - (CGVector)velocity
 {
-  v3 = [(HUVelocitySampler *)self currentSample];
+  currentSample = [(HUVelocitySampler *)self currentSample];
 
-  if (v3)
+  if (currentSample)
   {
-    v4 = [(HUVelocitySampler *)self currentSample];
-    [v4 velocity];
+    currentSample2 = [(HUVelocitySampler *)self currentSample];
+    [currentSample2 velocity];
     v6 = v5;
     v8 = v7;
 
-    v9 = [(HUVelocitySampler *)self previousSample];
-    if (v9)
+    previousSample = [(HUVelocitySampler *)self previousSample];
+    if (previousSample)
     {
-      v10 = v9;
-      v11 = [(HUVelocitySampler *)self previousSample];
-      [v11 dt];
+      v10 = previousSample;
+      previousSample2 = [(HUVelocitySampler *)self previousSample];
+      [previousSample2 dt];
       v13 = v12;
 
       if (v13 > 0.00000011920929)
       {
-        v14 = [(HUVelocitySampler *)self previousSample];
-        [v14 velocity];
+        previousSample3 = [(HUVelocitySampler *)self previousSample];
+        [previousSample3 velocity];
         v16 = v15;
         v18 = v17;
 

@@ -3,7 +3,7 @@
 - (id)_perform;
 - (id)_search;
 - (id)_validate;
-- (void)performWithCompletion:(id)a3;
+- (void)performWithCompletion:(id)completion;
 @end
 
 @implementation CKAssistantSMSRecipientSearch
@@ -18,9 +18,9 @@
     v3 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
     {
-      v4 = [(CKAssistantSMSRecipientSearch *)self recipients];
+      recipients = [(CKAssistantSMSRecipientSearch *)self recipients];
       *buf = 138412290;
-      *&buf[4] = v4;
+      *&buf[4] = recipients;
       _os_log_impl(&dword_0, v3, OS_LOG_TYPE_INFO, "Performing fast search path with recipients: %@", buf, 0xCu);
     }
   }
@@ -49,16 +49,16 @@
         v87 = v5;
         v109 = *(*(&v156 + 1) + 8 * v5);
         v7 = +[IMContactStore sharedInstance];
-        v8 = [v109 internalGUID];
-        v90 = [v7 fetchCNContactWithIdentifier:v8];
+        internalGUID = [v109 internalGUID];
+        v90 = [v7 fetchCNContactWithIdentifier:internalGUID];
 
         if (IMOSLoggingEnabled())
         {
           v9 = OSLogHandleForIMFoundationCategory();
           if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
           {
-            v10 = [v109 internalGUID];
-            v11 = v10;
+            internalGUID2 = [v109 internalGUID];
+            v11 = internalGUID2;
             *buf = 138412546;
             v12 = @"YES";
             if (!v90)
@@ -66,7 +66,7 @@
               v12 = @"NO";
             }
 
-            *&buf[4] = v10;
+            *&buf[4] = internalGUID2;
             *&buf[12] = 2112;
             *&buf[14] = v12;
             _os_log_impl(&dword_0, v9, OS_LOG_TYPE_INFO, "Found record for internal GUID %@: %@", buf, 0x16u);
@@ -79,8 +79,8 @@
           v147 = 0uLL;
           v144 = 0uLL;
           v145 = 0uLL;
-          v96 = v90;
-          v92 = [v96 countByEnumeratingWithState:&v144 objects:v172 count:16];
+          emails2 = v90;
+          v92 = [emails2 countByEnumeratingWithState:&v144 objects:v172 count:16];
           if (v92)
           {
             v91 = *v145;
@@ -90,19 +90,19 @@
               {
                 if (*v145 != v91)
                 {
-                  objc_enumerationMutation(v96);
+                  objc_enumerationMutation(emails2);
                 }
 
                 v97 = *(*(&v144 + 1) + 8 * i);
-                v95 = [v97 phoneNumbers];
+                phoneNumbers = [v97 phoneNumbers];
                 v99 = +[NSMutableArray array];
-                if ([v95 count])
+                if ([phoneNumbers count])
                 {
                   v142 = 0u;
                   v143 = 0u;
                   v140 = 0u;
                   v141 = 0u;
-                  v100 = v95;
+                  v100 = phoneNumbers;
                   v104 = [v100 countByEnumeratingWithState:&v140 objects:v171 count:16];
                   if (v104)
                   {
@@ -117,36 +117,36 @@
                         }
 
                         v14 = *(*(&v140 + 1) + 8 * j);
-                        v15 = [v14 value];
-                        v111 = [v15 stringValue];
+                        value = [v14 value];
+                        stringValue = [value stringValue];
 
-                        v16 = [v14 label];
+                        label = [v14 label];
                         if (IMOSLoggingEnabled())
                         {
                           v17 = OSLogHandleForIMFoundationCategory();
                           if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
                           {
                             *buf = 138412546;
-                            *&buf[4] = v111;
+                            *&buf[4] = stringValue;
                             *&buf[12] = 2112;
-                            *&buf[14] = v16;
+                            *&buf[14] = label;
                             _os_log_impl(&dword_0, v17, OS_LOG_TYPE_INFO, "Found number %@ for label %@", buf, 0x16u);
                           }
                         }
 
-                        if (v111)
+                        if (stringValue)
                         {
-                          v18 = [CKAssistantSearchUtilities canonicalizeNumber:v111];
+                          v18 = [CKAssistantSearchUtilities canonicalizeNumber:stringValue];
                           [v107 addObject:v18];
                           [v108 setObject:v109 forKey:v18];
-                          if (v16)
+                          if (label)
                           {
                             v138 = 0u;
                             v139 = 0u;
                             v136 = 0u;
                             v137 = 0u;
-                            v19 = [v109 phones];
-                            v20 = [v19 countByEnumeratingWithState:&v136 objects:v170 count:16];
+                            phones = [v109 phones];
+                            v20 = [phones countByEnumeratingWithState:&v136 objects:v170 count:16];
                             if (v20)
                             {
                               v21 = *v137;
@@ -156,12 +156,12 @@
                                 {
                                   if (*v137 != v21)
                                   {
-                                    objc_enumerationMutation(v19);
+                                    objc_enumerationMutation(phones);
                                   }
 
                                   v23 = *(*(&v136 + 1) + 8 * k);
-                                  v24 = [v23 label];
-                                  v25 = [v24 isEqualToString:v16];
+                                  label2 = [v23 label];
+                                  v25 = [label2 isEqualToString:label];
 
                                   if (v25)
                                   {
@@ -171,7 +171,7 @@
                                   }
                                 }
 
-                                v20 = [v19 countByEnumeratingWithState:&v136 objects:v170 count:16];
+                                v20 = [phones countByEnumeratingWithState:&v136 objects:v170 count:16];
                                 if (v20)
                                 {
                                   continue;
@@ -194,15 +194,15 @@ LABEL_44:
                 }
 
                 [v109 setPhones:v99];
-                v94 = [v97 emailAddresses];
+                emailAddresses = [v97 emailAddresses];
                 v98 = +[NSMutableArray array];
-                if ([v94 count])
+                if ([emailAddresses count])
                 {
                   v134 = 0u;
                   v135 = 0u;
                   v132 = 0u;
                   v133 = 0u;
-                  v101 = v94;
+                  v101 = emailAddresses;
                   v105 = [v101 countByEnumeratingWithState:&v132 objects:v169 count:16];
                   if (v105)
                   {
@@ -217,34 +217,34 @@ LABEL_44:
                         }
 
                         v27 = *(*(&v132 + 1) + 8 * m);
-                        v112 = [v27 value];
-                        v28 = [v27 label];
+                        value2 = [v27 value];
+                        label3 = [v27 label];
                         if (IMOSLoggingEnabled())
                         {
                           v29 = OSLogHandleForIMFoundationCategory();
                           if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
                           {
                             *buf = 138412546;
-                            *&buf[4] = v112;
+                            *&buf[4] = value2;
                             *&buf[12] = 2112;
-                            *&buf[14] = v28;
+                            *&buf[14] = label3;
                             _os_log_impl(&dword_0, v29, OS_LOG_TYPE_INFO, "Found email %@ for label %@", buf, 0x16u);
                           }
                         }
 
-                        if (v112)
+                        if (value2)
                         {
-                          v30 = [CKAssistantSearchUtilities canonicalizeNumber:v112];
+                          v30 = [CKAssistantSearchUtilities canonicalizeNumber:value2];
                           [v107 addObject:v30];
                           [v108 setObject:v109 forKey:v30];
-                          if (v28)
+                          if (label3)
                           {
                             v130 = 0u;
                             v131 = 0u;
                             v128 = 0u;
                             v129 = 0u;
-                            v31 = [v109 emails];
-                            v32 = [v31 countByEnumeratingWithState:&v128 objects:v168 count:16];
+                            emails = [v109 emails];
+                            v32 = [emails countByEnumeratingWithState:&v128 objects:v168 count:16];
                             if (v32)
                             {
                               v33 = *v129;
@@ -254,12 +254,12 @@ LABEL_44:
                                 {
                                   if (*v129 != v33)
                                   {
-                                    objc_enumerationMutation(v31);
+                                    objc_enumerationMutation(emails);
                                   }
 
                                   v35 = *(*(&v128 + 1) + 8 * n);
-                                  v36 = [v35 label];
-                                  v37 = [v36 isEqualToString:v28];
+                                  label4 = [v35 label];
+                                  v37 = [label4 isEqualToString:label3];
 
                                   if (v37)
                                   {
@@ -269,7 +269,7 @@ LABEL_44:
                                   }
                                 }
 
-                                v32 = [v31 countByEnumeratingWithState:&v128 objects:v168 count:16];
+                                v32 = [emails countByEnumeratingWithState:&v128 objects:v168 count:16];
                                 if (v32)
                                 {
                                   continue;
@@ -294,7 +294,7 @@ LABEL_71:
                 [v109 setEmails:v98];
               }
 
-              v92 = [v96 countByEnumeratingWithState:&v144 objects:v172 count:16];
+              v92 = [emails2 countByEnumeratingWithState:&v144 objects:v172 count:16];
             }
 
             while (v92);
@@ -307,8 +307,8 @@ LABEL_71:
           v155 = 0uLL;
           v152 = 0uLL;
           v153 = 0uLL;
-          v38 = [v109 phones];
-          v39 = [v38 countByEnumeratingWithState:&v152 objects:v174 count:16];
+          phones2 = [v109 phones];
+          v39 = [phones2 countByEnumeratingWithState:&v152 objects:v174 count:16];
           if (v39)
           {
             v40 = *v153;
@@ -318,25 +318,25 @@ LABEL_71:
               {
                 if (*v153 != v40)
                 {
-                  objc_enumerationMutation(v38);
+                  objc_enumerationMutation(phones2);
                 }
 
-                v42 = [*(*(&v152 + 1) + 8 * ii) number];
-                v43 = [CKAssistantSearchUtilities canonicalizeNumber:v42];
+                number = [*(*(&v152 + 1) + 8 * ii) number];
+                v43 = [CKAssistantSearchUtilities canonicalizeNumber:number];
 
                 if (v43)
                 {
-                  v44 = [v109 internalGUID];
-                  if (v44)
+                  internalGUID3 = [v109 internalGUID];
+                  if (internalGUID3)
                   {
-                    [v109 setInternalGUID:v44];
+                    [v109 setInternalGUID:internalGUID3];
                   }
 
                   else
                   {
                     v45 = +[NSUUID UUID];
-                    v46 = [v45 UUIDString];
-                    [v109 setInternalGUID:v46];
+                    uUIDString = [v45 UUIDString];
+                    [v109 setInternalGUID:uUIDString];
                   }
 
                   [v108 setObject:v109 forKey:v43];
@@ -344,7 +344,7 @@ LABEL_71:
                 }
               }
 
-              v39 = [v38 countByEnumeratingWithState:&v152 objects:v174 count:16];
+              v39 = [phones2 countByEnumeratingWithState:&v152 objects:v174 count:16];
             }
 
             while (v39);
@@ -354,8 +354,8 @@ LABEL_71:
           v151 = 0u;
           v148 = 0u;
           v149 = 0u;
-          v96 = [v109 emails];
-          v47 = [v96 countByEnumeratingWithState:&v148 objects:v173 count:16];
+          emails2 = [v109 emails];
+          v47 = [emails2 countByEnumeratingWithState:&v148 objects:v173 count:16];
           if (v47)
           {
             v48 = *v149;
@@ -365,25 +365,25 @@ LABEL_71:
               {
                 if (*v149 != v48)
                 {
-                  objc_enumerationMutation(v96);
+                  objc_enumerationMutation(emails2);
                 }
 
-                v50 = [*(*(&v148 + 1) + 8 * jj) emailAddress];
-                v51 = [CKAssistantSearchUtilities canonicalizeNumber:v50];
+                emailAddress = [*(*(&v148 + 1) + 8 * jj) emailAddress];
+                v51 = [CKAssistantSearchUtilities canonicalizeNumber:emailAddress];
 
                 if (v51)
                 {
-                  v52 = [v109 internalGUID];
-                  if (v52)
+                  internalGUID4 = [v109 internalGUID];
+                  if (internalGUID4)
                   {
-                    [v109 setInternalGUID:v52];
+                    [v109 setInternalGUID:internalGUID4];
                   }
 
                   else
                   {
                     v53 = +[NSUUID UUID];
-                    v54 = [v53 UUIDString];
-                    [v109 setInternalGUID:v54];
+                    uUIDString2 = [v53 UUIDString];
+                    [v109 setInternalGUID:uUIDString2];
                   }
 
                   [v108 setObject:v109 forKey:v51];
@@ -391,7 +391,7 @@ LABEL_71:
                 }
               }
 
-              v47 = [v96 countByEnumeratingWithState:&v148 objects:v173 count:16];
+              v47 = [emails2 countByEnumeratingWithState:&v148 objects:v173 count:16];
             }
 
             while (v47);
@@ -445,8 +445,8 @@ LABEL_71:
 
         v60 = *(*(&v118 + 1) + 8 * kk);
         v61 = [v108 objectForKey:v60];
-        v62 = [v61 internalGUID];
-        v63 = [v55 containsObject:v62];
+        internalGUID5 = [v61 internalGUID];
+        v63 = [v55 containsObject:internalGUID5];
 
         if ((v63 & 1) == 0)
         {
@@ -464,11 +464,11 @@ LABEL_71:
           }
 
           [v64 setObject:v61];
-          v66 = [v61 fullName];
-          [v64 setDisplayText:v66];
+          fullName = [v61 fullName];
+          [v64 setDisplayText:fullName];
 
-          v67 = [v61 internalGUID];
-          [v55 addObject:v67];
+          internalGUID6 = [v61 internalGUID];
+          [v55 addObject:internalGUID6];
 
           [v113 addObject:v64];
           [v110 addObject:v60];
@@ -573,9 +573,9 @@ LABEL_138:
     v3 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
     {
-      v4 = [(CKAssistantSMSRecipientSearch *)self recipients];
+      recipients = [(CKAssistantSMSRecipientSearch *)self recipients];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v4;
+      *(&buf + 4) = recipients;
       _os_log_impl(&dword_0, v3, OS_LOG_TYPE_INFO, "Performing old search path with recipients: %@", &buf, 0xCu);
     }
   }
@@ -603,8 +603,8 @@ LABEL_138:
         v101 = 0u;
         v102 = 0u;
         v103 = 0u;
-        v7 = [v6 phones];
-        v8 = [v7 countByEnumeratingWithState:&v100 objects:v120 count:16];
+        phones = [v6 phones];
+        v8 = [phones countByEnumeratingWithState:&v100 objects:v120 count:16];
         if (v8)
         {
           v9 = *v101;
@@ -614,20 +614,20 @@ LABEL_138:
             {
               if (*v101 != v9)
               {
-                objc_enumerationMutation(v7);
+                objc_enumerationMutation(phones);
               }
 
               v11 = *(*(&v100 + 1) + 8 * j);
-              v12 = [v11 number];
+              number = [v11 number];
 
-              if (v12)
+              if (number)
               {
-                v13 = [v11 number];
-                CFArrayAppendValue(v2, [CKAssistantSearchUtilities canonicalizeNumber:v13]);
+                number2 = [v11 number];
+                CFArrayAppendValue(v2, [CKAssistantSearchUtilities canonicalizeNumber:number2]);
               }
             }
 
-            v8 = [v7 countByEnumeratingWithState:&v100 objects:v120 count:16];
+            v8 = [phones countByEnumeratingWithState:&v100 objects:v120 count:16];
           }
 
           while (v8);
@@ -637,8 +637,8 @@ LABEL_138:
         v99 = 0u;
         v96 = 0u;
         v97 = 0u;
-        v14 = [v6 emails];
-        v15 = [v14 countByEnumeratingWithState:&v96 objects:v119 count:16];
+        emails = [v6 emails];
+        v15 = [emails countByEnumeratingWithState:&v96 objects:v119 count:16];
         if (v15)
         {
           v16 = *v97;
@@ -648,20 +648,20 @@ LABEL_138:
             {
               if (*v97 != v16)
               {
-                objc_enumerationMutation(v14);
+                objc_enumerationMutation(emails);
               }
 
               v18 = *(*(&v96 + 1) + 8 * k);
-              v19 = [v18 emailAddress];
+              emailAddress = [v18 emailAddress];
 
-              if (v19)
+              if (emailAddress)
               {
-                v20 = [v18 emailAddress];
-                CFArrayAppendValue(v2, [CKAssistantSearchUtilities canonicalizeNumber:v20]);
+                emailAddress2 = [v18 emailAddress];
+                CFArrayAppendValue(v2, [CKAssistantSearchUtilities canonicalizeNumber:emailAddress2]);
               }
             }
 
-            v15 = [v14 countByEnumeratingWithState:&v96 objects:v119 count:16];
+            v15 = [emails countByEnumeratingWithState:&v96 objects:v119 count:16];
           }
 
           while (v15);
@@ -697,12 +697,12 @@ LABEL_138:
     v89 = 0u;
     v86 = 0u;
     v87 = 0u;
-    v23 = [(CKAssistantSMSRecipientSearch *)self recipients];
-    v24 = [v23 countByEnumeratingWithState:&v86 objects:v113 count:16];
+    recipients2 = [(CKAssistantSMSRecipientSearch *)self recipients];
+    v24 = [recipients2 countByEnumeratingWithState:&v86 objects:v113 count:16];
     v73 = v22;
     if (v24)
     {
-      v66 = v23;
+      v66 = recipients2;
       v67 = *v87;
       do
       {
@@ -721,8 +721,8 @@ LABEL_138:
           v84 = 0u;
           v85 = 0u;
           v71 = v26;
-          v27 = [v26 emails];
-          v28 = [v27 countByEnumeratingWithState:&v82 objects:v112 count:16];
+          emails2 = [v26 emails];
+          v28 = [emails2 countByEnumeratingWithState:&v82 objects:v112 count:16];
           if (v28)
           {
             v29 = *v83;
@@ -732,32 +732,32 @@ LABEL_138:
               {
                 if (*v83 != v29)
                 {
-                  objc_enumerationMutation(v27);
+                  objc_enumerationMutation(emails2);
                 }
 
                 v31 = *(*(&v82 + 1) + 8 * n);
-                v32 = [v31 emailAddress];
+                emailAddress3 = [v31 emailAddress];
 
-                if (v32)
+                if (emailAddress3)
                 {
-                  v33 = [v31 emailAddress];
-                  v34 = CFEqual([CKAssistantSearchUtilities canonicalizeNumber:v33], v21) == 0;
+                  emailAddress4 = [v31 emailAddress];
+                  v34 = CFEqual([CKAssistantSearchUtilities canonicalizeNumber:emailAddress4], v21) == 0;
 
                   if (!v34)
                   {
-                    v35 = [v31 emailAddress];
-                    [v73 setData:v35];
+                    emailAddress5 = [v31 emailAddress];
+                    [v73 setData:emailAddress5];
 
                     [v73 setObject:v71];
-                    v36 = [v71 fullName];
-                    [v73 setDisplayText:v36];
+                    fullName = [v71 fullName];
+                    [v73 setDisplayText:fullName];
 
                     goto LABEL_48;
                   }
                 }
               }
 
-              v28 = [v27 countByEnumeratingWithState:&v82 objects:v112 count:16];
+              v28 = [emails2 countByEnumeratingWithState:&v82 objects:v112 count:16];
               if (v28)
               {
                 continue;
@@ -769,8 +769,8 @@ LABEL_138:
 
 LABEL_48:
 
-          v37 = [v73 object];
-          v38 = v37 == 0;
+          object = [v73 object];
+          v38 = object == 0;
 
           if (v38)
           {
@@ -778,8 +778,8 @@ LABEL_48:
             v81 = 0u;
             v78 = 0u;
             v79 = 0u;
-            v39 = [v71 phones];
-            v40 = [v39 countByEnumeratingWithState:&v78 objects:v111 count:16];
+            phones2 = [v71 phones];
+            v40 = [phones2 countByEnumeratingWithState:&v78 objects:v111 count:16];
             if (v40)
             {
               v41 = *v79;
@@ -789,32 +789,32 @@ LABEL_48:
                 {
                   if (*v79 != v41)
                   {
-                    objc_enumerationMutation(v39);
+                    objc_enumerationMutation(phones2);
                   }
 
                   v43 = *(*(&v78 + 1) + 8 * ii);
-                  v44 = [v43 number];
+                  number3 = [v43 number];
 
-                  if (v44)
+                  if (number3)
                   {
-                    v45 = [v43 number];
-                    v46 = CFEqual([CKAssistantSearchUtilities canonicalizeNumber:v45], v21) == 0;
+                    number4 = [v43 number];
+                    v46 = CFEqual([CKAssistantSearchUtilities canonicalizeNumber:number4], v21) == 0;
 
                     if (!v46)
                     {
-                      v47 = [v43 number];
-                      [v73 setData:v47];
+                      number5 = [v43 number];
+                      [v73 setData:number5];
 
                       [v73 setObject:v71];
-                      v48 = [v71 fullName];
-                      [v73 setDisplayText:v48];
+                      fullName2 = [v71 fullName];
+                      [v73 setDisplayText:fullName2];
 
                       goto LABEL_60;
                     }
                   }
                 }
 
-                v40 = [v39 countByEnumeratingWithState:&v78 objects:v111 count:16];
+                v40 = [phones2 countByEnumeratingWithState:&v78 objects:v111 count:16];
                 if (v40)
                 {
                   continue;
@@ -831,7 +831,7 @@ LABEL_60:
         }
 
         while (v25 != obja);
-        v23 = v66;
+        recipients2 = v66;
         v24 = [v66 countByEnumeratingWithState:&v86 objects:v113 count:16];
       }
 
@@ -856,9 +856,9 @@ LABEL_60:
             objc_enumerationMutation(v49);
           }
 
-          v53 = [*(*(&v74 + 1) + 8 * jj) object];
-          v54 = [v73 object];
-          v55 = [v53 isEqual:v54];
+          object2 = [*(*(&v74 + 1) + 8 * jj) object];
+          object3 = [v73 object];
+          v55 = [object2 isEqual:object3];
 
           if (v55)
           {
@@ -907,21 +907,21 @@ LABEL_73:
 {
   if ((objc_opt_respondsToSelector() & 1) != 0 && [(CKAssistantSMSRecipientSearch *)self clientShouldResolvePhonesAndEmails])
   {
-    v3 = [(CKAssistantSMSRecipientSearch *)self _search];
+    _search = [(CKAssistantSMSRecipientSearch *)self _search];
   }
 
   else
   {
-    v3 = [(CKAssistantSMSRecipientSearch *)self _oldSearch];
+    _search = [(CKAssistantSMSRecipientSearch *)self _oldSearch];
   }
 
-  return v3;
+  return _search;
 }
 
 - (id)_validate
 {
-  v2 = [(CKAssistantSMSRecipientSearch *)self recipients];
-  if ([v2 count])
+  recipients = [(CKAssistantSMSRecipientSearch *)self recipients];
+  if ([recipients count])
   {
     v3 = 0;
   }
@@ -934,9 +934,9 @@ LABEL_73:
   return v3;
 }
 
-- (void)performWithCompletion:(id)a3
+- (void)performWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
@@ -947,10 +947,10 @@ LABEL_73:
     }
   }
 
-  v6 = [(CKAssistantSMSRecipientSearch *)self _validate];
-  if (v6)
+  _validate = [(CKAssistantSMSRecipientSearch *)self _validate];
+  if (_validate)
   {
-    v7 = v6;
+    _perform = _validate;
     if (IMOSLoggingEnabled())
     {
       v8 = OSLogHandleForIMFoundationCategory();
@@ -964,11 +964,11 @@ LABEL_73:
 
   else
   {
-    v7 = [(CKAssistantSMSRecipientSearch *)self _perform];
+    _perform = [(CKAssistantSMSRecipientSearch *)self _perform];
   }
 
-  v9 = [v7 dictionary];
-  v4[2](v4, v9);
+  dictionary = [_perform dictionary];
+  completionCopy[2](completionCopy, dictionary);
 }
 
 @end

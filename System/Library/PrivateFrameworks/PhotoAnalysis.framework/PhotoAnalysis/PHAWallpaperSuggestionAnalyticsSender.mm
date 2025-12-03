@@ -1,19 +1,19 @@
 @interface PHAWallpaperSuggestionAnalyticsSender
-+ ($07919FF52A1CF34B835B8E07CC3CE49A)ambientSuggestionStatisticsFromSuggestions:(SEL)a3;
-+ ($1A9BA35ACF7822FDDDE3BD6714E1EA81)wallpaperSuggestionStatisticsFromSuggestions:(SEL)a3;
-+ (id)analyticsPayloadForLibraryAnalysisSummary:(id)a3;
-- (PHAWallpaperSuggestionAnalyticsSender)initWithGraphManager:(id)a3 libraryAnalysisSummary:(id)a4;
-- (id)ambientGenerationSummaryWithGeneratedSuggestionLocalIdentifiers:(id)a3;
++ ($07919FF52A1CF34B835B8E07CC3CE49A)ambientSuggestionStatisticsFromSuggestions:(SEL)suggestions;
++ ($1A9BA35ACF7822FDDDE3BD6714E1EA81)wallpaperSuggestionStatisticsFromSuggestions:(SEL)suggestions;
++ (id)analyticsPayloadForLibraryAnalysisSummary:(id)summary;
+- (PHAWallpaperSuggestionAnalyticsSender)initWithGraphManager:(id)manager libraryAnalysisSummary:(id)summary;
+- (id)ambientGenerationSummaryWithGeneratedSuggestionLocalIdentifiers:(id)identifiers;
 - (id)ambientPeoplePetSummary;
 - (id)existingAmbientSuggestionSummary;
 - (id)existingWallpaperSuggestionSummary;
-- (id)suggestionFetchOptionsWithLocalIdentifiers:(id)a3;
-- (id)wallpaperGenerationSummaryWithGeneratedSuggestionLocalIdentifiers:(id)a3;
+- (id)suggestionFetchOptionsWithLocalIdentifiers:(id)identifiers;
+- (id)wallpaperGenerationSummaryWithGeneratedSuggestionLocalIdentifiers:(id)identifiers;
 - (id)wallpaperPeoplePetSummary;
 - (int64_t)shufflePickerVisiblePeopleCount;
-- (void)sendAmbientGenerationSummaryEventWithGeneratedSuggestionLocalIdentifiers:(id)a3;
-- (void)sendRefreshSummaryEventWithPosterConfiguration:(id)a3;
-- (void)sendWallpaperGenerationSummaryEventWithGeneratedSuggestionLocalIdentifiers:(id)a3;
+- (void)sendAmbientGenerationSummaryEventWithGeneratedSuggestionLocalIdentifiers:(id)identifiers;
+- (void)sendRefreshSummaryEventWithPosterConfiguration:(id)configuration;
+- (void)sendWallpaperGenerationSummaryEventWithGeneratedSuggestionLocalIdentifiers:(id)identifiers;
 @end
 
 @implementation PHAWallpaperSuggestionAnalyticsSender
@@ -47,17 +47,17 @@
 
   spid = v3;
 
-  v7 = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
+  librarySpecificFetchOptions = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
   v8 = MEMORY[0x277CCA920];
   v9 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K != %d", @"state", 4];
   v32[0] = v9;
-  v10 = [MEMORY[0x277CD99E0] predicateForAllAmbientSuggestions];
-  v32[1] = v10;
+  predicateForAllAmbientSuggestions = [MEMORY[0x277CD99E0] predicateForAllAmbientSuggestions];
+  v32[1] = predicateForAllAmbientSuggestions;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v32 count:2];
   v12 = [v8 andPredicateWithSubpredicates:v11];
-  [v7 setPredicate:v12];
+  [librarySpecificFetchOptions setPredicate:v12];
 
-  v13 = [MEMORY[0x277CD99E0] fetchSuggestionsWithOptions:v7];
+  v13 = [MEMORY[0x277CD99E0] fetchSuggestionsWithOptions:librarySpecificFetchOptions];
   *buf = 0;
   v28 = 0;
   v29 = 0;
@@ -104,11 +104,11 @@
   return v21;
 }
 
-- (id)ambientGenerationSummaryWithGeneratedSuggestionLocalIdentifiers:(id)a3
+- (id)ambientGenerationSummaryWithGeneratedSuggestionLocalIdentifiers:(id)identifiers
 {
   v29[5] = *MEMORY[0x277D85DE8];
   loggingConnection = self->_loggingConnection;
-  v5 = a3;
+  identifiersCopy = identifiers;
   v6 = os_signpost_id_generate(loggingConnection);
   v7 = self->_loggingConnection;
   v8 = v7;
@@ -119,7 +119,7 @@
     _os_signpost_emit_with_name_impl(&dword_22FA28000, v8, OS_SIGNPOST_INTERVAL_BEGIN, v6, "fetchAmbientGenerationSummary", "", buf, 2u);
   }
 
-  v10 = [(PHAWallpaperSuggestionAnalyticsSender *)self suggestionFetchOptionsWithLocalIdentifiers:v5];
+  v10 = [(PHAWallpaperSuggestionAnalyticsSender *)self suggestionFetchOptionsWithLocalIdentifiers:identifiersCopy];
 
   v11 = [MEMORY[0x277CD99E0] fetchSuggestionsWithOptions:v10];
   *buf = 0;
@@ -173,13 +173,13 @@
 {
   v21 = *MEMORY[0x277D85DE8];
   v3 = [objc_alloc(MEMORY[0x277CD99F8]) initWithPhotoLibrary:self->_photoLibrary];
-  v4 = [v3 personUUIDsWithNegativeFeedback];
+  personUUIDsWithNegativeFeedback = [v3 personUUIDsWithNegativeFeedback];
   v5 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = v4;
+  v6 = personUUIDsWithNegativeFeedback;
   v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
@@ -251,23 +251,23 @@
 
   spid = v3;
 
-  v6 = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
+  librarySpecificFetchOptions = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
   v7 = MEMORY[0x277CCA920];
   v8 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K != %d", @"state", 4];
   v51[0] = v8;
-  v9 = [MEMORY[0x277CD99E0] predicateForAllFeaturedStateEnabledSuggestionTypesForWallpaper];
-  v51[1] = v9;
+  predicateForAllFeaturedStateEnabledSuggestionTypesForWallpaper = [MEMORY[0x277CD99E0] predicateForAllFeaturedStateEnabledSuggestionTypesForWallpaper];
+  v51[1] = predicateForAllFeaturedStateEnabledSuggestionTypesForWallpaper;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v51 count:2];
   v11 = [v7 andPredicateWithSubpredicates:v10];
-  [v6 setPredicate:v11];
+  [librarySpecificFetchOptions setPredicate:v11];
 
-  v42 = v6;
-  v12 = [MEMORY[0x277CD99E0] fetchSuggestionsWithOptions:v6];
+  v42 = librarySpecificFetchOptions;
+  v12 = [MEMORY[0x277CD99E0] fetchSuggestionsWithOptions:librarySpecificFetchOptions];
   v48 = 0;
   *buf = 0u;
   v47 = 0u;
   v13 = objc_opt_class();
-  v44 = self;
+  selfCopy = self;
   v41 = v12;
   if (v13)
   {
@@ -336,7 +336,7 @@
   v50[12] = v31;
   v37 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v50 forKeys:v49 count:13];
 
-  v32 = v44->_loggingConnection;
+  v32 = selfCopy->_loggingConnection;
   v33 = v32;
   if (v43 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v32))
   {
@@ -347,11 +347,11 @@
   return v37;
 }
 
-- (id)wallpaperGenerationSummaryWithGeneratedSuggestionLocalIdentifiers:(id)a3
+- (id)wallpaperGenerationSummaryWithGeneratedSuggestionLocalIdentifiers:(id)identifiers
 {
   v35[9] = *MEMORY[0x277D85DE8];
   loggingConnection = self->_loggingConnection;
-  v5 = a3;
+  identifiersCopy = identifiers;
   v6 = os_signpost_id_generate(loggingConnection);
   v7 = self->_loggingConnection;
   v8 = v7;
@@ -362,7 +362,7 @@
     _os_signpost_emit_with_name_impl(&dword_22FA28000, v8, OS_SIGNPOST_INTERVAL_BEGIN, v6, "fetchGeneratedSuggesstionSummary", "", buf, 2u);
   }
 
-  v9 = [(PHAWallpaperSuggestionAnalyticsSender *)self suggestionFetchOptionsWithLocalIdentifiers:v5];
+  v9 = [(PHAWallpaperSuggestionAnalyticsSender *)self suggestionFetchOptionsWithLocalIdentifiers:identifiersCopy];
 
   v28 = v9;
   v10 = [MEMORY[0x277CD99E0] fetchSuggestionsWithOptions:v9];
@@ -426,29 +426,29 @@
   return v26;
 }
 
-- (id)suggestionFetchOptionsWithLocalIdentifiers:(id)a3
+- (id)suggestionFetchOptionsWithLocalIdentifiers:(id)identifiers
 {
   v12[2] = *MEMORY[0x277D85DE8];
   photoLibrary = self->_photoLibrary;
-  v4 = a3;
-  v5 = [(PHPhotoLibrary *)photoLibrary librarySpecificFetchOptions];
+  identifiersCopy = identifiers;
+  librarySpecificFetchOptions = [(PHPhotoLibrary *)photoLibrary librarySpecificFetchOptions];
   v6 = MEMORY[0x277CCA920];
   v7 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K != %d", @"state", 4];
   v12[0] = v7;
-  v8 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K IN %@", @"localIdentifier", v4];
+  identifiersCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K IN %@", @"localIdentifier", identifiersCopy];
 
-  v12[1] = v8;
+  v12[1] = identifiersCopy;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:2];
   v10 = [v6 andPredicateWithSubpredicates:v9];
-  [v5 setPredicate:v10];
+  [librarySpecificFetchOptions setPredicate:v10];
 
-  return v5;
+  return librarySpecificFetchOptions;
 }
 
-- (void)sendAmbientGenerationSummaryEventWithGeneratedSuggestionLocalIdentifiers:(id)a3
+- (void)sendAmbientGenerationSummaryEventWithGeneratedSuggestionLocalIdentifiers:(id)identifiers
 {
   loggingConnection = self->_loggingConnection;
-  v5 = a3;
+  identifiersCopy = identifiers;
   v6 = os_signpost_id_generate(loggingConnection);
   v7 = self->_loggingConnection;
   v8 = v7;
@@ -459,14 +459,14 @@
   }
 
   v9 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v10 = [(PHAWallpaperSuggestionAnalyticsSender *)self ambientGenerationSummaryWithGeneratedSuggestionLocalIdentifiers:v5];
+  v10 = [(PHAWallpaperSuggestionAnalyticsSender *)self ambientGenerationSummaryWithGeneratedSuggestionLocalIdentifiers:identifiersCopy];
 
   [v9 addEntriesFromDictionary:v10];
-  v11 = [(PHAWallpaperSuggestionAnalyticsSender *)self existingAmbientSuggestionSummary];
-  [v9 addEntriesFromDictionary:v11];
+  existingAmbientSuggestionSummary = [(PHAWallpaperSuggestionAnalyticsSender *)self existingAmbientSuggestionSummary];
+  [v9 addEntriesFromDictionary:existingAmbientSuggestionSummary];
 
-  v12 = [(PHAWallpaperSuggestionAnalyticsSender *)self ambientPeoplePetSummary];
-  [v9 addEntriesFromDictionary:v12];
+  ambientPeoplePetSummary = [(PHAWallpaperSuggestionAnalyticsSender *)self ambientPeoplePetSummary];
+  [v9 addEntriesFromDictionary:ambientPeoplePetSummary];
 
   v13 = [objc_opt_class() analyticsPayloadForLibraryAnalysisSummary:self->_libraryAnalysisSummary];
   [v9 addEntriesFromDictionary:v13];
@@ -489,10 +489,10 @@
   }
 }
 
-- (void)sendRefreshSummaryEventWithPosterConfiguration:(id)a3
+- (void)sendRefreshSummaryEventWithPosterConfiguration:(id)configuration
 {
   loggingConnection = self->_loggingConnection;
-  v5 = a3;
+  configurationCopy = configuration;
   v6 = os_signpost_id_generate(loggingConnection);
   v7 = self->_loggingConnection;
   v8 = v7;
@@ -503,18 +503,18 @@
   }
 
   v9 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v10 = [(PHAWallpaperSuggestionAnalyticsSender *)self existingWallpaperSuggestionSummary];
-  [v9 addEntriesFromDictionary:v10];
+  existingWallpaperSuggestionSummary = [(PHAWallpaperSuggestionAnalyticsSender *)self existingWallpaperSuggestionSummary];
+  [v9 addEntriesFromDictionary:existingWallpaperSuggestionSummary];
 
-  v11 = [(PHAWallpaperSuggestionAnalyticsSender *)self wallpaperPeoplePetSummary];
-  [v9 addEntriesFromDictionary:v11];
+  wallpaperPeoplePetSummary = [(PHAWallpaperSuggestionAnalyticsSender *)self wallpaperPeoplePetSummary];
+  [v9 addEntriesFromDictionary:wallpaperPeoplePetSummary];
 
   v12 = [objc_opt_class() analyticsPayloadForLibraryAnalysisSummary:self->_libraryAnalysisSummary];
   [v9 addEntriesFromDictionary:v12];
 
-  v13 = [v5 analyticsPayload];
+  analyticsPayload = [configurationCopy analyticsPayload];
 
-  [v9 addEntriesFromDictionary:v13];
+  [v9 addEntriesFromDictionary:analyticsPayload];
   [(CPAnalytics *)self->_analytics sendEvent:@"com.apple.photos.wallpaper.refreshSummary" withPayload:v9];
   v14 = self->_loggingConnection;
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
@@ -533,10 +533,10 @@
   }
 }
 
-- (void)sendWallpaperGenerationSummaryEventWithGeneratedSuggestionLocalIdentifiers:(id)a3
+- (void)sendWallpaperGenerationSummaryEventWithGeneratedSuggestionLocalIdentifiers:(id)identifiers
 {
   loggingConnection = self->_loggingConnection;
-  v5 = a3;
+  identifiersCopy = identifiers;
   v6 = os_signpost_id_generate(loggingConnection);
   v7 = self->_loggingConnection;
   v8 = v7;
@@ -547,14 +547,14 @@
   }
 
   v9 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v10 = [(PHAWallpaperSuggestionAnalyticsSender *)self wallpaperGenerationSummaryWithGeneratedSuggestionLocalIdentifiers:v5];
+  v10 = [(PHAWallpaperSuggestionAnalyticsSender *)self wallpaperGenerationSummaryWithGeneratedSuggestionLocalIdentifiers:identifiersCopy];
 
   [v9 addEntriesFromDictionary:v10];
-  v11 = [(PHAWallpaperSuggestionAnalyticsSender *)self existingWallpaperSuggestionSummary];
-  [v9 addEntriesFromDictionary:v11];
+  existingWallpaperSuggestionSummary = [(PHAWallpaperSuggestionAnalyticsSender *)self existingWallpaperSuggestionSummary];
+  [v9 addEntriesFromDictionary:existingWallpaperSuggestionSummary];
 
-  v12 = [(PHAWallpaperSuggestionAnalyticsSender *)self wallpaperPeoplePetSummary];
-  [v9 addEntriesFromDictionary:v12];
+  wallpaperPeoplePetSummary = [(PHAWallpaperSuggestionAnalyticsSender *)self wallpaperPeoplePetSummary];
+  [v9 addEntriesFromDictionary:wallpaperPeoplePetSummary];
 
   v13 = [objc_opt_class() analyticsPayloadForLibraryAnalysisSummary:self->_libraryAnalysisSummary];
   [v9 addEntriesFromDictionary:v13];
@@ -577,34 +577,34 @@
   }
 }
 
-- (PHAWallpaperSuggestionAnalyticsSender)initWithGraphManager:(id)a3 libraryAnalysisSummary:(id)a4
+- (PHAWallpaperSuggestionAnalyticsSender)initWithGraphManager:(id)manager libraryAnalysisSummary:(id)summary
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  summaryCopy = summary;
   v28.receiver = self;
   v28.super_class = PHAWallpaperSuggestionAnalyticsSender;
   v8 = [(PHAWallpaperSuggestionAnalyticsSender *)&v28 init];
   if (v8)
   {
-    v9 = [v6 workingContext];
+    workingContext = [managerCopy workingContext];
     workingContext = v8->_workingContext;
-    v8->_workingContext = v9;
+    v8->_workingContext = workingContext;
 
-    v11 = [v6 photoLibrary];
+    photoLibrary = [managerCopy photoLibrary];
     photoLibrary = v8->_photoLibrary;
-    v8->_photoLibrary = v11;
+    v8->_photoLibrary = photoLibrary;
 
-    v13 = [v6 workingContext];
-    v14 = [v13 loggingConnection];
+    workingContext2 = [managerCopy workingContext];
+    loggingConnection = [workingContext2 loggingConnection];
     loggingConnection = v8->_loggingConnection;
-    v8->_loggingConnection = v14;
+    v8->_loggingConnection = loggingConnection;
 
-    v16 = [v6 analytics];
+    analytics = [managerCopy analytics];
     analytics = v8->_analytics;
-    v8->_analytics = v16;
+    v8->_analytics = analytics;
 
-    objc_storeStrong(&v8->_libraryAnalysisSummary, a4);
-    if ([v6 isReady])
+    objc_storeStrong(&v8->_libraryAnalysisSummary, summary);
+    if ([managerCopy isReady])
     {
       v18 = [objc_alloc(MEMORY[0x277D3BC58]) initWithWorkingContext:v8->_workingContext];
       informer = v8->_informer;
@@ -630,7 +630,7 @@
   return v8;
 }
 
-+ ($07919FF52A1CF34B835B8E07CC3CE49A)ambientSuggestionStatisticsFromSuggestions:(SEL)a3
++ ($07919FF52A1CF34B835B8E07CC3CE49A)ambientSuggestionStatisticsFromSuggestions:(SEL)suggestions
 {
   v23 = *MEMORY[0x277D85DE8];
   v5 = a4;
@@ -702,13 +702,13 @@
   return result;
 }
 
-+ (id)analyticsPayloadForLibraryAnalysisSummary:(id)a3
++ (id)analyticsPayloadForLibraryAnalysisSummary:(id)summary
 {
   v16[3] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  [v3 ratioOfAssetsAtOrAboveSceneAnalysisVersion];
+  summaryCopy = summary;
+  [summaryCopy ratioOfAssetsAtOrAboveSceneAnalysisVersion];
   v5 = (v4 * 100.0);
-  [v3 ratioOfAssetsAtOrAboveFaceAnalysisVersion];
+  [summaryCopy ratioOfAssetsAtOrAboveFaceAnalysisVersion];
   v7 = (v6 * 100.0);
   v15[0] = @"percentage_of_assets_at_or_above_scene_analysis_version";
   v8 = [MEMORY[0x277CCABB0] numberWithInteger:v5];
@@ -718,16 +718,16 @@
   v16[1] = v9;
   v15[2] = @"library_is_processed_enough";
   v10 = MEMORY[0x277CCABB0];
-  v11 = [v3 libraryIsProcessedEnough];
+  libraryIsProcessedEnough = [summaryCopy libraryIsProcessedEnough];
 
-  v12 = [v10 numberWithBool:v11];
+  v12 = [v10 numberWithBool:libraryIsProcessedEnough];
   v16[2] = v12;
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:v15 count:3];
 
   return v13;
 }
 
-+ ($1A9BA35ACF7822FDDDE3BD6714E1EA81)wallpaperSuggestionStatisticsFromSuggestions:(SEL)a3
++ ($1A9BA35ACF7822FDDDE3BD6714E1EA81)wallpaperSuggestionStatisticsFromSuggestions:(SEL)suggestions
 {
   v26 = *MEMORY[0x277D85DE8];
   v5 = a4;

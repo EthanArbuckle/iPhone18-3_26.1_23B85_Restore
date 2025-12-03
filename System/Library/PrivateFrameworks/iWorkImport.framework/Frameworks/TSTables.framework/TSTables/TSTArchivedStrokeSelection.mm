@@ -1,16 +1,16 @@
 @interface TSTArchivedStrokeSelection
 - (NSString)description;
-- (void)loadFromUnarchiver:(id)a3;
-- (void)saveToArchiver:(id)a3;
-- (void)setSelection:(id)a3;
+- (void)loadFromUnarchiver:(id)unarchiver;
+- (void)saveToArchiver:(id)archiver;
+- (void)setSelection:(id)selection;
 @end
 
 @implementation TSTArchivedStrokeSelection
 
-- (void)setSelection:(id)a3
+- (void)setSelection:(id)selection
 {
-  v8 = a3;
-  if (v8)
+  selectionCopy = selection;
+  if (selectionCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -28,28 +28,28 @@
 
   objc_msgSend_willModify(self, v4, v5, v6, v7);
   mStrokeSelection = self->mStrokeSelection;
-  self->mStrokeSelection = v8;
+  self->mStrokeSelection = selectionCopy;
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v15 = a3;
+  unarchiverCopy = unarchiver;
   google::protobuf::internal::AssignDescriptors();
-  v7 = objc_msgSend_messageWithDescriptor_(v15, v4, off_2812E4498[146], v5, v6);
+  v7 = objc_msgSend_messageWithDescriptor_(unarchiverCopy, v4, off_2812E4498[146], v5, v6);
 
   v8 = [TSTStrokeSelection alloc];
-  v11 = objc_msgSend_initWithArchive_unarchiver_(v8, v9, v7, v15, v10);
+  v11 = objc_msgSend_initWithArchive_unarchiver_(v8, v9, v7, unarchiverCopy, v10);
   objc_msgSend_setSelection_(self, v12, v11, v13, v14);
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v14 = a3;
+  archiverCopy = archiver;
   google::protobuf::internal::AssignDescriptors();
-  v6 = objc_msgSend_messageWithNewFunction_descriptor_(v14, v4, sub_221445348, off_2812E4498[146], v5);
+  v6 = objc_msgSend_messageWithNewFunction_descriptor_(archiverCopy, v4, sub_221445348, off_2812E4498[146], v5);
 
   v11 = objc_msgSend_selection(self, v7, v8, v9, v10);
-  objc_msgSend_saveToArchive_archiver_(v11, v12, v6, v14, v13);
+  objc_msgSend_saveToArchive_archiver_(v11, v12, v6, archiverCopy, v13);
 }
 
 - (NSString)description

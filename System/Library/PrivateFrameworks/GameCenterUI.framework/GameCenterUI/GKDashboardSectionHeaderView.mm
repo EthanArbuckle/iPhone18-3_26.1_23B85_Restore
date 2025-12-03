@@ -1,33 +1,33 @@
 @interface GKDashboardSectionHeaderView
-+ (CGSize)platformSizeForTitle:(id)a3 withFont:(id)a4;
-+ (double)widthForTitle:(id)a3 withFont:(id)a4;
++ (CGSize)platformSizeForTitle:(id)title withFont:(id)font;
++ (double)widthForTitle:(id)title withFont:(id)font;
 - (CGSize)intrinsicContentSize;
 - (void)awakeFromNib;
-- (void)setOnDarkBackground:(BOOL)a3;
+- (void)setOnDarkBackground:(BOOL)background;
 @end
 
 @implementation GKDashboardSectionHeaderView
 
-+ (double)widthForTitle:(id)a3 withFont:(id)a4
++ (double)widthForTitle:(id)title withFont:(id)font
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __55__GKDashboardSectionHeaderView_widthForTitle_withFont___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   v5 = widthForTitle_withFont__onceToken;
-  v6 = a4;
-  v7 = a3;
+  fontCopy = font;
+  titleCopy = title;
   if (v5 != -1)
   {
     dispatch_once(&widthForTitle_withFont__onceToken, block);
   }
 
-  [widthForTitle_withFont__sSectionHeaderView setTitle:v7];
+  [widthForTitle_withFont__sSectionHeaderView setTitle:titleCopy];
 
-  if (v6)
+  if (fontCopy)
   {
-    v8 = v6;
+    v8 = fontCopy;
   }
 
   else
@@ -54,10 +54,10 @@ uint64_t __55__GKDashboardSectionHeaderView_widthForTitle_withFont___block_invok
   return MEMORY[0x2821F96F8](v3, v4);
 }
 
-+ (CGSize)platformSizeForTitle:(id)a3 withFont:(id)a4
++ (CGSize)platformSizeForTitle:(id)title withFont:(id)font
 {
   v4 = *MEMORY[0x277CBF3A8];
-  [a1 defaultHeight];
+  [self defaultHeight];
   v6 = v5;
   v7 = v4;
   result.height = v6;
@@ -70,22 +70,22 @@ uint64_t __55__GKDashboardSectionHeaderView_widthForTitle_withFont___block_invok
   v4.receiver = self;
   v4.super_class = GKDashboardSectionHeaderView;
   [(GKDashboardSectionHeaderView *)&v4 awakeFromNib];
-  v3 = [(UILabel *)self->_titleLabel textColor];
-  [(GKDashboardSectionHeaderView *)self setTitleColor:v3];
+  textColor = [(UILabel *)self->_titleLabel textColor];
+  [(GKDashboardSectionHeaderView *)self setTitleColor:textColor];
 }
 
-- (void)setOnDarkBackground:(BOOL)a3
+- (void)setOnDarkBackground:(BOOL)background
 {
-  if (self->_onDarkBackground != a3)
+  if (self->_onDarkBackground != background)
   {
-    self->_onDarkBackground = a3;
+    self->_onDarkBackground = background;
   }
 }
 
 - (CGSize)intrinsicContentSize
 {
-  v3 = [(GKDashboardSectionHeaderView *)self titleLabel];
-  [v3 intrinsicContentSize];
+  titleLabel = [(GKDashboardSectionHeaderView *)self titleLabel];
+  [titleLabel intrinsicContentSize];
   v5 = v4;
   v7 = v6;
 

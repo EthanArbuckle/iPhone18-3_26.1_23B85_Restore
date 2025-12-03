@@ -1,7 +1,7 @@
 @interface TNUIAccountRemoteUI
 - (_TtC20ThreatNotificationUI19TNUIAccountRemoteUI)init;
-- (id)accountsForAccountManager:(id)a3;
-- (void)remoteUIRequestComplete:(id)a3 error:(id)a4;
+- (id)accountsForAccountManager:(id)manager;
+- (void)remoteUIRequestComplete:(id)complete error:(id)error;
 @end
 
 @implementation TNUIAccountRemoteUI
@@ -13,18 +13,18 @@
   return result;
 }
 
-- (id)accountsForAccountManager:(id)a3
+- (id)accountsForAccountManager:(id)manager
 {
-  v3 = a3;
+  managerCopy = manager;
   _sSD17dictionaryLiteralSDyxq_Gx_q_td_tcfCSo15AIDAServiceTypea_So9ACAccountCTt0g5Tf4g_n(MEMORY[0x277D84F90]);
-  v4 = [v3 accountStore];
-  v5 = [v4 aa_primaryAppleAccount];
+  accountStore = [managerCopy accountStore];
+  aa_primaryAppleAccount = [accountStore aa_primaryAppleAccount];
 
-  if (v5)
+  if (aa_primaryAppleAccount)
   {
     v6 = *MEMORY[0x277CED1A0];
-    v7 = v5;
-    specialized Dictionary.subscript.setter(v5, v6);
+    v7 = aa_primaryAppleAccount;
+    specialized Dictionary.subscript.setter(aa_primaryAppleAccount, v6);
   }
 
   type metadata accessor for AIDAServiceType(0);
@@ -35,7 +35,7 @@
   return v8.super.isa;
 }
 
-- (void)remoteUIRequestComplete:(id)a3 error:(id)a4
+- (void)remoteUIRequestComplete:(id)complete error:(id)error
 {
   v6 = type metadata accessor for URLRequest();
   v7 = *(v6 - 8);
@@ -43,9 +43,9 @@
   MEMORY[0x28223BE20](v6);
   v10 = &v13 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   static URLRequest._unconditionallyBridgeFromObjectiveC(_:)();
-  v11 = self;
-  v12 = a4;
-  TNUIAccountRemoteUI.remoteUIRequestComplete(_:error:)(v10, a4);
+  selfCopy = self;
+  errorCopy = error;
+  TNUIAccountRemoteUI.remoteUIRequestComplete(_:error:)(v10, error);
 
   (*(v7 + 8))(v10, v6);
 }

@@ -1,15 +1,15 @@
 @interface GKChallengeComposeController
-+ (id)composeFlowForChallenge:(id)a3 players:(id)a4 defaultMessage:(id)a5 completionHandler:(id)a6;
-+ (id)friendPickerFlowForChallenge:(id)a3 selectPlayers:(id)a4 defaultMessage:(id)a5 completionHandler:(id)a6;
-+ (void)composeAndSendFlowForChallenge:(id)a3 selectPlayers:(id)a4 defaultMessage:(id)a5 forcePicker:(BOOL)a6 readyHandler:(id)a7 completionHandler:(id)a8;
++ (id)composeFlowForChallenge:(id)challenge players:(id)players defaultMessage:(id)message completionHandler:(id)handler;
++ (id)friendPickerFlowForChallenge:(id)challenge selectPlayers:(id)players defaultMessage:(id)message completionHandler:(id)handler;
++ (void)composeAndSendFlowForChallenge:(id)challenge selectPlayers:(id)players defaultMessage:(id)message forcePicker:(BOOL)picker readyHandler:(id)handler completionHandler:(id)completionHandler;
 - (GKChallengeComposeController)init;
-- (GKChallengeComposeController)initWithChallenge:(id)a3 defaultMessage:(id)a4 players:(id)a5;
+- (GKChallengeComposeController)initWithChallenge:(id)challenge defaultMessage:(id)message players:(id)players;
 - (void)cancel;
 - (void)donePressed;
 - (void)loadView;
 - (void)updateChallengeText;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation GKChallengeComposeController
@@ -21,38 +21,38 @@
   [(GKChallengeComposeController *)&v8 viewDidLoad];
   v3 = objc_alloc_init(MEMORY[0x277D75D68]);
   [v3 _setGroupName:@"gameLayerGroup"];
-  v4 = [MEMORY[0x277D75D58] _gkGameLayerBackgroundVisualEffect];
-  [v3 setBackgroundEffects:v4];
+  _gkGameLayerBackgroundVisualEffect = [MEMORY[0x277D75D58] _gkGameLayerBackgroundVisualEffect];
+  [v3 setBackgroundEffects:_gkGameLayerBackgroundVisualEffect];
 
   [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v5 = [(GKChallengeComposeController *)self view];
-  [v5 insertSubview:v3 atIndex:0];
+  view = [(GKChallengeComposeController *)self view];
+  [view insertSubview:v3 atIndex:0];
 
   v6 = MEMORY[0x277CCAAD0];
-  v7 = [(GKChallengeComposeController *)self view];
-  [v6 _gkInstallEdgeConstraintsForView:v3 containedWithinParentView:v7];
+  view2 = [(GKChallengeComposeController *)self view];
+  [v6 _gkInstallEdgeConstraintsForView:v3 containedWithinParentView:view2];
 }
 
-+ (void)composeAndSendFlowForChallenge:(id)a3 selectPlayers:(id)a4 defaultMessage:(id)a5 forcePicker:(BOOL)a6 readyHandler:(id)a7 completionHandler:(id)a8
++ (void)composeAndSendFlowForChallenge:(id)challenge selectPlayers:(id)players defaultMessage:(id)message forcePicker:(BOOL)picker readyHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a7;
-  v18 = a8;
-  v19 = v18;
-  if (!v17)
+  challengeCopy = challenge;
+  playersCopy = players;
+  messageCopy = message;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  v19 = completionHandlerCopy;
+  if (!handlerCopy)
   {
-    v37 = a6;
-    v26 = a1;
+    pickerCopy = picker;
+    selfCopy = self;
     v27 = MEMORY[0x277CCACA8];
     v28 = [MEMORY[0x277CCACA8] stringWithFormat:@"Assertion failed"];
     v29 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter/Frameworks/GameCenterUI/iOS/Framework/Compose/GKChallengeComposeController.m"];
-    v30 = [v29 lastPathComponent];
-    v31 = [v27 stringWithFormat:@"%@ (readyHandler != ((void*)0))\n[%s (%s:%d)]", v28, "+[GKChallengeComposeController composeAndSendFlowForChallenge:selectPlayers:defaultMessage:forcePicker:readyHandler:completionHandler:]", objc_msgSend(v30, "UTF8String"), 66];
+    lastPathComponent = [v29 lastPathComponent];
+    v31 = [v27 stringWithFormat:@"%@ (readyHandler != ((void*)0))\n[%s (%s:%d)]", v28, "+[GKChallengeComposeController composeAndSendFlowForChallenge:selectPlayers:defaultMessage:forcePicker:readyHandler:completionHandler:]", objc_msgSend(lastPathComponent, "UTF8String"), 66];
 
-    a1 = v26;
-    a6 = v37;
+    self = selfCopy;
+    picker = pickerCopy;
 
     [MEMORY[0x277CBEAD8] raise:@"GameKit Exception" format:{@"%@", v31}];
     if (v19)
@@ -61,42 +61,42 @@
     }
 
 LABEL_5:
-    v38 = a1;
+    selfCopy2 = self;
     v32 = MEMORY[0x277CCACA8];
     v33 = [MEMORY[0x277CCACA8] stringWithFormat:@"Assertion failed"];
     v34 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter/Frameworks/GameCenterUI/iOS/Framework/Compose/GKChallengeComposeController.m"];
-    v35 = [v34 lastPathComponent];
-    v36 = [v32 stringWithFormat:@"%@ (handler != ((void*)0))\n[%s (%s:%d)]", v33, "+[GKChallengeComposeController composeAndSendFlowForChallenge:selectPlayers:defaultMessage:forcePicker:readyHandler:completionHandler:]", objc_msgSend(v35, "UTF8String"), 67];
+    lastPathComponent2 = [v34 lastPathComponent];
+    v36 = [v32 stringWithFormat:@"%@ (handler != ((void*)0))\n[%s (%s:%d)]", v33, "+[GKChallengeComposeController composeAndSendFlowForChallenge:selectPlayers:defaultMessage:forcePicker:readyHandler:completionHandler:]", objc_msgSend(lastPathComponent2, "UTF8String"), 67];
 
     [MEMORY[0x277CBEAD8] raise:@"GameKit Exception" format:{@"%@", v36}];
-    a1 = v38;
+    self = selfCopy2;
     goto LABEL_3;
   }
 
-  if (!v18)
+  if (!completionHandlerCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
-  v20 = [MEMORY[0x277D0C138] localPlayer];
+  localPlayer = [MEMORY[0x277D0C138] localPlayer];
   v39[0] = MEMORY[0x277D85DD0];
   v39[1] = 3221225472;
   v39[2] = __135__GKChallengeComposeController_composeAndSendFlowForChallenge_selectPlayers_defaultMessage_forcePicker_readyHandler_completionHandler___block_invoke;
   v39[3] = &unk_27966B500;
-  v46 = a6;
-  v40 = v15;
-  v41 = v14;
-  v42 = v16;
+  pickerCopy2 = picker;
+  v40 = playersCopy;
+  v41 = challengeCopy;
+  v42 = messageCopy;
   v43 = v19;
-  v44 = v17;
-  v45 = a1;
-  v21 = v17;
+  v44 = handlerCopy;
+  selfCopy3 = self;
+  v21 = handlerCopy;
   v22 = v19;
-  v23 = v16;
-  v24 = v14;
-  v25 = v15;
-  [v20 loadRecentPlayersWithCompletionHandler:v39];
+  v23 = messageCopy;
+  v24 = challengeCopy;
+  v25 = playersCopy;
+  [localPlayer loadRecentPlayersWithCompletionHandler:v39];
 }
 
 void __135__GKChallengeComposeController_composeAndSendFlowForChallenge_selectPlayers_defaultMessage_forcePicker_readyHandler_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -127,24 +127,24 @@ void __135__GKChallengeComposeController_composeAndSendFlowForChallenge_selectPl
   (*(*(a1 + 64) + 16))();
 }
 
-+ (id)composeFlowForChallenge:(id)a3 players:(id)a4 defaultMessage:(id)a5 completionHandler:(id)a6
++ (id)composeFlowForChallenge:(id)challenge players:(id)players defaultMessage:(id)message completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if ([v10 count])
+  challengeCopy = challenge;
+  playersCopy = players;
+  messageCopy = message;
+  handlerCopy = handler;
+  if ([playersCopy count])
   {
-    v13 = [[GKChallengeComposeController alloc] initWithChallenge:v9 defaultMessage:v11 players:0];
+    v13 = [[GKChallengeComposeController alloc] initWithChallenge:challengeCopy defaultMessage:messageCopy players:0];
     objc_initWeak(&location, v13);
-    [(GKChallengeComposeController *)v13 setPlayersToLoad:v10];
+    [(GKChallengeComposeController *)v13 setPlayersToLoad:playersCopy];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __97__GKChallengeComposeController_composeFlowForChallenge_players_defaultMessage_completionHandler___block_invoke;
     v15[3] = &unk_27966B550;
     objc_copyWeak(&v18, &location);
-    v16 = v9;
-    v17 = v12;
+    v16 = challengeCopy;
+    v17 = handlerCopy;
     [(GKSimpleComposeController *)v13 setDoneHandler:v15];
 
     objc_destroyWeak(&v18);
@@ -203,19 +203,19 @@ void __97__GKChallengeComposeController_composeFlowForChallenge_players_defaultM
   [v5 setDoneHandler:0];
 }
 
-+ (id)friendPickerFlowForChallenge:(id)a3 selectPlayers:(id)a4 defaultMessage:(id)a5 completionHandler:(id)a6
++ (id)friendPickerFlowForChallenge:(id)challenge selectPlayers:(id)players defaultMessage:(id)message completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [[GKChallengePlayerPickerViewController alloc] initWithChallenge:v9 initiallySelectedPlayers:v10];
-  [(GKChallengePlayerPickerViewController *)v13 setMessage:v11];
+  challengeCopy = challenge;
+  playersCopy = players;
+  messageCopy = message;
+  handlerCopy = handler;
+  v13 = [[GKChallengePlayerPickerViewController alloc] initWithChallenge:challengeCopy initiallySelectedPlayers:playersCopy];
+  [(GKChallengePlayerPickerViewController *)v13 setMessage:messageCopy];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __108__GKChallengeComposeController_friendPickerFlowForChallenge_selectPlayers_defaultMessage_completionHandler___block_invoke;
   v19[3] = &unk_27966B578;
-  v14 = v12;
+  v14 = handlerCopy;
   v20 = v14;
   [(GKChallengePlayerPickerViewController *)v13 setCompletionHandler:v19];
   objc_initWeak(&location, v13);
@@ -448,46 +448,46 @@ void __108__GKChallengeComposeController_friendPickerFlowForChallenge_selectPlay
     [(GKBaseComposeController *)v2 setShowHeaderFieldContainer:0];
     v4 = GKGameCenterUIFrameworkBundle();
     v5 = GKGetLocalizedStringFromTableInBundle();
-    v6 = [(GKBaseComposeController *)v3 messageField];
-    [v6 setPlaceholderText:v5];
+    messageField = [(GKBaseComposeController *)v3 messageField];
+    [messageField setPlaceholderText:v5];
 
-    v7 = [(GKBaseComposeController *)v3 messageField];
-    [v7 setTextContainerInset:{5.0, 0.0, 0.0, 0.0}];
+    messageField2 = [(GKBaseComposeController *)v3 messageField];
+    [messageField2 setTextContainerInset:{5.0, 0.0, 0.0, 0.0}];
   }
 
   return v3;
 }
 
-- (GKChallengeComposeController)initWithChallenge:(id)a3 defaultMessage:(id)a4 players:(id)a5
+- (GKChallengeComposeController)initWithChallenge:(id)challenge defaultMessage:(id)message players:(id)players
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  challengeCopy = challenge;
+  messageCopy = message;
+  playersCopy = players;
   v11 = [(GKChallengeComposeController *)self init];
   v12 = v11;
   if (v11)
   {
-    [(GKChallengeComposeController *)v11 setChallenge:v8];
-    [(GKSimpleComposeController *)v12 setDefaultMessage:v9];
-    [(GKSimpleComposeController *)v12 setPlayers:v10];
+    [(GKChallengeComposeController *)v11 setChallenge:challengeCopy];
+    [(GKSimpleComposeController *)v12 setDefaultMessage:messageCopy];
+    [(GKSimpleComposeController *)v12 setPlayers:playersCopy];
   }
 
   return v12;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   [(GKChallengeComposeController *)self updateChallengeText];
   v5.receiver = self;
   v5.super_class = GKChallengeComposeController;
-  [(GKSimpleComposeController *)&v5 viewWillAppear:v3];
+  [(GKSimpleComposeController *)&v5 viewWillAppear:appearCopy];
 }
 
 - (void)updateChallengeText
 {
-  v3 = [(GKChallenge *)self->_challenge composeGoalText];
-  [(GKComposeHeaderField *)self->_challengeField setValueText:v3];
+  composeGoalText = [(GKChallenge *)self->_challenge composeGoalText];
+  [(GKComposeHeaderField *)self->_challengeField setValueText:composeGoalText];
 }
 
 - (void)loadView
@@ -495,10 +495,10 @@ void __108__GKChallengeComposeController_friendPickerFlowForChallenge_selectPlay
   v12.receiver = self;
   v12.super_class = GKChallengeComposeController;
   [(GKSimpleComposeController *)&v12 loadView];
-  v3 = [(GKChallengeComposeController *)self navigationItem];
+  navigationItem = [(GKChallengeComposeController *)self navigationItem];
   v4 = GKGameCenterUIFrameworkBundle();
   v5 = GKGetLocalizedStringFromTableInBundle();
-  [v3 setTitle:v5];
+  [navigationItem setTitle:v5];
 
   if ([(NSArray *)self->_playersToLoad count]|| ([(GKChallenge *)self->_challenge detailsLoaded]& 1) == 0)
   {
@@ -593,16 +593,16 @@ uint64_t __40__GKChallengeComposeController_loadView__block_invoke_5(uint64_t a1
 
 - (void)cancel
 {
-  v3 = [(GKBaseComposeController *)self intendedFirstResponder];
-  [v3 resignFirstResponder];
+  intendedFirstResponder = [(GKBaseComposeController *)self intendedFirstResponder];
+  [intendedFirstResponder resignFirstResponder];
 
-  v4 = [(GKSimpleComposeController *)self doneHandler];
+  doneHandler = [(GKSimpleComposeController *)self doneHandler];
 
-  if (v4)
+  if (doneHandler)
   {
-    v5 = [(GKSimpleComposeController *)self doneHandler];
+    doneHandler2 = [(GKSimpleComposeController *)self doneHandler];
     v6 = [MEMORY[0x277CCA9B8] userErrorForCode:2 underlyingError:0];
-    (v5)[2](v5, 0, v6);
+    (doneHandler2)[2](doneHandler2, 0, v6);
 
     [(GKSimpleComposeController *)self setDoneHandler:0];
   }
@@ -610,8 +610,8 @@ uint64_t __40__GKChallengeComposeController_loadView__block_invoke_5(uint64_t a1
 
 - (void)donePressed
 {
-  v3 = [(GKBaseComposeController *)self intendedFirstResponder];
-  [v3 resignFirstResponder];
+  intendedFirstResponder = [(GKBaseComposeController *)self intendedFirstResponder];
+  [intendedFirstResponder resignFirstResponder];
 
   v4.receiver = self;
   v4.super_class = GKChallengeComposeController;

@@ -1,17 +1,17 @@
 @interface XxyDq1mpwtvCuJnm
 + (id)sharedInstance;
-- (BOOL)iww2ALffDR8ZLPHe:(BOOL)a3;
+- (BOOL)iww2ALffDR8ZLPHe:(BOOL)he;
 - (XxyDq1mpwtvCuJnm)init;
-- (id)xusy7Jyby2KbKh9r:(int)a3 bjbqetmBxg55daaO:(double)a4 pCfijpsS4m8yGvnw:(id)a5 gk4SFBckVtkbwrej:(id)a6 cI4BozMHCMeHTVXZ:(id)a7 waitingTime:(double)a8 errorCode:(int64_t)a9;
-- (void)UupMWO2j2nYek7xf:(_KUwyEjpVZR65eUyl *)a3 TYPlhTGwKuAdWgfx:(id)a4 TWWnmIjkBlMfHmma:(id)a5 withCompletion:(id)a6;
-- (void)locationManager:(id)a3 didFailWithError:(id)a4;
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4;
-- (void)locationManagerDidChangeAuthorization:(id)a3;
-- (void)npeR2NAWL3FAqCSx:(double)a3 andCompletion:(id)a4;
-- (void)prepareWithBundlePath:(id)a3 andLocationQueue:(id)a4;
+- (id)xusy7Jyby2KbKh9r:(int)kh9r bjbqetmBxg55daaO:(double)o pCfijpsS4m8yGvnw:(id)gvnw gk4SFBckVtkbwrej:(id)vtkbwrej cI4BozMHCMeHTVXZ:(id)z waitingTime:(double)time errorCode:(int64_t)code;
+- (void)UupMWO2j2nYek7xf:(_KUwyEjpVZR65eUyl *)yek7xf TYPlhTGwKuAdWgfx:(id)wgfx TWWnmIjkBlMfHmma:(id)hmma withCompletion:(id)completion;
+- (void)locationManager:(id)manager didFailWithError:(id)error;
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations;
+- (void)locationManagerDidChangeAuthorization:(id)authorization;
+- (void)npeR2NAWL3FAqCSx:(double)sx andCompletion:(id)completion;
+- (void)prepareWithBundlePath:(id)path andLocationQueue:(id)queue;
 - (void)startLocationManager;
-- (void)timeoutForKey:(id)a3 forAuthorisation:(BOOL)a4 efc6f2da04fb733f:(double)a5;
-- (void)ywKhQxUL6Utg1cmH:(double)a3 andCompletion:(id)a4;
+- (void)timeoutForKey:(id)key forAuthorisation:(BOOL)authorisation efc6f2da04fb733f:(double)efc6f2da04fb733f;
+- (void)ywKhQxUL6Utg1cmH:(double)h andCompletion:(id)completion;
 @end
 
 @implementation XxyDq1mpwtvCuJnm
@@ -81,76 +81,76 @@
   return v3;
 }
 
-- (void)prepareWithBundlePath:(id)a3 andLocationQueue:(id)a4
+- (void)prepareWithBundlePath:(id)path andLocationQueue:(id)queue
 {
-  v6 = a3;
-  objc_storeStrong(&self->_locationQueue, a4);
-  v11 = a4;
+  pathCopy = path;
+  objc_storeStrong(&self->_locationQueue, queue);
+  queueCopy = queue;
   locationBundlePath = self->_locationBundlePath;
-  self->_locationBundlePath = v6;
-  v8 = v6;
+  self->_locationBundlePath = pathCopy;
+  v8 = pathCopy;
 
-  v9 = [[CLLocationManager alloc] initWithEffectiveBundlePath:v8 delegate:self onQueue:v11];
+  v9 = [[CLLocationManager alloc] initWithEffectiveBundlePath:v8 delegate:self onQueue:queueCopy];
   N8Azi3NI6QrNPsLP = self->_N8Azi3NI6QrNPsLP;
   self->_N8Azi3NI6QrNPsLP = v9;
 }
 
-- (void)timeoutForKey:(id)a3 forAuthorisation:(BOOL)a4 efc6f2da04fb733f:(double)a5
+- (void)timeoutForKey:(id)key forAuthorisation:(BOOL)authorisation efc6f2da04fb733f:(double)efc6f2da04fb733f
 {
-  v8 = a3;
-  v9 = dispatch_time(0, (a5 * 1000000000.0));
-  v10 = [(XxyDq1mpwtvCuJnm *)self locationQueue];
+  keyCopy = key;
+  v9 = dispatch_time(0, (efc6f2da04fb733f * 1000000000.0));
+  locationQueue = [(XxyDq1mpwtvCuJnm *)self locationQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000AEA8;
   block[3] = &unk_10068F1A0;
-  v14 = a4;
+  authorisationCopy = authorisation;
   block[4] = self;
-  v13 = v8;
-  v11 = v8;
-  dispatch_after(v9, v10, block);
+  v13 = keyCopy;
+  v11 = keyCopy;
+  dispatch_after(v9, locationQueue, block);
 }
 
-- (void)ywKhQxUL6Utg1cmH:(double)a3 andCompletion:(id)a4
+- (void)ywKhQxUL6Utg1cmH:(double)h andCompletion:(id)completion
 {
-  v6 = a4;
-  v7 = [(XxyDq1mpwtvCuJnm *)self locationQueue];
+  completionCopy = completion;
+  locationQueue = [(XxyDq1mpwtvCuJnm *)self locationQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000B008;
   block[3] = &unk_10068F1C8;
   block[4] = self;
-  v10 = v6;
-  v11 = a3;
-  v8 = v6;
-  dispatch_async(v7, block);
+  v10 = completionCopy;
+  hCopy = h;
+  v8 = completionCopy;
+  dispatch_async(locationQueue, block);
 }
 
-- (void)npeR2NAWL3FAqCSx:(double)a3 andCompletion:(id)a4
+- (void)npeR2NAWL3FAqCSx:(double)sx andCompletion:(id)completion
 {
-  v6 = a4;
-  v7 = [(XxyDq1mpwtvCuJnm *)self locationQueue];
+  completionCopy = completion;
+  locationQueue = [(XxyDq1mpwtvCuJnm *)self locationQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000B1CC;
   block[3] = &unk_10068F1C8;
   block[4] = self;
-  v10 = v6;
-  v11 = a3;
-  v8 = v6;
-  dispatch_async(v7, block);
+  v10 = completionCopy;
+  sxCopy = sx;
+  v8 = completionCopy;
+  dispatch_async(locationQueue, block);
 }
 
-- (BOOL)iww2ALffDR8ZLPHe:(BOOL)a3
+- (BOOL)iww2ALffDR8ZLPHe:(BOOL)he
 {
-  v3 = a3;
-  v5 = [(XxyDq1mpwtvCuJnm *)self LUsBOf3PLbri6v6o];
-  if (v5)
+  heCopy = he;
+  lUsBOf3PLbri6v6o = [(XxyDq1mpwtvCuJnm *)self LUsBOf3PLbri6v6o];
+  if (lUsBOf3PLbri6v6o)
   {
-    v6 = [(XxyDq1mpwtvCuJnm *)self LUsBOf3PLbri6v6o];
-    [v6 timeIntervalSinceNow];
+    lUsBOf3PLbri6v6o2 = [(XxyDq1mpwtvCuJnm *)self LUsBOf3PLbri6v6o];
+    [lUsBOf3PLbri6v6o2 timeIntervalSinceNow];
     v8 = -3600.0;
-    if (v3)
+    if (heCopy)
     {
       v8 = -3570.0;
     }
@@ -177,24 +177,24 @@
   return v9;
 }
 
-- (id)xusy7Jyby2KbKh9r:(int)a3 bjbqetmBxg55daaO:(double)a4 pCfijpsS4m8yGvnw:(id)a5 gk4SFBckVtkbwrej:(id)a6 cI4BozMHCMeHTVXZ:(id)a7 waitingTime:(double)a8 errorCode:(int64_t)a9
+- (id)xusy7Jyby2KbKh9r:(int)kh9r bjbqetmBxg55daaO:(double)o pCfijpsS4m8yGvnw:(id)gvnw gk4SFBckVtkbwrej:(id)vtkbwrej cI4BozMHCMeHTVXZ:(id)z waitingTime:(double)time errorCode:(int64_t)code
 {
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = [(XxyDq1mpwtvCuJnm *)self yABQBiEYyLNkt6IY];
-  if (v18 && (v19 = v18, [(XxyDq1mpwtvCuJnm *)self kp3LsdVLlXwFNqJV], v20 = objc_claimAutoreleasedReturnValue(), v20, v19, v20))
+  gvnwCopy = gvnw;
+  vtkbwrejCopy = vtkbwrej;
+  zCopy = z;
+  yABQBiEYyLNkt6IY = [(XxyDq1mpwtvCuJnm *)self yABQBiEYyLNkt6IY];
+  if (yABQBiEYyLNkt6IY && (v19 = yABQBiEYyLNkt6IY, [(XxyDq1mpwtvCuJnm *)self kp3LsdVLlXwFNqJV], v20 = objc_claimAutoreleasedReturnValue(), v20, v19, v20))
   {
-    v21 = [(XxyDq1mpwtvCuJnm *)self yABQBiEYyLNkt6IY];
+    yABQBiEYyLNkt6IY2 = [(XxyDq1mpwtvCuJnm *)self yABQBiEYyLNkt6IY];
 
-    v22 = [(XxyDq1mpwtvCuJnm *)self kp3LsdVLlXwFNqJV];
+    kp3LsdVLlXwFNqJV = [(XxyDq1mpwtvCuJnm *)self kp3LsdVLlXwFNqJV];
 
     [(XxyDq1mpwtvCuJnm *)self zDlKxUFITTJsP8iN];
-    a4 = v23;
-    v24 = [(XxyDq1mpwtvCuJnm *)self vCWRguBEmim3giZ9];
+    o = v23;
+    vCWRguBEmim3giZ9 = [(XxyDq1mpwtvCuJnm *)self vCWRguBEmim3giZ9];
 
     [(XxyDq1mpwtvCuJnm *)self Msur5CGmk1XEBjLD];
-    if (a4 > v25)
+    if (o > v25)
     {
       v26 = 139007;
     }
@@ -204,15 +204,15 @@
       v26 = 0;
     }
 
-    v15 = v21;
-    v16 = v22;
-    v17 = v24;
+    gvnwCopy = yABQBiEYyLNkt6IY2;
+    vtkbwrejCopy = kp3LsdVLlXwFNqJV;
+    zCopy = vCWRguBEmim3giZ9;
   }
 
   else
   {
     v26 = 139002;
-    if (v15 && v16)
+    if (gvnwCopy && vtkbwrejCopy)
     {
       v26 = 139006;
     }
@@ -223,9 +223,9 @@
     }
   }
 
-  [v15 doubleValue];
+  [gvnwCopy doubleValue];
   v28 = v27 * 1000000.0;
-  [v16 doubleValue];
+  [vtkbwrejCopy doubleValue];
   v30 = (v29 * 1000000.0);
   v31 = objc_alloc_init(NSMutableDictionary);
   v32 = [NSNumber numberWithInteger:v26];
@@ -237,15 +237,15 @@
   v34 = [NSNumber numberWithInteger:v30];
   [v31 setObject:v34 forKeyedSubscript:@"mlon"];
 
-  if (a3 >= 3)
+  if (kh9r >= 3)
   {
-    v35 = [NSNumber numberWithDouble:a4];
+    v35 = [NSNumber numberWithDouble:o];
     [v31 setObject:v35 forKeyedSubscript:@"ha"];
 
-    v36 = [NSNumber numberWithDouble:0.0 - a8];
-    [v31 setObject:v36 forKeyedSubscript:@"time"];
+    time = [NSNumber numberWithDouble:0.0 - time];
+    [v31 setObject:time forKeyedSubscript:@"time"];
 
-    if (a3 != 3)
+    if (kh9r != 3)
     {
       LUsBOf3PLbri6v6o = self->_LUsBOf3PLbri6v6o;
       if (LUsBOf3PLbri6v6o)
@@ -279,11 +279,11 @@
   return v44;
 }
 
-- (void)UupMWO2j2nYek7xf:(_KUwyEjpVZR65eUyl *)a3 TYPlhTGwKuAdWgfx:(id)a4 TWWnmIjkBlMfHmma:(id)a5 withCompletion:(id)a6
+- (void)UupMWO2j2nYek7xf:(_KUwyEjpVZR65eUyl *)yek7xf TYPlhTGwKuAdWgfx:(id)wgfx TWWnmIjkBlMfHmma:(id)hmma withCompletion:(id)completion
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  wgfxCopy = wgfx;
+  hmmaCopy = hmma;
+  completionCopy = completion;
   v13 = +[NSDate date];
   *v42 = kCLLocationAccuracyBestForNavigation;
   *&v42[1] = kCLLocationAccuracyBest;
@@ -295,31 +295,31 @@
   v15 = self->_kp3LsdVLlXwFNqJV;
   zDlKxUFITTJsP8iN = self->_zDlKxUFITTJsP8iN;
   v17 = self->_vCWRguBEmim3giZ9;
-  if (a3->var0 == 4)
+  if (yek7xf->var0 == 4)
   {
-    var1 = a3->var1;
+    var1 = yek7xf->var1;
     if (var1 == 5)
     {
-      v25 = [eTBtehykeBvfpeTP rsNB9HkZVEH0l6fT:a3->var4.var0.var0 gsx0MJUoOpcxcozG:a3->var4.var1.var0.var1];
-      *&self->_Msur5CGmk1XEBjLD = v42[a3->var4.var5.var2];
-      v26 = [v10 i4KDOQicW9Xd5WBz];
+      v25 = [eTBtehykeBvfpeTP rsNB9HkZVEH0l6fT:yek7xf->var4.var0.var0 gsx0MJUoOpcxcozG:yek7xf->var4.var1.var0.var1];
+      *&self->_Msur5CGmk1XEBjLD = v42[yek7xf->var4.var5.var2];
+      i4KDOQicW9Xd5WBz = [wgfxCopy i4KDOQicW9Xd5WBz];
       v30[0] = _NSConcreteStackBlock;
       v30[1] = 3221225472;
       v30[2] = sub_10000BFC0;
       v30[3] = &unk_10068F290;
-      v40 = a3;
-      v31 = v10;
-      v32 = v11;
-      v33 = self;
+      yek7xfCopy = yek7xf;
+      v31 = wgfxCopy;
+      v32 = hmmaCopy;
+      selfCopy = self;
       v34 = v25;
       v41 = zDlKxUFITTJsP8iN;
       v35 = v14;
       v36 = v15;
       v37 = v17;
       v38 = v13;
-      v39 = v12;
+      v39 = completionCopy;
       v23 = v25;
-      [Yp00msaYdVlZesvU eJSthhES04gLkDjz:&a3->var4.var15.var2.var1 i4KDOQicW9Xd5WBz:v26 TWWnmIjkBlMfHmma:v32 withCompletion:v30];
+      [Yp00msaYdVlZesvU eJSthhES04gLkDjz:&yek7xf->var4.var15.var2.var1 i4KDOQicW9Xd5WBz:i4KDOQicW9Xd5WBz TWWnmIjkBlMfHmma:v32 withCompletion:v30];
 
       v24 = v31;
       goto LABEL_7;
@@ -327,19 +327,19 @@
 
     if (var1 == 4)
     {
-      v27 = [eTBtehykeBvfpeTP rsNB9HkZVEH0l6fT:a3->var4.var0.var0 gsx0MJUoOpcxcozG:a3->var4.var1.var0.var1];
-      *&self->_Msur5CGmk1XEBjLD = v42[a3->var4.var5.var2];
-      v19 = a3->var4.var5.var3 * 0.001;
-      v20 = a3->var4.var5.var4 * 0.001;
-      v21 = a3->var1;
+      v27 = [eTBtehykeBvfpeTP rsNB9HkZVEH0l6fT:yek7xf->var4.var0.var0 gsx0MJUoOpcxcozG:yek7xf->var4.var1.var0.var1];
+      *&self->_Msur5CGmk1XEBjLD = v42[yek7xf->var4.var5.var2];
+      v19 = yek7xf->var4.var5.var3 * 0.001;
+      v20 = yek7xf->var4.var5.var4 * 0.001;
+      v21 = yek7xf->var1;
       v28[0] = _NSConcreteStackBlock;
       v28[1] = 3221225472;
       v28[2] = sub_10000C284;
       v28[3] = &unk_10068F240;
-      v29 = v12;
-      v22 = self;
+      v29 = completionCopy;
+      selfCopy2 = self;
       v23 = v27;
-      [(XxyDq1mpwtvCuJnm *)v22 jEx0mo2jM4HTfcdS:v27 pRoPFwkNebqWzDu0:v21 bjbqetmBxg55daaO:v14 pCfijpsS4m8yGvnw:v15 gk4SFBckVtkbwrej:v17 cI4BozMHCMeHTVXZ:v13 veRLfRQYSQxKOWNa:zDlKxUFITTJsP8iN g6zbwvXxUAZNoblY:v20 sX1qLiPSUO5sF5EE:v19 withCompletion:v28];
+      [(XxyDq1mpwtvCuJnm *)selfCopy2 jEx0mo2jM4HTfcdS:v27 pRoPFwkNebqWzDu0:v21 bjbqetmBxg55daaO:v14 pCfijpsS4m8yGvnw:v15 gk4SFBckVtkbwrej:v17 cI4BozMHCMeHTVXZ:v13 veRLfRQYSQxKOWNa:zDlKxUFITTJsP8iN g6zbwvXxUAZNoblY:v20 sX1qLiPSUO5sF5EE:v19 withCompletion:v28];
       v24 = v29;
 LABEL_7:
 
@@ -347,34 +347,34 @@ LABEL_7:
     }
   }
 
-  (*(v12 + 2))(v12, 0);
+  (*(completionCopy + 2))(completionCopy, 0);
 LABEL_8:
 }
 
 - (void)startLocationManager
 {
-  v3 = [(XxyDq1mpwtvCuJnm *)self N8Azi3NI6QrNPsLP];
+  n8Azi3NI6QrNPsLP = [(XxyDq1mpwtvCuJnm *)self N8Azi3NI6QrNPsLP];
   [(XxyDq1mpwtvCuJnm *)self Msur5CGmk1XEBjLD];
-  [v3 setDesiredAccuracy:?];
+  [n8Azi3NI6QrNPsLP setDesiredAccuracy:?];
 
-  v4 = [(XxyDq1mpwtvCuJnm *)self N8Azi3NI6QrNPsLP];
-  [v4 setDistanceFilter:kCLLocationAccuracyKilometer];
+  n8Azi3NI6QrNPsLP2 = [(XxyDq1mpwtvCuJnm *)self N8Azi3NI6QrNPsLP];
+  [n8Azi3NI6QrNPsLP2 setDistanceFilter:kCLLocationAccuracyKilometer];
 
   if ([(XxyDq1mpwtvCuJnm *)self LjU00AjDrcTJbVJD]&& ![(XxyDq1mpwtvCuJnm *)self SNfHoVX7xML3tdWp])
   {
-    v5 = [(XxyDq1mpwtvCuJnm *)self N8Azi3NI6QrNPsLP];
-    [v5 startUpdatingLocation];
+    n8Azi3NI6QrNPsLP3 = [(XxyDq1mpwtvCuJnm *)self N8Azi3NI6QrNPsLP];
+    [n8Azi3NI6QrNPsLP3 startUpdatingLocation];
   }
 }
 
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations
 {
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v5 = [a4 reverseObjectEnumerator];
-  v6 = [v5 countByEnumeratingWithState:&v33 objects:v38 count:16];
+  reverseObjectEnumerator = [locations reverseObjectEnumerator];
+  v6 = [reverseObjectEnumerator countByEnumeratingWithState:&v33 objects:v38 count:16];
   if (v6)
   {
     v7 = v6;
@@ -386,21 +386,21 @@ LABEL_8:
       {
         if (*v34 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         v10 = *(*(&v33 + 1) + 8 * v9);
-        v11 = [(XxyDq1mpwtvCuJnm *)self LUsBOf3PLbri6v6o];
-        if (!v11)
+        lUsBOf3PLbri6v6o = [(XxyDq1mpwtvCuJnm *)self LUsBOf3PLbri6v6o];
+        if (!lUsBOf3PLbri6v6o)
         {
           goto LABEL_8;
         }
 
-        v12 = v11;
-        v13 = [v10 timestamp];
-        v14 = [(XxyDq1mpwtvCuJnm *)self LUsBOf3PLbri6v6o];
+        v12 = lUsBOf3PLbri6v6o;
+        timestamp = [v10 timestamp];
+        lUsBOf3PLbri6v6o2 = [(XxyDq1mpwtvCuJnm *)self LUsBOf3PLbri6v6o];
 
-        if (v13 > v14)
+        if (timestamp > lUsBOf3PLbri6v6o2)
         {
 LABEL_8:
           [v10 coordinate];
@@ -413,18 +413,18 @@ LABEL_8:
 
           [v10 horizontalAccuracy];
           [(XxyDq1mpwtvCuJnm *)self setZDlKxUFITTJsP8iN:?];
-          v18 = [v10 timestamp];
-          [(XxyDq1mpwtvCuJnm *)self setLUsBOf3PLbri6v6o:v18];
+          timestamp2 = [v10 timestamp];
+          [(XxyDq1mpwtvCuJnm *)self setLUsBOf3PLbri6v6o:timestamp2];
 
-          v19 = [v10 sourceInformation];
-          [(XxyDq1mpwtvCuJnm *)self setVCWRguBEmim3giZ9:v19];
+          sourceInformation = [v10 sourceInformation];
+          [(XxyDq1mpwtvCuJnm *)self setVCWRguBEmim3giZ9:sourceInformation];
         }
 
         v9 = v9 + 1;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v33 objects:v38 count:16];
+      v7 = [reverseObjectEnumerator countByEnumeratingWithState:&v33 objects:v38 count:16];
     }
 
     while (v7);
@@ -432,17 +432,17 @@ LABEL_8:
 
   if ([(XxyDq1mpwtvCuJnm *)self iww2ALffDR8ZLPHe:0])
   {
-    v20 = [(XxyDq1mpwtvCuJnm *)self locationCompletions];
-    v21 = [v20 allValues];
+    locationCompletions = [(XxyDq1mpwtvCuJnm *)self locationCompletions];
+    allValues = [locationCompletions allValues];
 
-    v22 = [(XxyDq1mpwtvCuJnm *)self locationCompletions];
-    [v22 removeAllObjects];
+    locationCompletions2 = [(XxyDq1mpwtvCuJnm *)self locationCompletions];
+    [locationCompletions2 removeAllObjects];
 
     v31 = 0u;
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v23 = v21;
+    v23 = allValues;
     v24 = [v23 countByEnumeratingWithState:&v29 objects:v37 count:16];
     if (v24)
     {
@@ -469,12 +469,12 @@ LABEL_8:
       while (v25);
     }
 
-    v28 = [(XxyDq1mpwtvCuJnm *)self N8Azi3NI6QrNPsLP];
-    [v28 stopUpdatingLocation];
+    n8Azi3NI6QrNPsLP = [(XxyDq1mpwtvCuJnm *)self N8Azi3NI6QrNPsLP];
+    [n8Azi3NI6QrNPsLP stopUpdatingLocation];
   }
 }
 
-- (void)locationManager:(id)a3 didFailWithError:(id)a4
+- (void)locationManager:(id)manager didFailWithError:(id)error
 {
   yABQBiEYyLNkt6IY = self->_yABQBiEYyLNkt6IY;
   self->_yABQBiEYyLNkt6IY = 0;
@@ -482,20 +482,20 @@ LABEL_8:
   kp3LsdVLlXwFNqJV = self->_kp3LsdVLlXwFNqJV;
   self->_kp3LsdVLlXwFNqJV = 0;
 
-  v7 = [(XxyDq1mpwtvCuJnm *)self N8Azi3NI6QrNPsLP];
-  [v7 stopUpdatingLocation];
+  n8Azi3NI6QrNPsLP = [(XxyDq1mpwtvCuJnm *)self N8Azi3NI6QrNPsLP];
+  [n8Azi3NI6QrNPsLP stopUpdatingLocation];
 
-  v8 = [(XxyDq1mpwtvCuJnm *)self locationCompletions];
-  v9 = [v8 allValues];
+  locationCompletions = [(XxyDq1mpwtvCuJnm *)self locationCompletions];
+  allValues = [locationCompletions allValues];
 
-  v10 = [(XxyDq1mpwtvCuJnm *)self locationCompletions];
-  [v10 removeAllObjects];
+  locationCompletions2 = [(XxyDq1mpwtvCuJnm *)self locationCompletions];
+  [locationCompletions2 removeAllObjects];
 
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v11 = v9;
+  v11 = allValues;
   v12 = [v11 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v12)
   {
@@ -523,21 +523,21 @@ LABEL_8:
   }
 }
 
-- (void)locationManagerDidChangeAuthorization:(id)a3
+- (void)locationManagerDidChangeAuthorization:(id)authorization
 {
-  self->_YGGzx6XAo42A7s6x = [a3 authorizationStatus];
+  self->_YGGzx6XAo42A7s6x = [authorization authorizationStatus];
   self->_jRTN5Tg2R7nMgayq = 1;
-  v4 = [(XxyDq1mpwtvCuJnm *)self authorisationCompletions];
-  v5 = [v4 allValues];
+  authorisationCompletions = [(XxyDq1mpwtvCuJnm *)self authorisationCompletions];
+  allValues = [authorisationCompletions allValues];
 
-  v6 = [(XxyDq1mpwtvCuJnm *)self authorisationCompletions];
-  [v6 removeAllObjects];
+  authorisationCompletions2 = [(XxyDq1mpwtvCuJnm *)self authorisationCompletions];
+  [authorisationCompletions2 removeAllObjects];
 
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v7 = v5;
+  v7 = allValues;
   v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v8)
   {

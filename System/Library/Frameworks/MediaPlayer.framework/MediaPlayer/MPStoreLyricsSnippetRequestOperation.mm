@@ -1,45 +1,45 @@
 @interface MPStoreLyricsSnippetRequestOperation
 - (void)execute;
-- (void)finishWithError:(id)a3;
+- (void)finishWithError:(id)error;
 @end
 
 @implementation MPStoreLyricsSnippetRequestOperation
 
-- (void)finishWithError:(id)a3
+- (void)finishWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v7.receiver = self;
   v7.super_class = MPStoreLyricsSnippetRequestOperation;
-  [(MPAsyncOperation *)&v7 finishWithError:v4];
-  if (v4)
+  [(MPAsyncOperation *)&v7 finishWithError:errorCopy];
+  if (errorCopy)
   {
-    v5 = [(MPStoreLyricsSnippetRequestOperation *)self responseHandler];
+    responseHandler = [(MPStoreLyricsSnippetRequestOperation *)self responseHandler];
 
-    if (v5)
+    if (responseHandler)
     {
-      v6 = [(MPStoreLyricsSnippetRequestOperation *)self responseHandler];
-      (v6)[2](v6, 0, v4);
+      responseHandler2 = [(MPStoreLyricsSnippetRequestOperation *)self responseHandler];
+      (responseHandler2)[2](responseHandler2, 0, errorCopy);
     }
   }
 }
 
 - (void)execute
 {
-  v3 = [(MPStoreLyricsSnippetRequestOperation *)self snippetURL];
+  snippetURL = [(MPStoreLyricsSnippetRequestOperation *)self snippetURL];
 
-  if (v3)
+  if (snippetURL)
   {
     v4 = objc_alloc(MEMORY[0x1E69E4618]);
-    v5 = [MEMORY[0x1E69E4680] activeAccount];
-    v6 = [v4 initWithIdentity:v5];
+    activeAccount = [MEMORY[0x1E69E4680] activeAccount];
+    v6 = [v4 initWithIdentity:activeAccount];
 
-    v7 = [MEMORY[0x1E69E4658] sharedBagProvider];
+    mEMORY[0x1E69E4658] = [MEMORY[0x1E69E4658] sharedBagProvider];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __47__MPStoreLyricsSnippetRequestOperation_execute__block_invoke;
     v9[3] = &unk_1E767D230;
     v9[4] = self;
-    [v7 getBagForRequestContext:v6 withCompletionHandler:v9];
+    [mEMORY[0x1E69E4658] getBagForRequestContext:v6 withCompletionHandler:v9];
   }
 
   else

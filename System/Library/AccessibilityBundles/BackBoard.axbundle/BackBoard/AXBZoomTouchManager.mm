@@ -1,5 +1,5 @@
 @interface AXBZoomTouchManager
-+ (Class)getZoomBundlePrincipalClassForcingLoad:(BOOL)a3;
++ (Class)getZoomBundlePrincipalClassForcingLoad:(BOOL)load;
 + (void)initializeZoomMonitor;
 - (void)updateSettings;
 @end
@@ -28,9 +28,9 @@ void __44__AXBZoomTouchManager_initializeZoomMonitor__block_invoke()
   v5 = [v6 addObserverForName:v3 object:0 queue:v4 usingBlock:&__block_literal_global_286_1];
 }
 
-+ (Class)getZoomBundlePrincipalClassForcingLoad:(BOOL)a3
++ (Class)getZoomBundlePrincipalClassForcingLoad:(BOOL)load
 {
-  v3 = a3;
+  loadCopy = load;
   v4 = [MEMORY[0x29EDB9F48] bundleWithPath:@"/System/Library/SpringBoardPlugins/ZoomTouch.bundle"];
   v5 = v4;
   if (v4)
@@ -38,11 +38,11 @@ void __44__AXBZoomTouchManager_initializeZoomMonitor__block_invoke()
     if ([v4 isLoaded])
     {
 LABEL_7:
-      v9 = [v5 principalClass];
+      principalClass = [v5 principalClass];
       goto LABEL_9;
     }
 
-    if (v3)
+    if (loadCopy)
     {
       v14 = 0;
       v6 = [v5 loadAndReturnError:&v14];
@@ -60,10 +60,10 @@ LABEL_7:
     }
   }
 
-  v9 = 0;
+  principalClass = 0;
 LABEL_9:
 
-  return v9;
+  return principalClass;
 }
 
 - (void)updateSettings

@@ -1,18 +1,18 @@
 @interface CDXNotifydNotifier
-- (CDXNotifydNotifier)initWithNotificationName:(const char *)a3;
+- (CDXNotifydNotifier)initWithNotificationName:(const char *)name;
 - (void)postNotification;
 @end
 
 @implementation CDXNotifydNotifier
 
-- (CDXNotifydNotifier)initWithNotificationName:(const char *)a3
+- (CDXNotifydNotifier)initWithNotificationName:(const char *)name
 {
   v5.receiver = self;
   v5.super_class = CDXNotifydNotifier;
   result = [(CDXNotifydNotifier *)&v5 init];
   if (result)
   {
-    result->_notificationName = a3;
+    result->_notificationName = name;
   }
 
   return result;
@@ -20,9 +20,9 @@
 
 - (void)postNotification
 {
-  v2 = [(CDXNotifydNotifier *)self notificationName];
+  notificationName = [(CDXNotifydNotifier *)self notificationName];
 
-  notify_post(v2);
+  notify_post(notificationName);
 }
 
 @end

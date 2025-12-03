@@ -1,41 +1,41 @@
 @interface _UIStatesFeedbackGeneratorConfiguration
-+ (id)keyFromState:(id)a3 toState:(id)a4;
++ (id)keyFromState:(id)state toState:(id)toState;
 - (NSDictionary)stateChangeConfigurations;
-- (id)_alternateFeedback:(id)a3 forDevice:(int64_t)a4 senderID:(unint64_t)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_alternateFeedback:(id)feedback forDevice:(int64_t)device senderID:(unint64_t)d;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)feedbackKeyPaths;
 - (id)hidFeedbackPatternNameKeyPaths;
-- (void)setStateChangeConfigurations:(id)a3;
+- (void)setStateChangeConfigurations:(id)configurations;
 @end
 
 @implementation _UIStatesFeedbackGeneratorConfiguration
 
-+ (id)keyFromState:(id)a3 toState:(id)a4
++ (id)keyFromState:(id)state toState:(id)toState
 {
-  v4 = @"any";
-  if (a3)
+  toStateCopy = @"any";
+  if (state)
   {
-    v5 = a3;
+    stateCopy = state;
   }
 
   else
   {
-    v5 = @"any";
+    stateCopy = @"any";
   }
 
-  if (a4)
+  if (toState)
   {
-    v4 = a4;
+    toStateCopy = toState;
   }
 
-  return [MEMORY[0x1E696AEC0] stringWithFormat:@"%@->%@", v5, v4];
+  return [MEMORY[0x1E696AEC0] stringWithFormat:@"%@->%@", stateCopy, toStateCopy];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v10.receiver = self;
   v10.super_class = _UIStatesFeedbackGeneratorConfiguration;
-  v4 = [(_UIFeedbackGeneratorConfiguration *)&v10 copyWithZone:a3];
+  v4 = [(_UIFeedbackGeneratorConfiguration *)&v10 copyWithZone:zone];
   v5 = [(NSString *)self->_initialState copy];
   v6 = v4[12];
   v4[12] = v5;
@@ -51,17 +51,17 @@
 {
   v10.receiver = self;
   v10.super_class = _UIStatesFeedbackGeneratorConfiguration;
-  v3 = [(_UIFeedbackGeneratorConfiguration *)&v10 feedbackKeyPaths];
-  v4 = [v3 mutableCopy];
+  feedbackKeyPaths = [(_UIFeedbackGeneratorConfiguration *)&v10 feedbackKeyPaths];
+  v4 = [feedbackKeyPaths mutableCopy];
 
-  v5 = [(_UIStatesFeedbackGeneratorConfiguration *)self stateChangeConfigurations];
+  stateChangeConfigurations = [(_UIStatesFeedbackGeneratorConfiguration *)self stateChangeConfigurations];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __59___UIStatesFeedbackGeneratorConfiguration_feedbackKeyPaths__block_invoke;
   v8[3] = &unk_1E71073B0;
   v6 = v4;
   v9 = v6;
-  [v5 enumerateKeysAndObjectsUsingBlock:v8];
+  [stateChangeConfigurations enumerateKeysAndObjectsUsingBlock:v8];
 
   return v6;
 }
@@ -70,51 +70,51 @@
 {
   v10.receiver = self;
   v10.super_class = _UIStatesFeedbackGeneratorConfiguration;
-  v3 = [(_UIFeedbackGeneratorConfiguration *)&v10 hidFeedbackPatternNameKeyPaths];
-  v4 = [v3 mutableCopy];
+  hidFeedbackPatternNameKeyPaths = [(_UIFeedbackGeneratorConfiguration *)&v10 hidFeedbackPatternNameKeyPaths];
+  v4 = [hidFeedbackPatternNameKeyPaths mutableCopy];
 
-  v5 = [(_UIStatesFeedbackGeneratorConfiguration *)self stateChangeConfigurations];
+  stateChangeConfigurations = [(_UIStatesFeedbackGeneratorConfiguration *)self stateChangeConfigurations];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __73___UIStatesFeedbackGeneratorConfiguration_hidFeedbackPatternNameKeyPaths__block_invoke;
   v8[3] = &unk_1E71073B0;
   v6 = v4;
   v9 = v6;
-  [v5 enumerateKeysAndObjectsUsingBlock:v8];
+  [stateChangeConfigurations enumerateKeysAndObjectsUsingBlock:v8];
 
   return v6;
 }
 
-- (id)_alternateFeedback:(id)a3 forDevice:(int64_t)a4 senderID:(unint64_t)a5
+- (id)_alternateFeedback:(id)feedback forDevice:(int64_t)device senderID:(unint64_t)d
 {
-  v8 = a3;
+  feedbackCopy = feedback;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
   v22 = __Block_byref_object_copy__77;
   v23 = __Block_byref_object_dispose__77;
   v24 = 0;
-  v9 = [(_UIStatesFeedbackGeneratorConfiguration *)self stateChangeConfigurations];
+  stateChangeConfigurations = [(_UIStatesFeedbackGeneratorConfiguration *)self stateChangeConfigurations];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __81___UIStatesFeedbackGeneratorConfiguration__alternateFeedback_forDevice_senderID___block_invoke;
   v16[3] = &unk_1E71073D8;
-  v10 = v8;
+  v10 = feedbackCopy;
   v17 = v10;
   v18 = &v19;
-  [v9 enumerateKeysAndObjectsUsingBlock:v16];
+  [stateChangeConfigurations enumerateKeysAndObjectsUsingBlock:v16];
 
   v11 = v20[5];
   if (v11)
   {
-    v12 = [_UIFeedbackBackBoardHIDPattern feedbackPatternWithName:v11 deviceType:a4 senderID:a5];
+    v12 = [_UIFeedbackBackBoardHIDPattern feedbackPatternWithName:v11 deviceType:device senderID:d];
   }
 
   else
   {
     v15.receiver = self;
     v15.super_class = _UIStatesFeedbackGeneratorConfiguration;
-    v12 = [(_UIFeedbackGeneratorConfiguration *)&v15 _alternateFeedback:v10 forDevice:a4 senderID:a5];
+    v12 = [(_UIFeedbackGeneratorConfiguration *)&v15 _alternateFeedback:v10 forDevice:device senderID:d];
   }
 
   v13 = v12;
@@ -124,12 +124,12 @@
   return v13;
 }
 
-- (void)setStateChangeConfigurations:(id)a3
+- (void)setStateChangeConfigurations:(id)configurations
 {
-  v4 = a3;
+  configurationsCopy = configurations;
   [(_UIFeedbackGeneratorConfiguration *)self _setupIfNecessary];
   stateChangeConfigurations = self->_stateChangeConfigurations;
-  self->_stateChangeConfigurations = v4;
+  self->_stateChangeConfigurations = configurationsCopy;
 }
 
 - (NSDictionary)stateChangeConfigurations

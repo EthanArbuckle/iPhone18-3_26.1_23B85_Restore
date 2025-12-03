@@ -1,10 +1,10 @@
 @interface SXJSONObjectMergerClassProvider
-- (SXJSONObjectMergerClassProvider)initWithObjectClass:(Class)a3;
+- (SXJSONObjectMergerClassProvider)initWithObjectClass:(Class)class;
 @end
 
 @implementation SXJSONObjectMergerClassProvider
 
-- (SXJSONObjectMergerClassProvider)initWithObjectClass:(Class)a3
+- (SXJSONObjectMergerClassProvider)initWithObjectClass:(Class)class
 {
   v7.receiver = self;
   v7.super_class = SXJSONObjectMergerClassProvider;
@@ -12,7 +12,7 @@
   v5 = v4;
   if (v4)
   {
-    objc_storeStrong(&v4->_objectClass, a3);
+    objc_storeStrong(&v4->_objectClass, class);
   }
 
   return v5;

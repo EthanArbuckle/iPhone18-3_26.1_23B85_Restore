@@ -18,36 +18,36 @@
   v15[3] = &unk_1E8238A50;
   v15[5] = v2;
   v15[6] = &v16;
-  v15[4] = a1;
+  v15[4] = self;
   [MEMORY[0x1E69706F8] performWithoutEnforcement:v15];
-  v3 = [a1 identifiers];
-  v4 = [v3 universalStore];
-  v5 = [v4 subscriptionAdamID];
+  identifiers = [self identifiers];
+  universalStore = [identifiers universalStore];
+  subscriptionAdamID = [universalStore subscriptionAdamID];
 
-  if (v5 || ([v3 universalStore], v6 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v6, "adamID"), v6, v5))
+  if (subscriptionAdamID || ([identifiers universalStore], v6 = objc_claimAutoreleasedReturnValue(), subscriptionAdamID = objc_msgSend(v6, "adamID"), v6, subscriptionAdamID))
   {
     *(v17 + 24) = 1;
-    v7 = [MEMORY[0x1E696AD98] numberWithLongLong:v5];
+    v7 = [MEMORY[0x1E696AD98] numberWithLongLong:subscriptionAdamID];
     [v2 setStoreAdamIdentifier:v7];
   }
 
-  v8 = [v3 personalizedStore];
-  v9 = [v8 cloudID];
+  personalizedStore = [identifiers personalizedStore];
+  cloudID = [personalizedStore cloudID];
 
-  if (v9)
+  if (cloudID)
   {
     *(v17 + 24) = 1;
-    v10 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v9];
+    v10 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:cloudID];
     [v2 setStoreCloudIdentifier:v10];
   }
 
-  v11 = [v3 universalStore];
-  v12 = [v11 universalCloudLibraryID];
+  universalStore2 = [identifiers universalStore];
+  universalCloudLibraryID = [universalStore2 universalCloudLibraryID];
 
-  if ([v12 length])
+  if ([universalCloudLibraryID length])
   {
     *(v17 + 24) = 1;
-    [v2 setUniversalCloudLibraryID:v12];
+    [v2 setUniversalCloudLibraryID:universalCloudLibraryID];
   }
 
   if (*(v17 + 24) == 1)

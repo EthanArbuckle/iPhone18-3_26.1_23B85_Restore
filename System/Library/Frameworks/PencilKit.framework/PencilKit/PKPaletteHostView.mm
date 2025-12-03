@@ -1,82 +1,82 @@
 @interface PKPaletteHostView
 - (BOOL)_isPaletteAnimating;
 - (BOOL)_shouldBeCompact;
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (BOOL)isPaletteDragging;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (CGPoint)_projectedLandingPointForGestureRecognizerEnd:(id)a3;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (CGPoint)_projectedLandingPointForGestureRecognizerEnd:(id)end;
 - (CGPoint)draggingInitialPaletteCenterInSelf;
-- (CGSize)_paletteSizeForVisualState:(int64_t)a3;
+- (CGSize)_paletteSizeForVisualState:(int64_t)state;
 - (CGSize)paletteShadowOffset;
-- (PKPaletteHostView)initWithPaletteView:(id)a3;
+- (PKPaletteHostView)initWithPaletteView:(id)view;
 - (PKPaletteHostViewDelegate)delegate;
 - (double)_bottomEdgeSpacingInCompact;
-- (double)_paletteEdgeMarginForEdge:(unint64_t)a3 isMinimized:(BOOL)a4;
+- (double)_paletteEdgeMarginForEdge:(unint64_t)edge isMinimized:(BOOL)minimized;
 - (double)_paletteViewCompactHeight;
 - (double)paletteBorderWidth;
 - (double)paletteShadowOpacity;
 - (double)paletteShadowRadius;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (id)paletteBorderColor;
-- (unint64_t)avoidanceEdgeForPaletteVisualState:(int64_t)a3;
+- (unint64_t)avoidanceEdgeForPaletteVisualState:(int64_t)state;
 - (void)_activatePaletteCenterConstraints;
 - (void)_cancelPanGestureIfNecessary;
 - (void)_deactivatePaletteCenterConstraints;
 - (void)_deactivatePaletteEdgeConstraints;
 - (void)_deactivatePaletteEdgeConstraintsForCompact;
-- (void)_dockPaletteToAutoHideCornerAnimated:(BOOL)a3;
-- (void)_dockPaletteToPosition:(int64_t)a3 isFromUserReposition:(BOOL)a4 animated:(BOOL)a5;
+- (void)_dockPaletteToAutoHideCornerAnimated:(BOOL)animated;
+- (void)_dockPaletteToPosition:(int64_t)position isFromUserReposition:(BOOL)reposition animated:(BOOL)animated;
 - (void)_fixToBottomEdge;
 - (void)_installPencilInteractionFeedbackHostViewIfNeeded;
-- (void)_paletteDidDockToPosition:(int64_t)a3 fromUserReposition:(BOOL)a4;
-- (void)_paletteWillDockToPosition:(int64_t)a3 prepareForExpansion:(BOOL)a4;
-- (void)_panGestureHandler:(id)a3;
-- (void)_performAnimated:(BOOL)a3 tracking:(BOOL)a4 animations:(id)a5 completion:(id)a6;
+- (void)_paletteDidDockToPosition:(int64_t)position fromUserReposition:(BOOL)reposition;
+- (void)_paletteWillDockToPosition:(int64_t)position prepareForExpansion:(BOOL)expansion;
+- (void)_panGestureHandler:(id)handler;
+- (void)_performAnimated:(BOOL)animated tracking:(BOOL)tracking animations:(id)animations completion:(id)completion;
 - (void)_processPendingDraggingTransition;
-- (void)_scheduleDraggingTransitionToVisualState:(int64_t)a3;
-- (void)_setPaletteVisualState:(int64_t)a3 usingTransition:(BOOL)a4;
-- (void)_tapToExpandPaletteFromMinimizedGestureHandler:(id)a3;
-- (void)_touchDownFeedbackGestureHandler:(id)a3;
-- (void)_updateConstraintsToDockPaletteToPosition:(int64_t)a3;
+- (void)_scheduleDraggingTransitionToVisualState:(int64_t)state;
+- (void)_setPaletteVisualState:(int64_t)state usingTransition:(BOOL)transition;
+- (void)_tapToExpandPaletteFromMinimizedGestureHandler:(id)handler;
+- (void)_touchDownFeedbackGestureHandler:(id)handler;
+- (void)_updateConstraintsToDockPaletteToPosition:(int64_t)position;
 - (void)_updateConstraintsToFixToBottomEdge;
-- (void)_updatePaletteAppearanceAnimated:(BOOL)a3;
+- (void)_updatePaletteAppearanceAnimated:(BOOL)animated;
 - (void)_updatePaletteContentAlpha;
 - (void)_updatePaletteHeightConstraint;
-- (void)_updatePaletteSizeAnimated:(BOOL)a3;
+- (void)_updatePaletteSizeAnimated:(BOOL)animated;
 - (void)_updatePaletteViewSizeConstraints;
-- (void)_updateToolPreviewMinimizedStateAnimated:(BOOL)a3;
-- (void)_updateToolPreviewRotationAnimated:(BOOL)a3;
+- (void)_updateToolPreviewMinimizedStateAnimated:(BOOL)animated;
+- (void)_updateToolPreviewRotationAnimated:(BOOL)animated;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)paletteViewReturnKeyTypeDidChange:(id)a3;
-- (void)paletteViewShowFeedbackForToolChange:(id)a3;
-- (void)paletteViewStateDidChange:(id)a3 updatePaletteAppearance:(BOOL)a4;
-- (void)paletteViewStateDidChangeAutoHide:(id)a3;
-- (void)paletteViewStateDidChangeScaleFactor:(id)a3;
-- (void)pointerInteraction:(id)a3 willEnterRegion:(id)a4 animator:(id)a5;
-- (void)pointerInteraction:(id)a3 willExitRegion:(id)a4 animator:(id)a5;
+- (void)paletteViewReturnKeyTypeDidChange:(id)change;
+- (void)paletteViewShowFeedbackForToolChange:(id)change;
+- (void)paletteViewStateDidChange:(id)change updatePaletteAppearance:(BOOL)appearance;
+- (void)paletteViewStateDidChangeAutoHide:(id)hide;
+- (void)paletteViewStateDidChangeScaleFactor:(id)factor;
+- (void)pointerInteraction:(id)interaction willEnterRegion:(id)region animator:(id)animator;
+- (void)pointerInteraction:(id)interaction willExitRegion:(id)region animator:(id)animator;
 - (void)safeAreaInsetsDidChange;
-- (void)setPaletteViewBottomEdgeSpacing:(double)a3;
-- (void)setPaletteVisible:(BOOL)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)transitionIntermediateVisualStateDidChange:(id)a3;
-- (void)updateKeyboardAvoidanceForPalette:(BOOL)a3;
+- (void)setPaletteViewBottomEdgeSpacing:(double)spacing;
+- (void)setPaletteVisible:(BOOL)visible animated:(BOOL)animated completion:(id)completion;
+- (void)traitCollectionDidChange:(id)change;
+- (void)transitionIntermediateVisualStateDidChange:(id)change;
+- (void)updateKeyboardAvoidanceForPalette:(BOOL)palette;
 @end
 
 @implementation PKPaletteHostView
 
-- (PKPaletteHostView)initWithPaletteView:(id)a3
+- (PKPaletteHostView)initWithPaletteView:(id)view
 {
   v134[4] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  viewCopy = view;
   v129.receiver = self;
   v129.super_class = PKPaletteHostView;
   v6 = [(PKPaletteHostView *)&v129 init];
   if (v6)
   {
-    obj = a3;
-    v128 = v5;
+    obj = view;
+    v128 = viewCopy;
     v7 = objc_alloc_init(MEMORY[0x1E69DCC20]);
     paletteViewLayoutGuide = v6->_paletteViewLayoutGuide;
     v6->_paletteViewLayoutGuide = v7;
@@ -85,55 +85,55 @@
     if (PKIsVisionDevice() && ([MEMORY[0x1E696AAE8] mainBundle], v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "bundleIdentifier"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "isEqualToString:", @"com.apple.freeform"), v10, v9, (v11 & 1) == 0))
     {
       v123 = MEMORY[0x1E696ACD8];
-      v27 = [(UILayoutGuide *)v6->_paletteViewLayoutGuide topAnchor];
-      v125 = [(PKPaletteHostView *)v6 topAnchor];
-      v126 = v27;
-      v124 = [v27 constraintEqualToAnchor:v125];
+      topAnchor = [(UILayoutGuide *)v6->_paletteViewLayoutGuide topAnchor];
+      topAnchor2 = [(PKPaletteHostView *)v6 topAnchor];
+      v126 = topAnchor;
+      v124 = [topAnchor constraintEqualToAnchor:topAnchor2];
       v134[0] = v124;
-      v28 = [(UILayoutGuide *)v6->_paletteViewLayoutGuide leadingAnchor];
-      v121 = [(PKPaletteHostView *)v6 leadingAnchor];
-      v122 = v28;
-      v19 = [v28 constraintEqualToAnchor:v121];
-      v134[1] = v19;
-      v20 = [(UILayoutGuide *)v6->_paletteViewLayoutGuide trailingAnchor];
-      v21 = [(PKPaletteHostView *)v6 trailingAnchor];
-      v22 = [v20 constraintEqualToAnchor:v21];
-      v134[2] = v22;
-      v23 = [(UILayoutGuide *)v6->_paletteViewLayoutGuide bottomAnchor];
-      v24 = [(PKPaletteHostView *)v6 bottomAnchor];
-      v25 = [v23 constraintEqualToAnchor:v24];
+      leadingAnchor = [(UILayoutGuide *)v6->_paletteViewLayoutGuide leadingAnchor];
+      leadingAnchor2 = [(PKPaletteHostView *)v6 leadingAnchor];
+      v122 = leadingAnchor;
+      layoutMarginsGuide2 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
+      v134[1] = layoutMarginsGuide2;
+      trailingAnchor = [(UILayoutGuide *)v6->_paletteViewLayoutGuide trailingAnchor];
+      trailingAnchor2 = [(PKPaletteHostView *)v6 trailingAnchor];
+      bottomAnchor3 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
+      v134[2] = bottomAnchor3;
+      bottomAnchor = [(UILayoutGuide *)v6->_paletteViewLayoutGuide bottomAnchor];
+      bottomAnchor2 = [(PKPaletteHostView *)v6 bottomAnchor];
+      v25 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
       v134[3] = v25;
       v26 = v134;
     }
 
     else
     {
-      v12 = [(UILayoutGuide *)v6->_paletteViewLayoutGuide topAnchor];
-      v13 = [(PKPaletteHostView *)v6 layoutMarginsGuide];
-      v14 = [v13 topAnchor];
-      v15 = [v12 constraintEqualToAnchor:v14];
+      topAnchor3 = [(UILayoutGuide *)v6->_paletteViewLayoutGuide topAnchor];
+      layoutMarginsGuide = [(PKPaletteHostView *)v6 layoutMarginsGuide];
+      topAnchor4 = [layoutMarginsGuide topAnchor];
+      v15 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
       paletteViewLayoutGuideTopConstraint = v6->_paletteViewLayoutGuideTopConstraint;
       v6->_paletteViewLayoutGuideTopConstraint = v15;
 
       v6->_paletteViewLayoutGuideTopConstant = 0.0;
       v123 = MEMORY[0x1E696ACD8];
       v133[0] = v6->_paletteViewLayoutGuideTopConstraint;
-      v17 = [(UILayoutGuide *)v6->_paletteViewLayoutGuide leadingAnchor];
-      v125 = [(PKPaletteHostView *)v6 layoutMarginsGuide];
-      [v125 leadingAnchor];
-      v124 = v126 = v17;
-      v122 = [v17 constraintEqualToAnchor:?];
+      leadingAnchor3 = [(UILayoutGuide *)v6->_paletteViewLayoutGuide leadingAnchor];
+      topAnchor2 = [(PKPaletteHostView *)v6 layoutMarginsGuide];
+      [topAnchor2 leadingAnchor];
+      v124 = v126 = leadingAnchor3;
+      v122 = [leadingAnchor3 constraintEqualToAnchor:?];
       v133[1] = v122;
-      v18 = [(UILayoutGuide *)v6->_paletteViewLayoutGuide trailingAnchor];
-      v19 = [(PKPaletteHostView *)v6 layoutMarginsGuide];
-      v20 = [v19 trailingAnchor];
-      v121 = v18;
-      v21 = [v18 constraintEqualToAnchor:v20];
-      v133[2] = v21;
-      v22 = [(UILayoutGuide *)v6->_paletteViewLayoutGuide bottomAnchor];
-      v23 = [(PKPaletteHostView *)v6 layoutMarginsGuide];
-      v24 = [v23 bottomAnchor];
-      v25 = [v22 constraintEqualToAnchor:v24];
+      trailingAnchor3 = [(UILayoutGuide *)v6->_paletteViewLayoutGuide trailingAnchor];
+      layoutMarginsGuide2 = [(PKPaletteHostView *)v6 layoutMarginsGuide];
+      trailingAnchor = [layoutMarginsGuide2 trailingAnchor];
+      leadingAnchor2 = trailingAnchor3;
+      trailingAnchor2 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor];
+      v133[2] = trailingAnchor2;
+      bottomAnchor3 = [(UILayoutGuide *)v6->_paletteViewLayoutGuide bottomAnchor];
+      bottomAnchor = [(PKPaletteHostView *)v6 layoutMarginsGuide];
+      bottomAnchor2 = [bottomAnchor bottomAnchor];
+      v25 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor2];
       v133[3] = v25;
       v26 = v133;
     }
@@ -146,11 +146,11 @@
     objc_storeStrong(&v6->_paletteView, obj);
     [(PKPaletteView *)v6->_paletteView setPaletteViewHosting:v6];
     [(PKPaletteView *)v6->_paletteView setInternalDelegate:v6];
-    v30 = [(PKPaletteHostView *)v6 paletteView];
-    [v30 setTranslatesAutoresizingMaskIntoConstraints:0];
+    paletteView = [(PKPaletteHostView *)v6 paletteView];
+    [paletteView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v31 = [(PKPaletteHostView *)v6 paletteView];
-    [(PKPaletteHostView *)v6 addSubview:v31];
+    paletteView2 = [(PKPaletteHostView *)v6 paletteView];
+    [(PKPaletteHostView *)v6 addSubview:paletteView2];
 
     [(PKPaletteHostView *)v6 setDelegate:v6->_paletteView];
     v32 = [objc_alloc(MEMORY[0x1E69DCDB0]) initWithDelegate:v6];
@@ -158,114 +158,114 @@
     v6->_pointerInteraction = v32;
 
     [(PKPaletteHostView *)v6 addInteraction:v6->_pointerInteraction];
-    v34 = [(PKPaletteHostView *)v6 paletteView];
-    v35 = [v34 topAnchor];
-    v36 = [(UILayoutGuide *)v6->_paletteViewLayoutGuide topAnchor];
-    v37 = [v35 constraintEqualToAnchor:v36];
+    paletteView3 = [(PKPaletteHostView *)v6 paletteView];
+    topAnchor5 = [paletteView3 topAnchor];
+    topAnchor6 = [(UILayoutGuide *)v6->_paletteViewLayoutGuide topAnchor];
+    v37 = [topAnchor5 constraintEqualToAnchor:topAnchor6];
     paletteTopConstraint = v6->_paletteTopConstraint;
     v6->_paletteTopConstraint = v37;
 
-    v39 = [(PKPaletteHostView *)v6 paletteTopConstraint];
+    paletteTopConstraint = [(PKPaletteHostView *)v6 paletteTopConstraint];
     LODWORD(v40) = 1132068864;
-    [v39 setPriority:v40];
+    [paletteTopConstraint setPriority:v40];
 
-    v41 = [(UILayoutGuide *)v6->_paletteViewLayoutGuide bottomAnchor];
-    v42 = [(PKPaletteHostView *)v6 paletteView];
-    v43 = [v42 bottomAnchor];
-    v44 = [v41 constraintEqualToAnchor:v43];
+    bottomAnchor4 = [(UILayoutGuide *)v6->_paletteViewLayoutGuide bottomAnchor];
+    paletteView4 = [(PKPaletteHostView *)v6 paletteView];
+    bottomAnchor5 = [paletteView4 bottomAnchor];
+    v44 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5];
     paletteBottomConstraint = v6->_paletteBottomConstraint;
     v6->_paletteBottomConstraint = v44;
 
-    v46 = [(PKPaletteHostView *)v6 paletteBottomConstraint];
+    paletteBottomConstraint = [(PKPaletteHostView *)v6 paletteBottomConstraint];
     LODWORD(v47) = 1132068864;
-    [v46 setPriority:v47];
+    [paletteBottomConstraint setPriority:v47];
 
-    v48 = [(PKPaletteHostView *)v6 paletteView];
-    v49 = [v48 leftAnchor];
-    v50 = [(UILayoutGuide *)v6->_paletteViewLayoutGuide leftAnchor];
-    v51 = [v49 constraintEqualToAnchor:v50];
+    paletteView5 = [(PKPaletteHostView *)v6 paletteView];
+    leftAnchor = [paletteView5 leftAnchor];
+    leftAnchor2 = [(UILayoutGuide *)v6->_paletteViewLayoutGuide leftAnchor];
+    v51 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
     paletteLeftConstraint = v6->_paletteLeftConstraint;
     v6->_paletteLeftConstraint = v51;
 
-    v53 = [(PKPaletteHostView *)v6 paletteLeftConstraint];
+    paletteLeftConstraint = [(PKPaletteHostView *)v6 paletteLeftConstraint];
     LODWORD(v54) = 1132068864;
-    [v53 setPriority:v54];
+    [paletteLeftConstraint setPriority:v54];
 
-    v55 = [(UILayoutGuide *)v6->_paletteViewLayoutGuide rightAnchor];
-    v56 = [(PKPaletteHostView *)v6 paletteView];
-    v57 = [v56 rightAnchor];
-    v58 = [v55 constraintEqualToAnchor:v57];
+    rightAnchor = [(UILayoutGuide *)v6->_paletteViewLayoutGuide rightAnchor];
+    paletteView6 = [(PKPaletteHostView *)v6 paletteView];
+    rightAnchor2 = [paletteView6 rightAnchor];
+    v58 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
     paletteRightConstraint = v6->_paletteRightConstraint;
     v6->_paletteRightConstraint = v58;
 
-    v60 = [(PKPaletteHostView *)v6 paletteRightConstraint];
+    paletteRightConstraint = [(PKPaletteHostView *)v6 paletteRightConstraint];
     LODWORD(v61) = 1132068864;
-    [v60 setPriority:v61];
+    [paletteRightConstraint setPriority:v61];
 
     v62 = MEMORY[0x1E696ACD8];
-    v63 = [(PKPaletteHostView *)v6 paletteTopConstraint];
-    v132[0] = v63;
-    v64 = [(PKPaletteHostView *)v6 paletteBottomConstraint];
-    v132[1] = v64;
-    v65 = [(PKPaletteHostView *)v6 paletteLeftConstraint];
-    v132[2] = v65;
-    v66 = [(PKPaletteHostView *)v6 paletteRightConstraint];
-    v132[3] = v66;
+    paletteTopConstraint2 = [(PKPaletteHostView *)v6 paletteTopConstraint];
+    v132[0] = paletteTopConstraint2;
+    paletteBottomConstraint2 = [(PKPaletteHostView *)v6 paletteBottomConstraint];
+    v132[1] = paletteBottomConstraint2;
+    paletteLeftConstraint2 = [(PKPaletteHostView *)v6 paletteLeftConstraint];
+    v132[2] = paletteLeftConstraint2;
+    paletteRightConstraint2 = [(PKPaletteHostView *)v6 paletteRightConstraint];
+    v132[3] = paletteRightConstraint2;
     v67 = [MEMORY[0x1E695DEC8] arrayWithObjects:v132 count:4];
     [v62 activateConstraints:v67];
 
-    v68 = [(PKPaletteHostView *)v6 paletteView];
-    v69 = [v68 centerXAnchor];
-    v70 = [(UILayoutGuide *)v6->_paletteViewLayoutGuide centerXAnchor];
-    v71 = [v69 constraintEqualToAnchor:v70];
+    paletteView7 = [(PKPaletteHostView *)v6 paletteView];
+    centerXAnchor = [paletteView7 centerXAnchor];
+    centerXAnchor2 = [(UILayoutGuide *)v6->_paletteViewLayoutGuide centerXAnchor];
+    v71 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     paletteCenterXConstraint = v6->_paletteCenterXConstraint;
     v6->_paletteCenterXConstraint = v71;
 
-    v73 = [(PKPaletteHostView *)v6 paletteCenterXConstraint];
+    paletteCenterXConstraint = [(PKPaletteHostView *)v6 paletteCenterXConstraint];
     LODWORD(v74) = 1132068864;
-    [v73 setPriority:v74];
+    [paletteCenterXConstraint setPriority:v74];
 
-    v75 = [(PKPaletteHostView *)v6 paletteView];
-    v76 = [v75 centerYAnchor];
-    v77 = [(UILayoutGuide *)v6->_paletteViewLayoutGuide centerYAnchor];
-    v78 = [v76 constraintEqualToAnchor:v77];
+    paletteView8 = [(PKPaletteHostView *)v6 paletteView];
+    centerYAnchor = [paletteView8 centerYAnchor];
+    centerYAnchor2 = [(UILayoutGuide *)v6->_paletteViewLayoutGuide centerYAnchor];
+    v78 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     paletteCenterYConstraint = v6->_paletteCenterYConstraint;
     v6->_paletteCenterYConstraint = v78;
 
-    v80 = [(PKPaletteHostView *)v6 paletteCenterYConstraint];
+    paletteCenterYConstraint = [(PKPaletteHostView *)v6 paletteCenterYConstraint];
     LODWORD(v81) = 1132068864;
-    [v80 setPriority:v81];
+    [paletteCenterYConstraint setPriority:v81];
 
     v82 = MEMORY[0x1E696ACD8];
-    v83 = [(PKPaletteHostView *)v6 paletteCenterXConstraint];
-    v131[0] = v83;
-    v84 = [(PKPaletteHostView *)v6 paletteCenterYConstraint];
-    v131[1] = v84;
+    paletteCenterXConstraint2 = [(PKPaletteHostView *)v6 paletteCenterXConstraint];
+    v131[0] = paletteCenterXConstraint2;
+    paletteCenterYConstraint2 = [(PKPaletteHostView *)v6 paletteCenterYConstraint];
+    v131[1] = paletteCenterYConstraint2;
     v85 = [MEMORY[0x1E695DEC8] arrayWithObjects:v131 count:2];
     [v82 activateConstraints:v85];
 
-    v86 = [(PKPaletteHostView *)v6 paletteView];
-    [v86 paletteSizeForEdge:4];
+    paletteView9 = [(PKPaletteHostView *)v6 paletteView];
+    [paletteView9 paletteSizeForEdge:4];
     v88 = v87;
     v90 = v89;
 
-    v91 = [(PKPaletteHostView *)v6 paletteView];
-    v92 = [v91 widthAnchor];
-    v93 = [v92 constraintEqualToConstant:v88];
+    paletteView10 = [(PKPaletteHostView *)v6 paletteView];
+    widthAnchor = [paletteView10 widthAnchor];
+    v93 = [widthAnchor constraintEqualToConstant:v88];
     paletteWidthConstraint = v6->_paletteWidthConstraint;
     v6->_paletteWidthConstraint = v93;
 
-    v95 = [(PKPaletteHostView *)v6 paletteView];
-    v96 = [v95 heightAnchor];
-    v97 = [v96 constraintEqualToConstant:v90];
+    paletteView11 = [(PKPaletteHostView *)v6 paletteView];
+    heightAnchor = [paletteView11 heightAnchor];
+    v97 = [heightAnchor constraintEqualToConstant:v90];
     paletteHeightConstraint = v6->_paletteHeightConstraint;
     v6->_paletteHeightConstraint = v97;
 
     v99 = MEMORY[0x1E696ACD8];
-    v100 = [(PKPaletteHostView *)v6 paletteWidthConstraint];
-    v130[0] = v100;
-    v101 = [(PKPaletteHostView *)v6 paletteHeightConstraint];
-    v130[1] = v101;
+    paletteWidthConstraint = [(PKPaletteHostView *)v6 paletteWidthConstraint];
+    v130[0] = paletteWidthConstraint;
+    paletteHeightConstraint = [(PKPaletteHostView *)v6 paletteHeightConstraint];
+    v130[1] = paletteHeightConstraint;
     v102 = [MEMORY[0x1E695DEC8] arrayWithObjects:v130 count:2];
     [v99 activateConstraints:v102];
 
@@ -273,27 +273,27 @@
     panGestureRecognizer = v6->_panGestureRecognizer;
     v6->_panGestureRecognizer = v103;
 
-    v105 = [(PKPaletteHostView *)v6 panGestureRecognizer];
-    [v105 setDelegate:v6];
+    panGestureRecognizer = [(PKPaletteHostView *)v6 panGestureRecognizer];
+    [panGestureRecognizer setDelegate:v6];
 
-    v106 = [(PKPaletteHostView *)v6 paletteView];
-    v107 = [(PKPaletteHostView *)v6 panGestureRecognizer];
-    [v106 addGestureRecognizer:v107];
+    paletteView12 = [(PKPaletteHostView *)v6 paletteView];
+    panGestureRecognizer2 = [(PKPaletteHostView *)v6 panGestureRecognizer];
+    [paletteView12 addGestureRecognizer:panGestureRecognizer2];
 
-    v108 = [(PKPaletteHostView *)v6 paletteView];
-    v109 = [v108 contentScrollView];
-    [v109 setDelegate:v6];
+    paletteView13 = [(PKPaletteHostView *)v6 paletteView];
+    contentScrollView = [paletteView13 contentScrollView];
+    [contentScrollView setDelegate:v6];
 
     v110 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:v6 action:sel__tapToExpandPaletteFromMinimizedGestureHandler_];
     tapToExpandPaletteFromMinimizedGestureRecognizer = v6->_tapToExpandPaletteFromMinimizedGestureRecognizer;
     v6->_tapToExpandPaletteFromMinimizedGestureRecognizer = v110;
 
-    v112 = [(PKPaletteHostView *)v6 tapToExpandPaletteFromMinimizedGestureRecognizer];
-    [v112 setDelegate:v6];
+    tapToExpandPaletteFromMinimizedGestureRecognizer = [(PKPaletteHostView *)v6 tapToExpandPaletteFromMinimizedGestureRecognizer];
+    [tapToExpandPaletteFromMinimizedGestureRecognizer setDelegate:v6];
 
-    v113 = [(PKPaletteHostView *)v6 paletteView];
-    v114 = [(PKPaletteHostView *)v6 tapToExpandPaletteFromMinimizedGestureRecognizer];
-    [v113 addGestureRecognizer:v114];
+    paletteView14 = [(PKPaletteHostView *)v6 paletteView];
+    tapToExpandPaletteFromMinimizedGestureRecognizer2 = [(PKPaletteHostView *)v6 tapToExpandPaletteFromMinimizedGestureRecognizer];
+    [paletteView14 addGestureRecognizer:tapToExpandPaletteFromMinimizedGestureRecognizer2];
 
     v115 = [objc_alloc(MEMORY[0x1E69DCC48]) initWithTarget:v6 action:sel__touchDownFeedbackGestureHandler_];
     touchDownFeedbackGestureRecognizer = v6->_touchDownFeedbackGestureRecognizer;
@@ -301,8 +301,8 @@
 
     [(UILongPressGestureRecognizer *)v6->_touchDownFeedbackGestureRecognizer setDelegate:v6];
     [(UILongPressGestureRecognizer *)v6->_touchDownFeedbackGestureRecognizer setMinimumPressDuration:0.0];
-    v117 = [(PKPaletteHostView *)v6 paletteView];
-    [v117 addGestureRecognizer:v6->_touchDownFeedbackGestureRecognizer];
+    paletteView15 = [(PKPaletteHostView *)v6 paletteView];
+    [paletteView15 addGestureRecognizer:v6->_touchDownFeedbackGestureRecognizer];
 
     v6->_panGestureDidStartInPaletteScrollView = 0;
     v6->_panGestureShouldDragPaletteView = 1;
@@ -312,29 +312,29 @@
     v6->_tooltipPresentationHandle = v118;
 
     [(PKPaletteHostView *)v6 setClipsToBounds:1];
-    v5 = v128;
+    viewCopy = v128;
   }
 
   return v6;
 }
 
-- (void)setPaletteViewBottomEdgeSpacing:(double)a3
+- (void)setPaletteViewBottomEdgeSpacing:(double)spacing
 {
-  if (self->_paletteViewBottomEdgeSpacing != a3)
+  if (self->_paletteViewBottomEdgeSpacing != spacing)
   {
-    self->_paletteViewBottomEdgeSpacing = a3;
-    v5 = [(PKPaletteHostView *)self palettePosition];
+    self->_paletteViewBottomEdgeSpacing = spacing;
+    palettePosition = [(PKPaletteHostView *)self palettePosition];
 
-    [(PKPaletteHostView *)self _updateConstraintsToDockPaletteToPosition:v5];
+    [(PKPaletteHostView *)self _updateConstraintsToDockPaletteToPosition:palettePosition];
   }
 }
 
 - (void)didMoveToWindow
 {
-  v3 = [(PKPaletteHostView *)self window];
-  if (v3)
+  window = [(PKPaletteHostView *)self window];
+  if (window)
   {
-    v9 = v3;
+    v9 = window;
     [(PKPaletteHostView *)self _updatePaletteViewSizeConstraints];
     if ([(PKPaletteHostView *)self _shouldBeCompact])
     {
@@ -343,22 +343,22 @@
 
     else
     {
-      v4 = [(PKPaletteHostView *)self paletteView];
-      if ([v4 isAutoHideEnabled])
+      paletteView = [(PKPaletteHostView *)self paletteView];
+      if ([paletteView isAutoHideEnabled])
       {
       }
 
       else
       {
-        v5 = [(PKPaletteHostView *)self paletteView];
-        v6 = [v5 shouldStartUpMinimized];
+        paletteView2 = [(PKPaletteHostView *)self paletteView];
+        shouldStartUpMinimized = [paletteView2 shouldStartUpMinimized];
 
-        if (!v6)
+        if (!shouldStartUpMinimized)
         {
-          v7 = [(PKPaletteView *)self->_paletteView palettePosition];
-          if (v7)
+          palettePosition = [(PKPaletteView *)self->_paletteView palettePosition];
+          if (palettePosition)
           {
-            v8 = v7;
+            v8 = palettePosition;
           }
 
           else
@@ -375,7 +375,7 @@
     }
 
 LABEL_12:
-    v3 = v9;
+    window = v9;
   }
 }
 
@@ -403,58 +403,58 @@ LABEL_12:
   }
 }
 
-- (void)setPaletteVisible:(BOOL)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)setPaletteVisible:(BOOL)visible animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
-  v8 = a5;
+  animatedCopy = animated;
+  visibleCopy = visible;
+  completionCopy = completion;
   paletteVisible = self->_paletteVisible;
-  if (paletteVisible != v6)
+  if (paletteVisible != visibleCopy)
   {
-    v10 = paletteVisible && ~v6;
-    self->_paletteVisible = v6;
+    v10 = paletteVisible && ~visibleCopy;
+    self->_paletteVisible = visibleCopy;
     [(PKPaletteHostView *)self _cancelPanGestureIfNecessary];
     [(PKPaletteHostView *)self layoutIfNeeded];
-    v11 = [(PKPaletteHostView *)self isPaletteVisible];
-    v12 = [(PKPaletteHostView *)self paletteView];
-    v13 = v12;
-    if (v11)
+    isPaletteVisible = [(PKPaletteHostView *)self isPaletteVisible];
+    paletteView = [(PKPaletteHostView *)self paletteView];
+    v13 = paletteView;
+    if (isPaletteVisible)
     {
-      [v12 setNeedsLayout];
+      [paletteView setNeedsLayout];
 
-      v14 = [(PKPaletteHostView *)self paletteView];
-      [v14 layoutIfNeeded];
+      paletteView2 = [(PKPaletteHostView *)self paletteView];
+      [paletteView2 layoutIfNeeded];
 
-      v15 = [(PKPaletteHostView *)self pencilInteractionFeedbackHostView];
-      [v15 hideFeedbackView];
+      pencilInteractionFeedbackHostView = [(PKPaletteHostView *)self pencilInteractionFeedbackHostView];
+      [pencilInteractionFeedbackHostView hideFeedbackView];
     }
 
     else
     {
-      [v12 dismissPalettePopoverWithCompletion:0];
+      [paletteView dismissPalettePopoverWithCompletion:0];
 
-      v15 = [(PKPaletteHostView *)self paletteView];
-      [v15 dismissContextMenu];
+      pencilInteractionFeedbackHostView = [(PKPaletteHostView *)self paletteView];
+      [pencilInteractionFeedbackHostView dismissContextMenu];
     }
 
-    v16 = [(PKPaletteHostView *)self paletteView];
-    [v16 willStartAppearanceAnimation:v6];
+    paletteView3 = [(PKPaletteHostView *)self paletteView];
+    [paletteView3 willStartAppearanceAnimation:visibleCopy];
 
-    [(PKPaletteHostView *)self updateKeyboardAvoidanceForPalette:v6];
+    [(PKPaletteHostView *)self updateKeyboardAvoidanceForPalette:visibleCopy];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __59__PKPaletteHostView_setPaletteVisible_animated_completion___block_invoke;
     v19[3] = &unk_1E82D9EF8;
     v19[4] = self;
-    v20 = v6;
+    v20 = visibleCopy;
     v21 = v10;
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __59__PKPaletteHostView_setPaletteVisible_animated_completion___block_invoke_2;
     v17[3] = &unk_1E82D77F0;
     v17[4] = self;
-    v18 = v8;
-    [(PKPaletteHostView *)self _performAnimated:v5 tracking:0 animations:v19 completion:v17];
+    v18 = completionCopy;
+    [(PKPaletteHostView *)self _performAnimated:animatedCopy tracking:0 animations:v19 completion:v17];
   }
 }
 
@@ -497,45 +497,45 @@ uint64_t __59__PKPaletteHostView_setPaletteVisible_animated_completion___block_i
   return result;
 }
 
-- (void)updateKeyboardAvoidanceForPalette:(BOOL)a3
+- (void)updateKeyboardAvoidanceForPalette:(BOOL)palette
 {
   v4 = 0.0;
-  if (a3 && [(PKPaletteHostView *)self _shouldBeCompact])
+  if (palette && [(PKPaletteHostView *)self _shouldBeCompact])
   {
     [(PKPaletteHostView *)self _paletteViewCompactHeight];
     v4 = v5;
   }
 
-  v6 = [(PKPaletteHostView *)self keyboardSceneDelegate];
+  keyboardSceneDelegate = [(PKPaletteHostView *)self keyboardSceneDelegate];
   if (objc_opt_respondsToSelector())
   {
-    [v6 refreshWithLocalMinimumKeyboardHeight:v4];
+    [keyboardSceneDelegate refreshWithLocalMinimumKeyboardHeight:v4];
   }
 }
 
-- (void)_setPaletteVisualState:(int64_t)a3 usingTransition:(BOOL)a4
+- (void)_setPaletteVisualState:(int64_t)state usingTransition:(BOOL)transition
 {
   paletteVisualState = self->_paletteVisualState;
-  if (paletteVisualState != a3)
+  if (paletteVisualState != state)
   {
-    self->_paletteVisualState = a3;
-    if (a4)
+    self->_paletteVisualState = state;
+    if (transition)
     {
-      v6 = [(PKPaletteHostView *)self paletteTransition];
-      if (!v6 || (v7 = v6, -[PKPaletteHostView paletteTransition](self, "paletteTransition"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 isTransitionInProgress], v8, v7, (v9 & 1) == 0))
+      paletteTransition = [(PKPaletteHostView *)self paletteTransition];
+      if (!paletteTransition || (v7 = paletteTransition, -[PKPaletteHostView paletteTransition](self, "paletteTransition"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 isTransitionInProgress], v8, v7, (v9 & 1) == 0))
       {
-        v10 = [(PKPaletteHostView *)self paletteTransition];
-        [v10 setDelegate:0];
+        paletteTransition2 = [(PKPaletteHostView *)self paletteTransition];
+        [paletteTransition2 setDelegate:0];
 
         v11 = [[PKPaletteTransition alloc] initWithInitialVisualState:paletteVisualState];
         [(PKPaletteHostView *)self setPaletteTransition:v11];
 
-        v12 = [(PKPaletteHostView *)self paletteTransition];
-        [v12 setDelegate:self];
+        paletteTransition3 = [(PKPaletteHostView *)self paletteTransition];
+        [paletteTransition3 setDelegate:self];
       }
 
-      v13 = [(PKPaletteHostView *)self paletteTransition];
-      [v13 transitionToVisualState:{-[PKPaletteHostView paletteVisualState](self, "paletteVisualState")}];
+      paletteTransition4 = [(PKPaletteHostView *)self paletteTransition];
+      [paletteTransition4 transitionToVisualState:{-[PKPaletteHostView paletteVisualState](self, "paletteVisualState")}];
     }
 
     else
@@ -557,81 +557,81 @@ uint64_t __59__PKPaletteHostView_setPaletteVisible_animated_completion___block_i
     return 1;
   }
 
-  v4 = [(PKPaletteHostView *)self panGestureRecognizer];
-  if ([v4 state] == 1)
+  panGestureRecognizer = [(PKPaletteHostView *)self panGestureRecognizer];
+  if ([panGestureRecognizer state] == 1)
   {
     v3 = 1;
   }
 
   else
   {
-    v5 = [(PKPaletteHostView *)self panGestureRecognizer];
-    v3 = [v5 state] == 2;
+    panGestureRecognizer2 = [(PKPaletteHostView *)self panGestureRecognizer];
+    v3 = [panGestureRecognizer2 state] == 2;
   }
 
   return v3;
 }
 
-- (void)_updatePaletteAppearanceAnimated:(BOOL)a3
+- (void)_updatePaletteAppearanceAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(PKPaletteHostView *)self paletteView];
-  v6 = [(PKPaletteHostView *)self traitCollection];
-  v7 = [v5 borderColorForTraitCollection:v6];
+  animatedCopy = animated;
+  paletteView = [(PKPaletteHostView *)self paletteView];
+  traitCollection = [(PKPaletteHostView *)self traitCollection];
+  v7 = [paletteView borderColorForTraitCollection:traitCollection];
 
-  v8 = [(PKPaletteHostView *)self paletteView];
-  v9 = [(PKPaletteHostView *)self traitCollection];
-  [v8 borderWidthForTraitCollection:v9];
+  paletteView2 = [(PKPaletteHostView *)self paletteView];
+  traitCollection2 = [(PKPaletteHostView *)self traitCollection];
+  [paletteView2 borderWidthForTraitCollection:traitCollection2];
   v11 = v10;
 
-  v12 = [v7 CGColor];
-  v13 = [(PKPaletteHostView *)self paletteView];
-  v14 = [v13 layer];
-  [v14 setBorderColor:v12];
+  cGColor = [v7 CGColor];
+  paletteView3 = [(PKPaletteHostView *)self paletteView];
+  layer = [paletteView3 layer];
+  [layer setBorderColor:cGColor];
 
-  v15 = [(PKPaletteHostView *)self paletteView];
-  v16 = [v15 layer];
-  [v16 setBorderWidth:v11];
+  paletteView4 = [(PKPaletteHostView *)self paletteView];
+  layer2 = [paletteView4 layer];
+  [layer2 setBorderWidth:v11];
 
-  v17 = [(PKPaletteHostView *)self paletteView];
-  v18 = [v17 layer];
-  [v18 setMasksToBounds:0];
+  paletteView5 = [(PKPaletteHostView *)self paletteView];
+  layer3 = [paletteView5 layer];
+  [layer3 setMasksToBounds:0];
 
   v19 = *MEMORY[0x1E695F060];
   v20 = *(MEMORY[0x1E695F060] + 8);
-  v21 = [(PKPaletteHostView *)self paletteView];
-  v22 = [v21 layer];
-  [v22 setShadowOffset:{v19, v20}];
+  paletteView6 = [(PKPaletteHostView *)self paletteView];
+  layer4 = [paletteView6 layer];
+  [layer4 setShadowOffset:{v19, v20}];
 
-  v23 = [(PKPaletteHostView *)self paletteVisualState];
-  v24 = [(PKPaletteHostView *)self paletteTransition];
-  LODWORD(v14) = [v24 isTransitionInProgress];
+  paletteVisualState = [(PKPaletteHostView *)self paletteVisualState];
+  paletteTransition = [(PKPaletteHostView *)self paletteTransition];
+  LODWORD(layer) = [paletteTransition isTransitionInProgress];
 
-  if (v14)
+  if (layer)
   {
-    v25 = [(PKPaletteHostView *)self paletteTransition];
-    v23 = [v25 intermediateVisualState];
+    paletteTransition2 = [(PKPaletteHostView *)self paletteTransition];
+    paletteVisualState = [paletteTransition2 intermediateVisualState];
   }
 
   v26 = 0.0;
-  if (v23 <= 7)
+  if (paletteVisualState <= 7)
   {
-    if (((1 << v23) & 0xF0) != 0)
+    if (((1 << paletteVisualState) & 0xF0) != 0)
     {
       goto LABEL_5;
     }
 
-    if (((1 << v23) & 3) == 0)
+    if (((1 << paletteVisualState) & 3) == 0)
     {
-      v33 = [(PKPaletteHostView *)self paletteView];
-      [v33 shadowOpacity];
+      paletteView7 = [(PKPaletteHostView *)self paletteView];
+      [paletteView7 shadowOpacity];
       v29 = v34;
 
-      v30 = [(PKPaletteHostView *)self paletteView];
-      v35 = [v30 shouldAdjustShadowRadiusForMinimized];
-      v36 = [(PKPaletteHostView *)self paletteView];
-      [v36 shadowRadius];
-      if (v35)
+      paletteView8 = [(PKPaletteHostView *)self paletteView];
+      shouldAdjustShadowRadiusForMinimized = [paletteView8 shouldAdjustShadowRadiusForMinimized];
+      paletteView9 = [(PKPaletteHostView *)self paletteView];
+      [paletteView9 shadowRadius];
+      if (shouldAdjustShadowRadiusForMinimized)
       {
         v26 = v37 * 0.5;
       }
@@ -647,29 +647,29 @@ uint64_t __59__PKPaletteHostView_setPaletteVisible_animated_completion___block_i
     if (_UISolariumEnabled() && [(PKPaletteHostView *)self isEffectivePaletteVisible])
     {
 LABEL_5:
-      v27 = [(PKPaletteHostView *)self paletteView];
-      [v27 shadowOpacity];
+      paletteView10 = [(PKPaletteHostView *)self paletteView];
+      [paletteView10 shadowOpacity];
       v29 = v28;
 
-      v30 = [(PKPaletteHostView *)self paletteView];
-      [v30 shadowRadius];
+      paletteView8 = [(PKPaletteHostView *)self paletteView];
+      [paletteView8 shadowRadius];
       v26 = v31;
 LABEL_14:
 
-      v32 = [MEMORY[0x1E69DC888] pk_paletteShadowColor];
+      pk_paletteShadowColor = [MEMORY[0x1E69DC888] pk_paletteShadowColor];
       goto LABEL_15;
     }
   }
 
-  v32 = 0;
+  pk_paletteShadowColor = 0;
   v29 = 0;
 LABEL_15:
-  v38 = [(PKPaletteHostView *)self avoidanceEdgeForPaletteVisualState:v23];
+  v38 = [(PKPaletteHostView *)self avoidanceEdgeForPaletteVisualState:paletteVisualState];
   if (v38 && (v39 = v38, -[PKPaletteHostView paletteView](self, "paletteView"), v40 = objc_claimAutoreleasedReturnValue(), v41 = [v40 isVisible], v40, v41))
   {
     v42 = [MEMORY[0x1E69DD438] sceneComponentForView:self];
-    v43 = [(PKPaletteHostView *)self paletteView];
-    [v43 frame];
+    paletteView11 = [(PKPaletteHostView *)self paletteView];
+    [paletteView11 frame];
     v57 = CGRectInset(v56, -8.0, -8.0);
     x = v57.origin.x;
     y = v57.origin.y;
@@ -698,8 +698,8 @@ LABEL_15:
     v52[4] = self;
     v54 = v29;
     v55 = v26;
-    v53 = v32;
-    [v51 _pk_withDisabledActions:!v3 perform:v52];
+    v53 = pk_paletteShadowColor;
+    [v51 _pk_withDisabledActions:!animatedCopy perform:v52];
   }
 }
 
@@ -735,11 +735,11 @@ void __54__PKPaletteHostView__updatePaletteAppearanceAnimated___block_invoke(uin
     [(PKPaletteHostView *)self _paletteSizeForVisualState:[(PKPaletteHostView *)self paletteVisualState]];
     v4 = v3;
     v6 = v5;
-    v7 = [(PKPaletteHostView *)self paletteWidthConstraint];
-    [v7 setConstant:v4];
+    paletteWidthConstraint = [(PKPaletteHostView *)self paletteWidthConstraint];
+    [paletteWidthConstraint setConstant:v4];
 
-    v8 = [(PKPaletteHostView *)self paletteHeightConstraint];
-    [v8 setConstant:v6];
+    paletteHeightConstraint = [(PKPaletteHostView *)self paletteHeightConstraint];
+    [paletteHeightConstraint setConstant:v6];
 
     [(PKPaletteHostView *)self setNeedsLayout];
   }
@@ -747,13 +747,13 @@ void __54__PKPaletteHostView__updatePaletteAppearanceAnimated___block_invoke(uin
 
 - (void)_updatePaletteContentAlpha
 {
-  v3 = [(PKPaletteHostView *)self paletteTransition];
-  v4 = [v3 isTransitionInProgress];
+  paletteTransition = [(PKPaletteHostView *)self paletteTransition];
+  isTransitionInProgress = [paletteTransition isTransitionInProgress];
 
-  if (v4)
+  if (isTransitionInProgress)
   {
-    v5 = [(PKPaletteHostView *)self paletteTransition];
-    [v5 expandedToCollapsedRatio];
+    paletteTransition2 = [(PKPaletteHostView *)self paletteTransition];
+    [paletteTransition2 expandedToCollapsedRatio];
     v7 = 1.0 - (v6 + v6);
 
     if (v7 < 0.0)
@@ -772,8 +772,8 @@ void __54__PKPaletteHostView__updatePaletteAppearanceAnimated___block_invoke(uin
     }
   }
 
-  v9 = [(PKPaletteHostView *)self paletteView];
-  [v9 setPaletteContentAlpha:v7];
+  paletteView = [(PKPaletteHostView *)self paletteView];
+  [paletteView setPaletteContentAlpha:v7];
 }
 
 - (void)layoutSubviews
@@ -786,22 +786,22 @@ void __54__PKPaletteHostView__updatePaletteAppearanceAnimated___block_invoke(uin
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(PKPaletteHostView *)self pencilInteractionFeedbackHostView];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  pencilInteractionFeedbackHostView = [(PKPaletteHostView *)self pencilInteractionFeedbackHostView];
+  [pencilInteractionFeedbackHostView setFrame:{v4, v6, v8, v10}];
 
   [(PKPaletteHostView *)self safeAreaInsets];
   v13 = v12;
-  v14 = [MEMORY[0x1E696AAE8] mainBundle];
-  v15 = [v14 bundleIdentifier];
-  if ([v15 isEqualToString:@"com.apple.quicklook.extension.previewUI"])
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  if ([bundleIdentifier isEqualToString:@"com.apple.quicklook.extension.previewUI"])
   {
   }
 
   else
   {
-    v16 = [MEMORY[0x1E696AAE8] mainBundle];
-    v17 = [v16 bundleIdentifier];
-    v18 = [v17 isEqualToString:@"com.apple.quicklook.UIExtension"];
+    mainBundle2 = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier2 = [mainBundle2 bundleIdentifier];
+    v18 = [bundleIdentifier2 isEqualToString:@"com.apple.quicklook.UIExtension"];
 
     if (!v18)
     {
@@ -862,19 +862,19 @@ uint64_t __44__PKPaletteHostView_safeAreaInsetsDidChange__block_invoke(uint64_t 
   v49[2] = *MEMORY[0x1E69E9840];
   if (_UISolariumEnabled())
   {
-    v3 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v3 bounds];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen bounds];
     v5 = v4;
 
-    v6 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v6 bounds];
+    mainScreen2 = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen2 bounds];
     v8 = v7;
 
-    LOBYTE(v6) = PKIsPhoneDevice();
-    v9 = [(PKPaletteHostView *)self paletteWidthConstraint];
-    [v9 setConstant:388.0];
+    LOBYTE(mainScreen2) = PKIsPhoneDevice();
+    paletteWidthConstraint = [(PKPaletteHostView *)self paletteWidthConstraint];
+    [paletteWidthConstraint setConstant:388.0];
 
-    if ((v6 & (v5 > v8)) != 0)
+    if ((mainScreen2 & (v5 > v8)) != 0)
     {
       v10 = 1000.0;
     }
@@ -884,9 +884,9 @@ uint64_t __44__PKPaletteHostView_safeAreaInsetsDidChange__block_invoke(uint64_t 
       v10 = 750.0;
     }
 
-    v11 = [(PKPaletteHostView *)self paletteWidthConstraint];
+    paletteWidthConstraint2 = [(PKPaletteHostView *)self paletteWidthConstraint];
     *&v12 = v10;
-    [v11 setPriority:v12];
+    [paletteWidthConstraint2 setPriority:v12];
   }
 
   [(PKPaletteHostView *)self _deactivatePaletteEdgeConstraintsForCompact];
@@ -905,12 +905,12 @@ uint64_t __44__PKPaletteHostView_safeAreaInsetsDidChange__block_invoke(uint64_t 
     v13 = -(Height + v16);
   }
 
-  v17 = [(PKPaletteHostView *)self paletteBottomConstraint];
-  [v17 setConstant:v13];
+  paletteBottomConstraint = [(PKPaletteHostView *)self paletteBottomConstraint];
+  [paletteBottomConstraint setConstant:v13];
 
-  v18 = [(PKPaletteHostView *)self paletteBottomConstraint];
+  paletteBottomConstraint2 = [(PKPaletteHostView *)self paletteBottomConstraint];
   LODWORD(v19) = 1148846080;
-  [v18 setPriority:v19];
+  [paletteBottomConstraint2 setPriority:v19];
 
   if (_UISolariumEnabled())
   {
@@ -922,14 +922,14 @@ uint64_t __44__PKPaletteHostView_safeAreaInsetsDidChange__block_invoke(uint64_t 
     v20 = 0.0;
   }
 
-  v21 = [(PKPaletteHostView *)self traitCollection];
-  v22 = [v21 layoutDirection];
-  v23 = [(PKPaletteHostView *)self paletteView];
-  [v23 edgeInsetsInCompactSize];
+  traitCollection = [(PKPaletteHostView *)self traitCollection];
+  layoutDirection = [traitCollection layoutDirection];
+  paletteView = [(PKPaletteHostView *)self paletteView];
+  [paletteView edgeInsetsInCompactSize];
   v25 = v24;
   v27 = v26;
 
-  if (v22 == 1)
+  if (layoutDirection == 1)
   {
     v28 = v27;
   }
@@ -941,11 +941,11 @@ uint64_t __44__PKPaletteHostView_safeAreaInsetsDidChange__block_invoke(uint64_t 
 
   v29 = v20 + v28;
 
-  v30 = [(PKPaletteHostView *)self traitCollection];
-  v31 = [v30 layoutDirection];
-  v32 = [(PKPaletteHostView *)self paletteView];
-  [v32 edgeInsetsInCompactSize];
-  if (v31 == 1)
+  traitCollection2 = [(PKPaletteHostView *)self traitCollection];
+  layoutDirection2 = [traitCollection2 layoutDirection];
+  paletteView2 = [(PKPaletteHostView *)self paletteView];
+  [paletteView2 edgeInsetsInCompactSize];
+  if (layoutDirection2 == 1)
   {
     v35 = v33;
   }
@@ -956,34 +956,34 @@ uint64_t __44__PKPaletteHostView_safeAreaInsetsDidChange__block_invoke(uint64_t 
   }
 
   v36 = _UISolariumEnabled();
-  v37 = [(PKPaletteHostView *)self paletteView];
-  v38 = [v37 leftAnchor];
-  v39 = [(PKPaletteHostView *)self leftAnchor];
+  paletteView3 = [(PKPaletteHostView *)self paletteView];
+  leftAnchor = [paletteView3 leftAnchor];
+  leftAnchor2 = [(PKPaletteHostView *)self leftAnchor];
   if (v36)
   {
-    [v38 constraintGreaterThanOrEqualToAnchor:v39 constant:v29];
+    [leftAnchor constraintGreaterThanOrEqualToAnchor:leftAnchor2 constant:v29];
   }
 
   else
   {
-    [v38 constraintEqualToAnchor:v39 constant:v29];
+    [leftAnchor constraintEqualToAnchor:leftAnchor2 constant:v29];
   }
   v40 = ;
   objc_storeStrong(&self->_paletteLeftConstraintInCompact, v40);
 
   LODWORD(v40) = _UISolariumEnabled();
-  v41 = [(PKPaletteHostView *)self rightAnchor];
-  v42 = [(PKPaletteHostView *)self paletteView];
-  v43 = [v42 rightAnchor];
+  rightAnchor = [(PKPaletteHostView *)self rightAnchor];
+  paletteView4 = [(PKPaletteHostView *)self paletteView];
+  rightAnchor2 = [paletteView4 rightAnchor];
   v44 = v20 + v35;
   if (v40)
   {
-    [v41 constraintGreaterThanOrEqualToAnchor:v43 constant:v44];
+    [rightAnchor constraintGreaterThanOrEqualToAnchor:rightAnchor2 constant:v44];
   }
 
   else
   {
-    [v41 constraintEqualToAnchor:v43 constant:v44];
+    [rightAnchor constraintEqualToAnchor:rightAnchor2 constant:v44];
   }
   v45 = ;
   objc_storeStrong(&self->_paletteRightConstraintInCompact, v45);
@@ -1000,9 +1000,9 @@ uint64_t __44__PKPaletteHostView_safeAreaInsetsDidChange__block_invoke(uint64_t 
 
 - (double)_bottomEdgeSpacingInCompact
 {
-  v2 = [(PKPaletteHostView *)self window];
-  v3 = [v2 windowScene];
-  if (PKIsQuickNoteWindowScene(v3))
+  window = [(PKPaletteHostView *)self window];
+  windowScene = [window windowScene];
+  if (PKIsQuickNoteWindowScene(windowScene))
   {
     v4 = 20.0;
   }
@@ -1019,32 +1019,32 @@ uint64_t __44__PKPaletteHostView_safeAreaInsetsDidChange__block_invoke(uint64_t 
 {
   [(PKPaletteHostView *)self _paletteViewCompactHeight];
   v4 = v3;
-  v5 = [(PKPaletteHostView *)self paletteHeightConstraint];
-  [v5 setConstant:v4];
+  paletteHeightConstraint = [(PKPaletteHostView *)self paletteHeightConstraint];
+  [paletteHeightConstraint setConstant:v4];
 
-  v7 = [(PKPaletteHostView *)self paletteHeightConstraint];
+  paletteHeightConstraint2 = [(PKPaletteHostView *)self paletteHeightConstraint];
   LODWORD(v6) = 1148846080;
-  [v7 setPriority:v6];
+  [paletteHeightConstraint2 setPriority:v6];
 }
 
 - (double)_paletteViewCompactHeight
 {
-  v3 = [(PKPaletteHostView *)self paletteView];
-  [v3 compactPaletteHeight];
+  paletteView = [(PKPaletteHostView *)self paletteView];
+  [paletteView compactPaletteHeight];
   v5 = v4;
-  v6 = [(PKPaletteHostView *)self paletteView];
-  [v6 edgeInsetsInCompactSize];
+  paletteView2 = [(PKPaletteHostView *)self paletteView];
+  [paletteView2 edgeInsetsInCompactSize];
   v8 = v5 + v7;
 
   if ((_UISolariumEnabled() & 1) == 0)
   {
-    v9 = [(PKPaletteHostView *)self paletteView];
-    v10 = [v9 ignoresSafeAreaInsetsInCompactSize];
+    paletteView3 = [(PKPaletteHostView *)self paletteView];
+    ignoresSafeAreaInsetsInCompactSize = [paletteView3 ignoresSafeAreaInsetsInCompactSize];
 
-    if ((v10 & 1) == 0)
+    if ((ignoresSafeAreaInsetsInCompactSize & 1) == 0)
     {
-      v11 = [(PKPaletteHostView *)self window];
-      [v11 safeAreaInsets];
+      window = [(PKPaletteHostView *)self window];
+      [window safeAreaInsets];
       v8 = v8 + v12;
     }
   }
@@ -1059,9 +1059,9 @@ uint64_t __44__PKPaletteHostView_safeAreaInsetsDidChange__block_invoke(uint64_t 
   return v8 + v14;
 }
 
-- (void)_dockPaletteToAutoHideCornerAnimated:(BOOL)a3
+- (void)_dockPaletteToAutoHideCornerAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if (![(PKPaletteHostView *)self _shouldBeCompact])
   {
     v5 = [(PKPaletteView *)self->_paletteView autoHideCorner]- 1;
@@ -1075,29 +1075,29 @@ uint64_t __44__PKPaletteHostView_safeAreaInsetsDidChange__block_invoke(uint64_t 
       v6 = qword_1C801DC40[v5];
     }
 
-    [(PKPaletteHostView *)self _dockPaletteToPosition:v6 animated:v3];
+    [(PKPaletteHostView *)self _dockPaletteToPosition:v6 animated:animatedCopy];
   }
 }
 
-- (void)_dockPaletteToPosition:(int64_t)a3 isFromUserReposition:(BOOL)a4 animated:(BOOL)a5
+- (void)_dockPaletteToPosition:(int64_t)position isFromUserReposition:(BOOL)reposition animated:(BOOL)animated
 {
-  v5 = a5;
-  v9 = a3 - 1;
-  v10 = (a3 - 1) < 4;
+  animatedCopy = animated;
+  v9 = position - 1;
+  v10 = (position - 1) < 4;
   v11 = ([(PKPaletteHostView *)self paletteVisualState]& 0xFFFFFFFFFFFFFFFELL) == 2 && v10;
-  [(PKPaletteHostView *)self _paletteWillDockToPosition:a3 prepareForExpansion:v11];
+  [(PKPaletteHostView *)self _paletteWillDockToPosition:position prepareForExpansion:v11];
   if (v9 >= 4)
   {
     [(PKPaletteHostView *)self layoutIfNeeded];
   }
 
-  v12 = [(PKPaletteHostView *)self paletteHeightConstraint];
+  paletteHeightConstraint = [(PKPaletteHostView *)self paletteHeightConstraint];
   LODWORD(v13) = 1148846080;
-  [v12 setPriority:v13];
+  [paletteHeightConstraint setPriority:v13];
 
-  v14 = [(PKPaletteHostView *)self paletteWidthConstraint];
+  paletteWidthConstraint = [(PKPaletteHostView *)self paletteWidthConstraint];
   LODWORD(v15) = 1148846080;
-  [v14 setPriority:v15];
+  [paletteWidthConstraint setPriority:v15];
 
   if (v9 > 7)
   {
@@ -1109,22 +1109,22 @@ uint64_t __44__PKPaletteHostView_safeAreaInsetsDidChange__block_invoke(uint64_t 
     v16 = qword_1C801DBC0[v9];
   }
 
-  [(PKPaletteHostView *)self _setPaletteVisualState:v16 usingTransition:v5];
+  [(PKPaletteHostView *)self _setPaletteVisualState:v16 usingTransition:animatedCopy];
   [(PKPaletteHostView *)self layoutIfNeeded];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __74__PKPaletteHostView__dockPaletteToPosition_isFromUserReposition_animated___block_invoke;
   v19[3] = &unk_1E82D7170;
   v19[4] = self;
-  v19[5] = a3;
+  v19[5] = position;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __74__PKPaletteHostView__dockPaletteToPosition_isFromUserReposition_animated___block_invoke_2;
   v17[3] = &unk_1E82D9F48;
   v17[4] = self;
-  v17[5] = a3;
-  v18 = a4;
-  [(PKPaletteHostView *)self _performAnimated:v5 tracking:0 animations:v19 completion:v17];
+  v17[5] = position;
+  repositionCopy = reposition;
+  [(PKPaletteHostView *)self _performAnimated:animatedCopy tracking:0 animations:v19 completion:v17];
 }
 
 uint64_t __74__PKPaletteHostView__dockPaletteToPosition_isFromUserReposition_animated___block_invoke(uint64_t a1)
@@ -1145,16 +1145,16 @@ uint64_t __74__PKPaletteHostView__dockPaletteToPosition_isFromUserReposition_ani
   return result;
 }
 
-- (double)_paletteEdgeMarginForEdge:(unint64_t)a3 isMinimized:(BOOL)a4
+- (double)_paletteEdgeMarginForEdge:(unint64_t)edge isMinimized:(BOOL)minimized
 {
-  v6 = [(PKPaletteHostView *)self paletteView:a3];
+  v6 = [(PKPaletteHostView *)self paletteView:edge];
   [v6 paletteScaleFactor];
   v8 = v7 * 122.0;
 
   v9 = 0.0;
-  if (a3 > 3)
+  if (edge > 3)
   {
-    if (a3 == 4)
+    if (edge == 4)
     {
       if (![(PKPaletteHostView *)self isEffectivePaletteVisible])
       {
@@ -1166,7 +1166,7 @@ uint64_t __74__PKPaletteHostView__dockPaletteToPosition_isFromUserReposition_ani
       return self->_paletteViewBottomEdgeSpacing;
     }
 
-    else if (a3 == 8 && ![(PKPaletteHostView *)self isEffectivePaletteVisible])
+    else if (edge == 8 && ![(PKPaletteHostView *)self isEffectivePaletteVisible])
     {
       [(PKPaletteHostView *)self layoutMargins];
       v11 = v8 + v12;
@@ -1174,7 +1174,7 @@ uint64_t __74__PKPaletteHostView__dockPaletteToPosition_isFromUserReposition_ani
     }
   }
 
-  else if (a3 == 1)
+  else if (edge == 1)
   {
     if (![(PKPaletteHostView *)self isEffectivePaletteVisible])
     {
@@ -1186,7 +1186,7 @@ uint64_t __74__PKPaletteHostView__dockPaletteToPosition_isFromUserReposition_ani
     }
   }
 
-  else if (a3 == 2 && ![(PKPaletteHostView *)self isEffectivePaletteVisible])
+  else if (edge == 2 && ![(PKPaletteHostView *)self isEffectivePaletteVisible])
   {
     [(PKPaletteHostView *)self layoutMargins];
     v11 = v8 + v10;
@@ -1196,54 +1196,54 @@ uint64_t __74__PKPaletteHostView__dockPaletteToPosition_isFromUserReposition_ani
   return v9;
 }
 
-- (void)_updateConstraintsToDockPaletteToPosition:(int64_t)a3
+- (void)_updateConstraintsToDockPaletteToPosition:(int64_t)position
 {
-  v5 = [(PKPaletteHostView *)self window];
+  window = [(PKPaletteHostView *)self window];
 
-  if (!v5)
+  if (!window)
   {
     return;
   }
 
   [(PKPaletteHostView *)self _deactivatePaletteEdgeConstraints];
   [(PKPaletteHostView *)self _deactivatePaletteCenterConstraints];
-  if (a3 > 4)
+  if (position > 4)
   {
-    if (a3 <= 6)
+    if (position <= 6)
     {
-      if (a3 != 5)
+      if (position != 5)
       {
-        v11 = [(PKPaletteHostView *)self paletteTopConstraint];
-        [v11 setConstant:0.0];
+        paletteTopConstraint = [(PKPaletteHostView *)self paletteTopConstraint];
+        [paletteTopConstraint setConstant:0.0];
 
-        v12 = [(PKPaletteHostView *)self paletteRightConstraint];
-        [v12 setConstant:0.0];
+        paletteRightConstraint = [(PKPaletteHostView *)self paletteRightConstraint];
+        [paletteRightConstraint setConstant:0.0];
 
-        v13 = [(PKPaletteHostView *)self paletteTopConstraint];
+        paletteTopConstraint2 = [(PKPaletteHostView *)self paletteTopConstraint];
         LODWORD(v14) = 1144750080;
-        [v13 setPriority:v14];
+        [paletteTopConstraint2 setPriority:v14];
 
-        v15 = [(PKPaletteHostView *)self paletteRightConstraint];
+        paletteRightConstraint2 = [(PKPaletteHostView *)self paletteRightConstraint];
         LODWORD(v16) = 1144750080;
-        [v15 setPriority:v16];
+        [paletteRightConstraint2 setPriority:v16];
 
         if (self->_effectivePaletteVisible)
         {
           return;
         }
 
-        v17 = [(PKPaletteHostView *)self paletteView];
-        v18 = [v17 edgeLocationToDockFromCorner:2];
+        paletteView = [(PKPaletteHostView *)self paletteView];
+        v18 = [paletteView edgeLocationToDockFromCorner:2];
 
         if (v18 == 1)
         {
 LABEL_55:
           [(PKPaletteHostView *)self _paletteEdgeMarginForEdge:1 isMinimized:1];
           v53 = v80;
-          v54 = [(PKPaletteHostView *)self paletteTopConstraint];
+          paletteTopConstraint3 = [(PKPaletteHostView *)self paletteTopConstraint];
 LABEL_57:
-          v82 = v54;
-          [v54 setConstant:v53];
+          v82 = paletteTopConstraint3;
+          [paletteTopConstraint3 setConstant:v53];
           goto LABEL_58;
         }
 
@@ -1255,31 +1255,31 @@ LABEL_31:
 
         [(PKPaletteHostView *)self _paletteEdgeMarginForEdge:8 isMinimized:1];
         v53 = v66;
-        v54 = [(PKPaletteHostView *)self paletteRightConstraint];
+        paletteTopConstraint3 = [(PKPaletteHostView *)self paletteRightConstraint];
         goto LABEL_57;
       }
 
-      v45 = [(PKPaletteHostView *)self paletteTopConstraint];
-      [v45 setConstant:0.0];
+      paletteTopConstraint4 = [(PKPaletteHostView *)self paletteTopConstraint];
+      [paletteTopConstraint4 setConstant:0.0];
 
-      v46 = [(PKPaletteHostView *)self paletteLeftConstraint];
-      [v46 setConstant:0.0];
+      paletteLeftConstraint = [(PKPaletteHostView *)self paletteLeftConstraint];
+      [paletteLeftConstraint setConstant:0.0];
 
-      v47 = [(PKPaletteHostView *)self paletteTopConstraint];
+      paletteTopConstraint5 = [(PKPaletteHostView *)self paletteTopConstraint];
       LODWORD(v48) = 1144750080;
-      [v47 setPriority:v48];
+      [paletteTopConstraint5 setPriority:v48];
 
-      v49 = [(PKPaletteHostView *)self paletteLeftConstraint];
+      paletteLeftConstraint2 = [(PKPaletteHostView *)self paletteLeftConstraint];
       LODWORD(v50) = 1144750080;
-      [v49 setPriority:v50];
+      [paletteLeftConstraint2 setPriority:v50];
 
       if (self->_effectivePaletteVisible)
       {
         return;
       }
 
-      v51 = [(PKPaletteHostView *)self paletteView];
-      v39 = [v51 edgeLocationToDockFromCorner:1];
+      paletteView2 = [(PKPaletteHostView *)self paletteView];
+      v39 = [paletteView2 edgeLocationToDockFromCorner:1];
 
       if (v39 == 1)
       {
@@ -1294,33 +1294,33 @@ LABEL_25:
 
       [(PKPaletteHostView *)self _paletteEdgeMarginForEdge:2 isMinimized:1];
       v53 = v52;
-      v54 = [(PKPaletteHostView *)self paletteLeftConstraint];
+      paletteTopConstraint3 = [(PKPaletteHostView *)self paletteLeftConstraint];
       goto LABEL_57;
     }
 
-    if (a3 == 7)
+    if (position == 7)
     {
-      v59 = [(PKPaletteHostView *)self paletteBottomConstraint];
-      [v59 setConstant:0.0];
+      paletteBottomConstraint = [(PKPaletteHostView *)self paletteBottomConstraint];
+      [paletteBottomConstraint setConstant:0.0];
 
-      v60 = [(PKPaletteHostView *)self paletteRightConstraint];
-      [v60 setConstant:0.0];
+      paletteRightConstraint3 = [(PKPaletteHostView *)self paletteRightConstraint];
+      [paletteRightConstraint3 setConstant:0.0];
 
-      v61 = [(PKPaletteHostView *)self paletteBottomConstraint];
+      paletteBottomConstraint2 = [(PKPaletteHostView *)self paletteBottomConstraint];
       LODWORD(v62) = 1144750080;
-      [v61 setPriority:v62];
+      [paletteBottomConstraint2 setPriority:v62];
 
-      v63 = [(PKPaletteHostView *)self paletteRightConstraint];
+      paletteRightConstraint4 = [(PKPaletteHostView *)self paletteRightConstraint];
       LODWORD(v64) = 1144750080;
-      [v63 setPriority:v64];
+      [paletteRightConstraint4 setPriority:v64];
 
       if (self->_effectivePaletteVisible)
       {
         return;
       }
 
-      v65 = [(PKPaletteHostView *)self paletteView];
-      v18 = [v65 edgeLocationToDockFromCorner:8];
+      paletteView3 = [(PKPaletteHostView *)self paletteView];
+      v18 = [paletteView3 edgeLocationToDockFromCorner:8];
 
       if (v18 != 4)
       {
@@ -1330,32 +1330,32 @@ LABEL_25:
 
     else
     {
-      if (a3 != 8)
+      if (position != 8)
       {
         goto LABEL_40;
       }
 
-      v32 = [(PKPaletteHostView *)self paletteBottomConstraint];
-      [v32 setConstant:0.0];
+      paletteBottomConstraint3 = [(PKPaletteHostView *)self paletteBottomConstraint];
+      [paletteBottomConstraint3 setConstant:0.0];
 
-      v33 = [(PKPaletteHostView *)self paletteLeftConstraint];
-      [v33 setConstant:0.0];
+      paletteLeftConstraint3 = [(PKPaletteHostView *)self paletteLeftConstraint];
+      [paletteLeftConstraint3 setConstant:0.0];
 
-      v34 = [(PKPaletteHostView *)self paletteBottomConstraint];
+      paletteBottomConstraint4 = [(PKPaletteHostView *)self paletteBottomConstraint];
       LODWORD(v35) = 1144750080;
-      [v34 setPriority:v35];
+      [paletteBottomConstraint4 setPriority:v35];
 
-      v36 = [(PKPaletteHostView *)self paletteLeftConstraint];
+      paletteLeftConstraint4 = [(PKPaletteHostView *)self paletteLeftConstraint];
       LODWORD(v37) = 1144750080;
-      [v36 setPriority:v37];
+      [paletteLeftConstraint4 setPriority:v37];
 
       if (self->_effectivePaletteVisible)
       {
         return;
       }
 
-      v38 = [(PKPaletteHostView *)self paletteView];
-      v39 = [v38 edgeLocationToDockFromCorner:4];
+      paletteView4 = [(PKPaletteHostView *)self paletteView];
+      v39 = [paletteView4 edgeLocationToDockFromCorner:4];
 
       if (v39 != 4)
       {
@@ -1365,146 +1365,146 @@ LABEL_25:
 
     [(PKPaletteHostView *)self _paletteEdgeMarginForEdge:4 isMinimized:1];
     v53 = v81;
-    v54 = [(PKPaletteHostView *)self paletteBottomConstraint];
+    paletteTopConstraint3 = [(PKPaletteHostView *)self paletteBottomConstraint];
     goto LABEL_57;
   }
 
-  if (a3 > 2)
+  if (position > 2)
   {
-    if (a3 != 3)
+    if (position != 3)
     {
       [(PKPaletteHostView *)self _paletteEdgeMarginForEdge:2 isMinimized:0];
       v20 = v19;
-      v21 = [(PKPaletteHostView *)self paletteLeftConstraint];
-      [v21 setConstant:v20];
+      paletteLeftConstraint5 = [(PKPaletteHostView *)self paletteLeftConstraint];
+      [paletteLeftConstraint5 setConstant:v20];
 
-      v9 = [(PKPaletteHostView *)self paletteLeftConstraint];
+      paletteLeftConstraint6 = [(PKPaletteHostView *)self paletteLeftConstraint];
       goto LABEL_14;
     }
 
     [(PKPaletteHostView *)self _paletteEdgeMarginForEdge:4 isMinimized:0];
     v56 = v55;
-    v57 = [(PKPaletteHostView *)self paletteBottomConstraint];
-    [v57 setConstant:v56];
+    paletteBottomConstraint5 = [(PKPaletteHostView *)self paletteBottomConstraint];
+    [paletteBottomConstraint5 setConstant:v56];
 
-    v43 = [(PKPaletteHostView *)self paletteBottomConstraint];
+    paletteBottomConstraint6 = [(PKPaletteHostView *)self paletteBottomConstraint];
 LABEL_28:
-    v58 = v43;
+    v58 = paletteBottomConstraint6;
     LODWORD(v44) = 1144750080;
-    [v43 setPriority:v44];
+    [paletteBottomConstraint6 setPriority:v44];
 
     goto LABEL_41;
   }
 
-  if (a3 == 1)
+  if (position == 1)
   {
     [(PKPaletteHostView *)self _paletteEdgeMarginForEdge:1 isMinimized:0];
     v41 = v40;
-    v42 = [(PKPaletteHostView *)self paletteTopConstraint];
-    [v42 setConstant:v41];
+    paletteTopConstraint6 = [(PKPaletteHostView *)self paletteTopConstraint];
+    [paletteTopConstraint6 setConstant:v41];
 
-    v43 = [(PKPaletteHostView *)self paletteTopConstraint];
+    paletteBottomConstraint6 = [(PKPaletteHostView *)self paletteTopConstraint];
     goto LABEL_28;
   }
 
-  if (a3 != 2)
+  if (position != 2)
   {
     goto LABEL_40;
   }
 
   [(PKPaletteHostView *)self _paletteEdgeMarginForEdge:8 isMinimized:0];
   v7 = v6;
-  v8 = [(PKPaletteHostView *)self paletteRightConstraint];
-  [v8 setConstant:v7];
+  paletteRightConstraint5 = [(PKPaletteHostView *)self paletteRightConstraint];
+  [paletteRightConstraint5 setConstant:v7];
 
-  v9 = [(PKPaletteHostView *)self paletteRightConstraint];
+  paletteLeftConstraint6 = [(PKPaletteHostView *)self paletteRightConstraint];
 LABEL_14:
-  v22 = v9;
+  v22 = paletteLeftConstraint6;
   v23 = 1144750080;
   LODWORD(v10) = 1144750080;
-  [v9 setPriority:v10];
+  [paletteLeftConstraint6 setPriority:v10];
 
-  v24 = [(PKPaletteHostView *)self paletteCenterYConstraint];
+  paletteCenterYConstraint = [(PKPaletteHostView *)self paletteCenterYConstraint];
   LODWORD(v25) = 1144750080;
-  [v24 setPriority:v25];
+  [paletteCenterYConstraint setPriority:v25];
 
-  v26 = [(PKPaletteHostView *)self paletteView];
-  v27 = [v26 isAutoHideEnabled];
+  paletteView5 = [(PKPaletteHostView *)self paletteView];
+  isAutoHideEnabled = [paletteView5 isAutoHideEnabled];
 
-  if (v27)
+  if (isAutoHideEnabled)
   {
-    v28 = [(PKPaletteHostView *)self paletteView];
-    v29 = [v28 autoHideCorner];
+    paletteView6 = [(PKPaletteHostView *)self paletteView];
+    autoHideCorner = [paletteView6 autoHideCorner];
 
-    if ((v29 - 1) > 1)
+    if ((autoHideCorner - 1) > 1)
     {
-      if (v29 != 8 && v29 != 4)
+      if (autoHideCorner != 8 && autoHideCorner != 4)
       {
         v23 = 1132068864;
         goto LABEL_39;
       }
 
-      v30 = [(PKPaletteHostView *)self paletteBottomConstraint];
+      paletteBottomConstraint7 = [(PKPaletteHostView *)self paletteBottomConstraint];
     }
 
     else
     {
-      v30 = [(PKPaletteHostView *)self paletteTopConstraint];
+      paletteBottomConstraint7 = [(PKPaletteHostView *)self paletteTopConstraint];
     }
 
-    v67 = v30;
+    paletteCenterYConstraint2 = paletteBottomConstraint7;
     LODWORD(v31) = 1144750080;
-    [v30 setPriority:v31];
+    [paletteBottomConstraint7 setPriority:v31];
     v23 = 1132068864;
   }
 
   else
   {
-    v67 = [(PKPaletteHostView *)self paletteCenterYConstraint];
-    [v67 setConstant:0.0];
+    paletteCenterYConstraint2 = [(PKPaletteHostView *)self paletteCenterYConstraint];
+    [paletteCenterYConstraint2 setConstant:0.0];
   }
 
 LABEL_39:
-  v68 = [(PKPaletteHostView *)self paletteCenterYConstraint];
+  paletteCenterYConstraint3 = [(PKPaletteHostView *)self paletteCenterYConstraint];
   LODWORD(v69) = v23;
-  [v68 setPriority:v69];
+  [paletteCenterYConstraint3 setPriority:v69];
 
 LABEL_40:
-  if ((a3 & 0xFFFFFFFFFFFFFFFDLL) != 1)
+  if ((position & 0xFFFFFFFFFFFFFFFDLL) != 1)
   {
     return;
   }
 
 LABEL_41:
-  v70 = [(PKPaletteHostView *)self paletteView];
-  v71 = [v70 isAutoHideEnabled];
+  paletteView7 = [(PKPaletteHostView *)self paletteView];
+  isAutoHideEnabled2 = [paletteView7 isAutoHideEnabled];
 
-  if (v71)
+  if (isAutoHideEnabled2)
   {
-    v72 = [(PKPaletteHostView *)self paletteView];
-    v73 = [v72 autoHideCorner];
+    paletteView8 = [(PKPaletteHostView *)self paletteView];
+    autoHideCorner2 = [paletteView8 autoHideCorner];
 
-    if (v73 > 3)
+    if (autoHideCorner2 > 3)
     {
-      if (v73 == 8)
+      if (autoHideCorner2 == 8)
       {
 LABEL_51:
-        v77 = [(PKPaletteHostView *)self paletteRightConstraint];
+        paletteRightConstraint6 = [(PKPaletteHostView *)self paletteRightConstraint];
         goto LABEL_52;
       }
 
-      if (v73 != 4)
+      if (autoHideCorner2 != 4)
       {
 LABEL_53:
-        v75 = [(PKPaletteHostView *)self paletteCenterXConstraint];
+        paletteCenterXConstraint = [(PKPaletteHostView *)self paletteCenterXConstraint];
         LODWORD(v76) = 1132068864;
         goto LABEL_54;
       }
     }
 
-    else if (v73 != 1)
+    else if (autoHideCorner2 != 1)
     {
-      if (v73 != 2)
+      if (autoHideCorner2 != 2)
       {
         goto LABEL_53;
       }
@@ -1512,65 +1512,65 @@ LABEL_53:
       goto LABEL_51;
     }
 
-    v77 = [(PKPaletteHostView *)self paletteLeftConstraint];
+    paletteRightConstraint6 = [(PKPaletteHostView *)self paletteLeftConstraint];
 LABEL_52:
-    v79 = v77;
+    v79 = paletteRightConstraint6;
     LODWORD(v78) = 1144750080;
-    [v77 setPriority:v78];
+    [paletteRightConstraint6 setPriority:v78];
 
     goto LABEL_53;
   }
 
-  v74 = [(PKPaletteHostView *)self paletteCenterXConstraint];
-  [v74 setConstant:0.0];
+  paletteCenterXConstraint2 = [(PKPaletteHostView *)self paletteCenterXConstraint];
+  [paletteCenterXConstraint2 setConstant:0.0];
 
-  v75 = [(PKPaletteHostView *)self paletteCenterXConstraint];
+  paletteCenterXConstraint = [(PKPaletteHostView *)self paletteCenterXConstraint];
   LODWORD(v76) = 1144750080;
 LABEL_54:
-  v82 = v75;
-  [v75 setPriority:v76];
+  v82 = paletteCenterXConstraint;
+  [paletteCenterXConstraint setPriority:v76];
 LABEL_58:
 }
 
-- (void)_paletteWillDockToPosition:(int64_t)a3 prepareForExpansion:(BOOL)a4
+- (void)_paletteWillDockToPosition:(int64_t)position prepareForExpansion:(BOOL)expansion
 {
-  v4 = a4;
+  expansionCopy = expansion;
   [(PKPaletteHostView *)self setPalettePosition:?];
-  v7 = [(PKPaletteHostView *)self delegate];
-  [v7 hostView:self willDockPaletteToPosition:a3 prepareForExpansion:v4];
+  delegate = [(PKPaletteHostView *)self delegate];
+  [delegate hostView:self willDockPaletteToPosition:position prepareForExpansion:expansionCopy];
 }
 
-- (void)_paletteDidDockToPosition:(int64_t)a3 fromUserReposition:(BOOL)a4
+- (void)_paletteDidDockToPosition:(int64_t)position fromUserReposition:(BOOL)reposition
 {
-  v4 = a4;
-  v7 = [(PKPaletteHostView *)self delegate];
-  [v7 hostView:self didDockPaletteToPosition:a3];
+  repositionCopy = reposition;
+  delegate = [(PKPaletteHostView *)self delegate];
+  [delegate hostView:self didDockPaletteToPosition:position];
 
-  if (v4)
+  if (repositionCopy)
   {
     v9 = +[PKStatisticsManager sharedStatisticsManager];
-    v8 = [(PKPaletteHostView *)self paletteView];
-    -[PKStatisticsManager recordPalettePositionChange:type:](v9, a3, [v8 paletteViewType]);
+    paletteView = [(PKPaletteHostView *)self paletteView];
+    -[PKStatisticsManager recordPalettePositionChange:type:](v9, position, [paletteView paletteViewType]);
   }
 }
 
-- (unint64_t)avoidanceEdgeForPaletteVisualState:(int64_t)a3
+- (unint64_t)avoidanceEdgeForPaletteVisualState:(int64_t)state
 {
-  if (PKIsVisionDevice() || (a3 - 4) > 3)
+  if (PKIsVisionDevice() || (state - 4) > 3)
   {
     return 0;
   }
 
   else
   {
-    return qword_1C801DC00[a3 - 4];
+    return qword_1C801DC00[state - 4];
   }
 }
 
-- (void)_touchDownFeedbackGestureHandler:(id)a3
+- (void)_touchDownFeedbackGestureHandler:(id)handler
 {
-  v4 = a3;
-  if ([v4 state] == 1)
+  handlerCopy = handler;
+  if ([handlerCopy state] == 1)
   {
     [(PKPaletteHostView *)self layoutIfNeeded];
     v12[0] = MEMORY[0x1E69E9820];
@@ -1584,22 +1584,22 @@ LABEL_58:
 
   else
   {
-    v5 = [v4 state] != 3 && objc_msgSend(v4, "state") != 5 && objc_msgSend(v4, "state") != 4;
-    v6 = [(PKPaletteHostView *)self tapToExpandPaletteFromMinimizedGestureRecognizer];
-    v7 = [v6 state];
+    v5 = [handlerCopy state] != 3 && objc_msgSend(handlerCopy, "state") != 5 && objc_msgSend(handlerCopy, "state") != 4;
+    tapToExpandPaletteFromMinimizedGestureRecognizer = [(PKPaletteHostView *)self tapToExpandPaletteFromMinimizedGestureRecognizer];
+    state = [tapToExpandPaletteFromMinimizedGestureRecognizer state];
 
-    v8 = [(PKPaletteHostView *)self panGestureRecognizer];
-    if ([v8 state] == 2)
+    panGestureRecognizer = [(PKPaletteHostView *)self panGestureRecognizer];
+    if ([panGestureRecognizer state] == 2)
     {
     }
 
     else
     {
-      v9 = [(PKPaletteHostView *)self panGestureRecognizer];
-      v10 = [v9 state];
+      panGestureRecognizer2 = [(PKPaletteHostView *)self panGestureRecognizer];
+      state2 = [panGestureRecognizer2 state];
 
-      v11 = v7 == 3 || v5;
-      if ((v11 & 1) == 0 && v10 != 3)
+      v11 = state == 3 || v5;
+      if ((v11 & 1) == 0 && state2 != 3)
       {
         [(PKPaletteHostView *)self _dockPaletteToPosition:[(PKPaletteHostView *)self palettePosition] animated:1];
       }
@@ -1663,9 +1663,9 @@ LABEL_12:
   return [*(a1 + 32) layoutIfNeeded];
 }
 
-- (void)_tapToExpandPaletteFromMinimizedGestureHandler:(id)a3
+- (void)_tapToExpandPaletteFromMinimizedGestureHandler:(id)handler
 {
-  if ([a3 state] == 3)
+  if ([handler state] == 3)
   {
     v4 = [(PKPaletteHostView *)self palettePosition]- 5;
     if (v4 > 3)
@@ -1678,8 +1678,8 @@ LABEL_12:
       v5 = qword_1C801DC20[v4];
     }
 
-    v6 = [(PKPaletteHostView *)self paletteView];
-    v7 = [v6 edgeLocationToDockFromCorner:v5];
+    paletteView = [(PKPaletteHostView *)self paletteView];
+    v7 = [paletteView edgeLocationToDockFromCorner:v5];
 
     if ((v7 - 1) > 7)
     {
@@ -1695,23 +1695,23 @@ LABEL_12:
   }
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = [(PKPaletteHostView *)self _shouldBeCompact];
-  v6 = [(PKPaletteHostView *)self panGestureRecognizer];
-  v7 = v6;
-  if (v5)
+  beginCopy = begin;
+  _shouldBeCompact = [(PKPaletteHostView *)self _shouldBeCompact];
+  panGestureRecognizer = [(PKPaletteHostView *)self panGestureRecognizer];
+  v7 = panGestureRecognizer;
+  if (_shouldBeCompact)
   {
-    if (v6 != v4)
+    if (panGestureRecognizer != beginCopy)
     {
-      v8 = [(PKPaletteHostView *)self touchDownFeedbackGestureRecognizer];
-      v9 = v8;
-      if (v8 != v4)
+      touchDownFeedbackGestureRecognizer = [(PKPaletteHostView *)self touchDownFeedbackGestureRecognizer];
+      v9 = touchDownFeedbackGestureRecognizer;
+      if (touchDownFeedbackGestureRecognizer != beginCopy)
       {
-        v10 = [(PKPaletteHostView *)self tapToExpandPaletteFromMinimizedGestureRecognizer];
+        tapToExpandPaletteFromMinimizedGestureRecognizer = [(PKPaletteHostView *)self tapToExpandPaletteFromMinimizedGestureRecognizer];
 
-        if (v10 == v4)
+        if (tapToExpandPaletteFromMinimizedGestureRecognizer == beginCopy)
         {
           goto LABEL_14;
         }
@@ -1727,25 +1727,25 @@ LABEL_14:
     goto LABEL_18;
   }
 
-  if (v7 == v4)
+  if (v7 == beginCopy)
   {
-    v13 = [(PKPaletteHostView *)self paletteView];
-    LOBYTE(self) = [v13 draggingEnabled];
+    paletteView = [(PKPaletteHostView *)self paletteView];
+    LOBYTE(self) = [paletteView draggingEnabled];
   }
 
   else
   {
-    v11 = [(PKPaletteHostView *)self touchDownFeedbackGestureRecognizer];
+    touchDownFeedbackGestureRecognizer2 = [(PKPaletteHostView *)self touchDownFeedbackGestureRecognizer];
 
-    if (v11 == v4)
+    if (touchDownFeedbackGestureRecognizer2 == beginCopy)
     {
       LOBYTE(self) = [(PKPaletteHostView *)self isPaletteVisualStateMinimized];
       goto LABEL_18;
     }
 
-    v12 = [(PKPaletteHostView *)self tapToExpandPaletteFromMinimizedGestureRecognizer];
+    tapToExpandPaletteFromMinimizedGestureRecognizer2 = [(PKPaletteHostView *)self tapToExpandPaletteFromMinimizedGestureRecognizer];
 
-    if (v12 == v4)
+    if (tapToExpandPaletteFromMinimizedGestureRecognizer2 == beginCopy)
     {
       if (![(PKPaletteHostView *)self isPaletteVisualStateMinimized])
       {
@@ -1756,35 +1756,35 @@ LABEL_14:
       goto LABEL_17;
     }
 
-    v13 = [(PKPaletteHostView *)self paletteView];
-    LODWORD(self) = [v13 isPalettePresentingPopover] ^ 1;
+    paletteView = [(PKPaletteHostView *)self paletteView];
+    LODWORD(self) = [paletteView isPalettePresentingPopover] ^ 1;
   }
 
 LABEL_18:
   return self;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
   v17[4] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PKPaletteHostView *)self panGestureRecognizer];
-  v17[0] = v8;
-  v9 = [(PKPaletteHostView *)self tapToExpandPaletteFromMinimizedGestureRecognizer];
-  v17[1] = v9;
-  v10 = [(PKPaletteHostView *)self touchDownFeedbackGestureRecognizer];
-  v17[2] = v10;
-  v11 = [(PKPaletteHostView *)self paletteView];
-  v12 = [v11 contentScrollView];
-  v13 = [v12 panGestureRecognizer];
-  v17[3] = v13;
+  gestureRecognizerCopy = gestureRecognizer;
+  recognizerCopy = recognizer;
+  panGestureRecognizer = [(PKPaletteHostView *)self panGestureRecognizer];
+  v17[0] = panGestureRecognizer;
+  tapToExpandPaletteFromMinimizedGestureRecognizer = [(PKPaletteHostView *)self tapToExpandPaletteFromMinimizedGestureRecognizer];
+  v17[1] = tapToExpandPaletteFromMinimizedGestureRecognizer;
+  touchDownFeedbackGestureRecognizer = [(PKPaletteHostView *)self touchDownFeedbackGestureRecognizer];
+  v17[2] = touchDownFeedbackGestureRecognizer;
+  paletteView = [(PKPaletteHostView *)self paletteView];
+  contentScrollView = [paletteView contentScrollView];
+  panGestureRecognizer2 = [contentScrollView panGestureRecognizer];
+  v17[3] = panGestureRecognizer2;
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:4];
 
-  LODWORD(v8) = [v14 containsObject:v7];
-  if (v8)
+  LODWORD(panGestureRecognizer) = [v14 containsObject:recognizerCopy];
+  if (panGestureRecognizer)
   {
-    v15 = [v14 containsObject:v6];
+    v15 = [v14 containsObject:gestureRecognizerCopy];
   }
 
   else
@@ -1795,11 +1795,11 @@ LABEL_18:
   return v15;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = inside.y;
+  x = inside.x;
+  eventCopy = event;
   [(PKPaletteHostView *)self bounds];
   v21.x = x;
   v21.y = y;
@@ -1810,31 +1810,31 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v8 = [(PKPaletteHostView *)self paletteView];
-  [(PKPaletteHostView *)self convertPoint:v8 toView:x, y];
+  paletteView = [(PKPaletteHostView *)self paletteView];
+  [(PKPaletteHostView *)self convertPoint:paletteView toView:x, y];
   v10 = v9;
   v12 = v11;
 
-  v13 = [(PKPaletteHostView *)self paletteView];
-  v14 = [v13 pointInside:v7 withEvent:{v10, v12}];
+  paletteView2 = [(PKPaletteHostView *)self paletteView];
+  v14 = [paletteView2 pointInside:eventCopy withEvent:{v10, v12}];
 
   if ((v14 & 1) == 0)
   {
-    if (v7)
+    if (eventCopy)
     {
-      if ([v7 type] != 11)
+      if ([eventCopy type] != 11)
       {
-        v16 = [(PKPaletteHostView *)self paletteView];
-        v17 = [v16 isPalettePresentingPopover];
+        paletteView3 = [(PKPaletteHostView *)self paletteView];
+        isPalettePresentingPopover = [paletteView3 isPalettePresentingPopover];
 
-        if ((v17 & 1) == 0 && ![(PKPaletteHostView *)self _shouldBeCompact])
+        if ((isPalettePresentingPopover & 1) == 0 && ![(PKPaletteHostView *)self _shouldBeCompact])
         {
-          v18 = [(PKPaletteHostView *)self paletteView];
-          if ([v18 isAutoHideEnabled])
+          paletteView4 = [(PKPaletteHostView *)self paletteView];
+          if ([paletteView4 isAutoHideEnabled])
           {
-            v19 = [(PKPaletteHostView *)self paletteVisualState];
+            paletteVisualState = [(PKPaletteHostView *)self paletteVisualState];
 
-            if (v19 != 2)
+            if (paletteVisualState != 2)
             {
               [(PKPaletteHostView *)self _dockPaletteToAutoHideCornerAnimated:1];
             }
@@ -1856,61 +1856,61 @@ LABEL_13:
   return v15;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [v7 PK_isEventFromPencil];
-  v9 = [(PKPaletteHostView *)self paletteView];
-  v10 = [v9 isPalettePresentingPopover];
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  pK_isEventFromPencil = [eventCopy PK_isEventFromPencil];
+  paletteView = [(PKPaletteHostView *)self paletteView];
+  isPalettePresentingPopover = [paletteView isPalettePresentingPopover];
 
-  v11 = [(PKPaletteHostView *)self paletteView];
-  v12 = [v11 hasContextMenuVisible];
+  paletteView2 = [(PKPaletteHostView *)self paletteView];
+  hasContextMenuVisible = [paletteView2 hasContextMenuVisible];
 
-  v13 = [v7 type];
+  type = [eventCopy type];
   if (([(PKPaletteHostView *)self isHidden]& 1) == 0)
   {
     [(PKPaletteHostView *)self alpha];
     if (v14 != 0.0)
     {
-      if (([(PKPaletteHostView *)self isPaletteVisible]| v10))
+      if (([(PKPaletteHostView *)self isPaletteVisible]| isPalettePresentingPopover))
       {
         goto LABEL_4;
       }
 
 LABEL_32:
-      v27 = [(PKPaletteHostView *)self pencilInteractionFeedbackHostView];
-      [(PKPaletteHostView *)self convertPoint:v27 toView:x, y];
+      pencilInteractionFeedbackHostView = [(PKPaletteHostView *)self pencilInteractionFeedbackHostView];
+      [(PKPaletteHostView *)self convertPoint:pencilInteractionFeedbackHostView toView:x, y];
       v29 = v28;
       v31 = v30;
 
-      v32 = [(PKPaletteHostView *)self pencilInteractionFeedbackHostView];
-      v17 = [v32 hitTest:v7 withEvent:{v29, v31}];
+      pencilInteractionFeedbackHostView2 = [(PKPaletteHostView *)self pencilInteractionFeedbackHostView];
+      selfCopy = [pencilInteractionFeedbackHostView2 hitTest:eventCopy withEvent:{v29, v31}];
 
       goto LABEL_33;
     }
   }
 
-  if ((v10 & 1) == 0)
+  if ((isPalettePresentingPopover & 1) == 0)
   {
     goto LABEL_32;
   }
 
 LABEL_4:
-  if (![(PKPaletteHostView *)self isPaletteVisible]&& ((v10 ^ 1) & 1) == 0 && ((v8 ^ 1) & 1) == 0 && v13 != 11)
+  if (![(PKPaletteHostView *)self isPaletteVisible]&& ((isPalettePresentingPopover ^ 1) & 1) == 0 && ((pK_isEventFromPencil ^ 1) & 1) == 0 && type != 11)
   {
-    v15 = [(PKPaletteHostView *)self paletteView];
-    [v15 dismissPalettePopoverWithCompletion:0];
+    paletteView3 = [(PKPaletteHostView *)self paletteView];
+    [paletteView3 dismissPalettePopoverWithCompletion:0];
   }
 
   v69.receiver = self;
   v69.super_class = PKPaletteHostView;
-  v16 = [(PKPaletteHostView *)&v69 hitTest:v7 withEvent:x, y];
-  v17 = v16;
-  if (v7)
+  v16 = [(PKPaletteHostView *)&v69 hitTest:eventCopy withEvent:x, y];
+  selfCopy = v16;
+  if (eventCopy)
   {
-    if ((v10 | v12))
+    if ((isPalettePresentingPopover | hasContextMenuVisible))
     {
       if (v16)
       {
@@ -1919,70 +1919,70 @@ LABEL_4:
 
       else
       {
-        v18 = v12;
+        v18 = hasContextMenuVisible;
       }
 
-      if (v18 == 1 && v13 != 11)
+      if (v18 == 1 && type != 11)
       {
-        v19 = [(PKPaletteHostView *)self paletteView];
-        [v19 dismissContextMenu];
+        paletteView4 = [(PKPaletteHostView *)self paletteView];
+        [paletteView4 dismissContextMenu];
       }
 
-      v20 = v17 ? 0 : v8;
-      if ((v20 & 1) == 0 && v13 != 11)
+      v20 = selfCopy ? 0 : pK_isEventFromPencil;
+      if ((v20 & 1) == 0 && type != 11)
       {
-        if (v10)
+        if (isPalettePresentingPopover)
         {
-          v21 = [(PKPaletteHostView *)self paletteView];
-          [v21 dismissPalettePopoverWithCompletion:0];
+          paletteView5 = [(PKPaletteHostView *)self paletteView];
+          [paletteView5 dismissPalettePopoverWithCompletion:0];
         }
 
-        if (!((v17 != 0) | v8 & 1))
+        if (!((selfCopy != 0) | pK_isEventFromPencil & 1))
         {
-          v17 = self;
+          selfCopy = self;
         }
 
         goto LABEL_33;
       }
     }
 
-    if (v17)
+    if (selfCopy)
     {
       goto LABEL_33;
     }
 
-    v22 = [(PKPaletteHostView *)self paletteView];
-    v23 = [v22 palettePopoverPresentingController];
-    v24 = [v23 presentedViewController];
+    paletteView6 = [(PKPaletteHostView *)self paletteView];
+    palettePopoverPresentingController = [paletteView6 palettePopoverPresentingController];
+    presentedViewController = [palettePopoverPresentingController presentedViewController];
 
-    if (v24)
+    if (presentedViewController)
     {
-      v25 = [v24 view];
-      v26 = [v25 hitTest:v7 withEvent:{PK_convertRectFromCoordinateSpaceToCoordinateSpace(self, v25, x, y, *MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8))}];
+      view = [presentedViewController view];
+      v26 = [view hitTest:eventCopy withEvent:{PK_convertRectFromCoordinateSpaceToCoordinateSpace(self, view, x, y, *MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8))}];
 
       if (v26)
       {
-        v17 = 0;
+        selfCopy = 0;
 LABEL_30:
 
         goto LABEL_33;
       }
     }
 
-    if (v13 != 11)
+    if (type != 11)
     {
-      v34 = [(PKPaletteHostView *)self paletteView];
-      [v34 dismissPalettePopoverWithCompletion:0];
+      paletteView7 = [(PKPaletteHostView *)self paletteView];
+      [paletteView7 dismissPalettePopoverWithCompletion:0];
     }
 
     if (![(PKPaletteHostView *)self _shouldBeCompact])
     {
-      v35 = [(PKPaletteHostView *)self paletteView];
-      if ([v35 isAutoHideEnabled])
+      paletteView8 = [(PKPaletteHostView *)self paletteView];
+      if ([paletteView8 isAutoHideEnabled])
       {
-        v36 = [(PKPaletteHostView *)self isPaletteVisualStateMinimized];
+        isPaletteVisualStateMinimized = [(PKPaletteHostView *)self isPaletteVisualStateMinimized];
 
-        if (!v36 && v13 != 11)
+        if (!isPaletteVisualStateMinimized && type != 11)
         {
           [(PKPaletteHostView *)self _dockPaletteToAutoHideCornerAnimated:1];
         }
@@ -1993,29 +1993,29 @@ LABEL_30:
       }
     }
 
-    v37 = [(PKPaletteHostView *)self paletteView];
+    paletteView9 = [(PKPaletteHostView *)self paletteView];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v39 = [(PKPaletteHostView *)self paletteView];
-      v40 = [v39 selectedTool];
-      v41 = [v40 ink];
-      v42 = [v41 _isHandwritingInk];
+      paletteView10 = [(PKPaletteHostView *)self paletteView];
+      selectedTool = [paletteView10 selectedTool];
+      v41 = [selectedTool ink];
+      _isHandwritingInk = [v41 _isHandwritingInk];
 
-      v43 = [v39 selectedTool];
-      if ([v43 _isLassoTool])
+      selectedTool2 = [paletteView10 selectedTool];
+      if ([selectedTool2 _isLassoTool])
       {
       }
 
       else
       {
-        v44 = [v39 selectedTool];
-        v45 = [v44 _configuration];
-        if (v45)
+        selectedTool3 = [paletteView10 selectedTool];
+        _configuration = [selectedTool3 _configuration];
+        if (_configuration)
         {
-          v46 = v45[20];
+          v46 = _configuration[20];
         }
 
         else
@@ -2023,33 +2023,33 @@ LABEL_30:
           v46 = 0;
         }
 
-        if (((v42 | v46) & 1) == 0)
+        if (((_isHandwritingInk | v46) & 1) == 0)
         {
-          v47 = [(PKPaletteHostView *)self window];
-          v48 = [(PKPaletteHostView *)self paletteView];
-          v49 = [v48 presentationController];
-          v50 = [v49 view];
-          v51 = [v50 window];
+          window = [(PKPaletteHostView *)self window];
+          paletteView11 = [(PKPaletteHostView *)self paletteView];
+          presentationController = [paletteView11 presentationController];
+          view2 = [presentationController view];
+          window2 = [view2 window];
 
-          if (v47 != v51)
+          if (window != window2)
           {
             [(PKPaletteHostView *)self convertPoint:0 toView:x, y];
             v53 = v52;
             v55 = v54;
-            v56 = [(PKPaletteHostView *)self window];
-            v57 = [(PKPaletteHostView *)self paletteView];
-            v58 = [v57 presentationController];
-            v59 = [v58 view];
-            v60 = [v59 window];
-            [v56 convertPoint:v60 toWindow:{v53, v55}];
+            window3 = [(PKPaletteHostView *)self window];
+            paletteView12 = [(PKPaletteHostView *)self paletteView];
+            presentationController2 = [paletteView12 presentationController];
+            view3 = [presentationController2 view];
+            window4 = [view3 window];
+            [window3 convertPoint:window4 toWindow:{v53, v55}];
             v62 = v61;
             v64 = v63;
 
-            v65 = [(PKPaletteHostView *)self paletteView];
-            v66 = [v65 presentationController];
-            v67 = [v66 view];
-            v68 = [v67 window];
-            v17 = [v68 hitTest:v7 withEvent:{v62, v64}];
+            paletteView13 = [(PKPaletteHostView *)self paletteView];
+            presentationController3 = [paletteView13 presentationController];
+            view4 = [presentationController3 view];
+            window5 = [view4 window];
+            selfCopy = [window5 hitTest:eventCopy withEvent:{v62, v64}];
 
             goto LABEL_30;
           }
@@ -2057,53 +2057,53 @@ LABEL_30:
       }
     }
 
-    v17 = 0;
+    selfCopy = 0;
   }
 
 LABEL_33:
 
-  return v17;
+  return selfCopy;
 }
 
 - (void)_deactivatePaletteCenterConstraints
 {
-  v3 = [(PKPaletteHostView *)self paletteCenterXConstraint];
+  paletteCenterXConstraint = [(PKPaletteHostView *)self paletteCenterXConstraint];
   LODWORD(v4) = 1132068864;
-  [v3 setPriority:v4];
+  [paletteCenterXConstraint setPriority:v4];
 
-  v6 = [(PKPaletteHostView *)self paletteCenterYConstraint];
+  paletteCenterYConstraint = [(PKPaletteHostView *)self paletteCenterYConstraint];
   LODWORD(v5) = 1132068864;
-  [v6 setPriority:v5];
+  [paletteCenterYConstraint setPriority:v5];
 }
 
 - (void)_activatePaletteCenterConstraints
 {
-  v3 = [(PKPaletteHostView *)self paletteCenterXConstraint];
+  paletteCenterXConstraint = [(PKPaletteHostView *)self paletteCenterXConstraint];
   LODWORD(v4) = 1144750080;
-  [v3 setPriority:v4];
+  [paletteCenterXConstraint setPriority:v4];
 
-  v6 = [(PKPaletteHostView *)self paletteCenterYConstraint];
+  paletteCenterYConstraint = [(PKPaletteHostView *)self paletteCenterYConstraint];
   LODWORD(v5) = 1144750080;
-  [v6 setPriority:v5];
+  [paletteCenterYConstraint setPriority:v5];
 }
 
 - (void)_deactivatePaletteEdgeConstraints
 {
-  v3 = [(PKPaletteHostView *)self paletteTopConstraint];
+  paletteTopConstraint = [(PKPaletteHostView *)self paletteTopConstraint];
   LODWORD(v4) = 1132068864;
-  [v3 setPriority:v4];
+  [paletteTopConstraint setPriority:v4];
 
-  v5 = [(PKPaletteHostView *)self paletteBottomConstraint];
+  paletteBottomConstraint = [(PKPaletteHostView *)self paletteBottomConstraint];
   LODWORD(v6) = 1132068864;
-  [v5 setPriority:v6];
+  [paletteBottomConstraint setPriority:v6];
 
-  v7 = [(PKPaletteHostView *)self paletteLeftConstraint];
+  paletteLeftConstraint = [(PKPaletteHostView *)self paletteLeftConstraint];
   LODWORD(v8) = 1132068864;
-  [v7 setPriority:v8];
+  [paletteLeftConstraint setPriority:v8];
 
-  v9 = [(PKPaletteHostView *)self paletteRightConstraint];
+  paletteRightConstraint = [(PKPaletteHostView *)self paletteRightConstraint];
   LODWORD(v10) = 1132068864;
-  [v9 setPriority:v10];
+  [paletteRightConstraint setPriority:v10];
 
   [(PKPaletteHostView *)self _deactivatePaletteEdgeConstraintsForCompact];
 }
@@ -2116,42 +2116,42 @@ LABEL_33:
   [(NSLayoutConstraint *)paletteRightConstraintInCompact setActive:0];
 }
 
-- (void)_panGestureHandler:(id)a3
+- (void)_panGestureHandler:(id)handler
 {
   v151 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = objc_opt_class();
-  v6 = [(PKPaletteHostView *)self paletteView];
-  v7 = PKDynamicCast(v5, v6);
+  paletteView = [(PKPaletteHostView *)self paletteView];
+  v7 = PKDynamicCast(v5, paletteView);
 
-  v8 = [v7 tools];
-  v9 = [v8 count];
+  tools = [v7 tools];
+  v9 = [tools count];
 
-  if ([v4 state] == 1)
+  if ([handlerCopy state] == 1)
   {
-    v10 = [(PKPaletteHostView *)self tooltipPresentationHandle];
-    [v10 hideFloatingLabel];
+    tooltipPresentationHandle = [(PKPaletteHostView *)self tooltipPresentationHandle];
+    [tooltipPresentationHandle hideFloatingLabel];
 
-    v11 = [(PKPaletteHostView *)self paletteView];
-    [(PKPaletteHostView *)self bringSubviewToFront:v11];
+    paletteView2 = [(PKPaletteHostView *)self paletteView];
+    [(PKPaletteHostView *)self bringSubviewToFront:paletteView2];
 
-    v12 = [(PKPaletteHostView *)self paletteView];
-    [v12 center];
+    paletteView3 = [(PKPaletteHostView *)self paletteView];
+    [paletteView3 center];
     [(PKPaletteHostView *)self setDraggingInitialPaletteCenterInSelf:?];
 
     [(PKPaletteHostView *)self setPaletteDraggingBehavior:0];
     [(PKPaletteHostView *)self setDraggingPendingPaletteVisualState:0];
-    v13 = [(PKPaletteHostView *)self paletteView];
-    v14 = [v13 contentScrollView];
-    [v4 locationInView:v14];
+    paletteView4 = [(PKPaletteHostView *)self paletteView];
+    contentScrollView = [paletteView4 contentScrollView];
+    [handlerCopy locationInView:contentScrollView];
     v16 = v15;
     v18 = v17;
 
     if (v9 > 7)
     {
-      v19 = [(PKPaletteHostView *)self paletteView];
-      v20 = [v19 contentScrollView];
-      -[PKPaletteHostView setPanGestureDidStartInPaletteScrollView:](self, "setPanGestureDidStartInPaletteScrollView:", [v20 pointInside:0 withEvent:{v16, v18}]);
+      paletteView5 = [(PKPaletteHostView *)self paletteView];
+      contentScrollView2 = [paletteView5 contentScrollView];
+      -[PKPaletteHostView setPanGestureDidStartInPaletteScrollView:](self, "setPanGestureDidStartInPaletteScrollView:", [contentScrollView2 pointInside:0 withEvent:{v16, v18}]);
 
 LABEL_78:
       goto LABEL_79;
@@ -2161,9 +2161,9 @@ LABEL_78:
     goto LABEL_79;
   }
 
-  if ([v4 state] != 2)
+  if ([handlerCopy state] != 2)
   {
-    if ([v4 state] != 3 && objc_msgSend(v4, "state") != 4 && objc_msgSend(v4, "state") != 5)
+    if ([handlerCopy state] != 3 && objc_msgSend(handlerCopy, "state") != 4 && objc_msgSend(handlerCopy, "state") != 5)
     {
       goto LABEL_79;
     }
@@ -2173,9 +2173,9 @@ LABEL_78:
 LABEL_57:
       [(PKPaletteHostView *)self setPanGestureShouldDragPaletteView:1];
       [(PKPaletteHostView *)self setPaletteScrollGestureShouldScroll:v9 > 7];
-      v86 = [(PKPaletteHostView *)self paletteView];
-      v87 = [v86 contentScrollView];
-      [v87 setScrollEnabled:1];
+      paletteView6 = [(PKPaletteHostView *)self paletteView];
+      contentScrollView3 = [paletteView6 contentScrollView];
+      [contentScrollView3 setScrollEnabled:1];
 
       goto LABEL_79;
     }
@@ -2186,15 +2186,15 @@ LABEL_57:
     v139[3] = &unk_1E82D7148;
     v139[4] = self;
     [(PKPaletteHostView *)self _performAnimated:1 tracking:0 animations:v139 completion:0];
-    [(PKPaletteHostView *)self _projectedLandingPointForGestureRecognizerEnd:v4];
+    [(PKPaletteHostView *)self _projectedLandingPointForGestureRecognizerEnd:handlerCopy];
     v23 = v22;
     v25 = v24;
-    v26 = [(PKPaletteHostView *)self layoutMarginsGuide];
-    [v26 layoutFrame];
+    layoutMarginsGuide = [(PKPaletteHostView *)self layoutMarginsGuide];
+    [layoutMarginsGuide layoutFrame];
     v31 = _PKPaletteVisualStateForPointInRectToSettle(1, v27, v28, v29, v30, v23, v25);
 
-    v32 = [(PKPaletteHostView *)self layoutMarginsGuide];
-    [v32 layoutFrame];
+    layoutMarginsGuide2 = [(PKPaletteHostView *)self layoutMarginsGuide];
+    [layoutMarginsGuide2 layoutFrame];
     v37 = v33;
     v38 = v34;
     v39 = v35;
@@ -2270,19 +2270,19 @@ LABEL_57:
 LABEL_54:
         v78 = v49[v48];
 LABEL_56:
-        v79 = [(PKPaletteHostView *)self palettePosition];
+        palettePosition = [(PKPaletteHostView *)self palettePosition];
         [(PKPaletteHostView *)self setPalettePosition:v78];
         [(PKPaletteHostView *)self setDraggingPendingPaletteVisualState:0];
         [(PKPaletteHostView *)self _setPaletteVisualState:v31 usingTransition:1];
         [(PKPaletteHostView *)self layoutIfNeeded];
-        v80 = [(PKPaletteHostView *)self paletteView];
-        [v4 velocityInView:self];
-        [v80 responseForThrowingFromPosition:v79 toPosition:v78 withVelocity:?];
+        paletteView7 = [(PKPaletteHostView *)self paletteView];
+        [handlerCopy velocityInView:self];
+        [paletteView7 responseForThrowingFromPosition:palettePosition toPosition:v78 withVelocity:?];
         v82 = v81;
 
-        v83 = [(PKPaletteHostView *)self paletteView];
-        [v4 velocityInView:self];
-        [v83 dampingRatioForThrowingFromPosition:v79 toPosition:v78 withVelocity:?];
+        paletteView8 = [(PKPaletteHostView *)self paletteView];
+        [handlerCopy velocityInView:self];
+        [paletteView8 dampingRatioForThrowingFromPosition:palettePosition toPosition:v78 withVelocity:?];
         v85 = v84;
 
         v138[0] = MEMORY[0x1E69E9820];
@@ -2391,15 +2391,15 @@ LABEL_56:
   [(PKPaletteHostView *)self setPanGestureShouldDragPaletteView:v21];
   if ([(PKPaletteHostView *)self panGestureDidStartInPaletteScrollView])
   {
-    v50 = [(PKPaletteHostView *)self paletteView];
-    v51 = [v50 contentScrollView];
-    [v4 translationInView:v51];
+    paletteView9 = [(PKPaletteHostView *)self paletteView];
+    contentScrollView4 = [paletteView9 contentScrollView];
+    [handlerCopy translationInView:contentScrollView4];
     v53 = v52;
     v55 = v54;
 
-    v56 = [(PKPaletteHostView *)self paletteView];
-    v57 = [v56 contentScrollView];
-    [v4 velocityInView:v57];
+    paletteView10 = [(PKPaletteHostView *)self paletteView];
+    contentScrollView5 = [paletteView10 contentScrollView];
+    [handlerCopy velocityInView:contentScrollView5];
     v59 = v58;
     v61 = v60;
 
@@ -2410,8 +2410,8 @@ LABEL_56:
     }
 
     v64 = v55 > 20.0 && v62 == 1;
-    v65 = [(PKPaletteHostView *)self palettePosition];
-    v67 = v65 == 2 || v65 == 4;
+    palettePosition2 = [(PKPaletteHostView *)self palettePosition];
+    v67 = palettePosition2 == 2 || palettePosition2 == 4;
     if (v53 < 0.0)
     {
       v53 = -v53;
@@ -2434,8 +2434,8 @@ LABEL_56:
       v70 = 0;
     }
 
-    v88 = [(PKPaletteHostView *)self palettePosition];
-    if (v88 == 4 || v88 == 2)
+    palettePosition3 = [(PKPaletteHostView *)self palettePosition];
+    if (palettePosition3 == 4 || palettePosition3 == 2)
     {
       v89 = -v61;
       if (v61 >= 0.0)
@@ -2461,54 +2461,54 @@ LABEL_56:
 LABEL_68:
       [(PKPaletteHostView *)self setPanGestureShouldDragPaletteView:1];
       [(PKPaletteHostView *)self setPaletteScrollGestureShouldScroll:0];
-      v91 = [(PKPaletteHostView *)self paletteView];
-      v92 = [v91 contentScrollView];
-      [v92 contentOffset];
+      paletteView11 = [(PKPaletteHostView *)self paletteView];
+      contentScrollView6 = [paletteView11 contentScrollView];
+      [contentScrollView6 contentOffset];
       v94 = v93;
       v96 = v95;
 
-      v97 = [(PKPaletteHostView *)self paletteView];
-      v98 = [v97 contentScrollView];
-      [v98 setScrollEnabled:0];
+      paletteView12 = [(PKPaletteHostView *)self paletteView];
+      contentScrollView7 = [paletteView12 contentScrollView];
+      [contentScrollView7 setScrollEnabled:0];
 
-      v99 = [(PKPaletteHostView *)self paletteView];
-      v100 = [v99 contentScrollView];
-      [v100 setContentOffset:{v94, v96}];
+      paletteView13 = [(PKPaletteHostView *)self paletteView];
+      contentScrollView8 = [paletteView13 contentScrollView];
+      [contentScrollView8 setContentOffset:{v94, v96}];
     }
   }
 
   if ([(PKPaletteHostView *)self panGestureShouldDragPaletteView])
   {
-    [v4 locationInView:self];
+    [handlerCopy locationInView:self];
     v102 = v101;
     v104 = v103;
     [(PKPaletteHostView *)self bounds];
     [(PKPaletteHostView *)self _scheduleDraggingTransitionToVisualState:_PKPaletteVisualStateForPointInRectToSettle(0, v105, v106, v107, v108, v102, v104)];
-    [v4 translationInView:self];
+    [handlerCopy translationInView:self];
     v110 = v109;
     v112 = v111;
     [(PKPaletteHostView *)self draggingInitialPaletteCenterInSelf];
     v114 = v113;
     [(PKPaletteHostView *)self draggingInitialPaletteCenterInSelf];
     v116 = v115;
-    v117 = [(PKPaletteHostView *)self paletteDraggingBehavior];
+    paletteDraggingBehavior = [(PKPaletteHostView *)self paletteDraggingBehavior];
     [(PKPaletteHostView *)self bounds];
     v118 = CGRectGetMidX(v166);
     [(PKPaletteHostView *)self bounds];
     v119 = CGRectGetMidY(v167);
-    v120 = [(PKPaletteHostView *)self paletteTransition];
-    v121 = [v120 intermediateVisualState];
-    if ((v121 - 4) < 4 || v121 == 1)
+    paletteTransition = [(PKPaletteHostView *)self paletteTransition];
+    intermediateVisualState = [paletteTransition intermediateVisualState];
+    if ((intermediateVisualState - 4) < 4 || intermediateVisualState == 1)
     {
       v122 = v112 + v116;
-      if (v117)
+      if (paletteDraggingBehavior)
       {
         v122 = v104;
       }
 
       v123 = v122 - v119;
       v124 = v110 + v114;
-      if (v117)
+      if (paletteDraggingBehavior)
       {
         v124 = v102;
       }
@@ -2541,7 +2541,7 @@ LABEL_68:
     v140[2] = __40__PKPaletteHostView__panGestureHandler___block_invoke_2;
     v140[3] = &unk_1E82D6F70;
     v141 = v126;
-    v19 = v126;
+    paletteView5 = v126;
     [v127 _animateUsingSpringWithDampingRatio:1 response:v140 tracking:0 dampingRatioSmoothing:1.0 responseSmoothing:0.15 targetSmoothing:0.0 projectionDeceleration:0.0 animations:0.0 completion:0.0];
 
     goto LABEL_78;
@@ -2606,12 +2606,12 @@ uint64_t __40__PKPaletteHostView__panGestureHandler___block_invoke_5(uint64_t re
   return result;
 }
 
-- (void)_scheduleDraggingTransitionToVisualState:(int64_t)a3
+- (void)_scheduleDraggingTransitionToVisualState:(int64_t)state
 {
-  if ([(PKPaletteHostView *)self draggingPendingPaletteVisualState]!= a3)
+  if ([(PKPaletteHostView *)self draggingPendingPaletteVisualState]!= state)
   {
-    [(PKPaletteHostView *)self setDraggingPendingPaletteVisualState:a3];
-    if ((a3 - 4) < 4 || a3 == 1)
+    [(PKPaletteHostView *)self setDraggingPendingPaletteVisualState:state];
+    if ((state - 4) < 4 || state == 1)
     {
       [MEMORY[0x1E69E58C0] cancelPreviousPerformRequestsWithTarget:self selector:sel__processPendingDraggingTransition object:0];
 
@@ -2629,29 +2629,29 @@ uint64_t __40__PKPaletteHostView__panGestureHandler___block_invoke_5(uint64_t re
 - (void)_processPendingDraggingTransition
 {
   [MEMORY[0x1E69E58C0] cancelPreviousPerformRequestsWithTarget:self selector:sel__processPendingDraggingTransition object:0];
-  v3 = [(PKPaletteHostView *)self draggingPendingPaletteVisualState];
-  if (v3)
+  draggingPendingPaletteVisualState = [(PKPaletteHostView *)self draggingPendingPaletteVisualState];
+  if (draggingPendingPaletteVisualState)
   {
 
-    [(PKPaletteHostView *)self _setPaletteVisualState:v3 usingTransition:1];
+    [(PKPaletteHostView *)self _setPaletteVisualState:draggingPendingPaletteVisualState usingTransition:1];
   }
 }
 
-- (CGPoint)_projectedLandingPointForGestureRecognizerEnd:(id)a3
+- (CGPoint)_projectedLandingPointForGestureRecognizerEnd:(id)end
 {
   v51[4] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PKPaletteHostView *)self layoutMarginsGuide];
-  [v5 layoutFrame];
+  endCopy = end;
+  layoutMarginsGuide = [(PKPaletteHostView *)self layoutMarginsGuide];
+  [layoutMarginsGuide layoutFrame];
   v45 = v7;
   v46 = v6;
   v43 = v9;
   v44 = v8;
 
-  [v4 locationInView:self];
+  [endCopy locationInView:self];
   v11 = v10;
   v13 = v12;
-  [v4 velocityInView:self];
+  [endCopy velocityInView:self];
   v15 = v14;
   v17 = v16;
   v18 = sqrt(v16 * v16 + v15 * v15);
@@ -2808,7 +2808,7 @@ uint64_t __40__PKPaletteHostView__panGestureHandler___block_invoke_5(uint64_t re
   return result;
 }
 
-- (void)transitionIntermediateVisualStateDidChange:(id)a3
+- (void)transitionIntermediateVisualStateDidChange:(id)change
 {
   [(PKPaletteHostView *)self _updatePaletteSizeAnimated:1];
   [(PKPaletteHostView *)self _updateToolPreviewMinimizedStateAnimated:1];
@@ -2816,16 +2816,16 @@ uint64_t __40__PKPaletteHostView__panGestureHandler___block_invoke_5(uint64_t re
   [(PKPaletteHostView *)self _updatePaletteAppearanceAnimated:1];
 }
 
-- (void)_performAnimated:(BOOL)a3 tracking:(BOOL)a4 animations:(id)a5 completion:(id)a6
+- (void)_performAnimated:(BOOL)animated tracking:(BOOL)tracking animations:(id)animations completion:(id)completion
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = a5;
-  v10 = a6;
-  v11 = v10;
-  if (v8)
+  trackingCopy = tracking;
+  animatedCopy = animated;
+  animationsCopy = animations;
+  completionCopy = completion;
+  v11 = completionCopy;
+  if (animatedCopy)
   {
-    if (v7)
+    if (trackingCopy)
     {
       v12 = 0.86;
     }
@@ -2835,7 +2835,7 @@ uint64_t __40__PKPaletteHostView__panGestureHandler___block_invoke_5(uint64_t re
       v12 = 0.845;
     }
 
-    if (v7)
+    if (trackingCopy)
     {
       v13 = 0.15;
     }
@@ -2850,13 +2850,13 @@ uint64_t __40__PKPaletteHostView__panGestureHandler___block_invoke_5(uint64_t re
     v15[1] = 3221225472;
     v15[2] = __69__PKPaletteHostView__performAnimated_tracking_animations_completion___block_invoke;
     v15[3] = &unk_1E82D9FE0;
-    v16 = v10;
-    [v14 _animateUsingSpringWithDampingRatio:v7 response:v9 tracking:v15 dampingRatioSmoothing:v12 responseSmoothing:v13 targetSmoothing:0.0 projectionDeceleration:0.0 animations:0.0 completion:0.0];
+    v16 = completionCopy;
+    [v14 _animateUsingSpringWithDampingRatio:trackingCopy response:animationsCopy tracking:v15 dampingRatioSmoothing:v12 responseSmoothing:v13 targetSmoothing:0.0 projectionDeceleration:0.0 animations:0.0 completion:0.0];
   }
 
   else
   {
-    [MEMORY[0x1E69DD250] _performWithoutRetargetingAnimations:v9];
+    [MEMORY[0x1E69DD250] _performWithoutRetargetingAnimations:animationsCopy];
     if (v11)
     {
       v11[2](v11, 1);
@@ -2875,53 +2875,53 @@ uint64_t __69__PKPaletteHostView__performAnimated_tracking_animations_completion
   return result;
 }
 
-- (void)_updateToolPreviewMinimizedStateAnimated:(BOOL)a3
+- (void)_updateToolPreviewMinimizedStateAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(PKPaletteHostView *)self paletteVisualState];
-  v6 = [(PKPaletteHostView *)self paletteTransition];
-  v7 = [v6 isTransitionInProgress];
+  animatedCopy = animated;
+  paletteVisualState = [(PKPaletteHostView *)self paletteVisualState];
+  paletteTransition = [(PKPaletteHostView *)self paletteTransition];
+  isTransitionInProgress = [paletteTransition isTransitionInProgress];
 
-  if (v7)
+  if (isTransitionInProgress)
   {
-    v8 = [(PKPaletteHostView *)self paletteTransition];
-    v5 = [v8 intermediateVisualState];
+    paletteTransition2 = [(PKPaletteHostView *)self paletteTransition];
+    paletteVisualState = [paletteTransition2 intermediateVisualState];
   }
 
-  v9 = [(PKPaletteHostView *)self paletteView];
-  [v9 setToolPreviewMinimized:v5 == 2 animated:v3];
+  paletteView = [(PKPaletteHostView *)self paletteView];
+  [paletteView setToolPreviewMinimized:paletteVisualState == 2 animated:animatedCopy];
 }
 
-- (void)_updateToolPreviewRotationAnimated:(BOOL)a3
+- (void)_updateToolPreviewRotationAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(PKPaletteHostView *)self paletteTransition];
-  v6 = [v5 isTransitionInProgress];
+  animatedCopy = animated;
+  paletteTransition = [(PKPaletteHostView *)self paletteTransition];
+  isTransitionInProgress = [paletteTransition isTransitionInProgress];
 
-  if (v6)
+  if (isTransitionInProgress)
   {
-    v7 = [(PKPaletteHostView *)self paletteTransition];
-    v8 = [v7 pointingDirection];
+    paletteTransition2 = [(PKPaletteHostView *)self paletteTransition];
+    pointingDirection = [paletteTransition2 pointingDirection];
 
     v9 = 1.57079633;
-    if (v8 != 2)
+    if (pointingDirection != 2)
     {
       v9 = 0.0;
     }
 
-    v10 = v8 == 1;
+    v10 = pointingDirection == 1;
   }
 
   else
   {
-    v11 = [(PKPaletteHostView *)self paletteVisualState];
+    paletteVisualState = [(PKPaletteHostView *)self paletteVisualState];
     v9 = 1.57079633;
-    if (v11 != 6)
+    if (paletteVisualState != 6)
     {
       v9 = 0.0;
     }
 
-    v10 = v11 == 7;
+    v10 = paletteVisualState == 7;
   }
 
   if (v10)
@@ -2934,7 +2934,7 @@ uint64_t __69__PKPaletteHostView__performAnimated_tracking_animations_completion
     v12 = v9;
   }
 
-  if (v3)
+  if (animatedCopy)
   {
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
@@ -2947,10 +2947,10 @@ uint64_t __69__PKPaletteHostView__performAnimated_tracking_animations_completion
 
   else
   {
-    v13 = [(PKPaletteHostView *)self paletteView];
-    v14 = [v13 toolPreviewView];
+    paletteView = [(PKPaletteHostView *)self paletteView];
+    toolPreviewView = [paletteView toolPreviewView];
     CGAffineTransformMakeRotation(&v15, v12);
-    [v14 setTransform:&v15];
+    [toolPreviewView setTransform:&v15];
   }
 }
 
@@ -2965,58 +2965,58 @@ void __56__PKPaletteHostView__updateToolPreviewRotationAnimated___block_invoke(u
   [v4 paletteDidBeginRotationAnimation];
 }
 
-- (void)_updatePaletteSizeAnimated:(BOOL)a3
+- (void)_updatePaletteSizeAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(PKPaletteHostView *)self paletteVisualState];
-  v6 = [(PKPaletteHostView *)self paletteTransition];
-  v7 = [v6 isTransitionInProgress];
+  animatedCopy = animated;
+  paletteVisualState = [(PKPaletteHostView *)self paletteVisualState];
+  paletteTransition = [(PKPaletteHostView *)self paletteTransition];
+  isTransitionInProgress = [paletteTransition isTransitionInProgress];
 
-  if (v7)
+  if (isTransitionInProgress)
   {
-    v8 = [(PKPaletteHostView *)self paletteTransition];
-    v5 = [v8 intermediateVisualState];
+    paletteTransition2 = [(PKPaletteHostView *)self paletteTransition];
+    paletteVisualState = [paletteTransition2 intermediateVisualState];
 
-    if (v5 == 3)
+    if (paletteVisualState == 3)
     {
-      v9 = [(PKPaletteHostView *)self paletteTransition];
-      v10 = [v9 pointingDirection];
+      paletteTransition3 = [(PKPaletteHostView *)self paletteTransition];
+      pointingDirection = [paletteTransition3 pointingDirection];
 
-      v11 = dbl_1C801DB20[(v10 - 1) < 2];
-      v5 = 3;
+      v11 = dbl_1C801DB20[(pointingDirection - 1) < 2];
+      paletteVisualState = 3;
 LABEL_9:
       if (([(PKPaletteHostView *)self palettePosition]- 5) > 3)
       {
         goto LABEL_19;
       }
 
-      v13 = [(PKPaletteHostView *)self palettePosition];
-      v12 = self;
+      palettePosition = [(PKPaletteHostView *)self palettePosition];
+      selfCopy5 = self;
       v14 = 0;
       goto LABEL_18;
     }
   }
 
   v11 = 0.531;
-  if (v5 > 4)
+  if (paletteVisualState > 4)
   {
-    if (v5 != 5)
+    if (paletteVisualState != 5)
     {
-      if (v5 == 6)
+      if (paletteVisualState == 6)
       {
-        v12 = self;
-        v13 = 4;
+        selfCopy5 = self;
+        palettePosition = 4;
       }
 
       else
       {
-        if (v5 != 7)
+        if (paletteVisualState != 7)
         {
           goto LABEL_19;
         }
 
-        v12 = self;
-        v13 = 2;
+        selfCopy5 = self;
+        palettePosition = 2;
       }
 
       goto LABEL_17;
@@ -3025,40 +3025,40 @@ LABEL_9:
 
   else
   {
-    if ((v5 - 2) < 2)
+    if ((paletteVisualState - 2) < 2)
     {
       goto LABEL_9;
     }
 
-    if (v5 != 1)
+    if (paletteVisualState != 1)
     {
-      if (v5 != 4)
+      if (paletteVisualState != 4)
       {
         goto LABEL_19;
       }
 
-      v12 = self;
-      v13 = 1;
+      selfCopy5 = self;
+      palettePosition = 1;
       goto LABEL_17;
     }
   }
 
-  v12 = self;
-  v13 = 3;
+  selfCopy5 = self;
+  palettePosition = 3;
 LABEL_17:
   v14 = 1;
 LABEL_18:
-  [(PKPaletteHostView *)v12 _paletteWillDockToPosition:v13 prepareForExpansion:v14];
+  [(PKPaletteHostView *)selfCopy5 _paletteWillDockToPosition:palettePosition prepareForExpansion:v14];
 LABEL_19:
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __48__PKPaletteHostView__updatePaletteSizeAnimated___block_invoke;
   aBlock[3] = &unk_1E82D7170;
   aBlock[4] = self;
-  aBlock[5] = v5;
+  aBlock[5] = paletteVisualState;
   v15 = _Block_copy(aBlock);
   v16 = v15;
-  if (v3)
+  if (animatedCopy)
   {
     [(PKPaletteHostView *)self layoutIfNeeded];
     v17 = MEMORY[0x1E69DD250];
@@ -3114,29 +3114,29 @@ uint64_t __48__PKPaletteHostView__updatePaletteSizeAnimated___block_invoke_2(uin
   return [v3 layoutIfNeeded];
 }
 
-- (CGSize)_paletteSizeForVisualState:(int64_t)a3
+- (CGSize)_paletteSizeForVisualState:(int64_t)state
 {
   v4 = *MEMORY[0x1E695F060];
   v5 = *(MEMORY[0x1E695F060] + 8);
-  if (a3 <= 3)
+  if (state <= 3)
   {
-    switch(a3)
+    switch(state)
     {
       case 1:
-        v9 = [(PKPaletteHostView *)self paletteView];
-        [v9 paletteSizeForEdge:4];
+        paletteView = [(PKPaletteHostView *)self paletteView];
+        [paletteView paletteSizeForEdge:4];
         v4 = v10;
 
         [(PKPaletteHostView *)self _paletteViewCompactHeight];
         v5 = v11;
         break;
       case 2:
-        v12 = [(PKPaletteHostView *)self paletteView];
-        [v12 minimizedPaletteSize];
+        paletteView2 = [(PKPaletteHostView *)self paletteView];
+        [paletteView2 minimizedPaletteSize];
         goto LABEL_16;
       case 3:
-        v7 = [(PKPaletteHostView *)self paletteView];
-        [v7 paletteSizeForEdge:4];
+        paletteView3 = [(PKPaletteHostView *)self paletteView];
+        [paletteView3 paletteSizeForEdge:4];
         v5 = v8;
 
         v4 = v5;
@@ -3146,9 +3146,9 @@ uint64_t __48__PKPaletteHostView__updatePaletteSizeAnimated___block_invoke_2(uin
 
   else
   {
-    if (a3 <= 5)
+    if (state <= 5)
     {
-      if (a3 == 4)
+      if (state == 4)
       {
         v6 = 1;
       }
@@ -3161,18 +3161,18 @@ uint64_t __48__PKPaletteHostView__updatePaletteSizeAnimated___block_invoke_2(uin
       goto LABEL_15;
     }
 
-    if (a3 == 6)
+    if (state == 6)
     {
       v6 = 2;
       goto LABEL_15;
     }
 
-    if (a3 == 7)
+    if (state == 7)
     {
       v6 = 8;
 LABEL_15:
-      v12 = [(PKPaletteHostView *)self paletteView];
-      [v12 paletteSizeForEdge:v6];
+      paletteView2 = [(PKPaletteHostView *)self paletteView];
+      [paletteView2 paletteSizeForEdge:v6];
 LABEL_16:
       v4 = v13;
       v5 = v14;
@@ -3188,28 +3188,28 @@ LABEL_16:
 
 - (BOOL)_isPaletteAnimating
 {
-  v2 = [(PKPaletteHostView *)self paletteTransition];
-  v3 = [v2 isTransitionInProgress];
+  paletteTransition = [(PKPaletteHostView *)self paletteTransition];
+  isTransitionInProgress = [paletteTransition isTransitionInProgress];
 
-  return v3;
+  return isTransitionInProgress;
 }
 
-- (void)pointerInteraction:(id)a3 willEnterRegion:(id)a4 animator:(id)a5
+- (void)pointerInteraction:(id)interaction willEnterRegion:(id)region animator:(id)animator
 {
-  v7 = a3;
-  v8 = a5;
+  interactionCopy = interaction;
+  animatorCopy = animator;
   if ([(PKPaletteHostView *)self isPaletteVisualStateMinimized])
   {
-    v9 = [v7 view];
+    view = [interactionCopy view];
     CGAffineTransformMakeScale(&v14, 1.15, 1.15);
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v13 = v14;
     v11[2] = __65__PKPaletteHostView_pointerInteraction_willEnterRegion_animator___block_invoke;
     v11[3] = &unk_1E82DA028;
-    v12 = v9;
-    v10 = v9;
-    [v8 addAnimations:v11];
+    v12 = view;
+    v10 = view;
+    [animatorCopy addAnimations:v11];
   }
 }
 
@@ -3219,17 +3219,17 @@ void __65__PKPaletteHostView_pointerInteraction_willEnterRegion_animator___block
   [v1 setTransform:&v2];
 }
 
-- (void)pointerInteraction:(id)a3 willExitRegion:(id)a4 animator:(id)a5
+- (void)pointerInteraction:(id)interaction willExitRegion:(id)region animator:(id)animator
 {
-  v6 = a5;
-  v7 = [a3 view];
+  animatorCopy = animator;
+  view = [interaction view];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __64__PKPaletteHostView_pointerInteraction_willExitRegion_animator___block_invoke;
   v9[3] = &unk_1E82D7148;
-  v10 = v7;
-  v8 = v7;
-  [v6 addAnimations:v9];
+  v10 = view;
+  v8 = view;
+  [animatorCopy addAnimations:v9];
 }
 
 void __64__PKPaletteHostView_pointerInteraction_willExitRegion_animator___block_invoke(uint64_t a1)
@@ -3242,21 +3242,21 @@ void __64__PKPaletteHostView_pointerInteraction_willExitRegion_animator___block_
   [v1 setTransform:v3];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v16.receiver = self;
   v16.super_class = PKPaletteHostView;
-  [(PKPaletteHostView *)&v16 traitCollectionDidChange:v4];
-  v5 = [(PKPaletteHostView *)self traitCollection];
-  v6 = [v5 verticalSizeClass];
-  if (v6 == [v4 verticalSizeClass])
+  [(PKPaletteHostView *)&v16 traitCollectionDidChange:changeCopy];
+  traitCollection = [(PKPaletteHostView *)self traitCollection];
+  verticalSizeClass = [traitCollection verticalSizeClass];
+  if (verticalSizeClass == [changeCopy verticalSizeClass])
   {
-    v7 = [(PKPaletteHostView *)self traitCollection];
-    v8 = [v7 horizontalSizeClass];
-    v9 = [v4 horizontalSizeClass];
+    traitCollection2 = [(PKPaletteHostView *)self traitCollection];
+    horizontalSizeClass = [traitCollection2 horizontalSizeClass];
+    horizontalSizeClass2 = [changeCopy horizontalSizeClass];
 
-    if (v8 == v9)
+    if (horizontalSizeClass == horizontalSizeClass2)
     {
       goto LABEL_11;
     }
@@ -3281,15 +3281,15 @@ void __64__PKPaletteHostView_pointerInteraction_willExitRegion_animator___block_
 
   else
   {
-    v12 = [(PKPaletteHostView *)self lastNonCompactPalettePosition];
+    lastNonCompactPalettePosition = [(PKPaletteHostView *)self lastNonCompactPalettePosition];
     v13 = 3;
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __46__PKPaletteHostView_traitCollectionDidChange___block_invoke_2;
     v14[3] = &unk_1E82D7170;
-    if (v12)
+    if (lastNonCompactPalettePosition)
     {
-      v13 = v12;
+      v13 = lastNonCompactPalettePosition;
     }
 
     v14[4] = self;
@@ -3313,34 +3313,34 @@ uint64_t __46__PKPaletteHostView_traitCollectionDidChange___block_invoke(uint64_
 
 - (BOOL)_shouldBeCompact
 {
-  v3 = [(PKPaletteHostView *)self traitCollection];
-  v4 = [(PKPaletteHostView *)self window];
-  v5 = [v4 windowScene];
-  v6 = PKUseCompactSize(v3, v5);
+  traitCollection = [(PKPaletteHostView *)self traitCollection];
+  window = [(PKPaletteHostView *)self window];
+  windowScene = [window windowScene];
+  v6 = PKUseCompactSize(traitCollection, windowScene);
 
   return v6;
 }
 
-- (void)paletteViewShowFeedbackForToolChange:(id)a3
+- (void)paletteViewShowFeedbackForToolChange:(id)change
 {
   [(PKPaletteHostView *)self _installPencilInteractionFeedbackHostViewIfNeeded];
-  v4 = [(PKPaletteHostView *)self pencilInteractionFeedbackHostView];
-  v5 = [(PKPaletteHostView *)self window];
-  v6 = [v5 traitCollection];
-  [v4 setOverrideUserInterfaceStyle:{objc_msgSend(v6, "userInterfaceStyle")}];
+  pencilInteractionFeedbackHostView = [(PKPaletteHostView *)self pencilInteractionFeedbackHostView];
+  window = [(PKPaletteHostView *)self window];
+  traitCollection = [window traitCollection];
+  [pencilInteractionFeedbackHostView setOverrideUserInterfaceStyle:{objc_msgSend(traitCollection, "userInterfaceStyle")}];
 
-  v7 = [(PKPaletteHostView *)self pencilInteractionFeedbackHostView];
-  [v7 showFeedbackForCurrentlySelectedToolInPaletteView];
+  pencilInteractionFeedbackHostView2 = [(PKPaletteHostView *)self pencilInteractionFeedbackHostView];
+  [pencilInteractionFeedbackHostView2 showFeedbackForCurrentlySelectedToolInPaletteView];
 }
 
-- (void)paletteViewReturnKeyTypeDidChange:(id)a3
+- (void)paletteViewReturnKeyTypeDidChange:(id)change
 {
-  v8 = a3;
-  if (([v8 palettePosition] - 5) <= 3 && objc_msgSend(v8, "shouldExpandFromCorner"))
+  changeCopy = change;
+  if (([changeCopy palettePosition] - 5) <= 3 && objc_msgSend(changeCopy, "shouldExpandFromCorner"))
   {
-    v4 = [(PKPaletteHostView *)self paletteView];
-    v5 = [(PKPaletteHostView *)self paletteView];
-    v6 = [v4 edgeLocationToDockFromCorner:{objc_msgSend(v5, "autoHideCorner")}];
+    paletteView = [(PKPaletteHostView *)self paletteView];
+    paletteView2 = [(PKPaletteHostView *)self paletteView];
+    v6 = [paletteView edgeLocationToDockFromCorner:{objc_msgSend(paletteView2, "autoHideCorner")}];
 
     if ((v6 - 1) > 7)
     {
@@ -3356,28 +3356,28 @@ uint64_t __46__PKPaletteHostView_traitCollectionDidChange___block_invoke(uint64_
   }
 }
 
-- (void)paletteViewStateDidChange:(id)a3 updatePaletteAppearance:(BOOL)a4
+- (void)paletteViewStateDidChange:(id)change updatePaletteAppearance:(BOOL)appearance
 {
-  v4 = a4;
+  appearanceCopy = appearance;
   [(PKPaletteHostView *)self _updatePaletteViewSizeConstraints];
-  if (v4)
+  if (appearanceCopy)
   {
 
     [(PKPaletteHostView *)self _updatePaletteAppearanceAnimated:1];
   }
 }
 
-- (void)paletteViewStateDidChangeScaleFactor:(id)a3
+- (void)paletteViewStateDidChangeScaleFactor:(id)factor
 {
   [(PKPaletteHostView *)self _updatePaletteViewSizeConstraints];
-  v4 = [(PKPaletteHostView *)self palettePosition];
+  palettePosition = [(PKPaletteHostView *)self palettePosition];
 
-  [(PKPaletteHostView *)self _updateConstraintsToDockPaletteToPosition:v4];
+  [(PKPaletteHostView *)self _updateConstraintsToDockPaletteToPosition:palettePosition];
 }
 
-- (void)paletteViewStateDidChangeAutoHide:(id)a3
+- (void)paletteViewStateDidChangeAutoHide:(id)hide
 {
-  if ([a3 isAutoHideEnabled])
+  if ([hide isAutoHideEnabled])
   {
 
     [(PKPaletteHostView *)self _dockPaletteToAutoHideCornerAnimated:1];
@@ -3385,9 +3385,9 @@ uint64_t __46__PKPaletteHostView_traitCollectionDidChange___block_invoke(uint64_
 
   else
   {
-    v4 = [(PKPaletteHostView *)self paletteView];
-    v5 = [(PKPaletteHostView *)self paletteView];
-    v6 = [v4 edgeLocationToDockFromCorner:{objc_msgSend(v5, "autoHideCorner")}];
+    paletteView = [(PKPaletteHostView *)self paletteView];
+    paletteView2 = [(PKPaletteHostView *)self paletteView];
+    v6 = [paletteView edgeLocationToDockFromCorner:{objc_msgSend(paletteView2, "autoHideCorner")}];
 
     if ((v6 - 1) > 7)
     {
@@ -3405,10 +3405,10 @@ uint64_t __46__PKPaletteHostView_traitCollectionDidChange___block_invoke(uint64_
 
 - (id)paletteBorderColor
 {
-  v3 = [(PKPaletteHostView *)self paletteView];
-  v4 = [(PKPaletteHostView *)self window];
-  v5 = [v4 traitCollection];
-  v6 = [v3 borderColorForTraitCollection:v5];
+  paletteView = [(PKPaletteHostView *)self paletteView];
+  window = [(PKPaletteHostView *)self window];
+  traitCollection = [window traitCollection];
+  v6 = [paletteView borderColorForTraitCollection:traitCollection];
 
   return v6;
 }
@@ -3424,8 +3424,8 @@ uint64_t __46__PKPaletteHostView_traitCollectionDidChange___block_invoke(uint64_
 
 - (double)paletteShadowOpacity
 {
-  v2 = [(PKPaletteHostView *)self paletteView];
-  [v2 shadowOpacity];
+  paletteView = [(PKPaletteHostView *)self paletteView];
+  [paletteView shadowOpacity];
   v4 = v3;
 
   return v4;
@@ -3433,8 +3433,8 @@ uint64_t __46__PKPaletteHostView_traitCollectionDidChange___block_invoke(uint64_
 
 - (double)paletteShadowRadius
 {
-  v2 = [(PKPaletteHostView *)self paletteView];
-  [v2 shadowRadius];
+  paletteView = [(PKPaletteHostView *)self paletteView];
+  [paletteView shadowRadius];
   v4 = v3;
 
   return v4;
@@ -3442,10 +3442,10 @@ uint64_t __46__PKPaletteHostView_traitCollectionDidChange___block_invoke(uint64_
 
 - (double)paletteBorderWidth
 {
-  v3 = [(PKPaletteHostView *)self paletteView];
-  v4 = [(PKPaletteHostView *)self window];
-  v5 = [v4 traitCollection];
-  [v3 borderWidthForTraitCollection:v5];
+  paletteView = [(PKPaletteHostView *)self paletteView];
+  window = [(PKPaletteHostView *)self window];
+  traitCollection = [window traitCollection];
+  [paletteView borderWidthForTraitCollection:traitCollection];
   v7 = v6;
 
   return v7;

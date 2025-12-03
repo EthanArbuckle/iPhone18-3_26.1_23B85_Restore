@@ -1,7 +1,7 @@
 @interface MRTelevisionController
 - (MRTelevisionController)init;
-- (void)externalDeviceController:(id)a3 didDiscoverDevice:(id)a4;
-- (void)externalDeviceController:(id)a3 didRemoveDevice:(id)a4;
+- (void)externalDeviceController:(id)controller didDiscoverDevice:(id)device;
+- (void)externalDeviceController:(id)controller didRemoveDevice:(id)device;
 @end
 
 @implementation MRTelevisionController
@@ -20,27 +20,27 @@
   return v3;
 }
 
-- (void)externalDeviceController:(id)a3 didDiscoverDevice:(id)a4
+- (void)externalDeviceController:(id)controller didDiscoverDevice:(id)device
 {
-  v5 = a4;
+  deviceCopy = device;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     [MRTelevisionController externalDeviceController:didDiscoverDevice:];
   }
 
-  v6 = v5;
+  v6 = deviceCopy;
   discoveryCallback = self->_discoveryCallback;
   if (discoveryCallback)
   {
-    v8 = [(_MRTelevisionControllerBlockCallback *)discoveryCallback queue];
+    queue = [(_MRTelevisionControllerBlockCallback *)discoveryCallback queue];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __69__MRTelevisionController_externalDeviceController_didDiscoverDevice___block_invoke;
     v9[3] = &unk_1E769A4A0;
     v9[4] = self;
     v10 = v6;
-    dispatch_async(v8, v9);
+    dispatch_async(queue, v9);
   }
 }
 
@@ -50,27 +50,27 @@ void __69__MRTelevisionController_externalDeviceController_didDiscoverDevice___b
   v2[2](v2, *(a1 + 40));
 }
 
-- (void)externalDeviceController:(id)a3 didRemoveDevice:(id)a4
+- (void)externalDeviceController:(id)controller didRemoveDevice:(id)device
 {
-  v5 = a4;
+  deviceCopy = device;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     [MRTelevisionController externalDeviceController:didRemoveDevice:];
   }
 
-  v6 = v5;
+  v6 = deviceCopy;
   removalCallback = self->_removalCallback;
   if (removalCallback)
   {
-    v8 = [(_MRTelevisionControllerBlockCallback *)removalCallback queue];
+    queue = [(_MRTelevisionControllerBlockCallback *)removalCallback queue];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __67__MRTelevisionController_externalDeviceController_didRemoveDevice___block_invoke;
     v9[3] = &unk_1E769A4A0;
     v9[4] = self;
     v10 = v6;
-    dispatch_async(v8, v9);
+    dispatch_async(queue, v9);
   }
 }
 

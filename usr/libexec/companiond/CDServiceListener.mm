@@ -1,12 +1,12 @@
 @interface CDServiceListener
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (CDServiceListener)init;
 - (CDServiceListenerDelegate)delegate;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (void)_activated;
-- (void)_connectionInvalidated:(id)a3;
+- (void)_connectionInvalidated:(id)invalidated;
 - (void)_invalidated;
 - (void)_languageNotificationEnsureStarted;
 - (void)_languageNotificationEnsureStopped;
@@ -109,13 +109,13 @@
   }
 }
 
-- (void)_connectionInvalidated:(id)a3
+- (void)_connectionInvalidated:(id)invalidated
 {
   dispatchQueue = self->_dispatchQueue;
-  v5 = a3;
+  invalidatedCopy = invalidated;
   dispatch_assert_queue_V2(dispatchQueue);
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained serviceListener:self connectionInvalidated:v5];
+  [WeakRetained serviceListener:self connectionInvalidated:invalidatedCopy];
 }
 
 - (void)_languageNotificationEnsureStarted
@@ -136,64 +136,64 @@
   }
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
+  prefixCopy = prefix;
   [BSDescriptionBuilder builderWithObject:self];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000212C4;
   v5 = v8[3] = &unk_10008A030;
   v9 = v5;
-  v10 = self;
-  [v5 appendBodySectionWithName:0 multilinePrefix:v4 block:v8];
+  selfCopy = self;
+  [v5 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v8];
 
   v6 = v5;
   return v5;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(CDServiceListener *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(CDServiceListener *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 - (id)succinctDescription
 {
-  v2 = [(CDServiceListener *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(CDServiceListener *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   dispatchQueue = self->_dispatchQueue;
-  v6 = a4;
+  connectionCopy = connection;
   dispatch_assert_queue_V2(dispatchQueue);
-  v7 = [[CDServiceConnection alloc] initWithConnection:v6];
-  [v6 _setQueue:self->_dispatchQueue];
+  v7 = [[CDServiceConnection alloc] initWithConnection:connectionCopy];
+  [connectionCopy _setQueue:self->_dispatchQueue];
   v8 = +[CPSAuthenticationServiceInterface daemonInterface];
-  [v6 setExportedInterface:v8];
+  [connectionCopy setExportedInterface:v8];
 
   v9 = +[CPSAuthenticationServiceInterface clientInterface];
-  [v6 setRemoteObjectInterface:v9];
+  [connectionCopy setRemoteObjectInterface:v9];
 
-  [v6 setExportedObject:v7];
+  [connectionCopy setExportedObject:v7];
   v13 = _NSConcreteStackBlock;
   v14 = 3221225472;
   v15 = sub_1000214F4;
   v16 = &unk_10008A030;
-  v17 = self;
+  selfCopy = self;
   v18 = v7;
   v10 = v7;
-  [v6 setInvalidationHandler:&v13];
+  [connectionCopy setInvalidationHandler:&v13];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained serviceListener:self willAcceptConnection:{v10, v13, v14, v15, v16, v17}];
+  [WeakRetained serviceListener:self willAcceptConnection:{v10, v13, v14, v15, v16, selfCopy}];
 
-  [v6 resume];
+  [connectionCopy resume];
   return 1;
 }
 

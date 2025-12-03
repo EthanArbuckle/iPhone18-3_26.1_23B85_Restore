@@ -1,15 +1,15 @@
 @interface IdentityProofingPrecursorPassMessageAction
 - (_TtC13CoreIDVShared42IdentityProofingPrecursorPassMessageAction)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IdentityProofingPrecursorPassMessageAction
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  IdentityProofingPrecursorPassMessageAction.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  IdentityProofingPrecursorPassMessageAction.encode(with:)(coderCopy);
 }
 
 - (_TtC13CoreIDVShared42IdentityProofingPrecursorPassMessageAction)init

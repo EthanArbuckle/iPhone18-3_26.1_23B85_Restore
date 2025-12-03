@@ -1,25 +1,25 @@
 @interface NFBackgroundTagReadingExtensionManager
-- (BOOL)extensionIdentity:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (BOOL)validateExtension:(id)a3;
-- (NFBackgroundTagReadingExtensionManager)initWithURLPrefixList:(id)a3;
-- (id)_extractURIFromMessage:(id)a3;
+- (BOOL)extensionIdentity:(id)identity shouldAcceptNewConnection:(id)connection;
+- (BOOL)validateExtension:(id)extension;
+- (NFBackgroundTagReadingExtensionManager)initWithURLPrefixList:(id)list;
+- (id)_extractURIFromMessage:(id)message;
 - (id)dumpState;
-- (id)findExtensionWithNdef:(id)a3 error:(id *)a4;
-- (void)postXPCEventDictionary:(id)a3;
-- (void)processNdef:(id)a3 tag:(id)a4 completion:(id)a5;
-- (void)processNdef:(id)a3 tag:(id)a4 targetExtension:(id)a5 completion:(id)a6;
+- (id)findExtensionWithNdef:(id)ndef error:(id *)error;
+- (void)postXPCEventDictionary:(id)dictionary;
+- (void)processNdef:(id)ndef tag:(id)tag completion:(id)completion;
+- (void)processNdef:(id)ndef tag:(id)tag targetExtension:(id)extension completion:(id)completion;
 @end
 
 @implementation NFBackgroundTagReadingExtensionManager
 
-- (NFBackgroundTagReadingExtensionManager)initWithURLPrefixList:(id)a3
+- (NFBackgroundTagReadingExtensionManager)initWithURLPrefixList:(id)list
 {
-  v5 = a3;
+  listCopy = list;
   v6 = objc_opt_new();
   registeredProcessorList = self->_registeredProcessorList;
   self->_registeredProcessorList = v6;
 
-  objc_storeStrong(&self->_restrictedURLPrefixList, a3);
+  objc_storeStrong(&self->_restrictedURLPrefixList, list);
   v13.receiver = self;
   v13.super_class = NFBackgroundTagReadingExtensionManager;
   v8 = [(NFExtensionPointManager *)&v13 initWithIdentifier:@"com.apple.nfcd.background.tag.reading.extension"];
@@ -35,11 +35,11 @@
   return v8;
 }
 
-- (BOOL)extensionIdentity:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)extensionIdentity:(id)identity shouldAcceptNewConnection:(id)connection
 {
-  v7 = a3;
+  identityCopy = identity;
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
-  v8 = a4;
+  connectionCopy = connection;
   Logger = NFLogGetLogger();
   if (Logger)
   {
@@ -48,7 +48,7 @@
     isMetaClass = class_isMetaClass(Class);
     ClassName = object_getClassName(self);
     Name = sel_getName(a2);
-    v15 = [v7 description];
+    v15 = [identityCopy description];
     v16 = 45;
     if (isMetaClass)
     {
@@ -75,7 +75,7 @@
 
     v20 = object_getClassName(self);
     v21 = sel_getName(a2);
-    v22 = [v7 description];
+    v22 = [identityCopy description];
     *buf = 67110146;
     v35 = v19;
     v36 = 2082;
@@ -89,9 +89,9 @@
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i exIdentity=%@", buf, 0x2Cu);
   }
 
-  v23 = [v7 bundleIdentifier];
+  bundleIdentifier = [identityCopy bundleIdentifier];
   v24 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___NFBackgroundTagReadingExtensionProtocol];
-  [v8 setRemoteObjectInterface:v24];
+  [connectionCopy setRemoteObjectInterface:v24];
 
   v31[0] = _NSConcreteStackBlock;
   v31[1] = 3221225472;
@@ -99,9 +99,9 @@
   v31[3] = &unk_100018A28;
   v31[4] = self;
   v33 = a2;
-  v25 = v23;
+  v25 = bundleIdentifier;
   v32 = v25;
-  [v8 setInterruptionHandler:v31];
+  [connectionCopy setInterruptionHandler:v31];
   v28[0] = _NSConcreteStackBlock;
   v28[1] = 3221225472;
   v28[2] = sub_100007524;
@@ -110,24 +110,24 @@
   v30 = a2;
   v28[4] = self;
   v26 = v25;
-  [v8 setInvalidationHandler:v28];
-  [v8 resume];
+  [connectionCopy setInvalidationHandler:v28];
+  [connectionCopy resume];
 
   return 1;
 }
 
-- (BOOL)validateExtension:(id)a3
+- (BOOL)validateExtension:(id)extension
 {
-  v158 = a3;
-  v4 = [v158 identity];
-  if (!v4)
+  extensionCopy = extension;
+  identity = [extensionCopy identity];
+  if (!identity)
   {
     __assert_rtn("[NFBackgroundTagReadingExtensionManager validateExtension:]", "NFBackgroundTagReadingExtensionManager.m", 97, "nil != targetExtension.identity");
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
-  v160 = self;
+  selfCopy = self;
   if (Logger)
   {
     v6 = Logger;
@@ -135,17 +135,17 @@
     isMetaClass = class_isMetaClass(Class);
     ClassName = object_getClassName(self);
     Name = sel_getName(a2);
-    v11 = [v158 identity];
-    v12 = [v11 applicationExtensionRecord];
+    identity2 = [extensionCopy identity];
+    applicationExtensionRecord = [identity2 applicationExtensionRecord];
     v13 = 45;
     if (isMetaClass)
     {
       v13 = 43;
     }
 
-    v6(6, "%c[%{public}s %{public}s]:%i appExtRecord=%@", v13, ClassName, Name, 99, v12);
+    v6(6, "%c[%{public}s %{public}s]:%i appExtRecord=%@", v13, ClassName, Name, 99, applicationExtensionRecord);
 
-    self = v160;
+    self = selfCopy;
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -165,8 +165,8 @@
 
     v17 = object_getClassName(self);
     v18 = sel_getName(a2);
-    v19 = [v158 identity];
-    v20 = [v19 applicationExtensionRecord];
+    identity3 = [extensionCopy identity];
+    applicationExtensionRecord2 = [identity3 applicationExtensionRecord];
     *buf = 67110146;
     v168 = v16;
     v169 = 2082;
@@ -176,20 +176,20 @@
     v173 = 1024;
     v174 = 99;
     v175 = 2112;
-    v176 = v20;
+    v176 = applicationExtensionRecord2;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i appExtRecord=%@", buf, 0x2Cu);
 
-    self = v160;
+    self = selfCopy;
   }
 
-  v21 = [v158 identity];
-  v22 = [v21 entitlementNamed:@"com.apple.nfcd.background.tag.reading.extension.generic" ofClass:objc_opt_class()];
+  identity4 = [extensionCopy identity];
+  v22 = [identity4 entitlementNamed:@"com.apple.nfcd.background.tag.reading.extension.generic" ofClass:objc_opt_class()];
 
-  v23 = [(NFBackgroundTagReadingExtensionManager *)self restrictedURLPrefixList];
-  if (v23)
+  restrictedURLPrefixList = [(NFBackgroundTagReadingExtensionManager *)self restrictedURLPrefixList];
+  if (restrictedURLPrefixList)
   {
-    v24 = [(NFBackgroundTagReadingExtensionManager *)self restrictedURLPrefixList];
-    v25 = v24 != 0;
+    restrictedURLPrefixList2 = [(NFBackgroundTagReadingExtensionManager *)self restrictedURLPrefixList];
+    v25 = restrictedURLPrefixList2 != 0;
   }
 
   else
@@ -203,9 +203,9 @@
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) != 0 && [v22 BOOLValue])
     {
-      v27 = [(NFBackgroundTagReadingExtensionManager *)self defaultProcessor];
+      defaultProcessor = [(NFBackgroundTagReadingExtensionManager *)self defaultProcessor];
 
-      if (v27)
+      if (defaultProcessor)
       {
         dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
         v28 = NFLogGetLogger();
@@ -256,7 +256,7 @@
 
       else
       {
-        [(NFBackgroundTagReadingExtensionManager *)self setDefaultProcessor:v158];
+        [(NFBackgroundTagReadingExtensionManager *)self setDefaultProcessor:extensionCopy];
       }
 
       v26 = 1;
@@ -269,8 +269,8 @@
   }
 
   v157 = v25;
-  v39 = [v158 identity];
-  v40 = [v39 entitlementNamed:@"com.apple.nfcd.background.tag.reading.extension.urls" ofClass:objc_opt_class()];
+  identity5 = [extensionCopy identity];
+  v40 = [identity5 entitlementNamed:@"com.apple.nfcd.background.tag.reading.extension.urls" ofClass:objc_opt_class()];
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   v41 = NFLogGetLogger();
@@ -361,9 +361,9 @@
             v59 = v58;
             if (v58)
             {
-              v60 = [v58 absoluteString];
-              v61 = [(NFBackgroundTagReadingExtensionManager *)self registeredProcessorList];
-              v62 = [v61 objectForKey:v60];
+              absoluteString = [v58 absoluteString];
+              registeredProcessorList = [(NFBackgroundTagReadingExtensionManager *)self registeredProcessorList];
+              v62 = [registeredProcessorList objectForKey:absoluteString];
 
               if (v62)
               {
@@ -383,13 +383,13 @@
                   }
 
                   v145 = v67;
-                  self = v160;
-                  v64(6, "%c[%{public}s %{public}s]:%i %{public}@ has been already registered to %{public}@", v68, v145, v150, 144, v60, v62);
+                  self = selfCopy;
+                  v64(6, "%c[%{public}s %{public}s]:%i %{public}@ has been already registered to %{public}@", v68, v145, v150, 144, absoluteString, v62);
                 }
 
                 dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
-                v69 = NFSharedLogGetLogger();
-                if (os_log_type_enabled(v69, OS_LOG_TYPE_DEFAULT))
+                registeredProcessorList2 = NFSharedLogGetLogger();
+                if (os_log_type_enabled(registeredProcessorList2, OS_LOG_TYPE_DEFAULT))
                 {
                   v70 = object_getClass(self);
                   if (class_isMetaClass(v70))
@@ -402,11 +402,11 @@
                     v71 = 45;
                   }
 
-                  v72 = object_getClassName(v160);
+                  v72 = object_getClassName(selfCopy);
                   v73 = sel_getName(a2);
                   *buf = 67110402;
                   v168 = v71;
-                  self = v160;
+                  self = selfCopy;
                   v169 = 2082;
                   v170 = v72;
                   v171 = 2082;
@@ -414,17 +414,17 @@
                   v173 = 1024;
                   v174 = 144;
                   v175 = 2114;
-                  v176 = v60;
+                  v176 = absoluteString;
                   v177 = 2114;
                   v178 = v62;
-                  v74 = v69;
+                  v74 = registeredProcessorList2;
                   v75 = "%c[%{public}s %{public}s]:%i %{public}@ has been already registered to %{public}@";
                   v76 = 54;
                   goto LABEL_60;
                 }
               }
 
-              else if (v157 && (-[NFBackgroundTagReadingExtensionManager restrictedURLPrefixList](self, "restrictedURLPrefixList"), v77 = objc_claimAutoreleasedReturnValue(), v78 = [v77 containsObject:v60], v77, (v78 & 1) == 0))
+              else if (v157 && (-[NFBackgroundTagReadingExtensionManager restrictedURLPrefixList](self, "restrictedURLPrefixList"), v77 = objc_claimAutoreleasedReturnValue(), v78 = [v77 containsObject:absoluteString], v77, (v78 & 1) == 0))
               {
                 dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
                 v90 = NFLogGetLogger();
@@ -441,13 +441,13 @@
                     v94 = 43;
                   }
 
-                  self = v160;
-                  v91(6, "%c[%{public}s %{public}s]:%i %{public}@ is not part of the restriction list", v94, v147, v152, 150, v60);
+                  self = selfCopy;
+                  v91(6, "%c[%{public}s %{public}s]:%i %{public}@ is not part of the restriction list", v94, v147, v152, 150, absoluteString);
                 }
 
                 dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
-                v69 = NFSharedLogGetLogger();
-                if (os_log_type_enabled(v69, OS_LOG_TYPE_DEFAULT))
+                registeredProcessorList2 = NFSharedLogGetLogger();
+                if (os_log_type_enabled(registeredProcessorList2, OS_LOG_TYPE_DEFAULT))
                 {
                   v95 = object_getClass(self);
                   if (class_isMetaClass(v95))
@@ -460,11 +460,11 @@
                     v96 = 45;
                   }
 
-                  v97 = object_getClassName(v160);
+                  v97 = object_getClassName(selfCopy);
                   v98 = sel_getName(a2);
                   *buf = 67110146;
                   v168 = v96;
-                  self = v160;
+                  self = selfCopy;
                   v169 = 2082;
                   v170 = v97;
                   v171 = 2082;
@@ -472,8 +472,8 @@
                   v173 = 1024;
                   v174 = 150;
                   v175 = 2114;
-                  v176 = v60;
-                  v74 = v69;
+                  v176 = absoluteString;
+                  v74 = registeredProcessorList2;
                   v75 = "%c[%{public}s %{public}s]:%i %{public}@ is not part of the restriction list";
                   v76 = 44;
 LABEL_60:
@@ -499,8 +499,8 @@ LABEL_60:
                   }
 
                   v146 = v83;
-                  self = v160;
-                  v80(6, "%c[%{public}s %{public}s]:%i %{public}@ register under extension %{public}@", v84, v146, v151, 155, v60, v158);
+                  self = selfCopy;
+                  v80(6, "%c[%{public}s %{public}s]:%i %{public}@ register under extension %{public}@", v84, v146, v151, 155, absoluteString, extensionCopy);
                 }
 
                 dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -518,11 +518,11 @@ LABEL_60:
                     v87 = 45;
                   }
 
-                  v88 = object_getClassName(v160);
+                  v88 = object_getClassName(selfCopy);
                   v89 = sel_getName(a2);
                   *buf = 67110402;
                   v168 = v87;
-                  self = v160;
+                  self = selfCopy;
                   v169 = 2082;
                   v170 = v88;
                   v171 = 2082;
@@ -530,14 +530,14 @@ LABEL_60:
                   v173 = 1024;
                   v174 = 155;
                   v175 = 2114;
-                  v176 = v60;
+                  v176 = absoluteString;
                   v177 = 2114;
-                  v178 = v158;
+                  v178 = extensionCopy;
                   _os_log_impl(&_mh_execute_header, v85, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i %{public}@ register under extension %{public}@", buf, 0x36u);
                 }
 
-                v69 = [(NFBackgroundTagReadingExtensionManager *)self registeredProcessorList];
-                [v69 setObject:v158 forKey:v60];
+                registeredProcessorList2 = [(NFBackgroundTagReadingExtensionManager *)self registeredProcessorList];
+                [registeredProcessorList2 setObject:extensionCopy forKey:absoluteString];
                 v156 = 1;
               }
             }
@@ -557,15 +557,15 @@ LABEL_87:
           v100 = v156;
           if (v156)
           {
-            v101 = [v158 identity];
-            v102 = [v101 entitlementNamed:@"com.apple.nfcd.background.tag.reading.extension.nonui" ofClass:objc_opt_class()];
+            identity6 = [extensionCopy identity];
+            v102 = [identity6 entitlementNamed:@"com.apple.nfcd.background.tag.reading.extension.nonui" ofClass:objc_opt_class()];
 
             if (v102)
             {
               objc_opt_class();
               if (objc_opt_isKindOfClass())
               {
-                [v158 setPresentUI:{objc_msgSend(v102, "BOOLValue") ^ 1}];
+                [extensionCopy setPresentUI:{objc_msgSend(v102, "BOOLValue") ^ 1}];
               }
             }
           }
@@ -579,14 +579,14 @@ LABEL_87:
             v106 = class_isMetaClass(v105);
             v107 = object_getClassName(self);
             v108 = sel_getName(a2);
-            v109 = [(NFBackgroundTagReadingExtensionManager *)self registeredProcessorList];
+            registeredProcessorList3 = [(NFBackgroundTagReadingExtensionManager *)self registeredProcessorList];
             v110 = 45;
             if (v106)
             {
               v110 = 43;
             }
 
-            v104(6, "%c[%{public}s %{public}s]:%i urlProcessor=%@", v110, v107, v108, 171, v109);
+            v104(6, "%c[%{public}s %{public}s]:%i urlProcessor=%@", v110, v107, v108, 171, registeredProcessorList3);
 
             v40 = v155;
           }
@@ -608,7 +608,7 @@ LABEL_87:
 
             v114 = object_getClassName(self);
             v115 = sel_getName(a2);
-            v116 = [(NFBackgroundTagReadingExtensionManager *)self registeredProcessorList];
+            registeredProcessorList4 = [(NFBackgroundTagReadingExtensionManager *)self registeredProcessorList];
             *buf = 67110146;
             v168 = v113;
             v100 = v156;
@@ -619,7 +619,7 @@ LABEL_87:
             v173 = 1024;
             v174 = 171;
             v175 = 2112;
-            v176 = v116;
+            v176 = registeredProcessorList4;
             _os_log_impl(&_mh_execute_header, v111, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i urlProcessor=%@", buf, 0x2Cu);
           }
 
@@ -648,7 +648,7 @@ LABEL_87:
 
       v118(3, "%c[%{public}s %{public}s]:%i [%@] %@", v125, v121, v122, 126, v124, v155);
 
-      self = v160;
+      self = selfCopy;
     }
 
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -750,14 +750,14 @@ LABEL_124:
   return v100 & 1;
 }
 
-- (id)_extractURIFromMessage:(id)a3
+- (id)_extractURIFromMessage:(id)message
 {
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [a3 records];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  records = [message records];
+  v4 = [records countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = *v11;
@@ -767,20 +767,20 @@ LABEL_124:
       {
         if (*v11 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(records);
         }
 
         v7 = *(*(&v10 + 1) + 8 * i);
         if ([v7 isURIRecord])
         {
-          v8 = [v7 decode];
-          v4 = [[NSURLComponents alloc] initWithString:v8];
+          decode = [v7 decode];
+          v4 = [[NSURLComponents alloc] initWithString:decode];
 
           goto LABEL_11;
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [records countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v4)
       {
         continue;
@@ -795,22 +795,22 @@ LABEL_11:
   return v4;
 }
 
-- (id)findExtensionWithNdef:(id)a3 error:(id *)a4
+- (id)findExtensionWithNdef:(id)ndef error:(id *)error
 {
-  v6 = self;
-  v7 = [(NFBackgroundTagReadingExtensionManager *)self _extractURIFromMessage:a3];
+  selfCopy = self;
+  v7 = [(NFBackgroundTagReadingExtensionManager *)self _extractURIFromMessage:ndef];
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
   if (Logger)
   {
     v9 = Logger;
-    Class = object_getClass(v6);
+    Class = object_getClass(selfCopy);
     isMetaClass = class_isMetaClass(Class);
-    ClassName = object_getClassName(v6);
+    ClassName = object_getClassName(selfCopy);
     Name = sel_getName(a2);
-    v14 = [(NFBackgroundTagReadingExtensionManager *)v6 registeredProcessorList];
-    [v14 allKeys];
-    v16 = v15 = v6;
+    registeredProcessorList = [(NFBackgroundTagReadingExtensionManager *)selfCopy registeredProcessorList];
+    [registeredProcessorList allKeys];
+    v16 = v15 = selfCopy;
     v17 = 45;
     if (isMetaClass)
     {
@@ -819,14 +819,14 @@ LABEL_11:
 
     v9(6, "%c[%{public}s %{public}s]:%i availableExtension=%@", v17, ClassName, Name, 190, v16);
 
-    v6 = v15;
+    selfCopy = v15;
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   v18 = NFSharedLogGetLogger();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
-    v19 = object_getClass(v6);
+    v19 = object_getClass(selfCopy);
     if (class_isMetaClass(v19))
     {
       v20 = 43;
@@ -837,10 +837,10 @@ LABEL_11:
       v20 = 45;
     }
 
-    v21 = object_getClassName(v6);
+    v21 = object_getClassName(selfCopy);
     v22 = sel_getName(a2);
-    v23 = [(NFBackgroundTagReadingExtensionManager *)v6 registeredProcessorList];
-    v24 = [v23 allKeys];
+    registeredProcessorList2 = [(NFBackgroundTagReadingExtensionManager *)selfCopy registeredProcessorList];
+    allKeys = [registeredProcessorList2 allKeys];
     *buf = 67110146;
     v109 = v20;
     v110 = 2082;
@@ -850,7 +850,7 @@ LABEL_11:
     v114 = 1024;
     v115 = 190;
     v116 = 2112;
-    v117 = v24;
+    v117 = allKeys;
     _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i availableExtension=%@", buf, 0x2Cu);
   }
 
@@ -859,9 +859,9 @@ LABEL_11:
   if (v25)
   {
     v26 = v25;
-    v27 = object_getClass(v6);
+    v27 = object_getClass(selfCopy);
     v28 = class_isMetaClass(v27);
-    v89 = object_getClassName(v6);
+    v89 = object_getClassName(selfCopy);
     v91 = sel_getName(a2);
     v29 = 45;
     if (v28)
@@ -876,7 +876,7 @@ LABEL_11:
   v30 = NFSharedLogGetLogger();
   if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
   {
-    v31 = object_getClass(v6);
+    v31 = object_getClass(selfCopy);
     if (class_isMetaClass(v31))
     {
       v32 = 43;
@@ -887,7 +887,7 @@ LABEL_11:
       v32 = 45;
     }
 
-    v33 = object_getClassName(v6);
+    v33 = object_getClassName(selfCopy);
     v34 = sel_getName(a2);
     *buf = 67110146;
     v109 = v32;
@@ -905,7 +905,7 @@ LABEL_11:
   v97 = v7;
   if (!v7)
   {
-    if (a4)
+    if (error)
     {
       v67 = [NSError alloc];
       v68 = [NSString stringWithUTF8String:"nfcd"];
@@ -921,95 +921,95 @@ LABEL_11:
       v71 = [[NSString alloc] initWithFormat:@"%s:%d", sel_getName(a2), 195];
       v107[3] = v71;
       v72 = [NSDictionary dictionaryWithObjects:v107 forKeys:v106 count:4];
-      *a4 = [v67 initWithDomain:v68 code:65 userInfo:v72];
+      *error = [v67 initWithDomain:v68 code:65 userInfo:v72];
 LABEL_63:
 
       v7 = v97;
     }
 
 LABEL_64:
-    v74 = 0;
+    defaultProcessor2 = 0;
     goto LABEL_65;
   }
 
-  v93 = a4;
+  errorCopy = error;
   v94 = a2;
   v101 = 0u;
   v102 = 0u;
   v99 = 0u;
   v100 = 0u;
-  v95 = v6;
-  v35 = [(NFBackgroundTagReadingExtensionManager *)v6 registeredProcessorList];
-  v36 = [v35 allKeys];
+  v95 = selfCopy;
+  registeredProcessorList3 = [(NFBackgroundTagReadingExtensionManager *)selfCopy registeredProcessorList];
+  allKeys2 = [registeredProcessorList3 allKeys];
 
-  v37 = [v36 countByEnumeratingWithState:&v99 objects:v105 count:16];
+  v37 = [allKeys2 countByEnumeratingWithState:&v99 objects:v105 count:16];
   if (v37)
   {
     v38 = v37;
     v98 = *v100;
-    v96 = v36;
+    v96 = allKeys2;
 LABEL_22:
     v39 = 0;
     while (1)
     {
       if (*v100 != v98)
       {
-        objc_enumerationMutation(v36);
+        objc_enumerationMutation(allKeys2);
       }
 
       v40 = *(*(&v99 + 1) + 8 * v39);
       v41 = [[NSURLComponents alloc] initWithString:v40];
-      v42 = [v41 scheme];
-      v43 = [v7 scheme];
-      v44 = [v42 compare:v43 options:1];
+      scheme = [v41 scheme];
+      scheme2 = [v7 scheme];
+      v44 = [scheme compare:scheme2 options:1];
 
       if (!v44)
       {
-        v45 = [v41 host];
+        host = [v41 host];
 
-        if (!v45)
+        if (!host)
         {
           goto LABEL_34;
         }
 
-        v46 = [v7 host];
+        host2 = [v7 host];
 
-        if (v46)
+        if (host2)
         {
-          v47 = [v41 host];
-          if (![v47 length])
+          host3 = [v41 host];
+          if (![host3 length])
           {
 
 LABEL_34:
-            v51 = [v41 path];
-            if (!v51)
+            path = [v41 path];
+            if (!path)
             {
               goto LABEL_49;
             }
 
-            v52 = v51;
-            v53 = [v41 path];
-            v54 = [v53 length];
+            v52 = path;
+            path2 = [v41 path];
+            v54 = [path2 length];
 
             if (!v54)
             {
               goto LABEL_49;
             }
 
-            v55 = [v7 path];
+            path3 = [v7 path];
 
-            if (v55)
+            if (path3)
             {
               v56 = [v7 URL];
-              v57 = [v56 pathComponents];
+              pathComponents = [v56 pathComponents];
 
               v58 = [v41 URL];
-              v59 = [v58 pathComponents];
+              pathComponents2 = [v58 pathComponents];
 
-              v60 = [v57 count];
-              if (v60 >= [v59 count])
+              v60 = [pathComponents count];
+              if (v60 >= [pathComponents2 count])
               {
-                if (![v59 count])
+                if (![pathComponents2 count])
                 {
                   goto LABEL_48;
                 }
@@ -1017,11 +1017,11 @@ LABEL_34:
                 v61 = 1;
                 do
                 {
-                  v62 = [v59 objectAtIndexedSubscript:v61 - 1];
-                  v63 = [v57 objectAtIndexedSubscript:v61 - 1];
+                  v62 = [pathComponents2 objectAtIndexedSubscript:v61 - 1];
+                  v63 = [pathComponents objectAtIndexedSubscript:v61 - 1];
                   v64 = [v62 compare:v63 options:1];
 
-                  if ([v59 count] <= v61)
+                  if ([pathComponents2 count] <= v61)
                   {
                     break;
                   }
@@ -1030,7 +1030,7 @@ LABEL_34:
                 }
 
                 while (!v64);
-                v36 = v96;
+                allKeys2 = v96;
                 v7 = v97;
                 if (!v64)
                 {
@@ -1038,10 +1038,10 @@ LABEL_48:
 
 LABEL_49:
                   v66 = v95;
-                  v73 = [(NFBackgroundTagReadingExtensionManager *)v95 registeredProcessorList];
-                  v74 = [v73 objectForKeyedSubscript:v40];
+                  registeredProcessorList4 = [(NFBackgroundTagReadingExtensionManager *)v95 registeredProcessorList];
+                  defaultProcessor2 = [registeredProcessorList4 objectForKeyedSubscript:v40];
 
-                  if (v74)
+                  if (defaultProcessor2)
                   {
                     goto LABEL_65;
                   }
@@ -1054,9 +1054,9 @@ LABEL_49:
             goto LABEL_26;
           }
 
-          v48 = [v41 host];
-          v49 = [v7 host];
-          v50 = [v48 compare:v49 options:1];
+          host4 = [v41 host];
+          host5 = [v7 host];
+          v50 = [host4 compare:host5 options:1];
 
           if (!v50)
           {
@@ -1069,7 +1069,7 @@ LABEL_26:
 
       if (++v39 == v38)
       {
-        v65 = [v36 countByEnumeratingWithState:&v99 objects:v105 count:16];
+        v65 = [allKeys2 countByEnumeratingWithState:&v99 objects:v105 count:16];
         v38 = v65;
         if (v65)
         {
@@ -1083,11 +1083,11 @@ LABEL_26:
 
   v66 = v95;
 LABEL_50:
-  v75 = [(NFBackgroundTagReadingExtensionManager *)v66 defaultProcessor];
+  defaultProcessor = [(NFBackgroundTagReadingExtensionManager *)v66 defaultProcessor];
 
-  if (!v75)
+  if (!defaultProcessor)
   {
-    if (v93)
+    if (errorCopy)
     {
       v87 = [NSError alloc];
       v68 = [NSString stringWithUTF8String:"nfcd"];
@@ -1103,7 +1103,7 @@ LABEL_50:
       v71 = [[NSString alloc] initWithFormat:@"%s:%d", sel_getName(v94), 257];
       v104[3] = v71;
       v72 = [NSDictionary dictionaryWithObjects:v104 forKeys:v103 count:4];
-      *v93 = [v87 initWithDomain:v68 code:65 userInfo:v72];
+      *errorCopy = [v87 initWithDomain:v68 code:65 userInfo:v72];
       goto LABEL_63;
     }
 
@@ -1158,46 +1158,46 @@ LABEL_50:
     _os_log_impl(&_mh_execute_header, v82, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i Use default processor", buf, 0x22u);
   }
 
-  v74 = [(NFBackgroundTagReadingExtensionManager *)v66 defaultProcessor];
+  defaultProcessor2 = [(NFBackgroundTagReadingExtensionManager *)v66 defaultProcessor];
 LABEL_65:
 
-  return v74;
+  return defaultProcessor2;
 }
 
-- (void)processNdef:(id)a3 tag:(id)a4 completion:(id)a5
+- (void)processNdef:(id)ndef tag:(id)tag completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
+  ndefCopy = ndef;
+  tagCopy = tag;
   v13 = 0;
-  v10 = a5;
-  v11 = [(NFBackgroundTagReadingExtensionManager *)self findExtensionWithNdef:v8 error:&v13];
+  completionCopy = completion;
+  v11 = [(NFBackgroundTagReadingExtensionManager *)self findExtensionWithNdef:ndefCopy error:&v13];
   v12 = v13;
   if (v12)
   {
-    v10[2](v10, v12);
+    completionCopy[2](completionCopy, v12);
   }
 
   else
   {
-    [(NFBackgroundTagReadingExtensionManager *)self processNdef:v8 tag:v9 targetExtension:v11 completion:v10];
+    [(NFBackgroundTagReadingExtensionManager *)self processNdef:ndefCopy tag:tagCopy targetExtension:v11 completion:completionCopy];
   }
 }
 
-- (void)processNdef:(id)a3 tag:(id)a4 targetExtension:(id)a5 completion:(id)a6
+- (void)processNdef:(id)ndef tag:(id)tag targetExtension:(id)extension completion:(id)completion
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = v13;
-  v16 = v14;
+  ndefCopy = ndef;
+  tagCopy = tag;
+  extensionCopy = extension;
+  completionCopy = completion;
+  v15 = extensionCopy;
+  v16 = completionCopy;
   if (!v15)
   {
     v27 = [NSError alloc];
     v20 = [NSString stringWithUTF8String:"nfcd"];
     v68[0] = NSLocalizedDescriptionKey;
-    v25 = [NSString stringWithUTF8String:"Invalid Parameter"];
-    v69[0] = v25;
+    bundleIdentifier = [NSString stringWithUTF8String:"Invalid Parameter"];
+    v69[0] = bundleIdentifier;
     v69[1] = &off_100019288;
     v68[1] = @"Line";
     v68[2] = @"Method";
@@ -1214,14 +1214,14 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  v57 = v14;
+  v57 = completionCopy;
   if (![(NFExtensionPointManager *)self launchExtension:v15])
   {
     v32 = [NSError alloc];
     v20 = [NSString stringWithUTF8String:"nfcd"];
     v66[0] = NSLocalizedDescriptionKey;
-    v25 = [NSString stringWithUTF8String:"Aborted"];
-    v67[0] = v25;
+    bundleIdentifier = [NSString stringWithUTF8String:"Aborted"];
+    v67[0] = bundleIdentifier;
     v67[1] = &off_1000192A0;
     v66[1] = @"Line";
     v66[2] = @"Method";
@@ -1236,10 +1236,10 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  v53 = self;
+  selfCopy = self;
   v54 = a2;
-  v55 = v12;
-  v56 = v11;
+  v55 = tagCopy;
+  v56 = ndefCopy;
   v17 = NFSharedSignpostLog();
   if (os_signpost_enabled(v17))
   {
@@ -1256,13 +1256,13 @@ LABEL_18:
     *&v65[16] = sub_100009BC0;
     *&v65[24] = sub_100009BD0;
     *&v65[32] = 0;
-    v19 = [v15 xpcConnection];
+    xpcConnection = [v15 xpcConnection];
     v61[0] = _NSConcreteStackBlock;
     v61[1] = 3221225472;
     v61[2] = sub_100009BD8;
     v61[3] = &unk_100018A50;
     v61[4] = buf;
-    v20 = [v19 synchronousRemoteObjectProxyWithErrorHandler:v61];
+    v20 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v61];
 
     v21 = *(*v65 + 40);
     if (v21)
@@ -1282,10 +1282,10 @@ LABEL_18:
   }
 
   while (v18 >= 1 && !v20);
-  v22 = [v15 extensionProcess];
-  v23 = [v22 configuration];
-  v24 = [v23 extensionIdentity];
-  v25 = [v24 bundleIdentifier];
+  extensionProcess = [v15 extensionProcess];
+  configuration = [extensionProcess configuration];
+  extensionIdentity = [configuration extensionIdentity];
+  bundleIdentifier = [extensionIdentity bundleIdentifier];
 
   if (v20)
   {
@@ -1293,12 +1293,12 @@ LABEL_18:
     v58[1] = 3221225472;
     v58[2] = sub_100009BE8;
     v58[3] = &unk_100018A78;
-    v58[4] = v53;
+    v58[4] = selfCopy;
     v60 = v54;
-    v25 = v25;
-    v59 = v25;
-    v11 = v56;
-    [v20 processNDEF:v56 tag:v12 replyWithXPCEvent:v58];
+    bundleIdentifier = bundleIdentifier;
+    v59 = bundleIdentifier;
+    ndefCopy = v56;
+    [v20 processNDEF:v56 tag:tagCopy replyWithXPCEvent:v58];
     v26 = NFSharedSignpostLog();
     v16 = v57;
     if (os_signpost_enabled(v26))
@@ -1319,9 +1319,9 @@ LABEL_18:
     if (Logger)
     {
       v34 = Logger;
-      Class = object_getClass(v53);
+      Class = object_getClass(selfCopy);
       isMetaClass = class_isMetaClass(Class);
-      ClassName = object_getClassName(v53);
+      ClassName = object_getClassName(selfCopy);
       Name = sel_getName(v54);
       v37 = 45;
       if (isMetaClass)
@@ -1329,14 +1329,14 @@ LABEL_18:
         v37 = 43;
       }
 
-      v34(3, "%c[%{public}s %{public}s]:%i Fail to get xpc proxy to %@", v37, ClassName, Name, 314, v25);
+      v34(3, "%c[%{public}s %{public}s]:%i Fail to get xpc proxy to %@", v37, ClassName, Name, 314, bundleIdentifier);
     }
 
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
     v38 = NFSharedLogGetLogger();
     if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
     {
-      v39 = object_getClass(v53);
+      v39 = object_getClass(selfCopy);
       if (class_isMetaClass(v39))
       {
         v40 = 43;
@@ -1347,7 +1347,7 @@ LABEL_18:
         v40 = 45;
       }
 
-      v41 = object_getClassName(v53);
+      v41 = object_getClassName(selfCopy);
       v42 = sel_getName(v54);
       *buf = 67110146;
       *&buf[4] = v40;
@@ -1358,7 +1358,7 @@ LABEL_18:
       *&v65[20] = 1024;
       *&v65[22] = 314;
       *&v65[26] = 2112;
-      *&v65[28] = v25;
+      *&v65[28] = bundleIdentifier;
       _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Fail to get xpc proxy to %@", buf, 0x2Cu);
     }
 
@@ -1387,21 +1387,21 @@ LABEL_18:
     (*(v57 + 2))(v57, v50);
 
     v20 = 0;
-    v12 = v55;
-    v11 = v56;
+    tagCopy = v55;
+    ndefCopy = v56;
   }
 
 LABEL_19:
 }
 
-- (void)postXPCEventDictionary:(id)a3
+- (void)postXPCEventDictionary:(id)dictionary
 {
-  if (a3)
+  if (dictionary)
   {
-    v4 = a3;
-    v14 = [v4 NF_stringForKey:@"streamName"];
-    v5 = [v4 NF_stringForKey:@"eventString"];
-    v6 = [v4 NF_dictionaryForKey:@"eventDictionary"];
+    dictionaryCopy = dictionary;
+    v14 = [dictionaryCopy NF_stringForKey:@"streamName"];
+    v5 = [dictionaryCopy NF_stringForKey:@"eventString"];
+    v6 = [dictionaryCopy NF_dictionaryForKey:@"eventDictionary"];
 
     if (v14 && v5 | v6)
     {
@@ -1414,16 +1414,16 @@ LABEL_19:
         self->_xpcEventDispatchQueue = v9;
       }
 
-      v11 = [(NFBackgroundTagReadingExtensionManager *)self xpcPublisherList];
-      v12 = [v11 objectForKeyedSubscript:v14];
+      xpcPublisherList = [(NFBackgroundTagReadingExtensionManager *)self xpcPublisherList];
+      v12 = [xpcPublisherList objectForKeyedSubscript:v14];
 
       if (!v12)
       {
         v12 = [[NFXPCEventPublisher alloc] initWithStreamName:v14 queue:self->_xpcEventDispatchQueue];
         if (v12)
         {
-          v13 = [(NFBackgroundTagReadingExtensionManager *)self xpcPublisherList];
-          [v13 setObject:v12 forKey:v14];
+          xpcPublisherList2 = [(NFBackgroundTagReadingExtensionManager *)self xpcPublisherList];
+          [xpcPublisherList2 setObject:v12 forKey:v14];
         }
       }
 
@@ -1445,13 +1445,13 @@ LABEL_19:
   v3 = [NSMutableDictionary alloc];
   v9.receiver = self;
   v9.super_class = NFBackgroundTagReadingExtensionManager;
-  v4 = [(NFExtensionPointManager *)&v9 dumpState];
-  v5 = [v3 initWithDictionary:v4];
+  dumpState = [(NFExtensionPointManager *)&v9 dumpState];
+  v5 = [v3 initWithDictionary:dumpState];
 
   if (NFIsInternalBuild())
   {
-    v6 = [(NFBackgroundTagReadingExtensionManager *)self registeredProcessorList];
-    v7 = [v6 description];
+    registeredProcessorList = [(NFBackgroundTagReadingExtensionManager *)self registeredProcessorList];
+    v7 = [registeredProcessorList description];
     [v5 setObject:v7 forKeyedSubscript:@"processors"];
   }
 

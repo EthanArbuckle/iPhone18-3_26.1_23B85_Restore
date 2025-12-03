@@ -2,7 +2,7 @@
 - (UIColor)backgroundColor;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setBackgroundColor:(id)a3;
+- (void)setBackgroundColor:(id)color;
 @end
 
 @implementation SmallBreakoutCollectionViewCell
@@ -11,36 +11,36 @@
 {
   v4.receiver = self;
   v4.super_class = swift_getObjectType();
-  v2 = [(SmallBreakoutCollectionViewCell *)&v4 backgroundColor];
+  backgroundColor = [(SmallBreakoutCollectionViewCell *)&v4 backgroundColor];
 
-  return v2;
+  return backgroundColor;
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   ObjectType = swift_getObjectType();
   v12.receiver = self;
   v12.super_class = ObjectType;
-  v6 = a3;
-  v7 = self;
-  [(SmallBreakoutCollectionViewCell *)&v12 setBackgroundColor:v6];
-  v8 = *(&v7->super.super.super.super.super.isa + OBJC_IVAR____TtC8AppStore31SmallBreakoutCollectionViewCell_iconView);
-  v11.receiver = v7;
+  colorCopy = color;
+  selfCopy = self;
+  [(SmallBreakoutCollectionViewCell *)&v12 setBackgroundColor:colorCopy];
+  v8 = *(&selfCopy->super.super.super.super.super.isa + OBJC_IVAR____TtC8AppStore31SmallBreakoutCollectionViewCell_iconView);
+  v11.receiver = selfCopy;
   v11.super_class = ObjectType;
   v9 = v8;
-  v10 = [(SmallBreakoutCollectionViewCell *)&v11 backgroundColor];
+  backgroundColor = [(SmallBreakoutCollectionViewCell *)&v11 backgroundColor];
   ArtworkView.backgroundColor.setter();
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_100129494();
 }
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_100129764();
 }
 

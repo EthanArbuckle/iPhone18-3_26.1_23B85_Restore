@@ -6,8 +6,8 @@
 
 - (void)app_updateViewAnnotation
 {
-  v3 = [(ICTableAttachmentView *)self attachment];
-  [(ICTableAttachmentView *)self ic_annotateWithTable:v3];
+  attachment = [(ICTableAttachmentView *)self attachment];
+  [(ICTableAttachmentView *)self ic_annotateWithTable:attachment];
 }
 
 @end

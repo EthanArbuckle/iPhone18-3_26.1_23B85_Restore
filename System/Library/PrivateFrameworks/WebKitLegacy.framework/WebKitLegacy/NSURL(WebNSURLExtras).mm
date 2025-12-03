@@ -25,7 +25,7 @@
 - (void)_web_originalDataAsString
 {
   v2 = objc_alloc(MEMORY[0x1E696AEC0]);
-  result = [v2 initWithData:WTF::originalURLData(a1 encoding:{v3), 5}];
+  result = [v2 initWithData:WTF::originalURLData(self encoding:{v3), 5}];
   if (result)
   {
     v5 = result;
@@ -38,29 +38,29 @@
 
 - (BOOL)_web_isEmpty
 {
-  if (CFURLGetBaseURL(a1))
+  if (CFURLGetBaseURL(self))
   {
-    return [WTF::originalURLData(a1 v2)] == 0;
+    return [WTF::originalURLData(self v2)] == 0;
   }
 
   else
   {
-    return CFURLGetBytes(a1, 0, 0) == 0;
+    return CFURLGetBytes(self, 0, 0) == 0;
   }
 }
 
 - (uint64_t)_web_URLCString
 {
-  v2 = [MEMORY[0x1E695DF88] data];
-  [v2 appendData:{WTF::originalURLData(a1, v3)}];
-  [v2 appendBytes:&unk_1C7B33990 length:1];
+  data = [MEMORY[0x1E695DF88] data];
+  [data appendData:{WTF::originalURLData(self, v3)}];
+  [data appendBytes:&unk_1C7B33990 length:1];
 
-  return [v2 bytes];
+  return [data bytes];
 }
 
 - (id)_webkit_canonicalize_with_wtf
 {
-  MEMORY[0x1CCA63960](&v8, a1);
+  MEMORY[0x1CCA63960](&v8, self);
   if (v9)
   {
     WTF::URL::createCFURL(&v7, &v8);
@@ -94,29 +94,29 @@
 
 - (uint64_t)_webkit_isJavaScriptURL
 {
-  v1 = [a1 _web_originalDataAsString];
+  _web_originalDataAsString = [self _web_originalDataAsString];
 
-  return [v1 _webkit_isJavaScriptURL];
+  return [_web_originalDataAsString _webkit_isJavaScriptURL];
 }
 
 - (uint64_t)_webkit_scriptIfJavaScriptURL
 {
-  v1 = [a1 absoluteString];
+  absoluteString = [self absoluteString];
 
-  return [v1 _webkit_scriptIfJavaScriptURL];
+  return [absoluteString _webkit_scriptIfJavaScriptURL];
 }
 
 - (uint64_t)_webkit_isFileURL
 {
-  v1 = [a1 _web_originalDataAsString];
+  _web_originalDataAsString = [self _web_originalDataAsString];
 
-  return [v1 _webkit_isFileURL];
+  return [_web_originalDataAsString _webkit_isFileURL];
 }
 
 - (void)_web_hostData
 {
-  v4 = WTF::dataForURLComponentType(a1, 8, a3);
-  if ([v4 _web_isCaseInsensitiveEqualToCString:"localhost"] && (objc_msgSend(-[WTF _web_schemeData](a1, "_web_schemeData"), "_web_isCaseInsensitiveEqualToCString:", "file") & 1) != 0)
+  v4 = WTF::dataForURLComponentType(self, 8, a3);
+  if ([v4 _web_isCaseInsensitiveEqualToCString:"localhost"] && (objc_msgSend(-[WTF _web_schemeData](self, "_web_schemeData"), "_web_isCaseInsensitiveEqualToCString:", "file") & 1) != 0)
   {
     return 0;
   }
@@ -126,7 +126,7 @@
 
 - (void)_web_hostString
 {
-  result = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:objc_msgSend(a1 encoding:{"_web_hostData"), 4}];
+  result = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:objc_msgSend(self encoding:{"_web_hostData"), 4}];
   if (result)
   {
     v2 = result;
@@ -140,7 +140,7 @@
 - (uint64_t)_webkit_suggestedFilenameWithMIMEType:()WebNSURLExtras
 {
   MEMORY[0x1CCA63A40](&v8, a3);
-  result = suggestedFilenameWithMIMEType(a1, &v8);
+  result = suggestedFilenameWithMIMEType(self, &v8);
   v6 = v8;
   v8 = 0;
   if (v6)
@@ -158,13 +158,13 @@
 
 - (uint64_t)_webkit_URLFromURLOrSchemelessFileURL
 {
-  if ([a1 scheme])
+  if ([self scheme])
   {
-    return a1;
+    return self;
   }
 
   v3 = MEMORY[0x1E695DFF8];
-  v4 = [@"file:" stringByAppendingString:{objc_msgSend(a1, "absoluteString")}];
+  v4 = [@"file:" stringByAppendingString:{objc_msgSend(self, "absoluteString")}];
 
   return [v3 URLWithString:v4];
 }

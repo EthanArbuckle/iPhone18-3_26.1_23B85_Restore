@@ -5,29 +5,29 @@
 + (id)sharedProfileDelegate;
 + (id)tabGroupManager;
 + (void)initialize;
-- (BOOL)_componentIDIsForBookmarksOrTabsComponent:(id)a3;
-- (BOOL)_componentIDIsForHistoryComponent:(id)a3;
+- (BOOL)_componentIDIsForBookmarksOrTabsComponent:(id)component;
+- (BOOL)_componentIDIsForHistoryComponent:(id)component;
 - (SafariDiagnosticExtension)init;
 - (id)_bookmarksAttachmentItem;
 - (id)_cloudKitDataAttachment;
 - (id)_cloudTabRestorationAttachment;
 - (id)_contentBlockerListAttachment;
 - (id)_currentLayoutModeAttachment;
-- (id)_getAttachmentsWithDisplayNamePattern:(id)a3;
+- (id)_getAttachmentsWithDisplayNamePattern:(id)pattern;
 - (id)_historyDataAttachmentItem;
 - (id)_migrationEligibilityLogItem;
 - (id)_openTabsAttachment;
 - (id)_readOnlyTabCollection;
-- (id)_tabCollectionDataAttachmentItemHidingSensitiveData:(BOOL)a3;
-- (id)_tabsDatabaseAttachmentsItemHidingSensitiveData:(BOOL)a3;
+- (id)_tabCollectionDataAttachmentItemHidingSensitiveData:(BOOL)data;
+- (id)_tabsDatabaseAttachmentsItemHidingSensitiveData:(BOOL)data;
 - (id)_temporaryDirectory;
 - (id)_webExtensionsListAttachment;
-- (id)attachmentsForParameters:(id)a3;
-- (void)_addTabGroup:(id)a3 inWindow:(id)a4 toLog:(id)a5;
-- (void)_addWindow:(id)a3 withActiveTabGroup:(id)a4 toLog:(id)a5;
-- (void)contentBlockerManagerExtensionListDidChange:(id)a3;
+- (id)attachmentsForParameters:(id)parameters;
+- (void)_addTabGroup:(id)group inWindow:(id)window toLog:(id)log;
+- (void)_addWindow:(id)window withActiveTabGroup:(id)group toLog:(id)log;
+- (void)contentBlockerManagerExtensionListDidChange:(id)change;
 - (void)dealloc;
-- (void)extensionsControllerExtensionListDidChange:(id)a3;
+- (void)extensionsControllerExtensionListDidChange:(id)change;
 @end
 
 @implementation SafariDiagnosticExtension
@@ -62,7 +62,7 @@
   block[1] = 3221225472;
   block[2] = sub_1000014D8;
   block[3] = &unk_10000C390;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100010B60 != -1)
   {
     dispatch_once(&qword_100010B60, block);
@@ -103,7 +103,7 @@
   block[1] = 3221225472;
   block[2] = sub_100001740;
   block[3] = &unk_10000C390;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100010B90 != -1)
   {
     dispatch_once(&qword_100010B90, block);
@@ -154,12 +154,12 @@
   return v3;
 }
 
-- (BOOL)_componentIDIsForHistoryComponent:(id)a3
+- (BOOL)_componentIDIsForHistoryComponent:(id)component
 {
-  v3 = a3;
+  componentCopy = component;
   v4 = +[WBSInternalFeedbackRadarComponent safariHistoryModelAll];
-  v5 = [v4 identifier];
-  if ([v3 isEqualToString:v5])
+  identifier = [v4 identifier];
+  if ([componentCopy isEqualToString:identifier])
   {
     v6 = 1;
   }
@@ -167,8 +167,8 @@
   else
   {
     v7 = +[WBSInternalFeedbackRadarComponent safariHistoryUIIOS];
-    v8 = [v7 identifier];
-    if ([v3 isEqualToString:v8])
+    identifier2 = [v7 identifier];
+    if ([componentCopy isEqualToString:identifier2])
     {
       v6 = 1;
     }
@@ -176,8 +176,8 @@
     else
     {
       v9 = +[WBSInternalFeedbackRadarComponent safariHistoryUIMacOS];
-      v10 = [v9 identifier];
-      if ([v3 isEqualToString:v10])
+      identifier3 = [v9 identifier];
+      if ([componentCopy isEqualToString:identifier3])
       {
         v6 = 1;
       }
@@ -185,8 +185,8 @@
       else
       {
         v11 = +[WBSInternalFeedbackRadarComponent safariIOS];
-        v12 = [v11 identifier];
-        v6 = [v3 isEqualToString:v12];
+        identifier4 = [v11 identifier];
+        v6 = [componentCopy isEqualToString:identifier4];
       }
     }
   }
@@ -194,12 +194,12 @@
   return v6;
 }
 
-- (BOOL)_componentIDIsForBookmarksOrTabsComponent:(id)a3
+- (BOOL)_componentIDIsForBookmarksOrTabsComponent:(id)component
 {
-  v3 = a3;
+  componentCopy = component;
   v4 = +[WBSInternalFeedbackRadarComponent safariBookmarksModelAll];
-  v5 = [v4 identifier];
-  if ([v3 isEqualToString:v5])
+  identifier = [v4 identifier];
+  if ([componentCopy isEqualToString:identifier])
   {
     v6 = 1;
   }
@@ -207,8 +207,8 @@
   else
   {
     v7 = +[WBSInternalFeedbackRadarComponent safariBookmarksModelIOS];
-    v8 = [v7 identifier];
-    if ([v3 isEqualToString:v8])
+    identifier2 = [v7 identifier];
+    if ([componentCopy isEqualToString:identifier2])
     {
       v6 = 1;
     }
@@ -216,8 +216,8 @@
     else
     {
       v9 = +[WBSInternalFeedbackRadarComponent safariBookmarksModelMacOS];
-      v10 = [v9 identifier];
-      if ([v3 isEqualToString:v10])
+      identifier3 = [v9 identifier];
+      if ([componentCopy isEqualToString:identifier3])
       {
         v6 = 1;
       }
@@ -225,8 +225,8 @@
       else
       {
         v11 = +[WBSInternalFeedbackRadarComponent safariBookmarksUIIOS];
-        v12 = [v11 identifier];
-        if ([v3 isEqualToString:v12])
+        identifier4 = [v11 identifier];
+        if ([componentCopy isEqualToString:identifier4])
         {
           v6 = 1;
         }
@@ -234,8 +234,8 @@
         else
         {
           v29 = +[WBSInternalFeedbackRadarComponent safariBookmarksUIMacOS];
-          v28 = [v29 identifier];
-          if ([v3 isEqualToString:?])
+          identifier5 = [v29 identifier];
+          if ([componentCopy isEqualToString:?])
           {
             v6 = 1;
           }
@@ -243,8 +243,8 @@
           else
           {
             v27 = +[WBSInternalFeedbackRadarComponent safariICloudTabsAll];
-            v26 = [v27 identifier];
-            if ([v3 isEqualToString:?])
+            identifier6 = [v27 identifier];
+            if ([componentCopy isEqualToString:?])
             {
               v6 = 1;
             }
@@ -252,8 +252,8 @@
             else
             {
               v25 = +[WBSInternalFeedbackRadarComponent safariICloudTabsIOS];
-              v24 = [v25 identifier];
-              if ([v3 isEqualToString:?])
+              identifier7 = [v25 identifier];
+              if ([componentCopy isEqualToString:?])
               {
                 v6 = 1;
               }
@@ -261,8 +261,8 @@
               else
               {
                 v23 = +[WBSInternalFeedbackRadarComponent safariICloudTabsMacOS];
-                v22 = [v23 identifier];
-                if ([v3 isEqualToString:?])
+                identifier8 = [v23 identifier];
+                if ([componentCopy isEqualToString:?])
                 {
                   v6 = 1;
                 }
@@ -270,8 +270,8 @@
                 else
                 {
                   v21 = +[WBSInternalFeedbackRadarComponent safariTabsAll];
-                  v20 = [v21 identifier];
-                  if ([v3 isEqualToString:?])
+                  identifier9 = [v21 identifier];
+                  if ([componentCopy isEqualToString:?])
                   {
                     v6 = 1;
                   }
@@ -279,8 +279,8 @@
                   else
                   {
                     v19 = +[WBSInternalFeedbackRadarComponent safariTabsIOS];
-                    v18 = [v19 identifier];
-                    if ([v3 isEqualToString:?])
+                    identifier10 = [v19 identifier];
+                    if ([componentCopy isEqualToString:?])
                     {
                       v6 = 1;
                     }
@@ -288,8 +288,8 @@
                     else
                     {
                       v17 = +[WBSInternalFeedbackRadarComponent safariTabsMacOS];
-                      v16 = [v17 identifier];
-                      if ([v3 isEqualToString:?])
+                      identifier11 = [v17 identifier];
+                      if ([componentCopy isEqualToString:?])
                       {
                         v6 = 1;
                       }
@@ -297,8 +297,8 @@
                       else
                       {
                         v15 = +[WBSInternalFeedbackRadarComponent safariIOS];
-                        v14 = [v15 identifier];
-                        v6 = [v3 isEqualToString:v14];
+                        identifier12 = [v15 identifier];
+                        v6 = [componentCopy isEqualToString:identifier12];
                       }
                     }
                   }
@@ -314,9 +314,9 @@
   return v6;
 }
 
-- (id)attachmentsForParameters:(id)a3
+- (id)attachmentsForParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   if (qword_100010B30 != -1)
   {
     sub_100005A34();
@@ -329,25 +329,25 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Starting to gather diagnostic extension attachments", &v26, 2u);
   }
 
-  v6 = [v4 safari_numberForKey:@"componentID"];
-  v7 = [v6 stringValue];
+  v6 = [parametersCopy safari_numberForKey:@"componentID"];
+  stringValue = [v6 stringValue];
 
   v8 = +[NSMutableArray array];
-  if ([(SafariDiagnosticExtension *)self _componentIDIsForBookmarksOrTabsComponent:v7])
+  if ([(SafariDiagnosticExtension *)self _componentIDIsForBookmarksOrTabsComponent:stringValue])
   {
-    v9 = [v4 safari_BOOLForKey:@"DEExtensionAttachmentsParamConsentProvidedKey"];
+    v9 = [parametersCopy safari_BOOLForKey:@"DEExtensionAttachmentsParamConsentProvidedKey"];
     if (v9)
     {
-      v10 = [(SafariDiagnosticExtension *)self _openTabsAttachment];
-      if (v10)
+      _openTabsAttachment = [(SafariDiagnosticExtension *)self _openTabsAttachment];
+      if (_openTabsAttachment)
       {
-        [v8 addObject:v10];
+        [v8 addObject:_openTabsAttachment];
       }
 
       if (+[WBSFeatureAvailability isInternalInstall])
       {
-        v11 = [(SafariDiagnosticExtension *)self _cloudKitDataAttachment];
-        [v8 safari_addObjectUnlessNil:v11];
+        _cloudKitDataAttachment = [(SafariDiagnosticExtension *)self _cloudKitDataAttachment];
+        [v8 safari_addObjectUnlessNil:_cloudKitDataAttachment];
       }
     }
 
@@ -357,44 +357,44 @@
     v13 = [(SafariDiagnosticExtension *)self _tabCollectionDataAttachmentItemHidingSensitiveData:v9 ^ 1];
     [v8 safari_addObjectUnlessNil:v13];
 
-    v14 = [(SafariDiagnosticExtension *)self _bookmarksAttachmentItem];
-    if (v14)
+    _bookmarksAttachmentItem = [(SafariDiagnosticExtension *)self _bookmarksAttachmentItem];
+    if (_bookmarksAttachmentItem)
     {
-      [v8 addObject:v14];
+      [v8 addObject:_bookmarksAttachmentItem];
     }
 
-    v15 = [(SafariDiagnosticExtension *)self _migrationEligibilityLogItem];
-    if (v15)
+    _migrationEligibilityLogItem = [(SafariDiagnosticExtension *)self _migrationEligibilityLogItem];
+    if (_migrationEligibilityLogItem)
     {
-      [v8 addObject:v15];
+      [v8 addObject:_migrationEligibilityLogItem];
     }
   }
 
-  if (+[WBSFeatureAvailability isInternalInstall]&& [(SafariDiagnosticExtension *)self _componentIDIsForHistoryComponent:v7])
+  if (+[WBSFeatureAvailability isInternalInstall]&& [(SafariDiagnosticExtension *)self _componentIDIsForHistoryComponent:stringValue])
   {
-    v16 = [(SafariDiagnosticExtension *)self _historyDataAttachmentItem];
-    [v8 safari_addObjectsFromArrayUnlessNil:v16];
+    _historyDataAttachmentItem = [(SafariDiagnosticExtension *)self _historyDataAttachmentItem];
+    [v8 safari_addObjectsFromArrayUnlessNil:_historyDataAttachmentItem];
   }
 
-  v17 = [(SafariDiagnosticExtension *)self _contentBlockerListAttachment];
-  if (v17)
+  _contentBlockerListAttachment = [(SafariDiagnosticExtension *)self _contentBlockerListAttachment];
+  if (_contentBlockerListAttachment)
   {
-    [v8 addObject:v17];
+    [v8 addObject:_contentBlockerListAttachment];
   }
 
-  v18 = [(SafariDiagnosticExtension *)self _webExtensionsListAttachment];
-  if (v18)
+  _webExtensionsListAttachment = [(SafariDiagnosticExtension *)self _webExtensionsListAttachment];
+  if (_webExtensionsListAttachment)
   {
-    [v8 addObject:v18];
+    [v8 addObject:_webExtensionsListAttachment];
   }
 
-  v19 = [(SafariDiagnosticExtension *)self _currentLayoutModeAttachment];
-  [v8 safari_addObjectUnlessNil:v19];
+  _currentLayoutModeAttachment = [(SafariDiagnosticExtension *)self _currentLayoutModeAttachment];
+  [v8 safari_addObjectUnlessNil:_currentLayoutModeAttachment];
   v20 = [(SafariDiagnosticExtension *)self _getAttachmentsWithDisplayNamePattern:@"com\\.apple\\.WebKit.*"];
   [v8 addObjectsFromArray:v20];
 
-  v21 = [(SafariDiagnosticExtension *)self _cloudTabRestorationAttachment];
-  [v8 safari_addObjectUnlessNil:v21];
+  _cloudTabRestorationAttachment = [(SafariDiagnosticExtension *)self _cloudTabRestorationAttachment];
+  [v8 safari_addObjectUnlessNil:_cloudTabRestorationAttachment];
 
   if (qword_100010B30 != -1)
   {
@@ -419,10 +419,10 @@
   if (_SFDeviceIsPad())
   {
     v3 = +[NSUserDefaults safari_browserDefaults];
-    v4 = [v3 safari_enableStandaloneTabBar];
+    safari_enableStandaloneTabBar = [v3 safari_enableStandaloneTabBar];
 
     v5 = @"Compact";
-    if (v4)
+    if (safari_enableStandaloneTabBar)
     {
       v5 = @"Separate";
     }
@@ -433,27 +433,27 @@
   else
   {
     v6 = +[SFFeatureManager sharedFeatureManager];
-    v7 = [v6 preferredCapsuleLayoutStyle];
+    preferredCapsuleLayoutStyle = [v6 preferredCapsuleLayoutStyle];
 
-    if ((v7 - 1) > 2)
+    if ((preferredCapsuleLayoutStyle - 1) > 2)
     {
       v8 = 0;
     }
 
     else
     {
-      v8 = *(&off_10000C550 + (v7 - 1));
+      v8 = *(&off_10000C550 + (preferredCapsuleLayoutStyle - 1));
     }
 
     [NSString stringWithFormat:@"Current Capsule Layout: %@", v8];
   }
   v9 = ;
   v10 = +[NSDate now];
-  v11 = [v10 safari_filenameFormattedString];
+  safari_filenameFormattedString = [v10 safari_filenameFormattedString];
 
-  v12 = [(SafariDiagnosticExtension *)self _temporaryDirectory];
-  v13 = [NSString stringWithFormat:@"Safari Current Layout State_%@.log", v11];
-  v14 = [v12 stringByAppendingPathComponent:v13];
+  _temporaryDirectory = [(SafariDiagnosticExtension *)self _temporaryDirectory];
+  v13 = [NSString stringWithFormat:@"Safari Current Layout State_%@.log", safari_filenameFormattedString];
+  v14 = [_temporaryDirectory stringByAppendingPathComponent:v13];
 
   v19 = 0;
   LODWORD(v13) = [v9 writeToFile:v14 atomically:1 encoding:4 error:&v19];
@@ -483,60 +483,60 @@
   return v17;
 }
 
-- (void)_addTabGroup:(id)a3 inWindow:(id)a4 toLog:(id)a5
+- (void)_addTabGroup:(id)group inWindow:(id)window toLog:(id)log
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v7 uuid];
-  v11 = [v8 activeTabUUIDForTabGroupWithUUID:v10];
+  groupCopy = group;
+  windowCopy = window;
+  logCopy = log;
+  uuid = [groupCopy uuid];
+  v11 = [windowCopy activeTabUUIDForTabGroupWithUUID:uuid];
 
-  v12 = [v7 tabWithUUID:v11];
-  v13 = [v7 title];
-  [v9 appendFormat:@"%@\n", v13];
+  v12 = [groupCopy tabWithUUID:v11];
+  title = [groupCopy title];
+  [logCopy appendFormat:@"%@\n", title];
 
-  v14 = [v7 tabs];
+  tabs = [groupCopy tabs];
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_1000025EC;
   v19[3] = &unk_10000C420;
-  v20 = v7;
+  v20 = groupCopy;
   v21 = v12;
-  v22 = v8;
-  v23 = v9;
-  v15 = v9;
-  v16 = v8;
+  v22 = windowCopy;
+  v23 = logCopy;
+  v15 = logCopy;
+  v16 = windowCopy;
   v17 = v12;
-  v18 = v7;
-  [v14 enumerateObjectsUsingBlock:v19];
+  v18 = groupCopy;
+  [tabs enumerateObjectsUsingBlock:v19];
 }
 
-- (void)_addWindow:(id)a3 withActiveTabGroup:(id)a4 toLog:(id)a5
+- (void)_addWindow:(id)window withActiveTabGroup:(id)group toLog:(id)log
 {
-  v15 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v15 uuid];
-  [v9 appendFormat:@"Browser Window : %@\n\n", v10];
+  windowCopy = window;
+  groupCopy = group;
+  logCopy = log;
+  uuid = [windowCopy uuid];
+  [logCopy appendFormat:@"Browser Window : %@\n\n", uuid];
   if (+[WBSFeatureAvailability isSafariProfilesEnabled])
   {
-    v11 = [v8 profileIdentifier];
-    [v9 appendFormat:@"Active Profile: %@\n\n", v11];
+    profileIdentifier = [groupCopy profileIdentifier];
+    [logCopy appendFormat:@"Active Profile: %@\n\n", profileIdentifier];
   }
 
-  v12 = [v15 localTabGroup];
-  [(SafariDiagnosticExtension *)self _addTabGroup:v12 inWindow:v15 toLog:v9];
+  localTabGroup = [windowCopy localTabGroup];
+  [(SafariDiagnosticExtension *)self _addTabGroup:localTabGroup inWindow:windowCopy toLog:logCopy];
 
-  v13 = [v15 localTabGroup];
+  localTabGroup2 = [windowCopy localTabGroup];
   v14 = WBSIsEqual();
 
   if ((v14 & 1) == 0)
   {
-    [v9 appendString:@"\n"];
-    [(SafariDiagnosticExtension *)self _addTabGroup:v8 inWindow:v15 toLog:v9];
+    [logCopy appendString:@"\n"];
+    [(SafariDiagnosticExtension *)self _addTabGroup:groupCopy inWindow:windowCopy toLog:logCopy];
   }
 
-  [v9 appendString:@"\n\n"];
+  [logCopy appendString:@"\n\n"];
 }
 
 - (id)_openTabsAttachment
@@ -575,26 +575,26 @@ LABEL_10:
   }
 
   v4 = objc_alloc_init(WBReadonlyTabCollection);
-  v5 = [v4 windowStates];
-  if ([v5 count])
+  windowStates = [v4 windowStates];
+  if ([windowStates count])
   {
     v36 = objc_alloc_init(NSMutableString);
     v6 = +[NSDate now];
-    v7 = [v6 safari_filenameFormattedString];
+    safari_filenameFormattedString = [v6 safari_filenameFormattedString];
 
-    v8 = [(SafariDiagnosticExtension *)self _temporaryDirectory];
-    v30 = v7;
-    v9 = [NSString stringWithFormat:@"Safari URLs for All Tabs_%@.log", v7];
-    v29 = [v8 stringByAppendingPathComponent:v9];
+    _temporaryDirectory = [(SafariDiagnosticExtension *)self _temporaryDirectory];
+    v30 = safari_filenameFormattedString;
+    v9 = [NSString stringWithFormat:@"Safari URLs for All Tabs_%@.log", safari_filenameFormattedString];
+    v29 = [_temporaryDirectory stringByAppendingPathComponent:v9];
 
     v32 = v4;
-    v34 = [v4 allNamedTabGroupsUnsorted];
+    allNamedTabGroupsUnsorted = [v4 allNamedTabGroupsUnsorted];
     v40 = 0u;
     v41 = 0u;
     v42 = 0u;
     v43 = 0u;
-    v31 = v5;
-    obj = v5;
+    v31 = windowStates;
+    obj = windowStates;
     v10 = [obj countByEnumeratingWithState:&v40 objects:v46 count:16];
     if (v10)
     {
@@ -610,20 +610,20 @@ LABEL_10:
           }
 
           v14 = *(*(&v40 + 1) + 8 * i);
-          v15 = [v14 activeTabGroupUUID];
-          v16 = [v14 localTabGroup];
-          v45[0] = v16;
-          v17 = [v14 privateTabGroup];
-          v45[1] = v17;
+          activeTabGroupUUID = [v14 activeTabGroupUUID];
+          localTabGroup = [v14 localTabGroup];
+          v45[0] = localTabGroup;
+          privateTabGroup = [v14 privateTabGroup];
+          v45[1] = privateTabGroup;
           v18 = [NSArray arrayWithObjects:v45 count:2];
-          v19 = [v34 arrayByAddingObjectsFromArray:v18];
+          v19 = [allNamedTabGroupsUnsorted arrayByAddingObjectsFromArray:v18];
 
           v38[0] = _NSConcreteStackBlock;
           v38[1] = 3221225472;
           v38[2] = sub_100002DD4;
           v38[3] = &unk_10000C448;
-          v39 = v15;
-          v20 = v15;
+          v39 = activeTabGroupUUID;
+          v20 = activeTabGroupUUID;
           v21 = [v19 safari_firstObjectPassingTest:v38];
           [(SafariDiagnosticExtension *)self _addWindow:v14 withActiveTabGroup:v21 toLog:v36];
         }
@@ -647,7 +647,7 @@ LABEL_10:
         sub_100005A48();
       }
 
-      v5 = v31;
+      windowStates = v31;
       v4 = v32;
       v25 = v30;
       v26 = qword_100010B28;
@@ -661,7 +661,7 @@ LABEL_10:
     else
     {
       v25 = v30;
-      v5 = v31;
+      windowStates = v31;
       if (qword_100010B30 != -1)
       {
         sub_100005A48();
@@ -697,9 +697,9 @@ LABEL_10:
   return v24;
 }
 
-- (void)contentBlockerManagerExtensionListDidChange:(id)a3
+- (void)contentBlockerManagerExtensionListDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   if (qword_100010B30 != -1)
   {
     sub_100005A34();
@@ -729,8 +729,8 @@ LABEL_10:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "Starting to gather content blockers", buf, 2u);
   }
 
-  v34 = [objc_opt_class() defaultContentBlockerManager];
-  v31 = self;
+  defaultContentBlockerManager = [objc_opt_class() defaultContentBlockerManager];
+  selfCopy = self;
   semaphoreWaitingForChangeInContentBlockers = self->_semaphoreWaitingForChangeInContentBlockers;
   v5 = dispatch_time(0, 10000000000);
   dispatch_semaphore_wait(semaphoreWaitingForChangeInContentBlockers, v5);
@@ -749,7 +749,7 @@ LABEL_10:
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  obj = [v34 extensions];
+  obj = [defaultContentBlockerManager extensions];
   v7 = [obj countByEnumeratingWithState:&v36 objects:v41 count:16];
   if (v7)
   {
@@ -766,12 +766,12 @@ LABEL_10:
         }
 
         v11 = *(*(&v36 + 1) + 8 * i);
-        v12 = [v34 displayNameForExtension:v11];
-        v13 = [v11 _plugIn];
-        v14 = [v13 identifier];
-        v15 = [NSString stringWithFormat:@"%@ (%@)", v12, v14];
+        v12 = [defaultContentBlockerManager displayNameForExtension:v11];
+        _plugIn = [v11 _plugIn];
+        identifier = [_plugIn identifier];
+        v15 = [NSString stringWithFormat:@"%@ (%@)", v12, identifier];
 
-        v16 = [v34 extensionIsEnabled:v11];
+        v16 = [defaultContentBlockerManager extensionIsEnabled:v11];
         v17 = @"disabled:";
         if (v16)
         {
@@ -792,11 +792,11 @@ LABEL_10:
   if ([v6 count])
   {
     v19 = +[NSDate now];
-    v20 = [v19 safari_filenameFormattedString];
+    safari_filenameFormattedString = [v19 safari_filenameFormattedString];
 
-    v21 = [(SafariDiagnosticExtension *)v31 _temporaryDirectory];
-    v22 = [NSString stringWithFormat:@"Safari Content Blockers_%@.log", v20];
-    v23 = [v21 stringByAppendingPathComponent:v22];
+    _temporaryDirectory = [(SafariDiagnosticExtension *)selfCopy _temporaryDirectory];
+    v22 = [NSString stringWithFormat:@"Safari Content Blockers_%@.log", safari_filenameFormattedString];
+    v23 = [_temporaryDirectory stringByAppendingPathComponent:v22];
 
     if ([v6 count])
     {
@@ -864,9 +864,9 @@ LABEL_10:
   return v26;
 }
 
-- (void)extensionsControllerExtensionListDidChange:(id)a3
+- (void)extensionsControllerExtensionListDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   if (qword_100010B30 != -1)
   {
     sub_100005A34();
@@ -907,11 +907,11 @@ LABEL_10:
   if ([v4 count])
   {
     v5 = +[NSDate now];
-    v6 = [v5 safari_filenameFormattedString];
+    safari_filenameFormattedString = [v5 safari_filenameFormattedString];
 
-    v7 = [(SafariDiagnosticExtension *)self _temporaryDirectory];
-    v8 = [NSString stringWithFormat:@"Safari Web Extensions_%@.log", v6];
-    v9 = [v7 stringByAppendingPathComponent:v8];
+    _temporaryDirectory = [(SafariDiagnosticExtension *)self _temporaryDirectory];
+    v8 = [NSString stringWithFormat:@"Safari Web Extensions_%@.log", safari_filenameFormattedString];
+    v9 = [_temporaryDirectory stringByAppendingPathComponent:v8];
 
     v10 = [v4 componentsJoinedByString:@"\n"];
     v17 = 0;
@@ -986,9 +986,9 @@ LABEL_10:
 
   v3 = SafariCloudBookmarksMigrationCoordinatorLogsDirectoryURL();
   v4 = +[NSDate now];
-  v5 = [v4 safari_filenameFormattedString];
+  safari_filenameFormattedString = [v4 safari_filenameFormattedString];
 
-  v6 = [NSString stringWithFormat:@"cloudBookmarksMigrationEligibility_%@.log", v5];
+  v6 = [NSString stringWithFormat:@"cloudBookmarksMigrationEligibility_%@.log", safari_filenameFormattedString];
   v7 = NSTemporaryDirectory();
   v8 = [v7 stringByAppendingPathComponent:v6];
   v9 = [NSURL fileURLWithPath:v8 isDirectory:0];
@@ -1066,11 +1066,11 @@ LABEL_10:
   }
 
   v4 = +[NSDate now];
-  v5 = [v4 safari_filenameFormattedString];
+  safari_filenameFormattedString = [v4 safari_filenameFormattedString];
 
-  v6 = [NSString stringWithFormat:@"Bookmarks_Diagnostic_%@.json", v5];
-  v7 = [(SafariDiagnosticExtension *)self _temporaryDirectory];
-  v8 = [v7 stringByAppendingPathComponent:v6];
+  v6 = [NSString stringWithFormat:@"Bookmarks_Diagnostic_%@.json", safari_filenameFormattedString];
+  _temporaryDirectory = [(SafariDiagnosticExtension *)self _temporaryDirectory];
+  v8 = [_temporaryDirectory stringByAppendingPathComponent:v6];
 
   v9 = [@"file://" stringByAppendingString:v8];
   v10 = [NSURL URLWithString:v9];
@@ -1167,8 +1167,8 @@ LABEL_14:
     v20 = qword_100010B28;
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
-      v21 = [v18 safari_privacyPreservingDescription];
-      sub_100005E38(v10, v21, v33, v20);
+      safari_privacyPreservingDescription = [v18 safari_privacyPreservingDescription];
+      sub_100005E38(v10, safari_privacyPreservingDescription, v33, v20);
     }
 
     v15 = 0;
@@ -1180,7 +1180,7 @@ LABEL_32:
   return v15;
 }
 
-- (id)_tabsDatabaseAttachmentsItemHidingSensitiveData:(BOOL)a3
+- (id)_tabsDatabaseAttachmentsItemHidingSensitiveData:(BOOL)data
 {
   if (qword_100010B30 != -1)
   {
@@ -1196,16 +1196,16 @@ LABEL_32:
   }
 
   v5 = +[NSDate now];
-  v6 = [v5 safari_filenameFormattedString];
+  safari_filenameFormattedString = [v5 safari_filenameFormattedString];
 
-  v7 = [(SafariDiagnosticExtension *)self _temporaryDirectory];
-  v8 = [NSString stringWithFormat:@"SafariTabs%@_%@.db", @"_WithoutSensitiveData", v6];
-  v9 = [v7 stringByAppendingPathComponent:v8];
+  _temporaryDirectory = [(SafariDiagnosticExtension *)self _temporaryDirectory];
+  v8 = [NSString stringWithFormat:@"SafariTabs%@_%@.db", @"_WithoutSensitiveData", safari_filenameFormattedString];
+  v9 = [_temporaryDirectory stringByAppendingPathComponent:v8];
   v10 = [NSURL fileURLWithPath:v9];
 
-  v11 = [(SafariDiagnosticExtension *)self _readOnlyTabCollection];
+  _readOnlyTabCollection = [(SafariDiagnosticExtension *)self _readOnlyTabCollection];
   v26 = 0;
-  v12 = [v11 copyTabsDatabase:v10 hidingSensitiveData:1 error:&v26];
+  v12 = [_readOnlyTabCollection copyTabsDatabase:v10 hidingSensitiveData:1 error:&v26];
   v13 = v26;
 
   if (v13 || (v12 & 1) == 0)
@@ -1230,15 +1230,15 @@ LABEL_32:
     v15 = [DEAttachmentItem attachmentWithPathURL:v10];
     [v15 setDeleteOnAttach:?];
     [v14 addObject:v15];
-    v16 = [v10 path];
-    v17 = [v16 stringByAppendingString:@"-wal"];
+    path = [v10 path];
+    v17 = [path stringByAppendingString:@"-wal"];
     v18 = [NSURL fileURLWithPath:v17];
     v19 = [DEAttachmentItem attachmentWithPathURL:v18];
 
     [v19 setDeleteOnAttach:&__kCFBooleanTrue];
     [v14 addObject:v19];
-    v20 = [v10 path];
-    v21 = [v20 stringByAppendingString:@"-shm"];
+    path2 = [v10 path];
+    v21 = [path2 stringByAppendingString:@"-shm"];
     v22 = [NSURL fileURLWithPath:v21];
     v23 = [DEAttachmentItem attachmentWithPathURL:v22];
 
@@ -1249,7 +1249,7 @@ LABEL_32:
   return v14;
 }
 
-- (id)_tabCollectionDataAttachmentItemHidingSensitiveData:(BOOL)a3
+- (id)_tabCollectionDataAttachmentItemHidingSensitiveData:(BOOL)data
 {
   if (qword_100010B30 != -1)
   {
@@ -1264,15 +1264,15 @@ LABEL_32:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "Starting to gather tab collection diagnostics %@", buf, 0xCu);
   }
 
-  v5 = [(SafariDiagnosticExtension *)self _readOnlyTabCollection];
-  v6 = [v5 tabCollectionDataSummaryLogHidingSensitiveData:1];
+  _readOnlyTabCollection = [(SafariDiagnosticExtension *)self _readOnlyTabCollection];
+  v6 = [_readOnlyTabCollection tabCollectionDataSummaryLogHidingSensitiveData:1];
 
   v7 = +[NSDate now];
-  v8 = [v7 safari_filenameFormattedString];
+  safari_filenameFormattedString = [v7 safari_filenameFormattedString];
 
-  v9 = [(SafariDiagnosticExtension *)self _temporaryDirectory];
-  v10 = [NSString stringWithFormat:@"Safari%@ Tabs Database_%@.log", @" Scrubbed", v8];
-  v11 = [v9 stringByAppendingPathComponent:v10];
+  _temporaryDirectory = [(SafariDiagnosticExtension *)self _temporaryDirectory];
+  v10 = [NSString stringWithFormat:@"Safari%@ Tabs Database_%@.log", @" Scrubbed", safari_filenameFormattedString];
+  v11 = [_temporaryDirectory stringByAppendingPathComponent:v10];
 
   v16 = 0;
   LOBYTE(v10) = [v6 writeToFile:v11 atomically:1 encoding:4 error:&v16];
@@ -1335,14 +1335,14 @@ LABEL_32:
   v29 = dispatch_semaphore_create(0);
   v34 = +[NSMutableDictionary dictionary];
   v3 = +[NSDate now];
-  v31 = [v3 safari_filenameFormattedString];
+  safari_filenameFormattedString = [v3 safari_filenameFormattedString];
 
   v44 = 0u;
   v45 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v4 = [objc_opt_class() tabGroupManager];
-  obj = [v4 allProfileIdentifiers];
+  tabGroupManager = [objc_opt_class() tabGroupManager];
+  obj = [tabGroupManager allProfileIdentifiers];
 
   v5 = [obj countByEnumeratingWithState:&v42 objects:v54 count:16];
   if (v5)
@@ -1358,13 +1358,13 @@ LABEL_32:
         }
 
         v8 = *(*(&v42 + 1) + 8 * i);
-        v9 = [(SafariDiagnosticExtension *)self _temporaryDirectory];
-        v10 = [NSString stringWithFormat:@"SafariHistoryWithURLsRedacted_%@_%@.db", v8, v31];
-        v11 = [v9 stringByAppendingPathComponent:v10];
+        _temporaryDirectory = [(SafariDiagnosticExtension *)self _temporaryDirectory];
+        v10 = [NSString stringWithFormat:@"SafariHistoryWithURLsRedacted_%@_%@.db", v8, safari_filenameFormattedString];
+        v11 = [_temporaryDirectory stringByAppendingPathComponent:v10];
         v12 = [NSURL fileURLWithPath:v11];
 
-        v13 = [v12 absoluteString];
-        [v34 setObject:v13 forKeyedSubscript:v8];
+        absoluteString = [v12 absoluteString];
+        [v34 setObject:absoluteString forKeyedSubscript:v8];
       }
 
       v5 = [obj countByEnumeratingWithState:&v42 objects:v54 count:16];
@@ -1422,8 +1422,8 @@ LABEL_27:
     v17 = qword_100010B28;
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
-      v18 = [*(v47 + 5) safari_privacyPreservingDescription];
-      sub_1000060A0(v18, v53, v17);
+      safari_privacyPreservingDescription = [*(v47 + 5) safari_privacyPreservingDescription];
+      sub_1000060A0(safari_privacyPreservingDescription, v53, v17);
     }
 
     goto LABEL_27;
@@ -1446,8 +1446,8 @@ LABEL_27:
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v23 = [v34 allValues];
-  v24 = [v23 countByEnumeratingWithState:&v35 objects:v52 count:16];
+  allValues = [v34 allValues];
+  v24 = [allValues countByEnumeratingWithState:&v35 objects:v52 count:16];
   if (v24)
   {
     v25 = *v36;
@@ -1457,7 +1457,7 @@ LABEL_27:
       {
         if (*v36 != v25)
         {
-          objc_enumerationMutation(v23);
+          objc_enumerationMutation(allValues);
         }
 
         v27 = [NSURL URLWithString:*(*(&v35 + 1) + 8 * j)];
@@ -1467,7 +1467,7 @@ LABEL_27:
         [v22 addObject:v28];
       }
 
-      v24 = [v23 countByEnumeratingWithState:&v35 objects:v52 count:16];
+      v24 = [allValues countByEnumeratingWithState:&v35 objects:v52 count:16];
     }
 
     while (v24);
@@ -1496,11 +1496,11 @@ LABEL_28:
   }
 
   v4 = +[NSDate now];
-  v5 = [v4 safari_filenameFormattedString];
+  safari_filenameFormattedString = [v4 safari_filenameFormattedString];
 
-  v6 = [NSString stringWithFormat:@"CloudKit_data_%@.plist", v5];
-  v7 = [(SafariDiagnosticExtension *)self _temporaryDirectory];
-  v8 = [v7 stringByAppendingPathComponent:v6];
+  v6 = [NSString stringWithFormat:@"CloudKit_data_%@.plist", safari_filenameFormattedString];
+  _temporaryDirectory = [(SafariDiagnosticExtension *)self _temporaryDirectory];
+  v8 = [_temporaryDirectory stringByAppendingPathComponent:v6];
 
   v9 = [NSURL fileURLWithPath:v8];
   v10 = objc_alloc_init(WBSSafariBookmarksSyncAgentProxy);
@@ -1574,11 +1574,11 @@ LABEL_28:
   }
 
   v4 = +[NSDate now];
-  v5 = [v4 safari_filenameFormattedString];
+  safari_filenameFormattedString = [v4 safari_filenameFormattedString];
 
-  v6 = [(SafariDiagnosticExtension *)self _temporaryDirectory];
-  v7 = [NSString stringWithFormat:@"Safari CloudTab restoration_%@.log", v5];
-  v8 = [v6 stringByAppendingPathComponent:v7];
+  _temporaryDirectory = [(SafariDiagnosticExtension *)self _temporaryDirectory];
+  v7 = [NSString stringWithFormat:@"Safari CloudTab restoration_%@.log", safari_filenameFormattedString];
+  v8 = [_temporaryDirectory stringByAppendingPathComponent:v7];
 
   v9 = +[NSUserDefaults safari_browserDefaults];
   v10 = [v9 stringArrayForKey:_SFCloudTabsDeviceUUIDForRestorationDebugSyncLogDefaultsKey];
@@ -1622,9 +1622,9 @@ LABEL_28:
   return v13;
 }
 
-- (id)_getAttachmentsWithDisplayNamePattern:(id)a3
+- (id)_getAttachmentsWithDisplayNamePattern:(id)pattern
 {
-  v3 = a3;
+  patternCopy = pattern;
   if (qword_100010B30 != -1)
   {
     sub_100005A34();
@@ -1634,12 +1634,12 @@ LABEL_28:
   if (os_log_type_enabled(qword_100010B28, OS_LOG_TYPE_INFO))
   {
     *buf = 138543362;
-    v15 = v3;
+    v15 = patternCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "Starting to gather crashes with display pattern '%{public}@'", buf, 0xCu);
   }
 
   v5 = objc_alloc_init(NSMutableArray);
-  v6 = [NSRegularExpression regularExpressionWithPattern:v3 options:1 error:0];
+  v6 = [NSRegularExpression regularExpressionWithPattern:patternCopy options:1 error:0];
   v7 = [NSRegularExpression regularExpressionWithPattern:@"(LowMemory|ExcResource|Sandbox|stacks|log-aggregated).*" options:1 error:0];
   v8 = v6;
   v9 = v7;
@@ -1676,8 +1676,8 @@ LABEL_28:
 
 - (void)dealloc
 {
-  v3 = [objc_opt_class() defaultContentBlockerManager];
-  [v3 removeObserver:self];
+  defaultContentBlockerManager = [objc_opt_class() defaultContentBlockerManager];
+  [defaultContentBlockerManager removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = SafariDiagnosticExtension;

@@ -1,7 +1,7 @@
 @interface _HKCFGNodeCache
 - (_HKCFGNodeCache)init;
-- (id)nodesForPosition:(unint64_t)a3 nonTerminal:(id)a4 withLengthAllowance:(unint64_t)a5;
-- (void)cacheNodes:(id)a3 forPosition:(unint64_t)a4 nonTerminal:(id)a5 lengthAllowance:(unint64_t)a6;
+- (id)nodesForPosition:(unint64_t)position nonTerminal:(id)terminal withLengthAllowance:(unint64_t)allowance;
+- (void)cacheNodes:(id)nodes forPosition:(unint64_t)position nonTerminal:(id)terminal lengthAllowance:(unint64_t)allowance;
 @end
 
 @implementation _HKCFGNodeCache
@@ -13,26 +13,26 @@
   v2 = [(_HKCFGNodeCache *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     cache = v2->_cache;
-    v2->_cache = v3;
+    v2->_cache = dictionary;
   }
 
   return v2;
 }
 
-- (id)nodesForPosition:(unint64_t)a3 nonTerminal:(id)a4 withLengthAllowance:(unint64_t)a5
+- (id)nodesForPosition:(unint64_t)position nonTerminal:(id)terminal withLengthAllowance:(unint64_t)allowance
 {
-  v8 = a4;
+  terminalCopy = terminal;
   cache = self->_cache;
-  v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:position];
   v11 = [(NSMutableDictionary *)cache objectForKey:v10];
 
   if (v11)
   {
-    v12 = [v11 objectForKey:v8];
+    v12 = [v11 objectForKey:terminalCopy];
     v13 = v12;
-    if (v12 && ([v12 objectForKey:@"allowance"], v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "unsignedIntegerValue"), v14, v15 >= a5))
+    if (v12 && ([v12 objectForKey:@"allowance"], v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "unsignedIntegerValue"), v14, v15 >= allowance))
     {
       v16 = [v13 objectForKey:@"nodes"];
     }
@@ -51,42 +51,42 @@
   return v16;
 }
 
-- (void)cacheNodes:(id)a3 forPosition:(unint64_t)a4 nonTerminal:(id)a5 lengthAllowance:(unint64_t)a6
+- (void)cacheNodes:(id)nodes forPosition:(unint64_t)position nonTerminal:(id)terminal lengthAllowance:(unint64_t)allowance
 {
-  v21 = a5;
+  terminalCopy = terminal;
   cache = self->_cache;
   v11 = MEMORY[0x1E696AD98];
-  v12 = a3;
-  v13 = [v11 numberWithUnsignedInteger:a4];
-  v14 = [(NSMutableDictionary *)cache objectForKey:v13];
+  nodesCopy = nodes;
+  v13 = [v11 numberWithUnsignedInteger:position];
+  strongToStrongObjectsMapTable = [(NSMutableDictionary *)cache objectForKey:v13];
 
-  if (!v14)
+  if (!strongToStrongObjectsMapTable)
   {
-    v14 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     v15 = self->_cache;
-    v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
-    [(NSMutableDictionary *)v15 setObject:v14 forKey:v16];
+    v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:position];
+    [(NSMutableDictionary *)v15 setObject:strongToStrongObjectsMapTable forKey:v16];
   }
 
-  v17 = [v14 objectForKey:v21];
-  if (!v17)
+  dictionary = [strongToStrongObjectsMapTable objectForKey:terminalCopy];
+  if (!dictionary)
   {
-    v17 = [MEMORY[0x1E695DF90] dictionary];
-    [v14 setObject:v17 forKey:v21];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    [strongToStrongObjectsMapTable setObject:dictionary forKey:terminalCopy];
   }
 
-  v18 = [v17 objectForKey:@"allowance"];
-  v19 = [v18 unsignedIntegerValue];
+  v18 = [dictionary objectForKey:@"allowance"];
+  unsignedIntegerValue = [v18 unsignedIntegerValue];
 
-  if (v19 > a6)
+  if (unsignedIntegerValue > allowance)
   {
     [_HKCFGNodeCache cacheNodes:forPosition:nonTerminal:lengthAllowance:];
   }
 
-  v20 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a6];
-  [v17 setObject:v20 forKey:@"allowance"];
+  v20 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:allowance];
+  [dictionary setObject:v20 forKey:@"allowance"];
 
-  [v17 setObject:v12 forKey:@"nodes"];
+  [dictionary setObject:nodesCopy forKey:@"nodes"];
 }
 
 - (void)cacheNodes:forPosition:nonTerminal:lengthAllowance:.cold.1()

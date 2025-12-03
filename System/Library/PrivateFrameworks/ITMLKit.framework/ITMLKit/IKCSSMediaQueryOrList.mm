@@ -25,7 +25,7 @@
 - (id)expressionAsString
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -46,8 +46,8 @@
           objc_enumerationMutation(v4);
         }
 
-        v10 = [*(*(&v13 + 1) + 8 * i) expressionAsString];
-        [v3 appendFormat:v8, v10];
+        expressionAsString = [*(*(&v13 + 1) + 8 * i) expressionAsString];
+        [string appendFormat:v8, expressionAsString];
 
         v8 = @" or %@";
       }
@@ -61,7 +61,7 @@
 
   v11 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return string;
 }
 
 - (BOOL)evaluate
@@ -110,12 +110,12 @@ LABEL_11:
 
 - (id)description
 {
-  v3 = [MEMORY[0x277CCAB68] string];
-  objc_msgSend(v3, "appendString:", @"(");
+  string = [MEMORY[0x277CCAB68] string];
+  objc_msgSend(string, "appendString:", @"(");
   if ([(IKArray *)self->_queryList count])
   {
     v4 = [(IKArray *)self->_queryList objectAtIndex:0];
-    [v3 appendFormat:@"%@", v4];
+    [string appendFormat:@"%@", v4];
 
     if ([(IKArray *)self->_queryList count]>= 2)
     {
@@ -123,7 +123,7 @@ LABEL_11:
       do
       {
         v6 = [(IKArray *)self->_queryList objectAtIndex:v5];
-        [v3 appendFormat:@" || %@", v6];
+        [string appendFormat:@" || %@", v6];
 
         ++v5;
       }
@@ -132,9 +132,9 @@ LABEL_11:
     }
   }
 
-  [v3 appendString:@""]);
+  [string appendString:@""]);
 
-  return v3;
+  return string;
 }
 
 @end

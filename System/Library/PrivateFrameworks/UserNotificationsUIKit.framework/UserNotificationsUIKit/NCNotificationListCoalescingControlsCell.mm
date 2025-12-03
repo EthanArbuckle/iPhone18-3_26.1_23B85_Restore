@@ -1,25 +1,25 @@
 @interface NCNotificationListCoalescingControlsCell
-+ (double)coalescingControlsCellHeightShowingCoalescingControls:(BOOL)a3;
++ (double)coalescingControlsCellHeightShowingCoalescingControls:(BOOL)controls;
 - (BOOL)adjustForContentSizeCategoryChange;
 - (BOOL)dismissModalFullScreenIfNeeded;
-- (BOOL)shouldReceiveTouchAtPointInWindowSpace:(CGPoint)a3;
+- (BOOL)shouldReceiveTouchAtPointInWindowSpace:(CGPoint)space;
 - (NCNotificationListCoalescingControlsHandlerDelegate)handlerDelegate;
-- (id)containerViewForCoalescingControlsPreviewInteractionPresentedContent:(id)a3;
+- (id)containerViewForCoalescingControlsPreviewInteractionPresentedContent:(id)content;
 - (void)_configureCoalescingControlsViewIfNecessary;
 - (void)_layoutCoalescingControlsView;
 - (void)layoutSubviews;
-- (void)notificationListCoalescingControlsView:(id)a3 didTransitionToClearState:(BOOL)a4;
-- (void)notificationListCoalescingControlsViewDidBeginPreviewInteraction:(id)a3;
-- (void)notificationListCoalescingControlsViewDidDismissPreviewInteractionPresentedContent:(id)a3;
-- (void)notificationListCoalescingControlsViewDidPresentPreviewInteractionPresentedContent:(id)a3;
-- (void)notificationListCoalescingControlsViewRequestsClear:(id)a3;
-- (void)notificationListCoalescingControlsViewRequestsClearAll:(id)a3;
-- (void)notificationListCoalescingControlsViewRequestsRestack:(id)a3;
-- (void)resetClearButtonStateAnimated:(BOOL)a3;
-- (void)setAdjustsFontForContentSizeCategory:(BOOL)a3;
-- (void)setClearAllText:(id)a3;
-- (void)setMaterialGroupNameBase:(id)a3;
-- (void)setShouldShowCoalescingControls:(BOOL)a3;
+- (void)notificationListCoalescingControlsView:(id)view didTransitionToClearState:(BOOL)state;
+- (void)notificationListCoalescingControlsViewDidBeginPreviewInteraction:(id)interaction;
+- (void)notificationListCoalescingControlsViewDidDismissPreviewInteractionPresentedContent:(id)content;
+- (void)notificationListCoalescingControlsViewDidPresentPreviewInteractionPresentedContent:(id)content;
+- (void)notificationListCoalescingControlsViewRequestsClear:(id)clear;
+- (void)notificationListCoalescingControlsViewRequestsClearAll:(id)all;
+- (void)notificationListCoalescingControlsViewRequestsRestack:(id)restack;
+- (void)resetClearButtonStateAnimated:(BOOL)animated;
+- (void)setAdjustsFontForContentSizeCategory:(BOOL)category;
+- (void)setClearAllText:(id)text;
+- (void)setMaterialGroupNameBase:(id)base;
+- (void)setShouldShowCoalescingControls:(BOOL)controls;
 @end
 
 @implementation NCNotificationListCoalescingControlsCell
@@ -33,46 +33,46 @@
   [(NCNotificationListCoalescingControlsCell *)self _layoutCoalescingControlsView];
 }
 
-- (void)setClearAllText:(id)a3
+- (void)setClearAllText:(id)text
 {
-  objc_storeStrong(&self->_clearAllText, a3);
-  v5 = a3;
-  [(NCNotificationListCoalescingControlsView *)self->_coalescingControlsView setClearAllText:v5];
+  objc_storeStrong(&self->_clearAllText, text);
+  textCopy = text;
+  [(NCNotificationListCoalescingControlsView *)self->_coalescingControlsView setClearAllText:textCopy];
 }
 
-- (void)resetClearButtonStateAnimated:(BOOL)a3
+- (void)resetClearButtonStateAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v4 = [(NCNotificationListCoalescingControlsCell *)self coalescingControlsView];
-  [v4 resetClearButtonStateAnimated:v3];
+  animatedCopy = animated;
+  coalescingControlsView = [(NCNotificationListCoalescingControlsCell *)self coalescingControlsView];
+  [coalescingControlsView resetClearButtonStateAnimated:animatedCopy];
 }
 
 - (BOOL)dismissModalFullScreenIfNeeded
 {
-  v2 = [(NCNotificationListCoalescingControlsCell *)self coalescingControlsView];
-  v3 = [v2 dismissModalFullScreenIfNeeded];
+  coalescingControlsView = [(NCNotificationListCoalescingControlsCell *)self coalescingControlsView];
+  dismissModalFullScreenIfNeeded = [coalescingControlsView dismissModalFullScreenIfNeeded];
 
-  return v3;
+  return dismissModalFullScreenIfNeeded;
 }
 
-- (BOOL)shouldReceiveTouchAtPointInWindowSpace:(CGPoint)a3
+- (BOOL)shouldReceiveTouchAtPointInWindowSpace:(CGPoint)space
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(NCNotificationListCoalescingControlsCell *)self coalescingControlsView];
-  v6 = [v5 shouldReceiveTouchAtPointInWindowSpace:{x, y}];
+  y = space.y;
+  x = space.x;
+  coalescingControlsView = [(NCNotificationListCoalescingControlsCell *)self coalescingControlsView];
+  v6 = [coalescingControlsView shouldReceiveTouchAtPointInWindowSpace:{x, y}];
 
   return v6;
 }
 
-- (void)setShouldShowCoalescingControls:(BOOL)a3
+- (void)setShouldShowCoalescingControls:(BOOL)controls
 {
-  if (self->_shouldShowCoalescingControls != a3)
+  if (self->_shouldShowCoalescingControls != controls)
   {
-    self->_shouldShowCoalescingControls = a3;
+    self->_shouldShowCoalescingControls = controls;
     coalescingControlsView = self->_coalescingControlsView;
     v4 = 0.0;
-    if (a3)
+    if (controls)
     {
       v4 = 1.0;
     }
@@ -81,9 +81,9 @@
   }
 }
 
-+ (double)coalescingControlsCellHeightShowingCoalescingControls:(BOOL)a3
++ (double)coalescingControlsCellHeightShowingCoalescingControls:(BOOL)controls
 {
-  if (a3)
+  if (controls)
   {
     v3 = 56.0;
   }
@@ -96,7 +96,7 @@
   v4 = +[NCNotificationListCoalescingControlsView labelTextStyle];
   v5 = [MEMORY[0x277D74300] preferredFontForTextStyle:v4];
   [v5 _scaledValueForValue:v3];
-  v6 = [MEMORY[0x277D759A0] mainScreen];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
   UIRoundToScreenScale();
 
   _NCMainScreenScale();
@@ -106,12 +106,12 @@
   return v8;
 }
 
-- (void)notificationListCoalescingControlsViewRequestsClear:(id)a3
+- (void)notificationListCoalescingControlsViewRequestsClear:(id)clear
 {
-  v4 = [(NCNotificationListCoalescingControlsCell *)self handlerDelegate];
-  if (v4)
+  handlerDelegate = [(NCNotificationListCoalescingControlsCell *)self handlerDelegate];
+  if (handlerDelegate)
   {
-    v5 = v4;
+    v5 = handlerDelegate;
     if (objc_opt_respondsToSelector())
     {
       [v5 notificationListCoalescingControlsHandlerRequestsClearingNotifications:self];
@@ -121,12 +121,12 @@
   MEMORY[0x2821F9730]();
 }
 
-- (void)notificationListCoalescingControlsViewRequestsClearAll:(id)a3
+- (void)notificationListCoalescingControlsViewRequestsClearAll:(id)all
 {
-  v4 = [(NCNotificationListCoalescingControlsCell *)self handlerDelegate];
-  if (v4)
+  handlerDelegate = [(NCNotificationListCoalescingControlsCell *)self handlerDelegate];
+  if (handlerDelegate)
   {
-    v5 = v4;
+    v5 = handlerDelegate;
     if (objc_opt_respondsToSelector())
     {
       [v5 notificationListCoalescingControlsHandlerRequestsClearingAllNotifications:self];
@@ -136,12 +136,12 @@
   MEMORY[0x2821F9730]();
 }
 
-- (void)notificationListCoalescingControlsViewRequestsRestack:(id)a3
+- (void)notificationListCoalescingControlsViewRequestsRestack:(id)restack
 {
-  v4 = [(NCNotificationListCoalescingControlsCell *)self handlerDelegate];
-  if (v4)
+  handlerDelegate = [(NCNotificationListCoalescingControlsCell *)self handlerDelegate];
+  if (handlerDelegate)
   {
-    v5 = v4;
+    v5 = handlerDelegate;
     if (objc_opt_respondsToSelector())
     {
       [v5 notificationListCoalescingControlsHandlerRequestsRestackingNotifications:self];
@@ -151,28 +151,28 @@
   MEMORY[0x2821F9730]();
 }
 
-- (void)notificationListCoalescingControlsView:(id)a3 didTransitionToClearState:(BOOL)a4
+- (void)notificationListCoalescingControlsView:(id)view didTransitionToClearState:(BOOL)state
 {
-  v4 = a4;
-  v6 = [(NCNotificationListCoalescingControlsCell *)self handlerDelegate];
-  if (v6)
+  stateCopy = state;
+  handlerDelegate = [(NCNotificationListCoalescingControlsCell *)self handlerDelegate];
+  if (handlerDelegate)
   {
-    v7 = v6;
+    v7 = handlerDelegate;
     if (objc_opt_respondsToSelector())
     {
-      [v7 notificationListCoalescingControlsHandler:self didTransitionToClearState:v4];
+      [v7 notificationListCoalescingControlsHandler:self didTransitionToClearState:stateCopy];
     }
   }
 
   MEMORY[0x2821F9730]();
 }
 
-- (id)containerViewForCoalescingControlsPreviewInteractionPresentedContent:(id)a3
+- (id)containerViewForCoalescingControlsPreviewInteractionPresentedContent:(id)content
 {
-  v4 = [(NCNotificationListCoalescingControlsCell *)self handlerDelegate];
-  if (v4 && (objc_opt_respondsToSelector() & 1) != 0)
+  handlerDelegate = [(NCNotificationListCoalescingControlsCell *)self handlerDelegate];
+  if (handlerDelegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v5 = [v4 containerViewForCoalescingControlsHandlerPreviewInteractionPresentedContent:self];
+    v5 = [handlerDelegate containerViewForCoalescingControlsHandlerPreviewInteractionPresentedContent:self];
   }
 
   else
@@ -183,62 +183,62 @@
   return v5;
 }
 
-- (void)notificationListCoalescingControlsViewDidBeginPreviewInteraction:(id)a3
+- (void)notificationListCoalescingControlsViewDidBeginPreviewInteraction:(id)interaction
 {
-  v4 = [(NCNotificationListCoalescingControlsCell *)self handlerDelegate];
+  handlerDelegate = [(NCNotificationListCoalescingControlsCell *)self handlerDelegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 notificationListCoalescingControlsHandlerDidBeginPreviewInteraction:self];
+    [handlerDelegate notificationListCoalescingControlsHandlerDidBeginPreviewInteraction:self];
   }
 }
 
-- (void)notificationListCoalescingControlsViewDidPresentPreviewInteractionPresentedContent:(id)a3
+- (void)notificationListCoalescingControlsViewDidPresentPreviewInteractionPresentedContent:(id)content
 {
-  v4 = [(NCNotificationListCoalescingControlsCell *)self handlerDelegate];
+  handlerDelegate = [(NCNotificationListCoalescingControlsCell *)self handlerDelegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 notificationListCoalescingControlsHandlerDidPresentPreviewInteractionPresentedContent:self];
+    [handlerDelegate notificationListCoalescingControlsHandlerDidPresentPreviewInteractionPresentedContent:self];
   }
 }
 
-- (void)notificationListCoalescingControlsViewDidDismissPreviewInteractionPresentedContent:(id)a3
+- (void)notificationListCoalescingControlsViewDidDismissPreviewInteractionPresentedContent:(id)content
 {
-  v4 = [(NCNotificationListCoalescingControlsCell *)self handlerDelegate];
+  handlerDelegate = [(NCNotificationListCoalescingControlsCell *)self handlerDelegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 notificationListCoalescingControlsHandlerDidDismissPreviewInteractionPresentedContent:self];
+    [handlerDelegate notificationListCoalescingControlsHandlerDidDismissPreviewInteractionPresentedContent:self];
   }
 }
 
-- (void)setAdjustsFontForContentSizeCategory:(BOOL)a3
+- (void)setAdjustsFontForContentSizeCategory:(BOOL)category
 {
-  if (self->_adjustsFontForContentSizeCategory != a3)
+  if (self->_adjustsFontForContentSizeCategory != category)
   {
-    self->_adjustsFontForContentSizeCategory = a3;
+    self->_adjustsFontForContentSizeCategory = category;
     [(NCNotificationListCoalescingControlsView *)self->_coalescingControlsView setAdjustsFontForContentSizeCategory:?];
   }
 }
 
 - (BOOL)adjustForContentSizeCategoryChange
 {
-  v3 = [(NCNotificationListCoalescingControlsCell *)self adjustsFontForContentSizeCategory];
-  if (v3)
+  adjustsFontForContentSizeCategory = [(NCNotificationListCoalescingControlsCell *)self adjustsFontForContentSizeCategory];
+  if (adjustsFontForContentSizeCategory)
   {
-    v3 = [(NCNotificationListCoalescingControlsView *)self->_coalescingControlsView adjustForContentSizeCategoryChange];
-    if (v3)
+    adjustsFontForContentSizeCategory = [(NCNotificationListCoalescingControlsView *)self->_coalescingControlsView adjustForContentSizeCategoryChange];
+    if (adjustsFontForContentSizeCategory)
     {
       [(NCNotificationListCoalescingControlsCell *)self setNeedsLayout];
-      LOBYTE(v3) = 1;
+      LOBYTE(adjustsFontForContentSizeCategory) = 1;
     }
   }
 
-  return v3;
+  return adjustsFontForContentSizeCategory;
 }
 
-- (void)setMaterialGroupNameBase:(id)a3
+- (void)setMaterialGroupNameBase:(id)base
 {
-  objc_storeStrong(&self->_materialGroupNameBase, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_materialGroupNameBase, base);
+  baseCopy = base;
   [(NCNotificationListCoalescingControlsView *)self->_coalescingControlsView setMaterialGroupNameBase:self->_materialGroupNameBase];
 }
 
@@ -255,8 +255,8 @@
     [(NCNotificationListCoalescingControlsView *)self->_coalescingControlsView setFooterCell:self->_footerCell];
     [(NCNotificationListCoalescingControlsView *)self->_coalescingControlsView setDelegate:self];
     v6 = self->_coalescingControlsView;
-    v7 = [(NCNotificationListCoalescingControlsCell *)self materialGroupNameBase];
-    [(NCNotificationListCoalescingControlsView *)v6 setMaterialGroupNameBase:v7];
+    materialGroupNameBase = [(NCNotificationListCoalescingControlsCell *)self materialGroupNameBase];
+    [(NCNotificationListCoalescingControlsView *)v6 setMaterialGroupNameBase:materialGroupNameBase];
 
     [(NCNotificationListCoalescingControlsView *)self->_coalescingControlsView setClearAllText:self->_clearAllText];
     [(NCNotificationListCoalescingControlsView *)self->_coalescingControlsView setAdjustsFontForContentSizeCategory:[(NCNotificationListCoalescingControlsCell *)self adjustsFontForContentSizeCategory]];
@@ -286,9 +286,9 @@
   [(NCNotificationListCoalescingControlsView *)self->_coalescingControlsView sizeThatFits:v8, v10];
   v16 = v15;
   v18 = v17;
-  v19 = [(NCNotificationListCoalescingControlsCell *)self _shouldReverseLayoutDirection];
+  _shouldReverseLayoutDirection = [(NCNotificationListCoalescingControlsCell *)self _shouldReverseLayoutDirection];
   v20 = 0.0;
-  if ((v19 & 1) == 0)
+  if ((_shouldReverseLayoutDirection & 1) == 0)
   {
     v24.origin.x = v4;
     v24.origin.y = v6;

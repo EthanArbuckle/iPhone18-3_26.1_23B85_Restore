@@ -1,5 +1,5 @@
 @interface UISystemKeyboardDockControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (double)_axUpdateGlobeKeyLabel;
 - (uint64_t)_axShowsGlobeKeyAsEmoji;
 - (void)_accessibilityLoadAccessibilityInformation;
@@ -10,14 +10,14 @@
 
 @implementation UISystemKeyboardDockControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v8 = location;
   v7 = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v4 = @"UISystemKeyboardDockController";
   [location[0] validateClass:? isKindOfClass:?];
   v3 = "UIKeyboardDockItem";
@@ -36,8 +36,8 @@
 
 - (uint64_t)_axShowsGlobeKeyAsEmoji
 {
-  location[1] = a1;
-  if (a1)
+  location[1] = self;
+  if (self)
   {
     location[0] = [MEMORY[0x29EDC7B08] activeInstance];
     LOBYTE(v2) = 0;
@@ -60,12 +60,12 @@
 
 - (double)_axUpdateGlobeKeyLabel
 {
-  if (a1)
+  if (self)
   {
-    v2 = [a1 safeValueForKey:@"_globeDockItem"];
+    v2 = [self safeValueForKey:@"_globeDockItem"];
     v5 = 0;
     v3 = 0;
-    if (([(UISystemKeyboardDockControllerAccessibility *)a1 _axShowsGlobeKeyAsEmoji]& 1) != 0)
+    if (([(UISystemKeyboardDockControllerAccessibility *)self _axShowsGlobeKeyAsEmoji]& 1) != 0)
     {
       v6 = AXKBElementLocalizedForKeyboardLocale(@"global.keyboard.key.emoji");
       v5 = 1;
@@ -97,24 +97,24 @@
 
 - (void)_accessibilityLoadAccessibilityInformation
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   v2.receiver = self;
   v2.super_class = UISystemKeyboardDockControllerAccessibility;
   [(UISystemKeyboardDockControllerAccessibility *)&v2 _accessibilityLoadAccessibilityInformation];
-  [(UISystemKeyboardDockControllerAccessibility *)v4 _accessibilityMarkupDockItems];
+  [(UISystemKeyboardDockControllerAccessibility *)selfCopy _accessibilityMarkupDockItems];
 }
 
 - (void)_accessibilityMarkupDockItems
 {
-  v23 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v22 = [v23 safeValueForKey:{@"_globeDockItem", -[UISystemKeyboardDockControllerAccessibility _axUpdateGlobeKeyLabel](v23)}];
+    v22 = [selfCopy safeValueForKey:{@"_globeDockItem", -[UISystemKeyboardDockControllerAccessibility _axUpdateGlobeKeyLabel](selfCopy)}];
     v10 = accessibilityLocalizedString(@"globe.keyboard.key.hint");
     [v22 setAccessibilityHint:?];
     MEMORY[0x29EDC9740](v10);
-    objc_initWeak(&location, v23);
+    objc_initWeak(&location, selfCopy);
     v11 = v22;
     v15 = MEMORY[0x29EDCA5F8];
     v16 = -1073741824;
@@ -123,21 +123,21 @@
     v19 = &unk_29F30C9E8;
     objc_copyWeak(&v20, &location);
     [v11 _setAccessibilityValueBlock:&v15];
-    v14 = [v23 safeValueForKey:@"_dictationRunningDockItem"];
+    v14 = [selfCopy safeValueForKey:@"_dictationRunningDockItem"];
     v9 = accessibilityLocalizedString(@"dictation.key");
     [v14 setAccessibilityLabel:?];
     MEMORY[0x29EDC9740](v9);
     v8 = accessibilityLocalizedString(@"dictation.running.key.value");
     [v14 setAccessibilityValue:?];
     [v14 setAccessibilityIdentifier:{@"dictation", MEMORY[0x29EDC9740](v8).n128_f64[0]}];
-    v13 = [v23 safeValueForKey:@"_dictationDockItem"];
+    v13 = [selfCopy safeValueForKey:@"_dictationDockItem"];
     v7 = accessibilityLocalizedString(@"dictation.key");
     [v13 setAccessibilityLabel:?];
     MEMORY[0x29EDC9740](v7);
     v6 = accessibilityLocalizedString(@"dictation.key.hint");
     [v13 setAccessibilityHint:?];
     [v13 setAccessibilityIdentifier:{@"dictation", MEMORY[0x29EDC9740](v6).n128_f64[0]}];
-    v12 = [v23 safeValueForKey:@"_keyboardDockItem"];
+    v12 = [selfCopy safeValueForKey:@"_keyboardDockItem"];
     v5 = accessibilityLocalizedString(@"keyboardMinimized.tabButton");
     [v12 setAccessibilityLabel:?];
     *&v1 = MEMORY[0x29EDC9740](v5).n128_u64[0];
@@ -180,22 +180,22 @@ id __76__UISystemKeyboardDockControllerAccessibility__accessibilityMarkupDockIte
 
 - (void)updateDockItemsVisibility
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   v2.receiver = self;
   v2.super_class = UISystemKeyboardDockControllerAccessibility;
   [(UISystemKeyboardDockControllerAccessibility *)&v2 updateDockItemsVisibility];
-  [(UISystemKeyboardDockControllerAccessibility *)v4 _axUpdateGlobeKeyLabel];
+  [(UISystemKeyboardDockControllerAccessibility *)selfCopy _axUpdateGlobeKeyLabel];
 }
 
 - (void)loadView
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   v2.receiver = self;
   v2.super_class = UISystemKeyboardDockControllerAccessibility;
   [(UISystemKeyboardDockControllerAccessibility *)&v2 loadView];
-  [(UISystemKeyboardDockControllerAccessibility *)v4 _accessibilityMarkupDockItems];
+  [(UISystemKeyboardDockControllerAccessibility *)selfCopy _accessibilityMarkupDockItems];
 }
 
 @end

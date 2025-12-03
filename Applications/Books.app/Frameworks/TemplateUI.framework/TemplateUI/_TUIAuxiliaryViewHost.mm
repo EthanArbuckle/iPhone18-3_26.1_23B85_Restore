@@ -1,29 +1,29 @@
 @interface _TUIAuxiliaryViewHost
 - (TUIHostingController)hostingController;
-- (_TUIAuxiliaryViewHost)initWithIdentifier:(id)a3 hostingController:(id)a4 viewVisibilityController:(id)a5 view:(id)a6;
+- (_TUIAuxiliaryViewHost)initWithIdentifier:(id)identifier hostingController:(id)controller viewVisibilityController:(id)visibilityController view:(id)view;
 - (void)_updateHost;
 - (void)_updatePopoverLayout;
-- (void)_updateVisible:(BOOL)a3;
+- (void)_updateVisible:(BOOL)visible;
 - (void)dealloc;
 @end
 
 @implementation _TUIAuxiliaryViewHost
 
-- (_TUIAuxiliaryViewHost)initWithIdentifier:(id)a3 hostingController:(id)a4 viewVisibilityController:(id)a5 view:(id)a6
+- (_TUIAuxiliaryViewHost)initWithIdentifier:(id)identifier hostingController:(id)controller viewVisibilityController:(id)visibilityController view:(id)view
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  identifierCopy = identifier;
+  controllerCopy = controller;
+  visibilityControllerCopy = visibilityController;
+  viewCopy = view;
   v28.receiver = self;
   v28.super_class = _TUIAuxiliaryViewHost;
   v15 = [(_TUIAuxiliaryViewHost *)&v28 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_identifier, a3);
-    objc_storeWeak(&v16->_hostingController, v12);
-    objc_storeStrong(&v16->_view, a6);
+    objc_storeStrong(&v15->_identifier, identifier);
+    objc_storeWeak(&v16->_hostingController, controllerCopy);
+    objc_storeStrong(&v16->_view, view);
     WeakRetained = objc_loadWeakRetained(&v16->_hostingController);
     [WeakRetained addProviderObserver:v16 forIdentifier:v16->_identifier];
 
@@ -34,7 +34,7 @@
     v24 = sub_124B40;
     v25 = &unk_2604B0;
     objc_copyWeak(&v26, &location);
-    v19 = [v13 observeNavigationBarView:v14 options:v18 block:&v22];
+    v19 = [visibilityControllerCopy observeNavigationBarView:viewCopy options:v18 block:&v22];
     visibilityObserver = v16->_visibilityObserver;
     v16->_visibilityObserver = v19;
 
@@ -68,11 +68,11 @@
   [WeakRetained updatePopoverLayoutForViewState:self->_viewState superview:self->_view];
 }
 
-- (void)_updateVisible:(BOOL)a3
+- (void)_updateVisible:(BOOL)visible
 {
-  self->_visible = a3;
+  self->_visible = visible;
   viewState = self->_viewState;
-  if (a3)
+  if (visible)
   {
     if (!viewState)
     {

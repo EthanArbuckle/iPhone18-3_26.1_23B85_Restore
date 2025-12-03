@@ -1,24 +1,24 @@
 @interface CNPhotoPickerProviderGroup
-+ (id)addItemsGroupWithProviders:(id)a3 environment:(id)a4;
-+ (id)animojiGroupWithProviders:(id)a3 environment:(id)a4 allowAddItem:(BOOL)a5;
-+ (id)emojiGroupWithProviders:(id)a3 environment:(id)a4 allowAddItem:(BOOL)a5;
-+ (id)injectedItemsGroupWithEnvironment:(id)a3;
-+ (id)suggestionsGroupWithProviders:(id)a3 environment:(id)a4 allowAddItem:(BOOL)a5;
++ (id)addItemsGroupWithProviders:(id)providers environment:(id)environment;
++ (id)animojiGroupWithProviders:(id)providers environment:(id)environment allowAddItem:(BOOL)item;
++ (id)emojiGroupWithProviders:(id)providers environment:(id)environment allowAddItem:(BOOL)item;
++ (id)injectedItemsGroupWithEnvironment:(id)environment;
++ (id)suggestionsGroupWithProviders:(id)providers environment:(id)environment allowAddItem:(BOOL)item;
 - (BOOL)hasAddedProviderItems;
-- (CNPhotoPickerProviderGroup)initWithProviders:(id)a3 groupType:(int64_t)a4 environment:(id)a5 allowAddItem:(BOOL)a6;
+- (CNPhotoPickerProviderGroup)initWithProviders:(id)providers groupType:(int64_t)type environment:(id)environment allowAddItem:(BOOL)item;
 - (CNPhotoPickerProviderGroupDelegate)delegate;
 - (NSArray)addItems;
-- (id)itemsForProviderIdentifier:(id)a3;
-- (id)providerItemAtIndex:(int64_t)a3;
+- (id)itemsForProviderIdentifier:(id)identifier;
+- (id)providerItemAtIndex:(int64_t)index;
 - (id)suggestionsProviderPrecedingFacesProvider;
-- (int64_t)addProviderItem:(id)a3;
+- (int64_t)addProviderItem:(id)item;
 - (int64_t)numberOfItems;
-- (int64_t)removeProviderItem:(id)a3;
-- (void)loadProvidersItemsForSize:(CGSize)a3 itemsPerRow:(double)a4 scale:(double)a5 RTL:(BOOL)a6;
-- (void)providerItemDidUpdate:(id)a3;
-- (void)reloadDisplayItemsNotifyDelegate:(BOOL)a3 requiresFullReload:(BOOL)a4;
+- (int64_t)removeProviderItem:(id)item;
+- (void)loadProvidersItemsForSize:(CGSize)size itemsPerRow:(double)row scale:(double)scale RTL:(BOOL)l;
+- (void)providerItemDidUpdate:(id)update;
+- (void)reloadDisplayItemsNotifyDelegate:(BOOL)delegate requiresFullReload:(BOOL)reload;
 - (void)removeAllAddedProviderItems;
-- (void)setItemsPerRow:(unint64_t)a3 requiresFullReload:(BOOL)a4;
+- (void)setItemsPerRow:(unint64_t)row requiresFullReload:(BOOL)reload;
 @end
 
 @implementation CNPhotoPickerProviderGroup
@@ -30,18 +30,18 @@
   return WeakRetained;
 }
 
-- (void)providerItemDidUpdate:(id)a3
+- (void)providerItemDidUpdate:(id)update
 {
-  v4 = a3;
-  v5 = [(CNPhotoPickerProviderGroup *)self callbackQueue];
+  updateCopy = update;
+  callbackQueue = [(CNPhotoPickerProviderGroup *)self callbackQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __52__CNPhotoPickerProviderGroup_providerItemDidUpdate___block_invoke;
   v7[3] = &unk_1E74E77C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 performBlock:v7];
+  v8 = updateCopy;
+  v6 = updateCopy;
+  [callbackQueue performBlock:v7];
 }
 
 void __52__CNPhotoPickerProviderGroup_providerItemDidUpdate___block_invoke(uint64_t a1)
@@ -53,8 +53,8 @@ void __52__CNPhotoPickerProviderGroup_providerItemDidUpdate___block_invoke(uint6
 - (BOOL)hasAddedProviderItems
 {
   v2 = *MEMORY[0x1E6996530];
-  v3 = [(CNPhotoPickerProviderGroup *)self addedItems];
-  LOBYTE(v2) = (*(v2 + 16))(v2, v3);
+  addedItems = [(CNPhotoPickerProviderGroup *)self addedItems];
+  LOBYTE(v2) = (*(v2 + 16))(v2, addedItems);
 
   return v2 ^ 1;
 }
@@ -66,27 +66,27 @@ void __52__CNPhotoPickerProviderGroup_providerItemDidUpdate___block_invoke(uint6
   [(CNPhotoPickerProviderGroup *)self reloadDisplayItemsNotifyDelegate:0];
 }
 
-- (int64_t)removeProviderItem:(id)a3
+- (int64_t)removeProviderItem:(id)item
 {
   v30[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CNPhotoPickerProviderGroup *)self displayItems];
-  v6 = [v5 indexOfObject:v4];
+  itemCopy = item;
+  displayItems = [(CNPhotoPickerProviderGroup *)self displayItems];
+  v6 = [displayItems indexOfObject:itemCopy];
 
   if (v6 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v7 = [(CNPhotoPickerProviderGroup *)self addedItems];
-    v8 = [v7 indexOfObject:v4];
+    addedItems = [(CNPhotoPickerProviderGroup *)self addedItems];
+    v8 = [addedItems indexOfObject:itemCopy];
 
     if (v8 == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v9 = [(CNPhotoPickerProviderGroup *)self paddingItems];
-      v10 = [v9 containsObject:v4];
+      paddingItems = [(CNPhotoPickerProviderGroup *)self paddingItems];
+      v10 = [paddingItems containsObject:itemCopy];
 
       if (!v10)
       {
-        v20 = [(CNPhotoPickerProviderGroup *)self removedItems];
-        v21 = [v20 arrayByAddingObject:v4];
+        removedItems = [(CNPhotoPickerProviderGroup *)self removedItems];
+        v21 = [removedItems arrayByAddingObject:itemCopy];
         [(CNPhotoPickerProviderGroup *)self setRemovedItems:v21];
 
 LABEL_11:
@@ -94,29 +94,29 @@ LABEL_11:
         goto LABEL_12;
       }
 
-      v11 = [(CNPhotoPickerProviderGroup *)self paddingItems];
+      paddingItems2 = [(CNPhotoPickerProviderGroup *)self paddingItems];
       v23 = MEMORY[0x1E69E9820];
       v24 = 3221225472;
       v25 = __49__CNPhotoPickerProviderGroup_removeProviderItem___block_invoke_2;
       v26 = &unk_1E74E66D0;
-      v12 = v4;
+      v12 = itemCopy;
       v27 = v12;
-      v13 = [v11 _cn_filter:&v23];
+      v13 = [paddingItems2 _cn_filter:&v23];
       [(CNPhotoPickerProviderGroup *)self setPaddingItems:v13, v23, v24, v25, v26];
 
-      v14 = [(CNPhotoPickerProviderGroup *)self removedPaddingItems];
-      if (v14)
+      removedPaddingItems = [(CNPhotoPickerProviderGroup *)self removedPaddingItems];
+      if (removedPaddingItems)
       {
-        v15 = [(CNPhotoPickerProviderGroup *)self removedPaddingItems];
-        v16 = [v15 arrayByAddingObject:v12];
+        removedPaddingItems2 = [(CNPhotoPickerProviderGroup *)self removedPaddingItems];
+        v16 = [removedPaddingItems2 arrayByAddingObject:v12];
         [(CNPhotoPickerProviderGroup *)self setRemovedPaddingItems:v16];
       }
 
       else
       {
         v30[0] = v12;
-        v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v30 count:1];
-        [(CNPhotoPickerProviderGroup *)self setRemovedPaddingItems:v15];
+        removedPaddingItems2 = [MEMORY[0x1E695DEC8] arrayWithObjects:v30 count:1];
+        [(CNPhotoPickerProviderGroup *)self setRemovedPaddingItems:removedPaddingItems2];
       }
 
       v19 = v27;
@@ -124,13 +124,13 @@ LABEL_11:
 
     else
     {
-      v17 = [(CNPhotoPickerProviderGroup *)self addedItems];
+      addedItems2 = [(CNPhotoPickerProviderGroup *)self addedItems];
       v28[0] = MEMORY[0x1E69E9820];
       v28[1] = 3221225472;
       v28[2] = __49__CNPhotoPickerProviderGroup_removeProviderItem___block_invoke;
       v28[3] = &unk_1E74E66D0;
-      v29 = v4;
-      v18 = [v17 _cn_filter:v28];
+      v29 = itemCopy;
+      v18 = [addedItems2 _cn_filter:v28];
       [(CNPhotoPickerProviderGroup *)self setAddedItems:v18];
 
       v19 = v29;
@@ -144,35 +144,35 @@ LABEL_12:
   return v6;
 }
 
-- (int64_t)addProviderItem:(id)a3
+- (int64_t)addProviderItem:(id)item
 {
   v13 = *MEMORY[0x1E69E9840];
-  v12 = a3;
+  itemCopy = item;
   v4 = MEMORY[0x1E695DEC8];
-  v5 = a3;
-  v6 = [v4 arrayWithObjects:&v12 count:1];
-  v7 = [(CNPhotoPickerProviderGroup *)self addedItems:v12];
+  itemCopy2 = item;
+  v6 = [v4 arrayWithObjects:&itemCopy count:1];
+  v7 = [(CNPhotoPickerProviderGroup *)self addedItems:itemCopy];
   v8 = [v6 arrayByAddingObjectsFromArray:v7];
   [(CNPhotoPickerProviderGroup *)self setAddedItems:v8];
 
   [(CNPhotoPickerProviderGroup *)self reloadDisplayItemsNotifyDelegate:0];
-  v9 = [(CNPhotoPickerProviderGroup *)self displayItems];
-  v10 = [v9 indexOfObject:v5];
+  displayItems = [(CNPhotoPickerProviderGroup *)self displayItems];
+  v10 = [displayItems indexOfObject:itemCopy2];
 
   return v10;
 }
 
-- (id)providerItemAtIndex:(int64_t)a3
+- (id)providerItemAtIndex:(int64_t)index
 {
-  if ([(CNPhotoPickerProviderGroup *)self numberOfItems]<= a3)
+  if ([(CNPhotoPickerProviderGroup *)self numberOfItems]<= index)
   {
     v6 = 0;
   }
 
   else
   {
-    v5 = [(CNPhotoPickerProviderGroup *)self displayItems];
-    v6 = [v5 objectAtIndexedSubscript:a3];
+    displayItems = [(CNPhotoPickerProviderGroup *)self displayItems];
+    v6 = [displayItems objectAtIndexedSubscript:index];
   }
 
   return v6;
@@ -180,8 +180,8 @@ LABEL_12:
 
 - (int64_t)numberOfItems
 {
-  v2 = [(CNPhotoPickerProviderGroup *)self displayItems];
-  v3 = [v2 count];
+  displayItems = [(CNPhotoPickerProviderGroup *)self displayItems];
+  v3 = [displayItems count];
 
   return v3;
 }
@@ -204,43 +204,43 @@ LABEL_12:
   return addItems;
 }
 
-- (void)reloadDisplayItemsNotifyDelegate:(BOOL)a3 requiresFullReload:(BOOL)a4
+- (void)reloadDisplayItemsNotifyDelegate:(BOOL)delegate requiresFullReload:(BOOL)reload
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [MEMORY[0x1E695DF70] array];
-  v8 = [(CNPhotoPickerProviderGroup *)self addedItems];
-  [v7 addObject:v8];
+  reloadCopy = reload;
+  delegateCopy = delegate;
+  array = [MEMORY[0x1E695DF70] array];
+  addedItems = [(CNPhotoPickerProviderGroup *)self addedItems];
+  [array addObject:addedItems];
 
-  v9 = [(CNPhotoPickerProviderGroup *)self providers];
+  providers = [(CNPhotoPickerProviderGroup *)self providers];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __82__CNPhotoPickerProviderGroup_reloadDisplayItemsNotifyDelegate_requiresFullReload___block_invoke;
   v16[3] = &unk_1E74E1AD8;
   v16[4] = self;
-  v10 = v7;
+  v10 = array;
   v17 = v10;
-  [v9 _cn_each:v16];
+  [providers _cn_each:v16];
 
   if ([(CNPhotoPickerProviderGroup *)self allowAddItem])
   {
-    v11 = [(CNPhotoPickerProviderGroup *)self addItems];
-    [v10 insertObject:v11 atIndex:0];
+    addItems = [(CNPhotoPickerProviderGroup *)self addItems];
+    [v10 insertObject:addItems atIndex:0];
   }
 
-  v12 = [v10 _cn_flatten];
+  _cn_flatten = [v10 _cn_flatten];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __82__CNPhotoPickerProviderGroup_reloadDisplayItemsNotifyDelegate_requiresFullReload___block_invoke_3;
   v15[3] = &unk_1E74E66D0;
   v15[4] = self;
-  v13 = [v12 _cn_filter:v15];
+  v13 = [_cn_flatten _cn_filter:v15];
 
   [(CNPhotoPickerProviderGroup *)self prepareDisplayItems:v13];
-  if (v5)
+  if (delegateCopy)
   {
-    v14 = [(CNPhotoPickerProviderGroup *)self delegate];
-    [v14 photoPickerProviderGroupDidUpdate:self requiresFullReload:v4];
+    delegate = [(CNPhotoPickerProviderGroup *)self delegate];
+    [delegate photoPickerProviderGroupDidUpdate:self requiresFullReload:reloadCopy];
   }
 }
 
@@ -294,21 +294,21 @@ BOOL __82__CNPhotoPickerProviderGroup_reloadDisplayItemsNotifyDelegate_requiresF
   return v5 == 0x7FFFFFFFFFFFFFFFLL;
 }
 
-- (id)itemsForProviderIdentifier:(id)a3
+- (id)itemsForProviderIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CNPhotoPickerProviderGroup *)self itemsGroupedByProvider];
-  v6 = [v5 valueForKey:v4];
+  identifierCopy = identifier;
+  itemsGroupedByProvider = [(CNPhotoPickerProviderGroup *)self itemsGroupedByProvider];
+  v6 = [itemsGroupedByProvider valueForKey:identifierCopy];
 
   return v6;
 }
 
-- (void)setItemsPerRow:(unint64_t)a3 requiresFullReload:(BOOL)a4
+- (void)setItemsPerRow:(unint64_t)row requiresFullReload:(BOOL)reload
 {
-  if (self->_itemsPerRow != a3)
+  if (self->_itemsPerRow != row)
   {
-    self->_itemsPerRow = a3;
-    [(CNPhotoPickerProviderGroup *)self reloadDisplayItemsNotifyDelegate:1 requiresFullReload:a4];
+    self->_itemsPerRow = row;
+    [(CNPhotoPickerProviderGroup *)self reloadDisplayItemsNotifyDelegate:1 requiresFullReload:reload];
   }
 }
 
@@ -322,8 +322,8 @@ BOOL __82__CNPhotoPickerProviderGroup_reloadDisplayItemsNotifyDelegate_requiresF
 
   else
   {
-    v8 = [(CNPhotoPickerProviderGroup *)self providers];
-    v9 = [v8 objectAtIndex:v5];
+    providers = [(CNPhotoPickerProviderGroup *)self providers];
+    v9 = [providers objectAtIndex:v5];
   }
 
   return v9;
@@ -338,28 +338,28 @@ uint64_t __71__CNPhotoPickerProviderGroup_suggestionsProviderPrecedingFacesProvi
   return isKindOfClass & 1;
 }
 
-- (void)loadProvidersItemsForSize:(CGSize)a3 itemsPerRow:(double)a4 scale:(double)a5 RTL:(BOOL)a6
+- (void)loadProvidersItemsForSize:(CGSize)size itemsPerRow:(double)row scale:(double)scale RTL:(BOOL)l
 {
-  height = a3.height;
-  width = a3.width;
-  self->_itemsPerRow = a4;
-  v11 = [(CNPhotoPickerProviderGroup *)self workQueue];
-  v12 = [(CNPhotoPickerProviderGroup *)self providerItemRenderingQueue];
-  v13 = [(CNPhotoPickerProviderGroup *)self callbackQueue];
+  height = size.height;
+  width = size.width;
+  self->_itemsPerRow = row;
+  workQueue = [(CNPhotoPickerProviderGroup *)self workQueue];
+  providerItemRenderingQueue = [(CNPhotoPickerProviderGroup *)self providerItemRenderingQueue];
+  callbackQueue = [(CNPhotoPickerProviderGroup *)self callbackQueue];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __78__CNPhotoPickerProviderGroup_loadProvidersItemsForSize_itemsPerRow_scale_RTL___block_invoke;
   v16[3] = &unk_1E74E1A90;
   v19 = width;
   v20 = height;
-  v21 = a5;
-  v22 = a6;
+  scaleCopy = scale;
+  lCopy = l;
   v16[4] = self;
-  v17 = v12;
-  v18 = v13;
-  v14 = v13;
-  v15 = v12;
-  [v11 performBlock:v16];
+  v17 = providerItemRenderingQueue;
+  v18 = callbackQueue;
+  v14 = callbackQueue;
+  v15 = providerItemRenderingQueue;
+  [workQueue performBlock:v16];
 }
 
 void __78__CNPhotoPickerProviderGroup_loadProvidersItemsForSize_itemsPerRow_scale_RTL___block_invoke(uint64_t a1)
@@ -434,29 +434,29 @@ void __78__CNPhotoPickerProviderGroup_loadProvidersItemsForSize_itemsPerRow_scal
   [v2 photoPickerProviderGroupDidUpdate:*(a1 + 32) requiresFullReload:0];
 }
 
-- (CNPhotoPickerProviderGroup)initWithProviders:(id)a3 groupType:(int64_t)a4 environment:(id)a5 allowAddItem:(BOOL)a6
+- (CNPhotoPickerProviderGroup)initWithProviders:(id)providers groupType:(int64_t)type environment:(id)environment allowAddItem:(BOOL)item
 {
-  v6 = a6;
-  v11 = a3;
-  v12 = a5;
+  itemCopy = item;
+  providersCopy = providers;
+  environmentCopy = environment;
   v31.receiver = self;
   v31.super_class = CNPhotoPickerProviderGroup;
   v13 = [(CNPhotoPickerProviderGroup *)&v31 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_providers, a3);
-    v14->_groupType = a4;
-    v14->_allowAddItem = v6;
+    objc_storeStrong(&v13->_providers, providers);
+    v14->_groupType = type;
+    v14->_allowAddItem = itemCopy;
     v15 = MEMORY[0x1E695E0F0];
-    v16 = MEMORY[0x1E695E0F0];
-    if (v6)
+    addItems = MEMORY[0x1E695E0F0];
+    if (itemCopy)
     {
-      v16 = [(CNPhotoPickerProviderGroup *)v14 addItems];
+      addItems = [(CNPhotoPickerProviderGroup *)v14 addItems];
     }
 
     displayItems = v14->_displayItems;
-    v14->_displayItems = v16;
+    v14->_displayItems = addItems;
 
     addedItems = v14->_addedItems;
     v14->_addedItems = v15;
@@ -464,22 +464,22 @@ void __78__CNPhotoPickerProviderGroup_loadProvidersItemsForSize_itemsPerRow_scal
     removedItems = v14->_removedItems;
     v14->_removedItems = v15;
 
-    v20 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     itemsGroupedByProvider = v14->_itemsGroupedByProvider;
-    v14->_itemsGroupedByProvider = v20;
+    v14->_itemsGroupedByProvider = dictionary;
 
-    v22 = [v12 defaultSchedulerProvider];
-    v23 = [v22 newSerialSchedulerWithName:@"com.apple.ContactsUI.PhotoPickerProvider.workQueue"];
+    defaultSchedulerProvider = [environmentCopy defaultSchedulerProvider];
+    v23 = [defaultSchedulerProvider newSerialSchedulerWithName:@"com.apple.ContactsUI.PhotoPickerProvider.workQueue"];
     workQueue = v14->_workQueue;
     v14->_workQueue = v23;
 
-    v25 = [v22 newSerialSchedulerWithName:@"com.apple.ContactsUI.PhotoPickerProvider.ProviderItem.workQueue"];
+    v25 = [defaultSchedulerProvider newSerialSchedulerWithName:@"com.apple.ContactsUI.PhotoPickerProvider.ProviderItem.workQueue"];
     providerItemRenderingQueue = v14->_providerItemRenderingQueue;
     v14->_providerItemRenderingQueue = v25;
 
-    v27 = [v22 mainThreadScheduler];
+    mainThreadScheduler = [defaultSchedulerProvider mainThreadScheduler];
     callbackQueue = v14->_callbackQueue;
-    v14->_callbackQueue = v27;
+    v14->_callbackQueue = mainThreadScheduler;
 
     v29 = v14;
   }
@@ -487,49 +487,49 @@ void __78__CNPhotoPickerProviderGroup_loadProvidersItemsForSize_itemsPerRow_scal
   return v14;
 }
 
-+ (id)addItemsGroupWithProviders:(id)a3 environment:(id)a4
++ (id)addItemsGroupWithProviders:(id)providers environment:(id)environment
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[CNPhotoPickerProviderAddItemsGroup alloc] initWithProviders:v6 environment:v5];
+  environmentCopy = environment;
+  providersCopy = providers;
+  v7 = [[CNPhotoPickerProviderAddItemsGroup alloc] initWithProviders:providersCopy environment:environmentCopy];
 
   return v7;
 }
 
-+ (id)emojiGroupWithProviders:(id)a3 environment:(id)a4 allowAddItem:(BOOL)a5
++ (id)emojiGroupWithProviders:(id)providers environment:(id)environment allowAddItem:(BOOL)item
 {
-  v5 = a5;
-  v7 = a4;
-  v8 = a3;
-  v9 = [[CNPhotoPickerProviderEmojiGroup alloc] initWithProviders:v8 environment:v7 allowAddItem:v5];
+  itemCopy = item;
+  environmentCopy = environment;
+  providersCopy = providers;
+  v9 = [[CNPhotoPickerProviderEmojiGroup alloc] initWithProviders:providersCopy environment:environmentCopy allowAddItem:itemCopy];
 
   return v9;
 }
 
-+ (id)animojiGroupWithProviders:(id)a3 environment:(id)a4 allowAddItem:(BOOL)a5
++ (id)animojiGroupWithProviders:(id)providers environment:(id)environment allowAddItem:(BOOL)item
 {
-  v5 = a5;
-  v7 = a4;
-  v8 = a3;
-  v9 = [[CNPhotoPickerProviderAnimojiGroup alloc] initWithProviders:v8 environment:v7 allowAddItem:v5];
+  itemCopy = item;
+  environmentCopy = environment;
+  providersCopy = providers;
+  v9 = [[CNPhotoPickerProviderAnimojiGroup alloc] initWithProviders:providersCopy environment:environmentCopy allowAddItem:itemCopy];
 
   return v9;
 }
 
-+ (id)suggestionsGroupWithProviders:(id)a3 environment:(id)a4 allowAddItem:(BOOL)a5
++ (id)suggestionsGroupWithProviders:(id)providers environment:(id)environment allowAddItem:(BOOL)item
 {
-  v5 = a5;
-  v7 = a4;
-  v8 = a3;
-  v9 = [[CNPhotoPickerProviderSuggestionsGroup alloc] initWithProviders:v8 environment:v7 allowAddItem:v5];
+  itemCopy = item;
+  environmentCopy = environment;
+  providersCopy = providers;
+  v9 = [[CNPhotoPickerProviderSuggestionsGroup alloc] initWithProviders:providersCopy environment:environmentCopy allowAddItem:itemCopy];
 
   return v9;
 }
 
-+ (id)injectedItemsGroupWithEnvironment:(id)a3
++ (id)injectedItemsGroupWithEnvironment:(id)environment
 {
-  v3 = a3;
-  v4 = [[CNPhotoPickerProviderInjectedItemsGroup alloc] initWithEnvironment:v3];
+  environmentCopy = environment;
+  v4 = [[CNPhotoPickerProviderInjectedItemsGroup alloc] initWithEnvironment:environmentCopy];
 
   return v4;
 }

@@ -1,6 +1,6 @@
 @interface IDSMMCSAccessRequestMessage
 - (IDSMMCSAccessRequestMessage)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)messageBody;
 - (id)requiredKeys;
 @end
@@ -21,11 +21,11 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v11.receiver = self;
   v11.super_class = IDSMMCSAccessRequestMessage;
-  v4 = [(IDSMessage *)&v11 copyWithZone:a3];
+  v4 = [(IDSMessage *)&v11 copyWithZone:zone];
   v5 = [(NSArray *)self->_downloadAuths copy];
   [v4 setDownloadAuths:v5];
 
@@ -61,8 +61,8 @@
   v24 = *MEMORY[0x1E69E9840];
   v22.receiver = self;
   v22.super_class = IDSMMCSAccessRequestMessage;
-  v3 = [(IDSMessage *)&v22 messageBody];
-  v4 = [v3 mutableCopy];
+  messageBody = [(IDSMessage *)&v22 messageBody];
+  v4 = [messageBody mutableCopy];
 
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v18 = 0u;
@@ -84,8 +84,8 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v18 + 1) + 8 * i) dictionaryRepresentation];
-        [v5 addObject:v11];
+        dictionaryRepresentation = [*(*(&v18 + 1) + 8 * i) dictionaryRepresentation];
+        [v5 addObject:dictionaryRepresentation];
       }
 
       v8 = [(NSArray *)v6 countByEnumeratingWithState:&v18 objects:v23 count:16];

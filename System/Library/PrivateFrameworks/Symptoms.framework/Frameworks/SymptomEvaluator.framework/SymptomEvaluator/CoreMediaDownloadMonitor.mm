@@ -1,13 +1,13 @@
 @interface CoreMediaDownloadMonitor
-- (CoreMediaDownloadMonitor)initWithQueue:(id)a3;
+- (CoreMediaDownloadMonitor)initWithQueue:(id)queue;
 - (id)getState;
 - (void)_evaluateProperties;
-- (void)_newCoreMediaAssetDownloadEvent:(id)a3;
-- (void)_noteCoreMediaAssetDownloadEvent:(unint64_t)a3 downloadUUID:(id)a4 onBehalfOf:(id)a5 duration:(double)a6;
-- (void)setConfiguration:(id)a3;
-- (void)setUserInitiatedDownloadInHysteresis:(BOOL)a3;
-- (void)setUserInitiatedDownloadInProgress:(BOOL)a3;
-- (void)setUserInitiatedDownloadInProgressOrHysteresis:(BOOL)a3;
+- (void)_newCoreMediaAssetDownloadEvent:(id)event;
+- (void)_noteCoreMediaAssetDownloadEvent:(unint64_t)event downloadUUID:(id)d onBehalfOf:(id)of duration:(double)duration;
+- (void)setConfiguration:(id)configuration;
+- (void)setUserInitiatedDownloadInHysteresis:(BOOL)hysteresis;
+- (void)setUserInitiatedDownloadInProgress:(BOOL)progress;
+- (void)setUserInitiatedDownloadInProgressOrHysteresis:(BOOL)hysteresis;
 @end
 
 @implementation CoreMediaDownloadMonitor
@@ -41,9 +41,9 @@
         }
 
         v11 = [(NSMutableDictionary *)self->_downloads objectForKeyedSubscript:*(*(&v28 + 1) + 8 * i)];
-        v12 = [v11 originatedInForeground];
-        v13 = [v11 downloadState];
-        if (v13 == 4)
+        originatedInForeground = [v11 originatedInForeground];
+        downloadState = [v11 downloadState];
+        if (downloadState == 4)
         {
           v14 = v7 + 1;
         }
@@ -53,7 +53,7 @@
           v14 = v7;
         }
 
-        if (v13 == 3)
+        if (downloadState == 3)
         {
           v15 = v6 + 1;
         }
@@ -63,12 +63,12 @@
           v15 = v6;
         }
 
-        if (v13 == 3)
+        if (downloadState == 3)
         {
           v14 = v7;
         }
 
-        if (v13 == 2)
+        if (downloadState == 2)
         {
           v16 = v7 + 1;
         }
@@ -78,7 +78,7 @@
           v16 = v7;
         }
 
-        if (v13 == 1)
+        if (downloadState == 1)
         {
           v17 = v5 + 1;
         }
@@ -88,12 +88,12 @@
           v17 = v5;
         }
 
-        if (v13 == 1)
+        if (downloadState == 1)
         {
           v16 = v7;
         }
 
-        if (v13 <= 2)
+        if (downloadState <= 2)
         {
           v15 = v6;
         }
@@ -103,12 +103,12 @@
           v17 = v5;
         }
 
-        if (v13 <= 2)
+        if (downloadState <= 2)
         {
           v14 = v16;
         }
 
-        if (v13 == 4)
+        if (downloadState == 4)
         {
           v18 = v4 + 1;
         }
@@ -118,7 +118,7 @@
           v18 = v4;
         }
 
-        if (v13 == 3)
+        if (downloadState == 3)
         {
           v18 = v4;
           v19 = v8 + 1;
@@ -129,7 +129,7 @@
           v19 = v8;
         }
 
-        if (v13 == 2)
+        if (downloadState == 2)
         {
           v20 = v4 + 1;
         }
@@ -139,7 +139,7 @@
           v20 = v4;
         }
 
-        if (v13 == 1)
+        if (downloadState == 1)
         {
           v20 = v4;
           v21 = v9 + 1;
@@ -150,7 +150,7 @@
           v21 = v9;
         }
 
-        if (v13 > 2)
+        if (downloadState > 2)
         {
           v22 = v9;
         }
@@ -162,7 +162,7 @@
           v22 = v21;
         }
 
-        if (v12)
+        if (originatedInForeground)
         {
           v4 = v18;
         }
@@ -172,7 +172,7 @@
           v5 = v17;
         }
 
-        if (v12)
+        if (originatedInForeground)
         {
           v8 = v19;
           v9 = v22;
@@ -223,31 +223,31 @@
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_noteCoreMediaAssetDownloadEvent:(unint64_t)a3 downloadUUID:(id)a4 onBehalfOf:(id)a5 duration:(double)a6
+- (void)_noteCoreMediaAssetDownloadEvent:(unint64_t)event downloadUUID:(id)d onBehalfOf:(id)of duration:(double)duration
 {
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  ofCopy = of;
   downloads = self->_downloads;
-  if (v9)
+  if (dCopy)
   {
-    v12 = [(NSMutableDictionary *)downloads objectForKeyedSubscript:v9];
+    v12 = [(NSMutableDictionary *)downloads objectForKeyedSubscript:dCopy];
     v13 = v12;
-    if (a3 != 2 && !v12)
+    if (event != 2 && !v12)
     {
       v13 = objc_alloc_init(MediaDownloadInstance);
       [(MediaDownloadInstance *)v13 setOriginatedInForeground:+[AppStateMonitor hasAnyForegroundApp]];
-      [(MediaDownloadInstance *)v13 setOriginator:v10];
-      [(NSMutableDictionary *)self->_downloads setObject:v13 forKeyedSubscript:v9];
+      [(MediaDownloadInstance *)v13 setOriginator:ofCopy];
+      [(NSMutableDictionary *)self->_downloads setObject:v13 forKeyedSubscript:dCopy];
     }
 
-    if (a3 <= 2)
+    if (event <= 2)
     {
-      if (a3 == 1)
+      if (event == 1)
       {
         [(MediaDownloadInstance *)v13 setDownloadState:1];
       }
 
-      else if (a3 == 2)
+      else if (event == 2)
       {
         [(MediaDownloadInstance *)v13 setDownloadState:4];
         v14 = dispatch_time(0, (self->_userInitiatedDownloadHysteresis * 1000000000.0));
@@ -257,7 +257,7 @@
         block[2] = __94__CoreMediaDownloadMonitor__noteCoreMediaAssetDownloadEvent_downloadUUID_onBehalfOf_duration___block_invoke;
         block[3] = &unk_27898A7D0;
         block[4] = self;
-        v29 = v9;
+        v29 = dCopy;
         dispatch_after(v14, queue, block);
         v16 = v29;
 LABEL_15:
@@ -268,9 +268,9 @@ LABEL_16:
       goto LABEL_17;
     }
 
-    if (a3 != 3)
+    if (event != 3)
     {
-      if (a3 == 4)
+      if (event == 4)
       {
         [(MediaDownloadInstance *)v13 setDownloadState:1];
         [(MediaDownloadInstance *)v13 setResumeCount:[(MediaDownloadInstance *)v13 resumeCount]+ 1];
@@ -280,17 +280,17 @@ LABEL_16:
     }
 
     [(MediaDownloadInstance *)v13 setDownloadState:2];
-    v17 = [(MediaDownloadInstance *)v13 resumeCount];
+    resumeCount = [(MediaDownloadInstance *)v13 resumeCount];
     v18 = dispatch_time(0, (self->_userInitiatedDownloadHysteresis * 1000000000.0));
     v19 = self->_queue;
     v20 = MEMORY[0x277D85DD0];
     v21 = 3221225472;
     v22 = __94__CoreMediaDownloadMonitor__noteCoreMediaAssetDownloadEvent_downloadUUID_onBehalfOf_duration___block_invoke_2;
     v23 = &unk_27898A758;
-    v24 = self;
-    v25 = v9;
+    selfCopy = self;
+    v25 = dCopy;
     v26 = v13;
-    v27 = v17;
+    v27 = resumeCount;
     dispatch_after(v18, v19, &v20);
 
     v16 = v25;
@@ -341,16 +341,16 @@ void __94__CoreMediaDownloadMonitor__noteCoreMediaAssetDownloadEvent_downloadUUI
   }
 }
 
-- (void)_newCoreMediaAssetDownloadEvent:(id)a3
+- (void)_newCoreMediaAssetDownloadEvent:(id)event
 {
   v55 = *MEMORY[0x277D85DE8];
-  v34 = [a3 userInfo];
-  v4 = [v34 keyEnumerator];
+  userInfo = [event userInfo];
+  keyEnumerator = [userInfo keyEnumerator];
   v5 = outrankLogHandle;
   if (os_log_type_enabled(outrankLogHandle, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v47 = v34;
+    v47 = userInfo;
     _os_log_impl(&dword_23255B000, v5, OS_LOG_TYPE_DEBUG, "_newCoreMediaAssetDownloadEvent receive %@", buf, 0xCu);
   }
 
@@ -358,7 +358,7 @@ void __94__CoreMediaDownloadMonitor__noteCoreMediaAssetDownloadEvent_downloadUUI
   v45 = 0u;
   v42 = 0u;
   v43 = 0u;
-  obj = v4;
+  obj = keyEnumerator;
   v33 = [obj countByEnumeratingWithState:&v42 objects:v54 count:16];
   if (!v33)
   {
@@ -381,11 +381,11 @@ void __94__CoreMediaDownloadMonitor__noteCoreMediaAssetDownloadEvent_downloadUUI
 
       v7 = *(*(&v42 + 1) + 8 * i);
 
-      v10 = [v34 objectForKeyedSubscript:v7];
-      v11 = [v10 eventKey];
-      v12 = [v10 eventData];
+      v10 = [userInfo objectForKeyedSubscript:v7];
+      eventKey = [v10 eventKey];
+      eventData = [v10 eventData];
       v13 = [SymptomStore keyFromSymptomName:@"SYMPTOM_TRANSPORT_DISCONNECT"];
-      v14 = [v11 isEqualToString:v13];
+      v14 = [eventKey isEqualToString:v13];
 
       if (v14)
       {
@@ -403,12 +403,12 @@ void __94__CoreMediaDownloadMonitor__noteCoreMediaAssetDownloadEvent_downloadUUI
         goto LABEL_40;
       }
 
-      if ((*(v12 + 4) & 4) == 0)
+      if ((*(eventData + 4) & 4) == 0)
       {
         goto LABEL_14;
       }
 
-      v15 = *(v12 + 40);
+      v15 = *(eventData + 40);
       if ((v15 & 1) == 0)
       {
         v28 = outrankLogHandle;
@@ -424,7 +424,7 @@ LABEL_40:
         goto LABEL_41;
       }
 
-      if ((~*(v12 + 40) & 6) != 0)
+      if ((~*(eventData + 40) & 6) != 0)
       {
         v16 = outrankLogHandle;
         if (os_log_type_enabled(outrankLogHandle, OS_LOG_TYPE_INFO))
@@ -439,20 +439,20 @@ LABEL_40:
 
 LABEL_14:
       v17 = [v10 eventQualifierStringForKey:{@"1", v30}];
-      v18 = [v10 processId];
-      if (self->_assetDownloadProcessId != v18)
+      processId = [v10 processId];
+      if (self->_assetDownloadProcessId != processId)
       {
         block[0] = MEMORY[0x277D85DD0];
         block[1] = 3221225472;
         block[2] = __60__CoreMediaDownloadMonitor__newCoreMediaAssetDownloadEvent___block_invoke_39;
         block[3] = &unk_27898AFE0;
         block[4] = self;
-        block[5] = v18;
+        block[5] = processId;
         dispatch_sync(MEMORY[0x277D85CD0], block);
       }
 
-      v19 = [v10 eventQualifiers];
-      v20 = [v19 objectForKeyedSubscript:@"2"];
+      eventQualifiers = [v10 eventQualifiers];
+      v20 = [eventQualifiers objectForKeyedSubscript:@"2"];
 
       if (v20 && [v20 length] == 16)
       {
@@ -464,10 +464,10 @@ LABEL_14:
         v21 = 0;
       }
 
-      v22 = *(v12 + 4);
+      v22 = *(eventData + 4);
       if (v22)
       {
-        v23 = *(v12 + 24);
+        v23 = *(eventData + 24);
       }
 
       else
@@ -475,13 +475,13 @@ LABEL_14:
 
         v23 = 0;
         v21 = 0;
-        v22 = *(v12 + 4);
+        v22 = *(eventData + 4);
       }
 
       v24 = 86400.0;
       if ((v22 & 2) != 0)
       {
-        v24 = *(v12 + 32) / 1000.0;
+        v24 = *(eventData + 32) / 1000.0;
       }
 
       v25 = outrankLogHandle;
@@ -543,34 +543,34 @@ uint64_t __60__CoreMediaDownloadMonitor__newCoreMediaAssetDownloadEvent___block_
   return result;
 }
 
-- (void)setUserInitiatedDownloadInProgress:(BOOL)a3
+- (void)setUserInitiatedDownloadInProgress:(BOOL)progress
 {
-  if (self->_userInitiatedDownloadInProgress != a3)
+  if (self->_userInitiatedDownloadInProgress != progress)
   {
     [(CoreMediaDownloadMonitor *)self willChangeValueForKey:@"userInitiatedDownloadInProgress"];
-    self->_userInitiatedDownloadInProgress = a3;
+    self->_userInitiatedDownloadInProgress = progress;
 
     [(CoreMediaDownloadMonitor *)self didChangeValueForKey:@"userInitiatedDownloadInProgress"];
   }
 }
 
-- (void)setUserInitiatedDownloadInProgressOrHysteresis:(BOOL)a3
+- (void)setUserInitiatedDownloadInProgressOrHysteresis:(BOOL)hysteresis
 {
-  if (self->_userInitiatedDownloadInProgressOrHysteresis != a3)
+  if (self->_userInitiatedDownloadInProgressOrHysteresis != hysteresis)
   {
     [(CoreMediaDownloadMonitor *)self willChangeValueForKey:@"userInitiatedDownloadInProgressOrHysteresis"];
-    self->_userInitiatedDownloadInProgressOrHysteresis = a3;
+    self->_userInitiatedDownloadInProgressOrHysteresis = hysteresis;
 
     [(CoreMediaDownloadMonitor *)self didChangeValueForKey:@"userInitiatedDownloadInProgressOrHysteresis"];
   }
 }
 
-- (void)setUserInitiatedDownloadInHysteresis:(BOOL)a3
+- (void)setUserInitiatedDownloadInHysteresis:(BOOL)hysteresis
 {
-  if (self->_userInitiatedDownloadInHysteresis != a3)
+  if (self->_userInitiatedDownloadInHysteresis != hysteresis)
   {
     [(CoreMediaDownloadMonitor *)self willChangeValueForKey:@"userInitiatedDownloadInHysteresis"];
-    self->_userInitiatedDownloadInHysteresis = a3;
+    self->_userInitiatedDownloadInHysteresis = hysteresis;
 
     [(CoreMediaDownloadMonitor *)self didChangeValueForKey:@"userInitiatedDownloadInHysteresis"];
   }
@@ -606,7 +606,7 @@ uint64_t __60__CoreMediaDownloadMonitor__newCoreMediaAssetDownloadEvent___block_
         v10 = *(*(&v20 + 1) + 8 * v8);
         v11 = [(NSMutableDictionary *)self->_downloads objectForKeyedSubscript:v10];
         v12 = objc_alloc(MEMORY[0x277CCACA8]);
-        v13 = [v11 originatedInForeground];
+        originatedInForeground = [v11 originatedInForeground];
         v14 = [v11 downloadState] - 1;
         v15 = "unknown";
         if (v14 <= 3)
@@ -614,7 +614,7 @@ uint64_t __60__CoreMediaDownloadMonitor__newCoreMediaAssetDownloadEvent___block_
           v15 = off_278990068[v14];
         }
 
-        v4 = [v12 initWithFormat:@"CoreMediaDownloadMonitor   d/l with UUID %@  fg %d state %s", v10, v13, v15];
+        v4 = [v12 initWithFormat:@"CoreMediaDownloadMonitor   d/l with UUID %@  fg %d state %s", v10, originatedInForeground, v15];
 
         [v3 addObject:v4];
         ++v8;
@@ -641,11 +641,11 @@ uint64_t __60__CoreMediaDownloadMonitor__newCoreMediaAssetDownloadEvent___block_
   return v3;
 }
 
-- (void)setConfiguration:(id)a3
+- (void)setConfiguration:(id)configuration
 {
-  v4 = a3;
-  [v4 extractKey:@"fgMediaDownloadReportHysteresis" toDouble:&self->_userInitiatedDownloadHysteresis defaultTo:10.0];
-  v5 = [v4 objectForKey:@"restoreDefaults"];
+  configurationCopy = configuration;
+  [configurationCopy extractKey:@"fgMediaDownloadReportHysteresis" toDouble:&self->_userInitiatedDownloadHysteresis defaultTo:10.0];
+  v5 = [configurationCopy objectForKey:@"restoreDefaults"];
 
   if (v5)
   {
@@ -654,29 +654,29 @@ uint64_t __60__CoreMediaDownloadMonitor__newCoreMediaAssetDownloadEvent___block_
   }
 }
 
-- (CoreMediaDownloadMonitor)initWithQueue:(id)a3
+- (CoreMediaDownloadMonitor)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v17.receiver = self;
   v17.super_class = CoreMediaDownloadMonitor;
   v6 = [(CoreMediaDownloadMonitor *)&v17 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_queue, a3);
+    objc_storeStrong(&v6->_queue, queue);
     v8 = objc_alloc_init(MEMORY[0x277CBEB38]);
     downloads = v7->_downloads;
     v7->_downloads = v8;
 
     [(CoreMediaDownloadMonitor *)v7 restoreDefaults];
-    v10 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __42__CoreMediaDownloadMonitor_initWithQueue___block_invoke;
     v15[3] = &unk_27898A690;
     v11 = v7;
     v16 = v11;
-    v12 = [v10 addObserverForName:@"kNotificationCoreMediaAssetDownload" object:0 queue:0 usingBlock:v15];
+    v12 = [defaultCenter addObserverForName:@"kNotificationCoreMediaAssetDownload" object:0 queue:0 usingBlock:v15];
     assetDownloadObserver = v11->_assetDownloadObserver;
     v11->_assetDownloadObserver = v12;
   }

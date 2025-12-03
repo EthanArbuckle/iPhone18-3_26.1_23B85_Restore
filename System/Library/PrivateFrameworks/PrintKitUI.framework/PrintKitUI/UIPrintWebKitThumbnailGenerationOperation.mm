@@ -1,20 +1,20 @@
 @interface UIPrintWebKitThumbnailGenerationOperation
-- (UIPrintWebKitThumbnailGenerationOperation)initWithPagesController:(id)a3;
+- (UIPrintWebKitThumbnailGenerationOperation)initWithPagesController:(id)controller;
 - (void)main;
 @end
 
 @implementation UIPrintWebKitThumbnailGenerationOperation
 
-- (UIPrintWebKitThumbnailGenerationOperation)initWithPagesController:(id)a3
+- (UIPrintWebKitThumbnailGenerationOperation)initWithPagesController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v8.receiver = self;
   v8.super_class = UIPrintWebKitThumbnailGenerationOperation;
   v5 = [(NSBlockOperation *)&v8 init];
   if (v5)
   {
-    v6 = [v4 webKitThumbnailGenerationThread];
-    [(UIPrintWebKitThumbnailGenerationOperation *)v5 setCurrentWebKitThumbnailGenerationThread:v6];
+    webKitThumbnailGenerationThread = [controllerCopy webKitThumbnailGenerationThread];
+    [(UIPrintWebKitThumbnailGenerationOperation *)v5 setCurrentWebKitThumbnailGenerationThread:webKitThumbnailGenerationThread];
   }
 
   return v5;
@@ -22,25 +22,25 @@
 
 - (void)main
 {
-  v3 = [(UIPrintWebKitThumbnailGenerationOperation *)self currentWebKitThumbnailGenerationThread];
-  if (v3)
+  currentWebKitThumbnailGenerationThread = [(UIPrintWebKitThumbnailGenerationOperation *)self currentWebKitThumbnailGenerationThread];
+  if (currentWebKitThumbnailGenerationThread)
   {
-    v4 = v3;
+    currentWebKitThumbnailGenerationThread3 = currentWebKitThumbnailGenerationThread;
     do
     {
-      v5 = [(UIPrintWebKitThumbnailGenerationOperation *)self currentWebKitThumbnailGenerationThread];
-      v6 = [v5 isFinished];
+      currentWebKitThumbnailGenerationThread2 = [(UIPrintWebKitThumbnailGenerationOperation *)self currentWebKitThumbnailGenerationThread];
+      isFinished = [currentWebKitThumbnailGenerationThread2 isFinished];
 
-      if (v6)
+      if (isFinished)
       {
         break;
       }
 
       usleep(0);
-      v4 = [(UIPrintWebKitThumbnailGenerationOperation *)self currentWebKitThumbnailGenerationThread];
+      currentWebKitThumbnailGenerationThread3 = [(UIPrintWebKitThumbnailGenerationOperation *)self currentWebKitThumbnailGenerationThread];
     }
 
-    while (v4);
+    while (currentWebKitThumbnailGenerationThread3);
   }
 
   if (([(UIPrintWebKitThumbnailGenerationOperation *)self isCancelled]& 1) == 0)

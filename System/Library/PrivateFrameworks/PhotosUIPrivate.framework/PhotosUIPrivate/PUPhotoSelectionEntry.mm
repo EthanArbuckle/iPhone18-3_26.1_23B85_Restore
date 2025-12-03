@@ -1,64 +1,64 @@
 @interface PUPhotoSelectionEntry
-- (BOOL)isIndexSelected:(unint64_t)a3;
+- (BOOL)isIndexSelected:(unint64_t)selected;
 - (NSArray)selectedAssets;
 - (NSIndexSet)selectedIndexes;
-- (PUPhotoSelectionEntry)initWithAssetCollection:(id)a3 fetchResult:(id)a4 uniqueSelectedAssets:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PUPhotoSelectionEntry)initWithAssetCollection:(id)collection fetchResult:(id)result uniqueSelectedAssets:(id)assets;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)_ensureValidAssetIndexes;
-- (void)deselectAssetsAtIndexes:(id)a3;
-- (void)enumerateSelectedAssetsWithBlock:(id)a3;
-- (void)handlePhotoLibraryChange:(id)a3;
-- (void)selectAssetsAtIndexes:(id)a3;
-- (void)setSelectedAssetsSet:(id)a3;
+- (void)deselectAssetsAtIndexes:(id)indexes;
+- (void)enumerateSelectedAssetsWithBlock:(id)block;
+- (void)handlePhotoLibraryChange:(id)change;
+- (void)selectAssetsAtIndexes:(id)indexes;
+- (void)setSelectedAssetsSet:(id)set;
 @end
 
 @implementation PUPhotoSelectionEntry
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[PUPhotoSelectionEntry allocWithZone:](PUPhotoSelectionEntry init];
   v5->_hasValidAssetIndexes = self->_hasValidAssetIndexes;
   objc_storeStrong(&v5->_assetCollection, self->_assetCollection);
-  v6 = [(PHFetchResult *)self->_fetchResult copyWithZone:a3];
+  v6 = [(PHFetchResult *)self->_fetchResult copyWithZone:zone];
   fetchResult = v5->_fetchResult;
   v5->_fetchResult = v6;
 
-  v8 = [(NSMutableSet *)self->_selectedAssets copyWithZone:a3];
+  v8 = [(NSMutableSet *)self->_selectedAssets copyWithZone:zone];
   selectedAssets = v5->_selectedAssets;
   v5->_selectedAssets = v8;
 
-  v10 = [(NSMutableIndexSet *)self->_selectedIndexes copyWithZone:a3];
+  v10 = [(NSMutableIndexSet *)self->_selectedIndexes copyWithZone:zone];
   selectedIndexes = v5->_selectedIndexes;
   v5->_selectedIndexes = v10;
 
   return v5;
 }
 
-- (void)setSelectedAssetsSet:(id)a3
+- (void)setSelectedAssetsSet:(id)set
 {
-  v4 = a3;
+  setCopy = set;
   selectedAssets = self->_selectedAssets;
-  if (selectedAssets != v4)
+  if (selectedAssets != setCopy)
   {
-    v6 = v4;
-    selectedAssets = [selectedAssets isEqualToSet:v4];
-    v4 = v6;
+    v6 = setCopy;
+    selectedAssets = [selectedAssets isEqualToSet:setCopy];
+    setCopy = v6;
     if ((selectedAssets & 1) == 0)
     {
       [(NSMutableSet *)self->_selectedAssets setSet:v6];
       selectedAssets = [(PUPhotoSelectionEntry *)self invalidateAllAssetIndexes];
-      v4 = v6;
+      setCopy = v6;
     }
   }
 
-  MEMORY[0x1EEE66BB8](selectedAssets, v4);
+  MEMORY[0x1EEE66BB8](selectedAssets, setCopy);
 }
 
-- (void)handlePhotoLibraryChange:(id)a3
+- (void)handlePhotoLibraryChange:(id)change
 {
-  v4 = a3;
-  v5 = [(PUPhotoSelectionEntry *)self fetchResult];
-  v14 = [v4 changeDetailsForFetchResult:v5];
+  changeCopy = change;
+  fetchResult = [(PUPhotoSelectionEntry *)self fetchResult];
+  v14 = [changeCopy changeDetailsForFetchResult:fetchResult];
 
   v6 = v14;
   if (v14)
@@ -69,21 +69,21 @@
     }
 
     v7 = MEMORY[0x1E695DFD8];
-    v8 = [v14 removedObjects];
-    v9 = [v7 setWithArray:v8];
+    removedObjects = [v14 removedObjects];
+    v9 = [v7 setWithArray:removedObjects];
 
     if (self->_hasValidAssetIndexes)
     {
-      v10 = [v14 removedIndexes];
-      if (v10)
+      removedIndexes = [v14 removedIndexes];
+      if (removedIndexes)
       {
-        [(NSMutableIndexSet *)self->_selectedIndexes pl_adjustIndexesForDeletions:v10];
+        [(NSMutableIndexSet *)self->_selectedIndexes pl_adjustIndexesForDeletions:removedIndexes];
       }
 
-      v11 = [v14 insertedIndexes];
-      if (v11)
+      insertedIndexes = [v14 insertedIndexes];
+      if (insertedIndexes)
       {
-        [(NSMutableIndexSet *)self->_selectedIndexes pl_adjustIndexesForInsertions:v11];
+        [(NSMutableIndexSet *)self->_selectedIndexes pl_adjustIndexesForInsertions:insertedIndexes];
       }
     }
 
@@ -92,19 +92,19 @@
       [(NSMutableSet *)self->_selectedAssets minusSet:v9];
     }
 
-    v12 = [v14 fetchResultAfterChanges];
+    fetchResultAfterChanges = [v14 fetchResultAfterChanges];
     fetchResult = self->_fetchResult;
-    self->_fetchResult = v12;
+    self->_fetchResult = fetchResultAfterChanges;
 
     v6 = v14;
   }
 }
 
-- (void)enumerateSelectedAssetsWithBlock:(id)a3
+- (void)enumerateSelectedAssetsWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   [(PUPhotoSelectionEntry *)self _ensureValidAssetIndexes];
-  v5 = [(PUPhotoSelectionEntry *)self selectedIndexes];
+  selectedIndexes = [(PUPhotoSelectionEntry *)self selectedIndexes];
   v10[0] = 0;
   v10[1] = v10;
   v10[2] = 0x2020000000;
@@ -114,10 +114,10 @@
   v7[2] = __58__PUPhotoSelectionEntry_enumerateSelectedAssetsWithBlock___block_invoke;
   v7[3] = &unk_1E7B7C378;
   v7[4] = self;
-  v6 = v4;
+  v6 = blockCopy;
   v8 = v6;
   v9 = v10;
-  [v5 enumerateIndexesUsingBlock:v7];
+  [selectedIndexes enumerateIndexesUsingBlock:v7];
 
   _Block_object_dispose(v10, 8);
 }
@@ -134,33 +134,33 @@ void __58__PUPhotoSelectionEntry_enumerateSelectedAssetsWithBlock___block_invoke
   }
 }
 
-- (BOOL)isIndexSelected:(unint64_t)a3
+- (BOOL)isIndexSelected:(unint64_t)selected
 {
   [(PUPhotoSelectionEntry *)self _ensureValidAssetIndexes];
   selectedIndexes = self->_selectedIndexes;
 
-  return [(NSMutableIndexSet *)selectedIndexes containsIndex:a3];
+  return [(NSMutableIndexSet *)selectedIndexes containsIndex:selected];
 }
 
-- (void)deselectAssetsAtIndexes:(id)a3
+- (void)deselectAssetsAtIndexes:(id)indexes
 {
-  v4 = a3;
+  indexesCopy = indexes;
   [(PUPhotoSelectionEntry *)self _ensureValidAssetIndexes];
   v5 = MEMORY[0x1E695DFD8];
-  v6 = [(PHFetchResult *)self->_fetchResult objectsAtIndexes:v4];
+  v6 = [(PHFetchResult *)self->_fetchResult objectsAtIndexes:indexesCopy];
   v7 = [v5 setWithArray:v6];
 
   [(NSMutableSet *)self->_selectedAssets minusSet:v7];
-  [(NSMutableIndexSet *)self->_selectedIndexes removeIndexes:v4];
+  [(NSMutableIndexSet *)self->_selectedIndexes removeIndexes:indexesCopy];
 }
 
-- (void)selectAssetsAtIndexes:(id)a3
+- (void)selectAssetsAtIndexes:(id)indexes
 {
-  v4 = a3;
+  indexesCopy = indexes;
   [(PUPhotoSelectionEntry *)self _ensureValidAssetIndexes];
-  v5 = [(PHFetchResult *)self->_fetchResult objectsAtIndexes:v4];
+  v5 = [(PHFetchResult *)self->_fetchResult objectsAtIndexes:indexesCopy];
   [(NSMutableSet *)self->_selectedAssets addObjectsFromArray:v5];
-  [(NSMutableIndexSet *)self->_selectedIndexes addIndexes:v4];
+  [(NSMutableIndexSet *)self->_selectedIndexes addIndexes:indexesCopy];
 }
 
 - (NSArray)selectedAssets
@@ -174,7 +174,7 @@ void __58__PUPhotoSelectionEntry_enumerateSelectedAssetsWithBlock___block_invoke
   v8[3] = &unk_1E7B7DEA8;
   v5 = v3;
   v9 = v5;
-  v10 = self;
+  selfCopy = self;
   [(NSMutableIndexSet *)selectedIndexes enumerateIndexesUsingBlock:v8];
   v6 = v5;
 
@@ -244,22 +244,22 @@ void __39__PUPhotoSelectionEntry_selectedAssets__block_invoke(uint64_t a1, uint6
   }
 }
 
-- (PUPhotoSelectionEntry)initWithAssetCollection:(id)a3 fetchResult:(id)a4 uniqueSelectedAssets:(id)a5
+- (PUPhotoSelectionEntry)initWithAssetCollection:(id)collection fetchResult:(id)result uniqueSelectedAssets:(id)assets
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  collectionCopy = collection;
+  resultCopy = result;
+  assetsCopy = assets;
   v19.receiver = self;
   v19.super_class = PUPhotoSelectionEntry;
   v12 = [(PUPhotoSelectionEntry *)&v19 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_assetCollection, a3);
-    objc_storeStrong(&v13->_fetchResult, a4);
-    if (v11)
+    objc_storeStrong(&v12->_assetCollection, collection);
+    objc_storeStrong(&v13->_fetchResult, result);
+    if (assetsCopy)
     {
-      v14 = v11;
+      v14 = assetsCopy;
     }
 
     else
@@ -270,9 +270,9 @@ void __39__PUPhotoSelectionEntry_selectedAssets__block_invoke(uint64_t a1, uint6
     selectedAssets = v13->_selectedAssets;
     v13->_selectedAssets = v14;
 
-    v16 = [MEMORY[0x1E696AD50] indexSet];
+    indexSet = [MEMORY[0x1E696AD50] indexSet];
     selectedIndexes = v13->_selectedIndexes;
-    v13->_selectedIndexes = v16;
+    v13->_selectedIndexes = indexSet;
   }
 
   return v13;

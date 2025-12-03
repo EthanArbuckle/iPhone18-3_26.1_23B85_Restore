@@ -1,24 +1,24 @@
 @interface MRDataCollectionNotice
-+ (BOOL)shouldShowDataCollectionNoticeForComponent:(unint64_t)a3;
-+ (void)didShowDataCollectionNoticeForComponent:(unint64_t)a3;
++ (BOOL)shouldShowDataCollectionNoticeForComponent:(unint64_t)component;
++ (void)didShowDataCollectionNoticeForComponent:(unint64_t)component;
 @end
 
 @implementation MRDataCollectionNotice
 
-+ (BOOL)shouldShowDataCollectionNoticeForComponent:(unint64_t)a3
++ (BOOL)shouldShowDataCollectionNoticeForComponent:(unint64_t)component
 {
   v4 = [MEMORY[0x277CBEBD0] groupUserDefaultsWithSuiteName:@"com.apple.mobilerepaird"];
   v5 = v4;
-  if (a3)
+  if (component)
   {
-    if (a3 == 10)
+    if (component == 10)
     {
       v6 = @"dataCollectionNoticePresentedForPartsAndService";
     }
 
     else
     {
-      if (a3 != 1)
+      if (component != 1)
       {
         LOBYTE(v7) = 0;
         goto LABEL_9;
@@ -39,19 +39,19 @@ LABEL_9:
   return v7;
 }
 
-+ (void)didShowDataCollectionNoticeForComponent:(unint64_t)a3
++ (void)didShowDataCollectionNoticeForComponent:(unint64_t)component
 {
   v4 = [MEMORY[0x277CBEBD0] groupUserDefaultsWithSuiteName:@"com.apple.mobilerepaird"];
-  if (a3)
+  if (component)
   {
-    if (a3 == 10)
+    if (component == 10)
     {
       v5 = @"dataCollectionNoticePresentedForPartsAndService";
     }
 
     else
     {
-      if (a3 != 1)
+      if (component != 1)
       {
         goto LABEL_8;
       }

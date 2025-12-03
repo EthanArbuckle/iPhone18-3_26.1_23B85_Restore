@@ -1,41 +1,41 @@
 @interface BKAudiobookSkipController
 + (void)initialize;
 - (BKAudiobookControls)audiobookControls;
-- (BKAudiobookSkipController)initWithAudiobookControls:(id)a3;
+- (BKAudiobookSkipController)initWithAudiobookControls:(id)controls;
 - (BOOL)endSeek;
 - (BOOL)endSkip;
-- (BOOL)singleSkip:(unint64_t)a3 interval:(double)a4;
-- (BOOL)startSeek:(unint64_t)a3;
-- (BOOL)startSkip:(unint64_t)a3 actionSource:(unint64_t)a4;
+- (BOOL)singleSkip:(unint64_t)skip interval:(double)interval;
+- (BOOL)startSeek:(unint64_t)seek;
+- (BOOL)startSkip:(unint64_t)skip actionSource:(unint64_t)source;
 - (BOOL)wasPlayingBeforeSkipSeek;
-- (double)_pushTemporaryTimeInterval:(double)a3 skipDirection:(unint64_t)a4;
+- (double)_pushTemporaryTimeInterval:(double)interval skipDirection:(unint64_t)direction;
 - (double)baseEventInterval;
-- (double)deltaFromStartingPoint:(double)a3;
+- (double)deltaFromStartingPoint:(double)point;
 - (id)allObservers;
 - (void)_cancelSeek;
 - (void)_cancelSkip;
-- (void)_popToStashedTimeInterval:(double)a3 skipDirection:(unint64_t)a4;
+- (void)_popToStashedTimeInterval:(double)interval skipDirection:(unint64_t)direction;
 - (void)_processSeekEvent;
 - (void)_processSkipEvent;
-- (void)_scheduleSeekTimerWithInterval:(double)a3;
-- (void)_scheduleSkipTimerWithInterval:(double)a3;
+- (void)_scheduleSeekTimerWithInterval:(double)interval;
+- (void)_scheduleSkipTimerWithInterval:(double)interval;
 - (void)_sendDidEndSeekingObserverCallbacks;
 - (void)_sendDidEndSkippingObserverCallbacks;
 - (void)_sendSkipControllerSettingsDidChange;
-- (void)_sendUpdatedCumulativeDeltaCallbacks:(double)a3;
+- (void)_sendUpdatedCumulativeDeltaCallbacks:(double)callbacks;
 - (void)_sendWillPauseObserverCallbacks;
-- (void)_sendWillWillBeginSeekingObserverCallbacksWithDirection:(unint64_t)a3;
-- (void)_sendWillWillBeginSkippingObserverCallbacksWithDirection:(unint64_t)a3;
-- (void)accelerateToInterval:(double)a3 afterEventCount:(unint64_t)a4;
-- (void)addObserver:(id)a3;
+- (void)_sendWillWillBeginSeekingObserverCallbacksWithDirection:(unint64_t)direction;
+- (void)_sendWillWillBeginSkippingObserverCallbacksWithDirection:(unint64_t)direction;
+- (void)accelerateToInterval:(double)interval afterEventCount:(unint64_t)count;
+- (void)addObserver:(id)observer;
 - (void)clearAccelerationStops;
 - (void)dealloc;
 - (void)endSeekIfSeeking;
 - (void)endSkipIfSkipping;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)removeObserver:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)removeObserver:(id)observer;
 - (void)reset;
-- (void)setBaseEventInterval:(double)a3;
+- (void)setBaseEventInterval:(double)interval;
 - (void)updateSkipInterval;
 @end
 
@@ -54,16 +54,16 @@
   [v2 registerDefaults:v5];
 }
 
-- (BKAudiobookSkipController)initWithAudiobookControls:(id)a3
+- (BKAudiobookSkipController)initWithAudiobookControls:(id)controls
 {
-  v4 = a3;
+  controlsCopy = controls;
   v19.receiver = self;
   v19.super_class = BKAudiobookSkipController;
   v5 = [(BKAudiobookSkipController *)&v19 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_audiobookControls, v4);
+    objc_storeWeak(&v5->_audiobookControls, controlsCopy);
     v7 = [AVAudioPlayer alloc];
     v8 = [NSBundle bundleForClass:objc_opt_class()];
     v9 = [v8 URLForResource:@"skipFX" withExtension:@"aiff"];
@@ -103,33 +103,33 @@
   [(BKAudiobookSkipController *)&v4 dealloc];
 }
 
-- (BOOL)startSkip:(unint64_t)a3 actionSource:(unint64_t)a4
+- (BOOL)startSkip:(unint64_t)skip actionSource:(unint64_t)source
 {
   v7 = BKAudiobooksSkipControllerLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v15[0] = 67109120;
-    v15[1] = a3;
+    v15[1] = skip;
     _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEFAULT, "startSkip: %d", v15, 8u);
   }
 
-  v8 = [(BKAudiobookSkipController *)self _canStartSkip];
-  if (v8)
+  _canStartSkip = [(BKAudiobookSkipController *)self _canStartSkip];
+  if (_canStartSkip)
   {
     [(BKAudiobookSkipController *)self _cancelSkip];
-    v9 = [(BKAudiobookSkipController *)self audiobookControls];
-    [v9 positionInCurrentAudiobook];
+    audiobookControls = [(BKAudiobookSkipController *)self audiobookControls];
+    [audiobookControls positionInCurrentAudiobook];
     [(BKAudiobookSkipController *)self setSkipStartAudiobookTime:?];
 
     [(BKAudiobookSkipController *)self setSkipping:1];
-    [(BKAudiobookSkipController *)self setDirection:a3];
-    [(BKAudiobookSkipController *)self setActionSource:a4];
-    [(BKAudiobookSkipController *)self _sendWillWillBeginSkippingObserverCallbacksWithDirection:a3];
+    [(BKAudiobookSkipController *)self setDirection:skip];
+    [(BKAudiobookSkipController *)self setActionSource:source];
+    [(BKAudiobookSkipController *)self _sendWillWillBeginSkippingObserverCallbacksWithDirection:skip];
     [(BKAudiobookSkipController *)self _sendWillPauseObserverCallbacks];
     WeakRetained = objc_loadWeakRetained(&self->_audiobookControls);
-    v11 = [WeakRetained isPlaying];
+    isPlaying = [WeakRetained isPlaying];
 
-    if (v11)
+    if (isPlaying)
     {
       [(BKAudiobookSkipController *)self setWasPlaying:1];
       v12 = objc_loadWeakRetained(&self->_audiobookControls);
@@ -150,7 +150,7 @@
     }
   }
 
-  return v8;
+  return _canStartSkip;
 }
 
 - (BOOL)endSkip
@@ -162,8 +162,8 @@
     _os_log_impl(&dword_0, v3, OS_LOG_TYPE_DEFAULT, "endSkip", v8, 2u);
   }
 
-  v4 = [(BKAudiobookSkipController *)self _canEndSkip];
-  if (v4)
+  _canEndSkip = [(BKAudiobookSkipController *)self _canEndSkip];
+  if (_canEndSkip)
   {
     [(BKAudiobookSkipController *)self _cancelSkip];
     if ([(BKAudiobookSkipController *)self wasPlaying])
@@ -193,7 +193,7 @@
     }
   }
 
-  return v4;
+  return _canEndSkip;
 }
 
 - (void)endSkipIfSkipping
@@ -205,30 +205,30 @@
   }
 }
 
-- (BOOL)singleSkip:(unint64_t)a3 interval:(double)a4
+- (BOOL)singleSkip:(unint64_t)skip interval:(double)interval
 {
   v7 = BKAudiobooksSkipControllerLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v14[0] = 67109376;
-    v14[1] = a3;
+    v14[1] = skip;
     v15 = 2048;
-    v16 = a4;
+    intervalCopy = interval;
     _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEFAULT, "singleSkip: %d interval:%lf", v14, 0x12u);
   }
 
-  v8 = [(BKAudiobookSkipController *)self _canStartSkip];
-  if (v8)
+  _canStartSkip = [(BKAudiobookSkipController *)self _canStartSkip];
+  if (_canStartSkip)
   {
     [(BKAudiobookSkipController *)self _cancelSkip];
     [(BKAudiobookSkipController *)self setSkipStepCount:0];
-    [(BKAudiobookSkipController *)self setDirection:a3];
-    v9 = [(BKAudiobookSkipController *)self audiobookControls];
-    [v9 positionInCurrentAudiobook];
+    [(BKAudiobookSkipController *)self setDirection:skip];
+    audiobookControls = [(BKAudiobookSkipController *)self audiobookControls];
+    [audiobookControls positionInCurrentAudiobook];
     [(BKAudiobookSkipController *)self setSkipStartAudiobookTime:?];
 
-    [(BKAudiobookSkipController *)self _sendWillWillBeginSkippingObserverCallbacksWithDirection:a3];
-    [(BKAudiobookSkipController *)self _pushTemporaryTimeInterval:[(BKAudiobookSkipController *)self direction] skipDirection:a4];
+    [(BKAudiobookSkipController *)self _sendWillWillBeginSkippingObserverCallbacksWithDirection:skip];
+    [(BKAudiobookSkipController *)self _pushTemporaryTimeInterval:[(BKAudiobookSkipController *)self direction] skipDirection:interval];
     v11 = v10;
     [(BKAudiobookSkipController *)self _processSkipEvent];
     [(BKAudiobookSkipController *)self _popToStashedTimeInterval:[(BKAudiobookSkipController *)self direction] skipDirection:v11];
@@ -245,30 +245,30 @@
     }
   }
 
-  return v8;
+  return _canStartSkip;
 }
 
-- (BOOL)startSeek:(unint64_t)a3
+- (BOOL)startSeek:(unint64_t)seek
 {
   v5 = BKAudiobooksSkipControllerLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v19[0] = 67109120;
-    v19[1] = a3;
+    v19[1] = seek;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "startSeek: %d", v19, 8u);
   }
 
-  v6 = [(BKAudiobookSkipController *)self _canStartSeek];
-  if (v6)
+  _canStartSeek = [(BKAudiobookSkipController *)self _canStartSeek];
+  if (_canStartSeek)
   {
     [(BKAudiobookSkipController *)self _cancelSeek];
-    v7 = [(BKAudiobookSkipController *)self audiobookControls];
-    [v7 positionInCurrentAudiobook];
+    audiobookControls = [(BKAudiobookSkipController *)self audiobookControls];
+    [audiobookControls positionInCurrentAudiobook];
     [(BKAudiobookSkipController *)self setSkipStartAudiobookTime:?];
 
     [(BKAudiobookSkipController *)self setSeeking:1];
-    [(BKAudiobookSkipController *)self setDirection:a3];
-    [(BKAudiobookSkipController *)self _sendWillWillBeginSeekingObserverCallbacksWithDirection:a3];
+    [(BKAudiobookSkipController *)self setDirection:seek];
+    [(BKAudiobookSkipController *)self _sendWillWillBeginSeekingObserverCallbacksWithDirection:seek];
     WeakRetained = objc_loadWeakRetained(&self->_audiobookControls);
     -[BKAudiobookSkipController setWasPlaying:](self, "setWasPlaying:", [WeakRetained isPlaying]);
 
@@ -283,7 +283,7 @@
     }
 
     v12 = playbackRateBeforeSeek;
-    if (a3 == 1)
+    if (seek == 1)
     {
       [(BKAudiobookSkipController *)self forwardSeekSpeedMultiplier];
     }
@@ -311,7 +311,7 @@
     }
   }
 
-  return v6;
+  return _canStartSeek;
 }
 
 - (BOOL)endSeek
@@ -323,8 +323,8 @@
     _os_log_impl(&dword_0, v3, OS_LOG_TYPE_DEFAULT, "endSeek", v11, 2u);
   }
 
-  v4 = [(BKAudiobookSkipController *)self _canEndSeek];
-  if (v4)
+  _canEndSeek = [(BKAudiobookSkipController *)self _canEndSeek];
+  if (_canEndSeek)
   {
     [(BKAudiobookSkipController *)self _cancelSeek];
     playbackRateBeforeSeek = self->_playbackRateBeforeSeek;
@@ -352,7 +352,7 @@
     }
   }
 
-  return v4;
+  return _canEndSeek;
 }
 
 - (void)endSeekIfSeeking
@@ -364,16 +364,16 @@
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
   objc_opt_class();
-  v13 = [v12 objectForKeyedSubscript:NSKeyValueChangeNewKey];
+  v13 = [changeCopy objectForKeyedSubscript:NSKeyValueChangeNewKey];
   v14 = BUDynamicCast();
 
-  if (off_474E0 == a6)
+  if (off_474E0 == context)
   {
     if (v14)
     {
@@ -382,7 +382,7 @@
     }
   }
 
-  else if (off_474E8 == a6)
+  else if (off_474E8 == context)
   {
     if (v14)
     {
@@ -395,7 +395,7 @@
   {
     v15.receiver = self;
     v15.super_class = BKAudiobookSkipController;
-    [(BKAudiobookSkipController *)&v15 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(BKAudiobookSkipController *)&v15 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
@@ -437,32 +437,32 @@
 
 - (BOOL)wasPlayingBeforeSkipSeek
 {
-  v3 = [(BKAudiobookSkipController *)self isSkipping];
-  if (v3)
+  isSkipping = [(BKAudiobookSkipController *)self isSkipping];
+  if (isSkipping)
   {
 
-    LOBYTE(v3) = [(BKAudiobookSkipController *)self wasPlaying];
+    LOBYTE(isSkipping) = [(BKAudiobookSkipController *)self wasPlaying];
   }
 
-  return v3;
+  return isSkipping;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_accessLock);
-  v5 = [(BKAudiobookSkipController *)self observers];
-  [v5 addObject:v4];
+  observers = [(BKAudiobookSkipController *)self observers];
+  [observers addObject:observerCopy];
 
   os_unfair_lock_unlock(&self->_accessLock);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_accessLock);
-  v5 = [(BKAudiobookSkipController *)self observers];
-  [v5 removeObject:v4];
+  observers = [(BKAudiobookSkipController *)self observers];
+  [observers removeObject:observerCopy];
 
   os_unfair_lock_unlock(&self->_accessLock);
 }
@@ -470,12 +470,12 @@
 - (id)allObservers
 {
   os_unfair_lock_lock(&self->_accessLock);
-  v3 = [(BKAudiobookSkipController *)self observers];
-  v4 = [v3 allObjects];
+  observers = [(BKAudiobookSkipController *)self observers];
+  allObjects = [observers allObjects];
 
   os_unfair_lock_unlock(&self->_accessLock);
 
-  return v4;
+  return allObjects;
 }
 
 - (double)baseEventInterval
@@ -487,7 +487,7 @@
   return v4;
 }
 
-- (void)setBaseEventInterval:(double)a3
+- (void)setBaseEventInterval:(double)interval
 {
   v5 = [NSNumber numberWithDouble:?];
   v6 = [(NSMutableDictionary *)self->_accelerationMap objectForKeyedSubscript:&off_3E108];
@@ -495,7 +495,7 @@
 
   if ((v7 & 1) == 0)
   {
-    v8 = [NSNumber numberWithDouble:a3];
+    v8 = [NSNumber numberWithDouble:interval];
     [(NSMutableDictionary *)self->_accelerationMap setObject:v8 forKeyedSubscript:&off_3E108];
   }
 }
@@ -509,37 +509,37 @@
   [(BKAudiobookSkipController *)self setBaseEventInterval:v4];
 }
 
-- (void)accelerateToInterval:(double)a3 afterEventCount:(unint64_t)a4
+- (void)accelerateToInterval:(double)interval afterEventCount:(unint64_t)count
 {
-  v7 = [(NSMutableDictionary *)self->_accelerationMap allKeys];
-  v13 = [v7 sortedArrayUsingSelector:"compare:"];
+  allKeys = [(NSMutableDictionary *)self->_accelerationMap allKeys];
+  v13 = [allKeys sortedArrayUsingSelector:"compare:"];
 
-  v8 = [v13 lastObject];
-  v9 = [v8 unsignedIntegerValue];
+  lastObject = [v13 lastObject];
+  unsignedIntegerValue = [lastObject unsignedIntegerValue];
 
-  v10 = [NSNumber numberWithDouble:a3];
+  v10 = [NSNumber numberWithDouble:interval];
   accelerationMap = self->_accelerationMap;
-  v12 = [NSNumber numberWithUnsignedInteger:&v9[a4]];
+  v12 = [NSNumber numberWithUnsignedInteger:&unsignedIntegerValue[count]];
   [(NSMutableDictionary *)accelerationMap setObject:v10 forKeyedSubscript:v12];
 }
 
-- (double)deltaFromStartingPoint:(double)a3
+- (double)deltaFromStartingPoint:(double)point
 {
   WeakRetained = objc_loadWeakRetained(&self->_audiobookControls);
   [WeakRetained positionInCurrentAudiobook];
-  v6 = v5 - a3;
+  v6 = v5 - point;
 
   return v6;
 }
 
 - (void)_cancelSkip
 {
-  v3 = [(BKAudiobookSkipController *)self skipDispatchSource];
+  skipDispatchSource = [(BKAudiobookSkipController *)self skipDispatchSource];
 
-  if (v3)
+  if (skipDispatchSource)
   {
-    v4 = [(BKAudiobookSkipController *)self skipDispatchSource];
-    dispatch_source_cancel(v4);
+    skipDispatchSource2 = [(BKAudiobookSkipController *)self skipDispatchSource];
+    dispatch_source_cancel(skipDispatchSource2);
 
     [(BKAudiobookSkipController *)self setSkipDispatchSource:0];
   }
@@ -547,23 +547,23 @@
 
 - (void)_cancelSeek
 {
-  v3 = [(BKAudiobookSkipController *)self seekDispatchSource];
+  seekDispatchSource = [(BKAudiobookSkipController *)self seekDispatchSource];
 
-  if (v3)
+  if (seekDispatchSource)
   {
-    v4 = [(BKAudiobookSkipController *)self seekDispatchSource];
-    dispatch_source_cancel(v4);
+    seekDispatchSource2 = [(BKAudiobookSkipController *)self seekDispatchSource];
+    dispatch_source_cancel(seekDispatchSource2);
 
     [(BKAudiobookSkipController *)self setSeekDispatchSource:0];
   }
 }
 
-- (void)_scheduleSkipTimerWithInterval:(double)a3
+- (void)_scheduleSkipTimerWithInterval:(double)interval
 {
   v5 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, &_dispatch_main_q);
   [(BKAudiobookSkipController *)self setSkipDispatchSource:v5];
   objc_initWeak(&location, self);
-  dispatch_source_set_timer(v5, 0, (a3 * 1000000000.0), (a3 / 10.0 * 1000000000.0));
+  dispatch_source_set_timer(v5, 0, (interval * 1000000000.0), (interval / 10.0 * 1000000000.0));
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_FA60;
@@ -578,8 +578,8 @@
 - (void)_processSkipEvent
 {
   ++self->_skipStepCount;
-  v21 = [(BKAudiobookSkipController *)self audiobookControls];
-  [v21 positionInCurrentAudiobook];
+  audiobookControls = [(BKAudiobookSkipController *)self audiobookControls];
+  [audiobookControls positionInCurrentAudiobook];
   v4 = v3;
   if ([(BKAudiobookSkipController *)self direction]== &dword_0 + 1)
   {
@@ -597,14 +597,14 @@
     v8 = v4 - backwardSkipTime * v10;
   }
 
-  [v21 durationOfCurrentAudiobook];
+  [audiobookControls durationOfCurrentAudiobook];
   v12 = v11 + -0.01;
   if (v12 >= v8)
   {
     v12 = v8;
   }
 
-  [v21 movePositionInCurrentAudiobook:0 completion:{fmax(v12, 0.0)}];
+  [audiobookControls movePositionInCurrentAudiobook:0 completion:{fmax(v12, 0.0)}];
   [(BKAudiobookSkipController *)self skipStartAudiobookTime];
   [(BKAudiobookSkipController *)self deltaFromStartingPoint:?];
   [(BKAudiobookSkipController *)self _sendUpdatedCumulativeDeltaCallbacks:?];
@@ -614,16 +614,16 @@
     [(AVAudioPlayer *)self->_fxPlayer play];
   }
 
-  v13 = [(BKAudiobookSkipController *)self accelerationMap];
+  accelerationMap = [(BKAudiobookSkipController *)self accelerationMap];
   v14 = [NSNumber numberWithUnsignedInteger:self->_skipStepCount];
-  v15 = [v13 objectForKeyedSubscript:v14];
+  v15 = [accelerationMap objectForKeyedSubscript:v14];
 
   if (v15)
   {
     [(BKAudiobookSkipController *)self _cancelSkip];
-    v16 = [(BKAudiobookSkipController *)self accelerationMap];
+    accelerationMap2 = [(BKAudiobookSkipController *)self accelerationMap];
     v17 = [NSNumber numberWithUnsignedInteger:self->_skipStepCount];
-    v18 = [v16 objectForKeyedSubscript:v17];
+    v18 = [accelerationMap2 objectForKeyedSubscript:v17];
     [v18 doubleValue];
     v20 = v19;
 
@@ -631,9 +631,9 @@
   }
 }
 
-- (double)_pushTemporaryTimeInterval:(double)a3 skipDirection:(unint64_t)a4
+- (double)_pushTemporaryTimeInterval:(double)interval skipDirection:(unint64_t)direction
 {
-  if (a4 == 1)
+  if (direction == 1)
   {
     v5 = 24;
   }
@@ -641,7 +641,7 @@
   else
   {
     v4 = 0.0;
-    if (a4)
+    if (direction)
     {
       return v4;
     }
@@ -650,25 +650,25 @@
   }
 
   v4 = *(&self->super.isa + v5);
-  if (a3 == 0.0)
+  if (interval == 0.0)
   {
-    a3 = *(&self->super.isa + v5);
+    interval = *(&self->super.isa + v5);
   }
 
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = interval;
   return v4;
 }
 
-- (void)_popToStashedTimeInterval:(double)a3 skipDirection:(unint64_t)a4
+- (void)_popToStashedTimeInterval:(double)interval skipDirection:(unint64_t)direction
 {
-  if (a4 == 1)
+  if (direction == 1)
   {
     v4 = 24;
   }
 
   else
   {
-    if (a4)
+    if (direction)
     {
       return;
     }
@@ -676,15 +676,15 @@
     v4 = 32;
   }
 
-  *(&self->super.isa + v4) = a3;
+  *(&self->super.isa + v4) = interval;
 }
 
-- (void)_scheduleSeekTimerWithInterval:(double)a3
+- (void)_scheduleSeekTimerWithInterval:(double)interval
 {
   v5 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, &_dispatch_main_q);
   [(BKAudiobookSkipController *)self setSeekDispatchSource:v5];
   objc_initWeak(&location, self);
-  dispatch_source_set_timer(v5, 0, (a3 * 1000000000.0), (a3 / 10.0 * 1000000000.0));
+  dispatch_source_set_timer(v5, 0, (interval * 1000000000.0), (interval / 10.0 * 1000000000.0));
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_FDF0;
@@ -698,35 +698,35 @@
 
 - (void)_processSeekEvent
 {
-  v10 = [(BKAudiobookSkipController *)self audiobookControls];
-  [v10 positionInCurrentAudiobook];
+  audiobookControls = [(BKAudiobookSkipController *)self audiobookControls];
+  [audiobookControls positionInCurrentAudiobook];
   v4 = v3;
-  v5 = [(BKAudiobookSkipController *)self direction];
+  direction = [(BKAudiobookSkipController *)self direction];
   seekDelta = self->_seekDelta;
-  if (v5 != 1)
+  if (direction != 1)
   {
     seekDelta = -seekDelta;
   }
 
   v7 = v4 + seekDelta;
-  [v10 durationOfCurrentAudiobook];
+  [audiobookControls durationOfCurrentAudiobook];
   v9 = v8 + -0.01;
   if (v9 >= v7)
   {
     v9 = v7;
   }
 
-  [v10 movePositionInCurrentAudiobook:0 completion:{fmax(v9, 0.0)}];
+  [audiobookControls movePositionInCurrentAudiobook:0 completion:{fmax(v9, 0.0)}];
 }
 
-- (void)_sendWillWillBeginSkippingObserverCallbacksWithDirection:(unint64_t)a3
+- (void)_sendWillWillBeginSkippingObserverCallbacksWithDirection:(unint64_t)direction
 {
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(BKAudiobookSkipController *)self allObservers];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  allObservers = [(BKAudiobookSkipController *)self allObservers];
+  v6 = [allObservers countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -738,20 +738,20 @@
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allObservers);
         }
 
         v10 = *(*(&v11 + 1) + 8 * v9);
         if (objc_opt_respondsToSelector())
         {
-          [v10 skipController:self willBeginSkippingInDirection:a3];
+          [v10 skipController:self willBeginSkippingInDirection:direction];
         }
 
         v9 = v9 + 1;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [allObservers countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
@@ -764,8 +764,8 @@
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(BKAudiobookSkipController *)self allObservers];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  allObservers = [(BKAudiobookSkipController *)self allObservers];
+  v4 = [allObservers countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -777,7 +777,7 @@
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allObservers);
         }
 
         v8 = *(*(&v9 + 1) + 8 * v7);
@@ -790,7 +790,7 @@
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [allObservers countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
@@ -803,8 +803,8 @@
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(BKAudiobookSkipController *)self allObservers];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  allObservers = [(BKAudiobookSkipController *)self allObservers];
+  v4 = [allObservers countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -816,7 +816,7 @@
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allObservers);
         }
 
         v8 = *(*(&v9 + 1) + 8 * v7);
@@ -829,21 +829,21 @@
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [allObservers countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
   }
 }
 
-- (void)_sendUpdatedCumulativeDeltaCallbacks:(double)a3
+- (void)_sendUpdatedCumulativeDeltaCallbacks:(double)callbacks
 {
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(BKAudiobookSkipController *)self allObservers];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  allObservers = [(BKAudiobookSkipController *)self allObservers];
+  v6 = [allObservers countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -855,34 +855,34 @@
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allObservers);
         }
 
         v10 = *(*(&v11 + 1) + 8 * v9);
         if (objc_opt_respondsToSelector())
         {
-          [v10 skipController:self updatedCumulativeDelta:a3];
+          [v10 skipController:self updatedCumulativeDelta:callbacks];
         }
 
         v9 = v9 + 1;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [allObservers countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)_sendWillWillBeginSeekingObserverCallbacksWithDirection:(unint64_t)a3
+- (void)_sendWillWillBeginSeekingObserverCallbacksWithDirection:(unint64_t)direction
 {
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(BKAudiobookSkipController *)self allObservers];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  allObservers = [(BKAudiobookSkipController *)self allObservers];
+  v6 = [allObservers countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -894,20 +894,20 @@
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allObservers);
         }
 
         v10 = *(*(&v11 + 1) + 8 * v9);
         if (objc_opt_respondsToSelector())
         {
-          [v10 skipController:self willBeginSeekingInDirection:a3];
+          [v10 skipController:self willBeginSeekingInDirection:direction];
         }
 
         v9 = v9 + 1;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [allObservers countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
@@ -920,8 +920,8 @@
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(BKAudiobookSkipController *)self allObservers];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  allObservers = [(BKAudiobookSkipController *)self allObservers];
+  v4 = [allObservers countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -933,7 +933,7 @@
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allObservers);
         }
 
         v8 = *(*(&v9 + 1) + 8 * v7);
@@ -946,7 +946,7 @@
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [allObservers countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
@@ -959,8 +959,8 @@
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(BKAudiobookSkipController *)self allObservers];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  allObservers = [(BKAudiobookSkipController *)self allObservers];
+  v4 = [allObservers countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -972,7 +972,7 @@
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allObservers);
         }
 
         v8 = *(*(&v9 + 1) + 8 * v7);
@@ -985,7 +985,7 @@
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [allObservers countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);

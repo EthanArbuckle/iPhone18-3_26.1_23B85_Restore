@@ -1,15 +1,15 @@
 @interface PALAccessorResolver
-- (PALAccessorResolver)initWithSettings:(id)a3 tccAttributionResolver:(id)a4 applicationMetadataResolver:(id)a5;
-- (id)resolveAccessorForAccess:(id)a3 senderAuditToken:(id *)a4 withError:(id *)a5;
+- (PALAccessorResolver)initWithSettings:(id)settings tccAttributionResolver:(id)resolver applicationMetadataResolver:(id)metadataResolver;
+- (id)resolveAccessorForAccess:(id)access senderAuditToken:(id *)token withError:(id *)error;
 @end
 
 @implementation PALAccessorResolver
 
-- (PALAccessorResolver)initWithSettings:(id)a3 tccAttributionResolver:(id)a4 applicationMetadataResolver:(id)a5
+- (PALAccessorResolver)initWithSettings:(id)settings tccAttributionResolver:(id)resolver applicationMetadataResolver:(id)metadataResolver
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  settingsCopy = settings;
+  resolverCopy = resolver;
+  metadataResolverCopy = metadataResolver;
   v18.receiver = self;
   v18.super_class = PALAccessorResolver;
   v12 = [(PALAccessorResolver *)&v18 init];
@@ -19,9 +19,9 @@
     logger = v12->_logger;
     v12->_logger = v13;
 
-    objc_storeStrong(&v12->_settings, a3);
-    objc_storeStrong(&v12->_tccAttributionResolver, a4);
-    objc_storeStrong(&v12->_applicationMetadataResolver, a5);
+    objc_storeStrong(&v12->_settings, settings);
+    objc_storeStrong(&v12->_tccAttributionResolver, resolver);
+    objc_storeStrong(&v12->_applicationMetadataResolver, metadataResolver);
     v15 = objc_alloc_init(NSCache);
     resolvedAccessorCache = v12->_resolvedAccessorCache;
     v12->_resolvedAccessorCache = v15;
@@ -32,30 +32,30 @@
   return v12;
 }
 
-- (id)resolveAccessorForAccess:(id)a3 senderAuditToken:(id *)a4 withError:(id *)a5
+- (id)resolveAccessorForAccess:(id)access senderAuditToken:(id *)token withError:(id *)error
 {
-  v8 = a3;
-  v9 = [v8 accessor];
-  v10 = [v9 identifierType];
+  accessCopy = access;
+  accessor = [accessCopy accessor];
+  identifierType = [accessor identifierType];
 
-  if (v10 == 3)
+  if (identifierType == 3)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = v8;
-      v16 = [v8 tccService];
-      v17 = [v16 isEqualToString:kTCCServiceMicrophone];
+      accessCopy = accessCopy;
+      tccService = [accessCopy tccService];
+      v17 = [tccService isEqualToString:kTCCServiceMicrophone];
 
       if (v17)
       {
         *task_info_out = 0u;
         v60 = 0u;
-        v18 = [v8 accessor];
-        v19 = [v18 insecureProcessIdentifier];
+        accessor2 = [accessCopy accessor];
+        insecureProcessIdentifier = [accessor2 insecureProcessIdentifier];
         target_task[0] = 0;
         v20 = 0;
-        if (!task_name_for_pid(mach_task_self_, v19, target_task))
+        if (!task_name_for_pid(mach_task_self_, insecureProcessIdentifier, target_task))
         {
           task_info_outCnt = 8;
           v20 = task_info(target_task[0], 0xFu, task_info_out, &task_info_outCnt) == 0;
@@ -71,16 +71,16 @@
           *target_task = *task_info_out;
           v58 = v60;
           v21 = [PAApplication applicationWithAuditToken:target_task];
-          v15 = [v8 copyWithNewAccessor:v21];
+          v15 = [accessCopy copyWithNewAccessor:v21];
 
-          v12 = 0;
+          bridgedAssumedIdentity = 0;
           goto LABEL_4;
         }
 
         logger = self->_logger;
         if (os_log_type_enabled(logger, OS_LOG_TYPE_ERROR))
         {
-          sub_1000041A4(logger, v8);
+          sub_1000041A4(logger, accessCopy);
         }
       }
 
@@ -105,33 +105,33 @@
     v30 = 0;
     v25 = 0;
     v24 = 0;
-    v12 = 0;
+    bridgedAssumedIdentity = 0;
     goto LABEL_56;
   }
 
-  if (v10 == 4)
+  if (identifierType == 4)
   {
-    v11 = [v8 accessor];
-    v12 = [v11 bridgedAssumedIdentity];
+    accessor3 = [accessCopy accessor];
+    bridgedAssumedIdentity = [accessor3 bridgedAssumedIdentity];
 
-    v13 = *&a4->var0[4];
-    *task_info_out = *a4->var0;
+    v13 = *&token->var0[4];
+    *task_info_out = *token->var0;
     v60 = v13;
     v14 = [PAApplication applicationWithAuditToken:task_info_out];
-    v15 = [v8 copyWithNewAccessor:v14];
+    v15 = [accessCopy copyWithNewAccessor:v14];
 
-    v8 = v14;
+    accessCopy = v14;
 LABEL_4:
 
-    v8 = v15;
+    accessCopy = v15;
     goto LABEL_14;
   }
 
-  v12 = 0;
+  bridgedAssumedIdentity = 0;
 LABEL_14:
   v22 = [PALResolvedAccessorCacheKey alloc];
-  v23 = [v8 accessor];
-  v24 = [(PALResolvedAccessorCacheKey *)v22 initWithAccessor:v23 clientProvidedIdentity:v12];
+  accessor4 = [accessCopy accessor];
+  v24 = [(PALResolvedAccessorCacheKey *)v22 initWithAccessor:accessor4 clientProvidedIdentity:bridgedAssumedIdentity];
 
   v25 = [(NSCache *)self->_resolvedAccessorCache objectForKey:v24];
   v26 = +[NSNull null];
@@ -144,17 +144,17 @@ LABEL_14:
       v31 = self->_logger;
       if (os_log_type_enabled(v31, OS_LOG_TYPE_DEBUG))
       {
-        sub_100004264(v31, v8);
+        sub_100004264(v31, accessCopy);
       }
 
-      v30 = [v8 copyWithNewAccessor:v25];
+      v30 = [accessCopy copyWithNewAccessor:v25];
       goto LABEL_22;
     }
 
-    v32 = [v8 accessor];
-    v33 = [v32 identifierType];
+    accessor5 = [accessCopy accessor];
+    identifierType2 = [accessor5 identifierType];
 
-    if (v33 != 2)
+    if (identifierType2 != 2)
     {
       goto LABEL_33;
     }
@@ -178,8 +178,8 @@ LABEL_14:
     if (objc_opt_isKindOfClass())
     {
       tccAttributionResolver = self->_tccAttributionResolver;
-      v35 = [v12 identity];
-      v36 = [(PALTCCAttributionResolverProtocol *)tccAttributionResolver resolveAttributionForTCCAccess:v8 clientProvidedIdentity:v35];
+      identity = [bridgedAssumedIdentity identity];
+      v36 = [(PALTCCAttributionResolverProtocol *)tccAttributionResolver resolveAttributionForTCCAccess:accessCopy clientProvidedIdentity:identity];
 
       if (!v36)
       {
@@ -207,7 +207,7 @@ LABEL_33:
 
     else
     {
-      v37 = v8;
+      v37 = accessCopy;
     }
 
     v38 = [(PALApplicationMetadataResolver *)self->_applicationMetadataResolver resolveApplicationMetadataForAccess:v37];
@@ -216,8 +216,8 @@ LABEL_33:
     {
       v39 = v38;
       v40 = [PALResolvedAccessorCacheKey alloc];
-      v41 = [v39 accessor];
-      v42 = [(PALResolvedAccessorCacheKey *)v40 initWithAccessor:v41 clientProvidedIdentity:0];
+      accessor6 = [v39 accessor];
+      v42 = [(PALResolvedAccessorCacheKey *)v40 initWithAccessor:accessor6 clientProvidedIdentity:0];
 
       if (qword_10001ECF8 != -1)
       {
@@ -248,7 +248,7 @@ LABEL_55:
   v28 = self->_logger;
   if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
   {
-    sub_1000043F0(v28, v8);
+    sub_1000043F0(v28, accessCopy);
   }
 
   v29 = [NSError errorWithDomain:@"PAErrorDomain" code:16 userInfo:0];
@@ -256,15 +256,15 @@ LABEL_55:
 LABEL_56:
   if ([(PALSettings *)self->_settings accessFilteringPolicy]== 2)
   {
-    v47 = [v30 accessor];
-    v48 = [v47 identifierType];
+    accessor7 = [v30 accessor];
+    identifierType3 = [accessor7 identifierType];
 
-    if (v48)
+    if (identifierType3)
     {
       v49 = self->_logger;
       if (os_log_type_enabled(v49, OS_LOG_TYPE_DEBUG))
       {
-        sub_100004484(v8, v49, v30);
+        sub_100004484(accessCopy, v49, v30);
       }
 
       v50 = [NSError errorWithDomain:@"PAErrorDomain" code:5 userInfo:0];
@@ -295,14 +295,14 @@ LABEL_64:
   }
 
   v51 = self->_resolvedAccessorCache;
-  v52 = [v30 accessor];
-  [(NSCache *)v51 setObject:v52 forKey:v24];
+  accessor8 = [v30 accessor];
+  [(NSCache *)v51 setObject:accessor8 forKey:v24];
 
   if (v29)
   {
 LABEL_68:
     v55 = v29;
-    *a5 = v29;
+    *error = v29;
   }
 
 LABEL_70:

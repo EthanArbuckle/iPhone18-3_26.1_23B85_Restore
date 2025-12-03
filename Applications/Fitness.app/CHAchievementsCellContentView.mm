@@ -1,34 +1,34 @@
 @interface CHAchievementsCellContentView
-+ (BOOL)_shouldShowProgressBar:(id)a3;
-+ (BOOL)shouldShowCountForAchievement:(id)a3;
-+ (double)cellHeightForAchievement:(id)a3 preferredWidth:(double)a4 appliesLargeCellInsets:(BOOL)a5 locProvider:(id)a6 withProgressBar:(BOOL)a7 formatForFriend:(BOOL)a8;
++ (BOOL)_shouldShowProgressBar:(id)bar;
++ (BOOL)shouldShowCountForAchievement:(id)achievement;
++ (double)cellHeightForAchievement:(id)achievement preferredWidth:(double)width appliesLargeCellInsets:(BOOL)insets locProvider:(id)provider withProgressBar:(BOOL)bar formatForFriend:(BOOL)friend;
 + (id)monthlyDateFormatter;
-+ (id)stringForAchievement:(id)a3 locProvider:(id)a4 formatForFriend:(BOOL)a5;
++ (id)stringForAchievement:(id)achievement locProvider:(id)provider formatForFriend:(BOOL)friend;
 - (CGRect)badgeRect;
-- (CHAchievementsCellContentView)initWithFrame:(CGRect)a3;
-- (void)_populateProgressBar:(id)a3;
-- (void)annotateView:(id)a3 withAchievement:(id)a4;
-- (void)applyProgressBarConstraints:(id)a3;
+- (CHAchievementsCellContentView)initWithFrame:(CGRect)frame;
+- (void)_populateProgressBar:(id)bar;
+- (void)annotateView:(id)view withAchievement:(id)achievement;
+- (void)applyProgressBarConstraints:(id)constraints;
 - (void)applyTextBaselineConstraints;
 - (void)applyTextLeadingAndTrailingConstraints;
 - (void)applyViewConstraints;
-- (void)configureWithAchievement:(id)a3 badgeImageFactory:(id)a4 locProvider:(id)a5 shouldShowProgressBar:(BOOL)a6 formatForFriend:(BOOL)a7;
-- (void)fontSizeChanged:(id)a3;
-- (void)layoutSublayersOfLayer:(id)a3;
+- (void)configureWithAchievement:(id)achievement badgeImageFactory:(id)factory locProvider:(id)provider shouldShowProgressBar:(BOOL)bar formatForFriend:(BOOL)friend;
+- (void)fontSizeChanged:(id)changed;
+- (void)layoutSublayersOfLayer:(id)layer;
 - (void)prepareForReuse;
-- (void)setAppliesLargeCellInset:(BOOL)a3;
-- (void)setBadgeHidden:(BOOL)a3;
-- (void)setEarnedInstanceCount:(int64_t)a3;
-- (void)setEarnedInstanceCountLabelBackgroundColor:(id)a3;
+- (void)setAppliesLargeCellInset:(BOOL)inset;
+- (void)setBadgeHidden:(BOOL)hidden;
+- (void)setEarnedInstanceCount:(int64_t)count;
+- (void)setEarnedInstanceCountLabelBackgroundColor:(id)color;
 @end
 
 @implementation CHAchievementsCellContentView
 
-- (CHAchievementsCellContentView)initWithFrame:(CGRect)a3
+- (CHAchievementsCellContentView)initWithFrame:(CGRect)frame
 {
   v34.receiver = self;
   v34.super_class = CHAchievementsCellContentView;
-  v3 = [(CHAchievementsCellContentView *)&v34 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CHAchievementsCellContentView *)&v34 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[UIColor clearColor];
@@ -71,18 +71,18 @@
     v3->_progressBar = v19;
 
     v21 = +[ARUIMetricColors briskColors];
-    v22 = [v21 gradientLightColor];
-    [(UIProgressView *)v3->_progressBar setProgressTintColor:v22];
+    gradientLightColor = [v21 gradientLightColor];
+    [(UIProgressView *)v3->_progressBar setProgressTintColor:gradientLightColor];
 
     v23 = sub_10013AA28();
     [(UIProgressView *)v3->_progressBar setTrackTintColor:v23];
 
-    v24 = [(UIProgressView *)v3->_progressBar layer];
-    [v24 setCornerRadius:2.0];
+    layer = [(UIProgressView *)v3->_progressBar layer];
+    [layer setCornerRadius:2.0];
 
     [(UIProgressView *)v3->_progressBar setTranslatesAutoresizingMaskIntoConstraints:0];
-    v25 = [(UIProgressView *)v3->_progressBar layer];
-    [v25 setMasksToBounds:1];
+    layer2 = [(UIProgressView *)v3->_progressBar layer];
+    [layer2 setMasksToBounds:1];
 
     [(UIProgressView *)v3->_progressBar setHidden:1];
     [(CHAchievementsCellContentView *)v3 addSubview:v3->_badgeView];
@@ -92,9 +92,9 @@
       [(CHAchievementsCellContentView *)v3 addSubview:v3->_progressBar];
     }
 
-    v26 = [[CHPillLabelView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
+    height = [[CHPillLabelView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
     earnedInstanceCountLabelView = v3->_earnedInstanceCountLabelView;
-    v3->_earnedInstanceCountLabelView = v26;
+    v3->_earnedInstanceCountLabelView = height;
 
     [(CHPillLabelView *)v3->_earnedInstanceCountLabelView setPillBackgroundColor:v3->_earnedInstanceCountLabelBackgroundColor];
     [(CHAchievementsCellContentView *)v3 addSubview:v3->_earnedInstanceCountLabelView];
@@ -110,8 +110,8 @@
     v31 = +[UIColor blackColor];
     -[CALayer setBackgroundColor:](v3->_darkeningLayer, "setBackgroundColor:", [v31 CGColor]);
 
-    v32 = [(CHAchievementsCellContentView *)v3 layer];
-    [v32 addSublayer:v3->_darkeningLayer];
+    layer3 = [(CHAchievementsCellContentView *)v3 layer];
+    [layer3 addSublayer:v3->_darkeningLayer];
 
     [(CALayer *)v3->_darkeningLayer setOpacity:0.0];
   }
@@ -131,37 +131,37 @@
   return v3;
 }
 
-+ (id)stringForAchievement:(id)a3 locProvider:(id)a4 formatForFriend:(BOOL)a5
++ (id)stringForAchievement:(id)achievement locProvider:(id)provider formatForFriend:(BOOL)friend
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  friendCopy = friend;
+  achievementCopy = achievement;
+  providerCopy = provider;
   v10 = +[UIColor labelColor];
   v11 = +[UIColor secondaryLabelColor];
-  v12 = [v9 titleForAchievement:v8];
-  v13 = [v12 stringByReplacingOccurrencesOfString:@"\n" withString:@" "];
+  v12 = [providerCopy titleForAchievement:achievementCopy];
+  uniqueName = [v12 stringByReplacingOccurrencesOfString:@"\n" withString:@" "];
 
-  if (!v13)
+  if (!uniqueName)
   {
-    v14 = [v8 template];
-    v13 = [v14 uniqueName];
+    template = [achievementCopy template];
+    uniqueName = [template uniqueName];
   }
 
-  if ([v8 unearned])
+  if ([achievementCopy unearned])
   {
-    v15 = [v9 unachievedShortDescriptionForAchievement:v8];
+    v15 = [providerCopy unachievedShortDescriptionForAchievement:achievementCopy];
   }
 
   else
   {
-    v15 = [v9 achievedShortDescriptionForAchievement:v8];
-    if (v5 && [a1 shouldShowCountForAchievement:v8])
+    v15 = [providerCopy achievedShortDescriptionForAchievement:achievementCopy];
+    if (friendCopy && [self shouldShowCountForAchievement:achievementCopy])
     {
-      v16 = [v8 relevantEarnedInstance];
-      v17 = [v16 earnedDateComponents];
+      relevantEarnedInstance = [achievementCopy relevantEarnedInstance];
+      earnedDateComponents = [relevantEarnedInstance earnedDateComponents];
 
       v18 = +[NSCalendar currentCalendar];
-      [v18 dateFromComponents:v17];
+      [v18 dateFromComponents:earnedDateComponents];
       v20 = v19 = v10;
 
       v21 = ACHFormatDateWithStyle();
@@ -179,9 +179,9 @@
 
   if ([(__CFString *)v15 length])
   {
-    v22 = [v13 stringByAppendingString:@"\n"];
+    v22 = [uniqueName stringByAppendingString:@"\n"];
 
-    v13 = v22;
+    uniqueName = v22;
   }
 
   v23 = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption2];
@@ -192,7 +192,7 @@
   v35[1] = v10;
   v25 = v10;
   v26 = [NSDictionary dictionaryWithObjects:v35 forKeys:v34 count:2];
-  v27 = [v24 initWithString:v13 attributes:v26];
+  v27 = [v24 initWithString:uniqueName attributes:v26];
 
   if ([(__CFString *)v15 length])
   {
@@ -209,41 +209,41 @@
   return v27;
 }
 
-+ (BOOL)shouldShowCountForAchievement:(id)a3
++ (BOOL)shouldShowCountForAchievement:(id)achievement
 {
-  v3 = a3;
-  v4 = [v3 template];
-  if (![v4 displaysEarnedInstanceCount])
+  achievementCopy = achievement;
+  template = [achievementCopy template];
+  if (![template displaysEarnedInstanceCount])
   {
 
     goto LABEL_5;
   }
 
-  v5 = [v3 unearned];
+  unearned = [achievementCopy unearned];
 
-  if (v5)
+  if (unearned)
   {
 LABEL_5:
     v6 = 0;
     goto LABEL_6;
   }
 
-  v6 = [v3 earnedInstanceCount] != 0;
+  v6 = [achievementCopy earnedInstanceCount] != 0;
 LABEL_6:
 
   return v6;
 }
 
-+ (double)cellHeightForAchievement:(id)a3 preferredWidth:(double)a4 appliesLargeCellInsets:(BOOL)a5 locProvider:(id)a6 withProgressBar:(BOOL)a7 formatForFriend:(BOOL)a8
++ (double)cellHeightForAchievement:(id)achievement preferredWidth:(double)width appliesLargeCellInsets:(BOOL)insets locProvider:(id)provider withProgressBar:(BOOL)bar formatForFriend:(BOOL)friend
 {
-  v8 = a8;
-  v9 = a7;
-  v11 = a5;
-  v14 = a3;
-  v15 = a6;
-  if (v11)
+  friendCopy = friend;
+  barCopy = bar;
+  insetsCopy = insets;
+  achievementCopy = achievement;
+  providerCopy = provider;
+  if (insetsCopy)
   {
-    a4 = a4 + a4 * -0.05;
+    width = width + width * -0.05;
   }
 
   if (qword_1008F9B38 != -1)
@@ -254,22 +254,22 @@ LABEL_6:
   v16 = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption2];
   [qword_1008F9B30 setFont:v16];
 
-  v17 = [a1 stringForAchievement:v14 locProvider:v15 formatForFriend:v8];
+  v17 = [self stringForAchievement:achievementCopy locProvider:providerCopy formatForFriend:friendCopy];
   [qword_1008F9B30 setAttributedText:v17];
 
-  [qword_1008F9B30 sizeThatFits:{a4, 1.79769313e308}];
-  [qword_1008F9B30 setFrame:{0.0, 0.0, a4, v18}];
+  [qword_1008F9B30 sizeThatFits:{width, 1.79769313e308}];
+  [qword_1008F9B30 setFrame:{0.0, 0.0, width, v18}];
   [qword_1008F9B30 _lastLineBaselineFrameOriginY];
   [qword_1008F9B30 _firstBaselineOffsetFromTop];
-  if (v9)
+  if (barCopy)
   {
-    [a1 _shouldShowProgressBar:v14];
+    [self _shouldShowProgressBar:achievementCopy];
   }
 
-  if (![a1 shouldShowCountForAchievement:v14] || v8)
+  if (![self shouldShowCountForAchievement:achievementCopy] || friendCopy)
   {
-    v19 = [qword_1008F9B30 font];
-    [v19 _scaledValueForValue:12.0];
+    font = [qword_1008F9B30 font];
+    [font _scaledValueForValue:12.0];
   }
 
   UICeilToViewScale();
@@ -280,47 +280,47 @@ LABEL_6:
 
 - (void)applyViewConstraints
 {
-  v3 = [(CHAchievementsCellContentView *)self badgeView];
-  v4 = [v3 leadingAnchor];
-  v5 = [(CHAchievementsCellContentView *)self leadingAnchor];
-  v6 = [v4 constraintEqualToAnchor:v5];
+  badgeView = [(CHAchievementsCellContentView *)self badgeView];
+  leadingAnchor = [badgeView leadingAnchor];
+  leadingAnchor2 = [(CHAchievementsCellContentView *)self leadingAnchor];
+  v6 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v6 setActive:1];
 
-  v7 = [(CHAchievementsCellContentView *)self badgeView];
-  v8 = [v7 topAnchor];
-  v9 = [(CHAchievementsCellContentView *)self topAnchor];
-  v10 = [v8 constraintEqualToAnchor:v9];
+  badgeView2 = [(CHAchievementsCellContentView *)self badgeView];
+  topAnchor = [badgeView2 topAnchor];
+  topAnchor2 = [(CHAchievementsCellContentView *)self topAnchor];
+  v10 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v10 setActive:1];
 
-  v11 = [(CHAchievementsCellContentView *)self badgeView];
-  v12 = [v11 trailingAnchor];
-  v13 = [(CHAchievementsCellContentView *)self trailingAnchor];
-  v14 = [v12 constraintEqualToAnchor:v13];
+  badgeView3 = [(CHAchievementsCellContentView *)self badgeView];
+  trailingAnchor = [badgeView3 trailingAnchor];
+  trailingAnchor2 = [(CHAchievementsCellContentView *)self trailingAnchor];
+  v14 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [v14 setActive:1];
 
-  v15 = [(CHAchievementsCellContentView *)self badgeView];
-  v16 = [v15 heightAnchor];
-  v17 = [(UIImageView *)self->_badgeView widthAnchor];
-  v18 = [v16 constraintEqualToAnchor:v17];
+  badgeView4 = [(CHAchievementsCellContentView *)self badgeView];
+  heightAnchor = [badgeView4 heightAnchor];
+  widthAnchor = [(UIImageView *)self->_badgeView widthAnchor];
+  v18 = [heightAnchor constraintEqualToAnchor:widthAnchor];
   [v18 setActive:1];
 
   [(CHAchievementsCellContentView *)self applyTextLeadingAndTrailingConstraints];
   [(CHAchievementsCellContentView *)self applyTextBaselineConstraints];
-  v19 = [(CHAchievementsCellContentView *)self earnedInstanceCountLabelView];
-  v20 = [v19 centerXAnchor];
-  v21 = [(CHAchievementsCellContentView *)self centerXAnchor];
-  v22 = [v20 constraintEqualToAnchor:v21];
+  earnedInstanceCountLabelView = [(CHAchievementsCellContentView *)self earnedInstanceCountLabelView];
+  centerXAnchor = [earnedInstanceCountLabelView centerXAnchor];
+  centerXAnchor2 = [(CHAchievementsCellContentView *)self centerXAnchor];
+  v22 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   [v22 setActive:1];
 
-  v23 = [(CHAchievementsCellContentView *)self earnedInstanceCountLabelView];
-  v24 = [v23 topAnchor];
-  v25 = [(CHAchievementsCellContentView *)self label];
-  v26 = [v25 lastBaselineAnchor];
-  v27 = [v24 constraintEqualToAnchor:v26 constant:6.0];
+  earnedInstanceCountLabelView2 = [(CHAchievementsCellContentView *)self earnedInstanceCountLabelView];
+  topAnchor3 = [earnedInstanceCountLabelView2 topAnchor];
+  label = [(CHAchievementsCellContentView *)self label];
+  lastBaselineAnchor = [label lastBaselineAnchor];
+  v27 = [topAnchor3 constraintEqualToAnchor:lastBaselineAnchor constant:6.0];
   [(CHAchievementsCellContentView *)self setCountLabelTopConstraint:v27];
 
-  v28 = [(CHAchievementsCellContentView *)self countLabelTopConstraint];
-  [v28 setActive:1];
+  countLabelTopConstraint = [(CHAchievementsCellContentView *)self countLabelTopConstraint];
+  [countLabelTopConstraint setActive:1];
 }
 
 - (void)applyTextLeadingAndTrailingConstraints
@@ -332,22 +332,22 @@ LABEL_6:
     v3 = v4 * 0.025;
   }
 
-  v5 = [(CHAchievementsCellContentView *)self label];
-  v6 = [v5 leadingAnchor];
-  v7 = [(CHAchievementsCellContentView *)self leadingAnchor];
-  v8 = [v6 constraintEqualToAnchor:v7 constant:v3];
+  label = [(CHAchievementsCellContentView *)self label];
+  leadingAnchor = [label leadingAnchor];
+  leadingAnchor2 = [(CHAchievementsCellContentView *)self leadingAnchor];
+  v8 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:v3];
   [(CHAchievementsCellContentView *)self setLeadingTextConstraint:v8];
 
-  v9 = [(CHAchievementsCellContentView *)self label];
-  v10 = [v9 trailingAnchor];
-  v11 = [(CHAchievementsCellContentView *)self trailingAnchor];
-  v12 = [v10 constraintEqualToAnchor:v11 constant:-v3];
+  label2 = [(CHAchievementsCellContentView *)self label];
+  trailingAnchor = [label2 trailingAnchor];
+  trailingAnchor2 = [(CHAchievementsCellContentView *)self trailingAnchor];
+  v12 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-v3];
   [(CHAchievementsCellContentView *)self setTrailingTextConstraint:v12];
 
-  v13 = [(CHAchievementsCellContentView *)self leadingTextConstraint];
-  v16[0] = v13;
-  v14 = [(CHAchievementsCellContentView *)self trailingTextConstraint];
-  v16[1] = v14;
+  leadingTextConstraint = [(CHAchievementsCellContentView *)self leadingTextConstraint];
+  v16[0] = leadingTextConstraint;
+  trailingTextConstraint = [(CHAchievementsCellContentView *)self trailingTextConstraint];
+  v16[1] = trailingTextConstraint;
   v15 = [NSArray arrayWithObjects:v16 count:2];
   [NSLayoutConstraint activateConstraints:v15];
 }
@@ -364,42 +364,42 @@ LABEL_6:
     v3 = 9.0;
   }
 
-  v4 = [(CHAchievementsCellContentView *)self label];
-  v5 = [v4 firstBaselineAnchor];
-  v6 = [(CHAchievementsCellContentView *)self badgeView];
-  v7 = [v6 bottomAnchor];
-  v8 = [(CHAchievementsCellContentView *)self label];
-  v9 = [v8 font];
-  [v9 _scaledValueForValue:v3];
-  v10 = [v5 constraintEqualToAnchor:v7 constant:?];
+  label = [(CHAchievementsCellContentView *)self label];
+  firstBaselineAnchor = [label firstBaselineAnchor];
+  badgeView = [(CHAchievementsCellContentView *)self badgeView];
+  bottomAnchor = [badgeView bottomAnchor];
+  label2 = [(CHAchievementsCellContentView *)self label];
+  font = [label2 font];
+  [font _scaledValueForValue:v3];
+  v10 = [firstBaselineAnchor constraintEqualToAnchor:bottomAnchor constant:?];
   [(CHAchievementsCellContentView *)self setLabelFirstBaselineConstraint:v10];
 
-  v11 = [(CHAchievementsCellContentView *)self labelFirstBaselineConstraint];
-  [v11 setActive:1];
+  labelFirstBaselineConstraint = [(CHAchievementsCellContentView *)self labelFirstBaselineConstraint];
+  [labelFirstBaselineConstraint setActive:1];
 }
 
-- (void)applyProgressBarConstraints:(id)a3
+- (void)applyProgressBarConstraints:(id)constraints
 {
-  v24 = a3;
-  if (AAUIShouldUseNewTrophyCase() && [objc_opt_class() _shouldShowProgressBar:v24])
+  constraintsCopy = constraints;
+  if (AAUIShouldUseNewTrophyCase() && [objc_opt_class() _shouldShowProgressBar:constraintsCopy])
   {
-    v4 = [(CHAchievementsCellContentView *)self progressBar];
-    v5 = [v4 leadingAnchor];
-    v6 = [(CHAchievementsCellContentView *)self leadingAnchor];
-    v7 = [v5 constraintEqualToAnchor:v6 constant:5.0];
+    progressBar = [(CHAchievementsCellContentView *)self progressBar];
+    leadingAnchor = [progressBar leadingAnchor];
+    leadingAnchor2 = [(CHAchievementsCellContentView *)self leadingAnchor];
+    v7 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:5.0];
     [v7 setActive:1];
 
-    v8 = [(CHAchievementsCellContentView *)self progressBar];
-    v9 = [v8 trailingAnchor];
-    v10 = [(CHAchievementsCellContentView *)self trailingAnchor];
-    v11 = [v9 constraintEqualToAnchor:v10 constant:-5.0];
+    progressBar2 = [(CHAchievementsCellContentView *)self progressBar];
+    trailingAnchor = [progressBar2 trailingAnchor];
+    trailingAnchor2 = [(CHAchievementsCellContentView *)self trailingAnchor];
+    v11 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-5.0];
     [v11 setActive:1];
 
     v12 = +[UIApplication sharedApplication];
-    v13 = [v12 preferredContentSizeCategory];
-    LODWORD(v10) = UIContentSizeCategoryIsAccessibilityCategory(v13);
+    preferredContentSizeCategory = [v12 preferredContentSizeCategory];
+    LODWORD(trailingAnchor2) = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
-    if (v10)
+    if (trailingAnchor2)
     {
       v14 = 8.0;
     }
@@ -409,45 +409,45 @@ LABEL_6:
       v14 = 4.0;
     }
 
-    v15 = [(CHAchievementsCellContentView *)self progressBar];
-    v16 = [v15 layer];
-    [v16 setCornerRadius:v14 * 0.5];
+    progressBar3 = [(CHAchievementsCellContentView *)self progressBar];
+    layer = [progressBar3 layer];
+    [layer setCornerRadius:v14 * 0.5];
 
-    v17 = [(CHAchievementsCellContentView *)self progressBar];
-    v18 = [v17 heightAnchor];
-    v19 = [v18 constraintEqualToConstant:v14];
+    progressBar4 = [(CHAchievementsCellContentView *)self progressBar];
+    heightAnchor = [progressBar4 heightAnchor];
+    v19 = [heightAnchor constraintEqualToConstant:v14];
     [v19 setActive:1];
 
-    v20 = [(CHAchievementsCellContentView *)self progressBar];
-    v21 = [v20 bottomAnchor];
-    v22 = [(CHAchievementsCellContentView *)self bottomAnchor];
-    v23 = [v21 constraintEqualToAnchor:v22 constant:-15.0];
+    progressBar5 = [(CHAchievementsCellContentView *)self progressBar];
+    bottomAnchor = [progressBar5 bottomAnchor];
+    bottomAnchor2 = [(CHAchievementsCellContentView *)self bottomAnchor];
+    v23 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-15.0];
     [v23 setActive:1];
   }
 }
 
-- (void)fontSizeChanged:(id)a3
+- (void)fontSizeChanged:(id)changed
 {
   v4 = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption2];
-  v5 = [(CHAchievementsCellContentView *)self label];
-  [v5 setFont:v4];
+  label = [(CHAchievementsCellContentView *)self label];
+  [label setFont:v4];
 
-  v6 = [(CHAchievementsCellContentView *)self labelFirstBaselineConstraint];
-  [v6 setActive:0];
+  labelFirstBaselineConstraint = [(CHAchievementsCellContentView *)self labelFirstBaselineConstraint];
+  [labelFirstBaselineConstraint setActive:0];
 
   [(CHAchievementsCellContentView *)self applyTextBaselineConstraints];
 }
 
-- (void)setAppliesLargeCellInset:(BOOL)a3
+- (void)setAppliesLargeCellInset:(BOOL)inset
 {
-  if (self->_appliesLargeCellInset != a3)
+  if (self->_appliesLargeCellInset != inset)
   {
-    self->_appliesLargeCellInset = a3;
-    v5 = [(CHAchievementsCellContentView *)self leadingTextConstraint];
-    [v5 setActive:0];
+    self->_appliesLargeCellInset = inset;
+    leadingTextConstraint = [(CHAchievementsCellContentView *)self leadingTextConstraint];
+    [leadingTextConstraint setActive:0];
 
-    v6 = [(CHAchievementsCellContentView *)self trailingTextConstraint];
-    [v6 setActive:0];
+    trailingTextConstraint = [(CHAchievementsCellContentView *)self trailingTextConstraint];
+    [trailingTextConstraint setActive:0];
 
     [(CHAchievementsCellContentView *)self applyTextLeadingAndTrailingConstraints];
 
@@ -455,34 +455,34 @@ LABEL_6:
   }
 }
 
-- (void)layoutSublayersOfLayer:(id)a3
+- (void)layoutSublayersOfLayer:(id)layer
 {
   v14.receiver = self;
   v14.super_class = CHAchievementsCellContentView;
-  v4 = a3;
-  [(CHAchievementsCellContentView *)&v14 layoutSublayersOfLayer:v4];
-  [v4 bounds];
+  layerCopy = layer;
+  [(CHAchievementsCellContentView *)&v14 layoutSublayersOfLayer:layerCopy];
+  [layerCopy bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
 
-  v13 = [(CHAchievementsCellContentView *)self darkeningLayer];
-  [v13 setFrame:{v6, v8, v10, v12}];
+  darkeningLayer = [(CHAchievementsCellContentView *)self darkeningLayer];
+  [darkeningLayer setFrame:{v6, v8, v10, v12}];
 }
 
-- (void)setBadgeHidden:(BOOL)a3
+- (void)setBadgeHidden:(BOOL)hidden
 {
-  v3 = a3;
-  self->_badgeHidden = a3;
-  v4 = [(CHAchievementsCellContentView *)self badgeView];
-  [v4 setHidden:v3];
+  hiddenCopy = hidden;
+  self->_badgeHidden = hidden;
+  badgeView = [(CHAchievementsCellContentView *)self badgeView];
+  [badgeView setHidden:hiddenCopy];
 }
 
 - (CGRect)badgeRect
 {
-  v2 = [(CHAchievementsCellContentView *)self badgeView];
-  [v2 frame];
+  badgeView = [(CHAchievementsCellContentView *)self badgeView];
+  [badgeView frame];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -496,49 +496,49 @@ LABEL_6:
   return CGRectInset(*&v11, 10.0, 10.0);
 }
 
-- (void)setEarnedInstanceCount:(int64_t)a3
+- (void)setEarnedInstanceCount:(int64_t)count
 {
-  v5 = [(CHAchievementsCellContentView *)self earnedInstanceCountLabelView];
-  v6 = v5;
-  if (a3 < 1)
+  earnedInstanceCountLabelView = [(CHAchievementsCellContentView *)self earnedInstanceCountLabelView];
+  earnedInstanceCountLabelView2 = earnedInstanceCountLabelView;
+  if (count < 1)
   {
-    [v5 setHidden:1];
+    [earnedInstanceCountLabelView setHidden:1];
   }
 
   else
   {
-    [v5 setHidden:0];
+    [earnedInstanceCountLabelView setHidden:0];
 
-    v6 = [(CHAchievementsCellContentView *)self earnedInstanceCountLabelView];
-    [v6 setIntegerValue:a3];
+    earnedInstanceCountLabelView2 = [(CHAchievementsCellContentView *)self earnedInstanceCountLabelView];
+    [earnedInstanceCountLabelView2 setIntegerValue:count];
   }
 }
 
-- (void)configureWithAchievement:(id)a3 badgeImageFactory:(id)a4 locProvider:(id)a5 shouldShowProgressBar:(BOOL)a6 formatForFriend:(BOOL)a7
+- (void)configureWithAchievement:(id)achievement badgeImageFactory:(id)factory locProvider:(id)provider shouldShowProgressBar:(BOOL)bar formatForFriend:(BOOL)friend
 {
-  v7 = a7;
-  v8 = a6;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  if (v12)
+  friendCopy = friend;
+  barCopy = bar;
+  achievementCopy = achievement;
+  factoryCopy = factory;
+  providerCopy = provider;
+  if (achievementCopy)
   {
     [(CHAchievementsCellContentView *)self setHidden:0];
-    v15 = [v12 template];
-    v16 = [v15 uniqueName];
-    [(CHAchievementsCellContentView *)self setTemplateUniqueName:v16];
+    template = [achievementCopy template];
+    uniqueName = [template uniqueName];
+    [(CHAchievementsCellContentView *)self setTemplateUniqueName:uniqueName];
 
-    v17 = [objc_opt_class() shouldShowCountForAchievement:v12];
-    v18 = 0;
-    if (v17 && !v7)
+    v17 = [objc_opt_class() shouldShowCountForAchievement:achievementCopy];
+    earnedInstanceCount = 0;
+    if (v17 && !friendCopy)
     {
-      v18 = [v12 earnedInstanceCount];
+      earnedInstanceCount = [achievementCopy earnedInstanceCount];
     }
 
-    [(CHAchievementsCellContentView *)self setEarnedInstanceCount:v18];
-    v19 = [v12 template];
-    v20 = [v19 sourceName];
-    v21 = [v20 isEqualToString:kASCompetitionsAchievementTemplateSourceIdentifier];
+    [(CHAchievementsCellContentView *)self setEarnedInstanceCount:earnedInstanceCount];
+    template2 = [achievementCopy template];
+    sourceName = [template2 sourceName];
+    v21 = [sourceName isEqualToString:kASCompetitionsAchievementTemplateSourceIdentifier];
 
     if (v21)
     {
@@ -556,11 +556,11 @@ LABEL_6:
     v24 = v23;
     [(CHAchievementsCellContentView *)self preferredWidth];
     v26 = v25;
-    if ([v13 hasCachedThumbnailImageForAchievement:v12 size:{v24, v25}])
+    if ([factoryCopy hasCachedThumbnailImageForAchievement:achievementCopy size:{v24, v25}])
     {
-      v27 = [v13 thumbnailImageForAchievement:v12 size:{v24, v26}];
-      v28 = [(CHAchievementsCellContentView *)self badgeView];
-      [v28 setImage:v27];
+      v27 = [factoryCopy thumbnailImageForAchievement:achievementCopy size:{v24, v26}];
+      badgeView = [(CHAchievementsCellContentView *)self badgeView];
+      [badgeView setImage:v27];
     }
 
     else
@@ -570,42 +570,42 @@ LABEL_6:
       block[1] = 3221225472;
       block[2] = sub_10011F890;
       block[3] = &unk_10083CD58;
-      v39 = v13;
+      v39 = factoryCopy;
       v42 = v24;
       v43 = v26;
-      v40 = v12;
-      v41 = self;
+      v40 = achievementCopy;
+      selfCopy = self;
       dispatch_async(v29, block);
     }
 
-    v30 = [objc_opt_class() stringForAchievement:v12 locProvider:v14 formatForFriend:v7];
-    v31 = [(CHAchievementsCellContentView *)self label];
-    [v31 setAttributedText:v30];
+    v30 = [objc_opt_class() stringForAchievement:achievementCopy locProvider:providerCopy formatForFriend:friendCopy];
+    label = [(CHAchievementsCellContentView *)self label];
+    [label setAttributedText:v30];
 
-    if (AAUIShouldUseNewTrophyCase() && v8)
+    if (AAUIShouldUseNewTrophyCase() && barCopy)
     {
-      [(CHAchievementsCellContentView *)self _populateProgressBar:v12];
-      [(CHAchievementsCellContentView *)self applyProgressBarConstraints:v12];
+      [(CHAchievementsCellContentView *)self _populateProgressBar:achievementCopy];
+      [(CHAchievementsCellContentView *)self applyProgressBarConstraints:achievementCopy];
     }
 
-    v32 = [(CHAchievementsCellContentView *)self templateUniqueName];
+    templateUniqueName = [(CHAchievementsCellContentView *)self templateUniqueName];
 
-    if (v32)
+    if (templateUniqueName)
     {
-      v33 = [v12 unearned];
+      unearned = [achievementCopy unearned];
       v34 = &off_10083D408;
-      if (!v33)
+      if (!unearned)
       {
         v34 = &off_10083D400;
       }
 
       v35 = *v34;
-      v36 = [(CHAchievementsCellContentView *)self templateUniqueName];
-      v37 = [NSString stringWithFormat:@"%@_%@", v36, v35];
+      templateUniqueName2 = [(CHAchievementsCellContentView *)self templateUniqueName];
+      v37 = [NSString stringWithFormat:@"%@_%@", templateUniqueName2, v35];
       [(CHAchievementsCellContentView *)self setAccessibilityIdentifier:v37];
     }
 
-    [(CHAchievementsCellContentView *)self annotateView:self->_badgeView withAchievement:v12];
+    [(CHAchievementsCellContentView *)self annotateView:self->_badgeView withAchievement:achievementCopy];
   }
 
   else
@@ -614,16 +614,16 @@ LABEL_6:
   }
 }
 
-+ (BOOL)_shouldShowProgressBar:(id)a3
++ (BOOL)_shouldShowProgressBar:(id)bar
 {
-  v3 = a3;
-  if (AAUIShouldUseNewTrophyCase() && [v3 unearned])
+  barCopy = bar;
+  if (AAUIShouldUseNewTrophyCase() && [barCopy unearned])
   {
-    v4 = [v3 goal];
-    if (v4)
+    goal = [barCopy goal];
+    if (goal)
     {
-      v5 = [v3 progress];
-      v6 = v5 != 0;
+      progress = [barCopy progress];
+      v6 = progress != 0;
     }
 
     else
@@ -640,20 +640,20 @@ LABEL_6:
   return v6;
 }
 
-- (void)_populateProgressBar:(id)a3
+- (void)_populateProgressBar:(id)bar
 {
-  v14 = a3;
-  if ([objc_opt_class() _shouldShowProgressBar:v14])
+  barCopy = bar;
+  if ([objc_opt_class() _shouldShowProgressBar:barCopy])
   {
-    v4 = [v14 template];
-    v5 = [v4 canonicalUnit];
+    template = [barCopy template];
+    canonicalUnit = [template canonicalUnit];
 
-    v6 = [v14 goal];
-    [v6 doubleValueForUnit:v5];
+    goal = [barCopy goal];
+    [goal doubleValueForUnit:canonicalUnit];
     v8 = v7;
 
-    v9 = [v14 progress];
-    [v9 doubleValueForUnit:v5];
+    progress = [barCopy progress];
+    [progress doubleValueForUnit:canonicalUnit];
     v11 = v10;
 
     if (v8 == 0.0)
@@ -691,21 +691,21 @@ LABEL_6:
   [(UIProgressView *)progressBar setHidden:1];
 }
 
-- (void)setEarnedInstanceCountLabelBackgroundColor:(id)a3
+- (void)setEarnedInstanceCountLabelBackgroundColor:(id)color
 {
-  objc_storeStrong(&self->_earnedInstanceCountLabelBackgroundColor, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_earnedInstanceCountLabelBackgroundColor, color);
+  colorCopy = color;
   earnedInstanceCountLabelBackgroundColor = self->_earnedInstanceCountLabelBackgroundColor;
-  v7 = [(CHAchievementsCellContentView *)self earnedInstanceCountLabelView];
-  [v7 setPillBackgroundColor:earnedInstanceCountLabelBackgroundColor];
+  earnedInstanceCountLabelView = [(CHAchievementsCellContentView *)self earnedInstanceCountLabelView];
+  [earnedInstanceCountLabelView setPillBackgroundColor:earnedInstanceCountLabelBackgroundColor];
 }
 
-- (void)annotateView:(id)a3 withAchievement:(id)a4
+- (void)annotateView:(id)view withAchievement:(id)achievement
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_100629168(v6, a4);
+  viewCopy = view;
+  achievementCopy = achievement;
+  selfCopy = self;
+  sub_100629168(viewCopy, achievement);
 }
 
 @end

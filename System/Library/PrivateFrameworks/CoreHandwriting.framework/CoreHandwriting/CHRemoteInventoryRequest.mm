@@ -1,16 +1,16 @@
 @interface CHRemoteInventoryRequest
-- (CHRemoteInventoryRequest)initWithCoder:(id)a3;
-- (CHRemoteInventoryRequest)initWithTokenizedResult:(id)a3 drawing:(id)a4 strokeIdentifiers:(id)a5;
-- (void)encodeWithCoder:(id)a3;
+- (CHRemoteInventoryRequest)initWithCoder:(id)coder;
+- (CHRemoteInventoryRequest)initWithTokenizedResult:(id)result drawing:(id)drawing strokeIdentifiers:(id)identifiers;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CHRemoteInventoryRequest
 
-- (CHRemoteInventoryRequest)initWithTokenizedResult:(id)a3 drawing:(id)a4 strokeIdentifiers:(id)a5
+- (CHRemoteInventoryRequest)initWithTokenizedResult:(id)result drawing:(id)drawing strokeIdentifiers:(id)identifiers
 {
-  v8 = a5;
-  v9 = a4;
-  if (!a3)
+  identifiersCopy = identifiers;
+  drawingCopy = drawing;
+  if (!result)
   {
     if (qword_1EA84DC48 != -1)
     {
@@ -31,8 +31,8 @@
       {
 LABEL_10:
 
-        v10 = self;
-        v11 = 0;
+        selfCopy2 = self;
+        resultCopy = 0;
         goto LABEL_11;
       }
     }
@@ -52,29 +52,29 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v10 = self;
-  v11 = a3;
+  selfCopy2 = self;
+  resultCopy = result;
 LABEL_11:
-  v14 = sub_1837BBA00(v10, v11, v9, v8, 0, 0);
+  v14 = sub_1837BBA00(selfCopy2, resultCopy, drawingCopy, identifiersCopy, 0, 0);
 
   return v14;
 }
 
-- (CHRemoteInventoryRequest)initWithCoder:(id)a3
+- (CHRemoteInventoryRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
-  v9 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v6, v5, @"tokenizedResult", v7, v8);
+  v9 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v6, v5, @"tokenizedResult", v7, v8);
   tokenizedResult = self->_tokenizedResult;
   self->_tokenizedResult = v9;
 
   v11 = objc_opt_class();
-  v15 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v12, v11, @"drawing", v13, v14);
+  v15 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v12, v11, @"drawing", v13, v14);
   drawing = self->_drawing;
   self->_drawing = v15;
 
   v17 = objc_opt_class();
-  v21 = objc_msgSend_decodeArrayOfObjectsOfClass_forKey_(v4, v18, v17, @"strokeIdentifiers", v19, v20);
+  v21 = objc_msgSend_decodeArrayOfObjectsOfClass_forKey_(coderCopy, v18, v17, @"strokeIdentifiers", v19, v20);
   strokeIdentifiers = self->_strokeIdentifiers;
   self->_strokeIdentifiers = v21;
 
@@ -82,25 +82,25 @@ LABEL_11:
   v24 = objc_opt_class();
   v25 = objc_opt_class();
   v30 = objc_msgSend_setWithObjects_(v23, v26, v24, v27, v28, v29, v25, 0);
-  v34 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v31, v30, @"removedStrokeIdentifiers", v32, v33);
+  v34 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v31, v30, @"removedStrokeIdentifiers", v32, v33);
   removedStrokeIdentifiers = self->_removedStrokeIdentifiers;
   self->_removedStrokeIdentifiers = v34;
 
-  LOBYTE(v24) = objc_msgSend_decodeBoolForKey_(v4, v36, @"shouldResetInventory", v37, v38, v39);
+  LOBYTE(v24) = objc_msgSend_decodeBoolForKey_(coderCopy, v36, @"shouldResetInventory", v37, v38, v39);
   self->_shouldResetInventory = v24;
 
   return self;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   tokenizedResult = self->_tokenizedResult;
-  v20 = a3;
-  objc_msgSend_encodeObject_forKey_(v20, v5, tokenizedResult, @"tokenizedResult", v6, v7);
-  objc_msgSend_encodeObject_forKey_(v20, v8, self->_drawing, @"drawing", v9, v10);
-  objc_msgSend_encodeObject_forKey_(v20, v11, self->_strokeIdentifiers, @"strokeIdentifiers", v12, v13);
-  objc_msgSend_encodeObject_forKey_(v20, v14, self->_removedStrokeIdentifiers, @"removedStrokeIdentifiers", v15, v16);
-  objc_msgSend_encodeBool_forKey_(v20, v17, self->_shouldResetInventory, @"shouldResetInventory", v18, v19);
+  coderCopy = coder;
+  objc_msgSend_encodeObject_forKey_(coderCopy, v5, tokenizedResult, @"tokenizedResult", v6, v7);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v8, self->_drawing, @"drawing", v9, v10);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v11, self->_strokeIdentifiers, @"strokeIdentifiers", v12, v13);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v14, self->_removedStrokeIdentifiers, @"removedStrokeIdentifiers", v15, v16);
+  objc_msgSend_encodeBool_forKey_(coderCopy, v17, self->_shouldResetInventory, @"shouldResetInventory", v18, v19);
 }
 
 @end

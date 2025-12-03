@@ -1,32 +1,32 @@
 @interface VCMediaNegotiationBlobMultiwayVideoStream
-+ (BOOL)convertVideoFormat:(int)a3 width:(int *)a4 height:(int *)a5;
-+ (int)payloadForVideoPayload:(int)a3;
-+ (int)videoFormatForWidth:(int)a3 height:(int)a4;
-+ (int)videoPayloadForPayload:(int)a3;
-- (BOOL)isEqual:(id)a3;
++ (BOOL)convertVideoFormat:(int)format width:(int *)width height:(int *)height;
++ (int)payloadForVideoPayload:(int)payload;
++ (int)videoFormatForWidth:(int)width height:(int)height;
++ (int)videoPayloadForPayload:(int)payload;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isSubStream;
-- (VCMediaNegotiationBlobMultiwayVideoStream)initWithStreamConfig:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (VCMediaNegotiationBlobMultiwayVideoStream)initWithStreamConfig:(id)config;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (id)newMultiwayVideoStream;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)printWithLogFile:(void *)a3;
-- (void)setHasMaxNetworkBitrate:(BOOL)a3;
-- (void)setHasMaxPacketsPerSecond:(BOOL)a3;
-- (void)setHasMetadata:(BOOL)a3;
-- (void)setHasRepairedMaxNetworkBitrate:(BOOL)a3;
-- (void)setHasRepairedStreamID:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)printWithLogFile:(void *)file;
+- (void)setHasMaxNetworkBitrate:(BOOL)bitrate;
+- (void)setHasMaxPacketsPerSecond:(BOOL)second;
+- (void)setHasMetadata:(BOOL)metadata;
+- (void)setHasRepairedMaxNetworkBitrate:(BOOL)bitrate;
+- (void)setHasRepairedStreamID:(BOOL)d;
+- (void)writeTo:(id)to;
 @end
 
 @implementation VCMediaNegotiationBlobMultiwayVideoStream
 
-- (void)setHasMaxNetworkBitrate:(BOOL)a3
+- (void)setHasMaxNetworkBitrate:(BOOL)bitrate
 {
-  if (a3)
+  if (bitrate)
   {
     v3 = 2;
   }
@@ -39,9 +39,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasMetadata:(BOOL)a3
+- (void)setHasMetadata:(BOOL)metadata
 {
-  if (a3)
+  if (metadata)
   {
     v3 = 8;
   }
@@ -54,9 +54,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasMaxPacketsPerSecond:(BOOL)a3
+- (void)setHasMaxPacketsPerSecond:(BOOL)second
 {
-  if (a3)
+  if (second)
   {
     v3 = 4;
   }
@@ -69,9 +69,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasRepairedStreamID:(BOOL)a3
+- (void)setHasRepairedStreamID:(BOOL)d
 {
-  if (a3)
+  if (d)
   {
     v3 = 32;
   }
@@ -84,9 +84,9 @@
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasRepairedMaxNetworkBitrate:(BOOL)a3
+- (void)setHasRepairedMaxNetworkBitrate:(BOOL)bitrate
 {
-  if (a3)
+  if (bitrate)
   {
     v3 = 16;
   }
@@ -109,28 +109,28 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_ssrc), @"ssrc"}];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_ssrc), @"ssrc"}];
   if ((*&self->_has & 2) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_maxNetworkBitrate), @"maxNetworkBitrate"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_maxNetworkBitrate), @"maxNetworkBitrate"}];
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_payload), @"payload"}];
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_streamID), @"streamID"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_payload), @"payload"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_streamID), @"streamID"}];
   if ((*&self->_has & 8) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_metadata), @"metadata"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_metadata), @"metadata"}];
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_qualityIndex), @"qualityIndex"}];
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_supportedVideoFormats), @"supportedVideoFormats"}];
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_frameRate), @"frameRate"}];
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_keyFrameInterval), @"keyFrameInterval"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_qualityIndex), @"qualityIndex"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_supportedVideoFormats), @"supportedVideoFormats"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_frameRate), @"frameRate"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_keyFrameInterval), @"keyFrameInterval"}];
   has = self->_has;
   if (has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_maxMediaBitrate), @"maxMediaBitrate"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_maxMediaBitrate), @"maxMediaBitrate"}];
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -141,10 +141,10 @@ LABEL_7:
       }
 
 LABEL_13:
-      [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_repairedStreamID), @"repairedStreamID"}];
+      [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_repairedStreamID), @"repairedStreamID"}];
       if ((*&self->_has & 0x10) == 0)
       {
-        return v3;
+        return dictionary;
       }
 
       goto LABEL_9;
@@ -156,7 +156,7 @@ LABEL_13:
     goto LABEL_7;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_maxPacketsPerSecond), @"maxPacketsPerSecond"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_maxPacketsPerSecond), @"maxPacketsPerSecond"}];
   has = self->_has;
   if ((has & 0x20) != 0)
   {
@@ -167,13 +167,13 @@ LABEL_8:
   if ((has & 0x10) != 0)
   {
 LABEL_9:
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_repairedMaxNetworkBitrate), @"repairedMaxNetworkBitrate"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_repairedMaxNetworkBitrate), @"repairedMaxNetworkBitrate"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   PBDataWriterWriteUint32Field();
   if ((*&self->_has & 2) != 0)
@@ -239,32 +239,32 @@ LABEL_13:
   PBDataWriterWriteUint32Field();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  *(a3 + 12) = self->_ssrc;
+  *(to + 12) = self->_ssrc;
   if ((*&self->_has & 2) != 0)
   {
-    *(a3 + 5) = self->_maxNetworkBitrate;
-    *(a3 + 60) |= 2u;
+    *(to + 5) = self->_maxNetworkBitrate;
+    *(to + 60) |= 2u;
   }
 
-  *(a3 + 8) = self->_payload;
-  *(a3 + 13) = self->_streamID;
+  *(to + 8) = self->_payload;
+  *(to + 13) = self->_streamID;
   if ((*&self->_has & 8) != 0)
   {
-    *(a3 + 7) = self->_metadata;
-    *(a3 + 60) |= 8u;
+    *(to + 7) = self->_metadata;
+    *(to + 60) |= 8u;
   }
 
-  *(a3 + 9) = self->_qualityIndex;
-  *(a3 + 14) = self->_supportedVideoFormats;
-  *(a3 + 2) = self->_frameRate;
-  *(a3 + 3) = self->_keyFrameInterval;
+  *(to + 9) = self->_qualityIndex;
+  *(to + 14) = self->_supportedVideoFormats;
+  *(to + 2) = self->_frameRate;
+  *(to + 3) = self->_keyFrameInterval;
   has = self->_has;
   if (has)
   {
-    *(a3 + 4) = self->_maxMediaBitrate;
-    *(a3 + 60) |= 1u;
+    *(to + 4) = self->_maxMediaBitrate;
+    *(to + 60) |= 1u;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -283,8 +283,8 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  *(a3 + 6) = self->_maxPacketsPerSecond;
-  *(a3 + 60) |= 4u;
+  *(to + 6) = self->_maxPacketsPerSecond;
+  *(to + 60) |= 4u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -295,23 +295,23 @@ LABEL_8:
     }
 
 LABEL_13:
-    *(a3 + 10) = self->_repairedMaxNetworkBitrate;
-    *(a3 + 60) |= 0x10u;
+    *(to + 10) = self->_repairedMaxNetworkBitrate;
+    *(to + 60) |= 0x10u;
     return;
   }
 
 LABEL_12:
-  *(a3 + 11) = self->_repairedStreamID;
-  *(a3 + 60) |= 0x20u;
+  *(to + 11) = self->_repairedStreamID;
+  *(to + 60) |= 0x20u;
   if ((*&self->_has & 0x10) != 0)
   {
     goto LABEL_13;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(result + 12) = self->_ssrc;
   if ((*&self->_has & 2) != 0)
   {
@@ -382,12 +382,12 @@ LABEL_9:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
-    if (self->_ssrc != *(a3 + 12))
+    if (self->_ssrc != *(equal + 12))
     {
 LABEL_38:
       LOBYTE(v5) = 0;
@@ -396,83 +396,83 @@ LABEL_38:
 
     if ((*&self->_has & 2) != 0)
     {
-      if ((*(a3 + 60) & 2) == 0 || self->_maxNetworkBitrate != *(a3 + 5))
+      if ((*(equal + 60) & 2) == 0 || self->_maxNetworkBitrate != *(equal + 5))
       {
         goto LABEL_38;
       }
     }
 
-    else if ((*(a3 + 60) & 2) != 0)
+    else if ((*(equal + 60) & 2) != 0)
     {
       goto LABEL_38;
     }
 
-    if (self->_payload != *(a3 + 8) || self->_streamID != *(a3 + 13))
+    if (self->_payload != *(equal + 8) || self->_streamID != *(equal + 13))
     {
       goto LABEL_38;
     }
 
     if ((*&self->_has & 8) != 0)
     {
-      if ((*(a3 + 60) & 8) == 0 || self->_metadata != *(a3 + 7))
+      if ((*(equal + 60) & 8) == 0 || self->_metadata != *(equal + 7))
       {
         goto LABEL_38;
       }
     }
 
-    else if ((*(a3 + 60) & 8) != 0)
+    else if ((*(equal + 60) & 8) != 0)
     {
       goto LABEL_38;
     }
 
-    if (self->_qualityIndex != *(a3 + 9) || self->_supportedVideoFormats != *(a3 + 14) || self->_frameRate != *(a3 + 2) || self->_keyFrameInterval != *(a3 + 3))
+    if (self->_qualityIndex != *(equal + 9) || self->_supportedVideoFormats != *(equal + 14) || self->_frameRate != *(equal + 2) || self->_keyFrameInterval != *(equal + 3))
     {
       goto LABEL_38;
     }
 
     if (*&self->_has)
     {
-      if ((*(a3 + 60) & 1) == 0 || self->_maxMediaBitrate != *(a3 + 4))
+      if ((*(equal + 60) & 1) == 0 || self->_maxMediaBitrate != *(equal + 4))
       {
         goto LABEL_38;
       }
     }
 
-    else if (*(a3 + 60))
+    else if (*(equal + 60))
     {
       goto LABEL_38;
     }
 
     if ((*&self->_has & 4) != 0)
     {
-      if ((*(a3 + 60) & 4) == 0 || self->_maxPacketsPerSecond != *(a3 + 6))
+      if ((*(equal + 60) & 4) == 0 || self->_maxPacketsPerSecond != *(equal + 6))
       {
         goto LABEL_38;
       }
     }
 
-    else if ((*(a3 + 60) & 4) != 0)
+    else if ((*(equal + 60) & 4) != 0)
     {
       goto LABEL_38;
     }
 
     if ((*&self->_has & 0x20) != 0)
     {
-      if ((*(a3 + 60) & 0x20) == 0 || self->_repairedStreamID != *(a3 + 11))
+      if ((*(equal + 60) & 0x20) == 0 || self->_repairedStreamID != *(equal + 11))
       {
         goto LABEL_38;
       }
     }
 
-    else if ((*(a3 + 60) & 0x20) != 0)
+    else if ((*(equal + 60) & 0x20) != 0)
     {
       goto LABEL_38;
     }
 
-    LOBYTE(v5) = (*(a3 + 60) & 0x10) == 0;
+    LOBYTE(v5) = (*(equal + 60) & 0x10) == 0;
     if ((*&self->_has & 0x10) != 0)
     {
-      if ((*(a3 + 60) & 0x10) == 0 || self->_repairedMaxNetworkBitrate != *(a3 + 10))
+      if ((*(equal + 60) & 0x10) == 0 || self->_repairedMaxNetworkBitrate != *(equal + 10))
       {
         goto LABEL_38;
       }
@@ -552,33 +552,33 @@ LABEL_14:
   return v2 ^ (2654435761 * self->_ssrc) ^ (2654435761 * self->_payload) ^ (2654435761 * self->_streamID) ^ v3 ^ (2654435761 * self->_qualityIndex) ^ (2654435761 * self->_supportedVideoFormats) ^ (2654435761 * self->_frameRate) ^ (2654435761 * self->_keyFrameInterval) ^ v4 ^ v5 ^ v6 ^ v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  self->_ssrc = *(a3 + 12);
-  if ((*(a3 + 60) & 2) != 0)
+  self->_ssrc = *(from + 12);
+  if ((*(from + 60) & 2) != 0)
   {
-    self->_maxNetworkBitrate = *(a3 + 5);
+    self->_maxNetworkBitrate = *(from + 5);
     *&self->_has |= 2u;
   }
 
-  self->_payload = *(a3 + 8);
-  self->_streamID = *(a3 + 13);
-  if ((*(a3 + 60) & 8) != 0)
+  self->_payload = *(from + 8);
+  self->_streamID = *(from + 13);
+  if ((*(from + 60) & 8) != 0)
   {
-    self->_metadata = *(a3 + 7);
+    self->_metadata = *(from + 7);
     *&self->_has |= 8u;
   }
 
-  self->_qualityIndex = *(a3 + 9);
-  self->_supportedVideoFormats = *(a3 + 14);
-  self->_frameRate = *(a3 + 2);
-  self->_keyFrameInterval = *(a3 + 3);
-  v3 = *(a3 + 60);
+  self->_qualityIndex = *(from + 9);
+  self->_supportedVideoFormats = *(from + 14);
+  self->_frameRate = *(from + 2);
+  self->_keyFrameInterval = *(from + 3);
+  v3 = *(from + 60);
   if (v3)
   {
-    self->_maxMediaBitrate = *(a3 + 4);
+    self->_maxMediaBitrate = *(from + 4);
     *&self->_has |= 1u;
-    v3 = *(a3 + 60);
+    v3 = *(from + 60);
     if ((v3 & 4) == 0)
     {
 LABEL_7:
@@ -591,14 +591,14 @@ LABEL_7:
     }
   }
 
-  else if ((*(a3 + 60) & 4) == 0)
+  else if ((*(from + 60) & 4) == 0)
   {
     goto LABEL_7;
   }
 
-  self->_maxPacketsPerSecond = *(a3 + 6);
+  self->_maxPacketsPerSecond = *(from + 6);
   *&self->_has |= 4u;
-  v3 = *(a3 + 60);
+  v3 = *(from + 60);
   if ((v3 & 0x20) == 0)
   {
 LABEL_8:
@@ -608,43 +608,43 @@ LABEL_8:
     }
 
 LABEL_13:
-    self->_repairedMaxNetworkBitrate = *(a3 + 10);
+    self->_repairedMaxNetworkBitrate = *(from + 10);
     *&self->_has |= 0x10u;
     return;
   }
 
 LABEL_12:
-  self->_repairedStreamID = *(a3 + 11);
+  self->_repairedStreamID = *(from + 11);
   *&self->_has |= 0x20u;
-  if ((*(a3 + 60) & 0x10) != 0)
+  if ((*(from + 60) & 0x10) != 0)
   {
     goto LABEL_13;
   }
 }
 
-- (VCMediaNegotiationBlobMultiwayVideoStream)initWithStreamConfig:(id)a3
+- (VCMediaNegotiationBlobMultiwayVideoStream)initWithStreamConfig:(id)config
 {
   v4 = [(VCMediaNegotiationBlobMultiwayVideoStream *)self init];
   if (v4)
   {
-    v4->_ssrc = [a3 ssrc];
-    v4->_maxNetworkBitrate = [a3 maxNetworkBitrate];
+    v4->_ssrc = [config ssrc];
+    v4->_maxNetworkBitrate = [config maxNetworkBitrate];
     *&v4->_has = *&v4->_has & 0xF8 | 2;
-    if ([a3 isSubstream])
+    if ([config isSubstream])
     {
       v4->_metadata |= 1u;
     }
 
     *&v4->_has |= 8u;
-    v4->_streamID = [a3 streamID];
-    v4->_qualityIndex = [a3 qualityIndex];
-    [a3 size];
+    v4->_streamID = [config streamID];
+    v4->_qualityIndex = [config qualityIndex];
+    [config size];
     v6 = v5;
-    [a3 size];
+    [config size];
     v4->_supportedVideoFormats = [VCMediaNegotiationBlobMultiwayVideoStream videoFormatForWidth:v6 height:v7];
-    v4->_frameRate = [a3 frameRate];
-    v4->_keyFrameInterval = [a3 keyFrameInterval];
-    if ([a3 hasRepairedStreamID])
+    v4->_frameRate = [config frameRate];
+    v4->_keyFrameInterval = [config keyFrameInterval];
+    if ([config hasRepairedStreamID])
     {
       v8 = 32;
     }
@@ -655,10 +655,10 @@ LABEL_12:
     }
 
     *&v4->_has = *&v4->_has & 0xDF | v8;
-    v4->_repairedStreamID = [a3 repairedStreamID];
-    v4->_repairedMaxNetworkBitrate = [a3 repairedMaxNetworkBitrate];
+    v4->_repairedStreamID = [config repairedStreamID];
+    v4->_repairedMaxNetworkBitrate = [config repairedMaxNetworkBitrate];
     *&v4->_has = (*&v4->_has >> 1) & 0x10 | *&v4->_has & 0xEF;
-    v4->_payload = +[VCMediaNegotiationBlobMultiwayVideoStream videoPayloadForPayload:](VCMediaNegotiationBlobMultiwayVideoStream, "videoPayloadForPayload:", [a3 payload]);
+    v4->_payload = +[VCMediaNegotiationBlobMultiwayVideoStream videoPayloadForPayload:](VCMediaNegotiationBlobMultiwayVideoStream, "videoPayloadForPayload:", [config payload]);
   }
 
   return v4;
@@ -719,12 +719,12 @@ LABEL_12:
   }
 }
 
-- (void)printWithLogFile:(void *)a3
+- (void)printWithLogFile:(void *)file
 {
   v22 = *MEMORY[0x1E69E9840];
   v3 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Multiway Video Stream Settings: SSRC=%x maxNetworkBitrate=%d maxMediaBitrate=%d maxPacketsPerSecond=%d payload=%d streamID=%d qualityIndex=%d supportedvideoFormats=%d frameRate=%d keyFrameInterval=%u metadata=%u hasRepaired:%u repairedMaxNetworkBitrate=%d repairedStreamID=%d", self->_ssrc, self->_maxNetworkBitrate, self->_maxMediaBitrate, self->_maxPacketsPerSecond, self->_payload, self->_streamID, self->_qualityIndex, self->_supportedVideoFormats, self->_frameRate, self->_keyFrameInterval, self->_metadata, -[VCMediaNegotiationBlobMultiwayVideoStream hasRepairedStreamID](self, "hasRepairedStreamID"), self->_repairedMaxNetworkBitrate, self->_repairedStreamID];
-  v4 = [v3 UTF8String];
-  VRLogfilePrintWithTimestamp(a3, "Media Blob -     %s\n", v5, v6, v7, v8, v9, v10, v4);
+  uTF8String = [v3 UTF8String];
+  VRLogfilePrintWithTimestamp(file, "Media Blob -     %s\n", v5, v6, v7, v8, v9, v10, uTF8String);
   if (VRTraceGetErrorLogLevelForModule() >= 6)
   {
     v11 = VRTraceErrorLogLevelToCSTR();
@@ -738,85 +738,85 @@ LABEL_12:
       v18 = 1024;
       v19 = 1436;
       v20 = 2080;
-      v21 = [v3 UTF8String];
+      uTF8String2 = [v3 UTF8String];
       _os_log_impl(&dword_1DB56E000, v12, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Media Blob -     %s\n", buf, 0x26u);
     }
   }
 }
 
-+ (int)videoFormatForWidth:(int)a3 height:(int)a4
++ (int)videoFormatForWidth:(int)width height:(int)height
 {
-  if (a3 == 192 && a4 == 112)
+  if (width == 192 && height == 112)
   {
     return 256;
   }
 
-  if (a3 == 320 && a4 == 176)
+  if (width == 320 && height == 176)
   {
     return 1;
   }
 
-  if (a3 == 320 && a4 == 240)
+  if (width == 320 && height == 240)
   {
     return 2;
   }
 
-  if (a3 == 480 && a4 == 272)
+  if (width == 480 && height == 272)
   {
     return 4;
   }
 
-  if (a3 == 480 && a4 == 368)
+  if (width == 480 && height == 368)
   {
     return 8;
   }
 
-  if (a3 == 640 && a4 == 368)
+  if (width == 640 && height == 368)
   {
     return 16;
   }
 
-  if (a3 == 640 && a4 == 480)
+  if (width == 640 && height == 480)
   {
     return 32;
   }
 
-  if (a3 == 1024 && a4 == 768)
+  if (width == 1024 && height == 768)
   {
     return 64;
   }
 
-  if (a3 == 1280 && a4 == 720)
+  if (width == 1280 && height == 720)
   {
     return 128;
   }
 
-  if (a3 == 192 && a4 == 192)
+  if (width == 192 && height == 192)
   {
     return 512;
   }
 
-  if (a3 == 240 && a4 == 240)
+  if (width == 240 && height == 240)
   {
     return 1024;
   }
 
-  if (a3 == 320 && a4 == 320)
+  if (width == 320 && height == 320)
   {
     return 2048;
   }
 
-  if (a3 == 480 && a4 == 480)
+  if (width == 480 && height == 480)
   {
     return 4096;
   }
 
-  if (a3 == 640 && a4 == 640)
+  if (width == 640 && height == 640)
   {
     return 0x2000;
   }
 
-  if (a4 == 720 && a3 == 720)
+  if (height == 720 && width == 720)
   {
     return 0x8000;
   }
@@ -827,18 +827,18 @@ LABEL_12:
   }
 }
 
-+ (BOOL)convertVideoFormat:(int)a3 width:(int *)a4 height:(int *)a5
++ (BOOL)convertVideoFormat:(int)format width:(int *)width height:(int *)height
 {
   result = 0;
-  if (a3 <= 127)
+  if (format <= 127)
   {
-    if (a3 > 7)
+    if (format > 7)
     {
-      if (a3 > 31)
+      if (format > 31)
       {
-        if (a3 != 32)
+        if (format != 32)
         {
-          if (a3 != 64)
+          if (format != 64)
           {
             return result;
           }
@@ -852,9 +852,9 @@ LABEL_12:
         goto LABEL_32;
       }
 
-      if (a3 != 8)
+      if (format != 8)
       {
-        if (a3 != 16)
+        if (format != 16)
         {
           return result;
         }
@@ -871,7 +871,7 @@ LABEL_30:
       goto LABEL_40;
     }
 
-    switch(a3)
+    switch(format)
     {
       case 1:
         v6 = 176;
@@ -890,11 +890,11 @@ LABEL_30:
     goto LABEL_40;
   }
 
-  if (a3 > 2047)
+  if (format > 2047)
   {
-    if (a3 >= 0x2000)
+    if (format >= 0x2000)
     {
-      if (a3 == 0x2000)
+      if (format == 0x2000)
       {
         v7 = 640;
         v6 = 640;
@@ -902,7 +902,7 @@ LABEL_30:
 
       else
       {
-        if (a3 != 0x8000)
+        if (format != 0x8000)
         {
           return result;
         }
@@ -912,7 +912,7 @@ LABEL_30:
       }
     }
 
-    else if (a3 == 2048)
+    else if (format == 2048)
     {
       v7 = 320;
       v6 = 320;
@@ -920,7 +920,7 @@ LABEL_30:
 
     else
     {
-      if (a3 != 4096)
+      if (format != 4096)
       {
         return result;
       }
@@ -930,9 +930,9 @@ LABEL_30:
     }
   }
 
-  else if (a3 > 511)
+  else if (format > 511)
   {
-    if (a3 == 512)
+    if (format == 512)
     {
       v7 = 192;
       v6 = 192;
@@ -940,7 +940,7 @@ LABEL_30:
 
     else
     {
-      if (a3 != 1024)
+      if (format != 1024)
       {
         return result;
       }
@@ -950,7 +950,7 @@ LABEL_30:
     }
   }
 
-  else if (a3 == 128)
+  else if (format == 128)
   {
     v6 = 720;
     v7 = 1280;
@@ -958,7 +958,7 @@ LABEL_30:
 
   else
   {
-    if (a3 != 256)
+    if (format != 256)
     {
       return result;
     }
@@ -968,14 +968,14 @@ LABEL_30:
   }
 
 LABEL_40:
-  *a4 = v7;
-  *a5 = v6;
+  *width = v7;
+  *height = v6;
   return 1;
 }
 
-+ (int)videoPayloadForPayload:(int)a3
++ (int)videoPayloadForPayload:(int)payload
 {
-  if (a3 == 123)
+  if (payload == 123)
   {
     v3 = 1;
   }
@@ -985,7 +985,7 @@ LABEL_40:
     v3 = -1;
   }
 
-  if (a3 == 100)
+  if (payload == 100)
   {
     return 2;
   }
@@ -996,9 +996,9 @@ LABEL_40:
   }
 }
 
-+ (int)payloadForVideoPayload:(int)a3
++ (int)payloadForVideoPayload:(int)payload
 {
-  if (a3 == 1)
+  if (payload == 1)
   {
     v3 = 123;
   }
@@ -1008,7 +1008,7 @@ LABEL_40:
     v3 = 128;
   }
 
-  if (a3 == 2)
+  if (payload == 2)
   {
     return 100;
   }

@@ -1,21 +1,21 @@
 @interface AMSODIAssessment
-- (AMSODIAssessment)initWithCoder:(id)a3;
-- (AMSODIAssessment)initWithStringValue:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (AMSODIAssessment)initWithCoder:(id)coder;
+- (AMSODIAssessment)initWithStringValue:(id)value;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AMSODIAssessment
 
-- (AMSODIAssessment)initWithStringValue:(id)a3
+- (AMSODIAssessment)initWithStringValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   v9.receiver = self;
   v9.super_class = AMSODIAssessment;
   v5 = [(AMSODIAssessment *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [valueCopy copy];
     stringValue = v5->_stringValue;
     v5->_stringValue = v6;
   }
@@ -23,32 +23,32 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_alloc_init(AMSODIAssessment);
-  v6 = [(NSString *)self->_stringValue copyWithZone:a3];
+  v6 = [(NSString *)self->_stringValue copyWithZone:zone];
   stringValue = v5->_stringValue;
   v5->_stringValue = v6;
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(AMSODIAssessment *)self stringValue];
-  [v4 encodeObject:v5 forKey:@"stringValue"];
+  coderCopy = coder;
+  stringValue = [(AMSODIAssessment *)self stringValue];
+  [coderCopy encodeObject:stringValue forKey:@"stringValue"];
 }
 
-- (AMSODIAssessment)initWithCoder:(id)a3
+- (AMSODIAssessment)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = AMSODIAssessment;
   v5 = [(AMSODIAssessment *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"stringValue"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"stringValue"];
     stringValue = v5->_stringValue;
     v5->_stringValue = v6;
   }

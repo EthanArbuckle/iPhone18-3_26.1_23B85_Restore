@@ -1,10 +1,10 @@
 @interface AMSSQLiteSchema
-- (AMSSQLiteSchema)initWithConnection:(id)a3;
-- (BOOL)column:(id)a3 existsInTable:(id)a4;
-- (BOOL)migrateToVersion:(int64_t)a3 usingBlock:(id)a4 error:(id *)a5;
-- (BOOL)tableExists:(id)a3;
+- (AMSSQLiteSchema)initWithConnection:(id)connection;
+- (BOOL)column:(id)column existsInTable:(id)table;
+- (BOOL)migrateToVersion:(int64_t)version usingBlock:(id)block error:(id *)error;
+- (BOOL)tableExists:(id)exists;
 - (int64_t)currentUserVersion;
-- (void)_setUserVersion:(int64_t)a3;
+- (void)_setUserVersion:(int64_t)version;
 @end
 
 @implementation AMSSQLiteSchema
@@ -34,39 +34,39 @@ uint64_t __37__AMSSQLiteSchema_currentUserVersion__block_invoke(uint64_t a1, voi
   return v3;
 }
 
-- (AMSSQLiteSchema)initWithConnection:(id)a3
+- (AMSSQLiteSchema)initWithConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v9.receiver = self;
   v9.super_class = AMSSQLiteSchema;
   v6 = [(AMSSQLiteSchema *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_connection, a3);
+    objc_storeStrong(&v6->_connection, connection);
   }
 
   return v7;
 }
 
-- (BOOL)column:(id)a3 existsInTable:(id)a4
+- (BOOL)column:(id)column existsInTable:(id)table
 {
-  v6 = a3;
-  v7 = a4;
+  columnCopy = column;
+  tableCopy = table;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
   v18 = 0;
   connection = self->_connection;
-  v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"PRAGMA table_info(%@)", v7];;
+  tableCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"PRAGMA table_info(%@)", tableCopy];;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __40__AMSSQLiteSchema_column_existsInTable___block_invoke;
   v12[3] = &unk_1E73BC3A8;
   v14 = &v15;
-  v10 = v6;
+  v10 = columnCopy;
   v13 = v10;
-  [(AMSSQLiteConnection *)connection executeQuery:v9 withResults:v12];
+  [(AMSSQLiteConnection *)connection executeQuery:tableCopy withResults:v12];
 
   LOBYTE(connection) = *(v16 + 24);
   _Block_object_dispose(&v15, 8);
@@ -94,9 +94,9 @@ void __40__AMSSQLiteSchema_column_existsInTable___block_invoke_2(uint64_t a1, vo
   *a4 = v6;
 }
 
-- (BOOL)migrateToVersion:(int64_t)a3 usingBlock:(id)a4 error:(id *)a5
+- (BOOL)migrateToVersion:(int64_t)version usingBlock:(id)block error:(id *)error
 {
-  v8 = a4;
+  blockCopy = block;
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
@@ -113,15 +113,15 @@ void __40__AMSSQLiteSchema_column_existsInTable___block_invoke_2(uint64_t a1, vo
   v13[2] = __53__AMSSQLiteSchema_migrateToVersion_usingBlock_error___block_invoke;
   v13[3] = &unk_1E73BC3F8;
   v13[4] = self;
-  v10 = v8;
+  v10 = blockCopy;
   v14 = v10;
   v15 = &v24;
   v16 = &v18;
-  v17 = a3;
+  versionCopy = version;
   [(AMSSQLiteConnection *)connection performTransaction:v13];
-  if (a5)
+  if (error)
   {
-    *a5 = v19[5];
+    *error = v19[5];
   }
 
   v11 = *(v25 + 24);
@@ -174,9 +174,9 @@ uint64_t __53__AMSSQLiteSchema_migrateToVersion_usingBlock_error___block_invoke(
   return v10;
 }
 
-- (BOOL)tableExists:(id)a3
+- (BOOL)tableExists:(id)exists
 {
-  v4 = a3;
+  existsCopy = exists;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -186,7 +186,7 @@ uint64_t __53__AMSSQLiteSchema_migrateToVersion_usingBlock_error___block_invoke(
   v8[1] = 3221225472;
   v8[2] = __31__AMSSQLiteSchema_tableExists___block_invoke;
   v8[3] = &unk_1E73BBFF0;
-  v6 = v4;
+  v6 = existsCopy;
   v9 = v6;
   v10 = &v11;
   [(AMSSQLiteConnection *)connection executeQuery:@"SELECT name FROM sqlite_master where name = '?'" withResults:v8];
@@ -206,10 +206,10 @@ void __31__AMSSQLiteSchema_tableExists___block_invoke(uint64_t a1, void *a2)
   *(*(*(a1 + 40) + 8) + 24) = v3;
 }
 
-- (void)_setUserVersion:(int64_t)a3
+- (void)_setUserVersion:(int64_t)version
 {
-  v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"PRAGMA user_version = %lld", a3];;
-  [(AMSSQLiteConnection *)self->_connection executeStatement:v4 error:0];
+  version = [MEMORY[0x1E696AEC0] stringWithFormat:@"PRAGMA user_version = %lld", version];;
+  [(AMSSQLiteConnection *)self->_connection executeStatement:version error:0];
 }
 
 @end

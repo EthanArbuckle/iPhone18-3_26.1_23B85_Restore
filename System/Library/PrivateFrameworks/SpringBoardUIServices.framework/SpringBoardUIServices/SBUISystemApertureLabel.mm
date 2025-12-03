@@ -1,81 +1,81 @@
 @interface SBUISystemApertureLabel
-- (CGSize)_sizeOfLabelWithNewText:(id)a3 fittingSize:(CGSize)a4;
-- (id)_springAnimationForKeyPath:(id)a3 fromValue:(id)a4 toValue:(id)a5;
-- (void)_animateLayer:(id)a3 andSetValueForKeyPath:(id)a4 fromValue:(id)a5 toValue:(id)a6;
-- (void)performTextSwapAnimationWithText:(id)a3 textColor:(id)a4 fittingSize:(CGSize)a5 sizeWillChangeBlock:(id)a6 didSetPropertiesBlock:(id)a7;
-- (void)setText:(id)a3;
-- (void)setTextColor:(id)a3;
+- (CGSize)_sizeOfLabelWithNewText:(id)text fittingSize:(CGSize)size;
+- (id)_springAnimationForKeyPath:(id)path fromValue:(id)value toValue:(id)toValue;
+- (void)_animateLayer:(id)layer andSetValueForKeyPath:(id)path fromValue:(id)value toValue:(id)toValue;
+- (void)performTextSwapAnimationWithText:(id)text textColor:(id)color fittingSize:(CGSize)size sizeWillChangeBlock:(id)block didSetPropertiesBlock:(id)propertiesBlock;
+- (void)setText:(id)text;
+- (void)setTextColor:(id)color;
 @end
 
 @implementation SBUISystemApertureLabel
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
   v5.receiver = self;
   v5.super_class = SBUISystemApertureLabel;
-  [(SBUISystemApertureLabel *)&v5 setText:a3];
+  [(SBUISystemApertureLabel *)&v5 setText:text];
   pendingText = self->_pendingText;
   self->_pendingText = 0;
 }
 
-- (void)setTextColor:(id)a3
+- (void)setTextColor:(id)color
 {
   v5.receiver = self;
   v5.super_class = SBUISystemApertureLabel;
-  [(SBUISystemApertureLabel *)&v5 setTextColor:a3];
+  [(SBUISystemApertureLabel *)&v5 setTextColor:color];
   pendingTextColor = self->_pendingTextColor;
   self->_pendingTextColor = 0;
 }
 
-- (void)performTextSwapAnimationWithText:(id)a3 textColor:(id)a4 fittingSize:(CGSize)a5 sizeWillChangeBlock:(id)a6 didSetPropertiesBlock:(id)a7
+- (void)performTextSwapAnimationWithText:(id)text textColor:(id)color fittingSize:(CGSize)size sizeWillChangeBlock:(id)block didSetPropertiesBlock:(id)propertiesBlock
 {
-  height = a5.height;
-  width = a5.width;
+  height = size.height;
+  width = size.width;
   v43[1] = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v29 = a4;
-  v15 = a7;
-  v16 = a6;
-  v17 = [(SBUISystemApertureLabel *)self layer];
+  textCopy = text;
+  colorCopy = color;
+  propertiesBlockCopy = propertiesBlock;
+  blockCopy = block;
+  layer = [(SBUISystemApertureLabel *)self layer];
   v18 = [MEMORY[0x1E6979378] filterWithType:*MEMORY[0x1E6979928]];
   [v18 setName:@"gaussianBlur"];
   [v18 setValue:&unk_1F1DB5AE0 forKey:*MEMORY[0x1E6979BA8]];
   v43[0] = v18;
   v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v43 count:1];
-  [v17 setFilters:v19];
+  [layer setFilters:v19];
 
-  [(SBUISystemApertureLabel *)self _animateLayer:v17 andSetValueForKeyPath:@"filters.gaussianBlur.inputRadius" fromValue:&unk_1F1DB5AE0 toValue:&unk_1F1DB5AF0];
-  [(SBUISystemApertureLabel *)self _animateLayer:v17 andSetValueForKeyPath:@"opacity" fromValue:&unk_1F1DB5B00 toValue:&unk_1F1DB5B10];
-  [(SBUISystemApertureLabel *)self _animateLayer:v17 andSetValueForKeyPath:@"transform.scale.xy" fromValue:&unk_1F1DB5B00 toValue:&unk_1F1DB5B10];
-  [(SBUISystemApertureLabel *)self _sizeOfLabelWithNewText:v14 fittingSize:width, height];
+  [(SBUISystemApertureLabel *)self _animateLayer:layer andSetValueForKeyPath:@"filters.gaussianBlur.inputRadius" fromValue:&unk_1F1DB5AE0 toValue:&unk_1F1DB5AF0];
+  [(SBUISystemApertureLabel *)self _animateLayer:layer andSetValueForKeyPath:@"opacity" fromValue:&unk_1F1DB5B00 toValue:&unk_1F1DB5B10];
+  [(SBUISystemApertureLabel *)self _animateLayer:layer andSetValueForKeyPath:@"transform.scale.xy" fromValue:&unk_1F1DB5B00 toValue:&unk_1F1DB5B10];
+  [(SBUISystemApertureLabel *)self _sizeOfLabelWithNewText:textCopy fittingSize:width, height];
   v21 = v20;
   v23 = v22;
-  v16[2](v16);
+  blockCopy[2](blockCopy);
 
-  objc_storeStrong(&self->_pendingText, a3);
-  objc_storeStrong(&self->_pendingTextColor, a4);
+  objc_storeStrong(&self->_pendingText, text);
+  objc_storeStrong(&self->_pendingTextColor, color);
   v24 = dispatch_time(0, 200000000);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __124__SBUISystemApertureLabel_performTextSwapAnimationWithText_textColor_fittingSize_sizeWillChangeBlock_didSetPropertiesBlock___block_invoke;
   block[3] = &unk_1E789FA08;
   block[4] = self;
-  v31 = v14;
+  v31 = textCopy;
   v41 = v21;
   v42 = v23;
   v39 = &unk_1F1DB5B00;
-  v40 = v15;
-  v32 = v29;
-  v33 = v17;
+  v40 = propertiesBlockCopy;
+  v32 = colorCopy;
+  v33 = layer;
   v34 = &unk_1F1DB5AF0;
   v35 = &unk_1F1DB5AE0;
   v36 = &unk_1F1DB5B10;
   v37 = &unk_1F1DB5B00;
   v38 = &unk_1F1DB5B10;
-  v25 = v17;
-  v26 = v15;
-  v27 = v29;
-  v28 = v14;
+  v25 = layer;
+  v26 = propertiesBlockCopy;
+  v27 = colorCopy;
+  v28 = textCopy;
   dispatch_after(v24, MEMORY[0x1E69E96A0], block);
 }
 
@@ -105,27 +105,27 @@ uint64_t __124__SBUISystemApertureLabel_performTextSwapAnimationWithText_textCol
   return [v3 _animateLayer:v4 andSetValueForKeyPath:@"transform.scale.xy" fromValue:v5 toValue:v6];
 }
 
-- (void)_animateLayer:(id)a3 andSetValueForKeyPath:(id)a4 fromValue:(id)a5 toValue:(id)a6
+- (void)_animateLayer:(id)layer andSetValueForKeyPath:(id)path fromValue:(id)value toValue:(id)toValue
 {
-  v10 = a6;
-  v11 = a4;
-  v12 = a3;
-  v13 = [(SBUISystemApertureLabel *)self _springAnimationForKeyPath:v11 fromValue:a5 toValue:v10];
-  [v12 addAnimation:v13 forKey:v11];
-  [v12 setValue:v10 forKeyPath:v11];
+  toValueCopy = toValue;
+  pathCopy = path;
+  layerCopy = layer;
+  v13 = [(SBUISystemApertureLabel *)self _springAnimationForKeyPath:pathCopy fromValue:value toValue:toValueCopy];
+  [layerCopy addAnimation:v13 forKey:pathCopy];
+  [layerCopy setValue:toValueCopy forKeyPath:pathCopy];
 }
 
-- (id)_springAnimationForKeyPath:(id)a3 fromValue:(id)a4 toValue:(id)a5
+- (id)_springAnimationForKeyPath:(id)path fromValue:(id)value toValue:(id)toValue
 {
   v7 = MEMORY[0x1E69794A8];
-  v8 = a5;
-  v9 = a4;
-  v10 = [v7 animationWithKeyPath:a3];
+  toValueCopy = toValue;
+  valueCopy = value;
+  v10 = [v7 animationWithKeyPath:path];
   [v10 setBeginTime:CACurrentMediaTime()];
   [v10 setFillMode:*MEMORY[0x1E69797D8]];
-  [v10 setFromValue:v9];
+  [v10 setFromValue:valueCopy];
 
-  [v10 setToValue:v8];
+  [v10 setToValue:toValueCopy];
   [v10 setMass:2.0];
   [v10 setStiffness:300.0];
   [v10 setDamping:30.0];
@@ -134,22 +134,22 @@ uint64_t __124__SBUISystemApertureLabel_performTextSwapAnimationWithText_textCol
   return v10;
 }
 
-- (CGSize)_sizeOfLabelWithNewText:(id)a3 fittingSize:(CGSize)a4
+- (CGSize)_sizeOfLabelWithNewText:(id)text fittingSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3;
+  height = size.height;
+  width = size.width;
+  textCopy = text;
   [(SBUISystemApertureLabel *)self sizeThatFits:width, height];
   v8 = objc_alloc_init(MEMORY[0x1E69DCC10]);
-  v9 = [(SBUISystemApertureLabel *)self font];
-  [v8 setFont:v9];
+  font = [(SBUISystemApertureLabel *)self font];
+  [v8 setFont:font];
 
-  v10 = [(SBUISystemApertureLabel *)self text];
-  [v8 setText:v10];
+  text = [(SBUISystemApertureLabel *)self text];
+  [v8 setText:text];
 
   [v8 setNumberOfLines:{-[SBUISystemApertureLabel numberOfLines](self, "numberOfLines")}];
   [v8 sizeThatFits:{width, height}];
-  [v8 setText:v7];
+  [v8 setText:textCopy];
 
   [v8 sizeThatFits:{width, height}];
   v12 = v11;

@@ -1,26 +1,26 @@
 @interface SIRINLUEXTERNALMatchInfo
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsMatchedAliasTypes:(id)a3;
-- (int)matchedAliasTypesAtIndex:(unint64_t)a3;
+- (int)StringAsMatchedAliasTypes:(id)types;
+- (int)matchedAliasTypesAtIndex:(unint64_t)index;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SIRINLUEXTERNALMatchInfo
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 104))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 104))
   {
-    self->_matchSignalBitset = *(v4 + 12);
+    self->_matchSignalBitset = *(fromCopy + 12);
     *&self->_has |= 1u;
   }
 
@@ -217,10 +217,10 @@ LABEL_45:
 
   v5 = v25;
 LABEL_51:
-  v22 = [v5 matchedAliasTypesCount];
-  if (v22)
+  matchedAliasTypesCount = [v5 matchedAliasTypesCount];
+  if (matchedAliasTypesCount)
   {
-    v23 = v22;
+    v23 = matchedAliasTypesCount;
     for (i = 0; i != v23; ++i)
     {
       -[SIRINLUEXTERNALMatchInfo addMatchedAliasTypes:](self, "addMatchedAliasTypes:", [v25 matchedAliasTypesAtIndex:i]);
@@ -251,24 +251,24 @@ LABEL_51:
   return v9 ^ v11 ^ PBRepeatedInt32Hash();
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_24;
   }
 
-  v5 = *(v4 + 104);
+  v5 = *(equalCopy + 104);
   if (*&self->_has)
   {
-    if ((*(v4 + 104) & 1) == 0 || self->_matchSignalBitset != *(v4 + 12))
+    if ((*(equalCopy + 104) & 1) == 0 || self->_matchSignalBitset != *(equalCopy + 12))
     {
       goto LABEL_24;
     }
   }
 
-  else if (*(v4 + 104))
+  else if (*(equalCopy + 104))
   {
 LABEL_24:
     IsEqual = 0;
@@ -276,13 +276,13 @@ LABEL_24:
   }
 
   matchScore = self->_matchScore;
-  if (matchScore | *(v4 + 5) && ![(SIRICOMMONFloatValue *)matchScore isEqual:?])
+  if (matchScore | *(equalCopy + 5) && ![(SIRICOMMONFloatValue *)matchScore isEqual:?])
   {
     goto LABEL_24;
   }
 
   maxTokenCount = self->_maxTokenCount;
-  if (maxTokenCount | *(v4 + 12))
+  if (maxTokenCount | *(equalCopy + 12))
   {
     if (![(SIRICOMMONUInt32Value *)maxTokenCount isEqual:?])
     {
@@ -291,7 +291,7 @@ LABEL_24:
   }
 
   matchedTokenCount = self->_matchedTokenCount;
-  if (matchedTokenCount | *(v4 + 9))
+  if (matchedTokenCount | *(equalCopy + 9))
   {
     if (![(SIRICOMMONUInt32Value *)matchedTokenCount isEqual:?])
     {
@@ -300,7 +300,7 @@ LABEL_24:
   }
 
   maxStopWordCount = self->_maxStopWordCount;
-  if (maxStopWordCount | *(v4 + 11))
+  if (maxStopWordCount | *(equalCopy + 11))
   {
     if (![(SIRICOMMONUInt32Value *)maxStopWordCount isEqual:?])
     {
@@ -309,7 +309,7 @@ LABEL_24:
   }
 
   matchedStopWordCount = self->_matchedStopWordCount;
-  if (matchedStopWordCount | *(v4 + 8))
+  if (matchedStopWordCount | *(equalCopy + 8))
   {
     if (![(SIRICOMMONUInt32Value *)matchedStopWordCount isEqual:?])
     {
@@ -318,7 +318,7 @@ LABEL_24:
   }
 
   editDistance = self->_editDistance;
-  if (editDistance | *(v4 + 4))
+  if (editDistance | *(equalCopy + 4))
   {
     if (![(SIRICOMMONUInt32Value *)editDistance isEqual:?])
     {
@@ -327,7 +327,7 @@ LABEL_24:
   }
 
   maxAliasCount = self->_maxAliasCount;
-  if (maxAliasCount | *(v4 + 10))
+  if (maxAliasCount | *(equalCopy + 10))
   {
     if (![(SIRICOMMONUInt32Value *)maxAliasCount isEqual:?])
     {
@@ -336,7 +336,7 @@ LABEL_24:
   }
 
   matchedAliasCount = self->_matchedAliasCount;
-  if (matchedAliasCount | *(v4 + 7))
+  if (matchedAliasCount | *(equalCopy + 7))
   {
     if (![(SIRICOMMONUInt32Value *)matchedAliasCount isEqual:?])
     {
@@ -350,9 +350,9 @@ LABEL_25:
   return IsEqual;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -360,35 +360,35 @@ LABEL_25:
     *(v5 + 104) |= 1u;
   }
 
-  v7 = [(SIRICOMMONFloatValue *)self->_matchScore copyWithZone:a3];
+  v7 = [(SIRICOMMONFloatValue *)self->_matchScore copyWithZone:zone];
   v8 = v6[5];
   v6[5] = v7;
 
-  v9 = [(SIRICOMMONUInt32Value *)self->_maxTokenCount copyWithZone:a3];
+  v9 = [(SIRICOMMONUInt32Value *)self->_maxTokenCount copyWithZone:zone];
   v10 = v6[12];
   v6[12] = v9;
 
-  v11 = [(SIRICOMMONUInt32Value *)self->_matchedTokenCount copyWithZone:a3];
+  v11 = [(SIRICOMMONUInt32Value *)self->_matchedTokenCount copyWithZone:zone];
   v12 = v6[9];
   v6[9] = v11;
 
-  v13 = [(SIRICOMMONUInt32Value *)self->_maxStopWordCount copyWithZone:a3];
+  v13 = [(SIRICOMMONUInt32Value *)self->_maxStopWordCount copyWithZone:zone];
   v14 = v6[11];
   v6[11] = v13;
 
-  v15 = [(SIRICOMMONUInt32Value *)self->_matchedStopWordCount copyWithZone:a3];
+  v15 = [(SIRICOMMONUInt32Value *)self->_matchedStopWordCount copyWithZone:zone];
   v16 = v6[8];
   v6[8] = v15;
 
-  v17 = [(SIRICOMMONUInt32Value *)self->_editDistance copyWithZone:a3];
+  v17 = [(SIRICOMMONUInt32Value *)self->_editDistance copyWithZone:zone];
   v18 = v6[4];
   v6[4] = v17;
 
-  v19 = [(SIRICOMMONUInt32Value *)self->_maxAliasCount copyWithZone:a3];
+  v19 = [(SIRICOMMONUInt32Value *)self->_maxAliasCount copyWithZone:zone];
   v20 = v6[10];
   v6[10] = v19;
 
-  v21 = [(SIRICOMMONUInt32Value *)self->_matchedAliasCount copyWithZone:a3];
+  v21 = [(SIRICOMMONUInt32Value *)self->_matchedAliasCount copyWithZone:zone];
   v22 = v6[7];
   v6[7] = v21;
 
@@ -396,19 +396,19 @@ LABEL_25:
   return v6;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[12] = self->_matchSignalBitset;
-    *(v4 + 104) |= 1u;
+    toCopy[12] = self->_matchSignalBitset;
+    *(toCopy + 104) |= 1u;
   }
 
-  v8 = v4;
+  v8 = toCopy;
   if (self->_matchScore)
   {
-    [v4 setMatchScore:?];
+    [toCopy setMatchScore:?];
   }
 
   if (self->_maxTokenCount)
@@ -449,10 +449,10 @@ LABEL_25:
   if ([(SIRINLUEXTERNALMatchInfo *)self matchedAliasTypesCount])
   {
     [v8 clearMatchedAliasTypes];
-    v5 = [(SIRINLUEXTERNALMatchInfo *)self matchedAliasTypesCount];
-    if (v5)
+    matchedAliasTypesCount = [(SIRINLUEXTERNALMatchInfo *)self matchedAliasTypesCount];
+    if (matchedAliasTypesCount)
     {
-      v6 = v5;
+      v6 = matchedAliasTypesCount;
       for (i = 0; i != v6; ++i)
       {
         [v8 addMatchedAliasTypes:{-[SIRINLUEXTERNALMatchInfo matchedAliasTypesAtIndex:](self, "matchedAliasTypesAtIndex:", i)}];
@@ -461,63 +461,63 @@ LABEL_25:
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v9 = v4;
+  toCopy = to;
+  v9 = toCopy;
   if (*&self->_has)
   {
     matchSignalBitset = self->_matchSignalBitset;
     PBDataWriterWriteFixed32Field();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_matchScore)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_maxTokenCount)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_matchedTokenCount)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_maxStopWordCount)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_matchedStopWordCount)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_editDistance)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_maxAliasCount)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_matchedAliasCount)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   p_matchedAliasTypes = &self->_matchedAliasTypes;
@@ -528,7 +528,7 @@ LABEL_25:
     {
       v8 = p_matchedAliasTypes->list[v7];
       PBDataWriterWriteInt32Field();
-      v4 = v9;
+      toCopy = v9;
       ++v7;
     }
 
@@ -538,67 +538,67 @@ LABEL_25:
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_matchSignalBitset];
-    [v3 setObject:v4 forKey:@"match_signal_bitset"];
+    [dictionary setObject:v4 forKey:@"match_signal_bitset"];
   }
 
   matchScore = self->_matchScore;
   if (matchScore)
   {
-    v6 = [(SIRICOMMONFloatValue *)matchScore dictionaryRepresentation];
-    [v3 setObject:v6 forKey:@"match_score"];
+    dictionaryRepresentation = [(SIRICOMMONFloatValue *)matchScore dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"match_score"];
   }
 
   maxTokenCount = self->_maxTokenCount;
   if (maxTokenCount)
   {
-    v8 = [(SIRICOMMONUInt32Value *)maxTokenCount dictionaryRepresentation];
-    [v3 setObject:v8 forKey:@"max_token_count"];
+    dictionaryRepresentation2 = [(SIRICOMMONUInt32Value *)maxTokenCount dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"max_token_count"];
   }
 
   matchedTokenCount = self->_matchedTokenCount;
   if (matchedTokenCount)
   {
-    v10 = [(SIRICOMMONUInt32Value *)matchedTokenCount dictionaryRepresentation];
-    [v3 setObject:v10 forKey:@"matched_token_count"];
+    dictionaryRepresentation3 = [(SIRICOMMONUInt32Value *)matchedTokenCount dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation3 forKey:@"matched_token_count"];
   }
 
   maxStopWordCount = self->_maxStopWordCount;
   if (maxStopWordCount)
   {
-    v12 = [(SIRICOMMONUInt32Value *)maxStopWordCount dictionaryRepresentation];
-    [v3 setObject:v12 forKey:@"max_stop_word_count"];
+    dictionaryRepresentation4 = [(SIRICOMMONUInt32Value *)maxStopWordCount dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation4 forKey:@"max_stop_word_count"];
   }
 
   matchedStopWordCount = self->_matchedStopWordCount;
   if (matchedStopWordCount)
   {
-    v14 = [(SIRICOMMONUInt32Value *)matchedStopWordCount dictionaryRepresentation];
-    [v3 setObject:v14 forKey:@"matched_stop_word_count"];
+    dictionaryRepresentation5 = [(SIRICOMMONUInt32Value *)matchedStopWordCount dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation5 forKey:@"matched_stop_word_count"];
   }
 
   editDistance = self->_editDistance;
   if (editDistance)
   {
-    v16 = [(SIRICOMMONUInt32Value *)editDistance dictionaryRepresentation];
-    [v3 setObject:v16 forKey:@"edit_distance"];
+    dictionaryRepresentation6 = [(SIRICOMMONUInt32Value *)editDistance dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation6 forKey:@"edit_distance"];
   }
 
   maxAliasCount = self->_maxAliasCount;
   if (maxAliasCount)
   {
-    v18 = [(SIRICOMMONUInt32Value *)maxAliasCount dictionaryRepresentation];
-    [v3 setObject:v18 forKey:@"max_alias_count"];
+    dictionaryRepresentation7 = [(SIRICOMMONUInt32Value *)maxAliasCount dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation7 forKey:@"max_alias_count"];
   }
 
   matchedAliasCount = self->_matchedAliasCount;
   if (matchedAliasCount)
   {
-    v20 = [(SIRICOMMONUInt32Value *)matchedAliasCount dictionaryRepresentation];
-    [v3 setObject:v20 forKey:@"matched_alias_count"];
+    dictionaryRepresentation8 = [(SIRICOMMONUInt32Value *)matchedAliasCount dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation8 forKey:@"matched_alias_count"];
   }
 
   p_matchedAliasTypes = &self->_matchedAliasTypes;
@@ -629,10 +629,10 @@ LABEL_25:
       while (v23 < p_matchedAliasTypes->count);
     }
 
-    [v3 setObject:v22 forKey:@"matched_alias_types"];
+    [dictionary setObject:v22 forKey:@"matched_alias_types"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -641,71 +641,71 @@ LABEL_25:
   v8.receiver = self;
   v8.super_class = SIRINLUEXTERNALMatchInfo;
   v4 = [(SIRINLUEXTERNALMatchInfo *)&v8 description];
-  v5 = [(SIRINLUEXTERNALMatchInfo *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SIRINLUEXTERNALMatchInfo *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (int)StringAsMatchedAliasTypes:(id)a3
+- (int)StringAsMatchedAliasTypes:(id)types
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"ALIAS_TYPE_UNDEFINED"])
+  typesCopy = types;
+  if ([typesCopy isEqualToString:@"ALIAS_TYPE_UNDEFINED"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"ALIAS_TYPE_HOME_AUTOMATION"])
+  else if ([typesCopy isEqualToString:@"ALIAS_TYPE_HOME_AUTOMATION"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"ALIAS_TYPE_SYNONYM"])
+  else if ([typesCopy isEqualToString:@"ALIAS_TYPE_SYNONYM"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"ALIAS_TYPE_TRANSLITERATION"])
+  else if ([typesCopy isEqualToString:@"ALIAS_TYPE_TRANSLITERATION"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"ALIAS_TYPE_EXPANDED_EMOJI"])
+  else if ([typesCopy isEqualToString:@"ALIAS_TYPE_EXPANDED_EMOJI"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"ALIAS_TYPE_CONTACT_RELATIONSHIP"])
+  else if ([typesCopy isEqualToString:@"ALIAS_TYPE_CONTACT_RELATIONSHIP"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"ALIAS_TYPE_CONTACT_HYPOCORISM"])
+  else if ([typesCopy isEqualToString:@"ALIAS_TYPE_CONTACT_HYPOCORISM"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"ALIAS_TYPE_CONTACT_HANDLE"])
+  else if ([typesCopy isEqualToString:@"ALIAS_TYPE_CONTACT_HANDLE"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"ALIAS_TYPE_PREFIX_MATCHING"])
+  else if ([typesCopy isEqualToString:@"ALIAS_TYPE_PREFIX_MATCHING"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"ALIAS_TYPE_DIACRITIC_REMOVAL"])
+  else if ([typesCopy isEqualToString:@"ALIAS_TYPE_DIACRITIC_REMOVAL"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"ALIAS_TYPE_PHONETIC_MATCHER"])
+  else if ([typesCopy isEqualToString:@"ALIAS_TYPE_PHONETIC_MATCHER"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"ALIAS_TYPE_LEMMATIZATION"])
+  else if ([typesCopy isEqualToString:@"ALIAS_TYPE_LEMMATIZATION"])
   {
     v4 = 11;
   }
@@ -718,20 +718,20 @@ LABEL_25:
   return v4;
 }
 
-- (int)matchedAliasTypesAtIndex:(unint64_t)a3
+- (int)matchedAliasTypesAtIndex:(unint64_t)index
 {
   p_matchedAliasTypes = &self->_matchedAliasTypes;
   count = self->_matchedAliasTypes.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x1E695DF30];
     v7 = *MEMORY[0x1E695DA20];
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_matchedAliasTypes->list[a3];
+  return p_matchedAliasTypes->list[index];
 }
 
 - (void)dealloc

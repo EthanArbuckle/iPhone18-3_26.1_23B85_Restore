@@ -1,14 +1,14 @@
 @interface SKGDomainNode
-+ (id)domainWithElementIdentifier:(unint64_t)a3 inGraph:(id)a4;
-- (SKGDomainNode)initWithDomain:(id)a3;
++ (id)domainWithElementIdentifier:(unint64_t)identifier inGraph:(id)graph;
+- (SKGDomainNode)initWithDomain:(id)domain;
 @end
 
 @implementation SKGDomainNode
 
-+ (id)domainWithElementIdentifier:(unint64_t)a3 inGraph:(id)a4
++ (id)domainWithElementIdentifier:(unint64_t)identifier inGraph:(id)graph
 {
-  v5 = [a4 graph];
-  v6 = [v5 nodeForIdentifier:a3];
+  graph = [graph graph];
+  v6 = [graph nodeForIdentifier:identifier];
 
   v7 = [SKGDomainNode alloc];
   v8 = [v6 propertyForKey:@"value"];
@@ -17,11 +17,11 @@
   return v9;
 }
 
-- (SKGDomainNode)initWithDomain:(id)a3
+- (SKGDomainNode)initWithDomain:(id)domain
 {
   v4.receiver = self;
   v4.super_class = SKGDomainNode;
-  return [(SKGNode *)&v4 initWithValue:a3];
+  return [(SKGNode *)&v4 initWithValue:domain];
 }
 
 @end

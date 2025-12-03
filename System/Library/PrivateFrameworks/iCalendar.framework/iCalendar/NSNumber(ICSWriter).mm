@@ -10,7 +10,7 @@
 - (void)_ICSBoolAppendingToString:()ICSWriter
 {
   v5 = a3;
-  if ([a1 BOOLValue])
+  if ([self BOOLValue])
   {
     v4 = @"TRUE";
   }
@@ -26,8 +26,8 @@
 - (void)_ICSUTCOffsetAppendingToString:()ICSWriter
 {
   v11 = a3;
-  v4 = [a1 intValue];
-  if (v4 >= 0)
+  intValue = [self intValue];
+  if (intValue >= 0)
   {
     v5 = @"+";
   }
@@ -38,7 +38,7 @@
   }
 
   [v11 appendString:v5];
-  LODWORD(v6) = v4 % 86400 / 3600;
+  LODWORD(v6) = intValue % 86400 / 3600;
   if (v6 >= 0)
   {
     v6 = v6;
@@ -46,10 +46,10 @@
 
   else
   {
-    v6 = (v4 % 86400 / -3600);
+    v6 = (intValue % 86400 / -3600);
   }
 
-  v7 = v4 % 3600 + ((-30583 * (v4 % 3600)) >> 16);
+  v7 = intValue % 3600 + ((-30583 * (intValue % 3600)) >> 16);
   LODWORD(v8) = (v7 >> 5) + ((v7 & 0x8000) >> 15);
   if (v8 >= 0)
   {
@@ -61,8 +61,8 @@
     v8 = -v8;
   }
 
-  LODWORD(v9) = v4 % 60;
-  if (v4 % 60)
+  LODWORD(v9) = intValue % 60;
+  if (intValue % 60)
   {
     if (v9 >= 0)
     {
@@ -86,18 +86,18 @@
 - (void)_ICSFBTypeAppendingToString:()ICSWriter
 {
   v5 = a3;
-  v4 = [a1 longValue];
-  if (v4 <= 4)
+  longValue = [self longValue];
+  if (longValue <= 4)
   {
-    [v5 appendString:off_27A64C170[v4]];
+    [v5 appendString:off_27A64C170[longValue]];
   }
 }
 
 - (void)_ICSStringWithOptions:()ICSWriter appendingToString:
 {
   v6 = a4;
-  v7 = [a1 stringValue];
-  iCalendarAppendStringToStringWithOptions(v7, v6, a3);
+  stringValue = [self stringValue];
+  iCalendarAppendStringToStringWithOptions(stringValue, v6, a3);
 }
 
 @end

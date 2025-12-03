@@ -1,18 +1,18 @@
 @interface NearbyPeerPaymentVFXView
-- (_TtC9PassKitUI24NearbyPeerPaymentVFXView)initWithCoder:(id)a3;
-- (_TtC9PassKitUI24NearbyPeerPaymentVFXView)initWithFrame:(CGRect)a3;
-- (_TtC9PassKitUI24NearbyPeerPaymentVFXView)initWithFrame:(CGRect)a3 options:(id)a4;
+- (_TtC9PassKitUI24NearbyPeerPaymentVFXView)initWithCoder:(id)coder;
+- (_TtC9PassKitUI24NearbyPeerPaymentVFXView)initWithFrame:(CGRect)frame;
+- (_TtC9PassKitUI24NearbyPeerPaymentVFXView)initWithFrame:(CGRect)frame options:(id)options;
 @end
 
 @implementation NearbyPeerPaymentVFXView
 
-- (_TtC9PassKitUI24NearbyPeerPaymentVFXView)initWithFrame:(CGRect)a3 options:(id)a4
+- (_TtC9PassKitUI24NearbyPeerPaymentVFXView)initWithFrame:(CGRect)frame options:(id)options
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (a4)
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  if (options)
   {
     sub_1BE052244();
     v9 = sub_1BE052224();
@@ -25,28 +25,28 @@
 
   v12.receiver = self;
   v12.super_class = type metadata accessor for NearbyPeerPaymentVFXView();
-  v10 = [(NearbyPeerPaymentVFXView *)&v12 initWithFrame:v9 options:x, y, width, height];
+  height = [(NearbyPeerPaymentVFXView *)&v12 initWithFrame:v9 options:x, y, width, height];
 
-  return v10;
+  return height;
 }
 
-- (_TtC9PassKitUI24NearbyPeerPaymentVFXView)initWithFrame:(CGRect)a3
+- (_TtC9PassKitUI24NearbyPeerPaymentVFXView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8.receiver = self;
   v8.super_class = type metadata accessor for NearbyPeerPaymentVFXView();
   return [(NearbyPeerPaymentVFXView *)&v8 initWithFrame:x, y, width, height];
 }
 
-- (_TtC9PassKitUI24NearbyPeerPaymentVFXView)initWithCoder:(id)a3
+- (_TtC9PassKitUI24NearbyPeerPaymentVFXView)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for NearbyPeerPaymentVFXView();
-  v4 = a3;
-  v5 = [(NearbyPeerPaymentVFXView *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(NearbyPeerPaymentVFXView *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

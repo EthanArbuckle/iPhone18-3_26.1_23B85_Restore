@@ -1,21 +1,21 @@
 @interface HFHomeItemProvider
-- (HFHomeItemProvider)initWithHomeManager:(id)a3;
+- (HFHomeItemProvider)initWithHomeManager:(id)manager;
 - (id)invalidationReasons;
 - (id)reloadItems;
 @end
 
 @implementation HFHomeItemProvider
 
-- (HFHomeItemProvider)initWithHomeManager:(id)a3
+- (HFHomeItemProvider)initWithHomeManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v11.receiver = self;
   v11.super_class = HFHomeItemProvider;
   v6 = [(HFItemProvider *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_homeManager, a3);
+    objc_storeStrong(&v6->_homeManager, manager);
     v8 = [MEMORY[0x277CBEB58] set];
     homeItems = v7->_homeItems;
     v7->_homeItems = v8;
@@ -26,12 +26,12 @@
 
 - (id)reloadItems
 {
-  v3 = [(HFHomeItemProvider *)self homeManager];
-  v4 = [v3 homes];
+  homeManager = [(HFHomeItemProvider *)self homeManager];
+  homes = [homeManager homes];
 
   objc_initWeak(&location, self);
-  v5 = [(HFHomeItemProvider *)self filter];
-  v6 = [(HFItemProvider *)self reloadItemsWithHomeKitObjects:v4 filter:v5 itemMap:&__block_literal_global_202];
+  filter = [(HFHomeItemProvider *)self filter];
+  v6 = [(HFItemProvider *)self reloadItemsWithHomeKitObjects:homes filter:filter itemMap:&__block_literal_global_202];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __33__HFHomeItemProvider_reloadItems__block_invoke_2;
@@ -74,8 +74,8 @@ id __33__HFHomeItemProvider_reloadItems__block_invoke_2(uint64_t a1, void *a2)
 {
   v5.receiver = self;
   v5.super_class = HFHomeItemProvider;
-  v2 = [(HFItemProvider *)&v5 invalidationReasons];
-  v3 = [v2 setByAddingObject:@"home"];
+  invalidationReasons = [(HFItemProvider *)&v5 invalidationReasons];
+  v3 = [invalidationReasons setByAddingObject:@"home"];
 
   return v3;
 }

@@ -1,36 +1,36 @@
 @interface BLSAlwaysOnFrequencyPerMinuteTimeline
-- (BLSAlwaysOnFrequencyPerMinuteTimeline)initWithPerMinuteUpdateFrequency:(int64_t)a3 identifier:(id)a4 configure:(id)a5;
+- (BLSAlwaysOnFrequencyPerMinuteTimeline)initWithPerMinuteUpdateFrequency:(int64_t)frequency identifier:(id)identifier configure:(id)configure;
 - (id)description;
-- (id)unconfiguredEntriesForDateInterval:(id)a3 previousEntry:(id)a4;
-- (int64_t)requestedFidelityForStartEntryInDateInterval:(id)a3 withPreviousEntry:(id)a4;
+- (id)unconfiguredEntriesForDateInterval:(id)interval previousEntry:(id)entry;
+- (int64_t)requestedFidelityForStartEntryInDateInterval:(id)interval withPreviousEntry:(id)entry;
 @end
 
 @implementation BLSAlwaysOnFrequencyPerMinuteTimeline
 
-- (BLSAlwaysOnFrequencyPerMinuteTimeline)initWithPerMinuteUpdateFrequency:(int64_t)a3 identifier:(id)a4 configure:(id)a5
+- (BLSAlwaysOnFrequencyPerMinuteTimeline)initWithPerMinuteUpdateFrequency:(int64_t)frequency identifier:(id)identifier configure:(id)configure
 {
-  v8 = a4;
-  v9 = a5;
+  identifierCopy = identifier;
+  configureCopy = configure;
   v15.receiver = self;
   v15.super_class = BLSAlwaysOnFrequencyPerMinuteTimeline;
-  v10 = [(BLSAlwaysOnTimeline *)&v15 initWithIdentifier:v8 configure:v9];
+  v10 = [(BLSAlwaysOnTimeline *)&v15 initWithIdentifier:identifierCopy configure:configureCopy];
   if (v10)
   {
-    if (a3 <= 0)
+    if (frequency <= 0)
     {
       v11 = bls_timelines_log();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
       {
-        [BLSAlwaysOnFrequencyPerMinuteTimeline initWithPerMinuteUpdateFrequency:a3 identifier:v8 configure:v11];
+        [BLSAlwaysOnFrequencyPerMinuteTimeline initWithPerMinuteUpdateFrequency:frequency identifier:identifierCopy configure:v11];
       }
 
-      a3 = 1;
+      frequency = 1;
     }
 
-    v10->_frequencyPerMinute = a3;
-    v12 = [MEMORY[0x277CBEA80] autoupdatingCurrentCalendar];
+    v10->_frequencyPerMinute = frequency;
+    autoupdatingCurrentCalendar = [MEMORY[0x277CBEA80] autoupdatingCurrentCalendar];
     calendar = v10->_calendar;
-    v10->_calendar = v12;
+    v10->_calendar = autoupdatingCurrentCalendar;
   }
 
   return v10;
@@ -45,7 +45,7 @@
   v10 = &unk_278428B78;
   v4 = v3;
   v11 = v4;
-  v12 = self;
+  selfCopy = self;
   [v4 appendProem:self block:&v7];
   v5 = [v4 description];
 
@@ -61,20 +61,20 @@ id __52__BLSAlwaysOnFrequencyPerMinuteTimeline_description__block_invoke(uint64_
   return [*(a1 + 32) appendDouble:@"freq" withName:4 decimalPrecision:*(*(a1 + 40) + 32)];
 }
 
-- (id)unconfiguredEntriesForDateInterval:(id)a3 previousEntry:(id)a4
+- (id)unconfiguredEntriesForDateInterval:(id)interval previousEntry:(id)entry
 {
   v72 = *MEMORY[0x277D85DE8];
-  v43 = a3;
-  v39 = a4;
-  v6 = [v43 startDate];
-  v7 = [v39 presentationTime];
-  v40 = v7;
-  if (v7 && [v6 compare:v7] != 1)
+  intervalCopy = interval;
+  entryCopy = entry;
+  startDate = [intervalCopy startDate];
+  presentationTime = [entryCopy presentationTime];
+  v40 = presentationTime;
+  if (presentationTime && [startDate compare:presentationTime] != 1)
   {
-    v9 = v7;
+    v9 = presentationTime;
 
     v8 = 1;
-    v6 = v9;
+    startDate = v9;
   }
 
   else
@@ -85,7 +85,7 @@ id __52__BLSAlwaysOnFrequencyPerMinuteTimeline_description__block_invoke(uint64_
   v10 = objc_alloc_init(MEMORY[0x277CBEAB8]);
   v42 = v10;
   [v10 setSecond:0];
-  v11 = [(NSCalendar *)self->_calendar components:32896 fromDate:v6];
+  v11 = [(NSCalendar *)self->_calendar components:32896 fromDate:startDate];
   v38 = v11;
   if ([v11 second])
   {
@@ -97,21 +97,21 @@ id __52__BLSAlwaysOnFrequencyPerMinuteTimeline_description__block_invoke(uint64_
     v12 = [v11 nanosecond] == 0;
   }
 
-  v41 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   if (v12)
   {
-    v13 = v6;
+    v13 = startDate;
   }
 
   else
   {
-    v13 = [(NSCalendar *)self->_calendar nextDateAfterDate:v6 matchingComponents:v10 options:5124];
+    v13 = [(NSCalendar *)self->_calendar nextDateAfterDate:startDate matchingComponents:v10 options:5124];
   }
 
   v14 = v13;
   v15 = self->_calendar;
   frequencyPerMinute = self->_frequencyPerMinute;
-  v17 = [v43 endDate];
+  endDate = [intervalCopy endDate];
   v50[0] = MEMORY[0x277D85DD0];
   v50[1] = 3221225472;
   v50[2] = __90__BLSAlwaysOnFrequencyPerMinuteTimeline_unconfiguredEntriesForDateInterval_previousEntry___block_invoke;
@@ -121,12 +121,12 @@ id __52__BLSAlwaysOnFrequencyPerMinuteTimeline_description__block_invoke(uint64_
   v51 = v18;
   v19 = v14;
   v52 = v19;
-  v20 = v6;
+  v20 = startDate;
   v53 = v20;
   v57 = v8;
-  v21 = v41;
+  v21 = array;
   v54 = v21;
-  v37 = v17;
+  v37 = endDate;
   v55 = v37;
   v22 = MEMORY[0x223D716E0](v50);
   v49 = 0;
@@ -172,15 +172,15 @@ LABEL_19:
   v27 = bls_timelines_log();
   if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
   {
-    v36 = [(BLSAlwaysOnTimeline *)self identifier];
+    identifier = [(BLSAlwaysOnTimeline *)self identifier];
     v34 = [v21 count];
     v31 = NSStringFromBLSUpdateFidelity(v26);
-    v33 = [v43 bls_shortLoggingString];
+    bls_shortLoggingString = [intervalCopy bls_shortLoggingString];
     v32 = [v21 bls_boundedDescriptionWithMax:8 transformer:&__block_literal_global_6];
     *buf = 134219522;
-    v59 = self;
+    selfCopy = self;
     v60 = 2114;
-    v61 = v36;
+    v61 = identifier;
     v62 = 1024;
     v63 = v34;
     v64 = 2112;
@@ -188,7 +188,7 @@ LABEL_19:
     v66 = 1024;
     v67 = frequencyPerMinute;
     v68 = 2114;
-    v69 = v33;
+    v69 = bls_shortLoggingString;
     v70 = 2112;
     v35 = v32;
     v71 = v32;
@@ -256,11 +256,11 @@ id __90__BLSAlwaysOnFrequencyPerMinuteTimeline_unconfiguredEntriesForDateInterva
   return v2;
 }
 
-- (int64_t)requestedFidelityForStartEntryInDateInterval:(id)a3 withPreviousEntry:(id)a4
+- (int64_t)requestedFidelityForStartEntryInDateInterval:(id)interval withPreviousEntry:(id)entry
 {
   if (self)
   {
-    return [BLSFidelityThreshold fidelityForUpdateInterval:a3, a4, 60.0 / *(self + 32)];
+    return [BLSFidelityThreshold fidelityForUpdateInterval:interval, entry, 60.0 / *(self + 32)];
   }
 
   return self;

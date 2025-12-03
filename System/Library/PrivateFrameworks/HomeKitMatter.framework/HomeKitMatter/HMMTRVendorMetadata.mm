@@ -1,12 +1,12 @@
 @interface HMMTRVendorMetadata
-- (BOOL)isEqual:(id)a3;
-- (HMMTRVendorMetadata)initWithDictionaryRepresentation:(id)a3;
-- (HMMTRVendorMetadata)initWithVersion:(id)a3 schemaVersion:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (HMMTRVendorMetadata)initWithDictionaryRepresentation:(id)representation;
+- (HMMTRVendorMetadata)initWithVersion:(id)version schemaVersion:(id)schemaVersion;
 - (NSDictionary)dictionaryRepresentation;
 - (NSSet)vendors;
 - (id)attributeDescriptions;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (id)vendorWithID:(id)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (id)vendorWithID:(id)d;
 - (unint64_t)hash;
 @end
 
@@ -14,61 +14,61 @@
 
 - (id)attributeDescriptions
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v4 = objc_alloc(MEMORY[0x277D0F778]);
-  v5 = [(HMMTRVendorMetadata *)self version];
-  v6 = [v4 initWithName:@"Version" value:v5];
-  [v3 addObject:v6];
+  version = [(HMMTRVendorMetadata *)self version];
+  v6 = [v4 initWithName:@"Version" value:version];
+  [array addObject:v6];
 
   v7 = objc_alloc(MEMORY[0x277D0F778]);
-  v8 = [(HMMTRVendorMetadata *)self schemaVersion];
-  v9 = [v7 initWithName:@"Schema Version" value:v8];
-  [v3 addObject:v9];
+  schemaVersion = [(HMMTRVendorMetadata *)self schemaVersion];
+  v9 = [v7 initWithName:@"Schema Version" value:schemaVersion];
+  [array addObject:v9];
 
-  v10 = [(HMMTRVendorMetadata *)self vendors];
-  v11 = [v10 count];
+  vendors = [(HMMTRVendorMetadata *)self vendors];
+  v11 = [vendors count];
 
   if (v11)
   {
     v12 = objc_alloc(MEMORY[0x277D0F778]);
-    v13 = [(HMMTRVendorMetadata *)self vendors];
-    v14 = [v12 initWithName:@"Vendors" value:v13];
-    [v3 addObject:v14];
+    vendors2 = [(HMMTRVendorMetadata *)self vendors];
+    v14 = [v12 initWithName:@"Vendors" value:vendors2];
+    [array addObject:v14];
   }
 
-  v15 = [v3 copy];
+  v15 = [array copy];
 
   return v15;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [HMMTRMutableVendorMetadata allocWithZone:a3];
-  v5 = [(HMMTRVendorMetadata *)self version];
-  v6 = [(HMMTRVendorMetadata *)self schemaVersion];
-  v7 = [(HMMTRVendorMetadata *)v4 initWithVersion:v5 schemaVersion:v6];
+  v4 = [HMMTRMutableVendorMetadata allocWithZone:zone];
+  version = [(HMMTRVendorMetadata *)self version];
+  schemaVersion = [(HMMTRVendorMetadata *)self schemaVersion];
+  v7 = [(HMMTRVendorMetadata *)v4 initWithVersion:version schemaVersion:schemaVersion];
 
-  v8 = [(HMMTRVendorMetadata *)self vendorsByVendorID];
-  [(HMMTRVendorMetadata *)v7 setVendorsByVendorID:v8];
+  vendorsByVendorID = [(HMMTRVendorMetadata *)self vendorsByVendorID];
+  [(HMMTRVendorMetadata *)v7 setVendorsByVendorID:vendorsByVendorID];
 
   return v7;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(HMMTRVendorMetadata *)self vendorsByVendorID];
-  v3 = [v2 hash];
+  vendorsByVendorID = [(HMMTRVendorMetadata *)self vendorsByVendorID];
+  v3 = [vendorsByVendorID hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -80,17 +80,17 @@
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 version];
-    v9 = [(HMMTRVendorMetadata *)self version];
-    if ([v8 isEqualToNumber:v9])
+    version = [v6 version];
+    version2 = [(HMMTRVendorMetadata *)self version];
+    if ([version isEqualToNumber:version2])
     {
-      v10 = [v7 schemaVersion];
-      v11 = [(HMMTRVendorMetadata *)self schemaVersion];
-      if ([v10 isEqualToNumber:v11])
+      schemaVersion = [v7 schemaVersion];
+      schemaVersion2 = [(HMMTRVendorMetadata *)self schemaVersion];
+      if ([schemaVersion isEqualToNumber:schemaVersion2])
       {
-        v12 = [v7 vendorsByVendorID];
-        v13 = [(HMMTRVendorMetadata *)self vendorsByVendorID];
-        v14 = [v12 isEqualToDictionary:v13];
+        vendorsByVendorID = [v7 vendorsByVendorID];
+        vendorsByVendorID2 = [(HMMTRVendorMetadata *)self vendorsByVendorID];
+        v14 = [vendorsByVendorID isEqualToDictionary:vendorsByVendorID2];
       }
 
       else
@@ -113,11 +113,11 @@
   return v14;
 }
 
-- (id)vendorWithID:(id)a3
+- (id)vendorWithID:(id)d
 {
-  v4 = a3;
-  v5 = [(HMMTRVendorMetadata *)self vendorsByVendorID];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  dCopy = d;
+  vendorsByVendorID = [(HMMTRVendorMetadata *)self vendorsByVendorID];
+  v6 = [vendorsByVendorID objectForKeyedSubscript:dCopy];
 
   return v6;
 }
@@ -125,23 +125,23 @@
 - (NSDictionary)dictionaryRepresentation
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = [(HMMTRVendorMetadata *)self version];
-  [v3 setObject:v4 forKeyedSubscript:@"Version"];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  version = [(HMMTRVendorMetadata *)self version];
+  [dictionary setObject:version forKeyedSubscript:@"Version"];
 
-  v5 = [(HMMTRVendorMetadata *)self schemaVersion];
-  [v3 setObject:v5 forKeyedSubscript:@"SchemaVersion"];
+  schemaVersion = [(HMMTRVendorMetadata *)self schemaVersion];
+  [dictionary setObject:schemaVersion forKeyedSubscript:@"SchemaVersion"];
 
   v6 = MEMORY[0x277CBEB38];
-  v7 = [(HMMTRVendorMetadata *)self vendors];
-  v8 = [v6 dictionaryWithCapacity:{objc_msgSend(v7, "count")}];
+  vendors = [(HMMTRVendorMetadata *)self vendors];
+  v8 = [v6 dictionaryWithCapacity:{objc_msgSend(vendors, "count")}];
 
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v9 = [(HMMTRVendorMetadata *)self vendors];
-  v10 = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  vendors2 = [(HMMTRVendorMetadata *)self vendors];
+  v10 = [vendors2 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v10)
   {
     v11 = v10;
@@ -152,24 +152,24 @@
       {
         if (*v22 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(vendors2);
         }
 
         v14 = *(*(&v21 + 1) + 8 * i);
-        v15 = [v14 dictionaryRepresentation];
-        v16 = [v14 identifier];
-        v17 = [v16 stringValue];
-        [v8 setObject:v15 forKeyedSubscript:v17];
+        dictionaryRepresentation = [v14 dictionaryRepresentation];
+        identifier = [v14 identifier];
+        stringValue = [identifier stringValue];
+        [v8 setObject:dictionaryRepresentation forKeyedSubscript:stringValue];
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v11 = [vendors2 countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v11);
   }
 
-  [v3 setObject:v8 forKeyedSubscript:@"Vendors"];
-  v18 = [v3 copy];
+  [dictionary setObject:v8 forKeyedSubscript:@"Vendors"];
+  v18 = [dictionary copy];
 
   v19 = *MEMORY[0x277D85DE8];
 
@@ -179,25 +179,25 @@
 - (NSSet)vendors
 {
   v2 = MEMORY[0x277CBEB98];
-  v3 = [(HMMTRVendorMetadata *)self vendorsByVendorID];
-  v4 = [v3 allValues];
-  v5 = [v2 setWithArray:v4];
+  vendorsByVendorID = [(HMMTRVendorMetadata *)self vendorsByVendorID];
+  allValues = [vendorsByVendorID allValues];
+  v5 = [v2 setWithArray:allValues];
 
   return v5;
 }
 
-- (HMMTRVendorMetadata)initWithVersion:(id)a3 schemaVersion:(id)a4
+- (HMMTRVendorMetadata)initWithVersion:(id)version schemaVersion:(id)schemaVersion
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  versionCopy = version;
+  schemaVersionCopy = schemaVersion;
+  if (!versionCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_7;
   }
 
-  v9 = v8;
-  if (!v8)
+  v9 = schemaVersionCopy;
+  if (!schemaVersionCopy)
   {
 LABEL_7:
     v14 = _HMFPreconditionFailure();
@@ -210,8 +210,8 @@ LABEL_7:
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_version, a3);
-    objc_storeStrong(&v11->_schemaVersion, a4);
+    objc_storeStrong(&v10->_version, version);
+    objc_storeStrong(&v11->_schemaVersion, schemaVersion);
     vendorsByVendorID = v11->_vendorsByVendorID;
     v11->_vendorsByVendorID = MEMORY[0x277CBEC10];
   }
@@ -219,17 +219,17 @@ LABEL_7:
   return v11;
 }
 
-- (HMMTRVendorMetadata)initWithDictionaryRepresentation:(id)a3
+- (HMMTRVendorMetadata)initWithDictionaryRepresentation:(id)representation
 {
   v55 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  representationCopy = representation;
+  if (!representationCopy)
   {
     _HMFPreconditionFailure();
   }
 
-  v5 = v4;
-  v6 = [v4 hmf_numberForKey:@"Version"];
+  v5 = representationCopy;
+  v6 = [representationCopy hmf_numberForKey:@"Version"];
   if (v6)
   {
     v7 = [v5 hmf_numberForKey:@"SchemaVersion"];
@@ -241,8 +241,8 @@ LABEL_7:
         v41 = v6;
         v42 = v5;
         v40 = v7;
-        v44 = [(HMMTRVendorMetadata *)self initWithVersion:v6 schemaVersion:v7];
-        v9 = [(HMMTRVendorMetadata *)v44 mutableCopy];
+        selfCopy3 = [(HMMTRVendorMetadata *)self initWithVersion:v6 schemaVersion:v7];
+        v9 = [(HMMTRVendorMetadata *)selfCopy3 mutableCopy];
         v46 = 0u;
         v47 = 0u;
         v48 = 0u;
@@ -285,7 +285,7 @@ LABEL_7:
               {
                 v21 = v13;
                 v22 = objc_autoreleasePoolPush();
-                v23 = v44;
+                v23 = selfCopy3;
                 v24 = HMFGetOSLogHandle();
                 if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
                 {
@@ -326,7 +326,7 @@ LABEL_7:
       else
       {
         v34 = objc_autoreleasePoolPush();
-        v44 = self;
+        selfCopy3 = self;
         v35 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
         {
@@ -348,7 +348,7 @@ LABEL_7:
     else
     {
       v31 = objc_autoreleasePoolPush();
-      v44 = self;
+      selfCopy3 = self;
       v32 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
       {
@@ -368,7 +368,7 @@ LABEL_7:
   else
   {
     v28 = objc_autoreleasePoolPush();
-    v44 = self;
+    selfCopy3 = self;
     v29 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
     {

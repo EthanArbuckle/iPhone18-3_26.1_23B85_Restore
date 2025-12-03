@@ -34,10 +34,10 @@
 
 - (id)gestureRecorderViewBackgroundGradientTopColor
 {
-  v2 = [MEMORY[0x1E69DC938] currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v3 == 1)
+  if (userInterfaceIdiom == 1)
   {
     v4 = 0.90234375;
     v5 = 0.91015625;
@@ -58,10 +58,10 @@
 
 - (id)gestureRecorderViewBackgroundGradientBottomColor
 {
-  v3 = [MEMORY[0x1E69DC938] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v4 == 1)
+  if (userInterfaceIdiom == 1)
   {
     [MEMORY[0x1E69DC888] colorWithRed:0.8515625 green:0.859375 blue:0.875 alpha:1.0];
   }
@@ -77,24 +77,24 @@
 
 - (id)tracingDynamicFingerColor
 {
-  v2 = [MEMORY[0x1E69DC888] systemTealColor];
-  v3 = [v2 colorWithAlphaComponent:0.8];
+  systemTealColor = [MEMORY[0x1E69DC888] systemTealColor];
+  v3 = [systemTealColor colorWithAlphaComponent:0.8];
 
   return v3;
 }
 
 - (id)dynamicFingerLineGradientTopColor
 {
-  v2 = [MEMORY[0x1E69DC888] systemBlueColor];
-  v3 = [v2 colorWithAlphaComponent:0.8];
+  systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+  v3 = [systemBlueColor colorWithAlphaComponent:0.8];
 
   return v3;
 }
 
 - (id)dynamicFingerLineGradientBottomColor
 {
-  v2 = [MEMORY[0x1E69DC888] systemGray2Color];
-  v3 = [v2 colorWithAlphaComponent:0.8];
+  systemGray2Color = [MEMORY[0x1E69DC888] systemGray2Color];
+  v3 = [systemGray2Color colorWithAlphaComponent:0.8];
 
   return v3;
 }

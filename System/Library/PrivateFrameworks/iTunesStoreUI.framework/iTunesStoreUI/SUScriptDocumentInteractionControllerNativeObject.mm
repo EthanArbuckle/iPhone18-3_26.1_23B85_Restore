@@ -1,12 +1,12 @@
 @interface SUScriptDocumentInteractionControllerNativeObject
-- (BOOL)_isAffectedByWindowNotification:(id)a3;
-- (void)_windowDidRotateNotification:(id)a3;
-- (void)_windowWillRotateNotification:(id)a3;
+- (BOOL)_isAffectedByWindowNotification:(id)notification;
+- (void)_windowDidRotateNotification:(id)notification;
+- (void)_windowWillRotateNotification:(id)notification;
 - (void)dealloc;
 - (void)destroyNativeObject;
-- (void)documentInteractionController:(id)a3 willBeginSendingToApplication:(id)a4;
-- (void)documentInteractionControllerDidDismissOpenInMenu:(id)a3;
-- (void)presentUsingBlock:(id)a3;
+- (void)documentInteractionController:(id)controller willBeginSendingToApplication:(id)application;
+- (void)documentInteractionControllerDidDismissOpenInMenu:(id)menu;
+- (void)presentUsingBlock:(id)block;
 - (void)setupNativeObject;
 @end
 
@@ -19,34 +19,34 @@
   [(SUScriptDocumentInteractionControllerNativeObject *)&v3 dealloc];
 }
 
-- (void)presentUsingBlock:(id)a3
+- (void)presentUsingBlock:(id)block
 {
   presentationBlock = self->_presentationBlock;
-  if (presentationBlock != a3)
+  if (presentationBlock != block)
   {
 
-    self->_presentationBlock = [a3 copy];
+    self->_presentationBlock = [block copy];
   }
 
-  if (a3)
+  if (block)
   {
-    v6 = *(a3 + 2);
+    v6 = *(block + 2);
 
-    v6(a3);
+    v6(block);
   }
 }
 
 - (void)destroyNativeObject
 {
-  v3 = [(SUScriptNativeObject *)self object];
-  if ([v3 delegate] == self)
+  object = [(SUScriptNativeObject *)self object];
+  if ([object delegate] == self)
   {
-    [v3 setDelegate:0];
+    [object setDelegate:0];
   }
 
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 removeObserver:self name:*MEMORY[0x1E69DE7D0] object:0];
-  [v4 removeObserver:self name:*MEMORY[0x1E69DE828] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DE7D0] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DE828] object:0];
   v5.receiver = self;
   v5.super_class = SUScriptDocumentInteractionControllerNativeObject;
   [(SUScriptNativeObject *)&v5 destroyNativeObject];
@@ -55,15 +55,15 @@
 - (void)setupNativeObject
 {
   [-[SUScriptNativeObject object](self "object")];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 addObserver:self selector:sel__windowDidRotateNotification_ name:*MEMORY[0x1E69DE7D0] object:0];
-  [v3 addObserver:self selector:sel__windowWillRotateNotification_ name:*MEMORY[0x1E69DE828] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__windowDidRotateNotification_ name:*MEMORY[0x1E69DE7D0] object:0];
+  [defaultCenter addObserver:self selector:sel__windowWillRotateNotification_ name:*MEMORY[0x1E69DE828] object:0];
   v4.receiver = self;
   v4.super_class = SUScriptDocumentInteractionControllerNativeObject;
   [(SUScriptNativeObject *)&v4 setupNativeObject];
 }
 
-- (void)documentInteractionControllerDidDismissOpenInMenu:(id)a3
+- (void)documentInteractionControllerDidDismissOpenInMenu:(id)menu
 {
   if (!self->_didPickApplication)
   {
@@ -73,39 +73,39 @@
   self->_isVisible = 0;
 }
 
-- (void)documentInteractionController:(id)a3 willBeginSendingToApplication:(id)a4
+- (void)documentInteractionController:(id)controller willBeginSendingToApplication:(id)application
 {
-  v6 = [(SUScriptObject *)[(SUScriptNativeObject *)self scriptObject] _openWithFunction];
-  [v6 callWithArguments:{objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:", a4, 0)}];
+  _openWithFunction = [(SUScriptObject *)[(SUScriptNativeObject *)self scriptObject] _openWithFunction];
+  [_openWithFunction callWithArguments:{objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:", application, 0)}];
   self->_didPickApplication = 1;
 }
 
-- (void)_windowDidRotateNotification:(id)a3
+- (void)_windowDidRotateNotification:(id)notification
 {
   if (self->_redisplayAfterRotation)
   {
     presentationBlock = self->_presentationBlock;
     if (presentationBlock)
     {
-      presentationBlock[2](presentationBlock, a2, a3);
+      presentationBlock[2](presentationBlock, a2, notification);
     }
   }
 
   self->_redisplayAfterRotation = 0;
 }
 
-- (void)_windowWillRotateNotification:(id)a3
+- (void)_windowWillRotateNotification:(id)notification
 {
-  if ([(SUScriptDocumentInteractionControllerNativeObject *)self _isAffectedByWindowNotification:a3]&& self->_isVisible)
+  if ([(SUScriptDocumentInteractionControllerNativeObject *)self _isAffectedByWindowNotification:notification]&& self->_isVisible)
   {
     self->_redisplayAfterRotation = 1;
-    v4 = [(SUScriptNativeObject *)self object];
+    object = [(SUScriptNativeObject *)self object];
 
-    [v4 dismissMenuAnimated:0];
+    [object dismissMenuAnimated:0];
   }
 }
 
-- (BOOL)_isAffectedByWindowNotification:(id)a3
+- (BOOL)_isAffectedByWindowNotification:(id)notification
 {
   [MEMORY[0x1E69DC938] currentDevice];
   if ((objc_opt_respondsToSelector() & 1) == 0)
@@ -118,16 +118,16 @@
     return 0;
   }
 
-  v5 = [(SUScriptObject *)[(SUScriptNativeObject *)self scriptObject] parentViewController];
-  if (![v5 isViewLoaded])
+  parentViewController = [(SUScriptObject *)[(SUScriptNativeObject *)self scriptObject] parentViewController];
+  if (![parentViewController isViewLoaded])
   {
     return 0;
   }
 
-  v6 = [v5 view];
-  v7 = [a3 object];
+  view = [parentViewController view];
+  object = [notification object];
 
-  return [v6 isDescendantOfView:v7];
+  return [view isDescendantOfView:object];
 }
 
 @end

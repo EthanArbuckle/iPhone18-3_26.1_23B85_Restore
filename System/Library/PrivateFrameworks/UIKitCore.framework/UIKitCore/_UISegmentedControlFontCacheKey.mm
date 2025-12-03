@@ -1,14 +1,14 @@
 @interface _UISegmentedControlFontCacheKey
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToCacheKey:(id)a3;
-- (_UISegmentedControlFontCacheKey)initWithStyleProvider:(id)a3 size:(int)a4 selected:(BOOL)a5 bold:(BOOL)a6 hasMaterial:(BOOL)a7;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToCacheKey:(id)key;
+- (_UISegmentedControlFontCacheKey)initWithStyleProvider:(id)provider size:(int)size selected:(BOOL)selected bold:(BOOL)bold hasMaterial:(BOOL)material;
 @end
 
 @implementation _UISegmentedControlFontCacheKey
 
-- (_UISegmentedControlFontCacheKey)initWithStyleProvider:(id)a3 size:(int)a4 selected:(BOOL)a5 bold:(BOOL)a6 hasMaterial:(BOOL)a7
+- (_UISegmentedControlFontCacheKey)initWithStyleProvider:(id)provider size:(int)size selected:(BOOL)selected bold:(BOOL)bold hasMaterial:(BOOL)material
 {
-  v12 = a3;
+  providerCopy = provider;
   v18.receiver = self;
   v18.super_class = _UISegmentedControlFontCacheKey;
   v13 = [(_UISegmentedControlFontCacheKey *)&v18 init];
@@ -19,19 +19,19 @@
     styleProviderName = v13->_styleProviderName;
     v13->_styleProviderName = v15;
 
-    v13->_size = a4;
-    v13->_selected = a5;
-    v13->_bold = a6;
-    v13->_material = a7;
+    v13->_size = size;
+    v13->_selected = selected;
+    v13->_bold = bold;
+    v13->_material = material;
   }
 
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -39,22 +39,22 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(_UISegmentedControlFontCacheKey *)self isEqualToCacheKey:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(_UISegmentedControlFontCacheKey *)self isEqualToCacheKey:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToCacheKey:(id)a3
+- (BOOL)isEqualToCacheKey:(id)key
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  keyCopy = key;
+  v5 = keyCopy;
+  if (!keyCopy)
   {
     goto LABEL_13;
   }
 
-  v6 = v4[1];
+  v6 = keyCopy[1];
   v7 = self->_styleProviderName;
   v8 = v6;
   v9 = v8;

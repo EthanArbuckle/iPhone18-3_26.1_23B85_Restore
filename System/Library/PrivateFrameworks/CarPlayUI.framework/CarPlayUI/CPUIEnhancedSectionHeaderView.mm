@@ -3,9 +3,9 @@
 - (UIImage)buttonImage;
 - (UIImage)image;
 - (id)buttonAction;
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3;
-- (void)setButtonAction:(id)a3;
-- (void)setEnabled:(BOOL)a3;
+- (void)_bridgedUpdateConfigurationUsingState:(id)state;
+- (void)setButtonAction:(id)action;
+- (void)setEnabled:(BOOL)enabled;
 @end
 
 @implementation CPUIEnhancedSectionHeaderView
@@ -48,9 +48,9 @@
   return v4;
 }
 
-- (void)setButtonAction:(id)a3
+- (void)setButtonAction:(id)action
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(action);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -68,10 +68,10 @@
   v7 = *v6;
   *v6 = v4;
   v6[1] = v5;
-  v8 = self;
+  selfCopy = self;
   _sxRi_zRi0_zlyytIsegr_SgWOy(v4);
   outlined consume of (@escaping @callee_guaranteed () -> ())?(v7);
-  [(CPUIEnhancedSectionHeaderView *)v8 setNeedsUpdateConfiguration];
+  [(CPUIEnhancedSectionHeaderView *)selfCopy setNeedsUpdateConfiguration];
 
   outlined consume of (@escaping @callee_guaranteed () -> ())?(v4);
 }
@@ -83,22 +83,22 @@
   return *(self + v3);
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
   v5 = OBJC_IVAR___CPUIEnhancedSectionHeaderView_enabled;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = enabled;
   [(CPUIEnhancedSectionHeaderView *)self setNeedsUpdateConfiguration];
 }
 
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3
+- (void)_bridgedUpdateConfigurationUsingState:(id)state
 {
   v4 = type metadata accessor for UIViewConfigurationState();
   v5 = *(v4 - 8);
   MEMORY[0x28223BE20](v4);
   v7 = &v9 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   static UIViewConfigurationState._unconditionallyBridgeFromObjectiveC(_:)();
-  v8 = self;
+  selfCopy = self;
   CPUIEnhancedSectionHeaderView.updateConfiguration(using:)(v7);
 
   (*(v5 + 8))(v7, v4);

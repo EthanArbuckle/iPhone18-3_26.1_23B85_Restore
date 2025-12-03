@@ -1,15 +1,15 @@
 @interface NEHelperConfigurationManager
-- (NEHelperConfigurationManager)initWithFirstMessage:(id)a3;
+- (NEHelperConfigurationManager)initWithFirstMessage:(id)message;
 - (OS_dispatch_queue)handlerQueue;
-- (void)handleMessage:(id)a3;
+- (void)handleMessage:(id)message;
 @end
 
 @implementation NEHelperConfigurationManager
 
-- (void)handleMessage:(id)a3
+- (void)handleMessage:(id)message
 {
-  v4 = a3;
-  int64 = xpc_dictionary_get_int64(v4, "config-operation");
+  messageCopy = message;
+  int64 = xpc_dictionary_get_int64(messageCopy, "config-operation");
   if (!int64)
   {
     v11 = 0;
@@ -18,7 +18,7 @@
   }
 
   v6 = int64;
-  string = xpc_dictionary_get_string(v4, "config-plugin-type");
+  string = xpc_dictionary_get_string(messageCopy, "config-plugin-type");
   if (string)
   {
     string = [[NSString alloc] initWithCString:string encoding:4];
@@ -27,7 +27,7 @@
   if (!self || !self->_entitled)
   {
 LABEL_17:
-    sub_10000BA0C(NEHelperServer, v4, 10, 0);
+    sub_10000BA0C(NEHelperServer, messageCopy, 10, 0);
     v11 = 0;
     goto LABEL_18;
   }
@@ -67,12 +67,12 @@ LABEL_17:
       v274[1] = 3221225472;
       v274[2] = sub_1000140A0;
       v274[3] = &unk_10003D270;
-      v275 = v4;
+      v275 = messageCopy;
       [v14 loadIndexWithFilter:v11 completionQueue:Property handler:v274];
 
       goto LABEL_18;
     case 2:
-      v47 = xpc_dictionary_get_value(v4, "config-ids-data");
+      v47 = xpc_dictionary_get_value(messageCopy, "config-ids-data");
       v48 = v47;
       if (v47 && xpc_get_type(v47) == &_xpc_type_data)
       {
@@ -105,7 +105,7 @@ LABEL_17:
           v272[1] = 3221225472;
           v272[2] = sub_100014194;
           v272[3] = &unk_10003D298;
-          v273 = v4;
+          v273 = messageCopy;
           [v60 loadConfigurations:v55 withFilter:v11 completionQueue:v62 completionHandler:v272];
         }
 
@@ -120,16 +120,16 @@ LABEL_17:
             _os_log_error_impl(&_mh_execute_header, v58, OS_LOG_TYPE_ERROR, "%@ Received invalid config IDs: %@", v276, 0x16u);
           }
 
-          sub_10000BA0C(NEHelperServer, v4, 0, 0);
+          sub_10000BA0C(NEHelperServer, messageCopy, 0, 0);
         }
       }
 
       goto LABEL_18;
     case 3:
       length = 0;
-      data = xpc_dictionary_get_data(v4, "config-data", &length);
+      data = xpc_dictionary_get_data(messageCopy, "config-data", &length);
       v270 = 0;
-      v35 = xpc_dictionary_get_data(v4, "config-signature", &v270);
+      v35 = xpc_dictionary_get_data(messageCopy, "config-signature", &v270);
       if (length > 0x80000)
       {
         v37 = ne_log_obj();
@@ -143,7 +143,7 @@ LABEL_17:
           _os_log_error_impl(&_mh_execute_header, v37, OS_LOG_TYPE_ERROR, "%@ configuration is too large: %lu", v276, 0x16u);
         }
 
-        sub_10000BA0C(NEHelperServer, v4, 2, 0);
+        sub_10000BA0C(NEHelperServer, messageCopy, 2, 0);
         goto LABEL_18;
       }
 
@@ -172,9 +172,9 @@ LABEL_121:
           goto LABEL_125;
         }
 
-        v104 = +[NEConfigurationManager sharedManagerForAllUsers];
+        appVPN = +[NEConfigurationManager sharedManagerForAllUsers];
         v130 = objc_getProperty(self, v129, 32, 1);
-        [v104 addGroups:v130 forApp:{objc_getProperty(self, v131, 48, 1)}];
+        [appVPN addGroups:v130 forApp:{objc_getProperty(self, v131, 48, 1)}];
 
 LABEL_124:
         goto LABEL_125;
@@ -199,49 +199,49 @@ LABEL_103:
           _os_log_error_impl(&_mh_execute_header, v115, OS_LOG_TYPE_ERROR, "%@ cannot create new configurations because it is only app group entitled", v276, 0xCu);
         }
 
-        sub_10000BA0C(NEHelperServer, v4, 10, 0);
+        sub_10000BA0C(NEHelperServer, messageCopy, 10, 0);
         goto LABEL_18;
       }
 
-      v104 = [v98 VPN];
-      if (v104)
+      appVPN = [v98 VPN];
+      if (appVPN)
       {
         goto LABEL_124;
       }
 
-      v104 = [v98 appVPN];
-      if (v104)
+      appVPN = [v98 appVPN];
+      if (appVPN)
       {
         goto LABEL_124;
       }
 
-      v104 = [v98 contentFilter];
-      if (v104)
+      appVPN = [v98 contentFilter];
+      if (appVPN)
       {
         goto LABEL_124;
       }
 
-      v104 = [v98 dnsProxy];
-      if (v104)
+      appVPN = [v98 dnsProxy];
+      if (appVPN)
       {
         goto LABEL_124;
       }
 
-      v105 = [v98 relay];
-      v106 = v105 == 0;
+      relay = [v98 relay];
+      v106 = relay == 0;
 
       if (v106)
       {
         v107 = ne_log_obj();
         if (os_log_type_enabled(v107, OS_LOG_TYPE_ERROR))
         {
-          v227 = [v98 name];
+          name = [v98 name];
           *v276 = 138412290;
-          *&v276[4] = v227;
+          *&v276[4] = name;
           _os_log_error_impl(&_mh_execute_header, v107, OS_LOG_TYPE_ERROR, "Configuration type of %@ does not allow modification by app group entitled apps", v276, 0xCu);
         }
 
-        sub_10000BA0C(NEHelperServer, v4, 10, 0);
+        sub_10000BA0C(NEHelperServer, messageCopy, 10, 0);
         goto LABEL_18;
       }
 
@@ -257,15 +257,15 @@ LABEL_125:
           _os_log_error_impl(&_mh_execute_header, v136, OS_LOG_TYPE_ERROR, "%@ cannot save a configuration, no configuration provided", v276, 0xCu);
         }
 
-        sub_10000BA0C(NEHelperServer, v4, 8, 0);
+        sub_10000BA0C(NEHelperServer, messageCopy, 8, 0);
         goto LABEL_18;
       }
 
-      v132 = [v98 pluginType];
-      v133 = v132;
+      pluginType = [v98 pluginType];
+      v133 = pluginType;
       if (string)
       {
-        if (!v132 || ([v132 isEqualToString:string] & 1) == 0)
+        if (!pluginType || ([pluginType isEqualToString:string] & 1) == 0)
         {
           v134 = ne_log_obj();
           if (os_log_type_enabled(v134, OS_LOG_TYPE_ERROR))
@@ -282,12 +282,12 @@ LABEL_125:
 
 LABEL_250:
 
-          sub_10000BA0C(NEHelperServer, v4, 10, 0);
+          sub_10000BA0C(NEHelperServer, messageCopy, 10, 0);
           goto LABEL_18;
         }
       }
 
-      else if (!v132)
+      else if (!pluginType)
       {
         v236 = 1;
         goto LABEL_154;
@@ -309,8 +309,8 @@ LABEL_250:
 
       v236 = 0;
 LABEL_154:
-      v143 = [v98 contentFilter];
-      v144 = v143 == 0;
+      contentFilter = [v98 contentFilter];
+      v144 = contentFilter == 0;
 
       if (v144)
       {
@@ -339,14 +339,14 @@ LABEL_154:
           _os_log_error_impl(&_mh_execute_header, v149, OS_LOG_TYPE_ERROR, "%@ trying to create a content filter configuration through an app. Creating a content filter configuration is only allowed through profile in production version of %@.", v276, 0x16u);
         }
 
-        sub_10000BA0C(NEHelperServer, v4, 10, 0);
+        sub_10000BA0C(NEHelperServer, messageCopy, 10, 0);
         goto LABEL_18;
       }
 
       if (!objc_opt_class() || (+[MCProfileConnection sharedConnection](MCProfileConnection, "sharedConnection"), v151 = objc_claimAutoreleasedReturnValue(), v152 = [v151 isSupervised], v151, (v152 & 1) == 0))
       {
-        v153 = [v98 externalIdentifier];
-        v154 = v153 == 0;
+        externalIdentifier = [v98 externalIdentifier];
+        v154 = externalIdentifier == 0;
 
         if (v154)
         {
@@ -381,15 +381,15 @@ LABEL_154:
       if (self->_superEntitled || ([v98 externalIdentifier], (v156 = objc_claimAutoreleasedReturnValue()) == 0) || (objc_msgSend(v98, "payloadInfo"), v157 = objc_claimAutoreleasedReturnValue(), v233 = objc_msgSend(v157, "profileSource") == 2, v157, v156, v233))
       {
 LABEL_168:
-        v158 = [v98 dnsProxy];
-        if (v158)
+        dnsProxy = [v98 dnsProxy];
+        if (dnsProxy)
         {
           v159 = [v98 grade] == 2;
 
           if (!v159)
           {
-            v160 = [v98 payloadInfo];
-            v161 = v160 == 0;
+            payloadInfo = [v98 payloadInfo];
+            v161 = payloadInfo == 0;
 
             if (v161)
             {
@@ -422,15 +422,15 @@ LABEL_168:
                   _os_log_error_impl(&_mh_execute_header, v164, OS_LOG_TYPE_ERROR, "DNS Proxy configurations can only be created via MDM", v276, 2u);
                 }
 
-                sub_10000BA0C(NEHelperServer, v4, 21, 0);
+                sub_10000BA0C(NEHelperServer, messageCopy, 21, 0);
                 goto LABEL_18;
               }
             }
           }
         }
 
-        v169 = [v98 dnsSettings];
-        if (v169)
+        dnsSettings = [v98 dnsSettings];
+        if (dnsSettings)
         {
           v170 = [v98 grade] == 1;
 
@@ -460,8 +460,8 @@ LABEL_168:
           v176 = v175;
           if (v175)
           {
-            v177 = [v175 name];
-            [v98 setApplicationName:v177];
+            name2 = [v175 name];
+            [v98 setApplicationName:name2];
           }
         }
 
@@ -473,15 +473,15 @@ LABEL_224:
             goto LABEL_227;
           }
 
-          v188 = [v98 dnsSettings];
-          if (v188)
+          dnsSettings2 = [v98 dnsSettings];
+          if (dnsSettings2)
           {
 
             goto LABEL_227;
           }
 
-          v195 = [v98 contentFilter];
-          if (v195)
+          contentFilter2 = [v98 contentFilter];
+          if (contentFilter2)
           {
             v196 = string != 0;
           }
@@ -493,10 +493,10 @@ LABEL_224:
 
           if (!v196)
           {
-            v197 = [v98 urlFilter];
-            v199 = v197;
+            urlFilter = [v98 urlFilter];
+            v199 = urlFilter;
             v200 = string == 0;
-            if (!v197)
+            if (!urlFilter)
             {
               v200 = 1;
             }
@@ -525,15 +525,15 @@ LABEL_224:
 LABEL_227:
                 if ((v236 & 1) == 0)
                 {
-                  v189 = [v98 appVPN];
-                  if (v189 || ([v98 contentFilter], (v189 = objc_claimAutoreleasedReturnValue()) != 0))
+                  appVPN2 = [v98 appVPN];
+                  if (appVPN2 || ([v98 contentFilter], (appVPN2 = objc_claimAutoreleasedReturnValue()) != 0))
                   {
                   }
 
                   else
                   {
-                    v204 = [v98 dnsProxy];
-                    v205 = v204 == 0;
+                    dnsProxy2 = [v98 dnsProxy];
+                    v205 = dnsProxy2 == 0;
 
                     if (v205)
                     {
@@ -552,14 +552,14 @@ LABEL_232:
                 v268[1] = 3221225472;
                 v268[2] = sub_1000149A8;
                 v268[3] = &unk_10003D2C0;
-                v269 = v4;
+                v269 = messageCopy;
                 [v190 saveConfigurationToDisk:v98 currentSignature:v103 userUUID:v192 isUpgrade:0 completionQueue:v194 completionHandler:v268];
 
                 goto LABEL_18;
               }
 
 LABEL_242:
-              sub_1000143FC(self, v98, v11, v103, v4);
+              sub_1000143FC(self, v98, v11, v103, messageCopy);
 
               goto LABEL_18;
             }
@@ -576,27 +576,27 @@ LABEL_242:
 
         else
         {
-          v231 = [v98 appVPN];
-          if (v231)
+          appVPN3 = [v98 appVPN];
+          if (appVPN3)
           {
             v232 = 0;
           }
 
           else
           {
-            v230 = [v98 alwaysOnVPN];
-            if (!v230)
+            alwaysOnVPN = [v98 alwaysOnVPN];
+            if (!alwaysOnVPN)
             {
               goto LABEL_224;
             }
 
-            v231 = 0;
+            appVPN3 = 0;
             v232 = 1;
           }
         }
 
-        v178 = [v98 payloadInfo];
-        if ([v178 profileSource] == 2)
+        payloadInfo2 = [v98 payloadInfo];
+        if ([payloadInfo2 profileSource] == 2)
         {
 
           v179 = 0;
@@ -677,7 +677,7 @@ LABEL_208:
         _os_log_error_impl(&_mh_execute_header, v202, OS_LOG_TYPE_ERROR, "%@ perApp content filter configuration can only be created via MDM", v276, 0xCu);
       }
 
-      sub_10000BA0C(NEHelperServer, v4, 21, 0);
+      sub_10000BA0C(NEHelperServer, messageCopy, 21, 0);
 LABEL_18:
 
       return;
@@ -692,12 +692,12 @@ LABEL_18:
           _os_log_error_impl(&_mh_execute_header, v78, OS_LOG_TYPE_ERROR, "%@ is not allowed to remove configurations because it is only app group entitled", v276, 0xCu);
         }
 
-        sub_10000BA0C(NEHelperServer, v4, 10, 0);
+        sub_10000BA0C(NEHelperServer, messageCopy, 10, 0);
       }
 
       else
       {
-        uuid = xpc_dictionary_get_uuid(v4, "config-identifier");
+        uuid = xpc_dictionary_get_uuid(messageCopy, "config-identifier");
         if (!uuid)
         {
           goto LABEL_107;
@@ -722,7 +722,7 @@ LABEL_18:
         v264[3] = &unk_10003D310;
         v264[4] = self;
         v267 = 0;
-        v265 = v4;
+        v265 = messageCopy;
         v266 = v90;
         v96 = v90;
         [v93 loadConfigurationWithID:v96 withCompletionQueue:v95 handler:v264];
@@ -731,7 +731,7 @@ LABEL_18:
       goto LABEL_18;
     case 5:
       *v276 = 0;
-      v80 = xpc_dictionary_get_data(v4, "identity-reference", v276);
+      v80 = xpc_dictionary_get_data(messageCopy, "identity-reference", v276);
       v82 = objc_getProperty(self, v81, 48, 1);
       if (v82)
       {
@@ -762,7 +762,7 @@ LABEL_18:
 
         v114 = 0;
 LABEL_98:
-        sub_10000BA0C(NEHelperServer, v4, v114, v113);
+        sub_10000BA0C(NEHelperServer, messageCopy, v114, v113);
 
         goto LABEL_18;
       }
@@ -775,12 +775,12 @@ LABEL_98:
     case 6:
       if (!self->_platformEntitled)
       {
-        v87 = v4;
+        v87 = messageCopy;
         v88 = 10;
         goto LABEL_108;
       }
 
-      sub_100014D60(self, v4);
+      sub_100014D60(self, messageCopy);
       goto LABEL_18;
     case 7:
       if (!self->_superEntitled)
@@ -788,7 +788,7 @@ LABEL_98:
         goto LABEL_107;
       }
 
-      v63 = xpc_dictionary_get_uuid(v4, "config-identifier");
+      v63 = xpc_dictionary_get_uuid(messageCopy, "config-identifier");
       if (!v63)
       {
         goto LABEL_107;
@@ -801,7 +801,7 @@ LABEL_98:
       {
 
 LABEL_107:
-        v87 = v4;
+        v87 = messageCopy;
         v88 = 8;
         goto LABEL_108;
       }
@@ -814,9 +814,9 @@ LABEL_107:
 
         if (!v140)
         {
-          v165 = [objc_getProperty(v67 v141];
+          v141 = [objc_getProperty(v67 v141];
 
-          if (!v165)
+          if (!v141)
           {
             [objc_getProperty(v67 v166];
           }
@@ -831,13 +831,13 @@ LABEL_107:
       v261[3] = &unk_10003D360;
       v261[4] = self;
       v262 = v67;
-      v263 = v4;
+      v263 = messageCopy;
       v209 = v67;
       [NEUserNotification promptForLocalAuthenticationWithReason:v206 completionQueue:v208 completionHandler:v261];
 
       goto LABEL_18;
     case 8:
-      v70 = xpc_dictionary_get_string(v4, "client-name");
+      v70 = xpc_dictionary_get_string(messageCopy, "client-name");
       if (v70)
       {
         v71 = sub_1000016DC();
@@ -854,9 +854,9 @@ LABEL_107:
         v257[1] = 3221225472;
         v257[2] = sub_100015210;
         v257[3] = &unk_10003D3B0;
-        v259 = self;
+        selfCopy = self;
         v260 = v276;
-        v258 = v4;
+        v258 = messageCopy;
         v74 = objc_retainBlock(v257);
         v75 = objc_retainBlock(v74);
         v76 = *(*&v276[8] + 40);
@@ -868,7 +868,7 @@ LABEL_107:
 
       else
       {
-        v87 = v4;
+        v87 = messageCopy;
         v88 = 22;
 LABEL_108:
         sub_10000BA0C(NEHelperServer, v87, v88, 0);
@@ -876,7 +876,7 @@ LABEL_108:
 
       goto LABEL_18;
     case 9:
-      v83 = xpc_dictionary_get_string(v4, "config-plugin-type");
+      v83 = xpc_dictionary_get_string(messageCopy, "config-plugin-type");
       if (v83)
       {
         v84 = [NSString stringWithUTF8String:v83];
@@ -898,30 +898,30 @@ LABEL_108:
         v86 = 0;
       }
 
-      sub_10000BA0C(NEHelperServer, v4, 0, v86);
+      sub_10000BA0C(NEHelperServer, messageCopy, 0, v86);
 
       goto LABEL_18;
     case 11:
-      sub_100014E38(self, v4);
+      sub_100014E38(self, messageCopy);
       goto LABEL_18;
     case 13:
-      v22 = xpc_dictionary_get_value(v4, "config-ids");
+      v22 = xpc_dictionary_get_value(messageCopy, "config-ids");
       v23 = +[NEConfigurationManager sharedManagerForAllUsers];
       v25 = objc_getProperty(self, v24, 40, 1);
       v247[0] = _NSConcreteStackBlock;
       v247[1] = 3221225472;
       v247[2] = sub_10001612C;
       v247[3] = &unk_10003D4C8;
-      v248 = v4;
+      v248 = messageCopy;
       [v23 syncConfigurationsWithSC:v22 completionQueue:v25 completionHandler:v247];
 
       goto LABEL_18;
     case 14:
-      v39 = xpc_dictionary_get_uuid(v4, "config-identifier");
+      v39 = xpc_dictionary_get_uuid(messageCopy, "config-identifier");
       if (v39)
       {
         v40 = v39;
-        v41 = xpc_dictionary_get_BOOL(v4, "enabled");
+        v41 = xpc_dictionary_get_BOOL(messageCopy, "enabled");
         v42 = [[NSUUID alloc] initWithUUIDBytes:v40];
         v43 = +[NEConfigurationManager sharedManagerForAllUsers];
         v45 = objc_getProperty(self, v44, 40, 1);
@@ -930,8 +930,8 @@ LABEL_108:
         v242[2] = sub_100016148;
         v242[3] = &unk_10003D518;
         v243 = v42;
-        v244 = v4;
-        v245 = self;
+        v244 = messageCopy;
+        selfCopy2 = self;
         v246 = v41;
         v46 = v42;
         [v43 loadIndexWithFilter:v11 completionQueue:v45 handler:v242];
@@ -948,8 +948,8 @@ LABEL_108:
 
       goto LABEL_90;
     case 15:
-      v26 = xpc_dictionary_get_string(v4, "app-bundle-id");
-      v27 = xpc_dictionary_get_BOOL(v4, "enable-required");
+      v26 = xpc_dictionary_get_string(messageCopy, "app-bundle-id");
+      v27 = xpc_dictionary_get_BOOL(messageCopy, "enable-required");
       if (v26)
       {
         v28 = v27;
@@ -962,8 +962,8 @@ LABEL_108:
         v237[3] = &unk_10003D540;
         v241 = v28;
         v238 = v29;
-        v239 = self;
-        v240 = v4;
+        selfCopy3 = self;
+        v240 = messageCopy;
         v33 = v29;
         [v30 loadConfigurations:0 withFilter:0 completionQueue:v32 completionHandler:v237];
       }
@@ -979,14 +979,14 @@ LABEL_108:
 
 LABEL_90:
 
-        sub_10000BA0C(NEHelperServer, v4, 22, 0);
+        sub_10000BA0C(NEHelperServer, messageCopy, 22, 0);
       }
 
       goto LABEL_18;
     case 16:
-      v19 = xpc_dictionary_get_string(v4, "bundle-id");
-      v20 = xpc_dictionary_get_int64(v4, "pid");
-      v21 = xpc_dictionary_get_uuid(v4, "uuid");
+      v19 = xpc_dictionary_get_string(messageCopy, "bundle-id");
+      v20 = xpc_dictionary_get_int64(messageCopy, "pid");
+      v21 = xpc_dictionary_get_uuid(messageCopy, "uuid");
       if (v21)
       {
         v235 = [[NSUUID alloc] initWithUUIDBytes:v21];
@@ -1008,7 +1008,7 @@ LABEL_90:
 
 LABEL_82:
 
-        sub_10000BA0C(NEHelperServer, v4, 22, 0);
+        sub_10000BA0C(NEHelperServer, messageCopy, 22, 0);
         goto LABEL_119;
       }
 
@@ -1034,7 +1034,7 @@ LABEL_82:
         v109 = 0;
       }
 
-      v117 = xpc_dictionary_get_string(v4, "query");
+      v117 = xpc_dictionary_get_string(messageCopy, "query");
       if (v117)
       {
         v118 = v117;
@@ -1072,15 +1072,15 @@ LABEL_180:
 
       v119 = 0;
 LABEL_118:
-      v124 = xpc_dictionary_get_BOOL(v4, "has-entitlement");
+      v124 = xpc_dictionary_get_BOOL(messageCopy, "has-entitlement");
       v125 = sub_1000155F4();
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_10001564C;
       block[3] = &unk_10003D4A0;
       v250 = v109;
-      v251 = v4;
-      v252 = self;
+      v251 = messageCopy;
+      selfCopy4 = self;
       v255 = v20;
       v253 = v235;
       v254 = v119;
@@ -1092,7 +1092,7 @@ LABEL_118:
 LABEL_119:
       goto LABEL_18;
     case 17:
-      v77 = xpc_dictionary_get_BOOL(v4, "reset-all");
+      v77 = xpc_dictionary_get_BOOL(messageCopy, "reset-all");
       sub_1000154E4(NEHelperConfigurationManager, v77, 0, 0);
       goto LABEL_18;
     default:
@@ -1111,9 +1111,9 @@ LABEL_119:
   return self;
 }
 
-- (NEHelperConfigurationManager)initWithFirstMessage:(id)a3
+- (NEHelperConfigurationManager)initWithFirstMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v86.receiver = self;
   v86.super_class = NEHelperConfigurationManager;
   v5 = [(NEHelperConfigurationManager *)&v86 init];
@@ -1124,7 +1124,7 @@ LABEL_86:
     goto LABEL_87;
   }
 
-  v6 = xpc_dictionary_get_remote_connection(v4);
+  v6 = xpc_dictionary_get_remote_connection(messageCopy);
   pid = xpc_connection_get_pid(v6);
   v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
   v9 = dispatch_queue_create("NEHelperConfigurationManager", v8);
@@ -1143,7 +1143,7 @@ LABEL_86:
   bundleID = v5->_bundleID;
   v5->_bundleID = v13;
 
-  v15 = xpc_dictionary_get_value(v4, "preferred-languages");
+  v15 = xpc_dictionary_get_value(messageCopy, "preferred-languages");
   v16 = v15;
   if (v15 && xpc_get_type(v15) == &_xpc_type_array && xpc_array_get_count(v16))
   {
@@ -1168,10 +1168,10 @@ LABEL_86:
         }
 
         v21 = [LSPlugInKitProxy pluginKitProxyForIdentifier:v19];
-        v22 = [v21 containingBundle];
-        v23 = [v22 bundleIdentifier];
+        containingBundle = [v21 containingBundle];
+        bundleIdentifier = [containingBundle bundleIdentifier];
         v24 = v5->_bundleID;
-        v5->_bundleID = v23;
+        v5->_bundleID = bundleIdentifier;
 
         v25 = ne_log_obj();
         if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
@@ -1362,7 +1362,7 @@ LABEL_58:
         }
       }
 
-      if (xpc_dictionary_get_BOOL(v4, "no-app-filter"))
+      if (xpc_dictionary_get_BOOL(messageCopy, "no-app-filter"))
       {
         v59 = v5->_applicationID;
         v5->_applicationID = 0;
@@ -1393,7 +1393,7 @@ LABEL_58:
     filter = v5->_filter;
     v5->_filter = v67;
 
-    if (!xpc_dictionary_get_BOOL(v4, "no-app-filter"))
+    if (!xpc_dictionary_get_BOOL(messageCopy, "no-app-filter"))
     {
       [(NSMutableDictionary *)v5->_filter setObject:v5->_userUUID forKeyedSubscript:@"user-uuid"];
     }

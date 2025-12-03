@@ -1,17 +1,17 @@
 @interface StocksAssistantStockDetailCell
-- (StocksAssistantStockDetailCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (void)chartUpdater:(id)a3 didFailWithError:(id)a4;
+- (StocksAssistantStockDetailCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (void)chartUpdater:(id)updater didFailWithError:(id)error;
 - (void)layoutSubviews;
-- (void)setStockObject:(id)a3;
+- (void)setStockObject:(id)object;
 @end
 
 @implementation StocksAssistantStockDetailCell
 
-- (StocksAssistantStockDetailCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (StocksAssistantStockDetailCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v11.receiver = self;
   v11.super_class = StocksAssistantStockDetailCell;
-  v4 = [(StocksAssistantStockCell *)&v11 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(StocksAssistantStockCell *)&v11 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = objc_opt_new();
@@ -32,9 +32,9 @@
   return v4;
 }
 
-- (void)setStockObject:(id)a3
+- (void)setStockObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -43,24 +43,24 @@
 
   v10.receiver = self;
   v10.super_class = StocksAssistantStockDetailCell;
-  [(StocksAssistantStockCell *)&v10 setStockObject:v4];
-  v5 = [(StocksAssistantStockCell *)self stock];
-  [(StocksAssistantChartView *)self->_stockChart setStock:v5];
+  [(StocksAssistantStockCell *)&v10 setStockObject:objectCopy];
+  stock = [(StocksAssistantStockCell *)self stock];
+  [(StocksAssistantChartView *)self->_stockChart setStock:stock];
 
-  v6 = [v4 chartData];
+  chartData = [objectCopy chartData];
 
   chartUpdater = self->_chartUpdater;
-  if (v6)
+  if (chartData)
   {
-    v8 = [v4 chartData];
-    v9 = [v8 dataUsingEncoding:4];
+    chartData2 = [objectCopy chartData];
+    v9 = [chartData2 dataUsingEncoding:4];
     [(ChartUpdater *)chartUpdater parseData:v9];
   }
 
   else
   {
-    v8 = [(StocksAssistantStockCell *)self stock];
-    [(ChartUpdater *)chartUpdater updateChartForStock:v8 interval:0];
+    chartData2 = [(StocksAssistantStockCell *)self stock];
+    [(ChartUpdater *)chartUpdater updateChartForStock:chartData2 interval:0];
   }
 
   [(StocksAssistantStockDetailCell *)self setNeedsLayout];
@@ -91,13 +91,13 @@
   [(StocksAssistantChartView *)self->_stockChart setFrame:SiriUIPlatterStyle[32], 0.0, v6 - SiriUIPlatterStyle[32] - SiriUIPlatterStyle[34], v8];
 }
 
-- (void)chartUpdater:(id)a3 didFailWithError:(id)a4
+- (void)chartUpdater:(id)updater didFailWithError:(id)error
 {
-  v4 = a4;
+  errorCopy = error;
   v5 = StocksLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
-    sub_54A0(v4, v5);
+    sub_54A0(errorCopy, v5);
   }
 }
 

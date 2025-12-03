@@ -1,17 +1,17 @@
 @interface _INPBShareFileIntentResponse
-- (BOOL)isEqual:(id)a3;
-- (_INPBShareFileIntentResponse)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBShareFileIntentResponse)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (int)StringAsShareMode:(id)a3;
+- (int)StringAsShareMode:(id)mode;
 - (unint64_t)hash;
-- (void)addRecipients:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setHasShareMode:(BOOL)a3;
-- (void)setHasSuccess:(BOOL)a3;
-- (void)setRecipients:(id)a3;
-- (void)setShareMode:(int)a3;
-- (void)writeTo:(id)a3;
+- (void)addRecipients:(id)recipients;
+- (void)encodeWithCoder:(id)coder;
+- (void)setHasShareMode:(BOOL)mode;
+- (void)setHasSuccess:(BOOL)success;
+- (void)setRecipients:(id)recipients;
+- (void)setShareMode:(int)mode;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBShareFileIntentResponse
@@ -19,16 +19,16 @@
 - (id)dictionaryRepresentation
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(_INPBShareFileIntentResponse *)self hasConfirm])
   {
     v4 = [MEMORY[0x1E696AD98] numberWithBool:{-[_INPBShareFileIntentResponse confirm](self, "confirm")}];
-    [v3 setObject:v4 forKeyedSubscript:@"confirm"];
+    [dictionary setObject:v4 forKeyedSubscript:@"confirm"];
   }
 
   if ([(NSArray *)self->_recipients count])
   {
-    v5 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
@@ -48,8 +48,8 @@
             objc_enumerationMutation(v6);
           }
 
-          v11 = [*(*(&v17 + 1) + 8 * i) dictionaryRepresentation];
-          [v5 addObject:v11];
+          dictionaryRepresentation = [*(*(&v17 + 1) + 8 * i) dictionaryRepresentation];
+          [array addObject:dictionaryRepresentation];
         }
 
         v8 = [(NSArray *)v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -58,34 +58,34 @@
       while (v8);
     }
 
-    [v3 setObject:v5 forKeyedSubscript:@"recipients"];
+    [dictionary setObject:array forKeyedSubscript:@"recipients"];
   }
 
   if ([(_INPBShareFileIntentResponse *)self hasShareMode])
   {
-    v12 = [(_INPBShareFileIntentResponse *)self shareMode];
-    if (v12 >= 3)
+    shareMode = [(_INPBShareFileIntentResponse *)self shareMode];
+    if (shareMode >= 3)
     {
-      v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v12];
+      v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", shareMode];
     }
 
     else
     {
-      v13 = off_1E727F780[v12];
+      v13 = off_1E727F780[shareMode];
     }
 
-    [v3 setObject:v13 forKeyedSubscript:@"shareMode"];
+    [dictionary setObject:v13 forKeyedSubscript:@"shareMode"];
   }
 
   if ([(_INPBShareFileIntentResponse *)self hasSuccess])
   {
     v14 = [MEMORY[0x1E696AD98] numberWithBool:{-[_INPBShareFileIntentResponse success](self, "success")}];
-    [v3 setObject:v14 forKeyedSubscript:@"success"];
+    [dictionary setObject:v14 forKeyedSubscript:@"success"];
   }
 
   v15 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -124,44 +124,44 @@
   return v4 ^ v3 ^ v5 ^ v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
-  v5 = [(_INPBShareFileIntentResponse *)self hasConfirm];
-  if (v5 != [v4 hasConfirm])
+  hasConfirm = [(_INPBShareFileIntentResponse *)self hasConfirm];
+  if (hasConfirm != [equalCopy hasConfirm])
   {
     goto LABEL_17;
   }
 
   if ([(_INPBShareFileIntentResponse *)self hasConfirm])
   {
-    if ([v4 hasConfirm])
+    if ([equalCopy hasConfirm])
     {
       confirm = self->_confirm;
-      if (confirm != [v4 confirm])
+      if (confirm != [equalCopy confirm])
       {
         goto LABEL_17;
       }
     }
   }
 
-  v7 = [(_INPBShareFileIntentResponse *)self recipients];
-  v8 = [v4 recipients];
-  v9 = v8;
-  if ((v7 != 0) != (v8 == 0))
+  recipients = [(_INPBShareFileIntentResponse *)self recipients];
+  recipients2 = [equalCopy recipients];
+  v9 = recipients2;
+  if ((recipients != 0) != (recipients2 == 0))
   {
-    v10 = [(_INPBShareFileIntentResponse *)self recipients];
-    if (v10)
+    recipients3 = [(_INPBShareFileIntentResponse *)self recipients];
+    if (recipients3)
     {
-      v11 = v10;
-      v12 = [(_INPBShareFileIntentResponse *)self recipients];
-      v13 = [v4 recipients];
-      v14 = [v12 isEqual:v13];
+      v11 = recipients3;
+      recipients4 = [(_INPBShareFileIntentResponse *)self recipients];
+      recipients5 = [equalCopy recipients];
+      v14 = [recipients4 isEqual:recipients5];
 
       if (!v14)
       {
@@ -173,15 +173,15 @@
     {
     }
 
-    v15 = [(_INPBShareFileIntentResponse *)self hasShareMode];
-    if (v15 == [v4 hasShareMode])
+    hasShareMode = [(_INPBShareFileIntentResponse *)self hasShareMode];
+    if (hasShareMode == [equalCopy hasShareMode])
     {
-      if (!-[_INPBShareFileIntentResponse hasShareMode](self, "hasShareMode") || ![v4 hasShareMode] || (shareMode = self->_shareMode, shareMode == objc_msgSend(v4, "shareMode")))
+      if (!-[_INPBShareFileIntentResponse hasShareMode](self, "hasShareMode") || ![equalCopy hasShareMode] || (shareMode = self->_shareMode, shareMode == objc_msgSend(equalCopy, "shareMode")))
       {
-        v17 = [(_INPBShareFileIntentResponse *)self hasSuccess];
-        if (v17 == [v4 hasSuccess])
+        hasSuccess = [(_INPBShareFileIntentResponse *)self hasSuccess];
+        if (hasSuccess == [equalCopy hasSuccess])
         {
-          if (!-[_INPBShareFileIntentResponse hasSuccess](self, "hasSuccess") || ![v4 hasSuccess] || (success = self->_success, success == objc_msgSend(v4, "success")))
+          if (!-[_INPBShareFileIntentResponse hasSuccess](self, "hasSuccess") || ![equalCopy hasSuccess] || (success = self->_success, success == objc_msgSend(equalCopy, "success")))
           {
             v18 = 1;
             goto LABEL_18;
@@ -202,7 +202,7 @@ LABEL_18:
   return v18;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBShareFileIntentResponse allocWithZone:](_INPBShareFileIntentResponse init];
   if ([(_INPBShareFileIntentResponse *)self hasConfirm])
@@ -210,7 +210,7 @@ LABEL_18:
     [(_INPBShareFileIntentResponse *)v5 setConfirm:[(_INPBShareFileIntentResponse *)self confirm]];
   }
 
-  v6 = [(NSArray *)self->_recipients copyWithZone:a3];
+  v6 = [(NSArray *)self->_recipients copyWithZone:zone];
   [(_INPBShareFileIntentResponse *)v5 setRecipients:v6];
 
   if ([(_INPBShareFileIntentResponse *)self hasShareMode])
@@ -226,34 +226,34 @@ LABEL_18:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBShareFileIntentResponse *)self data];
+  coderCopy = coder;
+  data = [(_INPBShareFileIntentResponse *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBShareFileIntentResponse)initWithCoder:(id)a3
+- (_INPBShareFileIntentResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBShareFileIntentResponse *)self initWithData:v6];
+    self = [(_INPBShareFileIntentResponse *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if ([(_INPBShareFileIntentResponse *)self hasConfirm])
   {
     confirm = self->_confirm;
@@ -307,9 +307,9 @@ LABEL_18:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setHasSuccess:(BOOL)a3
+- (void)setHasSuccess:(BOOL)success
 {
-  if (a3)
+  if (success)
   {
     v3 = 4;
   }
@@ -322,20 +322,20 @@ LABEL_18:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (int)StringAsShareMode:(id)a3
+- (int)StringAsShareMode:(id)mode
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"AIRDROP"])
+  modeCopy = mode;
+  if ([modeCopy isEqualToString:@"AIRDROP"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"MESSAGE"])
+  else if ([modeCopy isEqualToString:@"MESSAGE"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"MAIL"])
+  else if ([modeCopy isEqualToString:@"MAIL"])
   {
     v4 = 2;
   }
@@ -348,9 +348,9 @@ LABEL_18:
   return v4;
 }
 
-- (void)setHasShareMode:(BOOL)a3
+- (void)setHasShareMode:(BOOL)mode
 {
-  if (a3)
+  if (mode)
   {
     v3 = 2;
   }
@@ -363,10 +363,10 @@ LABEL_18:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setShareMode:(int)a3
+- (void)setShareMode:(int)mode
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (mode == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xFD;
   }
@@ -374,31 +374,31 @@ LABEL_18:
   else
   {
     *&self->_has = has | 2;
-    self->_shareMode = a3;
+    self->_shareMode = mode;
   }
 }
 
-- (void)addRecipients:(id)a3
+- (void)addRecipients:(id)recipients
 {
-  v4 = a3;
+  recipientsCopy = recipients;
   recipients = self->_recipients;
-  v8 = v4;
+  v8 = recipientsCopy;
   if (!recipients)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_recipients;
-    self->_recipients = v6;
+    self->_recipients = array;
 
-    v4 = v8;
+    recipientsCopy = v8;
     recipients = self->_recipients;
   }
 
-  [(NSArray *)recipients addObject:v4];
+  [(NSArray *)recipients addObject:recipientsCopy];
 }
 
-- (void)setRecipients:(id)a3
+- (void)setRecipients:(id)recipients
 {
-  v4 = [a3 mutableCopy];
+  v4 = [recipients mutableCopy];
   recipients = self->_recipients;
   self->_recipients = v4;
 

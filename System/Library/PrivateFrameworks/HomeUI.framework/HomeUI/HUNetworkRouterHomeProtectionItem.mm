@@ -1,61 +1,61 @@
 @interface HUNetworkRouterHomeProtectionItem
 - (HUNetworkRouterHomeProtectionItem)init;
-- (HUNetworkRouterHomeProtectionItem)initWithHome:(id)a3;
-- (id)_subclass_updateWithOptions:(id)a3;
+- (HUNetworkRouterHomeProtectionItem)initWithHome:(id)home;
+- (id)_subclass_updateWithOptions:(id)options;
 @end
 
 @implementation HUNetworkRouterHomeProtectionItem
 
 - (HUNetworkRouterHomeProtectionItem)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithHome_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HUNetworkRouterHomeProtectionItem.m" lineNumber:19 description:{@"%s is unavailable; use %@ instead", "-[HUNetworkRouterHomeProtectionItem init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUNetworkRouterHomeProtectionItem.m" lineNumber:19 description:{@"%s is unavailable; use %@ instead", "-[HUNetworkRouterHomeProtectionItem init]", v5}];
 
   return 0;
 }
 
-- (HUNetworkRouterHomeProtectionItem)initWithHome:(id)a3
+- (HUNetworkRouterHomeProtectionItem)initWithHome:(id)home
 {
-  v5 = a3;
+  homeCopy = home;
   v9.receiver = self;
   v9.super_class = HUNetworkRouterHomeProtectionItem;
   v6 = [(HUNetworkRouterHomeProtectionItem *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_home, a3);
+    objc_storeStrong(&v6->_home, home);
   }
 
   return v7;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
   v4 = objc_opt_new();
   v5 = _HULocalizedStringWithDefaultValue(@"HUNetworkRouterHomeProtectionItemTitle", @"HUNetworkRouterHomeProtectionItemTitle", 1);
   [v4 setObject:v5 forKeyedSubscript:*MEMORY[0x277D13F60]];
 
   v6 = MEMORY[0x277CCABB0];
-  v7 = [(HUNetworkRouterHomeProtectionItem *)self home];
-  [v7 hf_isNetworkProtectionEnabled];
+  home = [(HUNetworkRouterHomeProtectionItem *)self home];
+  [home hf_isNetworkProtectionEnabled];
   v8 = [v6 numberWithInteger:HFPrimaryStateFromBOOL()];
   [v4 setObject:v8 forKeyedSubscript:*MEMORY[0x277D14068]];
 
   v9 = MEMORY[0x277CBEB98];
-  v10 = [(HUNetworkRouterHomeProtectionItem *)self home];
-  v11 = [v9 setWithObject:v10];
+  home2 = [(HUNetworkRouterHomeProtectionItem *)self home];
+  v11 = [v9 setWithObject:home2];
   [v4 setObject:v11 forKeyedSubscript:*MEMORY[0x277D13DA8]];
 
   v12 = MEMORY[0x277CCABB0];
-  v13 = [(HUNetworkRouterHomeProtectionItem *)self home];
-  v14 = [v12 numberWithInt:{objc_msgSend(v13, "hf_isNetworkProtectionSupportedForHome") ^ 1}];
+  home3 = [(HUNetworkRouterHomeProtectionItem *)self home];
+  v14 = [v12 numberWithInt:{objc_msgSend(home3, "hf_isNetworkProtectionSupportedForHome") ^ 1}];
   [v4 setObject:v14 forKeyedSubscript:*MEMORY[0x277D13EA8]];
 
   [v4 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277D13F18]];
-  v15 = [(HUNetworkRouterHomeProtectionItem *)self home];
-  v16 = [v15 hf_localizedDescriptionForNetworkProtectionSupport];
-  [v4 setObject:v16 forKeyedSubscript:@"HFResultNetworkRouterHomeProtectionDescriptionKey"];
+  home4 = [(HUNetworkRouterHomeProtectionItem *)self home];
+  hf_localizedDescriptionForNetworkProtectionSupport = [home4 hf_localizedDescriptionForNetworkProtectionSupport];
+  [v4 setObject:hf_localizedDescriptionForNetworkProtectionSupport forKeyedSubscript:@"HFResultNetworkRouterHomeProtectionDescriptionKey"];
 
   v17 = MEMORY[0x277D2C900];
   v18 = [MEMORY[0x277D14780] outcomeWithResults:v4];

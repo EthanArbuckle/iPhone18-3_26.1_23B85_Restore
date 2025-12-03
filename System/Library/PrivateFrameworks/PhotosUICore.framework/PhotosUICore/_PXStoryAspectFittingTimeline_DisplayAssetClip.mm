@@ -2,10 +2,10 @@
 - ($E59C7DEBCD57E98EE3F0104B12BEB13C)clipTimeRange;
 - (CGRect)clipFrame;
 - (CGRect)transformedFrame;
-- (int64_t)compareByClipFrameOriginX:(id)a3;
-- (int64_t)compareByClipFrameOriginY:(id)a3;
+- (int64_t)compareByClipFrameOriginX:(id)x;
+- (int64_t)compareByClipFrameOriginY:(id)y;
 - (unint64_t)orientation;
-- (void)setClipTimeRange:(id *)a3;
+- (void)setClipTimeRange:(id *)range;
 @end
 
 @implementation _PXStoryAspectFittingTimeline_DisplayAssetClip
@@ -36,11 +36,11 @@
   return result;
 }
 
-- (void)setClipTimeRange:(id *)a3
+- (void)setClipTimeRange:(id *)range
 {
-  v3 = *&a3->var0.var0;
-  v4 = *&a3->var0.var3;
-  *&self->_clipTimeRange.duration.timescale = *&a3->var1.var1;
+  v3 = *&range->var0.var0;
+  v4 = *&range->var0.var3;
+  *&self->_clipTimeRange.duration.timescale = *&range->var1.var1;
   *&self->_clipTimeRange.start.epoch = v4;
   *&self->_clipTimeRange.start.value = v3;
 }
@@ -54,17 +54,17 @@
   return self;
 }
 
-- (int64_t)compareByClipFrameOriginY:(id)a3
+- (int64_t)compareByClipFrameOriginY:(id)y
 {
-  v4 = a3;
+  yCopy = y;
   [(_PXStoryAspectFittingTimeline_DisplayAssetClip *)self clipFrame];
   v6 = v5;
-  [v4 clipFrame];
+  [yCopy clipFrame];
   if (v6 >= v7)
   {
     [(_PXStoryAspectFittingTimeline_DisplayAssetClip *)self clipFrame];
     v10 = v9;
-    [v4 clipFrame];
+    [yCopy clipFrame];
     v8 = v10 > v11;
   }
 
@@ -76,17 +76,17 @@
   return v8;
 }
 
-- (int64_t)compareByClipFrameOriginX:(id)a3
+- (int64_t)compareByClipFrameOriginX:(id)x
 {
-  v4 = a3;
+  xCopy = x;
   [(_PXStoryAspectFittingTimeline_DisplayAssetClip *)self clipFrame];
   v6 = v5;
-  [v4 clipFrame];
+  [xCopy clipFrame];
   if (v6 >= v7)
   {
     [(_PXStoryAspectFittingTimeline_DisplayAssetClip *)self clipFrame];
     v10 = v9;
-    [v4 clipFrame];
+    [xCopy clipFrame];
     v8 = v10 > v11;
   }
 
@@ -100,8 +100,8 @@
 
 - (unint64_t)orientation
 {
-  v2 = [(_PXStoryAspectFittingTimeline_DisplayAssetClip *)self displayAsset];
-  [v2 aspectRatio];
+  displayAsset = [(_PXStoryAspectFittingTimeline_DisplayAssetClip *)self displayAsset];
+  [displayAsset aspectRatio];
   v4 = 3;
   if (v3 < 1.0)
   {

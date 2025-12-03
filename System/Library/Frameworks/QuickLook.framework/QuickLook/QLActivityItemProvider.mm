@@ -1,8 +1,8 @@
 @interface QLActivityItemProvider
-- (id)_pdfPreviewDataAtURL:(id)a3;
-- (id)activityViewController:(id)a3 itemForActivityType:(id)a4;
-- (id)activityViewControllerPlaceholderItems:(id)a3;
-- (id)activityViewControllerSuggestionFileURL:(id)a3;
+- (id)_pdfPreviewDataAtURL:(id)l;
+- (id)activityViewController:(id)controller itemForActivityType:(id)type;
+- (id)activityViewControllerPlaceholderItems:(id)items;
+- (id)activityViewControllerSuggestionFileURL:(id)l;
 - (id)mainItem;
 - (id)printInfo;
 @end
@@ -11,36 +11,36 @@
 
 - (id)mainItem
 {
-  v3 = [(QLActivityItemProvider *)self activityPreviewItem];
-  v4 = [v3 shareableURL];
+  activityPreviewItem = [(QLActivityItemProvider *)self activityPreviewItem];
+  shareableURL = [activityPreviewItem shareableURL];
 
-  v5 = [(QLActivityItemProvider *)self activityPreviewItem];
-  v6 = v5;
-  if (v4)
+  activityPreviewItem2 = [(QLActivityItemProvider *)self activityPreviewItem];
+  v6 = activityPreviewItem2;
+  if (shareableURL)
   {
-    v7 = [v5 shareableURL];
+    shareableURL2 = [activityPreviewItem2 shareableURL];
   }
 
   else
   {
-    v8 = [v5 fetcher];
-    v7 = [v8 shareableItem];
+    fetcher = [activityPreviewItem2 fetcher];
+    shareableURL2 = [fetcher shareableItem];
   }
 
-  return v7;
+  return shareableURL2;
 }
 
-- (id)activityViewControllerPlaceholderItems:(id)a3
+- (id)activityViewControllerPlaceholderItems:(id)items
 {
   v20 = *MEMORY[0x277D85DE8];
   v4 = objc_opt_new();
-  v5 = [(QLActivityItemProvider *)self mainItem];
+  mainItem = [(QLActivityItemProvider *)self mainItem];
 
   v6 = MEMORY[0x277D43EF8];
-  if (v5)
+  if (mainItem)
   {
-    v7 = [(QLActivityItemProvider *)self mainItem];
-    [v4 addObject:v7];
+    mainItem2 = [(QLActivityItemProvider *)self mainItem];
+    [v4 addObject:mainItem2];
   }
 
   else
@@ -59,9 +59,9 @@
     }
   }
 
-  v9 = [(QLActivityItemProvider *)self activityPreviewItem];
-  v10 = [v9 previewItemURL];
-  v11 = [(QLActivityItemProvider *)self _pdfPreviewDataAtURL:v10];
+  activityPreviewItem = [(QLActivityItemProvider *)self activityPreviewItem];
+  previewItemURL = [activityPreviewItem previewItemURL];
+  v11 = [(QLActivityItemProvider *)self _pdfPreviewDataAtURL:previewItemURL];
 
   if (v11)
   {
@@ -70,16 +70,16 @@
 
   else
   {
-    v15 = [(QLActivityItemProvider *)self mainItem];
+    mainItem3 = [(QLActivityItemProvider *)self mainItem];
 
-    if (v15)
+    if (mainItem3)
     {
-      v16 = [(QLActivityItemProvider *)self printer];
+      printer = [(QLActivityItemProvider *)self printer];
 
-      if (v16)
+      if (printer)
       {
-        v17 = [(QLActivityItemProvider *)self printer];
-        [v4 addObject:v17];
+        printer2 = [(QLActivityItemProvider *)self printer];
+        [v4 addObject:printer2];
       }
     }
   }
@@ -103,67 +103,67 @@
   return v4;
 }
 
-- (id)activityViewController:(id)a3 itemForActivityType:(id)a4
+- (id)activityViewController:(id)controller itemForActivityType:(id)type
 {
   v30[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (([v7 isEqualToString:*MEMORY[0x277D54778]] & 1) != 0 || objc_msgSend(v7, "isEqualToString:", *MEMORY[0x277D54740]))
+  controllerCopy = controller;
+  typeCopy = type;
+  if (([typeCopy isEqualToString:*MEMORY[0x277D54778]] & 1) != 0 || objc_msgSend(typeCopy, "isEqualToString:", *MEMORY[0x277D54740]))
   {
-    v8 = [v6 activity];
-    v9 = [(QLActivityItemProvider *)self printInfo];
-    v10 = [v8 printInteractionController];
-    [v10 setPrintInfo:v9];
+    activity = [controllerCopy activity];
+    printInfo = [(QLActivityItemProvider *)self printInfo];
+    printInteractionController = [activity printInteractionController];
+    [printInteractionController setPrintInfo:printInfo];
 
-    v11 = [(QLActivityItemProvider *)self activityPreviewItem];
-    v12 = [v11 previewItemURL];
-    v13 = [(QLActivityItemProvider *)self _pdfPreviewDataAtURL:v12];
+    activityPreviewItem = [(QLActivityItemProvider *)self activityPreviewItem];
+    previewItemURL = [activityPreviewItem previewItemURL];
+    identifier = [(QLActivityItemProvider *)self _pdfPreviewDataAtURL:previewItemURL];
 
-    if (v13)
+    if (identifier)
     {
-      v14 = v13;
+      v14 = identifier;
 LABEL_5:
-      v15 = v14;
+      printer2 = v14;
 LABEL_15:
 
       goto LABEL_16;
     }
 
-    v16 = [(QLItem *)self->_activityPreviewItem previewItemContentType];
-    v17 = [MEMORY[0x277D41248] printableUTIs];
-    if ([v17 containsObject:v16])
+    previewItemContentType = [(QLItem *)self->_activityPreviewItem previewItemContentType];
+    printableUTIs = [MEMORY[0x277D41248] printableUTIs];
+    if ([printableUTIs containsObject:previewItemContentType])
     {
     }
 
     else
     {
-      v20 = [(QLActivityItemProvider *)self printer];
+      printer = [(QLActivityItemProvider *)self printer];
 
-      if (v20)
+      if (printer)
       {
-        v15 = [(QLActivityItemProvider *)self printer];
+        printer2 = [(QLActivityItemProvider *)self printer];
 LABEL_14:
 
         goto LABEL_15;
       }
     }
 
-    v15 = 0;
+    printer2 = 0;
     goto LABEL_14;
   }
 
-  if ([v7 isEqualToString:*MEMORY[0x277D54720]])
+  if ([typeCopy isEqualToString:*MEMORY[0x277D54720]])
   {
-    v18 = [(QLActivityItemProvider *)self activityPreviewItem];
-    v19 = [v18 previewItemURL];
-    v8 = [(QLActivityItemProvider *)self _pdfPreviewDataAtURL:v19];
+    activityPreviewItem2 = [(QLActivityItemProvider *)self activityPreviewItem];
+    previewItemURL2 = [activityPreviewItem2 previewItemURL];
+    activity = [(QLActivityItemProvider *)self _pdfPreviewDataAtURL:previewItemURL2];
 
-    if (!v8)
+    if (!activity)
     {
-      v15 = 0;
+      printer2 = 0;
 LABEL_16:
 
-      if (v15)
+      if (printer2)
       {
         goto LABEL_18;
       }
@@ -171,15 +171,15 @@ LABEL_16:
       goto LABEL_17;
     }
 
-    v13 = [*MEMORY[0x277CE1E08] identifier];
-    v29 = v13;
-    v30[0] = v8;
+    identifier = [*MEMORY[0x277CE1E08] identifier];
+    v29 = identifier;
+    v30[0] = activity;
     v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v30 forKeys:&v29 count:1];
     goto LABEL_5;
   }
 
 LABEL_17:
-  v15 = [(QLActivityItemProvider *)self mainItem];
+  printer2 = [(QLActivityItemProvider *)self mainItem];
 LABEL_18:
   v21 = MEMORY[0x277D43EF8];
   v22 = *MEMORY[0x277D43EF8];
@@ -192,25 +192,25 @@ LABEL_18:
   if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
   {
     v25 = 138412546;
-    v26 = v7;
+    v26 = typeCopy;
     v27 = 2112;
-    v28 = v15;
+    v28 = printer2;
     _os_log_impl(&dword_23A714000, v22, OS_LOG_TYPE_INFO, "Returning activity item for activity type %@ : %@ #Printing", &v25, 0x16u);
   }
 
   v23 = *MEMORY[0x277D85DE8];
 
-  return v15;
+  return printer2;
 }
 
 - (id)printInfo
 {
-  v3 = [(QLActivityItemProvider *)self activityPreviewItem];
-  v4 = [v3 previewItemContentType];
+  activityPreviewItem = [(QLActivityItemProvider *)self activityPreviewItem];
+  previewItemContentType = [activityPreviewItem previewItemContentType];
 
-  if (v4)
+  if (previewItemContentType)
   {
-    v5 = [MEMORY[0x277CE1CB8] typeWithIdentifier:v4];
+    v5 = [MEMORY[0x277CE1CB8] typeWithIdentifier:previewItemContentType];
   }
 
   else
@@ -218,41 +218,41 @@ LABEL_18:
     v5 = 0;
   }
 
-  v6 = [MEMORY[0x277D43F90] isIWorkDocumentType:v4];
-  v7 = [MEMORY[0x277D43F90] isSpreadSheetDocumentType:v4];
+  v6 = [MEMORY[0x277D43F90] isIWorkDocumentType:previewItemContentType];
+  v7 = [MEMORY[0x277D43F90] isSpreadSheetDocumentType:previewItemContentType];
   v8 = [v5 conformsToType:*MEMORY[0x277CE1E30]];
   v9 = [v5 conformsToType:*MEMORY[0x277CE1DB0]];
-  v10 = [MEMORY[0x277D41240] printInfo];
-  v11 = [(QLActivityItemProvider *)self activityPreviewItem];
-  v12 = [v11 previewItemTitle];
-  [v10 setJobName:v12];
+  printInfo = [MEMORY[0x277D41240] printInfo];
+  activityPreviewItem2 = [(QLActivityItemProvider *)self activityPreviewItem];
+  previewItemTitle = [activityPreviewItem2 previewItemTitle];
+  [printInfo setJobName:previewItemTitle];
 
-  v13 = [(QLActivityItemProvider *)self activityPreviewItem];
-  v14 = [v13 previewItemURL];
-  v15 = [(QLActivityItemProvider *)self _pdfPreviewDataAtURL:v14];
+  activityPreviewItem3 = [(QLActivityItemProvider *)self activityPreviewItem];
+  previewItemURL = [activityPreviewItem3 previewItemURL];
+  v15 = [(QLActivityItemProvider *)self _pdfPreviewDataAtURL:previewItemURL];
 
   if (v15)
   {
-    [v10 setScaleUp:v6];
+    [printInfo setScaleUp:v6];
   }
 
   if (v9)
   {
-    [v10 setOutputType:1];
+    [printInfo setOutputType:1];
   }
 
   if ((v8 | v6 & v7))
   {
-    [v10 setOrientation:1];
+    [printInfo setOrientation:1];
   }
 
-  return v10;
+  return printInfo;
 }
 
-- (id)_pdfPreviewDataAtURL:(id)a3
+- (id)_pdfPreviewDataAtURL:(id)l
 {
-  v4 = a3;
-  v5 = v4;
+  lCopy = l;
+  v5 = lCopy;
   if (_pdfPreviewDataAtURL__onceToken != -1)
   {
     [QLActivityItemProvider _pdfPreviewDataAtURL:];
@@ -266,15 +266,15 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if (!v4)
+  if (!lCopy)
   {
     goto LABEL_14;
   }
 
 LABEL_3:
   v6 = [_pdfPreviewDataAtURL__sharedPDFPreviewCache objectForKey:v5];
-  v7 = [MEMORY[0x277CBEB68] null];
-  v8 = [v6 isEqual:v7];
+  null = [MEMORY[0x277CBEB68] null];
+  v8 = [v6 isEqual:null];
 
   if (v8)
   {
@@ -285,10 +285,10 @@ LABEL_3:
   {
     if (!v6)
     {
-      v10 = [(QLActivityItemProvider *)self activityPreviewItem];
-      v11 = [v10 previewItemContentType];
+      activityPreviewItem = [(QLActivityItemProvider *)self activityPreviewItem];
+      previewItemContentType = [activityPreviewItem previewItemContentType];
 
-      if (v11 && ([MEMORY[0x277CE1CB8] typeWithIdentifier:v11], v12 = objc_claimAutoreleasedReturnValue(), QLPreviewCopyEmbeddedPDF(), v6 = objc_claimAutoreleasedReturnValue(), v12, v6))
+      if (previewItemContentType && ([MEMORY[0x277CE1CB8] typeWithIdentifier:previewItemContentType], v12 = objc_claimAutoreleasedReturnValue(), QLPreviewCopyEmbeddedPDF(), v6 = objc_claimAutoreleasedReturnValue(), v12, v6))
       {
         [_pdfPreviewDataAtURL__sharedPDFPreviewCache setObject:v6 forKey:v5];
       }
@@ -296,8 +296,8 @@ LABEL_3:
       else
       {
         v13 = _pdfPreviewDataAtURL__sharedPDFPreviewCache;
-        v14 = [MEMORY[0x277CBEB68] null];
-        [v13 setObject:v14 forKey:v5];
+        null2 = [MEMORY[0x277CBEB68] null];
+        [v13 setObject:null2 forKey:v5];
 
         v6 = 0;
       }
@@ -319,23 +319,23 @@ uint64_t __47__QLActivityItemProvider__pdfPreviewDataAtURL___block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)activityViewControllerSuggestionFileURL:(id)a3
+- (id)activityViewControllerSuggestionFileURL:(id)l
 {
-  v4 = [(QLActivityItemProvider *)self activityPreviewItem];
-  v5 = [v4 previewItemType];
+  activityPreviewItem = [(QLActivityItemProvider *)self activityPreviewItem];
+  previewItemType = [activityPreviewItem previewItemType];
 
-  if ((v5 & 0xFFFFFFFFFFFFFFFELL) == 2)
+  if ((previewItemType & 0xFFFFFFFFFFFFFFFELL) == 2)
   {
-    v6 = [(QLActivityItemProvider *)self activityPreviewItem];
-    v7 = [v6 shareableURL];
+    activityPreviewItem2 = [(QLActivityItemProvider *)self activityPreviewItem];
+    shareableURL = [activityPreviewItem2 shareableURL];
   }
 
   else
   {
-    v7 = 0;
+    shareableURL = 0;
   }
 
-  return v7;
+  return shareableURL;
 }
 
 @end

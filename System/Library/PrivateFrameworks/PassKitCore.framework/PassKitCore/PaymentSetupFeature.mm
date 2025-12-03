@@ -1,23 +1,23 @@
 @interface PaymentSetupFeature
 + (id)_propertySettersForPaymentSetupFeature;
-+ (id)insertOrUpdatePaymentSetupFeature:(id)a3 inDatabase:(id)a4;
-+ (id)paymentSetupFeatureWithIdentifier:(id)a3 inDatabase:(id)a4;
-+ (id)paymentSetupFeaturesInDatabase:(id)a3;
-+ (void)deleteAllPaymentSetupFeaturesInDatabase:(id)a3;
-+ (void)deletePaymentSetupFeatureWithIdentifier:(id)a3 inDatabase:(id)a4;
-+ (void)deletePaymentSetupFeaturesNotIncludingIdentifiers:(id)a3 inDatabase:(id)a4;
-- (PaymentSetupFeature)initWithPaymentSetupFeature:(id)a3 inDatabase:(id)a4;
++ (id)insertOrUpdatePaymentSetupFeature:(id)feature inDatabase:(id)database;
++ (id)paymentSetupFeatureWithIdentifier:(id)identifier inDatabase:(id)database;
++ (id)paymentSetupFeaturesInDatabase:(id)database;
++ (void)deleteAllPaymentSetupFeaturesInDatabase:(id)database;
++ (void)deletePaymentSetupFeatureWithIdentifier:(id)identifier inDatabase:(id)database;
++ (void)deletePaymentSetupFeaturesNotIncludingIdentifiers:(id)identifiers inDatabase:(id)database;
+- (PaymentSetupFeature)initWithPaymentSetupFeature:(id)feature inDatabase:(id)database;
 - (id)paymentSetupFeature;
-- (void)updateWithPaymentSetupFeature:(id)a3;
+- (void)updateWithPaymentSetupFeature:(id)feature;
 @end
 
 @implementation PaymentSetupFeature
 
-+ (id)paymentSetupFeaturesInDatabase:(id)a3
++ (id)paymentSetupFeaturesInDatabase:(id)database
 {
-  v4 = a3;
+  databaseCopy = database;
   v5 = +[SQLiteBooleanPredicate truePredicate];
-  v6 = [a1 queryWithDatabase:v4 predicate:v5];
+  v6 = [self queryWithDatabase:databaseCopy predicate:v5];
 
   v7 = objc_alloc_init(NSMutableSet);
   v19 = @"pid";
@@ -26,10 +26,10 @@
   v14 = 3221225472;
   v15 = sub_1001ACE18;
   v16 = &unk_10083CBC0;
-  v17 = v4;
+  v17 = databaseCopy;
   v18 = v7;
   v9 = v7;
-  v10 = v4;
+  v10 = databaseCopy;
   [v6 enumeratePersistentIDsAndProperties:v8 usingBlock:&v13];
 
   v11 = [v9 copy];
@@ -37,130 +37,130 @@
   return v11;
 }
 
-+ (id)paymentSetupFeatureWithIdentifier:(id)a3 inDatabase:(id)a4
++ (id)paymentSetupFeatureWithIdentifier:(id)identifier inDatabase:(id)database
 {
-  v6 = a4;
-  v7 = [a1 _predicateForProductIdentifier:a3];
-  v8 = [a1 anyInDatabase:v6 predicate:v7];
+  databaseCopy = database;
+  v7 = [self _predicateForProductIdentifier:identifier];
+  v8 = [self anyInDatabase:databaseCopy predicate:v7];
 
   return v8;
 }
 
-+ (id)insertOrUpdatePaymentSetupFeature:(id)a3 inDatabase:(id)a4
++ (id)insertOrUpdatePaymentSetupFeature:(id)feature inDatabase:(id)database
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 productIdentifier];
-  v9 = [a1 paymentSetupFeatureWithIdentifier:v8 inDatabase:v7];
+  featureCopy = feature;
+  databaseCopy = database;
+  productIdentifier = [featureCopy productIdentifier];
+  v9 = [self paymentSetupFeatureWithIdentifier:productIdentifier inDatabase:databaseCopy];
 
   if (v9)
   {
-    [v9 updateWithPaymentSetupFeature:v6];
+    [v9 updateWithPaymentSetupFeature:featureCopy];
   }
 
   else
   {
-    v9 = [[a1 alloc] initWithPaymentSetupFeature:v6 inDatabase:v7];
+    v9 = [[self alloc] initWithPaymentSetupFeature:featureCopy inDatabase:databaseCopy];
   }
 
   return v9;
 }
 
-- (PaymentSetupFeature)initWithPaymentSetupFeature:(id)a3 inDatabase:(id)a4
+- (PaymentSetupFeature)initWithPaymentSetupFeature:(id)feature inDatabase:(id)database
 {
-  v6 = a4;
-  v7 = a3;
+  databaseCopy = database;
+  featureCopy = feature;
   v8 = objc_alloc_init(NSMutableDictionary);
-  v9 = [v7 identifiers];
-  v10 = _SQLValueForIdentifiers(v9);
+  identifiers = [featureCopy identifiers];
+  v10 = _SQLValueForIdentifiers(identifiers);
   [v8 setObjectOrNull:v10 forKey:@"identifiers"];
 
-  v11 = [v7 localizedDisplayName];
-  [v8 setObjectOrNull:v11 forKey:@"localized_display_name"];
+  localizedDisplayName = [featureCopy localizedDisplayName];
+  [v8 setObjectOrNull:localizedDisplayName forKey:@"localized_display_name"];
 
-  [v8 setInteger:objc_msgSend(v7 forKey:{"type"), @"feature_type"}];
-  [v8 setInteger:objc_msgSend(v7 forKey:{"state"), @"feature_state"}];
-  [v8 setInteger:objc_msgSend(v7 forKey:{"supportedOptions"), @"supported_options"}];
-  [v8 setInteger:objc_msgSend(v7 forKey:{"supportedDevices"), @"supported_devices"}];
-  v12 = [v7 productIdentifier];
-  [v8 setObjectOrNull:v12 forKey:@"product_identifier"];
+  [v8 setInteger:objc_msgSend(featureCopy forKey:{"type"), @"feature_type"}];
+  [v8 setInteger:objc_msgSend(featureCopy forKey:{"state"), @"feature_state"}];
+  [v8 setInteger:objc_msgSend(featureCopy forKey:{"supportedOptions"), @"supported_options"}];
+  [v8 setInteger:objc_msgSend(featureCopy forKey:{"supportedDevices"), @"supported_devices"}];
+  productIdentifier = [featureCopy productIdentifier];
+  [v8 setObjectOrNull:productIdentifier forKey:@"product_identifier"];
 
-  v13 = [v7 partnerIdentifier];
-  [v8 setObjectOrNull:v13 forKey:@"partner_identifier"];
+  partnerIdentifier = [featureCopy partnerIdentifier];
+  [v8 setObjectOrNull:partnerIdentifier forKey:@"partner_identifier"];
 
-  [v8 setInteger:objc_msgSend(v7 forKey:{"featureIdentifier"), @"feature_identifier"}];
-  v14 = [v7 dirtyStateIdentifier];
-  [v8 setObjectOrNull:v14 forKey:@"dirty_state_identifier"];
+  [v8 setInteger:objc_msgSend(featureCopy forKey:{"featureIdentifier"), @"feature_identifier"}];
+  dirtyStateIdentifier = [featureCopy dirtyStateIdentifier];
+  [v8 setObjectOrNull:dirtyStateIdentifier forKey:@"dirty_state_identifier"];
 
-  v15 = [v7 lastUpdated];
+  lastUpdated = [featureCopy lastUpdated];
   v16 = _SQLValueForDate();
   [v8 setObjectOrNull:v16 forKey:@"last_updated_date"];
 
-  v17 = [v7 expiry];
+  expiry = [featureCopy expiry];
   v18 = _SQLValueForDate();
   [v8 setObjectOrNull:v18 forKey:@"expiry_date"];
 
-  [v8 setInteger:objc_msgSend(v7 forKey:{"productType"), @"product_type"}];
-  [v8 setInteger:objc_msgSend(v7 forKey:{"productState"), @"product_state"}];
-  v19 = [v7 notificationTitle];
-  [v8 setObjectOrNull:v19 forKey:@"notification_title"];
+  [v8 setInteger:objc_msgSend(featureCopy forKey:{"productType"), @"product_type"}];
+  [v8 setInteger:objc_msgSend(featureCopy forKey:{"productState"), @"product_state"}];
+  notificationTitle = [featureCopy notificationTitle];
+  [v8 setObjectOrNull:notificationTitle forKey:@"notification_title"];
 
-  v20 = [v7 notificationMessage];
-  [v8 setObjectOrNull:v20 forKey:@"notification_message"];
+  notificationMessage = [featureCopy notificationMessage];
+  [v8 setObjectOrNull:notificationMessage forKey:@"notification_message"];
 
-  v21 = [v7 discoveryCardIdentifier];
+  discoveryCardIdentifier = [featureCopy discoveryCardIdentifier];
 
-  [v8 setObjectOrNull:v21 forKey:@"discovery_card_identitifer"];
-  v22 = [(SQLiteEntity *)self initWithPropertyValues:v8 inDatabase:v6];
+  [v8 setObjectOrNull:discoveryCardIdentifier forKey:@"discovery_card_identitifer"];
+  v22 = [(SQLiteEntity *)self initWithPropertyValues:v8 inDatabase:databaseCopy];
 
   v23 = v22;
   return v23;
 }
 
-- (void)updateWithPaymentSetupFeature:(id)a3
+- (void)updateWithPaymentSetupFeature:(id)feature
 {
-  v4 = a3;
+  featureCopy = feature;
   v18 = objc_alloc_init(NSMutableDictionary);
-  v5 = [v4 identifiers];
-  v6 = _SQLValueForIdentifiers(v5);
+  identifiers = [featureCopy identifiers];
+  v6 = _SQLValueForIdentifiers(identifiers);
   [v18 setObjectOrNull:v6 forKey:@"identifiers"];
 
-  v7 = [v4 localizedDisplayName];
-  [v18 setObjectOrNull:v7 forKey:@"localized_display_name"];
+  localizedDisplayName = [featureCopy localizedDisplayName];
+  [v18 setObjectOrNull:localizedDisplayName forKey:@"localized_display_name"];
 
-  [v18 setInteger:objc_msgSend(v4 forKey:{"type"), @"feature_type"}];
-  [v18 setInteger:objc_msgSend(v4 forKey:{"state"), @"feature_state"}];
-  [v18 setInteger:objc_msgSend(v4 forKey:{"supportedOptions"), @"supported_options"}];
-  [v18 setInteger:objc_msgSend(v4 forKey:{"supportedDevices"), @"supported_devices"}];
-  v8 = [v4 productIdentifier];
-  [v18 setObjectOrNull:v8 forKey:@"product_identifier"];
+  [v18 setInteger:objc_msgSend(featureCopy forKey:{"type"), @"feature_type"}];
+  [v18 setInteger:objc_msgSend(featureCopy forKey:{"state"), @"feature_state"}];
+  [v18 setInteger:objc_msgSend(featureCopy forKey:{"supportedOptions"), @"supported_options"}];
+  [v18 setInteger:objc_msgSend(featureCopy forKey:{"supportedDevices"), @"supported_devices"}];
+  productIdentifier = [featureCopy productIdentifier];
+  [v18 setObjectOrNull:productIdentifier forKey:@"product_identifier"];
 
-  v9 = [v4 partnerIdentifier];
-  [v18 setObjectOrNull:v9 forKey:@"partner_identifier"];
+  partnerIdentifier = [featureCopy partnerIdentifier];
+  [v18 setObjectOrNull:partnerIdentifier forKey:@"partner_identifier"];
 
-  [v18 setInteger:objc_msgSend(v4 forKey:{"featureIdentifier"), @"feature_identifier"}];
-  v10 = [v4 dirtyStateIdentifier];
-  [v18 setObjectOrNull:v10 forKey:@"dirty_state_identifier"];
+  [v18 setInteger:objc_msgSend(featureCopy forKey:{"featureIdentifier"), @"feature_identifier"}];
+  dirtyStateIdentifier = [featureCopy dirtyStateIdentifier];
+  [v18 setObjectOrNull:dirtyStateIdentifier forKey:@"dirty_state_identifier"];
 
-  v11 = [v4 lastUpdated];
+  lastUpdated = [featureCopy lastUpdated];
   v12 = _SQLValueForDate();
   [v18 setObjectOrNull:v12 forKey:@"last_updated_date"];
 
-  v13 = [v4 expiry];
+  expiry = [featureCopy expiry];
   v14 = _SQLValueForDate();
   [v18 setObjectOrNull:v14 forKey:@"expiry_date"];
 
-  [v18 setInteger:objc_msgSend(v4 forKey:{"productType"), @"product_type"}];
-  [v18 setInteger:objc_msgSend(v4 forKey:{"productState"), @"product_state"}];
-  v15 = [v4 notificationTitle];
-  [v18 setObjectOrNull:v15 forKey:@"notification_title"];
+  [v18 setInteger:objc_msgSend(featureCopy forKey:{"productType"), @"product_type"}];
+  [v18 setInteger:objc_msgSend(featureCopy forKey:{"productState"), @"product_state"}];
+  notificationTitle = [featureCopy notificationTitle];
+  [v18 setObjectOrNull:notificationTitle forKey:@"notification_title"];
 
-  v16 = [v4 notificationMessage];
-  [v18 setObjectOrNull:v16 forKey:@"notification_message"];
+  notificationMessage = [featureCopy notificationMessage];
+  [v18 setObjectOrNull:notificationMessage forKey:@"notification_message"];
 
-  v17 = [v4 discoveryCardIdentifier];
+  discoveryCardIdentifier = [featureCopy discoveryCardIdentifier];
 
-  [v18 setObjectOrNull:v17 forKey:@"discovery_card_identitifer"];
+  [v18 setObjectOrNull:discoveryCardIdentifier forKey:@"discovery_card_identitifer"];
   [(SQLiteEntity *)self setValuesWithDictionary:v18];
 }
 
@@ -168,7 +168,7 @@
 {
   v3 = objc_alloc_init(PKPaymentSetupFeature);
   v4 = +[PaymentSetupFeature _propertySettersForPaymentSetupFeature];
-  v5 = [v4 allKeys];
+  allKeys = [v4 allKeys];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1001AD6AC;
@@ -177,7 +177,7 @@
   v6 = v3;
   v13 = v6;
   v7 = v4;
-  [(SQLiteEntity *)self getValuesForProperties:v5 withApplier:v11];
+  [(SQLiteEntity *)self getValuesForProperties:allKeys withApplier:v11];
 
   v8 = v13;
   v9 = v6;
@@ -185,31 +185,31 @@
   return v6;
 }
 
-+ (void)deletePaymentSetupFeaturesNotIncludingIdentifiers:(id)a3 inDatabase:(id)a4
++ (void)deletePaymentSetupFeaturesNotIncludingIdentifiers:(id)identifiers inDatabase:(id)database
 {
-  v6 = a4;
-  v8 = [SQLiteContainsPredicate doesNotContainPredicateWithProperty:@"product_identifier" values:a3];
-  v7 = [a1 queryWithDatabase:v6 predicate:v8];
+  databaseCopy = database;
+  v8 = [SQLiteContainsPredicate doesNotContainPredicateWithProperty:@"product_identifier" values:identifiers];
+  v7 = [self queryWithDatabase:databaseCopy predicate:v8];
 
   [v7 deleteAllEntities];
 }
 
-+ (void)deleteAllPaymentSetupFeaturesInDatabase:(id)a3
++ (void)deleteAllPaymentSetupFeaturesInDatabase:(id)database
 {
-  v4 = a3;
+  databaseCopy = database;
   v5 = +[SQLiteBooleanPredicate truePredicate];
-  v6 = [a1 queryWithDatabase:v4 predicate:v5];
+  v6 = [self queryWithDatabase:databaseCopy predicate:v5];
 
   [v6 deleteAllEntities];
 }
 
-+ (void)deletePaymentSetupFeatureWithIdentifier:(id)a3 inDatabase:(id)a4
++ (void)deletePaymentSetupFeatureWithIdentifier:(id)identifier inDatabase:(id)database
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [objc_opt_class() _predicateForProductIdentifier:v7];
+  databaseCopy = database;
+  identifierCopy = identifier;
+  v9 = [objc_opt_class() _predicateForProductIdentifier:identifierCopy];
 
-  v8 = [a1 queryWithDatabase:v6 predicate:v9];
+  v8 = [self queryWithDatabase:databaseCopy predicate:v9];
 
   [v8 deleteAllEntities];
 }

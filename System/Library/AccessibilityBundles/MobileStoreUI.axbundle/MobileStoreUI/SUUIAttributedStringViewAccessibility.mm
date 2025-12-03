@@ -1,8 +1,8 @@
 @interface SUUIAttributedStringViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)isAccessibilityElement;
 - (id)_accessibilityLinks;
-- (id)accessibilityCustomRotorItemsAtIndex:(int64_t)a3;
+- (id)accessibilityCustomRotorItemsAtIndex:(int64_t)index;
 - (id)accessibilityCustomRotors;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
@@ -10,37 +10,37 @@
 
 @implementation SUUIAttributedStringViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SUUIAttributedStringView" hasInstanceVariable:@"_layout" withType:"SUUIAttributedStringLayout"];
-  [v3 validateClass:@"SUUIAttributedStringLayout" hasInstanceMethod:@"attributedString" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SUUIAttributedStringView" hasInstanceMethod:@"requiredBadges" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SUUIAttributedStringView" hasInstanceMethod:@"_setupTapLocatorContainer" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"SUUIAttributedStringView" hasInstanceVariable:@"_containsLinks" withType:"B"];
-  [v3 validateClass:@"SUUIAttributedStringView" hasInstanceVariable:@"_layoutManager" withType:"NSLayoutManager"];
-  [v3 validateClass:@"SUUIAttributedStringView" hasInstanceVariable:@"_textContainer" withType:"NSTextContainer"];
-  [v3 validateClass:@"SUUIAttributedStringView" hasInstanceVariable:@"_requiredBadges" withType:"NSArray"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SUUIAttributedStringView" hasInstanceVariable:@"_layout" withType:"SUUIAttributedStringLayout"];
+  [validationsCopy validateClass:@"SUUIAttributedStringLayout" hasInstanceMethod:@"attributedString" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SUUIAttributedStringView" hasInstanceMethod:@"requiredBadges" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SUUIAttributedStringView" hasInstanceMethod:@"_setupTapLocatorContainer" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"SUUIAttributedStringView" hasInstanceVariable:@"_containsLinks" withType:"B"];
+  [validationsCopy validateClass:@"SUUIAttributedStringView" hasInstanceVariable:@"_layoutManager" withType:"NSLayoutManager"];
+  [validationsCopy validateClass:@"SUUIAttributedStringView" hasInstanceVariable:@"_textContainer" withType:"NSTextContainer"];
+  [validationsCopy validateClass:@"SUUIAttributedStringView" hasInstanceVariable:@"_requiredBadges" withType:"NSArray"];
 }
 
 - (BOOL)isAccessibilityElement
 {
-  v2 = [(SUUIAttributedStringViewAccessibility *)self accessibilityLabel];
-  v3 = [MEMORY[0x29EDB9F50] whitespaceAndNewlineCharacterSet];
-  v4 = [v2 stringByTrimmingCharactersInSet:v3];
+  accessibilityLabel = [(SUUIAttributedStringViewAccessibility *)self accessibilityLabel];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x29EDB9F50] whitespaceAndNewlineCharacterSet];
+  v4 = [accessibilityLabel stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
-  LOBYTE(v2) = [v4 length] != 0;
-  return v2;
+  LOBYTE(accessibilityLabel) = [v4 length] != 0;
+  return accessibilityLabel;
 }
 
 - (id)accessibilityLabel
 {
   v28 = *MEMORY[0x29EDCA608];
-  v3 = [(SUUIAttributedStringViewAccessibility *)self accessibilityUserDefinedLabel];
+  accessibilityUserDefinedLabel = [(SUUIAttributedStringViewAccessibility *)self accessibilityUserDefinedLabel];
 
-  if (v3)
+  if (accessibilityUserDefinedLabel)
   {
-    v4 = [(SUUIAttributedStringViewAccessibility *)self accessibilityUserDefinedLabel];
+    accessibilityUserDefinedLabel2 = [(SUUIAttributedStringViewAccessibility *)self accessibilityUserDefinedLabel];
   }
 
   else
@@ -59,7 +59,7 @@
       abort();
     }
 
-    v4 = [v8 string];
+    accessibilityUserDefinedLabel2 = [v8 string];
   }
 
   v26 = 0;
@@ -89,10 +89,10 @@
         v16 = *(*(&v21 + 1) + 8 * i);
         if (v16)
         {
-          v20 = [v16 accessibilityLabel];
+          accessibilityLabel = [v16 accessibilityLabel];
           v17 = __UIAXStringForVariables();
 
-          v4 = v17;
+          accessibilityUserDefinedLabel2 = v17;
         }
       }
 
@@ -104,7 +104,7 @@
 
   v18 = *MEMORY[0x29EDCA608];
 
-  return v4;
+  return accessibilityUserDefinedLabel2;
 }
 
 - (unint64_t)accessibilityTraits
@@ -114,7 +114,7 @@
   v17 = 0x2020000000;
   v14.receiver = self;
   v14.super_class = SUUIAttributedStringViewAccessibility;
-  v18 = [(SUUIAttributedStringViewAccessibility *)&v14 accessibilityTraits];
+  accessibilityTraits = [(SUUIAttributedStringViewAccessibility *)&v14 accessibilityTraits];
   LOBYTE(v12[0]) = 0;
   objc_opt_class();
   v13 = 0;
@@ -169,11 +169,11 @@ uint64_t __60__SUUIAttributedStringViewAccessibility_accessibilityTraits__block_
 
 - (id)_accessibilityLinks
 {
-  v3 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   v4 = [(SUUIAttributedStringViewAccessibility *)self safeValueForKey:@"_containsLinks"];
-  v5 = [v4 BOOLValue];
+  bOOLValue = [v4 BOOLValue];
 
-  if (v5)
+  if (bOOLValue)
   {
     v6 = [(SUUIAttributedStringViewAccessibility *)self safeValueForKey:@"layout"];
     v7 = [v6 safeValueForKey:@"attributedString"];
@@ -186,7 +186,7 @@ uint64_t __60__SUUIAttributedStringViewAccessibility_accessibilityTraits__block_
       v25 = 3221225472;
       v26 = __60__SUUIAttributedStringViewAccessibility__accessibilityLinks__block_invoke;
       v27 = &unk_29F2D8E30;
-      v28 = self;
+      selfCopy = self;
       AXPerformSafeBlock();
       v10 = [(SUUIAttributedStringViewAccessibility *)self safeValueForKey:@"_layoutManager"];
       v11 = [(SUUIAttributedStringViewAccessibility *)self safeValueForKey:@"_textContainer"];
@@ -196,18 +196,18 @@ uint64_t __60__SUUIAttributedStringViewAccessibility_accessibilityTraits__block_
       v18 = &unk_29F2D8EA8;
       v19 = v10;
       v20 = v11;
-      v21 = self;
+      selfCopy2 = self;
       v22 = v7;
-      v23 = v3;
+      v23 = array;
       v12 = v11;
       v13 = v10;
       [v22 enumerateAttribute:@"SUUILinkAttributeName" inRange:0 options:v9 usingBlock:{0, &v15}];
     }
 
-    [(SUUIAttributedStringViewAccessibility *)self _accessibilitySetRetainedValue:v3 forKey:@"kAXLinks", v15, v16, v17, v18];
+    [(SUUIAttributedStringViewAccessibility *)self _accessibilitySetRetainedValue:array forKey:@"kAXLinks", v15, v16, v17, v18];
   }
 
-  return v3;
+  return array;
 }
 
 void __60__SUUIAttributedStringViewAccessibility__accessibilityLinks__block_invoke_2(uint64_t a1, uint64_t a2, uint64_t a3, uint64_t a4)
@@ -231,8 +231,8 @@ void __60__SUUIAttributedStringViewAccessibility__accessibilityLinks__block_invo
 - (id)accessibilityCustomRotors
 {
   v16[1] = *MEMORY[0x29EDCA608];
-  v3 = [(SUUIAttributedStringViewAccessibility *)self _accessibilityLinks];
-  v4 = [v3 count];
+  _accessibilityLinks = [(SUUIAttributedStringViewAccessibility *)self _accessibilityLinks];
+  v4 = [_accessibilityLinks count];
 
   if (v4)
   {
@@ -278,19 +278,19 @@ id __66__SUUIAttributedStringViewAccessibility_accessibilityCustomRotors__block_
   return v7;
 }
 
-- (id)accessibilityCustomRotorItemsAtIndex:(int64_t)a3
+- (id)accessibilityCustomRotorItemsAtIndex:(int64_t)index
 {
-  if (a3)
+  if (index)
   {
-    v5 = 0;
+    _accessibilityLinks = 0;
   }
 
   else
   {
-    v5 = [(SUUIAttributedStringViewAccessibility *)self _accessibilityLinks];
+    _accessibilityLinks = [(SUUIAttributedStringViewAccessibility *)self _accessibilityLinks];
   }
 
-  return v5;
+  return _accessibilityLinks;
 }
 
 @end

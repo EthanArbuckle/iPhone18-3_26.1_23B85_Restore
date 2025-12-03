@@ -1,5 +1,5 @@
 @interface PosterCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_accessibilityScrollParentForComparingByXAxis;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
@@ -8,17 +8,17 @@
 
 @implementation PosterCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MusicApplication.PosterCell" hasInstanceMethod:@"accessibilityTitle" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MusicApplication.PosterCell" hasInstanceMethod:@"accessibilitySubtitle" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MusicApplication.PosterCell" hasInstanceMethod:@"accessibilityDescriptionText" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MusicApplication.PosterCell" hasInstanceMethod:@"accessibilityAltText" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MusicApplication.PosterCell" hasInstanceMethod:@"overlayTitleText" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MusicApplication.PosterCell" hasInstanceMethod:@"materialImage" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MusicCoreUI.SymbolButton"];
-  [v3 validateClass:@"MusicApplication.PosterCell" hasSwiftField:@"isTitleChevronEnabled" withSwiftType:"Optional<Bool>"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MusicApplication.PosterCell" hasInstanceMethod:@"accessibilityTitle" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MusicApplication.PosterCell" hasInstanceMethod:@"accessibilitySubtitle" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MusicApplication.PosterCell" hasInstanceMethod:@"accessibilityDescriptionText" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MusicApplication.PosterCell" hasInstanceMethod:@"accessibilityAltText" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MusicApplication.PosterCell" hasInstanceMethod:@"overlayTitleText" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MusicApplication.PosterCell" hasInstanceMethod:@"materialImage" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MusicCoreUI.SymbolButton"];
+  [validationsCopy validateClass:@"MusicApplication.PosterCell" hasSwiftField:@"isTitleChevronEnabled" withSwiftType:"Optional<Bool>"];
 }
 
 - (id)accessibilityLabel
@@ -34,7 +34,7 @@
     v4 = &stru_2A2250960;
   }
 
-  v5 = [v3 accessibilityLabel];
+  accessibilityLabel = [v3 accessibilityLabel];
   v6 = [(PosterCellAccessibility *)self _accessibilityStringForLabelKeyValues:@"overlayTitleText, accessibilityAltText, accessibilityTitle"];
   v9 = [(PosterCellAccessibility *)self _accessibilityStringForLabelKeyValues:@"accessibilitySubtitle, accessibilityDescriptionText"];
   v7 = __UIAXStringForVariables();

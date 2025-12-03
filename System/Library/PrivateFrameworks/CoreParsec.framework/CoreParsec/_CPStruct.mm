@@ -1,37 +1,37 @@
 @interface _CPStruct
-- (BOOL)getStringKeyFields:(id *)a3 forKey:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (_CPStruct)initWithFacade:(id)a3;
-- (void)setIntKeyFields:(id)a3;
-- (void)setStringKeyFields:(id)a3;
-- (void)setStringKeyFields:(id)a3 forKey:(id)a4;
-- (void)writeTo:(id)a3;
+- (BOOL)getStringKeyFields:(id *)fields forKey:(id)key;
+- (BOOL)isEqual:(id)equal;
+- (_CPStruct)initWithFacade:(id)facade;
+- (void)setIntKeyFields:(id)fields;
+- (void)setStringKeyFields:(id)fields;
+- (void)setStringKeyFields:(id)fields forKey:(id)key;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _CPStruct
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(_CPStruct *)self stringKeyFields];
-  v6 = [v4 stringKeyFields];
-  if ((v5 != 0) == (v6 == 0))
+  stringKeyFields = [(_CPStruct *)self stringKeyFields];
+  stringKeyFields2 = [equalCopy stringKeyFields];
+  if ((stringKeyFields != 0) == (stringKeyFields2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(_CPStruct *)self stringKeyFields];
-  if (v7)
+  stringKeyFields3 = [(_CPStruct *)self stringKeyFields];
+  if (stringKeyFields3)
   {
-    v8 = v7;
-    v9 = [(_CPStruct *)self stringKeyFields];
-    v10 = [v4 stringKeyFields];
-    v11 = [v9 isEqual:v10];
+    v8 = stringKeyFields3;
+    stringKeyFields4 = [(_CPStruct *)self stringKeyFields];
+    stringKeyFields5 = [equalCopy stringKeyFields];
+    v11 = [stringKeyFields4 isEqual:stringKeyFields5];
 
     if (!v11)
     {
@@ -43,12 +43,12 @@
   {
   }
 
-  v5 = [(_CPStruct *)self intKeyFields];
-  v6 = [v4 intKeyFields];
-  if ((v5 != 0) != (v6 == 0))
+  stringKeyFields = [(_CPStruct *)self intKeyFields];
+  stringKeyFields2 = [equalCopy intKeyFields];
+  if ((stringKeyFields != 0) != (stringKeyFields2 == 0))
   {
-    v12 = [(_CPStruct *)self intKeyFields];
-    if (!v12)
+    intKeyFields = [(_CPStruct *)self intKeyFields];
+    if (!intKeyFields)
     {
 
 LABEL_15:
@@ -56,10 +56,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(_CPStruct *)self intKeyFields];
-    v15 = [v4 intKeyFields];
-    v16 = [v14 isEqual:v15];
+    v13 = intKeyFields;
+    intKeyFields2 = [(_CPStruct *)self intKeyFields];
+    intKeyFields3 = [equalCopy intKeyFields];
+    v16 = [intKeyFields2 isEqual:intKeyFields3];
 
     if (v16)
     {
@@ -79,10 +79,10 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
@@ -163,28 +163,28 @@ LABEL_13:
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setIntKeyFields:(id)a3
+- (void)setIntKeyFields:(id)fields
 {
-  v4 = [a3 mutableCopy];
+  v4 = [fields mutableCopy];
   intKeyFields = self->_intKeyFields;
   self->_intKeyFields = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setStringKeyFields:(id)a3 forKey:(id)a4
+- (void)setStringKeyFields:(id)fields forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  fieldsCopy = fields;
+  keyCopy = key;
   if (!self->_stringKeyFields)
   {
-    v8 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     stringKeyFields = self->_stringKeyFields;
-    self->_stringKeyFields = v8;
+    self->_stringKeyFields = dictionary;
   }
 
-  v10 = v7;
-  v11 = v6;
+  v10 = keyCopy;
+  v11 = fieldsCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -196,13 +196,13 @@ LABEL_13:
   }
 }
 
-- (BOOL)getStringKeyFields:(id *)a3 forKey:(id)a4
+- (BOOL)getStringKeyFields:(id *)fields forKey:(id)key
 {
-  v5 = [(NSDictionary *)self->_stringKeyFields objectForKeyedSubscript:a4];
-  if (a3 && v5)
+  v5 = [(NSDictionary *)self->_stringKeyFields objectForKeyedSubscript:key];
+  if (fields && v5)
   {
     v5 = v5;
-    *a3 = v5;
+    *fields = v5;
   }
 
   v6 = v5 != 0;
@@ -210,19 +210,19 @@ LABEL_13:
   return v6;
 }
 
-- (void)setStringKeyFields:(id)a3
+- (void)setStringKeyFields:(id)fields
 {
-  v4 = [a3 mutableCopy];
+  v4 = [fields mutableCopy];
   stringKeyFields = self->_stringKeyFields;
   self->_stringKeyFields = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (_CPStruct)initWithFacade:(id)a3
+- (_CPStruct)initWithFacade:(id)facade
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_CPStruct *)self init];
   if (v5)
   {
@@ -230,8 +230,8 @@ LABEL_13:
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v21 = v4;
-    v6 = v4;
+    v21 = facadeCopy;
+    v6 = facadeCopy;
     v7 = [v6 countByEnumeratingWithState:&v22 objects:v30 count:16];
     if (v7)
     {
@@ -301,7 +301,7 @@ LABEL_13:
     }
 
     v18 = v5;
-    v4 = v21;
+    facadeCopy = v21;
   }
 
   v19 = *MEMORY[0x1E69E9840];

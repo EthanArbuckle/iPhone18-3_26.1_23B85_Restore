@@ -3,23 +3,23 @@
 + (unint64_t)makeSignpostId;
 - (BOOL)requiresMeContactAuthorization;
 - (CNContactFetchRequest)init;
-- (CNContactFetchRequest)initWithCoder:(id)a3;
+- (CNContactFetchRequest)initWithCoder:(id)coder;
 - (CNContactFetchRequest)initWithKeysToFetch:(NSArray *)keysToFetch;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)effectiveKeysToFetch;
 - (id)effectivePredicate;
-- (void)encodeWithCoder:(id)a3;
-- (void)setContactBatchCount:(int64_t)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setContactBatchCount:(int64_t)count;
 @end
 
 @implementation CNContactFetchRequest
 
 - (id)effectivePredicate
 {
-  v3 = [(CNContactFetchRequest *)self predicate];
+  predicate = [(CNContactFetchRequest *)self predicate];
 
-  if (v3)
+  if (predicate)
   {
     [(CNContactFetchRequest *)self predicate];
   }
@@ -79,9 +79,9 @@ uint64_t __41__CNContactFetchRequest_makeSerialNumber__block_invoke()
 
 - (BOOL)requiresMeContactAuthorization
 {
-  v2 = [(CNContactFetchRequest *)self effectivePredicate];
+  effectivePredicate = [(CNContactFetchRequest *)self effectivePredicate];
   v3 = +[CNContact predicateForMeContact];
-  v4 = [v2 isEqual:v3];
+  v4 = [effectivePredicate isEqual:v3];
 
   return v4;
 }
@@ -89,11 +89,11 @@ uint64_t __41__CNContactFetchRequest_makeSerialNumber__block_invoke()
 - (id)description
 {
   v3 = [MEMORY[0x1E69966B0] descriptionBuilderWithObject:self];
-  v4 = [(CNContactFetchRequest *)self predicate];
-  v5 = [v3 appendName:@"predicate" object:v4];
+  predicate = [(CNContactFetchRequest *)self predicate];
+  v5 = [v3 appendName:@"predicate" object:predicate];
 
-  v6 = [(CNContactFetchRequest *)self keysToFetch];
-  v7 = [v3 appendName:@"keysToFetch" object:v6];
+  keysToFetch = [(CNContactFetchRequest *)self keysToFetch];
+  v7 = [v3 appendName:@"keysToFetch" object:keysToFetch];
 
   v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[CNContactFetchRequest unifyResults](self, "unifyResults")}];
   v9 = [v3 appendName:@"unifyResults" object:v8];
@@ -103,14 +103,14 @@ uint64_t __41__CNContactFetchRequest_makeSerialNumber__block_invoke()
 
   v12 = [v3 appendName:@"serialNumber" u_int64_t:self->_serialNumber];
   v13 = [v3 appendName:@"alwaysUnifyLabeledValues" BOOLValue:{-[CNContactFetchRequest alwaysUnifyLabeledValues](self, "alwaysUnifyLabeledValues")}];
-  v14 = [v3 build];
+  build = [v3 build];
 
-  return v14;
+  return build;
 }
 
 - (CNContactFetchRequest)init
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CNInitializerUnavailableException();
   objc_exception_throw(v3);
 }
@@ -138,18 +138,18 @@ uint64_t __41__CNContactFetchRequest_makeSerialNumber__block_invoke()
   return v5;
 }
 
-- (void)setContactBatchCount:(int64_t)a3
+- (void)setContactBatchCount:(int64_t)count
 {
-  if (self->_contactBatchCount != a3)
+  if (self->_contactBatchCount != count)
   {
-    self->_contactBatchCount = a3;
+    self->_contactBatchCount = count;
     [(CNContactFetchRequest *)self setBatchSize:?];
 
-    [(CNContactFetchRequest *)self setDecoderBatchSize:a3];
+    [(CNContactFetchRequest *)self setDecoderBatchSize:count];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [objc_alloc(objc_opt_class()) initWithKeysToFetch:self->_keysToFetch];
   v5 = [(NSPredicate *)self->_predicate copy];
@@ -166,31 +166,31 @@ uint64_t __41__CNContactFetchRequest_makeSerialNumber__block_invoke()
   return v4;
 }
 
-- (CNContactFetchRequest)initWithCoder:(id)a3
+- (CNContactFetchRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = +[CNSecureCodingClassSets keyDescriptorClasses];
-  v6 = [v4 decodeObjectOfClasses:v5 forKey:@"keysToFetch"];
+  v6 = [coderCopy decodeObjectOfClasses:v5 forKey:@"keysToFetch"];
 
   if (v6)
   {
     v7 = [(CNContactFetchRequest *)self initWithKeysToFetch:v6];
     if (v7)
     {
-      v7->_unifyResults = [v4 decodeBoolForKey:@"unifyResults"];
-      v7->_alwaysUnifyLabeledValues = [v4 decodeBoolForKey:@"alwaysUnifyLabeledValues"];
-      v7->_sortOrder = [v4 decodeIntegerForKey:@"sortOrder"];
-      v7->_rankSort = [v4 decodeIntegerForKey:@"rankSort"] != 0;
-      v7->_onlyMainStore = [v4 decodeBoolForKey:@"onlyMainStore"];
-      v7->_mutableObjects = [v4 decodeBoolForKey:@"mutableObjects"];
+      v7->_unifyResults = [coderCopy decodeBoolForKey:@"unifyResults"];
+      v7->_alwaysUnifyLabeledValues = [coderCopy decodeBoolForKey:@"alwaysUnifyLabeledValues"];
+      v7->_sortOrder = [coderCopy decodeIntegerForKey:@"sortOrder"];
+      v7->_rankSort = [coderCopy decodeIntegerForKey:@"rankSort"] != 0;
+      v7->_onlyMainStore = [coderCopy decodeBoolForKey:@"onlyMainStore"];
+      v7->_mutableObjects = [coderCopy decodeBoolForKey:@"mutableObjects"];
       v8 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
-      v9 = [v4 decodeObjectOfClasses:v8 forKey:@"predicate"];
+      v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"predicate"];
       v10 = [v9 copy];
       predicate = v7->_predicate;
       v7->_predicate = v10;
 
-      v7->_batchSize = [v4 decodeIntegerForKey:@"batchSize"];
-      v7->_decoderBatchSize = [v4 decodeIntegerForKey:@"decoderBatchSize"];
+      v7->_batchSize = [coderCopy decodeIntegerForKey:@"batchSize"];
+      v7->_decoderBatchSize = [coderCopy decodeIntegerForKey:@"decoderBatchSize"];
     }
   }
 
@@ -203,7 +203,7 @@ uint64_t __41__CNContactFetchRequest_makeSerialNumber__block_invoke()
     }
 
     v13 = [CNErrorFactory errorWithCode:2 userInfo:0];
-    [v4 failWithError:v13];
+    [coderCopy failWithError:v13];
 
     v7 = 0;
   }
@@ -211,19 +211,19 @@ uint64_t __41__CNContactFetchRequest_makeSerialNumber__block_invoke()
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   keysToFetch = self->_keysToFetch;
-  v6 = v4;
+  v6 = coderCopy;
   if (!keysToFetch)
   {
     [MEMORY[0x1E695DF30] raise:@"CNContactFetchRequestAPIMisuseException" format:@"Do not pass a nil array for keysToFetch"];
-    v4 = v6;
+    coderCopy = v6;
     keysToFetch = self->_keysToFetch;
   }
 
-  [v4 encodeObject:keysToFetch forKey:@"keysToFetch"];
+  [coderCopy encodeObject:keysToFetch forKey:@"keysToFetch"];
   [v6 encodeBool:self->_unifyResults forKey:@"unifyResults"];
   [v6 encodeBool:self->_alwaysUnifyLabeledValues forKey:@"alwaysUnifyLabeledValues"];
   [v6 encodeInteger:self->_sortOrder forKey:@"sortOrder"];

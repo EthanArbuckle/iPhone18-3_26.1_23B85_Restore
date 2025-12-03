@@ -1,21 +1,21 @@
 @interface MADPixelBufferProcesser
 - (id).cxx_construct;
-- (int)_configurePixelRotationSessionWithOrientation:(unsigned int)a3;
-- (int)_createPixelBuffer:(__CVBuffer *)a3 width:(unint64_t)a4 height:(unint64_t)a5 format:(unsigned int)a6;
-- (int)processPixelBuffer:(__CVBuffer *)a3 orientation:(unsigned int)a4 regionOfInterest:(CGRect)a5 scaledWidth:(unint64_t)a6 scaledHeight:(unint64_t)a7 pixelFormat:(unsigned int)a8 output:(__CVBuffer *)a9;
+- (int)_configurePixelRotationSessionWithOrientation:(unsigned int)orientation;
+- (int)_createPixelBuffer:(__CVBuffer *)buffer width:(unint64_t)width height:(unint64_t)height format:(unsigned int)format;
+- (int)processPixelBuffer:(__CVBuffer *)buffer orientation:(unsigned int)orientation regionOfInterest:(CGRect)interest scaledWidth:(unint64_t)width scaledHeight:(unint64_t)height pixelFormat:(unsigned int)format output:(__CVBuffer *)output;
 @end
 
 @implementation MADPixelBufferProcesser
 
-- (int)_configurePixelRotationSessionWithOrientation:(unsigned int)a3
+- (int)_configurePixelRotationSessionWithOrientation:(unsigned int)orientation
 {
-  if (a3 > 4)
+  if (orientation > 4)
   {
-    if (a3 > 6)
+    if (orientation > 6)
     {
-      if (a3 != 7)
+      if (orientation != 7)
       {
-        if (a3 != 8)
+        if (orientation != 8)
         {
           goto LABEL_29;
         }
@@ -33,7 +33,7 @@
 
     else
     {
-      if (a3 != 5)
+      if (orientation != 5)
       {
         value = self->_rotationSession.value_;
         v10 = *MEMORY[0x1E6983D98];
@@ -49,11 +49,11 @@
 
   else
   {
-    if (a3 <= 2)
+    if (orientation <= 2)
     {
-      if (a3 != 1)
+      if (orientation != 1)
       {
-        if (a3 == 2)
+        if (orientation == 2)
         {
           result = VTSessionSetProperty(self->_rotationSession.value_, *MEMORY[0x1E6983D98], *MEMORY[0x1E6983FE8]);
           if (!result)
@@ -83,7 +83,7 @@ LABEL_27:
 LABEL_29:
         if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
         {
-          [MADPixelBufferProcesser _configurePixelRotationSessionWithOrientation:a3];
+          [MADPixelBufferProcesser _configurePixelRotationSessionWithOrientation:orientation];
         }
 
         return -50;
@@ -110,7 +110,7 @@ LABEL_19:
       return result;
     }
 
-    if (a3 == 3)
+    if (orientation == 3)
     {
       value = self->_rotationSession.value_;
       v10 = *MEMORY[0x1E6983D98];
@@ -139,29 +139,29 @@ LABEL_19:
   return result;
 }
 
-- (int)_createPixelBuffer:(__CVBuffer *)a3 width:(unint64_t)a4 height:(unint64_t)a5 format:(unsigned int)a6
+- (int)_createPixelBuffer:(__CVBuffer *)buffer width:(unint64_t)width height:(unint64_t)height format:(unsigned int)format
 {
   v24[6] = *MEMORY[0x1E69E9840];
   cf = 0;
   p_pool = &self->_pool;
   value = self->_pool.value_;
-  if (!value || self->_bufferWidth != a4 || self->_bufferHeight != a5 || self->_pixelFormat != a6)
+  if (!value || self->_bufferWidth != width || self->_bufferHeight != height || self->_pixelFormat != format)
   {
-    self->_bufferWidth = a4;
-    self->_bufferHeight = a5;
-    self->_pixelFormat = a6;
-    v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{*&a6, cf, *MEMORY[0x1E6966130]}];
+    self->_bufferWidth = width;
+    self->_bufferHeight = height;
+    self->_pixelFormat = format;
+    v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{*&format, cf, *MEMORY[0x1E6966130]}];
     v24[0] = v11;
     v23[1] = *MEMORY[0x1E6966208];
-    v12 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:a4];
+    v12 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:width];
     v24[1] = v12;
     v23[2] = *MEMORY[0x1E69660B8];
-    v13 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:a5];
+    v13 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:height];
     v24[2] = v13;
     v23[3] = *MEMORY[0x1E6966090];
-    if ((a4 & 0xF) != 0)
+    if ((width & 0xF) != 0)
     {
-      v14 = 16 - (a4 & 0xF);
+      v14 = 16 - (width & 0xF);
     }
 
     else
@@ -172,9 +172,9 @@ LABEL_19:
     v15 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:v14];
     v24[3] = v15;
     v23[4] = *MEMORY[0x1E6966078];
-    if ((a5 & 0xF) != 0)
+    if ((height & 0xF) != 0)
     {
-      v16 = 16 - (a5 & 0xF);
+      v16 = 16 - (height & 0xF);
     }
 
     else
@@ -229,20 +229,20 @@ LABEL_17:
   }
 
   PixelBuffer = 0;
-  *a3 = v20;
+  *buffer = v20;
 LABEL_22:
   CF<CGColorSpace *>::~CF(&cf);
   return PixelBuffer;
 }
 
-- (int)processPixelBuffer:(__CVBuffer *)a3 orientation:(unsigned int)a4 regionOfInterest:(CGRect)a5 scaledWidth:(unint64_t)a6 scaledHeight:(unint64_t)a7 pixelFormat:(unsigned int)a8 output:(__CVBuffer *)a9
+- (int)processPixelBuffer:(__CVBuffer *)buffer orientation:(unsigned int)orientation regionOfInterest:(CGRect)interest scaledWidth:(unint64_t)width scaledHeight:(unint64_t)height pixelFormat:(unsigned int)format output:(__CVBuffer *)output
 {
-  v9 = *&a8;
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v16 = *&a4;
+  v9 = *&format;
+  height = interest.size.height;
+  width = interest.size.width;
+  y = interest.origin.y;
+  x = interest.origin.x;
+  v16 = *&orientation;
   v47 = [MEMORY[0x1E696AEC0] stringWithFormat:@"[%@][processPixelBuffer]", objc_opt_class()];
   v19 = MADSignpostLog();
   v20 = os_signpost_id_generate(v19);
@@ -269,8 +269,8 @@ LABEL_22:
 
     else
     {
-      v25 = CVPixelBufferGetWidth(a3);
-      v26 = CVPixelBufferGetHeight(a3);
+      v25 = CVPixelBufferGetWidth(buffer);
+      v26 = CVPixelBufferGetHeight(buffer);
       v50.origin.x = x;
       v50.origin.y = y;
       v50.size.width = width;
@@ -288,8 +288,8 @@ LABEL_22:
         v52.size.width = width;
         v52.size.height = height;
         DictionaryRepresentation = CGRectCreateDictionaryRepresentation(v52);
-        v53.size.height = a7;
-        v53.size.width = a6;
+        v53.size.height = height;
+        v53.size.width = width;
         *buf = DictionaryRepresentation;
         v53.origin.x = 0.0;
         v53.origin.y = 0.0;
@@ -305,17 +305,17 @@ LABEL_22:
       VTSessionSetProperty(p_rotationSession->value_, *MEMORY[0x1E6983DA0], v28);
       if (v16 <= 4)
       {
-        v29 = a6;
+        heightCopy = width;
       }
 
       else
       {
-        v29 = a7;
+        heightCopy = height;
       }
 
       if (v16 <= 4)
       {
-        a6 = a7;
+        width = height;
       }
 
       *buf = 0;
@@ -336,7 +336,7 @@ LABEL_22:
         *buf = 0;
       }
 
-      v24 = [(MADPixelBufferProcesser *)self _createPixelBuffer:buf width:v29 height:a6 format:v9];
+      v24 = [(MADPixelBufferProcesser *)self _createPixelBuffer:buf width:heightCopy height:width format:v9];
       v34 = MADSignpostLog();
       v35 = v34;
       if (v31 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v34))
@@ -366,7 +366,7 @@ LABEL_22:
           _os_signpost_emit_with_name_impl(&dword_1C972C000, v39, OS_SIGNPOST_INTERVAL_BEGIN, v37, "MADPixelBufferProcesser_ScaleRotate", &unk_1C977645E, propertyValue, 2u);
         }
 
-        v24 = VTPixelRotationSessionRotateImage(p_rotationSession->value_, a3, *buf);
+        v24 = VTPixelRotationSessionRotateImage(p_rotationSession->value_, buffer, *buf);
         v40 = MADSignpostLog();
         v41 = v40;
         if (v37 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v40))
@@ -391,7 +391,7 @@ LABEL_22:
             v42 = CFRetain(*buf);
           }
 
-          *a9 = v42;
+          *output = v42;
           v43 = MADSignpostLog();
           v44 = v43;
           if (v20 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v43))

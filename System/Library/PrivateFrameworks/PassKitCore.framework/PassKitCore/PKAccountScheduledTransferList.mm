@@ -1,26 +1,26 @@
 @interface PKAccountScheduledTransferList
 - (NSArray)scheduledTransfers;
-- (PKAccountScheduledTransferList)initWithCoder:(id)a3;
-- (PKAccountScheduledTransferList)initWithScheduledTransfer:(id)a3;
+- (PKAccountScheduledTransferList)initWithCoder:(id)coder;
+- (PKAccountScheduledTransferList)initWithScheduledTransfer:(id)transfer;
 - (id)jsonArrayRepresentation;
-- (id)scheduledTransferOfFundingSourceType:(int64_t)a3;
+- (id)scheduledTransferOfFundingSourceType:(int64_t)type;
 @end
 
 @implementation PKAccountScheduledTransferList
 
-- (PKAccountScheduledTransferList)initWithScheduledTransfer:(id)a3
+- (PKAccountScheduledTransferList)initWithScheduledTransfer:(id)transfer
 {
-  v4 = a3;
+  transferCopy = transfer;
   v9.receiver = self;
   v9.super_class = PKAccountScheduledTransferList;
   v5 = [(PKAccountScheduledTransferList *)&v9 init];
   if (v5)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     scheduledTransfers = v5->_scheduledTransfers;
-    v5->_scheduledTransfers = v6;
+    v5->_scheduledTransfers = array;
 
-    [(NSMutableArray *)v5->_scheduledTransfers safelyAddObject:v4];
+    [(NSMutableArray *)v5->_scheduledTransfers safelyAddObject:transferCopy];
   }
 
   return v5;
@@ -36,7 +36,7 @@
 - (id)jsonArrayRepresentation
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -56,8 +56,8 @@
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) jsonDictionaryRepresentation];
-        [v3 safelyAddObject:v9];
+        jsonDictionaryRepresentation = [*(*(&v12 + 1) + 8 * i) jsonDictionaryRepresentation];
+        [array safelyAddObject:jsonDictionaryRepresentation];
       }
 
       v6 = [(NSMutableArray *)v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -66,12 +66,12 @@
     while (v6);
   }
 
-  v10 = [v3 copy];
+  v10 = [array copy];
 
   return v10;
 }
 
-- (id)scheduledTransferOfFundingSourceType:(int64_t)a3
+- (id)scheduledTransferOfFundingSourceType:(int64_t)type
 {
   v19 = *MEMORY[0x1E69E9840];
   v14 = 0u;
@@ -94,10 +94,10 @@
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 externalAccount];
-        v11 = [v10 type];
+        externalAccount = [v9 externalAccount];
+        type = [externalAccount type];
 
-        if (v11 == a3)
+        if (type == type)
         {
           v12 = v9;
           goto LABEL_11;
@@ -120,9 +120,9 @@ LABEL_11:
   return v12;
 }
 
-- (PKAccountScheduledTransferList)initWithCoder:(id)a3
+- (PKAccountScheduledTransferList)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = PKAccountScheduledTransferList;
   v5 = [(PKAccountScheduledTransferList *)&v11 init];
@@ -131,7 +131,7 @@ LABEL_11:
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"scheduledTransfers"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"scheduledTransfers"];
   }
 
   return v5;

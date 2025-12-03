@@ -3,13 +3,13 @@
 - (CGRect)boundingCropRect;
 - (CGRect)cropRect;
 - (CGRect)imageBounds;
-- (CGRect)proposedBoundsForBounds:(CGRect)a3 inFrame:(CGRect)a4;
+- (CGRect)proposedBoundsForBounds:(CGRect)bounds inFrame:(CGRect)frame;
 - (CGSize)imageSize;
 - (CGSize)viewImageSize;
 - (NUViewGeometry)init;
 - (UIEdgeInsets)contentInsets;
-- (UIEdgeInsets)contentInsetsWithScale:(double)a3;
-- (uint64_t)insetBoundsForCrop:(CGFloat)a3 inBounds:(CGFloat)a4 inFrame:(CGFloat)a5;
+- (UIEdgeInsets)contentInsetsWithScale:(double)scale;
+- (uint64_t)insetBoundsForCrop:(CGFloat)crop inBounds:(CGFloat)bounds inFrame:(CGFloat)frame;
 @end
 
 @implementation NUViewGeometry
@@ -84,13 +84,13 @@
   return result;
 }
 
-- (UIEdgeInsets)contentInsetsWithScale:(double)a3
+- (UIEdgeInsets)contentInsetsWithScale:(double)scale
 {
   [(NUViewGeometry *)self contentInsets];
-  v5 = v4 * a3;
-  v7 = v6 * a3;
-  v9 = v8 * a3;
-  v11 = v10 * a3;
+  v5 = v4 * scale;
+  v7 = v6 * scale;
+  v9 = v8 * scale;
+  v11 = v10 * scale;
   result.right = v11;
   result.bottom = v9;
   result.left = v7;
@@ -98,7 +98,7 @@
   return result;
 }
 
-- (uint64_t)insetBoundsForCrop:(CGFloat)a3 inBounds:(CGFloat)a4 inFrame:(CGFloat)a5
+- (uint64_t)insetBoundsForCrop:(CGFloat)crop inBounds:(CGFloat)bounds inFrame:(CGFloat)frame
 {
   v24.origin.x = a10;
   v24.origin.y = a11;
@@ -106,9 +106,9 @@
   v24.size.height = a13;
   Width = CGRectGetWidth(v24);
   v25.origin.x = a2;
-  v25.origin.y = a3;
-  v25.size.width = a4;
-  v25.size.height = a5;
+  v25.origin.y = crop;
+  v25.size.width = bounds;
+  v25.size.height = frame;
   CGRectGetWidth(v25);
   v26.origin.x = a10;
   v26.origin.y = a11;
@@ -116,24 +116,24 @@
   v26.size.height = a13;
   CGRectGetHeight(v26);
   v27.origin.x = a2;
-  v27.origin.y = a3;
-  v27.size.width = a4;
-  v27.size.height = a5;
+  v27.origin.y = crop;
+  v27.size.width = bounds;
+  v27.size.height = frame;
   CGRectGetHeight(v27);
-  return [a1 contentInsets];
+  return [self contentInsets];
 }
 
-- (CGRect)proposedBoundsForBounds:(CGRect)a3 inFrame:(CGRect)a4
+- (CGRect)proposedBoundsForBounds:(CGRect)bounds inFrame:(CGRect)frame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3.size.height;
-  v9 = a3.size.width;
-  v10 = a3.origin.y;
-  v11 = a3.origin.x;
-  if (CGRectIsEmpty(a3))
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  v8 = bounds.size.height;
+  v9 = bounds.size.width;
+  v10 = bounds.origin.y;
+  v11 = bounds.origin.x;
+  if (CGRectIsEmpty(bounds))
   {
     v13 = *MEMORY[0x277CBF3A0];
     v14 = *(MEMORY[0x277CBF3A0] + 8);

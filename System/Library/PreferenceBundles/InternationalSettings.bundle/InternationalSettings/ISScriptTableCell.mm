@@ -1,23 +1,23 @@
 @interface ISScriptTableCell
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation ISScriptTableCell
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
   v10.receiver = self;
   v10.super_class = ISScriptTableCell;
-  [(ISScriptTableCell *)&v10 refreshCellContentsWithSpecifier:a3];
+  [(ISScriptTableCell *)&v10 refreshCellContentsWithSpecifier:specifier];
   v4 = +[PSListController appearance];
-  v5 = [v4 textColor];
-  v6 = [(ISScriptTableCell *)self titleLabel];
-  [v6 setTextColor:v5];
+  textColor = [v4 textColor];
+  titleLabel = [(ISScriptTableCell *)self titleLabel];
+  [titleLabel setTextColor:textColor];
 
   v7 = +[PSListController appearance];
-  v8 = [v7 textColor];
-  v9 = [(ISScriptTableCell *)self titleLabel];
-  [v9 setHighlightedTextColor:v8];
+  textColor2 = [v7 textColor];
+  titleLabel2 = [(ISScriptTableCell *)self titleLabel];
+  [titleLabel2 setHighlightedTextColor:textColor2];
 }
 
 @end

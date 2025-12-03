@@ -1,11 +1,11 @@
 @interface UISegmentLabel
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3;
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key;
 - (UILabel)associatedLabel;
 - (UISegmentLabel)init;
 - (id)_associatedScalingLabel;
 - (id)_disabledFontColor;
 - (id)_parentSegment;
-- (void)setAssociatedLabel:(id)a3;
+- (void)setAssociatedLabel:(id)label;
 @end
 
 @implementation UISegmentLabel
@@ -29,13 +29,13 @@
 
 - (id)_parentSegment
 {
-  v2 = self;
+  selfCopy = self;
   while (1)
   {
-    v3 = v2;
-    v2 = [(UIView *)v2 superview];
+    v3 = selfCopy;
+    selfCopy = [(UIView *)selfCopy superview];
 
-    if (!v2)
+    if (!selfCopy)
     {
       break;
     }
@@ -43,26 +43,26 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = v2;
+      v4 = selfCopy;
       break;
     }
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (id)_disabledFontColor
 {
-  v3 = [(UISegmentLabel *)self _parentSegment];
-  v4 = [v3 disabledTextColor];
-  if (!v4)
+  _parentSegment = [(UISegmentLabel *)self _parentSegment];
+  disabledTextColor = [_parentSegment disabledTextColor];
+  if (!disabledTextColor)
   {
     v6.receiver = self;
     v6.super_class = UISegmentLabel;
-    v4 = [(UILabel *)&v6 _disabledFontColor];
+    disabledTextColor = [(UILabel *)&v6 _disabledFontColor];
   }
 
-  return v4;
+  return disabledTextColor;
 }
 
 - (id)_associatedScalingLabel
@@ -72,9 +72,9 @@
   return WeakRetained;
 }
 
-- (void)setAssociatedLabel:(id)a3
+- (void)setAssociatedLabel:(id)label
 {
-  obj = a3;
+  obj = label;
   WeakRetained = objc_loadWeakRetained(&self->_associatedLabel);
 
   v5 = obj;
@@ -86,10 +86,10 @@
   }
 }
 
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"contents"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"contents"])
   {
     v5 = 1;
   }
@@ -98,7 +98,7 @@
   {
     v7.receiver = self;
     v7.super_class = UISegmentLabel;
-    v5 = [(UIView *)&v7 _shouldAnimatePropertyWithKey:v4];
+    v5 = [(UIView *)&v7 _shouldAnimatePropertyWithKey:keyCopy];
   }
 
   return v5;

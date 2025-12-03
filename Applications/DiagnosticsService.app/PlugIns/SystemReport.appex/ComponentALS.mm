@@ -2,7 +2,7 @@
 - (BOOL)isPresent;
 - (id)sensorSerialNumber;
 - (id)serialNumber;
-- (void)populateAttributes:(id)a3;
+- (void)populateAttributes:(id)attributes;
 @end
 
 @implementation ComponentALS
@@ -17,20 +17,20 @@
   return findDeviceWithName("als-i2c3");
 }
 
-- (void)populateAttributes:(id)a3
+- (void)populateAttributes:(id)attributes
 {
-  v7 = a3;
-  v4 = [(ComponentALS *)self serialNumber];
-  if ([v4 length])
+  attributesCopy = attributes;
+  serialNumber = [(ComponentALS *)self serialNumber];
+  if ([serialNumber length])
   {
-    [v7 setObject:v4 forKeyedSubscript:@"serialNumber"];
+    [attributesCopy setObject:serialNumber forKeyedSubscript:@"serialNumber"];
   }
 
-  v5 = [(ComponentALS *)self sensorSerialNumber];
-  if ([v5 length])
+  sensorSerialNumber = [(ComponentALS *)self sensorSerialNumber];
+  if ([sensorSerialNumber length])
   {
-    v6 = [(ComponentALS *)self sensorSerialNumber];
-    [v7 setObject:v6 forKeyedSubscript:@"sensorSerialNumber"];
+    sensorSerialNumber2 = [(ComponentALS *)self sensorSerialNumber];
+    [attributesCopy setObject:sensorSerialNumber2 forKeyedSubscript:@"sensorSerialNumber"];
   }
 }
 

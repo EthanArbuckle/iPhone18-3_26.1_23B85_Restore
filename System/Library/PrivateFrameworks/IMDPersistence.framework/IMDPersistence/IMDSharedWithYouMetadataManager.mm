@@ -1,26 +1,26 @@
 @interface IMDSharedWithYouMetadataManager
 + (Class)LPSharedObjectMetadataClass;
 + (Class)LPSpecializationMetadataClass;
-+ (id)Sha256ForData:(id)a3 withSalt:(id)a4;
++ (id)Sha256ForData:(id)data withSalt:(id)salt;
 + (id)collaborationMetadataKey;
 + (id)dataDetectedLink;
-- (BOOL)_isAttachmentType:(id)a3;
-- (BOOL)_isLNKTypeMessage:(id)a3;
-- (BOOL)_shouldDonateToSharedWithYou:(id)a3 lpLinkMetadata:(id)a4;
-- (BOOL)chatDictionary:(id)a3 matchesFaceTimeConversation:(id)a4;
+- (BOOL)_isAttachmentType:(id)type;
+- (BOOL)_isLNKTypeMessage:(id)message;
+- (BOOL)_shouldDonateToSharedWithYou:(id)you lpLinkMetadata:(id)metadata;
+- (BOOL)chatDictionary:(id)dictionary matchesFaceTimeConversation:(id)conversation;
 - (id)_ckBundleIDsKey;
 - (id)_collaborationIdentifierKey;
 - (id)_highlightedContentServerDateKey;
-- (id)_lpLinkMetadataForItem:(id)a3 attachmentPaths:(id)a4 originalURL:(id)a5;
+- (id)_lpLinkMetadataForItem:(id)item attachmentPaths:(id)paths originalURL:(id)l;
 - (id)_lpTitleCustomKey;
-- (id)_pluginPayloadAttachmentPathsForItem:(id)a3;
+- (id)_pluginPayloadAttachmentPathsForItem:(id)item;
 - (id)_syndicationContentTypeKey;
-- (id)_uniqueIdentifierForResourceURL:(id)a3;
-- (id)_updateAttributesWithCollaborationMetadata:(id)a3 forMessageWithGUID:(id)a4 withURL:(id)a5 lpLinkMetadata:(id)a6 messageDate:(id)a7;
-- (id)highlightDictionaryFromAttributes:(id)a3 withItem:(id)a4 chat:(id)a5;
-- (id)titleFromLPLinkMetadata:(id)a3;
-- (id)updateAttributesWithSharedWithYouMetadata:(id)a3 withItem:(id)a4 chat:(id)a5;
-- (void)updateConversationManagerWithItem:(id)a3 chat:(id)a4 attributes:(id)a5;
+- (id)_uniqueIdentifierForResourceURL:(id)l;
+- (id)_updateAttributesWithCollaborationMetadata:(id)metadata forMessageWithGUID:(id)d withURL:(id)l lpLinkMetadata:(id)linkMetadata messageDate:(id)date;
+- (id)highlightDictionaryFromAttributes:(id)attributes withItem:(id)item chat:(id)chat;
+- (id)titleFromLPLinkMetadata:(id)metadata;
+- (id)updateAttributesWithSharedWithYouMetadata:(id)metadata withItem:(id)item chat:(id)chat;
+- (void)updateConversationManagerWithItem:(id)item chat:(id)chat attributes:(id)attributes;
 @end
 
 @implementation IMDSharedWithYouMetadataManager
@@ -49,23 +49,23 @@
   return v3;
 }
 
-+ (id)Sha256ForData:(id)a3 withSalt:(id)a4
++ (id)Sha256ForData:(id)data withSalt:(id)salt
 {
   v29 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  saltCopy = salt;
   memset(&v26, 0, sizeof(v26));
-  v6 = a3;
+  dataCopy = data;
   CC_SHA256_Init(&v26);
-  v7 = v6;
+  v7 = dataCopy;
   v10 = objc_msgSend_bytes(v7, v8, v9, *v26.count, *&v26.hash[2], *&v26.hash[6], *&v26.wbuf[2], *&v26.wbuf[6], *&v26.wbuf[10], *&v26.wbuf[14]);
-  v13 = objc_msgSend_length(v6, v11, v12);
+  v13 = objc_msgSend_length(dataCopy, v11, v12);
 
   CC_SHA256_Update(&v26, v10, v13);
-  if (v5)
+  if (saltCopy)
   {
-    v14 = v5;
+    v14 = saltCopy;
     v17 = objc_msgSend_bytes(v14, v15, v16);
-    v20 = objc_msgSend_length(v5, v18, v19);
+    v20 = objc_msgSend_length(saltCopy, v18, v19);
     CC_SHA256_Update(&v26, v17, v20);
   }
 
@@ -80,16 +80,16 @@
   return v23;
 }
 
-- (id)updateAttributesWithSharedWithYouMetadata:(id)a3 withItem:(id)a4 chat:(id)a5
+- (id)updateAttributesWithSharedWithYouMetadata:(id)metadata withItem:(id)item chat:(id)chat
 {
   v183 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v162 = a4;
-  v8 = a5;
-  v161 = v7;
-  if (v7)
+  metadataCopy = metadata;
+  itemCopy = item;
+  chatCopy = chat;
+  v161 = metadataCopy;
+  if (metadataCopy)
   {
-    v9 = v7;
+    v9 = metadataCopy;
   }
 
   else
@@ -101,11 +101,11 @@
     }
   }
 
-  v154 = v8;
-  v12 = objc_msgSend_objectForKey_(v8, v10, @"lalh");
+  v154 = chatCopy;
+  v12 = objc_msgSend_objectForKey_(chatCopy, v10, @"lalh");
   v157 = objc_msgSend__stripFZIDPrefix(v12, v13, v14);
 
-  v16 = objc_msgSend_objectForKey_(v162, v15, @"flags");
+  v16 = objc_msgSend_objectForKey_(itemCopy, v15, @"flags");
   v19 = objc_msgSend_unsignedLongLongValue(v16, v17, v18);
 
   v151 = (v19 >> 2) & 1;
@@ -116,7 +116,7 @@
 
   else
   {
-    v22 = objc_msgSend_objectForKey_(v162, v20, @"handle");
+    v22 = objc_msgSend_objectForKey_(itemCopy, v20, @"handle");
     v25 = objc_msgSend__stripFZIDPrefix(v22, v23, v24);
 
     v21 = v25;
@@ -124,7 +124,7 @@
 
   v155 = v21;
   v26 = MEMORY[0x1B8CAF990]();
-  v156 = objc_msgSend_objectForKey_(v162, v27, @"guid");
+  v156 = objc_msgSend_objectForKey_(itemCopy, v27, @"guid");
   if (v26)
   {
     v30 = v161;
@@ -157,7 +157,7 @@
 
   else
   {
-    v33 = objc_msgSend_objectForKey_(v162, v32, @"attributedBody");
+    v33 = objc_msgSend_objectForKey_(itemCopy, v32, @"attributedBody");
     v159 = IMDCoreSpotlightURLFromAttributedMessageBody(v33);
     if (!v159)
     {
@@ -182,8 +182,8 @@
 LABEL_17:
   if (objc_msgSend__isLNKTypeMessage_(self, v39, v161))
   {
-    v152 = objc_msgSend__pluginPayloadAttachmentPathsForItem_(self, v40, v162);
-    v42 = objc_msgSend__lpLinkMetadataForItem_attachmentPaths_originalURL_(self, v41, v162, v152, v159);
+    v152 = objc_msgSend__pluginPayloadAttachmentPathsForItem_(self, v40, itemCopy);
+    v42 = objc_msgSend__lpLinkMetadataForItem_attachmentPaths_originalURL_(self, v41, itemCopy, v152, v159);
   }
 
   else
@@ -213,12 +213,12 @@ LABEL_30:
       }
     }
 
-    v65 = objc_msgSend_objectForKeyedSubscript_(v162, v63, @"hasAttachments");
+    v65 = objc_msgSend_objectForKeyedSubscript_(itemCopy, v63, @"hasAttachments");
     v68 = objc_msgSend_BOOLValue(v65, v66, v67);
 
     if (v68)
     {
-      objc_msgSend_objectForKeyedSubscript_(v162, v69, @"attachments");
+      objc_msgSend_objectForKeyedSubscript_(itemCopy, v69, @"attachments");
       v169 = 0u;
       v170 = 0u;
       v167 = 0u;
@@ -281,8 +281,8 @@ LABEL_51:
       v75 = 1;
     }
 
-    v149 = objc_msgSend_objectForKey_(v162, v69, @"syndicationRanges");
-    v160 = objc_msgSend_objectForKey_(v162, v82, @"time");
+    v149 = objc_msgSend_objectForKey_(itemCopy, v69, @"syndicationRanges");
+    v160 = objc_msgSend_objectForKey_(itemCopy, v82, @"time");
     if (v149)
     {
       v84 = objc_msgSend_rangesFromSerializedString_(MEMORY[0x1E69A8158], v83, v149);
@@ -462,12 +462,12 @@ LABEL_51:
         }
       }
 
-      v130 = objc_msgSend_objectForKey_(v162, v129, @"time");
+      v130 = objc_msgSend_objectForKey_(itemCopy, v129, @"time");
       v30 = objc_msgSend__updateAttributesWithCollaborationMetadata_forMessageWithGUID_withURL_lpLinkMetadata_messageDate_(self, v131, v161, v156, v159, v150, v130);
 
       if (v30)
       {
-        objc_msgSend_updateConversationManagerWithItem_chat_attributes_(self, v132, v162, v154, v30);
+        objc_msgSend_updateConversationManagerWithItem_chat_attributes_(self, v132, itemCopy, v154, v30);
       }
     }
 
@@ -593,17 +593,17 @@ LABEL_127:
   return v114;
 }
 
-- (id)_updateAttributesWithCollaborationMetadata:(id)a3 forMessageWithGUID:(id)a4 withURL:(id)a5 lpLinkMetadata:(id)a6 messageDate:(id)a7
+- (id)_updateAttributesWithCollaborationMetadata:(id)metadata forMessageWithGUID:(id)d withURL:(id)l lpLinkMetadata:(id)linkMetadata messageDate:(id)date
 {
   v214 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v206 = a4;
-  v205 = a5;
-  v13 = a6;
-  v14 = a7;
-  if (v12)
+  metadataCopy = metadata;
+  dCopy = d;
+  lCopy = l;
+  linkMetadataCopy = linkMetadata;
+  dateCopy = date;
+  if (metadataCopy)
   {
-    v15 = v12;
+    v15 = metadataCopy;
     if ((objc_msgSend__isLNKTypeMessage_(self, v16, v15) & 1) == 0)
     {
       if (IMOSLoggingEnabled())
@@ -621,14 +621,14 @@ LABEL_127:
     }
 
     v203 = objc_alloc_init(MEMORY[0x1E69A82D8]);
-    v19 = objc_msgSend_collaborationMetadata(v13, v17, v18);
+    v19 = objc_msgSend_collaborationMetadata(linkMetadataCopy, v17, v18);
 
     if (IMOSLoggingEnabled())
     {
       v22 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
       {
-        v25 = objc_msgSend_collaborationMetadata(v13, v23, v24);
+        v25 = objc_msgSend_collaborationMetadata(linkMetadataCopy, v23, v24);
         v26 = v25;
         v27 = @"YES";
         if (!v19)
@@ -651,7 +651,7 @@ LABEL_127:
       v201 = objc_msgSend_urlMinusFragment_onlyCKURL_(v202, v31, v30, 1);
 
       objc_msgSend_setURL_(v15, v32, v201);
-      v35 = objc_msgSend_collaborationMetadata(v13, v33, v34);
+      v35 = objc_msgSend_collaborationMetadata(linkMetadataCopy, v33, v34);
       v204 = objc_msgSend_collaborationIdentifier(v35, v36, v37);
 
       v40 = objc_msgSend_length(v204, v38, v39);
@@ -679,7 +679,7 @@ LABEL_127:
           *buf = 134218498;
           v209 = v41;
           v210 = 2112;
-          v211 = v206;
+          v211 = dCopy;
           v212 = 2112;
           v213 = @"YES";
           _os_log_impl(&dword_1B7AD5000, v46, OS_LOG_TYPE_INFO, "Setting share status to %lu for MessageGUID: %@. hasCollaborationMetadata: %@", buf, 0x20u);
@@ -697,7 +697,7 @@ LABEL_127:
         objc_msgSend_setAttribute_forKey_(v15, v53, MEMORY[0x1E695E118], @"FPIsTopLevelSharedItem");
       }
 
-      v54 = objc_msgSend_titleFromLPLinkMetadata_(self, v53, v13);
+      v54 = objc_msgSend_titleFromLPLinkMetadata_(self, v53, linkMetadataCopy);
       if (objc_msgSend_length(v54, v55, v56))
       {
         v59 = v54;
@@ -738,19 +738,19 @@ LABEL_127:
         }
       }
 
-      v76 = objc_msgSend_collaborationMetadata(v13, v72, v73);
+      v76 = objc_msgSend_collaborationMetadata(linkMetadataCopy, v72, v73);
       v79 = objc_msgSend_contentType(v76, v77, v78);
       v82 = objc_msgSend_identifier(v79, v80, v81);
 
       if (!objc_msgSend_length(v82, v83, v84))
       {
-        v87 = objc_msgSend_specialization(v13, v85, v86);
+        v87 = objc_msgSend_specialization(linkMetadataCopy, v85, v86);
         objc_msgSend_LPSharedObjectMetadataClass(IMDSharedWithYouMetadataManager, v88, v89);
         isKindOfClass = objc_opt_isKindOfClass();
 
         if (isKindOfClass)
         {
-          v91 = objc_msgSend_specialization(v13, v85, v86);
+          v91 = objc_msgSend_specialization(linkMetadataCopy, v85, v86);
           v94 = objc_msgSend_specialization(v91, v92, v93);
           objc_msgSend_LPSpecializationMetadataClass(IMDSharedWithYouMetadataManager, v95, v96);
           v97 = objc_opt_isKindOfClass();
@@ -775,7 +775,7 @@ LABEL_127:
 
       else
       {
-        v106 = objc_msgSend_UTITypeForURL_(v203, v103, v205);
+        v106 = objc_msgSend_UTITypeForURL_(v203, v103, lCopy);
 
         v105 = v106;
       }
@@ -786,7 +786,7 @@ LABEL_127:
         objc_msgSend_setContentType_(v15, v108, v107);
       }
 
-      v110 = objc_msgSend_collaborationMetadata(v13, v108, v109);
+      v110 = objc_msgSend_collaborationMetadata(linkMetadataCopy, v108, v109);
       v113 = objc_msgSend_creationDate(v110, v111, v112);
 
       v116 = objc_msgSend_distantPast(MEMORY[0x1E695DF00], v114, v115);
@@ -814,7 +814,7 @@ LABEL_127:
           *buf = 138412546;
           v209 = v204;
           v210 = 2112;
-          v211 = v206;
+          v211 = dCopy;
           _os_log_impl(&dword_1B7AD5000, v123, OS_LOG_TYPE_INFO, "Setting collaborationIdentifier to %@ for messageGUID: %@", buf, 0x16u);
         }
       }
@@ -824,7 +824,7 @@ LABEL_127:
 
       objc_msgSend_setAttribute_forKey_(v15, v126, v204, @"FPCollaborationIdentifier");
       objc_msgSend_setAttribute_forKey_(v15, v127, @"NSFileProviderRootContainerItemIdentifier", @"FPParentFileItemID");
-      v130 = objc_msgSend_collaborationMetadata(v13, v128, v129);
+      v130 = objc_msgSend_collaborationMetadata(linkMetadataCopy, v128, v129);
       v133 = objc_msgSend_ckAppBundleIDs(v130, v131, v132);
 
       if (!objc_msgSend_count(v133, v134, v135))
@@ -832,7 +832,7 @@ LABEL_127:
         v138 = IMLogHandleForCategory();
         if (os_log_type_enabled(v138, OS_LOG_TYPE_ERROR))
         {
-          sub_1B7CF8808(v206, v138);
+          sub_1B7CF8808(dCopy, v138);
         }
       }
 
@@ -840,7 +840,7 @@ LABEL_127:
       objc_msgSend_setValue_forCustomKey_(v15, v140, v133, v139);
 
       v141 = MEMORY[0x1E696ACC8];
-      v144 = objc_msgSend_collaborationMetadata(v13, v142, v143);
+      v144 = objc_msgSend_collaborationMetadata(linkMetadataCopy, v142, v143);
       v207 = 0;
       v146 = objc_msgSend_archivedDataWithRootObject_requiringSecureCoding_error_(v141, v145, v144, 1, &v207);
       v147 = v207;
@@ -909,7 +909,7 @@ LABEL_127:
 
 LABEL_80:
       v183 = objc_msgSend_distantPast(MEMORY[0x1E695DF00], v174, v175);
-      v185 = objc_msgSend_isEqualToDate_(v14, v184, v183);
+      v185 = objc_msgSend_isEqualToDate_(dateCopy, v184, v183);
 
       if (v185)
       {
@@ -920,10 +920,10 @@ LABEL_80:
         }
       }
 
-      else if (v14)
+      else if (dateCopy)
       {
-        objc_msgSend_setContentCreationDate_(v15, v186, v14);
-        objc_msgSend_setLastUsedDate_(v15, v188, v14);
+        objc_msgSend_setContentCreationDate_(v15, v186, dateCopy);
+        objc_msgSend_setLastUsedDate_(v15, v188, dateCopy);
         if (objc_msgSend_verboseLoggingEnabled(MEMORY[0x1E69A7FF8], v189, v190))
         {
           if (IMOSLoggingEnabled())
@@ -971,18 +971,18 @@ LABEL_92:
 
   v196 = *MEMORY[0x1E69E9840];
 
-  return v12;
+  return metadataCopy;
 }
 
-- (BOOL)chatDictionary:(id)a3 matchesFaceTimeConversation:(id)a4
+- (BOOL)chatDictionary:(id)dictionary matchesFaceTimeConversation:(id)conversation
 {
   v67 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if (objc_msgSend_state(v6, v7, v8) == 3)
+  dictionaryCopy = dictionary;
+  conversationCopy = conversation;
+  if (objc_msgSend_state(conversationCopy, v7, v8) == 3)
   {
-    v10 = objc_msgSend_objectForKeyedSubscript_(v5, v9, @"groupID");
-    v13 = objc_msgSend_groupUUID(v6, v11, v12);
+    v10 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v9, @"groupID");
+    v13 = objc_msgSend_groupUUID(conversationCopy, v11, v12);
     v16 = objc_msgSend_UUIDString(v13, v14, v15);
     isEqualToString = objc_msgSend_isEqualToString_(v10, v17, v16);
 
@@ -999,8 +999,8 @@ LABEL_92:
       v62 = 0u;
       v63 = 0u;
       v64 = 0u;
-      v56 = v5;
-      v27 = objc_msgSend_objectForKeyedSubscript_(v5, v26, @"participants");
+      v56 = dictionaryCopy;
+      v27 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v26, @"participants");
       v29 = objc_msgSend_countByEnumeratingWithState_objects_count_(v27, v28, &v61, v66, 16);
       if (v29)
       {
@@ -1029,7 +1029,7 @@ LABEL_92:
       v60 = 0u;
       v57 = 0u;
       v58 = 0u;
-      v38 = objc_msgSend_remoteMembers(v6, v36, v37);
+      v38 = objc_msgSend_remoteMembers(conversationCopy, v36, v37);
       v40 = objc_msgSend_countByEnumeratingWithState_objects_count_(v38, v39, &v57, v65, 16);
       if (v40)
       {
@@ -1062,7 +1062,7 @@ LABEL_92:
       }
 
       isEqualToSet = objc_msgSend_isEqualToSet_(v22, v53, v25);
-      v5 = v56;
+      dictionaryCopy = v56;
     }
   }
 
@@ -1075,12 +1075,12 @@ LABEL_92:
   return isEqualToSet;
 }
 
-- (void)updateConversationManagerWithItem:(id)a3 chat:(id)a4 attributes:(id)a5
+- (void)updateConversationManagerWithItem:(id)item chat:(id)chat attributes:(id)attributes
 {
   v56 = *MEMORY[0x1E69E9840];
-  v44 = a3;
-  v8 = a4;
-  v41 = a5;
+  itemCopy = item;
+  chatCopy = chat;
+  attributesCopy = attributes;
   v11 = objc_msgSend_sharedInstance(MEMORY[0x1E69D8A58], v9, v10);
   v42 = objc_msgSend_conversationManager(v11, v12, v13);
 
@@ -1105,7 +1105,7 @@ LABEL_92:
         }
 
         v22 = *(*(&v49 + 1) + 8 * i);
-        if (objc_msgSend_chatDictionary_matchesFaceTimeConversation_(self, v17, v8, v22, v40))
+        if (objc_msgSend_chatDictionary_matchesFaceTimeConversation_(self, v17, chatCopy, v22, v40))
         {
           if (IMOSLoggingEnabled())
           {
@@ -1118,7 +1118,7 @@ LABEL_92:
             }
           }
 
-          v25 = objc_msgSend_highlightDictionaryFromAttributes_withItem_chat_(self, v23, v41, v44, v8);
+          v25 = objc_msgSend_highlightDictionaryFromAttributes_withItem_chat_(self, v23, attributesCopy, itemCopy, chatCopy);
           if (IMOSLoggingEnabled())
           {
             v27 = OSLogHandleForIMFoundationCategory();
@@ -1130,7 +1130,7 @@ LABEL_92:
             }
           }
 
-          v28 = objc_msgSend_objectForKeyedSubscript_(v44, v26, @"flags");
+          v28 = objc_msgSend_objectForKeyedSubscript_(itemCopy, v26, @"flags");
           v31 = objc_msgSend_unsignedLongLongValue(v28, v29, v30);
 
           v34 = objc_msgSend_sharedInstance(MEMORY[0x1E69D8A58], v32, v33);
@@ -1157,12 +1157,12 @@ LABEL_92:
   v39 = *MEMORY[0x1E69E9840];
 }
 
-- (id)highlightDictionaryFromAttributes:(id)a3 withItem:(id)a4 chat:(id)a5
+- (id)highlightDictionaryFromAttributes:(id)attributes withItem:(id)item chat:(id)chat
 {
   v89 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v85 = a4;
-  v83 = a5;
+  attributesCopy = attributes;
+  itemCopy = item;
+  chatCopy = chat;
   if (IMOSLoggingEnabled())
   {
     v11 = OSLogHandleForIMFoundationCategory();
@@ -1174,33 +1174,33 @@ LABEL_92:
   }
 
   v14 = objc_msgSend_dictionary(MEMORY[0x1E695DF90], v9, v10);
-  if (v8)
+  if (attributesCopy)
   {
-    v82 = objc_msgSend_filename(v8, v12, v13);
+    v82 = objc_msgSend_filename(attributesCopy, v12, v13);
     if (objc_msgSend_length(v82, v15, v16))
     {
       objc_msgSend_setObject_forKey_(v14, v17, v82, @"fn");
     }
 
-    v81 = objc_msgSend_contentCreationDate(v8, v17, v18);
+    v81 = objc_msgSend_contentCreationDate(attributesCopy, v17, v18);
     if (v81)
     {
       objc_msgSend_setObject_forKey_(v14, v19, v81, @"cd");
     }
 
-    v80 = objc_msgSend_objectForKey_(v85, v19, @"time");
+    v80 = objc_msgSend_objectForKey_(itemCopy, v19, @"time");
     if (v80)
     {
       objc_msgSend_setObject_forKey_(v14, v20, v80, @"md");
     }
 
-    v79 = objc_msgSend_contentType(v8, v20, v21);
+    v79 = objc_msgSend_contentType(attributesCopy, v20, v21);
     if (objc_msgSend_length(v79, v22, v23))
     {
       objc_msgSend_setObject_forKey_(v14, v24, v79, @"ct");
     }
 
-    v84 = objc_msgSend_URL(v8, v24, v25);
+    v84 = objc_msgSend_URL(attributesCopy, v24, v25);
     if (v84)
     {
       v28 = objc_msgSend_absoluteString(v84, v26, v27);
@@ -1213,7 +1213,7 @@ LABEL_92:
       }
     }
 
-    v35 = objc_msgSend_customAttributeDictionary(v8, v26, v27);
+    v35 = objc_msgSend_customAttributeDictionary(attributesCopy, v26, v27);
     v78 = objc_msgSend_valueForKey_(v35, v36, @"com_apple_mobilesms_collaborationIdentifier");
 
     v41 = objc_msgSend_null(MEMORY[0x1E695DFB0], v37, v38);
@@ -1231,7 +1231,7 @@ LABEL_92:
       }
     }
 
-    v46 = objc_msgSend_customAttributeDictionary(v8, v43, v44);
+    v46 = objc_msgSend_customAttributeDictionary(attributesCopy, v43, v44);
     v48 = objc_msgSend_valueForKey_(v46, v47, @"com_apple_mobilesms_ckBundleIDs");
 
     if (v48)
@@ -1247,14 +1247,14 @@ LABEL_92:
     }
 
     v52 = objc_msgSend_dictionary(MEMORY[0x1E695DF90], v49, v50);
-    v54 = objc_msgSend_objectForKey_(v83, v53, @"guid");
+    v54 = objc_msgSend_objectForKey_(chatCopy, v53, @"guid");
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       objc_msgSend_setObject_forKey_(v52, v55, v54, @"cid");
     }
 
-    v56 = objc_msgSend_objectForKey_(v85, v55, @"guid");
+    v56 = objc_msgSend_objectForKey_(itemCopy, v55, @"guid");
     if (objc_msgSend_length(v56, v57, v58))
     {
       objc_msgSend_setObject_forKey_(v52, v59, v56, @"uid");
@@ -1263,7 +1263,7 @@ LABEL_92:
     objc_msgSend_setObject_forKey_(v52, v59, @"Messages", @"sa");
     objc_msgSend_setObject_forKey_(v52, v60, MEMORY[0x1E695E110], @"l");
     v63 = objc_msgSend_dictionary(MEMORY[0x1E695DF90], v61, v62);
-    v65 = objc_msgSend_objectForKey_(v85, v64, @"handle");
+    v65 = objc_msgSend_objectForKey_(itemCopy, v64, @"handle");
     if (objc_msgSend_length(v65, v66, v67))
     {
       objc_msgSend_setObject_forKey_(v63, v68, v65, @"h");
@@ -1303,9 +1303,9 @@ LABEL_92:
   return v14;
 }
 
-- (id)_uniqueIdentifierForResourceURL:(id)a3
+- (id)_uniqueIdentifierForResourceURL:(id)l
 {
-  v3 = objc_msgSend_absoluteString(a3, a2, a3);
+  v3 = objc_msgSend_absoluteString(l, a2, l);
   v5 = objc_msgSend_dataUsingEncoding_(v3, v4, 4);
 
   v6 = objc_opt_class();
@@ -1315,9 +1315,9 @@ LABEL_92:
   return v10;
 }
 
-- (BOOL)_isLNKTypeMessage:(id)a3
+- (BOOL)_isLNKTypeMessage:(id)message
 {
-  v3 = objc_msgSend_messageType(a3, a2, a3);
+  v3 = objc_msgSend_messageType(message, a2, message);
   v5 = v3;
   if (v3)
   {
@@ -1332,9 +1332,9 @@ LABEL_92:
   return isEqual;
 }
 
-- (BOOL)_isAttachmentType:(id)a3
+- (BOOL)_isAttachmentType:(id)type
 {
-  v3 = objc_msgSend_messageType(a3, a2, a3);
+  v3 = objc_msgSend_messageType(type, a2, type);
   v5 = v3;
   if (v3)
   {
@@ -1349,18 +1349,18 @@ LABEL_92:
   return isEqual;
 }
 
-- (id)titleFromLPLinkMetadata:(id)a3
+- (id)titleFromLPLinkMetadata:(id)metadata
 {
-  v3 = a3;
-  if (!v3)
+  metadataCopy = metadata;
+  if (!metadataCopy)
   {
     v11 = 0;
     goto LABEL_19;
   }
 
-  if (objc_opt_respondsToSelector() & 1) != 0 && (objc_msgSend_collaborationMetadata(v3, v4, v5), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_opt_respondsToSelector(), v6, (v7))
+  if (objc_opt_respondsToSelector() & 1) != 0 && (objc_msgSend_collaborationMetadata(metadataCopy, v4, v5), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_opt_respondsToSelector(), v6, (v7))
   {
-    v8 = objc_msgSend_collaborationMetadata(v3, v4, v5);
+    v8 = objc_msgSend_collaborationMetadata(metadataCopy, v4, v5);
     v11 = objc_msgSend_title(v8, v9, v10);
   }
 
@@ -1373,7 +1373,7 @@ LABEL_92:
   {
     if (!MEMORY[0x1B8CAFAC0](@"LPSharedObjectMetadata", @"LinkPresentation"))
     {
-      v35 = objc_msgSend_title(v3, v12, v13);
+      v35 = objc_msgSend_title(metadataCopy, v12, v13);
       v38 = objc_msgSend_length(v35, v36, v37);
 
       if (v38)
@@ -1381,12 +1381,12 @@ LABEL_92:
         goto LABEL_19;
       }
 
-      v21 = objc_msgSend_title(v3, v39, v40);
+      v21 = objc_msgSend_title(metadataCopy, v39, v40);
       v18 = v11;
       goto LABEL_18;
     }
 
-    v14 = objc_msgSend_specialization(v3, v12, v13);
+    v14 = objc_msgSend_specialization(metadataCopy, v12, v13);
     isKindOfClass = objc_opt_isKindOfClass();
 
     if ((isKindOfClass & 1) == 0)
@@ -1394,7 +1394,7 @@ LABEL_92:
       goto LABEL_19;
     }
 
-    v18 = objc_msgSend_specialization(v3, v16, v17);
+    v18 = objc_msgSend_specialization(metadataCopy, v16, v17);
     v21 = objc_msgSend_title(v18, v19, v20);
 
     if (!objc_msgSend_length(v21, v22, v23))
@@ -1436,10 +1436,10 @@ LABEL_19:
   return v11;
 }
 
-- (id)_pluginPayloadAttachmentPathsForItem:(id)a3
+- (id)_pluginPayloadAttachmentPathsForItem:(id)item
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = objc_msgSend_objectForKeyedSubscript_(a3, a2, @"attachments");
+  v3 = objc_msgSend_objectForKeyedSubscript_(item, a2, @"attachments");
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v18 = 0u;
   v19 = 0u;
@@ -1479,26 +1479,26 @@ LABEL_19:
   return v4;
 }
 
-- (id)_lpLinkMetadataForItem:(id)a3 attachmentPaths:(id)a4 originalURL:(id)a5
+- (id)_lpLinkMetadataForItem:(id)item attachmentPaths:(id)paths originalURL:(id)l
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  itemCopy = item;
+  pathsCopy = paths;
+  lCopy = l;
   if (MEMORY[0x1B8CAFAC0](@"LPLinkMetadataPresentationTransformer", @"LinkPresentation"))
   {
     v10 = objc_alloc_init(MEMORY[0x1E69A8010]);
-    v12 = objc_msgSend_objectForKey_(v7, v11, @"payloadData");
+    v12 = objc_msgSend_objectForKey_(itemCopy, v11, @"payloadData");
     v13 = IMSharedHelperCombinedPluginPayloadDictionaryDataWithAttachmentURLs();
     v14 = IMSharedHelperPayloadFromCombinedPluginPayloadData();
     objc_msgSend_setData_(v10, v15, v14);
-    v17 = objc_msgSend_objectForKey_(v7, v16, @"guid");
+    v17 = objc_msgSend_objectForKey_(itemCopy, v16, @"guid");
     objc_msgSend_setMessageGUID_(v10, v18, v17);
-    v20 = objc_msgSend_objectForKey_(v7, v19, @"flags");
+    v20 = objc_msgSend_objectForKey_(itemCopy, v19, @"flags");
     v23 = (objc_msgSend_unsignedLongLongValue(v20, v21, v22) >> 2) & 1;
 
     objc_msgSend_setIsFromMe_(v10, v24, v23);
-    objc_msgSend_setUrl_(v10, v25, v9);
-    objc_msgSend_setAttachments_(v10, v26, v8);
+    objc_msgSend_setUrl_(v10, v25, lCopy);
+    objc_msgSend_setAttachments_(v10, v26, pathsCopy);
     v28 = objc_msgSend_linkMetadataForPluginPayload_(MEMORY[0x1E69A8278], v27, v10);
     v31 = objc_msgSend_copy(v28, v29, v30);
   }
@@ -1511,12 +1511,12 @@ LABEL_19:
   return v31;
 }
 
-- (BOOL)_shouldDonateToSharedWithYou:(id)a3 lpLinkMetadata:(id)a4
+- (BOOL)_shouldDonateToSharedWithYou:(id)you lpLinkMetadata:(id)metadata
 {
   v30 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v8 = a4;
-  if (v8)
+  youCopy = you;
+  metadataCopy = metadata;
+  if (metadataCopy)
   {
     v22 = 0;
     v23 = &v22;
@@ -1537,7 +1537,7 @@ LABEL_19:
     v10 = v9;
     _Block_object_dispose(&v22, 8);
     v11 = [v9 alloc];
-    v13 = objc_msgSend_initWithMetadata_URL_(v11, v12, v8, v5, v22);
+    v13 = objc_msgSend_initWithMetadata_URL_(v11, v12, metadataCopy, youCopy, v22);
     if (v13 && (objc_opt_respondsToSelector() & 1) != 0)
     {
       shouldDonateToSharedWithYou = objc_msgSend_shouldDonateToSharedWithYou(v13, v14, v15);

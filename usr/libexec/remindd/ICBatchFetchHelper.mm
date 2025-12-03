@@ -1,39 +1,39 @@
 @interface ICBatchFetchHelper
-- (BOOL)_canObtainPermanentIDForObject:(id)a3 context:(id)a4 ckIdentifierAccountIdentifierPair:(id)a5;
-- (BOOL)isMissingCKIdentifier:(id)a3 accountIdentifier:(id)a4;
-- (ICBatchFetchHelper)initWithQueue:(id)a3 managedObjectContext:(id)a4 batchSize:(unint64_t)a5 cacheCountLimit:(unint64_t)a6;
+- (BOOL)_canObtainPermanentIDForObject:(id)object context:(id)context ckIdentifierAccountIdentifierPair:(id)pair;
+- (BOOL)isMissingCKIdentifier:(id)identifier accountIdentifier:(id)accountIdentifier;
+- (ICBatchFetchHelper)initWithQueue:(id)queue managedObjectContext:(id)context batchSize:(unint64_t)size cacheCountLimit:(unint64_t)limit;
 - (NSManagedObjectContext)managedObjectContext;
-- (id)cachedManagedObjectForCKIdentifier:(id)a3 accountIdentifier:(id)a4;
-- (void)_dispatchBlockApplyingBackPressureIfNeeded:(id)a3;
+- (id)cachedManagedObjectForCKIdentifier:(id)identifier accountIdentifier:(id)accountIdentifier;
+- (void)_dispatchBlockApplyingBackPressureIfNeeded:(id)needed;
 - (void)_flush;
-- (void)addCKIdentifiers:(id)a3 accountIdentifier:(id)a4 onCurrentQueue:(BOOL)a5 dispatchBlock:(id)a6;
-- (void)addDispatchBlock:(id)a3;
+- (void)addCKIdentifiers:(id)identifiers accountIdentifier:(id)identifier onCurrentQueue:(BOOL)queue dispatchBlock:(id)block;
+- (void)addDispatchBlock:(id)block;
 - (void)dealloc;
-- (void)flushOnCurrentQueue:(BOOL)a3;
-- (void)removeCachedManagedObjectForCKIdentifier:(id)a3 accountIdentifier:(id)a4;
-- (void)setCachedManagedObject:(id)a3 forCKIdentifier:(id)a4 accountIdentifier:(id)a5;
+- (void)flushOnCurrentQueue:(BOOL)queue;
+- (void)removeCachedManagedObjectForCKIdentifier:(id)identifier accountIdentifier:(id)accountIdentifier;
+- (void)setCachedManagedObject:(id)object forCKIdentifier:(id)identifier accountIdentifier:(id)accountIdentifier;
 @end
 
 @implementation ICBatchFetchHelper
 
-- (ICBatchFetchHelper)initWithQueue:(id)a3 managedObjectContext:(id)a4 batchSize:(unint64_t)a5 cacheCountLimit:(unint64_t)a6
+- (ICBatchFetchHelper)initWithQueue:(id)queue managedObjectContext:(id)context batchSize:(unint64_t)size cacheCountLimit:(unint64_t)limit
 {
-  v11 = a3;
-  v12 = a4;
+  queueCopy = queue;
+  contextCopy = context;
   v24.receiver = self;
   v24.super_class = ICBatchFetchHelper;
   v13 = [(ICBatchFetchHelper *)&v24 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_queue, a3);
-    objc_storeWeak(&v14->_managedObjectContext, v12);
-    v14->_batchSize = a5;
-    v15 = [[NSMutableSet alloc] initWithCapacity:a5];
+    objc_storeStrong(&v13->_queue, queue);
+    objc_storeWeak(&v14->_managedObjectContext, contextCopy);
+    v14->_batchSize = size;
+    v15 = [[NSMutableSet alloc] initWithCapacity:size];
     ckIdentifierAccountPairs = v14->_ckIdentifierAccountPairs;
     v14->_ckIdentifierAccountPairs = v15;
 
-    v17 = [[NSMutableArray alloc] initWithCapacity:a5];
+    v17 = [[NSMutableArray alloc] initWithCapacity:size];
     dispatchBlocks = v14->_dispatchBlocks;
     v14->_dispatchBlocks = v17;
 
@@ -41,23 +41,23 @@
     missingCKIdentifierAccountPairCache = v14->_missingCKIdentifierAccountPairCache;
     v14->_missingCKIdentifierAccountPairCache = v19;
 
-    [(NSCache *)v14->_missingCKIdentifierAccountPairCache setCountLimit:a6];
+    [(NSCache *)v14->_missingCKIdentifierAccountPairCache setCountLimit:limit];
     v21 = objc_alloc_init(NSCache);
     managedObjectIDCache = v14->_managedObjectIDCache;
     v14->_managedObjectIDCache = v21;
 
-    [(NSCache *)v14->_managedObjectIDCache setCountLimit:a6];
-    atomic_store(a5, &remainingDispatchQueueCapacity);
+    [(NSCache *)v14->_managedObjectIDCache setCountLimit:limit];
+    atomic_store(size, &remainingDispatchQueueCapacity);
   }
 
   return v14;
 }
 
-- (BOOL)_canObtainPermanentIDForObject:(id)a3 context:(id)a4 ckIdentifierAccountIdentifierPair:(id)a5
+- (BOOL)_canObtainPermanentIDForObject:(id)object context:(id)context ckIdentifierAccountIdentifierPair:(id)pair
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  objectCopy = object;
+  contextCopy = context;
+  pairCopy = pair;
   v28 = 0;
   v29 = &v28;
   v30 = 0x2020000000;
@@ -68,24 +68,24 @@
   v26[2] = sub_1000E38DC;
   v26[3] = sub_1000E38EC;
   v27 = 0;
-  v10 = [v7 objectID];
+  objectID = [objectCopy objectID];
 
-  if (v10)
+  if (objectID)
   {
-    v11 = [v7 objectID];
-    v12 = [v11 isTemporaryID];
+    objectID2 = [objectCopy objectID];
+    isTemporaryID = [objectID2 isTemporaryID];
 
-    if (v12)
+    if (isTemporaryID)
     {
-      if (v8)
+      if (contextCopy)
       {
         v17 = _NSConcreteStackBlock;
         v18 = 3221225472;
         v19 = sub_1000E38F4;
         v20 = &unk_1008DC748;
         v23 = &v28;
-        v21 = v8;
-        v22 = v7;
+        v21 = contextCopy;
+        v22 = objectCopy;
         v24 = &v25;
         [v21 performBlockAndWait:&v17];
         if ((v29[3] & 1) == 0)
@@ -93,7 +93,7 @@
           v13 = [REMLog cloudkit:v17];
           if (os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
           {
-            sub_10076DACC(v9, v26);
+            sub_10076DACC(pairCopy, v26);
           }
         }
       }
@@ -123,11 +123,11 @@
 
 - (void)_flush
 {
-  v3 = [(ICBatchFetchHelper *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(ICBatchFetchHelper *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(ICBatchFetchHelper *)self ckIdentifierAccountPairs];
-  v5 = [v4 count];
+  ckIdentifierAccountPairs = [(ICBatchFetchHelper *)self ckIdentifierAccountPairs];
+  v5 = [ckIdentifierAccountPairs count];
 
   if (v5)
   {
@@ -136,8 +136,8 @@
     v64 = 0u;
     v65 = 0u;
     v66 = 0u;
-    v7 = [(ICBatchFetchHelper *)self ckIdentifierAccountPairs];
-    v8 = [v7 countByEnumeratingWithState:&v63 objects:v75 count:16];
+    ckIdentifierAccountPairs2 = [(ICBatchFetchHelper *)self ckIdentifierAccountPairs];
+    v8 = [ckIdentifierAccountPairs2 countByEnumeratingWithState:&v63 objects:v75 count:16];
     if (!v8)
     {
       goto LABEL_17;
@@ -150,12 +150,12 @@
       {
         if (*v64 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(ckIdentifierAccountPairs2);
         }
 
         v11 = *(*(&v63 + 1) + 8 * i);
-        v12 = [(ICBatchFetchHelper *)self missingCKIdentifierAccountPairCache];
-        v13 = [v12 objectForKey:v11];
+        missingCKIdentifierAccountPairCache = [(ICBatchFetchHelper *)self missingCKIdentifierAccountPairCache];
+        v13 = [missingCKIdentifierAccountPairCache objectForKey:v11];
 
         if (v13)
         {
@@ -174,8 +174,8 @@ LABEL_13:
 
         else
         {
-          v17 = [(ICBatchFetchHelper *)self managedObjectIDCache];
-          v18 = [v17 objectForKey:v11];
+          managedObjectIDCache = [(ICBatchFetchHelper *)self managedObjectIDCache];
+          v18 = [managedObjectIDCache objectForKey:v11];
 
           if (!v18)
           {
@@ -195,21 +195,21 @@ LABEL_13:
         }
       }
 
-      v8 = [v7 countByEnumeratingWithState:&v63 objects:v75 count:16];
+      v8 = [ckIdentifierAccountPairs2 countByEnumeratingWithState:&v63 objects:v75 count:16];
       if (!v8)
       {
 LABEL_17:
 
-        v19 = [(ICBatchFetchHelper *)self ckIdentifierAccountPairs];
-        [v19 minusSet:v6];
+        ckIdentifierAccountPairs3 = [(ICBatchFetchHelper *)self ckIdentifierAccountPairs];
+        [ckIdentifierAccountPairs3 minusSet:v6];
 
         break;
       }
     }
   }
 
-  v20 = [(ICBatchFetchHelper *)self ckIdentifierAccountPairs];
-  v21 = [v20 count] == 0;
+  ckIdentifierAccountPairs4 = [(ICBatchFetchHelper *)self ckIdentifierAccountPairs];
+  v21 = [ckIdentifierAccountPairs4 count] == 0;
 
   if (!v21)
   {
@@ -218,8 +218,8 @@ LABEL_17:
     v62 = 0u;
     v59 = 0u;
     v60 = 0u;
-    v23 = [(ICBatchFetchHelper *)self ckIdentifierAccountPairs];
-    v24 = [v23 countByEnumeratingWithState:&v59 objects:v74 count:16];
+    ckIdentifierAccountPairs5 = [(ICBatchFetchHelper *)self ckIdentifierAccountPairs];
+    v24 = [ckIdentifierAccountPairs5 countByEnumeratingWithState:&v59 objects:v74 count:16];
     if (v24)
     {
       v25 = *v60;
@@ -229,23 +229,23 @@ LABEL_17:
         {
           if (*v60 != v25)
           {
-            objc_enumerationMutation(v23);
+            objc_enumerationMutation(ckIdentifierAccountPairs5);
           }
 
-          v27 = [*(*(&v59 + 1) + 8 * j) ckIdentifier];
-          [v22 addObject:v27];
+          ckIdentifier = [*(*(&v59 + 1) + 8 * j) ckIdentifier];
+          [v22 addObject:ckIdentifier];
         }
 
-        v24 = [v23 countByEnumeratingWithState:&v59 objects:v74 count:16];
+        v24 = [ckIdentifierAccountPairs5 countByEnumeratingWithState:&v59 objects:v74 count:16];
       }
 
       while (v24);
     }
 
     v28 = [NSPredicate predicateWithFormat:@"ckIdentifier IN %@", v22];
-    v29 = [(ICBatchFetchHelper *)self managedObjectContext];
+    managedObjectContext = [(ICBatchFetchHelper *)self managedObjectContext];
 
-    if (v29)
+    if (managedObjectContext)
     {
       *&buf = 0;
       *(&buf + 1) = &buf;
@@ -253,20 +253,20 @@ LABEL_17:
       v71 = sub_1000E38DC;
       v72 = sub_1000E38EC;
       v73 = 0;
-      v30 = [(ICBatchFetchHelper *)self managedObjectContext];
+      managedObjectContext2 = [(ICBatchFetchHelper *)self managedObjectContext];
       v55[0] = _NSConcreteStackBlock;
       v55[1] = 3221225472;
       v55[2] = sub_1000E4040;
       v55[3] = &unk_1008D9EE0;
       v56 = v28;
-      v57 = self;
+      selfCopy = self;
       p_buf = &buf;
-      [v30 performBlockAndWait:v55];
+      [managedObjectContext2 performBlockAndWait:v55];
 
       if (*(*(&buf + 1) + 40))
       {
-        v31 = [(ICBatchFetchHelper *)self ckIdentifierAccountPairs];
-        [v31 minusSet:*(*(&buf + 1) + 40)];
+        ckIdentifierAccountPairs6 = [(ICBatchFetchHelper *)self ckIdentifierAccountPairs];
+        [ckIdentifierAccountPairs6 minusSet:*(*(&buf + 1) + 40)];
       }
 
       _Block_object_dispose(&buf, 8);
@@ -285,8 +285,8 @@ LABEL_17:
     v54 = 0u;
     v51 = 0u;
     v52 = 0u;
-    v33 = [(ICBatchFetchHelper *)self ckIdentifierAccountPairs];
-    v34 = [v33 countByEnumeratingWithState:&v51 objects:v68 count:16];
+    ckIdentifierAccountPairs7 = [(ICBatchFetchHelper *)self ckIdentifierAccountPairs];
+    v34 = [ckIdentifierAccountPairs7 countByEnumeratingWithState:&v51 objects:v68 count:16];
     if (v34)
     {
       v35 = *v52;
@@ -296,29 +296,29 @@ LABEL_17:
         {
           if (*v52 != v35)
           {
-            objc_enumerationMutation(v33);
+            objc_enumerationMutation(ckIdentifierAccountPairs7);
           }
 
           v37 = *(*(&v51 + 1) + 8 * k);
-          v38 = [(ICBatchFetchHelper *)self missingCKIdentifierAccountPairCache];
-          [v38 setObject:v37 forKey:v37];
+          missingCKIdentifierAccountPairCache2 = [(ICBatchFetchHelper *)self missingCKIdentifierAccountPairCache];
+          [missingCKIdentifierAccountPairCache2 setObject:v37 forKey:v37];
         }
 
-        v34 = [v33 countByEnumeratingWithState:&v51 objects:v68 count:16];
+        v34 = [ckIdentifierAccountPairs7 countByEnumeratingWithState:&v51 objects:v68 count:16];
       }
 
       while (v34);
     }
   }
 
-  v39 = [(ICBatchFetchHelper *)self dispatchBlocks];
-  v40 = [v39 copy];
+  dispatchBlocks = [(ICBatchFetchHelper *)self dispatchBlocks];
+  v40 = [dispatchBlocks copy];
 
-  v41 = [(ICBatchFetchHelper *)self ckIdentifierAccountPairs];
-  [v41 removeAllObjects];
+  ckIdentifierAccountPairs8 = [(ICBatchFetchHelper *)self ckIdentifierAccountPairs];
+  [ckIdentifierAccountPairs8 removeAllObjects];
 
-  v42 = [(ICBatchFetchHelper *)self dispatchBlocks];
-  [v42 removeAllObjects];
+  dispatchBlocks2 = [(ICBatchFetchHelper *)self dispatchBlocks];
+  [dispatchBlocks2 removeAllObjects];
 
   v49 = 0u;
   v50 = 0u;
@@ -350,25 +350,25 @@ LABEL_17:
   atomic_fetch_add(remainingDispatchQueueCapacity, [v43 count]);
 }
 
-- (void)_dispatchBlockApplyingBackPressureIfNeeded:(id)a3
+- (void)_dispatchBlockApplyingBackPressureIfNeeded:(id)needed
 {
-  v4 = a3;
-  v5 = [(ICBatchFetchHelper *)self queue];
-  dispatch_assert_queue_not_V2(v5);
+  neededCopy = needed;
+  queue = [(ICBatchFetchHelper *)self queue];
+  dispatch_assert_queue_not_V2(queue);
 
   dispatch_assert_queue_not_V2(&_dispatch_main_q);
   if ((atomic_fetch_add(remainingDispatchQueueCapacity, 0xFFFFFFFF) - 1) <= 0)
   {
     Current = CFAbsoluteTimeGetCurrent();
-    v7 = [(ICBatchFetchHelper *)self queue];
-    dispatch_sync(v7, v4);
+    queue2 = [(ICBatchFetchHelper *)self queue];
+    dispatch_sync(queue2, neededCopy);
 
     v8 = CFAbsoluteTimeGetCurrent();
     v9 = +[REMLog cloudkit];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v12 = self;
+      selfCopy = self;
       v13 = 2048;
       v14 = v8 - Current;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ perform dispatch block sync took %f s", buf, 0x16u);
@@ -377,27 +377,27 @@ LABEL_17:
 
   else
   {
-    v10 = [(ICBatchFetchHelper *)self queue];
-    dispatch_async(v10, v4);
+    queue3 = [(ICBatchFetchHelper *)self queue];
+    dispatch_async(queue3, neededCopy);
   }
 }
 
-- (void)addCKIdentifiers:(id)a3 accountIdentifier:(id)a4 onCurrentQueue:(BOOL)a5 dispatchBlock:(id)a6
+- (void)addCKIdentifiers:(id)identifiers accountIdentifier:(id)identifier onCurrentQueue:(BOOL)queue dispatchBlock:(id)block
 {
-  v7 = a5;
+  queueCopy = queue;
   v15 = _NSConcreteStackBlock;
   v16 = 3221225472;
   v17 = sub_1000E47A8;
   v18 = &unk_1008DAB10;
-  v19 = a3;
-  v20 = a4;
-  v21 = self;
-  v22 = a6;
-  v10 = v22;
-  v11 = v20;
-  v12 = v19;
+  identifiersCopy = identifiers;
+  identifierCopy = identifier;
+  selfCopy = self;
+  blockCopy = block;
+  v10 = blockCopy;
+  v11 = identifierCopy;
+  v12 = identifiersCopy;
   v13 = objc_retainBlock(&v15);
-  if (v7)
+  if (queueCopy)
   {
     v14 = [(ICBatchFetchHelper *)self queue:v15];
     dispatch_assert_queue_V2(v14);
@@ -408,47 +408,47 @@ LABEL_17:
 
   else
   {
-    [(ICBatchFetchHelper *)self _dispatchBlockApplyingBackPressureIfNeeded:v13, v15, v16, v17, v18, v19, v20, v21, v22];
+    [(ICBatchFetchHelper *)self _dispatchBlockApplyingBackPressureIfNeeded:v13, v15, v16, v17, v18, identifiersCopy, identifierCopy, selfCopy, blockCopy];
   }
 }
 
-- (void)addDispatchBlock:(id)a3
+- (void)addDispatchBlock:(id)block
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1000E49DC;
   v4[3] = &unk_1008DA048;
-  v5 = self;
-  v6 = a3;
-  v3 = v6;
-  [(ICBatchFetchHelper *)v5 _dispatchBlockApplyingBackPressureIfNeeded:v4];
+  selfCopy = self;
+  blockCopy = block;
+  v3 = blockCopy;
+  [(ICBatchFetchHelper *)selfCopy _dispatchBlockApplyingBackPressureIfNeeded:v4];
 }
 
-- (void)flushOnCurrentQueue:(BOOL)a3
+- (void)flushOnCurrentQueue:(BOOL)queue
 {
-  v3 = a3;
+  queueCopy = queue;
   dispatch_assert_queue_not_V2(&_dispatch_main_q);
   Current = CFAbsoluteTimeGetCurrent();
-  v6 = [(ICBatchFetchHelper *)self queue];
-  v7 = v6;
-  if (v3)
+  queue = [(ICBatchFetchHelper *)self queue];
+  v7 = queue;
+  if (queueCopy)
   {
-    dispatch_assert_queue_V2(v6);
+    dispatch_assert_queue_V2(queue);
 
     [(ICBatchFetchHelper *)self _flush];
   }
 
   else
   {
-    dispatch_assert_queue_not_V2(v6);
+    dispatch_assert_queue_not_V2(queue);
 
-    v8 = [(ICBatchFetchHelper *)self queue];
+    queue2 = [(ICBatchFetchHelper *)self queue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1000E4C1C;
     block[3] = &unk_1008D9990;
     block[4] = self;
-    dispatch_sync(v8, block);
+    dispatch_sync(queue2, block);
   }
 
   v9 = CFAbsoluteTimeGetCurrent();
@@ -456,40 +456,40 @@ LABEL_17:
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
-    v13 = self;
+    selfCopy = self;
     v14 = 1024;
-    v15 = v3;
+    v15 = queueCopy;
     v16 = 2048;
     v17 = v9 - Current;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%{public}@ flush (onCurrentQueue = %d) took %f s", buf, 0x1Cu);
   }
 }
 
-- (BOOL)isMissingCKIdentifier:(id)a3 accountIdentifier:(id)a4
+- (BOOL)isMissingCKIdentifier:(id)identifier accountIdentifier:(id)accountIdentifier
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ICBatchFetchHelper *)self queue];
-  dispatch_assert_queue_V2(v8);
+  accountIdentifierCopy = accountIdentifier;
+  identifierCopy = identifier;
+  queue = [(ICBatchFetchHelper *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v9 = [[_REMCKIdentifierAccountIdentifierPair alloc] initWithCkIdentifier:v7 accountIdentifier:v6];
-  v10 = [(ICBatchFetchHelper *)self missingCKIdentifierAccountPairCache];
-  v11 = [v10 objectForKey:v9];
+  v9 = [[_REMCKIdentifierAccountIdentifierPair alloc] initWithCkIdentifier:identifierCopy accountIdentifier:accountIdentifierCopy];
+  missingCKIdentifierAccountPairCache = [(ICBatchFetchHelper *)self missingCKIdentifierAccountPairCache];
+  v11 = [missingCKIdentifierAccountPairCache objectForKey:v9];
   LOBYTE(self) = v11 != 0;
 
   return self;
 }
 
-- (id)cachedManagedObjectForCKIdentifier:(id)a3 accountIdentifier:(id)a4
+- (id)cachedManagedObjectForCKIdentifier:(id)identifier accountIdentifier:(id)accountIdentifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ICBatchFetchHelper *)self queue];
-  dispatch_assert_queue_V2(v8);
+  identifierCopy = identifier;
+  accountIdentifierCopy = accountIdentifier;
+  queue = [(ICBatchFetchHelper *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v9 = [[_REMCKIdentifierAccountIdentifierPair alloc] initWithCkIdentifier:v6 accountIdentifier:v7];
-  v10 = [(ICBatchFetchHelper *)self managedObjectIDCache];
-  v11 = [v10 objectForKey:v9];
+  v9 = [[_REMCKIdentifierAccountIdentifierPair alloc] initWithCkIdentifier:identifierCopy accountIdentifier:accountIdentifierCopy];
+  managedObjectIDCache = [(ICBatchFetchHelper *)self managedObjectIDCache];
+  v11 = [managedObjectIDCache objectForKey:v9];
 
   v27 = 0;
   v28 = &v27;
@@ -537,7 +537,7 @@ LABEL_9:
   v21 = sub_1000E50C4;
   v22 = &unk_1008DC748;
   v25 = &v27;
-  v23 = self;
+  selfCopy = self;
   v24 = v11;
   p_buf = &buf;
   [v13 performBlockAndWait:&v19];
@@ -567,8 +567,8 @@ LABEL_9:
     }
   }
 
-  v15 = [(ICBatchFetchHelper *)self managedObjectIDCache];
-  [v15 removeObjectForKey:v9];
+  managedObjectIDCache2 = [(ICBatchFetchHelper *)self managedObjectIDCache];
+  [managedObjectIDCache2 removeObjectForKey:v9];
 
 LABEL_14:
   _Block_object_dispose(&buf, 8);
@@ -580,46 +580,46 @@ LABEL_15:
   return v17;
 }
 
-- (void)setCachedManagedObject:(id)a3 forCKIdentifier:(id)a4 accountIdentifier:(id)a5
+- (void)setCachedManagedObject:(id)object forCKIdentifier:(id)identifier accountIdentifier:(id)accountIdentifier
 {
-  v16 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(ICBatchFetchHelper *)self queue];
-  dispatch_assert_queue_V2(v10);
+  objectCopy = object;
+  identifierCopy = identifier;
+  accountIdentifierCopy = accountIdentifier;
+  queue = [(ICBatchFetchHelper *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v11 = [v16 managedObjectContext];
-  if (v16 && v11)
+  managedObjectContext = [objectCopy managedObjectContext];
+  if (objectCopy && managedObjectContext)
   {
-    v12 = [[_REMCKIdentifierAccountIdentifierPair alloc] initWithCkIdentifier:v8 accountIdentifier:v9];
-    v13 = [(ICBatchFetchHelper *)self missingCKIdentifierAccountPairCache];
-    [v13 removeObjectForKey:v12];
+    v12 = [[_REMCKIdentifierAccountIdentifierPair alloc] initWithCkIdentifier:identifierCopy accountIdentifier:accountIdentifierCopy];
+    missingCKIdentifierAccountPairCache = [(ICBatchFetchHelper *)self missingCKIdentifierAccountPairCache];
+    [missingCKIdentifierAccountPairCache removeObjectForKey:v12];
 
-    if ([(ICBatchFetchHelper *)self _canObtainPermanentIDForObject:v16 context:v11 ckIdentifierAccountIdentifierPair:v12])
+    if ([(ICBatchFetchHelper *)self _canObtainPermanentIDForObject:objectCopy context:managedObjectContext ckIdentifierAccountIdentifierPair:v12])
     {
-      v14 = [(ICBatchFetchHelper *)self managedObjectIDCache];
-      v15 = [v16 objectID];
-      [v14 setObject:v15 forKey:v12];
+      managedObjectIDCache = [(ICBatchFetchHelper *)self managedObjectIDCache];
+      objectID = [objectCopy objectID];
+      [managedObjectIDCache setObject:objectID forKey:v12];
     }
   }
 }
 
-- (void)removeCachedManagedObjectForCKIdentifier:(id)a3 accountIdentifier:(id)a4
+- (void)removeCachedManagedObjectForCKIdentifier:(id)identifier accountIdentifier:(id)accountIdentifier
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ICBatchFetchHelper *)self queue];
-  dispatch_assert_queue_V2(v8);
+  accountIdentifierCopy = accountIdentifier;
+  identifierCopy = identifier;
+  queue = [(ICBatchFetchHelper *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v10 = [[_REMCKIdentifierAccountIdentifierPair alloc] initWithCkIdentifier:v7 accountIdentifier:v6];
-  v9 = [(ICBatchFetchHelper *)self managedObjectIDCache];
-  [v9 removeObjectForKey:v10];
+  v10 = [[_REMCKIdentifierAccountIdentifierPair alloc] initWithCkIdentifier:identifierCopy accountIdentifier:accountIdentifierCopy];
+  managedObjectIDCache = [(ICBatchFetchHelper *)self managedObjectIDCache];
+  [managedObjectIDCache removeObjectForKey:v10];
 }
 
 - (void)dealloc
 {
-  v3 = [(ICBatchFetchHelper *)self dispatchBlocks];
-  v4 = [v3 count];
+  dispatchBlocks = [(ICBatchFetchHelper *)self dispatchBlocks];
+  v4 = [dispatchBlocks count];
 
   if (v4)
   {

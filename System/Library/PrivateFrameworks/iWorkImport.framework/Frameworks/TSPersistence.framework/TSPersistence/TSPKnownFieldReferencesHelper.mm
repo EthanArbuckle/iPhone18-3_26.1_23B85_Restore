@@ -1,15 +1,15 @@
 @interface TSPKnownFieldReferencesHelper
-- (TSPKnownFieldReferencesHelper)initWithFieldDescriptor:(const void *)a3 message:(const Message *)a4 reflection:(const Reflection *)a5;
+- (TSPKnownFieldReferencesHelper)initWithFieldDescriptor:(const void *)descriptor message:(const Message *)message reflection:(const Reflection *)reflection;
 - (id).cxx_construct;
-- (void)loadFromUnarchiver:(id)a3;
-- (void)processFieldDescriptor:(const void *)a3 message:(const Message *)a4 reflection:(const Reflection *)a5;
-- (void)processFieldsFromMessage:(const Message *)a3 messageDescriptor:(const void *)a4 reflection:(const Reflection *)a5;
-- (void)saveToArchiver:(id)a3;
+- (void)loadFromUnarchiver:(id)unarchiver;
+- (void)processFieldDescriptor:(const void *)descriptor message:(const Message *)message reflection:(const Reflection *)reflection;
+- (void)processFieldsFromMessage:(const Message *)message messageDescriptor:(const void *)descriptor reflection:(const Reflection *)reflection;
+- (void)saveToArchiver:(id)archiver;
 @end
 
 @implementation TSPKnownFieldReferencesHelper
 
-- (TSPKnownFieldReferencesHelper)initWithFieldDescriptor:(const void *)a3 message:(const Message *)a4 reflection:(const Reflection *)a5
+- (TSPKnownFieldReferencesHelper)initWithFieldDescriptor:(const void *)descriptor message:(const Message *)message reflection:(const Reflection *)reflection
 {
   v12.receiver = self;
   v12.super_class = TSPKnownFieldReferencesHelper;
@@ -17,29 +17,29 @@
   v10 = v8;
   if (v8)
   {
-    objc_msgSend_processFieldDescriptor_message_reflection_(v8, v9, a3, a4, a5);
+    objc_msgSend_processFieldDescriptor_message_reflection_(v8, v9, descriptor, message, reflection);
   }
 
   return v10;
 }
 
-- (void)processFieldDescriptor:(const void *)a3 message:(const Message *)a4 reflection:(const Reflection *)a5
+- (void)processFieldDescriptor:(const void *)descriptor message:(const Message *)message reflection:(const Reflection *)reflection
 {
-  v5 = a5;
-  v6 = a4;
-  v34 = *(a3 + 15);
+  reflectionCopy = reflection;
+  messageCopy = message;
+  v34 = *(descriptor + 15);
   if (v34 == 3)
   {
-    HasField = google::protobuf::Reflection::FieldSize(a5, a4, a3);
+    HasField = google::protobuf::Reflection::FieldSize(reflection, message, descriptor);
   }
 
   else
   {
-    HasField = google::protobuf::Reflection::HasField(a5, a4, a3);
+    HasField = google::protobuf::Reflection::HasField(reflection, message, descriptor);
   }
 
   v35 = HasField;
-  v32 = google::protobuf::FieldDescriptor::message_type(a3);
+  v32 = google::protobuf::FieldDescriptor::message_type(descriptor);
   if (!v32)
   {
     return;
@@ -94,18 +94,18 @@ LABEL_34:
   {
     v23 = 0;
     v24 = 0;
-    v25 = v5;
-    v26 = v6;
+    v25 = reflectionCopy;
+    v26 = messageCopy;
     do
     {
       if (v34 == 3)
       {
-        RepeatedMessage = google::protobuf::Reflection::GetRepeatedMessage(v5, v6, a3, v23);
+        RepeatedMessage = google::protobuf::Reflection::GetRepeatedMessage(reflectionCopy, messageCopy, descriptor, v23);
       }
 
       else
       {
-        RepeatedMessage = google::protobuf::Reflection::GetMessage(v5, v6, a3, 0);
+        RepeatedMessage = google::protobuf::Reflection::GetMessage(reflectionCopy, messageCopy, descriptor, 0);
       }
 
       v29 = RepeatedMessage;
@@ -145,8 +145,8 @@ LABEL_34:
         self->_dataReferences.current_size_ = v31 + 1;
       }
 
-      v5 = v25;
-      v6 = v26;
+      reflectionCopy = v25;
+      messageCopy = v26;
 LABEL_51:
       ++v23;
     }
@@ -155,12 +155,12 @@ LABEL_51:
   }
 }
 
-- (void)processFieldsFromMessage:(const Message *)a3 messageDescriptor:(const void *)a4 reflection:(const Reflection *)a5
+- (void)processFieldsFromMessage:(const Message *)message messageDescriptor:(const void *)descriptor reflection:(const Reflection *)reflection
 {
   __p = 0;
   v15 = 0;
   v16 = 0;
-  google::protobuf::Reflection::ListFields(a5, a3, &__p);
+  google::protobuf::Reflection::ListFields(reflection, message, &__p);
   v9 = __p;
   if (v15 != __p)
   {
@@ -194,7 +194,7 @@ LABEL_51:
 
       if (google::protobuf::FieldDescriptor::kTypeToCppTypeMap[*(v12 + 56)] == 10)
       {
-        objc_msgSend_processFieldDescriptor_message_reflection_(self, v8, v12, a3, a5);
+        objc_msgSend_processFieldDescriptor_message_reflection_(self, v8, v12, message, reflection);
       }
 
       ++v10;
@@ -211,14 +211,14 @@ LABEL_51:
   }
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v4 = a3;
-  v7 = v4;
+  unarchiverCopy = unarchiver;
+  v7 = unarchiverCopy;
   current_size = self->_objectReferences.current_size_;
   if (current_size >= 1)
   {
-    v10 = objc_msgSend_strongReferences(v4, v5, v6);
+    v10 = objc_msgSend_strongReferences(unarchiverCopy, v5, v6);
     v11 = 0;
     v33 = 0;
     v34 = 0;
@@ -350,10 +350,10 @@ LABEL_21:
   }
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
   v40 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  archiverCopy = archiver;
   if (objc_msgSend_count(self->_strongObjects, v5, v6))
   {
     TSP::Reference::Reference(v37, 0);
@@ -376,7 +376,7 @@ LABEL_21:
             objc_enumerationMutation(v11);
           }
 
-          objc_msgSend_setStrongLazyReference_message_(v4, v13, *(*(&v33 + 1) + 8 * v16++), v37);
+          objc_msgSend_setStrongLazyReference_message_(archiverCopy, v13, *(*(&v33 + 1) + 8 * v16++), v37);
         }
 
         while (v14 != v16);
@@ -411,7 +411,7 @@ LABEL_21:
             objc_enumerationMutation(v21);
           }
 
-          objc_msgSend_setWeakLazyReference_message_(v4, v23, *(*(&v29 + 1) + 8 * v26++), v37);
+          objc_msgSend_setWeakLazyReference_message_(archiverCopy, v23, *(*(&v29 + 1) + 8 * v26++), v37);
         }
 
         while (v24 != v26);
@@ -427,7 +427,7 @@ LABEL_21:
   if (objc_msgSend_count(self->_allData, v17, v18))
   {
     memset(v37, 0, 24);
-    objc_msgSend_setDataReferenceArray_message_(v4, v27, self->_allData, v37);
+    objc_msgSend_setDataReferenceArray_message_(archiverCopy, v27, self->_allData, v37);
     sub_276A08184(v37);
   }
 

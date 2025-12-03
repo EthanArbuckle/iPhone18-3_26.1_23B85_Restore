@@ -1,41 +1,41 @@
 @interface AAFKeychainItem
-- (AAFKeychainItem)initWithAttributes:(id)a3;
-- (AAFKeychainItem)initWithDescriptor:(id)a3 value:(id)a4;
+- (AAFKeychainItem)initWithAttributes:(id)attributes;
+- (AAFKeychainItem)initWithDescriptor:(id)descriptor value:(id)value;
 - (id)itemAttributes;
 @end
 
 @implementation AAFKeychainItem
 
-- (AAFKeychainItem)initWithDescriptor:(id)a3 value:(id)a4
+- (AAFKeychainItem)initWithDescriptor:(id)descriptor value:(id)value
 {
-  v7 = a3;
-  v8 = a4;
+  descriptorCopy = descriptor;
+  valueCopy = value;
   v12.receiver = self;
   v12.super_class = AAFKeychainItem;
   v9 = [(AAFKeychainItem *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_descriptor, a3);
-    objc_storeStrong(&v10->_value, a4);
+    objc_storeStrong(&v9->_descriptor, descriptor);
+    objc_storeStrong(&v10->_value, value);
   }
 
   return v10;
 }
 
-- (AAFKeychainItem)initWithAttributes:(id)a3
+- (AAFKeychainItem)initWithAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   v11.receiver = self;
   v11.super_class = AAFKeychainItem;
   v5 = [(AAFKeychainItem *)&v11 init];
   if (v5)
   {
-    v6 = [[AAFKeychainItemDescriptor alloc] initWithAttributes:v4];
+    v6 = [[AAFKeychainItemDescriptor alloc] initWithAttributes:attributesCopy];
     descriptor = v5->_descriptor;
     v5->_descriptor = v6;
 
-    v8 = [v4 objectForKeyedSubscript:*MEMORY[0x1E697B3C0]];
+    v8 = [attributesCopy objectForKeyedSubscript:*MEMORY[0x1E697B3C0]];
     value = v5->_value;
     v5->_value = v8;
   }
@@ -45,9 +45,9 @@
 
 - (id)itemAttributes
 {
-  v3 = [(AAFKeychainItem *)self descriptor];
-  v4 = [v3 attributes];
-  v5 = [v4 mutableCopy];
+  descriptor = [(AAFKeychainItem *)self descriptor];
+  attributes = [descriptor attributes];
+  v5 = [attributes mutableCopy];
 
   [v5 setObject:self->_value forKeyedSubscript:*MEMORY[0x1E697B3C0]];
   v6 = [v5 copy];

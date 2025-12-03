@@ -1,22 +1,22 @@
 @interface RSObjectAsset
 - (RSObjectAsset)init;
-- (RSObjectAsset)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (RSObjectAsset)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RSObjectAsset
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  objc_msgSend_encodeObject_forKey_(v6, v4, self->_objects, @"objects");
-  objc_msgSend_encodeObject_forKey_(v6, v5, self->_groups, @"groups");
+  coderCopy = coder;
+  objc_msgSend_encodeObject_forKey_(coderCopy, v4, self->_objects, @"objects");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v5, self->_groups, @"groups");
 }
 
-- (RSObjectAsset)initWithCoder:(id)a3
+- (RSObjectAsset)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v30.receiver = self;
   v30.super_class = RSObjectAsset;
   v5 = [(RSObjectAsset *)&v30 init];
@@ -24,14 +24,14 @@
   v7 = objc_opt_class();
   v8 = objc_opt_class();
   v10 = objc_msgSend_setWithObjects_(v6, v9, v7, v8, 0);
-  v12 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v11, v10, @"groups");
+  v12 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v11, v10, @"groups");
   v15 = objc_msgSend_mutableCopy(v12, v13, v14);
 
   v18 = objc_msgSend_mutableCopy(v15, v16, v17);
   groups = v5->_groups;
   v5->_groups = v18;
 
-  v21 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v20, v10, @"objects");
+  v21 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v20, v10, @"objects");
   v24 = objc_msgSend_mutableCopy(v21, v22, v23);
 
   v27 = objc_msgSend_mutableCopy(v24, v25, v26);
@@ -41,7 +41,7 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(RSObjectAsset);
   v7 = objc_msgSend_mutableCopy(self->_groups, v5, v6);

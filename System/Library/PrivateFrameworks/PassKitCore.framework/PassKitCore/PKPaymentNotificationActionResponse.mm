@@ -1,31 +1,31 @@
 @interface PKPaymentNotificationActionResponse
-- (PKPaymentNotificationActionResponse)initWithData:(id)a3;
+- (PKPaymentNotificationActionResponse)initWithData:(id)data;
 @end
 
 @implementation PKPaymentNotificationActionResponse
 
-- (PKPaymentNotificationActionResponse)initWithData:(id)a3
+- (PKPaymentNotificationActionResponse)initWithData:(id)data
 {
   v23 = *MEMORY[0x1E69E9840];
   v18.receiver = self;
   v18.super_class = PKPaymentNotificationActionResponse;
-  v3 = [(PKWebServiceResponse *)&v18 initWithData:a3];
+  v3 = [(PKWebServiceResponse *)&v18 initWithData:data];
   v4 = v3;
   if (v3)
   {
-    v5 = [(PKWebServiceResponse *)v3 JSONObject];
+    jSONObject = [(PKWebServiceResponse *)v3 JSONObject];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [v5 PKStringForKey:@"requestId"];
+      v6 = [jSONObject PKStringForKey:@"requestId"];
       requestID = v4->_requestID;
       v4->_requestID = v6;
 
-      v8 = [v5 PKDictionaryForKey:@"aps"];
+      v8 = [jSONObject PKDictionaryForKey:@"aps"];
       aps = v4->_aps;
       v4->_aps = v8;
 
-      v10 = [v5 PKStringForKey:@"action"];
+      v10 = [jSONObject PKStringForKey:@"action"];
       action = v4->_action;
       v4->_action = v10;
     }

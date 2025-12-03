@@ -1,13 +1,13 @@
 @interface UVObjCExceptionHandler
-+ (BOOL)perform:(id)a3 error:(id *)a4;
++ (BOOL)perform:(id)perform error:(id *)error;
 @end
 
 @implementation UVObjCExceptionHandler
 
-+ (BOOL)perform:(id)a3 error:(id *)a4
++ (BOOL)perform:(id)perform error:(id *)error
 {
-  v4 = a3;
-  v4[2]();
+  performCopy = perform;
+  performCopy[2]();
 
   return 1;
 }

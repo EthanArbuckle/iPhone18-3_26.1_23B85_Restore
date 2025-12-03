@@ -1,7 +1,7 @@
 @interface EKPersistentSharee
 + (id)defaultPropertiesToLoad;
 + (id)relations;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -55,7 +55,7 @@ void __31__EKPersistentSharee_relations__block_invoke()
   relations_relations = v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(EKPersistentSharee);
   if (v4)
@@ -63,14 +63,14 @@ void __31__EKPersistentSharee_relations__block_invoke()
     v5 = EKUUIDString();
     [(EKPersistentSharee *)v4 setUUID:v5];
 
-    v6 = [(EKPersistentSharee *)self displayName];
-    [(EKPersistentSharee *)v4 setDisplayName:v6];
+    displayName = [(EKPersistentSharee *)self displayName];
+    [(EKPersistentSharee *)v4 setDisplayName:displayName];
 
-    v7 = [(EKPersistentSharee *)self address];
-    [(EKPersistentSharee *)v4 setAddress:v7];
+    address = [(EKPersistentSharee *)self address];
+    [(EKPersistentSharee *)v4 setAddress:address];
 
-    v8 = [(EKPersistentSharee *)self externalID];
-    [(EKPersistentSharee *)v4 setExternalID:v8];
+    externalID = [(EKPersistentSharee *)self externalID];
+    [(EKPersistentSharee *)v4 setExternalID:externalID];
 
     [(EKPersistentSharee *)v4 setShareeStatusRaw:[(EKPersistentSharee *)self shareeStatusRaw]];
     [(EKPersistentSharee *)v4 setShareeAccessLevelRaw:[(EKPersistentSharee *)self shareeAccessLevelRaw]];
@@ -83,12 +83,12 @@ void __31__EKPersistentSharee_relations__block_invoke()
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(EKPersistentSharee *)self UUID];
-  v6 = [(EKPersistentSharee *)self displayName];
-  v7 = [(EKPersistentSharee *)self address];
-  v8 = [(EKPersistentSharee *)self firstName];
-  v9 = [(EKPersistentSharee *)self lastName];
-  v10 = [v3 stringWithFormat:@"%@ <%p> {UUID = %@ displayName = %@; address = %@; firstName = %@; lastName = %@; status = %lu; accessLevel = %lu;}", v4, self, v5, v6, v7, v8, v9, -[EKPersistentSharee shareeStatusRaw](self, "shareeStatusRaw"), -[EKPersistentSharee shareeAccessLevelRaw](self, "shareeAccessLevelRaw")];;
+  uUID = [(EKPersistentSharee *)self UUID];
+  displayName = [(EKPersistentSharee *)self displayName];
+  address = [(EKPersistentSharee *)self address];
+  firstName = [(EKPersistentSharee *)self firstName];
+  lastName = [(EKPersistentSharee *)self lastName];
+  v10 = [v3 stringWithFormat:@"%@ <%p> {UUID = %@ displayName = %@; address = %@; firstName = %@; lastName = %@; status = %lu; accessLevel = %lu;}", v4, self, uUID, displayName, address, firstName, lastName, -[EKPersistentSharee shareeStatusRaw](self, "shareeStatusRaw"), -[EKPersistentSharee shareeAccessLevelRaw](self, "shareeAccessLevelRaw")];;
 
   return v10;
 }

@@ -1,8 +1,8 @@
 @interface DYPlaybackEngineFSEBuilder
 - (DYPlaybackEngineFSEBuilder)init;
-- (DYPlaybackEngineFSEBuilder)initWithPlaybackEngineCache:(void *)a3;
+- (DYPlaybackEngineFSEBuilder)initWithPlaybackEngineCache:(void *)cache;
 - (void)performPreVisitActions;
-- (void)visitCaptureStore:(id)a3;
+- (void)visitCaptureStore:(id)store;
 @end
 
 @implementation DYPlaybackEngineFSEBuilder
@@ -14,14 +14,14 @@
   return 0;
 }
 
-- (DYPlaybackEngineFSEBuilder)initWithPlaybackEngineCache:(void *)a3
+- (DYPlaybackEngineFSEBuilder)initWithPlaybackEngineCache:(void *)cache
 {
   v6.receiver = self;
   v6.super_class = DYPlaybackEngineFSEBuilder;
   result = [(DYCaptureVisitor *)&v6 init];
   if (result)
   {
-    result->_cache = a3;
+    result->_cache = cache;
     v5 = result;
     [(DYInOrderInstructionFilesVisitor *)result setVisitDeltaFiles:1];
     return v5;
@@ -30,9 +30,9 @@
   return result;
 }
 
-- (void)visitCaptureStore:(id)a3
+- (void)visitCaptureStore:(id)store
 {
-  self->_store = a3;
+  self->_store = store;
   v6.receiver = self;
   v6.super_class = DYPlaybackEngineFSEBuilder;
   [(DYInOrderInstructionFilesVisitor *)&v6 visitCaptureStore:?];

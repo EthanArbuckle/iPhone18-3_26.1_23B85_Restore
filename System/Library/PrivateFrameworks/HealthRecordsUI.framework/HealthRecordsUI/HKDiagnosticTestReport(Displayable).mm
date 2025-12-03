@@ -6,10 +6,10 @@
 
 - (id)codings
 {
-  v1 = [a1 diagnosticTestCodingCollection];
-  v2 = [v1 codings];
+  diagnosticTestCodingCollection = [self diagnosticTestCodingCollection];
+  codings = [diagnosticTestCodingCollection codings];
 
-  return v2;
+  return codings;
 }
 
 @end

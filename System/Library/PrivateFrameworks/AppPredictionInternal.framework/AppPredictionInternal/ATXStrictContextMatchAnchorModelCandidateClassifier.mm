@@ -1,42 +1,42 @@
 @interface ATXStrictContextMatchAnchorModelCandidateClassifier
-- (BOOL)isEqual:(id)a3;
-- (id)classifyCandidateForAnchorOccurrence:(id)a3 trainingResult:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (id)classifyCandidateForAnchorOccurrence:(id)occurrence trainingResult:(id)result;
 @end
 
 @implementation ATXStrictContextMatchAnchorModelCandidateClassifier
 
-- (id)classifyCandidateForAnchorOccurrence:(id)a3 trainingResult:(id)a4
+- (id)classifyCandidateForAnchorOccurrence:(id)occurrence trainingResult:(id)result
 {
   v29 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  occurrenceCopy = occurrence;
   v6 = __atxlog_handle_anchor();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v7 = objc_opt_class();
     v8 = NSStringFromClass(v7);
-    v9 = [(ATXNaivePositiveAnchorModelCandidateClassifier *)self candidateId];
+    candidateId = [(ATXNaivePositiveAnchorModelCandidateClassifier *)self candidateId];
     v25 = 138412546;
     v26 = v8;
     v27 = 2112;
-    v28 = v9;
+    v28 = candidateId;
     _os_log_impl(&dword_2263AA000, v6, OS_LOG_TYPE_INFO, "%@ making a prediction for candidate: %@", &v25, 0x16u);
   }
 
   v10 = objc_opt_new();
-  v11 = [(ATXNaivePositiveAnchorModelCandidateClassifier *)self anchor];
-  v12 = [v10 featurizeAnchorEvent:v5 anchor:v11];
+  anchor = [(ATXNaivePositiveAnchorModelCandidateClassifier *)self anchor];
+  v12 = [v10 featurizeAnchorEvent:occurrenceCopy anchor:anchor];
 
   v13 = objc_opt_new();
-  v14 = [(ATXNaivePositiveAnchorModelCandidateClassifier *)self candidateId];
-  v15 = [(ATXNaivePositiveAnchorModelCandidateClassifier *)self anchor];
-  v16 = [v13 numCandidateIdOccurrencesInJointAnchorContext:v14 anchor:v15 anchorMetadata:v12];
+  candidateId2 = [(ATXNaivePositiveAnchorModelCandidateClassifier *)self candidateId];
+  anchor2 = [(ATXNaivePositiveAnchorModelCandidateClassifier *)self anchor];
+  v16 = [v13 numCandidateIdOccurrencesInJointAnchorContext:candidateId2 anchor:anchor2 anchorMetadata:v12];
 
   v17 = __atxlog_handle_anchor();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
   {
-    v18 = [(ATXNaivePositiveAnchorModelCandidateClassifier *)self candidateId];
+    candidateId3 = [(ATXNaivePositiveAnchorModelCandidateClassifier *)self candidateId];
     v25 = 138412546;
-    v26 = v18;
+    v26 = candidateId3;
     v27 = 2048;
     v28 = v16;
     _os_log_impl(&dword_2263AA000, v17, OS_LOG_TYPE_INFO, "Candidate %@ has %ld occurrences in the joint context of the anchor.", &v25, 0x16u);
@@ -62,10 +62,10 @@
   return v22;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
@@ -75,16 +75,16 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(ATXNaivePositiveAnchorModelCandidateClassifier *)self candidateId];
-      v7 = [(ATXNaivePositiveAnchorModelCandidateClassifier *)v5 candidateId];
-      v8 = [v6 isEqualToString:v7];
+      v5 = equalCopy;
+      candidateId = [(ATXNaivePositiveAnchorModelCandidateClassifier *)self candidateId];
+      candidateId2 = [(ATXNaivePositiveAnchorModelCandidateClassifier *)v5 candidateId];
+      v8 = [candidateId isEqualToString:candidateId2];
 
       if (v8)
       {
-        v9 = [(ATXNaivePositiveAnchorModelCandidateClassifier *)self anchor];
-        v10 = [(ATXNaivePositiveAnchorModelCandidateClassifier *)v5 anchor];
-        v11 = [v9 isEqual:v10];
+        anchor = [(ATXNaivePositiveAnchorModelCandidateClassifier *)self anchor];
+        anchor2 = [(ATXNaivePositiveAnchorModelCandidateClassifier *)v5 anchor];
+        v11 = [anchor isEqual:anchor2];
       }
 
       else

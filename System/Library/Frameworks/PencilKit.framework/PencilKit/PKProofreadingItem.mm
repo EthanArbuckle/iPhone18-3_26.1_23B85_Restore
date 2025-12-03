@@ -1,6 +1,6 @@
 @interface PKProofreadingItem
-+ (id)proofreadingItemWithQueryItem:(id)a3 sessionManager:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)proofreadingItemWithQueryItem:(id)item sessionManager:(id)manager;
+- (BOOL)isEqual:(id)equal;
 - (NSArray)chStrokeIdentifiers;
 - (NSArray)replacementStrings;
 - (id)_baselinePath;
@@ -11,18 +11,18 @@
 
 @implementation PKProofreadingItem
 
-+ (id)proofreadingItemWithQueryItem:(id)a3 sessionManager:(id)a4
++ (id)proofreadingItemWithQueryItem:(id)item sessionManager:(id)manager
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 strokeIdentifiers];
-  v8 = [(PKRecognitionSessionManager *)v6 drawing];
-  valid = HasValidInkForDetectionItem(v7, v8);
+  itemCopy = item;
+  managerCopy = manager;
+  strokeIdentifiers = [itemCopy strokeIdentifiers];
+  drawing = [(PKRecognitionSessionManager *)managerCopy drawing];
+  valid = HasValidInkForDetectionItem(strokeIdentifiers, drawing);
 
   if (valid)
   {
-    v10 = [(PKDetectionItem *)[PKProofreadingItem alloc] initWithSessionManager:v6];
-    [(PKDetectionItem *)v10 setQueryItem:v5];
+    v10 = [(PKDetectionItem *)[PKProofreadingItem alloc] initWithSessionManager:managerCopy];
+    [(PKDetectionItem *)v10 setQueryItem:itemCopy];
   }
 
   else
@@ -35,57 +35,57 @@
 
 - (id)drawing
 {
-  v2 = [(PKDetectionItem *)self sessionManager];
-  v3 = [(PKRecognitionSessionManager *)v2 drawing];
+  sessionManager = [(PKDetectionItem *)self sessionManager];
+  drawing = [(PKRecognitionSessionManager *)sessionManager drawing];
 
-  return v3;
+  return drawing;
 }
 
 - (id)_baselinePath
 {
-  v2 = [(PKDetectionItem *)self queryItem];
-  v3 = [v2 baselinePath];
+  queryItem = [(PKDetectionItem *)self queryItem];
+  baselinePath = [queryItem baselinePath];
 
-  return v3;
+  return baselinePath;
 }
 
 - (NSArray)chStrokeIdentifiers
 {
-  v2 = [(PKDetectionItem *)self queryItem];
-  v3 = [v2 strokeIdentifiers];
-  v4 = [v3 allObjects];
+  queryItem = [(PKDetectionItem *)self queryItem];
+  strokeIdentifiers = [queryItem strokeIdentifiers];
+  allObjects = [strokeIdentifiers allObjects];
 
-  return v4;
+  return allObjects;
 }
 
 - (NSArray)replacementStrings
 {
-  v2 = [(PKDetectionItem *)self queryItem];
-  v3 = [v2 replacementStrings];
+  queryItem = [(PKDetectionItem *)self queryItem];
+  replacementStrings = [queryItem replacementStrings];
 
-  return v3;
+  return replacementStrings;
 }
 
 - (int)resultType
 {
-  v2 = [(PKDetectionItem *)self queryItem];
-  v3 = [v2 resultType];
+  queryItem = [(PKDetectionItem *)self queryItem];
+  resultType = [queryItem resultType];
 
-  return v3;
+  return resultType;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(PKDetectionItem *)self queryItem];
-  v3 = [v2 hash];
+  queryItem = [(PKDetectionItem *)self queryItem];
+  v3 = [queryItem hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -95,9 +95,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(PKDetectionItem *)self queryItem];
-      v6 = [(PKDetectionItem *)v4 queryItem];
-      v7 = [v5 isEqual:v6];
+      queryItem = [(PKDetectionItem *)self queryItem];
+      queryItem2 = [(PKDetectionItem *)equalCopy queryItem];
+      v7 = [queryItem isEqual:queryItem2];
     }
 
     else

@@ -1,33 +1,33 @@
 @interface CSBatteryFillView
-- (CSBatteryFillView)initWithFrame:(CGRect)a3 isInternalBattery:(BOOL)a4 lowBatteryLevel:(int64_t)a5;
-- (void)drawRect:(CGRect)a3;
+- (CSBatteryFillView)initWithFrame:(CGRect)frame isInternalBattery:(BOOL)battery lowBatteryLevel:(int64_t)level;
+- (void)drawRect:(CGRect)rect;
 @end
 
 @implementation CSBatteryFillView
 
-- (CSBatteryFillView)initWithFrame:(CGRect)a3 isInternalBattery:(BOOL)a4 lowBatteryLevel:(int64_t)a5
+- (CSBatteryFillView)initWithFrame:(CGRect)frame isInternalBattery:(BOOL)battery lowBatteryLevel:(int64_t)level
 {
   v8.receiver = self;
   v8.super_class = CSBatteryFillView;
-  result = [(CSBatteryFillView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  result = [(CSBatteryFillView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (result)
   {
-    result->_isInternalBattery = a4;
-    result->_lowBatteryLevel = a5;
+    result->_isInternalBattery = battery;
+    result->_lowBatteryLevel = level;
   }
 
   return result;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   if (self->_isInternalBattery && self->_isBatterySaverModeActive)
   {
-    v8 = [MEMORY[0x277D75348] systemYellowColor];
+    systemYellowColor = [MEMORY[0x277D75348] systemYellowColor];
   }
 
   else
@@ -41,11 +41,11 @@
     {
       [MEMORY[0x277D75348] systemGreenColor];
     }
-    v8 = ;
+    systemYellowColor = ;
   }
 
-  v12 = v8;
-  [v8 set];
+  v12 = systemYellowColor;
+  [systemYellowColor set];
   v9 = width * self->_chargePercentage / 100.0;
   v10 = floorf(v9);
   v11 = MEMORY[0x277D76620];

@@ -3,13 +3,13 @@
 - (NSArray)subresources;
 - (NSData)data;
 - (WebArchive)init;
-- (WebArchive)initWithCoder:(id)a3;
+- (WebArchive)initWithCoder:(id)coder;
 - (WebArchive)initWithData:(NSData *)data;
 - (WebArchive)initWithMainResource:(WebResource *)mainResource subresources:(NSArray *)subresources subframeArchives:(NSArray *)subframeArchives;
 - (WebResource)mainResource;
-- (id)_initWithCoreLegacyWebArchive:(void *)a3;
+- (id)_initWithCoreLegacyWebArchive:(void *)archive;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WebArchive
@@ -174,7 +174,7 @@ LABEL_31:
           objc_enumerationMutation(subresources);
         }
 
-        v29 = [*(*(&v69 + 1) + 8 * i) _coreResource];
+        _coreResource = [*(*(&v69 + 1) + 8 * i) _coreResource];
         v30 = HIDWORD(v74);
         if (HIDWORD(v74) == v74)
         {
@@ -225,8 +225,8 @@ LABEL_31:
           v28 = (v73 + 8 * HIDWORD(v74));
         }
 
-        ++*(v29 + 8);
-        *v28 = v29;
+        ++*(_coreResource + 8);
+        *v28 = _coreResource;
         HIDWORD(v74) = v30 + 1;
       }
 
@@ -255,7 +255,7 @@ LABEL_31:
           objc_enumerationMutation(subframeArchives);
         }
 
-        v40 = [*(*(*(&v63 + 1) + 8 * j) + 8) coreArchive];
+        coreArchive = [*(*(*(&v63 + 1) + 8 * j) + 8) coreArchive];
         v41 = HIDWORD(v68);
         if (HIDWORD(v68) == v68)
         {
@@ -307,8 +307,8 @@ LABEL_103:
           v39 = (v67 + 8 * HIDWORD(v68));
         }
 
-        ++*(v40 + 8);
-        *v39 = v40;
+        ++*(coreArchive + 8);
+        *v39 = coreArchive;
         HIDWORD(v68) = v41 + 1;
       }
 
@@ -319,9 +319,9 @@ LABEL_103:
   }
 
   v47 = v60->_private;
-  v48 = [v59 _coreResource];
-  ++*(v48 + 8);
-  v61 = v48;
+  _coreResource2 = [v59 _coreResource];
+  ++*(_coreResource2 + 8);
+  v61 = _coreResource2;
   WebCore::LegacyWebArchive::create();
   [(WebArchivePrivate *)v47 setCoreArchive:&v62];
   v50 = v62;
@@ -512,16 +512,16 @@ LABEL_11:
   return v3;
 }
 
-- (WebArchive)initWithCoder:(id)a3
+- (WebArchive)initWithCoder:(id)coder
 {
-  v5 = [a3 decodeObjectForKey:@"WebMainResource"];
+  v5 = [coder decodeObjectForKey:@"WebMainResource"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v5 = 0;
   }
 
-  v6 = [a3 decodeObjectForKey:@"WebSubresources"];
+  v6 = [coder decodeObjectForKey:@"WebSubresources"];
   objc_opt_class();
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -550,7 +550,7 @@ LABEL_11:
 
   v6 = 0;
 LABEL_10:
-  v9 = [a3 decodeObjectForKey:@"WebSubframeArchives"];
+  v9 = [coder decodeObjectForKey:@"WebSubframeArchives"];
   objc_opt_class();
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -583,13 +583,13 @@ LABEL_17:
   return [(WebArchive *)self initWithMainResource:v5 subresources:v6 subframeArchives:v9];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeObject:-[WebArchive mainResource](self forKey:{"mainResource"), @"WebMainResource"}];
-  [a3 encodeObject:-[WebArchive subresources](self forKey:{"subresources"), @"WebSubresources"}];
-  v5 = [(WebArchive *)self subframeArchives];
+  [coder encodeObject:-[WebArchive mainResource](self forKey:{"mainResource"), @"WebMainResource"}];
+  [coder encodeObject:-[WebArchive subresources](self forKey:{"subresources"), @"WebSubresources"}];
+  subframeArchives = [(WebArchive *)self subframeArchives];
 
-  [a3 encodeObject:v5 forKey:@"WebSubframeArchives"];
+  [coder encodeObject:subframeArchives forKey:@"WebSubframeArchives"];
 }
 
 - (void)dealloc
@@ -604,10 +604,10 @@ LABEL_17:
   v3 = self->_private;
   if (!v3->cachedMainResource.m_ptr)
   {
-    v8 = [(WebArchivePrivate *)v3 coreArchive];
-    if (v8)
+    coreArchive = [(WebArchivePrivate *)v3 coreArchive];
+    if (coreArchive)
     {
-      v9 = *(v8 + 16);
+      v9 = *(coreArchive + 16);
       if (v9)
       {
         v10 = [WebResource alloc];
@@ -654,11 +654,11 @@ LABEL_17:
   v3 = self->_private;
   if (!v3->cachedSubresources.m_ptr)
   {
-    v4 = [(WebArchivePrivate *)v3 coreArchive];
-    if (v4)
+    coreArchive = [(WebArchivePrivate *)v3 coreArchive];
+    if (coreArchive)
     {
-      v5 = v4;
-      v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:*(v4 + 36)];
+      v5 = coreArchive;
+      v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:*(coreArchive + 36)];
       v7 = *(v5 + 36);
       if (v7)
       {
@@ -743,8 +743,8 @@ LABEL_14:
   v3 = self->_private;
   if (!v3->cachedSubframeArchives.m_ptr)
   {
-    v4 = [(WebArchivePrivate *)v3 coreArchive];
-    if (!v4)
+    coreArchive = [(WebArchivePrivate *)v3 coreArchive];
+    if (!coreArchive)
     {
       v22 = objc_alloc_init(MEMORY[0x1E695DEC8]);
       v23 = self->_private;
@@ -758,8 +758,8 @@ LABEL_14:
       goto LABEL_17;
     }
 
-    v5 = v4;
-    v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:*(v4 + 52)];
+    v5 = coreArchive;
+    v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:*(coreArchive + 52)];
     v7 = *(v5 + 52);
     if (v7)
     {
@@ -866,7 +866,7 @@ LABEL_18:
   return v2;
 }
 
-- (id)_initWithCoreLegacyWebArchive:(void *)a3
+- (id)_initWithCoreLegacyWebArchive:(void *)archive
 {
   v7.receiver = self;
   v7.super_class = WebArchive;
@@ -874,7 +874,7 @@ LABEL_18:
   if (result)
   {
     v5 = result;
-    v6 = [[WebArchivePrivate alloc] initWithCoreArchive:a3];
+    v6 = [[WebArchivePrivate alloc] initWithCoreArchive:archive];
     result = v5;
     v5[1] = v6;
     if (!v6)

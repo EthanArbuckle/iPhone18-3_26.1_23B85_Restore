@@ -1,28 +1,28 @@
 @interface UITabBarCustomizeView
-- (UITabBarCustomizeView)initWithFrame:(CGRect)a3;
-- (id)itemInTabBarWithTouches:(id)a3 withEvent:(id)a4;
+- (UITabBarCustomizeView)initWithFrame:(CGRect)frame;
+- (id)itemInTabBarWithTouches:(id)touches withEvent:(id)event;
 - (id)titleLabelFont;
-- (void)adjustDragImageWithTouches:(id)a3 withEvent:(id)a4;
+- (void)adjustDragImageWithTouches:(id)touches withEvent:(id)event;
 - (void)layoutSubviews;
-- (void)setTabBar:(id)a3 currentItems:(id)a4 availableItems:(id)a5;
-- (void)tabBarTouchesBegan:(id)a3 withEvent:(id)a4;
-- (void)tabBarTouchesEnded:(id)a3 withEvent:(id)a4;
-- (void)tabBarTouchesMoved:(id)a3 withEvent:(id)a4;
-- (void)tintTabBarItemsForEdit:(BOOL)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)setTabBar:(id)bar currentItems:(id)items availableItems:(id)availableItems;
+- (void)tabBarTouchesBegan:(id)began withEvent:(id)event;
+- (void)tabBarTouchesEnded:(id)ended withEvent:(id)event;
+- (void)tabBarTouchesMoved:(id)moved withEvent:(id)event;
+- (void)tintTabBarItemsForEdit:(BOOL)edit;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 - (void)updateProxiesSelection;
 @end
 
 @implementation UITabBarCustomizeView
 
-- (UITabBarCustomizeView)initWithFrame:(CGRect)a3
+- (UITabBarCustomizeView)initWithFrame:(CGRect)frame
 {
   v17[1] = *MEMORY[0x1E69E9840];
   v16.receiver = self;
   v16.super_class = UITabBarCustomizeView;
-  v3 = [(UIView *)&v16 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v16 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -36,8 +36,8 @@
     [(UILabel *)v7 setText:v8];
 
     v9 = v4->_titleLabel;
-    v10 = [(UITabBarCustomizeView *)v4 titleLabelFont];
-    [(UILabel *)v9 setFont:v10];
+    titleLabelFont = [(UITabBarCustomizeView *)v4 titleLabelFont];
+    [(UILabel *)v9 setFont:titleLabelFont];
 
     v11 = v4->_titleLabel;
     v12 = +[UIColor secondaryLabelColor];
@@ -71,36 +71,36 @@ void __39__UITabBarCustomizeView_initWithFrame___block_invoke(uint64_t a1, void 
 
 - (id)titleLabelFont
 {
-  v3 = [(UIView *)self traitCollection];
-  v4 = [(UIView *)self traitCollection];
-  v5 = [v4 preferredContentSizeCategory];
-  v6 = UIContentSizeCategoryCompareToCategory(v5, &cfstr_Uictcontentsiz_10.isa);
+  traitCollection = [(UIView *)self traitCollection];
+  traitCollection2 = [(UIView *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection2 preferredContentSizeCategory];
+  v6 = UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, &cfstr_Uictcontentsiz_10.isa);
 
   if (v6 == NSOrderedDescending)
   {
     v7 = [UITraitCollection traitCollectionWithPreferredContentSizeCategory:@"UICTContentSizeCategoryAccessibilityL"];
 
-    v3 = v7;
+    traitCollection = v7;
   }
 
   v8 = [UIFontMetrics metricsForTextStyle:@"UICTFontTextStyleTitle2"];
   v9 = [off_1E70ECC18 systemFontOfSize:21.0];
-  v10 = [v8 scaledFontForFont:v9 compatibleWithTraitCollection:v3];
+  v10 = [v8 scaledFontForFont:v9 compatibleWithTraitCollection:traitCollection];
 
   return v10;
 }
 
-- (void)tintTabBarItemsForEdit:(BOOL)a3
+- (void)tintTabBarItemsForEdit:(BOOL)edit
 {
   v23 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (edit)
   {
     v19 = 0uLL;
     v20 = 0uLL;
     v17 = 0uLL;
     v18 = 0uLL;
-    v4 = [(UITabBar *)self->_tabBar items];
-    v5 = [v4 countByEnumeratingWithState:&v17 objects:v22 count:16];
+    items = [(UITabBar *)self->_tabBar items];
+    v5 = [items countByEnumeratingWithState:&v17 objects:v22 count:16];
     if (v5)
     {
       v6 = v5;
@@ -111,13 +111,13 @@ void __39__UITabBarCustomizeView_initWithFrame___block_invoke(uint64_t a1, void 
         {
           if (*v18 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(items);
           }
 
           [*(*(&v17 + 1) + 8 * i) _setSelected:{-[NSArray containsObject:](self->_availableItems, "containsObject:", *(*(&v17 + 1) + 8 * i))}];
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v17 objects:v22 count:16];
+        v6 = [items countByEnumeratingWithState:&v17 objects:v22 count:16];
       }
 
       while (v6);
@@ -130,8 +130,8 @@ void __39__UITabBarCustomizeView_initWithFrame___block_invoke(uint64_t a1, void 
     v16 = 0uLL;
     v13 = 0uLL;
     v14 = 0uLL;
-    v4 = [(UITabBar *)self->_tabBar items];
-    v9 = [v4 countByEnumeratingWithState:&v13 objects:v21 count:16];
+    items = [(UITabBar *)self->_tabBar items];
+    v9 = [items countByEnumeratingWithState:&v13 objects:v21 count:16];
     if (v9)
     {
       v10 = v9;
@@ -142,13 +142,13 @@ void __39__UITabBarCustomizeView_initWithFrame___block_invoke(uint64_t a1, void 
         {
           if (*v14 != v11)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(items);
           }
 
           [*(*(&v13 + 1) + 8 * j) _setSelected:*(*(&v13 + 1) + 8 * j) == self->_selectedBeforeItem];
         }
 
-        v10 = [v4 countByEnumeratingWithState:&v13 objects:v21 count:16];
+        v10 = [items countByEnumeratingWithState:&v13 objects:v21 count:16];
       }
 
       while (v10);
@@ -180,9 +180,9 @@ void __39__UITabBarCustomizeView_initWithFrame___block_invoke(uint64_t a1, void 
         }
 
         v8 = *(*(&v11 + 1) + 8 * v7);
-        v9 = [(UITabBar *)self->_tabBar items];
-        v10 = [v8 item];
-        [v8 setSelected:{objc_msgSend(v9, "containsObject:", v10) ^ 1}];
+        items = [(UITabBar *)self->_tabBar items];
+        item = [v8 item];
+        [v8 setSelected:{objc_msgSend(items, "containsObject:", item) ^ 1}];
 
         ++v7;
       }
@@ -195,12 +195,12 @@ void __39__UITabBarCustomizeView_initWithFrame___block_invoke(uint64_t a1, void 
   }
 }
 
-- (void)setTabBar:(id)a3 currentItems:(id)a4 availableItems:(id)a5
+- (void)setTabBar:(id)bar currentItems:(id)items availableItems:(id)availableItems
 {
   v40 = *MEMORY[0x1E69E9840];
-  v29 = a3;
-  v8 = a5;
-  objc_storeStrong(&self->_tabBar, a3);
+  barCopy = bar;
+  availableItemsCopy = availableItems;
+  objc_storeStrong(&self->_tabBar, bar);
   v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
   proxies = self->_proxies;
   self->_proxies = v9;
@@ -209,7 +209,7 @@ void __39__UITabBarCustomizeView_initWithFrame___block_invoke(uint64_t a1, void 
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  obj = v8;
+  obj = availableItemsCopy;
   v11 = [obj countByEnumeratingWithState:&v34 objects:v39 count:16];
   if (v11)
   {
@@ -224,14 +224,14 @@ void __39__UITabBarCustomizeView_initWithFrame___block_invoke(uint64_t a1, void 
           objc_enumerationMutation(obj);
         }
 
-        v15 = [[UITabBarItemProxy alloc] initWithItem:*(*(&v34 + 1) + 8 * i) inTabBar:v29];
-        v16 = [(UITabBarItemProxy *)v15 view];
+        v15 = [[UITabBarItemProxy alloc] initWithItem:*(*(&v34 + 1) + 8 * i) inTabBar:barCopy];
+        view = [(UITabBarItemProxy *)v15 view];
         v17 = +[UIColor secondaryLabelColor];
-        [v16 _setUnselectedTintColor:v17];
+        [view _setUnselectedTintColor:v17];
 
         [(NSMutableArray *)self->_proxies addObject:v15];
-        v18 = [(UITabBarItemProxy *)v15 view];
-        [(UIView *)self addSubview:v18];
+        view2 = [(UITabBarItemProxy *)v15 view];
+        [(UIView *)self addSubview:view2];
       }
 
       v12 = [obj countByEnumeratingWithState:&v34 objects:v39 count:16];
@@ -241,8 +241,8 @@ void __39__UITabBarCustomizeView_initWithFrame___block_invoke(uint64_t a1, void 
   }
 
   [(UITabBarCustomizeView *)self updateProxiesSelection];
-  v19 = [v29 items];
-  v20 = [v19 mutableCopy];
+  items = [barCopy items];
+  v20 = [items mutableCopy];
   fixedItems = self->_fixedItems;
   self->_fixedItems = v20;
 
@@ -251,8 +251,8 @@ void __39__UITabBarCustomizeView_initWithFrame___block_invoke(uint64_t a1, void 
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v22 = [(UITabBar *)self->_tabBar items];
-  v23 = [v22 countByEnumeratingWithState:&v30 objects:v38 count:16];
+  items2 = [(UITabBar *)self->_tabBar items];
+  v23 = [items2 countByEnumeratingWithState:&v30 objects:v38 count:16];
   if (v23)
   {
     v24 = v23;
@@ -263,7 +263,7 @@ void __39__UITabBarCustomizeView_initWithFrame___block_invoke(uint64_t a1, void 
       {
         if (*v31 != v25)
         {
-          objc_enumerationMutation(v22);
+          objc_enumerationMutation(items2);
         }
 
         v27 = *(*(&v30 + 1) + 8 * j);
@@ -273,7 +273,7 @@ void __39__UITabBarCustomizeView_initWithFrame___block_invoke(uint64_t a1, void 
         }
       }
 
-      v24 = [v22 countByEnumeratingWithState:&v30 objects:v38 count:16];
+      v24 = [items2 countByEnumeratingWithState:&v30 objects:v38 count:16];
     }
 
     while (v24);
@@ -289,13 +289,13 @@ void __39__UITabBarCustomizeView_initWithFrame___block_invoke(uint64_t a1, void 
   [(UIView *)self->_tabBar bounds];
   [(UIView *)self safeAreaInsets];
   v4 = v3;
-  v5 = [(UITabBarCustomizeView *)self navigationBar];
-  [v5 frame];
+  navigationBar = [(UITabBarCustomizeView *)self navigationBar];
+  [navigationBar frame];
   v7 = v6;
   v9 = v8;
 
-  v10 = [(UITabBarCustomizeView *)self navigationBar];
-  [v10 setFrame:{0.0, v4, v7, v9}];
+  navigationBar2 = [(UITabBarCustomizeView *)self navigationBar];
+  [navigationBar2 setFrame:{0.0, v4, v7, v9}];
 
   v93.origin.x = 0.0;
   v93.origin.y = v4;
@@ -322,16 +322,16 @@ void __39__UITabBarCustomizeView_initWithFrame___block_invoke(uint64_t a1, void 
   v26 = v25;
   v27 = v15 + v17;
   v28 = [(NSMutableArray *)self->_proxies count];
-  v29 = [(UIView *)self traitCollection];
-  v30 = [v29 horizontalSizeClass];
+  traitCollection = [(UIView *)self traitCollection];
+  horizontalSizeClass = [traitCollection horizontalSizeClass];
   v31 = dyld_program_sdk_at_least();
   v32 = +[UIDevice currentDevice];
-  v33 = [v32 userInterfaceIdiom];
+  userInterfaceIdiom = [v32 userInterfaceIdiom];
 
-  v34 = (v33 & 0xFFFFFFFFFFFFFFFBLL) == 1;
+  v34 = (userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1;
   if (v31)
   {
-    v34 = (v30 & 0xFFFFFFFFFFFFFFFDLL) == 0 && (v33 & 0xFFFFFFFFFFFFFFFBLL) == 1;
+    v34 = (horizontalSizeClass & 0xFFFFFFFFFFFFFFFDLL) == 0 && (userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1;
   }
 
   v36 = v24 - v27;
@@ -364,9 +364,9 @@ LABEL_19:
 
   else
   {
-    v43 = [(UIView *)self window];
-    v44 = [v43 windowScene];
-    v45 = [v44 _interfaceOrientation] - 3;
+    window = [(UIView *)self window];
+    windowScene = [window windowScene];
+    v45 = [windowScene _interfaceOrientation] - 3;
     v42 = v45 < 2;
 
     if (v41 > 12)
@@ -411,8 +411,8 @@ LABEL_20:
 LABEL_27:
   v49 = v40[779];
   v50 = v49;
-  v51 = [*(&self->super.super.super.isa + v49) superview];
-  v52 = v51;
+  superview = [*(&self->super.super.super.isa + v49) superview];
+  v52 = superview;
   if (v42)
   {
   }
@@ -424,9 +424,9 @@ LABEL_27:
   }
 
 LABEL_32:
-  v53 = [*(&self->super.super.super.isa + v50) superview];
+  superview2 = [*(&self->super.super.super.isa + v50) superview];
 
-  if (v53 != self)
+  if (superview2 != self)
   {
     [(UIView *)self addSubview:*(&self->super.super.super.isa + v50)];
   }
@@ -473,8 +473,8 @@ LABEL_34:
     if ([(NSMutableArray *)self->_proxies count])
     {
       v60 = [(NSMutableArray *)self->_proxies objectAtIndexedSubscript:0];
-      v61 = [v60 view];
-      [v61 frame];
+      view = [v60 view];
+      [view frame];
     }
 
     UIRoundToViewScale(self);
@@ -537,9 +537,9 @@ LABEL_34:
           objc_enumerationMutation(v71);
         }
 
-        v80 = [*(*(&v86 + 1) + 8 * v77) view];
-        [v80 frame];
-        [v80 setFrame:{round(width * 0.5 + v68 - v81 * v76), round(height * 0.5 + gridOffset - v82 * v76)}];
+        view2 = [*(*(&v86 + 1) + 8 * v77) view];
+        [view2 frame];
+        [view2 setFrame:{round(width * 0.5 + v68 - v81 * v76), round(height * 0.5 + gridOffset - v82 * v76)}];
         if (v79 % self->_itemsInRowCount)
         {
           if ((v38 & 0x400000) != 0)
@@ -585,10 +585,10 @@ LABEL_34:
   }
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
+  beganCopy = began;
+  eventCopy = event;
   if (!self->_draggingProxy)
   {
     v8 = *(&self->super._viewFlags + 2);
@@ -612,8 +612,8 @@ LABEL_34:
       x = v14 - CGRectGetMinX(v53);
     }
 
-    v15 = [v6 anyObject];
-    [v15 locationInView:self];
+    anyObject = [beganCopy anyObject];
+    [anyObject locationInView:self];
     v17 = v16;
     v19 = v18;
 
@@ -647,37 +647,37 @@ LABEL_34:
     v26 = self->_draggingProxy;
     if (v26)
     {
-      v27 = [(UITabBarItemProxy *)v26 view];
+      view = [(UITabBarItemProxy *)v26 view];
       v28 = objc_alloc_init(UISnapshotView);
       dragImage = self->_dragImage;
       self->_dragImage = v28;
 
-      [(UISnapshotView *)self->_dragImage captureSnapshotOfView:v27 withSnapshotType:1];
+      [(UISnapshotView *)self->_dragImage captureSnapshotOfView:view withSnapshotType:1];
       [(UIView *)self->_dragImage setOpaque:0];
       [(UIView *)self->_dragImage setUserInteractionEnabled:0];
-      v30 = [(UIView *)self superview];
-      [v27 bounds];
-      [v30 convertRect:v27 fromView:?];
+      superview = [(UIView *)self superview];
+      [view bounds];
+      [superview convertRect:view fromView:?];
       v32 = v31;
       v34 = v33;
       v36 = v35;
       v38 = v37;
-      v39 = [v6 anyObject];
-      [v39 locationInView:self];
+      anyObject2 = [beganCopy anyObject];
+      [anyObject2 locationInView:self];
       v41 = v40;
       v43 = v42;
 
       self->_startPoint.x = round(v41 - (v32 + v36 * 0.5));
       self->_startPoint.y = round(v43 - (v34 + v38 * 0.5));
       [(UISnapshotView *)self->_dragImage setFrame:v32, v34, v36, v38];
-      [v30 addSubview:self->_dragImage];
+      [superview addSubview:self->_dragImage];
       v48[0] = MEMORY[0x1E69E9820];
       v48[1] = 3221225472;
       v48[2] = __48__UITabBarCustomizeView_touchesBegan_withEvent___block_invoke;
       v48[3] = &unk_1E70F6228;
       v48[4] = self;
-      v49 = v6;
-      v50 = v7;
+      v49 = beganCopy;
+      v50 = eventCopy;
       [UIView animateWithDuration:32 delay:v48 options:0 animations:0.2 completion:0.0];
       if (!self->_replacementGlow)
       {
@@ -770,23 +770,23 @@ uint64_t __48__UITabBarCustomizeView_touchesBegan_withEvent___block_invoke(uint6
   return [*(a1 + 32) adjustDragImageWithTouches:*(a1 + 40) withEvent:*(a1 + 48)];
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
   if (self->_draggingProxy)
   {
-    v6 = a4;
-    v7 = a3;
-    [(UITabBarCustomizeView *)self adjustDragImageWithTouches:v7 withEvent:v6];
+    eventCopy = event;
+    movedCopy = moved;
+    [(UITabBarCustomizeView *)self adjustDragImageWithTouches:movedCopy withEvent:eventCopy];
     v8 = self->_replaceItem;
-    v9 = [(UITabBarCustomizeView *)self itemInTabBarWithTouches:v7 withEvent:v6];
+    v9 = [(UITabBarCustomizeView *)self itemInTabBarWithTouches:movedCopy withEvent:eventCopy];
 
     replaceItem = self->_replaceItem;
     self->_replaceItem = v9;
 
     v11 = self->_replaceItem;
-    v12 = [(UITabBarItemProxy *)self->_draggingProxy item];
+    item = [(UITabBarItemProxy *)self->_draggingProxy item];
 
-    if (v11 == v12)
+    if (v11 == item)
     {
       v13 = self->_replaceItem;
       self->_replaceItem = 0;
@@ -819,7 +819,7 @@ uint64_t __48__UITabBarCustomizeView_touchesBegan_withEvent___block_invoke(uint6
       v35 = 3221225472;
       v36 = __48__UITabBarCustomizeView_touchesMoved_withEvent___block_invoke;
       v37 = &unk_1E70F3590;
-      v38 = self;
+      selfCopy = self;
       v27 = &v34;
     }
 
@@ -837,29 +837,29 @@ LABEL_12:
       v30 = 3221225472;
       v31 = __48__UITabBarCustomizeView_touchesMoved_withEvent___block_invoke_2;
       v32 = &unk_1E70F3590;
-      v33 = self;
+      selfCopy2 = self;
       v27 = &v29;
     }
 
-    [UIView animateWithDuration:0 delay:v27 options:0 animations:0.2 completion:0.0, v29, v30, v31, v32, v33, v34, v35, v36, v37, v38];
+    [UIView animateWithDuration:0 delay:v27 options:0 animations:0.2 completion:0.0, v29, v30, v31, v32, selfCopy2, v34, v35, v36, v37, selfCopy];
     goto LABEL_12;
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
+  endedCopy = ended;
+  eventCopy = event;
   if (self->_draggingProxy)
   {
-    v8 = [(UITabBarCustomizeView *)self itemInTabBarWithTouches:v6 withEvent:v7];
+    v8 = [(UITabBarCustomizeView *)self itemInTabBarWithTouches:endedCopy withEvent:eventCopy];
     replaceItem = self->_replaceItem;
     self->_replaceItem = v8;
 
     v10 = self->_replaceItem;
-    v11 = [(UITabBarItemProxy *)self->_draggingProxy item];
+    item = [(UITabBarItemProxy *)self->_draggingProxy item];
 
-    if (v10 == v11)
+    if (v10 == item)
     {
       v12 = self->_replaceItem;
       self->_replaceItem = 0;
@@ -867,17 +867,17 @@ LABEL_12:
 
     if (self->_replaceItem)
     {
-      v13 = [(UITabBar *)self->_tabBar items];
-      v14 = [(UITabBarItemProxy *)self->_draggingProxy item];
-      v15 = [v13 containsObject:v14];
+      items = [(UITabBar *)self->_tabBar items];
+      item2 = [(UITabBarItemProxy *)self->_draggingProxy item];
+      v15 = [items containsObject:item2];
 
       tabBar = self->_tabBar;
       v17 = self->_replaceItem;
-      v18 = [(UITabBarItemProxy *)self->_draggingProxy item];
-      [(UITabBar *)tabBar _configureTabBarReplacingItem:v17 withNewItem:v18 swapping:v15];
+      item3 = [(UITabBarItemProxy *)self->_draggingProxy item];
+      [(UITabBar *)tabBar _configureTabBarReplacingItem:v17 withNewItem:item3 swapping:v15];
 
-      v19 = [(UITabBarItemProxy *)self->_draggingProxy item];
-      [v19 _setSelected:1];
+      item4 = [(UITabBarItemProxy *)self->_draggingProxy item];
+      [item4 _setSelected:1];
 
       [(UIView *)self->_dragImage removeFromSuperview];
     }
@@ -1110,18 +1110,18 @@ void __48__UITabBarCustomizeView_touchesEnded_withEvent___block_invoke_2(uint64_
   *(v9 + 432) = 0;
 }
 
-- (void)adjustDragImageWithTouches:(id)a3 withEvent:(id)a4
+- (void)adjustDragImageWithTouches:(id)touches withEvent:(id)event
 {
-  v5 = a3;
-  v23 = [(UIView *)self superview];
-  [v23 bounds];
+  touchesCopy = touches;
+  superview = [(UIView *)self superview];
+  [superview bounds];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  v14 = [v5 anyObject];
+  anyObject = [touchesCopy anyObject];
 
-  [v14 locationInView:self];
+  [anyObject locationInView:self];
   v16 = v15;
   v18 = v17;
 
@@ -1169,19 +1169,19 @@ void __48__UITabBarCustomizeView_touchesEnded_withEvent___block_invoke_2(uint64_
   [(UIView *)self->_dragImage setCenter:v20 - self->_startPoint.x, v22 - self->_startPoint.y + -32.0];
 }
 
-- (id)itemInTabBarWithTouches:(id)a3 withEvent:(id)a4
+- (id)itemInTabBarWithTouches:(id)touches withEvent:(id)event
 {
-  v6 = a4;
-  v7 = [a3 anyObject];
-  [v7 locationInView:self->_tabBar];
+  eventCopy = event;
+  anyObject = [touches anyObject];
+  [anyObject locationInView:self->_tabBar];
   v9 = v8;
   v11 = v10;
-  v12 = [(UITabBar *)self->_tabBar items];
-  v13 = [v12 count];
-  v14 = [(UIView *)self->_tabBar pointInside:v6 withEvent:v9, v11];
+  items = [(UITabBar *)self->_tabBar items];
+  v13 = [items count];
+  v14 = [(UIView *)self->_tabBar pointInside:eventCopy withEvent:v9, v11];
 
   v15 = !v14 || v13 < 1;
-  if (v15 || [v7 phase] == 4)
+  if (v15 || [anyObject phase] == 4)
   {
     goto LABEL_13;
   }
@@ -1196,7 +1196,7 @@ void __48__UITabBarCustomizeView_touchesEnded_withEvent___block_invoke_2(uint64_
       v18 = ~v18 + v13;
     }
 
-    v16 = [v12 objectAtIndex:v18];
+    v16 = [items objectAtIndex:v18];
   }
 
   if ([(NSMutableArray *)self->_fixedItems containsObject:v16])
@@ -1209,9 +1209,9 @@ LABEL_13:
   return v16;
 }
 
-- (void)tabBarTouchesBegan:(id)a3 withEvent:(id)a4
+- (void)tabBarTouchesBegan:(id)began withEvent:(id)event
 {
-  v14 = a3;
+  beganCopy = began;
   v5 = [UITabBarCustomizeView itemInTabBarWithTouches:"itemInTabBarWithTouches:withEvent:" withEvent:?];
   draggingItem = self->_draggingItem;
   self->_draggingItem = v5;
@@ -1223,8 +1223,8 @@ LABEL_13:
     [(_UITabBarButton *)v8 frame];
     v10 = v9;
 
-    v11 = [v14 anyObject];
-    [v11 locationInView:self];
+    anyObject = [beganCopy anyObject];
+    [anyObject locationInView:self];
     self->_startPoint.x = v12;
     self->_startPoint.y = v13;
 
@@ -1232,28 +1232,28 @@ LABEL_13:
   }
 }
 
-- (void)tabBarTouchesMoved:(id)a3 withEvent:(id)a4
+- (void)tabBarTouchesMoved:(id)moved withEvent:(id)event
 {
   draggingItem = self->_draggingItem;
   if (draggingItem)
   {
-    v7 = a4;
-    v8 = a3;
+    eventCopy = event;
+    movedCopy = moved;
     v9 = draggingItem->_view;
     [(_UITabBarButton *)v9 frame];
     v11 = v10;
     v13 = v12;
     v15 = v14;
 
-    v16 = [v8 anyObject];
-    [v16 locationInView:self];
+    anyObject = [movedCopy anyObject];
+    [anyObject locationInView:self];
     v18 = v17;
 
     v19 = v18 - self->_startPoint.x;
-    v20 = [(UITabBarItem *)&self->_draggingItem->super.super.isa _tabBarButton];
-    [v20 setFrame:{v19, v11, v13, v15}];
+    _tabBarButton = [(UITabBarItem *)&self->_draggingItem->super.super.isa _tabBarButton];
+    [_tabBarButton setFrame:{v19, v11, v13, v15}];
 
-    v22 = [(UITabBarCustomizeView *)self itemInTabBarWithTouches:v8 withEvent:v7];
+    v22 = [(UITabBarCustomizeView *)self itemInTabBarWithTouches:movedCopy withEvent:eventCopy];
 
     v21 = v22;
     if (v22 && v22 != self->_draggingItem)
@@ -1264,11 +1264,11 @@ LABEL_13:
   }
 }
 
-- (void)tabBarTouchesEnded:(id)a3 withEvent:(id)a4
+- (void)tabBarTouchesEnded:(id)ended withEvent:(id)event
 {
   if (self->_draggingItem)
   {
-    [UIApp setIgnoresInteractionEvents:{1, a4}];
+    [UIApp setIgnoresInteractionEvents:{1, event}];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __54__UITabBarCustomizeView_tabBarTouchesEnded_withEvent___block_invoke;

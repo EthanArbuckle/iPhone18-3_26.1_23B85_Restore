@@ -1,19 +1,19 @@
 @interface DKNotableUserDataCardPrimaryCell
-- (DKNotableUserDataCardPrimaryCell)initWithTitle:(id)a3 subtitle:(id)a4 icon:(id)a5;
+- (DKNotableUserDataCardPrimaryCell)initWithTitle:(id)title subtitle:(id)subtitle icon:(id)icon;
 - (id)_subtitleFont;
 - (id)_titleFont;
-- (void)setExpanded:(BOOL)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setExpanded:(BOOL)expanded;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation DKNotableUserDataCardPrimaryCell
 
-- (DKNotableUserDataCardPrimaryCell)initWithTitle:(id)a3 subtitle:(id)a4 icon:(id)a5
+- (DKNotableUserDataCardPrimaryCell)initWithTitle:(id)title subtitle:(id)subtitle icon:(id)icon
 {
   v88[15] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  titleCopy = title;
+  subtitleCopy = subtitle;
+  iconCopy = icon;
   v87.receiver = self;
   v87.super_class = DKNotableUserDataCardPrimaryCell;
   v11 = *MEMORY[0x277CBF3A0];
@@ -23,7 +23,7 @@
   v15 = [(DKNotableUserDataCardPrimaryCell *)&v87 initWithFrame:*MEMORY[0x277CBF3A0], v12, v13, v14];
   if (v15)
   {
-    v16 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v10];
+    v16 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:iconCopy];
     iconView = v15->_iconView;
     v15->_iconView = v16;
 
@@ -35,24 +35,24 @@
 
     [(UILabel *)v15->_titleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
     [(DKNotableUserDataCardPrimaryCell *)v15 _titleFont];
-    v20 = v84 = v10;
+    v20 = v84 = iconCopy;
     [(UILabel *)v15->_titleLabel setFont:v20];
 
-    [(UILabel *)v15->_titleLabel setText:v8];
+    [(UILabel *)v15->_titleLabel setText:titleCopy];
     [(UILabel *)v15->_titleLabel setNumberOfLines:0];
     v21 = [objc_alloc(MEMORY[0x277D756B8]) initWithFrame:{v11, v12, v13, v14}];
     subtitleLabel = v15->_subtitleLabel;
     v15->_subtitleLabel = v21;
 
     [(UILabel *)v15->_subtitleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-    v86 = v8;
-    v23 = [MEMORY[0x277D75348] secondaryLabelColor];
-    [(UILabel *)v15->_subtitleLabel setTextColor:v23];
+    v86 = titleCopy;
+    secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+    [(UILabel *)v15->_subtitleLabel setTextColor:secondaryLabelColor];
 
-    v24 = [(DKNotableUserDataCardPrimaryCell *)v15 _subtitleFont];
-    [(UILabel *)v15->_subtitleLabel setFont:v24];
+    _subtitleFont = [(DKNotableUserDataCardPrimaryCell *)v15 _subtitleFont];
+    [(UILabel *)v15->_subtitleLabel setFont:_subtitleFont];
 
-    [(UILabel *)v15->_subtitleLabel setText:v9];
+    [(UILabel *)v15->_subtitleLabel setText:subtitleCopy];
     v25 = [objc_alloc(MEMORY[0x277D75A68]) initWithFrame:{v11, v12, v13, v14}];
     labelContainer = v15->_labelContainer;
     v15->_labelContainer = v25;
@@ -67,8 +67,8 @@
     chevronImageView = v15->_chevronImageView;
     v15->_chevronImageView = v29;
 
-    v31 = [MEMORY[0x277D75348] secondaryLabelColor];
-    v32 = [v31 colorWithAlphaComponent:0.3];
+    secondaryLabelColor2 = [MEMORY[0x277D75348] secondaryLabelColor];
+    v32 = [secondaryLabelColor2 colorWithAlphaComponent:0.3];
     [(UIImageView *)v15->_chevronImageView setTintColor:v32];
 
     [(UIImageView *)v15->_chevronImageView setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -81,110 +81,110 @@
 
     [(UIView *)v15->_separatorView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIView *)v15->_separatorView setHidden:1];
-    v36 = [MEMORY[0x277D75348] separatorColor];
-    [(UIView *)v15->_separatorView setBackgroundColor:v36];
+    separatorColor = [MEMORY[0x277D75348] separatorColor];
+    [(UIView *)v15->_separatorView setBackgroundColor:separatorColor];
 
     [(DKNotableUserDataCardPrimaryCell *)v15 addSubview:v15->_iconView];
     [(DKNotableUserDataCardPrimaryCell *)v15 addSubview:v15->_labelContainer];
     [(DKNotableUserDataCardPrimaryCell *)v15 addSubview:v15->_chevronImageView];
     [(DKNotableUserDataCardPrimaryCell *)v15 addSubview:v15->_separatorView];
-    v83 = [(UIView *)v15->_iconView widthAnchor];
-    v82 = [v83 constraintEqualToConstant:40.0];
+    widthAnchor = [(UIView *)v15->_iconView widthAnchor];
+    v82 = [widthAnchor constraintEqualToConstant:40.0];
     v88[0] = v82;
-    v81 = [(UIView *)v15->_iconView heightAnchor];
-    v80 = [v81 constraintEqualToConstant:40.0];
+    heightAnchor = [(UIView *)v15->_iconView heightAnchor];
+    v80 = [heightAnchor constraintEqualToConstant:40.0];
     v88[1] = v80;
-    v78 = [(UIView *)v15->_iconView leadingAnchor];
-    v79 = [(DKNotableUserDataCardPrimaryCell *)v15 layoutMarginsGuide];
-    v77 = [v79 leadingAnchor];
-    v76 = [v78 constraintEqualToAnchor:v77];
+    leadingAnchor = [(UIView *)v15->_iconView leadingAnchor];
+    layoutMarginsGuide = [(DKNotableUserDataCardPrimaryCell *)v15 layoutMarginsGuide];
+    leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+    v76 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v88[2] = v76;
-    v75 = [(UIView *)v15->_iconView centerYAnchor];
-    v74 = [(DKNotableUserDataCardPrimaryCell *)v15 centerYAnchor];
-    v73 = [v75 constraintEqualToAnchor:v74];
+    centerYAnchor = [(UIView *)v15->_iconView centerYAnchor];
+    centerYAnchor2 = [(DKNotableUserDataCardPrimaryCell *)v15 centerYAnchor];
+    v73 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v88[3] = v73;
-    v72 = [(UIStackView *)v15->_labelContainer leadingAnchor];
-    v71 = [(UIView *)v15->_iconView trailingAnchor];
-    v70 = [v72 constraintEqualToAnchor:v71 constant:14.0];
+    leadingAnchor3 = [(UIStackView *)v15->_labelContainer leadingAnchor];
+    trailingAnchor = [(UIView *)v15->_iconView trailingAnchor];
+    v70 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor constant:14.0];
     v88[4] = v70;
-    v69 = [(UIStackView *)v15->_labelContainer trailingAnchor];
-    v68 = [(UIImageView *)v15->_chevronImageView leadingAnchor];
-    v67 = [v69 constraintEqualToAnchor:v68];
+    trailingAnchor2 = [(UIStackView *)v15->_labelContainer trailingAnchor];
+    leadingAnchor4 = [(UIImageView *)v15->_chevronImageView leadingAnchor];
+    v67 = [trailingAnchor2 constraintEqualToAnchor:leadingAnchor4];
     v88[5] = v67;
-    v66 = [(UIStackView *)v15->_labelContainer centerYAnchor];
-    v65 = [(DKNotableUserDataCardPrimaryCell *)v15 centerYAnchor];
-    v64 = [v66 constraintEqualToAnchor:v65];
+    centerYAnchor3 = [(UIStackView *)v15->_labelContainer centerYAnchor];
+    centerYAnchor4 = [(DKNotableUserDataCardPrimaryCell *)v15 centerYAnchor];
+    v64 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
     v88[6] = v64;
-    v63 = [(UIStackView *)v15->_labelContainer topAnchor];
-    v62 = [(DKNotableUserDataCardPrimaryCell *)v15 topAnchor];
-    v61 = [v63 constraintGreaterThanOrEqualToSystemSpacingBelowAnchor:v62 multiplier:1.0];
+    topAnchor = [(UIStackView *)v15->_labelContainer topAnchor];
+    topAnchor2 = [(DKNotableUserDataCardPrimaryCell *)v15 topAnchor];
+    v61 = [topAnchor constraintGreaterThanOrEqualToSystemSpacingBelowAnchor:topAnchor2 multiplier:1.0];
     v88[7] = v61;
-    v60 = [(DKNotableUserDataCardPrimaryCell *)v15 bottomAnchor];
-    v59 = [(UIStackView *)v15->_labelContainer bottomAnchor];
-    v58 = [v60 constraintGreaterThanOrEqualToSystemSpacingBelowAnchor:v59 multiplier:1.0];
+    bottomAnchor = [(DKNotableUserDataCardPrimaryCell *)v15 bottomAnchor];
+    bottomAnchor2 = [(UIStackView *)v15->_labelContainer bottomAnchor];
+    v58 = [bottomAnchor constraintGreaterThanOrEqualToSystemSpacingBelowAnchor:bottomAnchor2 multiplier:1.0];
     v88[8] = v58;
-    v57 = [(UIImageView *)v15->_chevronImageView centerYAnchor];
-    v56 = [(DKNotableUserDataCardPrimaryCell *)v15 centerYAnchor];
-    v55 = [v57 constraintEqualToAnchor:v56];
+    centerYAnchor5 = [(UIImageView *)v15->_chevronImageView centerYAnchor];
+    centerYAnchor6 = [(DKNotableUserDataCardPrimaryCell *)v15 centerYAnchor];
+    v55 = [centerYAnchor5 constraintEqualToAnchor:centerYAnchor6];
     v88[9] = v55;
-    v53 = [(UIImageView *)v15->_chevronImageView trailingAnchor];
-    v54 = [(DKNotableUserDataCardPrimaryCell *)v15 layoutMarginsGuide];
-    v52 = [v54 trailingAnchor];
-    v51 = [v53 constraintEqualToAnchor:v52];
+    trailingAnchor3 = [(UIImageView *)v15->_chevronImageView trailingAnchor];
+    layoutMarginsGuide2 = [(DKNotableUserDataCardPrimaryCell *)v15 layoutMarginsGuide];
+    trailingAnchor4 = [layoutMarginsGuide2 trailingAnchor];
+    v51 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     v88[10] = v51;
-    v50 = [(UIView *)v15->_separatorView heightAnchor];
-    v49 = [v50 constraintEqualToConstant:1.0];
+    heightAnchor2 = [(UIView *)v15->_separatorView heightAnchor];
+    v49 = [heightAnchor2 constraintEqualToConstant:1.0];
     v88[11] = v49;
-    v48 = [(UIView *)v15->_separatorView leadingAnchor];
-    v37 = [(UIStackView *)v15->_labelContainer leadingAnchor];
-    v38 = [v48 constraintEqualToAnchor:v37];
+    leadingAnchor5 = [(UIView *)v15->_separatorView leadingAnchor];
+    leadingAnchor6 = [(UIStackView *)v15->_labelContainer leadingAnchor];
+    v38 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
     v88[12] = v38;
-    v39 = [(UIView *)v15->_separatorView trailingAnchor];
-    v40 = [(DKNotableUserDataCardPrimaryCell *)v15 trailingAnchor];
-    [v39 constraintEqualToAnchor:v40];
-    v41 = v85 = v9;
+    trailingAnchor5 = [(UIView *)v15->_separatorView trailingAnchor];
+    trailingAnchor6 = [(DKNotableUserDataCardPrimaryCell *)v15 trailingAnchor];
+    [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
+    v41 = v85 = subtitleCopy;
     v88[13] = v41;
-    v42 = [(UIView *)v15->_separatorView bottomAnchor];
-    v43 = [(DKNotableUserDataCardPrimaryCell *)v15 bottomAnchor];
-    v44 = [v42 constraintEqualToAnchor:v43];
+    bottomAnchor3 = [(UIView *)v15->_separatorView bottomAnchor];
+    bottomAnchor4 = [(DKNotableUserDataCardPrimaryCell *)v15 bottomAnchor];
+    v44 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
     v88[14] = v44;
     v45 = [MEMORY[0x277CBEA60] arrayWithObjects:v88 count:15];
     [(DKNotableUserDataCardPrimaryCell *)v15 addConstraints:v45];
 
-    v10 = v84;
-    v9 = v85;
+    iconCopy = v84;
+    subtitleCopy = v85;
 
-    v8 = v86;
+    titleCopy = v86;
   }
 
   v46 = *MEMORY[0x277D85DE8];
   return v15;
 }
 
-- (void)setExpanded:(BOOL)a3
+- (void)setExpanded:(BOOL)expanded
 {
-  v3 = a3;
-  self->_expanded = a3;
+  expandedCopy = expanded;
+  self->_expanded = expanded;
   v5 = [DKCardChevron imageForExpandedCard:[(DKNotableUserDataCardPrimaryCell *)self isExpanded]];
-  v6 = [(DKNotableUserDataCardPrimaryCell *)self chevronImageView];
-  [v6 setImage:v5];
+  chevronImageView = [(DKNotableUserDataCardPrimaryCell *)self chevronImageView];
+  [chevronImageView setImage:v5];
 
-  v7 = [(DKNotableUserDataCardPrimaryCell *)self separatorView];
-  [v7 setHidden:!v3];
+  separatorView = [(DKNotableUserDataCardPrimaryCell *)self separatorView];
+  [separatorView setHidden:!expandedCopy];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v8.receiver = self;
   v8.super_class = DKNotableUserDataCardPrimaryCell;
-  [(DKNotableUserDataCardPrimaryCell *)&v8 traitCollectionDidChange:a3];
-  v4 = [(DKNotableUserDataCardPrimaryCell *)self _titleFont];
-  v5 = [(DKNotableUserDataCardPrimaryCell *)self titleLabel];
-  [v5 setFont:v4];
+  [(DKNotableUserDataCardPrimaryCell *)&v8 traitCollectionDidChange:change];
+  _titleFont = [(DKNotableUserDataCardPrimaryCell *)self _titleFont];
+  titleLabel = [(DKNotableUserDataCardPrimaryCell *)self titleLabel];
+  [titleLabel setFont:_titleFont];
 
-  v6 = [(DKNotableUserDataCardPrimaryCell *)self _subtitleFont];
-  v7 = [(DKNotableUserDataCardPrimaryCell *)self subtitleLabel];
-  [v7 setFont:v6];
+  _subtitleFont = [(DKNotableUserDataCardPrimaryCell *)self _subtitleFont];
+  subtitleLabel = [(DKNotableUserDataCardPrimaryCell *)self subtitleLabel];
+  [subtitleLabel setFont:_subtitleFont];
 }
 
 - (id)_titleFont

@@ -1,81 +1,81 @@
 @interface ADDeviceResolutionServiceListener
-- (ADDeviceResolutionServiceListener)initWithInstanceContext:(id)a3 deviceCircleManager:(id)a4;
-- (BOOL)_peerIsPairedPhone:(id)a3;
-- (BOOL)_peerIsPairedWatch:(id)a3;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (id)_crossDeviceCommandExecutionEndedEvent:(int)a3 actionResult:(int)a4 halId:(id)a5 contextProximityPairs:(id)a6 homeKitTarget:(int)a7;
-- (id)_crossDeviceCommandExecutionFailedEvent:(int)a3 action:(int)a4 halId:(id)a5;
-- (id)_crossDeviceCommandExecutionStartedEvent:(int)a3 halId:(id)a4;
-- (id)_devicesMatchingDescriptions:(id)a3 capabilitiesTuples:(id)a4 proximityMap:(id)a5;
-- (id)_halDeviceFromContext:(id)a3 proximity:(int64_t)a4;
-- (id)_resultStringFromHALAction:(int)a3 actionResult:(int)a4;
-- (int)_halActionFromAction:(id)a3;
-- (int)_halActionResultFromActionResult:(id)a3;
-- (int)_halDeviceFamilyFromInterfaceIdiom:(id)a3;
-- (int)_halDevicePowerStateFromSystemStateSnapshot:(id)a3;
-- (int)_halDeviceProximityFromProximity:(int64_t)a3;
-- (int)_halHomeKitTargetFromTarget:(id)a3;
-- (int)_halMediaPlayerStateFromPlaybackState:(int64_t)a3;
-- (void)_logAFAnalyticsCrossDeviceCommandHandledEventWithResult:(int)a3 halActionResult:(int)a4 contextProximityPairs:(id)a5;
-- (void)_pairedCompanionDeviceFromSharedDataWithCompletion:(id)a3;
-- (void)getAllReachableDevicesWithCompletion:(id)a3;
-- (void)getContextAndProximitySnapshotForCurrentRequestForDeviceUnits:(id)a3 serviceContexts:(id)a4 completion:(id)a5;
-- (void)getDeviceContextAndProximityMapIncludingAllReachableDevice:(BOOL)a3 completion:(id)a4;
-- (void)getDevicesMatchingCapabilityDescriptions:(id)a3 completion:(id)a4;
-- (void)getSourceDeviceForContextWithIdentifiers:(id)a3 completion:(id)a4;
-- (void)logCrossDeviceCommandEnded:(id)a3 action:(id)a4 actionResult:(id)a5 homeKitTarget:(id)a6 contextProximityPairs:(id)a7;
-- (void)logCrossDeviceCommandFailed:(id)a3 action:(id)a4 reason:(id)a5;
-- (void)logCrossDeviceCommandStarted:(id)a3 action:(id)a4;
-- (void)logCrossDeviceRequestLink:(id)a3 halId:(id)a4;
-- (void)meDeviceWithCompletion:(id)a3;
-- (void)pairedCompanionDeviceWithCompletion:(id)a3;
+- (ADDeviceResolutionServiceListener)initWithInstanceContext:(id)context deviceCircleManager:(id)manager;
+- (BOOL)_peerIsPairedPhone:(id)phone;
+- (BOOL)_peerIsPairedWatch:(id)watch;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (id)_crossDeviceCommandExecutionEndedEvent:(int)event actionResult:(int)result halId:(id)id contextProximityPairs:(id)pairs homeKitTarget:(int)target;
+- (id)_crossDeviceCommandExecutionFailedEvent:(int)event action:(int)action halId:(id)id;
+- (id)_crossDeviceCommandExecutionStartedEvent:(int)event halId:(id)id;
+- (id)_devicesMatchingDescriptions:(id)descriptions capabilitiesTuples:(id)tuples proximityMap:(id)map;
+- (id)_halDeviceFromContext:(id)context proximity:(int64_t)proximity;
+- (id)_resultStringFromHALAction:(int)action actionResult:(int)result;
+- (int)_halActionFromAction:(id)action;
+- (int)_halActionResultFromActionResult:(id)result;
+- (int)_halDeviceFamilyFromInterfaceIdiom:(id)idiom;
+- (int)_halDevicePowerStateFromSystemStateSnapshot:(id)snapshot;
+- (int)_halDeviceProximityFromProximity:(int64_t)proximity;
+- (int)_halHomeKitTargetFromTarget:(id)target;
+- (int)_halMediaPlayerStateFromPlaybackState:(int64_t)state;
+- (void)_logAFAnalyticsCrossDeviceCommandHandledEventWithResult:(int)result halActionResult:(int)actionResult contextProximityPairs:(id)pairs;
+- (void)_pairedCompanionDeviceFromSharedDataWithCompletion:(id)completion;
+- (void)getAllReachableDevicesWithCompletion:(id)completion;
+- (void)getContextAndProximitySnapshotForCurrentRequestForDeviceUnits:(id)units serviceContexts:(id)contexts completion:(id)completion;
+- (void)getDeviceContextAndProximityMapIncludingAllReachableDevice:(BOOL)device completion:(id)completion;
+- (void)getDevicesMatchingCapabilityDescriptions:(id)descriptions completion:(id)completion;
+- (void)getSourceDeviceForContextWithIdentifiers:(id)identifiers completion:(id)completion;
+- (void)logCrossDeviceCommandEnded:(id)ended action:(id)action actionResult:(id)result homeKitTarget:(id)target contextProximityPairs:(id)pairs;
+- (void)logCrossDeviceCommandFailed:(id)failed action:(id)action reason:(id)reason;
+- (void)logCrossDeviceCommandStarted:(id)started action:(id)action;
+- (void)logCrossDeviceRequestLink:(id)link halId:(id)id;
+- (void)meDeviceWithCompletion:(id)completion;
+- (void)pairedCompanionDeviceWithCompletion:(id)completion;
 - (void)setupListener;
 @end
 
 @implementation ADDeviceResolutionServiceListener
 
-- (void)getDeviceContextAndProximityMapIncludingAllReachableDevice:(BOOL)a3 completion:(id)a4
+- (void)getDeviceContextAndProximityMapIncludingAllReachableDevice:(BOOL)device completion:(id)completion
 {
-  v5 = a4;
-  if (v5)
+  completionCopy = completion;
+  if (completionCopy)
   {
     v6 = +[ADCommandCenter sharedCommandCenter];
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_1002D6DF8;
     v7[3] = &unk_10051A638;
-    v9 = a3;
-    v8 = v5;
+    deviceCopy = device;
+    v8 = completionCopy;
     [v6 getCurrentContextSnapshotWithCompletion:v7];
   }
 }
 
-- (BOOL)_peerIsPairedPhone:(id)a3
+- (BOOL)_peerIsPairedPhone:(id)phone
 {
-  v3 = [a3 rapportEffectiveIdentifier];
-  v4 = [v3 isEqualToString:@"BTPipe-Phone"];
+  rapportEffectiveIdentifier = [phone rapportEffectiveIdentifier];
+  v4 = [rapportEffectiveIdentifier isEqualToString:@"BTPipe-Phone"];
 
   return v4;
 }
 
-- (BOOL)_peerIsPairedWatch:(id)a3
+- (BOOL)_peerIsPairedWatch:(id)watch
 {
-  v3 = [a3 rapportEffectiveIdentifier];
-  v4 = [v3 isEqualToString:@"BTPipe-Watch"];
+  rapportEffectiveIdentifier = [watch rapportEffectiveIdentifier];
+  v4 = [rapportEffectiveIdentifier isEqualToString:@"BTPipe-Watch"];
 
   return v4;
 }
 
-- (void)meDeviceWithCompletion:(id)a3
+- (void)meDeviceWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
   {
     *buf = 136315138;
     v10 = "[ADDeviceResolutionServiceListener meDeviceWithCompletion:]";
     _os_log_debug_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "%s #hal", buf, 0xCu);
-    if (!v4)
+    if (!completionCopy)
     {
       goto LABEL_4;
     }
@@ -83,7 +83,7 @@
     goto LABEL_3;
   }
 
-  if (v4)
+  if (completionCopy)
   {
 LABEL_3:
     deviceCircleManager = self->_deviceCircleManager;
@@ -91,23 +91,23 @@ LABEL_3:
     v7[1] = 3221225472;
     v7[2] = sub_1002D70B8;
     v7[3] = &unk_10051A610;
-    v8 = v4;
+    v8 = completionCopy;
     [(ADDeviceCircleManager *)deviceCircleManager getManagedLocalAndRemotePeerInfoWithCompletion:v7];
   }
 
 LABEL_4:
 }
 
-- (void)_pairedCompanionDeviceFromSharedDataWithCompletion:(id)a3
+- (void)_pairedCompanionDeviceFromSharedDataWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
   {
     *buf = 136315138;
     v10 = "[ADDeviceResolutionServiceListener _pairedCompanionDeviceFromSharedDataWithCompletion:]";
     _os_log_debug_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEBUG, "%s #hal", buf, 0xCu);
-    if (!v3)
+    if (!completionCopy)
     {
       goto LABEL_4;
     }
@@ -115,38 +115,38 @@ LABEL_4:
     goto LABEL_3;
   }
 
-  if (v3)
+  if (completionCopy)
   {
 LABEL_3:
     v5 = +[ADCommandCenter sharedCommandCenter];
-    v6 = [v5 _sharedDataService];
+    _sharedDataService = [v5 _sharedDataService];
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_1002D77D0;
     v7[3] = &unk_10051A5C0;
-    v8 = v3;
-    [v6 getSharedDataFromPeerUseCache:1 completion:v7];
+    v8 = completionCopy;
+    [_sharedDataService getSharedDataFromPeerUseCache:1 completion:v7];
   }
 
 LABEL_4:
 }
 
-- (void)pairedCompanionDeviceWithCompletion:(id)a3
+- (void)pairedCompanionDeviceWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
   {
     *buf = 136315138;
     v10 = "[ADDeviceResolutionServiceListener pairedCompanionDeviceWithCompletion:]";
     _os_log_debug_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "%s #hal", buf, 0xCu);
-    if (!v4)
+    if (!completionCopy)
     {
       goto LABEL_7;
     }
   }
 
-  else if (!v4)
+  else if (!completionCopy)
   {
     goto LABEL_7;
   }
@@ -159,31 +159,31 @@ LABEL_4:
     v7[2] = sub_1002D7B9C;
     v7[3] = &unk_10051A570;
     v7[4] = self;
-    v8 = v4;
+    v8 = completionCopy;
     [(ADDeviceCircleManager *)deviceCircleManager getManagedLocalAndRemotePeerInfoWithCompletion:v7];
   }
 
   else
   {
-    [(ADDeviceResolutionServiceListener *)self _pairedCompanionDeviceFromSharedDataWithCompletion:v4];
+    [(ADDeviceResolutionServiceListener *)self _pairedCompanionDeviceFromSharedDataWithCompletion:completionCopy];
   }
 
 LABEL_7:
 }
 
-- (id)_devicesMatchingDescriptions:(id)a3 capabilitiesTuples:(id)a4 proximityMap:(id)a5
+- (id)_devicesMatchingDescriptions:(id)descriptions capabilitiesTuples:(id)tuples proximityMap:(id)map
 {
-  v7 = a3;
-  v8 = a4;
-  v23 = a5;
-  v21 = v7;
+  descriptionsCopy = descriptions;
+  tuplesCopy = tuples;
+  mapCopy = map;
+  v21 = descriptionsCopy;
   v25 = SVDCapabilityDescriptionsGroupedByCapabilityKey();
-  v22 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(v8, "count")}];
+  v22 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(tuplesCopy, "count")}];
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  obj = v8;
+  obj = tuplesCopy;
   v9 = [obj countByEnumeratingWithState:&v33 objects:v37 count:16];
   if (v9)
   {
@@ -198,8 +198,8 @@ LABEL_7:
         }
 
         v12 = *(*(&v33 + 1) + 8 * i);
-        v13 = [v12 content];
-        v14 = [v13 af_lenientMappedDictionary:&stru_10051A4F8];
+        content = [v12 content];
+        v14 = [content af_lenientMappedDictionary:&stru_10051A4F8];
         v29 = 0;
         v30 = &v29;
         v31 = 0x2020000000;
@@ -214,11 +214,11 @@ LABEL_7:
         [v25 enumerateKeysAndObjectsUsingBlock:v26];
         if (*(v30 + 24) == 1)
         {
-          v16 = [v12 info];
-          v17 = [v16 assistantIdentifier];
-          if (v17)
+          info = [v12 info];
+          assistantIdentifier = [info assistantIdentifier];
+          if (assistantIdentifier)
           {
-            v18 = [v23 objectForKey:v17];
+            v18 = [mapCopy objectForKey:assistantIdentifier];
           }
 
           else
@@ -226,10 +226,10 @@ LABEL_7:
             v18 = 0;
           }
 
-          v19 = sub_1002D72C8(v16, [v18 integerValue]);
+          v19 = sub_1002D72C8(info, [v18 integerValue]);
           if (v19)
           {
-            [v22 setObject:v13 forKey:v19];
+            [v22 setObject:content forKey:v19];
           }
         }
 
@@ -245,10 +245,10 @@ LABEL_7:
   return v22;
 }
 
-- (void)getDevicesMatchingCapabilityDescriptions:(id)a3 completion:(id)a4
+- (void)getDevicesMatchingCapabilityDescriptions:(id)descriptions completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  descriptionsCopy = descriptions;
+  completionCopy = completion;
   v8 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
   {
@@ -265,10 +265,10 @@ LABEL_7:
     v17[2] = sub_1002D84B8;
     v17[3] = &unk_10051CE90;
     v17[4] = self;
-    v18 = v6;
-    v19 = v7;
-    v10 = v7;
-    v11 = v6;
+    v18 = descriptionsCopy;
+    v19 = completionCopy;
+    v10 = completionCopy;
+    v11 = descriptionsCopy;
     [(ADDeviceCircleManager *)deviceCircleManager getCapabilitiesAndPeersFromContextCollectorThroughOnDemandRapportConnection:v17];
   }
 
@@ -281,43 +281,43 @@ LABEL_7:
     v14[2] = sub_1002D85E4;
     v14[3] = &unk_10051CE90;
     v14[4] = self;
-    v15 = v6;
-    v16 = v7;
-    v13 = v7;
-    v10 = v6;
+    v15 = descriptionsCopy;
+    v16 = completionCopy;
+    v13 = completionCopy;
+    v10 = descriptionsCopy;
     [(ADDeviceCircleManager *)v12 getCapabilitiesForReachableDevicesWithCompletion:v14];
   }
 }
 
-- (void)getSourceDeviceForContextWithIdentifiers:(id)a3 completion:(id)a4
+- (void)getSourceDeviceForContextWithIdentifiers:(id)identifiers completion:(id)completion
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1002D87F0;
   v8[3] = &unk_10051A4B8;
-  v9 = a3;
-  v10 = a4;
-  v6 = v10;
-  v7 = v9;
+  identifiersCopy = identifiers;
+  completionCopy = completion;
+  v6 = completionCopy;
+  v7 = identifiersCopy;
   [(ADDeviceResolutionServiceListener *)self getDeviceContextAndProximityMapIncludingAllReachableDevice:0 completion:v8];
 }
 
-- (void)getAllReachableDevicesWithCompletion:(id)a3
+- (void)getAllReachableDevicesWithCompletion:(id)completion
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_1002D8B18;
   v5[3] = &unk_10051A490;
-  v6 = a3;
-  v4 = v6;
+  completionCopy = completion;
+  v4 = completionCopy;
   [(ADDeviceResolutionServiceListener *)self getDeviceContextAndProximityMapIncludingAllReachableDevice:1 completion:v5];
 }
 
-- (void)getContextAndProximitySnapshotForCurrentRequestForDeviceUnits:(id)a3 serviceContexts:(id)a4 completion:(id)a5
+- (void)getContextAndProximitySnapshotForCurrentRequestForDeviceUnits:(id)units serviceContexts:(id)contexts completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  unitsCopy = units;
+  contextsCopy = contexts;
+  completionCopy = completion;
   v11 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
@@ -326,8 +326,8 @@ LABEL_7:
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "%s #hal", buf, 0xCu);
   }
 
-  v12 = [v9 af_mappedArray:&stru_10051A3C0];
-  v13 = [v8 af_mappedArray:&stru_10051A400];
+  v12 = [contextsCopy af_mappedArray:&stru_10051A3C0];
+  v13 = [unitsCopy af_mappedArray:&stru_10051A400];
   +[NSMutableDictionary dictionary];
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
@@ -335,22 +335,22 @@ LABEL_7:
   v18[3] = &unk_10051A428;
   v19 = v12;
   v21 = v20 = v13;
-  v22 = v10;
-  v14 = v10;
+  v22 = completionCopy;
+  v14 = completionCopy;
   v15 = v21;
   v16 = v13;
   v17 = v12;
   [(ADDeviceResolutionServiceListener *)self getDeviceContextAndProximityMapIncludingAllReachableDevice:1 completion:v18];
 }
 
-- (void)logCrossDeviceCommandFailed:(id)a3 action:(id)a4 reason:(id)a5
+- (void)logCrossDeviceCommandFailed:(id)failed action:(id)action reason:(id)reason
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [(ADDeviceResolutionServiceListener *)self _halActionFromAction:a4];
-  v11 = [v8 integerValue];
+  reasonCopy = reason;
+  failedCopy = failed;
+  v10 = [(ADDeviceResolutionServiceListener *)self _halActionFromAction:action];
+  integerValue = [reasonCopy integerValue];
 
-  v12 = [(ADDeviceResolutionServiceListener *)self _crossDeviceCommandExecutionFailedEvent:v11 action:v10 halId:v9];
+  v12 = [(ADDeviceResolutionServiceListener *)self _crossDeviceCommandExecutionFailedEvent:integerValue action:v10 halId:failedCopy];
 
   v13 = +[AssistantSiriAnalytics sharedStream];
   [v13 emitMessage:v12];
@@ -366,24 +366,24 @@ LABEL_7:
   }
 }
 
-- (void)_logAFAnalyticsCrossDeviceCommandHandledEventWithResult:(int)a3 halActionResult:(int)a4 contextProximityPairs:(id)a5
+- (void)_logAFAnalyticsCrossDeviceCommandHandledEventWithResult:(int)result halActionResult:(int)actionResult contextProximityPairs:(id)pairs
 {
-  v5 = *&a4;
-  v6 = *&a3;
-  v8 = a5;
+  v5 = *&actionResult;
+  v6 = *&result;
+  pairsCopy = pairs;
   v9 = [(ADDeviceResolutionServiceListener *)self _resultStringFromHALAction:v6 actionResult:v5];
-  v10 = [v8 allKeys];
-  v11 = [v10 firstObject];
+  allKeys = [pairsCopy allKeys];
+  firstObject = [allKeys firstObject];
 
-  v12 = [v8 objectForKeyedSubscript:v11];
+  v12 = [pairsCopy objectForKeyedSubscript:firstObject];
 
-  v13 = [v11 deviceInfo];
-  v14 = [v13 productType];
+  deviceInfo = [firstObject deviceInfo];
+  productType = [deviceInfo productType];
 
   [v12 integerValue];
-  if (v14)
+  if (productType)
   {
-    v15 = [NSSet setWithObject:v14];
+    v15 = [NSSet setWithObject:productType];
   }
 
   else
@@ -406,18 +406,18 @@ LABEL_7:
   }
 }
 
-- (void)logCrossDeviceCommandEnded:(id)a3 action:(id)a4 actionResult:(id)a5 homeKitTarget:(id)a6 contextProximityPairs:(id)a7
+- (void)logCrossDeviceCommandEnded:(id)ended action:(id)action actionResult:(id)result homeKitTarget:(id)target contextProximityPairs:(id)pairs
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
-  v17 = [(ADDeviceResolutionServiceListener *)self _halActionFromAction:v15];
-  v18 = [(ADDeviceResolutionServiceListener *)self _halActionResultFromActionResult:v14];
+  pairsCopy = pairs;
+  targetCopy = target;
+  resultCopy = result;
+  actionCopy = action;
+  endedCopy = ended;
+  v17 = [(ADDeviceResolutionServiceListener *)self _halActionFromAction:actionCopy];
+  v18 = [(ADDeviceResolutionServiceListener *)self _halActionResultFromActionResult:resultCopy];
 
-  v19 = [(ADDeviceResolutionServiceListener *)self _halHomeKitTargetFromTarget:v13];
-  v20 = [(ADDeviceResolutionServiceListener *)self _crossDeviceCommandExecutionEndedEvent:v17 actionResult:v18 halId:v16 contextProximityPairs:v12 homeKitTarget:v19];
+  v19 = [(ADDeviceResolutionServiceListener *)self _halHomeKitTargetFromTarget:targetCopy];
+  v20 = [(ADDeviceResolutionServiceListener *)self _crossDeviceCommandExecutionEndedEvent:v17 actionResult:v18 halId:endedCopy contextProximityPairs:pairsCopy homeKitTarget:v19];
 
   v21 = +[AssistantSiriAnalytics sharedStream];
   [v21 emitMessage:v20];
@@ -432,18 +432,18 @@ LABEL_7:
     _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_INFO, "%s #hal Emitted commandEnded %@ to sharedStream", &v24, 0x16u);
   }
 
-  v23 = [(ADDeviceResolutionServiceListener *)self _shouldLogAFAnalyticsCrossDeviceEvent:v15];
+  v23 = [(ADDeviceResolutionServiceListener *)self _shouldLogAFAnalyticsCrossDeviceEvent:actionCopy];
 
   if (v23)
   {
-    [(ADDeviceResolutionServiceListener *)self _logAFAnalyticsCrossDeviceCommandHandledEventWithResult:v17 halActionResult:v18 contextProximityPairs:v12];
+    [(ADDeviceResolutionServiceListener *)self _logAFAnalyticsCrossDeviceCommandHandledEventWithResult:v17 halActionResult:v18 contextProximityPairs:pairsCopy];
   }
 }
 
-- (void)logCrossDeviceCommandStarted:(id)a3 action:(id)a4
+- (void)logCrossDeviceCommandStarted:(id)started action:(id)action
 {
-  v6 = a3;
-  v7 = [(ADDeviceResolutionServiceListener *)self _crossDeviceCommandExecutionStartedEvent:[(ADDeviceResolutionServiceListener *)self _halActionFromAction:a4] halId:v6];
+  startedCopy = started;
+  v7 = [(ADDeviceResolutionServiceListener *)self _crossDeviceCommandExecutionStartedEvent:[(ADDeviceResolutionServiceListener *)self _halActionFromAction:action] halId:startedCopy];
 
   v8 = +[AssistantSiriAnalytics sharedStream];
   [v8 emitMessage:v7];
@@ -459,11 +459,11 @@ LABEL_7:
   }
 }
 
-- (void)logCrossDeviceRequestLink:(id)a3 halId:(id)a4
+- (void)logCrossDeviceRequestLink:(id)link halId:(id)id
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v6 length] && objc_msgSend(v5, "length"))
+  linkCopy = link;
+  idCopy = id;
+  if ([idCopy length] && objc_msgSend(linkCopy, "length"))
   {
     v7 = ADCreateRequestLinkInfo();
     v8 = ADCreateRequestLinkInfo();
@@ -485,52 +485,52 @@ LABEL_7:
       v11 = 136315650;
       v12 = "[ADDeviceResolutionServiceListener logCrossDeviceRequestLink:halId:]";
       v13 = 2112;
-      v14 = v5;
+      v14 = linkCopy;
       v15 = 2112;
-      v16 = v6;
+      v16 = idCopy;
       _os_log_error_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "%s #hal RequestId %@ or halIdentifier %@ should not be nil.", &v11, 0x20u);
     }
   }
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   v6 = +[SVDDeviceResolutionXPCInterface entitlement];
   HasEntitlement = AFConnectionHasEntitlement();
 
   if (HasEntitlement)
   {
-    v8 = [v5 processIdentifier];
+    processIdentifier = [connectionCopy processIdentifier];
     v9 = AFSiriLogContextDaemon;
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
     {
       *buf = 136315650;
       v18 = "[ADDeviceResolutionServiceListener listener:shouldAcceptNewConnection:]";
       v19 = 2112;
-      v20 = v5;
+      v20 = connectionCopy;
       v21 = 1024;
-      v22 = v8;
+      v22 = processIdentifier;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "%s %@ Device Resolution Service Connection Connected (pid=%d])", buf, 0x1Cu);
     }
 
     v10 = +[SVDDeviceResolutionXPCInterface xpcInterface];
-    [v5 setExportedInterface:v10];
+    [connectionCopy setExportedInterface:v10];
 
-    [v5 setExportedObject:self];
+    [connectionCopy setExportedObject:self];
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_1002D9B68;
     v15[3] = &unk_10051A380;
-    v16 = v8;
-    [v5 setInvalidationHandler:v15];
+    v16 = processIdentifier;
+    [connectionCopy setInvalidationHandler:v15];
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_1002D9C24;
     v13[3] = &unk_10051A380;
-    v14 = v8;
-    [v5 setInterruptionHandler:v13];
-    [v5 resume];
+    v14 = processIdentifier;
+    [connectionCopy setInterruptionHandler:v13];
+    [connectionCopy resume];
   }
 
   else
@@ -541,7 +541,7 @@ LABEL_7:
       *buf = 136315394;
       v18 = "[ADDeviceResolutionServiceListener listener:shouldAcceptNewConnection:]";
       v19 = 2112;
-      v20 = v5;
+      v20 = connectionCopy;
       _os_log_error_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, "%s %@ Device Resolution Service Connection does not have required entitlements.", buf, 0x16u);
     }
   }
@@ -560,18 +560,18 @@ LABEL_7:
   dispatch_async(queue, block);
 }
 
-- (ADDeviceResolutionServiceListener)initWithInstanceContext:(id)a3 deviceCircleManager:(id)a4
+- (ADDeviceResolutionServiceListener)initWithInstanceContext:(id)context deviceCircleManager:(id)manager
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  managerCopy = manager;
   v19.receiver = self;
   v19.super_class = ADDeviceResolutionServiceListener;
   v8 = [(ADDeviceResolutionServiceListener *)&v19 init];
   if (v8)
   {
-    if (v6)
+    if (contextCopy)
     {
-      v9 = v6;
+      v9 = contextCopy;
     }
 
     else
@@ -582,7 +582,7 @@ LABEL_7:
     instanceContext = v8->_instanceContext;
     v8->_instanceContext = v9;
 
-    objc_storeStrong(&v8->_deviceCircleManager, a4);
+    objc_storeStrong(&v8->_deviceCircleManager, manager);
     v11 = AFSiriLogContextDaemon;
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
     {
@@ -610,12 +610,12 @@ LABEL_7:
   return v8;
 }
 
-- (int)_halDevicePowerStateFromSystemStateSnapshot:(id)a3
+- (int)_halDevicePowerStateFromSystemStateSnapshot:(id)snapshot
 {
-  v3 = [a3 sleepState];
-  if (v3 < 3)
+  sleepState = [snapshot sleepState];
+  if (sleepState < 3)
   {
-    return v3 + 1;
+    return sleepState + 1;
   }
 
   else
@@ -624,35 +624,35 @@ LABEL_7:
   }
 }
 
-- (int)_halDeviceFamilyFromInterfaceIdiom:(id)a3
+- (int)_halDeviceFamilyFromInterfaceIdiom:(id)idiom
 {
-  v3 = a3;
-  if ([v3 isEqualToString:SAUserInterfaceIdiomPHONEValue])
+  idiomCopy = idiom;
+  if ([idiomCopy isEqualToString:SAUserInterfaceIdiomPHONEValue])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:SAUserInterfaceIdiomPADValue])
+  else if ([idiomCopy isEqualToString:SAUserInterfaceIdiomPADValue])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:SAUserInterfaceIdiomCAMEOValue])
+  else if ([idiomCopy isEqualToString:SAUserInterfaceIdiomCAMEOValue])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:SAUserInterfaceIdiomHORSEMANValue])
+  else if ([idiomCopy isEqualToString:SAUserInterfaceIdiomHORSEMANValue])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:SAUserInterfaceIdiomZEUSValue])
+  else if ([idiomCopy isEqualToString:SAUserInterfaceIdiomZEUSValue])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:SAUserInterfaceIdiomWATCHValue])
+  else if ([idiomCopy isEqualToString:SAUserInterfaceIdiomWATCHValue])
   {
     v4 = 4;
   }
@@ -665,22 +665,22 @@ LABEL_7:
   return v4;
 }
 
-- (int)_halMediaPlayerStateFromPlaybackState:(int64_t)a3
+- (int)_halMediaPlayerStateFromPlaybackState:(int64_t)state
 {
-  if (a3 > 5)
+  if (state > 5)
   {
     return 2;
   }
 
   else
   {
-    return dword_1003F0784[a3];
+    return dword_1003F0784[state];
   }
 }
 
-- (int)_halDeviceProximityFromProximity:(int64_t)a3
+- (int)_halDeviceProximityFromProximity:(int64_t)proximity
 {
-  if (a3 == 4000)
+  if (proximity == 4000)
   {
     v3 = 1;
   }
@@ -690,7 +690,7 @@ LABEL_7:
     v3 = 4;
   }
 
-  if (a3 == 3000)
+  if (proximity == 3000)
   {
     v4 = 2;
   }
@@ -700,7 +700,7 @@ LABEL_7:
     v4 = v3;
   }
 
-  if (a3 == 2000)
+  if (proximity == 2000)
   {
     v5 = 3;
   }
@@ -710,12 +710,12 @@ LABEL_7:
     v5 = 4;
   }
 
-  if (!a3)
+  if (!proximity)
   {
     v5 = 0;
   }
 
-  if (a3 <= 2999)
+  if (proximity <= 2999)
   {
     return v5;
   }
@@ -726,25 +726,25 @@ LABEL_7:
   }
 }
 
-- (id)_halDeviceFromContext:(id)a3 proximity:(int64_t)a4
+- (id)_halDeviceFromContext:(id)context proximity:(int64_t)proximity
 {
-  v6 = a3;
+  contextCopy = context;
   v7 = objc_alloc_init(HALSchemaHALDevice);
-  [v7 setDeviceProximity:{-[ADDeviceResolutionServiceListener _halDeviceProximityFromProximity:](self, "_halDeviceProximityFromProximity:", a4)}];
-  v8 = [v6 deviceInfo];
-  v9 = [v8 buildVersion];
-  [v7 setSystemBuild:v9];
+  [v7 setDeviceProximity:{-[ADDeviceResolutionServiceListener _halDeviceProximityFromProximity:](self, "_halDeviceProximityFromProximity:", proximity)}];
+  deviceInfo = [contextCopy deviceInfo];
+  buildVersion = [deviceInfo buildVersion];
+  [v7 setSystemBuild:buildVersion];
 
-  v10 = [v8 userInterfaceIdiom];
-  [v7 setDeviceFamily:{-[ADDeviceResolutionServiceListener _halDeviceFamilyFromInterfaceIdiom:](self, "_halDeviceFamilyFromInterfaceIdiom:", v10)}];
+  userInterfaceIdiom = [deviceInfo userInterfaceIdiom];
+  [v7 setDeviceFamily:{-[ADDeviceResolutionServiceListener _halDeviceFamilyFromInterfaceIdiom:](self, "_halDeviceFamilyFromInterfaceIdiom:", userInterfaceIdiom)}];
 
-  v11 = [v6 playbackStateSnapshot];
-  if (v11)
+  playbackStateSnapshot = [contextCopy playbackStateSnapshot];
+  if (playbackStateSnapshot)
   {
     v12 = objc_alloc_init(HALSchemaHALMediaPlayerContext);
-    [v12 setState:{-[ADDeviceResolutionServiceListener _halMediaPlayerStateFromPlaybackState:](self, "_halMediaPlayerStateFromPlaybackState:", objc_msgSend(v11, "playbackState"))}];
-    v13 = [v11 mediaType];
-    v14 = [v13 isEqualToString:kMRMediaRemoteMediaTypeMusic];
+    [v12 setState:{-[ADDeviceResolutionServiceListener _halMediaPlayerStateFromPlaybackState:](self, "_halMediaPlayerStateFromPlaybackState:", objc_msgSend(playbackStateSnapshot, "playbackState"))}];
+    mediaType = [playbackStateSnapshot mediaType];
+    v14 = [mediaType isEqualToString:kMRMediaRemoteMediaTypeMusic];
 
     if (v14)
     {
@@ -753,8 +753,8 @@ LABEL_7:
 
     else
     {
-      v16 = [v11 mediaType];
-      v17 = [v16 isEqualToString:kMRMediaRemoteNowPlayingInfoTypeVideo];
+      mediaType2 = [playbackStateSnapshot mediaType];
+      v17 = [mediaType2 isEqualToString:kMRMediaRemoteNowPlayingInfoTypeVideo];
 
       if (v17)
       {
@@ -763,8 +763,8 @@ LABEL_7:
 
       else
       {
-        v18 = [v11 mediaType];
-        v19 = [v18 isEqualToString:kMRMediaRemoteMediaTypePodcast];
+        mediaType3 = [playbackStateSnapshot mediaType];
+        v19 = [mediaType3 isEqualToString:kMRMediaRemoteMediaTypePodcast];
 
         if (v19)
         {
@@ -773,8 +773,8 @@ LABEL_7:
 
         else
         {
-          v20 = [v11 mediaType];
-          v21 = [v20 isEqualToString:kMRMediaRemoteMediaTypeAudioBook];
+          mediaType4 = [playbackStateSnapshot mediaType];
+          v21 = [mediaType4 isEqualToString:kMRMediaRemoteMediaTypeAudioBook];
 
           if (v21)
           {
@@ -783,8 +783,8 @@ LABEL_7:
 
           else
           {
-            v22 = [v11 mediaType];
-            v23 = [v22 isEqualToString:kMRMediaRemoteMediaTypeITunesU];
+            mediaType5 = [playbackStateSnapshot mediaType];
+            v23 = [mediaType5 isEqualToString:kMRMediaRemoteMediaTypeITunesU];
 
             if (v23)
             {
@@ -808,9 +808,9 @@ LABEL_7:
 
     else
     {
-      v25 = [v11 nowPlayingTimestamp];
+      nowPlayingTimestamp = [playbackStateSnapshot nowPlayingTimestamp];
 
-      if (!v25)
+      if (!nowPlayingTimestamp)
       {
 LABEL_18:
         [v7 setMediaPlayerContext:v12];
@@ -819,8 +819,8 @@ LABEL_18:
       }
 
       v26 = +[NSDate date];
-      v27 = [v11 nowPlayingTimestamp];
-      [v26 timeIntervalSinceDate:v27];
+      nowPlayingTimestamp2 = [playbackStateSnapshot nowPlayingTimestamp];
+      [v26 timeIntervalSinceDate:nowPlayingTimestamp2];
       v29 = v28;
 
       [(ADDeviceResolutionServiceListener *)self _generalizeTimeIntervalsForPrivacy:v29];
@@ -832,12 +832,12 @@ LABEL_18:
   }
 
 LABEL_19:
-  v31 = [v6 alarmSnapshot];
-  v32 = v31;
-  if (v31)
+  alarmSnapshot = [contextCopy alarmSnapshot];
+  v32 = alarmSnapshot;
+  if (alarmSnapshot)
   {
-    v33 = [v31 alarmsByID];
-    v34 = [v32 notifiedFiringAlarmIDs];
+    alarmsByID = [alarmSnapshot alarmsByID];
+    notifiedFiringAlarmIDs = [v32 notifiedFiringAlarmIDs];
     v66 = 0;
     v67 = &v66;
     v68 = 0x3032000000;
@@ -848,10 +848,10 @@ LABEL_19:
     v63[1] = 3221225472;
     v63[2] = sub_10031A538;
     v63[3] = &unk_10051BD78;
-    v35 = v33;
+    v35 = alarmsByID;
     v64 = v35;
     v65 = &v66;
-    [v34 enumerateObjectsUsingBlock:v63];
+    [notifiedFiringAlarmIDs enumerateObjectsUsingBlock:v63];
     if (v67[5])
     {
       v36 = +[NSDate date];
@@ -867,12 +867,12 @@ LABEL_19:
     _Block_object_dispose(&v66, 8);
   }
 
-  v41 = [v6 timerSnapshot];
-  v42 = v41;
-  if (v41)
+  timerSnapshot = [contextCopy timerSnapshot];
+  v42 = timerSnapshot;
+  if (timerSnapshot)
   {
-    v43 = [v41 timersByID];
-    v44 = [v42 notifiedFiringTimerIDs];
+    timersByID = [timerSnapshot timersByID];
+    notifiedFiringTimerIDs = [v42 notifiedFiringTimerIDs];
     v66 = 0;
     v67 = &v66;
     v68 = 0x3032000000;
@@ -883,10 +883,10 @@ LABEL_19:
     v60[1] = 3221225472;
     v60[2] = sub_10031A600;
     v60[3] = &unk_10051BD78;
-    v45 = v43;
+    v45 = timersByID;
     v61 = v45;
     v62 = &v66;
-    [v44 enumerateObjectsUsingBlock:v60];
+    [notifiedFiringTimerIDs enumerateObjectsUsingBlock:v60];
     if (v67[5])
     {
       v46 = +[NSDate date];
@@ -902,12 +902,12 @@ LABEL_19:
     _Block_object_dispose(&v66, 8);
   }
 
-  if ([v6 heardVoiceTrigger] == 2)
+  if ([contextCopy heardVoiceTrigger] == 2)
   {
-    v51 = [v6 heardVoiceTriggerMetadata];
+    heardVoiceTriggerMetadata = [contextCopy heardVoiceTriggerMetadata];
     v52 = +[NSDate date];
-    v53 = [v51 deliveryDate];
-    [v52 timeIntervalSinceDate:v53];
+    deliveryDate = [heardVoiceTriggerMetadata deliveryDate];
+    [v52 timeIntervalSinceDate:deliveryDate];
     v55 = v54;
 
     v56 = objc_alloc_init(HALSchemaHALVoiceTriggerContext);
@@ -916,22 +916,22 @@ LABEL_19:
     [v7 setVoiceTriggerContext:v56];
   }
 
-  v58 = [v6 systemStateSnapshot];
-  if (v58)
+  systemStateSnapshot = [contextCopy systemStateSnapshot];
+  if (systemStateSnapshot)
   {
-    [v7 setPowerState:{-[ADDeviceResolutionServiceListener _halDevicePowerStateFromSystemStateSnapshot:](self, "_halDevicePowerStateFromSystemStateSnapshot:", v58)}];
+    [v7 setPowerState:{-[ADDeviceResolutionServiceListener _halDevicePowerStateFromSystemStateSnapshot:](self, "_halDevicePowerStateFromSystemStateSnapshot:", systemStateSnapshot)}];
   }
 
   return v7;
 }
 
-- (id)_crossDeviceCommandExecutionEndedEvent:(int)a3 actionResult:(int)a4 halId:(id)a5 contextProximityPairs:(id)a6 homeKitTarget:(int)a7
+- (id)_crossDeviceCommandExecutionEndedEvent:(int)event actionResult:(int)result halId:(id)id contextProximityPairs:(id)pairs homeKitTarget:(int)target
 {
-  v7 = *&a7;
-  v9 = *&a4;
-  v10 = *&a3;
-  v12 = a5;
-  v13 = a6;
+  v7 = *&target;
+  v9 = *&result;
+  v10 = *&event;
+  idCopy = id;
+  pairsCopy = pairs;
   v14 = objc_alloc_init(HALSchemaHALCrossDeviceCommandExecutionEnded);
   [v14 setAction:v10];
   if (v9)
@@ -945,9 +945,9 @@ LABEL_19:
   [v16 setEnded:v14];
   [v15 setCrossDeviceCommandContext:v16];
   v17 = objc_alloc_init(HALSchemaHALClientEventMetadata);
-  if ([v12 length])
+  if ([idCopy length])
   {
-    v18 = [[NSUUID alloc] initWithUUIDString:v12];
+    v18 = [[NSUUID alloc] initWithUUIDString:idCopy];
   }
 
   else
@@ -967,7 +967,7 @@ LABEL_19:
   v27 = &unk_10051BD50;
   v29 = v28 = self;
   v21 = v29;
-  [v13 enumerateKeysAndObjectsUsingBlock:&v24];
+  [pairsCopy enumerateKeysAndObjectsUsingBlock:&v24];
 
   v22 = [NSArray arrayWithArray:v21, v24, v25, v26, v27, v28];
   [v14 setSelecteds:v22];
@@ -975,11 +975,11 @@ LABEL_19:
   return v15;
 }
 
-- (id)_crossDeviceCommandExecutionFailedEvent:(int)a3 action:(int)a4 halId:(id)a5
+- (id)_crossDeviceCommandExecutionFailedEvent:(int)event action:(int)action halId:(id)id
 {
-  v5 = *&a4;
-  v6 = *&a3;
-  v7 = a5;
+  v5 = *&action;
+  v6 = *&event;
+  idCopy = id;
   v8 = objc_alloc_init(HALSchemaHALCrossDeviceCommandExecutionFailed);
   [v8 setReason:v6];
   [v8 setAction:v5];
@@ -988,9 +988,9 @@ LABEL_19:
   [v10 setFailed:v8];
   [v9 setCrossDeviceCommandContext:v10];
   v11 = objc_alloc_init(HALSchemaHALClientEventMetadata);
-  if ([v7 length])
+  if ([idCopy length])
   {
-    v12 = [[NSUUID alloc] initWithUUIDString:v7];
+    v12 = [[NSUUID alloc] initWithUUIDString:idCopy];
   }
 
   else
@@ -1007,18 +1007,18 @@ LABEL_19:
   return v9;
 }
 
-- (id)_crossDeviceCommandExecutionStartedEvent:(int)a3 halId:(id)a4
+- (id)_crossDeviceCommandExecutionStartedEvent:(int)event halId:(id)id
 {
-  v4 = a4;
+  idCopy = id;
   v5 = objc_alloc_init(HALSchemaHALClientEvent);
   v6 = objc_alloc_init(HALSchemaHALCrossDeviceCommandExecutionStarted);
   v7 = objc_alloc_init(HALSchemaHALCrossDeviceCommandExecutionContext);
   [v7 setStartedOrChanged:v6];
   [v5 setCrossDeviceCommandContext:v7];
   v8 = objc_alloc_init(HALSchemaHALClientEventMetadata);
-  if ([v4 length])
+  if ([idCopy length])
   {
-    v9 = [[NSUUID alloc] initWithUUIDString:v4];
+    v9 = [[NSUUID alloc] initWithUUIDString:idCopy];
   }
 
   else
@@ -1035,42 +1035,42 @@ LABEL_19:
   return v5;
 }
 
-- (int)_halHomeKitTargetFromTarget:(id)a3
+- (int)_halHomeKitTargetFromTarget:(id)target
 {
-  v3 = [a3 integerValue];
-  if ((v3 - 1) >= 7)
+  integerValue = [target integerValue];
+  if ((integerValue - 1) >= 7)
   {
-    LODWORD(v3) = 0;
+    LODWORD(integerValue) = 0;
   }
 
-  return v3;
+  return integerValue;
 }
 
-- (int)_halActionFromAction:(id)a3
+- (int)_halActionFromAction:(id)action
 {
-  v3 = [a3 integerValue];
-  if ((v3 - 1) >= 0x15)
+  integerValue = [action integerValue];
+  if ((integerValue - 1) >= 0x15)
   {
-    LODWORD(v3) = 0;
+    LODWORD(integerValue) = 0;
   }
 
-  return v3;
+  return integerValue;
 }
 
-- (int)_halActionResultFromActionResult:(id)a3
+- (int)_halActionResultFromActionResult:(id)result
 {
-  v3 = [a3 integerValue];
-  if ((v3 - 1) >= 3)
+  integerValue = [result integerValue];
+  if ((integerValue - 1) >= 3)
   {
-    LODWORD(v3) = 0;
+    LODWORD(integerValue) = 0;
   }
 
-  return v3;
+  return integerValue;
 }
 
-- (id)_resultStringFromHALAction:(int)a3 actionResult:(int)a4
+- (id)_resultStringFromHALAction:(int)action actionResult:(int)result
 {
-  switch(a3)
+  switch(action)
   {
     case 0:
       result = @"unknown";
@@ -1118,12 +1118,12 @@ LABEL_19:
       result = @"QuickStop.QuickStopCompleted-confirmation";
       break;
     case 15:
-      if (a4 >= 4)
+      if (result >= 4)
       {
         goto LABEL_12;
       }
 
-      result = off_10051BD98[a4];
+      result = off_10051BD98[result];
       break;
     case 16:
       result = @"SAAlarmDismiss.CommandSucceeded";

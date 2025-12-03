@@ -1,30 +1,30 @@
 @interface AsyncTask
-- (void)completeWithError:(id)a3;
+- (void)completeWithError:(id)error;
 - (void)completeWithSuccess;
-- (void)setExecuting:(BOOL)a3;
-- (void)setFinished:(BOOL)a3;
+- (void)setExecuting:(BOOL)executing;
+- (void)setFinished:(BOOL)finished;
 - (void)start;
 @end
 
 @implementation AsyncTask
 
-- (void)setExecuting:(BOOL)a3
+- (void)setExecuting:(BOOL)executing
 {
-  if (self->_executing != a3)
+  if (self->_executing != executing)
   {
     [(AsyncTask *)self willChangeValueForKey:@"isExecuting"];
-    self->_executing = a3;
+    self->_executing = executing;
 
     [(AsyncTask *)self didChangeValueForKey:@"isExecuting"];
   }
 }
 
-- (void)setFinished:(BOOL)a3
+- (void)setFinished:(BOOL)finished
 {
-  if (self->_finished != a3)
+  if (self->_finished != finished)
   {
     [(AsyncTask *)self willChangeValueForKey:@"isFinished"];
-    self->_finished = a3;
+    self->_finished = finished;
 
     [(AsyncTask *)self didChangeValueForKey:@"isFinished"];
   }
@@ -37,11 +37,11 @@
   [(AsyncTask *)self main];
 }
 
-- (void)completeWithError:(id)a3
+- (void)completeWithError:(id)error
 {
   v4.receiver = self;
   v4.super_class = AsyncTask;
-  [(Task *)&v4 completeWithError:a3];
+  [(Task *)&v4 completeWithError:error];
   [(AsyncTask *)self setExecuting:0];
   [(AsyncTask *)self setFinished:1];
 }

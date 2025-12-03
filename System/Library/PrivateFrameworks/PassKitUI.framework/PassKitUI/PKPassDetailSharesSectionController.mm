@@ -1,32 +1,32 @@
 @interface PKPassDetailSharesSectionController
-- (PKPassDetailSharesSectionController)initWithSharesController:(id)a3 delegate:(id)a4;
+- (PKPassDetailSharesSectionController)initWithSharesController:(id)controller delegate:(id)delegate;
 - (PKPassDetailSharesSectionControllerDelegate)delegate;
 - (id)_localizedEntitlementSummary;
 - (id)allSectionIdentifiers;
 - (id)sectionIdentifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4 sectionIdentifier:(id)a5;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path sectionIdentifier:(id)identifier;
 - (void)_updateSectionIdentifiers;
 - (void)dealloc;
-- (void)preflight:(id)a3;
-- (void)sharedPassSharesControllerDidUpdateShares:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4 sectionIdentifier:(id)a5;
+- (void)preflight:(id)preflight;
+- (void)sharedPassSharesControllerDidUpdateShares:(id)shares;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path sectionIdentifier:(id)identifier;
 @end
 
 @implementation PKPassDetailSharesSectionController
 
-- (PKPassDetailSharesSectionController)initWithSharesController:(id)a3 delegate:(id)a4
+- (PKPassDetailSharesSectionController)initWithSharesController:(id)controller delegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
+  controllerCopy = controller;
+  delegateCopy = delegate;
   v12.receiver = self;
   v12.super_class = PKPassDetailSharesSectionController;
   v9 = [(PKPaymentPassDetailSectionController *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_sharesController, a3);
+    objc_storeStrong(&v9->_sharesController, controller);
     [(PKSharedPassSharesController *)v10->_sharesController addDelegate:v10];
-    objc_storeWeak(&v10->_delegate, v8);
+    objc_storeWeak(&v10->_delegate, delegateCopy);
     [(PKPassDetailSharesSectionController *)v10 _updateSectionIdentifiers];
   }
 
@@ -43,12 +43,12 @@
 
 - (void)_updateSectionIdentifiers
 {
-  v3 = [(PKSharedPassSharesController *)self->_sharesController myEntitlements];
+  myEntitlements = [(PKSharedPassSharesController *)self->_sharesController myEntitlements];
   mapped = self->_mapped;
-  v8 = v3;
-  if (v3)
+  v8 = myEntitlements;
+  if (myEntitlements)
   {
-    v5 = [v3 count] != 0;
+    v5 = [myEntitlements count] != 0;
   }
 
   else
@@ -60,14 +60,14 @@
   if (mapped != v5)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v7 = [(PKPassDetailSharesSectionController *)self sectionIdentifiers];
-    [WeakRetained reloadSections:v7];
+    sectionIdentifiers = [(PKPassDetailSharesSectionController *)self sectionIdentifiers];
+    [WeakRetained reloadSections:sectionIdentifiers];
   }
 }
 
-- (void)preflight:(id)a3
+- (void)preflight:(id)preflight
 {
-  v4 = a3;
+  preflightCopy = preflight;
   objc_initWeak(&location, self);
   sharesController = self->_sharesController;
   v7[0] = MEMORY[0x1E69E9820];
@@ -75,7 +75,7 @@
   v7[2] = __49__PKPassDetailSharesSectionController_preflight___block_invoke;
   v7[3] = &unk_1E80111D0;
   objc_copyWeak(&v9, &location);
-  v6 = v4;
+  v6 = preflightCopy;
   v8 = v6;
   [(PKSharedPassSharesController *)sharesController updateSharesWithCompletion:v7];
 
@@ -115,8 +115,8 @@ void __49__PKPassDetailSharesSectionController_preflight___block_invoke(uint64_t
 - (id)_localizedEntitlementSummary
 {
   entitlementComposer = self->_entitlementComposer;
-  v3 = [(PKSharedPassSharesController *)self->_sharesController pass];
-  v4 = -[PKPassEntitlementsComposer localizedSelectedEntitlementSummaryForAccessType:](entitlementComposer, "localizedSelectedEntitlementSummaryForAccessType:", [v3 accessType]);
+  pass = [(PKSharedPassSharesController *)self->_sharesController pass];
+  v4 = -[PKPassEntitlementsComposer localizedSelectedEntitlementSummaryForAccessType:](entitlementComposer, "localizedSelectedEntitlementSummaryForAccessType:", [pass accessType]);
 
   return v4;
 }
@@ -125,36 +125,36 @@ void __49__PKPassDetailSharesSectionController_preflight___block_invoke(uint64_t
 {
   if ([(PKPaymentPassDetailSectionController *)self currentSegment]|| !self->_mapped)
   {
-    v3 = MEMORY[0x1E695E0F0];
+    allSectionIdentifiers = MEMORY[0x1E695E0F0];
   }
 
   else
   {
-    v3 = [(PKPassDetailSharesSectionController *)self allSectionIdentifiers];
+    allSectionIdentifiers = [(PKPassDetailSharesSectionController *)self allSectionIdentifiers];
   }
 
-  return v3;
+  return allSectionIdentifiers;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4 sectionIdentifier:(id)a5
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path sectionIdentifier:(id)identifier
 {
-  v6 = a3;
+  viewCopy = view;
   if (PKEqualObjects())
   {
-    v7 = [(PKSharedPassSharesController *)self->_sharesController pass];
-    v8 = [v7 accessType];
+    pass = [(PKSharedPassSharesController *)self->_sharesController pass];
+    accessType = [pass accessType];
 
-    if (v8 == 4)
+    if (accessType == 4)
     {
       v9 = PKLocalizedShareableCredentialString(&cfstr_MyEntitlements.isa);
-      v10 = [(PKPassDetailSharesSectionController *)self _localizedEntitlementSummary];
-      v11 = [(PKPaymentPassDetailSectionController *)self infoCellWithPrimaryText:v9 detailText:v10 cellStyle:1 forTableView:v6];
+      _localizedEntitlementSummary = [(PKPassDetailSharesSectionController *)self _localizedEntitlementSummary];
+      v11 = [(PKPaymentPassDetailSectionController *)self infoCellWithPrimaryText:v9 detailText:_localizedEntitlementSummary cellStyle:1 forTableView:viewCopy];
     }
 
     else
     {
       v9 = PKLocalizedShareableCredentialString(&cfstr_MyEntitlements_0.isa);
-      v11 = [(PKPaymentPassDetailSectionController *)self infoCellWithPrimaryText:v9 detailText:0 cellStyle:1 forTableView:v6];
+      v11 = [(PKPaymentPassDetailSectionController *)self infoCellWithPrimaryText:v9 detailText:0 cellStyle:1 forTableView:viewCopy];
     }
 
     [v11 setAccessoryType:1];
@@ -168,7 +168,7 @@ void __49__PKPassDetailSharesSectionController_preflight___block_invoke(uint64_t
   return v11;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4 sectionIdentifier:(id)a5
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path sectionIdentifier:(id)identifier
 {
   if (PKEqualObjects())
   {
@@ -177,7 +177,7 @@ void __49__PKPassDetailSharesSectionController_preflight___block_invoke(uint64_t
   }
 }
 
-- (void)sharedPassSharesControllerDidUpdateShares:(id)a3
+- (void)sharedPassSharesControllerDidUpdateShares:(id)shares
 {
   if (self->_hasLoadedInitialData)
   {

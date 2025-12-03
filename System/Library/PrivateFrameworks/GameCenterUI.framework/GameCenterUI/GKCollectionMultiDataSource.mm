@@ -1,49 +1,49 @@
 @interface GKCollectionMultiDataSource
-- (BOOL)collectionView:(id)a3 canFocusItemAtIndexPath:(id)a4;
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForFooterInSection:(int64_t)a5;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForHeaderInSection:(int64_t)a5;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
+- (BOOL)collectionView:(id)view canFocusItemAtIndexPath:(id)path;
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path;
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForFooterInSection:(int64_t)section;
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForHeaderInSection:(int64_t)section;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
 - (double)preferredCollectionHeight;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5;
-- (id)dataSourceForIndexPath:(id)a3;
-- (id)itemForIndexPath:(id)a3;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path;
+- (id)dataSourceForIndexPath:(id)path;
+- (id)itemForIndexPath:(id)path;
 - (int64_t)itemCount;
-- (int64_t)itemCountInSection:(int64_t)a3;
-- (void)collectionView:(id)a3 didDeselectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 didFocusItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 didUnfocusItemAtIndexPath:(id)a4;
-- (void)loadDataWithCompletionHandler:(id)a3;
-- (void)setupCollectionView:(id)a3;
+- (int64_t)itemCountInSection:(int64_t)section;
+- (void)collectionView:(id)view didDeselectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didFocusItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didUnfocusItemAtIndexPath:(id)path;
+- (void)loadDataWithCompletionHandler:(id)handler;
+- (void)setupCollectionView:(id)view;
 @end
 
 @implementation GKCollectionMultiDataSource
 
-- (id)dataSourceForIndexPath:(id)a3
+- (id)dataSourceForIndexPath:(id)path
 {
-  v4 = [a3 section];
-  if ([(NSArray *)self->_dataSources count]<= v4)
+  section = [path section];
+  if ([(NSArray *)self->_dataSources count]<= section)
   {
     v5 = MEMORY[0x277CCACA8];
     v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"Assertion failed"];
     v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter/Frameworks/GameCenterUI/iOS/TVDashboard/GKCollectionMultiDataSource.m"];
-    v8 = [v7 lastPathComponent];
-    v9 = [v5 stringWithFormat:@"%@ (_dataSources.count > section)\n[%s (%s:%d)]", v6, "-[GKCollectionMultiDataSource dataSourceForIndexPath:]", objc_msgSend(v8, "UTF8String"), 18];
+    lastPathComponent = [v7 lastPathComponent];
+    v9 = [v5 stringWithFormat:@"%@ (_dataSources.count > section)\n[%s (%s:%d)]", v6, "-[GKCollectionMultiDataSource dataSourceForIndexPath:]", objc_msgSend(lastPathComponent, "UTF8String"), 18];
 
     [MEMORY[0x277CBEAD8] raise:@"GameKit Exception" format:{@"%@", v9}];
   }
 
   dataSources = self->_dataSources;
 
-  return [(NSArray *)dataSources objectAtIndexedSubscript:v4];
+  return [(NSArray *)dataSources objectAtIndexedSubscript:section];
 }
 
-- (void)setupCollectionView:(id)a3
+- (void)setupCollectionView:(id)view
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  viewCopy = view;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -64,7 +64,7 @@
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v10 + 1) + 8 * v9++) setupCollectionView:{v4, v10}];
+        [*(*(&v10 + 1) + 8 * v9++) setupCollectionView:{viewCopy, v10}];
       }
 
       while (v7 != v9);
@@ -74,14 +74,14 @@
     while (v7);
   }
 
-  [v4 setDataSource:self];
-  [v4 setDelegate:self];
+  [viewCopy setDataSource:self];
+  [viewCopy setDelegate:self];
 }
 
-- (void)loadDataWithCompletionHandler:(id)a3
+- (void)loadDataWithCompletionHandler:(id)handler
 {
   v29 = *MEMORY[0x277D85DE8];
-  v14 = a3;
+  handlerCopy = handler;
   v26[0] = 0;
   v26[1] = v26;
   v26[2] = 0x2020000000;
@@ -129,7 +129,7 @@
   v15[1] = 3221225472;
   v15[2] = __61__GKCollectionMultiDataSource_loadDataWithCompletionHandler___block_invoke_3;
   v15[3] = &unk_27966C058;
-  v12 = v14;
+  v12 = handlerCopy;
   v17 = v12;
   v18 = v26;
   v13 = v6;
@@ -223,23 +223,23 @@ void __61__GKCollectionMultiDataSource_loadDataWithCompletionHandler___block_inv
   return v5;
 }
 
-- (int64_t)itemCountInSection:(int64_t)a3
+- (int64_t)itemCountInSection:(int64_t)section
 {
-  if ([(NSArray *)self->_dataSources count]<= a3)
+  if ([(NSArray *)self->_dataSources count]<= section)
   {
     v5 = MEMORY[0x277CCACA8];
     v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"Assertion failed"];
     v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter/Frameworks/GameCenterUI/iOS/TVDashboard/GKCollectionMultiDataSource.m"];
-    v8 = [v7 lastPathComponent];
-    v9 = [v5 stringWithFormat:@"%@ (_dataSources.count > section)\n[%s (%s:%d)]", v6, "-[GKCollectionMultiDataSource itemCountInSection:]", objc_msgSend(v8, "UTF8String"), 69];
+    lastPathComponent = [v7 lastPathComponent];
+    v9 = [v5 stringWithFormat:@"%@ (_dataSources.count > section)\n[%s (%s:%d)]", v6, "-[GKCollectionMultiDataSource itemCountInSection:]", objc_msgSend(lastPathComponent, "UTF8String"), 69];
 
     [MEMORY[0x277CBEAD8] raise:@"GameKit Exception" format:{@"%@", v9}];
   }
 
-  v10 = [(NSArray *)self->_dataSources objectAtIndexedSubscript:a3];
-  v11 = [v10 itemCount];
+  v10 = [(NSArray *)self->_dataSources objectAtIndexedSubscript:section];
+  itemCount = [v10 itemCount];
 
-  return v11;
+  return itemCount;
 }
 
 - (double)preferredCollectionHeight
@@ -286,55 +286,55 @@ void __61__GKCollectionMultiDataSource_loadDataWithCompletionHandler___block_inv
   return v6;
 }
 
-- (id)itemForIndexPath:(id)a3
+- (id)itemForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(GKCollectionMultiDataSource *)self dataSourceForIndexPath:v4];
-  v6 = [v5 itemForIndexPath:v4];
+  pathCopy = path;
+  v5 = [(GKCollectionMultiDataSource *)self dataSourceForIndexPath:pathCopy];
+  v6 = [v5 itemForIndexPath:pathCopy];
 
   return v6;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(GKCollectionMultiDataSource *)self dataSourceForIndexPath:v6];
-  v9 = [v8 collectionView:v7 cellForItemAtIndexPath:v6];
+  pathCopy = path;
+  viewCopy = view;
+  v8 = [(GKCollectionMultiDataSource *)self dataSourceForIndexPath:pathCopy];
+  v9 = [v8 collectionView:viewCopy cellForItemAtIndexPath:pathCopy];
 
   return v9;
 }
 
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(GKCollectionMultiDataSource *)self dataSourceForIndexPath:v8];
-  v12 = [v11 collectionView:v10 viewForSupplementaryElementOfKind:v9 atIndexPath:v8];
+  pathCopy = path;
+  kindCopy = kind;
+  viewCopy = view;
+  v11 = [(GKCollectionMultiDataSource *)self dataSourceForIndexPath:pathCopy];
+  v12 = [v11 collectionView:viewCopy viewForSupplementaryElementOfKind:kindCopy atIndexPath:pathCopy];
 
   return v12;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForHeaderInSection:(int64_t)a5
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForHeaderInSection:(int64_t)section
 {
-  v8 = a3;
-  v9 = a4;
-  if ([(NSArray *)self->_dataSources count]<= a5)
+  viewCopy = view;
+  layoutCopy = layout;
+  if ([(NSArray *)self->_dataSources count]<= section)
   {
     v10 = MEMORY[0x277CCACA8];
     v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"Assertion failed"];
     v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter/Frameworks/GameCenterUI/iOS/TVDashboard/GKCollectionMultiDataSource.m"];
-    v13 = [v12 lastPathComponent];
-    v14 = [v10 stringWithFormat:@"%@ (_dataSources.count > section)\n[%s (%s:%d)]", v11, "-[GKCollectionMultiDataSource collectionView:layout:referenceSizeForHeaderInSection:]", objc_msgSend(v13, "UTF8String"), 125];
+    lastPathComponent = [v12 lastPathComponent];
+    v14 = [v10 stringWithFormat:@"%@ (_dataSources.count > section)\n[%s (%s:%d)]", v11, "-[GKCollectionMultiDataSource collectionView:layout:referenceSizeForHeaderInSection:]", objc_msgSend(lastPathComponent, "UTF8String"), 125];
 
     [MEMORY[0x277CBEAD8] raise:@"GameKit Exception" format:{@"%@", v14}];
   }
 
-  v15 = [(NSArray *)self->_dataSources objectAtIndexedSubscript:a5];
+  v15 = [(NSArray *)self->_dataSources objectAtIndexedSubscript:section];
   if (objc_opt_respondsToSelector())
   {
-    [v15 collectionView:v8 layout:v9 referenceSizeForHeaderInSection:a5];
+    [v15 collectionView:viewCopy layout:layoutCopy referenceSizeForHeaderInSection:section];
   }
 
   else
@@ -347,7 +347,7 @@ void __61__GKCollectionMultiDataSource_loadDataWithCompletionHandler___block_inv
       goto LABEL_9;
     }
 
-    [v9 headerReferenceSize];
+    [layoutCopy headerReferenceSize];
   }
 
   v18 = v16;
@@ -361,25 +361,25 @@ LABEL_9:
   return result;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForFooterInSection:(int64_t)a5
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForFooterInSection:(int64_t)section
 {
-  v8 = a3;
-  v9 = a4;
-  if ([(NSArray *)self->_dataSources count]<= a5)
+  viewCopy = view;
+  layoutCopy = layout;
+  if ([(NSArray *)self->_dataSources count]<= section)
   {
     v10 = MEMORY[0x277CCACA8];
     v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"Assertion failed"];
     v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter/Frameworks/GameCenterUI/iOS/TVDashboard/GKCollectionMultiDataSource.m"];
-    v13 = [v12 lastPathComponent];
-    v14 = [v10 stringWithFormat:@"%@ (_dataSources.count > section)\n[%s (%s:%d)]", v11, "-[GKCollectionMultiDataSource collectionView:layout:referenceSizeForFooterInSection:]", objc_msgSend(v13, "UTF8String"), 143];
+    lastPathComponent = [v12 lastPathComponent];
+    v14 = [v10 stringWithFormat:@"%@ (_dataSources.count > section)\n[%s (%s:%d)]", v11, "-[GKCollectionMultiDataSource collectionView:layout:referenceSizeForFooterInSection:]", objc_msgSend(lastPathComponent, "UTF8String"), 143];
 
     [MEMORY[0x277CBEAD8] raise:@"GameKit Exception" format:{@"%@", v14}];
   }
 
-  v15 = [(NSArray *)self->_dataSources objectAtIndexedSubscript:a5];
+  v15 = [(NSArray *)self->_dataSources objectAtIndexedSubscript:section];
   if (objc_opt_respondsToSelector())
   {
-    [v15 collectionView:v8 layout:v9 referenceSizeForFooterInSection:a5];
+    [v15 collectionView:viewCopy layout:layoutCopy referenceSizeForFooterInSection:section];
   }
 
   else
@@ -392,7 +392,7 @@ LABEL_9:
       goto LABEL_9;
     }
 
-    [v9 footerReferenceSize];
+    [layoutCopy footerReferenceSize];
   }
 
   v18 = v16;
@@ -406,15 +406,15 @@ LABEL_9:
   return result;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(GKCollectionMultiDataSource *)self dataSourceForIndexPath:v10];
+  viewCopy = view;
+  layoutCopy = layout;
+  pathCopy = path;
+  v11 = [(GKCollectionMultiDataSource *)self dataSourceForIndexPath:pathCopy];
   if (objc_opt_respondsToSelector())
   {
-    [v11 collectionView:v8 layout:v9 sizeForItemAtIndexPath:v10];
+    [v11 collectionView:viewCopy layout:layoutCopy sizeForItemAtIndexPath:pathCopy];
   }
 
   else
@@ -427,7 +427,7 @@ LABEL_9:
       goto LABEL_7;
     }
 
-    [v9 itemSize];
+    [layoutCopy itemSize];
   }
 
   v14 = v12;
@@ -441,14 +441,14 @@ LABEL_7:
   return result;
 }
 
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(GKCollectionMultiDataSource *)self dataSourceForIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(GKCollectionMultiDataSource *)self dataSourceForIndexPath:pathCopy];
   if (objc_opt_respondsToSelector())
   {
-    v9 = [v8 collectionView:v6 shouldSelectItemAtIndexPath:v7];
+    v9 = [v8 collectionView:viewCopy shouldSelectItemAtIndexPath:pathCopy];
   }
 
   else
@@ -459,60 +459,60 @@ LABEL_7:
   return v9;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(GKCollectionMultiDataSource *)self dataSourceForIndexPath:v6];
+  viewCopy = view;
+  pathCopy = path;
+  v7 = [(GKCollectionMultiDataSource *)self dataSourceForIndexPath:pathCopy];
   if (objc_opt_respondsToSelector())
   {
-    v8 = [v7 presentationViewController];
+    presentationViewController = [v7 presentationViewController];
 
-    if (!v8)
+    if (!presentationViewController)
     {
-      v9 = [(GKCollectionDataSource *)self presentationViewController];
-      [v7 setPresentationViewController:v9];
+      presentationViewController2 = [(GKCollectionDataSource *)self presentationViewController];
+      [v7 setPresentationViewController:presentationViewController2];
     }
 
-    [v7 collectionView:v10 didSelectItemAtIndexPath:v6];
+    [v7 collectionView:viewCopy didSelectItemAtIndexPath:pathCopy];
   }
 }
 
-- (void)collectionView:(id)a3 didDeselectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didDeselectItemAtIndexPath:(id)path
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [(GKCollectionMultiDataSource *)self dataSourceForIndexPath:v6];
+  viewCopy = view;
+  pathCopy = path;
+  v7 = [(GKCollectionMultiDataSource *)self dataSourceForIndexPath:pathCopy];
   if (objc_opt_respondsToSelector())
   {
-    [v7 collectionView:v8 didDeselectItemAtIndexPath:v6];
+    [v7 collectionView:viewCopy didDeselectItemAtIndexPath:pathCopy];
   }
 }
 
-- (BOOL)collectionView:(id)a3 canFocusItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view canFocusItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(GKCollectionMultiDataSource *)self dataSourceForIndexPath:v6];
-  v9 = [v8 collectionView:v7 canFocusItemAtIndexPath:v6];
+  pathCopy = path;
+  viewCopy = view;
+  v8 = [(GKCollectionMultiDataSource *)self dataSourceForIndexPath:pathCopy];
+  v9 = [v8 collectionView:viewCopy canFocusItemAtIndexPath:pathCopy];
 
   return v9;
 }
 
-- (void)collectionView:(id)a3 didFocusItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didFocusItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(GKCollectionMultiDataSource *)self dataSourceForIndexPath:v6];
-  [v8 collectionView:v7 didFocusItemAtIndexPath:v6];
+  pathCopy = path;
+  viewCopy = view;
+  v8 = [(GKCollectionMultiDataSource *)self dataSourceForIndexPath:pathCopy];
+  [v8 collectionView:viewCopy didFocusItemAtIndexPath:pathCopy];
 }
 
-- (void)collectionView:(id)a3 didUnfocusItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didUnfocusItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(GKCollectionMultiDataSource *)self dataSourceForIndexPath:v6];
-  [v8 collectionView:v7 didUnfocusItemAtIndexPath:v6];
+  pathCopy = path;
+  viewCopy = view;
+  v8 = [(GKCollectionMultiDataSource *)self dataSourceForIndexPath:pathCopy];
+  [v8 collectionView:viewCopy didUnfocusItemAtIndexPath:pathCopy];
 }
 
 @end

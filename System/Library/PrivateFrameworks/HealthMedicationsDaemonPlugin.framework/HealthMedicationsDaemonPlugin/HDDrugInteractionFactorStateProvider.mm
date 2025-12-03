@@ -1,16 +1,16 @@
 @interface HDDrugInteractionFactorStateProvider
 - (HDDaemon)daemon;
 - (HDDrugInteractionFactorStateProvider)init;
-- (HDDrugInteractionFactorStateProvider)initWithDaemon:(id)a3;
-- (int64_t)hasDrugInteractionFactorInProfile:(id)a3;
+- (HDDrugInteractionFactorStateProvider)initWithDaemon:(id)daemon;
+- (int64_t)hasDrugInteractionFactorInProfile:(id)profile;
 - (uint64_t)_lock_initalizeDrugInteractionFactorStates;
 - (uint64_t)_lock_startMonitoringKeyValueDomain;
-- (uint64_t)_lock_updateDrugInteractionFactorForKey:(char)a3 newValue:;
+- (uint64_t)_lock_updateDrugInteractionFactorForKey:(char)key newValue:;
 - (uint64_t)_notifyObserversWithHasDrugInteractionFactor:(uint64_t)result;
-- (void)_lock_updateChangeForKey:(uint64_t)a1;
+- (void)_lock_updateChangeForKey:(uint64_t)key;
 - (void)dealloc;
-- (void)didUpdateKeyValueDomain:(id)a3;
-- (void)monitorDrugInteractionFactorsInProfile:(id)a3;
+- (void)didUpdateKeyValueDomain:(id)domain;
+- (void)monitorDrugInteractionFactorsInProfile:(id)profile;
 @end
 
 @implementation HDDrugInteractionFactorStateProvider
@@ -25,16 +25,16 @@
   return 0;
 }
 
-- (HDDrugInteractionFactorStateProvider)initWithDaemon:(id)a3
+- (HDDrugInteractionFactorStateProvider)initWithDaemon:(id)daemon
 {
-  v4 = a3;
+  daemonCopy = daemon;
   v12.receiver = self;
   v12.super_class = HDDrugInteractionFactorStateProvider;
   v5 = [(HDDrugInteractionFactorStateProvider *)&v12 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_daemon, v4);
+    objc_storeWeak(&v5->_daemon, daemonCopy);
     v7 = objc_alloc(MEMORY[0x277CCD738]);
     v8 = HKLogHealthOntology();
     v9 = [v7 initWithName:@"HDDrugInteractionFactorStateObserver" loggingCategory:v8];
@@ -47,13 +47,13 @@
   return v6;
 }
 
-- (void)monitorDrugInteractionFactorsInProfile:(id)a3
+- (void)monitorDrugInteractionFactorsInProfile:(id)profile
 {
-  v6 = a3;
+  profileCopy = profile;
   os_unfair_lock_lock(&self->_lock);
   if (!self->_lock_medicationsKeyValueDomain)
   {
-    v4 = [MEMORY[0x277D10718] hdmd_defaultDomainWithProfile:v6];
+    v4 = [MEMORY[0x277D10718] hdmd_defaultDomainWithProfile:profileCopy];
     lock_medicationsKeyValueDomain = self->_lock_medicationsKeyValueDomain;
     self->_lock_medicationsKeyValueDomain = v4;
 
@@ -110,7 +110,7 @@ void __85__HDDrugInteractionFactorStateProvider__notifyObserversWithHasDrugInter
   return result;
 }
 
-- (int64_t)hasDrugInteractionFactorInProfile:(id)a3
+- (int64_t)hasDrugInteractionFactorInProfile:(id)profile
 {
   v4 = OUTLINED_FUNCTION_0_5(self);
   os_unfair_lock_lock(v4);
@@ -161,7 +161,7 @@ void __85__HDDrugInteractionFactorStateProvider__notifyObserversWithHasDrugInter
   return result;
 }
 
-- (void)didUpdateKeyValueDomain:(id)a3
+- (void)didUpdateKeyValueDomain:(id)domain
 {
   v4 = OUTLINED_FUNCTION_0_5(self);
   os_unfair_lock_lock(v4);
@@ -227,13 +227,13 @@ void __85__HDDrugInteractionFactorStateProvider__notifyObserversWithHasDrugInter
   [(HDDrugInteractionFactorStateProvider *)v3 _notifyObserversWithHasDrugInteractionFactor:v7];
 }
 
-- (void)_lock_updateChangeForKey:(uint64_t)a1
+- (void)_lock_updateChangeForKey:(uint64_t)key
 {
-  if (a1)
+  if (key)
   {
-    v3 = *(a1 + 24);
+    v3 = *(key + 24);
     v4 = a2;
-    -[HDDrugInteractionFactorStateProvider _lock_updateDrugInteractionFactorForKey:newValue:](a1, v4, [v3 hdmd_numberValueAsBoolForKey:v4]);
+    -[HDDrugInteractionFactorStateProvider _lock_updateDrugInteractionFactorForKey:newValue:](key, v4, [v3 hdmd_numberValueAsBoolForKey:v4]);
   }
 }
 
@@ -254,20 +254,20 @@ void __85__HDDrugInteractionFactorStateProvider__notifyObserversWithHasDrugInter
   return result;
 }
 
-- (uint64_t)_lock_updateDrugInteractionFactorForKey:(char)a3 newValue:
+- (uint64_t)_lock_updateDrugInteractionFactorForKey:(char)key newValue:
 {
   v5 = a2;
   v6 = v5;
-  if (a1)
+  if (self)
   {
     v9 = v5;
-    os_unfair_lock_assert_owner(a1 + 4);
+    os_unfair_lock_assert_owner(self + 4);
     v6 = v9;
     if (*MEMORY[0x277D11418] == v9 || *MEMORY[0x277D11418] && (v5 = [v9 isEqualToString:?], v6 = v9, (v5 & 1) != 0))
     {
       v7 = 32;
 LABEL_14:
-      *(&a1->_os_unfair_lock_opaque + v7) = a3;
+      *(&self->_os_unfair_lock_opaque + v7) = key;
       goto LABEL_15;
     }
 

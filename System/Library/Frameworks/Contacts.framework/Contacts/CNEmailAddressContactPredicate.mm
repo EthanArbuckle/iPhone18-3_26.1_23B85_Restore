@@ -1,41 +1,41 @@
 @interface CNEmailAddressContactPredicate
 - (BOOL)cn_hasHighSpecificity;
-- (BOOL)isEqual:(id)a3;
-- (CNEmailAddressContactPredicate)initWithCoder:(id)a3;
-- (CNEmailAddressContactPredicate)initWithEmailAddress:(id)a3 groupIdentifiers:(id)a4 returnMultipleResults:(BOOL)a5;
+- (BOOL)isEqual:(id)equal;
+- (CNEmailAddressContactPredicate)initWithCoder:(id)coder;
+- (CNEmailAddressContactPredicate)initWithEmailAddress:(id)address groupIdentifiers:(id)identifiers returnMultipleResults:(BOOL)results;
 - (NSString)description;
-- (id)contactsFromCLSDataStore:(id)a3;
-- (id)contactsFromRecentsLibrary:(id)a3;
-- (id)sgContactMatchesWithSortOrder:(int64_t)a3 mutableObjects:(BOOL)a4 service:(id)a5 error:(id *)a6;
-- (int64_t)countOfContactsFromRecentsLibrary:(id)a3;
+- (id)contactsFromCLSDataStore:(id)store;
+- (id)contactsFromRecentsLibrary:(id)library;
+- (id)sgContactMatchesWithSortOrder:(int64_t)order mutableObjects:(BOOL)objects service:(id)service error:(id *)error;
+- (int64_t)countOfContactsFromRecentsLibrary:(id)library;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CNEmailAddressContactPredicate
 
 - (BOOL)cn_hasHighSpecificity
 {
-  v2 = [(CNEmailAddressContactPredicate *)self emailAddresses];
-  v3 = [v2 firstObject];
-  v4 = [v3 containsString:@"@"];
+  emailAddresses = [(CNEmailAddressContactPredicate *)self emailAddresses];
+  firstObject = [emailAddresses firstObject];
+  v4 = [firstObject containsString:@"@"];
 
   return v4;
 }
 
-- (CNEmailAddressContactPredicate)initWithEmailAddress:(id)a3 groupIdentifiers:(id)a4 returnMultipleResults:(BOOL)a5
+- (CNEmailAddressContactPredicate)initWithEmailAddress:(id)address groupIdentifiers:(id)identifiers returnMultipleResults:(BOOL)results
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  addressCopy = address;
+  identifiersCopy = identifiers;
   v16.receiver = self;
   v16.super_class = CNEmailAddressContactPredicate;
   v10 = [(CNPredicate *)&v16 init];
   if (v10)
   {
-    if (v8)
+    if (addressCopy)
     {
-      v17[0] = v8;
+      v17[0] = addressCopy;
       v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:1];
     }
 
@@ -45,15 +45,15 @@
     }
 
     objc_storeStrong(&v10->_emailAddresses, v11);
-    if (v8)
+    if (addressCopy)
     {
     }
 
-    v12 = [v9 copy];
+    v12 = [identifiersCopy copy];
     groupIdentifiers = v10->_groupIdentifiers;
     v10->_groupIdentifiers = v12;
 
-    v10->_returnsMultipleResults = a5;
+    v10->_returnsMultipleResults = results;
     v14 = v10;
   }
 
@@ -64,33 +64,33 @@
 {
   v3 = [MEMORY[0x1E69966B0] descriptionBuilderWithObject:self];
   v4 = [v3 appendName:@"kind" object:@"-[CNContact predicateForContactsMatchingEmailAddresses:]"];
-  v5 = [(CNEmailAddressContactPredicate *)self emailAddresses];
-  v6 = [v3 appendName:@"emailAddresses" object:v5];
+  emailAddresses = [(CNEmailAddressContactPredicate *)self emailAddresses];
+  v6 = [v3 appendName:@"emailAddresses" object:emailAddresses];
 
-  v7 = [v3 build];
+  build = [v3 build];
 
-  return v7;
+  return build;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = MEMORY[0x1E69966F0];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __42__CNEmailAddressContactPredicate_isEqual___block_invoke;
   v15[3] = &unk_1E7412228;
-  v16 = v4;
-  v17 = self;
+  v16 = equalCopy;
+  selfCopy = self;
   aBlock = MEMORY[0x1E69E9820];
   v10 = 3221225472;
   v11 = __42__CNEmailAddressContactPredicate_isEqual___block_invoke_2;
   v12 = &unk_1E7412228;
-  v13 = self;
+  selfCopy2 = self;
   v14 = v16;
   v6 = v16;
   v7 = _Block_copy(&aBlock);
-  LOBYTE(self) = [v5 isObject:v6 memberOfSameClassAndEqualTo:self withBlocks:{v15, v7, 0, aBlock, v10, v11, v12, v13}];
+  LOBYTE(self) = [v5 isObject:v6 memberOfSameClassAndEqualTo:self withBlocks:{v15, v7, 0, aBlock, v10, v11, v12, selfCopy2}];
 
   return self;
 }
@@ -191,18 +191,18 @@ uint64_t __38__CNEmailAddressContactPredicate_hash__block_invoke_3(uint64_t a1)
   return [v1 BOOLHash:v2];
 }
 
-- (CNEmailAddressContactPredicate)initWithCoder:(id)a3
+- (CNEmailAddressContactPredicate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v20.receiver = self;
   v20.super_class = CNEmailAddressContactPredicate;
-  v5 = [(CNPredicate *)&v20 initWithCoder:v4];
+  v5 = [(CNPredicate *)&v20 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"_emailAddresses"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"_emailAddresses"];
     v10 = [v9 copy];
     emailAddresses = v5->_emailAddresses;
     v5->_emailAddresses = v10;
@@ -210,54 +210,54 @@ uint64_t __38__CNEmailAddressContactPredicate_hash__block_invoke_3(uint64_t a1)
     v12 = MEMORY[0x1E695DFD8];
     v13 = objc_opt_class();
     v14 = [v12 setWithObjects:{v13, objc_opt_class(), 0}];
-    v15 = [v4 decodeObjectOfClasses:v14 forKey:@"_groupIdentifiers"];
+    v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"_groupIdentifiers"];
     v16 = [v15 copy];
     groupIdentifiers = v5->_groupIdentifiers;
     v5->_groupIdentifiers = v16;
 
-    v5->_returnsMultipleResults = [v4 decodeBoolForKey:@"_returnsMultipleResults"];
+    v5->_returnsMultipleResults = [coderCopy decodeBoolForKey:@"_returnsMultipleResults"];
     v18 = v5;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = CNEmailAddressContactPredicate;
-  v4 = a3;
-  [(CNPredicate *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_emailAddresses forKey:{@"_emailAddresses", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_groupIdentifiers forKey:@"_groupIdentifiers"];
-  [v4 encodeBool:self->_returnsMultipleResults forKey:@"_returnsMultipleResults"];
+  coderCopy = coder;
+  [(CNPredicate *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_emailAddresses forKey:{@"_emailAddresses", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_groupIdentifiers forKey:@"_groupIdentifiers"];
+  [coderCopy encodeBool:self->_returnsMultipleResults forKey:@"_returnsMultipleResults"];
 }
 
-- (id)contactsFromRecentsLibrary:(id)a3
+- (id)contactsFromRecentsLibrary:(id)library
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  libraryCopy = library;
   v5 = *MEMORY[0x1E6996538];
-  v6 = [(CNEmailAddressContactPredicate *)self emailAddresses];
-  LOBYTE(v5) = (*(v5 + 16))(v5, v6);
+  emailAddresses = [(CNEmailAddressContactPredicate *)self emailAddresses];
+  LOBYTE(v5) = (*(v5 + 16))(v5, emailAddresses);
 
   if (v5)
   {
-    v7 = [(CNEmailAddressContactPredicate *)self returnsMultipleResults];
-    v8 = [(CNEmailAddressContactPredicate *)self emailAddresses];
-    v9 = v8;
-    if (v7)
+    returnsMultipleResults = [(CNEmailAddressContactPredicate *)self returnsMultipleResults];
+    emailAddresses2 = [(CNEmailAddressContactPredicate *)self emailAddresses];
+    v9 = emailAddresses2;
+    if (returnsMultipleResults)
     {
       v19 = 0;
-      v10 = [v4 contactsWithEmailAddresses:v8 error:&v19];
+      v10 = [libraryCopy contactsWithEmailAddresses:emailAddresses2 error:&v19];
       v11 = v19;
     }
 
     else
     {
-      v13 = [v8 firstObject];
+      firstObject = [emailAddresses2 firstObject];
       v18 = 0;
-      v14 = [v4 singleContactWithEmailAddress:v13 error:&v18];
+      v14 = [libraryCopy singleContactWithEmailAddress:firstObject error:&v18];
       v11 = v18;
 
       v20[0] = v14;
@@ -278,17 +278,17 @@ uint64_t __38__CNEmailAddressContactPredicate_hash__block_invoke_3(uint64_t a1)
   return v12;
 }
 
-- (int64_t)countOfContactsFromRecentsLibrary:(id)a3
+- (int64_t)countOfContactsFromRecentsLibrary:(id)library
 {
-  v4 = a3;
+  libraryCopy = library;
   v5 = *MEMORY[0x1E6996538];
-  v6 = [(CNEmailAddressContactPredicate *)self emailAddresses];
-  LODWORD(v5) = (*(v5 + 16))(v5, v6);
+  emailAddresses = [(CNEmailAddressContactPredicate *)self emailAddresses];
+  LODWORD(v5) = (*(v5 + 16))(v5, emailAddresses);
 
   if (v5)
   {
-    v7 = [(CNEmailAddressContactPredicate *)self emailAddresses];
-    v8 = [v4 countOfContactsWithEmailAddresses:v7 error:0];
+    emailAddresses2 = [(CNEmailAddressContactPredicate *)self emailAddresses];
+    v8 = [libraryCopy countOfContactsWithEmailAddresses:emailAddresses2 error:0];
 
     if ([(CNEmailAddressContactPredicate *)self returnsMultipleResults])
     {
@@ -309,16 +309,16 @@ uint64_t __38__CNEmailAddressContactPredicate_hash__block_invoke_3(uint64_t a1)
   return v9;
 }
 
-- (id)contactsFromCLSDataStore:(id)a3
+- (id)contactsFromCLSDataStore:(id)store
 {
-  v4 = a3;
-  v5 = [(CNEmailAddressContactPredicate *)self emailAddresses];
-  v6 = [v5 firstObject];
+  storeCopy = store;
+  emailAddresses = [(CNEmailAddressContactPredicate *)self emailAddresses];
+  firstObject = [emailAddresses firstObject];
 
   if ((*(*MEMORY[0x1E6996570] + 16))())
   {
-    v7 = [objc_alloc(MEMORY[0x1E695B4C0]) initWithOptions:1 behaviors:1 searchString:v6];
-    v8 = [CNClassKitServices objectsMatching:v7 fromStore:v4];
+    v7 = [objc_alloc(MEMORY[0x1E695B4C0]) initWithOptions:1 behaviors:1 searchString:firstObject];
+    v8 = [CNClassKitServices objectsMatching:v7 fromStore:storeCopy];
     v9 = [v8 map:&__block_literal_global_52];
   }
 
@@ -338,16 +338,16 @@ id __65__CNEmailAddressContactPredicate_MAID__contactsFromCLSDataStore___block_i
   return v3;
 }
 
-- (id)sgContactMatchesWithSortOrder:(int64_t)a3 mutableObjects:(BOOL)a4 service:(id)a5 error:(id *)a6
+- (id)sgContactMatchesWithSortOrder:(int64_t)order mutableObjects:(BOOL)objects service:(id)service error:(id *)error
 {
   v22 = *MEMORY[0x1E69E9840];
-  v8 = a5;
+  serviceCopy = service;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v9 = [(CNEmailAddressContactPredicate *)self emailAddresses];
-  v10 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  emailAddresses = [(CNEmailAddressContactPredicate *)self emailAddresses];
+  v10 = [emailAddresses countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v10)
   {
     v11 = v10;
@@ -359,10 +359,10 @@ id __65__CNEmailAddressContactPredicate_MAID__contactsFromCLSDataStore___block_i
       {
         if (*v18 != v13)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(emailAddresses);
         }
 
-        v15 = [v8 contactMatchesByEmailAddress:*(*(&v17 + 1) + 8 * i) error:a6];
+        v15 = [serviceCopy contactMatchesByEmailAddress:*(*(&v17 + 1) + 8 * i) error:error];
         if (v15)
         {
           if (v12)
@@ -377,7 +377,7 @@ id __65__CNEmailAddressContactPredicate_MAID__contactsFromCLSDataStore___block_i
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v11 = [emailAddresses countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v11);

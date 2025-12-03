@@ -1,24 +1,24 @@
 @interface BIDataEnumerator
-- (BIDataEnumerator)initWithStartDate:(id)a3 endDate:(id)a4 forBDCStream:(id)a5 atOrAboveVersion:(id)a6 usingDataFromCSVs:(BOOL)a7 withInputFilePath:(id)a8;
-- (id)getBDCDataFromStartDate:(id)a3 toEndDate:(id)a4 forStream:(id)a5 withMetrics:(id)a6 withLimit:(unint64_t)a7;
-- (id)getMedianValueForKey:(id)a3;
+- (BIDataEnumerator)initWithStartDate:(id)date endDate:(id)endDate forBDCStream:(id)stream atOrAboveVersion:(id)version usingDataFromCSVs:(BOOL)vs withInputFilePath:(id)path;
+- (id)getBDCDataFromStartDate:(id)date toEndDate:(id)endDate forStream:(id)stream withMetrics:(id)metrics withLimit:(unint64_t)limit;
+- (id)getMedianValueForKey:(id)key;
 - (id)nextObject;
 - (void)resetStream;
 @end
 
 @implementation BIDataEnumerator
 
-- (BIDataEnumerator)initWithStartDate:(id)a3 endDate:(id)a4 forBDCStream:(id)a5 atOrAboveVersion:(id)a6 usingDataFromCSVs:(BOOL)a7 withInputFilePath:(id)a8
+- (BIDataEnumerator)initWithStartDate:(id)date endDate:(id)endDate forBDCStream:(id)stream atOrAboveVersion:(id)version usingDataFromCSVs:(BOOL)vs withInputFilePath:(id)path
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v69 = a8;
+  dateCopy = date;
+  endDateCopy = endDate;
+  streamCopy = stream;
+  versionCopy = version;
+  pathCopy = path;
   v89.receiver = self;
   v89.super_class = BIDataEnumerator;
   v18 = [(BIDataEnumerator *)&v89 init];
-  v70 = v16;
+  v70 = streamCopy;
   if (!v18)
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -27,7 +27,7 @@
     }
 
     v32 = 0;
-    v29 = v16;
+    v29 = streamCopy;
     goto LABEL_9;
   }
 
@@ -35,39 +35,39 @@
   v20 = *(v18 + 1);
   *(v18 + 1) = v19;
 
-  *(v18 + 96) = a7;
+  *(v18 + 96) = vs;
   *(v18 + 8) = 0x412A5E0000000000;
   *(v18 + 9) = 0x3FF0000000000000;
-  v21 = [v14 copy];
+  v21 = [dateCopy copy];
   v22 = *(v18 + 13);
   *(v18 + 13) = v21;
 
-  v23 = [v15 copy];
+  v23 = [endDateCopy copy];
   v24 = *(v18 + 14);
   *(v18 + 14) = v23;
 
-  v25 = [v16 copy];
+  v25 = [streamCopy copy];
   v26 = *(v18 + 15);
   *(v18 + 15) = v25;
 
-  v27 = [v17 copy];
+  v27 = [versionCopy copy];
   v28 = *(v18 + 16);
   *(v18 + 16) = v27;
 
-  v29 = v16;
-  if (!a7)
+  v29 = streamCopy;
+  if (!vs)
   {
     v32 = v18;
 LABEL_9:
-    v30 = v69;
+    v30 = pathCopy;
     goto LABEL_52;
   }
 
   v68 = +[NSFileManager defaultManager];
-  v30 = v69;
-  if (v69)
+  v30 = pathCopy;
+  if (pathCopy)
   {
-    v31 = v69;
+    v31 = pathCopy;
   }
 
   else
@@ -88,8 +88,8 @@ LABEL_9:
   v65 = v35;
   if (v35)
   {
-    v71 = v15;
-    v72 = v14;
+    v71 = endDateCopy;
+    v72 = dateCopy;
     v36 = objc_alloc_init(NSMutableArray);
     v37 = *(v18 + 2);
     *(v18 + 2) = v36;
@@ -103,7 +103,7 @@ LABEL_9:
     if (v77)
     {
       v76 = *v85;
-      v73 = v17;
+      v73 = versionCopy;
       do
       {
         for (i = 0; i != v77; i = i + 1)
@@ -115,13 +115,13 @@ LABEL_9:
 
           v39 = *(*(&v84 + 1) + 8 * i);
           v40 = objc_autoreleasePoolPush();
-          v41 = [v39 lastPathComponent];
-          v42 = [v41 containsString:v29];
+          lastPathComponent = [v39 lastPathComponent];
+          v42 = [lastPathComponent containsString:v29];
 
           if (v42)
           {
-            v43 = [v39 lastPathComponent];
-            v44 = [v43 componentsSeparatedByString:@"_"];
+            lastPathComponent2 = [v39 lastPathComponent];
+            v44 = [lastPathComponent2 componentsSeparatedByString:@"_"];
 
             v82 = 0u;
             v83 = 0u;
@@ -164,10 +164,10 @@ LABEL_9:
               }
 
 LABEL_29:
-              v17 = v73;
+              versionCopy = v73;
             }
 
-            [v17 floatValue];
+            [versionCopy floatValue];
             if (v47 >= v54)
             {
               v78 = 0;
@@ -195,7 +195,7 @@ LABEL_29:
                 v60 = [v55 laterDate:v71];
 
                 v61 = v60 == v71;
-                v17 = v73;
+                versionCopy = v73;
                 v29 = v70;
                 if (v61)
                 {
@@ -206,7 +206,7 @@ LABEL_29:
                   }
 
                   [*(v18 + 2) addObject:v39];
-                  v17 = v73;
+                  versionCopy = v73;
                 }
               }
 
@@ -239,9 +239,9 @@ LABEL_29:
     }
 
     v32 = v63;
-    v14 = v72;
-    v15 = v71;
-    v30 = v69;
+    dateCopy = v72;
+    endDateCopy = v71;
+    v30 = pathCopy;
   }
 
   else
@@ -262,12 +262,12 @@ LABEL_52:
 {
   if (!self->_useCSVs)
   {
-    v5 = [NSPredicate predicateWithFormat:@"(subsystem == 'BatteryDataCollection' AND category == %@)", self->_bdcStream];
-    v6 = [(NSEnumerator *)self->_enumeratorPPSCollection nextObject];
+    nextObject3 = [NSPredicate predicateWithFormat:@"(subsystem == 'BatteryDataCollection' AND category == %@)", self->_bdcStream];
+    nextObject = [(NSEnumerator *)self->_enumeratorPPSCollection nextObject];
     if ([(NSString *)self->_bdcStream isEqualToString:@"BDC_SBC"])
     {
       v7 = [NSSet setWithArray:&off_10004CB98];
-      if (v6)
+      if (nextObject)
       {
         v8 = v7;
 LABEL_13:
@@ -329,7 +329,7 @@ LABEL_13:
           objc_storeStrong(&self->_itrEndDate, endDate);
 
           v30 = [[NSDateInterval alloc] initWithStartDate:self->_itrStartDate endDate:self->_itrEndDate];
-          v8 = [[PPSTimeSeriesRequest alloc] initWithMetrics:v46 predicate:v5 timeFilter:v30 limitCount:3000 offsetCount:0];
+          v8 = [[PPSTimeSeriesRequest alloc] initWithMetrics:v46 predicate:nextObject3 timeFilter:v30 limitCount:3000 offsetCount:0];
 
           logger = self->_logger;
           if (!v8)
@@ -339,7 +339,7 @@ LABEL_13:
               sub_10002ED64();
             }
 
-            v6 = 0;
+            nextObject = 0;
             v8 = v30;
             goto LABEL_13;
           }
@@ -376,14 +376,14 @@ LABEL_13:
           currentPPSCollection = self->_currentPPSCollection;
           self->_currentPPSCollection = v34;
 
-          v36 = [(PPSTimeSeries *)self->_currentPPSCollection objectEnumerator];
+          objectEnumerator = [(PPSTimeSeries *)self->_currentPPSCollection objectEnumerator];
           enumeratorPPSCollection = self->_enumeratorPPSCollection;
-          self->_enumeratorPPSCollection = v36;
+          self->_enumeratorPPSCollection = objectEnumerator;
 
-          v38 = [(NSEnumerator *)self->_enumeratorPPSCollection nextObject];
-          if (v38)
+          nextObject2 = [(NSEnumerator *)self->_enumeratorPPSCollection nextObject];
+          if (nextObject2)
           {
-            v6 = v38;
+            nextObject = nextObject2;
 
             v8 = v46;
             goto LABEL_13;
@@ -409,7 +409,7 @@ LABEL_13:
           sub_10002EDA0();
         }
 
-        v6 = 0;
+        nextObject = 0;
         v8 = v22;
         goto LABEL_13;
       }
@@ -432,31 +432,31 @@ LABEL_56:
         sub_10002EC78();
       }
 
-      v8 = v6;
+      v8 = nextObject;
     }
 
-    v6 = 0;
+    nextObject = 0;
     goto LABEL_13;
   }
 
   if (!self->_fileEnumerator)
   {
-    v3 = [(NSMutableArray *)self->_fileURLs objectEnumerator];
+    objectEnumerator2 = [(NSMutableArray *)self->_fileURLs objectEnumerator];
     fileEnumerator = self->_fileEnumerator;
-    self->_fileEnumerator = v3;
+    self->_fileEnumerator = objectEnumerator2;
   }
 
-  v5 = [(NSEnumerator *)self->_rowEnumerator nextObject];
-  if (v5)
+  nextObject3 = [(NSEnumerator *)self->_rowEnumerator nextObject];
+  if (nextObject3)
   {
     goto LABEL_5;
   }
 
-  v10 = [(NSEnumerator *)self->_fileEnumerator nextObject];
-  if (v10)
+  nextObject4 = [(NSEnumerator *)self->_fileEnumerator nextObject];
+  if (nextObject4)
   {
-    v5 = v10;
-    v11 = [NSString stringWithContentsOfURL:v10 encoding:4 error:0];
+    nextObject3 = nextObject4;
+    v11 = [NSString stringWithContentsOfURL:nextObject4 encoding:4 error:0];
     v12 = [v11 componentsSeparatedByString:@"\n"];
     v13 = [v12 mutableCopy];
     rows = self->_rows;
@@ -475,15 +475,15 @@ LABEL_56:
       if (v16 > 1)
       {
         [(NSMutableArray *)self->_rows removeObjectAtIndex:0];
-        v17 = [(NSMutableArray *)self->_rows objectEnumerator];
+        objectEnumerator3 = [(NSMutableArray *)self->_rows objectEnumerator];
         rowEnumerator = self->_rowEnumerator;
-        self->_rowEnumerator = v17;
+        self->_rowEnumerator = objectEnumerator3;
 
-        v19 = [(NSEnumerator *)self->_rowEnumerator nextObject];
+        nextObject5 = [(NSEnumerator *)self->_rowEnumerator nextObject];
 
-        v5 = v19;
+        nextObject3 = nextObject5;
 LABEL_5:
-        v6 = [v5 componentsSeparatedByString:{@", "}];
+        nextObject = [nextObject3 componentsSeparatedByString:{@", "}];
 LABEL_14:
 
         goto LABEL_15;
@@ -493,49 +493,49 @@ LABEL_14:
       if (os_log_type_enabled(v43, OS_LOG_TYPE_INFO))
       {
         *buf = 138412546;
-        v51 = v5;
+        v51 = nextObject3;
         v52 = 1024;
         LODWORD(v53) = v16;
         _os_log_impl(&_mh_execute_header, v43, OS_LOG_TYPE_INFO, "Returning early. File %@ Row count %u", buf, 0x12u);
       }
     }
 
-    v6 = 0;
+    nextObject = 0;
     goto LABEL_14;
   }
 
-  v6 = 0;
+  nextObject = 0;
 LABEL_15:
 
-  return v6;
+  return nextObject;
 }
 
-- (id)getBDCDataFromStartDate:(id)a3 toEndDate:(id)a4 forStream:(id)a5 withMetrics:(id)a6 withLimit:(unint64_t)a7
+- (id)getBDCDataFromStartDate:(id)date toEndDate:(id)endDate forStream:(id)stream withMetrics:(id)metrics withLimit:(unint64_t)limit
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  dateCopy = date;
+  endDateCopy = endDate;
+  streamCopy = stream;
+  metricsCopy = metrics;
   if (!self->_useCSVs)
   {
-    v17 = [NSPredicate predicateWithFormat:@"(subsystem == 'BatteryDataCollection' AND category == %@)", v14];
-    if ([v14 isEqualToString:@"BDC_Daily"] & 1) != 0 || (objc_msgSend(v14, "isEqualToString:", @"BDC_SBC"))
+    streamCopy = [NSPredicate predicateWithFormat:@"(subsystem == 'BatteryDataCollection' AND category == %@)", streamCopy];
+    if ([streamCopy isEqualToString:@"BDC_Daily"] & 1) != 0 || (objc_msgSend(streamCopy, "isEqualToString:", @"BDC_SBC"))
     {
-      v18 = [[NSDateInterval alloc] initWithStartDate:v12 endDate:v13];
-      v19 = [[PPSTimeSeriesRequest alloc] initWithMetrics:v15 predicate:v17 timeFilter:v18 limitCount:a7 offsetCount:0];
+      v18 = [[NSDateInterval alloc] initWithStartDate:dateCopy endDate:endDateCopy];
+      v19 = [[PPSTimeSeriesRequest alloc] initWithMetrics:metricsCopy predicate:streamCopy timeFilter:v18 limitCount:limit offsetCount:0];
       logger = self->_logger;
       if (v19)
       {
         v21 = v19;
-        v25 = v17;
+        v25 = streamCopy;
         if (os_log_type_enabled(logger, OS_LOG_TYPE_DEBUG))
         {
           *buf = 138412802;
-          v27 = v14;
+          v27 = streamCopy;
           v28 = 2112;
-          v29 = v12;
+          v29 = dateCopy;
           v30 = 2112;
-          v31 = v13;
+          v31 = endDateCopy;
           _os_log_debug_impl(&_mh_execute_header, logger, OS_LOG_TYPE_DEBUG, "Fetching data for stream %@ in range %@ - %@", buf, 0x20u);
         }
 
@@ -556,7 +556,7 @@ LABEL_15:
           v16 = v22;
         }
 
-        v17 = v25;
+        streamCopy = v25;
         goto LABEL_22;
       }
 
@@ -606,10 +606,10 @@ LABEL_23:
   self->_itrStartDate = 0;
 }
 
-- (id)getMedianValueForKey:(id)a3
+- (id)getMedianValueForKey:(id)key
 {
-  v4 = a3;
-  v5 = [NSSet setWithObject:v4];
+  keyCopy = key;
+  v5 = [NSSet setWithObject:keyCopy];
   v6 = [[NSDateInterval alloc] initWithStartDate:self->_startDate endDate:self->_endDate];
   v7 = [NSPredicate predicateWithFormat:@"(subsystem == 'BatteryDataCollection' AND category == %@)", self->_bdcStream];
   if (os_log_type_enabled(self->_logger, OS_LOG_TYPE_DEBUG))
@@ -623,7 +623,7 @@ LABEL_23:
     startDate = self->_startDate;
     endDate = self->_endDate;
     *buf = 138412802;
-    v39 = v4;
+    v39 = keyCopy;
     v40 = 2112;
     v41 = startDate;
     v42 = 2112;
@@ -679,8 +679,8 @@ LABEL_23:
               objc_enumerationMutation(v16);
             }
 
-            v21 = [*(*(&v32 + 1) + 8 * i) metricKeysAndValues];
-            v22 = [v21 objectForKeyedSubscript:v4];
+            metricKeysAndValues = [*(*(&v32 + 1) + 8 * i) metricKeysAndValues];
+            v22 = [metricKeysAndValues objectForKeyedSubscript:keyCopy];
             [v15 addObject:v22];
           }
 

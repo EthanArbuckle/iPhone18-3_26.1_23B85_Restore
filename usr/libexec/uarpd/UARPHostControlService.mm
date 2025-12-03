@@ -1,25 +1,25 @@
 @interface UARPHostControlService
 - (BOOL)activateListener;
 - (BOOL)activateToolMode;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (UARPHostControlService)initWithUARPHostManager:(id)a3 queue:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (UARPHostControlService)initWithUARPHostManager:(id)manager queue:(id)queue;
 - (void)dealloc;
 @end
 
 @implementation UARPHostControlService
 
-- (UARPHostControlService)initWithUARPHostManager:(id)a3 queue:(id)a4
+- (UARPHostControlService)initWithUARPHostManager:(id)manager queue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  queueCopy = queue;
   v14.receiver = self;
   v14.super_class = UARPHostControlService;
   v9 = [(UARPHostControlService *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_hostManager, a3);
-    objc_storeStrong(&v10->_internalQueue, a4);
+    objc_storeStrong(&v9->_hostManager, manager);
+    objc_storeStrong(&v10->_internalQueue, queue);
     v11 = os_log_create("com.apple.uarp", "controllistener");
     log = v10->_log;
     v10->_log = v11;
@@ -70,9 +70,9 @@
   return listener == 0;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
@@ -82,10 +82,10 @@
   block[1] = 3221225472;
   block[2] = sub_1000066A0;
   block[3] = &unk_1000B8AB0;
-  v10 = v5;
-  v11 = self;
+  v10 = connectionCopy;
+  selfCopy = self;
   v12 = &v13;
-  v7 = v5;
+  v7 = connectionCopy;
   dispatch_sync(internalQueue, block);
   LOBYTE(internalQueue) = *(v14 + 24);
 

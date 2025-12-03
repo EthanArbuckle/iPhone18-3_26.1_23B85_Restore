@@ -1,30 +1,30 @@
 @interface HUTimerTableViewController
-- (HUTimerTableViewController)initWithMediaProfileContainer:(id)a3;
+- (HUTimerTableViewController)initWithMediaProfileContainer:(id)container;
 - (id)_baseMobileTimerObjectsFuture;
 - (id)_canManagerControlAccessory;
-- (id)_findTimerObjectForID:(id)a3;
-- (id)_newCellForMTTimerObjectUUID:(id)a3;
+- (id)_findTimerObjectForID:(id)d;
+- (id)_newCellForMTTimerObjectUUID:(id)d;
 - (id)presentationDelegate;
-- (void)_extractUpdatedTimerObjectsFromNotification:(id)a3;
-- (void)_removeTimerObjectAtIndexPath:(id)a3;
-- (void)animationTimerTick:(id)a3;
+- (void)_extractUpdatedTimerObjectsFromNotification:(id)notification;
+- (void)_removeTimerObjectAtIndexPath:(id)path;
+- (void)animationTimerTick:(id)tick;
 - (void)dealloc;
 - (void)presentAddMobileTimerObjectViewControllerOnMainThread;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)timerCreationViewController:(id)a3 didCreateTimer:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)timerCreationViewController:(id)controller didCreateTimer:(id)timer;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation HUTimerTableViewController
 
-- (HUTimerTableViewController)initWithMediaProfileContainer:(id)a3
+- (HUTimerTableViewController)initWithMediaProfileContainer:(id)container
 {
-  v4 = a3;
+  containerCopy = container;
   v23.receiver = self;
   v23.super_class = HUTimerTableViewController;
-  v5 = [(HUMobileTimerObjectTableViewController *)&v23 initWithMediaProfileContainer:v4];
+  v5 = [(HUMobileTimerObjectTableViewController *)&v23 initWithMediaProfileContainer:containerCopy];
   if (v5)
   {
     v6 = _HULocalizedStringWithDefaultValue(@"HUQuickControlTimersDetailsButtonTitle", @"HUQuickControlTimersDetailsButtonTitle", 1);
@@ -40,13 +40,13 @@
     [(HUMobileTimerObjectTableViewController *)v5 setHeaderCellTitle:v9];
 
     [(HUMobileTimerObjectTableViewController *)v5 setIdentifier:*MEMORY[0x277D139F0]];
-    v10 = [v4 hf_categoryLowercaseLocalizedDescription];
-    v17 = HULocalizedStringWithFormat(@"HUHomePodTimersUnavailableExplanation", @"%@", v11, v12, v13, v14, v15, v16, v10);
+    hf_categoryLowercaseLocalizedDescription = [containerCopy hf_categoryLowercaseLocalizedDescription];
+    v17 = HULocalizedStringWithFormat(@"HUHomePodTimersUnavailableExplanation", @"%@", v11, v12, v13, v14, v15, v16, hf_categoryLowercaseLocalizedDescription);
     [(HUMobileTimerObjectTableViewController *)v5 setUnavailableText:v17];
 
     v18 = MEMORY[0x277CFD0F0];
-    v19 = [(HUMobileTimerObjectTableViewController *)v5 accessory];
-    v20 = [v18 hf_TimerManagerForAccessory:v19];
+    accessory = [(HUMobileTimerObjectTableViewController *)v5 accessory];
+    v20 = [v18 hf_TimerManagerForAccessory:accessory];
     timerManager = v5->_timerManager;
     v5->_timerManager = v20;
 
@@ -72,33 +72,33 @@
   objc_copyWeak(&v26, &location);
   v3 = _Block_copy(&v22);
   v4 = [(HUTimerTableViewController *)self timerManager:v22];
-  v5 = [MEMORY[0x277CCABD8] mainQueue];
-  v6 = [v4 addObserverForName:*MEMORY[0x277CFD028] queue:v5 usingBlock:v3];
+  mainQueue = [MEMORY[0x277CCABD8] mainQueue];
+  v6 = [v4 addObserverForName:*MEMORY[0x277CFD028] queue:mainQueue usingBlock:v3];
   [(HUTimerTableViewController *)self setAddNotificationObserver:v6];
 
-  v7 = [(HUTimerTableViewController *)self timerManager];
-  v8 = [MEMORY[0x277CCABD8] mainQueue];
-  v9 = [v7 addObserverForName:*MEMORY[0x277CFD050] queue:v8 usingBlock:v3];
+  timerManager = [(HUTimerTableViewController *)self timerManager];
+  mainQueue2 = [MEMORY[0x277CCABD8] mainQueue];
+  v9 = [timerManager addObserverForName:*MEMORY[0x277CFD050] queue:mainQueue2 usingBlock:v3];
   [(HUTimerTableViewController *)self setUpdateNotificationObserver:v9];
 
-  v10 = [(HUTimerTableViewController *)self timerManager];
-  v11 = [MEMORY[0x277CCABD8] mainQueue];
-  v12 = [v10 addObserverForName:*MEMORY[0x277CFD048] queue:v11 usingBlock:v3];
+  timerManager2 = [(HUTimerTableViewController *)self timerManager];
+  mainQueue3 = [MEMORY[0x277CCABD8] mainQueue];
+  v12 = [timerManager2 addObserverForName:*MEMORY[0x277CFD048] queue:mainQueue3 usingBlock:v3];
   [(HUTimerTableViewController *)self setRemoveNotificationObserver:v12];
 
-  v13 = [(HUTimerTableViewController *)self timerManager];
-  v14 = [MEMORY[0x277CCABD8] mainQueue];
-  v15 = [v13 addObserverForName:*MEMORY[0x277CFCFE8] queue:v14 usingBlock:v3];
+  timerManager3 = [(HUTimerTableViewController *)self timerManager];
+  mainQueue4 = [MEMORY[0x277CCABD8] mainQueue];
+  v15 = [timerManager3 addObserverForName:*MEMORY[0x277CFCFE8] queue:mainQueue4 usingBlock:v3];
   [(HUTimerTableViewController *)self setCanDispatchNotificationObserver:v15];
 
-  v16 = [(HUTimerTableViewController *)self timerManager];
-  v17 = [MEMORY[0x277CCABD8] mainQueue];
-  v18 = [v16 addObserverForName:*MEMORY[0x277CFD010] queue:v17 usingBlock:v3];
+  timerManager4 = [(HUTimerTableViewController *)self timerManager];
+  mainQueue5 = [MEMORY[0x277CCABD8] mainQueue];
+  v18 = [timerManager4 addObserverForName:*MEMORY[0x277CFD010] queue:mainQueue5 usingBlock:v3];
   [(HUTimerTableViewController *)self setResetNotificationObserver:v18];
 
-  v19 = [(HUTimerTableViewController *)self timerManager];
-  v20 = [MEMORY[0x277CCABD8] mainQueue];
-  v21 = [v19 addObserverForName:*MEMORY[0x277CFCFF8] queue:v20 usingBlock:v3];
+  timerManager5 = [(HUTimerTableViewController *)self timerManager];
+  mainQueue6 = [MEMORY[0x277CCABD8] mainQueue];
+  v21 = [timerManager5 addObserverForName:*MEMORY[0x277CFCFF8] queue:mainQueue6 usingBlock:v3];
   [(HUTimerTableViewController *)self setFiringNotificationObserver:v21];
 
   objc_destroyWeak(&v26);
@@ -138,51 +138,51 @@ void __41__HUTimerTableViewController_viewDidLoad__block_invoke(uint64_t a1, voi
   [WeakRetained _checkAccessFetchDataAndReloadTable];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v10.receiver = self;
   v10.super_class = HUTimerTableViewController;
-  [(HUMobileTimerObjectTableViewController *)&v10 viewWillAppear:a3];
-  v4 = [(HUTimerTableViewController *)self animationTimer];
+  [(HUMobileTimerObjectTableViewController *)&v10 viewWillAppear:appear];
+  animationTimer = [(HUTimerTableViewController *)self animationTimer];
 
-  if (!v4)
+  if (!animationTimer)
   {
     v5 = objc_alloc(MEMORY[0x277CBEBB8]);
-    v6 = [MEMORY[0x277CBEAA8] date];
-    v7 = [v5 initWithFireDate:v6 interval:self target:sel_animationTimerTick_ selector:0 userInfo:1 repeats:0.25];
+    date = [MEMORY[0x277CBEAA8] date];
+    v7 = [v5 initWithFireDate:date interval:self target:sel_animationTimerTick_ selector:0 userInfo:1 repeats:0.25];
     [(HUTimerTableViewController *)self setAnimationTimer:v7];
 
-    v8 = [MEMORY[0x277CBEB88] currentRunLoop];
-    v9 = [(HUTimerTableViewController *)self animationTimer];
-    [v8 addTimer:v9 forMode:*MEMORY[0x277CBE640]];
+    currentRunLoop = [MEMORY[0x277CBEB88] currentRunLoop];
+    animationTimer2 = [(HUTimerTableViewController *)self animationTimer];
+    [currentRunLoop addTimer:animationTimer2 forMode:*MEMORY[0x277CBE640]];
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = HUTimerTableViewController;
-  [(HUTimerTableViewController *)&v5 viewWillDisappear:a3];
-  v4 = [(HUTimerTableViewController *)self animationTimer];
-  [v4 invalidate];
+  [(HUTimerTableViewController *)&v5 viewWillDisappear:disappear];
+  animationTimer = [(HUTimerTableViewController *)self animationTimer];
+  [animationTimer invalidate];
 
   [(HUTimerTableViewController *)self setAnimationTimer:0];
 }
 
-- (void)animationTimerTick:(id)a3
+- (void)animationTimerTick:(id)tick
 {
-  v4 = [(HUTimerTableViewController *)self tableView];
-  v5 = [v4 numberOfSections];
+  tableView = [(HUTimerTableViewController *)self tableView];
+  numberOfSections = [tableView numberOfSections];
 
-  if (v5 >= 1)
+  if (numberOfSections >= 1)
   {
     v6 = 0;
     do
     {
       objc_opt_class();
-      v7 = [(HUTimerTableViewController *)self tableView];
+      tableView2 = [(HUTimerTableViewController *)self tableView];
       v8 = [MEMORY[0x277CCAA70] indexPathForRow:0 inSection:v6];
-      v9 = [v7 cellForRowAtIndexPath:v8];
+      v9 = [tableView2 cellForRowAtIndexPath:v8];
       if (objc_opt_isKindOfClass())
       {
         v10 = v9;
@@ -197,11 +197,11 @@ void __41__HUTimerTableViewController_viewDidLoad__block_invoke(uint64_t a1, voi
 
       [v11 updateTimerInfo];
       ++v6;
-      v12 = [(HUTimerTableViewController *)self tableView];
-      v13 = [v12 numberOfSections];
+      tableView3 = [(HUTimerTableViewController *)self tableView];
+      numberOfSections2 = [tableView3 numberOfSections];
     }
 
-    while (v6 < v13);
+    while (v6 < numberOfSections2);
   }
 }
 
@@ -214,27 +214,27 @@ void __41__HUTimerTableViewController_viewDidLoad__block_invoke(uint64_t a1, voi
     *buf = 136315394;
     v16 = "[HUTimerTableViewController presentAddMobileTimerObjectViewControllerOnMainThread]";
     v17 = 2112;
-    v18 = self;
+    selfCopy2 = self;
     _os_log_impl(&dword_20CEB6000, v3, OS_LOG_TYPE_DEFAULT, "%s(%@) adding new timer", buf, 0x16u);
   }
 
-  v4 = [(HUTimerTableViewController *)self parentViewController];
-  if (!v4 || (-[HUTimerTableViewController view](self, "view"), v5 = objc_claimAutoreleasedReturnValue(), [v5 window], v6 = objc_claimAutoreleasedReturnValue(), v7 = v6 == 0, v6, v5, v4, v7))
+  parentViewController = [(HUTimerTableViewController *)self parentViewController];
+  if (!parentViewController || (-[HUTimerTableViewController view](self, "view"), v5 = objc_claimAutoreleasedReturnValue(), [v5 window], v6 = objc_claimAutoreleasedReturnValue(), v7 = v6 == 0, v6, v5, parentViewController, v7))
   {
     v9 = HFLogForCategory();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      v10 = [(HUTimerTableViewController *)self parentViewController];
-      v11 = [(HUTimerTableViewController *)self view];
-      v12 = [v11 window];
+      parentViewController2 = [(HUTimerTableViewController *)self parentViewController];
+      view = [(HUTimerTableViewController *)self view];
+      window = [view window];
       *buf = 136315906;
       v16 = "[HUTimerTableViewController presentAddMobileTimerObjectViewControllerOnMainThread]";
       v17 = 2112;
-      v18 = self;
+      selfCopy2 = self;
       v19 = 2112;
-      v20 = v10;
+      v20 = parentViewController2;
       v21 = 2112;
-      v22 = v12;
+      v22 = window;
       _os_log_error_impl(&dword_20CEB6000, v9, OS_LOG_TYPE_ERROR, "%s(%@) view hierarchy problem: parentViewController %@ / window %@", buf, 0x2Au);
     }
   }
@@ -242,13 +242,13 @@ void __41__HUTimerTableViewController_viewDidLoad__block_invoke(uint64_t a1, voi
   else
   {
     objc_initWeak(buf, self);
-    v8 = [MEMORY[0x277D2C938] mainThreadScheduler];
+    mainThreadScheduler = [MEMORY[0x277D2C938] mainThreadScheduler];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __83__HUTimerTableViewController_presentAddMobileTimerObjectViewControllerOnMainThread__block_invoke;
     v13[3] = &unk_277DB8770;
     objc_copyWeak(&v14, buf);
-    [v8 performBlock:v13];
+    [mainThreadScheduler performBlock:v13];
 
     objc_destroyWeak(&v14);
     objc_destroyWeak(buf);
@@ -303,94 +303,94 @@ void __83__HUTimerTableViewController_presentAddMobileTimerObjectViewControllerO
   [v9 setBackgroundColor:v8];
 }
 
-- (void)timerCreationViewController:(id)a3 didCreateTimer:(id)a4
+- (void)timerCreationViewController:(id)controller didCreateTimer:(id)timer
 {
-  v5 = a4;
-  if (v5)
+  timerCopy = timer;
+  if (timerCopy)
   {
-    v10 = v5;
+    v10 = timerCopy;
     if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
     {
       NSLog(&cfstr_SShouldOnlyBeC.isa, self, "[HUTimerTableViewController timerCreationViewController:didCreateTimer:]");
     }
 
-    v6 = [(HUMobileTimerObjectTableViewController *)self mobileTimerObjects];
+    mobileTimerObjects = [(HUMobileTimerObjectTableViewController *)self mobileTimerObjects];
     v7 = [[HUMobileTimerObject alloc] initWithTimer:v10];
-    [v6 addObject:v7];
+    [mobileTimerObjects addObject:v7];
 
-    v8 = [(HUTimerTableViewController *)self timerManager];
-    v9 = [v8 addTimer:v10];
+    timerManager = [(HUTimerTableViewController *)self timerManager];
+    v9 = [timerManager addTimer:v10];
 
     [(HUMobileTimerObjectTableViewController *)self _checkAccessFetchDataAndReloadTable];
-    v5 = v10;
+    timerCopy = v10;
   }
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HUMobileTimerObjectTableViewController *)self tableViewDataSource];
-  v9 = [v8 itemIdentifierForIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  tableViewDataSource = [(HUMobileTimerObjectTableViewController *)self tableViewDataSource];
+  v9 = [tableViewDataSource itemIdentifierForIndexPath:pathCopy];
 
   v10 = HFLogForCategory();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [(HUMobileTimerObjectTableViewController *)self headerUUID];
+    headerUUID = [(HUMobileTimerObjectTableViewController *)self headerUUID];
     v14 = 136316162;
     v15 = "[HUTimerTableViewController tableView:didSelectRowAtIndexPath:]";
     v16 = 2112;
-    v17 = self;
+    selfCopy = self;
     v18 = 2112;
-    v19 = v7;
+    v19 = pathCopy;
     v20 = 2112;
     v21 = v9;
     v22 = 2112;
-    v23 = v11;
+    v23 = headerUUID;
     _os_log_impl(&dword_20CEB6000, v10, OS_LOG_TYPE_DEFAULT, "%s(%@) tapping indexPath = %@/objectID = %@ (FYI header ID: %@)", &v14, 0x34u);
   }
 
-  v12 = [(HUMobileTimerObjectTableViewController *)self headerUUID];
-  v13 = [v9 hmf_isEqualToUUID:v12];
+  headerUUID2 = [(HUMobileTimerObjectTableViewController *)self headerUUID];
+  v13 = [v9 hmf_isEqualToUUID:headerUUID2];
 
   if (v13)
   {
     [(HUMobileTimerObjectTableViewController *)self _checkAndAddTimerObject];
   }
 
-  [v6 deselectRowAtIndexPath:v7 animated:1];
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
 }
 
-- (void)_extractUpdatedTimerObjectsFromNotification:(id)a3
+- (void)_extractUpdatedTimerObjectsFromNotification:(id)notification
 {
   v32 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  notificationCopy = notification;
+  if (!notificationCopy)
   {
-    v23 = [MEMORY[0x277CCA890] currentHandler];
-    [v23 handleFailureInMethod:a2 object:self file:@"HUTimerTableViewController.m" lineNumber:199 description:@"This shouldn't happen"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HUTimerTableViewController.m" lineNumber:199 description:@"This shouldn't happen"];
   }
 
-  v6 = [v5 userInfo];
-  v7 = [v6 objectForKeyedSubscript:*MEMORY[0x277D296B0]];
+  userInfo = [notificationCopy userInfo];
+  v7 = [userInfo objectForKeyedSubscript:*MEMORY[0x277D296B0]];
 
   v8 = HFLogForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138413058;
-    v25 = self;
+    selfCopy3 = self;
     v26 = 2080;
     v27 = "[HUTimerTableViewController _extractUpdatedTimerObjectsFromNotification:]";
     v28 = 2112;
-    v29 = v5;
+    v29 = notificationCopy;
     v30 = 2112;
     v31 = v7;
     _os_log_impl(&dword_20CEB6000, v8, OS_LOG_TYPE_DEFAULT, "(%@)%s: NSNotification %@ contained updated timers: %@", buf, 0x2Au);
   }
 
-  v9 = [v5 name];
-  v10 = [v9 isEqualToString:*MEMORY[0x277CFD050]];
+  name = [notificationCopy name];
+  v10 = [name isEqualToString:*MEMORY[0x277CFD050]];
 
   if (v10)
   {
@@ -405,45 +405,45 @@ void __83__HUTimerTableViewController_presentAddMobileTimerObjectViewControllerO
     v12 = HFLogForCategory();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
-      v21 = [(HUMobileTimerObjectTableViewController *)self mobileTimerObjects];
+      mobileTimerObjects = [(HUMobileTimerObjectTableViewController *)self mobileTimerObjects];
       *buf = 138412802;
-      v25 = self;
+      selfCopy3 = self;
       v26 = 2080;
       v27 = "[HUTimerTableViewController _extractUpdatedTimerObjectsFromNotification:]";
       v28 = 2112;
-      v29 = v21;
+      v29 = mobileTimerObjects;
       _os_log_debug_impl(&dword_20CEB6000, v12, OS_LOG_TYPE_DEBUG, "(%@)%s:BEFORE replace %@", buf, 0x20u);
     }
 
-    v13 = [(HUMobileTimerObjectTableViewController *)self mobileTimerObjects];
-    v14 = [(HUMobileTimerObjectTableViewController *)self updatedMobileTimerObjects];
-    [v13 removeObjectsInArray:v14];
+    mobileTimerObjects2 = [(HUMobileTimerObjectTableViewController *)self mobileTimerObjects];
+    updatedMobileTimerObjects = [(HUMobileTimerObjectTableViewController *)self updatedMobileTimerObjects];
+    [mobileTimerObjects2 removeObjectsInArray:updatedMobileTimerObjects];
 
-    v15 = [(HUMobileTimerObjectTableViewController *)self mobileTimerObjects];
-    v16 = [(HUMobileTimerObjectTableViewController *)self updatedMobileTimerObjects];
-    [v15 addObjectsFromArray:v16];
+    mobileTimerObjects3 = [(HUMobileTimerObjectTableViewController *)self mobileTimerObjects];
+    updatedMobileTimerObjects2 = [(HUMobileTimerObjectTableViewController *)self updatedMobileTimerObjects];
+    [mobileTimerObjects3 addObjectsFromArray:updatedMobileTimerObjects2];
 
     v17 = HFLogForCategory();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
     {
-      v22 = [(HUMobileTimerObjectTableViewController *)self mobileTimerObjects];
+      mobileTimerObjects4 = [(HUMobileTimerObjectTableViewController *)self mobileTimerObjects];
       *buf = 138412802;
-      v25 = self;
+      selfCopy3 = self;
       v26 = 2080;
       v27 = "[HUTimerTableViewController _extractUpdatedTimerObjectsFromNotification:]";
       v28 = 2112;
-      v29 = v22;
+      v29 = mobileTimerObjects4;
       _os_log_debug_impl(&dword_20CEB6000, v17, OS_LOG_TYPE_DEBUG, "(%@)%s:AFTER replace %@", buf, 0x20u);
     }
   }
 
-  v18 = [v5 name];
-  v19 = [v18 isEqualToString:*MEMORY[0x277CFD010]];
+  name2 = [notificationCopy name];
+  v19 = [name2 isEqualToString:*MEMORY[0x277CFD010]];
 
   if (v19)
   {
-    v20 = [(HUMobileTimerObjectTableViewController *)self mobileTimerObjects];
-    [(HUMobileTimerObjectTableViewController *)self setUpdatedMobileTimerObjects:v20];
+    mobileTimerObjects5 = [(HUMobileTimerObjectTableViewController *)self mobileTimerObjects];
+    [(HUMobileTimerObjectTableViewController *)self setUpdatedMobileTimerObjects:mobileTimerObjects5];
   }
 }
 
@@ -479,34 +479,34 @@ HUMobileTimerObject *__74__HUTimerTableViewController__extractUpdatedTimerObject
 
 - (void)dealloc
 {
-  v3 = [(HUTimerTableViewController *)self timerManager];
-  v4 = [(HUTimerTableViewController *)self addNotificationObserver];
-  [v3 removeObserver:v4];
+  timerManager = [(HUTimerTableViewController *)self timerManager];
+  addNotificationObserver = [(HUTimerTableViewController *)self addNotificationObserver];
+  [timerManager removeObserver:addNotificationObserver];
 
   [(HUTimerTableViewController *)self setAddNotificationObserver:0];
-  v5 = [(HUTimerTableViewController *)self timerManager];
-  v6 = [(HUTimerTableViewController *)self updateNotificationObserver];
-  [v5 removeObserver:v6];
+  timerManager2 = [(HUTimerTableViewController *)self timerManager];
+  updateNotificationObserver = [(HUTimerTableViewController *)self updateNotificationObserver];
+  [timerManager2 removeObserver:updateNotificationObserver];
 
   [(HUTimerTableViewController *)self setUpdateNotificationObserver:0];
-  v7 = [(HUTimerTableViewController *)self timerManager];
-  v8 = [(HUTimerTableViewController *)self removeNotificationObserver];
-  [v7 removeObserver:v8];
+  timerManager3 = [(HUTimerTableViewController *)self timerManager];
+  removeNotificationObserver = [(HUTimerTableViewController *)self removeNotificationObserver];
+  [timerManager3 removeObserver:removeNotificationObserver];
 
   [(HUTimerTableViewController *)self setRemoveNotificationObserver:0];
-  v9 = [(HUTimerTableViewController *)self timerManager];
-  v10 = [(HUTimerTableViewController *)self canDispatchNotificationObserver];
-  [v9 removeObserver:v10];
+  timerManager4 = [(HUTimerTableViewController *)self timerManager];
+  canDispatchNotificationObserver = [(HUTimerTableViewController *)self canDispatchNotificationObserver];
+  [timerManager4 removeObserver:canDispatchNotificationObserver];
 
   [(HUTimerTableViewController *)self setCanDispatchNotificationObserver:0];
-  v11 = [(HUTimerTableViewController *)self timerManager];
-  v12 = [(HUTimerTableViewController *)self resetNotificationObserver];
-  [v11 removeObserver:v12];
+  timerManager5 = [(HUTimerTableViewController *)self timerManager];
+  resetNotificationObserver = [(HUTimerTableViewController *)self resetNotificationObserver];
+  [timerManager5 removeObserver:resetNotificationObserver];
 
   [(HUTimerTableViewController *)self setResetNotificationObserver:0];
-  v13 = [(HUTimerTableViewController *)self timerManager];
-  v14 = [(HUTimerTableViewController *)self firingNotificationObserver];
-  [v13 removeObserver:v14];
+  timerManager6 = [(HUTimerTableViewController *)self timerManager];
+  firingNotificationObserver = [(HUTimerTableViewController *)self firingNotificationObserver];
+  [timerManager6 removeObserver:firingNotificationObserver];
 
   [(HUTimerTableViewController *)self setFiringNotificationObserver:0];
   v15.receiver = self;
@@ -516,21 +516,21 @@ HUMobileTimerObject *__74__HUTimerTableViewController__extractUpdatedTimerObject
 
 - (id)_baseMobileTimerObjectsFuture
 {
-  v3 = [(HUMobileTimerObjectTableViewController *)self mediaProfileContainer];
-  v4 = [v3 accessories];
-  v5 = [v4 allObjects];
+  mediaProfileContainer = [(HUMobileTimerObjectTableViewController *)self mediaProfileContainer];
+  accessories = [mediaProfileContainer accessories];
+  allObjects = [accessories allObjects];
 
-  if (![v5 count])
+  if (![allObjects count])
   {
     v6 = MEMORY[0x277CBEA60];
-    v7 = [(HUMobileTimerObjectTableViewController *)self accessory];
-    v8 = [v6 arrayWithObject:v7];
+    accessory = [(HUMobileTimerObjectTableViewController *)self accessory];
+    v8 = [v6 arrayWithObject:accessory];
 
-    v5 = v8;
+    allObjects = v8;
   }
 
-  v9 = [(HUTimerTableViewController *)self timerManager];
-  v10 = [v9 timersForAccessories:v5];
+  timerManager = [(HUTimerTableViewController *)self timerManager];
+  v10 = [timerManager timersForAccessories:allObjects];
   v11 = [v10 flatMap:&__block_literal_global_59_0];
 
   return v11;
@@ -566,18 +566,18 @@ HUMobileTimerObject *__59__HUTimerTableViewController__baseMobileTimerObjectsFut
   return v3;
 }
 
-- (id)_newCellForMTTimerObjectUUID:(id)a3
+- (id)_newCellForMTTimerObjectUUID:(id)d
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HUTimerTableViewController *)self _findTimerObjectForID:v4];
+  dCopy = d;
+  v5 = [(HUTimerTableViewController *)self _findTimerObjectForID:dCopy];
   v6 = HFLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     v11 = 136315650;
-    v12 = "[HUTimerTableViewController _newCellForMTTimerObjectUUID:]";
+    selfCopy2 = "[HUTimerTableViewController _newCellForMTTimerObjectUUID:]";
     v13 = 2112;
-    v14 = self;
+    selfCopy = self;
     v15 = 2112;
     v16 = v5;
     _os_log_debug_impl(&dword_20CEB6000, v6, OS_LOG_TYPE_DEBUG, "%s(%@) new MT Cell for %@", &v11, 0x20u);
@@ -586,22 +586,22 @@ HUMobileTimerObject *__59__HUTimerTableViewController__baseMobileTimerObjectsFut
   if (v5)
   {
     v7 = [HUTimerTableViewCell alloc];
-    v8 = [(HUTimerTableViewController *)self timerManager];
-    v9 = [(HUTimerTableViewCell *)v7 initWithMobileTimerObject:v5 manager:v8 roomName:0];
+    timerManager = [(HUTimerTableViewController *)self timerManager];
+    v9 = [(HUTimerTableViewCell *)v7 initWithMobileTimerObject:v5 manager:timerManager roomName:0];
   }
 
   else
   {
-    v8 = HFLogForCategory();
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    timerManager = HFLogForCategory();
+    if (os_log_type_enabled(timerManager, OS_LOG_TYPE_ERROR))
     {
       v11 = 138412802;
-      v12 = self;
+      selfCopy2 = self;
       v13 = 2080;
-      v14 = "[HUTimerTableViewController _newCellForMTTimerObjectUUID:]";
+      selfCopy = "[HUTimerTableViewController _newCellForMTTimerObjectUUID:]";
       v15 = 2112;
-      v16 = v4;
-      _os_log_error_impl(&dword_20CEB6000, v8, OS_LOG_TYPE_ERROR, "(%@)%s: could not find mobileTimerObject for ID: %@", &v11, 0x20u);
+      v16 = dCopy;
+      _os_log_error_impl(&dword_20CEB6000, timerManager, OS_LOG_TYPE_ERROR, "(%@)%s: could not find mobileTimerObject for ID: %@", &v11, 0x20u);
     }
 
     v9 = 0;
@@ -612,26 +612,26 @@ HUMobileTimerObject *__59__HUTimerTableViewController__baseMobileTimerObjectsFut
 
 - (id)_canManagerControlAccessory
 {
-  v3 = [(HUMobileTimerObjectTableViewController *)self accessory];
-  v4 = [(HUTimerTableViewController *)self timerManager];
-  v5 = [HUAlarmsAndTimersAccessUtility canAccess:v3 for:1 withManager:v4];
-  v6 = [MEMORY[0x277D2C938] mainThreadScheduler];
-  v7 = [v5 reschedule:v6];
+  accessory = [(HUMobileTimerObjectTableViewController *)self accessory];
+  timerManager = [(HUTimerTableViewController *)self timerManager];
+  v5 = [HUAlarmsAndTimersAccessUtility canAccess:accessory for:1 withManager:timerManager];
+  mainThreadScheduler = [MEMORY[0x277D2C938] mainThreadScheduler];
+  v7 = [v5 reschedule:mainThreadScheduler];
 
   return v7;
 }
 
-- (id)_findTimerObjectForID:(id)a3
+- (id)_findTimerObjectForID:(id)d
 {
-  v4 = a3;
-  v5 = [(HUMobileTimerObjectTableViewController *)self mobileTimerObjects];
+  dCopy = d;
+  mobileTimerObjects = [(HUMobileTimerObjectTableViewController *)self mobileTimerObjects];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __52__HUTimerTableViewController__findTimerObjectForID___block_invoke;
   v9[3] = &unk_277DBA650;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 na_firstObjectPassingTest:v9];
+  v10 = dCopy;
+  v6 = dCopy;
+  v7 = [mobileTimerObjects na_firstObjectPassingTest:v9];
 
   return v7;
 }
@@ -645,12 +645,12 @@ uint64_t __52__HUTimerTableViewController__findTimerObjectForID___block_invoke(u
   return v5;
 }
 
-- (void)_removeTimerObjectAtIndexPath:(id)a3
+- (void)_removeTimerObjectAtIndexPath:(id)path
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HUTimerTableViewController *)self tableView];
-  v6 = [v5 cellForRowAtIndexPath:v4];
+  pathCopy = path;
+  tableView = [(HUTimerTableViewController *)self tableView];
+  v6 = [tableView cellForRowAtIndexPath:pathCopy];
 
   objc_opt_class();
   v7 = v6;
@@ -668,28 +668,28 @@ uint64_t __52__HUTimerTableViewController__findTimerObjectForID___block_invoke(u
 
   if (v9)
   {
-    v10 = [v9 timer];
+    timer = [v9 timer];
     v11 = HFLogForCategory();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v15 = 138413058;
-      v16 = self;
+      selfCopy = self;
       v17 = 2080;
       v18 = "[HUTimerTableViewController _removeTimerObjectAtIndexPath:]";
       v19 = 2112;
-      v20 = v10;
+      v20 = timer;
       v21 = 2112;
-      v22 = v4;
+      v22 = pathCopy;
       _os_log_impl(&dword_20CEB6000, v11, OS_LOG_TYPE_DEFAULT, "(%@)%s: Removing timer %@ at %@", &v15, 0x2Au);
     }
 
-    if (v10)
+    if (timer)
     {
-      v12 = [(HUTimerTableViewController *)self timerManager];
-      v13 = [v12 removeTimer:v10];
+      timerManager = [(HUTimerTableViewController *)self timerManager];
+      v13 = [timerManager removeTimer:timer];
 
-      v14 = [v10 timerID];
-      [(HUMobileTimerObjectTableViewController *)self _quickDeleteMobileTimerObjectFromTable:v14];
+      timerID = [timer timerID];
+      [(HUMobileTimerObjectTableViewController *)self _quickDeleteMobileTimerObjectFromTable:timerID];
     }
   }
 }

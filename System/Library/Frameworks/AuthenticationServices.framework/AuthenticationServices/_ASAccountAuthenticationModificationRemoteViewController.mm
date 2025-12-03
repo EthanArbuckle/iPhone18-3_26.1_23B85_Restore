@@ -1,97 +1,97 @@
 @interface _ASAccountAuthenticationModificationRemoteViewController
 + (id)exportedInterface;
-+ (id)requestViewControllerWithConnectionHandler:(id)a3;
++ (id)requestViewControllerWithConnectionHandler:(id)handler;
 - (_ASAccountAuthenticationModificationRemoteViewControllerDelegate)delegate;
 - (void)dismissAccountModificationRemoteViewController;
 - (void)presentAccountModificationRemoteViewController;
-- (void)requestDidFailWithError:(id)a3 completion:(id)a4;
-- (void)requestDidFinishWithCredential:(id)a3 userInfo:(id)a4 completion:(id)a5;
-- (void)requestToUpgradeToSignInWithAppleDidFinishWithUserInfo:(id)a3 completion:(id)a4;
-- (void)updateCredential:(id)a3 forServiceIdentifier:(id)a4 userInfo:(id)a5 extension:(id)a6;
-- (void)upgradeCredentialToSignInWithApple:(id)a3 forServiceIdentifier:(id)a4 userInfo:(id)a5 extension:(id)a6;
-- (void)viewServiceDidTerminateWithError:(id)a3;
+- (void)requestDidFailWithError:(id)error completion:(id)completion;
+- (void)requestDidFinishWithCredential:(id)credential userInfo:(id)info completion:(id)completion;
+- (void)requestToUpgradeToSignInWithAppleDidFinishWithUserInfo:(id)info completion:(id)completion;
+- (void)updateCredential:(id)credential forServiceIdentifier:(id)identifier userInfo:(id)info extension:(id)extension;
+- (void)upgradeCredentialToSignInWithApple:(id)apple forServiceIdentifier:(id)identifier userInfo:(id)info extension:(id)extension;
+- (void)viewServiceDidTerminateWithError:(id)error;
 @end
 
 @implementation _ASAccountAuthenticationModificationRemoteViewController
 
-+ (id)requestViewControllerWithConnectionHandler:(id)a3
++ (id)requestViewControllerWithConnectionHandler:(id)handler
 {
-  v3 = a3;
-  v4 = [objc_opt_class() requestViewController:@"ASAccountAuthenticationModificationServiceViewController" fromServiceWithBundleIdentifier:@"com.apple.SafariViewService" connectionHandler:v3];
+  handlerCopy = handler;
+  v4 = [objc_opt_class() requestViewController:@"ASAccountAuthenticationModificationServiceViewController" fromServiceWithBundleIdentifier:@"com.apple.SafariViewService" connectionHandler:handlerCopy];
 
   return v4;
 }
 
-- (void)upgradeCredentialToSignInWithApple:(id)a3 forServiceIdentifier:(id)a4 userInfo:(id)a5 extension:(id)a6
+- (void)upgradeCredentialToSignInWithApple:(id)apple forServiceIdentifier:(id)identifier userInfo:(id)info extension:(id)extension
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [a6 _plugIn];
-  v15 = [v13 uuid];
+  infoCopy = info;
+  identifierCopy = identifier;
+  appleCopy = apple;
+  _plugIn = [extension _plugIn];
+  uuid = [_plugIn uuid];
 
-  v14 = [(_UIRemoteViewController *)self serviceViewControllerProxy];
-  [v14 upgradeCredentialToSignInWithApple:v12 forServiceIdentifier:v11 userInfo:v10 extensionUUID:v15];
+  serviceViewControllerProxy = [(_UIRemoteViewController *)self serviceViewControllerProxy];
+  [serviceViewControllerProxy upgradeCredentialToSignInWithApple:appleCopy forServiceIdentifier:identifierCopy userInfo:infoCopy extensionUUID:uuid];
 }
 
-- (void)updateCredential:(id)a3 forServiceIdentifier:(id)a4 userInfo:(id)a5 extension:(id)a6
+- (void)updateCredential:(id)credential forServiceIdentifier:(id)identifier userInfo:(id)info extension:(id)extension
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [a6 _plugIn];
-  v15 = [v13 uuid];
+  infoCopy = info;
+  identifierCopy = identifier;
+  credentialCopy = credential;
+  _plugIn = [extension _plugIn];
+  uuid = [_plugIn uuid];
 
-  v14 = [(_UIRemoteViewController *)self serviceViewControllerProxy];
-  [v14 updateCredential:v12 forServiceIdentifier:v11 userInfo:v10 extensionUUID:v15];
+  serviceViewControllerProxy = [(_UIRemoteViewController *)self serviceViewControllerProxy];
+  [serviceViewControllerProxy updateCredential:credentialCopy forServiceIdentifier:identifierCopy userInfo:infoCopy extensionUUID:uuid];
 }
 
-- (void)requestToUpgradeToSignInWithAppleDidFinishWithUserInfo:(id)a3 completion:(id)a4
+- (void)requestToUpgradeToSignInWithAppleDidFinishWithUserInfo:(id)info completion:(id)completion
 {
-  v8 = a3;
-  v6 = a4;
+  infoCopy = info;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained accountModificationRemoteViewControllerDidFinishUpgradeToSignInWithApple:self userInfo:v8 completion:v6];
+    [WeakRetained accountModificationRemoteViewControllerDidFinishUpgradeToSignInWithApple:self userInfo:infoCopy completion:completionCopy];
   }
 
   else
   {
-    v6[2](v6);
+    completionCopy[2](completionCopy);
   }
 }
 
-- (void)requestDidFinishWithCredential:(id)a3 userInfo:(id)a4 completion:(id)a5
+- (void)requestDidFinishWithCredential:(id)credential userInfo:(id)info completion:(id)completion
 {
-  v11 = a3;
-  v8 = a4;
-  v9 = a5;
+  credentialCopy = credential;
+  infoCopy = info;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained accountModificationRemoteViewController:self didFinishWithCredential:v11 userInfo:v8 completion:v9];
+    [WeakRetained accountModificationRemoteViewController:self didFinishWithCredential:credentialCopy userInfo:infoCopy completion:completionCopy];
   }
 
   else
   {
-    v9[2](v9);
+    completionCopy[2](completionCopy);
   }
 }
 
-- (void)requestDidFailWithError:(id)a3 completion:(id)a4
+- (void)requestDidFailWithError:(id)error completion:(id)completion
 {
-  v8 = a3;
-  v6 = a4;
+  errorCopy = error;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained accountModificationRemoteViewController:self requestCanceledWithError:v8 completion:v6];
+    [WeakRetained accountModificationRemoteViewController:self requestCanceledWithError:errorCopy completion:completionCopy];
   }
 
   else
   {
-    v6[2](v6);
+    completionCopy[2](completionCopy);
   }
 }
 
@@ -125,13 +125,13 @@
   return v2;
 }
 
-- (void)viewServiceDidTerminateWithError:(id)a3
+- (void)viewServiceDidTerminateWithError:(id)error
 {
-  v5 = a3;
+  errorCopy = error;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained accountModificationRemoteViewController:self viewServiceDidTerminateWithError:v5];
+    [WeakRetained accountModificationRemoteViewController:self viewServiceDidTerminateWithError:errorCopy];
   }
 }
 

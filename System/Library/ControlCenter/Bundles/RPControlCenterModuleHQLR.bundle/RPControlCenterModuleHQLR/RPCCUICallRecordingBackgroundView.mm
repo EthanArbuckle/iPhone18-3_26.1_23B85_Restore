@@ -1,13 +1,13 @@
 @interface RPCCUICallRecordingBackgroundView
-- (_TtC25RPControlCenterModuleHQLR33RPCCUICallRecordingBackgroundView)initWithCoder:(id)a3;
-- (_TtC25RPControlCenterModuleHQLR33RPCCUICallRecordingBackgroundView)initWithFrame:(CGRect)a3;
+- (_TtC25RPControlCenterModuleHQLR33RPCCUICallRecordingBackgroundView)initWithCoder:(id)coder;
+- (_TtC25RPControlCenterModuleHQLR33RPCCUICallRecordingBackgroundView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 - (void)updateRecordingState;
 @end
 
 @implementation RPCCUICallRecordingBackgroundView
 
-- (_TtC25RPControlCenterModuleHQLR33RPCCUICallRecordingBackgroundView)initWithCoder:(id)a3
+- (_TtC25RPControlCenterModuleHQLR33RPCCUICallRecordingBackgroundView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC25RPControlCenterModuleHQLR33RPCCUICallRecordingBackgroundView_viewModel;
   type metadata accessor for CallRecordingStartButtonViewModel(0);
@@ -20,12 +20,12 @@
 - (void)layoutSubviews
 {
   v2 = *(&self->super.super.super.isa + OBJC_IVAR____TtC25RPControlCenterModuleHQLR33RPCCUICallRecordingBackgroundView_hostingViewController);
-  v5 = self;
-  v3 = [v2 view];
-  if (v3)
+  selfCopy = self;
+  view = [v2 view];
+  if (view)
   {
-    v4 = v3;
-    [(RPCCUICallRecordingBackgroundView *)v5 bounds];
+    v4 = view;
+    [(RPCCUICallRecordingBackgroundView *)selfCopy bounds];
     [v4 setFrame:?];
   }
 
@@ -37,11 +37,11 @@
 
 - (void)updateRecordingState
 {
-  v2 = self;
+  selfCopy = self;
   sub_11FA0();
 }
 
-- (_TtC25RPControlCenterModuleHQLR33RPCCUICallRecordingBackgroundView)initWithFrame:(CGRect)a3
+- (_TtC25RPControlCenterModuleHQLR33RPCCUICallRecordingBackgroundView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

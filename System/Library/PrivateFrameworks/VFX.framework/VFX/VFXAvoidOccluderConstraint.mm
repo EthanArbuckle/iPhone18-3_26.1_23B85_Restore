@@ -1,18 +1,18 @@
 @interface VFXAvoidOccluderConstraint
 + (id)avoidOccluderConstraint;
-+ (id)avoidOccluderConstraintWithTarget:(id)a3;
++ (id)avoidOccluderConstraintWithTarget:(id)target;
 - (VFXAvoidOccluderConstraint)init;
-- (VFXAvoidOccluderConstraint)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)_customDecodingOfVFXAvoidOccluderConstraint:(id)a3;
-- (void)_customEncodingOfVFXAvoidOccluderConstraint:(id)a3;
+- (VFXAvoidOccluderConstraint)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)_customDecodingOfVFXAvoidOccluderConstraint:(id)constraint;
+- (void)_customEncodingOfVFXAvoidOccluderConstraint:(id)constraint;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)enumerateReferencesForOperation:(int64_t)a3 usingBlock:(id)a4;
-- (void)setBias:(float)a3;
-- (void)setDelegate:(id)a3;
-- (void)setOccluderCategoryBitMask:(unint64_t)a3;
-- (void)setTarget:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)enumerateReferencesForOperation:(int64_t)operation usingBlock:(id)block;
+- (void)setBias:(float)bias;
+- (void)setDelegate:(id)delegate;
+- (void)setOccluderCategoryBitMask:(unint64_t)mask;
+- (void)setTarget:(id)target;
 @end
 
 @implementation VFXAvoidOccluderConstraint
@@ -65,16 +65,16 @@
   return v2;
 }
 
-+ (id)avoidOccluderConstraintWithTarget:(id)a3
++ (id)avoidOccluderConstraintWithTarget:(id)target
 {
   v4 = objc_alloc_init(VFXAvoidOccluderConstraint);
-  objc_msgSend_setTarget_(v4, v5, a3, v6);
+  objc_msgSend_setTarget_(v4, v5, target, v6);
   return v4;
 }
 
-- (void)enumerateReferencesForOperation:(int64_t)a3 usingBlock:(id)a4
+- (void)enumerateReferencesForOperation:(int64_t)operation usingBlock:(id)block
 {
-  if (!a3)
+  if (!operation)
   {
     target = self->_target;
     if (target)
@@ -84,14 +84,14 @@
       v6[2] = sub_1AF2BC224;
       v6[3] = &unk_1E7A7C0C8;
       v6[4] = self;
-      (*(a4 + 2))(a4, target, 1, v6);
+      (*(block + 2))(block, target, 1, v6);
     }
   }
 
-  objc_msgSend_enumerateAnimationReferencesUsingBlock_(self, target, a4, a4);
+  objc_msgSend_enumerateAnimationReferencesUsingBlock_(self, target, block, block);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   v8 = objc_msgSend_target(self, v5, v6, v7);
@@ -104,12 +104,12 @@
   return v4;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  if (self->_delegate != a3)
+  if (self->_delegate != delegate)
   {
-    self->_delegate = a3;
-    if (a3)
+    self->_delegate = delegate;
+    if (delegate)
     {
       if (objc_opt_respondsToSelector())
       {
@@ -160,17 +160,17 @@
   }
 }
 
-- (void)setTarget:(id)a3
+- (void)setTarget:(id)target
 {
   target = self->_target;
-  if (target != a3)
+  if (target != target)
   {
 
-    v6 = a3;
-    self->_target = v6;
-    if (v6)
+    targetCopy = target;
+    self->_target = targetCopy;
+    if (targetCopy)
     {
-      v6 = objc_msgSend_nodeRef(v6, v7, v8, v9);
+      targetCopy = objc_msgSend_nodeRef(targetCopy, v7, v8, v9);
     }
 
     v10[0] = MEMORY[0x1E69E9820];
@@ -178,68 +178,68 @@
     v10[2] = sub_1AF2BC5C4;
     v10[3] = &unk_1E7A7E248;
     v10[4] = self;
-    v10[5] = v6;
+    v10[5] = targetCopy;
     objc_msgSend_postCommandWithObject_applyBlock_(VFXTransaction, v7, self, v10);
   }
 }
 
-- (void)setOccluderCategoryBitMask:(unint64_t)a3
+- (void)setOccluderCategoryBitMask:(unint64_t)mask
 {
-  self->_categoryBitMask = a3;
+  self->_categoryBitMask = mask;
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = sub_1AF2BC668;
   v3[3] = &unk_1E7A7E248;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = mask;
   objc_msgSend_postCommandWithObject_applyBlock_(VFXTransaction, a2, self, v3);
 }
 
-- (void)setBias:(float)a3
+- (void)setBias:(float)bias
 {
-  self->_offset = a3;
+  self->_offset = bias;
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = sub_1AF2BC70C;
   v3[3] = &unk_1E7A7E270;
   v3[4] = self;
-  v4 = a3;
+  biasCopy = bias;
   objc_msgSend_postCommandWithObject_applyBlock_(VFXTransaction, a2, self, v3);
 }
 
-- (void)_customEncodingOfVFXAvoidOccluderConstraint:(id)a3
+- (void)_customEncodingOfVFXAvoidOccluderConstraint:(id)constraint
 {
   target = self->_target;
   if (target)
   {
-    objc_msgSend_encodeObject_forKey_(a3, a2, target, @"target");
+    objc_msgSend_encodeObject_forKey_(constraint, a2, target, @"target");
   }
 }
 
-- (void)_customDecodingOfVFXAvoidOccluderConstraint:(id)a3
+- (void)_customDecodingOfVFXAvoidOccluderConstraint:(id)constraint
 {
   v5 = objc_opt_class();
-  self->_target = objc_msgSend_decodeObjectOfClass_forKey_(a3, v6, v5, @"target");
+  self->_target = objc_msgSend_decodeObjectOfClass_forKey_(constraint, v6, v5, @"target");
   v7 = sub_1AF157E28();
   self->super._constraintRef = v7;
   v11 = objc_msgSend_nodeRef(self->_target, v8, v9, v10);
   sub_1AF15001C(v7, v11);
 
-  objc_msgSend_finalizeDecodeConstraint_(self, v12, a3, v13);
+  objc_msgSend_finalizeDecodeConstraint_(self, v12, constraint, v13);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v11.receiver = self;
   v11.super_class = VFXAvoidOccluderConstraint;
   [(VFXConstraint *)&v11 encodeWithCoder:?];
-  objc_msgSend__customEncodingOfVFXAvoidOccluderConstraint_(self, v5, a3, v6);
-  objc_msgSend_encodeInteger_forKey_(a3, v7, self->_categoryBitMask, @"categoryBitMask");
+  objc_msgSend__customEncodingOfVFXAvoidOccluderConstraint_(self, v5, coder, v6);
+  objc_msgSend_encodeInteger_forKey_(coder, v7, self->_categoryBitMask, @"categoryBitMask");
   *&v8 = self->_offset;
-  objc_msgSend_encodeFloat_forKey_(a3, v9, @"bias", v10, v8);
+  objc_msgSend_encodeFloat_forKey_(coder, v9, @"bias", v10, v8);
 }
 
-- (VFXAvoidOccluderConstraint)initWithCoder:(id)a3
+- (VFXAvoidOccluderConstraint)initWithCoder:(id)coder
 {
   v26.receiver = self;
   v26.super_class = VFXAvoidOccluderConstraint;
@@ -248,10 +248,10 @@
   {
     v8 = objc_msgSend_immediateMode(VFXTransaction, v4, v5, v6);
     objc_msgSend_setImmediateMode_(VFXTransaction, v9, 1, v10);
-    objc_msgSend__customDecodingOfVFXAvoidOccluderConstraint_(v7, v11, a3, v12);
-    v15 = objc_msgSend_decodeIntegerForKey_(a3, v13, @"categoryBitMask", v14);
+    objc_msgSend__customDecodingOfVFXAvoidOccluderConstraint_(v7, v11, coder, v12);
+    v15 = objc_msgSend_decodeIntegerForKey_(coder, v13, @"categoryBitMask", v14);
     objc_msgSend_setOccluderCategoryBitMask_(v7, v16, v15, v17);
-    objc_msgSend_decodeFloatForKey_(a3, v18, @"bias", v19);
+    objc_msgSend_decodeFloatForKey_(coder, v18, @"bias", v19);
     objc_msgSend_setBias_(v7, v20, v21, v22);
     objc_msgSend_setImmediateMode_(VFXTransaction, v23, v8, v24);
   }

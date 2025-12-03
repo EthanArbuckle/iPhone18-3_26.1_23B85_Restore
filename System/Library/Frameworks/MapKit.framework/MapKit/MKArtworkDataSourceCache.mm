@@ -1,32 +1,32 @@
 @interface MKArtworkDataSourceCache
 + (MKArtworkDataSourceCache)sharedInstance;
-- (MKArtworkDataSourceCache)initWithArtworkManager:(id)a3;
-- (id)imageForArtwork:(id)a3 size:(int64_t)a4 featureType:(unint64_t)a5 scale:(double)a6 nightMode:(BOOL)a7 widthPaddingMultiple:(double)a8;
-- (id)imageForSizedArtwork:(id)a3 scale:(double)a4 nightMode:(BOOL)a5;
+- (MKArtworkDataSourceCache)initWithArtworkManager:(id)manager;
+- (id)imageForArtwork:(id)artwork size:(int64_t)size featureType:(unint64_t)type scale:(double)scale nightMode:(BOOL)mode widthPaddingMultiple:(double)multiple;
+- (id)imageForSizedArtwork:(id)artwork scale:(double)scale nightMode:(BOOL)mode;
 - (void)purge;
 @end
 
 @implementation MKArtworkDataSourceCache
 
-- (id)imageForArtwork:(id)a3 size:(int64_t)a4 featureType:(unint64_t)a5 scale:(double)a6 nightMode:(BOOL)a7 widthPaddingMultiple:(double)a8
+- (id)imageForArtwork:(id)artwork size:(int64_t)size featureType:(unint64_t)type scale:(double)scale nightMode:(BOOL)mode widthPaddingMultiple:(double)multiple
 {
-  v9 = a7;
-  v14 = a3;
-  v15 = [v14 shieldDataSource];
-  ShouldBeFlipped = ImageForShieldDataSourceTypeShouldBeFlipped([v15 shieldType]);
+  modeCopy = mode;
+  artworkCopy = artwork;
+  shieldDataSource = [artworkCopy shieldDataSource];
+  ShouldBeFlipped = ImageForShieldDataSourceTypeShouldBeFlipped([shieldDataSource shieldType]);
 
-  v17 = MKKeyForTransitArtwork(v14, a4, a5, ShouldBeFlipped, v9, a8, a6);
+  v17 = MKKeyForTransitArtwork(artworkCopy, size, type, ShouldBeFlipped, modeCopy, multiple, scale);
   v18 = [(MKArtworkDataSourceCache *)self _lookupArtworkInCacheWithKey:v17];
   if (!v18)
   {
-    v19 = [(MKArtworkDataSourceCache *)self artworkManager];
-    v18 = [v19 transitArtworkImageWithDataSource:v14 size:a4 featureType:a5 scale:v9 nightMode:a6 withWidthPaddingMultiple:a8];
+    artworkManager = [(MKArtworkDataSourceCache *)self artworkManager];
+    v18 = [artworkManager transitArtworkImageWithDataSource:artworkCopy size:size featureType:type scale:modeCopy nightMode:scale withWidthPaddingMultiple:multiple];
 
     if (ShouldBeFlipped)
     {
-      v20 = [v18 imageFlippedForRightToLeftLayoutDirection];
+      imageFlippedForRightToLeftLayoutDirection = [v18 imageFlippedForRightToLeftLayoutDirection];
 
-      v18 = v20;
+      v18 = imageFlippedForRightToLeftLayoutDirection;
     }
 
     if (v18)
@@ -38,25 +38,25 @@
   return v18;
 }
 
-- (id)imageForSizedArtwork:(id)a3 scale:(double)a4 nightMode:(BOOL)a5
+- (id)imageForSizedArtwork:(id)artwork scale:(double)scale nightMode:(BOOL)mode
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = [v8 artwork];
-  v10 = -[MKArtworkDataSourceCache imageForArtwork:size:featureType:scale:nightMode:](self, "imageForArtwork:size:featureType:scale:nightMode:", v9, [v8 shieldSize], 2, v5, a4);
+  modeCopy = mode;
+  artworkCopy = artwork;
+  artwork = [artworkCopy artwork];
+  v10 = -[MKArtworkDataSourceCache imageForArtwork:size:featureType:scale:nightMode:](self, "imageForArtwork:size:featureType:scale:nightMode:", artwork, [artworkCopy shieldSize], 2, modeCopy, scale);
 
   if (!v10)
   {
-    v11 = [v8 fallbackShieldSize];
-    if (v11 == [v8 shieldSize])
+    fallbackShieldSize = [artworkCopy fallbackShieldSize];
+    if (fallbackShieldSize == [artworkCopy shieldSize])
     {
       v10 = 0;
     }
 
     else
     {
-      v12 = [v8 artwork];
-      v10 = -[MKArtworkDataSourceCache imageForArtwork:size:featureType:scale:nightMode:](self, "imageForArtwork:size:featureType:scale:nightMode:", v12, [v8 fallbackShieldSize], 2, v5, a4);
+      artwork2 = [artworkCopy artwork];
+      v10 = -[MKArtworkDataSourceCache imageForArtwork:size:featureType:scale:nightMode:](self, "imageForArtwork:size:featureType:scale:nightMode:", artwork2, [artworkCopy fallbackShieldSize], 2, modeCopy, scale);
     }
   }
 
@@ -65,30 +65,30 @@
 
 - (void)purge
 {
-  v3 = [(MKArtworkDataSourceCache *)self artworkManager];
-  [v3 purge];
+  artworkManager = [(MKArtworkDataSourceCache *)self artworkManager];
+  [artworkManager purge];
 
   artworkImageCache = self->_artworkImageCache;
 
   [(NSCache *)artworkImageCache removeAllObjects];
 }
 
-- (MKArtworkDataSourceCache)initWithArtworkManager:(id)a3
+- (MKArtworkDataSourceCache)initWithArtworkManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v12.receiver = self;
   v12.super_class = MKArtworkDataSourceCache;
   v6 = [(MKArtworkDataSourceCache *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_artworkManager, a3);
+    objc_storeStrong(&v6->_artworkManager, manager);
     v8 = objc_alloc_init(MEMORY[0x1E695DEE0]);
     artworkImageCache = v7->_artworkImageCache;
     v7->_artworkImageCache = v8;
 
-    v10 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v10 addObserver:v7 selector:sel__shieldPackDidUpdate name:*MEMORY[0x1E69A1970] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v7 selector:sel__shieldPackDidUpdate name:*MEMORY[0x1E69A1970] object:0];
   }
 
   return v7;
@@ -100,7 +100,7 @@
   block[1] = 3221225472;
   block[2] = __42__MKArtworkDataSourceCache_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_7628 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_7628, block);

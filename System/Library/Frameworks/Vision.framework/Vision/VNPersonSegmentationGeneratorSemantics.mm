@@ -1,7 +1,7 @@
 @interface VNPersonSegmentationGeneratorSemantics
-+ (id)_inferenceDescriptorForModelConfiguredWithOptions:(id)a3 error:(id *)a4;
-+ (id)espressoModelInputImageDimensionsBlobNameForConfigurationOptions:(id)a3;
-+ (id)espressoModelPathForConfigurationOptions:(id)a3 error:(id *)a4;
++ (id)_inferenceDescriptorForModelConfiguredWithOptions:(id)options error:(id *)error;
++ (id)espressoModelInputImageDimensionsBlobNameForConfigurationOptions:(id)options;
++ (id)espressoModelPathForConfigurationOptions:(id)options error:(id *)error;
 + (id)inputImageBlobName;
 + (id)outputMaskBlobNameToFeatureName;
 + (id)outputMaskBlobNameToRequestKey;
@@ -45,15 +45,15 @@ void __73__VNPersonSegmentationGeneratorSemantics_outputMaskBlobNameToFeatureNam
 + (id)outputMaskBlobNameToRequestKey
 {
   v32 = *MEMORY[0x1E69E9840];
-  v2 = [a1 _inferenceDescriptorForModelConfiguredWithOptions:0 error:0];
-  v3 = [v2 humanAttributesMasksOutput];
-  v4 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v3, "count") + 3}];
+  v2 = [self _inferenceDescriptorForModelConfiguredWithOptions:0 error:0];
+  humanAttributesMasksOutput = [v2 humanAttributesMasksOutput];
+  v4 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(humanAttributesMasksOutput, "count") + 3}];
   v5 = objc_opt_class();
   v29 = 0u;
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v6 = v3;
+  v6 = humanAttributesMasksOutput;
   v7 = [v6 countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v7)
   {
@@ -69,8 +69,8 @@ void __73__VNPersonSegmentationGeneratorSemantics_outputMaskBlobNameToFeatureNam
 
         v10 = *(*(&v27 + 1) + 8 * i);
         v11 = NSStringFromClass(v5);
-        v12 = [v10 name];
-        [v4 setObject:v11 forKeyedSubscript:v12];
+        name = [v10 name];
+        [v4 setObject:v11 forKeyedSubscript:name];
       }
 
       v7 = [v6 countByEnumeratingWithState:&v27 objects:v31 count:16];
@@ -81,21 +81,21 @@ void __73__VNPersonSegmentationGeneratorSemantics_outputMaskBlobNameToFeatureNam
 
   v13 = objc_opt_class();
   v14 = NSStringFromClass(v13);
-  v15 = [v2 personsMaskOutput];
-  v16 = [v15 name];
-  [v4 setObject:v14 forKeyedSubscript:v16];
+  personsMaskOutput = [v2 personsMaskOutput];
+  name2 = [personsMaskOutput name];
+  [v4 setObject:v14 forKeyedSubscript:name2];
 
   v17 = objc_opt_class();
   v18 = NSStringFromClass(v17);
-  v19 = [v2 skyMaskOutput];
-  v20 = [v19 name];
-  [v4 setObject:v18 forKeyedSubscript:v20];
+  skyMaskOutput = [v2 skyMaskOutput];
+  name3 = [skyMaskOutput name];
+  [v4 setObject:v18 forKeyedSubscript:name3];
 
   v21 = objc_opt_class();
   v22 = NSStringFromClass(v21);
-  v23 = [v2 glassesMaskOutput];
-  v24 = [v23 name];
-  [v4 setObject:v22 forKeyedSubscript:v24];
+  glassesMaskOutput = [v2 glassesMaskOutput];
+  name4 = [glassesMaskOutput name];
+  [v4 setObject:v22 forKeyedSubscript:name4];
 
   v25 = [v4 copy];
 
@@ -105,19 +105,19 @@ void __73__VNPersonSegmentationGeneratorSemantics_outputMaskBlobNameToFeatureNam
 + (id)outputMaskBlobNames
 {
   v21 = *MEMORY[0x1E69E9840];
-  v2 = [a1 _inferenceDescriptorForModelConfiguredWithOptions:0 error:0];
+  v2 = [self _inferenceDescriptorForModelConfiguredWithOptions:0 error:0];
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v4 = [v2 humanAttributesMasksOutput];
-  v5 = [v4 mutableCopy];
+  humanAttributesMasksOutput = [v2 humanAttributesMasksOutput];
+  v5 = [humanAttributesMasksOutput mutableCopy];
 
-  v6 = [v2 personsMaskOutput];
-  [v5 addObject:v6];
+  personsMaskOutput = [v2 personsMaskOutput];
+  [v5 addObject:personsMaskOutput];
 
-  v7 = [v2 skyMaskOutput];
-  [v5 addObject:v7];
+  skyMaskOutput = [v2 skyMaskOutput];
+  [v5 addObject:skyMaskOutput];
 
-  v8 = [v2 glassesMaskOutput];
-  [v5 addObject:v8];
+  glassesMaskOutput = [v2 glassesMaskOutput];
+  [v5 addObject:glassesMaskOutput];
 
   v18 = 0u;
   v19 = 0u;
@@ -137,8 +137,8 @@ void __73__VNPersonSegmentationGeneratorSemantics_outputMaskBlobNameToFeatureNam
           objc_enumerationMutation(v9);
         }
 
-        v13 = [*(*(&v16 + 1) + 8 * i) name];
-        [v3 addObject:v13];
+        name = [*(*(&v16 + 1) + 8 * i) name];
+        [v3 addObject:name];
       }
 
       v10 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -154,40 +154,40 @@ void __73__VNPersonSegmentationGeneratorSemantics_outputMaskBlobNameToFeatureNam
 
 + (id)inputImageBlobName
 {
-  v2 = [a1 _inferenceDescriptorForModelConfiguredWithOptions:0 error:0];
+  v2 = [self _inferenceDescriptorForModelConfiguredWithOptions:0 error:0];
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 allInputNames];
-    v5 = [v4 firstObject];
+    allInputNames = [v2 allInputNames];
+    firstObject = [allInputNames firstObject];
   }
 
   else
   {
-    v5 = 0;
+    firstObject = 0;
   }
 
-  return v5;
+  return firstObject;
 }
 
-+ (id)espressoModelInputImageDimensionsBlobNameForConfigurationOptions:(id)a3
++ (id)espressoModelInputImageDimensionsBlobNameForConfigurationOptions:(id)options
 {
-  v3 = [a1 inputImageBlobName];
+  inputImageBlobName = [self inputImageBlobName];
 
-  return v3;
+  return inputImageBlobName;
 }
 
-+ (id)espressoModelPathForConfigurationOptions:(id)a3 error:(id *)a4
++ (id)espressoModelPathForConfigurationOptions:(id)options error:(id *)error
 {
-  v6 = a3;
-  v7 = [VNValidationUtilities computeDeviceForKey:@"VNDetectorInternalOption_ModelComputeDevice" inOptions:v6 error:a4];
+  optionsCopy = options;
+  v7 = [VNValidationUtilities computeDeviceForKey:@"VNDetectorInternalOption_ModelComputeDevice" inOptions:optionsCopy error:error];
   if (v7)
   {
-    v8 = [a1 _inferenceDescriptorForModelConfiguredWithOptions:v6 error:a4];
+    v8 = [self _inferenceDescriptorForModelConfiguredWithOptions:optionsCopy error:error];
     v9 = v8;
     if (v8)
     {
-      v10 = [v8 modelPathForComputeDevice:v7 error:a4];
+      v10 = [v8 modelPathForComputeDevice:v7 error:error];
     }
 
     else
@@ -204,9 +204,9 @@ void __73__VNPersonSegmentationGeneratorSemantics_outputMaskBlobNameToFeatureNam
   return v10;
 }
 
-+ (id)_inferenceDescriptorForModelConfiguredWithOptions:(id)a3 error:(id *)a4
++ (id)_inferenceDescriptorForModelConfiguredWithOptions:(id)options error:(id *)error
 {
-  v5 = a3;
+  optionsCopy = options;
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
@@ -229,9 +229,9 @@ void __73__VNPersonSegmentationGeneratorSemantics_outputMaskBlobNameToFeatureNam
     v7 = +[VNPersonSegmentationGeneratorSemantics _inferenceDescriptorForModelConfiguredWithOptions:error:]::descriptor;
   }
 
-  else if (a4)
+  else if (error)
   {
-    *a4 = v11[5];
+    *error = v11[5];
   }
 
   _Block_object_dispose(&v10, 8);

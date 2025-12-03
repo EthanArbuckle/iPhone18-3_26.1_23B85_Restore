@@ -1,32 +1,32 @@
 @interface _CSVisualizationArchiver
-+ (void)beginProvidingVisualizationArchivesWithMachServiceName:(id)a3 queue:(id)a4 creatingVisualizersWithBlock:(id)a5;
-+ (void)processCommandFromConnection:(void *)a3 fileHandle:(__sFILE *)a4 providerBlock:(id)a5;
-+ (void)provideVisualizerToConnection:(void *)a3 fileHandle:(__sFILE *)a4 providerBlock:(id)a5;
-- (BOOL)fwrite:(const void *)a3 size:(unint64_t)a4 numberOfItems:(unint64_t)a5 error:(id *)a6;
-- (BOOL)writeDictionary:(id)a3 error:(id *)a4;
-- (BOOL)writeMetadata:(id)a3 forStore:(__CSStore *)a4 error:(id *)a5;
-- (_CSVisualizationArchiver)initWithVisualizer:(id)a3 fileHandle:(__sFILE *)a4 closeWhenDone:(BOOL)a5 allowCompression:(BOOL)a6 error:(id *)a7;
++ (void)beginProvidingVisualizationArchivesWithMachServiceName:(id)name queue:(id)queue creatingVisualizersWithBlock:(id)block;
++ (void)processCommandFromConnection:(void *)connection fileHandle:(__sFILE *)handle providerBlock:(id)block;
++ (void)provideVisualizerToConnection:(void *)connection fileHandle:(__sFILE *)handle providerBlock:(id)block;
+- (BOOL)fwrite:(const void *)fwrite size:(unint64_t)size numberOfItems:(unint64_t)items error:(id *)error;
+- (BOOL)writeDictionary:(id)dictionary error:(id *)error;
+- (BOOL)writeMetadata:(id)metadata forStore:(__CSStore *)store error:(id *)error;
+- (_CSVisualizationArchiver)initWithVisualizer:(id)visualizer fileHandle:(__sFILE *)handle closeWhenDone:(BOOL)done allowCompression:(BOOL)compression error:(id *)error;
 - (void)dealloc;
 - (void)finishWriting;
-- (void)setUnitDescriptionPredicate:(id)a3;
-- (void)writeAllUnitsWithBlock:(id)a3;
+- (void)setUnitDescriptionPredicate:(id)predicate;
+- (void)writeAllUnitsWithBlock:(id)block;
 @end
 
 @implementation _CSVisualizationArchiver
 
-- (void)setUnitDescriptionPredicate:(id)a3
+- (void)setUnitDescriptionPredicate:(id)predicate
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  objc_storeStrong(&self->_unitDescriptionPredicate, a3);
-  if (v5)
+  predicateCopy = predicate;
+  objc_storeStrong(&self->_unitDescriptionPredicate, predicate);
+  if (predicateCopy)
   {
     v10 = @"predicate";
-    v6 = [v5 predicateFormat];
-    v11[0] = v6;
+    predicateFormat = [predicateCopy predicateFormat];
+    v11[0] = predicateFormat;
     v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
-    v8 = [(_CSVisualizationArchiver *)self visualizer];
-    -[_CSVisualizationArchiver writeMetadata:forStore:error:](self, "writeMetadata:forStore:error:", v7, [v8 store], 0);
+    visualizer = [(_CSVisualizationArchiver *)self visualizer];
+    -[_CSVisualizationArchiver writeMetadata:forStore:error:](self, "writeMetadata:forStore:error:", v7, [visualizer store], 0);
   }
 
   v9 = *MEMORY[0x1E69E9840];
@@ -47,16 +47,16 @@
   }
 }
 
-- (void)writeAllUnitsWithBlock:(id)a3
+- (void)writeAllUnitsWithBlock:(id)block
 {
-  v5 = a3;
-  v6 = [(_CSVisualizationArchiver *)self visualizer];
-  v7 = [v6 store];
+  blockCopy = block;
+  visualizer = [(_CSVisualizationArchiver *)self visualizer];
+  store = [visualizer store];
 
-  if (!v7)
+  if (!store)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"CSVisualizationArchiver.mm" lineNumber:490 description:@"Missing CSStore"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"CSVisualizationArchiver.mm" lineNumber:490 description:@"Missing CSStore"];
   }
 
   v10[0] = MEMORY[0x1E69E9820];
@@ -64,18 +64,18 @@
   v10[2] = __51___CSVisualizationArchiver_writeAllUnitsWithBlock___block_invoke;
   v10[3] = &unk_1E7ED32E8;
   v10[4] = self;
-  v8 = v5;
+  v8 = blockCopy;
   v11 = v8;
-  _CSStoreEnumerateTables(v7, v10);
+  _CSStoreEnumerateTables(store, v10);
 }
 
-- (BOOL)fwrite:(const void *)a3 size:(unint64_t)a4 numberOfItems:(unint64_t)a5 error:(id *)a6
+- (BOOL)fwrite:(const void *)fwrite size:(unint64_t)size numberOfItems:(unint64_t)items error:(id *)error
 {
-  v7 = a5;
+  itemsCopy = items;
   v33 = *MEMORY[0x1E69E9840];
-  v9 = fwrite(a3, a4, a5, self->_fileHandle);
+  v9 = fwrite(fwrite, size, items, self->_fileHandle);
   fileHandle = self->_fileHandle;
-  if (v9 == v7 && !ferror(self->_fileHandle))
+  if (v9 == itemsCopy && !ferror(self->_fileHandle))
   {
     result = 1;
     goto LABEL_22;
@@ -95,8 +95,8 @@
       v30 = @"Line";
       v31 = @"errno";
       v32 = &unk_1F37D78F8;
-      v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v31 forKeys:&v29 count:2];
-      v15 = [v22 errorWithDomain:*v11 code:v23 userInfo:v7];
+      itemsCopy = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v31 forKeys:&v29 count:2];
+      v15 = [v22 errorWithDomain:*v11 code:v23 userInfo:itemsCopy];
     }
 
     else
@@ -112,8 +112,8 @@
       if (v16)
       {
         v29 = *MEMORY[0x1E696A578];
-        v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v16];
-        v31 = v7;
+        itemsCopy = [MEMORY[0x1E696AEC0] stringWithUTF8String:v16];
+        v31 = itemsCopy;
         v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v31 forKeys:&v29 count:1];
       }
 
@@ -142,16 +142,16 @@
   v15 = [v12 errorWithDomain:*v11 code:v13 userInfo:v14];
 
 LABEL_16:
-  if (a6)
+  if (error)
   {
     v24 = v15;
-    *a6 = v15;
+    *error = v15;
   }
 
   if ([v15 code] == 32)
   {
-    v25 = [v15 domain];
-    v26 = [v25 isEqual:*v11];
+    domain = [v15 domain];
+    v26 = [domain isEqual:*v11];
 
     if (v26)
     {
@@ -165,11 +165,11 @@ LABEL_22:
   return result;
 }
 
-- (BOOL)writeDictionary:(id)a3 error:(id *)a4
+- (BOOL)writeDictionary:(id)dictionary error:(id *)error
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 copy];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy copy];
 
   v8 = objc_autoreleasePoolPush();
   v9 = [objc_alloc(MEMORY[0x1E696ACC8]) initRequiringSecureCoding:1];
@@ -181,14 +181,14 @@ LABEL_22:
 
   [v10 encodeObject:v7 forKey:*MEMORY[0x1E696A508]];
   [v10 finishEncoding];
-  v11 = [v10 encodedData];
+  encodedData = [v10 encodedData];
 
   objc_autoreleasePoolPop(v8);
-  if (!v11)
+  if (!encodedData)
   {
     v15 = 0;
     LOBYTE(v14) = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_15;
     }
@@ -196,7 +196,7 @@ LABEL_22:
     goto LABEL_13;
   }
 
-  v12 = [v11 length];
+  v12 = [encodedData length];
   v23 = v12;
   v13 = CSStore2::GetLog(v12);
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
@@ -214,9 +214,9 @@ LABEL_22:
   v15 = v22;
   if (v14)
   {
-    v16 = v11;
+    v16 = encodedData;
     v21 = v15;
-    v14 = -[_CSVisualizationArchiver fwrite:size:numberOfItems:error:](self, "fwrite:size:numberOfItems:error:", [v11 bytes], objc_msgSend(v11, "length"), 1, &v21);
+    v14 = -[_CSVisualizationArchiver fwrite:size:numberOfItems:error:](self, "fwrite:size:numberOfItems:error:", [encodedData bytes], objc_msgSend(encodedData, "length"), 1, &v21);
     v17 = v21;
 
     if (v14)
@@ -229,13 +229,13 @@ LABEL_22:
   }
 
   os_unfair_lock_unlock(&self->_dictWriteLock);
-  if (a4)
+  if (error)
   {
 LABEL_13:
     if (!v14)
     {
       v18 = v15;
-      *a4 = v15;
+      *error = v15;
     }
   }
 
@@ -245,15 +245,15 @@ LABEL_15:
   return v14;
 }
 
-- (BOOL)writeMetadata:(id)a3 forStore:(__CSStore *)a4 error:(id *)a5
+- (BOOL)writeMetadata:(id)metadata forStore:(__CSStore *)store error:(id *)error
 {
-  v8 = a3;
+  metadataCopy = metadata;
   v9 = objc_autoreleasePoolPush();
   v10 = objc_alloc_init(MEMORY[0x1E695DF90]);
   [v10 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"metadata"];
-  if (v8)
+  if (metadataCopy)
   {
-    [v10 addEntriesFromDictionary:v8];
+    [v10 addEntriesFromDictionary:metadataCopy];
   }
 
   else
@@ -278,7 +278,7 @@ LABEL_15:
       [v10 setObject:v16 forKeyedSubscript:@"os-build"];
     }
 
-    if (a4)
+    if (store)
     {
       v17 = -37516;
     }
@@ -288,15 +288,15 @@ LABEL_15:
       v17 = 0;
     }
 
-    v18 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{CSStoreGetUnitCount(a4, v17)}];
+    v18 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{CSStoreGetUnitCount(store, v17)}];
     [v10 setObject:v18 forKeyedSubscript:@"tableCount"];
 
-    v19 = [(_CSVisualizationArchiver *)self visualizer];
-    v20 = [v19 breakDownUsage];
+    visualizer = [(_CSVisualizationArchiver *)self visualizer];
+    breakDownUsage = [visualizer breakDownUsage];
 
-    if (v20)
+    if (breakDownUsage)
     {
-      [v10 setObject:v20 forKeyedSubscript:@"breakdown"];
+      [v10 setObject:breakDownUsage forKeyedSubscript:@"breakdown"];
     }
   }
 
@@ -305,7 +305,7 @@ LABEL_15:
   v22 = v26;
 
   objc_autoreleasePoolPop(v9);
-  if (a5)
+  if (error)
   {
     v23 = v21;
   }
@@ -318,7 +318,7 @@ LABEL_15:
   if ((v23 & 1) == 0)
   {
     v24 = v22;
-    *a5 = v22;
+    *error = v22;
   }
 
   return v21;
@@ -337,24 +337,24 @@ LABEL_15:
   [(_CSVisualizationArchiver *)&v4 dealloc];
 }
 
-- (_CSVisualizationArchiver)initWithVisualizer:(id)a3 fileHandle:(__sFILE *)a4 closeWhenDone:(BOOL)a5 allowCompression:(BOOL)a6 error:(id *)a7
+- (_CSVisualizationArchiver)initWithVisualizer:(id)visualizer fileHandle:(__sFILE *)handle closeWhenDone:(BOOL)done allowCompression:(BOOL)compression error:(id *)error
 {
-  v9 = a5;
+  doneCopy = done;
   v88 = *MEMORY[0x1E69E9840];
-  v14 = a3;
+  visualizerCopy = visualizer;
   v77.receiver = self;
   v77.super_class = _CSVisualizationArchiver;
   v15 = [(_CSVisualizationArchiver *)&v77 init];
-  if (!v14)
+  if (!visualizerCopy)
   {
-    v71 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v71 handleFailureInMethod:a2 object:v15 file:@"CSVisualizationArchiver.mm" lineNumber:152 description:{@"Invalid parameter not satisfying: %@", @"visualizer != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:v15 file:@"CSVisualizationArchiver.mm" lineNumber:152 description:{@"Invalid parameter not satisfying: %@", @"visualizer != nil"}];
   }
 
-  if (!a4)
+  if (!handle)
   {
-    v72 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v72 handleFailureInMethod:a2 object:v15 file:@"CSVisualizationArchiver.mm" lineNumber:153 description:{@"Invalid parameter not satisfying: %@", @"fileHandle != NULL"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:v15 file:@"CSVisualizationArchiver.mm" lineNumber:153 description:{@"Invalid parameter not satisfying: %@", @"fileHandle != NULL"}];
   }
 
   if (!v15)
@@ -370,7 +370,7 @@ LABEL_15:
     goto LABEL_11;
   }
 
-  objc_storeStrong(&v15->_visualizer, a3);
+  objc_storeStrong(&v15->_visualizer, visualizer);
   *__str = 0;
   v87 = 0;
   v16 = getenv("CS_VISUALIZATION_COMPRESSION_LEVEL");
@@ -390,32 +390,32 @@ LABEL_15:
   }
 
   snprintf(__str, 0x10uLL, "%cb%lu", 119, v18);
-  v23 = fileno(a4);
+  v23 = fileno(handle);
   if ((v23 & 0x80000000) != 0)
   {
     v31 = CSStore2::GetLog(v23);
     if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
     {
       *buf = 134217984;
-      *&buf[4] = a4;
+      *&buf[4] = handle;
       _os_log_impl(&dword_1B9D5B000, v31, OS_LOG_TYPE_INFO, "File handle %p passed to _CSVisualization[Un]Archiver is not backed by a file descriptor. Will not compress/decompress.", buf, 0xCu);
     }
 
     v28 = 0;
-    if (a4)
+    if (handle)
     {
       goto LABEL_48;
     }
 
 LABEL_23:
     v32 = v28;
-    a4 = 0;
+    handle = 0;
     v33 = v28;
     goto LABEL_49;
   }
 
   v24 = v23;
-  if (a6)
+  if (compression)
   {
     v24 = dup(v23);
     if (v24 < 0)
@@ -454,11 +454,11 @@ LABEL_23:
     if (os_log_type_enabled(v34, OS_LOG_TYPE_INFO))
     {
       *buf = 134217984;
-      *&buf[4] = a4;
+      *&buf[4] = handle;
       _os_log_impl(&dword_1B9D5B000, v34, OS_LOG_TYPE_INFO, "Disabling compression for file handle %p passed to _CSVisualization[Un]Archiver. Will not compress/decompress.", buf, 0xCu);
     }
 
-    if (a4)
+    if (handle)
     {
       v33 = 0;
       v28 = 0;
@@ -562,19 +562,19 @@ LABEL_67:
 LABEL_39:
   v37 = 0;
 LABEL_40:
-  v54 = v37 != a4 || v9;
-  if (v37 == a4 || !v9)
+  v54 = v37 != handle || doneCopy;
+  if (v37 == handle || !doneCopy)
   {
-    LOBYTE(v9) = v54;
+    LOBYTE(doneCopy) = v54;
   }
 
   else
   {
-    fclose(a4);
-    LOBYTE(v9) = 1;
+    fclose(handle);
+    LOBYTE(doneCopy) = 1;
   }
 
-  a4 = v37;
+  handle = v37;
   if (!v37)
   {
     goto LABEL_23;
@@ -585,9 +585,9 @@ LABEL_48:
 LABEL_49:
 
   v21 = v33;
-  v15->_fileHandle = a4;
-  v15->_closeWhenDone = v9;
-  if (a4)
+  v15->_fileHandle = handle;
+  v15->_closeWhenDone = doneCopy;
+  if (handle)
   {
     v55 = getenv("CS_VISUALIZATION_OUTPUT_XML");
     if (v55)
@@ -612,9 +612,9 @@ LABEL_49:
       goto LABEL_61;
     }
 
-    v59 = [(_CSVisualizer *)v15->_visualizer store];
+    store = [(_CSVisualizer *)v15->_visualizer store];
     v60 = 4294929780;
-    if (!v59)
+    if (!store)
     {
       v60 = 0;
     }
@@ -628,7 +628,7 @@ LABEL_49:
     {
       fflush(v15->_fileHandle);
       v74 = v21;
-      v62 = -[_CSVisualizationArchiver writeMetadata:forStore:error:](v15, "writeMetadata:forStore:error:", 0, [v14 store], &v74);
+      v62 = -[_CSVisualizationArchiver writeMetadata:forStore:error:](v15, "writeMetadata:forStore:error:", 0, [visualizerCopy store], &v74);
       v58 = v74;
 
       if (v62)
@@ -639,7 +639,7 @@ LABEL_49:
 
 LABEL_61:
       v21 = v58;
-      if (!a7)
+      if (!error)
       {
         goto LABEL_62;
       }
@@ -653,7 +653,7 @@ LABEL_61:
   }
 
 LABEL_11:
-  if (!a7)
+  if (!error)
   {
 LABEL_62:
     v15 = 0;
@@ -663,23 +663,23 @@ LABEL_62:
 LABEL_12:
   v22 = v21;
   v15 = 0;
-  *a7 = v21;
+  *error = v21;
 LABEL_63:
 
   v63 = *MEMORY[0x1E69E9840];
   return v15;
 }
 
-+ (void)beginProvidingVisualizationArchivesWithMachServiceName:(id)a3 queue:(id)a4 creatingVisualizersWithBlock:(id)a5
++ (void)beginProvidingVisualizationArchivesWithMachServiceName:(id)name queue:(id)queue creatingVisualizersWithBlock:(id)block
 {
   v26 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
-  if (v9)
+  nameCopy = name;
+  queueCopy = queue;
+  blockCopy = block;
+  v12 = blockCopy;
+  if (nameCopy)
   {
-    if (v11)
+    if (blockCopy)
     {
       goto LABEL_3;
     }
@@ -687,8 +687,8 @@ LABEL_63:
 
   else
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:a1 file:@"CSVisualizationArchiver.mm" lineNumber:1092 description:{@"Invalid parameter not satisfying: %@", @"serviceName != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"CSVisualizationArchiver.mm" lineNumber:1092 description:{@"Invalid parameter not satisfying: %@", @"serviceName != nil"}];
 
     if (v12)
     {
@@ -696,8 +696,8 @@ LABEL_63:
     }
   }
 
-  v19 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v19 handleFailureInMethod:a2 object:a1 file:@"CSVisualizationArchiver.mm" lineNumber:1093 description:{@"Invalid parameter not satisfying: %@", @"block != nil"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"CSVisualizationArchiver.mm" lineNumber:1093 description:{@"Invalid parameter not satisfying: %@", @"block != nil"}];
 
 LABEL_3:
   if (lockdownLibrary(void)::sOnce != -1)
@@ -714,47 +714,47 @@ LABEL_3:
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138543362;
-        v25 = v9;
+        v25 = nameCopy;
         _os_log_debug_impl(&dword_1B9D5B000, v14, OS_LOG_TYPE_DEBUG, "Beginning remote visualization service '%{public}@'", buf, 0xCu);
       }
 
-      v15 = v9;
-      v16 = [v9 UTF8String];
+      v15 = nameCopy;
+      uTF8String = [nameCopy UTF8String];
       v20[0] = MEMORY[0x1E69E9820];
       v20[1] = 3221225472;
       v20[2] = __141___CSVisualizationArchiver_CSRemoteVisualization__beginProvidingVisualizationArchivesWithMachServiceName_queue_creatingVisualizersWithBlock___block_invoke;
       v20[3] = &unk_1E7ED3338;
-      v21 = v9;
-      v23 = a1;
+      v21 = nameCopy;
+      selfCopy = self;
       v22 = v12;
-      softLinklockdown_checkin_xpc(v16, 0, v10, v20);
+      softLinklockdown_checkin_xpc(uTF8String, 0, queueCopy, v20);
     }
   }
 
   v17 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)provideVisualizerToConnection:(void *)a3 fileHandle:(__sFILE *)a4 providerBlock:(id)a5
++ (void)provideVisualizerToConnection:(void *)connection fileHandle:(__sFILE *)handle providerBlock:(id)block
 {
-  v7 = a5;
+  blockCopy = block;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __106___CSVisualizationArchiver_CSRemoteVisualization__provideVisualizerToConnection_fileHandle_providerBlock___block_invoke;
   block[3] = &unk_1E7ED3310;
-  v11 = v7;
-  v12 = a3;
-  v13 = a4;
-  v8 = v7;
+  v11 = blockCopy;
+  connectionCopy = connection;
+  handleCopy = handle;
+  v8 = blockCopy;
   v9 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, QOS_CLASS_USER_INTERACTIVE, 0, block);
   v9[2]();
 }
 
-+ (void)processCommandFromConnection:(void *)a3 fileHandle:(__sFILE *)a4 providerBlock:(id)a5
++ (void)processCommandFromConnection:(void *)connection fileHandle:(__sFILE *)handle providerBlock:(id)block
 {
   v17 = *MEMORY[0x1E69E9840];
-  v8 = a5;
+  blockCopy = block;
   __ptr = -1;
-  if (fread(&__ptr, 8uLL, 1uLL, a4) == 1)
+  if (fread(&__ptr, 8uLL, 1uLL, handle) == 1)
   {
     v9 = __ptr;
     v10 = objc_autoreleasePoolPush();
@@ -778,7 +778,7 @@ LABEL_3:
         _os_log_impl(&dword_1B9D5B000, v12, OS_LOG_TYPE_DEFAULT, "Mac commanded we send a store archive", buf, 2u);
       }
 
-      [a1 provideVisualizerToConnection:a3 fileHandle:a4 providerBlock:v8];
+      [self provideVisualizerToConnection:connection fileHandle:handle providerBlock:blockCopy];
     }
 
     objc_autoreleasePoolPop(v10);

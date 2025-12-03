@@ -1,43 +1,43 @@
 @interface CollectionsPosterEditDelegate
-- (id)initialLookIdentifierForEditor:(id)a3;
-- (id)looksForEditor:(id)a3;
-- (int64_t)activeAppearanceMenuSelectionForEditor:(id)a3;
-- (void)editor:(PREditor *)a3 finalizeWithCompletion:(id)a4;
-- (void)editor:(id)a3 appearanceMenuDidChangeSelectedStyle:(int64_t)a4;
-- (void)editor:(id)a3 didFinishTransitionToLook:(id)a4;
-- (void)editor:(id)a3 didInitializeWithEnvironment:(id)a4;
-- (void)editor:(id)a3 didUpdateEnvironment:(id)a4 withTransition:(id)a5;
-- (void)editor:(id)a3 populateViews:(id)a4 forLook:(id)a5;
-- (void)editorDidInvalidate:(id)a3;
+- (id)initialLookIdentifierForEditor:(id)editor;
+- (id)looksForEditor:(id)editor;
+- (int64_t)activeAppearanceMenuSelectionForEditor:(id)editor;
+- (void)editor:(PREditor *)editor finalizeWithCompletion:(id)completion;
+- (void)editor:(id)editor appearanceMenuDidChangeSelectedStyle:(int64_t)style;
+- (void)editor:(id)editor didFinishTransitionToLook:(id)look;
+- (void)editor:(id)editor didInitializeWithEnvironment:(id)environment;
+- (void)editor:(id)editor didUpdateEnvironment:(id)environment withTransition:(id)transition;
+- (void)editor:(id)editor populateViews:(id)views forLook:(id)look;
+- (void)editorDidInvalidate:(id)invalidate;
 @end
 
 @implementation CollectionsPosterEditDelegate
 
-- (void)editor:(id)a3 didInitializeWithEnvironment:(id)a4
+- (void)editor:(id)editor didInitializeWithEnvironment:(id)environment
 {
-  v6 = a3;
+  editorCopy = editor;
   swift_unknownObjectRetain();
-  v7 = self;
-  sub_10000B5F4(v6, a4);
+  selfCopy = self;
+  sub_10000B5F4(editorCopy, environment);
 
   swift_unknownObjectRelease();
 }
 
-- (void)editor:(id)a3 didUpdateEnvironment:(id)a4 withTransition:(id)a5
+- (void)editor:(id)editor didUpdateEnvironment:(id)environment withTransition:(id)transition
 {
-  v8 = a3;
+  editorCopy = editor;
   swift_unknownObjectRetain();
-  v9 = a5;
-  v10 = self;
-  sub_10000BBBC(v8, a4, a5);
+  transitionCopy = transition;
+  selfCopy = self;
+  sub_10000BBBC(editorCopy, environment, transition);
 
   swift_unknownObjectRelease();
 }
 
-- (id)looksForEditor:(id)a3
+- (id)looksForEditor:(id)editor
 {
-  v4 = a3;
-  v5 = self;
+  editorCopy = editor;
+  selfCopy = self;
   sub_10000C158();
 
   sub_10000ACE8(0, &qword_1000206F8, PREditingLook_ptr);
@@ -46,10 +46,10 @@
   return v6.super.isa;
 }
 
-- (id)initialLookIdentifierForEditor:(id)a3
+- (id)initialLookIdentifierForEditor:(id)editor
 {
-  v4 = a3;
-  v5 = self;
+  editorCopy = editor;
+  selfCopy = self;
   sub_10000C69C();
 
   v6 = sub_10001096C();
@@ -57,51 +57,51 @@
   return v6;
 }
 
-- (int64_t)activeAppearanceMenuSelectionForEditor:(id)a3
+- (int64_t)activeAppearanceMenuSelectionForEditor:(id)editor
 {
-  v4 = a3;
-  v5 = self;
-  sub_10000CB24(v4, "CollectionsPosterEditDelegate.ActiveAppearanceSelection", &WKWallpaperPosterEditorController.activeAppearanceMenuSelection(for:));
+  editorCopy = editor;
+  selfCopy = self;
+  sub_10000CB24(editorCopy, "CollectionsPosterEditDelegate.ActiveAppearanceSelection", &WKWallpaperPosterEditorController.activeAppearanceMenuSelection(for:));
   v7 = v6;
 
   return v7;
 }
 
-- (void)editor:(id)a3 appearanceMenuDidChangeSelectedStyle:(int64_t)a4
+- (void)editor:(id)editor appearanceMenuDidChangeSelectedStyle:(int64_t)style
 {
-  v6 = a3;
-  v7 = self;
-  sub_10000D2B0(v6, a4, "CollectionsPosterEditDelegate.ActiveAppearanceChanged", &WKWallpaperPosterEditorController.editor(_:appearanceMenuDidChangeSelectedStyle:));
+  editorCopy = editor;
+  selfCopy = self;
+  sub_10000D2B0(editorCopy, style, "CollectionsPosterEditDelegate.ActiveAppearanceChanged", &WKWallpaperPosterEditorController.editor(_:appearanceMenuDidChangeSelectedStyle:));
 }
 
-- (void)editor:(id)a3 populateViews:(id)a4 forLook:(id)a5
+- (void)editor:(id)editor populateViews:(id)views forLook:(id)look
 {
-  v8 = a3;
+  editorCopy = editor;
   swift_unknownObjectRetain();
-  v9 = a5;
-  v10 = self;
-  sub_10000CEF8(v8, a4, v9);
+  lookCopy = look;
+  selfCopy = self;
+  sub_10000CEF8(editorCopy, views, lookCopy);
 
   swift_unknownObjectRelease();
 }
 
-- (void)editor:(id)a3 didFinishTransitionToLook:(id)a4
+- (void)editor:(id)editor didFinishTransitionToLook:(id)look
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_10000D2B0(v6, v7, "CollectionsPosterEditDelegate.LookTransitionFinished", &WKWallpaperPosterEditorController.editor(_:didFinishTransitionTo:));
+  editorCopy = editor;
+  lookCopy = look;
+  selfCopy = self;
+  sub_10000D2B0(editorCopy, lookCopy, "CollectionsPosterEditDelegate.LookTransitionFinished", &WKWallpaperPosterEditorController.editor(_:didFinishTransitionTo:));
 }
 
-- (void)editor:(PREditor *)a3 finalizeWithCompletion:(id)a4
+- (void)editor:(PREditor *)editor finalizeWithCompletion:(id)completion
 {
   v7 = sub_100001FDC(&qword_1000205D0, &qword_1000122F0);
   v8 = *(*(v7 - 8) + 64);
   __chkstk_darwin(v7 - 8);
   v10 = &v18 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(completion);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = editor;
   v12[3] = v11;
   v12[4] = self;
   v13 = sub_100010A2C();
@@ -116,15 +116,15 @@
   v15[3] = 0;
   v15[4] = &unk_1000123F0;
   v15[5] = v14;
-  v16 = a3;
-  v17 = self;
+  editorCopy = editor;
+  selfCopy = self;
   sub_10000E794(0, 0, v10, &unk_100012310, v15);
 }
 
-- (void)editorDidInvalidate:(id)a3
+- (void)editorDidInvalidate:(id)invalidate
 {
-  v4 = a3;
-  v5 = self;
+  invalidateCopy = invalidate;
+  selfCopy = self;
   sub_10000E020();
 }
 

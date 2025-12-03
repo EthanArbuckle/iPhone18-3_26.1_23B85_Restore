@@ -1,38 +1,38 @@
 @interface JavaNetDefaultFileNameMap
-- (id)getContentTypeForWithNSString:(id)a3;
+- (id)getContentTypeForWithNSString:(id)string;
 @end
 
 @implementation JavaNetDefaultFileNameMap
 
-- (id)getContentTypeForWithNSString:(id)a3
+- (id)getContentTypeForWithNSString:(id)string
 {
-  if (!a3)
+  if (!string)
   {
 LABEL_8:
     JreThrowNullPointerException();
   }
 
-  if ([a3 hasSuffix:@"/"])
+  if ([string hasSuffix:@"/"])
   {
     v4 = @"html";
     goto LABEL_13;
   }
 
-  v5 = [a3 lastIndexOf:35];
+  v5 = [string lastIndexOf:35];
   if ((v5 & 0x80000000) != 0)
   {
-    v5 = [a3 length];
+    v5 = [string length];
   }
 
-  v6 = [a3 lastIndexOf:46] + 1;
-  if (v6 <= [a3 lastIndexOf:47])
+  v6 = [string lastIndexOf:46] + 1;
+  if (v6 <= [string lastIndexOf:47])
   {
     v7 = &stru_100484358;
   }
 
   else
   {
-    v7 = [a3 substring:v6 endIndex:v5];
+    v7 = [string substring:v6 endIndex:v5];
     if (!v7)
     {
       goto LABEL_8;

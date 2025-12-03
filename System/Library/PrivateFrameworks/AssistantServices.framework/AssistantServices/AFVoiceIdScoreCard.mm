@@ -1,16 +1,16 @@
 @interface AFVoiceIdScoreCard
-+ (id)newWithBuilder:(id)a3;
-- (AFVoiceIdScoreCard)initWithBuilder:(id)a3;
-- (AFVoiceIdScoreCard)initWithCoder:(id)a3;
-- (AFVoiceIdScoreCard)initWithDictionaryRepresentation:(id)a3;
-- (AFVoiceIdScoreCard)initWithSpIdAudioProcessedDuration:(id)a3 spIdUnknownUserScore:(id)a4 spIdKnownUserScores:(id)a5 spIdUserScoresVersion:(id)a6 spIdScoreThresholdingType:(id)a7 spIdAssetVersion:(id)a8 userClassified:(id)a9 userIdentityClassification:(int64_t)a10;
-- (AFVoiceIdScoreCard)initWithSpIdAudioProcessedDuration:(id)a3 spIdUnknownUserScore:(id)a4 spIdKnownUserScores:(id)a5 spIdUserScoresVersion:(id)a6 spIdScoreThresholdingType:(id)a7 spIdAssetVersion:(id)a8 userClassified:(id)a9 userIdentityClassification:(int64_t)a10 lowScoreThreshold:(id)a11 highScoreThreshold:(id)a12 confidentScoreThreshold:(id)a13 deltaScoreThreshold:(id)a14 hasSufficientAudioProcessed:(int64_t)a15;
-- (BOOL)isEqual:(id)a3;
-- (id)_descriptionWithIndent:(unint64_t)a3;
++ (id)newWithBuilder:(id)builder;
+- (AFVoiceIdScoreCard)initWithBuilder:(id)builder;
+- (AFVoiceIdScoreCard)initWithCoder:(id)coder;
+- (AFVoiceIdScoreCard)initWithDictionaryRepresentation:(id)representation;
+- (AFVoiceIdScoreCard)initWithSpIdAudioProcessedDuration:(id)duration spIdUnknownUserScore:(id)score spIdKnownUserScores:(id)scores spIdUserScoresVersion:(id)version spIdScoreThresholdingType:(id)type spIdAssetVersion:(id)assetVersion userClassified:(id)classified userIdentityClassification:(int64_t)self0;
+- (AFVoiceIdScoreCard)initWithSpIdAudioProcessedDuration:(id)duration spIdUnknownUserScore:(id)score spIdKnownUserScores:(id)scores spIdUserScoresVersion:(id)version spIdScoreThresholdingType:(id)type spIdAssetVersion:(id)assetVersion userClassified:(id)classified userIdentityClassification:(int64_t)self0 lowScoreThreshold:(id)self1 highScoreThreshold:(id)self2 confidentScoreThreshold:(id)self3 deltaScoreThreshold:(id)self4 hasSufficientAudioProcessed:(int64_t)self5;
+- (BOOL)isEqual:(id)equal;
+- (id)_descriptionWithIndent:(unint64_t)indent;
 - (id)buildDictionaryRepresentation;
-- (id)mutatedCopyWithMutator:(id)a3;
+- (id)mutatedCopyWithMutator:(id)mutator;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AFVoiceIdScoreCard
@@ -151,14 +151,14 @@
   return v30;
 }
 
-- (AFVoiceIdScoreCard)initWithDictionaryRepresentation:(id)a3
+- (AFVoiceIdScoreCard)initWithDictionaryRepresentation:(id)representation
 {
   v51 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  representationCopy = representation;
+  v5 = representationCopy;
+  if (representationCopy)
   {
-    v6 = [v4 objectForKey:@"spIdAudioProcessedDuration"];
+    v6 = [representationCopy objectForKey:@"spIdAudioProcessedDuration"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -369,75 +369,75 @@
     }
 
     self = [(AFVoiceIdScoreCard *)self initWithSpIdAudioProcessedDuration:v45 spIdUnknownUserScore:v43 spIdKnownUserScores:v42 spIdUserScoresVersion:v41 spIdScoreThresholdingType:v39 spIdAssetVersion:v38 userClassified:v23 userIdentityClassification:v25 lowScoreThreshold:v27 highScoreThreshold:v29 confidentScoreThreshold:v31 deltaScoreThreshold:v33 hasSufficientAudioProcessed:v35];
-    v7 = self;
+    selfCopy = self;
     v5 = v44;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
   v36 = *MEMORY[0x1E69E9840];
-  return v7;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   spIdAudioProcessedDuration = self->_spIdAudioProcessedDuration;
-  v5 = a3;
-  [v5 encodeObject:spIdAudioProcessedDuration forKey:@"AFVoiceIdScoreCard::spIdAudioProcessedDuration"];
-  [v5 encodeObject:self->_spIdUnknownUserScore forKey:@"AFVoiceIdScoreCard::spIdUnknownUserScore"];
-  [v5 encodeObject:self->_spIdKnownUserScores forKey:@"AFVoiceIdScoreCard::spIdKnownUserScores"];
-  [v5 encodeObject:self->_spIdUserScoresVersion forKey:@"AFVoiceIdScoreCard::spIdUserScoresVersion"];
-  [v5 encodeObject:self->_spIdScoreThresholdingType forKey:@"AFVoiceIdScoreCard::spIdScoreThresholdingType"];
-  [v5 encodeObject:self->_spIdAssetVersion forKey:@"AFVoiceIdScoreCard::spIdAssetVersion"];
-  [v5 encodeObject:self->_userClassified forKey:@"AFVoiceIdScoreCard::userClassified"];
+  coderCopy = coder;
+  [coderCopy encodeObject:spIdAudioProcessedDuration forKey:@"AFVoiceIdScoreCard::spIdAudioProcessedDuration"];
+  [coderCopy encodeObject:self->_spIdUnknownUserScore forKey:@"AFVoiceIdScoreCard::spIdUnknownUserScore"];
+  [coderCopy encodeObject:self->_spIdKnownUserScores forKey:@"AFVoiceIdScoreCard::spIdKnownUserScores"];
+  [coderCopy encodeObject:self->_spIdUserScoresVersion forKey:@"AFVoiceIdScoreCard::spIdUserScoresVersion"];
+  [coderCopy encodeObject:self->_spIdScoreThresholdingType forKey:@"AFVoiceIdScoreCard::spIdScoreThresholdingType"];
+  [coderCopy encodeObject:self->_spIdAssetVersion forKey:@"AFVoiceIdScoreCard::spIdAssetVersion"];
+  [coderCopy encodeObject:self->_userClassified forKey:@"AFVoiceIdScoreCard::userClassified"];
   v6 = [MEMORY[0x1E696AD98] numberWithInteger:self->_userIdentityClassification];
-  [v5 encodeObject:v6 forKey:@"AFVoiceIdScoreCard::userIdentityClassification"];
+  [coderCopy encodeObject:v6 forKey:@"AFVoiceIdScoreCard::userIdentityClassification"];
 
-  [v5 encodeObject:self->_lowScoreThreshold forKey:@"AFVoiceIdScoreCard::lowScoreThreshold"];
-  [v5 encodeObject:self->_highScoreThreshold forKey:@"AFVoiceIdScoreCard::highScoreThreshold"];
-  [v5 encodeObject:self->_confidentScoreThreshold forKey:@"AFVoiceIdScoreCard::confidentScoreThreshold"];
-  [v5 encodeObject:self->_deltaScoreThreshold forKey:@"AFVoiceIdScoreCard::deltaScoreThreshold"];
+  [coderCopy encodeObject:self->_lowScoreThreshold forKey:@"AFVoiceIdScoreCard::lowScoreThreshold"];
+  [coderCopy encodeObject:self->_highScoreThreshold forKey:@"AFVoiceIdScoreCard::highScoreThreshold"];
+  [coderCopy encodeObject:self->_confidentScoreThreshold forKey:@"AFVoiceIdScoreCard::confidentScoreThreshold"];
+  [coderCopy encodeObject:self->_deltaScoreThreshold forKey:@"AFVoiceIdScoreCard::deltaScoreThreshold"];
   v7 = [MEMORY[0x1E696AD98] numberWithInteger:self->_hasSufficientAudioProcessed];
-  [v5 encodeObject:v7 forKey:@"AFVoiceIdScoreCard::hasSufficientAudioProcessed"];
+  [coderCopy encodeObject:v7 forKey:@"AFVoiceIdScoreCard::hasSufficientAudioProcessed"];
 }
 
-- (AFVoiceIdScoreCard)initWithCoder:(id)a3
+- (AFVoiceIdScoreCard)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v23 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFVoiceIdScoreCard::spIdAudioProcessedDuration"];
-  v22 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFVoiceIdScoreCard::spIdUnknownUserScore"];
+  coderCopy = coder;
+  v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFVoiceIdScoreCard::spIdAudioProcessedDuration"];
+  v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFVoiceIdScoreCard::spIdUnknownUserScore"];
   v4 = MEMORY[0x1E695DFD8];
   v5 = objc_opt_class();
   v6 = objc_opt_class();
   v7 = [v4 setWithObjects:{v5, v6, objc_opt_class(), 0}];
-  v20 = [v3 decodeObjectOfClasses:v7 forKey:@"AFVoiceIdScoreCard::spIdKnownUserScores"];
+  v20 = [coderCopy decodeObjectOfClasses:v7 forKey:@"AFVoiceIdScoreCard::spIdKnownUserScores"];
 
-  v8 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFVoiceIdScoreCard::spIdUserScoresVersion"];
-  v9 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFVoiceIdScoreCard::spIdScoreThresholdingType"];
-  v21 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFVoiceIdScoreCard::spIdAssetVersion"];
-  v10 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFVoiceIdScoreCard::userClassified"];
-  v11 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFVoiceIdScoreCard::userIdentityClassification"];
-  v12 = [v11 integerValue];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFVoiceIdScoreCard::spIdUserScoresVersion"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFVoiceIdScoreCard::spIdScoreThresholdingType"];
+  v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFVoiceIdScoreCard::spIdAssetVersion"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFVoiceIdScoreCard::userClassified"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFVoiceIdScoreCard::userIdentityClassification"];
+  integerValue = [v11 integerValue];
 
-  v19 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFVoiceIdScoreCard::lowScoreThreshold"];
-  v13 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFVoiceIdScoreCard::highScoreThreshold"];
-  v14 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFVoiceIdScoreCard::confidentScoreThreshold"];
-  v15 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFVoiceIdScoreCard::deltaScoreThreshold"];
-  v16 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFVoiceIdScoreCard::hasSufficientAudioProcessed"];
+  v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFVoiceIdScoreCard::lowScoreThreshold"];
+  v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFVoiceIdScoreCard::highScoreThreshold"];
+  v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFVoiceIdScoreCard::confidentScoreThreshold"];
+  v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFVoiceIdScoreCard::deltaScoreThreshold"];
+  v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFVoiceIdScoreCard::hasSufficientAudioProcessed"];
 
-  v17 = [v16 integerValue];
-  v25 = [(AFVoiceIdScoreCard *)self initWithSpIdAudioProcessedDuration:v23 spIdUnknownUserScore:v22 spIdKnownUserScores:v20 spIdUserScoresVersion:v8 spIdScoreThresholdingType:v9 spIdAssetVersion:v21 userClassified:v10 userIdentityClassification:v12 lowScoreThreshold:v19 highScoreThreshold:v13 confidentScoreThreshold:v14 deltaScoreThreshold:v15 hasSufficientAudioProcessed:v17];
+  integerValue2 = [v16 integerValue];
+  v25 = [(AFVoiceIdScoreCard *)self initWithSpIdAudioProcessedDuration:v23 spIdUnknownUserScore:v22 spIdKnownUserScores:v20 spIdUserScoresVersion:v8 spIdScoreThresholdingType:v9 spIdAssetVersion:v21 userClassified:v10 userIdentityClassification:integerValue lowScoreThreshold:v19 highScoreThreshold:v13 confidentScoreThreshold:v14 deltaScoreThreshold:v15 hasSufficientAudioProcessed:integerValue2];
 
   return v25;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v32 = 1;
   }
@@ -447,61 +447,61 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       userIdentityClassification = self->_userIdentityClassification;
       if (userIdentityClassification == [(AFVoiceIdScoreCard *)v5 userIdentityClassification]&& (hasSufficientAudioProcessed = self->_hasSufficientAudioProcessed, hasSufficientAudioProcessed == [(AFVoiceIdScoreCard *)v5 hasSufficientAudioProcessed]))
       {
-        v8 = [(AFVoiceIdScoreCard *)v5 spIdAudioProcessedDuration];
+        spIdAudioProcessedDuration = [(AFVoiceIdScoreCard *)v5 spIdAudioProcessedDuration];
         spIdAudioProcessedDuration = self->_spIdAudioProcessedDuration;
-        if (spIdAudioProcessedDuration == v8 || [(NSNumber *)spIdAudioProcessedDuration isEqual:v8])
+        if (spIdAudioProcessedDuration == spIdAudioProcessedDuration || [(NSNumber *)spIdAudioProcessedDuration isEqual:spIdAudioProcessedDuration])
         {
-          v10 = [(AFVoiceIdScoreCard *)v5 spIdUnknownUserScore];
+          spIdUnknownUserScore = [(AFVoiceIdScoreCard *)v5 spIdUnknownUserScore];
           spIdUnknownUserScore = self->_spIdUnknownUserScore;
-          if (spIdUnknownUserScore == v10 || [(NSNumber *)spIdUnknownUserScore isEqual:v10])
+          if (spIdUnknownUserScore == spIdUnknownUserScore || [(NSNumber *)spIdUnknownUserScore isEqual:spIdUnknownUserScore])
           {
-            v12 = [(AFVoiceIdScoreCard *)v5 spIdKnownUserScores];
+            spIdKnownUserScores = [(AFVoiceIdScoreCard *)v5 spIdKnownUserScores];
             spIdKnownUserScores = self->_spIdKnownUserScores;
-            if (spIdKnownUserScores == v12 || [(NSDictionary *)spIdKnownUserScores isEqual:v12])
+            if (spIdKnownUserScores == spIdKnownUserScores || [(NSDictionary *)spIdKnownUserScores isEqual:spIdKnownUserScores])
             {
-              v14 = [(AFVoiceIdScoreCard *)v5 spIdUserScoresVersion];
+              spIdUserScoresVersion = [(AFVoiceIdScoreCard *)v5 spIdUserScoresVersion];
               spIdUserScoresVersion = self->_spIdUserScoresVersion;
-              if (spIdUserScoresVersion == v14 || [(NSNumber *)spIdUserScoresVersion isEqual:v14])
+              if (spIdUserScoresVersion == spIdUserScoresVersion || [(NSNumber *)spIdUserScoresVersion isEqual:spIdUserScoresVersion])
               {
-                v16 = [(AFVoiceIdScoreCard *)v5 spIdScoreThresholdingType];
+                spIdScoreThresholdingType = [(AFVoiceIdScoreCard *)v5 spIdScoreThresholdingType];
                 spIdScoreThresholdingType = self->_spIdScoreThresholdingType;
-                if (spIdScoreThresholdingType == v16 || [(NSString *)spIdScoreThresholdingType isEqual:v16])
+                if (spIdScoreThresholdingType == spIdScoreThresholdingType || [(NSString *)spIdScoreThresholdingType isEqual:spIdScoreThresholdingType])
                 {
-                  v18 = [(AFVoiceIdScoreCard *)v5 spIdAssetVersion];
+                  spIdAssetVersion = [(AFVoiceIdScoreCard *)v5 spIdAssetVersion];
                   spIdAssetVersion = self->_spIdAssetVersion;
-                  if (spIdAssetVersion == v18 || [(NSString *)spIdAssetVersion isEqual:v18])
+                  if (spIdAssetVersion == spIdAssetVersion || [(NSString *)spIdAssetVersion isEqual:spIdAssetVersion])
                   {
-                    v20 = [(AFVoiceIdScoreCard *)v5 userClassified];
+                    userClassified = [(AFVoiceIdScoreCard *)v5 userClassified];
                     userClassified = self->_userClassified;
-                    if (userClassified == v20 || [(NSString *)userClassified isEqual:v20])
+                    if (userClassified == userClassified || [(NSString *)userClassified isEqual:userClassified])
                     {
-                      v36 = v20;
-                      v22 = [(AFVoiceIdScoreCard *)v5 lowScoreThreshold];
+                      v36 = userClassified;
+                      lowScoreThreshold = [(AFVoiceIdScoreCard *)v5 lowScoreThreshold];
                       lowScoreThreshold = self->_lowScoreThreshold;
-                      if (lowScoreThreshold == v22 || [(NSNumber *)lowScoreThreshold isEqual:v22])
+                      if (lowScoreThreshold == lowScoreThreshold || [(NSNumber *)lowScoreThreshold isEqual:lowScoreThreshold])
                       {
-                        v35 = v22;
-                        v24 = [(AFVoiceIdScoreCard *)v5 highScoreThreshold];
+                        v35 = lowScoreThreshold;
+                        highScoreThreshold = [(AFVoiceIdScoreCard *)v5 highScoreThreshold];
                         highScoreThreshold = self->_highScoreThreshold;
-                        if (highScoreThreshold == v24 || [(NSNumber *)highScoreThreshold isEqual:v24])
+                        if (highScoreThreshold == highScoreThreshold || [(NSNumber *)highScoreThreshold isEqual:highScoreThreshold])
                         {
-                          v34 = v24;
-                          v26 = [(AFVoiceIdScoreCard *)v5 confidentScoreThreshold];
+                          v34 = highScoreThreshold;
+                          confidentScoreThreshold = [(AFVoiceIdScoreCard *)v5 confidentScoreThreshold];
                           confidentScoreThreshold = self->_confidentScoreThreshold;
-                          if (confidentScoreThreshold == v26 || [(NSNumber *)confidentScoreThreshold isEqual:v26])
+                          if (confidentScoreThreshold == confidentScoreThreshold || [(NSNumber *)confidentScoreThreshold isEqual:confidentScoreThreshold])
                           {
-                            v28 = [(AFVoiceIdScoreCard *)v5 deltaScoreThreshold];
+                            deltaScoreThreshold = [(AFVoiceIdScoreCard *)v5 deltaScoreThreshold];
                             deltaScoreThreshold = self->_deltaScoreThreshold;
                             v32 = 1;
-                            if (deltaScoreThreshold != v28)
+                            if (deltaScoreThreshold != deltaScoreThreshold)
                             {
-                              v30 = v28;
-                              v31 = [(NSNumber *)deltaScoreThreshold isEqual:v28];
-                              v28 = v30;
+                              v30 = deltaScoreThreshold;
+                              v31 = [(NSNumber *)deltaScoreThreshold isEqual:deltaScoreThreshold];
+                              deltaScoreThreshold = v30;
                               if (!v31)
                               {
                                 v32 = 0;
@@ -514,7 +514,7 @@
                             v32 = 0;
                           }
 
-                          v24 = v34;
+                          highScoreThreshold = v34;
                         }
 
                         else
@@ -522,7 +522,7 @@
                           v32 = 0;
                         }
 
-                        v22 = v35;
+                        lowScoreThreshold = v35;
                       }
 
                       else
@@ -530,7 +530,7 @@
                         v32 = 0;
                       }
 
-                      v20 = v36;
+                      userClassified = v36;
                     }
 
                     else
@@ -611,7 +611,7 @@
   return v12 ^ v17;
 }
 
-- (id)_descriptionWithIndent:(unint64_t)a3
+- (id)_descriptionWithIndent:(unint64_t)indent
 {
   v24 = objc_alloc(MEMORY[0x1E696AEC0]);
   v25.receiver = self;
@@ -657,34 +657,34 @@
   return v18;
 }
 
-- (AFVoiceIdScoreCard)initWithSpIdAudioProcessedDuration:(id)a3 spIdUnknownUserScore:(id)a4 spIdKnownUserScores:(id)a5 spIdUserScoresVersion:(id)a6 spIdScoreThresholdingType:(id)a7 spIdAssetVersion:(id)a8 userClassified:(id)a9 userIdentityClassification:(int64_t)a10
+- (AFVoiceIdScoreCard)initWithSpIdAudioProcessedDuration:(id)duration spIdUnknownUserScore:(id)score spIdKnownUserScores:(id)scores spIdUserScoresVersion:(id)version spIdScoreThresholdingType:(id)type spIdAssetVersion:(id)assetVersion userClassified:(id)classified userIdentityClassification:(int64_t)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v22 = a9;
+  durationCopy = duration;
+  scoreCopy = score;
+  scoresCopy = scores;
+  versionCopy = version;
+  typeCopy = type;
+  assetVersionCopy = assetVersion;
+  classifiedCopy = classified;
   v32[0] = MEMORY[0x1E69E9820];
   v32[1] = 3221225472;
   v32[2] = __205__AFVoiceIdScoreCard_initWithSpIdAudioProcessedDuration_spIdUnknownUserScore_spIdKnownUserScores_spIdUserScoresVersion_spIdScoreThresholdingType_spIdAssetVersion_userClassified_userIdentityClassification___block_invoke;
   v32[3] = &unk_1E7346280;
-  v33 = v16;
-  v34 = v17;
-  v35 = v18;
-  v36 = v19;
-  v37 = v20;
-  v38 = v21;
-  v39 = v22;
-  v40 = a10;
-  v23 = v22;
-  v24 = v21;
-  v25 = v20;
-  v26 = v19;
-  v27 = v18;
-  v28 = v17;
-  v29 = v16;
+  v33 = durationCopy;
+  v34 = scoreCopy;
+  v35 = scoresCopy;
+  v36 = versionCopy;
+  v37 = typeCopy;
+  v38 = assetVersionCopy;
+  v39 = classifiedCopy;
+  classificationCopy = classification;
+  v23 = classifiedCopy;
+  v24 = assetVersionCopy;
+  v25 = typeCopy;
+  v26 = versionCopy;
+  v27 = scoresCopy;
+  v28 = scoreCopy;
+  v29 = durationCopy;
   v30 = [(AFVoiceIdScoreCard *)self initWithBuilder:v32];
 
   return v30;
@@ -704,47 +704,47 @@ void __205__AFVoiceIdScoreCard_initWithSpIdAudioProcessedDuration_spIdUnknownUse
   [v4 setUserIdentityClassification:a1[11]];
 }
 
-- (AFVoiceIdScoreCard)initWithSpIdAudioProcessedDuration:(id)a3 spIdUnknownUserScore:(id)a4 spIdKnownUserScores:(id)a5 spIdUserScoresVersion:(id)a6 spIdScoreThresholdingType:(id)a7 spIdAssetVersion:(id)a8 userClassified:(id)a9 userIdentityClassification:(int64_t)a10 lowScoreThreshold:(id)a11 highScoreThreshold:(id)a12 confidentScoreThreshold:(id)a13 deltaScoreThreshold:(id)a14 hasSufficientAudioProcessed:(int64_t)a15
+- (AFVoiceIdScoreCard)initWithSpIdAudioProcessedDuration:(id)duration spIdUnknownUserScore:(id)score spIdKnownUserScores:(id)scores spIdUserScoresVersion:(id)version spIdScoreThresholdingType:(id)type spIdAssetVersion:(id)assetVersion userClassified:(id)classified userIdentityClassification:(int64_t)self0 lowScoreThreshold:(id)self1 highScoreThreshold:(id)self2 confidentScoreThreshold:(id)self3 deltaScoreThreshold:(id)self4 hasSufficientAudioProcessed:(int64_t)self5
 {
-  v41 = a3;
-  v20 = a4;
-  v21 = a5;
-  v22 = a6;
-  v23 = a7;
-  v24 = a8;
-  v25 = a9;
-  v26 = a11;
-  v27 = a12;
-  v28 = a13;
-  v29 = a14;
+  durationCopy = duration;
+  scoreCopy = score;
+  scoresCopy = scores;
+  versionCopy = version;
+  typeCopy = type;
+  assetVersionCopy = assetVersion;
+  classifiedCopy = classified;
+  thresholdCopy = threshold;
+  scoreThresholdCopy = scoreThreshold;
+  confidentScoreThresholdCopy = confidentScoreThreshold;
+  deltaScoreThresholdCopy = deltaScoreThreshold;
   v45[0] = MEMORY[0x1E69E9820];
   v45[1] = 3221225472;
   v45[2] = __314__AFVoiceIdScoreCard_initWithSpIdAudioProcessedDuration_spIdUnknownUserScore_spIdKnownUserScores_spIdUserScoresVersion_spIdScoreThresholdingType_spIdAssetVersion_userClassified_userIdentityClassification_lowScoreThreshold_highScoreThreshold_confidentScoreThreshold_deltaScoreThreshold_hasSufficientAudioProcessed___block_invoke;
   v45[3] = &unk_1E7346258;
-  v46 = v41;
-  v47 = v20;
-  v48 = v21;
-  v49 = v22;
-  v50 = v23;
-  v51 = v24;
-  v52 = v25;
-  v53 = v26;
-  v54 = v27;
-  v55 = v28;
-  v56 = v29;
-  v57 = a10;
-  v58 = a15;
-  v43 = v29;
-  v42 = v28;
-  v30 = v27;
-  v31 = v26;
-  v32 = v25;
-  v33 = v24;
-  v34 = v23;
-  v35 = v22;
-  v36 = v21;
-  v37 = v20;
-  v38 = v41;
+  v46 = durationCopy;
+  v47 = scoreCopy;
+  v48 = scoresCopy;
+  v49 = versionCopy;
+  v50 = typeCopy;
+  v51 = assetVersionCopy;
+  v52 = classifiedCopy;
+  v53 = thresholdCopy;
+  v54 = scoreThresholdCopy;
+  v55 = confidentScoreThresholdCopy;
+  v56 = deltaScoreThresholdCopy;
+  classificationCopy = classification;
+  processedCopy = processed;
+  v43 = deltaScoreThresholdCopy;
+  v42 = confidentScoreThresholdCopy;
+  v30 = scoreThresholdCopy;
+  v31 = thresholdCopy;
+  v32 = classifiedCopy;
+  v33 = assetVersionCopy;
+  v34 = typeCopy;
+  v35 = versionCopy;
+  v36 = scoresCopy;
+  v37 = scoreCopy;
+  v38 = durationCopy;
   v39 = [(AFVoiceIdScoreCard *)self initWithBuilder:v45];
 
   return v39;
@@ -769,72 +769,72 @@ void __314__AFVoiceIdScoreCard_initWithSpIdAudioProcessedDuration_spIdUnknownUse
   [v4 setHasSufficientAudioProcessed:a1[16]];
 }
 
-- (AFVoiceIdScoreCard)initWithBuilder:(id)a3
+- (AFVoiceIdScoreCard)initWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v42.receiver = self;
   v42.super_class = AFVoiceIdScoreCard;
   v5 = [(AFVoiceIdScoreCard *)&v42 init];
   v6 = v5;
-  if (v4 && v5)
+  if (builderCopy && v5)
   {
     v7 = [[_AFVoiceIdScoreCardMutation alloc] initWithBase:0];
-    v4[2](v4, v7);
+    builderCopy[2](builderCopy, v7);
     if ([(_AFVoiceIdScoreCardMutation *)v7 isDirty])
     {
-      v8 = [(_AFVoiceIdScoreCardMutation *)v7 getSpIdAudioProcessedDuration];
-      v9 = [v8 copy];
+      getSpIdAudioProcessedDuration = [(_AFVoiceIdScoreCardMutation *)v7 getSpIdAudioProcessedDuration];
+      v9 = [getSpIdAudioProcessedDuration copy];
       spIdAudioProcessedDuration = v6->_spIdAudioProcessedDuration;
       v6->_spIdAudioProcessedDuration = v9;
 
-      v11 = [(_AFVoiceIdScoreCardMutation *)v7 getSpIdUnknownUserScore];
-      v12 = [v11 copy];
+      getSpIdUnknownUserScore = [(_AFVoiceIdScoreCardMutation *)v7 getSpIdUnknownUserScore];
+      v12 = [getSpIdUnknownUserScore copy];
       spIdUnknownUserScore = v6->_spIdUnknownUserScore;
       v6->_spIdUnknownUserScore = v12;
 
-      v14 = [(_AFVoiceIdScoreCardMutation *)v7 getSpIdKnownUserScores];
-      v15 = [v14 copy];
+      getSpIdKnownUserScores = [(_AFVoiceIdScoreCardMutation *)v7 getSpIdKnownUserScores];
+      v15 = [getSpIdKnownUserScores copy];
       spIdKnownUserScores = v6->_spIdKnownUserScores;
       v6->_spIdKnownUserScores = v15;
 
-      v17 = [(_AFVoiceIdScoreCardMutation *)v7 getSpIdUserScoresVersion];
-      v18 = [v17 copy];
+      getSpIdUserScoresVersion = [(_AFVoiceIdScoreCardMutation *)v7 getSpIdUserScoresVersion];
+      v18 = [getSpIdUserScoresVersion copy];
       spIdUserScoresVersion = v6->_spIdUserScoresVersion;
       v6->_spIdUserScoresVersion = v18;
 
-      v20 = [(_AFVoiceIdScoreCardMutation *)v7 getSpIdScoreThresholdingType];
-      v21 = [v20 copy];
+      getSpIdScoreThresholdingType = [(_AFVoiceIdScoreCardMutation *)v7 getSpIdScoreThresholdingType];
+      v21 = [getSpIdScoreThresholdingType copy];
       spIdScoreThresholdingType = v6->_spIdScoreThresholdingType;
       v6->_spIdScoreThresholdingType = v21;
 
-      v23 = [(_AFVoiceIdScoreCardMutation *)v7 getSpIdAssetVersion];
-      v24 = [v23 copy];
+      getSpIdAssetVersion = [(_AFVoiceIdScoreCardMutation *)v7 getSpIdAssetVersion];
+      v24 = [getSpIdAssetVersion copy];
       spIdAssetVersion = v6->_spIdAssetVersion;
       v6->_spIdAssetVersion = v24;
 
-      v26 = [(_AFVoiceIdScoreCardMutation *)v7 getUserClassified];
-      v27 = [v26 copy];
+      getUserClassified = [(_AFVoiceIdScoreCardMutation *)v7 getUserClassified];
+      v27 = [getUserClassified copy];
       userClassified = v6->_userClassified;
       v6->_userClassified = v27;
 
       v6->_userIdentityClassification = [(_AFVoiceIdScoreCardMutation *)v7 getUserIdentityClassification];
-      v29 = [(_AFVoiceIdScoreCardMutation *)v7 getLowScoreThreshold];
-      v30 = [v29 copy];
+      getLowScoreThreshold = [(_AFVoiceIdScoreCardMutation *)v7 getLowScoreThreshold];
+      v30 = [getLowScoreThreshold copy];
       lowScoreThreshold = v6->_lowScoreThreshold;
       v6->_lowScoreThreshold = v30;
 
-      v32 = [(_AFVoiceIdScoreCardMutation *)v7 getHighScoreThreshold];
-      v33 = [v32 copy];
+      getHighScoreThreshold = [(_AFVoiceIdScoreCardMutation *)v7 getHighScoreThreshold];
+      v33 = [getHighScoreThreshold copy];
       highScoreThreshold = v6->_highScoreThreshold;
       v6->_highScoreThreshold = v33;
 
-      v35 = [(_AFVoiceIdScoreCardMutation *)v7 getConfidentScoreThreshold];
-      v36 = [v35 copy];
+      getConfidentScoreThreshold = [(_AFVoiceIdScoreCardMutation *)v7 getConfidentScoreThreshold];
+      v36 = [getConfidentScoreThreshold copy];
       confidentScoreThreshold = v6->_confidentScoreThreshold;
       v6->_confidentScoreThreshold = v36;
 
-      v38 = [(_AFVoiceIdScoreCardMutation *)v7 getDeltaScoreThreshold];
-      v39 = [v38 copy];
+      getDeltaScoreThreshold = [(_AFVoiceIdScoreCardMutation *)v7 getDeltaScoreThreshold];
+      v39 = [getDeltaScoreThreshold copy];
       deltaScoreThreshold = v6->_deltaScoreThreshold;
       v6->_deltaScoreThreshold = v39;
 
@@ -845,77 +845,77 @@ void __314__AFVoiceIdScoreCard_initWithSpIdAudioProcessedDuration_spIdUnknownUse
   return v6;
 }
 
-+ (id)newWithBuilder:(id)a3
++ (id)newWithBuilder:(id)builder
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:v3];
+  builderCopy = builder;
+  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:builderCopy];
 
   return v4;
 }
 
-- (id)mutatedCopyWithMutator:(id)a3
+- (id)mutatedCopyWithMutator:(id)mutator
 {
-  v4 = a3;
-  if (v4)
+  mutatorCopy = mutator;
+  if (mutatorCopy)
   {
     v5 = [[_AFVoiceIdScoreCardMutation alloc] initWithBase:self];
-    v4[2](v4, v5);
+    mutatorCopy[2](mutatorCopy, v5);
     if ([(_AFVoiceIdScoreCardMutation *)v5 isDirty])
     {
       v6 = objc_alloc_init(AFVoiceIdScoreCard);
-      v7 = [(_AFVoiceIdScoreCardMutation *)v5 getSpIdAudioProcessedDuration];
-      v8 = [v7 copy];
+      getSpIdAudioProcessedDuration = [(_AFVoiceIdScoreCardMutation *)v5 getSpIdAudioProcessedDuration];
+      v8 = [getSpIdAudioProcessedDuration copy];
       spIdAudioProcessedDuration = v6->_spIdAudioProcessedDuration;
       v6->_spIdAudioProcessedDuration = v8;
 
-      v10 = [(_AFVoiceIdScoreCardMutation *)v5 getSpIdUnknownUserScore];
-      v11 = [v10 copy];
+      getSpIdUnknownUserScore = [(_AFVoiceIdScoreCardMutation *)v5 getSpIdUnknownUserScore];
+      v11 = [getSpIdUnknownUserScore copy];
       spIdUnknownUserScore = v6->_spIdUnknownUserScore;
       v6->_spIdUnknownUserScore = v11;
 
-      v13 = [(_AFVoiceIdScoreCardMutation *)v5 getSpIdKnownUserScores];
-      v14 = [v13 copy];
+      getSpIdKnownUserScores = [(_AFVoiceIdScoreCardMutation *)v5 getSpIdKnownUserScores];
+      v14 = [getSpIdKnownUserScores copy];
       spIdKnownUserScores = v6->_spIdKnownUserScores;
       v6->_spIdKnownUserScores = v14;
 
-      v16 = [(_AFVoiceIdScoreCardMutation *)v5 getSpIdUserScoresVersion];
-      v17 = [v16 copy];
+      getSpIdUserScoresVersion = [(_AFVoiceIdScoreCardMutation *)v5 getSpIdUserScoresVersion];
+      v17 = [getSpIdUserScoresVersion copy];
       spIdUserScoresVersion = v6->_spIdUserScoresVersion;
       v6->_spIdUserScoresVersion = v17;
 
-      v19 = [(_AFVoiceIdScoreCardMutation *)v5 getSpIdScoreThresholdingType];
-      v20 = [v19 copy];
+      getSpIdScoreThresholdingType = [(_AFVoiceIdScoreCardMutation *)v5 getSpIdScoreThresholdingType];
+      v20 = [getSpIdScoreThresholdingType copy];
       spIdScoreThresholdingType = v6->_spIdScoreThresholdingType;
       v6->_spIdScoreThresholdingType = v20;
 
-      v22 = [(_AFVoiceIdScoreCardMutation *)v5 getSpIdAssetVersion];
-      v23 = [v22 copy];
+      getSpIdAssetVersion = [(_AFVoiceIdScoreCardMutation *)v5 getSpIdAssetVersion];
+      v23 = [getSpIdAssetVersion copy];
       spIdAssetVersion = v6->_spIdAssetVersion;
       v6->_spIdAssetVersion = v23;
 
-      v25 = [(_AFVoiceIdScoreCardMutation *)v5 getUserClassified];
-      v26 = [v25 copy];
+      getUserClassified = [(_AFVoiceIdScoreCardMutation *)v5 getUserClassified];
+      v26 = [getUserClassified copy];
       userClassified = v6->_userClassified;
       v6->_userClassified = v26;
 
       v6->_userIdentityClassification = [(_AFVoiceIdScoreCardMutation *)v5 getUserIdentityClassification];
-      v28 = [(_AFVoiceIdScoreCardMutation *)v5 getLowScoreThreshold];
-      v29 = [v28 copy];
+      getLowScoreThreshold = [(_AFVoiceIdScoreCardMutation *)v5 getLowScoreThreshold];
+      v29 = [getLowScoreThreshold copy];
       lowScoreThreshold = v6->_lowScoreThreshold;
       v6->_lowScoreThreshold = v29;
 
-      v31 = [(_AFVoiceIdScoreCardMutation *)v5 getHighScoreThreshold];
-      v32 = [v31 copy];
+      getHighScoreThreshold = [(_AFVoiceIdScoreCardMutation *)v5 getHighScoreThreshold];
+      v32 = [getHighScoreThreshold copy];
       highScoreThreshold = v6->_highScoreThreshold;
       v6->_highScoreThreshold = v32;
 
-      v34 = [(_AFVoiceIdScoreCardMutation *)v5 getConfidentScoreThreshold];
-      v35 = [v34 copy];
+      getConfidentScoreThreshold = [(_AFVoiceIdScoreCardMutation *)v5 getConfidentScoreThreshold];
+      v35 = [getConfidentScoreThreshold copy];
       confidentScoreThreshold = v6->_confidentScoreThreshold;
       v6->_confidentScoreThreshold = v35;
 
-      v37 = [(_AFVoiceIdScoreCardMutation *)v5 getDeltaScoreThreshold];
-      v38 = [v37 copy];
+      getDeltaScoreThreshold = [(_AFVoiceIdScoreCardMutation *)v5 getDeltaScoreThreshold];
+      v38 = [getDeltaScoreThreshold copy];
       deltaScoreThreshold = v6->_deltaScoreThreshold;
       v6->_deltaScoreThreshold = v38;
 

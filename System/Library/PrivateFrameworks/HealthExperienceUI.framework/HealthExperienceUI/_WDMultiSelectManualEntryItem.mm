@@ -1,7 +1,7 @@
 @interface _WDMultiSelectManualEntryItem
 - (id)generateValue;
 - (id)tableViewCells;
-- (void)cellForItemTapped:(id)a3;
+- (void)cellForItemTapped:(id)tapped;
 @end
 
 @implementation _WDMultiSelectManualEntryItem
@@ -36,22 +36,22 @@
           }
 
           v10 = *(*(&v24 + 1) + 8 * v9);
-          v11 = [(WDAddDataManualEntryItem *)self _createUITableViewCell];
-          v12 = [v11 textLabel];
-          [v12 setText:v10];
+          _createUITableViewCell = [(WDAddDataManualEntryItem *)self _createUITableViewCell];
+          textLabel = [_createUITableViewCell textLabel];
+          [textLabel setText:v10];
 
-          v13 = [v11 textLabel];
+          textLabel2 = [_createUITableViewCell textLabel];
           v14 = [MEMORY[0x1E69DB878] hk_preferredFontForTextStyle:v8];
-          [v13 setFont:v14];
+          [textLabel2 setFont:v14];
 
           v15 = [v10 stringByReplacingOccurrencesOfString:@" " withString:@"_"];
           v28[0] = @"AddData.ValueCell";
           v28[1] = v15;
           v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v28 count:2];
           v17 = HKUIJoinStringsForAutomationIdentifier();
-          [v11 setAccessibilityIdentifier:v17];
+          [_createUITableViewCell setAccessibilityIdentifier:v17];
 
-          [v4 addObject:v11];
+          [v4 addObject:_createUITableViewCell];
           ++v9;
         }
 
@@ -75,10 +75,10 @@
   return tableViewCells;
 }
 
-- (void)cellForItemTapped:(id)a3
+- (void)cellForItemTapped:(id)tapped
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  tappedCopy = tapped;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -100,7 +100,7 @@
         }
 
         v10 = *(*(&v12 + 1) + 8 * v9);
-        if (v10 == v4)
+        if (v10 == tappedCopy)
         {
           v11 = 3;
         }

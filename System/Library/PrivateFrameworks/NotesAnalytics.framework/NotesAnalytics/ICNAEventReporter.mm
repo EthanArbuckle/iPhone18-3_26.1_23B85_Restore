@@ -1,186 +1,186 @@
 @interface ICNAEventReporter
-+ (BOOL)activityTypeHasUnknownShareFlow:(id)a3;
-+ (BOOL)attachmentHasDeepLinkSafariHighlight:(id)a3;
-+ (id)analyticsTypeUTIAttachment:(id)a3;
-+ (id)filteredActivityType:(id)a3;
-+ (id)inlineAttachmentReportForModernNote:(id)a3 faultOutInlineAttachmentsAfterDone:(BOOL)a4;
-+ (id)maskString:(id)a3 withoutPrefix:(id)a4 withMask:(id)a5;
-+ (void)faultOutObject:(id)a3;
++ (BOOL)activityTypeHasUnknownShareFlow:(id)flow;
++ (BOOL)attachmentHasDeepLinkSafariHighlight:(id)highlight;
++ (id)analyticsTypeUTIAttachment:(id)attachment;
++ (id)filteredActivityType:(id)type;
++ (id)inlineAttachmentReportForModernNote:(id)note faultOutInlineAttachmentsAfterDone:(BOOL)done;
++ (id)maskString:(id)string withoutPrefix:(id)prefix withMask:(id)mask;
++ (void)faultOutObject:(id)object;
 + (void)resetNoteCreateApproachEnumInAppSuiteDefaults;
-+ (void)setNoteCreateApproachEnumToAppSuiteDefaults:(int64_t)a3;
-- (ICNAEventReporter)initWithSubTrackerName:(id)a3;
-- (ICNAEventReporter)initWithSubTrackerName:(id)a3 view:(id)a4;
-- (ICNAEventReporter)initWithSubTrackerName:(id)a3 window:(id)a4;
-- (ICNAEventReporter)initWithSubTrackerName:(id)a3 windowScene:(id)a4;
++ (void)setNoteCreateApproachEnumToAppSuiteDefaults:(int64_t)defaults;
+- (ICNAEventReporter)initWithSubTrackerName:(id)name;
+- (ICNAEventReporter)initWithSubTrackerName:(id)name view:(id)view;
+- (ICNAEventReporter)initWithSubTrackerName:(id)name window:(id)window;
+- (ICNAEventReporter)initWithSubTrackerName:(id)name windowScene:(id)scene;
 - (ICNASubTracker)subTracker;
 - (UIWindowScene)windowScene;
-- (id)accountDataForHTMLAccount:(id)a3;
-- (id)accountDataForModernAccount:(id)a3;
-- (id)accountTypeForHTMLAccount:(id)a3;
-- (id)accountTypeForModernAccount:(id)a3;
-- (id)audioAttachmentDataForModernAttachment:(id)a3;
-- (id)audioTranscriptInteractionDataWithSummaryViewed:(BOOL)a3 transcriptViewed:(BOOL)a4 interactionTargets:(id)a5 interactionTypes:(id)a6;
-- (id)bioAuthDataForModernNote:(id)a3;
-- (id)collaborationActionDataIsInviting:(BOOL)a3 inviteStep:(int64_t)a4;
-- (id)collaborationStatusForModernObject:(id)a3;
-- (id)collaborationTypeForModernObject:(id)a3;
-- (id)folderContentDataForNoteCollection:(id)a3;
-- (id)folderContentDataForNoteContainer:(id)a3;
-- (id)folderContentDataForVirtualFolder:(id)a3 context:(id)a4;
-- (id)folderDataForHTMLCollection:(id)a3;
-- (id)folderDataForHTMLFolder:(id)a3;
-- (id)folderDataForModernAccountProxy:(id)a3;
-- (id)folderDataForModernFolder:(id)a3;
-- (id)folderDataForVirtualFolder:(id)a3;
-- (id)folderViewEventDataObjectsForNoteContainer:(id)a3 isInGridMode:(BOOL)a4;
-- (id)folderViewEventDataObjectsForVirtualFolder:(id)a3 isInGridMode:(BOOL)a4 context:(id)a5;
-- (id)initForAudioWithSubTrackerName:(id)a3;
+- (id)accountDataForHTMLAccount:(id)account;
+- (id)accountDataForModernAccount:(id)account;
+- (id)accountTypeForHTMLAccount:(id)account;
+- (id)accountTypeForModernAccount:(id)account;
+- (id)audioAttachmentDataForModernAttachment:(id)attachment;
+- (id)audioTranscriptInteractionDataWithSummaryViewed:(BOOL)viewed transcriptViewed:(BOOL)transcriptViewed interactionTargets:(id)targets interactionTypes:(id)types;
+- (id)bioAuthDataForModernNote:(id)note;
+- (id)collaborationActionDataIsInviting:(BOOL)inviting inviteStep:(int64_t)step;
+- (id)collaborationStatusForModernObject:(id)object;
+- (id)collaborationTypeForModernObject:(id)object;
+- (id)folderContentDataForNoteCollection:(id)collection;
+- (id)folderContentDataForNoteContainer:(id)container;
+- (id)folderContentDataForVirtualFolder:(id)folder context:(id)context;
+- (id)folderDataForHTMLCollection:(id)collection;
+- (id)folderDataForHTMLFolder:(id)folder;
+- (id)folderDataForModernAccountProxy:(id)proxy;
+- (id)folderDataForModernFolder:(id)folder;
+- (id)folderDataForVirtualFolder:(id)folder;
+- (id)folderViewEventDataObjectsForNoteContainer:(id)container isInGridMode:(BOOL)mode;
+- (id)folderViewEventDataObjectsForVirtualFolder:(id)folder isInGridMode:(BOOL)mode context:(id)context;
+- (id)initForAudioWithSubTrackerName:(id)name;
 - (id)noteAccessDataForHTMLNote;
-- (id)noteAccessDataForModernNote:(id)a3;
-- (id)noteCollapsibleSectionDataForHTMLNote:(id)a3;
-- (id)noteContentDataForHTMLNote:(id)a3;
-- (id)noteContentDataForModernNote:(id)a3;
+- (id)noteAccessDataForModernNote:(id)note;
+- (id)noteCollapsibleSectionDataForHTMLNote:(id)note;
+- (id)noteContentDataForHTMLNote:(id)note;
+- (id)noteContentDataForModernNote:(id)note;
 - (id)noteCreateDataFromAppSuiteDefaults;
-- (id)noteDataForHTMLNote:(id)a3;
-- (id)noteDataForModernNote:(id)a3;
-- (id)noteEditDataForContextType:(int64_t)a3;
-- (id)noteEditorCallOutBarDataForButtonTypeValue:(int64_t)a3;
-- (id)noteViewEventDataObjectsForHTMLNote:(id)a3;
-- (id)noteViewEventDataObjectsForModernNote:(id)a3;
-- (id)objectDataForCloudSyncingObject:(id)a3;
-- (id)passwordDataForModernNote:(id)a3;
-- (id)passwordModeDataForContextPath:(int64_t)a3 fromMode:(signed __int16)a4 toMode:(signed __int16)a5;
-- (id)searchRankingExperimentItemDataWithStrategyTypeEnum:(int64_t)a3 rank:(unint64_t)a4;
-- (id)searchSuggestionDataWithSearchSuggestionType:(unint64_t)a3;
-- (id)selectedResultAccountTypeForSearchResult:(id)a3;
-- (id)styleDataForStyleTypeValue:(int64_t)a3;
-- (id)tipDataForFeature:(id)a3;
-- (id)tipImpressionEventDataObjectsForFeature:(id)a3 andModernNote:(id)a4;
-- (id)tipLearnMoreClickEventDataObjectsForFeature:(id)a3 learnMoreTipName:(id)a4;
-- (int64_t)addApproachEnumForAddApproach:(int64_t)a3;
-- (int64_t)linkContentTypeEnumForURL:(id)a3;
-- (int64_t)weeksSinceDate:(id)a3;
-- (unint64_t)pencilStrokeCountForDrawing:(id)a3;
-- (void)aaSessionDidEnd:(id)a3;
+- (id)noteDataForHTMLNote:(id)note;
+- (id)noteDataForModernNote:(id)note;
+- (id)noteEditDataForContextType:(int64_t)type;
+- (id)noteEditorCallOutBarDataForButtonTypeValue:(int64_t)value;
+- (id)noteViewEventDataObjectsForHTMLNote:(id)note;
+- (id)noteViewEventDataObjectsForModernNote:(id)note;
+- (id)objectDataForCloudSyncingObject:(id)object;
+- (id)passwordDataForModernNote:(id)note;
+- (id)passwordModeDataForContextPath:(int64_t)path fromMode:(signed __int16)mode toMode:(signed __int16)toMode;
+- (id)searchRankingExperimentItemDataWithStrategyTypeEnum:(int64_t)enum rank:(unint64_t)rank;
+- (id)searchSuggestionDataWithSearchSuggestionType:(unint64_t)type;
+- (id)selectedResultAccountTypeForSearchResult:(id)result;
+- (id)styleDataForStyleTypeValue:(int64_t)value;
+- (id)tipDataForFeature:(id)feature;
+- (id)tipImpressionEventDataObjectsForFeature:(id)feature andModernNote:(id)note;
+- (id)tipLearnMoreClickEventDataObjectsForFeature:(id)feature learnMoreTipName:(id)name;
+- (int64_t)addApproachEnumForAddApproach:(int64_t)approach;
+- (int64_t)linkContentTypeEnumForURL:(id)l;
+- (int64_t)weeksSinceDate:(id)date;
+- (unint64_t)pencilStrokeCountForDrawing:(id)drawing;
+- (void)aaSessionDidEnd:(id)end;
 - (void)dealloc;
-- (void)flushAllTimedData:(id)a3;
+- (void)flushAllTimedData:(id)data;
 - (void)popContextPathData;
 - (void)popNoteCreateData;
 - (void)popSearchData;
-- (void)pushContextPathDataWithContextPathEnum:(int64_t)a3;
-- (void)pushDocScanDataWithID:(id)a3 actionType:(int64_t)a4 stage:(int64_t)a5;
-- (void)pushInlineDrawingDataForDrawingID:(id)a3 tool:(int64_t)a4;
-- (void)pushNoteCreateDataWithCreateApproach:(int64_t)a3;
-- (void)pushSearchDataWithSearchSessionID:(id)a3;
-- (void)pushStartDocScanPageCountData:(unint64_t)a3;
-- (void)pushStartTableDataWithStartColumns:(unint64_t)a3 startRows:(unint64_t)a4;
-- (void)reallySubmitSearchResultSelectEventWithSearchResult:(id)a3 searchSessionID:(id)a4 gmRank:(unint64_t)a5 queryLength:(unint64_t)a6 searchResultCountData:(id)a7 searchSuggestionData:(id)a8;
-- (void)setSubTracker:(id)a3;
-- (void)startActivityStreamSummaryEventForObject:(id)a3;
-- (void)startAttributionSideBarViewEventForNote:(id)a3;
+- (void)pushContextPathDataWithContextPathEnum:(int64_t)enum;
+- (void)pushDocScanDataWithID:(id)d actionType:(int64_t)type stage:(int64_t)stage;
+- (void)pushInlineDrawingDataForDrawingID:(id)d tool:(int64_t)tool;
+- (void)pushNoteCreateDataWithCreateApproach:(int64_t)approach;
+- (void)pushSearchDataWithSearchSessionID:(id)d;
+- (void)pushStartDocScanPageCountData:(unint64_t)data;
+- (void)pushStartTableDataWithStartColumns:(unint64_t)columns startRows:(unint64_t)rows;
+- (void)reallySubmitSearchResultSelectEventWithSearchResult:(id)result searchSessionID:(id)d gmRank:(unint64_t)rank queryLength:(unint64_t)length searchResultCountData:(id)data searchSuggestionData:(id)suggestionData;
+- (void)setSubTracker:(id)tracker;
+- (void)startActivityStreamSummaryEventForObject:(id)object;
+- (void)startAttributionSideBarViewEventForNote:(id)note;
 - (void)startAudioRecordingEvent;
 - (void)startFindInNoteEvent;
 - (void)startFolderListViewEventDurationTracking;
-- (void)startNoteViewEventDurationTrackingForHTMLNote:(id)a3;
-- (void)startNoteViewEventDurationTrackingForModernNote:(id)a3 reportCoreAnalytics:(BOOL)a4;
+- (void)startNoteViewEventDurationTrackingForHTMLNote:(id)note;
+- (void)startNoteViewEventDurationTrackingForModernNote:(id)note reportCoreAnalytics:(BOOL)analytics;
 - (void)startOnboardingScreenViewEventDurationTracking;
-- (void)startTimedEventOfType:(Class)a3;
-- (void)startTipImpressionEventDurationTrackingForFeature:(id)a3 andModernNote:(id)a4;
-- (void)submitActivityStreamSummaryEventForObject:(id)a3 halfHeightViewDuration:(double)a4 fullHeightViewDuration:(double)a5 sideBarViewDuration:(double)a6 minimizedViewDuration:(double)a7;
-- (void)submitAddLinkEvent:(id)a3 addApproach:(int64_t)a4 url:(id)a5;
-- (void)submitAddLinkEvent:(id)a3 addApproach:(int64_t)a4 url:(id)a5 noteData:(id *)a6 noteContentData:(id *)a7 noteAccessData:(id *)a8;
+- (void)startTimedEventOfType:(Class)type;
+- (void)startTipImpressionEventDurationTrackingForFeature:(id)feature andModernNote:(id)note;
+- (void)submitActivityStreamSummaryEventForObject:(id)object halfHeightViewDuration:(double)duration fullHeightViewDuration:(double)viewDuration sideBarViewDuration:(double)barViewDuration minimizedViewDuration:(double)minimizedViewDuration;
+- (void)submitAddLinkEvent:(id)event addApproach:(int64_t)approach url:(id)url;
+- (void)submitAddLinkEvent:(id)event addApproach:(int64_t)approach url:(id)url noteData:(id *)data noteContentData:(id *)contentData noteAccessData:(id *)accessData;
 - (void)submitAppReviewPromptRequestEvent;
 - (void)submitAppSessionResignEvent;
 - (void)submitAppSessionResumeEvent;
-- (void)submitAttachmentAddEventForAttachment:(id)a3;
-- (void)submitAttachmentBrowserActionEventForType:(int64_t)a3;
+- (void)submitAttachmentAddEventForAttachment:(id)attachment;
+- (void)submitAttachmentBrowserActionEventForType:(int64_t)type;
 - (void)submitAttachmentBrowserTapEvent;
-- (void)submitAttributionSideBarViewEventForNote:(id)a3 contextPath:(int64_t)a4 startState:(int64_t)a5 endState:(int64_t)a6;
-- (void)submitBiometricsFailEventForModernNote:(id)a3;
-- (void)submitChangePasswordEventForModernAccount:(id)a3 isReset:(BOOL)a4;
-- (void)submitChecklistUsageEventForModernNote:(id)a3 countOfCheckedItems:(int64_t)a4 countOfTotalItems:(int64_t)a5 checklistActionType:(int64_t)a6;
-- (void)submitCollabNotificationEventWithAction:(int64_t)a3;
-- (void)submitDocScanEventForNote:(id)a3 pageCount:(unint64_t)a4;
-- (void)submitEverNoteImportEventWithCount:(unint64_t)a3 isSuccessful:(BOOL)a4 intoAccount:(id)a5;
-- (void)submitFastSyncSessionEndForNote:(id)a3 sessionID:(id)a4 participantVersions:(id)a5 numUniqueAccounts:(id)a6 numUniqueDevices:(id)a7 errorCode:(id)a8 numIgnoredMessages:(id)a9;
-- (void)submitFastSyncSessionStartForNote:(id)a3 sessionID:(id)a4 participantVersions:(id)a5 numUniqueAccounts:(id)a6 numUniqueDevices:(id)a7;
-- (void)submitFolderCreateEventForModernFolder:(id)a3 creationApproach:(int64_t)a4 filterSelection:(id)a5;
-- (void)submitFolderDeleteEventForModernFolder:(id)a3;
+- (void)submitAttributionSideBarViewEventForNote:(id)note contextPath:(int64_t)path startState:(int64_t)state endState:(int64_t)endState;
+- (void)submitBiometricsFailEventForModernNote:(id)note;
+- (void)submitChangePasswordEventForModernAccount:(id)account isReset:(BOOL)reset;
+- (void)submitChecklistUsageEventForModernNote:(id)note countOfCheckedItems:(int64_t)items countOfTotalItems:(int64_t)totalItems checklistActionType:(int64_t)type;
+- (void)submitCollabNotificationEventWithAction:(int64_t)action;
+- (void)submitDocScanEventForNote:(id)note pageCount:(unint64_t)count;
+- (void)submitEverNoteImportEventWithCount:(unint64_t)count isSuccessful:(BOOL)successful intoAccount:(id)account;
+- (void)submitFastSyncSessionEndForNote:(id)note sessionID:(id)d participantVersions:(id)versions numUniqueAccounts:(id)accounts numUniqueDevices:(id)devices errorCode:(id)code numIgnoredMessages:(id)messages;
+- (void)submitFastSyncSessionStartForNote:(id)note sessionID:(id)d participantVersions:(id)versions numUniqueAccounts:(id)accounts numUniqueDevices:(id)devices;
+- (void)submitFolderCreateEventForModernFolder:(id)folder creationApproach:(int64_t)approach filterSelection:(id)selection;
+- (void)submitFolderDeleteEventForModernFolder:(id)folder;
 - (void)submitFolderListViewEvent;
-- (void)submitFullscreenDrawingToInlineDrawingEventForNote:(id)a3 drawing:(id)a4 drawingID:(id)a5 method:(int64_t)a6;
-- (void)submitHashtagAddEventForNote:(id)a3 tokenContentIdentifier:(id)a4 viaAutoComplete:(BOOL)a5;
-- (void)submitHashtagDeleteEvent:(id)a3 approachEnum:(int64_t)a4;
-- (void)submitHashtagRenameEvent:(id)a3 approachEnum:(int64_t)a4;
-- (void)submitInlineDrawingDataForDrawingDeletion:(id)a3 drawingID:(id)a4 forNote:(id)a5;
-- (void)submitLinkedNoteAcceleratorEndEvent:(id)a3 maxCharactersTyped:(unint64_t)a4 endResultCount:(unint64_t)a5;
-- (void)submitLinkedNoteAcceleratorInitiateEvent:(id)a3;
-- (void)submitMentionAddEventForNote:(id)a3 mentionID:(id)a4 participantID:(id)a5 viaAutoComplete:(BOOL)a6;
-- (void)submitMentionDeleteEvent:(id)a3;
-- (void)submitMoveCheckedItemsToBottomSwitchEventWithNewState:(BOOL)a3 isInApp:(BOOL)a4;
-- (void)submitNoteActionMenuEventForNoteEditorWithUsageType:(int64_t)a3 activityType:(id)a4;
-- (void)submitNoteCreateEventForHTMLNote:(id)a3;
-- (void)submitNoteCreateEventForHTMLNote:(id)a3 createApproach:(int64_t)a4;
-- (void)submitNoteCreateEventForModernNote:(id)a3;
-- (void)submitNoteCreateEventForModernNote:(id)a3 createApproach:(int64_t)a4;
-- (void)submitNoteCreateEventForSearchIndexableNote:(id)a3 createApproach:(int64_t)a4;
-- (void)submitNoteDeleteEventForHTMLNote:(id)a3;
-- (void)submitNoteDeleteEventForModernNote:(id)a3;
-- (void)submitNoteEditEventForHTMLNote:(id)a3;
-- (void)submitNoteEditEventForModernNote:(id)a3 fromQuickNote:(BOOL)a4;
-- (void)submitNoteEditorCallOutBarButtonSelectionEventForHTMLNote:(id)a3 buttonTypeValue:(int64_t)a4;
-- (void)submitNoteEditorCallOutBarButtonSelectionEventForModernNote:(id)a3 buttonTypeValue:(int64_t)a4;
-- (void)submitNotePinEventForModernNote:(id)a3 contextPath:(int64_t)a4;
-- (void)submitNoteSharrowEventForHTMLNote:(id)a3 activityType:(id)a4 contextPath:(int64_t)a5;
-- (void)submitNoteSharrowEventForModernNote:(id)a3 activityType:(id)a4 collaborationSelected:(BOOL)a5 countOfCollaboratorsAdded:(int64_t)a6 countOfCollaboratorsRemoved:(int64_t)a7 startInvitedCount:(int64_t)a8 startAcceptedCount:(int64_t)a9 endInvitedCount:(int64_t)a10 endAcceptedCount:(int64_t)a11;
-- (void)submitNoteViewEventForHTMLNote:(id)a3;
-- (void)submitNoteViewEventForModernNote:(id)a3 referringNote:(id)a4 collapsibleSectionAffordanceExposures:(int64_t)a5 collapsibleSectionAffordanceUsages:(int64_t)a6;
-- (void)submitNotesToPagesEventWithContextPath:(int64_t)a3;
-- (void)submitOnboardingScreenViewEventWithType:(int64_t)a3;
-- (void)submitPDFWorkflowEngagementSummary:(id)a3 modernNote:(id)a4;
-- (void)submitPaletteEngagementEventForNote:(id)a3 startPosition:(int64_t)a4 endPosition:(int64_t)a5;
-- (void)submitPasswordFailEventForModernNote:(id)a3;
-- (void)submitPasswordProtectEventForModernNote:(id)a3;
-- (void)submitPasswordSuccessEventForModernNote:(id)a3;
-- (void)submitPendingInlineDrawingDataForNote:(id)a3;
+- (void)submitFullscreenDrawingToInlineDrawingEventForNote:(id)note drawing:(id)drawing drawingID:(id)d method:(int64_t)method;
+- (void)submitHashtagAddEventForNote:(id)note tokenContentIdentifier:(id)identifier viaAutoComplete:(BOOL)complete;
+- (void)submitHashtagDeleteEvent:(id)event approachEnum:(int64_t)enum;
+- (void)submitHashtagRenameEvent:(id)event approachEnum:(int64_t)enum;
+- (void)submitInlineDrawingDataForDrawingDeletion:(id)deletion drawingID:(id)d forNote:(id)note;
+- (void)submitLinkedNoteAcceleratorEndEvent:(id)event maxCharactersTyped:(unint64_t)typed endResultCount:(unint64_t)count;
+- (void)submitLinkedNoteAcceleratorInitiateEvent:(id)event;
+- (void)submitMentionAddEventForNote:(id)note mentionID:(id)d participantID:(id)iD viaAutoComplete:(BOOL)complete;
+- (void)submitMentionDeleteEvent:(id)event;
+- (void)submitMoveCheckedItemsToBottomSwitchEventWithNewState:(BOOL)state isInApp:(BOOL)app;
+- (void)submitNoteActionMenuEventForNoteEditorWithUsageType:(int64_t)type activityType:(id)activityType;
+- (void)submitNoteCreateEventForHTMLNote:(id)note;
+- (void)submitNoteCreateEventForHTMLNote:(id)note createApproach:(int64_t)approach;
+- (void)submitNoteCreateEventForModernNote:(id)note;
+- (void)submitNoteCreateEventForModernNote:(id)note createApproach:(int64_t)approach;
+- (void)submitNoteCreateEventForSearchIndexableNote:(id)note createApproach:(int64_t)approach;
+- (void)submitNoteDeleteEventForHTMLNote:(id)note;
+- (void)submitNoteDeleteEventForModernNote:(id)note;
+- (void)submitNoteEditEventForHTMLNote:(id)note;
+- (void)submitNoteEditEventForModernNote:(id)note fromQuickNote:(BOOL)quickNote;
+- (void)submitNoteEditorCallOutBarButtonSelectionEventForHTMLNote:(id)note buttonTypeValue:(int64_t)value;
+- (void)submitNoteEditorCallOutBarButtonSelectionEventForModernNote:(id)note buttonTypeValue:(int64_t)value;
+- (void)submitNotePinEventForModernNote:(id)note contextPath:(int64_t)path;
+- (void)submitNoteSharrowEventForHTMLNote:(id)note activityType:(id)type contextPath:(int64_t)path;
+- (void)submitNoteSharrowEventForModernNote:(id)note activityType:(id)type collaborationSelected:(BOOL)selected countOfCollaboratorsAdded:(int64_t)added countOfCollaboratorsRemoved:(int64_t)removed startInvitedCount:(int64_t)count startAcceptedCount:(int64_t)acceptedCount endInvitedCount:(int64_t)self0 endAcceptedCount:(int64_t)self1;
+- (void)submitNoteViewEventForHTMLNote:(id)note;
+- (void)submitNoteViewEventForModernNote:(id)note referringNote:(id)referringNote collapsibleSectionAffordanceExposures:(int64_t)exposures collapsibleSectionAffordanceUsages:(int64_t)usages;
+- (void)submitNotesToPagesEventWithContextPath:(int64_t)path;
+- (void)submitOnboardingScreenViewEventWithType:(int64_t)type;
+- (void)submitPDFWorkflowEngagementSummary:(id)summary modernNote:(id)note;
+- (void)submitPaletteEngagementEventForNote:(id)note startPosition:(int64_t)position endPosition:(int64_t)endPosition;
+- (void)submitPasswordFailEventForModernNote:(id)note;
+- (void)submitPasswordProtectEventForModernNote:(id)note;
+- (void)submitPasswordSuccessEventForModernNote:(id)note;
+- (void)submitPendingInlineDrawingDataForNote:(id)note;
 - (void)submitSearchAttemptEvent;
-- (void)submitSearchInitiateEventWithSearchSessionID:(id)a3 searchSuggestionType:(unint64_t)a4;
-- (void)submitSearchResultExposureSummaryEventWithSearchResultExposureData:(id)a3 searchSessionID:(id)a4;
-- (void)submitSearchResultSelectEventWithSearchResult:(id)a3 searchSessionID:(id)a4 gmRank:(unint64_t)a5;
-- (void)submitSearchResultSelectEventWithSearchResult:(id)a3 searchSessionID:(id)a4 queryLength:(unint64_t)a5 topHitResultCount:(unint64_t)a6 noteResultCount:(unint64_t)a7 attachmentResultCount:(unint64_t)a8 gmRank:(unint64_t)a9;
-- (void)submitSnapshotCompletionEventIsSuccessful:(BOOL)a3;
-- (void)submitSnapshotRegisterEventIsSuccessful:(BOOL)a3;
+- (void)submitSearchInitiateEventWithSearchSessionID:(id)d searchSuggestionType:(unint64_t)type;
+- (void)submitSearchResultExposureSummaryEventWithSearchResultExposureData:(id)data searchSessionID:(id)d;
+- (void)submitSearchResultSelectEventWithSearchResult:(id)result searchSessionID:(id)d gmRank:(unint64_t)rank;
+- (void)submitSearchResultSelectEventWithSearchResult:(id)result searchSessionID:(id)d queryLength:(unint64_t)length topHitResultCount:(unint64_t)count noteResultCount:(unint64_t)resultCount attachmentResultCount:(unint64_t)attachmentResultCount gmRank:(unint64_t)rank;
+- (void)submitSnapshotCompletionEventIsSuccessful:(BOOL)successful;
+- (void)submitSnapshotRegisterEventIsSuccessful:(BOOL)successful;
 - (void)submitSnapshotTriggeredEvent;
-- (void)submitStyleFormatEventForHTMLNote:(id)a3 styleTypeValue:(int64_t)a4;
-- (void)submitStyleFormatEventForModernNote:(id)a3 styleTypeValue:(int64_t)a4;
-- (void)submitTableCreateEventForAttachment:(id)a3 inNote:(id)a4;
-- (void)submitTableEditEventForNote:(id)a3 endColumns:(unint64_t)a4 endRows:(unint64_t)a5;
-- (void)submitTableRemoveEventForAttachment:(id)a3 inNote:(id)a4;
-- (void)submitTimedEventOfTypeIfPossible:(Class)a3;
-- (void)submitTipImpressionEventForFeature:(id)a3 andModernNote:(id)a4;
-- (void)submitTipLearnMoreClickEventForFeature:(id)a3 learnMoreTipName:(id)a4;
+- (void)submitStyleFormatEventForHTMLNote:(id)note styleTypeValue:(int64_t)value;
+- (void)submitStyleFormatEventForModernNote:(id)note styleTypeValue:(int64_t)value;
+- (void)submitTableCreateEventForAttachment:(id)attachment inNote:(id)note;
+- (void)submitTableEditEventForNote:(id)note endColumns:(unint64_t)columns endRows:(unint64_t)rows;
+- (void)submitTableRemoveEventForAttachment:(id)attachment inNote:(id)note;
+- (void)submitTimedEventOfTypeIfPossible:(Class)possible;
+- (void)submitTipImpressionEventForFeature:(id)feature andModernNote:(id)note;
+- (void)submitTipLearnMoreClickEventForFeature:(id)feature learnMoreTipName:(id)name;
 @end
 
 @implementation ICNAEventReporter
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = ICNAEventReporter;
   [(ICNAEventReporter *)&v4 dealloc];
 }
 
-- (ICNAEventReporter)initWithSubTrackerName:(id)a3
+- (ICNAEventReporter)initWithSubTrackerName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v13.receiver = self;
   v13.super_class = ICNAEventReporter;
   v5 = [(ICNAOptedInObject *)&v13 init];
   if (v5)
   {
-    v6 = [[ICNASubTracker alloc] initWithName:v4];
+    v6 = [[ICNASubTracker alloc] initWithName:nameCopy];
     subTracker = v5->_subTracker;
     v5->_subTracker = v6;
 
@@ -188,17 +188,17 @@
     timedDataTrackingSet = v5->_timedDataTrackingSet;
     v5->_timedDataTrackingSet = v8;
 
-    v10 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v11 = +[ICNAController sharedController];
-    [v10 addObserver:v5 selector:sel_flushAllTimedData_ name:@"ICNASessionFlushTimedDataNotification" object:v11];
+    [defaultCenter addObserver:v5 selector:sel_flushAllTimedData_ name:@"ICNASessionFlushTimedDataNotification" object:v11];
   }
 
   return v5;
 }
 
-- (id)initForAudioWithSubTrackerName:(id)a3
+- (id)initForAudioWithSubTrackerName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v14.receiver = self;
   v14.super_class = ICNAEventReporter;
   v5 = [(ICNAOptedInObject *)&v14 init];
@@ -206,8 +206,8 @@
   {
     v6 = [ICNASubTracker alloc];
     v7 = +[ICNAController sharedController];
-    v8 = [v7 aaTrackerForAudio];
-    v9 = [(ICNASubTracker *)v6 initWithName:v4 parentAATracker:v8];
+    aaTrackerForAudio = [v7 aaTrackerForAudio];
+    v9 = [(ICNASubTracker *)v6 initWithName:nameCopy parentAATracker:aaTrackerForAudio];
     subTracker = v5->_subTracker;
     v5->_subTracker = v9;
 
@@ -219,11 +219,11 @@
   return v5;
 }
 
-- (ICNAEventReporter)initWithSubTrackerName:(id)a3 windowScene:(id)a4
+- (ICNAEventReporter)initWithSubTrackerName:(id)name windowScene:(id)scene
 {
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  nameCopy = name;
+  sceneCopy = scene;
+  if (sceneCopy)
   {
     v24.receiver = self;
     v24.super_class = ICNAEventReporter;
@@ -231,17 +231,17 @@
     v10 = v9;
     if (v9)
     {
-      objc_storeWeak(&v9->_windowScene, v8);
-      objc_storeStrong(&v10->_subTrackerName, a3);
-      v11 = [v8 session];
-      v12 = [v11 persistentIdentifier];
+      objc_storeWeak(&v9->_windowScene, sceneCopy);
+      objc_storeStrong(&v10->_subTrackerName, name);
+      session = [sceneCopy session];
+      persistentIdentifier = [session persistentIdentifier];
 
       v13 = +[ICNAController sharedController];
-      v14 = [v13 aaTrackerForWindowSceneIdentifier:v12];
+      v14 = [v13 aaTrackerForWindowSceneIdentifier:persistentIdentifier];
 
       if (v14)
       {
-        v15 = [[ICNASubTracker alloc] initWithName:v7 parentAATracker:v14];
+        v15 = [[ICNASubTracker alloc] initWithName:nameCopy parentAATracker:v14];
         subTracker = v10->_subTracker;
         v10->_subTracker = v15;
       }
@@ -250,15 +250,15 @@
       timedDataTrackingSet = v10->_timedDataTrackingSet;
       v10->_timedDataTrackingSet = v17;
 
-      v19 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v19 addObserver:v10 selector:sel_flushAllTimedData_ name:@"ICNASessionFlushTimedDataNotification" object:0];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter addObserver:v10 selector:sel_flushAllTimedData_ name:@"ICNASessionFlushTimedDataNotification" object:0];
 
-      v20 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v20 addObserver:v10 selector:sel_aaSessionDidEnd_ name:@"ICNASessionDidEndNotification" object:0];
+      defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter2 addObserver:v10 selector:sel_aaSessionDidEnd_ name:@"ICNASessionDidEndNotification" object:0];
     }
 
     self = v10;
-    v21 = self;
+    selfCopy = self;
   }
 
   else
@@ -269,21 +269,21 @@
       [ICNAEventReporter initWithSubTrackerName:windowScene:];
     }
 
-    v21 = 0;
+    selfCopy = 0;
   }
 
-  return v21;
+  return selfCopy;
 }
 
-- (ICNAEventReporter)initWithSubTrackerName:(id)a3 window:(id)a4
+- (ICNAEventReporter)initWithSubTrackerName:(id)name window:(id)window
 {
-  v6 = a3;
-  if (a4)
+  nameCopy = name;
+  if (window)
   {
-    v7 = [a4 windowScene];
-    self = [(ICNAEventReporter *)self initWithSubTrackerName:v6 windowScene:v7];
+    windowScene = [window windowScene];
+    self = [(ICNAEventReporter *)self initWithSubTrackerName:nameCopy windowScene:windowScene];
 
-    v8 = self;
+    selfCopy = self;
   }
 
   else
@@ -294,22 +294,22 @@
       [ICNAEventReporter initWithSubTrackerName:window:];
     }
 
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (ICNAEventReporter)initWithSubTrackerName:(id)a3 view:(id)a4
+- (ICNAEventReporter)initWithSubTrackerName:(id)name view:(id)view
 {
-  v6 = a3;
-  if (a4)
+  nameCopy = name;
+  if (view)
   {
-    v7 = [a4 window];
-    v8 = [v7 windowScene];
-    self = [(ICNAEventReporter *)self initWithSubTrackerName:v6 windowScene:v8];
+    window = [view window];
+    windowScene = [window windowScene];
+    self = [(ICNAEventReporter *)self initWithSubTrackerName:nameCopy windowScene:windowScene];
 
-    v9 = self;
+    selfCopy = self;
   }
 
   else
@@ -320,10 +320,10 @@
       [ICNAEventReporter initWithSubTrackerName:view:];
     }
 
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
 - (ICNASubTracker)subTracker
@@ -332,11 +332,11 @@
   if (!subTracker)
   {
     WeakRetained = objc_loadWeakRetained(&self->_windowScene);
-    v5 = [WeakRetained session];
-    v6 = [v5 persistentIdentifier];
+    session = [WeakRetained session];
+    persistentIdentifier = [session persistentIdentifier];
 
     v7 = +[ICNAController sharedController];
-    v8 = [v7 aaTrackerForWindowSceneIdentifier:v6];
+    v8 = [v7 aaTrackerForWindowSceneIdentifier:persistentIdentifier];
 
     if (v8)
     {
@@ -351,35 +351,35 @@
   return subTracker;
 }
 
-- (void)setSubTracker:(id)a3
+- (void)setSubTracker:(id)tracker
 {
-  v5 = a3;
-  if (self->_subTracker != v5)
+  trackerCopy = tracker;
+  if (self->_subTracker != trackerCopy)
   {
-    v8 = v5;
+    v8 = trackerCopy;
     v6 = NSStringFromSelector(sel_subTracker);
     [(ICNAEventReporter *)self willChangeValueForKey:v6];
 
-    objc_storeStrong(&self->_subTracker, a3);
+    objc_storeStrong(&self->_subTracker, tracker);
     v7 = NSStringFromSelector(sel_subTracker);
     [(ICNAEventReporter *)self didChangeValueForKey:v7];
 
-    v5 = v8;
+    trackerCopy = v8;
   }
 }
 
-- (void)startTimedEventOfType:(Class)a3
+- (void)startTimedEventOfType:(Class)type
 {
   objc_initWeak(&location, self);
   v5 = +[ICNAController sharedController];
-  v6 = [(ICNAEventReporter *)self subTracker];
+  subTracker = [(ICNAEventReporter *)self subTracker];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __43__ICNAEventReporter_startTimedEventOfType___block_invoke;
   v7[3] = &unk_2799AFA98;
   objc_copyWeak(v8, &location);
-  v8[1] = a3;
-  [v5 trackTimedEventType:a3 subTracker:v6 synchronousTaskBeforeStarting:v7];
+  v8[1] = type;
+  [v5 trackTimedEventType:type subTracker:subTracker synchronousTaskBeforeStarting:v7];
 
   objc_destroyWeak(v8);
   objc_destroyWeak(&location);
@@ -399,18 +399,18 @@ void __43__ICNAEventReporter_startTimedEventOfType___block_invoke(uint64_t a1)
   }
 }
 
-- (void)submitTimedEventOfTypeIfPossible:(Class)a3
+- (void)submitTimedEventOfTypeIfPossible:(Class)possible
 {
   objc_initWeak(&location, self);
   v5 = +[ICNAController sharedController];
-  v6 = [(ICNAEventReporter *)self subTracker];
+  subTracker = [(ICNAEventReporter *)self subTracker];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __54__ICNAEventReporter_submitTimedEventOfTypeIfPossible___block_invoke;
   v7[3] = &unk_2799AFAC0;
   objc_copyWeak(v8, &location);
-  v8[1] = a3;
-  [v5 submitEventOfType:a3 subTracker:v6 synchronousTaskBeforeSubmitting:v7];
+  v8[1] = possible;
+  [v5 submitEventOfType:possible subTracker:subTracker synchronousTaskBeforeSubmitting:v7];
 
   objc_destroyWeak(v8);
   objc_destroyWeak(&location);
@@ -443,23 +443,23 @@ uint64_t __54__ICNAEventReporter_submitTimedEventOfTypeIfPossible___block_invoke
   return v5;
 }
 
-- (void)flushAllTimedData:(id)a3
+- (void)flushAllTimedData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   objc_opt_class();
-  v5 = [v4 object];
+  object = [dataCopy object];
   v6 = ICDynamicCast();
 
-  v7 = [v6 session];
-  v8 = [v7 persistentIdentifier];
+  session = [v6 session];
+  persistentIdentifier = [session persistentIdentifier];
 
-  v9 = [(ICNAEventReporter *)self windowScene];
-  v10 = v9;
-  if (v8)
+  windowScene = [(ICNAEventReporter *)self windowScene];
+  v10 = windowScene;
+  if (persistentIdentifier)
   {
-    v11 = [v9 session];
-    v12 = [v11 persistentIdentifier];
-    v13 = [v8 isEqual:v12];
+    session2 = [windowScene session];
+    persistentIdentifier2 = [session2 persistentIdentifier];
+    v13 = [persistentIdentifier isEqual:persistentIdentifier2];
 
     if ((v13 & 1) == 0)
     {
@@ -538,18 +538,18 @@ void __39__ICNAEventReporter_flushAllTimedData___block_invoke(uint64_t a1)
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)aaSessionDidEnd:(id)a3
+- (void)aaSessionDidEnd:(id)end
 {
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 postNotificationName:@"ICNAEventReporterLostSessionNotification" object:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"ICNAEventReporterLostSessionNotification" object:self];
 }
 
 - (void)submitAppSessionResignEvent
 {
   v5 = +[ICNAController sharedController];
   v3 = objc_opt_class();
-  v4 = [(ICNAEventReporter *)self subTracker];
-  [v5 submitEventOfType:v3 subTracker:v4];
+  subTracker = [(ICNAEventReporter *)self subTracker];
+  [v5 submitEventOfType:v3 subTracker:subTracker];
 }
 
 - (void)submitAppSessionResumeEvent
@@ -557,8 +557,8 @@ void __39__ICNAEventReporter_flushAllTimedData___block_invoke(uint64_t a1)
   [(ICNAEventReporter *)self startTimedEventOfType:objc_opt_class()];
   v5 = +[ICNAController sharedController];
   v3 = objc_opt_class();
-  v4 = [(ICNAEventReporter *)self subTracker];
-  [v5 submitEventOfType:v3 subTracker:v4];
+  subTracker = [(ICNAEventReporter *)self subTracker];
+  [v5 submitEventOfType:v3 subTracker:subTracker];
 }
 
 - (void)startOnboardingScreenViewEventDurationTracking
@@ -567,19 +567,19 @@ void __39__ICNAEventReporter_flushAllTimedData___block_invoke(uint64_t a1)
   v3 = [[ICASOnboardingUserAction alloc] initWithOnboardingUserAction:0];
   v4 = [[ICASOnboardingScreenData alloc] initWithOnboardingScreenType:v10 onboardingUserAction:v3];
   v5 = +[ICNAController sharedController];
-  v6 = [(ICNAEventReporter *)self subTracker];
-  [v5 pushDataObject:v4 unique:1 onlyOnce:0 subTracker:v6];
+  subTracker = [(ICNAEventReporter *)self subTracker];
+  [v5 pushDataObject:v4 unique:1 onlyOnce:0 subTracker:subTracker];
 
   v7 = +[ICNAController sharedController];
   v8 = objc_opt_class();
-  v9 = [(ICNAEventReporter *)self subTracker];
-  [v7 trackTimedEventType:v8 subTracker:v9];
+  subTracker2 = [(ICNAEventReporter *)self subTracker];
+  [v7 trackTimedEventType:v8 subTracker:subTracker2];
 }
 
-- (void)submitOnboardingScreenViewEventWithType:(int64_t)a3
+- (void)submitOnboardingScreenViewEventWithType:(int64_t)type
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v4 = [[ICASOnboardingScreenType alloc] initWithOnboardingScreenType:a3];
+  v4 = [[ICASOnboardingScreenType alloc] initWithOnboardingScreenType:type];
   v5 = [ICASOnboardingScreenData alloc];
   v6 = [[ICASOnboardingUserAction alloc] initWithOnboardingUserAction:1];
   v7 = [(ICASOnboardingScreenData *)v5 initWithOnboardingScreenType:v4 onboardingUserAction:v6];
@@ -588,30 +588,30 @@ void __39__ICNAEventReporter_flushAllTimedData___block_invoke(uint64_t a1)
   v9 = objc_opt_class();
   v13[0] = v7;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:1];
-  v11 = [(ICNAEventReporter *)self subTracker];
-  [v8 submitEventOfType:v9 pushThenPopDataObjects:v10 subTracker:v11];
+  subTracker = [(ICNAEventReporter *)self subTracker];
+  [v8 submitEventOfType:v9 pushThenPopDataObjects:v10 subTracker:subTracker];
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)submitNoteCreateEventForModernNote:(id)a3
+- (void)submitNoteCreateEventForModernNote:(id)note
 {
   v18[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ICNAEventReporter *)self noteDataForModernNote:v4];
-  v6 = [v4 folder];
-  v7 = [(ICNAEventReporter *)self folderDataForModernFolder:v6];
+  noteCopy = note;
+  v5 = [(ICNAEventReporter *)self noteDataForModernNote:noteCopy];
+  folder = [noteCopy folder];
+  v7 = [(ICNAEventReporter *)self folderDataForModernFolder:folder];
 
-  v8 = [v4 account];
+  account = [noteCopy account];
 
-  v9 = [(ICNAEventReporter *)self accountDataForModernAccount:v8];
+  v9 = [(ICNAEventReporter *)self accountDataForModernAccount:account];
 
-  v10 = [(ICNAEventReporter *)self noteCreateDataFromAppSuiteDefaults];
-  if (v10)
+  noteCreateDataFromAppSuiteDefaults = [(ICNAEventReporter *)self noteCreateDataFromAppSuiteDefaults];
+  if (noteCreateDataFromAppSuiteDefaults)
   {
     v11 = +[ICNAController sharedController];
-    v12 = [(ICNAEventReporter *)self subTracker];
-    [v11 pushDataObject:v10 unique:0 onlyOnce:1 subTracker:v12];
+    subTracker = [(ICNAEventReporter *)self subTracker];
+    [v11 pushDataObject:noteCreateDataFromAppSuiteDefaults unique:0 onlyOnce:1 subTracker:subTracker];
   }
 
   v13 = +[ICNAController sharedController];
@@ -620,27 +620,27 @@ void __39__ICNAEventReporter_flushAllTimedData___block_invoke(uint64_t a1)
   v18[1] = v7;
   v18[2] = v9;
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:3];
-  v16 = [(ICNAEventReporter *)self subTracker];
-  [v13 submitEventOfType:v14 pushThenPopDataObjects:v15 subTracker:v16];
+  subTracker2 = [(ICNAEventReporter *)self subTracker];
+  [v13 submitEventOfType:v14 pushThenPopDataObjects:v15 subTracker:subTracker2];
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)submitNoteCreateEventForModernNote:(id)a3 createApproach:(int64_t)a4
+- (void)submitNoteCreateEventForModernNote:(id)note createApproach:(int64_t)approach
 {
   v20[4] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(ICNAEventReporter *)self noteDataForModernNote:v6];
+  noteCopy = note;
+  v7 = [(ICNAEventReporter *)self noteDataForModernNote:noteCopy];
   v8 = [ICASNoteCreateData alloc];
-  v9 = [[ICASNoteCreateApproach alloc] initWithNoteCreateApproach:a4];
+  v9 = [[ICASNoteCreateApproach alloc] initWithNoteCreateApproach:approach];
   v10 = [(ICASNoteCreateData *)v8 initWithNoteCreateApproach:v9];
 
-  v11 = [v6 folder];
-  v12 = [(ICNAEventReporter *)self folderDataForModernFolder:v11];
+  folder = [noteCopy folder];
+  v12 = [(ICNAEventReporter *)self folderDataForModernFolder:folder];
 
-  v13 = [v6 account];
+  account = [noteCopy account];
 
-  v14 = [(ICNAEventReporter *)self accountDataForModernAccount:v13];
+  v14 = [(ICNAEventReporter *)self accountDataForModernAccount:account];
 
   v15 = +[ICNAController sharedController];
   v16 = objc_opt_class();
@@ -649,30 +649,30 @@ void __39__ICNAEventReporter_flushAllTimedData___block_invoke(uint64_t a1)
   v20[2] = v12;
   v20[3] = v14;
   v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:4];
-  v18 = [(ICNAEventReporter *)self subTracker];
-  [v15 submitEventOfType:v16 pushThenPopDataObjects:v17 subTracker:v18];
+  subTracker = [(ICNAEventReporter *)self subTracker];
+  [v15 submitEventOfType:v16 pushThenPopDataObjects:v17 subTracker:subTracker];
 
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)submitNoteCreateEventForHTMLNote:(id)a3
+- (void)submitNoteCreateEventForHTMLNote:(id)note
 {
   v18[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ICNAEventReporter *)self noteDataForHTMLNote:v4];
-  v6 = [v4 folder];
-  v7 = [(ICNAEventReporter *)self folderDataForHTMLFolder:v6];
+  noteCopy = note;
+  v5 = [(ICNAEventReporter *)self noteDataForHTMLNote:noteCopy];
+  folder = [noteCopy folder];
+  v7 = [(ICNAEventReporter *)self folderDataForHTMLFolder:folder];
 
-  v8 = [v4 account];
+  account = [noteCopy account];
 
-  v9 = [(ICNAEventReporter *)self accountDataForHTMLAccount:v8];
+  v9 = [(ICNAEventReporter *)self accountDataForHTMLAccount:account];
 
-  v10 = [(ICNAEventReporter *)self noteCreateDataFromAppSuiteDefaults];
-  if (v10)
+  noteCreateDataFromAppSuiteDefaults = [(ICNAEventReporter *)self noteCreateDataFromAppSuiteDefaults];
+  if (noteCreateDataFromAppSuiteDefaults)
   {
     v11 = +[ICNAController sharedController];
-    v12 = [(ICNAEventReporter *)self subTracker];
-    [v11 pushDataObject:v10 unique:0 onlyOnce:1 subTracker:v12];
+    subTracker = [(ICNAEventReporter *)self subTracker];
+    [v11 pushDataObject:noteCreateDataFromAppSuiteDefaults unique:0 onlyOnce:1 subTracker:subTracker];
   }
 
   v13 = +[ICNAController sharedController];
@@ -681,27 +681,27 @@ void __39__ICNAEventReporter_flushAllTimedData___block_invoke(uint64_t a1)
   v18[1] = v7;
   v18[2] = v9;
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:3];
-  v16 = [(ICNAEventReporter *)self subTracker];
-  [v13 submitEventOfType:v14 pushThenPopDataObjects:v15 subTracker:v16];
+  subTracker2 = [(ICNAEventReporter *)self subTracker];
+  [v13 submitEventOfType:v14 pushThenPopDataObjects:v15 subTracker:subTracker2];
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)submitNoteCreateEventForHTMLNote:(id)a3 createApproach:(int64_t)a4
+- (void)submitNoteCreateEventForHTMLNote:(id)note createApproach:(int64_t)approach
 {
   v20[4] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(ICNAEventReporter *)self noteDataForHTMLNote:v6];
+  noteCopy = note;
+  v7 = [(ICNAEventReporter *)self noteDataForHTMLNote:noteCopy];
   v8 = [ICASNoteCreateData alloc];
-  v9 = [[ICASNoteCreateApproach alloc] initWithNoteCreateApproach:a4];
+  v9 = [[ICASNoteCreateApproach alloc] initWithNoteCreateApproach:approach];
   v10 = [(ICASNoteCreateData *)v8 initWithNoteCreateApproach:v9];
 
-  v11 = [v6 folder];
-  v12 = [(ICNAEventReporter *)self folderDataForHTMLFolder:v11];
+  folder = [noteCopy folder];
+  v12 = [(ICNAEventReporter *)self folderDataForHTMLFolder:folder];
 
-  v13 = [v6 account];
+  account = [noteCopy account];
 
-  v14 = [(ICNAEventReporter *)self accountDataForHTMLAccount:v13];
+  v14 = [(ICNAEventReporter *)self accountDataForHTMLAccount:account];
 
   v15 = +[ICNAController sharedController];
   v16 = objc_opt_class();
@@ -710,96 +710,96 @@ void __39__ICNAEventReporter_flushAllTimedData___block_invoke(uint64_t a1)
   v20[2] = v12;
   v20[3] = v14;
   v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:4];
-  v18 = [(ICNAEventReporter *)self subTracker];
-  [v15 submitEventOfType:v16 pushThenPopDataObjects:v17 subTracker:v18];
+  subTracker = [(ICNAEventReporter *)self subTracker];
+  [v15 submitEventOfType:v16 pushThenPopDataObjects:v17 subTracker:subTracker];
 
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)submitNoteCreateEventForSearchIndexableNote:(id)a3 createApproach:(int64_t)a4
+- (void)submitNoteCreateEventForSearchIndexableNote:(id)note createApproach:(int64_t)approach
 {
-  v6 = a3;
+  noteCopy = note;
   objc_opt_class();
   v8 = ICDynamicCast();
   v7 = ICProtocolCast();
 
   if (v8)
   {
-    [(ICNAEventReporter *)self submitNoteCreateEventForModernNote:v8 createApproach:a4];
+    [(ICNAEventReporter *)self submitNoteCreateEventForModernNote:v8 createApproach:approach];
   }
 
   else if (v7)
   {
-    [(ICNAEventReporter *)self submitNoteCreateEventForHTMLNote:v7 createApproach:a4];
+    [(ICNAEventReporter *)self submitNoteCreateEventForHTMLNote:v7 createApproach:approach];
   }
 }
 
-- (void)submitNoteDeleteEventForModernNote:(id)a3
+- (void)submitNoteDeleteEventForModernNote:(id)note
 {
-  v4 = a3;
-  v13 = [(ICNAEventReporter *)self noteDataForModernNote:v4];
-  v5 = [(ICNAEventReporter *)self noteContentDataForModernNote:v4];
-  v6 = [(ICNAEventReporter *)self noteAccessDataForModernNote:v4];
-  v7 = [v4 account];
+  noteCopy = note;
+  v13 = [(ICNAEventReporter *)self noteDataForModernNote:noteCopy];
+  v5 = [(ICNAEventReporter *)self noteContentDataForModernNote:noteCopy];
+  v6 = [(ICNAEventReporter *)self noteAccessDataForModernNote:noteCopy];
+  account = [noteCopy account];
 
-  v8 = [(ICNAEventReporter *)self accountDataForModernAccount:v7];
+  v8 = [(ICNAEventReporter *)self accountDataForModernAccount:account];
 
   v9 = [objc_alloc(MEMORY[0x277CBEB18]) initWithObjects:{v13, v5, v6, v8, 0}];
   v10 = +[ICNAController sharedController];
   v11 = objc_opt_class();
-  v12 = [(ICNAEventReporter *)self subTracker];
-  [v10 submitEventOfType:v11 pushThenPopDataObjects:v9 subTracker:v12];
+  subTracker = [(ICNAEventReporter *)self subTracker];
+  [v10 submitEventOfType:v11 pushThenPopDataObjects:v9 subTracker:subTracker];
 }
 
-- (void)submitNoteDeleteEventForHTMLNote:(id)a3
+- (void)submitNoteDeleteEventForHTMLNote:(id)note
 {
-  v4 = a3;
-  v13 = [(ICNAEventReporter *)self noteDataForHTMLNote:v4];
-  v5 = [(ICNAEventReporter *)self noteContentDataForHTMLNote:v4];
-  v6 = [(ICNAEventReporter *)self noteAccessDataForHTMLNote];
-  v7 = [v4 account];
+  noteCopy = note;
+  v13 = [(ICNAEventReporter *)self noteDataForHTMLNote:noteCopy];
+  v5 = [(ICNAEventReporter *)self noteContentDataForHTMLNote:noteCopy];
+  noteAccessDataForHTMLNote = [(ICNAEventReporter *)self noteAccessDataForHTMLNote];
+  account = [noteCopy account];
 
-  v8 = [(ICNAEventReporter *)self accountDataForHTMLAccount:v7];
+  v8 = [(ICNAEventReporter *)self accountDataForHTMLAccount:account];
 
-  v9 = [objc_alloc(MEMORY[0x277CBEB18]) initWithObjects:{v13, v5, v6, v8, 0}];
+  v9 = [objc_alloc(MEMORY[0x277CBEB18]) initWithObjects:{v13, v5, noteAccessDataForHTMLNote, v8, 0}];
   v10 = +[ICNAController sharedController];
   v11 = objc_opt_class();
-  v12 = [(ICNAEventReporter *)self subTracker];
-  [v10 submitEventOfType:v11 pushThenPopDataObjects:v9 subTracker:v12];
+  subTracker = [(ICNAEventReporter *)self subTracker];
+  [v10 submitEventOfType:v11 pushThenPopDataObjects:v9 subTracker:subTracker];
 }
 
-- (void)submitNoteSharrowEventForModernNote:(id)a3 activityType:(id)a4 collaborationSelected:(BOOL)a5 countOfCollaboratorsAdded:(int64_t)a6 countOfCollaboratorsRemoved:(int64_t)a7 startInvitedCount:(int64_t)a8 startAcceptedCount:(int64_t)a9 endInvitedCount:(int64_t)a10 endAcceptedCount:(int64_t)a11
+- (void)submitNoteSharrowEventForModernNote:(id)note activityType:(id)type collaborationSelected:(BOOL)selected countOfCollaboratorsAdded:(int64_t)added countOfCollaboratorsRemoved:(int64_t)removed startInvitedCount:(int64_t)count startAcceptedCount:(int64_t)acceptedCount endInvitedCount:(int64_t)self0 endAcceptedCount:(int64_t)self1
 {
-  v14 = a5;
-  v52 = a4;
-  v17 = a3;
-  v50 = [(ICNAEventReporter *)self noteDataForModernNote:v17];
-  v18 = [(ICNAEventReporter *)self noteContentDataForModernNote:v17];
-  v19 = [v17 folder];
-  v51 = [(ICNAEventReporter *)self folderDataForModernFolder:v19];
+  selectedCopy = selected;
+  typeCopy = type;
+  noteCopy = note;
+  v50 = [(ICNAEventReporter *)self noteDataForModernNote:noteCopy];
+  v18 = [(ICNAEventReporter *)self noteContentDataForModernNote:noteCopy];
+  folder = [noteCopy folder];
+  v51 = [(ICNAEventReporter *)self folderDataForModernFolder:folder];
 
-  v20 = [v17 account];
-  v49 = [(ICNAEventReporter *)self accountDataForModernAccount:v20];
+  account = [noteCopy account];
+  v49 = [(ICNAEventReporter *)self accountDataForModernAccount:account];
 
-  v48 = [(ICNAEventReporter *)self noteAccessDataForModernNote:v17];
+  v48 = [(ICNAEventReporter *)self noteAccessDataForModernNote:noteCopy];
 
-  v47 = [objc_opt_class() filteredActivityType:v52];
+  v47 = [objc_opt_class() filteredActivityType:typeCopy];
   v21 = [[ICASSharrowContextData alloc] initWithSharrowSelectedItem:v47];
-  if ([v52 isEqualToString:@"com.apple.notes.sharing.initiate"])
+  if ([typeCopy isEqualToString:@"com.apple.notes.sharing.initiate"])
   {
     v22 = 0;
   }
 
-  else if ([v52 isEqualToString:@"com.apple.notes.sharing.cancel"])
+  else if ([typeCopy isEqualToString:@"com.apple.notes.sharing.cancel"])
   {
     v22 = 3;
   }
 
   else
   {
-    v23 = [objc_opt_class() activityTypeHasUnknownShareFlow:v52];
+    v23 = [objc_opt_class() activityTypeHasUnknownShareFlow:typeCopy];
     v24 = 1;
-    if (v14)
+    if (selectedCopy)
     {
       v24 = 2;
     }
@@ -818,18 +818,18 @@ void __39__ICNAEventReporter_flushAllTimedData___block_invoke(uint64_t a1)
   v46 = [[ICASShareFlowType alloc] initWithShareFlowType:v22];
   v44 = [[ICASShareFlowData alloc] initWithShareFlowType:v46];
   v25 = [ICASCollaboratorData alloc];
-  v26 = [MEMORY[0x277CCABB0] numberWithInteger:ICNARoundTo2SigFigsInt(a6)];
-  v27 = [MEMORY[0x277CCABB0] numberWithInteger:ICNARoundTo2SigFigsInt(a7)];
+  v26 = [MEMORY[0x277CCABB0] numberWithInteger:ICNARoundTo2SigFigsInt(added)];
+  v27 = [MEMORY[0x277CCABB0] numberWithInteger:ICNARoundTo2SigFigsInt(removed)];
   v43 = [(ICASCollaboratorData *)v25 initWithCountOfCollaboratorAdded:v26 countOfCollaboratorRemoved:v27];
 
   v28 = [ICASStartCollaborationCollaboratorData alloc];
-  v29 = [MEMORY[0x277CCABB0] numberWithInteger:ICNARoundTo2SigFigsInt(a8)];
-  v30 = [MEMORY[0x277CCABB0] numberWithInteger:ICNARoundTo2SigFigsInt(a9)];
+  v29 = [MEMORY[0x277CCABB0] numberWithInteger:ICNARoundTo2SigFigsInt(count)];
+  v30 = [MEMORY[0x277CCABB0] numberWithInteger:ICNARoundTo2SigFigsInt(acceptedCount)];
   v45 = [(ICASStartCollaborationCollaboratorData *)v28 initWithStartInvitedCount:v29 startAcceptedCount:v30];
 
   v31 = [ICASEndCollaborationCollaboratorData alloc];
-  v32 = [MEMORY[0x277CCABB0] numberWithInteger:ICNARoundTo2SigFigsInt(a10)];
-  v33 = [MEMORY[0x277CCABB0] numberWithInteger:ICNARoundTo2SigFigsInt(a11)];
+  v32 = [MEMORY[0x277CCABB0] numberWithInteger:ICNARoundTo2SigFigsInt(invitedCount)];
+  v33 = [MEMORY[0x277CCABB0] numberWithInteger:ICNARoundTo2SigFigsInt(endAcceptedCount)];
   v34 = [(ICASEndCollaborationCollaboratorData *)v31 initWithEndInvitedCount:v32 endAcceptedCount:v33];
 
   v35 = v21;
@@ -841,34 +841,34 @@ void __39__ICNAEventReporter_flushAllTimedData___block_invoke(uint64_t a1)
   [v36 addObject:v39];
   v40 = objc_opt_class();
   v41 = +[ICNAController sharedController];
-  v42 = [(ICNAEventReporter *)self subTracker];
-  [v41 submitEventOfType:v40 pushThenPopDataObjects:v36 subTracker:v42];
+  subTracker = [(ICNAEventReporter *)self subTracker];
+  [v41 submitEventOfType:v40 pushThenPopDataObjects:v36 subTracker:subTracker];
 }
 
-- (void)submitNoteSharrowEventForHTMLNote:(id)a3 activityType:(id)a4 contextPath:(int64_t)a5
+- (void)submitNoteSharrowEventForHTMLNote:(id)note activityType:(id)type contextPath:(int64_t)path
 {
-  v37 = a4;
-  v7 = a3;
-  v8 = [(ICNAEventReporter *)self noteDataForHTMLNote:v7];
-  v9 = [(ICNAEventReporter *)self noteContentDataForHTMLNote:v7];
-  v10 = [v7 folder];
+  typeCopy = type;
+  noteCopy = note;
+  v8 = [(ICNAEventReporter *)self noteDataForHTMLNote:noteCopy];
+  v9 = [(ICNAEventReporter *)self noteContentDataForHTMLNote:noteCopy];
+  folder = [noteCopy folder];
 
-  v11 = [(ICNAEventReporter *)self folderDataForHTMLFolder:v10];
+  v11 = [(ICNAEventReporter *)self folderDataForHTMLFolder:folder];
   v12 = [ICASSharrowContextData alloc];
-  v13 = [objc_opt_class() filteredActivityType:v37];
+  v13 = [objc_opt_class() filteredActivityType:typeCopy];
   v36 = [(ICASSharrowContextData *)v12 initWithSharrowSelectedItem:v13];
 
-  v32 = v10;
-  v14 = [v10 account];
-  v35 = [(ICNAEventReporter *)self accountDataForHTMLAccount:v14];
+  v32 = folder;
+  account = [folder account];
+  v35 = [(ICNAEventReporter *)self accountDataForHTMLAccount:account];
 
-  v34 = [(ICNAEventReporter *)self noteAccessDataForHTMLNote];
-  if ([v37 isEqualToString:@"com.apple.notes.sharing.initiate"])
+  noteAccessDataForHTMLNote = [(ICNAEventReporter *)self noteAccessDataForHTMLNote];
+  if ([typeCopy isEqualToString:@"com.apple.notes.sharing.initiate"])
   {
     v15 = 0;
   }
 
-  else if ([objc_opt_class() activityTypeHasUnknownShareFlow:v37])
+  else if ([objc_opt_class() activityTypeHasUnknownShareFlow:typeCopy])
   {
     v15 = 3;
   }
@@ -887,11 +887,11 @@ void __39__ICNAEventReporter_flushAllTimedData___block_invoke(uint64_t a1)
   v33 = v9;
   v29 = v9;
   v21 = v8;
-  v22 = [objc_alloc(MEMORY[0x277CBEB18]) initWithObjects:{v8, v29, v11, v36, v35, v34, v17, v18, v19, v20, 0}];
-  if (a5)
+  v22 = [objc_alloc(MEMORY[0x277CBEB18]) initWithObjects:{v8, v29, v11, v36, v35, noteAccessDataForHTMLNote, v17, v18, v19, v20, 0}];
+  if (path)
   {
     v23 = [ICASContextPathData alloc];
-    v24 = [[ICASContextPath alloc] initWithContextPath:a5];
+    v24 = [[ICASContextPath alloc] initWithContextPath:path];
     v25 = [(ICASContextPathData *)v23 initWithContextPath:v24];
 
     [v22 addObject:v25];
@@ -899,22 +899,22 @@ void __39__ICNAEventReporter_flushAllTimedData___block_invoke(uint64_t a1)
 
   v26 = objc_opt_class();
   v27 = +[ICNAController sharedController];
-  v28 = [(ICNAEventReporter *)self subTracker];
-  [v27 submitEventOfType:v26 pushThenPopDataObjects:v22 subTracker:v28];
+  subTracker = [(ICNAEventReporter *)self subTracker];
+  [v27 submitEventOfType:v26 pushThenPopDataObjects:v22 subTracker:subTracker];
 }
 
-- (void)pushContextPathDataWithContextPathEnum:(int64_t)a3
+- (void)pushContextPathDataWithContextPathEnum:(int64_t)enum
 {
   v12[1] = *MEMORY[0x277D85DE8];
   v5 = [ICASContextPathData alloc];
-  v6 = [[ICASContextPath alloc] initWithContextPath:a3];
+  v6 = [[ICASContextPath alloc] initWithContextPath:enum];
   v7 = [(ICASContextPathData *)v5 initWithContextPath:v6];
 
   v8 = +[ICNAController sharedController];
   v12[0] = v7;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:1];
-  v10 = [(ICNAEventReporter *)self subTracker];
-  [v8 pushDataObjects:v9 unique:0 onlyOnce:0 subTracker:v10];
+  subTracker = [(ICNAEventReporter *)self subTracker];
+  [v8 pushDataObjects:v9 unique:0 onlyOnce:0 subTracker:subTracker];
 
   v11 = *MEMORY[0x277D85DE8];
 }
@@ -923,33 +923,33 @@ void __39__ICNAEventReporter_flushAllTimedData___block_invoke(uint64_t a1)
 {
   v5 = +[ICNAController sharedController];
   v3 = objc_opt_class();
-  v4 = [(ICNAEventReporter *)self subTracker];
-  [v5 popDataObjectWithType:v3 subTracker:v4];
+  subTracker = [(ICNAEventReporter *)self subTracker];
+  [v5 popDataObjectWithType:v3 subTracker:subTracker];
 }
 
-- (void)submitCollabNotificationEventWithAction:(int64_t)a3
+- (void)submitCollabNotificationEventWithAction:(int64_t)action
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v4 = [[ICASCollabNotificationAction alloc] initWithCollabNotificationAction:a3];
+  v4 = [[ICASCollabNotificationAction alloc] initWithCollabNotificationAction:action];
   v5 = [[ICASCollabNotificationData alloc] initWithCollabNotificationAction:v4];
   v6 = +[ICNAController sharedController];
   v7 = objc_opt_class();
   v11[0] = v5;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:1];
-  v9 = [(ICNAEventReporter *)self subTracker];
-  [v6 submitEventOfType:v7 pushThenPopDataObjects:v8 subTracker:v9];
+  subTracker = [(ICNAEventReporter *)self subTracker];
+  [v6 submitEventOfType:v7 pushThenPopDataObjects:v8 subTracker:subTracker];
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)submitEverNoteImportEventWithCount:(unint64_t)a3 isSuccessful:(BOOL)a4 intoAccount:(id)a5
+- (void)submitEverNoteImportEventWithCount:(unint64_t)count isSuccessful:(BOOL)successful intoAccount:(id)account
 {
-  v5 = a4;
+  successfulCopy = successful;
   v42[1] = *MEMORY[0x277D85DE8];
-  v8 = a5;
+  accountCopy = account;
   v9 = [[ICASImportFileType alloc] initWithImportFileType:5];
   v10 = [ICASImportItemData alloc];
-  v11 = [MEMORY[0x277CCABB0] numberWithInteger:ICNARoundTo2SigFigsInt(a3)];
+  v11 = [MEMORY[0x277CCABB0] numberWithInteger:ICNARoundTo2SigFigsInt(count)];
   v12 = [(ICASImportItemData *)v10 initWithImportFileType:v9 importItemCount:v11];
 
   v13 = [ICASImportData alloc];
@@ -963,19 +963,19 @@ void __39__ICNAEventReporter_flushAllTimedData___block_invoke(uint64_t a1)
   v38 = __Block_byref_object_copy__4;
   v39 = __Block_byref_object_dispose__4;
   v40 = 0;
-  v16 = [v8 managedObjectContext];
+  managedObjectContext = [accountCopy managedObjectContext];
   v28 = MEMORY[0x277D85DD0];
   v29 = 3221225472;
   v30 = __81__ICNAEventReporter_submitEverNoteImportEventWithCount_isSuccessful_intoAccount___block_invoke;
   v31 = &unk_2799AF078;
   v34 = &v35;
-  v32 = self;
-  v17 = v8;
+  selfCopy = self;
+  v17 = accountCopy;
   v33 = v17;
-  [v16 performBlockAndWait:&v28];
+  [managedObjectContext performBlockAndWait:&v28];
 
   v18 = [ICASResultType alloc];
-  if (v5)
+  if (successfulCopy)
   {
     v19 = 1;
   }
@@ -985,8 +985,8 @@ void __39__ICNAEventReporter_flushAllTimedData___block_invoke(uint64_t a1)
     v19 = 2;
   }
 
-  v20 = [(ICASResultType *)v18 initWithResultType:v19, v28, v29, v30, v31, v32];
-  v21 = [[ICASResultData alloc] initWithResultType:v20];
+  selfCopy = [(ICASResultType *)v18 initWithResultType:v19, v28, v29, v30, v31, selfCopy];
+  v21 = [[ICASResultData alloc] initWithResultType:selfCopy];
   v22 = +[ICNAController sharedController];
   v23 = objc_opt_class();
   v24 = v36[5];
@@ -994,8 +994,8 @@ void __39__ICNAEventReporter_flushAllTimedData___block_invoke(uint64_t a1)
   v41[1] = v24;
   v41[2] = v21;
   v25 = [MEMORY[0x277CBEA60] arrayWithObjects:v41 count:3];
-  v26 = [(ICNAEventReporter *)self subTracker];
-  [v22 submitEventOfType:v23 pushThenPopDataObjects:v25 subTracker:v26];
+  subTracker = [(ICNAEventReporter *)self subTracker];
+  [v22 submitEventOfType:v23 pushThenPopDataObjects:v25 subTracker:subTracker];
 
   _Block_object_dispose(&v35, 8);
   v27 = *MEMORY[0x277D85DE8];
@@ -1011,21 +1011,21 @@ uint64_t __81__ICNAEventReporter_submitEverNoteImportEventWithCount_isSuccessful
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)noteViewEventDataObjectsForModernNote:(id)a3
+- (id)noteViewEventDataObjectsForModernNote:(id)note
 {
   v15[5] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ICNAEventReporter *)self noteDataForModernNote:v4];
-  v6 = [(ICNAEventReporter *)self noteContentDataForModernNote:v4, v5];
+  noteCopy = note;
+  v5 = [(ICNAEventReporter *)self noteDataForModernNote:noteCopy];
+  v6 = [(ICNAEventReporter *)self noteContentDataForModernNote:noteCopy, v5];
   v15[1] = v6;
-  v7 = [(ICNAEventReporter *)self noteAccessDataForModernNote:v4];
+  v7 = [(ICNAEventReporter *)self noteAccessDataForModernNote:noteCopy];
   v15[2] = v7;
-  v8 = [v4 folder];
-  v9 = [(ICNAEventReporter *)self folderDataForModernFolder:v8];
+  folder = [noteCopy folder];
+  v9 = [(ICNAEventReporter *)self folderDataForModernFolder:folder];
   v15[3] = v9;
-  v10 = [v4 account];
+  account = [noteCopy account];
 
-  v11 = [(ICNAEventReporter *)self accountDataForModernAccount:v10];
+  v11 = [(ICNAEventReporter *)self accountDataForModernAccount:account];
   v15[4] = v11;
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:5];
 
@@ -1034,24 +1034,24 @@ uint64_t __81__ICNAEventReporter_submitEverNoteImportEventWithCount_isSuccessful
   return v12;
 }
 
-- (id)noteViewEventDataObjectsForHTMLNote:(id)a3
+- (id)noteViewEventDataObjectsForHTMLNote:(id)note
 {
   v16[6] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ICNAEventReporter *)self noteDataForHTMLNote:v4];
+  noteCopy = note;
+  v5 = [(ICNAEventReporter *)self noteDataForHTMLNote:noteCopy];
   v16[0] = v5;
-  v6 = [(ICNAEventReporter *)self noteContentDataForHTMLNote:v4];
+  v6 = [(ICNAEventReporter *)self noteContentDataForHTMLNote:noteCopy];
   v16[1] = v6;
-  v7 = [(ICNAEventReporter *)self noteCollapsibleSectionDataForHTMLNote:v4];
+  v7 = [(ICNAEventReporter *)self noteCollapsibleSectionDataForHTMLNote:noteCopy];
   v16[2] = v7;
-  v8 = [(ICNAEventReporter *)self noteAccessDataForHTMLNote];
-  v16[3] = v8;
-  v9 = [v4 folder];
-  v10 = [(ICNAEventReporter *)self folderDataForHTMLFolder:v9];
+  noteAccessDataForHTMLNote = [(ICNAEventReporter *)self noteAccessDataForHTMLNote];
+  v16[3] = noteAccessDataForHTMLNote;
+  folder = [noteCopy folder];
+  v10 = [(ICNAEventReporter *)self folderDataForHTMLFolder:folder];
   v16[4] = v10;
-  v11 = [v4 account];
+  account = [noteCopy account];
 
-  v12 = [(ICNAEventReporter *)self accountDataForHTMLAccount:v11];
+  v12 = [(ICNAEventReporter *)self accountDataForHTMLAccount:account];
   v16[5] = v12;
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:6];
 
@@ -1060,20 +1060,20 @@ uint64_t __81__ICNAEventReporter_submitEverNoteImportEventWithCount_isSuccessful
   return v13;
 }
 
-- (void)startNoteViewEventDurationTrackingForModernNote:(id)a3 reportCoreAnalytics:(BOOL)a4
+- (void)startNoteViewEventDurationTrackingForModernNote:(id)note reportCoreAnalytics:(BOOL)analytics
 {
-  v4 = a4;
+  analyticsCopy = analytics;
   v19[5] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  noteCopy = note;
   [(ICNAEventReporter *)self startTimedEventOfType:objc_opt_class()];
-  v7 = [(ICNAEventReporter *)self noteDataForModernNote:v6];
-  v8 = [(ICNAEventReporter *)self noteContentDataForModernNote:v6];
-  v9 = [(ICNAEventReporter *)self noteAccessDataForModernNote:v6];
-  v10 = [v6 folder];
-  v11 = [(ICNAEventReporter *)self folderDataForModernFolder:v10];
+  v7 = [(ICNAEventReporter *)self noteDataForModernNote:noteCopy];
+  v8 = [(ICNAEventReporter *)self noteContentDataForModernNote:noteCopy];
+  v9 = [(ICNAEventReporter *)self noteAccessDataForModernNote:noteCopy];
+  folder = [noteCopy folder];
+  v11 = [(ICNAEventReporter *)self folderDataForModernFolder:folder];
 
-  v12 = [v6 account];
-  v13 = [(ICNAEventReporter *)self accountDataForModernAccount:v12];
+  account = [noteCopy account];
+  v13 = [(ICNAEventReporter *)self accountDataForModernAccount:account];
 
   v14 = +[ICNAController sharedController];
   v19[0] = v7;
@@ -1082,105 +1082,105 @@ uint64_t __81__ICNAEventReporter_submitEverNoteImportEventWithCount_isSuccessful
   v19[3] = v11;
   v19[4] = v13;
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:5];
-  v16 = [(ICNAEventReporter *)self subTracker];
-  [v14 pushDataObjects:v15 unique:1 onlyOnce:0 subTracker:v16];
+  subTracker = [(ICNAEventReporter *)self subTracker];
+  [v14 pushDataObjects:v15 unique:1 onlyOnce:0 subTracker:subTracker];
 
-  if (v4)
+  if (analyticsCopy)
   {
     v17 = +[ICNACoreAnalyticsReporter sharedReporter];
-    [v17 fireNoteViewEventWithNote:v6 noteData:v7 noteContentData:v8];
+    [v17 fireNoteViewEventWithNote:noteCopy noteData:v7 noteContentData:v8];
   }
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)submitNoteViewEventForModernNote:(id)a3 referringNote:(id)a4 collapsibleSectionAffordanceExposures:(int64_t)a5 collapsibleSectionAffordanceUsages:(int64_t)a6
+- (void)submitNoteViewEventForModernNote:(id)note referringNote:(id)referringNote collapsibleSectionAffordanceExposures:(int64_t)exposures collapsibleSectionAffordanceUsages:(int64_t)usages
 {
-  v22 = a4;
-  v10 = [(ICNAEventReporter *)self noteViewEventDataObjectsForModernNote:a3];
+  referringNoteCopy = referringNote;
+  v10 = [(ICNAEventReporter *)self noteViewEventDataObjectsForModernNote:note];
   v11 = [v10 mutableCopy];
 
   v12 = [ICASCollapsibleSectionData alloc];
-  v13 = [MEMORY[0x277CCABB0] numberWithInteger:a5];
-  v14 = [MEMORY[0x277CCABB0] numberWithInteger:a6];
+  v13 = [MEMORY[0x277CCABB0] numberWithInteger:exposures];
+  v14 = [MEMORY[0x277CCABB0] numberWithInteger:usages];
   v15 = [(ICASCollapsibleSectionData *)v12 initWithSectionAffordanceExposures:v13 sectionAffordanceUsages:v14];
 
   [v11 addObject:v15];
-  if (v22)
+  if (referringNoteCopy)
   {
     v16 = +[ICNAIdentityManager sharedManager];
-    v17 = [v22 identifier];
-    v18 = [v16 saltedID:v17 forClass:objc_opt_class()];
+    identifier = [referringNoteCopy identifier];
+    v18 = [v16 saltedID:identifier forClass:objc_opt_class()];
 
     v19 = [[ICASViewRefData alloc] initWithLinkedNoteId:v18];
     [v11 addObject:v19];
   }
 
   v20 = +[ICNAController sharedController];
-  v21 = [(ICNAEventReporter *)self subTracker];
-  [v20 pushDataObjects:v11 unique:1 onlyOnce:1 subTracker:v21];
+  subTracker = [(ICNAEventReporter *)self subTracker];
+  [v20 pushDataObjects:v11 unique:1 onlyOnce:1 subTracker:subTracker];
 
   [(ICNAEventReporter *)self submitTimedEventOfTypeIfPossible:objc_opt_class()];
 }
 
-- (void)startNoteViewEventDurationTrackingForHTMLNote:(id)a3
+- (void)startNoteViewEventDurationTrackingForHTMLNote:(id)note
 {
-  v4 = a3;
+  noteCopy = note;
   [(ICNAEventReporter *)self startTimedEventOfType:objc_opt_class()];
-  v7 = [(ICNAEventReporter *)self noteViewEventDataObjectsForHTMLNote:v4];
+  v7 = [(ICNAEventReporter *)self noteViewEventDataObjectsForHTMLNote:noteCopy];
 
   v5 = +[ICNAController sharedController];
-  v6 = [(ICNAEventReporter *)self subTracker];
-  [v5 pushDataObjects:v7 unique:1 onlyOnce:0 subTracker:v6];
+  subTracker = [(ICNAEventReporter *)self subTracker];
+  [v5 pushDataObjects:v7 unique:1 onlyOnce:0 subTracker:subTracker];
 }
 
-- (void)submitNoteViewEventForHTMLNote:(id)a3
+- (void)submitNoteViewEventForHTMLNote:(id)note
 {
-  v6 = [(ICNAEventReporter *)self noteViewEventDataObjectsForHTMLNote:a3];
+  v6 = [(ICNAEventReporter *)self noteViewEventDataObjectsForHTMLNote:note];
   v4 = +[ICNAController sharedController];
-  v5 = [(ICNAEventReporter *)self subTracker];
-  [v4 pushDataObjects:v6 unique:1 onlyOnce:1 subTracker:v5];
+  subTracker = [(ICNAEventReporter *)self subTracker];
+  [v4 pushDataObjects:v6 unique:1 onlyOnce:1 subTracker:subTracker];
 
   [(ICNAEventReporter *)self submitTimedEventOfTypeIfPossible:objc_opt_class()];
 }
 
-- (void)pushSearchDataWithSearchSessionID:(id)a3
+- (void)pushSearchDataWithSearchSessionID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = [ICASSearchData alloc];
-  v6 = [v4 copy];
+  v6 = [dCopy copy];
 
   v9 = [(ICASSearchData *)v5 initWithSearchSessionID:v6];
   v7 = +[ICNAController sharedController];
-  v8 = [(ICNAEventReporter *)self subTracker];
-  [v7 pushDataObject:v9 unique:1 onlyOnce:0 subTracker:v8];
+  subTracker = [(ICNAEventReporter *)self subTracker];
+  [v7 pushDataObject:v9 unique:1 onlyOnce:0 subTracker:subTracker];
 }
 
 - (void)popSearchData
 {
   v5 = +[ICNAController sharedController];
   v3 = objc_opt_class();
-  v4 = [(ICNAEventReporter *)self subTracker];
-  [v5 popDataObjectWithType:v3 subTracker:v4];
+  subTracker = [(ICNAEventReporter *)self subTracker];
+  [v5 popDataObjectWithType:v3 subTracker:subTracker];
 }
 
-- (void)submitTableCreateEventForAttachment:(id)a3 inNote:(id)a4
+- (void)submitTableCreateEventForAttachment:(id)attachment inNote:(id)note
 {
   v23[5] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
-  v20 = [(ICNAEventReporter *)self noteDataForModernNote:v6];
-  v22 = [(ICNAEventReporter *)self noteAccessDataForModernNote:v6];
-  v8 = [v6 account];
+  noteCopy = note;
+  attachmentCopy = attachment;
+  v20 = [(ICNAEventReporter *)self noteDataForModernNote:noteCopy];
+  v22 = [(ICNAEventReporter *)self noteAccessDataForModernNote:noteCopy];
+  account = [noteCopy account];
 
-  v21 = [(ICNAEventReporter *)self accountDataForModernAccount:v8];
+  v21 = [(ICNAEventReporter *)self accountDataForModernAccount:account];
 
-  v9 = [v7 tableModel];
+  tableModel = [attachmentCopy tableModel];
 
-  v10 = [v9 table];
+  table = [tableModel table];
 
-  v11 = [MEMORY[0x277CCABB0] numberWithInteger:{ICNARoundTo2SigFigsInt(objc_msgSend(v10, "rowCount"))}];
-  v12 = [MEMORY[0x277CCABB0] numberWithInteger:{ICNARoundTo2SigFigsInt(objc_msgSend(v10, "columnCount"))}];
+  v11 = [MEMORY[0x277CCABB0] numberWithInteger:{ICNARoundTo2SigFigsInt(objc_msgSend(table, "rowCount"))}];
+  v12 = [MEMORY[0x277CCABB0] numberWithInteger:{ICNARoundTo2SigFigsInt(objc_msgSend(table, "columnCount"))}];
   v13 = [[ICASStartTableData alloc] initWithStartingRowCount:v11 startingColumnCount:v12];
   v14 = [[ICASEndTableData alloc] initWithEndingRowCount:v11 endingColumnCount:v12];
   v15 = +[ICNAController sharedController];
@@ -1191,37 +1191,37 @@ uint64_t __81__ICNAEventReporter_submitEverNoteImportEventWithCount_isSuccessful
   v23[3] = v13;
   v23[4] = v14;
   v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v23 count:5];
-  v18 = [(ICNAEventReporter *)self subTracker];
-  [v15 submitEventOfType:v16 pushThenPopDataObjects:v17 subTracker:v18];
+  subTracker = [(ICNAEventReporter *)self subTracker];
+  [v15 submitEventOfType:v16 pushThenPopDataObjects:v17 subTracker:subTracker];
 
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)pushStartTableDataWithStartColumns:(unint64_t)a3 startRows:(unint64_t)a4
+- (void)pushStartTableDataWithStartColumns:(unint64_t)columns startRows:(unint64_t)rows
 {
   v7 = [ICASStartTableData alloc];
-  v8 = [MEMORY[0x277CCABB0] numberWithInteger:ICNARoundTo2SigFigsInt(a4)];
-  v9 = [MEMORY[0x277CCABB0] numberWithInteger:ICNARoundTo2SigFigsInt(a3)];
+  v8 = [MEMORY[0x277CCABB0] numberWithInteger:ICNARoundTo2SigFigsInt(rows)];
+  v9 = [MEMORY[0x277CCABB0] numberWithInteger:ICNARoundTo2SigFigsInt(columns)];
   v12 = [(ICASStartTableData *)v7 initWithStartingRowCount:v8 startingColumnCount:v9];
 
   v10 = +[ICNAController sharedController];
-  v11 = [(ICNAEventReporter *)self subTracker];
-  [v10 pushDataObject:v12 unique:1 onlyOnce:1 subTracker:v11];
+  subTracker = [(ICNAEventReporter *)self subTracker];
+  [v10 pushDataObject:v12 unique:1 onlyOnce:1 subTracker:subTracker];
 }
 
-- (void)submitTableEditEventForNote:(id)a3 endColumns:(unint64_t)a4 endRows:(unint64_t)a5
+- (void)submitTableEditEventForNote:(id)note endColumns:(unint64_t)columns endRows:(unint64_t)rows
 {
   v22[4] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = [(ICNAEventReporter *)self noteDataForModernNote:v8];
-  v10 = [(ICNAEventReporter *)self noteAccessDataForModernNote:v8];
-  v11 = [v8 account];
+  noteCopy = note;
+  v9 = [(ICNAEventReporter *)self noteDataForModernNote:noteCopy];
+  v10 = [(ICNAEventReporter *)self noteAccessDataForModernNote:noteCopy];
+  account = [noteCopy account];
 
-  v12 = [(ICNAEventReporter *)self accountDataForModernAccount:v11];
+  v12 = [(ICNAEventReporter *)self accountDataForModernAccount:account];
 
   v13 = [ICASEndTableData alloc];
-  v14 = [MEMORY[0x277CCABB0] numberWithInteger:ICNARoundTo2SigFigsInt(a5)];
-  v15 = [MEMORY[0x277CCABB0] numberWithInteger:ICNARoundTo2SigFigsInt(a4)];
+  v14 = [MEMORY[0x277CCABB0] numberWithInteger:ICNARoundTo2SigFigsInt(rows)];
+  v15 = [MEMORY[0x277CCABB0] numberWithInteger:ICNARoundTo2SigFigsInt(columns)];
   v16 = [(ICASEndTableData *)v13 initWithEndingRowCount:v14 endingColumnCount:v15];
 
   v17 = +[ICNAController sharedController];
@@ -1231,29 +1231,29 @@ uint64_t __81__ICNAEventReporter_submitEverNoteImportEventWithCount_isSuccessful
   v22[2] = v12;
   v22[3] = v16;
   v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:4];
-  v20 = [(ICNAEventReporter *)self subTracker];
-  [v17 submitEventOfType:v18 pushThenPopDataObjects:v19 subTracker:v20];
+  subTracker = [(ICNAEventReporter *)self subTracker];
+  [v17 submitEventOfType:v18 pushThenPopDataObjects:v19 subTracker:subTracker];
 
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)submitTableRemoveEventForAttachment:(id)a3 inNote:(id)a4
+- (void)submitTableRemoveEventForAttachment:(id)attachment inNote:(id)note
 {
   v22[4] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ICNAEventReporter *)self noteDataForModernNote:v6];
-  v21 = [(ICNAEventReporter *)self noteAccessDataForModernNote:v6];
-  v9 = [v6 account];
+  noteCopy = note;
+  attachmentCopy = attachment;
+  v8 = [(ICNAEventReporter *)self noteDataForModernNote:noteCopy];
+  v21 = [(ICNAEventReporter *)self noteAccessDataForModernNote:noteCopy];
+  account = [noteCopy account];
 
-  v20 = [(ICNAEventReporter *)self accountDataForModernAccount:v9];
+  v20 = [(ICNAEventReporter *)self accountDataForModernAccount:account];
 
-  v10 = [v7 tableModel];
+  tableModel = [attachmentCopy tableModel];
 
-  v11 = [v10 table];
+  table = [tableModel table];
 
-  v19 = [MEMORY[0x277CCABB0] numberWithInteger:{ICNARoundTo2SigFigsInt(objc_msgSend(v11, "rowCount"))}];
-  v12 = [MEMORY[0x277CCABB0] numberWithInteger:{ICNARoundTo2SigFigsInt(objc_msgSend(v11, "columnCount"))}];
+  v19 = [MEMORY[0x277CCABB0] numberWithInteger:{ICNARoundTo2SigFigsInt(objc_msgSend(table, "rowCount"))}];
+  v12 = [MEMORY[0x277CCABB0] numberWithInteger:{ICNARoundTo2SigFigsInt(objc_msgSend(table, "columnCount"))}];
   v13 = [[ICASStartTableData alloc] initWithStartingRowCount:v19 startingColumnCount:v12];
   v14 = +[ICNAController sharedController];
   v15 = objc_opt_class();
@@ -1262,34 +1262,34 @@ uint64_t __81__ICNAEventReporter_submitEverNoteImportEventWithCount_isSuccessful
   v22[2] = v20;
   v22[3] = v13;
   v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:4];
-  v17 = [(ICNAEventReporter *)self subTracker];
-  [v14 submitEventOfType:v15 pushThenPopDataObjects:v16 subTracker:v17];
+  subTracker = [(ICNAEventReporter *)self subTracker];
+  [v14 submitEventOfType:v15 pushThenPopDataObjects:v16 subTracker:subTracker];
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)submitNotePinEventForModernNote:(id)a3 contextPath:(int64_t)a4
+- (void)submitNotePinEventForModernNote:(id)note contextPath:(int64_t)path
 {
-  v21 = a3;
-  v6 = [(ICNAEventReporter *)self noteAccessDataForModernNote:v21];
-  v7 = [v21 account];
-  v8 = [(ICNAEventReporter *)self accountDataForModernAccount:v7];
+  noteCopy = note;
+  v6 = [(ICNAEventReporter *)self noteAccessDataForModernNote:noteCopy];
+  account = [noteCopy account];
+  v8 = [(ICNAEventReporter *)self accountDataForModernAccount:account];
 
-  v9 = [(ICNAEventReporter *)self noteContentDataForModernNote:v21];
-  v10 = [(ICNAEventReporter *)self noteDataForModernNote:v21];
+  v9 = [(ICNAEventReporter *)self noteContentDataForModernNote:noteCopy];
+  v10 = [(ICNAEventReporter *)self noteDataForModernNote:noteCopy];
   v11 = [objc_alloc(MEMORY[0x277CBEB18]) initWithObjects:{v6, v8, v9, v10, 0}];
-  if (a4)
+  if (path)
   {
     v12 = [ICASContextPathData alloc];
-    v13 = [[ICASContextPath alloc] initWithContextPath:a4];
+    v13 = [[ICASContextPath alloc] initWithContextPath:path];
     v14 = [(ICASContextPathData *)v12 initWithContextPath:v13];
 
     [v11 addObject:v14];
   }
 
-  v15 = [v21 isPinned];
+  isPinned = [noteCopy isPinned];
   v16 = off_2799AE748;
-  if (!v15)
+  if (!isPinned)
   {
     v16 = off_2799AE770;
   }
@@ -1297,45 +1297,45 @@ uint64_t __81__ICNAEventReporter_submitEverNoteImportEventWithCount_isSuccessful
   v17 = *v16;
   v18 = objc_opt_class();
   v19 = +[ICNAController sharedController];
-  v20 = [(ICNAEventReporter *)self subTracker];
-  [v19 submitEventOfType:v18 pushThenPopDataObjects:v11 subTracker:v20];
+  subTracker = [(ICNAEventReporter *)self subTracker];
+  [v19 submitEventOfType:v18 pushThenPopDataObjects:v11 subTracker:subTracker];
 }
 
-- (void)submitFolderCreateEventForModernFolder:(id)a3 creationApproach:(int64_t)a4 filterSelection:(id)a5
+- (void)submitFolderCreateEventForModernFolder:(id)folder creationApproach:(int64_t)approach filterSelection:(id)selection
 {
-  v29 = a5;
+  selectionCopy = selection;
   v8 = MEMORY[0x277CBEB18];
-  v9 = a3;
-  v10 = [v8 array];
-  v11 = [(ICNAEventReporter *)self folderDataForModernFolder:v9];
-  [v10 addObject:v11];
-  v12 = [v9 account];
-  v13 = [(ICNAEventReporter *)self accountDataForModernAccount:v12];
+  folderCopy = folder;
+  array = [v8 array];
+  v11 = [(ICNAEventReporter *)self folderDataForModernFolder:folderCopy];
+  [array addObject:v11];
+  account = [folderCopy account];
+  v13 = [(ICNAEventReporter *)self accountDataForModernAccount:account];
 
-  [v10 addObject:v13];
-  LODWORD(v12) = [v9 isSmartFolder];
+  [array addObject:v13];
+  LODWORD(account) = [folderCopy isSmartFolder];
 
-  if (v12)
+  if (account)
   {
-    v14 = [[ICASFolderCreationApproach alloc] initWithFolderCreationApproach:a4];
+    v14 = [[ICASFolderCreationApproach alloc] initWithFolderCreationApproach:approach];
     objc_opt_class();
-    v15 = [v29 filterTypeSelectionForFilterType:0];
+    v15 = [selectionCopy filterTypeSelectionForFilterType:0];
     v16 = ICDynamicCast();
 
-    if (v29)
+    if (selectionCopy)
     {
-      v17 = [v29 filterTypeSelections];
-      v18 = [v17 ic_compactMap:&__block_literal_global_3];
+      filterTypeSelections = [selectionCopy filterTypeSelections];
+      v18 = [filterTypeSelections ic_compactMap:&__block_literal_global_3];
 
-      v19 = [v29 joinOperator];
-      if (v19 == 1)
+      joinOperator = [selectionCopy joinOperator];
+      if (joinOperator == 1)
       {
         v20 = 2;
       }
 
       else
       {
-        v20 = v19 == 0;
+        v20 = joinOperator == 0;
       }
     }
 
@@ -1350,14 +1350,14 @@ uint64_t __81__ICNAEventReporter_submitEverNoteImportEventWithCount_isSuccessful
     v23 = [[ICASFilterCondition alloc] initWithFilterCondition:v20];
     v24 = [(ICASSmartFolderCreationData *)v21 initWithFolderCreationApproach:v14 countOfTags:v22 filterCondition:v23 enabledFiltersArray:v18];
 
-    [v10 addObject:v24];
+    [array addObject:v24];
   }
 
   v25 = +[ICNAController sharedController];
   v26 = objc_opt_class();
-  v27 = [v10 copy];
-  v28 = [(ICNAEventReporter *)self subTracker];
-  [v25 submitEventOfType:v26 pushThenPopDataObjects:v27 subTracker:v28];
+  v27 = [array copy];
+  subTracker = [(ICNAEventReporter *)self subTracker];
+  [v25 submitEventOfType:v26 pushThenPopDataObjects:v27 subTracker:subTracker];
 }
 
 ICASEnabledFiltersArrayData *__93__ICNAEventReporter_submitFolderCreateEventForModernFolder_creationApproach_filterSelection___block_invoke(uint64_t a1, void *a2)
@@ -1373,26 +1373,26 @@ ICASEnabledFiltersArrayData *__93__ICNAEventReporter_submitFolderCreateEventForM
   return v6;
 }
 
-- (id)folderViewEventDataObjectsForNoteContainer:(id)a3 isInGridMode:(BOOL)a4
+- (id)folderViewEventDataObjectsForNoteContainer:(id)container isInGridMode:(BOOL)mode
 {
-  v6 = a3;
+  containerCopy = container;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
   v20 = __Block_byref_object_copy__4;
   v21 = __Block_byref_object_dispose__4;
   v22 = 0;
-  v7 = [v6 managedObjectContext];
+  managedObjectContext = [containerCopy managedObjectContext];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __77__ICNAEventReporter_folderViewEventDataObjectsForNoteContainer_isInGridMode___block_invoke;
   v12[3] = &unk_2799AFB08;
-  v8 = v6;
+  v8 = containerCopy;
   v13 = v8;
-  v14 = self;
-  v16 = a4;
+  selfCopy = self;
+  modeCopy = mode;
   v15 = &v17;
-  [v7 performBlockAndWait:v12];
+  [managedObjectContext performBlockAndWait:v12];
 
   v9 = v18[5];
   if (!v9)
@@ -1445,10 +1445,10 @@ void __77__ICNAEventReporter_folderViewEventDataObjectsForNoteContainer_isInGrid
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (id)folderViewEventDataObjectsForVirtualFolder:(id)a3 isInGridMode:(BOOL)a4 context:(id)a5
+- (id)folderViewEventDataObjectsForVirtualFolder:(id)folder isInGridMode:(BOOL)mode context:(id)context
 {
-  v8 = a3;
-  v9 = a5;
+  folderCopy = folder;
+  contextCopy = context;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -1459,13 +1459,13 @@ void __77__ICNAEventReporter_folderViewEventDataObjectsForNoteContainer_isInGrid
   v15[1] = 3221225472;
   v15[2] = __85__ICNAEventReporter_folderViewEventDataObjectsForVirtualFolder_isInGridMode_context___block_invoke;
   v15[3] = &unk_2799AFB30;
-  v10 = v8;
+  v10 = folderCopy;
   v16 = v10;
-  v11 = v9;
-  v18 = self;
+  v11 = contextCopy;
+  selfCopy = self;
   v19 = &v21;
   v17 = v11;
-  v20 = a4;
+  modeCopy = mode;
   [v11 performBlockAndWait:v15];
   v12 = v22[5];
   if (!v12)
@@ -1543,15 +1543,15 @@ void __85__ICNAEventReporter_folderViewEventDataObjectsForVirtualFolder_isInGrid
   [(ICNAEventReporter *)self submitTimedEventOfTypeIfPossible:v3];
 }
 
-- (void)submitFolderDeleteEventForModernFolder:(id)a3
+- (void)submitFolderDeleteEventForModernFolder:(id)folder
 {
   v14[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ICNAEventReporter *)self folderDataForModernFolder:v4];
-  v6 = [v4 account];
-  v7 = [(ICNAEventReporter *)self accountDataForModernAccount:v6];
+  folderCopy = folder;
+  v5 = [(ICNAEventReporter *)self folderDataForModernFolder:folderCopy];
+  account = [folderCopy account];
+  v7 = [(ICNAEventReporter *)self accountDataForModernAccount:account];
 
-  v8 = [(ICNAEventReporter *)self folderContentDataForNoteContainer:v4];
+  v8 = [(ICNAEventReporter *)self folderContentDataForNoteContainer:folderCopy];
 
   v9 = +[ICNAController sharedController];
   v10 = objc_opt_class();
@@ -1559,25 +1559,25 @@ void __85__ICNAEventReporter_folderViewEventDataObjectsForVirtualFolder_isInGrid
   v14[1] = v8;
   v14[2] = v7;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:3];
-  v12 = [(ICNAEventReporter *)self subTracker];
-  [v9 submitEventOfType:v10 pushThenPopDataObjects:v11 subTracker:v12];
+  subTracker = [(ICNAEventReporter *)self subTracker];
+  [v9 submitEventOfType:v10 pushThenPopDataObjects:v11 subTracker:subTracker];
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)pushInlineDrawingDataForDrawingID:(id)a3 tool:(int64_t)a4
+- (void)pushInlineDrawingDataForDrawingID:(id)d tool:(int64_t)tool
 {
-  v11 = a3;
-  v6 = [(ICNAEventReporter *)self pendingInlineDrawingInformation];
+  dCopy = d;
+  pendingInlineDrawingInformation = [(ICNAEventReporter *)self pendingInlineDrawingInformation];
 
-  if (!v6)
+  if (!pendingInlineDrawingInformation)
   {
-    v7 = [MEMORY[0x277CBEB38] dictionary];
-    [(ICNAEventReporter *)self setPendingInlineDrawingInformation:v7];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    [(ICNAEventReporter *)self setPendingInlineDrawingInformation:dictionary];
   }
 
-  v8 = [(ICNAEventReporter *)self pendingInlineDrawingInformation];
-  v9 = [v8 objectForKeyedSubscript:v11];
+  pendingInlineDrawingInformation2 = [(ICNAEventReporter *)self pendingInlineDrawingInformation];
+  v9 = [pendingInlineDrawingInformation2 objectForKeyedSubscript:dCopy];
 
   if (!v9)
   {
@@ -1586,11 +1586,11 @@ void __85__ICNAEventReporter_folderViewEventDataObjectsForVirtualFolder_isInGrid
     [(ICInlineDrawingAnalyticsInformation *)v9 setStartPencilStrokeCount:0];
     [(ICInlineDrawingAnalyticsInformation *)v9 setEndFingerStrokeCount:0];
     [(ICInlineDrawingAnalyticsInformation *)v9 setEndPencilStrokeCount:0];
-    v10 = [(ICNAEventReporter *)self pendingInlineDrawingInformation];
-    [v10 setObject:v9 forKey:v11];
+    pendingInlineDrawingInformation3 = [(ICNAEventReporter *)self pendingInlineDrawingInformation];
+    [pendingInlineDrawingInformation3 setObject:v9 forKey:dCopy];
   }
 
-  if (a4 == 1)
+  if (tool == 1)
   {
     [(ICInlineDrawingAnalyticsInformation *)v9 setAddedPencilStrokeCount:[(ICInlineDrawingAnalyticsInformation *)v9 addedPencilStrokeCount]+ 1];
   }
@@ -1600,17 +1600,17 @@ void __85__ICNAEventReporter_folderViewEventDataObjectsForVirtualFolder_isInGrid
     [(ICInlineDrawingAnalyticsInformation *)v9 setAddedFingerStrokeCount:[(ICInlineDrawingAnalyticsInformation *)v9 addedFingerStrokeCount]+ 1];
   }
 
-  [(ICInlineDrawingAnalyticsInformation *)v9 setLastUsedTool:a4];
+  [(ICInlineDrawingAnalyticsInformation *)v9 setLastUsedTool:tool];
 }
 
-- (void)submitPendingInlineDrawingDataForNote:(id)a3
+- (void)submitPendingInlineDrawingDataForNote:(id)note
 {
   v59 = *MEMORY[0x277D85DE8];
-  v42 = a3;
-  if (v42)
+  noteCopy = note;
+  if (noteCopy)
   {
-    v4 = [(ICNAEventReporter *)self pendingInlineDrawingInformation];
-    v5 = [v4 count];
+    pendingInlineDrawingInformation = [(ICNAEventReporter *)self pendingInlineDrawingInformation];
+    v5 = [pendingInlineDrawingInformation count];
 
     if (v5)
     {
@@ -1625,7 +1625,7 @@ void __85__ICNAEventReporter_folderViewEventDataObjectsForVirtualFolder_isInGrid
         v6 = 0x277D35000uLL;
         v7 = 0x277D35000uLL;
         v51 = *v54;
-        v41 = self;
+        selfCopy = self;
         do
         {
           v8 = 0;
@@ -1638,9 +1638,9 @@ void __85__ICNAEventReporter_folderViewEventDataObjectsForVirtualFolder_isInGrid
 
             v9 = *(*(&v53 + 1) + 8 * v8);
             v10 = *(v6 + 3584);
-            v11 = [*(v7 + 3888) sharedContext];
-            v12 = [v11 managedObjectContext];
-            v13 = [v10 attachmentWithIdentifier:v9 context:v12];
+            sharedContext = [*(v7 + 3888) sharedContext];
+            managedObjectContext = [sharedContext managedObjectContext];
+            v13 = [v10 attachmentWithIdentifier:v9 context:managedObjectContext];
 
             if (v13 && ([v13 markedForDeletion] & 1) == 0)
             {
@@ -1648,8 +1648,8 @@ void __85__ICNAEventReporter_folderViewEventDataObjectsForVirtualFolder_isInGrid
               v14 = v47 = v13;
               v15 = [v14 objectForKeyedSubscript:v9];
 
-              v16 = [v15 startPencilStrokeCount];
-              if (v16 + [v15 startFingerStrokeCount])
+              startPencilStrokeCount = [v15 startPencilStrokeCount];
+              if (startPencilStrokeCount + [v15 startFingerStrokeCount])
               {
                 v17 = 2;
               }
@@ -1677,11 +1677,11 @@ void __85__ICNAEventReporter_folderViewEventDataObjectsForVirtualFolder_isInGrid
               v27 = [MEMORY[0x277CCABB0] numberWithInteger:{ICNARoundTo2SigFigsInt(objc_msgSend(v15, "endFingerStrokeCount"))}];
               v46 = [(ICASEndDrawingStrokeData *)v25 initWithEndPencilStrokeCount:v26 endFingerStrokeCount:v27];
 
-              v44 = [(ICNAEventReporter *)v41 noteDataForModernNote:v42];
-              v45 = [(ICNAEventReporter *)v41 noteContentDataForModernNote:v42];
-              v28 = [(ICNAEventReporter *)v41 noteAccessDataForModernNote:v42];
-              v29 = [v42 account];
-              v30 = [(ICNAEventReporter *)v41 accountDataForModernAccount:v29];
+              v44 = [(ICNAEventReporter *)selfCopy noteDataForModernNote:noteCopy];
+              v45 = [(ICNAEventReporter *)selfCopy noteContentDataForModernNote:noteCopy];
+              v28 = [(ICNAEventReporter *)selfCopy noteAccessDataForModernNote:noteCopy];
+              account = [noteCopy account];
+              v30 = [(ICNAEventReporter *)selfCopy accountDataForModernAccount:account];
 
               v31 = +[ICNAController sharedController];
               v32 = objc_opt_class();
@@ -1693,12 +1693,12 @@ void __85__ICNAEventReporter_folderViewEventDataObjectsForVirtualFolder_isInGrid
               v57[5] = v48;
               v57[6] = v46;
               v33 = [MEMORY[0x277CBEA60] arrayWithObjects:v57 count:7];
-              v34 = [(ICNAEventReporter *)v41 subTracker];
-              [v31 submitEventOfType:v32 pushThenPopDataObjects:v33 subTracker:v34];
+              subTracker = [(ICNAEventReporter *)selfCopy subTracker];
+              [v31 submitEventOfType:v32 pushThenPopDataObjects:v33 subTracker:subTracker];
 
-              self = v41;
-              v35 = [v15 endPencilStrokeCount];
-              v36 = v35 > [v15 startPencilStrokeCount];
+              self = selfCopy;
+              endPencilStrokeCount = [v15 endPencilStrokeCount];
+              v36 = endPencilStrokeCount > [v15 startPencilStrokeCount];
               v37 = +[ICNACoreAnalyticsReporter sharedReporter];
               v38 = v36;
               v6 = 0x277D35000;
@@ -1718,32 +1718,32 @@ void __85__ICNAEventReporter_folderViewEventDataObjectsForVirtualFolder_isInGrid
         while (v52);
       }
 
-      v39 = [(ICNAEventReporter *)self pendingInlineDrawingInformation];
-      [v39 removeAllObjects];
+      pendingInlineDrawingInformation2 = [(ICNAEventReporter *)self pendingInlineDrawingInformation];
+      [pendingInlineDrawingInformation2 removeAllObjects];
     }
   }
 
   v40 = *MEMORY[0x277D85DE8];
 }
 
-- (void)submitInlineDrawingDataForDrawingDeletion:(id)a3 drawingID:(id)a4 forNote:(id)a5
+- (void)submitInlineDrawingDataForDrawingDeletion:(id)deletion drawingID:(id)d forNote:(id)note
 {
   v39[7] = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  noteCopy = note;
+  dCopy = d;
+  deletionCopy = deletion;
   v11 = +[ICNAIdentityManager sharedManager];
-  v38 = [v11 saltedID:v9 forClass:objc_opt_class()];
+  v38 = [v11 saltedID:dCopy forClass:objc_opt_class()];
 
   v12 = [ICASDrawingData alloc];
   v13 = [[ICASDrawingActionType alloc] initWithDrawingActionType:3];
   v14 = [[ICASDrawingTool alloc] initWithDrawingTool:0];
   v37 = [(ICASDrawingData *)v12 initWithDrawingActionType:v13 drawingTool:v14 drawingID:v38];
 
-  v15 = [(ICNAEventReporter *)self pencilStrokeCountForDrawing:v10];
-  v16 = [v10 strokes];
+  v15 = [(ICNAEventReporter *)self pencilStrokeCountForDrawing:deletionCopy];
+  strokes = [deletionCopy strokes];
 
-  v17 = [v16 count] - v15;
+  v17 = [strokes count] - v15;
   v18 = [ICASStartDrawingStrokeData alloc];
   v19 = [MEMORY[0x277CCABB0] numberWithInteger:ICNARoundTo2SigFigsInt(v15)];
   v20 = [MEMORY[0x277CCABB0] numberWithInteger:ICNARoundTo2SigFigsInt(v17)];
@@ -1754,12 +1754,12 @@ void __85__ICNAEventReporter_folderViewEventDataObjectsForVirtualFolder_isInGrid
   v23 = [MEMORY[0x277CCABB0] numberWithInteger:ICNARoundTo2SigFigsInt(v17)];
   v24 = [(ICASEndDrawingStrokeData *)v21 initWithEndPencilStrokeCount:v22 endFingerStrokeCount:v23];
 
-  v35 = [(ICNAEventReporter *)self noteDataForModernNote:v8];
-  v25 = [(ICNAEventReporter *)self noteContentDataForModernNote:v8];
-  v26 = [(ICNAEventReporter *)self noteAccessDataForModernNote:v8];
-  v27 = [v8 account];
+  v35 = [(ICNAEventReporter *)self noteDataForModernNote:noteCopy];
+  v25 = [(ICNAEventReporter *)self noteContentDataForModernNote:noteCopy];
+  v26 = [(ICNAEventReporter *)self noteAccessDataForModernNote:noteCopy];
+  account = [noteCopy account];
 
-  v28 = [(ICNAEventReporter *)self accountDataForModernAccount:v27];
+  v28 = [(ICNAEventReporter *)self accountDataForModernAccount:account];
 
   v29 = +[ICNAController sharedController];
   v30 = objc_opt_class();
@@ -1772,44 +1772,44 @@ void __85__ICNAEventReporter_folderViewEventDataObjectsForVirtualFolder_isInGrid
   v39[6] = v24;
   v31 = v24;
   v32 = [MEMORY[0x277CBEA60] arrayWithObjects:v39 count:7];
-  v33 = [(ICNAEventReporter *)self subTracker];
-  [v29 submitEventOfType:v30 pushThenPopDataObjects:v32 subTracker:v33];
+  subTracker = [(ICNAEventReporter *)self subTracker];
+  [v29 submitEventOfType:v30 pushThenPopDataObjects:v32 subTracker:subTracker];
 
   v34 = *MEMORY[0x277D85DE8];
 }
 
-- (void)submitFullscreenDrawingToInlineDrawingEventForNote:(id)a3 drawing:(id)a4 drawingID:(id)a5 method:(int64_t)a6
+- (void)submitFullscreenDrawingToInlineDrawingEventForNote:(id)note drawing:(id)drawing drawingID:(id)d method:(int64_t)method
 {
   v38[6] = *MEMORY[0x277D85DE8];
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  dCopy = d;
+  drawingCopy = drawing;
+  noteCopy = note;
   v13 = +[ICNAIdentityManager sharedManager];
-  v37 = [v13 saltedID:v10 forClass:objc_opt_class()];
+  v37 = [v13 saltedID:dCopy forClass:objc_opt_class()];
 
   v14 = [ICASDrawingData alloc];
   v15 = [[ICASDrawingActionType alloc] initWithDrawingActionType:1];
   v16 = [[ICASDrawingTool alloc] initWithDrawingTool:0];
   v17 = [(ICASDrawingData *)v14 initWithDrawingActionType:v15 drawingTool:v16 drawingID:v37];
 
-  v18 = [(ICNAEventReporter *)self pencilStrokeCountForDrawing:v11];
-  v19 = [v11 strokes];
+  v18 = [(ICNAEventReporter *)self pencilStrokeCountForDrawing:drawingCopy];
+  strokes = [drawingCopy strokes];
 
-  v20 = [v19 count] - v18;
+  v20 = [strokes count] - v18;
   v21 = [ICASStartDrawingStrokeData alloc];
   v22 = [MEMORY[0x277CCABB0] numberWithInteger:ICNARoundTo2SigFigsInt(v18)];
   v23 = [MEMORY[0x277CCABB0] numberWithInteger:ICNARoundTo2SigFigsInt(v20)];
   v24 = [(ICASStartDrawingStrokeData *)v21 initWithStartPencilStrokeCount:v22 startFingerStrokeCount:v23];
 
   v25 = [ICASDrawingConversionData alloc];
-  v26 = [[ICASConversionMethod alloc] initWithConversionMethod:a6];
+  v26 = [[ICASConversionMethod alloc] initWithConversionMethod:method];
   v27 = [(ICASDrawingConversionData *)v25 initWithConversionMethod:v26];
 
-  v28 = [(ICNAEventReporter *)self noteDataForModernNote:v12];
-  v29 = [(ICNAEventReporter *)self noteAccessDataForModernNote:v12];
-  v30 = [v12 account];
+  v28 = [(ICNAEventReporter *)self noteDataForModernNote:noteCopy];
+  v29 = [(ICNAEventReporter *)self noteAccessDataForModernNote:noteCopy];
+  account = [noteCopy account];
 
-  v31 = [(ICNAEventReporter *)self accountDataForModernAccount:v30];
+  v31 = [(ICNAEventReporter *)self accountDataForModernAccount:account];
 
   v32 = +[ICNAController sharedController];
   v33 = objc_opt_class();
@@ -1820,29 +1820,29 @@ void __85__ICNAEventReporter_folderViewEventDataObjectsForVirtualFolder_isInGrid
   v38[4] = v24;
   v38[5] = v27;
   v34 = [MEMORY[0x277CBEA60] arrayWithObjects:v38 count:6];
-  v35 = [(ICNAEventReporter *)self subTracker];
-  [v32 submitEventOfType:v33 pushThenPopDataObjects:v34 subTracker:v35];
+  subTracker = [(ICNAEventReporter *)self subTracker];
+  [v32 submitEventOfType:v33 pushThenPopDataObjects:v34 subTracker:subTracker];
 
   v36 = *MEMORY[0x277D85DE8];
 }
 
-- (void)submitPaletteEngagementEventForNote:(id)a3 startPosition:(int64_t)a4 endPosition:(int64_t)a5
+- (void)submitPaletteEngagementEventForNote:(id)note startPosition:(int64_t)position endPosition:(int64_t)endPosition
 {
   v25[5] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = [(ICNAEventReporter *)self noteDataForModernNote:v8];
-  v10 = [(ICNAEventReporter *)self noteAccessDataForModernNote:v8];
-  v11 = [v8 account];
+  noteCopy = note;
+  v9 = [(ICNAEventReporter *)self noteDataForModernNote:noteCopy];
+  v10 = [(ICNAEventReporter *)self noteAccessDataForModernNote:noteCopy];
+  account = [noteCopy account];
 
-  v12 = [(ICNAEventReporter *)self accountDataForModernAccount:v11];
+  v12 = [(ICNAEventReporter *)self accountDataForModernAccount:account];
 
   v13 = [ICASPaletteEngagementData alloc];
   v14 = [[ICASPaletteEngagementType alloc] initWithPaletteEngagementType:1];
   v15 = [(ICASPaletteEngagementData *)v13 initWithPaletteEngagementType:v14];
 
   v16 = [ICASPalettePositionData alloc];
-  v17 = [[ICASPalettePosition alloc] initWithPalettePosition:a4];
-  v18 = [[ICASPalettePosition alloc] initWithPalettePosition:a5];
+  v17 = [[ICASPalettePosition alloc] initWithPalettePosition:position];
+  v18 = [[ICASPalettePosition alloc] initWithPalettePosition:endPosition];
   v19 = [(ICASPalettePositionData *)v16 initWithPaletteStartPosition:v17 paletteEndPosition:v18];
 
   v20 = +[ICNAController sharedController];
@@ -1853,16 +1853,16 @@ void __85__ICNAEventReporter_folderViewEventDataObjectsForVirtualFolder_isInGrid
   v25[3] = v15;
   v25[4] = v19;
   v22 = [MEMORY[0x277CBEA60] arrayWithObjects:v25 count:5];
-  v23 = [(ICNAEventReporter *)self subTracker];
-  [v20 submitEventOfType:v21 pushThenPopDataObjects:v22 subTracker:v23];
+  subTracker = [(ICNAEventReporter *)self subTracker];
+  [v20 submitEventOfType:v21 pushThenPopDataObjects:v22 subTracker:subTracker];
 
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)submitAttachmentAddEventForAttachment:(id)a3
+- (void)submitAttachmentAddEventForAttachment:(id)attachment
 {
   v63[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  attachmentCopy = attachment;
   v56 = 0;
   v57 = &v56;
   v58 = 0x3032000000;
@@ -1894,20 +1894,20 @@ void __85__ICNAEventReporter_folderViewEventDataObjectsForVirtualFolder_isInGrid
   v36 = __Block_byref_object_dispose__4;
   v37 = 0;
   objc_initWeak(&location, self);
-  v5 = [v4 managedObjectContext];
+  managedObjectContext = [attachmentCopy managedObjectContext];
   v20 = MEMORY[0x277D85DD0];
   v21 = 3221225472;
   v22 = __59__ICNAEventReporter_submitAttachmentAddEventForAttachment___block_invoke;
   v23 = &unk_2799AFB58;
   v25 = &v56;
-  v6 = v4;
+  v6 = attachmentCopy;
   v24 = v6;
   v26 = &v50;
   v27 = &v44;
   objc_copyWeak(&v30, &location);
   v28 = &v38;
   v29 = &v32;
-  [v5 performBlockAndWait:&v20];
+  [managedObjectContext performBlockAndWait:&v20];
 
   v7 = [ICNAIdentityManager sharedManager:v20];
   v8 = [v7 saltedID:v57[5] forClass:objc_opt_class()];
@@ -1927,8 +1927,8 @@ void __85__ICNAEventReporter_folderViewEventDataObjectsForVirtualFolder_isInGrid
   v62[2] = v33[5];
   v62[3] = v13;
   v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v62 count:4];
-  v18 = [(ICNAEventReporter *)self subTracker];
-  [v14 submitEventOfType:v15 pushThenPopDataObjects:v17 subTracker:v18];
+  subTracker = [(ICNAEventReporter *)self subTracker];
+  [v14 submitEventOfType:v15 pushThenPopDataObjects:v17 subTracker:subTracker];
 
   objc_destroyWeak(&v30);
   objc_destroyWeak(&location);
@@ -1976,42 +1976,42 @@ void __59__ICNAEventReporter_submitAttachmentAddEventForAttachment___block_invok
   *(v19 + 40) = v18;
 }
 
-- (void)pushStartDocScanPageCountData:(unint64_t)a3
+- (void)pushStartDocScanPageCountData:(unint64_t)data
 {
   v5 = [ICASStartDocScanPageData alloc];
-  v6 = [MEMORY[0x277CCABB0] numberWithInteger:ICNARoundTo2SigFigsInt(a3)];
+  v6 = [MEMORY[0x277CCABB0] numberWithInteger:ICNARoundTo2SigFigsInt(data)];
   v9 = [(ICASStartDocScanPageData *)v5 initWithStartPageCount:v6];
 
   v7 = +[ICNAController sharedController];
-  v8 = [(ICNAEventReporter *)self subTracker];
-  [v7 pushDataObject:v9 unique:1 onlyOnce:0 subTracker:v8];
+  subTracker = [(ICNAEventReporter *)self subTracker];
+  [v7 pushDataObject:v9 unique:1 onlyOnce:0 subTracker:subTracker];
 }
 
-- (void)pushDocScanDataWithID:(id)a3 actionType:(int64_t)a4 stage:(int64_t)a5
+- (void)pushDocScanDataWithID:(id)d actionType:(int64_t)type stage:(int64_t)stage
 {
-  v8 = a3;
-  v15 = [[ICASDocScanActionType alloc] initWithDocScanActionType:a4];
-  v9 = [[ICASDocScanStage alloc] initWithDocScanStage:a5];
+  dCopy = d;
+  v15 = [[ICASDocScanActionType alloc] initWithDocScanActionType:type];
+  v9 = [[ICASDocScanStage alloc] initWithDocScanStage:stage];
   v10 = +[ICNAIdentityManager sharedManager];
-  v11 = [v10 saltedID:v8 forClass:objc_opt_class()];
+  v11 = [v10 saltedID:dCopy forClass:objc_opt_class()];
 
   v12 = [[ICASDocScanData alloc] initWithDocScanID:v11 docScanActionType:v15 docScanStage:v9];
   v13 = +[ICNAController sharedController];
-  v14 = [(ICNAEventReporter *)self subTracker];
-  [v13 pushDataObject:v12 unique:0 onlyOnce:1 subTracker:v14];
+  subTracker = [(ICNAEventReporter *)self subTracker];
+  [v13 pushDataObject:v12 unique:0 onlyOnce:1 subTracker:subTracker];
 }
 
-- (void)submitDocScanEventForNote:(id)a3 pageCount:(unint64_t)a4
+- (void)submitDocScanEventForNote:(id)note pageCount:(unint64_t)count
 {
   v18[3] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(ICNAEventReporter *)self noteDataForModernNote:v6];
-  v8 = [v6 account];
+  noteCopy = note;
+  v7 = [(ICNAEventReporter *)self noteDataForModernNote:noteCopy];
+  account = [noteCopy account];
 
-  v9 = [(ICNAEventReporter *)self accountDataForModernAccount:v8];
+  v9 = [(ICNAEventReporter *)self accountDataForModernAccount:account];
 
   v10 = [ICASEndDocScanPageData alloc];
-  v11 = [MEMORY[0x277CCABB0] numberWithInteger:ICNARoundTo2SigFigsInt(a4)];
+  v11 = [MEMORY[0x277CCABB0] numberWithInteger:ICNARoundTo2SigFigsInt(count)];
   v12 = [(ICASEndDocScanPageData *)v10 initWithEndPageCount:v11];
 
   v13 = +[ICNAController sharedController];
@@ -2020,23 +2020,23 @@ void __59__ICNAEventReporter_submitAttachmentAddEventForAttachment___block_invok
   v18[1] = v9;
   v18[2] = v12;
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:3];
-  v16 = [(ICNAEventReporter *)self subTracker];
-  [v13 submitEventOfType:v14 pushThenPopDataObjects:v15 subTracker:v16];
+  subTracker = [(ICNAEventReporter *)self subTracker];
+  [v13 submitEventOfType:v14 pushThenPopDataObjects:v15 subTracker:subTracker];
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)submitPasswordProtectEventForModernNote:(id)a3
+- (void)submitPasswordProtectEventForModernNote:(id)note
 {
   v16[5] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ICNAEventReporter *)self noteAccessDataForModernNote:v4];
-  v6 = [v4 account];
-  v7 = [(ICNAEventReporter *)self accountDataForModernAccount:v6];
+  noteCopy = note;
+  v5 = [(ICNAEventReporter *)self noteAccessDataForModernNote:noteCopy];
+  account = [noteCopy account];
+  v7 = [(ICNAEventReporter *)self accountDataForModernAccount:account];
 
-  v8 = [(ICNAEventReporter *)self noteContentDataForModernNote:v4];
-  v9 = [(ICNAEventReporter *)self noteDataForModernNote:v4];
-  v10 = [(ICNAEventReporter *)self passwordDataForModernNote:v4];
+  v8 = [(ICNAEventReporter *)self noteContentDataForModernNote:noteCopy];
+  v9 = [(ICNAEventReporter *)self noteDataForModernNote:noteCopy];
+  v10 = [(ICNAEventReporter *)self passwordDataForModernNote:noteCopy];
 
   v11 = +[ICNAController sharedController];
   v12 = objc_opt_class();
@@ -2046,19 +2046,19 @@ void __59__ICNAEventReporter_submitAttachmentAddEventForAttachment___block_invok
   v16[3] = v9;
   v16[4] = v10;
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:5];
-  v14 = [(ICNAEventReporter *)self subTracker];
-  [v11 submitEventOfType:v12 pushThenPopDataObjects:v13 subTracker:v14];
+  subTracker = [(ICNAEventReporter *)self subTracker];
+  [v11 submitEventOfType:v12 pushThenPopDataObjects:v13 subTracker:subTracker];
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)submitChangePasswordEventForModernAccount:(id)a3 isReset:(BOOL)a4
+- (void)submitChangePasswordEventForModernAccount:(id)account isReset:(BOOL)reset
 {
-  v4 = a4;
+  resetCopy = reset;
   v14[1] = *MEMORY[0x277D85DE8];
-  v6 = [(ICNAEventReporter *)self accountDataForModernAccount:a3];
+  v6 = [(ICNAEventReporter *)self accountDataForModernAccount:account];
   v7 = off_2799AE750;
-  if (!v4)
+  if (!resetCopy)
   {
     v7 = off_2799AE6C8;
   }
@@ -2068,22 +2068,22 @@ void __59__ICNAEventReporter_submitAttachmentAddEventForAttachment___block_invok
   v10 = +[ICNAController sharedController];
   v14[0] = v6;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:1];
-  v12 = [(ICNAEventReporter *)self subTracker];
-  [v10 submitEventOfType:v9 pushThenPopDataObjects:v11 subTracker:v12];
+  subTracker = [(ICNAEventReporter *)self subTracker];
+  [v10 submitEventOfType:v9 pushThenPopDataObjects:v11 subTracker:subTracker];
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)submitPasswordFailEventForModernNote:(id)a3
+- (void)submitPasswordFailEventForModernNote:(id)note
 {
   v15[4] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ICNAEventReporter *)self noteAccessDataForModernNote:v4];
-  v6 = [v4 account];
-  v7 = [(ICNAEventReporter *)self accountDataForModernAccount:v6];
+  noteCopy = note;
+  v5 = [(ICNAEventReporter *)self noteAccessDataForModernNote:noteCopy];
+  account = [noteCopy account];
+  v7 = [(ICNAEventReporter *)self accountDataForModernAccount:account];
 
-  v8 = [(ICNAEventReporter *)self noteDataForModernNote:v4];
-  v9 = [(ICNAEventReporter *)self passwordDataForModernNote:v4];
+  v8 = [(ICNAEventReporter *)self noteDataForModernNote:noteCopy];
+  v9 = [(ICNAEventReporter *)self passwordDataForModernNote:noteCopy];
 
   v10 = +[ICNAController sharedController];
   v11 = objc_opt_class();
@@ -2092,23 +2092,23 @@ void __59__ICNAEventReporter_submitAttachmentAddEventForAttachment___block_invok
   v15[2] = v8;
   v15[3] = v9;
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:4];
-  v13 = [(ICNAEventReporter *)self subTracker];
-  [v10 submitEventOfType:v11 pushThenPopDataObjects:v12 subTracker:v13];
+  subTracker = [(ICNAEventReporter *)self subTracker];
+  [v10 submitEventOfType:v11 pushThenPopDataObjects:v12 subTracker:subTracker];
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)submitPasswordSuccessEventForModernNote:(id)a3
+- (void)submitPasswordSuccessEventForModernNote:(id)note
 {
   v16[5] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ICNAEventReporter *)self noteAccessDataForModernNote:v4];
-  v6 = [v4 account];
-  v7 = [(ICNAEventReporter *)self accountDataForModernAccount:v6];
+  noteCopy = note;
+  v5 = [(ICNAEventReporter *)self noteAccessDataForModernNote:noteCopy];
+  account = [noteCopy account];
+  v7 = [(ICNAEventReporter *)self accountDataForModernAccount:account];
 
-  v8 = [(ICNAEventReporter *)self noteContentDataForModernNote:v4];
-  v9 = [(ICNAEventReporter *)self noteDataForModernNote:v4];
-  v10 = [(ICNAEventReporter *)self passwordDataForModernNote:v4];
+  v8 = [(ICNAEventReporter *)self noteContentDataForModernNote:noteCopy];
+  v9 = [(ICNAEventReporter *)self noteDataForModernNote:noteCopy];
+  v10 = [(ICNAEventReporter *)self passwordDataForModernNote:noteCopy];
 
   v11 = +[ICNAController sharedController];
   v12 = objc_opt_class();
@@ -2118,22 +2118,22 @@ void __59__ICNAEventReporter_submitAttachmentAddEventForAttachment___block_invok
   v16[3] = v9;
   v16[4] = v10;
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:5];
-  v14 = [(ICNAEventReporter *)self subTracker];
-  [v11 submitEventOfType:v12 pushThenPopDataObjects:v13 subTracker:v14];
+  subTracker = [(ICNAEventReporter *)self subTracker];
+  [v11 submitEventOfType:v12 pushThenPopDataObjects:v13 subTracker:subTracker];
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)submitBiometricsFailEventForModernNote:(id)a3
+- (void)submitBiometricsFailEventForModernNote:(id)note
 {
   v15[4] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ICNAEventReporter *)self noteAccessDataForModernNote:v4];
-  v6 = [v4 account];
-  v7 = [(ICNAEventReporter *)self accountDataForModernAccount:v6];
+  noteCopy = note;
+  v5 = [(ICNAEventReporter *)self noteAccessDataForModernNote:noteCopy];
+  account = [noteCopy account];
+  v7 = [(ICNAEventReporter *)self accountDataForModernAccount:account];
 
-  v8 = [(ICNAEventReporter *)self noteDataForModernNote:v4];
-  v9 = [(ICNAEventReporter *)self bioAuthDataForModernNote:v4];
+  v8 = [(ICNAEventReporter *)self noteDataForModernNote:noteCopy];
+  v9 = [(ICNAEventReporter *)self bioAuthDataForModernNote:noteCopy];
 
   v10 = +[ICNAController sharedController];
   v11 = objc_opt_class();
@@ -2142,29 +2142,29 @@ void __59__ICNAEventReporter_submitAttachmentAddEventForAttachment___block_invok
   v15[2] = v8;
   v15[3] = v9;
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:4];
-  v13 = [(ICNAEventReporter *)self subTracker];
-  [v10 submitEventOfType:v11 pushThenPopDataObjects:v12 subTracker:v13];
+  subTracker = [(ICNAEventReporter *)self subTracker];
+  [v10 submitEventOfType:v11 pushThenPopDataObjects:v12 subTracker:subTracker];
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)submitFastSyncSessionStartForNote:(id)a3 sessionID:(id)a4 participantVersions:(id)a5 numUniqueAccounts:(id)a6 numUniqueDevices:(id)a7
+- (void)submitFastSyncSessionStartForNote:(id)note sessionID:(id)d participantVersions:(id)versions numUniqueAccounts:(id)accounts numUniqueDevices:(id)devices
 {
   v29[5] = *MEMORY[0x277D85DE8];
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
+  devicesCopy = devices;
+  accountsCopy = accounts;
+  versionsCopy = versions;
+  dCopy = d;
+  noteCopy = note;
   v17 = +[ICNAIdentityManager sharedManager];
-  v18 = [v17 saltedID:v15 forClass:objc_opt_class()];
+  v18 = [v17 saltedID:dCopy forClass:objc_opt_class()];
 
-  v19 = [[ICASFastSyncData alloc] initWithFastSyncSessionId:v18 participantVersions:v14];
-  v20 = [[ICASFastSyncParticipantData alloc] initWithCountOfUniqueAccounts:v13 countOfUniqueDevices:v12];
+  v19 = [[ICASFastSyncData alloc] initWithFastSyncSessionId:v18 participantVersions:versionsCopy];
+  v20 = [[ICASFastSyncParticipantData alloc] initWithCountOfUniqueAccounts:accountsCopy countOfUniqueDevices:devicesCopy];
 
-  v21 = [(ICNAEventReporter *)self noteAccessDataForModernNote:v16];
-  v22 = [(ICNAEventReporter *)self noteContentDataForModernNote:v16];
-  v23 = [(ICNAEventReporter *)self noteDataForModernNote:v16];
+  v21 = [(ICNAEventReporter *)self noteAccessDataForModernNote:noteCopy];
+  v22 = [(ICNAEventReporter *)self noteContentDataForModernNote:noteCopy];
+  v23 = [(ICNAEventReporter *)self noteDataForModernNote:noteCopy];
 
   v24 = +[ICNAController sharedController];
   v25 = objc_opt_class();
@@ -2174,34 +2174,34 @@ void __59__ICNAEventReporter_submitAttachmentAddEventForAttachment___block_invok
   v29[3] = v22;
   v29[4] = v23;
   v26 = [MEMORY[0x277CBEA60] arrayWithObjects:v29 count:5];
-  v27 = [(ICNAEventReporter *)self subTracker];
-  [v24 submitEventOfType:v25 pushThenPopDataObjects:v26 subTracker:v27];
+  subTracker = [(ICNAEventReporter *)self subTracker];
+  [v24 submitEventOfType:v25 pushThenPopDataObjects:v26 subTracker:subTracker];
 
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)submitFastSyncSessionEndForNote:(id)a3 sessionID:(id)a4 participantVersions:(id)a5 numUniqueAccounts:(id)a6 numUniqueDevices:(id)a7 errorCode:(id)a8 numIgnoredMessages:(id)a9
+- (void)submitFastSyncSessionEndForNote:(id)note sessionID:(id)d participantVersions:(id)versions numUniqueAccounts:(id)accounts numUniqueDevices:(id)devices errorCode:(id)code numIgnoredMessages:(id)messages
 {
   v41[6] = *MEMORY[0x277D85DE8];
-  v15 = a9;
-  v16 = a8;
-  v17 = a7;
-  v18 = a6;
-  v19 = a5;
-  v20 = a4;
-  v21 = a3;
+  messagesCopy = messages;
+  codeCopy = code;
+  devicesCopy = devices;
+  accountsCopy = accounts;
+  versionsCopy = versions;
+  dCopy = d;
+  noteCopy = note;
   v22 = +[ICNAIdentityManager sharedManager];
-  v40 = [v22 saltedID:v20 forClass:objc_opt_class()];
+  v40 = [v22 saltedID:dCopy forClass:objc_opt_class()];
 
-  v39 = [v19 ic_map:&__block_literal_global_417];
+  v39 = [versionsCopy ic_map:&__block_literal_global_417];
 
   v23 = [[ICASFastSyncData alloc] initWithFastSyncSessionId:v40 participantVersions:v39];
-  v24 = [[ICASFastSyncParticipantData alloc] initWithCountOfUniqueAccounts:v18 countOfUniqueDevices:v17];
+  v24 = [[ICASFastSyncParticipantData alloc] initWithCountOfUniqueAccounts:accountsCopy countOfUniqueDevices:devicesCopy];
 
   v25 = [ICASFastSyncErrorData alloc];
-  if (v16)
+  if (codeCopy)
   {
-    v26 = v16;
+    v26 = codeCopy;
   }
 
   else
@@ -2209,9 +2209,9 @@ void __59__ICNAEventReporter_submitAttachmentAddEventForAttachment___block_invok
     v26 = &unk_286E61B70;
   }
 
-  if (v15)
+  if (messagesCopy)
   {
-    v27 = v15;
+    v27 = messagesCopy;
   }
 
   else
@@ -2221,9 +2221,9 @@ void __59__ICNAEventReporter_submitAttachmentAddEventForAttachment___block_invok
 
   v28 = [(ICASFastSyncErrorData *)v25 initWithErrorCode:v26 countOfIgnoredMessages:v27, self];
 
-  v29 = [v38 noteAccessDataForModernNote:v21];
-  v30 = [v38 noteContentDataForModernNote:v21];
-  v31 = [v38 noteDataForModernNote:v21];
+  v29 = [v38 noteAccessDataForModernNote:noteCopy];
+  v30 = [v38 noteContentDataForModernNote:noteCopy];
+  v31 = [v38 noteDataForModernNote:noteCopy];
 
   v32 = +[ICNAController sharedController];
   v33 = objc_opt_class();
@@ -2234,16 +2234,16 @@ void __59__ICNAEventReporter_submitAttachmentAddEventForAttachment___block_invok
   v41[4] = v30;
   v41[5] = v31;
   v34 = [MEMORY[0x277CBEA60] arrayWithObjects:v41 count:6];
-  v35 = [v38 subTracker];
-  [v32 submitEventOfType:v33 pushThenPopDataObjects:v34 subTracker:v35];
+  subTracker = [v38 subTracker];
+  [v32 submitEventOfType:v33 pushThenPopDataObjects:v34 subTracker:subTracker];
 
   v36 = *MEMORY[0x277D85DE8];
 }
 
-- (void)submitNoteEditEventForModernNote:(id)a3 fromQuickNote:(BOOL)a4
+- (void)submitNoteEditEventForModernNote:(id)note fromQuickNote:(BOOL)quickNote
 {
   v18[5] = *MEMORY[0x277D85DE8];
-  if (a4)
+  if (quickNote)
   {
     v5 = 2;
   }
@@ -2253,14 +2253,14 @@ void __59__ICNAEventReporter_submitAttachmentAddEventForAttachment___block_invok
     v5 = 1;
   }
 
-  v6 = a3;
+  noteCopy = note;
   v7 = [(ICNAEventReporter *)self noteEditDataForContextType:v5];
-  v8 = [(ICNAEventReporter *)self noteAccessDataForModernNote:v6];
-  v9 = [v6 account];
-  v10 = [(ICNAEventReporter *)self accountDataForModernAccount:v9];
+  v8 = [(ICNAEventReporter *)self noteAccessDataForModernNote:noteCopy];
+  account = [noteCopy account];
+  v10 = [(ICNAEventReporter *)self accountDataForModernAccount:account];
 
-  v11 = [(ICNAEventReporter *)self noteContentDataForModernNote:v6];
-  v12 = [(ICNAEventReporter *)self noteDataForModernNote:v6];
+  v11 = [(ICNAEventReporter *)self noteContentDataForModernNote:noteCopy];
+  v12 = [(ICNAEventReporter *)self noteDataForModernNote:noteCopy];
 
   v13 = +[ICNAController sharedController];
   v14 = objc_opt_class();
@@ -2270,48 +2270,48 @@ void __59__ICNAEventReporter_submitAttachmentAddEventForAttachment___block_invok
   v18[3] = v7;
   v18[4] = v12;
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:5];
-  v16 = [(ICNAEventReporter *)self subTracker];
-  [v13 submitEventOfType:v14 pushThenPopDataObjects:v15 subTracker:v16];
+  subTracker = [(ICNAEventReporter *)self subTracker];
+  [v13 submitEventOfType:v14 pushThenPopDataObjects:v15 subTracker:subTracker];
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)submitNoteEditEventForHTMLNote:(id)a3
+- (void)submitNoteEditEventForHTMLNote:(id)note
 {
   v16[5] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  noteCopy = note;
   v5 = [(ICNAEventReporter *)self noteEditDataForContextType:1];
-  v6 = [(ICNAEventReporter *)self noteAccessDataForHTMLNote];
-  v7 = [v4 account];
-  v8 = [(ICNAEventReporter *)self accountDataForHTMLAccount:v7];
+  noteAccessDataForHTMLNote = [(ICNAEventReporter *)self noteAccessDataForHTMLNote];
+  account = [noteCopy account];
+  v8 = [(ICNAEventReporter *)self accountDataForHTMLAccount:account];
 
-  v9 = [(ICNAEventReporter *)self noteContentDataForHTMLNote:v4];
-  v10 = [(ICNAEventReporter *)self noteDataForHTMLNote:v4];
+  v9 = [(ICNAEventReporter *)self noteContentDataForHTMLNote:noteCopy];
+  v10 = [(ICNAEventReporter *)self noteDataForHTMLNote:noteCopy];
 
   v11 = +[ICNAController sharedController];
   v12 = objc_opt_class();
-  v16[0] = v6;
+  v16[0] = noteAccessDataForHTMLNote;
   v16[1] = v8;
   v16[2] = v9;
   v16[3] = v5;
   v16[4] = v10;
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:5];
-  v14 = [(ICNAEventReporter *)self subTracker];
-  [v11 submitEventOfType:v12 pushThenPopDataObjects:v13 subTracker:v14];
+  subTracker = [(ICNAEventReporter *)self subTracker];
+  [v11 submitEventOfType:v12 pushThenPopDataObjects:v13 subTracker:subTracker];
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)submitChecklistUsageEventForModernNote:(id)a3 countOfCheckedItems:(int64_t)a4 countOfTotalItems:(int64_t)a5 checklistActionType:(int64_t)a6
+- (void)submitChecklistUsageEventForModernNote:(id)note countOfCheckedItems:(int64_t)items countOfTotalItems:(int64_t)totalItems checklistActionType:(int64_t)type
 {
   v25[3] = *MEMORY[0x277D85DE8];
-  v10 = a3;
+  noteCopy = note;
   v11 = [ICASChecklistItemsData alloc];
-  v12 = [MEMORY[0x277CCABB0] numberWithInteger:ICNARoundTo2SigFigsInt(a4)];
-  v13 = [MEMORY[0x277CCABB0] numberWithInteger:ICNARoundTo2SigFigsInt(a5)];
+  v12 = [MEMORY[0x277CCABB0] numberWithInteger:ICNARoundTo2SigFigsInt(items)];
+  v13 = [MEMORY[0x277CCABB0] numberWithInteger:ICNARoundTo2SigFigsInt(totalItems)];
   v14 = [(ICASChecklistItemsData *)v11 initWithCountOfCheckedItems:v12 countOfTotalItems:v13];
 
-  v15 = [[ICASChecklistAction alloc] initWithChecklistAction:a6];
+  v15 = [[ICASChecklistAction alloc] initWithChecklistAction:type];
   if ([MEMORY[0x277D36968] checklistAutoSortEnabled])
   {
     v16 = 1;
@@ -2324,7 +2324,7 @@ void __59__ICNAEventReporter_submitAttachmentAddEventForAttachment___block_invok
 
   v17 = [[ICASMoveCheckedItemsToBottomSwitchSetting alloc] initWithMoveCheckedItemsToBottomSwitchSetting:v16];
   v18 = [[ICASChecklistUsageData alloc] initWithChecklistAction:v15 moveCheckedItemsToBottomSwitchSetting:v17];
-  v19 = [(ICNAEventReporter *)self noteDataForModernNote:v10];
+  v19 = [(ICNAEventReporter *)self noteDataForModernNote:noteCopy];
 
   v20 = +[ICNAController sharedController];
   v21 = objc_opt_class();
@@ -2332,23 +2332,47 @@ void __59__ICNAEventReporter_submitAttachmentAddEventForAttachment___block_invok
   v25[1] = v18;
   v25[2] = v19;
   v22 = [MEMORY[0x277CBEA60] arrayWithObjects:v25 count:3];
-  v23 = [(ICNAEventReporter *)self subTracker];
-  [v20 submitEventOfType:v21 pushThenPopDataObjects:v22 subTracker:v23];
+  subTracker = [(ICNAEventReporter *)self subTracker];
+  [v20 submitEventOfType:v21 pushThenPopDataObjects:v22 subTracker:subTracker];
 
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)submitStyleFormatEventForHTMLNote:(id)a3 styleTypeValue:(int64_t)a4
+- (void)submitStyleFormatEventForHTMLNote:(id)note styleTypeValue:(int64_t)value
 {
   v17[4] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(ICNAEventReporter *)self noteAccessDataForHTMLNote];
-  v8 = [v6 account];
-  v9 = [(ICNAEventReporter *)self accountDataForHTMLAccount:v8];
+  noteCopy = note;
+  noteAccessDataForHTMLNote = [(ICNAEventReporter *)self noteAccessDataForHTMLNote];
+  account = [noteCopy account];
+  v9 = [(ICNAEventReporter *)self accountDataForHTMLAccount:account];
 
-  v10 = [(ICNAEventReporter *)self noteDataForHTMLNote:v6];
+  v10 = [(ICNAEventReporter *)self noteDataForHTMLNote:noteCopy];
 
-  v11 = [(ICNAEventReporter *)self styleDataForStyleTypeValue:a4];
+  v11 = [(ICNAEventReporter *)self styleDataForStyleTypeValue:value];
+  v12 = +[ICNAController sharedController];
+  v13 = objc_opt_class();
+  v17[0] = noteAccessDataForHTMLNote;
+  v17[1] = v9;
+  v17[2] = v10;
+  v17[3] = v11;
+  v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:4];
+  subTracker = [(ICNAEventReporter *)self subTracker];
+  [v12 submitEventOfType:v13 pushThenPopDataObjects:v14 subTracker:subTracker];
+
+  v16 = *MEMORY[0x277D85DE8];
+}
+
+- (void)submitStyleFormatEventForModernNote:(id)note styleTypeValue:(int64_t)value
+{
+  v17[4] = *MEMORY[0x277D85DE8];
+  noteCopy = note;
+  v7 = [(ICNAEventReporter *)self noteAccessDataForModernNote:noteCopy];
+  account = [noteCopy account];
+  v9 = [(ICNAEventReporter *)self accountDataForModernAccount:account];
+
+  v10 = [(ICNAEventReporter *)self noteDataForModernNote:noteCopy];
+
+  v11 = [(ICNAEventReporter *)self styleDataForStyleTypeValue:value];
   v12 = +[ICNAController sharedController];
   v13 = objc_opt_class();
   v17[0] = v7;
@@ -2356,70 +2380,22 @@ void __59__ICNAEventReporter_submitAttachmentAddEventForAttachment___block_invok
   v17[2] = v10;
   v17[3] = v11;
   v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:4];
-  v15 = [(ICNAEventReporter *)self subTracker];
-  [v12 submitEventOfType:v13 pushThenPopDataObjects:v14 subTracker:v15];
+  subTracker = [(ICNAEventReporter *)self subTracker];
+  [v12 submitEventOfType:v13 pushThenPopDataObjects:v14 subTracker:subTracker];
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)submitStyleFormatEventForModernNote:(id)a3 styleTypeValue:(int64_t)a4
+- (void)submitNoteEditorCallOutBarButtonSelectionEventForModernNote:(id)note buttonTypeValue:(int64_t)value
 {
   v17[4] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(ICNAEventReporter *)self noteAccessDataForModernNote:v6];
-  v8 = [v6 account];
-  v9 = [(ICNAEventReporter *)self accountDataForModernAccount:v8];
+  noteCopy = note;
+  v7 = [(ICNAEventReporter *)self noteAccessDataForModernNote:noteCopy];
+  account = [noteCopy account];
+  v9 = [(ICNAEventReporter *)self accountDataForModernAccount:account];
 
-  v10 = [(ICNAEventReporter *)self noteDataForModernNote:v6];
-
-  v11 = [(ICNAEventReporter *)self styleDataForStyleTypeValue:a4];
-  v12 = +[ICNAController sharedController];
-  v13 = objc_opt_class();
-  v17[0] = v7;
-  v17[1] = v9;
-  v17[2] = v10;
-  v17[3] = v11;
-  v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:4];
-  v15 = [(ICNAEventReporter *)self subTracker];
-  [v12 submitEventOfType:v13 pushThenPopDataObjects:v14 subTracker:v15];
-
-  v16 = *MEMORY[0x277D85DE8];
-}
-
-- (void)submitNoteEditorCallOutBarButtonSelectionEventForModernNote:(id)a3 buttonTypeValue:(int64_t)a4
-{
-  v17[4] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(ICNAEventReporter *)self noteAccessDataForModernNote:v6];
-  v8 = [v6 account];
-  v9 = [(ICNAEventReporter *)self accountDataForModernAccount:v8];
-
-  v10 = [(ICNAEventReporter *)self noteEditorCallOutBarDataForButtonTypeValue:a4];
-  v11 = [(ICNAEventReporter *)self noteContentDataForModernNote:v6];
-
-  v12 = +[ICNAController sharedController];
-  v13 = objc_opt_class();
-  v17[0] = v7;
-  v17[1] = v9;
-  v17[2] = v10;
-  v17[3] = v11;
-  v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:4];
-  v15 = [(ICNAEventReporter *)self subTracker];
-  [v12 submitEventOfType:v13 pushThenPopDataObjects:v14 subTracker:v15];
-
-  v16 = *MEMORY[0x277D85DE8];
-}
-
-- (void)submitNoteEditorCallOutBarButtonSelectionEventForHTMLNote:(id)a3 buttonTypeValue:(int64_t)a4
-{
-  v17[4] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(ICNAEventReporter *)self noteAccessDataForHTMLNote];
-  v8 = [v6 account];
-  v9 = [(ICNAEventReporter *)self accountDataForHTMLAccount:v8];
-
-  v10 = [(ICNAEventReporter *)self noteEditorCallOutBarDataForButtonTypeValue:a4];
-  v11 = [(ICNAEventReporter *)self noteContentDataForHTMLNote:v6];
+  v10 = [(ICNAEventReporter *)self noteEditorCallOutBarDataForButtonTypeValue:value];
+  v11 = [(ICNAEventReporter *)self noteContentDataForModernNote:noteCopy];
 
   v12 = +[ICNAController sharedController];
   v13 = objc_opt_class();
@@ -2428,17 +2404,41 @@ void __59__ICNAEventReporter_submitAttachmentAddEventForAttachment___block_invok
   v17[2] = v10;
   v17[3] = v11;
   v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:4];
-  v15 = [(ICNAEventReporter *)self subTracker];
-  [v12 submitEventOfType:v13 pushThenPopDataObjects:v14 subTracker:v15];
+  subTracker = [(ICNAEventReporter *)self subTracker];
+  [v12 submitEventOfType:v13 pushThenPopDataObjects:v14 subTracker:subTracker];
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)submitMoveCheckedItemsToBottomSwitchEventWithNewState:(BOOL)a3 isInApp:(BOOL)a4
+- (void)submitNoteEditorCallOutBarButtonSelectionEventForHTMLNote:(id)note buttonTypeValue:(int64_t)value
 {
-  v4 = a4;
+  v17[4] = *MEMORY[0x277D85DE8];
+  noteCopy = note;
+  noteAccessDataForHTMLNote = [(ICNAEventReporter *)self noteAccessDataForHTMLNote];
+  account = [noteCopy account];
+  v9 = [(ICNAEventReporter *)self accountDataForHTMLAccount:account];
+
+  v10 = [(ICNAEventReporter *)self noteEditorCallOutBarDataForButtonTypeValue:value];
+  v11 = [(ICNAEventReporter *)self noteContentDataForHTMLNote:noteCopy];
+
+  v12 = +[ICNAController sharedController];
+  v13 = objc_opt_class();
+  v17[0] = noteAccessDataForHTMLNote;
+  v17[1] = v9;
+  v17[2] = v10;
+  v17[3] = v11;
+  v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:4];
+  subTracker = [(ICNAEventReporter *)self subTracker];
+  [v12 submitEventOfType:v13 pushThenPopDataObjects:v14 subTracker:subTracker];
+
+  v16 = *MEMORY[0x277D85DE8];
+}
+
+- (void)submitMoveCheckedItemsToBottomSwitchEventWithNewState:(BOOL)state isInApp:(BOOL)app
+{
+  appCopy = app;
   v17[2] = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (state)
   {
     v6 = 1;
   }
@@ -2450,7 +2450,7 @@ void __59__ICNAEventReporter_submitAttachmentAddEventForAttachment___block_invok
 
   v7 = [[ICASSwitchSelectionType alloc] initWithSwitchSelectionType:v6];
   v8 = [[ICASSwitchSelectionData alloc] initWithSwitchSelectionType:v7];
-  if (v4)
+  if (appCopy)
   {
     v9 = 1;
   }
@@ -2467,8 +2467,8 @@ void __59__ICNAEventReporter_submitAttachmentAddEventForAttachment___block_invok
   v17[0] = v8;
   v17[1] = v11;
   v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:2];
-  v15 = [(ICNAEventReporter *)self subTracker];
-  [v12 submitEventOfType:v13 pushThenPopDataObjects:v14 subTracker:v15];
+  subTracker = [(ICNAEventReporter *)self subTracker];
+  [v12 submitEventOfType:v13 pushThenPopDataObjects:v14 subTracker:subTracker];
 
   v16 = *MEMORY[0x277D85DE8];
 }
@@ -2477,21 +2477,21 @@ void __59__ICNAEventReporter_submitAttachmentAddEventForAttachment___block_invok
 {
   v5 = +[ICNAController sharedController];
   v3 = objc_opt_class();
-  v4 = [(ICNAEventReporter *)self subTracker];
-  [v5 submitEventOfType:v3 pushThenPopDataObjects:MEMORY[0x277CBEBF8] subTracker:v4];
+  subTracker = [(ICNAEventReporter *)self subTracker];
+  [v5 submitEventOfType:v3 pushThenPopDataObjects:MEMORY[0x277CBEBF8] subTracker:subTracker];
 }
 
-- (void)submitAttachmentBrowserActionEventForType:(int64_t)a3
+- (void)submitAttachmentBrowserActionEventForType:(int64_t)type
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v4 = [[ICASActionType alloc] initWithActionType:a3];
+  v4 = [[ICASActionType alloc] initWithActionType:type];
   v5 = [[ICASAttachmentActionData alloc] initWithActionType:v4];
   v6 = +[ICNAController sharedController];
   v7 = objc_opt_class();
   v11[0] = v5;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:1];
-  v9 = [(ICNAEventReporter *)self subTracker];
-  [v6 submitEventOfType:v7 pushThenPopDataObjects:v8 subTracker:v9];
+  subTracker = [(ICNAEventReporter *)self subTracker];
+  [v6 submitEventOfType:v7 pushThenPopDataObjects:v8 subTracker:subTracker];
 
   v10 = *MEMORY[0x277D85DE8];
 }
@@ -2500,8 +2500,8 @@ void __59__ICNAEventReporter_submitAttachmentAddEventForAttachment___block_invok
 {
   v5 = +[ICNAController sharedController];
   v3 = objc_opt_class();
-  v4 = [(ICNAEventReporter *)self subTracker];
-  [v5 submitEventOfType:v3 subTracker:v4];
+  subTracker = [(ICNAEventReporter *)self subTracker];
+  [v5 submitEventOfType:v3 subTracker:subTracker];
 }
 
 - (void)startFindInNoteEvent
@@ -2570,15 +2570,15 @@ void __73__ICNAEventReporter_submitFindInNoteEventWasSearchQueryEntered_htmlNote
   *(v15 + 40) = v14;
 }
 
-- (void)submitSearchInitiateEventWithSearchSessionID:(id)a3 searchSuggestionType:(unint64_t)a4
+- (void)submitSearchInitiateEventWithSearchSessionID:(id)d searchSuggestionType:(unint64_t)type
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  dCopy = d;
   v7 = [ICASSearchData alloc];
-  v8 = [v6 copy];
+  v8 = [dCopy copy];
 
   v9 = [(ICASSearchData *)v7 initWithSearchSessionID:v8];
-  v10 = [(ICNAEventReporter *)self searchSuggestionDataWithSearchSuggestionType:a4];
+  v10 = [(ICNAEventReporter *)self searchSuggestionDataWithSearchSuggestionType:type];
   v11 = v10;
   if (v10)
   {
@@ -2600,37 +2600,37 @@ void __73__ICNAEventReporter_submitFindInNoteEventWasSearchQueryEntered_htmlNote
   v15 = [v12 arrayWithObjects:v13 count:{v14, v20, v21, v22, v23}];
   v16 = +[ICNAController sharedController];
   v17 = objc_opt_class();
-  v18 = [(ICNAEventReporter *)self subTracker];
-  [v16 submitEventOfType:v17 pushThenPopDataObjects:v15 subTracker:v18];
+  subTracker = [(ICNAEventReporter *)self subTracker];
+  [v16 submitEventOfType:v17 pushThenPopDataObjects:v15 subTracker:subTracker];
 
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)submitSearchResultSelectEventWithSearchResult:(id)a3 searchSessionID:(id)a4 gmRank:(unint64_t)a5
+- (void)submitSearchResultSelectEventWithSearchResult:(id)result searchSessionID:(id)d gmRank:(unint64_t)rank
 {
-  v8 = a4;
-  v9 = a3;
+  dCopy = d;
+  resultCopy = result;
   v10 = [[ICASSearchResultCountData alloc] initWithTopHitCount:&unk_286E61B70 notesCount:&unk_286E61B70 attachmentsCount:&unk_286E61B70];
-  [(ICNAEventReporter *)self reallySubmitSearchResultSelectEventWithSearchResult:v9 searchSessionID:v8 gmRank:a5 queryLength:0 searchResultCountData:v10 searchSuggestionData:0];
+  [(ICNAEventReporter *)self reallySubmitSearchResultSelectEventWithSearchResult:resultCopy searchSessionID:dCopy gmRank:rank queryLength:0 searchResultCountData:v10 searchSuggestionData:0];
 }
 
-- (void)submitSearchResultSelectEventWithSearchResult:(id)a3 searchSessionID:(id)a4 queryLength:(unint64_t)a5 topHitResultCount:(unint64_t)a6 noteResultCount:(unint64_t)a7 attachmentResultCount:(unint64_t)a8 gmRank:(unint64_t)a9
+- (void)submitSearchResultSelectEventWithSearchResult:(id)result searchSessionID:(id)d queryLength:(unint64_t)length topHitResultCount:(unint64_t)count noteResultCount:(unint64_t)resultCount attachmentResultCount:(unint64_t)attachmentResultCount gmRank:(unint64_t)rank
 {
-  v25 = a3;
-  v15 = a4;
+  resultCopy = result;
+  dCopy = d;
   v16 = [ICASSearchResultCountData alloc];
-  v17 = [MEMORY[0x277CCABB0] numberWithInteger:ICNARoundTo2SigFigsInt(a6)];
-  v18 = [MEMORY[0x277CCABB0] numberWithInteger:ICNARoundTo2SigFigsInt(a7)];
-  v19 = [MEMORY[0x277CCABB0] numberWithInteger:ICNARoundTo2SigFigsInt(a8)];
+  v17 = [MEMORY[0x277CCABB0] numberWithInteger:ICNARoundTo2SigFigsInt(count)];
+  v18 = [MEMORY[0x277CCABB0] numberWithInteger:ICNARoundTo2SigFigsInt(resultCount)];
+  v19 = [MEMORY[0x277CCABB0] numberWithInteger:ICNARoundTo2SigFigsInt(attachmentResultCount)];
   v20 = [(ICASSearchResultCountData *)v16 initWithTopHitCount:v17 notesCount:v18 attachmentsCount:v19];
 
-  v21 = [v25 configuration];
-  v22 = [v21 searchSuggestionType];
+  configuration = [resultCopy configuration];
+  searchSuggestionType = [configuration searchSuggestionType];
 
-  if (v22)
+  if (searchSuggestionType)
   {
-    v23 = [v25 configuration];
-    v24 = -[ICNAEventReporter searchSuggestionDataWithSearchSuggestionType:](self, "searchSuggestionDataWithSearchSuggestionType:", [v23 searchSuggestionType]);
+    configuration2 = [resultCopy configuration];
+    v24 = -[ICNAEventReporter searchSuggestionDataWithSearchSuggestionType:](self, "searchSuggestionDataWithSearchSuggestionType:", [configuration2 searchSuggestionType]);
   }
 
   else
@@ -2638,28 +2638,28 @@ void __73__ICNAEventReporter_submitFindInNoteEventWasSearchQueryEntered_htmlNote
     v24 = 0;
   }
 
-  [(ICNAEventReporter *)self reallySubmitSearchResultSelectEventWithSearchResult:v25 searchSessionID:v15 gmRank:a9 queryLength:a5 searchResultCountData:v20 searchSuggestionData:v24];
+  [(ICNAEventReporter *)self reallySubmitSearchResultSelectEventWithSearchResult:resultCopy searchSessionID:dCopy gmRank:rank queryLength:length searchResultCountData:v20 searchSuggestionData:v24];
 }
 
-- (void)reallySubmitSearchResultSelectEventWithSearchResult:(id)a3 searchSessionID:(id)a4 gmRank:(unint64_t)a5 queryLength:(unint64_t)a6 searchResultCountData:(id)a7 searchSuggestionData:(id)a8
+- (void)reallySubmitSearchResultSelectEventWithSearchResult:(id)result searchSessionID:(id)d gmRank:(unint64_t)rank queryLength:(unint64_t)length searchResultCountData:(id)data searchSuggestionData:(id)suggestionData
 {
   v50[3] = *MEMORY[0x277D85DE8];
-  v46 = a7;
-  v45 = a8;
-  v14 = a4;
-  v15 = a3;
+  dataCopy = data;
+  suggestionDataCopy = suggestionData;
+  dCopy = d;
+  resultCopy = result;
   v16 = [ICASSearchData alloc];
-  v17 = [v14 copy];
+  v17 = [dCopy copy];
 
   v44 = [(ICASSearchData *)v16 initWithSearchSessionID:v17];
-  v47 = self;
-  v49 = [(ICNAEventReporter *)self selectedResultAccountTypeForSearchResult:v15];
-  v18 = [v15 object];
-  v19 = [v18 searchResultType];
+  selfCopy = self;
+  v49 = [(ICNAEventReporter *)self selectedResultAccountTypeForSearchResult:resultCopy];
+  object = [resultCopy object];
+  searchResultType = [object searchResultType];
 
-  if (v19)
+  if (searchResultType)
   {
-    v20 = 2 * (v19 == 1);
+    v20 = 2 * (searchResultType == 1);
   }
 
   else
@@ -2670,74 +2670,74 @@ void __73__ICNAEventReporter_submitFindInNoteEventWasSearchQueryEntered_htmlNote
   v43 = [[ICASSelectedResultType alloc] initWithSelectedResultType:v20];
   v48 = [[ICASGmRankingStrategyType alloc] initWithGmRankingStrategyType:2];
   v21 = +[ICNAIdentityManager sharedManager];
-  v22 = [v15 object];
-  v23 = [v22 contentIdentifier];
-  v24 = [v21 saltedID:v23 forClass:objc_opt_class()];
+  object2 = [resultCopy object];
+  contentIdentifier = [object2 contentIdentifier];
+  v24 = [v21 saltedID:contentIdentifier forClass:objc_opt_class()];
 
   v25 = [ICASSearchSelectionData alloc];
-  v26 = [MEMORY[0x277CCABB0] numberWithInteger:ICNARoundTo2SigFigsInt(a5)];
-  v27 = [MEMORY[0x277CCABB0] numberWithInteger:ICNARoundTo2SigFigsInt(a6)];
+  v26 = [MEMORY[0x277CCABB0] numberWithInteger:ICNARoundTo2SigFigsInt(rank)];
+  v27 = [MEMORY[0x277CCABB0] numberWithInteger:ICNARoundTo2SigFigsInt(length)];
   v28 = MEMORY[0x277CCABB0];
-  v29 = [v15 configuration];
-  v30 = [v29 foundAttachmentObjectID];
-  v31 = [v28 numberWithInt:v30 != 0];
+  configuration = [resultCopy configuration];
+  foundAttachmentObjectID = [configuration foundAttachmentObjectID];
+  v31 = [v28 numberWithInt:foundAttachmentObjectID != 0];
   v32 = MEMORY[0x277CCABB0];
-  v33 = [v15 configuration];
+  configuration2 = [resultCopy configuration];
 
-  v34 = [v32 numberWithBool:{objc_msgSend(v33, "isTopHit")}];
+  v34 = [v32 numberWithBool:{objc_msgSend(configuration2, "isTopHit")}];
   v35 = [(ICASSearchSelectionData *)v25 initWithSelectedResultID:v24 selectedResultAccountType:v49 selectedResultType:v43 gmRankingStrategyType:v48 gmRank:v26 searchRankingExperimentSummary:0 gmRankIOS13:0 charLengthOfQueryString:v27 isNoteFoundByAttachment:v31 isTopHit:v34];
 
   v50[0] = v44;
   v50[1] = v35;
-  v50[2] = v46;
+  v50[2] = dataCopy;
   v36 = [MEMORY[0x277CBEA60] arrayWithObjects:v50 count:3];
   v37 = v36;
-  if (v45)
+  if (suggestionDataCopy)
   {
-    v38 = [v36 arrayByAddingObject:v45];
+    v38 = [v36 arrayByAddingObject:suggestionDataCopy];
 
     v37 = v38;
   }
 
   v39 = +[ICNAController sharedController];
   v40 = objc_opt_class();
-  v41 = [(ICNAEventReporter *)v47 subTracker];
-  [v39 submitEventOfType:v40 pushThenPopDataObjects:v37 subTracker:v41];
+  subTracker = [(ICNAEventReporter *)selfCopy subTracker];
+  [v39 submitEventOfType:v40 pushThenPopDataObjects:v37 subTracker:subTracker];
 
   v42 = *MEMORY[0x277D85DE8];
 }
 
-- (void)submitSearchResultExposureSummaryEventWithSearchResultExposureData:(id)a3 searchSessionID:(id)a4
+- (void)submitSearchResultExposureSummaryEventWithSearchResultExposureData:(id)data searchSessionID:(id)d
 {
   v14[2] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
-  v8 = [[ICASSearchData alloc] initWithSearchSessionID:v6];
+  dCopy = d;
+  dataCopy = data;
+  v8 = [[ICASSearchData alloc] initWithSearchSessionID:dCopy];
 
   v9 = +[ICNAController sharedController];
   v10 = objc_opt_class();
   v14[0] = v8;
-  v14[1] = v7;
+  v14[1] = dataCopy;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:2];
 
-  v12 = [(ICNAEventReporter *)self subTracker];
-  [v9 submitEventOfType:v10 pushThenPopDataObjects:v11 subTracker:v12];
+  subTracker = [(ICNAEventReporter *)self subTracker];
+  [v9 submitEventOfType:v10 pushThenPopDataObjects:v11 subTracker:subTracker];
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (id)tipImpressionEventDataObjectsForFeature:(id)a3 andModernNote:(id)a4
+- (id)tipImpressionEventDataObjectsForFeature:(id)feature andModernNote:(id)note
 {
-  v6 = a4;
+  noteCopy = note;
   v7 = MEMORY[0x277CBEB18];
-  v8 = a3;
+  featureCopy = feature;
   v9 = [v7 alloc];
-  v10 = [(ICNAEventReporter *)self tipDataForFeature:v8];
+  v10 = [(ICNAEventReporter *)self tipDataForFeature:featureCopy];
 
   v11 = [v9 initWithObjects:{v10, 0}];
-  if (v6)
+  if (noteCopy)
   {
-    v12 = [(ICNAEventReporter *)self noteDataForModernNote:v6];
+    v12 = [(ICNAEventReporter *)self noteDataForModernNote:noteCopy];
     [v11 addObject:v12];
   }
 
@@ -2746,33 +2746,33 @@ void __73__ICNAEventReporter_submitFindInNoteEventWasSearchQueryEntered_htmlNote
   return v13;
 }
 
-- (void)startTipImpressionEventDurationTrackingForFeature:(id)a3 andModernNote:(id)a4
+- (void)startTipImpressionEventDurationTrackingForFeature:(id)feature andModernNote:(id)note
 {
-  v6 = a4;
-  v7 = a3;
+  noteCopy = note;
+  featureCopy = feature;
   [(ICNAEventReporter *)self startTimedEventOfType:objc_opt_class()];
-  v10 = [(ICNAEventReporter *)self tipImpressionEventDataObjectsForFeature:v7 andModernNote:v6];
+  v10 = [(ICNAEventReporter *)self tipImpressionEventDataObjectsForFeature:featureCopy andModernNote:noteCopy];
 
   v8 = +[ICNAController sharedController];
-  v9 = [(ICNAEventReporter *)self subTracker];
-  [v8 pushDataObjects:v10 unique:1 onlyOnce:0 subTracker:v9];
+  subTracker = [(ICNAEventReporter *)self subTracker];
+  [v8 pushDataObjects:v10 unique:1 onlyOnce:0 subTracker:subTracker];
 }
 
-- (void)submitTipImpressionEventForFeature:(id)a3 andModernNote:(id)a4
+- (void)submitTipImpressionEventForFeature:(id)feature andModernNote:(id)note
 {
-  v7 = [(ICNAEventReporter *)self tipImpressionEventDataObjectsForFeature:a3 andModernNote:a4];
+  v7 = [(ICNAEventReporter *)self tipImpressionEventDataObjectsForFeature:feature andModernNote:note];
   v5 = +[ICNAController sharedController];
-  v6 = [(ICNAEventReporter *)self subTracker];
-  [v5 pushDataObjects:v7 unique:1 onlyOnce:1 subTracker:v6];
+  subTracker = [(ICNAEventReporter *)self subTracker];
+  [v5 pushDataObjects:v7 unique:1 onlyOnce:1 subTracker:subTracker];
 
   [(ICNAEventReporter *)self submitTimedEventOfTypeIfPossible:objc_opt_class()];
 }
 
-- (id)tipLearnMoreClickEventDataObjectsForFeature:(id)a3 learnMoreTipName:(id)a4
+- (id)tipLearnMoreClickEventDataObjectsForFeature:(id)feature learnMoreTipName:(id)name
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[ICASTipLearnMoreData alloc] initWithLearnMoreTipName:v5 tipFeature:v6];
+  nameCopy = name;
+  featureCopy = feature;
+  v7 = [[ICASTipLearnMoreData alloc] initWithLearnMoreTipName:nameCopy tipFeature:featureCopy];
 
   v8 = [objc_alloc(MEMORY[0x277CBEB18]) initWithObjects:{v7, 0}];
   v9 = [v8 copy];
@@ -2780,21 +2780,21 @@ void __73__ICNAEventReporter_submitFindInNoteEventWasSearchQueryEntered_htmlNote
   return v9;
 }
 
-- (void)submitTipLearnMoreClickEventForFeature:(id)a3 learnMoreTipName:(id)a4
+- (void)submitTipLearnMoreClickEventForFeature:(id)feature learnMoreTipName:(id)name
 {
-  v8 = [(ICNAEventReporter *)self tipLearnMoreClickEventDataObjectsForFeature:a3 learnMoreTipName:a4];
+  v8 = [(ICNAEventReporter *)self tipLearnMoreClickEventDataObjectsForFeature:feature learnMoreTipName:name];
   v5 = +[ICNAController sharedController];
   v6 = objc_opt_class();
-  v7 = [(ICNAEventReporter *)self subTracker];
-  [v5 submitEventOfType:v6 pushThenPopDataObjects:v8 subTracker:v7];
+  subTracker = [(ICNAEventReporter *)self subTracker];
+  [v5 submitEventOfType:v6 pushThenPopDataObjects:v8 subTracker:subTracker];
 }
 
-- (void)submitSnapshotRegisterEventIsSuccessful:(BOOL)a3
+- (void)submitSnapshotRegisterEventIsSuccessful:(BOOL)successful
 {
-  v3 = a3;
+  successfulCopy = successful;
   v14[1] = *MEMORY[0x277D85DE8];
   v5 = [ICASResultType alloc];
-  if (v3)
+  if (successfulCopy)
   {
     v6 = 1;
   }
@@ -2810,8 +2810,8 @@ void __73__ICNAEventReporter_submitFindInNoteEventWasSearchQueryEntered_htmlNote
   v10 = objc_opt_class();
   v14[0] = v8;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:1];
-  v12 = [(ICNAEventReporter *)self subTracker];
-  [v9 submitEventOfType:v10 pushThenPopDataObjects:v11 subTracker:v12];
+  subTracker = [(ICNAEventReporter *)self subTracker];
+  [v9 submitEventOfType:v10 pushThenPopDataObjects:v11 subTracker:subTracker];
 
   v13 = *MEMORY[0x277D85DE8];
 }
@@ -2820,16 +2820,16 @@ void __73__ICNAEventReporter_submitFindInNoteEventWasSearchQueryEntered_htmlNote
 {
   v5 = +[ICNAController sharedController];
   v3 = objc_opt_class();
-  v4 = [(ICNAEventReporter *)self subTracker];
-  [v5 submitEventOfType:v3 subTracker:v4];
+  subTracker = [(ICNAEventReporter *)self subTracker];
+  [v5 submitEventOfType:v3 subTracker:subTracker];
 }
 
-- (void)submitSnapshotCompletionEventIsSuccessful:(BOOL)a3
+- (void)submitSnapshotCompletionEventIsSuccessful:(BOOL)successful
 {
-  v3 = a3;
+  successfulCopy = successful;
   v14[1] = *MEMORY[0x277D85DE8];
   v5 = [ICASResultType alloc];
-  if (v3)
+  if (successfulCopy)
   {
     v6 = 1;
   }
@@ -2845,51 +2845,51 @@ void __73__ICNAEventReporter_submitFindInNoteEventWasSearchQueryEntered_htmlNote
   v10 = objc_opt_class();
   v14[0] = v8;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:1];
-  v12 = [(ICNAEventReporter *)self subTracker];
-  [v9 submitEventOfType:v10 pushThenPopDataObjects:v11 subTracker:v12];
+  subTracker = [(ICNAEventReporter *)self subTracker];
+  [v9 submitEventOfType:v10 pushThenPopDataObjects:v11 subTracker:subTracker];
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)submitNoteActionMenuEventForNoteEditorWithUsageType:(int64_t)a3 activityType:(id)a4
+- (void)submitNoteActionMenuEventForNoteEditorWithUsageType:(int64_t)type activityType:(id)activityType
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [[ICASActionMenuUsageType alloc] initWithActionMenuUsageType:a3];
+  activityTypeCopy = activityType;
+  v7 = [[ICASActionMenuUsageType alloc] initWithActionMenuUsageType:type];
   v8 = [[ICASActionMenuContextType alloc] initWithActionMenuContextType:1];
   v9 = [ICASActionMenuData alloc];
-  v10 = [objc_opt_class() filteredActivityType:v6];
+  v10 = [objc_opt_class() filteredActivityType:activityTypeCopy];
 
   v11 = [(ICASActionMenuData *)v9 initWithActionMenuUsageType:v7 actionMenuContextType:v8 actionMenuSelection:v10];
   v12 = +[ICNAController sharedController];
   v13 = objc_opt_class();
   v17[0] = v11;
   v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:1];
-  v15 = [(ICNAEventReporter *)self subTracker];
-  [v12 submitEventOfType:v13 pushThenPopDataObjects:v14 subTracker:v15];
+  subTracker = [(ICNAEventReporter *)self subTracker];
+  [v12 submitEventOfType:v13 pushThenPopDataObjects:v14 subTracker:subTracker];
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)submitMentionAddEventForNote:(id)a3 mentionID:(id)a4 participantID:(id)a5 viaAutoComplete:(BOOL)a6
+- (void)submitMentionAddEventForNote:(id)note mentionID:(id)d participantID:(id)iD viaAutoComplete:(BOOL)complete
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = [a3 objectID];
-  v13 = [MEMORY[0x277D35F30] sharedContext];
+  dCopy = d;
+  iDCopy = iD;
+  objectID = [note objectID];
+  mEMORY[0x277D35F30] = [MEMORY[0x277D35F30] sharedContext];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __90__ICNAEventReporter_submitMentionAddEventForNote_mentionID_participantID_viaAutoComplete___block_invoke;
   v17[3] = &unk_2799AFBF0;
-  v18 = v12;
-  v19 = v11;
-  v22 = a6;
-  v20 = v10;
-  v21 = self;
-  v14 = v10;
-  v15 = v11;
-  v16 = v12;
-  [v13 performBackgroundTask:v17];
+  v18 = objectID;
+  v19 = iDCopy;
+  completeCopy = complete;
+  v20 = dCopy;
+  selfCopy = self;
+  v14 = dCopy;
+  v15 = iDCopy;
+  v16 = objectID;
+  [mEMORY[0x277D35F30] performBackgroundTask:v17];
 }
 
 void __90__ICNAEventReporter_submitMentionAddEventForNote_mentionID_participantID_viaAutoComplete___block_invoke(uint64_t a1, uint64_t a2)
@@ -2979,25 +2979,25 @@ LABEL_14:
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)submitMentionDeleteEvent:(id)a3
+- (void)submitMentionDeleteEvent:(id)event
 {
   v10[1] = *MEMORY[0x277D85DE8];
-  v4 = [(ICNAEventReporter *)self noteDataForModernNote:a3];
+  v4 = [(ICNAEventReporter *)self noteDataForModernNote:event];
   v5 = +[ICNAController sharedController];
   v6 = objc_opt_class();
   v10[0] = v4;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:1];
-  v8 = [(ICNAEventReporter *)self subTracker];
-  [v5 submitEventOfType:v6 pushThenPopDataObjects:v7 subTracker:v8];
+  subTracker = [(ICNAEventReporter *)self subTracker];
+  [v5 submitEventOfType:v6 pushThenPopDataObjects:v7 subTracker:subTracker];
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startAttributionSideBarViewEventForNote:(id)a3
+- (void)startAttributionSideBarViewEventForNote:(id)note
 {
   v30[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  noteCopy = note;
+  if (noteCopy)
   {
     v5 = [[ICASCollabActivityContextPath alloc] initWithCollabActivityContextPath:0];
     v6 = [ICASEditorCallOutData alloc];
@@ -3011,15 +3011,15 @@ LABEL_14:
     v27 = __Block_byref_object_copy__4;
     v28 = __Block_byref_object_dispose__4;
     v29 = 0;
-    v10 = [v4 managedObjectContext];
+    managedObjectContext = [noteCopy managedObjectContext];
     v17 = MEMORY[0x277D85DD0];
     v18 = 3221225472;
     v19 = __61__ICNAEventReporter_startAttributionSideBarViewEventForNote___block_invoke;
     v20 = &unk_2799AF078;
     v23 = &v24;
-    v21 = self;
-    v22 = v4;
-    [v10 performBlockAndWait:&v17];
+    selfCopy = self;
+    v22 = noteCopy;
+    [managedObjectContext performBlockAndWait:&v17];
 
     if (v25[5])
     {
@@ -3028,8 +3028,8 @@ LABEL_14:
       v30[0] = v9;
       v30[1] = v12;
       v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v30 count:2];
-      v14 = [(ICNAEventReporter *)self subTracker];
-      [v11 pushDataObjects:v13 unique:1 onlyOnce:0 subTracker:v14];
+      subTracker = [(ICNAEventReporter *)self subTracker];
+      [v11 pushDataObjects:v13 unique:1 onlyOnce:0 subTracker:subTracker];
 
       [(ICNAEventReporter *)self startTimedEventOfType:objc_opt_class()];
     }
@@ -3068,16 +3068,16 @@ uint64_t __61__ICNAEventReporter_startAttributionSideBarViewEventForNote___block
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)submitAttributionSideBarViewEventForNote:(id)a3 contextPath:(int64_t)a4 startState:(int64_t)a5 endState:(int64_t)a6
+- (void)submitAttributionSideBarViewEventForNote:(id)note contextPath:(int64_t)path startState:(int64_t)state endState:(int64_t)endState
 {
   v36[2] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  if (v10)
+  noteCopy = note;
+  if (noteCopy)
   {
-    v11 = [[ICASCollabActivityContextPath alloc] initWithCollabActivityContextPath:a4];
+    v11 = [[ICASCollabActivityContextPath alloc] initWithCollabActivityContextPath:path];
     v12 = [ICASEditorCallOutData alloc];
-    v13 = [[ICASStartState alloc] initWithStartState:a5];
-    v14 = [[ICASEndState alloc] initWithEndState:a6];
+    v13 = [[ICASStartState alloc] initWithStartState:state];
+    v14 = [[ICASEndState alloc] initWithEndState:endState];
     v15 = [(ICASEditorCallOutData *)v12 initWithCollabActivityContextPath:v11 startState:v13 endState:v14];
 
     v30 = 0;
@@ -3086,15 +3086,15 @@ uint64_t __61__ICNAEventReporter_startAttributionSideBarViewEventForNote___block
     v33 = __Block_byref_object_copy__4;
     v34 = __Block_byref_object_dispose__4;
     v35 = 0;
-    v16 = [v10 managedObjectContext];
+    managedObjectContext = [noteCopy managedObjectContext];
     v23 = MEMORY[0x277D85DD0];
     v24 = 3221225472;
     v25 = __94__ICNAEventReporter_submitAttributionSideBarViewEventForNote_contextPath_startState_endState___block_invoke;
     v26 = &unk_2799AF078;
     v29 = &v30;
-    v27 = self;
-    v28 = v10;
-    [v16 performBlockAndWait:&v23];
+    selfCopy = self;
+    v28 = noteCopy;
+    [managedObjectContext performBlockAndWait:&v23];
 
     if (v15)
     {
@@ -3105,8 +3105,8 @@ uint64_t __61__ICNAEventReporter_startAttributionSideBarViewEventForNote___block
         v36[0] = v15;
         v36[1] = v18;
         v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v36 count:2];
-        v20 = [(ICNAEventReporter *)self subTracker];
-        [v17 pushDataObjects:v19 unique:1 onlyOnce:0 subTracker:v20];
+        subTracker = [(ICNAEventReporter *)self subTracker];
+        [v17 pushDataObjects:v19 unique:1 onlyOnce:0 subTracker:subTracker];
 
         [(ICNAEventReporter *)self submitTimedEventOfTypeIfPossible:objc_opt_class()];
 LABEL_12:
@@ -3155,27 +3155,27 @@ uint64_t __94__ICNAEventReporter_submitAttributionSideBarViewEventForNote_contex
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)startActivityStreamSummaryEventForObject:(id)a3
+- (void)startActivityStreamSummaryEventForObject:(id)object
 {
   v4 = MEMORY[0x277CCABB0];
-  v5 = a3;
-  v6 = [v5 serverShareCheckingParent];
-  v13 = [v4 numberWithInteger:{ICNARoundTo2SigFigsInt(objc_msgSend(v6, "ic_nonOwnerInvitedParticipantsCount"))}];
+  objectCopy = object;
+  serverShareCheckingParent = [objectCopy serverShareCheckingParent];
+  v13 = [v4 numberWithInteger:{ICNARoundTo2SigFigsInt(objc_msgSend(serverShareCheckingParent, "ic_nonOwnerInvitedParticipantsCount"))}];
 
   v7 = MEMORY[0x277CCABB0];
-  v8 = [v5 serverShareCheckingParent];
+  serverShareCheckingParent2 = [objectCopy serverShareCheckingParent];
 
-  v9 = [v7 numberWithInteger:{ICNARoundTo2SigFigsInt(objc_msgSend(v8, "ic_nonOwnerAcceptedParticipantsCount"))}];
+  v9 = [v7 numberWithInteger:{ICNARoundTo2SigFigsInt(objc_msgSend(serverShareCheckingParent2, "ic_nonOwnerAcceptedParticipantsCount"))}];
 
   v10 = [[ICASStartCollaborationCollaboratorData alloc] initWithStartInvitedCount:v13 startAcceptedCount:v9];
   v11 = +[ICNAController sharedController];
-  v12 = [(ICNAEventReporter *)self subTracker];
-  [v11 pushDataObject:v10 unique:1 onlyOnce:0 subTracker:v12];
+  subTracker = [(ICNAEventReporter *)self subTracker];
+  [v11 pushDataObject:v10 unique:1 onlyOnce:0 subTracker:subTracker];
 }
 
-- (void)submitActivityStreamSummaryEventForObject:(id)a3 halfHeightViewDuration:(double)a4 fullHeightViewDuration:(double)a5 sideBarViewDuration:(double)a6 minimizedViewDuration:(double)a7
+- (void)submitActivityStreamSummaryEventForObject:(id)object halfHeightViewDuration:(double)duration fullHeightViewDuration:(double)viewDuration sideBarViewDuration:(double)barViewDuration minimizedViewDuration:(double)minimizedViewDuration
 {
-  v12 = a3;
+  objectCopy = object;
   v44 = 0;
   v45 = &v44;
   v46 = 0x3032000000;
@@ -3188,30 +3188,30 @@ uint64_t __94__ICNAEventReporter_submitAttributionSideBarViewEventForNote_contex
   v41 = __Block_byref_object_copy__4;
   v42 = __Block_byref_object_dispose__4;
   v43 = 0;
-  v13 = [v12 managedObjectContext];
+  managedObjectContext = [objectCopy managedObjectContext];
   v30 = MEMORY[0x277D85DD0];
   v31 = 3221225472;
   v32 = __151__ICNAEventReporter_submitActivityStreamSummaryEventForObject_halfHeightViewDuration_fullHeightViewDuration_sideBarViewDuration_minimizedViewDuration___block_invoke;
   v33 = &unk_2799AFC18;
-  v14 = v12;
+  v14 = objectCopy;
   v36 = &v44;
   v37 = &v38;
   v34 = v14;
-  v35 = self;
-  [v13 performBlockAndWait:&v30];
+  selfCopy = self;
+  [managedObjectContext performBlockAndWait:&v30];
 
   v15 = [ICASActivityStreamDurationSummaryData alloc];
   v16 = MEMORY[0x277CCABB0];
-  ICNARoundTo2SigFigs(a4 * 1000.0);
+  ICNARoundTo2SigFigs(duration * 1000.0);
   v17 = [v16 numberWithDouble:{v30, v31, v32, v33}];
   v18 = MEMORY[0x277CCABB0];
-  ICNARoundTo2SigFigs(a5 * 1000.0);
+  ICNARoundTo2SigFigs(viewDuration * 1000.0);
   v19 = [v18 numberWithDouble:?];
   v20 = MEMORY[0x277CCABB0];
-  ICNARoundTo2SigFigs(a6 * 1000.0);
+  ICNARoundTo2SigFigs(barViewDuration * 1000.0);
   v21 = [v20 numberWithDouble:?];
   v22 = MEMORY[0x277CCABB0];
-  ICNARoundTo2SigFigs(a7 * 1000.0);
+  ICNARoundTo2SigFigs(minimizedViewDuration * 1000.0);
   v23 = [v22 numberWithDouble:?];
   v24 = [(ICASActivityStreamDurationSummaryData *)v15 initWithHalfHeightViewDuration:v17 fullHeightViewDuration:v19 sideBarViewDuration:v21 minimizedViewDuration:v23];
 
@@ -3221,8 +3221,8 @@ uint64_t __94__ICNAEventReporter_submitAttributionSideBarViewEventForNote_contex
   v26 = +[ICNAController sharedController];
   v27 = objc_opt_class();
   v28 = [v25 copy];
-  v29 = [(ICNAEventReporter *)self subTracker];
-  [v26 submitEventOfType:v27 pushThenPopDataObjects:v28 subTracker:v29];
+  subTracker = [(ICNAEventReporter *)self subTracker];
+  [v26 submitEventOfType:v27 pushThenPopDataObjects:v28 subTracker:subTracker];
 
   _Block_object_dispose(&v38, 8);
   _Block_object_dispose(&v44, 8);
@@ -3249,22 +3249,22 @@ void __151__ICNAEventReporter_submitActivityStreamSummaryEventForObject_halfHeig
   *(v11 + 40) = v10;
 }
 
-- (void)submitHashtagAddEventForNote:(id)a3 tokenContentIdentifier:(id)a4 viaAutoComplete:(BOOL)a5
+- (void)submitHashtagAddEventForNote:(id)note tokenContentIdentifier:(id)identifier viaAutoComplete:(BOOL)complete
 {
-  v8 = a4;
-  v9 = [a3 objectID];
-  v10 = [MEMORY[0x277D35F30] sharedContext];
+  identifierCopy = identifier;
+  objectID = [note objectID];
+  mEMORY[0x277D35F30] = [MEMORY[0x277D35F30] sharedContext];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __89__ICNAEventReporter_submitHashtagAddEventForNote_tokenContentIdentifier_viaAutoComplete___block_invoke;
   v13[3] = &unk_2799AFC40;
-  v14 = v9;
-  v15 = v8;
-  v17 = a5;
-  v16 = self;
-  v11 = v8;
-  v12 = v9;
-  [v10 performBackgroundTask:v13];
+  v14 = objectID;
+  v15 = identifierCopy;
+  completeCopy = complete;
+  selfCopy = self;
+  v11 = identifierCopy;
+  v12 = objectID;
+  [mEMORY[0x277D35F30] performBackgroundTask:v13];
 }
 
 void __89__ICNAEventReporter_submitHashtagAddEventForNote_tokenContentIdentifier_viaAutoComplete___block_invoke(uint64_t a1, uint64_t a2)
@@ -3351,36 +3351,36 @@ LABEL_13:
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)submitHashtagDeleteEvent:(id)a3 approachEnum:(int64_t)a4
+- (void)submitHashtagDeleteEvent:(id)event approachEnum:(int64_t)enum
 {
   v14[2] = *MEMORY[0x277D85DE8];
-  v6 = [(ICNAEventReporter *)self noteDataForModernNote:a3];
-  v7 = [[ICASTagDeleteApproach alloc] initWithTagDeleteApproach:a4];
+  v6 = [(ICNAEventReporter *)self noteDataForModernNote:event];
+  v7 = [[ICASTagDeleteApproach alloc] initWithTagDeleteApproach:enum];
   v8 = [[ICASTagDeleteData alloc] initWithTagDeleteApproach:v7];
   v9 = +[ICNAController sharedController];
   v10 = objc_opt_class();
   v14[0] = v6;
   v14[1] = v8;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:2];
-  v12 = [(ICNAEventReporter *)self subTracker];
-  [v9 submitEventOfType:v10 pushThenPopDataObjects:v11 subTracker:v12];
+  subTracker = [(ICNAEventReporter *)self subTracker];
+  [v9 submitEventOfType:v10 pushThenPopDataObjects:v11 subTracker:subTracker];
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)submitHashtagRenameEvent:(id)a3 approachEnum:(int64_t)a4
+- (void)submitHashtagRenameEvent:(id)event approachEnum:(int64_t)enum
 {
   v14[2] = *MEMORY[0x277D85DE8];
-  v6 = [(ICNAEventReporter *)self noteDataForModernNote:a3];
-  v7 = [[ICASTagRenameApproach alloc] initWithTagRenameApproach:a4];
+  v6 = [(ICNAEventReporter *)self noteDataForModernNote:event];
+  v7 = [[ICASTagRenameApproach alloc] initWithTagRenameApproach:enum];
   v8 = [[ICASTagRenameData alloc] initWithTagRenameApproach:v7];
   v9 = +[ICNAController sharedController];
   v10 = objc_opt_class();
   v14[0] = v6;
   v14[1] = v8;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:2];
-  v12 = [(ICNAEventReporter *)self subTracker];
-  [v9 submitEventOfType:v10 pushThenPopDataObjects:v11 subTracker:v12];
+  subTracker = [(ICNAEventReporter *)self subTracker];
+  [v9 submitEventOfType:v10 pushThenPopDataObjects:v11 subTracker:subTracker];
 
   v13 = *MEMORY[0x277D85DE8];
 }
@@ -3389,83 +3389,83 @@ LABEL_13:
 {
   v5 = +[ICNAController sharedController];
   v3 = objc_opt_class();
-  v4 = [(ICNAEventReporter *)self subTracker];
-  [v5 submitEventOfType:v3 subTracker:v4];
+  subTracker = [(ICNAEventReporter *)self subTracker];
+  [v5 submitEventOfType:v3 subTracker:subTracker];
 }
 
-- (void)submitNotesToPagesEventWithContextPath:(int64_t)a3
+- (void)submitNotesToPagesEventWithContextPath:(int64_t)path
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v4 = [[ICASNotesToPagesContextPath alloc] initWithNotesToPagesContextPath:a3];
+  v4 = [[ICASNotesToPagesContextPath alloc] initWithNotesToPagesContextPath:path];
   v5 = [[ICASNotesToPagesContextPathData alloc] initWithNotesToPagesContextPath:v4];
   v6 = +[ICNAController sharedController];
   v7 = objc_opt_class();
   v11[0] = v5;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:1];
-  v9 = [(ICNAEventReporter *)self subTracker];
-  [v6 submitEventOfType:v7 pushThenPopDataObjects:v8 subTracker:v9];
+  subTracker = [(ICNAEventReporter *)self subTracker];
+  [v6 submitEventOfType:v7 pushThenPopDataObjects:v8 subTracker:subTracker];
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (int64_t)addApproachEnumForAddApproach:(int64_t)a3
+- (int64_t)addApproachEnumForAddApproach:(int64_t)approach
 {
-  if ((a3 - 1) > 6)
+  if ((approach - 1) > 6)
   {
     return 0;
   }
 
   else
   {
-    return qword_25C72AD78[a3 - 1];
+    return qword_25C72AD78[approach - 1];
   }
 }
 
-- (int64_t)linkContentTypeEnumForURL:(id)a3
+- (int64_t)linkContentTypeEnumForURL:(id)l
 {
-  v3 = a3;
-  if ([MEMORY[0x277D35DF0] isShowNoteURL:v3] & 1) != 0 || (objc_msgSend(MEMORY[0x277D35DF0], "isShowHTMLNoteURL:", v3) & 1) != 0 || (objc_msgSend(MEMORY[0x277D35DF0], "isShowLegacyNoteURL:", v3))
+  lCopy = l;
+  if ([MEMORY[0x277D35DF0] isShowNoteURL:lCopy] & 1) != 0 || (objc_msgSend(MEMORY[0x277D35DF0], "isShowHTMLNoteURL:", lCopy) & 1) != 0 || (objc_msgSend(MEMORY[0x277D35DF0], "isShowLegacyNoteURL:", lCopy))
   {
     v4 = 1;
   }
 
-  else if ([MEMORY[0x277D35DF0] isShowFolderURL:v3] & 1) != 0 || (objc_msgSend(MEMORY[0x277D35DF0], "isShowHTMLFolderURL:", v3))
+  else if ([MEMORY[0x277D35DF0] isShowFolderURL:lCopy] & 1) != 0 || (objc_msgSend(MEMORY[0x277D35DF0], "isShowHTMLFolderURL:", lCopy))
   {
     v4 = 2;
   }
 
-  else if ([v3 ic_isWebURL])
+  else if ([lCopy ic_isWebURL])
   {
     v4 = 3;
   }
 
   else
   {
-    v4 = 4 * (v3 != 0);
+    v4 = 4 * (lCopy != 0);
   }
 
   return v4;
 }
 
-- (void)submitAddLinkEvent:(id)a3 addApproach:(int64_t)a4 url:(id)a5
+- (void)submitAddLinkEvent:(id)event addApproach:(int64_t)approach url:(id)url
 {
-  v8 = a3;
-  [(ICNAEventReporter *)self submitAddLinkEvent:v8 addApproach:a4 contentType:[(ICNAEventReporter *)self linkContentTypeEnumForURL:a5] isTokenized:0];
+  eventCopy = event;
+  [(ICNAEventReporter *)self submitAddLinkEvent:eventCopy addApproach:approach contentType:[(ICNAEventReporter *)self linkContentTypeEnumForURL:url] isTokenized:0];
 }
 
-- (void)submitAddLinkEvent:(id)a3 addApproach:(int64_t)a4 url:(id)a5 noteData:(id *)a6 noteContentData:(id *)a7 noteAccessData:(id *)a8
+- (void)submitAddLinkEvent:(id)event addApproach:(int64_t)approach url:(id)url noteData:(id *)data noteContentData:(id *)contentData noteAccessData:(id *)accessData
 {
-  v14 = a3;
-  [(ICNAEventReporter *)self submitAddLinkEvent:v14 addApproach:a4 contentType:[(ICNAEventReporter *)self linkContentTypeEnumForURL:a5] isTokenized:0 noteData:a6 noteContentData:a7 noteAccessData:a8];
+  eventCopy = event;
+  [(ICNAEventReporter *)self submitAddLinkEvent:eventCopy addApproach:approach contentType:[(ICNAEventReporter *)self linkContentTypeEnumForURL:url] isTokenized:0 noteData:data noteContentData:contentData noteAccessData:accessData];
 }
 
-- (void)submitLinkedNoteAcceleratorInitiateEvent:(id)a3
+- (void)submitLinkedNoteAcceleratorInitiateEvent:(id)event
 {
   v13[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ICNAEventReporter *)self noteDataForModernNote:v4];
-  v6 = [(ICNAEventReporter *)self noteContentDataForModernNote:v4];
-  v7 = [(ICNAEventReporter *)self noteAccessDataForModernNote:v4];
+  eventCopy = event;
+  v5 = [(ICNAEventReporter *)self noteDataForModernNote:eventCopy];
+  v6 = [(ICNAEventReporter *)self noteContentDataForModernNote:eventCopy];
+  v7 = [(ICNAEventReporter *)self noteAccessDataForModernNote:eventCopy];
 
   v8 = +[ICNAController sharedController];
   v9 = objc_opt_class();
@@ -3473,24 +3473,24 @@ LABEL_13:
   v13[1] = v6;
   v13[2] = v7;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:3];
-  v11 = [(ICNAEventReporter *)self subTracker];
-  [v8 submitEventOfType:v9 pushThenPopDataObjects:v10 subTracker:v11];
+  subTracker = [(ICNAEventReporter *)self subTracker];
+  [v8 submitEventOfType:v9 pushThenPopDataObjects:v10 subTracker:subTracker];
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)submitLinkedNoteAcceleratorEndEvent:(id)a3 maxCharactersTyped:(unint64_t)a4 endResultCount:(unint64_t)a5
+- (void)submitLinkedNoteAcceleratorEndEvent:(id)event maxCharactersTyped:(unint64_t)typed endResultCount:(unint64_t)count
 {
   v21[4] = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  eventCopy = event;
   v9 = [ICASAcceleratorUsageData alloc];
-  v10 = [MEMORY[0x277CCABB0] numberWithInteger:ICNARoundTo2SigFigsInt(a4)];
-  v11 = [MEMORY[0x277CCABB0] numberWithInteger:ICNARoundTo2SigFigsInt(a5)];
+  v10 = [MEMORY[0x277CCABB0] numberWithInteger:ICNARoundTo2SigFigsInt(typed)];
+  v11 = [MEMORY[0x277CCABB0] numberWithInteger:ICNARoundTo2SigFigsInt(count)];
   v12 = [(ICASAcceleratorUsageData *)v9 initWithMaxNumCharTyped:v10 endResultCount:v11];
 
-  v13 = [(ICNAEventReporter *)self noteDataForModernNote:v8];
-  v14 = [(ICNAEventReporter *)self noteContentDataForModernNote:v8];
-  v15 = [(ICNAEventReporter *)self noteAccessDataForModernNote:v8];
+  v13 = [(ICNAEventReporter *)self noteDataForModernNote:eventCopy];
+  v14 = [(ICNAEventReporter *)self noteContentDataForModernNote:eventCopy];
+  v15 = [(ICNAEventReporter *)self noteAccessDataForModernNote:eventCopy];
 
   v16 = +[ICNAController sharedController];
   v17 = objc_opt_class();
@@ -3499,53 +3499,53 @@ LABEL_13:
   v21[2] = v14;
   v21[3] = v15;
   v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:4];
-  v19 = [(ICNAEventReporter *)self subTracker];
-  [v16 submitEventOfType:v17 pushThenPopDataObjects:v18 subTracker:v19];
+  subTracker = [(ICNAEventReporter *)self subTracker];
+  [v16 submitEventOfType:v17 pushThenPopDataObjects:v18 subTracker:subTracker];
 
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)submitPDFWorkflowEngagementSummary:(id)a3 modernNote:(id)a4
+- (void)submitPDFWorkflowEngagementSummary:(id)summary modernNote:(id)note
 {
   v45[7] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
-  v44 = [(ICNAEventReporter *)self noteDataForModernNote:v6];
-  v42 = [(ICNAEventReporter *)self noteContentDataForModernNote:v6];
+  noteCopy = note;
+  summaryCopy = summary;
+  v44 = [(ICNAEventReporter *)self noteDataForModernNote:noteCopy];
+  v42 = [(ICNAEventReporter *)self noteContentDataForModernNote:noteCopy];
 
-  v41 = -[ICASPdfState initWithPdfState:]([ICASPdfState alloc], "initWithPdfState:", [v7 startState]);
-  v40 = -[ICASPdfState initWithPdfState:]([ICASPdfState alloc], "initWithPdfState:", [v7 endState]);
+  v41 = -[ICASPdfState initWithPdfState:]([ICASPdfState alloc], "initWithPdfState:", [summaryCopy startState]);
+  v40 = -[ICASPdfState initWithPdfState:]([ICASPdfState alloc], "initWithPdfState:", [summaryCopy endState]);
   v8 = [ICASPdfStateData alloc];
-  v9 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v7, "hasSmallStateUsage")}];
-  v10 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v7, "hasMediumStateUsage")}];
-  v11 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v7, "hasLargeStateUsage")}];
-  v12 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v7, "hasFullscreenStateUsage")}];
+  v9 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(summaryCopy, "hasSmallStateUsage")}];
+  v10 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(summaryCopy, "hasMediumStateUsage")}];
+  v11 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(summaryCopy, "hasLargeStateUsage")}];
+  v12 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(summaryCopy, "hasFullscreenStateUsage")}];
   v39 = [(ICASPdfStateData *)v8 initWithPdfStartState:v41 pdfEndState:v40 hasSmallStateUsage:v9 hasMediumStateUsage:v10 hasLargeStateUsage:v11 hasFullScreenStateUsage:v12];
 
   v13 = [ICASPdfPageData alloc];
-  v14 = [MEMORY[0x277CCABB0] numberWithInteger:{ICNARoundTo2SigFigsInt(objc_msgSend(v7, "startPageCount"))}];
-  v15 = [MEMORY[0x277CCABB0] numberWithInteger:{ICNARoundTo2SigFigsInt(objc_msgSend(v7, "endPageCount"))}];
+  v14 = [MEMORY[0x277CCABB0] numberWithInteger:{ICNARoundTo2SigFigsInt(objc_msgSend(summaryCopy, "startPageCount"))}];
+  v15 = [MEMORY[0x277CCABB0] numberWithInteger:{ICNARoundTo2SigFigsInt(objc_msgSend(summaryCopy, "endPageCount"))}];
   v16 = [(ICASPdfPageData *)v13 initWithStartPageCount:v14 endPageCount:v15];
 
   v17 = [ICASPdfAttachmentData alloc];
-  v18 = [v7 attachmentIdentifier];
-  v19 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v7, "hasActivity")}];
-  v20 = [(ICASPdfAttachmentData *)v17 initWithAttachmentID:v18 hasActivity:v19];
+  attachmentIdentifier = [summaryCopy attachmentIdentifier];
+  v19 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(summaryCopy, "hasActivity")}];
+  v20 = [(ICASPdfAttachmentData *)v17 initWithAttachmentID:attachmentIdentifier hasActivity:v19];
 
   v21 = [ICASPdfCollabIxData alloc];
-  v22 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v7, "hasCollabView")}];
-  v23 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v7, "hasCollabEdit")}];
+  v22 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(summaryCopy, "hasCollabView")}];
+  v23 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(summaryCopy, "hasCollabEdit")}];
   v38 = [(ICASPdfCollabIxData *)v21 initWithHasCollabView:v22 hasCollabEdit:v23];
 
   v24 = [ICASPdfNavIxData alloc];
-  v25 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v7, "hasGestures")}];
-  v26 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v7, "hasScroll")}];
-  v27 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v7, "hasPagination")}];
-  v28 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v7, "hasPinchZoom")}];
+  v25 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(summaryCopy, "hasGestures")}];
+  v26 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(summaryCopy, "hasScroll")}];
+  v27 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(summaryCopy, "hasPagination")}];
+  v28 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(summaryCopy, "hasPinchZoom")}];
   v29 = MEMORY[0x277CCABB0];
-  v30 = [v7 hasPinchToExpandState];
+  hasPinchToExpandState = [summaryCopy hasPinchToExpandState];
 
-  v31 = [v29 numberWithBool:v30];
+  v31 = [v29 numberWithBool:hasPinchToExpandState];
   v37 = [(ICASPdfNavIxData *)v24 initWithHasGestures:v25 hasScroll:v26 hasPagination:v27 hasPinchZoom:v28 hasPinchToExpandState:v31];
 
   v32 = +[ICNAController sharedController];
@@ -3558,8 +3558,8 @@ LABEL_13:
   v45[5] = v38;
   v45[6] = v37;
   v34 = [MEMORY[0x277CBEA60] arrayWithObjects:v45 count:7];
-  v35 = [(ICNAEventReporter *)self subTracker];
-  [v32 submitEventOfType:v33 pushThenPopDataObjects:v34 subTracker:v35];
+  subTracker = [(ICNAEventReporter *)self subTracker];
+  [v32 submitEventOfType:v33 pushThenPopDataObjects:v34 subTracker:subTracker];
 
   v36 = *MEMORY[0x277D85DE8];
 }
@@ -3604,23 +3604,23 @@ void __86__ICNAEventReporter_submitFindInTranscriptEventWasSearchQueryEntered_au
   *(v19 + 40) = v18;
 }
 
-+ (void)setNoteCreateApproachEnumToAppSuiteDefaults:(int64_t)a3
++ (void)setNoteCreateApproachEnumToAppSuiteDefaults:(int64_t)defaults
 {
-  v5 = [MEMORY[0x277D36180] sharedAppGroupDefaults];
-  v4 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
-  [v5 setObject:v4 forKey:@"analyticsNoteCreateApproachEnumValue"];
+  mEMORY[0x277D36180] = [MEMORY[0x277D36180] sharedAppGroupDefaults];
+  v4 = [MEMORY[0x277CCABB0] numberWithInteger:defaults];
+  [mEMORY[0x277D36180] setObject:v4 forKey:@"analyticsNoteCreateApproachEnumValue"];
 }
 
 + (void)resetNoteCreateApproachEnumInAppSuiteDefaults
 {
-  v2 = [MEMORY[0x277D36180] sharedAppGroupDefaults];
-  [v2 removeObjectForKey:@"analyticsNoteCreateApproachEnumValue"];
+  mEMORY[0x277D36180] = [MEMORY[0x277D36180] sharedAppGroupDefaults];
+  [mEMORY[0x277D36180] removeObjectForKey:@"analyticsNoteCreateApproachEnumValue"];
 }
 
 - (id)noteCreateDataFromAppSuiteDefaults
 {
-  v2 = [MEMORY[0x277D36180] sharedAppGroupDefaults];
-  v3 = [v2 objectForKey:@"analyticsNoteCreateApproachEnumValue"];
+  mEMORY[0x277D36180] = [MEMORY[0x277D36180] sharedAppGroupDefaults];
+  v3 = [mEMORY[0x277D36180] objectForKey:@"analyticsNoteCreateApproachEnumValue"];
 
   if (v3)
   {
@@ -3639,28 +3639,28 @@ void __86__ICNAEventReporter_submitFindInTranscriptEventWasSearchQueryEntered_au
   return v6;
 }
 
-- (void)pushNoteCreateDataWithCreateApproach:(int64_t)a3
+- (void)pushNoteCreateDataWithCreateApproach:(int64_t)approach
 {
   v5 = [ICASNoteCreateData alloc];
-  v6 = [[ICASNoteCreateApproach alloc] initWithNoteCreateApproach:a3];
+  v6 = [[ICASNoteCreateApproach alloc] initWithNoteCreateApproach:approach];
   v9 = [(ICASNoteCreateData *)v5 initWithNoteCreateApproach:v6];
 
   v7 = +[ICNAController sharedController];
-  v8 = [(ICNAEventReporter *)self subTracker];
-  [v7 pushDataObject:v9 unique:0 onlyOnce:1 subTracker:v8];
+  subTracker = [(ICNAEventReporter *)self subTracker];
+  [v7 pushDataObject:v9 unique:0 onlyOnce:1 subTracker:subTracker];
 }
 
 - (void)popNoteCreateData
 {
   v5 = +[ICNAController sharedController];
   v3 = objc_opt_class();
-  v4 = [(ICNAEventReporter *)self subTracker];
-  [v5 popDataObjectWithType:v3 subTracker:v4];
+  subTracker = [(ICNAEventReporter *)self subTracker];
+  [v5 popDataObjectWithType:v3 subTracker:subTracker];
 }
 
-- (id)collaborationActionDataIsInviting:(BOOL)a3 inviteStep:(int64_t)a4
+- (id)collaborationActionDataIsInviting:(BOOL)inviting inviteStep:(int64_t)step
 {
-  if (a3)
+  if (inviting)
   {
     v5 = 1;
   }
@@ -3671,19 +3671,19 @@ void __86__ICNAEventReporter_submitFindInTranscriptEventWasSearchQueryEntered_au
   }
 
   v6 = [[ICASCollaborationActionType alloc] initWithCollaborationActionType:v5];
-  v7 = [[ICASCollaborationInviteStep alloc] initWithCollaborationInviteStep:a4];
+  v7 = [[ICASCollaborationInviteStep alloc] initWithCollaborationInviteStep:step];
   v8 = [[ICASCollaborationActionData alloc] initWithCollaborationActionType:v6 collaborationInviteStep:v7 collaborationMethod:0];
 
   return v8;
 }
 
-- (id)objectDataForCloudSyncingObject:(id)a3
+- (id)objectDataForCloudSyncingObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(ICNAEventReporter *)self noteDataForModernNote:v4];
+    v5 = [(ICNAEventReporter *)self noteDataForModernNote:objectCopy];
 LABEL_5:
     v6 = v5;
     goto LABEL_7;
@@ -3692,7 +3692,7 @@ LABEL_5:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(ICNAEventReporter *)self folderDataForModernFolder:v4];
+    v5 = [(ICNAEventReporter *)self folderDataForModernFolder:objectCopy];
     goto LABEL_5;
   }
 
@@ -3702,17 +3702,17 @@ LABEL_7:
   return v6;
 }
 
-- (id)noteDataForModernNote:(id)a3
+- (id)noteDataForModernNote:(id)note
 {
-  v3 = a3;
+  noteCopy = note;
   v4 = [[ICASNoteType alloc] initWithNoteType:1];
   v5 = +[ICNAIdentityManager sharedManager];
-  v6 = [v3 identifier];
-  v7 = [v5 saltedID:v6 forClass:objc_opt_class()];
+  identifier = [noteCopy identifier];
+  v7 = [v5 saltedID:identifier forClass:objc_opt_class()];
 
-  v8 = [v3 isSystemPaper];
+  isSystemPaper = [noteCopy isSystemPaper];
   v9 = [ICASNoteData alloc];
-  v10 = [MEMORY[0x277CCABB0] numberWithBool:v8];
+  v10 = [MEMORY[0x277CCABB0] numberWithBool:isSystemPaper];
   v11 = [MEMORY[0x277CCABB0] numberWithBool:{+[ICNAController handwritingAutoRefineEnabled](ICNAController, "handwritingAutoRefineEnabled")}];
   v12 = [MEMORY[0x277CCABB0] numberWithBool:{+[ICNAController audioTranscriptEnabled](ICNAController, "audioTranscriptEnabled")}];
   v13 = [MEMORY[0x277CCABB0] numberWithBool:{+[ICNAController audioSummaryEnabled](ICNAController, "audioSummaryEnabled")}];
@@ -3721,14 +3721,14 @@ LABEL_7:
   return v14;
 }
 
-- (id)noteDataForHTMLNote:(id)a3
+- (id)noteDataForHTMLNote:(id)note
 {
-  v3 = a3;
+  noteCopy = note;
   v4 = [[ICASNoteType alloc] initWithNoteType:2];
   v5 = +[ICNAIdentityManager sharedManager];
-  v6 = [v3 identifier];
+  identifier = [noteCopy identifier];
 
-  v7 = [v5 saltedID:v6 forClass:objc_opt_class()];
+  v7 = [v5 saltedID:identifier forClass:objc_opt_class()];
 
   v8 = [ICASNoteData alloc];
   v9 = [(ICASNoteData *)v8 initWithNoteID:v7 noteType:v4 isScrapPaper:MEMORY[0x277CBEC28] isHandwritingAutoRefineEnabled:MEMORY[0x277CBEC28] isAudioTranscriptEnabled:MEMORY[0x277CBEC28] isAudioSummaryEnabled:MEMORY[0x277CBEC28]];
@@ -3736,15 +3736,15 @@ LABEL_7:
   return v9;
 }
 
-- (id)passwordDataForModernNote:(id)a3
+- (id)passwordDataForModernNote:(id)note
 {
-  v3 = a3;
-  if ([MEMORY[0x277D35E90] shouldAuthenticateWithCustomPasswordForObject:v3])
+  noteCopy = note;
+  if ([MEMORY[0x277D35E90] shouldAuthenticateWithCustomPasswordForObject:noteCopy])
   {
     v4 = 1;
   }
 
-  else if ([MEMORY[0x277D35E90] shouldAuthenticateWithDevicePasswordForObject:v3])
+  else if ([MEMORY[0x277D35E90] shouldAuthenticateWithDevicePasswordForObject:noteCopy])
   {
     v4 = 2;
   }
@@ -3755,17 +3755,17 @@ LABEL_7:
   }
 
   v5 = [[ICASPasswordType alloc] initWithPasswordType:v4];
-  v6 = [v3 passwordHint];
-  if (v6)
+  passwordHint = [noteCopy passwordHint];
+  if (passwordHint)
   {
     v7 = 1;
   }
 
   else
   {
-    v8 = [v3 account];
-    v9 = [v8 passwordHint];
-    v7 = v9 != 0;
+    account = [noteCopy account];
+    passwordHint2 = [account passwordHint];
+    v7 = passwordHint2 != 0;
   }
 
   v10 = [ICASPasswordData alloc];
@@ -3775,9 +3775,9 @@ LABEL_7:
   return v12;
 }
 
-- (id)bioAuthDataForModernNote:(id)a3
+- (id)bioAuthDataForModernNote:(id)note
 {
-  v3 = [MEMORY[0x277D366E0] promptForIntent:0 object:a3];
+  v3 = [MEMORY[0x277D366E0] promptForIntent:0 object:note];
   if ([v3 allowsBiometricAuthentication] && objc_msgSend(MEMORY[0x277D35F08], "biometricsType") == 2)
   {
     v4 = 1;
@@ -3799,14 +3799,14 @@ LABEL_7:
   return v6;
 }
 
-- (id)passwordModeDataForContextPath:(int64_t)a3 fromMode:(signed __int16)a4 toMode:(signed __int16)a5
+- (id)passwordModeDataForContextPath:(int64_t)path fromMode:(signed __int16)mode toMode:(signed __int16)toMode
 {
-  v5 = a5;
-  v6 = a4;
-  v7 = a5 == 2;
-  v8 = a4 == 2;
-  v9 = [[ICASPwdModeChangeContextPath alloc] initWithPwdModeChangeContextPath:a3];
-  if (v6 == 1)
+  toModeCopy = toMode;
+  modeCopy = mode;
+  v7 = toMode == 2;
+  v8 = mode == 2;
+  v9 = [[ICASPwdModeChangeContextPath alloc] initWithPwdModeChangeContextPath:path];
+  if (modeCopy == 1)
   {
     v10 = 1;
   }
@@ -3817,7 +3817,7 @@ LABEL_7:
   }
 
   v11 = [[ICASStartMode alloc] initWithStartMode:v10];
-  if (v5 == 1)
+  if (toModeCopy == 1)
   {
     v12 = 1;
   }
@@ -3833,20 +3833,20 @@ LABEL_7:
   return v14;
 }
 
-- (id)collaborationStatusForModernObject:(id)a3
+- (id)collaborationStatusForModernObject:(id)object
 {
-  v3 = a3;
-  if ([v3 isOwnedByCurrentUser])
+  objectCopy = object;
+  if ([objectCopy isOwnedByCurrentUser])
   {
     v4 = 1;
   }
 
-  else if ([v3 isSharedReadOnly])
+  else if ([objectCopy isSharedReadOnly])
   {
     v4 = 3;
   }
 
-  else if ([v3 isSharedViaICloud])
+  else if ([objectCopy isSharedViaICloud])
   {
     v4 = 2;
   }
@@ -3861,12 +3861,12 @@ LABEL_7:
   return v5;
 }
 
-- (id)collaborationTypeForModernObject:(id)a3
+- (id)collaborationTypeForModernObject:(id)object
 {
-  v3 = a3;
-  if ([v3 isSharedViaICloud])
+  objectCopy = object;
+  if ([objectCopy isSharedViaICloud])
   {
-    if ([v3 isSharedRootObject])
+    if ([objectCopy isSharedRootObject])
     {
       v4 = 2;
     }
@@ -3887,21 +3887,21 @@ LABEL_7:
   return v5;
 }
 
-- (id)folderDataForModernFolder:(id)a3
+- (id)folderDataForModernFolder:(id)folder
 {
-  v4 = a3;
+  folderCopy = folder;
   v5 = [[ICASFolderType alloc] initWithFolderType:1];
-  if ([v4 isDefaultFolderForAccount])
+  if ([folderCopy isDefaultFolderForAccount])
   {
     v6 = 2;
   }
 
-  else if ([v4 isTrashFolder])
+  else if ([folderCopy isTrashFolder])
   {
     v6 = 3;
   }
 
-  else if ([v4 isSmartFolder])
+  else if ([folderCopy isSmartFolder])
   {
     v6 = 5;
   }
@@ -3912,7 +3912,7 @@ LABEL_7:
   }
 
   v7 = [[ICASFolderLabelType alloc] initWithFolderLabelType:v6];
-  v8 = v4;
+  v8 = folderCopy;
   v9 = v8;
   v28 = v7;
   if (v8)
@@ -3921,24 +3921,24 @@ LABEL_7:
     v11 = v8;
     while (1)
     {
-      v12 = [v9 account];
-      v13 = [v12 defaultFolder];
-      v14 = v13;
-      if (v11 == v13)
+      account = [v9 account];
+      defaultFolder = [account defaultFolder];
+      v14 = defaultFolder;
+      if (v11 == defaultFolder)
       {
         break;
       }
 
-      v15 = [v9 account];
-      v16 = [v15 trashFolder];
+      account2 = [v9 account];
+      trashFolder = [account2 trashFolder];
 
-      if (v11 != v16)
+      if (v11 != trashFolder)
       {
         ++v10;
-        v17 = [v11 parent];
+        parent = [v11 parent];
 
-        v11 = v17;
-        if (v17)
+        v11 = parent;
+        if (parent)
         {
           continue;
         }
@@ -3962,8 +3962,8 @@ LABEL_16:
   v19 = [(ICNAEventReporter *)self collaborationStatusForModernObject:v9];
   v20 = [(ICNAEventReporter *)self collaborationTypeForModernObject:v9];
   v21 = +[ICNAIdentityManager sharedManager];
-  v22 = [v9 identifier];
-  v23 = [v21 saltedID:v22 forClass:objc_opt_class()];
+  identifier = [v9 identifier];
+  v23 = [v21 saltedID:identifier forClass:objc_opt_class()];
 
   v24 = [ICASFolderData alloc];
   v25 = [MEMORY[0x277CCABB0] numberWithInteger:ICNARoundTo2SigFigsInt(v10)];
@@ -3972,14 +3972,14 @@ LABEL_16:
   return v26;
 }
 
-- (id)folderDataForModernAccountProxy:(id)a3
+- (id)folderDataForModernAccountProxy:(id)proxy
 {
-  v3 = a3;
+  proxyCopy = proxy;
   v4 = +[ICNAIdentityManager sharedManager];
-  v5 = [v3 account];
+  account = [proxyCopy account];
 
-  v6 = [v5 identifier];
-  v7 = [v4 saltedID:v6 forClass:objc_opt_class()];
+  identifier = [account identifier];
+  v7 = [v4 saltedID:identifier forClass:objc_opt_class()];
 
   v8 = [ICASFolderData alloc];
   v9 = [[ICASFolderType alloc] initWithFolderType:1];
@@ -3991,15 +3991,15 @@ LABEL_16:
   return v13;
 }
 
-- (id)folderDataForVirtualFolder:(id)a3
+- (id)folderDataForVirtualFolder:(id)folder
 {
-  v3 = a3;
-  if ([v3 isEqual:*MEMORY[0x277D36678]])
+  folderCopy = folder;
+  if ([folderCopy isEqual:*MEMORY[0x277D36678]])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqual:*MEMORY[0x277D36670]])
+  else if ([folderCopy isEqual:*MEMORY[0x277D36670]])
   {
     v4 = 7;
   }
@@ -4011,8 +4011,8 @@ LABEL_16:
 
   v5 = [ICASFolderData alloc];
   v6 = +[ICNAIdentityManager sharedManager];
-  v7 = [v3 identifier];
-  v8 = [v6 saltedID:v7 forClass:objc_opt_class()];
+  identifier = [folderCopy identifier];
+  v8 = [v6 saltedID:identifier forClass:objc_opt_class()];
   v9 = [[ICASFolderType alloc] initWithFolderType:1];
   v10 = [[ICASFolderLabelType alloc] initWithFolderLabelType:v4];
   v11 = [[ICASCollaborationStatus alloc] initWithCollaborationStatus:0];
@@ -4022,14 +4022,14 @@ LABEL_16:
   return v13;
 }
 
-- (id)folderDataForHTMLFolder:(id)a3
+- (id)folderDataForHTMLFolder:(id)folder
 {
-  v3 = a3;
+  folderCopy = folder;
   v24 = [[ICASFolderType alloc] initWithFolderType:2];
-  v4 = [v3 account];
-  v5 = [v4 defaultFolder];
+  account = [folderCopy account];
+  defaultFolder = [account defaultFolder];
 
-  if (v5 == v3)
+  if (defaultFolder == folderCopy)
   {
     v6 = 2;
   }
@@ -4040,7 +4040,7 @@ LABEL_16:
   }
 
   v7 = [[ICASFolderLabelType alloc] initWithFolderLabelType:v6];
-  v8 = v3;
+  v8 = folderCopy;
   v9 = v8;
   if (v8)
   {
@@ -4048,21 +4048,21 @@ LABEL_16:
     v11 = v8;
     do
     {
-      v12 = [v9 account];
-      v13 = [v12 defaultFolder];
+      account2 = [v9 account];
+      defaultFolder2 = [account2 defaultFolder];
 
-      if (v11 == v13)
+      if (v11 == defaultFolder2)
       {
         break;
       }
 
       ++v10;
-      v14 = [v11 parentFolder];
+      parentFolder = [v11 parentFolder];
 
-      v11 = v14;
+      v11 = parentFolder;
     }
 
-    while (v14);
+    while (parentFolder);
   }
 
   else
@@ -4074,8 +4074,8 @@ LABEL_16:
   v15 = [[ICASCollaborationStatus alloc] initWithCollaborationStatus:1];
   v16 = [[ICASCollaborationType alloc] initWithCollaborationType:1];
   v17 = +[ICNAIdentityManager sharedManager];
-  v18 = [v9 externalIdentifier];
-  v19 = [v17 saltedID:v18 forClass:objc_opt_class()];
+  externalIdentifier = [v9 externalIdentifier];
+  v19 = [v17 saltedID:externalIdentifier forClass:objc_opt_class()];
 
   v20 = [ICASFolderData alloc];
   v21 = [MEMORY[0x277CCABB0] numberWithInteger:ICNARoundTo2SigFigsInt(v10)];
@@ -4084,9 +4084,9 @@ LABEL_16:
   return v22;
 }
 
-- (id)folderDataForHTMLCollection:(id)a3
+- (id)folderDataForHTMLCollection:(id)collection
 {
-  v4 = a3;
+  collectionCopy = collection;
   v5 = ICProtocolCast();
   if (v5)
   {
@@ -4098,8 +4098,8 @@ LABEL_16:
     v7 = [[ICASFolderType alloc] initWithFolderType:2];
     v8 = [[ICASFolderLabelType alloc] initWithFolderLabelType:1];
     v9 = +[ICNAIdentityManager sharedManager];
-    v10 = [v4 basicAccountIdentifier];
-    v11 = [v9 saltedID:v10 forClass:objc_opt_class()];
+    basicAccountIdentifier = [collectionCopy basicAccountIdentifier];
+    v11 = [v9 saltedID:basicAccountIdentifier forClass:objc_opt_class()];
 
     v12 = [ICASFolderData alloc];
     v13 = [[ICASCollaborationStatus alloc] initWithCollaborationStatus:1];
@@ -4110,26 +4110,26 @@ LABEL_16:
   return v6;
 }
 
-- (id)folderContentDataForNoteContainer:(id)a3
+- (id)folderContentDataForNoteContainer:(id)container
 {
-  v3 = a3;
+  containerCopy = container;
   v4 = [ICASFolderContentData alloc];
   v5 = MEMORY[0x277CCABB0];
-  v6 = [v3 visibleNotesCount];
+  visibleNotesCount = [containerCopy visibleNotesCount];
 
-  v7 = [v5 numberWithInteger:ICNARoundTo2SigFigsInt(v6)];
+  v7 = [v5 numberWithInteger:ICNARoundTo2SigFigsInt(visibleNotesCount)];
   v8 = [(ICASFolderContentData *)v4 initWithNoteCount:v7];
 
   return v8;
 }
 
-- (id)folderContentDataForVirtualFolder:(id)a3 context:(id)a4
+- (id)folderContentDataForVirtualFolder:(id)folder context:(id)context
 {
-  v5 = a4;
-  v6 = a3;
+  contextCopy = context;
+  folderCopy = folder;
   v7 = [ICASFolderContentData alloc];
   v8 = MEMORY[0x277CCABB0];
-  v9 = [v6 visibleNoteCountInContext:v5];
+  v9 = [folderCopy visibleNoteCountInContext:contextCopy];
 
   v10 = [v8 numberWithInteger:ICNARoundTo2SigFigsInt(v9)];
   v11 = [(ICASFolderContentData *)v7 initWithNoteCount:v10];
@@ -4137,9 +4137,9 @@ LABEL_16:
   return v11;
 }
 
-- (id)folderContentDataForNoteCollection:(id)a3
+- (id)folderContentDataForNoteCollection:(id)collection
 {
-  v3 = [MEMORY[0x277D35930] countOfVisibleNotesInCollection:a3];
+  v3 = [MEMORY[0x277D35930] countOfVisibleNotesInCollection:collection];
   v4 = [ICASFolderContentData alloc];
   v5 = [MEMORY[0x277CCABB0] numberWithInteger:ICNARoundTo2SigFigsInt(v3)];
   v6 = [(ICASFolderContentData *)v4 initWithNoteCount:v5];
@@ -4147,45 +4147,45 @@ LABEL_16:
   return v6;
 }
 
-- (id)accountDataForModernAccount:(id)a3
+- (id)accountDataForModernAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   v5 = +[ICNAIdentityManager sharedManager];
-  v6 = [v4 identifier];
-  v7 = [v5 saltedID:v6 forClass:objc_opt_class()];
+  identifier = [accountCopy identifier];
+  v7 = [v5 saltedID:identifier forClass:objc_opt_class()];
 
-  v8 = [(ICNAEventReporter *)self accountTypeForModernAccount:v4];
+  v8 = [(ICNAEventReporter *)self accountTypeForModernAccount:accountCopy];
 
   v9 = [[ICASAccountData alloc] initWithAccountType:v8 accountID:v7];
 
   return v9;
 }
 
-- (id)accountDataForHTMLAccount:(id)a3
+- (id)accountDataForHTMLAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   v5 = +[ICNAIdentityManager sharedManager];
-  v6 = [v4 accountIdentifier];
-  v7 = [v5 saltedID:v6 forClass:objc_opt_class()];
+  accountIdentifier = [accountCopy accountIdentifier];
+  v7 = [v5 saltedID:accountIdentifier forClass:objc_opt_class()];
 
-  v8 = [(ICNAEventReporter *)self accountTypeForHTMLAccount:v4];
+  v8 = [(ICNAEventReporter *)self accountTypeForHTMLAccount:accountCopy];
 
   v9 = [[ICASAccountData alloc] initWithAccountType:v8 accountID:v7];
 
   return v9;
 }
 
-- (id)noteAccessDataForModernNote:(id)a3
+- (id)noteAccessDataForModernNote:(id)note
 {
-  v4 = a3;
-  v5 = [(ICNAEventReporter *)self collaborationStatusForModernObject:v4];
-  v6 = [(ICNAEventReporter *)self collaborationTypeForModernObject:v4];
+  noteCopy = note;
+  v5 = [(ICNAEventReporter *)self collaborationStatusForModernObject:noteCopy];
+  v6 = [(ICNAEventReporter *)self collaborationTypeForModernObject:noteCopy];
   v7 = [ICASNoteAccessData alloc];
-  v8 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v4, "isPasswordProtected")}];
+  v8 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(noteCopy, "isPasswordProtected")}];
   v9 = MEMORY[0x277CCABB0];
-  v10 = [v4 isPinned];
+  isPinned = [noteCopy isPinned];
 
-  v11 = [v9 numberWithBool:v10];
+  v11 = [v9 numberWithBool:isPinned];
   v12 = [(ICASNoteAccessData *)v7 initWithIsPasswordProtected:v8 isPinned:v11 collaborationStatus:v5 collaborationType:v6];
 
   return v12;
@@ -4201,10 +4201,10 @@ LABEL_16:
   return v5;
 }
 
-- (id)noteContentDataForModernNote:(id)a3
+- (id)noteContentDataForModernNote:(id)note
 {
-  v4 = a3;
-  v5 = [v4 textStorageWithoutCreating];
+  noteCopy = note;
+  textStorageWithoutCreating = [noteCopy textStorageWithoutCreating];
   v145 = 0;
   v146 = &v145;
   v147 = 0x2020000000;
@@ -4289,14 +4289,14 @@ LABEL_16:
   v70 = __Block_byref_object_copy__4;
   v71 = __Block_byref_object_dispose__4;
   v72 = objc_alloc_init(MEMORY[0x277CBEB58]);
-  if (v5)
+  if (textStorageWithoutCreating)
   {
-    v6 = [v5 length];
-    v7 = [v5 string];
-    v8 = [v7 paragraphRangeForRange:{0, 0}];
+    v6 = [textStorageWithoutCreating length];
+    string = [textStorageWithoutCreating string];
+    v8 = [string paragraphRangeForRange:{0, 0}];
     v10 = v9;
 
-    v11 = [v5 ic_range];
+    ic_range = [textStorageWithoutCreating ic_range];
     v66[0] = MEMORY[0x277D85DD0];
     v66[1] = 3221225472;
     v66[2] = __50__ICNAEventReporter_noteContentDataForModernNote___block_invoke;
@@ -4305,8 +4305,8 @@ LABEL_16:
     v66[7] = v10;
     v66[4] = &v141;
     v66[5] = &v145;
-    [v5 enumerateAttributesInRange:v11 options:v12 usingBlock:{0, v66}];
-    v13 = [v5 ic_range];
+    [textStorageWithoutCreating enumerateAttributesInRange:ic_range options:v12 usingBlock:{0, v66}];
+    ic_range2 = [textStorageWithoutCreating ic_range];
     v14 = *MEMORY[0x277D740E8];
     v65[0] = MEMORY[0x277D85DD0];
     v65[1] = 3221225472;
@@ -4317,7 +4317,7 @@ LABEL_16:
     v65[6] = &v77;
     v65[7] = &v73;
     v65[8] = &v67;
-    [v5 enumerateAttribute:v14 inRange:v13 options:v15 usingBlock:{0, v65}];
+    [textStorageWithoutCreating enumerateAttribute:v14 inRange:ic_range2 options:v15 usingBlock:{0, v65}];
   }
 
   else
@@ -4325,7 +4325,7 @@ LABEL_16:
     v6 = 0;
   }
 
-  v16 = [v4 visibleAttachments];
+  visibleAttachments = [noteCopy visibleAttachments];
   v64[0] = MEMORY[0x277D85DD0];
   v64[1] = 3221225472;
   v64[2] = __50__ICNAEventReporter_noteContentDataForModernNote___block_invoke_3;
@@ -4344,25 +4344,25 @@ LABEL_16:
   v64[15] = &v95;
   v64[16] = &v87;
   v64[17] = &v111;
-  [v16 enumerateObjectsUsingBlock:v64];
-  v42 = v5;
+  [visibleAttachments enumerateObjectsUsingBlock:v64];
+  v42 = textStorageWithoutCreating;
 
-  v17 = [objc_opt_class() inlineAttachmentReportForModernNote:v4 faultOutInlineAttachmentsAfterDone:0];
-  v18 = [v17 countOfTags];
-  v19 = [v17 countOfTags];
-  v45 = [v17 countOfDistinctTags];
-  v20 = [v17 countOfMentions];
-  v21 = [v17 countOfMentions];
-  v22 = [v17 countOfDistinctMentions];
-  v23 = [v17 countOfNoteLinks];
-  v84[3] += v23;
+  v17 = [objc_opt_class() inlineAttachmentReportForModernNote:noteCopy faultOutInlineAttachmentsAfterDone:0];
+  countOfTags = [v17 countOfTags];
+  countOfTags2 = [v17 countOfTags];
+  countOfDistinctTags = [v17 countOfDistinctTags];
+  countOfMentions = [v17 countOfMentions];
+  countOfMentions2 = [v17 countOfMentions];
+  countOfDistinctMentions = [v17 countOfDistinctMentions];
+  countOfNoteLinks = [v17 countOfNoteLinks];
+  v84[3] += countOfNoteLinks;
   v40 = [v78[5] count];
-  v39 = [v17 countOfDistinctNoteLinks];
-  v24 = [v17 countOfFolderLinks];
-  v74[3] += v24;
+  countOfDistinctNoteLinks = [v17 countOfDistinctNoteLinks];
+  countOfFolderLinks = [v17 countOfFolderLinks];
+  v74[3] += countOfFolderLinks;
   v25 = [v68[5] count];
-  v38 = [v17 countOfDistinctFolderLinks];
-  v63 = v4;
+  countOfDistinctFolderLinks = [v17 countOfDistinctFolderLinks];
+  v63 = noteCopy;
   v37 = [ICASNoteContentData alloc];
   v61 = [MEMORY[0x277CCABB0] numberWithInteger:ICNARoundTo2SigFigsInt(v6)];
   v60 = [MEMORY[0x277CCABB0] numberWithBool:*(v146 + 24)];
@@ -4374,24 +4374,24 @@ LABEL_16:
   v54 = [MEMORY[0x277CCABB0] numberWithBool:*(v112 + 24)];
   v53 = [MEMORY[0x277CCABB0] numberWithBool:*(v108 + 24)];
   v26 = MEMORY[0x277CCABB0];
-  v62 = [v4 creationDate];
-  v52 = [v26 numberWithInteger:{ICNARoundTo2SigFigsInt(-[ICNAEventReporter weeksSinceDate:](self, "weeksSinceDate:", v62))}];
+  creationDate = [noteCopy creationDate];
+  v52 = [v26 numberWithInteger:{ICNARoundTo2SigFigsInt(-[ICNAEventReporter weeksSinceDate:](self, "weeksSinceDate:", creationDate))}];
   v51 = [MEMORY[0x277CCABB0] numberWithBool:*(v120 + 24)];
   v50 = [MEMORY[0x277CCABB0] numberWithBool:*(v116 + 24)];
-  v49 = [MEMORY[0x277CCABB0] numberWithBool:v18 != 0];
+  v49 = [MEMORY[0x277CCABB0] numberWithBool:countOfTags != 0];
   v48 = [MEMORY[0x277CCABB0] numberWithBool:*(v104 + 24)];
-  v47 = [MEMORY[0x277CCABB0] numberWithInteger:ICNARoundTo2SigFigsInt(v19)];
-  v46 = [MEMORY[0x277CCABB0] numberWithInteger:ICNARoundTo2SigFigsInt(v45)];
-  v44 = [MEMORY[0x277CCABB0] numberWithBool:v20 != 0];
-  v43 = [MEMORY[0x277CCABB0] numberWithInteger:ICNARoundTo2SigFigsInt(v21)];
-  v27 = [MEMORY[0x277CCABB0] numberWithInteger:ICNARoundTo2SigFigsInt(v22)];
+  v47 = [MEMORY[0x277CCABB0] numberWithInteger:ICNARoundTo2SigFigsInt(countOfTags2)];
+  v46 = [MEMORY[0x277CCABB0] numberWithInteger:ICNARoundTo2SigFigsInt(countOfDistinctTags)];
+  v44 = [MEMORY[0x277CCABB0] numberWithBool:countOfMentions != 0];
+  v43 = [MEMORY[0x277CCABB0] numberWithInteger:ICNARoundTo2SigFigsInt(countOfMentions2)];
+  v27 = [MEMORY[0x277CCABB0] numberWithInteger:ICNARoundTo2SigFigsInt(countOfDistinctMentions)];
   v28 = [MEMORY[0x277CCABB0] numberWithBool:*(v100 + 24)];
   v29 = [MEMORY[0x277CCABB0] numberWithBool:*(v96 + 24)];
   v30 = [MEMORY[0x277CCABB0] numberWithBool:*(v92 + 24)];
   v31 = [MEMORY[0x277CCABB0] numberWithInteger:ICNARoundTo2SigFigsInt(v84[3])];
-  v32 = [MEMORY[0x277CCABB0] numberWithInteger:ICNARoundTo2SigFigsInt(v40 + v39)];
+  v32 = [MEMORY[0x277CCABB0] numberWithInteger:ICNARoundTo2SigFigsInt(v40 + countOfDistinctNoteLinks)];
   v33 = [MEMORY[0x277CCABB0] numberWithInteger:ICNARoundTo2SigFigsInt(v74[3])];
-  v34 = [MEMORY[0x277CCABB0] numberWithInteger:ICNARoundTo2SigFigsInt(v38 + v25)];
+  v34 = [MEMORY[0x277CCABB0] numberWithInteger:ICNARoundTo2SigFigsInt(countOfDistinctFolderLinks + v25)];
   v35 = [MEMORY[0x277CCABB0] numberWithInteger:ICNARoundTo2SigFigsInt(v88[3])];
   v41 = [(ICASNoteContentData *)v37 initWithCharacterCount:v61 hasChecklist:v60 hasStyleFormatting:v59 hasTable:v58 hasAttachmentInlineDrawingV1:v57 hasAttachmentInlineDrawingV2:v56 hasAttachmentFullscreenDrawing:v55 hasAttachmentOther:v54 hasAttachedPhoto:v53 weeksSinceCreation:v52 hasAttachmentRichUrl:v51 hasAttachmentMapLink:v50 hasTags:v49 hasScannedDoc:v48 countOfTags:v47 countOfDistinctTags:v46 hasMentions:v44 countOfMentions:v43 countOfDistinctMentions:v27 hasPaperKitDrawing:v28 hasPaperDocument:v29 hasPdf:v30 countOfNoteLinks:v31 countOfDistinctNoteLinks:v32 countOfFolderLinks:v33 countOfDistinctFolderLinks:v34 countOfAudioAttachments:v35];
 
@@ -4648,11 +4648,11 @@ LABEL_25:
   }
 }
 
-+ (id)inlineAttachmentReportForModernNote:(id)a3 faultOutInlineAttachmentsAfterDone:(BOOL)a4
++ (id)inlineAttachmentReportForModernNote:(id)note faultOutInlineAttachmentsAfterDone:(BOOL)done
 {
-  v4 = a4;
+  doneCopy = done;
   v67 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  noteCopy = note;
   v62 = 0;
   v63 = &v62;
   v64 = 0x2020000000;
@@ -4698,7 +4698,7 @@ LABEL_25:
   v25 = __Block_byref_object_copy__4;
   v26 = __Block_byref_object_dispose__4;
   v27 = objc_alloc_init(MEMORY[0x277CBEB58]);
-  v7 = [v5 visibleInlineAttachments];
+  visibleInlineAttachments = [noteCopy visibleInlineAttachments];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __92__ICNAEventReporter_inlineAttachmentReportForModernNote_faultOutInlineAttachmentsAfterDone___block_invoke;
@@ -4712,7 +4712,7 @@ LABEL_25:
   v21[10] = &v50;
   v21[11] = &v46;
   v21[12] = &v40;
-  [v7 enumerateObjectsUsingBlock:v21];
+  [visibleInlineAttachments enumerateObjectsUsingBlock:v21];
 
   v8 = [v35[5] count];
   v9 = [v29[5] count];
@@ -4727,7 +4727,7 @@ LABEL_25:
   [(ICNANoteInlineAttachmentReport *)v6 setCountOfDistinctFolderLinks:0];
   [(ICNANoteInlineAttachmentReport *)v6 setCountOfCalculateResults:v51[3]];
   [(ICNANoteInlineAttachmentReport *)v6 setCountOfCalculateGraphExpressions:v47[3]];
-  if (v4)
+  if (doneCopy)
   {
     v19 = 0u;
     v20 = 0u;
@@ -4833,43 +4833,43 @@ LABEL_12:
   [*(*(a1[12] + 8) + 40) ic_addNonNilObject:v8];
 }
 
-- (int64_t)weeksSinceDate:(id)a3
+- (int64_t)weeksSinceDate:(id)date
 {
   v3 = MEMORY[0x277CBEAA8];
-  v4 = a3;
-  v5 = [v3 date];
-  [v5 timeIntervalSinceDate:v4];
+  dateCopy = date;
+  date = [v3 date];
+  [date timeIntervalSinceDate:dateCopy];
   v7 = v6;
 
   return llround(v7 / 60.0 / 60.0 / 24.0 / 7.0);
 }
 
-- (id)noteCollapsibleSectionDataForHTMLNote:(id)a3
+- (id)noteCollapsibleSectionDataForHTMLNote:(id)note
 {
   v3 = [[ICASCollapsibleSectionData alloc] initWithSectionAffordanceExposures:&unk_286E61B70 sectionAffordanceUsages:&unk_286E61B70];
 
   return v3;
 }
 
-- (id)noteContentDataForHTMLNote:(id)a3
+- (id)noteContentDataForHTMLNote:(id)note
 {
-  v4 = a3;
+  noteCopy = note;
   v5 = [ICASNoteContentData alloc];
   v6 = MEMORY[0x277CCABB0];
-  v7 = [v4 contentAsPlainText];
-  v8 = [v6 numberWithInteger:{ICNARoundTo2SigFigsInt(objc_msgSend(v7, "length"))}];
+  contentAsPlainText = [noteCopy contentAsPlainText];
+  v8 = [v6 numberWithInteger:{ICNARoundTo2SigFigsInt(objc_msgSend(contentAsPlainText, "length"))}];
   v9 = MEMORY[0x277CCABB0];
-  v10 = [v4 creationDate];
+  creationDate = [noteCopy creationDate];
 
-  v11 = [v9 numberWithInteger:{ICNARoundTo2SigFigsInt(-[ICNAEventReporter weeksSinceDate:](self, "weeksSinceDate:", v10))}];
+  v11 = [v9 numberWithInteger:{ICNARoundTo2SigFigsInt(-[ICNAEventReporter weeksSinceDate:](self, "weeksSinceDate:", creationDate))}];
   v12 = [(ICASNoteContentData *)v5 initWithCharacterCount:v8 hasChecklist:MEMORY[0x277CBEC28] hasStyleFormatting:MEMORY[0x277CBEC28] hasTable:MEMORY[0x277CBEC28] hasAttachmentInlineDrawingV1:MEMORY[0x277CBEC28] hasAttachmentInlineDrawingV2:MEMORY[0x277CBEC28] hasAttachmentFullscreenDrawing:MEMORY[0x277CBEC28] hasAttachmentOther:MEMORY[0x277CBEC28] hasAttachedPhoto:MEMORY[0x277CBEC28] weeksSinceCreation:v11 hasAttachmentRichUrl:MEMORY[0x277CBEC28] hasAttachmentMapLink:MEMORY[0x277CBEC28] hasTags:MEMORY[0x277CBEC28] hasScannedDoc:MEMORY[0x277CBEC28] countOfTags:&unk_286E61B70 countOfDistinctTags:&unk_286E61B70 hasMentions:MEMORY[0x277CBEC28] countOfMentions:&unk_286E61B70 countOfDistinctMentions:&unk_286E61B70 hasPaperKitDrawing:MEMORY[0x277CBEC28] hasPaperDocument:MEMORY[0x277CBEC28] hasPdf:MEMORY[0x277CBEC28] countOfNoteLinks:&unk_286E61B70 countOfDistinctNoteLinks:&unk_286E61B70 countOfFolderLinks:&unk_286E61B70 countOfDistinctFolderLinks:&unk_286E61B70 countOfAudioAttachments:&unk_286E61B70];
 
   return v12;
 }
 
-- (id)selectedResultAccountTypeForSearchResult:(id)a3
+- (id)selectedResultAccountTypeForSearchResult:(id)result
 {
-  v3 = [a3 object];
+  object = [result object];
   v4 = ICProtocolCast();
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -4879,48 +4879,48 @@ LABEL_12:
     {
       if (v4)
       {
-        v7 = [v4 account];
-        if (v7)
+        account = [v4 account];
+        if (account)
         {
-          v6 = [ICNAController accountTypeEnumForHTMLAccount:v7];
-          v5 = 0;
+          v6 = [ICNAController accountTypeEnumForHTMLAccount:account];
+          account2 = 0;
           goto LABEL_4;
         }
       }
 
       else
       {
-        v7 = 0;
+        account = 0;
       }
 
-      v5 = 0;
+      account2 = 0;
 LABEL_29:
       v12 = 0;
       goto LABEL_30;
     }
 
-    v13 = [v3 note];
-    v5 = [v13 account];
+    note = [object note];
+    account2 = [note account];
 
-    if (v5)
+    if (account2)
     {
       goto LABEL_3;
     }
 
 LABEL_23:
-    v7 = 0;
+    account = 0;
     goto LABEL_29;
   }
 
-  v5 = [v3 account];
-  if (!v5)
+  account2 = [object account];
+  if (!account2)
   {
     goto LABEL_23;
   }
 
 LABEL_3:
-  v6 = [ICNAController accountTypeEnumForModernAccount:v5];
-  v7 = 0;
+  v6 = [ICNAController accountTypeEnumForModernAccount:account2];
+  account = 0;
 LABEL_4:
   v8 = 5;
   v9 = 6;
@@ -4980,16 +4980,16 @@ LABEL_30:
   return v14;
 }
 
-- (id)searchSuggestionDataWithSearchSuggestionType:(unint64_t)a3
+- (id)searchSuggestionDataWithSearchSuggestionType:(unint64_t)type
 {
-  if (a3 - 1 > 6)
+  if (type - 1 > 6)
   {
     v3 = 0;
   }
 
   else
   {
-    v3 = qword_25C72ADB0[a3 - 1];
+    v3 = qword_25C72ADB0[type - 1];
   }
 
   v4 = [ICASSearchSuggestionData alloc];
@@ -4999,27 +4999,27 @@ LABEL_30:
   return v6;
 }
 
-- (id)tipDataForFeature:(id)a3
+- (id)tipDataForFeature:(id)feature
 {
-  v3 = a3;
-  v4 = [[ICASTipData alloc] initWithTipFeature:v3];
+  featureCopy = feature;
+  v4 = [[ICASTipData alloc] initWithTipFeature:featureCopy];
 
   return v4;
 }
 
-- (id)audioAttachmentDataForModernAttachment:(id)a3
+- (id)audioAttachmentDataForModernAttachment:(id)attachment
 {
-  v3 = a3;
-  v4 = [v3 parentAttachment];
-  v5 = v4;
-  if (v4)
+  attachmentCopy = attachment;
+  parentAttachment = [attachmentCopy parentAttachment];
+  v5 = parentAttachment;
+  if (parentAttachment)
   {
-    v6 = v4;
+    v6 = parentAttachment;
   }
 
   else
   {
-    v6 = v3;
+    v6 = attachmentCopy;
   }
 
   v7 = v6;
@@ -5030,7 +5030,7 @@ LABEL_30:
   v31 = __Block_byref_object_copy__4;
   v32 = __Block_byref_object_dispose__4;
   v33 = 0;
-  v8 = [v7 managedObjectContext];
+  managedObjectContext = [v7 managedObjectContext];
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = __60__ICNAEventReporter_audioAttachmentDataForModernAttachment___block_invoke;
@@ -5038,22 +5038,22 @@ LABEL_30:
   v27 = &v28;
   v9 = v7;
   v26 = v9;
-  [v8 performBlockAndWait:v25];
+  [managedObjectContext performBlockAndWait:v25];
 
   v10 = +[ICNAIdentityManager sharedManager];
   v11 = [v10 saltedID:v29[5] forClass:objc_opt_class()];
-  v24 = v3;
+  v24 = attachmentCopy;
 
   v12 = [objc_alloc(MEMORY[0x277D35E08]) initWithAttachment:v9];
   v13 = [ICASAudioAttachmentData alloc];
   v14 = MEMORY[0x277CCABB0];
-  v15 = [v12 audioDocument];
-  v16 = [v15 transcriptAsPlainText];
-  v17 = [v14 numberWithInteger:{ICNARoundTo2SigFigsInt(objc_msgSend(v16, "length"))}];
+  audioDocument = [v12 audioDocument];
+  transcriptAsPlainText = [audioDocument transcriptAsPlainText];
+  v17 = [v14 numberWithInteger:{ICNARoundTo2SigFigsInt(objc_msgSend(transcriptAsPlainText, "length"))}];
   v18 = MEMORY[0x277CCABB0];
-  v19 = [v12 audioDocument];
-  v20 = [v19 recordingSummaryAsPlainText];
-  v21 = [v18 numberWithInteger:{ICNARoundTo2SigFigsInt(objc_msgSend(v20, "length"))}];
+  audioDocument2 = [v12 audioDocument];
+  recordingSummaryAsPlainText = [audioDocument2 recordingSummaryAsPlainText];
+  v21 = [v18 numberWithInteger:{ICNARoundTo2SigFigsInt(objc_msgSend(recordingSummaryAsPlainText, "length"))}];
   v22 = [(ICASAudioAttachmentData *)v13 initWithAudioAttachmentID:v11 transcriptCharacterCount:v17 summaryCharacterCount:v21];
 
   _Block_object_dispose(&v28, 8);
@@ -5071,25 +5071,25 @@ uint64_t __60__ICNAEventReporter_audioAttachmentDataForModernAttachment___block_
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)audioTranscriptInteractionDataWithSummaryViewed:(BOOL)a3 transcriptViewed:(BOOL)a4 interactionTargets:(id)a5 interactionTypes:(id)a6
+- (id)audioTranscriptInteractionDataWithSummaryViewed:(BOOL)viewed transcriptViewed:(BOOL)transcriptViewed interactionTargets:(id)targets interactionTypes:(id)types
 {
-  v23 = a4;
-  v24 = a3;
-  v7 = a5;
-  v8 = a6;
+  transcriptViewedCopy = transcriptViewed;
+  viewedCopy = viewed;
+  targetsCopy = targets;
+  typesCopy = types;
   v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  if ([v7 count])
+  if ([targetsCopy count])
   {
     v10 = 0;
     do
     {
-      if (v10 >= [v8 count])
+      if (v10 >= [typesCopy count])
       {
         break;
       }
 
-      v11 = [v7 objectAtIndexedSubscript:v10];
-      v12 = [v8 objectAtIndexedSubscript:v10];
+      v11 = [targetsCopy objectAtIndexedSubscript:v10];
+      v12 = [typesCopy objectAtIndexedSubscript:v10];
       if ([v11 isEqual:@"audioTranscript"])
       {
         v13 = 1;
@@ -5123,72 +5123,72 @@ uint64_t __60__ICNAEventReporter_audioAttachmentDataForModernAttachment___block_
       ++v10;
     }
 
-    while (v10 < [v7 count]);
+    while (v10 < [targetsCopy count]);
   }
 
   v18 = [ICASAudioTranscriptInteractionData alloc];
-  v19 = [MEMORY[0x277CCABB0] numberWithBool:v23];
-  v20 = [MEMORY[0x277CCABB0] numberWithBool:v24];
+  v19 = [MEMORY[0x277CCABB0] numberWithBool:transcriptViewedCopy];
+  v20 = [MEMORY[0x277CCABB0] numberWithBool:viewedCopy];
   v21 = [(ICASAudioTranscriptInteractionData *)v18 initWithWasTranscriptViewed:v19 wasSummaryViewed:v20 transcriptInteractionSummaryArray:v9];
 
   return v21;
 }
 
-- (id)accountTypeForModernAccount:(id)a3
+- (id)accountTypeForModernAccount:(id)account
 {
-  v3 = a3;
+  accountCopy = account;
   v4 = [ICASAccountType alloc];
-  v5 = [ICNAController accountTypeEnumForModernAccount:v3];
+  v5 = [ICNAController accountTypeEnumForModernAccount:accountCopy];
 
   v6 = [(ICASAccountType *)v4 initWithAccountType:v5];
 
   return v6;
 }
 
-- (id)accountTypeForHTMLAccount:(id)a3
+- (id)accountTypeForHTMLAccount:(id)account
 {
-  v3 = a3;
+  accountCopy = account;
   v4 = [ICASAccountType alloc];
-  v5 = [ICNAController accountTypeEnumForHTMLAccount:v3];
+  v5 = [ICNAController accountTypeEnumForHTMLAccount:accountCopy];
 
   v6 = [(ICASAccountType *)v4 initWithAccountType:v5];
 
   return v6;
 }
 
-- (id)noteEditDataForContextType:(int64_t)a3
+- (id)noteEditDataForContextType:(int64_t)type
 {
-  v3 = [[ICASNoteEditContext alloc] initWithNoteEditContext:a3];
+  v3 = [[ICASNoteEditContext alloc] initWithNoteEditContext:type];
   v4 = [[ICASNoteEditData alloc] initWithNoteEditContext:v3];
 
   return v4;
 }
 
-- (id)styleDataForStyleTypeValue:(int64_t)a3
+- (id)styleDataForStyleTypeValue:(int64_t)value
 {
-  v3 = [[ICASStyleType alloc] initWithStyleType:a3];
+  v3 = [[ICASStyleType alloc] initWithStyleType:value];
   v4 = [[ICASStyleData alloc] initWithStyleType:v3];
 
   return v4;
 }
 
-- (id)noteEditorCallOutBarDataForButtonTypeValue:(int64_t)a3
+- (id)noteEditorCallOutBarDataForButtonTypeValue:(int64_t)value
 {
-  v3 = [[ICASNoteEditorCallOutBarButtonType alloc] initWithNoteEditorCallOutBarButtonType:a3];
+  v3 = [[ICASNoteEditorCallOutBarButtonType alloc] initWithNoteEditorCallOutBarButtonType:value];
   v4 = [[ICASNoteEditorCallOutBarData alloc] initWithNoteEditorCallOutBarButtonType:v3];
 
   return v4;
 }
 
-- (unint64_t)pencilStrokeCountForDrawing:(id)a3
+- (unint64_t)pencilStrokeCountForDrawing:(id)drawing
 {
   v16 = *MEMORY[0x277D85DE8];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [a3 strokes];
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  strokes = [drawing strokes];
+  v4 = [strokes countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -5200,7 +5200,7 @@ uint64_t __60__ICNAEventReporter_audioAttachmentDataForModernAttachment___block_
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(strokes);
         }
 
         if ([*(*(&v11 + 1) + 8 * i) _inputType] == 1)
@@ -5209,7 +5209,7 @@ uint64_t __60__ICNAEventReporter_audioAttachmentDataForModernAttachment___block_
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [strokes countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);
@@ -5224,30 +5224,30 @@ uint64_t __60__ICNAEventReporter_audioAttachmentDataForModernAttachment___block_
   return v6;
 }
 
-- (id)searchRankingExperimentItemDataWithStrategyTypeEnum:(int64_t)a3 rank:(unint64_t)a4
+- (id)searchRankingExperimentItemDataWithStrategyTypeEnum:(int64_t)enum rank:(unint64_t)rank
 {
-  v5 = [[ICASRankingStrategyType alloc] initWithRankingStrategyType:a3];
+  v5 = [[ICASRankingStrategyType alloc] initWithRankingStrategyType:enum];
   v6 = [ICASSearchRankingExperimentItemData alloc];
-  v7 = [MEMORY[0x277CCABB0] numberWithInteger:ICNARoundTo2SigFigsInt(a4)];
+  v7 = [MEMORY[0x277CCABB0] numberWithInteger:ICNARoundTo2SigFigsInt(rank)];
   v8 = [(ICASSearchRankingExperimentItemData *)v6 initWithRankingStrategyType:v5 rank:v7];
 
   return v8;
 }
 
-+ (id)analyticsTypeUTIAttachment:(id)a3
++ (id)analyticsTypeUTIAttachment:(id)attachment
 {
-  v3 = a3;
-  v4 = [v3 typeUTI];
-  v5 = [v4 copy];
+  attachmentCopy = attachment;
+  typeUTI = [attachmentCopy typeUTI];
+  v5 = [typeUTI copy];
 
-  if ([v3 isMap])
+  if ([attachmentCopy isMap])
   {
     v6 = @"com.apple.notes.analytics.appleMaps";
   }
 
   else
   {
-    if ([v3 attachmentType] != 6)
+    if ([attachmentCopy attachmentType] != 6)
     {
       goto LABEL_6;
     }
@@ -5261,9 +5261,9 @@ LABEL_6:
   return v5;
 }
 
-+ (id)filteredActivityType:(id)a3
++ (id)filteredActivityType:(id)type
 {
-  v3 = [a1 maskString:a3 withoutPrefix:@"com.apple." withMask:@"other"];
+  v3 = [self maskString:type withoutPrefix:@"com.apple." withMask:@"other"];
   if ([(__CFString *)v3 hasPrefix:@"com.apple.UIKit.activity.PostTo"])
   {
 
@@ -5273,19 +5273,19 @@ LABEL_6:
   return v3;
 }
 
-+ (id)maskString:(id)a3 withoutPrefix:(id)a4 withMask:(id)a5
++ (id)maskString:(id)string withoutPrefix:(id)prefix withMask:(id)mask
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v7 && ((v10 = [v7 length], v10 < objc_msgSend(v8, "length")) || (objc_msgSend(v7, "hasPrefix:", v8) & 1) == 0))
+  stringCopy = string;
+  prefixCopy = prefix;
+  maskCopy = mask;
+  if (stringCopy && ((v10 = [stringCopy length], v10 < objc_msgSend(prefixCopy, "length")) || (objc_msgSend(stringCopy, "hasPrefix:", prefixCopy) & 1) == 0))
   {
-    v11 = [v9 copy];
+    v11 = [maskCopy copy];
   }
 
   else
   {
-    v11 = v7;
+    v11 = stringCopy;
   }
 
   v12 = v11;
@@ -5293,16 +5293,16 @@ LABEL_6:
   return v12;
 }
 
-+ (BOOL)activityTypeHasUnknownShareFlow:(id)a3
++ (BOOL)activityTypeHasUnknownShareFlow:(id)flow
 {
   v3 = activityTypeHasUnknownShareFlow__onceToken;
-  v4 = a3;
+  flowCopy = flow;
   if (v3 != -1)
   {
     +[ICNAEventReporter activityTypeHasUnknownShareFlow:];
   }
 
-  v5 = [activityTypeHasUnknownShareFlow__unknownActivityTypes containsObject:v4];
+  v5 = [activityTypeHasUnknownShareFlow__unknownActivityTypes containsObject:flowCopy];
 
   return v5;
 }
@@ -5315,33 +5315,33 @@ uint64_t __53__ICNAEventReporter_activityTypeHasUnknownShareFlow___block_invoke(
   return MEMORY[0x2821F96F8]();
 }
 
-+ (void)faultOutObject:(id)a3
++ (void)faultOutObject:(id)object
 {
-  if (a3)
+  if (object)
   {
-    v3 = a3;
-    v4 = [v3 managedObjectContext];
-    [v4 refreshObject:v3 mergeChanges:0];
+    objectCopy = object;
+    managedObjectContext = [objectCopy managedObjectContext];
+    [managedObjectContext refreshObject:objectCopy mergeChanges:0];
   }
 }
 
-+ (BOOL)attachmentHasDeepLinkSafariHighlight:(id)a3
++ (BOOL)attachmentHasDeepLinkSafariHighlight:(id)highlight
 {
-  v3 = a3;
-  v4 = [v3 synapseData];
+  highlightCopy = highlight;
+  synapseData = [highlightCopy synapseData];
 
-  if (v4)
+  if (synapseData)
   {
-    v4 = objc_alloc(MEMORY[0x277D6B790]);
-    v5 = [v3 synapseData];
-    v6 = [v4 initWithData:v5 error:0];
+    synapseData = objc_alloc(MEMORY[0x277D6B790]);
+    synapseData2 = [highlightCopy synapseData];
+    v6 = [synapseData initWithData:synapseData2 error:0];
 
-    v7 = [v6 userActivity];
-    v8 = [v7 _linkContextInfo];
-    LOBYTE(v4) = v8 != 0;
+    userActivity = [v6 userActivity];
+    _linkContextInfo = [userActivity _linkContextInfo];
+    LOBYTE(synapseData) = _linkContextInfo != 0;
   }
 
-  return v4;
+  return synapseData;
 }
 
 - (UIWindowScene)windowScene

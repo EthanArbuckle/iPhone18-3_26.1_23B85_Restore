@@ -1,22 +1,22 @@
 @interface CLSiloIdleHandler
-- (CLSiloIdleHandler)initWithIdleHandler:(id)a3 onResume:(id)a4;
+- (CLSiloIdleHandler)initWithIdleHandler:(id)handler onResume:(id)resume;
 - (void)invalidate;
 @end
 
 @implementation CLSiloIdleHandler
 
-- (CLSiloIdleHandler)initWithIdleHandler:(id)a3 onResume:(id)a4
+- (CLSiloIdleHandler)initWithIdleHandler:(id)handler onResume:(id)resume
 {
-  v6 = a3;
-  v7 = a4;
+  handlerCopy = handler;
+  resumeCopy = resume;
   v11.receiver = self;
   v11.super_class = CLSiloIdleHandler;
   v8 = [(CLSiloIdleHandler *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(CLSiloIdleHandler *)v8 setOnIdle:v6];
-    [(CLSiloIdleHandler *)v9 setOnResume:v7];
+    [(CLSiloIdleHandler *)v8 setOnIdle:handlerCopy];
+    [(CLSiloIdleHandler *)v9 setOnResume:resumeCopy];
   }
 
   return v9;

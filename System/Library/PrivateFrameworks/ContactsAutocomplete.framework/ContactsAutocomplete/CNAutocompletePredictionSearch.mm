@@ -1,11 +1,11 @@
 @interface CNAutocompletePredictionSearch
 + (unint64_t)predictedResultLimit;
-+ (unint64_t)predictionStrategyForRequest:(id)a3;
++ (unint64_t)predictionStrategyForRequest:(id)request;
 - (CNAutocompletePredictionSearch)init;
-- (CNAutocompletePredictionSearch)initWithContactStore:(id)a3;
-- (id)executeRequest:(id)a3 completionHandler:(id)a4;
-- (id)strategyForRequest:(id)a3;
-- (id)suggestionsForRequest:(id)a3;
+- (CNAutocompletePredictionSearch)initWithContactStore:(id)store;
+- (id)executeRequest:(id)request completionHandler:(id)handler;
+- (id)strategyForRequest:(id)request;
+- (id)suggestionsForRequest:(id)request;
 @end
 
 @implementation CNAutocompletePredictionSearch
@@ -18,19 +18,19 @@
   return v4;
 }
 
-- (CNAutocompletePredictionSearch)initWithContactStore:(id)a3
+- (CNAutocompletePredictionSearch)initWithContactStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v14.receiver = self;
   v14.super_class = CNAutocompletePredictionSearch;
   v6 = [(CNAutocompletePredictionSearch *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_contactStore, a3);
-    v8 = [MEMORY[0x277CFBE10] currentEnvironment];
-    v9 = [v8 schedulerProvider];
-    v10 = [v9 backgroundSchedulerWithQualityOfService:4];
+    objc_storeStrong(&v6->_contactStore, store);
+    currentEnvironment = [MEMORY[0x277CFBE10] currentEnvironment];
+    schedulerProvider = [currentEnvironment schedulerProvider];
+    v10 = [schedulerProvider backgroundSchedulerWithQualityOfService:4];
     scheduler = v7->_scheduler;
     v7->_scheduler = v10;
 
@@ -40,25 +40,25 @@
   return v7;
 }
 
-- (id)executeRequest:(id)a3 completionHandler:(id)a4
+- (id)executeRequest:(id)request completionHandler:(id)handler
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   v8 = CNALoggingContextDebug();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v24 = v6;
+    v24 = requestCopy;
     _os_log_impl(&dword_2155FE000, v8, OS_LOG_TYPE_DEFAULT, "Executing request %p against predictions CoreDuet/PeopleSuggester", buf, 0xCu);
   }
 
-  v9 = [(CNAutocompletePredictionSearch *)self suggestionsForRequest:v6];
+  v9 = [(CNAutocompletePredictionSearch *)self suggestionsForRequest:requestCopy];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __67__CNAutocompletePredictionSearch_executeRequest_completionHandler___block_invoke;
   v21[3] = &unk_2781C4218;
-  v10 = v7;
+  v10 = handlerCopy;
   v22 = v10;
   [v9 addSuccessBlock:v21];
   v19[0] = MEMORY[0x277D85DD0];
@@ -82,25 +82,25 @@
   return v14;
 }
 
-- (id)suggestionsForRequest:(id)a3
+- (id)suggestionsForRequest:(id)request
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  requestCopy = request;
   v5 = objc_alloc_init(MEMORY[0x277CFBE90]);
-  v6 = [(CNAutocompletePredictionSearch *)self strategyForRequest:v4];
-  v7 = [MEMORY[0x277CFBED0] defaultProvider];
-  [v7 timestamp];
+  v6 = [(CNAutocompletePredictionSearch *)self strategyForRequest:requestCopy];
+  defaultProvider = [MEMORY[0x277CFBED0] defaultProvider];
+  [defaultProvider timestamp];
   v9 = v8;
 
   v10 = CNALoggingContextTriage();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v4 triageIdentifier];
-    v12 = [v6 descriptionForLogging];
+    triageIdentifier = [requestCopy triageIdentifier];
+    descriptionForLogging = [v6 descriptionForLogging];
     *buf = 138543618;
-    v29 = v11;
+    v29 = triageIdentifier;
     v30 = 2114;
-    v31 = v12;
+    v31 = descriptionForLogging;
     _os_log_impl(&dword_2155FE000, v10, OS_LOG_TYPE_DEFAULT, "[%{public}@] Predictions: Will search %{public}@", buf, 0x16u);
   }
 
@@ -110,18 +110,18 @@
   v22 = __56__CNAutocompletePredictionSearch_suggestionsForRequest___block_invoke;
   v23 = &unk_2781C4268;
   v24 = v6;
-  v25 = v4;
+  v25 = requestCopy;
   v27 = v9;
   v26 = v5;
   v14 = v5;
-  v15 = v4;
+  v15 = requestCopy;
   v16 = v6;
   [(CNScheduler *)scheduler performBlock:&v20];
-  v17 = [v14 future];
+  future = [v14 future];
 
   v18 = *MEMORY[0x277D85DE8];
 
-  return v17;
+  return future;
 }
 
 void __56__CNAutocompletePredictionSearch_suggestionsForRequest___block_invoke(uint64_t a1)
@@ -186,10 +186,10 @@ void __56__CNAutocompletePredictionSearch_suggestionsForRequest___block_invoke(u
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (id)strategyForRequest:(id)a3
+- (id)strategyForRequest:(id)request
 {
-  v4 = a3;
-  v5 = [objc_opt_class() predictionStrategyForRequest:v4];
+  requestCopy = request;
+  v5 = [objc_opt_class() predictionStrategyForRequest:requestCopy];
 
   contactStore = self->_contactStore;
   if (v5 == 1)
@@ -206,22 +206,22 @@ void __56__CNAutocompletePredictionSearch_suggestionsForRequest___block_invoke(u
   return v7;
 }
 
-+ (unint64_t)predictionStrategyForRequest:(id)a3
++ (unint64_t)predictionStrategyForRequest:(id)request
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CFBE10] currentEnvironment];
-  v5 = [v4 userDefaults];
-  v6 = [v5 userHasOptedInToPreference:@"CNAlwaysUsePeopleSuggesterForPredictions"];
+  requestCopy = request;
+  currentEnvironment = [MEMORY[0x277CFBE10] currentEnvironment];
+  userDefaults = [currentEnvironment userDefaults];
+  v6 = [userDefaults userHasOptedInToPreference:@"CNAlwaysUsePeopleSuggesterForPredictions"];
 
-  v7 = (v6 & 1) != 0 || [v3 searchType] == 2 || objc_msgSend(v3, "searchType") == 1;
+  v7 = (v6 & 1) != 0 || [requestCopy searchType] == 2 || objc_msgSend(requestCopy, "searchType") == 1;
   return v7;
 }
 
 + (unint64_t)predictedResultLimit
 {
   v5 = 0;
-  v2 = [MEMORY[0x277CFBEE8] standardPreferences];
-  v3 = [v2 integerForKey:@"CNAutocompleteDefaultsPredictedResultLimit" keyExists:&v5];
+  standardPreferences = [MEMORY[0x277CFBEE8] standardPreferences];
+  v3 = [standardPreferences integerForKey:@"CNAutocompleteDefaultsPredictedResultLimit" keyExists:&v5];
 
   if (v5)
   {

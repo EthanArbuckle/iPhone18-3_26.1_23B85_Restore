@@ -1,13 +1,13 @@
 @interface SBCaptureButtonCoachingHUDViewController
 - (SBCaptureButtonCoachingHUDGlyphView)_makeGlyphView;
-- (SBCaptureButtonCoachingHUDViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (SBCaptureButtonCoachingHUDViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (SBCaptureButtonCoachingHUDViewControllerDelegate)delegate;
 - (SBHUDAttachmentDelegate)attachmentDelegate;
 - (SBUIAnimationPropertyAnimator)_makeViewControllerTransitionAnimationController;
 - (double)_captureButtonFrame;
 - (double)_viewContentAlphaForCurrentState;
 - (double)_xTranslationTransformForCurrentState;
-- (id)_animationSettingsForTransitionFromState:(uint64_t)a3 toState:;
+- (id)_animationSettingsForTransitionFromState:(uint64_t)state toState:;
 - (id)_layoutCoachingButtonHighlight;
 - (id)_layoutCoachingLabel;
 - (id)_layoutGlyphView;
@@ -39,27 +39,27 @@
 - (uint64_t)tempBackdropLayer;
 - (void)_coachingLabelWrapperViewSize;
 - (void)_layoutCoachingLabelWrapperView;
-- (void)_pauseAndResetLayer:(uint64_t)a1;
-- (void)_playTimingOnLayerTree:(uint64_t)a1;
-- (void)_resetAndPauseTimingOnLayerTree:(uint64_t)a1;
-- (void)_resetGlyphViewToState:(uint64_t)a1;
-- (void)_resumeLayer:(uint64_t)a1;
+- (void)_pauseAndResetLayer:(uint64_t)layer;
+- (void)_playTimingOnLayerTree:(uint64_t)tree;
+- (void)_resetAndPauseTimingOnLayerTree:(uint64_t)tree;
+- (void)_resetGlyphViewToState:(uint64_t)state;
+- (void)_resumeLayer:(uint64_t)layer;
 - (void)_updateCoachingLabelTextIfNeeded;
 - (void)_updateLiveRenderingAssertionIfNeeded;
-- (void)setCoachingText:(id)a3 glyphPackageName:(id)a4 glyphLandscapeState:(id)a5;
-- (void)setIsAttached:(uint64_t)a1;
-- (void)setPositionOffset:(CGPoint)a3;
-- (void)transitionToState:(int64_t)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)setCoachingText:(id)text glyphPackageName:(id)name glyphLandscapeState:(id)state;
+- (void)setIsAttached:(uint64_t)attached;
+- (void)setPositionOffset:(CGPoint)offset;
+- (void)transitionToState:(int64_t)state animated:(BOOL)animated completion:(id)completion;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewIsAppearing:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewIsAppearing:(BOOL)appearing;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation SBCaptureButtonCoachingHUDViewController
 
-- (SBCaptureButtonCoachingHUDViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (SBCaptureButtonCoachingHUDViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v10.receiver = self;
   v10.super_class = SBCaptureButtonCoachingHUDViewController;
@@ -71,9 +71,9 @@
     v4->_stateTransitionAnimationCount = 0;
     v4->_state = 0;
     v6 = +[SBSystemActionDomain rootSettings];
-    v7 = [v6 coachingSettings];
+    coachingSettings = [v6 coachingSettings];
     settings = v5->_settings;
-    v5->_settings = v7;
+    v5->_settings = coachingSettings;
 
     v5->_coachingLabelTextNeedsUpdate = 1;
     v5->_coachingLabelOrientation = 1;
@@ -83,33 +83,33 @@
   return v5;
 }
 
-- (void)setCoachingText:(id)a3 glyphPackageName:(id)a4 glyphLandscapeState:(id)a5
+- (void)setCoachingText:(id)text glyphPackageName:(id)name glyphLandscapeState:(id)state
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [a3 copy];
+  stateCopy = state;
+  nameCopy = name;
+  v10 = [text copy];
   coachingText = self->_coachingText;
   self->_coachingText = v10;
 
-  v12 = [v9 copy];
+  v12 = [nameCopy copy];
   glyphPackageName = self->_glyphPackageName;
   self->_glyphPackageName = v12;
 
-  v14 = [v8 copy];
+  v14 = [stateCopy copy];
   glyphLandscapeState = self->_glyphLandscapeState;
   self->_glyphLandscapeState = v14;
 
   self->_coachingLabelTextNeedsUpdate = 1;
-  v16 = [(SBCaptureButtonCoachingHUDViewController *)self viewIfLoaded];
-  [v16 setNeedsLayout];
+  viewIfLoaded = [(SBCaptureButtonCoachingHUDViewController *)self viewIfLoaded];
+  [viewIfLoaded setNeedsLayout];
 }
 
-- (void)transitionToState:(int64_t)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)transitionToState:(int64_t)state animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = [(SBCaptureButtonCoachingHUDViewController *)&self->super.super.super.super.isa _animationSettingsForTransitionFromState:a3 toState:?];
-  if (a3 && !self->_state)
+  animatedCopy = animated;
+  completionCopy = completion;
+  v9 = [(SBCaptureButtonCoachingHUDViewController *)&self->super.super.super.super.isa _animationSettingsForTransitionFromState:state toState:?];
+  if (state && !self->_state)
   {
     if ((self->_coachingLabelOrientation - 3) > 1)
     {
@@ -129,16 +129,16 @@
     block[3] = &unk_2783A8C18;
     block[4] = self;
     dispatch_after(v11, MEMORY[0x277D85CD0], block);
-    v12 = [(SBOrientationTransformWrapperViewController *)self view];
-    [v12 setNeedsLayout];
+    view = [(SBOrientationTransformWrapperViewController *)self view];
+    [view setNeedsLayout];
 
-    v13 = [(SBOrientationTransformWrapperViewController *)self view];
-    [v13 layoutIfNeeded];
+    view2 = [(SBOrientationTransformWrapperViewController *)self view];
+    [view2 layoutIfNeeded];
 
     [(SBCaptureButtonCoachingHUDViewController *)self setIsAttached:?];
   }
 
-  if (v5)
+  if (animatedCopy)
   {
     v14 = 3;
   }
@@ -148,11 +148,11 @@
     v14 = 2;
   }
 
-  self->_state = a3;
+  self->_state = state;
   ++self->_stateTransitionAnimationCount;
   [(SBCaptureButtonCoachingHUDViewController *)self _updateCoachingLabelTextIfNeeded];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained captureButtonCoachingHUDViewController:self didBeginTransitionToState:a3];
+  [WeakRetained captureButtonCoachingHUDViewController:self didBeginTransitionToState:state];
 
   v16 = MEMORY[0x277D75D18];
   v21[0] = MEMORY[0x277D85DD0];
@@ -160,15 +160,15 @@
   v21[2] = __82__SBCaptureButtonCoachingHUDViewController_transitionToState_animated_completion___block_invoke_2;
   v21[3] = &unk_2783A8BC8;
   v21[4] = self;
-  v21[5] = a3;
+  v21[5] = state;
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __82__SBCaptureButtonCoachingHUDViewController_transitionToState_animated_completion___block_invoke_28;
   v18[3] = &unk_2783A92B0;
-  v19 = v8;
-  v20 = a3;
+  v19 = completionCopy;
+  stateCopy = state;
   v18[4] = self;
-  v17 = v8;
+  v17 = completionCopy;
   [v16 sb_animateWithSettings:v9 mode:v14 animations:v21 completion:v18];
 }
 
@@ -179,20 +179,20 @@ void __82__SBCaptureButtonCoachingHUDViewController_transitionToState_animated_c
   [(SBCaptureButtonCoachingHUDViewController *)v1 _playTimingOnLayerTree:v2];
 }
 
-- (void)_playTimingOnLayerTree:(uint64_t)a1
+- (void)_playTimingOnLayerTree:(uint64_t)tree
 {
   v15 = *MEMORY[0x277D85DE8];
   v3 = a2;
   v4 = v3;
-  if (a1 && v3)
+  if (tree && v3)
   {
-    [(SBCaptureButtonCoachingHUDViewController *)a1 _resumeLayer:v3];
+    [(SBCaptureButtonCoachingHUDViewController *)tree _resumeLayer:v3];
     v12 = 0u;
     v13 = 0u;
     v10 = 0u;
     v11 = 0u;
-    v5 = [v4 sublayers];
-    v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    sublayers = [v4 sublayers];
+    v6 = [sublayers countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v6)
     {
       v7 = v6;
@@ -203,13 +203,13 @@ void __82__SBCaptureButtonCoachingHUDViewController_transitionToState_animated_c
         {
           if (*v11 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(sublayers);
           }
 
-          [(SBCaptureButtonCoachingHUDViewController *)a1 _playTimingOnLayerTree:?];
+          [(SBCaptureButtonCoachingHUDViewController *)tree _playTimingOnLayerTree:?];
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v7 = [sublayers countByEnumeratingWithState:&v10 objects:v14 count:16];
       }
 
       while (v7);
@@ -247,22 +247,22 @@ uint64_t __82__SBCaptureButtonCoachingHUDViewController_transitionToState_animat
   v24.receiver = self;
   v24.super_class = SBCaptureButtonCoachingHUDViewController;
   [(SBCaptureButtonCoachingHUDViewController *)&v24 viewDidLoad];
-  v3 = [(SBOrientationTransformWrapperViewController *)self view];
-  [v3 setCounterTransformView:1];
-  [v3 bs_setHitTestingDisabled:1];
-  v4 = [(SBSystemActionCoachingHUDViewController *)self _makeContentView];
+  view = [(SBOrientationTransformWrapperViewController *)self view];
+  [view setCounterTransformView:1];
+  [view bs_setHitTestingDisabled:1];
+  _makeContentView = [(SBSystemActionCoachingHUDViewController *)self _makeContentView];
   contentView = self->_contentView;
-  self->_contentView = v4;
+  self->_contentView = _makeContentView;
 
-  [v3 addContentView:self->_contentView];
+  [view addContentView:self->_contentView];
   v6 = objc_alloc_init(_SBCaptureButtonCoachingBackdropLayer_Temp_134941860);
   tempBackdropLayer = self->_tempBackdropLayer;
   self->_tempBackdropLayer = v6;
 
   [(UIView *)self->_contentView addSubview:self->_tempBackdropLayer];
-  v8 = [(SBSystemActionCoachingHUDViewController *)self _makeDimmingView];
+  _makeDimmingView = [(SBSystemActionCoachingHUDViewController *)self _makeDimmingView];
   dimmingView = self->_dimmingView;
-  self->_dimmingView = v8;
+  self->_dimmingView = _makeDimmingView;
 
   [(UIView *)self->_contentView addSubview:self->_dimmingView];
   v10 = objc_alloc(MEMORY[0x277D75D18]);
@@ -271,49 +271,49 @@ uint64_t __82__SBCaptureButtonCoachingHUDViewController_transitionToState_animat
   coachingContentView = self->_coachingContentView;
   self->_coachingContentView = v11;
 
-  v13 = [(UIView *)self->_coachingContentView layer];
-  v14 = [(SBCaptureButtonCoachingHUDViewController *)self _makeGaussianBlurFilter];
-  v25[0] = v14;
+  layer = [(UIView *)self->_coachingContentView layer];
+  _makeGaussianBlurFilter = [(SBCaptureButtonCoachingHUDViewController *)self _makeGaussianBlurFilter];
+  v25[0] = _makeGaussianBlurFilter;
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v25 count:1];
-  [v13 setFilters:v15];
+  [layer setFilters:v15];
 
   [(UIView *)self->_contentView addSubview:self->_coachingContentView];
-  v16 = [(SBCaptureButtonCoachingHUDViewController *)self _makeCoachingButtonHighlight];
+  _makeCoachingButtonHighlight = [(SBCaptureButtonCoachingHUDViewController *)self _makeCoachingButtonHighlight];
   coachingButtonHighlightView = self->_coachingButtonHighlightView;
-  self->_coachingButtonHighlightView = v16;
+  self->_coachingButtonHighlightView = _makeCoachingButtonHighlight;
 
   [(UIView *)self->_coachingContentView addSubview:self->_coachingButtonHighlightView];
-  v18 = [(SBCaptureButtonCoachingHUDViewController *)self _makeCoachingLabelWrapperView];
+  _makeCoachingLabelWrapperView = [(SBCaptureButtonCoachingHUDViewController *)self _makeCoachingLabelWrapperView];
   coachingLabelWrapperView = self->_coachingLabelWrapperView;
-  self->_coachingLabelWrapperView = v18;
+  self->_coachingLabelWrapperView = _makeCoachingLabelWrapperView;
 
   [(UIView *)self->_coachingContentView addSubview:self->_coachingLabelWrapperView];
-  v20 = [(SBCaptureButtonCoachingHUDViewController *)self _makeCoachingLabel];
+  _makeCoachingLabel = [(SBCaptureButtonCoachingHUDViewController *)self _makeCoachingLabel];
   coachingLabel = self->_coachingLabel;
-  self->_coachingLabel = v20;
+  self->_coachingLabel = _makeCoachingLabel;
 
   [(SBCaptureButtonCoachingHUDLabelWrapperView *)self->_coachingLabelWrapperView addSubview:self->_coachingLabel];
-  v22 = [(SBCaptureButtonCoachingHUDViewController *)self _makeGlyphView];
+  _makeGlyphView = [(SBCaptureButtonCoachingHUDViewController *)self _makeGlyphView];
   glyphView = self->_glyphView;
-  self->_glyphView = v22;
+  self->_glyphView = _makeGlyphView;
 
   [(SBCaptureButtonCoachingHUDLabelWrapperView *)self->_coachingLabelWrapperView addSubview:self->_glyphView];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v14.receiver = self;
   v14.super_class = SBCaptureButtonCoachingHUDViewController;
-  v7 = a4;
-  [(SBCaptureButtonCoachingHUDViewController *)&v14 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  coordinatorCopy = coordinator;
+  [(SBCaptureButtonCoachingHUDViewController *)&v14 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained captureButtonCoachingHUDViewControllerWillRotate:self];
 
   self->_rotating = 1;
   v9 = SBFWindowForViewControllerTransition();
-  v10 = [v9 _toWindowOrientation];
+  _toWindowOrientation = [v9 _toWindowOrientation];
 
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
@@ -326,15 +326,15 @@ uint64_t __82__SBCaptureButtonCoachingHUDViewController_transitionToState_animat
   v12[2] = __95__SBCaptureButtonCoachingHUDViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke_2;
   v12[3] = &unk_2783BE3B8;
   v12[4] = self;
-  v12[5] = v10;
+  v12[5] = _toWindowOrientation;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __95__SBCaptureButtonCoachingHUDViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke_3;
   v11[3] = &unk_2783B50F8;
   v11[4] = self;
-  v11[5] = v10;
+  v11[5] = _toWindowOrientation;
   v11[6] = 0x3FC999999999999ALL;
-  [v7 animateAlongsideTransition:v12 completion:v11];
+  [coordinatorCopy animateAlongsideTransition:v12 completion:v11];
 }
 
 uint64_t __95__SBCaptureButtonCoachingHUDViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke(uint64_t a1)
@@ -378,33 +378,33 @@ void __95__SBCaptureButtonCoachingHUDViewController_viewWillTransitionToSize_wit
   [(SBCaptureButtonCoachingHUDViewController *)v4 _playTimingOnLayerTree:v5];
 }
 
-- (void)setPositionOffset:(CGPoint)a3
+- (void)setPositionOffset:(CGPoint)offset
 {
-  if (self->_positionOffset.x != a3.x || self->_positionOffset.y != a3.y)
+  if (self->_positionOffset.x != offset.x || self->_positionOffset.y != offset.y)
   {
     v8 = v3;
     v9 = v4;
-    self->_positionOffset = a3;
+    self->_positionOffset = offset;
     coachingContentView = self->_coachingContentView;
-    CGAffineTransformMakeTranslation(&v7, -a3.x, -a3.y);
+    CGAffineTransformMakeTranslation(&v7, -offset.x, -offset.y);
     [(UIView *)coachingContentView setTransform:&v7];
   }
 }
 
-- (void)_resetAndPauseTimingOnLayerTree:(uint64_t)a1
+- (void)_resetAndPauseTimingOnLayerTree:(uint64_t)tree
 {
   v15 = *MEMORY[0x277D85DE8];
   v3 = a2;
   v4 = v3;
-  if (a1 && v3)
+  if (tree && v3)
   {
-    [(SBCaptureButtonCoachingHUDViewController *)a1 _pauseAndResetLayer:v3];
+    [(SBCaptureButtonCoachingHUDViewController *)tree _pauseAndResetLayer:v3];
     v12 = 0u;
     v13 = 0u;
     v10 = 0u;
     v11 = 0u;
-    v5 = [v4 sublayers];
-    v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    sublayers = [v4 sublayers];
+    v6 = [sublayers countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v6)
     {
       v7 = v6;
@@ -415,13 +415,13 @@ void __95__SBCaptureButtonCoachingHUDViewController_viewWillTransitionToSize_wit
         {
           if (*v11 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(sublayers);
           }
 
-          [(SBCaptureButtonCoachingHUDViewController *)a1 _resetAndPauseTimingOnLayerTree:?];
+          [(SBCaptureButtonCoachingHUDViewController *)tree _resetAndPauseTimingOnLayerTree:?];
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v7 = [sublayers countByEnumeratingWithState:&v10 objects:v14 count:16];
       }
 
       while (v7);
@@ -478,9 +478,9 @@ void __92__SBCaptureButtonCoachingHUDViewController__makeViewControllerTransitio
 
 - (double)_xTranslationTransformForCurrentState
 {
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 1032);
+    v2 = *(self + 1032);
     v3 = 0.0;
     if (v2 == 2)
     {
@@ -520,18 +520,18 @@ void __92__SBCaptureButtonCoachingHUDViewController__makeViewControllerTransitio
   return WeakRetained;
 }
 
-- (id)_animationSettingsForTransitionFromState:(uint64_t)a3 toState:
+- (id)_animationSettingsForTransitionFromState:(uint64_t)state toState:
 {
-  if (a1)
+  if (self)
   {
-    if (a3 == 2)
+    if (state == 2)
     {
-      a1 = [a1[130] expansionSettings];
+      self = [self[130] expansionSettings];
     }
 
-    else if (a3 == 1)
+    else if (state == 1)
     {
-      v3 = a1[130];
+      v3 = self[130];
       if (a2 == 2)
       {
         [v3 contractionSettings];
@@ -541,72 +541,72 @@ void __92__SBCaptureButtonCoachingHUDViewController__makeViewControllerTransitio
       {
         [v3 presentationSettings];
       }
-      a1 = ;
+      self = ;
     }
 
-    else if (a3)
+    else if (state)
     {
-      a1 = 0;
+      self = 0;
     }
 
     else
     {
-      a1 = [a1[130] dismissalSettings];
+      self = [self[130] dismissalSettings];
     }
   }
 
-  return a1;
+  return self;
 }
 
-- (void)_resetGlyphViewToState:(uint64_t)a1
+- (void)_resetGlyphViewToState:(uint64_t)state
 {
-  if (a1)
+  if (state)
   {
-    v3 = *(a1 + 1120);
+    v3 = *(state + 1120);
     v4 = a2;
     [v3 setState:0 animated:0];
-    [*(a1 + 1120) removeFromSuperview];
-    v5 = *(a1 + 1120);
-    *(a1 + 1120) = 0;
+    [*(state + 1120) removeFromSuperview];
+    v5 = *(state + 1120);
+    *(state + 1120) = 0;
 
-    v6 = [(SBCaptureButtonCoachingHUDViewController *)a1 _makeGlyphView];
-    v7 = *(a1 + 1120);
-    *(a1 + 1120) = v6;
+    _makeGlyphView = [(SBCaptureButtonCoachingHUDViewController *)state _makeGlyphView];
+    v7 = *(state + 1120);
+    *(state + 1120) = _makeGlyphView;
 
-    [*(a1 + 1136) addSubview:*(a1 + 1120)];
-    [(SBCaptureButtonCoachingHUDViewController *)a1 _layoutGlyphView];
-    [*(a1 + 1120) setState:v4 animated:0];
+    [*(state + 1136) addSubview:*(state + 1120)];
+    [(SBCaptureButtonCoachingHUDViewController *)state _layoutGlyphView];
+    [*(state + 1120) setState:v4 animated:0];
 
-    v8 = [*(a1 + 1120) layer];
-    [(SBCaptureButtonCoachingHUDViewController *)a1 _resetAndPauseTimingOnLayerTree:v8];
+    layer = [*(state + 1120) layer];
+    [(SBCaptureButtonCoachingHUDViewController *)state _resetAndPauseTimingOnLayerTree:layer];
   }
 }
 
-- (void)setIsAttached:(uint64_t)a1
+- (void)setIsAttached:(uint64_t)attached
 {
-  if (a1 && *(a1 + 1018) != a2)
+  if (attached && *(attached + 1018) != a2)
   {
-    *(a1 + 1018) = a2;
-    WeakRetained = objc_loadWeakRetained((a1 + 992));
-    [WeakRetained updateAttachmentStateForHUDViewController:a1];
+    *(attached + 1018) = a2;
+    WeakRetained = objc_loadWeakRetained((attached + 992));
+    [WeakRetained updateAttachmentStateForHUDViewController:attached];
   }
 }
 
 - (void)_updateCoachingLabelTextIfNeeded
 {
-  if (a1)
+  if (self)
   {
-    if (*(a1 + 1017) == 1)
+    if (*(self + 1017) == 1)
     {
-      v2 = [a1 viewIfLoaded];
-      v3 = [v2 window];
+      viewIfLoaded = [self viewIfLoaded];
+      window = [viewIfLoaded window];
 
-      if (v3)
+      if (window)
       {
-        if (*(a1 + 1032) || !*(a1 + 1056))
+        if (*(self + 1032) || !*(self + 1056))
         {
-          [*(a1 + 1144) setText:*(a1 + 1064)];
-          *(a1 + 1017) = 0;
+          [*(self + 1144) setText:*(self + 1064)];
+          *(self + 1017) = 0;
         }
       }
     }
@@ -694,8 +694,8 @@ void __82__SBCaptureButtonCoachingHUDViewController_transitionToState_animated_c
   if (result)
   {
     v1 = result;
-    v2 = [result traitCollection];
-    [v2 displayScale];
+    traitCollection = [result traitCollection];
+    [traitCollection displayScale];
 
     [(SBCaptureButtonCoachingHUDViewController *)v1 _captureButtonFrame];
     OUTLINED_FUNCTION_14();
@@ -745,8 +745,8 @@ void __82__SBCaptureButtonCoachingHUDViewController_transitionToState_animated_c
   if (result)
   {
     v1 = result;
-    v2 = [result traitCollection];
-    [v2 displayScale];
+    traitCollection = [result traitCollection];
+    [traitCollection displayScale];
 
     [(SBCaptureButtonCoachingHUDViewController *)v1 _captureButtonFrame];
     [(SBCaptureButtonCoachingHUDViewController *)v1 _coachingLabelWrapperViewSize];
@@ -795,8 +795,8 @@ void __82__SBCaptureButtonCoachingHUDViewController_transitionToState_animated_c
     UIRectGetCenter();
     v12 = v11;
     v14 = v13;
-    v15 = [*(v1 + 142) layer];
-    [v15 anchorPoint];
+    layer = [*(v1 + 142) layer];
+    [layer anchorPoint];
     v17 = v16;
     v19 = v18;
 
@@ -817,8 +817,8 @@ void __82__SBCaptureButtonCoachingHUDViewController_transitionToState_animated_c
   if (result)
   {
     v1 = result;
-    v2 = [result traitCollection];
-    [v2 displayScale];
+    traitCollection = [result traitCollection];
+    [traitCollection displayScale];
     v4 = v3;
 
     [v1[142] bounds];
@@ -885,8 +885,8 @@ void __82__SBCaptureButtonCoachingHUDViewController_transitionToState_animated_c
   if (result)
   {
     v1 = result;
-    v2 = [result traitCollection];
-    [v2 displayScale];
+    traitCollection = [result traitCollection];
+    [traitCollection displayScale];
 
     [v1[142] bounds];
     [OUTLINED_FUNCTION_11_7() bounds];
@@ -944,10 +944,10 @@ void __82__SBCaptureButtonCoachingHUDViewController_transitionToState_animated_c
 - (double)_viewContentAlphaForCurrentState
 {
   result = 0.0;
-  if (a1 && (*(a1 + 1032) - 1) <= 1)
+  if (self && (*(self + 1032) - 1) <= 1)
   {
     result = 1.0;
-    if (*(a1 + 1016))
+    if (*(self + 1016))
     {
       return 0.0;
     }
@@ -958,7 +958,7 @@ void __82__SBCaptureButtonCoachingHUDViewController_transitionToState_animated_c
 
 - (id)_makeGaussianBlurFilter
 {
-  if (a1)
+  if (self)
   {
     v1 = [MEMORY[0x277CD9EA0] filterWithType:*MEMORY[0x277CDA328]];
     [v1 setName:@"gaussianBlur"];
@@ -979,26 +979,26 @@ void __82__SBCaptureButtonCoachingHUDViewController_transitionToState_animated_c
 
 - (id)_makeCoachingButtonHighlight
 {
-  if (a1)
+  if (self)
   {
     v2 = [SBCaptureButtonCoachingHUDButtonHighlight alloc];
     v3 = OUTLINED_FUNCTION_13_0(v2, MEMORY[0x277CBF3A0]);
     [v3 setAccessibilityIdentifier:@"capture-button-coaching-button"];
-    v4 = [MEMORY[0x277D75348] systemWhiteColor];
-    [v3 setBackgroundColor:v4];
+    systemWhiteColor = [MEMORY[0x277D75348] systemWhiteColor];
+    [v3 setBackgroundColor:systemWhiteColor];
 
-    v5 = [v3 layer];
-    [v5 setCornerCurve:*MEMORY[0x277CDA138]];
-    v6 = [MEMORY[0x277D75348] blackColor];
-    [v5 setShadowColor:{objc_msgSend(v6, "CGColor")}];
+    layer = [v3 layer];
+    [layer setCornerCurve:*MEMORY[0x277CDA138]];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    [layer setShadowColor:{objc_msgSend(blackColor, "CGColor")}];
 
-    [v5 setShadowOffset:{*MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8)}];
-    [v5 setShadowOpacity:0.0];
-    [v5 setShadowPathIsBounds:1];
-    [*(a1 + 1040) coachingButtonShadowRadius];
-    [v5 setShadowRadius:?];
-    [v5 setCornerRadius:2.5];
-    [v5 setAnchorPoint:{1.0, 0.5}];
+    [layer setShadowOffset:{*MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8)}];
+    [layer setShadowOpacity:0.0];
+    [layer setShadowPathIsBounds:1];
+    [*(self + 1040) coachingButtonShadowRadius];
+    [layer setShadowRadius:?];
+    [layer setCornerRadius:2.5];
+    [layer setAnchorPoint:{1.0, 0.5}];
   }
 
   else
@@ -1011,24 +1011,24 @@ void __82__SBCaptureButtonCoachingHUDViewController_transitionToState_animated_c
 
 - (id)_makeCoachingLabelWrapperView
 {
-  if (a1)
+  if (self)
   {
     v2 = [SBCaptureButtonCoachingHUDLabelWrapperView alloc];
     v3 = OUTLINED_FUNCTION_13_0(v2, MEMORY[0x277CBF3A0]);
     v4 = v3;
     v5 = 0.0;
-    if ((*(a1 + 1032) - 1) <= 1)
+    if ((*(self + 1032) - 1) <= 1)
     {
       v5 = 1.0;
-      if (*(a1 + 1016))
+      if (*(self + 1016))
       {
         v5 = 0.0;
       }
     }
 
     [v3 setAlpha:v5];
-    v6 = [v4 layer];
-    [v6 setAnchorPoint:{1.0, 0.5}];
+    layer = [v4 layer];
+    [layer setAnchorPoint:{1.0, 0.5}];
   }
 
   else
@@ -1041,7 +1041,7 @@ void __82__SBCaptureButtonCoachingHUDViewController_transitionToState_animated_c
 
 - (id)_makeCoachingLabel
 {
-  if (a1)
+  if (self)
   {
     v2 = [SBCaptureButtonCoachingHUDLabel alloc];
     v3 = OUTLINED_FUNCTION_13_0(v2, MEMORY[0x277CBF3A0]);
@@ -1051,19 +1051,19 @@ void __82__SBCaptureButtonCoachingHUDViewController_transitionToState_animated_c
 
     [v3 setNumberOfLines:0];
     [v3 setTextAlignment:2];
-    v5 = [MEMORY[0x277D75348] systemWhiteColor];
-    [v3 setTextColor:v5];
+    systemWhiteColor = [MEMORY[0x277D75348] systemWhiteColor];
+    [v3 setTextColor:systemWhiteColor];
 
-    v6 = [v3 layer];
-    v7 = [MEMORY[0x277D75348] blackColor];
-    [v6 setShadowColor:{objc_msgSend(v7, "CGColor")}];
+    layer = [v3 layer];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    [layer setShadowColor:{objc_msgSend(blackColor, "CGColor")}];
 
-    [v6 setShadowOffset:{*MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8)}];
-    [*(a1 + 1040) coachingLabelShadowOpacity];
+    [layer setShadowOffset:{*MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8)}];
+    [*(self + 1040) coachingLabelShadowOpacity];
     *&v8 = v8;
-    [v6 setShadowOpacity:v8];
-    [*(a1 + 1040) coachingLabelShadowRadius];
-    [v6 setShadowRadius:?];
+    [layer setShadowOpacity:v8];
+    [*(self + 1040) coachingLabelShadowRadius];
+    [layer setShadowRadius:?];
   }
 
   else
@@ -1076,41 +1076,41 @@ void __82__SBCaptureButtonCoachingHUDViewController_transitionToState_animated_c
 
 - (SBCaptureButtonCoachingHUDGlyphView)_makeGlyphView
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    if (*(&a1[2].super.super._viewFlags + 3))
+    if (*(&self[2].super.super._viewFlags + 3))
     {
       v2 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-      v3 = [v2 URLForResource:*(&v1[2].super.super._viewFlags + 3) withExtension:@"ca"];
+      v3 = [v2 URLForResource:*(&selfCopy[2].super.super._viewFlags + 3) withExtension:@"ca"];
 
-      v1 = [(BSUICAPackageView *)[SBCaptureButtonCoachingHUDGlyphView alloc] initWithURL:v3];
+      selfCopy = [(BSUICAPackageView *)[SBCaptureButtonCoachingHUDGlyphView alloc] initWithURL:v3];
     }
 
     else
     {
-      v1 = 0;
+      selfCopy = 0;
     }
   }
 
-  return v1;
+  return selfCopy;
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
   v8.receiver = self;
   v8.super_class = SBCaptureButtonCoachingHUDViewController;
-  [(SBCaptureButtonCoachingHUDViewController *)&v8 viewIsAppearing:a3];
-  v4 = [(SBOrientationTransformWrapperViewController *)self view];
-  v5 = [v4 window];
-  v6 = [v5 interfaceOrientation];
+  [(SBCaptureButtonCoachingHUDViewController *)&v8 viewIsAppearing:appearing];
+  view = [(SBOrientationTransformWrapperViewController *)self view];
+  window = [view window];
+  interfaceOrientation = [window interfaceOrientation];
 
-  [v4 setContainerOrientation:v6];
-  [v4 setContentOrientation:1];
-  if (self && self->_coachingLabelOrientation != v6)
+  [view setContainerOrientation:interfaceOrientation];
+  [view setContentOrientation:1];
+  if (self && self->_coachingLabelOrientation != interfaceOrientation)
   {
-    self->_coachingLabelOrientation = v6;
-    if ((v6 - 3) < 2)
+    self->_coachingLabelOrientation = interfaceOrientation;
+    if ((interfaceOrientation - 3) < 2)
     {
       v7 = 1;
     }
@@ -1151,15 +1151,15 @@ void __82__SBCaptureButtonCoachingHUDViewController_transitionToState_animated_c
 - (void)_updateLiveRenderingAssertionIfNeeded
 {
   v19[3] = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    v2 = [a1 view];
-    v3 = [v2 window];
-    v4 = [v3 windowScene];
+    view = [self view];
+    window = [view window];
+    windowScene = [window windowScene];
 
-    if (v4)
+    if (windowScene)
     {
-      v5 = [a1 _appearState] != 0;
+      v5 = [self _appearState] != 0;
     }
 
     else
@@ -1167,10 +1167,10 @@ void __82__SBCaptureButtonCoachingHUDViewController_transitionToState_animated_c
       v5 = 0;
     }
 
-    v6 = a1[131];
+    v6 = self[131];
     if (v6)
     {
-      v7 = [a1[131] isAcquired];
+      isAcquired = [self[131] isAcquired];
       if (!v5)
       {
         goto LABEL_11;
@@ -1179,28 +1179,28 @@ void __82__SBCaptureButtonCoachingHUDViewController_transitionToState_animated_c
 
     else
     {
-      v7 = 0;
+      isAcquired = 0;
       if (!v5)
       {
         goto LABEL_11;
       }
     }
 
-    if ((v7 & 1) == 0)
+    if ((isAcquired & 1) == 0)
     {
-      [a1[131] invalidate];
+      [self[131] invalidate];
       v8 = MEMORY[0x277CF0868];
       v9 = objc_opt_class();
       v10 = NSStringFromClass(v9);
-      v11 = [MEMORY[0x277CF09A8] requestLiveUpdatingForScene:v4];
-      v12 = [MEMORY[0x277CF09B0] requestUnrestrictedFramerateForScene:{v4, v11}];
+      v11 = [MEMORY[0x277CF09A8] requestLiveUpdatingForScene:windowScene];
+      v12 = [MEMORY[0x277CF09B0] requestUnrestrictedFramerateForScene:{windowScene, v11}];
       v19[1] = v12;
-      v13 = [MEMORY[0x277CF09E8] ignoreWhenBacklightInactivates];
-      v19[2] = v13;
+      ignoreWhenBacklightInactivates = [MEMORY[0x277CF09E8] ignoreWhenBacklightInactivates];
+      v19[2] = ignoreWhenBacklightInactivates;
       v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:3];
       v15 = [v8 acquireWithExplanation:v10 observer:0 attributes:v14];
-      v16 = a1[131];
-      a1[131] = v15;
+      v16 = self[131];
+      self[131] = v15;
 
 LABEL_16:
       return;
@@ -1219,20 +1219,20 @@ LABEL_11:
 
     if ((v17 & 1) == 0)
     {
-      [a1[131] invalidate];
-      v18 = a1[131];
-      a1[131] = 0;
+      [self[131] invalidate];
+      v18 = self[131];
+      self[131] = 0;
     }
 
     goto LABEL_16;
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = SBCaptureButtonCoachingHUDViewController;
-  [(SBCaptureButtonCoachingHUDViewController *)&v4 viewDidDisappear:a3];
+  [(SBCaptureButtonCoachingHUDViewController *)&v4 viewDidDisappear:disappear];
   [(SBCaptureButtonCoachingHUDViewController *)&self->super.super.super.super.isa _updateLiveRenderingAssertionIfNeeded];
 }
 
@@ -1343,18 +1343,18 @@ uint64_t __95__SBCaptureButtonCoachingHUDViewController_viewWillTransitionToSize
 
 - (SBUIAnimationPropertyAnimator)_makeViewControllerTransitionAnimationController
 {
-  if (a1)
+  if (self)
   {
-    a1 = [[SBUIAnimationPropertyAnimator alloc] initWithPropertyAnimatorGenerator:&__block_literal_global_345];
+    self = [[SBUIAnimationPropertyAnimator alloc] initWithPropertyAnimatorGenerator:&__block_literal_global_345];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (void)_pauseAndResetLayer:(uint64_t)a1
+- (void)_pauseAndResetLayer:(uint64_t)layer
 {
-  if (a1)
+  if (layer)
   {
     v4 = a2;
     [v4 convertTime:0 fromLayer:CACurrentMediaTime()];
@@ -1365,9 +1365,9 @@ uint64_t __95__SBCaptureButtonCoachingHUDViewController_viewWillTransitionToSize
   }
 }
 
-- (void)_resumeLayer:(uint64_t)a1
+- (void)_resumeLayer:(uint64_t)layer
 {
-  if (a1)
+  if (layer)
   {
     v5 = a2;
     [v5 timeOffset];
@@ -1383,23 +1383,23 @@ uint64_t __95__SBCaptureButtonCoachingHUDViewController_viewWillTransitionToSize
 
 - (double)_captureButtonFrame
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  v2 = [a1 view];
-  v3 = [v2 window];
-  v4 = [v3 windowScene];
+  view = [self view];
+  window = [view window];
+  windowScene = [window windowScene];
 
-  if (!v4)
+  if (!windowScene)
   {
     return *MEMORY[0x277CBF3A0];
   }
 
   v5 = +[SBButtonBezelGeometryInfo buttonBezelGeometryInfoForCurrentEmbeddedDisplayBezel];
-  v6 = [a1 view];
-  [v5 buttonHWRectForButton:9 inView:v6];
+  view2 = [self view];
+  [v5 buttonHWRectForButton:9 inView:view2];
   v8 = v7;
 
   return v8;
@@ -1410,22 +1410,22 @@ uint64_t __95__SBCaptureButtonCoachingHUDViewController_viewWillTransitionToSize
   if (result)
   {
     v1 = result;
-    v2 = [result traitCollection];
-    [v2 displayScale];
+    traitCollection = [result traitCollection];
+    [traitCollection displayScale];
 
-    v3 = [v1 view];
-    v4 = [v3 window];
-    v5 = [v4 interfaceOrientation];
+    view = [v1 view];
+    window = [view window];
+    interfaceOrientation = [window interfaceOrientation];
 
-    v6 = [v1 view];
-    [v6 safeAreaInsets];
+    view2 = [v1 view];
+    [view2 safeAreaInsets];
 
-    v7 = [v1 view];
-    [v7 frame];
+    view3 = [v1 view];
+    [view3 frame];
 
-    v8 = [v1 view];
-    [v8 frame];
-    if ((v5 - 1) <= 1)
+    view4 = [v1 view];
+    [view4 frame];
+    if ((interfaceOrientation - 1) <= 1)
     {
       [(SBCaptureButtonCoachingHUDViewController *)v1 _captureButtonFrame];
     }
@@ -1459,9 +1459,9 @@ uint64_t __95__SBCaptureButtonCoachingHUDViewController_viewWillTransitionToSize
 
 - (uint64_t)isRotating
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_0_9(*(a1 + 1016));
+    return OUTLINED_FUNCTION_0_9(*(self + 1016));
   }
 
   else
@@ -1482,9 +1482,9 @@ uint64_t __95__SBCaptureButtonCoachingHUDViewController_viewWillTransitionToSize
 
 - (uint64_t)coachingLabelTextNeedsUpdate
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_0_9(*(a1 + 1017));
+    return OUTLINED_FUNCTION_0_9(*(self + 1017));
   }
 
   else
@@ -1615,9 +1615,9 @@ uint64_t __95__SBCaptureButtonCoachingHUDViewController_viewWillTransitionToSize
 
 - (uint64_t)isAttached
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_0_9(*(a1 + 1018));
+    return OUTLINED_FUNCTION_0_9(*(self + 1018));
   }
 
   else

@@ -12,19 +12,19 @@
 
 - (BOOL)_typologyLoggingEnabledByProfile
 {
-  v2 = [(TITypologyPreferences *)self typologyProfileOptInManager];
-  v3 = v2;
-  if (v2)
+  typologyProfileOptInManager = [(TITypologyPreferences *)self typologyProfileOptInManager];
+  v3 = typologyProfileOptInManager;
+  if (typologyProfileOptInManager)
   {
-    v4 = [v2 isProfileInstalledAndUserEnabled];
+    isProfileInstalledAndUserEnabled = [typologyProfileOptInManager isProfileInstalledAndUserEnabled];
   }
 
   else
   {
-    v4 = 0;
+    isProfileInstalledAndUserEnabled = 0;
   }
 
-  return v4;
+  return isProfileInstalledAndUserEnabled;
 }
 
 - (TITypologyProfileOptInManaging)typologyProfileOptInManager
@@ -46,8 +46,8 @@
     return 0;
   }
 
-  v2 = [MEMORY[0x277D6F470] sharedPreferencesController];
-  v3 = [v2 BOOLForKey:53];
+  mEMORY[0x277D6F470] = [MEMORY[0x277D6F470] sharedPreferencesController];
+  v3 = [mEMORY[0x277D6F470] BOOLForKey:53];
 
   return v3;
 }
@@ -82,9 +82,9 @@
 {
   v13[2] = *MEMORY[0x277D85DE8];
   v3 = TI_KB_USER_DIRECTORY();
-  v4 = [(TITypologyPreferences *)self _typologyLoggingEnabledByProfile];
+  _typologyLoggingEnabledByProfile = [(TITypologyPreferences *)self _typologyLoggingEnabledByProfile];
   v5 = MEMORY[0x277CBEBC0];
-  if (v4)
+  if (_typologyLoggingEnabledByProfile)
   {
     v13[0] = v3;
     v6 = @"TypologyVault";

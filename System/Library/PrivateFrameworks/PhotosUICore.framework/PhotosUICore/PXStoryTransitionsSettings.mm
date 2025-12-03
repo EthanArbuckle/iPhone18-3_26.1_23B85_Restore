@@ -1,7 +1,7 @@
 @interface PXStoryTransitionsSettings
 + (PXStoryTransitionsSettings)sharedInstance;
 + (id)settingsControllerModule;
-- (double)cueAlignmentForTransitionKind:(char)a3;
+- (double)cueAlignmentForTransitionKind:(char)kind;
 - (void)setDefaultValues;
 @end
 
@@ -241,8 +241,8 @@
   v48 = [MEMORY[0x1E695DEC8] arrayWithObjects:v153 count:2];
   v49 = [v39 sectionWithRows:v48 title:@"Chapter Boundaries"];
   v163[9] = v49;
-  v50 = [MEMORY[0x1E69C6638] px_restoreDefaultsSection];
-  v163[10] = v50;
+  px_restoreDefaultsSection = [MEMORY[0x1E69C6638] px_restoreDefaultsSection];
+  v163[10] = px_restoreDefaultsSection;
   v51 = [MEMORY[0x1E695DEC8] arrayWithObjects:v163 count:11];
   v114 = [v113 moduleWithTitle:@"Transitions" contents:v51];
 
@@ -263,19 +263,19 @@ __CFString *__58__PXStoryTransitionsSettings_UI__settingsControllerModule__block
   }
 }
 
-- (double)cueAlignmentForTransitionKind:(char)a3
+- (double)cueAlignmentForTransitionKind:(char)kind
 {
-  if (a3 > 5)
+  if (kind > 5)
   {
-    if (a3 > 7)
+    if (kind > 7)
     {
-      if (a3 == 8)
+      if (kind == 8)
       {
         [(PXStoryTransitionsSettings *)self wipeTransitionCueAlignment];
         return result;
       }
 
-      if (a3 == 9)
+      if (kind == 9)
       {
         [(PXStoryTransitionsSettings *)self zoomTransitionCueAlignment];
         return result;
@@ -284,7 +284,7 @@ __CFString *__58__PXStoryTransitionsSettings_UI__settingsControllerModule__block
       return 0.0;
     }
 
-    if (a3 == 6)
+    if (kind == 6)
     {
       [(PXStoryTransitionsSettings *)self scaleTransitionCueAlignment];
     }
@@ -297,15 +297,15 @@ __CFString *__58__PXStoryTransitionsSettings_UI__settingsControllerModule__block
 
   else
   {
-    if (a3 <= 3)
+    if (kind <= 3)
     {
-      if (a3 == 2)
+      if (kind == 2)
       {
         [(PXStoryTransitionsSettings *)self crossfadeTransitionCueAlignment];
         return result;
       }
 
-      if (a3 == 3)
+      if (kind == 3)
       {
         [(PXStoryTransitionsSettings *)self fadeToBlackTransitionCueAlignment];
         return result;
@@ -314,7 +314,7 @@ __CFString *__58__PXStoryTransitionsSettings_UI__settingsControllerModule__block
       return 0.0;
     }
 
-    if (a3 == 4)
+    if (kind == 4)
     {
       [(PXStoryTransitionsSettings *)self exposureBleedTransitionCueAlignment];
     }

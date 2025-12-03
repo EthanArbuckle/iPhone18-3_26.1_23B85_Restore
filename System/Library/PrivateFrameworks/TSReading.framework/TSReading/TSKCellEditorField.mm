@@ -1,20 +1,20 @@
 @interface TSKCellEditorField
-- (TSKCellEditorField)initWithFrame:(CGRect)a3;
+- (TSKCellEditorField)initWithFrame:(CGRect)frame;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setLeftSymbol:(id)a3;
-- (void)setRightSymbol:(id)a3;
-- (void)setText:(id)a3;
+- (void)setLeftSymbol:(id)symbol;
+- (void)setRightSymbol:(id)symbol;
+- (void)setText:(id)text;
 @end
 
 @implementation TSKCellEditorField
 
-- (TSKCellEditorField)initWithFrame:(CGRect)a3
+- (TSKCellEditorField)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v9.receiver = self;
   v9.super_class = TSKCellEditorField;
   v7 = [(TSKCellEditorField *)&v9 initWithFrame:?];
@@ -45,23 +45,23 @@
   [(TSKCellEditorField *)&v3 dealloc];
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  [(UITextView *)self->mTextView setText:a3];
+  [(UITextView *)self->mTextView setText:text];
 
   [(TSKCellEditorField *)self setNeedsLayout];
 }
 
-- (void)setLeftSymbol:(id)a3
+- (void)setLeftSymbol:(id)symbol
 {
-  [(UILabel *)self->mLeftSymbolView setText:a3];
+  [(UILabel *)self->mLeftSymbolView setText:symbol];
 
   [(TSKCellEditorField *)self setNeedsLayout];
 }
 
-- (void)setRightSymbol:(id)a3
+- (void)setRightSymbol:(id)symbol
 {
-  [(UILabel *)self->mRightSymbolView setText:a3];
+  [(UILabel *)self->mRightSymbolView setText:symbol];
 
   [(TSKCellEditorField *)self setNeedsLayout];
 }
@@ -70,11 +70,11 @@
 {
   [(TSKCellEditorField *)self frame];
   v4 = v3;
-  v5 = [(UILabel *)[(TSKCellEditorField *)self leftSymbolView] text];
-  v6 = [(TSKCellEditorField *)self leftSymbolView];
-  if (v5)
+  text = [(UILabel *)[(TSKCellEditorField *)self leftSymbolView] text];
+  leftSymbolView = [(TSKCellEditorField *)self leftSymbolView];
+  if (text)
   {
-    [(UILabel *)v6 setHidden:0];
+    [(UILabel *)leftSymbolView setHidden:0];
     [(UILabel *)[(TSKCellEditorField *)self leftSymbolView] sizeToFit];
     [(UILabel *)[(TSKCellEditorField *)self leftSymbolView] frame];
     [(UILabel *)[(TSKCellEditorField *)self leftSymbolView] setFrame:0.0, v7, v8, v9];
@@ -84,15 +84,15 @@
 
   else
   {
-    [(UILabel *)v6 setHidden:1];
+    [(UILabel *)leftSymbolView setHidden:1];
     v11 = 0.0;
   }
 
-  v12 = [(UILabel *)[(TSKCellEditorField *)self rightSymbolView] text];
-  v13 = [(TSKCellEditorField *)self rightSymbolView];
-  if (v12)
+  text2 = [(UILabel *)[(TSKCellEditorField *)self rightSymbolView] text];
+  rightSymbolView = [(TSKCellEditorField *)self rightSymbolView];
+  if (text2)
   {
-    [(UILabel *)v13 setHidden:0];
+    [(UILabel *)rightSymbolView setHidden:0];
     [(UILabel *)[(TSKCellEditorField *)self rightSymbolView] sizeToFit];
     [(UILabel *)[(TSKCellEditorField *)self rightSymbolView] frame];
     v15 = v14;
@@ -107,14 +107,14 @@
 
   else
   {
-    [(UILabel *)v13 setHidden:1];
+    [(UILabel *)rightSymbolView setHidden:1];
   }
 
   [(TSKCellEditorField *)self frame];
   v24 = v23;
-  v25 = [(TSKCellEditorField *)self textView];
+  textView = [(TSKCellEditorField *)self textView];
 
-  [(UITextView *)v25 setFrame:v11, 0.0, v4 - v11, v24];
+  [(UITextView *)textView setFrame:v11, 0.0, v4 - v11, v24];
 }
 
 @end

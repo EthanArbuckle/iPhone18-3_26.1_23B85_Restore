@@ -33,7 +33,7 @@
 
   if (a3)
   {
-    [a1 _disableTouchCancellationOnRotation];
+    [self _disableTouchCancellationOnRotation];
   }
 
   v6[2](v6);

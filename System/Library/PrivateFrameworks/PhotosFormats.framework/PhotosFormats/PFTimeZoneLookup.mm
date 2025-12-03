@@ -1,8 +1,8 @@
 @interface PFTimeZoneLookup
 - (BOOL)loadOrCreateIndex;
-- (CLLocationCoordinate2D)anyCoordinateForTimeZoneName:(id)a3;
+- (CLLocationCoordinate2D)anyCoordinateForTimeZoneName:(id)name;
 - (char)magic;
-- (id)timeZoneNameForCoordinate:(CLLocationCoordinate2D)a3;
+- (id)timeZoneNameForCoordinate:(CLLocationCoordinate2D)coordinate;
 @end
 
 @implementation PFTimeZoneLookup
@@ -17,34 +17,34 @@
 
 - (char)magic
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
   v1 = [PFTimeZoneLookup magic]::buffer;
-  snprintf(-[PFTimeZoneLookup magic]::buffer, 0x50uLL, "%s%s%02x%08x", "PFTimeZone", "01", 4, [a1 architectureHash]);
+  snprintf(-[PFTimeZoneLookup magic]::buffer, 0x50uLL, "%s%s%02x%08x", "PFTimeZone", "01", 4, [self architectureHash]);
   return v1;
 }
 
-- (CLLocationCoordinate2D)anyCoordinateForTimeZoneName:(id)a3
+- (CLLocationCoordinate2D)anyCoordinateForTimeZoneName:(id)name
 {
   v69 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  nameCopy = name;
   if (![(PFTimeZoneLookup *)self loadOrCreateIndex])
   {
     v61 = *MEMORY[0x1E6985CC0];
     goto LABEL_82;
   }
 
-  if (([(__CFString *)v4 isEqualToString:@"US/Pacific"]& 1) != 0)
+  if (([(__CFString *)nameCopy isEqualToString:@"US/Pacific"]& 1) != 0)
   {
     v5 = @"America/Los_Angeles";
   }
 
   else
   {
-    if (![(__CFString *)v4 isEqualToString:@"GMT"])
+    if (![(__CFString *)nameCopy isEqualToString:@"GMT"])
     {
       goto LABEL_10;
     }
@@ -55,16 +55,16 @@
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    *&buf[4] = v4;
+    *&buf[4] = nameCopy;
     *&buf[12] = 2112;
     *&buf[14] = v5;
     _os_log_impl(&dword_1B35C1000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "Overriding input timeZone %@ with %@", buf, 0x16u);
   }
 
-  v4 = v5;
+  nameCopy = v5;
 LABEL_10:
-  v6 = v4;
-  std::string::basic_string[abi:ne200100]<0>(__p, -[__CFString UTF8String](v4, "UTF8String"));
+  v6 = nameCopy;
+  std::string::basic_string[abi:ne200100]<0>(__p, -[__CFString UTF8String](nameCopy, "UTF8String"));
   timezones = self->_timezones;
   v10 = timezones[1];
   v9 = (timezones + 1);
@@ -405,10 +405,10 @@ LABEL_82:
   return result;
 }
 
-- (id)timeZoneNameForCoordinate:(CLLocationCoordinate2D)a3
+- (id)timeZoneNameForCoordinate:(CLLocationCoordinate2D)coordinate
 {
-  longitude = a3.longitude;
-  latitude = a3.latitude;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
   v144 = *MEMORY[0x1E69E9840];
   if (![(PFTimeZoneLookup *)self loadOrCreateIndex])
   {
@@ -465,7 +465,7 @@ LABEL_8:
         std::__allocate_at_least[abi:ne200100]<std::allocator<std::pair<double,std::pair<boost::geometry::model::point<float,2ul,boost::geometry::cs::cartesian>,unsigned short> const*>>>(1uLL);
       }
 
-      v129 = self;
+      selfCopy = self;
       v14 = (rtree + 3) - &v132 + v12;
       v132 = v14;
       v15 = 0;
@@ -1043,7 +1043,7 @@ LABEL_8:
       if (v107 != v13)
       {
         v117 = *(v13 + 8);
-        timezones = v129->_timezones;
+        timezones = selfCopy->_timezones;
         v119 = timezones[2];
         if (v119 >= v117)
         {

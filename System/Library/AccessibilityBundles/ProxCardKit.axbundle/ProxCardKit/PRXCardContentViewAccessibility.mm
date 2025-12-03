@@ -1,17 +1,17 @@
 @interface PRXCardContentViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)layoutSubviews;
 @end
 
 @implementation PRXCardContentViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PRXCardContentView" hasInstanceMethod:@"dismissButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PRXCardContentView" hasInstanceMethod:@"titleView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PRXCardContentView" isKindOfClass:@"UIView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PRXCardContentView" hasInstanceMethod:@"dismissButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PRXCardContentView" hasInstanceMethod:@"titleView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PRXCardContentView" isKindOfClass:@"UIView"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

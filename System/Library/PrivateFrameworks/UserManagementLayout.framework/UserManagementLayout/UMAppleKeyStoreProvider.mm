@@ -1,31 +1,31 @@
 @interface UMAppleKeyStoreProvider
-- (BOOL)addPersonaWithUUID:(id)a3 toSession:(unsigned int)a4 passcode:(id)a5 error:(id *)a6;
-- (BOOL)bootstrapVolumeWithMountPoint:(id)a3 user:(unsigned int)a4 error:(id *)a5;
-- (BOOL)changeSecretrForIdentityWithUUID:(id)a3 oldPasscode:(id)a4 newPasscode:(id)a5 existingSession:(unsigned int)a6 isACMCredential:(BOOL)a7 error:(id *)a8;
-- (BOOL)createIdentityWithUUID:(id)a3 passcode:(id)a4 existingSession:(unsigned int)a5 existingSessionPasscode:(id)a6 isACMCredential:(BOOL)a7 error:(id *)a8;
-- (BOOL)deleteIdentity:(id)a3 error:(id *)a4;
-- (BOOL)deletePersonaWithUUID:(id)a3 fromSession:(unsigned int)a4 error:(id *)a5;
-- (BOOL)isIdentityLoadedIntoSession:(unsigned int)a3;
-- (BOOL)loadIdentity:(id)a3 intoSession:(unsigned int)a4 error:(id *)a5;
-- (BOOL)loginIdentity:(id)a3 intoSession:(unsigned int)a4 passcode:(id)a5 isACMCredential:(BOOL)a6 error:(id *)a7;
-- (BOOL)mapVolume:(id)a3 toSession:(unsigned int)a4 withPersona:(id)a5 error:(id *)a6;
-- (BOOL)unloadIdentityFromSession:(unsigned int)a3 error:(id *)a4;
-- (BOOL)unlockIdentityInSession:(unsigned int)a3 passcode:(id)a4 isACMCredential:(BOOL)a5 error:(id *)a6;
-- (BOOL)unmapVolume:(id)a3 error:(id *)a4;
-- (BOOL)verifyIdentityPasswordInSession:(unsigned int)a3 passcode:(id)a4 isACMCredential:(BOOL)a5 error:(id *)a6;
-- (id)dataUnwrappingDataWithDeviceClassF:(id)a3 error:(id *)a4;
-- (id)dataWrappingDataWithDeviceClassF:(id)a3 error:(id *)a4;
+- (BOOL)addPersonaWithUUID:(id)d toSession:(unsigned int)session passcode:(id)passcode error:(id *)error;
+- (BOOL)bootstrapVolumeWithMountPoint:(id)point user:(unsigned int)user error:(id *)error;
+- (BOOL)changeSecretrForIdentityWithUUID:(id)d oldPasscode:(id)passcode newPasscode:(id)newPasscode existingSession:(unsigned int)session isACMCredential:(BOOL)credential error:(id *)error;
+- (BOOL)createIdentityWithUUID:(id)d passcode:(id)passcode existingSession:(unsigned int)session existingSessionPasscode:(id)sessionPasscode isACMCredential:(BOOL)credential error:(id *)error;
+- (BOOL)deleteIdentity:(id)identity error:(id *)error;
+- (BOOL)deletePersonaWithUUID:(id)d fromSession:(unsigned int)session error:(id *)error;
+- (BOOL)isIdentityLoadedIntoSession:(unsigned int)session;
+- (BOOL)loadIdentity:(id)identity intoSession:(unsigned int)session error:(id *)error;
+- (BOOL)loginIdentity:(id)identity intoSession:(unsigned int)session passcode:(id)passcode isACMCredential:(BOOL)credential error:(id *)error;
+- (BOOL)mapVolume:(id)volume toSession:(unsigned int)session withPersona:(id)persona error:(id *)error;
+- (BOOL)unloadIdentityFromSession:(unsigned int)session error:(id *)error;
+- (BOOL)unlockIdentityInSession:(unsigned int)session passcode:(id)passcode isACMCredential:(BOOL)credential error:(id *)error;
+- (BOOL)unmapVolume:(id)volume error:(id *)error;
+- (BOOL)verifyIdentityPasswordInSession:(unsigned int)session passcode:(id)passcode isACMCredential:(BOOL)credential error:(id *)error;
+- (id)dataUnwrappingDataWithDeviceClassF:(id)f error:(id *)error;
+- (id)dataWrappingDataWithDeviceClassF:(id)f error:(id *)error;
 @end
 
 @implementation UMAppleKeyStoreProvider
 
-- (BOOL)bootstrapVolumeWithMountPoint:(id)a3 user:(unsigned int)a4 error:(id *)a5
+- (BOOL)bootstrapVolumeWithMountPoint:(id)point user:(unsigned int)user error:(id *)error
 {
   v21 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  if (a5)
+  pointCopy = point;
+  if (error)
   {
-    *a5 = 0;
+    *error = 0;
   }
 
   if ([(UMAppleKeyStoreProvider *)self ignoreIdentityMethods])
@@ -112,9 +112,9 @@
         free(v18);
       }
 
-      if (a5)
+      if (error)
       {
-        *a5 = 0;
+        *error = 0;
       }
 
       CFRelease(0);
@@ -125,17 +125,17 @@
   return v13;
 }
 
-- (id)dataWrappingDataWithDeviceClassF:(id)a3 error:(id *)a4
+- (id)dataWrappingDataWithDeviceClassF:(id)f error:(id *)error
 {
   v28 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = v5;
-  if (a4)
+  fCopy = f;
+  v6 = fCopy;
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
-  if ([v5 length] < 0x21)
+  if ([fCopy length] < 0x21)
   {
     memset(v27, 0, sizeof(v27));
     [v6 bytes];
@@ -189,7 +189,7 @@
       free(v17);
     }
 
-    if (a4)
+    if (error)
     {
       v19 = MEMORY[0x277CCA9B8];
       v20 = *MEMORY[0x277CCA4A8];
@@ -237,14 +237,14 @@
       free(v10);
     }
 
-    if (a4)
+    if (error)
     {
       v19 = MEMORY[0x277CCA9B8];
       v20 = *MEMORY[0x277CCA5B8];
       v21 = 22;
 LABEL_31:
       [v19 errorWithDomain:v20 code:v21 userInfo:{0, v24, v25}];
-      *a4 = v18 = 0;
+      *error = v18 = 0;
       goto LABEL_33;
     }
   }
@@ -257,17 +257,17 @@ LABEL_33:
   return v18;
 }
 
-- (id)dataUnwrappingDataWithDeviceClassF:(id)a3 error:(id *)a4
+- (id)dataUnwrappingDataWithDeviceClassF:(id)f error:(id *)error
 {
   v30 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = v5;
-  if (a4)
+  fCopy = f;
+  v6 = fCopy;
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
-  if ([v5 length] >= 0x29)
+  if ([fCopy length] >= 0x29)
   {
     if (qword_2810B8888 != -1)
     {
@@ -306,14 +306,14 @@ LABEL_33:
       free(v10);
     }
 
-    if (a4)
+    if (error)
     {
       v21 = MEMORY[0x277CCA9B8];
       v22 = *MEMORY[0x277CCA5B8];
       v23 = 22;
 LABEL_41:
       [v21 errorWithDomain:v22 code:v23 userInfo:{0, v26, v27}];
-      *a4 = v16 = 0;
+      *error = v16 = 0;
       goto LABEL_43;
     }
 
@@ -409,7 +409,7 @@ LABEL_38:
     }
   }
 
-  if (a4)
+  if (error)
   {
     v21 = MEMORY[0x277CCA9B8];
     v22 = *MEMORY[0x277CCA4A8];
@@ -426,17 +426,17 @@ LABEL_43:
   return v16;
 }
 
-- (BOOL)deleteIdentity:(id)a3 error:(id *)a4
+- (BOOL)deleteIdentity:(id)identity error:(id *)error
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = v5;
-  if (a4)
+  identityCopy = identity;
+  v6 = identityCopy;
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
-  v7 = sub_22EE66238(v5);
+  v7 = sub_22EE66238(identityCopy);
   v8 = AKSIdentityDelete();
   if (v8)
   {
@@ -517,9 +517,9 @@ LABEL_43:
       free(v18);
     }
 
-    if (a4)
+    if (error)
     {
-      *a4 = 0;
+      *error = 0;
     }
 
     else
@@ -534,7 +534,7 @@ LABEL_43:
   return v8;
 }
 
-- (BOOL)isIdentityLoadedIntoSession:(unsigned int)a3
+- (BOOL)isIdentityLoadedIntoSession:(unsigned int)session
 {
   v16 = *MEMORY[0x277D85DE8];
   system = aks_get_system();
@@ -647,17 +647,17 @@ LABEL_29:
   return v4 == 0;
 }
 
-- (BOOL)loadIdentity:(id)a3 intoSession:(unsigned int)a4 error:(id *)a5
+- (BOOL)loadIdentity:(id)identity intoSession:(unsigned int)session error:(id *)error
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = v6;
-  if (a5)
+  identityCopy = identity;
+  v7 = identityCopy;
+  if (error)
   {
-    *a5 = 0;
+    *error = 0;
   }
 
-  v8 = sub_22EE66238(v6);
+  v8 = sub_22EE66238(identityCopy);
   v9 = AKSIdentityLoad();
   if (v9)
   {
@@ -738,9 +738,9 @@ LABEL_29:
       free(v19);
     }
 
-    if (a5)
+    if (error)
     {
-      *a5 = 0;
+      *error = 0;
     }
 
     else
@@ -755,12 +755,12 @@ LABEL_29:
   return v9;
 }
 
-- (BOOL)unloadIdentityFromSession:(unsigned int)a3 error:(id *)a4
+- (BOOL)unloadIdentityFromSession:(unsigned int)session error:(id *)error
 {
   v18 = *MEMORY[0x277D85DE8];
-  if (a4)
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
   v5 = AKSIdentityUnload();
@@ -843,9 +843,9 @@ LABEL_29:
       free(v15);
     }
 
-    if (a4)
+    if (error)
     {
-      *a4 = 0;
+      *error = 0;
     }
 
     else
@@ -858,21 +858,21 @@ LABEL_29:
   return v5;
 }
 
-- (BOOL)loginIdentity:(id)a3 intoSession:(unsigned int)a4 passcode:(id)a5 isACMCredential:(BOOL)a6 error:(id *)a7
+- (BOOL)loginIdentity:(id)identity intoSession:(unsigned int)session passcode:(id)passcode isACMCredential:(BOOL)credential error:(id *)error
 {
-  v8 = a6;
+  credentialCopy = credential;
   v29 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a5;
-  if (a7)
+  identityCopy = identity;
+  passcodeCopy = passcode;
+  if (error)
   {
-    *a7 = 0;
+    *error = 0;
   }
 
-  v13 = sub_22EE66238(v11);
-  if (!v8)
+  v13 = sub_22EE66238(identityCopy);
+  if (!credentialCopy)
   {
-    sub_22EE75E98(self, v12);
+    sub_22EE75E98(self, passcodeCopy);
     if (AKSIdentityLogin())
     {
       goto LABEL_5;
@@ -888,10 +888,10 @@ LABEL_29:
     {
 LABEL_36:
 
-      if (a7)
+      if (error)
       {
         v24 = 0;
-        *a7 = 0;
+        *error = 0;
       }
 
       else
@@ -1012,17 +1012,17 @@ LABEL_39:
   return v24;
 }
 
-- (BOOL)deletePersonaWithUUID:(id)a3 fromSession:(unsigned int)a4 error:(id *)a5
+- (BOOL)deletePersonaWithUUID:(id)d fromSession:(unsigned int)session error:(id *)error
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = v6;
-  if (a5)
+  dCopy = d;
+  v7 = dCopy;
+  if (error)
   {
-    *a5 = 0;
+    *error = 0;
   }
 
-  v8 = sub_22EE66238(v6);
+  v8 = sub_22EE66238(dCopy);
   v9 = AKSIdentityDeletePersona();
   if (v9)
   {
@@ -1103,9 +1103,9 @@ LABEL_39:
       free(v19);
     }
 
-    if (a5)
+    if (error)
     {
-      *a5 = 0;
+      *error = 0;
     }
 
     else
@@ -1120,14 +1120,14 @@ LABEL_39:
   return v9;
 }
 
-- (BOOL)mapVolume:(id)a3 toSession:(unsigned int)a4 withPersona:(id)a5 error:(id *)a6
+- (BOOL)mapVolume:(id)volume toSession:(unsigned int)session withPersona:(id)persona error:(id *)error
 {
   v30 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a5;
-  if (a6)
+  volumeCopy = volume;
+  personaCopy = persona;
+  if (error)
   {
-    *a6 = 0;
+    *error = 0;
   }
 
   if ([(UMAppleKeyStoreProvider *)self ignoreIdentityMethods])
@@ -1173,7 +1173,7 @@ LABEL_39:
     goto LABEL_44;
   }
 
-  v16 = sub_22EE66238(v10);
+  v16 = sub_22EE66238(personaCopy);
   v17 = AKSVolumeMap();
   if ((v17 & 1) == 0)
   {
@@ -1214,10 +1214,10 @@ LABEL_39:
       free(v27);
     }
 
-    if (a6)
+    if (error)
     {
-      *a6 = 0;
-      if (!v10)
+      *error = 0;
+      if (!personaCopy)
       {
         goto LABEL_44;
       }
@@ -1226,7 +1226,7 @@ LABEL_39:
     else
     {
       CFRelease(0);
-      if (!v10)
+      if (!personaCopy)
       {
         goto LABEL_44;
       }
@@ -1274,7 +1274,7 @@ LABEL_43:
     free(v22);
   }
 
-  if (v10)
+  if (personaCopy)
   {
     goto LABEL_43;
   }
@@ -1285,13 +1285,13 @@ LABEL_44:
   return v17;
 }
 
-- (BOOL)unmapVolume:(id)a3 error:(id *)a4
+- (BOOL)unmapVolume:(id)volume error:(id *)error
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (a4)
+  volumeCopy = volume;
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
   if ([(UMAppleKeyStoreProvider *)self ignoreIdentityMethods])
@@ -1418,9 +1418,9 @@ LABEL_44:
         free(v22);
       }
 
-      if (a4)
+      if (error)
       {
-        *a4 = 0;
+        *error = 0;
       }
 
       else
@@ -1434,22 +1434,22 @@ LABEL_44:
   return v12;
 }
 
-- (BOOL)createIdentityWithUUID:(id)a3 passcode:(id)a4 existingSession:(unsigned int)a5 existingSessionPasscode:(id)a6 isACMCredential:(BOOL)a7 error:(id *)a8
+- (BOOL)createIdentityWithUUID:(id)d passcode:(id)passcode existingSession:(unsigned int)session existingSessionPasscode:(id)sessionPasscode isACMCredential:(BOOL)credential error:(id *)error
 {
-  v10 = a7;
+  credentialCopy = credential;
   v31 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
-  if (a8)
+  dCopy = d;
+  passcodeCopy = passcode;
+  sessionPasscodeCopy = sessionPasscode;
+  if (error)
   {
-    *a8 = 0;
+    *error = 0;
   }
 
-  sub_22EE66238(v14);
+  sub_22EE66238(dCopy);
   sub_22EE6611C();
-  sub_22EE75E98(self, v16);
-  if (v10)
+  sub_22EE75E98(self, sessionPasscodeCopy);
+  if (credentialCopy)
   {
     if ((AKSIdentityCreateWithACM() & 1) == 0)
     {
@@ -1494,10 +1494,10 @@ LABEL_5:
         free(v21);
       }
 
-      if (a8)
+      if (error)
       {
         v27 = 0;
-        *a8 = v30;
+        *error = v30;
       }
 
       else
@@ -1555,22 +1555,22 @@ LABEL_29:
   return v27;
 }
 
-- (BOOL)changeSecretrForIdentityWithUUID:(id)a3 oldPasscode:(id)a4 newPasscode:(id)a5 existingSession:(unsigned int)a6 isACMCredential:(BOOL)a7 error:(id *)a8
+- (BOOL)changeSecretrForIdentityWithUUID:(id)d oldPasscode:(id)passcode newPasscode:(id)newPasscode existingSession:(unsigned int)session isACMCredential:(BOOL)credential error:(id *)error
 {
-  v10 = a7;
+  credentialCopy = credential;
   v31 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  if (a8)
+  dCopy = d;
+  passcodeCopy = passcode;
+  newPasscodeCopy = newPasscode;
+  if (error)
   {
-    *a8 = 0;
+    *error = 0;
   }
 
-  sub_22EE66238(v14);
+  sub_22EE66238(dCopy);
   sub_22EE6611C();
-  sub_22EE75E98(self, v16);
-  if (v10)
+  sub_22EE75E98(self, newPasscodeCopy);
+  if (credentialCopy)
   {
     if ((AKSIdentityChangePasscodeWithACM() & 1) == 0)
     {
@@ -1615,10 +1615,10 @@ LABEL_5:
         free(v21);
       }
 
-      if (a8)
+      if (error)
       {
         v27 = 0;
-        *a8 = v30;
+        *error = v30;
       }
 
       else
@@ -1676,20 +1676,20 @@ LABEL_29:
   return v27;
 }
 
-- (BOOL)unlockIdentityInSession:(unsigned int)a3 passcode:(id)a4 isACMCredential:(BOOL)a5 error:(id *)a6
+- (BOOL)unlockIdentityInSession:(unsigned int)session passcode:(id)passcode isACMCredential:(BOOL)credential error:(id *)error
 {
-  v7 = a5;
+  credentialCopy = credential;
   v23 = *MEMORY[0x277D85DE8];
-  if (a6)
+  if (error)
   {
-    *a6 = 0;
+    *error = 0;
   }
 
-  v9 = sub_22EE75E98(self, a4);
-  v10 = -a3;
+  v9 = sub_22EE75E98(self, passcode);
+  v10 = -session;
   [v9 bytes];
   [v9 length];
-  if (v7)
+  if (credentialCopy)
   {
     v11 = aks_unlock_device_with_acm();
   }
@@ -1732,9 +1732,9 @@ LABEL_29:
       free(v16);
     }
 
-    if (a6)
+    if (error)
     {
-      *a6 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:v12 userInfo:0];
+      *error = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:v12 userInfo:0];
     }
   }
 
@@ -1775,17 +1775,17 @@ LABEL_29:
   return v12 == 0;
 }
 
-- (BOOL)verifyIdentityPasswordInSession:(unsigned int)a3 passcode:(id)a4 isACMCredential:(BOOL)a5 error:(id *)a6
+- (BOOL)verifyIdentityPasswordInSession:(unsigned int)session passcode:(id)passcode isACMCredential:(BOOL)credential error:(id *)error
 {
-  v7 = a5;
+  credentialCopy = credential;
   v30 = *MEMORY[0x277D85DE8];
-  if (a6)
+  if (error)
   {
-    *a6 = 0;
+    *error = 0;
   }
 
-  v8 = sub_22EE75E98(self, a4);
-  if (v7)
+  v8 = sub_22EE75E98(self, passcode);
+  if (credentialCopy)
   {
     if (qword_2810B8898 != -1)
     {
@@ -1817,7 +1817,7 @@ LABEL_29:
       free(v12);
     }
 
-    v17 = [v8 bytes];
+    bytes = [v8 bytes];
     [v8 length];
     sub_22EE660CC();
     v18 = aks_verify_password_with_acm();
@@ -1855,7 +1855,7 @@ LABEL_29:
       free(v16);
     }
 
-    v17 = [v8 bytes];
+    bytes = [v8 bytes];
     [v8 length];
     sub_22EE660CC();
     v18 = aks_verify_password();
@@ -1894,9 +1894,9 @@ LABEL_29:
       free(v23);
     }
 
-    if (a6)
+    if (error)
     {
-      *a6 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:v19 userInfo:0];
+      *error = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:v19 userInfo:0];
     }
   }
 
@@ -1937,18 +1937,18 @@ LABEL_29:
   return v19 == 0;
 }
 
-- (BOOL)addPersonaWithUUID:(id)a3 toSession:(unsigned int)a4 passcode:(id)a5 error:(id *)a6
+- (BOOL)addPersonaWithUUID:(id)d toSession:(unsigned int)session passcode:(id)passcode error:(id *)error
 {
   v24 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  if (a6)
+  dCopy = d;
+  if (error)
   {
-    *a6 = 0;
+    *error = 0;
   }
 
-  v10 = a5;
-  v11 = sub_22EE66238(v9);
-  sub_22EE75E98(self, v10);
+  passcodeCopy = passcode;
+  v11 = sub_22EE66238(dCopy);
+  sub_22EE75E98(self, passcodeCopy);
 
   v12 = AKSIdentityAddPersona();
   if (v12)
@@ -2026,9 +2026,9 @@ LABEL_29:
       free(v21);
     }
 
-    if (a6)
+    if (error)
     {
-      *a6 = 0;
+      *error = 0;
     }
 
     else

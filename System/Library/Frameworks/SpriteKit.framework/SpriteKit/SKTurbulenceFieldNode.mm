@@ -1,8 +1,8 @@
 @interface SKTurbulenceFieldNode
 - (SKTurbulenceFieldNode)init;
-- (SKTurbulenceFieldNode)initWithCoder:(id)a3;
+- (SKTurbulenceFieldNode)initWithCoder:(id)coder;
 - (void)_initialize;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SKTurbulenceFieldNode
@@ -11,9 +11,9 @@
 {
   if (!self->super.super._field)
   {
-    v3 = [MEMORY[0x277D3D120] field];
+    field = [MEMORY[0x277D3D120] field];
     field = self->super.super._field;
-    self->super.super._field = v3;
+    self->super.super._field = field;
 
     v5 = self->super.super._field;
 
@@ -35,13 +35,13 @@
   return v3;
 }
 
-- (SKTurbulenceFieldNode)initWithCoder:(id)a3
+- (SKTurbulenceFieldNode)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277D3D120] field];
+  coderCopy = coder;
+  field = [MEMORY[0x277D3D120] field];
   v8.receiver = self;
   v8.super_class = SKTurbulenceFieldNode;
-  v6 = [(SKFieldNode *)&v8 initWithCoder:v4 field:v5];
+  v6 = [(SKFieldNode *)&v8 initWithCoder:coderCopy field:field];
 
   if (v6)
   {
@@ -51,11 +51,11 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = SKTurbulenceFieldNode;
-  [(SKNoiseFieldNode *)&v3 encodeWithCoder:a3];
+  [(SKNoiseFieldNode *)&v3 encodeWithCoder:coder];
 }
 
 @end

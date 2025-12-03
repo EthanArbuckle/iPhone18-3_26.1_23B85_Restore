@@ -60,8 +60,8 @@
 
   [v3 appendFormat:@", "];
   v13 = NSStringFromSelector("upgradeSessionUUID");
-  v14 = [(CSDConversationJoinContext *)self upgradeSessionUUID];
-  [v3 appendFormat:@"%@=%@", v13, v14];
+  upgradeSessionUUID = [(CSDConversationJoinContext *)self upgradeSessionUUID];
+  [v3 appendFormat:@"%@=%@", v13, upgradeSessionUUID];
 
   [v3 appendFormat:@", "];
   v15 = NSStringFromSelector("isOneToOneModeEnabled");
@@ -69,13 +69,13 @@
 
   [v3 appendFormat:@", "];
   v16 = NSStringFromSelector("provider");
-  v17 = [(CSDConversationJoinContext *)self provider];
-  [v3 appendFormat:@"%@=%@", v16, v17];
+  provider = [(CSDConversationJoinContext *)self provider];
+  [v3 appendFormat:@"%@=%@", v16, provider];
 
   [v3 appendFormat:@", "];
   v18 = NSStringFromSelector("invitationPreferences");
-  v19 = [(CSDConversationJoinContext *)self invitationPreferences];
-  [v3 appendFormat:@"%@=%@", v18, v19];
+  invitationPreferences = [(CSDConversationJoinContext *)self invitationPreferences];
+  [v3 appendFormat:@"%@=%@", v18, invitationPreferences];
 
   [v3 appendFormat:@", "];
   v20 = NSStringFromSelector("isLightweight");
@@ -132,34 +132,34 @@
   v35 = NSStringFromSelector("screening");
   [v3 appendFormat:@"%@=%d", v35, -[CSDConversationJoinContext isScreening](self, "isScreening")];
 
-  v36 = [(CSDConversationJoinContext *)self participantAssociation];
+  participantAssociation = [(CSDConversationJoinContext *)self participantAssociation];
 
-  if (v36)
+  if (participantAssociation)
   {
     [v3 appendFormat:@", "];
     v37 = NSStringFromSelector("participantAssociation");
-    v38 = [(CSDConversationJoinContext *)self participantAssociation];
-    [v3 appendFormat:@"%@=%@", v37, v38];
+    participantAssociation2 = [(CSDConversationJoinContext *)self participantAssociation];
+    [v3 appendFormat:@"%@=%@", v37, participantAssociation2];
   }
 
-  v39 = [(CSDConversationJoinContext *)self activity];
+  activity = [(CSDConversationJoinContext *)self activity];
 
-  if (v39)
+  if (activity)
   {
     [v3 appendFormat:@", "];
     v40 = NSStringFromSelector("activity");
-    v41 = [(CSDConversationJoinContext *)self activity];
-    [v3 appendFormat:@"%@=%@", v40, v41];
+    activity2 = [(CSDConversationJoinContext *)self activity];
+    [v3 appendFormat:@"%@=%@", v40, activity2];
   }
 
-  v42 = [(CSDConversationJoinContext *)self screenSharingRequest];
+  screenSharingRequest = [(CSDConversationJoinContext *)self screenSharingRequest];
 
-  if (v42)
+  if (screenSharingRequest)
   {
     [v3 appendFormat:@", "];
     v43 = NSStringFromSelector("screenSharingRequest");
-    v44 = [(CSDConversationJoinContext *)self screenSharingRequest];
-    [v3 appendFormat:@"%@=%@", v43, v44];
+    screenSharingRequest2 = [(CSDConversationJoinContext *)self screenSharingRequest];
+    [v3 appendFormat:@"%@=%@", v43, screenSharingRequest2];
   }
 
   [v3 appendFormat:@", "];
@@ -170,14 +170,14 @@
   v46 = NSStringFromSelector("isUPlusOneVisionToVisionAvailable");
   [v3 appendFormat:@"%@=%d", v46, -[CSDConversationJoinContext isUPlusOneVisionToVisionAvailable](self, "isUPlusOneVisionToVisionAvailable")];
 
-  v47 = [(CSDConversationJoinContext *)self participantCluster];
+  participantCluster = [(CSDConversationJoinContext *)self participantCluster];
 
-  if (v47)
+  if (participantCluster)
   {
     [v3 appendFormat:@", "];
     v48 = NSStringFromSelector("participantCluster");
-    v49 = [(CSDConversationJoinContext *)self participantCluster];
-    [v3 appendFormat:@"%@=%@", v48, v49];
+    participantCluster2 = [(CSDConversationJoinContext *)self participantCluster];
+    [v3 appendFormat:@"%@=%@", v48, participantCluster2];
   }
 
   [v3 appendFormat:@", "];

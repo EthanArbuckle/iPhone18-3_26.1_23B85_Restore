@@ -35,13 +35,13 @@ LABEL_6:
   v28 = 0;
   v26 = 0;
   v27 = 0;
-  v11 = PFValidateDictionaryForClasses(a1, v9, v10, &v28, &v27, &v26);
+  v11 = PFValidateDictionaryForClasses(self, v9, v10, &v28, &v27, &v26);
   v12 = v28;
   v13 = v27;
   v14 = v26;
   if (v11)
   {
-    v15 = [a1 copy];
+    v15 = [self copy];
   }
 
   else
@@ -58,7 +58,7 @@ LABEL_6:
     v24 = v8;
     v25 = v14;
     v17 = v16;
-    [a1 enumerateKeysAndObjectsUsingBlock:v19];
+    [self enumerateKeysAndObjectsUsingBlock:v19];
     v15 = [v17 copy];
   }
 

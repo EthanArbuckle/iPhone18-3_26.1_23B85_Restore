@@ -1,71 +1,71 @@
 @interface TLKTableColumnAlignment
 - (id)description;
 - (int64_t)textAlignment;
-- (void)setColumnAlignment:(unint64_t)a3;
-- (void)setDataAlignment:(int64_t)a3;
-- (void)setIsEqualWidth:(BOOL)a3;
+- (void)setColumnAlignment:(unint64_t)alignment;
+- (void)setDataAlignment:(int64_t)alignment;
+- (void)setIsEqualWidth:(BOOL)width;
 @end
 
 @implementation TLKTableColumnAlignment
 
-- (void)setColumnAlignment:(unint64_t)a3
+- (void)setColumnAlignment:(unint64_t)alignment
 {
-  if (self->_columnAlignment != a3)
+  if (self->_columnAlignment != alignment)
   {
-    self->_columnAlignment = a3;
-    v4 = [(TLKObject *)self observer];
-    if (v4)
+    self->_columnAlignment = alignment;
+    observer = [(TLKObject *)self observer];
+    if (observer)
     {
-      v5 = v4;
-      v6 = [(TLKObject *)self observer];
-      v7 = [v6 batchUpdateCount];
+      v5 = observer;
+      observer2 = [(TLKObject *)self observer];
+      batchUpdateCount = [observer2 batchUpdateCount];
 
-      if (!v7)
+      if (!batchUpdateCount)
       {
-        v8 = [(TLKObject *)self observer];
-        [v8 propertiesDidChange];
+        observer3 = [(TLKObject *)self observer];
+        [observer3 propertiesDidChange];
       }
     }
   }
 }
 
-- (void)setDataAlignment:(int64_t)a3
+- (void)setDataAlignment:(int64_t)alignment
 {
-  if (self->_dataAlignment != a3)
+  if (self->_dataAlignment != alignment)
   {
-    self->_dataAlignment = a3;
-    v4 = [(TLKObject *)self observer];
-    if (v4)
+    self->_dataAlignment = alignment;
+    observer = [(TLKObject *)self observer];
+    if (observer)
     {
-      v5 = v4;
-      v6 = [(TLKObject *)self observer];
-      v7 = [v6 batchUpdateCount];
+      v5 = observer;
+      observer2 = [(TLKObject *)self observer];
+      batchUpdateCount = [observer2 batchUpdateCount];
 
-      if (!v7)
+      if (!batchUpdateCount)
       {
-        v8 = [(TLKObject *)self observer];
-        [v8 propertiesDidChange];
+        observer3 = [(TLKObject *)self observer];
+        [observer3 propertiesDidChange];
       }
     }
   }
 }
 
-- (void)setIsEqualWidth:(BOOL)a3
+- (void)setIsEqualWidth:(BOOL)width
 {
-  if (self->_isEqualWidth != a3)
+  if (self->_isEqualWidth != width)
   {
-    self->_isEqualWidth = a3;
-    v4 = [(TLKObject *)self observer];
-    if (v4)
+    self->_isEqualWidth = width;
+    observer = [(TLKObject *)self observer];
+    if (observer)
     {
-      v5 = v4;
-      v6 = [(TLKObject *)self observer];
-      v7 = [v6 batchUpdateCount];
+      v5 = observer;
+      observer2 = [(TLKObject *)self observer];
+      batchUpdateCount = [observer2 batchUpdateCount];
 
-      if (!v7)
+      if (!batchUpdateCount)
       {
-        v8 = [(TLKObject *)self observer];
-        [v8 propertiesDidChange];
+        observer3 = [(TLKObject *)self observer];
+        [observer3 propertiesDidChange];
       }
     }
   }
@@ -73,15 +73,15 @@
 
 - (int64_t)textAlignment
 {
-  v2 = [(TLKTableColumnAlignment *)self columnAlignment];
-  if (v2 == 1)
+  columnAlignment = [(TLKTableColumnAlignment *)self columnAlignment];
+  if (columnAlignment == 1)
   {
     return 1;
   }
 
   else
   {
-    return 2 * (v2 == 2);
+    return 2 * (columnAlignment == 2);
   }
 }
 

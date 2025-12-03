@@ -15,8 +15,8 @@
   {
     *(v2 + 20) = 0x3F00000043FA0000;
     *(v2 + 4) = 985963430;
-    v4 = [objc_opt_class() defaults];
-    [v4 floatForKey:kADDeviceConfigurationKeyJasperColorInFieldAngularVelocityThreshold];
+    defaults = [objc_opt_class() defaults];
+    [defaults floatForKey:kADDeviceConfigurationKeyJasperColorInFieldAngularVelocityThreshold];
     *(v3 + 9) = v5;
 
     *(v3 + 12) = 0x3200000032;

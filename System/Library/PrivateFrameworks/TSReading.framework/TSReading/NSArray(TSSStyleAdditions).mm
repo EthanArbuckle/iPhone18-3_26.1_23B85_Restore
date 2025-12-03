@@ -6,7 +6,7 @@
 
 - (uint64_t)propertyAtIndex:()TSSStyleAdditions
 {
-  v3 = [a1 objectAtIndexedSubscript:a3];
+  v3 = [self objectAtIndexedSubscript:a3];
 
   return [v3 unsignedIntValue];
 }

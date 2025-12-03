@@ -1,23 +1,23 @@
 @interface PGEventLabelingConfigurationWrapper
 - (PGEventLabelingConfigurationWrapper)init;
-- (double)highPrecisionThresholdForMeaningLabel:(id)a3;
-- (double)highRecallThresholdForMeaningLabel:(id)a3;
+- (double)highPrecisionThresholdForMeaningLabel:(id)label;
+- (double)highRecallThresholdForMeaningLabel:(id)label;
 @end
 
 @implementation PGEventLabelingConfigurationWrapper
 
-- (double)highRecallThresholdForMeaningLabel:(id)a3
+- (double)highRecallThresholdForMeaningLabel:(id)label
 {
-  v3 = [(PGEventLabelingConfiguration *)self->_configuration thresholdsBy:a3];
+  v3 = [(PGEventLabelingConfiguration *)self->_configuration thresholdsBy:label];
   [v3 highRecallThreshold];
   v5 = v4;
 
   return v5;
 }
 
-- (double)highPrecisionThresholdForMeaningLabel:(id)a3
+- (double)highPrecisionThresholdForMeaningLabel:(id)label
 {
-  v3 = [(PGEventLabelingConfiguration *)self->_configuration thresholdsBy:a3];
+  v3 = [(PGEventLabelingConfiguration *)self->_configuration thresholdsBy:label];
   [v3 highPrecisionThreshold];
   v5 = v4;
 

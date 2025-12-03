@@ -1,25 +1,25 @@
 @interface CoreCryptoP256Private
 + (id)generate;
 + (void)generate;
-- (CoreCryptoP256Private)initWithData:(id)a3 error:(id *)a4;
-- (CoreCryptoP256Private)initWithKey:(ccec_full_ctx *)a3;
-- (id)keyAgreement:(id)a3 error:(id *)a4;
+- (CoreCryptoP256Private)initWithData:(id)data error:(id *)error;
+- (CoreCryptoP256Private)initWithKey:(ccec_full_ctx *)key;
+- (id)keyAgreement:(id)agreement error:(id *)error;
 - (id)keychainData;
 - (id)publicKey;
-- (id)signData:(id)a3 error:(id *)a4;
+- (id)signData:(id)data error:(id *)error;
 - (void)dealloc;
 @end
 
 @implementation CoreCryptoP256Private
 
-- (CoreCryptoP256Private)initWithKey:(ccec_full_ctx *)a3
+- (CoreCryptoP256Private)initWithKey:(ccec_full_ctx *)key
 {
   v5.receiver = self;
   v5.super_class = CoreCryptoP256Private;
   result = [(CoreCryptoP256Private *)&v5 init];
   if (result)
   {
-    result->_full_key = a3;
+    result->_full_key = key;
   }
 
   return result;
@@ -27,7 +27,7 @@
 
 + (id)generate
 {
-  v3 = MEMORY[0x2318925A0](a1, a2);
+  v3 = MEMORY[0x2318925A0](self, a2);
   v4 = malloc_type_malloc((32 * *v3) | 0x10, 0x60040B37CB4BBuLL);
   ccrng();
   key = ccec_compact_generate_key();
@@ -46,30 +46,30 @@
 
   else
   {
-    v6 = [[a1 alloc] initWithKey:v4];
+    v6 = [[self alloc] initWithKey:v4];
   }
 
   return v6;
 }
 
-- (id)keyAgreement:(id)a3 error:(id *)a4
+- (id)keyAgreement:(id)agreement error:(id *)error
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = [a3 dataRepresentation];
-  if (!v6)
+  dataRepresentation = [agreement dataRepresentation];
+  if (!dataRepresentation)
   {
-    MPLogAndAssignError(7, a4, @"Failed to obtain data for the public key.");
+    MPLogAndAssignError(7, error, @"Failed to obtain data for the public key.");
     v8 = 0;
     goto LABEL_12;
   }
 
   v7 = (24 * *MEMORY[0x2318925A0]() + 31) & 0xFFFFFFFFFFFFFFF0;
   MEMORY[0x28223BE20]();
-  [v6 length];
-  [v6 bytes];
+  [dataRepresentation length];
+  [dataRepresentation bytes];
   if (ccec_compact_import_pub())
   {
-    MPLogAndAssignError(7, a4, @"Failed to initialize compact corecrypto public key.");
+    MPLogAndAssignError(7, error, @"Failed to initialize compact corecrypto public key.");
     v8 = 0;
     goto LABEL_12;
   }
@@ -80,7 +80,7 @@
     v11 = @"Failed to initialize masking rng for corecrypto key agreement.";
     v12 = 7;
 LABEL_10:
-    MPLogAndAssignError(v12, a4, v11);
+    MPLogAndAssignError(v12, error, v11);
     v8 = 0;
     goto LABEL_11;
   }
@@ -142,7 +142,7 @@ LABEL_12:
   return v10;
 }
 
-- (id)signData:(id)a3 error:(id *)a4
+- (id)signData:(id)data error:(id *)error
 {
   v4 = MessageProtectionLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_FAULT))
@@ -153,7 +153,7 @@ LABEL_12:
   return 0;
 }
 
-- (CoreCryptoP256Private)initWithData:(id)a3 error:(id *)a4
+- (CoreCryptoP256Private)initWithData:(id)data error:(id *)error
 {
   v5 = MessageProtectionLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))
@@ -168,7 +168,7 @@ LABEL_12:
 {
   v4 = *MEMORY[0x277D85DE8];
   v3[0] = 67109120;
-  v3[1] = a1;
+  v3[1] = self;
   _os_log_error_impl(&dword_22B404000, a2, OS_LOG_TYPE_ERROR, "Failed to generate an ephemeral ECDH key error code: %i", v3, 8u);
   v2 = *MEMORY[0x277D85DE8];
 }

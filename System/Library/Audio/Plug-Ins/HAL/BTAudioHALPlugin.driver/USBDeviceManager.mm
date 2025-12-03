@@ -1,34 +1,34 @@
 @interface USBDeviceManager
-- (BOOL)sendPingToUSBDevice:(id)a3;
-- (USBDeviceManager)initWithBTAddress:(id)a3;
-- (id)getUSBColor:(id)a3;
-- (id)getUSBFWVersion:(id)a3;
-- (id)getUSBFeatureBitmask:(id)a3;
-- (id)getUSBModelID:(id)a3;
-- (id)getUSBName:(id)a3;
-- (id)getUSBPairingMode:(id)a3;
-- (id)getUSBPid:(id)a3;
+- (BOOL)sendPingToUSBDevice:(id)device;
+- (USBDeviceManager)initWithBTAddress:(id)address;
+- (id)getUSBColor:(id)color;
+- (id)getUSBFWVersion:(id)version;
+- (id)getUSBFeatureBitmask:(id)bitmask;
+- (id)getUSBModelID:(id)d;
+- (id)getUSBName:(id)name;
+- (id)getUSBPairingMode:(id)mode;
+- (id)getUSBPid:(id)pid;
 - (id)updateHostSideInfo;
-- (void)addUSBAudioDevice:(id)a3 withModelID:(id)a4;
+- (void)addUSBAudioDevice:(id)device withModelID:(id)d;
 - (void)cleanUSBInformation;
-- (void)disableAirPlaneModeForUSBPortWithUID:(id)a3;
-- (void)enableAirPlaneModeForUSBPortWithUID:(id)a3;
-- (void)hideUSBPortWithUID:(id)a3 UpdateAirPodsState:(BOOL)a4;
-- (void)needToRemoveUSBDeviceFromList:(id)a3;
-- (void)playbackOverUSBChanged:(id)a3;
-- (void)processUSBDeviceBluetoothInformation:(id)a3 withBTAddress:(__CFDictionary *)a4;
-- (void)propertyChangeBTAddress:(id)a3;
-- (void)registerUSBDeviceNotification:(id)a3;
-- (void)removeUSBAudioDevice:(id)a3;
+- (void)disableAirPlaneModeForUSBPortWithUID:(id)d;
+- (void)enableAirPlaneModeForUSBPortWithUID:(id)d;
+- (void)hideUSBPortWithUID:(id)d UpdateAirPodsState:(BOOL)state;
+- (void)needToRemoveUSBDeviceFromList:(id)list;
+- (void)playbackOverUSBChanged:(id)changed;
+- (void)processUSBDeviceBluetoothInformation:(id)information withBTAddress:(__CFDictionary *)address;
+- (void)propertyChangeBTAddress:(id)address;
+- (void)registerUSBDeviceNotification:(id)notification;
+- (void)removeUSBAudioDevice:(id)device;
 - (void)sendUSBcMetric;
-- (void)startPairingProcess:(id)a3;
-- (void)unHideUSBPortWithUID:(id)a3 UpdateAirPodsState:(BOOL)a4;
-- (void)updateHostSideLocalBTAddress:(id)a3 withState:(id)a4;
+- (void)startPairingProcess:(id)process;
+- (void)unHideUSBPortWithUID:(id)d UpdateAirPodsState:(BOOL)state;
+- (void)updateHostSideLocalBTAddress:(id)address withState:(id)state;
 @end
 
 @implementation USBDeviceManager
 
-- (USBDeviceManager)initWithBTAddress:(id)a3
+- (USBDeviceManager)initWithBTAddress:(id)address
 {
   v6.receiver = self;
   v6.super_class = USBDeviceManager;
@@ -98,9 +98,9 @@
       goto LABEL_14;
     }
 
-    v10 = [(USBDeviceManager *)self hostSideUSBInfo];
+    hostSideUSBInfo = [(USBDeviceManager *)self hostSideUSBInfo];
     *buf = 138412290;
-    *v24 = v10;
+    *v24 = hostSideUSBInfo;
 LABEL_13:
     _os_log_impl(&dword_0, v9, OS_LOG_TYPE_DEFAULT, "Created hostSideUSBInfo %@", buf, 0xCu);
 LABEL_14:
@@ -113,9 +113,9 @@ LABEL_14:
     v12 = qword_D8560;
     if (os_log_type_enabled(qword_D8560, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [(USBDeviceManager *)self hostSideUSBInfo];
+      hostSideUSBInfo2 = [(USBDeviceManager *)self hostSideUSBInfo];
       *buf = 138412290;
-      *v24 = v13;
+      *v24 = hostSideUSBInfo2;
       _os_log_impl(&dword_0, v12, OS_LOG_TYPE_DEFAULT, "BT power state is off, continue with sending correct state %@", buf, 0xCu);
     }
 
@@ -164,9 +164,9 @@ LABEL_14:
         goto LABEL_14;
       }
 
-      v19 = [(USBDeviceManager *)self hostSideUSBInfo];
+      hostSideUSBInfo3 = [(USBDeviceManager *)self hostSideUSBInfo];
       *buf = 138412290;
-      *v24 = v19;
+      *v24 = hostSideUSBInfo3;
       goto LABEL_13;
     }
   }
@@ -184,7 +184,7 @@ LABEL_14:
   return self->_hostSideUSBInfo;
 }
 
-- (void)updateHostSideLocalBTAddress:(id)a3 withState:(id)a4
+- (void)updateHostSideLocalBTAddress:(id)address withState:(id)state
 {
   if (*(qword_D8DF0 + 496))
   {
@@ -197,8 +197,8 @@ LABEL_14:
     handler[2] = sub_525CC;
     handler[3] = &unk_B0C08;
     handler[4] = self;
-    handler[5] = a4;
-    handler[6] = a3;
+    handler[5] = state;
+    handler[6] = address;
     xpc_connection_send_message_with_reply(v8, v7, usbQueue, handler);
     xpc_release(v7);
   }
@@ -209,12 +209,12 @@ LABEL_14:
   }
 }
 
-- (id)getUSBModelID:(id)a3
+- (id)getUSBModelID:(id)d
 {
   result = [(NSMutableDictionary *)self->_usbAudioDeviceList objectForKeyedSubscript:?];
   if (result)
   {
-    v6 = [(NSMutableDictionary *)self->_usbAudioDeviceList objectForKeyedSubscript:a3];
+    v6 = [(NSMutableDictionary *)self->_usbAudioDeviceList objectForKeyedSubscript:d];
 
     return [v6 modelID];
   }
@@ -222,12 +222,12 @@ LABEL_14:
   return result;
 }
 
-- (id)getUSBName:(id)a3
+- (id)getUSBName:(id)name
 {
   result = [(NSMutableDictionary *)self->_usbAudioDeviceList objectForKeyedSubscript:?];
   if (result)
   {
-    v6 = [(NSMutableDictionary *)self->_usbAudioDeviceList objectForKeyedSubscript:a3];
+    v6 = [(NSMutableDictionary *)self->_usbAudioDeviceList objectForKeyedSubscript:name];
 
     return [v6 name];
   }
@@ -235,12 +235,12 @@ LABEL_14:
   return result;
 }
 
-- (id)getUSBColor:(id)a3
+- (id)getUSBColor:(id)color
 {
   result = [(NSMutableDictionary *)self->_usbAudioDeviceList objectForKeyedSubscript:?];
   if (result)
   {
-    v6 = [(NSMutableDictionary *)self->_usbAudioDeviceList objectForKeyedSubscript:a3];
+    v6 = [(NSMutableDictionary *)self->_usbAudioDeviceList objectForKeyedSubscript:color];
 
     return [v6 color];
   }
@@ -248,12 +248,12 @@ LABEL_14:
   return result;
 }
 
-- (id)getUSBFWVersion:(id)a3
+- (id)getUSBFWVersion:(id)version
 {
   result = [(NSMutableDictionary *)self->_usbAudioDeviceList objectForKeyedSubscript:?];
   if (result)
   {
-    v6 = [-[NSMutableDictionary objectForKeyedSubscript:](self->_usbAudioDeviceList objectForKeyedSubscript:{a3), "fwVersion"}];
+    v6 = [-[NSMutableDictionary objectForKeyedSubscript:](self->_usbAudioDeviceList objectForKeyedSubscript:{version), "fwVersion"}];
 
     return v6;
   }
@@ -261,12 +261,12 @@ LABEL_14:
   return result;
 }
 
-- (id)getUSBPid:(id)a3
+- (id)getUSBPid:(id)pid
 {
   result = [(NSMutableDictionary *)self->_usbAudioDeviceList objectForKeyedSubscript:?];
   if (result)
   {
-    v6 = [(NSMutableDictionary *)self->_usbAudioDeviceList objectForKeyedSubscript:a3];
+    v6 = [(NSMutableDictionary *)self->_usbAudioDeviceList objectForKeyedSubscript:pid];
 
     return [v6 pid];
   }
@@ -274,12 +274,12 @@ LABEL_14:
   return result;
 }
 
-- (id)getUSBPairingMode:(id)a3
+- (id)getUSBPairingMode:(id)mode
 {
   result = [(NSMutableDictionary *)self->_usbAudioDeviceList objectForKeyedSubscript:?];
   if (result)
   {
-    v6 = [(NSMutableDictionary *)self->_usbAudioDeviceList objectForKeyedSubscript:a3];
+    v6 = [(NSMutableDictionary *)self->_usbAudioDeviceList objectForKeyedSubscript:mode];
 
     return [v6 pairingMode];
   }
@@ -287,12 +287,12 @@ LABEL_14:
   return result;
 }
 
-- (id)getUSBFeatureBitmask:(id)a3
+- (id)getUSBFeatureBitmask:(id)bitmask
 {
   result = [(NSMutableDictionary *)self->_usbAudioDeviceList objectForKeyedSubscript:?];
   if (result)
   {
-    v6 = [(NSMutableDictionary *)self->_usbAudioDeviceList objectForKeyedSubscript:a3];
+    v6 = [(NSMutableDictionary *)self->_usbAudioDeviceList objectForKeyedSubscript:bitmask];
 
     return [v6 featureBitmask];
   }
@@ -300,7 +300,7 @@ LABEL_14:
   return result;
 }
 
-- (void)addUSBAudioDevice:(id)a3 withModelID:(id)a4
+- (void)addUSBAudioDevice:(id)device withModelID:(id)d
 {
   if (!self->_usbAudioDeviceList)
   {
@@ -314,29 +314,29 @@ LABEL_14:
   }
 
   v7 = objc_alloc_init(USBDevice);
-  [(USBDevice *)v7 setUsbDevice:a3];
-  -[USBDevice setUsbUID:](v7, "setUsbUID:", [a3 deviceUID]);
-  [(USBDevice *)v7 setModelID:a4];
-  -[USBDevice setName:](v7, "setName:", [a3 name]);
+  [(USBDevice *)v7 setUsbDevice:device];
+  -[USBDevice setUsbUID:](v7, "setUsbUID:", [device deviceUID]);
+  [(USBDevice *)v7 setModelID:d];
+  -[USBDevice setName:](v7, "setName:", [device name]);
   [(USBDevice *)v7 setColor:0];
   v8 = qword_D8560;
   if (os_log_type_enabled(qword_D8560, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    *&buf[4] = [a3 deviceUID];
+    *&buf[4] = [device deviceUID];
     *&buf[12] = 2048;
     *&buf[14] = v7;
     _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "Adding USBC device with id:%@ %p", buf, 0x16u);
   }
 
-  self->_currentRoutedUSBDeviceUID = [a3 deviceUID];
-  -[NSMutableDictionary setObject:forKeyedSubscript:](self->_usbAudioDeviceList, "setObject:forKeyedSubscript:", v7, [a3 deviceUID]);
-  if ([a3 hasProperty:1967669844 scope:1735159650 ofElement:0] && objc_msgSend(a3, "isMainGlobalPropertySettable:", 1967669844))
+  self->_currentRoutedUSBDeviceUID = [device deviceUID];
+  -[NSMutableDictionary setObject:forKeyedSubscript:](self->_usbAudioDeviceList, "setObject:forKeyedSubscript:", v7, [device deviceUID]);
+  if ([device hasProperty:1967669844 scope:1735159650 ofElement:0] && objc_msgSend(device, "isMainGlobalPropertySettable:", 1967669844))
   {
     *buf = 0;
     *&buf[8] = buf;
     *&buf[16] = 0x2020000000;
-    v13 = [(USBDeviceManager *)self sendPingToUSBDevice:a3];
+    v13 = [(USBDeviceManager *)self sendPingToUSBDevice:device];
     if ((*(*&buf[8] + 24) & 1) == 0)
     {
       v9 = dispatch_time(0, 20000000000);
@@ -345,7 +345,7 @@ LABEL_14:
       block[1] = 3221225472;
       block[2] = sub_52D08;
       block[3] = &unk_B0C30;
-      block[5] = a3;
+      block[5] = device;
       block[6] = buf;
       block[4] = self;
       dispatch_after(v9, usbQueue, block);
@@ -355,7 +355,7 @@ LABEL_14:
   }
 }
 
-- (void)registerUSBDeviceNotification:(id)a3
+- (void)registerUSBDeviceNotification:(id)notification
 {
   usbQueue = self->_usbQueue;
   v8[0] = _NSConcreteStackBlock;
@@ -363,19 +363,19 @@ LABEL_14:
   v8[2] = sub_52EF4;
   v8[3] = &unk_B0C58;
   v8[4] = self;
-  v8[5] = a3;
-  [a3 onQueue:usbQueue forMainGlobalProperty:1967407700 addListener:v8];
+  v8[5] = notification;
+  [notification onQueue:usbQueue forMainGlobalProperty:1967407700 addListener:v8];
   v6 = self->_usbQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_52F00;
   v7[3] = &unk_B0C58;
   v7[4] = self;
-  v7[5] = a3;
-  [a3 onQueue:v6 forMainGlobalProperty:1735356005 addListener:v7];
+  v7[5] = notification;
+  [notification onQueue:v6 forMainGlobalProperty:1735356005 addListener:v7];
 }
 
-- (BOOL)sendPingToUSBDevice:(id)a3
+- (BOOL)sendPingToUSBDevice:(id)device
 {
   [(USBDeviceManager *)self registerUSBDeviceNotification:?];
   if (self->_btPowerState)
@@ -391,14 +391,14 @@ LABEL_14:
   v6 = [NSNumber numberWithInt:v5];
   if (!sub_530BC(qword_D8DF0) && self->_btPowerState)
   {
-    [(USBDeviceManager *)self updateHostSideLocalBTAddress:a3 withState:v6];
+    [(USBDeviceManager *)self updateHostSideLocalBTAddress:device withState:v6];
   }
 
-  v7 = [(USBDeviceManager *)self updateHostSideInfo];
-  v8 = v7;
-  if (v7)
+  updateHostSideInfo = [(USBDeviceManager *)self updateHostSideInfo];
+  v8 = updateHostSideInfo;
+  if (updateHostSideInfo)
   {
-    [v7 setObject:v6 forKey:@"state"];
+    [updateHostSideInfo setObject:v6 forKey:@"state"];
     CFRelease(v6);
     v9 = qword_D8560;
     if (os_log_type_enabled(qword_D8560, OS_LOG_TYPE_DEFAULT))
@@ -410,7 +410,7 @@ LABEL_14:
 
     *v12 = v8;
     CFRetain(v8);
-    [a3 setMainGlobalProperty:1967669844 withData:v12 ofSize:8 withQualifier:0 ofSize:0];
+    [device setMainGlobalProperty:1967669844 withData:v12 ofSize:8 withQualifier:0 ofSize:0];
     [v8 removeObjectForKey:@"state"];
   }
 
@@ -427,11 +427,11 @@ LABEL_14:
   return v8 != 0;
 }
 
-- (void)needToRemoveUSBDeviceFromList:(id)a3
+- (void)needToRemoveUSBDeviceFromList:(id)list
 {
-  if ([a3 count])
+  if ([list count])
   {
-    v5 = [a3 count];
+    v5 = [list count];
     v6 = dword_D8570;
     v7 = qword_D8560;
     v8 = os_log_type_enabled(qword_D8560, OS_LOG_TYPE_DEFAULT);
@@ -573,8 +573,8 @@ LABEL_14:
     v54 = 0u;
     v51 = 0u;
     v52 = 0u;
-    v36 = [(NSMutableDictionary *)v23 allKeys];
-    v24 = [v36 countByEnumeratingWithState:&v51 objects:v62 count:16];
+    allKeys = [(NSMutableDictionary *)v23 allKeys];
+    v24 = [allKeys countByEnumeratingWithState:&v51 objects:v62 count:16];
     if (v24)
     {
       obja = *v52;
@@ -584,7 +584,7 @@ LABEL_14:
         {
           if (*v52 != obja)
           {
-            objc_enumerationMutation(v36);
+            objc_enumerationMutation(allKeys);
           }
 
           v26 = *(*(&v51 + 1) + 8 * j);
@@ -635,7 +635,7 @@ LABEL_14:
           _Block_object_dispose(buf, 8);
         }
 
-        v24 = [v36 countByEnumeratingWithState:&v51 objects:v62 count:16];
+        v24 = [allKeys countByEnumeratingWithState:&v51 objects:v62 count:16];
       }
 
       while (v24);
@@ -688,22 +688,22 @@ LABEL_52:
   dispatch_async(*(qword_D8DF0 + 176), &stru_B0CA0);
 }
 
-- (void)removeUSBAudioDevice:(id)a3
+- (void)removeUSBAudioDevice:(id)device
 {
   v5 = qword_D8560;
   if (os_log_type_enabled(qword_D8560, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = [a3 deviceUID];
+    deviceUID = [device deviceUID];
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "Remove listeners for device with id%@", &v6, 0xCu);
   }
 
-  [a3 onQueue:self->_usbQueue forMainGlobalProperty:1967407700 removeListener:&stru_B0CE8];
-  [a3 onQueue:self->_usbQueue forMainGlobalProperty:1735356005 removeListener:&stru_B0D08];
-  [a3 onQueue:self->_usbQueue forMainGlobalProperty:1967281251 removeListener:&stru_B0D28];
+  [device onQueue:self->_usbQueue forMainGlobalProperty:1967407700 removeListener:&stru_B0CE8];
+  [device onQueue:self->_usbQueue forMainGlobalProperty:1735356005 removeListener:&stru_B0D08];
+  [device onQueue:self->_usbQueue forMainGlobalProperty:1967281251 removeListener:&stru_B0D28];
 }
 
-- (void)playbackOverUSBChanged:(id)a3
+- (void)playbackOverUSBChanged:(id)changed
 {
   v5 = qword_D8560;
   if (os_log_type_enabled(qword_D8560, OS_LOG_TYPE_DEFAULT))
@@ -714,9 +714,9 @@ LABEL_52:
 
   v36 = 4;
   v37 = 0;
-  if ([a3 getMainGlobalProperty:1735356005 withData:&v37 ofSize:&v36 withQualifier:0 ofSize:0])
+  if ([changed getMainGlobalProperty:1735356005 withData:&v37 ofSize:&v36 withQualifier:0 ofSize:0])
   {
-    v6 = -[NSString isEqual:](self->_currentRoutedUSBDeviceUID, "isEqual:", [a3 deviceUID]);
+    v6 = -[NSString isEqual:](self->_currentRoutedUSBDeviceUID, "isEqual:", [changed deviceUID]);
     v7 = qword_D8560;
     if (v6)
     {
@@ -741,7 +741,7 @@ LABEL_52:
 
     else if (os_log_type_enabled(qword_D8560, OS_LOG_TYPE_ERROR))
     {
-      v29 = [a3 deviceUID];
+      deviceUID = [changed deviceUID];
       v30 = self->_currentRoutedUSBDeviceUID;
       if (v37)
       {
@@ -754,7 +754,7 @@ LABEL_52:
       }
 
       *buf = 138478339;
-      v39 = v29;
+      v39 = deviceUID;
       v40 = 2113;
       v41 = v30;
       v42 = 2112;
@@ -879,7 +879,7 @@ LABEL_40:
   }
 }
 
-- (void)propertyChangeBTAddress:(id)a3
+- (void)propertyChangeBTAddress:(id)address
 {
   v5 = qword_D8560;
   if (os_log_type_enabled(qword_D8560, OS_LOG_TYPE_DEFAULT))
@@ -890,9 +890,9 @@ LABEL_40:
 
   v7 = 8;
   cf = CFDictionaryCreateMutable(0, 0, &kCFCopyStringDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
-  if ([a3 getMainGlobalProperty:1967407700 withData:&cf ofSize:&v7 withQualifier:0 ofSize:0])
+  if ([address getMainGlobalProperty:1967407700 withData:&cf ofSize:&v7 withQualifier:0 ofSize:0])
   {
-    [(USBDeviceManager *)self processUSBDeviceBluetoothInformation:a3 withBTAddress:cf];
+    [(USBDeviceManager *)self processUSBDeviceBluetoothInformation:address withBTAddress:cf];
   }
 
   else if (os_log_type_enabled(qword_D8560, OS_LOG_TYPE_ERROR))
@@ -906,33 +906,33 @@ LABEL_40:
   }
 }
 
-- (void)processUSBDeviceBluetoothInformation:(id)a3 withBTAddress:(__CFDictionary *)a4
+- (void)processUSBDeviceBluetoothInformation:(id)information withBTAddress:(__CFDictionary *)address
 {
-  if (a4)
+  if (address)
   {
     v7 = qword_D8560;
     if (os_log_type_enabled(qword_D8560, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v43 = a4;
+      addressCopy = address;
       _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEFAULT, "Received usb BT information %@", buf, 0xCu);
     }
 
-    Value = CFDictionaryGetValue(a4, @"bt_addr");
-    v9 = CFDictionaryGetValue(a4, @"state");
+    Value = CFDictionaryGetValue(address, @"bt_addr");
+    v9 = CFDictionaryGetValue(address, @"state");
     v10 = v9;
     if (!Value)
     {
       goto LABEL_11;
     }
 
-    v40 = a3;
+    informationCopy = information;
     v11 = v9;
     v12 = qword_D8560;
     if (os_log_type_enabled(qword_D8560, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v43 = Value;
+      addressCopy = Value;
       _os_log_impl(&dword_0, v12, OS_LOG_TYPE_DEFAULT, "BTAddress is %@", buf, 0xCu);
     }
 
@@ -963,12 +963,12 @@ LABEL_40:
         CFRelease(currentBTDeviceUID);
       }
 
-      [-[NSMutableDictionary objectForKeyedSubscript:](self->_usbAudioDeviceList objectForKeyedSubscript:{objc_msgSend(v40, "deviceUID")), "setBtAddress:", objc_msgSend([NSString alloc], "initWithString:", v13)}];
-      [-[NSMutableDictionary objectForKeyedSubscript:](self->_usbAudioDeviceList objectForKeyedSubscript:{objc_msgSend(v40, "deviceUID")), "setFwVersion:", CFDictionaryGetValue(a4, @"fw_vers"}];
-      [-[NSMutableDictionary objectForKeyedSubscript:](self->_usbAudioDeviceList objectForKeyedSubscript:{objc_msgSend(v40, "deviceUID")), "setPid:", CFDictionaryGetValue(a4, @"bt_pid"}];
-      [-[NSMutableDictionary objectForKeyedSubscript:](self->_usbAudioDeviceList objectForKeyedSubscript:{objc_msgSend(v40, "deviceUID")), "setColor:", CFDictionaryGetValue(a4, @"color"}];
-      [-[NSMutableDictionary objectForKeyedSubscript:](self->_usbAudioDeviceList objectForKeyedSubscript:{objc_msgSend(v40, "deviceUID")), "setFeatureBitmask:", CFDictionaryGetValue(a4, @"feature_bitmask"}];
-      [-[NSMutableDictionary objectForKeyedSubscript:](self->_usbAudioDeviceList objectForKeyedSubscript:{objc_msgSend(v40, "deviceUID")), "setBtAddress:", objc_msgSend([NSString alloc], "initWithString:", v13)}];
+      [-[NSMutableDictionary objectForKeyedSubscript:](self->_usbAudioDeviceList objectForKeyedSubscript:{objc_msgSend(informationCopy, "deviceUID")), "setBtAddress:", objc_msgSend([NSString alloc], "initWithString:", v13)}];
+      [-[NSMutableDictionary objectForKeyedSubscript:](self->_usbAudioDeviceList objectForKeyedSubscript:{objc_msgSend(informationCopy, "deviceUID")), "setFwVersion:", CFDictionaryGetValue(address, @"fw_vers"}];
+      [-[NSMutableDictionary objectForKeyedSubscript:](self->_usbAudioDeviceList objectForKeyedSubscript:{objc_msgSend(informationCopy, "deviceUID")), "setPid:", CFDictionaryGetValue(address, @"bt_pid"}];
+      [-[NSMutableDictionary objectForKeyedSubscript:](self->_usbAudioDeviceList objectForKeyedSubscript:{objc_msgSend(informationCopy, "deviceUID")), "setColor:", CFDictionaryGetValue(address, @"color"}];
+      [-[NSMutableDictionary objectForKeyedSubscript:](self->_usbAudioDeviceList objectForKeyedSubscript:{objc_msgSend(informationCopy, "deviceUID")), "setFeatureBitmask:", CFDictionaryGetValue(address, @"feature_bitmask"}];
+      [-[NSMutableDictionary objectForKeyedSubscript:](self->_usbAudioDeviceList objectForKeyedSubscript:{objc_msgSend(informationCopy, "deviceUID")), "setBtAddress:", objc_msgSend([NSString alloc], "initWithString:", v13)}];
       if ([v11 intValue])
       {
         v22 = &off_B3740;
@@ -979,23 +979,23 @@ LABEL_40:
         v22 = &off_B3728;
       }
 
-      [-[NSMutableDictionary objectForKeyedSubscript:](self->_usbAudioDeviceList objectForKeyedSubscript:{objc_msgSend(v40, "deviceUID")), "setPairingMode:", v22}];
+      [-[NSMutableDictionary objectForKeyedSubscript:](self->_usbAudioDeviceList objectForKeyedSubscript:{objc_msgSend(informationCopy, "deviceUID")), "setPairingMode:", v22}];
       sub_519A8(qword_D8DF0);
       if (self->_currentBTDeviceUID)
       {
-        v23 = [v40 outputLatency];
+        outputLatency = [informationCopy outputLatency];
         v24 = qword_D8560;
-        if (v23)
+        if (outputLatency)
         {
           if (os_log_type_enabled(qword_D8560, OS_LOG_TYPE_DEFAULT))
           {
-            v25 = [v40 outputLatency];
+            outputLatency2 = [informationCopy outputLatency];
             *buf = 67109120;
-            LODWORD(v43) = v25;
+            LODWORD(addressCopy) = outputLatency2;
             _os_log_impl(&dword_0, v24, OS_LOG_TYPE_DEFAULT, "Updating A2DP latency to the new USB latency %u", buf, 8u);
           }
 
-          self->_usbLatency = [v40 outputLatency];
+          self->_usbLatency = [informationCopy outputLatency];
         }
 
         else if (os_log_type_enabled(qword_D8560, OS_LOG_TYPE_ERROR))
@@ -1003,19 +1003,19 @@ LABEL_40:
           sub_7E91C();
         }
 
-        v34 = [v40 outputSafetyOffset];
+        outputSafetyOffset = [informationCopy outputSafetyOffset];
         v35 = qword_D8560;
-        if (v34)
+        if (outputSafetyOffset)
         {
           if (os_log_type_enabled(qword_D8560, OS_LOG_TYPE_DEFAULT))
           {
-            v36 = [v40 outputLatency];
+            outputLatency3 = [informationCopy outputLatency];
             *buf = 67109120;
-            LODWORD(v43) = v36;
+            LODWORD(addressCopy) = outputLatency3;
             _os_log_impl(&dword_0, v35, OS_LOG_TYPE_DEFAULT, "Updating A2DP outputSafetyOffset to USB %u", buf, 8u);
           }
 
-          self->_safetyOffset = [v40 outputSafetyOffset];
+          self->_safetyOffset = [informationCopy outputSafetyOffset];
         }
 
         else if (os_log_type_enabled(qword_D8560, OS_LOG_TYPE_ERROR))
@@ -1028,7 +1028,7 @@ LABEL_40:
         {
           v38 = self->_currentBTDeviceUID;
           *buf = 138412290;
-          v43 = v38;
+          addressCopy = v38;
           _os_log_impl(&dword_0, v37, OS_LOG_TYPE_DEFAULT, "Trying to reconfig %@", buf, 0xCu);
         }
 
@@ -1057,7 +1057,7 @@ LABEL_11:
         {
           v27 = self->_currentBTDeviceUID;
           *buf = 138412290;
-          v43 = v27;
+          addressCopy = v27;
           _os_log_impl(&dword_0, v26, OS_LOG_TYPE_DEFAULT, "Telling audioaccessoryd device %@ is ready to pair", buf, 0xCu);
         }
 
@@ -1091,7 +1091,7 @@ LABEL_11:
         {
           v16 = self->_currentBTDeviceUID;
           *buf = 138412290;
-          v43 = v16;
+          addressCopy = v16;
           _os_log_impl(&dword_0, v15, OS_LOG_TYPE_DEFAULT, "Telling audioaccessoryd device %@ is AirPlane Mode Off", buf, 0xCu);
         }
 
@@ -1124,7 +1124,7 @@ LABEL_41:
         {
           v31 = self->_currentBTDeviceUID;
           *buf = 138412290;
-          v43 = v31;
+          addressCopy = v31;
           _os_log_impl(&dword_0, v30, OS_LOG_TYPE_DEFAULT, "Telling audioaccessoryd device %@ is AirPlane Mode On", buf, 0xCu);
         }
 
@@ -1149,9 +1149,9 @@ LABEL_41:
   }
 }
 
-- (void)enableAirPlaneModeForUSBPortWithUID:(id)a3
+- (void)enableAirPlaneModeForUSBPortWithUID:(id)d
 {
-  v4 = [a3 length];
+  v4 = [d length];
   v5 = qword_D8560;
   v6 = os_log_type_enabled(qword_D8560, OS_LOG_TYPE_DEFAULT);
   if (v4)
@@ -1159,7 +1159,7 @@ LABEL_41:
     if (v6)
     {
       *buf = 138412290;
-      *&buf[4] = a3;
+      *&buf[4] = d;
       _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "Connected USB device with ID %@ enable airplane mode on.", buf, 0xCu);
     }
 
@@ -1188,15 +1188,15 @@ LABEL_41:
           v13 = qword_D8560;
           if (os_log_type_enabled(qword_D8560, OS_LOG_TYPE_DEFAULT))
           {
-            v14 = [v12 modelName];
-            v15 = [v12 boxUID];
-            v16 = [v12 audioDeviceObjectIDs];
+            modelName = [v12 modelName];
+            boxUID = [v12 boxUID];
+            audioDeviceObjectIDs = [v12 audioDeviceObjectIDs];
             *buf = 138412802;
-            *&buf[4] = v14;
+            *&buf[4] = modelName;
             v42 = 2112;
-            v43 = v15;
+            v43 = boxUID;
             v44 = 2112;
-            v45 = v16;
+            v45 = audioDeviceObjectIDs;
             _os_log_impl(&dword_0, v13, OS_LOG_TYPE_DEFAULT, "Found box object with modelName %@ and boxUID %@ %@", buf, 0x20u);
           }
 
@@ -1204,8 +1204,8 @@ LABEL_41:
           v35 = 0u;
           v32 = 0u;
           v33 = 0u;
-          v17 = [v12 audioDevices];
-          v18 = [v17 countByEnumeratingWithState:&v32 objects:v40 count:16];
+          audioDevices = [v12 audioDevices];
+          v18 = [audioDevices countByEnumeratingWithState:&v32 objects:v40 count:16];
           if (v18)
           {
             v19 = v18;
@@ -1216,17 +1216,17 @@ LABEL_41:
               {
                 if (*v33 != v20)
                 {
-                  objc_enumerationMutation(v17);
+                  objc_enumerationMutation(audioDevices);
                 }
 
                 v22 = *(*(&v32 + 1) + 8 * j);
-                if ([v22 hasProperty:1967272528 scope:1735159650 ofElement:0] && objc_msgSend(objc_msgSend(v22, "deviceUID"), "isEqual:", a3))
+                if ([v22 hasProperty:1967272528 scope:1735159650 ofElement:0] && objc_msgSend(objc_msgSend(v22, "deviceUID"), "isEqual:", d))
                 {
                   v23 = qword_D8560;
                   if (os_log_type_enabled(qword_D8560, OS_LOG_TYPE_DEFAULT))
                   {
                     *buf = v29;
-                    *&buf[4] = a3;
+                    *&buf[4] = d;
                     _os_log_impl(&dword_0, v23, OS_LOG_TYPE_DEFAULT, "UNHIDING device with UID %@", buf, 0xCu);
                   }
 
@@ -1234,10 +1234,10 @@ LABEL_41:
                   v24 = [NSNumber numberWithInt:2];
                   if (sub_530BC(qword_D8DF0) || !self->_btPowerState)
                   {
-                    v25 = [(USBDeviceManager *)self updateHostSideInfo];
-                    if (v25)
+                    updateHostSideInfo = [(USBDeviceManager *)self updateHostSideInfo];
+                    if (updateHostSideInfo)
                     {
-                      v26 = v25;
+                      v26 = updateHostSideInfo;
                       v27 = [NSNumber numberWithInt:2];
                       [v26 setObject:v27 forKey:@"state"];
                       CFRelease(v27);
@@ -1265,7 +1265,7 @@ LABEL_41:
                 }
               }
 
-              v19 = [v17 countByEnumeratingWithState:&v32 objects:v40 count:16];
+              v19 = [audioDevices countByEnumeratingWithState:&v32 objects:v40 count:16];
               if (v19)
               {
                 continue;
@@ -1293,9 +1293,9 @@ LABEL_30:
   }
 }
 
-- (void)disableAirPlaneModeForUSBPortWithUID:(id)a3
+- (void)disableAirPlaneModeForUSBPortWithUID:(id)d
 {
-  v5 = [a3 length];
+  v5 = [d length];
   v6 = qword_D8560;
   v7 = os_log_type_enabled(qword_D8560, OS_LOG_TYPE_DEFAULT);
   if (v5)
@@ -1303,7 +1303,7 @@ LABEL_30:
     if (v7)
     {
       *buf = 138412290;
-      *&buf[4] = a3;
+      *&buf[4] = d;
       _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "Connected USB device with ID %@ disable airplane mode", buf, 0xCu);
     }
 
@@ -1332,15 +1332,15 @@ LABEL_30:
           v14 = qword_D8560;
           if (os_log_type_enabled(qword_D8560, OS_LOG_TYPE_DEFAULT))
           {
-            v15 = [v13 modelName];
-            v16 = [v13 boxUID];
-            v17 = [v13 audioDeviceObjectIDs];
+            modelName = [v13 modelName];
+            boxUID = [v13 boxUID];
+            audioDeviceObjectIDs = [v13 audioDeviceObjectIDs];
             *buf = 138412802;
-            *&buf[4] = v15;
+            *&buf[4] = modelName;
             v41 = 2112;
-            v42 = v16;
+            v42 = boxUID;
             v43 = 2112;
-            v44 = v17;
+            v44 = audioDeviceObjectIDs;
             _os_log_impl(&dword_0, v14, OS_LOG_TYPE_DEFAULT, "Found box object with modelName %@ and boxUID %@ %@", buf, 0x20u);
           }
 
@@ -1348,8 +1348,8 @@ LABEL_30:
           v34 = 0u;
           v31 = 0u;
           v32 = 0u;
-          v18 = [v13 audioDevices];
-          v19 = [v18 countByEnumeratingWithState:&v31 objects:v39 count:16];
+          audioDevices = [v13 audioDevices];
+          v19 = [audioDevices countByEnumeratingWithState:&v31 objects:v39 count:16];
           if (v19)
           {
             v20 = v19;
@@ -1360,19 +1360,19 @@ LABEL_30:
               {
                 if (*v32 != v21)
                 {
-                  objc_enumerationMutation(v18);
+                  objc_enumerationMutation(audioDevices);
                 }
 
                 v23 = *(*(&v31 + 1) + 8 * j);
-                if ([v23 hasProperty:1967272528 scope:1735159650 ofElement:0] && objc_msgSend(objc_msgSend(v23, "deviceUID"), "isEqual:", a3))
+                if ([v23 hasProperty:1967272528 scope:1735159650 ofElement:0] && objc_msgSend(objc_msgSend(v23, "deviceUID"), "isEqual:", d))
                 {
                   v24 = [NSNumber numberWithInt:3];
                   if (sub_530BC(qword_D8DF0) || !self->_btPowerState)
                   {
-                    v25 = [(USBDeviceManager *)self updateHostSideInfo];
-                    if (v25)
+                    updateHostSideInfo = [(USBDeviceManager *)self updateHostSideInfo];
+                    if (updateHostSideInfo)
                     {
-                      v26 = v25;
+                      v26 = updateHostSideInfo;
                       v27 = [NSNumber numberWithInt:3];
                       [v26 setObject:v27 forKey:@"state"];
                       CFRelease(v27);
@@ -1400,7 +1400,7 @@ LABEL_30:
                 }
               }
 
-              v20 = [v18 countByEnumeratingWithState:&v31 objects:v39 count:16];
+              v20 = [audioDevices countByEnumeratingWithState:&v31 objects:v39 count:16];
               if (v20)
               {
                 continue;
@@ -1428,9 +1428,9 @@ LABEL_28:
   }
 }
 
-- (void)unHideUSBPortWithUID:(id)a3 UpdateAirPodsState:(BOOL)a4
+- (void)unHideUSBPortWithUID:(id)d UpdateAirPodsState:(BOOL)state
 {
-  v5 = [a3 length];
+  v5 = [d length];
   v6 = qword_D8560;
   v7 = os_log_type_enabled(qword_D8560, OS_LOG_TYPE_DEFAULT);
   if (v5)
@@ -1438,11 +1438,11 @@ LABEL_28:
     if (v7)
     {
       *buf = 138412290;
-      v39 = a3;
+      dCopy2 = d;
       _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "Connected USB device with ID %@ unhide it.", buf, 0xCu);
     }
 
-    if ([a3 isEqual:self->_currentRoutedUSBDeviceUID])
+    if ([d isEqual:self->_currentRoutedUSBDeviceUID])
     {
       self->_currentRoutedDeviceIsUnified = 0;
     }
@@ -1472,15 +1472,15 @@ LABEL_28:
           v14 = qword_D8560;
           if (os_log_type_enabled(qword_D8560, OS_LOG_TYPE_DEFAULT))
           {
-            v15 = [v13 modelName];
-            v16 = [v13 boxUID];
-            v17 = [v13 audioDeviceObjectIDs];
+            modelName = [v13 modelName];
+            boxUID = [v13 boxUID];
+            audioDeviceObjectIDs = [v13 audioDeviceObjectIDs];
             *buf = 138412802;
-            v39 = v15;
+            dCopy2 = modelName;
             v40 = 2112;
-            v41 = v16;
+            v41 = boxUID;
             v42 = 2112;
-            v43 = v17;
+            v43 = audioDeviceObjectIDs;
             _os_log_impl(&dword_0, v14, OS_LOG_TYPE_DEFAULT, "Found box object with modelName %@ and boxUID %@ %@", buf, 0x20u);
           }
 
@@ -1488,8 +1488,8 @@ LABEL_28:
           v32 = 0u;
           v29 = 0u;
           v30 = 0u;
-          v18 = [v13 audioDevices];
-          v19 = [v18 countByEnumeratingWithState:&v29 objects:v37 count:16];
+          audioDevices = [v13 audioDevices];
+          v19 = [audioDevices countByEnumeratingWithState:&v29 objects:v37 count:16];
           if (v19)
           {
             v20 = v19;
@@ -1500,17 +1500,17 @@ LABEL_28:
               {
                 if (*v30 != v21)
                 {
-                  objc_enumerationMutation(v18);
+                  objc_enumerationMutation(audioDevices);
                 }
 
                 v23 = *(*(&v29 + 1) + 8 * j);
-                if ([v23 hasProperty:1967272528 scope:1735159650 ofElement:0] && objc_msgSend(objc_msgSend(v23, "deviceUID"), "isEqual:", a3))
+                if ([v23 hasProperty:1967272528 scope:1735159650 ofElement:0] && objc_msgSend(objc_msgSend(v23, "deviceUID"), "isEqual:", d))
                 {
                   v24 = qword_D8560;
                   if (os_log_type_enabled(qword_D8560, OS_LOG_TYPE_DEFAULT))
                   {
                     *buf = v26;
-                    v39 = a3;
+                    dCopy2 = d;
                     _os_log_impl(&dword_0, v24, OS_LOG_TYPE_DEFAULT, "UNHIDING device with UID %@", buf, 0xCu);
                   }
 
@@ -1529,7 +1529,7 @@ LABEL_28:
                 }
               }
 
-              v20 = [v18 countByEnumeratingWithState:&v29 objects:v37 count:16];
+              v20 = [audioDevices countByEnumeratingWithState:&v29 objects:v37 count:16];
               if (v20)
               {
                 continue;
@@ -1557,9 +1557,9 @@ LABEL_28:
   }
 }
 
-- (void)hideUSBPortWithUID:(id)a3 UpdateAirPodsState:(BOOL)a4
+- (void)hideUSBPortWithUID:(id)d UpdateAirPodsState:(BOOL)state
 {
-  v6 = [a3 length];
+  v6 = [d length];
   v7 = qword_D8560;
   v8 = os_log_type_enabled(qword_D8560, OS_LOG_TYPE_DEFAULT);
   if (v6)
@@ -1567,11 +1567,11 @@ LABEL_28:
     if (v8)
     {
       *buf = 138412290;
-      v40 = a3;
+      dCopy2 = d;
       _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEFAULT, "Connected USB device with ID %@ hide it.", buf, 0xCu);
     }
 
-    if ([a3 isEqual:self->_currentRoutedUSBDeviceUID])
+    if ([d isEqual:self->_currentRoutedUSBDeviceUID])
     {
       self->_currentRoutedDeviceIsUnified = 0;
     }
@@ -1600,15 +1600,15 @@ LABEL_28:
           v12 = qword_D8560;
           if (os_log_type_enabled(qword_D8560, OS_LOG_TYPE_DEFAULT))
           {
-            v13 = [v11 modelName];
-            v14 = [v11 boxUID];
-            v15 = [v11 audioDeviceObjectIDs];
+            modelName = [v11 modelName];
+            boxUID = [v11 boxUID];
+            audioDeviceObjectIDs = [v11 audioDeviceObjectIDs];
             *buf = 138412802;
-            v40 = v13;
+            dCopy2 = modelName;
             v41 = 2112;
-            v42 = v14;
+            v42 = boxUID;
             v43 = 2112;
-            v44 = v15;
+            v44 = audioDeviceObjectIDs;
             _os_log_impl(&dword_0, v12, OS_LOG_TYPE_DEFAULT, "Found box object with modelName %@ and boxUID %@ %@", buf, 0x20u);
           }
 
@@ -1616,8 +1616,8 @@ LABEL_28:
           v33 = 0u;
           v30 = 0u;
           v31 = 0u;
-          v16 = [v11 audioDevices];
-          v17 = [v16 countByEnumeratingWithState:&v30 objects:v38 count:16];
+          audioDevices = [v11 audioDevices];
+          v17 = [audioDevices countByEnumeratingWithState:&v30 objects:v38 count:16];
           if (v17)
           {
             v18 = v17;
@@ -1628,11 +1628,11 @@ LABEL_28:
               {
                 if (*v31 != v19)
                 {
-                  objc_enumerationMutation(v16);
+                  objc_enumerationMutation(audioDevices);
                 }
 
                 v21 = *(*(&v30 + 1) + 8 * j);
-                if ([v21 hasProperty:1967272528 scope:1735159650 ofElement:0] && objc_msgSend(objc_msgSend(v21, "deviceUID"), "isEqual:", a3))
+                if ([v21 hasProperty:1967272528 scope:1735159650 ofElement:0] && objc_msgSend(objc_msgSend(v21, "deviceUID"), "isEqual:", d))
                 {
                   usbMetric = self->_usbMetric;
                   if (usbMetric && [(USBMetric *)usbMetric usbcOnlyMetricCounter]== 1)
@@ -1640,15 +1640,15 @@ LABEL_28:
                     [(USBMetric *)self->_usbMetric setUsbcOnlyMetricCounter:0];
                   }
 
-                  v23 = [v11 isAcquired];
+                  isAcquired = [v11 isAcquired];
                   v24 = qword_D8560;
                   v25 = os_log_type_enabled(qword_D8560, OS_LOG_TYPE_DEFAULT);
-                  if (v23)
+                  if (isAcquired)
                   {
                     if (v25)
                     {
                       *buf = v26;
-                      v40 = a3;
+                      dCopy2 = d;
                       _os_log_impl(&dword_0, v24, OS_LOG_TYPE_DEFAULT, "HIDING device with UID %@", buf, 0xCu);
                     }
 
@@ -1664,7 +1664,7 @@ LABEL_28:
                 }
               }
 
-              v18 = [v16 countByEnumeratingWithState:&v30 objects:v38 count:16];
+              v18 = [audioDevices countByEnumeratingWithState:&v30 objects:v38 count:16];
               if (v18)
               {
                 continue;
@@ -1692,7 +1692,7 @@ LABEL_32:
   }
 }
 
-- (void)startPairingProcess:(id)a3
+- (void)startPairingProcess:(id)process
 {
   usbAudioDeviceList = self->_usbAudioDeviceList;
   if (!usbAudioDeviceList)
@@ -1701,7 +1701,7 @@ LABEL_32:
     if (os_log_type_enabled(qword_D8560, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v9 = a3;
+      processCopy = process;
       _os_log_error_impl(&dword_0, v6, OS_LOG_TYPE_ERROR, "Error, unable to pair to device %@", buf, 0xCu);
       usbAudioDeviceList = self->_usbAudioDeviceList;
     }
@@ -1716,7 +1716,7 @@ LABEL_32:
   v7[1] = 3221225472;
   v7[2] = sub_55D4C;
   v7[3] = &unk_B0D50;
-  v7[4] = a3;
+  v7[4] = process;
   [(NSMutableDictionary *)usbAudioDeviceList enumerateKeysAndObjectsUsingBlock:v7];
 }
 

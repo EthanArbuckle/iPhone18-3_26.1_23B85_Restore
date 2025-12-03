@@ -1,11 +1,11 @@
 @interface OSDBluetooth
-- (BOOL)_setBluetoothPower:(BTLocalDeviceImpl *)a3 enabled:(BOOL)a4 timeout:(double)a5;
-- (BOOL)_setupBluetoothSessionAndDevice:(id *)a3;
+- (BOOL)_setBluetoothPower:(BTLocalDeviceImpl *)power enabled:(BOOL)enabled timeout:(double)timeout;
+- (BOOL)_setupBluetoothSessionAndDevice:(id *)device;
 - (OSDBluetooth)init;
-- (id)performBluetoothScanWithTimeout:(double)a3 foundDevices:(id)a4;
-- (int)_bluetoothPower:(BTLocalDeviceImpl *)a3 isEnabled:(BOOL *)a4;
+- (id)performBluetoothScanWithTimeout:(double)timeout foundDevices:(id)devices;
+- (int)_bluetoothPower:(BTLocalDeviceImpl *)power isEnabled:(BOOL *)enabled;
 - (void)_teardownBluetoothSessionAndDevice;
-- (void)performScanOnQueue:(id)a3 timeout:(double)a4 gracePeriod:(double)a5 completionBlock:(id)a6;
+- (void)performScanOnQueue:(id)queue timeout:(double)timeout gracePeriod:(double)period completionBlock:(id)block;
 @end
 
 @implementation OSDBluetooth
@@ -37,7 +37,7 @@
   return v2;
 }
 
-- (int)_bluetoothPower:(BTLocalDeviceImpl *)a3 isEnabled:(BOOL *)a4
+- (int)_bluetoothPower:(BTLocalDeviceImpl *)power isEnabled:(BOOL *)enabled
 {
   v19 = 0;
   v20 = &v19;
@@ -59,8 +59,8 @@
     objc_copyWeak(v13, &location);
     block[4] = &v15;
     block[5] = &v19;
-    v13[1] = a3;
-    v13[2] = a4;
+    v13[1] = power;
+    v13[2] = enabled;
     dispatch_sync(btQueue, block);
     objc_destroyWeak(v13);
     objc_destroyWeak(&location);
@@ -77,17 +77,17 @@
   return v9;
 }
 
-- (BOOL)_setBluetoothPower:(BTLocalDeviceImpl *)a3 enabled:(BOOL)a4 timeout:(double)a5
+- (BOOL)_setBluetoothPower:(BTLocalDeviceImpl *)power enabled:(BOOL)enabled timeout:(double)timeout
 {
-  v5 = a4;
+  enabledCopy = enabled;
   v22 = 0;
   v23 = &v22;
   v24 = 0x2020000000;
   v25 = 1;
   v21 = 0;
-  if (![(OSDBluetooth *)self _bluetoothPower:a3 isEnabled:&v21])
+  if (![(OSDBluetooth *)self _bluetoothPower:power isEnabled:&v21])
   {
-    if ((v21 & 1) == v5)
+    if ((v21 & 1) == enabledCopy)
     {
       v9 = DiagnosticLogHandleForCategory();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -109,11 +109,11 @@ LABEL_15:
       block[2] = sub_10000242C;
       block[3] = &unk_1000082C8;
       block[4] = &v22;
-      block[5] = a3;
-      v20 = v5;
+      block[5] = power;
+      v20 = enabledCopy;
       dispatch_sync(btQueue, block);
       statusSema = self->_statusSema;
-      v13 = dispatch_time(0, (a5 * 1000000000.0));
+      v13 = dispatch_time(0, (timeout * 1000000000.0));
       dispatch_semaphore_wait(statusSema, v13);
       if (*(v23 + 6))
       {
@@ -130,7 +130,7 @@ LABEL_15:
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
         v17 = @"OFF";
-        if (v5)
+        if (enabledCopy)
         {
           v17 = @"ON";
         }
@@ -162,7 +162,7 @@ LABEL_17:
   return v10;
 }
 
-- (BOOL)_setupBluetoothSessionAndDevice:(id *)a3
+- (BOOL)_setupBluetoothSessionAndDevice:(id *)device
 {
   v25 = 0;
   v26 = &v25;
@@ -184,7 +184,7 @@ LABEL_17:
     dispatch_semaphore_wait(statusSema, v8);
     if (*(v26 + 6))
     {
-      [OSDError setError:a3 withDomain:@"com.apple.Diagnostics.DABluetooth" withCode:2101 format:@"Error attaching to BTSession."];
+      [OSDError setError:device withDomain:@"com.apple.Diagnostics.DABluetooth" withCode:2101 format:@"Error attaching to BTSession."];
       v3 = 0;
 LABEL_18:
       objc_destroyWeak(&v23);
@@ -202,7 +202,7 @@ LABEL_18:
     dispatch_sync(v9, v20);
     if (*(v26 + 6))
     {
-      [OSDError setError:a3 withDomain:@"com.apple.Diagnostics.DABluetooth" withCode:2102 format:@"Error getting default bluetooth device"];
+      [OSDError setError:device withDomain:@"com.apple.Diagnostics.DABluetooth" withCode:2102 format:@"Error getting default bluetooth device"];
       v3 = 0;
 LABEL_17:
       objc_destroyWeak(&v21);
@@ -219,7 +219,7 @@ LABEL_17:
     dispatch_sync(v10, v18);
     if (*(v26 + 6))
     {
-      [OSDError setError:a3 withDomain:@"com.apple.Diagnostics.DABluetooth" withCode:2103 format:@"Error adding bluetooth device callbacks"];
+      [OSDError setError:device withDomain:@"com.apple.Diagnostics.DABluetooth" withCode:2103 format:@"Error adding bluetooth device callbacks"];
       v3 = 0;
 LABEL_16:
       objc_destroyWeak(&v19);
@@ -246,7 +246,7 @@ LABEL_16:
       v3 = session != 0;
       if (!session)
       {
-        [OSDError setError:a3 withDomain:@"com.apple.Diagnostics.DABluetooth" withCode:2105 format:@"Error creating a Bluetooth session"];
+        [OSDError setError:device withDomain:@"com.apple.Diagnostics.DABluetooth" withCode:2105 format:@"Error creating a Bluetooth session"];
       }
 
       if (self->_localDevice)
@@ -258,7 +258,7 @@ LABEL_16:
       v13 = 2106;
     }
 
-    [OSDError setError:a3 withDomain:@"com.apple.Diagnostics.DABluetooth" withCode:v13 format:v12];
+    [OSDError setError:device withDomain:@"com.apple.Diagnostics.DABluetooth" withCode:v13 format:v12];
     v3 = 0;
 LABEL_15:
     objc_destroyWeak(&v17);
@@ -285,9 +285,9 @@ LABEL_19:
   objc_destroyWeak(&location);
 }
 
-- (id)performBluetoothScanWithTimeout:(double)a3 foundDevices:(id)a4
+- (id)performBluetoothScanWithTimeout:(double)timeout foundDevices:(id)devices
 {
-  v6 = a4;
+  devicesCopy = devices;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -300,12 +300,12 @@ LABEL_19:
   v13[1] = 3221225472;
   v13[2] = sub_100002D18;
   v13[3] = &unk_100008278;
-  v9 = v6;
+  v9 = devicesCopy;
   v14 = v9;
   v16 = &v17;
   v10 = v7;
   v15 = v10;
-  [(OSDBluetooth *)self performScanOnQueue:v8 timeout:v13 gracePeriod:a3 completionBlock:2.0];
+  [(OSDBluetooth *)self performScanOnQueue:v8 timeout:v13 gracePeriod:timeout completionBlock:2.0];
   dispatch_semaphore_wait(v10, 0xFFFFFFFFFFFFFFFFLL);
   v11 = v18[5];
 
@@ -314,20 +314,20 @@ LABEL_19:
   return v11;
 }
 
-- (void)performScanOnQueue:(id)a3 timeout:(double)a4 gracePeriod:(double)a5 completionBlock:(id)a6
+- (void)performScanOnQueue:(id)queue timeout:(double)timeout gracePeriod:(double)period completionBlock:(id)block
 {
-  v10 = a6;
-  if (a4 <= 0.0)
+  blockCopy = block;
+  if (timeout <= 0.0)
   {
-    a4 = 8.0;
+    timeout = 8.0;
   }
 
-  if (a5 <= 0.0)
+  if (period <= 0.0)
   {
-    a5 = 2.0;
+    period = 2.0;
   }
 
-  v11 = a3;
+  queueCopy = queue;
   objc_initWeak(&location, self);
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
@@ -335,11 +335,11 @@ LABEL_19:
   v13[3] = &unk_100008340;
   v13[4] = self;
   objc_copyWeak(v15, &location);
-  v15[1] = *&a4;
-  v15[2] = *&a5;
-  v14 = v10;
-  v12 = v10;
-  dispatch_async(v11, v13);
+  v15[1] = *&timeout;
+  v15[2] = *&period;
+  v14 = blockCopy;
+  v12 = blockCopy;
+  dispatch_async(queueCopy, v13);
 
   objc_destroyWeak(v15);
   objc_destroyWeak(&location);

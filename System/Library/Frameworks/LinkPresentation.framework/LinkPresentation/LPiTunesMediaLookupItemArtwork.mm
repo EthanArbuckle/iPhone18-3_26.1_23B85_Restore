@@ -1,7 +1,7 @@
 @interface LPiTunesMediaLookupItemArtwork
-+ (id)colorForColorKind:(id)a3 inColorDictionary:(id)a4;
-- (LPiTunesMediaLookupItemArtwork)initWithDictionary:(id)a3;
-- (id)URLWithHeight:(int64_t)a3 width:(int64_t)a4 cropStyle:(id)a5 format:(id)a6;
++ (id)colorForColorKind:(id)kind inColorDictionary:(id)dictionary;
+- (LPiTunesMediaLookupItemArtwork)initWithDictionary:(id)dictionary;
+- (id)URLWithHeight:(int64_t)height width:(int64_t)width cropStyle:(id)style format:(id)format;
 - (id)colors;
 - (int64_t)height;
 - (int64_t)width;
@@ -9,16 +9,16 @@
 
 @implementation LPiTunesMediaLookupItemArtwork
 
-- (LPiTunesMediaLookupItemArtwork)initWithDictionary:(id)a3
+- (LPiTunesMediaLookupItemArtwork)initWithDictionary:(id)dictionary
 {
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = LPiTunesMediaLookupItemArtwork;
   v6 = [(LPiTunesMediaLookupItemArtwork *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dictionary, a3);
+    objc_storeStrong(&v6->_dictionary, dictionary);
     v8 = v7;
   }
 
@@ -30,15 +30,15 @@
   v2 = [(NSDictionary *)self->_dictionary objectForKey:@"height"];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 integerValue];
+    integerValue = [v2 integerValue];
   }
 
   else
   {
-    v3 = 0;
+    integerValue = 0;
   }
 
-  return v3;
+  return integerValue;
 }
 
 - (int64_t)width
@@ -46,15 +46,15 @@
   v2 = [(NSDictionary *)self->_dictionary objectForKey:@"width"];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 integerValue];
+    integerValue = [v2 integerValue];
   }
 
   else
   {
-    v3 = 0;
+    integerValue = 0;
   }
 
-  return v3;
+  return integerValue;
 }
 
 - (id)colors
@@ -105,10 +105,10 @@
   return v3;
 }
 
-- (id)URLWithHeight:(int64_t)a3 width:(int64_t)a4 cropStyle:(id)a5 format:(id)a6
+- (id)URLWithHeight:(int64_t)height width:(int64_t)width cropStyle:(id)style format:(id)format
 {
-  v10 = a5;
-  v11 = a6;
+  styleCopy = style;
+  formatCopy = format;
   v12 = [(NSDictionary *)self->_dictionary objectForKeyedSubscript:@"url"];
   if (v12 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
@@ -131,10 +131,10 @@
     v16[4] = v17;
     v16[5] = &v19;
     v13 = _Block_copy(v16);
-    v13[2](v13, @"{h}", a3, 0);
-    v13[2](v13, @"{w}", a4, 0);
-    (v13)[2](v13, @"{f}", 0, v11);
-    (v13)[2](v13, @"{c}", 0, v10);
+    v13[2](v13, @"{h}", height, 0);
+    v13[2](v13, @"{w}", width, 0);
+    (v13)[2](v13, @"{f}", 0, formatCopy);
+    (v13)[2](v13, @"{c}", 0, styleCopy);
     if (v20[5])
     {
       v14 = [MEMORY[0x1E695DFF8] URLWithString:?];
@@ -187,14 +187,14 @@ void __71__LPiTunesMediaLookupItemArtwork_URLWithHeight_width_cropStyle_format__
   }
 }
 
-+ (id)colorForColorKind:(id)a3 inColorDictionary:(id)a4
++ (id)colorForColorKind:(id)kind inColorDictionary:(id)dictionary
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  kindCopy = kind;
+  dictionaryCopy = dictionary;
+  v7 = dictionaryCopy;
+  if (dictionaryCopy)
   {
-    v8 = [v6 objectForKeyedSubscript:v5];
+    v8 = [dictionaryCopy objectForKeyedSubscript:kindCopy];
     v9 = v8;
     if (v8)
     {

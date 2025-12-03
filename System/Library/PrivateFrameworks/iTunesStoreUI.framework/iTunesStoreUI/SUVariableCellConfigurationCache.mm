@@ -1,6 +1,6 @@
 @interface SUVariableCellConfigurationCache
-- (SUVariableCellConfigurationCache)initWithTableHeight:(double)a3;
-- (id)cacheForClass:(Class)a3;
+- (SUVariableCellConfigurationCache)initWithTableHeight:(double)height;
+- (id)cacheForClass:(Class)class;
 - (void)dealloc;
 - (void)reset;
 - (void)resetLayoutCaches;
@@ -8,12 +8,12 @@
 
 @implementation SUVariableCellConfigurationCache
 
-- (SUVariableCellConfigurationCache)initWithTableHeight:(double)a3
+- (SUVariableCellConfigurationCache)initWithTableHeight:(double)height
 {
   result = [(SUVariableCellConfigurationCache *)self init];
   if (result)
   {
-    result->_tableHeight = a3;
+    result->_tableHeight = height;
   }
 
   return result;
@@ -29,12 +29,12 @@
   [(SUVariableCellConfigurationCache *)&v3 dealloc];
 }
 
-- (id)cacheForClass:(Class)a3
+- (id)cacheForClass:(Class)class
 {
   caches = self->_caches;
   if (caches)
   {
-    if (a3)
+    if (class)
     {
       goto LABEL_3;
     }
@@ -44,17 +44,17 @@
 
   caches = objc_alloc_init(MEMORY[0x1E695DF90]);
   self->_caches = caches;
-  if (!a3)
+  if (!class)
   {
     return 0;
   }
 
 LABEL_3:
-  v6 = [(NSMutableDictionary *)caches objectForKey:a3];
+  v6 = [(NSMutableDictionary *)caches objectForKey:class];
   if (!v6)
   {
-    v6 = [[SUCellConfigurationCache alloc] initWithClass:a3 tableHeight:self->_tableHeight];
-    [(NSMutableDictionary *)self->_caches setObject:v6 forKey:a3];
+    v6 = [[SUCellConfigurationCache alloc] initWithClass:class tableHeight:self->_tableHeight];
+    [(NSMutableDictionary *)self->_caches setObject:v6 forKey:class];
   }
 
   return v6;

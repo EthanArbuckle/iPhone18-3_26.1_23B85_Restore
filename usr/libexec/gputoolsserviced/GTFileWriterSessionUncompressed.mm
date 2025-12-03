@@ -1,31 +1,31 @@
 @interface GTFileWriterSessionUncompressed
-+ (id)sessionWithFileEntries:(id)a3 relativeToURL:(id)a4 options:(id)a5 error:(id *)a6;
-- (BOOL)_closeCurrentFileDescriptor:(id *)a3;
-- (BOOL)_writeUncompressedFileData:(const char *)a3 length:(unint64_t)a4 error:(id *)a5;
-- (BOOL)finish:(id *)a3;
-- (GTFileWriterSessionUncompressed)initWithFileEntries:(id)a3 relativeToURL:(id)a4 options:(id)a5 error:(id *)a6;
-- (int)_getCurrentFileDescriptor:(id *)a3;
-- (int)_openNextFile:(id *)a3;
-- (void)writeFileData:(id)a3 completionHandler:(id)a4;
++ (id)sessionWithFileEntries:(id)entries relativeToURL:(id)l options:(id)options error:(id *)error;
+- (BOOL)_closeCurrentFileDescriptor:(id *)descriptor;
+- (BOOL)_writeUncompressedFileData:(const char *)data length:(unint64_t)length error:(id *)error;
+- (BOOL)finish:(id *)finish;
+- (GTFileWriterSessionUncompressed)initWithFileEntries:(id)entries relativeToURL:(id)l options:(id)options error:(id *)error;
+- (int)_getCurrentFileDescriptor:(id *)descriptor;
+- (int)_openNextFile:(id *)file;
+- (void)writeFileData:(id)data completionHandler:(id)handler;
 @end
 
 @implementation GTFileWriterSessionUncompressed
 
-+ (id)sessionWithFileEntries:(id)a3 relativeToURL:(id)a4 options:(id)a5 error:(id *)a6
++ (id)sessionWithFileEntries:(id)entries relativeToURL:(id)l options:(id)options error:(id *)error
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [[a1 alloc] initWithFileEntries:v12 relativeToURL:v11 options:v10 error:a6];
+  optionsCopy = options;
+  lCopy = l;
+  entriesCopy = entries;
+  v13 = [[self alloc] initWithFileEntries:entriesCopy relativeToURL:lCopy options:optionsCopy error:error];
 
   return v13;
 }
 
-- (GTFileWriterSessionUncompressed)initWithFileEntries:(id)a3 relativeToURL:(id)a4 options:(id)a5 error:(id *)a6
+- (GTFileWriterSessionUncompressed)initWithFileEntries:(id)entries relativeToURL:(id)l options:(id)options error:(id *)error
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  entriesCopy = entries;
+  lCopy = l;
+  optionsCopy = options;
   v75.receiver = self;
   v75.super_class = GTFileWriterSessionUncompressed;
   v14 = [(GTFileWriterSessionUncompressed *)&v75 init];
@@ -35,13 +35,13 @@
     goto LABEL_53;
   }
 
-  objc_storeStrong(&v14->_fileEntries, a3);
-  objc_storeStrong(&v15->_baseURL, a4);
+  objc_storeStrong(&v14->_fileEntries, entries);
+  objc_storeStrong(&v15->_baseURL, l);
   v15->_currentFileIndex = 0;
   v15->_currentFileBytesWritten = 0;
   v15->_fd = -1;
-  v16 = v11;
-  v71 = v12;
+  v16 = entriesCopy;
+  v71 = lCopy;
   v77 = 0u;
   v78 = 0u;
   v79 = 0u;
@@ -55,10 +55,10 @@
     goto LABEL_50;
   }
 
-  v67 = a6;
+  errorCopy = error;
   v68 = v15;
-  v69 = v13;
-  v70 = v12;
+  v69 = optionsCopy;
+  v70 = lCopy;
   v17 = 0;
   v73 = *v78;
   v18 = v71;
@@ -79,12 +79,12 @@
       v23 = v21;
       v24 = v18;
       v25 = [NSURL alloc];
-      v26 = [v23 path];
-      v27 = [v25 initFileURLWithPath:v26 isDirectory:0 relativeToURL:v24];
+      path = [v23 path];
+      v27 = [v25 initFileURLWithPath:path isDirectory:0 relativeToURL:v24];
 
       v28 = +[NSFileManager defaultManager];
-      v29 = [v27 URLByDeletingLastPathComponent];
-      LODWORD(v24) = [v28 createDirectoryAtURL:v29 withIntermediateDirectories:1 attributes:0 error:&v76];
+      uRLByDeletingLastPathComponent = [v27 URLByDeletingLastPathComponent];
+      LODWORD(v24) = [v28 createDirectoryAtURL:uRLByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:&v76];
 
       if (!v24)
       {
@@ -93,14 +93,14 @@ LABEL_20:
         goto LABEL_44;
       }
 
-      v30 = [v23 destination];
+      destination = [v23 destination];
 
-      if (v30)
+      if (destination)
       {
         v31 = +[NSFileManager defaultManager];
-        v32 = [v27 path];
-        v33 = [v23 destination];
-        v34 = [v31 createSymbolicLinkAtPath:v32 withDestinationPath:v33 error:&v76];
+        path2 = [v27 path];
+        destination2 = [v23 destination];
+        v34 = [v31 createSymbolicLinkAtPath:path2 withDestinationPath:destination2 error:&v76];
 
         if ((v34 & 1) == 0)
         {
@@ -155,7 +155,7 @@ LABEL_20:
         if (ftruncate(v38, [v23 fileSize]) < 0)
         {
           v45 = *__error();
-          v66 = v11;
+          v66 = entriesCopy;
           if (GTCoreLogUseOsLog())
           {
             v46 = gt_tagged_log(0x10u);
@@ -189,7 +189,7 @@ LABEL_20:
 
           close(v39);
           v35 = 0;
-          v11 = v66;
+          entriesCopy = v66;
           goto LABEL_43;
         }
 
@@ -293,16 +293,16 @@ LABEL_44:
   while (v74);
   v35 = 1;
 LABEL_48:
-  v13 = v69;
-  v12 = v70;
-  a6 = v67;
+  optionsCopy = v69;
+  lCopy = v70;
+  error = errorCopy;
   v15 = v68;
 LABEL_50:
 
-  if (a6)
+  if (error)
   {
     v63 = v17;
-    *a6 = v17;
+    *error = v17;
   }
 
   if (v35)
@@ -319,7 +319,7 @@ LABEL_53:
   return v64;
 }
 
-- (int)_openNextFile:(id *)a3
+- (int)_openNextFile:(id *)file
 {
   currentFileIndex = self->_currentFileIndex;
   if (currentFileIndex >= [(NSArray *)self->_fileEntries count])
@@ -334,7 +334,7 @@ LABEL_9:
         sub_100013208();
       }
 
-      if (a3)
+      if (file)
       {
         goto LABEL_13;
       }
@@ -346,13 +346,13 @@ LABEL_9:
       v14 = [NSString stringWithFormat:@"No more files to write to"];
       fprintf(v13, "%s\n", [v14 UTF8String]);
 
-      if (a3)
+      if (file)
       {
 LABEL_13:
         v27 = NSLocalizedDescriptionKey;
         v28 = @"No more files to write to";
         v11 = [NSDictionary dictionaryWithObjects:&v28 forKeys:&v27 count:1];
-        *a3 = [NSError errorWithDomain:NSPOSIXErrorDomain code:2 userInfo:v11];
+        *file = [NSError errorWithDomain:NSPOSIXErrorDomain code:2 userInfo:v11];
 LABEL_14:
         v12 = -1;
         goto LABEL_15;
@@ -369,8 +369,8 @@ LABEL_14:
     v7 = v6;
     v6 = [(NSArray *)self->_fileEntries objectAtIndexedSubscript:self->_currentFileIndex];
 
-    v8 = [v6 destination];
-    if (!v8)
+    destination = [v6 destination];
+    if (!destination)
     {
       break;
     }
@@ -390,8 +390,8 @@ LABEL_6:
   }
 
   v16 = [NSURL alloc];
-  v17 = [v6 path];
-  v11 = [v16 initFileURLWithPath:v17 isDirectory:0 relativeToURL:self->_baseURL];
+  path = [v6 path];
+  v11 = [v16 initFileURLWithPath:path isDirectory:0 relativeToURL:self->_baseURL];
 
   v18 = open([v11 fileSystemRepresentation], 1, 0);
   if (v18 < 0)
@@ -412,13 +412,13 @@ LABEL_6:
       fprintf(v20, "%s\n", [v21 UTF8String]);
     }
 
-    if (a3)
+    if (file)
     {
       v22 = *__error();
-      v23 = [NSString stringWithFormat:@"Failed to open file %@ for writing", v11, NSLocalizedDescriptionKey];
-      v26 = v23;
+      nSLocalizedDescriptionKey = [NSString stringWithFormat:@"Failed to open file %@ for writing", v11, NSLocalizedDescriptionKey];
+      v26 = nSLocalizedDescriptionKey;
       v24 = [NSDictionary dictionaryWithObjects:&v26 forKeys:&v25 count:1];
-      *a3 = [NSError errorWithDomain:NSPOSIXErrorDomain code:v22 userInfo:v24];
+      *file = [NSError errorWithDomain:NSPOSIXErrorDomain code:v22 userInfo:v24];
     }
 
     goto LABEL_14;
@@ -431,47 +431,47 @@ LABEL_18:
   return v12;
 }
 
-- (void)writeFileData:(id)a3 completionHandler:(id)a4
+- (void)writeFileData:(id)data completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a3;
-  v10 = [v9 bytes];
-  v11 = [v9 length];
+  dataCopy = data;
+  handlerCopy = handler;
+  dataCopy2 = data;
+  bytes = [dataCopy2 bytes];
+  v11 = [dataCopy2 length];
 
   v13 = 0;
-  [(GTFileWriterSessionUncompressed *)self _writeUncompressedFileData:v10 length:v11 error:&v13];
+  [(GTFileWriterSessionUncompressed *)self _writeUncompressedFileData:bytes length:v11 error:&v13];
   v12 = v13;
-  v8[2](v8, v12);
+  handlerCopy[2](handlerCopy, v12);
 }
 
-- (BOOL)_writeUncompressedFileData:(const char *)a3 length:(unint64_t)a4 error:(id *)a5
+- (BOOL)_writeUncompressedFileData:(const char *)data length:(unint64_t)length error:(id *)error
 {
-  if (a4)
+  if (length)
   {
     v9 = 0;
     while (1)
     {
-      v10 = [(GTFileWriterSessionUncompressed *)self _getCurrentFileDescriptor:a5];
+      v10 = [(GTFileWriterSessionUncompressed *)self _getCurrentFileDescriptor:error];
       if ((v10 & 0x80000000) != 0)
       {
         goto LABEL_21;
       }
 
       v11 = v10;
-      v12 = a4 - v9;
+      v12 = length - v9;
       v13 = [(NSArray *)self->_fileEntries objectAtIndexedSubscript:self->_currentFileIndex];
       v14 = [v13 fileSize] - self->_currentFileBytesWritten;
 
       v15 = 0;
-      if (a4 - v9 >= v14)
+      if (length - v9 >= v14)
       {
         v12 = v14;
       }
 
       do
       {
-        v16 = write(v11, &a3[v9 + v15], v12 - v15);
+        v16 = write(v11, &data[v9 + v15], v12 - v15);
         if (v16 < 0)
         {
           goto LABEL_14;
@@ -490,11 +490,11 @@ LABEL_18:
       v18 = self->_currentFileBytesWritten + v12;
       self->_currentFileBytesWritten = v18;
       v19 = [(NSArray *)self->_fileEntries objectAtIndexedSubscript:currentFileIndex];
-      v20 = [v19 fileSize];
+      fileSize = [v19 fileSize];
 
-      if (v18 == v20)
+      if (v18 == fileSize)
       {
-        v21 = [(GTFileWriterSessionUncompressed *)self _closeCurrentFileDescriptor:a5];
+        v21 = [(GTFileWriterSessionUncompressed *)self _closeCurrentFileDescriptor:error];
         if (!v21)
         {
           return v21;
@@ -505,7 +505,7 @@ LABEL_18:
       }
 
       v9 += v12;
-      if (v9 >= a4)
+      if (v9 >= length)
       {
         goto LABEL_13;
       }
@@ -520,7 +520,7 @@ LABEL_14:
         sub_10001323C();
       }
 
-      if (!a5)
+      if (!error)
       {
 LABEL_21:
         LOBYTE(v21) = 0;
@@ -534,17 +534,17 @@ LABEL_21:
       v24 = [NSString stringWithFormat:@"Failed to write to fd (%d)", v11];
       fprintf(v23, "%s\n", [v24 UTF8String]);
 
-      if (!a5)
+      if (!error)
       {
         goto LABEL_21;
       }
     }
 
     v25 = *__error();
-    v26 = [NSString stringWithFormat:@"Failed to write to fd (%d)", v11, NSLocalizedDescriptionKey];
-    v30 = v26;
+    nSLocalizedDescriptionKey = [NSString stringWithFormat:@"Failed to write to fd (%d)", v11, NSLocalizedDescriptionKey];
+    v30 = nSLocalizedDescriptionKey;
     v27 = [NSDictionary dictionaryWithObjects:&v30 forKeys:&v29 count:1];
-    *a5 = [NSError errorWithDomain:NSPOSIXErrorDomain code:v25 userInfo:v27];
+    *error = [NSError errorWithDomain:NSPOSIXErrorDomain code:v25 userInfo:v27];
 
     goto LABEL_21;
   }
@@ -554,19 +554,19 @@ LABEL_13:
   return v21;
 }
 
-- (int)_getCurrentFileDescriptor:(id *)a3
+- (int)_getCurrentFileDescriptor:(id *)descriptor
 {
   result = self->_fd;
   if (result < 0)
   {
-    result = [(GTFileWriterSessionUncompressed *)self _openNextFile:a3];
+    result = [(GTFileWriterSessionUncompressed *)self _openNextFile:descriptor];
     self->_fd = result;
   }
 
   return result;
 }
 
-- (BOOL)finish:(id *)a3
+- (BOOL)finish:(id *)finish
 {
   baseURL = self->_baseURL;
   self->_baseURL = 0;
@@ -577,10 +577,10 @@ LABEL_13:
   self->_currentFileIndex = 0;
   self->_currentFileBytesWritten = 0;
 
-  return [(GTFileWriterSessionUncompressed *)self _closeCurrentFileDescriptor:a3];
+  return [(GTFileWriterSessionUncompressed *)self _closeCurrentFileDescriptor:finish];
 }
 
-- (BOOL)_closeCurrentFileDescriptor:(id *)a3
+- (BOOL)_closeCurrentFileDescriptor:(id *)descriptor
 {
   fd = self->_fd;
   if ((fd & 0x80000000) != 0)
@@ -599,7 +599,7 @@ LABEL_13:
         sub_100013330();
       }
 
-      if (!a3)
+      if (!descriptor)
       {
         return 0;
       }
@@ -611,7 +611,7 @@ LABEL_13:
       v11 = [NSString stringWithFormat:@"Failed to flush fd (%d)", fd];
       fprintf(v10, "%s\n", [v11 UTF8String]);
 
-      if (!a3)
+      if (!descriptor)
       {
         return 0;
       }
@@ -626,7 +626,7 @@ LABEL_13:
     v16 = &v22;
 LABEL_19:
     v19 = [NSDictionary dictionaryWithObjects:v15 forKeys:v16 count:1];
-    *a3 = [NSError errorWithDomain:v12 code:v13 userInfo:v19];
+    *descriptor = [NSError errorWithDomain:v12 code:v13 userInfo:v19];
 
     return 0;
   }
@@ -646,7 +646,7 @@ LABEL_19:
       sub_1000132B0();
     }
 
-    if (!a3)
+    if (!descriptor)
     {
       return 0;
     }
@@ -658,7 +658,7 @@ LABEL_19:
   v18 = [NSString stringWithFormat:@"Failed to close fd (%d), status %d", fd, v8];
   fprintf(v17, "%s\n", [v18 UTF8String]);
 
-  if (a3)
+  if (descriptor)
   {
 LABEL_18:
     v12 = NSPOSIXErrorDomain;

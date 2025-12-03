@@ -1,14 +1,14 @@
 @interface BKClassicScrubberTrack
-- (void)_updateTrackForSize:(CGSize)a3;
+- (void)_updateTrackForSize:(CGSize)size;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setLayoutDirection:(int64_t)a3;
-- (void)setLoadingProgress:(double)a3;
-- (void)setReadingProgress:(double)a3;
-- (void)setRoundEndCaps:(BOOL)a3;
-- (void)setThickness:(double)a3;
-- (void)setTrackBackgroundColor:(id)a3;
-- (void)setTrackForegroundColor:(id)a3;
+- (void)setLayoutDirection:(int64_t)direction;
+- (void)setLoadingProgress:(double)progress;
+- (void)setReadingProgress:(double)progress;
+- (void)setRoundEndCaps:(BOOL)caps;
+- (void)setThickness:(double)thickness;
+- (void)setTrackBackgroundColor:(id)color;
+- (void)setTrackForegroundColor:(id)color;
 - (void)tintColorDidChange;
 @end
 
@@ -29,14 +29,14 @@
 
 - (void)tintColorDidChange
 {
-  v3 = [(BKClassicScrubberTrack *)self tintColor];
-  [(UIView *)self->_progressView setBackgroundColor:v3];
+  tintColor = [(BKClassicScrubberTrack *)self tintColor];
+  [(UIView *)self->_progressView setBackgroundColor:tintColor];
 }
 
-- (void)_updateTrackForSize:(CGSize)a3
+- (void)_updateTrackForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   y = CGRectZero.origin.y;
   v69 = CGRectZero.size.height;
   v70 = CGRectZero.size.width;
@@ -52,17 +52,17 @@ LABEL_12:
         goto LABEL_15;
       }
 
-      v7 = self;
+      selfCopy2 = self;
       v8 = width;
     }
 
     else
     {
-      v7 = self;
+      selfCopy2 = self;
       v8 = height;
     }
 
-    [(BKClassicScrubberTrack *)v7 setThickness:v8];
+    [(BKClassicScrubberTrack *)selfCopy2 setThickness:v8];
     goto LABEL_12;
   }
 
@@ -129,20 +129,20 @@ LABEL_15:
     v72.super_class = BKClassicScrubberTrack;
     [(BKScrubberTrack *)&v72 thickness];
     v31 = v30 * 0.5;
-    v32 = [(UIView *)self->_trackBackgroundView layer];
-    [v32 setCornerRadius:v31];
+    layer = [(UIView *)self->_trackBackgroundView layer];
+    [layer setCornerRadius:v31];
 
-    v33 = [(UIView *)self->_trackBackgroundView layer];
-    [v33 setMasksToBounds:1];
+    layer2 = [(UIView *)self->_trackBackgroundView layer];
+    [layer2 setMasksToBounds:1];
   }
 
   else
   {
-    v34 = [(UIView *)self->_trackBackgroundView layer];
-    [v34 setCornerRadius:0.0];
+    layer3 = [(UIView *)self->_trackBackgroundView layer];
+    [layer3 setCornerRadius:0.0];
 
-    v35 = [(UIView *)self->_trackBackgroundView layer];
-    [v35 setMasksToBounds:0];
+    layer4 = [(UIView *)self->_trackBackgroundView layer];
+    [layer4 setMasksToBounds:0];
   }
 
   if (!self->_progressView)
@@ -164,20 +164,20 @@ LABEL_15:
     v39 = v40 * 0.5;
   }
 
-  v41 = [(UIView *)self->_progressView layer];
-  [v41 setCornerRadius:v39];
+  layer5 = [(UIView *)self->_progressView layer];
+  [layer5 setCornerRadius:v39];
 
-  v42 = [(UIView *)self->_progressView layer];
-  [v42 setMasksToBounds:roundEndCaps];
+  layer6 = [(UIView *)self->_progressView layer];
+  [layer6 setMasksToBounds:roundEndCaps];
 
   v43 = +[UIColor clearColor];
   [(BKClassicScrubberTrack *)self setBackgroundColor:v43];
 
-  v44 = [(BKScrubberTrack *)self trackBackgroundColor];
-  if (v44)
+  trackBackgroundColor = [(BKScrubberTrack *)self trackBackgroundColor];
+  if (trackBackgroundColor)
   {
     p_trackBackgroundView = &self->_trackBackgroundView;
-    [(UIView *)self->_trackBackgroundView setBackgroundColor:v44];
+    [(UIView *)self->_trackBackgroundView setBackgroundColor:trackBackgroundColor];
   }
 
   else
@@ -187,16 +187,16 @@ LABEL_15:
     [(UIView *)self->_trackBackgroundView setBackgroundColor:v46];
   }
 
-  v47 = [(BKScrubberTrack *)self trackForegroundColor];
-  if (v47)
+  trackForegroundColor = [(BKScrubberTrack *)self trackForegroundColor];
+  if (trackForegroundColor)
   {
-    [(UIView *)self->_progressView setBackgroundColor:v47];
+    [(UIView *)self->_progressView setBackgroundColor:trackForegroundColor];
   }
 
   else
   {
-    v48 = [(BKClassicScrubberTrack *)self tintColor];
-    [(UIView *)self->_progressView setBackgroundColor:v48];
+    tintColor = [(BKClassicScrubberTrack *)self tintColor];
+    [(UIView *)self->_progressView setBackgroundColor:tintColor];
   }
 
   if (self->super._modern)
@@ -212,8 +212,8 @@ LABEL_15:
 
   if (![(BKScrubberTrack *)self trackOrientation])
   {
-    v57 = [(BKScrubberTrack *)self layoutDirection];
-    if (v57 == 1)
+    layoutDirection = [(BKScrubberTrack *)self layoutDirection];
+    if (layoutDirection == 1)
     {
       if (v25 == 1.0)
       {
@@ -268,7 +268,7 @@ LABEL_15:
       goto LABEL_60;
     }
 
-    if (!v57)
+    if (!layoutDirection)
     {
       v77.origin.x = x;
       v77.origin.y = v10;
@@ -382,36 +382,36 @@ LABEL_61:
   [(BKClassicScrubberTrack *)self _updateTrackForSize:v3, v4];
 }
 
-- (void)setTrackBackgroundColor:(id)a3
+- (void)setTrackBackgroundColor:(id)color
 {
   v4.receiver = self;
   v4.super_class = BKClassicScrubberTrack;
-  [(BKScrubberTrack *)&v4 setTrackBackgroundColor:a3];
+  [(BKScrubberTrack *)&v4 setTrackBackgroundColor:color];
   [(BKClassicScrubberTrack *)self setNeedsLayout];
 }
 
-- (void)setTrackForegroundColor:(id)a3
+- (void)setTrackForegroundColor:(id)color
 {
   v4.receiver = self;
   v4.super_class = BKClassicScrubberTrack;
-  [(BKScrubberTrack *)&v4 setTrackForegroundColor:a3];
+  [(BKScrubberTrack *)&v4 setTrackForegroundColor:color];
   [(BKClassicScrubberTrack *)self setNeedsLayout];
 }
 
-- (void)setLayoutDirection:(int64_t)a3
+- (void)setLayoutDirection:(int64_t)direction
 {
-  if ([(BKScrubberTrack *)self layoutDirection]!= a3)
+  if ([(BKScrubberTrack *)self layoutDirection]!= direction)
   {
     v5.receiver = self;
     v5.super_class = BKClassicScrubberTrack;
-    [(BKScrubberTrack *)&v5 setLayoutDirection:a3];
+    [(BKScrubberTrack *)&v5 setLayoutDirection:direction];
     [(BKClassicScrubberTrack *)self setNeedsLayout];
   }
 }
 
-- (void)setLoadingProgress:(double)a3
+- (void)setLoadingProgress:(double)progress
 {
-  if (self->super._loadingProgress != a3)
+  if (self->super._loadingProgress != progress)
   {
     v7 = v3;
     v8 = v4;
@@ -422,9 +422,9 @@ LABEL_61:
   }
 }
 
-- (void)setReadingProgress:(double)a3
+- (void)setReadingProgress:(double)progress
 {
-  if (self->super._readingProgress != a3)
+  if (self->super._readingProgress != progress)
   {
     v7 = v3;
     v8 = v4;
@@ -435,9 +435,9 @@ LABEL_61:
   }
 }
 
-- (void)setThickness:(double)a3
+- (void)setThickness:(double)thickness
 {
-  if (self->super._thickness != a3)
+  if (self->super._thickness != thickness)
   {
     v7 = v3;
     v8 = v4;
@@ -448,9 +448,9 @@ LABEL_61:
   }
 }
 
-- (void)setRoundEndCaps:(BOOL)a3
+- (void)setRoundEndCaps:(BOOL)caps
 {
-  if (self->super._roundEndCaps != a3)
+  if (self->super._roundEndCaps != caps)
   {
     v7 = v3;
     v8 = v4;

@@ -1,6 +1,6 @@
 @interface MTRPushAVStreamTransportClusterTransportZoneOptionsStruct
 - (MTRPushAVStreamTransportClusterTransportZoneOptionsStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -24,14 +24,14 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRPushAVStreamTransportClusterTransportZoneOptionsStruct);
   v5 = [(MTRPushAVStreamTransportClusterTransportZoneOptionsStruct *)self zone];
   [(MTRPushAVStreamTransportClusterTransportZoneOptionsStruct *)v4 setZone:v5];
 
-  v6 = [(MTRPushAVStreamTransportClusterTransportZoneOptionsStruct *)self sensitivity];
-  [(MTRPushAVStreamTransportClusterTransportZoneOptionsStruct *)v4 setSensitivity:v6];
+  sensitivity = [(MTRPushAVStreamTransportClusterTransportZoneOptionsStruct *)self sensitivity];
+  [(MTRPushAVStreamTransportClusterTransportZoneOptionsStruct *)v4 setSensitivity:sensitivity];
 
   return v4;
 }

@@ -1,11 +1,11 @@
 @interface MPCSharedListeningQueueEvent
-+ (MPCSharedListeningQueueEvent)queueEventWithAddedContent:(id)a3;
-+ (MPCSharedListeningQueueEvent)queueEventWithContentUpdatedMessage:(id)a3;
-+ (MPCSharedListeningQueueEvent)queueEventWithPlaybackModeChanged:(id)a3;
-+ (MPCSharedListeningQueueEvent)queueEventWithPlayedNowContent:(id)a3;
-+ (MPCSharedListeningQueueEvent)queueEventWithRemovedContent:(id)a3;
-+ (MPCSharedListeningQueueEvent)queueEventWithReorderedContent:(id)a3;
-+ (MPCSharedListeningQueueEvent)queueEventWithReplacedContent:(id)a3;
++ (MPCSharedListeningQueueEvent)queueEventWithAddedContent:(id)content;
++ (MPCSharedListeningQueueEvent)queueEventWithContentUpdatedMessage:(id)message;
++ (MPCSharedListeningQueueEvent)queueEventWithPlaybackModeChanged:(id)changed;
++ (MPCSharedListeningQueueEvent)queueEventWithPlayedNowContent:(id)content;
++ (MPCSharedListeningQueueEvent)queueEventWithRemovedContent:(id)content;
++ (MPCSharedListeningQueueEvent)queueEventWithReorderedContent:(id)content;
++ (MPCSharedListeningQueueEvent)queueEventWithReplacedContent:(id)content;
 - (id)description;
 @end
 
@@ -81,79 +81,79 @@ LABEL_18:
   return v3;
 }
 
-+ (MPCSharedListeningQueueEvent)queueEventWithPlaybackModeChanged:(id)a3
++ (MPCSharedListeningQueueEvent)queueEventWithPlaybackModeChanged:(id)changed
 {
-  v3 = a3;
+  changedCopy = changed;
   v4 = objc_alloc_init(MPCSharedListeningQueueEvent);
   v4->_kind = 4;
   playbackMode = v4->_playbackMode;
-  v4->_playbackMode = v3;
+  v4->_playbackMode = changedCopy;
 
   return v4;
 }
 
-+ (MPCSharedListeningQueueEvent)queueEventWithContentUpdatedMessage:(id)a3
++ (MPCSharedListeningQueueEvent)queueEventWithContentUpdatedMessage:(id)message
 {
-  v3 = a3;
+  messageCopy = message;
   v4 = objc_alloc_init(MPCSharedListeningQueueEvent);
   v4->_kind = 7;
   contentUpdatedMessage = v4->_contentUpdatedMessage;
-  v4->_contentUpdatedMessage = v3;
+  v4->_contentUpdatedMessage = messageCopy;
 
   return v4;
 }
 
-+ (MPCSharedListeningQueueEvent)queueEventWithReplacedContent:(id)a3
++ (MPCSharedListeningQueueEvent)queueEventWithReplacedContent:(id)content
 {
-  v3 = a3;
+  contentCopy = content;
   v4 = objc_alloc_init(MPCSharedListeningQueueEvent);
   v4->_kind = 5;
   replacedContent = v4->_replacedContent;
-  v4->_replacedContent = v3;
+  v4->_replacedContent = contentCopy;
 
   return v4;
 }
 
-+ (MPCSharedListeningQueueEvent)queueEventWithReorderedContent:(id)a3
++ (MPCSharedListeningQueueEvent)queueEventWithReorderedContent:(id)content
 {
-  v3 = a3;
+  contentCopy = content;
   v4 = objc_alloc_init(MPCSharedListeningQueueEvent);
   v4->_kind = 3;
   reorderedContent = v4->_reorderedContent;
-  v4->_reorderedContent = v3;
+  v4->_reorderedContent = contentCopy;
 
   return v4;
 }
 
-+ (MPCSharedListeningQueueEvent)queueEventWithRemovedContent:(id)a3
++ (MPCSharedListeningQueueEvent)queueEventWithRemovedContent:(id)content
 {
-  v3 = a3;
+  contentCopy = content;
   v4 = objc_alloc_init(MPCSharedListeningQueueEvent);
   v4->_kind = 2;
   removedContent = v4->_removedContent;
-  v4->_removedContent = v3;
+  v4->_removedContent = contentCopy;
 
   return v4;
 }
 
-+ (MPCSharedListeningQueueEvent)queueEventWithPlayedNowContent:(id)a3
++ (MPCSharedListeningQueueEvent)queueEventWithPlayedNowContent:(id)content
 {
-  v3 = a3;
+  contentCopy = content;
   v4 = objc_alloc_init(MPCSharedListeningQueueEvent);
   v4->_kind = 6;
   playedNowContent = v4->_playedNowContent;
-  v4->_playedNowContent = v3;
+  v4->_playedNowContent = contentCopy;
 
   return v4;
 }
 
-+ (MPCSharedListeningQueueEvent)queueEventWithAddedContent:(id)a3
++ (MPCSharedListeningQueueEvent)queueEventWithAddedContent:(id)content
 {
-  v3 = a3;
+  contentCopy = content;
   v4 = objc_alloc_init(MPCSharedListeningQueueEvent);
   addedContent = v4->_addedContent;
   v4->_kind = 1;
-  v4->_addedContent = v3;
+  v4->_addedContent = contentCopy;
 
   return v4;
 }

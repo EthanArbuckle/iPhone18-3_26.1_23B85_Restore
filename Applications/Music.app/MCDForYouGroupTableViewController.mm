@@ -1,29 +1,29 @@
 @interface MCDForYouGroupTableViewController
-- (MCDForYouGroupTableViewController)initWithRecommendationGroup:(id)a3;
-- (MCDForYouGroupTableViewController)initWithRecommendationItem:(id)a3;
+- (MCDForYouGroupTableViewController)initWithRecommendationGroup:(id)group;
+- (MCDForYouGroupTableViewController)initWithRecommendationItem:(id)item;
 - (id)_contentManager;
-- (id)contentManager:(id)a3 viewControllerForItem:(id)a4 indexPath:(id)a5;
+- (id)contentManager:(id)manager viewControllerForItem:(id)item indexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
 @implementation MCDForYouGroupTableViewController
 
-- (MCDForYouGroupTableViewController)initWithRecommendationGroup:(id)a3
+- (MCDForYouGroupTableViewController)initWithRecommendationGroup:(id)group
 {
-  v5 = a3;
+  groupCopy = group;
   v12.receiver = self;
   v12.super_class = MCDForYouGroupTableViewController;
   v6 = [(MCDFuseTableViewController *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_recommendation, a3);
-    if ([v5 groupType] == 4)
+    objc_storeStrong(&v6->_recommendation, group);
+    if ([groupCopy groupType] == 4)
     {
       v8 = +[MusicCarPlayApplicationCapabilitiesController sharedController];
-      v9 = [v8 userSubscriptionState];
+      userSubscriptionState = [v8 userSubscriptionState];
 
-      if (v9 == 3)
+      if (userSubscriptionState == 3)
       {
         v10 = @"play_it_again";
       }
@@ -45,16 +45,16 @@
   return v7;
 }
 
-- (MCDForYouGroupTableViewController)initWithRecommendationItem:(id)a3
+- (MCDForYouGroupTableViewController)initWithRecommendationItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   v9.receiver = self;
   v9.super_class = MCDForYouGroupTableViewController;
   v6 = [(MCDFuseTableViewController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_recommendation, a3);
+    objc_storeStrong(&v6->_recommendation, item);
     [(MCDForYouGroupTableViewController *)v7 setPlayActivityFeatureName:@"grouping"];
   }
 
@@ -66,14 +66,14 @@
   v22.receiver = self;
   v22.super_class = MCDForYouGroupTableViewController;
   [(MCDFuseTableViewController *)&v22 viewDidLoad];
-  v3 = [(MCDForYouGroupTableViewController *)self recommendation];
+  recommendation = [(MCDForYouGroupTableViewController *)self recommendation];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  v5 = [(MCDForYouGroupTableViewController *)self recommendation];
+  recommendation2 = [(MCDForYouGroupTableViewController *)self recommendation];
   if (isKindOfClass)
   {
-    v6 = 0;
+    recommendation3 = 0;
   }
 
   else
@@ -83,28 +83,28 @@
 
     if (v7)
     {
-      v6 = [(MCDForYouGroupTableViewController *)self recommendation];
+      recommendation3 = [(MCDForYouGroupTableViewController *)self recommendation];
     }
 
     else
     {
-      v6 = 0;
+      recommendation3 = 0;
     }
 
-    v5 = 0;
+    recommendation2 = 0;
   }
 
-  v8 = [v5 groupType] == 4;
-  v9 = [v5 title];
-  v10 = v9;
+  v8 = [recommendation2 groupType] == 4;
+  title = [recommendation2 title];
+  v10 = title;
   if (v8)
   {
-    if (!v9)
+    if (!title)
     {
-      v11 = [v6 title];
-      if (v11)
+      title2 = [recommendation3 title];
+      if (title2)
       {
-        [(MCDForYouGroupTableViewController *)self setTitle:v11];
+        [(MCDForYouGroupTableViewController *)self setTitle:title2];
       }
 
       else
@@ -120,29 +120,29 @@
     goto LABEL_9;
   }
 
-  if (v9)
+  if (title)
   {
 LABEL_9:
-    [(MCDForYouGroupTableViewController *)self setTitle:v9];
+    [(MCDForYouGroupTableViewController *)self setTitle:title];
     goto LABEL_17;
   }
 
-  v12 = [v6 title];
-  [(MCDForYouGroupTableViewController *)self setTitle:v12];
+  title3 = [recommendation3 title];
+  [(MCDForYouGroupTableViewController *)self setTitle:title3];
 
 LABEL_17:
   v15 = MCDMusicGeneralLogging();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
-    v16 = [(MCDForYouGroupTableViewController *)self title];
+    title4 = [(MCDForYouGroupTableViewController *)self title];
     *buf = 138412290;
-    v24 = v16;
+    v24 = title4;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Loading For You group view, title: %@", buf, 0xCu);
   }
 
   objc_initWeak(buf, self);
   objc_copyWeak(&v21, buf);
-  v17 = v5;
+  v17 = recommendation2;
   v20 = v17;
   v18 = [(MCDFuseTableViewController *)self contentManager:_NSConcreteStackBlock];
   [v18 setTableCellConfigurationBlock:&v19];
@@ -153,59 +153,59 @@ LABEL_17:
 
 - (id)_contentManager
 {
-  v3 = [(MCDForYouGroupTableViewController *)self recommendation];
+  recommendation = [(MCDForYouGroupTableViewController *)self recommendation];
   v4 = objc_opt_new();
-  [v4 appendSection:v3];
+  [v4 appendSection:recommendation];
   v5 = [MCDForYouGroupContentManager alloc];
-  v6 = [[MCDForYouDataSource alloc] initWithRecommendationGroup:v3];
-  v7 = [(MCDFuseTableViewController *)self playbackManager];
-  v8 = [(MCDForYouGroupTableViewController *)self traitCollection];
-  v9 = [v8 shouldLimitMusicLists];
+  v6 = [[MCDForYouDataSource alloc] initWithRecommendationGroup:recommendation];
+  playbackManager = [(MCDFuseTableViewController *)self playbackManager];
+  traitCollection = [(MCDForYouGroupTableViewController *)self traitCollection];
+  shouldLimitMusicLists = [traitCollection shouldLimitMusicLists];
   v10 = [v4 copy];
-  v11 = [(MCDForYouContentManager *)v5 initWithDataSource:v6 delegate:self viewController:self playbackManager:v7 limitedUI:v9 contentResults:v10];
+  v11 = [(MCDForYouContentManager *)v5 initWithDataSource:v6 delegate:self viewController:self playbackManager:playbackManager limitedUI:shouldLimitMusicLists contentResults:v10];
 
   return v11;
 }
 
-- (id)contentManager:(id)a3 viewControllerForItem:(id)a4 indexPath:(id)a5
+- (id)contentManager:(id)manager viewControllerForItem:(id)item indexPath:(id)path
 {
-  v5 = a4;
-  if ([v5 itemType] == 4)
+  itemCopy = item;
+  if ([itemCopy itemType] == 4)
   {
     v6 = [MCDForYouGroupTableViewController alloc];
-    v7 = [v5 subgroup];
-    v8 = [(MCDForYouGroupTableViewController *)v6 initWithRecommendationGroup:v7];
+    subgroup = [itemCopy subgroup];
+    v8 = [(MCDForYouGroupTableViewController *)v6 initWithRecommendationGroup:subgroup];
     goto LABEL_10;
   }
 
-  v9 = [v5 itemType];
-  if (v9 == 2)
+  itemType = [itemCopy itemType];
+  if (itemType == 2)
   {
     v13 = [_TtC5Music27MCDItemDetailViewController alloc];
-    v11 = [v5 playlist];
-    v12 = [(MCDItemDetailViewController *)v13 initWithPlaylist:v11 onlyDownloaded:0 preferCatalog:1];
+    playlist = [itemCopy playlist];
+    v12 = [(MCDItemDetailViewController *)v13 initWithPlaylist:playlist onlyDownloaded:0 preferCatalog:1];
   }
 
   else
   {
-    if (v9 != 1)
+    if (itemType != 1)
     {
       v8 = 0;
       goto LABEL_9;
     }
 
     v10 = [_TtC5Music27MCDItemDetailViewController alloc];
-    v11 = [v5 album];
-    v12 = [(MCDItemDetailViewController *)v10 initWithAlbum:v11 onlyDownloaded:0 preferCatalog:1];
+    playlist = [itemCopy album];
+    v12 = [(MCDItemDetailViewController *)v10 initWithAlbum:playlist onlyDownloaded:0 preferCatalog:1];
   }
 
   v8 = v12;
 
 LABEL_9:
-  v7 = [v5 identifiers];
-  v14 = [v7 personalizedStore];
-  v15 = [v14 recommendationID];
-  v16 = [v15 dataUsingEncoding:4];
+  subgroup = [itemCopy identifiers];
+  personalizedStore = [subgroup personalizedStore];
+  recommendationID = [personalizedStore recommendationID];
+  v16 = [recommendationID dataUsingEncoding:4];
   [(MCDForYouGroupTableViewController *)v8 setPlayActivityForwardedRecommendationData:v16];
 
 LABEL_10:

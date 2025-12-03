@@ -1,28 +1,28 @@
 @interface EBMergeTable
-+ (void)readWithState:(id)a3;
++ (void)readWithState:(id)state;
 @end
 
 @implementation EBMergeTable
 
-+ (void)readWithState:(id)a3
++ (void)readWithState:(id)state
 {
-  v3 = a3;
+  stateCopy = state;
   v11 = 0;
   v12 = 0;
   v13 = 0;
-  v4 = [v3 xlReader];
-  (*(*v4 + 552))(v4, &v10);
+  xlReader = [stateCopy xlReader];
+  (*(*xlReader + 552))(xlReader, &v10);
   v5 = (v12 - v11) >> 3;
   if (v5)
   {
-    v6 = [v3 edSheet];
-    v7 = [v6 mergedCells];
+    edSheet = [stateCopy edSheet];
+    mergedCells = [edSheet mergedCells];
 
     v8 = 0;
     do
     {
       v9 = [EBReference edReferenceFromXlRef:XlConditionalFormatTable::at(&v10, v8)];
-      [v7 addOrEquivalentObject:v9];
+      [mergedCells addOrEquivalentObject:v9];
 
       ++v8;
     }

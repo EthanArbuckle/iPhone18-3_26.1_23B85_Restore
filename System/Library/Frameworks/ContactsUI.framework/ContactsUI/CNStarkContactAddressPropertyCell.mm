@@ -1,33 +1,33 @@
 @interface CNStarkContactAddressPropertyCell
-- (CNStarkContactAddressPropertyCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (CNStarkContactAddressPropertyCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (id)constantConstraints;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
 - (void)performDefaultAction;
-- (void)setSeparatorStyle:(int64_t)a3;
-- (void)updateConfigurationUsingState:(id)a3;
+- (void)setSeparatorStyle:(int64_t)style;
+- (void)updateConfigurationUsingState:(id)state;
 @end
 
 @implementation CNStarkContactAddressPropertyCell
 
 - (void)performDefaultAction
 {
-  v3 = [(CNPropertyCell *)self propertyItem];
-  v4 = [v3 contact];
+  propertyItem = [(CNPropertyCell *)self propertyItem];
+  contact = [propertyItem contact];
 
-  v5 = [MEMORY[0x1E6996BF8] targetForDirections];
-  v6 = [v5 actionsForContact:v4 discoveringEnvironment:0];
+  targetForDirections = [MEMORY[0x1E6996BF8] targetForDirections];
+  v6 = [targetForDirections actionsForContact:contact discoveringEnvironment:0];
   v7 = [v6 allObjects:0];
-  v8 = [v7 firstObject];
+  firstObject = [v7 firstObject];
 
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __57__CNStarkContactAddressPropertyCell_performDefaultAction__block_invoke;
   v13[3] = &unk_1E74E58A8;
   v13[4] = self;
-  v9 = [v8 _cn_firstObjectPassingTest:v13];
+  v9 = [firstObject _cn_firstObjectPassingTest:v13];
   v10 = objc_alloc_init(MEMORY[0x1E6996BD0]);
-  v11 = [(objc_class *)getFBSOpenApplicationServiceClass_50258() dashboardEndpoint];
-  [v10 setConnectionEndpoint:v11];
+  dashboardEndpoint = [(objc_class *)getFBSOpenApplicationServiceClass_50258() dashboardEndpoint];
+  [v10 setConnectionEndpoint:dashboardEndpoint];
 
   v12 = [v9 performActionWithContext:v10 shouldCurateIfPerformed:0];
 }
@@ -47,150 +47,150 @@ uint64_t __57__CNStarkContactAddressPropertyCell_performDefaultAction__block_inv
   return v9;
 }
 
-- (void)setSeparatorStyle:(int64_t)a3
+- (void)setSeparatorStyle:(int64_t)style
 {
   v3.receiver = self;
   v3.super_class = CNStarkContactAddressPropertyCell;
   [(CNStarkContactAddressPropertyCell *)&v3 setSeparatorStyle:1];
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v6 = a3;
+  contextCopy = context;
   v13.receiver = self;
   v13.super_class = CNStarkContactAddressPropertyCell;
-  [(CNStarkContactAddressPropertyCell *)&v13 didUpdateFocusInContext:v6 withAnimationCoordinator:a4];
-  v7 = [v6 nextFocusedView];
-  if (v7 == self)
+  [(CNStarkContactAddressPropertyCell *)&v13 didUpdateFocusInContext:contextCopy withAnimationCoordinator:coordinator];
+  nextFocusedView = [contextCopy nextFocusedView];
+  if (nextFocusedView == self)
   {
     v9 = 1;
   }
 
   else
   {
-    v8 = [v6 previouslyFocusedView];
-    v9 = v8 == self;
+    previouslyFocusedView = [contextCopy previouslyFocusedView];
+    v9 = previouslyFocusedView == self;
   }
 
-  v10 = [v6 nextFocusedView];
+  nextFocusedView2 = [contextCopy nextFocusedView];
 
   if (v9)
   {
-    v11 = v10 == self;
-    v12 = [(CNStarkContactAddressPropertyCell *)self actionView];
-    [v12 updateForFocusedState:v11];
+    v11 = nextFocusedView2 == self;
+    actionView = [(CNStarkContactAddressPropertyCell *)self actionView];
+    [actionView updateForFocusedState:v11];
   }
 }
 
 - (id)constantConstraints
 {
   v48[2] = *MEMORY[0x1E69E9840];
-  v44 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v47[0] = @"label";
-  v3 = [(CNPropertySimpleCell *)self labelLabel];
-  v48[0] = v3;
+  labelLabel = [(CNPropertySimpleCell *)self labelLabel];
+  v48[0] = labelLabel;
   v47[1] = @"actionView";
-  v4 = [(CNStarkContactAddressPropertyCell *)self actionView];
-  v48[1] = v4;
+  actionView = [(CNStarkContactAddressPropertyCell *)self actionView];
+  v48[1] = actionView;
   v45 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v48 forKeys:v47 count:2];
 
-  v5 = [(CNPropertySimpleCell *)self labelView];
-  v6 = [v5 firstBaselineAnchor];
-  v7 = [(CNStarkContactAddressPropertyCell *)self contentView];
-  v8 = [v7 safeAreaLayoutGuide];
-  v9 = [v8 topAnchor];
+  labelView = [(CNPropertySimpleCell *)self labelView];
+  firstBaselineAnchor = [labelView firstBaselineAnchor];
+  contentView = [(CNStarkContactAddressPropertyCell *)self contentView];
+  safeAreaLayoutGuide = [contentView safeAreaLayoutGuide];
+  topAnchor = [safeAreaLayoutGuide topAnchor];
   +[CNStarkContactPropertyCell labelViewFirstBaselineAnchorConstraintConstant];
-  v10 = [v6 constraintEqualToAnchor:v9 constant:?];
+  v10 = [firstBaselineAnchor constraintEqualToAnchor:topAnchor constant:?];
   [(CNStarkContactAddressPropertyCell *)self setLabelViewFirstBaselineAnchorConstraint:v10];
 
-  v11 = [(CNPropertySimpleCell *)self valueView];
-  v12 = [v11 firstBaselineAnchor];
-  v13 = [(CNPropertySimpleCell *)self labelView];
-  v14 = [v13 firstBaselineAnchor];
+  valueView = [(CNPropertySimpleCell *)self valueView];
+  firstBaselineAnchor2 = [valueView firstBaselineAnchor];
+  labelView2 = [(CNPropertySimpleCell *)self labelView];
+  firstBaselineAnchor3 = [labelView2 firstBaselineAnchor];
   +[CNStarkContactPropertyCell valueLabelFirstBaselineAnchorConstraintConstant];
-  v15 = [v12 constraintEqualToAnchor:v14 constant:?];
+  v15 = [firstBaselineAnchor2 constraintEqualToAnchor:firstBaselineAnchor3 constant:?];
   [(CNStarkContactAddressPropertyCell *)self setValueViewFirstBaselineAnchorConstraint:v15];
 
-  v16 = [(CNPropertySimpleCell *)self valueView];
-  v17 = [v16 lastBaselineAnchor];
-  v18 = [(CNStarkContactAddressPropertyCell *)self contentView];
-  v19 = [v18 safeAreaLayoutGuide];
-  v20 = [v19 bottomAnchor];
+  valueView2 = [(CNPropertySimpleCell *)self valueView];
+  lastBaselineAnchor = [valueView2 lastBaselineAnchor];
+  contentView2 = [(CNStarkContactAddressPropertyCell *)self contentView];
+  safeAreaLayoutGuide2 = [contentView2 safeAreaLayoutGuide];
+  bottomAnchor = [safeAreaLayoutGuide2 bottomAnchor];
   +[CNStarkContactPropertyCell contentViewBottomAnchorConstraintConstant];
-  v21 = [v17 constraintEqualToAnchor:v20 constant:?];
+  v21 = [lastBaselineAnchor constraintEqualToAnchor:bottomAnchor constant:?];
   [(CNStarkContactAddressPropertyCell *)self setContentViewBottomAnchorConstraint:v21];
 
-  v43 = [(CNStarkContactAddressPropertyCell *)self labelViewFirstBaselineAnchorConstraint];
-  v46[0] = v43;
-  v42 = [(CNStarkContactAddressPropertyCell *)self valueViewFirstBaselineAnchorConstraint];
-  v46[1] = v42;
-  v41 = [(CNStarkContactAddressPropertyCell *)self contentViewBottomAnchorConstraint];
-  v46[2] = v41;
-  v40 = [(CNPropertySimpleCell *)self valueView];
-  v38 = [v40 leadingAnchor];
-  v39 = [(CNPropertySimpleCell *)self labelView];
-  v22 = [v39 leadingAnchor];
-  v23 = [v38 constraintEqualToAnchor:v22];
+  labelViewFirstBaselineAnchorConstraint = [(CNStarkContactAddressPropertyCell *)self labelViewFirstBaselineAnchorConstraint];
+  v46[0] = labelViewFirstBaselineAnchorConstraint;
+  valueViewFirstBaselineAnchorConstraint = [(CNStarkContactAddressPropertyCell *)self valueViewFirstBaselineAnchorConstraint];
+  v46[1] = valueViewFirstBaselineAnchorConstraint;
+  contentViewBottomAnchorConstraint = [(CNStarkContactAddressPropertyCell *)self contentViewBottomAnchorConstraint];
+  v46[2] = contentViewBottomAnchorConstraint;
+  valueView3 = [(CNPropertySimpleCell *)self valueView];
+  leadingAnchor = [valueView3 leadingAnchor];
+  labelView3 = [(CNPropertySimpleCell *)self labelView];
+  leadingAnchor2 = [labelView3 leadingAnchor];
+  v23 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v46[3] = v23;
-  v24 = [(CNPropertySimpleCell *)self valueView];
-  v25 = [v24 trailingAnchor];
-  v26 = [(CNPropertySimpleCell *)self labelView];
-  v27 = [v26 trailingAnchor];
-  v28 = [v25 constraintLessThanOrEqualToAnchor:v27];
+  valueView4 = [(CNPropertySimpleCell *)self valueView];
+  trailingAnchor = [valueView4 trailingAnchor];
+  labelView4 = [(CNPropertySimpleCell *)self labelView];
+  trailingAnchor2 = [labelView4 trailingAnchor];
+  v28 = [trailingAnchor constraintLessThanOrEqualToAnchor:trailingAnchor2];
   v46[4] = v28;
   v29 = [MEMORY[0x1E695DEC8] arrayWithObjects:v46 count:5];
-  [v44 addObjectsFromArray:v29];
+  [array addObjectsFromArray:v29];
 
   v30 = [MEMORY[0x1E696ACD8] constraintsWithVisualFormat:@"H:|-(60)-[actionView(==36)]-(12)-[label]-(>=12)-|" options:0 metrics:0 views:v45];
-  [v44 addObjectsFromArray:v30];
+  [array addObjectsFromArray:v30];
 
-  v31 = [(CNStarkContactAddressPropertyCell *)self actionView];
-  v32 = [v31 topAnchor];
-  v33 = [(CNStarkContactAddressPropertyCell *)self contentView];
-  v34 = [v33 safeAreaLayoutGuide];
-  v35 = [v34 topAnchor];
-  v36 = [v32 constraintEqualToAnchor:v35 constant:4.0];
-  [v44 addObject:v36];
+  actionView2 = [(CNStarkContactAddressPropertyCell *)self actionView];
+  topAnchor2 = [actionView2 topAnchor];
+  contentView3 = [(CNStarkContactAddressPropertyCell *)self contentView];
+  safeAreaLayoutGuide3 = [contentView3 safeAreaLayoutGuide];
+  topAnchor3 = [safeAreaLayoutGuide3 topAnchor];
+  v36 = [topAnchor2 constraintEqualToAnchor:topAnchor3 constant:4.0];
+  [array addObject:v36];
 
-  return v44;
+  return array;
 }
 
-- (void)updateConfigurationUsingState:(id)a3
+- (void)updateConfigurationUsingState:(id)state
 {
-  v6 = a3;
-  if (([v6 isHighlighted] & 1) != 0 || (objc_msgSend(v6, "isFocused") & 1) != 0 || objc_msgSend(v6, "isSelected"))
+  stateCopy = state;
+  if (([stateCopy isHighlighted] & 1) != 0 || (objc_msgSend(stateCopy, "isFocused") & 1) != 0 || objc_msgSend(stateCopy, "isSelected"))
   {
-    v4 = [MEMORY[0x1E69DC6E8] listCellConfiguration];
-    v5 = [MEMORY[0x1E69DC888] _carSystemFocusColor];
-    [v4 setBackgroundColor:v5];
+    listCellConfiguration = [MEMORY[0x1E69DC6E8] listCellConfiguration];
+    _carSystemFocusColor = [MEMORY[0x1E69DC888] _carSystemFocusColor];
+    [listCellConfiguration setBackgroundColor:_carSystemFocusColor];
 
-    [v4 setCornerRadius:14.0];
+    [listCellConfiguration setCornerRadius:14.0];
   }
 
   else
   {
-    v4 = [MEMORY[0x1E69DC6E8] clearConfiguration];
+    listCellConfiguration = [MEMORY[0x1E69DC6E8] clearConfiguration];
   }
 
-  [(CNStarkContactAddressPropertyCell *)self setBackgroundConfiguration:v4];
+  [(CNStarkContactAddressPropertyCell *)self setBackgroundConfiguration:listCellConfiguration];
 }
 
-- (CNStarkContactAddressPropertyCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (CNStarkContactAddressPropertyCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v14.receiver = self;
   v14.super_class = CNStarkContactAddressPropertyCell;
-  v4 = [(CNPropertyPostalAddressCell *)&v14 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(CNPropertyPostalAddressCell *)&v14 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
-    v6 = [(CNPropertySimpleCell *)v4 labelLabel];
-    [v6 setTextAlignment:4];
+    labelLabel = [(CNPropertySimpleCell *)v4 labelLabel];
+    [labelLabel setTextAlignment:4];
 
-    v7 = [(CNPropertySimpleCell *)v5 valueLabel];
-    [v7 setTextAlignment:4];
+    valueLabel = [(CNPropertySimpleCell *)v5 valueLabel];
+    [valueLabel setTextAlignment:4];
 
-    v8 = [(CNPropertySimpleCell *)v5 labelView];
-    [v8 setContentHuggingPriority:0 forAxis:0.0];
+    labelView = [(CNPropertySimpleCell *)v5 labelView];
+    [labelView setContentHuggingPriority:0 forAxis:0.0];
 
     v9 = [CNStarkActionView propertyTransportButtonWithDelegate:v5];
     actionView = v5->_actionView;
@@ -200,8 +200,8 @@ uint64_t __57__CNStarkContactAddressPropertyCell_performDefaultAction__block_inv
     [(CNStarkActionView *)v5->_actionView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(CNStarkActionView *)v5->_actionView setActionType:*MEMORY[0x1E695C160]];
     [(CNStarkActionView *)v5->_actionView setEnabled:0];
-    v11 = [(CNStarkContactAddressPropertyCell *)v5 contentView];
-    [v11 addSubview:v5->_actionView];
+    contentView = [(CNStarkContactAddressPropertyCell *)v5 contentView];
+    [contentView addSubview:v5->_actionView];
 
     [(CNStarkContactAddressPropertyCell *)v5 setAccessibilityIdentifier:@"CNStarkContactAddressPropertyCell"];
     v12 = v5;

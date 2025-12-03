@@ -1,9 +1,9 @@
 @interface PKPaymentHostEndpointRegistry
 - (PKPaymentHostEndpointRegistry)init;
 - (id)debugDescription;
-- (id)takeListenerEndpointForHostIdentifier:(id)a3;
-- (void)addListenerEndpoint:(id)a3 forHostIdentifier:(id)a4 processIdentifier:(int)a5;
-- (void)removeListenerEndpointsForProcessIdentifier:(int)a3;
+- (id)takeListenerEndpointForHostIdentifier:(id)identifier;
+- (void)addListenerEndpoint:(id)endpoint forHostIdentifier:(id)identifier processIdentifier:(int)processIdentifier;
+- (void)removeListenerEndpointsForProcessIdentifier:(int)identifier;
 @end
 
 @implementation PKPaymentHostEndpointRegistry
@@ -44,21 +44,21 @@ void __37__PKPaymentHostEndpointRegistry_init__block_invoke(uint64_t a1)
   *(v6 + 24) = v5;
 }
 
-- (void)addListenerEndpoint:(id)a3 forHostIdentifier:(id)a4 processIdentifier:(int)a5
+- (void)addListenerEndpoint:(id)endpoint forHostIdentifier:(id)identifier processIdentifier:(int)processIdentifier
 {
-  v8 = a3;
-  v9 = a4;
+  endpointCopy = endpoint;
+  identifierCopy = identifier;
   registrySerialQueue = self->_registrySerialQueue;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __89__PKPaymentHostEndpointRegistry_addListenerEndpoint_forHostIdentifier_processIdentifier___block_invoke;
   v13[3] = &unk_1E79D1A50;
-  v16 = a5;
+  processIdentifierCopy = processIdentifier;
   v13[4] = self;
-  v14 = v9;
-  v15 = v8;
-  v11 = v8;
-  v12 = v9;
+  v14 = identifierCopy;
+  v15 = endpointCopy;
+  v11 = endpointCopy;
+  v12 = identifierCopy;
   dispatch_sync(registrySerialQueue, v13);
 }
 
@@ -89,9 +89,9 @@ void __89__PKPaymentHostEndpointRegistry_addListenerEndpoint_forHostIdentifier_p
   [v7 setObject:v10 forKey:*(a1 + 40)];
 }
 
-- (id)takeListenerEndpointForHostIdentifier:(id)a3
+- (id)takeListenerEndpointForHostIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -104,9 +104,9 @@ void __89__PKPaymentHostEndpointRegistry_addListenerEndpoint_forHostIdentifier_p
   block[2] = __71__PKPaymentHostEndpointRegistry_takeListenerEndpointForHostIdentifier___block_invoke;
   block[3] = &unk_1E79D1A78;
   block[4] = self;
-  v10 = v4;
+  v10 = identifierCopy;
   v11 = &v12;
-  v6 = v4;
+  v6 = identifierCopy;
   dispatch_sync(registrySerialQueue, block);
   v7 = v13[5];
 
@@ -137,7 +137,7 @@ void __71__PKPaymentHostEndpointRegistry_takeListenerEndpointForHostIdentifier__
   [*(a1[4] + 16) removeObjectForKey:a1[5]];
 }
 
-- (void)removeListenerEndpointsForProcessIdentifier:(int)a3
+- (void)removeListenerEndpointsForProcessIdentifier:(int)identifier
 {
   registrySerialQueue = self->_registrySerialQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -145,7 +145,7 @@ void __71__PKPaymentHostEndpointRegistry_takeListenerEndpointForHostIdentifier__
   v4[2] = __77__PKPaymentHostEndpointRegistry_removeListenerEndpointsForProcessIdentifier___block_invoke;
   v4[3] = &unk_1E79D08C8;
   v4[4] = self;
-  v5 = a3;
+  identifierCopy = identifier;
   dispatch_sync(registrySerialQueue, v4);
 }
 

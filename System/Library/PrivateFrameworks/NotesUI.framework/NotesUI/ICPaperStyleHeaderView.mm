@@ -1,33 +1,33 @@
 @interface ICPaperStyleHeaderView
-- (ICPaperStyleHeaderView)initWithFrame:(CGRect)a3;
+- (ICPaperStyleHeaderView)initWithFrame:(CGRect)frame;
 - (NSString)title;
 - (UIEdgeInsets)titleInsets;
 - (void)contentSizeCategoryDidChange;
-- (void)setTitle:(id)a3;
-- (void)setTitleInsets:(UIEdgeInsets)a3;
+- (void)setTitle:(id)title;
+- (void)setTitleInsets:(UIEdgeInsets)insets;
 @end
 
 @implementation ICPaperStyleHeaderView
 
-- (ICPaperStyleHeaderView)initWithFrame:(CGRect)a3
+- (ICPaperStyleHeaderView)initWithFrame:(CGRect)frame
 {
   v36[4] = *MEMORY[0x1E69E9840];
   v35.receiver = self;
   v35.super_class = ICPaperStyleHeaderView;
-  v3 = [(ICPaperStyleHeaderView *)&v35 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(ICPaperStyleHeaderView *)&v35 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     [(ICPaperStyleHeaderView *)v3 setLabel:v4];
 
-    v5 = [(ICPaperStyleHeaderView *)v3 label];
-    [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
+    label = [(ICPaperStyleHeaderView *)v3 label];
+    [label setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v6 = [(ICPaperStyleHeaderView *)v3 label];
-    [v6 setTextAlignment:1];
+    label2 = [(ICPaperStyleHeaderView *)v3 label];
+    [label2 setTextAlignment:1];
 
-    v7 = [(ICPaperStyleHeaderView *)v3 label];
-    [v7 setNumberOfLines:0];
+    label3 = [(ICPaperStyleHeaderView *)v3 label];
+    [label3 setNumberOfLines:0];
 
     if ([MEMORY[0x1E69DC938] ic_isVision])
     {
@@ -39,44 +39,44 @@
       [MEMORY[0x1E69DC888] secondaryLabelColor];
     }
     v8 = ;
-    v9 = [(ICPaperStyleHeaderView *)v3 label];
-    [v9 setTextColor:v8];
+    label4 = [(ICPaperStyleHeaderView *)v3 label];
+    [label4 setTextColor:v8];
 
-    v10 = [(ICPaperStyleHeaderView *)v3 label];
-    [(ICPaperStyleHeaderView *)v3 addSubview:v10];
+    label5 = [(ICPaperStyleHeaderView *)v3 label];
+    [(ICPaperStyleHeaderView *)v3 addSubview:label5];
 
-    v11 = [MEMORY[0x1E69DC888] ICGroupedBackgroundColor];
-    [(ICPaperStyleHeaderView *)v3 setBackgroundColor:v11];
+    iCGroupedBackgroundColor = [MEMORY[0x1E69DC888] ICGroupedBackgroundColor];
+    [(ICPaperStyleHeaderView *)v3 setBackgroundColor:iCGroupedBackgroundColor];
 
     v30 = MEMORY[0x1E696ACD8];
-    v34 = [(ICPaperStyleHeaderView *)v3 label];
-    v33 = [v34 leadingAnchor];
-    v32 = [(ICPaperStyleHeaderView *)v3 leadingAnchor];
-    v12 = [v33 constraintEqualToAnchor:v32];
+    label6 = [(ICPaperStyleHeaderView *)v3 label];
+    leadingAnchor = [label6 leadingAnchor];
+    leadingAnchor2 = [(ICPaperStyleHeaderView *)v3 leadingAnchor];
+    v12 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     labelConstraintLeading = v3->_labelConstraintLeading;
     v3->_labelConstraintLeading = v12;
 
     v36[0] = v12;
-    v31 = [(ICPaperStyleHeaderView *)v3 label];
-    v14 = [v31 topAnchor];
-    v15 = [(ICPaperStyleHeaderView *)v3 topAnchor];
-    v16 = [v14 constraintEqualToAnchor:v15];
+    label7 = [(ICPaperStyleHeaderView *)v3 label];
+    topAnchor = [label7 topAnchor];
+    topAnchor2 = [(ICPaperStyleHeaderView *)v3 topAnchor];
+    v16 = [topAnchor constraintEqualToAnchor:topAnchor2];
     labelConstraintTop = v3->_labelConstraintTop;
     v3->_labelConstraintTop = v16;
 
     v36[1] = v16;
-    v18 = [(ICPaperStyleHeaderView *)v3 label];
-    v19 = [v18 trailingAnchor];
-    v20 = [(ICPaperStyleHeaderView *)v3 trailingAnchor];
-    v21 = [v19 constraintEqualToAnchor:v20];
+    label8 = [(ICPaperStyleHeaderView *)v3 label];
+    trailingAnchor = [label8 trailingAnchor];
+    trailingAnchor2 = [(ICPaperStyleHeaderView *)v3 trailingAnchor];
+    v21 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     labelConstraintTrailing = v3->_labelConstraintTrailing;
     v3->_labelConstraintTrailing = v21;
 
     v36[2] = v21;
-    v23 = [(ICPaperStyleHeaderView *)v3 label];
-    v24 = [v23 bottomAnchor];
-    v25 = [(ICPaperStyleHeaderView *)v3 bottomAnchor];
-    v26 = [v24 constraintEqualToAnchor:v25];
+    label9 = [(ICPaperStyleHeaderView *)v3 label];
+    bottomAnchor = [label9 bottomAnchor];
+    bottomAnchor2 = [(ICPaperStyleHeaderView *)v3 bottomAnchor];
+    v26 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     labelConstraintBottom = v3->_labelConstraintBottom;
     v3->_labelConstraintBottom = v26;
 
@@ -90,53 +90,53 @@
   return v3;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = a3;
-  v5 = [(ICPaperStyleHeaderView *)self label];
-  [v5 setText:v4];
+  titleCopy = title;
+  label = [(ICPaperStyleHeaderView *)self label];
+  [label setText:titleCopy];
 }
 
 - (NSString)title
 {
-  v2 = [(ICPaperStyleHeaderView *)self label];
-  v3 = [v2 text];
+  label = [(ICPaperStyleHeaderView *)self label];
+  text = [label text];
 
-  return v3;
+  return text;
 }
 
-- (void)setTitleInsets:(UIEdgeInsets)a3
+- (void)setTitleInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
-  v8 = [(ICPaperStyleHeaderView *)self labelConstraintLeading];
-  [v8 setConstant:left];
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  labelConstraintLeading = [(ICPaperStyleHeaderView *)self labelConstraintLeading];
+  [labelConstraintLeading setConstant:left];
 
-  v9 = [(ICPaperStyleHeaderView *)self labelConstraintTop];
-  [v9 setConstant:top];
+  labelConstraintTop = [(ICPaperStyleHeaderView *)self labelConstraintTop];
+  [labelConstraintTop setConstant:top];
 
-  v10 = [(ICPaperStyleHeaderView *)self labelConstraintTrailing];
-  [v10 setConstant:-right];
+  labelConstraintTrailing = [(ICPaperStyleHeaderView *)self labelConstraintTrailing];
+  [labelConstraintTrailing setConstant:-right];
 
-  v11 = [(ICPaperStyleHeaderView *)self labelConstraintBottom];
-  [v11 setConstant:-bottom];
+  labelConstraintBottom = [(ICPaperStyleHeaderView *)self labelConstraintBottom];
+  [labelConstraintBottom setConstant:-bottom];
 }
 
 - (UIEdgeInsets)titleInsets
 {
-  v3 = [(ICPaperStyleHeaderView *)self labelConstraintTop];
-  [v3 constant];
+  labelConstraintTop = [(ICPaperStyleHeaderView *)self labelConstraintTop];
+  [labelConstraintTop constant];
   v5 = v4;
-  v6 = [(ICPaperStyleHeaderView *)self labelConstraintLeading];
-  [v6 constant];
+  labelConstraintLeading = [(ICPaperStyleHeaderView *)self labelConstraintLeading];
+  [labelConstraintLeading constant];
   v8 = v7;
-  v9 = [(ICPaperStyleHeaderView *)self labelConstraintBottom];
-  [v9 constant];
+  labelConstraintBottom = [(ICPaperStyleHeaderView *)self labelConstraintBottom];
+  [labelConstraintBottom constant];
   v11 = -v10;
-  v12 = [(ICPaperStyleHeaderView *)self labelConstraintTrailing];
-  [v12 constant];
+  labelConstraintTrailing = [(ICPaperStyleHeaderView *)self labelConstraintTrailing];
+  [labelConstraintTrailing constant];
   v14 = -v13;
 
   v15 = v5;
@@ -153,9 +153,9 @@
 - (void)contentSizeCategoryDidChange
 {
   v5 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD28]];
-  v3 = [v5 ic_fontWithSingleLineA];
-  v4 = [(ICPaperStyleHeaderView *)self label];
-  [v4 setFont:v3];
+  ic_fontWithSingleLineA = [v5 ic_fontWithSingleLineA];
+  label = [(ICPaperStyleHeaderView *)self label];
+  [label setFont:ic_fontWithSingleLineA];
 }
 
 @end

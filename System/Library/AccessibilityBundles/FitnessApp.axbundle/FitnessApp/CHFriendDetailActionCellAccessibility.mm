@@ -8,9 +8,9 @@
 - (id)accessibilityLabel
 {
   v2 = [(CHFriendDetailActionCellAccessibility *)self _accessibilityFindSubviewDescendant:&__block_literal_global_2];
-  v3 = [v2 accessibilityLabel];
+  accessibilityLabel = [v2 accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 BOOL __59__CHFriendDetailActionCellAccessibility_accessibilityLabel__block_invoke(id a1, UIView *a2)

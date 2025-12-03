@@ -1,7 +1,7 @@
 @interface NWURLLoaderAbout
 - (OS_nw_connection)underlyingConnection;
-- (void)readResponse:(id)a3;
-- (void)writeData:(id)a3 complete:(BOOL)a4 completionHandler:(id)a5;
+- (void)readResponse:(id)response;
+- (void)writeData:(id)data complete:(BOOL)complete completionHandler:(id)handler;
 @end
 
 @implementation NWURLLoaderAbout
@@ -13,18 +13,18 @@
   return result;
 }
 
-- (void)writeData:(id)a3 complete:(BOOL)a4 completionHandler:(id)a5
+- (void)writeData:(id)data complete:(BOOL)complete completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a5;
+  dataCopy = data;
+  handlerCopy = handler;
   _os_crash();
   __break(1u);
 }
 
-- (void)readResponse:(id)a3
+- (void)readResponse:(id)response
 {
   v4 = MEMORY[0x1E695AC70];
-  v5 = a3;
+  responseCopy = response;
   v6 = [v4 alloc];
   if (self)
   {
@@ -37,7 +37,7 @@
   }
 
   v8 = [v6 initWithURL:URL MIMEType:@"text/html" expectedContentLength:0 textEncodingName:0];
-  v5[2](v5, v8, 0);
+  responseCopy[2](responseCopy, v8, 0);
 }
 
 @end

@@ -1,5 +1,5 @@
 @interface ICSiriAddToAccousticHistoryRequest
-- (ICSiriAddToAccousticHistoryRequest)initWithRequestContext:(id)a3 storeItemID:(int64_t)a4 affiliateIdentifier:(id)a5;
+- (ICSiriAddToAccousticHistoryRequest)initWithRequestContext:(id)context storeItemID:(int64_t)d affiliateIdentifier:(id)identifier;
 - (void)execute;
 @end
 
@@ -14,7 +14,7 @@
     storeItemID = self->_storeItemID;
     affiliateIdentifier = self->_affiliateIdentifier;
     *buf = 138543874;
-    v10 = self;
+    selfCopy = self;
     v11 = 2048;
     v12 = storeItemID;
     v13 = 2114;
@@ -22,14 +22,14 @@
     _os_log_impl(&dword_1B4491000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ Performing request with storeID %lld, affiliate %{public}@", buf, 0x20u);
   }
 
-  v6 = [(ICStoreRequestContext *)self->_requestContext identityStore];
-  v7 = [(ICStoreRequestContext *)self->_requestContext identity];
+  identityStore = [(ICStoreRequestContext *)self->_requestContext identityStore];
+  identity = [(ICStoreRequestContext *)self->_requestContext identity];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __45__ICSiriAddToAccousticHistoryRequest_execute__block_invoke;
   v8[3] = &unk_1E7BF7B20;
   v8[4] = self;
-  [v6 getPropertiesForUserIdentity:v7 completionHandler:v8];
+  [identityStore getPropertiesForUserIdentity:identity completionHandler:v8];
 }
 
 void __45__ICSiriAddToAccousticHistoryRequest_execute__block_invoke(uint64_t a1, uint64_t a2)
@@ -143,19 +143,19 @@ void __45__ICSiriAddToAccousticHistoryRequest_execute__block_invoke_2(uint64_t a
   [*(a1 + 32) finishWithError:v4];
 }
 
-- (ICSiriAddToAccousticHistoryRequest)initWithRequestContext:(id)a3 storeItemID:(int64_t)a4 affiliateIdentifier:(id)a5
+- (ICSiriAddToAccousticHistoryRequest)initWithRequestContext:(id)context storeItemID:(int64_t)d affiliateIdentifier:(id)identifier
 {
-  v9 = a3;
-  v10 = a5;
+  contextCopy = context;
+  identifierCopy = identifier;
   v16.receiver = self;
   v16.super_class = ICSiriAddToAccousticHistoryRequest;
   v11 = [(ICRequestOperation *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_requestContext, a3);
-    v12->_storeItemID = a4;
-    v13 = [v10 copy];
+    objc_storeStrong(&v11->_requestContext, context);
+    v12->_storeItemID = d;
+    v13 = [identifierCopy copy];
     affiliateIdentifier = v12->_affiliateIdentifier;
     v12->_affiliateIdentifier = v13;
   }

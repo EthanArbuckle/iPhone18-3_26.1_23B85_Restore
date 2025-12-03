@@ -1,34 +1,34 @@
 @interface UITapGestureRecognizer
-- (BOOL)_shouldFailInResponseToPresses:(id)a3 withEvent:(id)a4;
-- (BOOL)_shouldReceivePress:(id)a3;
-- (BOOL)canPreventGestureRecognizer:(id)a3;
-- (BOOL)shouldRequireFailureOfGestureRecognizer:(id)a3;
-- (BOOL)tapIsPossibleForTapRecognizer:(id)a3;
+- (BOOL)_shouldFailInResponseToPresses:(id)presses withEvent:(id)event;
+- (BOOL)_shouldReceivePress:(id)press;
+- (BOOL)canPreventGestureRecognizer:(id)recognizer;
+- (BOOL)shouldRequireFailureOfGestureRecognizer:(id)recognizer;
+- (BOOL)tapIsPossibleForTapRecognizer:(id)recognizer;
 - (CGPoint)_digitizerLocation;
 - (CGPoint)centroid;
 - (CGPoint)location;
-- (CGPoint)locationInView:(id)a3;
-- (CGPoint)locationOfTouch:(unint64_t)a3 inView:(id)a4;
-- (UITapGestureRecognizer)initWithCoder:(id)a3;
-- (UITapGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
+- (CGPoint)locationInView:(id)view;
+- (CGPoint)locationOfTouch:(unint64_t)touch inView:(id)view;
+- (UITapGestureRecognizer)initWithCoder:(id)coder;
+- (UITapGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
 - (double)_touchSloppinessFactor;
 - (int64_t)_buttonType;
-- (int64_t)_finalStateForRecognitionWithNumberOfTaps:(unint64_t)a3;
+- (int64_t)_finalStateForRecognitionWithNumberOfTaps:(unint64_t)taps;
 - (unint64_t)numberOfTouches;
-- (void)_appendSubclassDescription:(id)a3;
+- (void)_appendSubclassDescription:(id)description;
 - (void)_resetGestureRecognizer;
-- (void)_setButtonType:(int64_t)a3;
+- (void)_setButtonType:(int64_t)type;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)pressesBegan:(id)a3 withEvent:(id)a4;
-- (void)resetTapCountForTapRecognizer:(id)a3;
-- (void)setAllowedPressTypes:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)pressesBegan:(id)began withEvent:(id)event;
+- (void)resetTapCountForTapRecognizer:(id)recognizer;
+- (void)setAllowedPressTypes:(id)types;
 - (void)setButtonMaskRequired:(UIEventButtonMask)buttonMaskRequired;
-- (void)tapRecognizerRecognizedTap:(id)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)tapRecognizerRecognizedTap:(id)tap;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation UITapGestureRecognizer
@@ -51,35 +51,35 @@
 
 - (int64_t)_buttonType
 {
-  v2 = [(UIGestureRecognizer *)self allowedPressTypes];
-  if ([v2 count])
+  allowedPressTypes = [(UIGestureRecognizer *)self allowedPressTypes];
+  if ([allowedPressTypes count])
   {
-    v3 = [v2 firstObject];
-    v4 = [v3 integerValue];
+    firstObject = [allowedPressTypes firstObject];
+    integerValue = [firstObject integerValue];
   }
 
   else
   {
-    v4 = -1;
+    integerValue = -1;
   }
 
-  return v4;
+  return integerValue;
 }
 
 - (double)_touchSloppinessFactor
 {
-  v2 = [(UIGestureRecognizer *)self view];
-  [v2 _touchSloppinessFactor];
+  view = [(UIGestureRecognizer *)self view];
+  [view _touchSloppinessFactor];
   v4 = v3;
 
   return v4;
 }
 
-- (UITapGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (UITapGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
   v8.receiver = self;
   v8.super_class = UITapGestureRecognizer;
-  v4 = [(UIGestureRecognizer *)&v8 initWithTarget:a3 action:a4];
+  v4 = [(UIGestureRecognizer *)&v8 initWithTarget:target action:action];
   if (v4)
   {
     v5 = objc_alloc_init(UITapRecognizer);
@@ -93,15 +93,15 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = UITapGestureRecognizer;
   [(UIGestureRecognizer *)&v5 encodeWithCoder:?];
-  [a3 encodeObject:self->_imp forKey:@"UITapGestureRecognizer._imp"];
+  [coder encodeObject:self->_imp forKey:@"UITapGestureRecognizer._imp"];
 }
 
-- (UITapGestureRecognizer)initWithCoder:(id)a3
+- (UITapGestureRecognizer)initWithCoder:(id)coder
 {
   v10.receiver = self;
   v10.super_class = UITapGestureRecognizer;
@@ -110,7 +110,7 @@
   if (v4)
   {
     v4->_buttonType = -1;
-    v6 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"UITapGestureRecognizer._imp"];
+    v6 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"UITapGestureRecognizer._imp"];
     imp = v5->_imp;
     v5->_imp = v6;
 
@@ -121,13 +121,13 @@
   return v5;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   if ([(UITapGestureRecognizer *)self _canHandleTouches])
   {
     imp = self->_imp;
 
-    [(UITapRecognizer *)imp touchesBegan:a3 withEvent:a4];
+    [(UITapRecognizer *)imp touchesBegan:began withEvent:event];
   }
 
   else
@@ -137,50 +137,50 @@
   }
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
   if ([(UITapGestureRecognizer *)self _canHandleTouches])
   {
     imp = self->_imp;
 
-    [(UITapRecognizer *)imp touchesMoved:a3 withEvent:a4];
+    [(UITapRecognizer *)imp touchesMoved:moved withEvent:event];
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   if ([(UITapGestureRecognizer *)self _canHandleTouches])
   {
     imp = self->_imp;
 
-    [(UITapRecognizer *)imp touchesEnded:a3 withEvent:a4];
+    [(UITapRecognizer *)imp touchesEnded:ended withEvent:event];
   }
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
   if ([(UITapGestureRecognizer *)self _canHandleTouches])
   {
     imp = self->_imp;
 
-    [(UITapRecognizer *)imp touchesCancelled:a3 withEvent:a4];
+    [(UITapRecognizer *)imp touchesCancelled:cancelled withEvent:event];
   }
 }
 
-- (BOOL)shouldRequireFailureOfGestureRecognizer:(id)a3
+- (BOOL)shouldRequireFailureOfGestureRecognizer:(id)recognizer
 {
   if (self->_delaysRecognitionForGreaterTapCounts)
   {
-    if ([a3 _isGestureType:0])
+    if ([recognizer _isGestureType:0])
     {
-      v5 = [a3 numberOfTouchesRequired];
-      if (v5 == [(UITapGestureRecognizer *)self numberOfTouchesRequired])
+      numberOfTouchesRequired = [recognizer numberOfTouchesRequired];
+      if (numberOfTouchesRequired == [(UITapGestureRecognizer *)self numberOfTouchesRequired])
       {
-        v6 = [a3 buttonMaskRequired];
-        if (v6 == [(UITapGestureRecognizer *)self buttonMaskRequired])
+        buttonMaskRequired = [recognizer buttonMaskRequired];
+        if (buttonMaskRequired == [(UITapGestureRecognizer *)self buttonMaskRequired])
         {
-          v7 = [a3 numberOfTapsRequired];
-          if (v7 > [(UITapGestureRecognizer *)self numberOfTapsRequired])
+          numberOfTapsRequired = [recognizer numberOfTapsRequired];
+          if (numberOfTapsRequired > [(UITapGestureRecognizer *)self numberOfTapsRequired])
           {
             return 1;
           }
@@ -191,22 +191,22 @@
 
   v9.receiver = self;
   v9.super_class = UITapGestureRecognizer;
-  return [(UIGestureRecognizer *)&v9 shouldRequireFailureOfGestureRecognizer:a3];
+  return [(UIGestureRecognizer *)&v9 shouldRequireFailureOfGestureRecognizer:recognizer];
 }
 
-- (void)setAllowedPressTypes:(id)a3
+- (void)setAllowedPressTypes:(id)types
 {
   v20 = *MEMORY[0x1E69E9840];
   v14.receiver = self;
   v14.super_class = UITapGestureRecognizer;
-  [(UIGestureRecognizer *)&v14 setAllowedPressTypes:a3];
+  [(UIGestureRecognizer *)&v14 setAllowedPressTypes:types];
   imp = self->_imp;
-  v5 = [(UIGestureRecognizer *)self allowedPressTypes];
+  allowedPressTypes = [(UIGestureRecognizer *)self allowedPressTypes];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v6 = [allowedPressTypes countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -218,14 +218,14 @@ LABEL_3:
     {
       if (*v16 != v8)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(allowedPressTypes);
       }
 
-      v11 = [*(*(&v15 + 1) + 8 * v10) integerValue];
-      if (v11 != v9 && v11 <= 3)
+      integerValue = [*(*(&v15 + 1) + 8 * v10) integerValue];
+      if (integerValue != v9 && integerValue <= 3)
       {
         v13 = v9 == -1;
-        v9 = v11;
+        v9 = integerValue;
         if (!v13)
         {
           break;
@@ -234,7 +234,7 @@ LABEL_3:
 
       if (v7 == ++v10)
       {
-        v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v7 = [allowedPressTypes countByEnumeratingWithState:&v15 objects:v19 count:16];
         if (v7)
         {
           goto LABEL_3;
@@ -250,7 +250,7 @@ LABEL_16:
   [(UITapRecognizer *)imp setExclusiveDirectionalAxis:v9];
 }
 
-- (void)pressesBegan:(id)a3 withEvent:(id)a4
+- (void)pressesBegan:(id)began withEvent:(id)event
 {
   if ([UITapGestureRecognizer _shouldFailInResponseToPresses:"_shouldFailInResponseToPresses:withEvent:" withEvent:?])
   {
@@ -262,11 +262,11 @@ LABEL_16:
   {
     imp = self->_imp;
 
-    [(UITapRecognizer *)imp pressesBegan:a3 withEvent:a4];
+    [(UITapRecognizer *)imp pressesBegan:began withEvent:event];
   }
 }
 
-- (BOOL)_shouldReceivePress:(id)a3
+- (BOOL)_shouldReceivePress:(id)press
 {
   v10.receiver = self;
   v10.super_class = UITapGestureRecognizer;
@@ -277,22 +277,22 @@ LABEL_16:
 
   else
   {
-    v6 = [(UITapGestureRecognizer *)self _buttonType];
-    v5 = v6 == [a3 type];
+    _buttonType = [(UITapGestureRecognizer *)self _buttonType];
+    v5 = _buttonType == [press type];
   }
 
-  v7 = [MEMORY[0x1E695DFD8] setWithObject:a3];
+  v7 = [MEMORY[0x1E695DFD8] setWithObject:press];
   v8 = [(UITapGestureRecognizer *)self _shouldFailInResponseToPresses:v7 withEvent:0];
 
   return v5 || v8;
 }
 
-- (BOOL)_shouldFailInResponseToPresses:(id)a3 withEvent:(id)a4
+- (BOOL)_shouldFailInResponseToPresses:(id)presses withEvent:(id)event
 {
-  if (self->_isSingleKeyPressGesture && (-[UIGestureRecognizer allowedPressTypes](self, "allowedPressTypes", a3, a4), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 count], v6, v7))
+  if (self->_isSingleKeyPressGesture && (-[UIGestureRecognizer allowedPressTypes](self, "allowedPressTypes", presses, event), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 count], v6, v7))
   {
-    v8 = [(UIGestureRecognizer *)self allowedPressTypes];
-    v9 = _UIPressesOnlyContainsPressTypes(a3, v8) ^ 1;
+    allowedPressTypes = [(UIGestureRecognizer *)self allowedPressTypes];
+    v9 = _UIPressesOnlyContainsPressTypes(presses, allowedPressTypes) ^ 1;
   }
 
   else
@@ -303,19 +303,19 @@ LABEL_16:
   return v9;
 }
 
-- (int64_t)_finalStateForRecognitionWithNumberOfTaps:(unint64_t)a3
+- (int64_t)_finalStateForRecognitionWithNumberOfTaps:(unint64_t)taps
 {
-  v5 = [(UITapGestureRecognizer *)self continuousTapRecognition];
-  v6 = [(UIGestureRecognizer *)self allowedPressTypes];
-  v7 = [v6 count];
+  continuousTapRecognition = [(UITapGestureRecognizer *)self continuousTapRecognition];
+  allowedPressTypes = [(UIGestureRecognizer *)self allowedPressTypes];
+  v7 = [allowedPressTypes count];
 
   if (v7)
   {
-    v8 = [(UIGestureRecognizer *)self view];
+    view = [(UIGestureRecognizer *)self view];
     if ([UIApp isFrontBoard])
     {
-      v9 = [v8 _window];
-      v10 = [v9 _isSystemGestureWindow] ^ 1;
+      _window = [view _window];
+      v10 = [_window _isSystemGestureWindow] ^ 1;
     }
 
     else
@@ -323,28 +323,28 @@ LABEL_16:
       v10 = 1;
     }
 
-    v11 = [v8 _focusSystem];
-    v12 = [v11 focusedItem];
-    v13 = _UIFocusEnvironmentContainingView(v12);
+    _focusSystem = [view _focusSystem];
+    focusedItem = [_focusSystem focusedItem];
+    v13 = _UIFocusEnvironmentContainingView(focusedItem);
 
-    if (v10 && v13 && ([v13 isDescendantOfView:v8] & 1) == 0)
+    if (v10 && v13 && ([v13 isDescendantOfView:view] & 1) == 0)
     {
       [(UIGestureRecognizer *)self _failWithReason:@"unrelatedFocusView"];
     }
   }
 
   v14 = 2;
-  if (!a3)
+  if (!taps)
   {
     v14 = 3;
   }
 
-  if (a3 == 1)
+  if (taps == 1)
   {
     v14 = 1;
   }
 
-  if (v5)
+  if (continuousTapRecognition)
   {
     return v14;
   }
@@ -355,35 +355,35 @@ LABEL_16:
   }
 }
 
-- (BOOL)tapIsPossibleForTapRecognizer:(id)a3
+- (BOOL)tapIsPossibleForTapRecognizer:(id)recognizer
 {
-  v4 = [(UITapGestureRecognizer *)self continuousTapRecognition];
-  v5 = [(UIGestureRecognizer *)self state];
-  if (v4)
+  continuousTapRecognition = [(UITapGestureRecognizer *)self continuousTapRecognition];
+  state = [(UIGestureRecognizer *)self state];
+  if (continuousTapRecognition)
   {
-    return v5 < UIGestureRecognizerStateEnded;
+    return state < UIGestureRecognizerStateEnded;
   }
 
   else
   {
-    return v5 == UIGestureRecognizerStatePossible;
+    return state == UIGestureRecognizerStatePossible;
   }
 }
 
-- (void)tapRecognizerRecognizedTap:(id)a3
+- (void)tapRecognizerRecognizedTap:(id)tap
 {
   p_locationInView = &self->_locationInView;
-  v6 = [(UIGestureRecognizer *)self view];
-  [a3 locationInView:v6];
+  view = [(UIGestureRecognizer *)self view];
+  [tap locationInView:view];
   p_locationInView->x = v7;
   p_locationInView->y = v8;
 
-  v9 = -[UITapGestureRecognizer _finalStateForRecognitionWithNumberOfTaps:](self, "_finalStateForRecognitionWithNumberOfTaps:", [a3 currentNumberOfTaps]);
+  v9 = -[UITapGestureRecognizer _finalStateForRecognitionWithNumberOfTaps:](self, "_finalStateForRecognitionWithNumberOfTaps:", [tap currentNumberOfTaps]);
 
   [(UIGestureRecognizer *)self setState:v9];
 }
 
-- (void)resetTapCountForTapRecognizer:(id)a3
+- (void)resetTapCountForTapRecognizer:(id)recognizer
 {
   if ([(UITapGestureRecognizer *)self continuousTapRecognition])
   {
@@ -396,8 +396,8 @@ LABEL_16:
 {
   if (buttonMaskRequired <= 0)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"UITapGestureRecognizer.m" lineNumber:955 description:@"buttonMaskRequired must be greater than 0"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UITapGestureRecognizer.m" lineNumber:955 description:@"buttonMaskRequired must be greater than 0"];
   }
 
   imp = self->_imp;
@@ -405,41 +405,41 @@ LABEL_16:
   [(UITapRecognizer *)imp setButtonMaskRequired:buttonMaskRequired];
 }
 
-- (void)_setButtonType:(int64_t)a3
+- (void)_setButtonType:(int64_t)type
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  if ([(UITapGestureRecognizer *)self _buttonType]!= a3)
+  if ([(UITapGestureRecognizer *)self _buttonType]!= type)
   {
-    v6 = [(UIGestureRecognizer *)self view];
+    view = [(UIGestureRecognizer *)self view];
 
-    if (v6)
+    if (view)
     {
-      v9 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v9 handleFailureInMethod:a2 object:self file:@"UITapGestureRecognizer.m" lineNumber:1042 description:@"_buttonType can't be changed after a gesture recognizer is added to a view"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"UITapGestureRecognizer.m" lineNumber:1042 description:@"_buttonType can't be changed after a gesture recognizer is added to a view"];
     }
 
-    v7 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+    v7 = [MEMORY[0x1E696AD98] numberWithInteger:type];
     v10[0] = v7;
     v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
     [(UITapGestureRecognizer *)self setAllowedPressTypes:v8];
   }
 }
 
-- (void)_appendSubclassDescription:(id)a3
+- (void)_appendSubclassDescription:(id)description
 {
   if ([(UITapRecognizer *)self->_imp numberOfTapsRequired]!= 1)
   {
-    [a3 appendFormat:@"; numberOfTapsRequired = %ld", -[UITapRecognizer numberOfTapsRequired](self->_imp, "numberOfTapsRequired")];
+    [description appendFormat:@"; numberOfTapsRequired = %ld", -[UITapRecognizer numberOfTapsRequired](self->_imp, "numberOfTapsRequired")];
   }
 
   if ([(UITapRecognizer *)self->_imp numberOfTouchesRequired]!= 1)
   {
-    [a3 appendFormat:@"; numberOfTouchesRequired = %ld", -[UITapRecognizer numberOfTouchesRequired](self->_imp, "numberOfTouchesRequired")];
+    [description appendFormat:@"; numberOfTouchesRequired = %ld", -[UITapRecognizer numberOfTouchesRequired](self->_imp, "numberOfTouchesRequired")];
   }
 
   if ([(UITapRecognizer *)self->_imp buttonMaskRequired]!= 1)
   {
-    [a3 appendFormat:@"; buttonMaskRequired = %ld", -[UITapRecognizer buttonMaskRequired](self->_imp, "buttonMaskRequired")];
+    [description appendFormat:@"; buttonMaskRequired = %ld", -[UITapRecognizer buttonMaskRequired](self->_imp, "buttonMaskRequired")];
   }
 }
 
@@ -461,9 +461,9 @@ LABEL_16:
   return result;
 }
 
-- (CGPoint)locationInView:(id)a3
+- (CGPoint)locationInView:(id)view
 {
-  [(UITapRecognizer *)self->_imp locationInView:a3];
+  [(UITapRecognizer *)self->_imp locationInView:view];
   result.y = v4;
   result.x = v3;
   return result;
@@ -471,29 +471,29 @@ LABEL_16:
 
 - (unint64_t)numberOfTouches
 {
-  v2 = [(UITapRecognizer *)self->_imp touches];
-  v3 = [v2 count];
+  touches = [(UITapRecognizer *)self->_imp touches];
+  v3 = [touches count];
 
   return v3;
 }
 
-- (CGPoint)locationOfTouch:(unint64_t)a3 inView:(id)a4
+- (CGPoint)locationOfTouch:(unint64_t)touch inView:(id)view
 {
-  v8 = [(UITapRecognizer *)self->_imp touches];
-  v9 = [v8 count];
+  touches = [(UITapRecognizer *)self->_imp touches];
+  v9 = [touches count];
 
-  if (v9 <= a3)
+  if (v9 <= touch)
   {
     v16 = MEMORY[0x1E696AEC0];
     v17 = objc_opt_class();
     v18 = NSStringFromClass(v17);
     v19 = NSStringFromSelector(a2);
-    v10 = [v16 stringWithFormat:@"-[%@ %@]", v18, v19];
+    touches3 = [v16 stringWithFormat:@"-[%@ %@]", v18, v19];
 
     v20 = MEMORY[0x1E695DF30];
     v21 = *MEMORY[0x1E695DA20];
-    v22 = [(UITapRecognizer *)self->_imp touches];
-    [v20 raise:v21 format:{@"%@: index (%ld) beyond bounds (%ld).", v10, a3, objc_msgSend(v22, "count")}];
+    touches2 = [(UITapRecognizer *)self->_imp touches];
+    [v20 raise:v21 format:{@"%@: index (%ld) beyond bounds (%ld).", touches3, touch, objc_msgSend(touches2, "count")}];
 
     v13 = *MEMORY[0x1E695EFF8];
     v15 = *(MEMORY[0x1E695EFF8] + 8);
@@ -501,9 +501,9 @@ LABEL_16:
 
   else
   {
-    v10 = [(UITapRecognizer *)self->_imp touches];
-    v11 = [v10 objectAtIndex:a3];
-    [v11 locationInView:a4];
+    touches3 = [(UITapRecognizer *)self->_imp touches];
+    v11 = [touches3 objectAtIndex:touch];
+    [v11 locationInView:view];
     v13 = v12;
     v15 = v14;
   }
@@ -535,19 +535,19 @@ LABEL_16:
   return result;
 }
 
-- (BOOL)canPreventGestureRecognizer:(id)a3
+- (BOOL)canPreventGestureRecognizer:(id)recognizer
 {
-  if ([a3 _isGestureType:0])
+  if ([recognizer _isGestureType:0])
   {
-    v5 = a3;
-    v6 = [v5 numberOfTouchesRequired];
-    if (v6 == [(UITapGestureRecognizer *)self numberOfTouchesRequired])
+    recognizerCopy2 = recognizer;
+    numberOfTouchesRequired = [recognizerCopy2 numberOfTouchesRequired];
+    if (numberOfTouchesRequired == [(UITapGestureRecognizer *)self numberOfTouchesRequired])
     {
-      v7 = [v5 buttonMaskRequired];
-      if (v7 == [(UITapGestureRecognizer *)self buttonMaskRequired])
+      buttonMaskRequired = [recognizerCopy2 buttonMaskRequired];
+      if (buttonMaskRequired == [(UITapGestureRecognizer *)self buttonMaskRequired])
       {
-        v8 = [v5 numberOfTapsRequired];
-        v9 = v8 > [(UITapGestureRecognizer *)self numberOfTapsRequired];
+        numberOfTapsRequired = [recognizerCopy2 numberOfTapsRequired];
+        v9 = numberOfTapsRequired > [(UITapGestureRecognizer *)self numberOfTapsRequired];
 LABEL_9:
 
         return !v9;
@@ -557,14 +557,14 @@ LABEL_9:
     goto LABEL_8;
   }
 
-  if ([a3 _isGestureType:1])
+  if ([recognizer _isGestureType:1])
   {
-    v5 = a3;
-    v10 = [v5 numberOfTouchesRequired];
-    if (v10 == [(UITapGestureRecognizer *)self numberOfTouchesRequired])
+    recognizerCopy2 = recognizer;
+    numberOfTouchesRequired2 = [recognizerCopy2 numberOfTouchesRequired];
+    if (numberOfTouchesRequired2 == [(UITapGestureRecognizer *)self numberOfTouchesRequired])
     {
-      v11 = [v5 numberOfTapsRequired];
-      v9 = v11 >= [(UITapGestureRecognizer *)self numberOfTapsRequired];
+      numberOfTapsRequired2 = [recognizerCopy2 numberOfTapsRequired];
+      v9 = numberOfTapsRequired2 >= [(UITapGestureRecognizer *)self numberOfTapsRequired];
       goto LABEL_9;
     }
 
@@ -576,8 +576,8 @@ LABEL_8:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v13 = [a3 numberOfFullTaps];
-    v9 = [(UITapGestureRecognizer *)self numberOfTapsRequired]<= v13;
+    numberOfFullTaps = [recognizer numberOfFullTaps];
+    v9 = [(UITapGestureRecognizer *)self numberOfTapsRequired]<= numberOfFullTaps;
   }
 
   else

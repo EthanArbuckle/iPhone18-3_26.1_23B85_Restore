@@ -1,34 +1,34 @@
 @interface HMDCameraAccessorySettingsConfiguration
-- (HMDCameraAccessorySettingsConfiguration)initWithCameraAccessory:(id)a3;
+- (HMDCameraAccessorySettingsConfiguration)initWithCameraAccessory:(id)accessory;
 @end
 
 @implementation HMDCameraAccessorySettingsConfiguration
 
-- (HMDCameraAccessorySettingsConfiguration)initWithCameraAccessory:(id)a3
+- (HMDCameraAccessorySettingsConfiguration)initWithCameraAccessory:(id)accessory
 {
-  v4 = a3;
+  accessoryCopy = accessory;
   v13.receiver = self;
   v13.super_class = HMDCameraAccessorySettingsConfiguration;
   v5 = [(HMDCameraAccessorySettingsConfiguration *)&v13 init];
   if (v5)
   {
-    v6 = [v4 cameraProfileSettingsManager];
-    v7 = [v6 currentSettings];
+    cameraProfileSettingsManager = [accessoryCopy cameraProfileSettingsManager];
+    currentSettings = [cameraProfileSettingsManager currentSettings];
 
-    v5->_isRecordingCapable = [v4 isCameraRecordingFeatureSupported];
-    v8 = [v4 cameraProfileSettingsManager];
-    v5->_isRecordingEnabled = [v8 isRecordingEnabled];
+    v5->_isRecordingCapable = [accessoryCopy isCameraRecordingFeatureSupported];
+    cameraProfileSettingsManager2 = [accessoryCopy cameraProfileSettingsManager];
+    v5->_isRecordingEnabled = [cameraProfileSettingsManager2 isRecordingEnabled];
 
-    v5->_recordingEventTriggers = [v7 recordingEventTriggers];
-    v9 = [v7 activityZones];
-    v5->_numActivityZones = [v9 count];
+    v5->_recordingEventTriggers = [currentSettings recordingEventTriggers];
+    activityZones = [currentSettings activityZones];
+    v5->_numActivityZones = [activityZones count];
 
-    v5->_inclusionZone = [v7 areActivityZonesIncludedForSignificantEventDetection];
-    v10 = [v7 notificationSettings];
-    v5->_smartBulletinBoardNotificationEnabled = [v10 isSmartBulletinBoardNotificationEnabled];
+    v5->_inclusionZone = [currentSettings areActivityZonesIncludedForSignificantEventDetection];
+    notificationSettings = [currentSettings notificationSettings];
+    v5->_smartBulletinBoardNotificationEnabled = [notificationSettings isSmartBulletinBoardNotificationEnabled];
 
-    v11 = [v7 notificationSettings];
-    v5->_reachabilityNotificationEnabled = [v11 isReachabilityEventNotificationEnabled];
+    notificationSettings2 = [currentSettings notificationSettings];
+    v5->_reachabilityNotificationEnabled = [notificationSettings2 isReachabilityEventNotificationEnabled];
   }
 
   return v5;

@@ -1,35 +1,35 @@
 @interface CGImagePropertiesExtractor
 + (id)sharedMetadataHandler;
-- (BOOL)_shouldSkipInfoKey:(id)a3 key:(id)a4;
-- (id)formatArrayValue:(id)a3 forKey:(id)a4;
-- (id)formatStringValue:(id)a3;
-- (id)fractionString:(id)a3;
-- (id)handleColorSpace:(id)a3 infoStr:(id)a4 key:(id)a5;
-- (id)handleExifShutterSpeedValue:(id)a3;
-- (id)handleGPSAltitude:(id)a3;
-- (id)handleGPSKey:(id)a3 data:(id)a4 metaData:(id)a5;
-- (id)handleGPSLatitude:(id)a3 metaData:(id)a4;
-- (id)handleGPSLongitude:(id)a3 metaData:(id)a4;
-- (id)handleGPSSatellites:(id)a3;
-- (id)handleIPTCContributor:(id)a3;
-- (id)handleIPTCDateTime:(id)a3 format:(id)a4 useUTC:(BOOL)a5;
-- (id)handleIPTCDigitalSourceType:(id)a3;
-- (id)handleIPTCKey:(id)a3 data:(id)a4 array:(id)a5 localizedKey:(id)a6;
-- (id)handleISOSpeedRatings:(id)a3;
-- (id)localizedArrayValues:(id)a3;
-- (id)localizedDate:(id)a3 format:(id)a4;
-- (id)localizedDateTime:(id)a3;
-- (id)localizedTime:(id)a3 format:(id)a4 useUTC:(BOOL)a5;
-- (id)localizedVersionString:(id)a3;
-- (id)processMetaData:(id)a3;
-- (id)processSubInfo:(id)a3 forKey:(id)a4;
-- (id)stringForGPSValue:(double)a3 isLongitude:(BOOL)a4;
-- (void)forInfoKey:(id)a3 addKey:(id)a4 fromDictionary:(id)a5 toArray:(id)a6;
-- (void)formatDictionaryValue:(id)a3 forKey:(id)a4 localizedKey:(id)a5 toArray:(id)a6;
-- (void)formatNestedDictionary:(id)a3 withIndent:(id)a4 toArray:(id)a5;
-- (void)handleIPTCCaptionAbstract:(id)a3 localizedKey:(id)a4 rawKey:(id)a5 rawKeyPath:(id)a6 toArray:(id)a7;
-- (void)handleIPTCCreatorContactInfo:(id)a3 toArray:(id)a4;
-- (void)handleRegionsDict:(id)a3 localizedKey:(id)a4 toArray:(id)a5;
+- (BOOL)_shouldSkipInfoKey:(id)key key:(id)a4;
+- (id)formatArrayValue:(id)value forKey:(id)key;
+- (id)formatStringValue:(id)value;
+- (id)fractionString:(id)string;
+- (id)handleColorSpace:(id)space infoStr:(id)str key:(id)key;
+- (id)handleExifShutterSpeedValue:(id)value;
+- (id)handleGPSAltitude:(id)altitude;
+- (id)handleGPSKey:(id)key data:(id)data metaData:(id)metaData;
+- (id)handleGPSLatitude:(id)latitude metaData:(id)data;
+- (id)handleGPSLongitude:(id)longitude metaData:(id)data;
+- (id)handleGPSSatellites:(id)satellites;
+- (id)handleIPTCContributor:(id)contributor;
+- (id)handleIPTCDateTime:(id)time format:(id)format useUTC:(BOOL)c;
+- (id)handleIPTCDigitalSourceType:(id)type;
+- (id)handleIPTCKey:(id)key data:(id)data array:(id)array localizedKey:(id)localizedKey;
+- (id)handleISOSpeedRatings:(id)ratings;
+- (id)localizedArrayValues:(id)values;
+- (id)localizedDate:(id)date format:(id)format;
+- (id)localizedDateTime:(id)time;
+- (id)localizedTime:(id)time format:(id)format useUTC:(BOOL)c;
+- (id)localizedVersionString:(id)string;
+- (id)processMetaData:(id)data;
+- (id)processSubInfo:(id)info forKey:(id)key;
+- (id)stringForGPSValue:(double)value isLongitude:(BOOL)longitude;
+- (void)forInfoKey:(id)key addKey:(id)addKey fromDictionary:(id)dictionary toArray:(id)array;
+- (void)formatDictionaryValue:(id)value forKey:(id)key localizedKey:(id)localizedKey toArray:(id)array;
+- (void)formatNestedDictionary:(id)dictionary withIndent:(id)indent toArray:(id)array;
+- (void)handleIPTCCaptionAbstract:(id)abstract localizedKey:(id)key rawKey:(id)rawKey rawKeyPath:(id)path toArray:(id)array;
+- (void)handleIPTCCreatorContactInfo:(id)info toArray:(id)array;
+- (void)handleRegionsDict:(id)dict localizedKey:(id)key toArray:(id)array;
 @end
 
 @implementation CGImagePropertiesExtractor
@@ -49,26 +49,26 @@
   return v2;
 }
 
-- (id)stringForGPSValue:(double)a3 isLongitude:(BOOL)a4
+- (id)stringForGPSValue:(double)value isLongitude:(BOOL)longitude
 {
-  v5 = -a3;
-  if (a3 >= 0.0)
+  valueCopy = -value;
+  if (value >= 0.0)
   {
-    v5 = a3;
+    valueCopy = value;
   }
 
-  if (v5 > 90.0 && !a4)
+  if (valueCopy > 90.0 && !longitude)
   {
     v39 = &stru_1001FA0A8;
   }
 
   else
   {
-    v7 = a4;
-    v8 = round(v5 * 1.0e10) / 1.0e10;
-    if (v8 - v5 <= 1.0)
+    longitudeCopy = longitude;
+    v8 = round(valueCopy * 1.0e10) / 1.0e10;
+    if (v8 - valueCopy <= 1.0)
     {
-      v9 = v5;
+      v9 = valueCopy;
     }
 
     else
@@ -76,7 +76,7 @@
       v9 = v8;
     }
 
-    v10 = (v5 - v9) * 60.0;
+    v10 = (valueCopy - v9) * 60.0;
     v11 = round(v10 * 1.0e10) / 1.0e10;
     if (v11 - v10 <= 1.0)
     {
@@ -148,18 +148,18 @@
 
     [v28 replaceOccurrencesOfString:@"%3" withString:v34 options:0 range:{0, objc_msgSend(v28, "length")}];
     v35 = @"GPS.LongitudeRef.E";
-    if (a3 < 0.0)
+    if (value < 0.0)
     {
       v35 = @"GPS.LongitudeRef.W";
     }
 
     v36 = @"GPS.LatitudeRef.S";
-    if (a3 >= 0.0)
+    if (value >= 0.0)
     {
       v36 = @"GPS.LatitudeRef.N";
     }
 
-    if (v7)
+    if (longitudeCopy)
     {
       v37 = v35;
     }
@@ -177,65 +177,65 @@
   return v39;
 }
 
-- (id)localizedDateTime:(id)a3
+- (id)localizedDateTime:(id)time
 {
-  v3 = a3;
+  timeCopy = time;
   v4 = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
   v5 = objc_alloc_init(NSDateFormatter);
   [v5 setDateFormat:@"yyyy:MM:dd HH:mm:ss"];
   [v5 setLocale:v4];
-  v6 = [v5 dateFromString:v3];
+  v6 = [v5 dateFromString:timeCopy];
 
   v7 = [NSDateFormatter localizedStringFromDate:v6 dateStyle:2 timeStyle:2];
 
   return v7;
 }
 
-- (id)localizedDate:(id)a3 format:(id)a4
+- (id)localizedDate:(id)date format:(id)format
 {
-  v5 = a4;
-  v6 = a3;
+  formatCopy = format;
+  dateCopy = date;
   v7 = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
   v8 = objc_alloc_init(NSDateFormatter);
-  [v8 setDateFormat:v5];
+  [v8 setDateFormat:formatCopy];
 
   [v8 setLocale:v7];
-  v9 = [v8 dateFromString:v6];
+  v9 = [v8 dateFromString:dateCopy];
 
   v10 = [NSDateFormatter localizedStringFromDate:v9 dateStyle:2 timeStyle:0];
 
   return v10;
 }
 
-- (id)localizedTime:(id)a3 format:(id)a4 useUTC:(BOOL)a5
+- (id)localizedTime:(id)time format:(id)format useUTC:(BOOL)c
 {
-  v5 = a5;
-  v7 = a3;
-  v8 = a4;
+  cCopy = c;
+  timeCopy = time;
+  formatCopy = format;
   v9 = objc_alloc_init(NSDateFormatter);
-  [v9 setDateFormat:v8];
+  [v9 setDateFormat:formatCopy];
 
   v10 = [[NSLocale alloc] initWithLocaleIdentifier:@"en_GB"];
   [v9 setLocale:v10];
 
-  v11 = [v9 dateFromString:v7];
+  v11 = [v9 dateFromString:timeCopy];
   if (!v11)
   {
-    if ([v7 length] >= 9)
+    if ([timeCopy length] >= 9)
     {
-      v12 = [v7 substringToIndex:8];
+      v12 = [timeCopy substringToIndex:8];
 
-      v7 = v12;
+      timeCopy = v12;
     }
 
-    v11 = [v9 dateFromString:v7];
+    v11 = [v9 dateFromString:timeCopy];
   }
 
   v13 = v11;
   v14 = +[NSCalendar autoupdatingCurrentCalendar];
   [v9 setDateStyle:0];
   [v9 setTimeStyle:2];
-  if (v5)
+  if (cCopy)
   {
     v15 = objc_opt_new();
 
@@ -243,7 +243,7 @@
     v16 = [NSTimeZone timeZoneWithAbbreviation:@"UTC"];
     [v15 setTimeZone:v16];
 
-    v17 = [v15 dateFromString:v7];
+    v17 = [v15 dateFromString:timeCopy];
 
     v13 = v17;
     v9 = v15;
@@ -251,7 +251,7 @@
 
   [v9 setCalendar:v14];
   v18 = [v9 stringFromDate:v13];
-  if (v5)
+  if (cCopy)
   {
     v19 = sub_1000B7874(@"kIKUTCTimeFormat");
     v20 = [NSString stringWithFormat:v19, v18];
@@ -261,30 +261,30 @@
 
   if (!v18)
   {
-    v18 = v7;
+    v18 = timeCopy;
   }
 
   return v18;
 }
 
-- (void)forInfoKey:(id)a3 addKey:(id)a4 fromDictionary:(id)a5 toArray:(id)a6
+- (void)forInfoKey:(id)key addKey:(id)addKey fromDictionary:(id)dictionary toArray:(id)array
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (![(CGImagePropertiesExtractor *)self _shouldSkipInfoKey:v10 key:v11])
+  keyCopy = key;
+  addKeyCopy = addKey;
+  dictionaryCopy = dictionary;
+  arrayCopy = array;
+  if (![(CGImagePropertiesExtractor *)self _shouldSkipInfoKey:keyCopy key:addKeyCopy])
   {
-    v14 = [v12 objectForKeyedSubscript:v11];
-    v46 = sub_1000B772C(v11);
-    v15 = [v10 substringWithRange:{1, objc_msgSend(v10, "length") - 2}];
+    v14 = [dictionaryCopy objectForKeyedSubscript:addKeyCopy];
+    v46 = sub_1000B772C(addKeyCopy);
+    v15 = [keyCopy substringWithRange:{1, objc_msgSend(keyCopy, "length") - 2}];
     if ([(__CFString *)v15 isEqualToString:@"ExifAux"])
     {
 
       v15 = @"Exif";
     }
 
-    v16 = v11;
+    v16 = addKeyCopy;
     v45 = [NSString stringWithFormat:@"%@.%@", v15, v16];
     v17 = [NSString stringWithFormat:@"%@.%@.%@", v15, v16, v14];
     v18 = sub_1000B7874(v17);
@@ -296,7 +296,7 @@
     if ([v16 isEqualToString:kCGImagePropertyExifISOSpeedRatings])
     {
       v44 = v14;
-      v19 = [(CGImagePropertiesExtractor *)self handleISOSpeedRatings:v12];
+      v19 = [(CGImagePropertiesExtractor *)self handleISOSpeedRatings:dictionaryCopy];
       if (v19)
       {
         v20 = v19;
@@ -319,9 +319,9 @@
     {
       if ([v16 isEqualToString:@"Regions"])
       {
-        v25 = self;
+        selfCopy = self;
         v21 = v46;
-        [(CGImagePropertiesExtractor *)v25 handleRegionsDict:v14 localizedKey:v46 toArray:v13];
+        [(CGImagePropertiesExtractor *)selfCopy handleRegionsDict:v14 localizedKey:v46 toArray:arrayCopy];
         goto LABEL_62;
       }
 
@@ -362,9 +362,9 @@ LABEL_22:
 
         if ([v16 isEqualToString:kCGImagePropertyIPTCCaptionAbstract])
         {
-          v38 = self;
+          selfCopy2 = self;
           v21 = v46;
-          [(CGImagePropertiesExtractor *)v38 handleIPTCCaptionAbstract:v14 localizedKey:v46 rawKey:v16 rawKeyPath:v45 toArray:v13];
+          [(CGImagePropertiesExtractor *)selfCopy2 handleIPTCCaptionAbstract:v14 localizedKey:v46 rawKey:v16 rawKeyPath:v45 toArray:arrayCopy];
           goto LABEL_62;
         }
 
@@ -372,9 +372,9 @@ LABEL_22:
         {
           if (![v16 isEqualToString:kCGImagePropertyExifShutterSpeedValue])
           {
-            if ([v10 isEqualToString:kCGImagePropertyGPSDictionary])
+            if ([keyCopy isEqualToString:kCGImagePropertyGPSDictionary])
             {
-              v23 = [(CGImagePropertiesExtractor *)self handleGPSKey:v16 data:v14 metaData:v12];
+              v23 = [(CGImagePropertiesExtractor *)self handleGPSKey:v16 data:v14 metaData:dictionaryCopy];
 
               if ([v23 isEqualToString:@"SKIP"])
               {
@@ -388,7 +388,7 @@ LABEL_22:
             {
               if ([v16 isEqualToString:kCGImagePropertyIPTCCreatorContactInfo])
               {
-                [(CGImagePropertiesExtractor *)self handleIPTCCreatorContactInfo:v14 toArray:v13];
+                [(CGImagePropertiesExtractor *)self handleIPTCCreatorContactInfo:v14 toArray:arrayCopy];
                 v21 = v46;
                 v36 = v45;
                 goto LABEL_63;
@@ -398,10 +398,10 @@ LABEL_22:
             }
 
 LABEL_23:
-            if ([v10 isEqualToString:kCGImagePropertyIPTCDictionary])
+            if ([keyCopy isEqualToString:kCGImagePropertyIPTCDictionary])
             {
               v41 = v17;
-              v26 = [(CGImagePropertiesExtractor *)self handleIPTCKey:v16 data:v44 array:v13 localizedKey:v46];
+              v26 = [(CGImagePropertiesExtractor *)self handleIPTCKey:v16 data:v44 array:arrayCopy localizedKey:v46];
               v27 = v26;
               if (v26)
               {
@@ -454,9 +454,9 @@ LABEL_61:
               objc_opt_class();
               if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_respondsToSelector())
               {
-                v30 = self;
+                selfCopy3 = self;
                 v21 = v46;
-                [(CGImagePropertiesExtractor *)v30 formatDictionaryValue:v44 forKey:v16 localizedKey:v46 toArray:v13];
+                [(CGImagePropertiesExtractor *)selfCopy3 formatDictionaryValue:v44 forKey:v16 localizedKey:v46 toArray:arrayCopy];
                 goto LABEL_62;
               }
 
@@ -507,7 +507,7 @@ LABEL_59:
                   [NSDictionary dictionaryWithObjects:v48 forKeys:v47 count:4];
                   v46 = v21;
                   v35 = v34 = v14;
-                  [v13 addObject:v35];
+                  [arrayCopy addObject:v35];
 
                   v14 = v34;
                   goto LABEL_61;
@@ -535,9 +535,9 @@ LABEL_63:
                   if (isKindOfClass)
                   {
                     v40 = [v42 objectAtIndexedSubscript:0];
-                    v32 = self;
+                    selfCopy4 = self;
                     v21 = v46;
-                    [(CGImagePropertiesExtractor *)v32 formatDictionaryValue:v40 forKey:v16 localizedKey:v46 toArray:v13];
+                    [(CGImagePropertiesExtractor *)selfCopy4 formatDictionaryValue:v40 forKey:v16 localizedKey:v46 toArray:arrayCopy];
 
                     v18 = v20;
                     v14 = v44;
@@ -585,52 +585,52 @@ LABEL_11:
 LABEL_64:
 }
 
-- (id)handleGPSKey:(id)a3 data:(id)a4 metaData:(id)a5
+- (id)handleGPSKey:(id)key data:(id)data metaData:(id)metaData
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([(CGImagePropertiesExtractor *)self _shouldSkipInfoKey:@"{GPS}" key:v8])
+  keyCopy = key;
+  dataCopy = data;
+  metaDataCopy = metaData;
+  if ([(CGImagePropertiesExtractor *)self _shouldSkipInfoKey:@"{GPS}" key:keyCopy])
   {
     v11 = @"SKIP";
     goto LABEL_16;
   }
 
-  if ([v8 isEqualToString:kCGImagePropertyGPSLatitude])
+  if ([keyCopy isEqualToString:kCGImagePropertyGPSLatitude])
   {
-    v12 = [(CGImagePropertiesExtractor *)self handleGPSLatitude:v9 metaData:v10];
+    v12 = [(CGImagePropertiesExtractor *)self handleGPSLatitude:dataCopy metaData:metaDataCopy];
 LABEL_15:
     v11 = v12;
     goto LABEL_16;
   }
 
-  if ([v8 isEqualToString:kCGImagePropertyGPSLongitude])
+  if ([keyCopy isEqualToString:kCGImagePropertyGPSLongitude])
   {
-    v12 = [(CGImagePropertiesExtractor *)self handleGPSLongitude:v9 metaData:v10];
+    v12 = [(CGImagePropertiesExtractor *)self handleGPSLongitude:dataCopy metaData:metaDataCopy];
     goto LABEL_15;
   }
 
-  if ([v8 isEqualToString:kCGImagePropertyGPSDateStamp])
+  if ([keyCopy isEqualToString:kCGImagePropertyGPSDateStamp])
   {
-    v12 = [(CGImagePropertiesExtractor *)self handleGPSDateStamp:v9];
+    v12 = [(CGImagePropertiesExtractor *)self handleGPSDateStamp:dataCopy];
     goto LABEL_15;
   }
 
-  if ([v8 isEqualToString:kCGImagePropertyGPSTimeStamp])
+  if ([keyCopy isEqualToString:kCGImagePropertyGPSTimeStamp])
   {
-    v12 = [(CGImagePropertiesExtractor *)self handleGPSTimeStamp:v9];
+    v12 = [(CGImagePropertiesExtractor *)self handleGPSTimeStamp:dataCopy];
     goto LABEL_15;
   }
 
-  if ([v8 isEqualToString:kCGImagePropertyGPSAltitude])
+  if ([keyCopy isEqualToString:kCGImagePropertyGPSAltitude])
   {
-    v12 = [(CGImagePropertiesExtractor *)self handleGPSAltitude:v9];
+    v12 = [(CGImagePropertiesExtractor *)self handleGPSAltitude:dataCopy];
     goto LABEL_15;
   }
 
-  if ([v8 isEqualToString:kCGImagePropertyGPSSatellites])
+  if ([keyCopy isEqualToString:kCGImagePropertyGPSSatellites])
   {
-    v12 = [(CGImagePropertiesExtractor *)self handleGPSSatellites:v9];
+    v12 = [(CGImagePropertiesExtractor *)self handleGPSSatellites:dataCopy];
     goto LABEL_15;
   }
 
@@ -640,10 +640,10 @@ LABEL_16:
   return v11;
 }
 
-- (BOOL)_shouldSkipInfoKey:(id)a3 key:(id)a4
+- (BOOL)_shouldSkipInfoKey:(id)key key:(id)a4
 {
   v5 = a4;
-  if ([a3 isEqual:@"{GPS}"])
+  if ([key isEqual:@"{GPS}"])
   {
     if ([v5 isEqualToString:kCGImagePropertyGPSLongitudeRef])
     {
@@ -664,35 +664,35 @@ LABEL_16:
   return v6;
 }
 
-- (id)handleIPTCKey:(id)a3 data:(id)a4 array:(id)a5 localizedKey:(id)a6
+- (id)handleIPTCKey:(id)key data:(id)data array:(id)array localizedKey:(id)localizedKey
 {
-  v8 = a3;
-  v9 = a4;
-  if (([v8 isEqualToString:kCGImagePropertyIPTCDateCreated] & 1) != 0 || objc_msgSend(v8, "isEqualToString:", kCGImagePropertyIPTCDigitalCreationDate))
+  keyCopy = key;
+  dataCopy = data;
+  if (([keyCopy isEqualToString:kCGImagePropertyIPTCDateCreated] & 1) != 0 || objc_msgSend(keyCopy, "isEqualToString:", kCGImagePropertyIPTCDigitalCreationDate))
   {
     v10 = @"yyyyMMdd";
 LABEL_4:
-    v11 = [(CGImagePropertiesExtractor *)self handleIPTCDateTime:v9 format:v10 useUTC:0];
+    v11 = [(CGImagePropertiesExtractor *)self handleIPTCDateTime:dataCopy format:v10 useUTC:0];
 LABEL_5:
     v12 = v11;
     goto LABEL_6;
   }
 
-  if (([v8 isEqualToString:kCGImagePropertyIPTCTimeCreated] & 1) != 0 || objc_msgSend(v8, "isEqualToString:", kCGImagePropertyIPTCDigitalCreationTime))
+  if (([keyCopy isEqualToString:kCGImagePropertyIPTCTimeCreated] & 1) != 0 || objc_msgSend(keyCopy, "isEqualToString:", kCGImagePropertyIPTCDigitalCreationTime))
   {
     v10 = @"HHmmss";
     goto LABEL_4;
   }
 
-  if ([v8 isEqualToString:@"DigitalSourceType"])
+  if ([keyCopy isEqualToString:@"DigitalSourceType"])
   {
-    v11 = [(CGImagePropertiesExtractor *)self handleIPTCDigitalSourceType:v9];
+    v11 = [(CGImagePropertiesExtractor *)self handleIPTCDigitalSourceType:dataCopy];
     goto LABEL_5;
   }
 
-  if ([v8 isEqualToString:@"Contributor"])
+  if ([keyCopy isEqualToString:@"Contributor"])
   {
-    v11 = [(CGImagePropertiesExtractor *)self handleIPTCContributor:v9];
+    v11 = [(CGImagePropertiesExtractor *)self handleIPTCContributor:dataCopy];
     goto LABEL_5;
   }
 
@@ -702,16 +702,16 @@ LABEL_6:
   return v12;
 }
 
-- (id)processSubInfo:(id)a3 forKey:(id)a4
+- (id)processSubInfo:(id)info forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  infoCopy = info;
+  keyCopy = key;
   v8 = objc_alloc_init(NSMutableArray);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [v6 allKeys];
-    v10 = [v9 sortedArrayUsingSelector:"caseInsensitiveCompare:"];
+    allKeys = [infoCopy allKeys];
+    v10 = [allKeys sortedArrayUsingSelector:"caseInsensitiveCompare:"];
 
     v19 = 0u;
     v20 = 0u;
@@ -732,7 +732,7 @@ LABEL_6:
             objc_enumerationMutation(v11);
           }
 
-          [(CGImagePropertiesExtractor *)self forInfoKey:v7 addKey:*(*(&v17 + 1) + 8 * i) fromDictionary:v6 toArray:v8, v17];
+          [(CGImagePropertiesExtractor *)self forInfoKey:keyCopy addKey:*(*(&v17 + 1) + 8 * i) fromDictionary:infoCopy toArray:v8, v17];
         }
 
         v13 = [v11 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -745,14 +745,14 @@ LABEL_6:
   return v8;
 }
 
-- (id)processMetaData:(id)a3
+- (id)processMetaData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v4 = objc_alloc_init(NSMutableDictionary);
   v28 = objc_alloc_init(NSMutableArray);
-  v5 = v3;
-  v6 = [v3 allKeys];
-  v7 = [v6 sortedArrayUsingSelector:"caseInsensitiveCompare:"];
+  v5 = dataCopy;
+  allKeys = [dataCopy allKeys];
+  v7 = [allKeys sortedArrayUsingSelector:"caseInsensitiveCompare:"];
 
   v32 = 0u;
   v33 = 0u;
@@ -836,18 +836,18 @@ LABEL_6:
   return v4;
 }
 
-- (id)formatStringValue:(id)a3
+- (id)formatStringValue:(id)value
 {
-  v3 = a3;
-  if ([v3 length] > 0xFF)
+  valueCopy = value;
+  if ([valueCopy length] > 0xFF)
   {
-    v5 = [v3 substringToIndex:256];
+    v5 = [valueCopy substringToIndex:256];
     v4 = [NSMutableString stringWithString:v5];
   }
 
   else
   {
-    v4 = [NSMutableString stringWithString:v3];
+    v4 = [NSMutableString stringWithString:valueCopy];
   }
 
   v6 = [v4 replaceOccurrencesOfString:@"{\n" withString:&stru_1001FA0A8 options:0 range:{0, objc_msgSend(v4, "length")}];
@@ -883,10 +883,10 @@ LABEL_6:
   return v10;
 }
 
-- (id)formatArrayValue:(id)a3 forKey:(id)a4
+- (id)formatArrayValue:(id)value forKey:(id)key
 {
-  v6 = a3;
-  if ([a4 isEqualToString:@"channels"])
+  valueCopy = value;
+  if ([key isEqualToString:@"channels"])
   {
     v7 = +[NSMutableString string];
     v8 = +[NSMutableString string];
@@ -894,7 +894,7 @@ LABEL_6:
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
-    obj = v6;
+    obj = valueCopy;
     v9 = [obj countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v9)
     {
@@ -926,9 +926,9 @@ LABEL_6:
     [(__CFString *)v7 appendFormat:@" (%@)", v8];
   }
 
-  else if ([v6 count] && (objc_msgSend(v6, "objectAtIndexedSubscript:", 0), v16 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v16, (isKindOfClass & 1) != 0))
+  else if ([valueCopy count] && (objc_msgSend(valueCopy, "objectAtIndexedSubscript:", 0), v16 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v16, (isKindOfClass & 1) != 0))
   {
-    if ([v6 count] == 1)
+    if ([valueCopy count] == 1)
     {
       v7 = @"UNWRAP_SINGLE_DICT";
     }
@@ -936,7 +936,7 @@ LABEL_6:
     else
     {
       v7 = +[NSMutableString string];
-      if ([v6 count])
+      if ([valueCopy count])
       {
         v19 = 0;
         do
@@ -949,36 +949,36 @@ LABEL_6:
           [(__CFString *)v7 appendFormat:@"#%lu", v19++];
         }
 
-        while (v19 < [v6 count]);
+        while (v19 < [valueCopy count]);
       }
     }
   }
 
   else
   {
-    v7 = [(CGImagePropertiesExtractor *)self localizedArrayValues:v6];
+    v7 = [(CGImagePropertiesExtractor *)self localizedArrayValues:valueCopy];
   }
 
   return v7;
 }
 
-- (void)formatDictionaryValue:(id)a3 forKey:(id)a4 localizedKey:(id)a5 toArray:(id)a6
+- (void)formatDictionaryValue:(id)value forKey:(id)key localizedKey:(id)localizedKey toArray:(id)array
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
+  valueCopy = value;
+  localizedKeyCopy = localizedKey;
+  arrayCopy = array;
   v47[0] = @"data";
   v47[1] = @"key";
   v48[0] = @" ";
-  v48[1] = v10;
+  v48[1] = localizedKeyCopy;
   v12 = [NSDictionary dictionaryWithObjects:v48 forKeys:v47 count:2];
-  [v11 addObject:v12];
+  [arrayCopy addObject:v12];
 
   if (objc_opt_respondsToSelector())
   {
-    v34 = v10;
-    v33 = [v9 allKeys];
-    [v33 sortedArrayUsingSelector:"caseInsensitiveCompare:"];
+    v34 = localizedKeyCopy;
+    allKeys = [valueCopy allKeys];
+    [allKeys sortedArrayUsingSelector:"caseInsensitiveCompare:"];
     v38 = 0u;
     v39 = 0u;
     v40 = 0u;
@@ -1005,7 +1005,7 @@ LABEL_6:
         v17 = sub_1000B772C(v15);
         v18 = [v16 stringWithFormat:@"  %@", v17];
 
-        v19 = [v9 objectForKey:v15];
+        v19 = [valueCopy objectForKey:v15];
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
@@ -1032,9 +1032,9 @@ LABEL_6:
                 v45[0] = @" ";
                 v45[1] = v18;
                 v31 = [NSDictionary dictionaryWithObjects:v45 forKeys:v44 count:2];
-                [v11 addObject:v31];
+                [arrayCopy addObject:v31];
 
-                [(CGImagePropertiesExtractor *)self formatNestedDictionary:v19 withIndent:@"    " toArray:v11];
+                [(CGImagePropertiesExtractor *)self formatNestedDictionary:v19 withIndent:@"    " toArray:arrayCopy];
                 goto LABEL_23;
               }
 
@@ -1052,35 +1052,35 @@ LABEL_6:
           goto LABEL_21;
         }
 
-        v21 = v11;
-        v22 = self;
-        v23 = v9;
+        v21 = arrayCopy;
+        selfCopy = self;
+        v23 = valueCopy;
         v24 = v19;
         if ([v24 count] != 1 || (objc_msgSend(v24, "objectAtIndexedSubscript:", 0), v25 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v25, (isKindOfClass & 1) == 0))
         {
 
-          v9 = v23;
-          self = v22;
-          v11 = v21;
+          valueCopy = v23;
+          self = selfCopy;
+          arrayCopy = v21;
 LABEL_21:
           v42[0] = @"data";
           v42[1] = @"key";
           v43[0] = v20;
           v43[1] = v18;
           v32 = [NSDictionary dictionaryWithObjects:v43 forKeys:v42 count:2];
-          [v11 addObject:v32];
+          [arrayCopy addObject:v32];
 
           goto LABEL_22;
         }
 
         v27 = [v24 objectAtIndexedSubscript:0];
-        v28 = v22;
-        v29 = v22;
-        v11 = v21;
+        v28 = selfCopy;
+        v29 = selfCopy;
+        arrayCopy = v21;
         [(CGImagePropertiesExtractor *)v29 formatNestedDictionary:v27 withIndent:@"    " toArray:v21];
 
         self = v28;
-        v9 = v23;
+        valueCopy = v23;
 LABEL_22:
         v13 = &_ss53KEY_TYPE_OF_DICTIONARY_VIOLATES_HASHABLE_REQUIREMENTSys5NeverOypXpF_ptr;
 LABEL_23:
@@ -1091,22 +1091,22 @@ LABEL_23:
       {
 LABEL_25:
 
-        v10 = v34;
+        localizedKeyCopy = v34;
         break;
       }
     }
   }
 }
 
-- (void)formatNestedDictionary:(id)a3 withIndent:(id)a4 toArray:(id)a5
+- (void)formatNestedDictionary:(id)dictionary withIndent:(id)indent toArray:(id)array
 {
-  v7 = a3;
-  v26 = a4;
-  v8 = a5;
+  dictionaryCopy = dictionary;
+  indentCopy = indent;
+  arrayCopy = array;
   if (objc_opt_respondsToSelector())
   {
-    v23 = [v7 allKeys];
-    [v23 sortedArrayUsingSelector:"caseInsensitiveCompare:"];
+    allKeys = [dictionaryCopy allKeys];
+    [allKeys sortedArrayUsingSelector:"caseInsensitiveCompare:"];
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
@@ -1117,7 +1117,7 @@ LABEL_25:
       v10 = v9;
       v11 = &_ss53KEY_TYPE_OF_DICTIONARY_VIOLATES_HASHABLE_REQUIREMENTSys5NeverOypXpF_ptr;
       v12 = *v28;
-      v13 = v7;
+      v13 = dictionaryCopy;
       do
       {
         for (i = 0; i != v10; i = i + 1)
@@ -1130,9 +1130,9 @@ LABEL_25:
           v15 = *(*(&v27 + 1) + 8 * i);
           v16 = v11[420];
           v17 = sub_1000B772C(v15);
-          v18 = [v16 stringWithFormat:@"%@%@", v26, v17];
+          v18 = [v16 stringWithFormat:@"%@%@", indentCopy, v17];
 
-          v19 = [v7 objectForKey:v15];
+          v19 = [dictionaryCopy objectForKey:v15];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
@@ -1169,9 +1169,9 @@ LABEL_25:
           v32[0] = v20;
           v32[1] = v18;
           v22 = [NSDictionary dictionaryWithObjects:v32 forKeys:v31 count:2];
-          [v8 addObject:v22];
+          [arrayCopy addObject:v22];
 
-          v7 = v13;
+          dictionaryCopy = v13;
           v11 = &_ss53KEY_TYPE_OF_DICTIONARY_VIOLATES_HASHABLE_REQUIREMENTSys5NeverOypXpF_ptr;
         }
 
@@ -1183,10 +1183,10 @@ LABEL_25:
   }
 }
 
-- (id)handleISOSpeedRatings:(id)a3
+- (id)handleISOSpeedRatings:(id)ratings
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:kCGImagePropertyExifVersion];
+  ratingsCopy = ratings;
+  v5 = [ratingsCopy objectForKeyedSubscript:kCGImagePropertyExifVersion];
   v6 = [NSMutableString stringWithString:&stru_1001FA0A8];
   v18 = 0u;
   v19 = 0u;
@@ -1228,17 +1228,17 @@ LABEL_25:
 
   if ([v6 integerValue] >= 230)
   {
-    v12 = [v4 objectForKeyedSubscript:@"SensitivityType"];
-    v13 = [v12 integerValue];
+    v12 = [ratingsCopy objectForKeyedSubscript:@"SensitivityType"];
+    integerValue = [v12 integerValue];
 
-    if (v13 == 2)
+    if (integerValue == 2)
     {
-      v14 = [v4 objectForKeyedSubscript:@"RecommendedExposureIndex"];
+      v14 = [ratingsCopy objectForKeyedSubscript:@"RecommendedExposureIndex"];
       goto LABEL_16;
     }
   }
 
-  v14 = [v4 objectForKeyedSubscript:kCGImagePropertyExifISOSpeedRatings];
+  v14 = [ratingsCopy objectForKeyedSubscript:kCGImagePropertyExifISOSpeedRatings];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -1262,19 +1262,19 @@ LABEL_18:
   return v16;
 }
 
-- (id)handleColorSpace:(id)a3 infoStr:(id)a4 key:(id)a5
+- (id)handleColorSpace:(id)space infoStr:(id)str key:(id)key
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [a3 longValue];
-  if (v9 == 1)
+  strCopy = str;
+  keyCopy = key;
+  longValue = [space longValue];
+  if (longValue == 1)
   {
     v12 = 0;
   }
 
   else
   {
-    if (v9 == 0xFFFF)
+    if (longValue == 0xFFFF)
     {
       v10 = @"%@.%@.-1";
     }
@@ -1284,32 +1284,32 @@ LABEL_18:
       v10 = @"%@.%@.other";
     }
 
-    v11 = [NSString stringWithFormat:v10, v7, v8];
-    v12 = sub_1000B7874(v11);
+    keyCopy = [NSString stringWithFormat:v10, strCopy, keyCopy];
+    v12 = sub_1000B7874(keyCopy);
   }
 
   return v12;
 }
 
-- (void)handleRegionsDict:(id)a3 localizedKey:(id)a4 toArray:(id)a5
+- (void)handleRegionsDict:(id)dict localizedKey:(id)key toArray:(id)array
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = v7;
+  dictCopy = dict;
+  keyCopy = key;
+  arrayCopy = array;
+  v10 = dictCopy;
   v47 = [v10 objectForKeyedSubscript:@"RegionList"];
   v56 = [v47 count];
   v80[0] = @"data";
   v80[1] = @"key";
   v81[0] = @" ";
-  v81[1] = v8;
-  v46 = v8;
+  v81[1] = keyCopy;
+  v46 = keyCopy;
   v11 = [NSDictionary dictionaryWithObjects:v81 forKeys:v80 count:2];
-  [v9 addObject:v11];
+  [arrayCopy addObject:v11];
 
   v49 = v10;
-  v12 = [v10 allKeys];
-  v13 = [v12 sortedArrayUsingSelector:?];
+  allKeys = [v10 allKeys];
+  v13 = [allKeys sortedArrayUsingSelector:?];
 
   v69 = 0u;
   v70 = 0u;
@@ -1352,7 +1352,7 @@ LABEL_18:
           v78[0] = v22;
           v78[1] = v21;
           v23 = [NSDictionary dictionaryWithObjects:v78 forKeys:v77 count:2];
-          [v9 addObject:v23];
+          [arrayCopy addObject:v23];
 
           v15 = &_ss53KEY_TYPE_OF_DICTIONARY_VIOLATES_HASHABLE_REQUIREMENTSys5NeverOypXpF_ptr;
         }
@@ -1407,10 +1407,10 @@ LABEL_18:
           v75[1] = v31;
           v53 = v31;
           v32 = [NSDictionary dictionaryWithObjects:v75 forKeys:v74 count:2];
-          [v9 addObject:v32];
+          [arrayCopy addObject:v32];
 
-          v33 = [v26 allKeys];
-          v34 = [v33 sortedArrayUsingSelector:"caseInsensitiveCompare:"];
+          allKeys2 = [v26 allKeys];
+          v34 = [allKeys2 sortedArrayUsingSelector:"caseInsensitiveCompare:"];
 
           v61 = 0u;
           v62 = 0u;
@@ -1460,7 +1460,7 @@ LABEL_18:
                 v72[0] = v43;
                 v72[1] = v42;
                 v45 = [NSDictionary dictionaryWithObjects:v72 forKeys:v71 count:2];
-                [v9 addObject:v45];
+                [arrayCopy addObject:v45];
 
                 v15 = &_ss53KEY_TYPE_OF_DICTIONARY_VIOLATES_HASHABLE_REQUIREMENTSys5NeverOypXpF_ptr;
               }
@@ -1485,16 +1485,16 @@ LABEL_18:
 
   else
   {
-    [v9 addObject:&off_1001FAEB8];
+    [arrayCopy addObject:&off_1001FAEB8];
   }
 }
 
-- (id)handleGPSLatitude:(id)a3 metaData:(id)a4
+- (id)handleGPSLatitude:(id)latitude metaData:(id)data
 {
-  v6 = a3;
-  v7 = [a4 objectForKeyedSubscript:kCGImagePropertyGPSLatitudeRef];
+  latitudeCopy = latitude;
+  v7 = [data objectForKeyedSubscript:kCGImagePropertyGPSLatitudeRef];
   v8 = [v7 isEqualToString:@"S"];
-  [v6 doubleValue];
+  [latitudeCopy doubleValue];
   v10 = v9;
 
   v11 = -v10;
@@ -1508,12 +1508,12 @@ LABEL_18:
   return v12;
 }
 
-- (id)handleGPSLongitude:(id)a3 metaData:(id)a4
+- (id)handleGPSLongitude:(id)longitude metaData:(id)data
 {
-  v6 = a3;
-  v7 = [a4 objectForKeyedSubscript:kCGImagePropertyGPSLongitudeRef];
+  longitudeCopy = longitude;
+  v7 = [data objectForKeyedSubscript:kCGImagePropertyGPSLongitudeRef];
   v8 = [v7 isEqualToString:@"W"];
-  [v6 doubleValue];
+  [longitudeCopy doubleValue];
   v10 = v9;
 
   v11 = -v10;
@@ -1527,13 +1527,13 @@ LABEL_18:
   return v12;
 }
 
-- (id)handleGPSAltitude:(id)a3
+- (id)handleGPSAltitude:(id)altitude
 {
-  v3 = a3;
+  altitudeCopy = altitude;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v3 doubleValue];
+    [altitudeCopy doubleValue];
     v5 = v4 * 100.0;
     v6 = [NSNumber numberWithDouble:round(v4 * 100.0) / 100.0];
     v7 = [NSNumberFormatter localizedStringFromNumber:v6 numberStyle:1];
@@ -1554,9 +1554,9 @@ LABEL_18:
   return v12;
 }
 
-- (id)handleGPSSatellites:(id)a3
+- (id)handleGPSSatellites:(id)satellites
 {
-  v3 = [NSMutableString stringWithString:a3];
+  v3 = [NSMutableString stringWithString:satellites];
   for (i = v3; ; v3 = i)
   {
     v5 = [v3 length];
@@ -1577,9 +1577,9 @@ LABEL_18:
   return i;
 }
 
-- (id)handleExifShutterSpeedValue:(id)a3
+- (id)handleExifShutterSpeedValue:(id)value
 {
-  [a3 doubleValue];
+  [value doubleValue];
   v5 = v4;
   v6 = fabs(v4);
   v7 = 0.0;
@@ -1594,39 +1594,39 @@ LABEL_18:
   return v9;
 }
 
-- (id)handleIPTCDateTime:(id)a3 format:(id)a4 useUTC:(BOOL)a5
+- (id)handleIPTCDateTime:(id)time format:(id)format useUTC:(BOOL)c
 {
-  v5 = a5;
-  v8 = a4;
-  v9 = a3;
-  if ([v8 isEqualToString:@"yyyyMMdd"])
+  cCopy = c;
+  formatCopy = format;
+  timeCopy = time;
+  if ([formatCopy isEqualToString:@"yyyyMMdd"])
   {
-    [(CGImagePropertiesExtractor *)self localizedDate:v9 format:v8];
+    [(CGImagePropertiesExtractor *)self localizedDate:timeCopy format:formatCopy];
   }
 
   else
   {
-    [(CGImagePropertiesExtractor *)self localizedTime:v9 format:v8 useUTC:v5];
+    [(CGImagePropertiesExtractor *)self localizedTime:timeCopy format:formatCopy useUTC:cCopy];
   }
   v10 = ;
 
   return v10;
 }
 
-- (void)handleIPTCCaptionAbstract:(id)a3 localizedKey:(id)a4 rawKey:(id)a5 rawKeyPath:(id)a6 toArray:(id)a7
+- (void)handleIPTCCaptionAbstract:(id)abstract localizedKey:(id)key rawKey:(id)rawKey rawKeyPath:(id)path toArray:(id)array
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  abstractCopy = abstract;
+  keyCopy = key;
+  rawKeyCopy = rawKey;
+  pathCopy = path;
+  arrayCopy = array;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v25 = v14;
-    v26 = v13;
-    v27 = v12;
-    v16 = [v11 componentsSeparatedByString:@"\n"];
+    v25 = pathCopy;
+    v26 = rawKeyCopy;
+    v27 = keyCopy;
+    v16 = [abstractCopy componentsSeparatedByString:@"\n"];
     if ([v16 count] >= 2)
     {
       v32[0] = @"data";
@@ -1635,7 +1635,7 @@ LABEL_18:
       v33[0] = v17;
       v33[1] = v27;
       v18 = [NSDictionary dictionaryWithObjects:v33 forKeys:v32 count:2];
-      [v15 addObject:v18];
+      [arrayCopy addObject:v18];
 
       if ([v16 count] >= 2)
       {
@@ -1652,7 +1652,7 @@ LABEL_18:
             v31[0] = v21;
             v31[1] = v22;
             v23 = [NSDictionary dictionaryWithObjects:v31 forKeys:v30 count:2];
-            [v15 addObject:v23];
+            [arrayCopy addObject:v23];
 
             ++v19;
           }
@@ -1664,42 +1664,42 @@ LABEL_18:
       }
     }
 
-    v13 = v26;
-    v12 = v27;
-    v14 = v25;
+    rawKeyCopy = v26;
+    keyCopy = v27;
+    pathCopy = v25;
   }
 
   v28[0] = @"data";
   v28[1] = @"key";
-  v29[0] = v11;
-  v29[1] = v12;
+  v29[0] = abstractCopy;
+  v29[1] = keyCopy;
   v28[2] = @"rawKey";
   v28[3] = @"rawKeyPath";
-  v29[2] = v13;
-  v29[3] = v14;
+  v29[2] = rawKeyCopy;
+  v29[3] = pathCopy;
   v24 = [NSDictionary dictionaryWithObjects:v29 forKeys:v28 count:4];
-  [v15 addObject:v24];
+  [arrayCopy addObject:v24];
 }
 
-- (void)handleIPTCCreatorContactInfo:(id)a3 toArray:(id)a4
+- (void)handleIPTCCreatorContactInfo:(id)info toArray:(id)array
 {
-  v5 = a3;
-  v6 = a4;
+  infoCopy = info;
+  arrayCopy = array;
   v30[0] = @"data";
   v30[1] = @"key";
   v31[0] = @" ";
   v7 = sub_1000B772C(@"CreatorContactInfo");
   v31[1] = v7;
   v8 = [NSDictionary dictionaryWithObjects:v31 forKeys:v30 count:2];
-  v22 = v6;
-  [v6 addObject:v8];
+  v22 = arrayCopy;
+  [arrayCopy addObject:v8];
 
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v9 = v5;
-  obj = [v5 allKeys];
+  v9 = infoCopy;
+  obj = [infoCopy allKeys];
   v10 = [obj countByEnumeratingWithState:&v23 objects:v29 count:16];
   if (v10)
   {
@@ -1740,14 +1740,14 @@ LABEL_18:
   }
 }
 
-- (id)handleIPTCDigitalSourceType:(id)a3
+- (id)handleIPTCDigitalSourceType:(id)type
 {
-  v3 = a3;
-  v4 = sub_1000B772C(v3);
-  if ([v4 isEqualToString:v3] && objc_msgSend(v3, "hasPrefix:", @"https://cv.iptc.org/newscodes/digitalsourcetype/"))
+  typeCopy = type;
+  v4 = sub_1000B772C(typeCopy);
+  if ([v4 isEqualToString:typeCopy] && objc_msgSend(typeCopy, "hasPrefix:", @"https://cv.iptc.org/newscodes/digitalsourcetype/"))
   {
-    v5 = [v3 lastPathComponent];
-    v6 = [@"http://cv.iptc.org/newscodes/digitalsourcetype/" stringByAppendingString:v5];
+    lastPathComponent = [typeCopy lastPathComponent];
+    v6 = [@"http://cv.iptc.org/newscodes/digitalsourcetype/" stringByAppendingString:lastPathComponent];
     v7 = sub_1000B772C(v6);
 
     v4 = v7;
@@ -1756,9 +1756,9 @@ LABEL_18:
   return v4;
 }
 
-- (id)handleIPTCContributor:(id)a3
+- (id)handleIPTCContributor:(id)contributor
 {
-  v3 = a3;
+  contributorCopy = contributor;
   v4 = +[NSMutableString string];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -1767,8 +1767,8 @@ LABEL_18:
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v17 = v3;
-    obj = v3;
+    v17 = contributorCopy;
+    obj = contributorCopy;
     v5 = [obj countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v5)
     {
@@ -1804,17 +1804,17 @@ LABEL_18:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v12 = [v10 firstObject];
+            firstObject = [v10 firstObject];
 
-            v10 = v12;
+            v10 = firstObject;
           }
 
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v13 = [v11 firstObject];
+            firstObject2 = [v11 firstObject];
 
-            v11 = v13;
+            v11 = firstObject2;
           }
 
           v14 = sub_1000B772C(v11);
@@ -1828,7 +1828,7 @@ LABEL_18:
     }
 
     v15 = v4;
-    v3 = v17;
+    contributorCopy = v17;
   }
 
   else
@@ -1839,16 +1839,16 @@ LABEL_18:
   return v15;
 }
 
-- (id)localizedArrayValues:(id)a3
+- (id)localizedArrayValues:(id)values
 {
-  v3 = a3;
+  valuesCopy = values;
   v4 = sub_1000B7874(@", ");
   v5 = objc_alloc_init(NSMutableString);
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v6 = v3;
+  v6 = valuesCopy;
   v7 = [v6 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v7)
   {
@@ -1933,9 +1933,9 @@ LABEL_17:
   return v5;
 }
 
-- (id)localizedVersionString:(id)a3
+- (id)localizedVersionString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v4 = objc_alloc_init(NSMutableString);
   v5 = objc_alloc_init(NSNumberFormatter);
   [v5 _extractor_setFormat:@"#0;0;#0"];
@@ -1946,7 +1946,7 @@ LABEL_17:
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = v3;
+  v7 = stringCopy;
   v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
@@ -1984,14 +1984,14 @@ LABEL_17:
   return v13;
 }
 
-- (id)fractionString:(id)a3
+- (id)fractionString:(id)string
 {
-  v3 = a3;
-  [v3 doubleValue];
+  stringCopy = string;
+  [stringCopy doubleValue];
   v5 = v4;
   if (v4)
   {
-    v6 = [NSMutableString stringWithFormat:@"%@", v3];
+    stringCopy = [NSMutableString stringWithFormat:@"%@", stringCopy];
   }
 
   else
@@ -2094,13 +2094,13 @@ LABEL_9:
     v32 = [v26 stringForObjectValue:v31];
 
     v33 = sub_1000B7874(@"kIKLocalized_RationalFormat");
-    v6 = [NSMutableString stringWithString:v33];
+    stringCopy = [NSMutableString stringWithString:v33];
 
-    [v6 replaceOccurrencesOfString:@"%1" withString:v30 options:0 range:{0, objc_msgSend(v6, "length")}];
-    [v6 replaceOccurrencesOfString:@"%2" withString:v32 options:0 range:{0, objc_msgSend(v6, "length")}];
+    [stringCopy replaceOccurrencesOfString:@"%1" withString:v30 options:0 range:{0, objc_msgSend(stringCopy, "length")}];
+    [stringCopy replaceOccurrencesOfString:@"%2" withString:v32 options:0 range:{0, objc_msgSend(stringCopy, "length")}];
   }
 
-  return v6;
+  return stringCopy;
 }
 
 @end

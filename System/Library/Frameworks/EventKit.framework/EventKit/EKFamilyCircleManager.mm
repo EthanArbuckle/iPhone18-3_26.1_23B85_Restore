@@ -1,22 +1,22 @@
 @interface EKFamilyCircleManager
-+ (BOOL)isFamilyCalendar:(id)a3 givenFamilySharees:(id)a4;
-+ (BOOL)isFamilyCalendarGivenCalendarSharees:(id)a3 familySharees:(id)a4 isPrimaryAppleAccount:(BOOL)a5;
-+ (void)isFamilyCalendar:(id)a3 completion:(id)a4;
-+ (void)requestFamilyShareesWithCompletion:(id)a3;
++ (BOOL)isFamilyCalendar:(id)calendar givenFamilySharees:(id)sharees;
++ (BOOL)isFamilyCalendarGivenCalendarSharees:(id)sharees familySharees:(id)familySharees isPrimaryAppleAccount:(BOOL)account;
++ (void)isFamilyCalendar:(id)calendar completion:(id)completion;
++ (void)requestFamilyShareesWithCompletion:(id)completion;
 @end
 
 @implementation EKFamilyCircleManager
 
-+ (void)requestFamilyShareesWithCompletion:(id)a3
++ (void)requestFamilyShareesWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = objc_alloc_init(MEMORY[0x1E699C070]);
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __60__EKFamilyCircleManager_requestFamilyShareesWithCompletion___block_invoke;
   v6[3] = &unk_1E77FEAC0;
-  v7 = v3;
-  v5 = v3;
+  v7 = completionCopy;
+  v5 = completionCopy;
   [v4 startRequestWithCompletionHandler:v6];
 }
 
@@ -99,28 +99,28 @@ void __60__EKFamilyCircleManager_requestFamilyShareesWithCompletion___block_invo
   v22 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)isFamilyCalendar:(id)a3 completion:(id)a4
++ (void)isFamilyCalendar:(id)calendar completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 source];
-  v9 = [v8 isPrimaryAppleAccount];
+  calendarCopy = calendar;
+  completionCopy = completion;
+  source = [calendarCopy source];
+  isPrimaryAppleAccount = [source isPrimaryAppleAccount];
 
-  if (v9)
+  if (isPrimaryAppleAccount)
   {
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __53__EKFamilyCircleManager_isFamilyCalendar_completion___block_invoke;
     v10[3] = &unk_1E77FEAE8;
-    v11 = v6;
-    v13 = a1;
-    v12 = v7;
-    [a1 requestFamilyShareesWithCompletion:v10];
+    v11 = calendarCopy;
+    selfCopy = self;
+    v12 = completionCopy;
+    [self requestFamilyShareesWithCompletion:v10];
   }
 
   else
   {
-    (*(v7 + 2))(v7, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
@@ -134,30 +134,30 @@ void __53__EKFamilyCircleManager_isFamilyCalendar_completion___block_invoke(uint
   (*(*(a1 + 40) + 16))();
 }
 
-+ (BOOL)isFamilyCalendar:(id)a3 givenFamilySharees:(id)a4
++ (BOOL)isFamilyCalendar:(id)calendar givenFamilySharees:(id)sharees
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 sharees];
-  v9 = [v7 source];
+  shareesCopy = sharees;
+  calendarCopy = calendar;
+  sharees = [calendarCopy sharees];
+  source = [calendarCopy source];
 
-  LOBYTE(v7) = [a1 isFamilyCalendarGivenCalendarSharees:v8 familySharees:v6 isPrimaryAppleAccount:{objc_msgSend(v9, "isPrimaryAppleAccount")}];
-  return v7;
+  LOBYTE(calendarCopy) = [self isFamilyCalendarGivenCalendarSharees:sharees familySharees:shareesCopy isPrimaryAppleAccount:{objc_msgSend(source, "isPrimaryAppleAccount")}];
+  return calendarCopy;
 }
 
-+ (BOOL)isFamilyCalendarGivenCalendarSharees:(id)a3 familySharees:(id)a4 isPrimaryAppleAccount:(BOOL)a5
++ (BOOL)isFamilyCalendarGivenCalendarSharees:(id)sharees familySharees:(id)familySharees isPrimaryAppleAccount:(BOOL)account
 {
-  v5 = a5;
+  accountCopy = account;
   v34 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (v5)
+  shareesCopy = sharees;
+  familyShareesCopy = familySharees;
+  if (accountCopy)
   {
     v30 = 0u;
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v9 = v7;
+    v9 = shareesCopy;
     v10 = [v9 countByEnumeratingWithState:&v28 objects:v33 count:16];
     if (v10)
     {
@@ -178,7 +178,7 @@ void __53__EKFamilyCircleManager_isFamilyCalendar_completion___block_invoke(uint
           v25 = 0u;
           v26 = 0u;
           v27 = 0u;
-          v15 = v8;
+          v15 = familyShareesCopy;
           v16 = [v15 countByEnumeratingWithState:&v24 objects:v32 count:16];
           if (v16)
           {

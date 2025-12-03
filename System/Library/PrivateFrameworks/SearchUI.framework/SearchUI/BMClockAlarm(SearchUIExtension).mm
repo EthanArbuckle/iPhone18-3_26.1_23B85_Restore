@@ -7,8 +7,8 @@
 - (void)getEnabledStatusWithCompletion:()SearchUIExtension
 {
   v4 = a3;
-  v5 = [a1 alarmID];
-  [SearchUIMobileTimerUtilities getEnablementStatusForAlarmWithIdentifier:v5 completion:v4];
+  alarmID = [self alarmID];
+  [SearchUIMobileTimerUtilities getEnablementStatusForAlarmWithIdentifier:alarmID completion:v4];
 }
 
 @end

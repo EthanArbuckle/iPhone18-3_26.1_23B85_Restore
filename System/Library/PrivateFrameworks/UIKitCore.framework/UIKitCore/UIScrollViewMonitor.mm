@@ -1,29 +1,29 @@
 @interface UIScrollViewMonitor
-- (UIScrollViewMonitor)initWithScrollView:(id)a3;
+- (UIScrollViewMonitor)initWithScrollView:(id)view;
 - (UIScrollViewMonitorDelegate)delegate;
-- (void)_monitoredView:(id)a3 didMoveFromSuperview:(id)a4 toSuperview:(id)a5;
-- (void)_observeScrollViewDidScroll:(id)a3;
-- (void)setDelegate:(id)a3;
+- (void)_monitoredView:(id)view didMoveFromSuperview:(id)superview toSuperview:(id)toSuperview;
+- (void)_observeScrollViewDidScroll:(id)scroll;
+- (void)setDelegate:(id)delegate;
 - (void)stopMonitoring;
 @end
 
 @implementation UIScrollViewMonitor
 
-- (UIScrollViewMonitor)initWithScrollView:(id)a3
+- (UIScrollViewMonitor)initWithScrollView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   v11.receiver = self;
   v11.super_class = UIScrollViewMonitor;
   v6 = [(UIScrollViewMonitor *)&v11 init];
   if (v6)
   {
-    v7 = [v5 window];
+    window = [viewCopy window];
 
-    if (v7)
+    if (window)
     {
-      objc_storeStrong(&v6->_scrollView, a3);
-      v8 = [v5 window];
-      objc_storeWeak(&v6->_window, v8);
+      objc_storeStrong(&v6->_scrollView, view);
+      window2 = [viewCopy window];
+      objc_storeWeak(&v6->_window, window2);
 
       [(UIScrollView *)v6->_scrollView _addScrollViewScrollObserver:v6];
       WeakRetained = objc_loadWeakRetained(&v6->_window);
@@ -40,9 +40,9 @@
   return v6;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   objc_setAssociatedObject(self, &_UIScrollViewDelegateAssociationKey, obj, 0x301);
   v4 = objc_storeWeak(&self->_delegate, obj);
   [obj scrollViewMonitorDidStartMonitoring:self->_scrollView];
@@ -58,21 +58,21 @@
   [v4 _unregisterSubtreeMonitor:self];
 }
 
-- (void)_observeScrollViewDidScroll:(id)a3
+- (void)_observeScrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
+  scrollCopy = scroll;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained scrollViewMonitorScrollDidScrolled:v4];
+  [WeakRetained scrollViewMonitorScrollDidScrolled:scrollCopy];
 }
 
-- (void)_monitoredView:(id)a3 didMoveFromSuperview:(id)a4 toSuperview:(id)a5
+- (void)_monitoredView:(id)view didMoveFromSuperview:(id)superview toSuperview:(id)toSuperview
 {
-  v13 = a3;
-  if ([v13 isDescendantOfView:self->_scrollView])
+  viewCopy = view;
+  if ([viewCopy isDescendantOfView:self->_scrollView])
   {
-    if (a5)
+    if (toSuperview)
     {
-      if (a4)
+      if (superview)
       {
         goto LABEL_7;
       }
@@ -80,7 +80,7 @@
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
       v9 = WeakRetained;
       scrollView = self->_scrollView;
-      v11 = v13;
+      v11 = viewCopy;
       v12 = 0;
     }
 
@@ -90,7 +90,7 @@
       v9 = WeakRetained;
       scrollView = self->_scrollView;
       v11 = 0;
-      v12 = v13;
+      v12 = viewCopy;
     }
 
     [WeakRetained scrollViewMonitorScrollDid:scrollView addView:v11 removeView:v12];

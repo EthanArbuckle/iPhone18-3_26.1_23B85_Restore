@@ -1,61 +1,61 @@
 @interface NSTextAttachment
-+ (Class)textAttachmentClassForFileType:(id)a3;
++ (Class)textAttachmentClassForFileType:(id)type;
 + (Class)textAttachmentViewProviderClassForFileType:(NSString *)fileType;
 + (id)imageCache;
 + (void)initialize;
-+ (void)registerTextAttachmentClass:(Class)a3 forFileType:(id)a4;
++ (void)registerTextAttachmentClass:(Class)class forFileType:(id)type;
 + (void)registerTextAttachmentViewProviderClass:(Class)textAttachmentViewProviderClass forFileType:(NSString *)fileType;
 - (BOOL)usesTextAttachmentView;
-- (CGRect)attachmentBoundsForAttributes:(id)a3 location:(id)a4 textContainer:(id)a5 proposedLineFragment:(CGRect)a6 position:(CGPoint)a7;
-- (CGRect)attachmentBoundsForTextContainer:(id)a3 proposedLineFragment:(CGRect)a4 glyphPosition:(CGPoint)a5 characterIndex:(unint64_t)a6;
+- (CGRect)attachmentBoundsForAttributes:(id)attributes location:(id)location textContainer:(id)container proposedLineFragment:(CGRect)fragment position:(CGPoint)position;
+- (CGRect)attachmentBoundsForTextContainer:(id)container proposedLineFragment:(CGRect)fragment glyphPosition:(CGPoint)position characterIndex:(unint64_t)index;
 - (CGRect)bounds;
 - (Class)textAttachmentViewProviderClass;
 - (NSData)contents;
 - (NSFileWrapper)fileWrapper;
 - (NSString)description;
-- (NSTextAttachment)initWithCoder:(id)a3;
+- (NSTextAttachment)initWithCoder:(id)coder;
 - (NSTextAttachment)initWithData:(NSData *)contentData ofType:(NSString *)uti;
 - (NSTextAttachment)initWithFileWrapper:(NSFileWrapper *)fileWrapper;
 - (UIImage)image;
 - (id)_cacheKey;
 - (id)_image;
-- (id)_imageForUTType_iOS:(id)a3;
+- (id)_imageForUTType_iOS:(id)s;
 - (id)adaptiveImageGlyph;
 - (id)attachmentCell;
-- (id)imageForBounds:(CGRect)a3 attributes:(id)a4 location:(id)a5 textContainer:(id)a6;
-- (id)viewProviderForParentView:(id)a3 characterIndex:(unint64_t)a4 layoutManager:(id)a5;
-- (id)viewProviderForParentView:(id)a3 location:(id)a4 textContainer:(id)a5;
-- (int64_t)_characterIndexForLocation:(id)a3 textContainer:(id)a4;
-- (void)_drawInAlignedRect:(CGRect)a3 attributes:(id)a4 location:(id)a5 textContainer:(id)a6 applicationFrameworkContext:(int64_t)a7;
+- (id)imageForBounds:(CGRect)bounds attributes:(id)attributes location:(id)location textContainer:(id)container;
+- (id)viewProviderForParentView:(id)view characterIndex:(unint64_t)index layoutManager:(id)manager;
+- (id)viewProviderForParentView:(id)view location:(id)location textContainer:(id)container;
+- (int64_t)_characterIndexForLocation:(id)location textContainer:(id)container;
+- (void)_drawInAlignedRect:(CGRect)rect attributes:(id)attributes location:(id)location textContainer:(id)container applicationFrameworkContext:(int64_t)context;
 - (void)_invalidateWrapperView;
-- (void)_setAllocatesTextContainer:(BOOL)a3;
+- (void)_setAllocatesTextContainer:(BOOL)container;
 - (void)_setupAPIPreferences;
-- (void)_showAttachmentCell_iOS:(id)a3 inRect:(CGRect)a4 characterIndex:(unint64_t)a5;
-- (void)_showWithBounds:(CGRect)a3 attributes:(__CFDictionary *)a4 runRange:(id)a5 textLayoutFragment:(id)a6 inContext:(CGContext *)a7;
-- (void)_showWithBounds:(CGRect)a3 attributes:(id)a4 location:(id)a5 textContainer:(id)a6 applicationFrameworkContext:(int64_t)a7 acceptsViewProvider:(BOOL)a8;
+- (void)_showAttachmentCell_iOS:(id)s inRect:(CGRect)rect characterIndex:(unint64_t)index;
+- (void)_showWithBounds:(CGRect)bounds attributes:(__CFDictionary *)attributes runRange:(id)range textLayoutFragment:(id)fragment inContext:(CGContext *)context;
+- (void)_showWithBounds:(CGRect)bounds attributes:(id)attributes location:(id)location textContainer:(id)container applicationFrameworkContext:(int64_t)context acceptsViewProvider:(BOOL)provider;
 - (void)dealloc;
-- (void)detachView:(id)a3 fromParentView:(id)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)placeView:(id)a3 withFrame:(CGRect)a4 inParentView:(id)a5 characterIndex:(unint64_t)a6 layoutManager:(id)a7;
-- (void)placeView:(id)a3 withFrame:(CGRect)a4 inParentView:(id)a5 location:(id)a6 textContainer:(id)a7 applicationFrameworkContext:(int64_t)a8;
-- (void)setAllowsEditingContents:(BOOL)a3;
+- (void)detachView:(id)view fromParentView:(id)parentView;
+- (void)encodeWithCoder:(id)coder;
+- (void)placeView:(id)view withFrame:(CGRect)frame inParentView:(id)parentView characterIndex:(unint64_t)index layoutManager:(id)manager;
+- (void)placeView:(id)view withFrame:(CGRect)frame inParentView:(id)parentView location:(id)location textContainer:(id)container applicationFrameworkContext:(int64_t)context;
+- (void)setAllowsEditingContents:(BOOL)contents;
 - (void)setAllowsTextAttachmentView:(BOOL)allowsTextAttachmentView;
 - (void)setAttachmentCell:(id)attachmentCell;
-- (void)setContentView:(id)a3;
+- (void)setContentView:(id)view;
 - (void)setContents:(NSData *)contents;
-- (void)setEmbeddingType:(int64_t)a3;
+- (void)setEmbeddingType:(int64_t)type;
 - (void)setFileType:(NSString *)fileType;
 - (void)setFileWrapper:(NSFileWrapper *)fileWrapper;
-- (void)setIgnoresOrientation:(BOOL)a3;
+- (void)setIgnoresOrientation:(BOOL)orientation;
 - (void)setImage:(UIImage *)image;
-- (void)setStandaloneAlignment:(int64_t)a3;
+- (void)setStandaloneAlignment:(int64_t)alignment;
 @end
 
 @implementation NSTextAttachment
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     __NSTextAttachmentAlwaysUsesAttachmentView = [objc_msgSend(MEMORY[0x1E695E000] "standardUserDefaults")];
   }
@@ -98,30 +98,30 @@ uint64_t __40__NSTextAttachment__setupAPIPreferences__block_invoke(uint64_t a1)
 
 - (Class)textAttachmentViewProviderClass
 {
-  v3 = [(NSTextAttachment *)self fileType];
-  if (![(NSTextAttachment *)self allowsTextAttachmentView]|| !v3)
+  fileType = [(NSTextAttachment *)self fileType];
+  if (![(NSTextAttachment *)self allowsTextAttachmentView]|| !fileType)
   {
     return 0;
   }
 
   v4 = objc_opt_class();
 
-  return [v4 textAttachmentViewProviderClassForFileType:v3];
+  return [v4 textAttachmentViewProviderClassForFileType:fileType];
 }
 
 - (id)_image
 {
-  v3 = [(NSTextAttachment *)self image];
-  if (v3)
+  image = [(NSTextAttachment *)self image];
+  if (image)
   {
-    return v3;
+    return image;
   }
 
   v4 = +[NSTextAttachment imageCache];
-  v3 = [v4 objectForKey:{-[NSTextAttachment _cacheKey](self, "_cacheKey")}];
-  if (v3)
+  image = [v4 objectForKey:{-[NSTextAttachment _cacheKey](self, "_cacheKey")}];
+  if (image)
   {
-    return v3;
+    return image;
   }
 
   v7 = _NSTextScalingTypeForCurrentEnvironment();
@@ -132,7 +132,7 @@ uint64_t __40__NSTextAttachment__setupAPIPreferences__block_invoke(uint64_t a1)
     {
       if ([(NSFileWrapper *)fileWrapperForContents isSymbolicLink])
       {
-        v9 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:{-[NSFileWrapper symbolicLinkDestinationURL](self->_fileWrapperForContents, "symbolicLinkDestinationURL")}];
+        regularFileContents = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:{-[NSFileWrapper symbolicLinkDestinationURL](self->_fileWrapperForContents, "symbolicLinkDestinationURL")}];
       }
 
       else
@@ -142,11 +142,11 @@ uint64_t __40__NSTextAttachment__setupAPIPreferences__block_invoke(uint64_t a1)
           goto LABEL_19;
         }
 
-        v9 = [(NSFileWrapper *)self->_fileWrapperForContents regularFileContents];
+        regularFileContents = [(NSFileWrapper *)self->_fileWrapperForContents regularFileContents];
       }
 
-      data = v9;
-      if (v9)
+      data = regularFileContents;
+      if (regularFileContents)
       {
         goto LABEL_15;
       }
@@ -340,7 +340,7 @@ uint64_t __26__NSTextAttachment__image__block_invoke()
 - (id)adaptiveImageGlyph
 {
   objc_sync_enter(self);
-  v3 = [MEMORY[0x1E695DFB0] null];
+  null = [MEMORY[0x1E695DFB0] null];
   adaptiveImageGlyph = self->_adaptiveImageGlyph;
   if (adaptiveImageGlyph)
   {
@@ -358,8 +358,8 @@ uint64_t __26__NSTextAttachment__image__block_invoke()
 
   else
   {
-    v6 = [(NSString *)[(NSFileWrapper *)self->_fileWrapperForContents preferredFilename] pathExtension];
-    if (!v6 || ![objc_msgSend(MEMORY[0x1E6982C40] typeWithFilenameExtension:{v6), "conformsToType:", +[NSAdaptiveImageGlyph contentType](NSAdaptiveImageGlyph, "contentType")}] || (data = -[NSFileWrapper regularFileContents](self->_fileWrapperForContents, "regularFileContents")) == 0)
+    pathExtension = [(NSString *)[(NSFileWrapper *)self->_fileWrapperForContents preferredFilename] pathExtension];
+    if (!pathExtension || ![objc_msgSend(MEMORY[0x1E6982C40] typeWithFilenameExtension:{pathExtension), "conformsToType:", +[NSAdaptiveImageGlyph contentType](NSAdaptiveImageGlyph, "contentType")}] || (data = -[NSFileWrapper regularFileContents](self->_fileWrapperForContents, "regularFileContents")) == 0)
     {
 LABEL_11:
       adaptiveImageGlyph = self->_adaptiveImageGlyph;
@@ -380,10 +380,10 @@ LABEL_11:
   }
 
 LABEL_12:
-  adaptiveImageGlyph = v3;
+  adaptiveImageGlyph = null;
   self->_adaptiveImageGlyph = adaptiveImageGlyph;
 LABEL_13:
-  if (v3 == adaptiveImageGlyph)
+  if (null == adaptiveImageGlyph)
   {
     v7 = 0;
   }
@@ -453,9 +453,9 @@ _UICache *__30__NSTextAttachment_imageCache__block_invoke()
   return result;
 }
 
-- (id)_imageForUTType_iOS:(id)a3
+- (id)_imageForUTType_iOS:(id)s
 {
-  v3 = [MEMORY[0x1E6963658] documentProxyForName:0 type:objc_msgSend(a3 MIMEType:{"identifier"), 0}];
+  v3 = [MEMORY[0x1E6963658] documentProxyForName:0 type:objc_msgSend(s MIMEType:{"identifier"), 0}];
   result = [getUIImageClass[0]() _iconForResourceProxy:v3 format:3];
   if (!result)
   {
@@ -475,28 +475,28 @@ _UICache *__30__NSTextAttachment_imageCache__block_invoke()
   return result;
 }
 
-- (void)_showAttachmentCell_iOS:(id)a3 inRect:(CGRect)a4 characterIndex:(unint64_t)a5
+- (void)_showAttachmentCell_iOS:(id)s inRect:(CGRect)rect characterIndex:(unint64_t)index
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  x = a4.origin.x;
-  v9 = a4.origin.y - a4.size.height;
-  if (a5 == 0x7FFFFFFFFFFFFFFFLL || (objc_opt_respondsToSelector() & 1) == 0)
+  height = rect.size.height;
+  width = rect.size.width;
+  x = rect.origin.x;
+  v9 = rect.origin.y - rect.size.height;
+  if (index == 0x7FFFFFFFFFFFFFFFLL || (objc_opt_respondsToSelector() & 1) == 0)
   {
 
-    [a3 drawWithFrame:0 inView:{x, v9, width, height}];
+    [s drawWithFrame:0 inView:{x, v9, width, height}];
   }
 
   else
   {
 
-    [a3 drawWithFrame:0 inView:a5 characterIndex:{x, v9, width, height}];
+    [s drawWithFrame:0 inView:index characterIndex:{x, v9, width, height}];
   }
 }
 
-- (void)_setAllocatesTextContainer:(BOOL)a3
+- (void)_setAllocatesTextContainer:(BOOL)container
 {
-  if (a3)
+  if (container)
   {
     v3 = 256;
   }
@@ -545,13 +545,13 @@ _UICache *__30__NSTextAttachment_imageCache__block_invoke()
   {
     v5 = fileWrapper;
     v4->_fileWrapperForContents = v5;
-    v6 = [(NSString *)[(NSFileWrapper *)v5 preferredFilename] pathExtension];
-    if (v6)
+    pathExtension = [(NSString *)[(NSFileWrapper *)v5 preferredFilename] pathExtension];
+    if (pathExtension)
     {
-      v6 = [MEMORY[0x1E6982C40] typeWithFilenameExtension:v6];
+      pathExtension = [MEMORY[0x1E6982C40] typeWithFilenameExtension:pathExtension];
     }
 
-    v4->_uti = v6;
+    v4->_uti = pathExtension;
   }
 
   return v4;
@@ -612,10 +612,10 @@ _UICache *__30__NSTextAttachment_imageCache__block_invoke()
       uti = self->_uti;
       if (uti)
       {
-        v5 = [(UTType *)uti preferredFilenameExtension];
-        if (v5)
+        preferredFilenameExtension = [(UTType *)uti preferredFilenameExtension];
+        if (preferredFilenameExtension)
         {
-          v6 = [@"Attachment" stringByAppendingPathExtension:v5];
+          v6 = [@"Attachment" stringByAppendingPathExtension:preferredFilenameExtension];
         }
 
         else
@@ -657,26 +657,26 @@ LABEL_11:
     self->_image = 0;
 
     self->_data = 0;
-    v6 = [(NSString *)[(NSFileWrapper *)self->_fileWrapperForContents preferredFilename] pathExtension];
-    if (v6)
+    pathExtension = [(NSString *)[(NSFileWrapper *)self->_fileWrapperForContents preferredFilename] pathExtension];
+    if (pathExtension)
     {
-      v6 = [MEMORY[0x1E6982C40] typeWithFilenameExtension:v6];
+      pathExtension = [MEMORY[0x1E6982C40] typeWithFilenameExtension:pathExtension];
     }
 
-    self->_uti = v6;
+    self->_uti = pathExtension;
     [+[NSTextAttachment imageCache](NSTextAttachment "imageCache")];
 
     [(NSTextAttachment *)self _invalidateWrapperView];
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  if ([a3 allowsKeyedCoding])
+  if ([coder allowsKeyedCoding])
   {
     if (self->_data && self->_uti)
     {
-      [a3 encodeObject:? forKey:?];
+      [coder encodeObject:? forKey:?];
       image = [(UTType *)self->_uti identifier];
       v6 = @"NS.fileType";
     }
@@ -689,41 +689,41 @@ LABEL_11:
 LABEL_12:
         if ([(NSTextAttachment *)self embeddingType])
         {
-          [a3 encodeInt32:-[NSTextAttachment embeddingType](self forKey:{"embeddingType"), @"NS.embeddingType"}];
+          [coder encodeInt32:-[NSTextAttachment embeddingType](self forKey:{"embeddingType"), @"NS.embeddingType"}];
         }
 
         if ([(NSTextAttachment *)self standaloneAlignment]!= 1)
         {
-          [a3 encodeInt32:-[NSTextAttachment standaloneAlignment](self forKey:{"standaloneAlignment"), @"NS.standaloneAlignment"}];
+          [coder encodeInt32:-[NSTextAttachment standaloneAlignment](self forKey:{"standaloneAlignment"), @"NS.standaloneAlignment"}];
         }
 
         if (![(NSTextAttachment *)self allowsTextAttachmentView])
         {
-          [a3 encodeBool:-[NSTextAttachment allowsTextAttachmentView](self forKey:{"allowsTextAttachmentView"), @"NS.allowsTextAttachmentView"}];
+          [coder encodeBool:-[NSTextAttachment allowsTextAttachmentView](self forKey:{"allowsTextAttachmentView"), @"NS.allowsTextAttachmentView"}];
         }
 
         [(NSTextAttachment *)self lineLayoutPadding];
         if (v8 != 0.0)
         {
           [(NSTextAttachment *)self lineLayoutPadding];
-          [a3 encodeDouble:@"NS.lineLayoutPadding" forKey:?];
+          [coder encodeDouble:@"NS.lineLayoutPadding" forKey:?];
         }
 
         if ([(NSTextAttachment *)self accessibilityLabel])
         {
-          [a3 encodeObject:-[NSTextAttachment accessibilityLabel](self forKey:{"accessibilityLabel"), @"NS.accessibilityLabel"}];
+          [coder encodeObject:-[NSTextAttachment accessibilityLabel](self forKey:{"accessibilityLabel"), @"NS.accessibilityLabel"}];
         }
 
         if ([(NSTextAttachment *)self adjustsImageSizeForAccessibilityContentSizeCategory])
         {
-          [a3 encodeBool:-[NSTextAttachment adjustsImageSizeForAccessibilityContentSizeCategory](self forKey:{"adjustsImageSizeForAccessibilityContentSizeCategory"), @"NS.adjustsImageSizeForAccessibilityContentSizeCategory"}];
+          [coder encodeBool:-[NSTextAttachment adjustsImageSizeForAccessibilityContentSizeCategory](self forKey:{"adjustsImageSizeForAccessibilityContentSizeCategory"), @"NS.adjustsImageSizeForAccessibilityContentSizeCategory"}];
         }
 
-        [a3 encodeObject:-[NSTextAttachment fileWrapper](self forKey:{"fileWrapper"), @"NSFileWrapper"}];
+        [coder encodeObject:-[NSTextAttachment fileWrapper](self forKey:{"fileWrapper"), @"NSFileWrapper"}];
         if (self->_attachmentCell && (*&self->_taFlags & 0x800) != 0)
         {
 
-          [a3 encodeObject:? forKey:?];
+          [coder encodeObject:? forKey:?];
         }
 
         return;
@@ -732,7 +732,7 @@ LABEL_12:
       v6 = @"NS.image";
     }
 
-    [a3 encodeObject:image forKey:v6];
+    [coder encodeObject:image forKey:v6];
     goto LABEL_12;
   }
 
@@ -743,23 +743,23 @@ LABEL_12:
   }
 
   v9 = attachmentCell;
-  [a3 encodeValuesOfObjCTypes:{"c@", &v9, &self->_fileWrapperForContents}];
+  [coder encodeValuesOfObjCTypes:{"c@", &v9, &self->_fileWrapperForContents}];
   if (v9 == 1)
   {
-    [a3 encodeObject:self->_attachmentCell];
+    [coder encodeObject:self->_attachmentCell];
   }
 }
 
-- (NSTextAttachment)initWithCoder:(id)a3
+- (NSTextAttachment)initWithCoder:(id)coder
 {
-  if (![a3 allowsKeyedCoding])
+  if (![coder allowsKeyedCoding])
   {
 
     return 0;
   }
 
-  v5 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"NS.contents"];
-  v6 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"NS.fileType"];
+  v5 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"NS.contents"];
+  v6 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"NS.fileType"];
   if (v5)
   {
     v7 = v6 == 0;
@@ -783,10 +783,10 @@ LABEL_13:
     [NSTextAttachment initWithCoder:];
   }
 
-  v8 = [a3 decodeObjectOfClasses:initWithCoder__imageClasses forKey:@"NS.image"];
+  v8 = [coder decodeObjectOfClasses:initWithCoder__imageClasses forKey:@"NS.image"];
   if (!v8)
   {
-    v11 = -[NSTextAttachment initWithFileWrapper:](self, "initWithFileWrapper:", [a3 decodeObjectOfClass:objc_opt_class() forKey:@"NSFileWrapper"]);
+    v11 = -[NSTextAttachment initWithFileWrapper:](self, "initWithFileWrapper:", [coder decodeObjectOfClass:objc_opt_class() forKey:@"NSFileWrapper"]);
     goto LABEL_13;
   }
 
@@ -794,35 +794,35 @@ LABEL_13:
   v10 = [(NSTextAttachment *)self initWithData:0 ofType:0];
   [(NSTextAttachment *)v10 setImage:v9];
 LABEL_14:
-  if ([a3 containsValueForKey:@"NS.embeddingType"])
+  if ([coder containsValueForKey:@"NS.embeddingType"])
   {
-    -[NSTextAttachment setEmbeddingType:](v10, "setEmbeddingType:", [a3 decodeInt32ForKey:@"NS.embeddingType"]);
+    -[NSTextAttachment setEmbeddingType:](v10, "setEmbeddingType:", [coder decodeInt32ForKey:@"NS.embeddingType"]);
   }
 
-  if ([a3 containsValueForKey:@"NS.standaloneAlignment"])
+  if ([coder containsValueForKey:@"NS.standaloneAlignment"])
   {
-    -[NSTextAttachment setStandaloneAlignment:](v10, "setStandaloneAlignment:", [a3 decodeInt32ForKey:@"NS.standaloneAlignment"]);
+    -[NSTextAttachment setStandaloneAlignment:](v10, "setStandaloneAlignment:", [coder decodeInt32ForKey:@"NS.standaloneAlignment"]);
   }
 
-  if ([a3 containsValueForKey:@"NS.allowsTextAttachmentView"])
+  if ([coder containsValueForKey:@"NS.allowsTextAttachmentView"])
   {
-    -[NSTextAttachment setAllowsTextAttachmentView:](v10, "setAllowsTextAttachmentView:", [a3 decodeBoolForKey:@"NS.allowsTextAttachmentView"]);
+    -[NSTextAttachment setAllowsTextAttachmentView:](v10, "setAllowsTextAttachmentView:", [coder decodeBoolForKey:@"NS.allowsTextAttachmentView"]);
   }
 
-  if ([a3 containsValueForKey:@"NS.lineLayoutPadding"])
+  if ([coder containsValueForKey:@"NS.lineLayoutPadding"])
   {
-    [a3 decodeDoubleForKey:@"NS.lineLayoutPadding"];
+    [coder decodeDoubleForKey:@"NS.lineLayoutPadding"];
     [(NSTextAttachment *)v10 setLineLayoutPadding:?];
   }
 
-  if ([a3 containsValueForKey:@"NS.accessibilityLabel"])
+  if ([coder containsValueForKey:@"NS.accessibilityLabel"])
   {
-    -[NSTextAttachment setAccessibilityLabel:](v10, "setAccessibilityLabel:", [a3 decodeObjectOfClass:objc_opt_class() forKey:@"NS.accessibilityLabel"]);
+    -[NSTextAttachment setAccessibilityLabel:](v10, "setAccessibilityLabel:", [coder decodeObjectOfClass:objc_opt_class() forKey:@"NS.accessibilityLabel"]);
   }
 
-  if ([a3 containsValueForKey:@"NS.adjustsImageSizeForAccessibilityContentSizeCategory"])
+  if ([coder containsValueForKey:@"NS.adjustsImageSizeForAccessibilityContentSizeCategory"])
   {
-    -[NSTextAttachment setAdjustsImageSizeForAccessibilityContentSizeCategory:](v10, "setAdjustsImageSizeForAccessibilityContentSizeCategory:", [a3 decodeBoolForKey:@"NS.adjustsImageSizeForAccessibilityContentSizeCategory"]);
+    -[NSTextAttachment setAdjustsImageSizeForAccessibilityContentSizeCategory:](v10, "setAdjustsImageSizeForAccessibilityContentSizeCategory:", [coder decodeBoolForKey:@"NS.adjustsImageSizeForAccessibilityContentSizeCategory"]);
   }
 
   return v10;
@@ -836,9 +836,9 @@ uint64_t __34__NSTextAttachment_initWithCoder___block_invoke()
   return result;
 }
 
-- (void)setContentView:(id)a3
+- (void)setContentView:(id)view
 {
-  if ([(NSTextAttachmentView *)self->_wrapperView contentView]!= a3)
+  if ([(NSTextAttachmentView *)self->_wrapperView contentView]!= view)
   {
     v5 = _NSTextScalingTypeForCurrentEnvironment();
     v6 = &getNSTextAttachmentViewClass;
@@ -847,7 +847,7 @@ uint64_t __34__NSTextAttachment_initWithCoder___block_invoke()
       v6 = &getUITextAttachmentViewClass;
     }
 
-    v7 = [objc_alloc((*v6)()) initWithContentView:a3];
+    v7 = [objc_alloc((*v6)()) initWithContentView:view];
     [(NSTextAttachmentView *)self->_wrapperView removeFromSuperview];
 
     self->_wrapperView = v7;
@@ -880,7 +880,7 @@ uint64_t __34__NSTextAttachment_initWithCoder___block_invoke()
   }
 }
 
-- (CGRect)attachmentBoundsForTextContainer:(id)a3 proposedLineFragment:(CGRect)a4 glyphPosition:(CGPoint)a5 characterIndex:(unint64_t)a6
+- (CGRect)attachmentBoundsForTextContainer:(id)container proposedLineFragment:(CGRect)fragment glyphPosition:(CGPoint)position characterIndex:(unint64_t)index
 {
   [(NSTextAttachment *)self bounds];
   x = v38.origin.x;
@@ -901,15 +901,15 @@ uint64_t __34__NSTextAttachment_initWithCoder___block_invoke()
     {
       if (dyld_program_sdk_at_least())
       {
-        if (![a3 textLayoutManager])
+        if (![container textLayoutManager])
         {
-          v30 = [a3 layoutManager];
-          if (v30)
+          layoutManager = [container layoutManager];
+          if (layoutManager)
           {
-            v31 = -[NSTextAttachment viewProviderForParentView:characterIndex:layoutManager:](self, "viewProviderForParentView:characterIndex:layoutManager:", [a3 textView], a6, v30);
+            v31 = -[NSTextAttachment viewProviderForParentView:characterIndex:layoutManager:](self, "viewProviderForParentView:characterIndex:layoutManager:", [container textView], index, layoutManager);
             if ([v31 tracksTextAttachmentViewBounds])
             {
-              [v31 attachmentBoundsForTextContainer:a3 proposedLineFragment:a6 glyphPosition:a4.origin.x characterIndex:{a4.origin.y, a4.size.width, a4.size.height, a5.x, a5.y}];
+              [v31 attachmentBoundsForTextContainer:container proposedLineFragment:index glyphPosition:fragment.origin.x characterIndex:{fragment.origin.y, fragment.size.width, fragment.size.height, position.x, position.y}];
               x = v32;
               y = v33;
               width = v34;
@@ -931,11 +931,11 @@ uint64_t __34__NSTextAttachment_initWithCoder___block_invoke()
   v42.size.height = v16;
   if (CGRectEqualToRect(v39, v42))
   {
-    v17 = [(NSTextAttachment *)self _image];
-    if (v17)
+    _image = [(NSTextAttachment *)self _image];
+    if (_image)
     {
-      v18 = v17;
-      [v17 size];
+      v18 = _image;
+      [_image size];
       if (v19 != *MEMORY[0x1E695F060] || v20 != *(MEMORY[0x1E695F060] + 8))
       {
         height = v20;
@@ -978,9 +978,9 @@ uint64_t __34__NSTextAttachment_initWithCoder___block_invoke()
 
 + (Class)textAttachmentViewProviderClassForFileType:(NSString *)fileType
 {
-  objc_sync_enter(a1);
+  objc_sync_enter(self);
   v5 = [__NSTextAttachmentViewProviderClassMappings objectForKeyedSubscript:fileType];
-  objc_sync_exit(a1);
+  objc_sync_exit(self);
   if (v5)
   {
     return v5;
@@ -999,7 +999,7 @@ uint64_t __34__NSTextAttachment_initWithCoder___block_invoke()
 {
   if (textAttachmentViewProviderClass && fileType)
   {
-    objc_sync_enter(a1);
+    objc_sync_enter(self);
     v7 = __NSTextAttachmentViewProviderClassMappings;
     if (!__NSTextAttachmentViewProviderClassMappings)
     {
@@ -1009,24 +1009,24 @@ uint64_t __34__NSTextAttachment_initWithCoder___block_invoke()
 
     [v7 setValue:textAttachmentViewProviderClass forKey:fileType];
 
-    objc_sync_exit(a1);
+    objc_sync_exit(self);
   }
 }
 
-- (void)setEmbeddingType:(int64_t)a3
+- (void)setEmbeddingType:(int64_t)type
 {
-  v3 = a3;
+  typeCopy = type;
   objc_sync_enter(self);
-  *&self->_taFlags = *&self->_taFlags & 0xFFE1 | (2 * (v3 & 0xF));
+  *&self->_taFlags = *&self->_taFlags & 0xFFE1 | (2 * (typeCopy & 0xF));
 
   objc_sync_exit(self);
 }
 
-- (void)setStandaloneAlignment:(int64_t)a3
+- (void)setStandaloneAlignment:(int64_t)alignment
 {
-  v3 = a3;
+  alignmentCopy = alignment;
   objc_sync_enter(self);
-  *&self->_taFlags = *&self->_taFlags & 0xFF1F | (32 * (v3 & 7));
+  *&self->_taFlags = *&self->_taFlags & 0xFF1F | (32 * (alignmentCopy & 7));
 
   objc_sync_exit(self);
 }
@@ -1040,21 +1040,21 @@ uint64_t __34__NSTextAttachment_initWithCoder___block_invoke()
   objc_sync_exit(self);
 }
 
-- (id)viewProviderForParentView:(id)a3 characterIndex:(unint64_t)a4 layoutManager:(id)a5
+- (id)viewProviderForParentView:(id)view characterIndex:(unint64_t)index layoutManager:(id)manager
 {
   if (![(NSTextAttachment *)self usesTextAttachmentView])
   {
     return 0;
   }
 
-  v9 = [a5 viewProviderForTextAttachment:self characterIndex:a4];
+  v9 = [manager viewProviderForTextAttachment:self characterIndex:index];
   if (!v9)
   {
-    v10 = [(NSTextAttachment *)self textAttachmentViewProviderClass];
-    if (v10)
+    textAttachmentViewProviderClass = [(NSTextAttachment *)self textAttachmentViewProviderClass];
+    if (textAttachmentViewProviderClass)
     {
-      v9 = [[v10 alloc] initWithTextAttachment:self parentView:a3 characterIndex:a4 layoutManager:a5];
-      [a5 setViewProvider:v9 forTextAttachment:self characterIndex:a4];
+      v9 = [[textAttachmentViewProviderClass alloc] initWithTextAttachment:self parentView:view characterIndex:index layoutManager:manager];
+      [manager setViewProvider:v9 forTextAttachment:self characterIndex:index];
 
       return v9;
     }
@@ -1065,15 +1065,15 @@ uint64_t __34__NSTextAttachment_initWithCoder___block_invoke()
   return v9;
 }
 
-- (void)placeView:(id)a3 withFrame:(CGRect)a4 inParentView:(id)a5 characterIndex:(unint64_t)a6 layoutManager:(id)a7
+- (void)placeView:(id)view withFrame:(CGRect)frame inParentView:(id)parentView characterIndex:(unint64_t)index layoutManager:(id)manager
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  if ([a3 superview] != a5)
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  if ([view superview] != parentView)
   {
-    [(NSTextAttachment *)self detachView:a3 fromParentView:a5];
+    [(NSTextAttachment *)self detachView:view fromParentView:parentView];
   }
 
   if (width < 0.0)
@@ -1086,7 +1086,7 @@ uint64_t __34__NSTextAttachment_initWithCoder___block_invoke()
     height = 0.0;
   }
 
-  [a3 frame];
+  [view frame];
   v20.origin.x = v14;
   v20.origin.y = v15;
   v20.size.width = v16;
@@ -1097,38 +1097,38 @@ uint64_t __34__NSTextAttachment_initWithCoder___block_invoke()
   v19.size.height = height;
   if (!NSEqualRects(v19, v20))
   {
-    [a3 setFrame:{x, y, width, height}];
+    [view setFrame:{x, y, width, height}];
   }
 
-  if ([a3 superview] != a5)
+  if ([view superview] != parentView)
   {
 
-    [a5 addSubview:a3];
+    [parentView addSubview:view];
   }
 }
 
-- (void)detachView:(id)a3 fromParentView:(id)a4
+- (void)detachView:(id)view fromParentView:(id)parentView
 {
-  if ([a3 superview] == a4)
+  if ([view superview] == parentView)
   {
 
-    [a3 removeFromSuperview];
+    [view removeFromSuperview];
   }
 }
 
-+ (Class)textAttachmentClassForFileType:(id)a3
++ (Class)textAttachmentClassForFileType:(id)type
 {
-  objc_sync_enter(a1);
-  v5 = [__NSTextAttachmentClassMappings objectForKeyedSubscript:a3];
-  objc_sync_exit(a1);
+  objc_sync_enter(self);
+  v5 = [__NSTextAttachmentClassMappings objectForKeyedSubscript:type];
+  objc_sync_exit(self);
   return v5;
 }
 
-+ (void)registerTextAttachmentClass:(Class)a3 forFileType:(id)a4
++ (void)registerTextAttachmentClass:(Class)class forFileType:(id)type
 {
-  if (a3 && a4)
+  if (class && type)
   {
-    objc_sync_enter(a1);
+    objc_sync_enter(self);
     v7 = __NSTextAttachmentClassMappings;
     if (!__NSTextAttachmentClassMappings)
     {
@@ -1136,15 +1136,15 @@ uint64_t __34__NSTextAttachment_initWithCoder___block_invoke()
       __NSTextAttachmentClassMappings = v7;
     }
 
-    [v7 setValue:a3 forKey:a4];
+    [v7 setValue:class forKey:type];
 
-    objc_sync_exit(a1);
+    objc_sync_exit(self);
   }
 }
 
-- (void)setIgnoresOrientation:(BOOL)a3
+- (void)setIgnoresOrientation:(BOOL)orientation
 {
-  if (a3)
+  if (orientation)
   {
     v3 = 4096;
   }
@@ -1178,9 +1178,9 @@ uint64_t __34__NSTextAttachment_initWithCoder___block_invoke()
   }
 }
 
-- (void)setAllowsEditingContents:(BOOL)a3
+- (void)setAllowsEditingContents:(BOOL)contents
 {
-  if (a3)
+  if (contents)
   {
     v3 = 0x2000;
   }
@@ -1210,15 +1210,15 @@ uint64_t __34__NSTextAttachment_initWithCoder___block_invoke()
   }
 }
 
-- (int64_t)_characterIndexForLocation:(id)a3 textContainer:(id)a4
+- (int64_t)_characterIndexForLocation:(id)location textContainer:(id)container
 {
-  v5 = [objc_msgSend(a4 "textLayoutManager")];
+  v5 = [objc_msgSend(container "textLayoutManager")];
   if (v5)
   {
     v6 = v5;
     v7 = [objc_msgSend(v5 "documentRange")];
 
-    return [v6 offsetFromLocation:v7 toLocation:a3];
+    return [v6 offsetFromLocation:v7 toLocation:location];
   }
 
   else
@@ -1227,7 +1227,7 @@ uint64_t __34__NSTextAttachment_initWithCoder___block_invoke()
     if (objc_opt_isKindOfClass())
     {
 
-      return [a3 characterIndex];
+      return [location characterIndex];
     }
 
     else
@@ -1237,19 +1237,19 @@ uint64_t __34__NSTextAttachment_initWithCoder___block_invoke()
   }
 }
 
-- (void)_showWithBounds:(CGRect)a3 attributes:(id)a4 location:(id)a5 textContainer:(id)a6 applicationFrameworkContext:(int64_t)a7 acceptsViewProvider:(BOOL)a8
+- (void)_showWithBounds:(CGRect)bounds attributes:(id)attributes location:(id)location textContainer:(id)container applicationFrameworkContext:(int64_t)context acceptsViewProvider:(BOOL)provider
 {
-  v8 = a8;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v18 = [(NSTextAttachment *)self attachmentCell];
-  if (v18)
+  providerCopy = provider;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  attachmentCell = [(NSTextAttachment *)self attachmentCell];
+  if (attachmentCell)
   {
-    v19 = v18;
-    v20 = [(NSTextAttachment *)self _characterIndexForLocation:a5 textContainer:a6];
-    if (a7 == 2)
+    v19 = attachmentCell;
+    v20 = [(NSTextAttachment *)self _characterIndexForLocation:location textContainer:container];
+    if (context == 2)
     {
 
       [(NSTextAttachment *)self _showAttachmentCell_macOS:v19 inRect:v20 characterIndex:x, y, width, height];
@@ -1262,29 +1262,29 @@ uint64_t __34__NSTextAttachment_initWithCoder___block_invoke()
     }
   }
 
-  else if (!v8 || !-[NSTextAttachment usesTextAttachmentView](self, "usesTextAttachmentView") || ![objc_msgSend(a6 "textLayoutManager")])
+  else if (!providerCopy || !-[NSTextAttachment usesTextAttachmentView](self, "usesTextAttachmentView") || ![objc_msgSend(container "textLayoutManager")])
   {
 
-    [(NSTextAttachment *)self _drawInAlignedRect:a4 attributes:a5 location:a6 textContainer:a7 applicationFrameworkContext:x, y, width, height];
+    [(NSTextAttachment *)self _drawInAlignedRect:attributes attributes:location location:container textContainer:context applicationFrameworkContext:x, y, width, height];
   }
 }
 
-- (void)_showWithBounds:(CGRect)a3 attributes:(__CFDictionary *)a4 runRange:(id)a5 textLayoutFragment:(id)a6 inContext:(CGContext *)a7
+- (void)_showWithBounds:(CGRect)bounds attributes:(__CFDictionary *)attributes runRange:(id)range textLayoutFragment:(id)fragment inContext:(CGContext *)context
 {
-  var0 = a5.var0;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (!a6)
+  var0 = range.var0;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  if (!fragment)
   {
-    v18 = 0;
+    applicationFrameworkContext = 0;
     goto LABEL_5;
   }
 
-  v16 = [a6 textLayoutManager];
-  v17 = [objc_msgSend(a6 "textParagraph")];
-  v18 = [v16 applicationFrameworkContext];
+  textLayoutManager = [fragment textLayoutManager];
+  v17 = [objc_msgSend(fragment "textParagraph")];
+  applicationFrameworkContext = [textLayoutManager applicationFrameworkContext];
   if (!v17)
   {
 LABEL_5:
@@ -1293,23 +1293,23 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v19 = [v16 textContainerForLocation:v17];
+  v19 = [textLayoutManager textContainerForLocation:v17];
 LABEL_6:
-  v20 = [[_NSCGTextGraphicsContext alloc] initWithCGContext:a7];
+  v20 = [[_NSCGTextGraphicsContext alloc] initWithCGContext:context];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __85__NSTextAttachment__showWithBounds_attributes_runRange_textLayoutFragment_inContext___block_invoke;
   v21[3] = &unk_1E7268780;
   v21[7] = v19;
-  v21[8] = a7;
+  v21[8] = context;
   *&v21[9] = x;
   *&v21[10] = y;
   *&v21[11] = width;
   *&v21[12] = height;
   v21[4] = self;
-  v21[5] = a4;
+  v21[5] = attributes;
   v21[6] = v17;
-  v21[13] = v18;
+  v21[13] = applicationFrameworkContext;
   [NSTextGraphicsContextProvider setCurrentTextGraphicsContext:v20 duringBlock:v21];
 }
 
@@ -1329,20 +1329,20 @@ uint64_t __85__NSTextAttachment__showWithBounds_attributes_runRange_textLayoutFr
   return [v3 _showWithBounds:v4 attributes:v5 location:v6 textContainer:v7 applicationFrameworkContext:v2 acceptsViewProvider:{v8, v9, v10, v11}];
 }
 
-- (id)imageForBounds:(CGRect)a3 attributes:(id)a4 location:(id)a5 textContainer:(id)a6
+- (id)imageForBounds:(CGRect)bounds attributes:(id)attributes location:(id)location textContainer:(id)container
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   if ((*&self->_taFlags & 0x400) != 0)
   {
-    v18 = [(NSTextAttachment *)self _characterIndexForLocation:a5 textContainer:a6];
+    v18 = [(NSTextAttachment *)self _characterIndexForLocation:location textContainer:container];
 
-    return [(NSTextAttachment *)self imageForBounds:a6 textContainer:v18 characterIndex:x, y, width, height];
+    return [(NSTextAttachment *)self imageForBounds:container textContainer:v18 characterIndex:x, y, width, height];
   }
 
-  else if (-[NSTextAttachment usesTextAttachmentView](self, "usesTextAttachmentView") && (v14 = objc_autoreleasePoolPush(), v15 = [objc_msgSend(objc_msgSend(a6 "textLayoutManager")], objc_autoreleasePoolPop(v14), v16 = v15, v15))
+  else if (-[NSTextAttachment usesTextAttachmentView](self, "usesTextAttachmentView") && (v14 = objc_autoreleasePoolPush(), v15 = [objc_msgSend(objc_msgSend(container "textLayoutManager")], objc_autoreleasePoolPop(v14), v16 = v15, v15))
   {
     return v15;
   }
@@ -1354,12 +1354,12 @@ uint64_t __85__NSTextAttachment__showWithBounds_attributes_runRange_textLayoutFr
   }
 }
 
-- (CGRect)attachmentBoundsForAttributes:(id)a3 location:(id)a4 textContainer:(id)a5 proposedLineFragment:(CGRect)a6 position:(CGPoint)a7
+- (CGRect)attachmentBoundsForAttributes:(id)attributes location:(id)location textContainer:(id)container proposedLineFragment:(CGRect)fragment position:(CGPoint)position
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
+  height = fragment.size.height;
+  width = fragment.size.width;
+  y = fragment.origin.y;
+  x = fragment.origin.x;
   [(NSTextAttachment *)self bounds];
   v16 = v15;
   v60 = v17;
@@ -1367,7 +1367,7 @@ uint64_t __85__NSTextAttachment__showWithBounds_attributes_runRange_textLayoutFr
   v21 = v20;
   [(NSTextAttachment *)self lineLayoutPadding];
   v23 = v22;
-  v24 = [(NSTextAttachment *)self attachmentCell];
+  attachmentCell = [(NSTextAttachment *)self attachmentCell];
   v64.origin.x = x;
   v64.origin.y = y;
   v64.size.width = width;
@@ -1407,10 +1407,10 @@ uint64_t __85__NSTextAttachment__showWithBounds_attributes_runRange_textLayoutFr
   if (CGRectEqualToRect(v67, *MEMORY[0x1E695F058]) && [(NSTextAttachment *)self usesTextAttachmentView])
   {
     v31 = objc_autoreleasePoolPush();
-    v32 = [objc_msgSend(a5 "textLayoutManager")];
+    v32 = [objc_msgSend(container "textLayoutManager")];
     if ([v32 tracksTextAttachmentViewBounds])
     {
-      [v32 attachmentBoundsForAttributes:a3 location:a4 textContainer:a5 proposedLineFragment:x position:{y, v25, v58, a7.x, a7.y}];
+      [v32 attachmentBoundsForAttributes:attributes location:location textContainer:container proposedLineFragment:x position:{y, v25, v58, position.x, position.y}];
       v26 = v33;
       v27 = v34;
       v28 = v35;
@@ -1420,12 +1420,12 @@ uint64_t __85__NSTextAttachment__showWithBounds_attributes_runRange_textLayoutFr
     objc_autoreleasePoolPop(v31);
   }
 
-  if (v24)
+  if (attachmentCell)
   {
-    v37 = [(NSTextAttachment *)self _characterIndexForLocation:a4 textContainer:a5];
+    v37 = [(NSTextAttachment *)self _characterIndexForLocation:location textContainer:container];
     if (objc_opt_respondsToSelector())
     {
-      [v24 cellFrameForTextContainer:a5 proposedLineFragment:v37 glyphPosition:x characterIndex:{y, v25, v58, a7.x, a7.y}];
+      [attachmentCell cellFrameForTextContainer:container proposedLineFragment:v37 glyphPosition:x characterIndex:{y, v25, v58, position.x, position.y}];
 LABEL_14:
       v26 = v38;
       v27 = v39;
@@ -1434,14 +1434,14 @@ LABEL_14:
       goto LABEL_17;
     }
 
-    [v24 cellSize];
+    [attachmentCell cellSize];
     v28 = v42;
     v29 = v43;
     v27 = 0.0;
     v26 = 0.0;
     if (objc_opt_respondsToSelector())
     {
-      [v24 cellBaselineOffset];
+      [attachmentCell cellBaselineOffset];
       v26 = v44;
       v27 = v45;
     }
@@ -1449,7 +1449,7 @@ LABEL_14:
 
   else if ((*&self->_taFlags & 0x200) != 0)
   {
-    [(NSTextAttachment *)self attachmentBoundsForTextContainer:a5 proposedLineFragment:[(NSTextAttachment *)self _characterIndexForLocation:a4 textContainer:a5] glyphPosition:x characterIndex:y, v25, v58, a7.x, a7.y];
+    [(NSTextAttachment *)self attachmentBoundsForTextContainer:container proposedLineFragment:[(NSTextAttachment *)self _characterIndexForLocation:location textContainer:container] glyphPosition:x characterIndex:y, v25, v58, position.x, position.y];
     goto LABEL_14;
   }
 
@@ -1464,11 +1464,11 @@ LABEL_17:
   v71.size.height = rect2;
   if (CGRectEqualToRect(v68, v71))
   {
-    v46 = [(NSTextAttachment *)self _image];
-    if (v46)
+    _image = [(NSTextAttachment *)self _image];
+    if (_image)
     {
-      v47 = v46;
-      [v46 size];
+      v47 = _image;
+      [_image size];
       if (v48 != *MEMORY[0x1E695F060] || v49 != *(MEMORY[0x1E695F060] + 8))
       {
         v29 = v49;
@@ -1508,22 +1508,22 @@ LABEL_17:
   return result;
 }
 
-- (id)viewProviderForParentView:(id)a3 location:(id)a4 textContainer:(id)a5
+- (id)viewProviderForParentView:(id)view location:(id)location textContainer:(id)container
 {
-  v9 = [(NSTextAttachment *)self usesTextAttachmentView];
-  if (!a5 || !v9)
+  usesTextAttachmentView = [(NSTextAttachment *)self usesTextAttachmentView];
+  if (!container || !usesTextAttachmentView)
   {
     return 0;
   }
 
-  v10 = [a5 textLayoutManager];
-  if (v10)
+  textLayoutManager = [container textLayoutManager];
+  if (textLayoutManager)
   {
-    v11 = v10;
-    v12 = [(NSTextAttachment *)self textAttachmentViewProviderClass];
-    if (v12)
+    v11 = textLayoutManager;
+    textAttachmentViewProviderClass = [(NSTextAttachment *)self textAttachmentViewProviderClass];
+    if (textAttachmentViewProviderClass)
     {
-      v13 = [[v12 alloc] initWithTextAttachment:self parentView:a3 textLayoutManager:v11 location:a4];
+      v13 = [[textAttachmentViewProviderClass alloc] initWithTextAttachment:self parentView:view textLayoutManager:v11 location:location];
 
       return v13;
     }
@@ -1531,33 +1531,33 @@ LABEL_17:
     return 0;
   }
 
-  v15 = [a5 layoutManager];
-  if (!v15)
+  layoutManager = [container layoutManager];
+  if (!layoutManager)
   {
     return 0;
   }
 
-  v16 = v15;
+  v16 = layoutManager;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     return 0;
   }
 
-  v17 = [a4 characterIndex];
+  characterIndex = [location characterIndex];
 
-  return [(NSTextAttachment *)self viewProviderForParentView:a3 characterIndex:v17 layoutManager:v16];
+  return [(NSTextAttachment *)self viewProviderForParentView:view characterIndex:characterIndex layoutManager:v16];
 }
 
-- (void)placeView:(id)a3 withFrame:(CGRect)a4 inParentView:(id)a5 location:(id)a6 textContainer:(id)a7 applicationFrameworkContext:(int64_t)a8
+- (void)placeView:(id)view withFrame:(CGRect)frame inParentView:(id)parentView location:(id)location textContainer:(id)container applicationFrameworkContext:(int64_t)context
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  if ([a3 superview] != a5)
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  if ([view superview] != parentView)
   {
-    [(NSTextAttachment *)self detachView:a3 fromParentView:a5];
+    [(NSTextAttachment *)self detachView:view fromParentView:parentView];
   }
 
   if (width < 0.0)
@@ -1570,7 +1570,7 @@ LABEL_17:
     height = 0.0;
   }
 
-  [a3 frame];
+  [view frame];
   v21.origin.x = v15;
   v21.origin.y = v16;
   v21.size.width = v17;
@@ -1581,22 +1581,22 @@ LABEL_17:
   v20.size.height = height;
   if (!NSEqualRects(v20, v21))
   {
-    [a3 setFrame:{x, y, width, height}];
+    [view setFrame:{x, y, width, height}];
   }
 
-  if ([a3 superview] != a5)
+  if ([view superview] != parentView)
   {
 
-    [a5 addSubview:a3];
+    [parentView addSubview:view];
   }
 }
 
-- (void)_drawInAlignedRect:(CGRect)a3 attributes:(id)a4 location:(id)a5 textContainer:(id)a6 applicationFrameworkContext:(int64_t)a7
+- (void)_drawInAlignedRect:(CGRect)rect attributes:(id)attributes location:(id)location textContainer:(id)container applicationFrameworkContext:(int64_t)context
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   if (self)
   {
     [(NSTextAttachment *)self lineLayoutPadding];
@@ -1615,47 +1615,47 @@ LABEL_17:
     }
   }
 
-  v18 = [(NSTextAttachment *)self imageForBounds:a4 attributes:a5 location:a6 textContainer:x, y, width, height];
-  v19 = [(objc_class *)+[NSTextGraphicsContextProvider textGraphicsContextProviderClass](NSTextGraphicsContextProvider graphicsContextForApplicationFrameworkContext:"graphicsContextForApplicationFrameworkContext:", a7];
-  v20 = [(NSTextAttachment *)self image];
-  if (a7 == 2)
+  height = [(NSTextAttachment *)self imageForBounds:attributes attributes:location location:container textContainer:x, y, width, height];
+  context = [(objc_class *)+[NSTextGraphicsContextProvider textGraphicsContextProviderClass](NSTextGraphicsContextProvider graphicsContextForApplicationFrameworkContext:"graphicsContextForApplicationFrameworkContext:", context];
+  image = [(NSTextAttachment *)self image];
+  if (context == 2)
   {
-    v21 = v20;
-    if (v18 == v20 && [(UIImage *)v20 conformsToProtocol:&unk_1F01F0D38]&& [(UIImage *)v21 willProvideAdaptedImageForPresentation])
+    v21 = image;
+    if (height == image && [(UIImage *)image conformsToProtocol:&unk_1F01F0D38]&& [(UIImage *)v21 willProvideAdaptedImageForPresentation])
     {
-      v18 = [(UIImage *)v21 imageForBounds:a4 attributes:a5 location:a6 textContainer:x, y, width, height];
+      height = [(UIImage *)v21 imageForBounds:attributes attributes:location location:container textContainer:x, y, width, height];
     }
   }
 
-  v22 = [v19 CGContext];
-  if (v22)
+  cGContext = [context CGContext];
+  if (cGContext)
   {
-    v23 = v22;
-    v24 = [a4 objectForKeyedSubscript:@"NSColor"];
-    if (!v24)
+    v23 = cGContext;
+    blackColor = [attributes objectForKeyedSubscript:@"NSColor"];
+    if (!blackColor)
     {
       if (+[NSTextGraphicsContextProvider textGraphicsContextProviderClassRespondsToColorQuery])
       {
-        v25 = [(objc_class *)+[NSTextGraphicsContextProvider textGraphicsContextProviderClass](NSTextGraphicsContextProvider colorClassForApplicationFrameworkContext:"colorClassForApplicationFrameworkContext:", a7];
+        context2 = [(objc_class *)+[NSTextGraphicsContextProvider textGraphicsContextProviderClass](NSTextGraphicsContextProvider colorClassForApplicationFrameworkContext:"colorClassForApplicationFrameworkContext:", context];
       }
 
       else
       {
-        v25 = +[NSTextGraphicsContextProvider __defaultColorClass];
+        context2 = +[NSTextGraphicsContextProvider __defaultColorClass];
       }
 
-      v24 = [(objc_class *)v25 blackColor];
+      blackColor = [(objc_class *)context2 blackColor];
     }
 
     CGContextSaveGState(v23);
-    [v24 set];
-    v26 = [v19 CGContext];
+    [blackColor set];
+    cGContext2 = [context CGContext];
     v27 = y - height;
-    if (v26)
+    if (cGContext2)
     {
-      v28 = v26;
+      v28 = cGContext2;
       v29 = x;
-      v30 = CGContextConvertPointToDeviceSpace(v26, *(&v27 - 1));
+      v30 = CGContextConvertPointToDeviceSpace(cGContext2, *(&v27 - 1));
       v35.x = floor(v30.x + 0.5);
       v35.y = floor(v30.y + 0.5);
       v33 = CGContextConvertPointToUserSpace(v28, v35);
@@ -1669,7 +1669,7 @@ LABEL_17:
       v32 = floor(v27 + 0.5);
     }
 
-    [(UIImage *)v18 drawInRect:v31, v32, width, height];
+    [(UIImage *)height drawInRect:v31, v32, width, height];
 
     CGContextRestoreGState(v23);
   }

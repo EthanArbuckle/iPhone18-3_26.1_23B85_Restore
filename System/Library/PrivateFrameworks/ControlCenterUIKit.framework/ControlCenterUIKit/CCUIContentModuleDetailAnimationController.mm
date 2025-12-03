@@ -2,24 +2,24 @@
 - (UIViewPropertyAnimator)propertyAnimator;
 - (id)_contentModuleContainingViewController;
 - (id)_newPropertyAnimator;
-- (id)initForPresenting:(BOOL)a3 anchoringViewController:(id)a4;
-- (void)animateTransition:(id)a3;
-- (void)performTransition:(id)a3;
+- (id)initForPresenting:(BOOL)presenting anchoringViewController:(id)controller;
+- (void)animateTransition:(id)transition;
+- (void)performTransition:(id)transition;
 @end
 
 @implementation CCUIContentModuleDetailAnimationController
 
-- (id)initForPresenting:(BOOL)a3 anchoringViewController:(id)a4
+- (id)initForPresenting:(BOOL)presenting anchoringViewController:(id)controller
 {
-  v7 = a4;
+  controllerCopy = controller;
   v11.receiver = self;
   v11.super_class = CCUIContentModuleDetailAnimationController;
   v8 = [(CCUIContentModuleDetailAnimationController *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_presenting = a3;
-    objc_storeStrong(&v8->_anchoringViewController, a4);
+    v8->_presenting = presenting;
+    objc_storeStrong(&v8->_anchoringViewController, controller);
   }
 
   return v9;
@@ -30,9 +30,9 @@
   propertyAnimator = self->_propertyAnimator;
   if (!propertyAnimator)
   {
-    v4 = [(CCUIContentModuleDetailAnimationController *)self _newPropertyAnimator];
+    _newPropertyAnimator = [(CCUIContentModuleDetailAnimationController *)self _newPropertyAnimator];
     v5 = self->_propertyAnimator;
-    self->_propertyAnimator = v4;
+    self->_propertyAnimator = _newPropertyAnimator;
 
     propertyAnimator = self->_propertyAnimator;
   }
@@ -40,21 +40,21 @@
   return propertyAnimator;
 }
 
-- (void)performTransition:(id)a3
+- (void)performTransition:(id)transition
 {
-  v4 = a3;
-  v5 = [(CCUIContentModuleDetailAnimationController *)self _contentModuleContainingViewController];
+  transitionCopy = transition;
+  _contentModuleContainingViewController = [(CCUIContentModuleDetailAnimationController *)self _contentModuleContainingViewController];
   v6 = MEMORY[0x1E69DE778];
   if (!self->_presenting)
   {
     v6 = MEMORY[0x1E69DE768];
   }
 
-  v7 = [v4 viewControllerForKey:*v6];
+  v7 = [transitionCopy viewControllerForKey:*v6];
   v8 = v7;
   if (self->_presenting)
   {
-    [v5 contentContainerView];
+    [_contentModuleContainingViewController contentContainerView];
   }
 
   else
@@ -69,7 +69,7 @@
 
   else
   {
-    [v5 contentContainerView];
+    [_contentModuleContainingViewController contentContainerView];
   }
   v10 = ;
   v11 = MEMORY[0x1E69DD250];
@@ -82,19 +82,19 @@
   v13 = v9;
   v22 = v13;
   [v11 performWithoutAnimation:v20];
-  if (([v5 isExpanded] & 1) == 0)
+  if (([_contentModuleContainingViewController isExpanded] & 1) == 0)
   {
     if (self->_presenting)
     {
       if (objc_opt_respondsToSelector())
       {
-        [v5 willPresentViewController:v8];
+        [_contentModuleContainingViewController willPresentViewController:v8];
       }
     }
 
     else if (objc_opt_respondsToSelector())
     {
-      [v5 willDismissViewController:v8];
+      [_contentModuleContainingViewController willDismissViewController:v8];
     }
   }
 
@@ -109,20 +109,20 @@
   [v13 setTransform:&v19];
   if (self->_presenting)
   {
-    v15 = [(CCUIContentModuleDetailAnimationController *)self propertyAnimator];
+    propertyAnimator = [(CCUIContentModuleDetailAnimationController *)self propertyAnimator];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __64__CCUIContentModuleDetailAnimationController_performTransition___block_invoke_2;
     v17[3] = &unk_1E83EA5F8;
     v18 = v13;
-    [v15 addCompletion:v17];
+    [propertyAnimator addCompletion:v17];
 
     v16 = v18;
   }
 
   else
   {
-    v16 = [v4 viewForKey:*MEMORY[0x1E69DE780]];
+    v16 = [transitionCopy viewForKey:*MEMORY[0x1E69DE780]];
     [v16 removeFromSuperview];
   }
 }
@@ -152,32 +152,32 @@ uint64_t __64__CCUIContentModuleDetailAnimationController_performTransition___bl
   return [v1 setTransform:v4];
 }
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
-  v4 = a3;
-  if ([v4 isAnimated])
+  transitionCopy = transition;
+  if ([transitionCopy isAnimated])
   {
-    v5 = [(CCUIContentModuleDetailAnimationController *)self propertyAnimator];
+    propertyAnimator = [(CCUIContentModuleDetailAnimationController *)self propertyAnimator];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __64__CCUIContentModuleDetailAnimationController_animateTransition___block_invoke;
     v9[3] = &unk_1E83EA450;
     v9[4] = self;
-    v6 = v4;
+    v6 = transitionCopy;
     v10 = v6;
-    [v5 addAnimations:v9];
+    [propertyAnimator addAnimations:v9];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __64__CCUIContentModuleDetailAnimationController_animateTransition___block_invoke_2;
     v7[3] = &unk_1E83EA5F8;
     v8 = v6;
-    [v5 addCompletion:v7];
-    [v5 startAnimation];
+    [propertyAnimator addCompletion:v7];
+    [propertyAnimator startAnimation];
   }
 
   else
   {
-    [v4 completeTransition:1];
+    [transitionCopy completeTransition:1];
   }
 }
 
@@ -200,12 +200,12 @@ uint64_t __64__CCUIContentModuleDetailAnimationController_performTransition___bl
         break;
       }
 
-      v3 = [(UIViewController *)v2 parentViewController];
+      parentViewController = [(UIViewController *)v2 parentViewController];
 
-      v2 = v3;
+      v2 = parentViewController;
     }
 
-    while (v3);
+    while (parentViewController);
   }
 
   return v2;

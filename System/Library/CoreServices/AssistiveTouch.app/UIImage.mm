@@ -1,16 +1,16 @@
 @interface UIImage
-+ (id)scat_cachedMenuImageForImageName:(id)a3;
-+ (id)scat_imageForTitle:(id)a3 imageSize:(CGSize)a4;
-+ (id)scat_singleCharacterImageForTitle:(id)a3 charactersInUse:(id)a4;
-+ (void)scat_setCachedMenuImage:(id)a3 forImageName:(id)a4;
++ (id)scat_cachedMenuImageForImageName:(id)name;
++ (id)scat_imageForTitle:(id)title imageSize:(CGSize)size;
++ (id)scat_singleCharacterImageForTitle:(id)title charactersInUse:(id)use;
++ (void)scat_setCachedMenuImage:(id)image forImageName:(id)name;
 @end
 
 @implementation UIImage
 
-+ (void)scat_setCachedMenuImage:(id)a3 forImageName:(id)a4
++ (void)scat_setCachedMenuImage:(id)image forImageName:(id)name
 {
-  v8 = a3;
-  v5 = a4;
+  imageCopy = image;
+  nameCopy = name;
   if (!qword_100218A30)
   {
     v6 = objc_alloc_init(NSCache);
@@ -18,15 +18,15 @@
     qword_100218A30 = v6;
   }
 
-  if (v8 && v5)
+  if (imageCopy && nameCopy)
   {
-    [qword_100218A30 setObject:v8 forKey:v5];
+    [qword_100218A30 setObject:imageCopy forKey:nameCopy];
   }
 }
 
-+ (id)scat_cachedMenuImageForImageName:(id)a3
++ (id)scat_cachedMenuImageForImageName:(id)name
 {
-  if (a3)
+  if (name)
   {
     v4 = [qword_100218A30 objectForKey:?];
   }
@@ -39,17 +39,17 @@
   return v4;
 }
 
-+ (id)scat_singleCharacterImageForTitle:(id)a3 charactersInUse:(id)a4
++ (id)scat_singleCharacterImageForTitle:(id)title charactersInUse:(id)use
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 length])
+  titleCopy = title;
+  useCopy = use;
+  if ([titleCopy length])
   {
     v7 = 0;
     v8 = 0;
     while (1)
     {
-      v9 = [v5 rangeOfComposedCharacterSequenceAtIndex:v8];
+      v9 = [titleCopy rangeOfComposedCharacterSequenceAtIndex:v8];
       if (!v10)
       {
         break;
@@ -62,13 +62,13 @@
       }
 
       v12 = v10;
-      v13 = [v5 substringWithRange:{v9, v10}];
+      v13 = [titleCopy substringWithRange:{v9, v10}];
 
-      if (v6 && ([v6 containsObject:v13] & 1) != 0 || (+[NSCharacterSet whitespaceAndNewlineCharacterSet](NSCharacterSet, "whitespaceAndNewlineCharacterSet"), v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v13, "stringByTrimmingCharactersInSet:", v14), v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "length"), v15, v14, !v16))
+      if (useCopy && ([useCopy containsObject:v13] & 1) != 0 || (+[NSCharacterSet whitespaceAndNewlineCharacterSet](NSCharacterSet, "whitespaceAndNewlineCharacterSet"), v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v13, "stringByTrimmingCharactersInSet:", v14), v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "length"), v15, v14, !v16))
       {
         v8 = v11 + v12;
         v7 = v13;
-        if (v8 < [v5 length])
+        if (v8 < [titleCopy length])
         {
           continue;
         }
@@ -112,7 +112,7 @@ LABEL_12:
     [v13 drawInRect:v23 withAttributes:{(v18 - v25) * 0.5, (v20 - v27) * 0.5, v25, v27}];
     v31 = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
-    [v6 addObject:v13];
+    [useCopy addObject:v13];
   }
 
   else
@@ -123,12 +123,12 @@ LABEL_12:
   return v31;
 }
 
-+ (id)scat_imageForTitle:(id)a3 imageSize:(CGSize)a4
++ (id)scat_imageForTitle:(id)title imageSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v6 = a3;
-  if ([v6 length])
+  height = size.height;
+  width = size.width;
+  titleCopy = title;
+  if ([titleCopy length])
   {
     v19[0] = NSFontAttributeName;
     v7 = [UIFont systemFontOfSize:12.0];
@@ -138,7 +138,7 @@ LABEL_12:
     v20[1] = v8;
     v9 = [NSDictionary dictionaryWithObjects:v20 forKeys:v19 count:2];
 
-    [v6 sizeWithAttributes:v9];
+    [titleCopy sizeWithAttributes:v9];
     v11 = v10;
     v13 = v12;
     v14 = +[UIScreen mainScreen];
@@ -148,7 +148,7 @@ LABEL_12:
     v22.height = height;
     UIGraphicsBeginImageContextWithOptions(v22, 0, v16);
 
-    [v6 drawInRect:v9 withAttributes:{(width - v11) * 0.5, (height - v13) * 0.5, v11, v13}];
+    [titleCopy drawInRect:v9 withAttributes:{(width - v11) * 0.5, (height - v13) * 0.5, v11, v13}];
     v17 = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
   }

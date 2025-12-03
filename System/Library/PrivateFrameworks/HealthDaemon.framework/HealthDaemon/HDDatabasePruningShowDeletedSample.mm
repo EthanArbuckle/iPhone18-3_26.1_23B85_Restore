@@ -1,6 +1,6 @@
 @interface HDDatabasePruningShowDeletedSample
 - (HDDatabasePruningShowDeletedSample)init;
-- (HDDatabasePruningShowDeletedSample)initWithRowID:(int64_t)a3 identifier:(id)a4 creationDate:(id)a5 startDate:(id)a6 endDate:(id)a7 syncIdentity:(int64_t)a8;
+- (HDDatabasePruningShowDeletedSample)initWithRowID:(int64_t)d identifier:(id)identifier creationDate:(id)date startDate:(id)startDate endDate:(id)endDate syncIdentity:(int64_t)identity;
 @end
 
 @implementation HDDatabasePruningShowDeletedSample
@@ -15,24 +15,24 @@
   return 0;
 }
 
-- (HDDatabasePruningShowDeletedSample)initWithRowID:(int64_t)a3 identifier:(id)a4 creationDate:(id)a5 startDate:(id)a6 endDate:(id)a7 syncIdentity:(int64_t)a8
+- (HDDatabasePruningShowDeletedSample)initWithRowID:(int64_t)d identifier:(id)identifier creationDate:(id)date startDate:(id)startDate endDate:(id)endDate syncIdentity:(int64_t)identity
 {
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  identifierCopy = identifier;
+  dateCopy = date;
+  startDateCopy = startDate;
+  endDateCopy = endDate;
   v22.receiver = self;
   v22.super_class = HDDatabasePruningShowDeletedSample;
   v18 = [(HDDatabasePruningShowDeletedSample *)&v22 init];
   v19 = v18;
   if (v18)
   {
-    v18->_rowID = a3;
-    objc_storeStrong(&v18->_identifier, a4);
-    objc_storeStrong(&v19->_creationDate, a5);
-    objc_storeStrong(&v19->_startDate, a6);
-    objc_storeStrong(&v19->_endDate, a7);
-    v19->_syncIdentity = a8;
+    v18->_rowID = d;
+    objc_storeStrong(&v18->_identifier, identifier);
+    objc_storeStrong(&v19->_creationDate, date);
+    objc_storeStrong(&v19->_startDate, startDate);
+    objc_storeStrong(&v19->_endDate, endDate);
+    v19->_syncIdentity = identity;
   }
 
   return v19;

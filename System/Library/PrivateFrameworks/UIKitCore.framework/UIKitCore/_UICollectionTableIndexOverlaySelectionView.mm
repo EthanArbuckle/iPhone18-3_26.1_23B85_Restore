@@ -1,9 +1,9 @@
 @interface _UICollectionTableIndexOverlaySelectionView
-- (_UICollectionTableIndexOverlaySelectionView)initWithHost:(id)a3;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
-- (void)_cellTapped:(id)a3;
+- (_UICollectionTableIndexOverlaySelectionView)initWithHost:(id)host;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
+- (void)_cellTapped:(id)tapped;
 - (void)_doneTapped;
 - (void)layoutSubviews;
 @end
@@ -52,9 +52,9 @@
   v28 = v27;
   [(UICollectionViewFlowLayout *)self->_flowLayout setItemSize:v26, v27];
   v29 = v26 * (v19 % v20);
-  v30 = [(UIView *)self->_collectionView _shouldReverseLayoutDirection];
+  _shouldReverseLayoutDirection = [(UIView *)self->_collectionView _shouldReverseLayoutDirection];
   v31 = v17 - (v17 - v29) - v29;
-  if (!v30)
+  if (!_shouldReverseLayoutDirection)
   {
     v31 = v26 * (v19 % v20);
   }
@@ -63,16 +63,16 @@
   v35 = [[_UICollectionTableIndexOverlaySelectionViewCollectionViewCell alloc] initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), v26, v28];
   [(_UICollectionTableIndexOverlaySelectionViewCollectionViewCell *)v35 setText:@"A"];
   [(UIView *)v35 layoutBelowIfNeeded];
-  v32 = [(_UICollectionTableIndexOverlaySelectionViewCollectionViewCell *)v35 label];
-  [v32 bounds];
+  label = [(_UICollectionTableIndexOverlaySelectionViewCollectionViewCell *)v35 label];
+  [label bounds];
   v34 = (v26 - v33) * 0.5;
 
   [(_UICollectionTableIndexOverlaySelectionViewCollectionViewFlowLayout *)self->_flowLayout setRightMarginForDoneButton:v34];
 }
 
-- (_UICollectionTableIndexOverlaySelectionView)initWithHost:(id)a3
+- (_UICollectionTableIndexOverlaySelectionView)initWithHost:(id)host
 {
-  v4 = a3;
+  hostCopy = host;
   v13.receiver = self;
   v13.super_class = _UICollectionTableIndexOverlaySelectionView;
   v5 = [(UIView *)&v13 init];
@@ -98,68 +98,68 @@
     v11 = +[UIColor tableBackgroundColor];
     [(UIView *)v5 setBackgroundColor:v11];
 
-    objc_storeWeak(&v5->_host, v4);
+    objc_storeWeak(&v5->_host, hostCopy);
   }
 
   return v5;
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
   WeakRetained = objc_loadWeakRetained(&self->_host);
-  v5 = [WeakRetained _dataSourceSectionIndexTitles];
-  v6 = [v5 count];
+  _dataSourceSectionIndexTitles = [WeakRetained _dataSourceSectionIndexTitles];
+  v6 = [_dataSourceSectionIndexTitles count];
 
   return v6;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithReuseIdentifier:@"IndexOverlayCell" forIndexPath:v6];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithReuseIdentifier:@"IndexOverlayCell" forIndexPath:pathCopy];
   WeakRetained = objc_loadWeakRetained(&self->_host);
-  v9 = [WeakRetained _dataSourceSectionIndexTitles];
+  _dataSourceSectionIndexTitles = [WeakRetained _dataSourceSectionIndexTitles];
 
-  v10 = [v6 item];
-  if (v10 >= [v9 count])
+  item = [pathCopy item];
+  if (item >= [_dataSourceSectionIndexTitles count])
   {
     v11 = &stru_1EFB14550;
   }
 
   else
   {
-    v11 = [v9 objectAtIndex:v10];
+    v11 = [_dataSourceSectionIndexTitles objectAtIndex:item];
   }
 
   [v7 setText:v11];
-  v12 = [v7 button];
-  [v12 addTarget:self action:sel__cellTapped_ forControlEvents:64];
+  button = [v7 button];
+  [button addTarget:self action:sel__cellTapped_ forControlEvents:64];
 
   return v7;
 }
 
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path
 {
-  v6 = [a3 dequeueReusableSupplementaryViewOfKind:@"ExternalDoneKind" withReuseIdentifier:@"ExternalDoneReuse" forIndexPath:a5];
+  v6 = [view dequeueReusableSupplementaryViewOfKind:@"ExternalDoneKind" withReuseIdentifier:@"ExternalDoneReuse" forIndexPath:path];
   v7 = _UINSLocalizedStringWithDefaultValue(@"Done", @"Done");
   [v6 setText:v7];
 
   [v6 setTextAlignment:2];
-  v8 = [v6 button];
-  [v8 addTarget:self action:sel__doneTapped forControlEvents:64];
+  button = [v6 button];
+  [button addTarget:self action:sel__doneTapped forControlEvents:64];
 
   return v6;
 }
 
-- (void)_cellTapped:(id)a3
+- (void)_cellTapped:(id)tapped
 {
-  v9 = [a3 superview];
-  v4 = [(UICollectionView *)self->_collectionView indexPathForCell:v9];
-  v5 = [v4 item];
+  superview = [tapped superview];
+  v4 = [(UICollectionView *)self->_collectionView indexPathForCell:superview];
+  item = [v4 item];
 
-  v6 = [v9 text];
+  text = [superview text];
   WeakRetained = objc_loadWeakRetained(&self->_host);
-  [WeakRetained _sectionIndexChangedToIndex:v5 title:v6];
+  [WeakRetained _sectionIndexChangedToIndex:item title:text];
 
   v8 = objc_loadWeakRetained(&self->_host);
   [v8 _transitionIndexOverlaySelectionViewToVisible:0];

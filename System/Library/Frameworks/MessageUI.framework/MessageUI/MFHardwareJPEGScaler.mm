@@ -1,23 +1,23 @@
 @interface MFHardwareJPEGScaler
 - (BOOL)_decodeImageToIOSurface;
-- (BOOL)_isJPEGImage:(CGImageSource *)a3;
-- (BOOL)scaleImageToFitLargestDimension:(id)a3 dataConsumer:(id)a4;
-- (MFHardwareJPEGScaler)initWithImageData:(id)a3 imageSource:(CGImageSource *)a4;
+- (BOOL)_isJPEGImage:(CGImageSource *)image;
+- (BOOL)scaleImageToFitLargestDimension:(id)dimension dataConsumer:(id)consumer;
+- (MFHardwareJPEGScaler)initWithImageData:(id)data imageSource:(CGImageSource *)source;
 - (void)dealloc;
 @end
 
 @implementation MFHardwareJPEGScaler
 
-- (MFHardwareJPEGScaler)initWithImageData:(id)a3 imageSource:(CGImageSource *)a4
+- (MFHardwareJPEGScaler)initWithImageData:(id)data imageSource:(CGImageSource *)source
 {
-  v7 = a3;
+  dataCopy = data;
   v15.receiver = self;
   v15.super_class = MFHardwareJPEGScaler;
   v8 = [(MFHardwareJPEGScaler *)&v15 init];
-  if (v8 && MGGetBoolAnswer() && [(MFHardwareJPEGScaler *)v8 _isJPEGImage:a4])
+  if (v8 && MGGetBoolAnswer() && [(MFHardwareJPEGScaler *)v8 _isJPEGImage:source])
   {
-    objc_storeStrong(&v8->_imageData, a3);
-    v9 = CGImageSourceCopyPropertiesAtIndex(a4, 0, 0);
+    objc_storeStrong(&v8->_imageData, data);
+    v9 = CGImageSourceCopyPropertiesAtIndex(source, 0, 0);
     v8->_imageProperties = v9;
     v10 = [CFDictionaryGetValue(v9 *MEMORY[0x1E696DED8])];
     v11 = [CFDictionaryGetValue(v8->_imageProperties *MEMORY[0x1E696DEC8])];
@@ -47,9 +47,9 @@
   [(MFHardwareJPEGScaler *)&v5 dealloc];
 }
 
-- (BOOL)_isJPEGImage:(CGImageSource *)a3
+- (BOOL)_isJPEGImage:(CGImageSource *)image
 {
-  v3 = [MEMORY[0x1E6982C40] typeWithIdentifier:CGImageSourceGetType(a3)];
+  v3 = [MEMORY[0x1E6982C40] typeWithIdentifier:CGImageSourceGetType(image)];
   v4 = [v3 conformsToType:*MEMORY[0x1E6982E58]];
 
   return v4;
@@ -70,11 +70,11 @@
   return v6;
 }
 
-- (BOOL)scaleImageToFitLargestDimension:(id)a3 dataConsumer:(id)a4
+- (BOOL)scaleImageToFitLargestDimension:(id)dimension dataConsumer:(id)consumer
 {
-  v6 = a3;
-  v7 = a4;
-  if (!self->_canHardwareScaleImage || [v6 intValue] > 4092)
+  dimensionCopy = dimension;
+  consumerCopy = consumer;
+  if (!self->_canHardwareScaleImage || [dimensionCopy intValue] > 4092)
   {
     goto LABEL_3;
   }
@@ -99,7 +99,7 @@ LABEL_3:
   Width = IOSurfaceGetWidth(self->_ioSurfaceRef);
   IOSurfaceGetHeight(self->_ioSurfaceRef);
   buffer = 0;
-  [v6 intValue];
+  [dimensionCopy intValue];
   pixelBuffer = 0;
   if (Width < 4093)
   {
@@ -149,12 +149,12 @@ LABEL_3:
     if (self->_imageProperties)
     {
       EXIFJPEGData = CGImageCreateEXIFJPEGData();
-      [v7 appendData:EXIFJPEGData];
+      [consumerCopy appendData:EXIFJPEGData];
     }
 
     else
     {
-      [v7 appendData:v19];
+      [consumerCopy appendData:v19];
     }
 
     IOSurfaceUnlock(buffer, 1u, 0);

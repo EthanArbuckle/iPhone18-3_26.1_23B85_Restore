@@ -1,6 +1,6 @@
 @interface ATXLocationManagerStateStoreOnDiskEnv
-- (int)openFileAtPath:(id)a3 dataProtectionClass:(int)a4;
-- (void)callOnNextUnlock:(id)a3;
+- (int)openFileAtPath:(id)path dataProtectionClass:(int)class;
+- (void)callOnNextUnlock:(id)unlock;
 - (void)dealloc;
 @end
 
@@ -18,10 +18,10 @@
   [(ATXLocationManagerStateStoreOnDiskEnv *)&v3 dealloc];
 }
 
-- (int)openFileAtPath:(id)a3 dataProtectionClass:(int)a4
+- (int)openFileAtPath:(id)path dataProtectionClass:(int)class
 {
-  v5 = a3;
-  v6 = open_dprotected_np([v5 UTF8String], 514, a4, 0, 384);
+  pathCopy = path;
+  v6 = open_dprotected_np([pathCopy UTF8String], 514, class, 0, 384);
   if (v6 < 0 && *__error() != 1)
   {
     v7 = __atxlog_handle_default();
@@ -34,10 +34,10 @@
   return v6;
 }
 
-- (void)callOnNextUnlock:(id)a3
+- (void)callOnNextUnlock:(id)unlock
 {
-  v4 = a3;
-  if (!v4)
+  unlockCopy = unlock;
+  if (!unlockCopy)
   {
     [ATXLocationManagerStateStoreOnDiskEnv callOnNextUnlock:];
   }
@@ -58,7 +58,7 @@
   v10[1] = 3221225472;
   v10[2] = __58__ATXLocationManagerStateStoreOnDiskEnv_callOnNextUnlock___block_invoke;
   v10[3] = &unk_279AB8008;
-  v6 = v4;
+  v6 = unlockCopy;
   v11 = v6;
   v12 = &v13;
   v7 = [v5 registerForLockStateChangeNotifications:v10];

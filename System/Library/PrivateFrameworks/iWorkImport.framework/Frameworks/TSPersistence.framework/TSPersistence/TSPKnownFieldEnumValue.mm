@@ -1,18 +1,18 @@
 @interface TSPKnownFieldEnumValue
-- (TSPKnownFieldEnumValue)initWithFieldDescriptor:(const void *)a3 fieldInfo:(const void *)a4 message:(const Message *)a5 reflection:(const Reflection *)a6 unknownFieldSet:(void *)a7;
+- (TSPKnownFieldEnumValue)initWithFieldDescriptor:(const void *)descriptor fieldInfo:(const void *)info message:(const Message *)message reflection:(const Reflection *)reflection unknownFieldSet:(void *)set;
 - (id).cxx_construct;
 - (id)debugDescription;
-- (void)mergeToMessage:(Message *)a3 reflection:(const Reflection *)a4;
-- (void)mergeToUnknownFieldSet:(void *)a3;
+- (void)mergeToMessage:(Message *)message reflection:(const Reflection *)reflection;
+- (void)mergeToUnknownFieldSet:(void *)set;
 @end
 
 @implementation TSPKnownFieldEnumValue
 
-- (TSPKnownFieldEnumValue)initWithFieldDescriptor:(const void *)a3 fieldInfo:(const void *)a4 message:(const Message *)a5 reflection:(const Reflection *)a6 unknownFieldSet:(void *)a7
+- (TSPKnownFieldEnumValue)initWithFieldDescriptor:(const void *)descriptor fieldInfo:(const void *)info message:(const Message *)message reflection:(const Reflection *)reflection unknownFieldSet:(void *)set
 {
   v50.receiver = self;
   v50.super_class = TSPKnownFieldEnumValue;
-  v11 = [TSPKnownFieldNumericValue initSubclassWithFieldDescriptor:sel_initSubclassWithFieldDescriptor_fieldInfo_message_reflection_ fieldInfo:a3 message:a4 reflection:?];
+  v11 = [TSPKnownFieldNumericValue initSubclassWithFieldDescriptor:sel_initSubclassWithFieldDescriptor_fieldInfo_message_reflection_ fieldInfo:descriptor message:info reflection:?];
   v12 = v11;
   if (v11)
   {
@@ -30,8 +30,8 @@
     }
 
     v13 = v11 + 38;
-    v15 = *a7;
-    v14 = *(a7 + 1);
+    v15 = *set;
+    v14 = *(set + 1);
     if (v14)
     {
       atomic_fetch_add_explicit((v14 + 8), 1uLL, memory_order_relaxed);
@@ -45,21 +45,21 @@
       sub_2769C1430(v16);
     }
 
-    if (*a7)
+    if (*set)
     {
-      if (google::protobuf::Reflection::HasField(a6, a5, a3))
+      if (google::protobuf::Reflection::HasField(reflection, message, descriptor))
       {
         v18 = MEMORY[0x277D81150];
         v19 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v17, "[TSPKnownFieldEnumValue initWithFieldDescriptor:fieldInfo:message:reflection:unknownFieldSet:]");
         v21 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v20, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/persistence/src/TSPKnownField.mm");
-        v22 = *(a3 + 1);
+        v22 = *(descriptor + 1);
         if (*(v22 + 23) < 0)
         {
           v22 = *v22;
         }
 
         number = v12->super.super._number;
-        (*(a5->var0 + 2))(__p, a5);
+        (*(message->var0 + 2))(__p, message);
         if (v49 >= 0)
         {
           objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v18, v24, v19, v21, 578, 0, "Enum field %{public}s (%d) for message %{public}s has both known and unknown values. We will only preserve the unknown values.", v22, number, __p);
@@ -81,7 +81,7 @@
 
     else
     {
-      Enum = google::protobuf::Reflection::GetEnum(a6, a5, a3);
+      Enum = google::protobuf::Reflection::GetEnum(reflection, message, descriptor);
       if (Enum)
       {
         v29 = objc_msgSend_numberWithInt_(MEMORY[0x277CCABB0], v28, *(Enum + 16));
@@ -92,14 +92,14 @@
         v30 = MEMORY[0x277D81150];
         v31 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v28, "[TSPKnownFieldEnumValue initWithFieldDescriptor:fieldInfo:message:reflection:unknownFieldSet:]");
         v33 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v32, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/persistence/src/TSPKnownField.mm");
-        v34 = *(a3 + 1);
+        v34 = *(descriptor + 1);
         if (*(v34 + 23) < 0)
         {
           v34 = *v34;
         }
 
         v35 = v12->super.super._number;
-        (*(a5->var0 + 2))(__p, a5);
+        (*(message->var0 + 2))(__p, message);
         if (v49 >= 0)
         {
           objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v30, v36, v31, v33, 584, 0, "Found unexpected enum value for field %{public}s (%d) message %{public}s.", v34, v35, __p);
@@ -127,24 +127,24 @@
   return v12;
 }
 
-- (void)mergeToUnknownFieldSet:(void *)a3
+- (void)mergeToUnknownFieldSet:(void *)set
 {
-  if (a3)
+  if (set)
   {
-    google::protobuf::UnknownFieldSet::MergeFrom(a3, self->_unknownFieldSet.__ptr_);
+    google::protobuf::UnknownFieldSet::MergeFrom(set, self->_unknownFieldSet.__ptr_);
   }
 }
 
-- (void)mergeToMessage:(Message *)a3 reflection:(const Reflection *)a4
+- (void)mergeToMessage:(Message *)message reflection:(const Reflection *)reflection
 {
-  if (self->super._value || objc_msgSend_hasUnknownValues(self, a2, a3))
+  if (self->super._value || objc_msgSend_hasUnknownValues(self, a2, message))
   {
-    v7 = (*(a3->var0 + 19))(a3, a2);
+    v7 = (*(message->var0 + 19))(message, a2);
     FieldByNumber = google::protobuf::Descriptor::FindFieldByNumber(v7, self->super.super._number);
-    if (FieldByNumber || (FieldByNumber = google::protobuf::Reflection::FindKnownExtensionByNumber(a4, self->super.super._number)) != 0)
+    if (FieldByNumber || (FieldByNumber = google::protobuf::Reflection::FindKnownExtensionByNumber(reflection, self->super.super._number)) != 0)
     {
       v10 = FieldByNumber;
-      google::protobuf::Reflection::ClearField(a4, a3, FieldByNumber);
+      google::protobuf::Reflection::ClearField(reflection, message, FieldByNumber);
       if (self->super._value)
       {
         v11 = google::protobuf::FieldDescriptor::enum_type(v10);
@@ -153,7 +153,7 @@
         if (ValueByNumber)
         {
 
-          google::protobuf::Reflection::SetEnum(a4, a3, v10, ValueByNumber);
+          google::protobuf::Reflection::SetEnum(reflection, message, v10, ValueByNumber);
         }
 
         else
@@ -163,7 +163,7 @@
           v20 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v19, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/persistence/src/TSPKnownField.mm");
           v23 = objc_msgSend_intValue(self->super._value, v21, v22);
           number = self->super.super._number;
-          (*(a3->var0 + 2))(__p, a3);
+          (*(message->var0 + 2))(__p, message);
           if (v37 >= 0)
           {
             objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v17, v25, v18, v20, 627, 0, "Found unexpected enum value (%d) for field (%d) message %{public}s.", v23, number, __p);

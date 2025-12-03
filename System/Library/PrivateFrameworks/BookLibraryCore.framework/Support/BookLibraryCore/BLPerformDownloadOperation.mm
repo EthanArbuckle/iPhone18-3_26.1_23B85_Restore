@@ -1,21 +1,21 @@
 @interface BLPerformDownloadOperation
-- (BLPerformDownloadOperation)initWithBLDownloadPipeline:(id)a3 response:(id)a4 completion:(id)a5;
+- (BLPerformDownloadOperation)initWithBLDownloadPipeline:(id)pipeline response:(id)response completion:(id)completion;
 - (void)run;
 @end
 
 @implementation BLPerformDownloadOperation
 
-- (BLPerformDownloadOperation)initWithBLDownloadPipeline:(id)a3 response:(id)a4 completion:(id)a5
+- (BLPerformDownloadOperation)initWithBLDownloadPipeline:(id)pipeline response:(id)response completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  pipelineCopy = pipeline;
+  responseCopy = response;
+  completionCopy = completion;
   v15.receiver = self;
   v15.super_class = BLPerformDownloadOperation;
   v11 = [(BLOperation *)&v15 init];
   if (v11)
   {
-    v12 = [[_BLPerformDownloadOperation alloc] initWithBLDownloadPipeline:v8 response:v9 completion:v10];
+    v12 = [[_BLPerformDownloadOperation alloc] initWithBLDownloadPipeline:pipelineCopy response:responseCopy completion:completionCopy];
     operation = v11->_operation;
     v11->_operation = v12;
   }
@@ -25,8 +25,8 @@
 
 - (void)run
 {
-  v2 = [(BLPerformDownloadOperation *)self operation];
-  [v2 run];
+  operation = [(BLPerformDownloadOperation *)self operation];
+  [operation run];
 }
 
 @end

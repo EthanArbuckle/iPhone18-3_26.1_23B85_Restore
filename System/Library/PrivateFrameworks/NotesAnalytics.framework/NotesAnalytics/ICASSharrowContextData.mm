@@ -1,20 +1,20 @@
 @interface ICASSharrowContextData
-- (ICASSharrowContextData)initWithSharrowSelectedItem:(id)a3;
+- (ICASSharrowContextData)initWithSharrowSelectedItem:(id)item;
 - (id)toDict;
 @end
 
 @implementation ICASSharrowContextData
 
-- (ICASSharrowContextData)initWithSharrowSelectedItem:(id)a3
+- (ICASSharrowContextData)initWithSharrowSelectedItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   v9.receiver = self;
   v9.super_class = ICASSharrowContextData;
   v6 = [(ICASSharrowContextData *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_sharrowSelectedItem, a3);
+    objc_storeStrong(&v6->_sharrowSelectedItem, item);
   }
 
   return v7;
@@ -24,19 +24,19 @@
 {
   v10[1] = *MEMORY[0x277D85DE8];
   v9 = @"sharrowSelectedItem";
-  v3 = [(ICASSharrowContextData *)self sharrowSelectedItem];
-  if (v3)
+  sharrowSelectedItem = [(ICASSharrowContextData *)self sharrowSelectedItem];
+  if (sharrowSelectedItem)
   {
-    v4 = [(ICASSharrowContextData *)self sharrowSelectedItem];
+    sharrowSelectedItem2 = [(ICASSharrowContextData *)self sharrowSelectedItem];
   }
 
   else
   {
-    v4 = objc_opt_new();
+    sharrowSelectedItem2 = objc_opt_new();
   }
 
-  v5 = v4;
-  v10[0] = v4;
+  v5 = sharrowSelectedItem2;
+  v10[0] = sharrowSelectedItem2;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:&v9 count:1];
 
   v7 = *MEMORY[0x277D85DE8];

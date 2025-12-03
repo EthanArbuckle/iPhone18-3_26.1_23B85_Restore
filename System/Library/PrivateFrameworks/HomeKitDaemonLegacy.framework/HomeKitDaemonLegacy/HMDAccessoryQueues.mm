@@ -1,28 +1,28 @@
 @interface HMDAccessoryQueues
-- (BOOL)_inQueue:(id)a3 queue:(id)a4;
-- (BOOL)createQueue:(id)a3;
+- (BOOL)_inQueue:(id)queue queue:(id)a4;
+- (BOOL)createQueue:(id)queue;
 - (HMDAccessoryQueues)init;
-- (id)getAccessoryForContext:(id)a3 fromQueue:(id)a4;
-- (id)getContextForAccessory:(id)a3;
-- (id)popAccessoryFromQueue:(id)a3;
-- (id)whichQueueForAccessory:(id)a3;
-- (int)countForQueue:(id)a3;
-- (void)addAccessory:(id)a3 toQueue:(id)a4 context:(id)a5;
-- (void)enumerateQueue:(id)a3 enumerateAccessory:(id)a4;
-- (void)removeAccessory:(id)a3;
+- (id)getAccessoryForContext:(id)context fromQueue:(id)queue;
+- (id)getContextForAccessory:(id)accessory;
+- (id)popAccessoryFromQueue:(id)queue;
+- (id)whichQueueForAccessory:(id)accessory;
+- (int)countForQueue:(id)queue;
+- (void)addAccessory:(id)accessory toQueue:(id)queue context:(id)context;
+- (void)enumerateQueue:(id)queue enumerateAccessory:(id)accessory;
+- (void)removeAccessory:(id)accessory;
 @end
 
 @implementation HMDAccessoryQueues
 
-- (id)getAccessoryForContext:(id)a3 fromQueue:(id)a4
+- (id)getAccessoryForContext:(id)context fromQueue:(id)queue
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  contextCopy = context;
+  queueCopy = queue;
+  if (queueCopy)
   {
-    v8 = [(HMDAccessoryQueues *)self queues];
-    v9 = [v8 objectForKey:v7];
+    queues = [(HMDAccessoryQueues *)self queues];
+    v9 = [queues objectForKey:queueCopy];
 
     if (v9)
     {
@@ -31,13 +31,13 @@
       v19 = 0u;
       v20 = 0u;
       v10 = v9;
-      v11 = [v10 countByEnumeratingWithState:&v19 objects:v23 count:16];
-      if (v11)
+      accessory = [v10 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      if (accessory)
       {
         v12 = *v20;
         while (2)
         {
-          for (i = 0; i != v11; i = i + 1)
+          for (i = 0; i != accessory; i = i + 1)
           {
             if (*v20 != v12)
             {
@@ -45,18 +45,18 @@
             }
 
             v14 = *(*(&v19 + 1) + 8 * i);
-            v15 = [v14 context];
-            v16 = [v15 isEqual:v6];
+            context = [v14 context];
+            v16 = [context isEqual:contextCopy];
 
             if (v16)
             {
-              v11 = [v14 accessory];
+              accessory = [v14 accessory];
               goto LABEL_14;
             }
           }
 
-          v11 = [v10 countByEnumeratingWithState:&v19 objects:v23 count:16];
-          if (v11)
+          accessory = [v10 countByEnumeratingWithState:&v19 objects:v23 count:16];
+          if (accessory)
           {
             continue;
           }
@@ -70,25 +70,25 @@ LABEL_14:
 
     else
     {
-      v11 = 0;
+      accessory = 0;
     }
   }
 
   else
   {
-    v11 = 0;
+    accessory = 0;
   }
 
   v17 = *MEMORY[0x277D85DE8];
 
-  return v11;
+  return accessory;
 }
 
-- (int)countForQueue:(id)a3
+- (int)countForQueue:(id)queue
 {
-  v4 = a3;
-  v5 = [(HMDAccessoryQueues *)self queues];
-  v6 = [v5 objectForKey:v4];
+  queueCopy = queue;
+  queues = [(HMDAccessoryQueues *)self queues];
+  v6 = [queues objectForKey:queueCopy];
 
   if (v6)
   {
@@ -103,18 +103,18 @@ LABEL_14:
   return v7;
 }
 
-- (id)whichQueueForAccessory:(id)a3
+- (id)whichQueueForAccessory:(id)accessory
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  accessoryCopy = accessory;
+  if (accessoryCopy)
   {
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v5 = [(HMDAccessoryQueues *)self queues];
-    v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    queues = [(HMDAccessoryQueues *)self queues];
+    v6 = [queues countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v6)
     {
       v7 = v6;
@@ -125,14 +125,14 @@ LABEL_14:
         {
           if (*v17 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(queues);
           }
 
           v10 = *(*(&v16 + 1) + 8 * i);
-          v11 = [(HMDAccessoryQueues *)self queues];
-          v12 = [v11 objectForKey:v10];
+          queues2 = [(HMDAccessoryQueues *)self queues];
+          v12 = [queues2 objectForKey:v10];
 
-          if ([(HMDAccessoryQueues *)self _inQueue:v4 queue:v12])
+          if ([(HMDAccessoryQueues *)self _inQueue:accessoryCopy queue:v12])
           {
             v13 = v10;
 
@@ -140,7 +140,7 @@ LABEL_14:
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v7 = [queues countByEnumeratingWithState:&v16 objects:v20 count:16];
         if (v7)
         {
           continue;
@@ -164,10 +164,10 @@ LABEL_12:
   return v13;
 }
 
-- (BOOL)_inQueue:(id)a3 queue:(id)a4
+- (BOOL)_inQueue:(id)queue queue:(id)a4
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  queueCopy = queue;
   v6 = a4;
   if ([v6 count])
   {
@@ -189,8 +189,8 @@ LABEL_12:
             objc_enumerationMutation(v7);
           }
 
-          v11 = [*(*(&v15 + 1) + 8 * i) accessory];
-          v12 = [v11 isEqual:v5];
+          accessory = [*(*(&v15 + 1) + 8 * i) accessory];
+          v12 = [accessory isEqual:queueCopy];
 
           if (v12)
           {
@@ -221,46 +221,46 @@ LABEL_12:
   return v8;
 }
 
-- (id)popAccessoryFromQueue:(id)a3
+- (id)popAccessoryFromQueue:(id)queue
 {
-  if (a3)
+  if (queue)
   {
-    v4 = a3;
-    v5 = [(HMDAccessoryQueues *)self queues];
-    v6 = [v5 objectForKey:v4];
+    queueCopy = queue;
+    queues = [(HMDAccessoryQueues *)self queues];
+    v6 = [queues objectForKey:queueCopy];
 
     if (v6 && [v6 count])
     {
       v7 = [v6 objectAtIndexedSubscript:0];
-      v8 = [v7 accessory];
-      [(HMDAccessoryQueues *)self removeAccessory:v8];
+      accessory = [v7 accessory];
+      [(HMDAccessoryQueues *)self removeAccessory:accessory];
 
-      v9 = [v7 accessory];
+      accessory2 = [v7 accessory];
     }
 
     else
     {
-      v9 = 0;
+      accessory2 = 0;
     }
   }
 
   else
   {
-    v9 = 0;
+    accessory2 = 0;
   }
 
-  return v9;
+  return accessory2;
 }
 
-- (void)removeAccessory:(id)a3
+- (void)removeAccessory:(id)accessory
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDAccessoryQueues *)self whichQueueForAccessory:v4];
+  accessoryCopy = accessory;
+  v5 = [(HMDAccessoryQueues *)self whichQueueForAccessory:accessoryCopy];
   if (v5)
   {
-    v6 = [(HMDAccessoryQueues *)self queues];
-    v7 = [v6 objectForKey:v5];
+    queues = [(HMDAccessoryQueues *)self queues];
+    v7 = [queues objectForKey:v5];
 
     v19 = 0u;
     v20 = 0u;
@@ -282,8 +282,8 @@ LABEL_12:
           }
 
           v13 = *(*(&v17 + 1) + 8 * i);
-          v14 = [v13 accessory];
-          v15 = [v14 isEqual:v4];
+          accessory = [v13 accessory];
+          v15 = [accessory isEqual:accessoryCopy];
 
           if (v15)
           {
@@ -308,28 +308,28 @@ LABEL_12:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (id)getContextForAccessory:(id)a3
+- (id)getContextForAccessory:(id)accessory
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDAccessoryQueues *)self whichQueueForAccessory:v4];
+  accessoryCopy = accessory;
+  v5 = [(HMDAccessoryQueues *)self whichQueueForAccessory:accessoryCopy];
   if (v5)
   {
-    v6 = [(HMDAccessoryQueues *)self queues];
-    v7 = [v6 objectForKey:v5];
+    queues = [(HMDAccessoryQueues *)self queues];
+    v7 = [queues objectForKey:v5];
 
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
     v8 = v7;
-    v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
-    if (v9)
+    context = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    if (context)
     {
       v10 = *v18;
       while (2)
       {
-        for (i = 0; i != v9; i = i + 1)
+        for (i = 0; i != context; i = i + 1)
         {
           if (*v18 != v10)
           {
@@ -337,18 +337,18 @@ LABEL_12:
           }
 
           v12 = *(*(&v17 + 1) + 8 * i);
-          v13 = [v12 accessory];
-          v14 = [v13 isEqual:v4];
+          accessory = [v12 accessory];
+          v14 = [accessory isEqual:accessoryCopy];
 
           if (v14)
           {
-            v9 = [v12 context];
+            context = [v12 context];
             goto LABEL_12;
           }
         }
 
-        v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
-        if (v9)
+        context = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        if (context)
         {
           continue;
         }
@@ -362,43 +362,43 @@ LABEL_12:
 
   else
   {
-    v9 = 0;
+    context = 0;
   }
 
   v15 = *MEMORY[0x277D85DE8];
 
-  return v9;
+  return context;
 }
 
-- (void)addAccessory:(id)a3 toQueue:(id)a4 context:(id)a5
+- (void)addAccessory:(id)accessory toQueue:(id)queue context:(id)context
 {
-  v13 = a3;
-  v8 = a5;
-  if (v13 && a4)
+  accessoryCopy = accessory;
+  contextCopy = context;
+  if (accessoryCopy && queue)
   {
-    v9 = a4;
-    v10 = [(HMDAccessoryQueues *)self queues];
-    v11 = [v10 objectForKey:v9];
+    queueCopy = queue;
+    queues = [(HMDAccessoryQueues *)self queues];
+    v11 = [queues objectForKey:queueCopy];
 
     if (v11)
     {
-      v12 = [[HMDAccessoryBundle alloc] initWithAccessory:v13 context:v8];
+      v12 = [[HMDAccessoryBundle alloc] initWithAccessory:accessoryCopy context:contextCopy];
       [v11 addObject:v12];
     }
   }
 }
 
-- (BOOL)createQueue:(id)a3
+- (BOOL)createQueue:(id)queue
 {
-  v4 = a3;
-  v5 = [(HMDAccessoryQueues *)self queues];
-  v6 = [v5 objectForKey:v4];
+  queueCopy = queue;
+  queues = [(HMDAccessoryQueues *)self queues];
+  v6 = [queues objectForKey:queueCopy];
 
   if (!v6)
   {
     v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v8 = [(HMDAccessoryQueues *)self queues];
-    [v8 setObject:v7 forKey:v4];
+    queues2 = [(HMDAccessoryQueues *)self queues];
+    [queues2 setObject:v7 forKey:queueCopy];
   }
 
   return v6 == 0;
@@ -418,15 +418,15 @@ LABEL_12:
   return v2;
 }
 
-- (void)enumerateQueue:(id)a3 enumerateAccessory:(id)a4
+- (void)enumerateQueue:(id)queue enumerateAccessory:(id)accessory
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  queueCopy = queue;
+  accessoryCopy = accessory;
+  if (queueCopy)
   {
-    v8 = [(HMDAccessoryQueues *)self queues];
-    v9 = [v8 objectForKey:v6];
+    queues = [(HMDAccessoryQueues *)self queues];
+    v9 = [queues objectForKey:queueCopy];
 
     v22 = 0u;
     v23 = 0u;
@@ -448,9 +448,9 @@ LABEL_4:
         }
 
         v15 = *(*(&v20 + 1) + 8 * v14);
-        v16 = [v15 accessory];
-        v17 = [v15 context];
-        v18 = v7[2](v7, v16, v17);
+        accessory = [v15 accessory];
+        context = [v15 context];
+        v18 = accessoryCopy[2](accessoryCopy, accessory, context);
 
         if (v18)
         {

@@ -1,19 +1,19 @@
 @interface ADEspressoRunnerV2
-- (ADEspressoRunnerV2)initWithPath:(id)a3 forEngine:(unint64_t)a4 configurationName:(id)a5;
-- (BOOL)canBindFormat:(unsigned int)a3 e5rtFormat:(int)a4;
-- (__CVBuffer)createAndRegisterPixelBufferForDescriptor:(id)a3;
-- (e5rt_io_port)retainPortForDescriptor:(id)a3 usingOperation:(e5rt_execution_stream_operation *)a4;
+- (ADEspressoRunnerV2)initWithPath:(id)path forEngine:(unint64_t)engine configurationName:(id)name;
+- (BOOL)canBindFormat:(unsigned int)format e5rtFormat:(int)e5rtFormat;
+- (__CVBuffer)createAndRegisterPixelBufferForDescriptor:(id)descriptor;
+- (e5rt_io_port)retainPortForDescriptor:(id)descriptor usingOperation:(e5rt_execution_stream_operation *)operation;
 - (id).cxx_construct;
-- (id)registerDescriptor:(id)a3;
+- (id)registerDescriptor:(id)descriptor;
 - (int64_t)execute;
-- (int64_t)prewireSurfaces:(id)a3 toDescriptors:(id)a4;
-- (int64_t)registerIOSurface:(__IOSurface *)a3 forDescriptor:(id)a4 usingOperation:(e5rt_execution_stream_operation *)a5;
-- (int64_t)registerIOSurface:(__IOSurface *)a3 forSurfacePort:(e5rt_io_port *)a4 surfaceDesc:(e5rt_surface_desc *)a5;
-- (int64_t)registerIOSurface:(__IOSurface *)a3 forTensorPort:(e5rt_io_port *)a4;
-- (int64_t)registerPixelBufferPtr:(__CVBuffer *)a3 forDescriptor:(id)a4 forSurfacePort:(e5rt_io_port *)a5;
-- (int64_t)registerPixelBufferPtr:(__CVBuffer *)a3 forDescriptor:(id)a4 forTensorPort:(e5rt_io_port *)a5;
-- (int64_t)registerPixelBufferPtr:(__CVBuffer *)a3 forDescriptor:(id)a4 usingOperation:(e5rt_execution_stream_operation *)a5;
-- (int64_t)updateFeedbackLoopInputBuffer:(__CVBuffer *)a3 inputDescriptor:(id)a4 outputBuffer:(__CVBuffer *)a5 outputDescriptor:(id)a6;
+- (int64_t)prewireSurfaces:(id)surfaces toDescriptors:(id)descriptors;
+- (int64_t)registerIOSurface:(__IOSurface *)surface forDescriptor:(id)descriptor usingOperation:(e5rt_execution_stream_operation *)operation;
+- (int64_t)registerIOSurface:(__IOSurface *)surface forSurfacePort:(e5rt_io_port *)port surfaceDesc:(e5rt_surface_desc *)desc;
+- (int64_t)registerIOSurface:(__IOSurface *)surface forTensorPort:(e5rt_io_port *)port;
+- (int64_t)registerPixelBufferPtr:(__CVBuffer *)ptr forDescriptor:(id)descriptor forSurfacePort:(e5rt_io_port *)port;
+- (int64_t)registerPixelBufferPtr:(__CVBuffer *)ptr forDescriptor:(id)descriptor forTensorPort:(e5rt_io_port *)port;
+- (int64_t)registerPixelBufferPtr:(__CVBuffer *)ptr forDescriptor:(id)descriptor usingOperation:(e5rt_execution_stream_operation *)operation;
+- (int64_t)updateFeedbackLoopInputBuffer:(__CVBuffer *)buffer inputDescriptor:(id)descriptor outputBuffer:(__CVBuffer *)outputBuffer outputDescriptor:(id)outputDescriptor;
 - (void)dealloc;
 @end
 
@@ -55,8 +55,8 @@
 - (int64_t)execute
 {
   v14 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v9 = 335678456;
   v10 = 0u;
   v11 = 0u;
@@ -130,17 +130,17 @@ LABEL_17:
   v7 = -22968;
 LABEL_18:
   InstrumentsTraceGuard::~InstrumentsTraceGuard(&v9);
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }
 
-- (int64_t)prewireSurfaces:(id)a3 toDescriptors:(id)a4
+- (int64_t)prewireSurfaces:(id)surfaces toDescriptors:(id)descriptors
 {
   v53 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v39 = v6;
-  v40 = a4;
+  surfacesCopy = surfaces;
+  v39 = surfacesCopy;
+  descriptorsCopy = descriptors;
   if (self->_dummyOperations)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
@@ -158,7 +158,7 @@ LABEL_37:
     goto LABEL_38;
   }
 
-  if (!v6 || !v40)
+  if (!surfacesCopy || !descriptorsCopy)
   {
     if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
@@ -166,9 +166,9 @@ LABEL_37:
     }
 
     *buf = 134218240;
-    v47 = v6;
+    v47 = surfacesCopy;
     v48 = 2048;
-    v49 = v40;
+    v49 = descriptorsCopy;
     v7 = MEMORY[0x277D86220];
     v8 = "nil inputs in prewire method: %p, %p";
 LABEL_35:
@@ -176,8 +176,8 @@ LABEL_35:
     goto LABEL_36;
   }
 
-  v10 = [v6 count];
-  if (v10 != [v40 count])
+  v10 = [surfacesCopy count];
+  if (v10 != [descriptorsCopy count])
   {
     if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
@@ -185,9 +185,9 @@ LABEL_35:
     }
 
     *buf = 134218240;
-    v47 = [v40 count];
+    v47 = [descriptorsCopy count];
     v48 = 2048;
-    v49 = [v6 count];
+    v49 = [surfacesCopy count];
     v7 = MEMORY[0x277D86220];
     v8 = "cannot prewire buffers: number of descriptors %lu does not match number of surface arrays %lu.";
     goto LABEL_35;
@@ -197,7 +197,7 @@ LABEL_35:
   v45 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v11 = v6;
+  v11 = surfacesCopy;
   v12 = 0;
   v13 = [v11 countByEnumeratingWithState:&v42 objects:v52 count:16];
   if (v13)
@@ -303,18 +303,18 @@ LABEL_35:
   else
   {
 LABEL_39:
-    for (j = 0; j < [v40 count]; ++j)
+    for (j = 0; j < [descriptorsCopy count]; ++j)
     {
-      v24 = [v40 objectAtIndexedSubscript:j];
+      v24 = [descriptorsCopy objectAtIndexedSubscript:j];
       v25 = [v11 objectAtIndexedSubscript:j];
       if (ADDebugUtilsADVerboseLogsEnabled == 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
       {
         v26 = [v25 count];
-        v27 = [v24 name];
+        name = [v24 name];
         *buf = 134218242;
         v47 = v26;
         v48 = 2112;
-        v49 = v27;
+        v49 = name;
         _os_log_impl(&dword_240463000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "prewiring %lu surfaces to input %@", buf, 0x16u);
       }
 
@@ -333,11 +333,11 @@ LABEL_39:
 
           if (ADDebugUtilsADVerboseLogsEnabled == 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
           {
-            v30 = [v24 name];
+            name2 = [v24 name];
             *buf = 134218498;
             v47 = v28;
             v48 = 2112;
-            v49 = v30;
+            v49 = name2;
             v50 = 2048;
             v51 = j;
             _os_log_impl(&dword_240463000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "registered surface idx %lu from descriptor %@ to dummy op %lu", buf, 0x20u);
@@ -351,9 +351,9 @@ LABEL_39:
 
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
         {
-          v35 = [v24 name];
+          name3 = [v24 name];
           *buf = 138412546;
-          v47 = v35;
+          v47 = name3;
           v48 = 2048;
           v49 = v29;
           _os_log_error_impl(&dword_240463000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "failed to prewire %@: unable to bind iosurface %p", buf, 0x16u);
@@ -467,20 +467,20 @@ LABEL_38:
   return v21;
 }
 
-- (int64_t)updateFeedbackLoopInputBuffer:(__CVBuffer *)a3 inputDescriptor:(id)a4 outputBuffer:(__CVBuffer *)a5 outputDescriptor:(id)a6
+- (int64_t)updateFeedbackLoopInputBuffer:(__CVBuffer *)buffer inputDescriptor:(id)descriptor outputBuffer:(__CVBuffer *)outputBuffer outputDescriptor:(id)outputDescriptor
 {
   v41 = *MEMORY[0x277D85DE8];
-  v10 = a4;
-  v11 = a6;
-  Width = CVPixelBufferGetWidth(*a3);
-  if (Width != CVPixelBufferGetWidth(*a5) || (v13 = CVPixelBufferGetHeight(*a3), v13 != CVPixelBufferGetHeight(*a5)))
+  descriptorCopy = descriptor;
+  outputDescriptorCopy = outputDescriptor;
+  Width = CVPixelBufferGetWidth(*buffer);
+  if (Width != CVPixelBufferGetWidth(*outputBuffer) || (v13 = CVPixelBufferGetHeight(*buffer), v13 != CVPixelBufferGetHeight(*outputBuffer)))
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
-      v24 = CVPixelBufferGetWidth(*a3);
-      Height = CVPixelBufferGetHeight(*a3);
-      v26 = CVPixelBufferGetWidth(*a5);
-      v27 = CVPixelBufferGetHeight(*a5);
+      v24 = CVPixelBufferGetWidth(*buffer);
+      Height = CVPixelBufferGetHeight(*buffer);
+      v26 = CVPixelBufferGetWidth(*outputBuffer);
+      v27 = CVPixelBufferGetHeight(*outputBuffer);
       *buf = 134218752;
       *&buf[4] = v24;
       v35 = 2048;
@@ -495,12 +495,12 @@ LABEL_38:
     goto LABEL_9;
   }
 
-  PixelFormatType = CVPixelBufferGetPixelFormatType(*a3);
-  if (PixelFormatType != CVPixelBufferGetPixelFormatType(*a5))
+  PixelFormatType = CVPixelBufferGetPixelFormatType(*buffer);
+  if (PixelFormatType != CVPixelBufferGetPixelFormatType(*outputBuffer))
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
-      v19 = CVPixelBufferGetPixelFormatType(*a3);
+      v19 = CVPixelBufferGetPixelFormatType(*buffer);
       v20 = buf;
       PixelBufferUtils::pixelFormatAsString(v19, buf);
       if (v37 < 0)
@@ -508,7 +508,7 @@ LABEL_38:
         v20 = *buf;
       }
 
-      v21 = CVPixelBufferGetPixelFormatType(*a5);
+      v21 = CVPixelBufferGetPixelFormatType(*outputBuffer);
       PixelBufferUtils::pixelFormatAsString(v21, __p);
       if (v29 >= 0)
       {
@@ -541,29 +541,29 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v15 = *a3;
-  *a3 = *a5;
-  *a5 = v15;
-  v16 = [(ADEspressoRunnerV2 *)self registerPixelBuffer:*a3 forDescriptor:v10];
+  v15 = *buffer;
+  *buffer = *outputBuffer;
+  *outputBuffer = v15;
+  v16 = [(ADEspressoRunnerV2 *)self registerPixelBuffer:*buffer forDescriptor:descriptorCopy];
   if (v16)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
-      v17 = [v10 name];
+      name = [descriptorCopy name];
       *buf = 136315138;
-      *&buf[4] = [v17 UTF8String];
+      *&buf[4] = [name UTF8String];
       _os_log_error_impl(&dword_240463000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "failed to re-register %s", buf, 0xCu);
     }
   }
 
   else
   {
-    v16 = [(ADEspressoRunnerV2 *)self registerPixelBuffer:*a5 forDescriptor:v11];
+    v16 = [(ADEspressoRunnerV2 *)self registerPixelBuffer:*outputBuffer forDescriptor:outputDescriptorCopy];
     if (v16 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
-      v23 = [v11 name];
+      name2 = [outputDescriptorCopy name];
       *buf = 136315138;
-      *&buf[4] = [v23 UTF8String];
+      *&buf[4] = [name2 UTF8String];
       _os_log_error_impl(&dword_240463000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "failed to re-register %s", buf, 0xCu);
     }
   }
@@ -573,19 +573,19 @@ LABEL_10:
   return v16;
 }
 
-- (int64_t)registerPixelBufferPtr:(__CVBuffer *)a3 forDescriptor:(id)a4 usingOperation:(e5rt_execution_stream_operation *)a5
+- (int64_t)registerPixelBufferPtr:(__CVBuffer *)ptr forDescriptor:(id)descriptor usingOperation:(e5rt_execution_stream_operation *)operation
 {
   v20 = *MEMORY[0x277D85DE8];
-  v8 = a4;
+  descriptorCopy = descriptor;
   v15 = 335679308;
   v16 = 0u;
   v17 = 0u;
   kdebug_trace();
-  v9 = self;
-  objc_sync_enter(v9);
-  if (v8)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (descriptorCopy)
   {
-    v14 = [(ADEspressoRunnerV2 *)v9 retainPortForDescriptor:v8 usingOperation:a5];
+    v14 = [(ADEspressoRunnerV2 *)selfCopy retainPortForDescriptor:descriptorCopy usingOperation:operation];
     if (!v14)
     {
 LABEL_19:
@@ -615,7 +615,7 @@ LABEL_19:
 
     else
     {
-      v11 = [(ADEspressoRunnerV2 *)v9 registerPixelBufferPtr:a3 forDescriptor:v8 forTensorPort:&v14];
+      v11 = [(ADEspressoRunnerV2 *)selfCopy registerPixelBufferPtr:ptr forDescriptor:descriptorCopy forTensorPort:&v14];
     }
 
     if (v14 && e5rt_io_port_release())
@@ -651,18 +651,18 @@ LABEL_19:
   }
 
 LABEL_20:
-  objc_sync_exit(v9);
+  objc_sync_exit(selfCopy);
 
   InstrumentsTraceGuard::~InstrumentsTraceGuard(&v15);
   return v11;
 }
 
-- (int64_t)registerPixelBufferPtr:(__CVBuffer *)a3 forDescriptor:(id)a4 forTensorPort:(e5rt_io_port *)a5
+- (int64_t)registerPixelBufferPtr:(__CVBuffer *)ptr forDescriptor:(id)descriptor forTensorPort:(e5rt_io_port *)port
 {
   v38 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = *a3;
-  if (!*a3)
+  descriptorCopy = descriptor;
+  v9 = *ptr;
+  if (!*ptr)
   {
     if (e5rt_io_port_retain_tensor_desc())
     {
@@ -709,11 +709,11 @@ LABEL_20:
       else
       {
         v16 = MEMORY[0xFFFFFFFFFFFFFFF0];
-        v17 = [v8 imageDescriptor];
-        if (PixelBufferUtils::componentsPerPixelForPixelFormat([v17 pixelFormat], 0) == 1)
+        imageDescriptor = [descriptorCopy imageDescriptor];
+        if (PixelBufferUtils::componentsPerPixelForPixelFormat([imageDescriptor pixelFormat], 0) == 1)
         {
-          v18 = [v8 imageDescriptor];
-          v19 = PixelBufferUtils::planeCountForPixelFormat([v18 pixelFormat]) == 0;
+          imageDescriptor2 = [descriptorCopy imageDescriptor];
+          v19 = PixelBufferUtils::planeCountForPixelFormat([imageDescriptor2 pixelFormat]) == 0;
 
           v20 = v34;
           if (v19)
@@ -741,36 +741,36 @@ LABEL_20:
         }
 
         v24 = *(8 * v20 - 8);
-        v25 = [v8 imageDescriptor];
-        v26 = [v25 pixelFormat];
+        imageDescriptor3 = [descriptorCopy imageDescriptor];
+        pixelFormat = [imageDescriptor3 pixelFormat];
         pixelBufferOut = 0;
         BufferAttributes = getBufferAttributes();
-        v28 = CVPixelBufferCreate(*MEMORY[0x277CBECE8], v24, v16, v26, BufferAttributes, &pixelBufferOut);
+        v28 = CVPixelBufferCreate(*MEMORY[0x277CBECE8], v24, v16, pixelFormat, BufferAttributes, &pixelBufferOut);
         v29 = pixelBufferOut;
         if (v28)
         {
           v29 = 0;
         }
 
-        *a3 = v29;
+        *ptr = v29;
       }
     }
 
     if (v13)
     {
-      v9 = *a3;
-      if (*a3)
+      v9 = *ptr;
+      if (*ptr)
       {
         goto LABEL_2;
       }
 
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
       {
-        v31 = [v8 name];
-        v32 = v31;
-        v33 = [v31 UTF8String];
+        name = [descriptorCopy name];
+        v32 = name;
+        uTF8String = [name UTF8String];
         *buf = 136315138;
-        v37 = v33;
+        v37 = uTF8String;
         _os_log_error_impl(&dword_240463000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "failed allocating CVPixelBuffer for %s", buf, 0xCu);
       }
     }
@@ -783,7 +783,7 @@ LABEL_2:
   IOSurface = CVPixelBufferGetIOSurface(v9);
   if (IOSurface)
   {
-    v11 = [(ADEspressoRunnerV2 *)self registerIOSurface:IOSurface forTensorPort:a5];
+    v11 = [(ADEspressoRunnerV2 *)self registerIOSurface:IOSurface forTensorPort:port];
   }
 
   else
@@ -802,7 +802,7 @@ LABEL_33:
   return v11;
 }
 
-- (BOOL)canBindFormat:(unsigned int)a3 e5rtFormat:(int)a4
+- (BOOL)canBindFormat:(unsigned int)format e5rtFormat:(int)e5rtFormat
 {
   v10 = *MEMORY[0x277D85DE8];
   if (e5rt_cvpb_4cc_to_surface_format())
@@ -827,17 +827,17 @@ LABEL_33:
 
   else
   {
-    LOBYTE(v6) = a4 == 0;
+    LOBYTE(v6) = e5rtFormat == 0;
   }
 
   return v6;
 }
 
-- (int64_t)registerPixelBufferPtr:(__CVBuffer *)a3 forDescriptor:(id)a4 forSurfacePort:(e5rt_io_port *)a5
+- (int64_t)registerPixelBufferPtr:(__CVBuffer *)ptr forDescriptor:(id)descriptor forSurfacePort:(e5rt_io_port *)port
 {
   v25 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  if (v8)
+  descriptorCopy = descriptor;
+  if (descriptorCopy)
   {
     if (e5rt_io_port_retain_surface_desc())
     {
@@ -949,22 +949,22 @@ LABEL_33:
       goto LABEL_27;
     }
 
-    v17 = *a3;
-    if (!*a3)
+    v17 = *ptr;
+    if (!*ptr)
     {
-      v18 = [v8 imageDescriptor];
-      *a3 = PixelBufferUtils::createPixelBuffer(0, 0, [v18 pixelFormat], 1);
+      imageDescriptor = [descriptorCopy imageDescriptor];
+      *ptr = PixelBufferUtils::createPixelBuffer(0, 0, [imageDescriptor pixelFormat], 1);
 
-      v17 = *a3;
-      if (!*a3)
+      v17 = *ptr;
+      if (!*ptr)
       {
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
         {
-          v20 = [v8 name];
-          v21 = v20;
-          v22 = [v20 UTF8String];
+          name = [descriptorCopy name];
+          v21 = name;
+          uTF8String = [name UTF8String];
           *buf = 136315138;
-          v24 = v22;
+          v24 = uTF8String;
           _os_log_error_impl(&dword_240463000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "failed allocating CVPixelBuffer for %s", buf, 0xCu);
         }
 
@@ -975,7 +975,7 @@ LABEL_33:
     IOSurface = CVPixelBufferGetIOSurface(v17);
     if (IOSurface)
     {
-      v11 = [(ADEspressoRunnerV2 *)self registerIOSurface:IOSurface forSurfacePort:a5 surfaceDesc:0];
+      v11 = [(ADEspressoRunnerV2 *)self registerIOSurface:IOSurface forSurfacePort:port surfaceDesc:0];
     }
 
     else
@@ -1006,11 +1006,11 @@ LABEL_27:
   return v11;
 }
 
-- (__CVBuffer)createAndRegisterPixelBufferForDescriptor:(id)a3
+- (__CVBuffer)createAndRegisterPixelBufferForDescriptor:(id)descriptor
 {
-  v4 = a3;
+  descriptorCopy = descriptor;
   texture = 0;
-  v5 = [(ADEspressoRunnerV2 *)self registerPixelBufferPtr:&texture forDescriptor:v4];
+  v5 = [(ADEspressoRunnerV2 *)self registerPixelBufferPtr:&texture forDescriptor:descriptorCopy];
   v6 = texture;
   if (v5)
   {
@@ -1021,10 +1021,10 @@ LABEL_27:
   return v6;
 }
 
-- (int64_t)registerIOSurface:(__IOSurface *)a3 forSurfacePort:(e5rt_io_port *)a4 surfaceDesc:(e5rt_surface_desc *)a5
+- (int64_t)registerIOSurface:(__IOSurface *)surface forSurfacePort:(e5rt_io_port *)port surfaceDesc:(e5rt_surface_desc *)desc
 {
   v19 = *MEMORY[0x277D85DE8];
-  PixelFormat = IOSurfaceGetPixelFormat(a3);
+  PixelFormat = IOSurfaceGetPixelFormat(surface);
   if (e5rt_surface_desc_get_format())
   {
     last_error_message = e5rt_get_last_error_message();
@@ -1136,7 +1136,7 @@ LABEL_5:
   return v10;
 }
 
-- (int64_t)registerIOSurface:(__IOSurface *)a3 forTensorPort:(e5rt_io_port *)a4
+- (int64_t)registerIOSurface:(__IOSurface *)surface forTensorPort:(e5rt_io_port *)port
 {
   v11 = *MEMORY[0x277D85DE8];
   if (e5rt_buffer_object_create_from_iosurface())
@@ -1185,19 +1185,19 @@ LABEL_14:
   return -22971;
 }
 
-- (int64_t)registerIOSurface:(__IOSurface *)a3 forDescriptor:(id)a4 usingOperation:(e5rt_execution_stream_operation *)a5
+- (int64_t)registerIOSurface:(__IOSurface *)surface forDescriptor:(id)descriptor usingOperation:(e5rt_execution_stream_operation *)operation
 {
   v21 = *MEMORY[0x277D85DE8];
-  v8 = a4;
+  descriptorCopy = descriptor;
   v16 = 335679308;
   v17 = 0u;
   v18 = 0u;
   kdebug_trace();
-  if (a3)
+  if (surface)
   {
-    v9 = self;
-    objc_sync_enter(v9);
-    v15 = [(ADEspressoRunnerV2 *)v9 retainPortForDescriptor:v8 usingOperation:a5];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v15 = [(ADEspressoRunnerV2 *)selfCopy retainPortForDescriptor:descriptorCopy usingOperation:operation];
     if (v15)
     {
       if (e5rt_io_port_is_surface())
@@ -1222,7 +1222,7 @@ LABEL_14:
 
       else
       {
-        v11 = [(ADEspressoRunnerV2 *)v9 registerIOSurface:a3 forTensorPort:&v15];
+        v11 = [(ADEspressoRunnerV2 *)selfCopy registerIOSurface:surface forTensorPort:&v15];
       }
 
       if (!v15 || !e5rt_io_port_release())
@@ -1248,16 +1248,16 @@ LABEL_14:
 
     v11 = -22971;
 LABEL_20:
-    objc_sync_exit(v9);
+    objc_sync_exit(selfCopy);
 
     goto LABEL_21;
   }
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
-    v14 = [v8 name];
+    name = [descriptorCopy name];
     *buf = 138412290;
-    v20 = v14;
+    v20 = name;
     _os_log_error_impl(&dword_240463000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "espresso runner failed registering %@: null surface", buf, 0xCu);
   }
 
@@ -1268,14 +1268,14 @@ LABEL_21:
   return v11;
 }
 
-- (e5rt_io_port)retainPortForDescriptor:(id)a3 usingOperation:(e5rt_execution_stream_operation *)a4
+- (e5rt_io_port)retainPortForDescriptor:(id)descriptor usingOperation:(e5rt_execution_stream_operation *)operation
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 isInput])
+  descriptorCopy = descriptor;
+  if ([descriptorCopy isInput])
   {
-    v5 = [v4 name];
-    [v5 UTF8String];
+    name = [descriptorCopy name];
+    [name UTF8String];
     v6 = e5rt_execution_stream_operation_retain_input_port() == 0;
 
     if (!v6)
@@ -1284,18 +1284,18 @@ LABEL_21:
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
       {
         v13 = MEMORY[0x277CCACA8];
-        v14 = [v4 name];
-        v15 = [v13 stringWithFormat:@"e5rt_execution_stream_operation_retain_input_port failed on input %@", v14];
+        name2 = [descriptorCopy name];
+        v15 = [v13 stringWithFormat:@"e5rt_execution_stream_operation_retain_input_port failed on input %@", name2];
         v16 = v15;
         *buf = 136315138;
-        v22 = [v15 UTF8String];
+        uTF8String = [v15 UTF8String];
         _os_log_error_impl(&dword_240463000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%s", buf, 0xCu);
       }
 
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
       {
         *buf = 136315138;
-        v22 = last_error_message;
+        uTF8String = last_error_message;
         v8 = MEMORY[0x277D86220];
 LABEL_13:
         _os_log_error_impl(&dword_240463000, v8, OS_LOG_TYPE_ERROR, "E5RT operation failed with message = %s", buf, 0xCu);
@@ -1305,8 +1305,8 @@ LABEL_13:
 
   else
   {
-    v9 = [v4 name];
-    [v9 UTF8String];
+    name3 = [descriptorCopy name];
+    [name3 UTF8String];
     v10 = e5rt_execution_stream_operation_retain_output_port() == 0;
 
     if (!v10)
@@ -1315,18 +1315,18 @@ LABEL_13:
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
       {
         v17 = MEMORY[0x277CCACA8];
-        v18 = [v4 name];
-        v19 = [v17 stringWithFormat:@"e5rt_execution_stream_operation_retain_output_port failed on output %@", v18];
+        name4 = [descriptorCopy name];
+        v19 = [v17 stringWithFormat:@"e5rt_execution_stream_operation_retain_output_port failed on output %@", name4];
         v20 = v19;
         *buf = 136315138;
-        v22 = [v19 UTF8String];
+        uTF8String = [v19 UTF8String];
         _os_log_error_impl(&dword_240463000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%s", buf, 0xCu);
       }
 
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
       {
         *buf = 136315138;
-        v22 = v11;
+        uTF8String = v11;
         v8 = MEMORY[0x277D86220];
         goto LABEL_13;
       }
@@ -1336,17 +1336,17 @@ LABEL_13:
   return 0;
 }
 
-- (id)registerDescriptor:(id)a3
+- (id)registerDescriptor:(id)descriptor
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  descriptorCopy = descriptor;
   v23 = 335679308;
   v24 = 0u;
   v25 = 0u;
   kdebug_trace();
-  v5 = self;
-  objc_sync_enter(v5);
-  v22 = [(ADEspressoRunnerV2 *)v5 retainPortForDescriptor:v4 usingOperation:v5->_operation];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v22 = [(ADEspressoRunnerV2 *)selfCopy retainPortForDescriptor:descriptorCopy usingOperation:selfCopy->_operation];
   if (e5rt_io_port_is_surface())
   {
     last_error_message = e5rt_get_last_error_message();
@@ -1531,8 +1531,8 @@ LABEL_8:
   else if (v7)
   {
     v11 = [ADEspressoBufferHandle alloc];
-    v12 = [v4 name];
-    v13 = [(ADEspressoBufferHandle *)v11 initWithName:v12 rawData:0 dimensions:v9 strides:v8];
+    name = [descriptorCopy name];
+    v13 = [(ADEspressoBufferHandle *)v11 initWithName:name rawData:0 dimensions:v9 strides:v8];
 
     goto LABEL_36;
   }
@@ -1540,17 +1540,17 @@ LABEL_8:
   v13 = 0;
 LABEL_36:
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
   InstrumentsTraceGuard::~InstrumentsTraceGuard(&v23);
 
   return v13;
 }
 
-- (ADEspressoRunnerV2)initWithPath:(id)a3 forEngine:(unint64_t)a4 configurationName:(id)a5
+- (ADEspressoRunnerV2)initWithPath:(id)path forEngine:(unint64_t)engine configurationName:(id)name
 {
   v61 = *MEMORY[0x277D85DE8];
-  v40 = a3;
-  v41 = a5;
+  pathCopy = path;
+  nameCopy = name;
   v51 = 335679304;
   v52 = 0u;
   v53 = 0u;
@@ -1563,9 +1563,9 @@ LABEL_36:
     goto LABEL_68;
   }
 
-  if (v41)
+  if (nameCopy)
   {
-    v10 = v41;
+    v10 = nameCopy;
   }
 
   else
@@ -1576,11 +1576,11 @@ LABEL_36:
   functionName = v9->_functionName;
   v9->_functionName = &v10->isa;
 
-  objc_storeStrong(&v9->_path, a3);
+  objc_storeStrong(&v9->_path, path);
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v55 = v40;
+    v55 = pathCopy;
     _os_log_impl(&dword_240463000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "loading network from: %@", buf, 0xCu);
   }
 
@@ -1629,9 +1629,9 @@ LABEL_36:
 
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
-      v19 = [(NSString *)v9->_networkVersionString UTF8String];
+      uTF8String = [(NSString *)v9->_networkVersionString UTF8String];
       *buf = 136315138;
-      v55 = v19;
+      v55 = uTF8String;
       _os_log_impl(&dword_240463000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "network version: %s", buf, 0xCu);
     }
 
@@ -1652,8 +1652,8 @@ LABEL_40:
 
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
       {
-        v29 = [v20 allObjects];
-        v30 = [v29 componentsJoinedByString:{@", "}];
+        allObjects = [v20 allObjects];
+        v30 = [allObjects componentsJoinedByString:{@", "}];
         *buf = 138412290;
         v55 = v30;
         _os_log_impl(&dword_240463000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "network backend is: %@", buf, 0xCu);
@@ -1678,18 +1678,18 @@ LABEL_25:
       v26 = *(*(&v44 + 1) + 8 * v25);
       v27 = [v26 objectForKeyedSubscript:@"ComputeBackend"];
       [v20 addObject:v27];
-      if (a4 <= 2)
+      if (engine <= 2)
       {
         break;
       }
 
-      if (a4 - 3 < 2)
+      if (engine - 3 < 2)
       {
         v28 = @"ANE";
         goto LABEL_37;
       }
 
-      if (a4 != 5)
+      if (engine != 5)
       {
         goto LABEL_43;
       }
@@ -1708,10 +1708,10 @@ LABEL_38:
       }
     }
 
-    if (a4)
+    if (engine)
     {
       v28 = @"GPU";
-      if (a4 != 2)
+      if (engine != 2)
       {
         goto LABEL_43;
       }
@@ -1729,7 +1729,7 @@ LABEL_43:
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
       {
         v37 = [v26 objectForKeyedSubscript:@"OpName"];
-        ADCommonUtils::espressoEngineAsString(a4, __p);
+        ADCommonUtils::espressoEngineAsString(engine, __p);
         if (v43 >= 0)
         {
           v38 = __p;

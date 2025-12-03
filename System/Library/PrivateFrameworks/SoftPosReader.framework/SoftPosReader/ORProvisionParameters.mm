@@ -1,33 +1,33 @@
 @interface ORProvisionParameters
-- (ORProvisionParameters)initWithAmount:(id *)a3 currencyCode:(int64_t)a4 countryCode:(int64_t)a5 provisionReadTimeout:(int64_t)a6 transactionId:(id)a7 unpredictableNumber:(id)a8;
-- (ORProvisionParameters)initWithCoder:(id)a3;
+- (ORProvisionParameters)initWithAmount:(id *)amount currencyCode:(int64_t)code countryCode:(int64_t)countryCode provisionReadTimeout:(int64_t)timeout transactionId:(id)id unpredictableNumber:(id)number;
+- (ORProvisionParameters)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ORProvisionParameters
 
-- (ORProvisionParameters)initWithAmount:(id *)a3 currencyCode:(int64_t)a4 countryCode:(int64_t)a5 provisionReadTimeout:(int64_t)a6 transactionId:(id)a7 unpredictableNumber:(id)a8
+- (ORProvisionParameters)initWithAmount:(id *)amount currencyCode:(int64_t)code countryCode:(int64_t)countryCode provisionReadTimeout:(int64_t)timeout transactionId:(id)id unpredictableNumber:(id)number
 {
-  v14 = a7;
-  v15 = a8;
+  idCopy = id;
+  numberCopy = number;
   v32.receiver = self;
   v32.super_class = ORProvisionParameters;
   v16 = [(ORProvisionParameters *)&v32 init];
   v21 = v16;
   if (v16)
   {
-    v22 = *a3;
-    *&v16->_amount._mantissa[6] = *&a3->var5[6];
+    v22 = *amount;
+    *&v16->_amount._mantissa[6] = *&amount->var5[6];
     *&v16->_amount = v22;
-    v16->_currencyCode = a4;
-    v16->_countryCode = a5;
-    v16->_provisionReadTimeout = a6;
-    v23 = objc_msgSend_copy(v14, v17, v18, v19, v20);
+    v16->_currencyCode = code;
+    v16->_countryCode = countryCode;
+    v16->_provisionReadTimeout = timeout;
+    v23 = objc_msgSend_copy(idCopy, v17, v18, v19, v20);
     transactionId = v21->_transactionId;
     v21->_transactionId = v23;
 
-    v29 = objc_msgSend_copy(v15, v25, v26, v27, v28);
+    v29 = objc_msgSend_copy(numberCopy, v25, v26, v27, v28);
     unpredictableNumber = v21->_unpredictableNumber;
     v21->_unpredictableNumber = v29;
   }
@@ -49,17 +49,17 @@
   return v21;
 }
 
-- (ORProvisionParameters)initWithCoder:(id)a3
+- (ORProvisionParameters)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v28.receiver = self;
   v28.super_class = ORProvisionParameters;
   v8 = [(ORProvisionParameters *)&v28 init];
   if (v8)
   {
-    if (v4)
+    if (coderCopy)
     {
-      objc_msgSend_decodeDecimalForKey_(v4, v5, @"amount", v6, v7);
+      objc_msgSend_decodeDecimalForKey_(coderCopy, v5, @"amount", v6, v7);
     }
 
     else
@@ -70,16 +70,16 @@
 
     *&v8->_amount = v26;
     *&v8->_amount._mantissa[6] = v27;
-    v8->_currencyCode = objc_msgSend_decodeIntegerForKey_(v4, v5, @"currencyCode", v6, v7);
-    v8->_countryCode = objc_msgSend_decodeIntegerForKey_(v4, v9, @"countryCode", v10, v11);
-    v8->_provisionReadTimeout = objc_msgSend_decodeIntegerForKey_(v4, v12, @"provisionReadTimeout", v13, v14);
+    v8->_currencyCode = objc_msgSend_decodeIntegerForKey_(coderCopy, v5, @"currencyCode", v6, v7);
+    v8->_countryCode = objc_msgSend_decodeIntegerForKey_(coderCopy, v9, @"countryCode", v10, v11);
+    v8->_provisionReadTimeout = objc_msgSend_decodeIntegerForKey_(coderCopy, v12, @"provisionReadTimeout", v13, v14);
     v15 = objc_opt_class();
-    v18 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v16, v15, @"transactionId", v17);
+    v18 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v16, v15, @"transactionId", v17);
     transactionId = v8->_transactionId;
     v8->_transactionId = v18;
 
     v20 = objc_opt_class();
-    v23 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v21, v20, @"unpredictableNumber", v22);
+    v23 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v21, v20, @"unpredictableNumber", v22);
     unpredictableNumber = v8->_unpredictableNumber;
     v8->_unpredictableNumber = v23;
   }
@@ -87,17 +87,17 @@
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   amount = self->_amount;
   LODWORD(v18) = *&self->_amount._mantissa[6];
-  v4 = a3;
-  objc_msgSend_encodeDecimal_forKey_(v4, v5, &amount, @"amount", v6);
-  objc_msgSend_encodeInteger_forKey_(v4, v7, self->_currencyCode, @"currencyCode", v8, amount, v18);
-  objc_msgSend_encodeInteger_forKey_(v4, v9, self->_countryCode, @"countryCode", v10);
-  objc_msgSend_encodeInteger_forKey_(v4, v11, self->_provisionReadTimeout, @"provisionReadTimeout", v12);
-  objc_msgSend_encodeObject_forKey_(v4, v13, self->_transactionId, @"transactionId", v14);
-  objc_msgSend_encodeObject_forKey_(v4, v15, self->_unpredictableNumber, @"unpredictableNumber", v16);
+  coderCopy = coder;
+  objc_msgSend_encodeDecimal_forKey_(coderCopy, v5, &amount, @"amount", v6);
+  objc_msgSend_encodeInteger_forKey_(coderCopy, v7, self->_currencyCode, @"currencyCode", v8, amount, v18);
+  objc_msgSend_encodeInteger_forKey_(coderCopy, v9, self->_countryCode, @"countryCode", v10);
+  objc_msgSend_encodeInteger_forKey_(coderCopy, v11, self->_provisionReadTimeout, @"provisionReadTimeout", v12);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v13, self->_transactionId, @"transactionId", v14);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v15, self->_unpredictableNumber, @"unpredictableNumber", v16);
 }
 
 @end

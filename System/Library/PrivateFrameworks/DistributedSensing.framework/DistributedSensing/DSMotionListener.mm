@@ -1,45 +1,45 @@
 @interface DSMotionListener
-- (DSMotionListener)initWithDelegate:(id)a3 queue:(id)a4;
+- (DSMotionListener)initWithDelegate:(id)delegate queue:(id)queue;
 - (DSMotionListenerDelegate)delegate;
-- (void)failedToStartListenerWithError:(id)a3;
-- (void)receivedData:(id)a3 fromProvider:(id)a4;
+- (void)failedToStartListenerWithError:(id)error;
+- (void)receivedData:(id)data fromProvider:(id)provider;
 - (void)requestMotionData;
-- (void)startMotionDataListenerWithOptions:(id)a3;
+- (void)startMotionDataListenerWithOptions:(id)options;
 - (void)startedListener;
 - (void)stopMotionDataListener;
 - (void)stoppedListener;
-- (void)updateProviders:(id)a3;
+- (void)updateProviders:(id)providers;
 @end
 
 @implementation DSMotionListener
 
-- (DSMotionListener)initWithDelegate:(id)a3 queue:(id)a4
+- (DSMotionListener)initWithDelegate:(id)delegate queue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  queueCopy = queue;
   v19.receiver = self;
   v19.super_class = DSMotionListener;
   v8 = [(DSMotionListener *)&v19 init];
   if (v8)
   {
-    if (v7)
+    if (queueCopy)
     {
-      v9 = v7;
+      v9 = queueCopy;
       clientQueue = v8->_clientQueue;
       v8->_clientQueue = v9;
     }
 
     else
     {
-      v11 = [@"com.apple.distributedsensing.clientQueue" UTF8String];
+      uTF8String = [@"com.apple.distributedsensing.clientQueue" UTF8String];
       clientQueue = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-      v12 = dispatch_queue_create(v11, clientQueue);
+      v12 = dispatch_queue_create(uTF8String, clientQueue);
       v13 = v8->_clientQueue;
       v8->_clientQueue = v12;
     }
 
     v8->_isSubscribed = 0;
-    objc_storeWeak(&v8->_delegate, v6);
+    objc_storeWeak(&v8->_delegate, delegateCopy);
     v14 = objc_alloc_init(DSClientMotionDataOptions);
     motionDataOptions = v8->_motionDataOptions;
     v8->_motionDataOptions = v14;
@@ -53,10 +53,10 @@
   return v8;
 }
 
-- (void)startMotionDataListenerWithOptions:(id)a3
+- (void)startMotionDataListenerWithOptions:(id)options
 {
   v23[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  optionsCopy = options;
   if ((_os_feature_enabled_impl() & 1) == 0)
   {
     v8 = MEMORY[0x277CCA9B8];
@@ -76,9 +76,9 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v5 = [v4 deviceType];
-  v6 = [v4 dataSubType];
-  if ((v5 & 2) != 0)
+  deviceType = [optionsCopy deviceType];
+  dataSubType = [optionsCopy dataSubType];
+  if ((deviceType & 2) != 0)
   {
     v8 = MEMORY[0x277CCA9B8];
     v20 = *MEMORY[0x277CCA450];
@@ -89,8 +89,8 @@ LABEL_15:
     goto LABEL_14;
   }
 
-  v7 = v6;
-  if (v5)
+  v7 = dataSubType;
+  if (deviceType)
   {
     [(DSClientMotionDataOptions *)self->_motionDataOptions setDeviceType:[(DSClientMotionDataOptions *)self->_motionDataOptions deviceType]| 1];
   }
@@ -126,8 +126,8 @@ LABEL_16:
 {
   if ([(DSMotionListener *)self isSubscribed])
   {
-    v3 = [(DSMotionListener *)self sharedListener];
-    [v3 stopMotionStateListenerWithObserver:self];
+    sharedListener = [(DSMotionListener *)self sharedListener];
+    [sharedListener stopMotionStateListenerWithObserver:self];
   }
 }
 
@@ -136,29 +136,29 @@ LABEL_16:
   if (![(DSMotionListener *)self isSubscribed])
   {
     v3 = +[DSLogging sharedInstance];
-    v4 = [v3 dsLogger];
+    dsLogger = [v3 dsLogger];
 
-    if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(dsLogger, OS_LOG_TYPE_DEFAULT))
     {
       *v5 = 0;
-      _os_log_impl(&dword_249027000, v4, OS_LOG_TYPE_DEFAULT, "[DSMotionListener] can't request motion data before listener is started\n", v5, 2u);
+      _os_log_impl(&dword_249027000, dsLogger, OS_LOG_TYPE_DEFAULT, "[DSMotionListener] can't request motion data before listener is started\n", v5, 2u);
     }
   }
 
   [(DSMotionStateListenerProxy *)self->_sharedListener requestMotionState];
 }
 
-- (void)failedToStartListenerWithError:(id)a3
+- (void)failedToStartListenerWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   clientQueue = self->_clientQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __51__DSMotionListener_failedToStartListenerWithError___block_invoke;
   v7[3] = &unk_278F85DF8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = errorCopy;
+  v6 = errorCopy;
   dispatch_async(clientQueue, v7);
 }
 
@@ -198,20 +198,20 @@ void __35__DSMotionListener_startedListener__block_invoke(uint64_t a1)
   }
 }
 
-- (void)receivedData:(id)a3 fromProvider:(id)a4
+- (void)receivedData:(id)data fromProvider:(id)provider
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  providerCopy = provider;
   clientQueue = self->_clientQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __46__DSMotionListener_receivedData_fromProvider___block_invoke;
   block[3] = &unk_278F85C28;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = dataCopy;
+  v13 = providerCopy;
+  v9 = providerCopy;
+  v10 = dataCopy;
   dispatch_async(clientQueue, block);
 }
 
@@ -242,17 +242,17 @@ void __46__DSMotionListener_receivedData_fromProvider___block_invoke(uint64_t a1
   }
 }
 
-- (void)updateProviders:(id)a3
+- (void)updateProviders:(id)providers
 {
-  v4 = a3;
+  providersCopy = providers;
   clientQueue = self->_clientQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __36__DSMotionListener_updateProviders___block_invoke;
   v7[3] = &unk_278F85DF8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = providersCopy;
+  v6 = providersCopy;
   dispatch_async(clientQueue, v7);
 }
 

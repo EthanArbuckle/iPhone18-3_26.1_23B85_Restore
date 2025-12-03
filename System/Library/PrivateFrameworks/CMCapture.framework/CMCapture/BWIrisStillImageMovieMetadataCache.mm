@@ -1,23 +1,23 @@
 @interface BWIrisStillImageMovieMetadataCache
-- (id)copyAndClearStillImageTransformDataForSettingsID:(id)a3;
-- (void)cacheStillImageTransformDataFromMetadata:(id)a3 transformReferenceDimensions:(id)a4;
-- (void)cacheStillImageVideoToPhotoTransform:(id)a3 forSettingsID:(id)a4;
+- (id)copyAndClearStillImageTransformDataForSettingsID:(id)d;
+- (void)cacheStillImageTransformDataFromMetadata:(id)metadata transformReferenceDimensions:(id)dimensions;
+- (void)cacheStillImageVideoToPhotoTransform:(id)transform forSettingsID:(id)d;
 @end
 
 @implementation BWIrisStillImageMovieMetadataCache
 
-- (void)cacheStillImageTransformDataFromMetadata:(id)a3 transformReferenceDimensions:(id)a4
+- (void)cacheStillImageTransformDataFromMetadata:(id)metadata transformReferenceDimensions:(id)dimensions
 {
   v7 = *off_1E798D4D0;
-  v8 = [a3 objectForKeyedSubscript:*off_1E798D4D0];
-  v9 = [a3 objectForKeyedSubscript:*off_1E798A0A0];
-  v10 = [a3 objectForKeyedSubscript:@"FinalCropRectForIrisStillImageMovieMetadataCache"];
+  v8 = [metadata objectForKeyedSubscript:*off_1E798D4D0];
+  v9 = [metadata objectForKeyedSubscript:*off_1E798A0A0];
+  v10 = [metadata objectForKeyedSubscript:@"FinalCropRectForIrisStillImageMovieMetadataCache"];
   if (!v10)
   {
-    v10 = [a3 objectForKeyedSubscript:*off_1E798A5C8];
+    v10 = [metadata objectForKeyedSubscript:*off_1E798A5C8];
   }
 
-  v11 = [a3 objectForKeyedSubscript:@"PreviewShiftForIrisStillImageMovieMetadataCache"];
+  v11 = [metadata objectForKeyedSubscript:@"PreviewShiftForIrisStillImageMovieMetadataCache"];
   if (v8)
   {
     v12 = v9 == 0;
@@ -33,48 +33,48 @@
     v13 = v11;
     FigSimpleMutexLock();
     v14 = [(NSMutableDictionary *)self->super._cache objectForKeyedSubscript:v9];
-    v15 = v14;
+    dictionary = v14;
     if (!v14)
     {
-      v15 = [MEMORY[0x1E695DF90] dictionary];
-      [(NSMutableDictionary *)self->super._cache setObject:v15 forKeyedSubscript:v9];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
+      [(NSMutableDictionary *)self->super._cache setObject:dictionary forKeyedSubscript:v9];
     }
 
-    [v15 setObject:v8 forKeyedSubscript:v7];
-    [v15 setObject:v10 forKeyedSubscript:*off_1E798A5C8];
-    if (a4.var0 >= 1 && a4.var1 >= 1)
+    [dictionary setObject:v8 forKeyedSubscript:v7];
+    [dictionary setObject:v10 forKeyedSubscript:*off_1E798A5C8];
+    if (dimensions.var0 >= 1 && dimensions.var1 >= 1)
     {
-      [v15 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", a4), @"VitalityTransformReferenceWidth"}];
-      [v15 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", HIDWORD(*&a4)), @"VitalityTransformReferenceHeight"}];
+      [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", dimensions), @"VitalityTransformReferenceWidth"}];
+      [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", HIDWORD(*&dimensions)), @"VitalityTransformReferenceHeight"}];
     }
 
-    [v15 setObject:v13 forKeyedSubscript:@"PreviewShiftTranslation"];
+    [dictionary setObject:v13 forKeyedSubscript:@"PreviewShiftTranslation"];
 
     FigSimpleMutexUnlock();
   }
 }
 
-- (void)cacheStillImageVideoToPhotoTransform:(id)a3 forSettingsID:(id)a4
+- (void)cacheStillImageVideoToPhotoTransform:(id)transform forSettingsID:(id)d
 {
-  if (a3 && a4)
+  if (transform && d)
   {
     FigSimpleMutexLock();
-    v7 = [(NSMutableDictionary *)self->super._cache objectForKeyedSubscript:a4];
-    if (!v7)
+    dictionary = [(NSMutableDictionary *)self->super._cache objectForKeyedSubscript:d];
+    if (!dictionary)
     {
-      v7 = [MEMORY[0x1E695DF90] dictionary];
-      [(NSMutableDictionary *)self->super._cache setObject:v7 forKeyedSubscript:a4];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
+      [(NSMutableDictionary *)self->super._cache setObject:dictionary forKeyedSubscript:d];
     }
 
-    [v7 setObject:a3 forKeyedSubscript:@"VideoToPhotoTransform"];
+    [dictionary setObject:transform forKeyedSubscript:@"VideoToPhotoTransform"];
 
     FigSimpleMutexUnlock();
   }
 }
 
-- (id)copyAndClearStillImageTransformDataForSettingsID:(id)a3
+- (id)copyAndClearStillImageTransformDataForSettingsID:(id)d
 {
-  v3 = [(BWSimpleCache *)self copyAndClearObjectForKey:a3];
+  v3 = [(BWSimpleCache *)self copyAndClearObjectForKey:d];
   v4 = [v3 objectForKeyedSubscript:*off_1E798D4D0];
   v5 = [v3 objectForKeyedSubscript:@"VideoToPhotoTransform"];
   v6 = [v3 objectForKeyedSubscript:@"PreviewShiftTranslation"];
@@ -131,19 +131,19 @@
 
       else
       {
-        v22 = [v4 bytes];
+        bytes = [v4 bytes];
         v23 = v21[1];
         v82 = *v21;
         v83 = v23;
         v84 = v21[2];
-        if (v22)
+        if (bytes)
         {
           for (i = 0; i != 3; ++i)
           {
             v25 = 0;
             v26 = &v82.f32[4 * i];
             v27 = *v26;
-            v28 = v22;
+            v28 = bytes;
             do
             {
               v29 = *v28;
@@ -157,7 +157,7 @@
             while (v25 != 3);
             *(v26 + 2) = DWORD2(v75);
             *v26 = v27;
-            v22 += 4;
+            bytes += 4;
           }
         }
       }

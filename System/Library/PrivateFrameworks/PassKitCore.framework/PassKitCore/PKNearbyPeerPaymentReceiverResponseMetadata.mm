@@ -1,20 +1,20 @@
 @interface PKNearbyPeerPaymentReceiverResponseMetadata
-+ (void)receiverDataWithNonce:(id)a3 nearbyMetadata:(id)a4 appearanceData:(id)a5 completion:(id)a6;
-- (PKNearbyPeerPaymentReceiverResponseMetadata)initWithInternalData:(id)a3;
++ (void)receiverDataWithNonce:(id)nonce nearbyMetadata:(id)metadata appearanceData:(id)data completion:(id)completion;
+- (PKNearbyPeerPaymentReceiverResponseMetadata)initWithInternalData:(id)data;
 @end
 
 @implementation PKNearbyPeerPaymentReceiverResponseMetadata
 
-+ (void)receiverDataWithNonce:(id)a3 nearbyMetadata:(id)a4 appearanceData:(id)a5 completion:(id)a6
++ (void)receiverDataWithNonce:(id)nonce nearbyMetadata:(id)metadata appearanceData:(id)data completion:(id)completion
 {
-  v9 = a6;
+  completionCopy = completion;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __110__PKNearbyPeerPaymentReceiverResponseMetadata_receiverDataWithNonce_nearbyMetadata_appearanceData_completion___block_invoke;
   v11[3] = &unk_1E79E2F88;
-  v12 = v9;
-  v10 = v9;
-  [_PKNearbyPeerPaymentReceiverResponseMetadata receiverDataWithNonce:a3 nearbyMetadata:a4 appearanceData:a5 completion:v11];
+  v12 = completionCopy;
+  v10 = completionCopy;
+  [_PKNearbyPeerPaymentReceiverResponseMetadata receiverDataWithNonce:nonce nearbyMetadata:metadata appearanceData:data completion:v11];
 }
 
 void __110__PKNearbyPeerPaymentReceiverResponseMetadata_receiverDataWithNonce_nearbyMetadata_appearanceData_completion___block_invoke(uint64_t a1, void *a2)
@@ -33,16 +33,16 @@ void __110__PKNearbyPeerPaymentReceiverResponseMetadata_receiverDataWithNonce_ne
   (*(*(a1 + 32) + 16))();
 }
 
-- (PKNearbyPeerPaymentReceiverResponseMetadata)initWithInternalData:(id)a3
+- (PKNearbyPeerPaymentReceiverResponseMetadata)initWithInternalData:(id)data
 {
-  v5 = a3;
+  dataCopy = data;
   v9.receiver = self;
   v9.super_class = PKNearbyPeerPaymentReceiverResponseMetadata;
   v6 = [(PKNearbyPeerPaymentReceiverResponseMetadata *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_internalData, a3);
+    objc_storeStrong(&v6->_internalData, data);
   }
 
   return v7;

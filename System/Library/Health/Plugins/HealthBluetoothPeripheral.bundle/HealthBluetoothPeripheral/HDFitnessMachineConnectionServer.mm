@@ -1,28 +1,28 @@
 @interface HDFitnessMachineConnectionServer
-+ (id)createTaskServerWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6 error:(id *)a7;
++ (id)createTaskServerWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate error:(id *)error;
 + (id)requiredEntitlements;
 - (void)connectionInterrupted;
 - (void)remote_endFitnessMachineConnection;
-- (void)remote_endFitnessMachineConnectionForFitnessMachineSessionUUID:(id)a3;
+- (void)remote_endFitnessMachineConnectionForFitnessMachineSessionUUID:(id)d;
 - (void)remote_markClientReady;
-- (void)remote_registerClient:(id)a3;
+- (void)remote_registerClient:(id)client;
 @end
 
 @implementation HDFitnessMachineConnectionServer
 
-+ (id)createTaskServerWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6 error:(id *)a7
++ (id)createTaskServerWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate error:(id *)error
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = [v13 profile];
-  v16 = [v15 fitnessMachineManager];
+  dCopy = d;
+  configurationCopy = configuration;
+  clientCopy = client;
+  delegateCopy = delegate;
+  profile = [clientCopy profile];
+  fitnessMachineManager = [profile fitnessMachineManager];
 
-  if (v16)
+  if (fitnessMachineManager)
   {
-    v17 = [[HDFitnessMachineConnectionServer alloc] initWithUUID:v11 configuration:v12 client:v13 delegate:v14];
-    v18 = v16;
+    v17 = [[HDFitnessMachineConnectionServer alloc] initWithUUID:dCopy configuration:configurationCopy client:clientCopy delegate:delegateCopy];
+    v18 = fitnessMachineManager;
     fitnessMachineManager = v17->_fitnessMachineManager;
     v17->_fitnessMachineManager = v18;
   }
@@ -32,10 +32,10 @@
     fitnessMachineManager = +[NSError hk_featureUnavailableForProfileError];
     if (fitnessMachineManager)
     {
-      if (a7)
+      if (error)
       {
         v20 = fitnessMachineManager;
-        *a7 = fitnessMachineManager;
+        *error = fitnessMachineManager;
       }
 
       else
@@ -61,38 +61,38 @@
 - (void)connectionInterrupted
 {
   fitnessMachineManager = self->_fitnessMachineManager;
-  v3 = [(HDFitnessMachineConnectionServer *)self taskUUID];
-  [(HDFitnessMachineManager *)fitnessMachineManager clientInvalidatedWithConnectionUUID:v3];
+  taskUUID = [(HDFitnessMachineConnectionServer *)self taskUUID];
+  [(HDFitnessMachineManager *)fitnessMachineManager clientInvalidatedWithConnectionUUID:taskUUID];
 }
 
-- (void)remote_registerClient:(id)a3
+- (void)remote_registerClient:(id)client
 {
   fitnessMachineManager = self->_fitnessMachineManager;
-  v5 = a3;
-  v6 = [(HDFitnessMachineConnectionServer *)self taskUUID];
-  [(HDFitnessMachineManager *)fitnessMachineManager registerClient:v5 withConnectionUUID:v6];
+  clientCopy = client;
+  taskUUID = [(HDFitnessMachineConnectionServer *)self taskUUID];
+  [(HDFitnessMachineManager *)fitnessMachineManager registerClient:clientCopy withConnectionUUID:taskUUID];
 }
 
 - (void)remote_endFitnessMachineConnection
 {
   fitnessMachineManager = self->_fitnessMachineManager;
-  v3 = [(HDFitnessMachineConnectionServer *)self taskUUID];
-  [(HDFitnessMachineManager *)fitnessMachineManager endFitnessMachineConnectionWithUUID:v3];
+  taskUUID = [(HDFitnessMachineConnectionServer *)self taskUUID];
+  [(HDFitnessMachineManager *)fitnessMachineManager endFitnessMachineConnectionWithUUID:taskUUID];
 }
 
-- (void)remote_endFitnessMachineConnectionForFitnessMachineSessionUUID:(id)a3
+- (void)remote_endFitnessMachineConnectionForFitnessMachineSessionUUID:(id)d
 {
   fitnessMachineManager = self->_fitnessMachineManager;
-  v5 = a3;
-  v6 = [(HDFitnessMachineConnectionServer *)self taskUUID];
-  [(HDFitnessMachineManager *)fitnessMachineManager endFitnessMachineConnectionForFitnessMachineSessionUUID:v5 withConnectionUUID:v6];
+  dCopy = d;
+  taskUUID = [(HDFitnessMachineConnectionServer *)self taskUUID];
+  [(HDFitnessMachineManager *)fitnessMachineManager endFitnessMachineConnectionForFitnessMachineSessionUUID:dCopy withConnectionUUID:taskUUID];
 }
 
 - (void)remote_markClientReady
 {
   fitnessMachineManager = self->_fitnessMachineManager;
-  v3 = [(HDFitnessMachineConnectionServer *)self taskUUID];
-  [(HDFitnessMachineManager *)fitnessMachineManager markClientReadyWithConnectionUUID:v3];
+  taskUUID = [(HDFitnessMachineConnectionServer *)self taskUUID];
+  [(HDFitnessMachineManager *)fitnessMachineManager markClientReadyWithConnectionUUID:taskUUID];
 }
 
 @end

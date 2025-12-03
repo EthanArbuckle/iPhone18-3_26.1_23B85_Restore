@@ -1,21 +1,21 @@
 @interface SRSystemAssistantExperienceRootViewController
 - (BOOL)_canShowWhileLocked;
-- (SRSystemAssistantExperienceRootViewController)initWithContainerView:(id)a3;
+- (SRSystemAssistantExperienceRootViewController)initWithContainerView:(id)view;
 - (void)loadView;
 @end
 
 @implementation SRSystemAssistantExperienceRootViewController
 
-- (SRSystemAssistantExperienceRootViewController)initWithContainerView:(id)a3
+- (SRSystemAssistantExperienceRootViewController)initWithContainerView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   v9.receiver = self;
   v9.super_class = SRSystemAssistantExperienceRootViewController;
   v6 = [(SRSystemAssistantExperienceRootViewController *)&v9 initWithNibName:0 bundle:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_containerView, a3);
+    objc_storeStrong(&v6->_containerView, view);
   }
 
   return v7;
@@ -39,9 +39,9 @@
 - (BOOL)_canShowWhileLocked
 {
   v2 = +[SRUIFCachedPreferences sharedInstance];
-  v3 = [v2 isSiriSafeForLockScreen];
+  isSiriSafeForLockScreen = [v2 isSiriSafeForLockScreen];
 
-  return v3;
+  return isSiriSafeForLockScreen;
 }
 
 @end

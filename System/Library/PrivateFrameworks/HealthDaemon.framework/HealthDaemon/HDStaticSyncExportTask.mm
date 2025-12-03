@@ -1,37 +1,37 @@
 @interface HDStaticSyncExportTask
-- (BOOL)syncSession:(id)a3 didEndTransactionWithError:(id *)a4;
-- (HDStaticSyncExportTask)initWithProfile:(id)a3 options:(unint64_t)a4 storeIdentifier:(id)a5 URL:(id)a6 batchSize:(unint64_t)a7;
-- (id)runWithCompletion:(id)a3;
-- (void)syncSession:(id)a3 didFinishSuccessfully:(BOOL)a4 error:(id)a5;
-- (void)syncSession:(id)a3 sendChanges:(id)a4 completion:(id)a5;
-- (void)syncSessionWillBegin:(id)a3;
+- (BOOL)syncSession:(id)session didEndTransactionWithError:(id *)error;
+- (HDStaticSyncExportTask)initWithProfile:(id)profile options:(unint64_t)options storeIdentifier:(id)identifier URL:(id)l batchSize:(unint64_t)size;
+- (id)runWithCompletion:(id)completion;
+- (void)syncSession:(id)session didFinishSuccessfully:(BOOL)successfully error:(id)error;
+- (void)syncSession:(id)session sendChanges:(id)changes completion:(id)completion;
+- (void)syncSessionWillBegin:(id)begin;
 @end
 
 @implementation HDStaticSyncExportTask
 
-- (HDStaticSyncExportTask)initWithProfile:(id)a3 options:(unint64_t)a4 storeIdentifier:(id)a5 URL:(id)a6 batchSize:(unint64_t)a7
+- (HDStaticSyncExportTask)initWithProfile:(id)profile options:(unint64_t)options storeIdentifier:(id)identifier URL:(id)l batchSize:(unint64_t)size
 {
-  v13 = a6;
+  lCopy = l;
   v18.receiver = self;
   v18.super_class = HDStaticSyncExportTask;
-  v14 = [(HDStaticSyncTask *)&v18 initWithProfile:a3 options:a4 storeIdentifier:a5];
+  v14 = [(HDStaticSyncTask *)&v18 initWithProfile:profile options:options storeIdentifier:identifier];
   if (v14)
   {
     v15 = HKCreateSerialDispatchQueue();
     exportQueue = v14->_exportQueue;
     v14->_exportQueue = v15;
 
-    objc_storeStrong(&v14->_exportDirectoryURL, a6);
-    v14->_batchSize = a7;
+    objc_storeStrong(&v14->_exportDirectoryURL, l);
+    v14->_batchSize = size;
   }
 
   return v14;
 }
 
-- (id)runWithCompletion:(id)a3
+- (id)runWithCompletion:(id)completion
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = [MEMORY[0x277CCAC48] discreteProgressWithTotalUnitCount:1000];
   _HKInitializeLogging();
   v6 = *MEMORY[0x277CCC328];
@@ -53,7 +53,7 @@
     v10 = v6;
     v11 = HKStaticSyncOptionsToString();
     *buf = 138544130;
-    v23 = self;
+    selfCopy = self;
     v24 = 2080;
     v25 = "[HDStaticSyncExportTask runWithCompletion:]";
     v26 = 2114;
@@ -78,10 +78,10 @@
   block[2] = __44__HDStaticSyncExportTask_runWithCompletion___block_invoke;
   block[3] = &unk_278616D18;
   block[4] = self;
-  v21 = v4;
+  v21 = completionCopy;
   v13 = v5;
   v20 = v13;
-  v14 = v4;
+  v14 = completionCopy;
   dispatch_async(queue, block);
   v15 = v20;
   v16 = v13;
@@ -390,22 +390,22 @@ LABEL_14:
   return v20;
 }
 
-- (void)syncSessionWillBegin:(id)a3
+- (void)syncSessionWillBegin:(id)begin
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  beginCopy = begin;
   _HKInitializeLogging();
   v5 = *MEMORY[0x277CCC328];
   if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_INFO))
   {
     v6 = v5;
-    v7 = [v4 syncStore];
+    syncStore = [beginCopy syncStore];
     *buf = 138543874;
-    v14 = self;
+    selfCopy = self;
     v15 = 2080;
     v16 = "[HDStaticSyncExportTask syncSessionWillBegin:]";
     v17 = 2114;
-    v18 = v7;
+    v18 = syncStore;
     _os_log_impl(&dword_228986000, v6, OS_LOG_TYPE_INFO, "%{public}@: %s: %{public}@", buf, 0x20u);
   }
 
@@ -415,8 +415,8 @@ LABEL_14:
   v11[2] = __47__HDStaticSyncExportTask_syncSessionWillBegin___block_invoke;
   v11[3] = &unk_278613920;
   v11[4] = self;
-  v12 = v4;
-  v9 = v4;
+  v12 = beginCopy;
+  v9 = beginCopy;
   dispatch_async(exportQueue, v11);
 
   v10 = *MEMORY[0x277D85DE8];
@@ -501,24 +501,24 @@ LABEL_6:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)syncSession:(id)a3 sendChanges:(id)a4 completion:(id)a5
+- (void)syncSession:(id)session sendChanges:(id)changes completion:(id)completion
 {
   v29 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sessionCopy = session;
+  changesCopy = changes;
+  completionCopy = completion;
   _HKInitializeLogging();
   v11 = *MEMORY[0x277CCC328];
   if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_INFO))
   {
     v12 = v11;
-    v13 = [v8 syncStore];
+    syncStore = [sessionCopy syncStore];
     *buf = 138543874;
-    v24 = self;
+    selfCopy = self;
     v25 = 2080;
     v26 = "[HDStaticSyncExportTask syncSession:sendChanges:completion:]";
     v27 = 2114;
-    v28 = v13;
+    v28 = syncStore;
     _os_log_impl(&dword_228986000, v12, OS_LOG_TYPE_INFO, "%{public}@: %s: %{public}@", buf, 0x20u);
   }
 
@@ -528,12 +528,12 @@ LABEL_6:
   v19[2] = __61__HDStaticSyncExportTask_syncSession_sendChanges_completion___block_invoke;
   v19[3] = &unk_278613680;
   v19[4] = self;
-  v20 = v9;
-  v21 = v8;
-  v22 = v10;
-  v15 = v10;
-  v16 = v8;
-  v17 = v9;
+  v20 = changesCopy;
+  v21 = sessionCopy;
+  v22 = completionCopy;
+  v15 = completionCopy;
+  v16 = sessionCopy;
+  v17 = changesCopy;
   dispatch_async(exportQueue, v19);
 
   v18 = *MEMORY[0x277D85DE8];
@@ -841,22 +841,22 @@ LABEL_49:
   v87 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)syncSession:(id)a3 didEndTransactionWithError:(id *)a4
+- (BOOL)syncSession:(id)session didEndTransactionWithError:(id *)error
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  sessionCopy = session;
   _HKInitializeLogging();
   v6 = *MEMORY[0x277CCC328];
   if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_INFO))
   {
     v7 = v6;
-    v8 = [v5 syncStore];
+    syncStore = [sessionCopy syncStore];
     v11 = 138543874;
-    v12 = self;
+    selfCopy = self;
     v13 = 2080;
     v14 = "[HDStaticSyncExportTask syncSession:didEndTransactionWithError:]";
     v15 = 2114;
-    v16 = v8;
+    v16 = syncStore;
     _os_log_impl(&dword_228986000, v7, OS_LOG_TYPE_INFO, "%{public}@: %s: %{public}@", &v11, 0x20u);
   }
 
@@ -864,35 +864,35 @@ LABEL_49:
   return 1;
 }
 
-- (void)syncSession:(id)a3 didFinishSuccessfully:(BOOL)a4 error:(id)a5
+- (void)syncSession:(id)session didFinishSuccessfully:(BOOL)successfully error:(id)error
 {
-  v6 = a4;
+  successfullyCopy = successfully;
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  sessionCopy = session;
+  errorCopy = error;
   _HKInitializeLogging();
   v10 = *MEMORY[0x277CCC328];
   if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_INFO))
   {
     v11 = v10;
-    v12 = [v8 syncStore];
-    v13 = v12;
+    syncStore = [sessionCopy syncStore];
+    v13 = syncStore;
     v14 = @"NO";
     *buf = 138544386;
     v20 = 2080;
     v21 = "[HDStaticSyncExportTask syncSession:didFinishSuccessfully:error:]";
-    v19 = self;
+    selfCopy = self;
     v22 = 2114;
-    if (v6)
+    if (successfullyCopy)
     {
       v14 = @"YES";
     }
 
-    v23 = v12;
+    v23 = syncStore;
     v24 = 2114;
     v25 = v14;
     v26 = 2114;
-    v27 = v9;
+    v27 = errorCopy;
     _os_log_impl(&dword_228986000, v11, OS_LOG_TYPE_INFO, "%{public}@: %s: %{public}@: success: %{public}@, error: %{public}@", buf, 0x34u);
   }
 

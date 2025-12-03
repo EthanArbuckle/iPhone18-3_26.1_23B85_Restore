@@ -1,13 +1,13 @@
 @interface PUVFXBrushView
-- (PUVFXBrushView)initWithFrame:(CGRect)a3;
+- (PUVFXBrushView)initWithFrame:(CGRect)frame;
 - (PUVFXBrushViewDelegate)delegate;
 - (void)_didMoveToSuperview;
 - (void)_layoutSubviews;
 - (void)didMoveToSuperview;
 - (void)endEmission;
 - (void)layoutSubviews;
-- (void)setMask:(CGImage *)a3;
-- (void)startEmissionAtPoint:(CGPoint)a3;
+- (void)setMask:(CGImage *)mask;
+- (void)startEmissionAtPoint:(CGPoint)point;
 @end
 
 @implementation PUVFXBrushView
@@ -35,10 +35,10 @@
   [(CALayer *)brushMaskLayer setFrame:?];
 }
 
-- (void)setMask:(CGImage *)a3
+- (void)setMask:(CGImage *)mask
 {
   v19[4] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (mask)
   {
     brushMaskLayer = self->_brushMaskLayer;
     if (!brushMaskLayer)
@@ -49,27 +49,27 @@
 
       v8 = self->_brushMaskLayer;
       v18[0] = @"position";
-      v9 = [MEMORY[0x1E695DFB0] null];
-      v19[0] = v9;
+      null = [MEMORY[0x1E695DFB0] null];
+      v19[0] = null;
       v18[1] = @"bounds";
-      v10 = [MEMORY[0x1E695DFB0] null];
-      v19[1] = v10;
+      null2 = [MEMORY[0x1E695DFB0] null];
+      v19[1] = null2;
       v18[2] = @"transform";
-      v11 = [MEMORY[0x1E695DFB0] null];
-      v19[2] = v11;
+      null3 = [MEMORY[0x1E695DFB0] null];
+      v19[2] = null3;
       v18[3] = @"frame";
-      v12 = [MEMORY[0x1E695DFB0] null];
-      v19[3] = v12;
+      null4 = [MEMORY[0x1E695DFB0] null];
+      v19[3] = null4;
       v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v19 forKeys:v18 count:4];
       [(CALayer *)v8 setActions:v13];
 
-      v14 = [(PUVFXBrushView *)self layer];
-      [v14 setMask:self->_brushMaskLayer];
+      layer = [(PUVFXBrushView *)self layer];
+      [layer setMask:self->_brushMaskLayer];
 
       brushMaskLayer = self->_brushMaskLayer;
     }
 
-    [(CALayer *)brushMaskLayer setContents:a3];
+    [(CALayer *)brushMaskLayer setContents:mask];
     v15 = self->_brushMaskLayer;
     [(PUVFXBrushView *)self bounds];
     [(CALayer *)v15 setFrame:?];
@@ -77,8 +77,8 @@
 
   else
   {
-    v16 = [(PUVFXBrushView *)self layer];
-    [v16 setMask:0];
+    layer2 = [(PUVFXBrushView *)self layer];
+    [layer2 setMask:0];
 
     [(CALayer *)self->_brushMaskLayer setContents:0];
     v17 = self->_brushMaskLayer;
@@ -93,16 +93,16 @@
   [WeakRetained didEndBrushing];
 }
 
-- (void)startEmissionAtPoint:(CGPoint)a3
+- (void)startEmissionAtPoint:(CGPoint)point
 {
-  [(PUBrushEffectOverlay *)self->_brushOverlay setBrushPosition:a3.x, a3.y];
+  [(PUBrushEffectOverlay *)self->_brushOverlay setBrushPosition:point.x, point.y];
   [(PUBrushEffectOverlay *)self->_brushOverlay startEmission];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained didStartBrushing];
 
-  v6 = [(PUVFXBrushView *)self layer];
+  layer = [(PUVFXBrushView *)self layer];
   LODWORD(v5) = 1.0;
-  [v6 setOpacity:v5];
+  [layer setOpacity:v5];
 }
 
 - (void)didMoveToSuperview
@@ -115,9 +115,9 @@
 
 - (void)_didMoveToSuperview
 {
-  v3 = [(PUVFXBrushView *)self superview];
+  superview = [(PUVFXBrushView *)self superview];
 
-  if (v3)
+  if (superview)
   {
     v4 = [[PUBrushEffectOverlay alloc] initWithTimeScale:1.0];
     brushOverlay = self->_brushOverlay;
@@ -130,16 +130,16 @@
   }
 }
 
-- (PUVFXBrushView)initWithFrame:(CGRect)a3
+- (PUVFXBrushView)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = PUVFXBrushView;
-  v3 = [(PUVFXBrushView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PUVFXBrushView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(PUVFXBrushView *)v3 layer];
-    [v5 setOpacity:0.0];
+    layer = [(PUVFXBrushView *)v3 layer];
+    [layer setOpacity:0.0];
 
     v6 = v4;
   }

@@ -1,31 +1,31 @@
 @interface NLLanguageModelState
-- (NLLanguageModelState)initWithSession:(id)a3 options:(id)a4 context:(id)a5;
-- (id)conditionalProbabilitiesForStrings:(id)a3;
-- (id)conditionalProbabilitiesForTokens:(id)a3;
-- (id)conditionalProbabilityForString:(id)a3;
-- (id)conditionalProbabilityForToken:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (NLLanguageModelState)initWithSession:(id)session options:(id)options context:(id)context;
+- (id)conditionalProbabilitiesForStrings:(id)strings;
+- (id)conditionalProbabilitiesForTokens:(id)tokens;
+- (id)conditionalProbabilityForString:(id)string;
+- (id)conditionalProbabilityForToken:(id)token;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)enumeratePredictions:(unint64_t)a3 maximumTokensPerPrediction:(unint64_t)a4 withBlock:(id)a5;
+- (void)enumeratePredictions:(unint64_t)predictions maximumTokensPerPrediction:(unint64_t)prediction withBlock:(id)block;
 - (void)resetContext;
 @end
 
 @implementation NLLanguageModelState
 
-- (NLLanguageModelState)initWithSession:(id)a3 options:(id)a4 context:(id)a5
+- (NLLanguageModelState)initWithSession:(id)session options:(id)options context:(id)context
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  sessionCopy = session;
+  optionsCopy = options;
+  contextCopy = context;
   v17.receiver = self;
   v17.super_class = NLLanguageModelState;
   v12 = [(NLLanguageModelState *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_session, a3);
-    objc_storeStrong(&v13->_options, a4);
-    v14 = [objc_alloc(MEMORY[0x1E696AD60]) initWithString:v11];
+    objc_storeStrong(&v12->_session, session);
+    objc_storeStrong(&v13->_options, options);
+    v14 = [objc_alloc(MEMORY[0x1E696AD60]) initWithString:contextCopy];
     context = v13->_context;
     v13->_context = v14;
   }
@@ -39,22 +39,22 @@
   v11.receiver = self;
   v11.super_class = NLLanguageModelState;
   v4 = [(NLLanguageModelState *)&v11 description];
-  v5 = [(NLLanguageModelState *)self session];
-  v6 = [v5 languageModel];
-  v7 = [v6 localization];
-  v8 = [(NLLanguageModelState *)self context];
-  v9 = [v3 stringWithFormat:@"%@(%@)<%@>", v4, v7, v8];
+  session = [(NLLanguageModelState *)self session];
+  languageModel = [session languageModel];
+  localization = [languageModel localization];
+  context = [(NLLanguageModelState *)self context];
+  v9 = [v3 stringWithFormat:@"%@(%@)<%@>", v4, localization, context];
 
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(NLLanguageModelState *)self session];
-  v6 = [(NLLanguageModelState *)self options];
-  v7 = [(NLLanguageModelState *)self context];
-  v8 = [v4 initWithSession:v5 options:v6 context:v7];
+  session = [(NLLanguageModelState *)self session];
+  options = [(NLLanguageModelState *)self options];
+  context = [(NLLanguageModelState *)self context];
+  v8 = [v4 initWithSession:session options:options context:context];
 
   return v8;
 }
@@ -67,26 +67,26 @@
   [(NSMutableString *)context deleteCharactersInRange:0, v3];
 }
 
-- (id)conditionalProbabilityForToken:(id)a3
+- (id)conditionalProbabilityForToken:(id)token
 {
-  v4 = a3;
-  v5 = [(NLLanguageModelState *)self session];
-  v6 = [(NLLanguageModelState *)self context];
-  v7 = [v5 conditionalProbabilityForToken:v4 context:v6];
+  tokenCopy = token;
+  session = [(NLLanguageModelState *)self session];
+  context = [(NLLanguageModelState *)self context];
+  v7 = [session conditionalProbabilityForToken:tokenCopy context:context];
 
   return v7;
 }
 
-- (id)conditionalProbabilitiesForTokens:(id)a3
+- (id)conditionalProbabilitiesForTokens:(id)tokens
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
+  tokensCopy = tokens;
+  array = [MEMORY[0x1E695DF70] array];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v4;
+  v6 = tokensCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -102,7 +102,7 @@
         }
 
         v11 = [(NLLanguageModelState *)self conditionalProbabilityForToken:*(*(&v14 + 1) + 8 * i), v14];
-        [v5 addObject:v11];
+        [array addObject:v11];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -113,29 +113,29 @@
 
   v12 = *MEMORY[0x1E69E9840];
 
-  return v5;
+  return array;
 }
 
-- (id)conditionalProbabilityForString:(id)a3
+- (id)conditionalProbabilityForString:(id)string
 {
-  v4 = a3;
-  v5 = [(NLLanguageModelState *)self session];
-  v6 = [(NLLanguageModelState *)self context];
-  v7 = [v5 conditionalProbabilityForString:v4 context:v6];
+  stringCopy = string;
+  session = [(NLLanguageModelState *)self session];
+  context = [(NLLanguageModelState *)self context];
+  v7 = [session conditionalProbabilityForString:stringCopy context:context];
 
   return v7;
 }
 
-- (id)conditionalProbabilitiesForStrings:(id)a3
+- (id)conditionalProbabilitiesForStrings:(id)strings
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
+  stringsCopy = strings;
+  array = [MEMORY[0x1E695DF70] array];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v4;
+  v6 = stringsCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -151,7 +151,7 @@
         }
 
         v11 = [(NLLanguageModelState *)self conditionalProbabilityForString:*(*(&v14 + 1) + 8 * i), v14];
-        [v5 addObject:v11];
+        [array addObject:v11];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -162,15 +162,15 @@
 
   v12 = *MEMORY[0x1E69E9840];
 
-  return v5;
+  return array;
 }
 
-- (void)enumeratePredictions:(unint64_t)a3 maximumTokensPerPrediction:(unint64_t)a4 withBlock:(id)a5
+- (void)enumeratePredictions:(unint64_t)predictions maximumTokensPerPrediction:(unint64_t)prediction withBlock:(id)block
 {
-  v8 = a5;
-  v10 = [(NLLanguageModelState *)self session];
-  v9 = [(NLLanguageModelState *)self context];
-  [v10 enumeratePredictionsForContext:v9 maximumPredictions:a3 maximumTokensPerPrediction:a4 withBlock:v8];
+  blockCopy = block;
+  session = [(NLLanguageModelState *)self session];
+  context = [(NLLanguageModelState *)self context];
+  [session enumeratePredictionsForContext:context maximumPredictions:predictions maximumTokensPerPrediction:prediction withBlock:blockCopy];
 }
 
 @end

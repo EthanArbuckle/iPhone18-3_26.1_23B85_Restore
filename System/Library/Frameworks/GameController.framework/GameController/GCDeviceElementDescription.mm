@@ -1,12 +1,12 @@
 @interface GCDeviceElementDescription
-- (BOOL)isEqual:(id)a3;
-- (GCDeviceElementDescription)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (GCDeviceElementDescription)initWithCoder:(id)coder;
 - (unint64_t)hash;
 @end
 
 @implementation GCDeviceElementDescription
 
-- (GCDeviceElementDescription)initWithCoder:(id)a3
+- (GCDeviceElementDescription)initWithCoder:(id)coder
 {
   [(GCDeviceElementDescription *)self doesNotRecognizeSelector:a2];
 
@@ -15,21 +15,21 @@
 
 - (unint64_t)hash
 {
-  v2 = [(GCDeviceElementDescription *)self name];
-  v3 = [v2 hash];
+  name = [(GCDeviceElementDescription *)self name];
+  v3 = [name hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(GCDeviceElementDescription *)self name];
-    v6 = [v4 name];
-    v7 = [v5 isEqual:v6];
+    name = [(GCDeviceElementDescription *)self name];
+    name2 = [equalCopy name];
+    v7 = [name isEqual:name2];
   }
 
   else
@@ -41,8 +41,8 @@
       goto LABEL_7;
     }
 
-    v5 = [(GCDeviceElementDescription *)self name];
-    v7 = [v5 isEqual:v4];
+    name = [(GCDeviceElementDescription *)self name];
+    v7 = [name isEqual:equalCopy];
   }
 
 LABEL_7:

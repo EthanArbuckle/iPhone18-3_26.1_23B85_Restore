@@ -1,25 +1,25 @@
 @interface HKCodableMenstrualCyclesProjection
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasEndMean:(BOOL)a3;
-- (void)setHasEndStandardDeviation:(BOOL)a3;
-- (void)setHasIsPartiallyLogged:(BOOL)a3;
-- (void)setHasPredictionPrimarySource:(BOOL)a3;
-- (void)setHasStartMean:(BOOL)a3;
-- (void)setHasStartStandardDeviation:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasEndMean:(BOOL)mean;
+- (void)setHasEndStandardDeviation:(BOOL)deviation;
+- (void)setHasIsPartiallyLogged:(BOOL)logged;
+- (void)setHasPredictionPrimarySource:(BOOL)source;
+- (void)setHasStartMean:(BOOL)mean;
+- (void)setHasStartStandardDeviation:(BOOL)deviation;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HKCodableMenstrualCyclesProjection
 
-- (void)setHasStartMean:(BOOL)a3
+- (void)setHasStartMean:(BOOL)mean
 {
-  if (a3)
+  if (mean)
   {
     v3 = 16;
   }
@@ -32,9 +32,9 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasStartStandardDeviation:(BOOL)a3
+- (void)setHasStartStandardDeviation:(BOOL)deviation
 {
-  if (a3)
+  if (deviation)
   {
     v3 = 32;
   }
@@ -47,9 +47,9 @@
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasEndMean:(BOOL)a3
+- (void)setHasEndMean:(BOOL)mean
 {
-  if (a3)
+  if (mean)
   {
     v3 = 2;
   }
@@ -62,9 +62,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasEndStandardDeviation:(BOOL)a3
+- (void)setHasEndStandardDeviation:(BOOL)deviation
 {
-  if (a3)
+  if (deviation)
   {
     v3 = 4;
   }
@@ -77,9 +77,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasIsPartiallyLogged:(BOOL)a3
+- (void)setHasIsPartiallyLogged:(BOOL)logged
 {
-  if (a3)
+  if (logged)
   {
     v3 = 64;
   }
@@ -92,9 +92,9 @@
   *&self->_has = *&self->_has & 0xBF | v3;
 }
 
-- (void)setHasPredictionPrimarySource:(BOOL)a3
+- (void)setHasPredictionPrimarySource:(BOOL)source
 {
-  if (a3)
+  if (source)
   {
     v3 = 8;
   }
@@ -113,20 +113,20 @@
   v8.receiver = self;
   v8.super_class = HKCodableMenstrualCyclesProjection;
   v4 = [(HKCodableMenstrualCyclesProjection *)&v8 description];
-  v5 = [(HKCodableMenstrualCyclesProjection *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HKCodableMenstrualCyclesProjection *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 0x10) != 0)
   {
     v11 = [MEMORY[0x1E696AD98] numberWithDouble:self->_startMean];
-    [v3 setObject:v11 forKey:@"startMean"];
+    [dictionary setObject:v11 forKey:@"startMean"];
 
     has = self->_has;
     if ((has & 0x20) == 0)
@@ -147,7 +147,7 @@ LABEL_3:
   }
 
   v12 = [MEMORY[0x1E696AD98] numberWithDouble:self->_startStandardDeviation];
-  [v3 setObject:v12 forKey:@"startStandardDeviation"];
+  [dictionary setObject:v12 forKey:@"startStandardDeviation"];
 
   has = self->_has;
   if ((has & 2) == 0)
@@ -163,28 +163,28 @@ LABEL_4:
 
 LABEL_17:
   v13 = [MEMORY[0x1E696AD98] numberWithDouble:self->_endMean];
-  [v3 setObject:v13 forKey:@"endMean"];
+  [dictionary setObject:v13 forKey:@"endMean"];
 
   if ((*&self->_has & 4) != 0)
   {
 LABEL_5:
     v5 = [MEMORY[0x1E696AD98] numberWithDouble:self->_endStandardDeviation];
-    [v3 setObject:v5 forKey:@"endStandardDeviation"];
+    [dictionary setObject:v5 forKey:@"endStandardDeviation"];
   }
 
 LABEL_6:
   allDays = self->_allDays;
   if (allDays)
   {
-    v7 = [(HKCodableDayIndexRange *)allDays dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"allDays"];
+    dictionaryRepresentation = [(HKCodableDayIndexRange *)allDays dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"allDays"];
   }
 
   v8 = self->_has;
   if ((v8 & 0x40) != 0)
   {
     v14 = [MEMORY[0x1E696AD98] numberWithBool:self->_isPartiallyLogged];
-    [v3 setObject:v14 forKey:@"isPartiallyLogged"];
+    [dictionary setObject:v14 forKey:@"isPartiallyLogged"];
 
     v8 = self->_has;
     if ((v8 & 1) == 0)
@@ -205,23 +205,23 @@ LABEL_10:
   }
 
   v15 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_daysOffsetFromCalendarMethod];
-  [v3 setObject:v15 forKey:@"daysOffsetFromCalendarMethod"];
+  [dictionary setObject:v15 forKey:@"daysOffsetFromCalendarMethod"];
 
   if ((*&self->_has & 8) != 0)
   {
 LABEL_11:
     v9 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_predictionPrimarySource];
-    [v3 setObject:v9 forKey:@"predictionPrimarySource"];
+    [dictionary setObject:v9 forKey:@"predictionPrimarySource"];
   }
 
 LABEL_12:
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 0x10) != 0)
   {
@@ -303,14 +303,14 @@ LABEL_11:
 LABEL_12:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 0x10) != 0)
   {
-    v4[5] = *&self->_startMean;
-    *(v4 + 68) |= 0x10u;
+    toCopy[5] = *&self->_startMean;
+    *(toCopy + 68) |= 0x10u;
     has = self->_has;
     if ((has & 0x20) == 0)
     {
@@ -329,8 +329,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[6] = *&self->_startStandardDeviation;
-  *(v4 + 68) |= 0x20u;
+  toCopy[6] = *&self->_startStandardDeviation;
+  *(toCopy + 68) |= 0x20u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -344,28 +344,28 @@ LABEL_4:
   }
 
 LABEL_17:
-  v4[2] = *&self->_endMean;
-  *(v4 + 68) |= 2u;
+  toCopy[2] = *&self->_endMean;
+  *(toCopy + 68) |= 2u;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_5:
-    v4[3] = *&self->_endStandardDeviation;
-    *(v4 + 68) |= 4u;
+    toCopy[3] = *&self->_endStandardDeviation;
+    *(toCopy + 68) |= 4u;
   }
 
 LABEL_6:
   if (self->_allDays)
   {
-    v7 = v4;
-    [v4 setAllDays:?];
-    v4 = v7;
+    v7 = toCopy;
+    [toCopy setAllDays:?];
+    toCopy = v7;
   }
 
   v6 = self->_has;
   if ((v6 & 0x40) != 0)
   {
-    *(v4 + 64) = self->_isPartiallyLogged;
-    *(v4 + 68) |= 0x40u;
+    *(toCopy + 64) = self->_isPartiallyLogged;
+    *(toCopy + 68) |= 0x40u;
     v6 = self->_has;
     if ((v6 & 1) == 0)
     {
@@ -384,21 +384,21 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v4[1] = self->_daysOffsetFromCalendarMethod;
-  *(v4 + 68) |= 1u;
+  toCopy[1] = self->_daysOffsetFromCalendarMethod;
+  *(toCopy + 68) |= 1u;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_11:
-    v4[4] = self->_predictionPrimarySource;
-    *(v4 + 68) |= 8u;
+    toCopy[4] = self->_predictionPrimarySource;
+    *(toCopy + 68) |= 8u;
   }
 
 LABEL_12:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 0x10) != 0)
@@ -448,7 +448,7 @@ LABEL_5:
   }
 
 LABEL_6:
-  v8 = [(HKCodableDayIndexRange *)self->_allDays copyWithZone:a3];
+  v8 = [(HKCodableDayIndexRange *)self->_allDays copyWithZone:zone];
   v9 = *(v6 + 56);
   *(v6 + 56) = v8;
 
@@ -490,10 +490,10 @@ LABEL_9:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_41;
   }
@@ -501,58 +501,58 @@ LABEL_9:
   has = self->_has;
   if ((has & 0x10) != 0)
   {
-    if ((*(v4 + 68) & 0x10) == 0 || self->_startMean != *(v4 + 5))
+    if ((*(equalCopy + 68) & 0x10) == 0 || self->_startMean != *(equalCopy + 5))
     {
       goto LABEL_41;
     }
   }
 
-  else if ((*(v4 + 68) & 0x10) != 0)
+  else if ((*(equalCopy + 68) & 0x10) != 0)
   {
     goto LABEL_41;
   }
 
   if ((*&self->_has & 0x20) != 0)
   {
-    if ((*(v4 + 68) & 0x20) == 0 || self->_startStandardDeviation != *(v4 + 6))
+    if ((*(equalCopy + 68) & 0x20) == 0 || self->_startStandardDeviation != *(equalCopy + 6))
     {
       goto LABEL_41;
     }
   }
 
-  else if ((*(v4 + 68) & 0x20) != 0)
+  else if ((*(equalCopy + 68) & 0x20) != 0)
   {
     goto LABEL_41;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 68) & 2) == 0 || self->_endMean != *(v4 + 2))
+    if ((*(equalCopy + 68) & 2) == 0 || self->_endMean != *(equalCopy + 2))
     {
       goto LABEL_41;
     }
   }
 
-  else if ((*(v4 + 68) & 2) != 0)
+  else if ((*(equalCopy + 68) & 2) != 0)
   {
     goto LABEL_41;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 68) & 4) == 0 || self->_endStandardDeviation != *(v4 + 3))
+    if ((*(equalCopy + 68) & 4) == 0 || self->_endStandardDeviation != *(equalCopy + 3))
     {
       goto LABEL_41;
     }
   }
 
-  else if ((*(v4 + 68) & 4) != 0)
+  else if ((*(equalCopy + 68) & 4) != 0)
   {
     goto LABEL_41;
   }
 
   allDays = self->_allDays;
-  if (allDays | *(v4 + 7))
+  if (allDays | *(equalCopy + 7))
   {
     if (![(HKCodableDayIndexRange *)allDays isEqual:?])
     {
@@ -564,7 +564,7 @@ LABEL_9:
 
   if ((has & 0x40) == 0)
   {
-    if ((*(v4 + 68) & 0x40) == 0)
+    if ((*(equalCopy + 68) & 0x40) == 0)
     {
       goto LABEL_27;
     }
@@ -574,20 +574,20 @@ LABEL_41:
     goto LABEL_42;
   }
 
-  if ((*(v4 + 68) & 0x40) == 0)
+  if ((*(equalCopy + 68) & 0x40) == 0)
   {
     goto LABEL_41;
   }
 
   if (self->_isPartiallyLogged)
   {
-    if ((*(v4 + 64) & 1) == 0)
+    if ((*(equalCopy + 64) & 1) == 0)
     {
       goto LABEL_41;
     }
   }
 
-  else if (*(v4 + 64))
+  else if (*(equalCopy + 64))
   {
     goto LABEL_41;
   }
@@ -595,21 +595,21 @@ LABEL_41:
 LABEL_27:
   if (has)
   {
-    if ((*(v4 + 68) & 1) == 0 || self->_daysOffsetFromCalendarMethod != *(v4 + 1))
+    if ((*(equalCopy + 68) & 1) == 0 || self->_daysOffsetFromCalendarMethod != *(equalCopy + 1))
     {
       goto LABEL_41;
     }
   }
 
-  else if (*(v4 + 68))
+  else if (*(equalCopy + 68))
   {
     goto LABEL_41;
   }
 
-  v7 = (*(v4 + 68) & 8) == 0;
+  v7 = (*(equalCopy + 68) & 8) == 0;
   if ((has & 8) != 0)
   {
-    if ((*(v4 + 68) & 8) == 0 || self->_predictionPrimarySource != *(v4 + 4))
+    if ((*(equalCopy + 68) & 8) == 0 || self->_predictionPrimarySource != *(equalCopy + 4))
     {
       goto LABEL_41;
     }
@@ -798,16 +798,16 @@ LABEL_36:
   return v9 ^ v5 ^ v13 ^ v17 ^ v22 ^ v23 ^ v24 ^ v21;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  v6 = *(v4 + 68);
+  fromCopy = from;
+  v5 = fromCopy;
+  v6 = *(fromCopy + 68);
   if ((v6 & 0x10) != 0)
   {
-    self->_startMean = v4[5];
+    self->_startMean = fromCopy[5];
     *&self->_has |= 0x10u;
-    v6 = *(v4 + 68);
+    v6 = *(fromCopy + 68);
     if ((v6 & 0x20) == 0)
     {
 LABEL_3:
@@ -820,14 +820,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 68) & 0x20) == 0)
+  else if ((*(fromCopy + 68) & 0x20) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_startStandardDeviation = v4[6];
+  self->_startStandardDeviation = fromCopy[6];
   *&self->_has |= 0x20u;
-  v6 = *(v4 + 68);
+  v6 = *(fromCopy + 68);
   if ((v6 & 2) == 0)
   {
 LABEL_4:
@@ -840,12 +840,12 @@ LABEL_4:
   }
 
 LABEL_11:
-  self->_endMean = v4[2];
+  self->_endMean = fromCopy[2];
   *&self->_has |= 2u;
-  if ((*(v4 + 68) & 4) != 0)
+  if ((*(fromCopy + 68) & 4) != 0)
   {
 LABEL_5:
-    self->_endStandardDeviation = v4[3];
+    self->_endStandardDeviation = fromCopy[3];
     *&self->_has |= 4u;
   }
 

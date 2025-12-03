@@ -1,15 +1,15 @@
 @interface WCM_WiFiCellCoexIssueBandTable
-- ($3C9879B8047CCA62E59FC5E141A81388)search_2GWifi_IssueBandForCellBandInfoType:(int)a3 cellDlLowFreq:(double)a4 cellDlHighFreq:(double)a5 cellUlLowFreq:(double)a6 cellUlHighFreq:(double)a7 matchedIssuBand:(unsigned int *)a8;
-- ($3C9879B8047CCA62E59FC5E141A81388)search_5GWifi_IssueBandForCellBandInfoType:(int)a3 cellDlLowFreq:(double)a4 cellDlHighFreq:(double)a5 cellUlLowFreq:(double)a6 cellUlHighFreq:(double)a7 matchedIssuBand:(unsigned int *)a8;
-- ($3C9879B8047CCA62E59FC5E141A81388)search_WifiEnh_IssueBandForCellBandInfoType:(int)a3 cellDlLowFreq:(double)a4 cellDlHighFreq:(double)a5 cellUlLowFreq:(double)a6 cellUlHighFreq:(double)a7 matchedIssuBand:(unsigned int *)a8;
-- (BOOL)configureBy:(id *)a3;
-- (BOOL)isFalseTDDIssueBand:(int)a3 cellDlLowFreq:(double)a4 cellDlHighFreq:(double)a5 cellUlLowFreq:(double)a6 cellUlHighFreq:(double)a7;
-- (BOOL)isLTEB7FoundForCellDlLowFreq:(double)a3 cellDlHighFreq:(double)a4 cellUlLowFreq:(double)a5 cellUlHighFreq:(double)a6;
+- ($3C9879B8047CCA62E59FC5E141A81388)search_2GWifi_IssueBandForCellBandInfoType:(int)type cellDlLowFreq:(double)freq cellDlHighFreq:(double)highFreq cellUlLowFreq:(double)lowFreq cellUlHighFreq:(double)ulHighFreq matchedIssuBand:(unsigned int *)band;
+- ($3C9879B8047CCA62E59FC5E141A81388)search_5GWifi_IssueBandForCellBandInfoType:(int)type cellDlLowFreq:(double)freq cellDlHighFreq:(double)highFreq cellUlLowFreq:(double)lowFreq cellUlHighFreq:(double)ulHighFreq matchedIssuBand:(unsigned int *)band;
+- ($3C9879B8047CCA62E59FC5E141A81388)search_WifiEnh_IssueBandForCellBandInfoType:(int)type cellDlLowFreq:(double)freq cellDlHighFreq:(double)highFreq cellUlLowFreq:(double)lowFreq cellUlHighFreq:(double)ulHighFreq matchedIssuBand:(unsigned int *)band;
+- (BOOL)configureBy:(id *)by;
+- (BOOL)isFalseTDDIssueBand:(int)band cellDlLowFreq:(double)freq cellDlHighFreq:(double)highFreq cellUlLowFreq:(double)lowFreq cellUlHighFreq:(double)ulHighFreq;
+- (BOOL)isLTEB7FoundForCellDlLowFreq:(double)freq cellDlHighFreq:(double)highFreq cellUlLowFreq:(double)lowFreq cellUlHighFreq:(double)ulHighFreq;
 - (WCM_WiFiCellCoexIssueBandTable)init;
-- (id)getHFBTAFHCoexIssuesFromIssueBand:(id *)a3;
-- (id)getWifiDesensedCoexIssueFromIssueBand:(id *)a3;
-- (void)combineWifiChannelList:(id)a3 withChannelList:(id)a4;
-- (void)combineWifiChannelList:(id)a3 withChannelList:(id)a4 inAllowedChannelSet:(id)a5;
+- (id)getHFBTAFHCoexIssuesFromIssueBand:(id *)band;
+- (id)getWifiDesensedCoexIssueFromIssueBand:(id *)band;
+- (void)combineWifiChannelList:(id)list withChannelList:(id)channelList;
+- (void)combineWifiChannelList:(id)list withChannelList:(id)channelList inAllowedChannelSet:(id)set;
 - (void)dealloc;
 @end
 
@@ -320,42 +320,42 @@
   [(WCM_WiFiCellCoexIssueBandTable *)&v6 dealloc];
 }
 
-- (BOOL)isFalseTDDIssueBand:(int)a3 cellDlLowFreq:(double)a4 cellDlHighFreq:(double)a5 cellUlLowFreq:(double)a6 cellUlHighFreq:(double)a7
+- (BOOL)isFalseTDDIssueBand:(int)band cellDlLowFreq:(double)freq cellDlHighFreq:(double)highFreq cellUlLowFreq:(double)lowFreq cellUlHighFreq:(double)ulHighFreq
 {
   result = 0;
-  if (a3 <= 106)
+  if (band <= 106)
   {
-    if (a3 > 0x10 || ((1 << a3) & 0x11800) == 0)
+    if (band > 0x10 || ((1 << band) & 0x11800) == 0)
     {
       return result;
     }
 
-    return a5 != a7 || a4 != a6;
+    return highFreq != ulHighFreq || freq != lowFreq;
   }
 
-  if (a3 == 107 || a3 == 210 || a3 == 110)
+  if (band == 107 || band == 210 || band == 110)
   {
-    return a5 != a7 || a4 != a6;
+    return highFreq != ulHighFreq || freq != lowFreq;
   }
 
   return result;
 }
 
-- ($3C9879B8047CCA62E59FC5E141A81388)search_2GWifi_IssueBandForCellBandInfoType:(int)a3 cellDlLowFreq:(double)a4 cellDlHighFreq:(double)a5 cellUlLowFreq:(double)a6 cellUlHighFreq:(double)a7 matchedIssuBand:(unsigned int *)a8
+- ($3C9879B8047CCA62E59FC5E141A81388)search_2GWifi_IssueBandForCellBandInfoType:(int)type cellDlLowFreq:(double)freq cellDlHighFreq:(double)highFreq cellUlLowFreq:(double)lowFreq cellUlHighFreq:(double)ulHighFreq matchedIssuBand:(unsigned int *)band
 {
-  if (a8)
+  if (band)
   {
-    *a8 = 999;
+    *band = 999;
   }
 
   v15 = 0;
   for (i = 0; ; ++i)
   {
-    if ((self->_issueBand[v15]._bandInfoType & a3) != 0 && self->_issueBand[v15]._downlinkLowFreq <= a4 && self->_issueBand[v15]._downlinkHighFreq >= a5 && self->_issueBand[v15]._uplinkLowFreq <= a6 && self->_issueBand[v15]._uplinkHighFreq >= a7 && ![(WCM_WiFiCellCoexIssueBandTable *)self isFalseTDDIssueBand:i cellDlLowFreq:a4 cellDlHighFreq:a5 cellUlLowFreq:a6 cellUlHighFreq:a7])
+    if ((self->_issueBand[v15]._bandInfoType & type) != 0 && self->_issueBand[v15]._downlinkLowFreq <= freq && self->_issueBand[v15]._downlinkHighFreq >= highFreq && self->_issueBand[v15]._uplinkLowFreq <= lowFreq && self->_issueBand[v15]._uplinkHighFreq >= ulHighFreq && ![(WCM_WiFiCellCoexIssueBandTable *)self isFalseTDDIssueBand:i cellDlLowFreq:freq cellDlHighFreq:highFreq cellUlLowFreq:lowFreq cellUlHighFreq:ulHighFreq])
     {
-      if (a8)
+      if (band)
       {
-        *a8 = i;
+        *band = i;
       }
 
       if (self->_issueBand[v15]._hasIssue)
@@ -374,11 +374,11 @@
   return &self->_issueBand[v15];
 }
 
-- ($3C9879B8047CCA62E59FC5E141A81388)search_5GWifi_IssueBandForCellBandInfoType:(int)a3 cellDlLowFreq:(double)a4 cellDlHighFreq:(double)a5 cellUlLowFreq:(double)a6 cellUlHighFreq:(double)a7 matchedIssuBand:(unsigned int *)a8
+- ($3C9879B8047CCA62E59FC5E141A81388)search_5GWifi_IssueBandForCellBandInfoType:(int)type cellDlLowFreq:(double)freq cellDlHighFreq:(double)highFreq cellUlLowFreq:(double)lowFreq cellUlHighFreq:(double)ulHighFreq matchedIssuBand:(unsigned int *)band
 {
-  if (a8)
+  if (band)
   {
-    *a8 = 999;
+    *band = 999;
   }
 
   v15 = 0;
@@ -387,11 +387,11 @@
   v18 = 100;
   while (1)
   {
-    if ((self->_issueBand[v15 + 33]._bandInfoType & a3) != 0 && self->_issueBand[v15 + 33]._downlinkLowFreq <= a4 && self->_issueBand[v15 + 33]._downlinkHighFreq >= a5 && self->_issueBand[v15 + 33]._uplinkLowFreq <= a6 && self->_issueBand[v15 + 33]._uplinkHighFreq >= a7 && ![(WCM_WiFiCellCoexIssueBandTable *)self isFalseTDDIssueBand:v18 cellDlLowFreq:a4 cellDlHighFreq:a5 cellUlLowFreq:a6 cellUlHighFreq:a7])
+    if ((self->_issueBand[v15 + 33]._bandInfoType & type) != 0 && self->_issueBand[v15 + 33]._downlinkLowFreq <= freq && self->_issueBand[v15 + 33]._downlinkHighFreq >= highFreq && self->_issueBand[v15 + 33]._uplinkLowFreq <= lowFreq && self->_issueBand[v15 + 33]._uplinkHighFreq >= ulHighFreq && ![(WCM_WiFiCellCoexIssueBandTable *)self isFalseTDDIssueBand:v18 cellDlLowFreq:freq cellDlHighFreq:highFreq cellUlLowFreq:lowFreq cellUlHighFreq:ulHighFreq])
     {
-      if (a8)
+      if (band)
       {
-        *a8 = v18;
+        *band = v18;
       }
 
       if (self->_issueBand[v15 + 33]._hasIssue)
@@ -424,11 +424,11 @@
   return v19;
 }
 
-- ($3C9879B8047CCA62E59FC5E141A81388)search_WifiEnh_IssueBandForCellBandInfoType:(int)a3 cellDlLowFreq:(double)a4 cellDlHighFreq:(double)a5 cellUlLowFreq:(double)a6 cellUlHighFreq:(double)a7 matchedIssuBand:(unsigned int *)a8
+- ($3C9879B8047CCA62E59FC5E141A81388)search_WifiEnh_IssueBandForCellBandInfoType:(int)type cellDlLowFreq:(double)freq cellDlHighFreq:(double)highFreq cellUlLowFreq:(double)lowFreq cellUlHighFreq:(double)ulHighFreq matchedIssuBand:(unsigned int *)band
 {
-  if (a8)
+  if (band)
   {
-    *a8 = 999;
+    *band = 999;
   }
 
   v15 = &qword_1002402B8;
@@ -439,11 +439,11 @@
   v20 = 200;
   for (i = 4488; ; i += 88)
   {
-    if ((*(&self[1].super.isa + v19) & a3) != 0 && *(&self[1]._issueBand[0]._bandInfoType + v19) <= a4 && *(&self[1]._issueBand[0]._downlinkLowFreq + v19) >= a5 && *(&self[1]._issueBand[0]._downlinkHighFreq + v19) <= a6 && *(&self[1]._issueBand[0]._uplinkLowFreq + v19) >= a7 && ![(WCM_WiFiCellCoexIssueBandTable *)self isFalseTDDIssueBand:v20 cellDlLowFreq:a4 cellDlHighFreq:a5 cellUlLowFreq:a6 cellUlHighFreq:a7])
+    if ((*(&self[1].super.isa + v19) & type) != 0 && *(&self[1]._issueBand[0]._bandInfoType + v19) <= freq && *(&self[1]._issueBand[0]._downlinkLowFreq + v19) >= highFreq && *(&self[1]._issueBand[0]._downlinkHighFreq + v19) <= lowFreq && *(&self[1]._issueBand[0]._uplinkLowFreq + v19) >= ulHighFreq && ![(WCM_WiFiCellCoexIssueBandTable *)self isFalseTDDIssueBand:v20 cellDlLowFreq:freq cellDlHighFreq:highFreq cellUlLowFreq:lowFreq cellUlHighFreq:ulHighFreq])
     {
-      if (a8)
+      if (band)
       {
-        *a8 = v20;
+        *band = v20;
       }
 
       if (*(&self->super.isa + i) == 1)
@@ -479,17 +479,17 @@
   return v22;
 }
 
-- (void)combineWifiChannelList:(id)a3 withChannelList:(id)a4
+- (void)combineWifiChannelList:(id)list withChannelList:(id)channelList
 {
-  if (a3)
+  if (list)
   {
-    if (a4)
+    if (channelList)
     {
       v13 = 0u;
       v14 = 0u;
       v11 = 0u;
       v12 = 0u;
-      v6 = [a4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [channelList countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v6)
       {
         v7 = v6;
@@ -500,17 +500,17 @@
           {
             if (*v12 != v8)
             {
-              objc_enumerationMutation(a4);
+              objc_enumerationMutation(channelList);
             }
 
             v10 = *(*(&v11 + 1) + 8 * i);
-            if (([a3 containsObject:v10] & 1) == 0)
+            if (([list containsObject:v10] & 1) == 0)
             {
-              [a3 addObject:v10];
+              [list addObject:v10];
             }
           }
 
-          v7 = [a4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+          v7 = [channelList countByEnumeratingWithState:&v11 objects:v15 count:16];
         }
 
         while (v7);
@@ -519,15 +519,15 @@
   }
 }
 
-- (void)combineWifiChannelList:(id)a3 withChannelList:(id)a4 inAllowedChannelSet:(id)a5
+- (void)combineWifiChannelList:(id)list withChannelList:(id)channelList inAllowedChannelSet:(id)set
 {
-  if (a3 && a4 && a5)
+  if (list && channelList && set)
   {
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v8 = [a4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    v8 = [channelList countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v8)
     {
       v9 = v8;
@@ -538,46 +538,46 @@
         {
           if (*v14 != v10)
           {
-            objc_enumerationMutation(a4);
+            objc_enumerationMutation(channelList);
           }
 
           v12 = *(*(&v13 + 1) + 8 * i);
-          if (([a3 containsObject:v12] & 1) == 0 && objc_msgSend(a5, "containsObject:", v12))
+          if (([list containsObject:v12] & 1) == 0 && objc_msgSend(set, "containsObject:", v12))
           {
-            [a3 addObject:v12];
+            [list addObject:v12];
           }
         }
 
-        v9 = [a4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v9 = [channelList countByEnumeratingWithState:&v13 objects:v17 count:16];
       }
 
       while (v9);
     }
 
-    if ([a3 containsObject:&off_100271088] && objc_msgSend(a3, "count") >= 2)
+    if ([list containsObject:&off_100271088] && objc_msgSend(list, "count") >= 2)
     {
-      [a3 removeObject:&off_100271088];
+      [list removeObject:&off_100271088];
     }
 
-    if (![a3 count])
+    if (![list count])
     {
-      [a3 addObject:&off_100271088];
+      [list addObject:&off_100271088];
     }
   }
 
-  else if (a3 && ![a3 count])
+  else if (list && ![list count])
   {
 
-    [a3 addObject:&off_100271088];
+    [list addObject:&off_100271088];
   }
 }
 
-- (BOOL)configureBy:(id *)a3
+- (BOOL)configureBy:(id *)by
 {
-  if (a3)
+  if (by)
   {
-    v3 = a3;
-    var0 = a3->var0;
+    byCopy = by;
+    var0 = by->var0;
     result = 1;
     if (var0 <= 0xD2)
     {
@@ -587,28 +587,28 @@
       p_downlinkHighFreq = &self[-2]._issueBand[55]._downlinkHighFreq;
       do
       {
-        if (v3->var1 >= 0xFu)
+        if (byCopy->var1 >= 0xFu)
         {
-          [WCM_Logging logLevel:0 message:@"pConfigTable[%d] has invalid _issueType(%d)", v7, v3->var1, v31];
+          [WCM_Logging logLevel:0 message:@"pConfigTable[%d] has invalid _issueType(%d)", v7, byCopy->var1, v31];
           return 0;
         }
 
-        if (v3->var3 > 0xFu || v3->var4 > 0xFu || v3->var5 > 0xFu || v3->var6 >= 0x10u)
+        if (byCopy->var3 > 0xFu || byCopy->var4 > 0xFu || byCopy->var5 > 0xFu || byCopy->var6 >= 0x10u)
         {
           [WCM_Logging logLevel:0 message:@"pConfigTable[%d] has invalid antenna bitmaps", v7, var23, v31];
           return 0;
         }
 
-        if (v3->var7 > 0xFu || v3->var8 > 0xFu || v3->var9 > 0xFu || v3->var10 > 0xFu || v3->var11 > 0xFu || v3->var12 > 0xFu || v3->var13 > 0xFu || v3->var14 > 0xFu || v3->var15 > 0xFu || v3->var16 > 0xFu || v3->var17 > 0xFu || v3->var18 > 0xFu || v3->var19 > 0xFu || v3->var20 > 0xFu || v3->var21 > 0xFu || v3->var22 >= 0x10u)
+        if (byCopy->var7 > 0xFu || byCopy->var8 > 0xFu || byCopy->var9 > 0xFu || byCopy->var10 > 0xFu || byCopy->var11 > 0xFu || byCopy->var12 > 0xFu || byCopy->var13 > 0xFu || byCopy->var14 > 0xFu || byCopy->var15 > 0xFu || byCopy->var16 > 0xFu || byCopy->var17 > 0xFu || byCopy->var18 > 0xFu || byCopy->var19 > 0xFu || byCopy->var20 > 0xFu || byCopy->var21 > 0xFu || byCopy->var22 >= 0x10u)
         {
           [WCM_Logging logLevel:0 message:@"pConfigTable[%d] has invalid V2 antenna bitmaps", v7, var23, v31];
           return 0;
         }
 
-        if (v3->var23 >= 0x1F)
+        if (byCopy->var23 >= 0x1F)
         {
           v29 = v7;
-          var23 = v3->var23;
+          var23 = byCopy->var23;
           v25 = @"pConfigTable[%d] has invalid _cellTxPowerLimit(%llu)";
           goto LABEL_62;
         }
@@ -654,9 +654,9 @@
             break;
           }
 
-          v15 = [(WCM_WiFiCellCoexIssue *)v14 issueType];
-          var1 = v3->var1;
-          if (v15 == var1 && (var1 & 0xFFFFFFFE) != 12)
+          issueType = [(WCM_WiFiCellCoexIssue *)v14 issueType];
+          var1 = byCopy->var1;
+          if (issueType == var1 && (var1 & 0xFFFFFFFE) != 12)
           {
             [WCM_Logging logLevel:0 message:@"There is a higher priority WCM_WiFiCellCoexIssue with the same issue type as pConfigTable[%d]", v7, var23, v31];
             return 0;
@@ -669,11 +669,11 @@
           }
         }
 
-        v18 = [[WCM_WiFiCellCoexIssue alloc] initWithCoexIssueConfig:v3];
+        v18 = [[WCM_WiFiCellCoexIssue alloc] initWithCoexIssueConfig:byCopy];
         if (!v18)
         {
-          v26 = sub_10000BFB8(v3->var0);
-          v27 = v3->var1;
+          v26 = sub_10000BFB8(byCopy->var0);
+          v27 = byCopy->var1;
           if (v27 == 999)
           {
             v28 = "NO_ISSUE_TYPE";
@@ -694,7 +694,7 @@
         }
 
         coexIssues[v12] = v18;
-        v19 = v3->var0;
+        v19 = byCopy->var0;
         v20 = "NO_ISSUE_BAND";
         if (v19 != 999)
         {
@@ -730,7 +730,7 @@
         }
 
 LABEL_52:
-        v22 = v3->var1;
+        v22 = byCopy->var1;
         v23 = "NO_ISSUE_TYPE";
         if (v22 != 999)
         {
@@ -743,8 +743,8 @@ LABEL_52:
 
         [WCM_Logging logLevel:3 message:@"\tconfigure %s with %s at %s", v20, v23, off_10023FE60[v12]];
         v7 = (v7 + 1);
-        v24 = v3[1].var0;
-        ++v3;
+        v24 = byCopy[1].var0;
+        ++byCopy;
         var0 = v24;
         result = 1;
         p_uplinkLowFreq = v33;
@@ -767,29 +767,29 @@ LABEL_62:
   return result;
 }
 
-- (BOOL)isLTEB7FoundForCellDlLowFreq:(double)a3 cellDlHighFreq:(double)a4 cellUlLowFreq:(double)a5 cellUlHighFreq:(double)a6
+- (BOOL)isLTEB7FoundForCellDlLowFreq:(double)freq cellDlHighFreq:(double)highFreq cellUlLowFreq:(double)lowFreq cellUlHighFreq:(double)ulHighFreq
 {
-  v6 = a3 >= 2620.0;
-  if (a4 > 2690.0)
+  v6 = freq >= 2620.0;
+  if (highFreq > 2690.0)
   {
     v6 = 0;
   }
 
-  if (a5 <= 2500.0)
+  if (lowFreq <= 2500.0)
   {
     v6 = 0;
   }
 
-  return a6 < 2570.0 && v6;
+  return ulHighFreq < 2570.0 && v6;
 }
 
-- (id)getHFBTAFHCoexIssuesFromIssueBand:(id *)a3
+- (id)getHFBTAFHCoexIssuesFromIssueBand:(id *)band
 {
   v4 = objc_opt_new();
-  if (a3)
+  if (band)
   {
     v5 = 0;
-    var5 = a3->var5;
+    var5 = band->var5;
     while (1)
     {
       v7 = var5[v5];
@@ -830,15 +830,15 @@ LABEL_11:
   return [NSArray arrayWithArray:v4];
 }
 
-- (id)getWifiDesensedCoexIssueFromIssueBand:(id *)a3
+- (id)getWifiDesensedCoexIssueFromIssueBand:(id *)band
 {
-  if (!a3)
+  if (!band)
   {
     return 0;
   }
 
   v3 = 0;
-  var5 = a3->var5;
+  var5 = band->var5;
   while (1)
   {
     v5 = var5[v3];

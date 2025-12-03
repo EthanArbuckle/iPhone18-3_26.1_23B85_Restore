@@ -5,7 +5,7 @@
 + (id)configurationForResult;
 + (id)storeConfigurationForCompletion;
 + (id)storeConfigurationForResult;
-+ (id)streamWithName:(id)a3;
++ (id)streamWithName:(id)name;
 + (id)validKeyPaths;
 @end
 
@@ -14,7 +14,7 @@
 + (id)Completion
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForCompletion];
+  configurationForCompletion = [self configurationForCompletion];
   v3 = +[BMActivitySchedulerDependencyCompletion columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -26,7 +26,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"ActivityScheduler.Dependency.Completion" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"ActivityScheduler.Dependency.Completion" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"ActivityScheduler.Dependency.Completion" schema:v9 configuration:configurationForCompletion];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -35,13 +35,13 @@
 
 + (id)configurationForCompletion
 {
-  v3 = [a1 storeConfigurationForCompletion];
-  v4 = [a1 syncPolicyForCompletion];
+  storeConfigurationForCompletion = [self storeConfigurationForCompletion];
+  syncPolicyForCompletion = [self syncPolicyForCompletion];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"AB345AE8-7635-4A67-B4B7-984E4F8EFE04"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"ActivityScheduler.Dependency.Completion" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:@"com.apple.dasd" pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"ActivityScheduler.Dependency.Completion" eventClass:objc_opt_class() storeConfig:storeConfigurationForCompletion syncPolicy:syncPolicyForCompletion legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:@"com.apple.dasd" pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -57,7 +57,7 @@
 + (id)Result
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForResult];
+  configurationForResult = [self configurationForResult];
   v3 = +[BMActivitySchedulerDependencyResult columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -69,7 +69,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"ActivityScheduler.Dependency.Result" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"ActivityScheduler.Dependency.Result" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"ActivityScheduler.Dependency.Result" schema:v9 configuration:configurationForResult];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -78,13 +78,13 @@
 
 + (id)configurationForResult
 {
-  v3 = [a1 storeConfigurationForResult];
-  v4 = [a1 syncPolicyForResult];
+  storeConfigurationForResult = [self storeConfigurationForResult];
+  syncPolicyForResult = [self syncPolicyForResult];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"8468567A-1014-4602-859E-E3DDF42FD86D"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"ActivityScheduler.Dependency.Result" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:@"com.apple.dasd" pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"ActivityScheduler.Dependency.Result" eventClass:objc_opt_class() storeConfig:storeConfigurationForResult syncPolicy:syncPolicyForResult legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:@"com.apple.dasd" pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -97,20 +97,20 @@
   return v3;
 }
 
-+ (id)streamWithName:(id)a3
++ (id)streamWithName:(id)name
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"Completion"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"Completion"])
   {
-    v5 = [a1 Completion];
+    completion = [self Completion];
 LABEL_5:
-    v6 = v5;
+    v6 = completion;
     goto LABEL_7;
   }
 
-  if ([v4 isEqualToString:@"Result"])
+  if ([nameCopy isEqualToString:@"Result"])
   {
-    v5 = [a1 Result];
+    completion = [self Result];
     goto LABEL_5;
   }
 

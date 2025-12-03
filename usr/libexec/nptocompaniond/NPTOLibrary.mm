@@ -1,61 +1,61 @@
 @interface NPTOLibrary
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)_npto_assetCollections;
 - (id)_npto_assetIndices;
-- (id)_npto_assetUUIDsInAssetCollection:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_npto_assetUUIDsInAssetCollection:(id)collection;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)npto_assetCollectionsContainingAssetUUID:(id)a3;
-- (id)npto_changesFromLibrary:(id)a3 excludingAssets:(id)a4;
-- (int64_t)_npto_addAsset:(id)a3;
-- (int64_t)npto_indexOfAsset:(id)a3;
-- (void)addAsset:(id)a3;
-- (void)addAssetCollection:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)npto_addAssetCollection:(id)a3 assets:(id)a4 keyAssets:(id)a5;
-- (void)npto_addAssetCollections:(id)a3;
-- (void)npto_addAssets:(id)a3;
-- (void)writeTo:(id)a3;
+- (id)npto_assetCollectionsContainingAssetUUID:(id)d;
+- (id)npto_changesFromLibrary:(id)library excludingAssets:(id)assets;
+- (int64_t)_npto_addAsset:(id)asset;
+- (int64_t)npto_indexOfAsset:(id)asset;
+- (void)addAsset:(id)asset;
+- (void)addAssetCollection:(id)collection;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)npto_addAssetCollection:(id)collection assets:(id)assets keyAssets:(id)keyAssets;
+- (void)npto_addAssetCollections:(id)collections;
+- (void)npto_addAssets:(id)assets;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NPTOLibrary
 
-- (void)addAsset:(id)a3
+- (void)addAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   assets = self->_assets;
-  v8 = v4;
+  v8 = assetCopy;
   if (!assets)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_assets;
     self->_assets = v6;
 
-    v4 = v8;
+    assetCopy = v8;
     assets = self->_assets;
   }
 
-  [(NSMutableArray *)assets addObject:v4];
+  [(NSMutableArray *)assets addObject:assetCopy];
 }
 
-- (void)addAssetCollection:(id)a3
+- (void)addAssetCollection:(id)collection
 {
-  v4 = a3;
+  collectionCopy = collection;
   assetCollections = self->_assetCollections;
-  v8 = v4;
+  v8 = collectionCopy;
   if (!assetCollections)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_assetCollections;
     self->_assetCollections = v6;
 
-    v4 = v8;
+    collectionCopy = v8;
     assetCollections = self->_assetCollections;
   }
 
-  [(NSMutableArray *)assetCollections addObject:v4];
+  [(NSMutableArray *)assetCollections addObject:collectionCopy];
 }
 
 - (id)description
@@ -63,8 +63,8 @@
   v7.receiver = self;
   v7.super_class = NPTOLibrary;
   v3 = [(NPTOLibrary *)&v7 description];
-  v4 = [(NPTOLibrary *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(NPTOLibrary *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -94,8 +94,8 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v23 + 1) + 8 * i) dictionaryRepresentation];
-          [v4 addObject:v10];
+          dictionaryRepresentation = [*(*(&v23 + 1) + 8 * i) dictionaryRepresentation];
+          [v4 addObject:dictionaryRepresentation];
         }
 
         v7 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v23 objects:v28 count:16];
@@ -129,8 +129,8 @@
             objc_enumerationMutation(v12);
           }
 
-          v17 = [*(*(&v19 + 1) + 8 * j) dictionaryRepresentation];
-          [v11 addObject:v17];
+          dictionaryRepresentation2 = [*(*(&v19 + 1) + 8 * j) dictionaryRepresentation];
+          [v11 addObject:dictionaryRepresentation2];
         }
 
         v14 = [(NSMutableArray *)v12 countByEnumeratingWithState:&v19 objects:v27 count:16];
@@ -145,9 +145,9 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -211,43 +211,43 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v12 = a3;
+  toCopy = to;
   if ([(NPTOLibrary *)self assetsCount])
   {
-    [v12 clearAssets];
-    v4 = [(NPTOLibrary *)self assetsCount];
-    if (v4)
+    [toCopy clearAssets];
+    assetsCount = [(NPTOLibrary *)self assetsCount];
+    if (assetsCount)
     {
-      v5 = v4;
+      v5 = assetsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(NPTOLibrary *)self assetAtIndex:i];
-        [v12 addAsset:v7];
+        [toCopy addAsset:v7];
       }
     }
   }
 
   if ([(NPTOLibrary *)self assetCollectionsCount])
   {
-    [v12 clearAssetCollections];
-    v8 = [(NPTOLibrary *)self assetCollectionsCount];
-    if (v8)
+    [toCopy clearAssetCollections];
+    assetCollectionsCount = [(NPTOLibrary *)self assetCollectionsCount];
+    if (assetCollectionsCount)
     {
-      v9 = v8;
+      v9 = assetCollectionsCount;
       for (j = 0; j != v9; ++j)
       {
         v11 = [(NPTOLibrary *)self assetCollectionAtIndex:j];
-        [v12 addAssetCollection:v11];
+        [toCopy addAssetCollection:v11];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
@@ -268,7 +268,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v23 + 1) + 8 * v10) copyWithZone:a3];
+        v11 = [*(*(&v23 + 1) + 8 * v10) copyWithZone:zone];
         [v5 addAsset:v11];
 
         v10 = v10 + 1;
@@ -301,7 +301,7 @@
           objc_enumerationMutation(v12);
         }
 
-        v17 = [*(*(&v19 + 1) + 8 * v16) copyWithZone:{a3, v19}];
+        v17 = [*(*(&v19 + 1) + 8 * v16) copyWithZone:{zone, v19}];
         [v5 addAssetCollection:v17];
 
         v16 = v16 + 1;
@@ -317,13 +317,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((assets = self->_assets, !(assets | v4[2])) || -[NSMutableArray isEqual:](assets, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((assets = self->_assets, !(assets | equalCopy[2])) || -[NSMutableArray isEqual:](assets, "isEqual:")))
   {
     assetCollections = self->_assetCollections;
-    if (assetCollections | v4[1])
+    if (assetCollections | equalCopy[1])
     {
       v7 = [(NSMutableArray *)assetCollections isEqual:?];
     }
@@ -342,14 +342,14 @@
   return v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v5 = v4[2];
+  v5 = fromCopy[2];
   v6 = [v5 countByEnumeratingWithState:&v19 objects:v24 count:16];
   if (v6)
   {
@@ -380,7 +380,7 @@
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v10 = v4[1];
+  v10 = fromCopy[1];
   v11 = [v10 countByEnumeratingWithState:&v15 objects:v23 count:16];
   if (v11)
   {
@@ -408,14 +408,14 @@
   }
 }
 
-- (void)npto_addAssets:(id)a3
+- (void)npto_addAssets:(id)assets
 {
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  assetsCopy = assets;
+  v5 = [assetsCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -427,7 +427,7 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(assetsCopy);
         }
 
         v9 = *(*(&v11 + 1) + 8 * v8);
@@ -438,21 +438,21 @@
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [assetsCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)npto_addAssetCollections:(id)a3
+- (void)npto_addAssetCollections:(id)collections
 {
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  collectionsCopy = collections;
+  v5 = [collectionsCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -464,7 +464,7 @@
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(collectionsCopy);
         }
 
         v9 = *(*(&v13 + 1) + 8 * v8);
@@ -478,42 +478,42 @@
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [collectionsCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)npto_addAssetCollection:(id)a3 assets:(id)a4 keyAssets:(id)a5
+- (void)npto_addAssetCollection:(id)collection assets:(id)assets keyAssets:(id)keyAssets
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(NPTOLibrary *)self _npto_assetCollections];
-  v12 = [v8 npto_uuid];
-  v35 = v11;
-  v13 = [v11 objectForKey:v12];
+  collectionCopy = collection;
+  assetsCopy = assets;
+  keyAssetsCopy = keyAssets;
+  _npto_assetCollections = [(NPTOLibrary *)self _npto_assetCollections];
+  npto_uuid = [collectionCopy npto_uuid];
+  v35 = _npto_assetCollections;
+  v13 = [_npto_assetCollections objectForKey:npto_uuid];
 
   if (!v13)
   {
     v13 = objc_alloc_init(NPTOAssetCollection);
-    v14 = [v8 npto_uuid];
-    v15 = [v14 npto_data];
-    [(NPTOAssetCollection *)v13 setUuidData:v15];
+    npto_uuid2 = [collectionCopy npto_uuid];
+    npto_data = [npto_uuid2 npto_data];
+    [(NPTOAssetCollection *)v13 setUuidData:npto_data];
 
-    v16 = [v8 localizedTitle];
-    [(NPTOAssetCollection *)v13 setTitle:v16];
+    localizedTitle = [collectionCopy localizedTitle];
+    [(NPTOAssetCollection *)v13 setTitle:localizedTitle];
 
-    v17 = [v8 localizedSubtitle];
-    [(NPTOAssetCollection *)v13 setDeprecatedSubtitle:v17];
+    localizedSubtitle = [collectionCopy localizedSubtitle];
+    [(NPTOAssetCollection *)v13 setDeprecatedSubtitle:localizedSubtitle];
 
-    if ([v10 count])
+    if ([keyAssetsCopy count])
     {
-      v18 = [v10 firstObject];
-      v19 = [v18 npto_uuid];
-      v20 = [v19 npto_data];
-      [(NPTOAssetCollection *)v13 setDeprecatedKeyAssetUUIDData:v20];
+      firstObject = [keyAssetsCopy firstObject];
+      npto_uuid3 = [firstObject npto_uuid];
+      npto_data2 = [npto_uuid3 npto_data];
+      [(NPTOAssetCollection *)v13 setDeprecatedKeyAssetUUIDData:npto_data2];
     }
 
     [(NPTOLibrary *)self addAssetCollection:v13];
@@ -523,7 +523,7 @@
   v43 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v21 = v9;
+  v21 = assetsCopy;
   v22 = [v21 countByEnumeratingWithState:&v40 objects:v45 count:16];
   if (v22)
   {
@@ -557,7 +557,7 @@
   v39 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v28 = v10;
+  v28 = keyAssetsCopy;
   v29 = [v28 countByEnumeratingWithState:&v36 objects:v44 count:16];
   if (v29)
   {
@@ -588,48 +588,48 @@
   }
 }
 
-- (int64_t)npto_indexOfAsset:(id)a3
+- (int64_t)npto_indexOfAsset:(id)asset
 {
-  v4 = a3;
-  v5 = [(NPTOLibrary *)self _npto_assetIndices];
-  v6 = [v4 localIdentifier];
+  assetCopy = asset;
+  _npto_assetIndices = [(NPTOLibrary *)self _npto_assetIndices];
+  localIdentifier = [assetCopy localIdentifier];
 
-  v7 = [v5 objectForKey:v6];
+  v7 = [_npto_assetIndices objectForKey:localIdentifier];
 
   if (v7)
   {
-    v8 = [v7 integerValue];
+    integerValue = [v7 integerValue];
   }
 
   else
   {
-    v8 = 0x7FFFFFFFFFFFFFFFLL;
+    integerValue = 0x7FFFFFFFFFFFFFFFLL;
   }
 
+  return integerValue;
+}
+
+- (id)npto_changesFromLibrary:(id)library excludingAssets:(id)assets
+{
+  assetsCopy = assets;
+  libraryCopy = library;
+  v8 = [[NPTOLibraryChanges alloc] _initWithMasterLibrary:self clientLibrary:libraryCopy excludedAssets:assetsCopy];
+
   return v8;
 }
 
-- (id)npto_changesFromLibrary:(id)a3 excludingAssets:(id)a4
+- (id)npto_assetCollectionsContainingAssetUUID:(id)d
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[NPTOLibraryChanges alloc] _initWithMasterLibrary:self clientLibrary:v7 excludedAssets:v6];
-
-  return v8;
-}
-
-- (id)npto_assetCollectionsContainingAssetUUID:(id)a3
-{
-  v4 = a3;
-  v5 = [(NPTOLibrary *)self assetCollections];
-  v6 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v5 count]);
+  dCopy = d;
+  assetCollections = [(NPTOLibrary *)self assetCollections];
+  v6 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [assetCollections count]);
 
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = [(NPTOLibrary *)self assetCollections];
-  v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  assetCollections2 = [(NPTOLibrary *)self assetCollections];
+  v8 = [assetCollections2 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v8)
   {
     v9 = v8;
@@ -640,12 +640,12 @@
       {
         if (*v18 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(assetCollections2);
         }
 
         v12 = *(*(&v17 + 1) + 8 * i);
         v13 = [(NPTOLibrary *)self _npto_assetUUIDsInAssetCollection:v12];
-        v14 = [v13 containsObject:v4];
+        v14 = [v13 containsObject:dCopy];
 
         if (v14)
         {
@@ -653,7 +653,7 @@
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v9 = [assetCollections2 countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v9);
@@ -664,41 +664,41 @@
   return v15;
 }
 
-- (int64_t)_npto_addAsset:(id)a3
+- (int64_t)_npto_addAsset:(id)asset
 {
-  v4 = a3;
-  v5 = [(NPTOLibrary *)self _npto_assetIndices];
-  v6 = [v4 localIdentifier];
-  v7 = [v5 objectForKey:v6];
+  assetCopy = asset;
+  _npto_assetIndices = [(NPTOLibrary *)self _npto_assetIndices];
+  localIdentifier = [assetCopy localIdentifier];
+  v7 = [_npto_assetIndices objectForKey:localIdentifier];
 
   if (!v7)
   {
     v8 = objc_alloc_init(NPTOAsset);
-    v9 = [v4 npto_uuid];
-    v10 = [v9 npto_data];
-    [(NPTOAsset *)v8 setUuidData:v10];
+    npto_uuid = [assetCopy npto_uuid];
+    npto_data = [npto_uuid npto_data];
+    [(NPTOAsset *)v8 setUuidData:npto_data];
 
-    v11 = [v4 modificationDate];
-    if (v11)
+    modificationDate = [assetCopy modificationDate];
+    if (modificationDate)
     {
-      [(NPTOAsset *)v8 setDateAsDate:v11];
+      [(NPTOAsset *)v8 setDateAsDate:modificationDate];
     }
 
     else
     {
-      v12 = [v4 creationDate];
-      [(NPTOAsset *)v8 setDateAsDate:v12];
+      creationDate = [assetCopy creationDate];
+      [(NPTOAsset *)v8 setDateAsDate:creationDate];
     }
 
     [(NPTOLibrary *)self addAsset:v8];
     v7 = [NSNumber numberWithUnsignedInteger:[(NPTOLibrary *)self assetsCount]- 1];
-    v13 = [v4 localIdentifier];
-    [v5 setObject:v7 forKey:v13];
+    localIdentifier2 = [assetCopy localIdentifier];
+    [_npto_assetIndices setObject:v7 forKey:localIdentifier2];
   }
 
-  v14 = [v7 integerValue];
+  integerValue = [v7 integerValue];
 
-  return v14;
+  return integerValue;
 }
 
 - (id)_npto_assetIndices
@@ -725,24 +725,24 @@
   return v3;
 }
 
-- (id)_npto_assetUUIDsInAssetCollection:(id)a3
+- (id)_npto_assetUUIDsInAssetCollection:(id)collection
 {
-  v4 = a3;
-  v5 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v4 assetIndexsCount]);
-  if ([v4 assetIndexsCount])
+  collectionCopy = collection;
+  v5 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [collectionCopy assetIndexsCount]);
+  if ([collectionCopy assetIndexsCount])
   {
     v6 = 0;
     do
     {
-      v7 = -[NPTOLibrary assetAtIndex:](self, "assetAtIndex:", [v4 assetIndexAtIndex:v6]);
-      v8 = [v7 uuidData];
-      v9 = [v8 npto_uuid];
-      [v5 addObject:v9];
+      v7 = -[NPTOLibrary assetAtIndex:](self, "assetAtIndex:", [collectionCopy assetIndexAtIndex:v6]);
+      uuidData = [v7 uuidData];
+      npto_uuid = [uuidData npto_uuid];
+      [v5 addObject:npto_uuid];
 
       ++v6;
     }
 
-    while (v6 < [v4 assetIndexsCount]);
+    while (v6 < [collectionCopy assetIndexsCount]);
   }
 
   v10 = [v5 copy];

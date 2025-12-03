@@ -1,9 +1,9 @@
 @interface OKActionEdgePan
-+ (void)setupJavascriptContext:(id)a3;
++ (void)setupJavascriptContext:(id)context;
 - (OKActionEdgePan)init;
-- (OKActionEdgePan)initWithCoder:(id)a3;
+- (OKActionEdgePan)initWithCoder:(id)coder;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation OKActionEdgePan
@@ -22,25 +22,25 @@
   [(OKActionPan *)&v2 dealloc];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = OKActionEdgePan;
-  [(OKActionPan *)&v3 encodeWithCoder:a3];
+  [(OKActionPan *)&v3 encodeWithCoder:coder];
 }
 
-- (OKActionEdgePan)initWithCoder:(id)a3
+- (OKActionEdgePan)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = OKActionEdgePan;
-  return [(OKActionPan *)&v4 initWithCoder:a3];
+  return [(OKActionPan *)&v4 initWithCoder:coder];
 }
 
-+ (void)setupJavascriptContext:(id)a3
++ (void)setupJavascriptContext:(id)context
 {
   v4 = objc_opt_class();
 
-  [a3 setObject:v4 forKeyedSubscript:@"OKActionEdgePan"];
+  [context setObject:v4 forKeyedSubscript:@"OKActionEdgePan"];
 }
 
 @end

@@ -1,34 +1,34 @@
 @interface DBIconView
 + (BOOL)_iconLabelsRequireBackground;
-+ (CGSize)maxLabelSizeForIconImageSize:(CGSize)a3;
-+ (Class)defaultViewClassForAccessoryType:(int64_t)a3;
++ (CGSize)maxLabelSizeForIconImageSize:(CGSize)size;
++ (Class)defaultViewClassForAccessoryType:(int64_t)type;
 + (UIEdgeInsets)minimumInterIconSpacing;
 + (double)_labelVerticalSizeOffset;
-+ (double)maximumIconViewHeightForIconImageSize:(CGSize)a3;
-+ (id)focusColorForTraitCollection:(id)a3;
-+ (id)focusTextColorForTraitCollection:(id)a3;
-+ (id)labelFontForTraitCollection:(id)a3;
-+ (id)textColorForTraitCollection:(id)a3;
-+ (void)_updateCharacteristicsWithTraitCollection:(id)a3;
++ (double)maximumIconViewHeightForIconImageSize:(CGSize)size;
++ (id)focusColorForTraitCollection:(id)collection;
++ (id)focusTextColorForTraitCollection:(id)collection;
++ (id)labelFontForTraitCollection:(id)collection;
++ (id)textColorForTraitCollection:(id)collection;
++ (void)_updateCharacteristicsWithTraitCollection:(id)collection;
 - (CGRect)_frameForLabel;
 - (CGRect)_frameForLabelHighlight;
-- (DBIconView)initWithConfigurationOptions:(unint64_t)a3 listLayoutProvider:(id)a4;
-- (double)effectiveBrightnessForControlState:(unint64_t)a3;
+- (DBIconView)initWithConfigurationOptions:(unint64_t)options listLayoutProvider:(id)provider;
+- (double)effectiveBrightnessForControlState:(unint64_t)state;
 - (id)labelFont;
 - (unint64_t)accessibilityTraits;
-- (void)_configureIconImageView:(id)a3;
-- (void)_refreshDropShadowWithIconImage:(id)a3;
-- (void)_updateLabelAnimated:(BOOL)a3;
-- (void)_wallpaperChanged:(id)a3;
+- (void)_configureIconImageView:(id)view;
+- (void)_refreshDropShadowWithIconImage:(id)image;
+- (void)_updateLabelAnimated:(BOOL)animated;
+- (void)_wallpaperChanged:(id)changed;
 - (void)cleanupAfterCrossfade;
-- (void)configureLabelImageParametersBuilder:(id)a3;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
+- (void)configureLabelImageParametersBuilder:(id)builder;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setLabelHidden:(BOOL)a3;
-- (void)setShadowHidden:(BOOL)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setLabelHidden:(BOOL)hidden;
+- (void)setShadowHidden:(BOOL)hidden;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation DBIconView
@@ -76,25 +76,25 @@
   v25.receiver = self;
   v25.super_class = DBIconView;
   [(DBIconView *)&v25 layoutSubviews];
-  v3 = [(DBIconView *)self dropShadowView];
+  dropShadowView = [(DBIconView *)self dropShadowView];
 
-  if (!v3)
+  if (!dropShadowView)
   {
     v4 = objc_alloc(MEMORY[0x277D75D18]);
     v5 = [v4 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
     [(DBIconView *)self setDropShadowView:v5];
 
-    v6 = [(DBIconView *)self dropShadowView];
-    [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
+    dropShadowView2 = [(DBIconView *)self dropShadowView];
+    [dropShadowView2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v7 = [(DBIconView *)self dropShadowView];
-    [(DBIconView *)self insertSubview:v7 atIndex:0];
+    dropShadowView3 = [(DBIconView *)self dropShadowView];
+    [(DBIconView *)self insertSubview:dropShadowView3 atIndex:0];
 
-    v8 = [(DBIconView *)self dropShadowView];
-    [v8 setHidden:{-[DBIconView shadowHidden](self, "shadowHidden")}];
+    dropShadowView4 = [(DBIconView *)self dropShadowView];
+    [dropShadowView4 setHidden:{-[DBIconView shadowHidden](self, "shadowHidden")}];
 
-    v9 = [(DBIconView *)self iconImageSnapshot];
-    [(DBIconView *)self _refreshDropShadowWithIconImage:v9];
+    iconImageSnapshot = [(DBIconView *)self iconImageSnapshot];
+    [(DBIconView *)self _refreshDropShadowWithIconImage:iconImageSnapshot];
   }
 
   [(DBIconView *)self _frameForLabelHighlight];
@@ -102,18 +102,18 @@
   v13 = v12;
   v15 = v14;
   v17 = v16;
-  v18 = [(DBIconView *)self labelLegibilityView];
-  [v18 setFrame:{v11, v13, v15, v17}];
+  labelLegibilityView = [(DBIconView *)self labelLegibilityView];
+  [labelLegibilityView setFrame:{v11, v13, v15, v17}];
 
-  v19 = [(DBIconView *)self currentImageView];
-  [v19 frame];
+  currentImageView = [(DBIconView *)self currentImageView];
+  [currentImageView frame];
   v27 = CGRectInset(v26, -3.0, -3.0);
   x = v27.origin.x;
   y = v27.origin.y;
   width = v27.size.width;
   height = v27.size.height;
-  v24 = [(DBIconView *)self focusEffectView];
-  [v24 setFrame:{x, y, width, height}];
+  focusEffectView = [(DBIconView *)self focusEffectView];
+  [focusEffectView setFrame:{x, y, width, height}];
 }
 
 - (CGRect)_frameForLabel
@@ -141,20 +141,20 @@
 
 + (BOOL)_iconLabelsRequireBackground
 {
-  v2 = [a1 environmentConfiguration];
-  v3 = [v2 wallpaperPreferences];
-  v4 = [v3 currentWallpaper];
-  v5 = [v4 traits];
-  v6 = [v5 iconLabelsRequireBackground];
+  environmentConfiguration = [self environmentConfiguration];
+  wallpaperPreferences = [environmentConfiguration wallpaperPreferences];
+  currentWallpaper = [wallpaperPreferences currentWallpaper];
+  traits = [currentWallpaper traits];
+  iconLabelsRequireBackground = [traits iconLabelsRequireBackground];
 
-  return v6;
+  return iconLabelsRequireBackground;
 }
 
 - (id)labelFont
 {
   v3 = objc_opt_class();
-  v4 = [(DBIconView *)self traitCollection];
-  v5 = [v3 labelFontForTraitCollection:v4];
+  traitCollection = [(DBIconView *)self traitCollection];
+  v5 = [v3 labelFontForTraitCollection:traitCollection];
 
   return v5;
 }
@@ -186,20 +186,20 @@
   return result;
 }
 
-- (DBIconView)initWithConfigurationOptions:(unint64_t)a3 listLayoutProvider:(id)a4
+- (DBIconView)initWithConfigurationOptions:(unint64_t)options listLayoutProvider:(id)provider
 {
   v20[1] = *MEMORY[0x277D85DE8];
   v19.receiver = self;
   v19.super_class = DBIconView;
-  v4 = [(DBIconView *)&v19 initWithConfigurationOptions:a3 listLayoutProvider:a4];
+  v4 = [(DBIconView *)&v19 initWithConfigurationOptions:options listLayoutProvider:provider];
   if (v4)
   {
-    v5 = [objc_opt_class() environmentConfiguration];
-    v6 = [v5 wallpaperPreferences];
+    environmentConfiguration = [objc_opt_class() environmentConfiguration];
+    wallpaperPreferences = [environmentConfiguration wallpaperPreferences];
 
     v7 = [DBIconLabelBackdropView alloc];
-    v8 = [v6 currentWallpaper];
-    v9 = [(DBIconLabelBackdropView *)v7 initWithWallpaper:v8];
+    currentWallpaper = [wallpaperPreferences currentWallpaper];
+    v9 = [(DBIconLabelBackdropView *)v7 initWithWallpaper:currentWallpaper];
     labelLegibilityView = v4->_labelLegibilityView;
     v4->_labelLegibilityView = v9;
 
@@ -218,8 +218,8 @@
     v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:1];
     v16 = [(DBIconView *)v4 registerForTraitChanges:v15 withTarget:v4 action:sel__updateLabel];
 
-    v17 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v17 addObserver:v4 selector:sel__wallpaperChanged_ name:*MEMORY[0x277CF91E8] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v4 selector:sel__wallpaperChanged_ name:*MEMORY[0x277CF91E8] object:0];
   }
 
   return v4;
@@ -231,10 +231,10 @@
   v5.super_class = DBIconView;
   [(DBIconView *)&v5 cleanupAfterCrossfade];
   objc_opt_class();
-  v3 = [(DBIconView *)self _iconImageView];
-  if (v3 && (objc_opt_isKindOfClass() & 1) != 0)
+  _iconImageView = [(DBIconView *)self _iconImageView];
+  if (_iconImageView && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v4 = v3;
+    v4 = _iconImageView;
   }
 
   else
@@ -248,25 +248,25 @@
   }
 }
 
-+ (double)maximumIconViewHeightForIconImageSize:(CGSize)a3
++ (double)maximumIconViewHeightForIconImageSize:(CGSize)size
 {
-  height = a3.height;
-  [a1 minimumInterIconSpacing];
+  height = size.height;
+  [self minimumInterIconSpacing];
   v7 = height + v5 * 0.5 + v6 * 0.5;
-  [a1 _labelHeight];
+  [self _labelHeight];
   return v8 + v7;
 }
 
-+ (Class)defaultViewClassForAccessoryType:(int64_t)a3
++ (Class)defaultViewClassForAccessoryType:(int64_t)type
 {
-  if (a3 == 1)
+  if (type == 1)
   {
     v3 = objc_opt_self();
   }
 
   else
   {
-    v5.receiver = a1;
+    v5.receiver = self;
     v5.super_class = &OBJC_METACLASS___DBIconView;
     v3 = objc_msgSendSuper2(&v5, sel_defaultViewClassForAccessoryType_);
   }
@@ -274,11 +274,11 @@
   return v3;
 }
 
-+ (CGSize)maxLabelSizeForIconImageSize:(CGSize)a3
++ (CGSize)maxLabelSizeForIconImageSize:(CGSize)size
 {
-  v4 = a3.width + 28.0;
-  v5 = [a1 environmentConfiguration];
-  [v5 currentSafeViewAreaFrame];
+  v4 = size.width + 28.0;
+  environmentConfiguration = [self environmentConfiguration];
+  [environmentConfiguration currentSafeViewAreaFrame];
   Width = CGRectGetWidth(v15);
 
   if (Width > 400.0)
@@ -287,9 +287,9 @@
     v4 = v4 + floorf(v7);
   }
 
-  [a1 minimumInterIconSpacing];
+  [self minimumInterIconSpacing];
   v10 = fmin(v4, 110.0) + -8.0 - (v8 * 0.5 + v9 * 0.5);
-  [a1 _labelHeight];
+  [self _labelHeight];
   v12 = v11;
   v13 = v10;
   result.height = v12;
@@ -297,123 +297,123 @@
   return result;
 }
 
-- (void)setLabelHidden:(BOOL)a3
+- (void)setLabelHidden:(BOOL)hidden
 {
-  v3 = a3;
+  hiddenCopy = hidden;
   v6.receiver = self;
   v6.super_class = DBIconView;
   [(DBIconView *)&v6 setLabelHidden:?];
-  v5 = [(DBIconView *)self labelLegibilityView];
-  [v5 setHidden:v3];
+  labelLegibilityView = [(DBIconView *)self labelLegibilityView];
+  [labelLegibilityView setHidden:hiddenCopy];
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v13 = a3;
+  contextCopy = context;
   [(DBIconView *)self _updateLabel];
-  v5 = [v13 nextFocusedItem];
-  v6 = [(DBIconView *)self focusEffectView];
-  [v6 setHidden:v5 != self];
+  nextFocusedItem = [contextCopy nextFocusedItem];
+  focusEffectView = [(DBIconView *)self focusEffectView];
+  [focusEffectView setHidden:nextFocusedItem != self];
 
-  v7 = [(DBIconView *)self focusEffectView];
-  v8 = [v7 superview];
+  focusEffectView2 = [(DBIconView *)self focusEffectView];
+  superview = [focusEffectView2 superview];
 
-  if (v8 != self)
+  if (superview != self)
   {
-    v9 = [(DBIconView *)self focusEffectView];
-    v10 = [(DBIconView *)self labelLegibilityView];
-    [(DBIconView *)self insertSubview:v9 aboveSubview:v10];
+    focusEffectView3 = [(DBIconView *)self focusEffectView];
+    labelLegibilityView = [(DBIconView *)self labelLegibilityView];
+    [(DBIconView *)self insertSubview:focusEffectView3 aboveSubview:labelLegibilityView];
 
     [(DBIconView *)self setNeedsLayout];
   }
 
-  v11 = [v13 nextFocusedView];
+  nextFocusedView = [contextCopy nextFocusedView];
 
-  if (v11 == self)
+  if (nextFocusedView == self)
   {
-    v12 = [(DBIconView *)self superview];
-    [v12 bringSubviewToFront:self];
+    superview2 = [(DBIconView *)self superview];
+    [superview2 bringSubviewToFront:self];
   }
 }
 
-- (void)configureLabelImageParametersBuilder:(id)a3
+- (void)configureLabelImageParametersBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v36.receiver = self;
   v36.super_class = DBIconView;
-  [(DBIconView *)&v36 configureLabelImageParametersBuilder:v4];
-  v5 = [(DBIconView *)self location];
-  v6 = [v5 isEqualToString:*MEMORY[0x277D666D0]];
+  [(DBIconView *)&v36 configureLabelImageParametersBuilder:builderCopy];
+  location = [(DBIconView *)self location];
+  v6 = [location isEqualToString:*MEMORY[0x277D666D0]];
 
   if (v6)
   {
-    [v4 setTextInsets:{4.0, 4.0, 2.0, 4.0}];
+    [builderCopy setTextInsets:{4.0, 4.0, 2.0, 4.0}];
   }
 
-  v7 = [(DBIconView *)self traitCollection];
-  v8 = [v7 environmentInterfaceStyle];
+  traitCollection = [(DBIconView *)self traitCollection];
+  environmentInterfaceStyle = [traitCollection environmentInterfaceStyle];
 
-  v9 = [(DBIconView *)self traitCollection];
+  traitCollection2 = [(DBIconView *)self traitCollection];
   v35[0] = MEMORY[0x277D85DD0];
   v35[1] = 3221225472;
   v35[2] = __51__DBIconView_configureLabelImageParametersBuilder___block_invoke;
   v35[3] = &__block_descriptor_40_e27_v16__0___UIMutableTraits__8l;
-  v35[4] = v8;
-  v10 = [v9 traitCollectionByModifyingTraits:v35];
+  v35[4] = environmentInterfaceStyle;
+  v10 = [traitCollection2 traitCollectionByModifyingTraits:v35];
 
   v11 = [objc_opt_class() labelFontForTraitCollection:v10];
-  [v4 setFont:v11];
+  [builderCopy setFont:v11];
 
   v12 = [objc_opt_class() textColorForTraitCollection:v10];
-  [v4 setTextColor:v12];
+  [builderCopy setTextColor:v12];
 
   if ([(DBIconView *)self isFocused])
   {
     v13 = [objc_opt_class() focusTextColorForTraitCollection:v10];
-    [v4 setTextColor:v13];
+    [builderCopy setTextColor:v13];
   }
 
-  v14 = [(DBIconView *)self delegate];
+  delegate = [(DBIconView *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v14 scale];
-    [v4 setScale:?];
+    [delegate scale];
+    [builderCopy setScale:?];
   }
 
-  v15 = [(DBIconView *)self labelLegibilityView];
-  v16 = [v15 traitOverrides];
-  [v16 setUserInterfaceStyle:v8];
+  labelLegibilityView = [(DBIconView *)self labelLegibilityView];
+  traitOverrides = [labelLegibilityView traitOverrides];
+  [traitOverrides setUserInterfaceStyle:environmentInterfaceStyle];
 
-  v17 = [objc_opt_class() environmentConfiguration];
-  v18 = [v17 wallpaperPreferences];
-  v19 = [v18 currentWallpaper];
-  v20 = [(DBIconView *)self labelLegibilityView];
-  [v20 setWallpaper:v19];
+  environmentConfiguration = [objc_opt_class() environmentConfiguration];
+  wallpaperPreferences = [environmentConfiguration wallpaperPreferences];
+  currentWallpaper = [wallpaperPreferences currentWallpaper];
+  labelLegibilityView2 = [(DBIconView *)self labelLegibilityView];
+  [labelLegibilityView2 setWallpaper:currentWallpaper];
 
-  v21 = [(DBIconView *)self isFocused];
-  v22 = [(DBIconView *)self labelLegibilityView];
-  [v22 setHighlighted:v21];
+  isFocused = [(DBIconView *)self isFocused];
+  labelLegibilityView3 = [(DBIconView *)self labelLegibilityView];
+  [labelLegibilityView3 setHighlighted:isFocused];
 
   [(DBIconView *)self _frameForLabelHighlight];
   v24 = v23;
   v26 = v25;
   v28 = v27;
   v30 = v29;
-  v31 = [(DBIconView *)self labelLegibilityView];
-  [v31 setFrame:{v24, v26, v28, v30}];
+  labelLegibilityView4 = [(DBIconView *)self labelLegibilityView];
+  [labelLegibilityView4 setFrame:{v24, v26, v28, v30}];
 
-  v32 = [(DBIconView *)self focusEffectView];
-  v33 = [v32 traitOverrides];
-  [v33 setUserInterfaceStyle:v8];
+  focusEffectView = [(DBIconView *)self focusEffectView];
+  traitOverrides2 = [focusEffectView traitOverrides];
+  [traitOverrides2 setUserInterfaceStyle:environmentInterfaceStyle];
 
-  v34 = [(DBIconView *)self iconImageSnapshot];
-  [(DBIconView *)self _refreshDropShadowWithIconImage:v34];
+  iconImageSnapshot = [(DBIconView *)self iconImageSnapshot];
+  [(DBIconView *)self _refreshDropShadowWithIconImage:iconImageSnapshot];
 }
 
 - (void)prepareForReuse
 {
-  v3 = [(DBIconView *)self focusEffectView];
-  [v3 removeFromSuperview];
+  focusEffectView = [(DBIconView *)self focusEffectView];
+  [focusEffectView removeFromSuperview];
 
   v4.receiver = self;
   v4.super_class = DBIconView;
@@ -422,55 +422,55 @@
   [(DBIconView *)self _refreshDropShadowWithIconImage:0];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v7.receiver = self;
   v7.super_class = DBIconView;
-  [(DBIconView *)&v7 traitCollectionDidChange:a3];
+  [(DBIconView *)&v7 traitCollectionDidChange:change];
   v4 = objc_opt_class();
-  v5 = [(DBIconView *)self traitCollection];
-  [v4 _updateCharacteristicsWithTraitCollection:v5];
+  traitCollection = [(DBIconView *)self traitCollection];
+  [v4 _updateCharacteristicsWithTraitCollection:traitCollection];
 
-  v6 = [(DBIconView *)self iconImageSnapshot];
-  [(DBIconView *)self _refreshDropShadowWithIconImage:v6];
+  iconImageSnapshot = [(DBIconView *)self iconImageSnapshot];
+  [(DBIconView *)self _refreshDropShadowWithIconImage:iconImageSnapshot];
 
   [(DBIconView *)self _updateLabel];
 }
 
-- (void)_updateLabelAnimated:(BOOL)a3
+- (void)_updateLabelAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [MEMORY[0x277D75C80] _currentTraitCollection];
-  v6 = [(DBIconView *)self traitCollection];
-  [MEMORY[0x277D75C80] _setCurrentTraitCollection:v6];
+  animatedCopy = animated;
+  _currentTraitCollection = [MEMORY[0x277D75C80] _currentTraitCollection];
+  traitCollection = [(DBIconView *)self traitCollection];
+  [MEMORY[0x277D75C80] _setCurrentTraitCollection:traitCollection];
 
   v7.receiver = self;
   v7.super_class = DBIconView;
-  [(DBIconView *)&v7 _updateLabelAnimated:v3];
-  [MEMORY[0x277D75C80] _setCurrentTraitCollection:v5];
+  [(DBIconView *)&v7 _updateLabelAnimated:animatedCopy];
+  [MEMORY[0x277D75C80] _setCurrentTraitCollection:_currentTraitCollection];
 }
 
-- (void)_configureIconImageView:(id)a3
+- (void)_configureIconImageView:(id)view
 {
   v5.receiver = self;
   v5.super_class = DBIconView;
-  [(DBIconView *)&v5 _configureIconImageView:a3];
-  v4 = [(DBIconView *)self iconImageSnapshot];
-  [(DBIconView *)self _refreshDropShadowWithIconImage:v4];
+  [(DBIconView *)&v5 _configureIconImageView:view];
+  iconImageSnapshot = [(DBIconView *)self iconImageSnapshot];
+  [(DBIconView *)self _refreshDropShadowWithIconImage:iconImageSnapshot];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v9.receiver = self;
   v9.super_class = DBIconView;
   [(DBIconView *)&v9 setHighlighted:?];
-  [(CPUIFocusEffectView *)self->_focusEffectView setPressed:v3];
+  [(CPUIFocusEffectView *)self->_focusEffectView setPressed:highlightedCopy];
   objc_opt_class();
-  v5 = [(DBIconView *)self _iconImageView];
-  if (v5 && (objc_opt_isKindOfClass() & 1) != 0)
+  _iconImageView = [(DBIconView *)self _iconImageView];
+  if (_iconImageView && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v6 = v5;
+    v6 = _iconImageView;
   }
 
   else
@@ -480,62 +480,62 @@
 
   if (v6)
   {
-    v7 = [(DBIconView *)self isTouchDownInIcon]& v3;
-    v8 = [v6 dimmingView];
-    [v8 setHidden:v7 ^ 1u];
+    v7 = [(DBIconView *)self isTouchDownInIcon]& highlightedCopy;
+    dimmingView = [v6 dimmingView];
+    [dimmingView setHidden:v7 ^ 1u];
   }
 }
 
-- (double)effectiveBrightnessForControlState:(unint64_t)a3
+- (double)effectiveBrightnessForControlState:(unint64_t)state
 {
   v4.receiver = self;
   v4.super_class = DBIconView;
-  [(DBIconView *)&v4 effectiveBrightnessForControlState:a3 & 0xFFFFFFFFFFFFFFFELL];
+  [(DBIconView *)&v4 effectiveBrightnessForControlState:state & 0xFFFFFFFFFFFFFFFELL];
   return result;
 }
 
-- (void)_refreshDropShadowWithIconImage:(id)a3
+- (void)_refreshDropShadowWithIconImage:(id)image
 {
-  v4 = a3;
-  v5 = [(DBIconView *)self dropShadowProvider];
+  imageCopy = image;
+  dropShadowProvider = [(DBIconView *)self dropShadowProvider];
 
-  if (!v5)
+  if (!dropShadowProvider)
   {
     v6 = objc_alloc_init(DBIconDropShadowProvider);
     [(DBIconView *)self setDropShadowProvider:v6];
   }
 
-  v7 = [(DBIconView *)self dropShadowProvider];
-  v8 = [v7 iconImage];
+  dropShadowProvider2 = [(DBIconView *)self dropShadowProvider];
+  iconImage = [dropShadowProvider2 iconImage];
 
-  if (v8 != v4)
+  if (iconImage != imageCopy)
   {
-    v9 = [(DBIconView *)self dropShadowProvider];
-    [v9 setIconImage:v4];
+    dropShadowProvider3 = [(DBIconView *)self dropShadowProvider];
+    [dropShadowProvider3 setIconImage:imageCopy];
   }
 
-  v10 = [(DBIconView *)self traitCollection];
-  v11 = [v10 environmentInterfaceStyle];
+  traitCollection = [(DBIconView *)self traitCollection];
+  environmentInterfaceStyle = [traitCollection environmentInterfaceStyle];
 
-  v12 = [(DBIconView *)self traitCollection];
+  traitCollection2 = [(DBIconView *)self traitCollection];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __46__DBIconView__refreshDropShadowWithIconImage___block_invoke;
   v20[3] = &unk_278F03280;
   v20[4] = self;
-  v20[5] = v11;
-  v13 = [v12 traitCollectionByModifyingTraits:v20];
+  v20[5] = environmentInterfaceStyle;
+  v13 = [traitCollection2 traitCollectionByModifyingTraits:v20];
 
   objc_initWeak(&location, self);
-  v14 = [(DBIconView *)self dropShadowProvider];
+  dropShadowProvider4 = [(DBIconView *)self dropShadowProvider];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __46__DBIconView__refreshDropShadowWithIconImage___block_invoke_2;
   v16[3] = &unk_278F032D0;
   objc_copyWeak(&v18, &location);
-  v15 = v4;
+  v15 = imageCopy;
   v17 = v15;
-  [v14 imageForTraitCollection:v13 completion:v16];
+  [dropShadowProvider4 imageForTraitCollection:v13 completion:v16];
 
   objc_destroyWeak(&v18);
   objc_destroyWeak(&location);
@@ -640,44 +640,44 @@ void __46__DBIconView__refreshDropShadowWithIconImage___block_invoke_3(uint64_t 
   }
 }
 
-- (void)_wallpaperChanged:(id)a3
+- (void)_wallpaperChanged:(id)changed
 {
   v4 = objc_opt_class();
-  v5 = [(DBIconView *)self traitCollection];
-  [v4 _updateCharacteristicsWithTraitCollection:v5];
+  traitCollection = [(DBIconView *)self traitCollection];
+  [v4 _updateCharacteristicsWithTraitCollection:traitCollection];
 
-  v6 = [(DBIconView *)self iconImageSnapshot];
-  [(DBIconView *)self _refreshDropShadowWithIconImage:v6];
+  iconImageSnapshot = [(DBIconView *)self iconImageSnapshot];
+  [(DBIconView *)self _refreshDropShadowWithIconImage:iconImageSnapshot];
 
   [(DBIconView *)self _updateLabel];
-  v10 = [objc_opt_class() environmentConfiguration];
-  v7 = [v10 wallpaperPreferences];
-  v8 = [v7 currentWallpaper];
-  v9 = [(DBIconView *)self labelLegibilityView];
-  [v9 setWallpaper:v8];
+  environmentConfiguration = [objc_opt_class() environmentConfiguration];
+  wallpaperPreferences = [environmentConfiguration wallpaperPreferences];
+  currentWallpaper = [wallpaperPreferences currentWallpaper];
+  labelLegibilityView = [(DBIconView *)self labelLegibilityView];
+  [labelLegibilityView setWallpaper:currentWallpaper];
 }
 
-+ (id)textColorForTraitCollection:(id)a3
++ (id)textColorForTraitCollection:(id)collection
 {
   v3 = MEMORY[0x277D75348];
-  v4 = a3;
-  v5 = [v3 labelColor];
-  v6 = [v5 resolvedColorWithTraitCollection:v4];
+  collectionCopy = collection;
+  labelColor = [v3 labelColor];
+  v6 = [labelColor resolvedColorWithTraitCollection:collectionCopy];
 
   return v6;
 }
 
-+ (id)focusTextColorForTraitCollection:(id)a3
++ (id)focusTextColorForTraitCollection:(id)collection
 {
   v3 = MEMORY[0x277D75348];
-  v4 = a3;
-  v5 = [v3 _carSystemFocusLabelColor];
-  v6 = [v5 resolvedColorWithTraitCollection:v4];
+  collectionCopy = collection;
+  _carSystemFocusLabelColor = [v3 _carSystemFocusLabelColor];
+  v6 = [_carSystemFocusLabelColor resolvedColorWithTraitCollection:collectionCopy];
 
   return v6;
 }
 
-+ (id)focusColorForTraitCollection:(id)a3
++ (id)focusColorForTraitCollection:(id)collection
 {
   if (focusColorForTraitCollection__onceToken != -1)
   {
@@ -698,22 +698,22 @@ uint64_t __43__DBIconView_focusColorForTraitCollection___block_invoke()
   return MEMORY[0x2821F96F8](v0, v1);
 }
 
-+ (id)labelFontForTraitCollection:(id)a3
++ (id)labelFontForTraitCollection:(id)collection
 {
   v4 = _labelFont;
   if (!_labelFont)
   {
-    [a1 _updateCharacteristicsWithTraitCollection:a3];
+    [self _updateCharacteristicsWithTraitCollection:collection];
     v4 = _labelFont;
   }
 
   return v4;
 }
 
-+ (void)_updateCharacteristicsWithTraitCollection:(id)a3
++ (void)_updateCharacteristicsWithTraitCollection:(id)collection
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277D74310] preferredFontDescriptorWithTextStyle:*MEMORY[0x277D76938] compatibleWithTraitCollection:a3];
+  v3 = [MEMORY[0x277D74310] preferredFontDescriptorWithTextStyle:*MEMORY[0x277D76938] compatibleWithTraitCollection:collection];
   v12 = *MEMORY[0x277D74430];
   v4 = [MEMORY[0x277CCABB0] numberWithDouble:*MEMORY[0x277D74418]];
   v13[0] = v4;
@@ -729,13 +729,13 @@ uint64_t __43__DBIconView_focusColorForTraitCollection___block_invoke()
   _labelFont = v8;
 }
 
-- (void)setShadowHidden:(BOOL)a3
+- (void)setShadowHidden:(BOOL)hidden
 {
-  if (self->_shadowHidden != a3)
+  if (self->_shadowHidden != hidden)
   {
-    self->_shadowHidden = a3;
-    v4 = [(DBIconView *)self dropShadowView];
-    [v4 setHidden:self->_shadowHidden];
+    self->_shadowHidden = hidden;
+    dropShadowView = [(DBIconView *)self dropShadowView];
+    [dropShadowView setHidden:self->_shadowHidden];
   }
 }
 

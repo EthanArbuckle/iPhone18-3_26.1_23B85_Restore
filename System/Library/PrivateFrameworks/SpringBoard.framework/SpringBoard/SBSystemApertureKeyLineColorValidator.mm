@@ -1,8 +1,8 @@
 @interface SBSystemApertureKeyLineColorValidator
 - (SBSystemApertureKeyLineColorValidator)init;
-- (id)validateKeyLineColor:(id)a3;
+- (id)validateKeyLineColor:(id)color;
 - (void)dealloc;
-- (void)settings:(id)a3 changedValueForKey:(id)a4;
+- (void)settings:(id)settings changedValueForKey:(id)key;
 @end
 
 @implementation SBSystemApertureKeyLineColorValidator
@@ -40,26 +40,26 @@
   [(SBSystemApertureKeyLineColorValidator *)&v3 dealloc];
 }
 
-- (id)validateKeyLineColor:(id)a3
+- (id)validateKeyLineColor:(id)color
 {
   components[4] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  colorCopy = color;
   v5 = [MEMORY[0x277D75348] colorWithWhite:0.916 alpha:1.0];
-  if (v4)
+  if (colorCopy)
   {
-    v6 = [MEMORY[0x277D75348] clearColor];
-    if ([v4 isEqual:v6])
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    if ([colorCopy isEqual:clearColor])
     {
     }
 
     else
     {
-      v7 = [(SBSystemApertureSettings *)self->_settings activityKeyLineColorEnabled];
+      activityKeyLineColorEnabled = [(SBSystemApertureSettings *)self->_settings activityKeyLineColorEnabled];
 
-      if (v7)
+      if (activityKeyLineColorEnabled)
       {
         v8 = [MEMORY[0x277D75C80] traitCollectionWithUserInterfaceStyle:2];
-        v9 = [v4 resolvedColorWithTraitCollection:v8];
+        v9 = [colorCopy resolvedColorWithTraitCollection:v8];
 
         v10 = [v9 colorWithAlphaComponent:1.0];
         [v10 CGColor];
@@ -132,9 +132,9 @@ LABEL_17:
   return v5;
 }
 
-- (void)settings:(id)a3 changedValueForKey:(id)a4
+- (void)settings:(id)settings changedValueForKey:(id)key
 {
-  if ([a4 containsString:@"keyLineColorFixedLstar"])
+  if ([key containsString:@"keyLineColorFixedLstar"])
   {
 
     [(SBSystemApertureKeyLineColorValidator *)self _applySettingsValues];

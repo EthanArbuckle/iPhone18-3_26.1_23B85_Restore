@@ -1,23 +1,23 @@
 @interface CKDPThrottlingConfigCriteria
-- (BOOL)isEqual:(id)a3;
-- (id)containerEnvironmentAsString:(int)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)databaseTypeAsString:(int)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)containerEnvironmentAsString:(int)string;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)databaseTypeAsString:(int)string;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)operationTypeAsString:(int)a3;
-- (int)StringAsContainerEnvironment:(id)a3;
-- (int)StringAsDatabaseType:(id)a3;
-- (int)StringAsOperationType:(id)a3;
+- (id)operationTypeAsString:(int)string;
+- (int)StringAsContainerEnvironment:(id)environment;
+- (int)StringAsDatabaseType:(id)type;
+- (int)StringAsOperationType:(id)type;
 - (int)containerEnvironment;
 - (int)databaseType;
 - (int)operationType;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDatabaseType:(BOOL)a3;
-- (void)setHasOperationType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasDatabaseType:(BOOL)type;
+- (void)setHasOperationType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CKDPThrottlingConfigCriteria
@@ -35,33 +35,33 @@
   }
 }
 
-- (id)containerEnvironmentAsString:(int)a3
+- (id)containerEnvironmentAsString:(int)string
 {
-  if (a3 == 1)
+  if (string == 1)
   {
     v4 = @"production";
   }
 
-  else if (a3 == 2)
+  else if (string == 2)
   {
     v4 = @"sandbox";
   }
 
   else
   {
-    v4 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], a2, @"(unknown: %i)", a3);
+    v4 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], a2, @"(unknown: %i)", string);
   }
 
   return v4;
 }
 
-- (int)StringAsContainerEnvironment:(id)a3
+- (int)StringAsContainerEnvironment:(id)environment
 {
-  v3 = a3;
+  environmentCopy = environment;
   v6 = 1;
-  if ((objc_msgSend_isEqualToString_(v3, v4, @"production") & 1) == 0)
+  if ((objc_msgSend_isEqualToString_(environmentCopy, v4, @"production") & 1) == 0)
   {
-    if (objc_msgSend_isEqualToString_(v3, v5, @"sandbox"))
+    if (objc_msgSend_isEqualToString_(environmentCopy, v5, @"sandbox"))
     {
       v6 = 2;
     }
@@ -88,9 +88,9 @@
   }
 }
 
-- (void)setHasOperationType:(BOOL)a3
+- (void)setHasOperationType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 4;
   }
@@ -103,13 +103,13 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (id)operationTypeAsString:(int)a3
+- (id)operationTypeAsString:(int)string
 {
-  if (a3 <= 301)
+  if (string <= 301)
   {
-    if (a3 <= 259)
+    if (string <= 259)
     {
-      switch(a3)
+      switch(string)
       {
         case 200:
           v4 = @"zoneSaveType";
@@ -227,7 +227,7 @@
 
           break;
         default:
-          if (a3)
+          if (string)
           {
             goto LABEL_98;
           }
@@ -240,9 +240,9 @@
       return v4;
     }
 
-    if (a3 > 271)
+    if (string > 271)
     {
-      switch(a3)
+      switch(string)
       {
         case 272:
           v4 = @"zoneChildrenRetrieveType";
@@ -261,7 +261,7 @@
 
     else
     {
-      switch(a3)
+      switch(string)
       {
         case 260:
           v4 = @"dataRepairUpdateMissingAssetStatusType";
@@ -279,20 +279,20 @@
     }
 
 LABEL_98:
-    v4 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], a2, @"(unknown: %i)", a3);
+    v4 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], a2, @"(unknown: %i)", string);
 
     return v4;
   }
 
-  if (a3 <= 405)
+  if (string <= 405)
   {
-    if (a3 > 321)
+    if (string > 321)
     {
-      if (a3 > 401)
+      if (string > 401)
       {
-        if (a3 > 403)
+        if (string > 403)
         {
-          if (a3 == 404)
+          if (string == 404)
           {
             v4 = @"userPrivacySettingsResetType";
           }
@@ -303,7 +303,7 @@ LABEL_98:
           }
         }
 
-        else if (a3 == 402)
+        else if (string == 402)
         {
           v4 = @"userPrivacySettingsRetrieveType";
         }
@@ -316,7 +316,7 @@ LABEL_98:
         return v4;
       }
 
-      switch(a3)
+      switch(string)
       {
         case 322:
           v4 = @"privateSearchDeleteType";
@@ -333,9 +333,9 @@ LABEL_98:
       }
     }
 
-    else if (a3 <= 312)
+    else if (string <= 312)
     {
-      switch(a3)
+      switch(string)
       {
         case 302:
           v4 = @"subscriptionDeleteType";
@@ -354,9 +354,9 @@ LABEL_98:
 
     else
     {
-      if (a3 > 319)
+      if (string > 319)
       {
-        if (a3 == 320)
+        if (string == 320)
         {
           v4 = @"privateSearchSetType";
         }
@@ -369,14 +369,14 @@ LABEL_98:
         return v4;
       }
 
-      if (a3 == 313)
+      if (string == 313)
       {
         v4 = @"mergeableDeltaReplaceType";
 
         return v4;
       }
 
-      if (a3 == 314)
+      if (string == 314)
       {
         v4 = @"mergeableDeltaRetrieveType";
 
@@ -387,16 +387,16 @@ LABEL_98:
     goto LABEL_98;
   }
 
-  if (a3 <= 799)
+  if (string <= 799)
   {
-    if (a3 <= 408)
+    if (string <= 408)
     {
-      if (a3 == 406)
+      if (string == 406)
       {
         v4 = @"sharePermissionSettingsUpdateType";
       }
 
-      else if (a3 == 407)
+      else if (string == 407)
       {
         v4 = @"adopterCapabilitiesSaveType";
       }
@@ -409,16 +409,16 @@ LABEL_98:
       return v4;
     }
 
-    if (a3 > 502)
+    if (string > 502)
     {
-      if (a3 == 503)
+      if (string == 503)
       {
         v4 = @"shareAcceptType";
 
         return v4;
       }
 
-      if (a3 == 513)
+      if (string == 513)
       {
         v4 = @"shareVettingInitiateType";
 
@@ -428,14 +428,14 @@ LABEL_98:
 
     else
     {
-      if (a3 == 409)
+      if (string == 409)
       {
         v4 = @"zoneUsageSaveType";
 
         return v4;
       }
 
-      if (a3 == 410)
+      if (string == 410)
       {
         v4 = @"shareUsageSaveType";
 
@@ -446,11 +446,11 @@ LABEL_98:
     goto LABEL_98;
   }
 
-  if (a3 <= 803)
+  if (string <= 803)
   {
-    if (a3 > 801)
+    if (string > 801)
     {
-      if (a3 == 802)
+      if (string == 802)
       {
         v4 = @"pushBadgeType";
       }
@@ -461,7 +461,7 @@ LABEL_98:
       }
     }
 
-    else if (a3 == 800)
+    else if (string == 800)
     {
       v4 = @"pushRegisterType";
     }
@@ -474,16 +474,16 @@ LABEL_98:
     return v4;
   }
 
-  if (a3 > 900)
+  if (string > 900)
   {
-    if (a3 == 901)
+    if (string == 901)
     {
       v4 = @"datarepairMarkAssetBrokenType";
 
       return v4;
     }
 
-    if (a3 == 1101)
+    if (string == 1101)
     {
       v4 = @"functionInvokeType";
 
@@ -493,9 +493,9 @@ LABEL_98:
     goto LABEL_98;
   }
 
-  if (a3 != 804)
+  if (string != 804)
   {
-    if (a3 == 900)
+    if (string == 900)
     {
       v4 = @"archiveRecordsType";
 
@@ -510,290 +510,290 @@ LABEL_98:
   return v4;
 }
 
-- (int)StringAsOperationType:(id)a3
+- (int)StringAsOperationType:(id)type
 {
-  v3 = a3;
-  if (objc_msgSend_isEqualToString_(v3, v4, @"noneType"))
+  typeCopy = type;
+  if (objc_msgSend_isEqualToString_(typeCopy, v4, @"noneType"))
   {
     v6 = 0;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v5, @"zoneSaveType"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v5, @"zoneSaveType"))
   {
     v6 = 200;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v7, @"zoneRetrieveType"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v7, @"zoneRetrieveType"))
   {
     v6 = 201;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v8, @"zoneDeleteType"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v8, @"zoneDeleteType"))
   {
     v6 = 202;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v9, @"zoneRetrieveChangesType"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v9, @"zoneRetrieveChangesType"))
   {
     v6 = 203;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v10, @"zoneRetrieveAncestors"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v10, @"zoneRetrieveAncestors"))
   {
     v6 = 206;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v11, @"recordSaveType"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v11, @"recordSaveType"))
   {
     v6 = 210;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v12, @"recordRetrieveType"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v12, @"recordRetrieveType"))
   {
     v6 = 211;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v13, @"recordRetrieveVersionsType"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v13, @"recordRetrieveVersionsType"))
   {
     v6 = 212;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v14, @"recordRetrieveChangesType"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v14, @"recordRetrieveChangesType"))
   {
     v6 = 213;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v15, @"recordDeleteType"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v15, @"recordDeleteType"))
   {
     v6 = 214;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v16, @"recordResolveTokenType"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v16, @"recordResolveTokenType"))
   {
     v6 = 216;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v17, @"fetchArchivedRecordsType"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v17, @"fetchArchivedRecordsType"))
   {
     v6 = 217;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v18, @"recordMoveType"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v18, @"recordMoveType"))
   {
     v6 = 218;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v19, @"shareAccessType"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v19, @"shareAccessType"))
   {
     v6 = 219;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v20, @"queryRetrieveType"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v20, @"queryRetrieveType"))
   {
     v6 = 220;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v21, @"shareDeclineType"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v21, @"shareDeclineType"))
   {
     v6 = 221;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v22, @"assetUploadTokenRetrieveType"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v22, @"assetUploadTokenRetrieveType"))
   {
     v6 = 230;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v23, @"containerDeleteType"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v23, @"containerDeleteType"))
   {
     v6 = 240;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v24, @"userAvailableQuotaType"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v24, @"userAvailableQuotaType"))
   {
     v6 = 243;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v25, @"containerGetBundlesType"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v25, @"containerGetBundlesType"))
   {
     v6 = 244;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v26, @"webAuthTokenRetrieveType"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v26, @"webAuthTokenRetrieveType"))
   {
     v6 = 250;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v27, @"dataRepairUpdateMissingAssetStatusType"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v27, @"dataRepairUpdateMissingAssetStatusType"))
   {
     v6 = 260;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v28, @"addAnonymousShareType"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v28, @"addAnonymousShareType"))
   {
     v6 = 270;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v29, @"removeAnonymousShareType"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v29, @"removeAnonymousShareType"))
   {
     v6 = 271;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v30, @"zoneChildrenRetrieveType"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v30, @"zoneChildrenRetrieveType"))
   {
     v6 = 272;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v31, @"subscriptionCreateType"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v31, @"subscriptionCreateType"))
   {
     v6 = 300;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v32, @"subscriptionRetrieveType"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v32, @"subscriptionRetrieveType"))
   {
     v6 = 301;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v33, @"subscriptionDeleteType"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v33, @"subscriptionDeleteType"))
   {
     v6 = 302;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v34, @"mergeableDeltaSaveType"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v34, @"mergeableDeltaSaveType"))
   {
     v6 = 311;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v35, @"mergeableDeltaMetadataRetrieveType"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v35, @"mergeableDeltaMetadataRetrieveType"))
   {
     v6 = 312;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v36, @"mergeableDeltaReplaceType"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v36, @"mergeableDeltaReplaceType"))
   {
     v6 = 313;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v37, @"mergeableDeltaRetrieveType"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v37, @"mergeableDeltaRetrieveType"))
   {
     v6 = 314;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v38, @"privateSearchSetType"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v38, @"privateSearchSetType"))
   {
     v6 = 320;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v39, @"privateSearchGetType"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v39, @"privateSearchGetType"))
   {
     v6 = 321;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v40, @"privateSearchDeleteType"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v40, @"privateSearchDeleteType"))
   {
     v6 = 322;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v41, @"userRetrieveType"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v41, @"userRetrieveType"))
   {
     v6 = 400;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v42, @"userQueryType"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v42, @"userQueryType"))
   {
     v6 = 401;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v43, @"userPrivacySettingsRetrieveType"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v43, @"userPrivacySettingsRetrieveType"))
   {
     v6 = 402;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v44, @"userPrivacySettingsUpdateType"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v44, @"userPrivacySettingsUpdateType"))
   {
     v6 = 403;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v45, @"userPrivacySettingsResetType"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v45, @"userPrivacySettingsResetType"))
   {
     v6 = 404;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v46, @"userPrivacySettingsBatchLookup"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v46, @"userPrivacySettingsBatchLookup"))
   {
     v6 = 405;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v47, @"sharePermissionSettingsUpdateType"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v47, @"sharePermissionSettingsUpdateType"))
   {
     v6 = 406;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v48, @"adopterCapabilitiesSaveType"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v48, @"adopterCapabilitiesSaveType"))
   {
     v6 = 407;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v49, @"adopterCapabilitiesCheckType"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v49, @"adopterCapabilitiesCheckType"))
   {
     v6 = 408;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v50, @"zoneUsageSaveType"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v50, @"zoneUsageSaveType"))
   {
     v6 = 409;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v51, @"shareUsageSaveType"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v51, @"shareUsageSaveType"))
   {
     v6 = 410;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v52, @"shareAcceptType"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v52, @"shareAcceptType"))
   {
     v6 = 503;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v53, @"shareVettingInitiateType"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v53, @"shareVettingInitiateType"))
   {
     v6 = 513;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v54, @"pushRegisterType"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v54, @"pushRegisterType"))
   {
     v6 = 800;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v55, @"pushUnregisterType"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v55, @"pushUnregisterType"))
   {
     v6 = 801;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v56, @"pushBadgeType"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v56, @"pushBadgeType"))
   {
     v6 = 802;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v57, @"pushSyncType"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v57, @"pushSyncType"))
   {
     v6 = 803;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v58, @"pushReadType"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v58, @"pushReadType"))
   {
     v6 = 804;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v59, @"archiveRecordsType"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v59, @"archiveRecordsType"))
   {
     v6 = 900;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v60, @"datarepairMarkAssetBrokenType"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v60, @"datarepairMarkAssetBrokenType"))
   {
     v6 = 901;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v61, @"functionInvokeType"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v61, @"functionInvokeType"))
   {
     v6 = 1101;
   }
@@ -819,9 +819,9 @@ LABEL_98:
   }
 }
 
-- (void)setHasDatabaseType:(BOOL)a3
+- (void)setHasDatabaseType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -834,40 +834,40 @@ LABEL_98:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)databaseTypeAsString:(int)a3
+- (id)databaseTypeAsString:(int)string
 {
-  if ((a3 - 1) >= 4)
+  if ((string - 1) >= 4)
   {
-    v4 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], a2, @"(unknown: %i)", a3);
+    v4 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], a2, @"(unknown: %i)", string);
   }
 
   else
   {
-    v4 = off_27854CD68[a3 - 1];
+    v4 = off_27854CD68[string - 1];
   }
 
   return v4;
 }
 
-- (int)StringAsDatabaseType:(id)a3
+- (int)StringAsDatabaseType:(id)type
 {
-  v3 = a3;
-  if (objc_msgSend_isEqualToString_(v3, v4, @"privateDB"))
+  typeCopy = type;
+  if (objc_msgSend_isEqualToString_(typeCopy, v4, @"privateDB"))
   {
     v6 = 1;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v5, @"publicDB"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v5, @"publicDB"))
   {
     v6 = 2;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v7, @"sharedDB"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v7, @"sharedDB"))
   {
     v6 = 3;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v8, @"orgDB"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v8, @"orgDB"))
   {
     v6 = 4;
   }
@@ -1415,14 +1415,14 @@ LABEL_122:
   return v6;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v9 = v4;
+  toCopy = to;
+  v9 = toCopy;
   if (self->_containerName)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   has = self->_has;
@@ -1430,7 +1430,7 @@ LABEL_122:
   {
     containerEnvironment = self->_containerEnvironment;
     PBDataWriterWriteInt32Field();
-    v4 = v9;
+    toCopy = v9;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -1451,63 +1451,63 @@ LABEL_5:
 
   operationType = self->_operationType;
   PBDataWriterWriteInt32Field();
-  v4 = v9;
+  toCopy = v9;
   if ((*&self->_has & 2) != 0)
   {
 LABEL_6:
     databaseType = self->_databaseType;
     PBDataWriterWriteInt32Field();
-    v4 = v9;
+    toCopy = v9;
   }
 
 LABEL_7:
   if (self->_zoneName)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_operationGroupName)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_invernessServiceName)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_invernessFunctionName)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_bundleID)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   containerName = self->_containerName;
-  v13 = v4;
+  v13 = toCopy;
   if (containerName)
   {
-    objc_msgSend_setContainerName_(v4, v5, containerName);
-    v4 = v13;
+    objc_msgSend_setContainerName_(toCopy, v5, containerName);
+    toCopy = v13;
   }
 
   has = self->_has;
   if (has)
   {
-    *(v4 + 4) = self->_containerEnvironment;
-    *(v4 + 80) |= 1u;
+    *(toCopy + 4) = self->_containerEnvironment;
+    *(toCopy + 80) |= 1u;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -1526,13 +1526,13 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  *(v4 + 16) = self->_operationType;
-  *(v4 + 80) |= 4u;
+  *(toCopy + 16) = self->_operationType;
+  *(toCopy + 80) |= 4u;
   if ((*&self->_has & 2) != 0)
   {
 LABEL_6:
-    *(v4 + 8) = self->_databaseType;
-    *(v4 + 80) |= 2u;
+    *(toCopy + 8) = self->_databaseType;
+    *(toCopy + 80) |= 2u;
   }
 
 LABEL_7:
@@ -1540,44 +1540,44 @@ LABEL_7:
   if (zoneName)
   {
     objc_msgSend_setZoneName_(v13, v5, zoneName);
-    v4 = v13;
+    toCopy = v13;
   }
 
   operationGroupName = self->_operationGroupName;
   if (operationGroupName)
   {
     objc_msgSend_setOperationGroupName_(v13, v5, operationGroupName);
-    v4 = v13;
+    toCopy = v13;
   }
 
   invernessServiceName = self->_invernessServiceName;
   if (invernessServiceName)
   {
     objc_msgSend_setInvernessServiceName_(v13, v5, invernessServiceName);
-    v4 = v13;
+    toCopy = v13;
   }
 
   invernessFunctionName = self->_invernessFunctionName;
   if (invernessFunctionName)
   {
     objc_msgSend_setInvernessFunctionName_(v13, v5, invernessFunctionName);
-    v4 = v13;
+    toCopy = v13;
   }
 
   bundleID = self->_bundleID;
   if (bundleID)
   {
     objc_msgSend_setBundleID_(v13, v5, bundleID);
-    v4 = v13;
+    toCopy = v13;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
-  v12 = objc_msgSend_copyWithZone_(self->_containerName, v11, a3);
+  v12 = objc_msgSend_copyWithZone_(self->_containerName, v11, zone);
   v13 = *(v10 + 24);
   *(v10 + 24) = v12;
 
@@ -1617,40 +1617,40 @@ LABEL_4:
   }
 
 LABEL_5:
-  v16 = objc_msgSend_copyWithZone_(self->_zoneName, v14, a3);
+  v16 = objc_msgSend_copyWithZone_(self->_zoneName, v14, zone);
   v17 = *(v10 + 72);
   *(v10 + 72) = v16;
 
-  v19 = objc_msgSend_copyWithZone_(self->_operationGroupName, v18, a3);
+  v19 = objc_msgSend_copyWithZone_(self->_operationGroupName, v18, zone);
   v20 = *(v10 + 56);
   *(v10 + 56) = v19;
 
-  v22 = objc_msgSend_copyWithZone_(self->_invernessServiceName, v21, a3);
+  v22 = objc_msgSend_copyWithZone_(self->_invernessServiceName, v21, zone);
   v23 = *(v10 + 48);
   *(v10 + 48) = v22;
 
-  v25 = objc_msgSend_copyWithZone_(self->_invernessFunctionName, v24, a3);
+  v25 = objc_msgSend_copyWithZone_(self->_invernessFunctionName, v24, zone);
   v26 = *(v10 + 40);
   *(v10 + 40) = v25;
 
-  v28 = objc_msgSend_copyWithZone_(self->_bundleID, v27, a3);
+  v28 = objc_msgSend_copyWithZone_(self->_bundleID, v27, zone);
   v29 = *(v10 + 8);
   *(v10 + 8) = v28;
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (!objc_msgSend_isMemberOfClass_(v4, v6, v5))
+  if (!objc_msgSend_isMemberOfClass_(equalCopy, v6, v5))
   {
     goto LABEL_29;
   }
 
   containerName = self->_containerName;
-  v9 = v4[3];
+  v9 = equalCopy[3];
   if (containerName | v9)
   {
     if (!objc_msgSend_isEqual_(containerName, v7, v9))
@@ -1659,16 +1659,16 @@ LABEL_5:
     }
   }
 
-  v10 = *(v4 + 80);
+  v10 = *(equalCopy + 80);
   if (*&self->_has)
   {
-    if ((v4[10] & 1) == 0 || self->_containerEnvironment != *(v4 + 4))
+    if ((equalCopy[10] & 1) == 0 || self->_containerEnvironment != *(equalCopy + 4))
     {
       goto LABEL_29;
     }
   }
 
-  else if (v4[10])
+  else if (equalCopy[10])
   {
 LABEL_29:
     isEqual = 0;
@@ -1677,39 +1677,39 @@ LABEL_29:
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((v4[10] & 4) == 0 || self->_operationType != *(v4 + 16))
+    if ((equalCopy[10] & 4) == 0 || self->_operationType != *(equalCopy + 16))
     {
       goto LABEL_29;
     }
   }
 
-  else if ((v4[10] & 4) != 0)
+  else if ((equalCopy[10] & 4) != 0)
   {
     goto LABEL_29;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((v4[10] & 2) == 0 || self->_databaseType != *(v4 + 8))
+    if ((equalCopy[10] & 2) == 0 || self->_databaseType != *(equalCopy + 8))
     {
       goto LABEL_29;
     }
   }
 
-  else if ((v4[10] & 2) != 0)
+  else if ((equalCopy[10] & 2) != 0)
   {
     goto LABEL_29;
   }
 
   zoneName = self->_zoneName;
-  v12 = v4[9];
+  v12 = equalCopy[9];
   if (zoneName | v12 && !objc_msgSend_isEqual_(zoneName, v7, v12))
   {
     goto LABEL_29;
   }
 
   operationGroupName = self->_operationGroupName;
-  v14 = v4[7];
+  v14 = equalCopy[7];
   if (operationGroupName | v14)
   {
     if (!objc_msgSend_isEqual_(operationGroupName, v7, v14))
@@ -1719,7 +1719,7 @@ LABEL_29:
   }
 
   invernessServiceName = self->_invernessServiceName;
-  v16 = v4[6];
+  v16 = equalCopy[6];
   if (invernessServiceName | v16)
   {
     if (!objc_msgSend_isEqual_(invernessServiceName, v7, v16))
@@ -1729,7 +1729,7 @@ LABEL_29:
   }
 
   invernessFunctionName = self->_invernessFunctionName;
-  v18 = v4[5];
+  v18 = equalCopy[5];
   if (invernessFunctionName | v18)
   {
     if (!objc_msgSend_isEqual_(invernessFunctionName, v7, v18))
@@ -1739,7 +1739,7 @@ LABEL_29:
   }
 
   bundleID = self->_bundleID;
-  v20 = v4[1];
+  v20 = equalCopy[1];
   if (bundleID | v20)
   {
     isEqual = objc_msgSend_isEqual_(bundleID, v7, v20);
@@ -1801,23 +1801,23 @@ LABEL_8:
   return v19 ^ objc_msgSend_hash(self->_bundleID, v20, v21);
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v6 = *(v4 + 3);
-  v13 = v4;
+  fromCopy = from;
+  v6 = *(fromCopy + 3);
+  v13 = fromCopy;
   if (v6)
   {
     objc_msgSend_setContainerName_(self, v5, v6);
-    v4 = v13;
+    fromCopy = v13;
   }
 
-  v7 = *(v4 + 80);
+  v7 = *(fromCopy + 80);
   if (v7)
   {
-    self->_containerEnvironment = *(v4 + 4);
+    self->_containerEnvironment = *(fromCopy + 4);
     *&self->_has |= 1u;
-    v7 = *(v4 + 80);
+    v7 = *(fromCopy + 80);
     if ((v7 & 4) == 0)
     {
 LABEL_5:
@@ -1830,54 +1830,54 @@ LABEL_5:
     }
   }
 
-  else if ((*(v4 + 80) & 4) == 0)
+  else if ((*(fromCopy + 80) & 4) == 0)
   {
     goto LABEL_5;
   }
 
-  self->_operationType = *(v4 + 16);
+  self->_operationType = *(fromCopy + 16);
   *&self->_has |= 4u;
-  if ((*(v4 + 80) & 2) != 0)
+  if ((*(fromCopy + 80) & 2) != 0)
   {
 LABEL_6:
-    self->_databaseType = *(v4 + 8);
+    self->_databaseType = *(fromCopy + 8);
     *&self->_has |= 2u;
   }
 
 LABEL_7:
-  v8 = *(v4 + 9);
+  v8 = *(fromCopy + 9);
   if (v8)
   {
     objc_msgSend_setZoneName_(self, v5, v8);
-    v4 = v13;
+    fromCopy = v13;
   }
 
-  v9 = *(v4 + 7);
+  v9 = *(fromCopy + 7);
   if (v9)
   {
     objc_msgSend_setOperationGroupName_(self, v5, v9);
-    v4 = v13;
+    fromCopy = v13;
   }
 
-  v10 = *(v4 + 6);
+  v10 = *(fromCopy + 6);
   if (v10)
   {
     objc_msgSend_setInvernessServiceName_(self, v5, v10);
-    v4 = v13;
+    fromCopy = v13;
   }
 
-  v11 = *(v4 + 5);
+  v11 = *(fromCopy + 5);
   if (v11)
   {
     objc_msgSend_setInvernessFunctionName_(self, v5, v11);
-    v4 = v13;
+    fromCopy = v13;
   }
 
-  v12 = *(v4 + 1);
+  v12 = *(fromCopy + 1);
   if (v12)
   {
     objc_msgSend_setBundleID_(self, v5, v12);
-    v4 = v13;
+    fromCopy = v13;
   }
 }
 

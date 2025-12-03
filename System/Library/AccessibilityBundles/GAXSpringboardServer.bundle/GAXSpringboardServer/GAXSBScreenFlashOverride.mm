@@ -1,21 +1,21 @@
 @interface GAXSBScreenFlashOverride
-- (void)flashColor:(id)a3 withCompletion:(id)a4;
+- (void)flashColor:(id)color withCompletion:(id)completion;
 @end
 
 @implementation GAXSBScreenFlashOverride
 
-- (void)flashColor:(id)a3 withCompletion:(id)a4
+- (void)flashColor:(id)color withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  colorCopy = color;
+  completionCopy = completion;
   v8 = +[GAXSpringboard sharedInstance];
-  v9 = [v8 isInactive];
+  isInactive = [v8 isInactive];
 
-  if (v9)
+  if (isInactive)
   {
     v10.receiver = self;
     v10.super_class = GAXSBScreenFlashOverride;
-    [(GAXSBScreenFlashOverride *)&v10 flashColor:v6 withCompletion:v7];
+    [(GAXSBScreenFlashOverride *)&v10 flashColor:colorCopy withCompletion:completionCopy];
   }
 }
 

@@ -1,5 +1,5 @@
 @interface SBUIActionPlatterViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_axHideKeylinesContainerView;
 - (void)loadView;
@@ -7,11 +7,11 @@
 
 @implementation SBUIActionPlatterViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBUIActionPlatterViewController" hasInstanceMethod:@"loadView" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"SBUIActionPlatterViewController" hasInstanceVariable:@"_keylinesContainerView" withType:"UIView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBUIActionPlatterViewController" hasInstanceMethod:@"loadView" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"SBUIActionPlatterViewController" hasInstanceVariable:@"_keylinesContainerView" withType:"UIView"];
 }
 
 - (void)_axHideKeylinesContainerView

@@ -1,18 +1,18 @@
 @interface ATXAppPredictorPredictionChunks
-- (ATXAppPredictorPredictionChunks)initWithPredictionSetChunk:(id)a3 feedbackStateChunk:(id)a4;
+- (ATXAppPredictorPredictionChunks)initWithPredictionSetChunk:(id)chunk feedbackStateChunk:(id)stateChunk;
 - (id)chunkArray;
 - (id)joinChunks;
 @end
 
 @implementation ATXAppPredictorPredictionChunks
 
-- (ATXAppPredictorPredictionChunks)initWithPredictionSetChunk:(id)a3 feedbackStateChunk:(id)a4
+- (ATXAppPredictorPredictionChunks)initWithPredictionSetChunk:(id)chunk feedbackStateChunk:(id)stateChunk
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  v10 = 0;
-  if (v7 && v8)
+  chunkCopy = chunk;
+  stateChunkCopy = stateChunk;
+  v9 = stateChunkCopy;
+  selfCopy = 0;
+  if (chunkCopy && stateChunkCopy)
   {
     v14.receiver = self;
     v14.super_class = ATXAppPredictorPredictionChunks;
@@ -20,15 +20,15 @@
     p_isa = &v11->super.isa;
     if (v11)
     {
-      objc_storeStrong(&v11->_predictionSetChunk, a3);
-      objc_storeStrong(p_isa + 2, a4);
+      objc_storeStrong(&v11->_predictionSetChunk, chunk);
+      objc_storeStrong(p_isa + 2, stateChunk);
     }
 
     self = p_isa;
-    v10 = self;
+    selfCopy = self;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 - (id)chunkArray
@@ -45,7 +45,7 @@
 
 - (id)joinChunks
 {
-  v2 = [(ATXAppPredictorPredictionChunks *)self chunkArray];
+  chunkArray = [(ATXAppPredictorPredictionChunks *)self chunkArray];
   v3 = ATXCacheFileJoinChunks();
 
   return v3;

@@ -1,31 +1,31 @@
 @interface AudioDeviceManager
 + (id)sharedAudioDeviceManager;
 - (AudioDeviceManager)init;
-- (BOOL)_isDevicePairedCheck:(id)a3;
-- (BOOL)_isUSBDevice:(id)a3;
+- (BOOL)_isDevicePairedCheck:(id)check;
+- (BOOL)_isUSBDevice:(id)device;
 - (id)_ensureXPCStarted;
 - (id)_myBluetoothAddressString;
 - (void)_activate;
-- (void)_bluetoothStateUpdate:(int64_t)a3;
-- (void)_connectedDeviceFound:(id)a3;
-- (void)_connectedDeviceLost:(id)a3;
+- (void)_bluetoothStateUpdate:(int64_t)update;
+- (void)_connectedDeviceFound:(id)found;
+- (void)_connectedDeviceLost:(id)lost;
 - (void)_connectedUSBDeviceMonitorStart;
 - (void)_ensureXPCStopped;
-- (void)_hostBTAddress:(id)a3;
+- (void)_hostBTAddress:(id)address;
 - (void)_invalidate;
-- (void)_newUSBDeviceFound:(id)a3;
+- (void)_newUSBDeviceFound:(id)found;
 - (void)_startXPCConnection;
-- (void)_usbDeviceLost:(id)a3;
-- (void)_usbDevicePropertyChanged:(id)a3;
-- (void)_xpcConnectionEvent:(id)a3;
-- (void)_xpcConnectionInvalidated:(id)a3;
-- (void)activate:(BOOL)a3;
-- (void)getAllAudioAccessoriesPublishedUIDsWithCompletion:(id)a3;
-- (void)sendMsg:(int)a3 forUID:(id)a4 withArgs:(id)a5;
-- (void)usbDeviceDisableAirPlaneMode:(id)a3;
-- (void)usbDeviceEnableAirPlaneMode:(id)a3;
-- (void)usbDeviceHideDevice:(id)a3;
-- (void)usbDeviceUnHideDevice:(id)a3;
+- (void)_usbDeviceLost:(id)lost;
+- (void)_usbDevicePropertyChanged:(id)changed;
+- (void)_xpcConnectionEvent:(id)event;
+- (void)_xpcConnectionInvalidated:(id)invalidated;
+- (void)activate:(BOOL)activate;
+- (void)getAllAudioAccessoriesPublishedUIDsWithCompletion:(id)completion;
+- (void)sendMsg:(int)msg forUID:(id)d withArgs:(id)args;
+- (void)usbDeviceDisableAirPlaneMode:(id)mode;
+- (void)usbDeviceEnableAirPlaneMode:(id)mode;
+- (void)usbDeviceHideDevice:(id)device;
+- (void)usbDeviceUnHideDevice:(id)device;
 @end
 
 @implementation AudioDeviceManager
@@ -60,7 +60,7 @@
   return v2;
 }
 
-- (void)activate:(BOOL)a3
+- (void)activate:(BOOL)activate
 {
   if (_os_feature_enabled_impl())
   {
@@ -69,7 +69,7 @@
     v6[1] = 3221225472;
     v6[2] = sub_100009B04;
     v6[3] = &unk_1002B67F0;
-    v7 = a3;
+    activateCopy = activate;
     v6[4] = self;
     dispatch_async(dispatchQueue, v6);
   }
@@ -80,9 +80,9 @@
   }
 }
 
-- (void)getAllAudioAccessoriesPublishedUIDsWithCompletion:(id)a3
+- (void)getAllAudioAccessoriesPublishedUIDsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (dword_1002F5DA0 <= 50 && (dword_1002F5DA0 != -1 || _LogCategory_Initialize()))
   {
     sub_1001D102C();
@@ -110,7 +110,7 @@
     v8[2] = sub_100009D9C;
     v8[3] = &unk_1002B6818;
     v10 = v11;
-    v9 = v4;
+    v9 = completionCopy;
     xpc_connection_send_message_with_reply(xpcConnection, v5, dispatchQueue, v8);
   }
 
@@ -122,17 +122,17 @@
   _Block_object_dispose(v11, 8);
 }
 
-- (void)sendMsg:(int)a3 forUID:(id)a4 withArgs:(id)a5
+- (void)sendMsg:(int)msg forUID:(id)d withArgs:(id)args
 {
-  v8 = a4;
-  v9 = a5;
+  dCopy = d;
+  argsCopy = args;
   if (self->_xpcConnection)
   {
     *keys = *off_1002B6838;
     v16 = "kBTAudioMsgArgs";
-    values[0] = xpc_uint64_create(a3);
-    values[1] = xpc_string_create([v8 UTF8String]);
-    if (v9)
+    values[0] = xpc_uint64_create(msg);
+    values[1] = xpc_string_create([dCopy UTF8String]);
+    if (argsCopy)
     {
       v10 = 3;
     }
@@ -169,10 +169,10 @@
   }
 }
 
-- (void)usbDeviceEnableAirPlaneMode:(id)a3
+- (void)usbDeviceEnableAirPlaneMode:(id)mode
 {
-  v5 = a3;
-  if (v5)
+  modeCopy = mode;
+  if (modeCopy)
   {
     if (self->_xpcConnection)
     {
@@ -183,7 +183,7 @@
 
       v4 = xpc_dictionary_create(0, 0, 0);
       xpc_dictionary_set_uint64(v4, "kBTAudioMsgId", 0x23uLL);
-      xpc_dictionary_set_string(v4, "kAccAudioMsgArgUSBDeviceBTAddress", [v5 UTF8String]);
+      xpc_dictionary_set_string(v4, "kAccAudioMsgArgUSBDeviceBTAddress", [modeCopy UTF8String]);
       xpc_connection_send_message(self->_xpcConnection, v4);
     }
 
@@ -199,10 +199,10 @@
   }
 }
 
-- (void)usbDeviceDisableAirPlaneMode:(id)a3
+- (void)usbDeviceDisableAirPlaneMode:(id)mode
 {
-  v5 = a3;
-  if (v5)
+  modeCopy = mode;
+  if (modeCopy)
   {
     if (self->_xpcConnection)
     {
@@ -213,7 +213,7 @@
 
       v4 = xpc_dictionary_create(0, 0, 0);
       xpc_dictionary_set_uint64(v4, "kBTAudioMsgId", 0x24uLL);
-      xpc_dictionary_set_string(v4, "kAccAudioMsgArgUSBDeviceBTAddress", [v5 UTF8String]);
+      xpc_dictionary_set_string(v4, "kAccAudioMsgArgUSBDeviceBTAddress", [modeCopy UTF8String]);
       xpc_connection_send_message(self->_xpcConnection, v4);
     }
 
@@ -229,10 +229,10 @@
   }
 }
 
-- (void)usbDeviceHideDevice:(id)a3
+- (void)usbDeviceHideDevice:(id)device
 {
-  v5 = a3;
-  if (v5)
+  deviceCopy = device;
+  if (deviceCopy)
   {
     if (self->_xpcConnection)
     {
@@ -243,7 +243,7 @@
 
       v4 = xpc_dictionary_create(0, 0, 0);
       xpc_dictionary_set_uint64(v4, "kBTAudioMsgId", 0x20uLL);
-      xpc_dictionary_set_string(v4, "kAccAudioMsgArgUSBDeviceBTAddress", [v5 UTF8String]);
+      xpc_dictionary_set_string(v4, "kAccAudioMsgArgUSBDeviceBTAddress", [deviceCopy UTF8String]);
       xpc_connection_send_message(self->_xpcConnection, v4);
     }
 
@@ -259,10 +259,10 @@
   }
 }
 
-- (void)usbDeviceUnHideDevice:(id)a3
+- (void)usbDeviceUnHideDevice:(id)device
 {
-  v5 = a3;
-  if (v5)
+  deviceCopy = device;
+  if (deviceCopy)
   {
     if (self->_xpcConnection)
     {
@@ -273,7 +273,7 @@
 
       v4 = xpc_dictionary_create(0, 0, 0);
       xpc_dictionary_set_uint64(v4, "kBTAudioMsgId", 0x21uLL);
-      xpc_dictionary_set_string(v4, "kAccAudioMsgArgUSBDeviceBTAddress", [v5 UTF8String]);
+      xpc_dictionary_set_string(v4, "kAccAudioMsgArgUSBDeviceBTAddress", [deviceCopy UTF8String]);
       xpc_connection_send_message(self->_xpcConnection, v4);
     }
 
@@ -291,15 +291,15 @@
 
 - (void)_activate
 {
-  v3 = [(AudioDeviceManager *)self _ensureXPCStarted];
+  _ensureXPCStarted = [(AudioDeviceManager *)self _ensureXPCStarted];
   [(AudioDeviceManager *)self _startXPCConnection];
 
   [(AudioDeviceManager *)self _connectedUSBDeviceMonitorStart];
 }
 
-- (void)_bluetoothStateUpdate:(int64_t)a3
+- (void)_bluetoothStateUpdate:(int64_t)update
 {
-  if (a3 == 5)
+  if (update == 5)
   {
     btPowerState = self->_btPowerState;
     if (!btPowerState)
@@ -326,13 +326,13 @@ LABEL_17:
         xdict = xpc_dictionary_create(0, 0, 0);
         xpc_dictionary_set_uint64(xdict, "kBTAudioMsgId", 0x1EuLL);
         xpc_dictionary_set_BOOL(xdict, "kAccAudioMsgArgUSBDeviceHiddenState", self->_btPowerState);
-        v5 = [(AudioDeviceManager *)self _ensureXPCStarted];
-        xpc_connection_send_message(v5, xdict);
+        _ensureXPCStarted = [(AudioDeviceManager *)self _ensureXPCStarted];
+        xpc_connection_send_message(_ensureXPCStarted, xdict);
       }
     }
   }
 
-  else if (a3 == 4 && self->_btPowerState)
+  else if (update == 4 && self->_btPowerState)
   {
     if (dword_1002F5DA0 <= 50 && (dword_1002F5DA0 != -1 || _LogCategory_Initialize()))
     {
@@ -347,14 +347,14 @@ LABEL_17:
   }
 }
 
-- (void)_connectedDeviceFound:(id)a3
+- (void)_connectedDeviceFound:(id)found
 {
-  v8 = a3;
-  v4 = [(AudioDeviceManager *)self _isUSBDevice:v8];
-  v5 = v8;
+  foundCopy = found;
+  v4 = [(AudioDeviceManager *)self _isUSBDevice:foundCopy];
+  v5 = foundCopy;
   if (v4)
   {
-    v6 = [v8 btAddressData];
+    btAddressData = [foundCopy btAddressData];
     v7 = CUPrintNSDataAddress();
 
     if (v7)
@@ -364,23 +364,23 @@ LABEL_17:
         sub_1001D16A4();
       }
 
-      [(NSMutableDictionary *)self->_connectedBTUSBDevices setObject:v8 forKeyedSubscript:v7];
+      [(NSMutableDictionary *)self->_connectedBTUSBDevices setObject:foundCopy forKeyedSubscript:v7];
     }
 
-    v5 = v8;
+    v5 = foundCopy;
   }
 
   _objc_release_x1(v4, v5);
 }
 
-- (void)_connectedDeviceLost:(id)a3
+- (void)_connectedDeviceLost:(id)lost
 {
-  v9 = a3;
-  v4 = [(AudioDeviceManager *)self _isUSBDevice:v9];
-  v5 = v9;
+  lostCopy = lost;
+  v4 = [(AudioDeviceManager *)self _isUSBDevice:lostCopy];
+  v5 = lostCopy;
   if (v4)
   {
-    v6 = [v9 btAddressData];
+    btAddressData = [lostCopy btAddressData];
     v7 = CUPrintNSDataAddress();
 
     if (v7)
@@ -398,7 +398,7 @@ LABEL_17:
       }
     }
 
-    v5 = v9;
+    v5 = lostCopy;
   }
 
   _objc_release_x1(v4, v5);
@@ -453,23 +453,23 @@ LABEL_17:
   }
 }
 
-- (void)_hostBTAddress:(id)a3
+- (void)_hostBTAddress:(id)address
 {
-  xdict = xpc_dictionary_create_reply(a3);
-  v4 = [(AudioDeviceManager *)self _myBluetoothAddressString];
-  v5 = v4;
-  if (v4)
+  xdict = xpc_dictionary_create_reply(address);
+  _myBluetoothAddressString = [(AudioDeviceManager *)self _myBluetoothAddressString];
+  v5 = _myBluetoothAddressString;
+  if (_myBluetoothAddressString)
   {
-    xpc_dictionary_set_string(xdict, "kAccAudioMsgArgUSBHostBTAddress", [v4 UTF8String]);
+    xpc_dictionary_set_string(xdict, "kAccAudioMsgArgUSBHostBTAddress", [_myBluetoothAddressString UTF8String]);
   }
 
   xpc_connection_send_message(self->_xpcConnection, xdict);
 }
 
-- (BOOL)_isUSBDevice:(id)a3
+- (BOOL)_isUSBDevice:(id)device
 {
-  v3 = a3;
-  v4 = ([v3 connectedServices] & 0x11) != 0 && objc_msgSend(v3, "productID") == 8223;
+  deviceCopy = device;
+  v4 = ([deviceCopy connectedServices] & 0x11) != 0 && objc_msgSend(deviceCopy, "productID") == 8223;
 
   return v4;
 }
@@ -481,7 +481,7 @@ LABEL_17:
   if (!myBTAddress || -[NSString length](myBTAddress, "length") != 17 || !strcmp([*p_myBTAddress UTF8String], "00:00:00:00:00:00") || objc_msgSend(*p_myBTAddress, "isEqualToString:", @"NULL"))
   {
     v4 = [CBController controllerInfoAndReturnError:0];
-    v5 = [v4 hardwareAddressData];
+    hardwareAddressData = [v4 hardwareAddressData];
     v6 = CUPrintNSDataAddress();
     v7 = *p_myBTAddress;
     *p_myBTAddress = v6;
@@ -489,9 +489,9 @@ LABEL_17:
     if (!*p_myBTAddress || [*p_myBTAddress length] != 17 || !strcmp(objc_msgSend(*p_myBTAddress, "UTF8String"), "00:00:00:00:00:00") || objc_msgSend(*p_myBTAddress, "isEqualToString:", @"NULL"))
     {
       v8 = MGCopyAnswer();
-      v9 = [v8 uppercaseString];
+      uppercaseString = [v8 uppercaseString];
       v10 = *p_myBTAddress;
-      *p_myBTAddress = v9;
+      *p_myBTAddress = uppercaseString;
     }
   }
 
@@ -505,9 +505,9 @@ LABEL_17:
   return v11;
 }
 
-- (void)_newUSBDeviceFound:(id)a3
+- (void)_newUSBDeviceFound:(id)found
 {
-  xdict = a3;
+  xdict = found;
   if (!self->_usbDeviceMap)
   {
     v4 = objc_alloc_init(NSMutableDictionary);
@@ -690,9 +690,9 @@ LABEL_17:
   }
 }
 
-- (void)_usbDeviceLost:(id)a3
+- (void)_usbDeviceLost:(id)lost
 {
-  xdict = a3;
+  xdict = lost;
   if (dword_1002F5DA0 <= 50 && (dword_1002F5DA0 != -1 || _LogCategory_Initialize()))
   {
     sub_1001D1B10();
@@ -746,22 +746,22 @@ LABEL_17:
   }
 }
 
-- (void)_usbDevicePropertyChanged:(id)a3
+- (void)_usbDevicePropertyChanged:(id)changed
 {
-  v4 = a3;
-  xdict = v4;
+  changedCopy = changed;
+  xdict = changedCopy;
   if (dword_1002F5DA0 <= 50)
   {
-    if (dword_1002F5DA0 != -1 || (v5 = _LogCategory_Initialize(), v4 = xdict, v5))
+    if (dword_1002F5DA0 != -1 || (v5 = _LogCategory_Initialize(), changedCopy = xdict, v5))
     {
       sub_1001D1BEC();
-      v4 = xdict;
+      changedCopy = xdict;
     }
   }
 
   if (self->_usbDeviceMap)
   {
-    string = xpc_dictionary_get_string(v4, "kAccAudioMsgArgBTAddress");
+    string = xpc_dictionary_get_string(changedCopy, "kAccAudioMsgArgBTAddress");
     v7 = xpc_dictionary_get_string(xdict, "kAccAudioMsgArgUSBID");
     if (string)
     {
@@ -871,9 +871,9 @@ LABEL_17:
 
 - (id)_ensureXPCStarted
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  xpcConnection = v2->_xpcConnection;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  xpcConnection = selfCopy->_xpcConnection;
   if (!xpcConnection)
   {
     if (dword_1002F5DA0 <= 50 && (dword_1002F5DA0 != -1 || _LogCategory_Initialize()))
@@ -881,28 +881,28 @@ LABEL_17:
       LogPrintF();
     }
 
-    mach_service = xpc_connection_create_mach_service("com.apple.BTAudioHALPluginAccessories", v2->_dispatchQueue, 0);
-    v5 = v2->_xpcConnection;
-    v2->_xpcConnection = mach_service;
+    mach_service = xpc_connection_create_mach_service("com.apple.BTAudioHALPluginAccessories", selfCopy->_dispatchQueue, 0);
+    v5 = selfCopy->_xpcConnection;
+    selfCopy->_xpcConnection = mach_service;
 
-    v6 = v2->_xpcConnection;
+    v6 = selfCopy->_xpcConnection;
     handler[0] = _NSConcreteStackBlock;
     handler[1] = 3221225472;
     handler[2] = sub_10000BB78;
     handler[3] = &unk_1002B68D0;
-    handler[4] = v2;
+    handler[4] = selfCopy;
     xpc_connection_set_event_handler(v6, handler);
-    xpc_connection_activate(v2->_xpcConnection);
+    xpc_connection_activate(selfCopy->_xpcConnection);
     if (dword_1002F5DA0 <= 50 && (dword_1002F5DA0 != -1 || _LogCategory_Initialize()))
     {
       LogPrintF();
     }
 
-    xpcConnection = v2->_xpcConnection;
+    xpcConnection = selfCopy->_xpcConnection;
   }
 
   v7 = xpcConnection;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }
@@ -920,11 +920,11 @@ LABEL_17:
   objc_sync_exit(obj);
 }
 
-- (BOOL)_isDevicePairedCheck:(id)a3
+- (BOOL)_isDevicePairedCheck:(id)check
 {
-  v3 = a3;
+  checkCopy = check;
   v4 = +[CBIDSManager sharedInstance];
-  v5 = [v4 idsDeviceForBTAddress:v3];
+  v5 = [v4 idsDeviceForBTAddress:checkCopy];
 
   if (dword_1002F5DA0 <= 30 && (dword_1002F5DA0 != -1 || _LogCategory_Initialize()))
   {
@@ -941,27 +941,27 @@ LABEL_17:
     sub_1001D1D3C();
   }
 
-  v5 = [(AudioDeviceManager *)self _myBluetoothAddressString];
+  _myBluetoothAddressString = [(AudioDeviceManager *)self _myBluetoothAddressString];
   v3 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_uint64(v3, "kBTAudioMsgId", 0x17uLL);
-  if (v5)
+  if (_myBluetoothAddressString)
   {
-    xpc_dictionary_set_string(v3, "kBTAudioMsgDeviceUid", [v5 UTF8String]);
+    xpc_dictionary_set_string(v3, "kBTAudioMsgDeviceUid", [_myBluetoothAddressString UTF8String]);
   }
 
-  v4 = [(AudioDeviceManager *)self _ensureXPCStarted];
-  xpc_connection_send_message(v4, v3);
+  _ensureXPCStarted = [(AudioDeviceManager *)self _ensureXPCStarted];
+  xpc_connection_send_message(_ensureXPCStarted, v3);
   if (dword_1002F5DA0 <= 50 && (dword_1002F5DA0 != -1 || _LogCategory_Initialize()))
   {
     sub_1001D1D58();
   }
 }
 
-- (void)_xpcConnectionEvent:(id)a3
+- (void)_xpcConnectionEvent:(id)event
 {
-  v4 = a3;
-  type = xpc_get_type(v4);
-  if (v4 == &_xpc_error_connection_invalid)
+  eventCopy = event;
+  type = xpc_get_type(eventCopy);
+  if (eventCopy == &_xpc_error_connection_invalid)
   {
     if (dword_1002F5DA0 <= 90 && (dword_1002F5DA0 != -1 || _LogCategory_Initialize()))
     {
@@ -994,14 +994,14 @@ LABEL_17:
     dispatch_resume(self->_xpcTimer);
   }
 
-  else if (v4 == &_xpc_error_connection_interrupted || type == &_xpc_type_error)
+  else if (eventCopy == &_xpc_error_connection_interrupted || type == &_xpc_type_error)
   {
     if (dword_1002F5DA0 <= 90 && (dword_1002F5DA0 != -1 || _LogCategory_Initialize()))
     {
       sub_1001D1E64();
     }
 
-    [(AudioDeviceManager *)self _xpcConnectionInvalidated:v4];
+    [(AudioDeviceManager *)self _xpcConnectionInvalidated:eventCopy];
     [(AudioDeviceManager *)self activate:1];
   }
 
@@ -1017,7 +1017,7 @@ LABEL_17:
       goto LABEL_47;
     }
 
-    uint64 = xpc_dictionary_get_uint64(v4, "kBTAudioMsgMethod");
+    uint64 = xpc_dictionary_get_uint64(eventCopy, "kBTAudioMsgMethod");
     if (uint64 > 29)
     {
       if (uint64 == 30)
@@ -1027,7 +1027,7 @@ LABEL_17:
           sub_1001D1DD0();
         }
 
-        [(AudioDeviceManager *)self _usbDevicePropertyChanged:v4];
+        [(AudioDeviceManager *)self _usbDevicePropertyChanged:eventCopy];
       }
 
       else
@@ -1048,7 +1048,7 @@ LABEL_35:
           sub_1001D1DB4();
         }
 
-        [(AudioDeviceManager *)self _hostBTAddress:v4];
+        [(AudioDeviceManager *)self _hostBTAddress:eventCopy];
       }
     }
 
@@ -1063,7 +1063,7 @@ LABEL_35:
             sub_1001D1DEC();
           }
 
-          [(AudioDeviceManager *)self _usbDeviceLost:v4];
+          [(AudioDeviceManager *)self _usbDeviceLost:eventCopy];
           goto LABEL_47;
         }
 
@@ -1075,16 +1075,16 @@ LABEL_35:
         sub_1001D1E08();
       }
 
-      [(AudioDeviceManager *)self _newUSBDeviceFound:v4];
+      [(AudioDeviceManager *)self _newUSBDeviceFound:eventCopy];
     }
   }
 
 LABEL_47:
 }
 
-- (void)_xpcConnectionInvalidated:(id)a3
+- (void)_xpcConnectionInvalidated:(id)invalidated
 {
-  v6 = a3;
+  invalidatedCopy = invalidated;
   if (dword_1002F5DA0 <= 50 && (dword_1002F5DA0 != -1 || _LogCategory_Initialize()))
   {
     sub_1001D1EB8();

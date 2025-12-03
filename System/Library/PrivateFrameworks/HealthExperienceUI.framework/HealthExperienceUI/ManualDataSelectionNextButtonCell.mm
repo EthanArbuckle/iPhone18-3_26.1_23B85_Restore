@@ -1,16 +1,16 @@
 @interface ManualDataSelectionNextButtonCell
-- (_TtC18HealthExperienceUI33ManualDataSelectionNextButtonCell)initWithCoder:(id)a3;
-- (_TtC18HealthExperienceUI33ManualDataSelectionNextButtonCell)initWithFrame:(CGRect)a3;
+- (_TtC18HealthExperienceUI33ManualDataSelectionNextButtonCell)initWithCoder:(id)coder;
+- (_TtC18HealthExperienceUI33ManualDataSelectionNextButtonCell)initWithFrame:(CGRect)frame;
 @end
 
 @implementation ManualDataSelectionNextButtonCell
 
-- (_TtC18HealthExperienceUI33ManualDataSelectionNextButtonCell)initWithFrame:(CGRect)a3
+- (_TtC18HealthExperienceUI33ManualDataSelectionNextButtonCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = self + OBJC_IVAR____TtC18HealthExperienceUI33ManualDataSelectionNextButtonCell_item;
   *v8 = 0u;
   *(v8 + 1) = 0u;
@@ -24,7 +24,7 @@
   return [(ManualDataSelectionNextButtonCell *)&v12 initWithFrame:x, y, width, height];
 }
 
-- (_TtC18HealthExperienceUI33ManualDataSelectionNextButtonCell)initWithCoder:(id)a3
+- (_TtC18HealthExperienceUI33ManualDataSelectionNextButtonCell)initWithCoder:(id)coder
 {
   v4 = self + OBJC_IVAR____TtC18HealthExperienceUI33ManualDataSelectionNextButtonCell_item;
   *v4 = 0u;
@@ -35,8 +35,8 @@
   v5[1] = 0;
   v9.receiver = self;
   v9.super_class = type metadata accessor for ManualDataSelectionNextButtonCell();
-  v6 = a3;
-  v7 = [(ManualDataSelectionNextButtonCell *)&v9 initWithCoder:v6];
+  coderCopy = coder;
+  v7 = [(ManualDataSelectionNextButtonCell *)&v9 initWithCoder:coderCopy];
 
   if (v7)
   {

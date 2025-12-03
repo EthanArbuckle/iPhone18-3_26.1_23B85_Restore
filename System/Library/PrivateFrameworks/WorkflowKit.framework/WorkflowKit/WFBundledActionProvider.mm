@@ -1,9 +1,9 @@
 @interface WFBundledActionProvider
 - (NSSet)identifiersOfActionsDisabledOnWatch;
-- (id)actionDefinitionsWithIdentifiers:(id)a3;
+- (id)actionDefinitionsWithIdentifiers:(id)identifiers;
 - (id)availableActionIdentifiers;
 - (id)createAllAvailableActionsForLocalization;
-- (void)createActionsForRequests:(id)a3 forceLocalActionsOnly:(BOOL)a4;
+- (void)createActionsForRequests:(id)requests forceLocalActionsOnly:(BOOL)only;
 @end
 
 @implementation WFBundledActionProvider
@@ -107,16 +107,16 @@ void __79__WFBundledActionProvider_DisabledOnWatch__identifiersOfActionsDisabled
   return v4;
 }
 
-- (void)createActionsForRequests:(id)a3 forceLocalActionsOnly:(BOOL)a4
+- (void)createActionsForRequests:(id)requests forceLocalActionsOnly:(BOOL)only
 {
   v42 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  requestsCopy = requests;
   v5 = objc_opt_new();
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v6 = v4;
+  v6 = requestsCopy;
   v7 = [v6 countByEnumeratingWithState:&v32 objects:v41 count:16];
   if (v7)
   {
@@ -131,8 +131,8 @@ void __79__WFBundledActionProvider_DisabledOnWatch__identifiersOfActionsDisabled
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v32 + 1) + 8 * i) actionIdentifier];
-        [v5 addObject:v11];
+        actionIdentifier = [*(*(&v32 + 1) + 8 * i) actionIdentifier];
+        [v5 addObject:actionIdentifier];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v32 objects:v41 count:16];
@@ -146,11 +146,11 @@ void __79__WFBundledActionProvider_DisabledOnWatch__identifiersOfActionsDisabled
   v13 = getWFActionRegistryLogObject();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [v12 allKeys];
+    allKeys = [v12 allKeys];
     *buf = 136315394;
     v38 = "[WFBundledActionProvider createActionsForRequests:forceLocalActionsOnly:]";
     v39 = 2114;
-    v40 = v14;
+    v40 = allKeys;
     _os_log_impl(&dword_1CA256000, v13, OS_LOG_TYPE_DEFAULT, "%s Found actions: %{public}@", buf, 0x16u);
   }
 
@@ -174,12 +174,12 @@ void __79__WFBundledActionProvider_DisabledOnWatch__identifiersOfActionsDisabled
         }
 
         v20 = *(*(&v28 + 1) + 8 * j);
-        v21 = [v20 actionIdentifier];
-        v22 = [v12 objectForKey:v21];
+        actionIdentifier2 = [v20 actionIdentifier];
+        v22 = [v12 objectForKey:actionIdentifier2];
         if (v22)
         {
-          v23 = [v20 serializedParameters];
-          v24 = [(WFBundledActionProvider *)self createActionWithIdentifier:v21 definition:v22 serializedParameters:v23 fallbackToMissing:1 isForLocalization:0];
+          serializedParameters = [v20 serializedParameters];
+          v24 = [(WFBundledActionProvider *)self createActionWithIdentifier:actionIdentifier2 definition:v22 serializedParameters:serializedParameters fallbackToMissing:1 isForLocalization:0];
 
           if (v24)
           {
@@ -201,27 +201,27 @@ void __79__WFBundledActionProvider_DisabledOnWatch__identifiersOfActionsDisabled
 {
   v3 = objc_alloc(MEMORY[0x1E695DFD8]);
   v4 = [(WFBundledActionProvider *)self actionDefinitionsWithIdentifiers:0];
-  v5 = [v4 allKeys];
-  v6 = [v3 initWithArray:v5];
+  allKeys = [v4 allKeys];
+  v6 = [v3 initWithArray:allKeys];
 
   return v6;
 }
 
-- (id)actionDefinitionsWithIdentifiers:(id)a3
+- (id)actionDefinitionsWithIdentifiers:(id)identifiers
 {
   v50 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifiersCopy = identifiers;
   v5 = +[WFActionDefinitionRegistry registeredDefinitions];
   v6 = objc_opt_new();
   v7 = v6;
-  v30 = v4;
-  if (v4)
+  v30 = identifiersCopy;
+  if (identifiersCopy)
   {
     v42 = 0u;
     v43 = 0u;
     v40 = 0u;
     v41 = 0u;
-    obj = v4;
+    obj = identifiersCopy;
     v8 = [obj countByEnumeratingWithState:&v40 objects:v49 count:16];
     if (v8)
     {
@@ -242,13 +242,13 @@ void __79__WFBundledActionProvider_DisabledOnWatch__identifiersOfActionsDisabled
           {
             [(WFActionProvider *)self defaultActionDefinition];
             v13 = v7;
-            v14 = self;
+            selfCopy = self;
             v16 = v15 = v5;
             v17 = v12[2](v12);
             v18 = [v16 definitionByMergingWithDefinition:v17];
 
             v5 = v15;
-            self = v14;
+            self = selfCopy;
             v7 = v13;
             [v13 setObject:v18 forKey:v11];
           }
@@ -260,7 +260,7 @@ void __79__WFBundledActionProvider_DisabledOnWatch__identifiersOfActionsDisabled
       while (v9);
     }
 
-    v4 = v30;
+    identifiersCopy = v30;
   }
 
   else
@@ -318,7 +318,7 @@ void __79__WFBundledActionProvider_DisabledOnWatch__identifiersOfActionsDisabled
       while (v22);
     }
 
-    v4 = v30;
+    identifiersCopy = v30;
     v5 = obja;
     v19 = v29;
   }

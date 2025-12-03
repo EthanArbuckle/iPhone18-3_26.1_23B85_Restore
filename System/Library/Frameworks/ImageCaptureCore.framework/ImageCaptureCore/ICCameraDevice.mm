@@ -1,15 +1,15 @@
 @interface ICCameraDevice
-+ (BOOL)automaticallyNotifiesObserversForKey:(id)a3;
-+ (id)uuidStringFromFileProviderIdentifier:(id)a3;
-- (BOOL)addMediaFiles:(id)a3;
++ (BOOL)automaticallyNotifiesObserversForKey:(id)key;
++ (id)uuidStringFromFileProviderIdentifier:(id)identifier;
+- (BOOL)addMediaFiles:(id)files;
 - (BOOL)containsRestrictedStorage;
 - (BOOL)isAccessRestrictedAppleDevice;
 - (BOOL)legacyDevice;
-- (BOOL)setDefaultMediaPresentation:(unint64_t)a3;
+- (BOOL)setDefaultMediaPresentation:(unint64_t)presentation;
 - (BOOL)supportsMediaFormatCatalog;
-- (BOOL)updateAppleProperties:(id)a3;
+- (BOOL)updateAppleProperties:(id)properties;
 - (CGImage)icon;
-- (ICCameraDevice)initWithDictionary:(id)a3;
+- (ICCameraDevice)initWithDictionary:(id)dictionary;
 - (NSArray)contents;
 - (NSArray)filesOfType:(NSString *)fileUTType;
 - (NSArray)mediaFiles;
@@ -21,44 +21,44 @@
 - (NSString)deviceColor;
 - (NSString)deviceEnclosureColor;
 - (NSString)productVersion;
-- (id)cameraFileWithObjectID:(unint64_t)a3;
-- (id)cameraFolderWithObjectID:(unint64_t)a3;
+- (id)cameraFileWithObjectID:(unint64_t)d;
+- (id)cameraFolderWithObjectID:(unint64_t)d;
 - (id)description;
-- (id)ownerMedia:(id)a3 withMedia:(id)a4;
-- (id)relateGroupedMedia:(id)a3;
-- (id)relateLegacyMedia:(id)a3;
-- (id)relateMedia:(id)a3;
+- (id)ownerMedia:(id)media withMedia:(id)withMedia;
+- (id)relateGroupedMedia:(id)media;
+- (id)relateLegacyMedia:(id)media;
+- (id)relateMedia:(id)media;
 - (id)remoteCamera;
-- (id)remoteCameraWithFailureBlock:(id)a3;
+- (id)remoteCameraWithFailureBlock:(id)block;
 - (int64_t)cameraFilesContentSizeInBytes;
-- (int64_t)stitchMedia:(id)a3 withMedia:(id)a4;
+- (int64_t)stitchMedia:(id)media withMedia:(id)withMedia;
 - (unint64_t)countOfObjects;
-- (void)addCameraFileToIndex:(id)a3;
-- (void)addCameraFolderToIndex:(id)a3;
-- (void)addCapability:(id)a3;
-- (void)addFolder:(id)a3;
-- (void)addItems:(id)a3;
-- (void)blendMedia:(id)a3[10] ofLength:(int)a4 withMedia:(id)a5[10] ofLength:(int)a6;
+- (void)addCameraFileToIndex:(id)index;
+- (void)addCameraFolderToIndex:(id)index;
+- (void)addCapability:(id)capability;
+- (void)addFolder:(id)folder;
+- (void)addItems:(id)items;
+- (void)blendMedia:(id)media[10] ofLength:(int)length withMedia:(id)withMedia[10] ofLength:(int)ofLength;
 - (void)cancelDelete;
 - (void)cancelDownload;
 - (void)dealloc;
-- (void)dispatchAsyncForOperationType:(int64_t)a3 block:(id)a4;
-- (void)dumpPTPPassthruCommand:(id)a3 andData:(id)a4;
-- (void)grindMedia:(id)a3[10] index:(int *)a4 file:(id)a5;
-- (void)handlePtpEvent:(id)a3;
-- (void)handleStatusNotification:(id)a3;
-- (void)removeCameraFileFromIndex:(id)a3;
-- (void)removeCameraFolderFromIndex:(id)a3;
-- (void)removeFolder:(id)a3;
-- (void)removeItems:(id)a3;
+- (void)dispatchAsyncForOperationType:(int64_t)type block:(id)block;
+- (void)dumpPTPPassthruCommand:(id)command andData:(id)data;
+- (void)grindMedia:(id)media[10] index:(int *)index file:(id)file;
+- (void)handlePtpEvent:(id)event;
+- (void)handleStatusNotification:(id)notification;
+- (void)removeCameraFileFromIndex:(id)index;
+- (void)removeCameraFolderFromIndex:(id)index;
+- (void)removeFolder:(id)folder;
+- (void)removeItems:(id)items;
 - (void)requestCloseSession;
-- (void)requestCloseSessionWithOptions:(id)a3 completion:(id)a4;
+- (void)requestCloseSessionWithOptions:(id)options completion:(id)completion;
 - (void)requestDeleteFiles:(NSArray *)files;
 - (void)requestDownloadFile:(ICCameraFile *)file options:(NSDictionary *)options downloadDelegate:(id)downloadDelegate didDownloadSelector:(SEL)selector contextInfo:(void *)contextInfo;
 - (void)requestEject;
-- (void)requestEnumerateContentWithOptions:(id)a3 completion:(id)a4;
+- (void)requestEnumerateContentWithOptions:(id)options completion:(id)completion;
 - (void)requestOpenSession;
-- (void)requestOpenSessionWithOptions:(id)a3 completion:(id)a4;
+- (void)requestOpenSessionWithOptions:(id)options completion:(id)completion;
 - (void)requestReadDataFromFile:(ICCameraFile *)file atOffset:(off_t)offset length:(off_t)length readDelegate:(id)readDelegate didReadDataSelector:(SEL)selector contextInfo:(void *)contextInfo;
 - (void)requestSendPTPCommand:(NSData *)command outData:(NSData *)data sendCommandDelegate:(id)sendCommandDelegate didSendCommandSelector:(SEL)selector contextInfo:(void *)contextInfo;
 - (void)requestSendPTPCommand:(NSData *)ptpCommand outData:(NSData *)ptpData completion:(void *)completion;
@@ -66,61 +66,61 @@
 - (void)requestTakePicture;
 - (void)requestUploadFile:(NSURL *)fileURL options:(NSDictionary *)options uploadDelegate:(id)uploadDelegate didUploadSelector:(SEL)selector contextInfo:(void *)contextInfo;
 - (void)resetAccessRestriction;
-- (void)setAccessRestriction:(unint64_t)a3;
-- (void)setAppleRelatedUUIDSupport:(unint64_t)a3;
-- (void)setContentCatalogPercentCompleted:(unint64_t)a3;
-- (void)setDelegate:(id)a3;
-- (void)setICloudPhotosOptimizeStorageState:(unint64_t)a3;
-- (void)setIsAccessRestrictedAppleDevice:(BOOL)a3;
+- (void)setAccessRestriction:(unint64_t)restriction;
+- (void)setAppleRelatedUUIDSupport:(unint64_t)support;
+- (void)setContentCatalogPercentCompleted:(unint64_t)completed;
+- (void)setDelegate:(id)delegate;
+- (void)setICloudPhotosOptimizeStorageState:(unint64_t)state;
+- (void)setIsAccessRestrictedAppleDevice:(BOOL)device;
 - (void)setMediaPresentation:(ICMediaPresentation)mediaPresentation;
-- (void)setPtpEventForwarding:(BOOL)a3;
+- (void)setPtpEventForwarding:(BOOL)forwarding;
 - (void)setPtpEventHandler:(void *)ptpEventHandler;
 - (void)storageAvailable;
 - (void)updateAccessRestriction;
 - (void)updateContentCatalogPercentCompleted;
 - (void)updateEnumeratingErrorStatus;
 - (void)updateLockedErrorStatus;
-- (void)updateMediaFilesCount:(id)a3;
+- (void)updateMediaFilesCount:(id)count;
 @end
 
 @implementation ICCameraDevice
 
-+ (BOOL)automaticallyNotifiesObserversForKey:(id)a3
++ (BOOL)automaticallyNotifiesObserversForKey:(id)key
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"mediaFiles"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"mediaFiles"])
   {
     v5 = 0;
   }
 
   else
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___ICCameraDevice;
-    v5 = objc_msgSendSuper2(&v7, sel_automaticallyNotifiesObserversForKey_, v4);
+    v5 = objc_msgSendSuper2(&v7, sel_automaticallyNotifiesObserversForKey_, keyCopy);
   }
 
   return v5;
 }
 
-+ (id)uuidStringFromFileProviderIdentifier:(id)a3
++ (id)uuidStringFromFileProviderIdentifier:(id)identifier
 {
   __src[2] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = v3;
+  identifierCopy = identifier;
+  v4 = identifierCopy;
   __src[0] = 0;
   __src[1] = 0;
   v30 = 0;
-  if (!v3)
+  if (!identifierCopy)
   {
     goto LABEL_10;
   }
 
-  v5 = [v3 smallestEncoding];
+  smallestEncoding = [identifierCopy smallestEncoding];
   [v4 length];
   v6 = [v4 length] - 16;
   [v4 length];
-  if (![v4 getBytes:__src maxLength:16 usedLength:&v30 encoding:v5 options:1 range:v6 remainingRange:{16, 0}])
+  if (![v4 getBytes:__src maxLength:16 usedLength:&v30 encoding:smallestEncoding options:1 range:v6 remainingRange:{16, 0}])
   {
     goto LABEL_10;
   }
@@ -194,10 +194,10 @@ LABEL_10:
   return v27;
 }
 
-- (id)relateLegacyMedia:(id)a3
+- (id)relateLegacyMedia:(id)media
 {
   v3 = MEMORY[0x1E695DF90];
-  v4 = a3;
+  mediaCopy = media;
   v5 = objc_alloc_init(v3);
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v10[0] = MEMORY[0x1E69E9820];
@@ -206,7 +206,7 @@ LABEL_10:
   v10[3] = &unk_1E829D030;
   v11 = v6;
   v7 = v6;
-  [v4 enumerateKeysAndObjectsUsingBlock:v10];
+  [mediaCopy enumerateKeysAndObjectsUsingBlock:v10];
 
   v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v7, "count")}];
   [v5 setObject:v8 forKeyedSubscript:@"universalFilesCount"];
@@ -366,22 +366,22 @@ LABEL_32:
 LABEL_38:
 }
 
-- (id)relateGroupedMedia:(id)a3
+- (id)relateGroupedMedia:(id)media
 {
   v4 = MEMORY[0x1E695DF90];
-  v5 = a3;
+  mediaCopy = media;
   v6 = objc_alloc_init(v4);
   v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v11 = MEMORY[0x1E69E9820];
   v12 = 3221225472;
   v13 = __37__ICCameraDevice_relateGroupedMedia___block_invoke;
   v14 = &unk_1E829D058;
-  v15 = self;
+  selfCopy = self;
   v16 = v7;
   v8 = v7;
-  [v5 enumerateKeysAndObjectsUsingBlock:&v11];
+  [mediaCopy enumerateKeysAndObjectsUsingBlock:&v11];
 
-  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v8, "count", v11, v12, v13, v14, v15)}];
+  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v8, "count", v11, v12, v13, v14, selfCopy)}];
   [v6 setObject:v9 forKeyedSubscript:@"universalFilesCount"];
 
   [v6 setObject:v8 forKeyedSubscript:@"newMedia"];
@@ -435,11 +435,11 @@ void __37__ICCameraDevice_relateGroupedMedia___block_invoke(uint64_t a1, uint64_
   }
 }
 
-- (id)ownerMedia:(id)a3 withMedia:(id)a4
+- (id)ownerMedia:(id)media withMedia:(id)withMedia
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 isImage] && (v7 = objc_msgSend(v6, "isMovie"), v8 = v5, v9 = v6, (v7 & 1) != 0) || objc_msgSend(v5, "isMovie") && (v10 = objc_msgSend(v6, "isImage"), v8 = v6, v9 = v5, v10))
+  mediaCopy = media;
+  withMediaCopy = withMedia;
+  if ([mediaCopy isImage] && (v7 = objc_msgSend(withMediaCopy, "isMovie"), v8 = mediaCopy, v9 = withMediaCopy, (v7 & 1) != 0) || objc_msgSend(mediaCopy, "isMovie") && (v10 = objc_msgSend(withMediaCopy, "isImage"), v8 = withMediaCopy, v9 = mediaCopy, v10))
   {
     v11 = v8;
     [v11 addSidecarFile:v9];
@@ -454,30 +454,30 @@ void __37__ICCameraDevice_relateGroupedMedia___block_invoke(uint64_t a1, uint64_
   return v11;
 }
 
-- (int64_t)stitchMedia:(id)a3 withMedia:(id)a4
+- (int64_t)stitchMedia:(id)media withMedia:(id)withMedia
 {
   v33 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 objectID];
-  if (v8 != [v7 objectID])
+  mediaCopy = media;
+  withMediaCopy = withMedia;
+  objectID = [mediaCopy objectID];
+  if (objectID != [withMediaCopy objectID])
   {
-    if ([v6 isImage] && objc_msgSend(v7, "isMovie") || ((objc_msgSend(v6, "isMovie") & 1) != 0 || objc_msgSend(v6, "isImage")) && objc_msgSend(v7, "isDataUniversal"))
+    if ([mediaCopy isImage] && objc_msgSend(withMediaCopy, "isMovie") || ((objc_msgSend(mediaCopy, "isMovie") & 1) != 0 || objc_msgSend(mediaCopy, "isImage")) && objc_msgSend(withMediaCopy, "isDataUniversal"))
     {
-      [v6 addSidecarFile:v7];
-      [v7 flagAsSidecar];
+      [mediaCopy addSidecarFile:withMediaCopy];
+      [withMediaCopy flagAsSidecar];
     }
 
-    else if (([v7 isImage] && (objc_msgSend(v6, "isImage") & 1) != 0 || objc_msgSend(v7, "isMovie") && objc_msgSend(v6, "isMovie")) && (objc_msgSend(v7, "isOriginal") && (objc_msgSend(v6, "isConverted") & 1) != 0 || objc_msgSend(v6, "isOriginal") && objc_msgSend(v7, "isConverted")))
+    else if (([withMediaCopy isImage] && (objc_msgSend(mediaCopy, "isImage") & 1) != 0 || objc_msgSend(withMediaCopy, "isMovie") && objc_msgSend(mediaCopy, "isMovie")) && (objc_msgSend(withMediaCopy, "isOriginal") && (objc_msgSend(mediaCopy, "isConverted") & 1) != 0 || objc_msgSend(mediaCopy, "isOriginal") && objc_msgSend(withMediaCopy, "isConverted")))
     {
-      [v7 setTwinID:{objc_msgSend(v6, "objectID")}];
-      [v6 setTwinID:{objc_msgSend(v7, "objectID")}];
+      [withMediaCopy setTwinID:{objc_msgSend(mediaCopy, "objectID")}];
+      [mediaCopy setTwinID:{objc_msgSend(withMediaCopy, "objectID")}];
       v29 = 0u;
       v30 = 0u;
       v27 = 0u;
       v28 = 0u;
-      v21 = v6;
-      obj = [v6 sidecarFiles];
+      v21 = mediaCopy;
+      obj = [mediaCopy sidecarFiles];
       v9 = [obj countByEnumeratingWithState:&v27 objects:v32 count:16];
       if (v9)
       {
@@ -498,8 +498,8 @@ void __37__ICCameraDevice_relateGroupedMedia___block_invoke(uint64_t a1, uint64_
             v24 = 0u;
             v25 = 0u;
             v26 = 0u;
-            v14 = [v7 sidecarFiles];
-            v15 = [v14 countByEnumeratingWithState:&v23 objects:v31 count:16];
+            sidecarFiles = [withMediaCopy sidecarFiles];
+            v15 = [sidecarFiles countByEnumeratingWithState:&v23 objects:v31 count:16];
             if (v15)
             {
               v16 = v15;
@@ -511,14 +511,14 @@ void __37__ICCameraDevice_relateGroupedMedia___block_invoke(uint64_t a1, uint64_
                 {
                   if (*v24 != v17)
                   {
-                    objc_enumerationMutation(v14);
+                    objc_enumerationMutation(sidecarFiles);
                   }
 
                   [(ICCameraDevice *)self stitchMedia:v13 withMedia:*(*(&v23 + 1) + 8 * v18++)];
                 }
 
                 while (v16 != v18);
-                v16 = [v14 countByEnumeratingWithState:&v23 objects:v31 count:16];
+                v16 = [sidecarFiles countByEnumeratingWithState:&v23 objects:v31 count:16];
               }
 
               while (v16);
@@ -534,7 +534,7 @@ void __37__ICCameraDevice_relateGroupedMedia___block_invoke(uint64_t a1, uint64_
         while (v10);
       }
 
-      v6 = v21;
+      mediaCopy = v21;
     }
   }
 
@@ -542,87 +542,87 @@ void __37__ICCameraDevice_relateGroupedMedia___block_invoke(uint64_t a1, uint64_
   return 0;
 }
 
-- (void)blendMedia:(id)a3[10] ofLength:(int)a4 withMedia:(id)a5[10] ofLength:(int)a6
+- (void)blendMedia:(id)media[10] ofLength:(int)length withMedia:(id)withMedia[10] ofLength:(int)ofLength
 {
-  if (a4 >= 1)
+  if (length >= 1)
   {
     v8 = 0;
-    v20 = a4;
+    lengthCopy = length;
     do
     {
-      v9 = a6;
-      v10 = a5;
-      if (a6 >= 1)
+      ofLengthCopy = ofLength;
+      withMediaCopy = withMedia;
+      if (ofLength >= 1)
       {
         do
         {
-          v11 = a3[v8];
-          v12 = [v11 mediaBase];
-          v13 = [v12 length];
+          v11 = media[v8];
+          mediaBase = [v11 mediaBase];
+          v13 = [mediaBase length];
 
-          v14 = [*v10 mediaBase];
-          v15 = [v14 length];
+          mediaBase2 = [*withMediaCopy mediaBase];
+          v15 = [mediaBase2 length];
 
           if (v15 == v13)
           {
-            v16 = [v11 mediaBase];
-            v17 = [v16 UTF8String];
-            v18 = [*v10 mediaBase];
-            v19 = strncmp(v17, [v18 UTF8String], v13);
+            mediaBase3 = [v11 mediaBase];
+            uTF8String = [mediaBase3 UTF8String];
+            mediaBase4 = [*withMediaCopy mediaBase];
+            v19 = strncmp(uTF8String, [mediaBase4 UTF8String], v13);
 
             if (!v19)
             {
-              [(ICCameraDevice *)self stitchMedia:v11 withMedia:*v10];
+              [(ICCameraDevice *)self stitchMedia:v11 withMedia:*withMediaCopy];
             }
           }
 
-          ++v10;
-          --v9;
+          ++withMediaCopy;
+          --ofLengthCopy;
         }
 
-        while (v9);
+        while (ofLengthCopy);
       }
 
       ++v8;
     }
 
-    while (v8 != v20);
+    while (v8 != lengthCopy);
   }
 }
 
-- (void)grindMedia:(id)a3[10] index:(int *)a4 file:(id)a5
+- (void)grindMedia:(id)media[10] index:(int *)index file:(id)file
 {
-  v8 = a5;
-  v9 = *a4;
+  fileCopy = file;
+  v9 = *index;
   if (v9 < 1)
   {
 LABEL_7:
-    a3[v9] = v8;
-    ++*a4;
+    media[v9] = fileCopy;
+    ++*index;
   }
 
   else
   {
     v10 = 0;
-    v20 = v8;
+    v20 = fileCopy;
     while (1)
     {
-      v11 = [v8 mediaBase];
-      v12 = [v11 length];
+      mediaBase = [fileCopy mediaBase];
+      v12 = [mediaBase length];
 
-      v13 = [a3[v10] mediaBase];
-      v14 = [v13 length];
+      mediaBase2 = [media[v10] mediaBase];
+      v14 = [mediaBase2 length];
 
       if (v14 == v12)
       {
-        v15 = [a3[v10] mediaBase];
-        v16 = [v15 UTF8String];
-        v17 = [v20 mediaBase];
-        v18 = strncmp(v16, [v17 UTF8String], v12);
+        mediaBase3 = [media[v10] mediaBase];
+        uTF8String = [mediaBase3 UTF8String];
+        mediaBase4 = [v20 mediaBase];
+        v18 = strncmp(uTF8String, [mediaBase4 UTF8String], v12);
 
         if (!v18)
         {
-          v19 = [(ICCameraDevice *)self ownerMedia:a3[v10] withMedia:v20];
+          v19 = [(ICCameraDevice *)self ownerMedia:media[v10] withMedia:v20];
           if (v19)
           {
             break;
@@ -631,24 +631,24 @@ LABEL_7:
       }
 
       ++v10;
-      v9 = *a4;
-      v8 = v20;
+      v9 = *index;
+      fileCopy = v20;
       if (v10 >= v9)
       {
         goto LABEL_7;
       }
     }
 
-    a3[v10] = v19;
+    media[v10] = v19;
 
-    v8 = v20;
+    fileCopy = v20;
   }
 }
 
-- (id)relateMedia:(id)a3
+- (id)relateMedia:(id)media
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  mediaCopy = media;
   if ([(ICCameraDevice *)self legacyDevice])
   {
     v5 = @"mediaBase";
@@ -662,8 +662,8 @@ LABEL_7:
   v6 = [objc_alloc(MEMORY[0x1E696AEB0]) initWithKey:v5 ascending:1];
   v26[0] = v6;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:1];
-  v22 = v4;
-  v8 = [v4 sortedArrayUsingDescriptors:v7];
+  v22 = mediaCopy;
+  v8 = [mediaCopy sortedArrayUsingDescriptors:v7];
   v9 = [v8 mutableCopy];
 
   if ([v9 count])
@@ -673,8 +673,8 @@ LABEL_7:
     {
       v11 = [v9 objectAtIndexedSubscript:0];
       v12 = [v11 UTI];
-      v13 = [v10 identifier];
-      v14 = [v12 isEqualToString:v13];
+      identifier = [v10 identifier];
+      v14 = [v12 isEqualToString:identifier];
 
       if (!v14)
       {
@@ -749,21 +749,21 @@ void __30__ICCameraDevice_relateMedia___block_invoke_4(uint64_t a1, void *a2, vo
   [v5 setObject:v7 forKeyedSubscript:v9];
 }
 
-- (void)setIsAccessRestrictedAppleDevice:(BOOL)a3
+- (void)setIsAccessRestrictedAppleDevice:(BOOL)device
 {
   obj = self;
   objc_sync_enter(obj);
-  obj->_accessRestrictedAppleDevice = a3;
+  obj->_accessRestrictedAppleDevice = device;
   objc_sync_exit(obj);
 }
 
 - (BOOL)isAccessRestrictedAppleDevice
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if ([(ICDevice *)v2 isAppleDevice])
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([(ICDevice *)selfCopy isAppleDevice])
   {
-    v3 = ![(ICDevice *)v2 hasOpenSession]|| v2->_accessRestrictedAppleDevice;
+    v3 = ![(ICDevice *)selfCopy hasOpenSession]|| selfCopy->_accessRestrictedAppleDevice;
   }
 
   else
@@ -771,7 +771,7 @@ void __30__ICCameraDevice_relateMedia___block_invoke_4(uint64_t a1, void *a2, vo
     v3 = 0;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v3 & 1;
 }
@@ -781,15 +781,15 @@ void __30__ICCameraDevice_relateMedia___block_invoke_4(uint64_t a1, void *a2, vo
   v32 = *MEMORY[0x1E69E9840];
   if ([(ICDevice *)self isAppleDevice]&& (self->_devAccessRestriction != 8 || [(ICCameraDevice *)self notifyDelegateRestrictionChanged]))
   {
-    v3 = [(ICCameraDevice *)self devAccessRestriction];
-    v4 = [(ICCameraDevice *)self devAccessRestriction];
-    v5 = [(ICCameraDevice *)self devAccessRestriction];
-    v6 = [(ICCameraDevice *)self devAccessRestriction];
-    v7 = [(ICDevice *)self delegate];
+    devAccessRestriction = [(ICCameraDevice *)self devAccessRestriction];
+    devAccessRestriction2 = [(ICCameraDevice *)self devAccessRestriction];
+    devAccessRestriction3 = [(ICCameraDevice *)self devAccessRestriction];
+    devAccessRestriction4 = [(ICCameraDevice *)self devAccessRestriction];
+    delegate = [(ICDevice *)self delegate];
 
-    if (v7)
+    if (delegate)
     {
-      if ((v3 & 8) != 0 || (v4 & 6) == 6 || (v5 & 3) == 3 || (v6 & 5) == 5)
+      if ((devAccessRestriction & 8) != 0 || (devAccessRestriction2 & 6) == 6 || (devAccessRestriction3 & 3) == 3 || (devAccessRestriction4 & 5) == 5)
       {
         [(ICCameraDevice *)self setDevAccessRestriction:8];
         v27[0] = MEMORY[0x1E69E9820];
@@ -802,28 +802,28 @@ void __30__ICCameraDevice_relateMedia___block_invoke_4(uint64_t a1, void *a2, vo
 
       else
       {
-        v8 = [(ICDevice *)self delegate];
+        delegate2 = [(ICDevice *)self delegate];
         v9 = objc_opt_class();
         v10 = NSStringFromClass(v9);
 
         __ICOSLogCreate();
-        v11 = [(ICDevice *)self name];
-        if ([v11 length] >= 0x15)
+        name = [(ICDevice *)self name];
+        if ([name length] >= 0x15)
         {
-          v12 = [v11 substringWithRange:{0, 18}];
+          v12 = [name substringWithRange:{0, 18}];
           v13 = [v12 stringByAppendingString:@".."];
 
-          v11 = v13;
+          name = v13;
         }
 
         v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"⛔️ Notifying Access Restricted: %@", v10];
         v15 = *MEMORY[0x1E69A8B08];
         if (os_log_type_enabled(*MEMORY[0x1E69A8B08], OS_LOG_TYPE_DEFAULT))
         {
-          v16 = v11;
+          v16 = name;
           v17 = v15;
           *buf = 136446466;
-          v29 = [v11 UTF8String];
+          uTF8String = [name UTF8String];
           v30 = 2114;
           v31 = v14;
           _os_log_impl(&dword_1C6F19000, v17, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -843,23 +843,23 @@ void __30__ICCameraDevice_relateMedia___block_invoke_4(uint64_t a1, void *a2, vo
     {
       [(ICCameraDevice *)self setNotifyDelegateRestrictionChanged:1];
       __ICOSLogCreate();
-      v18 = [(ICDevice *)self name];
-      if ([v18 length] >= 0x15)
+      name2 = [(ICDevice *)self name];
+      if ([name2 length] >= 0x15)
       {
-        v19 = [v18 substringWithRange:{0, 18}];
+        v19 = [name2 substringWithRange:{0, 18}];
         v20 = [v19 stringByAppendingString:@".."];
 
-        v18 = v20;
+        name2 = v20;
       }
 
       v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"🟡 Queueing Access Restriction Changed: (delegate is nil)"];
       v22 = *MEMORY[0x1E69A8B08];
       if (os_log_type_enabled(*MEMORY[0x1E69A8B08], OS_LOG_TYPE_DEFAULT))
       {
-        v23 = v18;
+        v23 = name2;
         v24 = v22;
         *buf = 136446466;
-        v29 = [v18 UTF8String];
+        uTF8String = [name2 UTF8String];
         v30 = 2114;
         v31 = v21;
         _os_log_impl(&dword_1C6F19000, v24, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -932,16 +932,16 @@ uint64_t __41__ICCameraDevice_updateAccessRestriction__block_invoke_148(uint64_t
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setAccessRestriction:(unint64_t)a3
+- (void)setAccessRestriction:(unint64_t)restriction
 {
   if ([(ICDevice *)self isAppleDevice])
   {
-    if ((a3 & ~[(ICCameraDevice *)self devAccessRestriction]) != 0)
+    if ((restriction & ~[(ICCameraDevice *)self devAccessRestriction]) != 0)
     {
       devAccessRestriction = self->_devAccessRestriction;
       if (devAccessRestriction != 8)
       {
-        self->_devAccessRestriction = devAccessRestriction | a3;
+        self->_devAccessRestriction = devAccessRestriction | restriction;
 
         [(ICCameraDevice *)self updateAccessRestriction];
       }
@@ -987,16 +987,16 @@ void __30__ICCameraDevice_remoteCamera__block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (id)remoteCameraWithFailureBlock:(id)a3
+- (id)remoteCameraWithFailureBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   devConnection = self->_devConnection;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __47__ICCameraDevice_remoteCameraWithFailureBlock___block_invoke;
   v10[3] = &unk_1E829D0F0;
   v10[4] = self;
-  v6 = v4;
+  v6 = blockCopy;
   v11 = v6;
   v7 = [(NSXPCConnection *)devConnection remoteObjectProxyWithErrorHandler:v10];
   v8 = v7;
@@ -1041,15 +1041,15 @@ void __47__ICCameraDevice_remoteCameraWithFailureBlock___block_invoke(uint64_t a
 
 - (void)setMediaPresentation:(ICMediaPresentation)mediaPresentation
 {
-  v5 = [(ICDevice *)self capabilities];
-  if ([v5 containsObject:@"ICCameraDeviceSupportsHEIF"])
+  capabilities = [(ICDevice *)self capabilities];
+  if ([capabilities containsObject:@"ICCameraDeviceSupportsHEIF"])
   {
-    v6 = [(ICDevice *)self hasOpenSession];
+    hasOpenSession = [(ICDevice *)self hasOpenSession];
   }
 
   else
   {
-    v6 = 0;
+    hasOpenSession = 0;
   }
 
   if (mediaPresentation - 1 > 1)
@@ -1067,7 +1067,7 @@ void __47__ICCameraDevice_remoteCameraWithFailureBlock___block_invoke(uint64_t a
     [(ICCameraDevice *)self willChangeValueForKey:@"mediaPresentation"];
     self->_devMediaPresentation = mediaPresentation;
     [(ICCameraDevice *)self didChangeValueForKey:@"mediaPresentation"];
-    if (v6)
+    if (hasOpenSession)
     {
 
       [(ICCameraDevice *)self updateMediaPresentation];
@@ -1090,40 +1090,40 @@ void __47__ICCameraDevice_remoteCameraWithFailureBlock___block_invoke(uint64_t a
 
 - (NSString)buildVersion
 {
-  v2 = [(ICCameraDevice *)self mobdevProperties];
-  v3 = [v2 objectForKeyedSubscript:@"BuildVersion"];
+  mobdevProperties = [(ICCameraDevice *)self mobdevProperties];
+  v3 = [mobdevProperties objectForKeyedSubscript:@"BuildVersion"];
 
   return v3;
 }
 
 - (NSString)deviceClass
 {
-  v2 = [(ICCameraDevice *)self mobdevProperties];
-  v3 = [v2 objectForKeyedSubscript:@"DeviceClass"];
+  mobdevProperties = [(ICCameraDevice *)self mobdevProperties];
+  v3 = [mobdevProperties objectForKeyedSubscript:@"DeviceClass"];
 
   return v3;
 }
 
 - (NSString)deviceColor
 {
-  v2 = [(ICCameraDevice *)self mobdevProperties];
-  v3 = [v2 objectForKeyedSubscript:@"DeviceColor"];
+  mobdevProperties = [(ICCameraDevice *)self mobdevProperties];
+  v3 = [mobdevProperties objectForKeyedSubscript:@"DeviceColor"];
 
   return v3;
 }
 
 - (NSString)deviceEnclosureColor
 {
-  v2 = [(ICCameraDevice *)self mobdevProperties];
-  v3 = [v2 objectForKeyedSubscript:@"DeviceEnclosureColor"];
+  mobdevProperties = [(ICCameraDevice *)self mobdevProperties];
+  v3 = [mobdevProperties objectForKeyedSubscript:@"DeviceEnclosureColor"];
 
   return v3;
 }
 
 - (NSNumber)devicePairedState
 {
-  v2 = [(ICCameraDevice *)self mobdevProperties];
-  v3 = [v2 objectForKeyedSubscript:@"DevicePairedState"];
+  mobdevProperties = [(ICCameraDevice *)self mobdevProperties];
+  v3 = [mobdevProperties objectForKeyedSubscript:@"DevicePairedState"];
 
   return v3;
 }
@@ -1139,9 +1139,9 @@ void __47__ICCameraDevice_remoteCameraWithFailureBlock___block_invoke(uint64_t a
   [(ICCameraDevice *)self timeOffset];
   [v5 appendFormat:@"  timeOffset                    : %f\n", v6];
   [v5 appendFormat:@"  hasConfigurableWiFiInterface  : %s\n", "N/A"];
-  v7 = [(ICCameraDevice *)self isAccessRestrictedAppleDevice];
+  isAccessRestrictedAppleDevice = [(ICCameraDevice *)self isAccessRestrictedAppleDevice];
   v8 = "NO";
-  if (v7)
+  if (isAccessRestrictedAppleDevice)
   {
     v8 = "YES";
   }
@@ -1152,48 +1152,48 @@ void __47__ICCameraDevice_remoteCameraWithFailureBlock___block_invoke(uint64_t a
   return v5;
 }
 
-- (void)setICloudPhotosOptimizeStorageState:(unint64_t)a3
+- (void)setICloudPhotosOptimizeStorageState:(unint64_t)state
 {
   [(ICCameraDevice *)self willChangeValueForKey:@"iCloudPhotosOptimizeStorageState"];
-  self->_iCloudPhotosOptimizeStorageState = a3;
+  self->_iCloudPhotosOptimizeStorageState = state;
 
   [(ICCameraDevice *)self didChangeValueForKey:@"iCloudPhotosOptimizeStorageState"];
 }
 
-- (void)addCapability:(id)a3
+- (void)addCapability:(id)capability
 {
-  v4 = a3;
-  if (!-[ICCameraDevice iCloudPhotosEnabled](self, "iCloudPhotosEnabled") || ([v4 isEqualToString:@"ICCameraDeviceCanDeleteOneFile"] & 1) == 0)
+  capabilityCopy = capability;
+  if (!-[ICCameraDevice iCloudPhotosEnabled](self, "iCloudPhotosEnabled") || ([capabilityCopy isEqualToString:@"ICCameraDeviceCanDeleteOneFile"] & 1) == 0)
   {
     v5.receiver = self;
     v5.super_class = ICCameraDevice;
-    [(ICDevice *)&v5 addCapability:v4];
+    [(ICDevice *)&v5 addCapability:capabilityCopy];
   }
 }
 
 - (unint64_t)countOfObjects
 {
-  v2 = [(ICCameraDevice *)self indexedMediaSet];
-  v3 = [v2 mediaItemCount];
+  indexedMediaSet = [(ICCameraDevice *)self indexedMediaSet];
+  mediaItemCount = [indexedMediaSet mediaItemCount];
 
-  return v3;
+  return mediaItemCount;
 }
 
-- (void)updateMediaFilesCount:(id)a3
+- (void)updateMediaFilesCount:(id)count
 {
-  v4 = [a3 objectForKeyedSubscript:@"ICANumberOfPreflightObjectsKey"];
+  v4 = [count objectForKeyedSubscript:@"ICANumberOfPreflightObjectsKey"];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 unsignedIntegerValue];
-    if (v6 != [(ICCameraDevice *)self preflightCountOfObjects])
+    unsignedIntegerValue = [v4 unsignedIntegerValue];
+    if (unsignedIntegerValue != [(ICCameraDevice *)self preflightCountOfObjects])
     {
       v7[0] = MEMORY[0x1E69E9820];
       v7[1] = 3221225472;
       v7[2] = __40__ICCameraDevice_updateMediaFilesCount___block_invoke;
       v7[3] = &unk_1E829D118;
       v7[4] = self;
-      v7[5] = v6;
+      v7[5] = unsignedIntegerValue;
       ICPerformBlockOnMainThread(v7);
     }
   }
@@ -1245,12 +1245,12 @@ uint64_t __40__ICCameraDevice_updateMediaFilesCount___block_invoke(uint64_t a1)
 
   if ([(ICCameraDevice *)self preflightCountOfObjects]>= 1 && [(ICCameraDevice *)self countOfObjects])
   {
-    v3 = [(ICCameraDevice *)self countOfObjects];
-    v4 = [(ICCameraDevice *)self preflightCountOfObjects];
-    v5 = [(ICCameraDevice *)self countOfObjects];
-    if (v3 <= v4)
+    countOfObjects = [(ICCameraDevice *)self countOfObjects];
+    preflightCountOfObjects = [(ICCameraDevice *)self preflightCountOfObjects];
+    countOfObjects2 = [(ICCameraDevice *)self countOfObjects];
+    if (countOfObjects <= preflightCountOfObjects)
     {
-      v6 = v5 * 100.0 / [(ICCameraDevice *)self preflightCountOfObjects];
+      v6 = countOfObjects2 * 100.0 / [(ICCameraDevice *)self preflightCountOfObjects];
 LABEL_14:
       if (v6 > [(ICCameraDevice *)self contentCatalogPercentCompleted])
       {
@@ -1261,7 +1261,7 @@ LABEL_14:
       return;
     }
 
-    [(ICCameraDevice *)self setPreflightCountOfObjects:v5];
+    [(ICCameraDevice *)self setPreflightCountOfObjects:countOfObjects2];
 LABEL_9:
     v6 = 100.0;
     goto LABEL_14;
@@ -1270,22 +1270,22 @@ LABEL_9:
   [(ICCameraDevice *)self contentCatalogPercentCompleted];
 }
 
-- (void)setContentCatalogPercentCompleted:(unint64_t)a3
+- (void)setContentCatalogPercentCompleted:(unint64_t)completed
 {
   v29 = *MEMORY[0x1E69E9840];
-  if ((a3 != 100 || [(ICDevice *)self ready]) && self->_devContentCatalogPercentCompleted != 100 && ![(ICCameraDevice *)self containsRestrictedStorage])
+  if ((completed != 100 || [(ICDevice *)self ready]) && self->_devContentCatalogPercentCompleted != 100 && ![(ICCameraDevice *)self containsRestrictedStorage])
   {
     [(ICCameraDevice *)self willChangeValueForKey:@"contentCatalogPercentCompleted"];
-    self->_devContentCatalogPercentCompleted = a3;
+    self->_devContentCatalogPercentCompleted = completed;
     [(ICCameraDevice *)self didChangeValueForKey:@"contentCatalogPercentCompleted"];
     __ICOSLogCreate();
-    v5 = [(ICDevice *)self name];
-    if ([v5 length] >= 0x15)
+    name = [(ICDevice *)self name];
+    if ([name length] >= 0x15)
     {
-      v6 = [v5 substringWithRange:{0, 18}];
+      v6 = [name substringWithRange:{0, 18}];
       v7 = [v6 stringByAppendingString:@".."];
 
-      v5 = v7;
+      name = v7;
     }
 
     v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(Enumerated:%lu/Preflighted:%ld)", -[ICCameraDevice countOfObjects](self, "countOfObjects"), -[ICCameraDevice preflightCountOfObjects](self, "preflightCountOfObjects")];
@@ -1293,10 +1293,10 @@ LABEL_9:
     v10 = *MEMORY[0x1E69A8B08];
     if (os_log_type_enabled(*MEMORY[0x1E69A8B08], OS_LOG_TYPE_DEFAULT))
     {
-      v11 = v5;
+      v11 = name;
       v12 = v10;
       *buf = 136446466;
-      v26 = [v5 UTF8String];
+      uTF8String = [name UTF8String];
       v27 = 2114;
       v28 = v8;
       _os_log_impl(&dword_1C6F19000, v12, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -1315,13 +1315,13 @@ LABEL_9:
     else
     {
       __ICOSLogCreate();
-      v13 = [(ICDevice *)self name];
-      if ([v13 length] >= 0x15)
+      name2 = [(ICDevice *)self name];
+      if ([name2 length] >= 0x15)
       {
-        v14 = [v13 substringWithRange:{0, 18}];
+        v14 = [name2 substringWithRange:{0, 18}];
         v15 = [v14 stringByAppendingString:@".."];
 
-        v13 = v15;
+        name2 = v15;
       }
 
       v16 = MEMORY[0x1E696AEC0];
@@ -1339,11 +1339,11 @@ LABEL_9:
       v19 = *v9;
       if (os_log_type_enabled(*v9, OS_LOG_TYPE_DEFAULT))
       {
-        v20 = v13;
+        v20 = name2;
         v21 = v19;
-        v22 = [v13 UTF8String];
+        uTF8String2 = [name2 UTF8String];
         *buf = 136446466;
-        v26 = v22;
+        uTF8String = uTF8String2;
         v27 = 2114;
         v28 = v18;
         _os_log_impl(&dword_1C6F19000, v21, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -1420,28 +1420,28 @@ void __52__ICCameraDevice_setContentCatalogPercentCompleted___block_invoke(uint6
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (id)cameraFolderWithObjectID:(unint64_t)a3
+- (id)cameraFolderWithObjectID:(unint64_t)d
 {
-  v3 = a3;
-  if (a3)
+  dCopy = d;
+  if (d)
   {
-    v4 = [(ICCameraDevice *)self indexedMediaSet];
-    v3 = [v4 mediaItemWithHandle:v3 inTypes:&unk_1F4697240];
+    indexedMediaSet = [(ICCameraDevice *)self indexedMediaSet];
+    dCopy = [indexedMediaSet mediaItemWithHandle:dCopy inTypes:&unk_1F4697240];
   }
 
-  return v3;
+  return dCopy;
 }
 
-- (id)cameraFileWithObjectID:(unint64_t)a3
+- (id)cameraFileWithObjectID:(unint64_t)d
 {
-  v3 = a3;
-  if (a3)
+  dCopy = d;
+  if (d)
   {
-    v4 = [(ICCameraDevice *)self indexedMediaSet];
-    v3 = [v4 mediaItemWithHandle:v3 inTypes:&unk_1F4697258];
+    indexedMediaSet = [(ICCameraDevice *)self indexedMediaSet];
+    dCopy = [indexedMediaSet mediaItemWithHandle:dCopy inTypes:&unk_1F4697258];
   }
 
-  return v3;
+  return dCopy;
 }
 
 - (void)requestOpenSession
@@ -1456,8 +1456,8 @@ void __52__ICCameraDevice_setContentCatalogPercentCompleted___block_invoke(uint6
   }
 
   v5 = MEMORY[0x1E696AEC0];
-  v6 = [(ICDevice *)self name];
-  v7 = [v5 stringWithFormat:@"requestOpenSession: %@", v6];
+  name = [(ICDevice *)self name];
+  v7 = [v5 stringWithFormat:@"requestOpenSession: %@", name];
 
   v8 = *MEMORY[0x1E69A8B08];
   if (os_log_type_enabled(*MEMORY[0x1E69A8B08], OS_LOG_TYPE_DEFAULT))
@@ -1465,7 +1465,7 @@ void __52__ICCameraDevice_setContentCatalogPercentCompleted___block_invoke(uint6
     v9 = v3;
     v10 = v8;
     *buf = 136446466;
-    v14 = [(__CFString *)v3 UTF8String];
+    uTF8String = [(__CFString *)v3 UTF8String];
     v15 = 2114;
     v16 = v7;
     _os_log_impl(&dword_1C6F19000, v10, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -1526,25 +1526,25 @@ uint64_t __36__ICCameraDevice_requestOpenSession__block_invoke_2(uint64_t *a1)
   return result;
 }
 
-- (void)requestOpenSessionWithOptions:(id)a3 completion:(id)a4
+- (void)requestOpenSessionWithOptions:(id)options completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  optionsCopy = options;
+  completionCopy = completion;
+  if (optionsCopy)
   {
-    v8 = [v6 objectForKeyedSubscript:@"ICEnumerationChronologicalOrder"];
+    v8 = [optionsCopy objectForKeyedSubscript:@"ICEnumerationChronologicalOrder"];
     self->_enumerationOrder = [v8 intValue];
   }
 
   if ([(ICDevice *)self hasOpenSession])
   {
-    v7[2](v7, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
   else if ([(ICDevice *)self hasOpenSession]|| [(ICCameraDevice *)self beingEjected])
   {
     v9 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.ImageCaptureCore" code:-9927 userInfo:0];
-    (v7)[2](v7, v9);
+    (completionCopy)[2](completionCopy, v9);
   }
 
   else
@@ -1555,8 +1555,8 @@ uint64_t __36__ICCameraDevice_requestOpenSession__block_invoke_2(uint64_t *a1)
     v10[2] = __59__ICCameraDevice_requestOpenSessionWithOptions_completion___block_invoke;
     v10[3] = &unk_1E829CCA8;
     v10[4] = self;
-    v11 = v6;
-    v12 = v7;
+    v11 = optionsCopy;
+    v12 = completionCopy;
     [(ICCameraDevice *)self dispatchAsyncForOperationType:0 block:v10];
   }
 }
@@ -1639,13 +1639,13 @@ uint64_t __59__ICCameraDevice_requestOpenSessionWithOptions_completion___block_i
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)requestEnumerateContentWithOptions:(id)a3 completion:(id)a4
+- (void)requestEnumerateContentWithOptions:(id)options completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  optionsCopy = options;
+  completionCopy = completion;
+  if (optionsCopy)
   {
-    v8 = [v6 objectForKeyedSubscript:@"ICEnumerationChronologicalOrder"];
+    v8 = [optionsCopy objectForKeyedSubscript:@"ICEnumerationChronologicalOrder"];
     self->_enumerationOrder = [v8 intValue];
   }
 
@@ -1665,9 +1665,9 @@ uint64_t __59__ICCameraDevice_requestOpenSessionWithOptions_completion___block_i
         v12[1] = 3221225472;
         v12[2] = __64__ICCameraDevice_requestEnumerateContentWithOptions_completion___block_invoke;
         v12[3] = &unk_1E829CCA8;
-        v13 = v6;
-        v14 = self;
-        v15 = v7;
+        v13 = optionsCopy;
+        selfCopy = self;
+        v15 = completionCopy;
         [(ICCameraDevice *)self dispatchAsyncForOperationType:0 block:v12];
 
         goto LABEL_10;
@@ -1685,7 +1685,7 @@ uint64_t __59__ICCameraDevice_requestOpenSessionWithOptions_completion___block_i
   }
 
   v11 = [v9 errorWithDomain:@"com.apple.ImageCaptureCore" code:v10 userInfo:0];
-  (*(v7 + 2))(v7, v11);
+  (*(completionCopy + 2))(completionCopy, v11);
 
 LABEL_10:
 }
@@ -1720,45 +1720,45 @@ uint64_t __64__ICCameraDevice_requestEnumerateContentWithOptions_completion___bl
   return result;
 }
 
-- (void)addCameraFolderToIndex:(id)a3
+- (void)addCameraFolderToIndex:(id)index
 {
-  v4 = a3;
-  v5 = [(ICCameraDevice *)self indexedMediaSet];
-  [v5 addMediaItemToIndex:v4];
+  indexCopy = index;
+  indexedMediaSet = [(ICCameraDevice *)self indexedMediaSet];
+  [indexedMediaSet addMediaItemToIndex:indexCopy];
 }
 
-- (void)removeCameraFolderFromIndex:(id)a3
+- (void)removeCameraFolderFromIndex:(id)index
 {
-  v4 = a3;
-  v5 = [(ICCameraDevice *)self indexedMediaSet];
-  [v5 removeMediaItemFromIndex:v4];
+  indexCopy = index;
+  indexedMediaSet = [(ICCameraDevice *)self indexedMediaSet];
+  [indexedMediaSet removeMediaItemFromIndex:indexCopy];
 }
 
-- (void)addCameraFileToIndex:(id)a3
+- (void)addCameraFileToIndex:(id)index
 {
-  v4 = a3;
-  v5 = [(ICCameraDevice *)self indexedMediaSet];
-  [v5 addMediaItemToIndex:v4];
+  indexCopy = index;
+  indexedMediaSet = [(ICCameraDevice *)self indexedMediaSet];
+  [indexedMediaSet addMediaItemToIndex:indexCopy];
 }
 
-- (void)removeCameraFileFromIndex:(id)a3
+- (void)removeCameraFileFromIndex:(id)index
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
-  if (v4)
+  indexCopy = index;
+  array = [MEMORY[0x1E695DF70] array];
+  if (indexCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v5 addObject:v4];
-      if ([v4 twinID])
+      [array addObject:indexCopy];
+      if ([indexCopy twinID])
       {
-        v6 = -[ICCameraDevice cameraFileWithObjectID:](self, "cameraFileWithObjectID:", [v4 twinID]);
+        v6 = -[ICCameraDevice cameraFileWithObjectID:](self, "cameraFileWithObjectID:", [indexCopy twinID]);
         if (v6)
         {
           v7 = v6;
-          [v5 addObject:v6];
+          [array addObject:v6];
         }
       }
 
@@ -1768,8 +1768,8 @@ uint64_t __64__ICCameraDevice_requestEnumerateContentWithOptions_completion___bl
       v25 = 0u;
       v22 = 0u;
       v23 = 0u;
-      v21 = v5;
-      v8 = v5;
+      v21 = array;
+      v8 = array;
       v9 = [v8 countByEnumeratingWithState:&v22 objects:v26 count:16];
       if (v9)
       {
@@ -1787,18 +1787,18 @@ uint64_t __64__ICCameraDevice_requestEnumerateContentWithOptions_completion___bl
             }
 
             v14 = *(*(&v22 + 1) + 8 * v13);
-            v15 = [v4 sidecarFiles];
-            v16 = v15;
-            if (v15 && [v15 count])
+            sidecarFiles = [indexCopy sidecarFiles];
+            v16 = sidecarFiles;
+            if (sidecarFiles && [sidecarFiles count])
             {
               v11 += [v16 count];
-              v17 = [(ICCameraDevice *)self indexedMediaSet];
-              [v17 removeMediaItemsFromIndex:v16];
+              indexedMediaSet = [(ICCameraDevice *)self indexedMediaSet];
+              [indexedMediaSet removeMediaItemsFromIndex:v16];
             }
 
             v11 += [v14 universalFamily];
-            v18 = [(ICCameraDevice *)self indexedMediaSet];
-            [v18 removeMediaItemFromIndex:v14];
+            indexedMediaSet2 = [(ICCameraDevice *)self indexedMediaSet];
+            [indexedMediaSet2 removeMediaItemFromIndex:v14];
 
             [(ICCameraDevice *)self addNumberOfDownloadableItems:-v11];
             ++v13;
@@ -1812,7 +1812,7 @@ uint64_t __64__ICCameraDevice_requestEnumerateContentWithOptions_completion___bl
       }
 
       os_unfair_lock_unlock((self + v20));
-      v5 = v21;
+      array = v21;
     }
   }
 
@@ -1821,39 +1821,39 @@ uint64_t __64__ICCameraDevice_requestEnumerateContentWithOptions_completion___bl
 
 - (BOOL)supportsMediaFormatCatalog
 {
-  v3 = [(ICDevice *)self transportType];
-  v4 = ([v3 isEqualToString:@"ICTransportTypeMassStorage"] & 1) == 0 && -[ICCameraDevice appleRelatedUUIDSupport](self, "appleRelatedUUIDSupport") != 0;
+  transportType = [(ICDevice *)self transportType];
+  v4 = ([transportType isEqualToString:@"ICTransportTypeMassStorage"] & 1) == 0 && -[ICCameraDevice appleRelatedUUIDSupport](self, "appleRelatedUUIDSupport") != 0;
 
   return v4;
 }
 
-- (void)setAppleRelatedUUIDSupport:(unint64_t)a3
+- (void)setAppleRelatedUUIDSupport:(unint64_t)support
 {
-  if ([(ICCameraDevice *)self appleRelatedUUIDSupport]!= a3 && (a3 == 2 || a3 == 1) && ![(ICCameraDevice *)self appleRelatedUUIDSupport])
+  if ([(ICCameraDevice *)self appleRelatedUUIDSupport]!= support && (support == 2 || support == 1) && ![(ICCameraDevice *)self appleRelatedUUIDSupport])
   {
-    self->_appleRelatedUUIDSupport = a3;
+    self->_appleRelatedUUIDSupport = support;
   }
 }
 
 - (BOOL)legacyDevice
 {
-  v3 = [(ICDevice *)self transportType];
-  v4 = ([v3 isEqualToString:@"ICTransportTypeMassStorage"] & 1) != 0 || -[ICCameraDevice appleRelatedUUIDSupport](self, "appleRelatedUUIDSupport") != 1;
+  transportType = [(ICDevice *)self transportType];
+  v4 = ([transportType isEqualToString:@"ICTransportTypeMassStorage"] & 1) != 0 || -[ICCameraDevice appleRelatedUUIDSupport](self, "appleRelatedUUIDSupport") != 1;
 
   return v4;
 }
 
-- (void)addItems:(id)a3
+- (void)addItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   if ([(ICDevice *)self hasOpenSession])
   {
-    if (v4)
+    if (itemsCopy)
     {
-      v5 = [v4 count];
+      v5 = [itemsCopy count];
       if (v5)
       {
-        v5 = [(ICCameraDevice *)self relateMedia:v4];
+        v5 = [(ICCameraDevice *)self relateMedia:itemsCopy];
       }
     }
 
@@ -1867,7 +1867,7 @@ uint64_t __64__ICCameraDevice_requestEnumerateContentWithOptions_completion___bl
     v7[2] = __27__ICCameraDevice_addItems___block_invoke;
     v7[3] = &unk_1E829C870;
     v8 = v5;
-    v9 = self;
+    selfCopy = self;
     v6 = v5;
     ICPerformBlockOnMainThread(v7);
   }
@@ -1898,8 +1898,8 @@ uint64_t __27__ICCameraDevice_addItems___block_invoke(uint64_t a1)
 {
   os_unfair_lock_lock(&self->_mediaLock);
   v3 = MEMORY[0x1E695DEC8];
-  v4 = [(ICCameraDevice *)self devMediaFiles];
-  v5 = [v3 arrayWithArray:v4];
+  devMediaFiles = [(ICCameraDevice *)self devMediaFiles];
+  v5 = [v3 arrayWithArray:devMediaFiles];
 
   os_unfair_lock_unlock(&self->_mediaLock);
 
@@ -1976,8 +1976,8 @@ LABEL_4:
           objc_enumerationMutation(v3);
         }
 
-        v9 = [*(*(&v13 + 1) + 8 * v8) name];
-        v10 = [v9 isEqualToString:@"0xFEEDFACE"];
+        name = [*(*(&v13 + 1) + 8 * v8) name];
+        v10 = [name isEqualToString:@"0xFEEDFACE"];
 
         if (v10)
         {
@@ -2025,26 +2025,26 @@ LABEL_11:
   }
 }
 
-- (BOOL)addMediaFiles:(id)a3
+- (BOOL)addMediaFiles:(id)files
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 count])
+  filesCopy = files;
+  v5 = filesCopy;
+  if (filesCopy && [filesCopy count])
   {
     [(ICCameraDevice *)self willChangeValueForKey:@"mediaFiles"];
     [(ICCameraDevice *)self willChangeValueForKey:@"contents"];
-    v6 = [(ICCameraDevice *)self devMediaFiles];
-    [v6 addObjectsFromArray:v5];
+    devMediaFiles = [(ICCameraDevice *)self devMediaFiles];
+    [devMediaFiles addObjectsFromArray:v5];
 
-    v7 = [(ICDevice *)self delegate];
+    delegate = [(ICDevice *)self delegate];
     v8 = objc_opt_respondsToSelector();
     v9 = objc_opt_respondsToSelector();
-    if (v7 && (v8 & 1) != 0)
+    if (delegate && (v8 & 1) != 0)
     {
-      [v7 performSelector:sel_cameraDevice_didAddItems_ withObject:self withObject:v5];
+      [delegate performSelector:sel_cameraDevice_didAddItems_ withObject:self withObject:v5];
     }
 
-    else if (v7)
+    else if (delegate)
     {
       if (((v9 ^ 1) & 1) == 0)
       {
@@ -2055,7 +2055,7 @@ LABEL_11:
           for (i = 0; i != v11; ++i)
           {
             v13 = [v5 objectAtIndexedSubscript:i];
-            [v7 performSelector:sel_cameraDevice_didAddItem_ withObject:self withObject:v13];
+            [delegate performSelector:sel_cameraDevice_didAddItem_ withObject:self withObject:v13];
           }
         }
       }
@@ -2068,43 +2068,43 @@ LABEL_11:
   return 0;
 }
 
-- (void)handleStatusNotification:(id)a3
+- (void)handleStatusNotification:(id)notification
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"ICDeviceStatus"];
+  notificationCopy = notification;
+  v5 = [notificationCopy objectForKeyedSubscript:@"ICDeviceStatus"];
   if ([v5 isEqualToString:@"ICDeviceIsReady"])
   {
-    v6 = [(ICCameraDevice *)self deviceNotificationQueue];
+    deviceNotificationQueue = [(ICCameraDevice *)self deviceNotificationQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __43__ICCameraDevice_handleStatusNotification___block_invoke;
     block[3] = &unk_1E829C870;
     block[4] = self;
-    v32 = v4;
-    dispatch_async(v6, block);
+    v32 = notificationCopy;
+    dispatch_async(deviceNotificationQueue, block);
   }
 
   else if ([v5 isEqualToString:@"ICAppleDeviceUnlocked"])
   {
     __ICOSLogCreate();
-    v7 = [(ICDevice *)self name];
-    if ([v7 length] >= 0x15)
+    name = [(ICDevice *)self name];
+    if ([name length] >= 0x15)
     {
-      v8 = [v7 substringWithRange:{0, 18}];
+      v8 = [name substringWithRange:{0, 18}];
       v9 = [v8 stringByAppendingString:@".."];
 
-      v7 = v9;
+      name = v9;
     }
 
     v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"🔓 Device Is Unlocked"];
     v11 = *MEMORY[0x1E69A8B08];
     if (os_log_type_enabled(*MEMORY[0x1E69A8B08], OS_LOG_TYPE_DEFAULT))
     {
-      v12 = v7;
+      v12 = name;
       v13 = v11;
       *buf = 136446466;
-      v34 = [v7 UTF8String];
+      uTF8String = [name UTF8String];
       v35 = 2114;
       v36 = v10;
       _os_log_impl(&dword_1C6F19000, v13, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -2116,34 +2116,34 @@ LABEL_11:
   else if ([v5 isEqualToString:@"ICDeviceIsEnumerating"])
   {
     isEnumeratingContent = self->_isEnumeratingContent;
-    v15 = [v4 objectForKeyedSubscript:@"deviceIsEnumerating"];
-    v16 = [v15 BOOLValue];
+    v15 = [notificationCopy objectForKeyedSubscript:@"deviceIsEnumerating"];
+    bOOLValue = [v15 BOOLValue];
 
-    if (isEnumeratingContent != v16)
+    if (isEnumeratingContent != bOOLValue)
     {
-      v17 = [v4 objectForKeyedSubscript:@"deviceIsEnumerating"];
-      v18 = [v17 BOOLValue];
+      v17 = [notificationCopy objectForKeyedSubscript:@"deviceIsEnumerating"];
+      bOOLValue2 = [v17 BOOLValue];
 
-      if (v18)
+      if (bOOLValue2)
       {
         [(ICCameraDevice *)self setAccessRestriction:6];
       }
 
       __ICOSLogCreate();
-      v19 = [(ICDevice *)self name];
-      if ([v19 length] >= 0x15)
+      name2 = [(ICDevice *)self name];
+      if ([name2 length] >= 0x15)
       {
-        v20 = [v19 substringWithRange:{0, 18}];
+        v20 = [name2 substringWithRange:{0, 18}];
         v21 = [v20 stringByAppendingString:@".."];
 
-        v19 = v21;
+        name2 = v21;
       }
 
       v22 = MEMORY[0x1E696AEC0];
-      v23 = [v4 objectForKeyedSubscript:@"deviceIsEnumerating"];
-      v24 = [v23 BOOLValue];
+      v23 = [notificationCopy objectForKeyedSubscript:@"deviceIsEnumerating"];
+      bOOLValue3 = [v23 BOOLValue];
       v25 = @"NO";
-      if (v24)
+      if (bOOLValue3)
       {
         v25 = @"YES";
       }
@@ -2153,17 +2153,17 @@ LABEL_11:
       v27 = *MEMORY[0x1E69A8B08];
       if (os_log_type_enabled(*MEMORY[0x1E69A8B08], OS_LOG_TYPE_DEFAULT))
       {
-        v28 = v19;
+        v28 = name2;
         v29 = v27;
         *buf = 136446466;
-        v34 = [v19 UTF8String];
+        uTF8String = [name2 UTF8String];
         v35 = 2114;
         v36 = v26;
         _os_log_impl(&dword_1C6F19000, v29, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
       }
 
       [(ICCameraDevice *)self willChangeValueForKey:@"isEnumeratingContent"];
-      self->_isEnumeratingContent = v18;
+      self->_isEnumeratingContent = bOOLValue2;
       [(ICCameraDevice *)self updateEnumeratingErrorStatus];
       [(ICCameraDevice *)self didChangeValueForKey:@"isEnumeratingContent"];
     }
@@ -2244,7 +2244,7 @@ uint64_t __43__ICCameraDevice_handleStatusNotification___block_invoke_2(uint64_t
 {
   if ([(ICDevice *)self isAppleDevice])
   {
-    v3 = [(ICDevice *)self delegate];
+    delegate = [(ICDevice *)self delegate];
     if ([(ICCameraDevice *)self devAccessRestriction]== 8)
     {
       v4 = 0;
@@ -2252,29 +2252,29 @@ uint64_t __43__ICCameraDevice_handleStatusNotification___block_invoke_2(uint64_t
 
     else
     {
-      v5 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
       v6 = MEMORY[0x1E696AEC0];
       v7 = ICLocalizedString();
-      v8 = [(ICDevice *)self name];
-      v9 = [v6 stringWithFormat:v7, v8];
+      name = [(ICDevice *)self name];
+      v9 = [v6 stringWithFormat:v7, name];
 
       if (v9)
       {
-        [v5 setObject:v9 forKeyedSubscript:*MEMORY[0x1E696A578]];
+        [dictionary setObject:v9 forKeyedSubscript:*MEMORY[0x1E696A578]];
       }
 
-      v4 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.ImageCaptureCore" code:-9943 userInfo:v5];
+      v4 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.ImageCaptureCore" code:-9943 userInfo:dictionary];
     }
 
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __41__ICCameraDevice_updateLockedErrorStatus__block_invoke;
     block[3] = &unk_1E829CC30;
-    v13 = v3;
-    v14 = self;
+    v13 = delegate;
+    selfCopy = self;
     v15 = v4;
     v10 = v4;
-    v11 = v3;
+    v11 = delegate;
     ICPerformBlockOnMainThread(block);
   }
 }
@@ -2299,11 +2299,11 @@ uint64_t __41__ICCameraDevice_updateLockedErrorStatus__block_invoke(void *a1)
 {
   if ([(ICDevice *)self isAppleDevice]&& ![(ICCameraDevice *)self isAccessRestrictedAppleDevice])
   {
-    v3 = [(ICDevice *)self delegate];
+    delegate = [(ICDevice *)self delegate];
     if (self->_isEnumeratingContent)
     {
-      v4 = [(ICDevice *)self name];
-      v5 = ICMakeFormattedLocalizedError(-9954, v4);
+      name = [(ICDevice *)self name];
+      v5 = ICMakeFormattedLocalizedError(-9954, name);
     }
 
     else
@@ -2315,11 +2315,11 @@ uint64_t __41__ICCameraDevice_updateLockedErrorStatus__block_invoke(void *a1)
     block[1] = 3221225472;
     block[2] = __46__ICCameraDevice_updateEnumeratingErrorStatus__block_invoke;
     block[3] = &unk_1E829CC30;
-    v9 = v3;
-    v10 = self;
+    v9 = delegate;
+    selfCopy = self;
     v11 = v5;
     v6 = v5;
-    v7 = v3;
+    v7 = delegate;
     ICPerformBlockOnMainThread(block);
   }
 }
@@ -2340,16 +2340,16 @@ uint64_t __46__ICCameraDevice_updateEnumeratingErrorStatus__block_invoke(void *a
   return result;
 }
 
-- (void)removeItems:(id)a3
+- (void)removeItems:(id)items
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v15 = [MEMORY[0x1E695DF70] array];
+  itemsCopy = items;
+  array = [MEMORY[0x1E695DF70] array];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  obj = v4;
+  obj = itemsCopy;
   v5 = [obj countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v5)
   {
@@ -2369,8 +2369,8 @@ uint64_t __46__ICCameraDevice_updateEnumeratingErrorStatus__block_invoke(void *a
         v10 = v9;
         if (v9)
         {
-          v11 = [v9 parentFolder];
-          if (v11)
+          parentFolder = [v9 parentFolder];
+          if (parentFolder)
           {
             v12 = v10;
             objc_opt_class();
@@ -2378,7 +2378,7 @@ uint64_t __46__ICCameraDevice_updateEnumeratingErrorStatus__block_invoke(void *a
             {
               [(ICCameraDevice *)self willChangeValueForKey:@"contents"];
               [(ICCameraDevice *)self willChangeValueForKey:@"mediaFiles"];
-              [v11 deleteItem:v12];
+              [parentFolder deleteItem:v12];
               [(ICCameraDevice *)self removeCameraFileFromIndex:v12];
               os_unfair_lock_lock(&self->_mediaLock);
               [(NSMutableArray *)self->_devMediaFiles removeObject:v12];
@@ -2392,14 +2392,14 @@ uint64_t __46__ICCameraDevice_updateEnumeratingErrorStatus__block_invoke(void *a
               os_unfair_lock_lock(&self->_mediaLock);
               [(ICCameraDevice *)self willChangeValueForKey:@"contents"];
               [(ICCameraDevice *)self willChangeValueForKey:@"mediaFiles"];
-              [v11 deleteItem:v12];
+              [parentFolder deleteItem:v12];
               [(ICCameraDevice *)self removeCameraFolderFromIndex:v12];
               [(ICCameraDevice *)self didChangeValueForKey:@"contents"];
               [(ICCameraDevice *)self didChangeValueForKey:@"mediaFiles"];
               os_unfair_lock_unlock(&self->_mediaLock);
             }
 
-            [v15 addObject:v12];
+            [array addObject:v12];
           }
         }
 
@@ -2418,8 +2418,8 @@ uint64_t __46__ICCameraDevice_updateEnumeratingErrorStatus__block_invoke(void *a
   block[2] = __30__ICCameraDevice_removeItems___block_invoke;
   block[3] = &unk_1E829C870;
   block[4] = self;
-  v18 = v15;
-  v13 = v15;
+  v18 = array;
+  v13 = array;
   ICPerformBlockOnMainThread(block);
 
   v14 = *MEMORY[0x1E69E9840];
@@ -2484,26 +2484,26 @@ uint64_t __37__ICCameraDevice_requestCloseSession__block_invoke_2(uint64_t a1)
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)requestCloseSessionWithOptions:(id)a3 completion:(id)a4
+- (void)requestCloseSessionWithOptions:(id)options completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  completionCopy = completion;
   if ([(ICDevice *)self sessionState]== 1)
   {
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __60__ICCameraDevice_requestCloseSessionWithOptions_completion___block_invoke;
     v9[3] = &unk_1E829CCA8;
-    v10 = v6;
-    v11 = self;
-    v12 = v7;
+    v10 = optionsCopy;
+    selfCopy = self;
+    v12 = completionCopy;
     [(ICCameraDevice *)self dispatchAsyncForOperationType:1 block:v9];
   }
 
   else
   {
     v8 = ICMakeLocalizedError(-9958);
-    (*(v7 + 2))(v7, v8);
+    (*(completionCopy + 2))(completionCopy, v8);
   }
 }
 
@@ -2573,23 +2573,23 @@ uint64_t __60__ICCameraDevice_requestCloseSessionWithOptions_completion___block_
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)handlePtpEvent:(id)a3
+- (void)handlePtpEvent:(id)event
 {
-  v7 = a3;
-  v4 = [(ICDevice *)self delegate];
-  if (v7)
+  eventCopy = event;
+  delegate = [(ICDevice *)self delegate];
+  if (eventCopy)
   {
-    v5 = [(ICCameraDevice *)self ptpEventHandler];
+    ptpEventHandler = [(ICCameraDevice *)self ptpEventHandler];
 
-    if (v5)
+    if (ptpEventHandler)
     {
-      v6 = [(ICCameraDevice *)self ptpEventHandler];
-      (v6)[2](v6, v7);
+      ptpEventHandler2 = [(ICCameraDevice *)self ptpEventHandler];
+      (ptpEventHandler2)[2](ptpEventHandler2, eventCopy);
     }
 
-    else if (v4 && (objc_opt_respondsToSelector() & 1) != 0)
+    else if (delegate && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      [v4 performSelector:sel_cameraDevice_didReceivePTPEvent_ withObject:self withObject:v7];
+      [delegate performSelector:sel_cameraDevice_didReceivePTPEvent_ withObject:self withObject:eventCopy];
     }
   }
 }
@@ -2608,13 +2608,13 @@ uint64_t __60__ICCameraDevice_requestCloseSessionWithOptions_completion___block_
   self->_ptpEventHandler = v4;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v5.receiver = self;
   v5.super_class = ICCameraDevice;
-  [(ICDevice *)&v5 setDelegate:v4];
-  if (v4)
+  [(ICDevice *)&v5 setDelegate:delegateCopy];
+  if (delegateCopy)
   {
     if (objc_opt_respondsToSelector())
     {
@@ -2632,8 +2632,8 @@ uint64_t __60__ICCameraDevice_requestCloseSessionWithOptions_completion___block_
 {
   if ([(ICDevice *)self hasOpenSession]&& [(ICCameraDevice *)self allowsSyncingClock])
   {
-    v3 = [(ICDevice *)self deviceManager];
-    [v3 syncClock:self completion:&__block_literal_global_322];
+    deviceManager = [(ICDevice *)self deviceManager];
+    [deviceManager syncClock:self completion:&__block_literal_global_322];
   }
 }
 
@@ -2672,9 +2672,9 @@ void __34__ICCameraDevice_requestSyncClock__block_invoke(uint64_t a1, void *a2, 
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)dispatchAsyncForOperationType:(int64_t)a3 block:(id)a4
+- (void)dispatchAsyncForOperationType:(int64_t)type block:(id)block
 {
-  v5 = [a4 copy];
+  v5 = [block copy];
   devCommandQueue = self->_devCommandQueue;
   block = v5;
   if (devCommandQueue)
@@ -2990,13 +2990,13 @@ LABEL_15:
   {
     v9 = ptpData;
     v10 = ptpCommand;
-    v11 = [(ICDevice *)self deviceManager];
+    deviceManager = [(ICDevice *)self deviceManager];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __59__ICCameraDevice_requestSendPTPCommand_outData_completion___block_invoke;
     v12[3] = &unk_1E829CEF8;
     v13 = v8;
-    [v11 sendDevice:self ptpCommand:v10 andPayload:v9 completion:v12];
+    [deviceManager sendDevice:self ptpCommand:v10 andPayload:v9 completion:v12];
   }
 }
 
@@ -3022,23 +3022,23 @@ void __59__ICCameraDevice_requestSendPTPCommand_outData_completion___block_invok
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)setPtpEventForwarding:(BOOL)a3
+- (void)setPtpEventForwarding:(BOOL)forwarding
 {
-  v3 = a3;
+  forwardingCopy = forwarding;
   v9[1] = *MEMORY[0x1E69E9840];
-  v5 = [(ICDevice *)self deviceManager];
-  if (v3)
+  deviceManager = [(ICDevice *)self deviceManager];
+  if (forwardingCopy)
   {
     v9[0] = @"ICNotificationTypeDeviceForwardPTPEvents";
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
-    [v5 registerDevice:self forImageCaptureEventNotifications:v6];
+    [deviceManager registerDevice:self forImageCaptureEventNotifications:v6];
   }
 
   else
   {
     v8 = @"ICNotificationTypeDeviceForwardPTPEvents";
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v8 count:1];
-    [v5 unregisterDevice:self forImageCaptureEventNotifications:v6];
+    [deviceManager unregisterDevice:self forImageCaptureEventNotifications:v6];
   }
 
   v7 = *MEMORY[0x1E69E9840];
@@ -3046,12 +3046,12 @@ void __59__ICCameraDevice_requestSendPTPCommand_outData_completion___block_invok
 
 - (void)cancelDelete
 {
-  v3 = [(ICCameraDevice *)self deleteProgress];
+  deleteProgress = [(ICCameraDevice *)self deleteProgress];
 
-  if (v3)
+  if (deleteProgress)
   {
-    v4 = [(ICCameraDevice *)self deleteProgress];
-    [v4 cancel];
+    deleteProgress2 = [(ICCameraDevice *)self deleteProgress];
+    [deleteProgress2 cancel];
   }
 }
 
@@ -3118,57 +3118,57 @@ id __95__ICCameraDevice_requestDownloadFile_options_downloadDelegate_didDownload
   return [v5 v7];
 }
 
-- (void)addFolder:(id)a3
+- (void)addFolder:(id)folder
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  folderCopy = folder;
+  if (folderCopy)
   {
     os_unfair_lock_lock(&self->_mediaLock);
     __ICOSLogCreate();
-    v5 = [(ICDevice *)self name];
-    if ([v5 length] >= 0x15)
+    name = [(ICDevice *)self name];
+    if ([name length] >= 0x15)
     {
-      v6 = [v5 substringWithRange:{0, 18}];
+      v6 = [name substringWithRange:{0, 18}];
       v7 = [v6 stringByAppendingString:@".."];
 
-      v5 = v7;
+      name = v7;
     }
 
     v8 = MEMORY[0x1E696AEC0];
-    v9 = [v4 name];
-    v10 = [v8 stringWithFormat:@"🗄 Store Added  - %04d - [%8s]", 1, objc_msgSend(v9, "UTF8String")];
+    name2 = [folderCopy name];
+    v10 = [v8 stringWithFormat:@"🗄 Store Added  - %04d - [%8s]", 1, objc_msgSend(name2, "UTF8String")];
 
     v11 = *MEMORY[0x1E69A8B08];
     if (os_log_type_enabled(*MEMORY[0x1E69A8B08], OS_LOG_TYPE_DEFAULT))
     {
-      v12 = v5;
+      v12 = name;
       v13 = v11;
       *buf = 136446466;
-      v16 = [v5 UTF8String];
+      uTF8String = [name UTF8String];
       v17 = 2114;
       v18 = v10;
       _os_log_impl(&dword_1C6F19000, v13, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
     }
 
-    [(NSMutableArray *)self->_devContents addObject:v4];
+    [(NSMutableArray *)self->_devContents addObject:folderCopy];
     os_unfair_lock_unlock(&self->_mediaLock);
-    [(ICCameraDevice *)self addCameraFolderToIndex:v4];
+    [(ICCameraDevice *)self addCameraFolderToIndex:folderCopy];
     [(ICCameraDevice *)self storageAvailable];
   }
 
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeFolder:(id)a3
+- (void)removeFolder:(id)folder
 {
-  if (a3)
+  if (folder)
   {
     devContents = self->_devContents;
-    v5 = a3;
-    [(NSMutableArray *)devContents removeObject:v5];
-    v6 = [(ICCameraDevice *)self indexedMediaSet];
-    [v6 removeMediaItemFromIndex:v5];
+    folderCopy = folder;
+    [(NSMutableArray *)devContents removeObject:folderCopy];
+    indexedMediaSet = [(ICCameraDevice *)self indexedMediaSet];
+    [indexedMediaSet removeMediaItemFromIndex:folderCopy];
 
     [(ICCameraDevice *)self storageAvailable];
   }
@@ -3176,20 +3176,20 @@ id __95__ICCameraDevice_requestDownloadFile_options_downloadDelegate_didDownload
 
 - (void)cancelDownload
 {
-  v3 = [(ICCameraDevice *)self downloadProgress];
+  downloadProgress = [(ICCameraDevice *)self downloadProgress];
 
-  if (v3)
+  if (downloadProgress)
   {
-    v4 = [(ICCameraDevice *)self downloadProgress];
-    [v4 cancel];
+    downloadProgress2 = [(ICCameraDevice *)self downloadProgress];
+    [downloadProgress2 cancel];
   }
 }
 
 - (int64_t)cameraFilesContentSizeInBytes
 {
   v17 = *MEMORY[0x1E69E9840];
-  v2 = [(ICCameraDevice *)self indexedMediaSet];
-  v3 = [v2 orderedSetForType:@"file"];
+  indexedMediaSet = [(ICCameraDevice *)self indexedMediaSet];
+  v3 = [indexedMediaSet orderedSetForType:@"file"];
 
   v14 = 0u;
   v15 = 0u;
@@ -3231,34 +3231,34 @@ id __95__ICCameraDevice_requestDownloadFile_options_downloadDelegate_didDownload
 
 - (CGImage)icon
 {
-  v3 = [(ICDevice *)self systemSymbolName];
+  systemSymbolName = [(ICDevice *)self systemSymbolName];
 
-  if (!v3)
+  if (!systemSymbolName)
   {
     [(ICDevice *)self setSystemSymbolName:@"camera"];
   }
 
-  v4 = [(ICDevice *)self systemSymbolName];
-  if (v4)
+  systemSymbolName2 = [(ICDevice *)self systemSymbolName];
+  if (systemSymbolName2)
   {
-    v5 = v4;
-    v6 = [(ICCameraDevice *)self cameraDeviceIcon];
+    v5 = systemSymbolName2;
+    cameraDeviceIcon = [(ICCameraDevice *)self cameraDeviceIcon];
 
-    if (!v6)
+    if (!cameraDeviceIcon)
     {
       v7 = objc_alloc_init(MEMORY[0x1E69A89C0]);
       [v7 setSymbolWeight:3];
       [v7 setPointSize:24.0];
-      v8 = [(ICCameraDevice *)self mobdevProperties];
-      v9 = [v8 objectForKeyedSubscript:@"ProductType"];
+      mobdevProperties = [(ICCameraDevice *)self mobdevProperties];
+      v9 = [mobdevProperties objectForKeyedSubscript:@"ProductType"];
 
       if (v9)
       {
         v10 = [MEMORY[0x1E6982C40] _typeWithDeviceModelCode:v9];
         v11 = MEMORY[0x1E69A8A40];
-        v12 = [v10 identifier];
+        identifier = [v10 identifier];
         v22 = 0;
-        v13 = [v11 symbolForTypeIdentifier:v12 withResolutionStrategy:1 variantOptions:1 error:&v22];
+        v13 = [v11 symbolForTypeIdentifier:identifier withResolutionStrategy:1 variantOptions:1 error:&v22];
 
         v14 = [v13 imageForDescriptor:v7];
         v15 = v14;
@@ -3271,8 +3271,8 @@ id __95__ICCameraDevice_requestDownloadFile_options_downloadDelegate_didDownload
       if (![(ICCameraDevice *)self cameraDeviceIcon])
       {
         v16 = objc_alloc(MEMORY[0x1E69A8A40]);
-        v17 = [(ICDevice *)self systemSymbolName];
-        v18 = [v16 initWithSymbolName:v17 bundleURL:0];
+        systemSymbolName3 = [(ICDevice *)self systemSymbolName];
+        v18 = [v16 initWithSymbolName:systemSymbolName3 bundleURL:0];
 
         v19 = [v18 imageForDescriptor:v7];
         v20 = v19;
@@ -3287,22 +3287,22 @@ id __95__ICCameraDevice_requestDownloadFile_options_downloadDelegate_didDownload
   return [(ICCameraDevice *)self cameraDeviceIcon];
 }
 
-- (BOOL)setDefaultMediaPresentation:(unint64_t)a3
+- (BOOL)setDefaultMediaPresentation:(unint64_t)presentation
 {
-  v5 = [(ICCameraDevice *)self mediaPresentation];
-  if (v5 != a3)
+  mediaPresentation = [(ICCameraDevice *)self mediaPresentation];
+  if (mediaPresentation != presentation)
   {
-    [(ICCameraDevice *)self setMediaPresentation:a3];
+    [(ICCameraDevice *)self setMediaPresentation:presentation];
   }
 
-  return v5 != a3;
+  return mediaPresentation != presentation;
 }
 
-- (ICCameraDevice)initWithDictionary:(id)a3
+- (ICCameraDevice)initWithDictionary:(id)dictionary
 {
   v17.receiver = self;
   v17.super_class = ICCameraDevice;
-  v3 = [(ICDevice *)&v17 initWithDictionary:a3];
+  v3 = [(ICDevice *)&v17 initWithDictionary:dictionary];
   v4 = v3;
   if (v3)
   {
@@ -3350,23 +3350,23 @@ id __95__ICCameraDevice_requestDownloadFile_options_downloadDelegate_didDownload
 {
   v17 = *MEMORY[0x1E69E9840];
   __ICOSLogCreate();
-  v3 = [(ICDevice *)self name];
-  if ([v3 length] >= 0x15)
+  name = [(ICDevice *)self name];
+  if ([name length] >= 0x15)
   {
-    v4 = [v3 substringWithRange:{0, 18}];
+    v4 = [name substringWithRange:{0, 18}];
     v5 = [v4 stringByAppendingString:@".."];
 
-    v3 = v5;
+    name = v5;
   }
 
   v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@" --- Deallocating Device"];
   v7 = *MEMORY[0x1E69A8B08];
   if (os_log_type_enabled(*MEMORY[0x1E69A8B08], OS_LOG_TYPE_DEFAULT))
   {
-    v8 = v3;
+    v8 = name;
     v9 = v7;
     *buf = 136446466;
-    v14 = [v3 UTF8String];
+    uTF8String = [name UTF8String];
     v15 = 2114;
     v16 = v6;
     _os_log_impl(&dword_1C6F19000, v9, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -3374,8 +3374,8 @@ id __95__ICCameraDevice_requestDownloadFile_options_downloadDelegate_didDownload
 
   [(ICCameraDevice *)self removeObserver:self forKeyPath:@"ready"];
   [objc_opt_class() cancelPreviousPerformRequestsWithTarget:self];
-  v10 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v10 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v12.receiver = self;
   v12.super_class = ICCameraDevice;
@@ -3479,15 +3479,15 @@ uint64_t __103__ICCameraDevice_requestReadDataFromFile_atOffset_length_readDeleg
   return result;
 }
 
-- (void)dumpPTPPassthruCommand:(id)a3 andData:(id)a4
+- (void)dumpPTPPassthruCommand:(id)command andData:(id)data
 {
   v97 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  commandCopy = command;
+  dataCopy = data;
   v92 = 0;
   v91 = 0;
-  [v5 getBytes:&v92 range:{0, 4}];
-  [v5 getBytes:&v91 range:{6, 2}];
+  [commandCopy getBytes:&v92 range:{0, 4}];
+  [commandCopy getBytes:&v91 range:{6, 2}];
   if (v91 != 37142 && v91 != 37203)
   {
     __ICOSLogCreate();
@@ -3503,9 +3503,9 @@ uint64_t __103__ICCameraDevice_requestReadDataFromFile_atOffset_length_readDeleg
     v12 = *MEMORY[0x1E69A8B08];
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [(__CFString *)v8 UTF8String];
+      uTF8String = [(__CFString *)v8 UTF8String];
       *buf = 136446466;
-      v94 = v13;
+      v94 = uTF8String;
       v95 = 2114;
       v96 = v10;
       _os_log_impl(&dword_1C6F19000, v12, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -3523,15 +3523,15 @@ uint64_t __103__ICCameraDevice_requestReadDataFromFile_atOffset_length_readDeleg
     v17 = *v11;
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
-      v18 = [(__CFString *)v14 UTF8String];
+      uTF8String2 = [(__CFString *)v14 UTF8String];
       *buf = 136446466;
-      v94 = v18;
+      v94 = uTF8String2;
       v95 = 2114;
       v96 = v16;
       _os_log_impl(&dword_1C6F19000, v17, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
     }
 
-    [v5 getBytes:&v91 range:{4, 2}];
+    [commandCopy getBytes:&v91 range:{4, 2}];
     __ICOSLogCreate();
     v19 = @"type";
     if ([@"type" length] >= 0x15)
@@ -3544,15 +3544,15 @@ uint64_t __103__ICCameraDevice_requestReadDataFromFile_atOffset_length_readDeleg
     v22 = *v11;
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
-      v23 = [(__CFString *)v19 UTF8String];
+      uTF8String3 = [(__CFString *)v19 UTF8String];
       *buf = 136446466;
-      v94 = v23;
+      v94 = uTF8String3;
       v95 = 2114;
       v96 = v21;
       _os_log_impl(&dword_1C6F19000, v22, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
     }
 
-    [v5 getBytes:&v91 range:{6, 2}];
+    [commandCopy getBytes:&v91 range:{6, 2}];
     v24 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%u", v91];
     __ICOSLogCreate();
     v25 = @"op";
@@ -3566,15 +3566,15 @@ uint64_t __103__ICCameraDevice_requestReadDataFromFile_atOffset_length_readDeleg
     v28 = *v11;
     if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
     {
-      v29 = [(__CFString *)v25 UTF8String];
+      uTF8String4 = [(__CFString *)v25 UTF8String];
       *buf = 136446466;
-      v94 = v29;
+      v94 = uTF8String4;
       v95 = 2114;
       v96 = v27;
       _os_log_impl(&dword_1C6F19000, v28, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
     }
 
-    [v5 getBytes:&v92 range:{8, 4}];
+    [commandCopy getBytes:&v92 range:{8, 4}];
     __ICOSLogCreate();
     v30 = @"tid";
     if ([@"tid" length] >= 0x15)
@@ -3587,15 +3587,15 @@ uint64_t __103__ICCameraDevice_requestReadDataFromFile_atOffset_length_readDeleg
     v33 = *v11;
     if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
     {
-      v34 = [(__CFString *)v30 UTF8String];
+      uTF8String5 = [(__CFString *)v30 UTF8String];
       *buf = 136446466;
-      v94 = v34;
+      v94 = uTF8String5;
       v95 = 2114;
       v96 = v32;
       _os_log_impl(&dword_1C6F19000, v33, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
     }
 
-    if ([v5 length] >= 0x10)
+    if ([commandCopy length] >= 0x10)
     {
       __ICOSLogCreate();
       v35 = @"|---------pars--";
@@ -3609,15 +3609,15 @@ uint64_t __103__ICCameraDevice_requestReadDataFromFile_atOffset_length_readDeleg
       v38 = *v11;
       if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
       {
-        v39 = [(__CFString *)v35 UTF8String];
+        uTF8String6 = [(__CFString *)v35 UTF8String];
         *buf = 136446466;
-        v94 = v39;
+        v94 = uTF8String6;
         v95 = 2114;
         v96 = v37;
         _os_log_impl(&dword_1C6F19000, v38, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
       }
 
-      [v5 getBytes:&v92 range:{12, 4}];
+      [commandCopy getBytes:&v92 range:{12, 4}];
       __ICOSLogCreate();
       v40 = @"(p1)";
       if ([@"(p1)" length] >= 0x15)
@@ -3630,18 +3630,18 @@ uint64_t __103__ICCameraDevice_requestReadDataFromFile_atOffset_length_readDeleg
       v43 = *v11;
       if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
       {
-        v44 = [(__CFString *)v40 UTF8String];
+        uTF8String7 = [(__CFString *)v40 UTF8String];
         *buf = 136446466;
-        v94 = v44;
+        v94 = uTF8String7;
         v95 = 2114;
         v96 = v42;
         _os_log_impl(&dword_1C6F19000, v43, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
       }
     }
 
-    if ([v5 length] >= 0x14)
+    if ([commandCopy length] >= 0x14)
     {
-      [v5 getBytes:&v92 range:{16, 4}];
+      [commandCopy getBytes:&v92 range:{16, 4}];
       __ICOSLogCreate();
       v45 = @"(p2)";
       if ([@"(p2)" length] >= 0x15)
@@ -3654,18 +3654,18 @@ uint64_t __103__ICCameraDevice_requestReadDataFromFile_atOffset_length_readDeleg
       v48 = *v11;
       if (os_log_type_enabled(v48, OS_LOG_TYPE_DEFAULT))
       {
-        v49 = [(__CFString *)v45 UTF8String];
+        uTF8String8 = [(__CFString *)v45 UTF8String];
         *buf = 136446466;
-        v94 = v49;
+        v94 = uTF8String8;
         v95 = 2114;
         v96 = v47;
         _os_log_impl(&dword_1C6F19000, v48, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
       }
     }
 
-    if ([v5 length] >= 0x18)
+    if ([commandCopy length] >= 0x18)
     {
-      [v5 getBytes:&v92 range:{20, 4}];
+      [commandCopy getBytes:&v92 range:{20, 4}];
       __ICOSLogCreate();
       v50 = @"(p3)";
       if ([@"(p3)" length] >= 0x15)
@@ -3678,18 +3678,18 @@ uint64_t __103__ICCameraDevice_requestReadDataFromFile_atOffset_length_readDeleg
       v53 = *v11;
       if (os_log_type_enabled(v53, OS_LOG_TYPE_DEFAULT))
       {
-        v54 = [(__CFString *)v50 UTF8String];
+        uTF8String9 = [(__CFString *)v50 UTF8String];
         *buf = 136446466;
-        v94 = v54;
+        v94 = uTF8String9;
         v95 = 2114;
         v96 = v52;
         _os_log_impl(&dword_1C6F19000, v53, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
       }
     }
 
-    if ([v5 length] >= 0x1C)
+    if ([commandCopy length] >= 0x1C)
     {
-      [v5 getBytes:&v92 range:{24, 4}];
+      [commandCopy getBytes:&v92 range:{24, 4}];
       __ICOSLogCreate();
       v55 = @"(p4)";
       if ([@"(p4)" length] >= 0x15)
@@ -3702,18 +3702,18 @@ uint64_t __103__ICCameraDevice_requestReadDataFromFile_atOffset_length_readDeleg
       v58 = *v11;
       if (os_log_type_enabled(v58, OS_LOG_TYPE_DEFAULT))
       {
-        v59 = [(__CFString *)v55 UTF8String];
+        uTF8String10 = [(__CFString *)v55 UTF8String];
         *buf = 136446466;
-        v94 = v59;
+        v94 = uTF8String10;
         v95 = 2114;
         v96 = v57;
         _os_log_impl(&dword_1C6F19000, v58, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
       }
     }
 
-    if ([v5 length] >= 0x20)
+    if ([commandCopy length] >= 0x20)
     {
-      [v5 getBytes:&v92 range:{28, 4}];
+      [commandCopy getBytes:&v92 range:{28, 4}];
       __ICOSLogCreate();
       v60 = @"(p5)";
       if ([@"(p5)" length] >= 0x15)
@@ -3726,16 +3726,16 @@ uint64_t __103__ICCameraDevice_requestReadDataFromFile_atOffset_length_readDeleg
       v63 = *v11;
       if (os_log_type_enabled(v63, OS_LOG_TYPE_DEFAULT))
       {
-        v64 = [(__CFString *)v60 UTF8String];
+        uTF8String11 = [(__CFString *)v60 UTF8String];
         *buf = 136446466;
-        v94 = v64;
+        v94 = uTF8String11;
         v95 = 2114;
         v96 = v62;
         _os_log_impl(&dword_1C6F19000, v63, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
       }
     }
 
-    if (v6 && [v6 length] == 12)
+    if (dataCopy && [dataCopy length] == 12)
     {
       __ICOSLogCreate();
       v65 = @"|---------data--";
@@ -3749,16 +3749,16 @@ uint64_t __103__ICCameraDevice_requestReadDataFromFile_atOffset_length_readDeleg
       v68 = *v11;
       if (os_log_type_enabled(v68, OS_LOG_TYPE_DEFAULT))
       {
-        v69 = [(__CFString *)v65 UTF8String];
+        uTF8String12 = [(__CFString *)v65 UTF8String];
         *buf = 136446466;
-        v94 = v69;
+        v94 = uTF8String12;
         v95 = 2114;
         v96 = v67;
         _os_log_impl(&dword_1C6F19000, v68, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
       }
 
       v90 = 0;
-      [v6 getBytes:&v90 range:{0, 4}];
+      [dataCopy getBytes:&v90 range:{0, 4}];
       __ICOSLogCreate();
       v70 = @"|-->      length";
       if ([@"|-->      length" length] >= 0x15)
@@ -3771,15 +3771,15 @@ uint64_t __103__ICCameraDevice_requestReadDataFromFile_atOffset_length_readDeleg
       v73 = *v11;
       if (os_log_type_enabled(v73, OS_LOG_TYPE_DEFAULT))
       {
-        v74 = [(__CFString *)v70 UTF8String];
+        uTF8String13 = [(__CFString *)v70 UTF8String];
         *buf = 136446466;
-        v94 = v74;
+        v94 = uTF8String13;
         v95 = 2114;
         v96 = v72;
         _os_log_impl(&dword_1C6F19000, v73, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
       }
 
-      [v6 getBytes:&v90 range:{4, 4}];
+      [dataCopy getBytes:&v90 range:{4, 4}];
       __ICOSLogCreate();
       v75 = @"|-->  propertyID";
       if ([@"|-->  propertyID" length] >= 0x15)
@@ -3792,15 +3792,15 @@ uint64_t __103__ICCameraDevice_requestReadDataFromFile_atOffset_length_readDeleg
       v78 = *v11;
       if (os_log_type_enabled(v78, OS_LOG_TYPE_DEFAULT))
       {
-        v79 = [(__CFString *)v75 UTF8String];
+        uTF8String14 = [(__CFString *)v75 UTF8String];
         *buf = 136446466;
-        v94 = v79;
+        v94 = uTF8String14;
         v95 = 2114;
         v96 = v77;
         _os_log_impl(&dword_1C6F19000, v78, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
       }
 
-      [v6 getBytes:&v90 range:{8, 4}];
+      [dataCopy getBytes:&v90 range:{8, 4}];
       __ICOSLogCreate();
       v80 = @"|--> propertyVal";
       if ([@"|--> propertyVal" length] >= 0x15)
@@ -3813,9 +3813,9 @@ uint64_t __103__ICCameraDevice_requestReadDataFromFile_atOffset_length_readDeleg
       v83 = *v11;
       if (os_log_type_enabled(v83, OS_LOG_TYPE_DEFAULT))
       {
-        v84 = [(__CFString *)v80 UTF8String];
+        uTF8String15 = [(__CFString *)v80 UTF8String];
         *buf = 136446466;
-        v94 = v84;
+        v94 = uTF8String15;
         v95 = 2114;
         v96 = v82;
         _os_log_impl(&dword_1C6F19000, v83, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -3851,8 +3851,8 @@ uint64_t __103__ICCameraDevice_requestReadDataFromFile_atOffset_length_readDeleg
   v12 = command;
   v13 = data;
   v14 = sendCommandDelegate;
-  v15 = [(ICDevice *)self hasOpenSession];
-  if (selector && v14 && v12 && v15)
+  hasOpenSession = [(ICDevice *)self hasOpenSession];
+  if (selector && v14 && v12 && hasOpenSession)
   {
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
@@ -3893,31 +3893,31 @@ void __103__ICCameraDevice_requestSendPTPCommand_outData_sendCommandDelegate_did
 
 - (NSString)productVersion
 {
-  v2 = [(ICCameraDevice *)self mobdevProperties];
-  v3 = [v2 objectForKeyedSubscript:@"ProductVersion"];
+  mobdevProperties = [(ICCameraDevice *)self mobdevProperties];
+  v3 = [mobdevProperties objectForKeyedSubscript:@"ProductVersion"];
 
   return v3;
 }
 
 - (NSString)appleSerialNumber
 {
-  v2 = [(ICCameraDevice *)self mobdevProperties];
-  v3 = [v2 objectForKeyedSubscript:@"AppleSerialNumber"];
+  mobdevProperties = [(ICCameraDevice *)self mobdevProperties];
+  v3 = [mobdevProperties objectForKeyedSubscript:@"AppleSerialNumber"];
 
   return v3;
 }
 
-- (BOOL)updateAppleProperties:(id)a3
+- (BOOL)updateAppleProperties:(id)properties
 {
   v47 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  propertiesCopy = properties;
   if (![(ICDevice *)self isAppleDevice])
   {
     v17 = 0;
     goto LABEL_47;
   }
 
-  v5 = [v4 objectForKeyedSubscript:@"mobdevProps"];
+  v5 = [propertiesCopy objectForKeyedSubscript:@"mobdevProps"];
 
   if (v5)
   {
@@ -3932,7 +3932,7 @@ void __103__ICCameraDevice_requestSendPTPCommand_outData_sendCommandDelegate_did
       }
 
       v8 = MEMORY[0x1E696AEC0];
-      v9 = [v4 objectForKeyedSubscript:@"mobdevProps"];
+      v9 = [propertiesCopy objectForKeyedSubscript:@"mobdevProps"];
       v10 = [v8 stringWithFormat:@"%@", v9];
 
       v11 = *MEMORY[0x1E69A8B08];
@@ -3941,7 +3941,7 @@ void __103__ICCameraDevice_requestSendPTPCommand_outData_sendCommandDelegate_did
         v12 = v6;
         v13 = v11;
         *buf = 136446466;
-        v44 = [(__CFString *)v6 UTF8String];
+        uTF8String = [(__CFString *)v6 UTF8String];
         v45 = 2114;
         v46 = v10;
         _os_log_impl(&dword_1C6F19000, v13, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -3949,7 +3949,7 @@ void __103__ICCameraDevice_requestSendPTPCommand_outData_sendCommandDelegate_did
     }
   }
 
-  v14 = [v4 objectForKeyedSubscript:@"mobdevProps"];
+  v14 = [propertiesCopy objectForKeyedSubscript:@"mobdevProps"];
   if (v14 && (-[ICCameraDevice mobdevProperties](self, "mobdevProperties"), v15 = objc_claimAutoreleasedReturnValue(), v16 = [v14 isEqualToDictionary:v15], v15, (v16 & 1) == 0))
   {
     [(ICCameraDevice *)self willChangeValueForKey:@"mobdevProperties"];
@@ -3963,20 +3963,20 @@ void __103__ICCameraDevice_requestSendPTPCommand_outData_sendCommandDelegate_did
     v17 = 0;
   }
 
-  v18 = [v4 objectForKeyedSubscript:@"iCloudPhotosEnabled"];
+  v18 = [propertiesCopy objectForKeyedSubscript:@"iCloudPhotosEnabled"];
 
   if (v18)
   {
-    v19 = [v18 unsignedIntegerValue];
-    if (v19 != [(ICCameraDevice *)self iCloudPhotosEnabled])
+    unsignedIntegerValue = [v18 unsignedIntegerValue];
+    if (unsignedIntegerValue != [(ICCameraDevice *)self iCloudPhotosEnabled])
     {
-      [(ICCameraDevice *)self setICloudPhotosEnabled:v19 != 0];
+      [(ICCameraDevice *)self setICloudPhotosEnabled:unsignedIntegerValue != 0];
     }
   }
 
-  v20 = [(ICCameraDevice *)self mobdevProperties];
+  mobdevProperties = [(ICCameraDevice *)self mobdevProperties];
 
-  if (v20 && (-[ICCameraDevice mobdevProperties](self, "mobdevProperties"), v21 = objc_claimAutoreleasedReturnValue(), [v21 objectForKeyedSubscript:@"DevicePairedState"], v22 = objc_claimAutoreleasedReturnValue(), v21, v22))
+  if (mobdevProperties && (-[ICCameraDevice mobdevProperties](self, "mobdevProperties"), v21 = objc_claimAutoreleasedReturnValue(), [v21 objectForKeyedSubscript:@"DevicePairedState"], v22 = objc_claimAutoreleasedReturnValue(), v21, v22))
   {
     if ([v22 BOOLValue])
     {
@@ -3991,7 +3991,7 @@ void __103__ICCameraDevice_requestSendPTPCommand_outData_sendCommandDelegate_did
 
   else
   {
-    v24 = [v4 objectForKeyedSubscript:@"deviceIsPairedWithThisHost"];
+    v24 = [propertiesCopy objectForKeyedSubscript:@"deviceIsPairedWithThisHost"];
     if (!v24)
     {
       v23 = 0;
@@ -4011,8 +4011,8 @@ void __103__ICCameraDevice_requestSendPTPCommand_outData_sendCommandDelegate_did
   }
 
 LABEL_28:
-  v25 = [v4 objectForKeyedSubscript:@"deviceIsEnumerating"];
-  v26 = [v4 objectForKeyedSubscript:@"deviceIsPasscodeLocked"];
+  v25 = [propertiesCopy objectForKeyedSubscript:@"deviceIsEnumerating"];
+  v26 = [propertiesCopy objectForKeyedSubscript:@"deviceIsPasscodeLocked"];
   v27 = v26;
   if (v26 && ![v26 BOOLValue])
   {
@@ -4025,8 +4025,8 @@ LABEL_34:
     }
 
 LABEL_35:
-    v28 = [v25 BOOLValue];
-    if (v28 != [(ICCameraDevice *)self isEnumeratingContent])
+    bOOLValue = [v25 BOOLValue];
+    if (bOOLValue != [(ICCameraDevice *)self isEnumeratingContent])
     {
       __ICOSLogCreate();
       v29 = @"library";
@@ -4037,9 +4037,9 @@ LABEL_35:
       }
 
       v31 = MEMORY[0x1E696AEC0];
-      v32 = [v25 BOOLValue];
+      bOOLValue2 = [v25 BOOLValue];
       v33 = @"√ Complete";
-      if (v32)
+      if (bOOLValue2)
       {
         v33 = @"- Enumerating";
       }
@@ -4050,9 +4050,9 @@ LABEL_35:
       {
         v36 = v29;
         v37 = v35;
-        v38 = [(__CFString *)v29 UTF8String];
+        uTF8String2 = [(__CFString *)v29 UTF8String];
         *buf = 136446466;
-        v44 = v38;
+        uTF8String = uTF8String2;
         v45 = 2114;
         v46 = v34;
         _os_log_impl(&dword_1C6F19000, v37, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -4078,14 +4078,14 @@ LABEL_35:
   }
 
 LABEL_43:
-  v39 = [v4 objectForKeyedSubscript:@"deviceMediaPresentation"];
+  v39 = [propertiesCopy objectForKeyedSubscript:@"deviceMediaPresentation"];
 
   if (v39)
   {
-    v40 = [v39 intValue];
-    if ([(ICCameraDevice *)self mediaPresentation]!= v40)
+    intValue = [v39 intValue];
+    if ([(ICCameraDevice *)self mediaPresentation]!= intValue)
     {
-      [(ICCameraDevice *)self setDefaultMediaPresentation:v40];
+      [(ICCameraDevice *)self setDefaultMediaPresentation:intValue];
     }
   }
 
@@ -4126,14 +4126,14 @@ void __89__ICCameraDevice_requestUploadFile_options_uploadDelegate_didUploadSele
     if ([(ICCameraDevice *)self tetheredCaptureEnabled])
     {
       v3 = [objc_alloc(MEMORY[0x1E69A8AF8]) initWithOperationCode:4110 transactionID:0 dataPhaseInfo:1 parameter1:0 parameter2:0];
-      v4 = [v3 contentForUSB];
-      v5 = [v4 data];
+      contentForUSB = [v3 contentForUSB];
+      data = [contentForUSB data];
       v6[0] = MEMORY[0x1E69E9820];
       v6[1] = 3221225472;
       v6[2] = __36__ICCameraDevice_requestTakePicture__block_invoke;
       v6[3] = &unk_1E829D3B0;
       v6[4] = self;
-      [(ICCameraDevice *)self requestSendPTPCommand:v5 outData:0 completion:v6];
+      [(ICCameraDevice *)self requestSendPTPCommand:data outData:0 completion:v6];
     }
   }
 }

@@ -1,21 +1,21 @@
 @interface CARBluetoothLEService
 - (CARBluetoothLEChannel)activeChannel;
-- (CARBluetoothLEService)initWithPeripheral:(id)a3 serviceUUID:(id)a4 psmCharacteristicUUID:(id)a5;
+- (CARBluetoothLEService)initWithPeripheral:(id)peripheral serviceUUID:(id)d psmCharacteristicUUID:(id)iD;
 - (CARBluetoothLEServiceDelegate)serviceDelegate;
 - (void)_discoverService;
-- (void)peripheral:(id)a3 didDiscoverCharacteristicsForService:(id)a4 error:(id)a5;
-- (void)peripheral:(id)a3 didDiscoverServices:(id)a4;
-- (void)peripheral:(id)a3 didOpenL2CAPChannel:(id)a4 error:(id)a5;
-- (void)peripheral:(id)a3 didUpdateValueForCharacteristic:(id)a4 error:(id)a5;
+- (void)peripheral:(id)peripheral didDiscoverCharacteristicsForService:(id)service error:(id)error;
+- (void)peripheral:(id)peripheral didDiscoverServices:(id)services;
+- (void)peripheral:(id)peripheral didOpenL2CAPChannel:(id)channel error:(id)error;
+- (void)peripheral:(id)peripheral didUpdateValueForCharacteristic:(id)characteristic error:(id)error;
 @end
 
 @implementation CARBluetoothLEService
 
-- (CARBluetoothLEService)initWithPeripheral:(id)a3 serviceUUID:(id)a4 psmCharacteristicUUID:(id)a5
+- (CARBluetoothLEService)initWithPeripheral:(id)peripheral serviceUUID:(id)d psmCharacteristicUUID:(id)iD
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  peripheralCopy = peripheral;
+  dCopy = d;
+  iDCopy = iD;
   v18.receiver = self;
   v18.super_class = CARBluetoothLEService;
   v12 = [(CARBluetoothLEService *)&v18 init];
@@ -26,10 +26,10 @@
     queue = v12->_queue;
     v12->_queue = v14;
 
-    objc_storeStrong(&v12->_peripheral, a3);
-    [v9 setDelegate:v12];
-    objc_storeStrong(&v12->_serviceUUID, a4);
-    objc_storeStrong(&v12->_psmCharacteristicUUID, a5);
+    objc_storeStrong(&v12->_peripheral, peripheral);
+    [peripheralCopy setDelegate:v12];
+    objc_storeStrong(&v12->_serviceUUID, d);
+    objc_storeStrong(&v12->_psmCharacteristicUUID, iD);
     currentConnectionState = v12->_currentConnectionState;
     v12->_currentConnectionState = 0;
 
@@ -41,89 +41,89 @@
 
 - (void)_discoverService
 {
-  v3 = [(CARBluetoothLEService *)self queue];
+  queue = [(CARBluetoothLEService *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000E964;
   block[3] = &unk_1000DD480;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 - (CARBluetoothLEChannel)activeChannel
 {
-  v2 = [(CARBluetoothLEService *)self currentConnectionState];
-  v3 = [v2 serviceChannel];
+  currentConnectionState = [(CARBluetoothLEService *)self currentConnectionState];
+  serviceChannel = [currentConnectionState serviceChannel];
 
-  return v3;
+  return serviceChannel;
 }
 
-- (void)peripheral:(id)a3 didDiscoverServices:(id)a4
+- (void)peripheral:(id)peripheral didDiscoverServices:(id)services
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CARBluetoothLEService *)self queue];
+  peripheralCopy = peripheral;
+  servicesCopy = services;
+  queue = [(CARBluetoothLEService *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000EBD4;
   block[3] = &unk_1000DD6F0;
-  v12 = v7;
-  v13 = self;
-  v14 = v6;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async(v8, block);
+  v12 = servicesCopy;
+  selfCopy = self;
+  v14 = peripheralCopy;
+  v9 = peripheralCopy;
+  v10 = servicesCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)peripheral:(id)a3 didDiscoverCharacteristicsForService:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didDiscoverCharacteristicsForService:(id)service error:(id)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(CARBluetoothLEService *)self queue];
+  peripheralCopy = peripheral;
+  serviceCopy = service;
+  queue = [(CARBluetoothLEService *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000EFD8;
   block[3] = &unk_1000DD6F0;
   block[4] = self;
-  v13 = v8;
-  v14 = v7;
-  v10 = v7;
-  v11 = v8;
-  dispatch_async(v9, block);
+  v13 = serviceCopy;
+  v14 = peripheralCopy;
+  v10 = peripheralCopy;
+  v11 = serviceCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)peripheral:(id)a3 didUpdateValueForCharacteristic:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didUpdateValueForCharacteristic:(id)characteristic error:(id)error
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [(CARBluetoothLEService *)self queue];
+  characteristicCopy = characteristic;
+  errorCopy = error;
+  queue = [(CARBluetoothLEService *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000F3E0;
   block[3] = &unk_1000DD6F0;
   block[4] = self;
-  v13 = v7;
-  v14 = v8;
-  v10 = v8;
-  v11 = v7;
-  dispatch_async(v9, block);
+  v13 = characteristicCopy;
+  v14 = errorCopy;
+  v10 = errorCopy;
+  v11 = characteristicCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)peripheral:(id)a3 didOpenL2CAPChannel:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didOpenL2CAPChannel:(id)channel error:(id)error
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [(CARBluetoothLEService *)self queue];
+  channelCopy = channel;
+  errorCopy = error;
+  queue = [(CARBluetoothLEService *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000F7B8;
   block[3] = &unk_1000DD6F0;
-  v13 = v7;
-  v14 = v8;
-  v15 = self;
-  v10 = v8;
-  v11 = v7;
-  dispatch_async(v9, block);
+  v13 = channelCopy;
+  v14 = errorCopy;
+  selfCopy = self;
+  v10 = errorCopy;
+  v11 = channelCopy;
+  dispatch_async(queue, block);
 }
 
 - (CARBluetoothLEServiceDelegate)serviceDelegate

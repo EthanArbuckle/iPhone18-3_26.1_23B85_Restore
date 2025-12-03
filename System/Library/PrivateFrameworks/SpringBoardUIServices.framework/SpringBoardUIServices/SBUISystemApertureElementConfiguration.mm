@@ -12,7 +12,7 @@
 - (BSAction)launchAction;
 - (BSMutableSettings)_storage;
 - (BSSettings)otherSceneClientSettingsRepresentation;
-- (CGSize)maximumAccessoryViewSizeForLayoutMode:(int64_t)a3;
+- (CGSize)maximumAccessoryViewSizeForLayoutMode:(int64_t)mode;
 - (CGSize)preferredContentSizeClampedToMaximumExpandedSize;
 - (CGSize)preferredCustomAspectRatio;
 - (NSDirectionalEdgeInsets)preferredOutsetsFromUnsafeArea;
@@ -38,36 +38,36 @@
 - (unint64_t)presentationBehaviors;
 - (void)_updateStorageForViewProperties;
 - (void)_updateStorageForViewPropertiesIfNeeded;
-- (void)setAppliedLayoutMode:(int64_t)a3;
-- (void)setAssociatedAppBundleIdentifier:(id)a3;
-- (void)setAssociatedScenePersistenceIdentifier:(id)a3;
-- (void)setAttachedMinimalViewRequiresZeroPadding:(BOOL)a3;
-- (void)setBackgroundActivitiesToSuppress:(id)a3;
-- (void)setContentRole:(int64_t)a3;
-- (void)setElementIdentifier:(id)a3;
-- (void)setHasMenuPresentation:(BOOL)a3;
-- (void)setIsRegisteredForCapture:(BOOL)a3;
-- (void)setIsSecureFlipBookElement:(BOOL)a3;
-- (void)setKeyColor:(id)a3;
-- (void)setLaunchAction:(id)a3;
-- (void)setLaunchURL:(id)a3;
-- (void)setMaximumLayoutMode:(int64_t)a3;
-- (void)setMinimumLayoutMode:(int64_t)a3;
-- (void)setPreferredComponentStates:(id)a3;
-- (void)setPreferredConfiguration:(id)a3;
-- (void)setPreferredCustomAspectRatio:(CGSize)a3;
-- (void)setPreferredCustomLayout:(int64_t)a3;
-- (void)setPreferredHeightForBottomSafeArea:(double)a3;
-- (void)setPreferredLayoutMode:(int64_t)a3;
-- (void)setPreferredOutsetsfromUnsafeArea:(NSDirectionalEdgeInsets)a3;
-- (void)setPreferredPaddingForCompactLayout:(id)a3;
-- (void)setPrefersFixedPortraitOrientation:(BOOL)a3;
-- (void)setPresentationBehaviors:(unint64_t)a3;
-- (void)setPreventsAutomaticDismissal:(BOOL)a3;
-- (void)setPreventsInteractiveDismissal:(BOOL)a3;
-- (void)setRecordableConfigurations:(id)a3;
-- (void)setShouldDeferViewSizingPreferenceUpdates:(BOOL)a3;
-- (void)setSymmetricalConfigurations:(id)a3;
+- (void)setAppliedLayoutMode:(int64_t)mode;
+- (void)setAssociatedAppBundleIdentifier:(id)identifier;
+- (void)setAssociatedScenePersistenceIdentifier:(id)identifier;
+- (void)setAttachedMinimalViewRequiresZeroPadding:(BOOL)padding;
+- (void)setBackgroundActivitiesToSuppress:(id)suppress;
+- (void)setContentRole:(int64_t)role;
+- (void)setElementIdentifier:(id)identifier;
+- (void)setHasMenuPresentation:(BOOL)presentation;
+- (void)setIsRegisteredForCapture:(BOOL)capture;
+- (void)setIsSecureFlipBookElement:(BOOL)element;
+- (void)setKeyColor:(id)color;
+- (void)setLaunchAction:(id)action;
+- (void)setLaunchURL:(id)l;
+- (void)setMaximumLayoutMode:(int64_t)mode;
+- (void)setMinimumLayoutMode:(int64_t)mode;
+- (void)setPreferredComponentStates:(id)states;
+- (void)setPreferredConfiguration:(id)configuration;
+- (void)setPreferredCustomAspectRatio:(CGSize)ratio;
+- (void)setPreferredCustomLayout:(int64_t)layout;
+- (void)setPreferredHeightForBottomSafeArea:(double)area;
+- (void)setPreferredLayoutMode:(int64_t)mode;
+- (void)setPreferredOutsetsfromUnsafeArea:(NSDirectionalEdgeInsets)area;
+- (void)setPreferredPaddingForCompactLayout:(id)layout;
+- (void)setPrefersFixedPortraitOrientation:(BOOL)orientation;
+- (void)setPresentationBehaviors:(unint64_t)behaviors;
+- (void)setPreventsAutomaticDismissal:(BOOL)dismissal;
+- (void)setPreventsInteractiveDismissal:(BOOL)dismissal;
+- (void)setRecordableConfigurations:(id)configurations;
+- (void)setShouldDeferViewSizingPreferenceUpdates:(BOOL)updates;
+- (void)setSymmetricalConfigurations:(id)configurations;
 - (void)validateConfiguration;
 @end
 
@@ -89,8 +89,8 @@
 
 - (NSString)elementIdentifier
 {
-  v2 = [(SBUISystemApertureElementConfiguration *)self _storage];
-  v3 = [v2 SBUISA_stringforSetting:3213046];
+  _storage = [(SBUISystemApertureElementConfiguration *)self _storage];
+  v3 = [_storage SBUISA_stringforSetting:3213046];
 
   return v3;
 }
@@ -112,139 +112,139 @@
 
 - (int64_t)contentRole
 {
-  v2 = [(SBUISystemApertureElementConfiguration *)self _storage];
-  v3 = [v2 SBUISA_contentRoleforSetting:3213021];
+  _storage = [(SBUISystemApertureElementConfiguration *)self _storage];
+  v3 = [_storage SBUISA_contentRoleforSetting:3213021];
 
   return v3;
 }
 
 - (int64_t)preferredLayoutMode
 {
-  v2 = [(SBUISystemApertureElementConfiguration *)self _storage];
-  v3 = [v2 SBUISA_layoutModeforSetting:3213022];
+  _storage = [(SBUISystemApertureElementConfiguration *)self _storage];
+  v3 = [_storage SBUISA_layoutModeforSetting:3213022];
 
   return v3;
 }
 
 - (int64_t)maximumLayoutMode
 {
-  v2 = [(SBUISystemApertureElementConfiguration *)self _storage];
-  v3 = [v2 SBUISA_layoutModeforSetting:3213024];
+  _storage = [(SBUISystemApertureElementConfiguration *)self _storage];
+  v3 = [_storage SBUISA_layoutModeforSetting:3213024];
 
   return v3;
 }
 
 - (int64_t)minimumLayoutMode
 {
-  v2 = [(SBUISystemApertureElementConfiguration *)self _storage];
-  v3 = [v2 SBUISA_layoutModeforSetting:3213023];
+  _storage = [(SBUISystemApertureElementConfiguration *)self _storage];
+  v3 = [_storage SBUISA_layoutModeforSetting:3213023];
 
   return v3;
 }
 
 - (BOOL)preventsInteractiveDismissal
 {
-  v2 = [(SBUISystemApertureElementConfiguration *)self _storage];
-  v3 = [v2 objectForSetting:3213051];
-  v4 = [v3 BOOLValue];
+  _storage = [(SBUISystemApertureElementConfiguration *)self _storage];
+  v3 = [_storage objectForSetting:3213051];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)preventsAutomaticDismissal
 {
-  v2 = [(SBUISystemApertureElementConfiguration *)self _storage];
-  v3 = [v2 objectForSetting:3213052];
-  v4 = [v3 BOOLValue];
+  _storage = [(SBUISystemApertureElementConfiguration *)self _storage];
+  v3 = [_storage objectForSetting:3213052];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (NSString)associatedScenePersistenceIdentifier
 {
-  v2 = [(SBUISystemApertureElementConfiguration *)self _storage];
-  v3 = [v2 SBUISA_stringforSetting:3213026];
+  _storage = [(SBUISystemApertureElementConfiguration *)self _storage];
+  v3 = [_storage SBUISA_stringforSetting:3213026];
 
   return v3;
 }
 
 - (unint64_t)presentationBehaviors
 {
-  v2 = [(SBUISystemApertureElementConfiguration *)self _storage];
-  v3 = [v2 SBUISA_presentationBehaviorsForSetting:3213042];
+  _storage = [(SBUISystemApertureElementConfiguration *)self _storage];
+  v3 = [_storage SBUISA_presentationBehaviorsForSetting:3213042];
 
   return v3;
 }
 
 - (NSString)associatedAppBundleIdentifier
 {
-  v2 = [(SBUISystemApertureElementConfiguration *)self _storage];
-  v3 = [v2 SBUISA_stringforSetting:3213040];
+  _storage = [(SBUISystemApertureElementConfiguration *)self _storage];
+  v3 = [_storage SBUISA_stringforSetting:3213040];
 
   return v3;
 }
 
 - (NSURL)launchURL
 {
-  v2 = [(SBUISystemApertureElementConfiguration *)self _storage];
-  v3 = [v2 SBUISA_URLforSetting:3213054];
+  _storage = [(SBUISystemApertureElementConfiguration *)self _storage];
+  v3 = [_storage SBUISA_URLforSetting:3213054];
 
   return v3;
 }
 
 - (BSAction)launchAction
 {
-  v2 = [(SBUISystemApertureElementConfiguration *)self _storage];
-  v3 = [v2 SBUISA_BSActionforSetting:3213055];
+  _storage = [(SBUISystemApertureElementConfiguration *)self _storage];
+  v3 = [_storage SBUISA_BSActionforSetting:3213055];
 
   return v3;
 }
 
 - (NSSet)backgroundActivitiesToSuppress
 {
-  v2 = [(SBUISystemApertureElementConfiguration *)self _storage];
-  v3 = [v2 SBUISA_backgroundActivityIdentifiersForSetting:3213037];
+  _storage = [(SBUISystemApertureElementConfiguration *)self _storage];
+  v3 = [_storage SBUISA_backgroundActivityIdentifiersForSetting:3213037];
 
   return v3;
 }
 
 - (UIColor)keyColor
 {
-  v2 = [(SBUISystemApertureElementConfiguration *)self _storage];
-  v3 = [v2 SBUISA_UIColorForSetting:3213053];
+  _storage = [(SBUISystemApertureElementConfiguration *)self _storage];
+  v3 = [_storage SBUISA_UIColorForSetting:3213053];
 
   return v3;
 }
 
 - (BOOL)hasMenuPresentation
 {
-  v2 = [(SBUISystemApertureElementConfiguration *)self _storage];
-  v3 = [v2 objectForSetting:3213041];
-  v4 = [v3 BOOLValue];
+  _storage = [(SBUISystemApertureElementConfiguration *)self _storage];
+  v3 = [_storage objectForSetting:3213041];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (int64_t)appliedLayoutMode
 {
-  v2 = [(SBUISystemApertureElementConfiguration *)self _storage];
-  v3 = [v2 SBUISA_layoutModeforSetting:3213025];
+  _storage = [(SBUISystemApertureElementConfiguration *)self _storage];
+  v3 = [_storage SBUISA_layoutModeforSetting:3213025];
 
   return v3;
 }
 
 - (BOOL)attachedMinimalViewRequiresZeroPadding
 {
-  v2 = [(SBUISystemApertureElementConfiguration *)self _storage];
-  v3 = [v2 BOOLForSetting:3213044];
+  _storage = [(SBUISystemApertureElementConfiguration *)self _storage];
+  v3 = [_storage BOOLForSetting:3213044];
 
   return v3;
 }
 
 - (BOOL)prefersFixedPortraitOrientation
 {
-  v2 = [(SBUISystemApertureElementConfiguration *)self _storage];
-  v3 = [v2 BOOLForSetting:3213045];
+  _storage = [(SBUISystemApertureElementConfiguration *)self _storage];
+  v3 = [_storage BOOLForSetting:3213045];
 
   return v3;
 }
@@ -260,8 +260,8 @@
 
 - (void)_updateStorageForViewProperties
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"SBUISystemApertureElementConfiguration.m" lineNumber:552 description:@"Elements that don't support dynamic layout must implement -[SBUISystemApertureElement preferredHeightForBottomSafeArea]"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"SBUISystemApertureElementConfiguration.m" lineNumber:552 description:@"Elements that don't support dynamic layout must implement -[SBUISystemApertureElement preferredHeightForBottomSafeArea]"];
 }
 
 void __73__SBUISystemApertureElementConfiguration__updateStorageForViewProperties__block_invoke(uint64_t a1, void *a2, uint64_t a3, uint64_t a4, uint64_t a5, uint64_t a6)
@@ -419,7 +419,7 @@ LABEL_31:
 
 - (BOOL)_elementSupportsDynamicResizing
 {
-  v2 = [(SBUISystemApertureElementConfiguration *)self _strongElementViewController];
+  _strongElementViewController = [(SBUISystemApertureElementConfiguration *)self _strongElementViewController];
   v3 = objc_opt_respondsToSelector();
 
   return v3 & 1;
@@ -427,8 +427,8 @@ LABEL_31:
 
 - (NSDirectionalEdgeInsets)preferredOutsetsFromUnsafeArea
 {
-  v2 = [(SBUISystemApertureElementConfiguration *)self _storage];
-  [v2 SBUISA_directionalEdgeInsetsforSetting:3213036];
+  _storage = [(SBUISystemApertureElementConfiguration *)self _storage];
+  [_storage SBUISA_directionalEdgeInsetsforSetting:3213036];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -447,8 +447,8 @@ LABEL_31:
 
 - (NSValue)preferredPaddingForCompactLayout
 {
-  v2 = [(SBUISystemApertureElementConfiguration *)self _storage];
-  v3 = [v2 objectForSetting:3213043];
+  _storage = [(SBUISystemApertureElementConfiguration *)self _storage];
+  v3 = [_storage objectForSetting:3213043];
 
   return v3;
 }
@@ -467,15 +467,15 @@ LABEL_31:
   v28[3] = &unk_1E789F758;
   v28[4] = &v29;
   v4 = MEMORY[0x1AC58E960](v28);
-  v5 = [(SBUISystemApertureElementConfiguration *)self leadingView];
+  leadingView = [(SBUISystemApertureElementConfiguration *)self leadingView];
 
-  v6 = [(SBUISystemApertureElementConfiguration *)self trailingView];
+  trailingView = [(SBUISystemApertureElementConfiguration *)self trailingView];
 
-  v7 = [(SBUISystemApertureElementConfiguration *)self minimalView];
+  minimalView = [(SBUISystemApertureElementConfiguration *)self minimalView];
 
-  if (v6)
+  if (trailingView)
   {
-    v8 = v5 != 0;
+    v8 = leadingView != 0;
   }
 
   else
@@ -483,7 +483,7 @@ LABEL_31:
     v8 = 0;
   }
 
-  if (v7)
+  if (minimalView)
   {
     v9 = v8;
   }
@@ -493,14 +493,14 @@ LABEL_31:
     v9 = 0;
   }
 
-  if (v5 || v6 || v7)
+  if (leadingView || trailingView || minimalView)
   {
     if (v9)
     {
-      v10 = [(SBUISystemApertureElementConfiguration *)self leadingView];
-      v11 = [(SBUISystemApertureElementConfiguration *)self trailingView];
+      leadingView2 = [(SBUISystemApertureElementConfiguration *)self leadingView];
+      trailingView2 = [(SBUISystemApertureElementConfiguration *)self trailingView];
 
-      if (v10 != v11)
+      if (leadingView2 != trailingView2)
       {
         goto LABEL_25;
       }
@@ -509,7 +509,7 @@ LABEL_31:
       goto LABEL_24;
     }
 
-    if (v5 && !v6)
+    if (leadingView && !trailingView)
     {
       v12 = @"If you specify a leading view you must provide a trailing view.";
 LABEL_24:
@@ -517,9 +517,9 @@ LABEL_24:
       goto LABEL_25;
     }
 
-    if (v6)
+    if (trailingView)
     {
-      v13 = v5 != 0;
+      v13 = leadingView != 0;
     }
 
     else
@@ -533,7 +533,7 @@ LABEL_24:
       goto LABEL_24;
     }
 
-    if (!v7 && [(SBUISystemApertureElementConfiguration *)self minimumLayoutMode]== 2)
+    if (!minimalView && [(SBUISystemApertureElementConfiguration *)self minimumLayoutMode]== 2)
     {
       v12 = @"If you support minimal layout you must provide a minimal view.";
       goto LABEL_24;
@@ -546,20 +546,20 @@ LABEL_25:
     (v4)[2](v4, @"invalid content role");
   }
 
-  v14 = [(SBUISystemApertureElementConfiguration *)self preferredLayoutMode];
-  if (v14 < [(SBUISystemApertureElementConfiguration *)self minimumLayoutMode]&& [(SBUISystemApertureElementConfiguration *)self preferredLayoutMode]!= -1)
+  preferredLayoutMode = [(SBUISystemApertureElementConfiguration *)self preferredLayoutMode];
+  if (preferredLayoutMode < [(SBUISystemApertureElementConfiguration *)self minimumLayoutMode]&& [(SBUISystemApertureElementConfiguration *)self preferredLayoutMode]!= -1)
   {
     (v4)[2](v4, @"preferred layout mode must be greater than or equal to the minimum layout mode");
   }
 
-  v15 = [(SBUISystemApertureElementConfiguration *)self maximumLayoutMode];
-  if (v15 < [(SBUISystemApertureElementConfiguration *)self minimumLayoutMode])
+  maximumLayoutMode = [(SBUISystemApertureElementConfiguration *)self maximumLayoutMode];
+  if (maximumLayoutMode < [(SBUISystemApertureElementConfiguration *)self minimumLayoutMode])
   {
     (v4)[2](v4, @"maximum layout mode must be greater than or equal to the minimum layout mode");
   }
 
-  v16 = [(SBUISystemApertureElementConfiguration *)self preferredLayoutMode];
-  if (v16 > [(SBUISystemApertureElementConfiguration *)self maximumLayoutMode])
+  preferredLayoutMode2 = [(SBUISystemApertureElementConfiguration *)self preferredLayoutMode];
+  if (preferredLayoutMode2 > [(SBUISystemApertureElementConfiguration *)self maximumLayoutMode])
   {
     (v4)[2](v4, @"preferred layout mode must be less than or equal to the maximum layout mode");
   }
@@ -571,8 +571,8 @@ LABEL_25:
 
   if ([(SBUISystemApertureElementConfiguration *)self minimumLayoutMode]== 3)
   {
-    v17 = [(SBUISystemApertureElementConfiguration *)self leadingView];
-    if (!v17 || ([(SBUISystemApertureElementConfiguration *)self trailingView], v18 = objc_claimAutoreleasedReturnValue(), v18, v17, !v18))
+    leadingView3 = [(SBUISystemApertureElementConfiguration *)self leadingView];
+    if (!leadingView3 || ([(SBUISystemApertureElementConfiguration *)self trailingView], v18 = objc_claimAutoreleasedReturnValue(), v18, leadingView3, !v18))
     {
       (v4)[2](v4, @"if your minimum layout mode is .compact, you must specify leading and trailing views");
     }
@@ -580,17 +580,17 @@ LABEL_25:
 
   if ([(SBUISystemApertureElementConfiguration *)self _elementSupportsDynamicResizing])
   {
-    v19 = [(SBUISystemApertureElementConfiguration *)self minimalView];
-    v20 = [(SBUISystemApertureElementConfiguration *)self leadingView];
-    if ([v19 isEqual:v20])
+    minimalView2 = [(SBUISystemApertureElementConfiguration *)self minimalView];
+    leadingView4 = [(SBUISystemApertureElementConfiguration *)self leadingView];
+    if ([minimalView2 isEqual:leadingView4])
     {
     }
 
     else
     {
-      v21 = [(SBUISystemApertureElementConfiguration *)self minimalView];
-      v22 = [(SBUISystemApertureElementConfiguration *)self trailingView];
-      v23 = [v21 isEqual:v22];
+      minimalView3 = [(SBUISystemApertureElementConfiguration *)self minimalView];
+      trailingView3 = [(SBUISystemApertureElementConfiguration *)self trailingView];
+      v23 = [minimalView3 isEqual:trailingView3];
 
       if (!v23)
       {
@@ -608,8 +608,8 @@ LABEL_45:
     v25 = [v30[5] componentsJoinedByString:@" | "];
     v26 = [v24 stringWithFormat:@"Invalid config: %@ %@", self, v25];
 
-    v27 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v27 handleFailureInMethod:a2 object:self file:@"SBUISystemApertureElementConfiguration.m" lineNumber:640 description:v26];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SBUISystemApertureElementConfiguration.m" lineNumber:640 description:v26];
   }
 
   _Block_object_dispose(&v29, 8);
@@ -621,8 +621,8 @@ LABEL_45:
   otherSceneClientSettingsRepresentation = self->_otherSceneClientSettingsRepresentation;
   if (!otherSceneClientSettingsRepresentation)
   {
-    v4 = [(SBUISystemApertureElementConfiguration *)self _storage];
-    v5 = [v4 copy];
+    _storage = [(SBUISystemApertureElementConfiguration *)self _storage];
+    v5 = [_storage copy];
     v6 = self->_otherSceneClientSettingsRepresentation;
     self->_otherSceneClientSettingsRepresentation = v5;
 
@@ -634,17 +634,17 @@ LABEL_45:
 
 - (BOOL)SBUISA_attachedMinimalViewRequiresZeroPadding
 {
-  v2 = [(SBUISystemApertureElementConfiguration *)self _storage];
-  v3 = [v2 objectForSetting:3213044];
-  v4 = [v3 BOOLValue];
+  _storage = [(SBUISystemApertureElementConfiguration *)self _storage];
+  v3 = [_storage objectForSetting:3213044];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (CGSize)preferredCustomAspectRatio
 {
-  v2 = [(SBUISystemApertureElementConfiguration *)self _storage];
-  [v2 SBUISA_CGSizeforSetting:3213038];
+  _storage = [(SBUISystemApertureElementConfiguration *)self _storage];
+  [_storage SBUISA_CGSizeforSetting:3213038];
   v4 = v3;
   v6 = v5;
 
@@ -657,22 +657,22 @@ LABEL_45:
 
 - (int64_t)preferredCustomLayout
 {
-  v2 = [(SBUISystemApertureElementConfiguration *)self _storage];
-  v3 = [v2 SBUISA_customLayoutModeforSetting:3213039];
+  _storage = [(SBUISystemApertureElementConfiguration *)self _storage];
+  v3 = [_storage SBUISA_customLayoutModeforSetting:3213039];
 
   return v3;
 }
 
-- (void)setElementIdentifier:(id)a3
+- (void)setElementIdentifier:(id)identifier
 {
-  v7 = a3;
-  v4 = [(SBUISystemApertureElementConfiguration *)self elementIdentifier];
+  identifierCopy = identifier;
+  elementIdentifier = [(SBUISystemApertureElementConfiguration *)self elementIdentifier];
   v5 = BSEqualStrings();
 
   if ((v5 & 1) == 0)
   {
-    v6 = [(SBUISystemApertureElementConfiguration *)self _storage];
-    [v6 SBUISA_setString:v7 forSetting:3213046];
+    _storage = [(SBUISystemApertureElementConfiguration *)self _storage];
+    [_storage SBUISA_setString:identifierCopy forSetting:3213046];
 
     [(SBUISystemApertureElementConfiguration *)self _invalidateOtherSceneClientSettingsRepresentation];
   }
@@ -680,424 +680,424 @@ LABEL_45:
 
 - (BOOL)isSecureFlipBookElement
 {
-  v2 = [(SBUISystemApertureElementConfiguration *)self _storage];
-  v3 = [v2 BOOLForSetting:3213056];
+  _storage = [(SBUISystemApertureElementConfiguration *)self _storage];
+  v3 = [_storage BOOLForSetting:3213056];
 
   return v3;
 }
 
 - (BOOL)isRegisteredForCapture
 {
-  v2 = [(SBUISystemApertureElementConfiguration *)self _storage];
-  v3 = [v2 BOOLForSetting:3213057];
+  _storage = [(SBUISystemApertureElementConfiguration *)self _storage];
+  v3 = [_storage BOOLForSetting:3213057];
 
   return v3;
 }
 
 - (id)recordableConfigurations
 {
-  v2 = [(SBUISystemApertureElementConfiguration *)self _storage];
-  v3 = [v2 SBUISA_secureFlipBookElementConfigurationsForSetting:3213058];
+  _storage = [(SBUISystemApertureElementConfiguration *)self _storage];
+  v3 = [_storage SBUISA_secureFlipBookElementConfigurationsForSetting:3213058];
 
   return v3;
 }
 
 - (id)symmetricalConfigurations
 {
-  v2 = [(SBUISystemApertureElementConfiguration *)self _storage];
-  v3 = [v2 SBUISA_secureFlipBookElementSymmetricalConfigurationsForSetting:3213059];
+  _storage = [(SBUISystemApertureElementConfiguration *)self _storage];
+  v3 = [_storage SBUISA_secureFlipBookElementSymmetricalConfigurationsForSetting:3213059];
 
   return v3;
 }
 
 - (id)preferredConfiguration
 {
-  v2 = [(SBUISystemApertureElementConfiguration *)self _storage];
-  v3 = [v2 SBUISA_stringforSetting:3213060];
+  _storage = [(SBUISystemApertureElementConfiguration *)self _storage];
+  v3 = [_storage SBUISA_stringforSetting:3213060];
 
   return v3;
 }
 
 - (id)preferredComponentStates
 {
-  v2 = [(SBUISystemApertureElementConfiguration *)self _storage];
-  v3 = [v2 SBUISA_componentStatesForSetting:3213061];
+  _storage = [(SBUISystemApertureElementConfiguration *)self _storage];
+  v3 = [_storage SBUISA_componentStatesForSetting:3213061];
 
   return v3;
 }
 
-- (void)setContentRole:(int64_t)a3
+- (void)setContentRole:(int64_t)role
 {
-  if ([(SBUISystemApertureElementConfiguration *)self contentRole]!= a3)
+  if ([(SBUISystemApertureElementConfiguration *)self contentRole]!= role)
   {
-    v5 = [(SBUISystemApertureElementConfiguration *)self _storage];
-    [v5 SBUISA_setContentRole:a3 forSetting:3213021];
+    _storage = [(SBUISystemApertureElementConfiguration *)self _storage];
+    [_storage SBUISA_setContentRole:role forSetting:3213021];
 
     [(SBUISystemApertureElementConfiguration *)self _invalidateOtherSceneClientSettingsRepresentation];
   }
 }
 
-- (void)setPreferredLayoutMode:(int64_t)a3
+- (void)setPreferredLayoutMode:(int64_t)mode
 {
-  if ([(SBUISystemApertureElementConfiguration *)self preferredLayoutMode]!= a3)
+  if ([(SBUISystemApertureElementConfiguration *)self preferredLayoutMode]!= mode)
   {
-    v5 = [(SBUISystemApertureElementConfiguration *)self _storage];
-    [v5 SBUISA_setLayoutMode:a3 forSetting:3213022];
+    _storage = [(SBUISystemApertureElementConfiguration *)self _storage];
+    [_storage SBUISA_setLayoutMode:mode forSetting:3213022];
 
     [(SBUISystemApertureElementConfiguration *)self _invalidateOtherSceneClientSettingsRepresentation];
   }
 }
 
-- (void)setMinimumLayoutMode:(int64_t)a3
+- (void)setMinimumLayoutMode:(int64_t)mode
 {
-  if ([(SBUISystemApertureElementConfiguration *)self minimumLayoutMode]!= a3)
+  if ([(SBUISystemApertureElementConfiguration *)self minimumLayoutMode]!= mode)
   {
-    v5 = [(SBUISystemApertureElementConfiguration *)self _storage];
-    [v5 SBUISA_setLayoutMode:a3 forSetting:3213023];
+    _storage = [(SBUISystemApertureElementConfiguration *)self _storage];
+    [_storage SBUISA_setLayoutMode:mode forSetting:3213023];
 
     [(SBUISystemApertureElementConfiguration *)self _invalidateOtherSceneClientSettingsRepresentation];
   }
 }
 
-- (void)setMaximumLayoutMode:(int64_t)a3
+- (void)setMaximumLayoutMode:(int64_t)mode
 {
-  if ([(SBUISystemApertureElementConfiguration *)self maximumLayoutMode]!= a3)
+  if ([(SBUISystemApertureElementConfiguration *)self maximumLayoutMode]!= mode)
   {
-    v5 = [(SBUISystemApertureElementConfiguration *)self _storage];
-    [v5 SBUISA_setLayoutMode:a3 forSetting:3213024];
+    _storage = [(SBUISystemApertureElementConfiguration *)self _storage];
+    [_storage SBUISA_setLayoutMode:mode forSetting:3213024];
 
     [(SBUISystemApertureElementConfiguration *)self _invalidateOtherSceneClientSettingsRepresentation];
   }
 }
 
-- (void)setAppliedLayoutMode:(int64_t)a3
+- (void)setAppliedLayoutMode:(int64_t)mode
 {
-  if ([(SBUISystemApertureElementConfiguration *)self appliedLayoutMode]!= a3)
+  if ([(SBUISystemApertureElementConfiguration *)self appliedLayoutMode]!= mode)
   {
-    v5 = [(SBUISystemApertureElementConfiguration *)self _storage];
-    [v5 SBUISA_setLayoutMode:a3 forSetting:3213025];
+    _storage = [(SBUISystemApertureElementConfiguration *)self _storage];
+    [_storage SBUISA_setLayoutMode:mode forSetting:3213025];
 
     [(SBUISystemApertureElementConfiguration *)self _invalidateOtherSceneClientSettingsRepresentation];
   }
 }
 
-- (void)setPreferredHeightForBottomSafeArea:(double)a3
+- (void)setPreferredHeightForBottomSafeArea:(double)area
 {
   [(SBUISystemApertureElementConfiguration *)self preferredHeightForBottomSafeArea];
-  if (v5 != a3)
+  if (v5 != area)
   {
 
-    [(SBUISystemApertureElementConfiguration *)self setPreferredOutsetsfromUnsafeArea:0.0, -1000.0, -a3, -1000.0];
+    [(SBUISystemApertureElementConfiguration *)self setPreferredOutsetsfromUnsafeArea:0.0, -1000.0, -area, -1000.0];
   }
 }
 
-- (void)setPreferredOutsetsfromUnsafeArea:(NSDirectionalEdgeInsets)a3
+- (void)setPreferredOutsetsfromUnsafeArea:(NSDirectionalEdgeInsets)area
 {
-  trailing = a3.trailing;
-  bottom = a3.bottom;
-  leading = a3.leading;
-  top = a3.top;
+  trailing = area.trailing;
+  bottom = area.bottom;
+  leading = area.leading;
+  top = area.top;
   [(SBUISystemApertureElementConfiguration *)self preferredOutsetsFromUnsafeArea];
   if (leading != v11 || top != v8 || trailing != v10 || bottom != v9)
   {
-    v15 = [(SBUISystemApertureElementConfiguration *)self _storage];
-    [v15 SBUISA_setDirectionalEdgeInsets:3213036 forSetting:{top, leading, bottom, trailing}];
+    _storage = [(SBUISystemApertureElementConfiguration *)self _storage];
+    [_storage SBUISA_setDirectionalEdgeInsets:3213036 forSetting:{top, leading, bottom, trailing}];
 
     [(SBUISystemApertureElementConfiguration *)self _invalidateOtherSceneClientSettingsRepresentation];
   }
 }
 
-- (void)setPreferredPaddingForCompactLayout:(id)a3
+- (void)setPreferredPaddingForCompactLayout:(id)layout
 {
-  v7 = a3;
-  v4 = [(SBUISystemApertureElementConfiguration *)self preferredPaddingForCompactLayout];
-  [v7 directionalEdgeInsetsValue];
-  [v4 directionalEdgeInsetsValue];
-  if (!BSFloatApproximatelyEqualToFloat() || (v5 = BSFloatApproximatelyEqualToFloat(), (v7 == 0) == (v4 != 0)) || (v5 & 1) == 0)
+  layoutCopy = layout;
+  preferredPaddingForCompactLayout = [(SBUISystemApertureElementConfiguration *)self preferredPaddingForCompactLayout];
+  [layoutCopy directionalEdgeInsetsValue];
+  [preferredPaddingForCompactLayout directionalEdgeInsetsValue];
+  if (!BSFloatApproximatelyEqualToFloat() || (v5 = BSFloatApproximatelyEqualToFloat(), (layoutCopy == 0) == (preferredPaddingForCompactLayout != 0)) || (v5 & 1) == 0)
   {
-    v6 = [(SBUISystemApertureElementConfiguration *)self _storage];
-    [v6 setObject:v7 forSetting:3213043];
+    _storage = [(SBUISystemApertureElementConfiguration *)self _storage];
+    [_storage setObject:layoutCopy forSetting:3213043];
 
     [(SBUISystemApertureElementConfiguration *)self _invalidateOtherSceneClientSettingsRepresentation];
   }
 }
 
-- (void)setAttachedMinimalViewRequiresZeroPadding:(BOOL)a3
+- (void)setAttachedMinimalViewRequiresZeroPadding:(BOOL)padding
 {
-  v3 = a3;
-  if ([(SBUISystemApertureElementConfiguration *)self attachedMinimalViewRequiresZeroPadding]!= a3)
+  paddingCopy = padding;
+  if ([(SBUISystemApertureElementConfiguration *)self attachedMinimalViewRequiresZeroPadding]!= padding)
   {
-    v5 = [(SBUISystemApertureElementConfiguration *)self _storage];
-    v6 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-    [v5 setObject:v6 forSetting:3213044];
+    _storage = [(SBUISystemApertureElementConfiguration *)self _storage];
+    v6 = [MEMORY[0x1E696AD98] numberWithBool:paddingCopy];
+    [_storage setObject:v6 forSetting:3213044];
 
     [(SBUISystemApertureElementConfiguration *)self _invalidateOtherSceneClientSettingsRepresentation];
   }
 }
 
-- (void)setPrefersFixedPortraitOrientation:(BOOL)a3
+- (void)setPrefersFixedPortraitOrientation:(BOOL)orientation
 {
-  v3 = a3;
-  if ([(SBUISystemApertureElementConfiguration *)self prefersFixedPortraitOrientation]!= a3)
+  orientationCopy = orientation;
+  if ([(SBUISystemApertureElementConfiguration *)self prefersFixedPortraitOrientation]!= orientation)
   {
-    v5 = [(SBUISystemApertureElementConfiguration *)self _storage];
-    v6 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-    [v5 setObject:v6 forSetting:3213045];
+    _storage = [(SBUISystemApertureElementConfiguration *)self _storage];
+    v6 = [MEMORY[0x1E696AD98] numberWithBool:orientationCopy];
+    [_storage setObject:v6 forSetting:3213045];
 
     [(SBUISystemApertureElementConfiguration *)self _invalidateOtherSceneClientSettingsRepresentation];
   }
 }
 
-- (void)setAssociatedScenePersistenceIdentifier:(id)a3
+- (void)setAssociatedScenePersistenceIdentifier:(id)identifier
 {
-  v7 = a3;
-  v4 = [(SBUISystemApertureElementConfiguration *)self associatedScenePersistenceIdentifier];
+  identifierCopy = identifier;
+  associatedScenePersistenceIdentifier = [(SBUISystemApertureElementConfiguration *)self associatedScenePersistenceIdentifier];
   v5 = BSEqualStrings();
 
   if ((v5 & 1) == 0)
   {
-    v6 = [(SBUISystemApertureElementConfiguration *)self _storage];
-    [v6 SBUISA_setString:v7 forSetting:3213026];
+    _storage = [(SBUISystemApertureElementConfiguration *)self _storage];
+    [_storage SBUISA_setString:identifierCopy forSetting:3213026];
 
     [(SBUISystemApertureElementConfiguration *)self _invalidateOtherSceneClientSettingsRepresentation];
   }
 }
 
-- (void)setAssociatedAppBundleIdentifier:(id)a3
+- (void)setAssociatedAppBundleIdentifier:(id)identifier
 {
-  v7 = a3;
-  v4 = [(SBUISystemApertureElementConfiguration *)self associatedAppBundleIdentifier];
+  identifierCopy = identifier;
+  associatedAppBundleIdentifier = [(SBUISystemApertureElementConfiguration *)self associatedAppBundleIdentifier];
   v5 = BSEqualStrings();
 
   if ((v5 & 1) == 0)
   {
-    v6 = [(SBUISystemApertureElementConfiguration *)self _storage];
-    [v6 SBUISA_setString:v7 forSetting:3213040];
+    _storage = [(SBUISystemApertureElementConfiguration *)self _storage];
+    [_storage SBUISA_setString:identifierCopy forSetting:3213040];
 
     [(SBUISystemApertureElementConfiguration *)self _invalidateOtherSceneClientSettingsRepresentation];
   }
 }
 
-- (void)setLaunchURL:(id)a3
+- (void)setLaunchURL:(id)l
 {
-  v7 = a3;
-  v4 = [(SBUISystemApertureElementConfiguration *)self launchURL];
+  lCopy = l;
+  launchURL = [(SBUISystemApertureElementConfiguration *)self launchURL];
   v5 = BSEqualObjects();
 
   if ((v5 & 1) == 0)
   {
-    v6 = [(SBUISystemApertureElementConfiguration *)self _storage];
-    [v6 SBUISA_setURL:v7 forSetting:3213054];
+    _storage = [(SBUISystemApertureElementConfiguration *)self _storage];
+    [_storage SBUISA_setURL:lCopy forSetting:3213054];
 
     [(SBUISystemApertureElementConfiguration *)self _invalidateOtherSceneClientSettingsRepresentation];
   }
 }
 
-- (void)setLaunchAction:(id)a3
+- (void)setLaunchAction:(id)action
 {
-  v7 = a3;
-  v4 = [(SBUISystemApertureElementConfiguration *)self launchAction];
+  actionCopy = action;
+  launchAction = [(SBUISystemApertureElementConfiguration *)self launchAction];
   v5 = BSEqualObjects();
 
   if ((v5 & 1) == 0)
   {
-    v6 = [(SBUISystemApertureElementConfiguration *)self _storage];
-    [v6 SBUISA_setBSAction:v7 forSetting:3213055];
+    _storage = [(SBUISystemApertureElementConfiguration *)self _storage];
+    [_storage SBUISA_setBSAction:actionCopy forSetting:3213055];
 
     [(SBUISystemApertureElementConfiguration *)self _invalidateOtherSceneClientSettingsRepresentation];
   }
 }
 
-- (void)setBackgroundActivitiesToSuppress:(id)a3
+- (void)setBackgroundActivitiesToSuppress:(id)suppress
 {
-  v7 = a3;
-  v4 = [(SBUISystemApertureElementConfiguration *)self backgroundActivitiesToSuppress];
+  suppressCopy = suppress;
+  backgroundActivitiesToSuppress = [(SBUISystemApertureElementConfiguration *)self backgroundActivitiesToSuppress];
   v5 = BSEqualSets();
 
   if ((v5 & 1) == 0)
   {
-    v6 = [(SBUISystemApertureElementConfiguration *)self _storage];
-    [v6 SBUISA_setBackgroundActivityIdentifiers:v7 forSetting:3213037];
+    _storage = [(SBUISystemApertureElementConfiguration *)self _storage];
+    [_storage SBUISA_setBackgroundActivityIdentifiers:suppressCopy forSetting:3213037];
 
     [(SBUISystemApertureElementConfiguration *)self _invalidateOtherSceneClientSettingsRepresentation];
   }
 }
 
-- (void)setPreferredCustomAspectRatio:(CGSize)a3
+- (void)setPreferredCustomAspectRatio:(CGSize)ratio
 {
-  height = a3.height;
-  width = a3.width;
+  height = ratio.height;
+  width = ratio.width;
   [(SBUISystemApertureElementConfiguration *)self preferredCustomAspectRatio];
   if (width != v7 || height != v6)
   {
-    v9 = [(SBUISystemApertureElementConfiguration *)self _storage];
-    [v9 SBUISA_setCGSize:3213038 forSetting:{width, height}];
+    _storage = [(SBUISystemApertureElementConfiguration *)self _storage];
+    [_storage SBUISA_setCGSize:3213038 forSetting:{width, height}];
 
     [(SBUISystemApertureElementConfiguration *)self _invalidateOtherSceneClientSettingsRepresentation];
   }
 }
 
-- (void)setPreferredCustomLayout:(int64_t)a3
+- (void)setPreferredCustomLayout:(int64_t)layout
 {
-  if ([(SBUISystemApertureElementConfiguration *)self preferredCustomLayout]!= a3)
+  if ([(SBUISystemApertureElementConfiguration *)self preferredCustomLayout]!= layout)
   {
-    v5 = [(SBUISystemApertureElementConfiguration *)self _storage];
-    [v5 SBUISA_setCustomLayout:a3 forSetting:3213039];
+    _storage = [(SBUISystemApertureElementConfiguration *)self _storage];
+    [_storage SBUISA_setCustomLayout:layout forSetting:3213039];
 
     [(SBUISystemApertureElementConfiguration *)self _invalidateOtherSceneClientSettingsRepresentation];
   }
 }
 
-- (void)setHasMenuPresentation:(BOOL)a3
+- (void)setHasMenuPresentation:(BOOL)presentation
 {
-  v3 = a3;
-  if ([(SBUISystemApertureElementConfiguration *)self hasMenuPresentation]!= a3)
+  presentationCopy = presentation;
+  if ([(SBUISystemApertureElementConfiguration *)self hasMenuPresentation]!= presentation)
   {
-    v5 = [(SBUISystemApertureElementConfiguration *)self _storage];
-    v6 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-    [v5 setObject:v6 forSetting:3213041];
+    _storage = [(SBUISystemApertureElementConfiguration *)self _storage];
+    v6 = [MEMORY[0x1E696AD98] numberWithBool:presentationCopy];
+    [_storage setObject:v6 forSetting:3213041];
 
     [(SBUISystemApertureElementConfiguration *)self _invalidateOtherSceneClientSettingsRepresentation];
   }
 }
 
-- (void)setPresentationBehaviors:(unint64_t)a3
+- (void)setPresentationBehaviors:(unint64_t)behaviors
 {
-  v5 = [(SBUISystemApertureElementConfiguration *)self _storage];
-  v6 = [v5 SBUISA_presentationBehaviorsForSetting:3213042];
+  _storage = [(SBUISystemApertureElementConfiguration *)self _storage];
+  v6 = [_storage SBUISA_presentationBehaviorsForSetting:3213042];
 
-  if (v6 != a3)
+  if (v6 != behaviors)
   {
-    v7 = [(SBUISystemApertureElementConfiguration *)self _storage];
-    v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-    [v7 setObject:v8 forSetting:3213042];
+    _storage2 = [(SBUISystemApertureElementConfiguration *)self _storage];
+    v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:behaviors];
+    [_storage2 setObject:v8 forSetting:3213042];
 
     [(SBUISystemApertureElementConfiguration *)self _invalidateOtherSceneClientSettingsRepresentation];
   }
 }
 
-- (void)setPreventsInteractiveDismissal:(BOOL)a3
+- (void)setPreventsInteractiveDismissal:(BOOL)dismissal
 {
-  v3 = a3;
-  if ([(SBUISystemApertureElementConfiguration *)self preventsInteractiveDismissal]!= a3)
+  dismissalCopy = dismissal;
+  if ([(SBUISystemApertureElementConfiguration *)self preventsInteractiveDismissal]!= dismissal)
   {
-    v5 = [(SBUISystemApertureElementConfiguration *)self _storage];
-    v6 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-    [v5 setObject:v6 forSetting:3213051];
+    _storage = [(SBUISystemApertureElementConfiguration *)self _storage];
+    v6 = [MEMORY[0x1E696AD98] numberWithBool:dismissalCopy];
+    [_storage setObject:v6 forSetting:3213051];
 
     [(SBUISystemApertureElementConfiguration *)self _invalidateOtherSceneClientSettingsRepresentation];
   }
 }
 
-- (void)setPreventsAutomaticDismissal:(BOOL)a3
+- (void)setPreventsAutomaticDismissal:(BOOL)dismissal
 {
-  v3 = a3;
-  if ([(SBUISystemApertureElementConfiguration *)self preventsAutomaticDismissal]!= a3)
+  dismissalCopy = dismissal;
+  if ([(SBUISystemApertureElementConfiguration *)self preventsAutomaticDismissal]!= dismissal)
   {
-    v5 = [(SBUISystemApertureElementConfiguration *)self _storage];
-    v6 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-    [v5 setObject:v6 forSetting:3213052];
+    _storage = [(SBUISystemApertureElementConfiguration *)self _storage];
+    v6 = [MEMORY[0x1E696AD98] numberWithBool:dismissalCopy];
+    [_storage setObject:v6 forSetting:3213052];
 
     [(SBUISystemApertureElementConfiguration *)self _invalidateOtherSceneClientSettingsRepresentation];
   }
 }
 
-- (void)setKeyColor:(id)a3
+- (void)setKeyColor:(id)color
 {
-  v7 = a3;
-  v4 = [(SBUISystemApertureElementConfiguration *)self keyColor];
+  colorCopy = color;
+  keyColor = [(SBUISystemApertureElementConfiguration *)self keyColor];
   v5 = BSEqualObjects();
 
   if ((v5 & 1) == 0)
   {
-    v6 = [(SBUISystemApertureElementConfiguration *)self _storage];
-    [v6 SBUISA_setUIColor:v7 forSetting:3213053];
+    _storage = [(SBUISystemApertureElementConfiguration *)self _storage];
+    [_storage SBUISA_setUIColor:colorCopy forSetting:3213053];
 
     [(SBUISystemApertureElementConfiguration *)self _invalidateOtherSceneClientSettingsRepresentation];
   }
 }
 
-- (void)setIsSecureFlipBookElement:(BOOL)a3
+- (void)setIsSecureFlipBookElement:(BOOL)element
 {
-  v3 = a3;
-  if ([(SBUISystemApertureElementConfiguration *)self isSecureFlipBookElement]!= a3)
+  elementCopy = element;
+  if ([(SBUISystemApertureElementConfiguration *)self isSecureFlipBookElement]!= element)
   {
-    v5 = [(SBUISystemApertureElementConfiguration *)self _storage];
-    v6 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-    [v5 setObject:v6 forSetting:3213056];
+    _storage = [(SBUISystemApertureElementConfiguration *)self _storage];
+    v6 = [MEMORY[0x1E696AD98] numberWithBool:elementCopy];
+    [_storage setObject:v6 forSetting:3213056];
 
     [(SBUISystemApertureElementConfiguration *)self _invalidateOtherSceneClientSettingsRepresentation];
   }
 }
 
-- (void)setIsRegisteredForCapture:(BOOL)a3
+- (void)setIsRegisteredForCapture:(BOOL)capture
 {
-  v3 = a3;
-  if ([(SBUISystemApertureElementConfiguration *)self isRegisteredForCapture]!= a3)
+  captureCopy = capture;
+  if ([(SBUISystemApertureElementConfiguration *)self isRegisteredForCapture]!= capture)
   {
-    v5 = [(SBUISystemApertureElementConfiguration *)self _storage];
-    v6 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-    [v5 setObject:v6 forSetting:3213057];
+    _storage = [(SBUISystemApertureElementConfiguration *)self _storage];
+    v6 = [MEMORY[0x1E696AD98] numberWithBool:captureCopy];
+    [_storage setObject:v6 forSetting:3213057];
 
     [(SBUISystemApertureElementConfiguration *)self _invalidateOtherSceneClientSettingsRepresentation];
   }
 }
 
-- (void)setRecordableConfigurations:(id)a3
+- (void)setRecordableConfigurations:(id)configurations
 {
-  v7 = a3;
-  v4 = [(SBUISystemApertureElementConfiguration *)self recordableConfigurations];
+  configurationsCopy = configurations;
+  recordableConfigurations = [(SBUISystemApertureElementConfiguration *)self recordableConfigurations];
   v5 = BSEqualArrays();
 
   if ((v5 & 1) == 0)
   {
-    v6 = [(SBUISystemApertureElementConfiguration *)self _storage];
-    [v6 SBUISA_setSecureFlipBookElementConfigurations:v7 forSetting:3213058];
+    _storage = [(SBUISystemApertureElementConfiguration *)self _storage];
+    [_storage SBUISA_setSecureFlipBookElementConfigurations:configurationsCopy forSetting:3213058];
 
     [(SBUISystemApertureElementConfiguration *)self _invalidateOtherSceneClientSettingsRepresentation];
   }
 }
 
-- (void)setSymmetricalConfigurations:(id)a3
+- (void)setSymmetricalConfigurations:(id)configurations
 {
-  v7 = a3;
-  v4 = [(SBUISystemApertureElementConfiguration *)self symmetricalConfigurations];
+  configurationsCopy = configurations;
+  symmetricalConfigurations = [(SBUISystemApertureElementConfiguration *)self symmetricalConfigurations];
   v5 = BSEqualDictionaries();
 
   if ((v5 & 1) == 0)
   {
-    v6 = [(SBUISystemApertureElementConfiguration *)self _storage];
-    [v6 SBUISA_setSecureFlipBookElementSymmetricalConfigurations:v7 forSetting:3213059];
+    _storage = [(SBUISystemApertureElementConfiguration *)self _storage];
+    [_storage SBUISA_setSecureFlipBookElementSymmetricalConfigurations:configurationsCopy forSetting:3213059];
 
     [(SBUISystemApertureElementConfiguration *)self _invalidateOtherSceneClientSettingsRepresentation];
   }
 }
 
-- (void)setPreferredConfiguration:(id)a3
+- (void)setPreferredConfiguration:(id)configuration
 {
-  v7 = a3;
-  v4 = [(SBUISystemApertureElementConfiguration *)self preferredConfiguration];
+  configurationCopy = configuration;
+  preferredConfiguration = [(SBUISystemApertureElementConfiguration *)self preferredConfiguration];
   v5 = BSEqualStrings();
 
   if ((v5 & 1) == 0)
   {
-    v6 = [(SBUISystemApertureElementConfiguration *)self _storage];
-    [v6 SBUISA_setString:v7 forSetting:3213060];
+    _storage = [(SBUISystemApertureElementConfiguration *)self _storage];
+    [_storage SBUISA_setString:configurationCopy forSetting:3213060];
 
     [(SBUISystemApertureElementConfiguration *)self _invalidateOtherSceneClientSettingsRepresentation];
   }
 }
 
-- (void)setPreferredComponentStates:(id)a3
+- (void)setPreferredComponentStates:(id)states
 {
-  v7 = a3;
-  v4 = [(SBUISystemApertureElementConfiguration *)self preferredComponentStates];
+  statesCopy = states;
+  preferredComponentStates = [(SBUISystemApertureElementConfiguration *)self preferredComponentStates];
   v5 = BSEqualDictionaries();
 
   if ((v5 & 1) == 0)
   {
-    v6 = [(SBUISystemApertureElementConfiguration *)self _storage];
-    [v6 SBUISA_setComponentStates:v7 forSetting:3213061];
+    _storage = [(SBUISystemApertureElementConfiguration *)self _storage];
+    [_storage SBUISA_setComponentStates:statesCopy forSetting:3213061];
 
     [(SBUISystemApertureElementConfiguration *)self _invalidateOtherSceneClientSettingsRepresentation];
   }
@@ -1105,12 +1105,12 @@ LABEL_45:
 
 - (BOOL)_elementRequiresConstraintBasedLayout
 {
-  v3 = [(SBUISystemApertureElementConfiguration *)self _strongElementViewController];
-  if ([v3 isViewLoaded])
+  _strongElementViewController = [(SBUISystemApertureElementConfiguration *)self _strongElementViewController];
+  if ([_strongElementViewController isViewLoaded])
   {
-    v4 = [(SBUISystemApertureElementConfiguration *)self _strongElementViewController];
-    v5 = [v4 viewIfLoaded];
-    v6 = [v5 translatesAutoresizingMaskIntoConstraints] ^ 1;
+    _strongElementViewController2 = [(SBUISystemApertureElementConfiguration *)self _strongElementViewController];
+    viewIfLoaded = [_strongElementViewController2 viewIfLoaded];
+    v6 = [viewIfLoaded translatesAutoresizingMaskIntoConstraints] ^ 1;
   }
 
   else
@@ -1121,22 +1121,22 @@ LABEL_45:
   return v6;
 }
 
-- (void)setShouldDeferViewSizingPreferenceUpdates:(BOOL)a3
+- (void)setShouldDeferViewSizingPreferenceUpdates:(BOOL)updates
 {
-  if (self->_shouldDeferViewSizingPreferenceUpdates != a3)
+  if (self->_shouldDeferViewSizingPreferenceUpdates != updates)
   {
-    self->_shouldDeferViewSizingPreferenceUpdates = a3;
+    self->_shouldDeferViewSizingPreferenceUpdates = updates;
   }
 }
 
-- (CGSize)maximumAccessoryViewSizeForLayoutMode:(int64_t)a3
+- (CGSize)maximumAccessoryViewSizeForLayoutMode:(int64_t)mode
 {
-  v4 = [(SBUISystemApertureElementConfiguration *)self containerViewController];
-  v5 = [v4 view];
+  containerViewController = [(SBUISystemApertureElementConfiguration *)self containerViewController];
+  view = [containerViewController view];
 
-  if (a3 == 2)
+  if (mode == 2)
   {
-    [v5 bounds];
+    [view bounds];
     v7 = v6;
     v9 = v8;
   }
@@ -1158,13 +1158,13 @@ LABEL_45:
 
 - (CGSize)preferredContentSizeClampedToMaximumExpandedSize
 {
-  v2 = [(SBUISystemApertureElementConfiguration *)self elementViewController];
+  elementViewController = [(SBUISystemApertureElementConfiguration *)self elementViewController];
   v3 = +[SBUISystemApertureLayoutMetrics sharedInstanceForEmbeddedDisplay];
   [v3 maximumExpandedSize];
   v5 = v4;
   v7 = v6;
 
-  [v2 preferredContentSize];
+  [elementViewController preferredContentSize];
   if (v8 <= v5)
   {
     v5 = v8;

@@ -14,7 +14,7 @@
   block[1] = 3221225472;
   block[2] = sub_1003634E0;
   block[3] = &unk_10051E200;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100590B08 != -1)
   {
     dispatch_once(&qword_100590B08, block);
@@ -27,10 +27,10 @@
 
 - (BOOL)_fetchLostModeState
 {
-  v2 = [off_10058F7A0() sharedInstance];
-  v3 = [v2 lostModeIsActive];
+  sharedInstance = [off_10058F7A0() sharedInstance];
+  lostModeIsActive = [sharedInstance lostModeIsActive];
 
-  return v3;
+  return lostModeIsActive;
 }
 
 - (void)_updateLostModeState
@@ -72,13 +72,13 @@
     v7 = off_10058F798();
     CFNotificationCenterAddObserver(DarwinNotifyCenter, v2, sub_1003634D8, v7, 0, CFNotificationSuspensionBehaviorDrop);
 
-    v8 = [(ADFMDMonitor *)v2 _fetchLostModeState];
-    v2->_isLostModeActive = v8;
+    _fetchLostModeState = [(ADFMDMonitor *)v2 _fetchLostModeState];
+    v2->_isLostModeActive = _fetchLostModeState;
     v9 = AFSiriLogContextDaemon;
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
     {
       v10 = @"not lost";
-      if (v8)
+      if (_fetchLostModeState)
       {
         v10 = @"lost";
       }

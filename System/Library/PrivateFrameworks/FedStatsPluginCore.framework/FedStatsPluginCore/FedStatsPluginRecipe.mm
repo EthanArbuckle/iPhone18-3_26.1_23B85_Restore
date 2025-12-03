@@ -1,47 +1,47 @@
 @interface FedStatsPluginRecipe
-+ (id)recipeWithAssetProvider:(id)a3 error:(id *)a4;
-+ (id)recipeWithAssetProvider:(id)a3 recipeIdentifier:(id)a4 error:(id *)a5;
-- (BOOL)checkConsentWithError:(id *)a3;
-- (BOOL)checkDeviceOSVersionFilterWithError:(id *)a3;
-- (BOOL)checkDeviceRegionCodeWithError:(id *)a3;
-- (FedStatsPluginRecipe)initWithAssetProvider:(id)a3 recipeIdentifier:(id)a4 clientIdentifier:(id)a5 recordMetadata:(id)a6 dataTypeContent:(id)a7 sqlQuery:(id)a8 cohortNameList:(id)a9 defaultDonationParameters:(id)a10 maskingDataParameters:(id)a11;
++ (id)recipeWithAssetProvider:(id)provider error:(id *)error;
++ (id)recipeWithAssetProvider:(id)provider recipeIdentifier:(id)identifier error:(id *)error;
+- (BOOL)checkConsentWithError:(id *)error;
+- (BOOL)checkDeviceOSVersionFilterWithError:(id *)error;
+- (BOOL)checkDeviceRegionCodeWithError:(id *)error;
+- (FedStatsPluginRecipe)initWithAssetProvider:(id)provider recipeIdentifier:(id)identifier clientIdentifier:(id)clientIdentifier recordMetadata:(id)metadata dataTypeContent:(id)content sqlQuery:(id)query cohortNameList:(id)list defaultDonationParameters:(id)self0 maskingDataParameters:(id)self1;
 - (id)accessedStreams;
-- (id)assetKeysFromCollatedData:(id)a3;
-- (id)assetURLsForAssetKeys:(id)a3;
-- (id)collateQueryResults:(id)a3;
-- (id)evaluateQueryWithError:(id *)a3;
-- (id)recordCollatedData:(id)a3 assetURLs:(id)a4;
-- (id)runRecipeWithError:(id *)a3;
+- (id)assetKeysFromCollatedData:(id)data;
+- (id)assetURLsForAssetKeys:(id)keys;
+- (id)collateQueryResults:(id)results;
+- (id)evaluateQueryWithError:(id *)error;
+- (id)recordCollatedData:(id)data assetURLs:(id)ls;
+- (id)runRecipeWithError:(id *)error;
 @end
 
 @implementation FedStatsPluginRecipe
 
-- (FedStatsPluginRecipe)initWithAssetProvider:(id)a3 recipeIdentifier:(id)a4 clientIdentifier:(id)a5 recordMetadata:(id)a6 dataTypeContent:(id)a7 sqlQuery:(id)a8 cohortNameList:(id)a9 defaultDonationParameters:(id)a10 maskingDataParameters:(id)a11
+- (FedStatsPluginRecipe)initWithAssetProvider:(id)provider recipeIdentifier:(id)identifier clientIdentifier:(id)clientIdentifier recordMetadata:(id)metadata dataTypeContent:(id)content sqlQuery:(id)query cohortNameList:(id)list defaultDonationParameters:(id)self0 maskingDataParameters:(id)self1
 {
-  v30 = a3;
-  v29 = a4;
-  v28 = a5;
-  v27 = a6;
-  v26 = a7;
-  v25 = a8;
-  v24 = a9;
-  v23 = a10;
-  v18 = a11;
+  providerCopy = provider;
+  identifierCopy = identifier;
+  clientIdentifierCopy = clientIdentifier;
+  metadataCopy = metadata;
+  contentCopy = content;
+  queryCopy = query;
+  listCopy = list;
+  parametersCopy = parameters;
+  dataParametersCopy = dataParameters;
   v31.receiver = self;
   v31.super_class = FedStatsPluginRecipe;
   v19 = [(FedStatsPluginRecipe *)&v31 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_assetProvider, a3);
-    objc_storeStrong(&v20->_recipeIdentifier, a4);
-    objc_storeStrong(&v20->_clientIdentifier, a5);
-    objc_storeStrong(&v20->_recordMetadata, a6);
-    objc_storeStrong(&v20->_dataTypeContent, a7);
-    objc_storeStrong(&v20->_sqlQuery, a8);
-    objc_storeStrong(&v20->_cohortNameList, a9);
-    objc_storeStrong(&v20->_defaultDonationParameters, a10);
-    objc_storeStrong(&v20->_maskingDataParameters, a11);
+    objc_storeStrong(&v19->_assetProvider, provider);
+    objc_storeStrong(&v20->_recipeIdentifier, identifier);
+    objc_storeStrong(&v20->_clientIdentifier, clientIdentifier);
+    objc_storeStrong(&v20->_recordMetadata, metadata);
+    objc_storeStrong(&v20->_dataTypeContent, content);
+    objc_storeStrong(&v20->_sqlQuery, query);
+    objc_storeStrong(&v20->_cohortNameList, list);
+    objc_storeStrong(&v20->_defaultDonationParameters, parameters);
+    objc_storeStrong(&v20->_maskingDataParameters, dataParameters);
     biomeSQL = v20->_biomeSQL;
     v20->_biomeSQL = 0;
   }
@@ -49,17 +49,17 @@
   return v20;
 }
 
-+ (id)recipeWithAssetProvider:(id)a3 recipeIdentifier:(id)a4 error:(id *)a5
++ (id)recipeWithAssetProvider:(id)provider recipeIdentifier:(id)identifier error:(id *)error
 {
   v128 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  providerCopy = provider;
+  identifierCopy = identifier;
   v119 = 0;
-  v9 = [v7 recipeDictionaryForRecipe:v8 error:&v119];
+  v9 = [providerCopy recipeDictionaryForRecipe:identifierCopy error:&v119];
   v10 = v119;
-  if (a5 && !v9)
+  if (error && !v9)
   {
-    *a5 = [FedStatsPluginError errorWithCode:100 underlyingError:v10 description:@"Trial client cannot load the recipe"];
+    *error = [FedStatsPluginError errorWithCode:100 underlyingError:v10 description:@"Trial client cannot load the recipe"];
   }
 
   v11 = [v9 objectForKey:@"clientIdentifier"];
@@ -68,7 +68,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v7 namespaceIdentifierForRecipe:v8];
+      [providerCopy namespaceIdentifierForRecipe:identifierCopy];
       v96 = v118 = 0;
       v12 = [FedStatsPluginClientValidator checkClientIdentifier:"checkClientIdentifier:againstNamespaceIdentifier:error:" againstNamespaceIdentifier:v11 error:?];
       v13 = 0;
@@ -104,10 +104,10 @@
 
                   if (![FedStatsDataCohort checkCohortField:*(*(&v114 + 1) + 8 * i) forNamespaceID:v96])
                   {
-                    if (a5)
+                    if (error)
                     {
                       [FedStatsPluginError errorWithCode:100 description:@"Data type content contains required field(s) that are not allowed"];
-                      *a5 = v30 = 0;
+                      *error = v30 = 0;
                     }
 
                     else
@@ -137,10 +137,10 @@
             objc_opt_class();
             if ((objc_opt_isKindOfClass() & 1) == 0)
             {
-              if (a5)
+              if (error)
               {
                 [FedStatsPluginError errorWithCode:100 description:@"Cohorts must be a list of strings."];
-                *a5 = v30 = 0;
+                *error = v30 = 0;
               }
 
               else
@@ -185,10 +185,10 @@ LABEL_21:
 
               if (![FedStatsDataCohort checkCohortField:v24 forNamespaceID:v96])
               {
-                if (a5)
+                if (error)
                 {
                   v45 = [MEMORY[0x277CCACA8] stringWithFormat:@"Cohort field '%@' is not allowed for this namespace", v24];
-                  *a5 = [FedStatsPluginError errorWithCode:100 description:v45];
+                  *error = [FedStatsPluginError errorWithCode:100 description:v45];
                 }
 
 LABEL_75:
@@ -274,9 +274,9 @@ LABEL_29:
                           if ((objc_opt_isKindOfClass() & 1) == 0)
                           {
                             v20 = v85;
-                            if (a5)
+                            if (error)
                             {
-                              *a5 = [FedStatsPluginError errorWithCode:100 description:@"If SQL query is an array, all entries must be strings"];
+                              *error = [FedStatsPluginError errorWithCode:100 description:@"If SQL query is an array, all entries must be strings"];
                             }
 
                             v30 = 0;
@@ -325,13 +325,13 @@ LABEL_52:
                             goto LABEL_94;
                           }
 
-                          if (a5)
+                          if (error)
                           {
                             v55 = v38;
                             v56 = [FedStatsPluginError errorWithCode:100 underlyingError:v38 description:@"Cannot validate Dedisco V2 config for this use-case."];
                             v38 = v55;
                             v30 = 0;
-                            *a5 = v56;
+                            *error = v56;
                           }
 
                           else
@@ -363,12 +363,12 @@ LABEL_94:
                         if ((v49 & 1) == 0)
                         {
                           v13 = v39;
-                          if (a5)
+                          if (error)
                           {
                             v54 = [FedStatsPluginError errorWithCode:100 underlyingError:v78 description:@"Cannot validate recipe for Private Relay usage"];
                             v38 = v78;
                             v30 = 0;
-                            *a5 = v54;
+                            *error = v54;
                             v47 = v83;
                             v20 = v85;
                             goto LABEL_136;
@@ -391,10 +391,10 @@ LABEL_94:
                         if (v50 && !v53)
                         {
                           v20 = v85;
-                          if (a5)
+                          if (error)
                           {
                             [FedStatsPluginError errorWithCode:100 underlyingError:v52 description:@"Cannot create privacy parameters from provided configuration"];
-                            *a5 = v30 = 0;
+                            *error = v30 = 0;
                             v53 = 0;
                           }
 
@@ -422,10 +422,10 @@ LABEL_135:
                         v72 = v59;
                         if (v58 && !v59)
                         {
-                          if (a5)
+                          if (error)
                           {
                             [FedStatsPluginError errorWithCode:100 underlyingError:v69 description:@"Masking data parameters required for this SQL query but not provided properly"];
-                            *a5 = v30 = 0;
+                            *error = v30 = 0;
                           }
 
                           else
@@ -442,7 +442,7 @@ LABEL_135:
                           if (v59)
                           {
                             v60 = [MEMORY[0x277D08450] defaultDataPointForDataTypeContent:v94];
-                            v77 = [v72 maskingData];
+                            maskingData = [v72 maskingData];
                             v97 = 0u;
                             v98 = 0u;
                             v99 = 0u;
@@ -463,14 +463,14 @@ LABEL_135:
                                   }
 
                                   v64 = *(*(&v97 + 1) + 8 * k);
-                                  v65 = [v77 objectForKey:v64];
+                                  v65 = [maskingData objectForKey:v64];
 
                                   if (!v65)
                                   {
-                                    if (a5)
+                                    if (error)
                                     {
                                       v66 = [MEMORY[0x277CCACA8] stringWithFormat:@"Masking data parameters field names does not contain the data type '%@'", v64];
-                                      *a5 = [FedStatsPluginError errorWithCode:100 description:v66];
+                                      *error = [FedStatsPluginError errorWithCode:100 description:v66];
                                     }
 
                                     goto LABEL_130;
@@ -493,10 +493,10 @@ LABEL_135:
                             goto LABEL_119;
                           }
 
-                          if (a5)
+                          if (error)
                           {
                             [FedStatsPluginError errorWithCode:100 underlyingError:v69 description:@"Cannot create masking data parameters from provided configuration"];
-                            *a5 = v30 = 0;
+                            *error = v30 = 0;
                           }
 
                           else
@@ -516,26 +516,26 @@ LABEL_132:
                         {
 LABEL_119:
                           v47 = v83;
-                          v30 = [[FedStatsPluginRecipe alloc] initWithAssetProvider:v7 recipeIdentifier:v8 clientIdentifier:v11 recordMetadata:v83 dataTypeContent:v94 sqlQuery:v89 cohortNameList:v20 defaultDonationParameters:v73 maskingDataParameters:v72];
+                          v30 = [[FedStatsPluginRecipe alloc] initWithAssetProvider:providerCopy recipeIdentifier:identifierCopy clientIdentifier:v11 recordMetadata:v83 dataTypeContent:v94 sqlQuery:v89 cohortNameList:v20 defaultDonationParameters:v73 maskingDataParameters:v72];
                         }
 
                         v53 = v73;
                         goto LABEL_134;
                       }
 
-                      if (a5)
+                      if (error)
                       {
                         v46 = [FedStatsPluginError errorWithCode:100 description:@"SQL query not valid"];
 LABEL_86:
                         v30 = 0;
-                        *a5 = v46;
+                        *error = v46;
 LABEL_88:
                         v47 = v83;
                         goto LABEL_137;
                       }
                     }
 
-                    else if (a5)
+                    else if (error)
                     {
                       v46 = [FedStatsPluginError errorWithCode:100 underlyingError:v36 description:@"Cannot validate SQL query"];
                       goto LABEL_86;
@@ -545,19 +545,19 @@ LABEL_88:
                     goto LABEL_88;
                   }
 
-                  if (a5)
+                  if (error)
                   {
                     v40 = @"SQL query should either be an array of strings or a single string";
 LABEL_80:
                     [FedStatsPluginError errorWithCode:100 description:v40];
-                    *a5 = v30 = 0;
+                    *error = v30 = 0;
 LABEL_92:
                     v47 = v83;
                     goto LABEL_138;
                   }
                 }
 
-                else if (a5)
+                else if (error)
                 {
                   v40 = @"Recipe is missing SQL query";
                   goto LABEL_80;
@@ -568,20 +568,20 @@ LABEL_92:
               }
             }
 
-            if (a5)
+            if (error)
             {
-              *a5 = [FedStatsPluginError errorWithCode:100 description:@"Cohorts must be a list of strings."];
+              *error = [FedStatsPluginError errorWithCode:100 description:@"Cohorts must be a list of strings."];
             }
 
             goto LABEL_75;
           }
 
-          if (a5)
+          if (error)
           {
             v94 = 0;
             obj = [MEMORY[0x277CCACA8] stringWithFormat:@"key %@ missing from recipe", @"dataTypeContent"];
             [FedStatsPluginError errorWithCode:100 description:?];
-            *a5 = v30 = 0;
+            *error = v30 = 0;
             goto LABEL_140;
           }
 
@@ -591,17 +591,17 @@ LABEL_141:
           goto LABEL_142;
         }
 
-        if (a5)
+        if (error)
         {
           v31 = [MEMORY[0x277CCACA8] stringWithFormat:@"The client identifier %@ is not allowed for the namespace %@", v11, v96];
-          *a5 = [FedStatsPluginError errorWithCode:100 description:v31];
+          *error = [FedStatsPluginError errorWithCode:100 description:v31];
         }
       }
 
-      else if (a5)
+      else if (error)
       {
         [FedStatsPluginError errorWithCode:100 underlyingError:v13 description:@"Cannot perform recipe ID check"];
-        *a5 = v30 = 0;
+        *error = v30 = 0;
 LABEL_142:
 
         goto LABEL_143;
@@ -612,10 +612,10 @@ LABEL_142:
     }
   }
 
-  if (a5)
+  if (error)
   {
     [FedStatsPluginError errorWithCode:100 description:@"Recipe is missing client identifier string"];
-    *a5 = v30 = 0;
+    *error = v30 = 0;
   }
 
   else
@@ -630,24 +630,24 @@ LABEL_143:
   return v30;
 }
 
-+ (id)recipeWithAssetProvider:(id)a3 error:(id *)a4
++ (id)recipeWithAssetProvider:(id)provider error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 recipeIdentifiers];
-  if ([v7 count] == 1)
+  providerCopy = provider;
+  recipeIdentifiers = [providerCopy recipeIdentifiers];
+  if ([recipeIdentifiers count] == 1)
   {
-    v8 = [v7 firstObject];
-    v9 = [a1 recipeWithAssetProvider:v6 recipeIdentifier:v8 error:a4];
+    firstObject = [recipeIdentifiers firstObject];
+    v9 = [self recipeWithAssetProvider:providerCopy recipeIdentifier:firstObject error:error];
 LABEL_5:
 
     goto LABEL_6;
   }
 
-  if (a4)
+  if (error)
   {
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"Asset provider should have a single recipe for this call: %@", v7];
-    [FedStatsPluginError errorWithCode:100 description:v8];
-    *a4 = v9 = 0;
+    firstObject = [MEMORY[0x277CCACA8] stringWithFormat:@"Asset provider should have a single recipe for this call: %@", recipeIdentifiers];
+    [FedStatsPluginError errorWithCode:100 description:firstObject];
+    *error = v9 = 0;
     goto LABEL_5;
   }
 
@@ -657,7 +657,7 @@ LABEL_6:
   return v9;
 }
 
-- (BOOL)checkConsentWithError:(id *)a3
+- (BOOL)checkConsentWithError:(id *)error
 {
   v34[4] = *MEMORY[0x277D85DE8];
   v5 = objc_alloc_init(FedStatsPluginDnUConsentChecker);
@@ -683,7 +683,7 @@ LABEL_6:
   }
 
   v11 = v10;
-  v25 = a3;
+  errorCopy = error;
   v12 = *v30;
   while (2)
   {
@@ -701,25 +701,25 @@ LABEL_6:
         [FedStatsPluginRecipe checkConsentWithError:];
       }
 
-      v16 = [(FedStatsPluginRecipe *)self clientIdentifier];
+      clientIdentifier = [(FedStatsPluginRecipe *)self clientIdentifier];
       v28 = 0;
-      v17 = [v14 checkConsentForClientIdentifier:v16 error:&v28];
+      v17 = [v14 checkConsentForClientIdentifier:clientIdentifier error:&v28];
       v18 = v28;
 
       if (!v17)
       {
-        if (v25)
+        if (errorCopy)
         {
-          *v25 = [FedStatsPluginError errorWithCode:400 underlyingError:v18 description:@"Cannot run consent check"];
+          *errorCopy = [FedStatsPluginError errorWithCode:400 underlyingError:v18 description:@"Cannot run consent check"];
         }
 
         goto LABEL_21;
       }
 
-      v19 = [v17 BOOLValue];
+      bOOLValue = [v17 BOOLValue];
       v20 = +[FedStatsPluginLog logger];
       v21 = v20;
-      if ((v19 & 1) == 0)
+      if ((bOOLValue & 1) == 0)
       {
         if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
         {
@@ -754,13 +754,13 @@ LABEL_22:
   return v22;
 }
 
-- (BOOL)checkDeviceRegionCodeWithError:(id *)a3
+- (BOOL)checkDeviceRegionCodeWithError:(id *)error
 {
   v40 = *MEMORY[0x277D85DE8];
-  v5 = [(FedStatsPluginRecipe *)self assetProvider];
-  v6 = [(FedStatsPluginRecipe *)self recipeIdentifier];
+  assetProvider = [(FedStatsPluginRecipe *)self assetProvider];
+  recipeIdentifier = [(FedStatsPluginRecipe *)self recipeIdentifier];
   v37 = 0;
-  v7 = [v5 recipeDictionaryForRecipe:v6 error:&v37];
+  v7 = [assetProvider recipeDictionaryForRecipe:recipeIdentifier error:&v37];
   v8 = v37;
 
   if (v7)
@@ -771,7 +771,7 @@ LABEL_22:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a3)
+        if (!error)
         {
           v23 = 0;
           goto LABEL_39;
@@ -779,7 +779,7 @@ LABEL_22:
 
         v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"'%@' key should have an array of strings as value", @"allowedRegions"];
         [FedStatsPluginError errorWithCode:100 description:v10];
-        *a3 = v23 = 0;
+        *error = v23 = 0;
         goto LABEL_38;
       }
 
@@ -821,7 +821,7 @@ LABEL_6:
           }
         }
 
-        if (!a3)
+        if (!error)
         {
           goto LABEL_37;
         }
@@ -839,10 +839,10 @@ LABEL_12:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (a3)
+        if (error)
         {
           v24 = [MEMORY[0x277CCACA8] stringWithFormat:@"'%@' key should have an array of strings as value", @"deniedRegions"];
-          *a3 = [FedStatsPluginError errorWithCode:100 description:v24];
+          *error = [FedStatsPluginError errorWithCode:100 description:v24];
         }
 
         goto LABEL_37;
@@ -872,10 +872,10 @@ LABEL_12:
             objc_opt_class();
             if ((objc_opt_isKindOfClass() & 1) == 0)
             {
-              if (a3)
+              if (error)
               {
                 v27 = [MEMORY[0x277CCACA8] stringWithFormat:@"'%@' key should have an array of strings as value", @"deniedRegions"];
-                *a3 = [FedStatsPluginError errorWithCode:100 description:v27];
+                *error = [FedStatsPluginError errorWithCode:100 description:v27];
               }
 
               v23 = 0;
@@ -897,7 +897,7 @@ LABEL_12:
       v8 = v28;
       if (v9)
       {
-        if (!a3)
+        if (!error)
         {
 LABEL_37:
           v23 = 0;
@@ -906,7 +906,7 @@ LABEL_37:
 
         v22 = [MEMORY[0x277CCACA8] stringWithFormat:@"The recipe cannot have both '%@' and '%@' keys", @"allowedRegions", @"deniedRegions"];
 LABEL_34:
-        *a3 = [FedStatsPluginError errorWithCode:100 description:v22];
+        *error = [FedStatsPluginError errorWithCode:100 description:v22];
 
         goto LABEL_37;
       }
@@ -919,10 +919,10 @@ LABEL_39:
     goto LABEL_40;
   }
 
-  if (a3)
+  if (error)
   {
     [FedStatsPluginError errorWithCode:100 underlyingError:v8 description:@"Cannot load the recipe dictionary from asset provider"];
-    *a3 = v23 = 0;
+    *error = v23 = 0;
   }
 
   else
@@ -936,20 +936,20 @@ LABEL_40:
   return v23;
 }
 
-- (BOOL)checkDeviceOSVersionFilterWithError:(id *)a3
+- (BOOL)checkDeviceOSVersionFilterWithError:(id *)error
 {
-  v5 = [(FedStatsPluginRecipe *)self assetProvider];
-  v6 = [(FedStatsPluginRecipe *)self recipeIdentifier];
+  assetProvider = [(FedStatsPluginRecipe *)self assetProvider];
+  recipeIdentifier = [(FedStatsPluginRecipe *)self recipeIdentifier];
   v13 = 0;
-  v7 = [v5 recipeDictionaryForRecipe:v6 error:&v13];
+  v7 = [assetProvider recipeDictionaryForRecipe:recipeIdentifier error:&v13];
   v8 = v13;
 
   if (v8)
   {
-    if (a3)
+    if (error)
     {
       [FedStatsPluginError errorWithCode:100 underlyingError:v8 description:@"Cannot load recipe."];
-      *a3 = v9 = 0;
+      *error = v9 = 0;
     }
 
     else
@@ -973,38 +973,38 @@ LABEL_40:
   return v9;
 }
 
-- (id)evaluateQueryWithError:(id *)a3
+- (id)evaluateQueryWithError:(id *)error
 {
   v19 = 0;
   v5 = [[FedStatsPluginSQL alloc] initWithError:&v19];
   v6 = v19;
   [(FedStatsPluginRecipe *)self setBiomeSQL:v5];
 
-  v7 = [(FedStatsPluginRecipe *)self biomeSQL];
+  biomeSQL = [(FedStatsPluginRecipe *)self biomeSQL];
 
-  if (v7)
+  if (biomeSQL)
   {
-    v8 = [(FedStatsPluginRecipe *)self biomeSQL];
-    v9 = [(FedStatsPluginRecipe *)self sqlQuery];
+    biomeSQL2 = [(FedStatsPluginRecipe *)self biomeSQL];
+    sqlQuery = [(FedStatsPluginRecipe *)self sqlQuery];
     v18 = v6;
-    v10 = [v8 runQuery:v9 withError:&v18];
+    v10 = [biomeSQL2 runQuery:sqlQuery withError:&v18];
     v11 = v18;
 
     if (v10)
     {
-      v12 = [(FedStatsPluginRecipe *)self maskingDataParameters];
+      maskingDataParameters = [(FedStatsPluginRecipe *)self maskingDataParameters];
 
       v13 = +[FedStatsPluginLog logger];
       v14 = os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG);
-      if (v12)
+      if (maskingDataParameters)
       {
         if (v14)
         {
           [FedStatsPluginRecipe evaluateQueryWithError:];
         }
 
-        v15 = [(FedStatsPluginRecipe *)self maskingDataParameters];
-        v16 = [v15 maskedResultsFrom:v10];
+        maskingDataParameters2 = [(FedStatsPluginRecipe *)self maskingDataParameters];
+        v16 = [maskingDataParameters2 maskedResultsFrom:v10];
       }
 
       else
@@ -1018,10 +1018,10 @@ LABEL_40:
       }
     }
 
-    else if (a3)
+    else if (error)
     {
       [FedStatsPluginError errorWithCode:400 underlyingError:v11 description:@"SQL Query Running Error"];
-      *a3 = v16 = 0;
+      *error = v16 = 0;
     }
 
     else
@@ -1032,10 +1032,10 @@ LABEL_40:
 
   else
   {
-    if (a3)
+    if (error)
     {
       [FedStatsPluginError errorWithCode:400 underlyingError:v6 description:@"SQL Constructor Error"];
-      *a3 = v16 = 0;
+      *error = v16 = 0;
     }
 
     else
@@ -1051,19 +1051,19 @@ LABEL_40:
 
 - (id)accessedStreams
 {
-  v2 = [(FedStatsPluginRecipe *)self biomeSQL];
-  v3 = [v2 accessedStreams];
+  biomeSQL = [(FedStatsPluginRecipe *)self biomeSQL];
+  accessedStreams = [biomeSQL accessedStreams];
 
-  return v3;
+  return accessedStreams;
 }
 
-- (id)collateQueryResults:(id)a3
+- (id)collateQueryResults:(id)results
 {
   v92 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  resultsCopy = results;
   v5 = MEMORY[0x277D08450];
-  v6 = [(FedStatsPluginRecipe *)self dataTypeContent];
-  v7 = [v5 extractRequiredFieldsFrom:v6];
+  dataTypeContent = [(FedStatsPluginRecipe *)self dataTypeContent];
+  v7 = [v5 extractRequiredFieldsFrom:dataTypeContent];
 
   v8 = +[FedStatsPluginLog logger];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
@@ -1072,18 +1072,18 @@ LABEL_40:
   }
 
   v9 = [FedStatsCollectionKeyGenerator alloc];
-  v10 = [(FedStatsPluginRecipe *)self clientIdentifier];
-  v11 = [(FedStatsPluginRecipe *)self cohortNameList];
-  v12 = [(FedStatsPluginRecipe *)self assetProvider];
-  v67 = self;
-  v13 = [(FedStatsPluginRecipe *)self recipeIdentifier];
+  clientIdentifier = [(FedStatsPluginRecipe *)self clientIdentifier];
+  cohortNameList = [(FedStatsPluginRecipe *)self cohortNameList];
+  assetProvider = [(FedStatsPluginRecipe *)self assetProvider];
+  selfCopy = self;
+  recipeIdentifier = [(FedStatsPluginRecipe *)self recipeIdentifier];
   v64 = v7;
-  v14 = [(FedStatsCollectionKeyGenerator *)v9 initWithPrefix:v10 cohortKeys:v11 requiredFields:v7 assetProvider:v12 recipeIdentifier:v13];
+  v14 = [(FedStatsCollectionKeyGenerator *)v9 initWithPrefix:clientIdentifier cohortKeys:cohortNameList requiredFields:v7 assetProvider:assetProvider recipeIdentifier:recipeIdentifier];
 
-  v15 = v4;
+  v15 = resultsCopy;
   v68 = v14;
-  v16 = [MEMORY[0x277CBEB18] array];
-  v69 = [MEMORY[0x277CBEB38] dictionary];
+  array = [MEMORY[0x277CBEB18] array];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v79 = 0u;
   v80 = 0u;
   v81 = 0u;
@@ -1109,7 +1109,7 @@ LABEL_40:
         v23 = v78;
         if (v22)
         {
-          v24 = [v69 objectForKey:v22];
+          v24 = [dictionary objectForKey:v22];
           v25 = v24;
           if (v24)
           {
@@ -1122,15 +1122,15 @@ LABEL_40:
             [MEMORY[0x277CBEA60] arrayWithObjects:&v85 count:1];
           }
           v27 = ;
-          [v69 setObject:v27 forKey:v22];
+          [dictionary setObject:v27 forKey:v22];
         }
 
         else
         {
-          if (v16)
+          if (array)
           {
             v26 = [FedStatsPluginError errorWithCode:300 underlyingError:v23 description:@"Cannot generate collection key"];
-            [v16 addObject:v26];
+            [array addObject:v26];
           }
 
           v25 = +[FedStatsPluginLog logger];
@@ -1149,9 +1149,9 @@ LABEL_40:
     while (v18);
   }
 
-  if ([v16 count])
+  if ([array count])
   {
-    v28 = [FedStatsPluginError errorWithCode:300 underlyingErrors:v16 description:@"Some collection keys cannot be generated"];
+    v28 = [FedStatsPluginError errorWithCode:300 underlyingErrors:array description:@"Some collection keys cannot be generated"];
     v29 = v28;
   }
 
@@ -1160,7 +1160,7 @@ LABEL_40:
     v28 = 0;
   }
 
-  v30 = v67;
+  v30 = selfCopy;
 
   v31 = v28;
   v32 = v64;
@@ -1177,8 +1177,8 @@ LABEL_40:
     v77 = 0u;
     v74 = 0u;
     v75 = 0u;
-    v34 = [v31 describe];
-    v35 = [v34 countByEnumeratingWithState:&v74 objects:v84 count:16];
+    describe = [v31 describe];
+    v35 = [describe countByEnumeratingWithState:&v74 objects:v84 count:16];
     if (v35)
     {
       v36 = v35;
@@ -1189,7 +1189,7 @@ LABEL_40:
         {
           if (*v75 != v37)
           {
-            objc_enumerationMutation(v34);
+            objc_enumerationMutation(describe);
           }
 
           v39 = *(*(&v74 + 1) + 8 * j);
@@ -1202,7 +1202,7 @@ LABEL_40:
           }
         }
 
-        v36 = [v34 countByEnumeratingWithState:&v74 objects:v84 count:16];
+        v36 = [describe countByEnumeratingWithState:&v74 objects:v84 count:16];
       }
 
       while (v36);
@@ -1211,20 +1211,20 @@ LABEL_40:
     v31 = v62;
   }
 
-  v41 = [(FedStatsPluginRecipe *)v67 defaultDonationParameters];
+  defaultDonationParameters = [(FedStatsPluginRecipe *)selfCopy defaultDonationParameters];
 
-  if (v41)
+  if (defaultDonationParameters)
   {
-    v65 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v69, "count")}];
+    v65 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(dictionary, "count")}];
     v42 = MEMORY[0x277D08450];
-    v43 = [(FedStatsPluginRecipe *)v67 dataTypeContent];
-    v44 = [v42 defaultDataPointForDataTypeContent:v43];
+    dataTypeContent2 = [(FedStatsPluginRecipe *)selfCopy dataTypeContent];
+    v44 = [v42 defaultDataPointForDataTypeContent:dataTypeContent2];
 
     v72 = 0u;
     v73 = 0u;
     v70 = 0u;
     v71 = 0u;
-    v45 = v69;
+    v45 = dictionary;
     v46 = [v45 countByEnumeratingWithState:&v70 objects:v83 count:16];
     if (v46)
     {
@@ -1241,8 +1241,8 @@ LABEL_40:
 
           v50 = *(*(&v70 + 1) + 8 * k);
           v51 = [FedStatsCollectionKeyGenerator extractCohortKeyValuesFrom:v50];
-          v52 = [(FedStatsPluginRecipe *)v30 defaultDonationParameters];
-          v53 = [v52 determineDefaultRecordCountFor:v51];
+          defaultDonationParameters2 = [(FedStatsPluginRecipe *)v30 defaultDonationParameters];
+          v53 = [defaultDonationParameters2 determineDefaultRecordCountFor:v51];
 
           if (v53 == -1)
           {
@@ -1278,7 +1278,7 @@ LABEL_40:
             [v65 setObject:v57 forKey:v50];
           }
 
-          v30 = v67;
+          v30 = selfCopy;
         }
 
         v47 = [v45 countByEnumeratingWithState:&v70 objects:v83 count:16];
@@ -1289,7 +1289,7 @@ LABEL_40:
 
     v31 = v63;
     v32 = v64;
-    v58 = v69;
+    v58 = dictionary;
   }
 
   else
@@ -1300,8 +1300,8 @@ LABEL_40:
       [FedStatsPluginRecipe collateQueryResults:];
     }
 
-    v58 = v69;
-    v65 = v69;
+    v58 = dictionary;
+    v65 = dictionary;
   }
 
   v60 = *MEMORY[0x277D85DE8];
@@ -1309,16 +1309,16 @@ LABEL_40:
   return v65;
 }
 
-- (id)assetKeysFromCollatedData:(id)a3
+- (id)assetKeysFromCollatedData:(id)data
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dataCopy = data;
   v5 = [MEMORY[0x277CBEB58] set];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v6 = v4;
+  v6 = dataCopy;
   v7 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v7)
   {
@@ -1335,8 +1335,8 @@ LABEL_40:
 
         v11 = [FedStatsCollectionKeyGenerator extractCohortKeyValuesFrom:*(*(&v19 + 1) + 8 * i), v19];
         v12 = MEMORY[0x277D08450];
-        v13 = [(FedStatsPluginRecipe *)self dataTypeContent];
-        v14 = [v12 extractAssetNamesFrom:v13 usingFieldValues:v11];
+        dataTypeContent = [(FedStatsPluginRecipe *)self dataTypeContent];
+        v14 = [v12 extractAssetNamesFrom:dataTypeContent usingFieldValues:v11];
 
         [v5 addObjectsFromArray:v14];
       }
@@ -1353,28 +1353,28 @@ LABEL_40:
     [FedStatsPluginRecipe assetKeysFromCollatedData:v5];
   }
 
-  v16 = [v5 allObjects];
+  allObjects = [v5 allObjects];
 
   v17 = *MEMORY[0x277D85DE8];
 
-  return v16;
+  return allObjects;
 }
 
-- (id)assetURLsForAssetKeys:(id)a3
+- (id)assetURLsForAssetKeys:(id)keys
 {
   v43 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v27 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v4, "count")}];
+  keysCopy = keys;
+  v27 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(keysCopy, "count")}];
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v5 = v4;
+  v5 = keysCopy;
   v28 = [v5 countByEnumeratingWithState:&v35 objects:v42 count:16];
   if (v28)
   {
     v6 = *v36;
-    v25 = self;
+    selfCopy = self;
     obj = v5;
     v24 = *v36;
     do
@@ -1388,10 +1388,10 @@ LABEL_40:
         }
 
         v8 = *(*(&v35 + 1) + 8 * v7);
-        v9 = [(FedStatsPluginRecipe *)self assetProvider];
-        v10 = [(FedStatsPluginRecipe *)self recipeIdentifier];
+        assetProvider = [(FedStatsPluginRecipe *)self assetProvider];
+        recipeIdentifier = [(FedStatsPluginRecipe *)self recipeIdentifier];
         v34 = 0;
-        v11 = [v9 assetURLForRecipe:v10 forKey:v8 error:&v34];
+        v11 = [assetProvider assetURLForRecipe:recipeIdentifier forKey:v8 error:&v34];
         v29 = v34;
 
         if (v11)
@@ -1421,8 +1421,8 @@ LABEL_40:
           v33 = 0u;
           v30 = 0u;
           v31 = 0u;
-          v14 = [v29 describe];
-          v15 = [v14 countByEnumeratingWithState:&v30 objects:v39 count:16];
+          describe = [v29 describe];
+          v15 = [describe countByEnumeratingWithState:&v30 objects:v39 count:16];
           if (v15)
           {
             v16 = v15;
@@ -1434,7 +1434,7 @@ LABEL_40:
               {
                 if (*v31 != v17)
                 {
-                  objc_enumerationMutation(v14);
+                  objc_enumerationMutation(describe);
                 }
 
                 v19 = *(*(&v30 + 1) + 8 * v18);
@@ -1450,14 +1450,14 @@ LABEL_40:
               }
 
               while (v16 != v18);
-              v16 = [v14 countByEnumeratingWithState:&v30 objects:v39 count:16];
+              v16 = [describe countByEnumeratingWithState:&v30 objects:v39 count:16];
             }
 
             while (v16);
           }
 
           v6 = v24;
-          self = v25;
+          self = selfCopy;
           v11 = 0;
         }
 
@@ -1483,24 +1483,24 @@ LABEL_40:
   return v27;
 }
 
-- (id)recordCollatedData:(id)a3 assetURLs:(id)a4
+- (id)recordCollatedData:(id)data assetURLs:(id)ls
 {
   v88 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  dataCopy = data;
+  lsCopy = ls;
   v77 = 0u;
   v78 = 0u;
   v79 = 0u;
   v80 = 0u;
-  obj = v5;
-  v50 = [v5 countByEnumeratingWithState:&v77 objects:v87 count:16];
+  obj = dataCopy;
+  v50 = [dataCopy countByEnumeratingWithState:&v77 objects:v87 count:16];
   if (v50)
   {
     v48 = 0;
     v49 = *v78;
     *&v7 = 134218242;
     v47 = v7;
-    v53 = v6;
+    v53 = lsCopy;
     do
     {
       for (i = 0; i != v50; ++i)
@@ -1529,9 +1529,9 @@ LABEL_40:
         }
 
         v13 = MEMORY[0x277D08450];
-        v14 = [(FedStatsPluginRecipe *)self dataTypeContent];
+        dataTypeContent = [(FedStatsPluginRecipe *)self dataTypeContent];
         v76 = 0;
-        v15 = [v13 mutateDataTypeContent:v14 usingFieldValues:v11 assetURLs:v6 error:&v76];
+        v15 = [v13 mutateDataTypeContent:dataTypeContent usingFieldValues:v11 assetURLs:lsCopy error:&v76];
         v58 = v76;
 
         v16 = +[FedStatsPluginLog logger];
@@ -1550,23 +1550,23 @@ LABEL_40:
 
           v18 = MEMORY[0x277D08450];
           v19 = [obj objectForKey:v9];
-          v20 = [(FedStatsPluginRecipe *)self recordMetadata];
+          recordMetadata = [(FedStatsPluginRecipe *)self recordMetadata];
           v67 = 0;
           v21 = v18;
           v22 = v15;
-          v23 = [v21 encodeDataArrayAndRecord:v19 dataTypeContent:v15 metadata:v20 baseKey:v9 errorOut:&v67];
-          v24 = v67;
+          v23 = [v21 encodeDataArrayAndRecord:v19 dataTypeContent:v15 metadata:recordMetadata baseKey:v9 errorOut:&v67];
+          describe2 = v67;
 
           v25 = +[FedStatsPluginLog logger];
           v26 = v25;
-          v6 = v53;
+          lsCopy = v53;
           if (v23)
           {
             if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
             {
-              v42 = [v23 unsignedIntegerValue];
+              unsignedIntegerValue = [v23 unsignedIntegerValue];
               *buf = v47;
-              v82 = v42;
+              v82 = unsignedIntegerValue;
               v83 = 2112;
               v84 = v9;
               _os_log_debug_impl(&dword_24AB24000, v26, OS_LOG_TYPE_DEBUG, "Recorded %lu data for collection key '%@'", buf, 0x16u);
@@ -1593,8 +1593,8 @@ LABEL_40:
             v62 = 0u;
             v59 = 0u;
             v60 = 0u;
-            v35 = [v24 describe];
-            v36 = [v35 countByEnumeratingWithState:&v59 objects:v85 count:16];
+            describe = [describe2 describe];
+            v36 = [describe countByEnumeratingWithState:&v59 objects:v85 count:16];
             if (v36)
             {
               v37 = v36;
@@ -1605,7 +1605,7 @@ LABEL_40:
                 {
                   if (*v60 != v38)
                   {
-                    objc_enumerationMutation(v35);
+                    objc_enumerationMutation(describe);
                   }
 
                   v40 = *(*(&v59 + 1) + 8 * j);
@@ -1618,13 +1618,13 @@ LABEL_40:
                   }
                 }
 
-                v37 = [v35 countByEnumeratingWithState:&v59 objects:v85 count:16];
+                v37 = [describe countByEnumeratingWithState:&v59 objects:v85 count:16];
               }
 
               while (v37);
             }
 
-            v6 = v53;
+            lsCopy = v53;
             v11 = v55;
             v22 = v57;
             v23 = 0;
@@ -1641,7 +1641,7 @@ LABEL_40:
           }
 
           v27 = +[FedStatsPluginLog logger];
-          v6 = v53;
+          lsCopy = v53;
           if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
           {
             [FedStatsPluginRecipe recordCollatedData:v73 assetURLs:?];
@@ -1651,8 +1651,8 @@ LABEL_40:
           v71 = 0u;
           v68 = 0u;
           v69 = 0u;
-          v24 = [v58 describe];
-          v28 = [v24 countByEnumeratingWithState:&v68 objects:v86 count:16];
+          describe2 = [v58 describe];
+          v28 = [describe2 countByEnumeratingWithState:&v68 objects:v86 count:16];
           if (v28)
           {
             v29 = v28;
@@ -1664,7 +1664,7 @@ LABEL_40:
               {
                 if (*v69 != v30)
                 {
-                  objc_enumerationMutation(v24);
+                  objc_enumerationMutation(describe2);
                 }
 
                 v32 = *(*(&v68 + 1) + 8 * k);
@@ -1677,11 +1677,11 @@ LABEL_40:
                 }
               }
 
-              v29 = [v24 countByEnumeratingWithState:&v68 objects:v86 count:16];
+              v29 = [describe2 countByEnumeratingWithState:&v68 objects:v86 count:16];
             }
 
             while (v29);
-            v6 = v53;
+            lsCopy = v53;
             v11 = v56;
           }
 
@@ -1713,11 +1713,11 @@ LABEL_40:
   return v44;
 }
 
-- (id)runRecipeWithError:(id *)a3
+- (id)runRecipeWithError:(id *)error
 {
-  if ([(FedStatsPluginRecipe *)self checkDeviceOSVersionFilterWithError:?]&& [(FedStatsPluginRecipe *)self checkConsentWithError:a3]&& [(FedStatsPluginRecipe *)self checkDeviceRegionCodeWithError:a3])
+  if ([(FedStatsPluginRecipe *)self checkDeviceOSVersionFilterWithError:?]&& [(FedStatsPluginRecipe *)self checkConsentWithError:error]&& [(FedStatsPluginRecipe *)self checkDeviceRegionCodeWithError:error])
   {
-    v5 = [(FedStatsPluginRecipe *)self evaluateQueryWithError:a3];
+    v5 = [(FedStatsPluginRecipe *)self evaluateQueryWithError:error];
     v6 = v5;
     if (v5)
     {
@@ -1727,8 +1727,8 @@ LABEL_40:
         v8 = [(FedStatsPluginRecipe *)self assetKeysFromCollatedData:v7];
         v9 = [(FedStatsPluginRecipe *)self assetURLsForAssetKeys:v8];
         v10 = [(FedStatsPluginRecipe *)self recordCollatedData:v7 assetURLs:v9];
-        v11 = [(FedStatsPluginRecipe *)self assetProvider];
-        [v11 removeAssets];
+        assetProvider = [(FedStatsPluginRecipe *)self assetProvider];
+        [assetProvider removeAssets];
       }
 
       else

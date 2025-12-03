@@ -1,23 +1,23 @@
 @interface _UITextUndoAttributes
 - (_NSRange)affectedRange;
-- (_UITextUndoAttributes)initWithAttributesRun:(id)a3 affectedRange:(_NSRange)a4;
+- (_UITextUndoAttributes)initWithAttributesRun:(id)run affectedRange:(_NSRange)range;
 - (id)description;
 @end
 
 @implementation _UITextUndoAttributes
 
-- (_UITextUndoAttributes)initWithAttributesRun:(id)a3 affectedRange:(_NSRange)a4
+- (_UITextUndoAttributes)initWithAttributesRun:(id)run affectedRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v8 = a3;
+  length = range.length;
+  location = range.location;
+  runCopy = run;
   v12.receiver = self;
   v12.super_class = _UITextUndoAttributes;
   v9 = [(_UITextUndoAttributes *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_attributesRun, a3);
+    objc_storeStrong(&v9->_attributesRun, run);
     v10->_affectedRange.location = location;
     v10->_affectedRange.length = length;
   }

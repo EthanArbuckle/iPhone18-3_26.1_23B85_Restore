@@ -1,5 +1,5 @@
 @interface PLBackgroundMigrationContext
-- (PLBackgroundMigrationContext)initWithPathManager:(id)a3 databaseContext:(id)a4 analyticsEventManager:(id)a5;
+- (PLBackgroundMigrationContext)initWithPathManager:(id)manager databaseContext:(id)context analyticsEventManager:(id)eventManager;
 - (id)newModelMigrationHistory;
 - (void)dealloc;
 @end
@@ -14,8 +14,8 @@
   v5 = -[PLDatabaseContext newShortLivedLibraryWithName:](databaseContext, "newShortLivedLibraryWithName:", [v4 UTF8String]);
 
   v6 = [PLModelMigrationHistory alloc];
-  v7 = [v5 managedObjectContext];
-  v8 = [(PLModelMigrationHistory *)v6 initWithManagedObjectContext:v7];
+  managedObjectContext = [v5 managedObjectContext];
+  v8 = [(PLModelMigrationHistory *)v6 initWithManagedObjectContext:managedObjectContext];
 
   return v8;
 }
@@ -28,14 +28,14 @@
   [(PLBackgroundMigrationContext *)&v3 dealloc];
 }
 
-- (PLBackgroundMigrationContext)initWithPathManager:(id)a3 databaseContext:(id)a4 analyticsEventManager:(id)a5
+- (PLBackgroundMigrationContext)initWithPathManager:(id)manager databaseContext:(id)context analyticsEventManager:(id)eventManager
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (v10)
+  managerCopy = manager;
+  contextCopy = context;
+  eventManagerCopy = eventManager;
+  if (managerCopy)
   {
-    if (v11)
+    if (contextCopy)
     {
       goto LABEL_3;
     }
@@ -43,17 +43,17 @@
 
   else
   {
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v22 handleFailureInMethod:a2 object:self file:@"PLModelMigrationContext.m" lineNumber:97 description:{@"Invalid parameter not satisfying: %@", @"pathManager"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLModelMigrationContext.m" lineNumber:97 description:{@"Invalid parameter not satisfying: %@", @"pathManager"}];
 
-    if (v11)
+    if (contextCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v23 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v23 handleFailureInMethod:a2 object:self file:@"PLModelMigrationContext.m" lineNumber:98 description:{@"Invalid parameter not satisfying: %@", @"databaseContext"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLModelMigrationContext.m" lineNumber:98 description:{@"Invalid parameter not satisfying: %@", @"databaseContext"}];
 
 LABEL_3:
   v27.receiver = self;
@@ -62,9 +62,9 @@ LABEL_3:
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_pathManager, a3);
-    objc_storeStrong(&v14->_databaseContext, a4);
-    objc_storeStrong(&v14->_analyticsEventManager, a5);
+    objc_storeStrong(&v13->_pathManager, manager);
+    objc_storeStrong(&v14->_databaseContext, context);
+    objc_storeStrong(&v14->_analyticsEventManager, eventManager);
     v14->_policy = 0;
     v14->_libraryIdentifier = PLMigrationContextWellKnownPhotoLibraryIdentifier(v14->_pathManager);
     v15 = objc_initWeak(&location, v14);
@@ -81,9 +81,9 @@ LABEL_3:
     lazyModelMigrationHistory = v14->_lazyModelMigrationHistory;
     v14->_lazyModelMigrationHistory = v17;
 
-    v19 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     userInfo = v14->_userInfo;
-    v14->_userInfo = v19;
+    v14->_userInfo = dictionary;
   }
 
   return v14;

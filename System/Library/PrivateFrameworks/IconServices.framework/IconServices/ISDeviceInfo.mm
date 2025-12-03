@@ -81,13 +81,13 @@ uint64_t __30__ISDeviceInfo_sharedInstance__block_invoke()
 
     v7 = [v5 objectForKey:@"ArtworkDeviceIdiom"];
 
-    v8 = [v7 length];
-    if (v8)
+    integerValue = [v7 length];
+    if (integerValue)
     {
-      v8 = [v7 integerValue];
+      integerValue = [v7 integerValue];
     }
 
-    v2->_rawDeviceIdiom = v8;
+    v2->_rawDeviceIdiom = integerValue;
   }
 
   return v2;
@@ -95,28 +95,28 @@ uint64_t __30__ISDeviceInfo_sharedInstance__block_invoke()
 
 - (CGSize)homeScreenIconSize
 {
-  v3 = [(ISDeviceInfo *)self deviceClass];
-  v4 = [(ISDeviceInfo *)self screenClass];
-  if (v3 <= 3)
+  deviceClass = [(ISDeviceInfo *)self deviceClass];
+  screenClass = [(ISDeviceInfo *)self screenClass];
+  if (deviceClass <= 3)
   {
-    if (v3 == 1)
+    if (deviceClass == 1)
     {
-      if (v4 <= 0x1F && ((1 << v4) & 0x820C0000) != 0)
+      if (screenClass <= 0x1F && ((1 << screenClass) & 0x820C0000) != 0)
       {
         v5 = 0x4050000000000000;
         goto LABEL_26;
       }
     }
 
-    else if (v3 == 3)
+    else if (deviceClass == 3)
     {
       v6 = 60.0;
-      if (v4 == 20)
+      if (screenClass == 20)
       {
         v6 = 68.0;
       }
 
-      if (v4 == 11)
+      if (screenClass == 11)
       {
         v7 = 68.0;
       }
@@ -126,7 +126,7 @@ uint64_t __30__ISDeviceInfo_sharedInstance__block_invoke()
         v7 = v6;
       }
 
-      if (v4 == 11)
+      if (screenClass == 11)
       {
         v8 = 68.0;
       }
@@ -144,27 +144,27 @@ LABEL_25:
     goto LABEL_26;
   }
 
-  if (v3 == 4)
+  if (deviceClass == 4)
   {
     v8 = 400.0;
     v7 = 240.0;
     goto LABEL_28;
   }
 
-  if (v3 == 11)
+  if (deviceClass == 11)
   {
     v5 = 0x4060000000000000;
     goto LABEL_26;
   }
 
-  if (v3 != 6)
+  if (deviceClass != 6)
   {
     goto LABEL_25;
   }
 
-  if (v4 > 25)
+  if (screenClass > 25)
   {
-    switch(v4)
+    switch(screenClass)
     {
       case 26:
         v7 = 51.0;
@@ -180,19 +180,19 @@ LABEL_25:
 
   else
   {
-    if ((v4 - 12) < 2)
+    if ((screenClass - 12) < 2)
     {
       v5 = 0x4044000000000000;
       goto LABEL_26;
     }
 
-    if (v4 == 16)
+    if (screenClass == 16)
     {
       v5 = 0x4046000000000000;
       goto LABEL_26;
     }
 
-    if (v4 == 17)
+    if (screenClass == 17)
     {
       v5 = 0x4049000000000000;
 LABEL_26:
@@ -224,18 +224,18 @@ LABEL_28:
 
 - (CGSize)largeHomeScreenIconSize
 {
-  v3 = [(ISDeviceInfo *)self deviceClass];
-  v4 = [(ISDeviceInfo *)self screenClass];
-  if (v3 == 3)
+  deviceClass = [(ISDeviceInfo *)self deviceClass];
+  screenClass = [(ISDeviceInfo *)self screenClass];
+  if (deviceClass == 3)
   {
     v5 = 83.5;
     v6 = 76.0;
-    if (v4 == 20)
+    if (screenClass == 20)
     {
       v6 = 83.5;
     }
 
-    if (v4 != 11)
+    if (screenClass != 11)
     {
       v5 = v6;
     }
@@ -256,13 +256,13 @@ LABEL_28:
 
 - (CGSize)messagesLauncherIconSize
 {
-  v3 = [(ISDeviceInfo *)self deviceClass];
-  v4 = [(ISDeviceInfo *)self screenClass];
-  if (v3 == 3)
+  deviceClass = [(ISDeviceInfo *)self deviceClass];
+  screenClass = [(ISDeviceInfo *)self screenClass];
+  if (deviceClass == 3)
   {
     v5 = 55.0;
     v6 = 74.0;
-    if (v4 != 11 && v4 != 20)
+    if (screenClass != 11 && screenClass != 20)
     {
       v5 = 50.0;
       v6 = 67.0;

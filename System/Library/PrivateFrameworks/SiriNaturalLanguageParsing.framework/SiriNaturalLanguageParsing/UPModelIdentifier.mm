@@ -1,19 +1,19 @@
 @interface UPModelIdentifier
-- (BOOL)isEqual:(id)a3;
-- (UPModelIdentifier)initWithAppBundleId:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (UPModelIdentifier)initWithAppBundleId:(id)id;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation UPModelIdentifier
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [v4 uuid];
-  if ([v5 isEqual:self->_uuid])
+  equalCopy = equal;
+  uuid = [equalCopy uuid];
+  if ([uuid isEqual:self->_uuid])
   {
-    v6 = [v4 appBundleId];
-    v7 = [v6 isEqualToString:self->_appBundleId];
+    appBundleId = [equalCopy appBundleId];
+    v7 = [appBundleId isEqualToString:self->_appBundleId];
   }
 
   else
@@ -24,33 +24,33 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[UPModelIdentifier allocWithZone:](UPModelIdentifier init];
-  v6 = [(NSUUID *)self->_uuid copyWithZone:a3];
+  v6 = [(NSUUID *)self->_uuid copyWithZone:zone];
   uuid = v5->_uuid;
   v5->_uuid = v6;
 
-  v8 = [(NSString *)self->_appBundleId copyWithZone:a3];
+  v8 = [(NSString *)self->_appBundleId copyWithZone:zone];
   appBundleId = v5->_appBundleId;
   v5->_appBundleId = v8;
 
   return v5;
 }
 
-- (UPModelIdentifier)initWithAppBundleId:(id)a3
+- (UPModelIdentifier)initWithAppBundleId:(id)id
 {
-  v5 = a3;
+  idCopy = id;
   v10.receiver = self;
   v10.super_class = UPModelIdentifier;
   v6 = [(UPModelIdentifier *)&v10 init];
   if (v6)
   {
-    v7 = [MEMORY[0x277CCAD78] UUID];
+    uUID = [MEMORY[0x277CCAD78] UUID];
     uuid = v6->_uuid;
-    v6->_uuid = v7;
+    v6->_uuid = uUID;
 
-    objc_storeStrong(&v6->_appBundleId, a3);
+    objc_storeStrong(&v6->_appBundleId, id);
   }
 
   return v6;

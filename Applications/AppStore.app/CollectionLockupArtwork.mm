@@ -1,5 +1,5 @@
 @interface CollectionLockupArtwork
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (void)layoutSubviews;
 @end
 
@@ -14,16 +14,16 @@
   sub_10062C8C0(v4);
   sub_10002A400(v4, v4[3]);
   LayoutMarginsAware<>.layoutFrame.getter();
-  v3 = [v2 traitCollection];
+  traitCollection = [v2 traitCollection];
   dispatch thunk of Placeable.place(at:with:)();
 
   sub_100007000(v4);
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v3 = self;
-  v4 = [(CollectionLockupArtwork *)v3 traitCollection];
+  selfCopy = self;
+  traitCollection = [(CollectionLockupArtwork *)selfCopy traitCollection];
   sub_10062C8C0(v11);
   sub_10002A400(v11, v11[3]);
   dispatch thunk of Placeable.measure(toFit:with:)();

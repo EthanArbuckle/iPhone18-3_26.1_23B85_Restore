@@ -1,20 +1,20 @@
 @interface MRAPInputPlugin
 - (AVAudioRemoteInputPluginDelegate)delegate;
-- (MRAPInputPlugin)initWithPluginDelegate:(id)a3;
+- (MRAPInputPlugin)initWithPluginDelegate:(id)delegate;
 - (NSArray)devices;
-- (id)_inputDeviceWithIdentifier:(unsigned int)a3;
+- (id)_inputDeviceWithIdentifier:(unsigned int)identifier;
 - (void)_reloadInputDevices;
 - (void)dealloc;
 - (void)invalidate;
-- (void)recordingEndpoint:(id)a3 inputDeviceConnectedWithID:(unsigned int)a4;
-- (void)recordingEndpoint:(id)a3 inputDeviceDisconnectedWithID:(unsigned int)a4;
+- (void)recordingEndpoint:(id)endpoint inputDeviceConnectedWithID:(unsigned int)d;
+- (void)recordingEndpoint:(id)endpoint inputDeviceDisconnectedWithID:(unsigned int)d;
 @end
 
 @implementation MRAPInputPlugin
 
-- (MRAPInputPlugin)initWithPluginDelegate:(id)a3
+- (MRAPInputPlugin)initWithPluginDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v15.receiver = self;
   v15.super_class = MRAPInputPlugin;
   v5 = [(MRAPInputPlugin *)&v15 init];
@@ -27,7 +27,7 @@
       _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "[AudioPlugin] Plugin loaded", v14, 2u);
     }
 
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v7 = objc_opt_class();
     Name = class_getName(v7);
     v9 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
@@ -95,26 +95,26 @@
   [v5 removeDelegate:self];
 }
 
-- (void)recordingEndpoint:(id)a3 inputDeviceConnectedWithID:(unsigned int)a4
+- (void)recordingEndpoint:(id)endpoint inputDeviceConnectedWithID:(unsigned int)d
 {
   v6 = _MRLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7[0] = 67109120;
-    v7[1] = a4;
+    v7[1] = d;
     _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "[AudioPlugin] Device with ID %u connected", v7, 8u);
   }
 
   [(MRAPInputPlugin *)self _reloadInputDevices];
 }
 
-- (void)recordingEndpoint:(id)a3 inputDeviceDisconnectedWithID:(unsigned int)a4
+- (void)recordingEndpoint:(id)endpoint inputDeviceDisconnectedWithID:(unsigned int)d
 {
   v6 = _MRLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7[0] = 67109120;
-    v7[1] = a4;
+    v7[1] = d;
     _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "[AudioPlugin] Device with ID %u disconnected", v7, 8u);
   }
 
@@ -134,7 +134,7 @@
   MRVirtualVoiceInputGetDevices();
 }
 
-- (id)_inputDeviceWithIdentifier:(unsigned int)a3
+- (id)_inputDeviceWithIdentifier:(unsigned int)identifier
 {
   v8 = 0;
   v9 = &v8;
@@ -147,7 +147,7 @@
   block[1] = 3221225472;
   block[2] = sub_2C54;
   block[3] = &unk_83B8;
-  v7 = a3;
+  identifierCopy = identifier;
   block[4] = self;
   block[5] = &v8;
   dispatch_sync(serialQueue, block);

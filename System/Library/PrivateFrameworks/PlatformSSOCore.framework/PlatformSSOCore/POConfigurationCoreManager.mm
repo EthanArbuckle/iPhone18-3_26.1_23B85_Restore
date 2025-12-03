@@ -1,22 +1,22 @@
 @interface POConfigurationCoreManager
-- (BOOL)isPlatformSSOUserName:(id)a3;
-- (BOOL)isTemporaryAccountUserName:(id)a3;
-- (BOOL)savePendingSSOTokens:(id)a3 forUserName:(id)a4;
-- (BOOL)saveStashedSSOTokens:(id)a3 forUserName:(id)a4;
-- (BOOL)updateLoginStateForUserName:(id)a3 state:(unint64_t)a4 loginDate:(id)a5 loginType:(unint64_t)a6;
-- (BOOL)updateLoginTypeForUserName:(id)a3 loginType:(unint64_t)a4;
+- (BOOL)isPlatformSSOUserName:(id)name;
+- (BOOL)isTemporaryAccountUserName:(id)name;
+- (BOOL)savePendingSSOTokens:(id)tokens forUserName:(id)name;
+- (BOOL)saveStashedSSOTokens:(id)tokens forUserName:(id)name;
+- (BOOL)updateLoginStateForUserName:(id)name state:(unint64_t)state loginDate:(id)date loginType:(unint64_t)type;
+- (BOOL)updateLoginTypeForUserName:(id)name loginType:(unint64_t)type;
 - (NSString)userIdentifier;
-- (POConfigurationCoreManager)initWithUserName:(id)a3 identifierProvider:(id)a4 sharedOnly:(BOOL)a5 volume:(id)a6;
+- (POConfigurationCoreManager)initWithUserName:(id)name identifierProvider:(id)provider sharedOnly:(BOOL)only volume:(id)volume;
 - (PODeviceConfiguration)currentDeviceConfiguration;
 - (PODeviceConfiguration)userDeviceConfiguration;
 - (POLoginConfiguration)currentLoginConfiguration;
 - (POUserConfiguration)currentUserConfiguration;
 - (id)deviceConfiguration;
 - (id)loginConfiguration;
-- (id)retrievePendingSSOTokensForUserName:(id)a3;
-- (id)retrieveStashedSSOTokensForUserName:(id)a3;
-- (id)userConfigurationForUserName:(id)a3;
-- (id)userLoginStateForUserName:(id)a3;
+- (id)retrievePendingSSOTokensForUserName:(id)name;
+- (id)retrieveStashedSSOTokensForUserName:(id)name;
+- (id)userConfigurationForUserName:(id)name;
+- (id)userLoginStateForUserName:(id)name;
 - (void)deviceConfiguration;
 - (void)loginConfiguration;
 - (void)userDeviceConfiguration;
@@ -24,23 +24,23 @@
 
 @implementation POConfigurationCoreManager
 
-- (POConfigurationCoreManager)initWithUserName:(id)a3 identifierProvider:(id)a4 sharedOnly:(BOOL)a5 volume:(id)a6
+- (POConfigurationCoreManager)initWithUserName:(id)name identifierProvider:(id)provider sharedOnly:(BOOL)only volume:(id)volume
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  nameCopy = name;
+  providerCopy = provider;
+  volumeCopy = volume;
   v28.receiver = self;
   v28.super_class = POConfigurationCoreManager;
   v14 = [(POConfigurationCoreManager *)&v28 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_userName, a3);
-    v16 = [[PODaemonCoreConnection alloc] initWithVolume:v13];
+    objc_storeStrong(&v14->_userName, name);
+    v16 = [[PODaemonCoreConnection alloc] initWithVolume:volumeCopy];
     serviceConnection = v15->_serviceConnection;
     v15->_serviceConnection = v16;
 
-    objc_storeStrong(&v15->_userIdentifierProvider, a4);
+    objc_storeStrong(&v15->_userIdentifierProvider, provider);
     v18 = [[POConfigurationVersion alloc] initWithConfigurationType:0];
     userConfigurationVersion = v15->_userConfigurationVersion;
     v15->_userConfigurationVersion = v18;
@@ -53,7 +53,7 @@
     deviceConfigurationVersion = v15->_deviceConfigurationVersion;
     v15->_deviceConfigurationVersion = v22;
 
-    v15->_sharedOnly = a5;
+    v15->_sharedOnly = only;
     v24 = objc_alloc_init(MEMORY[0x277D82BB8]);
     userLock = v15->_userLock;
     v15->_userLock = v24;
@@ -62,7 +62,7 @@
   v26 = PO_LOG_POConfigurationManager();
   if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
   {
-    [POConfigurationCoreManager initWithUserName:v11 identifierProvider:v26 sharedOnly:? volume:?];
+    [POConfigurationCoreManager initWithUserName:nameCopy identifierProvider:v26 sharedOnly:? volume:?];
   }
 
   return v15;
@@ -70,20 +70,20 @@
 
 - (POUserConfiguration)currentUserConfiguration
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(POConfigurationCoreManager *)v2 userConfigurationVersion];
-  v4 = [v3 checkVersion];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  userConfigurationVersion = [(POConfigurationCoreManager *)selfCopy userConfigurationVersion];
+  checkVersion = [userConfigurationVersion checkVersion];
 
-  currentUserConfiguration = v2->_currentUserConfiguration;
+  currentUserConfiguration = selfCopy->_currentUserConfiguration;
   if (!currentUserConfiguration)
   {
-    v10 = [(POConfigurationCoreManager *)v2 userName];
-    v11 = [(POConfigurationCoreManager *)v2 userConfigurationForUserName:v10];
-    v12 = v2->_currentUserConfiguration;
-    v2->_currentUserConfiguration = v11;
+    userName = [(POConfigurationCoreManager *)selfCopy userName];
+    v11 = [(POConfigurationCoreManager *)selfCopy userConfigurationForUserName:userName];
+    v12 = selfCopy->_currentUserConfiguration;
+    selfCopy->_currentUserConfiguration = v11;
 
-    currentUserConfiguration = v2->_currentUserConfiguration;
+    currentUserConfiguration = selfCopy->_currentUserConfiguration;
     if (!currentUserConfiguration)
     {
       v13 = __54__POConfigurationCoreManager_currentUserConfiguration__block_invoke();
@@ -95,24 +95,24 @@ LABEL_9:
     goto LABEL_11;
   }
 
-  if (!v4)
+  if (!checkVersion)
   {
     goto LABEL_9;
   }
 
-  if (v4 == 1)
+  if (checkVersion == 1)
   {
-    v6 = [(POConfigurationCoreManager *)v2 userName];
-    v7 = [(POConfigurationCoreManager *)v2 userConfigurationForUserName:v6];
-    v8 = v2->_currentUserConfiguration;
-    v2->_currentUserConfiguration = v7;
+    userName2 = [(POConfigurationCoreManager *)selfCopy userName];
+    v7 = [(POConfigurationCoreManager *)selfCopy userConfigurationForUserName:userName2];
+    v8 = selfCopy->_currentUserConfiguration;
+    selfCopy->_currentUserConfiguration = v7;
 
-    currentUserConfiguration = v2->_currentUserConfiguration;
+    currentUserConfiguration = selfCopy->_currentUserConfiguration;
     if (!currentUserConfiguration)
     {
       v9 = __54__POConfigurationCoreManager_currentUserConfiguration__block_invoke_68();
 LABEL_8:
-      currentUserConfiguration = v2->_currentUserConfiguration;
+      currentUserConfiguration = selfCopy->_currentUserConfiguration;
       goto LABEL_9;
     }
 
@@ -121,7 +121,7 @@ LABEL_8:
 
   v14 = 0;
 LABEL_11:
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v14;
 }
@@ -152,19 +152,19 @@ id __54__POConfigurationCoreManager_currentUserConfiguration__block_invoke_68()
 
 - (PODeviceConfiguration)currentDeviceConfiguration
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(POConfigurationCoreManager *)v2 deviceConfigurationVersion];
-  v4 = [v3 checkVersion];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  deviceConfigurationVersion = [(POConfigurationCoreManager *)selfCopy deviceConfigurationVersion];
+  checkVersion = [deviceConfigurationVersion checkVersion];
 
-  currentDeviceConfiguration = v2->_currentDeviceConfiguration;
+  currentDeviceConfiguration = selfCopy->_currentDeviceConfiguration;
   if (!currentDeviceConfiguration)
   {
-    v9 = [(POConfigurationCoreManager *)v2 deviceConfiguration];
-    v10 = v2->_currentDeviceConfiguration;
-    v2->_currentDeviceConfiguration = v9;
+    deviceConfiguration = [(POConfigurationCoreManager *)selfCopy deviceConfiguration];
+    v10 = selfCopy->_currentDeviceConfiguration;
+    selfCopy->_currentDeviceConfiguration = deviceConfiguration;
 
-    currentDeviceConfiguration = v2->_currentDeviceConfiguration;
+    currentDeviceConfiguration = selfCopy->_currentDeviceConfiguration;
     if (!currentDeviceConfiguration)
     {
       v11 = __56__POConfigurationCoreManager_currentDeviceConfiguration__block_invoke();
@@ -176,23 +176,23 @@ LABEL_9:
     goto LABEL_11;
   }
 
-  if (!v4)
+  if (!checkVersion)
   {
     goto LABEL_9;
   }
 
-  if (v4 == 1)
+  if (checkVersion == 1)
   {
-    v6 = [(POConfigurationCoreManager *)v2 deviceConfiguration];
-    v7 = v2->_currentDeviceConfiguration;
-    v2->_currentDeviceConfiguration = v6;
+    deviceConfiguration2 = [(POConfigurationCoreManager *)selfCopy deviceConfiguration];
+    v7 = selfCopy->_currentDeviceConfiguration;
+    selfCopy->_currentDeviceConfiguration = deviceConfiguration2;
 
-    currentDeviceConfiguration = v2->_currentDeviceConfiguration;
+    currentDeviceConfiguration = selfCopy->_currentDeviceConfiguration;
     if (!currentDeviceConfiguration)
     {
       v8 = __56__POConfigurationCoreManager_currentDeviceConfiguration__block_invoke_72();
 LABEL_8:
-      currentDeviceConfiguration = v2->_currentDeviceConfiguration;
+      currentDeviceConfiguration = selfCopy->_currentDeviceConfiguration;
       goto LABEL_9;
     }
 
@@ -201,7 +201,7 @@ LABEL_8:
 
   v12 = 0;
 LABEL_11:
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v12;
 }
@@ -232,19 +232,19 @@ id __56__POConfigurationCoreManager_currentDeviceConfiguration__block_invoke_72(
 
 - (POLoginConfiguration)currentLoginConfiguration
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(POConfigurationCoreManager *)v2 loginConfigurationVersion];
-  v4 = [v3 checkVersion];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  loginConfigurationVersion = [(POConfigurationCoreManager *)selfCopy loginConfigurationVersion];
+  checkVersion = [loginConfigurationVersion checkVersion];
 
-  currentLoginConfiguration = v2->_currentLoginConfiguration;
+  currentLoginConfiguration = selfCopy->_currentLoginConfiguration;
   if (!currentLoginConfiguration)
   {
-    v9 = [(POConfigurationCoreManager *)v2 loginConfiguration];
-    v10 = v2->_currentLoginConfiguration;
-    v2->_currentLoginConfiguration = v9;
+    loginConfiguration = [(POConfigurationCoreManager *)selfCopy loginConfiguration];
+    v10 = selfCopy->_currentLoginConfiguration;
+    selfCopy->_currentLoginConfiguration = loginConfiguration;
 
-    currentLoginConfiguration = v2->_currentLoginConfiguration;
+    currentLoginConfiguration = selfCopy->_currentLoginConfiguration;
     if (!currentLoginConfiguration)
     {
       v11 = __55__POConfigurationCoreManager_currentLoginConfiguration__block_invoke();
@@ -256,23 +256,23 @@ LABEL_9:
     goto LABEL_11;
   }
 
-  if (!v4)
+  if (!checkVersion)
   {
     goto LABEL_9;
   }
 
-  if (v4 == 1)
+  if (checkVersion == 1)
   {
-    v6 = [(POConfigurationCoreManager *)v2 loginConfiguration];
-    v7 = v2->_currentLoginConfiguration;
-    v2->_currentLoginConfiguration = v6;
+    loginConfiguration2 = [(POConfigurationCoreManager *)selfCopy loginConfiguration];
+    v7 = selfCopy->_currentLoginConfiguration;
+    selfCopy->_currentLoginConfiguration = loginConfiguration2;
 
-    currentLoginConfiguration = v2->_currentLoginConfiguration;
+    currentLoginConfiguration = selfCopy->_currentLoginConfiguration;
     if (!currentLoginConfiguration)
     {
       v8 = __55__POConfigurationCoreManager_currentLoginConfiguration__block_invoke_76();
 LABEL_8:
-      currentLoginConfiguration = v2->_currentLoginConfiguration;
+      currentLoginConfiguration = selfCopy->_currentLoginConfiguration;
       goto LABEL_9;
     }
 
@@ -281,7 +281,7 @@ LABEL_8:
 
   v12 = 0;
 LABEL_11:
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v12;
 }
@@ -346,8 +346,8 @@ id __55__POConfigurationCoreManager_currentLoginConfiguration__block_invoke_76()
   if (!v14[5] && ![(POConfigurationCoreManager *)self sharedOnly])
   {
     v5 = MEMORY[0x277CCACA8];
-    v6 = [(POConfigurationCoreManager *)self userIdentifier];
-    v7 = [v5 stringWithFormat:@"%@", v6];
+    userIdentifier = [(POConfigurationCoreManager *)self userIdentifier];
+    v7 = [v5 stringWithFormat:@"%@", userIdentifier];
 
     v8 = self->_serviceConnection;
     v11[0] = MEMORY[0x277D85DD0];
@@ -412,8 +412,8 @@ void __49__POConfigurationCoreManager_deviceConfiguration__block_invoke_2(uint64
   }
 
   v4 = MEMORY[0x277CCACA8];
-  v5 = [(POConfigurationCoreManager *)self userIdentifier];
-  v6 = [v4 stringWithFormat:@"%@", v5];
+  userIdentifier = [(POConfigurationCoreManager *)self userIdentifier];
+  v6 = [v4 stringWithFormat:@"%@", userIdentifier];
 
   v17[0] = 0;
   v17[1] = v17;
@@ -481,10 +481,10 @@ void __53__POConfigurationCoreManager_userDeviceConfiguration__block_invoke(uint
   v16 = __Block_byref_object_copy__0;
   v17 = __Block_byref_object_dispose__0;
   v18 = 0;
-  v4 = [(POConfigurationCoreManager *)self currentDeviceConfiguration];
-  v5 = [v4 sharedDeviceKeys];
+  currentDeviceConfiguration = [(POConfigurationCoreManager *)self currentDeviceConfiguration];
+  sharedDeviceKeys = [currentDeviceConfiguration sharedDeviceKeys];
 
-  if (v5)
+  if (sharedDeviceKeys)
   {
     v6 = 0;
   }
@@ -492,8 +492,8 @@ void __53__POConfigurationCoreManager_userDeviceConfiguration__block_invoke(uint
   else
   {
     v7 = MEMORY[0x277CCACA8];
-    v8 = [(POConfigurationCoreManager *)self userIdentifier];
-    v6 = [v7 stringWithFormat:@"%@", v8];
+    userIdentifier = [(POConfigurationCoreManager *)self userIdentifier];
+    v6 = [v7 stringWithFormat:@"%@", userIdentifier];
   }
 
   serviceConnection = self->_serviceConnection;
@@ -530,17 +530,17 @@ void __48__POConfigurationCoreManager_loginConfiguration__block_invoke(uint64_t 
   *(v10 + 40) = v5;
 }
 
-- (id)userConfigurationForUserName:(id)a3
+- (id)userConfigurationForUserName:(id)name
 {
-  v4 = a3;
-  if (!v4)
+  nameCopy = name;
+  if (!nameCopy)
   {
     v12 = 0;
     goto LABEL_13;
   }
 
-  v5 = [(POConfigurationCoreManager *)self userIdentifierProvider];
-  v6 = [v5 uniqueIdentifierForUserName:v4];
+  userIdentifierProvider = [(POConfigurationCoreManager *)self userIdentifierProvider];
+  v6 = [userIdentifierProvider uniqueIdentifierForUserName:nameCopy];
 
   if (v6)
   {
@@ -567,8 +567,8 @@ void __48__POConfigurationCoreManager_loginConfiguration__block_invoke(uint64_t 
     v8 = v18[5];
     if (v8)
     {
-      v9 = [v8 uniqueIdentifier];
-      v10 = [v6 isEqualToString:v9];
+      uniqueIdentifier = [v8 uniqueIdentifier];
+      v10 = [v6 isEqualToString:uniqueIdentifier];
 
       if (!v10)
       {
@@ -597,7 +597,7 @@ LABEL_11:
   v25[1] = 3221225472;
   v25[2] = __59__POConfigurationCoreManager_userConfigurationForUserName___block_invoke;
   v25[3] = &unk_279A3DC48;
-  v26 = v4;
+  v26 = nameCopy;
   v13 = __59__POConfigurationCoreManager_userConfigurationForUserName___block_invoke(v25);
 
   v12 = 0;
@@ -646,17 +646,17 @@ id __59__POConfigurationCoreManager_userConfigurationForUserName___block_invoke_
   return v0;
 }
 
-- (id)userLoginStateForUserName:(id)a3
+- (id)userLoginStateForUserName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = PO_LOG_POConfigurationManager();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [POConfigurationCoreManager userLoginStateForUserName:];
   }
 
-  v6 = [(POConfigurationCoreManager *)self userIdentifierProvider];
-  v7 = [v6 uniqueIdentifierForUserName:v4];
+  userIdentifierProvider = [(POConfigurationCoreManager *)self userIdentifierProvider];
+  v7 = [userIdentifierProvider uniqueIdentifierForUserName:nameCopy];
 
   if (!v7)
   {
@@ -664,7 +664,7 @@ id __59__POConfigurationCoreManager_userConfigurationForUserName___block_invoke_
     v26[1] = 3221225472;
     v26[2] = __56__POConfigurationCoreManager_userLoginStateForUserName___block_invoke;
     v26[3] = &unk_279A3DC48;
-    v27 = v4;
+    v27 = nameCopy;
     v13 = __56__POConfigurationCoreManager_userLoginStateForUserName___block_invoke(v26);
 
     v14 = 0;
@@ -694,8 +694,8 @@ id __59__POConfigurationCoreManager_userConfigurationForUserName___block_invoke_
   v9 = v19[5];
   if (v9)
   {
-    v10 = [v9 uniqueIdentifier];
-    v11 = [v7 isEqualToString:v10];
+    uniqueIdentifier = [v9 uniqueIdentifier];
+    v11 = [v7 isEqualToString:uniqueIdentifier];
 
     if (!v11)
     {
@@ -760,31 +760,31 @@ id __56__POConfigurationCoreManager_userLoginStateForUserName___block_invoke_2()
   return v0;
 }
 
-- (BOOL)updateLoginStateForUserName:(id)a3 state:(unint64_t)a4 loginDate:(id)a5 loginType:(unint64_t)a6
+- (BOOL)updateLoginStateForUserName:(id)name state:(unint64_t)state loginDate:(id)date loginType:(unint64_t)type
 {
   v34 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a5;
+  nameCopy = name;
+  dateCopy = date;
   v12 = PO_LOG_POConfigurationManager();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
-    v23 = [POConstantCoreUtil stringForLoginPolicyState:a4];
-    v24 = [POConstantCoreUtil stringForLoginType:a6];
+    v23 = [POConstantCoreUtil stringForLoginPolicyState:state];
+    v24 = [POConstantCoreUtil stringForLoginType:type];
     *buf = 136316162;
     *&buf[4] = "[POConfigurationCoreManager updateLoginStateForUserName:state:loginDate:loginType:]";
     *&buf[12] = 2114;
     *&buf[14] = v23;
     *&buf[22] = 2114;
-    v29 = v11;
+    v29 = dateCopy;
     v30 = 2114;
     v31 = v24;
     v32 = 2112;
-    v33 = self;
+    selfCopy = self;
     _os_log_debug_impl(&dword_25E8B1000, v12, OS_LOG_TYPE_DEBUG, "%s state: %{public}@, loginDate: %{public}@, loginDate: %{public}@ on %@", buf, 0x34u);
   }
 
-  v13 = [(POConfigurationCoreManager *)self userIdentifierProvider];
-  v14 = [v13 uniqueIdentifierForUserName:v10];
+  userIdentifierProvider = [(POConfigurationCoreManager *)self userIdentifierProvider];
+  v14 = [userIdentifierProvider uniqueIdentifierForUserName:nameCopy];
 
   if (!v14)
   {
@@ -792,7 +792,7 @@ id __56__POConfigurationCoreManager_userLoginStateForUserName___block_invoke_2()
     v26[1] = 3221225472;
     v26[2] = __84__POConfigurationCoreManager_updateLoginStateForUserName_state_loginDate_loginType___block_invoke;
     v26[3] = &unk_279A3DC48;
-    v27 = v10;
+    v27 = nameCopy;
     v19 = __84__POConfigurationCoreManager_updateLoginStateForUserName_state_loginDate_loginType___block_invoke(v26);
 
 LABEL_8:
@@ -800,13 +800,13 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if (a4 >= 3)
+  if (state >= 3)
   {
     v25[5] = MEMORY[0x277D85DD0];
     v25[6] = 3221225472;
     v25[7] = __84__POConfigurationCoreManager_updateLoginStateForUserName_state_loginDate_loginType___block_invoke_101;
     v25[8] = &__block_descriptor_40_e14___NSError_8__0l;
-    v25[9] = a4;
+    v25[9] = state;
     v20 = __84__POConfigurationCoreManager_updateLoginStateForUserName_state_loginDate_loginType___block_invoke_101();
     goto LABEL_8;
   }
@@ -816,14 +816,14 @@ LABEL_8:
   *&buf[16] = 0x2020000000;
   LOBYTE(v29) = 0;
   serviceConnection = self->_serviceConnection;
-  v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
-  v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a6];
+  v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:state];
+  v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:type];
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = __84__POConfigurationCoreManager_updateLoginStateForUserName_state_loginDate_loginType___block_invoke_107;
   v25[3] = &unk_279A3E5A8;
   v25[4] = buf;
-  [(PODaemonCoreConnection *)serviceConnection updateLoginStateForIdentifier:v14 state:v16 loginDate:v11 loginType:v17 completion:v25];
+  [(PODaemonCoreConnection *)serviceConnection updateLoginStateForIdentifier:v14 state:v16 loginDate:dateCopy loginType:v17 completion:v25];
 
   v18 = *(*&buf[8] + 24);
   _Block_object_dispose(buf, 8);
@@ -857,17 +857,17 @@ id __84__POConfigurationCoreManager_updateLoginStateForUserName_state_loginDate_
   return v0;
 }
 
-- (BOOL)updateLoginTypeForUserName:(id)a3 loginType:(unint64_t)a4
+- (BOOL)updateLoginTypeForUserName:(id)name loginType:(unint64_t)type
 {
-  v6 = a3;
+  nameCopy = name;
   v7 = PO_LOG_POConfigurationManager();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    [(POConfigurationCoreManager *)a4 updateLoginTypeForUserName:v7 loginType:?];
+    [(POConfigurationCoreManager *)type updateLoginTypeForUserName:v7 loginType:?];
   }
 
-  v8 = [(POConfigurationCoreManager *)self userIdentifierProvider];
-  v9 = [v8 uniqueIdentifierForUserName:v6];
+  userIdentifierProvider = [(POConfigurationCoreManager *)self userIdentifierProvider];
+  v9 = [userIdentifierProvider uniqueIdentifierForUserName:nameCopy];
 
   if (v9)
   {
@@ -876,7 +876,7 @@ id __84__POConfigurationCoreManager_updateLoginStateForUserName_state_loginDate_
     v18 = 0x2020000000;
     v19 = 0;
     serviceConnection = self->_serviceConnection;
-    v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
+    v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:type];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __67__POConfigurationCoreManager_updateLoginTypeForUserName_loginType___block_invoke_109;
@@ -894,7 +894,7 @@ id __84__POConfigurationCoreManager_updateLoginStateForUserName_state_loginDate_
     v20[1] = 3221225472;
     v20[2] = __67__POConfigurationCoreManager_updateLoginTypeForUserName_loginType___block_invoke;
     v20[3] = &unk_279A3DC48;
-    v21 = v6;
+    v21 = nameCopy;
     v13 = __67__POConfigurationCoreManager_updateLoginTypeForUserName_loginType___block_invoke(v20);
 
     v12 = 0;
@@ -915,20 +915,20 @@ id __67__POConfigurationCoreManager_updateLoginTypeForUserName_loginType___block
   return v2;
 }
 
-- (BOOL)isPlatformSSOUserName:(id)a3
+- (BOOL)isPlatformSSOUserName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = PO_LOG_POConfigurationManager();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [POConfigurationCoreManager isPlatformSSOUserName:];
   }
 
-  v6 = [(POConfigurationCoreManager *)self currentDeviceConfiguration];
-  v7 = [v6 nonPlatformSSOAccounts];
-  v8 = [v4 lowercaseString];
+  currentDeviceConfiguration = [(POConfigurationCoreManager *)self currentDeviceConfiguration];
+  nonPlatformSSOAccounts = [currentDeviceConfiguration nonPlatformSSOAccounts];
+  lowercaseString = [nameCopy lowercaseString];
 
-  v9 = [v7 containsObject:v8];
+  v9 = [nonPlatformSSOAccounts containsObject:lowercaseString];
   if (v9)
   {
     v10 = PO_LOG_POConfigurationManager();
@@ -941,19 +941,19 @@ id __67__POConfigurationCoreManager_updateLoginTypeForUserName_loginType___block
   return v9 ^ 1;
 }
 
-- (BOOL)isTemporaryAccountUserName:(id)a3
+- (BOOL)isTemporaryAccountUserName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v4 = PO_LOG_POConfigurationManager();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
     [POConfigurationCoreManager isTemporaryAccountUserName:];
   }
 
-  v5 = [v3 lowercaseString];
+  lowercaseString = [nameCopy lowercaseString];
 
-  v6 = [@"temporary_session" lowercaseString];
-  v7 = [v5 isEqualToString:v6];
+  lowercaseString2 = [@"temporary_session" lowercaseString];
+  v7 = [lowercaseString isEqualToString:lowercaseString2];
 
   if (v7)
   {
@@ -967,18 +967,18 @@ id __67__POConfigurationCoreManager_updateLoginTypeForUserName_loginType___block
   return v7;
 }
 
-- (BOOL)savePendingSSOTokens:(id)a3 forUserName:(id)a4
+- (BOOL)savePendingSSOTokens:(id)tokens forUserName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  tokensCopy = tokens;
+  nameCopy = name;
   v8 = PO_LOG_POConfigurationManager();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     [POConfigurationCoreManager savePendingSSOTokens:forUserName:];
   }
 
-  v9 = [(POConfigurationCoreManager *)self userIdentifierProvider];
-  v10 = [v9 uniqueIdentifierForUserName:v7];
+  userIdentifierProvider = [(POConfigurationCoreManager *)self userIdentifierProvider];
+  v10 = [userIdentifierProvider uniqueIdentifierForUserName:nameCopy];
 
   if (v10)
   {
@@ -992,7 +992,7 @@ id __67__POConfigurationCoreManager_updateLoginTypeForUserName_loginType___block
     v15[2] = __63__POConfigurationCoreManager_savePendingSSOTokens_forUserName___block_invoke_110;
     v15[3] = &unk_279A3E5A8;
     v15[4] = &v16;
-    [(PODaemonCoreConnection *)serviceConnection savePendingSSOTokens:v6 identifier:v10 completion:v15];
+    [(PODaemonCoreConnection *)serviceConnection savePendingSSOTokens:tokensCopy identifier:v10 completion:v15];
     v12 = *(v17 + 24);
     _Block_object_dispose(&v16, 8);
   }
@@ -1003,7 +1003,7 @@ id __67__POConfigurationCoreManager_updateLoginTypeForUserName_loginType___block
     v20[1] = 3221225472;
     v20[2] = __63__POConfigurationCoreManager_savePendingSSOTokens_forUserName___block_invoke;
     v20[3] = &unk_279A3DC48;
-    v21 = v7;
+    v21 = nameCopy;
     v13 = __63__POConfigurationCoreManager_savePendingSSOTokens_forUserName___block_invoke(v20);
 
     v12 = 0;
@@ -1024,17 +1024,17 @@ id __63__POConfigurationCoreManager_savePendingSSOTokens_forUserName___block_inv
   return v2;
 }
 
-- (id)retrievePendingSSOTokensForUserName:(id)a3
+- (id)retrievePendingSSOTokensForUserName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = PO_LOG_POConfigurationManager();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [POConfigurationCoreManager retrievePendingSSOTokensForUserName:];
   }
 
-  v6 = [(POConfigurationCoreManager *)self userIdentifierProvider];
-  v7 = [v6 uniqueIdentifierForUserName:v4];
+  userIdentifierProvider = [(POConfigurationCoreManager *)self userIdentifierProvider];
+  v7 = [userIdentifierProvider uniqueIdentifierForUserName:nameCopy];
 
   if (v7)
   {
@@ -1070,7 +1070,7 @@ id __63__POConfigurationCoreManager_savePendingSSOTokens_forUserName___block_inv
     v21[1] = 3221225472;
     v21[2] = __66__POConfigurationCoreManager_retrievePendingSSOTokensForUserName___block_invoke;
     v21[3] = &unk_279A3DC48;
-    v22 = v4;
+    v22 = nameCopy;
     v10 = __66__POConfigurationCoreManager_retrievePendingSSOTokensForUserName___block_invoke(v21);
 
     v9 = 0;
@@ -1105,18 +1105,18 @@ void __66__POConfigurationCoreManager_retrievePendingSSOTokensForUserName___bloc
   *(v9 + 40) = v6;
 }
 
-- (BOOL)saveStashedSSOTokens:(id)a3 forUserName:(id)a4
+- (BOOL)saveStashedSSOTokens:(id)tokens forUserName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  tokensCopy = tokens;
+  nameCopy = name;
   v8 = PO_LOG_POConfigurationManager();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     [POConfigurationCoreManager saveStashedSSOTokens:forUserName:];
   }
 
-  v9 = [(POConfigurationCoreManager *)self userIdentifierProvider];
-  v10 = [v9 uniqueIdentifierForUserName:v7];
+  userIdentifierProvider = [(POConfigurationCoreManager *)self userIdentifierProvider];
+  v10 = [userIdentifierProvider uniqueIdentifierForUserName:nameCopy];
 
   if (v10)
   {
@@ -1130,7 +1130,7 @@ void __66__POConfigurationCoreManager_retrievePendingSSOTokensForUserName___bloc
     v15[2] = __63__POConfigurationCoreManager_saveStashedSSOTokens_forUserName___block_invoke_118;
     v15[3] = &unk_279A3E5A8;
     v15[4] = &v16;
-    [(PODaemonCoreConnection *)serviceConnection saveStashedSSOTokens:v6 identifier:v10 completion:v15];
+    [(PODaemonCoreConnection *)serviceConnection saveStashedSSOTokens:tokensCopy identifier:v10 completion:v15];
     v12 = *(v17 + 24);
     _Block_object_dispose(&v16, 8);
   }
@@ -1141,7 +1141,7 @@ void __66__POConfigurationCoreManager_retrievePendingSSOTokensForUserName___bloc
     v20[1] = 3221225472;
     v20[2] = __63__POConfigurationCoreManager_saveStashedSSOTokens_forUserName___block_invoke;
     v20[3] = &unk_279A3DC48;
-    v21 = v7;
+    v21 = nameCopy;
     v13 = __63__POConfigurationCoreManager_saveStashedSSOTokens_forUserName___block_invoke(v20);
 
     v12 = 0;
@@ -1162,17 +1162,17 @@ id __63__POConfigurationCoreManager_saveStashedSSOTokens_forUserName___block_inv
   return v2;
 }
 
-- (id)retrieveStashedSSOTokensForUserName:(id)a3
+- (id)retrieveStashedSSOTokensForUserName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = PO_LOG_POConfigurationManager();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [POConfigurationCoreManager retrieveStashedSSOTokensForUserName:];
   }
 
-  v6 = [(POConfigurationCoreManager *)self userIdentifierProvider];
-  v7 = [v6 uniqueIdentifierForUserName:v4];
+  userIdentifierProvider = [(POConfigurationCoreManager *)self userIdentifierProvider];
+  v7 = [userIdentifierProvider uniqueIdentifierForUserName:nameCopy];
 
   if (v7)
   {
@@ -1208,7 +1208,7 @@ id __63__POConfigurationCoreManager_saveStashedSSOTokens_forUserName___block_inv
     v21[1] = 3221225472;
     v21[2] = __66__POConfigurationCoreManager_retrieveStashedSSOTokensForUserName___block_invoke;
     v21[3] = &unk_279A3DC48;
-    v22 = v4;
+    v22 = nameCopy;
     v10 = __66__POConfigurationCoreManager_retrieveStashedSSOTokensForUserName___block_invoke(v21);
 
     v9 = 0;
@@ -1250,9 +1250,9 @@ void __66__POConfigurationCoreManager_retrieveStashedSSOTokensForUserName___bloc
   userIdentifier = self->_userIdentifier;
   if (!userIdentifier)
   {
-    v5 = [(POConfigurationCoreManager *)self userIdentifierProvider];
-    v6 = [(POConfigurationCoreManager *)self userName];
-    v7 = [v5 uniqueIdentifierForUserName:v6];
+    userIdentifierProvider = [(POConfigurationCoreManager *)self userIdentifierProvider];
+    userName = [(POConfigurationCoreManager *)self userName];
+    v7 = [userIdentifierProvider uniqueIdentifierForUserName:userName];
     v8 = self->_userIdentifier;
     self->_userIdentifier = v7;
 

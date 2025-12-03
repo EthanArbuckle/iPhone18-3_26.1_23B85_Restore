@@ -9,15 +9,15 @@
 {
   if (*(objc_loadWeak(&self->this$2_->this$0_) + 32) == 1)
   {
-    v3 = [(JavaUtilTreeMap_BoundedMap_BoundedIterator *)self stepForward];
+    stepForward = [(JavaUtilTreeMap_BoundedMap_BoundedIterator *)self stepForward];
   }
 
   else
   {
-    v3 = [(JavaUtilTreeMap_BoundedMap_BoundedIterator *)self stepBackward];
+    stepForward = [(JavaUtilTreeMap_BoundedMap_BoundedIterator *)self stepBackward];
   }
 
-  return v3[4];
+  return stepForward[4];
 }
 
 - (void)dealloc

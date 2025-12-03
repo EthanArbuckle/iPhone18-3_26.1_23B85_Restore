@@ -1,38 +1,38 @@
 @interface BMSiriRequestContextUser
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMSiriRequestContextUser)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BMSiriRequestContextUser)initWithUserID:(id)a3 isOnlyUserInHome:(id)a4 classification:(int)a5;
-- (BOOL)isEqual:(id)a3;
+- (BMSiriRequestContextUser)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BMSiriRequestContextUser)initWithUserID:(id)d isOnlyUserInHome:(id)home classification:(int)classification;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMSiriRequestContextUser
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMSiriRequestContextUser *)self userID];
-    v7 = [v5 userID];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    userID = [(BMSiriRequestContextUser *)self userID];
+    userID2 = [v5 userID];
+    v8 = userID2;
+    if (userID == userID2)
     {
     }
 
     else
     {
-      v9 = [(BMSiriRequestContextUser *)self userID];
-      v10 = [v5 userID];
-      v11 = [v9 isEqual:v10];
+      userID3 = [(BMSiriRequestContextUser *)self userID];
+      userID4 = [v5 userID];
+      v11 = [userID3 isEqual:userID4];
 
       if (!v11)
       {
@@ -42,8 +42,8 @@
 
     if (!-[BMSiriRequestContextUser hasIsOnlyUserInHome](self, "hasIsOnlyUserInHome") && ![v5 hasIsOnlyUserInHome] || -[BMSiriRequestContextUser hasIsOnlyUserInHome](self, "hasIsOnlyUserInHome") && objc_msgSend(v5, "hasIsOnlyUserInHome") && (v13 = -[BMSiriRequestContextUser isOnlyUserInHome](self, "isOnlyUserInHome"), v13 == objc_msgSend(v5, "isOnlyUserInHome")))
     {
-      v14 = [(BMSiriRequestContextUser *)self classification];
-      v12 = v14 == [v5 classification];
+      classification = [(BMSiriRequestContextUser *)self classification];
+      v12 = classification == [v5 classification];
       goto LABEL_14;
     }
 
@@ -63,7 +63,7 @@ LABEL_15:
 - (id)jsonDictionary
 {
   v13[3] = *MEMORY[0x1E69E9840];
-  v3 = [(BMSiriRequestContextUser *)self userID];
+  userID = [(BMSiriRequestContextUser *)self userID];
   if ([(BMSiriRequestContextUser *)self hasIsOnlyUserInHome])
   {
     v4 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMSiriRequestContextUser isOnlyUserInHome](self, "isOnlyUserInHome")}];
@@ -76,29 +76,29 @@ LABEL_15:
 
   v5 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMSiriRequestContextUser classification](self, "classification")}];
   v12[0] = @"userID";
-  v6 = v3;
-  if (!v3)
+  null = userID;
+  if (!userID)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[0] = v6;
+  v13[0] = null;
   v12[1] = @"isOnlyUserInHome";
-  v7 = v4;
+  null2 = v4;
   if (!v4)
   {
-    v7 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[1] = v7;
+  v13[1] = null2;
   v12[2] = @"classification";
-  v8 = v5;
+  null3 = v5;
   if (!v5)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[2] = v8;
+  v13[2] = null3;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:v12 count:3];
   if (v5)
   {
@@ -109,7 +109,7 @@ LABEL_15:
 
 LABEL_17:
 
-    if (v3)
+    if (userID)
     {
       goto LABEL_13;
     }
@@ -123,7 +123,7 @@ LABEL_17:
   }
 
 LABEL_12:
-  if (v3)
+  if (userID)
   {
     goto LABEL_13;
   }
@@ -136,25 +136,25 @@ LABEL_13:
   return v9;
 }
 
-- (BMSiriRequestContextUser)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMSiriRequestContextUser)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v31[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"userID"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"userID"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v8 = 0;
 LABEL_4:
-    v9 = [v6 objectForKeyedSubscript:@"isOnlyUserInHome"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"isOnlyUserInHome"];
     if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v10 = 0;
-          v16 = 0;
+          selfCopy = 0;
           goto LABEL_25;
         }
 
@@ -166,8 +166,8 @@ LABEL_4:
         v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v29 forKeys:&v28 count:1];
         v18 = [v24 initWithDomain:v17 code:2 userInfo:v11];
         v10 = 0;
-        v16 = 0;
-        *a4 = v18;
+        selfCopy = 0;
+        *error = v18;
         goto LABEL_24;
       }
 
@@ -179,7 +179,7 @@ LABEL_4:
       v10 = 0;
     }
 
-    v11 = [v6 objectForKeyedSubscript:@"classification"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"classification"];
     if (v11 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
@@ -193,7 +193,7 @@ LABEL_4:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (a4)
+          if (error)
           {
             v25 = objc_alloc(MEMORY[0x1E696ABC0]);
             v23 = *MEMORY[0x1E698F240];
@@ -201,11 +201,11 @@ LABEL_4:
             v21 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber (corresponding to enum value), or NSString (string version of enum)", objc_opt_class(), @"classification"];
             v27 = v21;
             v22 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v27 forKeys:&v26 count:1];
-            *a4 = [v25 initWithDomain:v23 code:2 userInfo:v22];
+            *error = [v25 initWithDomain:v23 code:2 userInfo:v22];
           }
 
           v12 = 0;
-          v16 = 0;
+          selfCopy = 0;
           goto LABEL_24;
         }
 
@@ -221,7 +221,7 @@ LABEL_4:
     }
 
     self = -[BMSiriRequestContextUser initWithUserID:isOnlyUserInHome:classification:](self, "initWithUserID:isOnlyUserInHome:classification:", v8, v10, [v12 intValue]);
-    v16 = self;
+    selfCopy = self;
 LABEL_24:
 
     goto LABEL_25;
@@ -234,10 +234,10 @@ LABEL_24:
     goto LABEL_4;
   }
 
-  if (!a4)
+  if (!error)
   {
     v8 = 0;
-    v16 = 0;
+    selfCopy = 0;
     goto LABEL_26;
   }
 
@@ -248,27 +248,27 @@ LABEL_24:
   v31[0] = v10;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v31 forKeys:&v30 count:1];
   v8 = 0;
-  v16 = 0;
-  *a4 = [v14 initWithDomain:v15 code:2 userInfo:v9];
+  selfCopy = 0;
+  *error = [v14 initWithDomain:v15 code:2 userInfo:v9];
 LABEL_25:
 
 LABEL_26:
   v19 = *MEMORY[0x1E69E9840];
-  return v16;
+  return selfCopy;
 }
 
 - (id)serialize
 {
   v3 = objc_opt_new();
   [(BMSiriRequestContextUser *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
+  toCopy = to;
   if (self->_userID)
   {
     PBDataWriterWriteStringField();
@@ -284,9 +284,9 @@ LABEL_26:
   PBDataWriterWriteUint32Field();
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v35.receiver = self;
   v35.super_class = BMSiriRequestContextUser;
   v5 = [(BMEventBase *)&v35 init];
@@ -295,12 +295,12 @@ LABEL_26:
     goto LABEL_51;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -311,18 +311,18 @@ LABEL_26:
       while (1)
       {
         v36 = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v36 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v36 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v36 & 0x7F) << v7;
@@ -340,9 +340,9 @@ LABEL_26:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -364,18 +364,18 @@ LABEL_16:
         while (1)
         {
           v36 = 0;
-          v26 = [v4 position] + 1;
-          if (v26 >= [v4 position] && (v27 = objc_msgSend(v4, "position") + 1, v27 <= objc_msgSend(v4, "length")))
+          v26 = [fromCopy position] + 1;
+          if (v26 >= [fromCopy position] && (v27 = objc_msgSend(fromCopy, "position") + 1, v27 <= objc_msgSend(fromCopy, "length")))
           {
-            v28 = [v4 data];
-            [v28 getBytes:&v36 range:{objc_msgSend(v4, "position"), 1}];
+            data2 = [fromCopy data];
+            [data2 getBytes:&v36 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v25 |= (v36 & 0x7F) << v23;
@@ -393,7 +393,7 @@ LABEL_16:
           }
         }
 
-        v29 = (v25 != 0) & ~[v4 hasError];
+        v29 = (v25 != 0) & ~[fromCopy hasError];
 LABEL_43:
         v5->_isOnlyUserInHome = v29;
       }
@@ -406,18 +406,18 @@ LABEL_43:
         while (1)
         {
           v36 = 0;
-          v19 = [v4 position] + 1;
-          if (v19 >= [v4 position] && (v20 = objc_msgSend(v4, "position") + 1, v20 <= objc_msgSend(v4, "length")))
+          v19 = [fromCopy position] + 1;
+          if (v19 >= [fromCopy position] && (v20 = objc_msgSend(fromCopy, "position") + 1, v20 <= objc_msgSend(fromCopy, "length")))
           {
-            v21 = [v4 data];
-            [v21 getBytes:&v36 range:{objc_msgSend(v4, "position"), 1}];
+            data3 = [fromCopy data];
+            [data3 getBytes:&v36 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v18 |= (v36 & 0x7F) << v16;
@@ -433,7 +433,7 @@ LABEL_43:
           }
         }
 
-        if (([v4 hasError] & 1) != 0 || v18 > 4)
+        if (([fromCopy hasError] & 1) != 0 || v18 > 4)
         {
 LABEL_46:
           LODWORD(v18) = 0;
@@ -447,13 +447,13 @@ LABEL_46:
         goto LABEL_50;
       }
 
-      v32 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v32 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_50:
     v33 = 0;
@@ -471,29 +471,29 @@ LABEL_51:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMSiriRequestContextUser *)self userID];
+  userID = [(BMSiriRequestContextUser *)self userID];
   v5 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMSiriRequestContextUser isOnlyUserInHome](self, "isOnlyUserInHome")}];
   v6 = BMSiriRequestContextUserClassificationAsString([(BMSiriRequestContextUser *)self classification]);
-  v7 = [v3 initWithFormat:@"BMSiriRequestContextUser with userID: %@, isOnlyUserInHome: %@, classification: %@", v4, v5, v6];
+  v7 = [v3 initWithFormat:@"BMSiriRequestContextUser with userID: %@, isOnlyUserInHome: %@, classification: %@", userID, v5, v6];
 
   return v7;
 }
 
-- (BMSiriRequestContextUser)initWithUserID:(id)a3 isOnlyUserInHome:(id)a4 classification:(int)a5
+- (BMSiriRequestContextUser)initWithUserID:(id)d isOnlyUserInHome:(id)home classification:(int)classification
 {
-  v9 = a3;
-  v10 = a4;
+  dCopy = d;
+  homeCopy = home;
   v13.receiver = self;
   v13.super_class = BMSiriRequestContextUser;
   v11 = [(BMEventBase *)&v13 init];
   if (v11)
   {
     v11->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v11->_userID, a3);
-    if (v10)
+    objc_storeStrong(&v11->_userID, d);
+    if (homeCopy)
     {
       v11->_hasIsOnlyUserInHome = 1;
-      v11->_isOnlyUserInHome = [v10 BOOLValue];
+      v11->_isOnlyUserInHome = [homeCopy BOOLValue];
     }
 
     else
@@ -502,7 +502,7 @@ LABEL_51:
       v11->_isOnlyUserInHome = 0;
     }
 
-    v11->_classification = a5;
+    v11->_classification = classification;
   }
 
   return v11;
@@ -539,9 +539,9 @@ LABEL_51:
   return v5;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -549,8 +549,8 @@ LABEL_51:
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMSiriRequestContextUser alloc] initByReadFrom:v7];
     v4 = v8;

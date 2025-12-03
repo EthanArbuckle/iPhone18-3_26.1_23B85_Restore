@@ -33,13 +33,13 @@
 
 - (int)getContentLength
 {
-  v2 = [(LibcoreNetUrlFileURLConnection *)self getContentLengthLong];
-  if (v2 >= 0x80000000)
+  getContentLengthLong = [(LibcoreNetUrlFileURLConnection *)self getContentLengthLong];
+  if (getContentLengthLong >= 0x80000000)
   {
-    LODWORD(v2) = -1;
+    LODWORD(getContentLengthLong) = -1;
   }
 
-  return v2;
+  return getContentLengthLong;
 }
 
 - (int64_t)getContentLengthLong

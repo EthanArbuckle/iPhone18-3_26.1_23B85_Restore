@@ -20,12 +20,12 @@
     }
   }
 
-  v11 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __41__SKUIStackItemViewElement_imageElements__block_invoke;
   v14[3] = &unk_2781F9640;
-  v12 = v11;
+  v12 = array;
   v15 = v12;
   [(SKUIViewElement *)self enumerateChildrenUsingBlock:v14];
 

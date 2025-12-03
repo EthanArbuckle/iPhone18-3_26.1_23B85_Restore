@@ -1,20 +1,20 @@
 @interface KNTransitionDroplet
 + (id)defaultAttributes;
-- (KNTransitionDroplet)initWithAnimationContext:(id)a3;
-- (void)animationWillBeginWithContext:(id)a3;
+- (KNTransitionDroplet)initWithAnimationContext:(id)context;
+- (void)animationWillBeginWithContext:(id)context;
 - (void)dealloc;
-- (void)p_drawWithMetalContext:(id)a3 renderEncoder:(id)a4;
+- (void)p_drawWithMetalContext:(id)context renderEncoder:(id)encoder;
 - (void)p_teardown;
-- (void)renderFrameWithContext:(id)a3;
+- (void)renderFrameWithContext:(id)context;
 @end
 
 @implementation KNTransitionDroplet
 
-- (KNTransitionDroplet)initWithAnimationContext:(id)a3
+- (KNTransitionDroplet)initWithAnimationContext:(id)context
 {
   v4.receiver = self;
   v4.super_class = KNTransitionDroplet;
-  return [(KNAnimationEffect *)&v4 initWithAnimationContext:a3];
+  return [(KNAnimationEffect *)&v4 initWithAnimationContext:context];
 }
 
 - (void)p_teardown
@@ -39,14 +39,14 @@
   return [NSDictionary dictionaryWithObjects:&v4 forKeys:&v3 count:1];
 }
 
-- (void)animationWillBeginWithContext:(id)a3
+- (void)animationWillBeginWithContext:(id)context
 {
-  v5 = [a3 textures];
-  v6 = [objc_msgSend(a3 "metalContext")];
+  textures = [context textures];
+  v6 = [objc_msgSend(context "metalContext")];
   v7 = objc_alloc_init(MTLRenderPipelineColorAttachmentDescriptor);
-  [v7 setPixelFormat:objc_msgSend(objc_msgSend(a3, "metalContext"), "pixelFormat")];
+  [v7 setPixelFormat:objc_msgSend(objc_msgSend(context, "metalContext"), "pixelFormat")];
   self->_rippleShader = [[TSDMetalShader alloc] initCustomShaderWithVertexShader:@"transitionDropletVertexShader" fragmentShader:@"transitionDropletFragmentShader" device:v6 library:@"KeynoteMetalLibrary" colorAttachment:v7];
-  v8 = [v5 objectAtIndexedSubscript:0];
+  v8 = [textures objectAtIndexedSubscript:0];
   [v8 size];
   TSDRectWithSize();
   self->_metalDrawBuffer = [TSDGPUDataBuffer newDataBufferWithVertexRect:"newDataBufferWithVertexRect:textureRect:device:" textureRect:v6 device:?];
@@ -83,34 +83,34 @@
   *(anon_b0 + 3) = 0x40C0000041200000;
 }
 
-- (void)p_drawWithMetalContext:(id)a3 renderEncoder:(id)a4
+- (void)p_drawWithMetalContext:(id)context renderEncoder:(id)encoder
 {
-  v7 = [a3 textures];
-  [a3 percent];
+  textures = [context textures];
+  [context percent];
   v9 = v8;
-  v10 = [objc_msgSend(v7 objectAtIndexedSubscript:{1), "metalTexture"}];
-  v11 = [objc_msgSend(v7 objectAtIndexedSubscript:{0), "metalTexture"}];
-  v12 = [objc_msgSend(a3 "metalContext")];
+  v10 = [objc_msgSend(textures objectAtIndexedSubscript:{1), "metalTexture"}];
+  v11 = [objc_msgSend(textures objectAtIndexedSubscript:{0), "metalTexture"}];
+  v12 = [objc_msgSend(context "metalContext")];
   v13 = v9;
   self->_fragmentInput[v12].percent = v13;
-  [a4 setFragmentBytes:? length:? atIndex:?];
-  [a4 setFragmentTexture:v11 atIndex:0];
-  [a4 setFragmentTexture:v10 atIndex:1];
+  [encoder setFragmentBytes:? length:? atIndex:?];
+  [encoder setFragmentTexture:v11 atIndex:0];
+  [encoder setFragmentTexture:v10 atIndex:1];
   metalDrawBuffer = self->_metalDrawBuffer;
 
-  [(TSDMTLDataBuffer *)metalDrawBuffer drawWithEncoder:a4 atIndex:0];
+  [(TSDMTLDataBuffer *)metalDrawBuffer drawWithEncoder:encoder atIndex:0];
 }
 
-- (void)renderFrameWithContext:(id)a3
+- (void)renderFrameWithContext:(id)context
 {
-  v5 = [a3 metalContext];
-  v6 = [v5 device];
-  v7 = [v5 commandBuffer];
-  v8 = [v5 passDescriptor];
-  v9 = [v5 renderEncoder];
-  if (v6)
+  metalContext = [context metalContext];
+  device = [metalContext device];
+  commandBuffer = [metalContext commandBuffer];
+  passDescriptor = [metalContext passDescriptor];
+  renderEncoder = [metalContext renderEncoder];
+  if (device)
   {
-    if (v7)
+    if (commandBuffer)
     {
       goto LABEL_3;
     }
@@ -119,17 +119,17 @@
   else
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
-    if (v7)
+    if (commandBuffer)
     {
 LABEL_3:
-      if (v8)
+      if (passDescriptor)
       {
         goto LABEL_4;
       }
 
 LABEL_10:
       [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
-      if (v9)
+      if (renderEncoder)
       {
         goto LABEL_5;
       }
@@ -139,13 +139,13 @@ LABEL_10:
   }
 
   [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
-  if (!v8)
+  if (!passDescriptor)
   {
     goto LABEL_10;
   }
 
 LABEL_4:
-  if (v9)
+  if (renderEncoder)
   {
     goto LABEL_5;
   }
@@ -153,9 +153,9 @@ LABEL_4:
 LABEL_11:
   [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
 LABEL_5:
-  [(TSDMetalShader *)self->_rippleShader setPipelineStateWithEncoder:v9 vertexBytes:self->_anon_70 fragmentBytes:self->_anon_b0];
+  [(TSDMetalShader *)self->_rippleShader setPipelineStateWithEncoder:renderEncoder vertexBytes:self->_anon_70 fragmentBytes:self->_anon_b0];
 
-  [(KNTransitionDroplet *)self p_drawWithMetalContext:a3 renderEncoder:v9];
+  [(KNTransitionDroplet *)self p_drawWithMetalContext:context renderEncoder:renderEncoder];
 }
 
 @end

@@ -6,44 +6,44 @@
 
 - (void)_cnui_applyContactStyle
 {
-  v12 = [a1 _cnui_contactStyle];
-  v2 = [v12 sectionHeaderTextColor];
+  _cnui_contactStyle = [self _cnui_contactStyle];
+  sectionHeaderTextColor = [_cnui_contactStyle sectionHeaderTextColor];
 
-  if (v2)
+  if (sectionHeaderTextColor)
   {
-    v3 = [v12 sectionHeaderTextColor];
-    v4 = [a1 textLabel];
-    [v4 setTextColor:v3];
+    sectionHeaderTextColor2 = [_cnui_contactStyle sectionHeaderTextColor];
+    textLabel = [self textLabel];
+    [textLabel setTextColor:sectionHeaderTextColor2];
   }
 
   v5 = [MEMORY[0x1E69DB878] ab_preferredContentSizeCategoryIsAccessibilityCategory] ^ 1;
-  v6 = [a1 textLabel];
-  [v6 setNumberOfLines:v5];
+  textLabel2 = [self textLabel];
+  [textLabel2 setNumberOfLines:v5];
 
-  v7 = [v12 sectionBackgroundColor];
+  sectionBackgroundColor = [_cnui_contactStyle sectionBackgroundColor];
 
-  if (v7)
+  if (sectionBackgroundColor)
   {
-    v8 = [v12 sectionBackgroundColor];
+    sectionBackgroundColor2 = [_cnui_contactStyle sectionBackgroundColor];
   }
 
   else
   {
-    v9 = [v12 backgroundColor];
+    backgroundColor = [_cnui_contactStyle backgroundColor];
 
-    if (!v9)
+    if (!backgroundColor)
     {
       goto LABEL_9;
     }
 
-    v8 = [v12 backgroundColor];
+    sectionBackgroundColor2 = [_cnui_contactStyle backgroundColor];
   }
 
-  v10 = v8;
-  if (v8)
+  v10 = sectionBackgroundColor2;
+  if (sectionBackgroundColor2)
   {
-    v11 = [a1 backgroundView];
-    [v11 setBackgroundColor:v10];
+    backgroundView = [self backgroundView];
+    [backgroundView setBackgroundColor:v10];
   }
 
 LABEL_9:

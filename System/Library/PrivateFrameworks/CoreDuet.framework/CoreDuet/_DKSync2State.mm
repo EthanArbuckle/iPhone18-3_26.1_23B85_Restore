@@ -1,56 +1,56 @@
 @interface _DKSync2State
-- (void)addCompletionBlock:(uint64_t)a1;
-- (void)finishWithError:(uint64_t)a1;
-- (void)initWithType:(void *)a3 completion:;
+- (void)addCompletionBlock:(uint64_t)block;
+- (void)finishWithError:(uint64_t)error;
+- (void)initWithType:(void *)type completion:;
 @end
 
 @implementation _DKSync2State
 
-- (void)addCompletionBlock:(uint64_t)a1
+- (void)addCompletionBlock:(uint64_t)block
 {
-  if (a1 && a2)
+  if (block && a2)
   {
-    v2 = *(a1 + 32);
+    v2 = *(block + 32);
     v3 = MEMORY[0x193B00C50](a2);
     [v2 addObject:v3];
   }
 }
 
-- (void)initWithType:(void *)a3 completion:
+- (void)initWithType:(void *)type completion:
 {
   v6 = a2;
-  v7 = a3;
-  if (a1)
+  typeCopy = type;
+  if (self)
   {
-    v14.receiver = a1;
+    v14.receiver = self;
     v14.super_class = _DKSync2State;
     v8 = objc_msgSendSuper2(&v14, sel_init);
-    a1 = v8;
+    self = v8;
     if (v8)
     {
       objc_storeStrong(v8 + 2, a2);
       v9 = MEMORY[0x1E695DF70];
-      v10 = MEMORY[0x193B00C50](v7);
+      v10 = MEMORY[0x193B00C50](typeCopy);
       v11 = [v9 arrayWithObjects:{v10, 0}];
-      v12 = a1[4];
-      a1[4] = v11;
+      v12 = self[4];
+      self[4] = v11;
     }
   }
 
-  return a1;
+  return self;
 }
 
-- (void)finishWithError:(uint64_t)a1
+- (void)finishWithError:(uint64_t)error
 {
   v18 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (error)
   {
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v4 = *(a1 + 32);
+    v4 = *(error + 32);
     v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v5)
     {
@@ -82,9 +82,9 @@
       while (v6);
     }
 
-    [*(a1 + 32) removeAllObjects];
-    v11 = *(a1 + 32);
-    *(a1 + 32) = 0;
+    [*(error + 32) removeAllObjects];
+    v11 = *(error + 32);
+    *(error + 32) = 0;
   }
 
   v12 = *MEMORY[0x1E69E9840];

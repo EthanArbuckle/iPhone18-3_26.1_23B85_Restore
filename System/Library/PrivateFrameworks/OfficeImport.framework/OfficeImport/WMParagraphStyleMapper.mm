@@ -1,55 +1,55 @@
 @interface WMParagraphStyleMapper
-- (BOOL)checkListId:(int64_t)a3 level:(unsigned __int8)a4;
-- (BOOL)getListLevel:(char *)a3 andListIndex:(int *)a4 fromStyleOnly:(BOOL)a5;
-- (WMParagraphStyleMapper)initWithWDParagraph:(id)a3 parent:(id)a4 isInTextFrame:(BOOL)a5;
-- (id)bulletLabelForIndex:(int)a3 inLevelDescription:(id)a4 listState:(id)a5;
-- (id)labelStringWithGap:(id)a3;
+- (BOOL)checkListId:(int64_t)id level:(unsigned __int8)level;
+- (BOOL)getListLevel:(char *)level andListIndex:(int *)index fromStyleOnly:(BOOL)only;
+- (WMParagraphStyleMapper)initWithWDParagraph:(id)paragraph parent:(id)parent isInTextFrame:(BOOL)frame;
+- (id)bulletLabelForIndex:(int)index inLevelDescription:(id)description listState:(id)state;
+- (id)labelStringWithGap:(id)gap;
 - (void)destyleEmptyParagraph;
-- (void)getListLevel:(char *)a3 andListIndex:(int *)a4 foundListLevel:(BOOL *)a5 foundListIndex:(BOOL *)a6 fromParagraphProperties:(id)a7;
-- (void)getListLevel:(char *)a3 andListIndex:(int *)a4 foundListLevel:(BOOL *)a5 foundListIndex:(BOOL *)a6 fromStyle:(id)a7;
-- (void)mapBulletAt:(id)a3 forIndex:(int)a4 inLevelDescription:(id)a5 listState:(id)a6;
-- (void)mapBulletFromListId:(int)a3 listLevel:(unsigned __int8)a4 at:(id)a5 document:(id)a6 state:(id)a7;
-- (void)mapListStyleAt:(id)a3 state:(id)a4;
-- (void)mapListStyleFromParagraphStyleWithState:(id)a3;
-- (void)mapStyleFromListId:(int)a3 listLevel:(unsigned __int8)a4 document:(id)a5 state:(id)a6;
-- (void)updateOutlineStateWithListId:(int)a3 listLevel:(unsigned __int8)a4 document:(id)a5 state:(id)a6;
+- (void)getListLevel:(char *)level andListIndex:(int *)index foundListLevel:(BOOL *)listLevel foundListIndex:(BOOL *)listIndex fromParagraphProperties:(id)properties;
+- (void)getListLevel:(char *)level andListIndex:(int *)index foundListLevel:(BOOL *)listLevel foundListIndex:(BOOL *)listIndex fromStyle:(id)style;
+- (void)mapBulletAt:(id)at forIndex:(int)index inLevelDescription:(id)description listState:(id)state;
+- (void)mapBulletFromListId:(int)id listLevel:(unsigned __int8)level at:(id)at document:(id)document state:(id)state;
+- (void)mapListStyleAt:(id)at state:(id)state;
+- (void)mapListStyleFromParagraphStyleWithState:(id)state;
+- (void)mapStyleFromListId:(int)id listLevel:(unsigned __int8)level document:(id)document state:(id)state;
+- (void)updateOutlineStateWithListId:(int)id listLevel:(unsigned __int8)level document:(id)document state:(id)state;
 @end
 
 @implementation WMParagraphStyleMapper
 
 - (void)destyleEmptyParagraph
 {
-  v2 = [(CMStyle *)self->mStyle properties];
-  [v2 removeObjectForKey:0x286F07E50];
+  properties = [(CMStyle *)self->mStyle properties];
+  [properties removeObjectForKey:0x286F07E50];
 }
 
-- (WMParagraphStyleMapper)initWithWDParagraph:(id)a3 parent:(id)a4 isInTextFrame:(BOOL)a5
+- (WMParagraphStyleMapper)initWithWDParagraph:(id)paragraph parent:(id)parent isInTextFrame:(BOOL)frame
 {
-  v5 = a5;
-  v9 = a3;
-  v10 = a4;
+  frameCopy = frame;
+  paragraphCopy = paragraph;
+  parentCopy = parent;
   v26.receiver = self;
   v26.super_class = WMParagraphStyleMapper;
-  v11 = [(CMMapper *)&v26 initWithParent:v10];
+  v11 = [(CMMapper *)&v26 initWithParent:parentCopy];
   v12 = v11;
   if (v11)
   {
     mStyle = v11->mStyle;
     v11->mStyle = 0;
 
-    objc_storeStrong(&v12->wdParagraph, a3);
-    v14 = [(WDParagraph *)v12->wdParagraph properties];
+    objc_storeStrong(&v12->wdParagraph, paragraph);
+    properties = [(WDParagraph *)v12->wdParagraph properties];
     wdParaProperties = v12->wdParaProperties;
-    v12->wdParaProperties = v14;
+    v12->wdParaProperties = properties;
 
     if ([(WDParagraphProperties *)v12->wdParaProperties isBaseStyleOverridden])
     {
       v16 = [WMParagraphStyle alloc];
-      v17 = [(WDParagraphProperties *)v12->wdParaProperties document];
-      v18 = [v17 styleSheet];
-      v19 = [v18 defaultParagraphProperties];
-      v20 = [(WDParagraphProperties *)v12->wdParaProperties baseStyle];
-      v21 = [(WMParagraphStyle *)v16 initWithDefaultProperties:v19 style:v20 isInTextFrame:v5];
+      document = [(WDParagraphProperties *)v12->wdParaProperties document];
+      styleSheet = [document styleSheet];
+      defaultParagraphProperties = [styleSheet defaultParagraphProperties];
+      baseStyle = [(WDParagraphProperties *)v12->wdParaProperties baseStyle];
+      v21 = [(WMParagraphStyle *)v16 initWithDefaultProperties:defaultParagraphProperties style:baseStyle isInTextFrame:frameCopy];
       v22 = v12->mStyle;
       v12->mStyle = v21;
     }
@@ -57,11 +57,11 @@
     else
     {
       v23 = [WMParagraphStyle alloc];
-      v17 = [(WDParagraphProperties *)v12->wdParaProperties document];
-      v18 = [v17 styleSheet];
-      v19 = [v18 defaultParagraphProperties];
-      v24 = [(WMParagraphStyle *)v23 initWithDefaultProperties:v19 isInTextFrame:v5];
-      v20 = v12->mStyle;
+      document = [(WDParagraphProperties *)v12->wdParaProperties document];
+      styleSheet = [document styleSheet];
+      defaultParagraphProperties = [styleSheet defaultParagraphProperties];
+      v24 = [(WMParagraphStyle *)v23 initWithDefaultProperties:defaultParagraphProperties isInTextFrame:frameCopy];
+      baseStyle = v12->mStyle;
       v12->mStyle = v24;
     }
   }
@@ -69,127 +69,127 @@
   return v12;
 }
 
-- (void)updateOutlineStateWithListId:(int)a3 listLevel:(unsigned __int8)a4 document:(id)a5 state:(id)a6
+- (void)updateOutlineStateWithListId:(int)id listLevel:(unsigned __int8)level document:(id)document state:(id)state
 {
-  v7 = a4;
-  v8 = *&a3;
-  v15 = a5;
-  v10 = a6;
-  if ([(WMParagraphStyleMapper *)self checkListId:v8 level:v7])
+  levelCopy = level;
+  v8 = *&id;
+  documentCopy = document;
+  stateCopy = state;
+  if ([(WMParagraphStyleMapper *)self checkListId:v8 level:levelCopy])
   {
-    v11 = [v15 listWithListId:v8];
-    v12 = [v11 listDefinitionId];
-    if (([v10 isCurrentListDefinitionId:v12] & 1) == 0)
+    v11 = [documentCopy listWithListId:v8];
+    listDefinitionId = [v11 listDefinitionId];
+    if (([stateCopy isCurrentListDefinitionId:listDefinitionId] & 1) == 0)
     {
-      v13 = [v10 listStateForListDefinitionWithId:v12 settingUpStateIfNeededWithDocument:v15];
-      [v10 setCurrentListState:v13];
+      v13 = [stateCopy listStateForListDefinitionWithId:listDefinitionId settingUpStateIfNeededWithDocument:documentCopy];
+      [stateCopy setCurrentListState:v13];
     }
 
-    v14 = [v10 currentListState];
-    [v14 setCurrentList:v11];
+    currentListState = [stateCopy currentListState];
+    [currentListState setCurrentList:v11];
   }
 }
 
-- (void)mapStyleFromListId:(int)a3 listLevel:(unsigned __int8)a4 document:(id)a5 state:(id)a6
+- (void)mapStyleFromListId:(int)id listLevel:(unsigned __int8)level document:(id)document state:(id)state
 {
-  v7 = a4;
-  v8 = *&a3;
-  v15 = a5;
-  v10 = a6;
-  if ([(WMParagraphStyleMapper *)self checkListId:v8 level:v7])
+  levelCopy = level;
+  v8 = *&id;
+  documentCopy = document;
+  stateCopy = state;
+  if ([(WMParagraphStyleMapper *)self checkListId:v8 level:levelCopy])
   {
-    [(WMParagraphStyleMapper *)self updateOutlineStateWithListId:v8 listLevel:v7 document:v15 state:v10];
-    v11 = [v10 currentListState];
-    v12 = [v11 levelDescriptionAtIndex:v7];
+    [(WMParagraphStyleMapper *)self updateOutlineStateWithListId:v8 listLevel:levelCopy document:documentCopy state:stateCopy];
+    currentListState = [stateCopy currentListState];
+    v12 = [currentListState levelDescriptionAtIndex:levelCopy];
     mStyle = self->mStyle;
-    v14 = [v12 paragraphProperties];
-    [(WMParagraphStyle *)mStyle addParagraphProperties:v14];
+    paragraphProperties = [v12 paragraphProperties];
+    [(WMParagraphStyle *)mStyle addParagraphProperties:paragraphProperties];
   }
 }
 
-- (void)mapBulletFromListId:(int)a3 listLevel:(unsigned __int8)a4 at:(id)a5 document:(id)a6 state:(id)a7
+- (void)mapBulletFromListId:(int)id listLevel:(unsigned __int8)level at:(id)at document:(id)document state:(id)state
 {
-  v9 = a4;
-  v10 = *&a3;
-  v16 = a5;
-  v12 = a6;
-  v13 = a7;
-  if ([(WMParagraphStyleMapper *)self checkListId:v10 level:v9])
+  levelCopy = level;
+  v10 = *&id;
+  atCopy = at;
+  documentCopy = document;
+  stateCopy = state;
+  if ([(WMParagraphStyleMapper *)self checkListId:v10 level:levelCopy])
   {
-    [(WMParagraphStyleMapper *)self updateOutlineStateWithListId:v10 listLevel:v9 document:v12 state:v13];
-    v14 = [v13 currentListState];
-    v15 = [v14 levelDescriptionAtIndex:v9];
-    [v14 increaseCounterAtLevel:v9];
-    [(WMParagraphStyleMapper *)self mapBulletAt:v16 forIndex:v9 inLevelDescription:v15 listState:v14];
+    [(WMParagraphStyleMapper *)self updateOutlineStateWithListId:v10 listLevel:levelCopy document:documentCopy state:stateCopy];
+    currentListState = [stateCopy currentListState];
+    v15 = [currentListState levelDescriptionAtIndex:levelCopy];
+    [currentListState increaseCounterAtLevel:levelCopy];
+    [(WMParagraphStyleMapper *)self mapBulletAt:atCopy forIndex:levelCopy inLevelDescription:v15 listState:currentListState];
   }
 }
 
-- (void)getListLevel:(char *)a3 andListIndex:(int *)a4 foundListLevel:(BOOL *)a5 foundListIndex:(BOOL *)a6 fromParagraphProperties:(id)a7
+- (void)getListLevel:(char *)level andListIndex:(int *)index foundListLevel:(BOOL *)listLevel foundListIndex:(BOOL *)listIndex fromParagraphProperties:(id)properties
 {
-  v11 = a7;
-  if ([v11 isListIndexOverridden])
+  propertiesCopy = properties;
+  if ([propertiesCopy isListIndexOverridden])
   {
-    *a6 = 1;
-    if (a4)
+    *listIndex = 1;
+    if (index)
     {
-      *a4 = [v11 listIndex];
+      *index = [propertiesCopy listIndex];
     }
   }
 
-  if ([v11 isListLevelOverridden])
+  if ([propertiesCopy isListLevelOverridden])
   {
-    *a5 = 1;
-    if (a3)
+    *listLevel = 1;
+    if (level)
     {
-      *a3 = [v11 listLevel];
+      *level = [propertiesCopy listLevel];
     }
   }
 }
 
-- (void)getListLevel:(char *)a3 andListIndex:(int *)a4 foundListLevel:(BOOL *)a5 foundListIndex:(BOOL *)a6 fromStyle:(id)a7
+- (void)getListLevel:(char *)level andListIndex:(int *)index foundListLevel:(BOOL *)listLevel foundListIndex:(BOOL *)listIndex fromStyle:(id)style
 {
-  v12 = a7;
-  if (v12)
+  styleCopy = style;
+  if (styleCopy)
   {
-    v17 = v12;
-    v13 = [v12 baseStyle];
+    v17 = styleCopy;
+    baseStyle = [styleCopy baseStyle];
 
     v14 = v17;
-    if (v13 != v17)
+    if (baseStyle != v17)
     {
-      v15 = [v17 baseStyle];
-      [(WMParagraphStyleMapper *)self getListLevel:a3 andListIndex:a4 foundListLevel:a5 foundListIndex:a6 fromStyle:v15];
+      baseStyle2 = [v17 baseStyle];
+      [(WMParagraphStyleMapper *)self getListLevel:level andListIndex:index foundListLevel:listLevel foundListIndex:listIndex fromStyle:baseStyle2];
 
       v14 = v17;
     }
 
-    v16 = [v14 paragraphProperties];
-    [(WMParagraphStyleMapper *)self getListLevel:a3 andListIndex:a4 foundListLevel:a5 foundListIndex:a6 fromParagraphProperties:v16];
+    paragraphProperties = [v14 paragraphProperties];
+    [(WMParagraphStyleMapper *)self getListLevel:level andListIndex:index foundListLevel:listLevel foundListIndex:listIndex fromParagraphProperties:paragraphProperties];
 
-    v12 = v17;
+    styleCopy = v17;
   }
 }
 
-- (BOOL)getListLevel:(char *)a3 andListIndex:(int *)a4 fromStyleOnly:(BOOL)a5
+- (BOOL)getListLevel:(char *)level andListIndex:(int *)index fromStyleOnly:(BOOL)only
 {
   v11 = 0;
   if ([(WDParagraphProperties *)self->wdParaProperties isBaseStyleOverridden])
   {
-    v9 = [(WDParagraphProperties *)self->wdParaProperties baseStyle];
-    [(WMParagraphStyleMapper *)self getListLevel:a3 andListIndex:a4 foundListLevel:&v11 + 1 foundListIndex:&v11 fromStyle:v9];
+    baseStyle = [(WDParagraphProperties *)self->wdParaProperties baseStyle];
+    [(WMParagraphStyleMapper *)self getListLevel:level andListIndex:index foundListLevel:&v11 + 1 foundListIndex:&v11 fromStyle:baseStyle];
   }
 
-  if (!a5)
+  if (!only)
   {
-    [(WMParagraphStyleMapper *)self getListLevel:a3 andListIndex:a4 foundListLevel:&v11 + 1 foundListIndex:&v11 fromParagraphProperties:self->wdParaProperties];
+    [(WMParagraphStyleMapper *)self getListLevel:level andListIndex:index foundListLevel:&v11 + 1 foundListIndex:&v11 fromParagraphProperties:self->wdParaProperties];
   }
 
   return v11;
 }
 
-- (void)mapListStyleFromParagraphStyleWithState:(id)a3
+- (void)mapListStyleFromParagraphStyleWithState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v9 = -1;
   v8 = -1;
   if ([(WMParagraphStyleMapper *)self getListLevel:&v9 andListIndex:&v8 fromStyleOnly:1])
@@ -202,26 +202,26 @@
     }
 
     v6 = v8;
-    v7 = [(WDParagraphProperties *)self->wdParaProperties document];
-    [(WMParagraphStyleMapper *)self mapStyleFromListId:v6 listLevel:v5 document:v7 state:v4];
+    document = [(WDParagraphProperties *)self->wdParaProperties document];
+    [(WMParagraphStyleMapper *)self mapStyleFromListId:v6 listLevel:v5 document:document state:stateCopy];
   }
 }
 
-- (void)mapListStyleAt:(id)a3 state:(id)a4
+- (void)mapListStyleAt:(id)at state:(id)state
 {
-  v6 = a3;
-  v7 = a4;
+  atCopy = at;
+  stateCopy = state;
   if ([(WDParagraphProperties *)self->wdParaProperties isCharacterPropertiesOverridden])
   {
-    v8 = [(WDParagraphProperties *)self->wdParaProperties characterProperties];
+    characterProperties = [(WDParagraphProperties *)self->wdParaProperties characterProperties];
   }
 
   else
   {
-    v8 = 0;
+    characterProperties = 0;
   }
 
-  if (![v8 isDeletedOverridden] || (objc_msgSend(v8, "deleted") & 0xFFFFFF7F) != 1)
+  if (![characterProperties isDeletedOverridden] || (objc_msgSend(characterProperties, "deleted") & 0xFFFFFF7F) != 1)
   {
     v16 = -1;
     v15 = -1;
@@ -236,30 +236,30 @@
       {
         v9 = v15;
         v10 = v16;
-        v11 = [(WDParagraphProperties *)self->wdParaProperties document];
-        [(WMParagraphStyleMapper *)self mapStyleFromListId:v9 listLevel:v10 document:v11 state:v7];
+        document = [(WDParagraphProperties *)self->wdParaProperties document];
+        [(WMParagraphStyleMapper *)self mapStyleFromListId:v9 listLevel:v10 document:document state:stateCopy];
       }
 
       v12 = v15;
       v13 = v16;
-      v14 = [(WDParagraphProperties *)self->wdParaProperties document];
-      [(WMParagraphStyleMapper *)self mapBulletFromListId:v12 listLevel:v13 at:v6 document:v14 state:v7];
+      document2 = [(WDParagraphProperties *)self->wdParaProperties document];
+      [(WMParagraphStyleMapper *)self mapBulletFromListId:v12 listLevel:v13 at:atCopy document:document2 state:stateCopy];
     }
   }
 }
 
-- (BOOL)checkListId:(int64_t)a3 level:(unsigned __int8)a4
+- (BOOL)checkListId:(int64_t)id level:(unsigned __int8)level
 {
   v4 = 0;
-  if (a3 >= 1 && a4 <= 9u)
+  if (id >= 1 && level <= 9u)
   {
-    v6 = [(WDParagraphProperties *)self->wdParaProperties document];
-    v7 = [v6 listTable];
+    document = [(WDParagraphProperties *)self->wdParaProperties document];
+    listTable = [document listTable];
 
-    if (v7)
+    if (listTable)
     {
-      v8 = [v7 lists];
-      v4 = [v8 count] >= a3;
+      lists = [listTable lists];
+      v4 = [lists count] >= id;
     }
 
     else
@@ -271,51 +271,51 @@
   return v4;
 }
 
-- (id)labelStringWithGap:(id)a3
+- (id)labelStringWithGap:(id)gap
 {
-  v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ ", a3];
+  v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ ", gap];
 
   return v3;
 }
 
-- (id)bulletLabelForIndex:(int)a3 inLevelDescription:(id)a4 listState:(id)a5
+- (id)bulletLabelForIndex:(int)index inLevelDescription:(id)description listState:(id)state
 {
-  v29 = a4;
-  v7 = a5;
+  descriptionCopy = description;
+  stateCopy = state;
   v8 = objc_alloc(MEMORY[0x277CBEB18]);
-  v9 = [v7 listDefinition];
-  v10 = [v8 initWithCapacity:{objc_msgSend(v9, "levelCount")}];
+  listDefinition = [stateCopy listDefinition];
+  v10 = [v8 initWithCapacity:{objc_msgSend(listDefinition, "levelCount")}];
 
   for (i = 0; ; ++i)
   {
-    v12 = [v7 listDefinition];
-    v13 = [v12 levelCount];
+    listDefinition2 = [stateCopy listDefinition];
+    levelCount = [listDefinition2 levelCount];
 
-    if (v13 <= i)
+    if (levelCount <= i)
     {
       break;
     }
 
-    v14 = [v7 levelDescriptionAtIndex:i];
+    v14 = [stateCopy levelDescriptionAtIndex:i];
     [v10 addObject:v14];
   }
 
   v15 = [WMListLevelTextMapper alloc];
-  v16 = [v29 text];
-  v17 = [(WDParagraphProperties *)self->wdParaProperties document];
-  v18 = [v17 styleSheet];
-  v19 = [v18 defaultCharacterProperties];
-  v20 = -[WMListLevelTextMapper initWithText:levelDescriptions:language:](v15, "initWithText:levelDescriptions:language:", v16, v10, [v19 languageForDefaultText]);
+  text = [descriptionCopy text];
+  document = [(WDParagraphProperties *)self->wdParaProperties document];
+  styleSheet = [document styleSheet];
+  defaultCharacterProperties = [styleSheet defaultCharacterProperties];
+  v20 = -[WMListLevelTextMapper initWithText:levelDescriptions:language:](v15, "initWithText:levelDescriptions:language:", text, v10, [defaultCharacterProperties languageForDefaultText]);
 
-  v21 = [(WMListLevelTextMapper *)v20 listLevelTextForOutline:v7];
-  v22 = [v29 characterProperties];
-  if ([v22 isFontOverridden])
+  v21 = [(WMListLevelTextMapper *)v20 listLevelTextForOutline:stateCopy];
+  characterProperties = [descriptionCopy characterProperties];
+  if ([characterProperties isFontOverridden])
   {
-    v23 = [v22 fontForFontType:0];
-    v24 = [v23 name];
-    v25 = [v22 fontForFontType:3];
-    v26 = [v25 name];
-    v27 = [TCFontUtils stringByFixingString:v21 latinFontFamilyName:v24 symbolFontFamilyName:v26];
+    v23 = [characterProperties fontForFontType:0];
+    name = [v23 name];
+    v25 = [characterProperties fontForFontType:3];
+    name2 = [v25 name];
+    v27 = [TCFontUtils stringByFixingString:v21 latinFontFamilyName:name symbolFontFamilyName:name2];
 
     v21 = v27;
   }
@@ -323,16 +323,16 @@
   return v21;
 }
 
-- (void)mapBulletAt:(id)a3 forIndex:(int)a4 inLevelDescription:(id)a5 listState:(id)a6
+- (void)mapBulletAt:(id)at forIndex:(int)index inLevelDescription:(id)description listState:(id)state
 {
-  v8 = *&a4;
-  v19 = a3;
-  v10 = a5;
-  v11 = [(WMParagraphStyleMapper *)self bulletLabelForIndex:v8 inLevelDescription:v10 listState:a6];
+  v8 = *&index;
+  atCopy = at;
+  descriptionCopy = description;
+  v11 = [(WMParagraphStyleMapper *)self bulletLabelForIndex:v8 inLevelDescription:descriptionCopy listState:state];
   v12 = [v11 stringByAppendingString:@" "];
   v13 = [OIXMLElement elementWithType:16];
   v14 = objc_alloc_init(WMParagraphStyle);
-  [v19 addChild:v13];
+  [atCopy addChild:v13];
   v15 = [OIXMLTextNode textNodeWithStringValue:v12];
   [v13 addChild:v15];
 
@@ -344,12 +344,12 @@
 
   if ([(WDParagraphProperties *)self->wdParaProperties isBaseStyleOverridden])
   {
-    v17 = [(WDParagraphProperties *)self->wdParaProperties baseStyle];
-    [(WMParagraphStyle *)v14 addParagraphStyleCharacterProperties:v17];
+    baseStyle = [(WDParagraphProperties *)self->wdParaProperties baseStyle];
+    [(WMParagraphStyle *)v14 addParagraphStyleCharacterProperties:baseStyle];
   }
 
-  v18 = [v10 characterProperties];
-  [(WMStyle *)v14 addCharacterProperties:v18];
+  characterProperties = [descriptionCopy characterProperties];
+  [(WMStyle *)v14 addCharacterProperties:characterProperties];
 
   [(CMMapper *)self addStyleUsingGlobalCacheTo:v13 style:v14];
 }

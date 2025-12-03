@@ -1,12 +1,12 @@
 @interface SGFn
-+ (id)simpleDedupe:(id)a3;
++ (id)simpleDedupe:(id)dedupe;
 @end
 
 @implementation SGFn
 
-+ (id)simpleDedupe:(id)a3
++ (id)simpleDedupe:(id)dedupe
 {
-  v3 = a3;
+  dedupeCopy = dedupe;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -17,7 +17,7 @@
   v9 = 3221225472;
   v10 = __21__SGFn_simpleDedupe___block_invoke;
   v11 = &unk_1E7EFCBE0;
-  v4 = v3;
+  v4 = dedupeCopy;
   v12 = v4;
   v13 = &v14;
   [v4 enumerateObjectsUsingBlock:&v8];

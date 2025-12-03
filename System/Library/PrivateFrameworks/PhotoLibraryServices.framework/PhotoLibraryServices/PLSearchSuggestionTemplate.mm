@@ -1,27 +1,27 @@
 @interface PLSearchSuggestionTemplate
 - (BOOL)isDateOnlyTemplate;
-- (BOOL)isEqual:(id)a3;
-- (PLSearchSuggestionTemplate)initWithSuggestionTemplateKey:(id)a3 firstIndexCategory:(unint64_t)a4 secondIndexCategory:(unint64_t)a5 templateType:(unint64_t)a6 templateContentType:(unint64_t)a7 templateDateType:(unint64_t)a8 styleType:(unint64_t)a9 identifier:(id)a10;
+- (BOOL)isEqual:(id)equal;
+- (PLSearchSuggestionTemplate)initWithSuggestionTemplateKey:(id)key firstIndexCategory:(unint64_t)category secondIndexCategory:(unint64_t)indexCategory templateType:(unint64_t)type templateContentType:(unint64_t)contentType templateDateType:(unint64_t)dateType styleType:(unint64_t)styleType identifier:(id)self0;
 - (PSIDateFilter)dateFilter;
-- (id)_initWithSuggestionTemplateKey:(id)a3 firstIndexCategory:(unint64_t)a4 secondIndexCategory:(unint64_t)a5 templateType:(unint64_t)a6 templateContentType:(unint64_t)a7 templateDateType:(unint64_t)a8 styleType:(unint64_t)a9 identifier:(id)a10;
+- (id)_initWithSuggestionTemplateKey:(id)key firstIndexCategory:(unint64_t)category secondIndexCategory:(unint64_t)indexCategory templateType:(unint64_t)type templateContentType:(unint64_t)contentType templateDateType:(unint64_t)dateType styleType:(unint64_t)styleType identifier:(id)self0;
 - (id)description;
-- (id)initForTestingWithSuggestionTemplateKey:(id)a3 firstIndexCategory:(unint64_t)a4 secondIndexCategory:(unint64_t)a5 templateType:(unint64_t)a6 templateContentType:(unint64_t)a7 templateDateType:(unint64_t)a8 styleType:(unint64_t)a9 identifier:(id)a10;
+- (id)initForTestingWithSuggestionTemplateKey:(id)key firstIndexCategory:(unint64_t)category secondIndexCategory:(unint64_t)indexCategory templateType:(unint64_t)type templateContentType:(unint64_t)contentType templateDateType:(unint64_t)dateType styleType:(unint64_t)styleType identifier:(id)self0;
 - (unint64_t)hash;
 @end
 
 @implementation PLSearchSuggestionTemplate
 
-- (id)initForTestingWithSuggestionTemplateKey:(id)a3 firstIndexCategory:(unint64_t)a4 secondIndexCategory:(unint64_t)a5 templateType:(unint64_t)a6 templateContentType:(unint64_t)a7 templateDateType:(unint64_t)a8 styleType:(unint64_t)a9 identifier:(id)a10
+- (id)initForTestingWithSuggestionTemplateKey:(id)key firstIndexCategory:(unint64_t)category secondIndexCategory:(unint64_t)indexCategory templateType:(unint64_t)type templateContentType:(unint64_t)contentType templateDateType:(unint64_t)dateType styleType:(unint64_t)styleType identifier:(id)self0
 {
-  v17 = a3;
-  v18 = a10;
-  if (!v17)
+  keyCopy = key;
+  identifierCopy = identifier;
+  if (!keyCopy)
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"PLSearchSuggestionTemplate.m" lineNumber:157 description:{@"Invalid parameter not satisfying: %@", @"key"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLSearchSuggestionTemplate.m" lineNumber:157 description:{@"Invalid parameter not satisfying: %@", @"key"}];
   }
 
-  v19 = [(PLSearchSuggestionTemplate *)self _initWithSuggestionTemplateKey:v17 firstIndexCategory:a4 secondIndexCategory:a5 templateType:a6 templateContentType:a7 templateDateType:a8 styleType:a9 identifier:v18];
+  v19 = [(PLSearchSuggestionTemplate *)self _initWithSuggestionTemplateKey:keyCopy firstIndexCategory:category secondIndexCategory:indexCategory templateType:type templateContentType:contentType templateDateType:dateType styleType:styleType identifier:identifierCopy];
 
   return v19;
 }
@@ -57,39 +57,39 @@
   }
 
   v13 = v12;
-  v14 = [(PLSearchSuggestionTemplate *)self dateFilter];
+  dateFilter = [(PLSearchSuggestionTemplate *)self dateFilter];
   identifier = self->_identifier;
-  v16 = [(PLSearchSuggestionTemplate *)self isMeTemplate];
+  isMeTemplate = [(PLSearchSuggestionTemplate *)self isMeTemplate];
   v17 = @"NO";
-  if (v16)
+  if (isMeTemplate)
   {
     v17 = @"YES";
   }
 
-  v18 = [v3 stringWithFormat:@"Key: %@, templateType: %tu, firstCategory: %@, secondCategory: %@, contentType:%@, dateType: %@, date filter: %@, identifier: %@, isMeTemplate: %@", suggestionTemplateKey, templateType, v6, v7, v10, v13, v14, identifier, v17];
+  v18 = [v3 stringWithFormat:@"Key: %@, templateType: %tu, firstCategory: %@, secondCategory: %@, contentType:%@, dateType: %@, date filter: %@, identifier: %@, isMeTemplate: %@", suggestionTemplateKey, templateType, v6, v7, v10, v13, dateFilter, identifier, v17];
 
   return v18;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(PLSearchSuggestionTemplate *)self suggestionTemplateKey];
-  v4 = [v3 hash];
-  v5 = [(PLSearchSuggestionTemplate *)self firstIndexCategory];
-  v6 = v5 ^ [(PLSearchSuggestionTemplate *)self secondIndexCategory]^ v4;
-  v7 = [(PLSearchSuggestionTemplate *)self templateType];
-  v8 = v7 ^ [(PLSearchSuggestionTemplate *)self templateDateType];
-  v9 = [(PLSearchSuggestionTemplate *)self identifier];
-  v10 = v6 ^ v8 ^ [v9 hash];
-  v11 = [(PLSearchSuggestionTemplate *)self templateContentType];
+  suggestionTemplateKey = [(PLSearchSuggestionTemplate *)self suggestionTemplateKey];
+  v4 = [suggestionTemplateKey hash];
+  firstIndexCategory = [(PLSearchSuggestionTemplate *)self firstIndexCategory];
+  v6 = firstIndexCategory ^ [(PLSearchSuggestionTemplate *)self secondIndexCategory]^ v4;
+  templateType = [(PLSearchSuggestionTemplate *)self templateType];
+  v8 = templateType ^ [(PLSearchSuggestionTemplate *)self templateDateType];
+  identifier = [(PLSearchSuggestionTemplate *)self identifier];
+  v10 = v6 ^ v8 ^ [identifier hash];
+  templateContentType = [(PLSearchSuggestionTemplate *)self templateContentType];
 
-  return v10 ^ v11;
+  return v10 ^ templateContentType;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v10 = 1;
   }
@@ -99,17 +99,17 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(PLSearchSuggestionTemplate *)self suggestionTemplateKey];
-      v7 = [(PLSearchSuggestionTemplate *)v5 suggestionTemplateKey];
-      v8 = v7;
-      if (v6 == v7)
+      v5 = equalCopy;
+      suggestionTemplateKey = [(PLSearchSuggestionTemplate *)self suggestionTemplateKey];
+      suggestionTemplateKey2 = [(PLSearchSuggestionTemplate *)v5 suggestionTemplateKey];
+      v8 = suggestionTemplateKey2;
+      if (suggestionTemplateKey == suggestionTemplateKey2)
       {
       }
 
       else
       {
-        v9 = [v6 isEqual:v7];
+        v9 = [suggestionTemplateKey isEqual:suggestionTemplateKey2];
 
         if ((v9 & 1) == 0)
         {
@@ -117,31 +117,31 @@
         }
       }
 
-      v11 = [(PLSearchSuggestionTemplate *)self firstIndexCategory];
-      if (v11 == [(PLSearchSuggestionTemplate *)v5 firstIndexCategory])
+      firstIndexCategory = [(PLSearchSuggestionTemplate *)self firstIndexCategory];
+      if (firstIndexCategory == [(PLSearchSuggestionTemplate *)v5 firstIndexCategory])
       {
-        v12 = [(PLSearchSuggestionTemplate *)self secondIndexCategory];
-        if (v12 == [(PLSearchSuggestionTemplate *)v5 secondIndexCategory])
+        secondIndexCategory = [(PLSearchSuggestionTemplate *)self secondIndexCategory];
+        if (secondIndexCategory == [(PLSearchSuggestionTemplate *)v5 secondIndexCategory])
         {
-          v13 = [(PLSearchSuggestionTemplate *)self templateType];
-          if (v13 == [(PLSearchSuggestionTemplate *)v5 templateType])
+          templateType = [(PLSearchSuggestionTemplate *)self templateType];
+          if (templateType == [(PLSearchSuggestionTemplate *)v5 templateType])
           {
-            v14 = [(PLSearchSuggestionTemplate *)self templateContentType];
-            if (v14 == [(PLSearchSuggestionTemplate *)v5 templateContentType])
+            templateContentType = [(PLSearchSuggestionTemplate *)self templateContentType];
+            if (templateContentType == [(PLSearchSuggestionTemplate *)v5 templateContentType])
             {
-              v15 = [(PLSearchSuggestionTemplate *)self templateDateType];
-              if (v15 == [(PLSearchSuggestionTemplate *)v5 templateDateType])
+              templateDateType = [(PLSearchSuggestionTemplate *)self templateDateType];
+              if (templateDateType == [(PLSearchSuggestionTemplate *)v5 templateDateType])
               {
-                v16 = [(PLSearchSuggestionTemplate *)self identifier];
-                v17 = [(PLSearchSuggestionTemplate *)v5 identifier];
-                if (v16 == v17)
+                identifier = [(PLSearchSuggestionTemplate *)self identifier];
+                identifier2 = [(PLSearchSuggestionTemplate *)v5 identifier];
+                if (identifier == identifier2)
                 {
                   v10 = 1;
                 }
 
                 else
                 {
-                  v10 = [v16 isEqualToString:v17];
+                  v10 = [identifier isEqualToString:identifier2];
                 }
 
                 goto LABEL_17;
@@ -168,9 +168,9 @@ LABEL_18:
 
 - (BOOL)isDateOnlyTemplate
 {
-  v3 = [(PLSearchSuggestionTemplate *)self templateType];
-  v4 = [(PLSearchSuggestionTemplate *)self templateType]& 2 | v3 & 1;
-  v5 = [(PLSearchSuggestionTemplate *)self templateDateType];
+  templateType = [(PLSearchSuggestionTemplate *)self templateType];
+  v4 = [(PLSearchSuggestionTemplate *)self templateType]& 2 | templateType & 1;
+  templateDateType = [(PLSearchSuggestionTemplate *)self templateDateType];
   if (v4)
   {
     v6 = 1;
@@ -178,7 +178,7 @@ LABEL_18:
 
   else
   {
-    v6 = v5 == 0;
+    v6 = templateDateType == 0;
   }
 
   return !v6;
@@ -189,10 +189,10 @@ LABEL_18:
   dateFilter = self->_dateFilter;
   if (!dateFilter)
   {
-    v4 = [(PLSearchSuggestionTemplate *)self templateDateType];
-    v5 = [MEMORY[0x1E695DEE8] currentCalendar];
-    v6 = [MEMORY[0x1E695DF00] date];
-    v7 = [PLSearchSuggestionDateUtility dateFilterForSearchSuggestionTemplateDateType:v4 calendar:v5 relativeDate:v6];
+    templateDateType = [(PLSearchSuggestionTemplate *)self templateDateType];
+    currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+    date = [MEMORY[0x1E695DF00] date];
+    v7 = [PLSearchSuggestionDateUtility dateFilterForSearchSuggestionTemplateDateType:templateDateType calendar:currentCalendar relativeDate:date];
     v8 = self->_dateFilter;
     self->_dateFilter = v7;
 
@@ -202,44 +202,44 @@ LABEL_18:
   return dateFilter;
 }
 
-- (id)_initWithSuggestionTemplateKey:(id)a3 firstIndexCategory:(unint64_t)a4 secondIndexCategory:(unint64_t)a5 templateType:(unint64_t)a6 templateContentType:(unint64_t)a7 templateDateType:(unint64_t)a8 styleType:(unint64_t)a9 identifier:(id)a10
+- (id)_initWithSuggestionTemplateKey:(id)key firstIndexCategory:(unint64_t)category secondIndexCategory:(unint64_t)indexCategory templateType:(unint64_t)type templateContentType:(unint64_t)contentType templateDateType:(unint64_t)dateType styleType:(unint64_t)styleType identifier:(id)self0
 {
-  v16 = a3;
-  v17 = a10;
-  if (!a4 && (a5 || !a8))
+  keyCopy = key;
+  identifierCopy = identifier;
+  if (!category && (indexCategory || !dateType))
   {
-    v28 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v28 handleFailureInMethod:a2 object:self file:@"PLSearchSuggestionTemplate.m" lineNumber:51 description:{@"Invalid parameter not satisfying: %@", @"secondIndexCategory == PLSearchIndexCategoryNone && templateDateType != PLSearchSuggestionDateTemplateCategoryTypeNone"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLSearchSuggestionTemplate.m" lineNumber:51 description:{@"Invalid parameter not satisfying: %@", @"secondIndexCategory == PLSearchIndexCategoryNone && templateDateType != PLSearchSuggestionDateTemplateCategoryTypeNone"}];
   }
 
-  if (a5 | a4 | a8)
+  if (indexCategory | category | dateType)
   {
     v18 = a2;
-    v19 = a4 != 0;
-    if (a4 && a5 && a8)
+    v19 = category != 0;
+    if (category && indexCategory && dateType)
     {
-      v26 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v26 handleFailureInMethod:v18 object:self file:@"PLSearchSuggestionTemplate.m" lineNumber:59 description:{@"Invalid parameter not satisfying: %@", @"templateDateType == PLSearchSuggestionDateTemplateCategoryTypeNone"}];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:v18 object:self file:@"PLSearchSuggestionTemplate.m" lineNumber:59 description:{@"Invalid parameter not satisfying: %@", @"templateDateType == PLSearchSuggestionDateTemplateCategoryTypeNone"}];
 
-      [v17 length];
+      [identifierCopy length];
       goto LABEL_11;
     }
   }
 
   else
   {
-    v29 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
     v18 = a2;
-    [v29 handleFailureInMethod:a2 object:self file:@"PLSearchSuggestionTemplate.m" lineNumber:55 description:{@"Invalid parameter not satisfying: %@", @"firstIndexCategory != PLSearchIndexCategoryNone || templateDateType != PLSearchSuggestionDateTemplateCategoryTypeNone"}];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"PLSearchSuggestionTemplate.m" lineNumber:55 description:{@"Invalid parameter not satisfying: %@", @"firstIndexCategory != PLSearchIndexCategoryNone || templateDateType != PLSearchSuggestionDateTemplateCategoryTypeNone"}];
 
-    v19 = a4 != 0;
+    v19 = category != 0;
   }
 
-  v20 = [v17 length];
+  v20 = [identifierCopy length];
   if (!v19 && v20)
   {
-    v27 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v27 handleFailureInMethod:v18 object:self file:@"PLSearchSuggestionTemplate.m" lineNumber:63 description:{@"Invalid parameter not satisfying: %@", @"firstIndexCategory != PLSearchIndexCategoryNone"}];
+    currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler4 handleFailureInMethod:v18 object:self file:@"PLSearchSuggestionTemplate.m" lineNumber:63 description:{@"Invalid parameter not satisfying: %@", @"firstIndexCategory != PLSearchIndexCategoryNone"}];
   }
 
 LABEL_11:
@@ -249,45 +249,45 @@ LABEL_11:
   v22 = v21;
   if (v21)
   {
-    v21->_templateStyleType = a9;
-    v23 = [v16 copy];
+    v21->_templateStyleType = styleType;
+    v23 = [keyCopy copy];
     suggestionTemplateKey = v22->_suggestionTemplateKey;
     v22->_suggestionTemplateKey = v23;
 
-    v22->_firstIndexCategory = a4;
-    v22->_secondIndexCategory = a5;
-    v22->_templateDateType = a8;
-    v22->_templateType = a6;
-    v22->_templateContentType = a7;
-    objc_storeStrong(&v22->_identifier, a10);
+    v22->_firstIndexCategory = category;
+    v22->_secondIndexCategory = indexCategory;
+    v22->_templateDateType = dateType;
+    v22->_templateType = type;
+    v22->_templateContentType = contentType;
+    objc_storeStrong(&v22->_identifier, identifier);
   }
 
   return v22;
 }
 
-- (PLSearchSuggestionTemplate)initWithSuggestionTemplateKey:(id)a3 firstIndexCategory:(unint64_t)a4 secondIndexCategory:(unint64_t)a5 templateType:(unint64_t)a6 templateContentType:(unint64_t)a7 templateDateType:(unint64_t)a8 styleType:(unint64_t)a9 identifier:(id)a10
+- (PLSearchSuggestionTemplate)initWithSuggestionTemplateKey:(id)key firstIndexCategory:(unint64_t)category secondIndexCategory:(unint64_t)indexCategory templateType:(unint64_t)type templateContentType:(unint64_t)contentType templateDateType:(unint64_t)dateType styleType:(unint64_t)styleType identifier:(id)self0
 {
   v26 = *MEMORY[0x1E69E9840];
-  v17 = a3;
-  v18 = a10;
-  if (a9)
+  keyCopy = key;
+  identifierCopy = identifier;
+  if (styleType)
   {
     goto LABEL_2;
   }
 
-  if (!v17)
+  if (!keyCopy)
   {
-    v23 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v23 handleFailureInMethod:a2 object:self file:@"PLSearchSuggestionTemplate.m" lineNumber:34 description:{@"Invalid parameter not satisfying: %@", @"key"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLSearchSuggestionTemplate.m" lineNumber:34 description:{@"Invalid parameter not satisfying: %@", @"key"}];
   }
 
   v20 = PLServicesLocalizedFrameworkString();
-  if ([v20 length] && !objc_msgSend(v20, "isEqualToString:", v17))
+  if ([v20 length] && !objc_msgSend(v20, "isEqualToString:", keyCopy))
   {
 
 LABEL_2:
-    self = [(PLSearchSuggestionTemplate *)self _initWithSuggestionTemplateKey:v17 firstIndexCategory:a4 secondIndexCategory:a5 templateType:a6 templateContentType:a7 templateDateType:a8 styleType:a9 identifier:v18];
-    v19 = self;
+    self = [(PLSearchSuggestionTemplate *)self _initWithSuggestionTemplateKey:keyCopy firstIndexCategory:category secondIndexCategory:indexCategory templateType:type templateContentType:contentType templateDateType:dateType styleType:styleType identifier:identifierCopy];
+    selfCopy = self;
     goto LABEL_10;
   }
 
@@ -295,14 +295,14 @@ LABEL_2:
   if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v25 = v17;
+    v25 = keyCopy;
     _os_log_impl(&dword_19BF1F000, v21, OS_LOG_TYPE_INFO, "Template for key %@ is not available in the current locale", buf, 0xCu);
   }
 
-  v19 = 0;
+  selfCopy = 0;
 LABEL_10:
 
-  return v19;
+  return selfCopy;
 }
 
 @end

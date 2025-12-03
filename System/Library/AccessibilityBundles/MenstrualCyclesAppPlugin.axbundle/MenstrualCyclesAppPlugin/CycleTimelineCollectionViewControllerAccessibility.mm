@@ -11,8 +11,8 @@
   [(CycleTimelineCollectionViewControllerAccessibility *)&v4 _accessibilityLoadAccessibilityInformation];
   objc_opt_class();
   v2 = __UIAccessibilityCastAsClass();
-  v3 = [v2 collectionView];
-  [v3 accessibilitySetIdentification:@"AXCycleTimelineCollectionView"];
+  collectionView = [v2 collectionView];
+  [collectionView accessibilitySetIdentification:@"AXCycleTimelineCollectionView"];
 }
 
 @end

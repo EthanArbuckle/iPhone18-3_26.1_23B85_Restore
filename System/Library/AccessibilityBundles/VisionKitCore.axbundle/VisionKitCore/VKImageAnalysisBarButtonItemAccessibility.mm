@@ -1,15 +1,15 @@
 @interface VKImageAnalysisBarButtonItemAccessibility
-+ (id)imageForMode:(unint64_t)a3;
++ (id)imageForMode:(unint64_t)mode;
 @end
 
 @implementation VKImageAnalysisBarButtonItemAccessibility
 
-+ (id)imageForMode:(unint64_t)a3
++ (id)imageForMode:(unint64_t)mode
 {
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &OBJC_METACLASS___VKImageAnalysisBarButtonItemAccessibility;
   v4 = objc_msgSendSuper2(&v7, sel_imageForMode_);
-  v5 = AXImageAnalysisLabel(a3);
+  v5 = AXImageAnalysisLabel(mode);
   if (v5)
   {
     [v4 setAccessibilityLabel:v5];

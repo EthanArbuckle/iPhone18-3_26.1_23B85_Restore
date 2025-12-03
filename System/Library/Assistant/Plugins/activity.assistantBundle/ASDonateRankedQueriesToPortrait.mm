@@ -1,29 +1,29 @@
 @interface ASDonateRankedQueriesToPortrait
 - (id)getPortraitQueryResults;
-- (void)performWithCompletion:(id)a3;
+- (void)performWithCompletion:(id)completion;
 @end
 
 @implementation ASDonateRankedQueriesToPortrait
 
-- (void)performWithCompletion:(id)a3
+- (void)performWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(ASDonateRankedQueriesToPortrait *)self utterance];
-  if (v5)
+  completionCopy = completion;
+  utterance = [(ASDonateRankedQueriesToPortrait *)self utterance];
+  if (utterance)
   {
-    v6 = [(ASDonateRankedQueriesToPortrait *)self queryDonations];
-    if (v6 && (v7 = v6, -[ASDonateRankedQueriesToPortrait queryDonations](self, "queryDonations"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 count], v8, v7, v9))
+    queryDonations = [(ASDonateRankedQueriesToPortrait *)self queryDonations];
+    if (queryDonations && (v7 = queryDonations, -[ASDonateRankedQueriesToPortrait queryDonations](self, "queryDonations"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 count], v8, v7, v9))
     {
-      v10 = [(ASDonateRankedQueriesToPortrait *)self getPortraitQueryResults];
+      getPortraitQueryResults = [(ASDonateRankedQueriesToPortrait *)self getPortraitQueryResults];
       v20 = 0;
-      v11 = [PPCustomDonation donateSiriQuery:v5 results:v10 error:&v20];
+      v11 = [PPCustomDonation donateSiriQuery:utterance results:getPortraitQueryResults error:&v20];
       v12 = v20;
       v13 = v12;
       if (v11)
       {
 
 LABEL_14:
-        if (!v4)
+        if (!completionCopy)
         {
           v14 = 0;
           goto LABEL_12;
@@ -42,8 +42,8 @@ LABEL_14:
         goto LABEL_11;
       }
 
-      v18 = [v12 localizedDescription];
-      v14 = [NSString stringWithFormat:@"donation failed: %@", v18];
+      localizedDescription = [v12 localizedDescription];
+      v14 = [NSString stringWithFormat:@"donation failed: %@", localizedDescription];
 
       if (!v14)
       {
@@ -66,7 +66,7 @@ LABEL_14:
   if (os_log_type_enabled(AFSiriLogContextService, OS_LOG_TYPE_ERROR))
   {
     sub_756C(v14, v15);
-    if (!v4)
+    if (!completionCopy)
     {
       goto LABEL_12;
     }
@@ -74,13 +74,13 @@ LABEL_14:
     goto LABEL_10;
   }
 
-  if (v4)
+  if (completionCopy)
   {
 LABEL_10:
     v16 = [[SACommandFailed alloc] initWithReason:v14];
 LABEL_11:
-    v17 = [v16 dictionary];
-    v4[2](v4, v17);
+    dictionary = [v16 dictionary];
+    completionCopy[2](completionCopy, dictionary);
   }
 
 LABEL_12:
@@ -94,11 +94,11 @@ LABEL_12:
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v5 = [(ASDonateRankedQueriesToPortrait *)self queryDonations];
+  queryDonations = [(ASDonateRankedQueriesToPortrait *)self queryDonations];
   v19 = v4;
   v25 = v4;
   v6 = [NSArray arrayWithObjects:&v25 count:1];
-  v7 = [v5 sortedArrayUsingDescriptors:v6];
+  v7 = [queryDonations sortedArrayUsingDescriptors:v6];
 
   obj = v7;
   v8 = [v7 countByEnumeratingWithState:&v21 objects:v26 count:16];
@@ -118,9 +118,9 @@ LABEL_12:
         v12 = *(*(&v21 + 1) + 8 * i);
         v13 = [PPSiriQueryResult alloc];
         v14 = [v12 qid];
-        v15 = [v12 domain];
+        domain = [v12 domain];
         v16 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v12 rank]);
-        v17 = [v13 initWithQid:v14 domain:v15 confidence:v16];
+        v17 = [v13 initWithQid:v14 domain:domain confidence:v16];
 
         [v3 addObject:v17];
       }

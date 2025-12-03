@@ -1,25 +1,25 @@
 @interface PXPhotoKitCollectionsDataSourceManagerConfiguration
-+ (id)_generatePredicateForAssetTypesToInclude:(unint64_t)a3;
-- (BOOL)_shouldSupportSyndicatedAssetFetches:(id)a3;
++ (id)_generatePredicateForAssetTypesToInclude:(unint64_t)include;
+- (BOOL)_shouldSupportSyndicatedAssetFetches:(id)fetches;
 - (PHFetchResult)collectionsFetchResult;
-- (PXPhotoKitCollectionsDataSourceManagerConfiguration)initWithCollectionList:(id)a3 collectionsFetchResult:(id)a4;
-- (id)_newConfigurationWithCollectionList:(id)a3 collectionsFetchResult:(id)a4;
-- (id)customFetchOptionsForCollection:(id)a3;
+- (PXPhotoKitCollectionsDataSourceManagerConfiguration)initWithCollectionList:(id)list collectionsFetchResult:(id)result;
+- (id)_newConfigurationWithCollectionList:(id)list collectionsFetchResult:(id)result;
+- (id)customFetchOptionsForCollection:(id)collection;
 @end
 
 @implementation PXPhotoKitCollectionsDataSourceManagerConfiguration
 
-- (id)_newConfigurationWithCollectionList:(id)a3 collectionsFetchResult:(id)a4
+- (id)_newConfigurationWithCollectionList:(id)list collectionsFetchResult:(id)result
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[PXPhotoKitCollectionsDataSourceManagerConfiguration alloc] initWithCollectionList:v7 collectionsFetchResult:v6];
+  resultCopy = result;
+  listCopy = list;
+  v8 = [[PXPhotoKitCollectionsDataSourceManagerConfiguration alloc] initWithCollectionList:listCopy collectionsFetchResult:resultCopy];
 
   [(PXPhotoKitCollectionsDataSourceManagerConfiguration *)v8 setSeparateSectionsForSmartAndUserCollections:[(PXPhotoKitCollectionsDataSourceManagerConfiguration *)self separateSectionsForSmartAndUserCollections]];
   [(PXPhotoKitCollectionsDataSourceManagerConfiguration *)v8 setIncludePeopleAlbum:[(PXPhotoKitCollectionsDataSourceManagerConfiguration *)self includePeopleAlbum]];
   [(PXPhotoKitCollectionsDataSourceManagerConfiguration *)v8 setAssetTypesToInclude:[(PXPhotoKitCollectionsDataSourceManagerConfiguration *)self assetTypesToInclude]];
-  v9 = [(PXPhotoKitCollectionsDataSourceManagerConfiguration *)self assetsFilterPredicate];
-  [(PXPhotoKitCollectionsDataSourceManagerConfiguration *)v8 setAssetsFilterPredicate:v9];
+  assetsFilterPredicate = [(PXPhotoKitCollectionsDataSourceManagerConfiguration *)self assetsFilterPredicate];
+  [(PXPhotoKitCollectionsDataSourceManagerConfiguration *)v8 setAssetsFilterPredicate:assetsFilterPredicate];
 
   [(PXPhotoKitCollectionsDataSourceManagerConfiguration *)v8 setCollectionTypesToInclude:[(PXPhotoKitCollectionsDataSourceManagerConfiguration *)self collectionTypesToInclude]];
   [(PXPhotoKitCollectionsDataSourceManagerConfiguration *)v8 setShouldExcludePrivacySensitiveAlbums:[(PXPhotoKitCollectionsDataSourceManagerConfiguration *)self shouldExcludePrivacySensitiveAlbums]];
@@ -31,17 +31,17 @@
   return v8;
 }
 
-- (BOOL)_shouldSupportSyndicatedAssetFetches:(id)a3
+- (BOOL)_shouldSupportSyndicatedAssetFetches:(id)fetches
 {
-  v4 = a3;
-  if (-[PXPhotoKitCollectionsDataSourceManagerConfiguration skipSyndicatedAssetFetches](self, "skipSyndicatedAssetFetches") || ([v4 photoLibrary], v5 = objc_claimAutoreleasedReturnValue(), +[PXContentSyndicationConfigurationProvider contentSyndicationConfigurationProviderWithPhotoLibrary:](PXContentSyndicationConfigurationProvider, "contentSyndicationConfigurationProviderWithPhotoLibrary:", v5), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "showUnsavedSyndicatedContentInPhotosGrids"), v6, v5, !v7))
+  fetchesCopy = fetches;
+  if (-[PXPhotoKitCollectionsDataSourceManagerConfiguration skipSyndicatedAssetFetches](self, "skipSyndicatedAssetFetches") || ([fetchesCopy photoLibrary], v5 = objc_claimAutoreleasedReturnValue(), +[PXContentSyndicationConfigurationProvider contentSyndicationConfigurationProviderWithPhotoLibrary:](PXContentSyndicationConfigurationProvider, "contentSyndicationConfigurationProviderWithPhotoLibrary:", v5), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "showUnsavedSyndicatedContentInPhotosGrids"), v6, v5, !v7))
   {
     ShouldShowUnsavedAssetsInAssetCollection = 0;
   }
 
-  else if ([v4 canContainAssets])
+  else if ([fetchesCopy canContainAssets])
   {
-    ShouldShowUnsavedAssetsInAssetCollection = PXContentSyndicationShouldShowUnsavedAssetsInAssetCollection(v4);
+    ShouldShowUnsavedAssetsInAssetCollection = PXContentSyndicationShouldShowUnsavedAssetsInAssetCollection(fetchesCopy);
   }
 
   else
@@ -52,19 +52,19 @@
   return ShouldShowUnsavedAssetsInAssetCollection;
 }
 
-- (id)customFetchOptionsForCollection:(id)a3
+- (id)customFetchOptionsForCollection:(id)collection
 {
-  v4 = a3;
-  v5 = [v4 photoLibrary];
-  v6 = [v5 px_standardLibrarySpecificFetchOptions];
+  collectionCopy = collection;
+  photoLibrary = [collectionCopy photoLibrary];
+  px_standardLibrarySpecificFetchOptions = [photoLibrary px_standardLibrarySpecificFetchOptions];
 
-  v7 = [(PXPhotoKitCollectionsDataSourceManagerConfiguration *)self _shouldSupportSyndicatedAssetFetches:v4];
-  [v6 setIncludeGuestAssets:v7];
-  v8 = [(PXPhotoKitCollectionsDataSourceManagerConfiguration *)self assetsFilterPredicate];
-  v9 = v8;
-  if (v8)
+  v7 = [(PXPhotoKitCollectionsDataSourceManagerConfiguration *)self _shouldSupportSyndicatedAssetFetches:collectionCopy];
+  [px_standardLibrarySpecificFetchOptions setIncludeGuestAssets:v7];
+  assetsFilterPredicate = [(PXPhotoKitCollectionsDataSourceManagerConfiguration *)self assetsFilterPredicate];
+  v9 = assetsFilterPredicate;
+  if (assetsFilterPredicate)
   {
-    v10 = v8;
+    v10 = assetsFilterPredicate;
   }
 
   else
@@ -74,9 +74,9 @@
 
   v11 = v10;
 
-  [v6 setInternalPredicate:v11];
+  [px_standardLibrarySpecificFetchOptions setInternalPredicate:v11];
 
-  return v6;
+  return px_standardLibrarySpecificFetchOptions;
 }
 
 - (PHFetchResult)collectionsFetchResult
@@ -84,20 +84,20 @@
   collectionsFetchResult = self->_collectionsFetchResult;
   if (!collectionsFetchResult)
   {
-    v4 = [(PXPhotoKitCollectionsDataSourceManagerConfiguration *)self collectionList];
-    v5 = [v4 photoLibrary];
-    v6 = [v5 px_standardLibrarySpecificFetchOptions];
+    collectionList = [(PXPhotoKitCollectionsDataSourceManagerConfiguration *)self collectionList];
+    photoLibrary = [collectionList photoLibrary];
+    px_standardLibrarySpecificFetchOptions = [photoLibrary px_standardLibrarySpecificFetchOptions];
 
-    [v6 setIncludePlacesSmartAlbum:{(-[PXPhotoKitCollectionsDataSourceManagerConfiguration collectionTypesToInclude](self, "collectionTypesToInclude") >> 6) & 1}];
-    [v6 setIncludeDuplicatesAlbums:{(-[PXPhotoKitCollectionsDataSourceManagerConfiguration collectionTypesToInclude](self, "collectionTypesToInclude") >> 16) & 1}];
-    [v6 setIncludeUserSmartAlbums:{(-[PXPhotoKitCollectionsDataSourceManagerConfiguration collectionTypesToInclude](self, "collectionTypesToInclude") >> 22) & 1}];
-    [v6 setIncludeAllPhotosSmartAlbum:{(-[PXPhotoKitCollectionsDataSourceManagerConfiguration collectionTypesToInclude](self, "collectionTypesToInclude") >> 2) & 1}];
-    [v6 setIncludeRecentlyEditedSmartAlbum:{(-[PXPhotoKitCollectionsDataSourceManagerConfiguration collectionTypesToInclude](self, "collectionTypesToInclude") >> 12) & 1}];
-    [v6 setIncludeScreenRecordingsSmartAlbum:{(-[PXPhotoKitCollectionsDataSourceManagerConfiguration collectionTypesToInclude](self, "collectionTypesToInclude") >> 7) & 1}];
-    [v6 setIncludeProResSmartAlbum:{(-[PXPhotoKitCollectionsDataSourceManagerConfiguration collectionTypesToInclude](self, "collectionTypesToInclude") >> 7) & 1}];
+    [px_standardLibrarySpecificFetchOptions setIncludePlacesSmartAlbum:{(-[PXPhotoKitCollectionsDataSourceManagerConfiguration collectionTypesToInclude](self, "collectionTypesToInclude") >> 6) & 1}];
+    [px_standardLibrarySpecificFetchOptions setIncludeDuplicatesAlbums:{(-[PXPhotoKitCollectionsDataSourceManagerConfiguration collectionTypesToInclude](self, "collectionTypesToInclude") >> 16) & 1}];
+    [px_standardLibrarySpecificFetchOptions setIncludeUserSmartAlbums:{(-[PXPhotoKitCollectionsDataSourceManagerConfiguration collectionTypesToInclude](self, "collectionTypesToInclude") >> 22) & 1}];
+    [px_standardLibrarySpecificFetchOptions setIncludeAllPhotosSmartAlbum:{(-[PXPhotoKitCollectionsDataSourceManagerConfiguration collectionTypesToInclude](self, "collectionTypesToInclude") >> 2) & 1}];
+    [px_standardLibrarySpecificFetchOptions setIncludeRecentlyEditedSmartAlbum:{(-[PXPhotoKitCollectionsDataSourceManagerConfiguration collectionTypesToInclude](self, "collectionTypesToInclude") >> 12) & 1}];
+    [px_standardLibrarySpecificFetchOptions setIncludeScreenRecordingsSmartAlbum:{(-[PXPhotoKitCollectionsDataSourceManagerConfiguration collectionTypesToInclude](self, "collectionTypesToInclude") >> 7) & 1}];
+    [px_standardLibrarySpecificFetchOptions setIncludeProResSmartAlbum:{(-[PXPhotoKitCollectionsDataSourceManagerConfiguration collectionTypesToInclude](self, "collectionTypesToInclude") >> 7) & 1}];
     v7 = MEMORY[0x1E6978758];
-    v8 = [(PXPhotoKitCollectionsDataSourceManagerConfiguration *)self collectionList];
-    v9 = [v7 fetchCollectionsInCollectionList:v8 options:v6];
+    collectionList2 = [(PXPhotoKitCollectionsDataSourceManagerConfiguration *)self collectionList];
+    v9 = [v7 fetchCollectionsInCollectionList:collectionList2 options:px_standardLibrarySpecificFetchOptions];
     v10 = self->_collectionsFetchResult;
     self->_collectionsFetchResult = v9;
 
@@ -107,10 +107,10 @@
   return collectionsFetchResult;
 }
 
-- (PXPhotoKitCollectionsDataSourceManagerConfiguration)initWithCollectionList:(id)a3 collectionsFetchResult:(id)a4
+- (PXPhotoKitCollectionsDataSourceManagerConfiguration)initWithCollectionList:(id)list collectionsFetchResult:(id)result
 {
-  v7 = a3;
-  v8 = a4;
+  listCopy = list;
+  resultCopy = result;
   v12.receiver = self;
   v12.super_class = PXPhotoKitCollectionsDataSourceManagerConfiguration;
   v9 = [(PXPhotoKitCollectionsDataSourceManagerConfiguration *)&v12 init];
@@ -119,25 +119,25 @@
   {
     v9->_assetTypesToInclude = -1;
     v9->_collectionTypesToInclude = -1;
-    objc_storeStrong(&v9->_collectionList, a3);
-    objc_storeStrong(&v10->_collectionsFetchResult, a4);
+    objc_storeStrong(&v9->_collectionList, list);
+    objc_storeStrong(&v10->_collectionsFetchResult, result);
   }
 
   return v10;
 }
 
-+ (id)_generatePredicateForAssetTypesToInclude:(unint64_t)a3
++ (id)_generatePredicateForAssetTypesToInclude:(unint64_t)include
 {
   v11[2] = *MEMORY[0x1E69E9840];
-  if (a3 == -1)
+  if (include == -1)
   {
 LABEL_9:
     v4 = 0;
     goto LABEL_12;
   }
 
-  v3 = a3;
-  if ((~a3 & 3) == 0)
+  includeCopy = include;
+  if ((~include & 3) == 0)
   {
     [MEMORY[0x1E696AE18] predicateWithFormat:@"noindex:(kind) == %d OR noindex:(kind) == %d", 0, 1];
     v4 = LABEL_4:;
@@ -163,9 +163,9 @@ LABEL_5:
     goto LABEL_12;
   }
 
-  if ((a3 & 1) == 0)
+  if ((include & 1) == 0)
   {
-    if ((a3 & 2) != 0)
+    if ((include & 2) != 0)
     {
       [MEMORY[0x1E696AE18] predicateWithFormat:@"noindex:(kind) == %d OR noindex:(playbackStyle) == %d", 1, 5];
       goto LABEL_4;
@@ -175,7 +175,7 @@ LABEL_5:
   }
 
   v4 = [MEMORY[0x1E696AE18] predicateWithFormat:@"noindex:(kind) == %d AND noindex:(playbackStyle) != %d", 0, 5];
-  if ((v3 & 2) != 0)
+  if ((includeCopy & 2) != 0)
   {
     goto LABEL_5;
   }

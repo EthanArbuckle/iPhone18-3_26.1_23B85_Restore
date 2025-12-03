@@ -1,59 +1,59 @@
 @interface FRPersonalizationAutoFavoritesCursor
-- (FRPersonalizationAutoFavoritesCursor)initWithCoreDuetLastQueryDate:(id)a3 portraitLastQueryDate:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (FRPersonalizationAutoFavoritesCursor)initWithCoreDuetLastQueryDate:(id)date portraitLastQueryDate:(id)queryDate;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation FRPersonalizationAutoFavoritesCursor
 
-- (FRPersonalizationAutoFavoritesCursor)initWithCoreDuetLastQueryDate:(id)a3 portraitLastQueryDate:(id)a4
+- (FRPersonalizationAutoFavoritesCursor)initWithCoreDuetLastQueryDate:(id)date portraitLastQueryDate:(id)queryDate
 {
-  v7 = a3;
-  v8 = a4;
+  dateCopy = date;
+  queryDateCopy = queryDate;
   v12.receiver = self;
   v12.super_class = FRPersonalizationAutoFavoritesCursor;
   v9 = [(FRPersonalizationAutoFavoritesCursor *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_coreDuetLastQueryDate, a3);
-    objc_storeStrong(&v10->_portraitLastQueryDate, a4);
+    objc_storeStrong(&v9->_coreDuetLastQueryDate, date);
+    objc_storeStrong(&v10->_portraitLastQueryDate, queryDate);
   }
 
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(FRPersonalizationAutoFavoritesCursor *)self lastInternalSignalProcessingDate];
-  [v4 setLastInternalSignalProcessingDate:v5];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  lastInternalSignalProcessingDate = [(FRPersonalizationAutoFavoritesCursor *)self lastInternalSignalProcessingDate];
+  [v4 setLastInternalSignalProcessingDate:lastInternalSignalProcessingDate];
 
-  v6 = [(FRPersonalizationAutoFavoritesCursor *)self lastExternalSignalProcessingDate];
-  [v4 setLastExternalSignalProcessingDate:v6];
+  lastExternalSignalProcessingDate = [(FRPersonalizationAutoFavoritesCursor *)self lastExternalSignalProcessingDate];
+  [v4 setLastExternalSignalProcessingDate:lastExternalSignalProcessingDate];
 
-  v7 = [(FRPersonalizationAutoFavoritesCursor *)self coreDuetLastQueryDate];
-  [v4 setCoreDuetLastQueryDate:v7];
+  coreDuetLastQueryDate = [(FRPersonalizationAutoFavoritesCursor *)self coreDuetLastQueryDate];
+  [v4 setCoreDuetLastQueryDate:coreDuetLastQueryDate];
 
-  v8 = [(FRPersonalizationAutoFavoritesCursor *)self portraitLastQueryDate];
-  [v4 setPortraitLastQueryDate:v8];
+  portraitLastQueryDate = [(FRPersonalizationAutoFavoritesCursor *)self portraitLastQueryDate];
+  [v4 setPortraitLastQueryDate:portraitLastQueryDate];
 
-  v9 = [(FRPersonalizationAutoFavoritesCursor *)self lastAppUsageAutoFavoriteResults];
-  [v4 setLastAppUsageAutoFavoriteResults:v9];
+  lastAppUsageAutoFavoriteResults = [(FRPersonalizationAutoFavoritesCursor *)self lastAppUsageAutoFavoriteResults];
+  [v4 setLastAppUsageAutoFavoriteResults:lastAppUsageAutoFavoriteResults];
 
-  v10 = [(FRPersonalizationAutoFavoritesCursor *)self lastSafariAutoFavoriteResults];
-  [v4 setLastSafariAutoFavoriteResults:v10];
+  lastSafariAutoFavoriteResults = [(FRPersonalizationAutoFavoritesCursor *)self lastSafariAutoFavoriteResults];
+  [v4 setLastSafariAutoFavoriteResults:lastSafariAutoFavoriteResults];
 
-  v11 = [(FRPersonalizationAutoFavoritesCursor *)self lastPortraitAutoFavoriteResults];
-  [v4 setLastPortraitAutoFavoriteResults:v11];
+  lastPortraitAutoFavoriteResults = [(FRPersonalizationAutoFavoritesCursor *)self lastPortraitAutoFavoriteResults];
+  [v4 setLastPortraitAutoFavoriteResults:lastPortraitAutoFavoriteResults];
 
-  v12 = [(FRPersonalizationAutoFavoritesCursor *)self lastLocationAutoFavoriteResults];
-  [v4 setLastLocationAutoFavoriteResults:v12];
+  lastLocationAutoFavoriteResults = [(FRPersonalizationAutoFavoritesCursor *)self lastLocationAutoFavoriteResults];
+  [v4 setLastLocationAutoFavoriteResults:lastLocationAutoFavoriteResults];
 
-  v13 = [(FRPersonalizationAutoFavoritesCursor *)self lastInternalSignalAutoFavorites];
-  [v4 setLastInternalSignalAutoFavorites:v13];
+  lastInternalSignalAutoFavorites = [(FRPersonalizationAutoFavoritesCursor *)self lastInternalSignalAutoFavorites];
+  [v4 setLastInternalSignalAutoFavorites:lastInternalSignalAutoFavorites];
 
-  v14 = [(FRPersonalizationAutoFavoritesCursor *)self lastInternalSignalGroupableFavorites];
-  [v4 setLastInternalSignalGroupableFavorites:v14];
+  lastInternalSignalGroupableFavorites = [(FRPersonalizationAutoFavoritesCursor *)self lastInternalSignalGroupableFavorites];
+  [v4 setLastInternalSignalGroupableFavorites:lastInternalSignalGroupableFavorites];
 
   return v4;
 }

@@ -1,7 +1,7 @@
 @interface ObjCRenameSequence
 - (NSString)description;
 - (_TtC9Coherence18ObjCRenameSequence)init;
-- (void)addTemporaryAddedByVersion:(id)a3;
+- (void)addTemporaryAddedByVersion:(id)version;
 @end
 
 @implementation ObjCRenameSequence
@@ -23,16 +23,16 @@
   return [(ObjCRenameSequence *)&v8 init];
 }
 
-- (void)addTemporaryAddedByVersion:(id)a3
+- (void)addTemporaryAddedByVersion:(id)version
 {
-  v4 = a3;
-  v5 = self;
-  sub_1AE225C08(v4);
+  versionCopy = version;
+  selfCopy = self;
+  sub_1AE225C08(versionCopy);
 }
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_1AE226C04();
 
   v3 = sub_1AE23CCDC();

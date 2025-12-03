@@ -1,19 +1,19 @@
 @interface FMRule
-- (FMRule)initWithFrame:(CGRect)a3;
+- (FMRule)initWithFrame:(CGRect)frame;
 - (void)awakeFromNib;
 - (void)commonSetup;
 - (void)prepareForInterfaceBuilder;
-- (void)setColor:(id)a3;
-- (void)setLeading:(BOOL)a3;
+- (void)setColor:(id)color;
+- (void)setLeading:(BOOL)leading;
 @end
 
 @implementation FMRule
 
-- (FMRule)initWithFrame:(CGRect)a3
+- (FMRule)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = FMRule;
-  v3 = [(FMRule *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(FMRule *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -46,37 +46,37 @@
   v4 = [v3 initWithFrame:?];
   [(FMRule *)self setImageView:v4];
 
-  v5 = [(FMRule *)self imageView];
-  [(FMRule *)self addSubview:v5];
+  imageView = [(FMRule *)self imageView];
+  [(FMRule *)self addSubview:imageView];
 
   v6 = objc_opt_class();
-  v7 = [(FMRule *)self color];
-  v9 = [v6 imageWithColor:v7 leading:{-[FMRule leading](self, "leading")}];
+  color = [(FMRule *)self color];
+  v9 = [v6 imageWithColor:color leading:{-[FMRule leading](self, "leading")}];
 
-  v8 = [(FMRule *)self imageView];
-  [v8 setImage:v9];
+  imageView2 = [(FMRule *)self imageView];
+  [imageView2 setImage:v9];
 }
 
-- (void)setColor:(id)a3
+- (void)setColor:(id)color
 {
-  objc_storeStrong(&self->_color, a3);
+  objc_storeStrong(&self->_color, color);
   v4 = objc_opt_class();
-  v5 = [(FMRule *)self color];
-  v7 = [v4 imageWithColor:v5 leading:{-[FMRule leading](self, "leading")}];
+  color = [(FMRule *)self color];
+  v7 = [v4 imageWithColor:color leading:{-[FMRule leading](self, "leading")}];
 
-  v6 = [(FMRule *)self imageView];
-  [v6 setImage:v7];
+  imageView = [(FMRule *)self imageView];
+  [imageView setImage:v7];
 }
 
-- (void)setLeading:(BOOL)a3
+- (void)setLeading:(BOOL)leading
 {
-  self->_leading = a3;
+  self->_leading = leading;
   v4 = objc_opt_class();
-  v5 = [(FMRule *)self color];
-  v7 = [v4 imageWithColor:v5 leading:{-[FMRule leading](self, "leading")}];
+  color = [(FMRule *)self color];
+  v7 = [v4 imageWithColor:color leading:{-[FMRule leading](self, "leading")}];
 
-  v6 = [(FMRule *)self imageView];
-  [v6 setImage:v7];
+  imageView = [(FMRule *)self imageView];
+  [imageView setImage:v7];
 }
 
 @end

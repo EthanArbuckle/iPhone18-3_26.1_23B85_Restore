@@ -1,8 +1,8 @@
 @interface PXImportExpansionPlaceholderViewModel
 + (id)sharedInstance;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToImportPlaceholderViewModel:(id)a3;
-- (PXImportExpansionPlaceholderViewModel)initWithPlaceholderDate:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToImportPlaceholderViewModel:(id)model;
+- (PXImportExpansionPlaceholderViewModel)initWithPlaceholderDate:(id)date;
 - (id)description;
 - (id)fileName;
 - (unint64_t)hash;
@@ -19,16 +19,16 @@
 
 - (unint64_t)hash
 {
-  v2 = [(PXImportExpansionPlaceholderViewModel *)self placeholderDate];
-  v3 = [v2 hash];
+  placeholderDate = [(PXImportExpansionPlaceholderViewModel *)self placeholderDate];
+  v3 = [placeholderDate hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -36,22 +36,22 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PXImportExpansionPlaceholderViewModel *)self isEqualToImportPlaceholderViewModel:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PXImportExpansionPlaceholderViewModel *)self isEqualToImportPlaceholderViewModel:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToImportPlaceholderViewModel:(id)a3
+- (BOOL)isEqualToImportPlaceholderViewModel:(id)model
 {
-  v4 = a3;
-  v5 = [(PXImportItemViewModel *)self kind];
-  v6 = [v4 kind];
-  if ([v5 isEqualToString:v6])
+  modelCopy = model;
+  kind = [(PXImportItemViewModel *)self kind];
+  kind2 = [modelCopy kind];
+  if ([kind isEqualToString:kind2])
   {
-    v7 = [(PXImportExpansionPlaceholderViewModel *)self placeholderDate];
-    v8 = [v4 placeholderDate];
-    v9 = [v7 isEqualToDate:v8];
+    placeholderDate = [(PXImportExpansionPlaceholderViewModel *)self placeholderDate];
+    placeholderDate2 = [modelCopy placeholderDate];
+    v9 = [placeholderDate isEqualToDate:placeholderDate2];
   }
 
   else
@@ -66,25 +66,25 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(PXImportExpansionPlaceholderViewModel *)self placeholderDate];
-  v6 = [v3 stringWithFormat:@"<%@:%p expansion placeholder date: %@>", v4, self, v5];
+  placeholderDate = [(PXImportExpansionPlaceholderViewModel *)self placeholderDate];
+  v6 = [v3 stringWithFormat:@"<%@:%p expansion placeholder date: %@>", v4, self, placeholderDate];
 
   return v6;
 }
 
-- (PXImportExpansionPlaceholderViewModel)initWithPlaceholderDate:(id)a3
+- (PXImportExpansionPlaceholderViewModel)initWithPlaceholderDate:(id)date
 {
-  v5 = a3;
+  dateCopy = date;
   v10.receiver = self;
   v10.super_class = PXImportExpansionPlaceholderViewModel;
   v6 = [(PXImportItemViewModel *)&v10 initWithKind:@"PXImportItemViewModelKindExpansionPlaceholder" selectable:0];
   if (v6)
   {
-    v7 = [MEMORY[0x1E696AFB0] UUID];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
     placeholderUUID = v6->_placeholderUUID;
-    v6->_placeholderUUID = v7;
+    v6->_placeholderUUID = uUID;
 
-    objc_storeStrong(&v6->_placeholderDate, a3);
+    objc_storeStrong(&v6->_placeholderDate, date);
   }
 
   return v6;

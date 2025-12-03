@@ -1,7 +1,7 @@
 @interface HMMTRHAPDescriptionAtEndpoint
 - (HMMTRHAPDescriptionAtEndpoint)init;
-- (HMMTRHAPDescriptionAtEndpoint)initWithType:(id)a3 serviceDescriptions:(id)a4;
-- (HMMTRHAPDescriptionAtEndpoint)initWithType:(id)a3 serviceDescriptions:(id)a4 name:(id)a5 partsList:(id)a6 fixedLabels:(id)a7;
+- (HMMTRHAPDescriptionAtEndpoint)initWithType:(id)type serviceDescriptions:(id)descriptions;
+- (HMMTRHAPDescriptionAtEndpoint)initWithType:(id)type serviceDescriptions:(id)descriptions name:(id)name partsList:(id)list fixedLabels:(id)labels;
 - (id)attributeDescriptions;
 @end
 
@@ -11,24 +11,24 @@
 {
   v21[5] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277D0F778]);
-  v20 = [(HMMTRHAPDescriptionAtEndpoint *)self categories];
-  v4 = [v3 initWithName:@"Categories" value:v20];
+  categories = [(HMMTRHAPDescriptionAtEndpoint *)self categories];
+  v4 = [v3 initWithName:@"Categories" value:categories];
   v21[0] = v4;
   v5 = objc_alloc(MEMORY[0x277D0F778]);
-  v6 = [(HMMTRHAPDescriptionAtEndpoint *)self serviceDescriptions];
-  v7 = [v5 initWithName:@"ServiceDescriptions" value:v6];
+  serviceDescriptions = [(HMMTRHAPDescriptionAtEndpoint *)self serviceDescriptions];
+  v7 = [v5 initWithName:@"ServiceDescriptions" value:serviceDescriptions];
   v21[1] = v7;
   v8 = objc_alloc(MEMORY[0x277D0F778]);
-  v9 = [(HMMTRHAPDescriptionAtEndpoint *)self name];
-  v10 = [v8 initWithName:@"Name" value:v9];
+  name = [(HMMTRHAPDescriptionAtEndpoint *)self name];
+  v10 = [v8 initWithName:@"Name" value:name];
   v21[2] = v10;
   v11 = objc_alloc(MEMORY[0x277D0F778]);
-  v12 = [(HMMTRHAPDescriptionAtEndpoint *)self partsList];
-  v13 = [v11 initWithName:@"PartsList" value:v12];
+  partsList = [(HMMTRHAPDescriptionAtEndpoint *)self partsList];
+  v13 = [v11 initWithName:@"PartsList" value:partsList];
   v21[3] = v13;
   v14 = objc_alloc(MEMORY[0x277D0F778]);
-  v15 = [(HMMTRHAPDescriptionAtEndpoint *)self fixedLabels];
-  v16 = [v14 initWithName:@"FixedLabels" value:v15];
+  fixedLabels = [(HMMTRHAPDescriptionAtEndpoint *)self fixedLabels];
+  v16 = [v14 initWithName:@"FixedLabels" value:fixedLabels];
   v21[4] = v16;
   v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:5];
 
@@ -37,52 +37,52 @@
   return v17;
 }
 
-- (HMMTRHAPDescriptionAtEndpoint)initWithType:(id)a3 serviceDescriptions:(id)a4 name:(id)a5 partsList:(id)a6 fixedLabels:(id)a7
+- (HMMTRHAPDescriptionAtEndpoint)initWithType:(id)type serviceDescriptions:(id)descriptions name:(id)name partsList:(id)list fixedLabels:(id)labels
 {
-  v24 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  typeCopy = type;
+  descriptionsCopy = descriptions;
+  nameCopy = name;
+  listCopy = list;
+  labelsCopy = labels;
   v17 = [(HMMTRHAPDescriptionAtEndpoint *)self init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_categories, a3);
-    objc_storeStrong(&v18->_serviceDescriptions, a4);
-    objc_storeStrong(&v18->_name, a5);
-    if (v15)
+    objc_storeStrong(&v17->_categories, type);
+    objc_storeStrong(&v18->_serviceDescriptions, descriptions);
+    objc_storeStrong(&v18->_name, name);
+    if (listCopy)
     {
       v19 = objc_alloc_init(MEMORY[0x277CBEB18]);
       partsList = v18->_partsList;
       v18->_partsList = v19;
 
-      objc_storeStrong(&v18->_partsList, a6);
+      objc_storeStrong(&v18->_partsList, list);
     }
 
-    if (v16)
+    if (labelsCopy)
     {
       v21 = objc_alloc_init(MEMORY[0x277CBEB18]);
       fixedLabels = v18->_fixedLabels;
       v18->_fixedLabels = v21;
 
-      objc_storeStrong(&v18->_fixedLabels, a7);
+      objc_storeStrong(&v18->_fixedLabels, labels);
     }
   }
 
   return v18;
 }
 
-- (HMMTRHAPDescriptionAtEndpoint)initWithType:(id)a3 serviceDescriptions:(id)a4
+- (HMMTRHAPDescriptionAtEndpoint)initWithType:(id)type serviceDescriptions:(id)descriptions
 {
-  v7 = a3;
-  v8 = a4;
+  typeCopy = type;
+  descriptionsCopy = descriptions;
   v9 = [(HMMTRHAPDescriptionAtEndpoint *)self init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_categories, a3);
-    objc_storeStrong(&v10->_serviceDescriptions, a4);
+    objc_storeStrong(&v9->_categories, type);
+    objc_storeStrong(&v10->_serviceDescriptions, descriptions);
   }
 
   return v10;

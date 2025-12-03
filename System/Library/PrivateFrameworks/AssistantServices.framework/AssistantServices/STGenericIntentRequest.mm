@@ -1,30 +1,30 @@
 @interface STGenericIntentRequest
-- (id)_ad_finalMetricsContextWithResponse:(id)a3 error:(id)a4;
+- (id)_ad_finalMetricsContextWithResponse:(id)response error:(id)error;
 @end
 
 @implementation STGenericIntentRequest
 
-- (id)_ad_finalMetricsContextWithResponse:(id)a3 error:(id)a4
+- (id)_ad_finalMetricsContextWithResponse:(id)response error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(STGenericIntentRequest *)self _af_analyticsContextDescription];
-  if (v7)
+  responseCopy = response;
+  errorCopy = error;
+  _af_analyticsContextDescription = [(STGenericIntentRequest *)self _af_analyticsContextDescription];
+  if (errorCopy)
   {
-    v9 = [v7 domain];
-    [v8 setObject:v9 forKeyedSubscript:@"errorDomain"];
+    domain = [errorCopy domain];
+    [_af_analyticsContextDescription setObject:domain forKeyedSubscript:@"errorDomain"];
 
-    v10 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v7 code]);
-    [v8 setObject:v10 forKeyedSubscript:@"errorCode"];
+    v10 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [errorCopy code]);
+    [_af_analyticsContextDescription setObject:v10 forKeyedSubscript:@"errorCode"];
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v6 responseCode];
+    [responseCopy responseCode];
 LABEL_6:
     v11 = STStringFromGenericIntentResponseCode();
-    [v8 setObject:v11 forKeyedSubscript:AFAnalyticsContextKey[2]];
+    [_af_analyticsContextDescription setObject:v11 forKeyedSubscript:AFAnalyticsContextKey[2]];
 
     goto LABEL_7;
   }
@@ -35,7 +35,7 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  if (v6)
+  if (responseCopy)
   {
     v13 = AFSiriLogContextDaemon;
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_ERROR))
@@ -43,14 +43,14 @@ LABEL_6:
       v14 = 136315394;
       v15 = "[STGenericIntentRequest(Metrics) _ad_finalMetricsContextWithResponse:error:]";
       v16 = 2112;
-      v17 = v6;
+      v17 = responseCopy;
       _os_log_error_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "%s unknown response %@", &v14, 0x16u);
     }
   }
 
 LABEL_7:
 
-  return v8;
+  return _af_analyticsContextDescription;
 }
 
 @end

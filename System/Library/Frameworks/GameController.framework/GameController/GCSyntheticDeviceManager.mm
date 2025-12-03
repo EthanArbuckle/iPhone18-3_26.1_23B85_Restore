@@ -1,29 +1,29 @@
 @interface GCSyntheticDeviceManager
 - (GCSyntheticDeviceManager)init;
-- (GCSyntheticDeviceManager)initWithServer:(id)a3;
-- (id)_onqueue_setupDeviceWithDescription:(void *)a1;
+- (GCSyntheticDeviceManager)initWithServer:(id)server;
+- (id)_onqueue_setupDeviceWithDescription:(void *)description;
 - (uint64_t)_kernel_close;
-- (uint64_t)_kernel_createDeviceWithProperties:(_DWORD *)a3 service:;
+- (uint64_t)_kernel_createDeviceWithProperties:(_DWORD *)properties service:;
 - (uint64_t)_kernel_open:(uint64_t)result;
 - (uint64_t)_kernel_terminateAllDevices:(uint64_t)result;
-- (uint64_t)_kernel_terminateDeviceWithIdentifier:(uint64_t)a1;
-- (uint64_t)_user_check:(void *)a3 device:(int *)a4 enabled:;
+- (uint64_t)_kernel_terminateDeviceWithIdentifier:(uint64_t)identifier;
+- (uint64_t)_user_check:(void *)_user_check device:(int *)device enabled:;
 - (void)_onqueue_refreshSyntheticControllersEnabled;
-- (void)_onqueue_setActiveDevices:(uint64_t)a1;
-- (void)_onqueue_teardownDevice:(uint64_t)a1;
+- (void)_onqueue_setActiveDevices:(uint64_t)devices;
+- (void)_onqueue_teardownDevice:(uint64_t)device;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation GCSyntheticDeviceManager
 
-- (GCSyntheticDeviceManager)initWithServer:(id)a3
+- (GCSyntheticDeviceManager)initWithServer:(id)server
 {
-  v6 = a3;
+  serverCopy = server;
   v59.receiver = self;
   v59.super_class = GCSyntheticDeviceManager;
   v7 = [(GCSyntheticDeviceManager *)&v59 init];
-  objc_storeStrong(v7 + 1, a3);
+  objc_storeStrong(v7 + 1, server);
   v8 = dispatch_queue_create("SyntheticDeviceManager", 0);
   v9 = *(v7 + 2);
   *(v7 + 2) = v8;
@@ -422,11 +422,11 @@ LABEL_30:
   v26 = *MEMORY[0x1E69E9840];
 }
 
-- (uint64_t)_user_check:(void *)a3 device:(int *)a4 enabled:
+- (uint64_t)_user_check:(void *)_user_check device:(int *)device enabled:
 {
   v7 = a2;
-  v8 = a3;
-  if (a1)
+  _user_checkCopy = _user_check;
+  if (self)
   {
     v9 = _os_activity_create(&dword_1D2CD5000, "[Synthetic Device Manager] Check Process Enabled", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
     v20.opaque[0] = 0;
@@ -435,20 +435,20 @@ LABEL_30:
     v10 = getLogger();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
-      [GCSyntheticDeviceManager _user_check:v8 device:v7 enabled:v10];
+      [GCSyntheticDeviceManager _user_check:_user_checkCopy device:v7 enabled:v10];
     }
 
-    v12 = [(_GCSyntheticDevice *)v8 persistentIdentifier];
+    persistentIdentifier = [(_GCSyntheticDevice *)_user_checkCopy persistentIdentifier];
     v13 = [v7 objectForKeyedSubscript:@"BundleIdentifier"];
     if (v13)
     {
-      v14 = [*(a1 + 104) games];
-      v15 = [v14 gameWithBundleIdentifier:v13];
+      games = [*(self + 104) games];
+      v15 = [games gameWithBundleIdentifier:v13];
 
       if (v15)
       {
-        v16 = [v15 controllerToCompatibilityModeMappings];
-        v17 = [v16 objectForKeyedSubscript:v12];
+        controllerToCompatibilityModeMappings = [v15 controllerToCompatibilityModeMappings];
+        v17 = [controllerToCompatibilityModeMappings objectForKeyedSubscript:persistentIdentifier];
       }
 
       else
@@ -460,7 +460,7 @@ LABEL_30:
       {
         v18 = 2;
 LABEL_12:
-        *a4 = v18;
+        *device = v18;
 
 LABEL_15:
         os_activity_scope_leave(&v20);
@@ -475,7 +475,7 @@ LABEL_15:
       }
     }
 
-    *a4 = 0;
+    *device = 0;
     goto LABEL_15;
   }
 
@@ -536,11 +536,11 @@ LABEL_16:
   [(GCSyntheticDeviceManager *)&v8 dealloc];
 }
 
-- (id)_onqueue_setupDeviceWithDescription:(void *)a1
+- (id)_onqueue_setupDeviceWithDescription:(void *)description
 {
   v12 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (description)
   {
     v4 = _os_activity_create(&dword_1D2CD5000, "[Synthetic Device Manager] Setup Kernel Device", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
     state.opaque[0] = 0;
@@ -557,14 +557,14 @@ LABEL_16:
     v9[1] = 3221225472;
     v9[2] = __64__GCSyntheticDeviceManager__onqueue_setupDeviceWithDescription___block_invoke;
     v9[3] = &unk_1E841A6B8;
-    v9[4] = a1;
-    a1 = [(_GCSyntheticDevice *)_GCSyntheticXbox360Controller deviceWithDescription:v3 creator:v9];
+    v9[4] = description;
+    description = [(_GCSyntheticDevice *)_GCSyntheticXbox360Controller deviceWithDescription:v3 creator:v9];
     os_activity_scope_leave(&state);
   }
 
   v7 = *MEMORY[0x1E69E9840];
 
-  return a1;
+  return description;
 }
 
 uint64_t __64__GCSyntheticDeviceManager__onqueue_setupDeviceWithDescription___block_invoke(uint64_t a1, void *a2)
@@ -595,25 +595,25 @@ uint64_t __64__GCSyntheticDeviceManager__onqueue_setupDeviceWithDescription___bl
   return result;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (self->_server == v11 && [v10 isEqualToString:@"activeControllerDevices"])
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (self->_server == objectCopy && [pathCopy isEqualToString:@"activeControllerDevices"])
   {
     state.opaque[0] = 0;
     state.opaque[1] = 0;
     v13 = _os_activity_create(&dword_1D2CD5000, "[Synthetic Device Manager] 'activeControllerDevices' changed", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
     os_activity_scope_enter(v13, &state);
-    v14 = [v12 objectForKeyedSubscript:*MEMORY[0x1E696A4F0]];
+    v14 = [changeCopy objectForKeyedSubscript:*MEMORY[0x1E696A4F0]];
     queue = self->_queue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __75__GCSyntheticDeviceManager_observeValueForKeyPath_ofObject_change_context___block_invoke;
     block[3] = &unk_1E8418C50;
     v23 = v14;
-    v24 = self;
+    selfCopy = self;
     v16 = v14;
     dispatch_async(queue, block);
     os_activity_scope_leave(&state);
@@ -621,11 +621,11 @@ uint64_t __64__GCSyntheticDeviceManager__onqueue_setupDeviceWithDescription___bl
 
   else
   {
-    if (self->_defaults != v11 || ![v10 isEqualToString:@"enableSyntheticDevices"])
+    if (self->_defaults != objectCopy || ![pathCopy isEqualToString:@"enableSyntheticDevices"])
     {
       v20.receiver = self;
       v20.super_class = GCSyntheticDeviceManager;
-      [(GCSyntheticDeviceManager *)&v20 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+      [(GCSyntheticDeviceManager *)&v20 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
       goto LABEL_13;
     }
 
@@ -633,7 +633,7 @@ uint64_t __64__GCSyntheticDeviceManager__onqueue_setupDeviceWithDescription___bl
     state.opaque[1] = 0;
     v13 = _os_activity_create(&dword_1D2CD5000, "[Synthetic Device Manager] Preference changed", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
     os_activity_scope_enter(v13, &state);
-    v17 = [v12 objectForKeyedSubscript:*MEMORY[0x1E696A4F0]];
+    v17 = [changeCopy objectForKeyedSubscript:*MEMORY[0x1E696A4F0]];
     v18 = getLogger();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
     {
@@ -679,23 +679,23 @@ LABEL_13:
 - (void)_onqueue_refreshSyntheticControllersEnabled
 {
   v25 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
     goto LABEL_13;
   }
 
-  dispatch_assert_queue_V2(*(a1 + 16));
-  if (*(a1 + 80))
+  dispatch_assert_queue_V2(*(self + 16));
+  if (*(self + 80))
   {
     v2 = getLogger();
     if (os_log_type_enabled(v2, OS_LOG_TYPE_DEBUG))
     {
-      v24 = *(a1 + 80);
+      v24 = *(self + 80);
       OUTLINED_FUNCTION_5_6();
       _os_log_debug_impl(v9, v10, v11, v12, v13, 0xCu);
     }
 
-    if (*(a1 + 96) != 1)
+    if (*(self + 96) != 1)
     {
       goto LABEL_11;
     }
@@ -703,7 +703,7 @@ LABEL_13:
     goto LABEL_8;
   }
 
-  if (*(a1 + 96))
+  if (*(self + 96))
   {
 LABEL_8:
     v3 = getLogger();
@@ -714,18 +714,18 @@ LABEL_8:
     }
 
 LABEL_11:
-    if (*(a1 + 112))
+    if (*(self + 112))
     {
-      [(GCSyntheticDeviceManager *)a1 _onqueue_setActiveDevices:?];
-      [*(a1 + 8) removeObserver:a1 forKeyPath:@"activeControllerDevices" context:0];
-      v8 = *(a1 + 112);
-      *(a1 + 112) = 0;
+      [(GCSyntheticDeviceManager *)self _onqueue_setActiveDevices:?];
+      [*(self + 8) removeObserver:self forKeyPath:@"activeControllerDevices" context:0];
+      v8 = *(self + 112);
+      *(self + 112) = 0;
     }
 
     goto LABEL_13;
   }
 
-  if (!*(a1 + 112))
+  if (!*(self + 112))
   {
     v5 = getLogger();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -734,11 +734,11 @@ LABEL_11:
       _os_log_debug_impl(v19, v20, v21, v22, v23, 2u);
     }
 
-    v6 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
-    v7 = *(a1 + 112);
-    *(a1 + 112) = v6;
+    strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    v7 = *(self + 112);
+    *(self + 112) = strongToStrongObjectsMapTable;
 
-    [*(a1 + 8) addObserver:a1 forKeyPath:@"activeControllerDevices" options:5 context:0];
+    [*(self + 8) addObserver:self forKeyPath:@"activeControllerDevices" options:5 context:0];
   }
 
 LABEL_13:
@@ -778,11 +778,11 @@ LABEL_13:
   return result;
 }
 
-- (uint64_t)_kernel_createDeviceWithProperties:(_DWORD *)a3 service:
+- (uint64_t)_kernel_createDeviceWithProperties:(_DWORD *)properties service:
 {
   v5 = a2;
   v6 = v5;
-  if (a1)
+  if (self)
   {
     v7 = IOCFSerialize(v5, 0);
     if (v7)
@@ -790,15 +790,15 @@ LABEL_13:
       v8 = v7;
       output = 0;
       outputCnt = 1;
-      v9 = *(a1 + 36);
+      v9 = *(self + 36);
       BytePtr = CFDataGetBytePtr(v7);
       Length = CFDataGetLength(v8);
-      a1 = IOConnectCallMethod(v9, 2u, 0, 0, BytePtr, Length, &output, &outputCnt, 0, 0);
-      if (!a1)
+      self = IOConnectCallMethod(v9, 2u, 0, 0, BytePtr, Length, &output, &outputCnt, 0, 0);
+      if (!self)
       {
-        if (a3)
+        if (properties)
         {
-          *a3 = output;
+          *properties = output;
         }
 
         else
@@ -819,18 +819,18 @@ LABEL_13:
         _os_log_impl(&dword_1D2CD5000, v12, OS_LOG_TYPE_INFO, "Serialization failed", buf, 2u);
       }
 
-      a1 = 3758097097;
+      self = 3758097097;
     }
   }
 
-  return a1;
+  return self;
 }
 
-- (void)_onqueue_teardownDevice:(uint64_t)a1
+- (void)_onqueue_teardownDevice:(uint64_t)device
 {
   v19 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (device)
   {
     v16.opaque[0] = 0;
     v16.opaque[1] = 0;
@@ -844,8 +844,8 @@ LABEL_13:
       _os_log_debug_impl(&dword_1D2CD5000, v5, OS_LOG_TYPE_DEBUG, "Teardown kernel synthetic device: %@", buf, 0xCu);
     }
 
-    v7 = [(_GCSyntheticDevice *)v3 identifier];
-    v8 = [(GCSyntheticDeviceManager *)a1 _kernel_terminateDeviceWithIdentifier:v7];
+    identifier = [(_GCSyntheticDevice *)v3 identifier];
+    v8 = [(GCSyntheticDeviceManager *)device _kernel_terminateDeviceWithIdentifier:identifier];
     if (!v8)
     {
       goto LABEL_12;
@@ -858,7 +858,7 @@ LABEL_13:
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v18 = v7;
+        v18 = identifier;
         v11 = "No kernel device with identifier '%@'.";
         v12 = v10;
         v13 = OS_LOG_TYPE_INFO;
@@ -890,11 +890,11 @@ LABEL_12:
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (uint64_t)_kernel_terminateDeviceWithIdentifier:(uint64_t)a1
+- (uint64_t)_kernel_terminateDeviceWithIdentifier:(uint64_t)identifier
 {
-  v2 = a1;
+  identifierCopy = identifier;
   v16[1] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (identifier)
   {
     v15 = @"_GCSyntheticDeviceIdentifier";
     v16[0] = a2;
@@ -906,10 +906,10 @@ LABEL_12:
     if (v6)
     {
       v7 = v6;
-      v8 = *(v2 + 36);
+      v8 = *(identifierCopy + 36);
       BytePtr = CFDataGetBytePtr(v6);
       Length = CFDataGetLength(v7);
-      v2 = IOConnectCallMethod(v8, 3u, 0, 0, BytePtr, Length, 0, 0, 0, 0);
+      identifierCopy = IOConnectCallMethod(v8, 3u, 0, 0, BytePtr, Length, 0, 0, 0, 0);
       CFRelease(v7);
     }
 
@@ -922,22 +922,22 @@ LABEL_12:
         _os_log_impl(&dword_1D2CD5000, v11, OS_LOG_TYPE_INFO, "Serialization failed", buf, 2u);
       }
 
-      v2 = 3758097097;
+      identifierCopy = 3758097097;
     }
   }
 
   v12 = *MEMORY[0x1E69E9840];
-  return v2;
+  return identifierCopy;
 }
 
-- (void)_onqueue_setActiveDevices:(uint64_t)a1
+- (void)_onqueue_setActiveDevices:(uint64_t)devices
 {
   v39 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (devices)
   {
-    dispatch_assert_queue_V2(*(a1 + 16));
-    v4 = [*(a1 + 112) copy];
+    dispatch_assert_queue_V2(*(devices + 16));
+    v4 = [*(devices + 112) copy];
     v5 = v4;
     if (v4)
     {
@@ -945,8 +945,8 @@ LABEL_12:
       v34 = 0u;
       v31 = 0u;
       v32 = 0u;
-      v6 = [v4 keyEnumerator];
-      v7 = [v6 countByEnumeratingWithState:&v31 objects:v38 count:16];
+      keyEnumerator = [v4 keyEnumerator];
+      v7 = [keyEnumerator countByEnumeratingWithState:&v31 objects:v38 count:16];
       if (v7)
       {
         v8 = v7;
@@ -958,7 +958,7 @@ LABEL_12:
           {
             if (*v32 != v9)
             {
-              objc_enumerationMutation(v6);
+              objc_enumerationMutation(keyEnumerator);
             }
 
             v11 = *(*(&v31 + 1) + 8 * v10);
@@ -969,19 +969,19 @@ LABEL_12:
               v13 = [v5 objectForKey:v11];
               if (!v13)
               {
-                v26 = [MEMORY[0x1E696AAA8] currentHandler];
-                [v26 handleFailureInMethod:sel__onqueue_setActiveDevices_ object:a1 file:@"GCSyntheticDeviceManager.m" lineNumber:449 description:{@"Bug in %s", "-[GCSyntheticDeviceManager _onqueue_setActiveDevices:]"}];
+                currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+                [currentHandler handleFailureInMethod:sel__onqueue_setActiveDevices_ object:devices file:@"GCSyntheticDeviceManager.m" lineNumber:449 description:{@"Bug in %s", "-[GCSyntheticDeviceManager _onqueue_setActiveDevices:]"}];
               }
 
-              [(GCSyntheticDeviceManager *)a1 _onqueue_teardownDevice:v13];
-              [*(a1 + 112) removeObjectForKey:v11];
+              [(GCSyntheticDeviceManager *)devices _onqueue_teardownDevice:v13];
+              [*(devices + 112) removeObjectForKey:v11];
             }
 
             ++v10;
           }
 
           while (v8 != v10);
-          v14 = [v6 countByEnumeratingWithState:&v31 objects:v38 count:16];
+          v14 = [keyEnumerator countByEnumeratingWithState:&v31 objects:v38 count:16];
           v8 = v14;
         }
 
@@ -1013,11 +1013,11 @@ LABEL_12:
 
             if (!v21)
             {
-              v22 = [v20 makeSyntheticController];
-              if (v22)
+              makeSyntheticController = [v20 makeSyntheticController];
+              if (makeSyntheticController)
               {
-                v23 = [(GCSyntheticDeviceManager *)a1 _onqueue_setupDeviceWithDescription:v22];
-                [*(a1 + 112) setObject:v23 forKey:v20];
+                v23 = [(GCSyntheticDeviceManager *)devices _onqueue_setupDeviceWithDescription:makeSyntheticController];
+                [*(devices + 112) setObject:v23 forKey:v20];
               }
 
               else

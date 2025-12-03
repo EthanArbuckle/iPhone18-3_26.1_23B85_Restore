@@ -1,30 +1,30 @@
 @interface MADPhotosFaceFastPassProcessingTask
-+ (id)taskWithCancelBlock:(id)a3 progressHandler:(id)a4 andCompletionHandler:(id)a5;
-- (BOOL)run:(id *)a3;
-- (MADPhotosFaceFastPassProcessingTask)initWithCancelBlock:(id)a3 progressHandler:(id)a4 andCompletionHandler:(id)a5;
-- (int)_requestAssetResource:(id)a3;
++ (id)taskWithCancelBlock:(id)block progressHandler:(id)handler andCompletionHandler:(id)completionHandler;
+- (BOOL)run:(id *)run;
+- (MADPhotosFaceFastPassProcessingTask)initWithCancelBlock:(id)block progressHandler:(id)handler andCompletionHandler:(id)completionHandler;
+- (int)_requestAssetResource:(id)resource;
 @end
 
 @implementation MADPhotosFaceFastPassProcessingTask
 
-- (MADPhotosFaceFastPassProcessingTask)initWithCancelBlock:(id)a3 progressHandler:(id)a4 andCompletionHandler:(id)a5
+- (MADPhotosFaceFastPassProcessingTask)initWithCancelBlock:(id)block progressHandler:(id)handler andCompletionHandler:(id)completionHandler
 {
-  v8 = a3;
-  v9 = a4;
+  blockCopy = block;
+  handlerCopy = handler;
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_1000FF3A8;
   v19[3] = &unk_100284038;
-  v10 = a5;
-  v20 = v10;
+  completionHandlerCopy = completionHandler;
+  v20 = completionHandlerCopy;
   v18.receiver = self;
   v18.super_class = MADPhotosFaceFastPassProcessingTask;
   v11 = [(MADPhotosFaceFastPassProcessingTask *)&v18 initWithCompletionHandler:v19];
   if (v11)
   {
-    if (v9)
+    if (handlerCopy)
     {
-      v12 = v9;
+      v12 = handlerCopy;
     }
 
     else
@@ -40,27 +40,27 @@
     downloadGroup = v11->_downloadGroup;
     v11->_downloadGroup = v15;
 
-    [(MADPhotosFaceFastPassProcessingTask *)v11 setCancelBlock:v8];
+    [(MADPhotosFaceFastPassProcessingTask *)v11 setCancelBlock:blockCopy];
   }
 
   return v11;
 }
 
-+ (id)taskWithCancelBlock:(id)a3 progressHandler:(id)a4 andCompletionHandler:(id)a5
++ (id)taskWithCancelBlock:(id)block progressHandler:(id)handler andCompletionHandler:(id)completionHandler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [[a1 alloc] initWithCancelBlock:v8 progressHandler:v9 andCompletionHandler:v10];
+  blockCopy = block;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  v11 = [[self alloc] initWithCancelBlock:blockCopy progressHandler:handlerCopy andCompletionHandler:completionHandlerCopy];
 
   return v11;
 }
 
-- (int)_requestAssetResource:(id)a3
+- (int)_requestAssetResource:(id)resource
 {
-  v4 = a3;
-  v5 = [v4 assetLocalIdentifier];
-  v6 = [NSString stringWithFormat:@"[Face-FP][Download][%@]", v5];
+  resourceCopy = resource;
+  assetLocalIdentifier = [resourceCopy assetLocalIdentifier];
+  v6 = [NSString stringWithFormat:@"[Face-FP][Download][%@]", assetLocalIdentifier];
 
   if (MediaAnalysisLogLevel() >= 6)
   {
@@ -70,7 +70,7 @@
       *buf = 138412546;
       v26 = v6;
       v27 = 2112;
-      v28 = v4;
+      v28 = resourceCopy;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v7, "%@ Attempt to download resource: %@", buf, 0x16u);
     }
   }
@@ -99,10 +99,10 @@
   v18[3] = &unk_100285C80;
   v12 = v10;
   v19 = v12;
-  v20 = self;
+  selfCopy = self;
   v13 = objc_retainBlock(v18);
   v14 = +[PHAssetResourceManager defaultManager];
-  v15 = [v14 requestFileURLForAssetResource:v4 options:v8 urlReceivedHandler:v11 completionHandler:v13];
+  v15 = [v14 requestFileURLForAssetResource:resourceCopy options:v8 urlReceivedHandler:v11 completionHandler:v13];
 
   if (!v15 && MediaAnalysisLogLevel() >= 3)
   {
@@ -118,7 +118,7 @@
   return v15;
 }
 
-- (BOOL)run:(id *)a3
+- (BOOL)run:(id *)run
 {
   v4 = DeviceWithGreymatterSupport();
   v5 = MediaAnalysisLogLevel();
@@ -135,13 +135,13 @@
       }
     }
 
-    v27 = [(MADPhotosFaceFastPassProcessingTask *)self completionHandler];
-    v27[2](v27, 0, 0);
+    completionHandler = [(MADPhotosFaceFastPassProcessingTask *)self completionHandler];
+    completionHandler[2](completionHandler, 0, 0);
 
     return 1;
   }
 
-  v183 = a3;
+  runCopy = run;
   if (v5 >= 5)
   {
     v6 = VCPLogToOSLogType[5];
@@ -179,25 +179,25 @@
   if (!v184)
   {
     v248 = NSLocalizedDescriptionKey;
-    v28 = [0 photoLibraryURL];
-    v29 = [v28 path];
-    v30 = [NSString stringWithFormat:@"%@ Failed to open Photo Library (%@)", @"[Face-FP]", v29];
+    photoLibraryURL = [0 photoLibraryURL];
+    path = [photoLibraryURL path];
+    v30 = [NSString stringWithFormat:@"%@ Failed to open Photo Library (%@)", @"[Face-FP]", path];
     v249 = v30;
     v31 = [NSDictionary dictionaryWithObjects:&v249 forKeys:&v248 count:1];
-    v182 = [NSError errorWithDomain:NSOSStatusErrorDomain code:-18 userInfo:v31];
+    librarySpecificFetchOptions = [NSError errorWithDomain:NSOSStatusErrorDomain code:-18 userInfo:v31];
 
-    v32 = v183;
+    v32 = runCopy;
     if (MediaAnalysisLogLevel() >= 3)
     {
       v33 = VCPLogToOSLogType[3];
       if (os_log_type_enabled(&_os_log_default, v33))
       {
-        v34 = [v182 description];
+        v34 = [librarySpecificFetchOptions description];
         *buf = 138412290;
         v218 = v34;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v33, "%@", buf, 0xCu);
 
-        v32 = v183;
+        v32 = runCopy;
       }
     }
 
@@ -212,25 +212,25 @@
   if (([v184 isReadyForAnalysisCPLInitialDownloadCompleted] & 1) == 0)
   {
     v246 = NSLocalizedDescriptionKey;
-    v37 = [v184 photoLibraryURL];
-    v38 = [v37 path];
-    v39 = [NSString stringWithFormat:@"%@ Photo Library not ready (initial download) for analysis (%@)", @"[Face-FP]", v38];
+    photoLibraryURL2 = [v184 photoLibraryURL];
+    path2 = [photoLibraryURL2 path];
+    v39 = [NSString stringWithFormat:@"%@ Photo Library not ready (initial download) for analysis (%@)", @"[Face-FP]", path2];
     v247 = v39;
     v40 = [NSDictionary dictionaryWithObjects:&v247 forKeys:&v246 count:1];
-    v182 = [NSError errorWithDomain:NSOSStatusErrorDomain code:-23812 userInfo:v40];
+    librarySpecificFetchOptions = [NSError errorWithDomain:NSOSStatusErrorDomain code:-23812 userInfo:v40];
 
-    v32 = v183;
+    v32 = runCopy;
     if (MediaAnalysisLogLevel() >= 3)
     {
       v41 = VCPLogToOSLogType[3];
       if (os_log_type_enabled(&_os_log_default, v41))
       {
-        v42 = [v182 description];
+        v42 = [librarySpecificFetchOptions description];
         *buf = 138412290;
         v218 = v42;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v41, "%@", buf, 0xCu);
 
-        v32 = v183;
+        v32 = runCopy;
       }
     }
 
@@ -242,10 +242,10 @@ LABEL_34:
     }
 
 LABEL_29:
-    v35 = v182;
+    v35 = librarySpecificFetchOptions;
     v185 = 0;
     v36 = *v32;
-    v182 = v35;
+    librarySpecificFetchOptions = v35;
     *v32 = v35;
     goto LABEL_205;
   }
@@ -253,15 +253,15 @@ LABEL_29:
   v12 = +[VCPWatchdog sharedWatchdog];
   [v12 pet];
 
-  v182 = [v184 librarySpecificFetchOptions];
+  librarySpecificFetchOptions = [v184 librarySpecificFetchOptions];
   v13 = [NSPredicate predicateWithFormat:@"(verifiedType = %d) OR (verifiedType = %d)", 1, 2];
-  [v182 setPredicate:v13];
+  [librarySpecificFetchOptions setPredicate:v13];
 
-  [v182 setMinimumVerifiedFaceCount:1];
+  [librarySpecificFetchOptions setMinimumVerifiedFaceCount:1];
   v14 = +[MADStateHandler sharedStateHandler];
-  [v14 addBreadcrumb:{@"%@ Fetching verified persons with fetchOptions: %@", @"[Face-FP]", v182}];
+  [v14 addBreadcrumb:{@"%@ Fetching verified persons with fetchOptions: %@", @"[Face-FP]", librarySpecificFetchOptions}];
 
-  v187 = [PHPerson fetchPersonsWithOptions:v182];
+  v187 = [PHPerson fetchPersonsWithOptions:librarySpecificFetchOptions];
   v15 = +[MADStateHandler sharedStateHandler];
   [v15 addBreadcrumb:{@"%@ Fetched %lu verified persons", @"[Face-FP]", objc_msgSend(v187, "count")}];
 
@@ -278,8 +278,8 @@ LABEL_29:
       }
     }
 
-    v141 = [(MADPhotosFaceFastPassProcessingTask *)self completionHandler];
-    v141[2](v141, 0, 0);
+    completionHandler2 = [(MADPhotosFaceFastPassProcessingTask *)self completionHandler];
+    completionHandler2[2](completionHandler2, 0, 0);
 
     v185 = 1;
     goto LABEL_204;
@@ -310,9 +310,9 @@ LABEL_29:
   [v186 setSortDescriptors:v19];
 
   v20 = [VUWGallery alloc];
-  v21 = [v184 vcp_visionCacheStorageDirectoryURL];
+  vcp_visionCacheStorageDirectoryURL = [v184 vcp_visionCacheStorageDirectoryURL];
   v208 = 0;
-  v171 = [v20 initWithClient:0 path:v21 error:&v208];
+  v171 = [v20 initWithClient:0 path:vcp_visionCacheStorageDirectoryURL error:&v208];
   v167 = v208;
 
   if (!v171)
@@ -330,12 +330,12 @@ LABEL_29:
       }
     }
 
-    if (v183)
+    if (runCopy)
     {
       v143 = [v167 copy];
       v185 = 0;
-      v181 = *v183;
-      *v183 = v143;
+      v181 = *runCopy;
+      *runCopy = v143;
     }
 
     else
@@ -391,7 +391,7 @@ LABEL_29:
     {
       v49 = [&off_1002962A8 count];
       v50 = [&off_1002962A8 objectAtIndexedSubscript:v44];
-      v51 = [v50 integerValue];
+      integerValue = [v50 integerValue];
 
       v52 = VCPSignPostLog();
       v53 = os_signpost_id_generate(v52);
@@ -401,11 +401,11 @@ LABEL_29:
       if (v53 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v54))
       {
         *buf = 134217984;
-        v218 = v51;
+        v218 = integerValue;
         _os_signpost_emit_with_name_impl(&_mh_execute_header, v55, OS_SIGNPOST_INTERVAL_BEGIN, v53, "MADPhotosFaceFastPassProcessingTask_FaceCrop", "VerifiedType_%ld", buf, 0xCu);
       }
 
-      v56 = [MADPhotosFaceCropProcessingTask taskWithPhotoLibrary:v184 gallery:v171 verifiedType:v51 limitPerPerson:v170 ignoreRejections:1];
+      v56 = [MADPhotosFaceCropProcessingTask taskWithPhotoLibrary:v184 gallery:v171 verifiedType:integerValue limitPerPerson:v170 ignoreRejections:1];
       v207[0] = _NSConcreteStackBlock;
       v207[1] = 3221225472;
       v207[2] = sub_1001028BC;
@@ -421,7 +421,7 @@ LABEL_29:
       if (v53 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v58))
       {
         *buf = 134217984;
-        v218 = v51;
+        v218 = integerValue;
         _os_signpost_emit_with_name_impl(&_mh_execute_header, v59, OS_SIGNPOST_INTERVAL_END, v53, "MADPhotosFaceFastPassProcessingTask_FaceCrop", "VerifiedType_%ld", buf, 0xCu);
       }
 
@@ -434,16 +434,16 @@ LABEL_29:
           _os_log_impl(&_mh_execute_header, &_os_log_default, type, "%@ cancelled", buf, 0xCu);
         }
 
-        if (v183)
+        if (runCopy)
         {
           v240 = NSLocalizedDescriptionKey;
           v241 = [NSString stringWithFormat:@"%@ cancelled", @"[Face-FP]"];
-          v176 = v241;
+          mad_allFacesFetchOptions = v241;
           v175 = [NSDictionary dictionaryWithObjects:&v241 forKeys:&v240 count:1];
           v60 = [NSError errorWithDomain:NSOSStatusErrorDomain code:-128 userInfo:?];
           v61 = 0;
-          v62 = *v183;
-          *v183 = v60;
+          v62 = *runCopy;
+          *runCopy = v60;
           goto LABEL_168;
         }
 
@@ -462,16 +462,16 @@ LABEL_169:
       if (v64 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v65))
       {
         *buf = 134217984;
-        v218 = v51;
+        v218 = integerValue;
         _os_signpost_emit_with_name_impl(&_mh_execute_header, v66, OS_SIGNPOST_INTERVAL_BEGIN, v64, "MADPhotosFaceFastPassProcessingTask_KeyFace", "VerifiedType_%ld", buf, 0xCu);
       }
 
-      v176 = [v184 mad_allFacesFetchOptions];
+      mad_allFacesFetchOptions = [v184 mad_allFacesFetchOptions];
       v67 = +[MADStateHandler sharedStateHandler];
-      [v67 addBreadcrumb:{@"%@ Fetching verified person faces with fetchOptions: %@", @"[Face-FP]", v176}];
+      [v67 addBreadcrumb:{@"%@ Fetching verified person faces with fetchOptions: %@", @"[Face-FP]", mad_allFacesFetchOptions}];
 
       v68 = [v43 objectAtIndexedSubscript:v44];
-      v175 = [PHFace fetchKeyFaceByPersonLocalIdentifierForPersons:v68 options:v176];
+      v175 = [PHFace fetchKeyFaceByPersonLocalIdentifierForPersons:v68 options:mad_allFacesFetchOptions];
 
       v69 = +[MADStateHandler sharedStateHandler];
       [v69 addBreadcrumb:{@"%@ Fetched %lu verified person faces", @"[Face-FP]", objc_msgSend(v175, "count")}];
@@ -479,8 +479,8 @@ LABEL_169:
       v70 = +[MADStateHandler sharedStateHandler];
       [v70 addBreadcrumb:{@"%@ Fetching assets by verified faces", @"[Face-FP]"}];
 
-      v71 = [v175 allValues];
-      v173 = [PHAsset fetchAssetsGroupedByFaceUUIDForFaces:v71];
+      allValues = [v175 allValues];
+      v173 = [PHAsset fetchAssetsGroupedByFaceUUIDForFaces:allValues];
 
       v72 = +[MADStateHandler sharedStateHandler];
       [v72 addBreadcrumb:{@"%@ Fetched %lu assets by verified faces", @"[Face-FP]", objc_msgSend(v173, "count")}];
@@ -503,15 +503,15 @@ LABEL_169:
           _os_log_impl(&_mh_execute_header, &_os_log_default, type, "%@ cancelled", buf, 0xCu);
         }
 
-        if (v183)
+        if (runCopy)
         {
           v238 = NSLocalizedDescriptionKey;
           v75 = [NSString stringWithFormat:@"%@ cancelled", @"[Face-FP]"];
           v239 = v75;
           v76 = [NSDictionary dictionaryWithObjects:&v239 forKeys:&v238 count:1];
           v77 = [NSError errorWithDomain:NSOSStatusErrorDomain code:-128 userInfo:v76];
-          v78 = *v183;
-          *v183 = v77;
+          v78 = *runCopy;
+          *runCopy = v77;
         }
 
         goto LABEL_75;
@@ -552,15 +552,15 @@ LABEL_169:
           _os_log_impl(&_mh_execute_header, &_os_log_default, type, "%@ cancelled", buf, 0xCu);
         }
 
-        if (v183)
+        if (runCopy)
         {
           v236 = NSLocalizedDescriptionKey;
           v86 = [NSString stringWithFormat:@"%@ cancelled", @"[Face-FP]"];
           v237 = v86;
           v87 = [NSDictionary dictionaryWithObjects:&v237 forKeys:&v236 count:1];
           v88 = [NSError errorWithDomain:NSOSStatusErrorDomain code:-128 userInfo:v87];
-          v89 = *v183;
-          *v183 = v88;
+          v89 = *runCopy;
+          *runCopy = v88;
         }
 
 LABEL_75:
@@ -574,8 +574,8 @@ LABEL_168:
       }
 
       v90 = [VCPMADQuickFaceIDAssetProcessingTask alloc];
-      v91 = [v74 allObjects];
-      v92 = [v184 photoLibraryURL];
+      allObjects = [v74 allObjects];
+      photoLibraryURL3 = [v184 photoLibraryURL];
       v200[0] = _NSConcreteStackBlock;
       v200[1] = 3221225472;
       v200[2] = sub_100102A1C;
@@ -586,7 +586,7 @@ LABEL_168:
       v198[2] = sub_100102A24;
       v198[3] = &unk_1002865E0;
       v199 = @"[Face-FP]";
-      v166 = [(VCPMADQuickFaceIDAssetProcessingTask *)v90 initWithLocalIdentifiers:v91 fromPhotoLibraryWithURL:v92 cancelBlock:v200 progressHandler:0 completionHandler:v198];
+      v166 = [(VCPMADQuickFaceIDAssetProcessingTask *)v90 initWithLocalIdentifiers:allObjects fromPhotoLibraryWithURL:photoLibraryURL3 cancelBlock:v200 progressHandler:0 completionHandler:v198];
 
       v93 = [(VCPMADQuickFaceIDAssetProcessingTask *)v166 run];
       if (v93)
@@ -600,11 +600,11 @@ LABEL_168:
           _os_log_impl(&_mh_execute_header, &_os_log_default, v165, "%@ Failed to analyze key faces from assets (err:%d)", buf, 0x12u);
         }
 
-        if (v183)
+        if (runCopy)
         {
           v234 = NSLocalizedDescriptionKey;
-          v94 = [NSString stringWithFormat:@"%@ Failed to analyze key faces from assets (err:%d)", @"[Face-FP]", v93];
-          v235 = v94;
+          mad_unclusteredFacesFetchOptions = [NSString stringWithFormat:@"%@ Failed to analyze key faces from assets (err:%d)", @"[Face-FP]", v93];
+          v235 = mad_unclusteredFacesFetchOptions;
           v169 = [NSDictionary dictionaryWithObjects:&v235 forKeys:&v234 count:1];
           v95 = [NSError errorWithDomain:NSOSStatusErrorDomain code:-128 userInfo:?];
           goto LABEL_91;
@@ -622,7 +622,7 @@ LABEL_166:
       if (v64 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v96))
       {
         *buf = 134217984;
-        v218 = v51;
+        v218 = integerValue;
         _os_signpost_emit_with_name_impl(&_mh_execute_header, v97, OS_SIGNPOST_INTERVAL_END, v64, "MADPhotosFaceFastPassProcessingTask_KeyFace", "VerifiedType_%ld", buf, 0xCu);
       }
 
@@ -636,20 +636,20 @@ LABEL_166:
           _os_log_impl(&_mh_execute_header, &_os_log_default, type, "%@ cancelled", buf, 0xCu);
         }
 
-        if (!v183)
+        if (!runCopy)
         {
           goto LABEL_92;
         }
 
         v232 = NSLocalizedDescriptionKey;
-        v94 = [NSString stringWithFormat:@"%@ cancelled", @"[Face-FP]"];
-        v233 = v94;
+        mad_unclusteredFacesFetchOptions = [NSString stringWithFormat:@"%@ cancelled", @"[Face-FP]"];
+        v233 = mad_unclusteredFacesFetchOptions;
         v169 = [NSDictionary dictionaryWithObjects:&v233 forKeys:&v232 count:1];
         v95 = [NSError errorWithDomain:NSOSStatusErrorDomain code:-128 userInfo:?];
 LABEL_91:
         v61 = 0;
-        v98 = *v183;
-        *v183 = v95;
+        v98 = *runCopy;
+        *runCopy = v95;
         goto LABEL_165;
       }
 
@@ -661,19 +661,19 @@ LABEL_91:
       if (v100 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v101))
       {
         *buf = 134217984;
-        v218 = v51;
+        v218 = integerValue;
         _os_signpost_emit_with_name_impl(&_mh_execute_header, v102, OS_SIGNPOST_INTERVAL_BEGIN, v100, "MADPhotosFaceFastPassProcessingTask_UVCluster", "VerifiedType_%ld", buf, 0xCu);
       }
 
-      v94 = [v184 mad_unclusteredFacesFetchOptions];
+      mad_unclusteredFacesFetchOptions = [v184 mad_unclusteredFacesFetchOptions];
       v103 = +[MADStateHandler sharedStateHandler];
-      [v103 addBreadcrumb:{@"%@ Fetching unclustered face assets with fetchOptions: %@", @"[Face-FP]", v94}];
+      [v103 addBreadcrumb:{@"%@ Fetching unclustered face assets with fetchOptions: %@", @"[Face-FP]", mad_unclusteredFacesFetchOptions}];
 
       v169 = [PHAsset vcp_fetchOptionsForLibrary:v184 forTaskID:3];
-      v104 = [v74 allObjects];
-      v159 = [PHAsset fetchAssetsWithLocalIdentifiers:v104 options:v169];
+      allObjects2 = [v74 allObjects];
+      v159 = [PHAsset fetchAssetsWithLocalIdentifiers:allObjects2 options:v169];
 
-      v160 = [PHFace fetchFacesInAssets:v159 options:v94];
+      v160 = [PHFace fetchFacesInAssets:v159 options:mad_unclusteredFacesFetchOptions];
       v105 = +[MADStateHandler sharedStateHandler];
       [v105 addBreadcrumb:{@"%@ Fetched %d unclustered face assets", @"[Face-FP]", objc_msgSend(v160, "count")}];
 
@@ -686,15 +686,15 @@ LABEL_91:
           _os_log_impl(&_mh_execute_header, &_os_log_default, type, "%@ cancelled", buf, 0xCu);
         }
 
-        if (v183)
+        if (runCopy)
         {
           v230 = NSLocalizedDescriptionKey;
           v106 = [NSString stringWithFormat:@"%@ cancelled", @"[Face-FP]"];
           v231 = v106;
           v107 = [NSDictionary dictionaryWithObjects:&v231 forKeys:&v230 count:1];
           v108 = [NSError errorWithDomain:NSOSStatusErrorDomain code:-128 userInfo:v107];
-          v109 = *v183;
-          *v183 = v108;
+          v109 = *runCopy;
+          *runCopy = v108;
         }
 
         goto LABEL_117;
@@ -735,11 +735,11 @@ LABEL_91:
           _os_log_impl(&_mh_execute_header, &_os_log_default, v165, "%@ Failed to add faces to Gallery - %@", buf, 0x16u);
         }
 
-        if (v183)
+        if (runCopy)
         {
           v125 = [v112 copy];
-          v126 = *v183;
-          *v183 = v125;
+          v126 = *runCopy;
+          *runCopy = v125;
         }
 
         v61 = 0;
@@ -769,15 +769,15 @@ LABEL_111:
           _os_log_impl(&_mh_execute_header, &_os_log_default, type, "%@ cancelled", buf, 0xCu);
         }
 
-        if (v183)
+        if (runCopy)
         {
           v228 = NSLocalizedDescriptionKey;
           v113 = [NSString stringWithFormat:@"%@ cancelled", @"[Face-FP]"];
           v229 = v113;
           v114 = [NSDictionary dictionaryWithObjects:&v229 forKeys:&v228 count:1];
           v115 = [NSError errorWithDomain:NSOSStatusErrorDomain code:-128 userInfo:v114];
-          v116 = *v183;
-          *v183 = v115;
+          v116 = *runCopy;
+          *runCopy = v115;
         }
 
 LABEL_117:
@@ -817,7 +817,7 @@ LABEL_117:
         if (v100 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v119))
         {
           *buf = 134217984;
-          v218 = v51;
+          v218 = integerValue;
           _os_signpost_emit_with_name_impl(&_mh_execute_header, v120, OS_SIGNPOST_INTERVAL_END, v100, "MADPhotosFaceFastPassProcessingTask_UVCluster", "VerifiedType_%ld", buf, 0xCu);
         }
 
@@ -832,15 +832,15 @@ LABEL_117:
             _os_log_impl(&_mh_execute_header, &_os_log_default, type, "%@ cancelled", buf, 0xCu);
           }
 
-          if (v183)
+          if (runCopy)
           {
             v226 = NSLocalizedDescriptionKey;
             v121 = [NSString stringWithFormat:@"%@ cancelled", @"[Face-FP]"];
             v227 = v121;
             v122 = [NSDictionary dictionaryWithObjects:&v227 forKeys:&v226 count:1];
             v123 = [NSError errorWithDomain:NSOSStatusErrorDomain code:-128 userInfo:v122];
-            v124 = *v183;
-            *v183 = v123;
+            v124 = *runCopy;
+            *runCopy = v123;
           }
 
           goto LABEL_145;
@@ -854,7 +854,7 @@ LABEL_117:
         if (v158 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v130))
         {
           *buf = 134217984;
-          v218 = v51;
+          v218 = integerValue;
           _os_signpost_emit_with_name_impl(&_mh_execute_header, v131, OS_SIGNPOST_INTERVAL_BEGIN, v158, "MADPhotosFaceFastPassProcessingTask_UVPersonalization", "VerifiedType_%ld", buf, 0xCu);
         }
 
@@ -884,7 +884,7 @@ LABEL_117:
           if (v158 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v134))
           {
             *buf = 134217984;
-            v218 = v51;
+            v218 = integerValue;
             _os_signpost_emit_with_name_impl(&_mh_execute_header, v135, OS_SIGNPOST_INTERVAL_END, v158, "MADPhotosFaceFastPassProcessingTask_UVPersonalization", "VerifiedType_%ld", buf, 0xCu);
           }
 
@@ -906,11 +906,11 @@ LABEL_117:
             _os_log_impl(&_mh_execute_header, &_os_log_default, v165, "%@ Failed to update VUWGallery for Personalization plugin - %@", buf, 0x16u);
           }
 
-          if (v183)
+          if (runCopy)
           {
             v138 = [v168 copy];
-            v139 = *v183;
-            *v183 = v138;
+            v139 = *runCopy;
+            *runCopy = v138;
           }
         }
       }
@@ -926,11 +926,11 @@ LABEL_117:
           _os_log_impl(&_mh_execute_header, &_os_log_default, v165, "%@ Failed to update Gallery - %@", buf, 0x16u);
         }
 
-        if (v183)
+        if (runCopy)
         {
           v127 = [v118 copy];
-          v128 = *v183;
-          *v183 = v127;
+          v128 = *runCopy;
+          *runCopy = v127;
         }
 
 LABEL_145:
@@ -948,15 +948,15 @@ LABEL_145:
       _os_log_impl(&_mh_execute_header, &_os_log_default, type, "%@ cancelled", buf, 0xCu);
     }
 
-    if (v183)
+    if (runCopy)
     {
       v242 = NSLocalizedDescriptionKey;
       v177 = [NSString stringWithFormat:@"%@ cancelled", @"[Face-FP]"];
       v243 = v177;
       v46 = [NSDictionary dictionaryWithObjects:&v243 forKeys:&v242 count:1];
       v47 = [NSError errorWithDomain:NSOSStatusErrorDomain code:-128 userInfo:v46];
-      v48 = *v183;
-      *v183 = v47;
+      v48 = *runCopy;
+      *runCopy = v47;
 
       goto LABEL_55;
     }
@@ -1043,8 +1043,8 @@ LABEL_190:
     _os_log_impl(&_mh_execute_header, &_os_log_default, v164, "%@ Screened %lu verified identities, processed %lu key-face assets, %lu additional assets, and clustered %lu faces", buf, 0x34u);
   }
 
-  v153 = [(MADPhotosFaceFastPassProcessingTask *)self completionHandler];
-  v153[2](v153, 0, 0);
+  completionHandler3 = [(MADPhotosFaceFastPassProcessingTask *)self completionHandler];
+  completionHandler3[2](completionHandler3, 0, 0);
 
 LABEL_202:
 LABEL_203:

@@ -1,7 +1,7 @@
 @interface NSMutableArray
 - (id)dequeue;
 - (void)shuffle;
-- (void)shuffleWithSeed:(int)a3;
+- (void)shuffleWithSeed:(int)seed;
 @end
 
 @implementation NSMutableArray
@@ -25,12 +25,12 @@
   }
 }
 
-- (void)shuffleWithSeed:(int)a3
+- (void)shuffleWithSeed:(int)seed
 {
   v5 = [(NSMutableArray *)self count];
   if (v5 >= 2)
   {
-    srand(a3);
+    srand(seed);
     v6 = (v5 - 1);
     do
     {

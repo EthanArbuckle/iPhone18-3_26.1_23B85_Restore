@@ -1,8 +1,8 @@
 @interface HKSPSelectableSubtitleCell
 + (int64_t)cellStyle;
 - (BOOL)canBeChecked;
-- (_TtC25NanoBedtimeBridgeSettings26HKSPSelectableSubtitleCell)initWithCoder:(id)a3;
-- (_TtC25NanoBedtimeBridgeSettings26HKSPSelectableSubtitleCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (_TtC25NanoBedtimeBridgeSettings26HKSPSelectableSubtitleCell)initWithCoder:(id)coder;
+- (_TtC25NanoBedtimeBridgeSettings26HKSPSelectableSubtitleCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 @end
 
 @implementation HKSPSelectableSubtitleCell
@@ -33,7 +33,7 @@
   return 1;
 }
 
-- (_TtC25NanoBedtimeBridgeSettings26HKSPSelectableSubtitleCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC25NanoBedtimeBridgeSettings26HKSPSelectableSubtitleCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   sub_117CC();
   sub_117BC();
@@ -43,20 +43,20 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  if (a4)
+  if (identifier)
   {
     sub_116EC();
-    a4 = sub_116BC();
+    identifier = sub_116BC();
   }
 
   v9.receiver = self;
   v9.super_class = type metadata accessor for HKSPSelectableSubtitleCell();
-  v7 = [(HKSPSelectableSubtitleCell *)&v9 initWithStyle:a3 reuseIdentifier:a4];
+  v7 = [(HKSPSelectableSubtitleCell *)&v9 initWithStyle:style reuseIdentifier:identifier];
 
   return v7;
 }
 
-- (_TtC25NanoBedtimeBridgeSettings26HKSPSelectableSubtitleCell)initWithCoder:(id)a3
+- (_TtC25NanoBedtimeBridgeSettings26HKSPSelectableSubtitleCell)initWithCoder:(id)coder
 {
   sub_117CC();
   sub_117BC();
@@ -68,8 +68,8 @@
 
   v8.receiver = self;
   v8.super_class = type metadata accessor for HKSPSelectableSubtitleCell();
-  v5 = a3;
-  v6 = [(HKSPSelectableSubtitleCell *)&v8 initWithCoder:v5];
+  coderCopy = coder;
+  v6 = [(HKSPSelectableSubtitleCell *)&v8 initWithCoder:coderCopy];
 
   if (v6)
   {

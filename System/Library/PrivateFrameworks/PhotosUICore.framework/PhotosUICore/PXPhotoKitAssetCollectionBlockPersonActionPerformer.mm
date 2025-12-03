@@ -1,33 +1,33 @@
 @interface PXPhotoKitAssetCollectionBlockPersonActionPerformer
-+ (BOOL)canPerformOnAssetCollectionReference:(id)a3 withInputs:(id)a4;
-+ (id)localizedTitleForPerson:(id)a3;
-+ (id)localizedTitleForUseCase:(unint64_t)a3 assetCollectionReference:(id)a4 withInputs:(id)a5;
-+ (id)systemImageNameForAssetCollectionReference:(id)a3 withInputs:(id)a4;
-+ (id)systemImageNameForPerson:(id)a3;
++ (BOOL)canPerformOnAssetCollectionReference:(id)reference withInputs:(id)inputs;
++ (id)localizedTitleForPerson:(id)person;
++ (id)localizedTitleForUseCase:(unint64_t)case assetCollectionReference:(id)reference withInputs:(id)inputs;
++ (id)systemImageNameForAssetCollectionReference:(id)reference withInputs:(id)inputs;
++ (id)systemImageNameForPerson:(id)person;
 - (void)performUserInteractionTask;
 @end
 
 @implementation PXPhotoKitAssetCollectionBlockPersonActionPerformer
 
-+ (id)systemImageNameForAssetCollectionReference:(id)a3 withInputs:(id)a4
++ (id)systemImageNameForAssetCollectionReference:(id)reference withInputs:(id)inputs
 {
-  v5 = PXFirstPersonFromAssetCollectionActionPerformerInput(a4);
-  v6 = [a1 systemImageNameForPerson:v5];
+  v5 = PXFirstPersonFromAssetCollectionActionPerformerInput(inputs);
+  v6 = [self systemImageNameForPerson:v5];
 
   return v6;
 }
 
-+ (id)localizedTitleForUseCase:(unint64_t)a3 assetCollectionReference:(id)a4 withInputs:(id)a5
++ (id)localizedTitleForUseCase:(unint64_t)case assetCollectionReference:(id)reference withInputs:(id)inputs
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (a3 - 1 >= 2)
+  referenceCopy = reference;
+  inputsCopy = inputs;
+  v11 = inputsCopy;
+  if (case - 1 >= 2)
   {
-    if (!a3)
+    if (!case)
     {
-      v15 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v15 handleFailureInMethod:a2 object:a1 file:@"PXPhotoKitAssetCollectionBlockPersonActionPerformer.m" lineNumber:94 description:@"Code which should be unreachable has been reached"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotoKitAssetCollectionBlockPersonActionPerformer.m" lineNumber:94 description:@"Code which should be unreachable has been reached"];
 
       abort();
     }
@@ -37,29 +37,29 @@
 
   else
   {
-    v12 = PXFirstPersonFromAssetCollectionActionPerformerInput(v10);
-    v13 = [a1 localizedTitleForPerson:v12];
+    v12 = PXFirstPersonFromAssetCollectionActionPerformerInput(inputsCopy);
+    v13 = [self localizedTitleForPerson:v12];
   }
 
   return v13;
 }
 
-+ (BOOL)canPerformOnAssetCollectionReference:(id)a3 withInputs:(id)a4
++ (BOOL)canPerformOnAssetCollectionReference:(id)reference withInputs:(id)inputs
 {
-  v5 = a4;
+  inputsCopy = inputs;
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v5 people];
+    people = [inputsCopy people];
   }
 
   else
   {
-    v6 = 0;
+    people = 0;
   }
 
-  if ([v6 count] == 1)
+  if ([people count] == 1)
   {
-    v7 = [a1 canPerformOn:v6];
+    v7 = [self canPerformOn:people];
   }
 
   else
@@ -70,15 +70,15 @@
   return v7;
 }
 
-+ (id)systemImageNameForPerson:(id)a3
++ (id)systemImageNameForPerson:(id)person
 {
-  v3 = a3;
-  [v3 fetchPropertySetsIfNeeded];
-  v4 = [v3 userFeedbackProperties];
+  personCopy = person;
+  [personCopy fetchPropertySetsIfNeeded];
+  userFeedbackProperties = [personCopy userFeedbackProperties];
 
-  v5 = [v4 userFeedback];
+  userFeedback = [userFeedbackProperties userFeedback];
 
-  if (v5)
+  if (userFeedback)
   {
     return @"plus.circle";
   }
@@ -89,16 +89,16 @@
   }
 }
 
-+ (id)localizedTitleForPerson:(id)a3
++ (id)localizedTitleForPerson:(id)person
 {
-  v3 = a3;
-  v4 = [v3 px_localizedName];
-  [v3 fetchPropertySetsIfNeeded];
-  v5 = [v3 userFeedbackProperties];
-  v6 = [v5 userFeedback];
+  personCopy = person;
+  px_localizedName = [personCopy px_localizedName];
+  [personCopy fetchPropertySetsIfNeeded];
+  userFeedbackProperties = [personCopy userFeedbackProperties];
+  userFeedback = [userFeedbackProperties userFeedback];
 
-  v7 = [v4 length];
-  if (v6)
+  v7 = [px_localizedName length];
+  if (userFeedback)
   {
     if (v7)
     {
@@ -115,7 +115,7 @@
     {
       v8 = @"PXPeopleBlockPersonActionTitleNamed";
 LABEL_6:
-      PXLocalizedStringForPersonOrPetAndVisibility(v3, 0, v8);
+      PXLocalizedStringForPersonOrPetAndVisibility(personCopy, 0, v8);
       objc_claimAutoreleasedReturnValue();
       PXStringWithValidatedFormat();
     }
@@ -123,7 +123,7 @@ LABEL_6:
     v9 = @"PXPeopleBlockPersonActionTitleNoName";
   }
 
-  v10 = PXLocalizedStringForPersonOrPetAndVisibility(v3, 0, v9);
+  v10 = PXLocalizedStringForPersonOrPetAndVisibility(personCopy, 0, v9);
 
   return v10;
 }
@@ -131,23 +131,23 @@ LABEL_6:
 - (void)performUserInteractionTask
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [(PXPhotoKitAssetCollectionActionPerformer *)self people];
-  v4 = [v3 firstObject];
+  people = [(PXPhotoKitAssetCollectionActionPerformer *)self people];
+  firstObject = [people firstObject];
 
   v5 = PLMemoriesGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v18 = v4;
+    v18 = firstObject;
     _os_log_impl(&dword_1A3C1C000, v5, OS_LOG_TYPE_DEFAULT, "Attempting to block person: %@", buf, 0xCu);
   }
 
-  v6 = [v4 photoLibrary];
+  photoLibrary = [firstObject photoLibrary];
 
-  if (!v6)
+  if (!photoLibrary)
   {
-    [v4 photoLibrary];
-    v11 = [MEMORY[0x1E696ABC0] px_genericErrorWithDebugDescription:{@"Failed to block person because person and/or its photo library was nil. Person: %@ photoLibrary: %@", v4, objc_claimAutoreleasedReturnValue()}];
+    [firstObject photoLibrary];
+    v11 = [MEMORY[0x1E696ABC0] px_genericErrorWithDebugDescription:{@"Failed to block person because person and/or its photo library was nil. Person: %@ photoLibrary: %@", firstObject, objc_claimAutoreleasedReturnValue()}];
     v12 = PLMemoriesGetLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
@@ -171,7 +171,7 @@ LABEL_6:
 
   objc_initWeak(buf, self);
   v9 = self->_suggestLessPeopleHelper;
-  v16 = v4;
+  v16 = firstObject;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v16 count:1];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;

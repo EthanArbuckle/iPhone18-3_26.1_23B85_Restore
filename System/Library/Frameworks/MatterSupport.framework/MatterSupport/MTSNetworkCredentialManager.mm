@@ -1,63 +1,63 @@
 @interface MTSNetworkCredentialManager
-+ (BOOL)threadCredentialManagementSupportedForCommissionee:(id)a3;
++ (BOOL)threadCredentialManagementSupportedForCommissionee:(id)commissionee;
 + (id)logCategory;
-+ (id)threadCredentialManagementEndpoint:(id)a3;
++ (id)threadCredentialManagementEndpoint:(id)endpoint;
 - (MTSNetworkCredentialManager)init;
-- (MTSNetworkCredentialManager)initWithServerProxy:(id)a3;
+- (MTSNetworkCredentialManager)initWithServerProxy:(id)proxy;
 - (void)dealloc;
-- (void)retrievePreferredThreadCredentialsOrCreateWithDataset:(id)a3 completionHandler:(id)a4;
-- (void)retrievePreferredThreadCredentialsWithCompletionHandler:(id)a3;
-- (void)retrievePreferredThreadCredentialsWithOptions:(unint64_t)a3 completionHandler:(id)a4;
+- (void)retrievePreferredThreadCredentialsOrCreateWithDataset:(id)dataset completionHandler:(id)handler;
+- (void)retrievePreferredThreadCredentialsWithCompletionHandler:(id)handler;
+- (void)retrievePreferredThreadCredentialsWithOptions:(unint64_t)options completionHandler:(id)handler;
 @end
 
 @implementation MTSNetworkCredentialManager
 
-- (void)retrievePreferredThreadCredentialsOrCreateWithDataset:(id)a3 completionHandler:(id)a4
+- (void)retrievePreferredThreadCredentialsOrCreateWithDataset:(id)dataset completionHandler:(id)handler
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  datasetCopy = dataset;
+  handlerCopy = handler;
+  if (!datasetCopy)
   {
     _HMFPreconditionFailure();
 LABEL_7:
     _HMFPreconditionFailure();
   }
 
-  v8 = v7;
-  if (!v7)
+  v8 = handlerCopy;
+  if (!handlerCopy)
   {
     goto LABEL_7;
   }
 
   v9 = [objc_alloc(MEMORY[0x277D0F770]) initWithName:@"Retrieve or create preferred Thread credentials"];
   v10 = objc_autoreleasePoolPush();
-  v11 = self;
+  selfCopy = self;
   v12 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
     v13 = HMFGetLogIdentifier();
-    v14 = [v9 identifier];
-    v15 = [v14 shortDescription];
+    identifier = [v9 identifier];
+    shortDescription = [identifier shortDescription];
     *buf = 138543618;
     v24 = v13;
     v25 = 2114;
-    v26 = v15;
+    v26 = shortDescription;
     _os_log_impl(&dword_239824000, v12, OS_LOG_TYPE_INFO, "%{public}@[%{public}@] Retrieving or creating preferred Thread credentials", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v10);
-  v16 = [(MTSNetworkCredentialManager *)v11 serverProxy];
+  serverProxy = [(MTSNetworkCredentialManager *)selfCopy serverProxy];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __103__MTSNetworkCredentialManager_retrievePreferredThreadCredentialsOrCreateWithDataset_completionHandler___block_invoke;
   v20[3] = &unk_278AA1978;
-  v20[4] = v11;
+  v20[4] = selfCopy;
   v21 = v9;
   v22 = v8;
   v17 = v8;
   v18 = v9;
-  [v16 retrievePreferredThreadCredentialsOrCreateWithDataset:v6 completionHandler:v20];
+  [serverProxy retrievePreferredThreadCredentialsOrCreateWithDataset:datasetCopy completionHandler:v20];
 
   v19 = *MEMORY[0x277D85DE8];
 }
@@ -115,44 +115,44 @@ LABEL_6:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)retrievePreferredThreadCredentialsWithCompletionHandler:(id)a3
+- (void)retrievePreferredThreadCredentialsWithCompletionHandler:(id)handler
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     _HMFPreconditionFailure();
   }
 
-  v5 = v4;
+  v5 = handlerCopy;
   v6 = [objc_alloc(MEMORY[0x277D0F770]) initWithName:@"Retrieve preferred Thread credentials"];
   v7 = objc_autoreleasePoolPush();
-  v8 = self;
+  selfCopy = self;
   v9 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     v10 = HMFGetLogIdentifier();
-    v11 = [v6 identifier];
-    v12 = [v11 shortDescription];
+    identifier = [v6 identifier];
+    shortDescription = [identifier shortDescription];
     *buf = 138543618;
     v21 = v10;
     v22 = 2114;
-    v23 = v12;
+    v23 = shortDescription;
     _os_log_impl(&dword_239824000, v9, OS_LOG_TYPE_INFO, "%{public}@[%{public}@] Retrieving preferred Thread credentials", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v7);
-  v13 = [(MTSNetworkCredentialManager *)v8 serverProxy];
+  serverProxy = [(MTSNetworkCredentialManager *)selfCopy serverProxy];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __87__MTSNetworkCredentialManager_retrievePreferredThreadCredentialsWithCompletionHandler___block_invoke;
   v17[3] = &unk_278AA1978;
-  v17[4] = v8;
+  v17[4] = selfCopy;
   v18 = v6;
   v19 = v5;
   v14 = v5;
   v15 = v6;
-  [v13 retrievePreferredThreadCredentialsOrCreateWithDataset:0 completionHandler:v17];
+  [serverProxy retrievePreferredThreadCredentialsOrCreateWithDataset:0 completionHandler:v17];
 
   v16 = *MEMORY[0x277D85DE8];
 }
@@ -210,17 +210,17 @@ LABEL_6:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)retrievePreferredThreadCredentialsWithOptions:(unint64_t)a3 completionHandler:(id)a4
+- (void)retrievePreferredThreadCredentialsWithOptions:(unint64_t)options completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = v6;
-  if (!a3)
+  handlerCopy = handler;
+  v7 = handlerCopy;
+  if (!options)
   {
-    [(MTSNetworkCredentialManager *)self retrievePreferredThreadCredentialsWithCompletionHandler:v6];
+    [(MTSNetworkCredentialManager *)self retrievePreferredThreadCredentialsWithCompletionHandler:handlerCopy];
     goto LABEL_5;
   }
 
-  if (v6)
+  if (handlerCopy)
   {
     v8 = dispatch_get_global_queue(21, 0);
     block[0] = MEMORY[0x277D85DD0];
@@ -305,12 +305,12 @@ LABEL_6:
   [(MTSNetworkCredentialManager *)&v3 dealloc];
 }
 
-- (MTSNetworkCredentialManager)initWithServerProxy:(id)a3
+- (MTSNetworkCredentialManager)initWithServerProxy:(id)proxy
 {
-  v4 = a3;
-  if (v4)
+  proxyCopy = proxy;
+  if (proxyCopy)
   {
-    v5 = v4;
+    v5 = proxyCopy;
     v11.receiver = self;
     v11.super_class = MTSNetworkCredentialManager;
     v6 = [(MTSNetworkCredentialManager *)&v11 init];
@@ -335,21 +335,21 @@ LABEL_6:
   return v4;
 }
 
-+ (BOOL)threadCredentialManagementSupportedForCommissionee:(id)a3
++ (BOOL)threadCredentialManagementSupportedForCommissionee:(id)commissionee
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 rootEndpoint];
-  if (v5)
+  commissioneeCopy = commissionee;
+  rootEndpoint = [commissioneeCopy rootEndpoint];
+  if (rootEndpoint)
   {
-    v6 = [a1 threadCredentialManagementEndpoint:v5];
+    v6 = [self threadCredentialManagementEndpoint:rootEndpoint];
     v7 = v6 != 0;
   }
 
   else
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = a1;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
@@ -367,19 +367,19 @@ LABEL_6:
   return v7;
 }
 
-+ (id)threadCredentialManagementEndpoint:(id)a3
++ (id)threadCredentialManagementEndpoint:(id)endpoint
 {
   v33 = *MEMORY[0x277D85DE8];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v3 = [a3 children];
-  v20 = [v3 countByEnumeratingWithState:&v27 objects:v32 count:16];
+  children = [endpoint children];
+  v20 = [children countByEnumeratingWithState:&v27 objects:v32 count:16];
   if (v20)
   {
     v4 = *v28;
-    v21 = v3;
+    v21 = children;
     v19 = *v28;
     do
     {
@@ -387,7 +387,7 @@ LABEL_6:
       {
         if (*v28 != v4)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(children);
         }
 
         v6 = *(*(&v27 + 1) + 8 * i);
@@ -396,8 +396,8 @@ LABEL_6:
         v25 = 0u;
         v26 = 0u;
         v22 = v6;
-        v7 = [v6 deviceTypes];
-        v8 = [v7 countByEnumeratingWithState:&v23 objects:v31 count:16];
+        deviceTypes = [v6 deviceTypes];
+        v8 = [deviceTypes countByEnumeratingWithState:&v23 objects:v31 count:16];
         if (v8)
         {
           v9 = v8;
@@ -408,23 +408,23 @@ LABEL_6:
             {
               if (*v24 != v10)
               {
-                objc_enumerationMutation(v7);
+                objc_enumerationMutation(deviceTypes);
               }
 
               v12 = *(*(&v23 + 1) + 8 * j);
-              v13 = [v12 deviceTypeID];
-              if ([v13 isEqualToNumber:&unk_284C4AF68])
+              deviceTypeID = [v12 deviceTypeID];
+              if ([deviceTypeID isEqualToNumber:&unk_284C4AF68])
               {
 
 LABEL_20:
-                v16 = [v22 endpointID];
+                endpointID = [v22 endpointID];
 
-                v3 = v21;
+                children = v21;
                 goto LABEL_21;
               }
 
-              v14 = [v12 deviceTypeID];
-              v15 = [v14 isEqualToNumber:&unk_284C4AF80];
+              deviceTypeID2 = [v12 deviceTypeID];
+              v15 = [deviceTypeID2 isEqualToNumber:&unk_284C4AF80];
 
               if (v15)
               {
@@ -432,8 +432,8 @@ LABEL_20:
               }
             }
 
-            v9 = [v7 countByEnumeratingWithState:&v23 objects:v31 count:16];
-            v3 = v21;
+            v9 = [deviceTypes countByEnumeratingWithState:&v23 objects:v31 count:16];
+            children = v21;
             v4 = v19;
             if (v9)
             {
@@ -445,8 +445,8 @@ LABEL_20:
         }
       }
 
-      v16 = 0;
-      v20 = [v3 countByEnumeratingWithState:&v27 objects:v32 count:16];
+      endpointID = 0;
+      v20 = [children countByEnumeratingWithState:&v27 objects:v32 count:16];
     }
 
     while (v20);
@@ -454,14 +454,14 @@ LABEL_20:
 
   else
   {
-    v16 = 0;
+    endpointID = 0;
   }
 
 LABEL_21:
 
   v17 = *MEMORY[0x277D85DE8];
 
-  return v16;
+  return endpointID;
 }
 
 + (id)logCategory

@@ -1,21 +1,21 @@
 @interface CGPDFDocumentImpl
-- (CGPDFDocumentImpl)initWithData:(id)a3 requestQueue:(id)a4;
+- (CGPDFDocumentImpl)initWithData:(id)data requestQueue:(id)queue;
 - (id).cxx_construct;
-- (id)getPageAtIndex:(int64_t)a3;
-- (void)getInfo:(id)a3;
-- (void)getIsEncrypted:(id)a3;
-- (void)getIsUnlocked:(id)a3;
-- (void)getPageAtIndex:(int64_t)a3 completion:(id)a4;
-- (void)getPageCount:(id)a3;
-- (void)getVersion:(id)a3;
+- (id)getPageAtIndex:(int64_t)index;
+- (void)getInfo:(id)info;
+- (void)getIsEncrypted:(id)encrypted;
+- (void)getIsUnlocked:(id)unlocked;
+- (void)getPageAtIndex:(int64_t)index completion:(id)completion;
+- (void)getPageCount:(id)count;
+- (void)getVersion:(id)version;
 @end
 
 @implementation CGPDFDocumentImpl
 
-- (CGPDFDocumentImpl)initWithData:(id)a3 requestQueue:(id)a4
+- (CGPDFDocumentImpl)initWithData:(id)data requestQueue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  queueCopy = queue;
   v20.receiver = self;
   v20.super_class = CGPDFDocumentImpl;
   v8 = [(CGPDFDocumentImpl *)&v20 init];
@@ -25,12 +25,12 @@
     goto LABEL_7;
   }
 
-  objc_storeStrong(&v8->_requestQueue, a4);
+  objc_storeStrong(&v8->_requestQueue, queue);
   v10 = os_transaction_create();
   transaction = v9->_transaction;
   v9->_transaction = v10;
 
-  v12 = CGDataProviderCreateWithCFData(v6);
+  v12 = CGDataProviderCreateWithCFData(dataCopy);
   v13 = v12;
   v19[1] = v12;
   if (!v12)
@@ -69,9 +69,9 @@ LABEL_11:
   return v17;
 }
 
-- (id)getPageAtIndex:(int64_t)a3
+- (id)getPageAtIndex:(int64_t)index
 {
-  if (a3 < 0 || (begin = self->_pages.__begin_, a3 >= self->_pages.var0 - begin))
+  if (index < 0 || (begin = self->_pages.__begin_, index >= self->_pages.var0 - begin))
   {
     NSLog(@"Out of bounds page index", a2);
     Page = 0;
@@ -79,19 +79,19 @@ LABEL_11:
 
   else
   {
-    Page = begin[a3];
+    Page = begin[index];
     if (!Page)
     {
-      Page = CGPDFDocumentGetPage(self->_cgDocument.mCFObject, a3 + 1);
+      Page = CGPDFDocumentGetPage(self->_cgDocument.mCFObject, index + 1);
       if (Page)
       {
         Page = [[CGPDFPageImpl alloc] initWithCGPDFPage:Page requestQueue:self->_requestQueue];
-        objc_storeStrong(&self->_pages.__begin_[a3], Page);
+        objc_storeStrong(&self->_pages.__begin_[index], Page);
       }
 
       else
       {
-        NSLog(@"Failed to create page at index: (%ld)", a3);
+        NSLog(@"Failed to create page at index: (%ld)", index);
       }
     }
   }
@@ -99,17 +99,17 @@ LABEL_11:
   return Page;
 }
 
-- (void)getInfo:(id)a3
+- (void)getInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   requestQueue = self->_requestQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = __29__CGPDFDocumentImpl_getInfo___block_invoke;
   v7[3] = &unk_1000082E8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = infoCopy;
+  v6 = infoCopy;
   [(NSOperationQueue *)requestQueue addOperationWithBlock:v7];
 }
 
@@ -120,17 +120,17 @@ void __29__CGPDFDocumentImpl_getInfo___block_invoke(uint64_t a1)
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)getVersion:(id)a3
+- (void)getVersion:(id)version
 {
-  v4 = a3;
+  versionCopy = version;
   requestQueue = self->_requestQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = __32__CGPDFDocumentImpl_getVersion___block_invoke;
   v7[3] = &unk_1000082E8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = versionCopy;
+  v6 = versionCopy;
   [(NSOperationQueue *)requestQueue addOperationWithBlock:v7];
 }
 
@@ -142,17 +142,17 @@ uint64_t __32__CGPDFDocumentImpl_getVersion___block_invoke(uint64_t a1)
   return (*(*(a1 + 40) + 16))();
 }
 
-- (void)getIsUnlocked:(id)a3
+- (void)getIsUnlocked:(id)unlocked
 {
-  v4 = a3;
+  unlockedCopy = unlocked;
   requestQueue = self->_requestQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = __35__CGPDFDocumentImpl_getIsUnlocked___block_invoke;
   v7[3] = &unk_1000082E8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = unlockedCopy;
+  v6 = unlockedCopy;
   [(NSOperationQueue *)requestQueue addOperationWithBlock:v7];
 }
 
@@ -164,17 +164,17 @@ uint64_t __35__CGPDFDocumentImpl_getIsUnlocked___block_invoke(uint64_t a1)
   return v2();
 }
 
-- (void)getIsEncrypted:(id)a3
+- (void)getIsEncrypted:(id)encrypted
 {
-  v4 = a3;
+  encryptedCopy = encrypted;
   requestQueue = self->_requestQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = __36__CGPDFDocumentImpl_getIsEncrypted___block_invoke;
   v7[3] = &unk_1000082E8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = encryptedCopy;
+  v6 = encryptedCopy;
   [(NSOperationQueue *)requestQueue addOperationWithBlock:v7];
 }
 
@@ -186,17 +186,17 @@ uint64_t __36__CGPDFDocumentImpl_getIsEncrypted___block_invoke(uint64_t a1)
   return v2();
 }
 
-- (void)getPageCount:(id)a3
+- (void)getPageCount:(id)count
 {
-  v4 = a3;
+  countCopy = count;
   requestQueue = self->_requestQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = __34__CGPDFDocumentImpl_getPageCount___block_invoke;
   v7[3] = &unk_1000082E8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = countCopy;
+  v6 = countCopy;
   [(NSOperationQueue *)requestQueue addOperationWithBlock:v7];
 }
 
@@ -208,18 +208,18 @@ uint64_t __34__CGPDFDocumentImpl_getPageCount___block_invoke(uint64_t a1)
   return v2();
 }
 
-- (void)getPageAtIndex:(int64_t)a3 completion:(id)a4
+- (void)getPageAtIndex:(int64_t)index completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   requestQueue = self->_requestQueue;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = __47__CGPDFDocumentImpl_getPageAtIndex_completion___block_invoke;
   v9[3] = &unk_1000083A0;
-  v10 = v6;
-  v11 = a3;
+  v10 = completionCopy;
+  indexCopy = index;
   v9[4] = self;
-  v8 = v6;
+  v8 = completionCopy;
   [(NSOperationQueue *)requestQueue addOperationWithBlock:v9];
 }
 

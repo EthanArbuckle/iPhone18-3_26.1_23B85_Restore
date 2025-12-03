@@ -1,6 +1,6 @@
 @interface HMDAccessoryFirmwareUpdateRegisterTask
 - (BOOL)shouldRun;
-- (HMDAccessoryFirmwareUpdateRegisterTask)initWithSession:(id)a3 profile:(id)a4 initialDelay:(double)a5;
+- (HMDAccessoryFirmwareUpdateRegisterTask)initWithSession:(id)session profile:(id)profile initialDelay:(double)delay;
 - (id)criteria;
 - (void)run;
 @end
@@ -9,34 +9,34 @@
 
 - (void)run
 {
-  v2 = [(HMDAccessoryFirmwareUpdateTask *)self session];
-  [v2 resumeWithState:3];
+  session = [(HMDAccessoryFirmwareUpdateTask *)self session];
+  [session resumeWithState:3];
 }
 
 - (BOOL)shouldRun
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDAccessoryFirmwareUpdateTask *)self session];
-  v4 = [(HMDAccessoryFirmwareUpdateTask *)self shouldRunOnCurrentDevice];
-  if (!v4)
+  session = [(HMDAccessoryFirmwareUpdateTask *)self session];
+  shouldRunOnCurrentDevice = [(HMDAccessoryFirmwareUpdateTask *)self shouldRunOnCurrentDevice];
+  if (!shouldRunOnCurrentDevice)
   {
     v5 = objc_autoreleasePoolPush();
-    v6 = self;
+    selfCopy = self;
     v7 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       v8 = HMFGetLogIdentifier();
-      [(HMDAccessoryFirmwareUpdateTask *)v6 shouldRunOnCurrentDevice];
+      [(HMDAccessoryFirmwareUpdateTask *)selfCopy shouldRunOnCurrentDevice];
       v9 = HMFBooleanToString();
-      v10 = [v3 sessionState];
-      if ((v10 - 1) > 2)
+      sessionState = [session sessionState];
+      if ((sessionState - 1) > 2)
       {
         v11 = @"Up-To-Date";
       }
 
       else
       {
-        v11 = off_27972C5C0[v10 - 1];
+        v11 = off_27972C5C0[sessionState - 1];
       }
 
       v12 = v11;
@@ -53,13 +53,13 @@
   }
 
   v13 = *MEMORY[0x277D85DE8];
-  return v4;
+  return shouldRunOnCurrentDevice;
 }
 
 - (id)criteria
 {
-  v2 = [(HMDAccessoryFirmwareUpdateTask *)self accessoryActiveTransport];
-  switch(v2)
+  accessoryActiveTransport = [(HMDAccessoryFirmwareUpdateTask *)self accessoryActiveTransport];
+  switch(accessoryActiveTransport)
   {
     case 4:
       v3 = threadAccessoryStageSystemCriteria();
@@ -78,11 +78,11 @@
   return v3;
 }
 
-- (HMDAccessoryFirmwareUpdateRegisterTask)initWithSession:(id)a3 profile:(id)a4 initialDelay:(double)a5
+- (HMDAccessoryFirmwareUpdateRegisterTask)initWithSession:(id)session profile:(id)profile initialDelay:(double)delay
 {
   v6.receiver = self;
   v6.super_class = HMDAccessoryFirmwareUpdateRegisterTask;
-  return [(HMDAccessoryFirmwareUpdateTask *)&v6 initWithSession:a3 profile:a4 initialDelay:a5];
+  return [(HMDAccessoryFirmwareUpdateTask *)&v6 initWithSession:session profile:profile initialDelay:delay];
 }
 
 @end

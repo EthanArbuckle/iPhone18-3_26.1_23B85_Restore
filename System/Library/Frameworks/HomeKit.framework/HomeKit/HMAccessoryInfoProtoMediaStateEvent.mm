@@ -1,28 +1,28 @@
 @interface HMAccessoryInfoProtoMediaStateEvent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasRepeatState:(BOOL)a3;
-- (void)setHasShuffleState:(BOOL)a3;
-- (void)setHasVolume:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasRepeatState:(BOOL)state;
+- (void)setHasShuffleState:(BOOL)state;
+- (void)setHasVolume:(BOOL)volume;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HMAccessoryInfoProtoMediaStateEvent
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 48);
+  fromCopy = from;
+  v5 = *(fromCopy + 48);
   if (v5)
   {
-    self->_playbackState = *(v4 + 1);
+    self->_playbackState = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v5 = *(v4 + 48);
+    v5 = *(fromCopy + 48);
     if ((v5 & 4) == 0)
     {
 LABEL_3:
@@ -35,14 +35,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 48) & 4) == 0)
+  else if ((*(fromCopy + 48) & 4) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_shuffleState = *(v4 + 3);
+  self->_shuffleState = *(fromCopy + 3);
   *&self->_has |= 4u;
-  v5 = *(v4 + 48);
+  v5 = *(fromCopy + 48);
   if ((v5 & 2) == 0)
   {
 LABEL_4:
@@ -55,21 +55,21 @@ LABEL_4:
   }
 
 LABEL_13:
-  self->_repeatState = *(v4 + 2);
+  self->_repeatState = *(fromCopy + 2);
   *&self->_has |= 2u;
-  if ((*(v4 + 48) & 8) != 0)
+  if ((*(fromCopy + 48) & 8) != 0)
   {
 LABEL_5:
-    self->_volume = *(v4 + 4);
+    self->_volume = *(fromCopy + 4);
     *&self->_has |= 8u;
   }
 
 LABEL_6:
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
-    v6 = v4;
+    v6 = fromCopy;
     [(HMAccessoryInfoProtoMediaStateEvent *)self setMediaIdentifier:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 }
 
@@ -151,24 +151,24 @@ LABEL_5:
   return v9 ^ v8 ^ v10 ^ v14 ^ [(NSString *)self->_mediaIdentifier hash:v3];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_24;
   }
 
-  v5 = *(v4 + 48);
+  v5 = *(equalCopy + 48);
   if (*&self->_has)
   {
-    if ((*(v4 + 48) & 1) == 0 || self->_playbackState != *(v4 + 1))
+    if ((*(equalCopy + 48) & 1) == 0 || self->_playbackState != *(equalCopy + 1))
     {
       goto LABEL_24;
     }
   }
 
-  else if (*(v4 + 48))
+  else if (*(equalCopy + 48))
   {
 LABEL_24:
     v7 = 0;
@@ -177,45 +177,45 @@ LABEL_24:
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 48) & 4) == 0 || self->_shuffleState != *(v4 + 3))
+    if ((*(equalCopy + 48) & 4) == 0 || self->_shuffleState != *(equalCopy + 3))
     {
       goto LABEL_24;
     }
   }
 
-  else if ((*(v4 + 48) & 4) != 0)
+  else if ((*(equalCopy + 48) & 4) != 0)
   {
     goto LABEL_24;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 48) & 2) == 0 || self->_repeatState != *(v4 + 2))
+    if ((*(equalCopy + 48) & 2) == 0 || self->_repeatState != *(equalCopy + 2))
     {
       goto LABEL_24;
     }
   }
 
-  else if ((*(v4 + 48) & 2) != 0)
+  else if ((*(equalCopy + 48) & 2) != 0)
   {
     goto LABEL_24;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 48) & 8) == 0 || self->_volume != *(v4 + 4))
+    if ((*(equalCopy + 48) & 8) == 0 || self->_volume != *(equalCopy + 4))
     {
       goto LABEL_24;
     }
   }
 
-  else if ((*(v4 + 48) & 8) != 0)
+  else if ((*(equalCopy + 48) & 8) != 0)
   {
     goto LABEL_24;
   }
 
   mediaIdentifier = self->_mediaIdentifier;
-  if (mediaIdentifier | *(v4 + 5))
+  if (mediaIdentifier | *(equalCopy + 5))
   {
     v7 = [(NSString *)mediaIdentifier isEqual:?];
   }
@@ -230,9 +230,9 @@ LABEL_25:
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if (has)
@@ -282,21 +282,21 @@ LABEL_5:
   }
 
 LABEL_6:
-  v8 = [(NSString *)self->_mediaIdentifier copyWithZone:a3];
+  v8 = [(NSString *)self->_mediaIdentifier copyWithZone:zone];
   v9 = v6[5];
   v6[5] = v8;
 
   return v6;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[1] = self->_playbackState;
-    *(v4 + 48) |= 1u;
+    toCopy[1] = self->_playbackState;
+    *(toCopy + 48) |= 1u;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -315,8 +315,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[3] = self->_shuffleState;
-  *(v4 + 48) |= 4u;
+  toCopy[3] = self->_shuffleState;
+  *(toCopy + 48) |= 4u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -330,34 +330,34 @@ LABEL_4:
   }
 
 LABEL_13:
-  v4[2] = self->_repeatState;
-  *(v4 + 48) |= 2u;
+  toCopy[2] = self->_repeatState;
+  *(toCopy + 48) |= 2u;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_5:
-    v4[4] = *&self->_volume;
-    *(v4 + 48) |= 8u;
+    toCopy[4] = *&self->_volume;
+    *(toCopy + 48) |= 8u;
   }
 
 LABEL_6:
   if (self->_mediaIdentifier)
   {
-    v6 = v4;
-    [v4 setMediaIdentifier:?];
-    v4 = v6;
+    v6 = toCopy;
+    [toCopy setMediaIdentifier:?];
+    toCopy = v6;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v10 = v4;
+  v10 = toCopy;
   if (has)
   {
     playbackState = self->_playbackState;
     PBDataWriterWriteInt64Field();
-    v4 = v10;
+    toCopy = v10;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -378,7 +378,7 @@ LABEL_3:
 
   shuffleState = self->_shuffleState;
   PBDataWriterWriteInt64Field();
-  v4 = v10;
+  toCopy = v10;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -394,31 +394,31 @@ LABEL_4:
 LABEL_13:
   repeatState = self->_repeatState;
   PBDataWriterWriteInt64Field();
-  v4 = v10;
+  toCopy = v10;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_5:
     volume = self->_volume;
     PBDataWriterWriteDoubleField();
-    v4 = v10;
+    toCopy = v10;
   }
 
 LABEL_6:
   if (self->_mediaIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v10;
+    toCopy = v10;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if (has)
   {
     v8 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_playbackState];
-    [v3 setObject:v8 forKey:@"playbackState"];
+    [dictionary setObject:v8 forKey:@"playbackState"];
 
     has = self->_has;
     if ((has & 4) == 0)
@@ -439,7 +439,7 @@ LABEL_3:
   }
 
   v9 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_shuffleState];
-  [v3 setObject:v9 forKey:@"shuffleState"];
+  [dictionary setObject:v9 forKey:@"shuffleState"];
 
   has = self->_has;
   if ((has & 2) == 0)
@@ -455,23 +455,23 @@ LABEL_4:
 
 LABEL_13:
   v10 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_repeatState];
-  [v3 setObject:v10 forKey:@"repeatState"];
+  [dictionary setObject:v10 forKey:@"repeatState"];
 
   if ((*&self->_has & 8) != 0)
   {
 LABEL_5:
     v5 = [MEMORY[0x1E696AD98] numberWithDouble:self->_volume];
-    [v3 setObject:v5 forKey:@"volume"];
+    [dictionary setObject:v5 forKey:@"volume"];
   }
 
 LABEL_6:
   mediaIdentifier = self->_mediaIdentifier;
   if (mediaIdentifier)
   {
-    [v3 setObject:mediaIdentifier forKey:@"mediaIdentifier"];
+    [dictionary setObject:mediaIdentifier forKey:@"mediaIdentifier"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -480,15 +480,15 @@ LABEL_6:
   v8.receiver = self;
   v8.super_class = HMAccessoryInfoProtoMediaStateEvent;
   v4 = [(HMAccessoryInfoProtoMediaStateEvent *)&v8 description];
-  v5 = [(HMAccessoryInfoProtoMediaStateEvent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HMAccessoryInfoProtoMediaStateEvent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)setHasVolume:(BOOL)a3
+- (void)setHasVolume:(BOOL)volume
 {
-  if (a3)
+  if (volume)
   {
     v3 = 8;
   }
@@ -501,9 +501,9 @@ LABEL_6:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasRepeatState:(BOOL)a3
+- (void)setHasRepeatState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 2;
   }
@@ -516,9 +516,9 @@ LABEL_6:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasShuffleState:(BOOL)a3
+- (void)setHasShuffleState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 4;
   }

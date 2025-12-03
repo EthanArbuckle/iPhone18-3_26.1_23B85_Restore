@@ -1,12 +1,12 @@
 @interface NTKDActivityTracker
 + (id)sharedInstance;
 - (NTKDActivityTracker)init;
-- (void)_queue_beginActivity:(id)a3;
-- (void)_queue_endActivity:(id)a3;
+- (void)_queue_beginActivity:(id)activity;
+- (void)_queue_endActivity:(id)activity;
 - (void)_queue_setOrUpdateActivityAndTimer;
-- (void)beginActivity:(id)a3;
+- (void)beginActivity:(id)activity;
 - (void)checkin;
-- (void)endActivity:(id)a3;
+- (void)endActivity:(id)activity;
 @end
 
 @implementation NTKDActivityTracker
@@ -42,31 +42,31 @@
   return v2;
 }
 
-- (void)beginActivity:(id)a3
+- (void)beginActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000068D8;
   v7[3] = &unk_10005CA98;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = activityCopy;
+  v6 = activityCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)endActivity:(id)a3
+- (void)endActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10000697C;
   v7[3] = &unk_10005CA98;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = activityCopy;
+  v6 = activityCopy;
   dispatch_async(queue, v7);
 }
 
@@ -82,36 +82,36 @@
   dispatch_async(queue, block);
 }
 
-- (void)_queue_beginActivity:(id)a3
+- (void)_queue_beginActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   v5 = _NTKLoggingObjectForDomain();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = activityCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "begin activity '%@'", &v6, 0xCu);
   }
 
-  [(NSMutableSet *)self->_activityIdentifiers addObject:v4];
+  [(NSMutableSet *)self->_activityIdentifiers addObject:activityCopy];
   if (!self->_xpcActivityRegistered)
   {
     [(NTKDActivityTracker *)self _queue_setOrUpdateActivityAndTimer];
   }
 }
 
-- (void)_queue_endActivity:(id)a3
+- (void)_queue_endActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   v5 = _NTKLoggingObjectForDomain();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = v4;
+    v10 = activityCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "end activity '%@'", &v9, 0xCu);
   }
 
-  [(NSMutableSet *)self->_activityIdentifiers removeObject:v4];
+  [(NSMutableSet *)self->_activityIdentifiers removeObject:activityCopy];
   if (self->_xpcActivityRegistered && ![(NSMutableSet *)self->_activityIdentifiers count])
   {
     v6 = _NTKLoggingObjectForDomain();

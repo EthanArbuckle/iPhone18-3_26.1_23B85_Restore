@@ -1,12 +1,12 @@
 @interface DisparityTuningParameters
 - (DisparityTuningParameters)init;
-- (DisparityTuningParameters)initWithTuningDictionary:(id)a3 cameraInfoByPortType:(id)a4;
-- (int)readAdaptiveCorrectionConfig:(id)a3 isUpdating:(BOOL)a4;
-- (int)readCalibrationConfig:(id)a3 isUpdating:(BOOL)a4;
-- (int)readDisparityClampingConfig:(id)a3 isUpdating:(BOOL)a4;
-- (int)readLKTConfig:(id)a3 isUpdating:(BOOL)a4;
-- (int)readMaxAnalogGain:(id)a3 isUpdating:(BOOL)a4;
-- (int)updateTuningParametersWith:(id)a3;
+- (DisparityTuningParameters)initWithTuningDictionary:(id)dictionary cameraInfoByPortType:(id)type;
+- (int)readAdaptiveCorrectionConfig:(id)config isUpdating:(BOOL)updating;
+- (int)readCalibrationConfig:(id)config isUpdating:(BOOL)updating;
+- (int)readDisparityClampingConfig:(id)config isUpdating:(BOOL)updating;
+- (int)readLKTConfig:(id)config isUpdating:(BOOL)updating;
+- (int)readMaxAnalogGain:(id)gain isUpdating:(BOOL)updating;
+- (int)updateTuningParametersWith:(id)with;
 - (void)setDefaultAdaptiveCorrectionParameters;
 - (void)setDefaultCalibrationParameters;
 - (void)setDefaultLKTParameters;
@@ -90,9 +90,9 @@
   return v11;
 }
 
-- (DisparityTuningParameters)initWithTuningDictionary:(id)a3 cameraInfoByPortType:(id)a4
+- (DisparityTuningParameters)initWithTuningDictionary:(id)dictionary cameraInfoByPortType:(id)type
 {
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v84.receiver = self;
   v84.super_class = DisparityTuningParameters;
   v12 = [(DisparityTuningParameters *)&v84 init];
@@ -101,7 +101,7 @@
     goto LABEL_13;
   }
 
-  v14 = objc_msgSend_objectForKeyedSubscript_(v5, v6, @"Calibration", v7, v8, v9, v10, v11, v13);
+  v14 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v6, @"Calibration", v7, v8, v9, v10, v11, v13);
   isUpdating = objc_msgSend_readCalibrationConfig_isUpdating_(v12, v15, v14, 0, v16, v17, v18, v19, v20);
 
   if (isUpdating)
@@ -112,7 +112,7 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v29 = objc_msgSend_objectForKeyedSubscript_(v5, v22, @"ADC", v23, v24, v25, v26, v27, v28);
+  v29 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v22, @"ADC", v23, v24, v25, v26, v27, v28);
   v36 = objc_msgSend_readAdaptiveCorrectionConfig_isUpdating_(v12, v30, v29, 0, v31, v32, v33, v34, v35);
 
   if (v36)
@@ -121,7 +121,7 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  v44 = objc_msgSend_objectForKeyedSubscript_(v5, v37, @"DisparityClamping", v38, v39, v40, v41, v42, v43);
+  v44 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v37, @"DisparityClamping", v38, v39, v40, v41, v42, v43);
   v51 = objc_msgSend_readDisparityClampingConfig_isUpdating_(v12, v45, v44, 0, v46, v47, v48, v49, v50);
 
   if (v51)
@@ -130,16 +130,16 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  v59 = objc_msgSend_objectForKeyedSubscript_(v5, v52, @"LKTParameters", v53, v54, v55, v56, v57, v58);
+  v59 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v52, @"LKTParameters", v53, v54, v55, v56, v57, v58);
 
   objc_msgSend_setDefaultLKTParameters(v12, v60, v61, v62, v63, v64, v65, v66, v67);
   if (v59)
   {
-    v75 = objc_msgSend_objectForKeyedSubscript_(v5, v68, @"LKTParameters", v69, v70, v71, v72, v73, v74);
+    v75 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v68, @"LKTParameters", v69, v70, v71, v72, v73, v74);
     objc_msgSend_readLKTConfig_isUpdating_(v12, v76, v75, 0, v77, v78, v79, v80, v81);
   }
 
-  if (objc_msgSend_readMaxAnalogGain_isUpdating_(v12, v68, v5, 0, v70, v71, v72, v73, v74))
+  if (objc_msgSend_readMaxAnalogGain_isUpdating_(v12, v68, dictionaryCopy, 0, v70, v71, v72, v73, v74))
   {
     sub_295773200();
     goto LABEL_13;
@@ -151,10 +151,10 @@ LABEL_14:
   return v82;
 }
 
-- (int)updateTuningParametersWith:(id)a3
+- (int)updateTuningParametersWith:(id)with
 {
-  v4 = a3;
-  v12 = objc_msgSend_objectForKeyedSubscript_(v4, v5, @"Calibration", v6, v7, v8, v9, v10, v11);
+  withCopy = with;
+  v12 = objc_msgSend_objectForKeyedSubscript_(withCopy, v5, @"Calibration", v6, v7, v8, v9, v10, v11);
   isUpdating = objc_msgSend_readCalibrationConfig_isUpdating_(self, v13, v12, 1, v14, v15, v16, v17, v18);
 
   if (isUpdating)
@@ -164,7 +164,7 @@ LABEL_14:
 
   else
   {
-    v27 = objc_msgSend_objectForKeyedSubscript_(v4, v20, @"ADC", v21, v22, v23, v24, v25, v26);
+    v27 = objc_msgSend_objectForKeyedSubscript_(withCopy, v20, @"ADC", v21, v22, v23, v24, v25, v26);
     isUpdating = objc_msgSend_readAdaptiveCorrectionConfig_isUpdating_(self, v28, v27, 1, v29, v30, v31, v32, v33);
 
     if (isUpdating)
@@ -174,7 +174,7 @@ LABEL_14:
 
     else
     {
-      v41 = objc_msgSend_objectForKeyedSubscript_(v4, v34, @"DisparityClamping", v35, v36, v37, v38, v39, v40);
+      v41 = objc_msgSend_objectForKeyedSubscript_(withCopy, v34, @"DisparityClamping", v35, v36, v37, v38, v39, v40);
       isUpdating = objc_msgSend_readDisparityClampingConfig_isUpdating_(self, v42, v41, 1, v43, v44, v45, v46, v47);
 
       if (isUpdating)
@@ -184,15 +184,15 @@ LABEL_14:
 
       else
       {
-        v55 = objc_msgSend_objectForKeyedSubscript_(v4, v48, @"LKTParameters", v49, v50, v51, v52, v53, v54);
+        v55 = objc_msgSend_objectForKeyedSubscript_(withCopy, v48, @"LKTParameters", v49, v50, v51, v52, v53, v54);
 
         if (v55)
         {
-          v63 = objc_msgSend_objectForKeyedSubscript_(v4, v56, @"LKTParameters", v57, v58, v59, v60, v61, v62);
+          v63 = objc_msgSend_objectForKeyedSubscript_(withCopy, v56, @"LKTParameters", v57, v58, v59, v60, v61, v62);
           objc_msgSend_readLKTConfig_isUpdating_(self, v64, v63, 1, v65, v66, v67, v68, v69);
         }
 
-        isUpdating = objc_msgSend_readMaxAnalogGain_isUpdating_(self, v56, v4, 1, v58, v59, v60, v61, v62);
+        isUpdating = objc_msgSend_readMaxAnalogGain_isUpdating_(self, v56, withCopy, 1, v58, v59, v60, v61, v62);
         if (isUpdating)
         {
           sub_2957733E0();
@@ -204,11 +204,11 @@ LABEL_14:
   return isUpdating;
 }
 
-- (int)readCalibrationConfig:(id)a3 isUpdating:(BOOL)a4
+- (int)readCalibrationConfig:(id)config isUpdating:(BOOL)updating
 {
-  v4 = a4;
-  v6 = a3;
-  if (!v6)
+  updatingCopy = updating;
+  configCopy = config;
+  if (!configCopy)
   {
     v16 = -12780;
     goto LABEL_4;
@@ -218,7 +218,7 @@ LABEL_14:
   v16 = sub_295772098(v7, v8, v9, v10, v11, v12, v13, v14, v15);
   if (v16)
   {
-    if (!v4)
+    if (!updatingCopy)
     {
       goto LABEL_4;
     }
@@ -242,7 +242,7 @@ LABEL_12:
       goto LABEL_13;
     }
 
-    if (!v4)
+    if (!updatingCopy)
     {
       goto LABEL_4;
     }
@@ -253,7 +253,7 @@ LABEL_13:
   v16 = sub_295772098(v37, v38, v39, v40, v41, v42, v43, v44, v45);
   if (v16)
   {
-    if (!v4)
+    if (!updatingCopy)
     {
       goto LABEL_4;
     }
@@ -277,7 +277,7 @@ LABEL_16:
       goto LABEL_17;
     }
 
-    if (!v4)
+    if (!updatingCopy)
     {
       goto LABEL_4;
     }
@@ -288,7 +288,7 @@ LABEL_17:
   v16 = sub_295772098(v55, v56, v57, v58, v59, v60, v61, v62, v63);
   if (v16)
   {
-    if (!v4)
+    if (!updatingCopy)
     {
       goto LABEL_4;
     }
@@ -307,7 +307,7 @@ LABEL_17:
     v16 = sub_2957720F0(v82, v83, v84, v85, v86, v87, v88, v89, v90);
     if (v16)
     {
-      if (!v4)
+      if (!updatingCopy)
       {
         goto LABEL_4;
       }
@@ -321,7 +321,7 @@ LABEL_17:
 LABEL_29:
   v16 = 0;
 LABEL_4:
-  if (v4)
+  if (updatingCopy)
   {
     v17 = 0;
   }
@@ -334,11 +334,11 @@ LABEL_4:
   return v17;
 }
 
-- (int)readAdaptiveCorrectionConfig:(id)a3 isUpdating:(BOOL)a4
+- (int)readAdaptiveCorrectionConfig:(id)config isUpdating:(BOOL)updating
 {
-  v4 = a4;
-  v6 = a3;
-  if (!v6)
+  updatingCopy = updating;
+  configCopy = config;
+  if (!configCopy)
   {
     v17 = 0;
     v18 = 0;
@@ -351,7 +351,7 @@ LABEL_4:
   LODWORD(v16) = sub_2957726B4(v7, v8, v9, v10, v11, v12, v13, v14, v15);
   if (v16)
   {
-    if (!v4)
+    if (!updatingCopy)
     {
 LABEL_4:
       v17 = 0;
@@ -380,7 +380,7 @@ LABEL_13:
       goto LABEL_14;
     }
 
-    if (!v4)
+    if (!updatingCopy)
     {
       goto LABEL_4;
     }
@@ -392,7 +392,7 @@ LABEL_14:
   LODWORD(v16) = sub_2957726B4(v39, v40, v41, v42, v43, v44, v45, v46, v47);
   if (v16)
   {
-    if (!v4)
+    if (!updatingCopy)
     {
       goto LABEL_4;
     }
@@ -418,7 +418,7 @@ LABEL_17:
       goto LABEL_18;
     }
 
-    if (!v4)
+    if (!updatingCopy)
     {
       goto LABEL_4;
     }
@@ -430,7 +430,7 @@ LABEL_18:
   LODWORD(v16) = sub_2957726B4(v57, v58, v59, v60, v61, v62, v63, v64, v65);
   if (v16)
   {
-    if (!v4)
+    if (!updatingCopy)
     {
       goto LABEL_4;
     }
@@ -456,7 +456,7 @@ LABEL_21:
       goto LABEL_22;
     }
 
-    if (!v4)
+    if (!updatingCopy)
     {
       goto LABEL_4;
     }
@@ -468,7 +468,7 @@ LABEL_22:
   LODWORD(v16) = sub_2957726B4(v75, v76, v77, v78, v79, v80, v81, v82, v83);
   if (v16)
   {
-    if (!v4)
+    if (!updatingCopy)
     {
       goto LABEL_4;
     }
@@ -494,7 +494,7 @@ LABEL_25:
       goto LABEL_26;
     }
 
-    if (!v4)
+    if (!updatingCopy)
     {
       goto LABEL_4;
     }
@@ -506,7 +506,7 @@ LABEL_26:
   LODWORD(v16) = sub_2957726B4(v93, v94, v95, v96, v97, v98, v99, v100, v101);
   if (v16)
   {
-    if (!v4)
+    if (!updatingCopy)
     {
       goto LABEL_4;
     }
@@ -532,7 +532,7 @@ LABEL_29:
       goto LABEL_30;
     }
 
-    if (!v4)
+    if (!updatingCopy)
     {
       goto LABEL_4;
     }
@@ -544,7 +544,7 @@ LABEL_30:
   LODWORD(v16) = sub_2957720F0(v111, v112, v113, v114, v115, v116, v117, v118, v119);
   if (v16)
   {
-    if (!v4)
+    if (!updatingCopy)
     {
       goto LABEL_4;
     }
@@ -570,7 +570,7 @@ LABEL_33:
       goto LABEL_34;
     }
 
-    if (!v4)
+    if (!updatingCopy)
     {
       goto LABEL_4;
     }
@@ -582,7 +582,7 @@ LABEL_34:
   LODWORD(v16) = sub_2957726B4(v129, v130, v131, v132, v133, v134, v135, v136, v137);
   if (v16)
   {
-    if (!v4)
+    if (!updatingCopy)
     {
       goto LABEL_4;
     }
@@ -608,7 +608,7 @@ LABEL_37:
       goto LABEL_38;
     }
 
-    if (!v4)
+    if (!updatingCopy)
     {
       goto LABEL_4;
     }
@@ -620,7 +620,7 @@ LABEL_38:
   LODWORD(v16) = sub_2957726B4(v147, v148, v149, v150, v151, v152, v153, v154, v155);
   if (v16)
   {
-    if (!v4)
+    if (!updatingCopy)
     {
       goto LABEL_4;
     }
@@ -647,7 +647,7 @@ LABEL_41:
       goto LABEL_42;
     }
 
-    if (!v4)
+    if (!updatingCopy)
     {
       goto LABEL_4;
     }
@@ -659,7 +659,7 @@ LABEL_42:
   LODWORD(v16) = sub_295772098(v166, v167, v168, v169, v170, v171, v172, v173, v174);
   if (v16)
   {
-    if (!v4)
+    if (!updatingCopy)
     {
       goto LABEL_4;
     }
@@ -682,7 +682,7 @@ LABEL_42:
   LODWORD(v16) = sub_295772098(v247, v248, v249, v250, v251, v252, v253, v254, v255);
   if (v16)
   {
-    if (!v4)
+    if (!updatingCopy)
     {
       goto LABEL_4;
     }
@@ -703,7 +703,7 @@ LABEL_42:
     LODWORD(v16) = sub_295772098(v304, v305, v306, v307, v308, v309, v310, v311, v312);
     if (v16)
     {
-      if (!v4)
+      if (!updatingCopy)
       {
         goto LABEL_4;
       }
@@ -730,21 +730,21 @@ LABEL_74:
   }
 
   self->_adaptiveCorrectionConfig.spgEpsilon = 0.0;
-  v315 = objc_msgSend_objectForKeyedSubscript_(v6, v283, @"overrideConfigPass1", v284, v285, v286, v287, v288, v289);
+  v315 = objc_msgSend_objectForKeyedSubscript_(configCopy, v283, @"overrideConfigPass1", v284, v285, v286, v287, v288, v289);
   if (v315)
   {
     sub_29577270C(&self->_adaptiveCorrectionConfig, v315, 50, __src, self->_adaptiveCorrectionConfig.epErrorLimitWidePix_FirstPass);
     memcpy(&self->_adaptiveCorrectionConfig.overrideConfigPass1, __src, sizeof(self->_adaptiveCorrectionConfig.overrideConfigPass1));
   }
 
-  v314 = objc_msgSend_objectForKeyedSubscript_(v6, v290, @"overrideConfigPass2", v291, v292, v293, v294, v295, v296);
+  v314 = objc_msgSend_objectForKeyedSubscript_(configCopy, v290, @"overrideConfigPass2", v291, v292, v293, v294, v295, v296);
   if (v314)
   {
     sub_29577270C(&self->_adaptiveCorrectionConfig, v314, 50, __src, self->_adaptiveCorrectionConfig.epErrorLimitWidePix_SecondPass);
     memcpy(&self->_adaptiveCorrectionConfig.overrideConfigPass2, __src, sizeof(self->_adaptiveCorrectionConfig.overrideConfigPass2));
   }
 
-  v16 = objc_msgSend_objectForKeyedSubscript_(v6, v297, @"overrideConfigPassDist", v298, v299, v300, v301, v302, v303);
+  v16 = objc_msgSend_objectForKeyedSubscript_(configCopy, v297, @"overrideConfigPassDist", v298, v299, v300, v301, v302, v303);
   if (v16)
   {
     v313 = v16;
@@ -757,7 +757,7 @@ LABEL_74:
   v18 = v314;
   v17 = v315;
 LABEL_5:
-  if (v4)
+  if (updatingCopy)
   {
     v19 = 0;
   }
@@ -770,11 +770,11 @@ LABEL_5:
   return v19;
 }
 
-- (int)readDisparityClampingConfig:(id)a3 isUpdating:(BOOL)a4
+- (int)readDisparityClampingConfig:(id)config isUpdating:(BOOL)updating
 {
-  v4 = a4;
-  v6 = a3;
-  if (!v6)
+  updatingCopy = updating;
+  configCopy = config;
+  if (!configCopy)
   {
     goto LABEL_23;
   }
@@ -784,13 +784,13 @@ LABEL_5:
   v16 = sub_295772098(v7, v8, v9, v10, v11, v12, v13, v14, v15);
   if (v16)
   {
-    if (!v4)
+    if (!updatingCopy)
     {
       goto LABEL_4;
     }
 
     v30 = 0.0;
-    if (sub_295772098(v6, @"maxDisparityPercentile", &v30, v17, v18, v19, v20, v21, v22))
+    if (sub_295772098(configCopy, @"maxDisparityPercentile", &v30, v17, v18, v19, v20, v21, v22))
     {
       goto LABEL_13;
     }
@@ -801,10 +801,10 @@ LABEL_5:
     v25 = v31;
     self->_minDisparityClampingPercentile = v31;
     v30 = 0.0;
-    v16 = sub_295772098(v6, @"maxDisparityPercentile", &v30, v17, v18, v19, v20, v21, v25);
+    v16 = sub_295772098(configCopy, @"maxDisparityPercentile", &v30, v17, v18, v19, v20, v21, v25);
     if (v16)
     {
-      if (!v4)
+      if (!updatingCopy)
       {
         goto LABEL_4;
       }
@@ -832,7 +832,7 @@ LABEL_13:
 LABEL_23:
   v16 = -12780;
 LABEL_4:
-  if (v4)
+  if (updatingCopy)
   {
     v23 = 0;
   }
@@ -845,11 +845,11 @@ LABEL_4:
   return v23;
 }
 
-- (int)readLKTConfig:(id)a3 isUpdating:(BOOL)a4
+- (int)readLKTConfig:(id)config isUpdating:(BOOL)updating
 {
-  v4 = a4;
-  v6 = a3;
-  if (!v6)
+  updatingCopy = updating;
+  configCopy = config;
+  if (!configCopy)
   {
     goto LABEL_43;
   }
@@ -858,7 +858,7 @@ LABEL_4:
   v16 = sub_2957720F0(v7, v8, v9, v10, v11, v12, v13, v14, v15);
   if (v16)
   {
-    if (!v4)
+    if (!updatingCopy)
     {
       goto LABEL_4;
     }
@@ -883,7 +883,7 @@ LABEL_12:
       goto LABEL_13;
     }
 
-    if (!v4)
+    if (!updatingCopy)
     {
       goto LABEL_4;
     }
@@ -894,7 +894,7 @@ LABEL_13:
   v16 = sub_295772098(v38, v39, v40, v41, v42, v43, v44, v45, v46);
   if (v16)
   {
-    if (!v4)
+    if (!updatingCopy)
     {
       goto LABEL_4;
     }
@@ -918,7 +918,7 @@ LABEL_16:
       goto LABEL_17;
     }
 
-    if (!v4)
+    if (!updatingCopy)
     {
       goto LABEL_4;
     }
@@ -929,7 +929,7 @@ LABEL_17:
   v16 = sub_2957720F0(v56, v57, v58, v59, v60, v61, v62, v63, v64);
   if (v16)
   {
-    if (!v4)
+    if (!updatingCopy)
     {
       goto LABEL_4;
     }
@@ -948,7 +948,7 @@ LABEL_17:
     v16 = sub_2957720F0(v92, v93, v94, v95, v96, v97, v98, v99, v100);
     if (v16)
     {
-      if (!v4)
+      if (!updatingCopy)
       {
         goto LABEL_4;
       }
@@ -963,7 +963,7 @@ LABEL_21:
   v16 = sub_2957720F0(v74, v75, v76, v77, v78, v79, v80, v81, v82);
   if (v16)
   {
-    if (!v4)
+    if (!updatingCopy)
     {
       goto LABEL_4;
     }
@@ -994,7 +994,7 @@ LABEL_21:
 LABEL_43:
   v16 = -12780;
 LABEL_4:
-  if (v4)
+  if (updatingCopy)
   {
     v17 = 0;
   }
@@ -1007,10 +1007,10 @@ LABEL_4:
   return v17;
 }
 
-- (int)readMaxAnalogGain:(id)a3 isUpdating:(BOOL)a4
+- (int)readMaxAnalogGain:(id)gain isUpdating:(BOOL)updating
 {
-  v13 = a3;
-  if (!a4)
+  gainCopy = gain;
+  if (!updating)
   {
     objc_msgSend_setDefaultMaxAnalogGain(self, v6, v7, v8, v9, v10, v11, v12, v14);
   }

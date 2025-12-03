@@ -7,7 +7,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   MusicCurationFeatures.description.getter();
 
   v3 = sub_22F740DF0();

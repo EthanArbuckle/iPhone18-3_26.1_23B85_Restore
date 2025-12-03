@@ -1,44 +1,44 @@
 @interface CRLUSDZRotationKnobTracker
 - (_TtC8Freeform26CRLUSDZRotationKnobTracker)init;
-- (_TtC8Freeform26CRLUSDZRotationKnobTracker)initWithRep:(id)a3 knob:(id)a4;
+- (_TtC8Freeform26CRLUSDZRotationKnobTracker)initWithRep:(id)rep knob:(id)knob;
 - (void)beginMovingKnob;
-- (void)commitChangesForReps:(id)a3;
+- (void)commitChangesForReps:(id)reps;
 - (void)endMovingKnob;
-- (void)moveKnobToRepPosition:(CGPoint)a3;
+- (void)moveKnobToRepPosition:(CGPoint)position;
 @end
 
 @implementation CRLUSDZRotationKnobTracker
 
 - (void)beginMovingKnob
 {
-  v2 = self;
+  selfCopy = self;
   sub_100604BB8();
 }
 
-- (void)commitChangesForReps:(id)a3
+- (void)commitChangesForReps:(id)reps
 {
   sub_1006055C8();
   sub_100605614();
   static Set._unconditionallyBridgeFromObjectiveC(_:)();
-  v4 = self;
+  selfCopy = self;
   sub_100604E40();
 }
 
-- (void)moveKnobToRepPosition:(CGPoint)a3
+- (void)moveKnobToRepPosition:(CGPoint)position
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = self;
+  y = position.y;
+  x = position.x;
+  selfCopy = self;
   sub_100604FB0(x, y);
 }
 
 - (void)endMovingKnob
 {
-  v2 = self;
+  selfCopy = self;
   sub_100605328();
 }
 
-- (_TtC8Freeform26CRLUSDZRotationKnobTracker)initWithRep:(id)a3 knob:(id)a4
+- (_TtC8Freeform26CRLUSDZRotationKnobTracker)initWithRep:(id)rep knob:(id)knob
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,5 +1,5 @@
 @interface CBNavigationController
-- (void)pushViewController:(id)a3 animated:(BOOL)a4;
+- (void)pushViewController:(id)controller animated:(BOOL)animated;
 - (void)viewDidLoad;
 @end
 
@@ -20,27 +20,27 @@
   [(CBNavigationController *)self setModalPresentationStyle:2];
 }
 
-- (void)pushViewController:(id)a3 animated:(BOOL)a4
+- (void)pushViewController:(id)controller animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
+  animatedCopy = animated;
+  controllerCopy = controller;
   v7 = CheckerBoardLogHandleForCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v12 = v6;
+    v12 = controllerCopy;
     v13 = 1024;
-    v14 = v4;
+    v14 = animatedCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Pushed view controller: %@ with animation %d", buf, 0x12u);
   }
 
-  v8 = [(CBNavigationController *)self _pushedViewControllerBackgroundColor];
-  v9 = [v6 view];
-  [v9 setBackgroundColor:v8];
+  _pushedViewControllerBackgroundColor = [(CBNavigationController *)self _pushedViewControllerBackgroundColor];
+  view = [controllerCopy view];
+  [view setBackgroundColor:_pushedViewControllerBackgroundColor];
 
   v10.receiver = self;
   v10.super_class = CBNavigationController;
-  [(CBNavigationController *)&v10 pushViewController:v6 animated:v4];
+  [(CBNavigationController *)&v10 pushViewController:controllerCopy animated:animatedCopy];
 }
 
 @end

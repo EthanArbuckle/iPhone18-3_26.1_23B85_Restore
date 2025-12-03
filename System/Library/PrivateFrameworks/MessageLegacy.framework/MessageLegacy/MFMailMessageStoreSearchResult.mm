@@ -1,9 +1,9 @@
 @interface MFMailMessageStoreSearchResult
 - (MFMailMessageStoreSearchResult)init;
 - (unint64_t)count;
-- (void)addRemoteID:(id)a3 mailbox:(id)a4;
+- (void)addRemoteID:(id)d mailbox:(id)mailbox;
 - (void)dealloc;
-- (void)enumerateMailboxesAndRemoteIDsUsingBlock:(id)a3;
+- (void)enumerateMailboxesAndRemoteIDsUsingBlock:(id)block;
 @end
 
 @implementation MFMailMessageStoreSearchResult
@@ -28,16 +28,16 @@
   [(MFMailMessageStoreSearchResult *)&v3 dealloc];
 }
 
-- (void)addRemoteID:(id)a3 mailbox:(id)a4
+- (void)addRemoteID:(id)d mailbox:(id)mailbox
 {
-  v7 = [(NSMutableDictionary *)[(MFMailMessageStoreSearchResult *)self mailboxToRemoteIdDictionary] objectForKeyedSubscript:a4];
+  v7 = [(NSMutableDictionary *)[(MFMailMessageStoreSearchResult *)self mailboxToRemoteIdDictionary] objectForKeyedSubscript:mailbox];
   if (!v7)
   {
     v7 = objc_alloc_init(MEMORY[0x277CBEB58]);
-    [(NSMutableDictionary *)[(MFMailMessageStoreSearchResult *)self mailboxToRemoteIdDictionary] setObject:v7 forKeyedSubscript:a4];
+    [(NSMutableDictionary *)[(MFMailMessageStoreSearchResult *)self mailboxToRemoteIdDictionary] setObject:v7 forKeyedSubscript:mailbox];
   }
 
-  [v7 addObject:a3];
+  [v7 addObject:d];
 }
 
 - (unint64_t)count
@@ -46,13 +46,13 @@
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v2 = [(MFMailMessageStoreSearchResult *)self mailboxToRemoteIdDictionary];
+  mailboxToRemoteIdDictionary = [(MFMailMessageStoreSearchResult *)self mailboxToRemoteIdDictionary];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __39__MFMailMessageStoreSearchResult_count__block_invoke;
   v5[3] = &unk_2798B7540;
   v5[4] = &v6;
-  [(NSMutableDictionary *)v2 enumerateKeysAndObjectsUsingBlock:v5];
+  [(NSMutableDictionary *)mailboxToRemoteIdDictionary enumerateKeysAndObjectsUsingBlock:v5];
   v3 = v7[3];
   _Block_object_dispose(&v6, 8);
   return v3;
@@ -65,11 +65,11 @@ uint64_t __39__MFMailMessageStoreSearchResult_count__block_invoke(uint64_t a1, u
   return result;
 }
 
-- (void)enumerateMailboxesAndRemoteIDsUsingBlock:(id)a3
+- (void)enumerateMailboxesAndRemoteIDsUsingBlock:(id)block
 {
-  v4 = [(MFMailMessageStoreSearchResult *)self mailboxToRemoteIdDictionary];
+  mailboxToRemoteIdDictionary = [(MFMailMessageStoreSearchResult *)self mailboxToRemoteIdDictionary];
 
-  [(NSMutableDictionary *)v4 enumerateKeysAndObjectsUsingBlock:a3];
+  [(NSMutableDictionary *)mailboxToRemoteIdDictionary enumerateKeysAndObjectsUsingBlock:block];
 }
 
 @end

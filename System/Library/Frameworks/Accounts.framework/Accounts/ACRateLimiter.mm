@@ -1,15 +1,15 @@
 @interface ACRateLimiter
-- (ACRateLimiter)initWithMaximum:(unint64_t)a3 inTimeInterval:(double)a4;
-- (BOOL)_vacuumQueue_vacuumKey:(id)a3;
-- (BOOL)reservePerformActionForKey:(id)a3;
-- (id)simpleRateLimiterForKey:(id)a3;
+- (ACRateLimiter)initWithMaximum:(unint64_t)maximum inTimeInterval:(double)interval;
+- (BOOL)_vacuumQueue_vacuumKey:(id)key;
+- (BOOL)reservePerformActionForKey:(id)key;
+- (id)simpleRateLimiterForKey:(id)key;
 - (void)_vacuumQueue_vacuum;
 - (void)vacuumIfNeeded;
 @end
 
 @implementation ACRateLimiter
 
-- (ACRateLimiter)initWithMaximum:(unint64_t)a3 inTimeInterval:(double)a4
+- (ACRateLimiter)initWithMaximum:(unint64_t)maximum inTimeInterval:(double)interval
 {
   v21.receiver = self;
   v21.super_class = ACRateLimiter;
@@ -17,11 +17,11 @@
   v7 = v6;
   if (v6)
   {
-    v6->_maximum = a3;
-    v6->_timeInterval = a4;
-    v8 = [MEMORY[0x1E695DF90] dictionary];
+    v6->_maximum = maximum;
+    v6->_timeInterval = interval;
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     keyToSimpleRateLimiter = v7->_keyToSimpleRateLimiter;
-    v7->_keyToSimpleRateLimiter = v8;
+    v7->_keyToSimpleRateLimiter = dictionary;
 
     v10 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v11 = dispatch_queue_attr_make_with_qos_class(v10, QOS_CLASS_UNSPECIFIED, 0);
@@ -35,7 +35,7 @@
     vacuumQueue = v7->_vacuumQueue;
     v7->_vacuumQueue = v16;
 
-    v7->_vacuumTimeInterval = fmax(a4, 3600.0);
+    v7->_vacuumTimeInterval = fmax(interval, 3600.0);
     v18 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:?];
     nextVacuumDate = v7->_nextVacuumDate;
     v7->_nextVacuumDate = v18;
@@ -44,34 +44,34 @@
   return v7;
 }
 
-- (BOOL)reservePerformActionForKey:(id)a3
+- (BOOL)reservePerformActionForKey:(id)key
 {
-  v4 = [(ACRateLimiter *)self simpleRateLimiterForKey:a3];
-  v5 = [v4 reservePerformActionNow];
+  v4 = [(ACRateLimiter *)self simpleRateLimiterForKey:key];
+  reservePerformActionNow = [v4 reservePerformActionNow];
   [(ACRateLimiter *)self vacuumIfNeeded];
 
-  return v5;
+  return reservePerformActionNow;
 }
 
-- (id)simpleRateLimiterForKey:(id)a3
+- (id)simpleRateLimiterForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__2;
   v16 = __Block_byref_object_dispose__2;
   v17 = 0;
-  v5 = [(ACRateLimiter *)self instanceQueue];
+  instanceQueue = [(ACRateLimiter *)self instanceQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __41__ACRateLimiter_simpleRateLimiterForKey___block_invoke;
   block[3] = &unk_1E7977290;
-  v10 = v4;
+  v10 = keyCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = keyCopy;
+  dispatch_sync(instanceQueue, block);
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -107,9 +107,9 @@ void __41__ACRateLimiter_simpleRateLimiterForKey___block_invoke(uint64_t a1)
 {
   if (![(ACRateLimiter *)self isVacuumInProgress])
   {
-    v3 = [(ACRateLimiter *)self nextVacuumDate];
-    v4 = [MEMORY[0x1E695DF00] date];
-    v5 = [v3 compare:v4];
+    nextVacuumDate = [(ACRateLimiter *)self nextVacuumDate];
+    date = [MEMORY[0x1E695DF00] date];
+    v5 = [nextVacuumDate compare:date];
 
     if (v5 == -1)
     {
@@ -154,14 +154,14 @@ uint64_t __31__ACRateLimiter_vacuumIfNeeded__block_invoke(uint64_t a1)
   v22 = __Block_byref_object_copy__2;
   v23 = __Block_byref_object_dispose__2;
   v24 = 0;
-  v3 = [(ACRateLimiter *)self instanceQueue];
+  instanceQueue = [(ACRateLimiter *)self instanceQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __36__ACRateLimiter__vacuumQueue_vacuum__block_invoke;
   block[3] = &unk_1E79772B8;
   block[4] = self;
   block[5] = &v19;
-  dispatch_sync(v3, block);
+  dispatch_sync(instanceQueue, block);
 
   v4 = _ACLogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -224,27 +224,27 @@ void __36__ACRateLimiter__vacuumQueue_vacuum__block_invoke(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-- (BOOL)_vacuumQueue_vacuumKey:(id)a3
+- (BOOL)_vacuumQueue_vacuumKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  v5 = [(ACRateLimiter *)self instanceQueue];
+  instanceQueue = [(ACRateLimiter *)self instanceQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __40__ACRateLimiter__vacuumQueue_vacuumKey___block_invoke;
   block[3] = &unk_1E79772E0;
   block[4] = self;
-  v9 = v4;
+  v9 = keyCopy;
   v10 = &v11;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = keyCopy;
+  dispatch_sync(instanceQueue, block);
 
-  LOBYTE(v4) = *(v12 + 24);
+  LOBYTE(keyCopy) = *(v12 + 24);
   _Block_object_dispose(&v11, 8);
-  return v4;
+  return keyCopy;
 }
 
 void __40__ACRateLimiter__vacuumQueue_vacuumKey___block_invoke(uint64_t a1)

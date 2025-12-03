@@ -1,15 +1,15 @@
 @interface TICandidateSorter
-- (BOOL)getInfoForCharacter:(id)a3 strokeCount:(unint64_t *)a4 radicals:(id *)a5 yomis:(id *)a6;
-- (BOOL)hasCandidatesFromCandidates:(id)a3 inputString:(id)a4 sortedBy:(unint64_t)a5 omittingEmoji:(BOOL)a6;
-- (BOOL)hasCandidatesSortedByEmojiCategoryFromCandidates:(id)a3;
-- (BOOL)hasCandidatesSortedByFacemarkCategoryFromCandidates:(id)a3;
-- (BOOL)hasCandidatesSortedByRadicalFromCandidates:(id)a3;
-- (BOOL)hasCandidatesSortedByYomiFromCandidates:(id)a3 inputString:(id)a4;
+- (BOOL)getInfoForCharacter:(id)character strokeCount:(unint64_t *)count radicals:(id *)radicals yomis:(id *)yomis;
+- (BOOL)hasCandidatesFromCandidates:(id)candidates inputString:(id)string sortedBy:(unint64_t)by omittingEmoji:(BOOL)emoji;
+- (BOOL)hasCandidatesSortedByEmojiCategoryFromCandidates:(id)candidates;
+- (BOOL)hasCandidatesSortedByFacemarkCategoryFromCandidates:(id)candidates;
+- (BOOL)hasCandidatesSortedByRadicalFromCandidates:(id)candidates;
+- (BOOL)hasCandidatesSortedByYomiFromCandidates:(id)candidates inputString:(id)string;
 - (TICandidateSorter)init;
-- (id)candidatesSortedByDefaultFromCandidates:(id)a3 omittingEmoji:(BOOL)a4;
-- (id)candidatesSortedByEmojiFromCandidates:(id)a3;
-- (id)candidatesSortedByRadicalFromCandidates:(id)a3;
-- (id)candidatesSortedByYomiFromCandidates:(id)a3 inputString:(id)a4;
+- (id)candidatesSortedByDefaultFromCandidates:(id)candidates omittingEmoji:(BOOL)emoji;
+- (id)candidatesSortedByEmojiFromCandidates:(id)candidates;
+- (id)candidatesSortedByRadicalFromCandidates:(id)candidates;
+- (id)candidatesSortedByYomiFromCandidates:(id)candidates inputString:(id)string;
 - (void)dealloc;
 @end
 
@@ -61,9 +61,9 @@
           v17 = *(*(&v24 + 1) + 8 * i);
           v18 = [v12 objectForKey:v17];
           v19 = [v18 objectAtIndex:0];
-          v20 = [v19 unsignedIntegerValue];
+          unsignedIntegerValue = [v19 unsignedIntegerValue];
 
-          CFDictionarySetValue(Mutable, v17, v20);
+          CFDictionarySetValue(Mutable, v17, unsignedIntegerValue);
         }
 
         v14 = [v12 countByEnumeratingWithState:&v24 objects:v29 count:16];
@@ -98,10 +98,10 @@
   [(TICandidateSorter *)&v5 dealloc];
 }
 
-- (BOOL)getInfoForCharacter:(id)a3 strokeCount:(unint64_t *)a4 radicals:(id *)a5 yomis:(id *)a6
+- (BOOL)getInfoForCharacter:(id)character strokeCount:(unint64_t *)count radicals:(id *)radicals yomis:(id *)yomis
 {
   v19 = *MEMORY[0x29EDCA608];
-  v10 = a3;
+  characterCopy = character;
   [(TICandidateSorter *)self index];
   v11 = *MEMORY[0x29EDC0FF8];
   IDXSetSearchString();
@@ -110,21 +110,21 @@
   if (matched >= 1)
   {
     IDXGetFieldDataPtrs();
-    if (a4)
+    if (count)
     {
-      *a4 = MEMORY[0];
+      *count = MEMORY[0];
     }
 
-    if (a5)
+    if (radicals)
     {
-      *a5 = [MEMORY[0x29EDBA0F8] stringWithCharacters:0 length:v17 >> 1];
+      *radicals = [MEMORY[0x29EDBA0F8] stringWithCharacters:0 length:v17 >> 1];
     }
 
-    if (a6)
+    if (yomis)
     {
       v13 = [MEMORY[0x29EDBA0F8] stringWithCharacters:0 length:v18 >> 1];
       v14 = [v13 stringByReplacingOccurrencesOfString:@"/" withString:{@", "}];
-      *a6 = [v14 componentsSeparatedByString:{@", "}];
+      *yomis = [v14 componentsSeparatedByString:{@", "}];
     }
   }
 
@@ -133,15 +133,15 @@
   return result;
 }
 
-- (BOOL)hasCandidatesSortedByRadicalFromCandidates:(id)a3
+- (BOOL)hasCandidatesSortedByRadicalFromCandidates:(id)candidates
 {
   v24 = *MEMORY[0x29EDCA608];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  candidatesCopy = candidates;
+  v5 = [candidatesCopy countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v5)
   {
     v6 = v5;
@@ -152,16 +152,16 @@
       {
         if (*v20 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(candidatesCopy);
         }
 
-        v9 = [*(*(&v19 + 1) + 8 * i) label];
-        v10 = [v9 _firstGrapheme];
-        if ([v10 length])
+        label = [*(*(&v19 + 1) + 8 * i) label];
+        _firstGrapheme = [label _firstGrapheme];
+        if ([_firstGrapheme length])
         {
           v17 = 0;
           v18 = 0;
-          v11 = [(TICandidateSorter *)self getInfoForCharacter:v10 strokeCount:&v18 radicals:&v17 yomis:0];
+          v11 = [(TICandidateSorter *)self getInfoForCharacter:_firstGrapheme strokeCount:&v18 radicals:&v17 yomis:0];
           v12 = v17;
           v13 = v12;
           if (v11 && [v12 length])
@@ -173,7 +173,7 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v6 = [candidatesCopy countByEnumeratingWithState:&v19 objects:v23 count:16];
       if (v6)
       {
         continue;
@@ -190,22 +190,22 @@ LABEL_14:
   return v14;
 }
 
-- (id)candidatesSortedByDefaultFromCandidates:(id)a3 omittingEmoji:(BOOL)a4
+- (id)candidatesSortedByDefaultFromCandidates:(id)candidates omittingEmoji:(BOOL)emoji
 {
   v16[1] = *MEMORY[0x29EDCA608];
-  v6 = a3;
+  candidatesCopy = candidates;
   if ([(TICandidateSorter *)self liveConversionEnabled])
   {
-    [v6 _sortedArrayByFrequency:2 extensionCandidateIndex:6 maxEmojisPerCandidate:1 ignoreTransliterateCandidate:1];
+    [candidatesCopy _sortedArrayByFrequency:2 extensionCandidateIndex:6 maxEmojisPerCandidate:1 ignoreTransliterateCandidate:1];
   }
 
   else
   {
-    [v6 _sortedArrayByFrequency];
+    [candidatesCopy _sortedArrayByFrequency];
   }
   v7 = ;
 
-  if (a4)
+  if (emoji)
   {
     v8 = [v7 _arrayByFilteringEmojiCandidates:0];
   }
@@ -227,20 +227,20 @@ LABEL_14:
   return v13;
 }
 
-- (id)candidatesSortedByRadicalFromCandidates:(id)a3
+- (id)candidatesSortedByRadicalFromCandidates:(id)candidates
 {
   v68 = *MEMORY[0x29EDCA608];
-  v3 = a3;
-  v42 = [MEMORY[0x29EDB8DE8] array];
+  candidatesCopy = candidates;
+  array = [MEMORY[0x29EDB8DE8] array];
   context = objc_autoreleasePoolPush();
   Mutable = CFDictionaryCreateMutable(*MEMORY[0x29EDB8ED8], 0, MEMORY[0x29EDB9010], 0);
-  v5 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   cf = [MEMORY[0x29EDB8E00] dictionary];
   v61 = 0u;
   v62 = 0u;
   v63 = 0u;
   v64 = 0u;
-  obj = v3;
+  obj = candidatesCopy;
   v6 = [obj countByEnumeratingWithState:&v61 objects:v67 count:16];
   if (v6)
   {
@@ -259,18 +259,18 @@ LABEL_14:
         v10 = *(*(&v61 + 1) + 8 * i);
         if (([v10 isTransliterationCandidate] & 1) == 0)
         {
-          v11 = [v10 label];
-          v12 = [v11 _firstGrapheme];
-          if ([v12 length])
+          label = [v10 label];
+          _firstGrapheme = [label _firstGrapheme];
+          if ([_firstGrapheme length])
           {
-            [v5 setObject:v12 forKey:v11];
+            [dictionary setObject:_firstGrapheme forKey:label];
             v59 = 0;
             value = 0;
-            v13 = [(TICandidateSorter *)self getInfoForCharacter:v12 strokeCount:&value radicals:&v59 yomis:0];
+            v13 = [(TICandidateSorter *)self getInfoForCharacter:_firstGrapheme strokeCount:&value radicals:&v59 yomis:0];
             v14 = v59;
             if (v13)
             {
-              CFDictionarySetValue(Mutable, v12, value);
+              CFDictionarySetValue(Mutable, _firstGrapheme, value);
               v15 = [v14 length];
               v55[0] = MEMORY[0x29EDCA5F8];
               v55[1] = 3221225472;
@@ -314,7 +314,7 @@ LABEL_14:
         v48[1] = 3221225472;
         v48[2] = __61__TICandidateSorter_candidatesSortedByRadicalFromCandidates___block_invoke_2;
         v48[3] = &unk_29F3793E8;
-        v49 = v5;
+        v49 = dictionary;
         v50 = Mutable;
         [v21 sortUsingComparator:v48];
       }
@@ -327,14 +327,14 @@ LABEL_14:
 
   cfa = Mutable;
 
-  v22 = [(TICandidateSorter *)self radicalToSortPosition];
-  v23 = [v16 allKeys];
+  radicalToSortPosition = [(TICandidateSorter *)self radicalToSortPosition];
+  allKeys = [v16 allKeys];
   v47[0] = MEMORY[0x29EDCA5F8];
   v47[1] = 3221225472;
   v47[2] = __61__TICandidateSorter_candidatesSortedByRadicalFromCandidates___block_invoke_3;
   v47[3] = &__block_descriptor_40_e11_q24__0_8_16l;
-  v47[4] = v22;
-  v24 = [v23 sortedArrayUsingComparator:v47];
+  v47[4] = radicalToSortPosition;
+  v24 = [allKeys sortedArrayUsingComparator:v47];
 
   v45 = 0u;
   v46 = 0u;
@@ -360,7 +360,7 @@ LABEL_14:
         v32 = [v16 objectForKey:v30];
         v33 = [v31 initWithTitle:v30 candidates:v32];
 
-        [v42 addObject:v33];
+        [array addObject:v33];
       }
 
       v27 = [v25 countByEnumeratingWithState:&v43 objects:v65 count:16];
@@ -374,7 +374,7 @@ LABEL_14:
 
   v34 = *MEMORY[0x29EDCA608];
 
-  return v42;
+  return array;
 }
 
 uint64_t __61__TICandidateSorter_candidatesSortedByRadicalFromCandidates___block_invoke(uint64_t a1, void *a2)
@@ -452,16 +452,16 @@ uint64_t __61__TICandidateSorter_candidatesSortedByRadicalFromCandidates___block
   }
 }
 
-- (BOOL)hasCandidatesSortedByYomiFromCandidates:(id)a3 inputString:(id)a4
+- (BOOL)hasCandidatesSortedByYomiFromCandidates:(id)candidates inputString:(id)string
 {
   v51 = *MEMORY[0x29EDCA608];
-  v6 = a3;
-  v7 = a4;
+  candidatesCopy = candidates;
+  stringCopy = string;
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v8 = v6;
+  v8 = candidatesCopy;
   v9 = [v8 countByEnumeratingWithState:&v45 objects:v50 count:16];
   if (v9)
   {
@@ -476,15 +476,15 @@ uint64_t __61__TICandidateSorter_candidatesSortedByRadicalFromCandidates___block
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v45 + 1) + 8 * i) label];
-        if ([v13 _containsJapaneseOnly])
+        label = [*(*(&v45 + 1) + 8 * i) label];
+        if ([label _containsJapaneseOnly])
         {
-          v14 = [v13 _firstGrapheme];
-          if ([v14 length])
+          _firstGrapheme = [label _firstGrapheme];
+          if ([_firstGrapheme length])
           {
             v43 = 0;
             v44 = 0;
-            v15 = [(TICandidateSorter *)self getInfoForCharacter:v14 strokeCount:&v44 radicals:0 yomis:&v43];
+            v15 = [(TICandidateSorter *)self getInfoForCharacter:_firstGrapheme strokeCount:&v44 radicals:0 yomis:&v43];
             v16 = v43;
             if (v15)
             {
@@ -500,7 +500,7 @@ uint64_t __61__TICandidateSorter_candidatesSortedByRadicalFromCandidates___block
                 v38 = *v40;
                 v33 = v11;
                 v34 = v8;
-                v31 = self;
+                selfCopy = self;
                 v32 = v10;
                 v36 = v17;
                 while (2)
@@ -517,14 +517,14 @@ uint64_t __61__TICandidateSorter_candidatesSortedByRadicalFromCandidates___block
                     {
                       v20 = [v19 rangeOfComposedCharacterSequenceAtIndex:0];
                       v22 = [v19 substringWithRange:{v20, v21}];
-                      v23 = [v22 stringByConvertingKatakanaToHiragana];
+                      stringByConvertingKatakanaToHiragana = [v22 stringByConvertingKatakanaToHiragana];
 
-                      v24 = [v7 length];
+                      v24 = [stringCopy length];
                       v25 = 1;
                       while (v24)
                       {
-                        v26 = [v7 substringToIndex:v25];
-                        v27 = [v23 isEqualToString:v26];
+                        v26 = [stringCopy substringToIndex:v25];
+                        v27 = [stringByConvertingKatakanaToHiragana isEqualToString:v26];
 
                         --v24;
                         ++v25;
@@ -548,7 +548,7 @@ LABEL_19:
                   }
 
                   v8 = v34;
-                  self = v31;
+                  self = selfCopy;
                   v37 = [v17 countByEnumeratingWithState:&v39 objects:v49 count:16];
                   if (v37)
                   {
@@ -583,21 +583,21 @@ LABEL_29:
   return v28;
 }
 
-- (id)candidatesSortedByYomiFromCandidates:(id)a3 inputString:(id)a4
+- (id)candidatesSortedByYomiFromCandidates:(id)candidates inputString:(id)string
 {
   v106 = *MEMORY[0x29EDCA608];
-  v6 = a3;
-  v59 = a4;
-  v73 = [MEMORY[0x29EDB8DE8] array];
+  candidatesCopy = candidates;
+  stringCopy = string;
+  array = [MEMORY[0x29EDB8DE8] array];
   context = objc_autoreleasePoolPush();
   theDict = CFDictionaryCreateMutable(*MEMORY[0x29EDB8ED8], 0, MEMORY[0x29EDB9010], 0);
-  v7 = [MEMORY[0x29EDB8E00] dictionaryWithCapacity:{objc_msgSend(v6, "count")}];
-  v8 = [MEMORY[0x29EDB8E00] dictionary];
+  v7 = [MEMORY[0x29EDB8E00] dictionaryWithCapacity:{objc_msgSend(candidatesCopy, "count")}];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   v97 = 0u;
   v98 = 0u;
   v99 = 0u;
   v100 = 0u;
-  v9 = v6;
+  v9 = candidatesCopy;
   v10 = [v9 countByEnumeratingWithState:&v97 objects:v105 count:16];
   v63 = v9;
   if (v10)
@@ -605,7 +605,7 @@ LABEL_29:
     v11 = v10;
     v12 = *v98;
     v61 = v7;
-    v62 = self;
+    selfCopy = self;
     v60 = *v98;
     do
     {
@@ -621,18 +621,18 @@ LABEL_29:
         v14 = *(*(&v97 + 1) + 8 * v13);
         if (([v14 isTransliterationCandidate] & 1) == 0)
         {
-          v15 = [v14 label];
-          if ([v15 _containsJapaneseOnly])
+          label = [v14 label];
+          if ([label _containsJapaneseOnly])
           {
-            v16 = [v15 _firstGrapheme];
-            if ([v16 length])
+            _firstGrapheme = [label _firstGrapheme];
+            if ([_firstGrapheme length])
             {
-              v71 = v15;
-              [v7 setObject:v16 forKey:v15];
+              v71 = label;
+              [v7 setObject:_firstGrapheme forKey:label];
               v95 = 0;
               value = 0;
-              key = v16;
-              v17 = [(TICandidateSorter *)self getInfoForCharacter:v16 strokeCount:&value radicals:0 yomis:&v95];
+              key = _firstGrapheme;
+              v17 = [(TICandidateSorter *)self getInfoForCharacter:_firstGrapheme strokeCount:&value radicals:0 yomis:&v95];
               v18 = v95;
               if (v17)
               {
@@ -663,18 +663,18 @@ LABEL_29:
                       {
                         v25 = [v24 rangeOfComposedCharacterSequenceAtIndex:0];
                         v27 = [v24 substringWithRange:{v25, v26}];
-                        v28 = [v27 stringByConvertingKatakanaToHiragana];
+                        stringByConvertingKatakanaToHiragana = [v27 stringByConvertingKatakanaToHiragana];
 
-                        v29 = [v8 objectForKey:v28];
-                        if (!v29)
+                        orderedSet = [dictionary objectForKey:stringByConvertingKatakanaToHiragana];
+                        if (!orderedSet)
                         {
-                          v29 = [MEMORY[0x29EDB8E10] orderedSet];
-                          [v8 setObject:v29 forKey:v28];
+                          orderedSet = [MEMORY[0x29EDB8E10] orderedSet];
+                          [dictionary setObject:orderedSet forKey:stringByConvertingKatakanaToHiragana];
                         }
 
                         v30 = [v14 copy];
                         [v30 setAlternativeText:v24];
-                        [v29 addObject:v30];
+                        [orderedSet addObject:v30];
                       }
                     }
 
@@ -684,7 +684,7 @@ LABEL_29:
                   while (v21);
                 }
 
-                self = v62;
+                self = selfCopy;
                 v9 = v63;
                 v12 = v60;
                 v7 = v61;
@@ -693,8 +693,8 @@ LABEL_29:
                 v13 = obj;
               }
 
-              v15 = v71;
-              v16 = key;
+              label = v71;
+              _firstGrapheme = key;
             }
           }
         }
@@ -717,15 +717,15 @@ LABEL_29:
   v89 = v68;
   v90 = theDict;
   v31 = MEMORY[0x29EDA3C60](v88);
-  v32 = [v59 length];
+  v32 = [stringCopy length];
   if (v32)
   {
     v33 = v32;
     v34 = 1;
     do
     {
-      v35 = [v59 substringToIndex:v34];
-      [v8 removeObjectForKey:v35];
+      v35 = [stringCopy substringToIndex:v34];
+      [dictionary removeObjectForKey:v35];
 
       ++v34;
       --v33;
@@ -738,7 +738,7 @@ LABEL_29:
   v87 = 0u;
   v84 = 0u;
   v85 = 0u;
-  v36 = v8;
+  v36 = dictionary;
   v37 = [v36 countByEnumeratingWithState:&v84 objects:v103 count:16];
   if (v37)
   {
@@ -763,9 +763,9 @@ LABEL_29:
     while (v38);
   }
 
-  v42 = [v36 allKeys];
+  allKeys = [v36 allKeys];
   v66 = v31;
-  v43 = [v42 sortedArrayUsingComparator:v31];
+  v43 = [allKeys sortedArrayUsingComparator:v31];
 
   v82 = 0u;
   v83 = 0u;
@@ -807,15 +807,15 @@ LABEL_29:
               }
 
               v52 = *(*(&v76 + 1) + 8 * m);
-              v53 = [v52 label];
-              if ([v53 _graphemeCount] == 1)
+              label2 = [v52 label];
+              if ([label2 _graphemeCount] == 1)
               {
-                v54 = v53;
+                v54 = label2;
 
                 v49 = v54;
               }
 
-              else if (v49 && [v53 hasPrefix:v49])
+              else if (v49 && [label2 hasPrefix:v49])
               {
                 [v52 setAlternativeText:0];
               }
@@ -833,7 +833,7 @@ LABEL_29:
         }
 
         v55 = [objc_alloc(MEMORY[0x29EDC7078]) initWithTitle:v45 candidates:v46];
-        [v73 addObject:v55];
+        [array addObject:v55];
       }
 
       keya = [obja countByEnumeratingWithState:&v80 objects:v102 count:16];
@@ -847,7 +847,7 @@ LABEL_29:
 
   v56 = *MEMORY[0x29EDCA608];
 
-  return v73;
+  return array;
 }
 
 uint64_t __70__TICandidateSorter_candidatesSortedByYomiFromCandidates_inputString___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -930,13 +930,13 @@ LABEL_10:
   return v17;
 }
 
-- (id)candidatesSortedByEmojiFromCandidates:(id)a3
+- (id)candidatesSortedByEmojiFromCandidates:(id)candidates
 {
   v13[1] = *MEMORY[0x29EDCA608];
   v3 = MEMORY[0x29EDBA0A8];
-  v4 = a3;
+  candidatesCopy = candidates;
   v5 = [v3 predicateWithBlock:&__block_literal_global_6];
-  v6 = [v4 filteredArrayUsingPredicate:v5];
+  v6 = [candidatesCopy filteredArrayUsingPredicate:v5];
 
   v7 = objc_alloc(MEMORY[0x29EDC7078]);
   v8 = [MEMORY[0x29EDB8E30] orderedSetWithArray:v6];
@@ -965,15 +965,15 @@ uint64_t __59__TICandidateSorter_candidatesSortedByEmojiFromCandidates___block_i
   return v3;
 }
 
-- (BOOL)hasCandidatesSortedByFacemarkCategoryFromCandidates:(id)a3
+- (BOOL)hasCandidatesSortedByFacemarkCategoryFromCandidates:(id)candidates
 {
   v15 = *MEMORY[0x29EDCA608];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  candidatesCopy = candidates;
+  v4 = [candidatesCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = *v11;
@@ -983,7 +983,7 @@ uint64_t __59__TICandidateSorter_candidatesSortedByEmojiFromCandidates___block_i
       {
         if (*v11 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(candidatesCopy);
         }
 
         v7 = *(*(&v10 + 1) + 8 * i);
@@ -995,7 +995,7 @@ uint64_t __59__TICandidateSorter_candidatesSortedByEmojiFromCandidates___block_i
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [candidatesCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v4)
       {
         continue;
@@ -1011,15 +1011,15 @@ LABEL_11:
   return v4;
 }
 
-- (BOOL)hasCandidatesSortedByEmojiCategoryFromCandidates:(id)a3
+- (BOOL)hasCandidatesSortedByEmojiCategoryFromCandidates:(id)candidates
 {
   v14 = *MEMORY[0x29EDCA608];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  candidatesCopy = candidates;
+  v4 = [candidatesCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = *v10;
@@ -1029,7 +1029,7 @@ LABEL_11:
       {
         if (*v10 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(candidatesCopy);
         }
 
         if ([*(*(&v9 + 1) + 8 * i) isEmojiCandidate])
@@ -1039,7 +1039,7 @@ LABEL_11:
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [candidatesCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
       if (v4)
       {
         continue;
@@ -1055,51 +1055,51 @@ LABEL_11:
   return v4;
 }
 
-- (BOOL)hasCandidatesFromCandidates:(id)a3 inputString:(id)a4 sortedBy:(unint64_t)a5 omittingEmoji:(BOOL)a6
+- (BOOL)hasCandidatesFromCandidates:(id)candidates inputString:(id)string sortedBy:(unint64_t)by omittingEmoji:(BOOL)emoji
 {
-  v6 = a6;
-  v10 = a3;
-  v11 = a4;
-  if (a5 > 2)
+  emojiCopy = emoji;
+  candidatesCopy = candidates;
+  stringCopy = string;
+  if (by > 2)
   {
-    if (a5 == 3)
+    if (by == 3)
     {
-      v12 = [(TICandidateSorter *)self hasCandidatesSortedByFacemarkCategoryFromCandidates:v10];
+      v12 = [(TICandidateSorter *)self hasCandidatesSortedByFacemarkCategoryFromCandidates:candidatesCopy];
       goto LABEL_13;
     }
 
-    if (a5 == 4)
+    if (by == 4)
     {
-      v12 = [(TICandidateSorter *)self hasCandidatesSortedByEmojiCategoryFromCandidates:v10];
+      v12 = [(TICandidateSorter *)self hasCandidatesSortedByEmojiCategoryFromCandidates:candidatesCopy];
       goto LABEL_13;
     }
   }
 
   else
   {
-    if (a5 == 1)
+    if (by == 1)
     {
-      v12 = [(TICandidateSorter *)self hasCandidatesSortedByRadicalFromCandidates:v10];
+      v12 = [(TICandidateSorter *)self hasCandidatesSortedByRadicalFromCandidates:candidatesCopy];
       goto LABEL_13;
     }
 
-    if (a5 == 2)
+    if (by == 2)
     {
-      v12 = [(TICandidateSorter *)self hasCandidatesSortedByYomiFromCandidates:v10 inputString:v11];
+      v12 = [(TICandidateSorter *)self hasCandidatesSortedByYomiFromCandidates:candidatesCopy inputString:stringCopy];
 LABEL_13:
       v14 = v12;
       goto LABEL_14;
     }
   }
 
-  if (v6)
+  if (emojiCopy)
   {
-    v13 = [v10 _arrayByFilteringEmojiCandidates:0];
+    v13 = [candidatesCopy _arrayByFilteringEmojiCandidates:0];
 
-    v10 = v13;
+    candidatesCopy = v13;
   }
 
-  v14 = [v10 count] != 0;
+  v14 = [candidatesCopy count] != 0;
 LABEL_14:
 
   return v14;

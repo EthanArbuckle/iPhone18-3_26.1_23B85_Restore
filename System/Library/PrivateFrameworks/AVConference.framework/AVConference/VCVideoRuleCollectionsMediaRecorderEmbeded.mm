@@ -1,7 +1,7 @@
 @interface VCVideoRuleCollectionsMediaRecorderEmbeded
 + (id)sharedInstance;
 - (BOOL)isSupportedDeviceClass;
-- (VCVideoRuleCollectionsMediaRecorderEmbeded)initWithHardwareSettings:(id)a3;
+- (VCVideoRuleCollectionsMediaRecorderEmbeded)initWithHardwareSettings:(id)settings;
 - (id)mediaRecorderImageTypes;
 - (id)mediaRecorderVideoCodecs;
 - (unsigned)mediaRecorderCapabilities;
@@ -10,7 +10,7 @@
 
 @implementation VCVideoRuleCollectionsMediaRecorderEmbeded
 
-- (VCVideoRuleCollectionsMediaRecorderEmbeded)initWithHardwareSettings:(id)a3
+- (VCVideoRuleCollectionsMediaRecorderEmbeded)initWithHardwareSettings:(id)settings
 {
   v6 = *MEMORY[0x1E69E9840];
   v5.receiver = self;
@@ -18,7 +18,7 @@
   result = [(VCVideoRuleCollectionsMediaRecorder *)&v5 init];
   if (result)
   {
-    result->_hardwareSettings = a3;
+    result->_hardwareSettings = settings;
   }
 
   return result;
@@ -85,8 +85,8 @@
 
 - (BOOL)isSupportedDeviceClass
 {
-  v3 = [(VCHardwareSettingsEmbeddedProtocol *)self->_hardwareSettings deviceClass];
-  if ((v3 - 1) >= 8 || ((0x8Fu >> (v3 - 1)) & 1) == 0)
+  deviceClass = [(VCHardwareSettingsEmbeddedProtocol *)self->_hardwareSettings deviceClass];
+  if ((deviceClass - 1) >= 8 || ((0x8Fu >> (deviceClass - 1)) & 1) == 0)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 3)
     {
@@ -112,15 +112,15 @@
 - (void)isSupportedDeviceClass
 {
   v14 = *MEMORY[0x1E69E9840];
-  v5 = [*a2 deviceClass];
+  deviceClass = [*a2 deviceClass];
   v6 = 136315906;
-  v7 = a1;
+  selfCopy = self;
   v8 = 2080;
   v9 = "[VCVideoRuleCollectionsMediaRecorderEmbeded isSupportedDeviceClass]";
   v10 = 1024;
   v11 = 167;
   v12 = 1024;
-  v13 = v5;
+  v13 = deviceClass;
   _os_log_error_impl(&dword_1DB56E000, a3, OS_LOG_TYPE_ERROR, " [%s] %s:%d No media recorder supported for device class %d", &v6, 0x22u);
 }
 

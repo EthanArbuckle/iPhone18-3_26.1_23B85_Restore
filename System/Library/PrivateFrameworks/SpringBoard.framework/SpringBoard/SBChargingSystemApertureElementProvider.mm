@@ -1,6 +1,6 @@
 @interface SBChargingSystemApertureElementProvider
 - (SBChargingSystemApertureElementProvider)init;
-- (id)powerElementWithBatteryCapacity:(double)a3;
+- (id)powerElementWithBatteryCapacity:(double)capacity;
 @end
 
 @implementation SBChargingSystemApertureElementProvider
@@ -21,12 +21,12 @@
   return v2;
 }
 
-- (id)powerElementWithBatteryCapacity:(double)a3
+- (id)powerElementWithBatteryCapacity:(double)capacity
 {
-  v5 = [MEMORY[0x277CCAC38] processInfo];
-  v6 = [v5 isLowPowerModeEnabled];
+  processInfo = [MEMORY[0x277CCAC38] processInfo];
+  isLowPowerModeEnabled = [processInfo isLowPowerModeEnabled];
 
-  v7 = [[SBPowerAlertElement alloc] initWithIdentifier:self style:0 batteryPercentage:v6 lowPowerModeEnabled:0 action:a3];
+  v7 = [[SBPowerAlertElement alloc] initWithIdentifier:self style:0 batteryPercentage:isLowPowerModeEnabled lowPowerModeEnabled:0 action:capacity];
 
   return v7;
 }

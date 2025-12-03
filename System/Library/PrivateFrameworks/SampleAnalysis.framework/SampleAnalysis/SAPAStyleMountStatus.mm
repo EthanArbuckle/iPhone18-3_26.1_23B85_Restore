@@ -1,20 +1,20 @@
 @interface SAPAStyleMountStatus
-+ (id)newInstanceWithoutReferencesFromSerializedBuffer:(const void *)a3 bufferLength:(unint64_t)a4;
-- (BOOL)addSelfToBuffer:(void *)a3 bufferLength:(unint64_t)a4 withCompletedSerializationDictionary:(id)a5;
++ (id)newInstanceWithoutReferencesFromSerializedBuffer:(const void *)buffer bufferLength:(unint64_t)length;
+- (BOOL)addSelfToBuffer:(void *)buffer bufferLength:(unint64_t)length withCompletedSerializationDictionary:(id)dictionary;
 - (unint64_t)sizeInBytesForSerializedVersion;
-- (void)addSelfToSerializationDictionary:(id)a3;
-- (void)populateReferencesUsingBuffer:(const void *)a3 bufferLength:(unint64_t)a4 andDeserializationDictionary:(id)a5 andDataBufferDictionary:(id)a6;
+- (void)addSelfToSerializationDictionary:(id)dictionary;
+- (void)populateReferencesUsingBuffer:(const void *)buffer bufferLength:(unint64_t)length andDeserializationDictionary:(id)dictionary andDataBufferDictionary:(id)bufferDictionary;
 @end
 
 @implementation SAPAStyleMountStatus
 
-- (BOOL)addSelfToBuffer:(void *)a3 bufferLength:(unint64_t)a4 withCompletedSerializationDictionary:(id)a5
+- (BOOL)addSelfToBuffer:(void *)buffer bufferLength:(unint64_t)length withCompletedSerializationDictionary:(id)dictionary
 {
   v5 = [SAException exceptionWithName:@"Encoding failure" reason:@"Trying to encode SAPAStyleMountStatus" userInfo:0];
   objc_exception_throw(v5);
 }
 
-- (void)addSelfToSerializationDictionary:(id)a3
+- (void)addSelfToSerializationDictionary:(id)dictionary
 {
   v3 = [SAException exceptionWithName:@"Encoding failure" reason:@"Trying to encode SAPAStyleMountStatus" userInfo:0];
   objc_exception_throw(v3);
@@ -26,9 +26,9 @@
   objc_exception_throw(v2);
 }
 
-+ (id)newInstanceWithoutReferencesFromSerializedBuffer:(const void *)a3 bufferLength:(unint64_t)a4
++ (id)newInstanceWithoutReferencesFromSerializedBuffer:(const void *)buffer bufferLength:(unint64_t)length
 {
-  if (*a3 != 3735928559)
+  if (*buffer != 3735928559)
   {
     v8 = [SAException exceptionWithName:@"Decoding failure" reason:@"Bad PAMountStatus magic" userInfo:0];
     objc_exception_throw(v8);
@@ -42,17 +42,17 @@
   return v4;
 }
 
-- (void)populateReferencesUsingBuffer:(const void *)a3 bufferLength:(unint64_t)a4 andDeserializationDictionary:(id)a5 andDataBufferDictionary:(id)a6
+- (void)populateReferencesUsingBuffer:(const void *)buffer bufferLength:(unint64_t)length andDeserializationDictionary:(id)dictionary andDataBufferDictionary:(id)bufferDictionary
 {
-  if (*a3 != 3735928559)
+  if (*buffer != 3735928559)
   {
-    v9 = [SAException exceptionWithName:@"Decoding failure" reason:@"Bad PAMountStatus magic" userInfo:0, a6, v6, v7];
+    v9 = [SAException exceptionWithName:@"Decoding failure" reason:@"Bad PAMountStatus magic" userInfo:0, bufferDictionary, v6, v7];
     objc_exception_throw(v9);
   }
 
   mountStatus = self->_mountStatus;
 
-  [(SAMountStatus *)mountStatus populateReferencesUsingPAStyleSerializedMountStatus:a3 andDeserializationDictionary:a5 andDataBufferDictionary:a6];
+  [(SAMountStatus *)mountStatus populateReferencesUsingPAStyleSerializedMountStatus:buffer andDeserializationDictionary:dictionary andDataBufferDictionary:bufferDictionary];
 }
 
 @end

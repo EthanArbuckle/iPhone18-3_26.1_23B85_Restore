@@ -9,26 +9,26 @@
   v30 = *MEMORY[0x277D85DE8];
   v7 = objc_opt_new();
   v28 = 0;
-  v8 = [a1 attributesOfItemAtPath:a3 error:&v28];
-  v9 = [v8 fileType];
+  v8 = [self attributesOfItemAtPath:a3 error:&v28];
+  fileType = [v8 fileType];
   v10 = *MEMORY[0x277CCA1E8];
-  if (([v9 isEqualToString:*MEMORY[0x277CCA1E8]] & 1) == 0 && (objc_msgSend(v9, "isEqualToString:", *MEMORY[0x277CCA1F0]) & 1) == 0 && !objc_msgSend(v9, "isEqualToString:", *MEMORY[0x277CCA1F8]))
+  if (([fileType isEqualToString:*MEMORY[0x277CCA1E8]] & 1) == 0 && (objc_msgSend(fileType, "isEqualToString:", *MEMORY[0x277CCA1F0]) & 1) == 0 && !objc_msgSend(fileType, "isEqualToString:", *MEMORY[0x277CCA1F8]))
   {
     goto LABEL_16;
   }
 
-  v11 = [v8 filePosixPermissions];
+  filePosixPermissions = [v8 filePosixPermissions];
   v12 = MEMORY[0x277CBEAC0];
-  v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v11 | 0x80];
-  if ([a1 setAttributes:objc_msgSend(v12 ofItemAtPath:"dictionaryWithObject:forKey:" error:{v13, *MEMORY[0x277CCA180]), a3, &v28}])
+  0x80 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:filePosixPermissions | 0x80];
+  if ([self setAttributes:objc_msgSend(v12 ofItemAtPath:"dictionaryWithObject:forKey:" error:{0x80, *MEMORY[0x277CCA180]), a3, &v28}])
   {
-    if ([v9 isEqualToString:v10])
+    if ([fileType isEqualToString:v10])
     {
       v26 = 0u;
       v27 = 0u;
       v24 = 0u;
       v25 = 0u;
-      v14 = [a1 contentsOfDirectoryAtPath:a3 error:{&v28, 0}];
+      v14 = [self contentsOfDirectoryAtPath:a3 error:{&v28, 0}];
       v15 = [v14 countByEnumeratingWithState:&v24 objects:v29 count:16];
       if (v15)
       {
@@ -43,7 +43,7 @@ LABEL_8:
             objc_enumerationMutation(v14);
           }
 
-          if (![a1 grantUserWritePosixPermissionAtPath:objc_msgSend(a3 error:{"stringByAppendingPathComponent:", *(*(&v24 + 1) + 8 * v18)), &v28}])
+          if (![self grantUserWritePosixPermissionAtPath:objc_msgSend(a3 error:{"stringByAppendingPathComponent:", *(*(&v24 + 1) + 8 * v18)), &v28}])
           {
             goto LABEL_15;
           }

@@ -1,15 +1,15 @@
 @interface ArticleNavigationBarPaletteContent
-- (_TtC12NewsArticles34ArticleNavigationBarPaletteContent)initWithCoder:(id)a3;
-- (id)showMessage:(int64_t)a3;
-- (void)compressWithScale:(double)a3 opacity:(double)a4;
+- (_TtC12NewsArticles34ArticleNavigationBarPaletteContent)initWithCoder:(id)coder;
+- (id)showMessage:(int64_t)message;
+- (void)compressWithScale:(double)scale opacity:(double)opacity;
 - (void)layoutSubviews;
-- (void)setBarColor:(id)a3;
-- (void)setBarColorFor:(id)a3 primaryColor:(id)a4 secondaryColor:(id)a5 primaryVisibilityFactor:(double)a6;
+- (void)setBarColor:(id)color;
+- (void)setBarColorFor:(id)for primaryColor:(id)color secondaryColor:(id)secondaryColor primaryVisibilityFactor:(double)factor;
 @end
 
 @implementation ArticleNavigationBarPaletteContent
 
-- (_TtC12NewsArticles34ArticleNavigationBarPaletteContent)initWithCoder:(id)a3
+- (_TtC12NewsArticles34ArticleNavigationBarPaletteContent)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC12NewsArticles34ArticleNavigationBarPaletteContent_opaqueBar;
   *(&self->super.super.super.isa + v4) = [objc_allocWithZone(MEMORY[0x1E69DD250]) init];
@@ -26,38 +26,38 @@
   return result;
 }
 
-- (void)setBarColorFor:(id)a3 primaryColor:(id)a4 secondaryColor:(id)a5 primaryVisibilityFactor:(double)a6
+- (void)setBarColorFor:(id)for primaryColor:(id)color secondaryColor:(id)secondaryColor primaryVisibilityFactor:(double)factor
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = self;
-  sub_1D7B19D54(v10, a4, a6);
+  forCopy = for;
+  colorCopy = color;
+  secondaryColorCopy = secondaryColor;
+  selfCopy = self;
+  sub_1D7B19D54(forCopy, color, factor);
 }
 
-- (void)setBarColor:(id)a3
+- (void)setBarColor:(id)color
 {
-  v5 = a3;
-  v6 = self;
-  sub_1D7B1A000(a3);
+  colorCopy = color;
+  selfCopy = self;
+  sub_1D7B1A000(color);
 }
 
-- (void)compressWithScale:(double)a3 opacity:(double)a4
+- (void)compressWithScale:(double)scale opacity:(double)opacity
 {
-  v6 = self;
-  sub_1D7B1A224(a3, a4);
+  selfCopy = self;
+  sub_1D7B1A224(scale, opacity);
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D7B1A50C();
 }
 
-- (id)showMessage:(int64_t)a3
+- (id)showMessage:(int64_t)message
 {
-  v4 = self;
-  ArticleNavigationBarPaletteContent.show(_:)(a3, &v13);
+  selfCopy = self;
+  ArticleNavigationBarPaletteContent.show(_:)(message, &v13);
 
   v5 = v14;
   if (v14)

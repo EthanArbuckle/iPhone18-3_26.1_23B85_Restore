@@ -3,7 +3,7 @@
 + (BOOL)naui_isPad;
 + (BOOL)naui_isUsingLandscapeOrientation;
 + (BOOL)naui_shouldUseLargeiPadLayout;
-+ (BOOL)naui_shouldUseLargeiPadLayoutForSize:(CGSize)a3;
++ (BOOL)naui_shouldUseLargeiPadLayoutForSize:(CGSize)size;
 + (NSString)localizedProductName;
 + (NSString)operatingSystemName;
 + (NSString)productClass;
@@ -21,28 +21,28 @@
 
 + (BOOL)naui_isPad
 {
-  v2 = [MEMORY[0x277D75418] currentDevice];
-  v3 = [v2 userInterfaceIdiom] == 1;
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  v3 = [currentDevice userInterfaceIdiom] == 1;
 
   return v3;
 }
 
 + (BOOL)naui_shouldUseLargeiPadLayout
 {
-  v3 = [MEMORY[0x277D75128] sharedApplication];
-  v4 = [v3 keyWindow];
-  [v4 frame];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  keyWindow = [mEMORY[0x277D75128] keyWindow];
+  [keyWindow frame];
   v6 = v5;
   v8 = v7;
 
-  return [a1 naui_shouldUseLargeiPadLayoutForSize:{v6, v8}];
+  return [self naui_shouldUseLargeiPadLayoutForSize:{v6, v8}];
 }
 
-+ (BOOL)naui_shouldUseLargeiPadLayoutForSize:(CGSize)a3
++ (BOOL)naui_shouldUseLargeiPadLayoutForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  result = [a1 naui_isPad];
+  height = size.height;
+  width = size.width;
+  result = [self naui_isPad];
   if (width >= height)
   {
     v6 = height;
@@ -63,8 +63,8 @@
 
 + (BOOL)naui_isUsingLandscapeOrientation
 {
-  v2 = [MEMORY[0x277D75128] sharedApplication];
-  v3 = ([v2 statusBarOrientation] - 3) < 2;
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  v3 = ([mEMORY[0x277D75128] statusBarOrientation] - 3) < 2;
 
   return v3;
 }

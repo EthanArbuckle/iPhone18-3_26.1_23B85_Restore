@@ -1,9 +1,9 @@
 @interface GKEntitlements
-- (GKEntitlements)initWithConnection:(id)a3;
+- (GKEntitlements)initWithConnection:(id)connection;
 - (id)description;
-- (unint64_t)_applyPrivateTransitiveEntitlements:(unint64_t)a3 forConnection:(id)a4;
-- (unint64_t)_entitlementForName:(id)a3;
-- (unint64_t)_valuesForEntitlement:(id)a3 forConnection:(id)a4;
+- (unint64_t)_applyPrivateTransitiveEntitlements:(unint64_t)entitlements forConnection:(id)connection;
+- (unint64_t)_entitlementForName:(id)name;
+- (unint64_t)_valuesForEntitlement:(id)entitlement forConnection:(id)connection;
 @end
 
 @implementation GKEntitlements
@@ -137,23 +137,23 @@
   return v24;
 }
 
-- (unint64_t)_entitlementForName:(id)a3
+- (unint64_t)_entitlementForName:(id)name
 {
   v3 = qword_1003B9180;
-  v4 = a3;
+  nameCopy = name;
   if (v3 != -1)
   {
     sub_10028D2CC();
   }
 
-  Value = CFDictionaryGetValue(qword_1003B9178, v4);
+  Value = CFDictionaryGetValue(qword_1003B9178, nameCopy);
 
   return Value;
 }
 
-- (unint64_t)_valuesForEntitlement:(id)a3 forConnection:(id)a4
+- (unint64_t)_valuesForEntitlement:(id)entitlement forConnection:(id)connection
 {
-  v5 = [a4 valueForEntitlement:a3];
+  v5 = [connection valueForEntitlement:entitlement];
   if (objc_opt_respondsToSelector())
   {
     v15 = 0u;
@@ -209,13 +209,13 @@
   return v9;
 }
 
-- (unint64_t)_applyPrivateTransitiveEntitlements:(unint64_t)a3 forConnection:(id)a4
+- (unint64_t)_applyPrivateTransitiveEntitlements:(unint64_t)entitlements forConnection:(id)connection
 {
-  v5 = a4;
-  v6 = v5;
-  if ((a3 & 2) == 0)
+  connectionCopy = connection;
+  v6 = connectionCopy;
+  if ((entitlements & 2) == 0)
   {
-    v7 = [v5 valueForEntitlement:@"com.apple.private.contacts"];
+    v7 = [connectionCopy valueForEntitlement:@"com.apple.private.contacts"];
     if (v7)
     {
     }
@@ -246,17 +246,17 @@
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "Using private Contacts entitlement to imply private Game Center Profile entitlement for: %@", &v14, 0xCu);
     }
 
-    a3 |= 2uLL;
+    entitlements |= 2uLL;
   }
 
 LABEL_10:
 
-  return a3;
+  return entitlements;
 }
 
-- (GKEntitlements)initWithConnection:(id)a3
+- (GKEntitlements)initWithConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v21.receiver = self;
   v21.super_class = GKEntitlements;
   v5 = [(GKEntitlements *)&v21 init];
@@ -266,17 +266,17 @@ LABEL_10:
     goto LABEL_25;
   }
 
-  v7 = [(GKEntitlements *)v5 _valuesForEntitlement:@"com.apple.private.game-center" forConnection:v4];
-  v8 = [(GKEntitlements *)v6 _valuesForEntitlement:@"com.apple.developer.game-center" forConnection:v4];
-  v9 = [(GKEntitlements *)v6 _applyPrivateTransitiveEntitlements:v7 forConnection:v4];
+  v7 = [(GKEntitlements *)v5 _valuesForEntitlement:@"com.apple.private.game-center" forConnection:connectionCopy];
+  v8 = [(GKEntitlements *)v6 _valuesForEntitlement:@"com.apple.developer.game-center" forConnection:connectionCopy];
+  v9 = [(GKEntitlements *)v6 _applyPrivateTransitiveEntitlements:v7 forConnection:connectionCopy];
   v6->_entitlements = v8 | (v9 << 16) | v9;
-  v10 = [v4 valueForEntitlement:@"com.apple.private.game-center.bypass-authentication"];
-  if (([v10 BOOLValue] & 1) != 0 || -[GKEntitlements _shouldBypasAuthenticationForConnection:](v6, "_shouldBypasAuthenticationForConnection:", v4))
+  v10 = [connectionCopy valueForEntitlement:@"com.apple.private.game-center.bypass-authentication"];
+  if (([v10 BOOLValue] & 1) != 0 || -[GKEntitlements _shouldBypasAuthenticationForConnection:](v6, "_shouldBypasAuthenticationForConnection:", connectionCopy))
   {
     v6->_entitlements |= &_mh_execute_header;
   }
 
-  v11 = [v4 valueForEntitlement:@"com.apple.accounts.appleaccount.fullaccess"];
+  v11 = [connectionCopy valueForEntitlement:@"com.apple.accounts.appleaccount.fullaccess"];
   if ([v11 BOOLValue])
   {
 
@@ -285,10 +285,10 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v12 = [v4 valueForEntitlement:@"com.apple.private.game-center.credential"];
-  v13 = [v12 BOOLValue];
+  v12 = [connectionCopy valueForEntitlement:@"com.apple.private.game-center.credential"];
+  bOOLValue = [v12 BOOLValue];
 
-  if (v13)
+  if (bOOLValue)
   {
     goto LABEL_8;
   }
@@ -317,7 +317,7 @@ LABEL_9:
       v17 = os_log_GKError;
       if (os_log_type_enabled(os_log_GKError, OS_LOG_TYPE_ERROR))
       {
-        sub_10028D324(v17, v4);
+        sub_10028D324(v17, connectionCopy);
       }
 
       v18 = os_log_GKGeneral;
@@ -329,7 +329,7 @@ LABEL_9:
 
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
       {
-        sub_10028D3E0(v18, v4);
+        sub_10028D3E0(v18, connectionCopy);
       }
     }
 

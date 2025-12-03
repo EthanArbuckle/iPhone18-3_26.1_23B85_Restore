@@ -1,25 +1,25 @@
 @interface PKCacheRecipientItem
 - (BOOL)hasExpired;
-- (PKCacheRecipientItem)initWithCoder:(id)a3;
-- (PKCacheRecipientItem)initWithItem:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (PKCacheRecipientItem)initWithCoder:(id)coder;
+- (PKCacheRecipientItem)initWithItem:(id)item;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKCacheRecipientItem
 
-- (PKCacheRecipientItem)initWithItem:(id)a3
+- (PKCacheRecipientItem)initWithItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   v11.receiver = self;
   v11.super_class = PKCacheRecipientItem;
   v6 = [(PKCacheRecipientItem *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_item, a3);
-    v8 = [MEMORY[0x1E695DF00] date];
+    objc_storeStrong(&v6->_item, item);
+    date = [MEMORY[0x1E695DF00] date];
     insertDate = v7->_insertDate;
-    v7->_insertDate = v8;
+    v7->_insertDate = date;
   }
 
   return v7;
@@ -27,11 +27,11 @@
 
 - (BOOL)hasExpired
 {
-  v3 = [(PKPeerPaymentRecipient *)self->_item cacheUntil];
-  v4 = v3;
-  if (v3)
+  cacheUntil = [(PKPeerPaymentRecipient *)self->_item cacheUntil];
+  v4 = cacheUntil;
+  if (cacheUntil)
   {
-    v5 = v3;
+    v5 = cacheUntil;
   }
 
   else
@@ -41,25 +41,25 @@
 
   v6 = v5;
 
-  v7 = [MEMORY[0x1E695DF00] date];
-  v8 = [v6 compare:v7] == -1;
+  date = [MEMORY[0x1E695DF00] date];
+  v8 = [v6 compare:date] == -1;
 
   return v8;
 }
 
-- (PKCacheRecipientItem)initWithCoder:(id)a3
+- (PKCacheRecipientItem)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = PKCacheRecipientItem;
   v5 = [(PKCacheRecipientItem *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"i"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"i"];
     item = v5->_item;
     v5->_item = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"d"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"d"];
     insertDate = v5->_insertDate;
     v5->_insertDate = v8;
   }
@@ -67,12 +67,12 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   item = self->_item;
-  v5 = a3;
-  [v5 encodeObject:item forKey:@"i"];
-  [v5 encodeObject:self->_insertDate forKey:@"d"];
+  coderCopy = coder;
+  [coderCopy encodeObject:item forKey:@"i"];
+  [coderCopy encodeObject:self->_insertDate forKey:@"d"];
 }
 
 @end

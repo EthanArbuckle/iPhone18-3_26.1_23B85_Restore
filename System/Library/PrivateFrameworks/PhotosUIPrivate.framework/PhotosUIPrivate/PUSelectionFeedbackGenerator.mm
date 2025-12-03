@@ -8,14 +8,14 @@
 
 - (void)performFeedback
 {
-  v2 = [(PUSelectionFeedbackGenerator *)self feedbackGenerator];
-  [v2 selectionChanged];
+  feedbackGenerator = [(PUSelectionFeedbackGenerator *)self feedbackGenerator];
+  [feedbackGenerator selectionChanged];
 }
 
 - (void)prepareFeedback
 {
-  v2 = [(PUSelectionFeedbackGenerator *)self feedbackGenerator];
-  [v2 prepare];
+  feedbackGenerator = [(PUSelectionFeedbackGenerator *)self feedbackGenerator];
+  [feedbackGenerator prepare];
 }
 
 - (PUSelectionFeedbackGenerator)init
@@ -25,8 +25,8 @@
   v2 = [(PUSelectionFeedbackGenerator *)&v9 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E69DD6E8] defaultConfiguration];
-    v4 = [v3 tweakedConfigurationForCaller:v2 usage:@"photosEditAdjustmentSelection"];
+    defaultConfiguration = [MEMORY[0x1E69DD6E8] defaultConfiguration];
+    v4 = [defaultConfiguration tweakedConfigurationForCaller:v2 usage:@"photosEditAdjustmentSelection"];
 
     v5 = [MEMORY[0x1E69DD470] feedbackWithDictionaryRepresentation:&unk_1F2B7F1E8];
     [v4 setFeedback:v5];

@@ -1,12 +1,12 @@
 @interface MRTextureSource
 - (MRTexture)texture;
-- (MRTextureSource)initWithCGContext:(CGContext *)a3 imageManager:(id)a4;
-- (MRTextureSource)initWithCGContext:(CGContext *)a3 size:(id)a4 imageManager:(id)a5;
-- (MRTextureSource)initWithCGImage:(CGImage *)a3 textureSize:(id)a4 orientation:(int64_t)a5 imageManager:(id)a6 monochromatic:(BOOL)a7;
-- (MRTextureSource)initWithCVPixelBuffer:(__CVBuffer *)a3 size:(id)a4 orientation:(int64_t)a5 imageManager:(id)a6 monochromatic:(BOOL)a7;
-- (MRTextureSource)initWithCVTexture:(__CVBuffer *)a3 size:(id)a4 orientation:(int64_t)a5 imageManager:(id)a6 monochromatic:(BOOL)a7;
-- (MRTextureSource)initWithSize:(id)a3 andColor:(const float *)a4 imageManager:(id)a5;
-- (void)addOverlayForROI:(id)a3;
+- (MRTextureSource)initWithCGContext:(CGContext *)context imageManager:(id)manager;
+- (MRTextureSource)initWithCGContext:(CGContext *)context size:(id)size imageManager:(id)manager;
+- (MRTextureSource)initWithCGImage:(CGImage *)image textureSize:(id)size orientation:(int64_t)orientation imageManager:(id)manager monochromatic:(BOOL)monochromatic;
+- (MRTextureSource)initWithCVPixelBuffer:(__CVBuffer *)buffer size:(id)size orientation:(int64_t)orientation imageManager:(id)manager monochromatic:(BOOL)monochromatic;
+- (MRTextureSource)initWithCVTexture:(__CVBuffer *)texture size:(id)size orientation:(int64_t)orientation imageManager:(id)manager monochromatic:(BOOL)monochromatic;
+- (MRTextureSource)initWithSize:(id)size andColor:(const float *)color imageManager:(id)manager;
+- (void)addOverlayForROI:(id)i;
 - (void)cleanup;
 - (void)dealloc;
 - (void)generateMipmap;
@@ -14,19 +14,19 @@
 
 @implementation MRTextureSource
 
-- (MRTextureSource)initWithSize:(id)a3 andColor:(const float *)a4 imageManager:(id)a5
+- (MRTextureSource)initWithSize:(id)size andColor:(const float *)color imageManager:(id)manager
 {
   result = [(MRTextureSource *)self init];
   if (result)
   {
-    result->_imageManager = a5;
-    result->_size = a3;
-    if (a4)
+    result->_imageManager = manager;
+    result->_size = size;
+    if (color)
     {
-      result->_color[0] = *a4;
-      result->_color[1] = a4[1];
-      result->_color[2] = a4[2];
-      v9 = a4[3];
+      result->_color[0] = *color;
+      result->_color[1] = color[1];
+      result->_color[2] = color[2];
+      v9 = color[3];
     }
 
     else
@@ -41,10 +41,10 @@
   return result;
 }
 
-- (MRTextureSource)initWithCGImage:(CGImage *)a3 textureSize:(id)a4 orientation:(int64_t)a5 imageManager:(id)a6 monochromatic:(BOOL)a7
+- (MRTextureSource)initWithCGImage:(CGImage *)image textureSize:(id)size orientation:(int64_t)orientation imageManager:(id)manager monochromatic:(BOOL)monochromatic
 {
-  v7 = a7;
-  v9 = a5;
+  monochromaticCopy = monochromatic;
+  orientationCopy = orientation;
   v12 = [(MRTextureSource *)self init];
   v13 = v12;
   if (!v12)
@@ -52,15 +52,15 @@
     return v13;
   }
 
-  v12->_imageManager = a6;
-  v12->_size = a4;
-  v12->_orientation = v9;
-  ColorSpace = CGImageGetColorSpace(a3);
-  if (v7)
+  v12->_imageManager = manager;
+  v12->_size = size;
+  v12->_orientation = orientationCopy;
+  ColorSpace = CGImageGetColorSpace(image);
+  if (monochromaticCopy)
   {
     v13->_textureOptions.wantsMonochromatic = 1;
-    *&v13->_dataWidth = a4;
-    var0 = a4.var0;
+    *&v13->_dataWidth = size;
+    var0 = size.var0;
   }
 
   else
@@ -69,8 +69,8 @@
     {
       Model = CGColorSpaceGetModel(ColorSpace);
       v13->_textureOptions.wantsMonochromatic = Model == kCGColorSpaceModelMonochrome;
-      *&v13->_dataWidth = a4;
-      var0 = a4.var0;
+      *&v13->_dataWidth = size;
+      var0 = size.var0;
       if (Model == kCGColorSpaceModelMonochrome)
       {
         goto LABEL_9;
@@ -80,30 +80,30 @@
     else
     {
       v13->_textureOptions.wantsMonochromatic = 0;
-      *&v13->_dataWidth = a4;
+      *&v13->_dataWidth = size;
     }
 
-    var0 = 4 * a4.var0;
+    var0 = 4 * size.var0;
   }
 
 LABEL_9:
   v13->_dataRowBytes = var0;
-  v17 = var0 * a4.var1;
+  v17 = var0 * size.var1;
   v13->_dataSize = v17;
   v13->_datas[0] = malloc_type_malloc(v17, 0x616595B0uLL);
   v13->_ownsData = 1;
   if (v13->_textureOptions.wantsMonochromatic)
   {
-    v18 = [(MRContext *)[(MRImageManager *)v13->_imageManager baseContext] monochromaticColorSpace];
+    monochromaticColorSpace = [(MRContext *)[(MRImageManager *)v13->_imageManager baseContext] monochromaticColorSpace];
   }
 
   else
   {
-    v18 = [objc_msgSend(a6 "baseContext")];
+    monochromaticColorSpace = [objc_msgSend(manager "baseContext")];
   }
 
-  v13->_colorspace = v18;
-  CGColorSpaceRetain(v18);
+  v13->_colorspace = monochromaticColorSpace;
+  CGColorSpaceRetain(monochromaticColorSpace);
   if (v13->_textureOptions.wantsMonochromatic)
   {
     v19 = 0;
@@ -119,68 +119,68 @@ LABEL_9:
   CGContextSetBlendMode(v20, kCGBlendModeCopy);
   v23.origin.x = 0.0;
   v23.origin.y = 0.0;
-  v23.size.width = a4.var0;
-  v23.size.height = a4.var1;
-  CGContextDrawImage(v20, v23, a3);
+  v23.size.width = size.var0;
+  v23.size.height = size.var1;
+  CGContextDrawImage(v20, v23, image);
   CGContextRelease(v20);
-  AlphaInfo = CGImageGetAlphaInfo(a3);
+  AlphaInfo = CGImageGetAlphaInfo(image);
   v13->_isOpaque = (AlphaInfo < kCGImageAlphaOnly) & (0x61u >> AlphaInfo);
   return v13;
 }
 
-- (MRTextureSource)initWithCVPixelBuffer:(__CVBuffer *)a3 size:(id)a4 orientation:(int64_t)a5 imageManager:(id)a6 monochromatic:(BOOL)a7
+- (MRTextureSource)initWithCVPixelBuffer:(__CVBuffer *)buffer size:(id)size orientation:(int64_t)orientation imageManager:(id)manager monochromatic:(BOOL)monochromatic
 {
-  v9 = a5;
+  orientationCopy = orientation;
   v12 = [(MRTextureSource *)self init];
   v13 = v12;
   if (v12)
   {
-    v12->_imageManager = a6;
-    v12->_cvPixelBuffer = CVPixelBufferRetain(a3);
-    v13->_size = a4;
-    v13->_orientation = v9;
-    v13->_textureOptions.wantsMonochromatic = a7;
+    v12->_imageManager = manager;
+    v12->_cvPixelBuffer = CVPixelBufferRetain(buffer);
+    v13->_size = size;
+    v13->_orientation = orientationCopy;
+    v13->_textureOptions.wantsMonochromatic = monochromatic;
     v13->_isOpaque = 1;
   }
 
   return v13;
 }
 
-- (MRTextureSource)initWithCVTexture:(__CVBuffer *)a3 size:(id)a4 orientation:(int64_t)a5 imageManager:(id)a6 monochromatic:(BOOL)a7
+- (MRTextureSource)initWithCVTexture:(__CVBuffer *)texture size:(id)size orientation:(int64_t)orientation imageManager:(id)manager monochromatic:(BOOL)monochromatic
 {
-  v9 = a5;
+  orientationCopy = orientation;
   v12 = [(MRTextureSource *)self init];
   v13 = v12;
   if (v12)
   {
-    v12->_imageManager = a6;
-    v12->_cvTexture = CVBufferRetain(a3);
-    v13->_size = a4;
-    v13->_orientation = v9;
-    v13->_textureOptions.wantsMonochromatic = a7;
+    v12->_imageManager = manager;
+    v12->_cvTexture = CVBufferRetain(texture);
+    v13->_size = size;
+    v13->_orientation = orientationCopy;
+    v13->_textureOptions.wantsMonochromatic = monochromatic;
     v13->_isOpaque = 1;
   }
 
   return v13;
 }
 
-- (MRTextureSource)initWithCGContext:(CGContext *)a3 size:(id)a4 imageManager:(id)a5
+- (MRTextureSource)initWithCGContext:(CGContext *)context size:(id)size imageManager:(id)manager
 {
   v8 = [(MRTextureSource *)self init];
   v9 = v8;
   if (v8)
   {
-    v8->_imageManager = a5;
-    v8->_size = a4;
-    v8->_textureOptions.wantsMonochromatic = CGBitmapContextGetBitsPerPixel(a3) < 9;
-    v9->_cgContext = CGContextRetain(a3);
-    v9->_dataWidth = CGBitmapContextGetWidth(a3);
-    v9->_dataHeight = CGBitmapContextGetHeight(a3);
-    BytesPerRow = CGBitmapContextGetBytesPerRow(a3);
+    v8->_imageManager = manager;
+    v8->_size = size;
+    v8->_textureOptions.wantsMonochromatic = CGBitmapContextGetBitsPerPixel(context) < 9;
+    v9->_cgContext = CGContextRetain(context);
+    v9->_dataWidth = CGBitmapContextGetWidth(context);
+    v9->_dataHeight = CGBitmapContextGetHeight(context);
+    BytesPerRow = CGBitmapContextGetBytesPerRow(context);
     v9->_dataRowBytes = BytesPerRow;
     v9->_dataSize = v9->_size.height * BytesPerRow;
-    v9->_datas[0] = CGBitmapContextGetData(a3);
-    AlphaInfo = CGBitmapContextGetAlphaInfo(a3);
+    v9->_datas[0] = CGBitmapContextGetData(context);
+    AlphaInfo = CGBitmapContextGetAlphaInfo(context);
     v9->_isPremultiplied = AlphaInfo - 1 < 2;
     v9->_isOpaque = (AlphaInfo < kCGImageAlphaOnly) & (0x61u >> AlphaInfo);
   }
@@ -188,12 +188,12 @@ LABEL_9:
   return v9;
 }
 
-- (MRTextureSource)initWithCGContext:(CGContext *)a3 imageManager:(id)a4
+- (MRTextureSource)initWithCGContext:(CGContext *)context imageManager:(id)manager
 {
-  Width = CGBitmapContextGetWidth(a3);
-  v8 = Width | (CGBitmapContextGetHeight(a3) << 32);
+  Width = CGBitmapContextGetWidth(context);
+  v8 = Width | (CGBitmapContextGetHeight(context) << 32);
 
-  return [(MRTextureSource *)self initWithCGContext:a3 size:v8 imageManager:a4];
+  return [(MRTextureSource *)self initWithCGContext:context size:v8 imageManager:manager];
 }
 
 - (void)dealloc
@@ -469,7 +469,7 @@ LABEL_9:
           dataWidth = self->_dataWidth;
           dataHeight = self->_dataHeight;
           dataRowBytes = self->_dataRowBytes;
-          v19 = [(MRImageManager *)self->_imageManager imageGLContext];
+          imageGLContext = [(MRImageManager *)self->_imageManager imageGLContext];
           if (v15)
           {
             v20 = 3;
@@ -480,7 +480,7 @@ LABEL_9:
             v20 = 2;
           }
 
-          v21 = [(MRTexture *)v14 initWithDatas:self->_datas dataCount:v20 width:dataWidth height:dataHeight rowBytes:dataRowBytes inGLContext:v19 options:&self->_textureOptions];
+          v21 = [(MRTexture *)v14 initWithDatas:self->_datas dataCount:v20 width:dataWidth height:dataHeight rowBytes:dataRowBytes inGLContext:imageGLContext options:&self->_textureOptions];
         }
 
         else
@@ -548,7 +548,7 @@ LABEL_37:
   return texture;
 }
 
-- (void)addOverlayForROI:(id)a3
+- (void)addOverlayForROI:(id)i
 {
   v4 = self->_datas[0];
   if (v4)
@@ -570,7 +570,7 @@ LABEL_37:
     CGContextSetStrokeColor(v7, v12);
     CGContextSetBlendMode(v7, kCGBlendModeNormal);
     CGContextSetLineWidth(v7, 3.0);
-    v13 = CGRectFromString(a3);
+    v13 = CGRectFromString(i);
     LODWORD(v8) = self->_dataWidth;
     LODWORD(v9) = self->_dataHeight;
     v10 = v8;

@@ -1,15 +1,15 @@
 @interface ItemCache
-- (ItemCache)initWithVolume:(id)a3;
-- (void)calculateKeyForItem:(id)a3 replyHandler:(id)a4;
-- (void)insertItem:(id)a3 replyHandler:(id)a4;
-- (void)removeItem:(id)a3;
+- (ItemCache)initWithVolume:(id)volume;
+- (void)calculateKeyForItem:(id)item replyHandler:(id)handler;
+- (void)insertItem:(id)item replyHandler:(id)handler;
+- (void)removeItem:(id)item;
 @end
 
 @implementation ItemCache
 
-- (ItemCache)initWithVolume:(id)a3
+- (ItemCache)initWithVolume:(id)volume
 {
-  v5 = a3;
+  volumeCopy = volume;
   v11.receiver = self;
   v11.super_class = ItemCache;
   v6 = [(ItemCache *)&v11 init];
@@ -34,26 +34,26 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  objc_storeStrong(&v6->_volume, a3);
+  objc_storeStrong(&v6->_volume, volume);
   v9 = v6;
 LABEL_7:
 
   return v9;
 }
 
-- (void)calculateKeyForItem:(id)a3 replyHandler:(id)a4
+- (void)calculateKeyForItem:(id)item replyHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  handlerCopy = handler;
   v28[0] = 0;
   v28[1] = v28;
   v28[2] = 0x2020000000;
-  v8 = [v6 entryData];
-  v9 = [v8 firstEntryOffsetInDir];
+  entryData = [itemCopy entryData];
+  firstEntryOffsetInDir = [entryData firstEntryOffsetInDir];
 
-  v28[3] = v9;
-  v10 = [(FATVolume *)self->_volume systemInfo];
-  v11 = [v10 bytesPerCluster];
+  v28[3] = firstEntryOffsetInDir;
+  systemInfo = [(FATVolume *)self->_volume systemInfo];
+  bytesPerCluster = [systemInfo bytesPerCluster];
 
   v24 = 0;
   v25 = &v24;
@@ -69,32 +69,32 @@ LABEL_7:
   v20 = sub_100021584;
   v21 = sub_100021594;
   v22 = 0;
-  v12 = [v6 parentDir];
+  parentDir = [itemCopy parentDir];
 
-  if (v12)
+  if (parentDir)
   {
-    v13 = [(FATVolume *)self->_volume fatManager];
-    v14 = [v6 parentDir];
+    fatManager = [(FATVolume *)self->_volume fatManager];
+    parentDir2 = [itemCopy parentDir];
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_10002159C;
     v15[3] = &unk_100051328;
     v15[4] = &v17;
     v15[5] = v28;
-    v16 = v11;
+    v16 = bytesPerCluster;
     v15[6] = v23;
     v15[7] = &v24;
-    [v13 iterateClusterChainOfItem:v14 replyHandler:v15];
+    [fatManager iterateClusterChainOfItem:parentDir2 replyHandler:v15];
   }
 
   if (v18[5])
   {
-    v7[2](v7, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 
   else
   {
-    v7[2](v7, v25[3]);
+    handlerCopy[2](handlerCopy, v25[3]);
   }
 
   _Block_object_dispose(&v17, 8);
@@ -104,11 +104,11 @@ LABEL_7:
   _Block_object_dispose(v28, 8);
 }
 
-- (void)insertItem:(id)a3 replyHandler:(id)a4
+- (void)insertItem:(id)item replyHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isDeleted])
+  itemCopy = item;
+  handlerCopy = handler;
+  if ([itemCopy isDeleted])
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_FAULT))
     {
@@ -116,15 +116,15 @@ LABEL_7:
     }
 
     v8 = fs_errorForPOSIXError();
-    v7[2](v7, 0, v8);
+    handlerCopy[2](handlerCopy, 0, v8);
   }
 
   else
   {
-    v9 = [v6 entryData];
-    v10 = [v6 volume];
-    v11 = [v10 systemInfo];
-    v12 = [v9 calcFirstEntryOffsetInVolume:v11];
+    entryData = [itemCopy entryData];
+    volume = [itemCopy volume];
+    systemInfo = [volume systemInfo];
+    v12 = [entryData calcFirstEntryOffsetInVolume:systemInfo];
 
     v13 = [[NSString alloc] initWithFormat:@"%llu", v12];
     v14 = self->_itemsHash;
@@ -135,8 +135,8 @@ LABEL_7:
     {
       if ([v15 isDeleted])
       {
-        [(NSMutableDictionary *)self->_itemsHash setObject:v6 forKey:v13];
-        v16 = v6;
+        [(NSMutableDictionary *)self->_itemsHash setObject:itemCopy forKey:v13];
+        v16 = itemCopy;
       }
 
       else
@@ -151,7 +151,7 @@ LABEL_7:
 
     else
     {
-      [(NSMutableDictionary *)self->_itemsHash setObject:v6 forKey:v13];
+      [(NSMutableDictionary *)self->_itemsHash setObject:itemCopy forKey:v13];
       v16 = 0;
     }
 
@@ -164,20 +164,20 @@ LABEL_7:
 
     else
     {
-      v17 = v6;
+      v17 = itemCopy;
     }
 
-    (v7)[2](v7, v17, 0);
+    (handlerCopy)[2](handlerCopy, v17, 0);
   }
 }
 
-- (void)removeItem:(id)a3
+- (void)removeItem:(id)item
 {
-  v4 = a3;
-  v5 = [v4 entryData];
-  v6 = [v4 volume];
-  v7 = [v6 systemInfo];
-  v8 = [v5 calcFirstEntryOffsetInVolume:v7];
+  itemCopy = item;
+  entryData = [itemCopy entryData];
+  volume = [itemCopy volume];
+  systemInfo = [volume systemInfo];
+  v8 = [entryData calcFirstEntryOffsetInVolume:systemInfo];
 
   v9 = [[NSString alloc] initWithFormat:@"%llu", v8];
   v10 = self->_itemsHash;

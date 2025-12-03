@@ -24,9 +24,9 @@
   v4 = MEMORY[0x277D3E848];
   v5 = originalDetection;
   v6 = [v4 alloc];
-  v7 = [(CNDetection *)v5 internalDetection];
+  internalDetection = [(CNDetection *)v5 internalDetection];
 
-  v8 = [v7 copy];
+  v8 = [internalDetection copy];
   v9 = [v6 initWithDetection:v8];
   v12.receiver = self;
   v12.super_class = CNFixedDetectionTrack;
@@ -37,8 +37,8 @@
 
 - (float)focusDisparity
 {
-  v2 = [(CNFixedDetectionTrack *)self _internalFixedTrack];
-  [v2 focusDistance];
+  _internalFixedTrack = [(CNFixedDetectionTrack *)self _internalFixedTrack];
+  [_internalFixedTrack focusDistance];
   v4 = v3;
 
   return v4;
@@ -46,17 +46,17 @@
 
 - (CNDetection)originalDetection
 {
-  v2 = [(CNFixedDetectionTrack *)self _internalFixedTrack];
-  v3 = [v2 detection];
+  _internalFixedTrack = [(CNFixedDetectionTrack *)self _internalFixedTrack];
+  detection = [_internalFixedTrack detection];
 
-  if (v3 && ([v3 time], (v7 & 1) != 0) && (objc_msgSend(v3, "time"), (v6 & 0x10) != 0))
+  if (detection && ([detection time], (v7 & 1) != 0) && (objc_msgSend(detection, "time"), (v6 & 0x10) != 0))
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [CNDetection _copyDetectionFromInternal:v3];
+    v4 = [CNDetection _copyDetectionFromInternal:detection];
   }
 
   return v4;

@@ -1,34 +1,34 @@
 @interface PHImportDuplicateChecker
-+ (id)_dateWithDate:(id)a3;
-+ (id)_fetchAssetInfoFromLibrary:(id)a3 forFileSizes:(id)a4;
-+ (id)duplicatesFromResults:(id)a3 forLibrary:(id)a4;
-- (BOOL)_findFingerprint:(id)a3 forItem:(id)a4 inCache:(id)a5 considerTrash:(BOOL)a6;
-- (PHImportDuplicateChecker)initWithLibrary:(id)a3;
-- (id)_checkForDuplicate:(id)a3 considerItemsInTheTrash:(BOOL)a4;
-- (id)_filterDuplicatesForItem:(id)a3 duplicateSet:(id)a4 considerItemsInTrash:(BOOL)a5;
-- (id)_findMatchingAssetsForItem:(id)a3 inSet:(id)a4 matchingDate:(id *)a5 confidence:(unsigned __int8 *)a6;
-- (unint64_t)_populateCachesWithAssetsInfos:(id)a3;
-- (void)_populateCachesWithAssetInfo:(id)a3;
-- (void)_setDupInfo:(id)a3 forFingerprint:(id)a4 inCache:(id)a5;
++ (id)_dateWithDate:(id)date;
++ (id)_fetchAssetInfoFromLibrary:(id)library forFileSizes:(id)sizes;
++ (id)duplicatesFromResults:(id)results forLibrary:(id)library;
+- (BOOL)_findFingerprint:(id)fingerprint forItem:(id)item inCache:(id)cache considerTrash:(BOOL)trash;
+- (PHImportDuplicateChecker)initWithLibrary:(id)library;
+- (id)_checkForDuplicate:(id)duplicate considerItemsInTheTrash:(BOOL)trash;
+- (id)_filterDuplicatesForItem:(id)item duplicateSet:(id)set considerItemsInTrash:(BOOL)trash;
+- (id)_findMatchingAssetsForItem:(id)item inSet:(id)set matchingDate:(id *)date confidence:(unsigned __int8 *)confidence;
+- (unint64_t)_populateCachesWithAssetsInfos:(id)infos;
+- (void)_populateCachesWithAssetInfo:(id)info;
+- (void)_setDupInfo:(id)info forFingerprint:(id)fingerprint inCache:(id)cache;
 - (void)_updateAssetsFromDupInfos;
-- (void)findDuplicatesOfItems:(id)a3 considerItemsInTrash:(BOOL)a4 forEach:(id)a5 atEnd:(id)a6;
+- (void)findDuplicatesOfItems:(id)items considerItemsInTrash:(BOOL)trash forEach:(id)each atEnd:(id)end;
 @end
 
 @implementation PHImportDuplicateChecker
 
-- (void)findDuplicatesOfItems:(id)a3 considerItemsInTrash:(BOOL)a4 forEach:(id)a5 atEnd:(id)a6
+- (void)findDuplicatesOfItems:(id)items considerItemsInTrash:(BOOL)trash forEach:(id)each atEnd:(id)end
 {
-  v35 = a4;
+  trashCopy = trash;
   v51 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  v33 = a6;
-  v10 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(v8, "count")}];
+  itemsCopy = items;
+  eachCopy = each;
+  endCopy = end;
+  v10 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(itemsCopy, "count")}];
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v11 = v8;
+  v11 = itemsCopy;
   v12 = [v11 countByEnumeratingWithState:&v41 objects:v50 count:16];
   if (v12)
   {
@@ -43,8 +43,8 @@
           objc_enumerationMutation(v11);
         }
 
-        v16 = [*(*(&v41 + 1) + 8 * i) sizeKey];
-        [v10 addObject:v16];
+        sizeKey = [*(*(&v41 + 1) + 8 * i) sizeKey];
+        [v10 addObject:sizeKey];
       }
 
       v13 = [v11 countByEnumeratingWithState:&v41 objects:v50 count:16];
@@ -79,8 +79,8 @@
         }
 
         v24 = *(*(&v37 + 1) + 8 * j);
-        v25 = [v24 isDuplicate];
-        v26 = [(PHImportDuplicateChecker *)self _checkForDuplicate:v24 considerItemsInTheTrash:v35];
+        isDuplicate = [v24 isDuplicate];
+        v26 = [(PHImportDuplicateChecker *)self _checkForDuplicate:v24 considerItemsInTheTrash:trashCopy];
         if (v26)
         {
           if (!v21)
@@ -88,13 +88,13 @@
             v21 = objc_opt_new();
           }
 
-          v27 = [v24 uuid];
-          [v21 setObject:v26 forKey:v27];
+          uuid = [v24 uuid];
+          [v21 setObject:v26 forKey:uuid];
         }
 
-        if (v9)
+        if (eachCopy)
         {
-          v9[2](v9, v24, v26, v25 ^ [v24 isDuplicate]);
+          eachCopy[2](eachCopy, v24, v26, isDuplicate ^ [v24 isDuplicate]);
         }
       }
 
@@ -121,37 +121,37 @@
     _os_log_impl(&dword_19C86F000, v28, OS_LOG_TYPE_DEBUG, "DUPLICATE CHECK: time to CHECK caches for %lu asset infos: %g", buf, 0x16u);
   }
 
-  if (v33)
+  if (endCopy)
   {
-    v33[2](v33, v21);
+    endCopy[2](endCopy, v21);
   }
 
   [(PHImportDuplicateChecker *)self _updateAssetsFromDupInfos];
 }
 
-- (id)_checkForDuplicate:(id)a3 considerItemsInTheTrash:(BOOL)a4
+- (id)_checkForDuplicate:(id)duplicate considerItemsInTheTrash:(BOOL)trash
 {
-  v4 = a4;
+  trashCopy = trash;
   v239 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 lastDuplicateCheck];
-  if (!v7 || (v8 = v7, -[NSObject lastDuplicateCheck](v6, "lastDuplicateCheck"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 compare:self->_lastChange], v9, v8, v10 == -1))
+  duplicateCopy = duplicate;
+  lastDuplicateCheck = [duplicateCopy lastDuplicateCheck];
+  if (!lastDuplicateCheck || (v8 = lastDuplicateCheck, -[NSObject lastDuplicateCheck](duplicateCopy, "lastDuplicateCheck"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 compare:self->_lastChange], v9, v8, v10 == -1))
   {
-    [v6 setIsDuplicate:0];
-    v24 = [v6 avchdAssetId];
-    v25 = [(PHImportDuplicateChecker *)self _findFingerprint:v24 forItem:v6 inCache:self->_avchdAssetIdentifierCache considerTrash:v4];
+    [duplicateCopy setIsDuplicate:0];
+    avchdAssetId = [duplicateCopy avchdAssetId];
+    v25 = [(PHImportDuplicateChecker *)self _findFingerprint:avchdAssetId forItem:duplicateCopy inCache:self->_avchdAssetIdentifierCache considerTrash:trashCopy];
 
     if (v25)
     {
       v26 = PLImportGetLog();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
       {
-        v27 = [v6 nameKey];
-        v28 = [v6 originatingAssetID];
+        nameKey = [duplicateCopy nameKey];
+        originatingAssetID = [duplicateCopy originatingAssetID];
         *buf = 138412546;
-        v226 = v27;
+        v226 = nameKey;
         v227 = 2112;
-        v228 = v28;
+        v228 = originatingAssetID;
         v29 = "DUPLICATE CHECK: name: %@, avchdAssetId (UUID): %@ ==> FOUND";
 LABEL_20:
         _os_log_impl(&dword_19C86F000, v26, OS_LOG_TYPE_DEBUG, v29, buf, 0x16u);
@@ -162,20 +162,20 @@ LABEL_20:
       goto LABEL_21;
     }
 
-    v30 = [v6 fingerprint];
-    v31 = [(PHImportDuplicateChecker *)self _findFingerprint:v30 forItem:v6 inCache:self->_assetIdentifierCache considerTrash:v4];
+    fingerprint = [duplicateCopy fingerprint];
+    v31 = [(PHImportDuplicateChecker *)self _findFingerprint:fingerprint forItem:duplicateCopy inCache:self->_assetIdentifierCache considerTrash:trashCopy];
 
     if (v31)
     {
       v26 = PLImportGetLog();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
       {
-        v27 = [v6 nameKey];
-        v28 = [v6 originatingAssetID];
+        nameKey = [duplicateCopy nameKey];
+        originatingAssetID = [duplicateCopy originatingAssetID];
         *buf = 138412546;
-        v226 = v27;
+        v226 = nameKey;
         v227 = 2112;
-        v228 = v28;
+        v228 = originatingAssetID;
         v29 = "DUPLICATE CHECK: name: %@, assetId (fingerprint): %@ ==> FOUND";
         goto LABEL_20;
       }
@@ -187,20 +187,20 @@ LABEL_22:
       goto LABEL_23;
     }
 
-    v38 = [v6 originatingAssetID];
-    v39 = [(PHImportDuplicateChecker *)self _findFingerprint:v38 forItem:v6 inCache:self->_assetIdentifierCache considerTrash:v4];
+    originatingAssetID2 = [duplicateCopy originatingAssetID];
+    v39 = [(PHImportDuplicateChecker *)self _findFingerprint:originatingAssetID2 forItem:duplicateCopy inCache:self->_assetIdentifierCache considerTrash:trashCopy];
 
     if (v39)
     {
       v26 = PLImportGetLog();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
       {
-        v27 = [v6 nameKey];
-        v28 = [v6 originatingAssetID];
+        nameKey = [duplicateCopy nameKey];
+        originatingAssetID = [duplicateCopy originatingAssetID];
         *buf = 138412546;
-        v226 = v27;
+        v226 = nameKey;
         v227 = 2112;
-        v228 = v28;
+        v228 = originatingAssetID;
         v29 = "DUPLICATE CHECK: name: %@, originatingAssetID (fingerprint): %@ ==> FOUND";
         goto LABEL_20;
       }
@@ -208,11 +208,11 @@ LABEL_22:
       goto LABEL_21;
     }
 
-    v41 = [v6 sizeKey];
-    v42 = [v6 nameKey];
-    v43 = v42;
-    v187 = v41;
-    if (!v41 || !v42)
+    sizeKey = [duplicateCopy sizeKey];
+    nameKey2 = [duplicateCopy nameKey];
+    v43 = nameKey2;
+    v187 = sizeKey;
+    if (!sizeKey || !nameKey2)
     {
 LABEL_42:
 
@@ -222,41 +222,41 @@ LABEL_42:
     sizeNameCache = self->_sizeNameCache;
     if (sizeNameCache)
     {
-      v169 = [(NSMutableDictionary *)sizeNameCache objectForKeyedSubscript:v41];
+      v169 = [(NSMutableDictionary *)sizeNameCache objectForKeyedSubscript:sizeKey];
       if (v169)
       {
-        v45 = [v6 url];
+        v45 = [duplicateCopy url];
         v219 = 0;
         v46 = *MEMORY[0x1E695DE18];
         v218 = 0;
         v165 = v45;
         v47 = [v45 getResourceValue:&v219 forKey:v46 error:&v218];
         v167 = v219;
-        v172 = v6;
+        v172 = duplicateCopy;
         v166 = v218;
         if (v166)
         {
           v48 = PLImportGetLog();
           if (os_log_type_enabled(v48, OS_LOG_TYPE_DEBUG))
           {
-            v49 = [v6 sizeKey];
-            v50 = [v6 nameKey];
-            v51 = [v6 fileName];
-            v52 = [v6 dateKey];
-            v53 = [PHImportDuplicateChecker _dateWithDate:v52];
+            sizeKey2 = [duplicateCopy sizeKey];
+            nameKey3 = [duplicateCopy nameKey];
+            fileName = [duplicateCopy fileName];
+            dateKey = [duplicateCopy dateKey];
+            v53 = [PHImportDuplicateChecker _dateWithDate:dateKey];
             *buf = 138413314;
-            v226 = v49;
+            v226 = sizeKey2;
             v227 = 2112;
-            v228 = v50;
+            v228 = nameKey3;
             v229 = 2112;
-            v230 = v51;
+            v230 = fileName;
             v231 = 2112;
             v232 = v53;
             v233 = 2112;
             v234 = v166;
             _os_log_impl(&dword_19C86F000, v48, OS_LOG_TYPE_DEBUG, "DUPLICATE CHECK: Looking for size: %@, name: %@ (%@), date: %@: ERROR => File case sensitivity checking:\n%@", buf, 0x34u);
 
-            v6 = v172;
+            duplicateCopy = v172;
           }
         }
 
@@ -271,12 +271,12 @@ LABEL_42:
           v54 = 1;
         }
 
-        v164 = [v168 lowercaseString];
+        lowercaseString = [v168 lowercaseString];
         v63 = [v169 objectForKeyedSubscript:?];
         v64 = v63;
         if ((v54 & 1) == 0)
         {
-          v184 = v4;
+          v184 = trashCopy;
           v65 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(v63, "count")}];
           v214 = 0u;
           v215 = 0u;
@@ -298,9 +298,9 @@ LABEL_42:
                 }
 
                 v71 = *(*(&v214 + 1) + 8 * i);
-                v72 = [v172 fileName];
-                v73 = [v71 fileName];
-                v74 = [v72 isEqualToString:v73];
+                fileName2 = [v172 fileName];
+                fileName3 = [v71 fileName];
+                v74 = [fileName2 isEqualToString:fileName3];
 
                 if (v74)
                 {
@@ -314,9 +314,9 @@ LABEL_42:
             while (v68);
           }
 
-          v6 = v172;
+          duplicateCopy = v172;
           v64 = v65;
-          v4 = v184;
+          trashCopy = v184;
         }
 
         v163 = v64;
@@ -397,8 +397,8 @@ LABEL_42:
                               if (([v101 isInTrash] & 1) == 0)
                               {
                                 v102 = MEMORY[0x1E696AEC0];
-                                v103 = [v101 fileName];
-                                v104 = [v102 stringWithFormat:@"[size: %@, name: %@, date: %@]", v187, v103, v94];
+                                fileName4 = [v101 fileName];
+                                v104 = [v102 stringWithFormat:@"[size: %@, name: %@, date: %@]", v187, fileName4, v94];
                                 [v77 addObject:v104];
                               }
                             }
@@ -437,17 +437,17 @@ LABEL_42:
           v105 = PLImportGetLog();
           if (os_log_type_enabled(v105, OS_LOG_TYPE_DEBUG))
           {
-            v106 = [v172 sizeKey];
-            v107 = [v172 nameKey];
-            v108 = [v172 fileName];
-            v109 = [v172 dateKey];
-            v110 = [PHImportDuplicateChecker _dateWithDate:v109];
+            sizeKey3 = [v172 sizeKey];
+            nameKey4 = [v172 nameKey];
+            fileName5 = [v172 fileName];
+            dateKey2 = [v172 dateKey];
+            v110 = [PHImportDuplicateChecker _dateWithDate:dateKey2];
             *buf = 138413058;
-            v226 = v106;
+            v226 = sizeKey3;
             v227 = 2112;
-            v228 = v107;
+            v228 = nameKey4;
             v229 = 2112;
-            v230 = v108;
+            v230 = fileName5;
             v231 = 2112;
             v232 = v110;
             _os_log_impl(&dword_19C86F000, v105, OS_LOG_TYPE_DEBUG, "DUPLICATE CHECK: size: %@, name: %@ (%@), date: %@ ==> NOT FOUND: No matching name.", buf, 0x2Au);
@@ -457,10 +457,10 @@ LABEL_42:
           if (![v77 count])
           {
             v14 = 0;
-            v113 = v164;
+            v113 = lowercaseString;
 LABEL_138:
 
-            v6 = v172;
+            duplicateCopy = v172;
             goto LABEL_23;
           }
 
@@ -474,15 +474,15 @@ LABEL_138:
           }
 
           v14 = 0;
-          v113 = v164;
+          v113 = lowercaseString;
 LABEL_137:
 
           goto LABEL_138;
         }
 
-        v75 = [v6 dateKey];
-        [PHImportDuplicateChecker _dateWithDate:v75];
-        v77 = v76 = v6;
+        dateKey3 = [duplicateCopy dateKey];
+        [PHImportDuplicateChecker _dateWithDate:dateKey3];
+        v77 = v76 = duplicateCopy;
 
         v213 = 0;
         v212 = 0;
@@ -547,10 +547,10 @@ LABEL_137:
                         if (([v128 isInTrash] & 1) == 0)
                         {
                           v129 = MEMORY[0x1E696AEC0];
-                          v130 = [v128 fileName];
+                          fileName6 = [v128 fileName];
                           [v77 timeIntervalSinceDate:v122];
-                          v132 = [v129 stringWithFormat:@"[size: %@, name: %@, date: %@ (diff: %gh)]", v187, v130, v122, fabs(v131 / 3600.0), v163];
-                          [v114 addObject:v132];
+                          v163 = [v129 stringWithFormat:@"[size: %@, name: %@, date: %@ (diff: %gh)]", v187, fileName6, v122, fabs(v131 / 3600.0), v163];
+                          [v114 addObject:v163];
                         }
                       }
 
@@ -576,30 +576,30 @@ LABEL_137:
             while (v119);
           }
 
-          v133 = [v172 creationDate];
+          creationDate = [v172 creationDate];
 
           v134 = PLImportGetLog();
           v135 = os_log_type_enabled(v134, OS_LOG_TYPE_DEBUG);
-          if (v133)
+          if (creationDate)
           {
             if (v135)
             {
-              v136 = [v172 sizeKey];
-              v137 = [v172 sizeKey];
-              v138 = [v172 fileName];
-              v139 = [v172 dateKey];
-              v140 = [PHImportDuplicateChecker _dateWithDate:v139];
-              v141 = [v172 creationDate];
+              sizeKey4 = [v172 sizeKey];
+              sizeKey5 = [v172 sizeKey];
+              fileName7 = [v172 fileName];
+              dateKey4 = [v172 dateKey];
+              v140 = [PHImportDuplicateChecker _dateWithDate:dateKey4];
+              creationDate2 = [v172 creationDate];
               *buf = 138413314;
-              v226 = v136;
+              v226 = sizeKey4;
               v227 = 2112;
-              v228 = v137;
+              v228 = sizeKey5;
               v229 = 2112;
-              v230 = v138;
+              v230 = fileName7;
               v231 = 2112;
               v232 = v140;
               v233 = 2112;
-              v234 = v141;
+              v234 = creationDate2;
               _os_log_impl(&dword_19C86F000, v134, OS_LOG_TYPE_DEBUG, "DUPLICATE CHECK: Looking for size: %@, name: %@ (%@), date: %@ ==> NOT FOUND: CHECKING EXIF date: %@ ==> NOT FOUND: No matching date.", buf, 0x34u);
 
               v117 = v181;
@@ -608,17 +608,17 @@ LABEL_137:
 
           else if (v135)
           {
-            v153 = [v172 sizeKey];
-            v154 = [v172 nameKey];
-            v155 = [v172 fileName];
-            v156 = [v172 dateKey];
-            v157 = [PHImportDuplicateChecker _dateWithDate:v156];
+            sizeKey6 = [v172 sizeKey];
+            nameKey5 = [v172 nameKey];
+            fileName8 = [v172 fileName];
+            dateKey5 = [v172 dateKey];
+            v157 = [PHImportDuplicateChecker _dateWithDate:dateKey5];
             *buf = 138413314;
-            v226 = v153;
+            v226 = sizeKey6;
             v227 = 2112;
-            v228 = v154;
+            v228 = nameKey5;
             v229 = 2112;
-            v230 = v155;
+            v230 = fileName8;
             v231 = 2112;
             v232 = v157;
             v233 = 2112;
@@ -648,14 +648,14 @@ LABEL_137:
           goto LABEL_136;
         }
 
-        v80 = [(PHImportDuplicateChecker *)self _filterDuplicatesForItem:v76 duplicateSet:v78 considerItemsInTrash:v4];
+        v80 = [(PHImportDuplicateChecker *)self _filterDuplicatesForItem:v76 duplicateSet:v78 considerItemsInTrash:trashCopy];
 
         if ([v80 count])
         {
           [v76 setIsDuplicate:1];
           [v76 setDuplicateStateConfidence:v213];
-          v81 = [(PHPhotoLibrary *)self->_library uuid];
-          [v76 setDuplicates:v80 forLibrary:v81];
+          uuid = [(PHPhotoLibrary *)self->_library uuid];
+          [v76 setDuplicates:v80 forLibrary:uuid];
 
           if ([v76 isLivePhoto])
           {
@@ -681,8 +681,8 @@ LABEL_137:
 
                   if ([*(*(&v208 + 1) + 8 * m) hasVideoComplement])
                   {
-                    v161 = [v172 videoComplement];
-                    [v161 setIsDuplicate:1];
+                    videoComplement = [v172 videoComplement];
+                    [videoComplement setIsDuplicate:1];
 
                     goto LABEL_131;
                   }
@@ -709,20 +709,20 @@ LABEL_131:
             goto LABEL_135;
           }
 
-          v143 = [v172 sizeKey];
+          sizeKey7 = [v172 sizeKey];
           [v172 nameKey];
           v145 = v144 = v79;
-          v146 = [v172 fileName];
+          fileName9 = [v172 fileName];
           [v172 dateKey];
           v148 = v147 = v142;
           v149 = [PHImportDuplicateChecker _dateWithDate:v148];
           [v77 timeIntervalSinceDate:v144];
           *buf = 138413570;
-          v226 = v143;
+          v226 = sizeKey7;
           v227 = 2112;
           v228 = v145;
           v229 = 2112;
-          v230 = v146;
+          v230 = fileName9;
           v231 = 2112;
           v232 = v149;
           v233 = 2112;
@@ -743,24 +743,24 @@ LABEL_135:
             v14 = v80;
             v111 = v168;
 LABEL_136:
-            v113 = v164;
+            v113 = lowercaseString;
 
             goto LABEL_137;
           }
 
-          v143 = [v172 sizeKey];
+          sizeKey7 = [v172 sizeKey];
           [v172 nameKey];
           v145 = v144 = v79;
-          v146 = [v172 fileName];
+          fileName9 = [v172 fileName];
           [v172 dateKey];
           v148 = v147 = v142;
           v149 = [PHImportDuplicateChecker _dateWithDate:v148];
           *buf = 138413058;
-          v226 = v143;
+          v226 = sizeKey7;
           v227 = 2112;
           v228 = v145;
           v229 = 2112;
-          v230 = v146;
+          v230 = fileName9;
           v231 = 2112;
           v232 = v149;
           v150 = "DUPLICATE CHECK: Looking for size: %@, name: %@ (%@), date: %@: Filtered out";
@@ -782,17 +782,17 @@ LABEL_136:
         goto LABEL_41;
       }
 
-      v56 = [v6 sizeKey];
-      v57 = [v6 nameKey];
-      v58 = [v6 fileName];
-      v62 = [v6 dateKey];
-      v60 = [PHImportDuplicateChecker _dateWithDate:v62];
+      sizeKey8 = [duplicateCopy sizeKey];
+      nameKey6 = [duplicateCopy nameKey];
+      fileName10 = [duplicateCopy fileName];
+      dateKey6 = [duplicateCopy dateKey];
+      v60 = [PHImportDuplicateChecker _dateWithDate:dateKey6];
       *buf = 138413058;
-      v226 = v56;
+      v226 = sizeKey8;
       v227 = 2112;
-      v228 = v57;
+      v228 = nameKey6;
       v229 = 2112;
-      v230 = v58;
+      v230 = fileName10;
       v231 = 2112;
       v232 = v60;
       _os_log_impl(&dword_19C86F000, v55, OS_LOG_TYPE_DEBUG, "DUPLICATE CHECK: Looking for size: %@, name: %@ (%@), date: %@ ==> NOT FOUND: No matching size.", buf, 0x2Au);
@@ -808,86 +808,86 @@ LABEL_41:
         goto LABEL_42;
       }
 
-      v56 = [v6 sizeKey];
-      v57 = [v6 nameKey];
-      v58 = [v6 fileName];
-      v59 = [v6 dateKey];
-      v60 = [PHImportDuplicateChecker _dateWithDate:v59];
-      v61 = [(PHPhotoLibrary *)self->_library uuid];
+      sizeKey8 = [duplicateCopy sizeKey];
+      nameKey6 = [duplicateCopy nameKey];
+      fileName10 = [duplicateCopy fileName];
+      dateKey7 = [duplicateCopy dateKey];
+      v60 = [PHImportDuplicateChecker _dateWithDate:dateKey7];
+      uuid2 = [(PHPhotoLibrary *)self->_library uuid];
       *buf = 138413314;
-      v226 = v56;
+      v226 = sizeKey8;
       v227 = 2112;
-      v228 = v57;
+      v228 = nameKey6;
       v229 = 2112;
-      v230 = v58;
+      v230 = fileName10;
       v231 = 2112;
       v232 = v60;
       v233 = 2112;
-      v234 = v61;
+      v234 = uuid2;
       _os_log_impl(&dword_19C86F000, v55, OS_LOG_TYPE_DEBUG, "DUPLICATE CHECK: Looking for size: %@, name: %@ (%@), date: %@: Can't dedup against databse %@ because it's not in the cache. Possibly shut down?", buf, 0x34u);
     }
 
     goto LABEL_41;
   }
 
-  if (![v6 isDuplicate])
+  if (![duplicateCopy isDuplicate])
   {
     v26 = PLImportGetLog();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
     {
-      v32 = [v6 sizeKey];
-      v33 = [v6 nameKey];
-      v34 = [v6 fileName];
-      v35 = [v6 dateKey];
-      v36 = [PHImportDuplicateChecker _dateWithDate:v35];
-      v37 = [v6 nameKey];
+      sizeKey9 = [duplicateCopy sizeKey];
+      nameKey7 = [duplicateCopy nameKey];
+      fileName11 = [duplicateCopy fileName];
+      dateKey8 = [duplicateCopy dateKey];
+      v36 = [PHImportDuplicateChecker _dateWithDate:dateKey8];
+      nameKey8 = [duplicateCopy nameKey];
       *buf = 138413314;
-      v226 = v32;
+      v226 = sizeKey9;
       v227 = 2112;
-      v228 = v33;
+      v228 = nameKey7;
       v229 = 2112;
-      v230 = v34;
+      v230 = fileName11;
       v231 = 2112;
       v232 = v36;
       v233 = 2112;
-      v234 = v37;
+      v234 = nameKey8;
       _os_log_impl(&dword_19C86F000, v26, OS_LOG_TYPE_DEBUG, "DUPLICATE CHECK: Looking for size: %@, name: %@ (%@), date: %@: No change in DB since last check, %@ is not a dup", buf, 0x34u);
     }
 
     goto LABEL_21;
   }
 
-  v11 = [v6 duplicates];
-  v12 = [(PHPhotoLibrary *)self->_library uuid];
-  v13 = [v11 objectForKeyedSubscript:v12];
-  v14 = [(PHImportDuplicateChecker *)self _filterDuplicatesForItem:v6 duplicateSet:v13 considerItemsInTrash:v4];
+  duplicates = [duplicateCopy duplicates];
+  uuid3 = [(PHPhotoLibrary *)self->_library uuid];
+  v13 = [duplicates objectForKeyedSubscript:uuid3];
+  v14 = [(PHImportDuplicateChecker *)self _filterDuplicatesForItem:duplicateCopy duplicateSet:v13 considerItemsInTrash:trashCopy];
 
   v15 = PLImportGetLog();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
   {
-    v16 = [v6 sizeKey];
-    v17 = [v6 nameKey];
-    v18 = [v6 fileName];
-    v19 = [v6 dateKey];
-    v20 = [PHImportDuplicateChecker _dateWithDate:v19];
-    v21 = [v6 nameKey];
+    sizeKey10 = [duplicateCopy sizeKey];
+    nameKey9 = [duplicateCopy nameKey];
+    fileName12 = [duplicateCopy fileName];
+    dateKey9 = [duplicateCopy dateKey];
+    v20 = [PHImportDuplicateChecker _dateWithDate:dateKey9];
+    nameKey10 = [duplicateCopy nameKey];
     v22 = [v14 count];
     *buf = 138413570;
     v23 = &stru_1F0FC60C8;
-    v226 = v16;
+    v226 = sizeKey10;
     v227 = 2112;
     if (!v22)
     {
       v23 = @": Filtered out";
     }
 
-    v228 = v17;
+    v228 = nameKey9;
     v229 = 2112;
-    v230 = v18;
+    v230 = fileName12;
     v231 = 2112;
     v232 = v20;
     v233 = 2112;
-    v234 = v21;
+    v234 = nameKey10;
     v235 = 2112;
     v236 = *&v23;
     _os_log_impl(&dword_19C86F000, v15, OS_LOG_TYPE_DEBUG, "DUPLICATE CHECK: Looking for size: %@, name: %@ (%@), date: %@: No change in DB since last check, %@ is a dup%@", buf, 0x3Eu);
@@ -898,26 +898,26 @@ LABEL_23:
   return v14;
 }
 
-- (BOOL)_findFingerprint:(id)a3 forItem:(id)a4 inCache:(id)a5 considerTrash:(BOOL)a6
+- (BOOL)_findFingerprint:(id)fingerprint forItem:(id)item inCache:(id)cache considerTrash:(BOOL)trash
 {
-  v6 = a6;
+  trashCopy = trash;
   v25 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  if (v10)
+  fingerprintCopy = fingerprint;
+  itemCopy = item;
+  if (fingerprintCopy)
   {
-    v12 = [a5 objectForKeyedSubscript:v10];
+    v12 = [cache objectForKeyedSubscript:fingerprintCopy];
     if ([v12 count])
     {
-      v13 = [(PHImportDuplicateChecker *)self _filterDuplicatesForItem:v11 duplicateSet:v12 considerItemsInTrash:v6];
+      v13 = [(PHImportDuplicateChecker *)self _filterDuplicatesForItem:itemCopy duplicateSet:v12 considerItemsInTrash:trashCopy];
 
       if ([v13 count])
       {
         v14 = 1;
-        [v11 setIsDuplicate:1];
-        [v11 setDuplicateStateConfidence:2];
-        v15 = [(PHPhotoLibrary *)self->_library uuid];
-        [v11 setDuplicates:v13 forLibrary:v15];
+        [itemCopy setIsDuplicate:1];
+        [itemCopy setDuplicateStateConfidence:2];
+        uuid = [(PHPhotoLibrary *)self->_library uuid];
+        [itemCopy setDuplicates:v13 forLibrary:uuid];
       }
 
       else
@@ -925,11 +925,11 @@ LABEL_23:
         v18 = PLImportGetLog();
         if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
         {
-          v19 = [v11 nameKey];
+          nameKey = [itemCopy nameKey];
           v21 = 138412546;
-          v22 = v19;
+          v22 = nameKey;
           v23 = 2112;
-          v24 = v10;
+          v24 = fingerprintCopy;
           _os_log_impl(&dword_19C86F000, v18, OS_LOG_TYPE_DEBUG, "DUPLICATE CHECK: name: %@, fingerprint: %@ ==> FOUND : Filtered out", &v21, 0x16u);
         }
 
@@ -942,11 +942,11 @@ LABEL_23:
       v16 = PLImportGetLog();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
       {
-        v17 = [v11 nameKey];
+        nameKey2 = [itemCopy nameKey];
         v21 = 138412546;
-        v22 = v17;
+        v22 = nameKey2;
         v23 = 2112;
-        v24 = v10;
+        v24 = fingerprintCopy;
         _os_log_impl(&dword_19C86F000, v16, OS_LOG_TYPE_DEBUG, "DUPLICATE CHECK: name: %@, fingerprint: %@ ==> NOT FOUND", &v21, 0x16u);
       }
 
@@ -963,27 +963,27 @@ LABEL_23:
   return v14;
 }
 
-- (id)_findMatchingAssetsForItem:(id)a3 inSet:(id)a4 matchingDate:(id *)a5 confidence:(unsigned __int8 *)a6
+- (id)_findMatchingAssetsForItem:(id)item inSet:(id)set matchingDate:(id *)date confidence:(unsigned __int8 *)confidence
 {
   v48 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
+  itemCopy = item;
+  setCopy = set;
   v41 = objc_opt_new();
-  v12 = [v10 dateKey];
-  v13 = [PHImportDuplicateChecker _dateWithDate:v12];
+  dateKey = [itemCopy dateKey];
+  v13 = [PHImportDuplicateChecker _dateWithDate:dateKey];
 
   v45 = 0u;
   v46 = 0u;
   v43 = 0u;
   v44 = 0u;
-  obj = v11;
+  obj = setCopy;
   v14 = [obj countByEnumeratingWithState:&v43 objects:v47 count:16];
   if (v14)
   {
     v15 = v14;
     v16 = *v44;
-    v38 = a6;
-    v39 = self;
+    confidenceCopy = confidence;
+    selfCopy = self;
     do
     {
       v17 = 0;
@@ -995,8 +995,8 @@ LABEL_23:
         }
 
         v18 = *(*(&v43 + 1) + 8 * v17);
-        v19 = [v18 imageDate];
-        [v13 timeIntervalSinceDate:v19];
+        imageDate = [v18 imageDate];
+        [v13 timeIntervalSinceDate:imageDate];
         v21 = fabs(v20);
 
         if (v21 <= 86400.0)
@@ -1009,7 +1009,7 @@ LABEL_23:
           }
 
           [v41 addObject:v18];
-          if (!a6)
+          if (!confidence)
           {
             goto LABEL_23;
           }
@@ -1018,31 +1018,31 @@ LABEL_23:
           goto LABEL_22;
         }
 
-        v22 = [v18 alternateImportImageDate];
-        if (!v22 || (v23 = v22, [v18 alternateImportImageDate], v24 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v13, "timeIntervalSinceDate:", v24), v26 = fabs(v25), v24, v23, v26 > 86400.0))
+        alternateImportImageDate = [v18 alternateImportImageDate];
+        if (!alternateImportImageDate || (v23 = alternateImportImageDate, [v18 alternateImportImageDate], v24 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v13, "timeIntervalSinceDate:", v24), v26 = fabs(v25), v24, v23, v26 > 86400.0))
         {
-          v27 = [v10 metadata];
+          metadata = [itemCopy metadata];
 
-          if (!v27)
+          if (!metadata)
           {
-            [v10 loadMetadataSync];
-            v28 = [v10 metadata];
+            [itemCopy loadMetadataSync];
+            metadata2 = [itemCopy metadata];
 
-            if (v28)
+            if (metadata2)
             {
-              v29 = [(PHImportDuplicateChecker *)v39 _findMatchingAssetsForItem:v10 inSet:obj matchingDate:a5 confidence:a6];
+              v29 = [(PHImportDuplicateChecker *)selfCopy _findMatchingAssetsForItem:itemCopy inSet:obj matchingDate:date confidence:confidence];
               if ([v29 count])
               {
-                v30 = [v29 allObjects];
-                [v41 addObjectsFromArray:v30];
+                allObjects = [v29 allObjects];
+                [v41 addObjectsFromArray:allObjects];
 
-                v31 = [v10 fileCreationDate];
-                [v18 setAlternateImportImageDate:v31];
+                fileCreationDate = [itemCopy fileCreationDate];
+                [v18 setAlternateImportImageDate:fileCreationDate];
 
-                [(NSMutableSet *)v39->_updatedDupInfos addObject:v18];
+                [(NSMutableSet *)selfCopy->_updatedDupInfos addObject:v18];
               }
 
-              a6 = v38;
+              confidence = confidenceCopy;
             }
 
             else
@@ -1067,17 +1067,17 @@ LABEL_23:
         }
 
         [v41 addObject:v18];
-        if (a6)
+        if (confidence)
         {
           v33 = 1;
 LABEL_22:
-          *a6 = v33;
+          *confidence = v33;
         }
 
 LABEL_23:
-        if (a5)
+        if (date)
         {
-          *a5 = [v18 imageDate];
+          *date = [v18 imageDate];
         }
 
 LABEL_25:
@@ -1095,14 +1095,14 @@ LABEL_25:
   return v41;
 }
 
-- (id)_filterDuplicatesForItem:(id)a3 duplicateSet:(id)a4 considerItemsInTrash:(BOOL)a5
+- (id)_filterDuplicatesForItem:(id)item duplicateSet:(id)set considerItemsInTrash:(BOOL)trash
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = v6;
-  if (a5)
+  setCopy = set;
+  v7 = setCopy;
+  if (trash)
   {
-    v8 = v6;
+    v8 = setCopy;
   }
 
   else
@@ -1144,45 +1144,45 @@ LABEL_25:
   return v8;
 }
 
-- (void)_populateCachesWithAssetInfo:(id)a3
+- (void)_populateCachesWithAssetInfo:(id)info
 {
   v43 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [[PHImportDuplicateInfo alloc] initWithAssetInfo:v4];
+  infoCopy = info;
+  v5 = [[PHImportDuplicateInfo alloc] initWithAssetInfo:infoCopy];
 
-  v6 = [(PHImportDuplicateInfo *)v5 fileName];
-  v7 = [(PHImportDuplicateInfo *)v5 fileSize];
-  v8 = v7;
-  if (!v4 || (v6 ? (v9 = v7 == 0) : (v9 = 1), v9))
+  fileName = [(PHImportDuplicateInfo *)v5 fileName];
+  fileSize = [(PHImportDuplicateInfo *)v5 fileSize];
+  v8 = fileSize;
+  if (!infoCopy || (fileName ? (v9 = fileSize == 0) : (v9 = 1), v9))
   {
-    v10 = PLImportGetLog();
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    avchdFingerprint = PLImportGetLog();
+    if (os_log_type_enabled(avchdFingerprint, OS_LOG_TYPE_ERROR))
     {
-      v27 = [(PHImportDuplicateInfo *)v5 objectID];
-      v28 = [(PHImportDuplicateInfo *)v5 fileName];
-      v29 = [(PHImportDuplicateInfo *)v5 fileSize];
+      objectID = [(PHImportDuplicateInfo *)v5 objectID];
+      fileName2 = [(PHImportDuplicateInfo *)v5 fileName];
+      fileSize2 = [(PHImportDuplicateInfo *)v5 fileSize];
       *buf = 134218754;
       v34 = v5;
       v35 = 2112;
-      v36 = v27;
+      v36 = objectID;
       v37 = 2112;
-      v38 = v28;
+      v38 = fileName2;
       v39 = 2112;
-      v40 = v29;
-      _os_log_impl(&dword_19C86F000, v10, OS_LOG_TYPE_ERROR, "DUPLICATE ERROR: Attempting to populate cache with assetIfo: <%p>(objectID: %@), fileName: %@, fileSize: %@", buf, 0x2Au);
+      v40 = fileSize2;
+      _os_log_impl(&dword_19C86F000, avchdFingerprint, OS_LOG_TYPE_ERROR, "DUPLICATE ERROR: Attempting to populate cache with assetIfo: <%p>(objectID: %@), fileName: %@, fileSize: %@", buf, 0x2Au);
     }
   }
 
   else
   {
-    v10 = [(PHImportDuplicateInfo *)v5 avchdFingerprint];
-    [v10 containsString:v6];
-    [(PHImportDuplicateChecker *)self _setDupInfo:v5 forFingerprint:v10 inCache:self->_avchdAssetIdentifierCache];
-    v11 = [(PHImportDuplicateInfo *)v5 fingerprint];
-    [(PHImportDuplicateChecker *)self _setDupInfo:v5 forFingerprint:v11 inCache:self->_assetIdentifierCache];
+    avchdFingerprint = [(PHImportDuplicateInfo *)v5 avchdFingerprint];
+    [avchdFingerprint containsString:fileName];
+    [(PHImportDuplicateChecker *)self _setDupInfo:v5 forFingerprint:avchdFingerprint inCache:self->_avchdAssetIdentifierCache];
+    fingerprint = [(PHImportDuplicateInfo *)v5 fingerprint];
+    [(PHImportDuplicateChecker *)self _setDupInfo:v5 forFingerprint:fingerprint inCache:self->_assetIdentifierCache];
 
-    v12 = [(PHImportDuplicateInfo *)v5 originatingAssetIdentifier];
-    [(PHImportDuplicateChecker *)self _setDupInfo:v5 forFingerprint:v12 inCache:self->_assetIdentifierCache];
+    originatingAssetIdentifier = [(PHImportDuplicateInfo *)v5 originatingAssetIdentifier];
+    [(PHImportDuplicateChecker *)self _setDupInfo:v5 forFingerprint:originatingAssetIdentifier inCache:self->_assetIdentifierCache];
 
     v13 = [(NSMutableDictionary *)self->_sizeNameCache objectForKeyedSubscript:v8];
     if (!v13)
@@ -1191,43 +1191,43 @@ LABEL_25:
       [(NSMutableDictionary *)self->_sizeNameCache setObject:v13 forKeyedSubscript:v8];
     }
 
-    v14 = [(PHImportDuplicateInfo *)v6 lowercaseString];
-    v15 = [v13 objectForKeyedSubscript:v14];
+    lowercaseString = [(PHImportDuplicateInfo *)fileName lowercaseString];
+    v15 = [v13 objectForKeyedSubscript:lowercaseString];
     if (!v15)
     {
       v15 = objc_opt_new();
-      [v13 setObject:v15 forKeyedSubscript:v14];
+      [v13 setObject:v15 forKeyedSubscript:lowercaseString];
     }
 
     [v15 addObject:v5];
     v16 = PLImportGetLog();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
     {
-      v17 = [(PHImportDuplicateInfo *)v5 imageDate];
-      v18 = v17;
+      imageDate = [(PHImportDuplicateInfo *)v5 imageDate];
+      v18 = imageDate;
       v19 = &stru_1F0FC60C8;
-      if (v17)
+      if (imageDate)
       {
-        v19 = v17;
+        v19 = imageDate;
       }
 
       v31 = v19;
-      v20 = [(PHImportDuplicateInfo *)v5 alternateImportImageDate];
-      v32 = v14;
-      v21 = v20;
+      alternateImportImageDate = [(PHImportDuplicateInfo *)v5 alternateImportImageDate];
+      v32 = lowercaseString;
+      v21 = alternateImportImageDate;
       v22 = &stru_1F0FC60C8;
-      if (v20)
+      if (alternateImportImageDate)
       {
-        v22 = v20;
+        v22 = alternateImportImageDate;
       }
 
       v30 = v22;
-      v23 = [(PHImportDuplicateInfo *)v5 isInTrash];
+      isInTrash = [(PHImportDuplicateInfo *)v5 isInTrash];
       *buf = 138413314;
       v24 = @"NO";
-      v34 = v6;
+      v34 = fileName;
       v35 = 2112;
-      if (v23)
+      if (isInTrash)
       {
         v24 = @"YES";
       }
@@ -1241,25 +1241,25 @@ LABEL_25:
       v42 = v24;
       _os_log_impl(&dword_19C86F000, v16, OS_LOG_TYPE_DEBUG, "DUPLICATE POPULATE: name: %@, size: %@, dates: %@%@, isInTrash: %@", buf, 0x34u);
 
-      v14 = v32;
+      lowercaseString = v32;
     }
 
-    v25 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     lastChange = self->_lastChange;
-    self->_lastChange = v25;
+    self->_lastChange = date;
   }
 }
 
-- (void)_setDupInfo:(id)a3 forFingerprint:(id)a4 inCache:(id)a5
+- (void)_setDupInfo:(id)info forFingerprint:(id)fingerprint inCache:(id)cache
 {
   v24 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (v8)
+  infoCopy = info;
+  fingerprintCopy = fingerprint;
+  cacheCopy = cache;
+  v10 = cacheCopy;
+  if (fingerprintCopy)
   {
-    v11 = [v9 objectForKeyedSubscript:v8];
+    v11 = [cacheCopy objectForKeyedSubscript:fingerprintCopy];
     if (v11)
     {
       v12 = v11;
@@ -1267,9 +1267,9 @@ LABEL_25:
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
       {
         v18 = 138412802;
-        v19 = v8;
+        v19 = fingerprintCopy;
         v20 = 2112;
-        v21 = v7;
+        v21 = infoCopy;
         v22 = 2112;
         v23 = v12;
         _os_log_impl(&dword_19C86F000, v13, OS_LOG_TYPE_DEBUG, "DUPLICATE POPULATE: More than one master for fingerprint '%@': adding: %@, in cache: %@", &v18, 0x20u);
@@ -1279,25 +1279,25 @@ LABEL_25:
     else
     {
       v12 = objc_opt_new();
-      [v10 setObject:v12 forKeyedSubscript:v8];
+      [v10 setObject:v12 forKeyedSubscript:fingerprintCopy];
     }
 
-    [(__CFString *)v12 addObject:v7];
+    [(__CFString *)v12 addObject:infoCopy];
     v14 = PLImportGetLog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
     {
-      v15 = [v7 fileName];
-      v16 = [v7 isInTrash];
+      fileName = [infoCopy fileName];
+      isInTrash = [infoCopy isInTrash];
       v17 = @"NO";
       v18 = 138412802;
-      v19 = v15;
+      v19 = fileName;
       v20 = 2112;
-      if (v16)
+      if (isInTrash)
       {
         v17 = @"YES";
       }
 
-      v21 = v8;
+      v21 = fingerprintCopy;
       v22 = 2112;
       v23 = v17;
       _os_log_impl(&dword_19C86F000, v14, OS_LOG_TYPE_DEBUG, "DUPLICATE POPULATE: name: %@, fingerprint: %@, isInTrash: %@", &v18, 0x20u);
@@ -1329,9 +1329,9 @@ LABEL_25:
         }
 
         v8 = *(*(&v26 + 1) + 8 * i);
-        v9 = [v8 alternateImportImageDate];
-        v10 = [v8 objectID];
-        [v3 setObject:v9 forKeyedSubscript:v10];
+        alternateImportImageDate = [v8 alternateImportImageDate];
+        objectID = [v8 objectID];
+        [v3 setObject:alternateImportImageDate forKeyedSubscript:objectID];
       }
 
       v5 = [(NSMutableSet *)v4 countByEnumeratingWithState:&v26 objects:v30 count:16];
@@ -1340,8 +1340,8 @@ LABEL_25:
     while (v5);
   }
 
-  v16 = [v3 allKeys];
-  v11 = [[PHManualFetchResult alloc] initWithOids:v16 photoLibrary:self->_library fetchType:@"PHAsset" fetchPropertySets:0 identifier:0 registerIfNeeded:0];
+  allKeys = [v3 allKeys];
+  v11 = [[PHManualFetchResult alloc] initWithOids:allKeys photoLibrary:self->_library fetchType:@"PHAsset" fetchPropertySets:0 identifier:0 registerIfNeeded:0];
   v25[0] = 0;
   v25[1] = v25;
   v25[2] = 0x2020000000;
@@ -1403,10 +1403,10 @@ void __53__PHImportDuplicateChecker__updateAssetsFromDupInfos__block_invoke_2(ui
   *a4 = *(*(*(a1 + 48) + 8) + 24) >= *(a1 + 56);
 }
 
-- (PHImportDuplicateChecker)initWithLibrary:(id)a3
+- (PHImportDuplicateChecker)initWithLibrary:(id)library
 {
-  v5 = a3;
-  if (v5)
+  libraryCopy = library;
+  if (libraryCopy)
   {
     v17.receiver = self;
     v17.super_class = PHImportDuplicateChecker;
@@ -1414,7 +1414,7 @@ void __53__PHImportDuplicateChecker__updateAssetsFromDupInfos__block_invoke_2(ui
     v7 = v6;
     if (v6)
     {
-      objc_storeStrong(&v6->_library, a3);
+      objc_storeStrong(&v6->_library, library);
       v8 = objc_opt_new();
       sizeNameCache = v7->_sizeNameCache;
       v7->_sizeNameCache = v8;
@@ -1442,17 +1442,17 @@ void __53__PHImportDuplicateChecker__updateAssetsFromDupInfos__block_invoke_2(ui
   return v7;
 }
 
-- (unint64_t)_populateCachesWithAssetsInfos:(id)a3
+- (unint64_t)_populateCachesWithAssetsInfos:(id)infos
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  infosCopy = infos;
   [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
   v6 = v5;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v7 = v4;
+  v7 = infosCopy;
   v8 = [v7 countByEnumeratingWithState:&v22 objects:v30 count:16];
   if (v8)
   {
@@ -1499,11 +1499,11 @@ void __53__PHImportDuplicateChecker__updateAssetsFromDupInfos__block_invoke_2(ui
   return v20;
 }
 
-+ (id)_fetchAssetInfoFromLibrary:(id)a3 forFileSizes:(id)a4
++ (id)_fetchAssetInfoFromLibrary:(id)library forFileSizes:(id)sizes
 {
   v50[2] = *MEMORY[0x1E69E9840];
-  v32 = a3;
-  v5 = a4;
+  libraryCopy = library;
+  sizesCopy = sizes;
   [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
   v7 = v6;
   if (_fetchAssetInfoFromLibrary_forFileSizes__onceToken != -1)
@@ -1511,7 +1511,7 @@ void __53__PHImportDuplicateChecker__updateAssetsFromDupInfos__block_invoke_2(ui
     dispatch_once(&_fetchAssetInfoFromLibrary_forFileSizes__onceToken, &__block_literal_global_62);
   }
 
-  v33 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K in %@", @"originalFilesize", v5];
+  sizesCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K in %@", @"originalFilesize", sizesCopy];
   v8 = MEMORY[0x1E696AB28];
   v9 = [MEMORY[0x1E696AE18] predicateWithFormat:@"noindex:(%K) == %d", @"asset.visibilityState", 0];
   v50[0] = v9;
@@ -1528,20 +1528,20 @@ void __53__PHImportDuplicateChecker__updateAssetsFromDupInfos__block_invoke_2(ui
 
   v17 = [MEMORY[0x1E69BF328] predicateForIncludeMask:objc_msgSend(MEMORY[0x1E69BF328] useIndex:"maskForUserLibrary") keyPathPrefix:{0, @"asset"}];
   v18 = MEMORY[0x1E696AB28];
-  v48[0] = v33;
+  v48[0] = sizesCopy;
   v48[1] = v16;
   v48[2] = v17;
   v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v48 count:3];
   v20 = [v18 andPredicateWithSubpredicates:v19];
 
   v21 = MEMORY[0x1E695D5E0];
-  v22 = [MEMORY[0x1E69BE250] entityName];
-  v23 = [v21 fetchRequestWithEntityName:v22];
+  entityName = [MEMORY[0x1E69BE250] entityName];
+  v23 = [v21 fetchRequestWithEntityName:entityName];
 
   [v23 setPredicate:v20];
   [v23 setPropertiesToFetch:_fetchAssetInfoFromLibrary_forFileSizes__properties];
   [v23 setResultType:2];
-  v24 = [v32 managedObjectContext];
+  managedObjectContext = [libraryCopy managedObjectContext];
   v38 = 0;
   v39 = &v38;
   v40 = 0x3032000000;
@@ -1553,7 +1553,7 @@ void __53__PHImportDuplicateChecker__updateAssetsFromDupInfos__block_invoke_2(ui
   v34[2] = __68__PHImportDuplicateChecker__fetchAssetInfoFromLibrary_forFileSizes___block_invoke_152;
   v34[3] = &unk_1E75AA3F8;
   v37 = &v38;
-  v25 = v24;
+  v25 = managedObjectContext;
   v35 = v25;
   v26 = v23;
   v36 = v26;
@@ -1562,7 +1562,7 @@ void __53__PHImportDuplicateChecker__updateAssetsFromDupInfos__block_invoke_2(ui
   v27 = PLImportGetLog();
   if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
   {
-    v28 = [v5 count];
+    v28 = [sizesCopy count];
     [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
     *buf = 134218240;
     v45 = v28;
@@ -1610,11 +1610,11 @@ void __68__PHImportDuplicateChecker__fetchAssetInfoFromLibrary_forFileSizes___bl
   _fetchAssetInfoFromLibrary_forFileSizes__properties = v2;
 }
 
-+ (id)_dateWithDate:(id)a3
++ (id)_dateWithDate:(id)date
 {
-  if (a3)
+  if (date)
   {
-    [a3 timeIntervalSinceReferenceDate];
+    [date timeIntervalSinceReferenceDate];
     v3 = vars8;
   }
 
@@ -1628,16 +1628,16 @@ void __68__PHImportDuplicateChecker__fetchAssetInfoFromLibrary_forFileSizes___bl
   return [v5 dateWithTimeIntervalSinceReferenceDate:v4];
 }
 
-+ (id)duplicatesFromResults:(id)a3 forLibrary:(id)a4
++ (id)duplicatesFromResults:(id)results forLibrary:(id)library
 {
-  v5 = a3;
-  v6 = [a4 photoLibraryURL];
-  v7 = [v6 path];
-  v8 = [v5 objectForKeyedSubscript:v7];
+  resultsCopy = results;
+  photoLibraryURL = [library photoLibraryURL];
+  path = [photoLibraryURL path];
+  v8 = [resultsCopy objectForKeyedSubscript:path];
 
-  v9 = [v8 allObjects];
+  allObjects = [v8 allObjects];
 
-  return v9;
+  return allObjects;
 }
 
 @end

@@ -1,7 +1,7 @@
 @interface PSSystemConfigurationDynamicStoreEthernetWatcher
 + (id)sharedManager;
 - (BOOL)hasEthernetNetworkInterfaces;
-- (BOOL)isHiddenEthernetInterface:(__SCNetworkInterface *)a3;
+- (BOOL)isHiddenEthernetInterface:(__SCNetworkInterface *)interface;
 - (PSSystemConfigurationDynamicStoreEthernetWatcher)init;
 - (id)ethernetNetworkInterfaces;
 - (void)dealloc;
@@ -107,7 +107,7 @@
   block[1] = 3221225472;
   block[2] = __65__PSSystemConfigurationDynamicStoreEthernetWatcher_sharedManager__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedManager_cacheOnce_160 != -1)
   {
     dispatch_once(&sharedManager_cacheOnce_160, block);
@@ -161,8 +161,8 @@ void __65__PSSystemConfigurationDynamicStoreEthernetWatcher_sharedManager__block
 
 - (BOOL)hasEthernetNetworkInterfaces
 {
-  v2 = [(PSSystemConfigurationDynamicStoreEthernetWatcher *)self ethernetNetworkInterfaces];
-  v3 = [v2 count] != 0;
+  ethernetNetworkInterfaces = [(PSSystemConfigurationDynamicStoreEthernetWatcher *)self ethernetNetworkInterfaces];
+  v3 = [ethernetNetworkInterfaces count] != 0;
 
   return v3;
 }
@@ -170,7 +170,7 @@ void __65__PSSystemConfigurationDynamicStoreEthernetWatcher_sharedManager__block
 - (id)ethernetNetworkInterfaces
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v4 = socket(30, 1, 0);
   if (v4 < 0)
   {
@@ -183,7 +183,7 @@ void __65__PSSystemConfigurationDynamicStoreEthernetWatcher_sharedManager__block
   if (v6)
   {
     v7 = v6;
-    v19 = v3;
+    v19 = array;
     for (i = 0; i != v7; ++i)
     {
       v9 = [(__CFArray *)v5 objectAtIndex:i];
@@ -244,7 +244,7 @@ void __65__PSSystemConfigurationDynamicStoreEthernetWatcher_sharedManager__block
       }
     }
 
-    v3 = v19;
+    array = v19;
 LABEL_20:
     if (v4 == -1)
     {
@@ -255,16 +255,16 @@ LABEL_20:
   close(v4);
 LABEL_22:
 
-  return v3;
+  return array;
 }
 
 - (void)ethernetDynamicStoreDidChange
 {
-  v2 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v2 postNotificationName:@"com.apple.Preferences.Ethernet" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"com.apple.Preferences.Ethernet" object:0];
 }
 
-- (BOOL)isHiddenEthernetInterface:(__SCNetworkInterface *)a3
+- (BOOL)isHiddenEthernetInterface:(__SCNetworkInterface *)interface
 {
   *mainPort = 0;
   parent = 0;

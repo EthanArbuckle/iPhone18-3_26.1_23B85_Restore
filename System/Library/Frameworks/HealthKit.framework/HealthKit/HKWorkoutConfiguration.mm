@@ -1,14 +1,14 @@
 @interface HKWorkoutConfiguration
-+ (id)_workoutConfigurationFromDictionary:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)validateIgnoringDeviceSupport:(BOOL)a3 error:(id *)a4;
++ (id)_workoutConfigurationFromDictionary:(id)dictionary;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)validateIgnoringDeviceSupport:(BOOL)support error:(id *)error;
 - (HKWorkoutConfiguration)init;
-- (HKWorkoutConfiguration)initWithCoder:(id)a3;
+- (HKWorkoutConfiguration)initWithCoder:(id)coder;
 - (id)_dictionaryRepresentation;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKWorkoutConfiguration
@@ -30,18 +30,18 @@
   return result;
 }
 
-- (BOOL)validateIgnoringDeviceSupport:(BOOL)a3 error:(id *)a4
+- (BOOL)validateIgnoringDeviceSupport:(BOOL)support error:(id *)error
 {
   if ((_HKWorkoutActivityTypeIsValid(self->_activityType) & 1) == 0)
   {
-    [MEMORY[0x1E696ABC0] hk_assignError:a4 code:3 format:{@"Invalid workout activity type %ld", self->_activityType}];
+    [MEMORY[0x1E696ABC0] hk_assignError:error code:3 format:{@"Invalid workout activity type %ld", self->_activityType}];
     return 0;
   }
 
   locationType = self->_locationType;
   if ((locationType - 1) >= 3)
   {
-    [MEMORY[0x1E696ABC0] hk_assignError:a4 code:3 format:{@"Invalid workout session location type %ld", self->_locationType}];
+    [MEMORY[0x1E696ABC0] hk_assignError:error code:3 format:{@"Invalid workout session location type %ld", self->_locationType}];
     return 0;
   }
 
@@ -50,18 +50,18 @@
     v13 = MEMORY[0x1E696ABC0];
     v14 = @"GymKit workout session location type should be indoor";
 LABEL_17:
-    [v13 hk_assignError:a4 code:3 format:{v14, v21}];
+    [v13 hk_assignError:error code:3 format:{v14, v21}];
     return 0;
   }
 
   if (self->_activityType == 46)
   {
-    if (!a3)
+    if (!support)
     {
       v9 = +[_HKBehavior sharedBehavior];
-      v10 = [v9 supportsSwimmingWorkoutSessions];
+      supportsSwimmingWorkoutSessions = [v9 supportsSwimmingWorkoutSessions];
 
-      if ((v10 & 1) == 0)
+      if ((supportsSwimmingWorkoutSessions & 1) == 0)
       {
         v13 = MEMORY[0x1E696ABC0];
         v14 = @"Swimming sessions are not supported on this device";
@@ -71,7 +71,7 @@ LABEL_17:
 
     if (!_HKWorkoutSwimmingLocationTypeIsValid(self->_swimmingLocationType))
     {
-      [MEMORY[0x1E696ABC0] hk_assignError:a4 code:3 format:{@"Invalid swimming location type %ld", self->_swimmingLocationType}];
+      [MEMORY[0x1E696ABC0] hk_assignError:error code:3 format:{@"Invalid swimming location type %ld", self->_swimmingLocationType}];
       return 0;
     }
 
@@ -101,7 +101,7 @@ LABEL_17:
       {
         if (!_HKWorkoutLapLengthIsValid(lapLength))
         {
-          [MEMORY[0x1E696ABC0] hk_assignError:a4 code:3 format:{@"Lap length is not a valid quantity type %@", self->_lapLength}];
+          [MEMORY[0x1E696ABC0] hk_assignError:error code:3 format:{@"Lap length is not a valid quantity type %@", self->_lapLength}];
           return 0;
         }
 
@@ -131,10 +131,10 @@ LABEL_17:
   return 1;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v15 = 1;
   }
@@ -144,7 +144,7 @@ LABEL_17:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = v5;
       if (self->_activityType != v5->_activityType)
       {
@@ -297,56 +297,56 @@ LABEL_23:
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   activityType = self->_activityType;
-  v5 = a3;
-  [v5 encodeInteger:activityType forKey:@"activityType"];
-  [v5 encodeInteger:self->_locationType forKey:@"locationType"];
-  [v5 encodeInteger:self->_swimmingLocationType forKey:@"swimmingLocationType"];
-  [v5 encodeObject:self->_lapLength forKey:@"lapLength"];
-  [v5 encodeObject:self->_fitnessMachineSessionUUID forKey:@"ftmSessionUUIDKey"];
-  [v5 encodeObject:self->_predictionSessionUUID forKey:@"predictionSessionUUIDKey"];
-  [v5 encodeBool:self->_shouldDisambiguateLocation forKey:@"disambiguateLocationTypeKey"];
-  [v5 encodeBool:self->_shouldUseExtendedMode forKey:@"useExtendedModeKey"];
-  [v5 encodeBool:self->_shouldUseLowPowerMode forKey:@"enableLowPowerModeKey"];
-  [v5 encodeObject:self->_fitnessPlusCatalogWorkoutId forKey:@"fpCatalogWorkoutIdString"];
-  [v5 encodeInteger:self->_fitnessPlusMediaType forKey:@"fpMediaType"];
-  [v5 encodeObject:self->_suggestedActivityUUID forKey:@"suggestedActivityUUIDKey"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:activityType forKey:@"activityType"];
+  [coderCopy encodeInteger:self->_locationType forKey:@"locationType"];
+  [coderCopy encodeInteger:self->_swimmingLocationType forKey:@"swimmingLocationType"];
+  [coderCopy encodeObject:self->_lapLength forKey:@"lapLength"];
+  [coderCopy encodeObject:self->_fitnessMachineSessionUUID forKey:@"ftmSessionUUIDKey"];
+  [coderCopy encodeObject:self->_predictionSessionUUID forKey:@"predictionSessionUUIDKey"];
+  [coderCopy encodeBool:self->_shouldDisambiguateLocation forKey:@"disambiguateLocationTypeKey"];
+  [coderCopy encodeBool:self->_shouldUseExtendedMode forKey:@"useExtendedModeKey"];
+  [coderCopy encodeBool:self->_shouldUseLowPowerMode forKey:@"enableLowPowerModeKey"];
+  [coderCopy encodeObject:self->_fitnessPlusCatalogWorkoutId forKey:@"fpCatalogWorkoutIdString"];
+  [coderCopy encodeInteger:self->_fitnessPlusMediaType forKey:@"fpMediaType"];
+  [coderCopy encodeObject:self->_suggestedActivityUUID forKey:@"suggestedActivityUUIDKey"];
 }
 
-- (HKWorkoutConfiguration)initWithCoder:(id)a3
+- (HKWorkoutConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = HKWorkoutConfiguration;
   v5 = [(HKWorkoutConfiguration *)&v17 init];
   if (v5)
   {
-    v5->_activityType = [v4 decodeIntegerForKey:@"activityType"];
-    v5->_locationType = [v4 decodeIntegerForKey:@"locationType"];
-    v5->_swimmingLocationType = [v4 decodeIntegerForKey:@"swimmingLocationType"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lapLength"];
+    v5->_activityType = [coderCopy decodeIntegerForKey:@"activityType"];
+    v5->_locationType = [coderCopy decodeIntegerForKey:@"locationType"];
+    v5->_swimmingLocationType = [coderCopy decodeIntegerForKey:@"swimmingLocationType"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lapLength"];
     lapLength = v5->_lapLength;
     v5->_lapLength = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ftmSessionUUIDKey"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ftmSessionUUIDKey"];
     fitnessMachineSessionUUID = v5->_fitnessMachineSessionUUID;
     v5->_fitnessMachineSessionUUID = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"predictionSessionUUIDKey"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"predictionSessionUUIDKey"];
     predictionSessionUUID = v5->_predictionSessionUUID;
     v5->_predictionSessionUUID = v10;
 
-    v5->_shouldDisambiguateLocation = [v4 decodeBoolForKey:@"disambiguateLocationTypeKey"];
-    v5->_shouldUseExtendedMode = [v4 decodeBoolForKey:@"useExtendedModeKey"];
-    v5->_shouldUseLowPowerMode = [v4 decodeBoolForKey:@"enableLowPowerModeKey"];
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"fpCatalogWorkoutIdString"];
+    v5->_shouldDisambiguateLocation = [coderCopy decodeBoolForKey:@"disambiguateLocationTypeKey"];
+    v5->_shouldUseExtendedMode = [coderCopy decodeBoolForKey:@"useExtendedModeKey"];
+    v5->_shouldUseLowPowerMode = [coderCopy decodeBoolForKey:@"enableLowPowerModeKey"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"fpCatalogWorkoutIdString"];
     fitnessPlusCatalogWorkoutId = v5->_fitnessPlusCatalogWorkoutId;
     v5->_fitnessPlusCatalogWorkoutId = v12;
 
-    v5->_fitnessPlusMediaType = [v4 decodeIntegerForKey:@"fpMediaType"];
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"suggestedActivityUUIDKey"];
+    v5->_fitnessPlusMediaType = [coderCopy decodeIntegerForKey:@"fpMediaType"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"suggestedActivityUUIDKey"];
     suggestedActivityUUID = v5->_suggestedActivityUUID;
     v5->_suggestedActivityUUID = v14;
   }
@@ -354,29 +354,29 @@ LABEL_23:
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[HKWorkoutConfiguration allocWithZone:](HKWorkoutConfiguration init];
   [(HKWorkoutConfiguration *)v5 setActivityType:self->_activityType];
   [(HKWorkoutConfiguration *)v5 setLocationType:self->_locationType];
   [(HKWorkoutConfiguration *)v5 setSwimmingLocationType:self->_swimmingLocationType];
-  v6 = [(HKQuantity *)self->_lapLength copyWithZone:a3];
+  v6 = [(HKQuantity *)self->_lapLength copyWithZone:zone];
   [(HKWorkoutConfiguration *)v5 setLapLength:v6];
 
-  v7 = [(NSUUID *)self->_predictionSessionUUID copyWithZone:a3];
+  v7 = [(NSUUID *)self->_predictionSessionUUID copyWithZone:zone];
   [(HKWorkoutConfiguration *)v5 setPredictionSessionUUID:v7];
 
-  v8 = [(NSUUID *)self->_fitnessMachineSessionUUID copyWithZone:a3];
+  v8 = [(NSUUID *)self->_fitnessMachineSessionUUID copyWithZone:zone];
   [(HKWorkoutConfiguration *)v5 setFitnessMachineSessionUUID:v8];
 
   [(HKWorkoutConfiguration *)v5 setShouldDisambiguateLocation:self->_shouldDisambiguateLocation];
   [(HKWorkoutConfiguration *)v5 setShouldUseExtendedMode:self->_shouldUseExtendedMode];
   [(HKWorkoutConfiguration *)v5 setShouldUseLowPowerMode:self->_shouldUseLowPowerMode];
-  v9 = [(NSString *)self->_fitnessPlusCatalogWorkoutId copyWithZone:a3];
+  v9 = [(NSString *)self->_fitnessPlusCatalogWorkoutId copyWithZone:zone];
   [(HKWorkoutConfiguration *)v5 setFitnessPlusCatalogWorkoutId:v9];
 
   [(HKWorkoutConfiguration *)v5 setFitnessPlusMediaType:self->_fitnessPlusMediaType];
-  v10 = [(NSUUID *)self->_suggestedActivityUUID copyWithZone:a3];
+  v10 = [(NSUUID *)self->_suggestedActivityUUID copyWithZone:zone];
   [(HKWorkoutConfiguration *)v5 setSuggestedActivityUUID:v10];
 
   return v5;
@@ -387,17 +387,17 @@ LABEL_23:
   v10[1] = *MEMORY[0x1E69E9840];
   v3 = [objc_alloc(MEMORY[0x1E696ACC8]) initRequiringSecureCoding:1];
   [v3 encodeObject:self forKey:@"HKWorkoutConfigurationKey"];
-  v4 = [v3 encodedData];
+  encodedData = [v3 encodedData];
   v9 = @"HKWorkoutConfigurationNSDataKey";
-  v5 = v4;
-  if (!v4)
+  data = encodedData;
+  if (!encodedData)
   {
-    v5 = [MEMORY[0x1E695DEF0] data];
+    data = [MEMORY[0x1E695DEF0] data];
   }
 
-  v10[0] = v5;
+  v10[0] = data;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:&v9 count:1];
-  if (!v4)
+  if (!encodedData)
   {
   }
 
@@ -406,9 +406,9 @@ LABEL_23:
   return v6;
 }
 
-+ (id)_workoutConfigurationFromDictionary:(id)a3
++ (id)_workoutConfigurationFromDictionary:(id)dictionary
 {
-  v3 = [a3 objectForKey:@"HKWorkoutConfigurationNSDataKey"];
+  v3 = [dictionary objectForKey:@"HKWorkoutConfigurationNSDataKey"];
   if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v4 = [objc_alloc(MEMORY[0x1E696ACD0]) initForReadingFromData:v3 error:0];

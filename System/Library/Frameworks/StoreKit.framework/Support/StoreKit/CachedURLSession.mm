@@ -1,17 +1,17 @@
 @interface CachedURLSession
-+ (id)cachedSession:(id)a3 maximumWatchCellularTransferSize:(id)a4;
++ (id)cachedSession:(id)session maximumWatchCellularTransferSize:(id)size;
 @end
 
 @implementation CachedURLSession
 
-+ (id)cachedSession:(id)a3 maximumWatchCellularTransferSize:(id)a4
++ (id)cachedSession:(id)session maximumWatchCellularTransferSize:(id)size
 {
-  v5 = a4;
-  v6 = a3;
+  sizeCopy = size;
+  sessionCopy = session;
   v7 = objc_opt_new();
-  [v7 setSession:v6];
+  [v7 setSession:sessionCopy];
 
-  [v7 setMaximumWatchCellularTransferSize:v5];
+  [v7 setMaximumWatchCellularTransferSize:sizeCopy];
 
   return v7;
 }

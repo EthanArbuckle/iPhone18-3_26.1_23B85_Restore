@@ -1,20 +1,20 @@
 @interface NSMutableDictionary
-- (void)ae_moveObjectFromKey:(void *)a3 toKey:;
+- (void)ae_moveObjectFromKey:(void *)key toKey:;
 @end
 
 @implementation NSMutableDictionary
 
-- (void)ae_moveObjectFromKey:(void *)a3 toKey:
+- (void)ae_moveObjectFromKey:(void *)key toKey:
 {
   v7 = a2;
-  v5 = a3;
-  if (a1 && v7 != v5)
+  keyCopy = key;
+  if (self && v7 != keyCopy)
   {
-    v6 = [a1 objectForKeyedSubscript:v7];
+    v6 = [self objectForKeyedSubscript:v7];
     if (v6)
     {
-      [a1 setObject:v6 forKeyedSubscript:v5];
-      [a1 removeObjectForKey:v7];
+      [self setObject:v6 forKeyedSubscript:keyCopy];
+      [self removeObjectForKey:v7];
     }
   }
 }

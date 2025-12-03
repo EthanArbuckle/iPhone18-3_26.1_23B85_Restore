@@ -1,61 +1,61 @@
 @interface SFAttributedRichLinkCell
-- (BOOL)shouldShowContextMenuFromPoint:(CGPoint)a3;
-- (SFAttributedRichLinkCell)initWithCoder:(id)a3;
-- (SFAttributedRichLinkCell)initWithFrame:(CGRect)a3;
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3;
+- (BOOL)shouldShowContextMenuFromPoint:(CGPoint)point;
+- (SFAttributedRichLinkCell)initWithCoder:(id)coder;
+- (SFAttributedRichLinkCell)initWithFrame:(CGRect)frame;
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes;
 - (void)_updateAttributionViewBackground;
 - (void)_updateUserInterfaceStyle;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setAttributionView:(id)a3;
-- (void)setMetadata:(id)a3;
-- (void)setRelativeDateString:(id)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setAttributionView:(id)view;
+- (void)setMetadata:(id)metadata;
+- (void)setRelativeDateString:(id)string;
+- (void)touchesBegan:(id)began withEvent:(id)event;
 @end
 
 @implementation SFAttributedRichLinkCell
 
-- (SFAttributedRichLinkCell)initWithFrame:(CGRect)a3
+- (SFAttributedRichLinkCell)initWithFrame:(CGRect)frame
 {
   v77[3] = *MEMORY[0x1E69E9840];
   v73.receiver = self;
   v73.super_class = SFAttributedRichLinkCell;
-  v3 = [(SFStartPageFilledBackgroundCell *)&v73 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SFStartPageFilledBackgroundCell *)&v73 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(SFAttributedRichLinkCell *)v3 contentView];
+    contentView = [(SFAttributedRichLinkCell *)v3 contentView];
     v6 = objc_alloc_init(MEMORY[0x1E69DD250]);
     linkViewContainer = v4->_linkViewContainer;
     v4->_linkViewContainer = v6;
 
     [(UIView *)v4->_linkViewContainer setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIView *)v4->_linkViewContainer _setContinuousCornerRadius:20.0];
-    [v5 addSubview:v4->_linkViewContainer];
+    [contentView addSubview:v4->_linkViewContainer];
     v63 = MEMORY[0x1E696ACD8];
-    v71 = [(UIView *)v4->_linkViewContainer topAnchor];
-    v69 = [v5 topAnchor];
-    v66 = [v71 constraintEqualToAnchor:v69];
+    topAnchor = [(UIView *)v4->_linkViewContainer topAnchor];
+    topAnchor2 = [contentView topAnchor];
+    v66 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v77[0] = v66;
-    v8 = [(UIView *)v4->_linkViewContainer leadingAnchor];
-    v9 = [v5 leadingAnchor];
-    v10 = [v8 constraintEqualToAnchor:v9];
+    leadingAnchor = [(UIView *)v4->_linkViewContainer leadingAnchor];
+    leadingAnchor2 = [contentView leadingAnchor];
+    v10 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v77[1] = v10;
-    v11 = [(UIView *)v4->_linkViewContainer trailingAnchor];
-    v12 = [v5 trailingAnchor];
-    v13 = [v11 constraintEqualToAnchor:v12];
+    trailingAnchor = [(UIView *)v4->_linkViewContainer trailingAnchor];
+    trailingAnchor2 = [contentView trailingAnchor];
+    v13 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v77[2] = v13;
     v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v77 count:3];
     [v63 activateConstraints:v14];
 
     v15 = 0x1E69C8000uLL;
-    LODWORD(v11) = [MEMORY[0x1E69C8880] is2024SuggestionsEnabled];
-    v16 = [(UIView *)v4->_linkViewContainer bottomAnchor];
-    v72 = v5;
-    v17 = [v5 bottomAnchor];
-    v18 = [v16 constraintEqualToAnchor:v17];
+    LODWORD(trailingAnchor) = [MEMORY[0x1E69C8880] is2024SuggestionsEnabled];
+    bottomAnchor = [(UIView *)v4->_linkViewContainer bottomAnchor];
+    v72 = contentView;
+    bottomAnchor2 = [contentView bottomAnchor];
+    v18 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v20 = v18;
-    if (v11)
+    if (trailingAnchor)
     {
       [v18 setActive:1];
     }
@@ -94,33 +94,33 @@
     }
 
     [(LPLinkView *)v4->_linkView _setSizeClassParameters:v25];
-    v26 = [MEMORY[0x1E69C8880] is2024SuggestionsEnabled];
+    is2024SuggestionsEnabled = [MEMORY[0x1E69C8880] is2024SuggestionsEnabled];
     v27 = v4->_linkViewContainer;
     v28 = v4->_linkView;
     v70 = v25;
-    if (v26)
+    if (is2024SuggestionsEnabled)
     {
       [(UIView *)v27 addSubview:v28];
       v58 = MEMORY[0x1E696ACD8];
-      v67 = [(LPLinkView *)v4->_linkView topAnchor];
-      v64 = [(UIView *)v4->_linkViewContainer topAnchor];
-      v62 = [v67 constraintEqualToAnchor:v64];
+      topAnchor3 = [(LPLinkView *)v4->_linkView topAnchor];
+      topAnchor4 = [(UIView *)v4->_linkViewContainer topAnchor];
+      v62 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
       v76[0] = v62;
-      v61 = [(LPLinkView *)v4->_linkView leadingAnchor];
-      v60 = [(UIView *)v4->_linkViewContainer leadingAnchor];
-      v59 = [v61 constraintEqualToAnchor:v60];
+      leadingAnchor3 = [(LPLinkView *)v4->_linkView leadingAnchor];
+      leadingAnchor4 = [(UIView *)v4->_linkViewContainer leadingAnchor];
+      v59 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
       v76[1] = v59;
-      v57 = [(LPLinkView *)v4->_linkView trailingAnchor];
-      v56 = [(UIView *)v4->_linkViewContainer trailingAnchor];
-      v29 = [v57 constraintEqualToAnchor:v56];
+      trailingAnchor3 = [(LPLinkView *)v4->_linkView trailingAnchor];
+      trailingAnchor4 = [(UIView *)v4->_linkViewContainer trailingAnchor];
+      v29 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
       v76[2] = v29;
-      v30 = [(UIView *)v4->_linkViewContainer heightAnchor];
-      v31 = [(LPLinkView *)v4->_linkView widthAnchor];
-      v32 = [v30 constraintEqualToAnchor:v31 multiplier:1.0];
+      heightAnchor = [(UIView *)v4->_linkViewContainer heightAnchor];
+      widthAnchor = [(LPLinkView *)v4->_linkView widthAnchor];
+      v32 = [heightAnchor constraintEqualToAnchor:widthAnchor multiplier:1.0];
       v76[3] = v32;
-      v33 = [(LPLinkView *)v4->_linkView heightAnchor];
-      v34 = [(UIView *)v4->_linkViewContainer heightAnchor];
-      v35 = [v33 constraintEqualToAnchor:v34];
+      heightAnchor2 = [(LPLinkView *)v4->_linkView heightAnchor];
+      heightAnchor3 = [(UIView *)v4->_linkViewContainer heightAnchor];
+      v35 = [heightAnchor2 constraintEqualToAnchor:heightAnchor3];
       v76[4] = v35;
       v36 = [MEMORY[0x1E695DEC8] arrayWithObjects:v76 count:5];
       [v58 activateConstraints:v36];
@@ -141,11 +141,11 @@
       v4->_relativeDateLabel = v37;
 
       [(UILabel *)v4->_relativeDateLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-      v39 = [(UILabel *)v4->_relativeDateLabel layer];
-      [v39 setZPosition:1000.0];
+      layer = [(UILabel *)v4->_relativeDateLabel layer];
+      [layer setZPosition:1000.0];
 
-      v40 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-      [(UILabel *)v4->_relativeDateLabel setTextColor:v40];
+      secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+      [(UILabel *)v4->_relativeDateLabel setTextColor:secondaryLabelColor];
 
       v41 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD10]];
       [(UILabel *)v4->_relativeDateLabel setFont:v41];
@@ -153,17 +153,17 @@
       [(SFAttributedRichLinkCell *)v4 _updateUserInterfaceStyle];
       [(UIView *)v4->_linkViewContainer addSubview:v4->_relativeDateLabel];
       v65 = MEMORY[0x1E696ACD8];
-      v68 = [(UIView *)v4->_linkViewContainer bottomAnchor];
-      v42 = [(UILabel *)v4->_relativeDateLabel bottomAnchor];
-      v43 = [v68 constraintEqualToAnchor:v42 constant:12.0];
+      bottomAnchor3 = [(UIView *)v4->_linkViewContainer bottomAnchor];
+      bottomAnchor4 = [(UILabel *)v4->_relativeDateLabel bottomAnchor];
+      v43 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4 constant:12.0];
       v75[0] = v43;
-      v44 = [(UILabel *)v4->_relativeDateLabel leadingAnchor];
-      v45 = [(UIView *)v4->_linkViewContainer leadingAnchor];
-      v46 = [v44 constraintEqualToAnchor:v45 constant:7.0];
+      leadingAnchor5 = [(UILabel *)v4->_relativeDateLabel leadingAnchor];
+      leadingAnchor6 = [(UIView *)v4->_linkViewContainer leadingAnchor];
+      v46 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6 constant:7.0];
       v75[1] = v46;
-      v47 = [(UIView *)v4->_linkViewContainer trailingAnchor];
-      v48 = [(UILabel *)v4->_relativeDateLabel trailingAnchor];
-      v49 = [v47 constraintEqualToAnchor:v48 constant:7.0];
+      trailingAnchor5 = [(UIView *)v4->_linkViewContainer trailingAnchor];
+      trailingAnchor6 = [(UILabel *)v4->_relativeDateLabel trailingAnchor];
+      v49 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6 constant:7.0];
       v75[2] = v49;
       v50 = [MEMORY[0x1E695DEC8] arrayWithObjects:v75 count:3];
       [v65 activateConstraints:v50];
@@ -175,20 +175,20 @@
     v51 = [MEMORY[0x1E695DEC8] arrayWithObjects:v74 count:2];
     v52 = [(SFAttributedRichLinkCell *)v4 registerForTraitChanges:v51 withAction:sel__updateAttributionViewBackground];
 
-    v53 = [(SFStartPageFilledBackgroundCell *)v4 defaultBackgroundConfiguration];
-    [v53 setCornerRadius:20.0];
-    [(SFAttributedRichLinkCell *)v4 setBackgroundConfiguration:v53];
+    defaultBackgroundConfiguration = [(SFStartPageFilledBackgroundCell *)v4 defaultBackgroundConfiguration];
+    [defaultBackgroundConfiguration setCornerRadius:20.0];
+    [(SFAttributedRichLinkCell *)v4 setBackgroundConfiguration:defaultBackgroundConfiguration];
     v54 = v4;
   }
 
   return v4;
 }
 
-- (SFAttributedRichLinkCell)initWithCoder:(id)a3
+- (SFAttributedRichLinkCell)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = SFAttributedRichLinkCell;
-  return [(SFAttributedRichLinkCell *)&v4 initWithCoder:a3];
+  return [(SFAttributedRichLinkCell *)&v4 initWithCoder:coder];
 }
 
 - (void)dealloc
@@ -199,24 +199,24 @@
   [(SFAttributedRichLinkCell *)&v3 dealloc];
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
+  beganCopy = began;
+  eventCopy = event;
   attributionView = self->_attributionView;
-  if (!attributionView || (-[SLAttributionView bounds](attributionView, "bounds"), v10 = v9, v12 = v11, v14 = v13, v16 = v15, [v6 anyObject], v17 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v17, "locationInView:", self->_attributionView), v22.x = v18, v22.y = v19, v23.origin.x = v10, v23.origin.y = v12, v23.size.width = v14, v23.size.height = v16, v20 = CGRectContainsPoint(v23, v22), v17, !v20))
+  if (!attributionView || (-[SLAttributionView bounds](attributionView, "bounds"), v10 = v9, v12 = v11, v14 = v13, v16 = v15, [beganCopy anyObject], v17 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v17, "locationInView:", self->_attributionView), v22.x = v18, v22.y = v19, v23.origin.x = v10, v23.origin.y = v12, v23.size.width = v14, v23.size.height = v16, v20 = CGRectContainsPoint(v23, v22), v17, !v20))
   {
     v21.receiver = self;
     v21.super_class = SFAttributedRichLinkCell;
-    [(SFAttributedRichLinkCell *)&v21 touchesBegan:v6 withEvent:v7];
+    [(SFAttributedRichLinkCell *)&v21 touchesBegan:beganCopy withEvent:eventCopy];
   }
 }
 
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes
 {
   v11.receiver = self;
   v11.super_class = SFAttributedRichLinkCell;
-  v4 = [(SFAttributedRichLinkCell *)&v11 preferredLayoutAttributesFittingAttributes:a3];
+  v4 = [(SFAttributedRichLinkCell *)&v11 preferredLayoutAttributesFittingAttributes:attributes];
   [v4 size];
   v6 = v5;
   if (([MEMORY[0x1E69C8880] is2024SuggestionsEnabled] & 1) == 0)
@@ -224,7 +224,7 @@
     _SFClamp(v6 * -0.002 + 1.15, 0.7, 0.85);
   }
 
-  v7 = [MEMORY[0x1E69C8880] is2024SuggestionsEnabled];
+  is2024SuggestionsEnabled = [MEMORY[0x1E69C8880] is2024SuggestionsEnabled];
   if (([MEMORY[0x1E69C8880] is2024SuggestionsEnabled] & 1) == 0)
   {
     attributionView = self->_attributionView;
@@ -237,7 +237,7 @@
   }
 
   v9 = 176.0;
-  if (!v7)
+  if (!is2024SuggestionsEnabled)
   {
     v9 = v6;
   }
@@ -256,11 +256,11 @@
 
   else
   {
-    v4 = [(SFAttributedRichLinkCell *)self traitCollection];
-    if ([v4 sf_usesVibrantAppearance])
+    traitCollection = [(SFAttributedRichLinkCell *)self traitCollection];
+    if ([traitCollection sf_usesVibrantAppearance])
     {
-      v5 = [v4 sf_backgroundBlurEffect];
-      v3 = v5 == 0;
+      sf_backgroundBlurEffect = [traitCollection sf_backgroundBlurEffect];
+      v3 = sf_backgroundBlurEffect == 0;
     }
 
     else
@@ -274,11 +274,11 @@
   [(SLAttributionView *)attributionView updateBackgroundStyle:v3];
 }
 
-- (void)setMetadata:(id)a3
+- (void)setMetadata:(id)metadata
 {
   v63[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(LPLinkView *)self->_linkView metadata];
+  metadataCopy = metadata;
+  metadata = [(LPLinkView *)self->_linkView metadata];
   v6 = WBSIsEqual();
 
   if ((v6 & 1) == 0)
@@ -287,50 +287,50 @@
     if (![MEMORY[0x1E69C8880] is2024SuggestionsEnabled])
     {
 LABEL_27:
-      [(LPLinkView *)self->_linkView setMetadata:v4];
+      [(LPLinkView *)self->_linkView setMetadata:metadataCopy];
       [(SFAttributedRichLinkCell *)self setNeedsLayout];
       objc_destroyWeak(&location);
       goto LABEL_28;
     }
 
-    v7 = [v4 copy];
+    v7 = [metadataCopy copy];
 
-    v8 = [v7 image];
-    v9 = v8;
-    if (v8)
+    image = [v7 image];
+    v9 = image;
+    if (image)
     {
-      v49 = v8;
+      icon = image;
     }
 
     else
     {
-      v49 = [v7 icon];
+      icon = [v7 icon];
     }
 
-    v10 = [v7 image];
-    v50 = [v10 platformImage];
+    image2 = [v7 image];
+    platformImage = [image2 platformImage];
 
-    v11 = [v7 icon];
-    v12 = [v11 platformImage];
+    icon2 = [v7 icon];
+    platformImage2 = [icon2 platformImage];
 
-    v13 = [MEMORY[0x1E69C9858] sharedManager];
-    v51 = [v13 displayableImageForImage:v50 withRequiredImageSize:{40.0, 40.0}];
+    mEMORY[0x1E69C9858] = [MEMORY[0x1E69C9858] sharedManager];
+    v51 = [mEMORY[0x1E69C9858] displayableImageForImage:platformImage withRequiredImageSize:{40.0, 40.0}];
 
-    if (v51 != v50)
+    if (v51 != platformImage)
     {
       v14 = [objc_alloc(MEMORY[0x1E696EC68]) initWithPlatformImage:v51];
       [v7 setImage:v14];
     }
 
     v15 = +[_SFTouchIconCache _monogramConfiguration];
-    v16 = [v15 backgroundColor];
+    backgroundColor = [v15 backgroundColor];
     v17 = [MEMORY[0x1E69DD1B8] traitCollectionWithUserInterfaceStyle:1];
-    v18 = [v16 resolvedColorWithTraitCollection:v17];
+    v18 = [backgroundColor resolvedColorWithTraitCollection:v17];
 
-    v19 = [v15 backgroundColor];
-    v20 = [MEMORY[0x1E69DD1B8] currentTraitCollection];
-    v21 = [v20 traitCollectionByModifyingTraits:&__block_literal_global_73];
-    v22 = [v19 resolvedColorWithTraitCollection:v21];
+    backgroundColor2 = [v15 backgroundColor];
+    currentTraitCollection = [MEMORY[0x1E69DD1B8] currentTraitCollection];
+    v21 = [currentTraitCollection traitCollectionByModifyingTraits:&__block_literal_global_73];
+    v22 = [backgroundColor2 resolvedColorWithTraitCollection:v21];
 
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
@@ -340,12 +340,12 @@ LABEL_27:
     v57 = v47;
     v48 = v22;
     v58 = v48;
-    v23 = v12;
+    v23 = platformImage2;
     v59 = v23;
     v45 = v15;
     v60 = v45;
-    v4 = v7;
-    v61 = v4;
+    metadataCopy = v7;
+    v61 = metadataCopy;
     v24 = _Block_copy(aBlock);
     if (self->_userInterfaceStyleChangeRegistrationForMetadata)
     {
@@ -356,7 +356,7 @@ LABEL_27:
     if (v25 != v23)
     {
       v26 = [objc_alloc(MEMORY[0x1E696EC68]) initWithPlatformImage:v25];
-      [v4 setIcon:v26];
+      [metadataCopy setIcon:v26];
 
       if (v25)
       {
@@ -367,7 +367,7 @@ LABEL_27:
         v52[2] = __40__SFAttributedRichLinkCell_setMetadata___block_invoke_3;
         v52[3] = &unk_1E721FE28;
         objc_copyWeak(&v55, &location);
-        v53 = v4;
+        v53 = metadataCopy;
         v54 = v24;
         v28 = [(SFAttributedRichLinkCell *)self registerForTraitChanges:v27 withHandler:v52];
         userInterfaceStyleChangeRegistrationForMetadata = self->_userInterfaceStyleChangeRegistrationForMetadata;
@@ -378,15 +378,15 @@ LABEL_27:
     }
 
     [(LPLinkView *)self->_linkView _setOverrideBackgroundColor:0, v45];
-    v30 = [(LPLinkView *)self->_linkView traitOverrides];
+    traitOverrides = [(LPLinkView *)self->_linkView traitOverrides];
     v31 = objc_opt_self();
-    v32 = [v30 containsTrait:v31];
+    v32 = [traitOverrides containsTrait:v31];
 
     if (v32)
     {
-      v33 = [(LPLinkView *)self->_linkView traitOverrides];
+      traitOverrides2 = [(LPLinkView *)self->_linkView traitOverrides];
       v34 = objc_opt_self();
-      [v33 removeTrait:v34];
+      [traitOverrides2 removeTrait:v34];
     }
 
     if (v51 | v25)
@@ -396,15 +396,15 @@ LABEL_27:
         goto LABEL_26;
       }
 
-      v35 = [MEMORY[0x1E69DC888] secondarySystemGroupedBackgroundColor];
-      [(LPLinkView *)self->_linkView _setOverrideBackgroundColor:v35];
+      secondarySystemGroupedBackgroundColor = [MEMORY[0x1E69DC888] secondarySystemGroupedBackgroundColor];
+      [(LPLinkView *)self->_linkView _setOverrideBackgroundColor:secondarySystemGroupedBackgroundColor];
     }
 
     else
     {
-      v36 = [v49 properties];
-      v37 = [v36 dominantColor];
-      v38 = v37 == 0;
+      properties = [icon properties];
+      dominantColor = [properties dominantColor];
+      v38 = dominantColor == 0;
 
       if (v38)
       {
@@ -413,17 +413,17 @@ LABEL_26:
         goto LABEL_27;
       }
 
-      v39 = [v49 properties];
-      v40 = [v39 dominantColor];
-      v41 = [v40 colorWithAlphaComponent:1.0];
+      properties2 = [icon properties];
+      dominantColor2 = [properties2 dominantColor];
+      v41 = [dominantColor2 colorWithAlphaComponent:1.0];
       [(LPLinkView *)self->_linkView _setOverrideBackgroundColor:v41];
 
-      v42 = [(LPLinkView *)self->_linkView _overrideBackgroundColor];
-      LODWORD(v40) = [v42 safari_meetsThresholdForDarkAppearance];
+      _overrideBackgroundColor = [(LPLinkView *)self->_linkView _overrideBackgroundColor];
+      LODWORD(dominantColor2) = [_overrideBackgroundColor safari_meetsThresholdForDarkAppearance];
 
-      v43 = [(LPLinkView *)self->_linkView traitOverrides];
-      v35 = v43;
-      if (v40)
+      traitOverrides3 = [(LPLinkView *)self->_linkView traitOverrides];
+      secondarySystemGroupedBackgroundColor = traitOverrides3;
+      if (dominantColor2)
       {
         v44 = 2;
       }
@@ -433,7 +433,7 @@ LABEL_26:
         v44 = 1;
       }
 
-      [v43 setUserInterfaceStyle:v44];
+      [traitOverrides3 setUserInterfaceStyle:v44];
     }
 
     goto LABEL_26;
@@ -495,29 +495,29 @@ void __40__SFAttributedRichLinkCell_setMetadata___block_invoke_3(uint64_t a1)
   }
 }
 
-- (void)setRelativeDateString:(id)a3
+- (void)setRelativeDateString:(id)string
 {
-  objc_storeStrong(&self->_relativeDateString, a3);
-  v5 = a3;
-  [(UILabel *)self->_relativeDateLabel setText:v5];
+  objc_storeStrong(&self->_relativeDateString, string);
+  stringCopy = string;
+  [(UILabel *)self->_relativeDateLabel setText:stringCopy];
 }
 
-- (void)setAttributionView:(id)a3
+- (void)setAttributionView:(id)view
 {
   v36[3] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [MEMORY[0x1E69C8880] is2024SuggestionsEnabled];
-  if (v5 || !v6)
+  viewCopy = view;
+  is2024SuggestionsEnabled = [MEMORY[0x1E69C8880] is2024SuggestionsEnabled];
+  if (viewCopy || !is2024SuggestionsEnabled)
   {
-    if (!WBSIsEqual() || ([v5 isDescendantOfView:self] & 1) == 0)
+    if (!WBSIsEqual() || ([viewCopy isDescendantOfView:self] & 1) == 0)
     {
-      [v5 removeFromSuperview];
+      [viewCopy removeFromSuperview];
       if ([(SLAttributionView *)self->_attributionView isDescendantOfView:self])
       {
         [(SLAttributionView *)self->_attributionView removeFromSuperview];
       }
 
-      objc_storeStrong(&self->_attributionView, a3);
+      objc_storeStrong(&self->_attributionView, view);
       [(SLAttributionView *)self->_attributionView setBlurEffectGroupName:@"start-page-attribution-view"];
       [(SFAttributedRichLinkCell *)self _updateAttributionViewBackground];
       [(SLAttributionView *)self->_attributionView setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -527,17 +527,17 @@ void __40__SFAttributedRichLinkCell_setMetadata___block_invoke_3(uint64_t a1)
       {
         [(UIView *)self->_linkViewContainer addSubview:self->_attributionView];
         v29 = MEMORY[0x1E696ACD8];
-        v33 = [(UIView *)self->_linkViewContainer bottomAnchor];
-        v31 = [(SLAttributionView *)self->_attributionView bottomAnchor];
-        v9 = [v33 constraintEqualToAnchor:v31 constant:12.0];
+        bottomAnchor = [(UIView *)self->_linkViewContainer bottomAnchor];
+        bottomAnchor2 = [(SLAttributionView *)self->_attributionView bottomAnchor];
+        v9 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:12.0];
         v36[0] = v9;
-        v10 = [(SLAttributionView *)self->_attributionView leadingAnchor];
-        v11 = [(UIView *)self->_linkViewContainer leadingAnchor];
-        v12 = [v10 constraintEqualToAnchor:v11 constant:12.0];
+        leadingAnchor = [(SLAttributionView *)self->_attributionView leadingAnchor];
+        leadingAnchor2 = [(UIView *)self->_linkViewContainer leadingAnchor];
+        v12 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:12.0];
         v36[1] = v12;
-        v13 = [(UIView *)self->_linkViewContainer trailingAnchor];
-        v14 = [(SLAttributionView *)self->_attributionView trailingAnchor];
-        v15 = [v13 constraintEqualToAnchor:v14 constant:12.0];
+        trailingAnchor = [(UIView *)self->_linkViewContainer trailingAnchor];
+        trailingAnchor2 = [(SLAttributionView *)self->_attributionView trailingAnchor];
+        v15 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:12.0];
         v36[2] = v15;
         v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v36 count:3];
         [v29 activateConstraints:v16];
@@ -547,24 +547,24 @@ void __40__SFAttributedRichLinkCell_setMetadata___block_invoke_3(uint64_t a1)
 
       else
       {
-        v17 = [(SFAttributedRichLinkCell *)self contentView];
-        [v17 addSubview:self->_attributionView];
+        contentView = [(SFAttributedRichLinkCell *)self contentView];
+        [contentView addSubview:self->_attributionView];
         v27 = MEMORY[0x1E696ACD8];
-        v34 = [(SLAttributionView *)self->_attributionView topAnchor];
-        v32 = [(UIView *)self->_linkViewContainer bottomAnchor];
-        v30 = [v34 constraintEqualToAnchor:v32 constant:6.0];
+        topAnchor = [(SLAttributionView *)self->_attributionView topAnchor];
+        bottomAnchor3 = [(UIView *)self->_linkViewContainer bottomAnchor];
+        v30 = [topAnchor constraintEqualToAnchor:bottomAnchor3 constant:6.0];
         v35[0] = v30;
-        v28 = [(SLAttributionView *)self->_attributionView bottomAnchor];
-        v26 = [v17 bottomAnchor];
-        v25 = [v28 constraintEqualToAnchor:v26];
+        bottomAnchor4 = [(SLAttributionView *)self->_attributionView bottomAnchor];
+        bottomAnchor5 = [contentView bottomAnchor];
+        v25 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5];
         v35[1] = v25;
-        v18 = [(SLAttributionView *)self->_attributionView leadingAnchor];
-        v19 = [v17 leadingAnchor];
-        v20 = [v18 constraintEqualToAnchor:v19];
+        leadingAnchor3 = [(SLAttributionView *)self->_attributionView leadingAnchor];
+        leadingAnchor4 = [contentView leadingAnchor];
+        v20 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
         v35[2] = v20;
-        v21 = [(SLAttributionView *)self->_attributionView trailingAnchor];
-        v22 = [v17 trailingAnchor];
-        v23 = [v21 constraintEqualToAnchor:v22];
+        trailingAnchor3 = [(SLAttributionView *)self->_attributionView trailingAnchor];
+        trailingAnchor4 = [contentView trailingAnchor];
+        v23 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
         v35[3] = v23;
         v24 = [MEMORY[0x1E695DEC8] arrayWithObjects:v35 count:4];
         [v27 activateConstraints:v24];
@@ -582,12 +582,12 @@ void __40__SFAttributedRichLinkCell_setMetadata___block_invoke_3(uint64_t a1)
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (a6 == &startPageAttributedRichLinkCellKvoEffectiveTraitCollectionKey && [v10 isEqualToString:@"_effectiveTraitCollection"])
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (context == &startPageAttributedRichLinkCellKvoEffectiveTraitCollectionKey && [pathCopy isEqualToString:@"_effectiveTraitCollection"])
   {
     if ([MEMORY[0x1E69C8880] is2024SuggestionsEnabled])
     {
@@ -599,26 +599,26 @@ void __40__SFAttributedRichLinkCell_setMetadata___block_invoke_3(uint64_t a1)
   {
     v13.receiver = self;
     v13.super_class = SFAttributedRichLinkCell;
-    [(SFAttributedRichLinkCell *)&v13 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(SFAttributedRichLinkCell *)&v13 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
 - (void)_updateUserInterfaceStyle
 {
-  v3 = [(LPLinkView *)self->_linkView _effectiveTraitCollection];
-  v4 = [v3 userInterfaceStyle];
+  _effectiveTraitCollection = [(LPLinkView *)self->_linkView _effectiveTraitCollection];
+  userInterfaceStyle = [_effectiveTraitCollection userInterfaceStyle];
 
-  v5 = [(SLAttributionView *)self->_attributionView traitOverrides];
-  [v5 setUserInterfaceStyle:v4];
+  traitOverrides = [(SLAttributionView *)self->_attributionView traitOverrides];
+  [traitOverrides setUserInterfaceStyle:userInterfaceStyle];
 
-  v6 = [(UILabel *)self->_relativeDateLabel traitOverrides];
-  [v6 setUserInterfaceStyle:v4];
+  traitOverrides2 = [(UILabel *)self->_relativeDateLabel traitOverrides];
+  [traitOverrides2 setUserInterfaceStyle:userInterfaceStyle];
 }
 
-- (BOOL)shouldShowContextMenuFromPoint:(CGPoint)a3
+- (BOOL)shouldShowContextMenuFromPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   [(UIView *)self->_linkViewContainer frame];
   v9 = x;
   v10 = y;

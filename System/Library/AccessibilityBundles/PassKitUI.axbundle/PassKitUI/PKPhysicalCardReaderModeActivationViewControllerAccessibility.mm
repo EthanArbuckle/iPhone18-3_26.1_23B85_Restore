@@ -1,18 +1,18 @@
 @interface PKPhysicalCardReaderModeActivationViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)viewDidLoad;
 @end
 
 @implementation PKPhysicalCardReaderModeActivationViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PKPhysicalCardReaderModeActivationViewController" isKindOfClass:@"PKExplanationViewController"];
-  [v3 validateClass:@"PKExplanationViewController" hasInstanceMethod:@"explanationView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PKPhysicalCardReaderModeActivationViewController" hasInstanceMethod:@"viewDidLoad" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"PKExplanationView" hasInstanceMethod:@"bodyTextView" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PKPhysicalCardReaderModeActivationViewController" isKindOfClass:@"PKExplanationViewController"];
+  [validationsCopy validateClass:@"PKExplanationViewController" hasInstanceMethod:@"explanationView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PKPhysicalCardReaderModeActivationViewController" hasInstanceMethod:@"viewDidLoad" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"PKExplanationView" hasInstanceMethod:@"bodyTextView" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

@@ -1,26 +1,26 @@
 @interface VCScreenCaptureManager
-- (BOOL)isPickerClientProcessId:(id)a3;
+- (BOOL)isPickerClientProcessId:(id)id;
 - (VCScreenCaptureManager)init;
-- (id)errorForAttributesError:(id)a3;
-- (id)getErrorDictionaryFromError:(id)a3;
+- (id)errorForAttributesError:(id)error;
+- (id)getErrorDictionaryFromError:(id)error;
 - (id)newCaptureSourceID;
-- (id)newScreenShareWithConfig:(id)a3 pid:(id)a4;
-- (id)screenShareDictionary:(id)a3;
-- (id)startScreenShare:(id)a3;
-- (id)stopScreenShare:(id)a3;
-- (id)stopScreenShareAndNotifyDelegate:(id)a3;
+- (id)newScreenShareWithConfig:(id)config pid:(id)pid;
+- (id)screenShareDictionary:(id)dictionary;
+- (id)startScreenShare:(id)share;
+- (id)stopScreenShare:(id)share;
+- (id)stopScreenShareAndNotifyDelegate:(id)delegate;
 - (id)updateCurrentPickerScreenCapture;
-- (id)updateScreenCapture:(id)a3 withConfig:(id)a4;
+- (id)updateScreenCapture:(id)capture withConfig:(id)config;
 - (void)createPicker;
 - (void)dealloc;
-- (void)endPrivacyAccountingInterval:(id)a3;
+- (void)endPrivacyAccountingInterval:(id)interval;
 - (void)init;
 - (void)invalidatePicker;
 - (void)registerBlocksForService;
-- (void)removePickerClientScreenShare:(id)a3;
-- (void)screenCaptureStartFor:(id)a3 didSucceed:(BOOL)a4 withError:(id)a5;
-- (void)screenCaptureStopFor:(id)a3 didSucceed:(BOOL)a4 withError:(id)a5;
-- (void)startPrivacyAccountingInterval:(id)a3;
+- (void)removePickerClientScreenShare:(id)share;
+- (void)screenCaptureStartFor:(id)for didSucceed:(BOOL)succeed withError:(id)error;
+- (void)screenCaptureStopFor:(id)for didSucceed:(BOOL)succeed withError:(id)error;
+- (void)startPrivacyAccountingInterval:(id)interval;
 @end
 
 @implementation VCScreenCaptureManager
@@ -76,30 +76,30 @@ VCScreenCaptureManager *__VCScreenCaptureManager_SharedInstance_block_invoke()
   [(VCScreenCaptureManager *)&v3 dealloc];
 }
 
-- (id)getErrorDictionaryFromError:(id)a3
+- (id)getErrorDictionaryFromError:(id)error
 {
   v4 = [MEMORY[0x1E696ABC0] AVConferenceServiceError:32000 detailCode:0 description:@"Screen Capture unknown error"];
   v5 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:3];
-  if (a3)
+  if (error)
   {
-    [v5 setObject:objc_msgSend(a3 forKeyedSubscript:{"domain"), @"ERROR_DOMAIN"}];
-    [v5 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInteger:", objc_msgSend(a3, "code")), @"ERROR_CODE"}];
-    v6 = a3;
+    [v5 setObject:objc_msgSend(error forKeyedSubscript:{"domain"), @"ERROR_DOMAIN"}];
+    [v5 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInteger:", objc_msgSend(error, "code")), @"ERROR_CODE"}];
+    errorCopy = error;
   }
 
   else
   {
     [v5 setObject:objc_msgSend(v4 forKeyedSubscript:{"domain"), @"ERROR_DOMAIN"}];
     [v5 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInteger:", objc_msgSend(v4, "code")), @"ERROR_CODE"}];
-    v6 = v4;
+    errorCopy = v4;
   }
 
-  [v5 setObject:objc_msgSend(v6 forKeyedSubscript:{"userInfo"), @"ERROR_USERINFO"}];
+  [v5 setObject:objc_msgSend(errorCopy forKeyedSubscript:{"userInfo"), @"ERROR_USERINFO"}];
 
   return v5;
 }
 
-- (void)screenCaptureStartFor:(id)a3 didSucceed:(BOOL)a4 withError:(id)a5
+- (void)screenCaptureStartFor:(id)for didSucceed:(BOOL)succeed withError:(id)error
 {
   v8 = *MEMORY[0x1E69E9840];
   xpcCommandQueue = self->_xpcCommandQueue;
@@ -107,10 +107,10 @@ VCScreenCaptureManager *__VCScreenCaptureManager_SharedInstance_block_invoke()
   block[1] = 3221225472;
   block[2] = __69__VCScreenCaptureManager_screenCaptureStartFor_didSucceed_withError___block_invoke;
   block[3] = &unk_1E85F5E38;
-  v7 = a4;
+  succeedCopy = succeed;
   block[4] = self;
-  block[5] = a5;
-  block[6] = a3;
+  block[5] = error;
+  block[6] = for;
   dispatch_async(xpcCommandQueue, block);
 }
 
@@ -135,7 +135,7 @@ uint64_t __69__VCScreenCaptureManager_screenCaptureStartFor_didSucceed_withError
   return [+[AVConferenceXPCServer AVConferenceXPCServerSingleton](AVConferenceXPCServer "AVConferenceXPCServerSingleton")];
 }
 
-- (void)screenCaptureStopFor:(id)a3 didSucceed:(BOOL)a4 withError:(id)a5
+- (void)screenCaptureStopFor:(id)for didSucceed:(BOOL)succeed withError:(id)error
 {
   v8 = *MEMORY[0x1E69E9840];
   xpcCommandQueue = self->_xpcCommandQueue;
@@ -143,10 +143,10 @@ uint64_t __69__VCScreenCaptureManager_screenCaptureStartFor_didSucceed_withError
   block[1] = 3221225472;
   block[2] = __68__VCScreenCaptureManager_screenCaptureStopFor_didSucceed_withError___block_invoke;
   block[3] = &unk_1E85F5E38;
-  v7 = a4;
-  block[4] = a5;
+  succeedCopy = succeed;
+  block[4] = error;
   block[5] = self;
-  block[6] = a3;
+  block[6] = for;
   dispatch_async(xpcCommandQueue, block);
 }
 
@@ -189,95 +189,95 @@ void __VCScreenCaptureManager_ScreenShareDidClearScreen_block_invoke(uint64_t a1
   }
 }
 
-- (id)screenShareDictionary:(id)a3
+- (id)screenShareDictionary:(id)dictionary
 {
   v12[13] = *MEMORY[0x1E69E9840];
   v11[0] = @"ScreenCaptureIsWindowed";
-  v12[0] = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(a3, "isWindowed")}];
+  v12[0] = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(dictionary, "isWindowed")}];
   v11[1] = @"ScreenCaptureUUID";
-  if ([a3 selectiveScreenUUID])
+  if ([dictionary selectiveScreenUUID])
   {
-    v4 = [a3 selectiveScreenUUID];
+    selectiveScreenUUID = [dictionary selectiveScreenUUID];
   }
 
   else
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    selectiveScreenUUID = [MEMORY[0x1E695DFB0] null];
   }
 
-  v12[1] = v4;
+  v12[1] = selectiveScreenUUID;
   v11[2] = @"ScreenDisplayID";
-  v12[2] = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(a3, "screenCaptureDisplayID")}];
+  v12[2] = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(dictionary, "screenCaptureDisplayID")}];
   v11[3] = @"ScreenCaptureConfigurationDisplayMode";
-  v12[3] = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(a3, "displayMode")}];
+  v12[3] = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(dictionary, "displayMode")}];
   v11[4] = @"IsCursorCapturedForScreen";
-  v12[4] = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(a3, "isCursorCaptured")}];
+  v12[4] = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(dictionary, "isCursorCaptured")}];
   v11[5] = @"CaptureSourceID";
-  v12[5] = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(a3, "captureSourceID")}];
+  v12[5] = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(dictionary, "captureSourceID")}];
   v11[6] = @"ClientBundleID";
-  if ([a3 clientBundleID])
+  if ([dictionary clientBundleID])
   {
-    v5 = [a3 clientBundleID];
+    clientBundleID = [dictionary clientBundleID];
   }
 
   else
   {
-    v5 = [MEMORY[0x1E695DFB0] null];
+    clientBundleID = [MEMORY[0x1E695DFB0] null];
   }
 
-  v12[6] = v5;
+  v12[6] = clientBundleID;
   v11[7] = @"HasPrivateCaptureEntitlement";
-  v12[7] = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(a3, "privateContentCaptureAllowed")}];
+  v12[7] = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(dictionary, "privateContentCaptureAllowed")}];
   v11[8] = @"CaptureExcludedBundleIDs";
-  if ([a3 excludedApplicationBundleIDs])
+  if ([dictionary excludedApplicationBundleIDs])
   {
-    v6 = [a3 excludedApplicationBundleIDs];
+    excludedApplicationBundleIDs = [dictionary excludedApplicationBundleIDs];
   }
 
   else
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    excludedApplicationBundleIDs = [MEMORY[0x1E695DFB0] null];
   }
 
-  v12[8] = v6;
+  v12[8] = excludedApplicationBundleIDs;
   v11[9] = @"CaptureExcludedAudioPids";
-  if ([a3 excludedAudioPids])
+  if ([dictionary excludedAudioPids])
   {
-    v7 = [a3 excludedAudioPids];
+    excludedAudioPids = [dictionary excludedAudioPids];
   }
 
   else
   {
-    v7 = [MEMORY[0x1E695DFB0] null];
+    excludedAudioPids = [MEMORY[0x1E695DFB0] null];
   }
 
-  v12[9] = v7;
+  v12[9] = excludedAudioPids;
   v11[10] = @"ScreenVirtualDisplayLabel";
-  if ([a3 screenVirtualDisplayLabel])
+  if ([dictionary screenVirtualDisplayLabel])
   {
-    v8 = [a3 screenVirtualDisplayLabel];
+    screenVirtualDisplayLabel = [dictionary screenVirtualDisplayLabel];
   }
 
   else
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    screenVirtualDisplayLabel = [MEMORY[0x1E695DFB0] null];
   }
 
-  v12[10] = v8;
+  v12[10] = screenVirtualDisplayLabel;
   v11[11] = @"AuditTokenData";
-  if ([a3 clientAuditTokenData])
+  if ([dictionary clientAuditTokenData])
   {
-    v9 = [a3 clientAuditTokenData];
+    clientAuditTokenData = [dictionary clientAuditTokenData];
   }
 
   else
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    clientAuditTokenData = [MEMORY[0x1E695DFB0] null];
   }
 
-  v12[11] = v9;
+  v12[11] = clientAuditTokenData;
   v11[12] = @"PdProtectionOptions";
-  v12[12] = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(a3, "pdProtectionOptions")}];
+  v12[12] = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(dictionary, "pdProtectionOptions")}];
   return [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:v11 count:13];
 }
 
@@ -318,11 +318,11 @@ void __VCScreenCaptureManager_ScreenShareDidClearScreen_block_invoke(uint64_t a1
   return v3;
 }
 
-- (id)newScreenShareWithConfig:(id)a3 pid:(id)a4
+- (id)newScreenShareWithConfig:(id)config pid:(id)pid
 {
   v20 = *MEMORY[0x1E69E9840];
-  v7 = [(VCScreenCaptureManager *)self newCaptureSourceID];
-  if (!v7)
+  newCaptureSourceID = [(VCScreenCaptureManager *)self newCaptureSourceID];
+  if (!newCaptureSourceID)
   {
     [VCScreenCaptureManager newScreenShareWithConfig:pid:];
 LABEL_11:
@@ -330,7 +330,7 @@ LABEL_11:
     goto LABEL_8;
   }
 
-  v8 = [[VCScreenShare alloc] initWithConfig:a3 pid:a4 captureSourceID:v7];
+  v8 = [[VCScreenShare alloc] initWithConfig:config pid:pid captureSourceID:newCaptureSourceID];
   ErrorLogLevelForModule = VRTraceGetErrorLogLevelForModule();
   if (!v8)
   {
@@ -357,7 +357,7 @@ LABEL_11:
   }
 
   -[NSMutableDictionary setObject:forKeyedSubscript:](self->_screenShare, "setObject:forKeyedSubscript:", v8, [MEMORY[0x1E696AD98] numberWithInteger:{-[VCScreenShare captureSourceID](v8, "captureSourceID")}]);
-  if ([(VCScreenCaptureManager *)self isPickerClientProcessId:a4])
+  if ([(VCScreenCaptureManager *)self isPickerClientProcessId:pid])
   {
 
     self->_pickerClientScreenShare = v8;
@@ -368,17 +368,17 @@ LABEL_8:
   return v8;
 }
 
-- (void)removePickerClientScreenShare:(id)a3
+- (void)removePickerClientScreenShare:(id)share
 {
   pickerClientScreenShare = self->_pickerClientScreenShare;
-  if (pickerClientScreenShare == a3)
+  if (pickerClientScreenShare == share)
   {
 
     self->_pickerClientScreenShare = 0;
   }
 }
 
-- (id)stopScreenShare:(id)a3
+- (id)stopScreenShare:(id)share
 {
   v22 = *MEMORY[0x1E69E9840];
   if (objc_opt_class() == self)
@@ -396,7 +396,7 @@ LABEL_8:
         *&v18[22] = 1024;
         LODWORD(v19) = 244;
         WORD2(v19) = 2112;
-        *(&v19 + 6) = a3;
+        *(&v19 + 6) = share;
         v8 = " [%s] %s:%d Stopping: %@";
         v9 = v7;
         v10 = 38;
@@ -433,9 +433,9 @@ LABEL_11:
         WORD2(v19) = 2112;
         *(&v19 + 6) = v5;
         HIWORD(v19) = 2048;
-        v20 = self;
+        selfCopy2 = self;
         LOWORD(v21) = 2112;
-        *(&v21 + 2) = a3;
+        *(&v21 + 2) = share;
         v8 = " [%s] %s:%d %@(%p) Stopping: %@";
         v9 = v12;
         v10 = 58;
@@ -491,7 +491,7 @@ LABEL_11:
           WORD2(v19) = 2112;
           *(&v19 + 6) = v14;
           HIWORD(v19) = 2048;
-          v20 = self;
+          selfCopy2 = self;
           LOWORD(v21) = 2112;
           *(&v21 + 2) = v13;
           _os_log_error_impl(&dword_1DB56E000, v16, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Failed to stop, error=%@", v18, 0x3Au);
@@ -500,13 +500,13 @@ LABEL_11:
     }
   }
 
-  [(VCScreenCaptureManager *)self endPrivacyAccountingInterval:a3];
+  [(VCScreenCaptureManager *)self endPrivacyAccountingInterval:share];
 
   self->_screenStream = 0;
   return v13;
 }
 
-- (id)startScreenShare:(id)a3
+- (id)startScreenShare:(id)share
 {
   v22 = *MEMORY[0x1E69E9840];
   if (objc_opt_class() == self)
@@ -524,7 +524,7 @@ LABEL_11:
         *&v18[22] = 1024;
         LODWORD(v19) = 285;
         WORD2(v19) = 2112;
-        *(&v19 + 6) = a3;
+        *(&v19 + 6) = share;
         v8 = " [%s] %s:%d Starting: %@";
         v9 = v7;
         v10 = 38;
@@ -561,9 +561,9 @@ LABEL_11:
         WORD2(v19) = 2112;
         *(&v19 + 6) = v5;
         HIWORD(v19) = 2048;
-        v20 = self;
+        selfCopy2 = self;
         LOWORD(v21) = 2112;
-        *(&v21 + 2) = a3;
+        *(&v21 + 2) = share;
         v8 = " [%s] %s:%d %@(%p) Starting: %@";
         v9 = v12;
         v10 = 58;
@@ -619,7 +619,7 @@ LABEL_11:
           WORD2(v19) = 2112;
           *(&v19 + 6) = v14;
           HIWORD(v19) = 2048;
-          v20 = self;
+          selfCopy2 = self;
           LOWORD(v21) = 2112;
           *(&v21 + 2) = v13;
           _os_log_error_impl(&dword_1DB56E000, v16, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Failed to start, error=%@", v18, 0x3Au);
@@ -628,15 +628,15 @@ LABEL_11:
     }
   }
 
-  [(VCScreenCaptureManager *)self startPrivacyAccountingInterval:a3];
+  [(VCScreenCaptureManager *)self startPrivacyAccountingInterval:share];
   return v13;
 }
 
-- (id)updateScreenCapture:(id)a3 withConfig:(id)a4
+- (id)updateScreenCapture:(id)capture withConfig:(id)config
 {
   v23 = *MEMORY[0x1E69E9840];
-  [a3 updateScreenCaptureWithConfig:a4];
-  -[VCScreenCapturePicker setRepickingAllowed:](self->_picker, "setRepickingAllowed:", [a3 contentRepickingAllowed]);
+  [capture updateScreenCaptureWithConfig:config];
+  -[VCScreenCapturePicker setRepickingAllowed:](self->_picker, "setRepickingAllowed:", [capture contentRepickingAllowed]);
   if (objc_opt_class() == self)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -652,7 +652,7 @@ LABEL_11:
         *&v19[22] = 1024;
         LODWORD(v20) = 303;
         WORD2(v20) = 2112;
-        *(&v20 + 6) = a3;
+        *(&v20 + 6) = capture;
         v9 = " [%s] %s:%d Updating: %@";
         v10 = v8;
         v11 = 38;
@@ -689,9 +689,9 @@ LABEL_11:
         WORD2(v20) = 2112;
         *(&v20 + 6) = v6;
         HIWORD(v20) = 2048;
-        v21 = self;
+        selfCopy2 = self;
         LOWORD(v22) = 2112;
-        *(&v22 + 2) = a3;
+        *(&v22 + 2) = capture;
         v9 = " [%s] %s:%d %@(%p) Updating: %@";
         v10 = v13;
         v11 = 58;
@@ -742,7 +742,7 @@ LABEL_11:
           WORD2(v20) = 2112;
           *(&v20 + 6) = v15;
           HIWORD(v20) = 2048;
-          v21 = self;
+          selfCopy2 = self;
           LOWORD(v22) = 2112;
           *(&v22 + 2) = v14;
           _os_log_error_impl(&dword_1DB56E000, v17, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Update operation returned error=%@", v19, 0x3Au);
@@ -1328,19 +1328,19 @@ uint64_t __50__VCScreenCaptureManager_registerBlocksForService__block_invoke_90(
   return 0;
 }
 
-- (void)startPrivacyAccountingInterval:(id)a3
+- (void)startPrivacyAccountingInterval:(id)interval
 {
-  if ([a3 selectiveScreenUUID])
+  if ([interval selectiveScreenUUID])
   {
     v4 = [MEMORY[0x1E69C5A40] applicationWithType:0 identifier:@"com.apple.facetime"];
-    v5 = [MEMORY[0x1E69C5A38] sharedInstance];
-    self->_accessInterval = [v5 beginIntervalForAccess:{objc_msgSend(MEMORY[0x1E69C5A50], "accessWithAccessor:fromBroadcaster:", v4, v4)}];
+    mEMORY[0x1E69C5A38] = [MEMORY[0x1E69C5A38] sharedInstance];
+    self->_accessInterval = [mEMORY[0x1E69C5A38] beginIntervalForAccess:{objc_msgSend(MEMORY[0x1E69C5A50], "accessWithAccessor:fromBroadcaster:", v4, v4)}];
   }
 }
 
-- (void)endPrivacyAccountingInterval:(id)a3
+- (void)endPrivacyAccountingInterval:(id)interval
 {
-  if ([a3 selectiveScreenUUID])
+  if ([interval selectiveScreenUUID])
   {
     accessInterval = self->_accessInterval;
     if (accessInterval)
@@ -1352,7 +1352,7 @@ uint64_t __50__VCScreenCaptureManager_registerBlocksForService__block_invoke_90(
   }
 }
 
-- (id)errorForAttributesError:(id)a3
+- (id)errorForAttributesError:(id)error
 {
   v32 = *MEMORY[0x1E69E9840];
   if (objc_opt_class() == self)
@@ -1373,7 +1373,7 @@ uint64_t __50__VCScreenCaptureManager_registerBlocksForService__block_invoke_90(
           v24 = 1024;
           v25 = 537;
           v26 = 2112;
-          v27 = a3;
+          errorCopy = error;
           v9 = " [%s] %s:%d error=%@";
           v10 = v7;
           v11 = 38;
@@ -1417,11 +1417,11 @@ LABEL_13:
           v24 = 1024;
           v25 = 537;
           v26 = 2112;
-          v27 = v5;
+          errorCopy = v5;
           v28 = 2048;
-          v29 = self;
+          selfCopy2 = self;
           v30 = 2112;
-          v31 = a3;
+          errorCopy3 = error;
           v9 = " [%s] %s:%d %@(%p) error=%@";
           v10 = v13;
           v11 = 58;
@@ -1438,22 +1438,22 @@ LABEL_13:
         v24 = 1024;
         v25 = 537;
         v26 = 2112;
-        v27 = v5;
+        errorCopy = v5;
         v28 = 2048;
-        v29 = self;
+        selfCopy2 = self;
         v30 = 2112;
-        v31 = a3;
+        errorCopy3 = error;
         _os_log_debug_impl(&dword_1DB56E000, v13, OS_LOG_TYPE_DEBUG, " [%s] %s:%d %@(%p) error=%@", buf, 0x3Au);
       }
     }
   }
 
   v18[0] = @"vcScreenCaptureAttributesErrorDomain";
-  v19[0] = [a3 domain];
+  v19[0] = [error domain];
   v18[1] = @"vcScreenCaptureAttributesErrorCode";
-  v19[1] = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(a3, "code")}];
+  v19[1] = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(error, "code")}];
   v18[2] = @"vcScreenCaptureAttributesErrorUserInfo";
-  v19[2] = [a3 userInfo];
+  v19[2] = [error userInfo];
   v16 = @"vcScreenCaptureAttributesError";
   v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v19 forKeys:v18 count:3];
   return [MEMORY[0x1E695DF20] dictionaryWithObjects:&v17 forKeys:&v16 count:1];
@@ -1493,7 +1493,7 @@ LABEL_13:
     v23 = 2048;
     v24 = contentFilter;
     v25 = 2112;
-    v26 = pickerClientScreenShare;
+    selfCopy = pickerClientScreenShare;
     v27 = 2112;
     v28 = v3;
     v9 = " [%s] %s:%d failed to update content filter=%p on screenshare=%@ with error=%@";
@@ -1531,7 +1531,7 @@ LABEL_13:
       v23 = 2112;
       v24 = v4;
       v25 = 2048;
-      v26 = self;
+      selfCopy = self;
       v27 = 2048;
       v28 = v15;
       v29 = 2112;
@@ -1548,11 +1548,11 @@ LABEL_13:
   return v3;
 }
 
-- (BOOL)isPickerClientProcessId:(id)a3
+- (BOOL)isPickerClientProcessId:(id)id
 {
   v8 = *MEMORY[0x1E69E9840];
   memset(__b, 170, sizeof(__b));
-  v4 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithBytes:__b length:proc_pidpath(objc_msgSend(a3 encoding:{"intValue"), __b, 0x1000u), 4}];
+  v4 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithBytes:__b length:proc_pidpath(objc_msgSend(id encoding:{"intValue"), __b, 0x1000u), 4}];
   if (v4 && [MEMORY[0x1E695DFF8] fileURLWithPath:v4])
   {
     if ([@"callservicesd" isEqualToString:{objc_msgSend(v4, "lastPathComponent")}])
@@ -1574,7 +1574,7 @@ LABEL_13:
   return v5;
 }
 
-- (id)stopScreenShareAndNotifyDelegate:(id)a3
+- (id)stopScreenShareAndNotifyDelegate:(id)delegate
 {
   *&v39[11] = *MEMORY[0x1E69E9840];
   pickerClientScreenShare = self->_pickerClientScreenShare;
@@ -1647,7 +1647,7 @@ LABEL_12:
   v16 = [(VCScreenCaptureManager *)self stopScreenShare:pickerClientScreenShare, *v34, *&v34[16]];
   if (v16)
   {
-    v17 = [a3 code] != 32000;
+    v17 = [delegate code] != 32000;
     if (objc_opt_class() == self)
     {
       if (VRTraceGetErrorLogLevelForModule() >= 3)
@@ -1706,12 +1706,12 @@ LABEL_12:
     v17 = 1;
   }
 
-  if (!a3)
+  if (!delegate)
   {
-    a3 = v16;
+    delegate = v16;
   }
 
-  [(VCScreenCaptureManager *)self screenCaptureStopFor:pickerClientScreenShare didSucceed:v17 withError:a3];
+  [(VCScreenCaptureManager *)self screenCaptureStopFor:pickerClientScreenShare didSucceed:v17 withError:delegate];
   if (objc_opt_class() == self)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -1729,7 +1729,7 @@ LABEL_12:
         v36 = v26;
         *v37 = v17;
         *&v37[4] = 2112;
-        *&v37[6] = a3;
+        *&v37[6] = delegate;
         v27 = " [%s] %s:%d didSucceed=%hhd error=%@";
         v28 = v25;
         v29 = 44;
@@ -1770,7 +1770,7 @@ LABEL_37:
         v38 = v32;
         *v39 = v17;
         v39[2] = 2112;
-        *&v39[3] = a3;
+        *&v39[3] = delegate;
         v27 = " [%s] %s:%d %@(%p) didSucceed=%hhd error=%@";
         v28 = v31;
         v29 = 64;

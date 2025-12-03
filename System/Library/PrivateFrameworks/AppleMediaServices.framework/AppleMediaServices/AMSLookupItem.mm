@@ -1,6 +1,6 @@
 @interface AMSLookupItem
-- (AMSLookupItem)initWithCoder:(id)a3;
-- (AMSLookupItem)initWithLookupDictionary:(id)a3;
+- (AMSLookupItem)initWithCoder:(id)coder;
+- (AMSLookupItem)initWithLookupDictionary:(id)dictionary;
 - (BOOL)isPOIBased;
 - (NSArray)artwork;
 - (NSArray)categoryNames;
@@ -14,16 +14,16 @@
 - (NSURL)productPageURL;
 - (float)userRating;
 - (float)userRatingForCurrentVersion;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (int64_t)numberOfUserRatings;
 - (int64_t)numberOfUserRatingsForCurrentVersion;
 @end
 
 @implementation AMSLookupItem
 
-- (AMSLookupItem)initWithLookupDictionary:(id)a3
+- (AMSLookupItem)initWithLookupDictionary:(id)dictionary
 {
-  v5 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -33,19 +33,19 @@
     v7 = v6;
     if (v6)
     {
-      objc_storeStrong(&v6->_itemDictionary, a3);
+      objc_storeStrong(&v6->_itemDictionary, dictionary);
     }
 
     self = v7;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 - (NSString)artistName
@@ -68,7 +68,7 @@
 - (NSArray)artwork
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v4 = [(NSDictionary *)self->_itemDictionary objectForKey:@"artwork"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -116,7 +116,7 @@
           v12 = [[AMSLookupItemArtwork alloc] initWithArtworkDictionary:v11];
           if (v12)
           {
-            [v3 addObject:v12];
+            [array addObject:v12];
           }
         }
       }
@@ -127,7 +127,7 @@
     while (v8);
   }
 
-  return v3;
+  return array;
 }
 
 - (NSString)bundleIdentifier
@@ -186,15 +186,15 @@
   v2 = [(NSDictionary *)self->_itemDictionary objectForKey:@"poiBased"];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v3 = 0;
+    bOOLValue = 0;
   }
 
-  return v3;
+  return bOOLValue;
 }
 
 - (NSString)itemKind
@@ -256,15 +256,15 @@ LABEL_7:
 
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 integerValue];
+    integerValue = [v3 integerValue];
   }
 
   else
   {
-    v4 = 0;
+    integerValue = 0;
   }
 
-  return v4;
+  return integerValue;
 }
 
 - (int64_t)numberOfUserRatingsForCurrentVersion
@@ -283,15 +283,15 @@ LABEL_7:
 
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 integerValue];
+    integerValue = [v3 integerValue];
   }
 
   else
   {
-    v4 = 0;
+    integerValue = 0;
   }
 
-  return v4;
+  return integerValue;
 }
 
 - (NSString)offerName
@@ -426,7 +426,7 @@ LABEL_7:
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   v5 = [(NSDictionary *)self->_itemDictionary copy];
@@ -436,15 +436,15 @@ LABEL_7:
   return v4;
 }
 
-- (AMSLookupItem)initWithCoder:(id)a3
+- (AMSLookupItem)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = AMSLookupItem;
   v5 = [(AMSLookupItem *)&v10 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectForKey:@"AMSEncodingDictionary"];
+    v6 = [coderCopy decodeObjectForKey:@"AMSEncodingDictionary"];
     v7 = [v6 copy];
     itemDictionary = v5->_itemDictionary;
     v5->_itemDictionary = v7;

@@ -1,13 +1,13 @@
 @interface PILevelsLuminanceAutoCalculator
-- (id)calculateSettingsForImageHistogram:(id)a3;
+- (id)calculateSettingsForImageHistogram:(id)histogram;
 @end
 
 @implementation PILevelsLuminanceAutoCalculator
 
-- (id)calculateSettingsForImageHistogram:(id)a3
+- (id)calculateSettingsForImageHistogram:(id)histogram
 {
-  v4 = [a3 luminance];
-  v5 = [(PILevelsAutoCalculator *)self calculateSettingsForSingleChannelHistogram:v4 suffix:@"RGB"];
+  luminance = [histogram luminance];
+  v5 = [(PILevelsAutoCalculator *)self calculateSettingsForSingleChannelHistogram:luminance suffix:@"RGB"];
 
   return v5;
 }

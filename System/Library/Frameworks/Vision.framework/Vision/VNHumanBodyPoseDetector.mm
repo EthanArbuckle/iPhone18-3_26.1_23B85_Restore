@@ -1,27 +1,27 @@
 @interface VNHumanBodyPoseDetector
 + (id)configurationOptionKeysForDetectorKey;
-+ (id)supportedComputeStageDevicesForOptions:(id)a3 error:(id *)a4;
-- (BOOL)canBehaveAsDetectorOfClass:(Class)a3 withConfiguration:(id)a4;
-- (BOOL)completeInitializationForSession:(id)a3 error:(id *)a4;
-- (BOOL)shouldBeReplacedByDetectorOfClass:(Class)a3 withConfiguration:(id)a4;
-- (id)_vcpRequestRevisionForOptions:(id)a3;
-- (id)vcpPoseRequestSetupOptionsForDetectorOptions:(id)a3 error:(id *)a4;
++ (id)supportedComputeStageDevicesForOptions:(id)options error:(id *)error;
+- (BOOL)canBehaveAsDetectorOfClass:(Class)class withConfiguration:(id)configuration;
+- (BOOL)completeInitializationForSession:(id)session error:(id *)error;
+- (BOOL)shouldBeReplacedByDetectorOfClass:(Class)class withConfiguration:(id)configuration;
+- (id)_vcpRequestRevisionForOptions:(id)options;
+- (id)vcpPoseRequestSetupOptionsForDetectorOptions:(id)options error:(id *)error;
 @end
 
 @implementation VNHumanBodyPoseDetector
 
-+ (id)supportedComputeStageDevicesForOptions:(id)a3 error:(id *)a4
++ (id)supportedComputeStageDevicesForOptions:(id)options error:(id *)error
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [VNValidationUtilities originatingRequestSpecifierInOptions:v5 error:a4];
+  optionsCopy = options;
+  v6 = [VNValidationUtilities originatingRequestSpecifierInOptions:optionsCopy error:error];
   if (!v6)
   {
     goto LABEL_13;
   }
 
   v7 = [v6 specifiesRequestClass:objc_opt_class()];
-  if (a4)
+  if (error)
   {
     v8 = v7;
   }
@@ -33,11 +33,11 @@
 
   if ((v8 & 1) == 0)
   {
-    *a4 = [VNError errorForUnsupportedRequestSpecifier:v6];
+    *error = [VNError errorForUnsupportedRequestSpecifier:v6];
   }
 
-  v9 = [v6 requestRevision];
-  if (v9 == 1)
+  requestRevision = [v6 requestRevision];
+  if (requestRevision == 1)
   {
     v16 = @"VNComputeStageMain";
     v12 = +[VNComputeDeviceUtilities allComputeDevices];
@@ -47,7 +47,7 @@
     goto LABEL_14;
   }
 
-  if (v9 == 3737841664)
+  if (requestRevision == 3737841664)
   {
     v14 = @"VNComputeStageMain";
     v10 = +[VNComputeDeviceUtilities allNeuralEngineComputeDevices];
@@ -57,10 +57,10 @@
     goto LABEL_14;
   }
 
-  if (a4)
+  if (error)
   {
     [VNError errorForUnsupportedRequestSpecifier:v6];
-    *a4 = v11 = 0;
+    *error = v11 = 0;
   }
 
   else
@@ -80,7 +80,7 @@ LABEL_14:
   block[1] = 3221225472;
   block[2] = __64__VNHumanBodyPoseDetector_configurationOptionKeysForDetectorKey__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (+[VNHumanBodyPoseDetector configurationOptionKeysForDetectorKey]::onceToken != -1)
   {
     dispatch_once(&+[VNHumanBodyPoseDetector configurationOptionKeysForDetectorKey]::onceToken, block);
@@ -103,11 +103,11 @@ void __64__VNHumanBodyPoseDetector_configurationOptionKeysForDetectorKey__block_
   +[VNHumanBodyPoseDetector configurationOptionKeysForDetectorKey]::configurationOptionKeys = v3;
 }
 
-- (id)_vcpRequestRevisionForOptions:(id)a3
+- (id)_vcpRequestRevisionForOptions:(id)options
 {
   v7 = 1;
   v6 = 0;
-  v3 = [VNValidationUtilities getBOOLValue:&v7 forKey:@"VNHumanBodyPoseDetectorProcessOption_HolisticDetection" inOptions:a3 withDefaultValue:1 error:&v6];
+  v3 = [VNValidationUtilities getBOOLValue:&v7 forKey:@"VNHumanBodyPoseDetectorProcessOption_HolisticDetection" inOptions:options withDefaultValue:1 error:&v6];
   v4 = &unk_1F19C14F8;
   if (v7)
   {
@@ -125,39 +125,39 @@ void __64__VNHumanBodyPoseDetector_configurationOptionKeysForDetectorKey__block_
   }
 }
 
-- (id)vcpPoseRequestSetupOptionsForDetectorOptions:(id)a3 error:(id *)a4
+- (id)vcpPoseRequestSetupOptionsForDetectorOptions:(id)options error:(id *)error
 {
-  v6 = a3;
+  optionsCopy = options;
   v15.receiver = self;
   v15.super_class = VNHumanBodyPoseDetector;
-  v7 = [(VNHumanPoseDetector *)&v15 vcpPoseRequestSetupOptionsForDetectorOptions:v6 error:a4];
+  v7 = [(VNHumanPoseDetector *)&v15 vcpPoseRequestSetupOptionsForDetectorOptions:optionsCopy error:error];
   if (!v7)
   {
     v13 = 0;
     goto LABEL_13;
   }
 
-  v8 = [VNValidationUtilities originatingRequestSpecifierInOptions:v6 specifyingRequestClass:objc_opt_class() error:a4];
+  v8 = [VNValidationUtilities originatingRequestSpecifierInOptions:optionsCopy specifyingRequestClass:objc_opt_class() error:error];
   v9 = v8;
   if (!v8)
   {
     goto LABEL_11;
   }
 
-  v10 = [v8 requestRevision];
-  if (v10 == 1)
+  requestRevision = [v8 requestRevision];
+  if (requestRevision == 1)
   {
     v11 = getVCPRequestRevisionPropertyKey();
     [v7 setObject:&unk_1F19C1510 forKeyedSubscript:v11];
     goto LABEL_8;
   }
 
-  if (v10 != 3737841664)
+  if (requestRevision != 3737841664)
   {
-    if (a4)
+    if (error)
     {
       [VNError errorForUnsupportedRequestSpecifier:v9];
-      *a4 = v13 = 0;
+      *error = v13 = 0;
       goto LABEL_12;
     }
 
@@ -166,7 +166,7 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v11 = [(VNHumanBodyPoseDetector *)self _vcpRequestRevisionForOptions:v6];
+  v11 = [(VNHumanBodyPoseDetector *)self _vcpRequestRevisionForOptions:optionsCopy];
   v12 = getVCPRequestRevisionPropertyKey();
   [v7 setObject:v11 forKeyedSubscript:v12];
 
@@ -179,13 +179,13 @@ LABEL_13:
   return v13;
 }
 
-- (BOOL)shouldBeReplacedByDetectorOfClass:(Class)a3 withConfiguration:(id)a4
+- (BOOL)shouldBeReplacedByDetectorOfClass:(Class)class withConfiguration:(id)configuration
 {
-  v6 = a4;
-  v7 = [(VNDetector *)self configurationOptions];
-  v8 = [(VNHumanBodyPoseDetector *)self _vcpRequestRevisionForOptions:v7];
+  configurationCopy = configuration;
+  configurationOptions = [(VNDetector *)self configurationOptions];
+  v8 = [(VNHumanBodyPoseDetector *)self _vcpRequestRevisionForOptions:configurationOptions];
 
-  v9 = [(VNHumanBodyPoseDetector *)self _vcpRequestRevisionForOptions:v6];
+  v9 = [(VNHumanBodyPoseDetector *)self _vcpRequestRevisionForOptions:configurationCopy];
   if ([v8 isEqualToNumber:&unk_1F19C14F8] && (objc_msgSend(v9, "isEqualToNumber:", &unk_1F19C14E0) & 1) != 0)
   {
     v10 = 1;
@@ -195,24 +195,24 @@ LABEL_13:
   {
     v12.receiver = self;
     v12.super_class = VNHumanBodyPoseDetector;
-    v10 = [(VNDetector *)&v12 shouldBeReplacedByDetectorOfClass:a3 withConfiguration:v6];
+    v10 = [(VNDetector *)&v12 shouldBeReplacedByDetectorOfClass:class withConfiguration:configurationCopy];
   }
 
   return v10;
 }
 
-- (BOOL)canBehaveAsDetectorOfClass:(Class)a3 withConfiguration:(id)a4
+- (BOOL)canBehaveAsDetectorOfClass:(Class)class withConfiguration:(id)configuration
 {
-  v6 = a4;
-  v7 = [(VNDetector *)self configurationOptions];
-  v8 = [(VNHumanBodyPoseDetector *)self _vcpRequestRevisionForOptions:v7];
+  configurationCopy = configuration;
+  configurationOptions = [(VNDetector *)self configurationOptions];
+  v8 = [(VNHumanBodyPoseDetector *)self _vcpRequestRevisionForOptions:configurationOptions];
 
-  v9 = [(VNHumanBodyPoseDetector *)self _vcpRequestRevisionForOptions:v6];
+  v9 = [(VNHumanBodyPoseDetector *)self _vcpRequestRevisionForOptions:configurationCopy];
   if ([v8 isEqualToNumber:v9])
   {
     v12.receiver = self;
     v12.super_class = VNHumanBodyPoseDetector;
-    v10 = [(VNDetector *)&v12 canBehaveAsDetectorOfClass:a3 withConfiguration:v6];
+    v10 = [(VNDetector *)&v12 canBehaveAsDetectorOfClass:class withConfiguration:configurationCopy];
   }
 
   else
@@ -223,15 +223,15 @@ LABEL_13:
   return v10;
 }
 
-- (BOOL)completeInitializationForSession:(id)a3 error:(id *)a4
+- (BOOL)completeInitializationForSession:(id)session error:(id *)error
 {
-  v6 = a3;
+  sessionCopy = session;
   v15.receiver = self;
   v15.super_class = VNHumanBodyPoseDetector;
-  if ([(VNDetector *)&v15 completeInitializationForSession:v6 error:a4])
+  if ([(VNDetector *)&v15 completeInitializationForSession:sessionCopy error:error])
   {
-    v7 = [(VNDetector *)self configurationOptions];
-    v8 = [(VNHumanBodyPoseDetector *)self vcpPoseRequestSetupOptionsForDetectorOptions:v7 error:a4];
+    configurationOptions = [(VNDetector *)self configurationOptions];
+    v8 = [(VNHumanBodyPoseDetector *)self vcpPoseRequestSetupOptionsForDetectorOptions:configurationOptions error:error];
     if (v8)
     {
       v17 = 0;
@@ -264,10 +264,10 @@ LABEL_11:
         goto LABEL_12;
       }
 
-      if (a4)
+      if (error)
       {
         [VNError errorForInternalErrorWithLocalizedDescription:@"Unable to setup request in VNDetectHumanBodyPoseRequest"];
-        *a4 = v13 = 0;
+        *error = v13 = 0;
         goto LABEL_11;
       }
     }

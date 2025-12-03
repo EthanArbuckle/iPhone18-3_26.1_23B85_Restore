@@ -2,19 +2,19 @@
 - (PSSpecifier)pickerGroupSpecifier;
 - (PSSpecifier)pickerSpecifier;
 - (SCATTapBehaviourController)init;
-- (double)valueForSpecifier:(id)a3;
+- (double)valueForSpecifier:(id)specifier;
 - (id)specifiers;
-- (id)stringValueForSpecifier:(id)a3;
+- (id)stringValueForSpecifier:(id)specifier;
 - (void)_updateSpecifierVisibility;
-- (void)selectBehavior:(int64_t)a3;
-- (void)selectSpecifierWithBehavior:(int64_t)a3;
-- (void)showPicker:(BOOL)a3 animated:(BOOL)a4;
-- (void)specifier:(id)a3 setValue:(double)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
-- (void)updateFooterTextWithBehavior:(int64_t)a3 animated:(BOOL)a4;
+- (void)selectBehavior:(int64_t)behavior;
+- (void)selectSpecifierWithBehavior:(int64_t)behavior;
+- (void)showPicker:(BOOL)picker animated:(BOOL)animated;
+- (void)specifier:(id)specifier setValue:(double)value;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
+- (void)updateFooterTextWithBehavior:(int64_t)behavior animated:(BOOL)animated;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)willBecomeActive;
 - (void)willResignActive;
 @end
@@ -49,28 +49,28 @@
   v6.receiver = self;
   v6.super_class = SCATTapBehaviourController;
   [(SCATTapBehaviourController *)&v6 viewDidLoad];
-  v3 = [(SCATTapBehaviourController *)self table];
+  table = [(SCATTapBehaviourController *)self table];
   v4 = objc_opt_class();
   v5 = +[AXUISettingsEditableTableCellWithStepper cellReuseIdentifier];
-  [v3 registerClass:v4 forCellReuseIdentifier:v5];
+  [table registerClass:v4 forCellReuseIdentifier:v5];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = SCATTapBehaviourController;
-  [(SCATTapBehaviourController *)&v4 viewWillAppear:a3];
+  [(SCATTapBehaviourController *)&v4 viewWillAppear:appear];
   [(SCATTapBehaviourController *)self _updateSpecifierVisibility];
 }
 
 - (void)_updateSpecifierVisibility
 {
   v3 = +[AXSettings sharedInstance];
-  v4 = [v3 switchControlTapBehavior];
+  switchControlTapBehavior = [v3 switchControlTapBehavior];
 
-  [(SCATTapBehaviourController *)self selectSpecifierWithBehavior:v4];
+  [(SCATTapBehaviourController *)self selectSpecifierWithBehavior:switchControlTapBehavior];
 
-  [(SCATTapBehaviourController *)self updateFooterTextWithBehavior:v4 animated:0];
+  [(SCATTapBehaviourController *)self updateFooterTextWithBehavior:switchControlTapBehavior animated:0];
 }
 
 - (void)willBecomeActive
@@ -89,14 +89,14 @@
   [(SCATTapBehaviourController *)self showPicker:0 animated:0];
 }
 
-- (void)selectSpecifierWithBehavior:(int64_t)a3
+- (void)selectSpecifierWithBehavior:(int64_t)behavior
 {
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(SCATTapBehaviourController *)self specifiers];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  specifiers = [(SCATTapBehaviourController *)self specifiers];
+  v6 = [specifiers countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -107,18 +107,18 @@
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(specifiers);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
         v11 = [v10 objectForKeyedSubscript:@"SCATBehaviorKey"];
         v12 = v11;
-        if (v11 && [v11 integerValue] == a3)
+        if (v11 && [v11 integerValue] == behavior)
         {
           v13 = [(SCATTapBehaviourController *)self indexPathForSpecifier:v10];
           [(SCATTapBehaviourController *)self updateTableCheckedSelection:v13];
 
-          if (a3 == 1)
+          if (behavior == 1)
           {
             [(SCATTapBehaviourController *)self showPicker:1 animated:0];
           }
@@ -127,7 +127,7 @@
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [specifiers countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v7)
       {
         continue;
@@ -140,53 +140,53 @@
 LABEL_14:
 }
 
-- (void)selectBehavior:(int64_t)a3
+- (void)selectBehavior:(int64_t)behavior
 {
   v4 = +[AXSettings sharedInstance];
-  [v4 setSwitchControlTapBehavior:a3];
+  [v4 setSwitchControlTapBehavior:behavior];
 }
 
-- (void)showPicker:(BOOL)a3 animated:(BOOL)a4
+- (void)showPicker:(BOOL)picker animated:(BOOL)animated
 {
-  if (self->_showingPicker != a3)
+  if (self->_showingPicker != picker)
   {
-    v5 = a4;
-    v6 = a3;
-    self->_showingPicker = a3;
+    animatedCopy = animated;
+    pickerCopy = picker;
+    self->_showingPicker = picker;
     v8 = [(SCATTapBehaviourController *)self specifierForID:@"AlwaysTap"];
     v9 = [(SCATTapBehaviourController *)self indexOfSpecifier:v8];
 
     [(SCATTapBehaviourController *)self pickerGroupSpecifier];
-    if (v6)
+    if (pickerCopy)
       v10 = {;
-      [(SCATTapBehaviourController *)self insertSpecifier:v10 atIndex:v9 + 1 animated:v5];
+      [(SCATTapBehaviourController *)self insertSpecifier:v10 atIndex:v9 + 1 animated:animatedCopy];
 
-      v12 = [(SCATTapBehaviourController *)self pickerSpecifier];
+      pickerSpecifier = [(SCATTapBehaviourController *)self pickerSpecifier];
       [SCATTapBehaviourController insertSpecifier:"insertSpecifier:atIndex:animated:" atIndex:? animated:?];
     }
 
     else
       v11 = {;
-      [(SCATTapBehaviourController *)self removeSpecifier:v11 animated:v5];
+      [(SCATTapBehaviourController *)self removeSpecifier:v11 animated:animatedCopy];
 
-      v12 = [(SCATTapBehaviourController *)self pickerSpecifier];
+      pickerSpecifier = [(SCATTapBehaviourController *)self pickerSpecifier];
       [SCATTapBehaviourController removeSpecifier:"removeSpecifier:animated:" animated:?];
     }
   }
 }
 
-- (void)updateFooterTextWithBehavior:(int64_t)a3 animated:(BOOL)a4
+- (void)updateFooterTextWithBehavior:(int64_t)behavior animated:(BOOL)animated
 {
-  v4 = a4;
-  v7 = [(SCATTapBehaviourController *)self behaviorFooterTextMap];
-  v8 = [NSNumber numberWithInteger:a3];
-  v11 = [v7 objectForKeyedSubscript:v8];
+  animatedCopy = animated;
+  behaviorFooterTextMap = [(SCATTapBehaviourController *)self behaviorFooterTextMap];
+  v8 = [NSNumber numberWithInteger:behavior];
+  v11 = [behaviorFooterTextMap objectForKeyedSubscript:v8];
 
-  v9 = [(SCATTapBehaviourController *)self descriptionGroupSpecifier];
-  [v9 setObject:v11 forKeyedSubscript:PSFooterTextGroupKey];
+  descriptionGroupSpecifier = [(SCATTapBehaviourController *)self descriptionGroupSpecifier];
+  [descriptionGroupSpecifier setObject:v11 forKeyedSubscript:PSFooterTextGroupKey];
 
-  v10 = [(SCATTapBehaviourController *)self descriptionGroupSpecifier];
-  [(SCATTapBehaviourController *)self reloadSpecifier:v10 animated:v4];
+  descriptionGroupSpecifier2 = [(SCATTapBehaviourController *)self descriptionGroupSpecifier];
+  [(SCATTapBehaviourController *)self reloadSpecifier:descriptionGroupSpecifier2 animated:animatedCopy];
 }
 
 - (id)specifiers
@@ -264,41 +264,41 @@ LABEL_14:
   return pickerSpecifier;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v12.receiver = self;
   v12.super_class = SCATTapBehaviourController;
-  v6 = a4;
-  [(SCATTapBehaviourController *)&v12 tableView:a3 didSelectRowAtIndexPath:v6];
+  pathCopy = path;
+  [(SCATTapBehaviourController *)&v12 tableView:view didSelectRowAtIndexPath:pathCopy];
   [(SCATTapBehaviourController *)self beginUpdates:v12.receiver];
-  v7 = [(SCATTapBehaviourController *)self specifierAtIndexPath:v6];
+  v7 = [(SCATTapBehaviourController *)self specifierAtIndexPath:pathCopy];
   v8 = [v7 objectForKeyedSubscript:@"SCATBehaviorKey"];
-  v9 = [v8 integerValue];
+  integerValue = [v8 integerValue];
 
-  [(SCATTapBehaviourController *)self selectBehavior:v9];
+  [(SCATTapBehaviourController *)self selectBehavior:integerValue];
   v10 = [v7 objectForKeyedSubscript:@"SCATShowPickerKey"];
-  v11 = [v10 BOOLValue];
+  bOOLValue = [v10 BOOLValue];
 
-  [(SCATTapBehaviourController *)self showPicker:v11 animated:1];
-  [(SCATTapBehaviourController *)self updateTableCheckedSelection:v6];
+  [(SCATTapBehaviourController *)self showPicker:bOOLValue animated:1];
+  [(SCATTapBehaviourController *)self updateTableCheckedSelection:pathCopy];
 
-  [(SCATTapBehaviourController *)self updateFooterTextWithBehavior:v9 animated:1];
+  [(SCATTapBehaviourController *)self updateFooterTextWithBehavior:integerValue animated:1];
   [(SCATTapBehaviourController *)self endUpdates];
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v10 = [v5 specifier];
-  v6 = [v10 propertyForKey:@"SCATBehaviorKey"];
+  cellCopy = cell;
+  specifier = [cellCopy specifier];
+  v6 = [specifier propertyForKey:@"SCATBehaviorKey"];
   v7 = +[AXSettings sharedInstance];
   v8 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v7 switchControlTapBehavior]);
   v9 = [v6 isEqual:v8];
 
-  [v5 setChecked:v9];
+  [cellCopy setChecked:v9];
 }
 
-- (double)valueForSpecifier:(id)a3
+- (double)valueForSpecifier:(id)specifier
 {
   v3 = +[AXSettings sharedInstance];
   [v3 switchControlAutoTapTimeout];
@@ -307,15 +307,15 @@ LABEL_14:
   return v5;
 }
 
-- (void)specifier:(id)a3 setValue:(double)a4
+- (void)specifier:(id)specifier setValue:(double)value
 {
   v5 = +[AXSettings sharedInstance];
-  [v5 setSwitchControlAutoTapTimeout:a4];
+  [v5 setSwitchControlAutoTapTimeout:value];
 }
 
-- (id)stringValueForSpecifier:(id)a3
+- (id)stringValueForSpecifier:(id)specifier
 {
-  [(SCATTapBehaviourController *)self valueForSpecifier:a3];
+  [(SCATTapBehaviourController *)self valueForSpecifier:specifier];
   v3 = [NSNumber numberWithDouble:?];
   v4 = AXFormatNumberWithOptions();
 

@@ -1,19 +1,19 @@
 @interface TTRSheetViewFactory
-+ (id)ttrSheetView:(id)a3;
++ (id)ttrSheetView:(id)view;
 - (_TtC7ChatKit19TTRSheetViewFactory)init;
 @end
 
 @implementation TTRSheetViewFactory
 
-+ (id)ttrSheetView:(id)a3
++ (id)ttrSheetView:(id)view
 {
   v4 = type metadata accessor for TTRSheetView();
   MEMORY[0x1EEE9AC00](v4 - 8);
   v6 = &v14 - ((v5 + 15) & 0xFFFFFFFFFFFFFFF0);
   MEMORY[0x1EEE9AC00](v7);
   v9 = &v14 - v8;
-  v10 = a3;
-  sub_190A2B948(v10, v9);
+  viewCopy = view;
+  sub_190A2B948(viewCopy, v9);
   objc_allocWithZone(type metadata accessor for TTRSheetViewUIHostingController());
   sub_190A2C12C(v9, v6);
   v11 = sub_190D54B60();

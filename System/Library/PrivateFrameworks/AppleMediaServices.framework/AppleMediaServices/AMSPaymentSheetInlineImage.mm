@@ -1,27 +1,27 @@
 @interface AMSPaymentSheetInlineImage
-+ (id)textEncapsulationForServerValue:(id)a3;
-- (AMSPaymentSheetInlineImage)initWithCoder:(id)a3;
-- (AMSPaymentSheetInlineImage)initWithDictionary:(id)a3;
-- (AMSPaymentSheetInlineImage)initWithURLString:(id)a3;
-- (id)_imageAssetConfigurationForDictionary:(id)a3;
-- (id)_symbolAssetConfigurationForDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (int64_t)_ratingTypeForType:(id)a3;
-- (int64_t)_scaleForString:(id)a3;
-- (void)encodeWithCoder:(id)a3;
++ (id)textEncapsulationForServerValue:(id)value;
+- (AMSPaymentSheetInlineImage)initWithCoder:(id)coder;
+- (AMSPaymentSheetInlineImage)initWithDictionary:(id)dictionary;
+- (AMSPaymentSheetInlineImage)initWithURLString:(id)string;
+- (id)_imageAssetConfigurationForDictionary:(id)dictionary;
+- (id)_symbolAssetConfigurationForDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
+- (int64_t)_ratingTypeForType:(id)type;
+- (int64_t)_scaleForString:(id)string;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AMSPaymentSheetInlineImage
 
-- (AMSPaymentSheetInlineImage)initWithURLString:(id)a3
+- (AMSPaymentSheetInlineImage)initWithURLString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v9.receiver = self;
   v9.super_class = AMSPaymentSheetInlineImage;
   v5 = [(AMSPaymentSheetInlineImage *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [stringCopy copy];
     URLString = v5->_URLString;
     v5->_URLString = v6;
 
@@ -31,17 +31,17 @@
   return v5;
 }
 
-- (AMSPaymentSheetInlineImage)initWithDictionary:(id)a3
+- (AMSPaymentSheetInlineImage)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v19.receiver = self;
   v19.super_class = AMSPaymentSheetInlineImage;
   v5 = [(AMSPaymentSheetInlineImage *)&v19 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"type"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"type"];
     v5->_imageType = [(AMSPaymentSheetInlineImage *)v5 _ratingTypeForType:v6];
-    v7 = [v6 uppercaseString];
+    uppercaseString = [v6 uppercaseString];
     imageType = v5->_imageType;
     if (imageType <= 3)
     {
@@ -49,7 +49,7 @@
       {
         if (imageType == 3)
         {
-          objc_storeStrong(&v5->_region, v7);
+          objc_storeStrong(&v5->_region, uppercaseString);
           goto LABEL_4;
         }
 
@@ -64,13 +64,13 @@ LABEL_14:
       if ((imageType - 4) < 5)
       {
 LABEL_4:
-        v9 = [v4 objectForKeyedSubscript:@"value"];
-        v10 = [v9 uppercaseString];
-        v11 = [v10 copy];
+        v9 = [dictionaryCopy objectForKeyedSubscript:@"value"];
+        uppercaseString2 = [v9 uppercaseString];
+        v11 = [uppercaseString2 copy];
         value = v5->_value;
         v5->_value = v11;
 
-        v13 = [(AMSPaymentSheetInlineImage *)v5 _imageAssetConfigurationForDictionary:v4];
+        v13 = [(AMSPaymentSheetInlineImage *)v5 _imageAssetConfigurationForDictionary:dictionaryCopy];
 LABEL_5:
         localAssetConfiguration = v5->_localAssetConfiguration;
         v5->_localAssetConfiguration = v13;
@@ -83,7 +83,7 @@ LABEL_13:
       {
         if (imageType == 10)
         {
-          v13 = [(AMSPaymentSheetInlineImage *)v5 _symbolAssetConfigurationForDictionary:v4];
+          v13 = [(AMSPaymentSheetInlineImage *)v5 _symbolAssetConfigurationForDictionary:dictionaryCopy];
           goto LABEL_5;
         }
 
@@ -91,9 +91,9 @@ LABEL_13:
       }
     }
 
-    localAssetConfiguration = [v4 objectForKeyedSubscript:@"value"];
-    v15 = [localAssetConfiguration uppercaseString];
-    v16 = [v15 copy];
+    localAssetConfiguration = [dictionaryCopy objectForKeyedSubscript:@"value"];
+    uppercaseString3 = [localAssetConfiguration uppercaseString];
+    v16 = [uppercaseString3 copy];
     v17 = v5->_value;
     v5->_value = v16;
 
@@ -105,17 +105,17 @@ LABEL_15:
   return v5;
 }
 
-+ (id)textEncapsulationForServerValue:(id)a3
++ (id)textEncapsulationForServerValue:(id)value
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  valueCopy = value;
   v4 = @"TV-Y";
-  if (([v3 isEqualToString:@"TV-Y"] & 1) == 0)
+  if (([valueCopy isEqualToString:@"TV-Y"] & 1) == 0)
   {
     v4 = @"TV-Y7";
-    if (([v3 isEqualToString:@"TV-Y7"] & 1) == 0)
+    if (([valueCopy isEqualToString:@"TV-Y7"] & 1) == 0)
     {
-      if ([v3 isEqualToString:@"FV"])
+      if ([valueCopy isEqualToString:@"FV"])
       {
         v4 = @"TV-Y7FV";
       }
@@ -123,28 +123,28 @@ LABEL_15:
       else
       {
         v4 = @"TV-14";
-        if (([v3 isEqualToString:@"TV-14"] & 1) == 0)
+        if (([valueCopy isEqualToString:@"TV-14"] & 1) == 0)
         {
           v4 = @"TV-G";
-          if (([v3 isEqualToString:@"TV-G"] & 1) == 0)
+          if (([valueCopy isEqualToString:@"TV-G"] & 1) == 0)
           {
             v4 = @"TV-PG";
-            if (([v3 isEqualToString:@"TV-PG"] & 1) == 0)
+            if (([valueCopy isEqualToString:@"TV-PG"] & 1) == 0)
             {
               v4 = @"TV-MA";
-              if (([v3 isEqualToString:@"TV-MA"] & 1) == 0)
+              if (([valueCopy isEqualToString:@"TV-MA"] & 1) == 0)
               {
                 v4 = @"D";
-                if (([v3 isEqualToString:@"D"] & 1) == 0)
+                if (([valueCopy isEqualToString:@"D"] & 1) == 0)
                 {
                   v4 = @"L";
-                  if (([v3 isEqualToString:@"L"] & 1) == 0)
+                  if (([valueCopy isEqualToString:@"L"] & 1) == 0)
                   {
                     v4 = @"S";
-                    if (([v3 isEqualToString:@"S"] & 1) == 0)
+                    if (([valueCopy isEqualToString:@"S"] & 1) == 0)
                     {
                       v4 = @"V";
-                      if (([v3 isEqualToString:@"V"] & 1) == 0)
+                      if (([valueCopy isEqualToString:@"V"] & 1) == 0)
                       {
                         v5 = +[AMSLogConfig sharedConfig];
                         if (!v5)
@@ -152,8 +152,8 @@ LABEL_15:
                           v5 = +[AMSLogConfig sharedConfig];
                         }
 
-                        v6 = [v5 OSLogObject];
-                        if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
+                        oSLogObject = [v5 OSLogObject];
+                        if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
                         {
                           v7 = objc_opt_class();
                           v8 = AMSLogKey();
@@ -162,8 +162,8 @@ LABEL_15:
                           v12 = 2114;
                           v13 = v8;
                           v14 = 2112;
-                          v15 = v3;
-                          _os_log_impl(&dword_192869000, v6, OS_LOG_TYPE_INFO, "%{public}@: [%{public}@] Failed to find text encapsulation mapping for: %@", &v10, 0x20u);
+                          v15 = valueCopy;
+                          _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_INFO, "%{public}@: [%{public}@] Failed to find text encapsulation mapping for: %@", &v10, 0x20u);
                         }
 
                         v4 = 0;
@@ -182,22 +182,22 @@ LABEL_15:
   return v4;
 }
 
-- (id)_imageAssetConfigurationForDictionary:(id)a3
+- (id)_imageAssetConfigurationForDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [(AMSPaymentSheetInlineImage *)self _defaultAssetType];
-  v6 = [v4 objectForKeyedSubscript:@"value"];
+  dictionaryCopy = dictionary;
+  _defaultAssetType = [(AMSPaymentSheetInlineImage *)self _defaultAssetType];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"value"];
 
-  v7 = [v6 uppercaseString];
+  uppercaseString = [v6 uppercaseString];
 
-  v8 = [(AMSPaymentSheetInlineImage *)self imageType];
+  imageType = [(AMSPaymentSheetInlineImage *)self imageType];
   v9 = 0;
-  if (v8 <= 5)
+  if (imageType <= 5)
   {
-    if (v8 == 3)
+    if (imageType == 3)
     {
-      v11 = [(AMSPaymentSheetInlineImage *)self region];
-      v12 = [v11 isEqualToString:@"APPS-AUSTRALIA"];
+      region = [(AMSPaymentSheetInlineImage *)self region];
+      v12 = [region isEqualToString:@"APPS-AUSTRALIA"];
 
       if (v12)
       {
@@ -206,8 +206,8 @@ LABEL_15:
 
       else
       {
-        v14 = [(AMSPaymentSheetInlineImage *)self region];
-        v15 = [v14 isEqualToString:@"APPS-BRAZIL"];
+        region2 = [(AMSPaymentSheetInlineImage *)self region];
+        v15 = [region2 isEqualToString:@"APPS-BRAZIL"];
 
         if (v15)
         {
@@ -216,8 +216,8 @@ LABEL_15:
 
         else
         {
-          v16 = [(AMSPaymentSheetInlineImage *)self region];
-          v17 = [v16 isEqualToString:@"APPS-FRANCE"];
+          region3 = [(AMSPaymentSheetInlineImage *)self region];
+          v17 = [region3 isEqualToString:@"APPS-FRANCE"];
 
           if (v17)
           {
@@ -226,8 +226,8 @@ LABEL_15:
 
           else
           {
-            v18 = [(AMSPaymentSheetInlineImage *)self region];
-            v19 = [v18 isEqualToString:@"APPS-KOREA"];
+            region4 = [(AMSPaymentSheetInlineImage *)self region];
+            v19 = [region4 isEqualToString:@"APPS-KOREA"];
 
             v13 = @"Korea";
             if (!v19)
@@ -238,7 +238,7 @@ LABEL_15:
         }
       }
 
-      v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Rating-%@_%@", v13, v7];
+      v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Rating-%@_%@", v13, uppercaseString];
       if (v10)
       {
         goto LABEL_43;
@@ -247,23 +247,23 @@ LABEL_15:
       goto LABEL_60;
     }
 
-    if (v8 != 4)
+    if (imageType != 4)
     {
-      if (v8 != 5)
+      if (imageType != 5)
       {
         goto LABEL_44;
       }
 
-      if ([v7 isEqualToString:@"CLEAN"])
+      if ([uppercaseString isEqualToString:@"CLEAN"])
       {
         v10 = @"Rating-RIAA_Clean";
 LABEL_43:
-        v9 = [[AMSPaymentSheetImageAssetConfiguration alloc] initWithFilename:v10 size:v5 type:*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)];
+        v9 = [[AMSPaymentSheetImageAssetConfiguration alloc] initWithFilename:v10 size:_defaultAssetType type:*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)];
 
         goto LABEL_44;
       }
 
-      if ([v7 isEqualToString:@"EXPLICIT"])
+      if ([uppercaseString isEqualToString:@"EXPLICIT"])
       {
         v10 = @"Rating-RIAA_Explicit";
         goto LABEL_43;
@@ -272,53 +272,53 @@ LABEL_43:
       goto LABEL_60;
     }
 
-    if ([v7 isEqualToString:@"G"])
+    if ([uppercaseString isEqualToString:@"G"])
     {
       v10 = @"Rating-MPAA_G";
       goto LABEL_43;
     }
 
-    if ([v7 isEqualToString:@"GP"])
+    if ([uppercaseString isEqualToString:@"GP"])
     {
       goto LABEL_60;
     }
 
-    if ([v7 isEqualToString:@"PG"])
+    if ([uppercaseString isEqualToString:@"PG"])
     {
       v10 = @"Rating-MPAA_PG";
       goto LABEL_43;
     }
 
-    if ([v7 isEqualToString:@"PG-13"])
+    if ([uppercaseString isEqualToString:@"PG-13"])
     {
       v10 = @"Rating-MPAA_PG13";
       goto LABEL_43;
     }
 
-    if ([v7 isEqualToString:@"M"])
+    if ([uppercaseString isEqualToString:@"M"])
     {
       goto LABEL_60;
     }
 
-    if ([v7 isEqualToString:@"R"])
+    if ([uppercaseString isEqualToString:@"R"])
     {
       v10 = @"Rating-MPAA_R";
       goto LABEL_43;
     }
 
-    if ([v7 isEqualToString:@"NC-17"])
+    if ([uppercaseString isEqualToString:@"NC-17"])
     {
       v10 = @"Rating-MPAA_NC17";
       goto LABEL_43;
     }
 
-    if ([v7 isEqualToString:@"UNRATED"])
+    if ([uppercaseString isEqualToString:@"UNRATED"])
     {
       v10 = @"Rating-MPAA_Unrated";
       goto LABEL_43;
     }
 
-    if ([v7 isEqualToString:@"NR"])
+    if ([uppercaseString isEqualToString:@"NR"])
     {
       v10 = @"Rating-MPAA_NR";
       goto LABEL_43;
@@ -326,67 +326,67 @@ LABEL_43:
 
     v22 = @"X";
 LABEL_103:
-    [v7 isEqualToString:v22];
+    [uppercaseString isEqualToString:v22];
     goto LABEL_60;
   }
 
-  if (v8 == 6)
+  if (imageType == 6)
   {
-    if ([v7 isEqualToString:@"G"])
+    if ([uppercaseString isEqualToString:@"G"])
     {
       v10 = @"Rating-Movie_NZ_G";
       goto LABEL_43;
     }
 
-    if ([v7 isEqualToString:@"PG"])
+    if ([uppercaseString isEqualToString:@"PG"])
     {
       v10 = @"Rating-Movie_NZ_PG";
       goto LABEL_43;
     }
 
-    if ([v7 isEqualToString:@"M"])
+    if ([uppercaseString isEqualToString:@"M"])
     {
       v10 = @"Rating-Movie_NZ_M";
       goto LABEL_43;
     }
 
-    if ([v7 isEqualToString:@"R13"])
+    if ([uppercaseString isEqualToString:@"R13"])
     {
       v10 = @"Rating-Movie_NZ_R13";
       goto LABEL_43;
     }
 
-    if ([v7 isEqualToString:@"R15"])
+    if ([uppercaseString isEqualToString:@"R15"])
     {
       v10 = @"Rating-Movie_NZ_R15";
       goto LABEL_43;
     }
 
-    if ([v7 isEqualToString:@"R16"])
+    if ([uppercaseString isEqualToString:@"R16"])
     {
       v10 = @"Rating-Movie_NZ_R16";
       goto LABEL_43;
     }
 
-    if ([v7 isEqualToString:@"R18"])
+    if ([uppercaseString isEqualToString:@"R18"])
     {
       v10 = @"Rating-Movie_NZ_R18";
       goto LABEL_43;
     }
 
-    if ([v7 isEqualToString:@"RP13"])
+    if ([uppercaseString isEqualToString:@"RP13"])
     {
       v10 = @"Rating-Movie_NZ_RP13";
       goto LABEL_43;
     }
 
-    if ([v7 isEqualToString:@"RP16"])
+    if ([uppercaseString isEqualToString:@"RP16"])
     {
       v10 = @"Rating-Movie_NZ_RP16";
       goto LABEL_43;
     }
 
-    if ([v7 isEqualToString:@"R"])
+    if ([uppercaseString isEqualToString:@"R"])
     {
       v10 = @"Rating-Movie_NZ_R";
       goto LABEL_43;
@@ -394,7 +394,7 @@ LABEL_103:
 
     v21 = @"NOT RATED";
 LABEL_101:
-    if ([v7 isEqualToString:v21])
+    if ([uppercaseString isEqualToString:v21])
     {
       goto LABEL_60;
     }
@@ -403,56 +403,56 @@ LABEL_101:
     goto LABEL_103;
   }
 
-  if (v8 == 7)
+  if (imageType == 7)
   {
-    if ([v7 isEqualToString:@"U"])
+    if ([uppercaseString isEqualToString:@"U"])
     {
       v10 = @"Rating-Movie_UK_U";
       goto LABEL_43;
     }
 
-    if ([v7 isEqualToString:@"UC"])
+    if ([uppercaseString isEqualToString:@"UC"])
     {
       goto LABEL_60;
     }
 
-    if ([v7 isEqualToString:@"PG"])
+    if ([uppercaseString isEqualToString:@"PG"])
     {
       v10 = @"Rating-Movie_UK_PG";
       goto LABEL_43;
     }
 
-    if ([v7 isEqualToString:@"12"])
+    if ([uppercaseString isEqualToString:@"12"])
     {
       v10 = @"Rating-Movie_UK_12";
       goto LABEL_43;
     }
 
-    if ([v7 isEqualToString:@"12A"])
+    if ([uppercaseString isEqualToString:@"12A"])
     {
       v10 = @"Rating-Movie_UK_12A";
       goto LABEL_43;
     }
 
-    if ([v7 isEqualToString:@"15"])
+    if ([uppercaseString isEqualToString:@"15"])
     {
       v10 = @"Rating-Movie_UK_15";
       goto LABEL_43;
     }
 
-    if ([v7 isEqualToString:@"18"])
+    if ([uppercaseString isEqualToString:@"18"])
     {
       v10 = @"Rating-Movie_UK_18";
       goto LABEL_43;
     }
 
-    if ([v7 isEqualToString:@"18R"])
+    if ([uppercaseString isEqualToString:@"18R"])
     {
       v10 = @"Rating-Movie_UK_R18";
       goto LABEL_43;
     }
 
-    if ([v7 isEqualToString:@"E"])
+    if ([uppercaseString isEqualToString:@"E"])
     {
       goto LABEL_60;
     }
@@ -461,72 +461,72 @@ LABEL_101:
     goto LABEL_101;
   }
 
-  if (v8 != 8)
+  if (imageType != 8)
   {
     goto LABEL_44;
   }
 
-  if ([v7 isEqualToString:@"TV-Y"])
+  if ([uppercaseString isEqualToString:@"TV-Y"])
   {
     v10 = @"Rating-TV_US_Y";
     goto LABEL_43;
   }
 
-  if ([v7 isEqualToString:@"TV-Y7"])
+  if ([uppercaseString isEqualToString:@"TV-Y7"])
   {
     v10 = @"Rating-TV_US_Y7";
     goto LABEL_43;
   }
 
-  if ([v7 isEqualToString:@"FV"])
+  if ([uppercaseString isEqualToString:@"FV"])
   {
     v10 = @"Rating-TV_US_Y7FV";
     goto LABEL_43;
   }
 
-  if ([v7 isEqualToString:@"TV-14"])
+  if ([uppercaseString isEqualToString:@"TV-14"])
   {
     v10 = @"Rating-TV_US_14";
     goto LABEL_43;
   }
 
-  if ([v7 isEqualToString:@"TV-G"])
+  if ([uppercaseString isEqualToString:@"TV-G"])
   {
     v10 = @"Rating-TV_US_G";
     goto LABEL_43;
   }
 
-  if ([v7 isEqualToString:@"TV-PG"])
+  if ([uppercaseString isEqualToString:@"TV-PG"])
   {
     v10 = @"Rating-TV_US_PG";
     goto LABEL_43;
   }
 
-  if ([v7 isEqualToString:@"TV-MA"])
+  if ([uppercaseString isEqualToString:@"TV-MA"])
   {
     v10 = @"Rating-TV_US_MA";
     goto LABEL_43;
   }
 
-  if ([v7 isEqualToString:@"D"])
+  if ([uppercaseString isEqualToString:@"D"])
   {
     v10 = @"Rating-TV_US_D";
     goto LABEL_43;
   }
 
-  if ([v7 isEqualToString:@"L"])
+  if ([uppercaseString isEqualToString:@"L"])
   {
     v10 = @"Rating-TV_US_L";
     goto LABEL_43;
   }
 
-  if ([v7 isEqualToString:@"S"])
+  if ([uppercaseString isEqualToString:@"S"])
   {
     v10 = @"Rating-TV_US_S";
     goto LABEL_43;
   }
 
-  if ([v7 isEqualToString:@"V"])
+  if ([uppercaseString isEqualToString:@"V"])
   {
     v10 = @"Rating-TV_US_V";
     goto LABEL_43;
@@ -539,50 +539,50 @@ LABEL_44:
   return v9;
 }
 
-- (int64_t)_ratingTypeForType:(id)a3
+- (int64_t)_ratingTypeForType:(id)type
 {
-  v3 = [a3 uppercaseString];
-  if ([v3 isEqualToString:@"APPS-AUSTRALIA"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"APPS-FRANCE") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"APPS-KOREA") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"APPS-BRAZIL"))
+  uppercaseString = [type uppercaseString];
+  if ([uppercaseString isEqualToString:@"APPS-AUSTRALIA"] & 1) != 0 || (objc_msgSend(uppercaseString, "isEqualToString:", @"APPS-FRANCE") & 1) != 0 || (objc_msgSend(uppercaseString, "isEqualToString:", @"APPS-KOREA") & 1) != 0 || (objc_msgSend(uppercaseString, "isEqualToString:", @"APPS-BRAZIL"))
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"GAMES"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"ITUNESGAMES") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"ITUNES-GAMES"))
+  else if ([uppercaseString isEqualToString:@"GAMES"] & 1) != 0 || (objc_msgSend(uppercaseString, "isEqualToString:", @"ITUNESGAMES") & 1) != 0 || (objc_msgSend(uppercaseString, "isEqualToString:", @"ITUNES-GAMES"))
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"NZ-OFLC"])
+  else if ([uppercaseString isEqualToString:@"NZ-OFLC"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"BBFC"])
+  else if ([uppercaseString isEqualToString:@"BBFC"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"MPAA"])
+  else if ([uppercaseString isEqualToString:@"MPAA"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"RIAA"])
+  else if ([uppercaseString isEqualToString:@"RIAA"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"TV-US"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"US-TV") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"TV"))
+  else if ([uppercaseString isEqualToString:@"TV-US"] & 1) != 0 || (objc_msgSend(uppercaseString, "isEqualToString:", @"US-TV") & 1) != 0 || (objc_msgSend(uppercaseString, "isEqualToString:", @"TV"))
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"PAYMENTTYPE"])
+  else if ([uppercaseString isEqualToString:@"PAYMENTTYPE"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"SYMBOL"])
+  else if ([uppercaseString isEqualToString:@"SYMBOL"])
   {
     v4 = 10;
   }
@@ -595,15 +595,15 @@ LABEL_44:
   return v4;
 }
 
-- (int64_t)_scaleForString:(id)a3
+- (int64_t)_scaleForString:(id)string
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (([v4 isEqualToString:@"small"] & 1) == 0)
+  stringCopy = string;
+  if (([stringCopy isEqualToString:@"small"] & 1) == 0)
   {
-    if (([v4 isEqualToString:@"medium"] & 1) == 0)
+    if (([stringCopy isEqualToString:@"medium"] & 1) == 0)
     {
-      if ([v4 isEqualToString:@"large"])
+      if ([stringCopy isEqualToString:@"large"])
       {
         v5 = 2;
         goto LABEL_28;
@@ -611,16 +611,16 @@ LABEL_44:
 
       v6 = +[AMSUnitTests isRunningUnitTests];
       v7 = +[AMSLogConfig sharedPurchaseConfig];
-      v8 = v7;
+      defaultCenter = v7;
       if (v6)
       {
         if (!v7)
         {
-          v8 = +[AMSLogConfig sharedConfig];
+          defaultCenter = +[AMSLogConfig sharedConfig];
         }
 
-        v9 = [v8 OSLogObject];
-        if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+        oSLogObject = [defaultCenter OSLogObject];
+        if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
         {
           v10 = AMSLogKey();
           v11 = MEMORY[0x1E696AEC0];
@@ -636,34 +636,34 @@ LABEL_44:
           {
             [v11 stringWithFormat:@"%@: ", v12];
           }
-          v14 = ;
-          v21 = AMSHashIfNeeded(v4);
+          selfCopy = ;
+          v21 = AMSHashIfNeeded(stringCopy);
           *buf = 138543618;
-          v25 = v14;
+          v25 = selfCopy;
           v26 = 2114;
           v27 = v21;
-          _os_log_impl(&dword_192869000, v9, OS_LOG_TYPE_ERROR, "%{public}@Unexpected image scale: %{public}@", buf, 0x16u);
+          _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@Unexpected image scale: %{public}@", buf, 0x16u);
           if (v10)
           {
 
-            v14 = self;
+            selfCopy = self;
           }
         }
 
-        v8 = [MEMORY[0x1E696AD88] defaultCenter];
-        v15 = +[AMSLogConfig sharedPurchaseConfig];
-        [v8 postNotificationName:@"com.apple.AppleMediaServicesTests.FaultLogged" object:v15 userInfo:0];
+        defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+        oSLogObject2 = +[AMSLogConfig sharedPurchaseConfig];
+        [defaultCenter postNotificationName:@"com.apple.AppleMediaServicesTests.FaultLogged" object:oSLogObject2 userInfo:0];
       }
 
       else
       {
         if (!v7)
         {
-          v8 = +[AMSLogConfig sharedConfig];
+          defaultCenter = +[AMSLogConfig sharedConfig];
         }
 
-        v15 = [v8 OSLogObject];
-        if (os_log_type_enabled(v15, OS_LOG_TYPE_FAULT))
+        oSLogObject2 = [defaultCenter OSLogObject];
+        if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_FAULT))
         {
           v16 = AMSLogKey();
           v17 = MEMORY[0x1E696AEC0];
@@ -679,17 +679,17 @@ LABEL_44:
           {
             [v17 stringWithFormat:@"%@: ", v18];
           }
-          v20 = ;
-          v22 = AMSHashIfNeeded(v4);
+          selfCopy2 = ;
+          v22 = AMSHashIfNeeded(stringCopy);
           *buf = 138543618;
-          v25 = v20;
+          v25 = selfCopy2;
           v26 = 2114;
           v27 = v22;
-          _os_log_impl(&dword_192869000, v15, OS_LOG_TYPE_FAULT, "%{public}@Unexpected image scale: %{public}@", buf, 0x16u);
+          _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_FAULT, "%{public}@Unexpected image scale: %{public}@", buf, 0x16u);
           if (v16)
           {
 
-            v20 = self;
+            selfCopy2 = self;
           }
         }
       }
@@ -705,10 +705,10 @@ LABEL_28:
   return v5;
 }
 
-- (id)_symbolAssetConfigurationForDictionary:(id)a3
+- (id)_symbolAssetConfigurationForDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"accessibilityText"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"accessibilityText"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -720,7 +720,7 @@ LABEL_28:
     v6 = 0;
   }
 
-  v7 = [v4 objectForKeyedSubscript:@"value"];
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"value"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -732,7 +732,7 @@ LABEL_28:
     v8 = 0;
   }
 
-  v9 = [v4 objectForKeyedSubscript:@"scale"];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"scale"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -758,59 +758,59 @@ LABEL_28:
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[AMSPaymentSheetInlineImage allocWithZone:](AMSPaymentSheetInlineImage init];
   v5->_imageType = [(AMSPaymentSheetInlineImage *)self imageType];
-  v6 = [(AMSPaymentSheetInlineImage *)self URLString];
-  v7 = [v6 copyWithZone:a3];
+  uRLString = [(AMSPaymentSheetInlineImage *)self URLString];
+  v7 = [uRLString copyWithZone:zone];
   URLString = v5->_URLString;
   v5->_URLString = v7;
 
-  v9 = [(AMSPaymentSheetInlineImage *)self value];
-  v10 = [v9 copyWithZone:a3];
+  value = [(AMSPaymentSheetInlineImage *)self value];
+  v10 = [value copyWithZone:zone];
   value = v5->_value;
   v5->_value = v10;
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[AMSPaymentSheetInlineImage imageType](self forKey:{"imageType"), @"imagetype"}];
-  v5 = [(AMSPaymentSheetInlineImage *)self region];
-  [v4 encodeObject:v5 forKey:@"region"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[AMSPaymentSheetInlineImage imageType](self forKey:{"imageType"), @"imagetype"}];
+  region = [(AMSPaymentSheetInlineImage *)self region];
+  [coderCopy encodeObject:region forKey:@"region"];
 
-  v6 = [(AMSPaymentSheetInlineImage *)self URLString];
-  [v4 encodeObject:v6 forKey:@"URLString"];
+  uRLString = [(AMSPaymentSheetInlineImage *)self URLString];
+  [coderCopy encodeObject:uRLString forKey:@"URLString"];
 
-  v7 = [(AMSPaymentSheetInlineImage *)self value];
-  [v4 encodeObject:v7 forKey:@"value"];
+  value = [(AMSPaymentSheetInlineImage *)self value];
+  [coderCopy encodeObject:value forKey:@"value"];
 
-  v8 = [(AMSPaymentSheetInlineImage *)self localAssetConfiguration];
-  [v4 encodeObject:v8 forKey:@"localAssetConfiguration"];
+  localAssetConfiguration = [(AMSPaymentSheetInlineImage *)self localAssetConfiguration];
+  [coderCopy encodeObject:localAssetConfiguration forKey:@"localAssetConfiguration"];
 }
 
-- (AMSPaymentSheetInlineImage)initWithCoder:(id)a3
+- (AMSPaymentSheetInlineImage)initWithCoder:(id)coder
 {
   v19[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v18.receiver = self;
   v18.super_class = AMSPaymentSheetInlineImage;
   v5 = [(AMSPaymentSheetInlineImage *)&v18 init];
   if (v5)
   {
-    v5->_imageType = [v4 decodeIntegerForKey:@"imagetype"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"region"];
+    v5->_imageType = [coderCopy decodeIntegerForKey:@"imagetype"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"region"];
     region = v5->_region;
     v5->_region = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"URLString"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"URLString"];
     URLString = v5->_URLString;
     v5->_URLString = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"value"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"value"];
     value = v5->_value;
     v5->_value = v10;
 
@@ -819,7 +819,7 @@ LABEL_28:
     v19[1] = objc_opt_class();
     v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:2];
     v14 = [v12 setWithArray:v13];
-    v15 = [v4 decodeObjectOfClasses:v14 forKey:@"localAssetConfiguration"];
+    v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"localAssetConfiguration"];
     localAssetConfiguration = v5->_localAssetConfiguration;
     v5->_localAssetConfiguration = v15;
   }

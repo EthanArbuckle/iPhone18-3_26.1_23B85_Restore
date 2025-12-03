@@ -1,20 +1,20 @@
 @interface BWLearnedNRInferenceConfiguration
-- (BWLearnedNRInferenceConfiguration)initWithMetalCommandQueue:(id)a3 sensorConfigurationsByPortType:(id)a4 inferenceType:(int)a5 outputVideoRequirements:(id)a6;
-- (id)outputAttachedMediaKeyForInputDimensions:(id)a3;
+- (BWLearnedNRInferenceConfiguration)initWithMetalCommandQueue:(id)queue sensorConfigurationsByPortType:(id)type inferenceType:(int)inferenceType outputVideoRequirements:(id)requirements;
+- (id)outputAttachedMediaKeyForInputDimensions:(id)dimensions;
 - (void)dealloc;
 @end
 
 @implementation BWLearnedNRInferenceConfiguration
 
-- (BWLearnedNRInferenceConfiguration)initWithMetalCommandQueue:(id)a3 sensorConfigurationsByPortType:(id)a4 inferenceType:(int)a5 outputVideoRequirements:(id)a6
+- (BWLearnedNRInferenceConfiguration)initWithMetalCommandQueue:(id)queue sensorConfigurationsByPortType:(id)type inferenceType:(int)inferenceType outputVideoRequirements:(id)requirements
 {
   v10.receiver = self;
   v10.super_class = BWLearnedNRInferenceConfiguration;
-  v8 = [(BWTiledEspressoInferenceConfiguration *)&v10 initWithInferenceType:*&a5 metalCommandQueue:a3];
+  v8 = [(BWTiledEspressoInferenceConfiguration *)&v10 initWithInferenceType:*&inferenceType metalCommandQueue:queue];
   if (v8)
   {
-    v8->_sensorConfigurationsByPortType = a4;
-    v8->_outputVideoRequirements = a6;
+    v8->_sensorConfigurationsByPortType = type;
+    v8->_outputVideoRequirements = requirements;
   }
 
   return v8;
@@ -27,7 +27,7 @@
   [(BWTiledEspressoInferenceConfiguration *)&v3 dealloc];
 }
 
-- (id)outputAttachedMediaKeyForInputDimensions:(id)a3
+- (id)outputAttachedMediaKeyForInputDimensions:(id)dimensions
 {
   v15 = 0u;
   v16 = 0u;
@@ -39,8 +39,8 @@
   {
     v6 = result;
     v7 = *v14;
-    var0 = a3.var0;
-    v9 = *&a3 >> 32;
+    var0 = dimensions.var0;
+    v9 = *&dimensions >> 32;
     while (2)
     {
       v10 = 0;

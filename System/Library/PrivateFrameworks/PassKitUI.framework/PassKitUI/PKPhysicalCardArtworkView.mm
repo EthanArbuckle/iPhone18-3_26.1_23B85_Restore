@@ -1,18 +1,18 @@
 @interface PKPhysicalCardArtworkView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKPhysicalCardArtworkView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKPhysicalCardArtworkView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setArtworkImage:(id)a3;
-- (void)setNameOnCard:(id)a3;
+- (void)setArtworkImage:(id)image;
+- (void)setNameOnCard:(id)card;
 @end
 
 @implementation PKPhysicalCardArtworkView
 
-- (PKPhysicalCardArtworkView)initWithFrame:(CGRect)a3
+- (PKPhysicalCardArtworkView)initWithFrame:(CGRect)frame
 {
   v15.receiver = self;
   v15.super_class = PKPhysicalCardArtworkView;
-  v3 = [(PKPhysicalCardArtworkView *)&v15 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKPhysicalCardArtworkView *)&v15 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x1E69DCAE0]);
@@ -33,8 +33,8 @@
     [(UILabel *)v10 setFont:v11];
 
     v12 = v3->_nameLabel;
-    v13 = [MEMORY[0x1E69DC888] systemGrayColor];
-    [(UILabel *)v12 setTextColor:v13];
+    systemGrayColor = [MEMORY[0x1E69DC888] systemGrayColor];
+    [(UILabel *)v12 setTextColor:systemGrayColor];
 
     [(UILabel *)v3->_nameLabel setAdjustsFontSizeToFitWidth:1];
     [(UILabel *)v3->_nameLabel setMinimumScaleFactor:0.2];
@@ -45,24 +45,24 @@
   return v3;
 }
 
-- (void)setArtworkImage:(id)a3
+- (void)setArtworkImage:(id)image
 {
-  v5 = a3;
-  if (self->_artworkImage != v5)
+  imageCopy = image;
+  if (self->_artworkImage != imageCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_artworkImage, a3);
+    v6 = imageCopy;
+    objc_storeStrong(&self->_artworkImage, image);
     [(UIImageView *)self->_artworkImageView setImage:self->_artworkImage];
     [(PKPhysicalCardArtworkView *)self setNeedsLayout];
-    v5 = v6;
+    imageCopy = v6;
   }
 }
 
-- (void)setNameOnCard:(id)a3
+- (void)setNameOnCard:(id)card
 {
-  if (self->_nameOnCard != a3)
+  if (self->_nameOnCard != card)
   {
-    v4 = [a3 copy];
+    v4 = [card copy];
     nameOnCard = self->_nameOnCard;
     self->_nameOnCard = v4;
 
@@ -80,14 +80,14 @@
   [(PKPhysicalCardArtworkView *)&v6 layoutSubviews];
   [(PKPhysicalCardArtworkView *)self bounds];
   [(UIImageView *)self->_artworkImageView setFrame:?];
-  v3 = [(UILabel *)self->_nameLabel font];
-  [v3 lineHeight];
+  font = [(UILabel *)self->_nameLabel font];
+  [font lineHeight];
   v5 = v4;
 
   [(UILabel *)self->_nameLabel setFrame:26.0, 110.0, 188.0, v5];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   PKPassViewFrontSize();
   v4 = 300.0 / v3;

@@ -1,16 +1,16 @@
 @interface _UIGameControllerWindowDelegate
-- (BOOL)_gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)_gestureRecognizerShouldBegin:(id)begin;
 @end
 
 @implementation _UIGameControllerWindowDelegate
 
-- (BOOL)_gestureRecognizerShouldBegin:(id)a3
+- (BOOL)_gestureRecognizerShouldBegin:(id)begin
 {
-  v3 = [(_UIDelegate *)self attachedObject];
-  v4 = [v3 _firstResponder];
-  v5 = [v4 _requiresKeyboardWhenFirstResponder];
+  attachedObject = [(_UIDelegate *)self attachedObject];
+  _firstResponder = [attachedObject _firstResponder];
+  _requiresKeyboardWhenFirstResponder = [_firstResponder _requiresKeyboardWhenFirstResponder];
 
-  return v5;
+  return _requiresKeyboardWhenFirstResponder;
 }
 
 @end

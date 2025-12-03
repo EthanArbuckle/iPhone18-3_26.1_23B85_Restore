@@ -3,12 +3,12 @@
 - (BOOL)isHighlighted;
 - (NSUUID)id;
 - (UIColor)backgroundColor;
-- (_TtC7Climate13ClimateButton)initWithFrame:(CGRect)a3;
+- (_TtC7Climate13ClimateButton)initWithFrame:(CGRect)frame;
 - (void)didMoveToSuperview;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
-- (void)drawRect:(CGRect)a3;
-- (void)longPressGestureTriggered:(id)a3;
-- (void)setHighlighted:(BOOL)a3;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
+- (void)drawRect:(CGRect)rect;
+- (void)longPressGestureTriggered:(id)triggered;
+- (void)setHighlighted:(BOOL)highlighted;
 - (void)touchUpInsideActionTriggered;
 @end
 
@@ -36,9 +36,9 @@
 
 - (UIColor)backgroundColor
 {
-  v2 = [*(self + OBJC_IVAR____TtC7Climate13ClimateButton_backgroundView) backgroundColor];
+  backgroundColor = [*(self + OBJC_IVAR____TtC7Climate13ClimateButton_backgroundView) backgroundColor];
 
-  return v2;
+  return backgroundColor;
 }
 
 - (BOOL)isHighlighted
@@ -48,18 +48,18 @@
   return [(ClimateButton *)&v3 isHighlighted];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v4 = self;
-  ClimateButton.isHighlighted.setter(a3);
+  selfCopy = self;
+  ClimateButton.isHighlighted.setter(highlighted);
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v8.receiver = self;
   v8.super_class = type metadata accessor for ClimateButton();
   v7 = v8.receiver;
@@ -69,26 +69,26 @@
 
 - (void)touchUpInsideActionTriggered
 {
-  v2 = self;
+  selfCopy = self;
   ClimateButton.touchUpInsideActionTriggered()();
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
   v10.receiver = self;
   v10.super_class = type metadata accessor for ClimateButton();
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  coordinatorCopy = coordinator;
   v8 = v10.receiver;
-  v9 = [(ClimateButton *)&v10 didUpdateFocusInContext:v6 withAnimationCoordinator:v7];
+  v9 = [(ClimateButton *)&v10 didUpdateFocusInContext:contextCopy withAnimationCoordinator:coordinatorCopy];
   (*((swift_isaMask & *v8) + 0x208))(v9);
 }
 
-- (void)longPressGestureTriggered:(id)a3
+- (void)longPressGestureTriggered:(id)triggered
 {
-  v4 = a3;
-  v5 = self;
-  ClimateButton.longPressGestureTriggered(_:)(v4);
+  triggeredCopy = triggered;
+  selfCopy = self;
+  ClimateButton.longPressGestureTriggered(_:)(triggeredCopy);
 }
 
 - (void)didMoveToSuperview
@@ -100,7 +100,7 @@
   sub_1000946A8();
 }
 
-- (_TtC7Climate13ClimateButton)initWithFrame:(CGRect)a3
+- (_TtC7Climate13ClimateButton)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

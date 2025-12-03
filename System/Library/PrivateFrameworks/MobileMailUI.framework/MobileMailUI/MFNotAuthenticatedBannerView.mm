@@ -1,8 +1,8 @@
 @interface MFNotAuthenticatedBannerView
-+ (BOOL)shouldDisplayBannerIfIsShowingGroupedSenderMessageList:(BOOL)a3;
-- (_TtC12MobileMailUI28MFNotAuthenticatedBannerView)initWithFrame:(CGRect)a3 sender:(id)a4;
++ (BOOL)shouldDisplayBannerIfIsShowingGroupedSenderMessageList:(BOOL)list;
+- (_TtC12MobileMailUI28MFNotAuthenticatedBannerView)initWithFrame:(CGRect)frame sender:(id)sender;
 - (_TtP12MobileMailUI36MFNotAuthenticatedBannerViewDelegate_)delegate;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation MFNotAuthenticatedBannerView
@@ -16,7 +16,7 @@
   return v4;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   swift_unknownObjectRetain();
   MEMORY[0x277D82BE0](self, v4);
@@ -24,16 +24,16 @@
   MEMORY[0x277D82BD8](self);
 }
 
-- (_TtC12MobileMailUI28MFNotAuthenticatedBannerView)initWithFrame:(CGRect)a3 sender:(id)a4
+- (_TtC12MobileMailUI28MFNotAuthenticatedBannerView)initWithFrame:(CGRect)frame sender:(id)sender
 {
-  MEMORY[0x277D82BE0](a4, a2);
+  MEMORY[0x277D82BE0](sender, a2);
   v4 = sub_214A1A634();
-  v9 = MFNotAuthenticatedBannerView.init(frame:sender:)(v4, v5, a3.origin.x, a3.origin.y, a3.size.width, a3.size.height);
-  MEMORY[0x277D82BD8](a4);
+  v9 = MFNotAuthenticatedBannerView.init(frame:sender:)(v4, v5, frame.origin.x, frame.origin.y, frame.size.width, frame.size.height);
+  MEMORY[0x277D82BD8](sender);
   return v9;
 }
 
-+ (BOOL)shouldDisplayBannerIfIsShowingGroupedSenderMessageList:(BOOL)a3
++ (BOOL)shouldDisplayBannerIfIsShowingGroupedSenderMessageList:(BOOL)list
 {
   swift_getObjCClassMetadata();
   v4 = sub_214A1A4C4();

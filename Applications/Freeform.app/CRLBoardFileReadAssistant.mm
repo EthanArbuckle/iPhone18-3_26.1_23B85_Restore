@@ -1,17 +1,17 @@
 @interface CRLBoardFileReadAssistant
 - (_TtC8Freeform25CRLBoardFileReadAssistant)init;
-- (void)getOriginalBoardUUIDWithCompletionHandler:(id)a3;
-- (void)readBoardWithCompletionHandler:(id)a3;
+- (void)getOriginalBoardUUIDWithCompletionHandler:(id)handler;
+- (void)readBoardWithCompletionHandler:(id)handler;
 @end
 
 @implementation CRLBoardFileReadAssistant
 
-- (void)readBoardWithCompletionHandler:(id)a3
+- (void)readBoardWithCompletionHandler:(id)handler
 {
   v5 = sub_1005B981C(&qword_1019FB750);
   __chkstk_darwin(v5 - 8);
   v7 = &v14 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   *(v9 + 24) = self;
@@ -27,16 +27,16 @@
   v12[3] = 0;
   v12[4] = &unk_101477760;
   v12[5] = v11;
-  v13 = self;
+  selfCopy = self;
   sub_10119D67C(0, 0, v7, &unk_101477768, v12);
 }
 
-- (void)getOriginalBoardUUIDWithCompletionHandler:(id)a3
+- (void)getOriginalBoardUUIDWithCompletionHandler:(id)handler
 {
   v5 = sub_1005B981C(&qword_1019FB750);
   __chkstk_darwin(v5 - 8);
   v7 = &v14 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   *(v9 + 24) = self;
@@ -52,7 +52,7 @@
   v12[3] = 0;
   v12[4] = &unk_1014938A0;
   v12[5] = v11;
-  v13 = self;
+  selfCopy = self;
   sub_10119D67C(0, 0, v7, &unk_101470870, v12);
 }
 

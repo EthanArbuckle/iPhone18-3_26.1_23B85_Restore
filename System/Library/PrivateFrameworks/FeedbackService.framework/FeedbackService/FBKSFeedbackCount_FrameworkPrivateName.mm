@@ -1,6 +1,6 @@
 @interface FBKSFeedbackCount_FrameworkPrivateName
-+ (id)fromJSONWithData:(id)a3;
-+ (void)fetchCountsForFormWithIdentifier:(id)a3 completion:(id)a4;
++ (id)fromJSONWithData:(id)data;
++ (void)fetchCountsForFormWithIdentifier:(id)identifier completion:(id)completion;
 - (FBKSFeedbackCount_FrameworkPrivateName)init;
 - (NSData)asJSON;
 @end
@@ -9,7 +9,7 @@
 
 - (NSData)asJSON
 {
-  v2 = self;
+  selfCopy = self;
   v3 = FBKSFeedbackCount.asJSON.getter();
   v5 = v4;
 
@@ -19,9 +19,9 @@
   return v6;
 }
 
-+ (id)fromJSONWithData:(id)a3
++ (id)fromJSONWithData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v4 = sub_1B014CA8C();
   v6 = v5;
 
@@ -31,9 +31,9 @@
   return v7;
 }
 
-+ (void)fetchCountsForFormWithIdentifier:(id)a3 completion:(id)a4
++ (void)fetchCountsForFormWithIdentifier:(id)identifier completion:(id)completion
 {
-  v4 = _Block_copy(a4);
+  v4 = _Block_copy(completion);
   v5 = sub_1B014CC1C();
   v7 = v6;
   v8 = swift_allocObject();

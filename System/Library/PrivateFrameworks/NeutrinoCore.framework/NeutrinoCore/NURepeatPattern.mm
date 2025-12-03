@@ -1,9 +1,9 @@
 @interface NURepeatPattern
-- (BOOL)isEqualToPattern:(id)a3;
-- (BOOL)isEqualToRepeatPattern:(id)a3;
-- (BOOL)match:(id)a3 location:(unint64_t *)a4 count:(unint64_t *)a5;
+- (BOOL)isEqualToPattern:(id)pattern;
+- (BOOL)isEqualToRepeatPattern:(id)pattern;
+- (BOOL)match:(id)match location:(unint64_t *)location count:(unint64_t *)count;
 - (NURepeatPattern)init;
-- (NURepeatPattern)initWithPattern:(id)a3 minCount:(int64_t)a4 maxCount:(int64_t)a5;
+- (NURepeatPattern)initWithPattern:(id)pattern minCount:(int64_t)count maxCount:(int64_t)maxCount;
 - (id)optimizedPattern;
 - (id)shortestMatch;
 - (id)stringRepresentation;
@@ -11,9 +11,9 @@
 
 @implementation NURepeatPattern
 
-- (BOOL)match:(id)a3 location:(unint64_t *)a4 count:(unint64_t *)a5
+- (BOOL)match:(id)match location:(unint64_t *)location count:(unint64_t *)count
 {
-  v8 = a3;
+  matchCopy = match;
   v15 = 0;
   minCount = self->_minCount;
   if (minCount < 1)
@@ -27,7 +27,7 @@
     v10 = 0;
     for (i = 0; i < minCount; ++i)
     {
-      v12 = [(NUPattern *)self->_pattern match:v8 location:a4 count:&v15];
+      v12 = [(NUPattern *)self->_pattern match:matchCopy location:location count:&v15];
       minCount = self->_minCount;
       if (!v12)
       {
@@ -45,7 +45,7 @@
       v13 = minCount;
       do
       {
-        if (![(NUPattern *)self->_pattern match:v8 location:a4 count:&v15])
+        if (![(NUPattern *)self->_pattern match:matchCopy location:location count:&v15])
         {
           break;
         }
@@ -57,21 +57,21 @@
       while (v13 < self->_maxCount);
     }
 
-    *a5 = v10;
+    *count = v10;
   }
 
   return i == minCount;
 }
 
-- (BOOL)isEqualToRepeatPattern:(id)a3
+- (BOOL)isEqualToRepeatPattern:(id)pattern
 {
-  v4 = a3;
-  v5 = [(NURepeatPattern *)self minCount];
-  if (v5 == [v4 minCount] && (v6 = -[NURepeatPattern maxCount](self, "maxCount"), v6 == objc_msgSend(v4, "maxCount")))
+  patternCopy = pattern;
+  minCount = [(NURepeatPattern *)self minCount];
+  if (minCount == [patternCopy minCount] && (v6 = -[NURepeatPattern maxCount](self, "maxCount"), v6 == objc_msgSend(patternCopy, "maxCount")))
   {
-    v7 = [(NURepeatPattern *)self pattern];
-    v8 = [v4 pattern];
-    v9 = [v7 isEqualToPattern:v8];
+    pattern = [(NURepeatPattern *)self pattern];
+    pattern2 = [patternCopy pattern];
+    v9 = [pattern isEqualToPattern:pattern2];
   }
 
   else
@@ -82,11 +82,11 @@
   return v9;
 }
 
-- (BOOL)isEqualToPattern:(id)a3
+- (BOOL)isEqualToPattern:(id)pattern
 {
-  v4 = a3;
+  patternCopy = pattern;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(NURepeatPattern *)self isEqualToRepeatPattern:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(NURepeatPattern *)self isEqualToRepeatPattern:patternCopy];
 
   return v5;
 }
@@ -100,8 +100,8 @@
     if (maxCount == 0x7FFFFFFFFFFFFFFFLL)
     {
       v7 = MEMORY[0x1E696AEC0];
-      v6 = [(NUPattern *)self->_pattern stringRepresentation];
-      [v7 stringWithFormat:@"%@+", v6, v13, v14];
+      stringRepresentation = [(NUPattern *)self->_pattern stringRepresentation];
+      [v7 stringWithFormat:@"%@+", stringRepresentation, v13, v14];
       goto LABEL_12;
     }
   }
@@ -111,31 +111,31 @@
     if (maxCount == 0x7FFFFFFFFFFFFFFFLL)
     {
       v10 = MEMORY[0x1E696AEC0];
-      v6 = [(NUPattern *)self->_pattern stringRepresentation];
-      [v10 stringWithFormat:@"%@*", v6, v13, v14];
+      stringRepresentation = [(NUPattern *)self->_pattern stringRepresentation];
+      [v10 stringWithFormat:@"%@*", stringRepresentation, v13, v14];
       goto LABEL_12;
     }
 
     if (maxCount == 1)
     {
       v5 = MEMORY[0x1E696AEC0];
-      v6 = [(NUPattern *)self->_pattern stringRepresentation];
-      [v5 stringWithFormat:@"%@?", v6, v13, v14];
+      stringRepresentation = [(NUPattern *)self->_pattern stringRepresentation];
+      [v5 stringWithFormat:@"%@?", stringRepresentation, v13, v14];
       goto LABEL_12;
     }
   }
 
   v8 = MEMORY[0x1E696AEC0];
-  v9 = [(NUPattern *)self->_pattern stringRepresentation];
-  v6 = v9;
+  stringRepresentation2 = [(NUPattern *)self->_pattern stringRepresentation];
+  stringRepresentation = stringRepresentation2;
   if (minCount == maxCount)
   {
-    [v8 stringWithFormat:@"%@<%d>", v9, LODWORD(self->_minCount), v14];
+    [v8 stringWithFormat:@"%@<%d>", stringRepresentation2, LODWORD(self->_minCount), v14];
   }
 
   else
   {
-    [v8 stringWithFormat:@"%@<%d, %d>", v9, LODWORD(self->_minCount), self->_maxCount];
+    [v8 stringWithFormat:@"%@<%d, %d>", stringRepresentation2, LODWORD(self->_minCount), self->_maxCount];
   }
 
   v11 = LABEL_12:;
@@ -145,15 +145,15 @@
 
 - (id)optimizedPattern
 {
-  v3 = [(NUPattern *)self->_pattern optimizedPattern];
-  if ([v3 isEmpty] || self->_minCount == 1 && self->_maxCount == 1)
+  optimizedPattern = [(NUPattern *)self->_pattern optimizedPattern];
+  if ([optimizedPattern isEmpty] || self->_minCount == 1 && self->_maxCount == 1)
   {
-    v4 = v3;
+    v4 = optimizedPattern;
   }
 
   else
   {
-    v4 = [[NURepeatPattern alloc] initWithPattern:v3 minCount:self->_minCount maxCount:self->_maxCount];
+    v4 = [[NURepeatPattern alloc] initWithPattern:optimizedPattern minCount:self->_minCount maxCount:self->_maxCount];
   }
 
   v5 = v4;
@@ -165,16 +165,16 @@
 {
   if (self->_minCount)
   {
-    v3 = [(NUPattern *)self->_pattern shortestMatch];
-    if (v3)
+    shortestMatch = [(NUPattern *)self->_pattern shortestMatch];
+    if (shortestMatch)
     {
-      v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{LODWORD(self->_minCount) * objc_msgSend(v3, "count")}];
+      v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{LODWORD(self->_minCount) * objc_msgSend(shortestMatch, "count")}];
       if (self->_minCount >= 1)
       {
         v5 = 0;
         do
         {
-          [v4 addObjectsFromArray:v3];
+          [v4 addObjectsFromArray:shortestMatch];
           ++v5;
         }
 
@@ -196,11 +196,11 @@
   return v4;
 }
 
-- (NURepeatPattern)initWithPattern:(id)a3 minCount:(int64_t)a4 maxCount:(int64_t)a5
+- (NURepeatPattern)initWithPattern:(id)pattern minCount:(int64_t)count maxCount:(int64_t)maxCount
 {
   v83 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  if (!v9)
+  patternCopy = pattern;
+  if (!patternCopy)
   {
     v14 = NUAssertLogger_5128();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -221,8 +221,8 @@
         v42 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v43 = MEMORY[0x1E696AF00];
         v44 = v42;
-        v45 = [v43 callStackSymbols];
-        v46 = [v45 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v43 callStackSymbols];
+        v46 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v80 = v42;
         v81 = 2114;
@@ -233,8 +233,8 @@
 
     else if (v18)
     {
-      v19 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v20 = [v19 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v20 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v80 = v20;
       _os_log_error_impl(&dword_1C0184000, v17, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -243,7 +243,7 @@
     _NUAssertFailHandler("[NURepeatPattern initWithPattern:minCount:maxCount:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Schema/NUPattern.m", 766, @"Invalid parameter not satisfying: %s", v47, v48, v49, v50, "pattern != nil");
   }
 
-  if (a4 < 0)
+  if (count < 0)
   {
     v21 = NUAssertLogger_5128();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -264,8 +264,8 @@
         v51 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v52 = MEMORY[0x1E696AF00];
         v53 = v51;
-        v54 = [v52 callStackSymbols];
-        v55 = [v54 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v52 callStackSymbols];
+        v55 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v80 = v51;
         v81 = 2114;
@@ -276,8 +276,8 @@
 
     else if (v25)
     {
-      v26 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v27 = [v26 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v27 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v80 = v27;
       _os_log_error_impl(&dword_1C0184000, v24, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -286,7 +286,7 @@
     _NUAssertFailHandler("[NURepeatPattern initWithPattern:minCount:maxCount:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Schema/NUPattern.m", 767, @"Invalid parameter not satisfying: %s", v56, v57, v58, v59, "min >= 0");
   }
 
-  if (a5 < 0)
+  if (maxCount < 0)
   {
     v28 = NUAssertLogger_5128();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
@@ -307,8 +307,8 @@
         v60 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v61 = MEMORY[0x1E696AF00];
         v62 = v60;
-        v63 = [v61 callStackSymbols];
-        v64 = [v63 componentsJoinedByString:@"\n"];
+        callStackSymbols5 = [v61 callStackSymbols];
+        v64 = [callStackSymbols5 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v80 = v60;
         v81 = 2114;
@@ -319,8 +319,8 @@
 
     else if (v32)
     {
-      v33 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v34 = [v33 componentsJoinedByString:@"\n"];
+      callStackSymbols6 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v34 = [callStackSymbols6 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v80 = v34;
       _os_log_error_impl(&dword_1C0184000, v31, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -329,7 +329,7 @@
     _NUAssertFailHandler("[NURepeatPattern initWithPattern:minCount:maxCount:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Schema/NUPattern.m", 768, @"Invalid parameter not satisfying: %s", v65, v66, v67, v68, "max >= 0");
   }
 
-  if (a4 > a5)
+  if (count > maxCount)
   {
     v35 = NUAssertLogger_5128();
     if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
@@ -350,8 +350,8 @@
         v69 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v70 = MEMORY[0x1E696AF00];
         v71 = v69;
-        v72 = [v70 callStackSymbols];
-        v73 = [v72 componentsJoinedByString:@"\n"];
+        callStackSymbols7 = [v70 callStackSymbols];
+        v73 = [callStackSymbols7 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v80 = v69;
         v81 = 2114;
@@ -362,8 +362,8 @@
 
     else if (v39)
     {
-      v40 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v41 = [v40 componentsJoinedByString:@"\n"];
+      callStackSymbols8 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v41 = [callStackSymbols8 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v80 = v41;
       _os_log_error_impl(&dword_1C0184000, v38, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -372,16 +372,16 @@
     _NUAssertFailHandler("[NURepeatPattern initWithPattern:minCount:maxCount:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Schema/NUPattern.m", 769, @"Invalid parameter not satisfying: %s", v74, v75, v76, v77, "min <= max");
   }
 
-  v10 = v9;
+  v10 = patternCopy;
   v78.receiver = self;
   v78.super_class = NURepeatPattern;
   v11 = [(NURepeatPattern *)&v78 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_pattern, a3);
-    v12->_minCount = a4;
-    v12->_maxCount = a5;
+    objc_storeStrong(&v11->_pattern, pattern);
+    v12->_minCount = count;
+    v12->_maxCount = maxCount;
   }
 
   return v12;
@@ -433,8 +433,8 @@ LABEL_8:
     {
       v12 = MEMORY[0x1E696AF00];
       v13 = v11;
-      v14 = [v12 callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v12 callStackSymbols];
+      v15 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v30 = v15;
       _os_log_error_impl(&dword_1C0184000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -450,8 +450,8 @@ LABEL_8:
     v18 = MEMORY[0x1E696AF00];
     v19 = specific;
     v20 = v16;
-    v21 = [v18 callStackSymbols];
-    v22 = [v21 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v18 callStackSymbols];
+    v22 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v30 = specific;
     v31 = 2114;

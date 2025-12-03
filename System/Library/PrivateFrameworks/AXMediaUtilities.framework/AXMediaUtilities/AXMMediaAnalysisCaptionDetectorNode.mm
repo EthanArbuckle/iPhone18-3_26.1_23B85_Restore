@@ -1,41 +1,41 @@
 @interface AXMMediaAnalysisCaptionDetectorNode
 + (BOOL)isSupported;
-- (AXMMediaAnalysisCaptionDetectorNode)initWithCoder:(id)a3;
+- (AXMMediaAnalysisCaptionDetectorNode)initWithCoder:(id)coder;
 - (AXMMediaAnalysisSceneDetectorNode)sceneDetector;
-- (id)_captionsFromAnalysis:(id)a3 forType:(unint64_t)a4;
-- (id)_mediaAnalysisCaptionResultForPHAssetsFromAnalysis:(id)a3;
-- (id)_mediaAnalysisCaptionResultFromResults:(id)a3;
-- (id)translatedTextForCaption:(id)a3 withContext:(id)a4 metrics:(id)a5;
-- (void)_addCaptionFeaturesToContext:(id)a3 metrics:(id)a4 fromResult:(id)a5;
-- (void)encodeWithCoder:(id)a3;
-- (void)evaluate:(id)a3 metrics:(id)a4;
+- (id)_captionsFromAnalysis:(id)analysis forType:(unint64_t)type;
+- (id)_mediaAnalysisCaptionResultForPHAssetsFromAnalysis:(id)analysis;
+- (id)_mediaAnalysisCaptionResultFromResults:(id)results;
+- (id)translatedTextForCaption:(id)caption withContext:(id)context metrics:(id)metrics;
+- (void)_addCaptionFeaturesToContext:(id)context metrics:(id)metrics fromResult:(id)result;
+- (void)encodeWithCoder:(id)coder;
+- (void)evaluate:(id)evaluate metrics:(id)metrics;
 @end
 
 @implementation AXMMediaAnalysisCaptionDetectorNode
 
-- (AXMMediaAnalysisCaptionDetectorNode)initWithCoder:(id)a3
+- (AXMMediaAnalysisCaptionDetectorNode)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = AXMMediaAnalysisCaptionDetectorNode;
-  v5 = [(AXMEvaluationNode *)&v8 initWithCoder:v4];
+  v5 = [(AXMEvaluationNode *)&v8 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sceneDetector"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sceneDetector"];
     [(AXMMediaAnalysisCaptionDetectorNode *)v5 setSceneDetector:v6];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = AXMMediaAnalysisCaptionDetectorNode;
-  v4 = a3;
-  [(AXMEvaluationNode *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(AXMEvaluationNode *)&v6 encodeWithCoder:coderCopy];
   v5 = [(AXMMediaAnalysisCaptionDetectorNode *)self sceneDetector:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"sceneDetector"];
+  [coderCopy encodeObject:v5 forKey:@"sceneDetector"];
 }
 
 + (BOOL)isSupported
@@ -45,8 +45,8 @@
     return 0;
   }
 
-  v2 = [MEMORY[0x1E696AE30] processInfo];
-  if ([v2 physicalMemory] < 0x77359400)
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  if ([processInfo physicalMemory] < 0x77359400)
   {
     v3 = 0;
   }
@@ -59,39 +59,39 @@
   return v3;
 }
 
-- (void)evaluate:(id)a3 metrics:(id)a4
+- (void)evaluate:(id)evaluate metrics:(id)metrics
 {
   v88 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  evaluateCopy = evaluate;
   v77.receiver = self;
   v77.super_class = AXMMediaAnalysisCaptionDetectorNode;
-  v53 = a4;
-  [(AXMEvaluationNode *)&v77 evaluate:v6 metrics:?];
-  v7 = [v6 sourceInput];
-  v55 = [v7 phAssetLocalIdentifier];
+  metricsCopy = metrics;
+  [(AXMEvaluationNode *)&v77 evaluate:evaluateCopy metrics:?];
+  sourceInput = [evaluateCopy sourceInput];
+  phAssetLocalIdentifier = [sourceInput phAssetLocalIdentifier];
 
-  v8 = [v6 sourceInput];
-  v56 = [v8 photoLibraryURL];
+  sourceInput2 = [evaluateCopy sourceInput];
+  photoLibraryURL = [sourceInput2 photoLibraryURL];
 
-  v9 = [v6 sourceInput];
-  v54 = [v9 ciImage];
+  sourceInput3 = [evaluateCopy sourceInput];
+  ciImage = [sourceInput3 ciImage];
 
-  v10 = [v6 sourceInput];
-  v52 = [v10 pixelBuffer];
+  sourceInput4 = [evaluateCopy sourceInput];
+  pixelBuffer = [sourceInput4 pixelBuffer];
 
   v11 = AXMediaLogCommon();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    *&buf[4] = v55;
+    *&buf[4] = phAssetLocalIdentifier;
     *&buf[12] = 2112;
-    *&buf[14] = v56;
+    *&buf[14] = photoLibraryURL;
     _os_log_impl(&dword_1AE37B000, v11, OS_LOG_TYPE_DEFAULT, "AXM Media analysis: Will evaluate media analysis caption detector node. phAssetLocalIdentifier : %@ and photoLibraryURL : %@", buf, 0x16u);
   }
 
-  if (v56 && v55)
+  if (photoLibraryURL && phAssetLocalIdentifier)
   {
-    v12 = [AXMPhotoAssetData phAssetFromLocalIdentifier:v55 photoLibraryURL:v56];
+    v12 = [AXMPhotoAssetData phAssetFromLocalIdentifier:phAssetLocalIdentifier photoLibraryURL:photoLibraryURL];
     if (!v12)
     {
       v50 = AXMediaLogCommon();
@@ -105,7 +105,7 @@
       goto LABEL_38;
     }
 
-    v51 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v78 = 0;
     v79 = &v78;
     v80 = 0x2020000000;
@@ -132,7 +132,7 @@
       __break(1u);
     }
 
-    [v51 setObject:MEMORY[0x1E695E118] forKeyedSubscript:*v13];
+    [dictionary setObject:MEMORY[0x1E695E118] forKeyedSubscript:*v13];
     v16 = dispatch_semaphore_create(0);
     v78 = 0;
     v79 = &v78;
@@ -152,7 +152,7 @@
 
     v18 = v17;
     _Block_object_dispose(&v78, 8);
-    v19 = [v17 analysisService];
+    analysisService = [v17 analysisService];
     objc_initWeak(buf, self);
     v84 = v12;
     v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v84 count:1];
@@ -163,11 +163,11 @@
     objc_copyWeak(&v76, buf);
     v12 = v12;
     v72 = v12;
-    v73 = v6;
-    v74 = v53;
+    v73 = evaluateCopy;
+    v74 = metricsCopy;
     v21 = v16;
     v75 = v21;
-    v22 = [v19 requestAnalysisTypes:0x100000000 forAssets:v20 withOptions:v51 progressHandler:&__block_literal_global_29 andCompletionHandler:v71];
+    v22 = [analysisService requestAnalysisTypes:0x100000000 forAssets:v20 withOptions:dictionary progressHandler:&__block_literal_global_29 andCompletionHandler:v71];
 
     v23 = dispatch_time(0, 100000000);
     if (dispatch_semaphore_wait(v21, v23))
@@ -183,7 +183,7 @@
             [AXMMediaAnalysisCaptionDetectorNode evaluate:&v78 + 1 metrics:?];
           }
 
-          [v19 cancelRequest:v22];
+          [analysisService cancelRequest:v22];
         }
 
         v26 = dispatch_time(0, 100000000);
@@ -197,18 +197,18 @@
     objc_destroyWeak(buf);
 
 LABEL_37:
-    v49 = v51;
+    v49 = dictionary;
 LABEL_38:
 
     goto LABEL_39;
   }
 
-  if (v54)
+  if (ciImage)
   {
     v27 = dispatch_semaphore_create(0);
     v28 = objc_alloc_init(getMADImageCaptionRequestClass());
     v29 = +[AXMMADSService sharedInstance];
-    v30 = [v29 service];
+    service = [v29 service];
 
     objc_initWeak(buf, self);
     v83 = v28;
@@ -218,14 +218,14 @@ LABEL_38:
     v64[2] = __56__AXMMediaAnalysisCaptionDetectorNode_evaluate_metrics___block_invoke_73;
     v64[3] = &unk_1E7A1E588;
     objc_copyWeak(&v70, buf);
-    v51 = v28;
-    v65 = v51;
-    v66 = v54;
-    v67 = v6;
-    v68 = v53;
+    dictionary = v28;
+    v65 = dictionary;
+    v66 = ciImage;
+    v67 = evaluateCopy;
+    v68 = metricsCopy;
     v12 = v27;
     v69 = v12;
-    v32 = [v30 performRequests:v31 onCIImage:v66 withOrientation:1 andIdentifier:&stru_1F23EA908 completionHandler:v64];
+    v32 = [service performRequests:v31 onCIImage:v66 withOrientation:1 andIdentifier:&stru_1F23EA908 completionHandler:v64];
 
     v33 = dispatch_time(0, 100000000);
     if (dispatch_semaphore_wait(v12, v33))
@@ -241,7 +241,7 @@ LABEL_38:
             [AXMMediaAnalysisCaptionDetectorNode evaluate:&v78 + 1 metrics:?];
           }
 
-          [v30 cancelRequestID:v32];
+          [service cancelRequestID:v32];
         }
 
         v36 = dispatch_time(0, 100000000);
@@ -257,31 +257,31 @@ LABEL_38:
     goto LABEL_37;
   }
 
-  if (v52)
+  if (pixelBuffer)
   {
     v37 = dispatch_semaphore_create(0);
     v38 = objc_alloc_init(getMADImageCaptionRequestClass());
     v39 = +[AXMMADSService sharedInstance];
-    v40 = [v39 service];
+    service2 = [v39 service];
 
     objc_initWeak(buf, self);
     v82 = v38;
     v41 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v82 count:1];
-    v42 = [v52 pixelBuffer];
-    v43 = [v52 orientation];
+    v52PixelBuffer = [pixelBuffer pixelBuffer];
+    orientation = [pixelBuffer orientation];
     v57[0] = MEMORY[0x1E69E9820];
     v57[1] = 3221225472;
     v57[2] = __56__AXMMediaAnalysisCaptionDetectorNode_evaluate_metrics___block_invoke_75;
     v57[3] = &unk_1E7A1E588;
     objc_copyWeak(&v63, buf);
-    v51 = v38;
-    v58 = v51;
-    v59 = v52;
-    v60 = v6;
-    v61 = v53;
+    dictionary = v38;
+    v58 = dictionary;
+    v59 = pixelBuffer;
+    v60 = evaluateCopy;
+    v61 = metricsCopy;
     v12 = v37;
     v62 = v12;
-    v44 = [v40 performRequests:v41 onPixelBuffer:v42 withOrientation:v43 andIdentifier:&stru_1F23EA908 completionHandler:v57];
+    v44 = [service2 performRequests:v41 onPixelBuffer:v52PixelBuffer withOrientation:orientation andIdentifier:&stru_1F23EA908 completionHandler:v57];
 
     v45 = dispatch_time(0, 100000000);
     if (dispatch_semaphore_wait(v12, v45))
@@ -297,7 +297,7 @@ LABEL_38:
             [AXMMediaAnalysisCaptionDetectorNode evaluate:&v78 + 1 metrics:?];
           }
 
-          [v40 cancelRequestID:v44];
+          [service2 cancelRequestID:v44];
         }
 
         v48 = dispatch_time(0, 100000000);
@@ -508,14 +508,14 @@ void __56__AXMMediaAnalysisCaptionDetectorNode_evaluate_metrics___block_invoke_7
   dispatch_semaphore_signal(*(a1 + 64));
 }
 
-- (id)translatedTextForCaption:(id)a3 withContext:(id)a4 metrics:(id)a5
+- (id)translatedTextForCaption:(id)caption withContext:(id)context metrics:(id)metrics
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [a4 analysisOptions];
-  v11 = [v10 preferredOutputLocale];
+  captionCopy = caption;
+  metricsCopy = metrics;
+  analysisOptions = [context analysisOptions];
+  preferredOutputLocale = [analysisOptions preferredOutputLocale];
 
-  if (!v11)
+  if (!preferredOutputLocale)
   {
     v12 = AXMediaLogLanguageTranslation();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
@@ -525,11 +525,11 @@ void __56__AXMMediaAnalysisCaptionDetectorNode_evaluate_metrics___block_invoke_7
     }
 
     v13 = +[AXMLocSupport sharedInstance];
-    v11 = [v13 en_USLocale];
+    preferredOutputLocale = [v13 en_USLocale];
   }
 
   v14 = +[AXMLocSupport sharedInstance];
-  v15 = [v14 localeBaseLanguageIsEnglish:v11];
+  v15 = [v14 localeBaseLanguageIsEnglish:preferredOutputLocale];
 
   if (v15)
   {
@@ -540,7 +540,7 @@ void __56__AXMMediaAnalysisCaptionDetectorNode_evaluate_metrics___block_invoke_7
       _os_log_impl(&dword_1AE37B000, v16, OS_LOG_TYPE_INFO, "preferred output language is English. Translation not required", v25, 2u);
     }
 
-    v17 = [AXMTranslatedText text:v8 confidence:0 isLowConfidence:v11 targetLocale:1.0];
+    v17 = [AXMTranslatedText text:captionCopy confidence:0 isLowConfidence:preferredOutputLocale targetLocale:1.0];
   }
 
   else
@@ -556,7 +556,7 @@ void __56__AXMMediaAnalysisCaptionDetectorNode_evaluate_metrics___block_invoke_7
     }
 
     v24 = 0;
-    v17 = [(AXMLanguageTranslator *)languageTranslator translateText:v8 toLocale:v11 respectAllowList:1 metrics:v9 error:&v24];
+    v17 = [(AXMLanguageTranslator *)languageTranslator translateText:captionCopy toLocale:preferredOutputLocale respectAllowList:1 metrics:metricsCopy error:&v24];
     v21 = v24;
     if (v21)
     {
@@ -571,33 +571,33 @@ void __56__AXMMediaAnalysisCaptionDetectorNode_evaluate_metrics___block_invoke_7
   return v17;
 }
 
-- (void)_addCaptionFeaturesToContext:(id)a3 metrics:(id)a4 fromResult:(id)a5
+- (void)_addCaptionFeaturesToContext:(id)context metrics:(id)metrics fromResult:(id)result
 {
   v40 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = [a5 imageCaptionResults];
-  v11 = [v10 firstObject];
+  contextCopy = context;
+  metricsCopy = metrics;
+  imageCaptionResults = [result imageCaptionResults];
+  firstObject = [imageCaptionResults firstObject];
 
-  if (v11)
+  if (firstObject)
   {
-    v12 = [v11 text];
-    v28 = self;
-    v31 = v9;
-    v13 = [(AXMMediaAnalysisCaptionDetectorNode *)self translatedTextForCaption:v12 withContext:v8 metrics:v9];
+    text = [firstObject text];
+    selfCopy = self;
+    v31 = metricsCopy;
+    v13 = [(AXMMediaAnalysisCaptionDetectorNode *)self translatedTextForCaption:text withContext:contextCopy metrics:metricsCopy];
 
-    v14 = [v11 text];
-    [v11 confidence];
+    text2 = [firstObject text];
+    [firstObject confidence];
     v29 = v13;
-    v32 = [AXMVisionFeature featureWithMediaAnalysisImageCaptionResult:v14 confidence:v13 translatedCaption:?];
+    v32 = [AXMVisionFeature featureWithMediaAnalysisImageCaptionResult:text2 confidence:v13 translatedCaption:?];
 
     v35 = 0u;
     v36 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v30 = v11;
-    v15 = [v11 classificationIdentifiers];
-    v16 = [v15 countByEnumeratingWithState:&v33 objects:v39 count:16];
+    v30 = firstObject;
+    classificationIdentifiers = [firstObject classificationIdentifiers];
+    v16 = [classificationIdentifiers countByEnumeratingWithState:&v33 objects:v39 count:16];
     if (v16)
     {
       v17 = v16;
@@ -609,12 +609,12 @@ void __56__AXMMediaAnalysisCaptionDetectorNode_evaluate_metrics___block_invoke_7
         {
           if (*v34 != v19)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(classificationIdentifiers);
           }
 
           v21 = *(*(&v33 + 1) + 8 * i);
-          v22 = [AXMMediaAnalysisSceneDetectorNode addSignificantEventResultToContext:v8 forIdentifier:v21 confidence:1 markAsSensitiveCaptionContent:1.0];
-          v23 = [AXMMediaAnalysisSceneDetectorNode addNSFWResultToContext:v8 forIdentifier:v21 confidence:1 markAsSensitiveCaptionContent:1.0];
+          v22 = [AXMMediaAnalysisSceneDetectorNode addSignificantEventResultToContext:contextCopy forIdentifier:v21 confidence:1 markAsSensitiveCaptionContent:1.0];
+          v23 = [AXMMediaAnalysisSceneDetectorNode addNSFWResultToContext:contextCopy forIdentifier:v21 confidence:1 markAsSensitiveCaptionContent:1.0];
           if (v23 || v22)
           {
             [v32 setCaptionMayContainSensitiveContent:1];
@@ -631,7 +631,7 @@ void __56__AXMMediaAnalysisCaptionDetectorNode_evaluate_metrics___block_invoke_7
           v18 |= v23;
         }
 
-        v17 = [v15 countByEnumeratingWithState:&v33 objects:v39 count:16];
+        v17 = [classificationIdentifiers countByEnumeratingWithState:&v33 objects:v39 count:16];
       }
 
       while (v17);
@@ -642,9 +642,9 @@ void __56__AXMMediaAnalysisCaptionDetectorNode_evaluate_metrics___block_invoke_7
       v18 = 0;
     }
 
-    [v8 appendFeature:v32];
-    [v8 addEvaluatedFeatureType:25];
-    v11 = v30;
+    [contextCopy appendFeature:v32];
+    [contextCopy addEvaluatedFeatureType:25];
+    firstObject = v30;
     if ([v30 isLowConfidence] & 1) != 0 || (v18)
     {
       v25 = AXMediaLogCommon();
@@ -654,11 +654,11 @@ void __56__AXMMediaAnalysisCaptionDetectorNode_evaluate_metrics___block_invoke_7
         _os_log_impl(&dword_1AE37B000, v25, OS_LOG_TYPE_INFO, "Caption was low confidence or explicit. Requesting auxiliary scene detection", buf, 2u);
       }
 
-      WeakRetained = objc_loadWeakRetained(&v28->_sceneDetector);
+      WeakRetained = objc_loadWeakRetained(&selfCopy->_sceneDetector);
       if (WeakRetained)
       {
-        v27 = objc_loadWeakRetained(&v28->_sceneDetector);
-        [v8 addAuxiliaryDetector:v27];
+        v27 = objc_loadWeakRetained(&selfCopy->_sceneDetector);
+        [contextCopy addAuxiliaryDetector:v27];
       }
 
       else
@@ -671,15 +671,15 @@ void __56__AXMMediaAnalysisCaptionDetectorNode_evaluate_metrics___block_invoke_7
       }
     }
 
-    v9 = v31;
+    metricsCopy = v31;
   }
 }
 
-- (id)_mediaAnalysisCaptionResultForPHAssetsFromAnalysis:(id)a3
+- (id)_mediaAnalysisCaptionResultForPHAssetsFromAnalysis:(id)analysis
 {
-  v4 = a3;
+  analysisCopy = analysis;
   v5 = objc_alloc_init(AXMMediaAnalysisCaptionsResult);
-  v6 = [(AXMMediaAnalysisCaptionDetectorNode *)self _captionsFromAnalysis:v4 forType:0];
+  v6 = [(AXMMediaAnalysisCaptionDetectorNode *)self _captionsFromAnalysis:analysisCopy forType:0];
 
   if ([v6 count])
   {
@@ -698,10 +698,10 @@ void __56__AXMMediaAnalysisCaptionDetectorNode_evaluate_metrics___block_invoke_7
   return v5;
 }
 
-- (id)_captionsFromAnalysis:(id)a3 forType:(unint64_t)a4
+- (id)_captionsFromAnalysis:(id)analysis forType:(unint64_t)type
 {
   v60 = *MEMORY[0x1E69E9840];
-  v40 = a3;
+  analysisCopy = analysis;
   v51 = 0;
   v52 = &v51;
   v53 = 0x2020000000;
@@ -780,7 +780,7 @@ void __56__AXMMediaAnalysisCaptionDetectorNode_evaluate_metrics___block_invoke_7
   }
 
   v44 = *v11;
-  if (a4)
+  if (type)
   {
     v14 = 0;
     v15 = 0;
@@ -869,10 +869,10 @@ LABEL_40:
 
   v14 = *v22;
 LABEL_22:
-  v43 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   if (v41)
   {
-    v39 = [v40 objectForKeyedSubscript:v41];
+    v39 = [analysisCopy objectForKeyedSubscript:v41];
     if ([v39 count])
     {
       v49 = 0u;
@@ -901,13 +901,13 @@ LABEL_22:
             v33 = v32;
 
             v34 = [v29 objectForKeyedSubscript:v45];
-            v35 = [v34 BOOLValue];
+            bOOLValue = [v34 BOOLValue];
 
             v36 = [v29 objectForKeyedSubscript:v44];
             if ([v30 length])
             {
-              v37 = [[AXMMediaAnalysisCaptions alloc] initWithText:v30 confidence:v35 isLowConfidence:v36 classificationIdentifiers:v33];
-              [v43 addObject:v37];
+              v37 = [[AXMMediaAnalysisCaptions alloc] initWithText:v30 confidence:bOOLValue isLowConfidence:v36 classificationIdentifiers:v33];
+              [array addObject:v37];
             }
 
             else
@@ -930,25 +930,25 @@ LABEL_22:
     }
   }
 
-  return v43;
+  return array;
 }
 
-- (id)_mediaAnalysisCaptionResultFromResults:(id)a3
+- (id)_mediaAnalysisCaptionResultFromResults:(id)results
 {
-  v3 = a3;
+  resultsCopy = results;
   v4 = objc_alloc_init(AXMMediaAnalysisCaptionsResult);
-  if (![v3 count])
+  if (![resultsCopy count])
   {
-    v16 = AXMediaLogCommon();
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
+    firstObject2 = AXMediaLogCommon();
+    if (os_log_type_enabled(firstObject2, OS_LOG_TYPE_DEBUG))
     {
-      [AXMMediaAnalysisCaptionDetectorNode _mediaAnalysisCaptionResultFromResults:v16];
+      [AXMMediaAnalysisCaptionDetectorNode _mediaAnalysisCaptionResultFromResults:firstObject2];
     }
 
     goto LABEL_12;
   }
 
-  v12 = [v3 firstObject];
+  firstObject = [resultsCopy firstObject];
   v27 = 0;
   v28 = &v27;
   v29 = 0x2050000000;
@@ -972,22 +972,22 @@ LABEL_22:
 
   if (isKindOfClass)
   {
-    v16 = [v3 firstObject];
-    v17 = [v16 caption];
-    [v16 score];
+    firstObject2 = [resultsCopy firstObject];
+    caption = [firstObject2 caption];
+    [firstObject2 score];
     v19 = v18;
-    v20 = [v16 isLowConfidence];
-    v21 = [v16 classificationIdentifiers];
-    v22 = [MEMORY[0x1E695DF70] array];
-    if ([v17 length])
+    isLowConfidence = [firstObject2 isLowConfidence];
+    classificationIdentifiers = [firstObject2 classificationIdentifiers];
+    array = [MEMORY[0x1E695DF70] array];
+    if ([caption length])
     {
-      v23 = [[AXMMediaAnalysisCaptions alloc] initWithText:v17 confidence:v20 isLowConfidence:v21 classificationIdentifiers:v19];
-      [v22 addObject:v23];
+      v23 = [[AXMMediaAnalysisCaptions alloc] initWithText:caption confidence:isLowConfidence isLowConfidence:classificationIdentifiers classificationIdentifiers:v19];
+      [array addObject:v23];
     }
 
-    if ([v22 count])
+    if ([array count])
     {
-      [(AXMMediaAnalysisCaptionsResult *)v4 setImageCaptionResults:v22];
+      [(AXMMediaAnalysisCaptionsResult *)v4 setImageCaptionResults:array];
     }
 
 LABEL_12:

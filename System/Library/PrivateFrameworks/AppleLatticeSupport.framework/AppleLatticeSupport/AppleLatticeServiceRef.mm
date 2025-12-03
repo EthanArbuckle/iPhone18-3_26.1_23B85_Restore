@@ -1,7 +1,7 @@
 @interface AppleLatticeServiceRef
 - (AppleLatticeServiceRef)init;
-- (BOOL)getInterfaceUpdateEvents:(id)a3;
-- (BOOL)setShuttingDown:(BOOL)a3;
+- (BOOL)getInterfaceUpdateEvents:(id)events;
+- (BOOL)setShuttingDown:(BOOL)down;
 - (void)dealloc;
 @end
 
@@ -19,15 +19,15 @@
   return 0;
 }
 
-- (BOOL)getInterfaceUpdateEvents:(id)a3
+- (BOOL)getInterfaceUpdateEvents:(id)events
 {
   v41 = *MEMORY[0x29EDCA608];
-  v4 = a3;
+  eventsCopy = events;
   v34[0] = MEMORY[0x29EDCA5F8];
   v34[1] = 3221225472;
   v34[2] = __51__AppleLatticeServiceRef_getInterfaceUpdateEvents___block_invoke;
   v34[3] = &unk_29F3800A0;
-  v5 = v4;
+  v5 = eventsCopy;
   v35 = v5;
   v6 = MEMORY[0x29EDA87F0](v34);
   v32[0] = MEMORY[0x29EDCA5F8];
@@ -181,10 +181,10 @@ void __51__AppleLatticeServiceRef_getInterfaceUpdateEvents___block_invoke_2(uint
   v6 = *MEMORY[0x29EDCA608];
 }
 
-- (BOOL)setShuttingDown:(BOOL)a3
+- (BOOL)setShuttingDown:(BOOL)down
 {
   ptr = self->_client.__ptr_;
-  inputStruct = a3;
+  inputStruct = down;
   outputStruct = 0;
   outputStructCnt = 4;
   v4 = IOConnectCallStructMethod(*ptr, 4u, &inputStruct, 1uLL, &outputStruct, &outputStructCnt);

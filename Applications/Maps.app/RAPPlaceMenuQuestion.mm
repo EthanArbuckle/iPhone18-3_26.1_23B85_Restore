@@ -1,30 +1,30 @@
 @interface RAPPlaceMenuQuestion
 - (MKMapItem)snippetMapItem;
-- (RAPPlaceMenuQuestion)initWithReport:(id)a3 parentQuestion:(id)a4 reportedPlace:(id)a5;
+- (RAPPlaceMenuQuestion)initWithReport:(id)report parentQuestion:(id)question reportedPlace:(id)place;
 - (id)_alternateMapViewContext;
-- (id)followUpQuestionForCategory:(int64_t)a3;
+- (id)followUpQuestionForCategory:(int64_t)category;
 - (id)mainMenuItems;
 - (int64_t)snippetStyle;
-- (void)_fillSubmissionParameters:(id)a3;
+- (void)_fillSubmissionParameters:(id)parameters;
 @end
 
 @implementation RAPPlaceMenuQuestion
 
-- (id)followUpQuestionForCategory:(int64_t)a3
+- (id)followUpQuestionForCategory:(int64_t)category
 {
-  if (a3 == 9)
+  if (category == 9)
   {
     v4 = off_1015F6540;
     goto LABEL_5;
   }
 
-  if (a3 == 1)
+  if (category == 1)
   {
     v4 = off_1015F6548;
 LABEL_5:
     v5 = objc_alloc(*v4);
-    v6 = [(RAPQuestion *)self report];
-    v7 = [v5 initWithReport:v6 parentQuestion:self];
+    report = [(RAPQuestion *)self report];
+    v7 = [v5 initWithReport:report parentQuestion:self];
 
     goto LABEL_7;
   }
@@ -37,44 +37,44 @@ LABEL_7:
 
 - (MKMapItem)snippetMapItem
 {
-  v2 = [(RAPPlaceMenuQuestion *)self reportedPlace];
-  v3 = [v2 mapItem];
+  reportedPlace = [(RAPPlaceMenuQuestion *)self reportedPlace];
+  mapItem = [reportedPlace mapItem];
 
-  return v3;
+  return mapItem;
 }
 
 - (int64_t)snippetStyle
 {
-  v2 = [(RAPPlaceMenuQuestion *)self reportedPlace];
+  reportedPlace = [(RAPPlaceMenuQuestion *)self reportedPlace];
 
-  return v2 != 0;
+  return reportedPlace != 0;
 }
 
-- (void)_fillSubmissionParameters:(id)a3
+- (void)_fillSubmissionParameters:(id)parameters
 {
-  v4 = a3;
-  v5 = [v4 commonContext];
+  parametersCopy = parameters;
+  commonContext = [parametersCopy commonContext];
 
-  if (!v5)
+  if (!commonContext)
   {
     v6 = objc_alloc_init(GEORPFeedbackCommonContext);
-    [v4 setCommonContext:v6];
+    [parametersCopy setCommonContext:v6];
   }
 
-  v7 = [v4 commonContext];
-  [v7 addUserPath:1];
+  commonContext2 = [parametersCopy commonContext];
+  [commonContext2 addUserPath:1];
 
   v8.receiver = self;
   v8.super_class = RAPPlaceMenuQuestion;
-  [(RAPMenuQuestion *)&v8 _fillSubmissionParameters:v4];
+  [(RAPMenuQuestion *)&v8 _fillSubmissionParameters:parametersCopy];
 }
 
 - (id)_alternateMapViewContext
 {
-  v2 = [(RAPMenuQuestion *)self selectedMenuItem];
-  v3 = [v2 _alternateMapViewContext];
+  selectedMenuItem = [(RAPMenuQuestion *)self selectedMenuItem];
+  _alternateMapViewContext = [selectedMenuItem _alternateMapViewContext];
 
-  return v3;
+  return _alternateMapViewContext;
 }
 
 - (id)mainMenuItems
@@ -93,16 +93,16 @@ LABEL_7:
   return mainMenuItems;
 }
 
-- (RAPPlaceMenuQuestion)initWithReport:(id)a3 parentQuestion:(id)a4 reportedPlace:(id)a5
+- (RAPPlaceMenuQuestion)initWithReport:(id)report parentQuestion:(id)question reportedPlace:(id)place
 {
-  v9 = a5;
+  placeCopy = place;
   v13.receiver = self;
   v13.super_class = RAPPlaceMenuQuestion;
-  v10 = [(RAPQuestion *)&v13 initWithReport:a3 parentQuestion:a4];
+  v10 = [(RAPQuestion *)&v13 initWithReport:report parentQuestion:question];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_reportedPlace, a5);
+    objc_storeStrong(&v10->_reportedPlace, place);
   }
 
   return v11;

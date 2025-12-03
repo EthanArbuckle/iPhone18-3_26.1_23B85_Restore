@@ -1,26 +1,26 @@
 @interface SISchemaCommonEventMetadata
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (SISchemaCommonEventMetadata)initWithDictionary:(id)a3;
-- (SISchemaCommonEventMetadata)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (SISchemaCommonEventMetadata)initWithDictionary:(id)dictionary;
+- (SISchemaCommonEventMetadata)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SISchemaCommonEventMetadata
 
-- (SISchemaCommonEventMetadata)initWithDictionary:(id)a3
+- (SISchemaCommonEventMetadata)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v15.receiver = self;
   v15.super_class = SISchemaCommonEventMetadata;
   v5 = [(SISchemaCommonEventMetadata *)&v15 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"timestamp"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"timestamp"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -28,7 +28,7 @@
       [(SISchemaCommonEventMetadata *)v5 setTimestamp:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"testFingerprint"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"testFingerprint"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -36,7 +36,7 @@
       [(SISchemaCommonEventMetadata *)v5 setTestFingerprint:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"eventId"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"eventId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -44,7 +44,7 @@
       [(SISchemaCommonEventMetadata *)v5 setEventId:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"emitTimestamp"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"emitTimestamp"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -57,30 +57,30 @@
   return v5;
 }
 
-- (SISchemaCommonEventMetadata)initWithJSON:(id)a3
+- (SISchemaCommonEventMetadata)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SISchemaCommonEventMetadata *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SISchemaCommonEventMetadata *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SISchemaCommonEventMetadata *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -93,64 +93,64 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithLongLong:{-[SISchemaCommonEventMetadata emitTimestamp](self, "emitTimestamp")}];
-    [v3 setObject:v4 forKeyedSubscript:@"emitTimestamp"];
+    [dictionary setObject:v4 forKeyedSubscript:@"emitTimestamp"];
   }
 
   if (self->_eventId)
   {
-    v5 = [(SISchemaCommonEventMetadata *)self eventId];
-    v6 = [v5 dictionaryRepresentation];
-    if (v6)
+    eventId = [(SISchemaCommonEventMetadata *)self eventId];
+    dictionaryRepresentation = [eventId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v6 forKeyedSubscript:@"eventId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"eventId"];
     }
 
     else
     {
-      v7 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v7 forKeyedSubscript:@"eventId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"eventId"];
     }
   }
 
   if (self->_testFingerprint)
   {
-    v8 = [(SISchemaCommonEventMetadata *)self testFingerprint];
-    v9 = [v8 dictionaryRepresentation];
-    if (v9)
+    testFingerprint = [(SISchemaCommonEventMetadata *)self testFingerprint];
+    dictionaryRepresentation2 = [testFingerprint dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v9 forKeyedSubscript:@"testFingerprint"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"testFingerprint"];
     }
 
     else
     {
-      v10 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v10 forKeyedSubscript:@"testFingerprint"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"testFingerprint"];
     }
   }
 
   if (self->_timestamp)
   {
-    v11 = [(SISchemaCommonEventMetadata *)self timestamp];
-    v12 = [v11 dictionaryRepresentation];
-    if (v12)
+    timestamp = [(SISchemaCommonEventMetadata *)self timestamp];
+    dictionaryRepresentation3 = [timestamp dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v12 forKeyedSubscript:@"timestamp"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"timestamp"];
     }
 
     else
     {
-      v13 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v13 forKeyedSubscript:@"timestamp"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"timestamp"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -171,28 +171,28 @@
   return v4 ^ v3 ^ v5 ^ v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
-  v5 = [(SISchemaCommonEventMetadata *)self timestamp];
-  v6 = [v4 timestamp];
-  if ((v5 != 0) == (v6 == 0))
+  timestamp = [(SISchemaCommonEventMetadata *)self timestamp];
+  timestamp2 = [equalCopy timestamp];
+  if ((timestamp != 0) == (timestamp2 == 0))
   {
     goto LABEL_16;
   }
 
-  v7 = [(SISchemaCommonEventMetadata *)self timestamp];
-  if (v7)
+  timestamp3 = [(SISchemaCommonEventMetadata *)self timestamp];
+  if (timestamp3)
   {
-    v8 = v7;
-    v9 = [(SISchemaCommonEventMetadata *)self timestamp];
-    v10 = [v4 timestamp];
-    v11 = [v9 isEqual:v10];
+    v8 = timestamp3;
+    timestamp4 = [(SISchemaCommonEventMetadata *)self timestamp];
+    timestamp5 = [equalCopy timestamp];
+    v11 = [timestamp4 isEqual:timestamp5];
 
     if (!v11)
     {
@@ -204,20 +204,20 @@
   {
   }
 
-  v5 = [(SISchemaCommonEventMetadata *)self testFingerprint];
-  v6 = [v4 testFingerprint];
-  if ((v5 != 0) == (v6 == 0))
+  timestamp = [(SISchemaCommonEventMetadata *)self testFingerprint];
+  timestamp2 = [equalCopy testFingerprint];
+  if ((timestamp != 0) == (timestamp2 == 0))
   {
     goto LABEL_16;
   }
 
-  v12 = [(SISchemaCommonEventMetadata *)self testFingerprint];
-  if (v12)
+  testFingerprint = [(SISchemaCommonEventMetadata *)self testFingerprint];
+  if (testFingerprint)
   {
-    v13 = v12;
-    v14 = [(SISchemaCommonEventMetadata *)self testFingerprint];
-    v15 = [v4 testFingerprint];
-    v16 = [v14 isEqual:v15];
+    v13 = testFingerprint;
+    testFingerprint2 = [(SISchemaCommonEventMetadata *)self testFingerprint];
+    testFingerprint3 = [equalCopy testFingerprint];
+    v16 = [testFingerprint2 isEqual:testFingerprint3];
 
     if (!v16)
     {
@@ -229,22 +229,22 @@
   {
   }
 
-  v5 = [(SISchemaCommonEventMetadata *)self eventId];
-  v6 = [v4 eventId];
-  if ((v5 != 0) == (v6 == 0))
+  timestamp = [(SISchemaCommonEventMetadata *)self eventId];
+  timestamp2 = [equalCopy eventId];
+  if ((timestamp != 0) == (timestamp2 == 0))
   {
 LABEL_16:
 
     goto LABEL_17;
   }
 
-  v17 = [(SISchemaCommonEventMetadata *)self eventId];
-  if (v17)
+  eventId = [(SISchemaCommonEventMetadata *)self eventId];
+  if (eventId)
   {
-    v18 = v17;
-    v19 = [(SISchemaCommonEventMetadata *)self eventId];
-    v20 = [v4 eventId];
-    v21 = [v19 isEqual:v20];
+    v18 = eventId;
+    eventId2 = [(SISchemaCommonEventMetadata *)self eventId];
+    eventId3 = [equalCopy eventId];
+    v21 = [eventId2 isEqual:eventId3];
 
     if (!v21)
     {
@@ -256,9 +256,9 @@ LABEL_16:
   {
   }
 
-  if ((*&self->_has & 1) == (v4[40] & 1))
+  if ((*&self->_has & 1) == (equalCopy[40] & 1))
   {
-    if ((*&self->_has & 1) == 0 || (emitTimestamp = self->_emitTimestamp, emitTimestamp == [v4 emitTimestamp]))
+    if ((*&self->_has & 1) == 0 || (emitTimestamp = self->_emitTimestamp, emitTimestamp == [equalCopy emitTimestamp]))
     {
       v22 = 1;
       goto LABEL_18;
@@ -272,30 +272,30 @@ LABEL_18:
   return v22;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v10 = a3;
-  v4 = [(SISchemaCommonEventMetadata *)self timestamp];
+  toCopy = to;
+  timestamp = [(SISchemaCommonEventMetadata *)self timestamp];
 
-  if (v4)
+  if (timestamp)
   {
-    v5 = [(SISchemaCommonEventMetadata *)self timestamp];
+    timestamp2 = [(SISchemaCommonEventMetadata *)self timestamp];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(SISchemaCommonEventMetadata *)self testFingerprint];
+  testFingerprint = [(SISchemaCommonEventMetadata *)self testFingerprint];
 
-  if (v6)
+  if (testFingerprint)
   {
-    v7 = [(SISchemaCommonEventMetadata *)self testFingerprint];
+    testFingerprint2 = [(SISchemaCommonEventMetadata *)self testFingerprint];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(SISchemaCommonEventMetadata *)self eventId];
+  eventId = [(SISchemaCommonEventMetadata *)self eventId];
 
-  if (v8)
+  if (eventId)
   {
-    v9 = [(SISchemaCommonEventMetadata *)self eventId];
+    eventId2 = [(SISchemaCommonEventMetadata *)self eventId];
     PBDataWriterWriteSubmessage();
   }
 
@@ -305,35 +305,35 @@ LABEL_18:
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v16.receiver = self;
   v16.super_class = SISchemaCommonEventMetadata;
-  v5 = [(SISchemaInstrumentationMessage *)&v16 applySensitiveConditionsPolicy:v4];
-  v6 = [(SISchemaCommonEventMetadata *)self timestamp];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v16 applySensitiveConditionsPolicy:policyCopy];
+  timestamp = [(SISchemaCommonEventMetadata *)self timestamp];
+  v7 = [timestamp applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(SISchemaCommonEventMetadata *)self deleteTimestamp];
   }
 
-  v9 = [(SISchemaCommonEventMetadata *)self testFingerprint];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  testFingerprint = [(SISchemaCommonEventMetadata *)self testFingerprint];
+  v10 = [testFingerprint applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(SISchemaCommonEventMetadata *)self deleteTestFingerprint];
   }
 
-  v12 = [(SISchemaCommonEventMetadata *)self eventId];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  eventId = [(SISchemaCommonEventMetadata *)self eventId];
+  v13 = [eventId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(SISchemaCommonEventMetadata *)self deleteEventId];
   }

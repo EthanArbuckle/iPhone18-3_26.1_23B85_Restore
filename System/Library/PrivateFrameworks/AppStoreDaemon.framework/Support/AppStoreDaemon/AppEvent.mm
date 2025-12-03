@@ -1,6 +1,6 @@
 @interface AppEvent
 - (AppEvent)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -48,12 +48,12 @@
   return v16;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v9.receiver = self;
   v9.super_class = AppEvent;
   v5 = [(SQLiteMemoryEntity *)&v9 copyWithZone:?];
-  v6 = [(NSMutableArray *)self->_mutableForegroundEvents copyWithZone:a3];
+  v6 = [(NSMutableArray *)self->_mutableForegroundEvents copyWithZone:zone];
   v7 = v5[5];
   v5[5] = v6;
 

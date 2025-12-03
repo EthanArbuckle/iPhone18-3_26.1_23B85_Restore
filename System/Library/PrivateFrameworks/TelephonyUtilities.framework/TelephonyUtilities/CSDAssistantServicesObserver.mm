@@ -1,21 +1,21 @@
 @interface CSDAssistantServicesObserver
-- (CSDAssistantServicesObserver)initWithQueue:(id)a3;
+- (CSDAssistantServicesObserver)initWithQueue:(id)queue;
 - (NSString)announceCallsProviderIdentifier;
-- (void)addDelegate:(id)a3 queue:(id)a4;
-- (void)availableAnnouncementRequestTypesChanged:(unint64_t)a3 onPlatform:(int64_t)a4;
+- (void)addDelegate:(id)delegate queue:(id)queue;
+- (void)availableAnnouncementRequestTypesChanged:(unint64_t)changed onPlatform:(int64_t)platform;
 - (void)dealloc;
-- (void)eligibleAnnouncementRequestTypesChanged:(unint64_t)a3 onPlatform:(int64_t)a4;
-- (void)handleAFPreferencesDidChangeNotification:(id)a3;
-- (void)removeDelegate:(id)a3;
-- (void)setAnnounceCallsProviderIdentifier:(id)a3;
-- (void)updateAnnounceCallsVersionForAvailableRequestTypes:(unint64_t)a3;
+- (void)eligibleAnnouncementRequestTypesChanged:(unint64_t)changed onPlatform:(int64_t)platform;
+- (void)handleAFPreferencesDidChangeNotification:(id)notification;
+- (void)removeDelegate:(id)delegate;
+- (void)setAnnounceCallsProviderIdentifier:(id)identifier;
+- (void)updateAnnounceCallsVersionForAvailableRequestTypes:(unint64_t)types;
 @end
 
 @implementation CSDAssistantServicesObserver
 
-- (CSDAssistantServicesObserver)initWithQueue:(id)a3
+- (CSDAssistantServicesObserver)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v21.receiver = self;
   v21.super_class = CSDAssistantServicesObserver;
   v6 = [(CSDAssistantServicesObserver *)&v21 init];
@@ -23,7 +23,7 @@
   if (v6)
   {
     v6->_accessorLock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v6->_queue, a3);
+    objc_storeStrong(&v6->_queue, queue);
     v7->_announceCallsPlatform = 1;
     objc_storeStrong(&v7->_announceCallsProviderIdentifier, TUBundleIdentifierInCallServiceApplication);
     v8 = objc_alloc_init(TUDelegateController);
@@ -79,91 +79,91 @@
   return v3;
 }
 
-- (void)setAnnounceCallsProviderIdentifier:(id)a3
+- (void)setAnnounceCallsProviderIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&self->_accessorLock);
   announceCallsProviderIdentifier = self->_announceCallsProviderIdentifier;
   if ((TUStringsAreEqualOrNil() & 1) == 0)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     v7 = self->_announceCallsProviderIdentifier;
     self->_announceCallsProviderIdentifier = v6;
 
-    v8 = [(CSDAssistantServicesObserver *)self delegateController];
+    delegateController = [(CSDAssistantServicesObserver *)self delegateController];
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_100219060;
     v9[3] = &unk_10061EC48;
     v9[4] = self;
-    v10 = v4;
-    [v8 enumerateDelegatesUsingBlock:v9];
+    v10 = identifierCopy;
+    [delegateController enumerateDelegatesUsingBlock:v9];
   }
 
   os_unfair_lock_unlock(&self->_accessorLock);
 }
 
-- (void)addDelegate:(id)a3 queue:(id)a4
+- (void)addDelegate:(id)delegate queue:(id)queue
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CSDAssistantServicesObserver *)self delegateController];
-  [v8 addDelegate:v7 queue:v6];
+  queueCopy = queue;
+  delegateCopy = delegate;
+  delegateController = [(CSDAssistantServicesObserver *)self delegateController];
+  [delegateController addDelegate:delegateCopy queue:queueCopy];
 }
 
-- (void)removeDelegate:(id)a3
+- (void)removeDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(CSDAssistantServicesObserver *)self delegateController];
-  [v5 removeDelegate:v4];
+  delegateCopy = delegate;
+  delegateController = [(CSDAssistantServicesObserver *)self delegateController];
+  [delegateController removeDelegate:delegateCopy];
 }
 
-- (void)updateAnnounceCallsVersionForAvailableRequestTypes:(unint64_t)a3
+- (void)updateAnnounceCallsVersionForAvailableRequestTypes:(unint64_t)types
 {
-  v5 = [(CSDAssistantServicesObserver *)self isAssistantAvailableWhenLocked];
+  isAssistantAvailableWhenLocked = [(CSDAssistantServicesObserver *)self isAssistantAvailableWhenLocked];
 
-  [(CSDAssistantServicesObserver *)self updateAnnounceCallsVersionForAssistantAvailableWhenLocked:v5 availableRequestTypes:a3];
+  [(CSDAssistantServicesObserver *)self updateAnnounceCallsVersionForAssistantAvailableWhenLocked:isAssistantAvailableWhenLocked availableRequestTypes:types];
 }
 
-- (void)availableAnnouncementRequestTypesChanged:(unint64_t)a3 onPlatform:(int64_t)a4
+- (void)availableAnnouncementRequestTypesChanged:(unint64_t)changed onPlatform:(int64_t)platform
 {
-  if ([(CSDAssistantServicesObserver *)self announceCallsPlatform]== a4)
+  if ([(CSDAssistantServicesObserver *)self announceCallsPlatform]== platform)
   {
     v7 = sub_100004778();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 134217984;
-      v9 = a4;
+      platformCopy = platform;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Available announcement request types changed for platform %ld", &v8, 0xCu);
     }
 
-    [(CSDAssistantServicesObserver *)self updateAnnounceCallsVersionForAvailableRequestTypes:a3];
+    [(CSDAssistantServicesObserver *)self updateAnnounceCallsVersionForAvailableRequestTypes:changed];
   }
 }
 
-- (void)eligibleAnnouncementRequestTypesChanged:(unint64_t)a3 onPlatform:(int64_t)a4
+- (void)eligibleAnnouncementRequestTypesChanged:(unint64_t)changed onPlatform:(int64_t)platform
 {
-  if ([(CSDAssistantServicesObserver *)self announceCallsPlatform]== a4)
+  if ([(CSDAssistantServicesObserver *)self announceCallsPlatform]== platform)
   {
     v5 = sub_100004778();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6 = 134217984;
-      v7 = a4;
+      platformCopy = platform;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Eligible announcement request types changed for platform %ld", &v6, 0xCu);
     }
   }
 }
 
-- (void)handleAFPreferencesDidChangeNotification:(id)a3
+- (void)handleAFPreferencesDidChangeNotification:(id)notification
 {
-  v4 = [(CSDAssistantServicesObserver *)self assistantPreferences];
-  v5 = [v4 disableAssistantWhilePasscodeLocked];
+  assistantPreferences = [(CSDAssistantServicesObserver *)self assistantPreferences];
+  disableAssistantWhilePasscodeLocked = [assistantPreferences disableAssistantWhilePasscodeLocked];
 
-  if (v5 == [(CSDAssistantServicesObserver *)self isAssistantAvailableWhenLocked])
+  if (disableAssistantWhilePasscodeLocked == [(CSDAssistantServicesObserver *)self isAssistantAvailableWhenLocked])
   {
 
-    [(CSDAssistantServicesObserver *)self updateAnnounceCallsVersionForAssistantAvailableWhenLocked:v5 ^ 1];
+    [(CSDAssistantServicesObserver *)self updateAnnounceCallsVersionForAssistantAvailableWhenLocked:disableAssistantWhilePasscodeLocked ^ 1];
   }
 }
 

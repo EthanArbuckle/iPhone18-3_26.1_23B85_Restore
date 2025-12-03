@@ -1,50 +1,50 @@
 @interface MPMusicPlayerApplicationController
-- (MPMusicPlayerApplicationController)initWithClientIdentifier:(id)a3 queue:(id)a4;
-- (id)_mediaItemsForContentItemIDs:(id)a3;
+- (MPMusicPlayerApplicationController)initWithClientIdentifier:(id)identifier queue:(id)queue;
+- (id)_mediaItemsForContentItemIDs:(id)ds;
 - (id)_nowPlaying;
 - (void)_clearConnection;
 - (void)_establishConnectionIfNeeded;
-- (void)_setApplicationMusicPlayerTransitionType:(int64_t)a3;
-- (void)_setApplicationMusicPlayerTransitionType:(int64_t)a3 withDuration:(double)a4;
+- (void)_setApplicationMusicPlayerTransitionType:(int64_t)type;
+- (void)_setApplicationMusicPlayerTransitionType:(int64_t)type withDuration:(double)duration;
 - (void)beginGeneratingPlaybackNotifications;
-- (void)beginPlaybackAtHostTime:(id *)a3;
+- (void)beginPlaybackAtHostTime:(id *)time;
 - (void)dealloc;
 - (void)endGeneratingPlaybackNotifications;
-- (void)onApplicationServer:(id)a3;
-- (void)onApplicationServerAsync:(id)a3 errorHandler:(id)a4;
+- (void)onApplicationServer:(id)server;
+- (void)onApplicationServerAsync:(id)async errorHandler:(id)handler;
 - (void)performQueueTransaction:(void *)queueTransaction completionHandler:(void *)completionHandler;
-- (void)prerollWithCompletion:(id)a3;
-- (void)setDisableAutoPlay:(BOOL)a3;
-- (void)setDisableAutomaticCanBeNowPlaying:(BOOL)a3;
-- (void)setDisableRepeat:(BOOL)a3;
-- (void)setDisableShuffle:(BOOL)a3;
-- (void)setRelativeVolume:(float)a3;
+- (void)prerollWithCompletion:(id)completion;
+- (void)setDisableAutoPlay:(BOOL)play;
+- (void)setDisableAutomaticCanBeNowPlaying:(BOOL)playing;
+- (void)setDisableRepeat:(BOOL)repeat;
+- (void)setDisableShuffle:(BOOL)shuffle;
+- (void)setRelativeVolume:(float)volume;
 @end
 
 @implementation MPMusicPlayerApplicationController
 
-- (void)onApplicationServer:(id)a3
+- (void)onApplicationServer:(id)server
 {
-  v4 = a3;
+  serverCopy = server;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __58__MPMusicPlayerApplicationController_onApplicationServer___block_invoke;
   v6[3] = &unk_1E7680C80;
-  v7 = v4;
-  v5 = v4;
+  v7 = serverCopy;
+  v5 = serverCopy;
   [(MPMusicPlayerController *)self onServer:v6];
 }
 
-- (void)onApplicationServerAsync:(id)a3 errorHandler:(id)a4
+- (void)onApplicationServerAsync:(id)async errorHandler:(id)handler
 {
-  v6 = a3;
+  asyncCopy = async;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __76__MPMusicPlayerApplicationController_onApplicationServerAsync_errorHandler___block_invoke;
   v8[3] = &unk_1E7680610;
-  v9 = v6;
-  v7 = v6;
-  [(MPMusicPlayerController *)self onServerAsync:v8 errorHandler:a4];
+  v9 = asyncCopy;
+  v7 = asyncCopy;
+  [(MPMusicPlayerController *)self onServerAsync:v8 errorHandler:handler];
 }
 
 - (id)_nowPlaying
@@ -53,15 +53,15 @@
   {
     v5.receiver = self;
     v5.super_class = MPMusicPlayerApplicationController;
-    v3 = [(MPMusicPlayerController *)&v5 _nowPlaying];
+    _nowPlaying = [(MPMusicPlayerController *)&v5 _nowPlaying];
   }
 
   else
   {
-    v3 = 0;
+    _nowPlaying = 0;
   }
 
-  return v3;
+  return _nowPlaying;
 }
 
 - (void)_establishConnectionIfNeeded
@@ -117,8 +117,8 @@
 
       if ([(MPMusicPlayerController *)self notificationsCounter]>= 1)
       {
-        v13 = [(NSXPCConnection *)self->_serviceConnection remoteObjectProxy];
-        [v13 setWantsReverseProcessAssertion:1];
+        remoteObjectProxy = [(NSXPCConnection *)self->_serviceConnection remoteObjectProxy];
+        [remoteObjectProxy setWantsReverseProcessAssertion:1];
       }
 
       objc_destroyWeak(&v37);
@@ -146,9 +146,9 @@
 
       if (v18)
       {
-        v21 = [MEMORY[0x1E695DF00] date];
+        date = [MEMORY[0x1E695DF00] date];
         lastWokeDate = self->_lastWokeDate;
-        self->_lastWokeDate = v21;
+        self->_lastWokeDate = date;
       }
 
       else
@@ -198,7 +198,7 @@ LABEL_32:
       v30 = 3221225472;
       v31 = __66__MPMusicPlayerApplicationController__establishConnectionIfNeeded__block_invoke_160;
       v32 = &unk_1E76805E8;
-      v33 = self;
+      selfCopy = self;
       objc_copyWeak(v34, location);
       v34[1] = v5;
       [v28 getServerEndpointWithReply:&v29];
@@ -367,10 +367,10 @@ void __66__MPMusicPlayerApplicationController__establishConnectionIfNeeded__bloc
   [(MPMusicPlayerController *)&v4 _clearConnection];
 }
 
-- (id)_mediaItemsForContentItemIDs:(id)a3
+- (id)_mediaItemsForContentItemIDs:(id)ds
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dsCopy = ds;
   v5 = os_log_create("com.apple.amp.mediaplayer", "SDKPlayback");
   v6 = os_signpost_id_generate(v5);
 
@@ -380,7 +380,7 @@ void __66__MPMusicPlayerApplicationController__establishConnectionIfNeeded__bloc
   if (v6 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v7))
   {
     LODWORD(buf) = 134217984;
-    *(&buf + 4) = [v4 count];
+    *(&buf + 4) = [dsCopy count];
     _os_signpost_emit_with_name_impl(&dword_1A238D000, v8, OS_SIGNPOST_INTERVAL_BEGIN, v6, "_mediaItemsForContentItemIDs", "contentItemIDs.count=%llu", &buf, 0xCu);
   }
 
@@ -396,7 +396,7 @@ void __66__MPMusicPlayerApplicationController__establishConnectionIfNeeded__bloc
   v28[1] = 3221225472;
   v28[2] = __67__MPMusicPlayerApplicationController__mediaItemsForContentItemIDs___block_invoke;
   v28[3] = &unk_1E76805A0;
-  v10 = v4;
+  v10 = dsCopy;
   v29 = v10;
   p_buf = &buf;
   [(MPMusicPlayerApplicationController *)self onApplicationServer:v28];
@@ -420,13 +420,13 @@ void __66__MPMusicPlayerApplicationController__establishConnectionIfNeeded__bloc
         }
 
         v16 = *(*(&v24 + 1) + 8 * i);
-        v17 = [v16 itemIdentifier];
-        if (v17)
+        itemIdentifier = [v16 itemIdentifier];
+        if (itemIdentifier)
         {
           v18 = [(MPMusicPlayerController *)self _mediaItemFromNowPlaying:v16];
           if (v18)
           {
-            [v11 setObject:v18 forKey:v17];
+            [v11 setObject:v18 forKey:itemIdentifier];
           }
         }
       }
@@ -489,23 +489,23 @@ void __67__MPMusicPlayerApplicationController__mediaItemsForContentItemIDs___blo
   *(v10 + 40) = v5;
 }
 
-- (void)setDisableAutomaticCanBeNowPlaying:(BOOL)a3
+- (void)setDisableAutomaticCanBeNowPlaying:(BOOL)playing
 {
-  *(&self->_disableAutoPlay + 1) = a3;
+  *(&self->_disableAutoPlay + 1) = playing;
   if (self->super._connection)
   {
     v3[0] = MEMORY[0x1E69E9820];
     v3[1] = 3221225472;
     v3[2] = __73__MPMusicPlayerApplicationController_setDisableAutomaticCanBeNowPlaying___block_invoke;
     v3[3] = &__block_descriptor_33_e52_v16__0___MPMusicPlayerControllerApplicationServer__8l;
-    v4 = a3;
+    playingCopy = playing;
     [(MPMusicPlayerApplicationController *)self onApplicationServer:v3];
   }
 }
 
-- (void)setRelativeVolume:(float)a3
+- (void)setRelativeVolume:(float)volume
 {
-  v3 = fminf(a3, 1.0);
+  v3 = fminf(volume, 1.0);
   if (v3 < 0.0)
   {
     v3 = 0.0;
@@ -519,13 +519,13 @@ void __67__MPMusicPlayerApplicationController__mediaItemsForContentItemIDs___blo
   [(MPMusicPlayerApplicationController *)self onApplicationServer:v4];
 }
 
-- (void)beginPlaybackAtHostTime:(id *)a3
+- (void)beginPlaybackAtHostTime:(id *)time
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __62__MPMusicPlayerApplicationController_beginPlaybackAtHostTime___block_invoke;
   v3[3] = &__block_descriptor_56_e61_v24__0___MPMusicPlayerControllerApplicationServer__8___B___16l;
-  v4 = *a3;
+  v4 = *time;
   [(MPMusicPlayerApplicationController *)self onApplicationServerAsync:v3 errorHandler:&__block_literal_global_51139];
 }
 
@@ -554,14 +554,14 @@ void __62__MPMusicPlayerApplicationController_beginPlaybackAtHostTime___block_in
   }
 }
 
-- (void)prerollWithCompletion:(id)a3
+- (void)prerollWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __60__MPMusicPlayerApplicationController_prerollWithCompletion___block_invoke;
   v8[3] = &unk_1E7680510;
-  v9 = v4;
+  v9 = completionCopy;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __60__MPMusicPlayerApplicationController_prerollWithCompletion___block_invoke_3;
@@ -612,10 +612,10 @@ uint64_t __60__MPMusicPlayerApplicationController_prerollWithCompletion___block_
   return result;
 }
 
-- (void)_setApplicationMusicPlayerTransitionType:(int64_t)a3
+- (void)_setApplicationMusicPlayerTransitionType:(int64_t)type
 {
-  self->_transitionType = a3;
-  if (a3 == 1)
+  self->_transitionType = type;
+  if (type == 1)
   {
     self->_crossFadeDuration = 4.0;
   }
@@ -633,21 +633,21 @@ uint64_t __60__MPMusicPlayerApplicationController_prerollWithCompletion___block_
   }
 }
 
-- (void)_setApplicationMusicPlayerTransitionType:(int64_t)a3 withDuration:(double)a4
+- (void)_setApplicationMusicPlayerTransitionType:(int64_t)type withDuration:(double)duration
 {
-  if (a3)
+  if (type)
   {
-    self->_transitionType = a3;
-    if (a3 == 1)
+    self->_transitionType = type;
+    if (type == 1)
     {
-      self->_crossFadeDuration = a4;
+      self->_crossFadeDuration = duration;
     }
   }
 
   else
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"MPMusicPlayerApplicationController.m" lineNumber:179 description:@"Duration cannot be passed in with TransitionTypeNone"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPMusicPlayerApplicationController.m" lineNumber:179 description:@"Duration cannot be passed in with TransitionTypeNone"];
 
     self->_transitionType = 0;
   }
@@ -663,10 +663,10 @@ uint64_t __60__MPMusicPlayerApplicationController_prerollWithCompletion___block_
   }
 }
 
-- (void)setDisableShuffle:(BOOL)a3
+- (void)setDisableShuffle:(BOOL)shuffle
 {
   v5 = *(&self->_disableAutoPlay + 2);
-  if (v5 == a3)
+  if (v5 == shuffle)
   {
     v8 = v3;
     v9 = v4;
@@ -679,10 +679,10 @@ uint64_t __60__MPMusicPlayerApplicationController_prerollWithCompletion___block_
   }
 }
 
-- (void)setDisableRepeat:(BOOL)a3
+- (void)setDisableRepeat:(BOOL)repeat
 {
   v5 = *(&self->_disableAutoPlay + 3);
-  if (v5 == a3)
+  if (v5 == repeat)
   {
     v8 = v3;
     v9 = v4;
@@ -695,10 +695,10 @@ uint64_t __60__MPMusicPlayerApplicationController_prerollWithCompletion___block_
   }
 }
 
-- (void)setDisableAutoPlay:(BOOL)a3
+- (void)setDisableAutoPlay:(BOOL)play
 {
   v5 = *(&self->_disableAutoPlay + 4);
-  if (v5 == a3)
+  if (v5 == play)
   {
     v8 = v3;
     v9 = v4;
@@ -718,7 +718,7 @@ uint64_t __60__MPMusicPlayerApplicationController_prerollWithCompletion___block_
   v8 = [[MPMusicPlayerControllerMutableQueue alloc] initWithController:self];
   objc_initWeak(&location, v8);
   v6[2](v6, v8);
-  v9 = [(MPMusicPlayerControllerMutableQueue *)v8 modifications];
+  modifications = [(MPMusicPlayerControllerMutableQueue *)v8 modifications];
 
   v10 = objc_loadWeakRetained(&location);
   [v10 fault];
@@ -727,9 +727,9 @@ uint64_t __60__MPMusicPlayerApplicationController_prerollWithCompletion___block_
   v15[1] = 3221225472;
   v15[2] = __80__MPMusicPlayerApplicationController_performQueueTransaction_completionHandler___block_invoke;
   v15[3] = &unk_1E7680478;
-  v11 = v9;
+  v11 = modifications;
   v16 = v11;
-  v17 = self;
+  selfCopy = self;
   v18 = v7;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
@@ -806,8 +806,8 @@ void __80__MPMusicPlayerApplicationController_performQueueTransaction_completion
   v4.receiver = self;
   v4.super_class = MPMusicPlayerApplicationController;
   [(MPMusicPlayerController *)&v4 endGeneratingPlaybackNotifications];
-  v3 = [(NSXPCConnection *)self->_serviceConnection remoteObjectProxy];
-  [v3 setWantsReverseProcessAssertion:{-[MPMusicPlayerController notificationsCounter](self, "notificationsCounter") > 0}];
+  remoteObjectProxy = [(NSXPCConnection *)self->_serviceConnection remoteObjectProxy];
+  [remoteObjectProxy setWantsReverseProcessAssertion:{-[MPMusicPlayerController notificationsCounter](self, "notificationsCounter") > 0}];
 }
 
 - (void)beginGeneratingPlaybackNotifications
@@ -815,8 +815,8 @@ void __80__MPMusicPlayerApplicationController_performQueueTransaction_completion
   v4.receiver = self;
   v4.super_class = MPMusicPlayerApplicationController;
   [(MPMusicPlayerController *)&v4 beginGeneratingPlaybackNotifications];
-  v3 = [(NSXPCConnection *)self->_serviceConnection remoteObjectProxy];
-  [v3 setWantsReverseProcessAssertion:{-[MPMusicPlayerController notificationsCounter](self, "notificationsCounter") > 0}];
+  remoteObjectProxy = [(NSXPCConnection *)self->_serviceConnection remoteObjectProxy];
+  [remoteObjectProxy setWantsReverseProcessAssertion:{-[MPMusicPlayerController notificationsCounter](self, "notificationsCounter") > 0}];
 }
 
 - (void)dealloc
@@ -827,11 +827,11 @@ void __80__MPMusicPlayerApplicationController_performQueueTransaction_completion
   [(MPMusicPlayerController *)&v3 dealloc];
 }
 
-- (MPMusicPlayerApplicationController)initWithClientIdentifier:(id)a3 queue:(id)a4
+- (MPMusicPlayerApplicationController)initWithClientIdentifier:(id)identifier queue:(id)queue
 {
   v5.receiver = self;
   v5.super_class = MPMusicPlayerApplicationController;
-  result = [(MPMusicPlayerController *)&v5 initWithClientIdentifier:a3 queue:a4];
+  result = [(MPMusicPlayerController *)&v5 initWithClientIdentifier:identifier queue:queue];
   if (result)
   {
     *(&result->_disableAutoPlay + 4) = 1;

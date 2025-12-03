@@ -1,5 +1,5 @@
 @interface _UIFontSystemCacheKey
-- (BOOL)_isEqualToKey:(id)a3;
+- (BOOL)_isEqualToKey:(id)key;
 - (unint64_t)_hash;
 - (void)dealloc;
 @end
@@ -32,27 +32,27 @@
   [(_UIFontSystemCacheKey *)&v3 dealloc];
 }
 
-- (BOOL)_isEqualToKey:(id)a3
+- (BOOL)_isEqualToKey:(id)key
 {
-  if (self->super._hash == *(a3 + 1))
+  if (self->super._hash == *(key + 1))
   {
     v24 = v9;
     v25 = v4;
     v26 = v3;
-    if (self->_traits != *(a3 + 5))
+    if (self->_traits != *(key + 5))
     {
       goto LABEL_15;
     }
 
     design = self->_design;
-    if (design == *(a3 + 3) || (v14 = [(NSString *)design isEqualToString:?]))
+    if (design == *(key + 3) || (v14 = [(NSString *)design isEqualToString:?]))
     {
       weight = self->_weight;
-      [a3 weight];
+      [key weight];
       if (vabdd_f64(weight, v16) < 0.00000011920929)
       {
         width = self->_width;
-        v18 = *(a3 + 5);
+        v18 = *(key + 5);
         if (width)
         {
           if (!v18)
@@ -73,14 +73,14 @@
         }
 
         pointSize = self->_pointSize;
-        [a3 pointSize];
+        [key pointSize];
         if (vabdd_f64(pointSize, v20) < 0.00000011920929)
         {
           monospacedDigits = self->_monospacedDigits;
-          if (monospacedDigits == [a3 monospacedDigits])
+          if (monospacedDigits == [key monospacedDigits])
           {
             textLegibility = self->_textLegibility;
-            LOBYTE(v14) = textLegibility == [a3 textLegibility];
+            LOBYTE(v14) = textLegibility == [key textLegibility];
             return v14;
           }
         }

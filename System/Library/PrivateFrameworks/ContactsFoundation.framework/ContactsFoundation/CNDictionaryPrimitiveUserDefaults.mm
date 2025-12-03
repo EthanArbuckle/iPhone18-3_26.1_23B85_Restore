@@ -1,8 +1,8 @@
 @interface CNDictionaryPrimitiveUserDefaults
-- (BOOL)primitiveBoolValueForKey:(id)a3 keyExists:(BOOL *)a4;
+- (BOOL)primitiveBoolValueForKey:(id)key keyExists:(BOOL *)exists;
 - (CNDictionaryPrimitiveUserDefaults)init;
-- (int64_t)primitiveIntegerValueForKey:(id)a3 keyExists:(BOOL *)a4;
-- (void)setPrimitiveObject:(id)a3 forKey:(id)a4;
+- (int64_t)primitiveIntegerValueForKey:(id)key keyExists:(BOOL *)exists;
+- (void)setPrimitiveObject:(id)object forKey:(id)key;
 @end
 
 @implementation CNDictionaryPrimitiveUserDefaults
@@ -24,46 +24,46 @@
   return v2;
 }
 
-- (void)setPrimitiveObject:(id)a3 forKey:(id)a4
+- (void)setPrimitiveObject:(id)object forKey:(id)key
 {
   preferences = self->_preferences;
-  if (a3)
+  if (object)
   {
-    [(NSMutableDictionary *)preferences setObject:a3 forKey:a4];
+    [(NSMutableDictionary *)preferences setObject:object forKey:key];
   }
 
   else
   {
-    [(NSMutableDictionary *)preferences removeObjectForKey:a4];
+    [(NSMutableDictionary *)preferences removeObjectForKey:key];
   }
 }
 
-- (BOOL)primitiveBoolValueForKey:(id)a3 keyExists:(BOOL *)a4
+- (BOOL)primitiveBoolValueForKey:(id)key keyExists:(BOOL *)exists
 {
-  v5 = [(NSMutableDictionary *)self->_preferences objectForKey:a3];
+  v5 = [(NSMutableDictionary *)self->_preferences objectForKey:key];
   v6 = v5;
-  if (a4)
+  if (exists)
   {
-    *a4 = v5 != 0;
+    *exists = v5 != 0;
   }
 
-  v7 = [v5 BOOLValue];
+  bOOLValue = [v5 BOOLValue];
 
-  return v7;
+  return bOOLValue;
 }
 
-- (int64_t)primitiveIntegerValueForKey:(id)a3 keyExists:(BOOL *)a4
+- (int64_t)primitiveIntegerValueForKey:(id)key keyExists:(BOOL *)exists
 {
-  v5 = [(NSMutableDictionary *)self->_preferences objectForKey:a3];
+  v5 = [(NSMutableDictionary *)self->_preferences objectForKey:key];
   v6 = v5;
-  if (a4)
+  if (exists)
   {
-    *a4 = v5 != 0;
+    *exists = v5 != 0;
   }
 
-  v7 = [v5 integerValue];
+  integerValue = [v5 integerValue];
 
-  return v7;
+  return integerValue;
 }
 
 @end

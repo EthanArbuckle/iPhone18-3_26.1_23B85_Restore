@@ -1,26 +1,26 @@
 @interface IDSQUICConnectionIDs
-- (id)_getConnectionIDData:(unsigned int)a3;
-- (id)_getConnectionIDDispatchData:(unsigned int)a3;
-- (id)generateLocalIDs:(id *)a3;
-- (unsigned)_generateUniqueQUICConnectionID:(unsigned int)a3 usedLocalConnectionIDs:(id *)a4;
+- (id)_getConnectionIDData:(unsigned int)data;
+- (id)_getConnectionIDDispatchData:(unsigned int)data;
+- (id)generateLocalIDs:(id *)ds;
+- (unsigned)_generateUniqueQUICConnectionID:(unsigned int)d usedLocalConnectionIDs:(id *)ds;
 @end
 
 @implementation IDSQUICConnectionIDs
 
-- (unsigned)_generateUniqueQUICConnectionID:(unsigned int)a3 usedLocalConnectionIDs:(id *)a4
+- (unsigned)_generateUniqueQUICConnectionID:(unsigned int)d usedLocalConnectionIDs:(id *)ds
 {
   v18 = *MEMORY[0x1E69E9840];
   v6 = +[IDSFoundationLog GlobalLink];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [*a4 count];
+    v7 = [*ds count];
     *buf = 134217984;
     v17 = v7;
     _os_log_impl(&dword_1A7AD9000, v6, OS_LOG_TYPE_DEFAULT, "generating a connection ID (%lu already taken)", buf, 0xCu);
   }
 
   __buf = -1431655766;
-  v8 = a3 << 28;
+  v8 = d << 28;
   v9 = -100000;
   do
   {
@@ -31,7 +31,7 @@
       sub_1A7E1ACD0();
     }
 
-    v11 = *a4;
+    v11 = *ds;
     v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:?];
     LOBYTE(v11) = [v11 containsObject:v12];
   }
@@ -48,27 +48,27 @@
   return __buf;
 }
 
-- (id)_getConnectionIDData:(unsigned int)a3
+- (id)_getConnectionIDData:(unsigned int)data
 {
-  v5 = bswap32(a3);
+  v5 = bswap32(data);
   v3 = [MEMORY[0x1E695DEF0] dataWithBytes:&v5 length:4];
 
   return v3;
 }
 
-- (id)_getConnectionIDDispatchData:(unsigned int)a3
+- (id)_getConnectionIDDispatchData:(unsigned int)data
 {
-  buffer = bswap32(a3);
+  buffer = bswap32(data);
   v3 = dispatch_data_create(&buffer, 4uLL, 0, 0);
 
   return v3;
 }
 
-- (id)generateLocalIDs:(id *)a3
+- (id)generateLocalIDs:(id *)ds
 {
   v9[2] = *MEMORY[0x1E69E9840];
-  self->_localAVCConnectionID = [(IDSQUICConnectionIDs *)self _generateUniqueQUICConnectionID:0 usedLocalConnectionIDs:a3];
-  self->_localIDSConnectionID = [(IDSQUICConnectionIDs *)self _generateUniqueQUICConnectionID:1 usedLocalConnectionIDs:a3];
+  self->_localAVCConnectionID = [(IDSQUICConnectionIDs *)self _generateUniqueQUICConnectionID:0 usedLocalConnectionIDs:ds];
+  self->_localIDSConnectionID = [(IDSQUICConnectionIDs *)self _generateUniqueQUICConnectionID:1 usedLocalConnectionIDs:ds];
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_localAVCConnectionID];
   v9[0] = v5;
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_localIDSConnectionID];

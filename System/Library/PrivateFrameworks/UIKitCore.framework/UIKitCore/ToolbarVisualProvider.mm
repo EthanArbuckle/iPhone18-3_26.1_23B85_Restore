@@ -1,26 +1,26 @@
 @interface ToolbarVisualProvider
 - (BOOL)toolbarIsSmall;
-- (CGSize)defaultSizeForOrientation:(int64_t)a3;
+- (CGSize)defaultSizeForOrientation:(int64_t)orientation;
 - (_TtC5UIKit21ToolbarVisualProvider)init;
-- (_TtC5UIKit21ToolbarVisualProvider)initWithToolbar:(id)a3;
+- (_TtC5UIKit21ToolbarVisualProvider)initWithToolbar:(id)toolbar;
 - (double)backgroundTransitionProgress;
-- (id)traitCollectionForChild:(id)a3 baseTraitCollection:(id)a4;
-- (void)appearance:(id)a3 categoriesChanged:(int64_t)a4;
+- (id)traitCollectionForChild:(id)child baseTraitCollection:(id)collection;
+- (void)appearance:(id)appearance categoriesChanged:(int64_t)changed;
 - (void)finishInteractiveTransition;
 - (void)layoutSubviews;
-- (void)setBackgroundTransitionProgress:(double)a3;
+- (void)setBackgroundTransitionProgress:(double)progress;
 - (void)startInteractiveTransition;
 - (void)updateAppearance;
-- (void)updateInteractiveTransitionWithProgress:(double)a3;
-- (void)updateWithItems:(id)a3 fromOldItems:(id)a4 animate:(BOOL)a5;
+- (void)updateInteractiveTransitionWithProgress:(double)progress;
+- (void)updateWithItems:(id)items fromOldItems:(id)oldItems animate:(BOOL)animate;
 @end
 
 @implementation ToolbarVisualProvider
 
-- (_TtC5UIKit21ToolbarVisualProvider)initWithToolbar:(id)a3
+- (_TtC5UIKit21ToolbarVisualProvider)initWithToolbar:(id)toolbar
 {
-  v4 = a3;
-  sub_188B2FDE0(a3);
+  toolbarCopy = toolbar;
+  sub_188B2FDE0(toolbar);
   return result;
 }
 
@@ -29,7 +29,7 @@
   v3 = *(&self->super.super.isa + OBJC_IVAR____TtC5UIKit21ToolbarVisualProvider_model);
   swift_getKeyPath();
   sub_188AF0C98();
-  v4 = self;
+  selfCopy = self;
   sub_18A4A2C08();
 
   swift_beginAccess();
@@ -40,34 +40,34 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_188C01F88();
 }
 
-- (void)appearance:(id)a3 categoriesChanged:(int64_t)a4
+- (void)appearance:(id)appearance categoriesChanged:(int64_t)changed
 {
-  v4 = self;
+  selfCopy = self;
   sub_188B3019C();
 }
 
-- (id)traitCollectionForChild:(id)a3 baseTraitCollection:(id)a4
+- (id)traitCollectionForChild:(id)child baseTraitCollection:(id)collection
 {
-  v5 = a4;
-  v6 = self;
-  result = [(_UIToolbarVisualProvider *)v6 toolbar];
+  collectionCopy = collection;
+  selfCopy = self;
+  result = [(_UIToolbarVisualProvider *)selfCopy toolbar];
   if (result)
   {
     v8 = result;
-    v9 = [result barStyle];
+    barStyle = [result barStyle];
 
-    if (v9 == 1)
+    if (barStyle == 1)
     {
       v10 = sub_1890A6140(2);
 
-      v5 = v10;
+      collectionCopy = v10;
     }
 
-    return v5;
+    return collectionCopy;
   }
 
   else
@@ -78,18 +78,18 @@
   return result;
 }
 
-- (void)updateWithItems:(id)a3 fromOldItems:(id)a4 animate:(BOOL)a5
+- (void)updateWithItems:(id)items fromOldItems:(id)oldItems animate:(BOOL)animate
 {
   sub_188A34624(0, &qword_1ED48E8C0);
   v7 = sub_18A4A7548();
-  v8 = self;
-  sub_188C19C30(v7, a5);
+  selfCopy = self;
+  sub_188C19C30(v7, animate);
 }
 
-- (CGSize)defaultSizeForOrientation:(int64_t)a3
+- (CGSize)defaultSizeForOrientation:(int64_t)orientation
 {
-  v4 = self;
-  sub_188C3D53C(a3);
+  selfCopy = self;
+  sub_188C3D53C(orientation);
   v6 = v5;
   v8 = v7;
 
@@ -105,7 +105,7 @@
   v3 = *(&self->super.super.isa + OBJC_IVAR____TtC5UIKit21ToolbarVisualProvider_model);
   swift_getKeyPath();
   sub_188AF0C98();
-  v4 = self;
+  selfCopy = self;
   sub_18A4A2C08();
 
   v5 = *(v3 + 136);
@@ -113,27 +113,27 @@
   return v5;
 }
 
-- (void)setBackgroundTransitionProgress:(double)a3
+- (void)setBackgroundTransitionProgress:(double)progress
 {
-  v4 = self;
-  sub_1890A6630(a3);
+  selfCopy = self;
+  sub_1890A6630(progress);
 }
 
 - (void)updateAppearance
 {
-  v2 = self;
+  selfCopy = self;
   sub_188B3019C();
 }
 
 - (void)startInteractiveTransition
 {
-  v2 = self;
+  selfCopy = self;
   sub_1890A6AB0();
 }
 
-- (void)updateInteractiveTransitionWithProgress:(double)a3
+- (void)updateInteractiveTransitionWithProgress:(double)progress
 {
-  v3 = self;
+  selfCopy = self;
   MEMORY[0x18CFE1B90](0.15, 0.85, 0.25);
   sub_18A4A49A8();
 }
@@ -141,7 +141,7 @@
 - (void)finishInteractiveTransition
 {
   *(&self->super.super.isa + OBJC_IVAR____TtC5UIKit21ToolbarVisualProvider_isInteractive) = 0;
-  v2 = self;
+  selfCopy = self;
   sub_18A4A6C78();
   sub_18A4A49A8();
 }

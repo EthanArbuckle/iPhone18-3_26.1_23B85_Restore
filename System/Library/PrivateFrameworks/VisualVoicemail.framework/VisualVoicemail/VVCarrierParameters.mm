@@ -1,31 +1,31 @@
 @interface VVCarrierParameters
-- (VVCarrierParameters)initWithService:(id)a3;
-- (id)parameterValueForKey:(id)a3;
+- (VVCarrierParameters)initWithService:(id)service;
+- (id)parameterValueForKey:(id)key;
 - (void)dealloc;
 @end
 
 @implementation VVCarrierParameters
 
-- (VVCarrierParameters)initWithService:(id)a3
+- (VVCarrierParameters)initWithService:(id)service
 {
-  v4 = a3;
+  serviceCopy = service;
   v77.receiver = self;
   v77.super_class = VVCarrierParameters;
   v5 = [(VVCarrierParameters *)&v77 init];
   v63 = v5;
   if (v5)
   {
-    v62 = v4;
-    v65 = [v4 contextInfo];
-    v64 = [v4 telephonyClient];
+    v62 = serviceCopy;
+    contextInfo = [serviceCopy contextInfo];
+    telephonyClient = [serviceCopy telephonyClient];
     v6 = +[NSMutableDictionary dictionary];
-    v5->mambaID = [v4 getServiceObjLogPrefix];
+    v5->mambaID = [serviceCopy getServiceObjLogPrefix];
     p_mambaID = &v5->mambaID;
-    v8 = [v65 context];
+    context = [contextInfo context];
     v89 = @"com.apple.voicemail.imap";
     v9 = [NSArray arrayWithObjects:&v89 count:1];
     v76 = 0;
-    v10 = [v64 context:v8 getCarrierBundleValue:v9 error:&v76];
+    v10 = [telephonyClient context:context getCarrierBundleValue:v9 error:&v76];
     v11 = v76;
 
     if (v11)
@@ -45,9 +45,9 @@
     v88[0] = @"com.apple.voicemail.imap";
     v88[1] = @"AllowedIMAPServers";
     v13 = [NSArray arrayWithObjects:v88 count:2];
-    v14 = [v65 context];
+    context2 = [contextInfo context];
     v75 = v11;
-    v15 = [v64 context:v14 getCarrierBundleValue:v13 error:&v75];
+    v15 = [telephonyClient context:context2 getCarrierBundleValue:v13 error:&v75];
     v16 = v75;
 
     if (v16)
@@ -64,11 +64,11 @@
       [v6 addEntriesFromDictionary:v15];
     }
 
-    v18 = [v65 context];
+    context3 = [contextInfo context];
     v87 = @"VVMIgnoresIntlDataRoaming";
     v19 = [NSArray arrayWithObjects:&v87 count:1];
     v74 = v16;
-    v20 = [v64 context:v18 getCarrierBundleValue:v19 error:&v74];
+    v20 = [telephonyClient context:context3 getCarrierBundleValue:v19 error:&v74];
     v21 = v74;
 
     if (v21)
@@ -85,11 +85,11 @@
       [v6 setObject:v20 forKey:@"VVMIgnoresIntlDataRoaming"];
     }
 
-    v23 = [v65 context];
+    context4 = [contextInfo context];
     v86 = @"VVMRetryIntervals";
     v24 = [NSArray arrayWithObjects:&v86 count:1];
     v73 = v21;
-    v25 = [v64 context:v23 getCarrierBundleValue:v24 error:&v73];
+    v25 = [telephonyClient context:context4 getCarrierBundleValue:v24 error:&v73];
     v26 = v73;
 
     if (v26)
@@ -106,11 +106,11 @@
       [v6 setObject:v25 forKey:@"VVMRetryIntervals"];
     }
 
-    v28 = [v65 context];
+    context5 = [contextInfo context];
     v85 = @"VVMDetachedStorageDisabled";
     v29 = [NSArray arrayWithObjects:&v85 count:1];
     v72 = v26;
-    v30 = [v64 context:v28 getCarrierBundleValue:v29 error:&v72];
+    v30 = [telephonyClient context:context5 getCarrierBundleValue:v29 error:&v72];
     v31 = v72;
 
     if (v31)
@@ -127,11 +127,11 @@
       [v6 setObject:v30 forKey:@"VVMDetachedStorageDisabled"];
     }
 
-    v33 = [v65 context];
+    context6 = [contextInfo context];
     v84 = @"VVMNotificationFallbackTimeout";
     v34 = [NSArray arrayWithObjects:&v84 count:1];
     v71 = v31;
-    v35 = [v64 context:v33 getCarrierBundleValue:v34 error:&v71];
+    v35 = [telephonyClient context:context6 getCarrierBundleValue:v34 error:&v71];
     v61 = v71;
 
     if (v61)
@@ -148,7 +148,7 @@
       [v6 setObject:v35 forKey:@"VVMNotificationFallbackTimeout"];
     }
 
-    v37 = [v64 carrierBundle:v65];
+    v37 = [telephonyClient carrierBundle:contextInfo];
     v38 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v37 isGreetingChangeSupportedForSubscription]);
     [v6 setObject:v38 forKey:@"GreetingChangeSupported"];
 
@@ -164,8 +164,8 @@
       v70 = 0u;
       v67 = 0u;
       v68 = 0u;
-      v42 = [v41 allKeys];
-      v43 = [v42 countByEnumeratingWithState:&v67 objects:v83 count:16];
+      allKeys = [v41 allKeys];
+      v43 = [allKeys countByEnumeratingWithState:&v67 objects:v83 count:16];
       if (v43)
       {
         v44 = *v68;
@@ -175,7 +175,7 @@
           {
             if (*v68 != v44)
             {
-              objc_enumerationMutation(v42);
+              objc_enumerationMutation(allKeys);
             }
 
             v46 = *(*(&v67 + 1) + 8 * i);
@@ -189,7 +189,7 @@
             }
           }
 
-          v43 = [v42 countByEnumeratingWithState:&v67 objects:v83 count:16];
+          v43 = [allKeys countByEnumeratingWithState:&v67 objects:v83 count:16];
         }
 
         while (v43);
@@ -215,13 +215,13 @@
     v52 = sub_1000090B8();
     if (os_log_type_enabled(v52, OS_LOG_TYPE_DEFAULT))
     {
-      v53 = [v62 contextInfo];
+      contextInfo2 = [v62 contextInfo];
       *buf = 136315650;
       *&buf[4] = v51;
       *&buf[12] = 2080;
       *&buf[14] = " ";
       v79 = 2112;
-      v80 = v53;
+      v80 = contextInfo2;
       _os_log_impl(&_mh_execute_header, v52, OS_LOG_TYPE_DEFAULT, "#I %s%sInitialized CarrierParameters for context %@:", buf, 0x20u);
     }
 
@@ -250,7 +250,7 @@
       _os_log_impl(&_mh_execute_header, v55, OS_LOG_TYPE_DEFAULT, "#I %s%s<%@ %p> Created", buf, 0x2Au);
     }
 
-    v4 = v62;
+    serviceCopy = v62;
   }
 
   return v63;
@@ -269,7 +269,7 @@
     v11 = 2112;
     v12 = objc_opt_class();
     v13 = 2048;
-    v14 = self;
+    selfCopy = self;
     v5 = v12;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "#I %s%s<%@ %p> Deleted", buf, 0x2Au);
   }
@@ -279,9 +279,9 @@
   [(VVCarrierParameters *)&v6 dealloc];
 }
 
-- (id)parameterValueForKey:(id)a3
+- (id)parameterValueForKey:(id)key
 {
-  v3 = [(NSDictionary *)self->_parameterValues objectForKeyedSubscript:a3];
+  v3 = [(NSDictionary *)self->_parameterValues objectForKeyedSubscript:key];
 
   return v3;
 }

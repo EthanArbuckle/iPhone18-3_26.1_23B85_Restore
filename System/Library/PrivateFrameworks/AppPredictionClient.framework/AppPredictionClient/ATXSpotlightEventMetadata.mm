@@ -1,68 +1,68 @@
 @interface ATXSpotlightEventMetadata
-- (ATXSpotlightEventMetadata)initWithCoder:(id)a3;
-- (ATXSpotlightEventMetadata)initWithProto:(id)a3;
-- (ATXSpotlightEventMetadata)initWithProtoData:(id)a3;
-- (ATXSpotlightEventMetadata)initWithQueryAtEngagement:(id)a3 engagedAppString:(id)a4 didSearchDuringSession:(id)a5 searchEngagedBundleId:(id)a6 searchEngagedActionType:(id)a7;
-- (BOOL)checkAndReportDecodingFailureIfNeededForid:(id)a3 key:(id)a4 coder:(id)a5 errorDomain:(id)a6 errorCode:(int64_t)a7;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToATXSpotlightEventMetadata:(id)a3;
+- (ATXSpotlightEventMetadata)initWithCoder:(id)coder;
+- (ATXSpotlightEventMetadata)initWithProto:(id)proto;
+- (ATXSpotlightEventMetadata)initWithProtoData:(id)data;
+- (ATXSpotlightEventMetadata)initWithQueryAtEngagement:(id)engagement engagedAppString:(id)string didSearchDuringSession:(id)session searchEngagedBundleId:(id)id searchEngagedActionType:(id)type;
+- (BOOL)checkAndReportDecodingFailureIfNeededForid:(id)forid key:(id)key coder:(id)coder errorDomain:(id)domain errorCode:(int64_t)code;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToATXSpotlightEventMetadata:(id)metadata;
 - (id)encodeAsProto;
 - (id)proto;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXSpotlightEventMetadata
 
-- (ATXSpotlightEventMetadata)initWithQueryAtEngagement:(id)a3 engagedAppString:(id)a4 didSearchDuringSession:(id)a5 searchEngagedBundleId:(id)a6 searchEngagedActionType:(id)a7
+- (ATXSpotlightEventMetadata)initWithQueryAtEngagement:(id)engagement engagedAppString:(id)string didSearchDuringSession:(id)session searchEngagedBundleId:(id)id searchEngagedActionType:(id)type
 {
-  v20 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  engagementCopy = engagement;
+  stringCopy = string;
+  sessionCopy = session;
+  idCopy = id;
+  typeCopy = type;
   v21.receiver = self;
   v21.super_class = ATXSpotlightEventMetadata;
   v17 = [(ATXSpotlightEventMetadata *)&v21 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_queryAtEngagement, a3);
-    objc_storeStrong(&v18->_engagedAppString, a4);
-    objc_storeStrong(&v18->_didSearchDuringSession, a5);
-    objc_storeStrong(&v18->_searchEngagedBundleId, a6);
-    objc_storeStrong(&v18->_searchEngagedActionType, a7);
+    objc_storeStrong(&v17->_queryAtEngagement, engagement);
+    objc_storeStrong(&v18->_engagedAppString, string);
+    objc_storeStrong(&v18->_didSearchDuringSession, session);
+    objc_storeStrong(&v18->_searchEngagedBundleId, id);
+    objc_storeStrong(&v18->_searchEngagedActionType, type);
   }
 
   return v18;
 }
 
-- (ATXSpotlightEventMetadata)initWithProtoData:(id)a3
+- (ATXSpotlightEventMetadata)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[ATXPBSpotlightEventMetadata alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[ATXPBSpotlightEventMetadata alloc] initWithData:dataCopy];
 
     self = [(ATXSpotlightEventMetadata *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (ATXSpotlightEventMetadata)initWithProto:(id)a3
+- (ATXSpotlightEventMetadata)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (!v4)
+  protoCopy = proto;
+  if (!protoCopy)
   {
 LABEL_8:
-    v8 = 0;
+    selfCopy = 0;
     goto LABEL_14;
   }
 
@@ -78,7 +78,7 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  v5 = v4;
+  v5 = protoCopy;
   if ([(ATXPBSpotlightEventMetadata *)v5 hasDidSearchDuringSession])
   {
     v6 = [MEMORY[0x1E696AD98] numberWithBool:-[ATXPBSpotlightEventMetadata didSearchDuringSession](v5)];
@@ -99,15 +99,15 @@ LABEL_8:
     v9 = 0;
   }
 
-  v10 = [(ATXPBSpotlightEventMetadata *)v5 queryAtEngagement];
-  v11 = [(ATXPBSpotlightEventMetadata *)v5 engagedAppString];
-  v12 = [(ATXPBSpotlightEventMetadata *)v5 searchEngagedBundleId];
-  self = [(ATXSpotlightEventMetadata *)self initWithQueryAtEngagement:v10 engagedAppString:v11 didSearchDuringSession:v6 searchEngagedBundleId:v12 searchEngagedActionType:v9];
+  queryAtEngagement = [(ATXPBSpotlightEventMetadata *)v5 queryAtEngagement];
+  engagedAppString = [(ATXPBSpotlightEventMetadata *)v5 engagedAppString];
+  searchEngagedBundleId = [(ATXPBSpotlightEventMetadata *)v5 searchEngagedBundleId];
+  self = [(ATXSpotlightEventMetadata *)self initWithQueryAtEngagement:queryAtEngagement engagedAppString:engagedAppString didSearchDuringSession:v6 searchEngagedBundleId:searchEngagedBundleId searchEngagedActionType:v9];
 
-  v8 = self;
+  selfCopy = self;
 LABEL_14:
 
-  return v8;
+  return selfCopy;
 }
 
 - (id)proto
@@ -133,39 +133,39 @@ LABEL_14:
 
 - (id)encodeAsProto
 {
-  v2 = [(ATXSpotlightEventMetadata *)self proto];
-  v3 = [v2 data];
+  proto = [(ATXSpotlightEventMetadata *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (BOOL)checkAndReportDecodingFailureIfNeededForid:(id)a3 key:(id)a4 coder:(id)a5 errorDomain:(id)a6 errorCode:(int64_t)a7
+- (BOOL)checkAndReportDecodingFailureIfNeededForid:(id)forid key:(id)key coder:(id)coder errorDomain:(id)domain errorCode:(int64_t)code
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!a3)
+  keyCopy = key;
+  coderCopy = coder;
+  domainCopy = domain;
+  if (!forid)
   {
-    v15 = [v12 error];
+    error = [coderCopy error];
 
-    if (v15)
+    if (error)
     {
       v14 = 1;
       goto LABEL_7;
     }
 
-    if (([v12 containsValueForKey:v11] & 1) == 0)
+    if (([coderCopy containsValueForKey:keyCopy] & 1) == 0)
     {
       v16 = objc_alloc(MEMORY[0x1E696ABC0]);
       v21 = *MEMORY[0x1E696A578];
-      v17 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Failed to decode key %@", v11, v21];
+      v17 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Failed to decode key %@", keyCopy, v21];
       v22[0] = v17;
       v14 = 1;
       v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v22 forKeys:&v21 count:1];
-      v19 = [v16 initWithDomain:v13 code:a7 userInfo:v18];
+      v19 = [v16 initWithDomain:domainCopy code:code userInfo:v18];
 
-      [v12 failWithError:v19];
+      [coderCopy failWithError:v19];
       goto LABEL_7;
     }
   }
@@ -176,45 +176,45 @@ LABEL_7:
   return v14;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ATXSpotlightEventMetadata *)self encodeAsProto];
-  [v4 encodeObject:v5 forKey:@"protobufData"];
+  coderCopy = coder;
+  encodeAsProto = [(ATXSpotlightEventMetadata *)self encodeAsProto];
+  [coderCopy encodeObject:encodeAsProto forKey:@"protobufData"];
 }
 
-- (ATXSpotlightEventMetadata)initWithCoder:(id)a3
+- (ATXSpotlightEventMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"protobufData"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"protobufData"];
 
   v6 = [(ATXSpotlightEventMetadata *)self initWithProtoData:v5];
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXSpotlightEventMetadata *)self isEqualToATXSpotlightEventMetadata:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXSpotlightEventMetadata *)self isEqualToATXSpotlightEventMetadata:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToATXSpotlightEventMetadata:(id)a3
+- (BOOL)isEqualToATXSpotlightEventMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   v5 = self->_queryAtEngagement;
   v6 = v5;
-  if (v5 == v4[1])
+  if (v5 == metadataCopy[1])
   {
   }
 
@@ -230,7 +230,7 @@ LABEL_7:
 
   v8 = self->_engagedAppString;
   v9 = v8;
-  if (v8 == v4[2])
+  if (v8 == metadataCopy[2])
   {
   }
 
@@ -246,7 +246,7 @@ LABEL_7:
 
   v11 = self->_didSearchDuringSession;
   v12 = v11;
-  if (v11 == v4[3])
+  if (v11 == metadataCopy[3])
   {
   }
 
@@ -262,7 +262,7 @@ LABEL_7:
 
   v14 = self->_searchEngagedBundleId;
   v15 = v14;
-  if (v14 == v4[4])
+  if (v14 == metadataCopy[4])
   {
   }
 
@@ -280,7 +280,7 @@ LABEL_15:
 
   v18 = self->_searchEngagedActionType;
   v19 = v18;
-  if (v18 == v4[5])
+  if (v18 == metadataCopy[5])
   {
     v17 = 1;
   }

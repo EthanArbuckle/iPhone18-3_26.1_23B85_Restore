@@ -1,14 +1,14 @@
 @interface BKAudiobookPlugin
-- (id)helperForURL:(id)a3 withOptions:(id)a4;
+- (id)helperForURL:(id)l withOptions:(id)options;
 @end
 
 @implementation BKAudiobookPlugin
 
-- (id)helperForURL:(id)a3 withOptions:(id)a4
+- (id)helperForURL:(id)l withOptions:(id)options
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[BKMLAudiobookHelper alloc] initWithAssetUrl:v6 options:v5];
+  optionsCopy = options;
+  lCopy = l;
+  v7 = [[BKMLAudiobookHelper alloc] initWithAssetUrl:lCopy options:optionsCopy];
 
   return v7;
 }

@@ -1,28 +1,28 @@
 @interface RTEventAgentManager
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (RTEventAgentManager)initWithPlatform:(id)a3;
-- (void)_launchDaemonWithRestorationIdentifier:(id)a3 withReply:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (RTEventAgentManager)initWithPlatform:(id)platform;
+- (void)_launchDaemonWithRestorationIdentifier:(id)identifier withReply:(id)reply;
 - (void)_setup;
 - (void)checkin;
 - (void)dealloc;
-- (void)launchDaemonWithRestorationIdentifier:(id)a3 withReply:(id)a4;
+- (void)launchDaemonWithRestorationIdentifier:(id)identifier withReply:(id)reply;
 - (void)onLaunchDaemonWithRestorationIdentifierFromDefaults;
-- (void)setPluginConnection:(id)a3;
+- (void)setPluginConnection:(id)connection;
 - (void)setup;
 @end
 
 @implementation RTEventAgentManager
 
-- (RTEventAgentManager)initWithPlatform:(id)a3
+- (RTEventAgentManager)initWithPlatform:(id)platform
 {
-  v5 = a3;
+  platformCopy = platform;
   v9.receiver = self;
   v9.super_class = RTEventAgentManager;
   v6 = [(RTXPCListener *)&v9 initWithMachServiceName:@"com.apple.routined.event"];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_platform, a3);
+    objc_storeStrong(&v6->_platform, platform);
     [(RTEventAgentManager *)v7 setup];
   }
 
@@ -41,8 +41,8 @@
 - (void)_setup
 {
   v9 = *MEMORY[0x277D85DE8];
-  v3 = [(RTXPCListener *)self queue];
-  [(RTEventAgentManager *)self _setQueue:v3];
+  queue = [(RTXPCListener *)self queue];
+  [(RTEventAgentManager *)self _setQueue:queue];
 
   [(RTEventAgentManager *)self setDelegate:self];
   [(RTEventAgentManager *)self resume];
@@ -68,49 +68,49 @@
 
 - (void)setup
 {
-  v3 = [(RTXPCListener *)self queue];
+  queue = [(RTXPCListener *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __28__RTEventAgentManager_setup__block_invoke;
   block[3] = &unk_2788C4EA0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  connectionCopy = connection;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v6 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
-      v7 = [RTXPC executablePathOfConnection:v5];
-      v8 = [v5 processIdentifier];
-      v9 = [RTXPC signingIdentifierOfConnection:v5];
+      v7 = [RTXPC executablePathOfConnection:connectionCopy];
+      processIdentifier = [connectionCopy processIdentifier];
+      v9 = [RTXPC signingIdentifierOfConnection:connectionCopy];
       v11 = 138412802;
       v12 = v7;
       v13 = 1024;
-      v14 = v8;
+      v14 = processIdentifier;
       v15 = 2112;
       v16 = v9;
       _os_log_impl(&dword_2304B3000, v6, OS_LOG_TYPE_INFO, "incoming connetion from %@(%d), signing identifier, %@", &v11, 0x1Cu);
     }
   }
 
-  [(RTEventAgentManager *)self setPluginConnection:v5];
+  [(RTEventAgentManager *)self setPluginConnection:connectionCopy];
 
   return 1;
 }
 
-- (void)setPluginConnection:(id)a3
+- (void)setPluginConnection:(id)connection
 {
-  v5 = a3;
-  objc_storeStrong(&self->_pluginConnection, a3);
+  connectionCopy = connection;
+  objc_storeStrong(&self->_pluginConnection, connection);
   pluginConnection = self->_pluginConnection;
-  v7 = [(RTXPCListener *)self queue];
-  [(NSXPCConnection *)pluginConnection _setQueue:v7];
+  queue = [(RTXPCListener *)self queue];
+  [(NSXPCConnection *)pluginConnection _setQueue:queue];
 
   v8 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_28465E4C8];
   [(NSXPCConnection *)self->_pluginConnection setRemoteObjectInterface:v8];
@@ -163,8 +163,8 @@ void __43__RTEventAgentManager_setPluginConnection___block_invoke_54()
 {
   if ([(RTPlatform *)self->_platform internalInstall])
   {
-    v4 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v5 = [v4 objectForKey:@"LaunchDaemonWithRestorationIdentifier"];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v5 = [standardUserDefaults objectForKey:@"LaunchDaemonWithRestorationIdentifier"];
 
     if (v5)
     {
@@ -206,42 +206,42 @@ void __74__RTEventAgentManager_onLaunchDaemonWithRestorationIdentifierFromDefaul
   }
 }
 
-- (void)_launchDaemonWithRestorationIdentifier:(id)a3 withReply:(id)a4
+- (void)_launchDaemonWithRestorationIdentifier:(id)identifier withReply:(id)reply
 {
   v13 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  replyCopy = reply;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v8 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       v11 = 138412290;
-      v12 = v6;
+      v12 = identifierCopy;
       _os_log_impl(&dword_2304B3000, v8, OS_LOG_TYPE_INFO, "launch daemon with restoration identifer, %@", &v11, 0xCu);
     }
   }
 
-  v9 = [(RTEventAgentManager *)self pluginConnection];
-  v10 = [v9 remoteObjectProxy];
-  [v10 launchDaemonWithRestorationIdentifier:v6 reply:v7];
+  pluginConnection = [(RTEventAgentManager *)self pluginConnection];
+  remoteObjectProxy = [pluginConnection remoteObjectProxy];
+  [remoteObjectProxy launchDaemonWithRestorationIdentifier:identifierCopy reply:replyCopy];
 }
 
-- (void)launchDaemonWithRestorationIdentifier:(id)a3 withReply:(id)a4
+- (void)launchDaemonWithRestorationIdentifier:(id)identifier withReply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTXPCListener *)self queue];
+  identifierCopy = identifier;
+  replyCopy = reply;
+  queue = [(RTXPCListener *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __71__RTEventAgentManager_launchDaemonWithRestorationIdentifier_withReply___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = identifierCopy;
+  v13 = replyCopy;
+  v9 = replyCopy;
+  v10 = identifierCopy;
+  dispatch_async(queue, block);
 }
 
 - (void)checkin

@@ -1,10 +1,10 @@
 @interface PPEvent
-+ (id)convertBatchOfEKEvents:(id)a3 calendarInternPool:(id)a4;
-+ (id)convertBatchOfEKEvents:(id)a3 calendarInternPool:(id)a4 interningSet:(id)a5;
-+ (id)deferredAllocationEventFromEKEvent:(id)a3;
-+ (id)descriptionForSuggestedEventCategory:(unsigned __int8)a3;
-+ (unsigned)suggestedEventCategoryFromMetadata:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)convertBatchOfEKEvents:(id)events calendarInternPool:(id)pool;
++ (id)convertBatchOfEKEvents:(id)events calendarInternPool:(id)pool interningSet:(id)set;
++ (id)deferredAllocationEventFromEKEvent:(id)event;
++ (id)descriptionForSuggestedEventCategory:(unsigned __int8)category;
++ (unsigned)suggestedEventCategoryFromMetadata:(id)metadata;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isStructuredEvent;
 - (CLLocation)structuredLocationCoordinates;
 - (EKObjectID)objectID;
@@ -20,47 +20,47 @@
 - (NSString)title;
 - (NSURL)externalURI;
 - (NSURL)url;
-- (PPEvent)initWithCoder:(id)a3;
-- (PPEvent)initWithEKEvent:(id)a3 calendarInternPool:(id)a4;
-- (PPEvent)initWithEventIdentifier:(id)a3 objectID:(id)a4 title:(id)a5 location:(id)a6 calendar:(id)a7 startDate:(id)a8 endDate:(id)a9 availability:(char)a10 externalURI:(id)a11 attendees:(id)a12 organizerName:(id)a13 eventFlags:(unsigned __int8)a14 notes:(id)a15 url:(id)a16 structuredLocationTitle:(id)a17 structuredLocationAddress:(id)a18 structuredLocationCoordinates:(id)a19 suggestedEventCategory:(unsigned __int8)a20;
-- (PPEvent)initWithEventIdentifier:(id)a3 objectID:(id)a4 title:(id)a5 location:(id)a6 calendar:(id)a7 startDate:(id)a8 endDate:(id)a9 availability:(char)a10 externalURIString:(id)a11 attendees:(id)a12 organizerName:(id)a13 eventFlags:(unsigned __int8)a14 notes:(id)a15 urlString:(id)a16 structuredLocationTitle:(id)a17 structuredLocationAddress:(id)a18 structuredLocationCoordinates:(id)a19 suggestedEventCategory:(unsigned __int8)a20;
-- (PPEvent)initWithIndex:(unint64_t)a3 inBackingPlists:(id)a4 calendar:(id)a5;
-- (PPEvent)initWithPlist:(id)a3 calendar:(id)a4;
+- (PPEvent)initWithCoder:(id)coder;
+- (PPEvent)initWithEKEvent:(id)event calendarInternPool:(id)pool;
+- (PPEvent)initWithEventIdentifier:(id)identifier objectID:(id)d title:(id)title location:(id)location calendar:(id)calendar startDate:(id)date endDate:(id)endDate availability:(char)self0 externalURI:(id)self1 attendees:(id)self2 organizerName:(id)self3 eventFlags:(unsigned __int8)self4 notes:(id)self5 url:(id)self6 structuredLocationTitle:(id)self7 structuredLocationAddress:(id)self8 structuredLocationCoordinates:(id)self9 suggestedEventCategory:(unsigned __int8)category;
+- (PPEvent)initWithEventIdentifier:(id)identifier objectID:(id)d title:(id)title location:(id)location calendar:(id)calendar startDate:(id)date endDate:(id)endDate availability:(char)self0 externalURIString:(id)self1 attendees:(id)self2 organizerName:(id)self3 eventFlags:(unsigned __int8)self4 notes:(id)self5 urlString:(id)self6 structuredLocationTitle:(id)self7 structuredLocationAddress:(id)self8 structuredLocationCoordinates:(id)self9 suggestedEventCategory:(unsigned __int8)category;
+- (PPEvent)initWithIndex:(unint64_t)index inBackingPlists:(id)plists calendar:(id)calendar;
+- (PPEvent)initWithPlist:(id)plist calendar:(id)calendar;
 - (char)availability;
 - (id)description;
-- (int64_t)compareStartDateWithEvent:(id)a3;
+- (int64_t)compareStartDateWithEvent:(id)event;
 - (unint64_t)hash;
 - (unsigned)eventFlags;
 - (unsigned)suggestedEventCategory;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PPEvent
 
 - (BOOL)isStructuredEvent
 {
-  v3 = [(PPEvent *)self suggestedEventCategory];
-  if (v3)
+  suggestedEventCategory = [(PPEvent *)self suggestedEventCategory];
+  if (suggestedEventCategory)
   {
-    LOBYTE(v3) = [(PPEvent *)self suggestedEventCategory]!= 12;
+    LOBYTE(suggestedEventCategory) = [(PPEvent *)self suggestedEventCategory]!= 12;
   }
 
-  return v3;
+  return suggestedEventCategory;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v10 = 1;
   }
 
   else
   {
-    if (v4)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -179,75 +179,75 @@ LABEL_29:
 
 - (unint64_t)hash
 {
-  v2 = [(PPEvent *)self objectID];
-  v3 = [v2 hash];
+  objectID = [(PPEvent *)self objectID];
+  v3 = [objectID hash];
 
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v21 = a3;
-  v4 = [(PPEvent *)self eventIdentifier];
-  [v21 encodeObject:v4 forKey:@"eid"];
+  coderCopy = coder;
+  eventIdentifier = [(PPEvent *)self eventIdentifier];
+  [coderCopy encodeObject:eventIdentifier forKey:@"eid"];
 
-  v5 = [(PPEvent *)self objectID];
-  v6 = [v5 URIRepresentation];
-  v7 = [v6 absoluteString];
-  [v21 encodeObject:v7 forKey:@"oid"];
+  objectID = [(PPEvent *)self objectID];
+  uRIRepresentation = [objectID URIRepresentation];
+  absoluteString = [uRIRepresentation absoluteString];
+  [coderCopy encodeObject:absoluteString forKey:@"oid"];
 
-  v8 = [(PPEvent *)self title];
-  [v21 encodeObject:v8 forKey:@"ttl"];
+  title = [(PPEvent *)self title];
+  [coderCopy encodeObject:title forKey:@"ttl"];
 
-  v9 = [(PPEvent *)self location];
-  [v21 encodeObject:v9 forKey:@"loc"];
+  location = [(PPEvent *)self location];
+  [coderCopy encodeObject:location forKey:@"loc"];
 
-  v10 = [(PPEvent *)self calendar];
-  [v21 encodeObject:v10 forKey:@"cal"];
+  calendar = [(PPEvent *)self calendar];
+  [coderCopy encodeObject:calendar forKey:@"cal"];
 
-  v11 = [(PPEvent *)self startDate];
-  [v21 encodeObject:v11 forKey:@"sdt"];
+  startDate = [(PPEvent *)self startDate];
+  [coderCopy encodeObject:startDate forKey:@"sdt"];
 
-  v12 = [(PPEvent *)self endDate];
-  [v21 encodeObject:v12 forKey:@"edt"];
+  endDate = [(PPEvent *)self endDate];
+  [coderCopy encodeObject:endDate forKey:@"edt"];
 
-  [v21 encodeInt32:-[PPEvent availability](self forKey:{"availability"), @"avl"}];
-  v13 = [(PPEvent *)self externalURI];
-  [v21 encodeObject:v13 forKey:@"uri"];
+  [coderCopy encodeInt32:-[PPEvent availability](self forKey:{"availability"), @"avl"}];
+  externalURI = [(PPEvent *)self externalURI];
+  [coderCopy encodeObject:externalURI forKey:@"uri"];
 
-  v14 = [(PPEvent *)self attendees];
-  [v21 encodeObject:v14 forKey:@"atn"];
+  attendees = [(PPEvent *)self attendees];
+  [coderCopy encodeObject:attendees forKey:@"atn"];
 
-  v15 = [(PPEvent *)self organizerName];
-  [v21 encodeObject:v15 forKey:@"onm"];
+  organizerName = [(PPEvent *)self organizerName];
+  [coderCopy encodeObject:organizerName forKey:@"onm"];
 
-  [v21 encodeInt32:-[PPEvent eventFlags](self forKey:{"eventFlags"), @"efl"}];
-  v16 = [(PPEvent *)self notes];
-  [v21 encodeObject:v16 forKey:@"not"];
+  [coderCopy encodeInt32:-[PPEvent eventFlags](self forKey:{"eventFlags"), @"efl"}];
+  notes = [(PPEvent *)self notes];
+  [coderCopy encodeObject:notes forKey:@"not"];
 
   v17 = [(PPEvent *)self url];
-  [v21 encodeObject:v17 forKey:@"url"];
+  [coderCopy encodeObject:v17 forKey:@"url"];
 
-  v18 = [(PPEvent *)self structuredLocationTitle];
-  [v21 encodeObject:v18 forKey:@"slt"];
+  structuredLocationTitle = [(PPEvent *)self structuredLocationTitle];
+  [coderCopy encodeObject:structuredLocationTitle forKey:@"slt"];
 
-  v19 = [(PPEvent *)self structuredLocationAddress];
-  [v21 encodeObject:v19 forKey:@"sla"];
+  structuredLocationAddress = [(PPEvent *)self structuredLocationAddress];
+  [coderCopy encodeObject:structuredLocationAddress forKey:@"sla"];
 
-  v20 = [(PPEvent *)self structuredLocationCoordinates];
-  [v21 encodeObject:v20 forKey:@"slc"];
+  structuredLocationCoordinates = [(PPEvent *)self structuredLocationCoordinates];
+  [coderCopy encodeObject:structuredLocationCoordinates forKey:@"slc"];
 
-  [v21 encodeInt32:-[PPEvent suggestedEventCategory](self forKey:{"suggestedEventCategory"), @"sec"}];
+  [coderCopy encodeInt32:-[PPEvent suggestedEventCategory](self forKey:{"suggestedEventCategory"), @"sec"}];
 }
 
-- (PPEvent)initWithCoder:(id)a3
+- (PPEvent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
   v6 = objc_opt_class();
   v7 = objc_opt_class();
-  v8 = [v4 decodeObjectOfClass:v5 forKey:@"eid"];
-  v9 = [v4 decodeObjectOfClass:v5 forKey:@"oid"];
+  v8 = [coderCopy decodeObjectOfClass:v5 forKey:@"eid"];
+  v9 = [coderCopy decodeObjectOfClass:v5 forKey:@"oid"];
   v44 = v8;
   if (v9)
   {
@@ -261,17 +261,17 @@ LABEL_29:
     v12 = 0;
   }
 
-  v13 = [v4 decodeObjectOfClass:v5 forKey:@"ttl"];
-  v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"cal"];
-  v15 = [v4 decodeObjectOfClass:v6 forKey:@"sdt"];
-  v16 = [v4 decodeObjectOfClass:v6 forKey:@"edt"];
+  v13 = [coderCopy decodeObjectOfClass:v5 forKey:@"ttl"];
+  v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"cal"];
+  v15 = [coderCopy decodeObjectOfClass:v6 forKey:@"sdt"];
+  v16 = [coderCopy decodeObjectOfClass:v6 forKey:@"edt"];
   v17 = 0;
   if (v12 && v14 && v15 && v16)
   {
     v41 = v16;
-    v39 = [v4 decodeObjectOfClass:v5 forKey:@"loc"];
-    v38 = [v4 decodeInt32ForKey:@"avl"];
-    v36 = [v4 decodeObjectOfClass:v7 forKey:@"uri"];
+    v39 = [coderCopy decodeObjectOfClass:v5 forKey:@"loc"];
+    v38 = [coderCopy decodeInt32ForKey:@"avl"];
+    v36 = [coderCopy decodeObjectOfClass:v7 forKey:@"uri"];
     v18 = objc_autoreleasePoolPush();
     v42 = v13;
     v19 = objc_alloc(MEMORY[0x1E695DFD8]);
@@ -279,17 +279,17 @@ LABEL_29:
     v20 = objc_opt_class();
     v37 = [v19 initWithObjects:{v20, objc_opt_class(), 0}];
     objc_autoreleasePoolPop(v18);
-    v34 = [v4 decodeObjectOfClasses:v37 forKey:@"atn"];
-    v33 = [v4 decodeObjectOfClass:v5 forKey:@"onm"];
-    v35 = [v4 decodeInt32ForKey:@"efl"];
-    v32 = [v4 decodeObjectOfClass:v5 forKey:@"not"];
-    v21 = [v4 decodeObjectOfClass:v7 forKey:@"url"];
-    [v4 decodeObjectOfClass:v5 forKey:@"slt"];
+    v34 = [coderCopy decodeObjectOfClasses:v37 forKey:@"atn"];
+    v33 = [coderCopy decodeObjectOfClass:v5 forKey:@"onm"];
+    v35 = [coderCopy decodeInt32ForKey:@"efl"];
+    v32 = [coderCopy decodeObjectOfClass:v5 forKey:@"not"];
+    v21 = [coderCopy decodeObjectOfClass:v7 forKey:@"url"];
+    [coderCopy decodeObjectOfClass:v5 forKey:@"slt"];
     v40 = v15;
     v23 = v22 = v14;
-    v24 = [v4 decodeObjectOfClass:v5 forKey:@"sla"];
-    v25 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"slc"];
-    LOBYTE(v31) = [v4 decodeInt32ForKey:@"sec"];
+    v24 = [coderCopy decodeObjectOfClass:v5 forKey:@"sla"];
+    v25 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"slc"];
+    LOBYTE(v31) = [coderCopy decodeInt32ForKey:@"sec"];
     LOBYTE(v30) = v35;
     LOBYTE(v29) = v38;
     v26 = v44;
@@ -317,39 +317,39 @@ LABEL_29:
 - (id)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(PPEvent *)self eventIdentifier];
-  v5 = [(PPEvent *)self title];
-  v6 = [(PPEvent *)self startDate];
-  v7 = [(PPEvent *)self endDate];
-  v8 = [(PPEvent *)self attendees];
-  v9 = [v3 initWithFormat:@"<PPEvent i:'%@' t:'%@' s:'%@' e:'%@' a:'%tu'>", v4, v5, v6, v7, objc_msgSend(v8, "count")];
+  eventIdentifier = [(PPEvent *)self eventIdentifier];
+  title = [(PPEvent *)self title];
+  startDate = [(PPEvent *)self startDate];
+  endDate = [(PPEvent *)self endDate];
+  attendees = [(PPEvent *)self attendees];
+  v9 = [v3 initWithFormat:@"<PPEvent i:'%@' t:'%@' s:'%@' e:'%@' a:'%tu'>", eventIdentifier, title, startDate, endDate, objc_msgSend(attendees, "count")];
 
   return v9;
 }
 
-- (int64_t)compareStartDateWithEvent:(id)a3
+- (int64_t)compareStartDateWithEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(PPEvent *)self startDate];
-  v6 = [v4 startDate];
+  eventCopy = event;
+  startDate = [(PPEvent *)self startDate];
+  startDate2 = [eventCopy startDate];
 
-  v7 = [v5 compare:v6];
+  v7 = [startDate compare:startDate2];
   return v7;
 }
 
 - (unsigned)suggestedEventCategory
 {
-  v2 = [(PPAttendee *)self _plist];
-  v3 = [v2 objectForKeyedSubscript:@"sec"];
-  v4 = [v3 unsignedCharValue];
+  _plist = [(PPAttendee *)self _plist];
+  v3 = [_plist objectForKeyedSubscript:@"sec"];
+  unsignedCharValue = [v3 unsignedCharValue];
 
-  return v4;
+  return unsignedCharValue;
 }
 
 - (CLLocation)structuredLocationCoordinates
 {
-  v2 = [(PPAttendee *)self _plist];
-  v3 = [v2 objectForKeyedSubscript:@"slc"];
+  _plist = [(PPAttendee *)self _plist];
+  v3 = [_plist objectForKeyedSubscript:@"slc"];
 
   if (v3)
   {
@@ -373,24 +373,24 @@ LABEL_29:
 
 - (NSString)structuredLocationAddress
 {
-  v2 = [(PPAttendee *)self _plist];
-  v3 = [v2 objectForKeyedSubscript:@"sla"];
+  _plist = [(PPAttendee *)self _plist];
+  v3 = [_plist objectForKeyedSubscript:@"sla"];
 
   return v3;
 }
 
 - (NSString)structuredLocationTitle
 {
-  v2 = [(PPAttendee *)self _plist];
-  v3 = [v2 objectForKeyedSubscript:@"slt"];
+  _plist = [(PPAttendee *)self _plist];
+  v3 = [_plist objectForKeyedSubscript:@"slt"];
 
   return v3;
 }
 
 - (NSURL)url
 {
-  v2 = [(PPAttendee *)self _plist];
-  v3 = [v2 objectForKeyedSubscript:@"url"];
+  _plist = [(PPAttendee *)self _plist];
+  v3 = [_plist objectForKeyedSubscript:@"url"];
 
   if (v3)
   {
@@ -407,33 +407,33 @@ LABEL_29:
 
 - (NSString)notes
 {
-  v2 = [(PPAttendee *)self _plist];
-  v3 = [v2 objectForKeyedSubscript:@"not"];
+  _plist = [(PPAttendee *)self _plist];
+  v3 = [_plist objectForKeyedSubscript:@"not"];
 
   return v3;
 }
 
 - (unsigned)eventFlags
 {
-  v2 = [(PPAttendee *)self _plist];
-  v3 = [v2 objectForKeyedSubscript:@"efl"];
-  v4 = [v3 unsignedCharValue];
+  _plist = [(PPAttendee *)self _plist];
+  v3 = [_plist objectForKeyedSubscript:@"efl"];
+  unsignedCharValue = [v3 unsignedCharValue];
 
-  return v4;
+  return unsignedCharValue;
 }
 
 - (NSString)organizerName
 {
-  v2 = [(PPAttendee *)self _plist];
-  v3 = [v2 objectForKeyedSubscript:@"onm"];
+  _plist = [(PPAttendee *)self _plist];
+  v3 = [_plist objectForKeyedSubscript:@"onm"];
 
   return v3;
 }
 
 - (NSArray)attendees
 {
-  v2 = [(PPAttendee *)self _plist];
-  v3 = [v2 objectForKeyedSubscript:@"atn"];
+  _plist = [(PPAttendee *)self _plist];
+  v3 = [_plist objectForKeyedSubscript:@"atn"];
 
   v4 = [v3 count];
   if (v4)
@@ -465,8 +465,8 @@ id *__20__PPEvent_attendees__block_invoke(uint64_t a1, void *a2)
 
 - (NSURL)externalURI
 {
-  v2 = [(PPAttendee *)self _plist];
-  v3 = [v2 objectForKeyedSubscript:@"uri"];
+  _plist = [(PPAttendee *)self _plist];
+  v3 = [_plist objectForKeyedSubscript:@"uri"];
 
   if (v3)
   {
@@ -483,41 +483,41 @@ id *__20__PPEvent_attendees__block_invoke(uint64_t a1, void *a2)
 
 - (char)availability
 {
-  v2 = [(PPAttendee *)self _plist];
-  v3 = [v2 objectForKeyedSubscript:@"avl"];
-  v4 = [v3 unsignedCharValue];
+  _plist = [(PPAttendee *)self _plist];
+  v3 = [_plist objectForKeyedSubscript:@"avl"];
+  unsignedCharValue = [v3 unsignedCharValue];
 
-  return v4;
+  return unsignedCharValue;
 }
 
 - (NSDate)endDate
 {
-  v2 = [(PPAttendee *)self _plist];
-  v3 = [v2 objectForKeyedSubscript:@"edt"];
+  _plist = [(PPAttendee *)self _plist];
+  v3 = [_plist objectForKeyedSubscript:@"edt"];
 
   return v3;
 }
 
 - (NSDate)startDate
 {
-  v2 = [(PPAttendee *)self _plist];
-  v3 = [v2 objectForKeyedSubscript:@"sdt"];
+  _plist = [(PPAttendee *)self _plist];
+  v3 = [_plist objectForKeyedSubscript:@"sdt"];
 
   return v3;
 }
 
 - (NSString)location
 {
-  v2 = [(PPAttendee *)self _plist];
-  v3 = [v2 objectForKeyedSubscript:@"loc"];
+  _plist = [(PPAttendee *)self _plist];
+  v3 = [_plist objectForKeyedSubscript:@"loc"];
 
   return v3;
 }
 
 - (NSString)title
 {
-  v2 = [(PPAttendee *)self _plist];
-  v3 = [v2 objectForKeyedSubscript:@"ttl"];
+  _plist = [(PPAttendee *)self _plist];
+  v3 = [_plist objectForKeyedSubscript:@"ttl"];
 
   return v3;
 }
@@ -525,8 +525,8 @@ id *__20__PPEvent_attendees__block_invoke(uint64_t a1, void *a2)
 - (EKObjectID)objectID
 {
   v3 = objc_alloc(getEKObjectIDClass());
-  v4 = [(PPAttendee *)self _plist];
-  v5 = [v4 objectForKeyedSubscript:@"oid"];
+  _plist = [(PPAttendee *)self _plist];
+  v5 = [_plist objectForKeyedSubscript:@"oid"];
   v6 = [v3 initWithDictionaryRepresentation:v5];
 
   return v6;
@@ -534,69 +534,69 @@ id *__20__PPEvent_attendees__block_invoke(uint64_t a1, void *a2)
 
 - (NSString)eventIdentifier
 {
-  v2 = [(PPAttendee *)self _plist];
-  v3 = [v2 objectForKeyedSubscript:@"eid"];
+  _plist = [(PPAttendee *)self _plist];
+  v3 = [_plist objectForKeyedSubscript:@"eid"];
 
   return v3;
 }
 
-- (PPEvent)initWithIndex:(unint64_t)a3 inBackingPlists:(id)a4 calendar:(id)a5
+- (PPEvent)initWithIndex:(unint64_t)index inBackingPlists:(id)plists calendar:(id)calendar
 {
-  v9 = a4;
-  v10 = a5;
+  plistsCopy = plists;
+  calendarCopy = calendar;
   v14.receiver = self;
   v14.super_class = PPEvent;
   v11 = [(PPEvent *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    v11->_indexInBackingPlists = a3;
-    objc_storeStrong(&v11->_backingPlists, a4);
-    objc_storeStrong(&v12->_calendar, a5);
+    v11->_indexInBackingPlists = index;
+    objc_storeStrong(&v11->_backingPlists, plists);
+    objc_storeStrong(&v12->_calendar, calendar);
   }
 
   return v12;
 }
 
-- (PPEvent)initWithPlist:(id)a3 calendar:(id)a4
+- (PPEvent)initWithPlist:(id)plist calendar:(id)calendar
 {
   v14 = *MEMORY[0x1E69E9840];
-  v13 = a3;
+  plistCopy = plist;
   v6 = MEMORY[0x1E695DEC8];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 arrayWithObjects:&v13 count:1];
+  calendarCopy = calendar;
+  plistCopy2 = plist;
+  v9 = [v6 arrayWithObjects:&plistCopy count:1];
 
-  v10 = [(PPEvent *)self initWithIndex:0 inBackingPlists:v9 calendar:v7, v13, v14];
+  v10 = [(PPEvent *)self initWithIndex:0 inBackingPlists:v9 calendar:calendarCopy, plistCopy, v14];
   v11 = *MEMORY[0x1E69E9840];
   return v10;
 }
 
-- (PPEvent)initWithEventIdentifier:(id)a3 objectID:(id)a4 title:(id)a5 location:(id)a6 calendar:(id)a7 startDate:(id)a8 endDate:(id)a9 availability:(char)a10 externalURIString:(id)a11 attendees:(id)a12 organizerName:(id)a13 eventFlags:(unsigned __int8)a14 notes:(id)a15 urlString:(id)a16 structuredLocationTitle:(id)a17 structuredLocationAddress:(id)a18 structuredLocationCoordinates:(id)a19 suggestedEventCategory:(unsigned __int8)a20
+- (PPEvent)initWithEventIdentifier:(id)identifier objectID:(id)d title:(id)title location:(id)location calendar:(id)calendar startDate:(id)date endDate:(id)endDate availability:(char)self0 externalURIString:(id)self1 attendees:(id)self2 organizerName:(id)self3 eventFlags:(unsigned __int8)self4 notes:(id)self5 urlString:(id)self6 structuredLocationTitle:(id)self7 structuredLocationAddress:(id)self8 structuredLocationCoordinates:(id)self9 suggestedEventCategory:(unsigned __int8)category
 {
   v95[127] = *MEMORY[0x1E69E9840];
-  v91 = a3;
-  v24 = a4;
-  obj = a5;
-  v89 = a5;
-  v74 = a6;
-  v88 = a6;
-  v25 = a7;
-  v75 = a8;
-  v87 = a8;
-  v85 = a9;
-  v79 = a11;
-  v78 = a12;
-  v77 = a13;
-  v76 = a15;
-  v84 = a16;
-  v83 = a17;
-  v82 = a18;
-  v81 = a19;
-  v90 = v24;
-  if (v24)
+  identifierCopy = identifier;
+  dCopy = d;
+  obj = title;
+  titleCopy = title;
+  locationCopy = location;
+  locationCopy2 = location;
+  calendarCopy = calendar;
+  dateCopy = date;
+  dateCopy2 = date;
+  endDateCopy = endDate;
+  stringCopy = string;
+  attendeesCopy = attendees;
+  nameCopy = name;
+  notesCopy = notes;
+  urlStringCopy = urlString;
+  locationTitleCopy = locationTitle;
+  addressCopy = address;
+  coordinatesCopy = coordinates;
+  v90 = dCopy;
+  if (dCopy)
   {
-    if (v25)
+    if (calendarCopy)
     {
       goto LABEL_3;
     }
@@ -604,41 +604,41 @@ id *__20__PPEvent_attendees__block_invoke(uint64_t a1, void *a2)
 
   else
   {
-    v68 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v68 handleFailureInMethod:a2 object:self file:@"PPEvent.m" lineNumber:556 description:{@"Invalid parameter not satisfying: %@", @"objectID"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PPEvent.m" lineNumber:556 description:{@"Invalid parameter not satisfying: %@", @"objectID"}];
 
-    if (v25)
+    if (calendarCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v69 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v69 handleFailureInMethod:a2 object:self file:@"PPEvent.m" lineNumber:557 description:{@"Invalid parameter not satisfying: %@", @"calendar"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PPEvent.m" lineNumber:557 description:{@"Invalid parameter not satisfying: %@", @"calendar"}];
 
 LABEL_3:
-  if (!v87)
+  if (!dateCopy2)
   {
-    v70 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v70 handleFailureInMethod:a2 object:self file:@"PPEvent.m" lineNumber:558 description:{@"Invalid parameter not satisfying: %@", @"startDate"}];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"PPEvent.m" lineNumber:558 description:{@"Invalid parameter not satisfying: %@", @"startDate"}];
   }
 
-  if (!v85)
+  if (!endDateCopy)
   {
-    v71 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v71 handleFailureInMethod:a2 object:self file:@"PPEvent.m" lineNumber:559 description:{@"Invalid parameter not satisfying: %@", @"endDate"}];
+    currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler4 handleFailureInMethod:a2 object:self file:@"PPEvent.m" lineNumber:559 description:{@"Invalid parameter not satisfying: %@", @"endDate"}];
   }
 
   v26 = &v94;
   bzero(&v94, 0x400uLL);
   v27 = v92;
   bzero(v92, 0x400uLL);
-  if (v91)
+  if (identifierCopy)
   {
     v27 = &v93;
     v26 = v95;
     v94 = @"eid";
-    v92[0] = v91;
+    v92[0] = identifierCopy;
     v28 = 1;
   }
 
@@ -648,12 +648,12 @@ LABEL_3:
   }
 
   *v26 = @"oid";
-  v29 = [v90 dictionaryRepresentation];
+  dictionaryRepresentation = [v90 dictionaryRepresentation];
   v30 = *v27;
-  *v27 = v29;
+  *v27 = dictionaryRepresentation;
 
   v31 = v28 + 1;
-  if (v89)
+  if (titleCopy)
   {
     v32 = v95[v31 - 1];
     v95[v31 - 1] = @"ttl";
@@ -662,107 +662,107 @@ LABEL_3:
     v31 = v28 | 2;
   }
 
-  if (v88)
+  if (locationCopy2)
   {
     v33 = v95[v31 - 1];
     v95[v31 - 1] = @"loc";
 
-    objc_storeStrong(&v92[v31++], v74);
+    objc_storeStrong(&v92[v31++], locationCopy);
   }
 
   v34 = v31;
   v35 = v95[v31 - 1];
   v95[v31 - 1] = @"sdt";
 
-  objc_storeStrong(&v92[v31], v75);
+  objc_storeStrong(&v92[v31], dateCopy);
   v36 = v95[v31];
   v95[v34] = @"edt";
 
-  objc_storeStrong(&v92[v31 + 1], a9);
+  objc_storeStrong(&v92[v31 + 1], endDate);
   v37 = 8 * v31 + 16;
   v38 = *(&v95[-1] + v37);
   *(v95 + v34 * 8 + 8) = @"avl";
 
-  v39 = [MEMORY[0x1E696AD98] numberWithChar:a10];
+  v39 = [MEMORY[0x1E696AD98] numberWithChar:availability];
   v40 = *(v92 + v37);
   *(v92 + v37) = v39;
 
   v41 = v31 + 3;
-  if (v79)
+  if (stringCopy)
   {
     v42 = v95[v41 - 1];
     v95[v41 - 1] = @"uri";
 
-    objc_storeStrong(&v92[v41], a11);
+    objc_storeStrong(&v92[v41], string);
     v41 = v31 + 4;
   }
 
-  if (v78)
+  if (attendeesCopy)
   {
     v43 = v95[v41 - 1];
     v95[v41 - 1] = @"atn";
 
-    v44 = [v78 _pas_mappedArrayWithTransform:&__block_literal_global_171];
+    v44 = [attendeesCopy _pas_mappedArrayWithTransform:&__block_literal_global_171];
     v45 = v92[v41];
     v92[v41] = v44;
 
     ++v41;
   }
 
-  if (v77)
+  if (nameCopy)
   {
     v46 = v95[v41 - 1];
     v95[v41 - 1] = @"onm";
 
-    objc_storeStrong(&v92[v41++], a13);
+    objc_storeStrong(&v92[v41++], name);
   }
 
   v47 = v95[v41 - 1];
   v95[v41 - 1] = @"efl";
 
-  v48 = [MEMORY[0x1E696AD98] numberWithUnsignedChar:a14];
+  v48 = [MEMORY[0x1E696AD98] numberWithUnsignedChar:flags];
   v49 = v92[v41];
   v92[v41] = v48;
 
   v50 = v41 + 1;
-  if (v76)
+  if (notesCopy)
   {
     v51 = v95[v50 - 1];
     v95[v50 - 1] = @"not";
 
-    objc_storeStrong(&v92[v50], a15);
+    objc_storeStrong(&v92[v50], notes);
     v50 = v41 + 2;
   }
 
-  v52 = v81;
-  if (v84)
+  v52 = coordinatesCopy;
+  if (urlStringCopy)
   {
     v53 = v95[v50 - 1];
     v95[v50 - 1] = @"url";
 
-    objc_storeStrong(&v92[v50++], a16);
+    objc_storeStrong(&v92[v50++], urlString);
   }
 
-  if (v83)
+  if (locationTitleCopy)
   {
     v54 = v95[v50 - 1];
     v95[v50 - 1] = @"slt";
 
-    objc_storeStrong(&v92[v50++], a17);
+    objc_storeStrong(&v92[v50++], locationTitle);
   }
 
-  if (v82)
+  if (addressCopy)
   {
     v55 = v95[v50 - 1];
     v95[v50 - 1] = @"sla";
 
-    objc_storeStrong(&v92[v50++], a18);
+    objc_storeStrong(&v92[v50++], address);
   }
 
-  if (v81)
+  if (coordinatesCopy)
   {
     v56 = objc_autoreleasePoolPush();
-    v57 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v81 requiringSecureCoding:1 error:0];
+    v57 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:coordinatesCopy requiringSecureCoding:1 error:0];
     objc_autoreleasePoolPop(v56);
     if (v57)
     {
@@ -772,15 +772,15 @@ LABEL_3:
       objc_storeStrong(&v92[v50++], v57);
     }
 
-    v52 = v81;
+    v52 = coordinatesCopy;
   }
 
-  if (a20)
+  if (category)
   {
     v59 = v95[v50 - 1];
     v95[v50 - 1] = @"sec";
 
-    v60 = [MEMORY[0x1E696AD98] numberWithUnsignedChar:a20];
+    v60 = [MEMORY[0x1E696AD98] numberWithUnsignedChar:category];
     v61 = v92[v50];
     v92[v50] = v60;
 
@@ -788,7 +788,7 @@ LABEL_3:
   }
 
   v62 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjects:v92 forKeys:&v94 count:v50];
-  v63 = [(PPEvent *)self initWithPlist:v62 calendar:v25];
+  v63 = [(PPEvent *)self initWithPlist:v62 calendar:calendarCopy];
 
   for (i = 127; i != -1; --i)
   {
@@ -802,77 +802,77 @@ LABEL_3:
   return v63;
 }
 
-- (PPEvent)initWithEventIdentifier:(id)a3 objectID:(id)a4 title:(id)a5 location:(id)a6 calendar:(id)a7 startDate:(id)a8 endDate:(id)a9 availability:(char)a10 externalURI:(id)a11 attendees:(id)a12 organizerName:(id)a13 eventFlags:(unsigned __int8)a14 notes:(id)a15 url:(id)a16 structuredLocationTitle:(id)a17 structuredLocationAddress:(id)a18 structuredLocationCoordinates:(id)a19 suggestedEventCategory:(unsigned __int8)a20
+- (PPEvent)initWithEventIdentifier:(id)identifier objectID:(id)d title:(id)title location:(id)location calendar:(id)calendar startDate:(id)date endDate:(id)endDate availability:(char)self0 externalURI:(id)self1 attendees:(id)self2 organizerName:(id)self3 eventFlags:(unsigned __int8)self4 notes:(id)self5 url:(id)self6 structuredLocationTitle:(id)self7 structuredLocationAddress:(id)self8 structuredLocationCoordinates:(id)self9 suggestedEventCategory:(unsigned __int8)category
 {
-  v46 = a19;
-  v44 = a18;
-  v41 = a17;
-  v23 = a16;
-  v36 = a15;
-  v32 = a13;
-  v35 = a12;
-  v33 = a9;
-  v34 = a8;
-  v48 = a7;
-  v24 = a6;
-  v38 = a5;
-  v40 = a4;
-  v25 = a3;
-  v43 = [a11 absoluteString];
-  v45 = [v23 absoluteString];
+  coordinatesCopy = coordinates;
+  addressCopy = address;
+  locationTitleCopy = locationTitle;
+  urlCopy = url;
+  notesCopy = notes;
+  nameCopy = name;
+  attendeesCopy = attendees;
+  endDateCopy = endDate;
+  dateCopy = date;
+  calendarCopy = calendar;
+  locationCopy = location;
+  titleCopy = title;
+  dCopy = d;
+  identifierCopy = identifier;
+  absoluteString = [i absoluteString];
+  absoluteString2 = [urlCopy absoluteString];
 
-  LOBYTE(v31) = a20;
-  LOBYTE(v30) = a14;
-  LOBYTE(v29) = a10;
-  v26 = v24;
-  v27 = [(PPEvent *)self initWithEventIdentifier:v25 objectID:v40 title:v38 location:v24 calendar:v48 startDate:v34 endDate:v33 availability:v29 externalURIString:v43 attendees:v35 organizerName:v32 eventFlags:v30 notes:v36 urlString:v45 structuredLocationTitle:v41 structuredLocationAddress:v44 structuredLocationCoordinates:v46 suggestedEventCategory:v31];
+  LOBYTE(v31) = category;
+  LOBYTE(v30) = flags;
+  LOBYTE(v29) = availability;
+  v26 = locationCopy;
+  v27 = [(PPEvent *)self initWithEventIdentifier:identifierCopy objectID:dCopy title:titleCopy location:locationCopy calendar:calendarCopy startDate:dateCopy endDate:endDateCopy availability:v29 externalURIString:absoluteString attendees:attendeesCopy organizerName:nameCopy eventFlags:v30 notes:notesCopy urlString:absoluteString2 structuredLocationTitle:locationTitleCopy structuredLocationAddress:addressCopy structuredLocationCoordinates:coordinatesCopy suggestedEventCategory:v31];
 
   return v27;
 }
 
-- (PPEvent)initWithEKEvent:(id)a3 calendarInternPool:(id)a4
+- (PPEvent)initWithEKEvent:(id)event calendarInternPool:(id)pool
 {
-  v6 = a4;
-  v7 = [PPEvent deferredAllocationEventFromEKEvent:a3];
+  poolCopy = pool;
+  v7 = [PPEvent deferredAllocationEventFromEKEvent:event];
   v8 = objc_opt_new();
-  v9 = (v7)[2](v7, v8, v6);
+  v9 = (v7)[2](v7, v8, poolCopy);
 
   return v9;
 }
 
-+ (id)descriptionForSuggestedEventCategory:(unsigned __int8)a3
++ (id)descriptionForSuggestedEventCategory:(unsigned __int8)category
 {
-  if (a3 > 0xCu)
+  if (category > 0xCu)
   {
     return 0;
   }
 
   else
   {
-    return *(&off_1E77F66C0 + a3);
+    return *(&off_1E77F66C0 + category);
   }
 }
 
-+ (unsigned)suggestedEventCategoryFromMetadata:(id)a3
++ (unsigned)suggestedEventCategoryFromMetadata:(id)metadata
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"SGEventMetadataTypeKey"];
+  metadataCopy = metadata;
+  v4 = [metadataCopy objectForKeyedSubscript:@"SGEventMetadataTypeKey"];
   v5 = [v4 isEqualToString:@"StructuredEvent"];
 
   if (v5)
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = [v3 objectForKeyedSubscript:@"SGEventMetadataCategoryDescriptionKey"];
-    v8 = [v7 lowercaseString];
+    v7 = [metadataCopy objectForKeyedSubscript:@"SGEventMetadataCategoryDescriptionKey"];
+    lowercaseString = [v7 lowercaseString];
 
-    if (v8)
+    if (lowercaseString)
     {
-      v9 = [&unk_1F1B465C0 objectForKeyedSubscript:v8];
+      v9 = [&unk_1F1B465C0 objectForKeyedSubscript:lowercaseString];
       v10 = v9;
       if (v9)
       {
-        v11 = [v9 unsignedCharValue];
+        unsignedCharValue = [v9 unsignedCharValue];
       }
 
       else
@@ -881,17 +881,17 @@ LABEL_3:
         if (os_log_type_enabled(v14, OS_LOG_TYPE_FAULT))
         {
           v17 = 138543362;
-          v18 = v8;
+          v18 = lowercaseString;
           _os_log_fault_impl(&dword_1A7FD3000, v14, OS_LOG_TYPE_FAULT, "PPEvent creation with unknown suggested category: StructuredEvent::%{public}@", &v17, 0xCu);
         }
 
-        v11 = 0;
+        unsignedCharValue = 0;
       }
     }
 
     else
     {
-      v11 = 0;
+      unsignedCharValue = 0;
     }
 
     objc_autoreleasePoolPop(v6);
@@ -899,37 +899,37 @@ LABEL_3:
 
   else
   {
-    v12 = [v3 objectForKeyedSubscript:@"SGEventMetadataTypeKey"];
+    v12 = [metadataCopy objectForKeyedSubscript:@"SGEventMetadataTypeKey"];
     v13 = [v12 isEqualToString:@"NLEvent"];
 
     if (v13)
     {
-      v11 = 12;
+      unsignedCharValue = 12;
     }
 
     else
     {
-      v11 = 0;
+      unsignedCharValue = 0;
     }
   }
 
   v15 = *MEMORY[0x1E69E9840];
-  return v11;
+  return unsignedCharValue;
 }
 
-+ (id)convertBatchOfEKEvents:(id)a3 calendarInternPool:(id)a4 interningSet:(id)a5
++ (id)convertBatchOfEKEvents:(id)events calendarInternPool:(id)pool interningSet:(id)set
 {
   v35 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 count])
+  eventsCopy = events;
+  poolCopy = pool;
+  setCopy = set;
+  if ([eventsCopy count])
   {
     v11 = pp_default_log_handle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v30 = [v8 count];
+      v30 = [eventsCopy count];
       _os_log_impl(&dword_1A7FD3000, v11, OS_LOG_TYPE_DEFAULT, "PPEvent convertBatchOfEKEvents begin (count %tu)", buf, 0xCu);
     }
 
@@ -945,8 +945,8 @@ LABEL_3:
     v28[1] = 3221225472;
     v28[2] = __66__PPEvent_convertBatchOfEKEvents_calendarInternPool_interningSet___block_invoke;
     v28[3] = &__block_descriptor_40_e17__16__0__EKEvent_8l;
-    v28[4] = a1;
-    v14 = [v8 _pas_mappedArrayWithTransform:v28];
+    v28[4] = self;
+    v14 = [eventsCopy _pas_mappedArrayWithTransform:v28];
     objc_autoreleasePoolPop(v13);
     v15 = pp_default_log_handle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -960,16 +960,16 @@ LABEL_3:
     v25[1] = 3221225472;
     v25[2] = __66__PPEvent_convertBatchOfEKEvents_calendarInternPool_interningSet___block_invoke_155;
     v25[3] = &unk_1E77F6620;
-    v17 = v10;
+    v17 = setCopy;
     v26 = v17;
-    v27 = v9;
+    v27 = poolCopy;
     v18 = [v14 _pas_mappedArrayWithTransform:v25];
 
     objc_autoreleasePoolPop(v16);
     v19 = pp_default_log_handle();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
-      v20 = [v8 count];
+      v20 = [eventsCopy count];
       v21 = [v18 count];
       v22 = [v17 count];
       *buf = 134218496;
@@ -992,13 +992,13 @@ LABEL_3:
   return v18;
 }
 
-+ (id)convertBatchOfEKEvents:(id)a3 calendarInternPool:(id)a4
++ (id)convertBatchOfEKEvents:(id)events calendarInternPool:(id)pool
 {
   v6 = MEMORY[0x1E695DFA8];
-  v7 = a4;
-  v8 = a3;
+  poolCopy = pool;
+  eventsCopy = events;
   v9 = [v6 alloc];
-  v10 = [v8 count];
+  v10 = [eventsCopy count];
   if ((10 * v10) >= 0x4000)
   {
     v11 = 0x4000;
@@ -1010,35 +1010,35 @@ LABEL_3:
   }
 
   v12 = [v9 initWithCapacity:v11];
-  v13 = [a1 convertBatchOfEKEvents:v8 calendarInternPool:v7 interningSet:v12];
+  v13 = [self convertBatchOfEKEvents:eventsCopy calendarInternPool:poolCopy interningSet:v12];
 
   return v13;
 }
 
-+ (id)deferredAllocationEventFromEKEvent:(id)a3
++ (id)deferredAllocationEventFromEKEvent:(id)event
 {
   v89 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  eventCopy = event;
   v4 = objc_autoreleasePoolPush();
-  v5 = [v3 startDate];
-  if (v5 && (v6 = v5, [v3 endDate], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v7))
+  startDate = [eventCopy startDate];
+  if (startDate && (v6 = startDate, [eventCopy endDate], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v7))
   {
-    v64 = [v3 eventIdentifier];
-    v8 = [v3 organizer];
-    v9 = [v8 isCurrentUser];
+    eventIdentifier = [eventCopy eventIdentifier];
+    organizer = [eventCopy organizer];
+    isCurrentUser = [organizer isCurrentUser];
 
-    v10 = [v3 eligibleForTravelAdvisories];
-    v11 = v9 | 4;
-    if (!v10)
+    eligibleForTravelAdvisories = [eventCopy eligibleForTravelAdvisories];
+    v11 = isCurrentUser | 4;
+    if (!eligibleForTravelAdvisories)
     {
-      v11 = v9;
+      v11 = isCurrentUser;
     }
 
     v59 = v11;
-    v12 = [v3 preferredLocationWithoutPrediction];
-    v63 = [v3 calendar];
+    preferredLocationWithoutPrediction = [eventCopy preferredLocationWithoutPrediction];
+    calendar = [eventCopy calendar];
     v13 = objc_autoreleasePoolPush();
-    v14 = [v3 customObjectForKey:@"SGEventMetadataKey"];
+    v14 = [eventCopy customObjectForKey:@"SGEventMetadataKey"];
     objc_autoreleasePoolPop(v13);
     if (v14 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
@@ -1050,10 +1050,10 @@ LABEL_3:
       v55 = 0;
     }
 
-    v17 = [v3 locationWithoutPrediction];
-    if ([v17 length])
+    locationWithoutPrediction = [eventCopy locationWithoutPrediction];
+    if ([locationWithoutPrediction length])
     {
-      v57 = v17;
+      v57 = locationWithoutPrediction;
     }
 
     else
@@ -1062,75 +1062,75 @@ LABEL_3:
       v57 = 0;
     }
 
-    v18 = [v3 attendees];
-    v62 = [v18 _pas_mappedArrayWithTransform:&__block_literal_global_146];
+    attendees = [eventCopy attendees];
+    v62 = [attendees _pas_mappedArrayWithTransform:&__block_literal_global_146];
 
     v61 = v14;
-    if ([v3 hasNotes])
+    if ([eventCopy hasNotes])
     {
-      v49 = [v3 notes];
+      notes = [eventCopy notes];
     }
 
     else
     {
-      v49 = 0;
+      notes = 0;
     }
 
-    v53 = [v12 title];
-    v43 = [v3 title];
-    v44 = [v3 objectID];
-    v19 = [v3 startDate];
-    v20 = [v3 endDate];
-    v51 = [v3 availability];
-    v21 = [v3 externalURI];
-    [v21 absoluteString];
-    v22 = v65 = v12;
+    title = [preferredLocationWithoutPrediction title];
+    title2 = [eventCopy title];
+    objectID = [eventCopy objectID];
+    startDate2 = [eventCopy startDate];
+    endDate = [eventCopy endDate];
+    availability = [eventCopy availability];
+    externalURI = [eventCopy externalURI];
+    [externalURI absoluteString];
+    v22 = v65 = preferredLocationWithoutPrediction;
 
-    v23 = [v3 organizer];
-    v24 = [v23 name];
+    organizer2 = [eventCopy organizer];
+    name = [organizer2 name];
 
-    v25 = [v3 URL];
-    v26 = [v25 absoluteString];
+    v25 = [eventCopy URL];
+    absoluteString = [v25 absoluteString];
 
-    v27 = [v65 address];
-    v28 = [v65 geoLocation];
+    address = [v65 address];
+    geoLocation = [v65 geoLocation];
     v66[0] = MEMORY[0x1E69E9820];
     v66[1] = 3221225472;
     v66[2] = __46__PPEvent_deferredAllocationEventFromEKEvent___block_invoke_4;
     v66[3] = &unk_1E77F65D8;
-    v67 = v63;
+    v67 = calendar;
     v68 = v62;
-    v69 = v64;
-    v70 = v44;
-    v71 = v43;
+    v69 = eventIdentifier;
+    v70 = objectID;
+    v71 = title2;
     v72 = v57;
-    v73 = v19;
-    v74 = v20;
+    v73 = startDate2;
+    v74 = endDate;
     v75 = v22;
-    v76 = v24;
+    v76 = name;
     v83 = v59;
-    v77 = v49;
-    v78 = v26;
-    v79 = v53;
-    v80 = v27;
-    v81 = v28;
-    v82 = v51;
+    v77 = notes;
+    v78 = absoluteString;
+    v79 = title;
+    v80 = address;
+    v81 = geoLocation;
+    v82 = availability;
     v84 = v55;
-    v60 = v28;
-    v56 = v27;
-    v54 = v53;
-    v52 = v26;
-    v50 = v49;
-    v48 = v24;
+    v60 = geoLocation;
+    v56 = address;
+    v54 = title;
+    v52 = absoluteString;
+    v50 = notes;
+    v48 = name;
     v47 = v22;
-    v46 = v20;
-    v45 = v19;
+    v46 = endDate;
+    v45 = startDate2;
     v58 = v57;
-    v29 = v43;
-    v30 = v44;
-    v31 = v64;
+    v29 = title2;
+    v30 = objectID;
+    v31 = eventIdentifier;
     v32 = v62;
-    v33 = v63;
+    v33 = calendar;
     v16 = [v66 copy];
 
     v15 = v65;
@@ -1143,13 +1143,13 @@ LABEL_3:
     {
       v85[0] = @"nil start date";
       v36 = MEMORY[0x1E696AD98];
-      v37 = [v3 startDate];
-      v38 = [v36 numberWithInt:v37 == 0];
+      startDate3 = [eventCopy startDate];
+      v38 = [v36 numberWithInt:startDate3 == 0];
       v85[1] = @"nil end date";
       v86[0] = v38;
       v39 = MEMORY[0x1E696AD98];
-      v40 = [v3 endDate];
-      v41 = [v39 numberWithInt:v40 == 0];
+      endDate2 = [eventCopy endDate];
+      v41 = [v39 numberWithInt:endDate2 == 0];
       v86[1] = v41;
       v42 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v86 forKeys:v85 count:2];
       *buf = 138412290;

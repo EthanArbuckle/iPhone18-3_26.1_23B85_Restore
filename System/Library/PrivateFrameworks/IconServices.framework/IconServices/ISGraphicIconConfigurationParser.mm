@@ -11,16 +11,16 @@
   v16 = *MEMORY[0x1E69E9840];
   v13.receiver = self;
   v13.super_class = ISGraphicIconConfigurationParser;
-  v3 = [(ISIconConfigurationMarkupParser *)&v13 symbolName];
-  v4 = v3;
-  if (!v3 || ![(__CFString *)v3 length])
+  symbolName = [(ISIconConfigurationMarkupParser *)&v13 symbolName];
+  v4 = symbolName;
+  if (!symbolName || ![(__CFString *)symbolName length])
   {
     v5 = _ISDefaultLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
-      v6 = [(ISIconConfigurationMarkupParser *)self configDict];
+      configDict = [(ISIconConfigurationMarkupParser *)self configDict];
       *buf = 138412290;
-      v15 = v6;
+      v15 = configDict;
       _os_log_impl(&dword_1A77B8000, v5, OS_LOG_TYPE_INFO, "Failed to find name for graphic variant. Dict: %@", buf, 0xCu);
     }
 
@@ -29,21 +29,21 @@
 
   if (![(__CFString *)v4 caseInsensitiveCompare:@"ISCurrentDevice"])
   {
-    v7 = [MEMORY[0x1E6982C40] _typeOfCurrentDevice];
-    v8 = [v7 identifier];
-    v9 = [ISSymbol symbolForTypeIdentifier:v8 error:0];
+    _typeOfCurrentDevice = [MEMORY[0x1E6982C40] _typeOfCurrentDevice];
+    identifier = [_typeOfCurrentDevice identifier];
+    v9 = [ISSymbol symbolForTypeIdentifier:identifier error:0];
 
     if (v9)
     {
-      v10 = [v9 name];
+      name = [v9 name];
     }
 
     else
     {
-      v10 = @"questionmark.app.dashed";
+      name = @"questionmark.app.dashed";
     }
 
-    v4 = v10;
+    v4 = name;
   }
 
   v11 = *MEMORY[0x1E69E9840];
@@ -54,8 +54,8 @@
 - (int64_t)renderingMode
 {
   v10 = *MEMORY[0x1E69E9840];
-  v2 = [(ISIconConfigurationMarkupParser *)self configDict];
-  v3 = [v2 _IF_stringForKey:@"ISRenderingMode"];
+  configDict = [(ISIconConfigurationMarkupParser *)self configDict];
+  v3 = [configDict _IF_stringForKey:@"ISRenderingMode"];
 
   if (v3)
   {
@@ -106,8 +106,8 @@ LABEL_16:
 
 - (NSDictionary)aliasedConfigurationDictionary
 {
-  v2 = [(ISIconConfigurationMarkupParser *)self configDict];
-  v3 = [v2 _IF_stringForKey:@"ISTypeIdentifier"];
+  configDict = [(ISIconConfigurationMarkupParser *)self configDict];
+  v3 = [configDict _IF_stringForKey:@"ISTypeIdentifier"];
 
   if (v3)
   {
@@ -115,8 +115,8 @@ LABEL_16:
     v5 = v4;
     if (v4 && [v4 isDeclared])
     {
-      v6 = [v5 iconDictionary];
-      v7 = [v6 _IF_dictionaryForKey:@"ISGraphicIconConfiguration"];
+      iconDictionary = [v5 iconDictionary];
+      v7 = [iconDictionary _IF_dictionaryForKey:@"ISGraphicIconConfiguration"];
     }
 
     else

@@ -1,21 +1,21 @@
 @interface BRCMinHeap
 - (BOOL)check;
-- (BOOL)containsObject:(id)a3;
+- (BOOL)containsObject:(id)object;
 - (BRCMinHeap)init;
-- (BRCMinHeap)initWithComparator:(id)a3;
+- (BRCMinHeap)initWithComparator:(id)comparator;
 - (id)description;
 - (id)firstObject;
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5;
-- (void)_moveDown:(id)a3 index:(unint64_t)a4;
-- (void)_moveUp:(id)a3 index:(unint64_t)a4;
-- (void)_moveUpOrDown:(id)a3 index:(unint64_t)a4;
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count;
+- (void)_moveDown:(id)down index:(unint64_t)index;
+- (void)_moveUp:(id)up index:(unint64_t)index;
+- (void)_moveUpOrDown:(id)down index:(unint64_t)index;
 - (void)_shrink;
-- (void)addObject:(id)a3;
+- (void)addObject:(id)object;
 - (void)dealloc;
-- (void)objectWeightChanged:(id)a3;
+- (void)objectWeightChanged:(id)changed;
 - (void)removeAllObjects;
 - (void)removeFirstObject;
-- (void)removeObject:(id)a3;
+- (void)removeObject:(id)object;
 @end
 
 @implementation BRCMinHeap
@@ -31,16 +31,16 @@
     v6 = array[v5];
     v7 = *self->_array;
     objects = self->_objects;
-    v9 = self;
+    selfCopy = self;
     [(NSMapTable *)objects removeObjectForKey:v7];
 
     self->_array[self->_count] = 0;
     if (self->_count)
     {
-      [(BRCMinHeap *)v9 _moveDown:v6 index:0];
+      [(BRCMinHeap *)selfCopy _moveDown:v6 index:0];
     }
 
-    [(BRCMinHeap *)v9 _shrink];
+    [(BRCMinHeap *)selfCopy _shrink];
   }
 
   ++self->_mutation;
@@ -85,21 +85,21 @@
   return 0;
 }
 
-- (BRCMinHeap)initWithComparator:(id)a3
+- (BRCMinHeap)initWithComparator:(id)comparator
 {
-  v4 = a3;
+  comparatorCopy = comparator;
   v11.receiver = self;
   v11.super_class = BRCMinHeap;
   v5 = [(BRCMinHeap *)&v11 init];
   if (v5)
   {
-    v6 = MEMORY[0x22AA4A310](v4);
+    v6 = MEMORY[0x22AA4A310](comparatorCopy);
     comparator = v5->_comparator;
     v5->_comparator = v6;
 
-    v8 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     objects = v5->_objects;
-    v5->_objects = v8;
+    v5->_objects = strongToStrongObjectsMapTable;
   }
 
   return v5;
@@ -168,72 +168,72 @@ LABEL_10:
   return 0;
 }
 
-- (void)_moveUp:(id)a3 index:(unint64_t)a4
+- (void)_moveUp:(id)up index:(unint64_t)index
 {
-  v6 = a3;
-  if (a4)
+  upCopy = up;
+  if (index)
   {
     while (1)
     {
-      v7 = a4 - 1;
-      v8 = (a4 - 1) >> 1;
-      v9 = self->_array[v8];
+      v7 = index - 1;
+      indexCopy = (index - 1) >> 1;
+      v9 = self->_array[indexCopy];
       if ((*(self->_comparator + 2))() <= 0)
       {
         break;
       }
 
-      self->_array[a4] = v9;
+      self->_array[index] = v9;
       objects = self->_objects;
       v11 = MEMORY[0x277CCABB0];
       v12 = v9;
-      v13 = self;
-      v14 = [v11 numberWithUnsignedInteger:a4];
+      selfCopy = self;
+      v14 = [v11 numberWithUnsignedInteger:index];
       [(NSMapTable *)objects setObject:v14 forKey:v12];
 
-      a4 = v8;
+      index = indexCopy;
       if (v7 <= 1)
       {
         goto LABEL_7;
       }
     }
 
-    v8 = a4;
+    indexCopy = index;
   }
 
   else
   {
-    v8 = 0;
+    indexCopy = 0;
   }
 
 LABEL_7:
-  self->_array[v8] = v6;
+  self->_array[indexCopy] = upCopy;
   v15 = self->_objects;
   v16 = MEMORY[0x277CCABB0];
-  v19 = v6;
-  v17 = self;
-  v18 = [v16 numberWithUnsignedInteger:v8];
+  v19 = upCopy;
+  selfCopy2 = self;
+  v18 = [v16 numberWithUnsignedInteger:indexCopy];
   [(NSMapTable *)v15 setObject:v18 forKey:v19];
 }
 
-- (void)_moveDown:(id)a3 index:(unint64_t)a4
+- (void)_moveDown:(id)down index:(unint64_t)index
 {
-  v6 = a3;
-  v7 = (2 * a4) | 1;
+  downCopy = down;
+  v7 = (2 * index) | 1;
   if (v7 < self->_count)
   {
-    v8 = 2 * a4;
+    v8 = 2 * index;
     while (1)
     {
       v9 = self->_array[v7];
       v10 = (*(self->_comparator + 2))();
-      v11 = v8 + 2;
+      indexCopy2 = v8 + 2;
       count = self->_count;
       if (v10 < 0)
       {
-        if (v8 + 2 >= count || (array = self->_array, v15 = array[v11], v16 = array[v7], ((*(self->_comparator + 2))() & 0x8000000000000000) == 0))
+        if (v8 + 2 >= count || (array = self->_array, v15 = array[indexCopy2], v16 = array[v7], ((*(self->_comparator + 2))() & 0x8000000000000000) == 0))
         {
-          v11 = v7;
+          indexCopy2 = v7;
         }
       }
 
@@ -244,31 +244,31 @@ LABEL_7:
           break;
         }
 
-        v13 = self->_array[v11];
+        v13 = self->_array[indexCopy2];
         if ((*(self->_comparator + 2))() >= 0)
         {
-          v11 = a4;
+          indexCopy2 = index;
         }
       }
 
-      if (v11 == a4)
+      if (indexCopy2 == index)
       {
         break;
       }
 
       v17 = self->_array;
-      v18 = v17[v11];
-      v17[a4] = v18;
+      v18 = v17[indexCopy2];
+      v17[index] = v18;
       objects = self->_objects;
       v20 = MEMORY[0x277CCABB0];
       v21 = v18;
-      v22 = self;
-      v23 = [v20 numberWithUnsignedInteger:a4];
+      selfCopy = self;
+      v23 = [v20 numberWithUnsignedInteger:index];
       [(NSMapTable *)objects setObject:v23 forKey:v21];
 
-      v8 = 2 * v11;
-      v7 = (2 * v11) | 1;
-      a4 = v11;
+      v8 = 2 * indexCopy2;
+      v7 = (2 * indexCopy2) | 1;
+      index = indexCopy2;
       if (v7 >= self->_count)
       {
         goto LABEL_15;
@@ -276,88 +276,88 @@ LABEL_7:
     }
   }
 
-  v11 = a4;
+  indexCopy2 = index;
 LABEL_15:
-  self->_array[v11] = v6;
+  self->_array[indexCopy2] = downCopy;
   v24 = self->_objects;
   v25 = MEMORY[0x277CCABB0];
-  v28 = v6;
-  v26 = self;
-  v27 = [v25 numberWithUnsignedInteger:v11];
+  v28 = downCopy;
+  selfCopy2 = self;
+  v27 = [v25 numberWithUnsignedInteger:indexCopy2];
   [(NSMapTable *)v24 setObject:v27 forKey:v28];
 }
 
-- (void)_moveUpOrDown:(id)a3 index:(unint64_t)a4
+- (void)_moveUpOrDown:(id)down index:(unint64_t)index
 {
-  v17 = a3;
-  if (!a4)
+  downCopy = down;
+  if (!index)
   {
-    v10 = self;
-    v11 = v17;
-    v12 = 0;
+    selfCopy2 = self;
+    v11 = downCopy;
+    indexCopy = 0;
     goto LABEL_8;
   }
 
-  v6 = *(self->_array + ((4 * a4) & 0xFFFFFFFFFFFFFFF8));
+  v6 = *(self->_array + ((4 * index) & 0xFFFFFFFFFFFFFFF8));
   v7 = (*(self->_comparator + 2))();
   if (v7 == 1)
   {
-    [(BRCMinHeap *)self _moveUp:v17 index:a4];
+    [(BRCMinHeap *)self _moveUp:downCopy index:index];
     goto LABEL_11;
   }
 
   if (!v7)
   {
-    self->_array[a4] = v17;
+    self->_array[index] = downCopy;
     objects = self->_objects;
     v14 = MEMORY[0x277CCABB0];
-    v15 = v17;
-    v16 = [v14 numberWithUnsignedInteger:a4];
+    v15 = downCopy;
+    v16 = [v14 numberWithUnsignedInteger:index];
     [(NSMapTable *)objects setObject:v16 forKey:v15];
 
     goto LABEL_11;
   }
 
   v8 = v7 == -1;
-  v9 = v17;
+  v9 = downCopy;
   if (v8)
   {
-    v10 = self;
-    v11 = v17;
-    v12 = a4;
+    selfCopy2 = self;
+    v11 = downCopy;
+    indexCopy = index;
 LABEL_8:
-    [(BRCMinHeap *)v10 _moveDown:v11 index:v12];
+    [(BRCMinHeap *)selfCopy2 _moveDown:v11 index:indexCopy];
 LABEL_11:
-    v9 = v17;
+    v9 = downCopy;
   }
 }
 
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count
 {
-  if (a3->var0)
+  if (state->var0)
   {
     return 0;
   }
 
   array = self->_array;
-  a3->var0 = 1;
-  a3->var1 = array;
-  a3->var2 = &self->_mutation;
+  state->var0 = 1;
+  state->var1 = array;
+  state->var2 = &self->_mutation;
   return self->_count;
 }
 
-- (BOOL)containsObject:(id)a3
+- (BOOL)containsObject:(id)object
 {
-  v3 = [(NSMapTable *)self->_objects objectForKey:a3];
+  v3 = [(NSMapTable *)self->_objects objectForKey:object];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (void)addObject:(id)a3
+- (void)addObject:(id)object
 {
-  v4 = a3;
-  v5 = [(NSMapTable *)self->_objects objectForKey:v4];
+  objectCopy = object;
+  v5 = [(NSMapTable *)self->_objects objectForKey:objectCopy];
 
   if (v5)
   {
@@ -377,33 +377,33 @@ LABEL_11:
   }
 
   self->_count = v6;
-  [(BRCMinHeap *)self _moveUp:v4 index:?];
+  [(BRCMinHeap *)self _moveUp:objectCopy index:?];
   ++self->_mutation;
 }
 
-- (void)removeObject:(id)a3
+- (void)removeObject:(id)object
 {
-  v4 = a3;
-  v5 = [(NSMapTable *)self->_objects objectForKey:v4];
+  objectCopy = object;
+  v5 = [(NSMapTable *)self->_objects objectForKey:objectCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 unsignedIntegerValue];
-    if (self->_array[v7] != v4)
+    unsignedIntegerValue = [v5 unsignedIntegerValue];
+    if (self->_array[unsignedIntegerValue] != objectCopy)
     {
       [BRCMinHeap removeObject:];
     }
 
-    [(NSMapTable *)self->_objects removeObjectForKey:v4];
+    [(NSMapTable *)self->_objects removeObjectForKey:objectCopy];
     array = self->_array;
     v9 = self->_count - 1;
     self->_count = v9;
     v10 = array[v9];
 
     self->_array[self->_count] = 0;
-    if (v7 != self->_count)
+    if (unsignedIntegerValue != self->_count)
     {
-      [(BRCMinHeap *)self _moveUpOrDown:v10 index:v7];
+      [(BRCMinHeap *)self _moveUpOrDown:v10 index:unsignedIntegerValue];
     }
 
     [(BRCMinHeap *)self _shrink];
@@ -411,7 +411,7 @@ LABEL_11:
 
   else
   {
-    v10 = v4;
+    v10 = objectCopy;
   }
 
   ++self->_mutation;
@@ -435,20 +435,20 @@ LABEL_11:
   ++self->_mutation;
 }
 
-- (void)objectWeightChanged:(id)a3
+- (void)objectWeightChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [(NSMapTable *)self->_objects objectForKey:v4];
+  changedCopy = changed;
+  v5 = [(NSMapTable *)self->_objects objectForKey:changedCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 unsignedIntegerValue];
-    if (self->_array[v7] != v4)
+    unsignedIntegerValue = [v5 unsignedIntegerValue];
+    if (self->_array[unsignedIntegerValue] != changedCopy)
     {
       [BRCMinHeap objectWeightChanged:];
     }
 
-    [(BRCMinHeap *)self _moveUpOrDown:v4 index:v7];
+    [(BRCMinHeap *)self _moveUpOrDown:changedCopy index:unsignedIntegerValue];
   }
 
   ++self->_mutation;

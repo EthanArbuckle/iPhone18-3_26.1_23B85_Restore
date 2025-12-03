@@ -52,7 +52,7 @@
   v12 = a4;
   v13 = [[v11 alloc] initWithFormat:v12 arguments:&a9];
 
-  v14 = [a1 _fp_errorWithPOSIXCode:a3 itemURL:0 debugDescription:0 message:v13];
+  v14 = [self _fp_errorWithPOSIXCode:a3 itemURL:0 debugDescription:0 message:v13];
 
   return v14;
 }
@@ -62,17 +62,17 @@
   v10 = a6;
   v11 = a5;
   v12 = a4;
-  [a1 fp_initLocalizationStrings];
-  v13 = [MEMORY[0x1E695DF90] dictionary];
-  [v13 setObject:v12 forKeyedSubscript:*MEMORY[0x1E696A998]];
+  [self fp_initLocalizationStrings];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:v12 forKeyedSubscript:*MEMORY[0x1E696A998]];
 
-  [v13 setObject:v11 forKeyedSubscript:*MEMORY[0x1E696A278]];
+  [dictionary setObject:v11 forKeyedSubscript:*MEMORY[0x1E696A278]];
   if (v10)
   {
-    [v13 setObject:v10 forKeyedSubscript:*MEMORY[0x1E695E620]];
+    [dictionary setObject:v10 forKeyedSubscript:*MEMORY[0x1E695E620]];
   }
 
-  v14 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:a3 userInfo:v13];
+  v14 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:a3 userInfo:dictionary];
 
   return v14;
 }
@@ -81,7 +81,7 @@
 {
   v17[1] = *MEMORY[0x1E69E9840];
   v10 = a3;
-  [a1 fp_initLocalizationStrings];
+  [self fp_initLocalizationStrings];
   v11 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:v10 arguments:&a9];
 
   v16 = *MEMORY[0x1E695E620];
@@ -115,7 +115,7 @@
 {
   v22[3] = *MEMORY[0x1E69E9840];
   v4 = a3;
-  [a1 fp_initLocalizationStrings];
+  [self fp_initLocalizationStrings];
   v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"The executable currently located at %@ is translocated and can't be launched."];
   v6 = MEMORY[0x1E696ABC0];
   v21[0] = *MEMORY[0x1E696A578];
@@ -139,7 +139,7 @@
 {
   v11[1] = *MEMORY[0x1E69E9840];
   v4 = a3;
-  [a1 fp_initLocalizationStrings];
+  [self fp_initLocalizationStrings];
   v5 = MEMORY[0x1E696ABC0];
   v10 = *MEMORY[0x1E696AA08];
   v11[0] = v4;
@@ -153,12 +153,12 @@
 
 - (uint64_t)fp_isFileProviderError:()FPAdditions
 {
-  v5 = [a1 domain];
-  if ([v5 isEqualToString:@"NSFileProviderErrorDomain"])
+  domain = [self domain];
+  if ([domain isEqualToString:@"NSFileProviderErrorDomain"])
   {
-    v6 = [a1 code];
+    code = [self code];
 
-    if (v6 == a3)
+    if (code == a3)
     {
       return 1;
     }
@@ -173,12 +173,12 @@
 
 - (uint64_t)fp_isFileProviderInternalError:()FPAdditions
 {
-  v5 = [a1 domain];
-  if ([v5 isEqualToString:@"NSFileProviderInternalErrorDomain"])
+  domain = [self domain];
+  if ([domain isEqualToString:@"NSFileProviderInternalErrorDomain"])
   {
-    v6 = [a1 code];
+    code = [self code];
 
-    if (v6 == a3)
+    if (code == a3)
     {
       return 1;
     }
@@ -193,10 +193,10 @@
 
 - (BOOL)fp_isCocoaErrorCode:()FPAdditions
 {
-  v5 = [a1 domain];
-  if ([v5 isEqualToString:*MEMORY[0x1E696A250]])
+  domain = [self domain];
+  if ([domain isEqualToString:*MEMORY[0x1E696A250]])
   {
-    v6 = [a1 code] == a3;
+    v6 = [self code] == a3;
   }
 
   else
@@ -209,10 +209,10 @@
 
 - (BOOL)fp_isPOSIXErrorCode:()FPAdditions
 {
-  v5 = [a1 domain];
-  if ([v5 isEqualToString:*MEMORY[0x1E696A798]])
+  domain = [self domain];
+  if ([domain isEqualToString:*MEMORY[0x1E696A798]])
   {
-    v6 = [a1 code] == a3;
+    v6 = [self code] == a3;
   }
 
   else
@@ -227,24 +227,24 @@
 {
   [MEMORY[0x1E696ABC0] fp_initLocalizationStrings];
   v2 = objc_opt_new();
-  v3 = [a1 userInfo];
+  userInfo = [self userInfo];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __40__NSError_FPAdditions__fp_strippedError__block_invoke;
   v11[3] = &unk_1E793A100;
   v12 = v2;
   v4 = v2;
-  [v3 enumerateKeysAndObjectsUsingBlock:v11];
+  [userInfo enumerateKeysAndObjectsUsingBlock:v11];
 
-  v5 = [a1 localizedDescription];
-  [v4 setValue:v5 forKey:*MEMORY[0x1E696A578]];
+  localizedDescription = [self localizedDescription];
+  [v4 setValue:localizedDescription forKey:*MEMORY[0x1E696A578]];
 
-  v6 = [a1 debugDescription];
+  v6 = [self debugDescription];
   [v4 setValue:v6 forKey:*MEMORY[0x1E696A278]];
 
   v7 = MEMORY[0x1E696ABC0];
-  v8 = [a1 domain];
-  v9 = [v7 errorWithDomain:v8 code:objc_msgSend(a1 userInfo:{"code"), v4}];
+  domain = [self domain];
+  v9 = [v7 errorWithDomain:domain code:objc_msgSend(self userInfo:{"code"), v4}];
 
   return v9;
 }
@@ -255,33 +255,33 @@
   v6 = a3;
   v7 = a4;
   [MEMORY[0x1E696ABC0] fp_initLocalizationStrings];
-  v8 = [a1 domain];
+  domain = [self domain];
   v9 = fp_current_or_default_log();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
   {
-    [(NSError(FPAdditions) *)v6 fp_internalErrorForVendorErrorWithCallerDescription:a1 itemCreationBlock:v9];
+    [(NSError(FPAdditions) *)v6 fp_internalErrorForVendorErrorWithCallerDescription:self itemCreationBlock:v9];
   }
 
-  if (([a1 fp_isFileProviderError:-1001] & 1) != 0 || objc_msgSend(a1, "fp_isFileProviderError:", -1006))
+  if (([self fp_isFileProviderError:-1001] & 1) != 0 || objc_msgSend(self, "fp_isFileProviderError:", -1006))
   {
-    v10 = [a1 fp_userInfoItem];
-    v11 = v10;
-    if (!v10)
+    fp_userInfoItem = [self fp_userInfoItem];
+    v11 = fp_userInfoItem;
+    if (!fp_userInfoItem)
     {
       v13 = fp_current_or_default_log();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
-        [(NSError(FPAdditions) *)a1 fp_internalErrorForVendorErrorWithCallerDescription:v13 itemCreationBlock:v14, v15, v16, v17, v18, v19];
+        [(NSError(FPAdditions) *)self fp_internalErrorForVendorErrorWithCallerDescription:v13 itemCreationBlock:v14, v15, v16, v17, v18, v19];
       }
 
-      v20 = [a1 fp_strippedError];
+      fp_strippedError = [self fp_strippedError];
       goto LABEL_20;
     }
 
     if (v7)
     {
-      v12 = v7[2](v7, v10);
-      if ([a1 code] == -1001)
+      v12 = v7[2](v7, fp_userInfoItem);
+      if ([self code] == -1001)
       {
         [MEMORY[0x1E696ABC0] fileProviderErrorForCollisionWithItem:v12];
       }
@@ -290,35 +290,35 @@
       {
         [MEMORY[0x1E696ABC0] fileProviderErrorForRejectedDeletionOfItem:v12];
       }
-      v20 = ;
+      fp_strippedError = ;
 
 LABEL_20:
       goto LABEL_21;
     }
   }
 
-  if ([v8 isEqualToString:@"Swift.CancellationError"])
+  if ([domain isEqualToString:@"Swift.CancellationError"])
   {
-    v21 = FPUserCancelledError();
+    fp_strippedError2 = FPUserCancelledError();
 LABEL_17:
-    v20 = v21;
+    fp_strippedError = fp_strippedError2;
     goto LABEL_21;
   }
 
   v22 = +[FPXPCSanitizer permittedErrorDomains];
-  v23 = [v22 containsObject:v8];
+  v23 = [v22 containsObject:domain];
 
   if (v23)
   {
-    v21 = [a1 fp_strippedError];
+    fp_strippedError2 = [self fp_strippedError];
     goto LABEL_17;
   }
 
-  __FILEPROVIDER_UNSUPPORTED_ERROR__(v8, [a1 code]);
+  __FILEPROVIDER_UNSUPPORTED_ERROR__(domain, [self code]);
   v26 = fp_current_or_default_log();
   if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
   {
-    [(NSError(FPAdditions) *)a1 fp_internalErrorForVendorErrorWithCallerDescription:v26 itemCreationBlock:v27, v28, v29, v30, v31, v32];
+    [(NSError(FPAdditions) *)self fp_internalErrorForVendorErrorWithCallerDescription:v26 itemCreationBlock:v27, v28, v29, v30, v31, v32];
   }
 
   v33 = MEMORY[0x1E696ABC0];
@@ -328,50 +328,50 @@ LABEL_17:
   v36 = *MEMORY[0x1E696AA08];
   v39[0] = v35;
   v39[1] = v36;
-  v37 = [a1 fp_strippedError];
-  v40[1] = v37;
+  fp_strippedError3 = [self fp_strippedError];
+  v40[1] = fp_strippedError3;
   v38 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v40 forKeys:v39 count:2];
-  v20 = [v33 errorWithDomain:v34 code:4101 userInfo:v38];
+  fp_strippedError = [v33 errorWithDomain:v34 code:4101 userInfo:v38];
 
 LABEL_21:
   v24 = *MEMORY[0x1E69E9840];
 
-  return v20;
+  return fp_strippedError;
 }
 
 - (id)fp_genericPreflightError
 {
   [MEMORY[0x1E696ABC0] fp_initLocalizationStrings];
-  v2 = [a1 userInfo];
-  v3 = [v2 mutableCopy];
+  userInfo = [self userInfo];
+  v3 = [userInfo mutableCopy];
 
   [v3 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"NSFileProviderErrorIsGenericPreflightError"];
   v4 = MEMORY[0x1E696ABC0];
-  v5 = [a1 domain];
-  v6 = [v4 errorWithDomain:v5 code:objc_msgSend(a1 userInfo:{"code"), v3}];
+  domain = [self domain];
+  v6 = [v4 errorWithDomain:domain code:objc_msgSend(self userInfo:{"code"), v3}];
 
   return v6;
 }
 
 - (uint64_t)fp_isGenericPreflightError
 {
-  v1 = [a1 userInfo];
-  v2 = [v1 objectForKeyedSubscript:@"NSFileProviderErrorIsGenericPreflightError"];
-  v3 = [v2 BOOLValue];
+  userInfo = [self userInfo];
+  v2 = [userInfo objectForKeyedSubscript:@"NSFileProviderErrorIsGenericPreflightError"];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (id)fp_asWarning
 {
   v14[2] = *MEMORY[0x1E69E9840];
   [MEMORY[0x1E696ABC0] fp_initLocalizationStrings];
-  v2 = [a1 userInfo];
-  v3 = [v2 mutableCopy];
+  userInfo = [self userInfo];
+  v3 = [userInfo mutableCopy];
 
   [v3 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"NSFileProviderErrorIsSoftError"];
-  v4 = [a1 localizedRecoveryOptions];
-  v5 = [v4 count];
+  localizedRecoveryOptions = [self localizedRecoveryOptions];
+  v5 = [localizedRecoveryOptions count];
 
   if (!v5)
   {
@@ -384,8 +384,8 @@ LABEL_21:
   }
 
   v9 = MEMORY[0x1E696ABC0];
-  v10 = [a1 domain];
-  v11 = [v9 errorWithDomain:v10 code:objc_msgSend(a1 userInfo:{"code"), v3}];
+  domain = [self domain];
+  v11 = [v9 errorWithDomain:domain code:objc_msgSend(self userInfo:{"code"), v3}];
 
   v12 = *MEMORY[0x1E69E9840];
 
@@ -394,87 +394,87 @@ LABEL_21:
 
 - (uint64_t)fp_isWarning
 {
-  v1 = [a1 userInfo];
-  v2 = [v1 objectForKeyedSubscript:@"NSFileProviderErrorIsSoftError"];
-  v3 = [v2 BOOLValue];
+  userInfo = [self userInfo];
+  v2 = [userInfo objectForKeyedSubscript:@"NSFileProviderErrorIsSoftError"];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (uint64_t)fp_isRemoteCrashError
 {
-  v2 = [a1 domain];
-  v3 = [v2 isEqualToString:*MEMORY[0x1E696A250]];
+  domain = [self domain];
+  v3 = [domain isEqualToString:*MEMORY[0x1E696A250]];
 
   if (!v3)
   {
     return 0;
   }
 
-  if ([a1 code] == 4099 || objc_msgSend(a1, "code") == 4097)
+  if ([self code] == 4099 || objc_msgSend(self, "code") == 4097)
   {
     return 1;
   }
 
-  if ([a1 code] != 4101)
+  if ([self code] != 4101)
   {
     return 0;
   }
 
-  v5 = [a1 userInfo];
-  v6 = [v5 objectForKey:*MEMORY[0x1E696AA08]];
+  userInfo = [self userInfo];
+  v6 = [userInfo objectForKey:*MEMORY[0x1E696AA08]];
 
   if (v6)
   {
-    v4 = [v6 fp_isRemoteCrashError];
+    fp_isRemoteCrashError = [v6 fp_isRemoteCrashError];
   }
 
   else
   {
-    v4 = 1;
+    fp_isRemoteCrashError = 1;
   }
 
-  return v4;
+  return fp_isRemoteCrashError;
 }
 
 - (id)fp_unwrappedErrorForDomains:()FPAdditions
 {
   v4 = a3;
-  v5 = [a1 domain];
-  if (![v5 isEqualToString:*MEMORY[0x1E696A250]])
+  domain = [self domain];
+  if (![domain isEqualToString:*MEMORY[0x1E696A250]])
   {
 
     goto LABEL_8;
   }
 
-  v6 = [a1 code];
+  code = [self code];
 
-  if (v6 != 4101)
+  if (code != 4101)
   {
 LABEL_8:
-    v11 = a1;
+    selfCopy2 = self;
     goto LABEL_9;
   }
 
-  v7 = [a1 userInfo];
-  v8 = [v7 objectForKey:*MEMORY[0x1E696AA08]];
+  userInfo = [self userInfo];
+  v8 = [userInfo objectForKey:*MEMORY[0x1E696AA08]];
 
   if (v8)
   {
-    v9 = [v8 domain];
-    v10 = [v4 containsObject:v9];
+    domain2 = [v8 domain];
+    v10 = [v4 containsObject:domain2];
 
     if (v10)
     {
-      a1 = v8;
+      self = v8;
     }
   }
 
-  v11 = a1;
+  selfCopy2 = self;
 
 LABEL_9:
 
-  return v11;
+  return selfCopy2;
 }
 
 - (id)fp_unwrappedInternalError
@@ -482,7 +482,7 @@ LABEL_9:
   v6[1] = *MEMORY[0x1E69E9840];
   v6[0] = @"NSFileProviderInternalErrorDomain";
   v2 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:1];
-  v3 = [a1 fp_unwrappedErrorForDomains:v2];
+  v3 = [self fp_unwrappedErrorForDomains:v2];
 
   v4 = *MEMORY[0x1E69E9840];
 
@@ -491,10 +491,10 @@ LABEL_9:
 
 - (BOOL)fp_isFeatureUnsupportedError
 {
-  v2 = [a1 domain];
-  if ([v2 isEqualToString:*MEMORY[0x1E696A250]])
+  domain = [self domain];
+  if ([domain isEqualToString:*MEMORY[0x1E696A250]])
   {
-    v3 = [a1 code] == 3328;
+    v3 = [self code] == 3328;
   }
 
   else
@@ -507,10 +507,10 @@ LABEL_9:
 
 - (BOOL)fp_isNotPermittedError
 {
-  v2 = [a1 domain];
-  if ([v2 isEqualToString:*MEMORY[0x1E696A250]])
+  domain = [self domain];
+  if ([domain isEqualToString:*MEMORY[0x1E696A250]])
   {
-    v3 = [a1 code] == 257;
+    v3 = [self code] == 257;
   }
 
   else
@@ -523,10 +523,10 @@ LABEL_9:
 
 - (BOOL)fp_isNameTooLongError
 {
-  v2 = [a1 domain];
-  if ([v2 isEqualToString:*MEMORY[0x1E696A798]])
+  domain = [self domain];
+  if ([domain isEqualToString:*MEMORY[0x1E696A798]])
   {
-    v3 = [a1 code] == 63;
+    v3 = [self code] == 63;
   }
 
   else
@@ -542,8 +542,8 @@ LABEL_9:
   v6 = a3;
   v7 = a4;
   [MEMORY[0x1E696ABC0] fp_initLocalizationStrings];
-  v8 = [a1 userInfo];
-  v9 = [v8 objectForKeyedSubscript:@"NSFileProviderErrorNonExistentItemIdentifier"];
+  userInfo = [self userInfo];
+  v9 = [userInfo objectForKeyedSubscript:@"NSFileProviderErrorNonExistentItemIdentifier"];
 
   if (v9)
   {
@@ -555,19 +555,19 @@ LABEL_9:
     v10 = [v6 indexOfObjectPassingTest:v14];
     if (v10 == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v11 = [a1 fp_annotatedErrorWithItem:0 variant:v7];
+      v11 = [self fp_annotatedErrorWithItem:0 variant:v7];
     }
 
     else
     {
       v12 = [v6 objectAtIndex:v10];
-      v11 = [a1 fp_annotatedErrorWithItem:v12 variant:v7];
+      v11 = [self fp_annotatedErrorWithItem:v12 variant:v7];
     }
   }
 
   else
   {
-    v11 = [a1 fp_annotatedErrorWithItem:0 variant:v7];
+    v11 = [self fp_annotatedErrorWithItem:0 variant:v7];
   }
 
   return v11;
@@ -579,43 +579,43 @@ LABEL_9:
   v9 = a4;
   v10 = a5;
   [MEMORY[0x1E696ABC0] fp_initLocalizationStrings];
-  v11 = [a1 domain];
-  if ([v11 isEqualToString:@"NSFileProviderErrorDomain"])
+  domain = [self domain];
+  if ([domain isEqualToString:@"NSFileProviderErrorDomain"])
   {
     goto LABEL_4;
   }
 
-  v12 = [a1 domain];
-  if ([v12 isEqualToString:*MEMORY[0x1E696A250]])
+  domain2 = [self domain];
+  if ([domain2 isEqualToString:*MEMORY[0x1E696A250]])
   {
 
 LABEL_4:
 LABEL_5:
-    v13 = [a1 userInfo];
-    v14 = [v13 mutableCopy];
+    userInfo = [self userInfo];
+    v14 = [userInfo mutableCopy];
 
     [v14 setValue:v8 forKey:@"NSFileProviderErrorItemName"];
     [v14 setValue:v10 forKey:@"NSUserStringVariant"];
     [v14 setValue:v9 forKey:*MEMORY[0x1E696A368]];
     v15 = MEMORY[0x1E696ABC0];
-    v16 = [a1 domain];
-    v17 = [v15 errorWithDomain:v16 code:objc_msgSend(a1 userInfo:{"code"), v14}];
+    domain3 = [self domain];
+    selfCopy = [v15 errorWithDomain:domain3 code:objc_msgSend(self userInfo:{"code"), v14}];
 
     goto LABEL_6;
   }
 
-  v19 = [a1 domain];
-  v20 = [v19 isEqualToString:@"NSFileProviderInternalErrorDomain"];
+  domain4 = [self domain];
+  v20 = [domain4 isEqualToString:@"NSFileProviderInternalErrorDomain"];
 
   if (v20)
   {
     goto LABEL_5;
   }
 
-  v17 = a1;
+  selfCopy = self;
 LABEL_6:
 
-  return v17;
+  return selfCopy;
 }
 
 - (id)fp_annotatedErrorWithURL:()FPAdditions variant:
@@ -626,9 +626,9 @@ LABEL_6:
   v8 = a3;
   [v8 getPromisedItemResourceValue:&v13 forKey:v6 error:0];
   v9 = v13;
-  v10 = [v8 path];
+  path = [v8 path];
 
-  v11 = [a1 fp_annotatedErrorWithName:v9 path:v10 variant:v7];
+  v11 = [self fp_annotatedErrorWithName:v9 path:path variant:v7];
 
   return v11;
 }
@@ -637,10 +637,10 @@ LABEL_6:
 {
   v6 = a4;
   v7 = a3;
-  v8 = [v7 displayName];
-  v9 = [v7 filename];
+  displayName = [v7 displayName];
+  filename = [v7 filename];
 
-  v10 = [a1 fp_annotatedErrorWithName:v8 path:v9 variant:v6];
+  v10 = [self fp_annotatedErrorWithName:displayName path:filename variant:v6];
 
   return v10;
 }
@@ -650,13 +650,13 @@ LABEL_6:
   v4 = MEMORY[0x1E696ABC0];
   v5 = a3;
   [v4 fp_initLocalizationStrings];
-  v6 = [a1 userInfo];
-  v7 = [v6 mutableCopy];
+  userInfo = [self userInfo];
+  v7 = [userInfo mutableCopy];
 
   [v7 setValue:v5 forKey:*MEMORY[0x1E696A8A8]];
   v8 = MEMORY[0x1E696ABC0];
-  v9 = [a1 domain];
-  v10 = [v8 errorWithDomain:v9 code:objc_msgSend(a1 userInfo:{"code"), v7}];
+  domain = [self domain];
+  v10 = [v8 errorWithDomain:domain code:objc_msgSend(self userInfo:{"code"), v7}];
 
   return v10;
 }
@@ -670,7 +670,7 @@ LABEL_6:
   [v8 fp_initLocalizationStrings];
   v12 = [[FPBlockRecoveryAttempter alloc] initWithBlock:v11 operationService:v9];
 
-  v13 = [a1 fp_annotatedErrorWithRecoveryAttempter:v12 fpProviderDomainId:v10];
+  v13 = [self fp_annotatedErrorWithRecoveryAttempter:v12 fpProviderDomainId:v10];
 
   [(FPBlockRecoveryAttempter *)v12 setExpectedError:v13];
 
@@ -682,13 +682,13 @@ LABEL_6:
   v4 = MEMORY[0x1E696ABC0];
   v5 = a3;
   [v4 fp_initLocalizationStrings];
-  v6 = [a1 userInfo];
-  v7 = [v6 mutableCopy];
+  userInfo = [self userInfo];
+  v7 = [userInfo mutableCopy];
 
   [v7 setValue:v5 forKey:@"NSFileProviderErrorOperationItemKey"];
   v8 = MEMORY[0x1E696ABC0];
-  v9 = [a1 domain];
-  v10 = [v8 errorWithDomain:v9 code:objc_msgSend(a1 userInfo:{"code"), v7}];
+  domain = [self domain];
+  v10 = [v8 errorWithDomain:domain code:objc_msgSend(self userInfo:{"code"), v7}];
 
   return v10;
 }
@@ -697,8 +697,8 @@ LABEL_6:
 {
   v58[3] = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [a1 domain];
-  v6 = [v5 isEqualToString:@"NSFileProviderErrorDomain"];
+  domain = [self domain];
+  v6 = [domain isEqualToString:@"NSFileProviderErrorDomain"];
 
   if (!v6)
   {
@@ -706,15 +706,15 @@ LABEL_6:
     goto LABEL_43;
   }
 
-  v7 = [a1 userInfo];
-  v8 = [v7 objectForKeyedSubscript:@"NSUserStringVariant"];
+  userInfo = [self userInfo];
+  v8 = [userInfo objectForKeyedSubscript:@"NSUserStringVariant"];
 
-  v9 = [a1 userInfo];
-  v10 = [v9 objectForKeyedSubscript:@"NSFileProviderErrorItemName"];
+  userInfo2 = [self userInfo];
+  v10 = [userInfo2 objectForKeyedSubscript:@"NSFileProviderErrorItemName"];
 
-  v11 = [a1 fp_userInfoItem];
-  v12 = [a1 userInfo];
-  v13 = [v12 objectForKeyedSubscript:@"NSFileProviderErrorOperationItemKey"];
+  fp_userInfoItem = [self fp_userInfoItem];
+  userInfo3 = [self userInfo];
+  v13 = [userInfo3 objectForKeyedSubscript:@"NSFileProviderErrorOperationItemKey"];
 
   if ([v4 isEqualToString:*MEMORY[0x1E696A578]])
   {
@@ -732,7 +732,7 @@ LABEL_6:
     {
       if ([v4 isEqualToString:*MEMORY[0x1E696A590]])
       {
-        if ([a1 code] == -1001)
+        if ([self code] == -1001)
         {
           v21 = FPLocalizedErrorStringForKey(@"Copy-Stop");
           v58[0] = v21;
@@ -745,7 +745,7 @@ LABEL_6:
 
         else
         {
-          if ([a1 code] == -5007)
+          if ([self code] == -5007)
           {
             v21 = FPLocalizedErrorStringForKey(@"Disconnect-Cancel");
             v57[0] = v21;
@@ -757,7 +757,7 @@ LABEL_6:
 
           else
           {
-            if (![a1 fp_isGenericPreflightError])
+            if (![self fp_isGenericPreflightError])
             {
               goto LABEL_58;
             }
@@ -784,18 +784,18 @@ LABEL_58:
     v14 = @"-R";
   }
 
-  v16 = [a1 code];
-  if (v16 > -1005)
+  code = [self code];
+  if (code > -1005)
   {
-    if (v16 <= -1002)
+    if (code <= -1002)
     {
-      if (v16 == -1004)
+      if (code == -1004)
       {
         v20 = @"ServerUnreachable";
         goto LABEL_40;
       }
 
-      if (v16 == -1003)
+      if (code == -1003)
       {
         v20 = @"InsufficientQuota";
 LABEL_40:
@@ -810,20 +810,20 @@ LABEL_41:
       goto LABEL_25;
     }
 
-    if (v16 != -1001)
+    if (code != -1001)
     {
-      if (v16 == -1000)
+      if (code == -1000)
       {
         v20 = @"NotAuthenticated";
         goto LABEL_40;
       }
 
 LABEL_25:
-      if ([a1 code] == -5007)
+      if ([self code] == -5007)
       {
-        v31 = [a1 recoveryAttempter];
+        recoveryAttempter = [self recoveryAttempter];
 
-        if (v31)
+        if (recoveryAttempter)
         {
           v32 = @"Recovery-";
         }
@@ -842,9 +842,9 @@ LABEL_25:
       goto LABEL_58;
     }
 
-    v35 = [a1 recoveryAttempter];
+    recoveryAttempter2 = [self recoveryAttempter];
 
-    if (v35)
+    if (recoveryAttempter2)
     {
       v36 = @"Recovery-";
     }
@@ -854,14 +854,14 @@ LABEL_25:
       v36 = 0;
     }
 
-    v37 = [v11 contentModificationDate];
-    v38 = [v13 contentModificationDate];
-    v39 = v38;
+    contentModificationDate = [fp_userInfoItem contentModificationDate];
+    contentModificationDate2 = [v13 contentModificationDate];
+    v39 = contentModificationDate2;
     v40 = @"ItemExists";
     v55 = v13;
-    if (v37 && v38)
+    if (contentModificationDate && contentModificationDate2)
     {
-      v41 = [v37 compare:v38];
+      v41 = [contentModificationDate compare:contentModificationDate2];
       if (v41 == -1)
       {
         v42 = @"Older";
@@ -876,12 +876,12 @@ LABEL_49:
       }
     }
 
-    v47 = [v11 filename];
-    v51 = v37;
-    v52 = v47;
-    if (v47)
+    filename = [fp_userInfoItem filename];
+    v51 = contentModificationDate;
+    v52 = filename;
+    if (filename)
     {
-      v53 = v47;
+      v53 = filename;
     }
 
     else
@@ -895,15 +895,15 @@ LABEL_49:
     goto LABEL_42;
   }
 
-  if (v16 != -2011)
+  if (code != -2011)
   {
-    if (v16 == -1006)
+    if (code == -1006)
     {
       v20 = @"DeletionRejected";
       goto LABEL_40;
     }
 
-    if (v16 == -1005)
+    if (code == -1005)
     {
       v20 = @"NoSuchItem";
       goto LABEL_40;
@@ -912,8 +912,8 @@ LABEL_49:
     goto LABEL_25;
   }
 
-  v24 = [a1 userInfo];
-  v25 = [v24 objectForKeyedSubscript:@"NSFileProviderProviderDisplayName"];
+  userInfo4 = [self userInfo];
+  v25 = [userInfo4 objectForKeyedSubscript:@"NSFileProviderProviderDisplayName"];
 
   v15 = FPLocalizedStringWithKeyAndVariantLiteral(v26, v27, v14, v8, v10, v28, v29, v30, v25);
 
@@ -927,15 +927,15 @@ LABEL_43:
 
 - (id)fp_internalUserInfoValueKey:()FPAdditions
 {
-  v2 = [a1 domain];
-  v3 = [v2 isEqualToString:@"NSFileProviderInternalErrorDomain"];
+  domain = [self domain];
+  v3 = [domain isEqualToString:@"NSFileProviderInternalErrorDomain"];
 
   if (v3)
   {
-    v4 = [a1 userInfo];
-    v5 = [v4 objectForKeyedSubscript:@"NSUserStringVariant"];
+    userInfo = [self userInfo];
+    v5 = [userInfo objectForKeyedSubscript:@"NSUserStringVariant"];
 
-    if ([a1 code] == 28)
+    if ([self code] == 28)
     {
       v9 = FPLocalizedStringWithKeyAndVariant(0, @"ItemNotReadable", &stru_1F1F94B20, v5, 0, v6, v7, v8, v11);
     }
@@ -956,10 +956,10 @@ LABEL_43:
 
 - (id)fp_userInfoItem
 {
-  if (([a1 fp_isFileProviderError:-1001] & 1) != 0 || objc_msgSend(a1, "fp_isFileProviderError:", -1006))
+  if (([self fp_isFileProviderError:-1001] & 1) != 0 || objc_msgSend(self, "fp_isFileProviderError:", -1006))
   {
-    v2 = [a1 userInfo];
-    v3 = [v2 objectForKeyedSubscript:@"NSFileProviderErrorItem"];
+    userInfo = [self userInfo];
+    v3 = [userInfo objectForKeyedSubscript:@"NSFileProviderErrorItem"];
     v4 = v3;
     if (v3)
     {
@@ -968,8 +968,8 @@ LABEL_43:
 
     else
     {
-      v6 = [a1 userInfo];
-      v5 = [v6 objectForKeyedSubscript:@"NSFileProviderErrorCollidingItem"];
+      userInfo2 = [self userInfo];
+      v5 = [userInfo2 objectForKeyedSubscript:@"NSFileProviderErrorCollidingItem"];
     }
   }
 
@@ -983,18 +983,18 @@ LABEL_43:
 
 - (id)fp_userInfoFPItem
 {
-  v4 = [a1 fp_userInfoItem];
-  if (v4)
+  fp_userInfoItem = [self fp_userInfoItem];
+  if (fp_userInfoItem)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = fp_userInfoItem;
       goto LABEL_6;
     }
 
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:a1 file:@"NSError+FPAdditions.m" lineNumber:846 description:{@"we shouldn't have requested an FPItem from the error, it's doesn't contain the right type"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"NSError+FPAdditions.m" lineNumber:846 description:{@"we shouldn't have requested an FPItem from the error, it's doesn't contain the right type"}];
   }
 
   v5 = 0;
@@ -1005,7 +1005,7 @@ LABEL_6:
 
 - (FPErrorRedactionHelper)fp_prettyDescription:()FPAdditions
 {
-  v3 = [[FPErrorRedactionHelper alloc] initWithError:a1 depth:a3];
+  v3 = [[FPErrorRedactionHelper alloc] initWithError:self depth:a3];
 
   return v3;
 }

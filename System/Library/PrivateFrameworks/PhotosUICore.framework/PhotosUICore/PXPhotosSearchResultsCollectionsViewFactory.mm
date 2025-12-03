@@ -1,18 +1,18 @@
 @interface PXPhotosSearchResultsCollectionsViewFactory
-+ (id)createViewWithCollectionSectionProvider:(id)a3 hostViewController:(id)a4 containerInfo:(id)a5 viewDelegate:(id)a6 selectionDelegate:(id)a7;
++ (id)createViewWithCollectionSectionProvider:(id)provider hostViewController:(id)controller containerInfo:(id)info viewDelegate:(id)delegate selectionDelegate:(id)selectionDelegate;
 - (PXPhotosSearchResultsCollectionsViewFactory)init;
 @end
 
 @implementation PXPhotosSearchResultsCollectionsViewFactory
 
-+ (id)createViewWithCollectionSectionProvider:(id)a3 hostViewController:(id)a4 containerInfo:(id)a5 viewDelegate:(id)a6 selectionDelegate:(id)a7
++ (id)createViewWithCollectionSectionProvider:(id)provider hostViewController:(id)controller containerInfo:(id)info viewDelegate:(id)delegate selectionDelegate:(id)selectionDelegate
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  providerCopy = provider;
+  controllerCopy = controller;
+  infoCopy = info;
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
-  v13 = sub_1A4171AC0(v10, a4, v12, a6);
+  v13 = sub_1A4171AC0(providerCopy, controller, infoCopy, delegate);
 
   swift_unknownObjectRelease();
   swift_unknownObjectRelease();

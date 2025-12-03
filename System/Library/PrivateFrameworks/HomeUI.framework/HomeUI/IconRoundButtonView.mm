@@ -68,7 +68,7 @@
 
 - (void)updateConstraints
 {
-  v2 = self;
+  selfCopy = self;
   sub_20D0F5F7C();
 }
 

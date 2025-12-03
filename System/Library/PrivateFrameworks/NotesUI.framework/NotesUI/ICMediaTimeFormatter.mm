@@ -1,8 +1,8 @@
 @interface ICMediaTimeFormatter
 + (id)timecodeFormatter;
 + (id)wordyFormatter;
-- (id)stringForObjectValue:(id)a3;
-- (id)stringFromTimeInterval:(double)a3;
+- (id)stringForObjectValue:(id)value;
+- (id)stringFromTimeInterval:(double)interval;
 @end
 
 @implementation ICMediaTimeFormatter
@@ -54,13 +54,13 @@ uint64_t __38__ICMediaTimeFormatter_wordyFormatter__block_invoke()
   return [v2 setZeroFormattingBehavior:14];
 }
 
-- (id)stringForObjectValue:(id)a3
+- (id)stringForObjectValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v4 doubleValue];
+    [valueCopy doubleValue];
 LABEL_5:
     v11 = [(ICMediaTimeFormatter *)self stringFromTimeInterval:v5];
     goto LABEL_7;
@@ -69,50 +69,50 @@ LABEL_5:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v4;
-    v7 = [v6 days];
-    v8 = [v6 hours] * 3600.0 + v7 * 86400.0;
+    v6 = valueCopy;
+    days = [v6 days];
+    v8 = [v6 hours] * 3600.0 + days * 86400.0;
     v9 = v8 + [v6 minutes] * 60.0;
-    v10 = [v6 seconds];
+    seconds = [v6 seconds];
 
-    v5 = v9 + v10;
+    v5 = v9 + seconds;
     goto LABEL_5;
   }
 
   v14.receiver = self;
   v14.super_class = ICMediaTimeFormatter;
-  v11 = [(NSDateComponentsFormatter *)&v14 stringForObjectValue:v4];
+  v11 = [(NSDateComponentsFormatter *)&v14 stringForObjectValue:valueCopy];
 LABEL_7:
   v12 = v11;
 
   return v12;
 }
 
-- (id)stringFromTimeInterval:(double)a3
+- (id)stringFromTimeInterval:(double)interval
 {
-  v3 = a3;
-  if ((*&a3 & 0x7FFFFFFFFFFFFFFFuLL) >= 0x7FF0000000000000)
+  intervalCopy = interval;
+  if ((*&interval & 0x7FFFFFFFFFFFFFFFuLL) >= 0x7FF0000000000000)
   {
     v6 = os_log_create("com.apple.notes", "UI");
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      [(ICMediaTimeFormatter *)a2 stringFromTimeInterval:v6, v3];
+      [(ICMediaTimeFormatter *)a2 stringFromTimeInterval:v6, intervalCopy];
     }
 
-    v3 = 0.0;
+    intervalCopy = 0.0;
   }
 
-  v7 = self;
-  objc_sync_enter(v7);
-  if ([(NSDateComponentsFormatter *)v7 unitsStyle])
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([(NSDateComponentsFormatter *)selfCopy unitsStyle])
   {
-    if (v3 >= 60.0)
+    if (intervalCopy >= 60.0)
     {
-      if (v3 >= 3600.0)
+      if (intervalCopy >= 3600.0)
       {
-        if (v3 >= 86400.0)
+        if (intervalCopy >= 86400.0)
         {
-          v15 = fmod(v3, 86400.0);
+          v15 = fmod(intervalCopy, 86400.0);
           if (v15 >= 3600.0)
           {
             v16 = 2;
@@ -123,7 +123,7 @@ LABEL_7:
             v16 = 3;
           }
 
-          [(NSDateComponentsFormatter *)v7 setUnitsStyle:v16];
+          [(NSDateComponentsFormatter *)selfCopy setUnitsStyle:v16];
           if (v15 >= 3600.0)
           {
             v14 = 48;
@@ -137,7 +137,7 @@ LABEL_7:
 
         else
         {
-          v12 = fmod(v3, 3600.0);
+          v12 = fmod(intervalCopy, 3600.0);
           if (v12 >= 60.0)
           {
             v13 = 2;
@@ -148,7 +148,7 @@ LABEL_7:
             v13 = 3;
           }
 
-          [(NSDateComponentsFormatter *)v7 setUnitsStyle:v13];
+          [(NSDateComponentsFormatter *)selfCopy setUnitsStyle:v13];
           if (v12 >= 60.0)
           {
             v14 = 96;
@@ -160,12 +160,12 @@ LABEL_7:
           }
         }
 
-        [(NSDateComponentsFormatter *)v7 setAllowedUnits:v14];
+        [(NSDateComponentsFormatter *)selfCopy setAllowedUnits:v14];
       }
 
       else
       {
-        if (fmod(v3, 60.0) == 0.0)
+        if (fmod(intervalCopy, 60.0) == 0.0)
         {
           v8 = 3;
         }
@@ -175,39 +175,39 @@ LABEL_7:
           v8 = 2;
         }
 
-        [(NSDateComponentsFormatter *)v7 setUnitsStyle:v8];
-        [(NSDateComponentsFormatter *)v7 setAllowedUnits:192];
+        [(NSDateComponentsFormatter *)selfCopy setUnitsStyle:v8];
+        [(NSDateComponentsFormatter *)selfCopy setAllowedUnits:192];
       }
     }
 
     else
     {
-      [(NSDateComponentsFormatter *)v7 setUnitsStyle:3];
-      [(NSDateComponentsFormatter *)v7 setAllowedUnits:128];
+      [(NSDateComponentsFormatter *)selfCopy setUnitsStyle:3];
+      [(NSDateComponentsFormatter *)selfCopy setAllowedUnits:128];
     }
   }
 
   else
   {
-    if (v3 < 60.0)
+    if (intervalCopy < 60.0)
     {
-      [(NSDateComponentsFormatter *)v7 setAllowedUnits:192];
+      [(NSDateComponentsFormatter *)selfCopy setAllowedUnits:192];
       v9 = 0x10000;
     }
 
     else
     {
-      [(NSDateComponentsFormatter *)v7 setAllowedUnits:240];
+      [(NSDateComponentsFormatter *)selfCopy setAllowedUnits:240];
       v9 = 1;
     }
 
-    [(NSDateComponentsFormatter *)v7 setZeroFormattingBehavior:v9];
+    [(NSDateComponentsFormatter *)selfCopy setZeroFormattingBehavior:v9];
   }
 
-  v17.receiver = v7;
+  v17.receiver = selfCopy;
   v17.super_class = ICMediaTimeFormatter;
-  v10 = [(NSDateComponentsFormatter *)&v17 stringFromTimeInterval:v3];
-  objc_sync_exit(v7);
+  v10 = [(NSDateComponentsFormatter *)&v17 stringFromTimeInterval:intervalCopy];
+  objc_sync_exit(selfCopy);
 
   return v10;
 }

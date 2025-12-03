@@ -1,9 +1,9 @@
 @interface VLAR_DTMFCommandsAccumulator
 - (VLAR_DTMFCommandsAccumulator)init;
-- (id)_stringFromDTMFCommand:(unint64_t)a3 withPlaybackState:(unint64_t)a4;
+- (id)_stringFromDTMFCommand:(unint64_t)command withPlaybackState:(unint64_t)state;
 - (id)analyticsDataDict;
 - (id)reportedCommands;
-- (void)noteDidReceiveDTMFCommand:(unint64_t)a3 withPlaybackState:(unint64_t)a4;
+- (void)noteDidReceiveDTMFCommand:(unint64_t)command withPlaybackState:(unint64_t)state;
 @end
 
 @implementation VLAR_DTMFCommandsAccumulator
@@ -27,17 +27,17 @@
   return v2;
 }
 
-- (id)_stringFromDTMFCommand:(unint64_t)a3 withPlaybackState:(unint64_t)a4
+- (id)_stringFromDTMFCommand:(unint64_t)command withPlaybackState:(unint64_t)state
 {
-  if (a3 <= 199)
+  if (command <= 199)
   {
-    if (!a3)
+    if (!command)
     {
       v4 = @"None";
       goto LABEL_13;
     }
 
-    if (a3 == 100)
+    if (command == 100)
     {
       v4 = @"Stop";
       goto LABEL_13;
@@ -46,7 +46,7 @@
 
   else
   {
-    switch(a3)
+    switch(command)
     {
       case 0xC8uLL:
         v4 = @"Repeat";
@@ -65,27 +65,27 @@ LABEL_13:
   v5 = @"NotStarted";
   v6 = @"Responding";
   v7 = @"Repeating";
-  if (a4 != 400)
+  if (state != 400)
   {
     v7 = @"NotStarted";
   }
 
-  if (a4 != 300)
+  if (state != 300)
   {
     v6 = v7;
   }
 
-  if (a4 == 200)
+  if (state == 200)
   {
     v5 = @"Stopped";
   }
 
-  if (a4 == 100)
+  if (state == 100)
   {
     v5 = @"InitialLoop";
   }
 
-  if (a4 > 299)
+  if (state > 299)
   {
     v5 = v6;
   }
@@ -93,18 +93,18 @@ LABEL_13:
   return [(__CFString *)v4 stringByAppendingFormat:@"-%@", v5];
 }
 
-- (void)noteDidReceiveDTMFCommand:(unint64_t)a3 withPlaybackState:(unint64_t)a4
+- (void)noteDidReceiveDTMFCommand:(unint64_t)command withPlaybackState:(unint64_t)state
 {
   commandsAccumulator = self->_commandsAccumulator;
-  if (a3 <= 199)
+  if (command <= 199)
   {
-    if (!a3)
+    if (!command)
     {
       v8 = @"None";
       goto LABEL_13;
     }
 
-    if (a3 == 100)
+    if (command == 100)
     {
       v8 = @"Stop";
       goto LABEL_13;
@@ -113,7 +113,7 @@ LABEL_13:
 
   else
   {
-    switch(a3)
+    switch(command)
     {
       case 0xC8uLL:
         v8 = @"Repeat";
@@ -131,7 +131,7 @@ LABEL_13:
 LABEL_13:
   [(SOSAnalyticsEventAccumulator *)commandsAccumulator noteEvent:v8];
   commandsWithPlaybackStateAccumulator = self->_commandsWithPlaybackStateAccumulator;
-  v10 = [(VLAR_DTMFCommandsAccumulator *)self _stringFromDTMFCommand:a3 withPlaybackState:a4];
+  v10 = [(VLAR_DTMFCommandsAccumulator *)self _stringFromDTMFCommand:command withPlaybackState:state];
   [(SOSAnalyticsEventAccumulator *)commandsWithPlaybackStateAccumulator noteEvent:v10];
 }
 
@@ -153,14 +153,14 @@ LABEL_13:
 - (id)analyticsDataDict
 {
   v37 = *MEMORY[0x277D85DE8];
-  v3 = [(VLAR_DTMFCommandsAccumulator *)self reportedCommands];
-  v24 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v3, "count")}];
-  v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(&unk_2875D2C98, "count") * objc_msgSend(v3, "count")}];
+  reportedCommands = [(VLAR_DTMFCommandsAccumulator *)self reportedCommands];
+  v24 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(reportedCommands, "count")}];
+  v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(&unk_2875D2C98, "count") * objc_msgSend(reportedCommands, "count")}];
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  obj = v3;
+  obj = reportedCommands;
   v5 = [obj countByEnumeratingWithState:&v29 objects:v36 count:16];
   if (v5)
   {
@@ -175,17 +175,17 @@ LABEL_13:
           objc_enumerationMutation(obj);
         }
 
-        v8 = [*(*(&v29 + 1) + 8 * i) unsignedIntegerValue];
-        v9 = v8;
-        if (v8 <= 199)
+        unsignedIntegerValue = [*(*(&v29 + 1) + 8 * i) unsignedIntegerValue];
+        v9 = unsignedIntegerValue;
+        if (unsignedIntegerValue <= 199)
         {
           v10 = @"None";
-          if (!v8)
+          if (!unsignedIntegerValue)
           {
             goto LABEL_17;
           }
 
-          if (v8 == 100)
+          if (unsignedIntegerValue == 100)
           {
             v10 = @"Stop";
             goto LABEL_17;
@@ -194,7 +194,7 @@ LABEL_13:
 
         else
         {
-          switch(v8)
+          switch(unsignedIntegerValue)
           {
             case 200:
               v10 = @"Repeat";

@@ -1,32 +1,32 @@
 @interface PXPhotoKitAssetCollectionAddContentActionPerformer
-+ (BOOL)canPerformOnAssetCollectionReference:(id)a3 withInputs:(id)a4;
++ (BOOL)canPerformOnAssetCollectionReference:(id)reference withInputs:(id)inputs;
 - (BOOL)_isAddingToSharedAlbum;
-- (PXPhotoKitAssetCollectionAddContentActionPerformer)initWithActionType:(id)a3 assetCollectionReference:(id)a4 parameters:(id)a5;
-- (void)_performAddAssets:(id)a3;
-- (void)_performAddSharedAlbumAssets:(id)a3;
-- (void)_performMergeAssetCollections:(id)a3;
+- (PXPhotoKitAssetCollectionAddContentActionPerformer)initWithActionType:(id)type assetCollectionReference:(id)reference parameters:(id)parameters;
+- (void)_performAddAssets:(id)assets;
+- (void)_performAddSharedAlbumAssets:(id)assets;
+- (void)_performMergeAssetCollections:(id)collections;
 - (void)performBackgroundTask;
 - (void)performUserInteractionTask;
 @end
 
 @implementation PXPhotoKitAssetCollectionAddContentActionPerformer
 
-- (void)_performMergeAssetCollections:(id)a3
+- (void)_performMergeAssetCollections:(id)collections
 {
-  v4 = a3;
-  v5 = [(PXAssetCollectionActionPerformer *)self assetCollection];
-  v6 = [[PXMergeAssetCollectionsAction alloc] initWithSourceAssetCollections:self->_content targetAssetCollection:v5];
-  v7 = [(PXActionPerformer *)self undoManager];
+  collectionsCopy = collections;
+  assetCollection = [(PXAssetCollectionActionPerformer *)self assetCollection];
+  v6 = [[PXMergeAssetCollectionsAction alloc] initWithSourceAssetCollections:self->_content targetAssetCollection:assetCollection];
+  undoManager = [(PXActionPerformer *)self undoManager];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __84__PXPhotoKitAssetCollectionAddContentActionPerformer__performMergeAssetCollections___block_invoke;
   v10[3] = &unk_1E774ACE8;
   v10[4] = self;
-  v11 = v5;
-  v12 = v4;
-  v8 = v4;
-  v9 = v5;
-  [(PXAction *)v6 executeWithUndoManager:v7 completionHandler:v10];
+  v11 = assetCollection;
+  v12 = collectionsCopy;
+  v8 = collectionsCopy;
+  v9 = assetCollection;
+  [(PXAction *)v6 executeWithUndoManager:undoManager completionHandler:v10];
 }
 
 void __84__PXPhotoKitAssetCollectionAddContentActionPerformer__performMergeAssetCollections___block_invoke(void *a1, char a2, void *a3)
@@ -53,34 +53,34 @@ void __84__PXPhotoKitAssetCollectionAddContentActionPerformer__performMergeAsset
   (*(a1[6] + 16))();
 }
 
-- (void)_performAddAssets:(id)a3
+- (void)_performAddAssets:(id)assets
 {
-  v5 = a3;
-  v6 = [(PXAssetCollectionActionPerformer *)self assetCollection];
-  if (v6 && [(PXFastEnumeration *)self->_content count])
+  assetsCopy = assets;
+  assetCollection = [(PXAssetCollectionActionPerformer *)self assetCollection];
+  if (assetCollection && [(PXFastEnumeration *)self->_content count])
   {
-    if (([v6 canPerformEditOperation:3] & 1) == 0)
+    if (([assetCollection canPerformEditOperation:3] & 1) == 0)
     {
-      v10 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v10 handleFailureInMethod:a2 object:self file:@"PXPhotoKitAssetCollectionAddContentActionPerformer.m" lineNumber:135 description:{@"Attempting to add assets to a non-editable collection: %@", v6}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotoKitAssetCollectionAddContentActionPerformer.m" lineNumber:135 description:{@"Attempting to add assets to a non-editable collection: %@", assetCollection}];
     }
 
-    v7 = [[PXAddAssetsToAssetCollectionAction alloc] initWithAssets:self->_content assetCollection:v6];
-    v8 = [(PXActionPerformer *)self undoManager];
+    v7 = [[PXAddAssetsToAssetCollectionAction alloc] initWithAssets:self->_content assetCollection:assetCollection];
+    undoManager = [(PXActionPerformer *)self undoManager];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __72__PXPhotoKitAssetCollectionAddContentActionPerformer__performAddAssets___block_invoke;
     v11[3] = &unk_1E774ACE8;
     v11[4] = self;
-    v12 = v6;
-    v13 = v5;
-    [(PXAction *)v7 executeWithUndoManager:v8 completionHandler:v11];
+    v12 = assetCollection;
+    v13 = assetsCopy;
+    [(PXAction *)v7 executeWithUndoManager:undoManager completionHandler:v11];
   }
 
   else
   {
     v9 = [MEMORY[0x1E696ABC0] px_genericErrorWithDebugDescription:@"PXPhotoKitAssetCollectionAddContentActionPerformer did not complete successfully"];
-    (*(v5 + 2))(v5, 0, v9);
+    (*(assetsCopy + 2))(assetsCopy, 0, v9);
   }
 }
 
@@ -108,11 +108,11 @@ void __72__PXPhotoKitAssetCollectionAddContentActionPerformer__performAddAssets_
   (*(a1[6] + 16))();
 }
 
-- (void)_performAddSharedAlbumAssets:(id)a3
+- (void)_performAddSharedAlbumAssets:(id)assets
 {
-  v4 = a3;
-  v5 = [(PXAssetCollectionActionPerformer *)self assetCollection];
-  [(PXPhotoKitAssetCollectionActionPerformer *)self addAssets:v4 toSharedAlbum:v5];
+  assetsCopy = assets;
+  assetCollection = [(PXAssetCollectionActionPerformer *)self assetCollection];
+  [(PXPhotoKitAssetCollectionActionPerformer *)self addAssets:assetsCopy toSharedAlbum:assetCollection];
 }
 
 - (void)performBackgroundTask
@@ -125,7 +125,7 @@ void __72__PXPhotoKitAssetCollectionAddContentActionPerformer__performAddAssets_
 
   else
   {
-    v3 = [(PXFastEnumeration *)self->_content firstObject];
+    firstObject = [(PXFastEnumeration *)self->_content firstObject];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -143,9 +143,9 @@ void __72__PXPhotoKitAssetCollectionAddContentActionPerformer__performAddAssets_
 
 - (void)performUserInteractionTask
 {
-  v4 = [(PXPhotoKitAssetCollectionAddContentActionPerformer *)self _isAddingToSharedAlbum];
+  _isAddingToSharedAlbum = [(PXPhotoKitAssetCollectionAddContentActionPerformer *)self _isAddingToSharedAlbum];
   content = self->_content;
-  if (v4)
+  if (_isAddingToSharedAlbum)
   {
     v17 = content;
     if (v17)
@@ -153,11 +153,11 @@ void __72__PXPhotoKitAssetCollectionAddContentActionPerformer__performAddAssets_
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v13 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
         v14 = objc_opt_class();
         v15 = NSStringFromClass(v14);
-        v16 = [(PXFastEnumeration *)v17 px_descriptionForAssertionMessage];
-        [v13 handleFailureInMethod:a2 object:self file:@"PXPhotoKitAssetCollectionAddContentActionPerformer.m" lineNumber:56 description:{@"%@ should be nil or an instance inheriting from %@, but it is %@", @"_content", v15, v16}];
+        px_descriptionForAssertionMessage = [(PXFastEnumeration *)v17 px_descriptionForAssertionMessage];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotoKitAssetCollectionAddContentActionPerformer.m" lineNumber:56 description:{@"%@ should be nil or an instance inheriting from %@, but it is %@", @"_content", v15, px_descriptionForAssertionMessage}];
       }
 
       [(PXPhotoKitAssetCollectionAddContentActionPerformer *)self _performAddSharedAlbumAssets:v17];
@@ -172,7 +172,7 @@ void __72__PXPhotoKitAssetCollectionAddContentActionPerformer__performAddAssets_
 
   else
   {
-    v6 = [(PXFastEnumeration *)content firstObject];
+    firstObject = [(PXFastEnumeration *)content firstObject];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -215,31 +215,31 @@ uint64_t __80__PXPhotoKitAssetCollectionAddContentActionPerformer_performUserInt
 
 - (BOOL)_isAddingToSharedAlbum
 {
-  v3 = [(PXFastEnumeration *)self->_content firstObject];
+  firstObject = [(PXFastEnumeration *)self->_content firstObject];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [(PXAssetCollectionActionPerformer *)self assetCollection];
-    v5 = [v4 px_isSharedAlbum];
+    assetCollection = [(PXAssetCollectionActionPerformer *)self assetCollection];
+    px_isSharedAlbum = [assetCollection px_isSharedAlbum];
   }
 
   else
   {
-    v5 = 0;
+    px_isSharedAlbum = 0;
   }
 
-  return v5;
+  return px_isSharedAlbum;
 }
 
-- (PXPhotoKitAssetCollectionAddContentActionPerformer)initWithActionType:(id)a3 assetCollectionReference:(id)a4 parameters:(id)a5
+- (PXPhotoKitAssetCollectionAddContentActionPerformer)initWithActionType:(id)type assetCollectionReference:(id)reference parameters:(id)parameters
 {
-  v9 = a5;
+  parametersCopy = parameters;
   v17.receiver = self;
   v17.super_class = PXPhotoKitAssetCollectionAddContentActionPerformer;
-  v10 = [(PXAssetCollectionActionPerformer *)&v17 initWithActionType:a3 assetCollectionReference:a4 parameters:v9];
+  v10 = [(PXAssetCollectionActionPerformer *)&v17 initWithActionType:type assetCollectionReference:reference parameters:parametersCopy];
   if (v10)
   {
-    v11 = [v9 objectForKeyedSubscript:*off_1E77219C0];
+    v11 = [parametersCopy objectForKeyedSubscript:*off_1E77219C0];
     v12 = v11;
     if (v11)
     {
@@ -252,15 +252,15 @@ LABEL_4:
         goto LABEL_5;
       }
 
-      v15 = [MEMORY[0x1E696AAA8] currentHandler];
-      v16 = [(PXFastEnumeration *)v12 px_descriptionForAssertionMessage];
-      [v15 handleFailureInMethod:a2 object:v10 file:@"PXPhotoKitAssetCollectionAddContentActionPerformer.m" lineNumber:40 description:{@"%@ should conform to protocol %@, but %@ doesn't", @"parameters[PXActionParameterKeyContent]", @"PXFastEnumeration", v16}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      px_descriptionForAssertionMessage = [(PXFastEnumeration *)v12 px_descriptionForAssertionMessage];
+      [currentHandler handleFailureInMethod:a2 object:v10 file:@"PXPhotoKitAssetCollectionAddContentActionPerformer.m" lineNumber:40 description:{@"%@ should conform to protocol %@, but %@ doesn't", @"parameters[PXActionParameterKeyContent]", @"PXFastEnumeration", px_descriptionForAssertionMessage}];
     }
 
     else
     {
-      v15 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v15 handleFailureInMethod:a2 object:v10 file:@"PXPhotoKitAssetCollectionAddContentActionPerformer.m" lineNumber:40 description:{@"%@ should conform to protocol %@, but it is nil", @"parameters[PXActionParameterKeyContent]", @"PXFastEnumeration"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v10 file:@"PXPhotoKitAssetCollectionAddContentActionPerformer.m" lineNumber:40 description:{@"%@ should conform to protocol %@, but it is nil", @"parameters[PXActionParameterKeyContent]", @"PXFastEnumeration"}];
     }
 
     goto LABEL_4;
@@ -271,15 +271,15 @@ LABEL_5:
   return v10;
 }
 
-+ (BOOL)canPerformOnAssetCollectionReference:(id)a3 withInputs:(id)a4
++ (BOOL)canPerformOnAssetCollectionReference:(id)reference withInputs:(id)inputs
 {
-  v6 = [a3 assetCollection];
-  if (!v6)
+  assetCollection = [reference assetCollection];
+  if (!assetCollection)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v10 = objc_opt_class();
     v11 = NSStringFromClass(v10);
-    [v9 handleFailureInMethod:a2 object:a1 file:@"PXPhotoKitAssetCollectionAddContentActionPerformer.m" lineNumber:30 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"assetCollectionReference.assetCollection", v11}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotoKitAssetCollectionAddContentActionPerformer.m" lineNumber:30 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"assetCollectionReference.assetCollection", v11}];
 LABEL_6:
 
     goto LABEL_3;
@@ -288,17 +288,17 @@ LABEL_6:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v12 = objc_opt_class();
     v11 = NSStringFromClass(v12);
-    v13 = [v6 px_descriptionForAssertionMessage];
-    [v9 handleFailureInMethod:a2 object:a1 file:@"PXPhotoKitAssetCollectionAddContentActionPerformer.m" lineNumber:30 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"assetCollectionReference.assetCollection", v11, v13}];
+    px_descriptionForAssertionMessage = [assetCollection px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotoKitAssetCollectionAddContentActionPerformer.m" lineNumber:30 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"assetCollectionReference.assetCollection", v11, px_descriptionForAssertionMessage}];
 
     goto LABEL_6;
   }
 
 LABEL_3:
-  v7 = [v6 canPerformEditOperation:3];
+  v7 = [assetCollection canPerformEditOperation:3];
 
   return v7;
 }

@@ -1,22 +1,22 @@
 @interface WFiTunesPodcastObject
 + (id)JSONKeyPathsByPropertyKey;
-- (WFiTunesPodcastObject)initWithName:(id)a3 identifier:(id)a4 podcastUUID:(id)a5 feedURL:(id)a6 kind:(id)a7;
+- (WFiTunesPodcastObject)initWithName:(id)name identifier:(id)identifier podcastUUID:(id)d feedURL:(id)l kind:(id)kind;
 @end
 
 @implementation WFiTunesPodcastObject
 
-- (WFiTunesPodcastObject)initWithName:(id)a3 identifier:(id)a4 podcastUUID:(id)a5 feedURL:(id)a6 kind:(id)a7
+- (WFiTunesPodcastObject)initWithName:(id)name identifier:(id)identifier podcastUUID:(id)d feedURL:(id)l kind:(id)kind
 {
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  lCopy = l;
   v18.receiver = self;
   v18.super_class = WFiTunesPodcastObject;
-  v14 = [(WFiTunesObject *)&v18 initWithName:a3 identifier:a4 kind:a7];
+  v14 = [(WFiTunesObject *)&v18 initWithName:name identifier:identifier kind:kind];
   v15 = v14;
   if (v14)
   {
-    [(WFiTunesPodcastObject *)v14 setPodcastUUID:v12];
-    [(WFiTunesPodcastObject *)v15 setFeedURL:v13];
+    [(WFiTunesPodcastObject *)v14 setPodcastUUID:dCopy];
+    [(WFiTunesPodcastObject *)v15 setFeedURL:lCopy];
     v16 = v15;
   }
 
@@ -26,7 +26,7 @@
 + (id)JSONKeyPathsByPropertyKey
 {
   v9[2] = *MEMORY[0x1E69E9840];
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &OBJC_METACLASS___WFiTunesPodcastObject;
   v2 = objc_msgSendSuper2(&v7, sel_JSONKeyPathsByPropertyKey);
   v3 = [v2 mutableCopy];

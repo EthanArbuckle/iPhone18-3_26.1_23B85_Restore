@@ -1,6 +1,6 @@
 @interface VUIMediaLibraryOperation
 - (VUIMediaLibraryOperation)init;
-- (VUIMediaLibraryOperation)initWithMediaLibrary:(id)a3;
+- (VUIMediaLibraryOperation)initWithMediaLibrary:(id)library;
 - (void)cancel;
 @end
 
@@ -16,10 +16,10 @@
   return 0;
 }
 
-- (VUIMediaLibraryOperation)initWithMediaLibrary:(id)a3
+- (VUIMediaLibraryOperation)initWithMediaLibrary:(id)library
 {
-  v5 = a3;
-  if (!v5)
+  libraryCopy = library;
+  if (!libraryCopy)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"The %@ parameter must not be nil.", @"mediaLibrary"}];
   }
@@ -30,7 +30,7 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_mediaLibrary, a3);
+    objc_storeStrong(&v6->_mediaLibrary, library);
   }
 
   return v7;
@@ -41,8 +41,8 @@
   v4.receiver = self;
   v4.super_class = VUIMediaLibraryOperation;
   [(VUIMediaLibraryOperation *)&v4 cancel];
-  v3 = [(VUIMediaLibraryOperation *)self asyncWorkToken];
-  [v3 cancel];
+  asyncWorkToken = [(VUIMediaLibraryOperation *)self asyncWorkToken];
+  [asyncWorkToken cancel];
 
   [(VUIAsynchronousOperation *)self finishExecutionIfPossible];
 }

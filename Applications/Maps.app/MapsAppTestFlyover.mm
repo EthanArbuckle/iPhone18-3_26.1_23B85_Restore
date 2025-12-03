@@ -1,19 +1,19 @@
 @interface MapsAppTestFlyover
 - (BOOL)runTest;
-- (void)setCenterCoordinateFull:(id)a3;
+- (void)setCenterCoordinateFull:(id)full;
 @end
 
 @implementation MapsAppTestFlyover
 
-- (void)setCenterCoordinateFull:(id)a3
+- (void)setCenterCoordinateFull:(id)full
 {
-  v5 = a3;
-  if (!v5)
+  fullCopy = full;
+  if (!fullCopy)
   {
-    v5 = [(MapsAppTest *)self options];
+    fullCopy = [(MapsAppTest *)self options];
   }
 
-  v6 = [v5 objectForKeyedSubscript:@"subTestName"];
+  v6 = [fullCopy objectForKeyedSubscript:@"subTestName"];
   if (!v6)
   {
     v6 = NSStringFromSelector(a2);
@@ -27,18 +27,18 @@
   }
 
   objc_initWeak(&location, self);
-  [v5 _mapstest_VKLocationCoordinate2D];
+  [fullCopy _mapstest_VKLocationCoordinate2D];
   v9 = v8;
   v11 = v10;
-  [v5 _mapstest_altitude];
+  [fullCopy _mapstest_altitude];
   v13 = v12;
-  [v5 _mapstest_yaw];
+  [fullCopy _mapstest_yaw];
   v15 = v14;
-  [v5 _mapstest_pitch];
+  [fullCopy _mapstest_pitch];
   v17 = v16;
-  [v5 _mapstest_duration];
+  [fullCopy _mapstest_duration];
   v19 = v18;
-  v20 = [(MapsAppTest *)self mainVKMapView];
+  mainVKMapView = [(MapsAppTest *)self mainVKMapView];
   v21 = VKAnimationCurveEaseInOut;
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
@@ -47,7 +47,7 @@
   objc_copyWeak(&v25, &location);
   v22 = v6;
   v24 = v22;
-  [v20 setCenterCoordinate:v21 altitude:v23 yaw:v9 pitch:v11 duration:v13 timingCurve:v15 completion:{v17, v19}];
+  [mainVKMapView setCenterCoordinate:v21 altitude:v23 yaw:v9 pitch:v11 duration:v13 timingCurve:v15 completion:{v17, v19}];
 
   objc_destroyWeak(&v25);
   objc_destroyWeak(&location);
@@ -55,8 +55,8 @@
 
 - (BOOL)runTest
 {
-  v3 = [(MapsAppTest *)self testName];
-  NSLog(@"test is %@", v3);
+  testName = [(MapsAppTest *)self testName];
+  NSLog(@"test is %@", testName);
 
   [(MapsAppTest *)self startedTest];
   [(MapsAppTest *)self setupForVKTest];

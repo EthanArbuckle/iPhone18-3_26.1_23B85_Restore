@@ -1,40 +1,40 @@
 @interface SGConversationFlatteningTransformer
-+ (id)withPerMessageTransformer:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToConversationFlatteningTransformer:(id)a3;
-- (SGConversationFlatteningTransformer)initWithPerMessageTransformer:(id)a3;
-- (SGConversationFlatteningTransformer)initWithPlist:(id)a3 chunks:(id)a4 context:(id)a5;
-- (id)toPlistWithChunks:(id)a3;
-- (id)transform:(id)a3;
++ (id)withPerMessageTransformer:(id)transformer;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToConversationFlatteningTransformer:(id)transformer;
+- (SGConversationFlatteningTransformer)initWithPerMessageTransformer:(id)transformer;
+- (SGConversationFlatteningTransformer)initWithPlist:(id)plist chunks:(id)chunks context:(id)context;
+- (id)toPlistWithChunks:(id)chunks;
+- (id)transform:(id)transform;
 @end
 
 @implementation SGConversationFlatteningTransformer
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(SGConversationFlatteningTransformer *)self isEqualToConversationFlatteningTransformer:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(SGConversationFlatteningTransformer *)self isEqualToConversationFlatteningTransformer:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToConversationFlatteningTransformer:(id)a3
+- (BOOL)isEqualToConversationFlatteningTransformer:(id)transformer
 {
-  v4 = a3;
-  if (v4)
+  transformerCopy = transformer;
+  if (transformerCopy)
   {
     v5 = self->_perMessageTranformer;
     v6 = v5;
-    if (v5 == v4[1])
+    if (v5 == transformerCopy[1])
     {
       v7 = 1;
     }
@@ -53,31 +53,31 @@
   return v7;
 }
 
-- (SGConversationFlatteningTransformer)initWithPlist:(id)a3 chunks:(id)a4 context:(id)a5
+- (SGConversationFlatteningTransformer)initWithPlist:(id)plist chunks:(id)chunks context:(id)context
 {
   v8 = MEMORY[0x277D41F60];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  contextCopy = context;
+  chunksCopy = chunks;
+  plistCopy = plist;
   v12 = [v8 alloc];
   v13 = [v12 initWithClassNameKey:*MEMORY[0x277D41F98]];
-  v14 = [v11 objectForKeyedSubscript:@"PER_MESSAGE_TRANSFORMER"];
+  v14 = [plistCopy objectForKeyedSubscript:@"PER_MESSAGE_TRANSFORMER"];
 
-  v15 = [v13 readObjectWithPlist:v14 chunks:v10 context:v9];
+  v15 = [v13 readObjectWithPlist:v14 chunks:chunksCopy context:contextCopy];
 
   v16 = [(SGConversationFlatteningTransformer *)self initWithPerMessageTransformer:v15];
   return v16;
 }
 
-- (id)toPlistWithChunks:(id)a3
+- (id)toPlistWithChunks:(id)chunks
 {
   v13[1] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277D41F60];
-  v5 = a3;
+  chunksCopy = chunks;
   v6 = [v4 alloc];
   v7 = [v6 initWithClassNameKey:*MEMORY[0x277D41F98]];
   v12 = @"PER_MESSAGE_TRANSFORMER";
-  v8 = [v7 writeToPlistWithObject:self->_perMessageTranformer andChunks:v5];
+  v8 = [v7 writeToPlistWithObject:self->_perMessageTranformer andChunks:chunksCopy];
 
   v13[0] = v8;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:&v12 count:1];
@@ -87,27 +87,27 @@
   return v9;
 }
 
-- (id)transform:(id)a3
+- (id)transform:(id)transform
 {
   v56[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  transformCopy = transform;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v39 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v40 = objc_opt_class();
     v41 = NSStringFromClass(v40);
-    [v39 handleFailureInMethod:a2 object:self file:@"SGConversationFlatteningTransformer.m" lineNumber:47 description:{@"Unexpected input type for %@: %@, ", v4, v41}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGConversationFlatteningTransformer.m" lineNumber:47 description:{@"Unexpected input type for %@: %@, ", transformCopy, v41}];
   }
 
-  v5 = [v4 objectForKeyedSubscript:@"INPUT_CONVERSATION"];
-  v42 = v4;
-  v6 = [v4 objectForKeyedSubscript:@"SG_MODEL_INPUT_TARGET_MESSAGE_INDEX"];
+  v5 = [transformCopy objectForKeyedSubscript:@"INPUT_CONVERSATION"];
+  v42 = transformCopy;
+  v6 = [transformCopy objectForKeyedSubscript:@"SG_MODEL_INPUT_TARGET_MESSAGE_INDEX"];
   v7 = objc_opt_new();
   v46 = v6;
   v8 = [v5 objectAtIndexedSubscript:{objc_msgSend(v6, "integerValue")}];
-  v9 = [v8 message];
-  v43 = [v9 senderIsAccountOwner];
+  message = [v8 message];
+  senderIsAccountOwner = [message senderIsAccountOwner];
 
   v10 = [v5 count];
   if (v10 <= 3)
@@ -128,16 +128,16 @@
     {
       v13 = objc_autoreleasePoolPush();
       v14 = [v5 objectAtIndexedSubscript:v12];
-      v15 = [v14 text];
+      text = [v14 text];
 
       v16 = [v5 objectAtIndexedSubscript:v12];
-      v17 = [v16 message];
-      v18 = [v17 senderIsAccountOwner];
+      message2 = [v16 message];
+      senderIsAccountOwner2 = [message2 senderIsAccountOwner];
 
       v19 = objc_alloc(MEMORY[0x277CBEB38]);
       v55 = @"INPUT_TEXT";
-      v56[0] = v15;
-      v47 = v15;
+      v56[0] = text;
+      v47 = text;
       v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v56 forKeys:&v55 count:1];
       v21 = [v19 initWithDictionary:v20];
 
@@ -158,8 +158,8 @@
       else
       {
         v25 = [v5 objectAtIndexedSubscript:v12];
-        v26 = [v25 detectedData];
-        [v21 setObject:v26 forKeyedSubscript:@"DD_MATCHES"];
+        detectedData = [v25 detectedData];
+        [v21 setObject:detectedData forKeyedSubscript:@"DD_MATCHES"];
 
         [v21 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"SG_MODEL_DISABLE_TARGET_MAPPING"];
       }
@@ -174,7 +174,7 @@
       if (v29)
       {
         v30 = v29;
-        v31 = v43 ^ v18;
+        v31 = senderIsAccountOwner ^ senderIsAccountOwner2;
         v32 = *v51;
         do
         {
@@ -221,25 +221,25 @@
   return v7;
 }
 
-- (SGConversationFlatteningTransformer)initWithPerMessageTransformer:(id)a3
+- (SGConversationFlatteningTransformer)initWithPerMessageTransformer:(id)transformer
 {
-  v5 = a3;
+  transformerCopy = transformer;
   v9.receiver = self;
   v9.super_class = SGConversationFlatteningTransformer;
   v6 = [(SGConversationFlatteningTransformer *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_perMessageTranformer, a3);
+    objc_storeStrong(&v6->_perMessageTranformer, transformer);
   }
 
   return v7;
 }
 
-+ (id)withPerMessageTransformer:(id)a3
++ (id)withPerMessageTransformer:(id)transformer
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithPerMessageTransformer:v4];
+  transformerCopy = transformer;
+  v5 = [[self alloc] initWithPerMessageTransformer:transformerCopy];
 
   return v5;
 }

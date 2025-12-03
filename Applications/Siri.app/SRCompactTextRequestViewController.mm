@@ -3,16 +3,16 @@
 - (SRCompactTextRequestView)_textRequestView;
 - (SRCompactTextRequestViewControllerDelegate)delegate;
 - (void)loadView;
-- (void)setAllowsCancellation:(BOOL)a3;
-- (void)textRequestView:(id)a3 didChangeTextFieldText:(id)a4;
-- (void)textRequestView:(id)a3 didEnableSuggestions:(BOOL)a4;
-- (void)textRequestView:(id)a3 requestsKeyboardWithCompletion:(id)a4;
-- (void)textRequestView:(id)a3 siriRequestCommittedWithText:(id)a4;
-- (void)textRequestViewDidEndEditing:(id)a3;
-- (void)textRequestViewDidEndTextEditMenuInteraction:(id)a3;
-- (void)textRequestViewRequestsVoiceActivation:(id)a3;
-- (void)textRequestViewWillBeginEditing:(id)a3;
-- (void)textRequestViewWillBeginTextEditMenuInteraction:(id)a3;
+- (void)setAllowsCancellation:(BOOL)cancellation;
+- (void)textRequestView:(id)view didChangeTextFieldText:(id)text;
+- (void)textRequestView:(id)view didEnableSuggestions:(BOOL)suggestions;
+- (void)textRequestView:(id)view requestsKeyboardWithCompletion:(id)completion;
+- (void)textRequestView:(id)view siriRequestCommittedWithText:(id)text;
+- (void)textRequestViewDidEndEditing:(id)editing;
+- (void)textRequestViewDidEndTextEditMenuInteraction:(id)interaction;
+- (void)textRequestViewRequestsVoiceActivation:(id)activation;
+- (void)textRequestViewWillBeginEditing:(id)editing;
+- (void)textRequestViewWillBeginTextEditMenuInteraction:(id)interaction;
 @end
 
 @implementation SRCompactTextRequestViewController
@@ -35,93 +35,93 @@
 
 - (BOOL)allowsCancellation
 {
-  v2 = [(SRCompactTextRequestViewController *)self _textRequestView];
-  v3 = [v2 allowsCancellation];
+  _textRequestView = [(SRCompactTextRequestViewController *)self _textRequestView];
+  allowsCancellation = [_textRequestView allowsCancellation];
 
-  return v3;
+  return allowsCancellation;
 }
 
-- (void)setAllowsCancellation:(BOOL)a3
+- (void)setAllowsCancellation:(BOOL)cancellation
 {
-  v3 = a3;
-  v4 = [(SRCompactTextRequestViewController *)self _textRequestView];
-  [v4 setAllowsCancellation:v3];
+  cancellationCopy = cancellation;
+  _textRequestView = [(SRCompactTextRequestViewController *)self _textRequestView];
+  [_textRequestView setAllowsCancellation:cancellationCopy];
 }
 
 - (void)loadView
 {
-  v3 = [(SRCompactTextRequestViewController *)self _textRequestView];
-  [(SRCompactTextRequestViewController *)self setView:v3];
+  _textRequestView = [(SRCompactTextRequestViewController *)self _textRequestView];
+  [(SRCompactTextRequestViewController *)self setView:_textRequestView];
 }
 
-- (void)textRequestView:(id)a3 requestsKeyboardWithCompletion:(id)a4
+- (void)textRequestView:(id)view requestsKeyboardWithCompletion:(id)completion
 {
-  v5 = a4;
-  v6 = [(SRCompactTextRequestViewController *)self delegate];
-  [v6 textRequestController:self requestsKeyboardWithCompletion:v5];
+  completionCopy = completion;
+  delegate = [(SRCompactTextRequestViewController *)self delegate];
+  [delegate textRequestController:self requestsKeyboardWithCompletion:completionCopy];
 }
 
-- (void)textRequestViewWillBeginEditing:(id)a3
+- (void)textRequestViewWillBeginEditing:(id)editing
 {
-  v4 = [(SRCompactTextRequestViewController *)self delegate];
-  [v4 textRequestControllerWillBeginEditing:self];
+  delegate = [(SRCompactTextRequestViewController *)self delegate];
+  [delegate textRequestControllerWillBeginEditing:self];
 }
 
-- (void)textRequestViewDidEndEditing:(id)a3
+- (void)textRequestViewDidEndEditing:(id)editing
 {
-  v4 = [(SRCompactTextRequestViewController *)self delegate];
-  [v4 textRequestControllerDidEndEditing:self];
+  delegate = [(SRCompactTextRequestViewController *)self delegate];
+  [delegate textRequestControllerDidEndEditing:self];
 }
 
-- (void)textRequestViewWillBeginTextEditMenuInteraction:(id)a3
+- (void)textRequestViewWillBeginTextEditMenuInteraction:(id)interaction
 {
-  v4 = [(SRCompactTextRequestViewController *)self delegate];
-  [v4 textRequestControllerWillBeginTextEditMenuInteraction:self];
+  delegate = [(SRCompactTextRequestViewController *)self delegate];
+  [delegate textRequestControllerWillBeginTextEditMenuInteraction:self];
 }
 
-- (void)textRequestViewDidEndTextEditMenuInteraction:(id)a3
+- (void)textRequestViewDidEndTextEditMenuInteraction:(id)interaction
 {
-  v4 = [(SRCompactTextRequestViewController *)self delegate];
-  [v4 textRequestControllerDidEndTextEditMenuInteraction:self];
+  delegate = [(SRCompactTextRequestViewController *)self delegate];
+  [delegate textRequestControllerDidEndTextEditMenuInteraction:self];
 }
 
-- (void)textRequestView:(id)a3 siriRequestCommittedWithText:(id)a4
+- (void)textRequestView:(id)view siriRequestCommittedWithText:(id)text
 {
-  v5 = a4;
-  v6 = [(SRCompactTextRequestViewController *)self delegate];
-  [v6 textRequestController:self siriRequestCommittedWithText:v5];
+  textCopy = text;
+  delegate = [(SRCompactTextRequestViewController *)self delegate];
+  [delegate textRequestController:self siriRequestCommittedWithText:textCopy];
 }
 
-- (void)textRequestView:(id)a3 didChangeTextFieldText:(id)a4
+- (void)textRequestView:(id)view didChangeTextFieldText:(id)text
 {
-  v8 = a4;
-  v5 = [(SRCompactTextRequestViewController *)self delegate];
+  textCopy = text;
+  delegate = [(SRCompactTextRequestViewController *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(SRCompactTextRequestViewController *)self delegate];
-    [v7 textRequestController:self didChangeText:v8];
+    delegate2 = [(SRCompactTextRequestViewController *)self delegate];
+    [delegate2 textRequestController:self didChangeText:textCopy];
   }
 }
 
-- (void)textRequestView:(id)a3 didEnableSuggestions:(BOOL)a4
+- (void)textRequestView:(id)view didEnableSuggestions:(BOOL)suggestions
 {
-  v4 = a4;
-  v6 = [(SRCompactTextRequestViewController *)self delegate];
+  suggestionsCopy = suggestions;
+  delegate = [(SRCompactTextRequestViewController *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(SRCompactTextRequestViewController *)self delegate];
-    [v8 textRequestController:self didEnableSuggestions:v4];
+    delegate2 = [(SRCompactTextRequestViewController *)self delegate];
+    [delegate2 textRequestController:self didEnableSuggestions:suggestionsCopy];
   }
 }
 
-- (void)textRequestViewRequestsVoiceActivation:(id)a3
+- (void)textRequestViewRequestsVoiceActivation:(id)activation
 {
-  v4 = [(SRCompactTextRequestViewController *)self delegate];
-  [v4 textRequestControllerRequestsVoiceActivation:self];
+  delegate = [(SRCompactTextRequestViewController *)self delegate];
+  [delegate textRequestControllerRequestsVoiceActivation:self];
 }
 
 - (SRCompactTextRequestViewControllerDelegate)delegate

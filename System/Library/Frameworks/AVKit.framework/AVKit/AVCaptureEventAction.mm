@@ -1,14 +1,14 @@
 @interface AVCaptureEventAction
-- (AVCaptureEventAction)initWithSource:(unint64_t)a3 eventHandler:(id)a4;
-- (void)sendPhaseUpdate:(unint64_t)a3 physicalButton:(unint64_t)a4 interaction:(id)a5;
+- (AVCaptureEventAction)initWithSource:(unint64_t)source eventHandler:(id)handler;
+- (void)sendPhaseUpdate:(unint64_t)update physicalButton:(unint64_t)button interaction:(id)interaction;
 @end
 
 @implementation AVCaptureEventAction
 
-- (void)sendPhaseUpdate:(unint64_t)a3 physicalButton:(unint64_t)a4 interaction:(id)a5
+- (void)sendPhaseUpdate:(unint64_t)update physicalButton:(unint64_t)button interaction:(id)interaction
 {
   v13 = *MEMORY[0x1E69E9840];
-  v6 = [AVCaptureEvent eventWithSource:self->_source physicalButton:a4 phase:a3 interaction:a5];
+  v6 = [AVCaptureEvent eventWithSource:self->_source physicalButton:button phase:update interaction:interaction];
   v7 = _AVLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -23,17 +23,17 @@
   (*(self->_handler + 2))();
 }
 
-- (AVCaptureEventAction)initWithSource:(unint64_t)a3 eventHandler:(id)a4
+- (AVCaptureEventAction)initWithSource:(unint64_t)source eventHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v12.receiver = self;
   v12.super_class = AVCaptureEventAction;
   v7 = [(AVCaptureEventAction *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    v7->_source = a3;
-    v9 = [v6 copy];
+    v7->_source = source;
+    v9 = [handlerCopy copy];
     handler = v8->_handler;
     v8->_handler = v9;
   }

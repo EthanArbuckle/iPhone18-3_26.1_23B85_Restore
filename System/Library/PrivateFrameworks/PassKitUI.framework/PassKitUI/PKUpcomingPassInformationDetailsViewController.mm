@@ -1,52 +1,52 @@
 @interface PKUpcomingPassInformationDetailsViewController
-+ (BOOL)entryMeetsMinimumContentRequirements:(id)a3;
++ (BOOL)entryMeetsMinimumContentRequirements:(id)requirements;
 - ($85E40A55691FE2F31975A98F57E3065D)pkui_navigationStatusBarStyleDescriptor;
-- (BOOL)entryCanCreateCalendarEvent:(id)a3;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
-- (PKUpcomingPassInformationDetailsViewController)initWithDataSource:(id)a3;
+- (BOOL)entryCanCreateCalendarEvent:(id)event;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
+- (PKUpcomingPassInformationDetailsViewController)initWithDataSource:(id)source;
 - (id)_allMenuItems;
 - (id)_showCalendarAction;
 - (id)_showSellAction;
 - (id)_showTransferAction;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
 - (id)createBarButtonItems;
 - (id)moreMenu;
-- (void)_performAddToCalendarRequestNeedingPermission:(BOOL)a3 eventStore:(id)a4 entry:(id)a5 pass:(id)a6;
-- (void)_updateHeaderCellWithAnimationProgress:(id)a3;
-- (void)_updateNavigationBarIconForNavigationBarAppeared:(BOOL)a3;
+- (void)_performAddToCalendarRequestNeedingPermission:(BOOL)permission eventStore:(id)store entry:(id)entry pass:(id)pass;
+- (void)_updateHeaderCellWithAnimationProgress:(id)progress;
+- (void)_updateNavigationBarIconForNavigationBarAppeared:(BOOL)appeared;
 - (void)_updateTitle;
-- (void)addEventToCalendarWithEventStore:(id)a3 entry:(id)a4 pass:(id)a5;
-- (void)didMoveToParentViewController:(id)a3;
-- (void)eventViewController:(id)a3 didCompleteWithAction:(int64_t)a4;
-- (void)passTilesItemPresenter:(id)a3 displayTileContext:(int64_t)a4 forPass:(id)a5 tile:(id)a6 overrideMaximumRows:(BOOL)a7;
-- (void)presentExistingCalendarEvent:(id)a3 eventStore:(id)a4;
+- (void)addEventToCalendarWithEventStore:(id)store entry:(id)entry pass:(id)pass;
+- (void)didMoveToParentViewController:(id)controller;
+- (void)eventViewController:(id)controller didCompleteWithAction:(int64_t)action;
+- (void)passTilesItemPresenter:(id)presenter displayTileContext:(int64_t)context forPass:(id)pass tile:(id)tile overrideMaximumRows:(BOOL)rows;
+- (void)presentExistingCalendarEvent:(id)event eventStore:(id)store;
 - (void)presentNeedsCalendarPermissionsAlert;
 - (void)updateContent;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
-- (void)willMoveToParentViewController:(id)a3;
+- (void)willMoveToParentViewController:(id)controller;
 @end
 
 @implementation PKUpcomingPassInformationDetailsViewController
 
-+ (BOOL)entryMeetsMinimumContentRequirements:(id)a3
++ (BOOL)entryMeetsMinimumContentRequirements:(id)requirements
 {
-  v3 = a3;
-  v4 = [v3 content];
-  v5 = [v4 backFields];
-  v6 = [v5 count] != 0;
+  requirementsCopy = requirements;
+  content = [requirementsCopy content];
+  backFields = [content backFields];
+  v6 = [backFields count] != 0;
 
-  v7 = [v3 metadata];
+  metadata = [requirementsCopy metadata];
 
-  [v7 type];
+  [metadata type];
   return v6;
 }
 
-- (PKUpcomingPassInformationDetailsViewController)initWithDataSource:(id)a3
+- (PKUpcomingPassInformationDetailsViewController)initWithDataSource:(id)source
 {
   v20[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  sourceCopy = source;
   v5 = objc_alloc_init(PKUpcomingPassInformationDetailsHeaderItemPresenter);
   v6 = objc_alloc_init(PKDashboardPassTilesItemPresenter);
   v7 = objc_alloc_init(PKDashboardTextActionItemPresenter);
@@ -58,25 +58,25 @@
   [(PKHeaderVerticalScrollingLayout *)v9 setUseStickyHeader:1];
   v19.receiver = self;
   v19.super_class = PKUpcomingPassInformationDetailsViewController;
-  v10 = [(PKDashboardViewController *)&v19 initWithDataSource:v4 presenters:v8 layout:v9];
+  v10 = [(PKDashboardViewController *)&v19 initWithDataSource:sourceCopy presenters:v8 layout:v9];
   if (v10)
   {
-    v11 = [v4 headerIndexPath];
+    headerIndexPath = [sourceCopy headerIndexPath];
     headerIndexPath = v10->_headerIndexPath;
-    v10->_headerIndexPath = v11;
+    v10->_headerIndexPath = headerIndexPath;
 
     v10->_hideTopPocket = 1;
     [(PKDashboardPassTilesItemPresenter *)v6 setDelegate:v10];
-    v13 = [(PKUpcomingPassInformationDetailsViewController *)v10 navigationItem];
-    v14 = [(PKUpcomingPassInformationDetailsViewController *)v10 createBarButtonItems];
-    [v13 setRightBarButtonItems:v14];
+    navigationItem = [(PKUpcomingPassInformationDetailsViewController *)v10 navigationItem];
+    createBarButtonItems = [(PKUpcomingPassInformationDetailsViewController *)v10 createBarButtonItems];
+    [navigationItem setRightBarButtonItems:createBarButtonItems];
 
-    v15 = [v13 standardAppearance];
-    v16 = [v15 backgroundEffect];
-    [(PKUpcomingPassInformationDetailsHeaderItemPresenter *)v5 setOverlayEffect:v16];
+    standardAppearance = [navigationItem standardAppearance];
+    backgroundEffect = [standardAppearance backgroundEffect];
+    [(PKUpcomingPassInformationDetailsHeaderItemPresenter *)v5 setOverlayEffect:backgroundEffect];
 
-    v17 = [v15 shadowColor];
-    [(PKUpcomingPassInformationDetailsHeaderItemPresenter *)v5 setShadowColor:v17];
+    shadowColor = [standardAppearance shadowColor];
+    [(PKUpcomingPassInformationDetailsHeaderItemPresenter *)v5 setShadowColor:shadowColor];
   }
 
   return v10;
@@ -87,9 +87,9 @@
   v5.receiver = self;
   v5.super_class = PKUpcomingPassInformationDetailsViewController;
   [(PKDashboardViewController *)&v5 viewDidLoad];
-  v3 = [(PKUpcomingPassInformationDetailsViewController *)self view];
+  view = [(PKUpcomingPassInformationDetailsViewController *)self view];
   v4 = +[PKDashboardViewController backgroundColor];
-  [v3 setBackgroundColor:v4];
+  [view setBackgroundColor:v4];
 
   [(PKUpcomingPassInformationDetailsViewController *)self _updateTitle];
 }
@@ -99,10 +99,10 @@
   v40.receiver = self;
   v40.super_class = PKUpcomingPassInformationDetailsViewController;
   [(PKUpcomingPassInformationDetailsViewController *)&v40 viewWillLayoutSubviews];
-  v3 = [(PKUpcomingPassInformationDetailsViewController *)self collectionView];
-  [v3 contentOffset];
+  collectionView = [(PKUpcomingPassInformationDetailsViewController *)self collectionView];
+  [collectionView contentOffset];
   v5 = v4;
-  [v3 safeAreaInsets];
+  [collectionView safeAreaInsets];
   v8 = v7;
   v9 = MEMORY[0x1E69DDCE0];
   v10 = *(MEMORY[0x1E69DDCE0] + 8);
@@ -121,7 +121,7 @@
   v14 = v9[3];
   v15 = *v9;
   v16 = self->_headerHeight - v8;
-  [v3 pkui_naturalRestingBounds];
+  [collectionView pkui_naturalRestingBounds];
   v18 = v5 - v17;
   v19 = v16 - (v5 - v17);
   if (v18 < 0.0)
@@ -129,16 +129,16 @@
     v16 = v19;
   }
 
-  [v3 verticalScrollIndicatorInsets];
+  [collectionView verticalScrollIndicatorInsets];
   if (v23 != v10 || (v20 == v16 ? (v24 = v22 == v14) : (v24 = 0), v24 ? (v25 = v21 == v13) : (v25 = 0), !v25))
   {
-    [v3 setVerticalScrollIndicatorInsets:{v16, v10, v13, v14}];
+    [collectionView setVerticalScrollIndicatorInsets:{v16, v10, v13, v14}];
   }
 
-  [v3 contentInset];
+  [collectionView contentInset];
   if (v29 != v10 || v26 != v15 || v28 != v14 || v27 != v13)
   {
-    [v3 setContentInset:{v15, v10, v13, v14}];
+    [collectionView setContentInset:{v15, v10, v13, v14}];
   }
 
   headerHeight = self->_headerHeight;
@@ -171,8 +171,8 @@ LABEL_37:
 LABEL_38:
   if (self->_headerIndexPath)
   {
-    v38 = [(PKUpcomingPassInformationDetailsViewController *)self collectionView];
-    v39 = [v38 cellForItemAtIndexPath:self->_headerIndexPath];
+    collectionView2 = [(PKUpcomingPassInformationDetailsViewController *)self collectionView];
+    v39 = [collectionView2 cellForItemAtIndexPath:self->_headerIndexPath];
 
     if (v39)
     {
@@ -185,13 +185,13 @@ LABEL_38:
   }
 }
 
-- (void)_updateNavigationBarIconForNavigationBarAppeared:(BOOL)a3
+- (void)_updateNavigationBarIconForNavigationBarAppeared:(BOOL)appeared
 {
   if (self->_titleText)
   {
-    v3 = a3;
-    v5 = [(PKUpcomingPassInformationDetailsViewController *)self navigationItem];
-    if (v3)
+    appearedCopy = appeared;
+    navigationItem = [(PKUpcomingPassInformationDetailsViewController *)self navigationItem];
+    if (appearedCopy)
     {
       titleText = self->_titleText;
     }
@@ -201,8 +201,8 @@ LABEL_38:
       titleText = 0;
     }
 
-    v7 = v5;
-    [v5 _setTitle:titleText animated:1];
+    v7 = navigationItem;
+    [navigationItem _setTitle:titleText animated:1];
   }
 }
 
@@ -211,14 +211,14 @@ LABEL_38:
   v15.receiver = self;
   v15.super_class = PKUpcomingPassInformationDetailsViewController;
   [(PKUpcomingPassInformationDetailsViewController *)&v15 viewDidLayoutSubviews];
-  v3 = [(PKUpcomingPassInformationDetailsViewController *)self view];
-  [v3 bounds];
+  view = [(PKUpcomingPassInformationDetailsViewController *)self view];
+  [view bounds];
   if (self->_footerContainer)
   {
     v7 = v4;
     v8 = v5;
     v9 = v6;
-    [v3 safeAreaInsets];
+    [view safeAreaInsets];
     v11 = v10;
     v13 = v8 - v10 - v12;
     [(PKDashboardViewControllerFooterContainer *)self->_footerContainer sizeThatFits:v13, v9];
@@ -226,26 +226,26 @@ LABEL_38:
   }
 }
 
-- (void)willMoveToParentViewController:(id)a3
+- (void)willMoveToParentViewController:(id)controller
 {
   v5.receiver = self;
   v5.super_class = PKUpcomingPassInformationDetailsViewController;
   [(PKUpcomingPassInformationDetailsViewController *)&v5 willMoveToParentViewController:?];
-  if (!a3)
+  if (!controller)
   {
     objc_storeWeak(&self->_navigationController, 0);
   }
 }
 
-- (void)didMoveToParentViewController:(id)a3
+- (void)didMoveToParentViewController:(id)controller
 {
   v6.receiver = self;
   v6.super_class = PKUpcomingPassInformationDetailsViewController;
-  [(PKUpcomingPassInformationDetailsViewController *)&v6 didMoveToParentViewController:a3];
-  v4 = [(PKUpcomingPassInformationDetailsViewController *)self navigationController];
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  [(PKUpcomingPassInformationDetailsViewController *)&v6 didMoveToParentViewController:controller];
+  navigationController = [(PKUpcomingPassInformationDetailsViewController *)self navigationController];
+  if (navigationController && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = v4;
+    v5 = navigationController;
     objc_storeWeak(&self->_navigationController, v5);
     if (self->_hideTopPocketDirty)
     {
@@ -265,18 +265,18 @@ LABEL_38:
   v30.receiver = self;
   v30.super_class = PKUpcomingPassInformationDetailsViewController;
   [(PKDashboardViewController *)&v30 updateContent];
-  v3 = [(PKUpcomingPassInformationDetailsViewController *)self navigationItem];
-  v4 = [v3 rightBarButtonItems];
-  v5 = [(PKUpcomingPassInformationDetailsViewController *)self createBarButtonItems];
+  navigationItem = [(PKUpcomingPassInformationDetailsViewController *)self navigationItem];
+  rightBarButtonItems = [navigationItem rightBarButtonItems];
+  createBarButtonItems = [(PKUpcomingPassInformationDetailsViewController *)self createBarButtonItems];
   if ((PKEqualObjects() & 1) == 0)
   {
-    [v3 setRightBarButtonItems:v5 animated:1];
+    [navigationItem setRightBarButtonItems:createBarButtonItems animated:1];
   }
 
   [(PKUpcomingPassInformationDetailsViewController *)self _updateTitle];
-  v6 = [(PKDashboardViewController *)self dataSource];
-  v7 = [v6 footerTitle];
-  if (v7)
+  dataSource = [(PKDashboardViewController *)self dataSource];
+  footerTitle = [dataSource footerTitle];
+  if (footerTitle)
   {
     footer = self->_footer;
     if (!footer)
@@ -292,8 +292,8 @@ LABEL_38:
 
       [(PKDashboardViewControllerFooterView *)self->_footer setDetailNumberOfLines:2];
       v16 = objc_alloc(MEMORY[0x1E69DD6C8]);
-      v17 = [(PKUpcomingPassInformationDetailsViewController *)self collectionView];
-      v18 = [v16 initWithScrollView:v17 edge:4 style:1];
+      collectionView = [(PKUpcomingPassInformationDetailsViewController *)self collectionView];
+      v18 = [v16 initWithScrollView:collectionView edge:4 style:1];
 
       [(PKDashboardViewControllerFooterView *)self->_footer addInteraction:v18];
       v19 = [[PKDashboardViewControllerFooterContainer alloc] initWithFrame:v10, v11, v12, v13];
@@ -302,8 +302,8 @@ LABEL_38:
 
       [(PKDashboardViewControllerFooterContainer *)self->_footerContainer setCurrentFooter:self->_footer];
       [(PKDashboardViewControllerFooterContainer *)self->_footerContainer setAlpha:0.0];
-      v21 = [(PKUpcomingPassInformationDetailsViewController *)self view];
-      [v21 addSubview:self->_footerContainer];
+      view = [(PKUpcomingPassInformationDetailsViewController *)self view];
+      [view addSubview:self->_footerContainer];
 
       v29[0] = MEMORY[0x1E69E9820];
       v29[1] = 3221225472;
@@ -315,20 +315,20 @@ LABEL_38:
       footer = self->_footer;
     }
 
-    v22 = [(PKDashboardViewControllerFooterView *)footer leadingTitle];
-    [v22 setText:v7];
+    leadingTitle = [(PKDashboardViewControllerFooterView *)footer leadingTitle];
+    [leadingTitle setText:footerTitle];
 
-    v23 = [(PKDashboardViewControllerFooterView *)self->_footer leadingDetail];
-    v24 = [v6 footerText];
-    [v23 setText:v24];
+    leadingDetail = [(PKDashboardViewControllerFooterView *)self->_footer leadingDetail];
+    footerText = [dataSource footerText];
+    [leadingDetail setText:footerText];
 
-    v25 = [(PKDashboardViewControllerFooterView *)self->_footer trailingTitle];
-    v26 = [v6 footerSecondaryTitle];
-    [v25 setText:v26];
+    trailingTitle = [(PKDashboardViewControllerFooterView *)self->_footer trailingTitle];
+    footerSecondaryTitle = [dataSource footerSecondaryTitle];
+    [trailingTitle setText:footerSecondaryTitle];
 
-    v27 = [(PKDashboardViewControllerFooterView *)self->_footer trailingDetail];
-    v28 = [v6 footerSecondaryText];
-    [v27 setText:v28];
+    trailingDetail = [(PKDashboardViewControllerFooterView *)self->_footer trailingDetail];
+    footerSecondaryText = [dataSource footerSecondaryText];
+    [trailingDetail setText:footerSecondaryText];
 
     [(PKDashboardViewControllerFooterView *)self->_footer setNeedsLayout];
   }
@@ -339,19 +339,19 @@ LABEL_38:
   }
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
-  v8 = a5;
+  pathCopy = path;
   v16.receiver = self;
   v16.super_class = PKUpcomingPassInformationDetailsViewController;
-  [(PKDashboardViewController *)&v16 collectionView:a3 layout:a4 sizeForItemAtIndexPath:v8];
+  [(PKDashboardViewController *)&v16 collectionView:view layout:layout sizeForItemAtIndexPath:pathCopy];
   v10 = v9;
   v12 = v11;
-  if (self->_headerIndexPath && [v8 isEqual:?] && self->_headerHeight != v12)
+  if (self->_headerIndexPath && [pathCopy isEqual:?] && self->_headerHeight != v12)
   {
     self->_headerHeight = v12;
-    v13 = [(PKUpcomingPassInformationDetailsViewController *)self view];
-    [v13 setNeedsLayout];
+    view = [(PKUpcomingPassInformationDetailsViewController *)self view];
+    [view setNeedsLayout];
   }
 
   v14 = v10;
@@ -361,15 +361,15 @@ LABEL_38:
   return result;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a4;
+  pathCopy = path;
   v9.receiver = self;
   v9.super_class = PKUpcomingPassInformationDetailsViewController;
-  v7 = [(PKDashboardViewController *)&v9 collectionView:a3 cellForItemAtIndexPath:v6];
+  v7 = [(PKDashboardViewController *)&v9 collectionView:view cellForItemAtIndexPath:pathCopy];
   if (self->_headerIndexPath)
   {
-    if ([v6 isEqual:?])
+    if ([pathCopy isEqual:?])
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -382,17 +382,17 @@ LABEL_38:
   return v7;
 }
 
-- (void)_updateHeaderCellWithAnimationProgress:(id)a3
+- (void)_updateHeaderCellWithAnimationProgress:(id)progress
 {
-  v14 = a3;
-  [v14 setOverlayAlpha:self->_headerAnimationProgress];
+  progressCopy = progress;
+  [progressCopy setOverlayAlpha:self->_headerAnimationProgress];
   if (self->_headerAnimationProgress >= 1.0)
   {
-    [v14 setOverlayAlpha:0.0];
+    [progressCopy setOverlayAlpha:0.0];
   }
 
-  v4 = [(PKUpcomingPassInformationDetailsViewController *)self collectionView];
-  v5 = v4;
+  collectionView = [(PKUpcomingPassInformationDetailsViewController *)self collectionView];
+  v5 = collectionView;
   if (self->_headerHeight <= 0.0)
   {
     v11 = 0;
@@ -400,11 +400,11 @@ LABEL_38:
 
   else
   {
-    [v4 contentOffset];
+    [collectionView contentOffset];
     v7 = v6;
     [v5 safeAreaInsets];
     v9 = v8;
-    [v14 topLabelWithRespectTo:v5];
+    [progressCopy topLabelWithRespectTo:v5];
     v11 = v7 <= v10 - v9;
   }
 
@@ -442,23 +442,23 @@ LABEL_38:
 
 - (void)_updateTitle
 {
-  v6 = [(PKUpcomingPassInformationDetailsViewController *)self navigationItem];
-  v3 = [(PKDashboardViewController *)self dataSource];
-  v4 = [v3 navigationBarTitle];
-  [v6 setBackButtonTitle:v4];
-  [v6 setBackButtonDisplayMode:1];
+  navigationItem = [(PKUpcomingPassInformationDetailsViewController *)self navigationItem];
+  dataSource = [(PKDashboardViewController *)self dataSource];
+  navigationBarTitle = [dataSource navigationBarTitle];
+  [navigationItem setBackButtonTitle:navigationBarTitle];
+  [navigationItem setBackButtonDisplayMode:1];
   titleText = self->_titleText;
-  self->_titleText = v4;
+  self->_titleText = navigationBarTitle;
 }
 
 - (id)createBarButtonItems
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v4 = [(PKUpcomingPassInformationDetailsViewController *)self moreMenu];
-  if (v4)
+  moreMenu = [(PKUpcomingPassInformationDetailsViewController *)self moreMenu];
+  if (moreMenu)
   {
     v5 = PKUIInfoButtonImageWithDefaultConfiguration();
-    v6 = [objc_alloc(MEMORY[0x1E69DC708]) initWithImage:v5 menu:v4];
+    v6 = [objc_alloc(MEMORY[0x1E69DC708]) initWithImage:v5 menu:moreMenu];
     [v6 setAccessibilityIdentifier:*MEMORY[0x1E69B9970]];
     [v3 addObject:v6];
   }
@@ -470,10 +470,10 @@ LABEL_38:
 
 - (id)moreMenu
 {
-  v2 = [(PKUpcomingPassInformationDetailsViewController *)self _allMenuItems];
-  if ([v2 count])
+  _allMenuItems = [(PKUpcomingPassInformationDetailsViewController *)self _allMenuItems];
+  if ([_allMenuItems count])
   {
-    v3 = [MEMORY[0x1E69DCC60] menuWithChildren:v2];
+    v3 = [MEMORY[0x1E69DCC60] menuWithChildren:_allMenuItems];
     [v3 setAccessibilityIdentifier:*MEMORY[0x1E69B9970]];
   }
 
@@ -489,14 +489,14 @@ LABEL_38:
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v5 = [(PKUpcomingPassInformationDetailsViewController *)self _showCalendarAction];
-  [v4 safelyAddObject:v5];
+  _showCalendarAction = [(PKUpcomingPassInformationDetailsViewController *)self _showCalendarAction];
+  [v4 safelyAddObject:_showCalendarAction];
 
-  v6 = [(PKUpcomingPassInformationDetailsViewController *)self _showTransferAction];
-  [v4 safelyAddObject:v6];
+  _showTransferAction = [(PKUpcomingPassInformationDetailsViewController *)self _showTransferAction];
+  [v4 safelyAddObject:_showTransferAction];
 
-  v7 = [(PKUpcomingPassInformationDetailsViewController *)self _showSellAction];
-  [v4 safelyAddObject:v7];
+  _showSellAction = [(PKUpcomingPassInformationDetailsViewController *)self _showSellAction];
+  [v4 safelyAddObject:_showSellAction];
 
   if ([v4 count])
   {
@@ -511,14 +511,14 @@ LABEL_38:
 
 - (id)_showTransferAction
 {
-  v3 = [(PKDashboardViewController *)self dataSource];
-  v4 = [v3 entry];
-  v5 = [v4 content];
+  dataSource = [(PKDashboardViewController *)self dataSource];
+  entry = [dataSource entry];
+  content = [entry content];
 
-  v6 = [v5 eventContent];
-  v7 = [v6 transferURL];
+  eventContent = [content eventContent];
+  transferURL = [eventContent transferURL];
 
-  if (v7)
+  if (transferURL)
   {
     objc_initWeak(&location, self);
     v8 = MEMORY[0x1E69DC628];
@@ -529,7 +529,7 @@ LABEL_38:
     v13[2] = __69__PKUpcomingPassInformationDetailsViewController__showTransferAction__block_invoke;
     v13[3] = &unk_1E8012328;
     objc_copyWeak(&v15, &location);
-    v14 = v7;
+    v14 = transferURL;
     v11 = [v8 actionWithTitle:v9 image:v10 identifier:0 handler:v13];
 
     [v11 setAccessibilityIdentifier:*MEMORY[0x1E69B9D68]];
@@ -558,14 +558,14 @@ void __69__PKUpcomingPassInformationDetailsViewController__showTransferAction__b
 
 - (id)_showSellAction
 {
-  v3 = [(PKDashboardViewController *)self dataSource];
-  v4 = [v3 entry];
-  v5 = [v4 content];
+  dataSource = [(PKDashboardViewController *)self dataSource];
+  entry = [dataSource entry];
+  content = [entry content];
 
-  v6 = [v5 eventContent];
-  v7 = [v6 sellURL];
+  eventContent = [content eventContent];
+  sellURL = [eventContent sellURL];
 
-  if (v7)
+  if (sellURL)
   {
     objc_initWeak(&location, self);
     v8 = MEMORY[0x1E69DC628];
@@ -576,7 +576,7 @@ void __69__PKUpcomingPassInformationDetailsViewController__showTransferAction__b
     v13[2] = __65__PKUpcomingPassInformationDetailsViewController__showSellAction__block_invoke;
     v13[3] = &unk_1E8012328;
     objc_copyWeak(&v15, &location);
-    v14 = v7;
+    v14 = sellURL;
     v11 = [v8 actionWithTitle:v9 image:v10 identifier:0 handler:v13];
 
     [v11 setAccessibilityIdentifier:*MEMORY[0x1E69B9C08]];
@@ -614,10 +614,10 @@ void __65__PKUpcomingPassInformationDetailsViewController__showSellAction__block
   else
   {
     v5 = v3;
-    v6 = [(PKDashboardViewController *)self dataSource];
-    v7 = [v6 entry];
-    v8 = [v6 pass];
-    if ([(PKUpcomingPassInformationDetailsViewController *)self entryCanCreateCalendarEvent:v7])
+    dataSource = [(PKDashboardViewController *)self dataSource];
+    entry = [dataSource entry];
+    pass = [dataSource pass];
+    if ([(PKUpcomingPassInformationDetailsViewController *)self entryCanCreateCalendarEvent:entry])
     {
       v9 = MEMORY[0x1E69DC928];
       v11[0] = MEMORY[0x1E69E9820];
@@ -625,9 +625,9 @@ void __65__PKUpcomingPassInformationDetailsViewController__showSellAction__block
       v11[2] = __69__PKUpcomingPassInformationDetailsViewController__showCalendarAction__block_invoke;
       v11[3] = &unk_1E8019868;
       v15 = v5;
-      v12 = v8;
-      v13 = v7;
-      v14 = self;
+      v12 = pass;
+      v13 = entry;
+      selfCopy = self;
       v4 = [v9 elementWithUncachedProvider:v11];
     }
 
@@ -713,46 +713,46 @@ void __69__PKUpcomingPassInformationDetailsViewController__showCalendarAction__b
   }
 }
 
-- (BOOL)entryCanCreateCalendarEvent:(id)a3
+- (BOOL)entryCanCreateCalendarEvent:(id)event
 {
-  v3 = [a3 metadata];
-  v4 = [v3 name];
+  metadata = [event metadata];
+  name = [metadata name];
 
-  if (!v4 || [v3 type] != 1)
+  if (!name || [metadata type] != 1)
   {
     v9 = 0;
     goto LABEL_14;
   }
 
-  v5 = [v3 semantics];
-  v6 = [v5 objectForKeyedSubscript:*MEMORY[0x1E69BBC58]];
+  semantics = [metadata semantics];
+  v6 = [semantics objectForKeyedSubscript:*MEMORY[0x1E69BBC58]];
 
-  v7 = [v6 dateValue];
-  if (!v7)
+  dateValue = [v6 dateValue];
+  if (!dateValue)
   {
-    v10 = [v3 semantics];
-    v11 = [v10 objectForKeyedSubscript:*MEMORY[0x1E69BBCB8]];
+    semantics2 = [metadata semantics];
+    v11 = [semantics2 objectForKeyedSubscript:*MEMORY[0x1E69BBCB8]];
 
-    v12 = [v11 eventDateInfoValue];
-    v8 = [v12 date];
+    eventDateInfoValue = [v11 eventDateInfoValue];
+    date = [eventDateInfoValue date];
 
-    if (v8)
+    if (date)
     {
       goto LABEL_7;
     }
 
-    v7 = [v3 date];
+    dateValue = [metadata date];
   }
 
-  v8 = v7;
+  date = dateValue;
 LABEL_7:
-  v13 = [v3 semantics];
-  v14 = [v13 objectForKeyedSubscript:*MEMORY[0x1E69BBC50]];
+  semantics3 = [metadata semantics];
+  v14 = [semantics3 objectForKeyedSubscript:*MEMORY[0x1E69BBC50]];
 
-  v15 = [v14 dateValue];
-  if (v8)
+  dateValue2 = [v14 dateValue];
+  if (date)
   {
-    v16 = v15 == 0;
+    v16 = dateValue2 == 0;
   }
 
   else
@@ -766,18 +766,18 @@ LABEL_14:
   return v9;
 }
 
-- (void)_performAddToCalendarRequestNeedingPermission:(BOOL)a3 eventStore:(id)a4 entry:(id)a5 pass:(id)a6
+- (void)_performAddToCalendarRequestNeedingPermission:(BOOL)permission eventStore:(id)store entry:(id)entry pass:(id)pass
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if (a3)
+  storeCopy = store;
+  entryCopy = entry;
+  passCopy = pass;
+  if (permission)
   {
     objc_initWeak(&location, self);
     objc_copyWeak(&v16, &location);
-    v13 = v10;
-    v14 = v11;
-    v15 = v12;
+    v13 = storeCopy;
+    v14 = entryCopy;
+    v15 = passCopy;
     PKRequestEventsAuthorization();
 
     objc_destroyWeak(&v16);
@@ -786,7 +786,7 @@ LABEL_14:
 
   else
   {
-    [(PKUpcomingPassInformationDetailsViewController *)self addEventToCalendarWithEventStore:v10 entry:v11 pass:v12];
+    [(PKUpcomingPassInformationDetailsViewController *)self addEventToCalendarWithEventStore:storeCopy entry:entryCopy pass:passCopy];
   }
 }
 
@@ -823,30 +823,30 @@ uint64_t __118__PKUpcomingPassInformationDetailsViewController__performAddToCale
   }
 }
 
-- (void)presentExistingCalendarEvent:(id)a3 eventStore:(id)a4
+- (void)presentExistingCalendarEvent:(id)event eventStore:(id)store
 {
   v5 = MEMORY[0x1E6966B90];
-  v6 = a3;
+  eventCopy = event;
   v9 = objc_alloc_init(v5);
   [v9 setDelegate:self];
-  [v9 setEvent:v6];
+  [v9 setEvent:eventCopy];
 
   v7 = [objc_opt_new() initWithRootViewController:v9];
   WeakRetained = objc_loadWeakRetained(&self->_navigationController);
   [WeakRetained presentViewController:v7 animated:1 completion:0];
 }
 
-- (void)addEventToCalendarWithEventStore:(id)a3 entry:(id)a4 pass:(id)a5
+- (void)addEventToCalendarWithEventStore:(id)store entry:(id)entry pass:(id)pass
 {
-  v10 = a3;
+  storeCopy = store;
   v6 = PKGenerateCalendarEventsFromPass();
   if ([v6 count])
   {
     v7 = objc_alloc_init(MEMORY[0x1E6966B88]);
     [v7 setEditViewDelegate:self];
-    [v7 setEventStore:v10];
-    v8 = [v6 firstObject];
-    [v7 setEvent:v8];
+    [v7 setEventStore:storeCopy];
+    firstObject = [v6 firstObject];
+    [v7 setEvent:firstObject];
 
     WeakRetained = objc_loadWeakRetained(&self->_navigationController);
     [WeakRetained presentViewController:v7 animated:1 completion:0];
@@ -880,55 +880,55 @@ void __86__PKUpcomingPassInformationDetailsViewController_presentNeedsCalendarPe
   PKOpenURL();
 }
 
-- (void)eventViewController:(id)a3 didCompleteWithAction:(int64_t)a4
+- (void)eventViewController:(id)controller didCompleteWithAction:(int64_t)action
 {
-  v5 = a3;
-  if ((a4 | 2) == 2)
+  controllerCopy = controller;
+  if ((action | 2) == 2)
   {
-    v6 = v5;
-    [v5 dismissViewControllerAnimated:1 completion:0];
-    v5 = v6;
+    v6 = controllerCopy;
+    [controllerCopy dismissViewControllerAnimated:1 completion:0];
+    controllerCopy = v6;
   }
 }
 
-- (void)passTilesItemPresenter:(id)a3 displayTileContext:(int64_t)a4 forPass:(id)a5 tile:(id)a6 overrideMaximumRows:(BOOL)a7
+- (void)passTilesItemPresenter:(id)presenter displayTileContext:(int64_t)context forPass:(id)pass tile:(id)tile overrideMaximumRows:(BOOL)rows
 {
-  v7 = a7;
-  v39 = a3;
-  v38 = a5;
-  v12 = a6;
-  v36 = self;
-  v13 = [(PKDashboardViewController *)self dataSource];
-  v40 = [v13 entry];
-  v14 = [v13 passStateProvider];
-  v15 = [v13 tileDescriptor];
-  v16 = [v13 tileFactory];
+  rowsCopy = rows;
+  presenterCopy = presenter;
+  passCopy = pass;
+  tileCopy = tile;
+  selfCopy = self;
+  dataSource = [(PKDashboardViewController *)self dataSource];
+  entry = [dataSource entry];
+  passStateProvider = [dataSource passStateProvider];
+  tileDescriptor = [dataSource tileDescriptor];
+  tileFactory = [dataSource tileFactory];
   v17 = [PKDashboardSectionDataSourcePassSemanticTiles alloc];
-  v18 = [v12 metadata];
-  v19 = [v18 identifier];
-  v20 = [(PKDashboardSectionDataSourcePassSemanticTiles *)v17 initWithDescriptor:v15 forContext:a4 tileFactory:v16 tileGroupID:v19 passStateProvider:v14 overridesMaximumRows:v7];
+  metadata = [tileCopy metadata];
+  identifier = [metadata identifier];
+  v20 = [(PKDashboardSectionDataSourcePassSemanticTiles *)v17 initWithDescriptor:tileDescriptor forContext:context tileFactory:tileFactory tileGroupID:identifier passStateProvider:passStateProvider overridesMaximumRows:rowsCopy];
 
   v21 = objc_alloc_init(MEMORY[0x1E695DF70]);
   [v21 addObject:v20];
-  v37 = v12;
-  if (a4 == 4)
+  v37 = tileCopy;
+  if (context == 4)
   {
     goto LABEL_5;
   }
 
-  if (a4 == 5)
+  if (context == 5)
   {
-    v25 = [v40 metadata];
-    v26 = [v25 type];
+    metadata2 = [entry metadata];
+    type = [metadata2 type];
 
-    if (v26 == 1)
+    if (type == 1)
     {
-      v27 = [v40 metadata];
-      v28 = [v27 name];
-      v29 = v28;
-      if (v28)
+      metadata3 = [entry metadata];
+      name = [metadata3 name];
+      v29 = name;
+      if (name)
       {
-        v30 = v28;
+        v30 = name;
       }
 
       else
@@ -936,41 +936,41 @@ void __86__PKUpcomingPassInformationDetailsViewController_presentNeedsCalendarPe
         v30 = PKLocalizedTicketingString(&cfstr_EventGuideFall.isa);
       }
 
-      v24 = v30;
+      header = v30;
 
       v31 = [PKDashboardSectionDataSourceLinkedApp alloc];
-      v22 = [v40 content];
-      v23 = [v22 auxiliaryStoreIdentifiers];
-      v32 = [(PKDashboardSectionDataSourceLinkedApp *)v31 initWithStoreIDs:v23 applicationBundleIdentifiers:0 defaultLaunchURL:0];
+      content = [entry content];
+      auxiliaryStoreIdentifiers = [content auxiliaryStoreIdentifiers];
+      v32 = [(PKDashboardSectionDataSourceLinkedApp *)v31 initWithStoreIDs:auxiliaryStoreIdentifiers applicationBundleIdentifiers:0 defaultLaunchURL:0];
       [v21 addObject:v32];
 
       goto LABEL_13;
     }
 
-    if (!v26)
+    if (!type)
     {
       __break(1u);
       return;
     }
   }
 
-  else if (a4 < 4)
+  else if (context < 4)
   {
     __break(1u);
 LABEL_5:
-    v22 = [v12 state];
-    v23 = [v22 stateTypeGroup];
-    v24 = [v23 header];
+    content = [tileCopy state];
+    auxiliaryStoreIdentifiers = [content stateTypeGroup];
+    header = [auxiliaryStoreIdentifiers header];
 LABEL_13:
 
     goto LABEL_14;
   }
 
-  v24 = &stru_1F3BD7330;
+  header = &stru_1F3BD7330;
 LABEL_14:
   v33 = [[PKSectionedDashboardDataSource alloc] initWithSectionDataSources:v21];
-  v34 = [[PKDashboardTileContextViewController alloc] initWithTitle:v24 dataSource:v33];
-  WeakRetained = objc_loadWeakRetained(&v36->_navigationController);
+  v34 = [[PKDashboardTileContextViewController alloc] initWithTitle:header dataSource:v33];
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_navigationController);
   [WeakRetained pushViewController:v34 animated:1];
 }
 

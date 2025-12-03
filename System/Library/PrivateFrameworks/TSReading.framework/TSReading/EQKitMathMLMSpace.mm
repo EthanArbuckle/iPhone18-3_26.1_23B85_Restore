@@ -1,15 +1,15 @@
 @interface EQKitMathMLMSpace
 - (const)mathMLAttributes;
-- (id)initFromXMLNode:(_xmlNode *)a3 parser:(id)a4;
+- (id)initFromXMLNode:(_xmlNode *)node parser:(id)parser;
 @end
 
 @implementation EQKitMathMLMSpace
 
-- (id)initFromXMLNode:(_xmlNode *)a3 parser:(id)a4
+- (id)initFromXMLNode:(_xmlNode *)node parser:(id)parser
 {
   v5.receiver = self;
   v5.super_class = EQKitMathMLMSpace;
-  return [(EQKitMathMLMSpace *)&v5 init:a3];
+  return [(EQKitMathMLMSpace *)&v5 init:node];
 }
 
 - (const)mathMLAttributes

@@ -1,15 +1,15 @@
 @interface CSFCircularEventsCacheBuffer
 - (CSFCircularEventsCacheBuffer)init;
-- (void)addEventToCacheBuffer:(id)a3;
+- (void)addEventToCacheBuffer:(id)buffer;
 @end
 
 @implementation CSFCircularEventsCacheBuffer
 
-- (void)addEventToCacheBuffer:(id)a3
+- (void)addEventToCacheBuffer:(id)buffer
 {
-  if (a3)
+  if (buffer)
   {
-    [(NSMutableArray *)self->_eventsArray insertObject:a3 atIndex:(self->_lastEventIndex + 1) % 0x14uLL];
+    [(NSMutableArray *)self->_eventsArray insertObject:buffer atIndex:(self->_lastEventIndex + 1) % 0x14uLL];
   }
 }
 

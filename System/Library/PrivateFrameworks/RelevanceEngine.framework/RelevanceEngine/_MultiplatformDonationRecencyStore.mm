@@ -1,7 +1,7 @@
 @interface _MultiplatformDonationRecencyStore
 - (_MultiplatformDonationRecencyStore)init;
 - (id)bundlesFromMostRecentlyProvidingPlatforms;
-- (void)updateDataWithRemoteBundleIdentifier:(id)a3 remoteDate:(id)a4 localBundleIdentifier:(id)a5 localDate:(id)a6;
+- (void)updateDataWithRemoteBundleIdentifier:(id)identifier remoteDate:(id)date localBundleIdentifier:(id)bundleIdentifier localDate:(id)localDate;
 @end
 
 @implementation _MultiplatformDonationRecencyStore
@@ -13,32 +13,32 @@
   v2 = [(_MultiplatformDonationRecencyStore *)&v10 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     appDateInfo = v2->_appDateInfo;
-    v2->_appDateInfo = v3;
+    v2->_appDateInfo = array;
 
-    v5 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     infoByLocalID = v2->_infoByLocalID;
-    v2->_infoByLocalID = v5;
+    v2->_infoByLocalID = dictionary;
 
-    v7 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     infoByRemoteID = v2->_infoByRemoteID;
-    v2->_infoByRemoteID = v7;
+    v2->_infoByRemoteID = dictionary2;
   }
 
   return v2;
 }
 
-- (void)updateDataWithRemoteBundleIdentifier:(id)a3 remoteDate:(id)a4 localBundleIdentifier:(id)a5 localDate:(id)a6
+- (void)updateDataWithRemoteBundleIdentifier:(id)identifier remoteDate:(id)date localBundleIdentifier:(id)bundleIdentifier localDate:(id)localDate
 {
-  v37 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if (!v37)
+  identifierCopy = identifier;
+  dateCopy = date;
+  bundleIdentifierCopy = bundleIdentifier;
+  localDateCopy = localDate;
+  if (!identifierCopy)
   {
     v13 = 0;
-    if (v11)
+    if (bundleIdentifierCopy)
     {
       goto LABEL_3;
     }
@@ -56,13 +56,13 @@ LABEL_8:
   }
 
   v13 = [(NSMutableDictionary *)self->_infoByRemoteID objectForKeyedSubscript:?];
-  if (!v11)
+  if (!bundleIdentifierCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_3:
-  v14 = [(NSMutableDictionary *)self->_infoByLocalID objectForKeyedSubscript:v11];
+  v14 = [(NSMutableDictionary *)self->_infoByLocalID objectForKeyedSubscript:bundleIdentifierCopy];
   v21 = v14;
   v22 = v13 != 0;
   v23 = v14 != 0;
@@ -93,14 +93,14 @@ LABEL_13:
     [(NSMutableArray *)self->_appDateInfo addObject:v25];
   }
 
-  if (v11 && !v23)
+  if (bundleIdentifierCopy && !v23)
   {
-    [(_MultiplatformDonationRecencyInfo *)v25 setLocalBundleIdentifier:v11];
-    [(NSMutableDictionary *)self->_infoByLocalID setObject:v25 forKey:v11];
+    [(_MultiplatformDonationRecencyInfo *)v25 setLocalBundleIdentifier:bundleIdentifierCopy];
+    [(NSMutableDictionary *)self->_infoByLocalID setObject:v25 forKey:bundleIdentifierCopy];
   }
 
-  v26 = v37;
-  if (v37)
+  v26 = identifierCopy;
+  if (identifierCopy)
   {
     v27 = v22;
   }
@@ -112,30 +112,30 @@ LABEL_13:
 
   if ((v27 & 1) == 0)
   {
-    [(_MultiplatformDonationRecencyInfo *)v25 setRemoteBundleIdentifier:v37];
-    [(NSMutableDictionary *)self->_infoByRemoteID setObject:v25 forKey:v37];
-    v26 = v37;
+    [(_MultiplatformDonationRecencyInfo *)v25 setRemoteBundleIdentifier:identifierCopy];
+    [(NSMutableDictionary *)self->_infoByRemoteID setObject:v25 forKey:identifierCopy];
+    v26 = identifierCopy;
   }
 
-  if (v11 && v12)
+  if (bundleIdentifierCopy && localDateCopy)
   {
-    v28 = [(_MultiplatformDonationRecencyInfo *)v25 localDonationCreationDate];
-    v29 = v28;
-    if (!v28 || ([v28 laterDate:v12], v30 = objc_claimAutoreleasedReturnValue(), v31 = objc_msgSend(v30, "isEqual:", v12), v30, v31))
+    localDonationCreationDate = [(_MultiplatformDonationRecencyInfo *)v25 localDonationCreationDate];
+    v29 = localDonationCreationDate;
+    if (!localDonationCreationDate || ([localDonationCreationDate laterDate:localDateCopy], v30 = objc_claimAutoreleasedReturnValue(), v31 = objc_msgSend(v30, "isEqual:", localDateCopy), v30, v31))
     {
-      [(_MultiplatformDonationRecencyInfo *)v25 setLocalDonationCreationDate:v12];
+      [(_MultiplatformDonationRecencyInfo *)v25 setLocalDonationCreationDate:localDateCopy];
     }
 
-    v26 = v37;
+    v26 = identifierCopy;
   }
 
-  if (v26 && v10)
+  if (v26 && dateCopy)
   {
-    v32 = [(_MultiplatformDonationRecencyInfo *)v25 remoteDonationCreationDate];
-    v33 = v32;
-    if (!v32 || ([v32 laterDate:v10], v34 = objc_claimAutoreleasedReturnValue(), v35 = objc_msgSend(v34, "isEqual:", v10), v34, v35))
+    remoteDonationCreationDate = [(_MultiplatformDonationRecencyInfo *)v25 remoteDonationCreationDate];
+    v33 = remoteDonationCreationDate;
+    if (!remoteDonationCreationDate || ([remoteDonationCreationDate laterDate:dateCopy], v34 = objc_claimAutoreleasedReturnValue(), v35 = objc_msgSend(v34, "isEqual:", dateCopy), v34, v35))
     {
-      [(_MultiplatformDonationRecencyInfo *)v25 setRemoteDonationCreationDate:v10];
+      [(_MultiplatformDonationRecencyInfo *)v25 setRemoteDonationCreationDate:dateCopy];
     }
   }
 }
@@ -163,8 +163,8 @@ LABEL_13:
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v13 + 1) + 8 * i) identifierForMostRecentData];
-        [v3 addObject:v9];
+        identifierForMostRecentData = [*(*(&v13 + 1) + 8 * i) identifierForMostRecentData];
+        [v3 addObject:identifierForMostRecentData];
       }
 
       v6 = [(NSMutableArray *)v4 countByEnumeratingWithState:&v13 objects:v17 count:16];

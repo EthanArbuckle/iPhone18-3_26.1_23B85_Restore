@@ -1,16 +1,16 @@
 @interface PLCleanupPersonFaceDataMaintenanceTask
-- (BOOL)runTaskWithTransaction:(id)a3;
+- (BOOL)runTaskWithTransaction:(id)transaction;
 @end
 
 @implementation PLCleanupPersonFaceDataMaintenanceTask
 
-- (BOOL)runTaskWithTransaction:(id)a3
+- (BOOL)runTaskWithTransaction:(id)transaction
 {
-  v4 = a3;
-  v5 = [(PLMaintenanceTask *)self photoLibrary];
-  v6 = [v5 isCloudPhotoLibraryEnabled];
+  transactionCopy = transaction;
+  photoLibrary = [(PLMaintenanceTask *)self photoLibrary];
+  isCloudPhotoLibraryEnabled = [photoLibrary isCloudPhotoLibraryEnabled];
 
-  if ((v6 & 1) == 0)
+  if ((isCloudPhotoLibraryEnabled & 1) == 0)
   {
     v22 = 0;
     v23 = &v22;
@@ -22,7 +22,7 @@
     v19 = &v18;
     v20 = 0x2020000000;
     v21 = 0x7FFFFFFFFFFFFFFFLL;
-    v7 = [(PLMaintenanceTask *)self photoLibrary];
+    photoLibrary2 = [(PLMaintenanceTask *)self photoLibrary];
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
     v17[2] = sub_10000DE54;
@@ -30,7 +30,7 @@
     v17[4] = self;
     v17[5] = &v18;
     v17[6] = &v22;
-    [v7 performBlockAndWait:v17];
+    [photoLibrary2 performBlockAndWait:v17];
 
     v8 = v19[3];
     if (v8)
@@ -63,9 +63,9 @@ LABEL_13:
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "Deleting all person / face data due to user library contains 0 assets", buf, 2u);
       }
 
-      v12 = [(PLMaintenanceTask *)self photoLibrary];
+      photoLibrary3 = [(PLMaintenanceTask *)self photoLibrary];
       v16 = 0;
-      v13 = [PLPerson resetAllInLibrary:v12 error:&v16];
+      v13 = [PLPerson resetAllInLibrary:photoLibrary3 error:&v16];
       v9 = v16;
 
       if ((v13 & 1) == 0)

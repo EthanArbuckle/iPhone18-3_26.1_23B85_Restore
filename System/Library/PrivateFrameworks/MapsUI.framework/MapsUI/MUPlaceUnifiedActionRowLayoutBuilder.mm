@@ -1,15 +1,15 @@
 @interface MUPlaceUnifiedActionRowLayoutBuilder
-- (MUPlaceUnifiedActionRowLayoutBuilder)initWithConfiguration:(id)a3 delegate:(id)a4;
+- (MUPlaceUnifiedActionRowLayoutBuilder)initWithConfiguration:(id)configuration delegate:(id)delegate;
 - (MUPlaceUnifiedActionRowLayoutBuilderDelegate)delegate;
-- (id)_actionItemViewModelWithPlaceActionItem:(id)a3;
+- (id)_actionItemViewModelWithPlaceActionItem:(id)item;
 - (id)_buildSARLayout;
-- (id)_buildServerControlledLayoutWithConfiguration:(id)a3;
+- (id)_buildServerControlledLayoutWithConfiguration:(id)configuration;
 - (id)_buildStaticLayout;
 - (id)_contactActionRowViewModel;
 - (id)_directionsViewModel;
-- (id)_moreActionsViewModelWithGroupedButton:(id)a3 excludedSystemActionsTypes:(id)a4;
-- (id)_moreActionsViewModelWithPartnerActions:(id)a3 promotedSystemActionTypes:(id)a4 excludedSystemActionTypes:(id)a5;
-- (id)_partnerActionViewModelWithPartnerActionIndex:(unint64_t)a3;
+- (id)_moreActionsViewModelWithGroupedButton:(id)button excludedSystemActionsTypes:(id)types;
+- (id)_moreActionsViewModelWithPartnerActions:(id)actions promotedSystemActionTypes:(id)types excludedSystemActionTypes:(id)actionTypes;
+- (id)_partnerActionViewModelWithPartnerActionIndex:(unint64_t)index;
 - (id)buildButtonLayout;
 - (id)downloadOfflineViewModel;
 @end
@@ -23,60 +23,60 @@
   return WeakRetained;
 }
 
-- (id)_moreActionsViewModelWithPartnerActions:(id)a3 promotedSystemActionTypes:(id)a4 excludedSystemActionTypes:(id)a5
+- (id)_moreActionsViewModelWithPartnerActions:(id)actions promotedSystemActionTypes:(id)types excludedSystemActionTypes:(id)actionTypes
 {
   v54 = *MEMORY[0x1E69E9840];
-  v48 = a3;
-  v8 = a4;
-  v9 = [a5 arrayByAddingObjectsFromArray:&unk_1F450E338];
-  v10 = [(MUPlaceUnifiedActionRowLayoutBuilder *)self configuration];
-  LOBYTE(a4) = [v10 showMoreButtonIfAvailable];
+  actionsCopy = actions;
+  typesCopy = types;
+  v9 = [actionTypes arrayByAddingObjectsFromArray:&unk_1F450E338];
+  configuration = [(MUPlaceUnifiedActionRowLayoutBuilder *)self configuration];
+  LOBYTE(types) = [configuration showMoreButtonIfAvailable];
 
-  if (a4)
+  if (types)
   {
 LABEL_16:
-    v21 = [(MUPlaceUnifiedActionRowLayoutBuilder *)self delegate];
+    delegate = [(MUPlaceUnifiedActionRowLayoutBuilder *)self delegate];
     v22 = objc_opt_respondsToSelector();
 
-    v45 = v8;
+    v45 = typesCopy;
     v46 = v9;
     if (v22)
     {
-      v23 = [(MUPlaceUnifiedActionRowLayoutBuilder *)self delegate];
-      v44 = [v23 analyticsHandler];
+      delegate2 = [(MUPlaceUnifiedActionRowLayoutBuilder *)self delegate];
+      analyticsHandler = [delegate2 analyticsHandler];
     }
 
     else
     {
-      v44 = 0;
+      analyticsHandler = 0;
     }
 
     v24 = [MUPlaceMoreActionsViewModel alloc];
-    v43 = [(MUPlaceUnifiedActionRowLayoutBuilder *)self configuration];
-    v39 = [v43 moreActionsProvider];
-    v42 = [(MUPlaceUnifiedActionRowLayoutBuilder *)self configuration];
-    v38 = [v42 amsResultProvider];
-    v41 = [(MUPlaceUnifiedActionRowLayoutBuilder *)self configuration];
-    v36 = [v41 artworkCache];
-    v40 = [(MUPlaceUnifiedActionRowLayoutBuilder *)self configuration];
-    v25 = [v40 moreActionAnalyticsModuleType];
-    v37 = [(MUPlaceUnifiedActionRowLayoutBuilder *)self configuration];
-    v26 = [v37 moreActionSingleVendorAnalyticsTarget];
-    v27 = [(MUPlaceUnifiedActionRowLayoutBuilder *)self configuration];
-    v28 = [v27 moreActionMultipleVendorAnalyticsTarget];
-    v29 = [(MUPlaceUnifiedActionRowLayoutBuilder *)self configuration];
-    v30 = [v29 moreActionAppleMediaServicesSource];
-    v31 = [(MUPlaceUnifiedActionRowLayoutBuilder *)self configuration];
-    v32 = [v31 externalActionHandler];
-    v35 = __PAIR64__(v28, v26);
-    v8 = v45;
+    configuration2 = [(MUPlaceUnifiedActionRowLayoutBuilder *)self configuration];
+    moreActionsProvider = [configuration2 moreActionsProvider];
+    configuration3 = [(MUPlaceUnifiedActionRowLayoutBuilder *)self configuration];
+    amsResultProvider = [configuration3 amsResultProvider];
+    configuration4 = [(MUPlaceUnifiedActionRowLayoutBuilder *)self configuration];
+    artworkCache = [configuration4 artworkCache];
+    configuration5 = [(MUPlaceUnifiedActionRowLayoutBuilder *)self configuration];
+    moreActionAnalyticsModuleType = [configuration5 moreActionAnalyticsModuleType];
+    configuration6 = [(MUPlaceUnifiedActionRowLayoutBuilder *)self configuration];
+    moreActionSingleVendorAnalyticsTarget = [configuration6 moreActionSingleVendorAnalyticsTarget];
+    configuration7 = [(MUPlaceUnifiedActionRowLayoutBuilder *)self configuration];
+    moreActionMultipleVendorAnalyticsTarget = [configuration7 moreActionMultipleVendorAnalyticsTarget];
+    configuration8 = [(MUPlaceUnifiedActionRowLayoutBuilder *)self configuration];
+    moreActionAppleMediaServicesSource = [configuration8 moreActionAppleMediaServicesSource];
+    configuration9 = [(MUPlaceUnifiedActionRowLayoutBuilder *)self configuration];
+    externalActionHandler = [configuration9 externalActionHandler];
+    v35 = __PAIR64__(moreActionMultipleVendorAnalyticsTarget, moreActionSingleVendorAnalyticsTarget);
+    typesCopy = v45;
     v9 = v46;
-    v47 = [(MUPlaceMoreActionsViewModel *)v24 initWithGroupedExternalActions:v48 promotedSystemActionTypes:v45 excludedSystemActionTypes:v46 menuActionProvider:v39 amsResultProvider:v38 iconCache:v36 analyticsModuleType:v25 singleVendorAnalyticsTarget:v35 multipleVendorAnalyticsTarget:v30 appleMediaServicesSource:v32 externalActionHandler:v44 analyticsHandler:?];
+    v47 = [(MUPlaceMoreActionsViewModel *)v24 initWithGroupedExternalActions:actionsCopy promotedSystemActionTypes:v45 excludedSystemActionTypes:v46 menuActionProvider:moreActionsProvider amsResultProvider:amsResultProvider iconCache:artworkCache analyticsModuleType:moreActionAnalyticsModuleType singleVendorAnalyticsTarget:v35 multipleVendorAnalyticsTarget:moreActionAppleMediaServicesSource appleMediaServicesSource:externalActionHandler externalActionHandler:analyticsHandler analyticsHandler:?];
 
     goto LABEL_20;
   }
 
-  v11 = v8;
+  v11 = typesCopy;
   v12 = &__block_literal_global_14083;
   if (v11)
   {
@@ -114,19 +114,19 @@ LABEL_16:
       while (v17);
     }
 
-    v8 = [v14 copy];
+    typesCopy = [v14 copy];
     v9 = v13;
   }
 
   else
   {
-    v8 = MEMORY[0x1E695E0F0];
+    typesCopy = MEMORY[0x1E695E0F0];
   }
 
-  if ([v8 count])
+  if ([typesCopy count])
   {
 
-    v48 = MEMORY[0x1E695E0F0];
+    actionsCopy = MEMORY[0x1E695E0F0];
     goto LABEL_16;
   }
 
@@ -138,25 +138,25 @@ LABEL_20:
   return v47;
 }
 
-- (id)_moreActionsViewModelWithGroupedButton:(id)a3 excludedSystemActionsTypes:(id)a4
+- (id)_moreActionsViewModelWithGroupedButton:(id)button excludedSystemActionsTypes:(id)types
 {
   v45 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  buttonCopy = button;
   v34 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v33 = v5;
-  obj = [v5 buttonItems];
+  v33 = buttonCopy;
+  obj = [buttonCopy buttonItems];
   v7 = [obj countByEnumeratingWithState:&v40 objects:v44 count:16];
   if (v7)
   {
     v8 = v7;
     v9 = *v41;
-    v10 = self;
-    v35 = self;
+    selfCopy = self;
+    selfCopy2 = self;
     do
     {
       v11 = 0;
@@ -168,14 +168,14 @@ LABEL_20:
         }
 
         v12 = *(*(&v40 + 1) + 8 * v11);
-        v13 = [v12 buttonType];
-        if (v13 <= 0x10)
+        buttonType = [v12 buttonType];
+        if (buttonType <= 0x10)
         {
-          if (((1 << v13) & 0x1FF7E) != 0)
+          if (((1 << buttonType) & 0x1FF7E) != 0)
           {
-            v14 = [(MUPlaceUnifiedActionRowLayoutBuilder *)self configuration];
-            v15 = [v14 actionManager];
-            v16 = [v15 actionItemForButtonItem:v12];
+            configuration = [(MUPlaceUnifiedActionRowLayoutBuilder *)self configuration];
+            actionManager = [configuration actionManager];
+            v16 = [actionManager actionItemForButtonItem:v12];
 
             if ([v12 buttonType] == 13 || objc_msgSend(v12, "buttonType") == 14)
             {
@@ -184,40 +184,40 @@ LABEL_20:
             }
 
             v18 = MEMORY[0x1E696AD98];
-            v19 = [v16 resolvedActionItem];
-            v20 = [v18 numberWithUnsignedInteger:{objc_msgSend(v19, "type")}];
-            [v6 addObject:v20];
+            resolvedActionItem = [v16 resolvedActionItem];
+            mapItem2 = [v18 numberWithUnsignedInteger:{objc_msgSend(resolvedActionItem, "type")}];
+            [v6 addObject:mapItem2];
 LABEL_12:
 
-            self = v10;
+            self = selfCopy;
             goto LABEL_13;
           }
 
-          if (v13 == 7)
+          if (buttonType == 7)
           {
             v16 = v12;
             if ([v16 groupType] == 2)
             {
-              v38 = [v16 actionDataIndex];
-              v21 = [(MUPlaceUnifiedActionRowLayoutBuilder *)self delegate];
-              v22 = [v21 mapItem];
-              v23 = [v22 _geoMapItem];
-              v24 = [v23 _externalActionLinks];
-              v36 = [v24 count];
+              actionDataIndex = [v16 actionDataIndex];
+              delegate = [(MUPlaceUnifiedActionRowLayoutBuilder *)self delegate];
+              mapItem = [delegate mapItem];
+              _geoMapItem = [mapItem _geoMapItem];
+              _externalActionLinks = [_geoMapItem _externalActionLinks];
+              v36 = [_externalActionLinks count];
 
-              if (v38 < v36)
+              if (actionDataIndex < v36)
               {
-                v19 = [(MUPlaceUnifiedActionRowLayoutBuilder *)v35 delegate];
-                v20 = [v19 mapItem];
-                v37 = [v20 _geoMapItem];
-                v25 = [v37 _externalActionLinks];
-                v26 = [v25 objectAtIndexedSubscript:v38];
+                resolvedActionItem = [(MUPlaceUnifiedActionRowLayoutBuilder *)selfCopy2 delegate];
+                mapItem2 = [resolvedActionItem mapItem];
+                _geoMapItem2 = [mapItem2 _geoMapItem];
+                _externalActionLinks2 = [_geoMapItem2 _externalActionLinks];
+                v26 = [_externalActionLinks2 objectAtIndexedSubscript:actionDataIndex];
                 [v34 addObject:v26];
 
                 goto LABEL_12;
               }
 
-              self = v35;
+              self = selfCopy2;
             }
 
 LABEL_13:
@@ -244,26 +244,26 @@ LABEL_13:
   return v30;
 }
 
-- (id)_actionItemViewModelWithPlaceActionItem:(id)a3
+- (id)_actionItemViewModelWithPlaceActionItem:(id)item
 {
-  if (a3)
+  if (item)
   {
-    v4 = a3;
-    v5 = [(MUPlaceUnifiedActionRowLayoutBuilder *)self delegate];
+    itemCopy = item;
+    delegate = [(MUPlaceUnifiedActionRowLayoutBuilder *)self delegate];
     v6 = objc_opt_respondsToSelector();
 
     if (v6)
     {
-      v7 = [(MUPlaceUnifiedActionRowLayoutBuilder *)self delegate];
-      v8 = [v7 menuProvider];
+      delegate2 = [(MUPlaceUnifiedActionRowLayoutBuilder *)self delegate];
+      menuProvider = [delegate2 menuProvider];
     }
 
     else
     {
-      v8 = 0;
+      menuProvider = 0;
     }
 
-    v9 = [[MUPlaceActionRowItemViewModel alloc] initWithActionRowItem:v4 menuProvider:v8 style:0];
+    v9 = [[MUPlaceActionRowItemViewModel alloc] initWithActionRowItem:itemCopy menuProvider:menuProvider style:0];
   }
 
   else
@@ -274,28 +274,28 @@ LABEL_13:
   return v9;
 }
 
-- (id)_partnerActionViewModelWithPartnerActionIndex:(unint64_t)a3
+- (id)_partnerActionViewModelWithPartnerActionIndex:(unint64_t)index
 {
-  v5 = [(MUPlaceUnifiedActionRowLayoutBuilder *)self delegate];
+  delegate = [(MUPlaceUnifiedActionRowLayoutBuilder *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(MUPlaceUnifiedActionRowLayoutBuilder *)self delegate];
-    v8 = [v7 analyticsHandler];
+    delegate2 = [(MUPlaceUnifiedActionRowLayoutBuilder *)self delegate];
+    analyticsHandler = [delegate2 analyticsHandler];
   }
 
   else
   {
-    v8 = 0;
+    analyticsHandler = 0;
   }
 
-  v9 = [(MUPlaceUnifiedActionRowLayoutBuilder *)self delegate];
-  v10 = [v9 mapItem];
-  v11 = [v10 _geoMapItem];
-  v12 = [v11 _externalActionLinks];
+  delegate3 = [(MUPlaceUnifiedActionRowLayoutBuilder *)self delegate];
+  mapItem = [delegate3 mapItem];
+  _geoMapItem = [mapItem _geoMapItem];
+  _externalActionLinks = [_geoMapItem _externalActionLinks];
 
-  if ([v12 count] <= a3)
+  if ([_externalActionLinks count] <= index)
   {
     v20 = 0;
   }
@@ -303,22 +303,22 @@ LABEL_13:
   else
   {
     v13 = [MUPlaceExternalActionViewModel alloc];
-    v27 = [v12 objectAtIndexedSubscript:a3];
-    v30 = [(MUPlaceUnifiedActionRowLayoutBuilder *)self configuration];
-    v26 = [v30 amsResultProvider];
-    v29 = [(MUPlaceUnifiedActionRowLayoutBuilder *)self configuration];
-    v24 = [v29 artworkCache];
-    v28 = [(MUPlaceUnifiedActionRowLayoutBuilder *)self configuration];
-    v23 = [v28 externalActionAnalyticsModuleType];
-    v25 = [(MUPlaceUnifiedActionRowLayoutBuilder *)self configuration];
-    v22 = [v25 externalActionSingleVendorAnalyticsTarget];
-    v14 = [(MUPlaceUnifiedActionRowLayoutBuilder *)self configuration];
-    v15 = [v14 externalActionMultipleVendorAnalyticsTarget];
-    v16 = [(MUPlaceUnifiedActionRowLayoutBuilder *)self configuration];
-    v17 = [v16 externalActionAppleMediaServicesSource];
-    v18 = [(MUPlaceUnifiedActionRowLayoutBuilder *)self configuration];
-    v19 = [v18 externalActionHandler];
-    v20 = [(MUPlaceExternalActionViewModel *)v13 initWithExternalAction:v27 amsResultProvider:v26 iconCache:v24 analyticsModuleType:v23 singleVendorAnalyticsTarget:v22 multipleVendorAnalyticsTarget:v15 appleMediaServicesSource:v17 actionHandler:v19 analyticsHandler:v8];
+    v27 = [_externalActionLinks objectAtIndexedSubscript:index];
+    configuration = [(MUPlaceUnifiedActionRowLayoutBuilder *)self configuration];
+    amsResultProvider = [configuration amsResultProvider];
+    configuration2 = [(MUPlaceUnifiedActionRowLayoutBuilder *)self configuration];
+    artworkCache = [configuration2 artworkCache];
+    configuration3 = [(MUPlaceUnifiedActionRowLayoutBuilder *)self configuration];
+    externalActionAnalyticsModuleType = [configuration3 externalActionAnalyticsModuleType];
+    configuration4 = [(MUPlaceUnifiedActionRowLayoutBuilder *)self configuration];
+    externalActionSingleVendorAnalyticsTarget = [configuration4 externalActionSingleVendorAnalyticsTarget];
+    configuration5 = [(MUPlaceUnifiedActionRowLayoutBuilder *)self configuration];
+    externalActionMultipleVendorAnalyticsTarget = [configuration5 externalActionMultipleVendorAnalyticsTarget];
+    configuration6 = [(MUPlaceUnifiedActionRowLayoutBuilder *)self configuration];
+    externalActionAppleMediaServicesSource = [configuration6 externalActionAppleMediaServicesSource];
+    configuration7 = [(MUPlaceUnifiedActionRowLayoutBuilder *)self configuration];
+    externalActionHandler = [configuration7 externalActionHandler];
+    v20 = [(MUPlaceExternalActionViewModel *)v13 initWithExternalAction:v27 amsResultProvider:amsResultProvider iconCache:artworkCache analyticsModuleType:externalActionAnalyticsModuleType singleVendorAnalyticsTarget:externalActionSingleVendorAnalyticsTarget multipleVendorAnalyticsTarget:externalActionMultipleVendorAnalyticsTarget appleMediaServicesSource:externalActionAppleMediaServicesSource actionHandler:externalActionHandler analyticsHandler:analyticsHandler];
   }
 
   return v20;
@@ -343,24 +343,24 @@ LABEL_13:
 {
   if (GEOSupportsOfflineMaps() && (-[MUPlaceUnifiedActionRowLayoutBuilder configuration](self, "configuration"), v3 = objc_claimAutoreleasedReturnValue(), v4 = [v3 canShowDownloadOffline], v3, v4))
   {
-    v5 = [(MUPlaceUnifiedActionRowLayoutBuilder *)self delegate];
+    delegate = [(MUPlaceUnifiedActionRowLayoutBuilder *)self delegate];
     v6 = objc_opt_respondsToSelector();
 
     if (v6)
     {
-      v7 = [(MUPlaceUnifiedActionRowLayoutBuilder *)self delegate];
-      v8 = [v7 offlineMapProvider];
+      delegate2 = [(MUPlaceUnifiedActionRowLayoutBuilder *)self delegate];
+      offlineMapProvider = [delegate2 offlineMapProvider];
     }
 
     else
     {
-      v8 = 0;
+      offlineMapProvider = 0;
     }
 
     offlineViewModel = self->_offlineViewModel;
-    if (!offlineViewModel || ([(MUDownloadOfflineActionRowItemViewModel *)offlineViewModel offlineMapProvider], v11 = objc_claimAutoreleasedReturnValue(), v11, v8 != v11))
+    if (!offlineViewModel || ([(MUDownloadOfflineActionRowItemViewModel *)offlineViewModel offlineMapProvider], v11 = objc_claimAutoreleasedReturnValue(), v11, offlineMapProvider != v11))
     {
-      v12 = [[MUDownloadOfflineActionRowItemViewModel alloc] initWithOfflineMapProvider:v8];
+      v12 = [[MUDownloadOfflineActionRowItemViewModel alloc] initWithOfflineMapProvider:offlineMapProvider];
       v13 = self->_offlineViewModel;
       self->_offlineViewModel = v12;
     }
@@ -378,27 +378,27 @@ LABEL_13:
 
 - (id)_directionsViewModel
 {
-  v3 = [(MUPlaceUnifiedActionRowLayoutBuilder *)self configuration];
-  v4 = [v3 primaryButtonType];
+  configuration = [(MUPlaceUnifiedActionRowLayoutBuilder *)self configuration];
+  primaryButtonType = [configuration primaryButtonType];
 
-  if ((v4 - 1) >= 2)
+  if ((primaryButtonType - 1) >= 2)
   {
-    if (v4 == 4)
+    if (primaryButtonType == 4)
     {
-      v9 = [(MUPlaceUnifiedActionRowLayoutBuilder *)self configuration];
-      v10 = [v9 isSearchAlongRoute];
+      configuration2 = [(MUPlaceUnifiedActionRowLayoutBuilder *)self configuration];
+      isSearchAlongRoute = [configuration2 isSearchAlongRoute];
 
       v11 = [MUPlaceAddStopActionRowItemViewModel alloc];
       v12 = v11;
-      if (v10)
+      if (isSearchAlongRoute)
       {
-        v13 = [(MUPlaceUnifiedActionRowLayoutBuilder *)self configuration];
-        v14 = [v13 etaProvider];
-        v15 = [(MUPlaceUnifiedActionRowLayoutBuilder *)self delegate];
-        v16 = [v15 mapItem];
-        v17 = [v16 _detourInfo];
-        v18 = [(MUPlaceUnifiedActionRowLayoutBuilder *)self configuration];
-        v8 = -[MUPlaceAddStopActionRowItemViewModel initWithSearchAlongRoute:ETAProvider:detourInfo:canShowDetourTime:](v12, "initWithSearchAlongRoute:ETAProvider:detourInfo:canShowDetourTime:", 1, v14, v17, [v18 canShowDetourTime]);
+        configuration3 = [(MUPlaceUnifiedActionRowLayoutBuilder *)self configuration];
+        etaProvider = [configuration3 etaProvider];
+        delegate = [(MUPlaceUnifiedActionRowLayoutBuilder *)self delegate];
+        mapItem = [delegate mapItem];
+        _detourInfo = [mapItem _detourInfo];
+        configuration4 = [(MUPlaceUnifiedActionRowLayoutBuilder *)self configuration];
+        v8 = -[MUPlaceAddStopActionRowItemViewModel initWithSearchAlongRoute:ETAProvider:detourInfo:canShowDetourTime:](v12, "initWithSearchAlongRoute:ETAProvider:detourInfo:canShowDetourTime:", 1, etaProvider, _detourInfo, [configuration4 canShowDetourTime]);
       }
 
       else
@@ -416,25 +416,25 @@ LABEL_13:
   else
   {
     v5 = [MUDirectionsActionRowItemViewModel alloc];
-    v6 = [(MUPlaceUnifiedActionRowLayoutBuilder *)self configuration];
-    v7 = [v6 etaProvider];
-    v8 = [(MUDirectionsActionRowItemViewModel *)v5 initWithETAProvider:v7];
+    configuration5 = [(MUPlaceUnifiedActionRowLayoutBuilder *)self configuration];
+    etaProvider2 = [configuration5 etaProvider];
+    v8 = [(MUDirectionsActionRowItemViewModel *)v5 initWithETAProvider:etaProvider2];
   }
 
   return v8;
 }
 
-- (id)_buildServerControlledLayoutWithConfiguration:(id)a3
+- (id)_buildServerControlledLayoutWithConfiguration:(id)configuration
 {
   v38 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:5];
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v31 = v4;
-  obj = [v4 buttonItems];
+  v31 = configurationCopy;
+  obj = [configurationCopy buttonItems];
   v6 = [obj countByEnumeratingWithState:&v33 objects:v37 count:16];
   if (v6)
   {
@@ -452,24 +452,24 @@ LABEL_13:
 
         v10 = *(*(&v33 + 1) + 8 * v9);
         v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
-        v12 = [v10 buttonType];
-        if (v12 > 8)
+        buttonType = [v10 buttonType];
+        if (buttonType > 8)
         {
-          if ((v12 - 11) < 6)
+          if ((buttonType - 11) < 6)
           {
             goto LABEL_12;
           }
 
-          if (v12 != 10)
+          if (buttonType != 10)
           {
-            if (v12 != 9)
+            if (buttonType != 9)
             {
               goto LABEL_16;
             }
 
 LABEL_12:
-            v14 = [(MUPlaceUnifiedActionRowLayoutBuilder *)self configuration];
-            v15 = [v14 actionManager];
+            configuration = [(MUPlaceUnifiedActionRowLayoutBuilder *)self configuration];
+            actionManager = [configuration actionManager];
             objc_opt_class();
             isKindOfClass = objc_opt_isKindOfClass();
 
@@ -478,51 +478,51 @@ LABEL_12:
               goto LABEL_16;
             }
 
-            v17 = [(MUPlaceUnifiedActionRowLayoutBuilder *)self configuration];
-            v18 = [v17 actionManager];
-            v19 = [v18 actionItemForButtonItem:v10];
+            configuration2 = [(MUPlaceUnifiedActionRowLayoutBuilder *)self configuration];
+            actionManager2 = [configuration2 actionManager];
+            v19 = [actionManager2 actionItemForButtonItem:v10];
 
             v20 = [(MUPlaceUnifiedActionRowLayoutBuilder *)self _actionItemViewModelWithPlaceActionItem:v19];
             v21 = MEMORY[0x1E696AD98];
-            v22 = [v19 resolvedActionItem];
-            v23 = [v21 numberWithUnsignedInteger:{objc_msgSend(v22, "type")}];
+            resolvedActionItem = [v19 resolvedActionItem];
+            v23 = [v21 numberWithUnsignedInteger:{objc_msgSend(resolvedActionItem, "type")}];
             [v11 addObject:v23];
 
             goto LABEL_14;
           }
 
-          v13 = [(MUPlaceUnifiedActionRowLayoutBuilder *)self downloadOfflineViewModel];
+          downloadOfflineViewModel = [(MUPlaceUnifiedActionRowLayoutBuilder *)self downloadOfflineViewModel];
           goto LABEL_25;
         }
 
-        if ((v12 - 1) < 6)
+        if ((buttonType - 1) < 6)
         {
           goto LABEL_12;
         }
 
-        if (v12 != 7)
+        if (buttonType != 7)
         {
-          if (v12 != 8)
+          if (buttonType != 8)
           {
             goto LABEL_16;
           }
 
-          v13 = [(MUPlaceUnifiedActionRowLayoutBuilder *)self _directionsViewModel];
+          downloadOfflineViewModel = [(MUPlaceUnifiedActionRowLayoutBuilder *)self _directionsViewModel];
 LABEL_25:
-          v20 = v13;
+          v20 = downloadOfflineViewModel;
           goto LABEL_14;
         }
 
         v24 = v10;
-        v25 = [v24 groupType];
-        if (v25 == 1)
+        groupType = [v24 groupType];
+        if (groupType == 1)
         {
           v26 = [(MUPlaceUnifiedActionRowLayoutBuilder *)self _moreActionsViewModelWithGroupedButton:v24 excludedSystemActionsTypes:v11];
         }
 
         else
         {
-          if (v25 != 2)
+          if (groupType != 2)
           {
             v20 = 0;
             goto LABEL_29;
@@ -563,18 +563,18 @@ LABEL_16:
 {
   v22 = *MEMORY[0x1E69E9840];
   v3 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:2];
-  v4 = [(MUPlaceUnifiedActionRowLayoutBuilder *)self _directionsViewModel];
-  [v3 _mapsui_addObjectIfNotNil:v4];
+  _directionsViewModel = [(MUPlaceUnifiedActionRowLayoutBuilder *)self _directionsViewModel];
+  [v3 _mapsui_addObjectIfNotNil:_directionsViewModel];
 
-  v5 = [(MUPlaceUnifiedActionRowLayoutBuilder *)self configuration];
-  v6 = [v5 actionManager];
-  v7 = [v6 createSearchAlongRouteActions];
+  configuration = [(MUPlaceUnifiedActionRowLayoutBuilder *)self configuration];
+  actionManager = [configuration actionManager];
+  createSearchAlongRouteActions = [actionManager createSearchAlongRouteActions];
 
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v8 = v7;
+  v8 = createSearchAlongRouteActions;
   v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v9)
   {
@@ -608,104 +608,104 @@ LABEL_16:
 - (id)_buildStaticLayout
 {
   v3 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:5];
-  v4 = [(MUPlaceUnifiedActionRowLayoutBuilder *)self configuration];
-  v5 = [v4 shouldShowDirectionsAction];
+  configuration = [(MUPlaceUnifiedActionRowLayoutBuilder *)self configuration];
+  shouldShowDirectionsAction = [configuration shouldShowDirectionsAction];
 
-  if (v5)
+  if (shouldShowDirectionsAction)
   {
-    v6 = [(MUPlaceUnifiedActionRowLayoutBuilder *)self _directionsViewModel];
-    [v3 _mapsui_addObjectIfNotNil:v6];
+    _directionsViewModel = [(MUPlaceUnifiedActionRowLayoutBuilder *)self _directionsViewModel];
+    [v3 _mapsui_addObjectIfNotNil:_directionsViewModel];
   }
 
   if (GEOSupportsOfflineMaps())
   {
-    v7 = [(MUPlaceUnifiedActionRowLayoutBuilder *)self configuration];
-    if ([v7 canShowDownloadOffline])
+    configuration2 = [(MUPlaceUnifiedActionRowLayoutBuilder *)self configuration];
+    if ([configuration2 canShowDownloadOffline])
     {
-      v8 = [(MUPlaceUnifiedActionRowLayoutBuilder *)self delegate];
-      v9 = [v8 mapItem];
-      v10 = [v9 _geoMapItem];
-      v11 = [v10 supportsOfflineMaps];
+      delegate = [(MUPlaceUnifiedActionRowLayoutBuilder *)self delegate];
+      mapItem = [delegate mapItem];
+      _geoMapItem = [mapItem _geoMapItem];
+      supportsOfflineMaps = [_geoMapItem supportsOfflineMaps];
     }
 
     else
     {
-      v11 = 0;
+      supportsOfflineMaps = 0;
     }
   }
 
   else
   {
-    v11 = 0;
+    supportsOfflineMaps = 0;
   }
 
-  v12 = [(MUPlaceUnifiedActionRowLayoutBuilder *)self configuration];
-  v13 = [v12 staticButtonModuleConfiguration];
+  configuration3 = [(MUPlaceUnifiedActionRowLayoutBuilder *)self configuration];
+  staticButtonModuleConfiguration = [configuration3 staticButtonModuleConfiguration];
 
-  if (v13)
+  if (staticButtonModuleConfiguration)
   {
-    v14 = [(MUPlaceUnifiedActionRowLayoutBuilder *)self configuration];
-    v15 = [v14 staticButtonModuleConfiguration];
-    v16 = [(MUPlaceUnifiedActionRowLayoutBuilder *)self _buildServerControlledLayoutWithConfiguration:v15];
+    configuration4 = [(MUPlaceUnifiedActionRowLayoutBuilder *)self configuration];
+    staticButtonModuleConfiguration2 = [configuration4 staticButtonModuleConfiguration];
+    v16 = [(MUPlaceUnifiedActionRowLayoutBuilder *)self _buildServerControlledLayoutWithConfiguration:staticButtonModuleConfiguration2];
     [v3 _mapsui_addObjectsFromArrayIfNotNil:v16];
 
 LABEL_18:
     goto LABEL_19;
   }
 
-  if (v11)
+  if (supportsOfflineMaps)
   {
-    v17 = [(MUPlaceUnifiedActionRowLayoutBuilder *)self configuration];
-    v18 = [v17 shouldPromoteDownloadOffline];
+    configuration5 = [(MUPlaceUnifiedActionRowLayoutBuilder *)self configuration];
+    shouldPromoteDownloadOffline = [configuration5 shouldPromoteDownloadOffline];
 
-    if (v18)
+    if (shouldPromoteDownloadOffline)
     {
-      v19 = [(MUPlaceUnifiedActionRowLayoutBuilder *)self downloadOfflineViewModel];
-      [v3 _mapsui_addObjectIfNotNil:v19];
+      downloadOfflineViewModel = [(MUPlaceUnifiedActionRowLayoutBuilder *)self downloadOfflineViewModel];
+      [v3 _mapsui_addObjectIfNotNil:downloadOfflineViewModel];
     }
   }
 
-  v20 = [(MUPlaceUnifiedActionRowLayoutBuilder *)self configuration];
-  v21 = [v20 secondaryActionButtonController];
+  configuration6 = [(MUPlaceUnifiedActionRowLayoutBuilder *)self configuration];
+  secondaryActionButtonController = [configuration6 secondaryActionButtonController];
 
-  if (v21)
+  if (secondaryActionButtonController)
   {
     v22 = [MUPlaceActionControlledItemViewModel alloc];
-    v23 = [(MUPlaceUnifiedActionRowLayoutBuilder *)self configuration];
-    v24 = [v23 secondaryActionButtonController];
-    v25 = [(MUPlaceActionControlledItemViewModel *)v22 initWithPlaceActionController:v24];
+    configuration7 = [(MUPlaceUnifiedActionRowLayoutBuilder *)self configuration];
+    secondaryActionButtonController2 = [configuration7 secondaryActionButtonController];
+    v25 = [(MUPlaceActionControlledItemViewModel *)v22 initWithPlaceActionController:secondaryActionButtonController2];
     [v3 _mapsui_addObjectIfNotNil:v25];
   }
 
-  v26 = [(MUPlaceUnifiedActionRowLayoutBuilder *)self configuration];
-  v27 = [v26 shouldShowContactsAction];
+  configuration8 = [(MUPlaceUnifiedActionRowLayoutBuilder *)self configuration];
+  shouldShowContactsAction = [configuration8 shouldShowContactsAction];
 
-  if (v27)
+  if (shouldShowContactsAction)
   {
-    v14 = [(MUPlaceUnifiedActionRowLayoutBuilder *)self _contactActionRowViewModel];
-    [v3 _mapsui_addObjectIfNotNil:v14];
+    configuration4 = [(MUPlaceUnifiedActionRowLayoutBuilder *)self _contactActionRowViewModel];
+    [v3 _mapsui_addObjectIfNotNil:configuration4];
     goto LABEL_18;
   }
 
 LABEL_19:
   v28 = [objc_alloc(MEMORY[0x1E695DF70]) initWithArray:&unk_1F450E308];
-  if (v11)
+  if (supportsOfflineMaps)
   {
-    v29 = [(MUPlaceUnifiedActionRowLayoutBuilder *)self configuration];
-    v30 = [v29 shouldPromoteDownloadOffline];
+    configuration9 = [(MUPlaceUnifiedActionRowLayoutBuilder *)self configuration];
+    shouldPromoteDownloadOffline2 = [configuration9 shouldPromoteDownloadOffline];
 
-    if ((v30 & 1) == 0)
+    if ((shouldPromoteDownloadOffline2 & 1) == 0)
     {
       [v28 addObjectsFromArray:&unk_1F450E320];
     }
   }
 
-  v31 = [(MUPlaceUnifiedActionRowLayoutBuilder *)self delegate];
-  v32 = [v31 mapItem];
-  v33 = [v32 _geoMapItem];
-  v34 = [v33 _externalActionLinks];
+  delegate2 = [(MUPlaceUnifiedActionRowLayoutBuilder *)self delegate];
+  mapItem2 = [delegate2 mapItem];
+  _geoMapItem2 = [mapItem2 _geoMapItem];
+  _externalActionLinks = [_geoMapItem2 _externalActionLinks];
   v35 = [v28 copy];
-  v36 = [(MUPlaceUnifiedActionRowLayoutBuilder *)self _moreActionsViewModelWithPartnerActions:v34 promotedSystemActionTypes:v35 excludedSystemActionTypes:MEMORY[0x1E695E0F0]];
+  v36 = [(MUPlaceUnifiedActionRowLayoutBuilder *)self _moreActionsViewModelWithPartnerActions:_externalActionLinks promotedSystemActionTypes:v35 excludedSystemActionTypes:MEMORY[0x1E695E0F0]];
   [v3 _mapsui_addObjectIfNotNil:v36];
 
   v37 = [v3 copy];
@@ -716,34 +716,34 @@ LABEL_19:
 - (id)buildButtonLayout
 {
   v25 = *MEMORY[0x1E69E9840];
-  v3 = [(MUPlaceUnifiedActionRowLayoutBuilder *)self configuration];
-  v4 = [v3 isSearchAlongRoute];
+  configuration = [(MUPlaceUnifiedActionRowLayoutBuilder *)self configuration];
+  isSearchAlongRoute = [configuration isSearchAlongRoute];
 
-  if (v4)
+  if (isSearchAlongRoute)
   {
-    v5 = [(MUPlaceUnifiedActionRowLayoutBuilder *)self _buildSARLayout];
+    _buildSARLayout = [(MUPlaceUnifiedActionRowLayoutBuilder *)self _buildSARLayout];
   }
 
   else
   {
-    v6 = [(MUPlaceUnifiedActionRowLayoutBuilder *)self configuration];
-    v7 = [v6 buttonModuleConfiguration];
+    configuration2 = [(MUPlaceUnifiedActionRowLayoutBuilder *)self configuration];
+    buttonModuleConfiguration = [configuration2 buttonModuleConfiguration];
 
-    if (v7)
+    if (buttonModuleConfiguration)
     {
-      v8 = [(MUPlaceUnifiedActionRowLayoutBuilder *)self configuration];
-      v9 = [v8 buttonModuleConfiguration];
-      v10 = [(MUPlaceUnifiedActionRowLayoutBuilder *)self _buildServerControlledLayoutWithConfiguration:v9];
+      configuration3 = [(MUPlaceUnifiedActionRowLayoutBuilder *)self configuration];
+      buttonModuleConfiguration2 = [configuration3 buttonModuleConfiguration];
+      v10 = [(MUPlaceUnifiedActionRowLayoutBuilder *)self _buildServerControlledLayoutWithConfiguration:buttonModuleConfiguration2];
 
       goto LABEL_7;
     }
 
-    v5 = [(MUPlaceUnifiedActionRowLayoutBuilder *)self _buildStaticLayout];
+    _buildSARLayout = [(MUPlaceUnifiedActionRowLayoutBuilder *)self _buildStaticLayout];
   }
 
-  v10 = v5;
+  v10 = _buildSARLayout;
 LABEL_7:
-  v11 = [(MUPlaceUnifiedActionRowLayoutBuilder *)self configuration];
+  configuration4 = [(MUPlaceUnifiedActionRowLayoutBuilder *)self configuration];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -780,18 +780,18 @@ LABEL_7:
   return v13;
 }
 
-- (MUPlaceUnifiedActionRowLayoutBuilder)initWithConfiguration:(id)a3 delegate:(id)a4
+- (MUPlaceUnifiedActionRowLayoutBuilder)initWithConfiguration:(id)configuration delegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
+  configurationCopy = configuration;
+  delegateCopy = delegate;
   v12.receiver = self;
   v12.super_class = MUPlaceUnifiedActionRowLayoutBuilder;
   v9 = [(MUPlaceUnifiedActionRowLayoutBuilder *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_configuration, a3);
-    objc_storeWeak(&v10->_delegate, v8);
+    objc_storeStrong(&v9->_configuration, configuration);
+    objc_storeWeak(&v10->_delegate, delegateCopy);
   }
 
   return v10;

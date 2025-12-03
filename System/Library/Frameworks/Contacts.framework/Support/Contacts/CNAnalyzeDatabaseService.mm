@@ -1,12 +1,12 @@
 @interface CNAnalyzeDatabaseService
 + (id)log;
-+ (id)makeWorkQueueUsingSchedulerProvider:(id)a3 withName:(id)a4 qualityOfService:(unint64_t)a5;
++ (id)makeWorkQueueUsingSchedulerProvider:(id)provider withName:(id)name qualityOfService:(unint64_t)service;
 + (id)sharedInstance;
 - (CNAnalyzeDatabaseService)init;
 - (id)interestedNotifications;
-- (void)handleAnalyzingEvent:(id)a3;
-- (void)handleCoalescedShouldAnalyzeEvent:(id)a3;
-- (void)handleNotificationName:(id)a3;
+- (void)handleAnalyzingEvent:(id)event;
+- (void)handleCoalescedShouldAnalyzeEvent:(id)event;
+- (void)handleNotificationName:(id)name;
 @end
 
 @implementation CNAnalyzeDatabaseService
@@ -29,7 +29,7 @@
   block[1] = 3221225472;
   block[2] = sub_10000B278;
   block[3] = &unk_100045580;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10004E068 != -1)
   {
     dispatch_once(&qword_10004E068, block);
@@ -82,10 +82,10 @@
   return v2;
 }
 
-+ (id)makeWorkQueueUsingSchedulerProvider:(id)a3 withName:(id)a4 qualityOfService:(unint64_t)a5
++ (id)makeWorkQueueUsingSchedulerProvider:(id)provider withName:(id)name qualityOfService:(unint64_t)service
 {
-  v6 = [a3 newSerialSchedulerWithName:a4];
-  v7 = [[CNQualityOfServiceSchedulerDecorator alloc] initWithScheduler:v6 qualityOfService:a5];
+  v6 = [provider newSerialSchedulerWithName:name];
+  v7 = [[CNQualityOfServiceSchedulerDecorator alloc] initWithScheduler:v6 qualityOfService:service];
 
   return v7;
 }
@@ -99,59 +99,59 @@
   return v2;
 }
 
-- (void)handleNotificationName:(id)a3
+- (void)handleNotificationName:(id)name
 {
-  v4 = a3;
-  v5 = [(CNAnalyzeDatabaseService *)self interestedNotifications];
-  v6 = [v5 containsObject:v4];
+  nameCopy = name;
+  interestedNotifications = [(CNAnalyzeDatabaseService *)self interestedNotifications];
+  v6 = [interestedNotifications containsObject:nameCopy];
 
   if (v6)
   {
-    v7 = [(CNAnalyzeDatabaseService *)self lowPriorityWorkQueue];
+    lowPriorityWorkQueue = [(CNAnalyzeDatabaseService *)self lowPriorityWorkQueue];
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_10000B600;
     v8[3] = &unk_1000455E8;
     v8[4] = self;
-    [v7 performBlock:v8];
+    [lowPriorityWorkQueue performBlock:v8];
   }
 }
 
-- (void)handleCoalescedShouldAnalyzeEvent:(id)a3
+- (void)handleCoalescedShouldAnalyzeEvent:(id)event
 {
   v4 = [objc_opt_class() log];
   v5 = +[CNEnvironment currentEnvironment];
-  v6 = [v5 contactStore];
+  contactStore = [v5 contactStore];
 
-  v7 = [(CNAnalyzeDatabaseService *)self lowPriorityWorkQueue];
+  lowPriorityWorkQueue = [(CNAnalyzeDatabaseService *)self lowPriorityWorkQueue];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10000B764;
   v10[3] = &unk_100045668;
   v11 = v4;
-  v12 = v6;
-  v13 = self;
-  v8 = v6;
+  v12 = contactStore;
+  selfCopy = self;
+  v8 = contactStore;
   v9 = v4;
-  [v7 performBlock:v10];
+  [lowPriorityWorkQueue performBlock:v10];
 }
 
-- (void)handleAnalyzingEvent:(id)a3
+- (void)handleAnalyzingEvent:(id)event
 {
   v4 = [objc_opt_class() log];
   v5 = +[CNEnvironment currentEnvironment];
-  v6 = [v5 contactStore];
+  contactStore = [v5 contactStore];
 
-  v7 = [(CNAnalyzeDatabaseService *)self highPriorityWorkQueue];
+  highPriorityWorkQueue = [(CNAnalyzeDatabaseService *)self highPriorityWorkQueue];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10000B954;
   v10[3] = &unk_100045690;
   v11 = v4;
-  v12 = v6;
-  v8 = v6;
+  v12 = contactStore;
+  v8 = contactStore;
   v9 = v4;
-  [v7 performBlock:v10];
+  [highPriorityWorkQueue performBlock:v10];
 }
 
 @end

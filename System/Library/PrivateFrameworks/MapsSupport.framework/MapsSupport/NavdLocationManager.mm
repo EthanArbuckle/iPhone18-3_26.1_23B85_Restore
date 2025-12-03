@@ -1,27 +1,27 @@
 @interface NavdLocationManager
 + (id)sharedInstance;
-- (BOOL)_q_isNewLocation:(id)a3 tolerableWithLocation:(id)a4 distance:(double)a5;
-- (BOOL)_q_pivotShouldBeUpdatedDistanceToCandidate:(double)a3;
+- (BOOL)_q_isNewLocation:(id)location tolerableWithLocation:(id)withLocation distance:(double)distance;
+- (BOOL)_q_pivotShouldBeUpdatedDistanceToCandidate:(double)candidate;
 - (NavdLocationManager)init;
-- (NavdLocationManager)initWithLocationProvider:(id)a3;
-- (void)_q_badCandidateLocation:(id)a3;
+- (NavdLocationManager)initWithLocationProvider:(id)provider;
+- (void)_q_badCandidateLocation:(id)location;
 - (void)_q_cancelStaleLocationTimer;
 - (void)_q_createActivityForLocationUpdate;
-- (void)_q_createActivityForStaleLocationUse:(id)a3;
-- (void)_q_createActivityToUseStaleLocation:(id)a3 fireAtAbsoluteTime:(double)a4;
-- (void)_q_goodCandidateLocation:(id)a3 shouldUpdatePivot:(BOOL)a4;
+- (void)_q_createActivityForStaleLocationUse:(id)use;
+- (void)_q_createActivityToUseStaleLocation:(id)location fireAtAbsoluteTime:(double)time;
+- (void)_q_goodCandidateLocation:(id)location shouldUpdatePivot:(BOOL)pivot;
 - (void)_q_locationRefreshActivityFired;
-- (void)_q_processCandidateLocation:(id)a3;
-- (void)_q_processErrorWhenUpdatingCurrentLocation:(id)a3;
-- (void)_q_staleLocationUseActivityFired:(id)a3;
+- (void)_q_processCandidateLocation:(id)location;
+- (void)_q_processErrorWhenUpdatingCurrentLocation:(id)location;
+- (void)_q_staleLocationUseActivityFired:(id)fired;
 - (void)_q_startLocationUpdate;
 - (void)_q_stopLocationUpdate;
-- (void)_q_updateDesiredAccuracyBasedOnCadidateDistanceToPivot:(double)a3 candidateDistanceToCurrent:(double)a4;
+- (void)_q_updateDesiredAccuracyBasedOnCadidateDistanceToPivot:(double)pivot candidateDistanceToCurrent:(double)current;
 - (void)dealloc;
 - (void)deregisterBackgroundTasks;
-- (void)getCurrentLocationWithHandler:(id)a3;
-- (void)locationProvider:(id)a3 didReceiveError:(id)a4;
-- (void)locationProvider:(id)a3 didUpdateLocation:(id)a4;
+- (void)getCurrentLocationWithHandler:(id)handler;
+- (void)locationProvider:(id)provider didReceiveError:(id)error;
+- (void)locationProvider:(id)provider didUpdateLocation:(id)location;
 - (void)registerBackgroundTasks;
 - (void)startLocationUpdate;
 - (void)stopLocationUpdate;
@@ -49,9 +49,9 @@
   return v4;
 }
 
-- (NavdLocationManager)initWithLocationProvider:(id)a3
+- (NavdLocationManager)initWithLocationProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v17.receiver = self;
   v17.super_class = NavdLocationManager;
   v6 = [(NavdLocationManager *)&v17 init];
@@ -71,7 +71,7 @@
     v6->_serialQueue = v12;
 
     v6->_transportTypeToRequestAccuracyFor = 0;
-    objc_storeStrong(&v6->_locationProvider, a3);
+    objc_storeStrong(&v6->_locationProvider, provider);
     [(NavdLocationProvider *)v6->_locationProvider setDelegate:v6];
     v14 = +[GEONavdDefaults sharedInstance];
     [v14 minimumDistanceToGetLocationUpdatesInMeters];
@@ -193,11 +193,11 @@
   dispatch_async(serialQueue, block);
 }
 
-- (void)getCurrentLocationWithHandler:(id)a3
+- (void)getCurrentLocationWithHandler:(id)handler
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  handlerCopy = handler;
+  v5 = handlerCopy;
+  if (handlerCopy)
   {
     serialQueue = self->_serialQueue;
     v7[0] = _NSConcreteStackBlock;
@@ -205,46 +205,46 @@
     v7[2] = sub_10000A314;
     v7[3] = &unk_100065098;
     v7[4] = self;
-    v8 = v4;
+    v8 = handlerCopy;
     dispatch_async(serialQueue, v7);
   }
 }
 
-- (BOOL)_q_isNewLocation:(id)a3 tolerableWithLocation:(id)a4 distance:(double)a5
+- (BOOL)_q_isNewLocation:(id)location tolerableWithLocation:(id)withLocation distance:(double)distance
 {
-  v7 = a3;
-  v8 = a4;
+  locationCopy = location;
+  withLocationCopy = withLocation;
   v9 = +[GEONavdDefaults sharedInstance];
   [v9 minimumDistanceToCompareAgainstLocationAccuracy];
   v11 = v10;
 
-  if (v11 >= a5)
+  if (v11 >= distance)
   {
     v15 = 1;
   }
 
   else
   {
-    [v8 horizontalAccuracy];
+    [withLocationCopy horizontalAccuracy];
     v13 = v12;
-    [v7 horizontalAccuracy];
-    v15 = fmax(v13, v14) <= a5;
+    [locationCopy horizontalAccuracy];
+    v15 = fmax(v13, v14) <= distance;
   }
 
   return v15;
 }
 
-- (BOOL)_q_pivotShouldBeUpdatedDistanceToCandidate:(double)a3
+- (BOOL)_q_pivotShouldBeUpdatedDistanceToCandidate:(double)candidate
 {
   [(NavdLocationProvider *)self->_locationProvider desiredAccuracy];
-  if (v5 < a3)
+  if (v5 < candidate)
   {
     return 1;
   }
 
   Current = CFAbsoluteTimeGetCurrent();
-  v7 = [(CLLocation *)self->_pivotLocation timestamp];
-  [v7 timeIntervalSinceReferenceDate];
+  timestamp = [(CLLocation *)self->_pivotLocation timestamp];
+  [timestamp timeIntervalSinceReferenceDate];
   v9 = Current - v8;
   v10 = +[GEONavdDefaults sharedInstance];
   [v10 locationFreshnessThreshold];
@@ -253,20 +253,20 @@
   return v12;
 }
 
-- (void)_q_updateDesiredAccuracyBasedOnCadidateDistanceToPivot:(double)a3 candidateDistanceToCurrent:(double)a4
+- (void)_q_updateDesiredAccuracyBasedOnCadidateDistanceToPivot:(double)pivot candidateDistanceToCurrent:(double)current
 {
   [(NavdLocationProvider *)self->_locationProvider desiredAccuracy];
   v8 = v7;
-  v9 = (v7 <= a3) | (v7 <= a4);
+  v9 = (v7 <= pivot) | (v7 <= current);
   v10 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
     v14 = 134218752;
     v15 = v8;
     v16 = 2048;
-    v17 = a4;
+    currentCopy = current;
     v18 = 2048;
-    v19 = a3;
+    pivotCopy = pivot;
     v20 = 2048;
     v21 = v9;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEBUG, "Current location manager accuracy: %f, distance to last location: %f, distance to pivot location: %f, motionType: %lu", &v14, 0x2Au);
@@ -288,13 +288,13 @@
   }
 }
 
-- (void)_q_staleLocationUseActivityFired:(id)a3
+- (void)_q_staleLocationUseActivityFired:(id)fired
 {
-  v4 = a3;
+  firedCopy = fired;
   candidateStaleLocation = self->_candidateStaleLocation;
   v6 = GEOFindOrCreateLog();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG);
-  if (candidateStaleLocation == v4)
+  if (candidateStaleLocation == firedCopy)
   {
     if (v7)
     {
@@ -317,7 +317,7 @@
       }
     }
 
-    [(NavdLocationManager *)self _q_goodCandidateLocation:v4 shouldUpdatePivot:1];
+    [(NavdLocationManager *)self _q_goodCandidateLocation:firedCopy shouldUpdatePivot:1];
   }
 
   else
@@ -342,13 +342,13 @@
   self->_staleLocationTimer = 0;
 }
 
-- (void)_q_createActivityToUseStaleLocation:(id)a3 fireAtAbsoluteTime:(double)a4
+- (void)_q_createActivityToUseStaleLocation:(id)location fireAtAbsoluteTime:(double)time
 {
-  v6 = a3;
+  locationCopy = location;
   Current = CFAbsoluteTimeGetCurrent();
-  if (Current >= a4 + -1.0)
+  if (Current >= time + -1.0)
   {
-    [(NavdLocationManager *)self _q_staleLocationUseActivityFired:v6];
+    [(NavdLocationManager *)self _q_staleLocationUseActivityFired:locationCopy];
   }
 
   else
@@ -357,9 +357,9 @@
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138478083;
-      v21 = v6;
+      v21 = locationCopy;
       v22 = 2048;
-      v23 = a4 - Current;
+      v23 = time - Current;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "Too early to use stale location %{private}@.  Scheduling with delay %f.", buf, 0x16u);
     }
 
@@ -378,8 +378,8 @@
     handler[2] = sub_10000ADF8;
     handler[3] = &unk_1000651A8;
     objc_copyWeak(v19, buf);
-    v18 = v6;
-    v19[1] = *&a4;
+    v18 = locationCopy;
+    v19[1] = *&time;
     dispatch_source_set_event_handler(v14, handler);
     v15 = self->_staleLocationTimer;
     v16 = dispatch_walltime(0, (v11 * 1000000000.0));
@@ -391,9 +391,9 @@
   }
 }
 
-- (void)_q_createActivityForStaleLocationUse:(id)a3
+- (void)_q_createActivityForStaleLocationUse:(id)use
 {
-  v4 = a3;
+  useCopy = use;
   v5 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -402,8 +402,8 @@
   }
 
   candidateStaleLocation = self->_candidateStaleLocation;
-  self->_candidateStaleLocation = v4;
-  v7 = v4;
+  self->_candidateStaleLocation = useCopy;
+  v7 = useCopy;
 
   v8 = +[GEONavdDefaults sharedInstance];
   [v8 staleLocationUseTimerInterval];
@@ -502,10 +502,10 @@
   }
 }
 
-- (void)_q_badCandidateLocation:(id)a3
+- (void)_q_badCandidateLocation:(id)location
 {
   ++self->_numberOfRetriesForLocation;
-  [(NavdLocationManager *)self _q_createActivityForStaleLocationUse:a3];
+  [(NavdLocationManager *)self _q_createActivityForStaleLocationUse:location];
   if (self->_numberOfRetriesForLocation >= 5)
   {
     [(NavdLocationManager *)self _q_stopLocationUpdate];
@@ -515,10 +515,10 @@
   }
 }
 
-- (void)_q_goodCandidateLocation:(id)a3 shouldUpdatePivot:(BOOL)a4
+- (void)_q_goodCandidateLocation:(id)location shouldUpdatePivot:(BOOL)pivot
 {
-  v4 = a4;
-  v7 = a3;
+  pivotCopy = pivot;
+  locationCopy = location;
   [(NavdLocationManager *)self _q_stopLocationUpdate];
   [(NavdLocationManager *)self _q_cancelStaleLocationTimer];
   self->_numberOfRetriesForLocation = 0;
@@ -540,10 +540,10 @@
   candidateStaleLocation = self->_candidateStaleLocation;
   self->_candidateStaleLocation = 0;
 
-  objc_storeStrong(&self->_currentLocation, a3);
-  if (v4)
+  objc_storeStrong(&self->_currentLocation, location);
+  if (pivotCopy)
   {
-    objc_storeStrong(&self->_pivotLocation, a3);
+    objc_storeStrong(&self->_pivotLocation, location);
   }
 
   v12 = [(NSMutableArray *)self->_locationHandlers copy];
@@ -580,12 +580,12 @@
   }
 }
 
-- (void)_q_processCandidateLocation:(id)a3
+- (void)_q_processCandidateLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   Current = CFAbsoluteTimeGetCurrent();
-  v6 = [v4 timestamp];
-  [v6 timeIntervalSinceReferenceDate];
+  timestamp = [locationCopy timestamp];
+  [timestamp timeIntervalSinceReferenceDate];
   v8 = Current - v7;
   v9 = +[GEONavdDefaults sharedInstance];
   [v9 locationFreshnessThreshold];
@@ -597,7 +597,7 @@
     if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
     {
       *v36 = 138477827;
-      *&v36[4] = v4;
+      *&v36[4] = locationCopy;
       v28 = "Location is not fresh:%{private}@. \nIgnoring..";
       v29 = v27;
       v30 = OS_LOG_TYPE_INFO;
@@ -609,7 +609,7 @@ LABEL_16:
 LABEL_17:
 
 LABEL_18:
-    [(NavdLocationManager *)self _q_badCandidateLocation:v4, *v36, *&v36[16], *&v37, *v38, *&v38[16]];
+    [(NavdLocationManager *)self _q_badCandidateLocation:locationCopy, *v36, *&v36[16], *&v37, *v38, *&v38[16]];
     goto LABEL_19;
   }
 
@@ -620,11 +620,11 @@ LABEL_18:
     pivotLocation = self->_pivotLocation;
   }
 
-  [(CLLocation *)pivotLocation distanceFromLocation:v4];
+  [(CLLocation *)pivotLocation distanceFromLocation:locationCopy];
   v14 = v13;
-  [(CLLocation *)self->_currentLocation distanceFromLocation:v4];
+  [(CLLocation *)self->_currentLocation distanceFromLocation:locationCopy];
   v16 = v15;
-  if (![(NavdLocationManager *)self _q_isNewLocation:v4 tolerableWithLocation:self->_pivotLocation distance:v14]|| ![(NavdLocationManager *)self _q_isNewLocation:v4 tolerableWithLocation:self->_currentLocation distance:v16])
+  if (![(NavdLocationManager *)self _q_isNewLocation:locationCopy tolerableWithLocation:self->_pivotLocation distance:v14]|| ![(NavdLocationManager *)self _q_isNewLocation:locationCopy tolerableWithLocation:self->_currentLocation distance:v16])
   {
     v27 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
@@ -636,7 +636,7 @@ LABEL_18:
       *&v36[12] = 2113;
       *&v36[14] = currentLocation;
       *&v36[22] = 2113;
-      v37 = *&v4;
+      v37 = *&locationCopy;
       *v38 = 2048;
       *&v38[2] = v14;
       *&v38[10] = 2048;
@@ -666,7 +666,7 @@ LABEL_18:
   }
 
   [(NavdLocationManager *)self _q_updateDesiredAccuracyBasedOnCadidateDistanceToPivot:v14 candidateDistanceToCurrent:v16];
-  [v4 horizontalAccuracy];
+  [locationCopy horizontalAccuracy];
   v21 = v20;
   [(NavdLocationProvider *)self->_locationProvider desiredAccuracy];
   v23 = v22;
@@ -680,7 +680,7 @@ LABEL_18:
       *v36 = 134218243;
       *&v36[4] = v26;
       *&v36[12] = 2113;
-      *&v36[14] = v4;
+      *&v36[14] = locationCopy;
       _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEBUG, "Desired accuracy of %f not achieved in location %{private}@.  Not updating current or pivot location.", v36, 0x16u);
     }
 
@@ -699,24 +699,24 @@ LABEL_18:
       v34 = @"Updating";
     }
 
-    *&v36[14] = v4;
+    *&v36[14] = locationCopy;
     *&v36[22] = 2113;
     v37 = *&v34;
     _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEBUG, "Desired accuracy of %f achieved in location %{private}@.  Updating current location.  %{private}@ pivot location.", v36, 0x20u);
   }
 
-  [(NavdLocationManager *)self _q_goodCandidateLocation:v4 shouldUpdatePivot:v17];
+  [(NavdLocationManager *)self _q_goodCandidateLocation:locationCopy shouldUpdatePivot:v17];
 LABEL_19:
 }
 
-- (void)_q_processErrorWhenUpdatingCurrentLocation:(id)a3
+- (void)_q_processErrorWhenUpdatingCurrentLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   v5 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
     v6 = 138543362;
-    v7 = v4;
+    v7 = locationCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_ERROR, "Error while updating current location:%{public}@", &v6, 0xCu);
   }
 
@@ -725,10 +725,10 @@ LABEL_19:
   [(NavdLocationManager *)self _q_createActivityForLocationUpdate];
 }
 
-- (void)locationProvider:(id)a3 didUpdateLocation:(id)a4
+- (void)locationProvider:(id)provider didUpdateLocation:(id)location
 {
-  v6 = a3;
-  v7 = a4;
+  providerCopy = provider;
+  locationCopy = location;
   v8 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -737,7 +737,7 @@ LABEL_19:
     *buf = 138478083;
     v17 = v10;
     v18 = 2113;
-    v19 = v7;
+    v19 = locationCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "%{private}@ received new location: %{private}@", buf, 0x16u);
   }
 
@@ -746,16 +746,16 @@ LABEL_19:
   v13[1] = 3221225472;
   v13[2] = sub_10000BBCC;
   v13[3] = &unk_1000651D0;
-  v14 = v7;
-  v15 = self;
-  v12 = v7;
+  v14 = locationCopy;
+  selfCopy = self;
+  v12 = locationCopy;
   [(GEOLocationShifter *)locationShifter navdShiftLocation:v12 withCompletionHandler:v13];
 }
 
-- (void)locationProvider:(id)a3 didReceiveError:(id)a4
+- (void)locationProvider:(id)provider didReceiveError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  providerCopy = provider;
+  errorCopy = error;
   v8 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -764,7 +764,7 @@ LABEL_19:
     *buf = 138478083;
     v16 = v10;
     v17 = 2113;
-    v18 = v7;
+    v18 = errorCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "%{private}@ failed with error: %{private}@", buf, 0x16u);
   }
 
@@ -774,8 +774,8 @@ LABEL_19:
   v13[2] = sub_10000BF2C;
   v13[3] = &unk_1000650C0;
   v13[4] = self;
-  v14 = v7;
-  v12 = v7;
+  v14 = errorCopy;
+  v12 = errorCopy;
   dispatch_async(serialQueue, v13);
 }
 

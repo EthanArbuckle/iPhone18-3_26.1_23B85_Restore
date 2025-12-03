@@ -1,22 +1,22 @@
 @interface PXPhotoKitSyndicationSaveToLibraryActionPerformer
-+ (BOOL)canPerformOnAsset:(id)a3 inAssetCollection:(id)a4 person:(id)a5 socialGroup:(id)a6 error:(id *)a7;
-+ (BOOL)canPerformWithActionManager:(id)a3 error:(id *)a4;
-+ (id)localizedTitleForUseCase:(unint64_t)a3 actionManager:(id)a4;
++ (BOOL)canPerformOnAsset:(id)asset inAssetCollection:(id)collection person:(id)person socialGroup:(id)group error:(id *)error;
++ (BOOL)canPerformWithActionManager:(id)manager error:(id *)error;
++ (id)localizedTitleForUseCase:(unint64_t)case actionManager:(id)manager;
 - (void)performBackgroundTask;
 - (void)performUserInteractionTask;
 @end
 
 @implementation PXPhotoKitSyndicationSaveToLibraryActionPerformer
 
-+ (id)localizedTitleForUseCase:(unint64_t)a3 actionManager:(id)a4
++ (id)localizedTitleForUseCase:(unint64_t)case actionManager:(id)manager
 {
-  v4 = a4;
-  v5 = [v4 selectionManager];
-  v6 = [v5 selectionSnapshot];
-  v7 = [v6 allItemsEnumerator];
+  managerCopy = manager;
+  selectionManager = [managerCopy selectionManager];
+  selectionSnapshot = [selectionManager selectionSnapshot];
+  allItemsEnumerator = [selectionSnapshot allItemsEnumerator];
 
-  v8 = [v7 count];
-  [v4 presentationSource];
+  v8 = [allItemsEnumerator count];
+  [managerCopy presentationSource];
 
   if (v8 == 1)
   {
@@ -26,11 +26,11 @@
   PXFilter();
 }
 
-+ (BOOL)canPerformOnAsset:(id)a3 inAssetCollection:(id)a4 person:(id)a5 socialGroup:(id)a6 error:(id *)a7
++ (BOOL)canPerformOnAsset:(id)asset inAssetCollection:(id)collection person:(id)person socialGroup:(id)group error:(id *)error
 {
-  if (a3)
+  if (asset)
   {
-    return [a3 px_isUnsavedSyndicatedAsset];
+    return [asset px_isUnsavedSyndicatedAsset];
   }
 
   else
@@ -39,12 +39,12 @@
   }
 }
 
-+ (BOOL)canPerformWithActionManager:(id)a3 error:(id *)a4
++ (BOOL)canPerformWithActionManager:(id)manager error:(id *)error
 {
-  v6 = [a3 objectReference];
+  objectReference = [manager objectReference];
   if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v7 = v6;
+    v7 = objectReference;
   }
 
   else
@@ -52,10 +52,10 @@
     v7 = 0;
   }
 
-  v8 = [v7 asset];
+  asset = [v7 asset];
   if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v9 = v8;
+    v9 = asset;
   }
 
   else
@@ -63,10 +63,10 @@
     v9 = 0;
   }
 
-  v10 = [v7 assetCollection];
+  assetCollection = [v7 assetCollection];
   if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v11 = v10;
+    v11 = assetCollection;
   }
 
   else
@@ -74,16 +74,16 @@
     v11 = 0;
   }
 
-  v12 = [a1 canPerformOnAsset:v9 inAssetCollection:v11 person:0 socialGroup:0 error:a4];
+  v12 = [self canPerformOnAsset:v9 inAssetCollection:v11 person:0 socialGroup:0 error:error];
   return v12;
 }
 
 - (void)performBackgroundTask
 {
   v3 = +[PXContentSyndicationSettings sharedInstance];
-  v4 = [v3 preventActualSaveToLibraryBehavior];
+  preventActualSaveToLibraryBehavior = [v3 preventActualSaveToLibraryBehavior];
 
-  if (v4)
+  if (preventActualSaveToLibraryBehavior)
   {
 
     [(PXActionPerformer *)self completeBackgroundTaskWithSuccess:1 error:0];
@@ -91,21 +91,21 @@
 
   else
   {
-    v5 = [(PXPhotoKitAssetActionPerformer *)self assets];
-    v6 = [MEMORY[0x1E69789A8] px_systemPhotoLibrary];
+    assets = [(PXPhotoKitAssetActionPerformer *)self assets];
+    px_systemPhotoLibrary = [MEMORY[0x1E69789A8] px_systemPhotoLibrary];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __74__PXPhotoKitSyndicationSaveToLibraryActionPerformer_performBackgroundTask__block_invoke;
     v11[3] = &unk_1E774C648;
-    v12 = v5;
+    v12 = assets;
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __74__PXPhotoKitSyndicationSaveToLibraryActionPerformer_performBackgroundTask__block_invoke_240;
     v8[3] = &unk_1E774B730;
     v9 = v12;
-    v10 = self;
+    selfCopy = self;
     v7 = v12;
-    [v6 performChanges:v11 completionHandler:v8];
+    [px_systemPhotoLibrary performChanges:v11 completionHandler:v8];
   }
 }
 
@@ -284,9 +284,9 @@ LABEL_10:
 {
   v14 = *MEMORY[0x1E69E9840];
   v3 = +[PXContentSyndicationSettings sharedInstance];
-  v4 = [v3 preventActualSaveToLibraryBehavior];
+  preventActualSaveToLibraryBehavior = [v3 preventActualSaveToLibraryBehavior];
 
-  if (v4)
+  if (preventActualSaveToLibraryBehavior)
   {
     v10 = [MEMORY[0x1E69DC650] alertControllerWithTitle:@"Save to Library Prevented" message:@"Saving to Library is currently disabled via our internal settings (for debugging)." preferredStyle:1];
     v5 = [MEMORY[0x1E69DC648] actionWithTitle:@"OK" style:0 handler:0];
@@ -301,20 +301,20 @@ LABEL_10:
     v6 = PLSyndicationUIGetLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [(PXPhotoKitAssetActionPerformer *)self assets];
+      assets = [(PXPhotoKitAssetActionPerformer *)self assets];
       *buf = 134217984;
-      v13 = [v7 count];
+      v13 = [assets count];
       _os_log_impl(&dword_1A3C1C000, v6, OS_LOG_TYPE_DEFAULT, "SyndicationSaveActionPerformer: Ensuring all %lu unsaved assets are available locally...", buf, 0xCu);
     }
 
     v8 = PXCreateDefaultAssetSharingHelper(self);
-    v9 = [(PXPhotoKitAssetActionPerformer *)self assets];
+    assets2 = [(PXPhotoKitAssetActionPerformer *)self assets];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __79__PXPhotoKitSyndicationSaveToLibraryActionPerformer_performUserInteractionTask__block_invoke;
     v11[3] = &unk_1E774B308;
     v11[4] = self;
-    [v8 ensureLocalAssetsForSyndicationSave:v9 completion:v11];
+    [v8 ensureLocalAssetsForSyndicationSave:assets2 completion:v11];
   }
 }
 

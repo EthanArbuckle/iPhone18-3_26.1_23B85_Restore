@@ -1,11 +1,11 @@
 @interface TSWPCTTypesetterCache
 - (id).cxx_construct;
-- (shared_ptr<TSWPParagraphTypesetter>)cachedTypesetterForParagraphIdentifier:(unint64_t)a3;
-- (void)addTypesetterForParagraphIdentifier:(unint64_t)a3 typesetter:(shared_ptr<TSWPParagraphTypesetter>)a4;
+- (shared_ptr<TSWPParagraphTypesetter>)cachedTypesetterForParagraphIdentifier:(unint64_t)identifier;
+- (void)addTypesetterForParagraphIdentifier:(unint64_t)identifier typesetter:(shared_ptr<TSWPParagraphTypesetter>)typesetter;
 - (void)clearCache;
 - (void)dealloc;
-- (void)p_limitCacheSize:(unint64_t)a3;
-- (void)removeTypesetterForParagraphIndex:(unint64_t)a3;
+- (void)p_limitCacheSize:(unint64_t)size;
+- (void)removeTypesetterForParagraphIndex:(unint64_t)index;
 @end
 
 @implementation TSWPCTTypesetterCache
@@ -18,7 +18,7 @@
   [(TSWPCTTypesetterCache *)&v3 dealloc];
 }
 
-- (shared_ptr<TSWPParagraphTypesetter>)cachedTypesetterForParagraphIdentifier:(unint64_t)a3
+- (shared_ptr<TSWPParagraphTypesetter>)cachedTypesetterForParagraphIdentifier:(unint64_t)identifier
 {
   *v3 = 0;
   v3[1] = 0;
@@ -31,8 +31,8 @@
     do
     {
       v8 = v5[4].__left_;
-      v9 = v8 >= a3;
-      v10 = v8 < a3;
+      v9 = v8 >= identifier;
+      v10 = v8 < identifier;
       if (v9)
       {
         v7 = v5;
@@ -42,7 +42,7 @@
     }
 
     while (v5);
-    if (v7 != p_end_node && v7[4].__left_ <= a3)
+    if (v7 != p_end_node && v7[4].__left_ <= identifier)
     {
       v12 = v7[5].__left_;
       v11 = v7[6].__left_;
@@ -61,12 +61,12 @@
   return result;
 }
 
-- (void)addTypesetterForParagraphIdentifier:(unint64_t)a3 typesetter:(shared_ptr<TSWPParagraphTypesetter>)a4
+- (void)addTypesetterForParagraphIdentifier:(unint64_t)identifier typesetter:(shared_ptr<TSWPParagraphTypesetter>)typesetter
 {
-  v12[0] = a3;
-  if (*a4.var0)
+  v12[0] = identifier;
+  if (*typesetter.var0)
   {
-    var0 = a4.var0;
+    var0 = typesetter.var0;
     v12[2] = v12;
     v6 = std::__tree<std::__value_type<unsigned long,std::shared_ptr<TSWPParagraphTypesetter>>,std::__map_value_compare<unsigned long,std::__value_type<unsigned long,std::shared_ptr<TSWPParagraphTypesetter>>,std::less<unsigned long>,true>,std::allocator<std::__value_type<unsigned long,std::shared_ptr<TSWPParagraphTypesetter>>>>::__emplace_unique_key_args<unsigned long,std::piecewise_construct_t const&,std::tuple<unsigned long const&>,std::tuple<>>(&self->_typesetters, v12);
     v8 = *var0;
@@ -87,14 +87,14 @@
     [(TSWPCTTypesetterCache *)self p_limitCacheSize:v12[0]];
     if (self->_typesetters.__tree_.__size_ >= 2)
     {
-      v10 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPCTTypesetterCache addTypesetterForParagraphIdentifier:typesetter:]"];
-      [v10 handleFailureInFunction:v11 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPCTTypesetterCache.mm"), 57, @"too many entries in our typesetter cache"}];
+      [currentHandler handleFailureInFunction:v11 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPCTTypesetterCache.mm"), 57, @"too many entries in our typesetter cache"}];
     }
   }
 }
 
-- (void)removeTypesetterForParagraphIndex:(unint64_t)a3
+- (void)removeTypesetterForParagraphIndex:(unint64_t)index
 {
   p_end_node = &self->_typesetters.__tree_.__end_node_;
   left = self->_typesetters.__tree_.__end_node_.__left_;
@@ -105,8 +105,8 @@
     do
     {
       v7 = left[4];
-      v8 = v7 >= a3;
-      v9 = v7 < a3;
+      v8 = v7 >= index;
+      v9 = v7 < index;
       if (v8)
       {
         v6 = left;
@@ -116,7 +116,7 @@
     }
 
     while (left);
-    if (v6 != p_end_node && v6[4] <= a3)
+    if (v6 != p_end_node && v6[4] <= index)
     {
       std::__tree<std::__value_type<unsigned long,std::shared_ptr<TSWPParagraphTypesetter>>,std::__map_value_compare<unsigned long,std::__value_type<unsigned long,std::shared_ptr<TSWPParagraphTypesetter>>,std::less<unsigned long>,true>,std::allocator<std::__value_type<unsigned long,std::shared_ptr<TSWPParagraphTypesetter>>>>::erase(p_typesetters, v6);
     }
@@ -132,7 +132,7 @@
   p_end_node[-1].__left_ = p_end_node;
 }
 
-- (void)p_limitCacheSize:(unint64_t)a3
+- (void)p_limitCacheSize:(unint64_t)size
 {
   if (self->_typesetters.__tree_.__size_ >= 2)
   {
@@ -161,7 +161,7 @@
       while (v6);
     }
 
-    if (begin_node[4] == a3)
+    if (begin_node[4] == size)
     {
       begin_node = self->_typesetters.__tree_.__begin_node_;
     }

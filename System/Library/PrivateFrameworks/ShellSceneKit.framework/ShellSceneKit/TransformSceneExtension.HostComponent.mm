@@ -1,16 +1,16 @@
 @interface TransformSceneExtension.HostComponent
 - (_TtCC13ShellSceneKit23TransformSceneExtension13HostComponent)init;
 - (void)invalidate;
-- (void)scene:(id)a3 didUpdateSettings:(id)a4;
-- (void)setScene:(id)a3;
+- (void)scene:(id)scene didUpdateSettings:(id)settings;
+- (void)setScene:(id)scene;
 @end
 
 @implementation TransformSceneExtension.HostComponent
 
-- (void)setScene:(id)a3
+- (void)setScene:(id)scene
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_265FE9CD8();
   swift_unknownObjectRelease();
 }
@@ -32,12 +32,12 @@
   return [(TransformSceneExtension.HostComponent *)&v5 init];
 }
 
-- (void)scene:(id)a3 didUpdateSettings:(id)a4
+- (void)scene:(id)scene didUpdateSettings:(id)settings
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_265FEA27C(v6, v7);
+  sceneCopy = scene;
+  settingsCopy = settings;
+  selfCopy = self;
+  sub_265FEA27C(sceneCopy, settingsCopy);
 }
 
 @end

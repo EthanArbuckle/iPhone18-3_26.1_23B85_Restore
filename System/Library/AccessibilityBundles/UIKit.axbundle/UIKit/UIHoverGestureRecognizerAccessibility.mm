@@ -1,13 +1,13 @@
 @interface UIHoverGestureRecognizerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_axGesture;
 - (int64_t)state;
 - (uint64_t)_axIsListeningForNotifications;
 - (uint64_t)_axSetIsListeningForNotifications:(uint64_t)result;
 - (uint64_t)_axSetSimulatedState:(uint64_t)result;
 - (uint64_t)_axSimulatedState;
-- (void)_accessibilityFocusedElementChanged:(id)a3;
-- (void)_accessibilityFocusedElementChangedToElement:(void *)a1;
+- (void)_accessibilityFocusedElementChanged:(id)changed;
+- (void)_accessibilityFocusedElementChangedToElement:(void *)element;
 - (void)_accessibilitySimulateStateChange;
 - (void)_axSetOverrideStateEnabled:(id)obj forFocusedElement:;
 @end
@@ -16,7 +16,7 @@
 
 - (uint64_t)_axIsListeningForNotifications
 {
-  if (a1)
+  if (self)
   {
     v2 = __UIAccessibilityGetAssociatedBool() & 1;
   }
@@ -41,7 +41,7 @@
 
 - (uint64_t)_axSimulatedState
 {
-  if (a1)
+  if (self)
   {
     return __UIAccessibilityGetAssociatedInteger();
   }
@@ -62,14 +62,14 @@
   return result;
 }
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v6 = location;
   obj = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v4 = @"UIGestureRecognizer";
   [location[0] validateClass:@"UIHoverGestureRecognizer" isKindOfClass:?];
   [location[0] validateClass:@"UIGestureRecognizer" hasInstanceVariable:@"_targets" withType:"NSMutableArray"];
@@ -82,66 +82,66 @@
 
 - (int64_t)state
 {
-  v6 = self;
+  selfCopy = self;
   v5 = a2;
   v3.receiver = self;
   v3.super_class = UIHoverGestureRecognizerAccessibility;
-  v4 = [(UIHoverGestureRecognizerAccessibility *)&v3 state];
-  if (v4 <= 0)
+  state = [(UIHoverGestureRecognizerAccessibility *)&v3 state];
+  if (state <= 0)
   {
-    return [(UIHoverGestureRecognizerAccessibility *)v6 _axSimulatedState];
+    return [(UIHoverGestureRecognizerAccessibility *)selfCopy _axSimulatedState];
   }
 
   else
   {
-    return v4;
+    return state;
   }
 }
 
-- (void)_accessibilityFocusedElementChanged:(id)a3
+- (void)_accessibilityFocusedElementChanged:(id)changed
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v4 = [location[0] userInfo];
-  v3 = [v4 objectForKeyedSubscript:*MEMORY[0x29EDC7EC0]];
-  [(UIHoverGestureRecognizerAccessibility *)v6 _accessibilityFocusedElementChangedToElement:v3];
+  objc_storeStrong(location, changed);
+  userInfo = [location[0] userInfo];
+  v3 = [userInfo objectForKeyedSubscript:*MEMORY[0x29EDC7EC0]];
+  [(UIHoverGestureRecognizerAccessibility *)selfCopy _accessibilityFocusedElementChangedToElement:v3];
   objc_storeStrong(&v3, 0);
-  objc_storeStrong(&v4, 0);
+  objc_storeStrong(&userInfo, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)_accessibilityFocusedElementChangedToElement:(void *)a1
+- (void)_accessibilityFocusedElementChangedToElement:(void *)element
 {
-  v18 = a1;
+  elementCopy = element;
   location = 0;
   objc_storeStrong(&location, a2);
-  if (v18)
+  if (elementCopy)
   {
-    v15 = [(UIHoverGestureRecognizerAccessibility *)v18 _axGesture];
-    v14 = [(UIHoverGestureRecognizerAccessibility *)v18 _axSimulatedState]> 0;
-    v10 = [v15 view];
-    [v10 accessibilityFrame];
+    _axGesture = [(UIHoverGestureRecognizerAccessibility *)elementCopy _axGesture];
+    v14 = [(UIHoverGestureRecognizerAccessibility *)elementCopy _axSimulatedState]> 0;
+    view = [_axGesture view];
+    [view accessibilityFrame];
     rect1.origin.x = v2;
     rect1.origin.y = v3;
     rect1.size.width = v4;
     rect1.size.height = v5;
-    MEMORY[0x29EDC9740](v10);
+    MEMORY[0x29EDC9740](view);
     [location accessibilityFrame];
     rect2.origin.x = v6;
     rect2.origin.y = v7;
     rect2.size.width = v8;
     rect2.size.height = v9;
     CGRectContainsRect(rect1, rect2);
-    [UIHoverGestureRecognizerAccessibility _axSetSimulatedState:v18];
-    v11 = [(UIHoverGestureRecognizerAccessibility *)v18 _axSimulatedState]> 0;
+    [UIHoverGestureRecognizerAccessibility _axSetSimulatedState:elementCopy];
+    v11 = [(UIHoverGestureRecognizerAccessibility *)elementCopy _axSimulatedState]> 0;
     if (v14 || v11)
     {
-      [(UIHoverGestureRecognizerAccessibility *)v18 _accessibilitySimulateStateChange];
+      [(UIHoverGestureRecognizerAccessibility *)elementCopy _accessibilitySimulateStateChange];
     }
 
-    objc_storeStrong(&v15, 0);
+    objc_storeStrong(&_axGesture, 0);
     v16 = 0;
   }
 
@@ -155,8 +155,8 @@
 
 - (id)_axGesture
 {
-  v6 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
     v5 = 0;
     objc_opt_class();
@@ -178,21 +178,21 @@
 
 - (void)_accessibilitySimulateStateChange
 {
-  v7 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v6 = [(UIHoverGestureRecognizerAccessibility *)v7 _axGesture];
-    v5 = [v6 delegate];
-    if (v5 && (objc_opt_respondsToSelector() & 1) != 0 && ([v5 gestureRecognizerShouldBegin:v6] & 1) == 0)
+    _axGesture = [(UIHoverGestureRecognizerAccessibility *)selfCopy _axGesture];
+    delegate = [_axGesture delegate];
+    if (delegate && (objc_opt_respondsToSelector() & 1) != 0 && ([delegate gestureRecognizerShouldBegin:_axGesture] & 1) == 0)
     {
       v4 = 1;
     }
 
     else
     {
-      v3 = [v7 safeArrayForKey:@"_targets"];
+      v3 = [selfCopy safeArrayForKey:@"_targets"];
       v1 = MEMORY[0x29EDC9748](v3);
-      v2 = MEMORY[0x29EDC9748](v6);
+      v2 = MEMORY[0x29EDC9748](_axGesture);
       AXPerformSafeBlock();
       objc_storeStrong(&v2, 0);
       objc_storeStrong(&v1, 0);
@@ -200,8 +200,8 @@
       v4 = 0;
     }
 
-    objc_storeStrong(&v5, 0);
-    objc_storeStrong(&v6, 0);
+    objc_storeStrong(&delegate, 0);
+    objc_storeStrong(&_axGesture, 0);
   }
 }
 
@@ -249,32 +249,32 @@ double __74__UIHoverGestureRecognizerAccessibility__accessibilitySimulateStateCh
 
 - (void)_axSetOverrideStateEnabled:(id)obj forFocusedElement:
 {
-  v7 = a1;
+  selfCopy = self;
   v6 = a2;
   location = 0;
   objc_storeStrong(&location, obj);
-  if (v7)
+  if (selfCopy)
   {
-    if ((v6 & 1) == 0 || ([(UIHoverGestureRecognizerAccessibility *)v7 _axIsListeningForNotifications]& 1) != 0)
+    if ((v6 & 1) == 0 || ([(UIHoverGestureRecognizerAccessibility *)selfCopy _axIsListeningForNotifications]& 1) != 0)
     {
-      if ((v6 & 1) == 0 && ([(UIHoverGestureRecognizerAccessibility *)v7 _axIsListeningForNotifications]& 1) != 0)
+      if ((v6 & 1) == 0 && ([(UIHoverGestureRecognizerAccessibility *)selfCopy _axIsListeningForNotifications]& 1) != 0)
       {
-        [UIHoverGestureRecognizerAccessibility _axSetIsListeningForNotifications:v7];
-        v3 = [MEMORY[0x29EDBA068] defaultCenter];
-        [v3 removeObserver:v7 name:*MEMORY[0x29EDC7EB8] object:0];
-        MEMORY[0x29EDC9740](v3);
-        [UIHoverGestureRecognizerAccessibility _axSetSimulatedState:v7];
-        [(UIHoverGestureRecognizerAccessibility *)v7 _accessibilitySimulateStateChange];
+        [UIHoverGestureRecognizerAccessibility _axSetIsListeningForNotifications:selfCopy];
+        defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+        [defaultCenter removeObserver:selfCopy name:*MEMORY[0x29EDC7EB8] object:0];
+        MEMORY[0x29EDC9740](defaultCenter);
+        [UIHoverGestureRecognizerAccessibility _axSetSimulatedState:selfCopy];
+        [(UIHoverGestureRecognizerAccessibility *)selfCopy _accessibilitySimulateStateChange];
       }
     }
 
     else
     {
-      [UIHoverGestureRecognizerAccessibility _axSetIsListeningForNotifications:v7];
-      v4 = [MEMORY[0x29EDBA068] defaultCenter];
-      [v4 addObserver:v7 selector:sel__accessibilityFocusedElementChanged_ name:*MEMORY[0x29EDC7EB8] object:0];
-      MEMORY[0x29EDC9740](v4);
-      [(UIHoverGestureRecognizerAccessibility *)v7 _accessibilityFocusedElementChangedToElement:?];
+      [UIHoverGestureRecognizerAccessibility _axSetIsListeningForNotifications:selfCopy];
+      defaultCenter2 = [MEMORY[0x29EDBA068] defaultCenter];
+      [defaultCenter2 addObserver:selfCopy selector:sel__accessibilityFocusedElementChanged_ name:*MEMORY[0x29EDC7EB8] object:0];
+      MEMORY[0x29EDC9740](defaultCenter2);
+      [(UIHoverGestureRecognizerAccessibility *)selfCopy _accessibilityFocusedElementChangedToElement:?];
     }
   }
 

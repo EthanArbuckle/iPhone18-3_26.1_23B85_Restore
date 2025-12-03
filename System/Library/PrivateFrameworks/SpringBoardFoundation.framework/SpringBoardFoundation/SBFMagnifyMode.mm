@@ -1,13 +1,13 @@
 @interface SBFMagnifyMode
 + (id)currentMagnifyMode;
-+ (id)magnifyModeWithSize:(CGSize)a3 name:(id)a4;
++ (id)magnifyModeWithSize:(CGSize)size name:(id)name;
 + (void)currentMagnifyMode;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGSize)size;
 - (SBFMagnifyMode)init;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (unint64_t)hash;
 @end
@@ -22,16 +22,16 @@
   v13 = __Block_byref_object_copy__3;
   v14 = __Block_byref_object_dispose__3;
   v15 = 0;
-  v2 = [MEMORY[0x1E69DCEB0] mainScreen];
-  v3 = [v2 displayConfiguration];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  displayConfiguration = [mainScreen displayConfiguration];
 
   v9 = 0;
-  [v3 deviceName];
+  [displayConfiguration deviceName];
   v4 = IOMobileFramebufferOpenByName();
   v5 = SBLogCommon();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
-    +[(SBFMagnifyMode *)v3];
+    +[(SBFMagnifyMode *)displayConfiguration];
   }
 
   v8 = SBLogCommon();
@@ -46,14 +46,14 @@
   return v6;
 }
 
-+ (id)magnifyModeWithSize:(CGSize)a3 name:(id)a4
++ (id)magnifyModeWithSize:(CGSize)size name:(id)name
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
-  v8 = objc_alloc_init(a1);
+  height = size.height;
+  width = size.width;
+  nameCopy = name;
+  v8 = objc_alloc_init(self);
   [v8 setSize:{width, height}];
-  [v8 setName:v7];
+  [v8 setName:nameCopy];
 
   LODWORD(v9) = 1.0;
   [v8 setZoomFactor:v9];
@@ -61,7 +61,7 @@
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   [v4 setSize:{self->_size.width, self->_size.height}];
@@ -84,22 +84,22 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     [v5 size];
     v7 = v6;
     v9 = v8;
     [(SBFMagnifyMode *)self size];
     if (v7 == v11 && v9 == v10)
     {
-      v14 = [(SBFMagnifyMode *)self name];
-      v15 = [v5 name];
-      if ([v14 isEqualToString:v15])
+      name = [(SBFMagnifyMode *)self name];
+      name2 = [v5 name];
+      if ([name isEqualToString:name2])
       {
         [(SBFMagnifyMode *)self zoomFactor];
         v17 = v16;
@@ -135,19 +135,19 @@
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBFMagnifyMode *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBFMagnifyMode *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v4 = [MEMORY[0x1E698E680] builderWithObject:self];
-  v5 = [(SBFMagnifyMode *)self name];
-  v6 = [v4 appendObject:v5 withName:@"name"];
+  name = [(SBFMagnifyMode *)self name];
+  v6 = [v4 appendObject:name withName:@"name"];
 
   [(SBFMagnifyMode *)self zoomFactor];
   v8 = [v4 appendFloat:@"zoomFactor" withName:v7];
@@ -159,10 +159,10 @@
 
 - (id)succinctDescription
 {
-  v2 = [(SBFMagnifyMode *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBFMagnifyMode *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (CGSize)size

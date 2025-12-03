@@ -4,10 +4,10 @@
 + (id)shortDescription;
 - (BOOL)canWriteToCache;
 - (HMHomeManagerConfiguration)init;
-- (HMHomeManagerConfiguration)initWithOptions:(unint64_t)a3 cachePolicy:(unint64_t)a4;
+- (HMHomeManagerConfiguration)initWithOptions:(unint64_t)options cachePolicy:(unint64_t)policy;
 - (NSArray)attributeDescriptions;
 - (NSString)shortDescription;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 @end
 
 @implementation HMHomeManagerConfiguration
@@ -43,12 +43,12 @@
   v9 = [v7 initWithName:@"Inactive Updating Level" value:v8];
   v27[3] = v9;
   v10 = objc_alloc(MEMORY[0x1E69A29C8]);
-  v11 = [(HMHomeManagerConfiguration *)self delegateQueue];
-  v12 = [v10 initWithName:@"Delegate Queue" value:v11];
+  delegateQueue = [(HMHomeManagerConfiguration *)self delegateQueue];
+  v12 = [v10 initWithName:@"Delegate Queue" value:delegateQueue];
   v27[4] = v12;
   v13 = objc_alloc(MEMORY[0x1E69A29C8]);
-  v14 = [(HMHomeManagerConfiguration *)self locationAuthorization];
-  v15 = [v13 initWithName:@"Location Authorization" value:v14];
+  locationAuthorization = [(HMHomeManagerConfiguration *)self locationAuthorization];
+  v15 = [v13 initWithName:@"Location Authorization" value:locationAuthorization];
   v27[5] = v15;
   v16 = objc_alloc(MEMORY[0x1E69A29C8]);
   [(HMHomeManagerConfiguration *)self shouldConnect];
@@ -69,16 +69,16 @@
   return [v2 shortDescription];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [(HMHomeManagerConfiguration *)[HMMutableHomeManagerConfiguration allocWithZone:?]cachePolicy:"initWithOptions:cachePolicy:", [(HMHomeManagerConfiguration *)self options], [(HMHomeManagerConfiguration *)self cachePolicy]];
   [(HMHomeManagerConfiguration *)v4 setDiscretionary:[(HMHomeManagerConfiguration *)self isDiscretionary]];
   [(HMHomeManagerConfiguration *)v4 setInactiveUpdatingLevel:[(HMHomeManagerConfiguration *)self inactiveUpdatingLevel]];
-  v5 = [(HMHomeManagerConfiguration *)self delegateQueue];
-  [(HMHomeManagerConfiguration *)v4 setDelegateQueue:v5];
+  delegateQueue = [(HMHomeManagerConfiguration *)self delegateQueue];
+  [(HMHomeManagerConfiguration *)v4 setDelegateQueue:delegateQueue];
 
-  v6 = [(HMHomeManagerConfiguration *)self locationAuthorization];
-  [(HMHomeManagerConfiguration *)v4 setLocationAuthorization:v6];
+  locationAuthorization = [(HMHomeManagerConfiguration *)self locationAuthorization];
+  [(HMHomeManagerConfiguration *)v4 setLocationAuthorization:locationAuthorization];
 
   return v4;
 }
@@ -104,7 +104,7 @@
   return v2;
 }
 
-- (HMHomeManagerConfiguration)initWithOptions:(unint64_t)a3 cachePolicy:(unint64_t)a4
+- (HMHomeManagerConfiguration)initWithOptions:(unint64_t)options cachePolicy:(unint64_t)policy
 {
   v24 = *MEMORY[0x1E69E9840];
   v21.receiver = self;
@@ -113,16 +113,16 @@
   v7 = v6;
   if (v6)
   {
-    v6->_cachePolicy = a4;
-    v6->_options = a3;
+    v6->_cachePolicy = policy;
+    v6->_options = options;
     v6->_inactiveUpdatingLevel = 0;
-    v8 = [MEMORY[0x1E696ADC8] mainQueue];
+    mainQueue = [MEMORY[0x1E696ADC8] mainQueue];
     delegateQueue = v7->_delegateQueue;
-    v7->_delegateQueue = v8;
+    v7->_delegateQueue = mainQueue;
 
-    v10 = [MEMORY[0x1E69A29E8] sharedAuthorization];
+    mEMORY[0x1E69A29E8] = [MEMORY[0x1E69A29E8] sharedAuthorization];
     locationAuthorization = v7->_locationAuthorization;
-    v7->_locationAuthorization = v10;
+    v7->_locationAuthorization = mEMORY[0x1E69A29E8];
 
     if ([(HMHomeManagerConfiguration *)v7 canUseCache]|| [(HMHomeManagerConfiguration *)v7 canWriteToCache])
     {

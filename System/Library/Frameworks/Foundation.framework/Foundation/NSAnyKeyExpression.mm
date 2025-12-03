@@ -1,8 +1,8 @@
 @interface NSAnyKeyExpression
 + (void)initialize;
-- (NSAnyKeyExpression)initWithCoder:(id)a3;
+- (NSAnyKeyExpression)initWithCoder:(id)coder;
 - (id)_initPrivate;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NSAnyKeyExpression
@@ -11,7 +11,7 @@
 {
   if (!_NSAnyKeyExpressionSingleton)
   {
-    v2 = NSAllocateObject(a1, 0, 0);
+    v2 = NSAllocateObject(self, 0, 0);
     _NSAnyKeyExpressionSingleton = v2;
 
     [v2 _initPrivate];
@@ -26,22 +26,22 @@
   return [(NSExpression *)&v3 initWithExpressionType:15];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6 = *MEMORY[0x1E69E9840];
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"NSPredicates and NSExpressions cannot be encoded by non-keyed archivers" userInfo:0]);
   }
 
   v5.receiver = self;
   v5.super_class = NSAnyKeyExpression;
-  [(NSExpression *)&v5 encodeWithCoder:a3];
+  [(NSExpression *)&v5 encodeWithCoder:coder];
 }
 
-- (NSAnyKeyExpression)initWithCoder:(id)a3
+- (NSAnyKeyExpression)initWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
 
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"NSPredicates and NSExpressions cannot be decoded by non-keyed archivers" userInfo:0]);

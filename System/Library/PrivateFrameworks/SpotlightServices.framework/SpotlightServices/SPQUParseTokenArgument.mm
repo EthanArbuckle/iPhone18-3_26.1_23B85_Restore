@@ -1,24 +1,24 @@
 @interface SPQUParseTokenArgument
-- (SPQUParseTokenArgument)initWithLabel:(id)a3 token:(id)a4 tokenRange:(id)a5;
+- (SPQUParseTokenArgument)initWithLabel:(id)label token:(id)token tokenRange:(id)range;
 - (id)getEncodedData;
 @end
 
 @implementation SPQUParseTokenArgument
 
-- (SPQUParseTokenArgument)initWithLabel:(id)a3 token:(id)a4 tokenRange:(id)a5
+- (SPQUParseTokenArgument)initWithLabel:(id)label token:(id)token tokenRange:(id)range
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  labelCopy = label;
+  tokenCopy = token;
+  rangeCopy = range;
   v15.receiver = self;
   v15.super_class = SPQUParseTokenArgument;
   v12 = [(SPQUParseTokenArgument *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_token, a4);
-    objc_storeStrong(&v13->_tokenLabel, a3);
-    objc_storeStrong(&v13->_tokenRange, a5);
+    objc_storeStrong(&v12->_token, token);
+    objc_storeStrong(&v13->_tokenLabel, label);
+    objc_storeStrong(&v13->_tokenRange, range);
   }
 
   return v13;

@@ -1,8 +1,8 @@
 @interface MTRChannelClusterGetProgramGuideParams
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3;
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader;
 - (MTRChannelClusterGetProgramGuideParams)init;
-- (id)_encodeAsDataValue:(id *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_encodeAsDataValue:(id *)value;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -47,35 +47,35 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRChannelClusterGetProgramGuideParams);
-  v5 = [(MTRChannelClusterGetProgramGuideParams *)self startTime];
-  [(MTRChannelClusterGetProgramGuideParams *)v4 setStartTime:v5];
+  startTime = [(MTRChannelClusterGetProgramGuideParams *)self startTime];
+  [(MTRChannelClusterGetProgramGuideParams *)v4 setStartTime:startTime];
 
-  v6 = [(MTRChannelClusterGetProgramGuideParams *)self endTime];
-  [(MTRChannelClusterGetProgramGuideParams *)v4 setEndTime:v6];
+  endTime = [(MTRChannelClusterGetProgramGuideParams *)self endTime];
+  [(MTRChannelClusterGetProgramGuideParams *)v4 setEndTime:endTime];
 
-  v7 = [(MTRChannelClusterGetProgramGuideParams *)self channelList];
-  [(MTRChannelClusterGetProgramGuideParams *)v4 setChannelList:v7];
+  channelList = [(MTRChannelClusterGetProgramGuideParams *)self channelList];
+  [(MTRChannelClusterGetProgramGuideParams *)v4 setChannelList:channelList];
 
-  v8 = [(MTRChannelClusterGetProgramGuideParams *)self pageToken];
-  [(MTRChannelClusterGetProgramGuideParams *)v4 setPageToken:v8];
+  pageToken = [(MTRChannelClusterGetProgramGuideParams *)self pageToken];
+  [(MTRChannelClusterGetProgramGuideParams *)v4 setPageToken:pageToken];
 
-  v9 = [(MTRChannelClusterGetProgramGuideParams *)self recordingFlag];
-  [(MTRChannelClusterGetProgramGuideParams *)v4 setRecordingFlag:v9];
+  recordingFlag = [(MTRChannelClusterGetProgramGuideParams *)self recordingFlag];
+  [(MTRChannelClusterGetProgramGuideParams *)v4 setRecordingFlag:recordingFlag];
 
-  v10 = [(MTRChannelClusterGetProgramGuideParams *)self externalIDList];
-  [(MTRChannelClusterGetProgramGuideParams *)v4 setExternalIDList:v10];
+  externalIDList = [(MTRChannelClusterGetProgramGuideParams *)self externalIDList];
+  [(MTRChannelClusterGetProgramGuideParams *)v4 setExternalIDList:externalIDList];
 
-  v11 = [(MTRChannelClusterGetProgramGuideParams *)self data];
-  [(MTRChannelClusterGetProgramGuideParams *)v4 setData:v11];
+  data = [(MTRChannelClusterGetProgramGuideParams *)self data];
+  [(MTRChannelClusterGetProgramGuideParams *)v4 setData:data];
 
-  v12 = [(MTRChannelClusterGetProgramGuideParams *)self timedInvokeTimeoutMs];
-  [(MTRChannelClusterGetProgramGuideParams *)v4 setTimedInvokeTimeoutMs:v12];
+  timedInvokeTimeoutMs = [(MTRChannelClusterGetProgramGuideParams *)self timedInvokeTimeoutMs];
+  [(MTRChannelClusterGetProgramGuideParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
-  v13 = [(MTRChannelClusterGetProgramGuideParams *)self serverSideProcessingTimeout];
-  [(MTRChannelClusterGetProgramGuideParams *)v4 setServerSideProcessingTimeout:v13];
+  serverSideProcessingTimeout = [(MTRChannelClusterGetProgramGuideParams *)self serverSideProcessingTimeout];
+  [(MTRChannelClusterGetProgramGuideParams *)v4 setServerSideProcessingTimeout:serverSideProcessingTimeout];
 
   return v4;
 }
@@ -97,7 +97,7 @@
   return v13;
 }
 
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader
 {
   v80 = *MEMORY[0x277D85DE8];
   v57[0] = 0;
@@ -110,38 +110,38 @@
   v56[0] = 0;
   v56[1] = 0;
   v55 = v56;
-  v4 = [(MTRChannelClusterGetProgramGuideParams *)self startTime];
-  v5 = v4 == 0;
+  startTime = [(MTRChannelClusterGetProgramGuideParams *)self startTime];
+  v5 = startTime == 0;
 
   if (!v5)
   {
     v57[0] = 1;
-    v58 = 0;
-    v6 = [(MTRChannelClusterGetProgramGuideParams *)self startTime];
-    v58 = [v6 unsignedIntValue];
+    unsignedIntValue = 0;
+    startTime2 = [(MTRChannelClusterGetProgramGuideParams *)self startTime];
+    unsignedIntValue = [startTime2 unsignedIntValue];
   }
 
-  v7 = [(MTRChannelClusterGetProgramGuideParams *)self endTime];
-  v8 = v7 == 0;
+  endTime = [(MTRChannelClusterGetProgramGuideParams *)self endTime];
+  v8 = endTime == 0;
 
   if (!v8)
   {
     v59 = 1;
-    v60 = 0;
-    v9 = [(MTRChannelClusterGetProgramGuideParams *)self endTime];
-    v60 = [v9 unsignedIntValue];
+    unsignedIntValue2 = 0;
+    endTime2 = [(MTRChannelClusterGetProgramGuideParams *)self endTime];
+    unsignedIntValue2 = [endTime2 unsignedIntValue];
   }
 
-  v10 = [(MTRChannelClusterGetProgramGuideParams *)self channelList];
-  v11 = v10 == 0;
+  channelList = [(MTRChannelClusterGetProgramGuideParams *)self channelList];
+  v11 = channelList == 0;
 
   if (!v11)
   {
     v61 = 1;
     v62 = 0;
     v63 = 0;
-    v12 = [(MTRChannelClusterGetProgramGuideParams *)self channelList];
-    v13 = [v12 count] == 0;
+    channelList2 = [(MTRChannelClusterGetProgramGuideParams *)self channelList];
+    v13 = [channelList2 count] == 0;
 
     if (!v13)
     {
@@ -152,8 +152,8 @@
     v63 = 0;
   }
 
-  v14 = [(MTRChannelClusterGetProgramGuideParams *)self pageToken];
-  v15 = v14 == 0;
+  pageToken = [(MTRChannelClusterGetProgramGuideParams *)self pageToken];
+  v15 = pageToken == 0;
 
   if (!v15)
   {
@@ -161,74 +161,74 @@
     v65 = 0u;
     v66 = 0u;
     memset(v67, 0, sizeof(v67));
-    v16 = [(MTRChannelClusterGetProgramGuideParams *)self pageToken];
-    v17 = [v16 limit];
-    v18 = v17 == 0;
+    pageToken2 = [(MTRChannelClusterGetProgramGuideParams *)self pageToken];
+    limit = [pageToken2 limit];
+    v18 = limit == 0;
 
     if (!v18)
     {
       LOBYTE(v65) = 1;
       WORD1(v65) = 0;
-      v19 = [(MTRChannelClusterGetProgramGuideParams *)self pageToken];
-      v20 = [v19 limit];
-      WORD1(v65) = [v20 unsignedShortValue];
+      pageToken3 = [(MTRChannelClusterGetProgramGuideParams *)self pageToken];
+      limit2 = [pageToken3 limit];
+      WORD1(v65) = [limit2 unsignedShortValue];
     }
 
-    v21 = [(MTRChannelClusterGetProgramGuideParams *)self pageToken];
-    v22 = [v21 after];
-    v23 = v22 == 0;
+    pageToken4 = [(MTRChannelClusterGetProgramGuideParams *)self pageToken];
+    after = [pageToken4 after];
+    v23 = after == 0;
 
     if (!v23)
     {
       BYTE8(v65) = 1;
       v66 = 0uLL;
-      v24 = [(MTRChannelClusterGetProgramGuideParams *)self pageToken];
-      v25 = [v24 after];
-      v26 = v25;
-      sub_238DB9BD8(buf, [v25 UTF8String], objc_msgSend(v25, "lengthOfBytesUsingEncoding:", 4));
+      pageToken5 = [(MTRChannelClusterGetProgramGuideParams *)self pageToken];
+      after2 = [pageToken5 after];
+      v26 = after2;
+      sub_238DB9BD8(buf, [after2 UTF8String], objc_msgSend(after2, "lengthOfBytesUsingEncoding:", 4));
 
       v66 = *buf;
     }
 
-    v27 = [(MTRChannelClusterGetProgramGuideParams *)self pageToken];
-    v28 = [v27 before];
-    v29 = v28 == 0;
+    pageToken6 = [(MTRChannelClusterGetProgramGuideParams *)self pageToken];
+    before = [pageToken6 before];
+    v29 = before == 0;
 
     if (!v29)
     {
       v67[0] = 1;
       *&v67[8] = 0;
       *&v67[16] = 0;
-      v30 = [(MTRChannelClusterGetProgramGuideParams *)self pageToken];
-      v31 = [v30 before];
-      v32 = v31;
-      sub_238DB9BD8(buf, [v31 UTF8String], objc_msgSend(v31, "lengthOfBytesUsingEncoding:", 4));
+      pageToken7 = [(MTRChannelClusterGetProgramGuideParams *)self pageToken];
+      before2 = [pageToken7 before];
+      v32 = before2;
+      sub_238DB9BD8(buf, [before2 UTF8String], objc_msgSend(before2, "lengthOfBytesUsingEncoding:", 4));
 
       *&v67[8] = *buf;
     }
   }
 
-  v33 = [(MTRChannelClusterGetProgramGuideParams *)self recordingFlag];
-  v34 = v33 == 0;
+  recordingFlag = [(MTRChannelClusterGetProgramGuideParams *)self recordingFlag];
+  v34 = recordingFlag == 0;
 
   if (!v34)
   {
     v68 = 1;
-    v69 = 0;
-    v35 = [(MTRChannelClusterGetProgramGuideParams *)self recordingFlag];
-    v69 = [v35 unsignedIntValue];
+    unsignedIntValue3 = 0;
+    recordingFlag2 = [(MTRChannelClusterGetProgramGuideParams *)self recordingFlag];
+    unsignedIntValue3 = [recordingFlag2 unsignedIntValue];
   }
 
-  v36 = [(MTRChannelClusterGetProgramGuideParams *)self externalIDList];
-  v37 = v36 == 0;
+  externalIDList = [(MTRChannelClusterGetProgramGuideParams *)self externalIDList];
+  v37 = externalIDList == 0;
 
   if (!v37)
   {
     v70 = 1;
     v71 = 0;
     v72 = 0;
-    v38 = [(MTRChannelClusterGetProgramGuideParams *)self externalIDList];
-    v39 = [v38 count] == 0;
+    externalIDList2 = [(MTRChannelClusterGetProgramGuideParams *)self externalIDList];
+    v39 = [externalIDList2 count] == 0;
 
     if (!v39)
     {
@@ -239,16 +239,16 @@
     v72 = 0;
   }
 
-  v40 = [(MTRChannelClusterGetProgramGuideParams *)self data];
-  v41 = v40 == 0;
+  data = [(MTRChannelClusterGetProgramGuideParams *)self data];
+  v41 = data == 0;
 
   if (!v41)
   {
     v73 = 1;
     v74 = 0uLL;
-    v42 = [(MTRChannelClusterGetProgramGuideParams *)self data];
-    v43 = v42;
-    sub_238DB6950(buf, [v42 bytes], objc_msgSend(v42, "length"));
+    data2 = [(MTRChannelClusterGetProgramGuideParams *)self data];
+    v43 = data2;
+    sub_238DB6950(buf, [data2 bytes], objc_msgSend(data2, "length"));
 
     v74 = *buf;
   }
@@ -272,8 +272,8 @@
 
     else
     {
-      sub_238DD2F90(a3, &v54);
-      v44 = sub_2393C7114(a3, 21, 256);
+      sub_238DD2F90(reader, &v54);
+      v44 = sub_2393C7114(reader, 21, 256);
       v47 = v52;
       v46 = v44;
     }
@@ -302,19 +302,19 @@
   return result;
 }
 
-- (id)_encodeAsDataValue:(id *)a3
+- (id)_encodeAsDataValue:(id *)value
 {
   v5 = sub_2393C5AAC(v12);
   v13 = 0;
   v7 = [(MTRChannelClusterGetProgramGuideParams *)self _encodeToTLVReader:v12, v5];
   if (v7)
   {
-    if (a3)
+    if (value)
     {
       v8 = sub_23921C1E4(MTRError, v7, v6);
       v9 = 0;
 LABEL_7:
-      *a3 = v8;
+      *value = v8;
       goto LABEL_9;
     }
 
@@ -325,7 +325,7 @@ LABEL_7:
   {
     v10 = sub_238EE60DC(v12, 0);
     v9 = v10;
-    if (a3 && !v10)
+    if (value && !v10)
     {
       v8 = sub_23921C1E4(MTRError, 0x6E2800000003, "/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/zap-generated/MTRCommandPayloadsObjc.mm");
       goto LABEL_7;

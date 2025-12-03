@@ -1,5 +1,5 @@
 @interface OverallMemoryUsage
-+ (id)accumulateMemoryAcrossPrioritiesWithFootprints:(id)a3 withComparator:(id)a4;
++ (id)accumulateMemoryAcrossPrioritiesWithFootprints:(id)footprints withComparator:(id)comparator;
 - (OverallMemoryUsage)init;
 - (id)systemMemoryStatsDictionary;
 @end
@@ -65,8 +65,8 @@
         v13 = _sumMemoryAtEachPriority;
         _sumMemoryAtEachPriority = v12;
 
-        v14 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:_filebackedBytes + _freeBytes];
-        [_sumMemoryAtEachPriority setObject:v14 forKeyedSubscript:&unk_282C11C40];
+        _freeBytes = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:_filebackedBytes + _freeBytes];
+        [_sumMemoryAtEachPriority setObject:_freeBytes forKeyedSubscript:&unk_282C11C40];
 
         v11 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:_wiredBytes];
         [_sumMemoryAtEachPriority setObject:v11 forKeyedSubscript:&unk_282C11C58];
@@ -79,15 +79,15 @@
   return v2;
 }
 
-+ (id)accumulateMemoryAcrossPrioritiesWithFootprints:(id)a3 withComparator:(id)a4
++ (id)accumulateMemoryAcrossPrioritiesWithFootprints:(id)footprints withComparator:(id)comparator
 {
   v27 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  footprintsCopy = footprints;
+  comparatorCopy = comparator;
   v7 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v8 = [v5 allKeys];
-  v21 = v6;
-  v9 = [v8 sortedArrayUsingComparator:v6];
+  allKeys = [footprintsCopy allKeys];
+  v21 = comparatorCopy;
+  v9 = [allKeys sortedArrayUsingComparator:comparatorCopy];
 
   v24 = 0u;
   v25 = 0u;
@@ -110,7 +110,7 @@
         }
 
         v16 = *(*(&v22 + 1) + 8 * i);
-        v17 = [v5 objectForKeyedSubscript:v16];
+        v17 = [footprintsCopy objectForKeyedSubscript:v16];
         v13 += [v17 unsignedLongValue];
 
         v18 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v13];

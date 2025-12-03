@@ -7,9 +7,9 @@
 - (CGSize)size;
 - (NSString)resourceName;
 - (NSURL)URL;
-- (SUUIImageViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5;
+- (SUUIImageViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory;
 - (id)accessibilityText;
-- (id)applyUpdatesWithElement:(id)a3;
+- (id)applyUpdatesWithElement:(id)element;
 - (id)entityValueProperties;
 - (id)resourceCacheKey;
 - (id)uniquingMapKey;
@@ -19,14 +19,14 @@
 
 @implementation SUUIImageViewElement
 
-- (SUUIImageViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5
+- (SUUIImageViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  elementCopy = element;
+  parentCopy = parent;
+  factoryCopy = factory;
   v46.receiver = self;
   v46.super_class = SUUIImageViewElement;
-  v11 = [(SUUIViewElement *)&v46 initWithDOMElement:v8 parent:v9 elementFactory:v10];
+  v11 = [(SUUIViewElement *)&v46 initWithDOMElement:elementCopy parent:parentCopy elementFactory:factoryCopy];
   if (v11)
   {
     if (initWithDOMElement_parent_elementFactory__sOnce != -1)
@@ -34,8 +34,8 @@
       [SUUIImageViewElement initWithDOMElement:parent:elementFactory:];
     }
 
-    v12 = [v8 getAttribute:@"srcset"];
-    v13 = [v8 getAttribute:@"src"];
+    v12 = [elementCopy getAttribute:@"srcset"];
+    v13 = [elementCopy getAttribute:@"src"];
     if ([v13 length])
     {
       v14 = [objc_alloc(MEMORY[0x277CBEBC0]) initWithString:v13];
@@ -76,16 +76,16 @@
 
     if (v19)
     {
-      v20 = [(NSURL *)v11->_url host];
+      host = [(NSURL *)v11->_url host];
       resourceName = v11->_resourceName;
-      v11->_resourceName = v20;
+      v11->_resourceName = host;
 
       v22 = v11->_url;
       v11->_url = 0;
     }
 
-    v23 = [v8 getAttribute:@"height"];
-    v24 = [v8 getAttribute:@"width"];
+    v23 = [elementCopy getAttribute:@"height"];
+    v24 = [elementCopy getAttribute:@"width"];
     if ([v23 length] && objc_msgSend(v24, "length"))
     {
       [v23 doubleValue];
@@ -94,11 +94,11 @@
       v11->_size.width = v26;
     }
 
-    v27 = [v8 getAttribute:@"alt"];
+    v27 = [elementCopy getAttribute:@"alt"];
     alt = v11->_alt;
     v11->_alt = v27;
 
-    v29 = [v8 getAttribute:@"disabled"];
+    v29 = [elementCopy getAttribute:@"disabled"];
     if ([v29 length])
     {
       v30 = [v29 BOOLValue] ^ 1;
@@ -171,9 +171,9 @@ void __65__SUUIImageViewElement_initWithDOMElement_parent_elementFactory___block
     [(SUUIImageViewElement *)self size];
     v7 = v6;
     v9 = v8;
-    v10 = [(SUUIImageViewElement *)self style];
-    v11 = [v10 imageTreatment];
-    v12 = [(SUUIImageViewElementCacheKey *)v4 initWithURL:v5 size:v11 imageTreatment:v7, v9];
+    style = [(SUUIImageViewElement *)self style];
+    imageTreatment = [style imageTreatment];
+    v12 = [(SUUIImageViewElementCacheKey *)v4 initWithURL:v5 size:imageTreatment imageTreatment:v7, v9];
     v13 = self->_resourceCacheKey;
     self->_resourceCacheKey = v12;
 
@@ -187,13 +187,13 @@ void __65__SUUIImageViewElement_initWithDOMElement_parent_elementFactory___block
 {
   width = self->_size.width;
   height = self->_size.height;
-  v4 = [(SUUIImageViewElement *)self style];
-  v5 = [v4 maxHeight];
-  v6 = [v4 maxWidth];
-  v7 = v6;
-  if (v5 && v6)
+  style = [(SUUIImageViewElement *)self style];
+  maxHeight = [style maxHeight];
+  maxWidth = [style maxWidth];
+  v7 = maxWidth;
+  if (maxHeight && maxWidth)
   {
-    [v5 floatValue];
+    [maxHeight floatValue];
     height = v8;
     [v7 floatValue];
     width = v9;
@@ -211,25 +211,25 @@ void __65__SUUIImageViewElement_initWithDOMElement_parent_elementFactory___block
   alt = self->_alt;
   if (alt)
   {
-    v3 = alt;
+    accessibilityText = alt;
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = SUUIImageViewElement;
-    v3 = [(SUUIImageViewElement *)&v5 accessibilityText];
+    accessibilityText = [(SUUIImageViewElement *)&v5 accessibilityText];
   }
 
-  return v3;
+  return accessibilityText;
 }
 
-- (id)applyUpdatesWithElement:(id)a3
+- (id)applyUpdatesWithElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v23.receiver = self;
   v23.super_class = SUUIImageViewElement;
-  v5 = [(SUUIViewElement *)&v23 applyUpdatesWithElement:v4];
+  v5 = [(SUUIViewElement *)&v23 applyUpdatesWithElement:elementCopy];
   v6 = v5;
   if (v5 != self)
   {
@@ -241,33 +241,33 @@ void __65__SUUIImageViewElement_initWithDOMElement_parent_elementFactory___block
     v7 = [SUUIImageViewElementCacheKey alloc];
     url = self->_url;
     p_size = &self->_size;
-    v10 = [(SUUIImageViewElement *)self style];
-    v11 = [v10 imageTreatment];
-    v12 = [(SUUIImageViewElementCacheKey *)v7 initWithURL:url size:v11 imageTreatment:p_size->width, p_size->height];
+    style = [(SUUIImageViewElement *)self style];
+    imageTreatment = [style imageTreatment];
+    v12 = [(SUUIImageViewElementCacheKey *)v7 initWithURL:url size:imageTreatment imageTreatment:p_size->width, p_size->height];
     transientResourceCacheKey = v6->_transientResourceCacheKey;
     v6->_transientResourceCacheKey = v12;
 
     goto LABEL_7;
   }
 
-  if (v4 != self && v4)
+  if (elementCopy != self && elementCopy)
   {
-    v14 = [(NSString *)v4->_alt copy];
+    v14 = [(NSString *)elementCopy->_alt copy];
     alt = self->_alt;
     self->_alt = v14;
 
     resourceCacheKey = self->_resourceCacheKey;
     self->_resourceCacheKey = 0;
 
-    v17 = [(SUUIImageViewElement *)v4 resourceName];
+    resourceName = [(SUUIImageViewElement *)elementCopy resourceName];
     resourceName = self->_resourceName;
-    self->_resourceName = v17;
+    self->_resourceName = resourceName;
 
-    [(SUUIImageViewElement *)v4 size];
+    [(SUUIImageViewElement *)elementCopy size];
     self->_size.width = v19;
     self->_size.height = v20;
-    v21 = [(SUUIImageViewElement *)v4 URL];
-    v10 = self->_url;
+    v21 = [(SUUIImageViewElement *)elementCopy URL];
+    style = self->_url;
     self->_url = v21;
 LABEL_7:
   }
@@ -279,8 +279,8 @@ LABEL_8:
 
 - (id)entityValueProperties
 {
-  v2 = [(SUUIImageViewElement *)self attributes];
-  v3 = [v2 objectForKey:@"valueProperty"];
+  attributes = [(SUUIImageViewElement *)self attributes];
+  v3 = [attributes objectForKey:@"valueProperty"];
 
   if (v3)
   {
@@ -318,18 +318,18 @@ LABEL_8:
 
   v14 = v2;
   v15 = v3;
-  v6 = [(SUUIImageViewElement *)self style];
-  v7 = [v6 imageTreatment];
-  v8 = SUUIImageTreatmentForString(v7);
+  style = [(SUUIImageViewElement *)self style];
+  imageTreatment = [style imageTreatment];
+  v8 = SUUIImageTreatmentForString(imageTreatment);
 
   if (v8 == 8)
   {
     return 0;
   }
 
-  v9 = [(SUUIImageViewElement *)self style];
-  v10 = [v9 imageTreatment];
-  v11 = SUUIImageTreatmentForString(v10);
+  style2 = [(SUUIImageViewElement *)self style];
+  imageTreatment2 = [style2 imageTreatment];
+  v11 = SUUIImageTreatmentForString(imageTreatment2);
 
   if (v11 == 9)
   {
@@ -343,18 +343,18 @@ LABEL_8:
 
 - (BOOL)rendersWithPerspective
 {
-  v2 = [(SUUIImageViewElement *)self style];
-  v3 = [v2 imageTreatment];
-  v4 = SUUIImageTreatmentForString(v3);
+  style = [(SUUIImageViewElement *)self style];
+  imageTreatment = [style imageTreatment];
+  v4 = SUUIImageTreatmentForString(imageTreatment);
 
   return v4 == 7;
 }
 
 - (BOOL)rendersWithParallax
 {
-  v2 = [(SUUIImageViewElement *)self style];
-  v3 = [v2 imageTreatment];
-  v4 = SUUIImageTreatmentForString(v3);
+  style = [(SUUIImageViewElement *)self style];
+  imageTreatment = [style imageTreatment];
+  v4 = SUUIImageTreatmentForString(imageTreatment);
 
   return v4 == 13;
 }
@@ -365,17 +365,17 @@ LABEL_8:
   entityURL = self->_entityURL;
   if (entityURL || (entityURL = self->_entityResourceName) != 0)
   {
-    v4 = entityURL;
+    uniquingMapKey = entityURL;
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = SUUIImageViewElement;
-    v4 = [(SUUIViewElement *)&v6 uniquingMapKey];
+    uniquingMapKey = [(SUUIViewElement *)&v6 uniquingMapKey];
   }
 
-  return v4;
+  return uniquingMapKey;
 }
 
 - (NSString)resourceName
@@ -407,42 +407,42 @@ LABEL_8:
   if (!self->_hasValidEntityValues)
   {
     self->_hasValidEntityValues = 1;
-    v4 = [(SUUIViewElement *)self entityValueProvider];
-    if (v4)
+    entityValueProvider = [(SUUIViewElement *)self entityValueProvider];
+    if (entityValueProvider)
     {
-      v5 = [(SUUIImageViewElement *)self attributes];
-      v6 = [v5 objectForKey:@"valueProperty"];
+      attributes = [(SUUIImageViewElement *)self attributes];
+      v6 = [attributes objectForKey:@"valueProperty"];
 
       if (v6)
       {
-        v7 = [MEMORY[0x277D759A0] mainScreen];
-        [v7 scale];
-        v9 = [v4 imageURLForEntityArtworkProperty:v6 fittingSize:self->_size.width destinationScale:{self->_size.height, v8}];
+        mainScreen = [MEMORY[0x277D759A0] mainScreen];
+        [mainScreen scale];
+        v9 = [entityValueProvider imageURLForEntityArtworkProperty:v6 fittingSize:self->_size.width destinationScale:{self->_size.height, v8}];
 
-        v10 = [(NSURL *)v9 scheme];
-        v11 = [v10 isEqualToString:@"resource"];
+        scheme = [(NSURL *)v9 scheme];
+        v11 = [scheme isEqualToString:@"resource"];
 
         if (v11)
         {
-          v12 = [(NSURL *)v9 host];
+          host = [(NSURL *)v9 host];
         }
 
         else
         {
-          v12 = 0;
+          host = 0;
         }
       }
 
       else
       {
-        v12 = 0;
+        host = 0;
         v9 = 0;
       }
     }
 
     else
     {
-      v12 = 0;
+      host = 0;
       v9 = 0;
     }
 
@@ -451,8 +451,8 @@ LABEL_8:
     v17 = v9;
 
     entityResourceName = self->_entityResourceName;
-    self->_entityResourceName = v12;
-    v15 = v12;
+    self->_entityResourceName = host;
+    v15 = host;
 
     resourceCacheKey = self->_resourceCacheKey;
     self->_resourceCacheKey = 0;

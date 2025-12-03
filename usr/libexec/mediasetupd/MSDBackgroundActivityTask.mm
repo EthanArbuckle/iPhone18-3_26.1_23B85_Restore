@@ -1,5 +1,5 @@
 @interface MSDBackgroundActivityTask
-- (MSDBackgroundActivityTask)initWithIdentifier:(id)a3;
+- (MSDBackgroundActivityTask)initWithIdentifier:(id)identifier;
 - (void)checkIn;
 - (void)invalidate;
 - (void)schedule;
@@ -7,10 +7,10 @@
 
 @implementation MSDBackgroundActivityTask
 
-- (MSDBackgroundActivityTask)initWithIdentifier:(id)a3
+- (MSDBackgroundActivityTask)initWithIdentifier:(id)identifier
 {
-  v5 = a3;
-  if (v5)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     v18.receiver = self;
     v18.super_class = MSDBackgroundActivityTask;
@@ -18,12 +18,12 @@
     v7 = v6;
     if (v6)
     {
-      objc_storeStrong(&v6->_identifier, a3);
+      objc_storeStrong(&v6->_identifier, identifier);
       v7->_qualityOfService = 9;
     }
 
     self = v7;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
@@ -34,10 +34,10 @@
       sub_10000358C(v9, v10, v11, v12, v13, v14, v15, v16);
     }
 
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 - (void)checkIn

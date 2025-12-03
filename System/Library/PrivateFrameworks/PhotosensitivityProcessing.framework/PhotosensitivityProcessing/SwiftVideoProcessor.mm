@@ -3,11 +3,11 @@
 - (BOOL)debugMode;
 - (BOOL)inTestingMode;
 - (id)validationCallback;
-- (void)processSurfaceWithSourceSurface:(__IOSurface *)a3 timestamp:(double)a4 destinationSurface:(__IOSurface *)a5 options:(id)a6;
-- (void)setCopySourceOnlyDebugging:(BOOL)a3;
-- (void)setDebugMode:(BOOL)a3;
-- (void)setInTestingMode:(BOOL)a3;
-- (void)setValidationCallback:(id)a3;
+- (void)processSurfaceWithSourceSurface:(__IOSurface *)surface timestamp:(double)timestamp destinationSurface:(__IOSurface *)destinationSurface options:(id)options;
+- (void)setCopySourceOnlyDebugging:(BOOL)debugging;
+- (void)setDebugMode:(BOOL)mode;
+- (void)setInTestingMode:(BOOL)mode;
+- (void)setValidationCallback:(id)callback;
 @end
 
 @implementation SwiftVideoProcessor
@@ -36,9 +36,9 @@
   return v4;
 }
 
-- (void)setValidationCallback:(id)a3
+- (void)setValidationCallback:(id)callback
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(callback);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -58,7 +58,7 @@
   v9 = v7[1];
   *v7 = v6;
   v7[1] = v5;
-  v10 = self;
+  selfCopy = self;
   sub_25E78D970(v6);
   sub_25E79268C(v8);
   if (v4)
@@ -67,7 +67,7 @@
   }
 
   v11 = v4 != 0;
-  v12 = v10 + OBJC_IVAR___SwiftVideoProcessor_bufferConstants;
+  v12 = selfCopy + OBJC_IVAR___SwiftVideoProcessor_bufferConstants;
   swift_beginAccess();
   v12[6] = v11;
 }
@@ -79,11 +79,11 @@
   return *(self + v3);
 }
 
-- (void)setInTestingMode:(BOOL)a3
+- (void)setInTestingMode:(BOOL)mode
 {
   v5 = OBJC_IVAR___SwiftVideoProcessor_inTestingMode;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = mode;
 }
 
 - (BOOL)debugMode
@@ -93,14 +93,14 @@
   return *(self + v3);
 }
 
-- (void)setDebugMode:(BOOL)a3
+- (void)setDebugMode:(BOOL)mode
 {
   v5 = OBJC_IVAR___SwiftVideoProcessor_debugMode;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = mode;
   v6 = self + OBJC_IVAR___SwiftVideoProcessor_bufferConstants;
   swift_beginAccess();
-  v6[5] = a3;
+  v6[5] = mode;
 }
 
 - (BOOL)copySourceOnlyDebugging
@@ -110,23 +110,23 @@
   return *(self + v3);
 }
 
-- (void)setCopySourceOnlyDebugging:(BOOL)a3
+- (void)setCopySourceOnlyDebugging:(BOOL)debugging
 {
   v5 = OBJC_IVAR___SwiftVideoProcessor_copySourceOnlyDebugging;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = debugging;
   v6 = self + OBJC_IVAR___SwiftVideoProcessor_bufferConstants;
   swift_beginAccess();
-  v6[7] = a3;
+  v6[7] = debugging;
 }
 
-- (void)processSurfaceWithSourceSurface:(__IOSurface *)a3 timestamp:(double)a4 destinationSurface:(__IOSurface *)a5 options:(id)a6
+- (void)processSurfaceWithSourceSurface:(__IOSurface *)surface timestamp:(double)timestamp destinationSurface:(__IOSurface *)destinationSurface options:(id)options
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = self;
-  VideoProcessor.processSurface(sourceSurface:timestamp:destinationSurface:options:)(v10, a4, v11, v12);
+  surfaceCopy = surface;
+  destinationSurfaceCopy = destinationSurface;
+  optionsCopy = options;
+  selfCopy = self;
+  VideoProcessor.processSurface(sourceSurface:timestamp:destinationSurface:options:)(surfaceCopy, timestamp, destinationSurfaceCopy, optionsCopy);
 }
 
 @end

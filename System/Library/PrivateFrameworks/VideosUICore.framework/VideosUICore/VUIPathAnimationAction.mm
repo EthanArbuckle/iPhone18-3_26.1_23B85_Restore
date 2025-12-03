@@ -1,14 +1,14 @@
 @interface VUIPathAnimationAction
 - (void)dealloc;
-- (void)runActionForKey:(id)a3 object:(id)a4 arguments:(id)a5;
-- (void)setFromPath:(CGPath *)a3;
+- (void)runActionForKey:(id)key object:(id)object arguments:(id)arguments;
+- (void)setFromPath:(CGPath *)path;
 @end
 
 @implementation VUIPathAnimationAction
 
-- (void)runActionForKey:(id)a3 object:(id)a4 arguments:(id)a5
+- (void)runActionForKey:(id)key object:(id)object arguments:(id)arguments
 {
-  v9 = a4;
+  objectCopy = object;
   objc_opt_class();
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -18,7 +18,7 @@
       key = self->_key;
       if (key)
       {
-        v7 = v9;
+        v7 = objectCopy;
         v8 = [v7 valueForKey:key];
         [(CABasicAnimation *)self->_animationToRun setFromValue:self->_fromPath];
         [(CABasicAnimation *)self->_animationToRun setToValue:v8];
@@ -28,11 +28,11 @@
   }
 }
 
-- (void)setFromPath:(CGPath *)a3
+- (void)setFromPath:(CGPath *)path
 {
-  CGPathRetain(a3);
+  CGPathRetain(path);
   CGPathRelease(self->_fromPath);
-  self->_fromPath = a3;
+  self->_fromPath = path;
 }
 
 - (void)dealloc

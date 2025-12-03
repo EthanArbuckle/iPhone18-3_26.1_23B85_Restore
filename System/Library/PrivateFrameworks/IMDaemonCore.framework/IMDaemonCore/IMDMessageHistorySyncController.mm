@@ -1,5 +1,5 @@
 @interface IMDMessageHistorySyncController
-- (IMDMessageHistorySyncController)initWithMessageHistorySyncTaskFactory:(id)a3;
+- (IMDMessageHistorySyncController)initWithMessageHistorySyncTaskFactory:(id)factory;
 - (void)_evaluateStateAndActIfNeeded;
 - (void)_scheduleNextEvaluation;
 - (void)dealloc;
@@ -8,16 +8,16 @@
 
 @implementation IMDMessageHistorySyncController
 
-- (IMDMessageHistorySyncController)initWithMessageHistorySyncTaskFactory:(id)a3
+- (IMDMessageHistorySyncController)initWithMessageHistorySyncTaskFactory:(id)factory
 {
   v7.receiver = self;
   v7.super_class = IMDMessageHistorySyncController;
   v4 = [(IMDMessageHistorySyncController *)&v7 init];
   if (v4)
   {
-    v4->_syncTaskFactory = a3;
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v5 addObserver:v4 selector:sel_replayControllerWantsToSync name:IMDMessageHistorySyncNotifyReplayControllerWantsSync object:0];
+    v4->_syncTaskFactory = factory;
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v4 selector:sel_replayControllerWantsToSync name:IMDMessageHistorySyncNotifyReplayControllerWantsSync object:0];
   }
 
   return v4;
@@ -113,7 +113,7 @@ LABEL_16:
     v11 = 0x3052000000;
     v12 = sub_22B4D77E0;
     v13 = sub_22B4D7954;
-    v14 = self;
+    selfCopy = self;
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = sub_22B6AF1E0;

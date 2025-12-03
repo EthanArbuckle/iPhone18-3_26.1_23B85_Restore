@@ -1,23 +1,23 @@
 @interface CalAlarmMetadata
-+ (BOOL)isRecognizedParameter:(id)a3 forProperty:(id)a4 inComponent:(id)a5;
-+ (BOOL)isRecognizedProperty:(id)a3 inComponent:(id)a4;
-+ (BOOL)shouldSkipSavingUnrecognizedParametersForProperty:(id)a3 inComponent:(id)a4;
-+ (id)metadataWithData:(id)a3;
-- (CalAlarmMetadata)initWithCoder:(id)a3;
++ (BOOL)isRecognizedParameter:(id)parameter forProperty:(id)property inComponent:(id)component;
++ (BOOL)isRecognizedProperty:(id)property inComponent:(id)component;
++ (BOOL)shouldSkipSavingUnrecognizedParametersForProperty:(id)property inComponent:(id)component;
++ (id)metadataWithData:(id)data;
+- (CalAlarmMetadata)initWithCoder:(id)coder;
 @end
 
 @implementation CalAlarmMetadata
 
-+ (BOOL)isRecognizedProperty:(id)a3 inComponent:(id)a4
++ (BOOL)isRecognizedProperty:(id)property inComponent:(id)component
 {
   v4 = isRecognizedProperty_inComponent__onceToken;
-  v5 = a3;
+  propertyCopy = property;
   if (v4 != -1)
   {
     +[CalAlarmMetadata isRecognizedProperty:inComponent:];
   }
 
-  v6 = [isRecognizedProperty_inComponent__recognizedProperties containsObject:v5];
+  v6 = [isRecognizedProperty_inComponent__recognizedProperties containsObject:propertyCopy];
 
   return v6;
 }
@@ -33,19 +33,19 @@ uint64_t __53__CalAlarmMetadata_isRecognizedProperty_inComponent___block_invoke(
   return MEMORY[0x1EEE66BB8](v2, v3);
 }
 
-+ (BOOL)isRecognizedParameter:(id)a3 forProperty:(id)a4 inComponent:(id)a5
++ (BOOL)isRecognizedParameter:(id)parameter forProperty:(id)property inComponent:(id)component
 {
   v6 = isRecognizedParameter_forProperty_inComponent__onceToken;
-  v7 = a4;
-  v8 = a3;
+  propertyCopy = property;
+  parameterCopy = parameter;
   if (v6 != -1)
   {
     +[CalAlarmMetadata isRecognizedParameter:forProperty:inComponent:];
   }
 
-  v9 = [isRecognizedParameter_forProperty_inComponent__recognizedParametersByPropertyName objectForKeyedSubscript:v7];
+  v9 = [isRecognizedParameter_forProperty_inComponent__recognizedParametersByPropertyName objectForKeyedSubscript:propertyCopy];
 
-  v10 = [v9 containsObject:v8];
+  v10 = [v9 containsObject:parameterCopy];
   return v10;
 }
 
@@ -65,16 +65,16 @@ void __66__CalAlarmMetadata_isRecognizedParameter_forProperty_inComponent___bloc
   v4 = *MEMORY[0x1E69E9840];
 }
 
-+ (BOOL)shouldSkipSavingUnrecognizedParametersForProperty:(id)a3 inComponent:(id)a4
++ (BOOL)shouldSkipSavingUnrecognizedParametersForProperty:(id)property inComponent:(id)component
 {
   v4 = shouldSkipSavingUnrecognizedParametersForProperty_inComponent__onceToken;
-  v5 = a3;
+  propertyCopy = property;
   if (v4 != -1)
   {
     +[CalAlarmMetadata shouldSkipSavingUnrecognizedParametersForProperty:inComponent:];
   }
 
-  v6 = [shouldSkipSavingUnrecognizedParametersForProperty_inComponent__propertiesToSkipSavingUnrecognizedParameters containsObject:v5];
+  v6 = [shouldSkipSavingUnrecognizedParametersForProperty_inComponent__propertiesToSkipSavingUnrecognizedParameters containsObject:propertyCopy];
 
   return v6;
 }
@@ -89,17 +89,17 @@ uint64_t __82__CalAlarmMetadata_shouldSkipSavingUnrecognizedParametersForPropert
   return MEMORY[0x1EEE66BB8](v1, v2);
 }
 
-+ (id)metadataWithData:(id)a3
++ (id)metadataWithData:(id)data
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v11.receiver = a1;
+  dataCopy = data;
+  v11.receiver = self;
   v11.super_class = &OBJC_METACLASS___CalAlarmMetadata;
-  v5 = objc_msgSendSuper2(&v11, sel_metadataWithData_, v4);
+  v5 = objc_msgSendSuper2(&v11, sel_metadataWithData_, dataCopy);
   if (!v5)
   {
     v10 = 0;
-    v5 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:v4 error:&v10];
+    v5 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:dataCopy error:&v10];
     v6 = v10;
     if (!v5)
     {
@@ -118,18 +118,18 @@ uint64_t __82__CalAlarmMetadata_shouldSkipSavingUnrecognizedParametersForPropert
   return v5;
 }
 
-- (CalAlarmMetadata)initWithCoder:(id)a3
+- (CalAlarmMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   if (initWithCoder__onceToken != -1)
   {
     [CalAlarmMetadata initWithCoder:];
   }
 
-  v5 = [v4 decodeObjectOfClasses:initWithCoder__attachmentClasses forKey:@"Attach"];
-  v6 = [v4 decodeObjectOfClasses:initWithCoder__attendeeClasses forKey:@"Attendee"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Description"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Summary"];
+  v5 = [coderCopy decodeObjectOfClasses:initWithCoder__attachmentClasses forKey:@"Attach"];
+  v6 = [coderCopy decodeObjectOfClasses:initWithCoder__attendeeClasses forKey:@"Attendee"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Description"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Summary"];
   v9 = v8;
   if (v5 || v6 || v7 || v8)
   {
@@ -147,7 +147,7 @@ uint64_t __82__CalAlarmMetadata_shouldSkipSavingUnrecognizedParametersForPropert
   {
     v14.receiver = self;
     v14.super_class = CalAlarmMetadata;
-    v10 = [(CalItemMetadata *)&v14 initWithCoder:v4];
+    v10 = [(CalItemMetadata *)&v14 initWithCoder:coderCopy];
   }
 
   return v10;

@@ -27,7 +27,7 @@
           objc_enumerationMutation(obj);
         }
 
-        v4 = [*(*(&v30 + 1) + 8 * v3) integerValue];
+        integerValue = [*(*(&v30 + 1) + 8 * v3) integerValue];
         v34[0] = &unk_1F1DC29E0;
         v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:UIAccessibilityScrollToVisibleAction];
         v35[0] = v5;
@@ -46,26 +46,26 @@
         v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v35 forKeys:v34 count:5];
 
         objc_initWeak(&location, self);
-        if (v4 <= 2005)
+        if (integerValue <= 2005)
         {
-          switch(v4)
+          switch(integerValue)
           {
             case 0x7D3:
 LABEL_8:
-              v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v4];
+              v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:integerValue];
               v12 = [v10 objectForKeyedSubscript:v11];
 
               if (v12)
               {
                 [(UIAccessibilityBridgeElement *)self setIsAXScrollAncestor:1];
-                v13 = [v12 intValue];
+                intValue = [v12 intValue];
                 v18[0] = MEMORY[0x1E69E9820];
                 v18[1] = 3221225472;
                 v18[2] = __75__UIAccessibilityBridgeElement_overrideAccessibilityMethodsForRemoteDevice__block_invoke_5;
                 v18[3] = &unk_1E78AB9C0;
                 objc_copyWeak(&v19, &location);
-                v20 = v4;
-                [self _accessibilitySetActionBlock:v18 withValue:0 forKey:v13];
+                v20 = integerValue;
+                [self _accessibilitySetActionBlock:v18 withValue:0 forKey:intValue];
                 objc_destroyWeak(&v19);
               }
 
@@ -93,12 +93,12 @@ LABEL_8:
 
         else
         {
-          if ((v4 - 2006) < 4)
+          if ((integerValue - 2006) < 4)
           {
             goto LABEL_8;
           }
 
-          if (v4 == 2013)
+          if (integerValue == 2013)
           {
             v25[0] = MEMORY[0x1E69E9820];
             v25[1] = 3221225472;
@@ -109,7 +109,7 @@ LABEL_8:
             objc_destroyWeak(&v26);
           }
 
-          else if (v4 == 2010)
+          else if (integerValue == 2010)
           {
             v27[0] = MEMORY[0x1E69E9820];
             v27[1] = 3221225472;

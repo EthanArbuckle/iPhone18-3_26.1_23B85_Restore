@@ -1,79 +1,79 @@
 @interface UAMockActivityAdvertiser
-- (UAMockActivityAdvertiser)initWithController:(id)a3;
-- (void)advertiseAdvertisementPayload:(id)a3 options:(id)a4;
-- (void)fetchPeerForUUID:(id)a3 withCompletionHandler:(id)a4;
-- (void)fetchSFPeerDevicesWithCompletionHandler:(id)a3;
+- (UAMockActivityAdvertiser)initWithController:(id)controller;
+- (void)advertiseAdvertisementPayload:(id)payload options:(id)options;
+- (void)fetchPeerForUUID:(id)d withCompletionHandler:(id)handler;
+- (void)fetchSFPeerDevicesWithCompletionHandler:(id)handler;
 @end
 
 @implementation UAMockActivityAdvertiser
 
-- (UAMockActivityAdvertiser)initWithController:(id)a3
+- (UAMockActivityAdvertiser)initWithController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v9.receiver = self;
   v9.super_class = UAMockActivityAdvertiser;
   v6 = [(UAMockActivityAdvertiser *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_controller, a3);
+    objc_storeStrong(&v6->_controller, controller);
   }
 
   return v7;
 }
 
-- (void)advertiseAdvertisementPayload:(id)a3 options:(id)a4
+- (void)advertiseAdvertisementPayload:(id)payload options:(id)options
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(UAMockActivityAdvertiser *)self controller];
-  [v8 doAdvertiseAdvertisementPayload:v7 options:v6];
+  optionsCopy = options;
+  payloadCopy = payload;
+  controller = [(UAMockActivityAdvertiser *)self controller];
+  [controller doAdvertiseAdvertisementPayload:payloadCopy options:optionsCopy];
 }
 
-- (void)fetchSFPeerDevicesWithCompletionHandler:(id)a3
+- (void)fetchSFPeerDevicesWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(UAMockActivityAdvertiser *)self controller];
-  v6 = [v5 pairedPeer];
+  handlerCopy = handler;
+  controller = [(UAMockActivityAdvertiser *)self controller];
+  pairedPeer = [controller pairedPeer];
 
-  if (v6)
+  if (pairedPeer)
   {
-    v9 = [(UAMockActivityAdvertiser *)self controller];
-    v7 = [v9 pairedPeer];
-    v8 = [NSSet setWithObject:v7];
-    v4[2](v4, v8, 0);
+    controller2 = [(UAMockActivityAdvertiser *)self controller];
+    pairedPeer2 = [controller2 pairedPeer];
+    v8 = [NSSet setWithObject:pairedPeer2];
+    handlerCopy[2](handlerCopy, v8, 0);
 
-    v4 = v7;
+    handlerCopy = pairedPeer2;
   }
 
   else
   {
-    v9 = [NSError errorWithDomain:UAContinuityErrorDomain code:-1 userInfo:0];
-    (v4[2])(v4, 0);
+    controller2 = [NSError errorWithDomain:UAContinuityErrorDomain code:-1 userInfo:0];
+    (handlerCopy[2])(handlerCopy, 0);
   }
 }
 
-- (void)fetchPeerForUUID:(id)a3 withCompletionHandler:(id)a4
+- (void)fetchPeerForUUID:(id)d withCompletionHandler:(id)handler
 {
-  v16 = a3;
-  v6 = a4;
-  if (v16)
+  dCopy = d;
+  handlerCopy = handler;
+  if (dCopy)
   {
-    v7 = [(UAMockActivityAdvertiser *)self controller];
-    v8 = [v7 pairedPeer];
-    if (v8)
+    controller = [(UAMockActivityAdvertiser *)self controller];
+    pairedPeer = [controller pairedPeer];
+    if (pairedPeer)
     {
-      v9 = v8;
-      v10 = [(UAMockActivityAdvertiser *)self controller];
-      v11 = [v10 pairedPeer];
-      v12 = [v11 uniqueID];
-      v13 = [v12 isEqual:v16];
+      v9 = pairedPeer;
+      controller2 = [(UAMockActivityAdvertiser *)self controller];
+      pairedPeer2 = [controller2 pairedPeer];
+      uniqueID = [pairedPeer2 uniqueID];
+      v13 = [uniqueID isEqual:dCopy];
 
       if (v13)
       {
-        v14 = [(UAMockActivityAdvertiser *)self controller];
-        v15 = [v14 pairedPeer];
-        v6[2](v6, v15, 0);
+        controller3 = [(UAMockActivityAdvertiser *)self controller];
+        pairedPeer3 = [controller3 pairedPeer];
+        handlerCopy[2](handlerCopy, pairedPeer3, 0);
 
         goto LABEL_7;
       }
@@ -84,8 +84,8 @@
     }
   }
 
-  v14 = [NSError errorWithDomain:UAContinuityErrorDomain code:-1 userInfo:0];
-  (v6)[2](v6, 0, v14);
+  controller3 = [NSError errorWithDomain:UAContinuityErrorDomain code:-1 userInfo:0];
+  (handlerCopy)[2](handlerCopy, 0, controller3);
 LABEL_7:
 }
 

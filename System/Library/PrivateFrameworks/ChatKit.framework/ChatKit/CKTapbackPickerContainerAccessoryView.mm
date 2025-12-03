@@ -1,31 +1,31 @@
 @interface CKTapbackPickerContainerAccessoryView
-- (CGPoint)attachmentOffsetWithReferenceFrame:(CGRect)a3;
-- (CKTapbackPickerContainerAccessoryView)initWithFrame:(CGRect)a3 configuration:(id *)a4;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (id)init:(id)a3 layoutBounds:(CGRect)a4 delegate:(id)a5;
-- (void)setVisible:(BOOL)a3 animated:(BOOL)a4;
+- (CGPoint)attachmentOffsetWithReferenceFrame:(CGRect)frame;
+- (CKTapbackPickerContainerAccessoryView)initWithFrame:(CGRect)frame configuration:(id *)configuration;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (id)init:(id)init layoutBounds:(CGRect)bounds delegate:(id)delegate;
+- (void)setVisible:(BOOL)visible animated:(BOOL)animated;
 @end
 
 @implementation CKTapbackPickerContainerAccessoryView
 
-- (id)init:(id)a3 layoutBounds:(CGRect)a4 delegate:(id)a5
+- (id)init:(id)init layoutBounds:(CGRect)bounds delegate:(id)delegate
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v10 = a3;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  initCopy = init;
   swift_unknownObjectRetain();
-  return TapbackPickerContainerAccessoryView.init(_:layoutBounds:delegate:)(v10, a5, x, y, width, height);
+  return TapbackPickerContainerAccessoryView.init(_:layoutBounds:delegate:)(initCopy, delegate, x, y, width, height);
 }
 
-- (void)setVisible:(BOOL)a3 animated:(BOOL)a4
+- (void)setVisible:(BOOL)visible animated:(BOOL)animated
 {
-  if (*(&self->super.super.super.super.isa + OBJC_IVAR___CKTapbackPickerContainerAccessoryView_visible) != a3)
+  if (*(&self->super.super.super.super.isa + OBJC_IVAR___CKTapbackPickerContainerAccessoryView_visible) != visible)
   {
-    *(&self->super.super.super.super.isa + OBJC_IVAR___CKTapbackPickerContainerAccessoryView_visible) = a3;
-    v6 = self;
-    if (a3)
+    *(&self->super.super.super.super.isa + OBJC_IVAR___CKTapbackPickerContainerAccessoryView_visible) = visible;
+    selfCopy = self;
+    if (visible)
     {
       sub_19092CB50();
     }
@@ -37,13 +37,13 @@
   }
 }
 
-- (CGPoint)attachmentOffsetWithReferenceFrame:(CGRect)a3
+- (CGPoint)attachmentOffsetWithReferenceFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  selfCopy = self;
   v8 = sub_190CB0178(x, y, width, height);
   v10 = v9;
 
@@ -54,14 +54,14 @@
   return result;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  v4 = [*(&self->super.super.super.super.isa + OBJC_IVAR___CKTapbackPickerContainerAccessoryView_pickerBalloonParentView) hitTest:a4 withEvent:{a3.x, a3.y}];
+  v4 = [*(&self->super.super.super.super.isa + OBJC_IVAR___CKTapbackPickerContainerAccessoryView_pickerBalloonParentView) hitTest:event withEvent:{test.x, test.y}];
 
   return v4;
 }
 
-- (CKTapbackPickerContainerAccessoryView)initWithFrame:(CGRect)a3 configuration:(id *)a4
+- (CKTapbackPickerContainerAccessoryView)initWithFrame:(CGRect)frame configuration:(id *)configuration
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

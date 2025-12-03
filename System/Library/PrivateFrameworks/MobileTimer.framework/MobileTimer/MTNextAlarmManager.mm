@@ -32,10 +32,10 @@
     [(MTNextAlarmManager *)v2 setAlarmManager:v6];
 
     [(MTNextAlarmManager *)v2 calculateNextAlarms];
-    v7 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v7 addObserver:v2 selector:sel__handleAlarmsDidChange name:@"MTAlarmManagerFiringAlarmChanged" object:v2->_alarmManager];
-    [v7 addObserver:v2 selector:sel__handleAlarmsDidChange name:@"MTAlarmManagerNextAlarmChanged" object:v2->_alarmManager];
-    [v7 addObserver:v2 selector:sel__handleAlarmsDidChange name:@"MTAlarmManagerAlarmsChanged" object:v2->_alarmManager];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__handleAlarmsDidChange name:@"MTAlarmManagerFiringAlarmChanged" object:v2->_alarmManager];
+    [defaultCenter addObserver:v2 selector:sel__handleAlarmsDidChange name:@"MTAlarmManagerNextAlarmChanged" object:v2->_alarmManager];
+    [defaultCenter addObserver:v2 selector:sel__handleAlarmsDidChange name:@"MTAlarmManagerAlarmsChanged" object:v2->_alarmManager];
   }
 
   v8 = *MEMORY[0x1E69E9840];
@@ -114,7 +114,7 @@ id __41__MTNextAlarmManager_calculateNextAlarms__block_invoke_3(uint64_t a1, voi
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138543362;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B1F9F000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ _handleAlarmsDidChange", &v5, 0xCu);
   }
 

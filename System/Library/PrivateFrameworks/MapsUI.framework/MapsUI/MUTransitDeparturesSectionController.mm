@@ -1,16 +1,16 @@
 @interface MUTransitDeparturesSectionController
-- (BOOL)sectionViewProvider:(id)a3 canSelect:(id)a4 using:(id)a5;
-- (MUTransitDeparturesSectionController)initWithMapItem:(id)a3 allowTransitLineSelection:(BOOL)a4 departuresDelegate:(id)a5;
+- (BOOL)sectionViewProvider:(id)provider canSelect:(id)select using:(id)using;
+- (MUTransitDeparturesSectionController)initWithMapItem:(id)item allowTransitLineSelection:(BOOL)selection departuresDelegate:(id)delegate;
 - (MUTransitDeparturesSectionControllerDelegate)departuresDelegate;
-- (id)traitsForDeparturesDataSource:(id)a3;
+- (id)traitsForDeparturesDataSource:(id)source;
 - (void)_setupSections;
-- (void)sectionViewProvider:(id)a3 didSelect:(id)a4 using:(id)a5;
-- (void)sectionViewProvider:(id)a3 didSelectAttribution:(id)a4;
-- (void)sectionViewProvider:(id)a3 didSelectConnectionInfo:(id)a4;
-- (void)sectionViewProvider:(id)a3 didSelectDepartureSequence:(id)a4 using:(id)a5;
-- (void)sectionViewProvider:(id)a3 didSelectIncidents:(id)a4;
-- (void)setActive:(BOOL)a3;
-- (void)transitDeparturesDataSourceWantsReload:(id)a3;
+- (void)sectionViewProvider:(id)provider didSelect:(id)select using:(id)using;
+- (void)sectionViewProvider:(id)provider didSelectAttribution:(id)attribution;
+- (void)sectionViewProvider:(id)provider didSelectConnectionInfo:(id)info;
+- (void)sectionViewProvider:(id)provider didSelectDepartureSequence:(id)sequence using:(id)using;
+- (void)sectionViewProvider:(id)provider didSelectIncidents:(id)incidents;
+- (void)setActive:(BOOL)active;
+- (void)transitDeparturesDataSourceWantsReload:(id)reload;
 @end
 
 @implementation MUTransitDeparturesSectionController
@@ -22,74 +22,74 @@
   return WeakRetained;
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  if (self->_active != a3)
+  if (self->_active != active)
   {
-    self->_active = a3;
+    self->_active = active;
     [(MUTransitDeparturesDataSource *)self->_dataSource setIsActive:?];
   }
 }
 
-- (void)transitDeparturesDataSourceWantsReload:(id)a3
+- (void)transitDeparturesDataSourceWantsReload:(id)reload
 {
   [(MUTransitDeparturesSectionViewProvider *)self->_viewProvider setNeedsRebuild:1];
-  v4 = [(MUPlaceSectionController *)self delegate];
-  [v4 placeSectionControllerDidUpdateContent:self];
+  delegate = [(MUPlaceSectionController *)self delegate];
+  [delegate placeSectionControllerDidUpdateContent:self];
 }
 
-- (id)traitsForDeparturesDataSource:(id)a3
+- (id)traitsForDeparturesDataSource:(id)source
 {
-  v4 = [(MUTransitDeparturesSectionController *)self departuresDelegate];
-  v5 = [v4 traitsForTransitDeparturesSectionController:self];
+  departuresDelegate = [(MUTransitDeparturesSectionController *)self departuresDelegate];
+  v5 = [departuresDelegate traitsForTransitDeparturesSectionController:self];
 
   return v5;
 }
 
-- (void)sectionViewProvider:(id)a3 didSelectIncidents:(id)a4
+- (void)sectionViewProvider:(id)provider didSelectIncidents:(id)incidents
 {
-  v5 = a4;
-  v6 = [(MUTransitDeparturesSectionController *)self departuresDelegate];
-  [v6 transitDeparturesSectionController:self showIncidents:v5];
+  incidentsCopy = incidents;
+  departuresDelegate = [(MUTransitDeparturesSectionController *)self departuresDelegate];
+  [departuresDelegate transitDeparturesSectionController:self showIncidents:incidentsCopy];
 }
 
-- (void)sectionViewProvider:(id)a3 didSelect:(id)a4 using:(id)a5
+- (void)sectionViewProvider:(id)provider didSelect:(id)select using:(id)using
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [(MUTransitDeparturesSectionController *)self departuresDelegate];
-  [v9 transitDeparturesSectionController:self didSelectTransitLine:v8 usingPresentationOptions:v7 completion:&__block_literal_global_16135];
+  usingCopy = using;
+  selectCopy = select;
+  departuresDelegate = [(MUTransitDeparturesSectionController *)self departuresDelegate];
+  [departuresDelegate transitDeparturesSectionController:self didSelectTransitLine:selectCopy usingPresentationOptions:usingCopy completion:&__block_literal_global_16135];
 }
 
-- (void)sectionViewProvider:(id)a3 didSelectDepartureSequence:(id)a4 using:(id)a5
+- (void)sectionViewProvider:(id)provider didSelectDepartureSequence:(id)sequence using:(id)using
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [(MUTransitDeparturesSectionController *)self departuresDelegate];
-  [v9 transitDeparturesSectionController:self didSelectDepartureSequence:v8 usingMapItem:v7];
+  usingCopy = using;
+  sequenceCopy = sequence;
+  departuresDelegate = [(MUTransitDeparturesSectionController *)self departuresDelegate];
+  [departuresDelegate transitDeparturesSectionController:self didSelectDepartureSequence:sequenceCopy usingMapItem:usingCopy];
 }
 
-- (void)sectionViewProvider:(id)a3 didSelectConnectionInfo:(id)a4
+- (void)sectionViewProvider:(id)provider didSelectConnectionInfo:(id)info
 {
-  v5 = a4;
-  v6 = [(MUTransitDeparturesSectionController *)self departuresDelegate];
-  [v6 transitDeparturesSectionController:self didSelectConnectionInformation:v5];
+  infoCopy = info;
+  departuresDelegate = [(MUTransitDeparturesSectionController *)self departuresDelegate];
+  [departuresDelegate transitDeparturesSectionController:self didSelectConnectionInformation:infoCopy];
 }
 
-- (void)sectionViewProvider:(id)a3 didSelectAttribution:(id)a4
+- (void)sectionViewProvider:(id)provider didSelectAttribution:(id)attribution
 {
-  v5 = a4;
+  attributionCopy = attribution;
   [(MUPlaceSectionController *)self captureInfoCardAction:7006 eventValue:0 feedbackType:0 actionRichProviderId:0 classification:0];
-  v6 = [(MUTransitDeparturesSectionController *)self departuresDelegate];
-  [v6 transitDeparturesSectionController:self didSelectAttribution:v5];
+  departuresDelegate = [(MUTransitDeparturesSectionController *)self departuresDelegate];
+  [departuresDelegate transitDeparturesSectionController:self didSelectAttribution:attributionCopy];
 }
 
-- (BOOL)sectionViewProvider:(id)a3 canSelect:(id)a4 using:(id)a5
+- (BOOL)sectionViewProvider:(id)provider canSelect:(id)select using:(id)using
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [(MUTransitDeparturesSectionController *)self departuresDelegate];
-  LOBYTE(self) = [v9 transitDeparturesSectionController:self canSelectDepartureSequence:v8 usingMapItem:v7];
+  usingCopy = using;
+  selectCopy = select;
+  departuresDelegate = [(MUTransitDeparturesSectionController *)self departuresDelegate];
+  LOBYTE(self) = [departuresDelegate transitDeparturesSectionController:self canSelectDepartureSequence:selectCopy usingMapItem:usingCopy];
 
   return self;
 }
@@ -97,8 +97,8 @@
 - (void)_setupSections
 {
   v3 = [MUTransitDeparturesDataSource alloc];
-  v4 = [(MUPlaceSectionController *)self mapItem];
-  v5 = [(MUTransitDeparturesDataSource *)v3 initWithMapItem:v4];
+  mapItem = [(MUPlaceSectionController *)self mapItem];
+  v5 = [(MUTransitDeparturesDataSource *)v3 initWithMapItem:mapItem];
   dataSource = self->_dataSource;
   self->_dataSource = v5;
 
@@ -110,16 +110,16 @@
   MEMORY[0x1EEE66BB8](v7, viewProvider);
 }
 
-- (MUTransitDeparturesSectionController)initWithMapItem:(id)a3 allowTransitLineSelection:(BOOL)a4 departuresDelegate:(id)a5
+- (MUTransitDeparturesSectionController)initWithMapItem:(id)item allowTransitLineSelection:(BOOL)selection departuresDelegate:(id)delegate
 {
-  v7 = a5;
+  delegateCopy = delegate;
   v11.receiver = self;
   v11.super_class = MUTransitDeparturesSectionController;
-  v8 = [(MUPlaceSectionController *)&v11 initWithMapItem:a3];
+  v8 = [(MUPlaceSectionController *)&v11 initWithMapItem:item];
   v9 = v8;
   if (v8)
   {
-    [(MUTransitDeparturesSectionController *)v8 setDeparturesDelegate:v7];
+    [(MUTransitDeparturesSectionController *)v8 setDeparturesDelegate:delegateCopy];
     [(MUTransitDeparturesSectionController *)v9 _setupSections];
   }
 

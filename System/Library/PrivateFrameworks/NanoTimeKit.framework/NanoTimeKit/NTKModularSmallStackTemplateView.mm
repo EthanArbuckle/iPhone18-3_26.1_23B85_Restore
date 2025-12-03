@@ -1,24 +1,24 @@
 @interface NTKModularSmallStackTemplateView
-+ (BOOL)handlesComplicationTemplate:(id)a3;
++ (BOOL)handlesComplicationTemplate:(id)template;
 - (CLKUIColoringLabel)subtitleLabel;
 - (CLKUIColoringLabel)titleLabel;
-- (void)_enumerateForegroundColoringViewsWithBlock:(id)a3;
+- (void)_enumerateForegroundColoringViewsWithBlock:(id)block;
 - (void)_layoutContentView;
 - (void)_update;
-- (void)_updateLayoutForLabel:(id)a3 baselineOffset:(double)a4;
+- (void)_updateLayoutForLabel:(id)label baselineOffset:(double)offset;
 @end
 
 @implementation NTKModularSmallStackTemplateView
 
 - (void)_update
 {
-  v27 = [(NTKModularTemplateView *)self complicationTemplate];
-  v3 = [(NTKModuleView *)self device];
-  v4 = [NTKOneColumnModularSmallLayoutAttributes attributesForTemplate:v27 forDevice:v3];
+  complicationTemplate = [(NTKModularTemplateView *)self complicationTemplate];
+  device = [(NTKModuleView *)self device];
+  v4 = [NTKOneColumnModularSmallLayoutAttributes attributesForTemplate:complicationTemplate forDevice:device];
 
-  v5 = [(NTKModularSmallStackTemplateView *)self subtitleLabel];
-  v6 = [v4 subtitleFont];
-  [v5 setFont:v6];
+  subtitleLabel = [(NTKModularSmallStackTemplateView *)self subtitleLabel];
+  subtitleFont = [v4 subtitleFont];
+  [subtitleLabel setFont:subtitleFont];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
@@ -27,19 +27,19 @@
     imageView = self->_imageView;
     self->_imageView = 0;
 
-    v8 = [(NTKModularSmallStackTemplateView *)self titleLabel];
-    v9 = [v4 titleFont];
-    [v8 setFont:v9];
+    titleLabel = [(NTKModularSmallStackTemplateView *)self titleLabel];
+    titleFont = [v4 titleFont];
+    [titleLabel setFont:titleFont];
 
-    v10 = [(NTKModularSmallStackTemplateView *)self titleLabel];
-    v11 = [v27 line1TextProvider];
-    [v10 setTextProvider:v11];
+    titleLabel2 = [(NTKModularSmallStackTemplateView *)self titleLabel];
+    line1TextProvider = [complicationTemplate line1TextProvider];
+    [titleLabel2 setTextProvider:line1TextProvider];
 
-    v12 = [(NTKModularSmallStackTemplateView *)self subtitleLabel];
-    v13 = [v27 line2TextProvider];
-    [v12 setTextProvider:v13];
+    subtitleLabel2 = [(NTKModularSmallStackTemplateView *)self subtitleLabel];
+    line2TextProvider = [complicationTemplate line2TextProvider];
+    [subtitleLabel2 setTextProvider:line2TextProvider];
 
-    v14 = [v27 highlightMode];
+    highlightMode = [complicationTemplate highlightMode];
   }
 
   else
@@ -51,24 +51,24 @@
       titleLabel = self->_titleLabel;
       self->_titleLabel = 0;
 
-      v17 = [v27 line1ImageProvider];
-      v18 = [off_27877BE78 existingImageView:self->_imageView supportsImageProvider:v17];
+      line1ImageProvider = [complicationTemplate line1ImageProvider];
+      v18 = [off_27877BE78 existingImageView:self->_imageView supportsImageProvider:line1ImageProvider];
       v19 = self->_imageView;
       if ((v18 & 1) == 0)
       {
         [(CDComplicationImageView *)v19 removeFromSuperview];
-        v20 = [off_27877BE78 viewForImageProvider:v17];
+        v20 = [off_27877BE78 viewForImageProvider:line1ImageProvider];
         v21 = self->_imageView;
         self->_imageView = v20;
 
         v22 = self->_imageView;
         if (v22)
         {
-          v23 = [(NTKModuleView *)self foregroundColor];
-          [(CDComplicationImageView *)v22 setColor:v23];
+          foregroundColor = [(NTKModuleView *)self foregroundColor];
+          [(CDComplicationImageView *)v22 setColor:foregroundColor];
 
-          v24 = [(NTKModuleView *)self contentView];
-          [v24 addSubview:self->_imageView];
+          contentView = [(NTKModuleView *)self contentView];
+          [contentView addSubview:self->_imageView];
 
           v19 = self->_imageView;
         }
@@ -79,30 +79,30 @@
         }
       }
 
-      [(CDComplicationImageView *)v19 setImageProvider:v17];
-      v25 = [(NTKModularSmallStackTemplateView *)self subtitleLabel];
-      v26 = [v27 line2TextProvider];
-      [v25 setTextProvider:v26];
+      [(CDComplicationImageView *)v19 setImageProvider:line1ImageProvider];
+      subtitleLabel3 = [(NTKModularSmallStackTemplateView *)self subtitleLabel];
+      line2TextProvider2 = [complicationTemplate line2TextProvider];
+      [subtitleLabel3 setTextProvider:line2TextProvider2];
 
-      v14 = [v27 highlightMode];
+      highlightMode = [complicationTemplate highlightMode];
     }
 
     else
     {
-      v14 = 0;
+      highlightMode = 0;
     }
   }
 
-  [(NTKModularTemplateView *)self setHighlightMode:v14];
-  v15 = [(NTKModuleView *)self contentView];
-  [v15 setNeedsLayout];
+  [(NTKModularTemplateView *)self setHighlightMode:highlightMode];
+  contentView2 = [(NTKModuleView *)self contentView];
+  [contentView2 setNeedsLayout];
 }
 
 - (void)_layoutContentView
 {
-  v21 = [(NTKModularTemplateView *)self complicationTemplate];
-  v3 = [(NTKModuleView *)self device];
-  v4 = [NTKOneColumnModularSmallLayoutAttributes attributesForTemplate:v21 forDevice:v3];
+  complicationTemplate = [(NTKModularTemplateView *)self complicationTemplate];
+  device = [(NTKModuleView *)self device];
+  v4 = [NTKOneColumnModularSmallLayoutAttributes attributesForTemplate:complicationTemplate forDevice:device];
 
   [v4 subtitleBaselineOffset];
   [(NTKModularSmallStackTemplateView *)self _updateLayoutForLabel:self->_subtitleLabel baselineOffset:?];
@@ -117,8 +117,8 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
     {
-      v5 = [(NTKModuleView *)self contentView];
-      [v5 bounds];
+      contentView = [(NTKModuleView *)self contentView];
+      [contentView bounds];
       v7 = v6;
       v9 = v8;
       v11 = v10;
@@ -137,26 +137,26 @@
       [v4 imageHeight];
       [v4 imageOriginY];
       [v4 imageHeight];
-      v18 = [(NTKModuleView *)self device];
+      device2 = [(NTKModuleView *)self device];
       CLKRectCenteredXInRectForDevice();
 
       imageView = self->_imageView;
-      v20 = [(NTKModuleView *)self device];
+      device3 = [(NTKModuleView *)self device];
       CLKPixelAlignRectForDevice();
       [(CDComplicationImageView *)imageView setFrame:?];
     }
   }
 }
 
-- (void)_updateLayoutForLabel:(id)a3 baselineOffset:(double)a4
+- (void)_updateLayoutForLabel:(id)label baselineOffset:(double)offset
 {
-  v39 = a3;
-  v5 = [(NTKModularTemplateView *)self complicationTemplate];
-  v6 = [(NTKModuleView *)self device];
-  v7 = [NTKOneColumnModularSmallLayoutAttributes attributesForTemplate:v5 forDevice:v6];
+  labelCopy = label;
+  complicationTemplate = [(NTKModularTemplateView *)self complicationTemplate];
+  device = [(NTKModuleView *)self device];
+  v7 = [NTKOneColumnModularSmallLayoutAttributes attributesForTemplate:complicationTemplate forDevice:device];
 
-  v8 = [(NTKModuleView *)self contentView];
-  [v8 bounds];
+  contentView = [(NTKModuleView *)self contentView];
+  [contentView bounds];
   v10 = v9;
   v12 = v11;
   v14 = v13;
@@ -172,19 +172,19 @@
   width = v42.size.width;
   height = v42.size.height;
 
-  [v39 setMaxWidth:width];
-  [v39 sizeThatFits:{width, height}];
+  [labelCopy setMaxWidth:width];
+  [labelCopy sizeThatFits:{width, height}];
   v23 = v22;
-  v24 = [v39 textProvider];
-  v25 = [v24 shrinkTextPreference];
+  textProvider = [labelCopy textProvider];
+  shrinkTextPreference = [textProvider shrinkTextPreference];
 
-  if (v25)
+  if (shrinkTextPreference)
   {
-    v26 = [v39 font];
-    [v26 pointSize];
+    font = [labelCopy font];
+    [font pointSize];
     v28 = v27;
 
-    if (v25 == 1)
+    if (shrinkTextPreference == 1)
     {
       [v7 minimumFontSize];
       v19 = v29;
@@ -196,7 +196,7 @@
       {
         v28 = v28 + -1.0;
         v30 = [MEMORY[0x277CBBB08] systemFontOfSize:v28];
-        [v39 widthForMaxWidth:v30 withFont:width];
+        [labelCopy widthForMaxWidth:v30 withFont:width];
         v32 = v31;
       }
 
@@ -204,22 +204,22 @@
     }
 
     v34 = [MEMORY[0x277CBBB08] systemFontOfSize:v28];
-    [v39 setFont:v34];
+    [labelCopy setFont:v34];
 
-    [v39 sizeThatFits:{width, height}];
+    [labelCopy sizeThatFits:{width, height}];
   }
 
-  v35 = [v39 font];
-  [v35 ascender];
-  v36 = [(NTKModuleView *)self device];
+  font2 = [labelCopy font];
+  [font2 ascender];
+  device2 = [(NTKModuleView *)self device];
   CLKRoundForDevice();
 
-  v37 = [(NTKModuleView *)self device];
+  device3 = [(NTKModuleView *)self device];
   CLKRectCenteredXInRectForDevice();
 
-  v38 = [(NTKModuleView *)self device];
+  device4 = [(NTKModuleView *)self device];
   CLKPixelAlignRectForDevice();
-  [v39 setFrame:?];
+  [labelCopy setFrame:?];
 }
 
 - (CLKUIColoringLabel)titleLabel
@@ -232,15 +232,15 @@
     self->_titleLabel = v4;
 
     v6 = self->_titleLabel;
-    v7 = [(NTKModularTemplateView *)self timeTravelDate];
-    [(CLKUIColoringLabel *)v6 setInTimeTravel:v7 != 0];
+    timeTravelDate = [(NTKModularTemplateView *)self timeTravelDate];
+    [(CLKUIColoringLabel *)v6 setInTimeTravel:timeTravelDate != 0];
 
     v8 = self->_titleLabel;
-    v9 = [(NTKModuleView *)self foregroundColor];
-    [(CLKUIColoringLabel *)v8 setTextColor:v9];
+    foregroundColor = [(NTKModuleView *)self foregroundColor];
+    [(CLKUIColoringLabel *)v8 setTextColor:foregroundColor];
 
-    v10 = [(NTKModuleView *)self contentView];
-    [v10 addSubview:self->_titleLabel];
+    contentView = [(NTKModuleView *)self contentView];
+    [contentView addSubview:self->_titleLabel];
 
     objc_initWeak(&location, self);
     v11 = self->_titleLabel;
@@ -303,15 +303,15 @@ void __46__NTKModularSmallStackTemplateView_titleLabel__block_invoke_2(uint64_t 
     self->_subtitleLabel = v4;
 
     v6 = self->_subtitleLabel;
-    v7 = [(NTKModularTemplateView *)self timeTravelDate];
-    [(CLKUIColoringLabel *)v6 setInTimeTravel:v7 != 0];
+    timeTravelDate = [(NTKModularTemplateView *)self timeTravelDate];
+    [(CLKUIColoringLabel *)v6 setInTimeTravel:timeTravelDate != 0];
 
     v8 = self->_subtitleLabel;
-    v9 = [(NTKModuleView *)self secondaryForegroundColor];
-    [(CLKUIColoringLabel *)v8 setTextColor:v9];
+    secondaryForegroundColor = [(NTKModuleView *)self secondaryForegroundColor];
+    [(CLKUIColoringLabel *)v8 setTextColor:secondaryForegroundColor];
 
-    v10 = [(NTKModuleView *)self contentView];
-    [v10 addSubview:self->_subtitleLabel];
+    contentView = [(NTKModuleView *)self contentView];
+    [contentView addSubview:self->_subtitleLabel];
 
     objc_initWeak(&location, self);
     v11 = self->_subtitleLabel;
@@ -364,10 +364,10 @@ void __49__NTKModularSmallStackTemplateView_subtitleLabel__block_invoke_2(uint64
   [v1 setNeedsLayout];
 }
 
-+ (BOOL)handlesComplicationTemplate:(id)a3
++ (BOOL)handlesComplicationTemplate:(id)template
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  templateCopy = template;
   if (handlesComplicationTemplate__onceToken != -1)
   {
     +[NTKModularSmallStackTemplateView handlesComplicationTemplate:];
@@ -425,13 +425,13 @@ void __64__NTKModularSmallStackTemplateView_handlesComplicationTemplate___block_
   handlesComplicationTemplate___supportedClasses = v0;
 }
 
-- (void)_enumerateForegroundColoringViewsWithBlock:(id)a3
+- (void)_enumerateForegroundColoringViewsWithBlock:(id)block
 {
-  v4 = (a3 + 16);
-  v5 = *(a3 + 2);
-  v6 = a3;
+  v4 = (block + 16);
+  v5 = *(block + 2);
+  blockCopy = block;
   v5();
-  (*v4)(v6, self->_imageView);
+  (*v4)(blockCopy, self->_imageView);
 }
 
 @end

@@ -4,7 +4,7 @@
 - (BOOL)_initFaceRectsFromAsset;
 - (CGSize)presentationSize;
 - (CGSize)storedSize;
-- (NTKCompanionUltraCubeImageDataDescriptor)initWithAsset:(id)a3;
+- (NTKCompanionUltraCubeImageDataDescriptor)initWithAsset:(id)asset;
 - (NTKImageSource)imageSource;
 - (NTKUltraCubeSegmentation)segmentation;
 - (void)_loadFaceRegions;
@@ -12,16 +12,16 @@
 
 @implementation NTKCompanionUltraCubeImageDataDescriptor
 
-- (NTKCompanionUltraCubeImageDataDescriptor)initWithAsset:(id)a3
+- (NTKCompanionUltraCubeImageDataDescriptor)initWithAsset:(id)asset
 {
-  v5 = a3;
+  assetCopy = asset;
   v23.receiver = self;
   v23.super_class = NTKCompanionUltraCubeImageDataDescriptor;
   v6 = [(NTKCompanionUltraCubeImageDataDescriptor *)&v23 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_asset, a3);
+    objc_storeStrong(&v6->_asset, asset);
     data = v7->_data;
     v7->_data = 0;
 
@@ -44,10 +44,10 @@
     v7->_valid = 0;
     if ([(NTKCompanionUltraCubeImageDataDescriptor *)v7 _initDataAndOrientationFromAsset])
     {
-      v14 = [v5 pixelWidth];
-      v15 = [v5 pixelHeight];
-      v7->_presentationSize.width = v14;
-      v7->_presentationSize.height = v15;
+      pixelWidth = [assetCopy pixelWidth];
+      pixelHeight = [assetCopy pixelHeight];
+      v7->_presentationSize.width = pixelWidth;
+      v7->_presentationSize.height = pixelHeight;
       sub_19478();
       v7->_storedSize.width = v16;
       v7->_storedSize.height = v17;
@@ -71,11 +71,11 @@
       v20 = _NTKLoggingObjectForDomain();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
       {
-        v21 = [(PHAsset *)v7->_asset localIdentifier];
+        localIdentifier = [(PHAsset *)v7->_asset localIdentifier];
         *buf = 136315394;
         *&buf[4] = "[NTKCompanionUltraCubeImageDataDescriptor initWithAsset:]";
         *&buf[12] = 2112;
-        *&buf[14] = v21;
+        *&buf[14] = localIdentifier;
         _os_log_impl(&dword_0, v20, OS_LOG_TYPE_DEFAULT, "%s: Cannot read image data from asset %@", buf, 0x16u);
       }
     }
@@ -89,24 +89,24 @@
   segmentation = self->_segmentation;
   if (!segmentation)
   {
-    v4 = [(NTKCompanionUltraCubeImageDataDescriptor *)self imageSource];
-    if (!v4)
+    imageSource = [(NTKCompanionUltraCubeImageDataDescriptor *)self imageSource];
+    if (!imageSource)
     {
       goto LABEL_5;
     }
 
-    v5 = v4;
-    v6 = [NTKUltraCubeSegmentationGenerator segmentationFromImageSource:v4 faceRects:self->_faceRects orientation:self->_orientation];
+    v5 = imageSource;
+    v6 = [NTKUltraCubeSegmentationGenerator segmentationFromImageSource:imageSource faceRects:self->_faceRects orientation:self->_orientation];
     v7 = self->_segmentation;
     self->_segmentation = v6;
 
     segmentation = self->_segmentation;
   }
 
-  v4 = segmentation;
+  imageSource = segmentation;
 LABEL_5:
 
-  return v4;
+  return imageSource;
 }
 
 - (BOOL)_initDataAndOrientationFromAsset
@@ -147,13 +147,13 @@ LABEL_5:
   v6 = _NTKLoggingObjectForDomain();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(PHAsset *)self->_asset localIdentifier];
+    localIdentifier = [(PHAsset *)self->_asset localIdentifier];
     v8 = [v28[5] length];
     v9 = [PHAsset originalUniformTypeIdentifierForAsset:self->_asset];
     *buf = 136315906;
     v34 = "[NTKCompanionUltraCubeImageDataDescriptor _initDataAndOrientationFromAsset]";
     v35 = 2112;
-    v36 = v7;
+    v36 = localIdentifier;
     v37 = 2048;
     v38 = v8;
     v39 = 2112;
@@ -164,13 +164,13 @@ LABEL_5:
   v10 = _NTKLoggingObjectForDomain();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [(PHAsset *)self->_asset pixelWidth];
-    v12 = [(PHAsset *)self->_asset pixelHeight];
+    pixelWidth = [(PHAsset *)self->_asset pixelWidth];
+    pixelHeight = [(PHAsset *)self->_asset pixelHeight];
     v13 = *(v24 + 6);
     *buf = 134218496;
-    v34 = v11;
+    v34 = pixelWidth;
     v35 = 2048;
-    v36 = v12;
+    v36 = pixelHeight;
     v37 = 2048;
     v38 = v13;
     _os_log_impl(&dword_0, v10, OS_LOG_TYPE_DEFAULT, "w == %ld, h == %ld, o == %ld", buf, 0x20u);
@@ -194,11 +194,11 @@ LABEL_5:
     v3 = _NTKLoggingObjectForDomain();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
-      v4 = [(PHAsset *)self->_asset localIdentifier];
+      localIdentifier = [(PHAsset *)self->_asset localIdentifier];
       v5 = 136315394;
       v6 = "[NTKCompanionUltraCubeImageDataDescriptor _loadFaceRegions]";
       v7 = 2112;
-      v8 = v4;
+      v8 = localIdentifier;
       _os_log_impl(&dword_0, v3, OS_LOG_TYPE_DEFAULT, "%s: No face data in asset %@", &v5, 0x16u);
     }
   }
@@ -337,11 +337,11 @@ LABEL_5:
 
 - (BOOL)_initFaceRectsByComputing
 {
-  v3 = [(NTKCompanionUltraCubeImageDataDescriptor *)self imageSource];
-  v4 = v3;
-  if (v3)
+  imageSource = [(NTKCompanionUltraCubeImageDataDescriptor *)self imageSource];
+  v4 = imageSource;
+  if (imageSource)
   {
-    v5 = [v3 CreateCGImageWithSubsampleFactor:1];
+    v5 = [imageSource CreateCGImageWithSubsampleFactor:1];
     v6 = v5;
     if (v5)
     {

@@ -1,17 +1,17 @@
 @interface OTAuthKitActualAdapter
-- (BOOL)accountIsCDPCapableByAltDSID:(id)a3;
-- (BOOL)accountIsDemoAccountByAltDSID:(id)a3 error:(id *)a4;
-- (id)machineID:(id)a3 flowID:(id)a4 deviceSessionID:(id)a5 canSendMetrics:(BOOL)a6 error:(id *)a7;
-- (id)passwordResetTokenByAltDSID:(id)a3 error:(id *)a4;
-- (void)deliverAKDeviceListDeltaMessagePayload:(id)a3;
-- (void)fetchCurrentDeviceListByAltDSID:(id)a3 flowID:(id)a4 deviceSessionID:(id)a5 reply:(id)a6;
-- (void)notifyAKDeviceList:(id)a3;
-- (void)registerNotification:(id)a3;
+- (BOOL)accountIsCDPCapableByAltDSID:(id)d;
+- (BOOL)accountIsDemoAccountByAltDSID:(id)d error:(id *)error;
+- (id)machineID:(id)d flowID:(id)iD deviceSessionID:(id)sessionID canSendMetrics:(BOOL)metrics error:(id *)error;
+- (id)passwordResetTokenByAltDSID:(id)d error:(id *)error;
+- (void)deliverAKDeviceListDeltaMessagePayload:(id)payload;
+- (void)fetchCurrentDeviceListByAltDSID:(id)d flowID:(id)iD deviceSessionID:(id)sessionID reply:(id)reply;
+- (void)notifyAKDeviceList:(id)list;
+- (void)registerNotification:(id)notification;
 @end
 
 @implementation OTAuthKitActualAdapter
 
-- (void)deliverAKDeviceListDeltaMessagePayload:(id)a3
+- (void)deliverAKDeviceListDeltaMessagePayload:(id)payload
 {
   v4 = sub_100006274("authkit");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -20,26 +20,26 @@
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "received notifyAKDeviceListDeltaMessagePayload", v6, 2u);
   }
 
-  v5 = [(OTAuthKitActualAdapter *)self notifiers];
-  [v5 iterateListeners:&stru_100339718];
+  notifiers = [(OTAuthKitActualAdapter *)self notifiers];
+  [notifiers iterateListeners:&stru_100339718];
 }
 
-- (void)notifyAKDeviceList:(id)a3
+- (void)notifyAKDeviceList:(id)list
 {
-  v4 = a3;
+  listCopy = list;
   if (objc_opt_class())
   {
-    if (v4)
+    if (listCopy)
     {
-      v5 = [v4 userInfo];
+      userInfo = [listCopy userInfo];
     }
 
     else
     {
-      v5 = 0;
+      userInfo = 0;
     }
 
-    [(OTAuthKitActualAdapter *)self deliverAKDeviceListDeltaMessagePayload:v5];
+    [(OTAuthKitActualAdapter *)self deliverAKDeviceListDeltaMessagePayload:userInfo];
   }
 
   else
@@ -53,12 +53,12 @@
   }
 }
 
-- (void)registerNotification:(id)a3
+- (void)registerNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(OTAuthKitActualAdapter *)self notifiers];
+  notificationCopy = notification;
+  notifiers = [(OTAuthKitActualAdapter *)self notifiers];
 
-  if (!v5)
+  if (!notifiers)
   {
     v6 = [[CKKSListenerCollection alloc] initWithName:@"otauthkitadapter-notifiers"];
     [(OTAuthKitActualAdapter *)self setNotifiers:v6];
@@ -67,23 +67,23 @@
     [v7 addObserver:self selector:"notifyAKDeviceList:" name:AKDeviceListChangedNotification object:0];
   }
 
-  v8 = [(OTAuthKitActualAdapter *)self notifiers];
-  [v8 registerListener:v4];
+  notifiers2 = [(OTAuthKitActualAdapter *)self notifiers];
+  [notifiers2 registerListener:notificationCopy];
 }
 
-- (void)fetchCurrentDeviceListByAltDSID:(id)a3 flowID:(id)a4 deviceSessionID:(id)a5 reply:(id)a6
+- (void)fetchCurrentDeviceListByAltDSID:(id)d flowID:(id)iD deviceSessionID:(id)sessionID reply:(id)reply
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  dCopy = d;
+  iDCopy = iD;
+  sessionIDCopy = sessionID;
+  replyCopy = reply;
   if (objc_opt_class() && objc_opt_class())
   {
     v13 = objc_alloc_init(AKDeviceListRequestContext);
     if (v13)
     {
       v14 = v13;
-      [v13 setAltDSID:v9];
+      [v13 setAltDSID:dCopy];
       [v14 setType:3];
       v15 = objc_alloc_init(AKAppleIDAuthenticationController);
       if (v15)
@@ -92,10 +92,10 @@
         v21[1] = 3221225472;
         v21[2] = sub_100177024;
         v21[3] = &unk_1003396D8;
-        v22 = v9;
-        v23 = v10;
-        v24 = v11;
-        v25 = v12;
+        v22 = dCopy;
+        v23 = iDCopy;
+        v24 = sessionIDCopy;
+        v25 = replyCopy;
         [v15 deviceListWithContext:v14 completion:v21];
       }
 
@@ -105,7 +105,7 @@
         v20 = +[CKKSAnalytics logger];
         [v20 logUnrecoverableError:v19 forEvent:@"OctagonEventAuthKitDeviceList" withAttributes:0];
 
-        (*(v12 + 2))(v12, 0, 0, 0, 0, 0, 0, 0, 0, v19);
+        (*(replyCopy + 2))(replyCopy, 0, 0, 0, 0, 0, 0, 0, 0, v19);
       }
     }
 
@@ -115,7 +115,7 @@
       v18 = +[CKKSAnalytics logger];
       [v18 logUnrecoverableError:v17 forEvent:@"OctagonEventAuthKitDeviceList" withAttributes:0];
 
-      (*(v12 + 2))(v12, 0, 0, 0, 0, 0, 0, 0, 0, v17);
+      (*(replyCopy + 2))(replyCopy, 0, 0, 0, 0, 0, 0, 0, 0, v17);
       v14 = 0;
     }
   }
@@ -130,18 +130,18 @@
     }
 
     v14 = [NSError errorWithDomain:@"com.apple.security.octagon" code:50 description:@"AKAnisette not available"];
-    (*(v12 + 2))(v12, 0, 0, 0, 0, 0, 0, 0, 0, v14);
+    (*(replyCopy + 2))(replyCopy, 0, 0, 0, 0, 0, 0, 0, 0, v14);
   }
 }
 
-- (id)machineID:(id)a3 flowID:(id)a4 deviceSessionID:(id)a5 canSendMetrics:(BOOL)a6 error:(id *)a7
+- (id)machineID:(id)d flowID:(id)iD deviceSessionID:(id)sessionID canSendMetrics:(BOOL)metrics error:(id *)error
 {
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  sessionIDCopy = sessionID;
+  iDCopy = iD;
+  dCopy = d;
   v14 = [AAFAnalyticsEventSecurity alloc];
-  LOBYTE(v31) = a6;
-  v15 = [v14 initWithKeychainCircleMetrics:0 altDSID:v13 flowID:v12 deviceSessionID:v11 eventName:kSecurityRTCEventNameFetchMachineID testsAreEnabled:0 canSendMetrics:v31 category:kSecurityRTCEventCategoryAccountDataAccessRecovery];
+  LOBYTE(v31) = metrics;
+  v15 = [v14 initWithKeychainCircleMetrics:0 altDSID:dCopy flowID:iDCopy deviceSessionID:sessionIDCopy eventName:kSecurityRTCEventNameFetchMachineID testsAreEnabled:0 canSendMetrics:v31 category:kSecurityRTCEventCategoryAccountDataAccessRecovery];
 
   if (objc_opt_class() && objc_opt_class())
   {
@@ -151,20 +151,20 @@
     v18 = v32;
     if (v17)
     {
-      v19 = [v17 machineID];
+      machineID = [v17 machineID];
       v20 = sub_100006274("authkit");
       v21 = os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT);
-      if (v19)
+      if (machineID)
       {
         if (v21)
         {
           *buf = 138412290;
-          v34 = v19;
+          v34 = machineID;
           _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "fetched current machine ID as: %@", buf, 0xCu);
         }
 
         [v15 sendMetricWithResult:1 error:0];
-        v22 = v19;
+        v22 = machineID;
       }
 
       else
@@ -176,11 +176,11 @@
         }
 
         v28 = [NSError errorWithDomain:@"com.apple.security.octagon" code:46 description:@"Anisette data does not have machineID"];
-        if (a7)
+        if (error)
         {
           [SecABC triggerAutoBugCaptureWithType:@"AuthKit" subType:@"missingMID"];
           v29 = v28;
-          *a7 = v28;
+          *error = v28;
         }
 
         [v15 sendMetricWithResult:0 error:v28];
@@ -197,14 +197,14 @@
         _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "Unable to fetch data: %@", buf, 0xCu);
       }
 
-      if (a7)
+      if (error)
       {
         v27 = v18;
-        *a7 = v18;
+        *error = v18;
       }
 
       [v15 sendMetricWithResult:0 error:v18];
-      v19 = 0;
+      machineID = 0;
     }
   }
 
@@ -219,29 +219,29 @@
 
     v24 = [NSError errorWithDomain:@"com.apple.security.octagon" code:50 description:@"AKAnisette not available"];
     v16 = v24;
-    if (a7)
+    if (error)
     {
       v25 = v24;
-      *a7 = v16;
+      *error = v16;
     }
 
     [v15 sendMetricWithResult:0 error:v16];
-    v19 = 0;
+    machineID = 0;
   }
 
-  return v19;
+  return machineID;
 }
 
-- (id)passwordResetTokenByAltDSID:(id)a3 error:(id *)a4
+- (id)passwordResetTokenByAltDSID:(id)d error:(id *)error
 {
-  v5 = a3;
+  dCopy = d;
   v6 = +[AKAccountManager sharedInstance];
-  v7 = [v6 authKitAccountWithAltDSID:v5 error:a4];
+  v7 = [v6 authKitAccountWithAltDSID:dCopy error:error];
 
   if (v7)
   {
     v8 = +[ACAccountStore defaultStore];
-    v9 = [v8 credentialForAccount:v7 error:a4];
+    v9 = [v8 credentialForAccount:v7 error:error];
 
     if (v9)
     {
@@ -262,17 +262,17 @@
   return v10;
 }
 
-- (BOOL)accountIsDemoAccountByAltDSID:(id)a3 error:(id *)a4
+- (BOOL)accountIsDemoAccountByAltDSID:(id)d error:(id *)error
 {
-  v4 = a3;
+  dCopy = d;
   v5 = +[AKAccountManager sharedInstance];
-  v6 = [v5 authKitAccountWithAltDSID:v4];
+  v6 = [v5 authKitAccountWithAltDSID:dCopy];
   v7 = [v5 demoAccountForAccount:v6];
   v8 = sub_100006274("authkit");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412546;
-    v11 = v4;
+    v11 = dCopy;
     v12 = 1024;
     v13 = v7;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Account with altDSID %@ is a demo account: %{BOOL}d", &v10, 0x12u);
@@ -281,14 +281,14 @@
   return v7;
 }
 
-- (BOOL)accountIsCDPCapableByAltDSID:(id)a3
+- (BOOL)accountIsCDPCapableByAltDSID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   if (objc_opt_class() && objc_opt_class())
   {
     v4 = +[AKAccountManager sharedInstance];
     v14 = 0;
-    v5 = [v4 authKitAccountWithAltDSID:v3 error:&v14];
+    v5 = [v4 authKitAccountWithAltDSID:dCopy error:&v14];
     v6 = v14;
     if (v5)
     {
@@ -329,7 +329,7 @@ LABEL_16:
           if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412802;
-            v16 = v3;
+            v16 = dCopy;
             v17 = 2048;
             v18 = v8;
             v19 = 2112;

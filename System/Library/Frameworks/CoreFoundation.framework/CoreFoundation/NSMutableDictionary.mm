@@ -1,30 +1,30 @@
 @interface NSMutableDictionary
 + (NSMutableDictionary)dictionaryWithCapacity:(NSUInteger)numItems;
 + (NSMutableDictionary)dictionaryWithSharedKeySet:(id)keyset;
-- (NSMutableDictionary)initWithObjects:(const void *)a3 forKeys:(const void *)a4 count:(unint64_t)a5;
-- (void)__addObject:(id)a3 forKey:(id)a4;
-- (void)__setObject:(id)a3 forKey:(id)a4;
+- (NSMutableDictionary)initWithObjects:(const void *)objects forKeys:(const void *)keys count:(unint64_t)count;
+- (void)__addObject:(id)object forKey:(id)key;
+- (void)__setObject:(id)object forKey:(id)key;
 - (void)addEntriesFromDictionary:(NSDictionary *)otherDictionary;
-- (void)addObject:(id)a3 forKey:(id)a4;
-- (void)addObjects:(const void *)a3 forKeys:(const void *)a4 count:(unint64_t)a5;
-- (void)addObjects:(id)a3 forKeys:(id)a4;
+- (void)addObject:(id)object forKey:(id)key;
+- (void)addObjects:(const void *)objects forKeys:(const void *)keys count:(unint64_t)count;
+- (void)addObjects:(id)objects forKeys:(id)keys;
 - (void)invert;
 - (void)removeAllObjects;
-- (void)removeEntriesInDictionary:(id)a3;
-- (void)removeEntriesPassingTest:(id)a3;
-- (void)removeEntriesWithOptions:(unint64_t)a3 passingTest:(id)a4;
-- (void)removeKeysForObject:(id)a3;
+- (void)removeEntriesInDictionary:(id)dictionary;
+- (void)removeEntriesPassingTest:(id)test;
+- (void)removeEntriesWithOptions:(unint64_t)options passingTest:(id)test;
+- (void)removeKeysForObject:(id)object;
 - (void)removeObjectForKey:(id)aKey;
 - (void)removeObjectsForKeys:(NSArray *)keyArray;
-- (void)replaceObject:(id)a3 forKey:(id)a4;
-- (void)replaceObjects:(const void *)a3 forKeys:(const void *)a4 count:(unint64_t)a5;
-- (void)replaceObjects:(id)a3 forKeys:(id)a4;
+- (void)replaceObject:(id)object forKey:(id)key;
+- (void)replaceObjects:(const void *)objects forKeys:(const void *)keys count:(unint64_t)count;
+- (void)replaceObjects:(id)objects forKeys:(id)keys;
 - (void)setDictionary:(NSDictionary *)otherDictionary;
-- (void)setEntriesFromDictionary:(id)a3;
+- (void)setEntriesFromDictionary:(id)dictionary;
 - (void)setObject:(id)anObject forKey:(id)aKey;
 - (void)setObject:(id)obj forKeyedSubscript:(id)key;
-- (void)setObjects:(const void *)a3 forKeys:(const void *)a4 count:(unint64_t)a5;
-- (void)setObjects:(id)a3 forKeys:(id)a4;
+- (void)setObjects:(const void *)objects forKeys:(const void *)keys count:(unint64_t)count;
+- (void)setObjects:(id)objects forKeys:(id)keys;
 @end
 
 @implementation NSMutableDictionary
@@ -92,13 +92,13 @@ LABEL_4:
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addObject:(id)a3 forKey:(id)a4
+- (void)addObject:(id)object forKey:(id)key
 {
   v16[1] = *MEMORY[0x1E69E9840];
   [(NSMutableDictionary *)self _mutate];
   if (!__cf_tsanWriteFunction)
   {
-    if (a3)
+    if (object)
     {
       goto LABEL_3;
     }
@@ -114,13 +114,13 @@ LABEL_10:
   }
 
   __cf_tsanWriteFunction(self, v4, __CFTSANTagMutableDictionary);
-  if (!a3)
+  if (!object)
   {
     goto LABEL_10;
   }
 
 LABEL_3:
-  if (!a4)
+  if (!key)
   {
     v10 = _os_log_pack_size();
     v11 = v16 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
@@ -133,7 +133,7 @@ LABEL_12:
     objc_exception_throw(v15);
   }
 
-  if ([(NSDictionary *)self objectForKey:a4])
+  if ([(NSDictionary *)self objectForKey:key])
   {
     v8 = *MEMORY[0x1E69E9840];
   }
@@ -142,35 +142,35 @@ LABEL_12:
   {
     v9 = *MEMORY[0x1E69E9840];
 
-    [(NSMutableDictionary *)self setObject:a3 forKey:a4];
+    [(NSMutableDictionary *)self setObject:object forKey:key];
   }
 }
 
-- (void)addObjects:(const void *)a3 forKeys:(const void *)a4 count:(unint64_t)a5
+- (void)addObjects:(const void *)objects forKeys:(const void *)keys count:(unint64_t)count
 {
   v22[1] = *MEMORY[0x1E69E9840];
   [(NSMutableDictionary *)self _mutate];
   if (__cf_tsanWriteFunction)
   {
     __cf_tsanWriteFunction(self, v5, __CFTSANTagMutableDictionary);
-    if (a3)
+    if (objects)
     {
       goto LABEL_4;
     }
   }
 
-  else if (a3)
+  else if (objects)
   {
     goto LABEL_4;
   }
 
-  if (a5)
+  if (count)
   {
     goto LABEL_22;
   }
 
 LABEL_4:
-  if (a5 >> 61)
+  if (count >> 61)
   {
     v16 = _os_log_pack_size();
     v17 = v22 - ((v16 + 15) & 0xFFFFFFFFFFFFFFF0);
@@ -178,12 +178,12 @@ LABEL_4:
     *v18 = 136315394;
     *(v18 + 4) = "[NSMutableDictionary addObjects:forKeys:count:]";
     *(v18 + 12) = 2048;
-    *(v18 + 14) = a5;
-    v19 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: count (%lu) of objects array is ridiculous", "[NSMutableDictionary addObjects:forKeys:count:]", a5);
+    *(v18 + 14) = count;
+    v19 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: count (%lu) of objects array is ridiculous", "[NSMutableDictionary addObjects:forKeys:count:]", count);
     goto LABEL_23;
   }
 
-  if (!a5)
+  if (!count)
   {
     goto LABEL_16;
   }
@@ -191,7 +191,7 @@ LABEL_4:
   v10 = 0;
   do
   {
-    if (!a3[v10])
+    if (!objects[v10])
     {
 LABEL_19:
       v12 = _os_log_pack_size();
@@ -208,8 +208,8 @@ LABEL_19:
     ++v10;
   }
 
-  while (a5 != v10);
-  if (!a4)
+  while (count != v10);
+  if (!keys)
   {
 LABEL_22:
     v16 = _os_log_pack_size();
@@ -218,8 +218,8 @@ LABEL_22:
     *v20 = 136315394;
     *(v20 + 4) = "[NSMutableDictionary addObjects:forKeys:count:]";
     *(v20 + 12) = 2048;
-    *(v20 + 14) = a5;
-    v19 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: pointer to objects array is NULL but length is %lu", "[NSMutableDictionary addObjects:forKeys:count:]", a5);
+    *(v20 + 14) = count;
+    v19 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: pointer to objects array is NULL but length is %lu", "[NSMutableDictionary addObjects:forKeys:count:]", count);
 LABEL_23:
     v21 = [NSException exceptionWithName:@"NSInvalidArgumentException" reason:_CFAutoreleasePoolAddObject(0 userInfo:v19) osLogPack:0 size:v17, v16];
     objc_exception_throw(v21);
@@ -228,7 +228,7 @@ LABEL_23:
   v10 = 0;
   do
   {
-    if (!a4[v10])
+    if (!keys[v10])
     {
       goto LABEL_19;
     }
@@ -236,43 +236,43 @@ LABEL_23:
     ++v10;
   }
 
-  while (a5 != v10);
+  while (count != v10);
   do
   {
-    if (![(NSDictionary *)self objectForKey:*a4])
+    if (![(NSDictionary *)self objectForKey:*keys])
     {
-      [(NSMutableDictionary *)self setObject:*a3 forKey:*a4];
+      [(NSMutableDictionary *)self setObject:*objects forKey:*keys];
     }
 
-    ++a3;
-    ++a4;
-    --a5;
+    ++objects;
+    ++keys;
+    --count;
   }
 
-  while (a5);
+  while (count);
 LABEL_16:
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addObjects:(id)a3 forKeys:(id)a4
+- (void)addObjects:(id)objects forKeys:(id)keys
 {
   v20[1] = *MEMORY[0x1E69E9840];
   [(NSMutableDictionary *)self _mutate];
   if (__cf_tsanWriteFunction)
   {
     __cf_tsanWriteFunction(self, v4, __CFTSANTagMutableDictionary);
-    if (!a3)
+    if (!objects)
     {
       goto LABEL_4;
     }
   }
 
-  else if (!a3)
+  else if (!objects)
   {
     goto LABEL_4;
   }
 
-  if ((_NSIsNSArray(a3) & 1) == 0)
+  if ((_NSIsNSArray(objects) & 1) == 0)
   {
     v14 = _os_log_pack_size();
     v15 = v20 - ((v14 + 15) & 0xFFFFFFFFFFFFFFF0);
@@ -284,7 +284,7 @@ LABEL_16:
   }
 
 LABEL_4:
-  if (a4 && (_NSIsNSArray(a4) & 1) == 0)
+  if (keys && (_NSIsNSArray(keys) & 1) == 0)
   {
     v14 = _os_log_pack_size();
     v15 = v20 - ((v14 + 15) & 0xFFFFFFFFFFFFFFF0);
@@ -297,20 +297,20 @@ LABEL_16:
     objc_exception_throw(v19);
   }
 
-  v8 = [a3 count];
-  v9 = [a4 count];
+  v8 = [objects count];
+  v9 = [keys count];
   if (v8 != v9)
   {
     _CFThrowFormattedException(@"NSInvalidArgumentException", @"*** %s: count of objects (%lu) differs from count of keys (%lu)", "[NSMutableDictionary addObjects:forKeys:]", v8, v9);
   }
 
-  v10 = [a3 count];
+  v10 = [objects count];
   if (v10)
   {
     v11 = v10;
     for (i = 0; i != v11; ++i)
     {
-      -[NSMutableDictionary addObject:forKey:](self, "addObject:forKey:", [a3 objectAtIndex:i], objc_msgSend(a4, "objectAtIndex:", i));
+      -[NSMutableDictionary addObject:forKey:](self, "addObject:forKey:", [objects objectAtIndex:i], objc_msgSend(keys, "objectAtIndex:", i));
     }
   }
 
@@ -326,14 +326,14 @@ LABEL_16:
     __cf_tsanWriteFunction(self, v2, __CFTSANTagMutableDictionary);
   }
 
-  v4 = [(NSDictionary *)self allKeys];
-  v5 = [(NSDictionary *)self allValues];
+  allKeys = [(NSDictionary *)self allKeys];
+  allValues = [(NSDictionary *)self allValues];
   [(NSMutableDictionary *)self removeAllObjects];
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = [(NSArray *)v4 countByEnumeratingWithState:&v13 objects:v12 count:16];
+  v6 = [(NSArray *)allKeys countByEnumeratingWithState:&v13 objects:v12 count:16];
   if (v6)
   {
     v7 = v6;
@@ -346,14 +346,14 @@ LABEL_16:
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allKeys);
         }
 
-        [(NSMutableDictionary *)self setObject:*(*(&v13 + 1) + 8 * v10++) forKey:[(NSArray *)v5 objectAtIndex:v8++]];
+        [(NSMutableDictionary *)self setObject:*(*(&v13 + 1) + 8 * v10++) forKey:[(NSArray *)allValues objectAtIndex:v8++]];
       }
 
       while (v7 != v10);
-      v7 = [(NSArray *)v4 countByEnumeratingWithState:&v13 objects:v12 count:16];
+      v7 = [(NSArray *)allKeys countByEnumeratingWithState:&v13 objects:v12 count:16];
     }
 
     while (v7);
@@ -417,25 +417,25 @@ LABEL_16:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeEntriesInDictionary:(id)a3
+- (void)removeEntriesInDictionary:(id)dictionary
 {
   v21 = *MEMORY[0x1E69E9840];
   [(NSMutableDictionary *)self _mutate];
   if (__cf_tsanWriteFunction)
   {
     __cf_tsanWriteFunction(self, v3, __CFTSANTagMutableDictionary);
-    if (!a3)
+    if (!dictionary)
     {
       goto LABEL_4;
     }
   }
 
-  else if (!a3)
+  else if (!dictionary)
   {
     goto LABEL_4;
   }
 
-  if ((_NSIsNSDictionary(a3) & 1) == 0)
+  if ((_NSIsNSDictionary(dictionary) & 1) == 0)
   {
     v12 = _os_log_pack_size();
     v13 = _os_log_pack_fill();
@@ -447,7 +447,7 @@ LABEL_16:
   }
 
 LABEL_4:
-  if (self == a3)
+  if (self == dictionary)
   {
     v11 = *MEMORY[0x1E69E9840];
 
@@ -460,7 +460,7 @@ LABEL_4:
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v6 = [a3 countByEnumeratingWithState:&v17 objects:v16 count:16];
+    v6 = [dictionary countByEnumeratingWithState:&v17 objects:v16 count:16];
     if (v6)
     {
       v7 = v6;
@@ -471,13 +471,13 @@ LABEL_4:
         {
           if (*v18 != v8)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(dictionary);
           }
 
           [(NSMutableDictionary *)self removeObjectForKey:*(*(&v17 + 1) + 8 * i)];
         }
 
-        v7 = [a3 countByEnumeratingWithState:&v17 objects:v16 count:16];
+        v7 = [dictionary countByEnumeratingWithState:&v17 objects:v16 count:16];
       }
 
       while (v7);
@@ -487,14 +487,14 @@ LABEL_4:
   }
 }
 
-- (void)removeEntriesWithOptions:(unint64_t)a3 passingTest:(id)a4
+- (void)removeEntriesWithOptions:(unint64_t)options passingTest:(id)test
 {
-  v6 = a3;
+  optionsCopy = options;
   v31 = *MEMORY[0x1E69E9840];
   [(NSMutableDictionary *)self _mutate];
   if (!__cf_tsanWriteFunction)
   {
-    if (a4)
+    if (test)
     {
       goto LABEL_3;
     }
@@ -510,13 +510,13 @@ LABEL_12:
   }
 
   __cf_tsanWriteFunction(self, v4, __CFTSANTagMutableDictionary);
-  if (!a4)
+  if (!test)
   {
     goto LABEL_12;
   }
 
 LABEL_3:
-  __NSDictionaryParameterCheckIterate(self, a2, a4);
+  __NSDictionaryParameterCheckIterate(self, a2, test);
   v9 = +[(NSSet *)NSMutableSet];
   v28 = 0u;
   v29 = 0u;
@@ -527,10 +527,10 @@ LABEL_3:
   v20[1] = 3221225472;
   v20[2] = __60__NSMutableDictionary_removeEntriesWithOptions_passingTest___block_invoke;
   v20[3] = &unk_1E6D82458;
-  v20[5] = a4;
+  v20[5] = test;
   v20[6] = &v26;
   v20[4] = v9;
-  __NSDictionaryEnumerate(self, v6 & 0xFD, v20);
+  __NSDictionaryEnumerate(self, optionsCopy & 0xFD, v20);
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
@@ -576,12 +576,12 @@ uint64_t __60__NSMutableDictionary_removeEntriesWithOptions_passingTest___block_
   return result;
 }
 
-- (void)removeEntriesPassingTest:(id)a3
+- (void)removeEntriesPassingTest:(id)test
 {
   v11[1] = *MEMORY[0x1E69E9840];
   if (!__cf_tsanWriteFunction)
   {
-    if (a3)
+    if (test)
     {
       goto LABEL_3;
     }
@@ -597,7 +597,7 @@ LABEL_7:
   }
 
   __cf_tsanWriteFunction(self, v3, __CFTSANTagMutableDictionary);
-  if (!a3)
+  if (!test)
   {
     goto LABEL_7;
   }
@@ -605,10 +605,10 @@ LABEL_7:
 LABEL_3:
   v6 = *MEMORY[0x1E69E9840];
 
-  [(NSMutableDictionary *)self removeEntriesWithOptions:0 passingTest:a3];
+  [(NSMutableDictionary *)self removeEntriesWithOptions:0 passingTest:test];
 }
 
-- (void)removeKeysForObject:(id)a3
+- (void)removeKeysForObject:(id)object
 {
   v27 = *MEMORY[0x1E69E9840];
   [(NSMutableDictionary *)self _mutate];
@@ -637,7 +637,7 @@ LABEL_3:
         }
 
         v11 = *(*(&v23 + 1) + 8 * i);
-        if ([(NSDictionary *)self objectForKey:v11]== a3)
+        if ([(NSDictionary *)self objectForKey:v11]== object)
         {
           [(NSArray *)v6 addObject:v11];
         }
@@ -739,13 +739,13 @@ LABEL_4:
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)replaceObject:(id)a3 forKey:(id)a4
+- (void)replaceObject:(id)object forKey:(id)key
 {
   v16[1] = *MEMORY[0x1E69E9840];
   [(NSMutableDictionary *)self _mutate];
   if (!__cf_tsanWriteFunction)
   {
-    if (a3)
+    if (object)
     {
       goto LABEL_3;
     }
@@ -761,13 +761,13 @@ LABEL_10:
   }
 
   __cf_tsanWriteFunction(self, v4, __CFTSANTagMutableDictionary);
-  if (!a3)
+  if (!object)
   {
     goto LABEL_10;
   }
 
 LABEL_3:
-  if (!a4)
+  if (!key)
   {
     v10 = _os_log_pack_size();
     v11 = v16 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
@@ -780,11 +780,11 @@ LABEL_12:
     objc_exception_throw(v15);
   }
 
-  if ([(NSDictionary *)self objectForKey:a4])
+  if ([(NSDictionary *)self objectForKey:key])
   {
     v8 = *MEMORY[0x1E69E9840];
 
-    [(NSMutableDictionary *)self setObject:a3 forKey:a4];
+    [(NSMutableDictionary *)self setObject:object forKey:key];
   }
 
   else
@@ -793,31 +793,31 @@ LABEL_12:
   }
 }
 
-- (void)replaceObjects:(const void *)a3 forKeys:(const void *)a4 count:(unint64_t)a5
+- (void)replaceObjects:(const void *)objects forKeys:(const void *)keys count:(unint64_t)count
 {
   v25[1] = *MEMORY[0x1E69E9840];
   [(NSMutableDictionary *)self _mutate];
   if (__cf_tsanWriteFunction)
   {
     __cf_tsanWriteFunction(self, v5, __CFTSANTagMutableDictionary);
-    if (a3)
+    if (objects)
     {
       goto LABEL_4;
     }
   }
 
-  else if (a3)
+  else if (objects)
   {
     goto LABEL_4;
   }
 
-  if (a5)
+  if (count)
   {
     goto LABEL_20;
   }
 
 LABEL_4:
-  if (a5 >> 61)
+  if (count >> 61)
   {
     v19 = _os_log_pack_size();
     v20 = v25 - ((v19 + 15) & 0xFFFFFFFFFFFFFFF0);
@@ -825,12 +825,12 @@ LABEL_4:
     *v21 = 136315394;
     *(v21 + 4) = "[NSMutableDictionary replaceObjects:forKeys:count:]";
     *(v21 + 12) = 2048;
-    *(v21 + 14) = a5;
-    v22 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: count (%lu) of objects array is ridiculous", "[NSMutableDictionary replaceObjects:forKeys:count:]", a5);
+    *(v21 + 14) = count;
+    v22 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: count (%lu) of objects array is ridiculous", "[NSMutableDictionary replaceObjects:forKeys:count:]", count);
     goto LABEL_21;
   }
 
-  if (!a5)
+  if (!count)
   {
     goto LABEL_14;
   }
@@ -838,7 +838,7 @@ LABEL_4:
   v10 = 0;
   do
   {
-    if (!a3[v10])
+    if (!objects[v10])
     {
 LABEL_17:
       v15 = _os_log_pack_size();
@@ -855,8 +855,8 @@ LABEL_17:
     ++v10;
   }
 
-  while (a5 != v10);
-  if (!a4)
+  while (count != v10);
+  if (!keys)
   {
 LABEL_20:
     v19 = _os_log_pack_size();
@@ -865,8 +865,8 @@ LABEL_20:
     *v23 = 136315394;
     *(v23 + 4) = "[NSMutableDictionary replaceObjects:forKeys:count:]";
     *(v23 + 12) = 2048;
-    *(v23 + 14) = a5;
-    v22 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: pointer to objects array is NULL but length is %lu", "[NSMutableDictionary replaceObjects:forKeys:count:]", a5);
+    *(v23 + 14) = count;
+    v22 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: pointer to objects array is NULL but length is %lu", "[NSMutableDictionary replaceObjects:forKeys:count:]", count);
 LABEL_21:
     v24 = [NSException exceptionWithName:@"NSInvalidArgumentException" reason:_CFAutoreleasePoolAddObject(0 userInfo:v22) osLogPack:0 size:v20, v19];
     objc_exception_throw(v24);
@@ -875,7 +875,7 @@ LABEL_21:
   v10 = 0;
   do
   {
-    if (!a4[v10])
+    if (!keys[v10])
     {
       goto LABEL_17;
     }
@@ -883,40 +883,40 @@ LABEL_21:
     ++v10;
   }
 
-  while (a5 != v10);
+  while (count != v10);
   do
   {
-    v12 = *a3++;
+    v12 = *objects++;
     v11 = v12;
-    v13 = *a4++;
+    v13 = *keys++;
     [(NSMutableDictionary *)self replaceObject:v11 forKey:v13];
-    --a5;
+    --count;
   }
 
-  while (a5);
+  while (count);
 LABEL_14:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)replaceObjects:(id)a3 forKeys:(id)a4
+- (void)replaceObjects:(id)objects forKeys:(id)keys
 {
   v20[1] = *MEMORY[0x1E69E9840];
   [(NSMutableDictionary *)self _mutate];
   if (__cf_tsanWriteFunction)
   {
     __cf_tsanWriteFunction(self, v4, __CFTSANTagMutableDictionary);
-    if (!a3)
+    if (!objects)
     {
       goto LABEL_4;
     }
   }
 
-  else if (!a3)
+  else if (!objects)
   {
     goto LABEL_4;
   }
 
-  if ((_NSIsNSArray(a3) & 1) == 0)
+  if ((_NSIsNSArray(objects) & 1) == 0)
   {
     v14 = _os_log_pack_size();
     v15 = v20 - ((v14 + 15) & 0xFFFFFFFFFFFFFFF0);
@@ -928,7 +928,7 @@ LABEL_14:
   }
 
 LABEL_4:
-  if (a4 && (_NSIsNSArray(a4) & 1) == 0)
+  if (keys && (_NSIsNSArray(keys) & 1) == 0)
   {
     v14 = _os_log_pack_size();
     v15 = v20 - ((v14 + 15) & 0xFFFFFFFFFFFFFFF0);
@@ -941,45 +941,45 @@ LABEL_16:
     objc_exception_throw(v19);
   }
 
-  v8 = [a3 count];
-  v9 = [a4 count];
+  v8 = [objects count];
+  v9 = [keys count];
   if (v8 != v9)
   {
     _CFThrowFormattedException(@"NSInvalidArgumentException", @"*** %s: count of objects (%lu) differs from count of keys (%lu)", "[NSMutableDictionary replaceObjects:forKeys:]", v8, v9);
   }
 
-  v10 = [a3 count];
+  v10 = [objects count];
   if (v10)
   {
     v11 = v10;
     for (i = 0; i != v11; ++i)
     {
-      -[NSMutableDictionary replaceObject:forKey:](self, "replaceObject:forKey:", [a3 objectAtIndex:i], objc_msgSend(a4, "objectAtIndex:", i));
+      -[NSMutableDictionary replaceObject:forKey:](self, "replaceObject:forKey:", [objects objectAtIndex:i], objc_msgSend(keys, "objectAtIndex:", i));
     }
   }
 
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setEntriesFromDictionary:(id)a3
+- (void)setEntriesFromDictionary:(id)dictionary
 {
   v20 = *MEMORY[0x1E69E9840];
   [(NSMutableDictionary *)self _mutate];
   if (__cf_tsanWriteFunction)
   {
     __cf_tsanWriteFunction(self, v3, __CFTSANTagMutableDictionary);
-    if (!a3)
+    if (!dictionary)
     {
       goto LABEL_4;
     }
   }
 
-  else if (!a3)
+  else if (!dictionary)
   {
     goto LABEL_4;
   }
 
-  if ((_NSIsNSDictionary(a3) & 1) == 0)
+  if ((_NSIsNSDictionary(dictionary) & 1) == 0)
   {
     v11 = _os_log_pack_size();
     v12 = _os_log_pack_fill();
@@ -991,13 +991,13 @@ LABEL_16:
   }
 
 LABEL_4:
-  if (self != a3)
+  if (self != dictionary)
   {
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v6 = [a3 countByEnumeratingWithState:&v16 objects:v15 count:16];
+    v6 = [dictionary countByEnumeratingWithState:&v16 objects:v15 count:16];
     if (v6)
     {
       v7 = v6;
@@ -1008,13 +1008,13 @@ LABEL_4:
         {
           if (*v17 != v8)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(dictionary);
           }
 
-          -[NSMutableDictionary setObject:forKey:](self, "setObject:forKey:", [a3 objectForKey:*(*(&v16 + 1) + 8 * i)], *(*(&v16 + 1) + 8 * i));
+          -[NSMutableDictionary setObject:forKey:](self, "setObject:forKey:", [dictionary objectForKey:*(*(&v16 + 1) + 8 * i)], *(*(&v16 + 1) + 8 * i));
         }
 
-        v7 = [a3 countByEnumeratingWithState:&v16 objects:v15 count:16];
+        v7 = [dictionary countByEnumeratingWithState:&v16 objects:v15 count:16];
       }
 
       while (v7);
@@ -1044,31 +1044,31 @@ LABEL_4:
   }
 }
 
-- (void)setObjects:(const void *)a3 forKeys:(const void *)a4 count:(unint64_t)a5
+- (void)setObjects:(const void *)objects forKeys:(const void *)keys count:(unint64_t)count
 {
   v25[1] = *MEMORY[0x1E69E9840];
   [(NSMutableDictionary *)self _mutate];
   if (__cf_tsanWriteFunction)
   {
     __cf_tsanWriteFunction(self, v5, __CFTSANTagMutableDictionary);
-    if (a3)
+    if (objects)
     {
       goto LABEL_4;
     }
   }
 
-  else if (a3)
+  else if (objects)
   {
     goto LABEL_4;
   }
 
-  if (a5)
+  if (count)
   {
     goto LABEL_20;
   }
 
 LABEL_4:
-  if (a5 >> 61)
+  if (count >> 61)
   {
     v19 = _os_log_pack_size();
     v20 = v25 - ((v19 + 15) & 0xFFFFFFFFFFFFFFF0);
@@ -1076,12 +1076,12 @@ LABEL_4:
     *v21 = 136315394;
     *(v21 + 4) = "[NSMutableDictionary setObjects:forKeys:count:]";
     *(v21 + 12) = 2048;
-    *(v21 + 14) = a5;
-    v22 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: count (%lu) of objects array is ridiculous", "[NSMutableDictionary setObjects:forKeys:count:]", a5);
+    *(v21 + 14) = count;
+    v22 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: count (%lu) of objects array is ridiculous", "[NSMutableDictionary setObjects:forKeys:count:]", count);
     goto LABEL_21;
   }
 
-  if (!a5)
+  if (!count)
   {
     goto LABEL_14;
   }
@@ -1089,7 +1089,7 @@ LABEL_4:
   v10 = 0;
   do
   {
-    if (!a3[v10])
+    if (!objects[v10])
     {
 LABEL_17:
       v15 = _os_log_pack_size();
@@ -1106,8 +1106,8 @@ LABEL_17:
     ++v10;
   }
 
-  while (a5 != v10);
-  if (!a4)
+  while (count != v10);
+  if (!keys)
   {
 LABEL_20:
     v19 = _os_log_pack_size();
@@ -1116,8 +1116,8 @@ LABEL_20:
     *v23 = 136315394;
     *(v23 + 4) = "[NSMutableDictionary setObjects:forKeys:count:]";
     *(v23 + 12) = 2048;
-    *(v23 + 14) = a5;
-    v22 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: pointer to objects array is NULL but length is %lu", "[NSMutableDictionary setObjects:forKeys:count:]", a5);
+    *(v23 + 14) = count;
+    v22 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: pointer to objects array is NULL but length is %lu", "[NSMutableDictionary setObjects:forKeys:count:]", count);
 LABEL_21:
     v24 = [NSException exceptionWithName:@"NSInvalidArgumentException" reason:_CFAutoreleasePoolAddObject(0 userInfo:v22) osLogPack:0 size:v20, v19];
     objc_exception_throw(v24);
@@ -1126,7 +1126,7 @@ LABEL_21:
   v10 = 0;
   do
   {
-    if (!a4[v10])
+    if (!keys[v10])
     {
       goto LABEL_17;
     }
@@ -1134,40 +1134,40 @@ LABEL_21:
     ++v10;
   }
 
-  while (a5 != v10);
+  while (count != v10);
   do
   {
-    v12 = *a3++;
+    v12 = *objects++;
     v11 = v12;
-    v13 = *a4++;
+    v13 = *keys++;
     [(NSMutableDictionary *)self setObject:v11 forKey:v13];
-    --a5;
+    --count;
   }
 
-  while (a5);
+  while (count);
 LABEL_14:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setObjects:(id)a3 forKeys:(id)a4
+- (void)setObjects:(id)objects forKeys:(id)keys
 {
   v18[1] = *MEMORY[0x1E69E9840];
   [(NSMutableDictionary *)self _mutate];
   if (__cf_tsanWriteFunction)
   {
     __cf_tsanWriteFunction(self, v4, __CFTSANTagMutableDictionary);
-    if (!a3)
+    if (!objects)
     {
       goto LABEL_4;
     }
   }
 
-  else if (!a3)
+  else if (!objects)
   {
     goto LABEL_4;
   }
 
-  if ((_NSIsNSArray(a3) & 1) == 0)
+  if ((_NSIsNSArray(objects) & 1) == 0)
   {
     v12 = _os_log_pack_size();
     v13 = v18 - ((v12 + 15) & 0xFFFFFFFFFFFFFFF0);
@@ -1179,7 +1179,7 @@ LABEL_14:
   }
 
 LABEL_4:
-  if (a4 && (_NSIsNSArray(a4) & 1) == 0)
+  if (keys && (_NSIsNSArray(keys) & 1) == 0)
   {
     v12 = _os_log_pack_size();
     v13 = v18 - ((v12 + 15) & 0xFFFFFFFFFFFFFFF0);
@@ -1192,8 +1192,8 @@ LABEL_16:
     objc_exception_throw(v17);
   }
 
-  v8 = [a3 count];
-  v9 = [a4 count];
+  v8 = [objects count];
+  v9 = [keys count];
   if (v8 != v9)
   {
     _CFThrowFormattedException(@"NSInvalidArgumentException", @"*** %s: count of objects (%lu) differs from count of keys (%lu)", "[NSMutableDictionary setObjects:forKeys:]", v8, v9);
@@ -1203,7 +1203,7 @@ LABEL_16:
   {
     for (i = 0; i != v8; ++i)
     {
-      -[NSMutableDictionary setObject:forKey:](self, "setObject:forKey:", [a3 objectAtIndex:i], objc_msgSend(a4, "objectAtIndex:", i));
+      -[NSMutableDictionary setObject:forKey:](self, "setObject:forKey:", [objects objectAtIndex:i], objc_msgSend(keys, "objectAtIndex:", i));
     }
   }
 
@@ -1274,13 +1274,13 @@ LABEL_4:
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)__addObject:(id)a3 forKey:(id)a4
+- (void)__addObject:(id)object forKey:(id)key
 {
   v16[1] = *MEMORY[0x1E69E9840];
   [(NSMutableDictionary *)self _mutate];
   if (!__cf_tsanWriteFunction)
   {
-    if (a3)
+    if (object)
     {
       goto LABEL_3;
     }
@@ -1296,13 +1296,13 @@ LABEL_10:
   }
 
   __cf_tsanWriteFunction(self, v4, __CFTSANTagMutableDictionary);
-  if (!a3)
+  if (!object)
   {
     goto LABEL_10;
   }
 
 LABEL_3:
-  if (!a4)
+  if (!key)
   {
     v10 = _os_log_pack_size();
     v11 = v16 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
@@ -1315,7 +1315,7 @@ LABEL_12:
     objc_exception_throw(v15);
   }
 
-  if ([(NSDictionary *)self objectForKey:a4])
+  if ([(NSDictionary *)self objectForKey:key])
   {
     v8 = *MEMORY[0x1E69E9840];
   }
@@ -1324,17 +1324,17 @@ LABEL_12:
   {
     v9 = *MEMORY[0x1E69E9840];
 
-    [(NSMutableDictionary *)self __setObject:a3 forKey:a4];
+    [(NSMutableDictionary *)self __setObject:object forKey:key];
   }
 }
 
-- (void)__setObject:(id)a3 forKey:(id)a4
+- (void)__setObject:(id)object forKey:(id)key
 {
   v21[1] = *MEMORY[0x1E69E9840];
   [(NSMutableDictionary *)self _mutate];
   if (!__cf_tsanWriteFunction)
   {
-    if (a3)
+    if (object)
     {
       goto LABEL_3;
     }
@@ -1350,13 +1350,13 @@ LABEL_10:
   }
 
   __cf_tsanWriteFunction(self, v4, __CFTSANTagMutableDictionary);
-  if (!a3)
+  if (!object)
   {
     goto LABEL_10;
   }
 
 LABEL_3:
-  if (!a4)
+  if (!key)
   {
     v15 = _os_log_pack_size();
     v16 = v21 - ((v15 + 15) & 0xFFFFFFFFFFFFFFF0);
@@ -1376,21 +1376,21 @@ LABEL_12:
 
   v14 = *MEMORY[0x1E69E9840];
 
-  [(NSMutableDictionary *)self setObject:a3 forKey:a4];
+  [(NSMutableDictionary *)self setObject:object forKey:key];
 }
 
-- (NSMutableDictionary)initWithObjects:(const void *)a3 forKeys:(const void *)a4 count:(unint64_t)a5
+- (NSMutableDictionary)initWithObjects:(const void *)objects forKeys:(const void *)keys count:(unint64_t)count
 {
-  v5 = a5;
-  v6 = a4;
-  v7 = a3;
+  countCopy = count;
+  keysCopy = keys;
+  objectsCopy = objects;
   v26[1] = *MEMORY[0x1E69E9840];
-  if (!a3 && a5)
+  if (!objects && count)
   {
     goto LABEL_21;
   }
 
-  if (a5 >> 61)
+  if (count >> 61)
   {
     v20 = _os_log_pack_size();
     v21 = v26 - ((v20 + 15) & 0xFFFFFFFFFFFFFFF0);
@@ -1398,21 +1398,21 @@ LABEL_12:
     *v22 = 136315394;
     *(v22 + 4) = "[NSMutableDictionary initWithObjects:forKeys:count:]";
     *(v22 + 12) = 2048;
-    *(v22 + 14) = v5;
-    v23 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: count (%lu) of objects array is ridiculous", "[NSMutableDictionary initWithObjects:forKeys:count:]", v5);
+    *(v22 + 14) = countCopy;
+    v23 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: count (%lu) of objects array is ridiculous", "[NSMutableDictionary initWithObjects:forKeys:count:]", countCopy);
     goto LABEL_22;
   }
 
-  if (!a5)
+  if (!count)
   {
     v15 = *MEMORY[0x1E69E9840];
 
     return [(NSMutableDictionary *)self initWithCapacity:0];
   }
 
-  for (i = 0; i != a5; ++i)
+  for (i = 0; i != count; ++i)
   {
-    if (!a3[i])
+    if (!objects[i])
     {
 LABEL_18:
       v16 = _os_log_pack_size();
@@ -1427,7 +1427,7 @@ LABEL_18:
     }
   }
 
-  if (!a4)
+  if (!keys)
   {
 LABEL_21:
     v20 = _os_log_pack_size();
@@ -1436,39 +1436,39 @@ LABEL_21:
     *v24 = 136315394;
     *(v24 + 4) = "[NSMutableDictionary initWithObjects:forKeys:count:]";
     *(v24 + 12) = 2048;
-    *(v24 + 14) = v5;
-    v23 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: pointer to objects array is NULL but length is %lu", "[NSMutableDictionary initWithObjects:forKeys:count:]", v5);
+    *(v24 + 14) = countCopy;
+    v23 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: pointer to objects array is NULL but length is %lu", "[NSMutableDictionary initWithObjects:forKeys:count:]", countCopy);
 LABEL_22:
     v25 = [NSException exceptionWithName:@"NSInvalidArgumentException" reason:_CFAutoreleasePoolAddObject(0 userInfo:v23) osLogPack:0 size:v21, v20];
     objc_exception_throw(v25);
   }
 
-  for (i = 0; i != a5; ++i)
+  for (i = 0; i != count; ++i)
   {
-    if (!a4[i])
+    if (!keys[i])
     {
       goto LABEL_18;
     }
   }
 
-  v9 = [(NSMutableDictionary *)self initWithCapacity:a5];
+  v9 = [(NSMutableDictionary *)self initWithCapacity:count];
   do
   {
-    v11 = *v7++;
+    v11 = *objectsCopy++;
     v10 = v11;
-    v12 = *v6++;
+    v12 = *keysCopy++;
     [(NSMutableDictionary *)v9 setObject:v10 forKey:v12];
-    --v5;
+    --countCopy;
   }
 
-  while (v5);
+  while (countCopy);
   v13 = *MEMORY[0x1E69E9840];
   return v9;
 }
 
 + (NSMutableDictionary)dictionaryWithCapacity:(NSUInteger)numItems
 {
-  v3 = [[a1 alloc] initWithCapacity:numItems];
+  v3 = [[self alloc] initWithCapacity:numItems];
 
   return v3;
 }
@@ -1477,14 +1477,14 @@ LABEL_22:
 {
   if (!keyset)
   {
-    v10 = __CFExceptionProem(a1, a2);
+    v10 = __CFExceptionProem(self, a2);
     v7 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"%@: keyset cannot be nil", v10);
     goto LABEL_12;
   }
 
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v8 = __CFExceptionProem(a1, a2);
+    v8 = __CFExceptionProem(self, a2);
     v11 = objc_opt_class();
     v7 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"%@: keyset must be an object created by +sharedKeySetForKeys: instead of '%@'", v8, v11);
 LABEL_12:

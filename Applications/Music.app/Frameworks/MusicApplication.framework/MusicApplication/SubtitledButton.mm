@@ -1,17 +1,17 @@
 @interface SubtitledButton
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC16MusicApplication15SubtitledButton)initWithCoder:(id)a3;
-- (_TtC16MusicApplication15SubtitledButton)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC16MusicApplication15SubtitledButton)initWithCoder:(id)coder;
+- (_TtC16MusicApplication15SubtitledButton)initWithFrame:(CGRect)frame;
 @end
 
 @implementation SubtitledButton
 
-- (_TtC16MusicApplication15SubtitledButton)initWithFrame:(CGRect)a3
+- (_TtC16MusicApplication15SubtitledButton)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   ObjectType = swift_getObjectType();
   v9 = (&self->super.super.super.super.super.isa + OBJC_IVAR____TtC16MusicApplication15SubtitledButton_title);
   *v9 = 0;
@@ -23,13 +23,13 @@
   *(&self->super.super.super.super.super.isa + v11) = [objc_opt_self() whiteColor];
   v14.receiver = self;
   v14.super_class = ObjectType;
-  v12 = [(MultilineButton *)&v14 initWithFrame:x, y, width, height];
+  height = [(MultilineButton *)&v14 initWithFrame:x, y, width, height];
   sub_458374();
 
-  return v12;
+  return height;
 }
 
-- (_TtC16MusicApplication15SubtitledButton)initWithCoder:(id)a3
+- (_TtC16MusicApplication15SubtitledButton)initWithCoder:(id)coder
 {
   v3 = (&self->super.super.super.super.super.isa + OBJC_IVAR____TtC16MusicApplication15SubtitledButton_title);
   *v3 = 0;
@@ -44,10 +44,10 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
   [(MultilineButton *)&v7 sizeThatFits:width, height];

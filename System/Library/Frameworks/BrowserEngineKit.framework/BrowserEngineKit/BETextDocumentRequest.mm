@@ -1,21 +1,21 @@
 @interface BETextDocumentRequest
 - (CGRect)_documentRect;
-- (id)_initWithUIKitDocumentRequest:(id)a3;
+- (id)_initWithUIKitDocumentRequest:(id)request;
 - (int64_t)options;
 @end
 
 @implementation BETextDocumentRequest
 
-- (id)_initWithUIKitDocumentRequest:(id)a3
+- (id)_initWithUIKitDocumentRequest:(id)request
 {
-  v5 = a3;
+  requestCopy = request;
   v9.receiver = self;
   v9.super_class = BETextDocumentRequest;
   v6 = [(BETextDocumentRequest *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_backingDocumentRequest, a3);
+    objc_storeStrong(&v6->_backingDocumentRequest, request);
   }
 
   return v7;
@@ -33,10 +33,10 @@
 
 - (int64_t)options
 {
-  v2 = [(BETextDocumentRequest *)self backingDocumentRequest];
-  v3 = [v2 flags];
+  backingDocumentRequest = [(BETextDocumentRequest *)self backingDocumentRequest];
+  flags = [backingDocumentRequest flags];
 
-  return v3;
+  return flags;
 }
 
 @end

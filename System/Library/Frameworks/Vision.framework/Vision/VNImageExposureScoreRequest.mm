@@ -1,21 +1,21 @@
 @interface VNImageExposureScoreRequest
-- (BOOL)internalPerformRevision:(unint64_t)a3 inContext:(id)a4 error:(id *)a5;
-- (id)applicableDetectorTypeForRevision:(unint64_t)a3 error:(id *)a4;
+- (BOOL)internalPerformRevision:(unint64_t)revision inContext:(id)context error:(id *)error;
+- (id)applicableDetectorTypeForRevision:(unint64_t)revision error:(id *)error;
 @end
 
 @implementation VNImageExposureScoreRequest
 
-- (BOOL)internalPerformRevision:(unint64_t)a3 inContext:(id)a4 error:(id *)a5
+- (BOOL)internalPerformRevision:(unint64_t)revision inContext:(id)context error:(id *)error
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v8 = a4;
+  contextCopy = context;
   VNValidatedLog(1, @"Processing VNImageBrightnessMetric request\n", v9, v10, v11, v12, v13, v14, v24);
-  v15 = [v8 imageBufferAndReturnError:a5];
+  v15 = [contextCopy imageBufferAndReturnError:error];
   if (v15)
   {
-    v16 = [v8 session];
+    session = [contextCopy session];
     v25 = 0;
-    v17 = [(VNRequest *)self applicableDetectorAndOptions:&v25 forRevision:a3 loadedInSession:v16 error:a5];
+    v17 = [(VNRequest *)self applicableDetectorAndOptions:&v25 forRevision:revision loadedInSession:session error:error];
     v18 = v25;
     if (v17)
     {
@@ -23,9 +23,9 @@
       v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:1];
       [v18 setObject:v19 forKeyedSubscript:@"VNDetectorProcessOption_InputImageBuffers"];
 
-      v20 = [v8 qosClass];
+      qosClass = [contextCopy qosClass];
       [(VNImageBasedRequest *)self regionOfInterest];
-      v21 = [v17 processUsingQualityOfServiceClass:v20 options:v18 regionOfInterest:self warningRecorder:a5 error:0 progressHandler:?];
+      v21 = [v17 processUsingQualityOfServiceClass:qosClass options:v18 regionOfInterest:self warningRecorder:error error:0 progressHandler:?];
       v22 = v21 != 0;
       if (v21)
       {
@@ -47,18 +47,18 @@
   return v22;
 }
 
-- (id)applicableDetectorTypeForRevision:(unint64_t)a3 error:(id *)a4
+- (id)applicableDetectorTypeForRevision:(unint64_t)revision error:(id *)error
 {
-  if (a3 == 1)
+  if (revision == 1)
   {
     v4 = @"VNBrightnessDetectorType";
     v5 = @"VNBrightnessDetectorType";
   }
 
-  else if (a4)
+  else if (error)
   {
     [VNError errorForUnsupportedRevision:"errorForUnsupportedRevision:ofRequest:" ofRequest:?];
-    *a4 = v4 = 0;
+    *error = v4 = 0;
   }
 
   else

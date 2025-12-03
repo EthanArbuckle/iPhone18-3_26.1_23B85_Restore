@@ -1,9 +1,9 @@
 @interface SUTabBarAppearance
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)titleTextAttributesForState:(unint64_t)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)titleTextAttributesForState:(unint64_t)state;
 - (void)dealloc;
-- (void)enumerateTitleTextAttributesUsingBlock:(id)a3;
-- (void)setTitleTextAttributes:(id)a3 forState:(unint64_t)a4;
+- (void)enumerateTitleTextAttributesUsingBlock:(id)block;
+- (void)setTitleTextAttributes:(id)attributes forState:(unint64_t)state;
 @end
 
 @implementation SUTabBarAppearance
@@ -15,20 +15,20 @@
   [(SUTabBarAppearance *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(v5 + 8) = self->_backgroundImage;
   *(v5 + 16) = self->_dividerImage;
   *(v5 + 24) = self->_selectedDividerImage;
   *(v5 + 32) = self->_selectionIndicatorImage;
   *(v5 + 40) = self->_tabBarButtonSpacing;
   *(v5 + 48) = self->_tabBarButtonWidth;
-  *(v5 + 56) = [(NSMutableDictionary *)self->_titleTextAttributes mutableCopyWithZone:a3];
+  *(v5 + 56) = [(NSMutableDictionary *)self->_titleTextAttributes mutableCopyWithZone:zone];
   return v5;
 }
 
-- (void)enumerateTitleTextAttributesUsingBlock:(id)a3
+- (void)enumerateTitleTextAttributesUsingBlock:(id)block
 {
   v15 = *MEMORY[0x1E69E9840];
   v10 = 0u;
@@ -50,7 +50,7 @@
           objc_enumerationMutation(titleTextAttributes);
         }
 
-        (*(a3 + 2))(a3, [*(*(&v10 + 1) + 8 * i) integerValue], -[NSMutableDictionary objectForKey:](self->_titleTextAttributes, "objectForKey:", *(*(&v10 + 1) + 8 * i)));
+        (*(block + 2))(block, [*(*(&v10 + 1) + 8 * i) integerValue], -[NSMutableDictionary objectForKey:](self->_titleTextAttributes, "objectForKey:", *(*(&v10 + 1) + 8 * i)));
       }
 
       v7 = [(NSMutableDictionary *)titleTextAttributes countByEnumeratingWithState:&v10 objects:v14 count:16];
@@ -60,19 +60,19 @@
   }
 }
 
-- (void)setTitleTextAttributes:(id)a3 forState:(unint64_t)a4
+- (void)setTitleTextAttributes:(id)attributes forState:(unint64_t)state
 {
-  v6 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInteger:a4];
+  v6 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInteger:state];
   titleTextAttributes = self->_titleTextAttributes;
   v9 = v6;
-  if (a3)
+  if (attributes)
   {
     if (!titleTextAttributes)
     {
       self->_titleTextAttributes = objc_alloc_init(MEMORY[0x1E695DF90]);
     }
 
-    v8 = [a3 copy];
+    v8 = [attributes copy];
     [(NSMutableDictionary *)self->_titleTextAttributes setObject:v8 forKey:v9];
   }
 
@@ -82,9 +82,9 @@
   }
 }
 
-- (id)titleTextAttributesForState:(unint64_t)a3
+- (id)titleTextAttributesForState:(unint64_t)state
 {
-  v4 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInteger:a3];
+  v4 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInteger:state];
   v5 = [-[NSMutableDictionary objectForKey:](self->_titleTextAttributes objectForKey:{v4), "copy"}];
 
   return v5;

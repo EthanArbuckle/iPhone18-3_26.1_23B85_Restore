@@ -1,48 +1,48 @@
 @interface _AppExtensionEventHostView.HostCoordinator
 - (_TtCV10EventKitUI26_AppExtensionEventHostView15HostCoordinator)init;
-- (void)didCompleteWithAction:(int64_t)a3;
-- (void)hostViewControllerDidActivate:(id)a3;
-- (void)hostViewControllerWillDeactivate:(id)a3 error:(id)a4;
-- (void)requestDismissViewWithName:(id)a3 presentationStyle:(int64_t)a4;
-- (void)requestPresentViewWithName:(id)a3 viewID:(id)a4 presentationStyle:(int64_t)a5 sourceRect:(id)a6 preferredContentSize:(id)a7 oopContentBackgroundColor:(id)a8;
+- (void)didCompleteWithAction:(int64_t)action;
+- (void)hostViewControllerDidActivate:(id)activate;
+- (void)hostViewControllerWillDeactivate:(id)deactivate error:(id)error;
+- (void)requestDismissViewWithName:(id)name presentationStyle:(int64_t)style;
+- (void)requestPresentViewWithName:(id)name viewID:(id)d presentationStyle:(int64_t)style sourceRect:(id)rect preferredContentSize:(id)size oopContentBackgroundColor:(id)color;
 @end
 
 @implementation _AppExtensionEventHostView.HostCoordinator
 
-- (void)hostViewControllerDidActivate:(id)a3
+- (void)hostViewControllerDidActivate:(id)activate
 {
-  v4 = a3;
-  v5 = self;
-  sub_1D35B9678(v4);
+  activateCopy = activate;
+  selfCopy = self;
+  sub_1D35B9678(activateCopy);
 }
 
-- (void)hostViewControllerWillDeactivate:(id)a3 error:(id)a4
+- (void)hostViewControllerWillDeactivate:(id)deactivate error:(id)error
 {
   v4 = MEMORY[0x1E69E7D40];
   v5 = *((*MEMORY[0x1E69E7D40] & self->super.isa) + 0x90);
-  v7 = self;
+  selfCopy = self;
   v6 = v5();
   [v6 invalidate];
 
-  (*((*v4 & v7->super.isa) + 0x98))(0);
+  (*((*v4 & selfCopy->super.isa) + 0x98))(0);
 }
 
-- (void)requestPresentViewWithName:(id)a3 viewID:(id)a4 presentationStyle:(int64_t)a5 sourceRect:(id)a6 preferredContentSize:(id)a7 oopContentBackgroundColor:(id)a8
+- (void)requestPresentViewWithName:(id)name viewID:(id)d presentationStyle:(int64_t)style sourceRect:(id)rect preferredContentSize:(id)size oopContentBackgroundColor:(id)color
 {
   v12 = sub_1D35DF384();
   v14 = v13;
   v15 = sub_1D35DF384();
   v17 = v16;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = self;
-  sub_1D35BAD48(v12, v14, v15, v17, a5, v18, v19, a8);
+  rectCopy = rect;
+  sizeCopy = size;
+  colorCopy = color;
+  selfCopy = self;
+  sub_1D35BAD48(v12, v14, v15, v17, style, rectCopy, sizeCopy, color);
 }
 
-- (void)requestDismissViewWithName:(id)a3 presentationStyle:(int64_t)a4
+- (void)requestDismissViewWithName:(id)name presentationStyle:(int64_t)style
 {
-  if (a3)
+  if (name)
   {
     v6 = sub_1D35DF384();
     v8 = v7;
@@ -54,14 +54,14 @@
     v8 = 0;
   }
 
-  v9 = self;
-  sub_1D35BB1C4(v6, v8, a4);
+  selfCopy = self;
+  sub_1D35BB1C4(v6, v8, style);
 }
 
-- (void)didCompleteWithAction:(int64_t)a3
+- (void)didCompleteWithAction:(int64_t)action
 {
-  v4 = self;
-  sub_1D35BB588(a3);
+  selfCopy = self;
+  sub_1D35BB588(action);
 }
 
 - (_TtCV10EventKitUI26_AppExtensionEventHostView15HostCoordinator)init

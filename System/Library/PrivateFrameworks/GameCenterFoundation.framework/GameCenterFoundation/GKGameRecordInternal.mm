@@ -1,30 +1,30 @@
 @interface GKGameRecordInternal
-+ (id)gameRecordForGame:(id)a3;
++ (id)gameRecordForGame:(id)game;
 + (id)secureCodedPropertyKeys;
-- (void)updateWithGame:(id)a3;
+- (void)updateWithGame:(id)game;
 @end
 
 @implementation GKGameRecordInternal
 
-+ (id)gameRecordForGame:(id)a3
++ (id)gameRecordForGame:(id)game
 {
-  v3 = a3;
+  gameCopy = game;
   v4 = +[(GKInternalRepresentation *)GKGameRecordInternal];
-  [v4 updateWithGame:v3];
+  [v4 updateWithGame:gameCopy];
 
   return v4;
 }
 
-- (void)updateWithGame:(id)a3
+- (void)updateWithGame:(id)game
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  gameCopy = game;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [objc_opt_class() secureCodedPropertyKeys];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  secureCodedPropertyKeys = [objc_opt_class() secureCodedPropertyKeys];
+  v6 = [secureCodedPropertyKeys countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -35,15 +35,15 @@
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(secureCodedPropertyKeys);
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
-        v11 = [v4 valueForKey:v10];
+        v11 = [gameCopy valueForKey:v10];
         [(GKGameRecordInternal *)self setValue:v11 forKey:v10];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [secureCodedPropertyKeys countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
@@ -58,7 +58,7 @@
   block[1] = 3221225472;
   block[2] = __47__GKGameRecordInternal_secureCodedPropertyKeys__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (secureCodedPropertyKeys_onceToken_223 != -1)
   {
     dispatch_once(&secureCodedPropertyKeys_onceToken_223, block);

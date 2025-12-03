@@ -1,20 +1,20 @@
 @interface CLBackgroundInertialOdometrySample
-- (CLBackgroundInertialOdometrySample)initWithTimestamp:(id)a3 sampleInterval:(double)a4 CMOdometry:(id)a5;
-- (id)initWithCLPIOSample:(CLPIOSample *)a3;
+- (CLBackgroundInertialOdometrySample)initWithTimestamp:(id)timestamp sampleInterval:(double)interval CMOdometry:(id)odometry;
+- (id)initWithCLPIOSample:(CLPIOSample *)sample;
 @end
 
 @implementation CLBackgroundInertialOdometrySample
 
-- (CLBackgroundInertialOdometrySample)initWithTimestamp:(id)a3 sampleInterval:(double)a4 CMOdometry:(id)a5
+- (CLBackgroundInertialOdometrySample)initWithTimestamp:(id)timestamp sampleInterval:(double)interval CMOdometry:(id)odometry
 {
-  if ([a5 deltaPositionX] && objc_msgSend(a5, "deltaPositionY") && objc_msgSend(a5, "deltaPositionZ"))
+  if ([odometry deltaPositionX] && objc_msgSend(odometry, "deltaPositionY") && objc_msgSend(odometry, "deltaPositionZ"))
   {
     v7 = [CLBIO_DeltaPosition alloc];
-    [objc_msgSend(a5 "deltaPositionX")];
+    [objc_msgSend(odometry "deltaPositionX")];
     v9 = v8;
-    [objc_msgSend(a5 "deltaPositionY")];
+    [objc_msgSend(odometry "deltaPositionY")];
     v11 = v10;
-    [objc_msgSend(a5 "deltaPositionZ")];
+    [objc_msgSend(odometry "deltaPositionZ")];
     v13 = [v7 initWithX:v9 Y:v11 Z:v12];
   }
 
@@ -23,14 +23,14 @@
     v13 = 0;
   }
 
-  if ([a5 deltaVelocityX] && objc_msgSend(a5, "deltaVelocityY") && objc_msgSend(a5, "deltaVelocityZ"))
+  if ([odometry deltaVelocityX] && objc_msgSend(odometry, "deltaVelocityY") && objc_msgSend(odometry, "deltaVelocityZ"))
   {
     v14 = [CLBIO_DeltaVelocity alloc];
-    [objc_msgSend(a5 "deltaVelocityX")];
+    [objc_msgSend(odometry "deltaVelocityX")];
     v16 = v15;
-    [objc_msgSend(a5 "deltaVelocityY")];
+    [objc_msgSend(odometry "deltaVelocityY")];
     v18 = v17;
-    [objc_msgSend(a5 "deltaVelocityZ")];
+    [objc_msgSend(odometry "deltaVelocityZ")];
     v20 = [v14 initWithX:v16 Y:v18 Z:v19];
   }
 
@@ -39,16 +39,16 @@
     v20 = 0;
   }
 
-  if ([a5 quaternionX] && objc_msgSend(a5, "quaternionY") && objc_msgSend(a5, "quaternionZ") && objc_msgSend(a5, "quaternionW"))
+  if ([odometry quaternionX] && objc_msgSend(odometry, "quaternionY") && objc_msgSend(odometry, "quaternionZ") && objc_msgSend(odometry, "quaternionW"))
   {
     v21 = [CLBIO_Quaternion alloc];
-    [objc_msgSend(a5 "quaternionX")];
+    [objc_msgSend(odometry "quaternionX")];
     v23 = v22;
-    [objc_msgSend(a5 "quaternionY")];
+    [objc_msgSend(odometry "quaternionY")];
     v25 = v24;
-    [objc_msgSend(a5 "quaternionZ")];
+    [objc_msgSend(odometry "quaternionZ")];
     v27 = v26;
-    [objc_msgSend(a5 "quaternionW")];
+    [objc_msgSend(odometry "quaternionW")];
     v29 = [v21 initWithX:v23 Y:v25 Z:v27 W:v28];
   }
 
@@ -57,20 +57,20 @@
     v29 = 0;
   }
 
-  v30 = [a5 referenceFrame];
-  v31 = [a5 staticFlag];
-  if (v31 == 1)
+  referenceFrame = [odometry referenceFrame];
+  staticFlag = [odometry staticFlag];
+  if (staticFlag == 1)
   {
     v32 = 1;
   }
 
   else
   {
-    v32 = 2 * (v31 == 2);
+    v32 = 2 * (staticFlag == 2);
   }
 
   v33 = 1;
-  if ([a5 isMounted])
+  if ([odometry isMounted])
   {
     v34 = 2;
   }
@@ -80,7 +80,7 @@
     v34 = 1;
   }
 
-  if ([a5 isZUPT])
+  if ([odometry isZUPT])
   {
     v35 = 2;
   }
@@ -90,12 +90,12 @@
     v35 = 1;
   }
 
-  if ([a5 isDOTBiasChangePossible])
+  if ([odometry isDOTBiasChangePossible])
   {
     v33 = 2;
   }
 
-  if (v30 == 1)
+  if (referenceFrame == 1)
   {
     v36 = 1;
   }
@@ -105,13 +105,13 @@
     v36 = 8;
   }
 
-  [a5 timestamp];
-  return [CLBackgroundInertialOdometrySample initWithTimestamp:"initWithTimestamp:machContinuousTimestamp:sampleInterval:deltaPosition:deltaVelocity:quaternion:referenceFrameContinuity:referenceFrame:staticFlag:mountState:zupt:dotBiasChange:calibration:" machContinuousTimestamp:a3 sampleInterval:v13 deltaPosition:v20 deltaVelocity:v29 quaternion:0 referenceFrameContinuity:v36 referenceFrame:v32 staticFlag:v34 mountState:v35 zupt:v33 dotBiasChange:0 calibration:?];
+  [odometry timestamp];
+  return [CLBackgroundInertialOdometrySample initWithTimestamp:"initWithTimestamp:machContinuousTimestamp:sampleInterval:deltaPosition:deltaVelocity:quaternion:referenceFrameContinuity:referenceFrame:staticFlag:mountState:zupt:dotBiasChange:calibration:" machContinuousTimestamp:timestamp sampleInterval:v13 deltaPosition:v20 deltaVelocity:v29 quaternion:0 referenceFrameContinuity:v36 referenceFrame:v32 staticFlag:v34 mountState:v35 zupt:v33 dotBiasChange:0 calibration:?];
 }
 
-- (id)initWithCLPIOSample:(CLPIOSample *)a3
+- (id)initWithCLPIOSample:(CLPIOSample *)sample
 {
-  var29 = a3->var29;
+  var29 = sample->var29;
   if ((var29 & 1) == 0)
   {
     v23 = 0;
@@ -130,33 +130,33 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v23 = [[CLBIO_DeltaPosition alloc] initWithX:a3->var4 Y:a3->var5 Z:a3->var6];
-  var29 = a3->var29;
+  v23 = [[CLBIO_DeltaPosition alloc] initWithX:sample->var4 Y:sample->var5 Z:sample->var6];
+  var29 = sample->var29;
   if ((var29 & 2) == 0)
   {
     goto LABEL_6;
   }
 
 LABEL_3:
-  v5 = [[CLBIO_DeltaVelocity alloc] initWithX:a3->var7 Y:a3->var8 Z:a3->var9];
-  var29 = a3->var29;
+  v5 = [[CLBIO_DeltaVelocity alloc] initWithX:sample->var7 Y:sample->var8 Z:sample->var9];
+  var29 = sample->var29;
   if ((var29 & 4) != 0)
   {
 LABEL_4:
-    v6 = [[CLBIO_Quaternion alloc] initWithX:a3->var10 Y:a3->var11 Z:a3->var12 W:a3->var13];
-    var29 = a3->var29;
+    v6 = [[CLBIO_Quaternion alloc] initWithX:sample->var10 Y:sample->var11 Z:sample->var12 W:sample->var13];
+    var29 = sample->var29;
     goto LABEL_8;
   }
 
 LABEL_7:
   v6 = 0;
 LABEL_8:
-  var24 = a3->var24;
-  var23 = a3->var23;
-  var25 = a3->var25;
-  var26 = a3->var26;
-  var27 = a3->var27;
-  var28 = a3->var28;
+  var24 = sample->var24;
+  var23 = sample->var23;
+  var25 = sample->var25;
+  var26 = sample->var26;
+  var27 = sample->var27;
+  var28 = sample->var28;
   if ((~var29 & 0x18) != 0)
   {
     v16 = 0;
@@ -165,8 +165,8 @@ LABEL_8:
   else
   {
     v13 = [CLBIO_Calibration alloc];
-    *&v14 = a3->var14;
-    *&v15 = a3->var16;
+    *&v14 = sample->var14;
+    *&v15 = sample->var16;
     v16 = [v13 initWithRotationToTrueNorth:v14 scaleFactor:v15];
   }
 
@@ -220,7 +220,7 @@ LABEL_8:
     v21 = 1;
   }
 
-  return -[CLBackgroundInertialOdometrySample initWithTimestamp:machContinuousTimestamp:sampleInterval:deltaPosition:deltaVelocity:quaternion:referenceFrameContinuity:referenceFrame:staticFlag:mountState:zupt:dotBiasChange:calibration:](self, "initWithTimestamp:machContinuousTimestamp:sampleInterval:deltaPosition:deltaVelocity:quaternion:referenceFrameContinuity:referenceFrame:staticFlag:mountState:zupt:dotBiasChange:calibration:", [[NSDate alloc] initWithTimeIntervalSinceReferenceDate:a3->var0], v23, v5, v6, var24 == 1, v21, a3->var1, a3->var3, v20, v19, v18, v17, v16);
+  return -[CLBackgroundInertialOdometrySample initWithTimestamp:machContinuousTimestamp:sampleInterval:deltaPosition:deltaVelocity:quaternion:referenceFrameContinuity:referenceFrame:staticFlag:mountState:zupt:dotBiasChange:calibration:](self, "initWithTimestamp:machContinuousTimestamp:sampleInterval:deltaPosition:deltaVelocity:quaternion:referenceFrameContinuity:referenceFrame:staticFlag:mountState:zupt:dotBiasChange:calibration:", [[NSDate alloc] initWithTimeIntervalSinceReferenceDate:sample->var0], v23, v5, v6, var24 == 1, v21, sample->var1, sample->var3, v20, v19, v18, v17, v16);
 }
 
 @end

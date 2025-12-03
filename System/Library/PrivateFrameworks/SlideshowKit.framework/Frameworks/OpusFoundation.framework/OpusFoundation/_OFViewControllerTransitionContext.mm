@@ -1,19 +1,19 @@
 @interface _OFViewControllerTransitionContext
-- (_OFViewControllerTransitionContext)initWithContainerView:(id)a3 fromViewController:(id)a4 toViewController:(id)a5 animator:(id)a6 interactor:(id)a7;
-- (void)cancelInteractiveTransitionWithVelocity:(double)a3;
-- (void)completeTransition:(BOOL)a3;
+- (_OFViewControllerTransitionContext)initWithContainerView:(id)view fromViewController:(id)controller toViewController:(id)viewController animator:(id)animator interactor:(id)interactor;
+- (void)cancelInteractiveTransitionWithVelocity:(double)velocity;
+- (void)completeTransition:(BOOL)transition;
 - (void)dealloc;
-- (void)finishInteractiveTransitionWithVelocity:(double)a3;
-- (void)makeTransitionInteractiveWithInteractor:(id)a3 andProgress:(double)a4;
-- (void)setIsCompleting:(BOOL)a3;
+- (void)finishInteractiveTransitionWithVelocity:(double)velocity;
+- (void)makeTransitionInteractiveWithInteractor:(id)interactor andProgress:(double)progress;
+- (void)setIsCompleting:(BOOL)completing;
 - (void)startInteractiveTransition;
-- (void)updateInteractiveTransition:(double)a3;
-- (void)updateNonInteractiveTransitionWithProgress:(double)a3;
+- (void)updateInteractiveTransition:(double)transition;
+- (void)updateNonInteractiveTransitionWithProgress:(double)progress;
 @end
 
 @implementation _OFViewControllerTransitionContext
 
-- (_OFViewControllerTransitionContext)initWithContainerView:(id)a3 fromViewController:(id)a4 toViewController:(id)a5 animator:(id)a6 interactor:(id)a7
+- (_OFViewControllerTransitionContext)initWithContainerView:(id)view fromViewController:(id)controller toViewController:(id)viewController animator:(id)animator interactor:(id)interactor
 {
   v16.receiver = self;
   v16.super_class = _OFViewControllerTransitionContext;
@@ -22,13 +22,13 @@
   if (v12)
   {
     *(&v12->_flags + 8) |= 2u;
-    v12->_containerView = a3;
-    v13->_fromViewController = a4;
-    v13->_toViewController = a5;
-    v13->_animator = a6;
-    if (a7)
+    v12->_containerView = view;
+    v13->_fromViewController = controller;
+    v13->_toViewController = viewController;
+    v13->_animator = animator;
+    if (interactor)
     {
-      v13->_interactor = a7;
+      v13->_interactor = interactor;
       *&v13->_flags = *&v13->_flags & 0xFE | objc_opt_respondsToSelector() & 1;
       if (objc_opt_respondsToSelector())
       {
@@ -111,32 +111,32 @@
   self->_progressVelocity = 0.0;
 }
 
-- (void)updateInteractiveTransition:(double)a3
+- (void)updateInteractiveTransition:(double)transition
 {
-  if (self->_state == 1 && self->_flags.isCurrentlyInteractive && self->_interactiveUpdateHandler && self->_progress != a3)
+  if (self->_state == 1 && self->_flags.isCurrentlyInteractive && self->_interactiveUpdateHandler && self->_progress != transition)
   {
     *(&self->_flags + 8) &= ~2u;
     Current = CFAbsoluteTimeGetCurrent();
     lastUpdateTimestamp = self->_lastUpdateTimestamp;
     if (lastUpdateTimestamp > 0.0)
     {
-      self->_progressVelocity = (a3 - self->_progress) / (Current - lastUpdateTimestamp);
+      self->_progressVelocity = (transition - self->_progress) / (Current - lastUpdateTimestamp);
     }
 
     self->_lastUpdateTimestamp = Current;
-    self->_progress = a3;
-    v7 = self;
+    self->_progress = transition;
+    selfCopy = self;
     (*(self->_interactiveUpdateHandler + 2))(self->_progress);
 
-    v8 = self;
+    selfCopy2 = self;
   }
 }
 
-- (void)makeTransitionInteractiveWithInteractor:(id)a3 andProgress:(double)a4
+- (void)makeTransitionInteractiveWithInteractor:(id)interactor andProgress:(double)progress
 {
-  if (a3)
+  if (interactor)
   {
-    self->_interactor = a3;
+    self->_interactor = interactor;
     *&self->_flags = *&self->_flags & 0xFE | objc_opt_respondsToSelector() & 1;
     if (objc_opt_respondsToSelector())
     {
@@ -151,20 +151,20 @@
     *&self->_flags = *&self->_flags & 0xFD | v6;
   }
 
-  self->_progress = a4;
+  self->_progress = progress;
   self->_flags.isCurrentlyInteractive = 1;
   *(&self->_flags + 8) &= 0xFCu;
 }
 
-- (void)finishInteractiveTransitionWithVelocity:(double)a3
+- (void)finishInteractiveTransitionWithVelocity:(double)velocity
 {
-  self->_progressVelocity = a3;
+  self->_progressVelocity = velocity;
   if (self->_toViewController)
   {
     if (self->_state == 1)
     {
       *(&self->_flags + 8) = *(&self->_flags + 8) & 0xFC | 2;
-      v4 = self;
+      selfCopy = self;
       if (self->_flags.isCurrentlyInteractive)
       {
         interactiveUpdateHandler = self->_interactiveUpdateHandler;
@@ -176,7 +176,7 @@
 
       self->_flags.isCurrentlyInteractive = 0;
 
-      v6 = self;
+      selfCopy2 = self;
     }
 
     else
@@ -192,13 +192,13 @@
   }
 }
 
-- (void)cancelInteractiveTransitionWithVelocity:(double)a3
+- (void)cancelInteractiveTransitionWithVelocity:(double)velocity
 {
-  self->_progressVelocity = a3;
+  self->_progressVelocity = velocity;
   if (self->_state == 1)
   {
     *(&self->_flags + 8) |= 3u;
-    v4 = self;
+    selfCopy = self;
     if (self->_flags.isCurrentlyInteractive)
     {
       interactiveUpdateHandler = self->_interactiveUpdateHandler;
@@ -210,7 +210,7 @@
 
     self->_flags.isCurrentlyInteractive = 0;
 
-    v6 = self;
+    selfCopy2 = self;
   }
 
   else
@@ -219,28 +219,28 @@
   }
 }
 
-- (void)updateNonInteractiveTransitionWithProgress:(double)a3
+- (void)updateNonInteractiveTransitionWithProgress:(double)progress
 {
-  if (self->_state == 1 && self->_progress != a3)
+  if (self->_state == 1 && self->_progress != progress)
   {
     Current = CFAbsoluteTimeGetCurrent();
     lastUpdateTimestamp = self->_lastUpdateTimestamp;
     if (lastUpdateTimestamp > 0.0)
     {
-      self->_progressVelocity = (a3 - self->_progress) / (Current - lastUpdateTimestamp);
+      self->_progressVelocity = (progress - self->_progress) / (Current - lastUpdateTimestamp);
     }
 
     self->_lastUpdateTimestamp = Current;
-    self->_progress = a3;
+    self->_progress = progress;
   }
 }
 
-- (void)completeTransition:(BOOL)a3
+- (void)completeTransition:(BOOL)transition
 {
   willCompleteHandler = self->_willCompleteHandler;
   if (willCompleteHandler)
   {
-    willCompleteHandler[2](willCompleteHandler, self, a3);
+    willCompleteHandler[2](willCompleteHandler, self, transition);
   }
 
   completionHandler = self->_completionHandler;
@@ -252,9 +252,9 @@
   }
 }
 
-- (void)setIsCompleting:(BOOL)a3
+- (void)setIsCompleting:(BOOL)completing
 {
-  if (a3)
+  if (completing)
   {
     v3 = 2;
   }

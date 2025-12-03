@@ -1,36 +1,36 @@
 @interface WFWeatherEventConfig
-- (WFWeatherEventConfig)initWithDictionary:(id)a3 defaulEnabled:(BOOL)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (WFWeatherEventConfig)initWithDictionary:(id)dictionary defaulEnabled:(BOOL)enabled;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation WFWeatherEventConfig
 
-- (WFWeatherEventConfig)initWithDictionary:(id)a3 defaulEnabled:(BOOL)a4
+- (WFWeatherEventConfig)initWithDictionary:(id)dictionary defaulEnabled:(BOOL)enabled
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = WFWeatherEventConfig;
   v7 = [(WFWeatherEventConfig *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    v7->_enabled = a4;
-    v9 = [v6 numberForKey:@"ios"];
+    v7->_enabled = enabled;
+    v9 = [dictionaryCopy numberForKey:@"ios"];
     v10 = v9;
     if (v9)
     {
-      a4 = [v9 BOOLValue];
+      enabled = [v9 BOOLValue];
     }
 
-    v8->_enabled = a4;
+    v8->_enabled = enabled;
   }
 
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(result + 8) = self->_enabled;
   return result;
 }

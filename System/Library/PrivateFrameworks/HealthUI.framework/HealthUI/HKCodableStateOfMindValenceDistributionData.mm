@@ -1,25 +1,25 @@
 @interface HKCodableStateOfMindValenceDistributionData
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)reflectiveIntervalAsString:(int)a3;
-- (int)StringAsReflectiveInterval:(id)a3;
+- (id)reflectiveIntervalAsString:(int)string;
+- (int)StringAsReflectiveInterval:(id)interval;
 - (int)reflectiveInterval;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasMinimumValence:(BOOL)a3;
-- (void)setHasReflectiveInterval:(BOOL)a3;
-- (void)setHasSampleCount:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasMinimumValence:(BOOL)valence;
+- (void)setHasReflectiveInterval:(BOOL)interval;
+- (void)setHasSampleCount:(BOOL)count;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HKCodableStateOfMindValenceDistributionData
 
-- (void)setHasMinimumValence:(BOOL)a3
+- (void)setHasMinimumValence:(BOOL)valence
 {
-  if (a3)
+  if (valence)
   {
     v3 = 2;
   }
@@ -32,9 +32,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasSampleCount:(BOOL)a3
+- (void)setHasSampleCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 4;
   }
@@ -60,9 +60,9 @@
   }
 }
 
-- (void)setHasReflectiveInterval:(BOOL)a3
+- (void)setHasReflectiveInterval:(BOOL)interval
 {
-  if (a3)
+  if (interval)
   {
     v3 = 8;
   }
@@ -75,33 +75,33 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (id)reflectiveIntervalAsString:(int)a3
+- (id)reflectiveIntervalAsString:(int)string
 {
-  if (a3 == 1)
+  if (string == 1)
   {
     v4 = @"momentary";
   }
 
-  else if (a3 == 2)
+  else if (string == 2)
   {
     v4 = @"daily";
   }
 
   else
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   return v4;
 }
 
-- (int)StringAsReflectiveInterval:(id)a3
+- (int)StringAsReflectiveInterval:(id)interval
 {
-  v3 = a3;
+  intervalCopy = interval;
   v4 = 1;
-  if (([v3 isEqualToString:@"momentary"] & 1) == 0)
+  if (([intervalCopy isEqualToString:@"momentary"] & 1) == 0)
   {
-    if ([v3 isEqualToString:@"daily"])
+    if ([intervalCopy isEqualToString:@"daily"])
     {
       v4 = 2;
     }
@@ -121,20 +121,20 @@
   v8.receiver = self;
   v8.super_class = HKCodableStateOfMindValenceDistributionData;
   v4 = [(HKCodableStateOfMindValenceDistributionData *)&v8 description];
-  v5 = [(HKCodableStateOfMindValenceDistributionData *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HKCodableStateOfMindValenceDistributionData *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithDouble:self->_minimumValence];
-    [v3 setObject:v5 forKey:@"minimumValence"];
+    [dictionary setObject:v5 forKey:@"minimumValence"];
 
     has = self->_has;
     if ((has & 1) == 0)
@@ -147,7 +147,7 @@ LABEL_3:
 
 LABEL_8:
       v7 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_sampleCount];
-      [v3 setObject:v7 forKey:@"sampleCount"];
+      [dictionary setObject:v7 forKey:@"sampleCount"];
 
       if ((*&self->_has & 8) == 0)
       {
@@ -171,7 +171,7 @@ LABEL_9:
         v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", self->_reflectiveInterval];
       }
 
-      [v3 setObject:v9 forKey:@"reflectiveInterval"];
+      [dictionary setObject:v9 forKey:@"reflectiveInterval"];
 
       goto LABEL_15;
     }
@@ -183,7 +183,7 @@ LABEL_9:
   }
 
   v6 = [MEMORY[0x1E696AD98] numberWithDouble:self->_maximumValence];
-  [v3 setObject:v6 forKey:@"maximumValence"];
+  [dictionary setObject:v6 forKey:@"maximumValence"];
 
   has = self->_has;
   if ((has & 4) != 0)
@@ -199,12 +199,12 @@ LABEL_4:
 
 LABEL_15:
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -251,14 +251,14 @@ LABEL_5:
 LABEL_6:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
-    v4[2] = *&self->_minimumValence;
-    *(v4 + 36) |= 2u;
+    toCopy[2] = *&self->_minimumValence;
+    *(toCopy + 36) |= 2u;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -277,8 +277,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[1] = *&self->_maximumValence;
-  *(v4 + 36) |= 1u;
+  toCopy[1] = *&self->_maximumValence;
+  *(toCopy + 36) |= 1u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -292,21 +292,21 @@ LABEL_4:
   }
 
 LABEL_11:
-  v4[3] = self->_sampleCount;
-  *(v4 + 36) |= 4u;
+  toCopy[3] = self->_sampleCount;
+  *(toCopy + 36) |= 4u;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_5:
-    *(v4 + 8) = self->_reflectiveInterval;
-    *(v4 + 36) |= 8u;
+    *(toCopy + 8) = self->_reflectiveInterval;
+    *(toCopy + 36) |= 8u;
   }
 
 LABEL_6:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -358,23 +358,23 @@ LABEL_5:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_21;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 36) & 2) == 0 || self->_minimumValence != *(v4 + 2))
+    if ((*(equalCopy + 36) & 2) == 0 || self->_minimumValence != *(equalCopy + 2))
     {
       goto LABEL_21;
     }
   }
 
-  else if ((*(v4 + 36) & 2) != 0)
+  else if ((*(equalCopy + 36) & 2) != 0)
   {
 LABEL_21:
     v5 = 0;
@@ -383,34 +383,34 @@ LABEL_21:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 36) & 1) == 0 || self->_maximumValence != *(v4 + 1))
+    if ((*(equalCopy + 36) & 1) == 0 || self->_maximumValence != *(equalCopy + 1))
     {
       goto LABEL_21;
     }
   }
 
-  else if (*(v4 + 36))
+  else if (*(equalCopy + 36))
   {
     goto LABEL_21;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 36) & 4) == 0 || self->_sampleCount != *(v4 + 3))
+    if ((*(equalCopy + 36) & 4) == 0 || self->_sampleCount != *(equalCopy + 3))
     {
       goto LABEL_21;
     }
   }
 
-  else if ((*(v4 + 36) & 4) != 0)
+  else if ((*(equalCopy + 36) & 4) != 0)
   {
     goto LABEL_21;
   }
 
-  v5 = (*(v4 + 36) & 8) == 0;
+  v5 = (*(equalCopy + 36) & 8) == 0;
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 36) & 8) == 0 || self->_reflectiveInterval != *(v4 + 8))
+    if ((*(equalCopy + 36) & 8) == 0 || self->_reflectiveInterval != *(equalCopy + 8))
     {
       goto LABEL_21;
     }
@@ -516,15 +516,15 @@ LABEL_19:
   return v8 ^ v4 ^ v12 ^ v13;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 36);
+  fromCopy = from;
+  v5 = *(fromCopy + 36);
   if ((v5 & 2) != 0)
   {
-    self->_minimumValence = *(v4 + 2);
+    self->_minimumValence = *(fromCopy + 2);
     *&self->_has |= 2u;
-    v5 = *(v4 + 36);
+    v5 = *(fromCopy + 36);
     if ((v5 & 1) == 0)
     {
 LABEL_3:
@@ -537,14 +537,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 36) & 1) == 0)
+  else if ((*(fromCopy + 36) & 1) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_maximumValence = *(v4 + 1);
+  self->_maximumValence = *(fromCopy + 1);
   *&self->_has |= 1u;
-  v5 = *(v4 + 36);
+  v5 = *(fromCopy + 36);
   if ((v5 & 4) == 0)
   {
 LABEL_4:
@@ -557,12 +557,12 @@ LABEL_4:
   }
 
 LABEL_11:
-  self->_sampleCount = *(v4 + 3);
+  self->_sampleCount = *(fromCopy + 3);
   *&self->_has |= 4u;
-  if ((*(v4 + 36) & 8) != 0)
+  if ((*(fromCopy + 36) & 8) != 0)
   {
 LABEL_5:
-    self->_reflectiveInterval = *(v4 + 8);
+    self->_reflectiveInterval = *(fromCopy + 8);
     *&self->_has |= 8u;
   }
 

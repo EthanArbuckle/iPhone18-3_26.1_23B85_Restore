@@ -1,8 +1,8 @@
 @interface CRLCommandSetShadow
 - (NSUUID)id;
 - (_TtC8Freeform19CRLCommandSetShadow)init;
-- (_TtC8Freeform19CRLCommandSetShadow)initWithBoardItem:(id)a3 shadow:(id)a4;
-- (_TtC8Freeform19CRLCommandSetShadow)initWithId:(id)a3 shadow:(id)a4;
+- (_TtC8Freeform19CRLCommandSetShadow)initWithBoardItem:(id)item shadow:(id)shadow;
+- (_TtC8Freeform19CRLCommandSetShadow)initWithId:(id)id shadow:(id)shadow;
 @end
 
 @implementation CRLCommandSetShadow
@@ -20,30 +20,30 @@
   return v8.super.isa;
 }
 
-- (_TtC8Freeform19CRLCommandSetShadow)initWithId:(id)a3 shadow:(id)a4
+- (_TtC8Freeform19CRLCommandSetShadow)initWithId:(id)id shadow:(id)shadow
 {
   v5 = type metadata accessor for UUID();
   __chkstk_darwin(v5 - 8);
   v7 = &v11 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   static UUID._unconditionallyBridgeFromObjectiveC(_:)();
-  v8 = a4;
-  v9 = sub_100AE4EDC(v7, a4);
+  shadowCopy = shadow;
+  v9 = sub_100AE4EDC(v7, shadow);
 
   return v9;
 }
 
-- (_TtC8Freeform19CRLCommandSetShadow)initWithBoardItem:(id)a3 shadow:(id)a4
+- (_TtC8Freeform19CRLCommandSetShadow)initWithBoardItem:(id)item shadow:(id)shadow
 {
   v7 = type metadata accessor for UUID();
   v8 = *(v7 - 8);
   v9 = __chkstk_darwin(v7);
   v11 = &v17 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
-  (*((swift_isaMask & *a3) + 0x88))(v9);
-  v12 = a3;
-  v13 = a4;
+  (*((swift_isaMask & *item) + 0x88))(v9);
+  itemCopy = item;
+  shadowCopy = shadow;
   isa = UUID._bridgeToObjectiveC()().super.isa;
   (*(v8 + 8))(v11, v7);
-  v15 = [(CRLCommandSetShadow *)self initWithId:isa shadow:v13];
+  v15 = [(CRLCommandSetShadow *)self initWithId:isa shadow:shadowCopy];
 
   return v15;
 }

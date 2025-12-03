@@ -6,9 +6,9 @@
 
 - (id)acquireSystemUIScenePresentingAssertion
 {
-  v3 = [SBApp systemUIScenesCoordinator];
-  v4 = [v3 inputUISceneController];
-  v5 = [v4 addPresenter:self];
+  systemUIScenesCoordinator = [SBApp systemUIScenesCoordinator];
+  inputUISceneController = [systemUIScenesCoordinator inputUISceneController];
+  v5 = [inputUISceneController addPresenter:self];
 
   return v5;
 }

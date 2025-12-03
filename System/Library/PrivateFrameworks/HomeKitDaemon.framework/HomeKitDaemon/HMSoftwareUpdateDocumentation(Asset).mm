@@ -8,15 +8,15 @@
 {
   v82 = *MEMORY[0x277D85DE8];
   v4 = a3;
-  v5 = [v4 bundleURL];
+  bundleURL = [v4 bundleURL];
 
-  if (v5)
+  if (bundleURL)
   {
     v75 = 0;
-    v6 = [v4 fileManager];
-    v7 = [v4 bundleURL];
-    v8 = [v7 path];
-    v9 = [v6 fileExistsAtPath:v8 isDirectory:&v75];
+    fileManager = [v4 fileManager];
+    bundleURL2 = [v4 bundleURL];
+    path = [bundleURL2 path];
+    v9 = [fileManager fileExistsAtPath:path isDirectory:&v75];
 
     if (v9)
     {
@@ -28,40 +28,40 @@
       else
       {
         v10 = objc_autoreleasePoolPush();
-        v11 = a1;
+        selfCopy = self;
         v12 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
         {
           v13 = HMFGetLogIdentifier();
-          v14 = [v4 bundleURL];
+          bundleURL3 = [v4 bundleURL];
           *buf = 138543618;
           v77 = v13;
           v78 = 2112;
-          v79 = v14;
+          v79 = bundleURL3;
           _os_log_impl(&dword_229538000, v12, OS_LOG_TYPE_INFO, "%{public}@Unarchiving the non-streamable asset: %@", buf, 0x16u);
         }
 
         objc_autoreleasePoolPop(v10);
-        v15 = [v4 fileManager];
-        v16 = [v4 bundleURL];
-        v17 = [v4 bundleURL];
+        fileManager2 = [v4 fileManager];
+        bundleURL4 = [v4 bundleURL];
+        bundleURL5 = [v4 bundleURL];
         v74 = 0;
-        v18 = [v15 unzipItemAtURL:v16 toURL:v17 error:&v74];
+        v18 = [fileManager2 unzipItemAtURL:bundleURL4 toURL:bundleURL5 error:&v74];
         v19 = v74;
 
         if ((v18 & 1) == 0)
         {
           v20 = objc_autoreleasePoolPush();
-          a1 = v11;
+          self = selfCopy;
           v21 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
           {
             v22 = HMFGetLogIdentifier();
-            v23 = [v4 bundleURL];
+            bundleURL6 = [v4 bundleURL];
             *buf = 138543874;
             v77 = v22;
             v78 = 2112;
-            v79 = v23;
+            v79 = bundleURL6;
             v80 = 2112;
             v81 = v19;
             _os_log_impl(&dword_229538000, v21, OS_LOG_TYPE_ERROR, "%{public}@Failed to unarchive contents of asset: %@ with error: %@", buf, 0x20u);
@@ -72,16 +72,16 @@
         }
       }
 
-      v30 = [v4 fileManager];
-      v31 = [v4 bundleURL];
+      fileManager3 = [v4 fileManager];
+      bundleURL7 = [v4 bundleURL];
       v73 = v19;
-      v32 = [v30 contentsOfDirectoryAtURL:v31 includingPropertiesForKeys:MEMORY[0x277CBEBF8] options:4 error:&v73];
+      v32 = [fileManager3 contentsOfDirectoryAtURL:bundleURL7 includingPropertiesForKeys:MEMORY[0x277CBEBF8] options:4 error:&v73];
       v33 = v73;
 
       if (![v32 count])
       {
         v43 = objc_autoreleasePoolPush();
-        a1 = a1;
+        self = self;
         v44 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v44, OS_LOG_TYPE_ERROR))
         {
@@ -94,7 +94,7 @@
         }
 
         objc_autoreleasePoolPop(v43);
-        v29 = 0;
+        selfCopy2 = 0;
         goto LABEL_46;
       }
 
@@ -103,7 +103,7 @@
       if (![v35 count])
       {
         v46 = objc_autoreleasePoolPush();
-        a1 = a1;
+        self = self;
         v47 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v47, OS_LOG_TYPE_ERROR))
         {
@@ -114,29 +114,29 @@
         }
 
         objc_autoreleasePoolPop(v46);
-        v29 = 0;
+        selfCopy2 = 0;
         goto LABEL_45;
       }
 
       v65 = v34;
-      v36 = [MEMORY[0x277CBEAF8] currentLocale];
-      v37 = [v36 languageCode];
+      currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+      languageCode = [currentLocale languageCode];
 
-      v38 = [MEMORY[0x277CBEAF8] currentLocale];
-      v39 = [v38 localeIdentifier];
+      currentLocale2 = [MEMORY[0x277CBEAF8] currentLocale];
+      localeIdentifier = [currentLocale2 localeIdentifier];
 
-      v40 = [MEMORY[0x277CBEAF8] currentLocale];
-      v41 = [v40 languageIdentifier];
+      currentLocale3 = [MEMORY[0x277CBEAF8] currentLocale];
+      languageIdentifier = [currentLocale3 languageIdentifier];
 
-      v63 = v39;
-      if (v39 | v41)
+      v63 = localeIdentifier;
+      if (localeIdentifier | languageIdentifier)
       {
         v70[0] = MEMORY[0x277D85DD0];
         v70[1] = 3221225472;
         v70[2] = __54__HMSoftwareUpdateDocumentation_Asset__initWithAsset___block_invoke;
         v70[3] = &unk_27867D758;
-        v71 = v41;
-        v72 = v39;
+        v71 = languageIdentifier;
+        v72 = localeIdentifier;
         v42 = [v35 na_firstObjectPassingTest:v70];
       }
 
@@ -145,37 +145,37 @@
         v42 = 0;
       }
 
-      if (!v42 && v37)
+      if (!v42 && languageCode)
       {
         v68[0] = MEMORY[0x277D85DD0];
         v68[1] = 3221225472;
         v68[2] = __54__HMSoftwareUpdateDocumentation_Asset__initWithAsset___block_invoke_2;
         v68[3] = &unk_27867D780;
-        v69 = v37;
+        v69 = languageCode;
         v42 = [v35 na_firstObjectPassingTest:v68];
       }
 
-      v62 = v41;
-      v64 = v37;
+      v62 = languageIdentifier;
+      v64 = languageCode;
       if (v42 || ([v35 na_firstObjectPassingTest:&__block_literal_global_183000], (v42 = objc_claimAutoreleasedReturnValue()) != 0))
       {
-        v49 = [v4 testDocumentData];
+        testDocumentData = [v4 testDocumentData];
 
         v50 = objc_alloc(MEMORY[0x277CD1D08]);
-        if (v49)
+        if (testDocumentData)
         {
-          v51 = [v4 testDocumentData];
+          testDocumentData2 = [v4 testDocumentData];
           v67 = v33;
           v52 = &v67;
-          v53 = [v50 initWithData:v51 error:&v67];
+          v53 = [v50 initWithData:testDocumentData2 error:&v67];
         }
 
         else
         {
-          v51 = [v4 fileManager];
+          testDocumentData2 = [v4 fileManager];
           v66 = v33;
           v52 = &v66;
-          v53 = [v50 initWithURL:v42 fileManager:v51 error:&v66];
+          v53 = [v50 initWithURL:v42 fileManager:testDocumentData2 error:&v66];
         }
 
         v54 = v53;
@@ -183,10 +183,10 @@
 
         if (v54)
         {
-          a1 = [a1 initWithReleaseNotesSummary:0 releaseNotes:0 textReleaseNotes:v54 licenseAgreement:0 licenseAgreementVersion:0];
+          self = [self initWithReleaseNotesSummary:0 releaseNotes:0 textReleaseNotes:v54 licenseAgreement:0 licenseAgreementVersion:0];
 
           v33 = v55;
-          v29 = a1;
+          selfCopy2 = self;
 LABEL_44:
 
           v34 = v65;
@@ -215,22 +215,22 @@ LABEL_46:
       }
 
       objc_autoreleasePoolPop(v56);
-      v29 = 0;
+      selfCopy2 = 0;
       goto LABEL_44;
     }
 
     v24 = objc_autoreleasePoolPush();
-    a1 = a1;
+    self = self;
     v25 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
     {
       v26 = HMFGetLogIdentifier();
-      v27 = [v4 bundleURL];
-      v28 = [v27 path];
+      bundleURL8 = [v4 bundleURL];
+      path2 = [bundleURL8 path];
       *buf = 138543618;
       v77 = v26;
       v78 = 2112;
-      v79 = v28;
+      v79 = path2;
       _os_log_impl(&dword_229538000, v25, OS_LOG_TYPE_ERROR, "%{public}@No asset in path: %@", buf, 0x16u);
 
       goto LABEL_15;
@@ -240,7 +240,7 @@ LABEL_46:
   else
   {
     v24 = objc_autoreleasePoolPush();
-    a1 = a1;
+    self = self;
     v25 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
     {
@@ -254,11 +254,11 @@ LABEL_15:
 
   objc_autoreleasePoolPop(v24);
 LABEL_17:
-  v29 = 0;
+  selfCopy2 = 0;
 LABEL_47:
 
   v60 = *MEMORY[0x277D85DE8];
-  return v29;
+  return selfCopy2;
 }
 
 @end

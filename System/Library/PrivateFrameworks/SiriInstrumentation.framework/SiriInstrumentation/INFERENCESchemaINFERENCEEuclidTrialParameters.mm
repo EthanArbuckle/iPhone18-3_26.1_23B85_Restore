@@ -1,26 +1,26 @@
 @interface INFERENCESchemaINFERENCEEuclidTrialParameters
-- (BOOL)isEqual:(id)a3;
-- (INFERENCESchemaINFERENCEEuclidTrialParameters)initWithDictionary:(id)a3;
-- (INFERENCESchemaINFERENCEEuclidTrialParameters)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (INFERENCESchemaINFERENCEEuclidTrialParameters)initWithDictionary:(id)dictionary;
+- (INFERENCESchemaINFERENCEEuclidTrialParameters)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasEuclidAsrConfidenceThreshold:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasEuclidAsrConfidenceThreshold:(BOOL)threshold;
+- (void)writeTo:(id)to;
 @end
 
 @implementation INFERENCESchemaINFERENCEEuclidTrialParameters
 
-- (INFERENCESchemaINFERENCEEuclidTrialParameters)initWithDictionary:(id)a3
+- (INFERENCESchemaINFERENCEEuclidTrialParameters)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = INFERENCESchemaINFERENCEEuclidTrialParameters;
   v5 = [(INFERENCESchemaINFERENCEEuclidTrialParameters *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"euclidModelVersion"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"euclidModelVersion"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -28,7 +28,7 @@
       [(INFERENCESchemaINFERENCEEuclidTrialParameters *)v5 setEuclidModelVersion:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"euclidScoreThreshold"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"euclidScoreThreshold"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -36,7 +36,7 @@
       [(INFERENCESchemaINFERENCEEuclidTrialParameters *)v5 setEuclidScoreThreshold:?];
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"euclidAsrConfidenceThreshold"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"euclidAsrConfidenceThreshold"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -50,30 +50,30 @@
   return v5;
 }
 
-- (INFERENCESchemaINFERENCEEuclidTrialParameters)initWithJSON:(id)a3
+- (INFERENCESchemaINFERENCEEuclidTrialParameters)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(INFERENCESchemaINFERENCEEuclidTrialParameters *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(INFERENCESchemaINFERENCEEuclidTrialParameters *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(INFERENCESchemaINFERENCEEuclidTrialParameters *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -86,20 +86,20 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ((*&self->_has & 2) != 0)
   {
     v4 = MEMORY[0x1E696AD98];
     [(INFERENCESchemaINFERENCEEuclidTrialParameters *)self euclidAsrConfidenceThreshold];
     v5 = [v4 numberWithFloat:?];
-    [v3 setObject:v5 forKeyedSubscript:@"euclidAsrConfidenceThreshold"];
+    [dictionary setObject:v5 forKeyedSubscript:@"euclidAsrConfidenceThreshold"];
   }
 
   if (self->_euclidModelVersion)
   {
-    v6 = [(INFERENCESchemaINFERENCEEuclidTrialParameters *)self euclidModelVersion];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"euclidModelVersion"];
+    euclidModelVersion = [(INFERENCESchemaINFERENCEEuclidTrialParameters *)self euclidModelVersion];
+    v7 = [euclidModelVersion copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"euclidModelVersion"];
   }
 
   if (*&self->_has)
@@ -107,12 +107,12 @@
     v8 = MEMORY[0x1E696AD98];
     [(INFERENCESchemaINFERENCEEuclidTrialParameters *)self euclidScoreThreshold];
     v9 = [v8 numberWithFloat:?];
-    [v3 setObject:v9 forKeyedSubscript:@"euclidScoreThreshold"];
+    [dictionary setObject:v9 forKeyedSubscript:@"euclidScoreThreshold"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -198,26 +198,26 @@
   return v6 ^ v3 ^ v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_15;
   }
 
-  v5 = [(INFERENCESchemaINFERENCEEuclidTrialParameters *)self euclidModelVersion];
-  v6 = [v4 euclidModelVersion];
-  v7 = v6;
-  if ((v5 != 0) != (v6 == 0))
+  euclidModelVersion = [(INFERENCESchemaINFERENCEEuclidTrialParameters *)self euclidModelVersion];
+  euclidModelVersion2 = [equalCopy euclidModelVersion];
+  v7 = euclidModelVersion2;
+  if ((euclidModelVersion != 0) != (euclidModelVersion2 == 0))
   {
-    v8 = [(INFERENCESchemaINFERENCEEuclidTrialParameters *)self euclidModelVersion];
-    if (v8)
+    euclidModelVersion3 = [(INFERENCESchemaINFERENCEEuclidTrialParameters *)self euclidModelVersion];
+    if (euclidModelVersion3)
     {
-      v9 = v8;
-      v10 = [(INFERENCESchemaINFERENCEEuclidTrialParameters *)self euclidModelVersion];
-      v11 = [v4 euclidModelVersion];
-      v12 = [v10 isEqual:v11];
+      v9 = euclidModelVersion3;
+      euclidModelVersion4 = [(INFERENCESchemaINFERENCEEuclidTrialParameters *)self euclidModelVersion];
+      euclidModelVersion5 = [equalCopy euclidModelVersion];
+      v12 = [euclidModelVersion4 isEqual:euclidModelVersion5];
 
       if (!v12)
       {
@@ -230,26 +230,26 @@
     }
 
     has = self->_has;
-    v14 = v4[24];
+    v14 = equalCopy[24];
     if ((*&has & 1) == (v14 & 1))
     {
       if (*&has)
       {
         euclidScoreThreshold = self->_euclidScoreThreshold;
-        [v4 euclidScoreThreshold];
+        [equalCopy euclidScoreThreshold];
         if (euclidScoreThreshold != v16)
         {
           goto LABEL_15;
         }
 
         has = self->_has;
-        v14 = v4[24];
+        v14 = equalCopy[24];
       }
 
       v17 = (*&has >> 1) & 1;
       if (v17 == ((v14 >> 1) & 1))
       {
-        if (!v17 || (euclidAsrConfidenceThreshold = self->_euclidAsrConfidenceThreshold, [v4 euclidAsrConfidenceThreshold], euclidAsrConfidenceThreshold == v19))
+        if (!v17 || (euclidAsrConfidenceThreshold = self->_euclidAsrConfidenceThreshold, [equalCopy euclidAsrConfidenceThreshold], euclidAsrConfidenceThreshold == v19))
         {
           v20 = 1;
           goto LABEL_16;
@@ -269,12 +269,12 @@ LABEL_16:
   return v20;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v7 = a3;
-  v4 = [(INFERENCESchemaINFERENCEEuclidTrialParameters *)self euclidModelVersion];
+  toCopy = to;
+  euclidModelVersion = [(INFERENCESchemaINFERENCEEuclidTrialParameters *)self euclidModelVersion];
 
-  if (v4)
+  if (euclidModelVersion)
   {
     PBDataWriterWriteStringField();
   }
@@ -286,17 +286,17 @@ LABEL_16:
     has = self->_has;
   }
 
-  v6 = v7;
+  v6 = toCopy;
   if ((has & 2) != 0)
   {
     PBDataWriterWriteFloatField();
-    v6 = v7;
+    v6 = toCopy;
   }
 }
 
-- (void)setHasEuclidAsrConfidenceThreshold:(BOOL)a3
+- (void)setHasEuclidAsrConfidenceThreshold:(BOOL)threshold
 {
-  if (a3)
+  if (threshold)
   {
     v3 = 2;
   }

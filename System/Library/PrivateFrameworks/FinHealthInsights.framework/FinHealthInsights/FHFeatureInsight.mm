@@ -1,84 +1,84 @@
 @interface FHFeatureInsight
-- (FHFeatureInsight)initWithCoder:(id)a3;
+- (FHFeatureInsight)initWithCoder:(id)coder;
 - (NSString)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FHFeatureInsight
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(FHFeatureInsight *)self type];
-  [v4 encodeObject:v5 forKey:@"type"];
+  coderCopy = coder;
+  type = [(FHFeatureInsight *)self type];
+  [coderCopy encodeObject:type forKey:@"type"];
 
-  [v4 encodeInteger:-[FHFeatureInsight detectionType](self forKey:{"detectionType"), @"detectionType"}];
-  [v4 encodeInteger:-[FHFeatureInsight direction](self forKey:{"direction"), @"direction"}];
-  [v4 encodeInteger:-[FHFeatureInsight window](self forKey:{"window"), @"window"}];
-  [v4 encodeInteger:-[FHFeatureInsight windowReference](self forKey:{"windowReference"), @"windowReference"}];
-  v6 = [(FHFeatureInsight *)self startDate];
-  [v4 encodeObject:v6 forKey:@"startDate"];
+  [coderCopy encodeInteger:-[FHFeatureInsight detectionType](self forKey:{"detectionType"), @"detectionType"}];
+  [coderCopy encodeInteger:-[FHFeatureInsight direction](self forKey:{"direction"), @"direction"}];
+  [coderCopy encodeInteger:-[FHFeatureInsight window](self forKey:{"window"), @"window"}];
+  [coderCopy encodeInteger:-[FHFeatureInsight windowReference](self forKey:{"windowReference"), @"windowReference"}];
+  startDate = [(FHFeatureInsight *)self startDate];
+  [coderCopy encodeObject:startDate forKey:@"startDate"];
 
-  v7 = [(FHFeatureInsight *)self endDate];
-  [v4 encodeObject:v7 forKey:@"endDate"];
+  endDate = [(FHFeatureInsight *)self endDate];
+  [coderCopy encodeObject:endDate forKey:@"endDate"];
 
-  v8 = [(FHFeatureInsight *)self averageAmount];
-  [v4 encodeObject:v8 forKey:@"averageAmount"];
+  averageAmount = [(FHFeatureInsight *)self averageAmount];
+  [coderCopy encodeObject:averageAmount forKey:@"averageAmount"];
 
-  v9 = [(FHFeatureInsight *)self spendAmount];
-  [v4 encodeObject:v9 forKey:@"spendAmount"];
+  spendAmount = [(FHFeatureInsight *)self spendAmount];
+  [coderCopy encodeObject:spendAmount forKey:@"spendAmount"];
 
-  v10 = [(FHFeatureInsight *)self spendingInsightAmount];
-  [v4 encodeObject:v10 forKey:@"spendingInsightAmount"];
+  spendingInsightAmount = [(FHFeatureInsight *)self spendingInsightAmount];
+  [coderCopy encodeObject:spendingInsightAmount forKey:@"spendingInsightAmount"];
 
-  v11 = [(FHFeatureInsight *)self spendingInsightPercentageValue];
-  [v4 encodeObject:v11 forKey:@"spendingInsightPercentageValue"];
+  spendingInsightPercentageValue = [(FHFeatureInsight *)self spendingInsightPercentageValue];
+  [coderCopy encodeObject:spendingInsightPercentageValue forKey:@"spendingInsightPercentageValue"];
 
-  v12 = [(FHFeatureInsight *)self currencyCode];
-  [v4 encodeObject:v12 forKey:@"currencyCode"];
+  currencyCode = [(FHFeatureInsight *)self currencyCode];
+  [coderCopy encodeObject:currencyCode forKey:@"currencyCode"];
 }
 
-- (FHFeatureInsight)initWithCoder:(id)a3
+- (FHFeatureInsight)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v23.receiver = self;
   v23.super_class = FHFeatureInsight;
   v5 = [(FHFeatureInsight *)&v23 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"type"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"type"];
     type = v5->type;
     v5->type = v6;
 
-    v5->detectionType = [v4 decodeIntegerForKey:@"detectionType"];
-    v5->direction = [v4 decodeIntegerForKey:@"direction"];
-    v5->window = [v4 decodeIntegerForKey:@"window"];
-    v5->windowReference = [v4 decodeIntegerForKey:@"windowReference"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"startDate"];
+    v5->detectionType = [coderCopy decodeIntegerForKey:@"detectionType"];
+    v5->direction = [coderCopy decodeIntegerForKey:@"direction"];
+    v5->window = [coderCopy decodeIntegerForKey:@"window"];
+    v5->windowReference = [coderCopy decodeIntegerForKey:@"windowReference"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"startDate"];
     startDate = v5->startDate;
     v5->startDate = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"endDate"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"endDate"];
     endDate = v5->endDate;
     v5->endDate = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"averageAmount"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"averageAmount"];
     averageAmount = v5->averageAmount;
     v5->averageAmount = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"spendAmount"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"spendAmount"];
     spendAmount = v5->spendAmount;
     v5->spendAmount = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"spendingInsightAmount"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"spendingInsightAmount"];
     spendingInsightAmount = v5->spendingInsightAmount;
     v5->spendingInsightAmount = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"spendingInsightPercentageValue"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"spendingInsightPercentageValue"];
     spendingInsightPercentageValue = v5->spendingInsightPercentageValue;
     v5->spendingInsightPercentageValue = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"currencyCode"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"currencyCode"];
     currencyCode = v5->currencyCode;
     v5->currencyCode = v20;
   }

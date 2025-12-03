@@ -1,49 +1,49 @@
 @interface PKIdentityProvisioningTransactionKey
-- (PKIdentityProvisioningTransactionKey)initWithCASDAttestation:(id)a3 authorization:(id)a4;
-- (PKIdentityProvisioningTransactionKey)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (PKIdentityProvisioningTransactionKey)initWithCASDAttestation:(id)attestation authorization:(id)authorization;
+- (PKIdentityProvisioningTransactionKey)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKIdentityProvisioningTransactionKey
 
-- (PKIdentityProvisioningTransactionKey)initWithCASDAttestation:(id)a3 authorization:(id)a4
+- (PKIdentityProvisioningTransactionKey)initWithCASDAttestation:(id)attestation authorization:(id)authorization
 {
-  v7 = a3;
-  v8 = a4;
+  attestationCopy = attestation;
+  authorizationCopy = authorization;
   v12.receiver = self;
   v12.super_class = PKIdentityProvisioningTransactionKey;
   v9 = [(PKIdentityProvisioningTransactionKey *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_casdAttestation, a3);
-    objc_storeStrong(&v10->_authorization, a4);
+    objc_storeStrong(&v9->_casdAttestation, attestation);
+    objc_storeStrong(&v10->_authorization, authorization);
   }
 
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   casdAttestation = self->_casdAttestation;
-  v5 = a3;
-  [v5 encodeObject:casdAttestation forKey:@"transactionKeyAttestation"];
-  [v5 encodeObject:self->_authorization forKey:@"transactionKeyAuthorization"];
+  coderCopy = coder;
+  [coderCopy encodeObject:casdAttestation forKey:@"transactionKeyAttestation"];
+  [coderCopy encodeObject:self->_authorization forKey:@"transactionKeyAuthorization"];
 }
 
-- (PKIdentityProvisioningTransactionKey)initWithCoder:(id)a3
+- (PKIdentityProvisioningTransactionKey)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = PKIdentityProvisioningTransactionKey;
   v5 = [(PKIdentityProvisioningTransactionKey *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"transactionKeyAttestation"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"transactionKeyAttestation"];
     casdAttestation = v5->_casdAttestation;
     v5->_casdAttestation = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"transactionKeyAuthorization"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"transactionKeyAuthorization"];
     authorization = v5->_authorization;
     v5->_authorization = v8;
   }

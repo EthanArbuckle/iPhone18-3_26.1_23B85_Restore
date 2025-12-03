@@ -1,39 +1,39 @@
 @interface MFSearchSuggestionsTableViewModel
-- (MFSearchSuggestionsTableViewModel)initWithSectionComparator:(id)a3 defaultReuseConfiguration:(id)a4;
+- (MFSearchSuggestionsTableViewModel)initWithSectionComparator:(id)comparator defaultReuseConfiguration:(id)configuration;
 - (NSString)description;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
-- (id)_reuseConfigurationForSuggestion:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)indexPathForSuggestion:(id)a3;
-- (id)objectForKeyedSubscript:(id)a3;
-- (id)sectionAtIndex:(unint64_t)a3;
-- (id)sectionForIdentifier:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (id)tableViewModelByRemovingItemsAtIndexPaths:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)enumerateSections:(id)a3;
-- (void)registerCategory:(id)a3 forReuseConfiguration:(id)a4;
-- (void)setSection:(id)a3 forIdentifier:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
+- (id)_reuseConfigurationForSuggestion:(id)suggestion;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)indexPathForSuggestion:(id)suggestion;
+- (id)objectForKeyedSubscript:(id)subscript;
+- (id)sectionAtIndex:(unint64_t)index;
+- (id)sectionForIdentifier:(id)identifier;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (id)tableViewModelByRemovingItemsAtIndexPaths:(id)paths;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)enumerateSections:(id)sections;
+- (void)registerCategory:(id)category forReuseConfiguration:(id)configuration;
+- (void)setSection:(id)section forIdentifier:(id)identifier;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation MFSearchSuggestionsTableViewModel
 
-- (MFSearchSuggestionsTableViewModel)initWithSectionComparator:(id)a3 defaultReuseConfiguration:(id)a4
+- (MFSearchSuggestionsTableViewModel)initWithSectionComparator:(id)comparator defaultReuseConfiguration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
+  comparatorCopy = comparator;
+  configurationCopy = configuration;
   v16.receiver = self;
   v16.super_class = MFSearchSuggestionsTableViewModel;
   v8 = [(MFSearchSuggestionsTableViewModel *)&v16 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [comparatorCopy copy];
     comparator = v8->_comparator;
     v8->_comparator = v9;
 
-    v11 = [v7 copy];
+    v11 = [configurationCopy copy];
     defaultReuseConfiguration = v8->_defaultReuseConfiguration;
     v8->_defaultReuseConfiguration = v11;
 
@@ -46,7 +46,7 @@
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [objc_alloc(objc_opt_class()) initWithSectionComparator:self->_comparator defaultReuseConfiguration:self->_defaultReuseConfiguration];
   if (!v4)
@@ -70,23 +70,23 @@
   v10 = v4;
   v15 = v10;
   [(NSMutableDictionary *)objectsByIdentifier enumerateKeysAndObjectsUsingBlock:v14];
-  v11 = [(MFSearchSuggestionsTableViewModel *)self categoryConfiguration];
-  v12 = [v11 mutableCopy];
+  categoryConfiguration = [(MFSearchSuggestionsTableViewModel *)self categoryConfiguration];
+  v12 = [categoryConfiguration mutableCopy];
   [v10 setCategoryConfiguration:v12];
 
   return v10;
 }
 
-- (id)objectForKeyedSubscript:(id)a3
+- (id)objectForKeyedSubscript:(id)subscript
 {
-  v3 = [(MFSearchSuggestionsTableViewModel *)self sectionForIdentifier:a3];
+  v3 = [(MFSearchSuggestionsTableViewModel *)self sectionForIdentifier:subscript];
 
   return v3;
 }
 
-- (void)enumerateSections:(id)a3
+- (void)enumerateSections:(id)sections
 {
-  v4 = a3;
+  sectionsCopy = sections;
   v16 = 0;
   v12 = 0u;
   v13 = 0u;
@@ -109,7 +109,7 @@ LABEL_3:
 
       v10 = *(*(&v12 + 1) + 8 * v9);
       v11 = [(NSMutableDictionary *)self->_objectsByIdentifier objectForKeyedSubscript:v10, v12];
-      v4[2](v4, v7, v10, v11, &v16);
+      sectionsCopy[2](sectionsCopy, v7, v10, v11, &v16);
 
       if (v16)
       {
@@ -131,27 +131,27 @@ LABEL_3:
   }
 }
 
-- (id)sectionAtIndex:(unint64_t)a3
+- (id)sectionAtIndex:(unint64_t)index
 {
-  v4 = [(NSMutableArray *)self->_orderedIdentifiers objectAtIndexedSubscript:a3];
+  v4 = [(NSMutableArray *)self->_orderedIdentifiers objectAtIndexedSubscript:index];
   v5 = [(MFSearchSuggestionsTableViewModel *)self sectionForIdentifier:v4];
 
   return v5;
 }
 
-- (id)sectionForIdentifier:(id)a3
+- (id)sectionForIdentifier:(id)identifier
 {
-  v3 = [(NSMutableDictionary *)self->_objectsByIdentifier objectForKeyedSubscript:a3];
+  v3 = [(NSMutableDictionary *)self->_objectsByIdentifier objectForKeyedSubscript:identifier];
   v4 = [NSArray arrayWithArray:v3];
 
   return v4;
 }
 
-- (void)setSection:(id)a3 forIdentifier:(id)a4
+- (void)setSection:(id)section forIdentifier:(id)identifier
 {
-  v14 = a3;
-  v6 = a4;
-  v7 = [v14 count];
+  sectionCopy = section;
+  identifierCopy = identifier;
+  v7 = [sectionCopy count];
   orderedIdentifiers = self->_orderedIdentifiers;
   if (v7)
   {
@@ -168,37 +168,37 @@ LABEL_3:
       orderedIdentifiers = self->_orderedIdentifiers;
     }
 
-    [(NSMutableArray *)orderedIdentifiers ef_insertObject:v6 usingComparator:self->_comparator allowDuplicates:0];
-    v13 = [NSMutableArray arrayWithArray:v14];
-    [(NSMutableDictionary *)self->_objectsByIdentifier setObject:v13 forKeyedSubscript:v6];
+    [(NSMutableArray *)orderedIdentifiers ef_insertObject:identifierCopy usingComparator:self->_comparator allowDuplicates:0];
+    v13 = [NSMutableArray arrayWithArray:sectionCopy];
+    [(NSMutableDictionary *)self->_objectsByIdentifier setObject:v13 forKeyedSubscript:identifierCopy];
   }
 
   else
   {
-    [(NSMutableArray *)orderedIdentifiers ef_removeObject:v6 usingComparator:self->_comparator];
-    [(NSMutableDictionary *)self->_objectsByIdentifier removeObjectForKey:v6];
+    [(NSMutableArray *)orderedIdentifiers ef_removeObject:identifierCopy usingComparator:self->_comparator];
+    [(NSMutableDictionary *)self->_objectsByIdentifier removeObjectForKey:identifierCopy];
   }
 }
 
-- (void)registerCategory:(id)a3 forReuseConfiguration:(id)a4
+- (void)registerCategory:(id)category forReuseConfiguration:(id)configuration
 {
-  v8 = a3;
-  v6 = a4;
-  [v6 validate];
-  v7 = [(MFSearchSuggestionsTableViewModel *)self categoryConfiguration];
-  [v7 setObject:v6 forKeyedSubscript:v8];
+  categoryCopy = category;
+  configurationCopy = configuration;
+  [configurationCopy validate];
+  categoryConfiguration = [(MFSearchSuggestionsTableViewModel *)self categoryConfiguration];
+  [categoryConfiguration setObject:configurationCopy forKeyedSubscript:categoryCopy];
 }
 
-- (id)tableViewModelByRemovingItemsAtIndexPaths:(id)a3
+- (id)tableViewModelByRemovingItemsAtIndexPaths:(id)paths
 {
-  v18 = a3;
+  pathsCopy = paths;
   v17 = [(MFSearchSuggestionsTableViewModel *)self copy];
   v4 = objc_alloc_init(NSMutableDictionary);
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v5 = v18;
+  v5 = pathsCopy;
   v6 = [v5 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v6)
   {
@@ -213,10 +213,10 @@ LABEL_3:
         }
 
         v9 = *(*(&v21 + 1) + 8 * i);
-        v10 = [v9 section];
-        if (v10 != 0x7FFFFFFFFFFFFFFFLL && v10 < [(NSMutableArray *)self->_orderedIdentifiers count])
+        section = [v9 section];
+        if (section != 0x7FFFFFFFFFFFFFFFLL && section < [(NSMutableArray *)self->_orderedIdentifiers count])
         {
-          v11 = [(MFSearchSuggestionsTableViewModel *)self identifierAtIndex:v10];
+          v11 = [(MFSearchSuggestionsTableViewModel *)self identifierAtIndex:section];
           v12 = [v9 row];
           v13 = [v4 objectForKeyedSubscript:v11];
           v14 = v13;
@@ -250,13 +250,13 @@ LABEL_3:
   return v15;
 }
 
-- (id)indexPathForSuggestion:(id)a3
+- (id)indexPathForSuggestion:(id)suggestion
 {
-  v4 = a3;
-  v5 = [v4 category];
-  v6 = [(NSMutableArray *)self->_orderedIdentifiers indexOfObject:v5];
-  v7 = [(NSMutableDictionary *)self->_objectsByIdentifier objectForKeyedSubscript:v5];
-  v8 = [v7 indexOfObject:v4];
+  suggestionCopy = suggestion;
+  category = [suggestionCopy category];
+  v6 = [(NSMutableArray *)self->_orderedIdentifiers indexOfObject:category];
+  v7 = [(NSMutableDictionary *)self->_objectsByIdentifier objectForKeyedSubscript:category];
+  v8 = [v7 indexOfObject:suggestionCopy];
 
   v9 = [NSIndexPath indexPathForRow:v8 inSection:v6];
 
@@ -266,86 +266,86 @@ LABEL_3:
 - (NSString)description
 {
   v3 = objc_opt_class();
-  v4 = [(MFSearchSuggestionsTableViewModel *)self objectsByIdentifier];
-  v5 = [NSString stringWithFormat:@"<%@: %p> %@", v3, self, v4];
+  objectsByIdentifier = [(MFSearchSuggestionsTableViewModel *)self objectsByIdentifier];
+  v5 = [NSString stringWithFormat:@"<%@: %p> %@", v3, self, objectsByIdentifier];
 
   return v5;
 }
 
-- (id)_reuseConfigurationForSuggestion:(id)a3
+- (id)_reuseConfigurationForSuggestion:(id)suggestion
 {
-  v4 = a3;
-  v5 = [v4 category];
-  v6 = [(MFSearchSuggestionsTableViewModel *)self categoryConfiguration];
-  v7 = [v6 objectForKeyedSubscript:v5];
+  suggestionCopy = suggestion;
+  category = [suggestionCopy category];
+  categoryConfiguration = [(MFSearchSuggestionsTableViewModel *)self categoryConfiguration];
+  defaultReuseConfiguration = [categoryConfiguration objectForKeyedSubscript:category];
 
-  if (!v7)
+  if (!defaultReuseConfiguration)
   {
-    v7 = [(MFSearchSuggestionsTableViewModel *)self defaultReuseConfiguration];
-    if (!v7)
+    defaultReuseConfiguration = [(MFSearchSuggestionsTableViewModel *)self defaultReuseConfiguration];
+    if (!defaultReuseConfiguration)
     {
       __assert_rtn("[MFSearchSuggestionsTableViewModel _reuseConfigurationForSuggestion:]", "MFSearchSuggestionsTableViewModel.m", 226, "reuseConfiguration");
     }
   }
 
-  return v7;
+  return defaultReuseConfiguration;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(MFSearchSuggestionsTableViewModel *)self objectAtIndexedSubscript:a4];
+  v4 = [(MFSearchSuggestionsTableViewModel *)self objectAtIndexedSubscript:section];
   v5 = [v4 count];
 
   return v5;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v4 = [(MFSearchSuggestionsTableViewModel *)self identifierAtIndex:a4];
-  v5 = [v4 displayName];
+  v4 = [(MFSearchSuggestionsTableViewModel *)self identifierAtIndex:section];
+  displayName = [v4 displayName];
 
-  return v5;
+  return displayName;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = -[MFSearchSuggestionsTableViewModel objectAtIndexedSubscript:](self, "objectAtIndexedSubscript:", [v7 section]);
-  v9 = [v8 objectAtIndexedSubscript:{objc_msgSend(v7, "row")}];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = -[MFSearchSuggestionsTableViewModel objectAtIndexedSubscript:](self, "objectAtIndexedSubscript:", [pathCopy section]);
+  v9 = [v8 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
 
   v10 = [(MFSearchSuggestionsTableViewModel *)self _reuseConfigurationForSuggestion:v9];
-  v11 = [v10 reuseIdentifier];
-  v12 = [v6 dequeueReusableCellWithIdentifier:v11 forIndexPath:v7];
+  reuseIdentifier = [v10 reuseIdentifier];
+  v12 = [viewCopy dequeueReusableCellWithIdentifier:reuseIdentifier forIndexPath:pathCopy];
 
-  v13 = [v10 cellPopulator];
-  (v13)[2](v13, v9, v7, v12);
+  cellPopulator = [v10 cellPopulator];
+  (cellPopulator)[2](cellPopulator, v9, pathCopy, v12);
 
   return v12;
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = -[MFSearchSuggestionsTableViewModel objectAtIndexedSubscript:](self, "objectAtIndexedSubscript:", [v5 section]);
-  v7 = [v6 objectAtIndexedSubscript:{objc_msgSend(v5, "row")}];
+  pathCopy = path;
+  v6 = -[MFSearchSuggestionsTableViewModel objectAtIndexedSubscript:](self, "objectAtIndexedSubscript:", [pathCopy section]);
+  v7 = [v6 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
 
   v8 = [(MFSearchSuggestionsTableViewModel *)self _reuseConfigurationForSuggestion:v7];
-  v9 = [v8 rowHeightCalculator];
-  v10 = (v9)[2](v9, v7, v5);
+  rowHeightCalculator = [v8 rowHeightCalculator];
+  v10 = (rowHeightCalculator)[2](rowHeightCalculator, v7, pathCopy);
 
   return v10;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v9 = a4;
-  v5 = -[MFSearchSuggestionsTableViewModel objectAtIndexedSubscript:](self, "objectAtIndexedSubscript:", [v9 section]);
-  v6 = [v5 objectAtIndexedSubscript:{objc_msgSend(v9, "row")}];
+  pathCopy = path;
+  v5 = -[MFSearchSuggestionsTableViewModel objectAtIndexedSubscript:](self, "objectAtIndexedSubscript:", [pathCopy section]);
+  v6 = [v5 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
 
   v7 = [(MFSearchSuggestionsTableViewModel *)self _reuseConfigurationForSuggestion:v6];
-  v8 = [v7 rowSelector];
-  (v8)[2](v8, v6, v9);
+  rowSelector = [v7 rowSelector];
+  (rowSelector)[2](rowSelector, v6, pathCopy);
 }
 
 @end

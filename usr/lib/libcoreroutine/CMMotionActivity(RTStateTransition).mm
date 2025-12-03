@@ -7,21 +7,21 @@
 - (BOOL)isEqual:()RTStateTransition
 {
   v4 = a3;
-  v5 = [a1 unknown];
+  unknown = [self unknown];
   v10 = 0;
-  if (v5 == [v4 unknown])
+  if (unknown == [v4 unknown])
   {
-    v6 = [a1 stationary];
-    if (v6 == [v4 stationary])
+    stationary = [self stationary];
+    if (stationary == [v4 stationary])
     {
-      v7 = [a1 walking];
-      if (v7 == [v4 walking])
+      walking = [self walking];
+      if (walking == [v4 walking])
       {
-        v8 = [a1 running];
-        if (v8 == [v4 running])
+        running = [self running];
+        if (running == [v4 running])
         {
-          v9 = [a1 automotive];
-          if (v9 == [v4 automotive])
+          automotive = [self automotive];
+          if (automotive == [v4 automotive])
           {
             v10 = 1;
           }

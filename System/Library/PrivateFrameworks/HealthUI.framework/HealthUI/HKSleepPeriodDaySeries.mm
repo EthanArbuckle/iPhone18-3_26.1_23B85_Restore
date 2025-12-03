@@ -1,38 +1,38 @@
 @interface HKSleepPeriodDaySeries
-- (double)barWidthForVisibleBarCount:(int64_t)a3 axisRect:(CGRect)a4 minimumSpacing:(double)a5;
-- (id)coordinatesForBlock:(id)a3 blockPath:(HKGraphSeriesDataBlockPath *)a4 xAxis:(id)a5 yAxis:(id)a6;
-- (void)addGoalLinePathsToCoordinate:(id)a3 upperGoalLinePath:(id)a4 upperGoalMarkerPoints:(id)a5 previousUpperGoalLinePoint:(id)a6 lowerGoalLinePath:(id)a7 lowerGoalMarkerPoints:(id)a8 previousLowerGoalLinePoint:(id)a9 axisRect:(CGRect)a10;
+- (double)barWidthForVisibleBarCount:(int64_t)count axisRect:(CGRect)rect minimumSpacing:(double)spacing;
+- (id)coordinatesForBlock:(id)block blockPath:(HKGraphSeriesDataBlockPath *)path xAxis:(id)axis yAxis:(id)yAxis;
+- (void)addGoalLinePathsToCoordinate:(id)coordinate upperGoalLinePath:(id)path upperGoalMarkerPoints:(id)points previousUpperGoalLinePoint:(id)point lowerGoalLinePath:(id)linePath lowerGoalMarkerPoints:(id)markerPoints previousLowerGoalLinePoint:(id)linePoint axisRect:(CGRect)self0;
 @end
 
 @implementation HKSleepPeriodDaySeries
 
-- (id)coordinatesForBlock:(id)a3 blockPath:(HKGraphSeriesDataBlockPath *)a4 xAxis:(id)a5 yAxis:(id)a6
+- (id)coordinatesForBlock:(id)block blockPath:(HKGraphSeriesDataBlockPath *)path xAxis:(id)axis yAxis:(id)yAxis
 {
-  v11 = a5;
-  v12 = a6;
-  v13 = [a3 chartPoints];
-  if (!v13)
+  axisCopy = axis;
+  yAxisCopy = yAxis;
+  chartPoints = [block chartPoints];
+  if (!chartPoints)
   {
     [HKSleepPeriodDaySeries coordinatesForBlock:a2 blockPath:self xAxis:? yAxis:?];
   }
 
-  v14 = [v11 transform];
-  v15 = [v12 transform];
+  transform = [axisCopy transform];
+  transform2 = [yAxisCopy transform];
 
   v16 = objc_opt_new();
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __68__HKSleepPeriodDaySeries_coordinatesForBlock_blockPath_xAxis_yAxis___block_invoke;
   v24[3] = &unk_1E81BA8E8;
-  v25 = v15;
-  v26 = v14;
+  v25 = transform2;
+  v26 = transform;
   v27 = v16;
   v17 = v16;
-  v18 = v14;
-  v19 = v15;
-  [v13 enumerateObjectsUsingBlock:v24];
-  v22 = *&a4->index;
-  resolution = a4->resolution;
+  v18 = transform;
+  v19 = transform2;
+  [chartPoints enumerateObjectsUsingBlock:v24];
+  v22 = *&path->index;
+  resolution = path->resolution;
   v20 = [HKGraphSeriesBlockCoordinateList coordinateListWithCoordinates:v17 blockPath:&v22];
 
   return v20;
@@ -99,75 +99,75 @@ void __68__HKSleepPeriodDaySeries_coordinatesForBlock_blockPath_xAxis_yAxis___bl
   }
 }
 
-- (double)barWidthForVisibleBarCount:(int64_t)a3 axisRect:(CGRect)a4 minimumSpacing:(double)a5
+- (double)barWidthForVisibleBarCount:(int64_t)count axisRect:(CGRect)rect minimumSpacing:(double)spacing
 {
-  v5 = a4.size.width / a3;
-  v6 = v5 * 0.5;
-  if (v5 * 0.5 <= a5)
+  v5 = rect.size.width / count;
+  spacingCopy = v5 * 0.5;
+  if (v5 * 0.5 <= spacing)
   {
-    v6 = a5;
+    spacingCopy = spacing;
   }
 
-  return round(v5 - v6);
+  return round(v5 - spacingCopy);
 }
 
-- (void)addGoalLinePathsToCoordinate:(id)a3 upperGoalLinePath:(id)a4 upperGoalMarkerPoints:(id)a5 previousUpperGoalLinePoint:(id)a6 lowerGoalLinePath:(id)a7 lowerGoalMarkerPoints:(id)a8 previousLowerGoalLinePoint:(id)a9 axisRect:(CGRect)a10
+- (void)addGoalLinePathsToCoordinate:(id)coordinate upperGoalLinePath:(id)path upperGoalMarkerPoints:(id)points previousUpperGoalLinePoint:(id)point lowerGoalLinePath:(id)linePath lowerGoalMarkerPoints:(id)markerPoints previousLowerGoalLinePoint:(id)linePoint axisRect:(CGRect)self0
 {
-  width = a10.size.width;
-  v50 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a7;
-  v18 = a8;
+  width = rect.size.width;
+  coordinateCopy = coordinate;
+  pathCopy = path;
+  pointsCopy = points;
+  linePathCopy = linePath;
+  markerPointsCopy = markerPoints;
   v19 = width * 0.25;
-  v20 = [v50 upperGoalYValue];
+  upperGoalYValue = [coordinateCopy upperGoalYValue];
 
-  if (v20)
+  if (upperGoalYValue)
   {
-    [v50 startXValue];
+    [coordinateCopy startXValue];
     v22 = v21 - v19;
-    v23 = [v50 upperGoalYValue];
-    [v23 doubleValue];
-    [v15 moveToPoint:{v22, v24}];
+    upperGoalYValue2 = [coordinateCopy upperGoalYValue];
+    [upperGoalYValue2 doubleValue];
+    [pathCopy moveToPoint:{v22, v24}];
 
-    [v50 startXValue];
+    [coordinateCopy startXValue];
     v26 = v19 + v25;
-    v27 = [v50 upperGoalYValue];
-    [v27 doubleValue];
-    [v15 addLineToPoint:{v26, v28}];
+    upperGoalYValue3 = [coordinateCopy upperGoalYValue];
+    [upperGoalYValue3 doubleValue];
+    [pathCopy addLineToPoint:{v26, v28}];
 
     v29 = MEMORY[0x1E696B098];
-    [v50 startXValue];
+    [coordinateCopy startXValue];
     v31 = v30;
-    v32 = [v50 upperGoalYValue];
-    [v32 doubleValue];
+    upperGoalYValue4 = [coordinateCopy upperGoalYValue];
+    [upperGoalYValue4 doubleValue];
     v34 = [v29 valueWithCGPoint:{v31, v33}];
-    [v16 addObject:v34];
+    [pointsCopy addObject:v34];
   }
 
-  v35 = [v50 lowerGoalYValue];
+  lowerGoalYValue = [coordinateCopy lowerGoalYValue];
 
-  if (v35)
+  if (lowerGoalYValue)
   {
-    [v50 startXValue];
+    [coordinateCopy startXValue];
     v37 = v36 - v19;
-    v38 = [v50 lowerGoalYValue];
-    [v38 doubleValue];
-    [v17 moveToPoint:{v37, v39}];
+    lowerGoalYValue2 = [coordinateCopy lowerGoalYValue];
+    [lowerGoalYValue2 doubleValue];
+    [linePathCopy moveToPoint:{v37, v39}];
 
-    [v50 startXValue];
+    [coordinateCopy startXValue];
     v41 = v19 + v40;
-    v42 = [v50 lowerGoalYValue];
-    [v42 doubleValue];
-    [v17 addLineToPoint:{v41, v43}];
+    lowerGoalYValue3 = [coordinateCopy lowerGoalYValue];
+    [lowerGoalYValue3 doubleValue];
+    [linePathCopy addLineToPoint:{v41, v43}];
 
     v44 = MEMORY[0x1E696B098];
-    [v50 startXValue];
+    [coordinateCopy startXValue];
     v46 = v45;
-    v47 = [v50 lowerGoalYValue];
-    [v47 doubleValue];
+    lowerGoalYValue4 = [coordinateCopy lowerGoalYValue];
+    [lowerGoalYValue4 doubleValue];
     v49 = [v44 valueWithCGPoint:{v46, v48}];
-    [v18 addObject:v49];
+    [markerPointsCopy addObject:v49];
   }
 }
 

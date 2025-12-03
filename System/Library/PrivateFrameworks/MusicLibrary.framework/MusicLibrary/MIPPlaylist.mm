@@ -1,73 +1,73 @@
 @interface MIPPlaylist
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)sortTypeAsString:(int)a3;
-- (id)typeAsString:(int)a3;
-- (int)StringAsSortType:(id)a3;
-- (int)StringAsType:(id)a3;
+- (id)sortTypeAsString:(int)string;
+- (id)typeAsString:(int)string;
+- (int)StringAsSortType:(id)type;
+- (int)StringAsType:(id)type;
 - (int)sortType;
 - (int)type;
 - (unint64_t)hash;
-- (void)addChildIdentifiers:(id)a3;
-- (void)addItems:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasCloudIsCuratorPlaylist:(BOOL)a3;
-- (void)setHasCloudIsSharingDisabled:(BOOL)a3;
-- (void)setHasCloudIsSubscribed:(BOOL)a3;
-- (void)setHasCloudLastUpdateTime:(BOOL)a3;
-- (void)setHasCollaborationInvitationURLExpirationDate:(BOOL)a3;
-- (void)setHasCollaborationJoinRequestPending:(BOOL)a3;
-- (void)setHasCollaborationMode:(BOOL)a3;
-- (void)setHasCollaboratorStatus:(BOOL)a3;
-- (void)setHasCreationDateTime:(BOOL)a3;
-- (void)setHasDistinguishedKind:(BOOL)a3;
-- (void)setHasEditable:(BOOL)a3;
-- (void)setHasExternalVendorPlaylist:(BOOL)a3;
-- (void)setHasHidden:(BOOL)a3;
-- (void)setHasIsCollaborative:(BOOL)a3;
-- (void)setHasLastPlayedDateTime:(BOOL)a3;
-- (void)setHasLikedState:(BOOL)a3;
-- (void)setHasLikedStateChangedDate:(BOOL)a3;
-- (void)setHasMinRefreshInterval:(BOOL)a3;
-- (void)setHasModificationDateTime:(BOOL)a3;
-- (void)setHasOwner:(BOOL)a3;
-- (void)setHasPlayCount:(BOOL)a3;
-- (void)setHasPlaylistCategoryTypeMask:(BOOL)a3;
-- (void)setHasRemoteSourceType:(BOOL)a3;
-- (void)setHasReversedSorting:(BOOL)a3;
-- (void)setHasSecondaryArtworkSourceType:(BOOL)a3;
-- (void)setHasShared:(BOOL)a3;
-- (void)setHasSortType:(BOOL)a3;
-- (void)setHasStoreId:(BOOL)a3;
-- (void)setHasSubscriberCount:(BOOL)a3;
-- (void)setHasSubscriberLikedCount:(BOOL)a3;
-- (void)setHasSubscriberPlayCount:(BOOL)a3;
-- (void)setHasTraits:(BOOL)a3;
-- (void)setHasType:(BOOL)a3;
-- (void)setHasVisible:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addChildIdentifiers:(id)identifiers;
+- (void)addItems:(id)items;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasCloudIsCuratorPlaylist:(BOOL)playlist;
+- (void)setHasCloudIsSharingDisabled:(BOOL)disabled;
+- (void)setHasCloudIsSubscribed:(BOOL)subscribed;
+- (void)setHasCloudLastUpdateTime:(BOOL)time;
+- (void)setHasCollaborationInvitationURLExpirationDate:(BOOL)date;
+- (void)setHasCollaborationJoinRequestPending:(BOOL)pending;
+- (void)setHasCollaborationMode:(BOOL)mode;
+- (void)setHasCollaboratorStatus:(BOOL)status;
+- (void)setHasCreationDateTime:(BOOL)time;
+- (void)setHasDistinguishedKind:(BOOL)kind;
+- (void)setHasEditable:(BOOL)editable;
+- (void)setHasExternalVendorPlaylist:(BOOL)playlist;
+- (void)setHasHidden:(BOOL)hidden;
+- (void)setHasIsCollaborative:(BOOL)collaborative;
+- (void)setHasLastPlayedDateTime:(BOOL)time;
+- (void)setHasLikedState:(BOOL)state;
+- (void)setHasLikedStateChangedDate:(BOOL)date;
+- (void)setHasMinRefreshInterval:(BOOL)interval;
+- (void)setHasModificationDateTime:(BOOL)time;
+- (void)setHasOwner:(BOOL)owner;
+- (void)setHasPlayCount:(BOOL)count;
+- (void)setHasPlaylistCategoryTypeMask:(BOOL)mask;
+- (void)setHasRemoteSourceType:(BOOL)type;
+- (void)setHasReversedSorting:(BOOL)sorting;
+- (void)setHasSecondaryArtworkSourceType:(BOOL)type;
+- (void)setHasShared:(BOOL)shared;
+- (void)setHasSortType:(BOOL)type;
+- (void)setHasStoreId:(BOOL)id;
+- (void)setHasSubscriberCount:(BOOL)count;
+- (void)setHasSubscriberLikedCount:(BOOL)count;
+- (void)setHasSubscriberPlayCount:(BOOL)count;
+- (void)setHasTraits:(BOOL)traits;
+- (void)setHasType:(BOOL)type;
+- (void)setHasVisible:(BOOL)visible;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MIPPlaylist
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v40 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (*(v4 + 28))
+  fromCopy = from;
+  if (*(fromCopy + 28))
   {
     [(MIPPlaylist *)self setName:?];
   }
 
-  v5 = *(v4 + 340);
+  v5 = *(fromCopy + 340);
   if ((v5 & 0x100) != 0)
   {
-    self->_storeId = *(v4 + 9);
+    self->_storeId = *(fromCopy + 9);
     *&self->_has |= 0x100uLL;
-    v5 = *(v4 + 340);
+    v5 = *(fromCopy + 340);
     if ((v5 & 0x400000) == 0)
     {
 LABEL_5:
@@ -85,18 +85,18 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  self->_type = *(v4 + 81);
+  self->_type = *(fromCopy + 81);
   *&self->_has |= 0x400000uLL;
-  if ((*(v4 + 340) & 0x20000000) != 0)
+  if ((*(fromCopy + 340) & 0x20000000) != 0)
   {
 LABEL_6:
-    self->_hidden = v4[334];
+    self->_hidden = fromCopy[334];
     *&self->_has |= 0x20000000uLL;
   }
 
 LABEL_7:
   smartPlaylistInfo = self->_smartPlaylistInfo;
-  v7 = *(v4 + 36);
+  v7 = *(fromCopy + 36);
   if (smartPlaylistInfo)
   {
     if (v7)
@@ -110,22 +110,22 @@ LABEL_7:
     [(MIPPlaylist *)self setSmartPlaylistInfo:?];
   }
 
-  v8 = *(v4 + 340);
+  v8 = *(fromCopy + 340);
   if ((v8 & 0x20000) != 0)
   {
-    self->_sortType = *(v4 + 74);
+    self->_sortType = *(fromCopy + 74);
     *&self->_has |= 0x20000uLL;
-    v8 = *(v4 + 340);
+    v8 = *(fromCopy + 340);
   }
 
   if ((v8 & 0x100000000) != 0)
   {
-    self->_reversedSorting = v4[337];
+    self->_reversedSorting = fromCopy[337];
     *&self->_has |= 0x100000000uLL;
   }
 
   parentIdentifier = self->_parentIdentifier;
-  v10 = *(v4 + 29);
+  v10 = *(fromCopy + 29);
   if (parentIdentifier)
   {
     if (v10)
@@ -140,7 +140,7 @@ LABEL_7:
   }
 
   geniusSeedTrackIdentifier = self->_geniusSeedTrackIdentifier;
-  v12 = *(v4 + 25);
+  v12 = *(fromCopy + 25);
   if (geniusSeedTrackIdentifier)
   {
     if (v12)
@@ -154,52 +154,52 @@ LABEL_7:
     [(MIPPlaylist *)self setGeniusSeedTrackIdentifier:?];
   }
 
-  if ((v4[341] & 8) != 0)
+  if ((fromCopy[341] & 8) != 0)
   {
-    self->_distinguishedKind = *(v4 + 42);
+    self->_distinguishedKind = *(fromCopy + 42);
     *&self->_has |= 0x800uLL;
   }
 
-  if (*(v4 + 15))
+  if (*(fromCopy + 15))
   {
     [(MIPPlaylist *)self setCloudGlobalId:?];
   }
 
-  v13 = *(v4 + 340);
+  v13 = *(fromCopy + 340);
   if ((v13 & 0x2000000) != 0)
   {
-    self->_cloudIsSubscribed = v4[330];
+    self->_cloudIsSubscribed = fromCopy[330];
     *&self->_has |= 0x2000000uLL;
-    v13 = *(v4 + 340);
+    v13 = *(fromCopy + 340);
   }
 
   if ((v13 & 0x800000) != 0)
   {
-    self->_cloudIsCuratorPlaylist = v4[328];
+    self->_cloudIsCuratorPlaylist = fromCopy[328];
     *&self->_has |= 0x800000uLL;
   }
 
-  if (*(v4 + 23))
+  if (*(fromCopy + 23))
   {
     [(MIPPlaylist *)self setExternalVendorIdentifier:?];
   }
 
-  if (*(v4 + 22))
+  if (*(fromCopy + 22))
   {
     [(MIPPlaylist *)self setExternalVendorDisplayName:?];
   }
 
-  if (*(v4 + 24))
+  if (*(fromCopy + 24))
   {
     [(MIPPlaylist *)self setExternalVendorTag:?];
   }
 
-  v14 = *(v4 + 340);
+  v14 = *(fromCopy + 340);
   if ((v14 & 0x10000000) != 0)
   {
-    self->_externalVendorPlaylist = v4[333];
+    self->_externalVendorPlaylist = fromCopy[333];
     *&self->_has |= 0x10000000uLL;
-    v14 = *(v4 + 340);
+    v14 = *(fromCopy + 340);
     if ((v14 & 8) == 0)
     {
 LABEL_45:
@@ -217,9 +217,9 @@ LABEL_45:
     goto LABEL_45;
   }
 
-  self->_creationDateTime = *(v4 + 4);
+  self->_creationDateTime = *(fromCopy + 4);
   *&self->_has |= 8uLL;
-  v14 = *(v4 + 340);
+  v14 = *(fromCopy + 340);
   if ((v14 & 0x80) == 0)
   {
 LABEL_46:
@@ -232,9 +232,9 @@ LABEL_46:
   }
 
 LABEL_121:
-  self->_modificationDateTime = *(v4 + 8);
+  self->_modificationDateTime = *(fromCopy + 8);
   *&self->_has |= 0x80uLL;
-  v14 = *(v4 + 340);
+  v14 = *(fromCopy + 340);
   if ((v14 & 0x10) == 0)
   {
 LABEL_47:
@@ -247,32 +247,32 @@ LABEL_47:
   }
 
 LABEL_122:
-  self->_lastPlayedDateTime = *(v4 + 5);
+  self->_lastPlayedDateTime = *(fromCopy + 5);
   *&self->_has |= 0x10uLL;
-  if ((*(v4 + 340) & 0x1000000) != 0)
+  if ((*(fromCopy + 340) & 0x1000000) != 0)
   {
 LABEL_48:
-    self->_cloudIsSharingDisabled = v4[329];
+    self->_cloudIsSharingDisabled = fromCopy[329];
     *&self->_has |= 0x1000000uLL;
   }
 
 LABEL_49:
-  if (*(v4 + 17))
+  if (*(fromCopy + 17))
   {
     [(MIPPlaylist *)self setCloudVersionHash:?];
   }
 
-  if (*(v4 + 10))
+  if (*(fromCopy + 10))
   {
     [(MIPPlaylist *)self setArtworkId:?];
   }
 
-  v15 = *(v4 + 340);
+  v15 = *(fromCopy + 340);
   if ((v15 & 0x1000) != 0)
   {
-    self->_likedState = *(v4 + 54);
+    self->_likedState = *(fromCopy + 54);
     *&self->_has |= 0x1000uLL;
-    v15 = *(v4 + 340);
+    v15 = *(fromCopy + 340);
     if ((v15 & 0x8000) == 0)
     {
 LABEL_55:
@@ -290,9 +290,9 @@ LABEL_55:
     goto LABEL_55;
   }
 
-  self->_remoteSourceType = *(v4 + 66);
+  self->_remoteSourceType = *(fromCopy + 66);
   *&self->_has |= 0x8000uLL;
-  v15 = *(v4 + 340);
+  v15 = *(fromCopy + 340);
   if ((v15 & 0x80000000) == 0)
   {
 LABEL_56:
@@ -305,9 +305,9 @@ LABEL_56:
   }
 
 LABEL_126:
-  self->_owner = v4[336];
+  self->_owner = fromCopy[336];
   *&self->_has |= 0x80000000uLL;
-  v15 = *(v4 + 340);
+  v15 = *(fromCopy + 340);
   if ((v15 & 0x8000000) == 0)
   {
 LABEL_57:
@@ -320,9 +320,9 @@ LABEL_57:
   }
 
 LABEL_127:
-  self->_editable = v4[332];
+  self->_editable = fromCopy[332];
   *&self->_has |= 0x8000000uLL;
-  v15 = *(v4 + 340);
+  v15 = *(fromCopy + 340);
   if ((v15 & 0x2000) == 0)
   {
 LABEL_58:
@@ -335,9 +335,9 @@ LABEL_58:
   }
 
 LABEL_128:
-  self->_playCount = *(v4 + 60);
+  self->_playCount = *(fromCopy + 60);
   *&self->_has |= 0x2000uLL;
-  v15 = *(v4 + 340);
+  v15 = *(fromCopy + 340);
   if ((v15 & 0x200000000) == 0)
   {
 LABEL_59:
@@ -350,9 +350,9 @@ LABEL_59:
   }
 
 LABEL_129:
-  self->_shared = v4[338];
+  self->_shared = fromCopy[338];
   *&self->_has |= 0x200000000uLL;
-  v15 = *(v4 + 340);
+  v15 = *(fromCopy + 340);
   if ((v15 & 0x400000000) == 0)
   {
 LABEL_60:
@@ -365,37 +365,37 @@ LABEL_60:
   }
 
 LABEL_130:
-  self->_visible = v4[339];
+  self->_visible = fromCopy[339];
   *&self->_has |= 0x400000000uLL;
-  if (*(v4 + 340))
+  if (*(fromCopy + 340))
   {
 LABEL_61:
-    self->_authorStoreId = *(v4 + 1);
+    self->_authorStoreId = *(fromCopy + 1);
     *&self->_has |= 1uLL;
   }
 
 LABEL_62:
-  if (*(v4 + 11))
+  if (*(fromCopy + 11))
   {
     [(MIPPlaylist *)self setAuthorDisplayName:?];
   }
 
-  if (*(v4 + 13))
+  if (*(fromCopy + 13))
   {
     [(MIPPlaylist *)self setAuthorStoreURL:?];
   }
 
-  if (*(v4 + 12))
+  if (*(fromCopy + 12))
   {
     [(MIPPlaylist *)self setAuthorHandle:?];
   }
 
-  v16 = *(v4 + 340);
+  v16 = *(fromCopy + 340);
   if ((v16 & 0x40) != 0)
   {
-    self->_minRefreshInterval = *(v4 + 7);
+    self->_minRefreshInterval = *(fromCopy + 7);
     *&self->_has |= 0x40uLL;
-    v16 = *(v4 + 340);
+    v16 = *(fromCopy + 340);
     if ((v16 & 2) == 0)
     {
 LABEL_70:
@@ -413,9 +413,9 @@ LABEL_70:
     goto LABEL_70;
   }
 
-  self->_cloudLastUpdateTime = *(v4 + 2);
+  self->_cloudLastUpdateTime = *(fromCopy + 2);
   *&self->_has |= 2uLL;
-  v16 = *(v4 + 340);
+  v16 = *(fromCopy + 340);
   if ((v16 & 0x40000) == 0)
   {
 LABEL_71:
@@ -428,9 +428,9 @@ LABEL_71:
   }
 
 LABEL_134:
-  self->_subscriberCount = *(v4 + 75);
+  self->_subscriberCount = *(fromCopy + 75);
   *&self->_has |= 0x40000uLL;
-  v16 = *(v4 + 340);
+  v16 = *(fromCopy + 340);
   if ((v16 & 0x100000) == 0)
   {
 LABEL_72:
@@ -443,97 +443,97 @@ LABEL_72:
   }
 
 LABEL_135:
-  self->_subscriberPlayCount = *(v4 + 77);
+  self->_subscriberPlayCount = *(fromCopy + 77);
   *&self->_has |= 0x100000uLL;
-  if ((*(v4 + 340) & 0x80000) != 0)
+  if ((*(fromCopy + 340) & 0x80000) != 0)
   {
 LABEL_73:
-    self->_subscriberLikedCount = *(v4 + 76);
+    self->_subscriberLikedCount = *(fromCopy + 76);
     *&self->_has |= 0x80000uLL;
   }
 
 LABEL_74:
-  if (*(v4 + 39))
+  if (*(fromCopy + 39))
   {
     [(MIPPlaylist *)self setSubscriberURL:?];
   }
 
-  if (*(v4 + 31))
+  if (*(fromCopy + 31))
   {
     [(MIPPlaylist *)self setPlaylistDescription:?];
   }
 
-  if (*(v4 + 16))
+  if (*(fromCopy + 16))
   {
     [(MIPPlaylist *)self setCloudUniversalLibraryId:?];
   }
 
-  if (v4[342])
+  if (fromCopy[342])
   {
-    self->_secondaryArtworkSourceType = *(v4 + 70);
+    self->_secondaryArtworkSourceType = *(fromCopy + 70);
     *&self->_has |= 0x10000uLL;
   }
 
-  if (*(v4 + 34))
+  if (*(fromCopy + 34))
   {
     [(MIPPlaylist *)self setSecondaryArtworkId:?];
   }
 
-  if ((v4[341] & 0x40) != 0)
+  if ((fromCopy[341] & 0x40) != 0)
   {
-    self->_playlistCategoryTypeMask = *(v4 + 61);
+    self->_playlistCategoryTypeMask = *(fromCopy + 61);
     *&self->_has |= 0x4000uLL;
   }
 
-  if (*(v4 + 32))
+  if (*(fromCopy + 32))
   {
     [(MIPPlaylist *)self setPlaylistGroupingSortKey:?];
   }
 
-  v17 = *(v4 + 340);
+  v17 = *(fromCopy + 340);
   if ((v17 & 0x20) != 0)
   {
-    self->_likedStateChangedDate = *(v4 + 6);
+    self->_likedStateChangedDate = *(fromCopy + 6);
     *&self->_has |= 0x20uLL;
-    v17 = *(v4 + 340);
+    v17 = *(fromCopy + 340);
   }
 
   if ((v17 & 0x200000) != 0)
   {
-    self->_traits = *(v4 + 80);
+    self->_traits = *(fromCopy + 80);
     *&self->_has |= 0x200000uLL;
   }
 
-  if (*(v4 + 20))
+  if (*(fromCopy + 20))
   {
     [(MIPPlaylist *)self setCoverArtworkRecipe:?];
   }
 
-  v18 = *(v4 + 340);
+  v18 = *(fromCopy + 340);
   if ((v18 & 0x40000000) != 0)
   {
-    self->_isCollaborative = v4[335];
+    self->_isCollaborative = fromCopy[335];
     *&self->_has |= 0x40000000uLL;
-    v18 = *(v4 + 340);
+    v18 = *(fromCopy + 340);
   }
 
   if ((v18 & 0x200) != 0)
   {
-    self->_collaborationMode = *(v4 + 38);
+    self->_collaborationMode = *(fromCopy + 38);
     *&self->_has |= 0x200uLL;
   }
 
-  if (*(v4 + 18))
+  if (*(fromCopy + 18))
   {
     [(MIPPlaylist *)self setCollaborationInvitationURL:?];
   }
 
-  v19 = *(v4 + 340);
+  v19 = *(fromCopy + 340);
   if ((v19 & 4) != 0)
   {
-    self->_collaborationInvitationURLExpirationDate = *(v4 + 3);
+    self->_collaborationInvitationURLExpirationDate = *(fromCopy + 3);
     *&self->_has |= 4uLL;
-    v19 = *(v4 + 340);
+    v19 = *(fromCopy + 340);
     if ((v19 & 0x4000000) == 0)
     {
 LABEL_102:
@@ -551,12 +551,12 @@ LABEL_102:
     goto LABEL_102;
   }
 
-  self->_collaborationJoinRequestPending = v4[331];
+  self->_collaborationJoinRequestPending = fromCopy[331];
   *&self->_has |= 0x4000000uLL;
-  if ((*(v4 + 340) & 0x400) != 0)
+  if ((*(fromCopy + 340) & 0x400) != 0)
   {
 LABEL_103:
-    self->_collaboratorStatus = *(v4 + 39);
+    self->_collaboratorStatus = *(fromCopy + 39);
     *&self->_has |= 0x400uLL;
   }
 
@@ -565,7 +565,7 @@ LABEL_104:
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v20 = *(v4 + 14);
+  v20 = *(fromCopy + 14);
   v21 = [v20 countByEnumeratingWithState:&v34 objects:v39 count:16];
   if (v21)
   {
@@ -593,7 +593,7 @@ LABEL_104:
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v25 = *(v4 + 26);
+  v25 = *(fromCopy + 26);
   v26 = [v25 countByEnumeratingWithState:&v30 objects:v38 count:16];
   if (v26)
   {
@@ -1077,16 +1077,16 @@ LABEL_83:
   return v23 ^ [(NSMutableArray *)self->_items hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_40;
   }
 
   name = self->_name;
-  if (name | *(v4 + 28))
+  if (name | *(equalCopy + 28))
   {
     if (![(NSString *)name isEqual:?])
     {
@@ -1095,10 +1095,10 @@ LABEL_83:
   }
 
   has = self->_has;
-  v7 = *(v4 + 340);
+  v7 = *(equalCopy + 340);
   if ((*&has & 0x100) != 0)
   {
-    if ((v7 & 0x100) == 0 || self->_storeId != *(v4 + 9))
+    if ((v7 & 0x100) == 0 || self->_storeId != *(equalCopy + 9))
     {
       goto LABEL_40;
     }
@@ -1111,7 +1111,7 @@ LABEL_83:
 
   if ((*&has & 0x400000) != 0)
   {
-    if ((v7 & 0x400000) == 0 || self->_type != *(v4 + 81))
+    if ((v7 & 0x400000) == 0 || self->_type != *(equalCopy + 81))
     {
       goto LABEL_40;
     }
@@ -1131,13 +1131,13 @@ LABEL_83:
 
     if (self->_hidden)
     {
-      if ((v4[334] & 1) == 0)
+      if ((equalCopy[334] & 1) == 0)
       {
         goto LABEL_40;
       }
     }
 
-    else if (v4[334])
+    else if (equalCopy[334])
     {
       goto LABEL_40;
     }
@@ -1149,7 +1149,7 @@ LABEL_83:
   }
 
   smartPlaylistInfo = self->_smartPlaylistInfo;
-  if (smartPlaylistInfo | *(v4 + 36))
+  if (smartPlaylistInfo | *(equalCopy + 36))
   {
     if (![(MIPSmartPlaylistInfo *)smartPlaylistInfo isEqual:?])
     {
@@ -1157,12 +1157,12 @@ LABEL_83:
     }
 
     has = self->_has;
-    v7 = *(v4 + 340);
+    v7 = *(equalCopy + 340);
   }
 
   if ((*&has & 0x20000) != 0)
   {
-    if ((v7 & 0x20000) == 0 || self->_sortType != *(v4 + 74))
+    if ((v7 & 0x20000) == 0 || self->_sortType != *(equalCopy + 74))
     {
       goto LABEL_40;
     }
@@ -1182,13 +1182,13 @@ LABEL_83:
 
     if (self->_reversedSorting)
     {
-      if ((v4[337] & 1) == 0)
+      if ((equalCopy[337] & 1) == 0)
       {
         goto LABEL_40;
       }
     }
 
-    else if (v4[337])
+    else if (equalCopy[337])
     {
       goto LABEL_40;
     }
@@ -1200,13 +1200,13 @@ LABEL_83:
   }
 
   parentIdentifier = self->_parentIdentifier;
-  if (parentIdentifier | *(v4 + 29) && ![(MIPMultiverseIdentifier *)parentIdentifier isEqual:?])
+  if (parentIdentifier | *(equalCopy + 29) && ![(MIPMultiverseIdentifier *)parentIdentifier isEqual:?])
   {
     goto LABEL_40;
   }
 
   geniusSeedTrackIdentifier = self->_geniusSeedTrackIdentifier;
-  if (geniusSeedTrackIdentifier | *(v4 + 25))
+  if (geniusSeedTrackIdentifier | *(equalCopy + 25))
   {
     if (![(MIPMultiverseIdentifier *)geniusSeedTrackIdentifier isEqual:?])
     {
@@ -1215,10 +1215,10 @@ LABEL_83:
   }
 
   v11 = self->_has;
-  v12 = *(v4 + 340);
+  v12 = *(equalCopy + 340);
   if ((*&v11 & 0x800) != 0)
   {
-    if ((v12 & 0x800) == 0 || self->_distinguishedKind != *(v4 + 42))
+    if ((v12 & 0x800) == 0 || self->_distinguishedKind != *(equalCopy + 42))
     {
       goto LABEL_40;
     }
@@ -1230,7 +1230,7 @@ LABEL_83:
   }
 
   cloudGlobalId = self->_cloudGlobalId;
-  if (cloudGlobalId | *(v4 + 15))
+  if (cloudGlobalId | *(equalCopy + 15))
   {
     if (![(NSString *)cloudGlobalId isEqual:?])
     {
@@ -1238,7 +1238,7 @@ LABEL_83:
     }
 
     v11 = self->_has;
-    v12 = *(v4 + 340);
+    v12 = *(equalCopy + 340);
   }
 
   if ((*&v11 & 0x2000000) != 0)
@@ -1250,13 +1250,13 @@ LABEL_83:
 
     if (self->_cloudIsSubscribed)
     {
-      if ((v4[330] & 1) == 0)
+      if ((equalCopy[330] & 1) == 0)
       {
         goto LABEL_40;
       }
     }
 
-    else if (v4[330])
+    else if (equalCopy[330])
     {
       goto LABEL_40;
     }
@@ -1276,13 +1276,13 @@ LABEL_83:
 
     if (self->_cloudIsCuratorPlaylist)
     {
-      if ((v4[328] & 1) == 0)
+      if ((equalCopy[328] & 1) == 0)
       {
         goto LABEL_40;
       }
     }
 
-    else if (v4[328])
+    else if (equalCopy[328])
     {
       goto LABEL_40;
     }
@@ -1294,13 +1294,13 @@ LABEL_83:
   }
 
   externalVendorIdentifier = self->_externalVendorIdentifier;
-  if (externalVendorIdentifier | *(v4 + 23) && ![(NSString *)externalVendorIdentifier isEqual:?])
+  if (externalVendorIdentifier | *(equalCopy + 23) && ![(NSString *)externalVendorIdentifier isEqual:?])
   {
     goto LABEL_40;
   }
 
   externalVendorDisplayName = self->_externalVendorDisplayName;
-  if (externalVendorDisplayName | *(v4 + 22))
+  if (externalVendorDisplayName | *(equalCopy + 22))
   {
     if (![(NSString *)externalVendorDisplayName isEqual:?])
     {
@@ -1309,7 +1309,7 @@ LABEL_83:
   }
 
   externalVendorTag = self->_externalVendorTag;
-  if (externalVendorTag | *(v4 + 24))
+  if (externalVendorTag | *(equalCopy + 24))
   {
     if (![(NSString *)externalVendorTag isEqual:?])
     {
@@ -1318,7 +1318,7 @@ LABEL_83:
   }
 
   v19 = self->_has;
-  v20 = *(v4 + 340);
+  v20 = *(equalCopy + 340);
   if ((*&v19 & 0x10000000) != 0)
   {
     if ((v20 & 0x10000000) == 0)
@@ -1328,13 +1328,13 @@ LABEL_83:
 
     if (self->_externalVendorPlaylist)
     {
-      if ((v4[333] & 1) == 0)
+      if ((equalCopy[333] & 1) == 0)
       {
         goto LABEL_40;
       }
     }
 
-    else if (v4[333])
+    else if (equalCopy[333])
     {
       goto LABEL_40;
     }
@@ -1347,7 +1347,7 @@ LABEL_83:
 
   if ((*&v19 & 8) != 0)
   {
-    if ((v20 & 8) == 0 || self->_creationDateTime != *(v4 + 4))
+    if ((v20 & 8) == 0 || self->_creationDateTime != *(equalCopy + 4))
     {
       goto LABEL_40;
     }
@@ -1360,7 +1360,7 @@ LABEL_83:
 
   if ((*&v19 & 0x80) != 0)
   {
-    if ((v20 & 0x80) == 0 || self->_modificationDateTime != *(v4 + 8))
+    if ((v20 & 0x80) == 0 || self->_modificationDateTime != *(equalCopy + 8))
     {
       goto LABEL_40;
     }
@@ -1373,7 +1373,7 @@ LABEL_83:
 
   if ((*&v19 & 0x10) != 0)
   {
-    if ((v20 & 0x10) == 0 || self->_lastPlayedDateTime != *(v4 + 5))
+    if ((v20 & 0x10) == 0 || self->_lastPlayedDateTime != *(equalCopy + 5))
     {
       goto LABEL_40;
     }
@@ -1393,13 +1393,13 @@ LABEL_83:
 
     if (self->_cloudIsSharingDisabled)
     {
-      if ((v4[329] & 1) == 0)
+      if ((equalCopy[329] & 1) == 0)
       {
         goto LABEL_40;
       }
     }
 
-    else if (v4[329])
+    else if (equalCopy[329])
     {
       goto LABEL_40;
     }
@@ -1411,13 +1411,13 @@ LABEL_83:
   }
 
   cloudVersionHash = self->_cloudVersionHash;
-  if (cloudVersionHash | *(v4 + 17) && ![(NSString *)cloudVersionHash isEqual:?])
+  if (cloudVersionHash | *(equalCopy + 17) && ![(NSString *)cloudVersionHash isEqual:?])
   {
     goto LABEL_40;
   }
 
   artworkId = self->_artworkId;
-  if (artworkId | *(v4 + 10))
+  if (artworkId | *(equalCopy + 10))
   {
     if (![(NSString *)artworkId isEqual:?])
     {
@@ -1426,10 +1426,10 @@ LABEL_83:
   }
 
   v23 = self->_has;
-  v24 = *(v4 + 340);
+  v24 = *(equalCopy + 340);
   if ((*&v23 & 0x1000) != 0)
   {
-    if ((v24 & 0x1000) == 0 || self->_likedState != *(v4 + 54))
+    if ((v24 & 0x1000) == 0 || self->_likedState != *(equalCopy + 54))
     {
       goto LABEL_40;
     }
@@ -1442,7 +1442,7 @@ LABEL_83:
 
   if ((*&v23 & 0x8000) != 0)
   {
-    if ((v24 & 0x8000) == 0 || self->_remoteSourceType != *(v4 + 66))
+    if ((v24 & 0x8000) == 0 || self->_remoteSourceType != *(equalCopy + 66))
     {
       goto LABEL_40;
     }
@@ -1462,13 +1462,13 @@ LABEL_83:
 
     if (self->_owner)
     {
-      if ((v4[336] & 1) == 0)
+      if ((equalCopy[336] & 1) == 0)
       {
         goto LABEL_40;
       }
     }
 
-    else if (v4[336])
+    else if (equalCopy[336])
     {
       goto LABEL_40;
     }
@@ -1488,13 +1488,13 @@ LABEL_83:
 
     if (self->_editable)
     {
-      if ((v4[332] & 1) == 0)
+      if ((equalCopy[332] & 1) == 0)
       {
         goto LABEL_40;
       }
     }
 
-    else if (v4[332])
+    else if (equalCopy[332])
     {
       goto LABEL_40;
     }
@@ -1507,7 +1507,7 @@ LABEL_83:
 
   if ((*&v23 & 0x2000) != 0)
   {
-    if ((v24 & 0x2000) == 0 || self->_playCount != *(v4 + 60))
+    if ((v24 & 0x2000) == 0 || self->_playCount != *(equalCopy + 60))
     {
       goto LABEL_40;
     }
@@ -1527,13 +1527,13 @@ LABEL_83:
 
     if (self->_shared)
     {
-      if ((v4[338] & 1) == 0)
+      if ((equalCopy[338] & 1) == 0)
       {
         goto LABEL_40;
       }
     }
 
-    else if (v4[338])
+    else if (equalCopy[338])
     {
       goto LABEL_40;
     }
@@ -1553,13 +1553,13 @@ LABEL_83:
 
     if (self->_visible)
     {
-      if ((v4[339] & 1) == 0)
+      if ((equalCopy[339] & 1) == 0)
       {
         goto LABEL_40;
       }
     }
 
-    else if (v4[339])
+    else if (equalCopy[339])
     {
       goto LABEL_40;
     }
@@ -1572,7 +1572,7 @@ LABEL_83:
 
   if (*&v23)
   {
-    if ((v24 & 1) == 0 || self->_authorStoreId != *(v4 + 1))
+    if ((v24 & 1) == 0 || self->_authorStoreId != *(equalCopy + 1))
     {
       goto LABEL_40;
     }
@@ -1584,13 +1584,13 @@ LABEL_83:
   }
 
   authorDisplayName = self->_authorDisplayName;
-  if (authorDisplayName | *(v4 + 11) && ![(NSString *)authorDisplayName isEqual:?])
+  if (authorDisplayName | *(equalCopy + 11) && ![(NSString *)authorDisplayName isEqual:?])
   {
     goto LABEL_40;
   }
 
   authorStoreURL = self->_authorStoreURL;
-  if (authorStoreURL | *(v4 + 13))
+  if (authorStoreURL | *(equalCopy + 13))
   {
     if (![(NSString *)authorStoreURL isEqual:?])
     {
@@ -1599,7 +1599,7 @@ LABEL_83:
   }
 
   authorHandle = self->_authorHandle;
-  if (authorHandle | *(v4 + 12))
+  if (authorHandle | *(equalCopy + 12))
   {
     if (![(NSString *)authorHandle isEqual:?])
     {
@@ -1608,10 +1608,10 @@ LABEL_83:
   }
 
   v28 = self->_has;
-  v29 = *(v4 + 340);
+  v29 = *(equalCopy + 340);
   if ((*&v28 & 0x40) != 0)
   {
-    if ((v29 & 0x40) == 0 || self->_minRefreshInterval != *(v4 + 7))
+    if ((v29 & 0x40) == 0 || self->_minRefreshInterval != *(equalCopy + 7))
     {
       goto LABEL_40;
     }
@@ -1624,7 +1624,7 @@ LABEL_83:
 
   if ((*&v28 & 2) != 0)
   {
-    if ((v29 & 2) == 0 || self->_cloudLastUpdateTime != *(v4 + 2))
+    if ((v29 & 2) == 0 || self->_cloudLastUpdateTime != *(equalCopy + 2))
     {
       goto LABEL_40;
     }
@@ -1637,7 +1637,7 @@ LABEL_83:
 
   if ((*&v28 & 0x40000) != 0)
   {
-    if ((v29 & 0x40000) == 0 || self->_subscriberCount != *(v4 + 75))
+    if ((v29 & 0x40000) == 0 || self->_subscriberCount != *(equalCopy + 75))
     {
       goto LABEL_40;
     }
@@ -1650,7 +1650,7 @@ LABEL_83:
 
   if ((*&v28 & 0x100000) != 0)
   {
-    if ((v29 & 0x100000) == 0 || self->_subscriberPlayCount != *(v4 + 77))
+    if ((v29 & 0x100000) == 0 || self->_subscriberPlayCount != *(equalCopy + 77))
     {
       goto LABEL_40;
     }
@@ -1663,7 +1663,7 @@ LABEL_83:
 
   if ((*&v28 & 0x80000) != 0)
   {
-    if ((v29 & 0x80000) == 0 || self->_subscriberLikedCount != *(v4 + 76))
+    if ((v29 & 0x80000) == 0 || self->_subscriberLikedCount != *(equalCopy + 76))
     {
       goto LABEL_40;
     }
@@ -1675,13 +1675,13 @@ LABEL_83:
   }
 
   subscriberURL = self->_subscriberURL;
-  if (subscriberURL | *(v4 + 39) && ![(NSString *)subscriberURL isEqual:?])
+  if (subscriberURL | *(equalCopy + 39) && ![(NSString *)subscriberURL isEqual:?])
   {
     goto LABEL_40;
   }
 
   playlistDescription = self->_playlistDescription;
-  if (playlistDescription | *(v4 + 31))
+  if (playlistDescription | *(equalCopy + 31))
   {
     if (![(NSString *)playlistDescription isEqual:?])
     {
@@ -1690,7 +1690,7 @@ LABEL_83:
   }
 
   cloudUniversalLibraryId = self->_cloudUniversalLibraryId;
-  if (cloudUniversalLibraryId | *(v4 + 16))
+  if (cloudUniversalLibraryId | *(equalCopy + 16))
   {
     if (![(NSString *)cloudUniversalLibraryId isEqual:?])
     {
@@ -1699,10 +1699,10 @@ LABEL_83:
   }
 
   v33 = self->_has;
-  v34 = *(v4 + 340);
+  v34 = *(equalCopy + 340);
   if ((*&v33 & 0x10000) != 0)
   {
-    if ((v34 & 0x10000) == 0 || self->_secondaryArtworkSourceType != *(v4 + 70))
+    if ((v34 & 0x10000) == 0 || self->_secondaryArtworkSourceType != *(equalCopy + 70))
     {
       goto LABEL_40;
     }
@@ -1714,7 +1714,7 @@ LABEL_83:
   }
 
   secondaryArtworkId = self->_secondaryArtworkId;
-  if (secondaryArtworkId | *(v4 + 34))
+  if (secondaryArtworkId | *(equalCopy + 34))
   {
     if (![(NSString *)secondaryArtworkId isEqual:?])
     {
@@ -1722,12 +1722,12 @@ LABEL_83:
     }
 
     v33 = self->_has;
-    v34 = *(v4 + 340);
+    v34 = *(equalCopy + 340);
   }
 
   if ((*&v33 & 0x4000) != 0)
   {
-    if ((v34 & 0x4000) == 0 || self->_playlistCategoryTypeMask != *(v4 + 61))
+    if ((v34 & 0x4000) == 0 || self->_playlistCategoryTypeMask != *(equalCopy + 61))
     {
       goto LABEL_40;
     }
@@ -1739,7 +1739,7 @@ LABEL_83:
   }
 
   playlistGroupingSortKey = self->_playlistGroupingSortKey;
-  if (playlistGroupingSortKey | *(v4 + 32))
+  if (playlistGroupingSortKey | *(equalCopy + 32))
   {
     if (![(NSString *)playlistGroupingSortKey isEqual:?])
     {
@@ -1747,12 +1747,12 @@ LABEL_83:
     }
 
     v33 = self->_has;
-    v34 = *(v4 + 340);
+    v34 = *(equalCopy + 340);
   }
 
   if ((*&v33 & 0x20) != 0)
   {
-    if ((v34 & 0x20) == 0 || self->_likedStateChangedDate != *(v4 + 6))
+    if ((v34 & 0x20) == 0 || self->_likedStateChangedDate != *(equalCopy + 6))
     {
       goto LABEL_40;
     }
@@ -1765,7 +1765,7 @@ LABEL_83:
 
   if ((*&v33 & 0x200000) != 0)
   {
-    if ((v34 & 0x200000) == 0 || self->_traits != *(v4 + 80))
+    if ((v34 & 0x200000) == 0 || self->_traits != *(equalCopy + 80))
     {
       goto LABEL_40;
     }
@@ -1777,7 +1777,7 @@ LABEL_83:
   }
 
   coverArtworkRecipe = self->_coverArtworkRecipe;
-  if (coverArtworkRecipe | *(v4 + 20))
+  if (coverArtworkRecipe | *(equalCopy + 20))
   {
     if (![(NSString *)coverArtworkRecipe isEqual:?])
     {
@@ -1785,7 +1785,7 @@ LABEL_83:
     }
 
     v33 = self->_has;
-    v34 = *(v4 + 340);
+    v34 = *(equalCopy + 340);
   }
 
   if ((*&v33 & 0x40000000) != 0)
@@ -1797,13 +1797,13 @@ LABEL_83:
 
     if (self->_isCollaborative)
     {
-      if ((v4[335] & 1) == 0)
+      if ((equalCopy[335] & 1) == 0)
       {
         goto LABEL_40;
       }
     }
 
-    else if (v4[335])
+    else if (equalCopy[335])
     {
       goto LABEL_40;
     }
@@ -1816,7 +1816,7 @@ LABEL_83:
 
   if ((*&v33 & 0x200) != 0)
   {
-    if ((v34 & 0x200) == 0 || self->_collaborationMode != *(v4 + 38))
+    if ((v34 & 0x200) == 0 || self->_collaborationMode != *(equalCopy + 38))
     {
       goto LABEL_40;
     }
@@ -1828,7 +1828,7 @@ LABEL_83:
   }
 
   collaborationInvitationURL = self->_collaborationInvitationURL;
-  if (collaborationInvitationURL | *(v4 + 18))
+  if (collaborationInvitationURL | *(equalCopy + 18))
   {
     if (![(NSString *)collaborationInvitationURL isEqual:?])
     {
@@ -1836,12 +1836,12 @@ LABEL_83:
     }
 
     v33 = self->_has;
-    v34 = *(v4 + 340);
+    v34 = *(equalCopy + 340);
   }
 
   if ((*&v33 & 4) != 0)
   {
-    if ((v34 & 4) == 0 || self->_collaborationInvitationURLExpirationDate != *(v4 + 3))
+    if ((v34 & 4) == 0 || self->_collaborationInvitationURLExpirationDate != *(equalCopy + 3))
     {
       goto LABEL_40;
     }
@@ -1861,13 +1861,13 @@ LABEL_83:
 
     if (self->_collaborationJoinRequestPending)
     {
-      if ((v4[331] & 1) == 0)
+      if ((equalCopy[331] & 1) == 0)
       {
         goto LABEL_40;
       }
     }
 
-    else if (v4[331])
+    else if (equalCopy[331])
     {
       goto LABEL_40;
     }
@@ -1890,20 +1890,20 @@ LABEL_40:
     goto LABEL_41;
   }
 
-  if ((v34 & 0x400) == 0 || self->_collaboratorStatus != *(v4 + 39))
+  if ((v34 & 0x400) == 0 || self->_collaboratorStatus != *(equalCopy + 39))
   {
     goto LABEL_40;
   }
 
 LABEL_261:
   childIdentifiers = self->_childIdentifiers;
-  if (childIdentifiers | *(v4 + 14) && ![(NSMutableArray *)childIdentifiers isEqual:?])
+  if (childIdentifiers | *(equalCopy + 14) && ![(NSMutableArray *)childIdentifiers isEqual:?])
   {
     goto LABEL_40;
   }
 
   items = self->_items;
-  if (items | *(v4 + 26))
+  if (items | *(equalCopy + 26))
   {
     v13 = [(NSMutableArray *)items isEqual:?];
   }
@@ -1918,11 +1918,11 @@ LABEL_41:
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v79 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_name copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_name copyWithZone:zone];
   v7 = *(v5 + 224);
   *(v5 + 224) = v6;
 
@@ -1959,7 +1959,7 @@ LABEL_4:
   }
 
 LABEL_5:
-  v9 = [(MIPSmartPlaylistInfo *)self->_smartPlaylistInfo copyWithZone:a3];
+  v9 = [(MIPSmartPlaylistInfo *)self->_smartPlaylistInfo copyWithZone:zone];
   v10 = *(v5 + 288);
   *(v5 + 288) = v9;
 
@@ -1977,11 +1977,11 @@ LABEL_5:
     *(v5 + 340) |= 0x100000000uLL;
   }
 
-  v12 = [(MIPMultiverseIdentifier *)self->_parentIdentifier copyWithZone:a3];
+  v12 = [(MIPMultiverseIdentifier *)self->_parentIdentifier copyWithZone:zone];
   v13 = *(v5 + 232);
   *(v5 + 232) = v12;
 
-  v14 = [(MIPMultiverseIdentifier *)self->_geniusSeedTrackIdentifier copyWithZone:a3];
+  v14 = [(MIPMultiverseIdentifier *)self->_geniusSeedTrackIdentifier copyWithZone:zone];
   v15 = *(v5 + 200);
   *(v5 + 200) = v14;
 
@@ -1991,7 +1991,7 @@ LABEL_5:
     *(v5 + 340) |= 0x800uLL;
   }
 
-  v16 = [(NSString *)self->_cloudGlobalId copyWithZone:a3];
+  v16 = [(NSString *)self->_cloudGlobalId copyWithZone:zone];
   v17 = *(v5 + 120);
   *(v5 + 120) = v16;
 
@@ -2009,15 +2009,15 @@ LABEL_5:
     *(v5 + 340) |= 0x800000uLL;
   }
 
-  v19 = [(NSString *)self->_externalVendorIdentifier copyWithZone:a3];
+  v19 = [(NSString *)self->_externalVendorIdentifier copyWithZone:zone];
   v20 = *(v5 + 184);
   *(v5 + 184) = v19;
 
-  v21 = [(NSString *)self->_externalVendorDisplayName copyWithZone:a3];
+  v21 = [(NSString *)self->_externalVendorDisplayName copyWithZone:zone];
   v22 = *(v5 + 176);
   *(v5 + 176) = v21;
 
-  v23 = [(NSString *)self->_externalVendorTag copyWithZone:a3];
+  v23 = [(NSString *)self->_externalVendorTag copyWithZone:zone];
   v24 = *(v5 + 192);
   *(v5 + 192) = v23;
 
@@ -2084,11 +2084,11 @@ LABEL_20:
   }
 
 LABEL_21:
-  v26 = [(NSString *)self->_cloudVersionHash copyWithZone:a3];
+  v26 = [(NSString *)self->_cloudVersionHash copyWithZone:zone];
   v27 = *(v5 + 136);
   *(v5 + 136) = v26;
 
-  v28 = [(NSString *)self->_artworkId copyWithZone:a3];
+  v28 = [(NSString *)self->_artworkId copyWithZone:zone];
   v29 = *(v5 + 80);
   *(v5 + 80) = v28;
 
@@ -2200,15 +2200,15 @@ LABEL_29:
   }
 
 LABEL_30:
-  v31 = [(NSString *)self->_authorDisplayName copyWithZone:a3];
+  v31 = [(NSString *)self->_authorDisplayName copyWithZone:zone];
   v32 = *(v5 + 88);
   *(v5 + 88) = v31;
 
-  v33 = [(NSString *)self->_authorStoreURL copyWithZone:a3];
+  v33 = [(NSString *)self->_authorStoreURL copyWithZone:zone];
   v34 = *(v5 + 104);
   *(v5 + 104) = v33;
 
-  v35 = [(NSString *)self->_authorHandle copyWithZone:a3];
+  v35 = [(NSString *)self->_authorHandle copyWithZone:zone];
   v36 = *(v5 + 96);
   *(v5 + 96) = v35;
 
@@ -2275,15 +2275,15 @@ LABEL_35:
   }
 
 LABEL_36:
-  v38 = [(NSString *)self->_subscriberURL copyWithZone:a3];
+  v38 = [(NSString *)self->_subscriberURL copyWithZone:zone];
   v39 = *(v5 + 312);
   *(v5 + 312) = v38;
 
-  v40 = [(NSString *)self->_playlistDescription copyWithZone:a3];
+  v40 = [(NSString *)self->_playlistDescription copyWithZone:zone];
   v41 = *(v5 + 248);
   *(v5 + 248) = v40;
 
-  v42 = [(NSString *)self->_cloudUniversalLibraryId copyWithZone:a3];
+  v42 = [(NSString *)self->_cloudUniversalLibraryId copyWithZone:zone];
   v43 = *(v5 + 128);
   *(v5 + 128) = v42;
 
@@ -2293,7 +2293,7 @@ LABEL_36:
     *(v5 + 340) |= 0x10000uLL;
   }
 
-  v44 = [(NSString *)self->_secondaryArtworkId copyWithZone:a3];
+  v44 = [(NSString *)self->_secondaryArtworkId copyWithZone:zone];
   v45 = *(v5 + 272);
   *(v5 + 272) = v44;
 
@@ -2303,7 +2303,7 @@ LABEL_36:
     *(v5 + 340) |= 0x4000uLL;
   }
 
-  v46 = [(NSString *)self->_playlistGroupingSortKey copyWithZone:a3];
+  v46 = [(NSString *)self->_playlistGroupingSortKey copyWithZone:zone];
   v47 = *(v5 + 256);
   *(v5 + 256) = v46;
 
@@ -2321,7 +2321,7 @@ LABEL_36:
     *(v5 + 340) |= 0x200000uLL;
   }
 
-  v49 = [(NSString *)self->_coverArtworkRecipe copyWithZone:a3];
+  v49 = [(NSString *)self->_coverArtworkRecipe copyWithZone:zone];
   v50 = *(v5 + 160);
   *(v5 + 160) = v49;
 
@@ -2339,7 +2339,7 @@ LABEL_36:
     *(v5 + 340) |= 0x200uLL;
   }
 
-  v52 = [(NSString *)self->_collaborationInvitationURL copyWithZone:a3];
+  v52 = [(NSString *)self->_collaborationInvitationURL copyWithZone:zone];
   v53 = *(v5 + 144);
   *(v5 + 144) = v52;
 
@@ -2396,7 +2396,7 @@ LABEL_52:
           objc_enumerationMutation(v55);
         }
 
-        v60 = [*(*(&v73 + 1) + 8 * v59) copyWithZone:a3];
+        v60 = [*(*(&v73 + 1) + 8 * v59) copyWithZone:zone];
         [v5 addChildIdentifiers:v60];
 
         ++v59;
@@ -2429,7 +2429,7 @@ LABEL_52:
           objc_enumerationMutation(v61);
         }
 
-        v66 = [*(*(&v69 + 1) + 8 * v65) copyWithZone:{a3, v69}];
+        v66 = [*(*(&v69 + 1) + 8 * v65) copyWithZone:{zone, v69}];
         [v5 addItems:v66];
 
         ++v65;
@@ -2446,21 +2446,21 @@ LABEL_52:
   return v67;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v22 = v4;
+  toCopy = to;
+  v22 = toCopy;
   if (self->_name)
   {
-    [v4 setName:?];
-    v4 = v22;
+    [toCopy setName:?];
+    toCopy = v22;
   }
 
   has = self->_has;
   if ((*&has & 0x100) != 0)
   {
-    *(v4 + 9) = self->_storeId;
-    *(v4 + 340) |= 0x100uLL;
+    *(toCopy + 9) = self->_storeId;
+    *(toCopy + 340) |= 0x100uLL;
     has = self->_has;
     if ((*&has & 0x400000) == 0)
     {
@@ -2479,97 +2479,97 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  *(v4 + 81) = self->_type;
-  *(v4 + 340) |= 0x400000uLL;
+  *(toCopy + 81) = self->_type;
+  *(toCopy + 340) |= 0x400000uLL;
   if ((*&self->_has & 0x20000000) != 0)
   {
 LABEL_6:
-    v4[334] = self->_hidden;
-    *(v4 + 340) |= 0x20000000uLL;
+    toCopy[334] = self->_hidden;
+    *(toCopy + 340) |= 0x20000000uLL;
   }
 
 LABEL_7:
   if (self->_smartPlaylistInfo)
   {
     [v22 setSmartPlaylistInfo:?];
-    v4 = v22;
+    toCopy = v22;
   }
 
   v6 = self->_has;
   if ((*&v6 & 0x20000) != 0)
   {
-    *(v4 + 74) = self->_sortType;
-    *(v4 + 340) |= 0x20000uLL;
+    *(toCopy + 74) = self->_sortType;
+    *(toCopy + 340) |= 0x20000uLL;
     v6 = self->_has;
   }
 
   if ((*&v6 & 0x100000000) != 0)
   {
-    v4[337] = self->_reversedSorting;
-    *(v4 + 340) |= 0x100000000uLL;
+    toCopy[337] = self->_reversedSorting;
+    *(toCopy + 340) |= 0x100000000uLL;
   }
 
   if (self->_parentIdentifier)
   {
     [v22 setParentIdentifier:?];
-    v4 = v22;
+    toCopy = v22;
   }
 
   if (self->_geniusSeedTrackIdentifier)
   {
     [v22 setGeniusSeedTrackIdentifier:?];
-    v4 = v22;
+    toCopy = v22;
   }
 
   if ((*(&self->_has + 1) & 8) != 0)
   {
-    *(v4 + 42) = self->_distinguishedKind;
-    *(v4 + 340) |= 0x800uLL;
+    *(toCopy + 42) = self->_distinguishedKind;
+    *(toCopy + 340) |= 0x800uLL;
   }
 
   if (self->_cloudGlobalId)
   {
     [v22 setCloudGlobalId:?];
-    v4 = v22;
+    toCopy = v22;
   }
 
   v7 = self->_has;
   if ((*&v7 & 0x2000000) != 0)
   {
-    v4[330] = self->_cloudIsSubscribed;
-    *(v4 + 340) |= 0x2000000uLL;
+    toCopy[330] = self->_cloudIsSubscribed;
+    *(toCopy + 340) |= 0x2000000uLL;
     v7 = self->_has;
   }
 
   if ((*&v7 & 0x800000) != 0)
   {
-    v4[328] = self->_cloudIsCuratorPlaylist;
-    *(v4 + 340) |= 0x800000uLL;
+    toCopy[328] = self->_cloudIsCuratorPlaylist;
+    *(toCopy + 340) |= 0x800000uLL;
   }
 
   if (self->_externalVendorIdentifier)
   {
     [v22 setExternalVendorIdentifier:?];
-    v4 = v22;
+    toCopy = v22;
   }
 
   if (self->_externalVendorDisplayName)
   {
     [v22 setExternalVendorDisplayName:?];
-    v4 = v22;
+    toCopy = v22;
   }
 
   if (self->_externalVendorTag)
   {
     [v22 setExternalVendorTag:?];
-    v4 = v22;
+    toCopy = v22;
   }
 
   v8 = self->_has;
   if ((*&v8 & 0x10000000) != 0)
   {
-    v4[333] = self->_externalVendorPlaylist;
-    *(v4 + 340) |= 0x10000000uLL;
+    toCopy[333] = self->_externalVendorPlaylist;
+    *(toCopy + 340) |= 0x10000000uLL;
     v8 = self->_has;
     if ((*&v8 & 8) == 0)
     {
@@ -2588,8 +2588,8 @@ LABEL_33:
     goto LABEL_33;
   }
 
-  *(v4 + 4) = self->_creationDateTime;
-  *(v4 + 340) |= 8uLL;
+  *(toCopy + 4) = self->_creationDateTime;
+  *(toCopy + 340) |= 8uLL;
   v8 = self->_has;
   if ((*&v8 & 0x80) == 0)
   {
@@ -2603,8 +2603,8 @@ LABEL_34:
   }
 
 LABEL_108:
-  *(v4 + 8) = self->_modificationDateTime;
-  *(v4 + 340) |= 0x80uLL;
+  *(toCopy + 8) = self->_modificationDateTime;
+  *(toCopy + 340) |= 0x80uLL;
   v8 = self->_has;
   if ((*&v8 & 0x10) == 0)
   {
@@ -2618,33 +2618,33 @@ LABEL_35:
   }
 
 LABEL_109:
-  *(v4 + 5) = self->_lastPlayedDateTime;
-  *(v4 + 340) |= 0x10uLL;
+  *(toCopy + 5) = self->_lastPlayedDateTime;
+  *(toCopy + 340) |= 0x10uLL;
   if ((*&self->_has & 0x1000000) != 0)
   {
 LABEL_36:
-    v4[329] = self->_cloudIsSharingDisabled;
-    *(v4 + 340) |= 0x1000000uLL;
+    toCopy[329] = self->_cloudIsSharingDisabled;
+    *(toCopy + 340) |= 0x1000000uLL;
   }
 
 LABEL_37:
   if (self->_cloudVersionHash)
   {
     [v22 setCloudVersionHash:?];
-    v4 = v22;
+    toCopy = v22;
   }
 
   if (self->_artworkId)
   {
     [v22 setArtworkId:?];
-    v4 = v22;
+    toCopy = v22;
   }
 
   v9 = self->_has;
   if ((*&v9 & 0x1000) != 0)
   {
-    *(v4 + 54) = self->_likedState;
-    *(v4 + 340) |= 0x1000uLL;
+    *(toCopy + 54) = self->_likedState;
+    *(toCopy + 340) |= 0x1000uLL;
     v9 = self->_has;
     if ((*&v9 & 0x8000) == 0)
     {
@@ -2663,8 +2663,8 @@ LABEL_43:
     goto LABEL_43;
   }
 
-  *(v4 + 66) = self->_remoteSourceType;
-  *(v4 + 340) |= 0x8000uLL;
+  *(toCopy + 66) = self->_remoteSourceType;
+  *(toCopy + 340) |= 0x8000uLL;
   v9 = self->_has;
   if ((*&v9 & 0x80000000) == 0)
   {
@@ -2678,8 +2678,8 @@ LABEL_44:
   }
 
 LABEL_113:
-  v4[336] = self->_owner;
-  *(v4 + 340) |= 0x80000000uLL;
+  toCopy[336] = self->_owner;
+  *(toCopy + 340) |= 0x80000000uLL;
   v9 = self->_has;
   if ((*&v9 & 0x8000000) == 0)
   {
@@ -2693,8 +2693,8 @@ LABEL_45:
   }
 
 LABEL_114:
-  v4[332] = self->_editable;
-  *(v4 + 340) |= 0x8000000uLL;
+  toCopy[332] = self->_editable;
+  *(toCopy + 340) |= 0x8000000uLL;
   v9 = self->_has;
   if ((*&v9 & 0x2000) == 0)
   {
@@ -2708,8 +2708,8 @@ LABEL_46:
   }
 
 LABEL_115:
-  *(v4 + 60) = self->_playCount;
-  *(v4 + 340) |= 0x2000uLL;
+  *(toCopy + 60) = self->_playCount;
+  *(toCopy + 340) |= 0x2000uLL;
   v9 = self->_has;
   if ((*&v9 & 0x200000000) == 0)
   {
@@ -2723,8 +2723,8 @@ LABEL_47:
   }
 
 LABEL_116:
-  v4[338] = self->_shared;
-  *(v4 + 340) |= 0x200000000uLL;
+  toCopy[338] = self->_shared;
+  *(toCopy + 340) |= 0x200000000uLL;
   v9 = self->_has;
   if ((*&v9 & 0x400000000) == 0)
   {
@@ -2738,39 +2738,39 @@ LABEL_48:
   }
 
 LABEL_117:
-  v4[339] = self->_visible;
-  *(v4 + 340) |= 0x400000000uLL;
+  toCopy[339] = self->_visible;
+  *(toCopy + 340) |= 0x400000000uLL;
   if (*&self->_has)
   {
 LABEL_49:
-    *(v4 + 1) = self->_authorStoreId;
-    *(v4 + 340) |= 1uLL;
+    *(toCopy + 1) = self->_authorStoreId;
+    *(toCopy + 340) |= 1uLL;
   }
 
 LABEL_50:
   if (self->_authorDisplayName)
   {
     [v22 setAuthorDisplayName:?];
-    v4 = v22;
+    toCopy = v22;
   }
 
   if (self->_authorStoreURL)
   {
     [v22 setAuthorStoreURL:?];
-    v4 = v22;
+    toCopy = v22;
   }
 
   if (self->_authorHandle)
   {
     [v22 setAuthorHandle:?];
-    v4 = v22;
+    toCopy = v22;
   }
 
   v10 = self->_has;
   if ((*&v10 & 0x40) != 0)
   {
-    *(v4 + 7) = self->_minRefreshInterval;
-    *(v4 + 340) |= 0x40uLL;
+    *(toCopy + 7) = self->_minRefreshInterval;
+    *(toCopy + 340) |= 0x40uLL;
     v10 = self->_has;
     if ((*&v10 & 2) == 0)
     {
@@ -2789,8 +2789,8 @@ LABEL_58:
     goto LABEL_58;
   }
 
-  *(v4 + 2) = self->_cloudLastUpdateTime;
-  *(v4 + 340) |= 2uLL;
+  *(toCopy + 2) = self->_cloudLastUpdateTime;
+  *(toCopy + 340) |= 2uLL;
   v10 = self->_has;
   if ((*&v10 & 0x40000) == 0)
   {
@@ -2804,8 +2804,8 @@ LABEL_59:
   }
 
 LABEL_121:
-  *(v4 + 75) = self->_subscriberCount;
-  *(v4 + 340) |= 0x40000uLL;
+  *(toCopy + 75) = self->_subscriberCount;
+  *(toCopy + 340) |= 0x40000uLL;
   v10 = self->_has;
   if ((*&v10 & 0x100000) == 0)
   {
@@ -2819,96 +2819,96 @@ LABEL_60:
   }
 
 LABEL_122:
-  *(v4 + 77) = self->_subscriberPlayCount;
-  *(v4 + 340) |= 0x100000uLL;
+  *(toCopy + 77) = self->_subscriberPlayCount;
+  *(toCopy + 340) |= 0x100000uLL;
   if ((*&self->_has & 0x80000) != 0)
   {
 LABEL_61:
-    *(v4 + 76) = self->_subscriberLikedCount;
-    *(v4 + 340) |= 0x80000uLL;
+    *(toCopy + 76) = self->_subscriberLikedCount;
+    *(toCopy + 340) |= 0x80000uLL;
   }
 
 LABEL_62:
   if (self->_subscriberURL)
   {
     [v22 setSubscriberURL:?];
-    v4 = v22;
+    toCopy = v22;
   }
 
   if (self->_playlistDescription)
   {
     [v22 setPlaylistDescription:?];
-    v4 = v22;
+    toCopy = v22;
   }
 
   if (self->_cloudUniversalLibraryId)
   {
     [v22 setCloudUniversalLibraryId:?];
-    v4 = v22;
+    toCopy = v22;
   }
 
   if (*(&self->_has + 2))
   {
-    *(v4 + 70) = self->_secondaryArtworkSourceType;
-    *(v4 + 340) |= 0x10000uLL;
+    *(toCopy + 70) = self->_secondaryArtworkSourceType;
+    *(toCopy + 340) |= 0x10000uLL;
   }
 
   if (self->_secondaryArtworkId)
   {
     [v22 setSecondaryArtworkId:?];
-    v4 = v22;
+    toCopy = v22;
   }
 
   if ((*(&self->_has + 1) & 0x40) != 0)
   {
-    *(v4 + 61) = self->_playlistCategoryTypeMask;
-    *(v4 + 340) |= 0x4000uLL;
+    *(toCopy + 61) = self->_playlistCategoryTypeMask;
+    *(toCopy + 340) |= 0x4000uLL;
   }
 
   if (self->_playlistGroupingSortKey)
   {
     [v22 setPlaylistGroupingSortKey:?];
-    v4 = v22;
+    toCopy = v22;
   }
 
   v11 = self->_has;
   if ((*&v11 & 0x20) != 0)
   {
-    *(v4 + 6) = self->_likedStateChangedDate;
-    *(v4 + 340) |= 0x20uLL;
+    *(toCopy + 6) = self->_likedStateChangedDate;
+    *(toCopy + 340) |= 0x20uLL;
     v11 = self->_has;
   }
 
   if ((*&v11 & 0x200000) != 0)
   {
-    *(v4 + 80) = self->_traits;
-    *(v4 + 340) |= 0x200000uLL;
+    *(toCopy + 80) = self->_traits;
+    *(toCopy + 340) |= 0x200000uLL;
   }
 
   if (self->_coverArtworkRecipe)
   {
     [v22 setCoverArtworkRecipe:?];
-    v4 = v22;
+    toCopy = v22;
   }
 
   v12 = self->_has;
   if ((*&v12 & 0x40000000) != 0)
   {
-    v4[335] = self->_isCollaborative;
-    *(v4 + 340) |= 0x40000000uLL;
+    toCopy[335] = self->_isCollaborative;
+    *(toCopy + 340) |= 0x40000000uLL;
     v12 = self->_has;
   }
 
   if ((*&v12 & 0x200) != 0)
   {
-    *(v4 + 38) = self->_collaborationMode;
-    *(v4 + 340) |= 0x200uLL;
+    *(toCopy + 38) = self->_collaborationMode;
+    *(toCopy + 340) |= 0x200uLL;
   }
 
   if (self->_collaborationInvitationURL)
   {
     [v22 setCollaborationInvitationURL:?];
-    v4 = v22;
+    toCopy = v22;
   }
 
   v13 = self->_has;
@@ -2920,8 +2920,8 @@ LABEL_62:
     }
 
 LABEL_125:
-    v4[331] = self->_collaborationJoinRequestPending;
-    *(v4 + 340) |= 0x4000000uLL;
+    toCopy[331] = self->_collaborationJoinRequestPending;
+    *(toCopy + 340) |= 0x4000000uLL;
     if ((*&self->_has & 0x400) == 0)
     {
       goto LABEL_92;
@@ -2930,8 +2930,8 @@ LABEL_125:
     goto LABEL_91;
   }
 
-  *(v4 + 3) = self->_collaborationInvitationURLExpirationDate;
-  *(v4 + 340) |= 4uLL;
+  *(toCopy + 3) = self->_collaborationInvitationURLExpirationDate;
+  *(toCopy + 340) |= 4uLL;
   v13 = self->_has;
   if ((*&v13 & 0x4000000) != 0)
   {
@@ -2942,18 +2942,18 @@ LABEL_90:
   if ((*&v13 & 0x400) != 0)
   {
 LABEL_91:
-    *(v4 + 39) = self->_collaboratorStatus;
-    *(v4 + 340) |= 0x400uLL;
+    *(toCopy + 39) = self->_collaboratorStatus;
+    *(toCopy + 340) |= 0x400uLL;
   }
 
 LABEL_92:
   if ([(MIPPlaylist *)self childIdentifiersCount])
   {
     [v22 clearChildIdentifiers];
-    v14 = [(MIPPlaylist *)self childIdentifiersCount];
-    if (v14)
+    childIdentifiersCount = [(MIPPlaylist *)self childIdentifiersCount];
+    if (childIdentifiersCount)
     {
-      v15 = v14;
+      v15 = childIdentifiersCount;
       for (i = 0; i != v15; ++i)
       {
         v17 = [(MIPPlaylist *)self childIdentifiersAtIndex:i];
@@ -2965,10 +2965,10 @@ LABEL_92:
   if ([(MIPPlaylist *)self itemsCount])
   {
     [v22 clearItems];
-    v18 = [(MIPPlaylist *)self itemsCount];
-    if (v18)
+    itemsCount = [(MIPPlaylist *)self itemsCount];
+    if (itemsCount)
     {
-      v19 = v18;
+      v19 = itemsCount;
       for (j = 0; j != v19; ++j)
       {
         v21 = [(MIPPlaylist *)self itemsAtIndex:j];
@@ -2978,10 +2978,10 @@ LABEL_92:
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_name)
   {
     PBDataWriterWriteStringField();
@@ -3487,12 +3487,12 @@ LABEL_92:
 - (id)dictionaryRepresentation
 {
   v100 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   name = self->_name;
   if (name)
   {
-    [v3 setObject:name forKey:@"name"];
+    [dictionary setObject:name forKey:@"name"];
   }
 
   has = self->_has;
@@ -3543,8 +3543,8 @@ LABEL_7:
   smartPlaylistInfo = self->_smartPlaylistInfo;
   if (smartPlaylistInfo)
   {
-    v9 = [(MIPSmartPlaylistInfo *)smartPlaylistInfo dictionaryRepresentation];
-    [v4 setObject:v9 forKey:@"smartPlaylistInfo"];
+    dictionaryRepresentation = [(MIPSmartPlaylistInfo *)smartPlaylistInfo dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"smartPlaylistInfo"];
   }
 
   v10 = self->_has;
@@ -3575,15 +3575,15 @@ LABEL_7:
   parentIdentifier = self->_parentIdentifier;
   if (parentIdentifier)
   {
-    v18 = [(MIPMultiverseIdentifier *)parentIdentifier dictionaryRepresentation];
-    [v4 setObject:v18 forKey:@"parentIdentifier"];
+    dictionaryRepresentation2 = [(MIPMultiverseIdentifier *)parentIdentifier dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation2 forKey:@"parentIdentifier"];
   }
 
   geniusSeedTrackIdentifier = self->_geniusSeedTrackIdentifier;
   if (geniusSeedTrackIdentifier)
   {
-    v20 = [(MIPMultiverseIdentifier *)geniusSeedTrackIdentifier dictionaryRepresentation];
-    [v4 setObject:v20 forKey:@"geniusSeedTrackIdentifier"];
+    dictionaryRepresentation3 = [(MIPMultiverseIdentifier *)geniusSeedTrackIdentifier dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation3 forKey:@"geniusSeedTrackIdentifier"];
   }
 
   if ((*(&self->_has + 1) & 8) != 0)
@@ -4051,8 +4051,8 @@ LABEL_98:
             objc_enumerationMutation(v58);
           }
 
-          v63 = [*(*(&v94 + 1) + 8 * i) dictionaryRepresentation];
-          [v57 addObject:v63];
+          dictionaryRepresentation4 = [*(*(&v94 + 1) + 8 * i) dictionaryRepresentation];
+          [v57 addObject:dictionaryRepresentation4];
         }
 
         v60 = [(NSMutableArray *)v58 countByEnumeratingWithState:&v94 objects:v99 count:16];
@@ -4086,8 +4086,8 @@ LABEL_98:
             objc_enumerationMutation(v65);
           }
 
-          v70 = [*(*(&v90 + 1) + 8 * j) dictionaryRepresentation];
-          [v64 addObject:v70];
+          dictionaryRepresentation5 = [*(*(&v90 + 1) + 8 * j) dictionaryRepresentation];
+          [v64 addObject:dictionaryRepresentation5];
         }
 
         v67 = [(NSMutableArray *)v65 countByEnumeratingWithState:&v90 objects:v98 count:16];
@@ -4110,52 +4110,52 @@ LABEL_98:
   v8.receiver = self;
   v8.super_class = MIPPlaylist;
   v4 = [(MIPPlaylist *)&v8 description];
-  v5 = [(MIPPlaylist *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(MIPPlaylist *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)addItems:(id)a3
+- (void)addItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   items = self->_items;
-  v8 = v4;
+  v8 = itemsCopy;
   if (!items)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_items;
     self->_items = v6;
 
-    v4 = v8;
+    itemsCopy = v8;
     items = self->_items;
   }
 
-  [(NSMutableArray *)items addObject:v4];
+  [(NSMutableArray *)items addObject:itemsCopy];
 }
 
-- (void)addChildIdentifiers:(id)a3
+- (void)addChildIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   childIdentifiers = self->_childIdentifiers;
-  v8 = v4;
+  v8 = identifiersCopy;
   if (!childIdentifiers)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_childIdentifiers;
     self->_childIdentifiers = v6;
 
-    v4 = v8;
+    identifiersCopy = v8;
     childIdentifiers = self->_childIdentifiers;
   }
 
-  [(NSMutableArray *)childIdentifiers addObject:v4];
+  [(NSMutableArray *)childIdentifiers addObject:identifiersCopy];
 }
 
-- (void)setHasCollaboratorStatus:(BOOL)a3
+- (void)setHasCollaboratorStatus:(BOOL)status
 {
   v3 = 1024;
-  if (!a3)
+  if (!status)
   {
     v3 = 0;
   }
@@ -4163,10 +4163,10 @@ LABEL_98:
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFBFFLL | v3);
 }
 
-- (void)setHasCollaborationJoinRequestPending:(BOOL)a3
+- (void)setHasCollaborationJoinRequestPending:(BOOL)pending
 {
   v3 = 0x4000000;
-  if (!a3)
+  if (!pending)
   {
     v3 = 0;
   }
@@ -4174,10 +4174,10 @@ LABEL_98:
   self->_has = (*&self->_has & 0xFFFFFFFFFBFFFFFFLL | v3);
 }
 
-- (void)setHasCollaborationInvitationURLExpirationDate:(BOOL)a3
+- (void)setHasCollaborationInvitationURLExpirationDate:(BOOL)date
 {
   v3 = 4;
-  if (!a3)
+  if (!date)
   {
     v3 = 0;
   }
@@ -4185,10 +4185,10 @@ LABEL_98:
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFFFBLL | v3);
 }
 
-- (void)setHasCollaborationMode:(BOOL)a3
+- (void)setHasCollaborationMode:(BOOL)mode
 {
   v3 = 512;
-  if (!a3)
+  if (!mode)
   {
     v3 = 0;
   }
@@ -4196,10 +4196,10 @@ LABEL_98:
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFDFFLL | v3);
 }
 
-- (void)setHasIsCollaborative:(BOOL)a3
+- (void)setHasIsCollaborative:(BOOL)collaborative
 {
   v3 = 0x40000000;
-  if (!a3)
+  if (!collaborative)
   {
     v3 = 0;
   }
@@ -4207,10 +4207,10 @@ LABEL_98:
   self->_has = (*&self->_has & 0xFFFFFFFFBFFFFFFFLL | v3);
 }
 
-- (void)setHasTraits:(BOOL)a3
+- (void)setHasTraits:(BOOL)traits
 {
   v3 = 0x200000;
-  if (!a3)
+  if (!traits)
   {
     v3 = 0;
   }
@@ -4218,10 +4218,10 @@ LABEL_98:
   self->_has = (*&self->_has & 0xFFFFFFFFFFDFFFFFLL | v3);
 }
 
-- (void)setHasLikedStateChangedDate:(BOOL)a3
+- (void)setHasLikedStateChangedDate:(BOOL)date
 {
   v3 = 32;
-  if (!a3)
+  if (!date)
   {
     v3 = 0;
   }
@@ -4229,10 +4229,10 @@ LABEL_98:
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFFDFLL | v3);
 }
 
-- (void)setHasPlaylistCategoryTypeMask:(BOOL)a3
+- (void)setHasPlaylistCategoryTypeMask:(BOOL)mask
 {
   v3 = 0x4000;
-  if (!a3)
+  if (!mask)
   {
     v3 = 0;
   }
@@ -4240,10 +4240,10 @@ LABEL_98:
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFBFFFLL | v3);
 }
 
-- (void)setHasSecondaryArtworkSourceType:(BOOL)a3
+- (void)setHasSecondaryArtworkSourceType:(BOOL)type
 {
   v3 = 0x10000;
-  if (!a3)
+  if (!type)
   {
     v3 = 0;
   }
@@ -4251,10 +4251,10 @@ LABEL_98:
   self->_has = (*&self->_has & 0xFFFFFFFFFFFEFFFFLL | v3);
 }
 
-- (void)setHasSubscriberLikedCount:(BOOL)a3
+- (void)setHasSubscriberLikedCount:(BOOL)count
 {
   v3 = 0x80000;
-  if (!a3)
+  if (!count)
   {
     v3 = 0;
   }
@@ -4262,10 +4262,10 @@ LABEL_98:
   self->_has = (*&self->_has & 0xFFFFFFFFFFF7FFFFLL | v3);
 }
 
-- (void)setHasSubscriberPlayCount:(BOOL)a3
+- (void)setHasSubscriberPlayCount:(BOOL)count
 {
   v3 = 0x100000;
-  if (!a3)
+  if (!count)
   {
     v3 = 0;
   }
@@ -4273,10 +4273,10 @@ LABEL_98:
   self->_has = (*&self->_has & 0xFFFFFFFFFFEFFFFFLL | v3);
 }
 
-- (void)setHasSubscriberCount:(BOOL)a3
+- (void)setHasSubscriberCount:(BOOL)count
 {
   v3 = 0x40000;
-  if (!a3)
+  if (!count)
   {
     v3 = 0;
   }
@@ -4284,10 +4284,10 @@ LABEL_98:
   self->_has = (*&self->_has & 0xFFFFFFFFFFFBFFFFLL | v3);
 }
 
-- (void)setHasCloudLastUpdateTime:(BOOL)a3
+- (void)setHasCloudLastUpdateTime:(BOOL)time
 {
   v3 = 2;
-  if (!a3)
+  if (!time)
   {
     v3 = 0;
   }
@@ -4295,10 +4295,10 @@ LABEL_98:
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFFFDLL | v3);
 }
 
-- (void)setHasMinRefreshInterval:(BOOL)a3
+- (void)setHasMinRefreshInterval:(BOOL)interval
 {
   v3 = 64;
-  if (!a3)
+  if (!interval)
   {
     v3 = 0;
   }
@@ -4306,10 +4306,10 @@ LABEL_98:
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFFBFLL | v3);
 }
 
-- (void)setHasVisible:(BOOL)a3
+- (void)setHasVisible:(BOOL)visible
 {
   v3 = 0x400000000;
-  if (!a3)
+  if (!visible)
   {
     v3 = 0;
   }
@@ -4317,10 +4317,10 @@ LABEL_98:
   self->_has = (*&self->_has & 0xFFFFFFFBFFFFFFFFLL | v3);
 }
 
-- (void)setHasShared:(BOOL)a3
+- (void)setHasShared:(BOOL)shared
 {
   v3 = 0x200000000;
-  if (!a3)
+  if (!shared)
   {
     v3 = 0;
   }
@@ -4328,10 +4328,10 @@ LABEL_98:
   self->_has = (*&self->_has & 0xFFFFFFFDFFFFFFFFLL | v3);
 }
 
-- (void)setHasPlayCount:(BOOL)a3
+- (void)setHasPlayCount:(BOOL)count
 {
   v3 = 0x2000;
-  if (!a3)
+  if (!count)
   {
     v3 = 0;
   }
@@ -4339,10 +4339,10 @@ LABEL_98:
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFDFFFLL | v3);
 }
 
-- (void)setHasEditable:(BOOL)a3
+- (void)setHasEditable:(BOOL)editable
 {
   v3 = 0x8000000;
-  if (!a3)
+  if (!editable)
   {
     v3 = 0;
   }
@@ -4350,10 +4350,10 @@ LABEL_98:
   self->_has = (*&self->_has & 0xFFFFFFFFF7FFFFFFLL | v3);
 }
 
-- (void)setHasOwner:(BOOL)a3
+- (void)setHasOwner:(BOOL)owner
 {
   v3 = 0x80000000;
-  if (!a3)
+  if (!owner)
   {
     v3 = 0;
   }
@@ -4361,10 +4361,10 @@ LABEL_98:
   self->_has = (*&self->_has & 0xFFFFFFFF7FFFFFFFLL | v3);
 }
 
-- (void)setHasRemoteSourceType:(BOOL)a3
+- (void)setHasRemoteSourceType:(BOOL)type
 {
   v3 = 0x8000;
-  if (!a3)
+  if (!type)
   {
     v3 = 0;
   }
@@ -4372,10 +4372,10 @@ LABEL_98:
   self->_has = (*&self->_has & 0xFFFFFFFFFFFF7FFFLL | v3);
 }
 
-- (void)setHasLikedState:(BOOL)a3
+- (void)setHasLikedState:(BOOL)state
 {
   v3 = 4096;
-  if (!a3)
+  if (!state)
   {
     v3 = 0;
   }
@@ -4383,10 +4383,10 @@ LABEL_98:
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFEFFFLL | v3);
 }
 
-- (void)setHasCloudIsSharingDisabled:(BOOL)a3
+- (void)setHasCloudIsSharingDisabled:(BOOL)disabled
 {
   v3 = 0x1000000;
-  if (!a3)
+  if (!disabled)
   {
     v3 = 0;
   }
@@ -4394,10 +4394,10 @@ LABEL_98:
   self->_has = (*&self->_has & 0xFFFFFFFFFEFFFFFFLL | v3);
 }
 
-- (void)setHasLastPlayedDateTime:(BOOL)a3
+- (void)setHasLastPlayedDateTime:(BOOL)time
 {
   v3 = 16;
-  if (!a3)
+  if (!time)
   {
     v3 = 0;
   }
@@ -4405,10 +4405,10 @@ LABEL_98:
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFFEFLL | v3);
 }
 
-- (void)setHasModificationDateTime:(BOOL)a3
+- (void)setHasModificationDateTime:(BOOL)time
 {
   v3 = 128;
-  if (!a3)
+  if (!time)
   {
     v3 = 0;
   }
@@ -4416,10 +4416,10 @@ LABEL_98:
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFF7FLL | v3);
 }
 
-- (void)setHasCreationDateTime:(BOOL)a3
+- (void)setHasCreationDateTime:(BOOL)time
 {
   v3 = 8;
-  if (!a3)
+  if (!time)
   {
     v3 = 0;
   }
@@ -4427,10 +4427,10 @@ LABEL_98:
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFFF7 | v3);
 }
 
-- (void)setHasExternalVendorPlaylist:(BOOL)a3
+- (void)setHasExternalVendorPlaylist:(BOOL)playlist
 {
   v3 = 0x10000000;
-  if (!a3)
+  if (!playlist)
   {
     v3 = 0;
   }
@@ -4438,10 +4438,10 @@ LABEL_98:
   self->_has = (*&self->_has & 0xFFFFFFFFEFFFFFFFLL | v3);
 }
 
-- (void)setHasCloudIsCuratorPlaylist:(BOOL)a3
+- (void)setHasCloudIsCuratorPlaylist:(BOOL)playlist
 {
   v3 = 0x800000;
-  if (!a3)
+  if (!playlist)
   {
     v3 = 0;
   }
@@ -4449,10 +4449,10 @@ LABEL_98:
   self->_has = (*&self->_has & 0xFFFFFFFFFF7FFFFFLL | v3);
 }
 
-- (void)setHasCloudIsSubscribed:(BOOL)a3
+- (void)setHasCloudIsSubscribed:(BOOL)subscribed
 {
   v3 = 0x2000000;
-  if (!a3)
+  if (!subscribed)
   {
     v3 = 0;
   }
@@ -4460,10 +4460,10 @@ LABEL_98:
   self->_has = (*&self->_has & 0xFFFFFFFFFDFFFFFFLL | v3);
 }
 
-- (void)setHasDistinguishedKind:(BOOL)a3
+- (void)setHasDistinguishedKind:(BOOL)kind
 {
   v3 = 2048;
-  if (!a3)
+  if (!kind)
   {
     v3 = 0;
   }
@@ -4471,10 +4471,10 @@ LABEL_98:
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFF7FFLL | v3);
 }
 
-- (void)setHasReversedSorting:(BOOL)a3
+- (void)setHasReversedSorting:(BOOL)sorting
 {
   v3 = 0x100000000;
-  if (!a3)
+  if (!sorting)
   {
     v3 = 0;
   }
@@ -4482,385 +4482,385 @@ LABEL_98:
   self->_has = (*&self->_has & 0xFFFFFFFEFFFFFFFFLL | v3);
 }
 
-- (int)StringAsSortType:(id)a3
+- (int)StringAsSortType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"None"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"None"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Artist"])
+  else if ([typeCopy isEqualToString:@"Artist"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Album"])
+  else if ([typeCopy isEqualToString:@"Album"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Name"])
+  else if ([typeCopy isEqualToString:@"Name"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"ReleaseDate"])
+  else if ([typeCopy isEqualToString:@"ReleaseDate"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"AddedDate"])
+  else if ([typeCopy isEqualToString:@"AddedDate"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"PlayedDate"])
+  else if ([typeCopy isEqualToString:@"PlayedDate"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"SeriesName"])
+  else if ([typeCopy isEqualToString:@"SeriesName"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"Physical"])
+  else if ([typeCopy isEqualToString:@"Physical"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"Shuffle"])
+  else if ([typeCopy isEqualToString:@"Shuffle"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"TrackID"])
+  else if ([typeCopy isEqualToString:@"TrackID"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"PlaylistItemID"])
+  else if ([typeCopy isEqualToString:@"PlaylistItemID"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"BitRate"])
+  else if ([typeCopy isEqualToString:@"BitRate"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"Genre"])
+  else if ([typeCopy isEqualToString:@"Genre"])
   {
     v4 = 13;
   }
 
-  else if ([v3 isEqualToString:@"Kind"])
+  else if ([typeCopy isEqualToString:@"Kind"])
   {
     v4 = 14;
   }
 
-  else if ([v3 isEqualToString:@"Date"])
+  else if ([typeCopy isEqualToString:@"Date"])
   {
     v4 = 15;
   }
 
-  else if ([v3 isEqualToString:@"TrackNumber"])
+  else if ([typeCopy isEqualToString:@"TrackNumber"])
   {
     v4 = 16;
   }
 
-  else if ([v3 isEqualToString:@"TotalSize"])
+  else if ([typeCopy isEqualToString:@"TotalSize"])
   {
     v4 = 17;
   }
 
-  else if ([v3 isEqualToString:@"TotalTime"])
+  else if ([typeCopy isEqualToString:@"TotalTime"])
   {
     v4 = 18;
   }
 
-  else if ([v3 isEqualToString:@"Year"])
+  else if ([typeCopy isEqualToString:@"Year"])
   {
     v4 = 19;
   }
 
-  else if ([v3 isEqualToString:@"SampleRate"])
+  else if ([typeCopy isEqualToString:@"SampleRate"])
   {
     v4 = 20;
   }
 
-  else if ([v3 isEqualToString:@"Category"])
+  else if ([typeCopy isEqualToString:@"Category"])
   {
     v4 = 21;
   }
 
-  else if ([v3 isEqualToString:@"Location"])
+  else if ([typeCopy isEqualToString:@"Location"])
   {
     v4 = 22;
   }
 
-  else if ([v3 isEqualToString:@"StreamStatus"])
+  else if ([typeCopy isEqualToString:@"StreamStatus"])
   {
     v4 = 23;
   }
 
-  else if ([v3 isEqualToString:@"Description"])
+  else if ([typeCopy isEqualToString:@"Description"])
   {
     v4 = 24;
   }
 
-  else if ([v3 isEqualToString:@"Comment"])
+  else if ([typeCopy isEqualToString:@"Comment"])
   {
     v4 = 25;
   }
 
-  else if ([v3 isEqualToString:@"DateAdded"])
+  else if ([typeCopy isEqualToString:@"DateAdded"])
   {
     v4 = 26;
   }
 
-  else if ([v3 isEqualToString:@"EQPreset"])
+  else if ([typeCopy isEqualToString:@"EQPreset"])
   {
     v4 = 27;
   }
 
-  else if ([v3 isEqualToString:@"Composer"])
+  else if ([typeCopy isEqualToString:@"Composer"])
   {
     v4 = 28;
   }
 
-  else if ([v3 isEqualToString:@"NormVolume"])
+  else if ([typeCopy isEqualToString:@"NormVolume"])
   {
     v4 = 29;
   }
 
-  else if ([v3 isEqualToString:@"UserPlayCount"])
+  else if ([typeCopy isEqualToString:@"UserPlayCount"])
   {
     v4 = 30;
   }
 
-  else if ([v3 isEqualToString:@"PlayDate"])
+  else if ([typeCopy isEqualToString:@"PlayDate"])
   {
     v4 = 31;
   }
 
-  else if ([v3 isEqualToString:@"DiscNumber"])
+  else if ([typeCopy isEqualToString:@"DiscNumber"])
   {
     v4 = 32;
   }
 
-  else if ([v3 isEqualToString:@"TrackRating"])
+  else if ([typeCopy isEqualToString:@"TrackRating"])
   {
     v4 = 33;
   }
 
-  else if ([v3 isEqualToString:@"CompilationArtist"])
+  else if ([typeCopy isEqualToString:@"CompilationArtist"])
   {
     v4 = 34;
   }
 
-  else if ([v3 isEqualToString:@"CompilationGenre"])
+  else if ([typeCopy isEqualToString:@"CompilationGenre"])
   {
     v4 = 35;
   }
 
-  else if ([v3 isEqualToString:@"FastArtist"])
+  else if ([typeCopy isEqualToString:@"FastArtist"])
   {
     v4 = 36;
   }
 
-  else if ([v3 isEqualToString:@"FastAlbumArtistOrArtist"])
+  else if ([typeCopy isEqualToString:@"FastAlbumArtistOrArtist"])
   {
     v4 = 37;
   }
 
-  else if ([v3 isEqualToString:@"FastAlbum"])
+  else if ([typeCopy isEqualToString:@"FastAlbum"])
   {
     v4 = 38;
   }
 
-  else if ([v3 isEqualToString:@"FastGenre"])
+  else if ([typeCopy isEqualToString:@"FastGenre"])
   {
     v4 = 39;
   }
 
-  else if ([v3 isEqualToString:@"FastComposer"])
+  else if ([typeCopy isEqualToString:@"FastComposer"])
   {
     v4 = 40;
   }
 
-  else if ([v3 isEqualToString:@"Price"])
+  else if ([typeCopy isEqualToString:@"Price"])
   {
     v4 = 41;
   }
 
-  else if ([v3 isEqualToString:@"Relevance"])
+  else if ([typeCopy isEqualToString:@"Relevance"])
   {
     v4 = 42;
   }
 
-  else if ([v3 isEqualToString:@"PurchaseDate"])
+  else if ([typeCopy isEqualToString:@"PurchaseDate"])
   {
     v4 = 43;
   }
 
-  else if ([v3 isEqualToString:@"BeatsPerMinute"])
+  else if ([typeCopy isEqualToString:@"BeatsPerMinute"])
   {
     v4 = 44;
   }
 
-  else if ([v3 isEqualToString:@"Popularity"])
+  else if ([typeCopy isEqualToString:@"Popularity"])
   {
     v4 = 45;
   }
 
-  else if ([v3 isEqualToString:@"Grouping"])
+  else if ([typeCopy isEqualToString:@"Grouping"])
   {
     v4 = 46;
   }
 
-  else if ([v3 isEqualToString:@"SeasonNumber"])
+  else if ([typeCopy isEqualToString:@"SeasonNumber"])
   {
     v4 = 47;
   }
 
-  else if ([v3 isEqualToString:@"EpisodeID"])
+  else if ([typeCopy isEqualToString:@"EpisodeID"])
   {
     v4 = 48;
   }
 
-  else if ([v3 isEqualToString:@"EpisodeSortID"])
+  else if ([typeCopy isEqualToString:@"EpisodeSortID"])
   {
     v4 = 49;
   }
 
-  else if ([v3 isEqualToString:@"UserSkipCount"])
+  else if ([typeCopy isEqualToString:@"UserSkipCount"])
   {
     v4 = 50;
   }
 
-  else if ([v3 isEqualToString:@"SkipDate"])
+  else if ([typeCopy isEqualToString:@"SkipDate"])
   {
     v4 = 51;
   }
 
-  else if ([v3 isEqualToString:@"AlbumArtist"])
+  else if ([typeCopy isEqualToString:@"AlbumArtist"])
   {
     v4 = 52;
   }
 
-  else if ([v3 isEqualToString:@"AlbumByArtistYear"])
+  else if ([typeCopy isEqualToString:@"AlbumByArtistYear"])
   {
     v4 = 53;
   }
 
-  else if ([v3 isEqualToString:@"AlbumByArtist"])
+  else if ([typeCopy isEqualToString:@"AlbumByArtist"])
   {
     v4 = 54;
   }
 
-  else if ([v3 isEqualToString:@"AlbumRating"])
+  else if ([typeCopy isEqualToString:@"AlbumRating"])
   {
     v4 = 55;
   }
 
-  else if ([v3 isEqualToString:@"RentalExpirationDate"])
+  else if ([typeCopy isEqualToString:@"RentalExpirationDate"])
   {
     v4 = 56;
   }
 
-  else if ([v3 isEqualToString:@"ComposerAlbum"])
+  else if ([typeCopy isEqualToString:@"ComposerAlbum"])
   {
     v4 = 57;
   }
 
-  else if ([v3 isEqualToString:@"CategoryAlbum"])
+  else if ([typeCopy isEqualToString:@"CategoryAlbum"])
   {
     v4 = 58;
   }
 
-  else if ([v3 isEqualToString:@"GenreAlbum"])
+  else if ([typeCopy isEqualToString:@"GenreAlbum"])
   {
     v4 = 59;
   }
 
-  else if ([v3 isEqualToString:@"GenreName"])
+  else if ([typeCopy isEqualToString:@"GenreName"])
   {
     v4 = 60;
   }
 
-  else if ([v3 isEqualToString:@"GeniusID"])
+  else if ([typeCopy isEqualToString:@"GeniusID"])
   {
     v4 = 61;
   }
 
-  else if ([v3 isEqualToString:@"PodcastCategory"])
+  else if ([typeCopy isEqualToString:@"PodcastCategory"])
   {
     v4 = 62;
   }
 
-  else if ([v3 isEqualToString:@"StorePersistentID"])
+  else if ([typeCopy isEqualToString:@"StorePersistentID"])
   {
     v4 = 63;
   }
 
-  else if ([v3 isEqualToString:@"Version"])
+  else if ([typeCopy isEqualToString:@"Version"])
   {
     v4 = 64;
   }
 
-  else if ([v3 isEqualToString:@"UncompressedSize"])
+  else if ([typeCopy isEqualToString:@"UncompressedSize"])
   {
     v4 = 65;
   }
 
-  else if ([v3 isEqualToString:@"AppKind"])
+  else if ([typeCopy isEqualToString:@"AppKind"])
   {
     v4 = 66;
   }
 
-  else if ([v3 isEqualToString:@"UserDisabled"])
+  else if ([typeCopy isEqualToString:@"UserDisabled"])
   {
     v4 = 67;
   }
 
-  else if ([v3 isEqualToString:@"CloudDownload"])
+  else if ([typeCopy isEqualToString:@"CloudDownload"])
   {
     v4 = 68;
   }
 
-  else if ([v3 isEqualToString:@"CloudMatchState"])
+  else if ([typeCopy isEqualToString:@"CloudMatchState"])
   {
     v4 = 69;
   }
 
-  else if ([v3 isEqualToString:@"CloudID"])
+  else if ([typeCopy isEqualToString:@"CloudID"])
   {
     v4 = 70;
   }
 
-  else if ([v3 isEqualToString:@"CloudUserID"])
+  else if ([typeCopy isEqualToString:@"CloudUserID"])
   {
     v4 = 71;
   }
 
-  else if ([v3 isEqualToString:@"CloudStatus"])
+  else if ([typeCopy isEqualToString:@"CloudStatus"])
   {
     v4 = 72;
   }
 
-  else if ([v3 isEqualToString:@"CloudFlavorID"])
+  else if ([typeCopy isEqualToString:@"CloudFlavorID"])
   {
     v4 = 73;
   }
 
-  else if ([v3 isEqualToString:@"CloudLibraryKind"])
+  else if ([typeCopy isEqualToString:@"CloudLibraryKind"])
   {
     v4 = 74;
   }
 
-  else if ([v3 isEqualToString:@"Tags"])
+  else if ([typeCopy isEqualToString:@"Tags"])
   {
     v4 = 75;
   }
@@ -4873,25 +4873,25 @@ LABEL_98:
   return v4;
 }
 
-- (id)sortTypeAsString:(int)a3
+- (id)sortTypeAsString:(int)string
 {
-  if (a3 >= 0x4C)
+  if (string >= 0x4C)
   {
-    v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   else
   {
-    v4 = off_278762F20[a3];
+    v4 = off_278762F20[string];
   }
 
   return v4;
 }
 
-- (void)setHasSortType:(BOOL)a3
+- (void)setHasSortType:(BOOL)type
 {
   v3 = 0x20000;
-  if (!a3)
+  if (!type)
   {
     v3 = 0;
   }
@@ -4912,10 +4912,10 @@ LABEL_98:
   }
 }
 
-- (void)setHasHidden:(BOOL)a3
+- (void)setHasHidden:(BOOL)hidden
 {
   v3 = 0x20000000;
-  if (!a3)
+  if (!hidden)
   {
     v3 = 0;
   }
@@ -4923,25 +4923,25 @@ LABEL_98:
   self->_has = (*&self->_has & 0xFFFFFFFFDFFFFFFFLL | v3);
 }
 
-- (int)StringAsType:(id)a3
+- (int)StringAsType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Normal"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"Normal"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Smart"])
+  else if ([typeCopy isEqualToString:@"Smart"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Genius"])
+  else if ([typeCopy isEqualToString:@"Genius"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"Folder"])
+  else if ([typeCopy isEqualToString:@"Folder"])
   {
     v4 = 4;
   }
@@ -4954,25 +4954,25 @@ LABEL_98:
   return v4;
 }
 
-- (id)typeAsString:(int)a3
+- (id)typeAsString:(int)string
 {
-  if ((a3 - 1) >= 4)
+  if ((string - 1) >= 4)
   {
-    v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   else
   {
-    v4 = off_278762F00[a3 - 1];
+    v4 = off_278762F00[string - 1];
   }
 
   return v4;
 }
 
-- (void)setHasType:(BOOL)a3
+- (void)setHasType:(BOOL)type
 {
   v3 = 0x400000;
-  if (!a3)
+  if (!type)
   {
     v3 = 0;
   }
@@ -4993,10 +4993,10 @@ LABEL_98:
   }
 }
 
-- (void)setHasStoreId:(BOOL)a3
+- (void)setHasStoreId:(BOOL)id
 {
   v3 = 256;
-  if (!a3)
+  if (!id)
   {
     v3 = 0;
   }

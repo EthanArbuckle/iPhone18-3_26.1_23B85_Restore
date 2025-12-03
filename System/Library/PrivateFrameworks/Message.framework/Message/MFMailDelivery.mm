@@ -1,28 +1,28 @@
 @interface MFMailDelivery
-+ (BOOL)deliverMessage:(id)a3;
++ (BOOL)deliverMessage:(id)message;
 + (id)log;
-+ (id)newWithHeaders:(id)a3 HTML:(id)a4 plainTextAlternative:(id)a5 other:(id)a6;
-+ (id)newWithMessage:(id)a3;
++ (id)newWithHeaders:(id)headers HTML:(id)l plainTextAlternative:(id)alternative other:(id)other;
++ (id)newWithMessage:(id)message;
 - (MFMailDelivery)init;
-- (MFMailDelivery)initWithHeaders:(id)a3 HTML:(id)a4 plainTextAlternative:(id)a5 other:(id)a6;
-- (MFMailDelivery)initWithHeaders:(id)a3 mixedContent:(id)a4 textPartsAreHTML:(BOOL)a5;
-- (MFMailDelivery)initWithMessage:(id)a3;
-- (id)_htmlBodyForMessage:(id)a3;
+- (MFMailDelivery)initWithHeaders:(id)headers HTML:(id)l plainTextAlternative:(id)alternative other:(id)other;
+- (MFMailDelivery)initWithHeaders:(id)headers mixedContent:(id)content textPartsAreHTML:(BOOL)l;
+- (MFMailDelivery)initWithMessage:(id)message;
+- (id)_htmlBodyForMessage:(id)message;
 - (id)delegate;
-- (id)deliverMessageData:(id)a3 toRecipients:(id)a4;
+- (id)deliverMessageData:(id)data toRecipients:(id)recipients;
 - (id)deliverSynchronously;
 - (id)followUpWarning;
 - (id)headersForDelivery;
 - (id)message;
 - (id)newMessageWriter;
 - (id)originalHeaders;
-- (void)_checkAndApplyFollowUpToDeliveredMessage:(id)a3;
+- (void)_checkAndApplyFollowUpToDeliveredMessage:(id)message;
 - (void)archive;
 - (void)dealloc;
 - (void)deliverAsynchronously;
-- (void)setAccount:(id)a3;
-- (void)setCellDataOnly:(BOOL)a3;
-- (void)updateOriginalMessageFromHeaders:(id)a3;
+- (void)setAccount:(id)account;
+- (void)setCellDataOnly:(BOOL)only;
+- (void)updateOriginalMessageFromHeaders:(id)headers;
 @end
 
 @implementation MFMailDelivery
@@ -33,7 +33,7 @@
   block[1] = 3221225472;
   block[2] = __21__MFMailDelivery_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_6 != -1)
   {
     dispatch_once(&log_onceToken_6, block);
@@ -52,42 +52,42 @@ void __21__MFMailDelivery_log__block_invoke(uint64_t a1)
   log_log_6 = v1;
 }
 
-+ (id)newWithMessage:(id)a3
++ (id)newWithMessage:(id)message
 {
-  v3 = a3;
-  v4 = [MailAccount accountThatMessageIsFrom:v3];
-  v5 = [v4 deliveryAccount];
+  messageCopy = message;
+  v4 = [MailAccount accountThatMessageIsFrom:messageCopy];
+  deliveryAccount = [v4 deliveryAccount];
 
-  if (!v5)
+  if (!deliveryAccount)
   {
-    v5 = +[MailAccount defaultDeliveryAccount];
+    deliveryAccount = +[MailAccount defaultDeliveryAccount];
   }
 
-  v6 = [v5 newDeliveryWithMessage:v3];
+  v6 = [deliveryAccount newDeliveryWithMessage:messageCopy];
 
   return v6;
 }
 
-+ (id)newWithHeaders:(id)a3 HTML:(id)a4 plainTextAlternative:(id)a5 other:(id)a6
++ (id)newWithHeaders:(id)headers HTML:(id)l plainTextAlternative:(id)alternative other:(id)other
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = accountForHeaders(v9);
-  v14 = [v13 newDeliveryWithHeaders:v9 HTML:v10 plainTextAlternative:v11 other:v12];
+  headersCopy = headers;
+  lCopy = l;
+  alternativeCopy = alternative;
+  otherCopy = other;
+  v13 = accountForHeaders(headersCopy);
+  v14 = [v13 newDeliveryWithHeaders:headersCopy HTML:lCopy plainTextAlternative:alternativeCopy other:otherCopy];
 
   return v14;
 }
 
-+ (BOOL)deliverMessage:(id)a3
++ (BOOL)deliverMessage:(id)message
 {
-  v3 = [a1 newWithMessage:a3];
+  v3 = [self newWithMessage:message];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 deliverSynchronously];
-    v6 = [v5 status] == 0;
+    deliverSynchronously = [v3 deliverSynchronously];
+    v6 = [deliverSynchronously status] == 0;
   }
 
   else
@@ -180,57 +180,57 @@ MFFollowUpWarningResult *__22__MFMailDelivery_init__block_invoke(uint64_t a1, vo
   return v19;
 }
 
-- (MFMailDelivery)initWithMessage:(id)a3
+- (MFMailDelivery)initWithMessage:(id)message
 {
-  v5 = a3;
+  messageCopy = message;
   v6 = [(MFMailDelivery *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_message, a3);
+    objc_storeStrong(&v6->_message, message);
   }
 
   return v7;
 }
 
-- (MFMailDelivery)initWithHeaders:(id)a3 mixedContent:(id)a4 textPartsAreHTML:(BOOL)a5
+- (MFMailDelivery)initWithHeaders:(id)headers mixedContent:(id)content textPartsAreHTML:(BOOL)l
 {
-  v8 = a3;
-  v9 = a4;
+  headersCopy = headers;
+  contentCopy = content;
   v10 = [(MFMailDelivery *)self init];
   if (v10)
   {
-    v11 = [v8 mutableCopy];
+    v11 = [headersCopy mutableCopy];
     headers = v10->_headers;
     v10->_headers = v11;
 
     [(MFMailDelivery *)v10 updateOriginalMessageFromHeaders:v10->_headers];
     [(MFMutableMessageHeaders *)v10->_headers stripInternalHeaders];
-    objc_storeStrong(&v10->_mixedContent, a4);
-    v10->_textPartsAreHTML = a5;
+    objc_storeStrong(&v10->_mixedContent, content);
+    v10->_textPartsAreHTML = l;
   }
 
   return v10;
 }
 
-- (MFMailDelivery)initWithHeaders:(id)a3 HTML:(id)a4 plainTextAlternative:(id)a5 other:(id)a6
+- (MFMailDelivery)initWithHeaders:(id)headers HTML:(id)l plainTextAlternative:(id)alternative other:(id)other
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  headersCopy = headers;
+  lCopy = l;
+  alternativeCopy = alternative;
+  otherCopy = other;
   v14 = [(MFMailDelivery *)self init];
   if (v14)
   {
-    v15 = [v10 mutableCopy];
+    v15 = [headersCopy mutableCopy];
     headers = v14->_headers;
     v14->_headers = v15;
 
     [(MFMailDelivery *)v14 updateOriginalMessageFromHeaders:v14->_headers];
     [(MFMutableMessageHeaders *)v14->_headers stripInternalHeaders];
-    objc_storeStrong(&v14->_htmlString, a4);
-    objc_storeStrong(&v14->_plainTextAlternative, a5);
-    objc_storeStrong(&v14->_otherStringsAndAttachments, a6);
+    objc_storeStrong(&v14->_htmlString, l);
+    objc_storeStrong(&v14->_plainTextAlternative, alternative);
+    objc_storeStrong(&v14->_otherStringsAndAttachments, other);
     v14->_textPartsAreHTML = 1;
   }
 
@@ -254,8 +254,8 @@ MFFollowUpWarningResult *__22__MFMailDelivery_init__block_invoke(uint64_t a1, vo
 - (id)newMessageWriter
 {
   v3 = [MFMessageWriter alloc];
-  v4 = [(MFMailDelivery *)self compositionSpecification];
-  v5 = [(MFMessageWriter *)v3 initWithCompositionSpecification:v4];
+  compositionSpecification = [(MFMailDelivery *)self compositionSpecification];
+  v5 = [(MFMessageWriter *)v3 initWithCompositionSpecification:compositionSpecification];
 
   return v5;
 }
@@ -267,28 +267,28 @@ MFFollowUpWarningResult *__22__MFMailDelivery_init__block_invoke(uint64_t a1, vo
   {
     if (self->_htmlString)
     {
-      v4 = [(MFMailDelivery *)self newMessageWriter];
+      newMessageWriter = [(MFMailDelivery *)self newMessageWriter];
     }
 
     else
     {
       otherStringsAndAttachments = self->_otherStringsAndAttachments;
-      v6 = [(MFMailDelivery *)self newMessageWriter];
-      v4 = v6;
+      newMessageWriter2 = [(MFMailDelivery *)self newMessageWriter];
+      newMessageWriter = newMessageWriter2;
       if (!otherStringsAndAttachments)
       {
-        v7 = [v6 createMessageWithPlainTextDocumentsAndAttachments:self->_mixedContent headers:self->_headers];
+        v7 = [newMessageWriter2 createMessageWithPlainTextDocumentsAndAttachments:self->_mixedContent headers:self->_headers];
         goto LABEL_6;
       }
     }
 
-    v7 = [v4 createMessageWithHTMLStringAndMIMECharset:self->_htmlString plainTextAlternative:self->_plainTextAlternative otherHtmlStringsAndAttachments:self->_otherStringsAndAttachments headers:self->_headers];
+    v7 = [newMessageWriter createMessageWithHTMLStringAndMIMECharset:self->_htmlString plainTextAlternative:self->_plainTextAlternative otherHtmlStringsAndAttachments:self->_otherStringsAndAttachments headers:self->_headers];
 LABEL_6:
     v8 = self->_message;
     self->_message = v7;
 
-    v9 = [MEMORY[0x1E695DF00] date];
-    [v9 timeIntervalSince1970];
+    date = [MEMORY[0x1E695DF00] date];
+    [date timeIntervalSince1970];
     [(MFMailMessage *)self->_message setDateSentAsTimeIntervalSince1970:?];
 
     message = self->_message;
@@ -304,38 +304,38 @@ LABEL_6:
   return WeakRetained;
 }
 
-- (void)setAccount:(id)a3
+- (void)setAccount:(id)account
 {
-  v5 = a3;
-  if (self->_account != v5)
+  accountCopy = account;
+  if (self->_account != accountCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_account, a3);
-    v5 = v6;
+    v6 = accountCopy;
+    objc_storeStrong(&self->_account, account);
+    accountCopy = v6;
     *(self + 104) &= ~2u;
   }
 }
 
 - (id)originalHeaders
 {
-  v3 = self->_headers;
-  if (!v3)
+  headers = self->_headers;
+  if (!headers)
   {
-    v3 = [(MFMailMessage *)self->_message headers];
+    headers = [(MFMailMessage *)self->_message headers];
   }
 
-  return v3;
+  return headers;
 }
 
 - (id)headersForDelivery
 {
-  v3 = [(MFMailMessage *)self->_message headers];
-  if (!v3)
+  headers = [(MFMailMessage *)self->_message headers];
+  if (!headers)
   {
-    v3 = [(MFMailDelivery *)self originalHeaders];
+    headers = [(MFMailDelivery *)self originalHeaders];
   }
 
-  v4 = [v3 mutableCopy];
+  v4 = [headers mutableCopy];
   [v4 removeHeaderForKey:*MEMORY[0x1E69AD618]];
   [v4 stripInternalHeaders];
   v5 = *MEMORY[0x1E699B1A0];
@@ -362,21 +362,21 @@ LABEL_6:
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = MFLookupLocalizedString(@"SEND_MESSAGE_FORMAT", @"Sending message: %@", @"Message");
-  v5 = [(MFMailMessage *)self->_message subject];
-  v6 = [v5 length];
+  subject = [(MFMailMessage *)self->_message subject];
+  v6 = [subject length];
   if (v6)
   {
-    v7 = [(MFMailMessage *)self->_message subject];
-    v8 = [v7 subjectString];
+    subject2 = [(MFMailMessage *)self->_message subject];
+    subjectString = [subject2 subjectString];
   }
 
   else
   {
-    v8 = MFLookupLocalizedString(@"NO_SUBJECT", @"No subject", @"Message");
-    v7 = v8;
+    subjectString = MFLookupLocalizedString(@"NO_SUBJECT", @"No subject", @"Message");
+    subject2 = subjectString;
   }
 
-  v11 = [v3 stringWithFormat:v4, v8];
+  v11 = [v3 stringWithFormat:v4, subjectString];
   if (v6)
   {
   }
@@ -389,40 +389,40 @@ LABEL_6:
 - (id)deliverSynchronously
 {
   v3 = +[MFActivityMonitor currentMonitor];
-  v4 = [(MFMailDelivery *)self message];
-  v5 = [(MFMailDelivery *)self headersForDelivery];
-  if (!v4)
+  message = [(MFMailDelivery *)self message];
+  headersForDelivery = [(MFMailDelivery *)self headersForDelivery];
+  if (!message)
   {
-    v24 = [v3 error];
+    error = [v3 error];
 
-    if (v24)
+    if (error)
     {
       goto LABEL_11;
     }
   }
 
-  v28 = v5;
+  v28 = headersForDelivery;
   v29 = v3;
-  v6 = [MEMORY[0x1E695DF70] array];
-  v7 = [MEMORY[0x1E69AD730] data];
-  v8 = [v4 messageBody];
-  v9 = [v8 rawData];
+  array = [MEMORY[0x1E695DF70] array];
+  data = [MEMORY[0x1E69AD730] data];
+  messageBody = [message messageBody];
+  rawData = [messageBody rawData];
 
-  [v5 appendHeaderData:v7 andRecipients:v6];
-  v10 = [MEMORY[0x1E69AD6B8] dataHolderWithData:v7];
+  [headersForDelivery appendHeaderData:data andRecipients:array];
+  v10 = [MEMORY[0x1E69AD6B8] dataHolderWithData:data];
   v11 = v10;
-  if (v9)
+  if (rawData)
   {
-    [v10 addData:v9];
+    [v10 addData:rawData];
   }
 
-  if (v6 && [v6 count])
+  if (array && [array count])
   {
-    v12 = [(MFMailDelivery *)self deliverMessageData:v11 toRecipients:v6];
+    v12 = [(MFMailDelivery *)self deliverMessageData:v11 toRecipients:array];
     v13 = self->_result;
     self->_result = v12;
 
-    v14 = [(MFDeliveryResult *)self->_result status];
+    status = [(MFDeliveryResult *)self->_result status];
   }
 
   else
@@ -434,12 +434,12 @@ LABEL_6:
     v19 = [MFError errorWithDomain:@"MFMessageErrorDomain" code:1048 localizedDescription:v18];
     [v29 setError:v19];
 
-    v14 = 1;
+    status = 1;
   }
 
-  v5 = v28;
+  headersForDelivery = v28;
   v3 = v29;
-  if (v14 == 3)
+  if (status == 3)
   {
     v20 = MEMORY[0x1E696AEC0];
     v21 = MFLookupLocalizedString(@"INTERNAL_DELIVERY_ERROR_FORMAT", @"This message couldn’t be delivered because the following internal error occurred: %@", @"Delayed");
@@ -449,26 +449,26 @@ LABEL_6:
     [v29 setError:v23];
 
 LABEL_11:
-    v14 = 1;
+    status = 1;
   }
 
-  [(MFDeliveryResult *)self->_result setStatus:v14];
+  [(MFDeliveryResult *)self->_result setStatus:status];
   v25 = self->_result;
   v26 = v25;
 
   return v25;
 }
 
-- (id)deliverMessageData:(id)a3 toRecipients:(id)a4
+- (id)deliverMessageData:(id)data toRecipients:(id)recipients
 {
   v4 = [[MFDeliveryResult alloc] initWithStatus:1];
 
   return v4;
 }
 
-- (void)setCellDataOnly:(BOOL)a3
+- (void)setCellDataOnly:(BOOL)only
 {
-  if (a3)
+  if (only)
   {
     v3 = 2;
   }
@@ -487,9 +487,9 @@ LABEL_11:
   v7 = 0;
   v3 = [(EFFuture *)followUpFuture result:&v7];
   v4 = v7;
-  v5 = [v3 followUpWarning];
+  followUpWarning = [v3 followUpWarning];
 
-  return v5;
+  return followUpWarning;
 }
 
 - (void)archive
@@ -501,33 +501,33 @@ LABEL_11:
   {
     v5 = [(MailAccount *)archiveAccount mailboxUidOfType:4 createIfNeeded:1];
     [v3 setCanBeCancelled:1];
-    v6 = [v5 store];
-    v7 = [v6 allowsAppend];
+    store = [v5 store];
+    allowsAppend = [store allowsAppend];
 
-    if (v7)
+    if (allowsAppend)
     {
       v16 = +[MFMailMessageLibrary defaultInstance];
-      v8 = [v16 persistence];
-      v9 = [v8 messageChangeManager];
-      v10 = [(MFMailDelivery *)self message];
-      v17[0] = v10;
+      persistence = [v16 persistence];
+      messageChangeManager = [persistence messageChangeManager];
+      message = [(MFMailDelivery *)self message];
+      v17[0] = message;
       v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:1];
       v12 = [v5 URL];
-      v13 = [v9 addNewMessages:v11 mailboxURL:v12 userInitiated:0];
-      v14 = [v13 firstObject];
+      v13 = [messageChangeManager addNewMessages:v11 mailboxURL:v12 userInitiated:0];
+      firstObject = [v13 firstObject];
 
-      [(MFMailDelivery *)self _checkAndApplyFollowUpToDeliveredMessage:v14];
+      [(MFMailDelivery *)self _checkAndApplyFollowUpToDeliveredMessage:firstObject];
     }
   }
 
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateOriginalMessageFromHeaders:(id)a3
+- (void)updateOriginalMessageFromHeaders:(id)headers
 {
-  v13 = a3;
-  v4 = [v13 firstHeaderForKey:*MEMORY[0x1E69AD628]];
-  v5 = [v13 firstHeaderForKey:*MEMORY[0x1E69AD610]];
+  headersCopy = headers;
+  v4 = [headersCopy firstHeaderForKey:*MEMORY[0x1E69AD628]];
+  v5 = [headersCopy firstHeaderForKey:*MEMORY[0x1E69AD610]];
   v6 = v5;
   self->_action = 0;
   if (v4)
@@ -558,19 +558,19 @@ LABEL_11:
 LABEL_6:
 }
 
-- (void)_checkAndApplyFollowUpToDeliveredMessage:(id)a3
+- (void)_checkAndApplyFollowUpToDeliveredMessage:(id)message
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(MFMailDelivery *)self followUpWarning];
-  if (!v5)
+  messageCopy = message;
+  followUpWarning = [(MFMailDelivery *)self followUpWarning];
+  if (!followUpWarning)
   {
     goto LABEL_16;
   }
 
   v6 = +[MFMailMessageLibrary defaultInstance];
-  v7 = [v6 persistence];
-  v8 = [v7 messageChangeManager];
+  persistence = [v6 persistence];
+  messageChangeManager = [persistence messageChangeManager];
 
   v9 = [MEMORY[0x1E699ACE8] preferenceEnabled:16];
   v10 = [MEMORY[0x1E699ACE8] preferenceEnabled:17];
@@ -581,18 +581,18 @@ LABEL_6:
 
   else
   {
-    [v5 startDate];
+    [followUpWarning startDate];
   }
   v11 = ;
   v12 = v11;
   if (v10)
   {
-    v13 = [v11 dateByAddingTimeInterval:60.0];
+    endDate = [v11 dateByAddingTimeInterval:60.0];
   }
 
   else
   {
-    v13 = [v5 endDate];
+    endDate = [followUpWarning endDate];
     if (!v9)
     {
       v17 = &stru_1F273A5E0;
@@ -601,28 +601,28 @@ LABEL_6:
   }
 
   v14 = MEMORY[0x1E696AEC0];
-  v15 = [v5 startDate];
-  v16 = [v5 endDate];
-  v17 = [v14 stringWithFormat:@"using DebugStartDate (original startDate:%@, endDate:%@)", v15, v16];
+  startDate = [followUpWarning startDate];
+  endDate2 = [followUpWarning endDate];
+  v17 = [v14 stringWithFormat:@"using DebugStartDate (original startDate:%@, endDate:%@)", startDate, endDate2];
 
 LABEL_10:
   if (objc_opt_respondsToSelector())
   {
-    v18 = [v5 toLightJson];
+    toLightJson = [followUpWarning toLightJson];
   }
 
   else
   {
-    v18 = 0;
+    toLightJson = 0;
   }
 
-  v19 = [objc_alloc(MEMORY[0x1E699ACA8]) initWithStartDate:v12 endDate:v13 jsonStringForModelEvaluationForSuggestions:v18];
+  v19 = [objc_alloc(MEMORY[0x1E699ACA8]) initWithStartDate:v12 endDate:endDate jsonStringForModelEvaluationForSuggestions:toLightJson];
   v20 = +[MFMailDelivery log];
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
-    v21 = [v5 score];
+    score = [followUpWarning score];
     *buf = 138543874;
-    v26 = v21;
+    v26 = score;
     v27 = 2114;
     v28 = v19;
     v29 = 2114;
@@ -630,25 +630,25 @@ LABEL_10:
     _os_log_impl(&dword_1B0389000, v20, OS_LOG_TYPE_DEFAULT, "suggestionService warning.score:%{public}@ followUp:%{public}@ %{public}@", buf, 0x20u);
   }
 
-  v24 = v4;
+  v24 = messageCopy;
   v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v24 count:1];
-  [v8 applyFollowUp:v19 toMessages:v22];
+  [messageChangeManager applyFollowUp:v19 toMessages:v22];
 
 LABEL_16:
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_htmlBodyForMessage:(id)a3
+- (id)_htmlBodyForMessage:(id)message
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [a3 messageBodyIfAvailable];
-  v15 = [v3 htmlContent];
+  messageBodyIfAvailable = [message messageBodyIfAvailable];
+  htmlContent = [messageBodyIfAvailable htmlContent];
   v4 = objc_alloc_init(MEMORY[0x1E696AD60]);
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v15;
+  v5 = htmlContent;
   v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
@@ -666,8 +666,8 @@ LABEL_16:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v10 = [v9 htmlData];
-          v11 = [v9 preferredCharacterSet];
+          htmlData = [v9 htmlData];
+          preferredCharacterSet = [v9 preferredCharacterSet];
           MFEncodingForCharset();
           v12 = MFCreateStringWithData();
 

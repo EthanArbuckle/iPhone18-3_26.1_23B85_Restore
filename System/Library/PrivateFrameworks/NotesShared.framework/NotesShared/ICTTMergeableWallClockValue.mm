@@ -1,34 +1,34 @@
 @interface ICTTMergeableWallClockValue
-+ (BOOL)canParseData:(id)a3;
-+ (id)extractContentsFromBoxedValue:(const void *)a3;
-- (ICTTMergeableWallClockValue)initWithArchive:(const void *)a3;
-- (ICTTMergeableWallClockValue)initWithData:(id)a3;
-- (ICTTMergeableWallClockValue)initWithValue:(id)a3 timestamp:(id)a4;
++ (BOOL)canParseData:(id)data;
++ (id)extractContentsFromBoxedValue:(const void *)value;
+- (ICTTMergeableWallClockValue)initWithArchive:(const void *)archive;
+- (ICTTMergeableWallClockValue)initWithData:(id)data;
+- (ICTTMergeableWallClockValue)initWithValue:(id)value timestamp:(id)timestamp;
 - (id)description;
 - (id)serialize;
-- (unint64_t)merge:(id)a3;
-- (void)saveToArchive:(void *)a3;
-- (void)setValue:(id)a3;
+- (unint64_t)merge:(id)merge;
+- (void)saveToArchive:(void *)archive;
+- (void)setValue:(id)value;
 @end
 
 @implementation ICTTMergeableWallClockValue
 
-- (ICTTMergeableWallClockValue)initWithValue:(id)a3 timestamp:(id)a4
+- (ICTTMergeableWallClockValue)initWithValue:(id)value timestamp:(id)timestamp
 {
-  v6 = a3;
-  v7 = a4;
+  valueCopy = value;
+  timestampCopy = timestamp;
   v14.receiver = self;
   v14.super_class = ICTTMergeableWallClockValue;
   v8 = [(ICTTMergeableWallClockValue *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copyWithZone:0];
+    v9 = [valueCopy copyWithZone:0];
     value = v8->_value;
     v8->_value = v9;
 
-    if (v7)
+    if (timestampCopy)
     {
-      v11 = v7;
+      v11 = timestampCopy;
     }
 
     else
@@ -43,18 +43,18 @@
   return v8;
 }
 
-- (void)setValue:(id)a3
+- (void)setValue:(id)value
 {
-  v12 = a3;
-  v4 = [(ICTTMergeableWallClockValue *)self value];
-  v5 = [v4 isEqual:v12];
+  valueCopy = value;
+  value = [(ICTTMergeableWallClockValue *)self value];
+  v5 = [value isEqual:valueCopy];
 
   if ((v5 & 1) == 0)
   {
     v6 = NSStringFromSelector(sel_value);
     [(ICTTMergeableWallClockValue *)self willChangeValueForKey:v6];
 
-    v7 = [v12 copyWithZone:0];
+    v7 = [valueCopy copyWithZone:0];
     value = self->_value;
     self->_value = v7;
 
@@ -67,20 +67,20 @@
   }
 }
 
-- (unint64_t)merge:(id)a3
+- (unint64_t)merge:(id)merge
 {
-  v4 = a3;
-  v5 = [(ICTTMergeableWallClockValue *)self timestamp];
-  v6 = [v4 timestamp];
-  v7 = [v5 compare:v6];
+  mergeCopy = merge;
+  timestamp = [(ICTTMergeableWallClockValue *)self timestamp];
+  timestamp2 = [mergeCopy timestamp];
+  v7 = [timestamp compare:timestamp2];
 
   if (v7 == -1)
   {
-    v9 = [v4 value];
-    [(ICTTMergeableWallClockValue *)self setValue:v9];
+    value = [mergeCopy value];
+    [(ICTTMergeableWallClockValue *)self setValue:value];
 
-    v10 = [v4 timestamp];
-    [(ICTTMergeableWallClockValue *)self setTimestamp:v10];
+    timestamp3 = [mergeCopy timestamp];
+    [(ICTTMergeableWallClockValue *)self setTimestamp:timestamp3];
 
     v8 = 2;
   }
@@ -93,16 +93,16 @@
   return v8;
 }
 
-- (ICTTMergeableWallClockValue)initWithData:(id)a3
+- (ICTTMergeableWallClockValue)initWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   topotext::WallClockMergeableValue::WallClockMergeableValue(v10);
-  v5 = [v4 bytes];
-  v6 = ICTTBoundedCheckedCastNSUIntegerToUInt32([v4 length]);
-  if (google::protobuf::MessageLite::ParseFromArray(v10, v5, v6))
+  bytes = [dataCopy bytes];
+  v6 = ICTTBoundedCheckedCastNSUIntegerToUInt32([dataCopy length]);
+  if (google::protobuf::MessageLite::ParseFromArray(v10, bytes, v6))
   {
     self = [(ICTTMergeableWallClockValue *)self initWithArchive:v10];
-    v7 = self;
+    selfCopy = self;
   }
 
   else
@@ -113,57 +113,57 @@
       [ICTTMergeableWallClockValue initWithData:v8];
     }
 
-    v7 = 0;
+    selfCopy = 0;
   }
 
   topotext::WallClockMergeableValue::~WallClockMergeableValue(v10);
 
-  return v7;
+  return selfCopy;
 }
 
-- (ICTTMergeableWallClockValue)initWithArchive:(const void *)a3
+- (ICTTMergeableWallClockValue)initWithArchive:(const void *)archive
 {
-  if ((~*(a3 + 8) & 3) != 0)
+  if ((~*(archive + 8) & 3) != 0)
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     v5 = objc_opt_class();
     v6 = v5;
-    v7 = *(a3 + 6);
+    v7 = *(archive + 6);
     if (!v7)
     {
       v7 = *(topotext::WallClockMergeableValue::default_instance(v5) + 48);
     }
 
     v8 = [(topotext::WallClockMergeableValue *)v6 extractContentsFromBoxedValue:v7];
-    v9 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:*(a3 + 5)];
+    v9 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:*(archive + 5)];
     self = [(ICTTMergeableWallClockValue *)self initWithValue:v8 timestamp:v9];
 
-    v10 = self;
+    selfCopy = self;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-+ (id)extractContentsFromBoxedValue:(const void *)a3
++ (id)extractContentsFromBoxedValue:(const void *)value
 {
   v4 = 0;
-  v5 = *(a3 + 12);
+  v5 = *(value + 12);
   if (v5 <= 4)
   {
     switch(v5)
     {
       case 1:
-        v7 = [MEMORY[0x277CCABB0] numberWithLongLong:*(a3 + 5)];
+        v7 = [MEMORY[0x277CCABB0] numberWithLongLong:*(value + 5)];
         break;
       case 3:
-        v7 = [MEMORY[0x277CCABB0] numberWithDouble:*(a3 + 5)];
+        v7 = [MEMORY[0x277CCABB0] numberWithDouble:*(value + 5)];
         break;
       case 4:
-        v6 = *(a3 + 5);
+        v6 = *(value + 5);
         if (*(v6 + 23) < 0)
         {
           v6 = *v6;
@@ -182,10 +182,10 @@
   {
     case 5:
       v16 = objc_alloc(MEMORY[0x277CBEA90]);
-      v17 = *(a3 + 12);
+      v17 = *(value + 12);
       if (v17 == 5)
       {
-        v18 = *(a3 + 5);
+        v18 = *(value + 5);
       }
 
       else
@@ -204,7 +204,7 @@
 
       if (v17 == 5)
       {
-        v21 = *(a3 + 5);
+        v21 = *(value + 5);
       }
 
       else
@@ -226,9 +226,9 @@
       goto LABEL_41;
     case 6:
       v19 = objc_alloc(MEMORY[0x277CCAD78]);
-      if (*(a3 + 12) == 6)
+      if (*(value + 12) == 6)
       {
-        v20 = *(a3 + 5);
+        v20 = *(value + 5);
       }
 
       else
@@ -251,7 +251,7 @@ LABEL_41:
       break;
     case 7:
       v8 = objc_alloc(MEMORY[0x277CBEA90]);
-      v9 = topotext::BoxedValue::jsonvalue(a3);
+      v9 = topotext::BoxedValue::jsonvalue(value);
       if (*(v9 + 23) >= 0)
       {
         v10 = v9;
@@ -262,7 +262,7 @@ LABEL_41:
         v10 = *v9;
       }
 
-      v11 = topotext::BoxedValue::jsonvalue(a3);
+      v11 = topotext::BoxedValue::jsonvalue(value);
       if (*(v11 + 23) >= 0)
       {
         v12 = *(v11 + 23);
@@ -298,37 +298,37 @@ LABEL_42:
 {
   [(ICTTMergeableWallClockValue *)self saveToArchive:v6, topotext::WallClockMergeableValue::WallClockMergeableValue(v6)];
   v2 = [objc_alloc(MEMORY[0x277CBEB28]) initWithLength:topotext::WallClockMergeableValue::ByteSize(v6)];
-  v3 = [v2 mutableBytes];
+  mutableBytes = [v2 mutableBytes];
   v4 = ICTTBoundedCheckedCastNSUIntegerToUInt32([v2 length]);
-  google::protobuf::MessageLite::SerializeToArray(v6, v3, v4);
+  google::protobuf::MessageLite::SerializeToArray(v6, mutableBytes, v4);
   topotext::WallClockMergeableValue::~WallClockMergeableValue(v6);
 
   return v2;
 }
 
-- (void)saveToArchive:(void *)a3
+- (void)saveToArchive:(void *)archive
 {
   v42 = *MEMORY[0x277D85DE8];
-  *(a3 + 8) |= 2u;
-  v5 = *(a3 + 6);
+  *(archive + 8) |= 2u;
+  v5 = *(archive + 6);
   if (!v5)
   {
     operator new();
   }
 
-  v6 = [(ICTTMergeableWallClockValue *)self value];
+  value = [(ICTTMergeableWallClockValue *)self value];
 
-  if (v6)
+  if (value)
   {
-    v7 = [(ICTTMergeableWallClockValue *)self value];
+    value2 = [(ICTTMergeableWallClockValue *)self value];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
-    v9 = [(ICTTMergeableWallClockValue *)self value];
-    v10 = v9;
+    value3 = [(ICTTMergeableWallClockValue *)self value];
+    v10 = value3;
     if (isKindOfClass)
     {
-      if (CFNumberIsFloatType(v9))
+      if (CFNumberIsFloatType(value3))
       {
         [(__CFNumber *)v10 doubleValue];
         v12 = v11;
@@ -343,14 +343,14 @@ LABEL_42:
 
       else
       {
-        v21 = [(__CFNumber *)v10 integerValue];
+        integerValue = [(__CFNumber *)v10 integerValue];
         if (*(v5 + 48) != 1)
         {
           topotext::BoxedValue::clear_contents(v5);
           *(v5 + 48) = 1;
         }
 
-        *(v5 + 40) = v21;
+        *(v5 + 40) = integerValue;
       }
 
       goto LABEL_51;
@@ -359,12 +359,12 @@ LABEL_42:
     objc_opt_class();
     v13 = objc_opt_isKindOfClass();
 
-    v14 = [(ICTTMergeableWallClockValue *)self value];
-    v15 = v14;
+    value4 = [(ICTTMergeableWallClockValue *)self value];
+    v15 = value4;
     if (v13)
     {
-      v16 = [v14 UTF8String];
-      v17 = strlen(v16);
+      uTF8String = [value4 UTF8String];
+      v17 = strlen(uTF8String);
       if (v17 >= 0x7FFFFFFFFFFFFFF8)
       {
         std::string::__throw_length_error[abi:ne200100]();
@@ -379,7 +379,7 @@ LABEL_42:
       *(&__dst.__r_.__value_.__s + 23) = v17;
       if (v17)
       {
-        memmove(&__dst, v16, v17);
+        memmove(&__dst, uTF8String, v17);
       }
 
       __dst.__r_.__value_.__s.__data_[v18] = 0;
@@ -404,11 +404,11 @@ LABEL_28:
     objc_opt_class();
     v19 = objc_opt_isKindOfClass();
 
-    v20 = [(ICTTMergeableWallClockValue *)self value];
-    v15 = v20;
+    value5 = [(ICTTMergeableWallClockValue *)self value];
+    v15 = value5;
     if (v19)
     {
-      std::string::basic_string[abi:ne200100](&__dst, [v20 bytes], objc_msgSend(v20, "length"));
+      std::string::basic_string[abi:ne200100](&__dst, [value5 bytes], objc_msgSend(value5, "length"));
       if (*(v5 + 48) != 5)
       {
         topotext::BoxedValue::clear_contents(v5);
@@ -430,9 +430,9 @@ LABEL_28:
 
     if (v22)
     {
-      v23 = [(ICTTMergeableWallClockValue *)self value];
+      value6 = [(ICTTMergeableWallClockValue *)self value];
       *&__dst.__r_.__value_.__l.__data_ = 0uLL;
-      [v23 getUUIDBytes:&__dst];
+      [value6 getUUIDBytes:&__dst];
       if (*(v5 + 48) != 6)
       {
         topotext::BoxedValue::clear_contents(v5);
@@ -459,15 +459,15 @@ LABEL_28:
     else
     {
       v25 = MEMORY[0x277CCAAA0];
-      v26 = [(ICTTMergeableWallClockValue *)self value];
-      LODWORD(v25) = [v25 isValidJSONObject:v26];
+      value7 = [(ICTTMergeableWallClockValue *)self value];
+      LODWORD(v25) = [v25 isValidJSONObject:value7];
 
       if (v25)
       {
         v27 = MEMORY[0x277CCAAA0];
-        v28 = [(ICTTMergeableWallClockValue *)self value];
+        value8 = [(ICTTMergeableWallClockValue *)self value];
         v40 = 0;
-        v29 = [v27 dataWithJSONObject:v28 options:0 error:&v40];
+        v29 = [v27 dataWithJSONObject:value8 options:0 error:&v40];
         v30 = v40;
 
         if (!v29 || v30)
@@ -475,7 +475,7 @@ LABEL_28:
           v34 = os_log_create("com.apple.notes", "Topotext");
           if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
           {
-            v37 = [(ICTTMergeableWallClockValue *)self value];
+            value9 = [(ICTTMergeableWallClockValue *)self value];
             v38 = objc_opt_class();
             LODWORD(__dst.__r_.__value_.__l.__data_) = 138412546;
             *(__dst.__r_.__value_.__r.__words + 4) = v38;
@@ -501,40 +501,40 @@ LABEL_28:
       else
       {
         v32 = MEMORY[0x277D36198];
-        v33 = [(ICTTMergeableWallClockValue *)self value];
+        value10 = [(ICTTMergeableWallClockValue *)self value];
         [v32 handleFailedAssertWithCondition:"__objc_no" functionName:"-[ICTTMergeableWallClockValue saveToArchive:]" simulateCrash:1 showAlert:0 format:{@"Unsupported contents type for boxing in ICTTMergeableWallClockValue: %@", objc_opt_class()}];
       }
     }
   }
 
 LABEL_51:
-  v35 = [(ICTTMergeableWallClockValue *)self timestamp];
-  [v35 timeIntervalSinceReferenceDate];
-  *(a3 + 8) |= 1u;
-  *(a3 + 5) = v36;
+  timestamp = [(ICTTMergeableWallClockValue *)self timestamp];
+  [timestamp timeIntervalSinceReferenceDate];
+  *(archive + 8) |= 1u;
+  *(archive + 5) = v36;
 }
 
-+ (BOOL)canParseData:(id)a3
++ (BOOL)canParseData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   topotext::WallClockMergeableValue::WallClockMergeableValue(v7);
-  v4 = [v3 bytes];
-  v5 = ICTTBoundedCheckedCastNSUIntegerToUInt32([v3 length]);
-  LOBYTE(v4) = google::protobuf::MessageLite::ParseFromArray(v7, v4, v5);
+  bytes = [dataCopy bytes];
+  v5 = ICTTBoundedCheckedCastNSUIntegerToUInt32([dataCopy length]);
+  LOBYTE(bytes) = google::protobuf::MessageLite::ParseFromArray(v7, bytes, v5);
   topotext::WallClockMergeableValue::~WallClockMergeableValue(v7);
 
-  return v4;
+  return bytes;
 }
 
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(ICTTMergeableWallClockValue *)self timestamp];
-  [v5 timeIntervalSinceReferenceDate];
+  timestamp = [(ICTTMergeableWallClockValue *)self timestamp];
+  [timestamp timeIntervalSinceReferenceDate];
   v7 = v6;
-  v8 = [(ICTTMergeableWallClockValue *)self value];
-  v9 = [v3 stringWithFormat:@"<%@: %p, timestamp: %f, value: %@>", v4, self, v7, v8];
+  value = [(ICTTMergeableWallClockValue *)self value];
+  v9 = [v3 stringWithFormat:@"<%@: %p, timestamp: %f, value: %@>", v4, self, v7, value];
 
   return v9;
 }

@@ -1,27 +1,27 @@
 @interface FAFamilyNotifier
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (FAFamilyNotificationDelegate)delegate;
-- (FAFamilyNotifier)initWithIdentifier:(id)a3 machServiceName:(id)a4;
-- (id)_pendingNotificationsWithClientIdentifier:(id)a3;
+- (FAFamilyNotifier)initWithIdentifier:(id)identifier machServiceName:(id)name;
+- (id)_pendingNotificationsWithClientIdentifier:(id)identifier;
 - (id)agentConnection;
 - (id)pendingNotifications;
 - (void)_agentConnectionFailedToBootstrap;
 - (void)_agentConnectionWasInterrupted;
 - (void)_agentConnectionWasInvalidated;
-- (void)deliverNotification:(id)a3;
-- (void)didActivateNotification:(id)a3;
-- (void)didClearNotification:(id)a3;
-- (void)didDismissNotification:(id)a3;
+- (void)deliverNotification:(id)notification;
+- (void)didActivateNotification:(id)notification;
+- (void)didClearNotification:(id)notification;
+- (void)didDismissNotification:(id)notification;
 - (void)removeAllNotifications;
-- (void)removeNotificationWithIdentifier:(id)a3;
+- (void)removeNotificationWithIdentifier:(id)identifier;
 @end
 
 @implementation FAFamilyNotifier
 
-- (FAFamilyNotifier)initWithIdentifier:(id)a3 machServiceName:(id)a4
+- (FAFamilyNotifier)initWithIdentifier:(id)identifier machServiceName:(id)name
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  nameCopy = name;
   v9 = [(FAFamilyNotifier *)self init];
   if (v9)
   {
@@ -29,11 +29,11 @@
     connLock = v9->_connLock;
     v9->_connLock = v10;
 
-    objc_storeStrong(&v9->_identifier, a3);
-    objc_storeStrong(&v9->_serviceName, a4);
+    objc_storeStrong(&v9->_identifier, identifier);
+    objc_storeStrong(&v9->_serviceName, name);
     if (v9->_serviceName)
     {
-      v12 = [objc_alloc(MEMORY[0x277CCAE98]) initWithMachServiceName:v8];
+      v12 = [objc_alloc(MEMORY[0x277CCAE98]) initWithMachServiceName:nameCopy];
       listener = v9->_listener;
       v9->_listener = v12;
 
@@ -47,17 +47,17 @@
   return v9;
 }
 
-- (void)deliverNotification:(id)a3
+- (void)deliverNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(FAFamilyNotifier *)self agentConnection];
+  notificationCopy = notification;
+  agentConnection = [(FAFamilyNotifier *)self agentConnection];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __40__FAFamilyNotifier_deliverNotification___block_invoke;
   v8[3] = &unk_278FF4B30;
-  v9 = v4;
-  v6 = v4;
-  v7 = [v5 remoteObjectProxyWithErrorHandler:v8];
+  v9 = notificationCopy;
+  v6 = notificationCopy;
+  v7 = [agentConnection remoteObjectProxyWithErrorHandler:v8];
 
   [v7 deliverNotificaton:v6];
 }
@@ -82,17 +82,17 @@ void __40__FAFamilyNotifier_deliverNotification___block_invoke(uint64_t a1, void
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeNotificationWithIdentifier:(id)a3
+- (void)removeNotificationWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(FAFamilyNotifier *)self agentConnection];
+  identifierCopy = identifier;
+  agentConnection = [(FAFamilyNotifier *)self agentConnection];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __53__FAFamilyNotifier_removeNotificationWithIdentifier___block_invoke;
   v8[3] = &unk_278FF4B30;
-  v9 = v4;
-  v6 = v4;
-  v7 = [v5 remoteObjectProxyWithErrorHandler:v8];
+  v9 = identifierCopy;
+  v6 = identifierCopy;
+  v7 = [agentConnection remoteObjectProxyWithErrorHandler:v8];
 
   [v7 removeNotificationWithIdentifier:v6];
 }
@@ -119,8 +119,8 @@ void __53__FAFamilyNotifier_removeNotificationWithIdentifier___block_invoke(uint
 
 - (void)removeAllNotifications
 {
-  v2 = [(FAFamilyNotifier *)self agentConnection];
-  v3 = [v2 remoteObjectProxyWithErrorHandler:&__block_literal_global_0];
+  agentConnection = [(FAFamilyNotifier *)self agentConnection];
+  v3 = [agentConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_0];
 
   [v3 removeAllNotifications];
 }
@@ -142,18 +142,18 @@ void __42__FAFamilyNotifier_removeAllNotifications__block_invoke(uint64_t a1, vo
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_pendingNotificationsWithClientIdentifier:(id)a3
+- (id)_pendingNotificationsWithClientIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = dispatch_semaphore_create(0);
-  v6 = [(FAFamilyNotifier *)self agentConnection];
+  agentConnection = [(FAFamilyNotifier *)self agentConnection];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __62__FAFamilyNotifier__pendingNotificationsWithClientIdentifier___block_invoke;
   v21[3] = &unk_278FF4B30;
   v7 = v5;
   v22 = v7;
-  v8 = [v6 remoteObjectProxyWithErrorHandler:v21];
+  v8 = [agentConnection remoteObjectProxyWithErrorHandler:v21];
 
   v15 = 0;
   v16 = &v15;
@@ -168,7 +168,7 @@ void __42__FAFamilyNotifier_removeAllNotifications__block_invoke(uint64_t a1, vo
   v14 = &v15;
   v9 = v7;
   v13 = v9;
-  [v8 pendingNotificationsWithIdentifier:v4 replyBlock:v12];
+  [v8 pendingNotificationsWithIdentifier:identifierCopy replyBlock:v12];
   dispatch_semaphore_wait(v9, 0xFFFFFFFFFFFFFFFFLL);
   v10 = v16[5];
 
@@ -204,8 +204,8 @@ void __62__FAFamilyNotifier__pendingNotificationsWithClientIdentifier___block_in
 
 - (id)pendingNotifications
 {
-  v3 = [(FAFamilyNotifier *)self identifier];
-  v4 = [(FAFamilyNotifier *)self _pendingNotificationsWithClientIdentifier:v3];
+  identifier = [(FAFamilyNotifier *)self identifier];
+  v4 = [(FAFamilyNotifier *)self _pendingNotificationsWithClientIdentifier:identifier];
 
   return v4;
 }
@@ -230,8 +230,8 @@ void __62__FAFamilyNotifier__pendingNotificationsWithClientIdentifier___block_in
     v21[2] = 0x3032000000;
     v21[3] = __Block_byref_object_copy_;
     v21[4] = __Block_byref_object_dispose_;
-    v9 = self;
-    v22 = v9;
+    selfCopy = self;
+    v22 = selfCopy;
     v10 = self->_conn;
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
@@ -254,11 +254,11 @@ void __62__FAFamilyNotifier__pendingNotificationsWithClientIdentifier___block_in
     v18[3] = &unk_278FF4BC8;
     v18[4] = v21;
     v13 = [(NSXPCConnection *)v12 remoteObjectProxyWithErrorHandler:v18];
-    v14 = [(FAFamilyNotifier *)v9 identifier];
-    [v13 setClientIdentifier:v14];
+    identifier = [(FAFamilyNotifier *)selfCopy identifier];
+    [v13 setClientIdentifier:identifier];
 
-    v15 = [(FAFamilyNotifier *)v9 serviceName];
-    [v13 setDelegateMachServiceName:v15];
+    serviceName = [(FAFamilyNotifier *)selfCopy serviceName];
+    [v13 setDelegateMachServiceName:serviceName];
 
     [(NSXPCConnection *)self->_conn resume];
     _Block_object_dispose(v21, 8);
@@ -345,54 +345,54 @@ void __35__FAFamilyNotifier_agentConnection__block_invoke_3(uint64_t a1, void *a
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v5 = MEMORY[0x277CCAE90];
-  v6 = a4;
+  connectionCopy = connection;
   v7 = [v5 interfaceWithProtocol:&unk_285E0B660];
-  [v6 setExportedInterface:v7];
-  [v6 setExportedObject:self];
-  [v6 resume];
+  [connectionCopy setExportedInterface:v7];
+  [connectionCopy setExportedObject:self];
+  [connectionCopy resume];
 
   return 1;
 }
 
-- (void)didActivateNotification:(id)a3
+- (void)didActivateNotification:(id)notification
 {
-  v7 = a3;
-  v4 = [(FAFamilyNotifier *)self delegate];
+  notificationCopy = notification;
+  delegate = [(FAFamilyNotifier *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(FAFamilyNotifier *)self delegate];
-    [v6 didActivateFamilyNotification:v7];
+    delegate2 = [(FAFamilyNotifier *)self delegate];
+    [delegate2 didActivateFamilyNotification:notificationCopy];
   }
 }
 
-- (void)didDismissNotification:(id)a3
+- (void)didDismissNotification:(id)notification
 {
-  v7 = a3;
-  v4 = [(FAFamilyNotifier *)self delegate];
+  notificationCopy = notification;
+  delegate = [(FAFamilyNotifier *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(FAFamilyNotifier *)self delegate];
-    [v6 didDismissFamilyNotification:v7];
+    delegate2 = [(FAFamilyNotifier *)self delegate];
+    [delegate2 didDismissFamilyNotification:notificationCopy];
   }
 }
 
-- (void)didClearNotification:(id)a3
+- (void)didClearNotification:(id)notification
 {
-  v7 = a3;
-  v4 = [(FAFamilyNotifier *)self delegate];
+  notificationCopy = notification;
+  delegate = [(FAFamilyNotifier *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(FAFamilyNotifier *)self delegate];
-    [v6 didClearFamilyNotification:v7];
+    delegate2 = [(FAFamilyNotifier *)self delegate];
+    [delegate2 didClearFamilyNotification:notificationCopy];
   }
 }
 

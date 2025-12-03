@@ -33,7 +33,7 @@
 - (int)screenClass;
 - (unsigned)fairPlayDeviceType;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation ICDeviceInfo
@@ -217,41 +217,41 @@ uint64_t __33__ICDeviceInfo_currentDeviceInfo__block_invoke()
 - (NSString)productPlatform
 {
   v3 = +[ICDefaults standardDefaults];
-  v4 = [v3 productPlatformOverride];
+  productPlatformOverride = [v3 productPlatformOverride];
 
-  if (!v4)
+  if (!productPlatformOverride)
   {
     if ([(ICDeviceInfo *)self isWatch])
     {
-      v4 = @"watchOS";
+      productPlatformOverride = @"watchOS";
     }
 
     else if ([(ICDeviceInfo *)self isMac])
     {
-      v4 = @"macOS";
+      productPlatformOverride = @"macOS";
     }
 
     else if ([(ICDeviceInfo *)self isAppleTV])
     {
-      v4 = @"tvOS";
+      productPlatformOverride = @"tvOS";
     }
 
     else
     {
-      v4 = @"iOS";
+      productPlatformOverride = @"iOS";
     }
   }
 
-  return v4;
+  return productPlatformOverride;
 }
 
 - (NSString)deviceModel
 {
   v3 = +[ICDefaults standardDefaults];
-  v4 = [v3 deviceModelOverride];
+  deviceModelOverride = [v3 deviceModelOverride];
 
-  deviceModel = v4;
-  if (!v4)
+  deviceModel = deviceModelOverride;
+  if (!deviceModelOverride)
   {
     deviceModel = self->_deviceModel;
     if (!deviceModel)
@@ -272,19 +272,19 @@ uint64_t __33__ICDeviceInfo_currentDeviceInfo__block_invoke()
 - (int)deviceClass
 {
   v3 = +[ICDefaults standardDefaults];
-  v4 = [v3 deviceClassOverride];
+  deviceClassOverride = [v3 deviceClassOverride];
 
-  if (v4)
+  if (deviceClassOverride)
   {
-    v5 = [v4 intValue];
+    intValue = [deviceClassOverride intValue];
   }
 
   else
   {
-    v5 = [(ICDeviceInfo *)self _gestaltDeviceClass];
+    intValue = [(ICDeviceInfo *)self _gestaltDeviceClass];
   }
 
-  v6 = v5;
+  v6 = intValue;
 
   return v6;
 }
@@ -292,27 +292,27 @@ uint64_t __33__ICDeviceInfo_currentDeviceInfo__block_invoke()
 - (unsigned)fairPlayDeviceType
 {
   v3 = +[ICDefaults standardDefaults];
-  v4 = [v3 fairPlayDeviceTypeOverride];
+  fairPlayDeviceTypeOverride = [v3 fairPlayDeviceTypeOverride];
 
-  if (v4)
+  if (fairPlayDeviceTypeOverride)
   {
-    v5 = [v4 unsignedIntValue];
+    unsignedIntValue = [fairPlayDeviceTypeOverride unsignedIntValue];
   }
 
   else
   {
     fairPlayDeviceType = self->_fairPlayDeviceType;
     p_fairPlayDeviceType = &self->_fairPlayDeviceType;
-    v5 = fairPlayDeviceType;
+    unsignedIntValue = fairPlayDeviceType;
     if (!fairPlayDeviceType)
     {
       v9 = 0;
       CjHbHx(p_fairPlayDeviceType, &v9);
-      v5 = *p_fairPlayDeviceType;
+      unsignedIntValue = *p_fairPlayDeviceType;
     }
   }
 
-  return v5;
+  return unsignedIntValue;
 }
 
 - (NSString)deviceGUID
@@ -337,10 +337,10 @@ uint64_t __33__ICDeviceInfo_currentDeviceInfo__block_invoke()
 - (NSString)productVersion
 {
   v3 = +[ICDefaults standardDefaults];
-  v4 = [v3 productVersionOverride];
+  productVersionOverride = [v3 productVersionOverride];
 
-  productVersion = v4;
-  if (!v4)
+  productVersion = productVersionOverride;
+  if (!productVersionOverride)
   {
     productVersion = self->_productVersion;
     if (!productVersion)
@@ -362,10 +362,10 @@ uint64_t __33__ICDeviceInfo_currentDeviceInfo__block_invoke()
 - (NSString)hardwarePlatform
 {
   v3 = +[ICDefaults standardDefaults];
-  v4 = [v3 hardwarePlatformOverride];
+  hardwarePlatformOverride = [v3 hardwarePlatformOverride];
 
-  hardwarePlatform = v4;
-  if (!v4)
+  hardwarePlatform = hardwarePlatformOverride;
+  if (!hardwarePlatformOverride)
   {
     hardwarePlatform = self->_hardwarePlatform;
     if (!hardwarePlatform)
@@ -398,19 +398,19 @@ uint64_t __33__ICDeviceInfo_currentDeviceInfo__block_invoke()
   return rawDeviceModel;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   v19 = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  if ([a3 isEqualToString:@"iTunesStoreDemoMode"])
+  changeCopy = change;
+  if ([path isEqualToString:@"iTunesStoreDemoMode"])
   {
-    v9 = [v8 objectForKey:*MEMORY[0x1E696A4F0]];
-    v10 = [v8 objectForKey:*MEMORY[0x1E696A500]];
+    v9 = [changeCopy objectForKey:*MEMORY[0x1E696A4F0]];
+    v10 = [changeCopy objectForKey:*MEMORY[0x1E696A500]];
     v11 = os_log_create("com.apple.amp.iTunesCloud", "Default");
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       v13 = 138543874;
-      v14 = self;
+      selfCopy = self;
       v15 = 2114;
       v16 = v10;
       v17 = 2114;
@@ -418,8 +418,8 @@ uint64_t __33__ICDeviceInfo_currentDeviceInfo__block_invoke()
       _os_log_impl(&dword_1B4491000, v11, OS_LOG_TYPE_ERROR, "%{public}@ iTunes store demo mode has changed from %{public}@ --> %{public}@ - posting notification", &v13, 0x20u);
     }
 
-    v12 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v12 postNotificationName:@"ICDeviceInfoStoreDemoModeDidChangeNotification" object:self];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"ICDeviceInfoStoreDemoModeDidChangeNotification" object:self];
   }
 }
 
@@ -668,23 +668,23 @@ LABEL_21:
 
 - (NSString)macAddress
 {
-  v2 = [(ICDeviceInfo *)self macAddressData];
-  if (v2)
+  macAddressData = [(ICDeviceInfo *)self macAddressData];
+  if (macAddressData)
   {
-    v3 = [MEMORY[0x1E696AD60] string];
-    v4 = [v2 bytes];
-    if ([v2 length])
+    string = [MEMORY[0x1E696AD60] string];
+    bytes = [macAddressData bytes];
+    if ([macAddressData length])
     {
       v5 = 0;
       do
       {
-        [v3 appendFormat:@"%02X", *(v4 + v5++)];
+        [string appendFormat:@"%02X", *(bytes + v5++)];
       }
 
-      while ([v2 length] > v5);
+      while ([macAddressData length] > v5);
     }
 
-    v6 = [v3 copy];
+    v6 = [string copy];
   }
 
   else
@@ -752,7 +752,7 @@ void __26__ICDeviceInfo_deviceName__block_invoke()
     v7[4] = self;
     v7[5] = buf;
     dispatch_sync(deviceNameUpdateQueue, v7);
-    v4 = *(v9 + 5);
+    deviceName = *(v9 + 5);
     _Block_object_dispose(buf, 8);
   }
 
@@ -765,10 +765,10 @@ void __26__ICDeviceInfo_deviceName__block_invoke()
       _os_log_impl(&dword_1B4491000, v5, OS_LOG_TYPE_ERROR, "User assigned name requested without entitlement. Returning generic device name.", buf, 2u);
     }
 
-    v4 = [(ICDeviceInfo *)self deviceName];
+    deviceName = [(ICDeviceInfo *)self deviceName];
   }
 
-  return v4;
+  return deviceName;
 }
 
 void __20__ICDeviceInfo_name__block_invoke(uint64_t a1)
@@ -843,12 +843,12 @@ void __20__ICDeviceInfo_name__block_invoke_3(uint64_t a1)
   deviceGUIDData = self->_deviceGUIDData;
   if (!deviceGUIDData)
   {
-    v4 = [(ICDeviceInfo *)self deviceGUID];
-    v5 = v4;
-    if (v4)
+    deviceGUID = [(ICDeviceInfo *)self deviceGUID];
+    v5 = deviceGUID;
+    if (deviceGUID)
     {
       memset(v10, 0, 24);
-      ICFairPlayGetHardwareInfoFromDeviceUDID(v4, v10);
+      ICFairPlayGetHardwareInfoFromDeviceUDID(deviceGUID, v10);
       if (!v6)
       {
         v7 = [MEMORY[0x1E695DEF0] dataWithBytes:v10 + 4 length:LODWORD(v10[0])];

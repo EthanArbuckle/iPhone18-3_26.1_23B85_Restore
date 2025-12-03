@@ -1,9 +1,9 @@
 @interface MTRScenesManagementClusterViewSceneResponseParams
-- (ChipError)_setFieldsFromDecodableStruct:(const void *)a3;
+- (ChipError)_setFieldsFromDecodableStruct:(const void *)struct;
 - (MTRScenesManagementClusterViewSceneResponseParams)init;
-- (MTRScenesManagementClusterViewSceneResponseParams)initWithDecodableStruct:(const void *)a3;
-- (MTRScenesManagementClusterViewSceneResponseParams)initWithResponseValue:(id)a3 error:(id *)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (MTRScenesManagementClusterViewSceneResponseParams)initWithDecodableStruct:(const void *)struct;
+- (MTRScenesManagementClusterViewSceneResponseParams)initWithResponseValue:(id)value error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -39,26 +39,26 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRScenesManagementClusterViewSceneResponseParams);
-  v5 = [(MTRScenesManagementClusterViewSceneResponseParams *)self status];
-  [(MTRScenesManagementClusterViewSceneResponseParams *)v4 setStatus:v5];
+  status = [(MTRScenesManagementClusterViewSceneResponseParams *)self status];
+  [(MTRScenesManagementClusterViewSceneResponseParams *)v4 setStatus:status];
 
-  v6 = [(MTRScenesManagementClusterViewSceneResponseParams *)self groupID];
-  [(MTRScenesManagementClusterViewSceneResponseParams *)v4 setGroupID:v6];
+  groupID = [(MTRScenesManagementClusterViewSceneResponseParams *)self groupID];
+  [(MTRScenesManagementClusterViewSceneResponseParams *)v4 setGroupID:groupID];
 
-  v7 = [(MTRScenesManagementClusterViewSceneResponseParams *)self sceneID];
-  [(MTRScenesManagementClusterViewSceneResponseParams *)v4 setSceneID:v7];
+  sceneID = [(MTRScenesManagementClusterViewSceneResponseParams *)self sceneID];
+  [(MTRScenesManagementClusterViewSceneResponseParams *)v4 setSceneID:sceneID];
 
-  v8 = [(MTRScenesManagementClusterViewSceneResponseParams *)self transitionTime];
-  [(MTRScenesManagementClusterViewSceneResponseParams *)v4 setTransitionTime:v8];
+  transitionTime = [(MTRScenesManagementClusterViewSceneResponseParams *)self transitionTime];
+  [(MTRScenesManagementClusterViewSceneResponseParams *)v4 setTransitionTime:transitionTime];
 
-  v9 = [(MTRScenesManagementClusterViewSceneResponseParams *)self sceneName];
-  [(MTRScenesManagementClusterViewSceneResponseParams *)v4 setSceneName:v9];
+  sceneName = [(MTRScenesManagementClusterViewSceneResponseParams *)self sceneName];
+  [(MTRScenesManagementClusterViewSceneResponseParams *)v4 setSceneName:sceneName];
 
-  v10 = [(MTRScenesManagementClusterViewSceneResponseParams *)self extensionFieldSetStructs];
-  [(MTRScenesManagementClusterViewSceneResponseParams *)v4 setExtensionFieldSetStructs:v10];
+  extensionFieldSetStructs = [(MTRScenesManagementClusterViewSceneResponseParams *)self extensionFieldSetStructs];
+  [(MTRScenesManagementClusterViewSceneResponseParams *)v4 setExtensionFieldSetStructs:extensionFieldSetStructs];
 
   return v4;
 }
@@ -73,9 +73,9 @@
   return v6;
 }
 
-- (MTRScenesManagementClusterViewSceneResponseParams)initWithResponseValue:(id)a3 error:(id *)a4
+- (MTRScenesManagementClusterViewSceneResponseParams)initWithResponseValue:(id)value error:(id *)error
 {
-  v6 = a3;
+  valueCopy = value;
   v20.receiver = self;
   v20.super_class = MTRScenesManagementClusterViewSceneResponseParams;
   v7 = [(MTRScenesManagementClusterViewSceneResponseParams *)&v20 init];
@@ -85,7 +85,7 @@
     goto LABEL_10;
   }
 
-  [MTRBaseDevice _responseDataForCommand:v6 clusterID:98 commandID:1 error:a4];
+  [MTRBaseDevice _responseDataForCommand:valueCopy clusterID:98 commandID:1 error:error];
   if (v19)
   {
     sub_2393C5AAC(v18);
@@ -111,7 +111,7 @@
       }
     }
 
-    sub_238DD3F98(v8, v9, a4);
+    sub_238DD3F98(v8, v9, error);
   }
 
   v10 = 0;
@@ -122,7 +122,7 @@ LABEL_10:
   return v10;
 }
 
-- (MTRScenesManagementClusterViewSceneResponseParams)initWithDecodableStruct:(const void *)a3
+- (MTRScenesManagementClusterViewSceneResponseParams)initWithDecodableStruct:(const void *)struct
 {
   v10.receiver = self;
   v10.super_class = MTRScenesManagementClusterViewSceneResponseParams;
@@ -130,7 +130,7 @@ LABEL_10:
   v5 = v4;
   if (v4)
   {
-    v6 = [(MTRScenesManagementClusterViewSceneResponseParams *)v4 _setFieldsFromDecodableStruct:a3];
+    v6 = [(MTRScenesManagementClusterViewSceneResponseParams *)v4 _setFieldsFromDecodableStruct:struct];
     if (!v6)
     {
       v8 = v5;
@@ -146,20 +146,20 @@ LABEL_6:
   return v8;
 }
 
-- (ChipError)_setFieldsFromDecodableStruct:(const void *)a3
+- (ChipError)_setFieldsFromDecodableStruct:(const void *)struct
 {
-  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*a3];
+  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*struct];
   [(MTRScenesManagementClusterViewSceneResponseParams *)self setStatus:v5];
 
-  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:*(a3 + 1)];
+  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:*(struct + 1)];
   [(MTRScenesManagementClusterViewSceneResponseParams *)self setGroupID:v6];
 
-  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*(a3 + 4)];
+  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*(struct + 4)];
   [(MTRScenesManagementClusterViewSceneResponseParams *)self setSceneID:v7];
 
-  if (*(a3 + 8) == 1)
+  if (*(struct + 8) == 1)
   {
-    v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:*sub_238DE3698(a3 + 8)];
+    v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:*sub_238DE3698(struct + 8)];
     [(MTRScenesManagementClusterViewSceneResponseParams *)self setTransitionTime:v8];
   }
 
@@ -168,15 +168,15 @@ LABEL_6:
     [(MTRScenesManagementClusterViewSceneResponseParams *)self setTransitionTime:0];
   }
 
-  if (*(a3 + 16) == 1)
+  if (*(struct + 16) == 1)
   {
-    v9 = sub_238DE36B8(a3 + 16);
+    v9 = sub_238DE36B8(struct + 16);
     v10 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:*v9 length:v9[1] encoding:4];
     [(MTRScenesManagementClusterViewSceneResponseParams *)self setSceneName:v10];
 
-    v11 = [(MTRScenesManagementClusterViewSceneResponseParams *)self sceneName];
+    sceneName = [(MTRScenesManagementClusterViewSceneResponseParams *)self sceneName];
 
-    if (!v11)
+    if (!sceneName)
     {
       v12 = 0x386700000000;
       v13 = "/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/zap-generated/MTRCommandPayloadsObjc.mm";
@@ -190,8 +190,8 @@ LABEL_6:
     [(MTRScenesManagementClusterViewSceneResponseParams *)self setSceneName:0];
   }
 
-  v16 = *(a3 + 40);
-  v15 = a3 + 40;
+  v16 = *(struct + 40);
+  v15 = struct + 40;
   if (v16 == 1)
   {
     v17 = objc_opt_new();

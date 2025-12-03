@@ -1,7 +1,7 @@
 @interface PXPhotosDetailsLoadCoordinationToken
 - (PXPhotosDetailsLoadCoordinationToken)init;
 - (PXPhotosDetailsLoadCoordinator)_loadCoordinator;
-- (id)_initWithLoadCoordinator:(id)a3;
+- (id)_initWithLoadCoordinator:(id)coordinator;
 - (void)_timeout;
 - (void)complete;
 - (void)dealloc;
@@ -36,8 +36,8 @@
   if (!self->_didComplete)
   {
     self->_didComplete = 1;
-    v4 = [(PXPhotosDetailsLoadCoordinationToken *)self _loadCoordinator];
-    [v4 _tokenDidComplete:self];
+    _loadCoordinator = [(PXPhotosDetailsLoadCoordinationToken *)self _loadCoordinator];
+    [_loadCoordinator _tokenDidComplete:self];
   }
 }
 
@@ -55,18 +55,18 @@
   [(PXPhotosDetailsLoadCoordinationToken *)&v4 dealloc];
 }
 
-- (id)_initWithLoadCoordinator:(id)a3
+- (id)_initWithLoadCoordinator:(id)coordinator
 {
-  v4 = a3;
+  coordinatorCopy = coordinator;
   v13.receiver = self;
   v13.super_class = PXPhotosDetailsLoadCoordinationToken;
   v5 = [(PXPhotosDetailsLoadCoordinationToken *)&v13 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->__loadCoordinator, v4);
+    objc_storeWeak(&v5->__loadCoordinator, coordinatorCopy);
     objc_initWeak(&location, v6);
-    [v4 timeoutDelay];
+    [coordinatorCopy timeoutDelay];
     v8 = dispatch_time(0, (v7 * 1000000000.0));
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
@@ -89,8 +89,8 @@ void __65__PXPhotosDetailsLoadCoordinationToken__initWithLoadCoordinator___block
 
 - (PXPhotosDetailsLoadCoordinationToken)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXPhotosDetailsLoadCoordinator.m" lineNumber:130 description:{@"%s is not available as initializer", "-[PXPhotosDetailsLoadCoordinationToken init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosDetailsLoadCoordinator.m" lineNumber:130 description:{@"%s is not available as initializer", "-[PXPhotosDetailsLoadCoordinationToken init]"}];
 
   abort();
 }

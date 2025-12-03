@@ -1,48 +1,48 @@
 @interface PMLLogisticRegressionModel
-- (PMLLogisticRegressionModel)initWithPlist:(id)a3 chunks:(id)a4 context:(id)a5;
-- (PMLLogisticRegressionModel)initWithSolver:(id)a3;
-- (id)predict:(id)a3;
-- (id)toPlistWithChunks:(id)a3;
+- (PMLLogisticRegressionModel)initWithPlist:(id)plist chunks:(id)chunks context:(id)context;
+- (PMLLogisticRegressionModel)initWithSolver:(id)solver;
+- (id)predict:(id)predict;
+- (id)toPlistWithChunks:(id)chunks;
 @end
 
 @implementation PMLLogisticRegressionModel
 
-- (PMLLogisticRegressionModel)initWithPlist:(id)a3 chunks:(id)a4 context:(id)a5
+- (PMLLogisticRegressionModel)initWithPlist:(id)plist chunks:(id)chunks context:(id)context
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
+  plistCopy = plist;
+  contextCopy = context;
+  chunksCopy = chunks;
   v11 = [PMLModelWeights alloc];
-  v12 = [v8 objectForKeyedSubscript:@"WEIGHTS"];
-  v13 = [(PMLModelWeights *)v11 initWithPlist:v12 chunks:v10 context:v9];
+  v12 = [plistCopy objectForKeyedSubscript:@"WEIGHTS"];
+  v13 = [(PMLModelWeights *)v11 initWithPlist:v12 chunks:chunksCopy context:contextCopy];
 
   if (v13)
   {
-    v14 = [v8 objectForKeyedSubscript:@"INTERCEPT"];
-    v15 = [v14 BOOLValue];
+    v14 = [plistCopy objectForKeyedSubscript:@"INTERCEPT"];
+    bOOLValue = [v14 BOOLValue];
 
-    v16 = [PMLLogisticRegressionModel solverWithWeights:v13 andIntercept:v15];
+    v16 = [PMLLogisticRegressionModel solverWithWeights:v13 andIntercept:bOOLValue];
     self = [(PMLLogisticRegressionModel *)self initWithSolver:v16];
 
-    v17 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v17 = 0;
+    selfCopy = 0;
   }
 
-  return v17;
+  return selfCopy;
 }
 
-- (id)toPlistWithChunks:(id)a3
+- (id)toPlistWithChunks:(id)chunks
 {
   v13[2] = *MEMORY[0x277D85DE8];
   v12[0] = @"WEIGHTS";
   solver = self->_solver;
-  v5 = a3;
-  v6 = [(PMLGradientSolver *)solver weights];
-  v7 = [v6 toPlistWithChunks:v5];
+  chunksCopy = chunks;
+  weights = [(PMLGradientSolver *)solver weights];
+  v7 = [weights toPlistWithChunks:chunksCopy];
 
   v12[1] = @"INTERCEPT";
   v13[0] = v7;
@@ -55,10 +55,10 @@
   return v9;
 }
 
-- (id)predict:(id)a3
+- (id)predict:(id)predict
 {
   v10[2] = *MEMORY[0x277D85DE8];
-  [(PMLGradientSolver *)self->_solver predict:a3];
+  [(PMLGradientSolver *)self->_solver predict:predict];
   v4 = v3;
   v5 = [MEMORY[0x277CCABB0] numberWithFloat:?];
   v10[0] = v5;
@@ -71,16 +71,16 @@
   return v7;
 }
 
-- (PMLLogisticRegressionModel)initWithSolver:(id)a3
+- (PMLLogisticRegressionModel)initWithSolver:(id)solver
 {
-  v5 = a3;
+  solverCopy = solver;
   v9.receiver = self;
   v9.super_class = PMLLogisticRegressionModel;
   v6 = [(PMLLogisticRegressionModel *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_solver, a3);
+    objc_storeStrong(&v6->_solver, solver);
   }
 
   return v7;

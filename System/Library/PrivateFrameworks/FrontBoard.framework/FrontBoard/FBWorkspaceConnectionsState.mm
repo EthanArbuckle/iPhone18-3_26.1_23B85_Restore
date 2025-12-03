@@ -1,13 +1,13 @@
 @interface FBWorkspaceConnectionsState
-+ (id)deserializeLength:(unint64_t *)a3 fromReader:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)deserializeLength:(unint64_t *)length fromReader:(id)reader;
+- (BOOL)isEqual:(id)equal;
 - (NSSet)processIdentifiers;
-- (id)_initWithIndexSet:(id)a3;
+- (id)_initWithIndexSet:(id)set;
 - (id)copy;
 - (id)description;
 - (id)mutableCopy;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (int64_t)serializeToWriter:(id)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (int64_t)serializeToWriter:(id)writer;
 @end
 
 @implementation FBWorkspaceConnectionsState
@@ -42,26 +42,26 @@
   return v5;
 }
 
-- (id)_initWithIndexSet:(id)a3
+- (id)_initWithIndexSet:(id)set
 {
-  v4 = a3;
+  setCopy = set;
   v9.receiver = self;
   v9.super_class = FBWorkspaceConnectionsState;
   v5 = [(FBWorkspaceConnectionsState *)&v9 init];
   if (v5)
   {
-    if (v4)
+    if (setCopy)
     {
-      v6 = [v4 mutableCopy];
+      indexSet = [setCopy mutableCopy];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E696AD50] indexSet];
+      indexSet = [MEMORY[0x1E696AD50] indexSet];
     }
 
     pidSet = v5->_pidSet;
-    v5->_pidSet = v6;
+    v5->_pidSet = indexSet;
   }
 
   return v5;
@@ -81,10 +81,10 @@ void __49__FBWorkspaceConnectionsState_processIdentifiers__block_invoke(uint64_t
   return [(FBWorkspaceConnectionsState *)&v3 mutableCopy];
 }
 
-- (int64_t)serializeToWriter:(id)a3
+- (int64_t)serializeToWriter:(id)writer
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  writerCopy = writer;
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
@@ -104,7 +104,7 @@ void __49__FBWorkspaceConnectionsState_processIdentifiers__block_invoke(uint64_t
   else
   {
     v19 = [(NSMutableIndexSet *)self->_pidSet count];
-    v5 = v4[2](v4, &v19, 4);
+    v5 = writerCopy[2](writerCopy, &v19, 4);
     if (v5 < 0)
     {
       v10 = __error();
@@ -135,7 +135,7 @@ void __49__FBWorkspaceConnectionsState_processIdentifiers__block_invoke(uint64_t
       v16[1] = 3221225472;
       v16[2] = __49__FBWorkspaceConnectionsState_serializeToWriter___block_invoke;
       v16[3] = &unk_1E783C880;
-      v17 = v4;
+      v17 = writerCopy;
       v18 = &v20;
       [(NSMutableIndexSet *)pidSet enumerateIndexesUsingBlock:v16];
 
@@ -178,13 +178,13 @@ void __49__FBWorkspaceConnectionsState_serializeToWriter___block_invoke(uint64_t
   v8 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)deserializeLength:(unint64_t *)a3 fromReader:(id)a4
++ (id)deserializeLength:(unint64_t *)length fromReader:(id)reader
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  readerCopy = reader;
   v6 = objc_opt_new();
   v19 = 0;
-  v7 = v5[2](v5, &v19, 4);
+  v7 = readerCopy[2](readerCopy, &v19, 4);
   if (v7 < 0)
   {
     v12 = __error();
@@ -202,9 +202,9 @@ void __49__FBWorkspaceConnectionsState_serializeToWriter___block_invoke(uint64_t
     if (v19 < 1)
     {
 LABEL_8:
-      if (a3)
+      if (length)
       {
-        *a3 = v8;
+        *length = v8;
       }
 
       v11 = v6;
@@ -215,7 +215,7 @@ LABEL_8:
     while ((v8 + 4) >= 0)
     {
       v18 = -1;
-      v10 = v5[2](v5, &v18, 4);
+      v10 = readerCopy[2](readerCopy, &v18, 4);
       if (v10 < 0)
       {
         v14 = __error();
@@ -266,10 +266,10 @@ LABEL_22:
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -279,7 +279,7 @@ LABEL_22:
     v5 = objc_opt_class();
     if (v5 == objc_opt_class() || (v6 = objc_opt_class(), v6 == objc_opt_class()))
     {
-      v7 = [(NSMutableIndexSet *)self->_pidSet isEqualToIndexSet:v4->_pidSet];
+      v7 = [(NSMutableIndexSet *)self->_pidSet isEqualToIndexSet:equalCopy->_pidSet];
     }
 
     else
@@ -293,14 +293,14 @@ LABEL_22:
 
 - (id)description
 {
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   pidSet = self->_pidSet;
   v8 = MEMORY[0x1E69E9820];
   v9 = 3221225472;
   v10 = __42__FBWorkspaceConnectionsState_description__block_invoke;
   v11 = &unk_1E783C8A8;
-  v12 = v3;
-  v5 = v3;
+  v12 = string;
+  v5 = string;
   [(NSMutableIndexSet *)pidSet enumerateRangesUsingBlock:&v8];
   v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"<%@:%p pids=%@>", objc_opt_class(), self, v5, v8, v9, v10, v11];
 
@@ -329,7 +329,7 @@ void __42__FBWorkspaceConnectionsState_description__block_invoke(uint64_t a1, ui
   }
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [FBMutableWorkspaceConnectionsState alloc];
   pidSet = self->_pidSet;

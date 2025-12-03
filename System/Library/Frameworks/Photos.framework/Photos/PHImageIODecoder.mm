@@ -1,27 +1,27 @@
 @interface PHImageIODecoder
 + (id)sharedDecoder;
-+ (void)setMaxConcurrentDecodeCount:(int64_t)a3;
++ (void)setMaxConcurrentDecodeCount:(int64_t)count;
 - (PHImageIODecoder)init;
-- (id)decodeImageFromData:(id)a3 orFileURL:(id)a4 options:(id)a5 existingRequestHandle:(id)a6 completion:(id)a7;
+- (id)decodeImageFromData:(id)data orFileURL:(id)l options:(id)options existingRequestHandle:(id)handle completion:(id)completion;
 @end
 
 @implementation PHImageIODecoder
 
-- (id)decodeImageFromData:(id)a3 orFileURL:(id)a4 options:(id)a5 existingRequestHandle:(id)a6 completion:(id)a7
+- (id)decodeImageFromData:(id)data orFileURL:(id)l options:(id)options existingRequestHandle:(id)handle completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if ([v14 waitUntilComplete])
+  dataCopy = data;
+  lCopy = l;
+  optionsCopy = options;
+  handleCopy = handle;
+  completionCopy = completion;
+  if ([optionsCopy waitUntilComplete])
   {
     v31 = 0;
     v30 = 1;
     v29 = 0;
-    v17 = _createDecodedImageUsingImageIOWithFileUrlOrData(v14, v13, v12, [v14 maximumLongSideLength], objc_msgSend(v14, "optimizeForDrawing"), objc_msgSend(v14, "shouldLoadGainMap"), &v31, &v30, &v29);
+    v17 = _createDecodedImageUsingImageIOWithFileUrlOrData(optionsCopy, lCopy, dataCopy, [optionsCopy maximumLongSideLength], objc_msgSend(optionsCopy, "optimizeForDrawing"), objc_msgSend(optionsCopy, "shouldLoadGainMap"), &v31, &v30, &v29);
     v18 = v29;
-    v16[2](v16, v17, v31, v30, v18);
+    completionCopy[2](completionCopy, v17, v31, v30, v18);
     CGImageRelease(v17);
     if (v31)
     {
@@ -33,9 +33,9 @@
 
   else
   {
-    if (v15)
+    if (handleCopy)
     {
-      v20 = v15;
+      v20 = handleCopy;
     }
 
     else
@@ -51,10 +51,10 @@
     block[4] = self;
     v19 = v20;
     v24 = v19;
-    v28 = v16;
-    v25 = v14;
-    v26 = v13;
-    v27 = v12;
+    v28 = completionCopy;
+    v25 = optionsCopy;
+    v26 = lCopy;
+    v27 = dataCopy;
     dispatch_async(pendingRequestQueue, block);
   }
 
@@ -140,19 +140,19 @@ intptr_t __91__PHImageIODecoder_decodeImageFromData_orFileURL_options_existingRe
   return v2;
 }
 
-+ (void)setMaxConcurrentDecodeCount:(int64_t)a3
++ (void)setMaxConcurrentDecodeCount:(int64_t)count
 {
-  if (a3 <= 1)
+  if (count <= 1)
   {
-    v3 = 1;
+    countCopy = 1;
   }
 
   else
   {
-    v3 = a3;
+    countCopy = count;
   }
 
-  sMaxConcurrentDecodeCount = v3;
+  sMaxConcurrentDecodeCount = countCopy;
 }
 
 + (id)sharedDecoder

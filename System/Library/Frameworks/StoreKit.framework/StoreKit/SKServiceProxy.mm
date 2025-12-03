@@ -2,7 +2,7 @@
 + (id)inAppClientInterface;
 + (id)serviceProxy;
 - (SKServiceProxy)init;
-- (id)objectProxyWithErrorHandler:(id)a3;
+- (id)objectProxyWithErrorHandler:(id)handler;
 - (id)serviceConnection;
 - (void)_serviceConnectionInvalidated;
 @end
@@ -94,7 +94,7 @@ uint64_t __30__SKServiceProxy_serviceProxy__block_invoke()
     v14[2] = 0x3032000000;
     v14[3] = __Block_byref_object_copy__2;
     v14[4] = __Block_byref_object_dispose__2;
-    v15 = self;
+    selfCopy = self;
     v8 = self->_serviceConnection;
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
@@ -130,17 +130,17 @@ uint64_t __30__SKServiceProxy_serviceProxy__block_invoke()
   [(NSLock *)serviceConnectionLock unlock];
 }
 
-- (id)objectProxyWithErrorHandler:(id)a3
+- (id)objectProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(SKServiceProxy *)self serviceConnection];
+  handlerCopy = handler;
+  serviceConnection = [(SKServiceProxy *)self serviceConnection];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __46__SKServiceProxy_objectProxyWithErrorHandler___block_invoke;
   v9[3] = &unk_1E7B27DA8;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 remoteObjectProxyWithErrorHandler:v9];
+  v10 = handlerCopy;
+  v6 = handlerCopy;
+  v7 = [serviceConnection remoteObjectProxyWithErrorHandler:v9];
 
   return v7;
 }

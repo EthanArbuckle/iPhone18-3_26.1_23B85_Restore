@@ -1,29 +1,29 @@
 @interface TSCEAbstractGrid
-- (BOOL)asBoolean:(id)a3 functionSpec:(id)a4 argIndex:(int)a5 outError:(id *)a6;
+- (BOOL)asBoolean:(id)boolean functionSpec:(id)spec argIndex:(int)index outError:(id *)error;
 - (BOOL)canResolveToSingleError;
-- (BOOL)containsError:(int)a3 evaluationContext:(id)a4 outError:(id *)a5;
+- (BOOL)containsError:(int)error evaluationContext:(id)context outError:(id *)outError;
 - (TSCEAbstractGrid)init;
-- (TSCEFormat)formatAtIndex:(SEL)a3 accessContext:(unint64_t)a4;
-- (TSCEFormat)preferredFormatOptions:(SEL)a3;
+- (TSCEFormat)formatAtIndex:(SEL)index accessContext:(unint64_t)context;
+- (TSCEFormat)preferredFormatOptions:(SEL)options;
 - (TSCEGridDimensions)dimensions;
-- (char)deepType:(id)a3 outError:(id *)a4;
-- (id)asDate:(id)a3 functionSpec:(id)a4 argIndex:(int)a5 outError:(id *)a6;
-- (id)asNumber:(id)a3 functionSpec:(id)a4 argIndex:(int)a5 outError:(id *)a6;
-- (id)asRawString:(id)a3 functionSpec:(id)a4 argIndex:(int)a5 outError:(id *)a6;
-- (id)asReference:(id)a3 functionSpec:(id)a4 argIndex:(int)a5 outError:(id *)a6;
-- (id)asString:(id)a3 functionSpec:(id)a4 argIndex:(int)a5 outError:(id *)a6;
-- (id)asValueGrid:(id)a3;
-- (id)deepResolveInPlace:(id)a3;
+- (char)deepType:(id)type outError:(id *)error;
+- (id)asDate:(id)date functionSpec:(id)spec argIndex:(int)index outError:(id *)error;
+- (id)asNumber:(id)number functionSpec:(id)spec argIndex:(int)index outError:(id *)error;
+- (id)asRawString:(id)string functionSpec:(id)spec argIndex:(int)index outError:(id *)error;
+- (id)asReference:(id)reference functionSpec:(id)spec argIndex:(int)index outError:(id *)error;
+- (id)asString:(id)string functionSpec:(id)spec argIndex:(int)index outError:(id *)error;
+- (id)asValueGrid:(id)grid;
+- (id)deepResolveInPlace:(id)place;
 - (id)error;
-- (id)errorWithContext:(id)a3;
-- (id)flattenedGrid:(TSCEGridAccessContext *)a3 format:(const TSCEFormat *)a4;
-- (id)resolvedValueAtGridCoord:(const TSCEGridCoord *)a3 accessContext:(TSCEGridAccessContext *)a4;
-- (id)subGridValueAtGridCoord:(const TSCEGridCoord *)a3 width:(int)a4 height:(int)a5 accessContext:(TSCEGridAccessContext *)a6;
+- (id)errorWithContext:(id)context;
+- (id)flattenedGrid:(TSCEGridAccessContext *)grid format:(const TSCEFormat *)format;
+- (id)resolvedValueAtGridCoord:(const TSCEGridCoord *)coord accessContext:(TSCEGridAccessContext *)context;
+- (id)subGridValueAtGridCoord:(const TSCEGridCoord *)coord width:(int)width height:(int)height accessContext:(TSCEGridAccessContext *)context;
 - (id)value;
-- (id)valueAtGridCoord:(const TSCEGridCoord *)a3;
-- (id)valueAtGridCoord:(const TSCEGridCoord *)a3 accessContext:(TSCEGridAccessContext *)a4;
-- (id)valueAtIndex:(unint64_t)a3;
-- (id)valueAtIndex:(unint64_t)a3 accessContext:(TSCEGridAccessContext *)a4;
+- (id)valueAtGridCoord:(const TSCEGridCoord *)coord;
+- (id)valueAtGridCoord:(const TSCEGridCoord *)coord accessContext:(TSCEGridAccessContext *)context;
+- (id)valueAtIndex:(unint64_t)index;
+- (id)valueAtIndex:(unint64_t)index accessContext:(TSCEGridAccessContext *)context;
 - (unint64_t)count;
 @end
 
@@ -36,10 +36,10 @@
   return [(TSCEAbstractGrid *)&v3 init];
 }
 
-- (char)deepType:(id)a3 outError:(id *)a4
+- (char)deepType:(id)type outError:(id *)error
 {
   v5 = MEMORY[0x277D81150];
-  v6 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSCEAbstractGrid deepType:outError:]", a4, v4);
+  v6 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSCEAbstractGrid deepType:outError:]", error, v4);
   v10 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/calculationEngine/TSCEAbstractGrid.mm", v8, v9);
   objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v5, v11, v6, v10, 38, 0, "TSCEAbstractGrid subclasses must override");
 
@@ -47,7 +47,7 @@
   return 9;
 }
 
-- (id)errorWithContext:(id)a3
+- (id)errorWithContext:(id)context
 {
   v5 = MEMORY[0x277D81150];
   v6 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSCEAbstractGrid errorWithContext:]", v3, v4);
@@ -80,7 +80,7 @@
   return 0x7FFFFFFF7FFFFFFFLL;
 }
 
-- (id)valueAtGridCoord:(const TSCEGridCoord *)a3
+- (id)valueAtGridCoord:(const TSCEGridCoord *)coord
 {
   v5 = MEMORY[0x277D81150];
   v6 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSCEAbstractGrid valueAtGridCoord:]", v3, v4);
@@ -92,10 +92,10 @@
   return objc_msgSend_zero(TSCENumberValue, v16, v17, v18, v19);
 }
 
-- (id)valueAtGridCoord:(const TSCEGridCoord *)a3 accessContext:(TSCEGridAccessContext *)a4
+- (id)valueAtGridCoord:(const TSCEGridCoord *)coord accessContext:(TSCEGridAccessContext *)context
 {
   v5 = MEMORY[0x277D81150];
-  v6 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSCEAbstractGrid valueAtGridCoord:accessContext:]", a4, v4);
+  v6 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSCEAbstractGrid valueAtGridCoord:accessContext:]", context, v4);
   v10 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/calculationEngine/TSCEAbstractGrid.mm", v8, v9);
   objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v5, v11, v6, v10, 63, 0, "TSCEAbstractGrid subclasses must override");
 
@@ -104,13 +104,13 @@
   return objc_msgSend_zero(TSCENumberValue, v16, v17, v18, v19);
 }
 
-- (id)resolvedValueAtGridCoord:(const TSCEGridCoord *)a3 accessContext:(TSCEGridAccessContext *)a4
+- (id)resolvedValueAtGridCoord:(const TSCEGridCoord *)coord accessContext:(TSCEGridAccessContext *)context
 {
-  v6 = objc_msgSend_valueAtGridCoord_accessContext_(self, a2, a3, a4, v4);
+  v6 = objc_msgSend_valueAtGridCoord_accessContext_(self, a2, coord, context, v4);
   if (objc_msgSend_nativeType(v6, v7, v8, v9, v10) == 6)
   {
     v15 = objc_msgSend_referenceValue(v6, v11, v12, v13, v14);
-    v18 = objc_msgSend_referredToValue_fetchRichTextAttributesIfPlainText_(v15, v16, a4->var0, 0, v17);
+    v18 = objc_msgSend_referredToValue_fetchRichTextAttributesIfPlainText_(v15, v16, context->var0, 0, v17);
 
     v6 = v18;
   }
@@ -118,7 +118,7 @@
   return v6;
 }
 
-- (id)valueAtIndex:(unint64_t)a3
+- (id)valueAtIndex:(unint64_t)index
 {
   v5 = MEMORY[0x277D81150];
   v6 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSCEAbstractGrid valueAtIndex:]", v3, v4);
@@ -130,10 +130,10 @@
   return objc_msgSend_zero(TSCENumberValue, v16, v17, v18, v19);
 }
 
-- (id)valueAtIndex:(unint64_t)a3 accessContext:(TSCEGridAccessContext *)a4
+- (id)valueAtIndex:(unint64_t)index accessContext:(TSCEGridAccessContext *)context
 {
   v5 = MEMORY[0x277D81150];
-  v6 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSCEAbstractGrid valueAtIndex:accessContext:]", a4, v4);
+  v6 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSCEAbstractGrid valueAtIndex:accessContext:]", context, v4);
   v10 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/calculationEngine/TSCEAbstractGrid.mm", v8, v9);
   objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v5, v11, v6, v10, 84, 0, "TSCEAbstractGrid subclasses must override");
 
@@ -153,41 +153,41 @@
   return 0;
 }
 
-- (id)flattenedGrid:(TSCEGridAccessContext *)a3 format:(const TSCEFormat *)a4
+- (id)flattenedGrid:(TSCEGridAccessContext *)grid format:(const TSCEFormat *)format
 {
   memset(v60, 0, sizeof(v60));
-  v8 = objc_msgSend_count(self, a2, a3, a4, v4);
-  var6 = a3->var6;
-  a3->var6 = 1;
+  v8 = objc_msgSend_count(self, a2, grid, format, v4);
+  var6 = grid->var6;
+  grid->var6 = 1;
   sub_2210ED528(v60, v8);
   if (v8)
   {
     for (i = 0; i != v8; ++i)
     {
-      v61 = objc_msgSend_valueAtIndex_accessContext_(self, v9, i, a3, v10);
+      v61 = objc_msgSend_valueAtIndex_accessContext_(self, v9, i, grid, v10);
       if ((objc_msgSend_isNil(v61, v12, v13, v14, v15) & 1) == 0)
       {
         v20 = objc_msgSend_nativeType(v61, v16, v17, v18, v19);
         if (v20 == 6 || v20 == 1)
         {
           v22 = v61;
-          v23 = a3->var0;
-          v24 = a3->var1;
-          var3 = a3->var3;
+          v23 = grid->var0;
+          v24 = grid->var1;
+          var3 = grid->var3;
           v59 = 0;
           v27 = objc_msgSend_asGrid_functionSpec_argumentIndex_applyPreferredFormat_outError_(v22, v26, v23, v24, var3, 1, &v59);
           v28 = v59;
 
           if (!v28)
           {
-            v31 = objc_msgSend_flattenedGrid_format_(v27, v29, a3, a4, v30);
+            v31 = objc_msgSend_flattenedGrid_format_(v27, v29, grid, format, v30);
             v38 = objc_msgSend_count(v31, v32, v33, v34, v35);
             if (v38)
             {
               for (j = 0; j != v38; ++j)
               {
-                v58 = objc_msgSend_valueAtIndex_accessContext_(v31, v36, j, a3, v37);
-                if (!objc_msgSend_isNil(v58, v40, v41, v42, v43) || a3->var8)
+                v58 = objc_msgSend_valueAtIndex_accessContext_(v31, v36, j, grid, v37);
+                if (!objc_msgSend_isNil(v58, v40, v41, v42, v43) || grid->var8)
                 {
                   sub_221179A54(v60, &v58);
                 }
@@ -204,11 +204,11 @@
     }
   }
 
-  a3->var6 = var6;
+  grid->var6 = var6;
   v44 = [TSCEDenseGrid alloc];
   v49 = objc_msgSend_gridKind(self, v45, v46, v47, v48);
   v52 = objc_msgSend_initWithValues_gridKind_(v44, v50, v60, v49, v51);
-  v55 = objc_msgSend_gridValue_format_(TSCEGridValue, v53, v52, a4, v54);
+  v55 = objc_msgSend_gridValue_format_(TSCEGridValue, v53, v52, format, v54);
 
   v61 = v60;
   sub_22107C2C0(&v61);
@@ -216,9 +216,9 @@
   return v55;
 }
 
-- (TSCEFormat)formatAtIndex:(SEL)a3 accessContext:(unint64_t)a4
+- (TSCEFormat)formatAtIndex:(SEL)index accessContext:(unint64_t)context
 {
-  v13 = objc_msgSend_valueAtIndex_accessContext_(self, a3, a4, a5, v5);
+  v13 = objc_msgSend_valueAtIndex_accessContext_(self, index, context, a5, v5);
   v11 = a5->var0;
   if (v13)
   {
@@ -234,9 +234,9 @@
   return result;
 }
 
-- (TSCEFormat)preferredFormatOptions:(SEL)a3
+- (TSCEFormat)preferredFormatOptions:(SEL)options
 {
-  result = objc_msgSend_count(self, a3, a4, v4, v5);
+  result = objc_msgSend_count(self, options, a4, v4, v5);
   retstr->_tskFormat = 0;
   retstr->_formatType = 0;
   retstr->_formatState = 0;
@@ -275,12 +275,12 @@
   return result;
 }
 
-- (BOOL)containsError:(int)a3 evaluationContext:(id)a4 outError:(id *)a5
+- (BOOL)containsError:(int)error evaluationContext:(id)context outError:(id *)outError
 {
-  v6 = *&a3;
-  v8 = a4;
+  v6 = *&error;
+  contextCopy = context;
   v13 = objc_msgSend_count(self, v9, v10, v11, v12);
-  v16 = v8;
+  v16 = contextCopy;
   v24[1] = 0;
   v25 = 0;
   v24[0] = v16;
@@ -297,7 +297,7 @@
     do
     {
       v19 = objc_msgSend_valueAtIndex_accessContext_(self, v14, v17, v24, v15);
-      HasError_context_outError = objc_msgSend_valueHasError_context_outError_(v19, v20, v6, v16, a5);
+      HasError_context_outError = objc_msgSend_valueHasError_context_outError_(v19, v20, v6, v16, outError);
 
       if (HasError_context_outError)
       {
@@ -359,10 +359,10 @@ LABEL_10:
   return v9;
 }
 
-- (id)subGridValueAtGridCoord:(const TSCEGridCoord *)a3 width:(int)a4 height:(int)a5 accessContext:(TSCEGridAccessContext *)a6
+- (id)subGridValueAtGridCoord:(const TSCEGridCoord *)coord width:(int)width height:(int)height accessContext:(TSCEGridAccessContext *)context
 {
   v6 = MEMORY[0x277D81150];
-  v7 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSCEAbstractGrid subGridValueAtGridCoord:width:height:accessContext:]", *&a4, *&a5, a6);
+  v7 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSCEAbstractGrid subGridValueAtGridCoord:width:height:accessContext:]", *&width, *&height, context);
   v11 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v8, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/calculationEngine/TSCEAbstractGrid.mm", v9, v10);
   objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v6, v12, v7, v11, 200, 0, "TSCEAbstractGrid subclasses must override");
 
@@ -383,11 +383,11 @@ LABEL_10:
   return objc_msgSend_zero(TSCENumberValue, v15, v16, v17, v18);
 }
 
-- (id)asNumber:(id)a3 functionSpec:(id)a4 argIndex:(int)a5 outError:(id *)a6
+- (id)asNumber:(id)number functionSpec:(id)spec argIndex:(int)index outError:(id *)error
 {
-  v7 = *&a5;
-  v14 = a3;
-  if (!a6)
+  v7 = *&index;
+  numberCopy = number;
+  if (!error)
   {
     v15 = MEMORY[0x277D81150];
     v16 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v10, "[TSCEAbstractGrid asNumber:functionSpec:argIndex:outError:]", v12, v13);
@@ -398,18 +398,18 @@ LABEL_10:
   }
 
   v26 = objc_msgSend_value(self, v10, v11, v12, v13);
-  *a6 = objc_msgSend_typeErrorForValue_context_functionSpec_argumentIndex_(TSCEError, v27, v26, v14, a4, v7);
+  *error = objc_msgSend_typeErrorForValue_context_functionSpec_argumentIndex_(TSCEError, v27, v26, numberCopy, spec, v7);
 
   v32 = objc_msgSend_zero(TSCENumberValue, v28, v29, v30, v31);
 
   return v32;
 }
 
-- (id)asDate:(id)a3 functionSpec:(id)a4 argIndex:(int)a5 outError:(id *)a6
+- (id)asDate:(id)date functionSpec:(id)spec argIndex:(int)index outError:(id *)error
 {
-  v7 = *&a5;
-  v14 = a3;
-  if (!a6)
+  v7 = *&index;
+  dateCopy = date;
+  if (!error)
   {
     v15 = MEMORY[0x277D81150];
     v16 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v10, "[TSCEAbstractGrid asDate:functionSpec:argIndex:outError:]", v12, v13);
@@ -420,16 +420,16 @@ LABEL_10:
   }
 
   v26 = objc_msgSend_value(self, v10, v11, v12, v13);
-  *a6 = objc_msgSend_typeErrorForValue_context_functionSpec_argumentIndex_(TSCEError, v27, v26, v14, a4, v7);
+  *error = objc_msgSend_typeErrorForValue_context_functionSpec_argumentIndex_(TSCEError, v27, v26, dateCopy, spec, v7);
 
   return 0;
 }
 
-- (BOOL)asBoolean:(id)a3 functionSpec:(id)a4 argIndex:(int)a5 outError:(id *)a6
+- (BOOL)asBoolean:(id)boolean functionSpec:(id)spec argIndex:(int)index outError:(id *)error
 {
-  v7 = *&a5;
-  v14 = a3;
-  if (!a6)
+  v7 = *&index;
+  booleanCopy = boolean;
+  if (!error)
   {
     v15 = MEMORY[0x277D81150];
     v16 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v10, "[TSCEAbstractGrid asBoolean:functionSpec:argIndex:outError:]", v12, v13);
@@ -440,16 +440,16 @@ LABEL_10:
   }
 
   v26 = objc_msgSend_value(self, v10, v11, v12, v13);
-  *a6 = objc_msgSend_typeErrorForValue_context_functionSpec_argumentIndex_(TSCEError, v27, v26, v14, a4, v7);
+  *error = objc_msgSend_typeErrorForValue_context_functionSpec_argumentIndex_(TSCEError, v27, v26, booleanCopy, spec, v7);
 
   return 0;
 }
 
-- (id)asReference:(id)a3 functionSpec:(id)a4 argIndex:(int)a5 outError:(id *)a6
+- (id)asReference:(id)reference functionSpec:(id)spec argIndex:(int)index outError:(id *)error
 {
-  v7 = *&a5;
-  v14 = a3;
-  if (!a6)
+  v7 = *&index;
+  referenceCopy = reference;
+  if (!error)
   {
     v15 = MEMORY[0x277D81150];
     v16 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v10, "[TSCEAbstractGrid asReference:functionSpec:argIndex:outError:]", v12, v13);
@@ -460,18 +460,18 @@ LABEL_10:
   }
 
   v26 = objc_msgSend_value(self, v10, v11, v12, v13);
-  *a6 = objc_msgSend_typeErrorForValue_context_functionSpec_argumentIndex_(TSCEError, v27, v26, v14, a4, v7);
+  *error = objc_msgSend_typeErrorForValue_context_functionSpec_argumentIndex_(TSCEError, v27, v26, referenceCopy, spec, v7);
 
   v32 = objc_msgSend_emptyReferenceValue(TSCEReferenceValue, v28, v29, v30, v31);
 
   return v32;
 }
 
-- (id)asString:(id)a3 functionSpec:(id)a4 argIndex:(int)a5 outError:(id *)a6
+- (id)asString:(id)string functionSpec:(id)spec argIndex:(int)index outError:(id *)error
 {
-  v7 = *&a5;
-  v14 = a3;
-  if (!a6)
+  v7 = *&index;
+  stringCopy = string;
+  if (!error)
   {
     v15 = MEMORY[0x277D81150];
     v16 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v10, "[TSCEAbstractGrid asString:functionSpec:argIndex:outError:]", v12, v13);
@@ -482,16 +482,16 @@ LABEL_10:
   }
 
   v26 = objc_msgSend_value(self, v10, v11, v12, v13);
-  *a6 = objc_msgSend_typeErrorForValue_context_functionSpec_argumentIndex_(TSCEError, v27, v26, v14, a4, v7);
+  *error = objc_msgSend_typeErrorForValue_context_functionSpec_argumentIndex_(TSCEError, v27, v26, stringCopy, spec, v7);
 
   return 0;
 }
 
-- (id)asRawString:(id)a3 functionSpec:(id)a4 argIndex:(int)a5 outError:(id *)a6
+- (id)asRawString:(id)string functionSpec:(id)spec argIndex:(int)index outError:(id *)error
 {
-  v7 = *&a5;
-  v14 = a3;
-  if (!a6)
+  v7 = *&index;
+  stringCopy = string;
+  if (!error)
   {
     v15 = MEMORY[0x277D81150];
     v16 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v10, "[TSCEAbstractGrid asRawString:functionSpec:argIndex:outError:]", v12, v13);
@@ -502,12 +502,12 @@ LABEL_10:
   }
 
   v26 = objc_msgSend_value(self, v10, v11, v12, v13);
-  *a6 = objc_msgSend_typeErrorForValue_context_functionSpec_argumentIndex_(TSCEError, v27, v26, v14, a4, v7);
+  *error = objc_msgSend_typeErrorForValue_context_functionSpec_argumentIndex_(TSCEError, v27, v26, stringCopy, spec, v7);
 
   return 0;
 }
 
-- (id)asValueGrid:(id)a3
+- (id)asValueGrid:(id)grid
 {
   v5 = MEMORY[0x277D81150];
   v6 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSCEAbstractGrid asValueGrid:]", v3, v4);
@@ -518,7 +518,7 @@ LABEL_10:
   return 0;
 }
 
-- (id)deepResolveInPlace:(id)a3
+- (id)deepResolveInPlace:(id)place
 {
   v6 = MEMORY[0x277D81150];
   v7 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSCEAbstractGrid deepResolveInPlace:]", v3, v4);

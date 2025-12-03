@@ -1,9 +1,9 @@
 @interface _NTKLayoutDescriptor
 - (CGRect)crop;
 - (_NTKLayoutDescriptor)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (int64_t)position;
-- (void)setPosition:(int64_t)a3;
+- (void)setPosition:(int64_t)position;
 @end
 
 @implementation _NTKLayoutDescriptor
@@ -26,9 +26,9 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setCrop:{self->_crop.origin.x, self->_crop.origin.y, self->_crop.size.width, self->_crop.size.height}];
   [v4 setBaseline:self->_baseline];
   [v4 setMaskedImageZorder:self->_maskedImageZorder];
@@ -58,10 +58,10 @@
   }
 }
 
-- (void)setPosition:(int64_t)a3
+- (void)setPosition:(int64_t)position
 {
-  v4 = a3 - 1;
-  if ((a3 - 1) > 3)
+  v4 = position - 1;
+  if ((position - 1) > 3)
   {
     v7 = &NTKUltraCubePhotoTimeElementBelowUnitBaseY;
     v6 = 2.0;

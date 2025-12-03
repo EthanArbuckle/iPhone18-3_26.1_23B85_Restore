@@ -1,20 +1,20 @@
 @interface TSPKnownFieldRepeatedNumericValue
-- (TSPKnownFieldRepeatedNumericValue)initWithFieldDescriptor:(const void *)a3 fieldInfo:(const void *)a4 message:(const Message *)a5 reflection:(const Reflection *)a6;
+- (TSPKnownFieldRepeatedNumericValue)initWithFieldDescriptor:(const void *)descriptor fieldInfo:(const void *)info message:(const Message *)message reflection:(const Reflection *)reflection;
 - (id)debugDescription;
-- (id)initSubclassWithFieldDescriptor:(const void *)a3 fieldInfo:(const void *)a4 message:(const Message *)a5 reflection:(const Reflection *)a6;
-- (void)mergeToMessage:(Message *)a3 reflection:(const Reflection *)a4;
+- (id)initSubclassWithFieldDescriptor:(const void *)descriptor fieldInfo:(const void *)info message:(const Message *)message reflection:(const Reflection *)reflection;
+- (void)mergeToMessage:(Message *)message reflection:(const Reflection *)reflection;
 @end
 
 @implementation TSPKnownFieldRepeatedNumericValue
 
-- (TSPKnownFieldRepeatedNumericValue)initWithFieldDescriptor:(const void *)a3 fieldInfo:(const void *)a4 message:(const Message *)a5 reflection:(const Reflection *)a6
+- (TSPKnownFieldRepeatedNumericValue)initWithFieldDescriptor:(const void *)descriptor fieldInfo:(const void *)info message:(const Message *)message reflection:(const Reflection *)reflection
 {
   v76.receiver = self;
   v76.super_class = TSPKnownFieldRepeatedNumericValue;
-  v9 = [TSPKnownField initWithFieldDescriptor:sel_initWithFieldDescriptor_fieldInfo_message_reflection_ fieldInfo:a3 message:a4 reflection:?];
+  v9 = [TSPKnownField initWithFieldDescriptor:sel_initWithFieldDescriptor_fieldInfo_message_reflection_ fieldInfo:descriptor message:info reflection:?];
   if (v9)
   {
-    v10 = google::protobuf::Reflection::FieldSize(a6, a5, a3);
+    v10 = google::protobuf::Reflection::FieldSize(reflection, message, descriptor);
     v11 = objc_alloc(MEMORY[0x277CBEB18]);
     v13 = objc_msgSend_initWithCapacity_(v11, v12, v10);
     values = v9->_values;
@@ -33,7 +33,7 @@
             {
               v40 = v9->_values;
               v41 = MEMORY[0x277CCABB0];
-              RepeatedBool = google::protobuf::Reflection::GetRepeatedBool(a6, a5, a3, i);
+              RepeatedBool = google::protobuf::Reflection::GetRepeatedBool(reflection, message, descriptor, i);
               v44 = objc_msgSend_numberWithBool_(v41, v43, RepeatedBool);
               objc_msgSend_addObject_(v40, v45, v44);
             }
@@ -62,7 +62,7 @@
           {
             v47 = v9->_values;
             v48 = MEMORY[0x277CCABB0];
-            RepeatedDouble = google::protobuf::Reflection::GetRepeatedDouble(a6, a5, a3, j);
+            RepeatedDouble = google::protobuf::Reflection::GetRepeatedDouble(reflection, message, descriptor, j);
             v52 = objc_msgSend_numberWithDouble_(v48, v50, v51, RepeatedDouble);
             objc_msgSend_addObject_(v47, v53, v52);
           }
@@ -76,7 +76,7 @@
         {
           v25 = v9->_values;
           v26 = MEMORY[0x277CCABB0];
-          *&v27 = google::protobuf::Reflection::GetRepeatedFloat(a6, a5, a3, v24);
+          *&v27 = google::protobuf::Reflection::GetRepeatedFloat(reflection, message, descriptor, v24);
           v30 = objc_msgSend_numberWithFloat_(v26, v28, v29, v27);
           objc_msgSend_addObject_(v25, v31, v30);
 
@@ -97,7 +97,7 @@
           {
             v62 = v9->_values;
             v63 = MEMORY[0x277CCABB0];
-            RepeatedUInt32 = google::protobuf::Reflection::GetRepeatedUInt32(a6, a5, a3, k);
+            RepeatedUInt32 = google::protobuf::Reflection::GetRepeatedUInt32(reflection, message, descriptor, k);
             v66 = objc_msgSend_numberWithUnsignedInt_(v63, v65, RepeatedUInt32);
             objc_msgSend_addObject_(v62, v67, v66);
           }
@@ -111,7 +111,7 @@
         {
           v33 = v9->_values;
           v34 = MEMORY[0x277CCABB0];
-          RepeatedUInt64 = google::protobuf::Reflection::GetRepeatedUInt64(a6, a5, a3, v32);
+          RepeatedUInt64 = google::protobuf::Reflection::GetRepeatedUInt64(reflection, message, descriptor, v32);
           v37 = objc_msgSend_numberWithUnsignedLongLong_(v34, v36, RepeatedUInt64);
           objc_msgSend_addObject_(v33, v38, v37);
 
@@ -130,7 +130,7 @@
         {
           v55 = v9->_values;
           v56 = MEMORY[0x277CCABB0];
-          RepeatedInt32 = google::protobuf::Reflection::GetRepeatedInt32(a6, a5, a3, m);
+          RepeatedInt32 = google::protobuf::Reflection::GetRepeatedInt32(reflection, message, descriptor, m);
           v59 = objc_msgSend_numberWithInt_(v56, v58, RepeatedInt32);
           objc_msgSend_addObject_(v55, v60, v59);
         }
@@ -144,7 +144,7 @@
       {
         v18 = v9->_values;
         v19 = MEMORY[0x277CCABB0];
-        RepeatedInt64 = google::protobuf::Reflection::GetRepeatedInt64(a6, a5, a3, v17);
+        RepeatedInt64 = google::protobuf::Reflection::GetRepeatedInt64(reflection, message, descriptor, v17);
         v22 = objc_msgSend_numberWithLongLong_(v19, v21, RepeatedInt64);
         objc_msgSend_addObject_(v18, v23, v22);
 
@@ -158,14 +158,14 @@
   return v9;
 }
 
-- (id)initSubclassWithFieldDescriptor:(const void *)a3 fieldInfo:(const void *)a4 message:(const Message *)a5 reflection:(const Reflection *)a6
+- (id)initSubclassWithFieldDescriptor:(const void *)descriptor fieldInfo:(const void *)info message:(const Message *)message reflection:(const Reflection *)reflection
 {
   v7.receiver = self;
   v7.super_class = TSPKnownFieldRepeatedNumericValue;
-  return [(TSPKnownField *)&v7 initWithFieldDescriptor:a3 fieldInfo:a4 message:a5 reflection:a6];
+  return [(TSPKnownField *)&v7 initWithFieldDescriptor:descriptor fieldInfo:info message:message reflection:reflection];
 }
 
-- (void)mergeToMessage:(Message *)a3 reflection:(const Reflection *)a4
+- (void)mergeToMessage:(Message *)message reflection:(const Reflection *)reflection
 {
   v120 = *MEMORY[0x277D85DE8];
   if (!self->_values)
@@ -175,12 +175,12 @@ LABEL_72:
     return;
   }
 
-  v7 = (*(a3->var0 + 19))(a3, a2);
+  v7 = (*(message->var0 + 19))(message, a2);
   FieldByNumber = google::protobuf::Descriptor::FindFieldByNumber(v7, self->super._number);
-  if (FieldByNumber || (FieldByNumber = google::protobuf::Reflection::FindKnownExtensionByNumber(a4, self->super._number)) != 0)
+  if (FieldByNumber || (FieldByNumber = google::protobuf::Reflection::FindKnownExtensionByNumber(reflection, self->super._number)) != 0)
   {
     v10 = FieldByNumber;
-    google::protobuf::Reflection::ClearField(a4, a3, FieldByNumber);
+    google::protobuf::Reflection::ClearField(reflection, message, FieldByNumber);
     type = self->super._type;
     if (type > 4)
     {
@@ -207,7 +207,7 @@ LABEL_72:
                 }
 
                 v52 = objc_msgSend_BOOLValue(*(*(&v85 + 1) + 8 * i), v47, v48);
-                google::protobuf::Reflection::AddBool(a4, a3, v10, v52);
+                google::protobuf::Reflection::AddBool(reflection, message, v10, v52);
               }
 
               v49 = objc_msgSend_countByEnumeratingWithState_objects_count_(v45, v47, &v85, v113, 16);
@@ -252,7 +252,7 @@ LABEL_72:
               }
 
               objc_msgSend_doubleValue(*(*(&v93 + 1) + 8 * j), v55, v56);
-              google::protobuf::Reflection::AddDouble(a4, a3, v10, v60);
+              google::protobuf::Reflection::AddDouble(reflection, message, v10, v60);
             }
 
             v57 = objc_msgSend_countByEnumeratingWithState_objects_count_(v53, v55, &v93, v115, 16);
@@ -283,7 +283,7 @@ LABEL_72:
               }
 
               objc_msgSend_floatValue(*(*(&v89 + 1) + 8 * k), v22, v23);
-              google::protobuf::Reflection::AddFloat(a4, a3, v10, v27);
+              google::protobuf::Reflection::AddFloat(reflection, message, v10, v27);
             }
 
             v24 = objc_msgSend_countByEnumeratingWithState_objects_count_(v20, v22, &v89, v114, 16);
@@ -317,7 +317,7 @@ LABEL_72:
               }
 
               v76 = objc_msgSend_unsignedIntValue(*(*(&v101 + 1) + 8 * m), v71, v72);
-              google::protobuf::Reflection::AddUInt32(a4, a3, v10, v76);
+              google::protobuf::Reflection::AddUInt32(reflection, message, v10, v76);
             }
 
             v73 = objc_msgSend_countByEnumeratingWithState_objects_count_(v69, v71, &v101, v117, 16);
@@ -348,7 +348,7 @@ LABEL_72:
               }
 
               v35 = objc_msgSend_unsignedLongLongValue(*(*(&v97 + 1) + 8 * n), v30, v31);
-              google::protobuf::Reflection::AddUInt64(a4, a3, v10, v35);
+              google::protobuf::Reflection::AddUInt64(reflection, message, v10, v35);
             }
 
             v32 = objc_msgSend_countByEnumeratingWithState_objects_count_(v28, v30, &v97, v116, 16);
@@ -380,7 +380,7 @@ LABEL_72:
             }
 
             v68 = objc_msgSend_intValue(*(*(&v109 + 1) + 8 * ii), v63, v64);
-            google::protobuf::Reflection::AddInt32(a4, a3, v10, v68);
+            google::protobuf::Reflection::AddInt32(reflection, message, v10, v68);
           }
 
           v65 = objc_msgSend_countByEnumeratingWithState_objects_count_(v61, v63, &v109, v119, 16);
@@ -411,7 +411,7 @@ LABEL_72:
             }
 
             v19 = objc_msgSend_longLongValue(*(*(&v105 + 1) + 8 * jj), v14, v15);
-            google::protobuf::Reflection::AddInt64(a4, a3, v10, v19);
+            google::protobuf::Reflection::AddInt64(reflection, message, v10, v19);
           }
 
           v16 = objc_msgSend_countByEnumeratingWithState_objects_count_(v12, v14, &v105, v118, 16);

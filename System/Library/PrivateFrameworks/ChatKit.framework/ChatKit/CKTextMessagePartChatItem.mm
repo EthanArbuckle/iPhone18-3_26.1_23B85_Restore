@@ -4,9 +4,9 @@
 - (BOOL)allowsMentions;
 - (BOOL)containsExcessiveLineHeightCharacters;
 - (BOOL)containsHyperlink;
-- (BOOL)isRecentForTextEffectCoordinationWithinTimeInterval:(double)a3;
+- (BOOL)isRecentForTextEffectCoordinationWithinTimeInterval:(double)interval;
 - (BOOL)isShowingEditHistory;
-- (BOOL)mentionsMe:(id)a3;
+- (BOOL)mentionsMe:(id)me;
 - (BOOL)showMoneyResults;
 - (BOOL)showTranslationAlternateText;
 - (Class)balloonViewClass;
@@ -19,19 +19,19 @@
 - (NSOrderedSet)transferGUIDsInMessagePartText;
 - (UIEdgeInsets)stickerReactionInsets;
 - (double)ageForTextEffectCoordination;
-- (id)_attributedTextWithTextColor:(id)a3;
-- (id)_fallbackCorruptMessageTextWithTextColor:(id)a3;
+- (id)_attributedTextWithTextColor:(id)color;
+- (id)_fallbackCorruptMessageTextWithTextColor:(id)color;
 - (id)_time;
 - (id)bodyTextFont;
 - (id)bodyTranslationSecondaryTextFont;
-- (id)compositionWithContext:(id)a3;
+- (id)compositionWithContext:(id)context;
 - (id)dragItemProvider;
 - (id)loadAlternateTranscriptText;
 - (id)loadTranscriptText;
 - (id)meMentionsTextColor;
-- (id)mediaObjectForTransferGUID:(id)a3;
+- (id)mediaObjectForTransferGUID:(id)d;
 - (id)mediaObjectsInMessagePartText;
-- (id)rtfDocumentItemsWithFormatString:(id)a3 selectedTextRange:(_NSRange)a4;
+- (id)rtfDocumentItemsWithFormatString:(id)string selectedTextRange:(_NSRange)range;
 - (id)sizeCacheUniquenessValue;
 - (id)time;
 - (int64_t)bigEmojiStyle;
@@ -42,23 +42,23 @@
 
 - (id)loadTranscriptText
 {
-  v3 = [(CKTextMessagePartChatItem *)self bigEmojiStyle];
-  if ((v3 - 1) < 3)
+  bigEmojiStyle = [(CKTextMessagePartChatItem *)self bigEmojiStyle];
+  if ((bigEmojiStyle - 1) < 3)
   {
     v4 = +[CKUIBehavior sharedBehaviors];
-    v5 = [v4 theme];
-    v6 = [v5 transcriptBigEmojiColor];
+    theme = [v4 theme];
+    transcriptBigEmojiColor = [theme transcriptBigEmojiColor];
 LABEL_5:
-    v7 = v6;
+    v7 = transcriptBigEmojiColor;
 
     goto LABEL_6;
   }
 
-  if (!v3)
+  if (!bigEmojiStyle)
   {
     v4 = +[CKUIBehavior sharedBehaviors];
-    v5 = [v4 theme];
-    v6 = [v5 balloonTextColorInPrintingPathForColorType:{-[CKMessagePartChatItem color](self, "color")}];
+    theme = [v4 theme];
+    transcriptBigEmojiColor = [theme balloonTextColorInPrintingPathForColorType:{-[CKMessagePartChatItem color](self, "color")}];
     goto LABEL_5;
   }
 
@@ -81,10 +81,10 @@ LABEL_6:
 - (id)loadAlternateTranscriptText
 {
   v47[4] = *MEMORY[0x1E69E9840];
-  v3 = [(CKTextMessagePartChatItem *)self translationSecondaryText];
-  v4 = [v3 mutableCopy];
+  translationSecondaryText = [(CKTextMessagePartChatItem *)self translationSecondaryText];
+  v4 = [translationSecondaryText mutableCopy];
 
-  v5 = [(CKTextMessagePartChatItem *)self bodyTranslationSecondaryTextFont];
+  bodyTranslationSecondaryTextFont = [(CKTextMessagePartChatItem *)self bodyTranslationSecondaryTextFont];
   if (v4)
   {
     v6 = [v4 length];
@@ -95,16 +95,16 @@ LABEL_6:
     v41[3] = &unk_1E72F11F0;
     v8 = v4;
     v42 = v8;
-    v43 = v5;
-    v44 = self;
+    v43 = bodyTranslationSecondaryTextFont;
+    selfCopy = self;
     [v8 enumerateAttribute:v7 inRange:0 options:v6 usingBlock:{0, v41}];
-    v9 = [(CKTextMessagePartChatItem *)self translationSecondaryText];
-    v10 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-    v11 = [v10 isExpressiveTextEnabled];
+    translationSecondaryText2 = [(CKTextMessagePartChatItem *)self translationSecondaryText];
+    mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+    isExpressiveTextEnabled = [mEMORY[0x1E69A8070] isExpressiveTextEnabled];
 
-    if (v11)
+    if (isExpressiveTextEnabled)
     {
-      v28 = v5;
+      v28 = bodyTranslationSecondaryTextFont;
       v29 = v4;
       v12 = *MEMORY[0x1E69A7CF8];
       v39[0] = MEMORY[0x1E69E9820];
@@ -113,7 +113,7 @@ LABEL_6:
       v39[3] = &unk_1E72EF890;
       v31 = v8;
       v40 = v31;
-      [v9 enumerateAttribute:v12 inRange:0 options:v6 usingBlock:{0, v39}];
+      [translationSecondaryText2 enumerateAttribute:v12 inRange:0 options:v6 usingBlock:{0, v39}];
       v13 = *MEMORY[0x1E69A7CF0];
       v46[0] = *MEMORY[0x1E69A7D00];
       v46[1] = v13;
@@ -139,7 +139,7 @@ LABEL_6:
         {
           for (i = 0; i != v17; ++i)
           {
-            v20 = v9;
+            v20 = translationSecondaryText2;
             v21 = v6;
             if (*v36 != v18)
             {
@@ -148,15 +148,15 @@ LABEL_6:
 
             v22 = *(*(&v35 + 1) + 8 * i);
             v23 = [v15 objectForKeyedSubscript:{v22, v28, v29}];
-            v24 = [v23 integerValue];
+            integerValue = [v23 integerValue];
 
             v32[0] = MEMORY[0x1E69E9820];
             v32[1] = 3221225472;
             v32[2] = __56__CKTextMessagePartChatItem_loadAlternateTranscriptText__block_invoke_226;
             v32[3] = &unk_1E72F1218;
             v33 = v31;
-            v34 = v24;
-            v9 = v20;
+            v34 = integerValue;
+            translationSecondaryText2 = v20;
             v25 = v22;
             v6 = v21;
             [v20 enumerateAttribute:v25 inRange:0 options:v21 usingBlock:{0, v32}];
@@ -168,7 +168,7 @@ LABEL_6:
         while (v17);
       }
 
-      v5 = v28;
+      bodyTranslationSecondaryTextFont = v28;
       v4 = v29;
     }
   }
@@ -229,38 +229,38 @@ void __56__CKTextMessagePartChatItem_loadAlternateTranscriptText__block_invoke_2
 
 - (id)sizeCacheUniquenessValue
 {
-  v3 = [(CKChatItem *)self IMChatItem];
-  v4 = [v3 numberOfPreviousEdits];
-  v5 = [MEMORY[0x1E696AD60] string];
-  if (v4 >= 1)
+  iMChatItem = [(CKChatItem *)self IMChatItem];
+  numberOfPreviousEdits = [iMChatItem numberOfPreviousEdits];
+  string = [MEMORY[0x1E696AD60] string];
+  if (numberOfPreviousEdits >= 1)
   {
-    v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%ld", v4];
-    [v5 appendString:v6];
+    v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%ld", numberOfPreviousEdits];
+    [string appendString:v6];
   }
 
-  if ([v3 showTranslationAlternateText])
+  if ([iMChatItem showTranslationAlternateText])
   {
     v12.receiver = self;
     v12.super_class = CKTextMessagePartChatItem;
-    v7 = [(CKChatItem *)&v12 sizeCacheUniquenessValue];
-    [v5 appendString:v7];
+    sizeCacheUniquenessValue = [(CKChatItem *)&v12 sizeCacheUniquenessValue];
+    [string appendString:sizeCacheUniquenessValue];
 
-    [v5 appendString:@"show-translation"];
+    [string appendString:@"show-translation"];
   }
 
-  if ([v5 length])
+  if ([string length])
   {
-    v8 = [v5 copy];
+    sizeCacheUniquenessValue2 = [string copy];
   }
 
   else
   {
     v11.receiver = self;
     v11.super_class = CKTextMessagePartChatItem;
-    v8 = [(CKChatItem *)&v11 sizeCacheUniquenessValue];
+    sizeCacheUniquenessValue2 = [(CKChatItem *)&v11 sizeCacheUniquenessValue];
   }
 
-  v9 = v8;
+  v9 = sizeCacheUniquenessValue2;
 
   return v9;
 }
@@ -278,24 +278,24 @@ void __56__CKTextMessagePartChatItem_loadAlternateTranscriptText__block_invoke_2
 
 - (BOOL)showTranslationAlternateText
 {
-  v2 = [(CKChatItem *)self IMChatItem];
-  v3 = [v2 showTranslationAlternateText];
+  iMChatItem = [(CKChatItem *)self IMChatItem];
+  showTranslationAlternateText = [iMChatItem showTranslationAlternateText];
 
-  return v3;
+  return showTranslationAlternateText;
 }
 
 - (BOOL)showMoneyResults
 {
   v3 = MEMORY[0x1E69A7FD0];
-  v4 = [(CKMessagePartChatItem *)self sender];
-  v5 = [v4 cnContactWithKeys:MEMORY[0x1E695E0F0]];
+  sender = [(CKMessagePartChatItem *)self sender];
+  v5 = [sender cnContactWithKeys:MEMORY[0x1E695E0F0]];
   v6 = [v3 isCNContactAKnownContact:v5];
 
   if (CKShouldShowSURF())
   {
-    v7 = [(CKMessagePartChatItem *)self message];
-    v8 = [v7 __ck_service];
-    v9 = ([v8 __ck_isSMS] ^ 1) & v6;
+    message = [(CKMessagePartChatItem *)self message];
+    __ck_service = [message __ck_service];
+    v9 = ([__ck_service __ck_isSMS] ^ 1) & v6;
   }
 
   else
@@ -306,9 +306,9 @@ void __56__CKTextMessagePartChatItem_loadAlternateTranscriptText__block_invoke_2
   return v9;
 }
 
-- (id)_fallbackCorruptMessageTextWithTextColor:(id)a3
+- (id)_fallbackCorruptMessageTextWithTextColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   v5 = objc_alloc(MEMORY[0x1E696AD40]);
   v6 = CKFrameworkBundle();
   v7 = [v6 localizedStringForKey:@"CORRUPT_MESSAGE_FALLBACK_TEXT" value:&stru_1F04268F8 table:@"ChatKit"];
@@ -316,12 +316,12 @@ void __56__CKTextMessagePartChatItem_loadAlternateTranscriptText__block_invoke_2
 
   v9 = [v8 length];
   v10 = *MEMORY[0x1E69DB648];
-  v11 = [(CKTextMessagePartChatItem *)self bodyTextFont];
-  [v8 addAttribute:v10 value:v11 range:{0, v9}];
+  bodyTextFont = [(CKTextMessagePartChatItem *)self bodyTextFont];
+  [v8 addAttribute:v10 value:bodyTextFont range:{0, v9}];
 
-  if (v4)
+  if (colorCopy)
   {
-    [v8 addAttribute:*MEMORY[0x1E69DB650] value:v4 range:{0, v9}];
+    [v8 addAttribute:*MEMORY[0x1E69DB650] value:colorCopy range:{0, v9}];
   }
 
   else if (IMOSLoggingEnabled())
@@ -337,13 +337,13 @@ void __56__CKTextMessagePartChatItem_loadAlternateTranscriptText__block_invoke_2
   return v8;
 }
 
-- (id)_attributedTextWithTextColor:(id)a3
+- (id)_attributedTextWithTextColor:(id)color
 {
   v181[6] = *MEMORY[0x1E69E9840];
-  v123 = a3;
-  v125 = [(CKTextMessagePartChatItem *)self subject];
-  v4 = [v125 string];
-  v5 = [v4 length];
+  colorCopy = color;
+  subject = [(CKTextMessagePartChatItem *)self subject];
+  string = [subject string];
+  v5 = [string length];
   LODWORD(v6) = v5 != 0;
   if (!v5)
   {
@@ -352,15 +352,15 @@ void __56__CKTextMessagePartChatItem_loadAlternateTranscriptText__block_invoke_2
   }
 
   v7 = objc_alloc(MEMORY[0x1E696AD40]);
-  v8 = [v125 string];
-  v6 = [v7 initWithString:v8];
+  string2 = [subject string];
+  v6 = [v7 initWithString:string2];
 
   v124 = v6;
   if (v6)
   {
-    v4 = +[CKUIBehavior sharedBehaviors];
-    v9 = [v4 balloonSubjectFont];
-    [v6 addAttribute:*MEMORY[0x1E69DB648] value:v9 range:{0, objc_msgSend(v6, "length")}];
+    string = +[CKUIBehavior sharedBehaviors];
+    balloonSubjectFont = [string balloonSubjectFont];
+    [v6 addAttribute:*MEMORY[0x1E69DB648] value:balloonSubjectFont range:{0, objc_msgSend(v6, "length")}];
 
     LODWORD(v6) = 1;
 LABEL_5:
@@ -374,19 +374,19 @@ LABEL_7:
   v168 = &v167;
   v169 = 0x2020000000;
   v170 = 0;
-  v10 = [(CKTextMessagePartChatItem *)self containsHyperlink];
+  containsHyperlink = [(CKTextMessagePartChatItem *)self containsHyperlink];
   v163 = 0;
   v164 = &v163;
   v165 = 0x2020000000;
   v166 = 0;
-  v11 = [(CKTextMessagePartChatItem *)self text];
-  v12 = [v11 string];
+  text = [(CKTextMessagePartChatItem *)self text];
+  string3 = [text string];
   v121 = v6;
-  if ([v12 length])
+  if ([string3 length])
   {
     v13 = objc_alloc(MEMORY[0x1E696AD40]);
-    v14 = [v11 string];
-    v15 = [v13 initWithString:v14];
+    string4 = [text string];
+    v15 = [v13 initWithString:string4];
   }
 
   else
@@ -395,47 +395,47 @@ LABEL_7:
   }
 
   v122 = +[CKUIBehavior sharedBehaviors];
-  v16 = [(CKTextMessagePartChatItem *)self bigEmojiStyle];
-  v126 = 0;
-  if (v16 > 1)
+  bigEmojiStyle = [(CKTextMessagePartChatItem *)self bigEmojiStyle];
+  multipleBigEmojiFont = 0;
+  if (bigEmojiStyle > 1)
   {
-    if (v16 == 2)
+    if (bigEmojiStyle == 2)
     {
-      v126 = [v122 multipleBigEmojiFont];
+      multipleBigEmojiFont = [v122 multipleBigEmojiFont];
     }
 
-    else if (v16 == 3)
+    else if (bigEmojiStyle == 3)
     {
-      v126 = [v122 singleBigAssetFont];
+      multipleBigEmojiFont = [v122 singleBigAssetFont];
     }
   }
 
-  else if (v16)
+  else if (bigEmojiStyle)
   {
-    if (v16 == 1)
+    if (bigEmojiStyle == 1)
     {
-      v126 = [v122 singleBigEmojiFont];
+      multipleBigEmojiFont = [v122 singleBigEmojiFont];
     }
   }
 
   else
   {
-    v126 = [(CKTextMessagePartChatItem *)self bodyTextFont];
+    multipleBigEmojiFont = [(CKTextMessagePartChatItem *)self bodyTextFont];
   }
 
-  v17 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v18 = [v17 isExpressiveTextEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isExpressiveTextEnabled = [mEMORY[0x1E69A8070] isExpressiveTextEnabled];
 
-  if (v18)
+  if (isExpressiveTextEnabled)
   {
     v19 = [v15 length];
-    [v15 addAttribute:*MEMORY[0x1E69DB648] value:v126 range:{0, v19}];
+    [v15 addAttribute:*MEMORY[0x1E69DB648] value:multipleBigEmojiFont range:{0, v19}];
   }
 
   if (v15)
   {
     v20 = [v15 length];
-    if (!v10)
+    if (!containsHyperlink)
     {
       goto LABEL_52;
     }
@@ -447,15 +447,15 @@ LABEL_7:
     v161 = &v167;
     v21 = v15;
     v159 = v21;
-    v160 = self;
+    selfCopy = self;
     v162 = &v163;
-    [v11 enumerateAttribute:@"DDResultAttributeName" inRange:0 options:v20 usingBlock:{0, v158}];
+    [text enumerateAttribute:@"DDResultAttributeName" inRange:0 options:v20 usingBlock:{0, v158}];
     *v152 = 0;
     v153 = v152;
     v154 = 0x3032000000;
     v155 = __Block_byref_object_copy__27;
     v156 = __Block_byref_object_dispose__27;
-    v157 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v22 = *MEMORY[0x1E69A6000];
     v151[0] = MEMORY[0x1E69E9820];
     v151[1] = 3221225472;
@@ -463,7 +463,7 @@ LABEL_7:
     v151[3] = &unk_1E72F1268;
     v151[4] = &v167;
     v151[5] = v152;
-    [v11 enumerateAttribute:v22 inRange:0 options:v20 usingBlock:{0, v151}];
+    [text enumerateAttribute:v22 inRange:0 options:v20 usingBlock:{0, v151}];
     if (*(v168 + 24) != 1)
     {
 LABEL_51:
@@ -473,19 +473,19 @@ LABEL_51:
       v149[2] = __58__CKTextMessagePartChatItem__attributedTextWithTextColor___block_invoke_257;
       v149[3] = &unk_1E72EF890;
       v150 = v21;
-      [v11 enumerateAttribute:v53 inRange:0 options:v20 usingBlock:{0, v149}];
+      [text enumerateAttribute:v53 inRange:0 options:v20 usingBlock:{0, v149}];
 
       _Block_object_dispose(v152, 8);
 LABEL_52:
-      v54 = [MEMORY[0x1E69A5B80] sharedInstance];
-      v55 = [MEMORY[0x1E69A7FC8] sharedManager];
-      v56 = [v55 isFeatureEnabled];
+      mEMORY[0x1E69A5B80] = [MEMORY[0x1E69A5B80] sharedInstance];
+      mEMORY[0x1E69A7FC8] = [MEMORY[0x1E69A7FC8] sharedManager];
+      isFeatureEnabled = [mEMORY[0x1E69A7FC8] isFeatureEnabled];
 
       aBlock[0] = MEMORY[0x1E69E9820];
       aBlock[1] = 3221225472;
       aBlock[2] = __58__CKTextMessagePartChatItem__attributedTextWithTextColor___block_invoke_2;
       aBlock[3] = &unk_1E72EBF70;
-      v57 = v54;
+      v57 = mEMORY[0x1E69A5B80];
       v148 = v57;
       v58 = _Block_copy(aBlock);
       v143[0] = MEMORY[0x1E69E9820];
@@ -493,11 +493,11 @@ LABEL_52:
       v143[2] = __58__CKTextMessagePartChatItem__attributedTextWithTextColor___block_invoke_3;
       v143[3] = &unk_1E72F1290;
       v143[4] = self;
-      v146 = v56;
+      v146 = isFeatureEnabled;
       v59 = v15;
       v144 = v59;
-      v145 = v126;
-      [v11 __im_enumerateAdaptiveImageGlyphFileTransfersUsingFileTransferProvider:v58 block:v143];
+      v145 = multipleBigEmojiFont;
+      [text __im_enumerateAdaptiveImageGlyphFileTransfersUsingFileTransferProvider:v58 block:v143];
       if ([(CKTextMessagePartChatItem *)self allowsMentions])
       {
         v60 = *MEMORY[0x1E69A70F8];
@@ -506,13 +506,13 @@ LABEL_52:
         v141[2] = __58__CKTextMessagePartChatItem__attributedTextWithTextColor___block_invoke_270;
         v141[3] = &unk_1E72EF890;
         v142 = v59;
-        [v11 enumerateAttribute:v60 inRange:0 options:v20 usingBlock:{0, v141}];
+        [text enumerateAttribute:v60 inRange:0 options:v20 usingBlock:{0, v141}];
       }
 
-      v61 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-      v62 = [v61 isExpressiveTextEnabled];
+      mEMORY[0x1E69A8070]2 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+      isExpressiveTextEnabled2 = [mEMORY[0x1E69A8070]2 isExpressiveTextEnabled];
 
-      if (v62)
+      if (isExpressiveTextEnabled2)
       {
         v63 = *MEMORY[0x1E69A7CF8];
         v139[0] = MEMORY[0x1E69E9820];
@@ -521,7 +521,7 @@ LABEL_52:
         v139[3] = &unk_1E72EF890;
         v64 = v59;
         v140 = v64;
-        [v11 enumerateAttribute:v63 inRange:0 options:v20 usingBlock:{0, v139}];
+        [text enumerateAttribute:v63 inRange:0 options:v20 usingBlock:{0, v139}];
         v65 = *MEMORY[0x1E69A7D08];
         v137[0] = MEMORY[0x1E69E9820];
         v137[1] = 3221225472;
@@ -529,7 +529,7 @@ LABEL_52:
         v137[3] = &unk_1E72EF890;
         v66 = v64;
         v138 = v66;
-        [v11 enumerateAttribute:v65 inRange:0 options:v20 usingBlock:{0, v137}];
+        [text enumerateAttribute:v65 inRange:0 options:v20 usingBlock:{0, v137}];
         v67 = *MEMORY[0x1E69A7D18];
         v135[0] = MEMORY[0x1E69E9820];
         v135[1] = 3221225472;
@@ -537,7 +537,7 @@ LABEL_52:
         v135[3] = &unk_1E72EF890;
         v68 = v66;
         v136 = v68;
-        [v11 enumerateAttribute:v67 inRange:0 options:v20 usingBlock:{0, v135}];
+        [text enumerateAttribute:v67 inRange:0 options:v20 usingBlock:{0, v135}];
         v69 = *MEMORY[0x1E69A7CF0];
         v133[0] = MEMORY[0x1E69E9820];
         v133[1] = 3221225472;
@@ -545,66 +545,66 @@ LABEL_52:
         v133[3] = &unk_1E72EF890;
         v70 = v68;
         v134 = v70;
-        [v11 enumerateAttribute:v69 inRange:0 options:v20 usingBlock:{0, v133}];
+        [text enumerateAttribute:v69 inRange:0 options:v20 usingBlock:{0, v133}];
         v71 = *MEMORY[0x1E69A7D00];
         v131[0] = MEMORY[0x1E69E9820];
         v131[1] = 3221225472;
         v131[2] = __58__CKTextMessagePartChatItem__attributedTextWithTextColor___block_invoke_6;
         v131[3] = &unk_1E72EF890;
         v132 = v70;
-        [v11 enumerateAttribute:v71 inRange:0 options:v20 usingBlock:{0, v131}];
+        [text enumerateAttribute:v71 inRange:0 options:v20 usingBlock:{0, v131}];
 
         v72 = v140;
         goto LABEL_67;
       }
 
       v72 = +[CKUIBehavior sharedBehaviors];
-      v73 = [(CKTextMessagePartChatItem *)self bigEmojiStyle];
+      bigEmojiStyle2 = [(CKTextMessagePartChatItem *)self bigEmojiStyle];
       v74 = 0;
-      if (v73 > 1)
+      if (bigEmojiStyle2 > 1)
       {
-        if (v73 == 2)
+        if (bigEmojiStyle2 == 2)
         {
-          v75 = [v72 multipleBigEmojiFont];
+          multipleBigEmojiFont2 = [v72 multipleBigEmojiFont];
           goto LABEL_65;
         }
 
-        if (v73 == 3)
+        if (bigEmojiStyle2 == 3)
         {
-          v75 = [v72 singleBigAssetFont];
+          multipleBigEmojiFont2 = [v72 singleBigAssetFont];
           goto LABEL_65;
         }
       }
 
       else
       {
-        if (!v73)
+        if (!bigEmojiStyle2)
         {
-          v75 = [(CKTextMessagePartChatItem *)self bodyTextFont];
+          multipleBigEmojiFont2 = [(CKTextMessagePartChatItem *)self bodyTextFont];
           goto LABEL_65;
         }
 
-        if (v73 == 1)
+        if (bigEmojiStyle2 == 1)
         {
-          v75 = [v72 singleBigEmojiFont];
+          multipleBigEmojiFont2 = [v72 singleBigEmojiFont];
 LABEL_65:
-          v74 = v75;
+          v74 = multipleBigEmojiFont2;
         }
       }
 
       [v59 addAttribute:*MEMORY[0x1E69DB648] value:v74 range:{0, v20}];
 
 LABEL_67:
-      v76 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-      v77 = [v76 stewieEnabled];
+      mEMORY[0x1E69A8070]3 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+      stewieEnabled = [mEMORY[0x1E69A8070]3 stewieEnabled];
 
-      if (v77)
+      if (stewieEnabled)
       {
-        v78 = [(CKMessagePartChatItem *)self message];
-        v79 = [v78 subject];
-        v80 = [v79 isStewie];
+        message = [(CKMessagePartChatItem *)self message];
+        subject2 = [message subject];
+        isStewie = [subject2 isStewie];
 
-        if (v80)
+        if (isStewie)
         {
           v81 = *MEMORY[0x1E69A68A8];
           v129[0] = MEMORY[0x1E69E9820];
@@ -612,25 +612,25 @@ LABEL_67:
           v129[2] = __58__CKTextMessagePartChatItem__attributedTextWithTextColor___block_invoke_7;
           v129[3] = &unk_1E72EF890;
           v130 = v59;
-          [v11 enumerateAttribute:v81 inRange:0 options:v20 usingBlock:{0, v129}];
+          [text enumerateAttribute:v81 inRange:0 options:v20 usingBlock:{0, v129}];
         }
       }
 
       goto LABEL_71;
     }
 
-    v120 = [(CKMessagePartChatItem *)self message];
-    v23 = [v120 sender];
-    v119 = [v23 ID];
+    message2 = [(CKMessagePartChatItem *)self message];
+    sender = [message2 sender];
+    v119 = [sender ID];
 
-    v24 = [(CKTextMessagePartChatItem *)self _time];
-    v25 = [v120 guid];
-    v26 = v25;
-    v118 = v24;
-    if (v24 && v25 && *(v153 + 5))
+    _time = [(CKTextMessagePartChatItem *)self _time];
+    guid = [message2 guid];
+    v26 = guid;
+    v118 = _time;
+    if (_time && guid && *(v153 + 5))
     {
       v27 = MEMORY[0x1E695DFF8];
-      v117 = v25;
+      v117 = guid;
       v28 = [MEMORY[0x1E69A7FE8] referenceURLForMessageGUID:?];
       v116 = [v27 URLWithString:v28];
 
@@ -797,48 +797,48 @@ LABEL_50:
                   goto LABEL_51;
                 }
 
-                v108 = [MEMORY[0x1E696AAA8] currentHandler];
+                currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
                 v109 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getkDataDetectorsCoreRecentsMetadataDictionaryKey(void)"];
-                [v108 handleFailureInFunction:v109 file:@"CKTextMessagePartChatItem.m" lineNumber:75 description:{@"%s", dlerror()}];
+                [currentHandler handleFailureInFunction:v109 file:@"CKTextMessagePartChatItem.m" lineNumber:75 description:{@"%s", dlerror()}];
               }
 
               else
               {
-                v106 = [MEMORY[0x1E696AAA8] currentHandler];
+                currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
                 v107 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getkDataDetectorsCustomActionRangesKey(void)"];
-                [v106 handleFailureInFunction:v107 file:@"CKTextMessagePartChatItem.m" lineNumber:73 description:{@"%s", dlerror()}];
+                [currentHandler2 handleFailureInFunction:v107 file:@"CKTextMessagePartChatItem.m" lineNumber:73 description:{@"%s", dlerror()}];
               }
             }
 
             else
             {
-              v104 = [MEMORY[0x1E696AAA8] currentHandler];
+              currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
               v105 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getkDataDetectorsIncludeMoney(void)"];
-              [v104 handleFailureInFunction:v105 file:@"CKTextMessagePartChatItem.m" lineNumber:71 description:{@"%s", dlerror()}];
+              [currentHandler3 handleFailureInFunction:v105 file:@"CKTextMessagePartChatItem.m" lineNumber:71 description:{@"%s", dlerror()}];
             }
           }
 
           else
           {
-            v102 = [MEMORY[0x1E696AAA8] currentHandler];
+            currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
             v103 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getkDataDetectorsCoreSpotlightUniqueIdentifier(void)"];
-            [v102 handleFailureInFunction:v103 file:@"CKTextMessagePartChatItem.m" lineNumber:69 description:{@"%s", dlerror()}];
+            [currentHandler4 handleFailureInFunction:v103 file:@"CKTextMessagePartChatItem.m" lineNumber:69 description:{@"%s", dlerror()}];
           }
         }
 
         else
         {
-          v100 = [MEMORY[0x1E696AAA8] currentHandler];
+          currentHandler5 = [MEMORY[0x1E696AAA8] currentHandler];
           v101 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getkDataDetectorsSpecialURLKey(void)"];
-          [v100 handleFailureInFunction:v101 file:@"CKTextMessagePartChatItem.m" lineNumber:67 description:{@"%s", dlerror()}];
+          [currentHandler5 handleFailureInFunction:v101 file:@"CKTextMessagePartChatItem.m" lineNumber:67 description:{@"%s", dlerror()}];
         }
       }
 
       else
       {
-        v98 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler6 = [MEMORY[0x1E696AAA8] currentHandler];
         v99 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getkDataDetectorsReferenceDateKey(void)"];
-        [v98 handleFailureInFunction:v99 file:@"CKTextMessagePartChatItem.m" lineNumber:65 description:{@"%s", dlerror()}];
+        [currentHandler6 handleFailureInFunction:v99 file:@"CKTextMessagePartChatItem.m" lineNumber:65 description:{@"%s", dlerror()}];
       }
 
       __break(1u);
@@ -859,12 +859,12 @@ LABEL_50:
 
 LABEL_71:
   v82 = +[CKUIBehavior sharedBehaviors];
-  v83 = [v82 hyphenatesTextContent];
+  hyphenatesTextContent = [v82 hyphenatesTextContent];
 
-  if (v83)
+  if (hyphenatesTextContent)
   {
-    v84 = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
-    v85 = [v84 mutableCopy];
+    defaultParagraphStyle = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
+    v85 = [defaultParagraphStyle mutableCopy];
 
     LODWORD(v86) = 1.0;
     [v85 setHyphenationFactor:v86];
@@ -907,10 +907,10 @@ LABEL_71:
     }
   }
 
-  if (v123)
+  if (colorCopy)
   {
     v93 = [v89 length];
-    [v89 addAttribute:*MEMORY[0x1E69DB650] value:v123 range:{0, v93}];
+    [v89 addAttribute:*MEMORY[0x1E69DB650] value:colorCopy range:{0, v93}];
   }
 
   else if (IMOSLoggingEnabled())
@@ -1206,11 +1206,11 @@ void __58__CKTextMessagePartChatItem__attributedTextWithTextColor___block_invoke
 
 - (NSOrderedSet)transferGUIDsInMessagePartText
 {
-  v2 = [(CKTextMessagePartChatItem *)self text];
-  v3 = v2;
-  if (v2)
+  text = [(CKTextMessagePartChatItem *)self text];
+  v3 = text;
+  if (text)
   {
-    [v2 __im_transferGUIDsInAttributedString];
+    [text __im_transferGUIDsInAttributedString];
   }
 
   else
@@ -1222,20 +1222,20 @@ void __58__CKTextMessagePartChatItem__attributedTextWithTextColor___block_invoke
   return v4;
 }
 
-- (id)mediaObjectForTransferGUID:(id)a3
+- (id)mediaObjectForTransferGUID:(id)d
 {
-  v4 = a3;
-  v5 = [(CKChatItem *)self IMChatItem];
-  v6 = [v5 chatContext];
-  v7 = [v5 message];
+  dCopy = d;
+  iMChatItem = [(CKChatItem *)self IMChatItem];
+  chatContext = [iMChatItem chatContext];
+  message = [iMChatItem message];
   v8 = +[CKMediaObjectManager sharedInstance];
-  v9 = [v8 mediaObjectWithTransferGUID:v4 imMessage:v7 chatContext:v6];
+  v9 = [v8 mediaObjectWithTransferGUID:dCopy imMessage:message chatContext:chatContext];
   if (v9)
   {
-    v10 = [v5 time];
-    if (v10)
+    time = [iMChatItem time];
+    if (time)
     {
-      [v9 setTime:v10];
+      [v9 setTime:time];
     }
 
     v11 = v9;
@@ -1243,10 +1243,10 @@ void __58__CKTextMessagePartChatItem__attributedTextWithTextColor___block_invoke
 
   else
   {
-    v10 = IMLogHandleForCategory();
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    time = IMLogHandleForCategory();
+    if (os_log_type_enabled(time, OS_LOG_TYPE_ERROR))
     {
-      [(CKTextMessagePartChatItem *)v4 mediaObjectForTransferGUID:v10];
+      [(CKTextMessagePartChatItem *)dCopy mediaObjectForTransferGUID:time];
     }
   }
 
@@ -1256,13 +1256,13 @@ void __58__CKTextMessagePartChatItem__attributedTextWithTextColor___block_invoke
 - (id)mediaObjectsInMessagePartText
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = [(CKTextMessagePartChatItem *)self transferGUIDsInMessagePartText];
+  transferGUIDsInMessagePartText = [(CKTextMessagePartChatItem *)self transferGUIDsInMessagePartText];
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = v3;
+  v5 = transferGUIDsInMessagePartText;
   v6 = [v5 countByEnumeratingWithState:&v17 objects:v23 count:16];
   if (v6)
   {
@@ -1312,13 +1312,13 @@ void __58__CKTextMessagePartChatItem__attributedTextWithTextColor___block_invoke
 - (NSArray)emojiImageMediaObjectsInMessagePartText
 {
   v17 = *MEMORY[0x1E69E9840];
-  v2 = [(CKTextMessagePartChatItem *)self mediaObjectsInMessagePartText];
+  mediaObjectsInMessagePartText = [(CKTextMessagePartChatItem *)self mediaObjectsInMessagePartText];
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = v2;
+  v4 = mediaObjectsInMessagePartText;
   v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
@@ -1352,82 +1352,82 @@ void __58__CKTextMessagePartChatItem__attributedTextWithTextColor___block_invoke
   return v10;
 }
 
-- (BOOL)mentionsMe:(id)a3
+- (BOOL)mentionsMe:(id)me
 {
   v3 = MEMORY[0x1E69A5A80];
-  v4 = a3;
-  v5 = [v3 sharedInstance];
-  v6 = [v5 metionedHandleMatchesMeCard:v4];
+  meCopy = me;
+  sharedInstance = [v3 sharedInstance];
+  v6 = [sharedInstance metionedHandleMatchesMeCard:meCopy];
 
   return v6;
 }
 
 - (BOOL)allowsMentions
 {
-  v2 = [(CKChatItem *)self IMChatItem];
-  if ([v2 isBusiness])
+  iMChatItem = [(CKChatItem *)self IMChatItem];
+  if ([iMChatItem isBusiness])
   {
-    v3 = 0;
+    platformSupportsMentioning = 0;
   }
 
   else
   {
     v4 = +[CKUIBehavior sharedBehaviors];
-    v3 = [v4 platformSupportsMentioning];
+    platformSupportsMentioning = [v4 platformSupportsMentioning];
   }
 
-  return v3;
+  return platformSupportsMentioning;
 }
 
 - (id)bodyTextFont
 {
   v2 = +[CKUIBehavior sharedBehaviors];
-  v3 = [v2 balloonTextFont];
+  balloonTextFont = [v2 balloonTextFont];
 
-  return v3;
+  return balloonTextFont;
 }
 
 - (id)bodyTranslationSecondaryTextFont
 {
   v2 = +[CKUIBehavior sharedBehaviors];
-  v3 = [v2 balloonTranslationSecondaryTextFont];
+  balloonTranslationSecondaryTextFont = [v2 balloonTranslationSecondaryTextFont];
 
-  return v3;
+  return balloonTranslationSecondaryTextFont;
 }
 
 - (id)meMentionsTextColor
 {
   v2 = +[CKUIBehavior sharedBehaviors];
-  v3 = [v2 theme];
-  v4 = [v3 meMentionTextColor];
+  theme = [v2 theme];
+  meMentionTextColor = [theme meMentionTextColor];
 
-  return v4;
+  return meMentionTextColor;
 }
 
 - (BOOL)isShowingEditHistory
 {
-  v2 = [(CKChatItem *)self IMChatItem];
-  v3 = [v2 isShowingEditHistory];
+  iMChatItem = [(CKChatItem *)self IMChatItem];
+  isShowingEditHistory = [iMChatItem isShowingEditHistory];
 
-  return v3;
+  return isShowingEditHistory;
 }
 
 - (id)time
 {
   if ([(CKTextMessagePartChatItem *)self isShowingEditHistory])
   {
-    v3 = [(CKChatItem *)self IMChatItem];
-    v4 = [v3 lastEditDateForMessagePart];
+    iMChatItem = [(CKChatItem *)self IMChatItem];
+    lastEditDateForMessagePart = [iMChatItem lastEditDateForMessagePart];
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = CKTextMessagePartChatItem;
-    v4 = [(CKMessagePartChatItem *)&v6 time];
+    lastEditDateForMessagePart = [(CKMessagePartChatItem *)&v6 time];
   }
 
-  return v4;
+  return lastEditDateForMessagePart;
 }
 
 - (UIEdgeInsets)stickerReactionInsets
@@ -1470,15 +1470,15 @@ void __58__CKTextMessagePartChatItem__attributedTextWithTextColor___block_invoke
   {
     v5.receiver = self;
     v5.super_class = CKTextMessagePartChatItem;
-    v3 = [(CKBalloonChatItem *)&v5 impactBalloonViewClass];
+    impactBalloonViewClass = [(CKBalloonChatItem *)&v5 impactBalloonViewClass];
   }
 
   else
   {
-    v3 = objc_opt_class();
+    impactBalloonViewClass = objc_opt_class();
   }
 
-  return v3;
+  return impactBalloonViewClass;
 }
 
 - (id)dragItemProvider
@@ -1486,42 +1486,42 @@ void __58__CKTextMessagePartChatItem__attributedTextWithTextColor___block_invoke
   dragItemProvider = self->_dragItemProvider;
   if (!dragItemProvider)
   {
-    v4 = [(CKChatItem *)self transcriptText];
-    v5 = v4;
-    if (v4)
+    transcriptText = [(CKChatItem *)self transcriptText];
+    v5 = transcriptText;
+    if (transcriptText)
     {
-      v6 = [v4 ck_attributedStringByRemovingUnsupportedCompositionAttributes];
+      ck_attributedStringByRemovingUnsupportedCompositionAttributes = [transcriptText ck_attributedStringByRemovingUnsupportedCompositionAttributes];
       v29 = 0;
       v30 = &v29;
       v31 = 0x2020000000;
       v32 = 0;
-      v7 = [v6 length];
+      v7 = [ck_attributedStringByRemovingUnsupportedCompositionAttributes length];
       v28[0] = MEMORY[0x1E69E9820];
       v28[1] = 3221225472;
       v28[2] = __45__CKTextMessagePartChatItem_dragItemProvider__block_invoke;
       v28[3] = &unk_1E72F12E0;
       v28[4] = &v29;
-      [v6 enumerateAttributesInRange:0 options:v7 usingBlock:0, v28];
-      v8 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-      v9 = [v8 isAutomaticIncomingTranslationEnabled];
+      [ck_attributedStringByRemovingUnsupportedCompositionAttributes enumerateAttributesInRange:0 options:v7 usingBlock:0, v28];
+      mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+      isAutomaticIncomingTranslationEnabled = [mEMORY[0x1E69A8070] isAutomaticIncomingTranslationEnabled];
 
-      if (v9)
+      if (isAutomaticIncomingTranslationEnabled)
       {
-        v10 = [(CKTextMessagePartChatItem *)self translationSecondaryText];
-        if (v10 && [(CKTextMessagePartChatItem *)self showTranslationAlternateText])
+        translationSecondaryText = [(CKTextMessagePartChatItem *)self translationSecondaryText];
+        if (translationSecondaryText && [(CKTextMessagePartChatItem *)self showTranslationAlternateText])
         {
-          v11 = [v10 ck_attributedStringByRemovingUnsupportedCompositionAttributes];
+          ck_attributedStringByRemovingUnsupportedCompositionAttributes2 = [translationSecondaryText ck_attributedStringByRemovingUnsupportedCompositionAttributes];
           *buf = 0;
           v25 = buf;
           v26 = 0x2020000000;
           v27 = 0;
-          v12 = [v11 length];
+          v12 = [ck_attributedStringByRemovingUnsupportedCompositionAttributes2 length];
           v23[0] = MEMORY[0x1E69E9820];
           v23[1] = 3221225472;
           v23[2] = __45__CKTextMessagePartChatItem_dragItemProvider__block_invoke_2;
           v23[3] = &unk_1E72F12E0;
           v23[4] = buf;
-          [v11 enumerateAttributesInRange:0 options:v12 usingBlock:{0, v23}];
+          [ck_attributedStringByRemovingUnsupportedCompositionAttributes2 enumerateAttributesInRange:0 options:v12 usingBlock:{0, v23}];
           if (v25[24] == 1)
           {
             v13 = *(v30 + 24);
@@ -1533,15 +1533,15 @@ void __58__CKTextMessagePartChatItem__attributedTextWithTextColor___block_invoke
           }
 
           *(v30 + 24) = v13 & 1;
-          v14 = [v11 mutableCopy];
+          v14 = [ck_attributedStringByRemovingUnsupportedCompositionAttributes2 mutableCopy];
           v15 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:@"\n\n"];
           [v14 appendAttributedString:v15];
 
-          [v14 appendAttributedString:v6];
+          [v14 appendAttributedString:ck_attributedStringByRemovingUnsupportedCompositionAttributes];
           v16 = [v14 copy];
 
           _Block_object_dispose(buf, 8);
-          v6 = v16;
+          ck_attributedStringByRemovingUnsupportedCompositionAttributes = v16;
         }
       }
 
@@ -1565,7 +1565,7 @@ void __58__CKTextMessagePartChatItem__attributedTextWithTextColor___block_invoke
         v17 = off_1E72E54B0;
       }
 
-      v19 = [objc_alloc(*v17) initWithAttributedString:v6];
+      v19 = [objc_alloc(*v17) initWithAttributedString:ck_attributedStringByRemovingUnsupportedCompositionAttributes];
       v20 = [objc_alloc(MEMORY[0x1E696ACA0]) initWithObject:v19];
       v21 = self->_dragItemProvider;
       self->_dragItemProvider = v20;
@@ -1575,10 +1575,10 @@ void __58__CKTextMessagePartChatItem__attributedTextWithTextColor___block_invoke
 
     else
     {
-      v6 = IMLogHandleForCategory();
-      if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+      ck_attributedStringByRemovingUnsupportedCompositionAttributes = IMLogHandleForCategory();
+      if (os_log_type_enabled(ck_attributedStringByRemovingUnsupportedCompositionAttributes, OS_LOG_TYPE_ERROR))
       {
-        [(CKTextMessagePartChatItem *)v6 dragItemProvider];
+        [(CKTextMessagePartChatItem *)ck_attributedStringByRemovingUnsupportedCompositionAttributes dragItemProvider];
       }
     }
 
@@ -1604,33 +1604,33 @@ uint64_t __45__CKTextMessagePartChatItem_dragItemProvider__block_invoke_2(uint64
   return result;
 }
 
-- (id)rtfDocumentItemsWithFormatString:(id)a3 selectedTextRange:(_NSRange)a4
+- (id)rtfDocumentItemsWithFormatString:(id)string selectedTextRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v18[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = [(CKChatItem *)self transcriptText];
-  v9 = [v8 ck_attributedStringByRemovingUnsupportedCompositionAttributes];
+  stringCopy = string;
+  transcriptText = [(CKChatItem *)self transcriptText];
+  ck_attributedStringByRemovingUnsupportedCompositionAttributes = [transcriptText ck_attributedStringByRemovingUnsupportedCompositionAttributes];
   if (length)
   {
-    v10 = [v8 attributedSubstringFromRange:{location, length}];
+    v10 = [transcriptText attributedSubstringFromRange:{location, length}];
 
-    v9 = v10;
+    ck_attributedStringByRemovingUnsupportedCompositionAttributes = v10;
   }
 
-  if (v7)
+  if (stringCopy)
   {
     v11 = objc_alloc(MEMORY[0x1E696AAB0]);
     v12 = MEMORY[0x1E696AEC0];
-    v13 = [v9 string];
-    v14 = [v12 stringWithValidatedFormat:v7 validFormatSpecifiers:@"%@" error:0, v13];
+    string = [ck_attributedStringByRemovingUnsupportedCompositionAttributes string];
+    v14 = [v12 stringWithValidatedFormat:stringCopy validFormatSpecifiers:@"%@" error:0, string];
     v15 = [v11 initWithString:v14];
   }
 
   else
   {
-    v15 = v9;
+    v15 = ck_attributedStringByRemovingUnsupportedCompositionAttributes;
   }
 
   v18[0] = v15;
@@ -1641,137 +1641,137 @@ uint64_t __45__CKTextMessagePartChatItem_dragItemProvider__block_invoke_2(uint64
 
 - (id)_time
 {
-  v3 = [(CKChatItem *)self notification];
+  notification = [(CKChatItem *)self notification];
 
-  if (v3)
+  if (notification)
   {
-    v4 = [(CKChatItem *)self notification];
-    v5 = [v4 date];
+    notification2 = [(CKChatItem *)self notification];
+    date = [notification2 date];
 LABEL_3:
-    v6 = v5;
+    time = date;
 
     goto LABEL_5;
   }
 
-  v7 = [(CKMessagePartChatItem *)self message];
-  v6 = [v7 time];
+  message = [(CKMessagePartChatItem *)self message];
+  time = [message time];
 
-  if (!v6)
+  if (!time)
   {
-    v4 = [(CKChatItem *)self IMChatItem];
-    v5 = [v4 time];
+    notification2 = [(CKChatItem *)self IMChatItem];
+    date = [notification2 time];
     goto LABEL_3;
   }
 
 LABEL_5:
 
-  return v6;
+  return time;
 }
 
 - (NSAttributedString)text
 {
-  v3 = [(CKChatItem *)self notification];
-  v4 = [v3 request];
-  v5 = [v4 content];
-  v6 = [v5 body];
+  notification = [(CKChatItem *)self notification];
+  request = [notification request];
+  content = [request content];
+  body = [content body];
 
-  if (v6)
+  if (body)
   {
-    v7 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v6];
+    text = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:body];
   }
 
   else
   {
-    v8 = [(CKChatItem *)self IMChatItem];
-    v7 = [v8 text];
+    iMChatItem = [(CKChatItem *)self IMChatItem];
+    text = [iMChatItem text];
   }
 
-  return v7;
+  return text;
 }
 
 - (NSAttributedString)translationSecondaryText
 {
-  v2 = [(CKChatItem *)self IMChatItem];
-  v3 = [v2 translationSecondaryText];
+  iMChatItem = [(CKChatItem *)self IMChatItem];
+  translationSecondaryText = [iMChatItem translationSecondaryText];
 
-  return v3;
+  return translationSecondaryText;
 }
 
 - (NSAttributedString)fallbackCorruptText
 {
-  v2 = [(CKChatItem *)self IMChatItem];
-  v3 = [v2 fallbackCorruptText];
+  iMChatItem = [(CKChatItem *)self IMChatItem];
+  fallbackCorruptText = [iMChatItem fallbackCorruptText];
 
-  return v3;
+  return fallbackCorruptText;
 }
 
 - (NSAttributedString)subject
 {
-  v3 = [(CKChatItem *)self notification];
-  if (v3)
+  notification = [(CKChatItem *)self notification];
+  if (notification)
   {
-    v4 = 0;
+    subject = 0;
   }
 
   else
   {
-    v5 = [(CKChatItem *)self IMChatItem];
-    v4 = [v5 subject];
+    iMChatItem = [(CKChatItem *)self IMChatItem];
+    subject = [iMChatItem subject];
   }
 
-  return v4;
+  return subject;
 }
 
 - (BOOL)containsHyperlink
 {
-  v3 = [(CKChatItem *)self notification];
+  notification = [(CKChatItem *)self notification];
 
-  if (v3)
+  if (notification)
   {
     return 0;
   }
 
-  v5 = [(CKChatItem *)self IMChatItem];
-  if ([v5 shouldDisplayRichLink])
+  iMChatItem = [(CKChatItem *)self IMChatItem];
+  if ([iMChatItem shouldDisplayRichLink])
   {
-    v6 = [(CKMessagePartChatItem *)self message];
-    if ([v6 hasDataDetectorResults])
+    message = [(CKMessagePartChatItem *)self message];
+    if ([message hasDataDetectorResults])
     {
-      v4 = 1;
+      allowsMentions = 1;
     }
 
     else
     {
-      v7 = [(CKMessagePartChatItem *)self message];
-      if ([v7 hasMention])
+      message2 = [(CKMessagePartChatItem *)self message];
+      if ([message2 hasMention])
       {
-        v4 = [(CKTextMessagePartChatItem *)self allowsMentions];
+        allowsMentions = [(CKTextMessagePartChatItem *)self allowsMentions];
       }
 
       else
       {
-        v4 = 0;
+        allowsMentions = 0;
       }
     }
   }
 
   else
   {
-    v4 = 0;
+    allowsMentions = 0;
   }
 
-  return v4;
+  return allowsMentions;
 }
 
 - (BOOL)containsExcessiveLineHeightCharacters
 {
-  v2 = [(CKTextMessagePartChatItem *)self text];
-  v3 = [v2 string];
+  text = [(CKTextMessagePartChatItem *)self text];
+  string = [text string];
 
-  if ([v3 length])
+  if ([string length])
   {
     v4 = +[CKUIBehavior sharedBehaviors];
-    v5 = [v3 rangeOfCharacterFromSet:{objc_msgSend(v4, "systemUIFontExcessiveLineHeightCharacterSet")}] != 0x7FFFFFFFFFFFFFFFLL;
+    v5 = [string rangeOfCharacterFromSet:{objc_msgSend(v4, "systemUIFontExcessiveLineHeightCharacterSet")}] != 0x7FFFFFFFFFFFFFFFLL;
   }
 
   else
@@ -1786,8 +1786,8 @@ LABEL_5:
 {
   if (!self->_hasCachedBigEmojiStyle)
   {
-    v3 = [(CKTextMessagePartChatItem *)self subject];
-    v4 = [v3 length];
+    subject = [(CKTextMessagePartChatItem *)self subject];
+    v4 = [subject length];
 
     if (v4)
     {
@@ -1796,8 +1796,8 @@ LABEL_5:
 
     else
     {
-      v5 = [(CKTextMessagePartChatItem *)self text];
-      self->_bigEmojiStyle = [v5 __ck_bigEmojiStyle];
+      text = [(CKTextMessagePartChatItem *)self text];
+      self->_bigEmojiStyle = [text __ck_bigEmojiStyle];
     }
 
     self->_hasCachedBigEmojiStyle = 1;
@@ -1808,58 +1808,58 @@ LABEL_5:
 
 - (BOOL)_textContainsIMTextEffect
 {
-  v2 = [(CKTextMessagePartChatItem *)self text];
-  v3 = [v2 ck_containsIMTextEffect];
+  text = [(CKTextMessagePartChatItem *)self text];
+  ck_containsIMTextEffect = [text ck_containsIMTextEffect];
 
-  return v3;
+  return ck_containsIMTextEffect;
 }
 
 - (BOOL)_translationSecondaryTextContainsIMTextEffect
 {
-  v3 = [(CKTextMessagePartChatItem *)self translationSecondaryText];
-  if ([v3 ck_containsIMTextEffect])
+  translationSecondaryText = [(CKTextMessagePartChatItem *)self translationSecondaryText];
+  if ([translationSecondaryText ck_containsIMTextEffect])
   {
-    v4 = [(CKTextMessagePartChatItem *)self showTranslationAlternateText];
+    showTranslationAlternateText = [(CKTextMessagePartChatItem *)self showTranslationAlternateText];
   }
 
   else
   {
-    v4 = 0;
+    showTranslationAlternateText = 0;
   }
 
-  return v4;
+  return showTranslationAlternateText;
 }
 
 - (double)ageForTextEffectCoordination
 {
-  v2 = [(CKChatItem *)self IMChatItem];
-  [v2 ageForTextEffectCoordination];
+  iMChatItem = [(CKChatItem *)self IMChatItem];
+  [iMChatItem ageForTextEffectCoordination];
   v4 = v3;
 
   return v4;
 }
 
-- (BOOL)isRecentForTextEffectCoordinationWithinTimeInterval:(double)a3
+- (BOOL)isRecentForTextEffectCoordinationWithinTimeInterval:(double)interval
 {
-  v4 = [(CKChatItem *)self IMChatItem];
-  v5 = [v4 isRecentForTextEffectCoordinationWithinTimeInterval:a3];
+  iMChatItem = [(CKChatItem *)self IMChatItem];
+  v5 = [iMChatItem isRecentForTextEffectCoordinationWithinTimeInterval:interval];
 
   return v5;
 }
 
-- (id)compositionWithContext:(id)a3
+- (id)compositionWithContext:(id)context
 {
-  v4 = [(CKTextMessagePartChatItem *)self text];
-  v5 = [v4 ck_attributedStringByRemovingUnsupportedCompositionAttributes];
+  text = [(CKTextMessagePartChatItem *)self text];
+  ck_attributedStringByRemovingUnsupportedCompositionAttributes = [text ck_attributedStringByRemovingUnsupportedCompositionAttributes];
 
-  v6 = [(CKTextMessagePartChatItem *)self subject];
-  v7 = [v6 string];
-  if ([v7 length])
+  subject = [(CKTextMessagePartChatItem *)self subject];
+  string = [subject string];
+  if ([string length])
   {
     v8 = objc_alloc(MEMORY[0x1E696AAB0]);
-    v9 = [(CKTextMessagePartChatItem *)self subject];
-    v10 = [v9 string];
-    v11 = [v8 initWithString:v10];
+    subject2 = [(CKTextMessagePartChatItem *)self subject];
+    string2 = [subject2 string];
+    v11 = [v8 initWithString:string2];
   }
 
   else
@@ -1867,7 +1867,7 @@ LABEL_5:
     v11 = 0;
   }
 
-  v12 = [[CKComposition alloc] initWithText:v5 subject:v11];
+  v12 = [[CKComposition alloc] initWithText:ck_attributedStringByRemovingUnsupportedCompositionAttributes subject:v11];
 
   return v12;
 }

@@ -1,15 +1,15 @@
 @interface CKLinkBalloonViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation CKLinkBalloonViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CKLinkBalloonView" hasInstanceMethod:@"linkView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKBalloonView" hasInstanceMethod:@"tapGestureRecognized:" withFullSignature:{"v", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CKLinkBalloonView" hasInstanceMethod:@"linkView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKBalloonView" hasInstanceMethod:@"tapGestureRecognized:" withFullSignature:{"v", "@", 0}];
 }
 
 - (id)accessibilityLabel
@@ -18,17 +18,17 @@
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 accessibilityLabel];
+    accessibilityLabel = [v3 accessibilityLabel];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = CKLinkBalloonViewAccessibility;
-    v5 = [(CKLinkBalloonViewAccessibility *)&v8 accessibilityLabel];
+    accessibilityLabel = [(CKLinkBalloonViewAccessibility *)&v8 accessibilityLabel];
   }
 
-  v6 = v5;
+  v6 = accessibilityLabel;
 
   return v6;
 }

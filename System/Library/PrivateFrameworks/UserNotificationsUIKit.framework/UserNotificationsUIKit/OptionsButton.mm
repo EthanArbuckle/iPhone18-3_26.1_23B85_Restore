@@ -1,16 +1,16 @@
 @interface OptionsButton
-- (_TtC22UserNotificationsUIKitP33_31F77A0F2E2B97FF4D299720B6240BE113OptionsButton)initWithCoder:(id)a3;
-- (_TtC22UserNotificationsUIKitP33_31F77A0F2E2B97FF4D299720B6240BE113OptionsButton)initWithFrame:(CGRect)a3;
+- (_TtC22UserNotificationsUIKitP33_31F77A0F2E2B97FF4D299720B6240BE113OptionsButton)initWithCoder:(id)coder;
+- (_TtC22UserNotificationsUIKitP33_31F77A0F2E2B97FF4D299720B6240BE113OptionsButton)initWithFrame:(CGRect)frame;
 @end
 
 @implementation OptionsButton
 
-- (_TtC22UserNotificationsUIKitP33_31F77A0F2E2B97FF4D299720B6240BE113OptionsButton)initWithFrame:(CGRect)a3
+- (_TtC22UserNotificationsUIKitP33_31F77A0F2E2B97FF4D299720B6240BE113OptionsButton)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v7 = (&self->super.super.super.super.super.isa + OBJC_IVAR____TtC22UserNotificationsUIKitP33_31F77A0F2E2B97FF4D299720B6240BE113OptionsButton_onShowMenu);
   *v7 = 0;
   v7[1] = 0;
@@ -23,7 +23,7 @@
   return [(OptionsButton *)&v10 initWithFrame:x, y, width, height];
 }
 
-- (_TtC22UserNotificationsUIKitP33_31F77A0F2E2B97FF4D299720B6240BE113OptionsButton)initWithCoder:(id)a3
+- (_TtC22UserNotificationsUIKitP33_31F77A0F2E2B97FF4D299720B6240BE113OptionsButton)initWithCoder:(id)coder
 {
   v4 = (&self->super.super.super.super.super.isa + OBJC_IVAR____TtC22UserNotificationsUIKitP33_31F77A0F2E2B97FF4D299720B6240BE113OptionsButton_onShowMenu);
   *v4 = 0;
@@ -34,8 +34,8 @@
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC22UserNotificationsUIKitP33_31F77A0F2E2B97FF4D299720B6240BE113OptionsButton_isPresentingMenu) = 0;
   v9.receiver = self;
   v9.super_class = type metadata accessor for OptionsButton();
-  v6 = a3;
-  v7 = [(OptionsButton *)&v9 initWithCoder:v6];
+  coderCopy = coder;
+  v7 = [(OptionsButton *)&v9 initWithCoder:coderCopy];
 
   if (v7)
   {

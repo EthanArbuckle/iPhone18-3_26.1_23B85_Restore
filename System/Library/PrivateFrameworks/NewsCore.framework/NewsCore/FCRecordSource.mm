@@ -1,61 +1,61 @@
 @interface FCRecordSource
-+ (BOOL)recognizesRecordID:(id)a3 inRecordIDPrefixes:(id)a4;
-+ (id)identifierFromCKRecord:(id)a3;
-- (BOOL)isRecordStale:(id)a3 withCachePolicy:(id)a4;
-- (BOOL)recognizesRecordID:(id)a3;
++ (BOOL)recognizesRecordID:(id)d inRecordIDPrefixes:(id)prefixes;
++ (id)identifierFromCKRecord:(id)record;
+- (BOOL)isRecordStale:(id)stale withCachePolicy:(id)policy;
+- (BOOL)recognizesRecordID:(id)d;
 - (FCRecordSource)init;
-- (FCRecordSource)initWithContentDatabase:(id)a3 contentDirectory:(id)a4 appActivityMonitor:(id)a5 backgroundTaskable:(id)a6 defaultTTL:(double)a7 experimentalizableFieldsPostfix:(id)a8 activeTreatmentID:(id)a9;
+- (FCRecordSource)initWithContentDatabase:(id)database contentDirectory:(id)directory appActivityMonitor:(id)monitor backgroundTaskable:(id)taskable defaultTTL:(double)l experimentalizableFieldsPostfix:(id)postfix activeTreatmentID:(id)d;
 - (NSArray)desiredKeys;
 - (NSDictionary)experimentalizedKeysByOriginalKey;
 - (NSDictionary)localizedExperimentalizedKeysByOriginalKey;
 - (NSDictionary)localizedKeysByOriginalKey;
 - (NSDictionary)localizedLanguageSpecificKeysByOriginalKey;
-- (id)_ckRecordIDFromIdentifier:(uint64_t)a1;
-- (id)_deleteRecordsWithWriteLockWithIDs:(id *)a1;
-- (id)_experimentalizedKeysByOriginalKeyForExperimentPostfix:(id)a3;
-- (id)_faultableRecordsWithIdentifiers:(id *)a1;
-- (id)_fetchErrorForKey:(id)a1;
-- (id)_identifierFromCKRecordID:(void *)a1;
-- (id)_localizedExperimentalizedKeysByOriginalKeyForContentStoreFrontID:(id)a3 experimentPostfix:(id)a4;
-- (id)_localizedKeysByOriginalKeyForContentStoreFrontID:(id)a3;
-- (id)_localizedLanguageSpecificKeysByOriginalKeyForContentStoreFrontID:(void *)a3 languageCode:;
-- (id)_recordFromCKRecord:(void *)a1;
-- (id)_saveCKRecordsWithWriteLock:(void *)a3 updateFetchDateForRecordIdentifiers:(void *)a4 fetchContext:;
-- (id)cachedRecordWithID:(id)a3;
-- (id)cachedRecordsWithIDs:(id)a3;
-- (id)convertRecords:(id)a3;
-- (id)deleteRecordsWithIDs:(id)a3;
-- (id)fetchCoordinator:(id)a3 fetchOperationForKeys:(id)a4 context:(id)a5 qualityOfService:(int64_t)a6 relativePriority:(int64_t)a7;
-- (id)fetchOperationForRecordsWithIDs:(id)a3;
-- (id)fetchOperationForRecordsWithIDs:(id)a3 ignoreCacheForRecordIDs:(id)a4;
-- (id)interestTokenForRecordIDs:(id)a3;
+- (id)_ckRecordIDFromIdentifier:(uint64_t)identifier;
+- (id)_deleteRecordsWithWriteLockWithIDs:(id *)ds;
+- (id)_experimentalizedKeysByOriginalKeyForExperimentPostfix:(id)postfix;
+- (id)_faultableRecordsWithIdentifiers:(id *)identifiers;
+- (id)_fetchErrorForKey:(id)key;
+- (id)_identifierFromCKRecordID:(void *)d;
+- (id)_localizedExperimentalizedKeysByOriginalKeyForContentStoreFrontID:(id)d experimentPostfix:(id)postfix;
+- (id)_localizedKeysByOriginalKeyForContentStoreFrontID:(id)d;
+- (id)_localizedLanguageSpecificKeysByOriginalKeyForContentStoreFrontID:(void *)d languageCode:;
+- (id)_recordFromCKRecord:(void *)record;
+- (id)_saveCKRecordsWithWriteLock:(void *)lock updateFetchDateForRecordIdentifiers:(void *)identifiers fetchContext:;
+- (id)cachedRecordWithID:(id)d;
+- (id)cachedRecordsWithIDs:(id)ds;
+- (id)convertRecords:(id)records;
+- (id)deleteRecordsWithIDs:(id)ds;
+- (id)fetchCoordinator:(id)coordinator fetchOperationForKeys:(id)keys context:(id)context qualityOfService:(int64_t)service relativePriority:(int64_t)priority;
+- (id)fetchOperationForRecordsWithIDs:(id)ds;
+- (id)fetchOperationForRecordsWithIDs:(id)ds ignoreCacheForRecordIDs:(id)iDs;
+- (id)interestTokenForRecordIDs:(id)ds;
 - (id)jsonEncodableObject;
-- (id)recordFromCKRecord:(id)a3 base:(id)a4;
+- (id)recordFromCKRecord:(id)record base:(id)base;
 - (id)recordType;
-- (id)resolveLocalizableExperimentalizableFieldforKey:(id)a3 inRecord:(id)a4 activeExperimentIDKey:(id)a5;
-- (id)savePBRecords:(id)a3;
-- (id)saveRecords:(id)a3;
+- (id)resolveLocalizableExperimentalizableFieldforKey:(id)key inRecord:(id)record activeExperimentIDKey:(id)dKey;
+- (id)savePBRecords:(id)records;
+- (id)saveRecords:(id)records;
 - (id)storeFilename;
-- (id)valueFromCKRecord:(id)a3 baseKey:(id)a4 localizedKeys:(id)a5 localizedLanguageSpecificKeys:(id)a6;
+- (id)valueFromCKRecord:(id)record baseKey:(id)key localizedKeys:(id)keys localizedLanguageSpecificKeys:(id)specificKeys;
 - (int)pbRecordType;
 - (int64_t)storageSize;
 - (uint64_t)_prepareForUse;
-- (unint64_t)cacheCoordinatorCurrentSizeWithReadLock:(id)a3;
+- (unint64_t)cacheCoordinatorCurrentSizeWithReadLock:(id)lock;
 - (unint64_t)highThresholdDataSizeLimit;
 - (unint64_t)lowThresholdDataSizeLimit;
 - (unint64_t)storeVersion;
 - (void)_deriveDesiredKeys;
 - (void)_deriveDesiredKeysIfNeeded;
-- (void)addCacheObserver:(id)a3;
-- (void)cacheCoordinator:(id)a3 flushKeysWithWriteLock:(id)a4;
-- (void)enableFlushingWithFlushingThreshold:(unint64_t)a3;
-- (void)fetchCoordinator:(id)a3 addFetchOperation:(id)a4 context:(id)a5;
-- (void)fetchCoordinator:(id)a3 filterKeysToFetch:(id)a4 isFirstAttempt:(BOOL)a5 context:(id)a6;
+- (void)addCacheObserver:(id)observer;
+- (void)cacheCoordinator:(id)coordinator flushKeysWithWriteLock:(id)lock;
+- (void)enableFlushingWithFlushingThreshold:(unint64_t)threshold;
+- (void)fetchCoordinator:(id)coordinator addFetchOperation:(id)operation context:(id)context;
+- (void)fetchCoordinator:(id)coordinator filterKeysToFetch:(id)fetch isFirstAttempt:(BOOL)attempt context:(id)context;
 - (void)forceRefreshDesiredKeys;
 - (void)save;
-- (void)t_startOverridingExperimentalizableFieldsPostfix:(id)a3 treatmentID:(id)a4;
+- (void)t_startOverridingExperimentalizableFieldsPostfix:(id)postfix treatmentID:(id)d;
 - (void)t_stopOverridingExperimentalizableFieldsPostfixAndTreatmentID;
-- (void)updateFetchDateForRecordIDs:(id)a3;
+- (void)updateFetchDateForRecordIDs:(id)ds;
 @end
 
 @implementation FCRecordSource
@@ -70,95 +70,95 @@
 
 - (void)_deriveDesiredKeysIfNeeded
 {
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_lock((a1 + 8));
-    if (!*(a1 + 16))
+    os_unfair_lock_lock((self + 8));
+    if (!*(self + 16))
     {
-      [(FCRecordSource *)a1 _deriveDesiredKeys];
+      [(FCRecordSource *)self _deriveDesiredKeys];
     }
 
-    os_unfair_lock_unlock((a1 + 8));
+    os_unfair_lock_unlock((self + 8));
   }
 }
 
 - (void)_deriveDesiredKeys
 {
-  if (a1)
+  if (self)
   {
     v2 = +[FCAppleAccount sharedAccount];
-    v3 = [v2 contentStoreFrontID];
+    contentStoreFrontID = [v2 contentStoreFrontID];
 
     v4 = +[FCAppleAccount sharedAccount];
-    v5 = [v4 primaryLanguageCode];
+    primaryLanguageCode = [v4 primaryLanguageCode];
 
-    v6 = [a1 experimentalizableFieldsPostfix];
-    v36 = v3;
+    experimentalizableFieldsPostfix = [self experimentalizableFieldsPostfix];
+    v36 = contentStoreFrontID;
     v7 = MEMORY[0x1E695DFA8];
-    v8 = v5;
-    v9 = v6;
-    v10 = [a1 nonLocalizableKeys];
-    v11 = [v7 setWithArray:v10];
+    v8 = primaryLanguageCode;
+    v9 = experimentalizableFieldsPostfix;
+    nonLocalizableKeys = [self nonLocalizableKeys];
+    v11 = [v7 setWithArray:nonLocalizableKeys];
 
-    v12 = [a1 localizableKeys];
-    [v11 addObjectsFromArray:v12];
+    localizableKeys = [self localizableKeys];
+    [v11 addObjectsFromArray:localizableKeys];
 
-    v13 = [a1 _localizedKeysByOriginalKeyForContentStoreFrontID:v36];
-    v14 = [v13 allValues];
-    [v11 addObjectsFromArray:v14];
+    v13 = [self _localizedKeysByOriginalKeyForContentStoreFrontID:v36];
+    allValues = [v13 allValues];
+    [v11 addObjectsFromArray:allValues];
 
     v15 = +[FCAppleAccount sharedAccount];
-    LOBYTE(v14) = [v15 isContentStoreFrontSupported];
+    LOBYTE(allValues) = [v15 isContentStoreFrontSupported];
 
-    if ((v14 & 1) == 0)
+    if ((allValues & 1) == 0)
     {
-      v16 = [a1 alwaysLocalizedKeys];
-      [v11 addObjectsFromArray:v16];
+      alwaysLocalizedKeys = [self alwaysLocalizedKeys];
+      [v11 addObjectsFromArray:alwaysLocalizedKeys];
     }
 
-    v17 = [a1 experimentalizableKeys];
-    [v11 addObjectsFromArray:v17];
+    experimentalizableKeys = [self experimentalizableKeys];
+    [v11 addObjectsFromArray:experimentalizableKeys];
 
-    v18 = [a1 _experimentalizedKeysByOriginalKeyForExperimentPostfix:v9];
-    v19 = [v18 allValues];
-    [v11 addObjectsFromArray:v19];
+    v18 = [self _experimentalizedKeysByOriginalKeyForExperimentPostfix:v9];
+    allValues2 = [v18 allValues];
+    [v11 addObjectsFromArray:allValues2];
 
-    v20 = [a1 localizableExperimentalizableKeys];
-    [v11 addObjectsFromArray:v20];
+    localizableExperimentalizableKeys = [self localizableExperimentalizableKeys];
+    [v11 addObjectsFromArray:localizableExperimentalizableKeys];
 
-    v21 = [a1 _localizedExperimentalizedKeysByOriginalKeyForContentStoreFrontID:v36 experimentPostfix:v9];
+    v21 = [self _localizedExperimentalizedKeysByOriginalKeyForContentStoreFrontID:v36 experimentPostfix:v9];
 
-    v22 = [v21 allValues];
-    [v11 addObjectsFromArray:v22];
+    allValues3 = [v21 allValues];
+    [v11 addObjectsFromArray:allValues3];
 
-    v23 = [a1 localizableLanguageSpecificKeys];
-    [v11 addObjectsFromArray:v23];
+    localizableLanguageSpecificKeys = [self localizableLanguageSpecificKeys];
+    [v11 addObjectsFromArray:localizableLanguageSpecificKeys];
 
-    v24 = [(FCRecordSource *)a1 _localizedLanguageSpecificKeysByOriginalKeyForContentStoreFrontID:v36 languageCode:v8];
+    v24 = [(FCRecordSource *)self _localizedLanguageSpecificKeysByOriginalKeyForContentStoreFrontID:v36 languageCode:v8];
 
-    v25 = [v24 allValues];
-    [v11 addObjectsFromArray:v25];
+    allValues4 = [v24 allValues];
+    [v11 addObjectsFromArray:allValues4];
 
-    v26 = [v11 allObjects];
+    allObjects = [v11 allObjects];
 
-    v27 = a1[2];
-    a1[2] = v26;
+    v27 = self[2];
+    self[2] = allObjects;
 
-    v28 = [a1 _localizedKeysByOriginalKeyForContentStoreFrontID:v36];
-    v29 = a1[3];
-    a1[3] = v28;
+    v28 = [self _localizedKeysByOriginalKeyForContentStoreFrontID:v36];
+    v29 = self[3];
+    self[3] = v28;
 
-    v30 = [a1 _experimentalizedKeysByOriginalKeyForExperimentPostfix:v9];
-    v31 = a1[4];
-    a1[4] = v30;
+    v30 = [self _experimentalizedKeysByOriginalKeyForExperimentPostfix:v9];
+    v31 = self[4];
+    self[4] = v30;
 
-    v32 = [a1 _localizedExperimentalizedKeysByOriginalKeyForContentStoreFrontID:v36 experimentPostfix:v9];
-    v33 = a1[5];
-    a1[5] = v32;
+    v32 = [self _localizedExperimentalizedKeysByOriginalKeyForContentStoreFrontID:v36 experimentPostfix:v9];
+    v33 = self[5];
+    self[5] = v32;
 
-    v34 = [(FCRecordSource *)a1 _localizedLanguageSpecificKeysByOriginalKeyForContentStoreFrontID:v36 languageCode:v8];
-    v35 = a1[6];
-    a1[6] = v34;
+    v34 = [(FCRecordSource *)self _localizedLanguageSpecificKeysByOriginalKeyForContentStoreFrontID:v36 languageCode:v8];
+    v35 = self[6];
+    self[6] = v34;
   }
 }
 
@@ -190,9 +190,9 @@
         }
       }
 
-      v10 = [MEMORY[0x1E696AAE8] mainBundle];
-      v11 = [v10 bundleIdentifier];
-      v12 = [v11 isEqualToString:@"com.apple.newsd"];
+      mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+      bundleIdentifier = [mainBundle bundleIdentifier];
+      v12 = [bundleIdentifier isEqualToString:@"com.apple.newsd"];
 
       if (v12)
       {
@@ -205,16 +205,16 @@
       }
 
       v14 = [FCKeyValueStore alloc];
-      v15 = [v1 storeFilename];
+      storeFilename = [v1 storeFilename];
       v16 = *(v1 + 72);
-      v17 = -[FCKeyValueStore initWithName:directory:version:options:classRegistry:migrator:savePolicy:](v14, "initWithName:directory:version:options:classRegistry:migrator:savePolicy:", v15, v16, [v1 storeVersion], v13, v3, 0, v4);
+      v17 = -[FCKeyValueStore initWithName:directory:version:options:classRegistry:migrator:savePolicy:](v14, "initWithName:directory:version:options:classRegistry:migrator:savePolicy:", storeFilename, v16, [v1 storeVersion], v13, v3, 0, v4);
       v18 = *(v1 + 104);
       *(v1 + 104) = v17;
 
       [*(v1 + 104) setShouldExportJSONSidecar:1];
       [*(v1 + 104) setJSONEncodingHandlersWithObjectHandler:&__block_literal_global_96 arrayObjectHandler:0 dictionaryKeyHandler:0 dictionaryValueHandler:0];
-      v19 = [*(v1 + 104) allKeys];
-      v20 = [v19 fc_arrayByRemovingObject:@"cacheHints"];
+      allKeys = [*(v1 + 104) allKeys];
+      v20 = [allKeys fc_arrayByRemovingObject:@"cacheHints"];
 
       v21 = *(v1 + 112);
       v22 = [*(v1 + 104) objectForKeyedSubscript:@"cacheHints"];
@@ -273,16 +273,16 @@
   objc_exception_throw(v6);
 }
 
-- (FCRecordSource)initWithContentDatabase:(id)a3 contentDirectory:(id)a4 appActivityMonitor:(id)a5 backgroundTaskable:(id)a6 defaultTTL:(double)a7 experimentalizableFieldsPostfix:(id)a8 activeTreatmentID:(id)a9
+- (FCRecordSource)initWithContentDatabase:(id)database contentDirectory:(id)directory appActivityMonitor:(id)monitor backgroundTaskable:(id)taskable defaultTTL:(double)l experimentalizableFieldsPostfix:(id)postfix activeTreatmentID:(id)d
 {
   v49 = *MEMORY[0x1E69E9840];
-  v17 = a3;
-  v18 = a4;
-  v39 = a5;
-  v38 = a6;
-  v37 = a8;
-  v19 = a9;
-  if (!v17 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  databaseCopy = database;
+  directoryCopy = directory;
+  monitorCopy = monitor;
+  taskableCopy = taskable;
+  postfixCopy = postfix;
+  dCopy = d;
+  if (!databaseCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v35 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "contentDatabase != nil"];
     *buf = 136315906;
@@ -295,13 +295,13 @@
     v48 = v35;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
 
-    if (v18)
+    if (directoryCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v18)
+  else if (directoryCopy)
   {
     goto LABEL_6;
   }
@@ -327,22 +327,22 @@ LABEL_6:
   v21 = v20;
   if (v20)
   {
-    objc_storeStrong(&v20->_contentDatabase, a3);
-    objc_storeStrong(&v21->_contentDirectory, a4);
-    v22 = 1.79769313e308;
-    if (a7 > 0.0)
+    objc_storeStrong(&v20->_contentDatabase, database);
+    objc_storeStrong(&v21->_contentDirectory, directory);
+    lCopy = 1.79769313e308;
+    if (l > 0.0)
     {
-      v22 = a7;
+      lCopy = l;
     }
 
-    v23 = [FCCachePolicy cachePolicyWithSoftMaxAge:v22];
+    v23 = [FCCachePolicy cachePolicyWithSoftMaxAge:lCopy];
     defaultCachePolicy = v21->_defaultCachePolicy;
     v21->_defaultCachePolicy = v23;
 
-    objc_storeStrong(&v21->_appActivityMonitor, a5);
-    objc_storeStrong(&v21->_backgroundTaskable, a6);
-    objc_storeStrong(&v21->_experimentalizableFieldsPostfix, a8);
-    objc_storeStrong(&v21->_activeTreatmentID, a9);
+    objc_storeStrong(&v21->_appActivityMonitor, monitor);
+    objc_storeStrong(&v21->_backgroundTaskable, taskable);
+    objc_storeStrong(&v21->_experimentalizableFieldsPostfix, postfix);
+    objc_storeStrong(&v21->_activeTreatmentID, d);
     v25 = objc_alloc_init(FCThreadSafeMutableDictionary);
     fetchErrorsByKey = v21->_fetchErrorsByKey;
     v21->_fetchErrorsByKey = v25;
@@ -524,11 +524,11 @@ LABEL_6:
   objc_exception_throw(v6);
 }
 
-- (id)recordFromCKRecord:(id)a3 base:(id)a4
+- (id)recordFromCKRecord:(id)record base:(id)base
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  recordCopy = record;
+  baseCopy = base;
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v7 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Abstract method"];
@@ -552,41 +552,41 @@ LABEL_6:
   objc_exception_throw(v11);
 }
 
-+ (id)identifierFromCKRecord:(id)a3
++ (id)identifierFromCKRecord:(id)record
 {
-  v3 = [a3 recordID];
-  v4 = [v3 recordName];
+  recordID = [record recordID];
+  recordName = [recordID recordName];
 
-  return v4;
+  return recordName;
 }
 
-- (id)resolveLocalizableExperimentalizableFieldforKey:(id)a3 inRecord:(id)a4 activeExperimentIDKey:(id)a5
+- (id)resolveLocalizableExperimentalizableFieldforKey:(id)key inRecord:(id)record activeExperimentIDKey:(id)dKey
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(FCRecordSource *)self localizedExperimentalizedKeysByOriginalKey];
-  v12 = [v11 objectForKeyedSubscript:v10];
-  v13 = [v9 fc_safeObjectForKey:v12];
+  dKeyCopy = dKey;
+  recordCopy = record;
+  keyCopy = key;
+  localizedExperimentalizedKeysByOriginalKey = [(FCRecordSource *)self localizedExperimentalizedKeysByOriginalKey];
+  v12 = [localizedExperimentalizedKeysByOriginalKey objectForKeyedSubscript:keyCopy];
+  v13 = [recordCopy fc_safeObjectForKey:v12];
 
-  v14 = [(FCRecordSource *)self experimentalizedKeysByOriginalKey];
-  v15 = [v14 objectForKeyedSubscript:v10];
-  v16 = [v9 fc_safeObjectForKey:v15];
+  experimentalizedKeysByOriginalKey = [(FCRecordSource *)self experimentalizedKeysByOriginalKey];
+  v15 = [experimentalizedKeysByOriginalKey objectForKeyedSubscript:keyCopy];
+  v16 = [recordCopy fc_safeObjectForKey:v15];
 
-  v17 = [(FCRecordSource *)self localizedKeysByOriginalKey];
-  v18 = [v17 objectForKeyedSubscript:v10];
-  v19 = [v9 fc_safeObjectForKey:v18];
+  localizedKeysByOriginalKey = [(FCRecordSource *)self localizedKeysByOriginalKey];
+  v18 = [localizedKeysByOriginalKey objectForKeyedSubscript:keyCopy];
+  v19 = [recordCopy fc_safeObjectForKey:v18];
 
-  v20 = [v9 objectForKeyedSubscript:v10];
+  v20 = [recordCopy objectForKeyedSubscript:keyCopy];
 
-  v21 = [(FCRecordSource *)self experimentalizedKeysByOriginalKey];
-  v22 = [v21 objectForKeyedSubscript:v8];
+  experimentalizedKeysByOriginalKey2 = [(FCRecordSource *)self experimentalizedKeysByOriginalKey];
+  v22 = [experimentalizedKeysByOriginalKey2 objectForKeyedSubscript:dKeyCopy];
 
-  v23 = [v9 objectForKeyedSubscript:v22];
+  v23 = [recordCopy objectForKeyedSubscript:v22];
 
   v24 = MEMORY[0x1E69E58C0];
-  v25 = [(FCRecordSource *)self activeTreatmentID];
-  v26 = [v24 nf_object:v23 isEqualToObject:v25];
+  activeTreatmentID = [(FCRecordSource *)self activeTreatmentID];
+  v26 = [v24 nf_object:v23 isEqualToObject:activeTreatmentID];
 
   if (v19)
   {
@@ -633,14 +633,14 @@ LABEL_6:
   return v29;
 }
 
-- (id)valueFromCKRecord:(id)a3 baseKey:(id)a4 localizedKeys:(id)a5 localizedLanguageSpecificKeys:(id)a6
+- (id)valueFromCKRecord:(id)record baseKey:(id)key localizedKeys:(id)keys localizedLanguageSpecificKeys:(id)specificKeys
 {
   v36 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if (!v9 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  recordCopy = record;
+  keyCopy = key;
+  keysCopy = keys;
+  specificKeysCopy = specificKeys;
+  if (!recordCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v26 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "ckRecord"];
     *buf = 136315906;
@@ -653,13 +653,13 @@ LABEL_6:
     v35 = v26;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
 
-    if (v10)
+    if (keyCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v10)
+  else if (keyCopy)
   {
     goto LABEL_6;
   }
@@ -679,39 +679,39 @@ LABEL_6:
   }
 
 LABEL_6:
-  v13 = [v12 objectForKeyedSubscript:v10];
+  v13 = [specificKeysCopy objectForKeyedSubscript:keyCopy];
   if (v13)
   {
     v14 = v13;
-    v15 = [v12 objectForKeyedSubscript:v10];
-    v16 = [v9 objectForKeyedSubscript:v15];
+    v15 = [specificKeysCopy objectForKeyedSubscript:keyCopy];
+    v16 = [recordCopy objectForKeyedSubscript:v15];
 
     if (v16)
     {
-      v17 = v12;
+      v17 = specificKeysCopy;
 LABEL_12:
-      v22 = [v17 objectForKeyedSubscript:v10];
-      v23 = [v9 objectForKeyedSubscript:v22];
+      v22 = [v17 objectForKeyedSubscript:keyCopy];
+      v23 = [recordCopy objectForKeyedSubscript:v22];
 
       goto LABEL_14;
     }
   }
 
-  v18 = [v11 objectForKeyedSubscript:v10];
+  v18 = [keysCopy objectForKeyedSubscript:keyCopy];
   if (v18)
   {
     v19 = v18;
-    v20 = [v11 objectForKeyedSubscript:v10];
-    v21 = [v9 objectForKeyedSubscript:v20];
+    v20 = [keysCopy objectForKeyedSubscript:keyCopy];
+    v21 = [recordCopy objectForKeyedSubscript:v20];
 
     if (v21)
     {
-      v17 = v11;
+      v17 = keysCopy;
       goto LABEL_12;
     }
   }
 
-  v23 = [v9 objectForKeyedSubscript:v10];
+  v23 = [recordCopy objectForKeyedSubscript:keyCopy];
 LABEL_14:
 
   v24 = *MEMORY[0x1E69E9840];
@@ -719,10 +719,10 @@ LABEL_14:
   return v23;
 }
 
-- (id)_recordFromCKRecord:(void *)a1
+- (id)_recordFromCKRecord:(void *)record
 {
   v3 = a2;
-  if (a1)
+  if (record)
   {
     v4 = objc_autoreleasePoolPush();
     v5 = MEMORY[0x1E69B6FA0];
@@ -736,20 +736,20 @@ LABEL_14:
 
     v10 = [objc_opt_class() modificationDateFromCKRecord:v6];
 
-    v11 = [v10 pbDate];
-    [v7 setModificationDate:v11];
+    pbDate = [v10 pbDate];
+    [v7 setModificationDate:pbDate];
 
-    [v7 setRecordType:{objc_msgSend(a1, "pbRecordType")}];
-    v12 = [MEMORY[0x1E695DF00] pbDate];
-    [v7 setFetchDate:v12];
-    [v7 setAssetURLsDate:v12];
+    [v7 setRecordType:{objc_msgSend(record, "pbRecordType")}];
+    pbDate2 = [MEMORY[0x1E695DF00] pbDate];
+    [v7 setFetchDate:pbDate2];
+    [v7 setAssetURLsDate:pbDate2];
 
-    a1 = [a1 recordFromCKRecord:v6 base:v7];
+    record = [record recordFromCKRecord:v6 base:v7];
 
     objc_autoreleasePoolPop(v4);
   }
 
-  return a1;
+  return record;
 }
 
 - (NSDictionary)experimentalizedKeysByOriginalKey
@@ -768,20 +768,20 @@ LABEL_14:
   return localizedExperimentalizedKeysByOriginalKey;
 }
 
-- (id)_localizedLanguageSpecificKeysByOriginalKeyForContentStoreFrontID:(void *)a3 languageCode:
+- (id)_localizedLanguageSpecificKeysByOriginalKeyForContentStoreFrontID:(void *)d languageCode:
 {
   v22 = *MEMORY[0x1E69E9840];
   v5 = a2;
-  v6 = a3;
-  v7 = [MEMORY[0x1E695DF90] dictionary];
-  if ([v5 length] && objc_msgSend(v6, "length"))
+  dCopy = d;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  if ([v5 length] && objc_msgSend(dCopy, "length"))
   {
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v8 = [a1 localizableLanguageSpecificKeys];
-    v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    localizableLanguageSpecificKeys = [self localizableLanguageSpecificKeys];
+    v9 = [localizableLanguageSpecificKeys countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v9)
     {
       v10 = v9;
@@ -792,15 +792,15 @@ LABEL_14:
         {
           if (*v18 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(localizableLanguageSpecificKeys);
           }
 
           v13 = *(*(&v17 + 1) + 8 * i);
-          v14 = FCCKLocalizedLanguageSpecificRecordKey(v13, v5, v6);
-          [v7 setObject:v14 forKey:v13];
+          v14 = FCCKLocalizedLanguageSpecificRecordKey(v13, v5, dCopy);
+          [dictionary setObject:v14 forKey:v13];
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v10 = [localizableLanguageSpecificKeys countByEnumeratingWithState:&v17 objects:v21 count:16];
       }
 
       while (v10);
@@ -809,22 +809,22 @@ LABEL_14:
 
   v15 = *MEMORY[0x1E69E9840];
 
-  return v7;
+  return dictionary;
 }
 
-- (id)_localizedKeysByOriginalKeyForContentStoreFrontID:(id)a3
+- (id)_localizedKeysByOriginalKeyForContentStoreFrontID:(id)d
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF90] dictionary];
-  if ([v4 length])
+  dCopy = d;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  if ([dCopy length])
   {
     v28 = 0u;
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v6 = [(FCRecordSource *)self localizableKeys];
-    v7 = [v6 countByEnumeratingWithState:&v26 objects:v31 count:16];
+    localizableKeys = [(FCRecordSource *)self localizableKeys];
+    v7 = [localizableKeys countByEnumeratingWithState:&v26 objects:v31 count:16];
     if (v7)
     {
       v8 = v7;
@@ -835,15 +835,15 @@ LABEL_14:
         {
           if (*v27 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(localizableKeys);
           }
 
           v11 = *(*(&v26 + 1) + 8 * i);
-          v12 = FCCKLocalizedRecordKey(v11, v4);
-          [v5 setObject:v12 forKey:v11];
+          v12 = FCCKLocalizedRecordKey(v11, dCopy);
+          [dictionary setObject:v12 forKey:v11];
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v26 objects:v31 count:16];
+        v8 = [localizableKeys countByEnumeratingWithState:&v26 objects:v31 count:16];
       }
 
       while (v8);
@@ -853,8 +853,8 @@ LABEL_14:
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v13 = [(FCRecordSource *)self alwaysLocalizedKeys];
-    v14 = [v13 countByEnumeratingWithState:&v22 objects:v30 count:16];
+    alwaysLocalizedKeys = [(FCRecordSource *)self alwaysLocalizedKeys];
+    v14 = [alwaysLocalizedKeys countByEnumeratingWithState:&v22 objects:v30 count:16];
     if (v14)
     {
       v15 = v14;
@@ -865,15 +865,15 @@ LABEL_14:
         {
           if (*v23 != v16)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(alwaysLocalizedKeys);
           }
 
           v18 = *(*(&v22 + 1) + 8 * j);
-          v19 = FCCKLocalizedRecordKey(v18, v4);
-          [v5 setObject:v19 forKey:v18];
+          v19 = FCCKLocalizedRecordKey(v18, dCopy);
+          [dictionary setObject:v19 forKey:v18];
         }
 
-        v15 = [v13 countByEnumeratingWithState:&v22 objects:v30 count:16];
+        v15 = [alwaysLocalizedKeys countByEnumeratingWithState:&v22 objects:v30 count:16];
       }
 
       while (v15);
@@ -882,22 +882,22 @@ LABEL_14:
 
   v20 = *MEMORY[0x1E69E9840];
 
-  return v5;
+  return dictionary;
 }
 
-- (id)_experimentalizedKeysByOriginalKeyForExperimentPostfix:(id)a3
+- (id)_experimentalizedKeysByOriginalKeyForExperimentPostfix:(id)postfix
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF90] dictionary];
-  if ([v4 length])
+  postfixCopy = postfix;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  if ([postfixCopy length])
   {
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v6 = [(FCRecordSource *)self experimentalizableKeys];
-    v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    experimentalizableKeys = [(FCRecordSource *)self experimentalizableKeys];
+    v7 = [experimentalizableKeys countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v7)
     {
       v8 = v7;
@@ -908,15 +908,15 @@ LABEL_14:
         {
           if (*v16 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(experimentalizableKeys);
           }
 
           v11 = *(*(&v15 + 1) + 8 * i);
-          v12 = FCCKExperimentizedRecordKey(v11, v4);
-          [v5 setObject:v12 forKey:v11];
+          v12 = FCCKExperimentizedRecordKey(v11, postfixCopy);
+          [dictionary setObject:v12 forKey:v11];
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v8 = [experimentalizableKeys countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v8);
@@ -925,23 +925,23 @@ LABEL_14:
 
   v13 = *MEMORY[0x1E69E9840];
 
-  return v5;
+  return dictionary;
 }
 
-- (id)_localizedExperimentalizedKeysByOriginalKeyForContentStoreFrontID:(id)a3 experimentPostfix:(id)a4
+- (id)_localizedExperimentalizedKeysByOriginalKeyForContentStoreFrontID:(id)d experimentPostfix:(id)postfix
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E695DF90] dictionary];
-  if ([v6 length] && objc_msgSend(v7, "length"))
+  dCopy = d;
+  postfixCopy = postfix;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  if ([dCopy length] && objc_msgSend(postfixCopy, "length"))
   {
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v9 = [(FCRecordSource *)self localizableExperimentalizableKeys];
-    v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    localizableExperimentalizableKeys = [(FCRecordSource *)self localizableExperimentalizableKeys];
+    v10 = [localizableExperimentalizableKeys countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v10)
     {
       v11 = v10;
@@ -952,15 +952,15 @@ LABEL_14:
         {
           if (*v19 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(localizableExperimentalizableKeys);
           }
 
           v14 = *(*(&v18 + 1) + 8 * i);
-          v15 = FCCKLocalizedExperimentizedRecordKey(v14, v6, v7);
-          [v8 setObject:v15 forKey:v14];
+          v15 = FCCKLocalizedExperimentizedRecordKey(v14, dCopy, postfixCopy);
+          [dictionary setObject:v15 forKey:v14];
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v11 = [localizableExperimentalizableKeys countByEnumeratingWithState:&v18 objects:v22 count:16];
       }
 
       while (v11);
@@ -969,15 +969,15 @@ LABEL_14:
 
   v16 = *MEMORY[0x1E69E9840];
 
-  return v8;
+  return dictionary;
 }
 
-- (id)fetchOperationForRecordsWithIDs:(id)a3
+- (id)fetchOperationForRecordsWithIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   v5 = [FCRecordsFetchOperation alloc];
-  v6 = self;
-  v7 = v4;
+  selfCopy = self;
+  v7 = dsCopy;
   if (v5)
   {
     v12.receiver = v5;
@@ -996,14 +996,14 @@ LABEL_14:
   return v5;
 }
 
-- (id)fetchOperationForRecordsWithIDs:(id)a3 ignoreCacheForRecordIDs:(id)a4
+- (id)fetchOperationForRecordsWithIDs:(id)ds ignoreCacheForRecordIDs:(id)iDs
 {
-  v6 = a4;
-  v7 = a3;
+  iDsCopy = iDs;
+  dsCopy = ds;
   v8 = [FCRecordsFetchOperation alloc];
-  v9 = self;
-  v10 = v7;
-  v11 = v6;
+  selfCopy = self;
+  v10 = dsCopy;
+  v11 = iDsCopy;
   if (v8)
   {
     v18.receiver = v8;
@@ -1026,35 +1026,35 @@ LABEL_14:
   return v8;
 }
 
-- (id)cachedRecordWithID:(id)a3
+- (id)cachedRecordWithID:(id)d
 {
   v13 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (d)
   {
-    v12 = a3;
+    dCopy = d;
     v4 = MEMORY[0x1E695DEC8];
-    v5 = a3;
-    v6 = [v4 arrayWithObjects:&v12 count:1];
+    dCopy2 = d;
+    v6 = [v4 arrayWithObjects:&dCopy count:1];
 
-    v7 = [(FCRecordSource *)self cachedRecordsWithIDs:v6, v12, v13];
-    v8 = [v7 allRecords];
-    v9 = [v8 firstObject];
+    v7 = [(FCRecordSource *)self cachedRecordsWithIDs:v6, dCopy, v13];
+    allRecords = [v7 allRecords];
+    firstObject = [allRecords firstObject];
   }
 
   else
   {
-    v9 = 0;
+    firstObject = 0;
   }
 
   v10 = *MEMORY[0x1E69E9840];
 
-  return v9;
+  return firstObject;
 }
 
-- (id)cachedRecordsWithIDs:(id)a3
+- (id)cachedRecordsWithIDs:(id)ds
 {
-  v4 = a3;
-  if ([v4 count])
+  dsCopy = ds;
+  if ([dsCopy count])
   {
     [(FCRecordSource *)self _prepareForUse];
     if (self)
@@ -1067,8 +1067,8 @@ LABEL_14:
       cacheCoordinator = 0;
     }
 
-    v6 = [(FCCacheCoordinator *)cacheCoordinator holdTokensForKeys:v4];
-    v7 = [MEMORY[0x1E695DF70] array];
+    v6 = [(FCCacheCoordinator *)cacheCoordinator holdTokensForKeys:dsCopy];
+    array = [MEMORY[0x1E695DF70] array];
     if (self)
     {
       v8 = self->_cacheCoordinator;
@@ -1083,10 +1083,10 @@ LABEL_14:
     v13[1] = 3221225472;
     v13[2] = __39__FCRecordSource_cachedRecordsWithIDs___block_invoke_2;
     v13[3] = &unk_1E7C376A0;
-    v14 = v4;
-    v15 = self;
-    v16 = v7;
-    v9 = v7;
+    v14 = dsCopy;
+    selfCopy = self;
+    v16 = array;
+    v9 = array;
     [(FCCacheCoordinator *)v8 performCacheRead:v13];
     v10 = [v9 fc_dictionaryWithKeyBlock:&__block_literal_global_42 valueBlock:&__block_literal_global_45];
     v11 = [[FCHeldRecords alloc] initWithRecordsByID:v10 interestTokensByID:v6];
@@ -1178,9 +1178,9 @@ id __39__FCRecordSource_cachedRecordsWithIDs___block_invoke_3(uint64_t a1, uint6
   return v3;
 }
 
-- (id)interestTokenForRecordIDs:(id)a3
+- (id)interestTokenForRecordIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   [(FCRecordSource *)self _prepareForUse];
   if (self)
   {
@@ -1192,21 +1192,21 @@ id __39__FCRecordSource_cachedRecordsWithIDs___block_invoke_3(uint64_t a1, uint6
     cacheCoordinator = 0;
   }
 
-  v6 = [(FCCacheCoordinator *)cacheCoordinator holdTokenForKeys:v4];
+  v6 = [(FCCacheCoordinator *)cacheCoordinator holdTokenForKeys:dsCopy];
 
   return v6;
 }
 
-- (id)saveRecords:(id)a3
+- (id)saveRecords:(id)records
 {
-  v4 = a3;
+  recordsCopy = records;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__9;
   v16 = __Block_byref_object_dispose__9;
   v17 = 0;
-  if ([v4 count])
+  if ([recordsCopy count])
   {
     [(FCRecordSource *)self _prepareForUse];
     if (self)
@@ -1225,7 +1225,7 @@ id __39__FCRecordSource_cachedRecordsWithIDs___block_invoke_3(uint64_t a1, uint6
     v9[2] = __30__FCRecordSource_saveRecords___block_invoke;
     v9[3] = &unk_1E7C37408;
     v9[4] = self;
-    v10 = v4;
+    v10 = recordsCopy;
     v11 = &v12;
     [(FCCacheCoordinator *)v6 performCacheWrite:v9];
   }
@@ -1301,18 +1301,18 @@ void __30__FCRecordSource_saveRecords___block_invoke(uint64_t a1)
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_saveCKRecordsWithWriteLock:(void *)a3 updateFetchDateForRecordIdentifiers:(void *)a4 fetchContext:
+- (id)_saveCKRecordsWithWriteLock:(void *)lock updateFetchDateForRecordIdentifiers:(void *)identifiers fetchContext:
 {
   v51 = *MEMORY[0x1E69E9840];
   v7 = a2;
-  v37 = a3;
-  v8 = a4;
-  if (a1)
+  lockCopy = lock;
+  identifiersCopy = identifiers;
+  if (self)
   {
-    v44 = [MEMORY[0x1E695DF90] dictionary];
-    v43 = [MEMORY[0x1E695DF70] array];
-    v41 = [MEMORY[0x1E695DF70] array];
-    v40 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    array = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     v46 = 0u;
     v47 = 0u;
     v48 = 0u;
@@ -1324,7 +1324,7 @@ void __30__FCRecordSource_saveRecords___block_invoke(uint64_t a1)
     {
       v9 = *v47;
       v38 = *v47;
-      v39 = v8;
+      v39 = identifiersCopy;
       do
       {
         for (i = 0; i != v45; ++i)
@@ -1336,71 +1336,71 @@ void __30__FCRecordSource_saveRecords___block_invoke(uint64_t a1)
 
           v11 = *(*(&v46 + 1) + 8 * i);
           v12 = [objc_opt_class() identifierFromCKRecord:v11];
-          if ([a1[14] cacheContainsKey:v12])
+          if ([self[14] cacheContainsKey:v12])
           {
-            v13 = [a1[13] objectForKey:v12];
-            v14 = [(FCFaultableRecord *)v13 recordBase];
-            if (v8)
+            v13 = [self[13] objectForKey:v12];
+            recordBase = [(FCFaultableRecord *)v13 recordBase];
+            if (identifiersCopy)
             {
-              LODWORD(v8) = v8[2] == 1 && NSClassFromString(&cfstr_Xctest.isa) != 0;
+              LODWORD(identifiersCopy) = identifiersCopy[2] == 1 && NSClassFromString(&cfstr_Xctest.isa) != 0;
             }
 
             v20 = MEMORY[0x1E695DF00];
-            v21 = [v14 modificationDate];
-            v19 = [v20 dateWithPBDate:v21];
+            modificationDate = [recordBase modificationDate];
+            v19 = [v20 dateWithPBDate:modificationDate];
 
             v22 = [objc_opt_class() modificationDateFromCKRecord:v11];
             v23 = [v22 fc_isLaterThan:v19 withPrecision:1];
-            if ([(NTPBRecordBase *)v14 needsAssetURLRefresh]|| (v23 & 1) != 0 || v8)
+            if ([(NTPBRecordBase *)recordBase needsAssetURLRefresh]|| (v23 & 1) != 0 || identifiersCopy)
             {
-              v25 = [(FCRecordSource *)a1 _recordFromCKRecord:v11];
-              v26 = [FCFaultableRecord faultableRecordWithRecord:v25];
-              [v44 setObject:v26 forKey:v12];
+              v25 = [(FCRecordSource *)self _recordFromCKRecord:v11];
+              base = [FCFaultableRecord faultableRecordWithRecord:v25];
+              [dictionary setObject:base forKey:v12];
             }
 
             else
             {
-              v24 = [(FCFaultableRecord *)v13 record];
-              v25 = [v24 copy];
+              record = [(FCFaultableRecord *)v13 record];
+              v25 = [record copy];
 
-              v26 = [v25 base];
-              v27 = [MEMORY[0x1E695DF00] pbDate];
-              [v26 setFetchDate:v27];
+              base = [v25 base];
+              pbDate = [MEMORY[0x1E695DF00] pbDate];
+              [base setFetchDate:pbDate];
 
               v28 = [FCFaultableRecord faultableRecordWithRecord:v25];
-              [v44 setObject:v28 forKey:v12];
+              [dictionary setObject:v28 forKey:v12];
             }
 
-            v8 = v39;
+            identifiersCopy = v39;
 
             v9 = v38;
           }
 
           else
           {
-            v13 = [(FCRecordSource *)a1 _recordFromCKRecord:v11];
-            v14 = [v13 base];
+            v13 = [(FCRecordSource *)self _recordFromCKRecord:v11];
+            recordBase = [v13 base];
             v15 = [FCFaultableRecord faultableRecordWithRecord:v13];
-            [v44 setObject:v15 forKey:v12];
+            [dictionary setObject:v15 forKey:v12];
 
-            [v41 addObject:v12];
+            [array2 addObject:v12];
             v16 = MEMORY[0x1E696AD98];
-            v17 = [v14 cacheLifetimeHint];
-            if (v17 == 2)
+            cacheLifetimeHint = [recordBase cacheLifetimeHint];
+            if (cacheLifetimeHint == 2)
             {
               v18 = 2;
             }
 
             else
             {
-              v18 = v17 == 1;
+              v18 = cacheLifetimeHint == 1;
             }
 
             v19 = [v16 numberWithInteger:{v18, v36}];
-            [v40 setObject:v19 forKey:v12];
+            [dictionary2 setObject:v19 forKey:v12];
           }
 
-          [v43 addObject:v12];
+          [array addObject:v12];
         }
 
         v45 = [obj countByEnumeratingWithState:&v46 objects:v50 count:16];
@@ -1409,22 +1409,22 @@ void __30__FCRecordSource_saveRecords___block_invoke(uint64_t a1)
       while (v45);
     }
 
-    v29 = v37;
-    if ([v37 count])
+    v29 = lockCopy;
+    if ([lockCopy count])
     {
-      [a1[13] updateObjectsForKeys:v37 withBlock:&__block_literal_global_104];
+      [self[13] updateObjectsForKeys:lockCopy withBlock:&__block_literal_global_104];
     }
 
-    v30 = a1[13];
-    v31 = [v44 allValues];
-    v32 = [v44 allKeys];
-    [v30 setObjects:v31 forKeys:v32];
+    v30 = self[13];
+    allValues = [dictionary allValues];
+    allKeys = [dictionary allKeys];
+    [v30 setObjects:allValues forKeys:allKeys];
 
-    [a1[14] didInsertKeysIntoCache:v41 withLifetimeHints:v40];
-    v33 = [a1[14] persistableHints];
-    if (v33)
+    [self[14] didInsertKeysIntoCache:array2 withLifetimeHints:dictionary2];
+    persistableHints = [self[14] persistableHints];
+    if (persistableHints)
     {
-      [a1[13] setObject:v33 forKey:@"cacheHints"];
+      [self[13] setObject:persistableHints forKey:@"cacheHints"];
     }
 
     v7 = v36;
@@ -1432,25 +1432,25 @@ void __30__FCRecordSource_saveRecords___block_invoke(uint64_t a1)
 
   else
   {
-    v43 = 0;
-    v29 = v37;
+    array = 0;
+    v29 = lockCopy;
   }
 
   v34 = *MEMORY[0x1E69E9840];
 
-  return v43;
+  return array;
 }
 
-- (id)savePBRecords:(id)a3
+- (id)savePBRecords:(id)records
 {
-  v4 = a3;
+  recordsCopy = records;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = __Block_byref_object_copy__9;
   v17 = __Block_byref_object_dispose__9;
   v18 = 0;
-  if ([v4 count])
+  if ([recordsCopy count])
   {
     [(FCRecordSource *)self _prepareForUse];
     if (self)
@@ -1468,8 +1468,8 @@ void __30__FCRecordSource_saveRecords___block_invoke(uint64_t a1)
     v9[1] = 3221225472;
     v9[2] = __32__FCRecordSource_savePBRecords___block_invoke;
     v9[3] = &unk_1E7C37408;
-    v10 = v4;
-    v11 = self;
+    v10 = recordsCopy;
+    selfCopy = self;
     v12 = &v13;
     [(FCCacheCoordinator *)v6 performCacheWrite:v9];
   }
@@ -1658,17 +1658,17 @@ void __32__FCRecordSource_savePBRecords___block_invoke(uint64_t a1)
   v45 = *MEMORY[0x1E69E9840];
 }
 
-- (id)convertRecords:(id)a3
+- (id)convertRecords:(id)records
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF90] dictionary];
-  v6 = [MEMORY[0x1E695DF90] dictionary];
+  recordsCopy = records;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  dictionary2 = [MEMORY[0x1E695DF90] dictionary];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v7 = v4;
+  v7 = recordsCopy;
   v8 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v8)
   {
@@ -1687,8 +1687,8 @@ void __32__FCRecordSource_savePBRecords___block_invoke(uint64_t a1)
         v13 = objc_autoreleasePoolPush();
         v14 = [objc_opt_class() identifierFromCKRecord:{v12, v19}];
         v15 = [(FCRecordSource *)self _recordFromCKRecord:v12];
-        [v5 setObject:v15 forKey:v14];
-        [v6 setObject:v14 forKey:v14];
+        [dictionary setObject:v15 forKey:v14];
+        [dictionary2 setObject:v14 forKey:v14];
 
         objc_autoreleasePoolPop(v13);
       }
@@ -1699,16 +1699,16 @@ void __32__FCRecordSource_savePBRecords___block_invoke(uint64_t a1)
     while (v9);
   }
 
-  v16 = [[FCHeldRecords alloc] initWithRecordsByID:v5 interestTokensByID:v6];
+  v16 = [[FCHeldRecords alloc] initWithRecordsByID:dictionary interestTokensByID:dictionary2];
   v17 = *MEMORY[0x1E69E9840];
 
   return v16;
 }
 
-- (id)deleteRecordsWithIDs:(id)a3
+- (id)deleteRecordsWithIDs:(id)ds
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dsCopy = ds;
   if (([objc_opt_class() supportsDeletions] & 1) == 0 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v12 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"should only attempt to delete when the record source supports deletions"];
@@ -1729,7 +1729,7 @@ void __32__FCRecordSource_savePBRecords___block_invoke(uint64_t a1)
   *&v17 = __Block_byref_object_copy__9;
   *(&v17 + 1) = __Block_byref_object_dispose__9;
   v18 = 0;
-  if ([v4 count])
+  if ([dsCopy count])
   {
     if (self)
     {
@@ -1748,7 +1748,7 @@ void __32__FCRecordSource_savePBRecords___block_invoke(uint64_t a1)
     v13[3] = &unk_1E7C37138;
     v15 = buf;
     v13[4] = self;
-    v14 = v4;
+    v14 = dsCopy;
     [(FCCacheCoordinator *)v6 performCacheWrite:v13];
   }
 
@@ -1777,12 +1777,12 @@ uint64_t __39__FCRecordSource_deleteRecordsWithIDs___block_invoke(uint64_t a1)
   return MEMORY[0x1EEE66BB8](v2, v4);
 }
 
-- (id)_deleteRecordsWithWriteLockWithIDs:(id *)a1
+- (id)_deleteRecordsWithWriteLockWithIDs:(id *)ds
 {
   v39 = *MEMORY[0x1E69E9840];
   v3 = a2;
   v25 = v3;
-  if (!a1)
+  if (!ds)
   {
     goto LABEL_15;
   }
@@ -1825,15 +1825,15 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  v5 = a1[13];
-  v6 = [v4 allObjects];
-  v7 = [v5 objectsForKeys:v6];
+  v5 = ds[13];
+  allObjects = [v4 allObjects];
+  v7 = [v5 objectsForKeys:allObjects];
 
-  v8 = [v7 allKeys];
+  allKeys = [v7 allKeys];
 
-  [a1[13] updateObjectsForKeys:v8 withBlock:&__block_literal_global_107];
-  v9 = [a1[13] objectsForKeys:v8];
-  v10 = [MEMORY[0x1E695DF90] dictionary];
+  [ds[13] updateObjectsForKeys:allKeys withBlock:&__block_literal_global_107];
+  v9 = [ds[13] objectsForKeys:allKeys];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
@@ -1855,8 +1855,8 @@ LABEL_5:
 
         v16 = *(*(&v26 + 1) + 8 * i);
         v17 = [v11 objectForKey:v16];
-        v18 = [(FCFaultableRecord *)v17 record];
-        [v10 setObject:v18 forKey:v16];
+        record = [(FCFaultableRecord *)v17 record];
+        [dictionary setObject:record forKey:v16];
       }
 
       v13 = [v11 countByEnumeratingWithState:&v26 objects:v30 count:16];
@@ -1866,19 +1866,19 @@ LABEL_5:
   }
 
   v19 = [FCHeldRecords alloc];
-  v20 = [a1[14] holdTokensForKeys:v8];
-  a1 = [(FCHeldRecords *)v19 initWithRecordsByID:v10 interestTokensByID:v20];
+  v20 = [ds[14] holdTokensForKeys:allKeys];
+  ds = [(FCHeldRecords *)v19 initWithRecordsByID:dictionary interestTokensByID:v20];
 
 LABEL_15:
   v21 = *MEMORY[0x1E69E9840];
 
-  return a1;
+  return ds;
 }
 
-- (void)updateFetchDateForRecordIDs:(id)a3
+- (void)updateFetchDateForRecordIDs:(id)ds
 {
-  v4 = a3;
-  if ([v4 count])
+  dsCopy = ds;
+  if ([dsCopy count])
   {
     [(FCRecordSource *)self _prepareForUse];
     if (self)
@@ -1896,18 +1896,18 @@ LABEL_15:
     v6[2] = __46__FCRecordSource_updateFetchDateForRecordIDs___block_invoke;
     v6[3] = &unk_1E7C36C58;
     v6[4] = self;
-    v7 = v4;
+    v7 = dsCopy;
     [(FCCacheCoordinator *)cacheCoordinator performCacheWrite:v6];
   }
 }
 
-- (BOOL)isRecordStale:(id)a3 withCachePolicy:(id)a4
+- (BOOL)isRecordStale:(id)stale withCachePolicy:(id)policy
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v7 || ![(FCCachePolicy *)v7 cachePolicy])
+  staleCopy = stale;
+  policyCopy = policy;
+  v8 = policyCopy;
+  if (!policyCopy || ![(FCCachePolicy *)policyCopy cachePolicy])
   {
     if (self)
     {
@@ -1924,15 +1924,15 @@ LABEL_15:
     v8 = v10;
   }
 
-  v11 = [(FCCachePolicy *)v8 cachePolicy];
-  if (v11 > 3)
+  cachePolicy = [(FCCachePolicy *)v8 cachePolicy];
+  if (cachePolicy > 3)
   {
-    if ((v11 - 4) < 2)
+    if ((cachePolicy - 4) < 2)
     {
 LABEL_13:
-      v14 = [v6 base];
+      base = [staleCopy base];
       [(FCCachePolicy *)v8 maximumCachedAge];
-      v12 = [v14 fc_isCachedAgeGreaterThan:?];
+      v12 = [base fc_isCachedAgeGreaterThan:?];
 
       goto LABEL_17;
     }
@@ -1942,7 +1942,7 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  if ((v11 - 2) < 2)
+  if ((cachePolicy - 2) < 2)
   {
     [(FCCachePolicy *)v8 maximumCachedAge];
     if (v13 != 0.0)
@@ -1953,7 +1953,7 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  if (!v11)
+  if (!cachePolicy)
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
@@ -1972,34 +1972,34 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  v12 = v11 == 1;
+  v12 = cachePolicy == 1;
 LABEL_17:
 
   v15 = *MEMORY[0x1E69E9840];
   return v12;
 }
 
-- (BOOL)recognizesRecordID:(id)a3
+- (BOOL)recognizesRecordID:(id)d
 {
-  v4 = a3;
-  v5 = [(FCRecordSource *)self recordIDPrefixes];
-  v6 = [FCRecordSource recognizesRecordID:v4 inRecordIDPrefixes:v5];
+  dCopy = d;
+  recordIDPrefixes = [(FCRecordSource *)self recordIDPrefixes];
+  v6 = [FCRecordSource recognizesRecordID:dCopy inRecordIDPrefixes:recordIDPrefixes];
 
   return v6;
 }
 
-+ (BOOL)recognizesRecordID:(id)a3 inRecordIDPrefixes:(id)a4
++ (BOOL)recognizesRecordID:(id)d inRecordIDPrefixes:(id)prefixes
 {
-  v5 = a3;
+  dCopy = d;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __56__FCRecordSource_recognizesRecordID_inRecordIDPrefixes___block_invoke;
   v8[3] = &unk_1E7C38B40;
-  v9 = v5;
-  v6 = v5;
-  LOBYTE(a4) = [a4 fc_containsObjectPassingTest:v8];
+  v9 = dCopy;
+  v6 = dCopy;
+  LOBYTE(prefixes) = [prefixes fc_containsObjectPassingTest:v8];
 
-  return a4;
+  return prefixes;
 }
 
 - (int64_t)storageSize
@@ -2038,9 +2038,9 @@ LABEL_17:
   [(FCKeyValueStore *)v4 save];
 }
 
-- (void)addCacheObserver:(id)a3
+- (void)addCacheObserver:(id)observer
 {
-  v5 = a3;
+  observerCopy = observer;
   [(FCRecordSource *)self _prepareForUse];
   if (self)
   {
@@ -2052,19 +2052,19 @@ LABEL_17:
     cacheCoordinator = 0;
   }
 
-  [(FCCacheCoordinator *)cacheCoordinator addObserver:v5];
+  [(FCCacheCoordinator *)cacheCoordinator addObserver:observerCopy];
 }
 
-- (void)enableFlushingWithFlushingThreshold:(unint64_t)a3
+- (void)enableFlushingWithFlushingThreshold:(unint64_t)threshold
 {
   v20 = *MEMORY[0x1E69E9840];
   v5 = @"zero-interest";
-  if (a3 == 1)
+  if (threshold == 1)
   {
     v5 = @"low";
   }
 
-  if (a3 == 2)
+  if (threshold == 2)
   {
     v5 = @"high";
   }
@@ -2074,32 +2074,32 @@ LABEL_17:
   if (os_log_type_enabled(FCRecordSourceLog, OS_LOG_TYPE_DEFAULT))
   {
     v8 = v7;
-    v9 = [(FCRecordSource *)self recordType];
+    recordType = [(FCRecordSource *)self recordType];
     *buf = 138543618;
-    v17 = v9;
+    v17 = recordType;
     v18 = 2114;
     v19 = v6;
     _os_log_impl(&dword_1B63EF000, v8, OS_LOG_TYPE_DEFAULT, "will enable flushing %{public}@ records with %{public}@ threshold", buf, 0x16u);
   }
 
-  if (a3 == 2)
+  if (threshold == 2)
   {
-    v12 = [(FCRecordSource *)self highThresholdDataSizeLimit];
+    highThresholdDataSizeLimit = [(FCRecordSource *)self highThresholdDataSizeLimit];
   }
 
   else
   {
-    if (a3 != 1)
+    if (threshold != 1)
     {
-      v10 = a3 == 0;
+      v10 = threshold == 0;
       v11 = 0;
       goto LABEL_13;
     }
 
-    v12 = [(FCRecordSource *)self lowThresholdDataSizeLimit];
+    highThresholdDataSizeLimit = [(FCRecordSource *)self lowThresholdDataSizeLimit];
   }
 
-  v11 = v12;
+  v11 = highThresholdDataSizeLimit;
   v10 = 0;
 LABEL_13:
   v13 = [[FCCacheCoordinatorFlushPolicy alloc] initWithLowWaterMark:(v11 * 0.7) highWaterMark:v11 alwaysFlushKeysWithZeroInterest:v10];
@@ -2138,7 +2138,7 @@ __CFString *__54__FCRecordSource_enableFlushingWithFlushingThreshold___block_inv
   }
 }
 
-- (unint64_t)cacheCoordinatorCurrentSizeWithReadLock:(id)a3
+- (unint64_t)cacheCoordinatorCurrentSizeWithReadLock:(id)lock
 {
   if (self)
   {
@@ -2148,16 +2148,16 @@ __CFString *__54__FCRecordSource_enableFlushingWithFlushingThreshold___block_inv
   return [(FCRecordSource *)self storeSize];
 }
 
-- (void)cacheCoordinator:(id)a3 flushKeysWithWriteLock:(id)a4
+- (void)cacheCoordinator:(id)coordinator flushKeysWithWriteLock:(id)lock
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  coordinatorCopy = coordinator;
+  lockCopy = lock;
   v8 = FCRecordSourceLog;
   if (os_log_type_enabled(FCRecordSourceLog, OS_LOG_TYPE_DEFAULT))
   {
     v9 = v8;
-    v10 = [v7 count];
+    v10 = [lockCopy count];
     if (self)
     {
       localStore = self->_localStore;
@@ -2169,17 +2169,17 @@ __CFString *__54__FCRecordSource_enableFlushingWithFlushingThreshold___block_inv
     }
 
     v12 = localStore;
-    v13 = [(FCKeyValueStore *)v12 allKeys];
-    v14 = [v13 count] - 1;
-    v15 = [(FCRecordSource *)self recordType];
+    allKeys = [(FCKeyValueStore *)v12 allKeys];
+    v14 = [allKeys count] - 1;
+    recordType = [(FCRecordSource *)self recordType];
     v20 = 134218754;
     v21 = v10;
     v22 = 2048;
     v23 = v14;
     v24 = 2114;
-    v25 = v15;
+    v25 = recordType;
     v26 = 2114;
-    v27 = v7;
+    v27 = lockCopy;
     _os_log_impl(&dword_1B63EF000, v9, OS_LOG_TYPE_DEFAULT, "record source is flushing %lu of %lu %{public}@ records: %{public}@", &v20, 0x2Au);
   }
 
@@ -2194,23 +2194,23 @@ __CFString *__54__FCRecordSource_enableFlushingWithFlushingThreshold___block_inv
   }
 
   v17 = v16;
-  v18 = [v7 allObjects];
-  [(FCKeyValueStore *)v17 removeObjectsForKeys:v18];
+  allObjects = [lockCopy allObjects];
+  [(FCKeyValueStore *)v17 removeObjectsForKeys:allObjects];
 
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchCoordinator:(id)a3 filterKeysToFetch:(id)a4 isFirstAttempt:(BOOL)a5 context:(id)a6
+- (void)fetchCoordinator:(id)coordinator filterKeysToFetch:(id)fetch isFirstAttempt:(BOOL)attempt context:(id)context
 {
   v57 = *MEMORY[0x1E69E9840];
-  v9 = a4;
-  v10 = a6;
+  fetchCopy = fetch;
+  contextCopy = context;
   v11 = objc_opt_class();
-  v12 = FCCheckedDynamicCast(v11, v10);
+  v12 = FCCheckedDynamicCast(v11, contextCopy);
   v13 = v12;
   if (v12 && (*(v12 + 8) & 1) != 0)
   {
-    v37 = v10;
+    v37 = contextCopy;
     v39 = v12;
     if ((*(v12 + 16) | 4) == 5 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
@@ -2226,8 +2226,8 @@ __CFString *__54__FCRecordSource_enableFlushingWithFlushingThreshold___block_inv
       _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
     }
 
-    v14 = [v9 allObjects];
-    v15 = [(FCRecordSource *)&self->super.isa _faultableRecordsWithIdentifiers:v14];
+    allObjects = [fetchCopy allObjects];
+    v15 = [(FCRecordSource *)&self->super.isa _faultableRecordsWithIdentifiers:allObjects];
 
     v42 = 0u;
     v43 = 0u;
@@ -2251,33 +2251,33 @@ __CFString *__54__FCRecordSource_enableFlushingWithFlushingThreshold___block_inv
 
           v21 = *(*(&v40 + 1) + 8 * i);
           v22 = [v16 objectForKeyedSubscript:v21];
-          v23 = [(FCFaultableRecord *)v22 recordBase];
-          if (![(NTPBRecordBase *)v23 needsAssetURLRefresh])
+          recordBase = [(FCFaultableRecord *)v22 recordBase];
+          if (![(NTPBRecordBase *)recordBase needsAssetURLRefresh])
           {
-            v24 = [v23 fetchDate];
-            if (!v24)
+            fetchDate = [recordBase fetchDate];
+            if (!fetchDate)
             {
               goto LABEL_14;
             }
 
-            v25 = v24;
-            v26 = v9;
+            v25 = fetchDate;
+            v26 = fetchCopy;
             v27 = MEMORY[0x1E695DF00];
-            [v23 fetchDate];
+            [recordBase fetchDate];
             v29 = v28 = v18;
             v30 = [v27 dateWithPBDate:v29];
             [v30 fc_timeIntervalUntilNow];
             v32 = v31;
             v33 = v39[3];
 
-            v9 = v26;
+            fetchCopy = v26;
             v19 = v38;
 
             v18 = v28;
             if (v32 < v33)
             {
 LABEL_14:
-              [v9 removeObject:v21];
+              [fetchCopy removeObject:v21];
             }
           }
         }
@@ -2288,7 +2288,7 @@ LABEL_14:
       while (v18);
     }
 
-    v10 = v37;
+    contextCopy = v37;
     v13 = v39;
   }
 
@@ -2308,9 +2308,9 @@ LABEL_14:
     v44[1] = 3221225472;
     v44[2] = __76__FCRecordSource_fetchCoordinator_filterKeysToFetch_isFirstAttempt_context___block_invoke;
     v44[3] = &unk_1E7C37678;
-    v45 = v9;
-    v46 = self;
-    v47 = a5;
+    v45 = fetchCopy;
+    selfCopy = self;
+    attemptCopy = attempt;
     [(FCCacheCoordinator *)cacheCoordinator performCacheRead:v44];
     v16 = v45;
   }
@@ -2388,10 +2388,10 @@ void __76__FCRecordSource_fetchCoordinator_filterKeysToFetch_isFirstAttempt_cont
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_faultableRecordsWithIdentifiers:(id *)a1
+- (id)_faultableRecordsWithIdentifiers:(id *)identifiers
 {
   v3 = a2;
-  if (a1)
+  if (identifiers)
   {
     v9 = 0;
     v10 = &v9;
@@ -2399,48 +2399,48 @@ void __76__FCRecordSource_fetchCoordinator_filterKeysToFetch_isFirstAttempt_cont
     v12 = __Block_byref_object_copy__9;
     v13 = __Block_byref_object_dispose__9;
     v14 = 0;
-    v4 = a1[14];
+    v4 = identifiers[14];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __51__FCRecordSource__faultableRecordsWithIdentifiers___block_invoke;
     v6[3] = &unk_1E7C37138;
     v8 = &v9;
-    v6[4] = a1;
+    v6[4] = identifiers;
     v7 = v3;
     [v4 performCacheRead:v6];
 
-    a1 = v10[5];
+    identifiers = v10[5];
     _Block_object_dispose(&v9, 8);
   }
 
-  return a1;
+  return identifiers;
 }
 
-- (id)fetchCoordinator:(id)a3 fetchOperationForKeys:(id)a4 context:(id)a5 qualityOfService:(int64_t)a6 relativePriority:(int64_t)a7
+- (id)fetchCoordinator:(id)coordinator fetchOperationForKeys:(id)keys context:(id)context qualityOfService:(int64_t)service relativePriority:(int64_t)priority
 {
   v110 = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v11 = a5;
+  keysCopy = keys;
+  contextCopy = context;
   v12 = objc_opt_class();
-  v13 = FCCheckedDynamicCast(v12, v11);
+  v13 = FCCheckedDynamicCast(v12, contextCopy);
   v80 = v13;
-  v81 = v11;
+  v81 = contextCopy;
   if (v13 && (*(v13 + 8) & 1) != 0)
   {
-    v77 = a6;
-    v14 = [v10 allObjects];
+    serviceCopy = service;
+    allObjects = [keysCopy allObjects];
     v91[0] = MEMORY[0x1E69E9820];
     v91[1] = 3221225472;
     v91[2] = __99__FCRecordSource_fetchCoordinator_fetchOperationForKeys_context_qualityOfService_relativePriority___block_invoke_77;
     v91[3] = &unk_1E7C38BD8;
     v91[4] = self;
-    v79 = [v14 fc_arrayByTransformingWithBlock:v91];
+    v79 = [allObjects fc_arrayByTransformingWithBlock:v91];
 
-    v78 = v10;
-    v15 = [v10 allObjects];
-    v16 = [(FCRecordSource *)&self->super.isa _faultableRecordsWithIdentifiers:v15];
+    v78 = keysCopy;
+    allObjects2 = [keysCopy allObjects];
+    v16 = [(FCRecordSource *)&self->super.isa _faultableRecordsWithIdentifiers:allObjects2];
 
-    v17 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v87 = 0u;
     v88 = 0u;
     v89 = 0u;
@@ -2462,18 +2462,18 @@ void __76__FCRecordSource_fetchCoordinator_filterKeysToFetch_isFirstAttempt_cont
 
           v23 = *(*(&v87 + 1) + 8 * i);
           v24 = [v18 objectForKey:v23];
-          v25 = [(FCFaultableRecord *)v24 recordBase];
-          v26 = [(NTPBRecordBase *)v25 needsAssetURLRefresh];
+          recordBase = [(FCFaultableRecord *)v24 recordBase];
+          needsAssetURLRefresh = [(NTPBRecordBase *)recordBase needsAssetURLRefresh];
 
-          if (!v26)
+          if (!needsAssetURLRefresh)
           {
-            v27 = [(FCFaultableRecord *)v24 recordBase];
-            v28 = [v27 changeTag];
+            recordBase2 = [(FCFaultableRecord *)v24 recordBase];
+            changeTag = [recordBase2 changeTag];
 
-            if (v28)
+            if (changeTag)
             {
               v29 = [(FCRecordSource *)self _ckRecordIDFromIdentifier:v23];
-              [v17 setObject:v28 forKeyedSubscript:v29];
+              [dictionary setObject:changeTag forKeyedSubscript:v29];
             }
           }
         }
@@ -2501,19 +2501,19 @@ void __76__FCRecordSource_fetchCoordinator_filterKeysToFetch_isFirstAttempt_cont
     if (v31)
     {
       objc_setProperty_nonatomic_copy(v31, v34, v79, 384);
-      objc_setProperty_nonatomic_copy(v31, v35, v17, 392);
-      v36 = [(FCRecordSource *)self desiredKeys];
-      objc_setProperty_nonatomic_copy(v31, v37, v36, 400);
+      objc_setProperty_nonatomic_copy(v31, v35, dictionary, 392);
+      desiredKeys = [(FCRecordSource *)self desiredKeys];
+      objc_setProperty_nonatomic_copy(v31, v37, desiredKeys, 400);
     }
 
     else
     {
-      v36 = [(FCRecordSource *)self desiredKeys];
+      desiredKeys = [(FCRecordSource *)self desiredKeys];
     }
 
-    v10 = v78;
+    keysCopy = v78;
 
-    [v31 setQualityOfService:v77];
+    [v31 setQualityOfService:serviceCopy];
     if ([objc_opt_class() supportsDeletions])
     {
       if (v31)
@@ -2521,10 +2521,10 @@ void __76__FCRecordSource_fetchCoordinator_filterKeysToFetch_isFirstAttempt_cont
         v31[368] = 1;
       }
 
-      v38 = [objc_opt_class() canaryRecordName];
-      if (v38)
+      canaryRecordName = [objc_opt_class() canaryRecordName];
+      if (canaryRecordName)
       {
-        v40 = [objc_alloc(MEMORY[0x1E695BA70]) initWithRecordName:v38];
+        v40 = [objc_alloc(MEMORY[0x1E695BA70]) initWithRecordName:canaryRecordName];
         if (v31)
         {
           objc_setProperty_nonatomic_copy(v31, v39, v40, 408);
@@ -2534,19 +2534,19 @@ void __76__FCRecordSource_fetchCoordinator_filterKeysToFetch_isFirstAttempt_cont
 
     [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
     v42 = v41;
-    v43 = [v31 operationID];
+    operationID = [v31 operationID];
     v44 = FCRecordSourceLog;
     if (os_log_type_enabled(FCRecordSourceLog, OS_LOG_TYPE_INFO))
     {
       v45 = v44;
       v46 = [v79 count];
-      v47 = [(FCRecordSource *)self recordType];
+      recordType = [(FCRecordSource *)self recordType];
       *buf = 134218498;
       v105 = v46;
       v106 = 2114;
-      v107 = v47;
+      v107 = recordType;
       v108 = 2114;
-      v109 = v43;
+      v109 = operationID;
       _os_log_impl(&dword_1B63EF000, v45, OS_LOG_TYPE_INFO, "will refresh %lu %{public}@ records with operation ID %{public}@", buf, 0x20u);
 
       v33 = v79;
@@ -2559,11 +2559,11 @@ void __76__FCRecordSource_fetchCoordinator_filterKeysToFetch_isFirstAttempt_cont
     newValue[4] = self;
     v48 = v80;
     v83 = v80;
-    v84 = v43;
+    v84 = operationID;
     v86 = v42;
     v85 = v33;
     v49 = v33;
-    v51 = v43;
+    v51 = operationID;
     v52 = v49;
     if (v31)
     {
@@ -2576,13 +2576,13 @@ void __76__FCRecordSource_fetchCoordinator_filterKeysToFetch_isFirstAttempt_cont
 
   else
   {
-    v54 = [v10 allObjects];
+    allObjects3 = [keysCopy allObjects];
     v102[0] = MEMORY[0x1E69E9820];
     v102[1] = 3221225472;
     v102[2] = __99__FCRecordSource_fetchCoordinator_fetchOperationForKeys_context_qualityOfService_relativePriority___block_invoke;
     v102[3] = &unk_1E7C38D38;
     v102[4] = self;
-    v55 = [v54 fc_arrayByTransformingWithBlock:v102];
+    v55 = [allObjects3 fc_arrayByTransformingWithBlock:v102];
 
     v56 = objc_alloc_init(FCCKContentBatchedFetchRecordsOperation);
     v31 = v56;
@@ -2600,31 +2600,31 @@ void __76__FCRecordSource_fetchCoordinator_filterKeysToFetch_isFirstAttempt_cont
     if (v31)
     {
       objc_setProperty_nonatomic_copy(v31, v58, v55, 376);
-      v59 = [(FCRecordSource *)self desiredKeys];
-      objc_setProperty_nonatomic_copy(v31, v60, v59, 384);
+      desiredKeys2 = [(FCRecordSource *)self desiredKeys];
+      objc_setProperty_nonatomic_copy(v31, v60, desiredKeys2, 384);
     }
 
     else
     {
-      v59 = [(FCRecordSource *)self desiredKeys];
+      desiredKeys2 = [(FCRecordSource *)self desiredKeys];
     }
 
-    [v31 setQualityOfService:a6];
+    [v31 setQualityOfService:service];
     [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
     v62 = v61;
-    v63 = [v31 operationID];
+    operationID2 = [v31 operationID];
     v64 = FCRecordSourceLog;
     if (os_log_type_enabled(FCRecordSourceLog, OS_LOG_TYPE_INFO))
     {
       v65 = v64;
       v66 = [v55 count];
-      v67 = [(FCRecordSource *)self recordType];
+      recordType2 = [(FCRecordSource *)self recordType];
       *buf = 134218498;
       v105 = v66;
       v106 = 2114;
-      v107 = v67;
+      v107 = recordType2;
       v108 = 2112;
-      v109 = v63;
+      v109 = operationID2;
       _os_log_impl(&dword_1B63EF000, v65, OS_LOG_TYPE_INFO, "will fetch %lu %{public}@ records with operation ID %@", buf, 0x20u);
     }
 
@@ -2648,14 +2648,14 @@ void __76__FCRecordSource_fetchCoordinator_filterKeysToFetch_isFirstAttempt_cont
     v92[2] = __99__FCRecordSource_fetchCoordinator_fetchOperationForKeys_context_qualityOfService_relativePriority___block_invoke_2;
     v92[3] = &unk_1E7C38BB0;
     v93 = v72;
-    v94 = self;
+    selfCopy = self;
     v95 = v70;
-    v96 = v63;
+    v96 = operationID2;
     v98 = v62;
     v97 = v55;
     v49 = v55;
-    v51 = v63;
-    v17 = v70;
+    v51 = operationID2;
+    dictionary = v70;
     v18 = v72;
     v74 = v49;
     v48 = v80;
@@ -2673,9 +2673,9 @@ void __76__FCRecordSource_fetchCoordinator_filterKeysToFetch_isFirstAttempt_cont
   return v31;
 }
 
-- (id)_ckRecordIDFromIdentifier:(uint64_t)a1
+- (id)_ckRecordIDFromIdentifier:(uint64_t)identifier
 {
-  if (a1)
+  if (identifier)
   {
     v2 = MEMORY[0x1E695BA70];
     v3 = a2;
@@ -2821,12 +2821,12 @@ LABEL_17:
   v31 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_identifierFromCKRecordID:(void *)a1
+- (id)_identifierFromCKRecordID:(void *)d
 {
   v16 = *MEMORY[0x1E69E9840];
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (d)
   {
     if (!v3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
@@ -2842,12 +2842,12 @@ LABEL_17:
       _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
     }
 
-    a1 = [v4 recordName];
+    d = [v4 recordName];
   }
 
   v5 = *MEMORY[0x1E69E9840];
 
-  return a1;
+  return d;
 }
 
 void __99__FCRecordSource_fetchCoordinator_fetchOperationForKeys_context_qualityOfService_relativePriority___block_invoke_81(uint64_t a1, void *a2, void *a3, void *a4, void *a5)
@@ -2974,12 +2974,12 @@ void __99__FCRecordSource_fetchCoordinator_fetchOperationForKeys_context_quality
   }
 }
 
-- (void)fetchCoordinator:(id)a3 addFetchOperation:(id)a4 context:(id)a5
+- (void)fetchCoordinator:(id)coordinator addFetchOperation:(id)operation context:(id)context
 {
   v5 = MEMORY[0x1E696ADC8];
-  v6 = a4;
-  v7 = [v5 fc_sharedConcurrentQueue];
-  [v7 addOperation:v6];
+  operationCopy = operation;
+  fc_sharedConcurrentQueue = [v5 fc_sharedConcurrentQueue];
+  [fc_sharedConcurrentQueue addOperation:operationCopy];
 }
 
 id __34__FCRecordSource__initializeStore__block_invoke(uint64_t a1, void *a2)
@@ -3058,17 +3058,17 @@ void __51__FCRecordSource__faultableRecordsWithIdentifiers___block_invoke(void *
   *(v5 + 40) = v4;
 }
 
-- (id)_fetchErrorForKey:(id)a1
+- (id)_fetchErrorForKey:(id)key
 {
-  v2 = a1;
-  if (a1)
+  keyCopy = key;
+  if (key)
   {
     v3 = a2;
-    v4 = [v2 fetchErrorsByKey];
-    v2 = [v4 objectForKey:v3];
+    fetchErrorsByKey = [keyCopy fetchErrorsByKey];
+    keyCopy = [fetchErrorsByKey objectForKey:v3];
   }
 
-  return v2;
+  return keyCopy;
 }
 
 id __53__FCRecordSource__deleteRecordsWithWriteLockWithIDs___block_invoke(uint64_t a1, uint64_t a2)
@@ -3089,17 +3089,17 @@ id __53__FCRecordSource__deleteRecordsWithWriteLockWithIDs___block_invoke(uint64
   return v7;
 }
 
-- (void)t_startOverridingExperimentalizableFieldsPostfix:(id)a3 treatmentID:(id)a4
+- (void)t_startOverridingExperimentalizableFieldsPostfix:(id)postfix treatmentID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  postfixCopy = postfix;
+  dCopy = d;
   experimentalizableFieldsPostfix = self->_experimentalizableFieldsPostfix;
-  self->_experimentalizableFieldsPostfix = v6;
-  v12 = v6;
+  self->_experimentalizableFieldsPostfix = postfixCopy;
+  v12 = postfixCopy;
 
   activeTreatmentID = self->_activeTreatmentID;
-  self->_activeTreatmentID = v7;
-  v10 = v7;
+  self->_activeTreatmentID = dCopy;
+  v10 = dCopy;
 
   desiredKeys = self->_desiredKeys;
   self->_desiredKeys = 0;

@@ -1,27 +1,27 @@
 @interface CKCanvasBackButtonViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation CKCanvasBackButtonViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CKCanvasBackButtonView" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKCanvasBackButtonView" hasInstanceMethod:@"backButtonView" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CKCanvasBackButtonView" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKCanvasBackButtonView" hasInstanceMethod:@"backButtonView" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
 {
   v2 = [(CKCanvasBackButtonViewAccessibility *)self safeValueForKey:@"titleLabel"];
-  v3 = [v2 accessibilityLabel];
+  accessibilityLabel = [v2 accessibilityLabel];
 
-  if ([v3 length])
+  if ([accessibilityLabel length])
   {
     v4 = MEMORY[0x29EDBA0F8];
     v5 = accessibilityLocalizedString(@"message.view.back.button.unread");
-    v6 = [v4 stringWithFormat:v5, v3];
+    v6 = [v4 stringWithFormat:v5, accessibilityLabel];
   }
 
   else

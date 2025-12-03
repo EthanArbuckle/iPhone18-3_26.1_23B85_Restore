@@ -1,45 +1,45 @@
 @interface FigCaptureImageSensorTemperatureMonitor
-- (FigCaptureImageSensorTemperatureMonitor)initWithPortType:(id)a3 sensorThermalLevelsByTemperature:(id)a4;
+- (FigCaptureImageSensorTemperatureMonitor)initWithPortType:(id)type sensorThermalLevelsByTemperature:(id)temperature;
 - (void)dealloc;
-- (void)startMonitoringImageSensorTemperatureUntilNominalWithQueue:(id)a3 changeHandler:(id)a4;
-- (void)updateWithImageSensorTemperature:(float)a3;
+- (void)startMonitoringImageSensorTemperatureUntilNominalWithQueue:(id)queue changeHandler:(id)handler;
+- (void)updateWithImageSensorTemperature:(float)temperature;
 @end
 
 @implementation FigCaptureImageSensorTemperatureMonitor
 
-- (FigCaptureImageSensorTemperatureMonitor)initWithPortType:(id)a3 sensorThermalLevelsByTemperature:(id)a4
+- (FigCaptureImageSensorTemperatureMonitor)initWithPortType:(id)type sensorThermalLevelsByTemperature:(id)temperature
 {
   v25.receiver = self;
   v25.super_class = FigCaptureImageSensorTemperatureMonitor;
   v6 = [(FigCaptureImageSensorTemperatureMonitor *)&v25 init];
   if (v6)
   {
-    if (a3 && a4)
+    if (type && temperature)
     {
-      v6->_portType = a3;
-      [objc_msgSend(objc_msgSend(a4 objectForKeyedSubscript:{@"Nominal", "objectForKeyedSubscript:", @"Min", "floatValue"}];
+      v6->_portType = type;
+      [objc_msgSend(objc_msgSend(temperature objectForKeyedSubscript:{@"Nominal", "objectForKeyedSubscript:", @"Min", "floatValue"}];
       v8 = v7;
-      [objc_msgSend(objc_msgSend(a4 objectForKeyedSubscript:{@"Nominal", "objectForKeyedSubscript:", @"Max", "floatValue"}];
+      [objc_msgSend(objc_msgSend(temperature objectForKeyedSubscript:{@"Nominal", "objectForKeyedSubscript:", @"Max", "floatValue"}];
       v6->_systemPressureLevelByImageSensorTemperature[0].min = v8;
       v6->_systemPressureLevelByImageSensorTemperature[0].max = v9;
-      [objc_msgSend(objc_msgSend(a4 objectForKeyedSubscript:{@"Fair", "objectForKeyedSubscript:", @"Min", "floatValue"}];
+      [objc_msgSend(objc_msgSend(temperature objectForKeyedSubscript:{@"Fair", "objectForKeyedSubscript:", @"Min", "floatValue"}];
       v11 = v10;
-      [objc_msgSend(objc_msgSend(a4 objectForKeyedSubscript:{@"Fair", "objectForKeyedSubscript:", @"Max", "floatValue"}];
+      [objc_msgSend(objc_msgSend(temperature objectForKeyedSubscript:{@"Fair", "objectForKeyedSubscript:", @"Max", "floatValue"}];
       v6->_systemPressureLevelByImageSensorTemperature[1].min = v11;
       v6->_systemPressureLevelByImageSensorTemperature[1].max = v12;
-      [objc_msgSend(objc_msgSend(a4 objectForKeyedSubscript:{@"Serious", "objectForKeyedSubscript:", @"Min", "floatValue"}];
+      [objc_msgSend(objc_msgSend(temperature objectForKeyedSubscript:{@"Serious", "objectForKeyedSubscript:", @"Min", "floatValue"}];
       v14 = v13;
-      [objc_msgSend(objc_msgSend(a4 objectForKeyedSubscript:{@"Serious", "objectForKeyedSubscript:", @"Max", "floatValue"}];
+      [objc_msgSend(objc_msgSend(temperature objectForKeyedSubscript:{@"Serious", "objectForKeyedSubscript:", @"Max", "floatValue"}];
       v6->_systemPressureLevelByImageSensorTemperature[2].min = v14;
       v6->_systemPressureLevelByImageSensorTemperature[2].max = v15;
-      [objc_msgSend(objc_msgSend(a4 objectForKeyedSubscript:{@"Critical", "objectForKeyedSubscript:", @"Min", "floatValue"}];
+      [objc_msgSend(objc_msgSend(temperature objectForKeyedSubscript:{@"Critical", "objectForKeyedSubscript:", @"Min", "floatValue"}];
       v17 = v16;
-      [objc_msgSend(objc_msgSend(a4 objectForKeyedSubscript:{@"Critical", "objectForKeyedSubscript:", @"Max", "floatValue"}];
+      [objc_msgSend(objc_msgSend(temperature objectForKeyedSubscript:{@"Critical", "objectForKeyedSubscript:", @"Max", "floatValue"}];
       v6->_systemPressureLevelByImageSensorTemperature[3].min = v17;
       v6->_systemPressureLevelByImageSensorTemperature[3].max = v18;
-      [objc_msgSend(objc_msgSend(a4 objectForKeyedSubscript:{@"Shutdown", "objectForKeyedSubscript:", @"Min", "floatValue"}];
+      [objc_msgSend(objc_msgSend(temperature objectForKeyedSubscript:{@"Shutdown", "objectForKeyedSubscript:", @"Min", "floatValue"}];
       v20 = v19;
-      [objc_msgSend(objc_msgSend(a4 objectForKeyedSubscript:{@"Shutdown", "objectForKeyedSubscript:", @"Max", "floatValue"}];
+      [objc_msgSend(objc_msgSend(temperature objectForKeyedSubscript:{@"Shutdown", "objectForKeyedSubscript:", @"Max", "floatValue"}];
       v21 = 0;
       v6->_systemPressureLevelByImageSensorTemperature[4].min = v20;
       v6->_systemPressureLevelByImageSensorTemperature[4].max = v22;
@@ -69,7 +69,7 @@
   return v6;
 }
 
-- (void)startMonitoringImageSensorTemperatureUntilNominalWithQueue:(id)a3 changeHandler:(id)a4
+- (void)startMonitoringImageSensorTemperatureUntilNominalWithQueue:(id)queue changeHandler:(id)handler
 {
   if (!self->_nominalImageSensorTemperatureMonitorTimer)
   {
@@ -82,8 +82,8 @@
     v16[2] = 0x3052000000;
     v16[3] = __Block_byref_object_copy__45;
     v16[4] = __Block_byref_object_dispose__45;
-    v16[5] = [a4 copy];
-    v10 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, a3);
+    v16[5] = [handler copy];
+    v10 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, queue);
     self->_nominalImageSensorTemperatureMonitorTimer = v10;
     v11 = dispatch_time(0, 30000000000);
     dispatch_source_set_timer(v10, v11, 0x6FC23AC00uLL, 0xF4240uLL);
@@ -131,7 +131,7 @@ void __116__FigCaptureImageSensorTemperatureMonitor_startMonitoringImageSensorTe
   [(FigCaptureImageSensorTemperatureMonitor *)&v4 dealloc];
 }
 
-- (void)updateWithImageSensorTemperature:(float)a3
+- (void)updateWithImageSensorTemperature:(float)temperature
 {
   if (self)
   {
@@ -144,9 +144,9 @@ void __116__FigCaptureImageSensorTemperatureMonitor_startMonitoringImageSensorTe
 
   currentSystemPressureFromImageSensorTemperature = self->_currentSystemPressureFromImageSensorTemperature;
   v7 = &self->_systemPressureLevelByImageSensorTemperature[currentSystemPressureFromImageSensorTemperature];
-  if (v7->min > a3 || v7->max < a3)
+  if (v7->min > temperature || v7->max < temperature)
   {
-    v9 = v7->min <= a3 ? 1 : -1;
+    v9 = v7->min <= temperature ? 1 : -1;
     v10 = currentSystemPressureFromImageSensorTemperature + v9;
     if ((currentSystemPressureFromImageSensorTemperature + v9) > 4)
     {
@@ -156,7 +156,7 @@ void __116__FigCaptureImageSensorTemperatureMonitor_startMonitoringImageSensorTe
     do
     {
       v11 = &self->_systemPressureLevelByImageSensorTemperature[v10];
-      if (v11->min <= a3 && v11->max >= a3)
+      if (v11->min <= temperature && v11->max >= temperature)
       {
         break;
       }

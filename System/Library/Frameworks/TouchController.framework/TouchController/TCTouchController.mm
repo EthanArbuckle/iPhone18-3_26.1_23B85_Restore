@@ -1,10 +1,10 @@
 @interface TCTouchController
 + (BOOL)isSupported;
-+ (id)_createSystemTouchControllerWithConfig:(id)a3;
-- (BOOL)handleTouchBeganAtPoint:(CGPoint)a3 index:(int64_t)a4;
-- (BOOL)handleTouchEndedAtPoint:(CGPoint)a3 index:(int64_t)a4;
-- (BOOL)handleTouchMovedAtPoint:(CGPoint)a3 index:(int64_t)a4;
-- (CGPoint)offsetForAnchor:(int64_t)a3 anchorCoordinateSystem:(int64_t)a4;
++ (id)_createSystemTouchControllerWithConfig:(id)config;
+- (BOOL)handleTouchBeganAtPoint:(CGPoint)point index:(int64_t)index;
+- (BOOL)handleTouchEndedAtPoint:(CGPoint)point index:(int64_t)index;
+- (BOOL)handleTouchMovedAtPoint:(CGPoint)point index:(int64_t)index;
+- (CGPoint)offsetForAnchor:(int64_t)anchor anchorCoordinateSystem:(int64_t)system;
 - (CGSize)drawableSize;
 - (CGSize)size;
 - (GCController)controller;
@@ -14,48 +14,48 @@
 - (NSArray)throttles;
 - (NSArray)thumbsticks;
 - (NSArray)touchpads;
-- (TCTouchController)initWithDescriptor:(id)a3;
-- (id)addButtonWithDescriptor:(id)a3;
-- (id)addDirectionPadWithDescriptor:(id)a3;
-- (id)addSwitchWithDescriptor:(id)a3;
-- (id)addThrottleWithDescriptor:(id)a3;
-- (id)addThumbstickWithDescriptor:(id)a3;
-- (id)addTouchpadWithDescriptor:(id)a3;
-- (id)controlAtPoint:(CGPoint)a3;
-- (void)_makeButtonWithAnchor:(int64_t)a3 offset:(CGPoint)a4 label:(id)a5 colliderShape:(int64_t)a6;
-- (void)_makeDpadWithAnchor:(int64_t)a3 offset:(CGPoint)a4 label:(id)a5;
-- (void)_makeHiddenThumbstickWithLabel:(id)a3 colliderShape:(int64_t)a4;
-- (void)_renderButtonQuadsWithCommandEncoder:(id)a3;
-- (void)_setButtonValue:(double)a3 forControl:(id)a4;
-- (void)_setDirectionPadPosition:(CGPoint)a3 forControl:(id)a4;
-- (void)addControl:(id)a3;
-- (void)automaticallyLayoutControlsForLabels:(id)a3;
+- (TCTouchController)initWithDescriptor:(id)descriptor;
+- (id)addButtonWithDescriptor:(id)descriptor;
+- (id)addDirectionPadWithDescriptor:(id)descriptor;
+- (id)addSwitchWithDescriptor:(id)descriptor;
+- (id)addThrottleWithDescriptor:(id)descriptor;
+- (id)addThumbstickWithDescriptor:(id)descriptor;
+- (id)addTouchpadWithDescriptor:(id)descriptor;
+- (id)controlAtPoint:(CGPoint)point;
+- (void)_makeButtonWithAnchor:(int64_t)anchor offset:(CGPoint)offset label:(id)label colliderShape:(int64_t)shape;
+- (void)_makeDpadWithAnchor:(int64_t)anchor offset:(CGPoint)offset label:(id)label;
+- (void)_makeHiddenThumbstickWithLabel:(id)label colliderShape:(int64_t)shape;
+- (void)_renderButtonQuadsWithCommandEncoder:(id)encoder;
+- (void)_setButtonValue:(double)value forControl:(id)control;
+- (void)_setDirectionPadPosition:(CGPoint)position forControl:(id)control;
+- (void)addControl:(id)control;
+- (void)automaticallyLayoutControlsForLabels:(id)labels;
 - (void)buildDepthStencilState;
 - (void)buildPipeline;
 - (void)buildSharedQuadBuffers;
 - (void)connect;
 - (void)disconnect;
 - (void)removeAllControls;
-- (void)removeControl:(id)a3;
-- (void)renderUsingRenderCommandEncoder:(id)a3;
-- (void)setDrawableSize:(CGSize)a3;
+- (void)removeControl:(id)control;
+- (void)renderUsingRenderCommandEncoder:(id)encoder;
+- (void)setDrawableSize:(CGSize)size;
 @end
 
 @implementation TCTouchController
 
-+ (id)_createSystemTouchControllerWithConfig:(id)a3
++ (id)_createSystemTouchControllerWithConfig:(id)config
 {
-  v3 = a3;
+  configCopy = config;
   v4 = objc_alloc_init(TCTouchController);
   config = v4->_config;
-  v4->_config = v3;
+  v4->_config = configCopy;
 
   return v4;
 }
 
-- (TCTouchController)initWithDescriptor:(id)a3
+- (TCTouchController)initWithDescriptor:(id)descriptor
 {
-  v4 = a3;
+  descriptorCopy = descriptor;
   v19.receiver = self;
   v19.super_class = TCTouchController;
   v5 = [(TCTouchController *)&v19 init];
@@ -65,27 +65,27 @@
     controller = v5->_controller;
     v5->_controller = v6;
 
-    v8 = [v4 device];
+    device = [descriptorCopy device];
     device = v5->_device;
-    v5->_device = v8;
+    v5->_device = device;
 
-    [v4 size];
+    [descriptorCopy size];
     v5->_size.width = v10;
     v5->_size.height = v11;
-    [v4 drawableSize];
+    [descriptorCopy drawableSize];
     v5->_drawableSize.width = v12;
     v5->_drawableSize.height = v13;
-    v5->_colorPixelFormat = [v4 colorPixelFormat];
-    v5->_depthAttachmentPixelFormat = [v4 depthAttachmentPixelFormat];
-    v5->_stencilAttachmentPixelFormat = [v4 stencilAttachmentPixelFormat];
-    v5->_sampleCount = [v4 sampleCount];
-    v14 = [MEMORY[0x277CBEB18] array];
+    v5->_colorPixelFormat = [descriptorCopy colorPixelFormat];
+    v5->_depthAttachmentPixelFormat = [descriptorCopy depthAttachmentPixelFormat];
+    v5->_stencilAttachmentPixelFormat = [descriptorCopy stencilAttachmentPixelFormat];
+    v5->_sampleCount = [descriptorCopy sampleCount];
+    array = [MEMORY[0x277CBEB18] array];
     controls = v5->_controls;
-    v5->_controls = v14;
+    v5->_controls = array;
 
-    v16 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     pressedControls = v5->_pressedControls;
-    v5->_pressedControls = v16;
+    v5->_pressedControls = dictionary;
 
     [(TCTouchController *)v5 buildPipeline];
     [(TCTouchController *)v5 buildDepthStencilState];
@@ -97,16 +97,16 @@
 
 + (BOOL)isSupported
 {
-  v2 = [MEMORY[0x277CCAC38] processInfo];
-  if ([v2 isMacCatalystApp])
+  processInfo = [MEMORY[0x277CCAC38] processInfo];
+  if ([processInfo isMacCatalystApp])
   {
     LOBYTE(v3) = 0;
   }
 
   else
   {
-    v4 = [MEMORY[0x277CCAC38] processInfo];
-    v3 = [v4 isiOSAppOnMac] ^ 1;
+    processInfo2 = [MEMORY[0x277CCAC38] processInfo];
+    v3 = [processInfo2 isiOSAppOnMac] ^ 1;
   }
 
   return v3;
@@ -125,32 +125,32 @@
   vertexDescriptor = self->_vertexDescriptor;
   self->_vertexDescriptor = v9;
 
-  v11 = [(MTLVertexDescriptor *)self->_vertexDescriptor layouts];
-  v12 = [v11 objectAtIndexedSubscript:0];
+  layouts = [(MTLVertexDescriptor *)self->_vertexDescriptor layouts];
+  v12 = [layouts objectAtIndexedSubscript:0];
   [v12 setStride:16];
 
-  v13 = [(MTLVertexDescriptor *)self->_vertexDescriptor attributes];
-  v14 = [v13 objectAtIndexedSubscript:0];
+  attributes = [(MTLVertexDescriptor *)self->_vertexDescriptor attributes];
+  v14 = [attributes objectAtIndexedSubscript:0];
   [v14 setFormat:29];
 
-  v15 = [(MTLVertexDescriptor *)self->_vertexDescriptor attributes];
-  v16 = [v15 objectAtIndexedSubscript:0];
+  attributes2 = [(MTLVertexDescriptor *)self->_vertexDescriptor attributes];
+  v16 = [attributes2 objectAtIndexedSubscript:0];
   [v16 setOffset:0];
 
-  v17 = [(MTLVertexDescriptor *)self->_vertexDescriptor attributes];
-  v18 = [v17 objectAtIndexedSubscript:0];
+  attributes3 = [(MTLVertexDescriptor *)self->_vertexDescriptor attributes];
+  v18 = [attributes3 objectAtIndexedSubscript:0];
   [v18 setBufferIndex:0];
 
-  v19 = [(MTLVertexDescriptor *)self->_vertexDescriptor attributes];
-  v20 = [v19 objectAtIndexedSubscript:1];
+  attributes4 = [(MTLVertexDescriptor *)self->_vertexDescriptor attributes];
+  v20 = [attributes4 objectAtIndexedSubscript:1];
   [v20 setFormat:29];
 
-  v21 = [(MTLVertexDescriptor *)self->_vertexDescriptor attributes];
-  v22 = [v21 objectAtIndexedSubscript:1];
+  attributes5 = [(MTLVertexDescriptor *)self->_vertexDescriptor attributes];
+  v22 = [attributes5 objectAtIndexedSubscript:1];
   [v22 setOffset:8];
 
-  v23 = [(MTLVertexDescriptor *)self->_vertexDescriptor attributes];
-  v24 = [v23 objectAtIndexedSubscript:1];
+  attributes6 = [(MTLVertexDescriptor *)self->_vertexDescriptor attributes];
+  v24 = [attributes6 objectAtIndexedSubscript:1];
   [v24 setBufferIndex:0];
 
   v25 = objc_alloc_init(MEMORY[0x277CD6F78]);
@@ -159,38 +159,38 @@
   [v25 setVertexDescriptor:self->_vertexDescriptor];
   [v25 setRasterSampleCount:self->_sampleCount];
   colorPixelFormat = self->_colorPixelFormat;
-  v27 = [v25 colorAttachments];
-  v28 = [v27 objectAtIndexedSubscript:0];
+  colorAttachments = [v25 colorAttachments];
+  v28 = [colorAttachments objectAtIndexedSubscript:0];
   [v28 setPixelFormat:colorPixelFormat];
 
   [v25 setDepthAttachmentPixelFormat:self->_depthAttachmentPixelFormat];
   [v25 setStencilAttachmentPixelFormat:self->_stencilAttachmentPixelFormat];
-  v29 = [v25 colorAttachments];
-  v30 = [v29 objectAtIndexedSubscript:0];
+  colorAttachments2 = [v25 colorAttachments];
+  v30 = [colorAttachments2 objectAtIndexedSubscript:0];
   [v30 setBlendingEnabled:1];
 
-  v31 = [v25 colorAttachments];
-  v32 = [v31 objectAtIndexedSubscript:0];
+  colorAttachments3 = [v25 colorAttachments];
+  v32 = [colorAttachments3 objectAtIndexedSubscript:0];
   [v32 setRgbBlendOperation:0];
 
-  v33 = [v25 colorAttachments];
-  v34 = [v33 objectAtIndexedSubscript:0];
+  colorAttachments4 = [v25 colorAttachments];
+  v34 = [colorAttachments4 objectAtIndexedSubscript:0];
   [v34 setAlphaBlendOperation:0];
 
-  v35 = [v25 colorAttachments];
-  v36 = [v35 objectAtIndexedSubscript:0];
+  colorAttachments5 = [v25 colorAttachments];
+  v36 = [colorAttachments5 objectAtIndexedSubscript:0];
   [v36 setSourceRGBBlendFactor:4];
 
-  v37 = [v25 colorAttachments];
-  v38 = [v37 objectAtIndexedSubscript:0];
+  colorAttachments6 = [v25 colorAttachments];
+  v38 = [colorAttachments6 objectAtIndexedSubscript:0];
   [v38 setDestinationRGBBlendFactor:5];
 
-  v39 = [v25 colorAttachments];
-  v40 = [v39 objectAtIndexedSubscript:0];
+  colorAttachments7 = [v25 colorAttachments];
+  v40 = [colorAttachments7 objectAtIndexedSubscript:0];
   [v40 setSourceAlphaBlendFactor:4];
 
-  v41 = [v25 colorAttachments];
-  v42 = [v41 objectAtIndexedSubscript:0];
+  colorAttachments8 = [v25 colorAttachments];
+  v42 = [colorAttachments8 objectAtIndexedSubscript:0];
   [v42 setDestinationAlphaBlendFactor:5];
 
   v43 = self->_device;
@@ -237,10 +237,10 @@
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setDrawableSize:(CGSize)a3
+- (void)setDrawableSize:(CGSize)size
 {
   v15 = *MEMORY[0x277D85DE8];
-  self->_drawableSize = a3;
+  self->_drawableSize = size;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -280,17 +280,17 @@
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)renderUsingRenderCommandEncoder:(id)a3
+- (void)renderUsingRenderCommandEncoder:(id)encoder
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(TCTouchController *)self controls];
-  v6 = [v5 count];
+  encoderCopy = encoder;
+  controls = [(TCTouchController *)self controls];
+  v6 = [controls count];
 
   if (v6 && self->_connected)
   {
-    v7 = [MEMORY[0x277CBEAA8] date];
-    [v7 timeIntervalSince1970];
+    date = [MEMORY[0x277CBEAA8] date];
+    [date timeIntervalSince1970];
     v9 = v8;
 
     time = self->_time;
@@ -305,8 +305,8 @@
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v11 = [(TCTouchController *)self touchpads];
-    v12 = [v11 countByEnumeratingWithState:&v33 objects:v37 count:16];
+    touchpads = [(TCTouchController *)self touchpads];
+    v12 = [touchpads countByEnumeratingWithState:&v33 objects:v37 count:16];
     if (v12)
     {
       v13 = v12;
@@ -318,30 +318,30 @@
         {
           if (*v34 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(touchpads);
           }
 
           [*(*(&v33 + 1) + 8 * v15++) resetDeltas];
         }
 
         while (v13 != v15);
-        v13 = [v11 countByEnumeratingWithState:&v33 objects:v37 count:16];
+        v13 = [touchpads countByEnumeratingWithState:&v33 objects:v37 count:16];
       }
 
       while (v13);
     }
 
-    [(TCTouchController *)self _renderButtonQuadsWithCommandEncoder:v4];
-    v16 = [(TCTouchController *)self controls];
-    v17 = [v16 count];
+    [(TCTouchController *)self _renderButtonQuadsWithCommandEncoder:encoderCopy];
+    controls2 = [(TCTouchController *)self controls];
+    v17 = [controls2 count];
 
     if (v17)
     {
       v18 = 0;
       while (1)
       {
-        v19 = [(TCTouchController *)self controls];
-        v20 = [v19 objectAtIndexedSubscript:v18];
+        controls3 = [(TCTouchController *)self controls];
+        v20 = [controls3 objectAtIndexedSubscript:v18];
 
         if (objc_opt_respondsToSelector())
         {
@@ -351,8 +351,8 @@
 LABEL_22:
 
         ++v18;
-        v30 = [(TCTouchController *)self controls];
-        v31 = [v30 count];
+        controls4 = [(TCTouchController *)self controls];
+        v31 = [controls4 count];
 
         if (v18 >= v31)
         {
@@ -396,10 +396,10 @@ LABEL_23:
   v32 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_renderButtonQuadsWithCommandEncoder:(id)a3
+- (void)_renderButtonQuadsWithCommandEncoder:(id)encoder
 {
   v68 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  encoderCopy = encoder;
   v5 = objc_opt_new();
   v55 = 0u;
   v56 = 0u;
@@ -440,18 +440,18 @@ LABEL_23:
     self->_instanceBuffer = v12;
 
     width = self->_drawableSize.width;
-    v14 = [MEMORY[0x277D759A0] mainScreen];
-    [v14 scale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     v50 = v15;
 
     v16.f64[0] = width;
     v16.f64[1] = self->_drawableSize.height;
     v53 = v16;
-    v17 = [MEMORY[0x277D759A0] mainScreen];
-    [v17 scale];
+    mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen2 scale];
     v48 = v18;
 
-    v19 = [(MTLBuffer *)self->_instanceBuffer contents];
+    contents = [(MTLBuffer *)self->_instanceBuffer contents];
     if ([v5 count])
     {
       v20 = 0;
@@ -520,7 +520,7 @@ LABEL_23:
         v35 = v64;
         v36 = v65;
         v37 = v66;
-        v38 = v19 + 96 * v20;
+        v38 = contents + 96 * v20;
         *v38 = v63;
         *(v38 + 16) = v35;
         *(v38 + 32) = v36;
@@ -538,23 +538,23 @@ LABEL_23:
       while (v20 < [v5 count]);
     }
 
-    [v4 setRenderPipelineState:self->_pipelineState];
-    [v4 setVertexBuffer:self->_quadVertexBuffer offset:0 atIndex:0];
-    [v4 setVertexBuffer:self->_instanceBuffer offset:0 atIndex:1];
-    [v4 setDepthStencilState:self->_depthState];
+    [encoderCopy setRenderPipelineState:self->_pipelineState];
+    [encoderCopy setVertexBuffer:self->_quadVertexBuffer offset:0 atIndex:0];
+    [encoderCopy setVertexBuffer:self->_instanceBuffer offset:0 atIndex:1];
+    [encoderCopy setDepthStencilState:self->_depthState];
     if ([v5 count])
     {
       v41 = 0;
       do
       {
         v42 = [v5 objectAtIndexedSubscript:v41];
-        v43 = [v42 texture];
-        [v4 setFragmentTexture:v43 atIndex:0];
+        texture = [v42 texture];
+        [encoderCopy setFragmentTexture:texture atIndex:0];
 
-        v44 = [v42 highlightTexture];
-        [v4 setFragmentTexture:v44 atIndex:1];
+        highlightTexture = [v42 highlightTexture];
+        [encoderCopy setFragmentTexture:highlightTexture atIndex:1];
 
-        [v4 drawIndexedPrimitives:3 indexCount:6 indexType:0 indexBuffer:self->_quadIndexBuffer indexBufferOffset:0 instanceCount:1 baseVertex:0 baseInstance:v41];
+        [encoderCopy drawIndexedPrimitives:3 indexCount:6 indexType:0 indexBuffer:self->_quadIndexBuffer indexBufferOffset:0 instanceCount:1 baseVertex:0 baseInstance:v41];
         ++v41;
       }
 
@@ -817,11 +817,11 @@ LABEL_23:
   return v3;
 }
 
-- (void)addControl:(id)a3
+- (void)addControl:(id)control
 {
-  [(NSMutableArray *)self->_controls addObject:a3];
-  v4 = [(TCTouchController *)self controls];
-  v7 = [v4 sortedArrayUsingComparator:&__block_literal_global_2];
+  [(NSMutableArray *)self->_controls addObject:control];
+  controls = [(TCTouchController *)self controls];
+  v7 = [controls sortedArrayUsingComparator:&__block_literal_global_2];
 
   v5 = [v7 mutableCopy];
   controls = self->_controls;
@@ -855,11 +855,11 @@ uint64_t __32__TCTouchController_addControl___block_invoke(uint64_t a1, void *a2
   return v7;
 }
 
-- (void)removeControl:(id)a3
+- (void)removeControl:(id)control
 {
-  [(NSMutableArray *)self->_controls removeObject:a3];
-  v4 = [(TCTouchController *)self controls];
-  v7 = [v4 sortedArrayUsingComparator:&__block_literal_global_139];
+  [(NSMutableArray *)self->_controls removeObject:control];
+  controls = [(TCTouchController *)self controls];
+  v7 = [controls sortedArrayUsingComparator:&__block_literal_global_139];
 
   v5 = [v7 mutableCopy];
   controls = self->_controls;
@@ -893,96 +893,96 @@ uint64_t __35__TCTouchController_removeControl___block_invoke(uint64_t a1, void 
   return v7;
 }
 
-- (id)addButtonWithDescriptor:(id)a3
+- (id)addButtonWithDescriptor:(id)descriptor
 {
-  v4 = a3;
-  v5 = [[TCButton alloc] initWithDescriptor:v4 touchController:self];
+  descriptorCopy = descriptor;
+  v5 = [[TCButton alloc] initWithDescriptor:descriptorCopy touchController:self];
   [(TCTouchController *)self addControl:v5];
   controller = self->_controller;
-  v7 = [v4 label];
+  label = [descriptorCopy label];
 
-  [(_TCGameController *)controller addButtonWithLabel:v7];
+  [(_TCGameController *)controller addButtonWithLabel:label];
 
   return v5;
 }
 
-- (id)addSwitchWithDescriptor:(id)a3
+- (id)addSwitchWithDescriptor:(id)descriptor
 {
-  v4 = a3;
-  v5 = [[TCSwitch alloc] initWithDescriptor:v4 touchController:self];
+  descriptorCopy = descriptor;
+  v5 = [[TCSwitch alloc] initWithDescriptor:descriptorCopy touchController:self];
   [(TCTouchController *)self addControl:v5];
   controller = self->_controller;
-  v7 = [v4 label];
+  label = [descriptorCopy label];
 
-  [(_TCGameController *)controller addButtonWithLabel:v7];
+  [(_TCGameController *)controller addButtonWithLabel:label];
 
   return v5;
 }
 
-- (id)addThumbstickWithDescriptor:(id)a3
+- (id)addThumbstickWithDescriptor:(id)descriptor
 {
-  v4 = a3;
-  v5 = [[TCThumbstick alloc] initWithDescriptor:v4 touchController:self];
+  descriptorCopy = descriptor;
+  v5 = [[TCThumbstick alloc] initWithDescriptor:descriptorCopy touchController:self];
   [(TCTouchController *)self addControl:v5];
   controller = self->_controller;
-  v7 = [v4 label];
+  label = [descriptorCopy label];
 
-  [(_TCGameController *)controller addDirectionPadWithLabel:v7];
+  [(_TCGameController *)controller addDirectionPadWithLabel:label];
 
   return v5;
 }
 
-- (id)addDirectionPadWithDescriptor:(id)a3
+- (id)addDirectionPadWithDescriptor:(id)descriptor
 {
-  v4 = a3;
-  v5 = [[TCDirectionPad alloc] initWithDescriptor:v4 touchController:self];
+  descriptorCopy = descriptor;
+  v5 = [[TCDirectionPad alloc] initWithDescriptor:descriptorCopy touchController:self];
   [(TCTouchController *)self addControl:v5];
-  v6 = [v4 compositeLabel];
+  compositeLabel = [descriptorCopy compositeLabel];
 
-  if (v6)
+  if (compositeLabel)
   {
     controller = self->_controller;
-    v8 = [v4 compositeLabel];
-    [(_TCGameController *)controller addDirectionPadWithLabel:v8];
+    compositeLabel2 = [descriptorCopy compositeLabel];
+    [(_TCGameController *)controller addDirectionPadWithLabel:compositeLabel2];
 LABEL_11:
 
     goto LABEL_12;
   }
 
-  v9 = [v4 upLabel];
+  upLabel = [descriptorCopy upLabel];
 
-  if (v9)
+  if (upLabel)
   {
     v10 = self->_controller;
-    v11 = [v4 upLabel];
-    [(_TCGameController *)v10 addButtonWithLabel:v11];
+    upLabel2 = [descriptorCopy upLabel];
+    [(_TCGameController *)v10 addButtonWithLabel:upLabel2];
   }
 
-  v12 = [v4 downLabel];
+  downLabel = [descriptorCopy downLabel];
 
-  if (v12)
+  if (downLabel)
   {
     v13 = self->_controller;
-    v14 = [v4 downLabel];
-    [(_TCGameController *)v13 addButtonWithLabel:v14];
+    downLabel2 = [descriptorCopy downLabel];
+    [(_TCGameController *)v13 addButtonWithLabel:downLabel2];
   }
 
-  v15 = [v4 leftLabel];
+  leftLabel = [descriptorCopy leftLabel];
 
-  if (v15)
+  if (leftLabel)
   {
     v16 = self->_controller;
-    v17 = [v4 leftLabel];
-    [(_TCGameController *)v16 addButtonWithLabel:v17];
+    leftLabel2 = [descriptorCopy leftLabel];
+    [(_TCGameController *)v16 addButtonWithLabel:leftLabel2];
   }
 
-  v18 = [v4 rightLabel];
+  rightLabel = [descriptorCopy rightLabel];
 
-  if (v18)
+  if (rightLabel)
   {
     v19 = self->_controller;
-    v8 = [v4 rightLabel];
-    [(_TCGameController *)v19 addButtonWithLabel:v8];
+    compositeLabel2 = [descriptorCopy rightLabel];
+    [(_TCGameController *)v19 addButtonWithLabel:compositeLabel2];
     goto LABEL_11;
   }
 
@@ -991,28 +991,28 @@ LABEL_12:
   return v5;
 }
 
-- (id)addThrottleWithDescriptor:(id)a3
+- (id)addThrottleWithDescriptor:(id)descriptor
 {
-  v4 = a3;
-  v5 = [[TCThrottle alloc] initWithDescriptor:v4 touchController:self];
+  descriptorCopy = descriptor;
+  v5 = [[TCThrottle alloc] initWithDescriptor:descriptorCopy touchController:self];
   [(TCTouchController *)self addControl:v5];
   controller = self->_controller;
-  v7 = [v4 label];
+  label = [descriptorCopy label];
 
-  [(_TCGameController *)controller addButtonWithLabel:v7];
+  [(_TCGameController *)controller addButtonWithLabel:label];
 
   return v5;
 }
 
-- (id)addTouchpadWithDescriptor:(id)a3
+- (id)addTouchpadWithDescriptor:(id)descriptor
 {
-  v4 = a3;
-  v5 = [[TCTouchpad alloc] initWithDescriptor:v4 touchController:self];
+  descriptorCopy = descriptor;
+  v5 = [[TCTouchpad alloc] initWithDescriptor:descriptorCopy touchController:self];
   [(TCTouchController *)self addControl:v5];
   controller = self->_controller;
-  v7 = [v4 label];
+  label = [descriptorCopy label];
 
-  [(_TCGameController *)controller addButtonWithLabel:v7];
+  [(_TCGameController *)controller addButtonWithLabel:label];
 
   return v5;
 }
@@ -1026,19 +1026,19 @@ LABEL_12:
   MEMORY[0x2821F96F8]();
 }
 
-- (id)controlAtPoint:(CGPoint)a3
+- (id)controlAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v20 = *MEMORY[0x277D85DE8];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [(TCTouchController *)self controls];
-  v6 = [v5 reverseObjectEnumerator];
+  controls = [(TCTouchController *)self controls];
+  reverseObjectEnumerator = [controls reverseObjectEnumerator];
 
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v7 = [reverseObjectEnumerator countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = *v16;
@@ -1048,14 +1048,14 @@ LABEL_12:
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
         if (objc_opt_respondsToSelector())
         {
-          v11 = [v10 collider];
-          v12 = [v11 containsPoint:{x, y}];
+          collider = [v10 collider];
+          v12 = [collider containsPoint:{x, y}];
 
           if (v12)
           {
@@ -1065,7 +1065,7 @@ LABEL_12:
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [reverseObjectEnumerator countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v7)
       {
         continue;
@@ -1082,21 +1082,21 @@ LABEL_12:
   return v7;
 }
 
-- (BOOL)handleTouchBeganAtPoint:(CGPoint)a3 index:(int64_t)a4
+- (BOOL)handleTouchBeganAtPoint:(CGPoint)point index:(int64_t)index
 {
   if (!self->_connected)
   {
     return 0;
   }
 
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v8 = [(TCTouchController *)self controlAtPoint:?];
   v9 = v8 != 0;
   if (v8)
   {
     pressedControls = self->_pressedControls;
-    v11 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+    v11 = [MEMORY[0x277CCABB0] numberWithInteger:index];
     [(NSMutableDictionary *)pressedControls setObject:v8 forKeyedSubscript:v11];
 
     [v8 handleTouchBeganAtPoint:{x, y}];
@@ -1105,17 +1105,17 @@ LABEL_12:
   return v9;
 }
 
-- (BOOL)handleTouchMovedAtPoint:(CGPoint)a3 index:(int64_t)a4
+- (BOOL)handleTouchMovedAtPoint:(CGPoint)point index:(int64_t)index
 {
   if (!self->_connected)
   {
     return 0;
   }
 
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   pressedControls = self->_pressedControls;
-  v7 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+  v7 = [MEMORY[0x277CCABB0] numberWithInteger:index];
   v8 = [(NSMutableDictionary *)pressedControls objectForKeyedSubscript:v7];
 
   v9 = v8 != 0;
@@ -1127,15 +1127,15 @@ LABEL_12:
   return v9;
 }
 
-- (BOOL)handleTouchEndedAtPoint:(CGPoint)a3 index:(int64_t)a4
+- (BOOL)handleTouchEndedAtPoint:(CGPoint)point index:(int64_t)index
 {
   if (!self->_connected)
   {
     return 0;
   }
 
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   pressedControls = self->_pressedControls;
   v9 = [MEMORY[0x277CCABB0] numberWithInteger:?];
   v10 = [(NSMutableDictionary *)pressedControls objectForKeyedSubscript:v9];
@@ -1145,23 +1145,23 @@ LABEL_12:
   {
     [v10 handleTouchEndedAtPoint:{x, y}];
     v12 = self->_pressedControls;
-    v13 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+    v13 = [MEMORY[0x277CCABB0] numberWithInteger:index];
     [(NSMutableDictionary *)v12 removeObjectForKey:v13];
   }
 
   return v11;
 }
 
-- (CGPoint)offsetForAnchor:(int64_t)a3 anchorCoordinateSystem:(int64_t)a4
+- (CGPoint)offsetForAnchor:(int64_t)anchor anchorCoordinateSystem:(int64_t)system
 {
   width = self->_size.width;
   height = self->_size.height;
-  v8 = [MEMORY[0x277D75418] currentDevice];
-  v9 = [v8 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   *&v10 = height * 0.4;
   v11 = 0.0;
-  if (v9 == 1)
+  if (userInterfaceIdiom == 1)
   {
     v12 = height * 0.4;
   }
@@ -1171,17 +1171,17 @@ LABEL_12:
     v12 = 0.0;
   }
 
-  if (a4 == 1)
+  if (system == 1)
   {
     v11 = 0.0;
-    if (a3 > 4)
+    if (anchor > 4)
     {
-      if (a3 > 6)
+      if (anchor > 6)
       {
-        if (a3 != 7)
+        if (anchor != 7)
         {
           v10 = 0.0;
-          if (a3 != 8)
+          if (anchor != 8)
           {
             goto LABEL_43;
           }
@@ -1197,7 +1197,7 @@ LABEL_34:
         goto LABEL_35;
       }
 
-      if (a3 == 5)
+      if (anchor == 5)
       {
 LABEL_32:
         v10 = width;
@@ -1210,9 +1210,9 @@ LABEL_32:
 
     else
     {
-      if (a3 > 2)
+      if (anchor > 2)
       {
-        if (a3 != 3)
+        if (anchor != 3)
         {
           goto LABEL_33;
         }
@@ -1220,13 +1220,13 @@ LABEL_32:
         goto LABEL_30;
       }
 
-      if (a3 == 1)
+      if (anchor == 1)
       {
         v10 = width * 0.5;
         goto LABEL_43;
       }
 
-      if (a3 == 2)
+      if (anchor == 2)
       {
         v10 = width;
         goto LABEL_43;
@@ -1238,18 +1238,18 @@ LABEL_42:
     goto LABEL_43;
   }
 
-  if (a4)
+  if (system)
   {
     goto LABEL_43;
   }
 
-  if (a3 <= 3)
+  if (anchor <= 3)
   {
-    if (a3 <= 1)
+    if (anchor <= 1)
     {
-      if (a3)
+      if (anchor)
       {
-        if (a3 == 1)
+        if (anchor == 1)
         {
           v10 = width * 0.5;
           v11 = 0.0;
@@ -1262,7 +1262,7 @@ LABEL_42:
       goto LABEL_41;
     }
 
-    if (a3 == 2)
+    if (anchor == 2)
     {
       v10 = width;
       v13 = v12 + 0.0;
@@ -1274,9 +1274,9 @@ LABEL_30:
     goto LABEL_42;
   }
 
-  if (a3 <= 5)
+  if (anchor <= 5)
   {
-    if (a3 != 4)
+    if (anchor != 4)
     {
       goto LABEL_32;
     }
@@ -1287,7 +1287,7 @@ LABEL_33:
     goto LABEL_43;
   }
 
-  switch(a3)
+  switch(anchor)
   {
     case 6:
       v14 = height + 0.0;
@@ -1359,40 +1359,40 @@ LABEL_43:
   return v3;
 }
 
-- (void)_setButtonValue:(double)a3 forControl:(id)a4
+- (void)_setButtonValue:(double)value forControl:(id)control
 {
-  v8 = a4;
-  if (![v8 role])
+  controlCopy = control;
+  if (![controlCopy role])
   {
-    v6 = [v8 name];
-    if (v6)
+    name = [controlCopy name];
+    if (name)
     {
-      v7 = v6;
-      [(_TCGameController *)self->_controller setValue:v6 forButtonElement:a3];
+      v7 = name;
+      [(_TCGameController *)self->_controller setValue:name forButtonElement:value];
     }
   }
 }
 
-- (void)_setDirectionPadPosition:(CGPoint)a3 forControl:(id)a4
+- (void)_setDirectionPadPosition:(CGPoint)position forControl:(id)control
 {
-  y = a3.y;
-  x = a3.x;
-  v9 = a4;
-  if ([v9 role] == 1)
+  y = position.y;
+  x = position.x;
+  controlCopy = control;
+  if ([controlCopy role] == 1)
   {
-    v7 = [v9 name];
-    if (v7)
+    name = [controlCopy name];
+    if (name)
     {
-      v8 = v7;
-      [(_TCGameController *)self->_controller setPosition:v7 forDirectionPadElement:x, y];
+      v8 = name;
+      [(_TCGameController *)self->_controller setPosition:name forDirectionPadElement:x, y];
     }
   }
 }
 
-- (void)automaticallyLayoutControlsForLabels:(id)a3
+- (void)automaticallyLayoutControlsForLabels:(id)labels
 {
   v43 = *MEMORY[0x277D85DE8];
-  v32 = a3;
+  labelsCopy = labels;
   [(TCTouchController *)self removeAllControls];
   v4 = +[TCControlLabel buttonA];
   [(TCTouchController *)self _makeButtonWithAnchor:8 offset:v4 label:0 colliderShape:-100.0, -60.0];
@@ -1463,7 +1463,7 @@ LABEL_43:
         v34 = 0u;
         v35 = 0u;
         v36 = 0u;
-        v24 = v32;
+        v24 = labelsCopy;
         v25 = [v24 countByEnumeratingWithState:&v33 objects:v41 count:16];
         if (v25)
         {
@@ -1478,8 +1478,8 @@ LABEL_43:
               }
 
               v28 = *(*(&v33 + 1) + 8 * j);
-              v29 = [v23 label];
-              LOBYTE(v28) = [v28 isEqual:v29];
+              label = [v23 label];
+              LOBYTE(v28) = [v28 isEqual:label];
 
               if (v28)
               {
@@ -1512,17 +1512,17 @@ LABEL_16:
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_makeButtonWithAnchor:(int64_t)a3 offset:(CGPoint)a4 label:(id)a5 colliderShape:(int64_t)a6
+- (void)_makeButtonWithAnchor:(int64_t)anchor offset:(CGPoint)offset label:(id)label colliderShape:(int64_t)shape
 {
-  y = a4.y;
-  x = a4.x;
-  v11 = a5;
+  y = offset.y;
+  x = offset.x;
+  labelCopy = label;
   v17 = objc_opt_new();
   [v17 setHighlightDuration:0.25];
   [v17 setZIndex:0];
-  [v17 setColliderShape:a6];
-  v12 = a6 == 0;
-  v13 = a6 != 0;
+  [v17 setColliderShape:shape];
+  v12 = shape == 0;
+  v13 = shape != 0;
   v14 = 78.0;
   if (v12)
   {
@@ -1530,9 +1530,9 @@ LABEL_16:
   }
 
   [v17 setSize:v14];
-  [v17 setAnchor:a3];
+  [v17 setAnchor:anchor];
   [v17 setOffset:{x, y}];
-  [v17 setLabel:v11];
+  [v17 setLabel:labelCopy];
 
   [v17 size];
   v15 = [TCControlContents buttonContentsForSystemImageNamed:&stru_284DB3138 size:v13 shape:self controller:?];
@@ -1541,10 +1541,10 @@ LABEL_16:
   v16 = [(TCTouchController *)self addButtonWithDescriptor:v17];
 }
 
-- (void)_makeDpadWithAnchor:(int64_t)a3 offset:(CGPoint)a4 label:(id)a5
+- (void)_makeDpadWithAnchor:(int64_t)anchor offset:(CGPoint)offset label:(id)label
 {
-  y = a4.y;
-  x = a4.x;
+  y = offset.y;
+  x = offset.x;
   v18 = objc_opt_new();
   [v18 setMutuallyExclusiveInput:1];
   [v18 setHighlightDuration:0.25];
@@ -1559,37 +1559,37 @@ LABEL_16:
   [v18 setSize:{120.0, 120.0}];
   [v18 setRadial:0];
   [v18 setMutuallyExclusiveInput:0];
-  v9 = [v18 compositeLabel];
-  v10 = [TCControlContents directionPadContentsForLabel:v9 size:1 style:0 direction:self controller:60.0, 60.0];
+  compositeLabel = [v18 compositeLabel];
+  v10 = [TCControlContents directionPadContentsForLabel:compositeLabel size:1 style:0 direction:self controller:60.0, 60.0];
   [v18 setUpContents:v10];
 
-  v11 = [v18 compositeLabel];
-  v12 = [TCControlContents directionPadContentsForLabel:v11 size:1 style:1 direction:self controller:60.0, 60.0];
+  compositeLabel2 = [v18 compositeLabel];
+  v12 = [TCControlContents directionPadContentsForLabel:compositeLabel2 size:1 style:1 direction:self controller:60.0, 60.0];
   [v18 setDownContents:v12];
 
-  v13 = [v18 compositeLabel];
-  v14 = [TCControlContents directionPadContentsForLabel:v13 size:1 style:2 direction:self controller:60.0, 60.0];
+  compositeLabel3 = [v18 compositeLabel];
+  v14 = [TCControlContents directionPadContentsForLabel:compositeLabel3 size:1 style:2 direction:self controller:60.0, 60.0];
   [v18 setLeftContents:v14];
 
-  v15 = [v18 compositeLabel];
-  v16 = [TCControlContents directionPadContentsForLabel:v15 size:1 style:3 direction:self controller:60.0, 60.0];
+  compositeLabel4 = [v18 compositeLabel];
+  v16 = [TCControlContents directionPadContentsForLabel:compositeLabel4 size:1 style:3 direction:self controller:60.0, 60.0];
   [v18 setRightContents:v16];
 
   v17 = [(TCTouchController *)self addDirectionPadWithDescriptor:v18];
 }
 
-- (void)_makeHiddenThumbstickWithLabel:(id)a3 colliderShape:(int64_t)a4
+- (void)_makeHiddenThumbstickWithLabel:(id)label colliderShape:(int64_t)shape
 {
-  v6 = a3;
+  labelCopy = label;
   v10 = objc_opt_new();
   [v10 setHighlightDuration:0.150000006];
   [v10 setZIndex:-1];
-  [v10 setColliderShape:a4];
+  [v10 setColliderShape:shape];
   [v10 setAnchor:6];
   [v10 setOffset:{*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)}];
   [v10 setStickSize:{50.0, 50.0}];
   [v10 setSize:{90.0, 90.0}];
-  [v10 setLabel:v6];
+  [v10 setLabel:labelCopy];
 
   [v10 setHidesWhenNotPressed:1];
   [v10 stickSize];

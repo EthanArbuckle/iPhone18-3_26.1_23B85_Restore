@@ -1,20 +1,20 @@
 @interface TSTTableDataRichTextPayload
-- (BOOL)isEqual:(id)a3;
-- (id)initObjectWithRichTextPayload:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)initObjectWithRichTextPayload:(id)payload;
 - (unint64_t)hash;
 - (void)dealloc;
 @end
 
 @implementation TSTTableDataRichTextPayload
 
-- (id)initObjectWithRichTextPayload:(id)a3
+- (id)initObjectWithRichTextPayload:(id)payload
 {
   v6.receiver = self;
   v6.super_class = TSTTableDataRichTextPayload;
   v4 = [(TSTTableDataRichTextPayload *)&v6 init];
   if (v4)
   {
-    v4->mPayload = a3;
+    v4->mPayload = payload;
     v4->super.mRefCount = 1;
   }
 
@@ -23,14 +23,14 @@
 
 - (unint64_t)hash
 {
-  v2 = [(TSTRichTextPayload *)self->mPayload storage];
+  storage = [(TSTRichTextPayload *)self->mPayload storage];
 
-  return [(TSWPStorage *)v2 hash];
+  return [(TSWPStorage *)storage hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
@@ -41,10 +41,10 @@
     return 0;
   }
 
-  v5 = [*(a3 + 2) storage];
-  v6 = [(TSTRichTextPayload *)self->mPayload storage];
+  storage = [*(equal + 2) storage];
+  storage2 = [(TSTRichTextPayload *)self->mPayload storage];
 
-  return [(TSWPStorage *)v6 isEqual:v5];
+  return [(TSWPStorage *)storage2 isEqual:storage];
 }
 
 - (void)dealloc

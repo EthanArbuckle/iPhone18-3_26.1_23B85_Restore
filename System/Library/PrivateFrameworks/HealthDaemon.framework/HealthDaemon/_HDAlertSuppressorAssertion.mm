@@ -1,14 +1,14 @@
 @interface _HDAlertSuppressorAssertion
-- (void)setKeepaliveTimer:(uint64_t)a1;
+- (void)setKeepaliveTimer:(uint64_t)timer;
 @end
 
 @implementation _HDAlertSuppressorAssertion
 
-- (void)setKeepaliveTimer:(uint64_t)a1
+- (void)setKeepaliveTimer:(uint64_t)timer
 {
-  if (a1)
+  if (timer)
   {
-    objc_storeStrong((a1 + 96), a2);
+    objc_storeStrong((timer + 96), a2);
   }
 }
 

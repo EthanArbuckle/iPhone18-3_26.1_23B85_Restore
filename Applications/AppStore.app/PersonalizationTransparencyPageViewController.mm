@@ -1,12 +1,12 @@
 @interface PersonalizationTransparencyPageViewController
-- (_TtC8AppStore45PersonalizationTransparencyPageViewController)initWithCoder:(id)a3;
-- (_TtC8AppStore45PersonalizationTransparencyPageViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC8AppStore45PersonalizationTransparencyPageViewController)initWithCoder:(id)coder;
+- (_TtC8AppStore45PersonalizationTransparencyPageViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
 @end
 
 @implementation PersonalizationTransparencyPageViewController
 
-- (_TtC8AppStore45PersonalizationTransparencyPageViewController)initWithCoder:(id)a3
+- (_TtC8AppStore45PersonalizationTransparencyPageViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC8AppStore45PersonalizationTransparencyPageViewController_overlayViewController) = 0;
   result = _assertionFailure(_:_:file:line:flags:)();
@@ -23,7 +23,7 @@
   dispatch thunk of BasePresenter.didLoad()();
 }
 
-- (_TtC8AppStore45PersonalizationTransparencyPageViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC8AppStore45PersonalizationTransparencyPageViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

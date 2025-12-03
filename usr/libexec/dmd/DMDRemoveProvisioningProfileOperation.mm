@@ -1,7 +1,7 @@
 @interface DMDRemoveProvisioningProfileOperation
-+ (BOOL)validateRequest:(id)a3 error:(id *)a4;
++ (BOOL)validateRequest:(id)request error:(id *)error;
 + (id)whitelistedClassesForRequest;
-- (void)runWithRequest:(id)a3;
+- (void)runWithRequest:(id)request;
 - (void)waitUntilFinished;
 @end
 
@@ -21,21 +21,21 @@
   return [NSSet setWithObject:v2];
 }
 
-+ (BOOL)validateRequest:(id)a3 error:(id *)a4
++ (BOOL)validateRequest:(id)request error:(id *)error
 {
-  v6 = a3;
-  v13.receiver = a1;
+  requestCopy = request;
+  v13.receiver = self;
   v13.super_class = &OBJC_METACLASS___DMDRemoveProvisioningProfileOperation;
-  if (!objc_msgSendSuper2(&v13, "validateRequest:error:", v6, a4))
+  if (!objc_msgSendSuper2(&v13, "validateRequest:error:", requestCopy, error))
   {
     goto LABEL_10;
   }
 
-  v7 = [v6 profileIdentifier];
+  profileIdentifier = [requestCopy profileIdentifier];
 
-  if (!v7)
+  if (!profileIdentifier)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_11;
     }
@@ -47,11 +47,11 @@
     goto LABEL_9;
   }
 
-  v8 = [v6 managingProfileIdentifier];
+  managingProfileIdentifier = [requestCopy managingProfileIdentifier];
 
-  if (!v8)
+  if (!managingProfileIdentifier)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_11;
     }
@@ -62,33 +62,33 @@
     v10 = &v14;
 LABEL_9:
     v11 = [NSDictionary dictionaryWithObjects:v9 forKeys:v10 count:1];
-    *a4 = DMFErrorWithCodeAndUserInfo();
+    *error = DMFErrorWithCodeAndUserInfo();
 
 LABEL_10:
-    LOBYTE(a4) = 0;
+    LOBYTE(error) = 0;
     goto LABEL_11;
   }
 
-  LOBYTE(a4) = 1;
+  LOBYTE(error) = 1;
 LABEL_11:
 
-  return a4;
+  return error;
 }
 
-- (void)runWithRequest:(id)a3
+- (void)runWithRequest:(id)request
 {
-  v4 = a3;
-  v5 = [v4 profileIdentifier];
+  requestCopy = request;
+  profileIdentifier = [requestCopy profileIdentifier];
   v6 = +[MCDependencyReader sharedReader];
-  v7 = [v4 managingProfileIdentifier];
+  managingProfileIdentifier = [requestCopy managingProfileIdentifier];
 
-  v8 = [v6 dependentsOfParent:v7 inDomain:kMCDMManagingProfileToProvisioningProfileKey];
+  v8 = [v6 dependentsOfParent:managingProfileIdentifier inDomain:kMCDMManagingProfileToProvisioningProfileKey];
 
-  if ([v8 containsObject:v5])
+  if ([v8 containsObject:profileIdentifier])
   {
     v9 = +[MCProfileConnection sharedConnection];
     v14 = 0;
-    v10 = [v9 removeProvisioningProfileWithUUID:v5 outError:&v14];
+    v10 = [v9 removeProvisioningProfileWithUUID:profileIdentifier outError:&v14];
     v11 = v14;
 
     if (v10)
